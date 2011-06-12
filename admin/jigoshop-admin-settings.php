@@ -200,6 +200,25 @@ function jigoshop_admin_fields($options) {
 						echo '</table></div>';
 		                $counter = $counter + 1;
 		            break;
+		            case 'single_select_page' :
+		            	$page_setting = (int) get_option($value['id']);
+		            	
+		            	$args = array( 'name'	=> $value['id'],
+		            				   'id'		=> $value['id']. '" style="width: 200px;',
+		            				   'sort_column' 	=> 'menu_order',
+		            				   'sort_order'		=> 'ASC',
+		            				   'selected'		=> $page_setting);
+		            	
+		            	if( isset($value['args']) ) $args = wp_parse_args($value['args'], $args);
+		            	
+		            	?><tr class="single_select_page">
+		                    <td class="titledesc"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
+		                    <td class="forminp">
+					        	<?php wp_dropdown_pages($args); ?>  
+					        	<br /><small><?php echo $value['desc'] ?></small>        
+					        </td>
+		               	</tr><?php	
+		            break;
 		            case 'single_select_country' :
 		            	$countries = jigoshop_countries::$countries;
 		            	$country_setting = (string) get_option($value['id']);
