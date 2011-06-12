@@ -58,6 +58,28 @@ function jigoshop_default_options() {
 function jigoshop_create_pages() {
     global $wpdb;
 	
+    $slug = esc_sql( _x('shop', 'page_slug', 'jigoshop') );
+	$page_found = $wpdb->get_var("SELECT ID FROM " . $wpdb->posts . " WHERE post_name = '$slug' LIMIT 1");
+
+    if(!$page_found) {
+
+        $page_data = array(
+	        'post_status' => 'publish',
+	        'post_type' => 'page',
+	        'post_author' => 1,
+	        'post_name' => $slug,
+	        'post_title' => __('Shop', 'jigoshop'),
+	        'post_content' => 'This page holds your shop front page',
+	        'comment_status' => 'closed'
+        );
+        $page_id = wp_insert_post($page_data);
+
+        update_option('jigoshop_shop_page_id', $page_id);
+
+    } else {
+    	update_option('jigoshop_shop_page_id', $page_found);
+    }
+    
     $slug = esc_sql( _x('cart', 'page_slug', 'jigoshop') );
     $page_found = $wpdb->get_var("SELECT ID FROM " . $wpdb->posts . " WHERE post_name = '$slug' LIMIT 1");
 
