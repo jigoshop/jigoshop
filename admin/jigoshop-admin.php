@@ -204,3 +204,32 @@ function jigoshop_system_info() {
 	</script>
 	<?php
 }
+
+function jigoshop_feature_product () {
+
+	if( !is_admin() ) die;
+	
+	if( !current_user_can('edit_posts') ) wp_die( __('You do not have sufficient permissions to access this page.') );
+	
+	if( !check_admin_referer()) wp_die( __('You have taken too long. Please go back and retry.', 'jigoshop') );
+	
+	$post_id = isset($_GET['product_id']) && (int)$_GET['product_id'] ? (int)$_GET['product_id'] : '';
+	
+	if(!$post_id) die;
+	
+	$post = get_post($post_id);
+	if(!$post) die;
+	
+	if($post->post_type !== 'product') die;
+	
+	$product = new jigoshop_product($post->ID);
+
+	if ($product->is_featured()) update_post_meta($post->ID, 'featured', 'no');
+	else update_post_meta($post->ID, 'featured', 'yes');
+	
+	$sendback = remove_query_arg( array('trashed', 'untrashed', 'deleted', 'ids'), wp_get_referer() );
+	wp_safe_redirect( $sendback );
+
+}
+add_action('wp_ajax_jigoshop-feature-product', 'jigoshop_feature_product');
+
