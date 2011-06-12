@@ -411,7 +411,10 @@ add_action( 'comment_post', 'jigoshop_add_comment_rating', 1 );
 
 function jigoshop_check_comment_rating($comment_data) {
 	// If posting a comment (not trackback etc) and not logged in
-	if ( isset($_POST['rating']) && empty($_POST['rating']) && $comment_data['comment_type']== '' ) {
+	if ( !jigoshop::verify_nonce('comment_rating', 'comment-rating') )
+		wp_die( __('You have taken too long. Please go back and refresh the page.', 'jigoshop') );
+		
+	elseif ( isset($_POST['rating']) && empty($_POST['rating']) && $comment_data['comment_type']== '' ) {
 		wp_die( __('Please rate the product.',"jigowatt") );
 		exit;
 	}

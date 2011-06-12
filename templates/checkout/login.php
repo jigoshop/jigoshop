@@ -11,6 +11,7 @@
 	<div class="clear"></div>
 	
 	<p class="form-row">
+		<?php jigoshop::nonce_field('login', 'login') ?>
 		<input type="submit" class="button" name="login" value="<?php _e('Login', 'jigoshop'); ?>" />
 	</p>
 </form>

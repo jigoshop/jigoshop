@@ -149,6 +149,44 @@ class jigoshop {
 		endif;
 	}
 	
+	public static function nonce_field ($action, $name = "", $referer = true , $echo = true) {
+		
+		$name = 'jigoshop_nonce_' . $name;
+		$action = 'jigoshop-' . $action;
+		
+		return wp_nonce_field($action, $name, $referer, $echo);
+		
+	}
+	/**
+	 * Check a nonce and sets jigoshop error in case it is invalid
+	 * To fail silently, set the error_message to an empty string
+	 * 
+	 * @param 	string $name the nonce name
+	 * @param	string $action then nonce action
+	 * @param   string $method the http request method _POST, _GET or _REQUEST
+	 * @param   string $error_message custom error message, or false for default message, or an empty string to fail silently
+	 * 
+	 * @return   bool
+	 */
+	public static function verify_nonce ($name, $action, $method='_POST', $error_message = false) {
+		
+		$name = 'jigoshop_nonce_' . $name;
+		$action = 'jigoshop-' . $action;
+		
+		if( $error_message === false ) $error_message = __('You have taken too long. Please refresh the page and retry.', 'jigoshop'); 
+		
+		if(!in_array($method, array('_GET', '_POST', '_REQUEST'))) $method = '_POST';
+		
+		$request = $GLOBALS[$method];
+		
+		if ( isset($request[$name]) && wp_verify_nonce($request[$name], $action) ) return true;
+		
+		if( $error_message ) jigoshop::add_error( $error_message );
+		
+		return false;
+		
+	}
+	
 	/**
 	 * Redirection hook which stores messages into session data
 	 *

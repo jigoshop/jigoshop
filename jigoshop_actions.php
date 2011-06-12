@@ -21,7 +21,10 @@ function jigoshop_add_to_cart( $url = false ) {
 	
 	if (isset($_GET['add-to-cart']) && $_GET['add-to-cart']) :
 	
-		if (is_numeric($_GET['add-to-cart'])) :
+		if ( !jigoshop::verify_nonce('add_to_cart', 'add-to-cart', '_GET') ):
+			;
+			
+		elseif (is_numeric($_GET['add-to-cart'])) :
 		
 			$quantity = 1;
 			if (isset($_POST['quantity'])) $quantity = $_POST['quantity'];
@@ -107,6 +110,8 @@ function jigoshop_process_login() {
 	
 	if (isset($_POST['login']) && $_POST['login']) :
 	
+		jigoshop::verify_nonce('login', 'login');
+
 		if ( !isset($_POST['username']) || empty($_POST['username']) ) jigoshop::add_error( __('Username is required.', 'jigoshop') );
 		if ( !isset($_POST['password']) || empty($_POST['password']) ) jigoshop::add_error( __('Password is required.', 'jigoshop') );
 		
@@ -149,7 +154,7 @@ function jigoshop_cancel_order() {
 		
 		$order = &new jigoshop_order( $order_id );
 
-		if ($order->id == $order_id && $order->order_key == $order_key && $order->status=='pending') :
+		if ($order->id == $order_id && $order->order_key == $order_key && $order->status=='pending' && jigoshop::verify_nonce('cancel_order', 'cancel-order', '_GET')) :
 			
 			// Cancel the order + restore stock
 			$order->cancel_order( __('Order cancelled by customer.', 'jigoshop') );

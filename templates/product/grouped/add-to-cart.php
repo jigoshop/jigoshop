@@ -17,4 +17,5 @@
 		</tbody>
 	</table>
 	<button type="submit" class="button-alt"><?php _e('Add to cart', 'jigoshop'); ?></button>
+	<?php jigoshop::nonce_field('add_to_cart', 'add-to-cart') ?>
 </form>

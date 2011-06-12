@@ -160,6 +160,7 @@
 		
 			<noscript><?php _e('Since your browser does not support JavaScript, or it is disabled, please ensure you click the <em>Update Totals</em> button before placing your order. You may be charged more than the amount stated above if you fail to do so.', 'jigoshop'); ?><br/><input type="submit" class="button-alt" name="update_totals" value="<?php _e('Update totals', 'jigoshop'); ?>" /></noscript>
 		
+			<?php jigoshop::nonce_field('process-checkout', 'process_checkout')?>
 			<input type="submit" class="button-alt" name="place_order" id="place_order" value="<?php _e('Place order', 'jigoshop'); ?>" />
 			
 			<?php if (get_option('jigoshop_terms_page_id')>0) : ?>
