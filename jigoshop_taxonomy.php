@@ -123,8 +123,6 @@ function jigoshop_post_type() {
 		)
 	);
 	
-	//jigashop_rewrite_rules ();
-	
     register_taxonomy( 'product_type',
         array('product'),
         array(
@@ -200,39 +198,3 @@ function jigoshop_post_type() {
     endif;
     
 } 
-
-function jigashop_rewrite_rules () {
-    	
-		global $wp_rewrite;
-    	 
-		if ( '' != get_option('permalink_structure') ) {
-    	
-			$post_type = get_post_type_object('product');
-			
-    		if ( ! is_array( $post_type->rewrite ) )
-    			$post_type->rewrite = array();
-    		if ( empty( $post_type->rewrite['slug'] ) )
-    			$post_type->rewrite['slug'] = 'product';
-    		if ( ! isset( $post_type->rewrite['with_front'] ) )
-    			$post_type->rewrite['with_front'] = true;
-    		if ( ! isset( $post_type->rewrite['pages'] ) )
-    			$post_type->rewrite['pages'] = true;
-    		if ( ! isset( $args->rewrite['feeds'] ) || ! $args->has_archive )
-				$args->rewrite['feeds'] = (bool) $args->has_archive;
-    		
-    		$archive_slug = get_page_uri( get_option('jigoshop_shop_page_id') ) ? get_page_uri( get_option('jigoshop_shop_page_id') ) : 'shop';	
-
-    		//$wp_rewrite->add_rule( "{$archive_slug}/?$", "index.php?post_type=$post_type", 'top' );
-	    		
-	    	if ( $post_type->rewrite['feeds'] && $wp_rewrite->feeds ) {
-	    		$feeds = '(' . trim( implode( '|', $wp_rewrite->feeds ) ) . ')';
-	    		$wp_rewrite->add_rule( "{$archive_slug}/feed/$feeds/?$", "index.php?post_type=$this->Id" . '&feed=$matches[1]', 'top' );
-	    		$wp_rewrite->add_rule( "{$archive_slug}/$feeds/?$", "index.php?post_type=$this->Id" . '&feed=$matches[1]', 'top' );
-	    	}
-	    		
-	    	if ( $post_type->rewrite['pages'] )
-	    		$wp_rewrite->add_rule( "({$archive_slug})/{$wp_rewrite->pagination_base}/([0-9]{1,})/?$", 'index.php?pagename=$matches[1]' . '&paged=$matches[2]', 'top' );
-	    	}
-    	
-    	
-    }
