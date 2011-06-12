@@ -137,24 +137,25 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	array(	'name' => __('Catalog Options', 'jigoshop'), 'type' 		=> 'title','desc' 		=> '', 'id' 		=> '' ),
 
 	array(  
-		'name' => __('Products Base URL','jigoshop'),
+		'name' => __('Products Base Page','jigoshop'),
 		'desc' 		=> sprintf( __("IMPORTANT: You must <a target='_blank' href='%s'>re-save your permalinks</a> for this change to take effect.",'jigoshop'), 'options-permalink.php' ),
-		'tip' 		=> __('This controls the base name of your product urls. The default is shop and will look like this: http://www.yoursite.com/shop/product-name-here/. Do not include any slashes. This should only be alpha or numeric values. You should not change this value once you have launched your site otherwise you risk breaking urls of other sites pointing to yours, etc.','jigoshop'),
-		'id' 		=> 'jigoshop_shop_slug',
+		'tip' 		=> __('This sets the base page of your shop. You should not change this value once you have launched your site otherwise you risk breaking urls of other sites pointing to yours, etc.','jigoshop'),
+		'id' 		=> 'jigoshop_shop_page_id',
 		'css' 		=> 'min-width:50px;',
-		'type' 		=> 'text',
-		'std' 		=> 'shop'
+		'type' 		=> 'single_select_page',
+		'std' 		=> ''
 	),
 
 
 	array(  
 		'name' => __('Terms page ID', 'jigoshop'),
 		'desc' 		=> __('If you define a "Terms" page the customer will be asked if they accept them when checking out.', 'jigoshop'),
-		'tip' 		=> 'To get the page ID go to the Pages menu, hover over the page, and look at the url.',
+		'tip' 		=> '',
 		'id' 		=> 'jigoshop_terms_page_id',
 		'css' 		=> 'min-width:50px;',
 		'std' 		=> '',
-		'type' 		=> 'text'
+		'type' 		=> 'single_select_page',
+		'args'		=> 'show_option_none=' . __('None', 'jigoshop'),
 	),
 	
 	array(	'name' => __('Pricing Options', 'jigoshop'), 'type' 		=> 'title','desc' 		=> '', 'id' 		=> '' ),
