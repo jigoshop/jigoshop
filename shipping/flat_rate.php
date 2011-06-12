@@ -136,7 +136,7 @@ class flat_rate extends jigoshop_shipping_method {
             			                    			
         				echo '<li><label><input type="checkbox" name="jigoshop_flat_rate_countries[]" value="'. $key .'" ';
         				if (in_array($key, $selections)) echo 'checked="checked"';
-        				echo ' />'. $val .'</label></li>';
+        				echo ' />'. __($val, 'jigoshop') .'</label></li>';
 
             		endforeach;
        			?></ul></div>
