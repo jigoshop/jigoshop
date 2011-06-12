@@ -352,7 +352,7 @@ function get_jigoshop_currency_symbol() {
 		case 'GBP' : 
 		default    : $currency_symbol = '&pound;'; break;
 	endswitch;
-	return $currency_symbol;
+	return apply_filters('jigoshop_currency_symbol', $currency_symbol, $currency);
 }
 
 function jigoshop_price( $price ) {

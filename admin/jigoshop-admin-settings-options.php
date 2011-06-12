@@ -168,7 +168,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'css' 		=> 'min-width:200px;',
 		'std' 		=> 'GBP',
 		'type' 		=> 'select',
-		'options' => array( 
+		'options' => apply_filters('jigoshop_currencies', array( 
 			'USD' => __('US Dollars (&#36;)', 'jigoshop'),
 			'EUR' => __('Euros (&euro;)', 'jigoshop'),
 			'GBP' => __('Pounds Sterling (&pound;)', 'jigoshop'),
@@ -191,7 +191,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 			'SEK' => __('Swedish Krona', 'jigoshop'),
 			'CHF' => __('Swiss Franc', 'jigoshop'),
 			'TWD' => __('Taiwan New Dollars', 'jigoshop'),
-			'THB' => __('Thai Baht', 'jigoshop')
+			'THB' => __('Thai Baht', 'jigoshop') )
 		)
 	),
 	
