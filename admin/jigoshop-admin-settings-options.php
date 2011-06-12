@@ -10,7 +10,7 @@
  */
 global $options_settings;
 
-$options_settings = array(
+$options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array( 'type' => 'tab', 'tabname' => __('General', 'jigoshop') ),
 
@@ -420,4 +420,4 @@ $options_settings = array(
 	
 	array( 'type' => 'tabend')
 
-);
+) );
