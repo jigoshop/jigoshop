@@ -117,7 +117,7 @@ function jigoshop_order_tracking( $atts ) {
 			<p class="form-row form-row-first"><label for="orderid"><?php _e('Order ID', 'jigoshop'); ?></label> <span class="input-text"><input type="text" name="orderid" id="orderid" placeholder="<?php _e('Found in your order confirmation email.', 'jigoshop'); ?>" /></span></p>
 			<p class="form-row form-row-last"><label for="order_email"><?php _e('Billing Email', 'jigoshop'); ?></label> <span class="input-text"><input type="text" name="order_email" id="order_email" placeholder="<?php _e('Email you used during checkout.', 'jigoshop'); ?>" /></span></p>
 			<div class="clear"></div>
-			<p class="form-row"><input type="submit" class="button" name="track" value="<?php _e('Track"', 'jigoshop'); ?> /></p>
+			<p class="form-row"><input type="submit" class="button" name="track" value="<?php _e('Track"', 'jigoshop'); ?>" /></p>
 			<?php jigoshop::nonce_field('order-tracking', 'order_tracking') ?>
 		</form>
 		<?php

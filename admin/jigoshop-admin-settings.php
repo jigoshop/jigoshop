@@ -233,7 +233,7 @@ function jigoshop_admin_fields($options) {
 		                    <td class="titledesc"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
 		                    <td class="forminp"><select name="<?php echo $value['id'] ?>" title="Country" style="width: 150px;">	
 					        	<?php echo jigoshop_countries::country_dropdown_options($country, $state); ?>          
-					        </select></div>
+					        </select>
 		               		</td>
 		               	</tr><?php	
 		            break;
@@ -272,7 +272,7 @@ function jigoshop_admin_fields($options) {
 			                    			<th><?php _e('Delete', 'jigoshop'); ?></th>
 			                    		</tr>
 			                    	</thead>
-			                    	<body>
+			                    	<tbody>
 			                    	<?php
 			                    	$i = -1;
 			                    	if ($coupon_codes && is_array($coupon_codes) && sizeof($coupon_codes)>0) foreach( $coupon_codes as $coupon ) : $i++;
@@ -299,7 +299,7 @@ function jigoshop_admin_fields($options) {
 					                    echo ' /> '.__('Individual use only', 'jigoshop').'</label></td><td><a href="#" class="remove button">&times;</a></td></tr>';
 			                    	endforeach;
 			                    	?>
-			                    	</body>
+			                    	</tbody>
 		                        </table>
 		                        <p><a href="#" class="add button"><?php _e('+ Add Coupon', 'jigoshop'); ?></a></p>
 		                    </td>
