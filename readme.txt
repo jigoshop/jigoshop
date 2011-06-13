@@ -52,7 +52,11 @@ Find out more on the official <a href="http://jigoshop.com" title="WordPress eCo
 
 = Official Jigoshop themes =
 
-* <a href="http://jigoshop.com/themes/jigotheme/">Jigotheme</a> - Our flagship premium theme complete with mobile optimisation
+* <a href="http://jigoshop.com/themes/jigotheme/">Jigotheme</a> - Our flagship premium theme complete with mobile optimisation.
+
+= Official Jigoshop Extensions =
+
+* <a href="http://jigoshop.com/extensions/sagepay-form/">SagePay Form</a> - SagePay Form payment gateway.
 
 = Minimum Requirements =
 
@@ -67,9 +71,6 @@ Find out more on the official <a href="http://jigoshop.com" title="WordPress eCo
 
 An advanced version of Jigoshop offering additional features and access to dedicated support
 
-= Coming soon: SagePay Form =
-
-SagePay form payment gateway
 
 == Installation ==
 

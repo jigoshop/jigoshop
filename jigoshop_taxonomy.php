@@ -8,7 +8,13 @@ function jigoshop_post_type() {
 	
 	$shop_page_id = get_option('jigoshop_shop_page_id');
 	
-	$base_slug = $shop_page_id && get_page_uri( get_option('jigoshop_shop_page_id') ) ? get_page_uri( get_option('jigoshop_shop_page_id') ) : 'shop';	
+	$base_slug = $shop_page_id && get_page_uri( get_option('jigoshop_shop_page_id') ) ? get_page_uri( get_option('jigoshop_shop_page_id') ) : 'shop';
+	
+	if (get_option('jigoshop_prepend_shop_page_to_urls')=="yes") :
+		$category_base = trailingslashit($base_slug);
+	else :
+		$category_base = '';
+	endif;
 	
 	register_taxonomy( 'product_cat',
         array('product'),
@@ -29,7 +35,7 @@ function jigoshop_post_type() {
             ),
             'show_ui' => true,
             'query_var' => true,
-            'rewrite' => array( 'slug' => $base_slug . '/' . _x('category', 'slug', 'jigoshop'), 'with_front' => false ),
+            'rewrite' => array( 'slug' => $category_base . _x('product-category', 'slug', 'jigoshop'), 'with_front' => false ),
         )
     );
     
@@ -51,7 +57,7 @@ function jigoshop_post_type() {
             ),
             'show_ui' => true,
             'query_var' => true,
-            'rewrite' => array( 'slug' => $base_slug . '/' . _x('tag', 'slug', 'jigoshop'), 'with_front' => false ),
+            'rewrite' => array( 'slug' => $category_base . _x('product-tag', 'slug', 'jigoshop'), 'with_front' => false ),
         )
     );
     
@@ -82,7 +88,7 @@ function jigoshop_post_type() {
 			            'show_ui' => false,
 			            'query_var' => true,
 			            'show_in_nav_menus' => false,
-			            'rewrite' => array( 'slug' => $base_slug . '/' . strtolower(sanitize_title($tax->attribute_name)), 'with_front' => false, 'hierarchical' => $hierarchical ),
+			            'rewrite' => array( 'slug' => $category_base . strtolower(sanitize_title($tax->attribute_name)), 'with_front' => false, 'hierarchical' => $hierarchical ),
 			        )
 			    );
 	    		
