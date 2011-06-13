@@ -67,8 +67,11 @@ function jigoshop_custom_product_columns($column) {
 			endif;
 		break;
 		case "featured" :
-			if ($product->is_featured()) echo '<img src="'.jigoshop::plugin_url().'/assets/images/success.gif" alt="yes" />';
-			else echo '<span class="na">&ndash;</span>';
+			$url = wp_nonce_url( admin_url('admin-ajax.php?action=jigoshop-feature-product&product_id=' . $post->ID) );
+			echo '<a href="'.$url.'" title="'.__('Change','jigoshop') .'">';
+			if ($product->is_featured()) echo '<a href="'.$url.'"><img src="'.jigoshop::plugin_url().'/assets/images/success.gif" alt="yes" />';
+			else echo '<img src="'.jigoshop::plugin_url().'/assets/images/success-off.gif" alt="no" />';
+			echo '</a>';
 		break;
 		case "visibility" :
 			if ( $this_data = $product->visibility ) :

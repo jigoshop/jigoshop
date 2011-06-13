@@ -20,10 +20,10 @@ function jigoshop_pay() {
 			if ($order->billing_postcode) jigoshop_customer::set_postcode( $order->billing_postcode );
 			
 			// Pay form was posted - process payment
-			if (isset($_POST['pay'])) :
+			if (isset($_POST['pay']) && jigoshop::verify_nonce('pay', 'pay')) :
 			
 				// Update payment method
-				if ($order->order_total > 0) : 
+				if ($order->order_total > 0 ) : 
 					$payment_method 			= jigowatt_clean($_POST['payment_method']);
 					$data 						= (array) maybe_unserialize( get_post_meta( $order_id, 'order_data', true ) );
 					$data['payment_method']		= $payment_method;
