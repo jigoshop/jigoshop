@@ -6,7 +6,9 @@ function jigoshop_post_type() {
 
 	global $wpdb;
 	
-	$base_slug = get_page_uri( get_option('jigoshop_shop_page_id') ) ? get_page_uri( get_option('jigoshop_shop_page_id') ) : 'shop';	
+	$shop_page_id = get_option('jigoshop_shop_page_id');
+	
+	$base_slug = $shop_page_id && get_page_uri( get_option('jigoshop_shop_page_id') ) ? get_page_uri( get_option('jigoshop_shop_page_id') ) : 'shop';	
 	
 	register_taxonomy( 'product_cat',
         array('product'),
@@ -112,9 +114,7 @@ function jigoshop_post_type() {
 			'publicly_queryable' => true,
 			'exclude_from_search' => false,
 			'menu_position' => 57,
-			//'menu_icon' => jigoshop::plugin_url() . '/assets/images/icons/menu-icons.png',
 			'hierarchical' => true,
-			//'show_in_menu' => 'jigoshop',
 			'rewrite' => array( 'slug' => $base_slug, 'with_front' => false ),
 			'query_var' => true,			
 			'supports' => array( 'title', 'editor', 'thumbnail', 'comments'/*, 'page-attributes'*/ ),

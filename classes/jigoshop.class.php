@@ -16,7 +16,7 @@ class jigoshop {
 	public static $messages = array();
 	public static $attribute_taxonomies;
 	
-	const VERSION = '0.9.7.5';
+	const VERSION = '0.9.7.6';
 	const SHOP_SMALL_W = '150';
 	const SHOP_SMALL_H = '150';
 	const SHOP_TINY_W = '36';

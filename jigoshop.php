@@ -3,12 +3,11 @@
 Plugin Name: Jigoshop - WordPress eCommerce
 Plugin URI: http://jigoshop.com
 Description: An eCommerce plugin for wordpress.
-Version: 0.9.7.5
+Version: 0.9.7.6
 Author: Jigowatt
 Author URI: http://jigowatt.co.uk
 Requires at least: 3.1
 Tested up to: 3.1.3
-Forked By: Robert Rhoades
 */
 
 	@session_start();

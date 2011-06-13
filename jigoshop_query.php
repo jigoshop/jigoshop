@@ -11,14 +11,6 @@ function jigoshop_get_products_in_view() {
 	if (is_tax( 'product_cat' ) || is_post_type_archive('product') || is_tax( 'product_tag' )) :
 	
 		$all_post_ids = jigoshop_get_post_ids();
-		
-		/*if (is_tax( 'product_cat' ) || is_tax( 'product_tag' )) :
-		
-			// Get posts in taxonomy
-			$term = get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) );
-			$all_post_ids = array_intersect($all_post_ids, get_objects_in_term( $term->term_id,  get_query_var( 'taxonomy' ) ));
-		
-		endif;*/	
 	
 	endif;
 	
@@ -73,44 +65,6 @@ function jigoshop_layered_nav_init() {
 	    endforeach;    	
     endif;
 
-	/*
-	if (isset($_SESSION['jigoshop_chosen_attributes'])) $_chosen_attributes = unserialize($_SESSION['jigoshop_chosen_attributes']); else $_chosen_attributes = array();
-	
-	if (isset($_GET['attribute']) && isset($_GET['value'])) :
-	
-		$taxonomy = stripslashes($_GET['attribute']);
-
-		if (taxonomy_exists($taxonomy)) :
-			
-			if (!is_array($_chosen_attributes[$taxonomy])) $_chosen_attributes[$taxonomy] = array();
-			
-			if (in_array(stripslashes($_GET['value']), $_chosen_attributes[$taxonomy])) :
-				
-				$remove_from_array = array(stripslashes($_GET['value']));
-				$_chosen_attributes[$taxonomy] = array_diff($_chosen_attributes[$taxonomy], $remove_from_array);
-				
-			else :
-				$_chosen_attributes[$taxonomy][] = stripslashes($_GET['value']);
-			endif;
-			
-			$_chosen_attributes[$taxonomy] = array_unique($_chosen_attributes[$taxonomy]);
-			
-		endif;
-	
-	endif;
-	
-	$_SESSION['jigoshop_chosen_attributes'] = serialize($_chosen_attributes);
-	
-	if (isset($_GET['attribute']) || isset($_GET['value'])) :
-		
-		if (isset($_SERVER['HTTP_REFERER'])) :
-			wp_redirect($_SERVER['HTTP_REFERER']);
-			exit;
-		endif;
-		
-	endif;
-	*/
-
 }
 add_action('init', 'jigoshop_layered_nav_init', 1);
 
@@ -124,15 +78,6 @@ function jigoshop_get_post_ids() {
 	$in = array('visible');
 	if (is_search()) $in[] = 'search';
 	if (!is_search()) $in[] = 'catalog';
-		
-	/*$post_ids = $wpdb->get_col( "
-		SELECT DISTINCT ID FROM $wpdb->posts 
-		LEFT JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id
-		WHERE post_type='product' 
-		AND post_status='publish'
-		AND meta_key = 'visibility'
-		AND meta_value IN ('".implode("','", $in)."');");
-	$post_ids[] = 0;*/
 	
 	// WP Query to get all queried post ids
 	
