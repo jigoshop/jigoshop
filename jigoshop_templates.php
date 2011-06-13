@@ -71,7 +71,7 @@ function jigoshop_get_template_part( $slug, $name = '' ) {
 ################################################################################
 
 function jigoshop_comments_template() {
-	if (file_exists( TEMPLATEPATH . '/jigoshop/product/reviews.php' ))
+	if (file_exists( STYLESHEETPATH . '/jigoshop/product/reviews.php' ))
 		comments_template( '/jigoshop/product/reviews.php' ); 
 	else
 		comments_template( '/../../plugins/jigoshop/templates/product/reviews.php' );
@@ -82,7 +82,7 @@ function jigoshop_comments_template() {
 ################################################################################
 
 function jigoshop_get_template($template_name) {
-	if (file_exists( TEMPLATEPATH . '/jigoshop/' . $template_name )) include( TEMPLATEPATH . '/jigoshop/' . $template_name ); 
+	if (file_exists( STYLESHEETPATH . '/jigoshop/' . $template_name )) include( STYLESHEETPATH . '/jigoshop/' . $template_name ); 
 	else include( jigoshop::plugin_path() . '/templates/' . $template_name );
 }
 
@@ -91,7 +91,7 @@ function jigoshop_get_template($template_name) {
 ################################################################################
 
 function jigoshop_get_template_file_url($template_name, $ssl = false) {
-	if (file_exists( TEMPLATEPATH . '/jigoshop/' . $template_name )) 
+	if (file_exists( STYLESHEETPATH . '/jigoshop/' . $template_name )) 
 		$return = get_bloginfo('template_url') . '/jigoshop/' . $template_name; 
 	else 
 		$return = jigoshop::plugin_url() . '/templates/' . $template_name;
