@@ -150,7 +150,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	array(  
 		'name' => __('Prepend shop categories/tags with base page?','jigoshop'),
 		'desc' 		=> sprintf( __("IMPORTANT: You must <a target='_blank' href='%s'>re-save your permalinks</a> for this change to take effect.",'jigoshop'), 'options-permalink.php' ),
-		'tip' 		=> __('If set to yes, categories will shop up as "your_base_page/shop_category" instead of just "shop_category".', 'jigoshop'),
+		'tip' 		=> __('If set to yes, categories will show up as "your_base_page/shop_category" instead of just "shop_category".', 'jigoshop'),
 		'id' 		=> 'jigoshop_prepend_shop_page_to_urls',
 		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'no',
