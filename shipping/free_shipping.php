@@ -66,7 +66,7 @@ class free_shipping extends jigoshop_shipping_method {
             			                    			
         				echo '<li><label><input type="checkbox" name="jigoshop_free_shipping_countries[]" value="'. $key .'" ';
         				if (in_array($key, $selections)) echo 'checked="checked"';
-        				echo ' />'. $val .'</label></li>';
+        				echo ' />'. __($val, 'jigoshop') .'</label></li>';
 
             		endforeach;
        			?></ul></div>

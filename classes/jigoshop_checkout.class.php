@@ -164,7 +164,7 @@ class jigoshop_checkout {
 					$field .= '<option value="'.$key.'"';
 					if ($this->get_value($args['name'])==$key) $field .= 'selected="selected"';
 					elseif (!$this->get_value($args['name']) && jigoshop_customer::get_country()==$key) $field .= 'selected="selected"';
-					$field .= '>'.$value.'</option>';
+					$field .= '>'.__($value, 'jigoshop').'</option>';
 				endforeach;
 				
 				$field .= '</select></p>'.$after;
@@ -189,7 +189,7 @@ class jigoshop_checkout {
 					foreach($states[$current_cc] as $key=>$value) :
 						$field .= '<option value="'.$key.'"';
 						if ($current_r==$key) $field .= 'selected="selected"';
-						$field .= '>'.$value.'</option>';
+						$field .= '>'.__($value, 'jigoshop').'</option>';
 					endforeach;
 					$field .= '</select></span>';
 				else :
@@ -232,10 +232,12 @@ class jigoshop_checkout {
 
 			jigoshop_cart::calculate_totals();
 			
+			jigoshop::verify_nonce('process_checkout', 'process-checkout');
+			
 			if (sizeof(jigoshop_cart::$cart_contents)==0) :
 				jigoshop::add_error( sprintf(__('Sorry, your session has expired. <a href="%s">Return to homepage &rarr;</a>','jigoshop'), home_url()) );
 			endif;
-			
+						
 			// Checkout fields
 			$this->posted['shiptobilling'] = isset($_POST['shiptobilling']) ? jigowatt_clean($_POST['shiptobilling']) : '';
 			$this->posted['payment_method'] = isset($_POST['payment_method']) ? jigowatt_clean($_POST['payment_method']) : '';

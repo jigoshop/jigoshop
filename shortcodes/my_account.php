@@ -150,7 +150,7 @@ function jigoshop_edit_address() {
 		
 		if ($_POST) :
 		
-			if ($user_id>0) :
+			if ($user_id>0 && jigoshop::verify_nonce('edit_address', 'edit-address') ) :
 				update_user_meta( $user_id, $load_address . '-first_name', jigowatt_clean($_POST['address-first_name']) );
 				update_user_meta( $user_id, $load_address . '-last_name', jigowatt_clean($_POST['address-last_name']) );
 				update_user_meta( $user_id, $load_address . '-company', jigowatt_clean($_POST['address-company']) );
@@ -290,7 +290,7 @@ function jigoshop_edit_address() {
 				</p>
 				<div class="clear"></div>
 			<?php endif; ?>
-			
+			<?php jigoshop::nonce_field('edit-address', 'edit_address') ?>
 			<input type="submit" class="button" name="save_address" value="<?php _e('Save Address', 'jigoshop'); ?>" />
 	
 		</form>
@@ -312,8 +312,8 @@ function jigoshop_change_password() {
 	if (is_user_logged_in()) :
 		
 		if ($_POST) :
-		
-			if ($user_id>0) :
+			
+			if ($user_id>0 && jigoshop::verify_nonce('change_password', 'change-password')) :
 				
 				if ( $_POST['password-1'] && $_POST['password-2']  ) :
 					
@@ -354,7 +354,7 @@ function jigoshop_change_password() {
 				<span class="input-text"><input type="password" name="password-2" id="password-2" /></span>
 			</p>
 			<div class="clear"></div>
-			
+			<?php jigoshop::nonce_field('change-password', 'change_password')?>
 			<p><input type="submit" class="button" name="save_password" value="<?php _e('Save', 'jigoshop'); ?>" /></p>
 	
 		</form>
