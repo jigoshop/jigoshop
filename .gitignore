@@ -1,1 +1,2 @@
 drop-ins/*
+!drop-ins/.placeholder
