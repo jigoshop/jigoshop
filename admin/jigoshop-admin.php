@@ -233,3 +233,25 @@ function jigoshop_feature_product () {
 }
 add_action('wp_ajax_jigoshop-feature-product', 'jigoshop_feature_product');
 
+/**
+ * Returns proper post_type
+ */
+function jigoshop_get_current_post_type() {
+        
+	global $post, $typenow, $current_screen;
+         
+    if( $current_screen && @$current_screen->post_type ) return $current_screen->post_type;
+    
+    if( $typenow ) return $typenow;
+        
+    if( !empty($_REQUEST['post_type']) ) return sanitize_key( $_REQUEST['post_type'] );
+    
+    if ( !empty($post) && !empty($post->post_type) ) return $post->post_type;
+         
+    if( ! empty($_REQUEST['post']) && (int)$_REQUEST['post'] ) {
+    	$p = get_post( $_REQUEST['post'] );
+    	return $p ? $p->post_type : '';
+    }
+    
+    return '';
+}

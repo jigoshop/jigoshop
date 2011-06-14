@@ -69,7 +69,7 @@
 					<?php jigoshop_get_template( 'product/attributes.php' ); ?>
 				</div><?php endif; ?>
 				<?php if ( comments_open() ) : ?><div class="panel" id="tab-reviews">
-					<?php jigoshop_comments_template(); ?>
+					<?php comments_template(); ?>
 				</div><?php endif; ?>
 			</div>
 				

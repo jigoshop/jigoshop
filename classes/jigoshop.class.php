@@ -16,6 +16,9 @@ class jigoshop {
 	public static $messages = array();
 	public static $attribute_taxonomies;
 	
+	public static $plugin_url;
+	public static $plugin_path;
+	
 	const VERSION = '0.9.7.6';
 	const SHOP_SMALL_W = '150';
 	const SHOP_SMALL_H = '150';
@@ -57,10 +60,8 @@ class jigoshop {
 	 * @return  string	url
 	 */
 	public static function plugin_url() { 
-		if (is_ssl()) :
-			return str_replace('http:', 'https:', WP_CONTENT_URL).'/plugins/jigoshop';
-		endif;
-		return WP_CONTENT_URL.'/plugins/jigoshop'; 
+		if(self::$plugin_url) return self::$plugin_url;
+		return self::$plugin_url = WP_PLUGIN_URL . "/" . plugin_basename( dirname(dirname(__FILE__))); 
 	}
 	
 	/**
@@ -68,7 +69,10 @@ class jigoshop {
 	 *
 	 * @return  string	url
 	 */
-	public static function plugin_path() { return WP_CONTENT_DIR.'/plugins/jigoshop'; }
+	public static function plugin_path() { 	
+		if(self::$plugin_path) return self::$plugin_path;
+		return self::$plugin_path = WP_PLUGIN_DIR . "/" . plugin_basename( dirname(dirname(__FILE__))); 
+	 }
 	
 	/**
 	 * Get a var

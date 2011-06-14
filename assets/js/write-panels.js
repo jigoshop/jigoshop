@@ -1,15 +1,3 @@
-<?php 
-	if (!defined('ABSPATH')) :
-		define('WP_INSTALLING', true); // Prevent all plugins loading!! This is a nasty hack, but it does make the file load much faster.
-		$root = dirname(dirname(dirname(dirname(dirname(dirname(__FILE__))))));
-		require_once( $root.'/wp-load.php' );
-		require_once( $root.'/wp-includes/wp-db.php' );
-		require_once( WP_CONTENT_DIR.'/plugins/jigoshop/jigoshop.php' );
-		jigoshop_load_core();
-	endif;
-	header("Content-type: text/javascript"); 
-?>
-
 jQuery(function(){
 
 	// TABS
@@ -29,7 +17,7 @@ jQuery(function(){
 	// ORDERS
 	
 	jQuery('#order_items_list button.remove_row').live('click', function(){
-		var answer = confirm("<?php _e("Remove this item? If you have previously reduced this item's stock, or this order was submitted by a customer, will need to manually restore the item's stock.", 'jigoshop'); ?>")
+		var answer = confirm(jigoshop_wp.remove_item_notice);
 		if (answer){
 			jQuery(this).parent().parent().remove();
 		}
@@ -37,7 +25,7 @@ jQuery(function(){
 	});
 	
 	jQuery('button.calc_totals').live('click', function(){
-		var answer = confirm("<?php _e("Calc totals based on order items, discount amount, and shipping?", 'jigoshop'); ?>")
+		var answer = confirm(jigoshop_wp.cart_total);
 		if (answer){
 			
 			var item_count = jQuery('#order_items_list tr').size();
@@ -84,17 +72,19 @@ jQuery(function(){
 				}
 			}
 			
-			<?php if (get_option('jigoshop_prices_include_tax')=='yes') : ?>
+			subtotal = itemTotal;
+			
+			/* why that condition ? 
+			if (jigoshop_wp.prices_include_tax == 'yes')
 				subtotal = itemTotal;
-			<?php else : ?>
+			else
 				subtotal = itemTotal;
-			<?php endif; ?>
-
-			<?php if (get_option('jigoshop_prices_include_tax')=='yes') : ?>
+			*/
+			
+			if (jigoshop_wp.prices_include_tax == 'yes')
 				total = parseFloat(subtotal) - parseFloat(discount) + parseFloat(shipping) + parseFloat(shipping_tax);
-			<?php else : ?>
+			else
 				total = parseFloat(subtotal) + parseFloat(tax) - parseFloat(discount) + parseFloat(shipping) + parseFloat(shipping_tax);
-			<?php endif; ?>
 			
 			if (total < 0 ) total = 0;
 
@@ -108,11 +98,11 @@ jQuery(function(){
 	});
 	
 	jQuery('button.add_shop_order_item').click(function(){
-		jQuery('table.jigoshop_order_items tbody').append('<tr><td><input type="text" name="item_id[]" placeholder="<?php _e('ID', 'jigoshop'); ?>" value="" /></td><td><input type="text" name="item_name[]" placeholder="<?php _e('Item Name', 'jigoshop'); ?>" value="" /></td><td><input type="text" name="item_quantity[]" placeholder="<?php _e('Quantity e.g. 2', 'jigoshop'); ?>" value="" /></td><td><input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit e.g. 2.99', 'jigoshop'); ?>" value="" /></td><td><input type="text" name="item_tax_rate[]" placeholder="<?php _e('Tax Rate e.g. 20.0000', 'jigoshop'); ?>" value="" /></td><td class="center"><button type="button" class="remove_row button">&times;</button></td></tr>');
+		jQuery('table.jigoshop_order_items tbody').append('<tr><td><input type="text" name="item_id[]" placeholder="'+jigoshop_wp.ID+'" value="" /></td><td><input type="text" name="item_name[]" placeholder="'+jigoshop_wp.item_name+'" value="" /></td><td><input type="text" name="item_quantity[]" placeholder="'+jigoshop_wp.quantity+'" value="" /></td><td><input type="text" name="item_cost[]" placeholder="'+jigoshop_wp.cost_unit+'" value="" /></td><td><input type="text" name="item_tax_rate[]" placeholder="'+jigoshop_wp.tax_rate+'" value="" /></td><td class="center"><button type="button" class="remove_row button">&times;</button></td></tr>');
 	});
 	
 	jQuery('button.billing-same-as-shipping').live('click', function(){
-		var answer = confirm("<?php _e("Copy billing information to shipping information? This will remove any currently entered shipping information.", 'jigoshop'); ?>")
+		var answer = confirm(jigoshop_wp.copy_billing);
 		if (answer){
 			jQuery('input#shipping_first_name').val( jQuery('input#billing_first_name').val() );
 			jQuery('input#shipping_last_name').val( jQuery('input#billing_last_name').val() );
