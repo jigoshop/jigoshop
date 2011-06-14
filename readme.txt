@@ -1,4 +1,4 @@
-=== Jigoshop - WordPress eCommerce ===
+ === Jigoshop - WordPress eCommerce ===
 Contributors: jigowatt
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal
 Requires at least: 3.1
@@ -48,7 +48,7 @@ Find out more on the official <a href="http://jigoshop.com" title="WordPress eCo
 * Moneybookers / Skrill
 * Cheque payments
 
-(&dagger;) Coming soon in Jigoshop Premium
+(&dagger;) Coming soon
 
 = Official Jigoshop themes =
 
@@ -66,11 +66,6 @@ Find out more on the official <a href="http://jigoshop.com" title="WordPress eCo
 * The mod_rewrite Apache module (for permalinks)
 * fsockopen support (for payment gateway IPN access)
 * We recommend a Linux based server rather than a Windows server (Windows servers can have PHP configuration problems, especially with mail).
-
-= Coming soon: Jigoshop Premium =
-
-An advanced version of Jigoshop offering additional features and access to dedicated support
-
 
 == Installation ==
 
