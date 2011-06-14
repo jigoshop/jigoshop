@@ -207,8 +207,9 @@ function jigoshop_init() {
 	    'edit_posts' => false,
 	    'delete_posts' => false
 	));
-   
-    if (JIGOSHOP_USE_CSS) wp_register_style('jigoshop_frontend_styles', jigoshop::plugin_url() . '/assets/css/frontend.css');
+
+	$css = file_exists(get_stylesheet_directory() . '/jigoshop/style.css') ? get_stylesheet_directory_uri() . '/jigoshop/style.css' : jigoshop::plugin_url() . '/assets/css/frontend.css';
+    if (JIGOSHOP_USE_CSS) wp_register_style('jigoshop_frontend_styles', $css );
     
     wp_register_style('jigoshop_fancybox_styles', jigoshop::plugin_url() . '/assets/css/fancybox.css');
     wp_register_style('jqueryui_styles', jigoshop::plugin_url() . '/assets/css/ui.css');
