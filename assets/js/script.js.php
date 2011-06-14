@@ -4,7 +4,7 @@
 		$root = dirname(dirname(dirname(dirname(dirname(dirname(__FILE__))))));
 		require_once( $root.'/wp-load.php' );
 		require_once( $root.'/wp-includes/wp-db.php' );
-		require_once( WP_CONTENT_DIR.'/plugins/jigoshop/jigoshop.php' );
+		require_once( dirname(dirname(dirname(__FILE__))).'/jigoshop.php' );
 		jigoshop_load_core();
 	endif;
 	header("Content-type: text/javascript"); 
