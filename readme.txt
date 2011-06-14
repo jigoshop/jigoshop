@@ -146,6 +146,10 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * Options for different permalinks (with a base url)
 * Security fixes
 * One click featuring of products
+* Options to configure page IDs
+* Better support for child themes
+* Better support for plugin folder names
+* Localization of scripts
 
 = 0.9.7.5 =
 
