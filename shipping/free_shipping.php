@@ -57,7 +57,7 @@ class free_shipping extends jigoshop_shipping_method {
 	    </tr>
 	    <?php
     	$countries = jigoshop_countries::$countries;
-    	$selections = get_option('jigoshop_free_shipping_countries');
+    	$selections = get_option('jigoshop_free_shipping_countries', array());
     	?><tr class="multi_select_countries">
             <td class="titledesc"><?php _e('Specific Countries', 'jigoshop'); ?>:</td>
             <td class="forminp">
