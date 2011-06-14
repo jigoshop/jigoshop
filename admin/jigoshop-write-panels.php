@@ -126,6 +126,43 @@ function jigoshop_meta_boxes_save_errors() {
 }
 
 /**
+ * Enqueue scripts
+ * 
+ * Enqueue JavaScript used by the meta panels.
+ *
+ * @since 		1.0
+ */
+function jigoshop_write_panel_scripts() {
+	
+	$post_type = jigoshop_get_current_post_type();
+	
+	if( $post_type !== 'product' && $post_type !== 'shop_order' ) return;
+	
+	wp_register_script('jigoshop-date', jigoshop::plugin_url() . '/assets/js/date.js');
+	wp_register_script('jigoshop-datepicker', jigoshop::plugin_url() . '/assets/js/datepicker.js', array('jquery', 'jigoshop-date'));
+	
+	wp_enqueue_script('jigoshop-datepicker');
+	
+	wp_register_script('jigoshop-writepanel', jigoshop::plugin_url() . '/assets/js/write-panels.js', array('jquery'));
+	wp_enqueue_script('jigoshop-writepanel');
+	
+	$data = array( 'remove_item_notice' =>  __("Remove this item? If you have previously reduced this item's stock, or this order was submitted by a customer, will need to manually restore the item's stock.", 'jigoshop'),
+				   'cart_total' => __("Calc totals based on order items, discount amount, and shipping?", 'jigoshop'),
+				   'copy_billing' => __("Copy billing information to shipping information? This will remove any currently entered shipping information.", 'jigoshop'),
+				   'prices_include_tax' => get_option('jigoshop_prices_include_tax'),
+				   'ID' =>  __('ID', 'jigoshop'),
+				   'item_name' => __('Item Name', 'jigoshop'),
+				   'quantity' => __('Quantity e.g. 2', 'jigoshop'),
+				   'cost_unit' => __('Cost per unit e.g. 2.99', 'jigoshop'),
+				   'tax_rate' => __('Tax Rate e.g. 20.0000', 'jigoshop'),
+				 );
+	wp_localize_script( 'jigoshop-writepanel', 'jigoshop_wp', $data );
+	
+	
+}
+add_action('admin_print_scripts-post.php', 'jigoshop_write_panel_scripts');
+
+/**
  * Meta scripts
  * 
  * Outputs JavaScript used by the meta panels.
@@ -134,9 +171,6 @@ function jigoshop_meta_boxes_save_errors() {
  */
 function jigoshop_meta_scripts() {
 	?>
-	<script type="text/javascript" src="<?php echo jigoshop::plugin_url(); ?>/assets/js/date.js"></script>
-	<script type="text/javascript" src="<?php echo jigoshop::plugin_url(); ?>/assets/js/datepicker.js"></script>
-	<script type="text/javascript" src="<?php echo jigoshop::plugin_url(); ?>/admin/write-panels/write-panels.js.php"></script>
 	<script type="text/javascript">
 		jQuery(function(){
 			<?php do_action('product_write_panel_js'); ?>
