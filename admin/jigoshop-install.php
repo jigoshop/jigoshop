@@ -256,7 +256,7 @@ function jigoshop_create_pages() {
     }
     
     // Thank you Page
-    $slug = esc_sql( _x('view-order', 'thanks', 'jigoshop') );
+    $slug = esc_sql( _x('thanks', 'page_slug', 'jigoshop') );
     $page_found = $wpdb->get_var("SELECT ID FROM " . $wpdb->posts . " WHERE post_name = '$slug' LIMIT 1");
 
 	if(!$page_found) {
