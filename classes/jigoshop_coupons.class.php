@@ -24,4 +24,18 @@ class jigoshop_coupons {
 		return false;
 	}
 	
+	/** Check coupon is valid by looking at cart */
+	function is_valid($code) {
+		$coupon = self::get_coupon($code);
+		if (sizeof($coupon['products']>0)) :
+			$valid = false;
+			if (sizeof(jigoshop_cart::$cart_contents)>0) : foreach (jigoshop_cart::$cart_contents as $item_id => $values) :
+				if (in_array($item_id, $coupon['products'])) :
+					$valid = true;
+				endif;
+			endforeach; endif;
+			return $valid;
+		endif;
+		return true;
+	}
 }

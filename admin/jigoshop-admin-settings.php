@@ -276,23 +276,20 @@ function jigoshop_admin_fields($options) {
 			                    	<?php
 			                    	$i = -1;
 			                    	if ($coupon_codes && is_array($coupon_codes) && sizeof($coupon_codes)>0) foreach( $coupon_codes as $coupon ) : $i++;
-			                    		echo '<tr class="coupon_row"><td><input type="text" value="'.$coupon['code'].'" name="coupon_code['.$i.']" title="'.__('Coupon Code', 'jigoshop').'" placeholder="'.__('Coupon Code', 'jigoshop').'" class="text" /></td><td><select name="coupon_type['.$i.']" title="Coupon Type">
-			                    			<option value="percent" ';
+			                    		echo '<tr class="coupon_row"><td><input type="text" value="'.$coupon['code'].'" name="coupon_code['.$i.']" title="'.__('Coupon Code', 'jigoshop').'" placeholder="'.__('Coupon Code', 'jigoshop').'" class="text" /></td><td><select name="coupon_type['.$i.']" title="Coupon Type">';
 			                    		
-			                    		if ($coupon['type']=="percent") echo 'selected="selected"';
+			                    		$discount_types = array(
+			                    			'fixed_cart' 	=> __('Cart Discount', 'jigoshop'),
+			                    			'percent' 		=> __('Cart % Discount', 'jigoshop'),
+			                    			'fixed_product'	=> __('Product Discount', 'jigoshop')
+			                    		);
 			                    		
-			                    		echo '>'.__('% Discount', 'jigoshop').'</option>
-			                    			<option value="fixed_product" ';
+			                    		foreach ($discount_types as $type => $label) :
+			                    			$selected = ($coupon['type']==$type) ? 'selected="selected"' : '';
+			                    			echo '<option value="'.$type.'" '.$selected.'>'.$label.'</option>';
+			                    		endforeach;
 			                    		
-			                    		if ($coupon['type']=="fixed_product") echo 'selected="selected"';
-			                    		
-			                    		echo '>'.__('Product Discount', 'jigoshop').'</option>
-			                    			<option value="fixed_cart" ';
-			                    			
-			                    		if ($coupon['type']=="fixed_cart") echo 'selected="selected"';	
-			                    			
-			                    		echo '>'.__('Cart Discount', 'jigoshop').'</option>
-			                    		</select></td><td><input type="text" value="'.$coupon['amount'].'" name="coupon_amount['.$i.']" title="'.__('Coupon Amount', 'jigoshop').'" placeholder="'.__('Coupon Amount', 'jigoshop').'" class="text" /></td><td><input type="text" value="'.implode(', ', $coupon['products']).'" name="product_ids['.$i.']" placeholder="'.__('1, 2, 3', 'jigoshop').'" class="text" /></td><td><label><input type="checkbox" name="individual['.$i.']" ';
+			                    		echo '</select></td><td><input type="text" value="'.$coupon['amount'].'" name="coupon_amount['.$i.']" title="'.__('Coupon Amount', 'jigoshop').'" placeholder="'.__('Coupon Amount', 'jigoshop').'" class="text" /></td><td><input type="text" value="'.implode(', ', $coupon['products']).'" name="product_ids['.$i.']" placeholder="'.__('1, 2, 3', 'jigoshop').'" class="text" /></td><td><label><input type="checkbox" name="individual['.$i.']" ';
 					                    
 					                    if (isset($coupon['individual_use']) && $coupon['individual_use']=='yes') echo 'checked="checked"';
 					                    
