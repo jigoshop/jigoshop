@@ -45,6 +45,25 @@ class jigoshop_customer {
         }
         return self::$_instance;
     }
+    
+    /** Is customer outside base country? */
+	public static function is_customer_outside_base() {
+		if (isset($_SESSION['customer']['country'])) :
+			
+			$default = get_option('jigoshop_default_country');
+        	if (strstr($default, ':')) :
+        		$country = current(explode(':', $default));
+        		$state = end(explode(':', $default));
+        	else :
+        		$country = $default;
+        		$state = '';
+        	endif;
+        	
+			if ($country!==$_SESSION['customer']['country']) return true;
+			
+		endif;
+		return false;
+	}
 	
 	/** Gets the state from the current session */
 	public static function get_state() {

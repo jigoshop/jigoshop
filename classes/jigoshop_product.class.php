@@ -292,8 +292,27 @@ class jigoshop_product {
 	}
 	
 	/** Returns the product's price */
-	function get_price() {
-		return $this->price;
+	function get_price( $price = '' ) {
+		
+		if (!$price) $price = $this->price;
+		
+		if (get_option('jigoshop_prices_include_tax')=='yes' && $this->is_taxable() && jigoshop_customer::is_customer_outside_base()) :
+			
+			$_tax = &new jigoshop_tax();
+			
+			$price = $price * 100;
+			
+			$base_rate 			= $_tax->get_shop_base_rate( $this->data['tax_class'] );
+			$rate 				= $_tax->get_rate( $this->data['tax_class'] );
+			
+			$base_tax_amount 	= round($_tax->calc_tax( $price, $base_rate, true ));
+			$tax_amount 		= round($_tax->calc_tax( ($price-$base_tax_amount), $rate, false ));
+			
+			return ($price - $base_tax_amount + $tax_amount) / 100;			
+
+		endif;
+		
+		return $price;
 	}
 	
 	/** Returns the price (excluding tax) */
@@ -350,9 +369,9 @@ class jigoshop_product {
 		else :
 			if ($this->price) :
 				if ($this->is_on_sale() && isset($this->data['regular_price'])) :
-					$price .= '<del>'.jigoshop_price($this->data['regular_price']).'</del> <ins>'.jigoshop_price($this->price).'</ins>';
+					$price .= '<del>'.jigoshop_price( $this->get_price($this->data['regular_price']) ).'</del> <ins>'.jigoshop_price($this->get_price()).'</ins>';
 				else :
-					$price .= jigoshop_price($this->price);
+					$price .= jigoshop_price($this->get_price());
 				endif;
 			endif;
 		endif;

@@ -245,21 +245,29 @@ class jigoshop_cart {
 				
 				self::$cart_contents_weight = self::$cart_contents_weight + $_product->get_weight();
 				
-				$total_item_price = $_product->get_price() * $values['quantity'] * 100; // In pence
-				
+				$total_item_price = $_product->get_price() * $values['quantity'] * 100; // Into pounds
+
 				if ( get_option('jigoshop_calc_taxes')=='yes') :
 					
 					if ( $_product->is_taxable() ) :
 					
 						$rate = $_tax->get_rate( $_product->data['tax_class'] );
-	
-						if (get_option('jigoshop_prices_include_tax')=='yes') :
 						
+						if (get_option('jigoshop_prices_include_tax')=='yes') :
+							$tax_amount = $_tax->calc_tax( $total_item_price, $rate, true );
+						else :
+							$tax_amount = $_tax->calc_tax( $total_item_price, $rate, false );
+						endif;
+						
+						/* Get_price now includes correct country tax  - code not needed
+						if (get_option('jigoshop_prices_include_tax')=='yes') :
+							
+							
 							/**
 							 * Our prices include tax so we need to take the base tax rate into consideration of our shop's country
 							 *
 							 * Lets get the base rate first
-							 */
+							 *
 							$base_rate = $_tax->get_shop_base_rate( $_product->data['tax_class'] );
 							
 							// Calc tax for base country
@@ -272,15 +280,12 @@ class jigoshop_cart {
 							$total_item_price = ($total_item_price - $base_tax_amount + $tax_amount);
 
 						else :
-						
-							/**
-							 * Tax amount based on user's country (prices exclude tax)
-							 */
+
 							$tax_amount = $_tax->calc_tax( $total_item_price, $rate, false );
 						
 						endif;
 						
-						$tax_amount = $tax_amount / 100; // Back to pounds
+						$tax_amount = $tax_amount / 100; // Back to pounds*/
 						
 						self::$cart_contents_tax = self::$cart_contents_tax + $tax_amount;
 					
@@ -288,8 +293,9 @@ class jigoshop_cart {
 					
 				endif;
 				
-				$total_item_price = $total_item_price / 100; // Back to pounds
-				
+				$total_item_price 			= $total_item_price / 100; // Back to pounds
+				self::$cart_contents_tax 	= self::$cart_contents_tax / 100; // Back to pounds
+								
 				self::$cart_contents_total = self::$cart_contents_total + $total_item_price;
 				self::$cart_contents_total_ex_tax = self::$cart_contents_total_ex_tax + ($_product->get_price_excluding_tax() * $values['quantity']);
 				

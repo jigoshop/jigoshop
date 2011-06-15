@@ -136,6 +136,7 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * Fixed discount code logic
 * Changed/improved nonces
 * Tax amounts take base tax rate into consideration - should fix tax rates for other countries
+* Prices show relative to users country
 
 = 0.9.7.6 =
 
