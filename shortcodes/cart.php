@@ -4,20 +4,20 @@ function jigoshop_cart( $atts ) {
 	$errors = array();
 	
 	// Process Discount Codes
-	if (isset($_POST['apply_coupon']) && $_POST['apply_coupon'] && jigoshop::verify_nonce('cart', 'cart')) :
+	if (isset($_POST['apply_coupon']) && $_POST['apply_coupon'] && jigoshop::verify_nonce('cart')) :
 	
 		$coupon_code = stripslashes(trim($_POST['coupon_code']));
 		jigoshop_cart::add_discount($coupon_code);
 
 	// Remove from cart
-	elseif ( isset($_GET['remove_item']) && $_GET['remove_item'] > 0  && jigoshop::verify_nonce('cart', 'cart', '_GET')) :
+	elseif ( isset($_GET['remove_item']) && $_GET['remove_item'] > 0  && jigoshop::verify_nonce('cart', '_GET')) :
 	
 		jigoshop_cart::set_quantity( $_GET['remove_item'], 0 );
 		
 		jigoshop::add_message( __('Cart updated.', 'jigoshop') );
 	
 	// Update Cart
-	elseif (isset($_POST['update_cart']) && $_POST['update_cart']  && jigoshop::verify_nonce('cart', 'cart')) :
+	elseif (isset($_POST['update_cart']) && $_POST['update_cart']  && jigoshop::verify_nonce('cart')) :
 		
 		$cart_totals = $_POST['cart'];
 		
@@ -32,7 +32,7 @@ function jigoshop_cart( $atts ) {
 		jigoshop::add_message( __('Cart updated.', 'jigoshop') );
 	
 	// Update Shipping
-	elseif (isset($_POST['calc_shipping']) && $_POST['calc_shipping'] && jigoshop::verify_nonce('cart', 'cart')) :
+	elseif (isset($_POST['calc_shipping']) && $_POST['calc_shipping'] && jigoshop::verify_nonce('cart')) :
 
 		unset($_SESSION['_chosen_method_id']);
 		$country 	= $_POST['calc_shipping_country'];
@@ -121,7 +121,7 @@ function jigoshop_cart( $atts ) {
 					<div class="coupon">
 						<label for="coupon_code"><?php _e('Coupon', 'jigoshop'); ?>:</label> <span class="input-text"><input name="coupon_code" id="coupon_code" value="" /></span> <input type="submit" class="button" name="apply_coupon" value="<?php _e('Apply Coupon', 'jigoshop'); ?>" />
 					</div>
-					<?php jigoshop::nonce_field('cart', 'cart') ?>
+					<?php jigoshop::nonce_field('cart') ?>
 					<input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" /> <a href="<?php echo jigoshop_cart::get_checkout_url(); ?>" class="checkout-button button-alt"><?php _e('Proceed to Checkout &rarr;', 'jigoshop'); ?></a>
 				</td>
 			</tr>

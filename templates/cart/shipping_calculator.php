@@ -50,7 +50,7 @@
 			</p>
 		</div>
 		<p><button type="submit" name="calc_shipping" value="1" class="button"><?php _e('Update Totals', 'jigoshop'); ?></button></p>
-		<?php jigoshop::nonce_field('cart', 'cart') ?>
+		<?php jigoshop::nonce_field('cart') ?>
 		</section>
 	</form>
 	<?php

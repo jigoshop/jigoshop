@@ -150,7 +150,7 @@ function jigoshop_edit_address() {
 		
 		if ($_POST) :
 		
-			if ($user_id>0 && jigoshop::verify_nonce('edit_address', 'edit-address') ) :
+			if ($user_id>0 && jigoshop::verify_nonce('edit_address') ) :
 				update_user_meta( $user_id, $load_address . '-first_name', jigowatt_clean($_POST['address-first_name']) );
 				update_user_meta( $user_id, $load_address . '-last_name', jigowatt_clean($_POST['address-last_name']) );
 				update_user_meta( $user_id, $load_address . '-company', jigowatt_clean($_POST['address-company']) );
@@ -313,7 +313,7 @@ function jigoshop_change_password() {
 		
 		if ($_POST) :
 			
-			if ($user_id>0 && jigoshop::verify_nonce('change_password', 'change-password')) :
+			if ($user_id>0 && jigoshop::verify_nonce('change_password')) :
 				
 				if ( $_POST['password-1'] && $_POST['password-2']  ) :
 					

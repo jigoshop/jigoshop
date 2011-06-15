@@ -162,7 +162,7 @@ class jigoshop_cart {
 	/** gets the url to remove an item from the cart */
 	function get_remove_url( $item_id ) {
 		$cart_page_id = get_option('jigoshop_cart_page_id');
-		if ($cart_page_id) return add_query_arg('remove_item', $item_id, get_permalink($cart_page_id));
+		if ($cart_page_id) return jigoshop::nonce_url( 'cart', add_query_arg('remove_item', $item_id, get_permalink($cart_page_id)));
 	}
 	
 	/** looks through the cart to see if shipping is actually required */

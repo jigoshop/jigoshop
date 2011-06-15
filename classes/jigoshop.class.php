@@ -153,13 +153,23 @@ class jigoshop {
 		endif;
 	}
 	
-	public static function nonce_field ($action, $name = "", $referer = true , $echo = true) {
+	public static function nonce_field ($action, $referer = true , $echo = true) {
 		
-		$name = 'jigoshop_nonce_' . $name;
+		$name = '_n';
 		$action = 'jigoshop-' . $action;
 		
 		return wp_nonce_field($action, $name, $referer, $echo);
 		
+	}
+	
+	public static function nonce_url ($action, $url = '') {
+		
+		$name = '_n';
+		$action = 'jigoshop-' . $action;
+		
+		$url = add_query_arg( $name, wp_create_nonce( $action ), $url);
+		
+		return $url;
 	}
 	/**
 	 * Check a nonce and sets jigoshop error in case it is invalid
@@ -172,9 +182,9 @@ class jigoshop {
 	 * 
 	 * @return   bool
 	 */
-	public static function verify_nonce ($name, $action, $method='_POST', $error_message = false) {
+	public static function verify_nonce($action, $method='_POST', $error_message = false) {
 		
-		$name = 'jigoshop_nonce_' . $name;
+		$name = '_n';
 		$action = 'jigoshop-' . $action;
 		
 		if( $error_message === false ) $error_message = __('You have taken too long. Please refresh the page and retry.', 'jigoshop'); 

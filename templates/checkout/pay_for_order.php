@@ -80,7 +80,7 @@
 		<?php endif; ?>
 
 		<div class="form-row">
-			<?php jigoshop::nonce_field('pay', 'pay')?>
+			<?php jigoshop::nonce_field('pay')?>
 			<input type="submit" class="button-alt" name="pay" id="place_order" value="<?php _e('Pay for order', 'jigoshop'); ?>" />
 
 		</div>

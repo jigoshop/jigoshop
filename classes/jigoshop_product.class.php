@@ -151,7 +151,7 @@ class jigoshop_product {
 			$url = add_query_arg('add-to-cart', $this->id);
 		endif;
 		
-		$url = add_query_arg( 'jigoshop_nonce_add_to_cart', wp_create_nonce( 'jigoshop-add-to-cart' ), $url );
+		$url = jigoshop::nonce_url( 'add_to_cart', $url );
 		return $url;
 	}
 	

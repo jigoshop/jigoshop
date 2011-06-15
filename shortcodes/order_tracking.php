@@ -15,7 +15,8 @@ function jigoshop_order_tracking( $atts ) {
 		if (isset($_POST['orderid']) && $_POST['orderid'] > 0) $order->id = (int) $_POST['orderid']; else $order->id = 0;
 		if (isset($_POST['order_email']) && $_POST['order_email']) $order_email = trim($_POST['order_email']); else $order_email = '';
 		
-		if ( !isset($_POST['jigoshop_nonce_order_tracking']) || !wp_verify_nonce($_POST['jigoshop_nonce_order_tracking'], 'jigoshop-order-tracking') ):
+		if ( !jigoshop::verify_nonce('order_tracking') ):
+		
 			echo '<p>'.__('You have taken too long. Please refresh the page and retry.', 'jigoshop').'</p>';
 				
 		elseif ($order->id && $order_email && $order->get_order( $order->id )) :
@@ -118,7 +119,7 @@ function jigoshop_order_tracking( $atts ) {
 			<p class="form-row form-row-last"><label for="order_email"><?php _e('Billing Email', 'jigoshop'); ?></label> <span class="input-text"><input type="text" name="order_email" id="order_email" placeholder="<?php _e('Email you used during checkout.', 'jigoshop'); ?>" /></span></p>
 			<div class="clear"></div>
 			<p class="form-row"><input type="submit" class="button" name="track" value="<?php _e('Track"', 'jigoshop'); ?>" /></p>
-			<?php jigoshop::nonce_field('order-tracking', 'order_tracking') ?>
+			<?php jigoshop::nonce_field('order_tracking') ?>
 		</form>
 		<?php
 		
