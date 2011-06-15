@@ -19,7 +19,7 @@ class jigoshop {
 	public static $plugin_url;
 	public static $plugin_path;
 	
-	const VERSION = '0.9.7.6';
+	const VERSION = '0.9.7.7';
 	const SHOP_SMALL_W = '150';
 	const SHOP_SMALL_H = '150';
 	const SHOP_TINY_W = '36';
