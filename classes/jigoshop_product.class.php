@@ -308,24 +308,13 @@ class jigoshop_product {
 				$_tax = &new jigoshop_tax();
 				
 				// Get rate for base country
-				$default = get_option('jigoshop_default_country');
-	        	if (strstr($default, ':')) :
-	        		$country = current(explode(':', $default));
-	        		$state = end(explode(':', $default));
-	        	else :
-	        		$country = $default;
-	        		$state = '';
-	        	endif;
-				
-				$rate = $_tax->find_rate( $country, $state, $this->data['tax_class'] );
-				
-				$rate = $rate['rate'];
+				$rate = $_tax->get_shop_base_rate( $this->data['tax_class'] );
 				
 				//echo '-> Product Rate: ' . $rate . '<br/>';
 				
 				if ( $rate>0 ) :
 	
-					$tax_amount = $_tax->calc_tax( $price, $rate );
+					$tax_amount = $_tax->calc_tax( $price, $rate, true );
 					
 					//echo '-> Product Tax Rate: ' . $tax_amount . '<br/>';
 					

@@ -239,6 +239,7 @@ function jigoshop_admin_fields($options) {
 		            break;
 		            case 'multi_select_countries' :
 		            	$countries = jigoshop_countries::$countries;
+		            	asort($countries);
 		            	$selections = (array) get_option($value['id']);
 		            	?><tr class="multi_select_countries">
 		                    <td class="titledesc"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>

@@ -350,8 +350,12 @@ class jigoshop_countries {
 	
 	/** get countries we allow only */
 	function get_allowed_countries() {
+	
+		$countries = self::$countries;
 		
-		if (get_option('jigoshop_allowed_countries')!=='specific') return self::$countries;
+		asort($countries);
+		
+		if (get_option('jigoshop_allowed_countries')!=='specific') return $countries;
 
 		$allowed_countries = array();
 		
@@ -359,9 +363,11 @@ class jigoshop_countries {
 		
 		foreach ($allowed_countries_raw as $country) :
 			
-			$allowed_countries[$country] = self::$countries[$country];
+			$allowed_countries[$country] = $countries[$country];
 			
 		endforeach;
+		
+		asort($allowed_countries);
 		
 		return $allowed_countries;
 	}
@@ -382,7 +388,11 @@ class jigoshop_countries {
 	
 	/** Outputs the list of countries and states for use in dropdown boxes */
 	function country_dropdown_options( $selected_country = '', $selected_state = '' ) {
-		if ( self::$countries) foreach ( self::$countries as $key=>$value) :
+		
+		$countries = self::$countries;
+		asort($countries);
+		
+		if ( $countries ) foreach ( $countries as $key=>$value) :
 			if ( $states =  self::get_states($key) ) :
 				echo '<optgroup label="'.$value.'">';
     				echo '<option value="'.$key.'"';
