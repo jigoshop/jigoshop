@@ -153,7 +153,16 @@ class jigoshop_order {
 			
 		else :
 			
-			$subtotal = jigoshop_price($this->order_subtotal);
+			if (get_option('jigoshop_prices_include_tax')=='yes') :
+				
+				$subtotal = jigoshop_price($this->order_subtotal);
+				
+			else :
+				
+				$subtotal = jigoshop_price($this->order_subtotal + $this->order_tax);
+				
+			endif;
+			
 			if ($this->order_tax>0) :
 				$subtotal .= __(' <small>(inc. tax)</small>', 'jigoshop');
 			endif;
@@ -289,31 +298,6 @@ class jigoshop_order {
 	function cancel_order( $note = '' ) {
 	
 		$this->update_status('cancelled', $note);
-		
-		/* NO need for this anymore since stock is reduced after payment, not on order creation
-		foreach ($this->items as $order_item) :
-						
-			$_product = &new jigoshop_product( $order_item['id'] );
-			
-			if ($_product->exists) :
-			
-			 	if ($_product->managing_stock()) :
-					
-					$old_stock = $_product->stock;
-					
-					$new_quantity = $_product->increase_stock( $order_item['qty'] );
-					
-					$this->add_order_note( sprintf( __('Item #%s stock increased from %s to %s.', 'jigoshop'), $order_item['id'], $old_stock, $new_quantity) );
-					
-				endif;
-			
-			else :
-				
-				$this->add_order_note( sprintf( __('Item %s %s not found, skipping.', 'jigoshop'), $order_item['id'], $order_item['name'] ) );
-				
-			endif;
-		 	
-		endforeach;*/
 		
 	}
 
