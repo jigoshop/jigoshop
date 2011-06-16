@@ -52,11 +52,12 @@ Find out more on the official <a href="http://jigoshop.com" title="WordPress eCo
 
 = Official Jigoshop themes =
 
-* <a href="http://jigoshop.com/themes/jigotheme/">Jigotheme</a> - Our flagship premium theme complete with mobile optimisation.
+* <a href="http://jigoshop.com/themes/jigotheme/" title="Premium WordPress eComemrce theme for Jigoshop">Jigotheme</a> - Our flagship premium theme complete with mobile optimisation.
 
 = Official Jigoshop Extensions =
 
-* <a href="http://jigoshop.com/extensions/sagepay-form/">SagePay Form</a> - SagePay Form payment gateway.
+* <a href="http://jigoshop.com/extensions/sagepay-form/" title="SagePay Form payment gateway extension of Jigoshop">SagePay Form</a> - SagePay Form payment gateway.
+* <a href="http://jigoshop.com/extensions/jigoshop-html-email/" title="Jigoshop HTML Emails">Jigoshop HTML Emails</a> - Give your Jigoshop emails a makeover
 
 = Minimum Requirements =
 
