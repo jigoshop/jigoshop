@@ -522,14 +522,23 @@ function jigoshop_dashboard() {
 				     			<li><a href="http://jigoshop.com/tour/"><?php _e('Tour', 'jigoshop'); ?></a> &ndash; <?php _e('Take a tour of the plugin'); ?></li>
 				     			<li><a href="http://jigoshop.com/user-guide/"><?php _e('Documentation', 'jigoshop'); ?></a> &ndash; <?php _e('Stuck? Read the plugin\'s documentation.'); ?></li>
 				     			<li><a href="http://jigoshop.com/forums/"><?php _e('Forums', 'jigoshop'); ?></a> &ndash; <?php _e('Help from the community or our dedicated support team.'); ?></li>
+				     			<li><a href="http://jigoshop.com/extend/extensions/"><?php _e('Jigoshop Extensions', 'jigoshop'); ?></a> &ndash; <?php _e('Extend Jigoshop with extra plugins and modules.'); ?></li>
 				     			<li><a href="http://jigoshop.com/extend/themes/"><?php _e('Jigoshop Themes', 'jigoshop'); ?></a> &ndash; <?php _e('Extend Jigoshop with themes.'); ?></li>
 				     			<li><a href="http://twitter.com/#!/jigoshop"><?php _e('@Jigoshop', 'jigoshop'); ?></a> &ndash; <?php _e('Follow us on Twitter.'); ?></li>
 				     			<li><a href="https://github.com/mikejolley/Jigoshop"><?php _e('Jigoshop on Github', 'jigoshop'); ?></a> &ndash; <?php _e('Help extend Jigoshop.'); ?></li>
+				     			<li><a href="http://wordpress.org/extend/plugins/jigoshop/"><?php _e('Jigoshop on WordPress.org', 'jigoshop'); ?></a> &ndash; <?php _e('Leave us a rating!'); ?></li>
 				     		</ul>
 				     		<div class="social">
 				     			
-				     			<h4 class="first"><?php _e('Help promote Jigoshop!', 'jigoshop'); ?></h4>
+				     			<h4 class="first"><?php _e('Show your support &amp; Help promote Jigoshop!', 'jigoshop'); ?></h4>
 				     			
+				     			<form action="https://www.paypal.com/cgi-bin/webscr" method="post" style="margin: 0 0 1em 0;">
+									<input type="hidden" name="cmd" value="_s-xclick">
+									<input type="hidden" name="hosted_button_id" value="TKRER2WH7UAD6">
+									<input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online." style="margin:0; padding:0; ">
+									<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+								</form>
+								
 				     			<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fjigoshop.com&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font=segoe+ui&amp;height=24" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:24px;" allowTransparency="true"></iframe>
 				     			
 				     			<p><a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jigoshop.com/" data-text="Jigoshop: A WordPress eCommerce solution that works" data-count="horizontal" data-via="jigoshop" data-related="Jigowatt:Creators">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script></p>
