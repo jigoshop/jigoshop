@@ -108,6 +108,29 @@ class jigoshop_tax {
 	}
 	
 	/**
+	 * Get the shop's taxation rate using find_rate()
+	 *
+	 * @param   object	Tax Class
+	 * @return  int
+	 */
+	function get_shop_base_rate( $tax_class = '' ) {
+		
+		$default = get_option('jigoshop_default_country');
+    	if (strstr($default, ':')) :
+    		$country = current(explode(':', $default));
+    		$state = end(explode(':', $default));
+    	else :
+    		$country = $default;
+    		$state = '';
+    	endif;
+		
+		$rate = $this->find_rate( $country, $state, $tax_class );
+		
+		return $rate['rate'];
+	}
+
+	
+	/**
 	 * Get the tax rate based on the country and state
 	 *
 	 * @param   object	Tax Class
@@ -186,42 +209,27 @@ class jigoshop_tax {
 	 * @param	int		Taxation Rate
 	 * @return  int		
 	 */
-	function calc_tax( $price, $rate ) {
+	function calc_tax( $price, $rate, $price_includes_tax = true ) {
 	
 		// To avoid float roudning errors, work with integers (pence)
 		$price = round($price * 100, 0);
-		// $math_rate 	= ($rate/100)+1;
 		$math_rate = $rate;
-		
-		//echo '<br />Price: ' . $price;
-		//echo '<br />Math Rate: ' . $math_rate;
-			
-		if (get_option('jigoshop_prices_include_tax')=='yes') :
-			
+
+		if ($price_includes_tax) :
+
 			$math_rate = ($math_rate / 100) + 1;
-			
-			//echo '<br/>' . $math_rate. '<br/>';
-			
-			//$price_ex 	= $price - (( $price / 100 ) * $math_rate);
-			
+
 			$price_ex = round($price / $math_rate);
-			
-			//echo '<br/>price ex: '.$price_ex;
-			
+
 			$tax_amount = round($price - $price_ex);
 			
 		else :
 			$tax_amount = $price * ($rate/100);
 		endif;
-		
-		//echo '<br/>tax amount pence: '.$tax_amount;
 
 		$tax_amount = $tax_amount / 100; // Back to pounds
 		
-		//echo '<br/>tax amount: '.round($tax_amount, 2);
-		//echo '<br/>--';
-		
-		return number_format($tax_amount, 2);
+		return number_format($tax_amount, 2, '.', '');
 	}
 	
 	/**

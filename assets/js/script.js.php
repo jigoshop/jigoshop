@@ -162,7 +162,7 @@ function update_checkout() {
 
 	var method = jQuery('#shipping_method').val();
 	
-	if (jQuery('#shiptobilling input').is(':checked')) {
+	if (jQuery('#shiptobilling input').is(':checked') || jQuery('#shiptobilling input').size()==0) {
 		var country 	= jQuery('#billing-country').val();
 		var state 		= jQuery('#billing-state').val();
 		var postcode 	= jQuery('input#billing-postcode').val();

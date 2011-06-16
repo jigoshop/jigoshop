@@ -3,7 +3,7 @@
 Plugin Name: Jigoshop - WordPress eCommerce
 Plugin URI: http://jigoshop.com
 Description: An eCommerce plugin for wordpress.
-Version: 0.9.7.6
+Version: 0.9.7.7
 Author: Jigowatt
 Author URI: http://jigowatt.co.uk
 Requires at least: 3.1
@@ -411,7 +411,7 @@ add_action( 'comment_post', 'jigoshop_add_comment_rating', 1 );
 
 function jigoshop_check_comment_rating($comment_data) {
 	// If posting a comment (not trackback etc) and not logged in
-	if ( !jigoshop::verify_nonce('comment_rating', 'comment-rating') )
+	if ( !jigoshop::verify_nonce('comment_rating') )
 		wp_die( __('You have taken too long. Please go back and refresh the page.', 'jigoshop') );
 		
 	elseif ( isset($_POST['rating']) && empty($_POST['rating']) && $comment_data['comment_type']== '' ) {

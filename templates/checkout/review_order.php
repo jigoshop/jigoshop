@@ -3,10 +3,6 @@
 		define('DOING_AJAX', true);
 		$root = dirname(dirname(dirname(dirname(dirname(dirname(__FILE__))))));
 		require_once( $root.'/wp-load.php' );
-		/*define('WP_INSTALLING', true); // Prevent all plugins loading!! This is a nasty hack, but it does make the file load much faster.
-		require_once( $root.'/wp-includes/wp-db.php' );
-		require_once( WP_CONTENT_DIR.'/plugins/jigoshop/jigoshop.php' );
-		jigoshop_load_core();*/
 	endif;
 	
 	if (sizeof(jigoshop_cart::$cart_contents)==0) :
@@ -160,7 +156,7 @@
 		
 			<noscript><?php _e('Since your browser does not support JavaScript, or it is disabled, please ensure you click the <em>Update Totals</em> button before placing your order. You may be charged more than the amount stated above if you fail to do so.', 'jigoshop'); ?><br/><input type="submit" class="button-alt" name="update_totals" value="<?php _e('Update totals', 'jigoshop'); ?>" /></noscript>
 		
-			<?php jigoshop::nonce_field('process-checkout', 'process_checkout')?>
+			<?php jigoshop::nonce_field('process_checkout')?>
 			<input type="submit" class="button-alt" name="place_order" id="place_order" value="<?php _e('Place order', 'jigoshop'); ?>" />
 			
 			<?php if (get_option('jigoshop_terms_page_id')>0) : ?>

@@ -153,7 +153,16 @@ class jigoshop_order {
 			
 		else :
 			
-			$subtotal = jigoshop_price($this->order_subtotal);
+			if (get_option('jigoshop_prices_include_tax')=='yes') :
+				
+				$subtotal = jigoshop_price($this->order_subtotal);
+				
+			else :
+				
+				$subtotal = jigoshop_price($this->order_subtotal + $this->order_tax);
+				
+			endif;
+			
 			if ($this->order_tax>0) :
 				$subtotal .= __(' <small>(inc. tax)</small>', 'jigoshop');
 			endif;
@@ -205,7 +214,7 @@ class jigoshop_order {
 	
 	/** Generates a URL so that a customer can cancel their (unpaid - pending) order */
 	function get_cancel_order_url() {
-		return add_query_arg( 'jigoshop_nonce_cancel_order', wp_create_nonce( 'jigoshop-cancel-order' ), add_query_arg('cancel_order', 'true', add_query_arg('order', $this->order_key, add_query_arg('order_id', $this->id, home_url()))));
+		return jigoshop::nonce_url( 'cancel_order', add_query_arg('cancel_order', 'true', add_query_arg('order', $this->order_key, add_query_arg('order_id', $this->id, home_url()))));
 	}
 	
 	
@@ -289,31 +298,6 @@ class jigoshop_order {
 	function cancel_order( $note = '' ) {
 	
 		$this->update_status('cancelled', $note);
-		
-		/* NO need for this anymore since stock is reduced after payment, not on order creation
-		foreach ($this->items as $order_item) :
-						
-			$_product = &new jigoshop_product( $order_item['id'] );
-			
-			if ($_product->exists) :
-			
-			 	if ($_product->managing_stock()) :
-					
-					$old_stock = $_product->stock;
-					
-					$new_quantity = $_product->increase_stock( $order_item['qty'] );
-					
-					$this->add_order_note( sprintf( __('Item #%s stock increased from %s to %s.', 'jigoshop'), $order_item['id'], $old_stock, $new_quantity) );
-					
-				endif;
-			
-			else :
-				
-				$this->add_order_note( sprintf( __('Item %s %s not found, skipping.', 'jigoshop'), $order_item['id'], $order_item['name'] ) );
-				
-			endif;
-		 	
-		endforeach;*/
 		
 	}
 

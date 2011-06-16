@@ -232,7 +232,7 @@ class jigoshop_checkout {
 
 			jigoshop_cart::calculate_totals();
 			
-			jigoshop::verify_nonce('process_checkout', 'process-checkout');
+			jigoshop::verify_nonce('process_checkout');
 			
 			if (sizeof(jigoshop_cart::$cart_contents)==0) :
 				jigoshop::add_error( sprintf(__('Sorry, your session has expired. <a href="%s">Return to homepage &rarr;</a>','jigoshop'), home_url()) );
