@@ -50,7 +50,7 @@ function jigoshop_cart( $atts ) {
 		if ($country) :
 			
 			// Update customer location
-			jigoshop_customer::set_location( $country, $state, $postcode );
+			jigoshop_customer::set_shipping_location( $country, $state, $postcode );
 			
 			// Re-calc price
 			jigoshop_cart::calculate_totals();
@@ -59,7 +59,7 @@ function jigoshop_cart( $atts ) {
 		
 		else :
 		
-			jigoshop_customer::set_location( '', '', '' );
+			jigoshop_customer::set_shipping_location( '', '', '' );
 			
 			jigoshop::add_message(  __('Shipping costs updated.', 'jigoshop') );
 			
@@ -136,7 +136,7 @@ function jigoshop_cart( $atts ) {
 		<?php
 		// Hide totals if customer has set location and there are no methods going there
 		$available_methods = jigoshop_shipping::get_available_shipping_methods();
-		if ($available_methods || !jigoshop_customer::get_country() || !jigoshop_shipping::$enabled ) : 
+		if ($available_methods || !jigoshop_customer::get_shipping_country() || !jigoshop_shipping::$enabled ) : 
 			?>
 			<h2><?php _e('Cart Totals', 'jigoshop'); ?></h2>
 			<table cellspacing="0" cellpadding="0">
@@ -145,19 +145,28 @@ function jigoshop_cart( $atts ) {
 					<td><?php echo jigoshop_cart::get_cart_subtotal(); ?></td>
 				</tr>
 				<?php if (jigoshop_cart::get_cart_shipping_total()) : ?><tr>
-					<th><?php _e('Shipping', 'jigoshop'); ?> <small><?php echo jigoshop_countries::shipping_to_prefix().' '.jigoshop_countries::$countries[ jigoshop_customer::get_country() ]; ?></small></th>
+					<th><?php _e('Shipping', 'jigoshop'); ?> <small><?php echo jigoshop_countries::shipping_to_prefix().' '.jigoshop_countries::$countries[ jigoshop_customer::get_shipping_country() ]; ?></small></th>
 					<td><?php echo jigoshop_cart::get_cart_shipping_total(); ?> <small><?php echo jigoshop_cart::get_cart_shipping_title(); ?></small></td>
 				</tr><?php endif; ?>
 				<?php if (jigoshop_cart::get_cart_tax()) : ?><tr>
-					<th><?php _e('Tax', 'jigoshop'); ?></th>
-					<td><?php echo jigoshop_cart::get_cart_tax(); ?></td>
+					<th><?php 
+						_e('Tax', 'jigoshop'); 
+						
+						$_tax = &new jigoshop_tax();
+						$rate = (float) $_tax->get_shop_base_rate();
+	
+						if ($rate>0) echo sprintf(__('<small>at %s (%s)</small>', 'jigoshop'), $rate.'%', jigoshop_countries::$countries[ jigoshop_countries::get_base_country() ] );
+					?></th>
+					<td><?php 
+						echo jigoshop_cart::get_cart_tax(); 
+					?></td>
 				</tr><?php endif; ?>
 				<?php if (jigoshop_cart::get_total_discount()) : ?><tr class="discount">
 					<th><?php _e('Discount', 'jigoshop'); ?></th>
 					<td>-<?php echo jigoshop_cart::get_total_discount(); ?></td>
 				</tr><?php endif; ?>
 				<tr>
-					<th><strong><?php _e('Total', 'jigoshop'); ?></strong></th>
+					<th><strong><?php _e('Estimated Total', 'jigoshop'); ?></strong></th>
 					<td><strong><?php echo jigoshop_cart::get_total(); ?></strong></td>
 				</tr>
 			</table>

@@ -99,12 +99,22 @@ class jigoshop_tax {
 	 */
 	function get_rate( $tax_class = '' ) {
 		
-		$country 	= jigoshop_customer::get_country();
-		$state 	= jigoshop_customer::get_state();
+		/* Checkout uses customer location, otherwise use store base rate */
+		if (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT) :
+			
+			$country 	= jigoshop_customer::get_country();
+			$state 		= jigoshop_customer::get_state();
+			
+			$rate = $this->find_rate( $country, $state, $tax_class );
+			
+			return $rate['rate'];
 		
-		$rate = $this->find_rate( $country, $state, $tax_class );
-		
-		return $rate['rate'];
+		else :
+			
+			return $this->get_shop_base_rate( $tax_class );
+			
+		endif;
+
 	}
 	
 	/**
@@ -115,14 +125,8 @@ class jigoshop_tax {
 	 */
 	function get_shop_base_rate( $tax_class = '' ) {
 		
-		$default = get_option('jigoshop_default_country');
-    	if (strstr($default, ':')) :
-    		$country = current(explode(':', $default));
-    		$state = end(explode(':', $default));
-    	else :
-    		$country = $default;
-    		$state = '';
-    	endif;
+		$country 	= jigoshop_countries::get_base_country();
+		$state 		= jigoshop_countries::get_base_state();
 		
 		$rate = $this->find_rate( $country, $state, $tax_class );
 		
@@ -138,8 +142,13 @@ class jigoshop_tax {
 	 */
 	function get_shipping_tax_rate( $tax_class = '' ) {
 		
-		$country 	= jigoshop_customer::get_country();
-		$state 	= jigoshop_customer::get_state();
+		if (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT) :
+			$country 	= jigoshop_customer::get_country();
+			$state 		= jigoshop_customer::get_state();
+		else :
+			$country 	= jigoshop_countries::get_base_country();
+			$state 		= jigoshop_countries::get_base_state();
+		endif;
 		
 		// If we are here then shipping is taxable - work it out
 		

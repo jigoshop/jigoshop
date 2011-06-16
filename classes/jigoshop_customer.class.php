@@ -30,6 +30,9 @@ class jigoshop_customer {
 				'country' => $country,
 				'state' => $state,
 				'postcode' => '',
+				'shipping_country' => $country,
+				'shipping_state' => $state,
+				'shipping_postcode' => ''
 			);			
 			$_SESSION['customer'] = $data;
 			
@@ -80,13 +83,29 @@ class jigoshop_customer {
 		if (isset($_SESSION['customer']['postcode'])) return strtolower(str_replace(' ', '', $_SESSION['customer']['postcode']));
 	}
 	
+	/** Gets the state from the current session */
+	public static function get_shipping_state() {
+		if (isset($_SESSION['customer']['shipping_state'])) return $_SESSION['customer']['shipping_state'];
+	}
+	
+	/** Gets the country from the current session */
+	public static function get_shipping_country() {
+		if (isset($_SESSION['customer']['shipping_country'])) return $_SESSION['customer']['shipping_country'];
+	}
+	
+	/** Gets the postcode from the current session */
+	public static function get_shipping_postcode() {
+		if (isset($_SESSION['customer']['shipping_postcode'])) return strtolower(str_replace(' ', '', $_SESSION['customer']['shipping_postcode']));
+	}
+	
 	/** Sets session data for the location */
 	public static function set_location( $country, $state, $postcode = '' ) {
-		$data = array(
-			'country' => $country,
-			'state' => $state,
-			'postcode' => $postcode
-		);			
+		$data = (array) $_SESSION['customer'];
+		
+		$data['country'] = $country;
+		$data['state'] = $state;
+		$data['postcode'] = $postcode;
+		
 		$_SESSION['customer'] = $data;
 	}
 	
@@ -103,6 +122,32 @@ class jigoshop_customer {
 	/** Sets session data for the postcode */
 	public static function set_postcode( $postcode ) {
 		$_SESSION['customer']['postcode'] = $postcode;
+	}
+	
+	/** Sets session data for the location */
+	public static function set_shipping_location( $country, $state, $postcode = '' ) {
+		$data = (array) $_SESSION['customer'];
+		
+		$data['shipping_country'] = $country;
+		$data['shipping_state'] = $state;
+		$data['shipping_postcode'] = $postcode;
+		
+		$_SESSION['customer'] = $data;
+	}
+	
+	/** Sets session data for the country */
+	public static function set_shipping_country( $country ) {
+		$_SESSION['customer']['shipping_country'] = $country;
+	}
+	
+	/** Sets session data for the state */
+	public static function set_shipping_state( $state ) {
+		$_SESSION['customer']['shipping_state'] = $state;
+	}
+	
+	/** Sets session data for the postcode */
+	public static function set_shipping_postcode( $postcode ) {
+		$_SESSION['customer']['shipping_postcode'] = $postcode;
 	}
 	
 	/**

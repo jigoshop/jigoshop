@@ -254,38 +254,34 @@ class jigoshop_cart {
 						$rate = $_tax->get_rate( $_product->data['tax_class'] );
 						
 						if (get_option('jigoshop_prices_include_tax')=='yes') :
+						
 							$tax_amount = $_tax->calc_tax( $total_item_price, $rate, true );
+							
 						else :
+						
 							$tax_amount = $_tax->calc_tax( $total_item_price, $rate, false );
+							
 						endif;
 						
-						/* Get_price now includes correct country tax  - code not needed
-						if (get_option('jigoshop_prices_include_tax')=='yes') :
-							
+						if (get_option('jigoshop_prices_include_tax')=='yes' && defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT && jigoshop_customer::is_customer_outside_base()) :
 							
 							/**
 							 * Our prices include tax so we need to take the base tax rate into consideration of our shop's country
 							 *
 							 * Lets get the base rate first
-							 *
+							 */
 							$base_rate = $_tax->get_shop_base_rate( $_product->data['tax_class'] );
 							
 							// Calc tax for base country
-							$base_tax_amount = $_tax->calc_tax( $total_item_price, $base_rate, true );
+							$base_tax_amount = round($_tax->calc_tax( $total_item_price, $base_rate, true ));
 							
 							// Now calc tax for user county (which now excludes tax)
-							$tax_amount = $_tax->calc_tax( ($total_item_price-$base_tax_amount), $rate, false );
+							$tax_amount = round($_tax->calc_tax( ($total_item_price-$base_tax_amount), $rate, false ));
 							
 							// Finally, update $total_item_price to reflect tax amounts
 							$total_item_price = ($total_item_price - $base_tax_amount + $tax_amount);
-
-						else :
-
-							$tax_amount = $_tax->calc_tax( $total_item_price, $rate, false );
 						
 						endif;
-						
-						$tax_amount = $tax_amount / 100; // Back to pounds*/
 						
 						self::$cart_contents_tax = self::$cart_contents_tax + $tax_amount;
 					
@@ -359,7 +355,7 @@ class jigoshop_cart {
 	/** gets the sub total (after calculation) */
 	function get_cart_subtotal() {
 		
-		if (get_option('jigoshop_display_totals_tax')=='excluding') :
+		if (get_option('jigoshop_display_totals_tax')=='excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
 			
 			if (get_option('jigoshop_prices_include_tax')=='yes') :
 				

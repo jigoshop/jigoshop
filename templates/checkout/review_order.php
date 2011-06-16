@@ -1,4 +1,6 @@
 <?php
+	if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
+	
 	if (!defined('ABSPATH')) :
 		define('DOING_AJAX', true);
 		$root = dirname(dirname(dirname(dirname(dirname(dirname(__FILE__))))));
@@ -54,11 +56,12 @@
 							echo '>'.$method->title.' &ndash; ';
 							
 							if ($method->shipping_total>0) :
-								if (get_option('jigoshop_prices_include_tax')=='yes') :
+								/*if (get_option('jigoshop_prices_include_tax')=='yes') :
 									echo jigoshop_price($method->shipping_total + $method->shipping_tax);
 								else :
 									echo jigoshop_price($method->shipping_total);
-								endif; 
+								endif; */
+								echo jigoshop_price($method->shipping_total).__(' (ex. tax)', 'jigoshop');
 							else :
 								echo __('Free', 'jigoshop');
 							endif;
@@ -107,7 +110,7 @@
 							<tr>
 								<td>'.$_product->get_title().'</td>
 								<td>'.$values['quantity'].'</td>
-								<td>'.jigoshop_price($_product->get_price()*$values['quantity']).'</td>
+								<td>'.jigoshop_price($_product->get_price_excluding_tax()*$values['quantity']).' '.__(' <small>(ex. tax)</small>', 'jigoshop').'</td>
 							</tr>';
 					endif;
 				endforeach; 

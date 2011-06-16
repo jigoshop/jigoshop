@@ -528,7 +528,7 @@ class jigoshop_checkout {
 					 		'id' 		=> $item_id,
 					 		'name' 		=> $_product->get_title(),
 					 		'qty' 		=> (int) $values['quantity'],
-					 		'cost' 		=> $_product->get_price(),
+					 		'cost' 		=> $_product->get_price_excluding_tax(),
 					 		'taxrate' 	=> $rate
 					 	);
 					 	

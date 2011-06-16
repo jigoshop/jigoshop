@@ -348,6 +348,34 @@ class jigoshop_countries {
 		)
 	);
 	
+	/** get base country */
+	function get_base_country() {
+		$default = get_option('jigoshop_default_country');
+    	if (strstr($default, ':')) :
+    		$country = current(explode(':', $default));
+    		$state = end(explode(':', $default));
+    	else :
+    		$country = $default;
+    		$state = '';
+    	endif;
+		
+		return $country;	    	
+	}
+	
+	/** get base state */
+	function get_base_state() {
+		$default = get_option('jigoshop_default_country');
+    	if (strstr($default, ':')) :
+    		$country = current(explode(':', $default));
+    		$state = end(explode(':', $default));
+    	else :
+    		$country = $default;
+    		$state = '';
+    	endif;
+		
+		return $state;	    	
+	}
+	
 	/** get countries we allow only */
 	function get_allowed_countries() {
 	

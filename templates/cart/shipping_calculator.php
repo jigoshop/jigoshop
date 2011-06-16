@@ -9,7 +9,7 @@
 				<?php				
 					foreach(jigoshop_countries::get_allowed_countries() as $key=>$value) :
 						echo '<option value="'.$key.'"';
-						if (jigoshop_customer::get_country()==$key) echo 'selected="selected"';
+						if (jigoshop_customer::get_shipping_country()==$key) echo 'selected="selected"';
 						echo '>'.$value.'</option>';
 					endforeach;
 				?>
@@ -18,8 +18,8 @@
 		<div class="col2-set">
 			<p class="form-row col-1">
 				<?php 
-					$current_cc = jigoshop_customer::get_country();
-					$current_r = jigoshop_customer::get_state();
+					$current_cc = jigoshop_customer::get_shipping_country();
+					$current_r = jigoshop_customer::get_shipping_state();
 					$states = jigoshop_countries::$states;
 					
 					if (isset( $states[$current_cc][$current_r] )) :
@@ -46,7 +46,7 @@
 				?>
 			</p>
 			<p class="form-row col-2">
-				<span class="input-text"><input type="text" value="<?php echo jigoshop_customer::get_postcode(); ?>" placeholder="<?php _e('Postcode/Zip', 'jigoshop'); ?>" title="<?php _e('Postcode', 'jigoshop'); ?>" name="calc_shipping_postcode" id="calc_shipping_postcode" /></span>
+				<span class="input-text"><input type="text" value="<?php echo jigoshop_customer::get_shipping_postcode(); ?>" placeholder="<?php _e('Postcode/Zip', 'jigoshop'); ?>" title="<?php _e('Postcode', 'jigoshop'); ?>" name="calc_shipping_postcode" id="calc_shipping_postcode" /></span>
 			</p>
 		</div>
 		<p><button type="submit" name="calc_shipping" value="1" class="button"><?php _e('Update Totals', 'jigoshop'); ?></button></p>
