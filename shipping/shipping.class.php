@@ -14,6 +14,8 @@ class jigoshop_shipping {
 	
     	if (get_option('jigoshop_calc_shipping')!='no') self::$enabled = true; 
 		
+		do_action('jigoshop_shipping_init');
+		
 		$load_methods = apply_filters('jigoshop_shipping_methods', array());
 		
 		foreach ($load_methods as $method) :
