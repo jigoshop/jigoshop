@@ -317,11 +317,16 @@ function jigoshop_tables_install() {
         PRIMARY KEY id (`product_id`, `order_key`)) $collate;";
     $wpdb->query($sql);
     
-	// for categories ordering
-	if (0 == $wpdb->query("SHOW COLUMNS FROM $wpdb->terms LIKE 'term_order'")) {
-		$wpdb->query("ALTER TABLE $wpdb->terms ADD `term_order` INT( 4 ) NULL DEFAULT '0'");
-	}
-    
+    $sql = "CREATE TABLE IF NOT EXISTS ". $wpdb->prefix . "jigoshop_termmeta" ." (
+    		`meta_id` bigint(20) unsigned NOT NULL auto_increment,
+	      	`jigoshop_term_id` bigint(20) unsigned NOT NULL default '0',
+	      	`meta_key` varchar(255) default NULL,
+	      	`meta_value` longtext,
+	      	PRIMARY KEY  (meta_id),
+	      	KEY jigoshop_term_id (jigoshop_term_id),
+	      	KEY meta_key (meta_key) ) $collate;";
+    $wpdb->query($sql);	
+
 }
 
 /**
