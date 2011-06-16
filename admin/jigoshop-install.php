@@ -316,6 +316,12 @@ function jigoshop_tables_install() {
         `downloads_remaining`	mediumint(9) NULL,
         PRIMARY KEY id (`product_id`, `order_key`)) $collate;";
     $wpdb->query($sql);
+    
+	// for categories ordering
+	if (0 == $wpdb->query("SHOW COLUMNS FROM $wpdb->terms LIKE 'term_order'")) {
+		$wpdb->query("ALTER TABLE $wpdb->terms ADD `term_order` INT( 4 ) NULL DEFAULT '0'");
+	}
+    
 }
 
 /**

@@ -204,3 +204,30 @@ function jigoshop_post_type() {
     endif;
     
 } 
+
+/**
+ * Adds product_cat ordering to get_terms
+ * 
+ * It enables the support a 'menu_order' parameter to get_terms for the product_cat taxonomy.
+ * By default it is 'ASC'. It accepts 'DESC' too
+ * 
+ * To disable it, set it ot false (or 0)
+ * 
+ */
+function jigoshop_get_terms_orderby ($orderby, $args) {
+	
+	// wordpress should give us the taxonomies asked when calling the get_terms function
+	if( ( isset($args['taxonomy']) && 'product_cat' !== $args['taxonomy'])
+		  || ( isset($_GET['taxonomy']) && 'product_cat' !== $_GET['taxonomy']) ) return $orderby;
+	
+	if( isset($args['menu_order']) && ! $args['menu_order']) return $orderby;
+	
+	if( ! isset($args['menu_order']) || ! in_array(strtoupper($args['menu_order']), array('ASC', 'DESC')) ) $args['menu_order'] = 'ASC';
+	
+	$orderby = 't.term_order ' . $args['menu_order'] . ', ' . $orderby;		
+	
+	
+	return $orderby;
+}
+
+add_filter( 'get_terms_orderby', 'jigoshop_get_terms_orderby', 10, 2 );
