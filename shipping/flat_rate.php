@@ -127,6 +127,7 @@ class flat_rate extends jigoshop_shipping_method {
 	    </tr>
 	    <?php
     	$countries = jigoshop_countries::$countries;
+    	asort($countries);
     	$selections = get_option('jigoshop_flat_rate_countries', array());
     	?><tr class="multi_select_countries">
             <td class="titledesc"><?php _e('Specific Countries', 'jigoshop'); ?>:</td>
