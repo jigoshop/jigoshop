@@ -73,6 +73,7 @@ Tested up to: 3.1.3
 		
 		// Constants
 		if (!defined('JIGOSHOP_USE_CSS')) define('JIGOSHOP_USE_CSS', true);
+		if (!defined('JIGOSHOP_TEMPLATE_URL')) define('JIGOSHOP_TEMPLATE_URL', 'jigoshop/'); // Trailing slash is important :)
 		
 		// Init
 		jigoshop_init();
