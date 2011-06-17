@@ -143,6 +143,7 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * Taxonomy ordering script to allow sorting of product categories using drag and drop
 * Excluded shop order comments from front end widget
 * per-page limit fix
+* Added body classes based on page
 
 = 0.9.7.6 =
 

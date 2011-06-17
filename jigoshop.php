@@ -403,6 +403,49 @@ function jigowatt_clean( $var ) {
 	return stripslashes(trim($var));
 }
 
+global $jigoshop_body_classes;
+
+function jigoshop_page_body_classes() {
+	
+	global $jigoshop_body_classes;
+	
+	$jigoshop_body_classes = (array) $jigoshop_body_classes;
+	
+	if (is_checkout() || is_page(get_option('jigoshop_pay_page_id'))) jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-checkout' ) );
+	
+	if (is_cart()) jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-cart' ) );
+	
+	if (is_page(get_option('jigoshop_thanks_page_id'))) jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-thanks' ) );
+	
+	if (is_page(get_option('jigoshop_shop_page_id'))) jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-shop' ) );
+	
+	if (is_page(get_option('jigoshop_myaccount_page_id')) || is_page(get_option('jigoshop_edit_address_page_id')) || is_page(get_option('jigoshop_view_order_page_id')) || is_page(get_option('jigoshop_change_password_page_id'))) jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-myaccount' ) );	
+	
+}
+add_action('wp_head', 'jigoshop_page_body_classes');
+
+function jigoshop_add_body_class( $class = array() ) {
+	
+	global $jigoshop_body_classes;
+	
+	$jigoshop_body_classes = (array) $jigoshop_body_classes;
+	
+	$jigoshop_body_classes = array_merge($class, $jigoshop_body_classes);
+	
+}
+
+function jigoshop_body_class($classes) {
+	
+	global $jigoshop_body_classes;
+	
+	$jigoshop_body_classes = (array) $jigoshop_body_classes;
+	
+	$classes = array_merge($classes, $jigoshop_body_classes);
+	
+	return $classes;
+}
+add_filter('body_class','jigoshop_body_class');
+
 ### Extra Review Field in comments #########################################################
 
 function jigoshop_add_comment_rating($comment_id) {

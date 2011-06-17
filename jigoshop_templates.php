@@ -1,4 +1,5 @@
 <?php
+
 ### Templates ##################################################################
 /*
  * Templates are in the 'templates' folder. jigoshop looks for theme 
@@ -9,6 +10,8 @@
 function jigoshop_template_loader( $template ) {
 	if ( is_single() && get_post_type() == 'product' ) :
 		
+		jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-product' ) );
+		
 		$template = JIGOSHOP_TEMPLATE_URL . 'single-product.php';
 		
 		if (!locate_template(array( $template ), false, false)) :
@@ -18,7 +21,9 @@ function jigoshop_template_loader( $template ) {
 		endif;
 
 	elseif ( is_tax('product_cat') ) :
-	
+		
+		jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-product_cat' ) );
+		
 		$template = JIGOSHOP_TEMPLATE_URL . 'taxonomy-product_cat.php';
 		
 		if (!locate_template(array( $template ), false, false)) :
@@ -28,7 +33,9 @@ function jigoshop_template_loader( $template ) {
 		endif;
 
 	elseif ( is_tax('product_tag') ) :
-	
+		
+		jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-product_tag' ) );
+		
 		$template = JIGOSHOP_TEMPLATE_URL . 'taxonomy-product_tag.php';
 		
 		if (!locate_template(array( $template ), false, false)) :
@@ -38,6 +45,8 @@ function jigoshop_template_loader( $template ) {
 		endif;
 
 	elseif ( is_post_type_archive('product') ) :
+		
+		jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-products' ) );
 		
 		$template = JIGOSHOP_TEMPLATE_URL . 'archive-product.php';
 		
