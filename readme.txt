@@ -145,6 +145,7 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * per-page limit fix
 * Added body classes based on page
 * Unlimited download fix
+* Lost password link on my-account login
 
 = 0.9.7.6 =
 

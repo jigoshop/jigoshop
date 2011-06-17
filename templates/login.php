@@ -12,5 +12,6 @@
 	<p class="form-row">
 		<?php jigoshop::nonce_field('login', 'login') ?>
 		<input type="submit" class="button" name="login" value="<?php _e('Login', 'jigoshop'); ?>" />
+		<a class="lost_password" href="<?php echo home_url('wp-login.php?action=lostpassword'); ?>"><?php _e('Lost Password?', 'jigoshop'); ?></a>
 	</p>
 </form>

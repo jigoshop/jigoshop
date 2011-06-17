@@ -60,11 +60,13 @@ class jigoshop_product {
 			$this->product_type = 'simple';
 		endif;
 		
+		$this->children = array();
+		
 		if ($this->is_type( 'grouped' ) && $children_products =& get_children( 'post_parent='.$id.'&post_type=product&orderby=menu_order&order=ASC' )) :
 			if ($children_products) foreach ($children_products as $child) :
 				$child->product = &new jigoshop_product( $child->ID );
 			endforeach;
-			$this->children = $children_products;
+			$this->children = (array) $children_products;
 		endif;
 		
 		if ($this->data) :

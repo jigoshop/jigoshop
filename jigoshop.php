@@ -507,7 +507,10 @@ function jigoshop_exclude_order_comments( $clauses ) {
 	$clauses['join'] = "
 		LEFT JOIN $wpdb->posts ON $wpdb->comments.comment_post_ID = $wpdb->posts.ID
 	";
-	$clauses['where'] = "
+	
+	if ($clauses['where']) $clauses['where'] .= ' AND ';
+	
+	$clauses['where'] .= "
 		$wpdb->posts.post_type NOT IN ('shop_order')
 	";
 	
