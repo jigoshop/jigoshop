@@ -1,12 +1,14 @@
 <?php
 
-global $columns, $post;
+global $columns, $post, $per_page;
 
 jigoshop::show_messages();
 
 $loop = 0;
+
 if (!isset($columns) || !$columns) $columns = 4;
-$limit = get_option('posts_per_page');
+if (!isset($per_page) || !$per_page) $per_page = get_option('posts_per_page');
+
 $found = false;
 ob_start();
 if (have_posts()) : while (have_posts()) : the_post(); 
@@ -30,7 +32,7 @@ if (have_posts()) : while (have_posts()) : the_post();
 	<a href="<?php echo $_product->add_to_cart_url(); ?>" class="button"><?php _e('Add to cart', 'jigoshop'); ?></a>
 	</li><?php 
 	
-	if ($loop==$limit) break;
+	if ($loop==$per_page) break;
 	
 endwhile; else :
 	

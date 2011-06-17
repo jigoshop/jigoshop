@@ -141,6 +141,8 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * Added JIGOSHOP_TEMPLATE_URL constant for moving the template folder within your theme (for better theme compatibility)
 * Option in settings to turn off css
 * Taxonomy ordering script to allow sorting of product categories using drag and drop
+* Excluded shop order comments from front end widget
+* per-page limit fix
 
 = 0.9.7.6 =
 

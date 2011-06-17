@@ -5,7 +5,7 @@ foreach(glob( dirname(__FILE__)."/shortcodes/*.php" ) as $filename) include_once
 
 function jigoshop_recent_products( $atts ) {
 	
-	global $columns;
+	global $columns, $per_page;
 	
 	extract(shortcode_atts(array(
 		'per_page' 	=> '12',
@@ -39,7 +39,7 @@ function jigoshop_recent_products( $atts ) {
 
 function jigoshop_featured_products( $atts ) {
 	
-	global $columns;
+	global $columns, $per_page;
 	
 	extract(shortcode_atts(array(
 		'per_page' 	=> '12',

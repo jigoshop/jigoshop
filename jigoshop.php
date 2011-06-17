@@ -454,3 +454,24 @@ function jigoshop_comments($comment, $args, $depth) {
 		</div>
 	<?php
 }
+
+### Exclude order comments from front end #########################################################
+
+function jigoshop_exclude_order_comments( $clauses ) {
+	
+	global $wpdb;
+	
+	$clauses['join'] = "
+		LEFT JOIN $wpdb->posts ON $wpdb->comments.comment_post_ID = $wpdb->posts.ID
+	";
+	$clauses['where'] = "
+		$wpdb->posts.post_type NOT IN ('shop_order')
+	";
+	
+	return $clauses;	
+
+}
+if (!is_admin()) add_filter('comments_clauses', 'jigoshop_exclude_order_comments');
+
+
+
