@@ -144,6 +144,7 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * Excluded shop order comments from front end widget
 * per-page limit fix
 * Added body classes based on page
+* Unlimited download fix
 
 = 0.9.7.6 =
 

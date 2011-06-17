@@ -203,9 +203,7 @@ function jigoshop_download_product() {
 			AND product_id = '$download_file'
 		;") );
 		
-		if (is_null($downloads_remaining)) :
-			wp_die( sprintf(__('You do not have permission to download this file. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
-		elseif ($downloads_remaining=='0') :
+		if ($downloads_remaining=='0') :
 			wp_die( sprintf(__('Sorry, you have reached your download limit for this file. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
 		else :
 			
