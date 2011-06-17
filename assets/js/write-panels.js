@@ -62,12 +62,19 @@ jQuery(function(){
 						
 						totalItemCost = totalItemCost * 100;
 						
-						totalCostExTax = Math.round( (totalItemCost / taxRate) *100 )/100; // 2 decimal places
+						totalItemTax = Math.round(totalItemCost*taxRate);
 						
-						totalCostExTax = totalCostExTax / 100;
+						//totalCostExTax = Math.round( (totalItemCost / taxRate) *100 )/100; // 2 decimal places
+						
+						//totalCostExTax = totalCostExTax / 100;
+						
+						totalItemTax = totalItemTax - totalItemCost;
+						
 						totalItemCost = totalItemCost / 100;
 						
-						totalItemTax = totalItemCost - totalCostExTax;
+						totalItemTax = totalItemTax / 100;
+						
+						//totalItemTax = totalItemCost - totalCostExTax;
 						
 					}
 					

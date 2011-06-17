@@ -504,7 +504,7 @@ class jigoshop_checkout {
 					$data['shipping_state']			= $shipping_state;
 					$data['shipping_method']		= $this->posted['shipping_method'];
 					$data['payment_method']			= $this->posted['payment_method'];
-					$data['order_subtotal']			= number_format(jigoshop_cart::$subtotal, 2, '.', '');
+					$data['order_subtotal']			= number_format(jigoshop_cart::$subtotal_ex_tax, 2, '.', '');
 					$data['order_shipping']			= number_format(jigoshop_cart::$shipping_total, 2, '.', '');
 					$data['order_discount']			= number_format(jigoshop_cart::$discount_total, 2, '.', '');
 					$data['order_tax']				= number_format(jigoshop_cart::$tax_total, 2, '.', '');

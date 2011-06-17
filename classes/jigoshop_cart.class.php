@@ -21,6 +21,7 @@ class jigoshop_cart {
 	public static $cart_contents;
 	public static $total;
 	public static $subtotal;
+	public static $subtotal_ex_tax;
 	public static $tax_total;
 	public static $discount_total;
 	public static $shipping_total;
@@ -234,6 +235,7 @@ class jigoshop_cart {
 		self::$tax_total = 0;
 		self::$shipping_tax_total = 0;
 		self::$subtotal = 0;
+		self::$subtotal_ex_tax = 0;
 		self::$discount_total = 0;
 		self::$shipping_total = 0;
 		
@@ -263,7 +265,7 @@ class jigoshop_cart {
 							
 						endif;
 						
-						if (get_option('jigoshop_prices_include_tax')=='yes' && /*defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT &&*/ jigoshop_customer::is_customer_outside_base()) :
+						if (get_option('jigoshop_prices_include_tax')=='yes' && jigoshop_customer::is_customer_outside_base() && defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT ) :
 							
 							/**
 							 * Our prices include tax so we need to take the base tax rate into consideration of our shop's country
@@ -316,6 +318,7 @@ class jigoshop_cart {
 		self::$tax_total = self::$cart_contents_tax;
 		
 		// Subtotal
+		self::$subtotal_ex_tax = self::$cart_contents_total_ex_tax;
 		self::$subtotal = self::$cart_contents_total;
 		
 		// Cart Discounts

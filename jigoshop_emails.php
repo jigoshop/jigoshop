@@ -27,15 +27,7 @@ function jigoshop_new_order_notification( $order_id ) {
 	$message .= __('ORDER #: ','jigoshop') . $order->id . '' . PHP_EOL;
 	$message 	.= '=====================================================================' . PHP_EOL;
 	
-	foreach($order->items as $item) : 
-		$_product = &new jigoshop_product( $item['id'] );
-		
-		if ($_product->exists) :
-			$message .= '#' .  $item['id'] .' - ' . $item['name'] . ' (' . $_product->sku . ') @ ' . jigoshop_price( $item['cost']*$item['qty'] ) . ' X ' . $item['qty'] . PHP_EOL;
-		else :
-			$message .= '#' .  $item['id'] .' - ' . $item['name'] . ' @ ' . jigoshop_price( $item['cost']*$item['qty'] ) . ' X ' . $item['qty'] . PHP_EOL;
-		endif;
-	endforeach;
+	$message 	.= $order->email_order_items_list( false, true );
 	
 	if ($order->customer_note) :
 		$message .= PHP_EOL . __('Note:','jigoshop') .$order->customer_note . PHP_EOL;
@@ -44,7 +36,7 @@ function jigoshop_new_order_notification( $order_id ) {
 	$message .= PHP_EOL . __('Subtotal:','jigoshop') . "\t\t\t" . $order->get_subtotal_to_display() . PHP_EOL;
 	if ($order->order_shipping > 0) $message .= __('Shipping:','jigoshop') . "\t\t\t" . $order->get_shipping_to_display() . PHP_EOL;
 	if ($order->order_discount > 0) $message .= __('Discount:','jigoshop') . "\t\t\t" . jigoshop_price($order->order_discount) . PHP_EOL;
-	$message .= __('Tax:','jigoshop') . "\t\t\t\t\t" . jigoshop_price($order->get_total_tax()) . PHP_EOL;
+	if ($order->get_total_tax() > 0) $message .= __('Tax:','jigoshop') . "\t\t\t\t\t" . jigoshop_price($order->get_total_tax()) . PHP_EOL;
 	$message .= __('Total:','jigoshop') . "\t\t\t\t" . jigoshop_price($order->order_total) . ' - via ' . ucwords($order->payment_method) . PHP_EOL . PHP_EOL;
 	
 	$message 	.= '=====================================================================' . PHP_EOL;
@@ -96,14 +88,7 @@ function jigoshop_processing_order_customer_notification( $order_id ) {
 	$message 	.= __('ORDER #: ','jigoshop') . $order->id . '' . PHP_EOL;
 	$message 	.= '=====================================================================' . PHP_EOL;
 	
-	foreach($order->items as $item) : 
-		$_product = &new jigoshop_product( $item['id'] );
-		
-		$message .= $item['name'] . ' (' . jigoshop_price( $item['cost'] ) . ' x ' . $item['qty'] . ')';
-		
-		$message .= PHP_EOL;
-		
-	endforeach;
+	$message 	.= $order->email_order_items_list();
 	
 	if ($order->customer_note) :
 		$message .= PHP_EOL . __('Note:','jigoshop') .$order->customer_note . PHP_EOL;
@@ -112,7 +97,7 @@ function jigoshop_processing_order_customer_notification( $order_id ) {
 	$message .= PHP_EOL . __('Subtotal:','jigoshop') . "\t\t\t" . $order->get_subtotal_to_display() . PHP_EOL;
 	if ($order->order_shipping > 0) $message .= __('Shipping:','jigoshop') . "\t\t\t" . $order->get_shipping_to_display() . PHP_EOL;
 	if ($order->order_discount > 0) $message .= __('Discount:','jigoshop') . "\t\t\t" . jigoshop_price($order->order_discount) . PHP_EOL;
-	$message .= __('Tax:','jigoshop') . "\t\t\t\t\t" . jigoshop_price($order->get_total_tax()) . PHP_EOL;
+	if ($order->get_total_tax() > 0) $message .= __('Tax:','jigoshop') . "\t\t\t\t\t" . jigoshop_price($order->get_total_tax()) . PHP_EOL;
 	$message .= __('Total:','jigoshop') . "\t\t\t\t" . jigoshop_price($order->order_total) . ' - via ' . ucwords($order->payment_method) . PHP_EOL . PHP_EOL;
 	
 	$message 	.= '=====================================================================' . PHP_EOL;
@@ -163,22 +148,7 @@ function jigoshop_completed_order_customer_notification( $order_id ) {
 	$message 	.= __('ORDER #: ','jigoshop') . $order->id . '' . PHP_EOL;
 	$message 	.= '=====================================================================' . PHP_EOL;
 	
-	foreach($order->items as $item) : 
-		$_product = &new jigoshop_product( $item['id'] );
-		
-		$message .= $item['name'] . ' (' . jigoshop_price( $item['cost'] ) . ' x ' . $item['qty'] . ')';
-		
-		if ($_product->exists) :
-			
-			if ($_product->is_type('downloadable')) :
-				$message .= PHP_EOL . ' - ' . $order->get_downloadable_file_url( $item['id'] ) . '';
-			endif;
-
-		endif;
-		
-		$message .= PHP_EOL;
-		
-	endforeach;
+	$message 	.= $order->email_order_items_list( true );
 	
 	if ($order->customer_note) :
 		$message .= PHP_EOL . __('Note:','jigoshop') .$order->customer_note . PHP_EOL;
@@ -187,7 +157,7 @@ function jigoshop_completed_order_customer_notification( $order_id ) {
 	$message .= PHP_EOL . __('Subtotal:','jigoshop') . "\t\t\t" . $order->get_subtotal_to_display() . PHP_EOL;
 	if ($order->order_shipping > 0) $message .= __('Shipping:','jigoshop') . "\t\t\t" . $order->get_shipping_to_display() . PHP_EOL;
 	if ($order->order_discount > 0) $message .= __('Discount:','jigoshop') . "\t\t\t" . jigoshop_price($order->order_discount) . PHP_EOL;
-	$message .= __('Tax:','jigoshop') . "\t\t\t\t\t" . jigoshop_price($order->get_total_tax()) . PHP_EOL;
+	if ($order->get_total_tax() > 0) $message .= __('Tax:','jigoshop') . "\t\t\t\t\t" . jigoshop_price($order->get_total_tax()) . PHP_EOL;
 	$message .= __('Total:','jigoshop') . "\t\t\t\t" . jigoshop_price($order->order_total) . ' - via ' . ucwords($order->payment_method) . PHP_EOL . PHP_EOL;
 	
 	$message 	.= '=====================================================================' . PHP_EOL;
@@ -236,14 +206,7 @@ function jigoshop_pay_for_order_customer_notification( $order_id ) {
 	$message 	.= __('ORDER #: ','jigoshop') . $order->id . '' . PHP_EOL;
 	$message 	.= '=====================================================================' . PHP_EOL;
 	
-	foreach($order->items as $item) : 
-		$_product = &new jigoshop_product( $item['id'] );
-		
-		$message .= $item['name'] . ' (' . jigoshop_price( $item['cost'] ) . ' x ' . $item['qty'] . ')';
-		
-		$message .= PHP_EOL;
-		
-	endforeach;
+	$message 	.= $order->email_order_items_list();
 	
 	if ($order->customer_note) :
 		$message .= PHP_EOL . __('Note:','jigoshop') .$order->customer_note . PHP_EOL;
@@ -252,7 +215,7 @@ function jigoshop_pay_for_order_customer_notification( $order_id ) {
 	$message .= PHP_EOL . __('Subtotal:','jigoshop') . "\t\t\t" . $order->get_subtotal_to_display() . PHP_EOL;
 	if ($order->order_shipping > 0) $message .= __('Shipping:','jigoshop') . "\t\t\t" . $order->get_shipping_to_display() . PHP_EOL;
 	if ($order->order_discount > 0) $message .= __('Discount:','jigoshop') . "\t\t\t" . jigoshop_price($order->order_discount) . PHP_EOL;
-	$message .= __('Tax:','jigoshop') . "\t\t\t\t\t" . jigoshop_price($order->get_total_tax()) . PHP_EOL;
+	if ($order->get_total_tax() > 0) $message .= __('Tax:','jigoshop') . "\t\t\t\t\t" . jigoshop_price($order->get_total_tax()) . PHP_EOL;
 	$message .= __('Total:','jigoshop') . "\t\t\t\t" . jigoshop_price($order->order_total) . ' - via ' . ucwords($order->payment_method) . PHP_EOL . PHP_EOL;
 	
 	$customer_message = html_entity_decode( strip_tags( $customer_message.$message ) );

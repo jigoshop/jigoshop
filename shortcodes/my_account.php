@@ -433,7 +433,7 @@ function jigoshop_view_order() {
 								<tr>
 									<td>'.$item['name'].'</td>
 									<td>'.$item['qty'].'</td>
-									<td>'.jigoshop_price( $item['cost']*$item['qty'] ).'</td>
+									<td>'.jigoshop_price( $item['cost']*$item['qty'] ).' <small>'.__('(ex. tax)', 'jigoshop').'</small></td>
 								</tr>';
 						endforeach; 
 					endif;
@@ -446,8 +446,8 @@ function jigoshop_view_order() {
 			</header>
 			<dl>
 			<?php
-				if ($order->billing_email) echo '<dt>Email:</dt><dd>'.$order->billing_email.'</dd>';
-				if ($order->billing_phone) echo '<dt>Telephone:</dt><dd>'.$order->billing_phone.'</dd>';
+				if ($order->billing_email) echo '<dt>'.__('Email:', 'jigoshop').'</dt><dd>'.$order->billing_email.'</dd>';
+				if ($order->billing_phone) echo '<dt>'.__('Telephone:', 'jigoshop').'</dt><dd>'.$order->billing_phone.'</dd>';
 			?>
 			</dl>
 			
