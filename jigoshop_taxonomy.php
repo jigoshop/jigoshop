@@ -301,7 +301,7 @@ function jigoshop_delete_product_cat ($term_id) {
 add_action("delete_product_cat", 'jigoshop_delete_product_cat');
 
 /**
- * Move a category before the a	given element of its hierachy level
+ * Move a category before the a	given element of its hierarchy level
  *
  * @param object $the_term
  * @param int $next_id the id of the next slibling element in save hierachy level

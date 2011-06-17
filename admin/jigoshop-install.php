@@ -278,8 +278,6 @@ function jigoshop_create_pages() {
 	} else {
 		update_option('jigoshop_thanks_page_id', $page_found);
 	}
-	
-	// Thank you Page
     
 }
 
@@ -293,7 +291,7 @@ function jigoshop_create_pages() {
 function jigoshop_tables_install() {
 	global $wpdb;
 	
-	$wpdb->show_errors();
+	//$wpdb->show_errors();
 	
     $collate = '';
     if($wpdb->supports_collation()) {
@@ -318,13 +316,11 @@ function jigoshop_tables_install() {
     $wpdb->query($sql);
     
     $sql = "CREATE TABLE IF NOT EXISTS ". $wpdb->prefix . "jigoshop_termmeta" ." (
-    		`meta_id` bigint(20) unsigned NOT NULL auto_increment,
-	      	`jigoshop_term_id` bigint(20) unsigned NOT NULL default '0',
-	      	`meta_key` varchar(255) default NULL,
-	      	`meta_value` longtext,
-	      	PRIMARY KEY  (meta_id),
-	      	KEY jigoshop_term_id (jigoshop_term_id),
-	      	KEY meta_key (meta_key) ) $collate;";
+		`meta_id` 				bigint(20) NOT NULL AUTO_INCREMENT,
+      	`jigoshop_term_id` 		bigint(20) NOT NULL,
+      	`meta_key` 				varchar(255) NULL,
+      	`meta_value` 			longtext NULL,
+      	PRIMARY KEY id (`meta_id`)) $collate;";
     $wpdb->query($sql);	
 
 }

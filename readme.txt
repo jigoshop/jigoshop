@@ -140,6 +140,7 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * Localisation fixes
 * Added JIGOSHOP_TEMPLATE_URL constant for moving the template folder within your theme (for better theme compatibility)
 * Option in settings to turn off css
+* Taxonomy ordering script to allow sorting by menu_order
 
 = 0.9.7.6 =
 

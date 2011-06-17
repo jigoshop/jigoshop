@@ -16,7 +16,7 @@ Tested up to: 3.1.3
 
 	load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
 	
-	register_activation_hook( __FILE__, 'install_jigoshop' );
+	register_activation_hook( __FILE__, 'jigoshop_activation_hook' );
 
 /**
  * Include core files and classes

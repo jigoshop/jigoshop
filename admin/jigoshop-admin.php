@@ -9,6 +9,10 @@
  * @package 	JigoShop
  */
  
+function jigoshop_activation_hook() {
+	add_action('init', 'install_jigoshop', 10);
+} 
+ 
 function load_jigoshop_admin() {
 	require_once ( 'jigoshop-admin-dashboard.php' );
 	require_once ( 'jigoshop-admin-settings-options.php' );

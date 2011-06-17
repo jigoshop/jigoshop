@@ -1,4 +1,4 @@
-/* Modifided script from the imple-page-ordering plugin */
+/* Modifided script from the simple-page-ordering plugin */
 jQuery(document).ready(function($) {
 
 	$('table.widefat.wp-list-table tbody th, table.widefat tbody td').css('cursor','move');
@@ -10,7 +10,6 @@ jQuery(document).ready(function($) {
 		containment: 'table.widefat',
 		placeholder: 'product-cat-placeholder',
 		scrollSensitivity: 40,
-		placeholder: 'product-cat-placeholder',
 		helper: function(e, ui) {					
 			ui.children().each(function() { jQuery(this).width(jQuery(this).width()); });
 			return ui;
