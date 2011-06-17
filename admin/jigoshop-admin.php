@@ -258,3 +258,43 @@ function jigoshop_get_current_post_type() {
     
     return '';
 }
+
+/**
+ * Categories ordering
+ */
+
+/**
+ * Load needed scripts to order categories
+ */
+function jigoshop_categories_scripts () {
+	
+	if( !isset($_GET['taxonomy']) || $_GET['taxonomy'] !== 'product_cat') return;
+	
+	wp_register_script('jigoshop-categories-ordering', jigoshop::plugin_url() . '/assets/js/categories-ordering.js', array('jquery-ui-sortable'));
+	wp_print_scripts('jigoshop-categories-ordering');
+	
+}
+add_action('admin_footer-edit-tags.php', 'jigoshop_categories_scripts');
+
+/**
+ * Ajax request handling for categories ordering
+ */
+function jigoshop_categories_ordering () {
+
+	global $wpdb;
+	
+	$id = (int)$_POST['id'];
+	$next_id  = isset($_POST['nextid']) && (int) $_POST['nextid'] ? (int) $_POST['nextid'] : null;
+	
+	if( ! $id || ! $term = get_term_by('id', $id, 'product_cat') ) die(0);
+	
+	jigoshop_order_categories ( $term, $next_id);
+	
+	$children = get_terms('product_cat', "child_of=$id&menu_order=ASC&hide_empty=0");
+	if( $term && sizeof($children) ) {
+		echo 'children';
+		die;	
+	}
+	
+}
+add_action('wp_ajax_jigoshop-categories-ordering', 'jigoshop_categories_ordering');

@@ -858,3 +858,8 @@ div.multi_select_products_wrapper {
   float: right;
   width: 60%;
 }
+
+.widefat  .product-cat-placeholder {
+	outline: 1px dotted #A0C443;
+	height: 60px;
+}
