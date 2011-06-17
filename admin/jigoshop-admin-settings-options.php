@@ -291,7 +291,8 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 			'SEK' => __('Swedish Krona', 'jigoshop'),
 			'CHF' => __('Swiss Franc', 'jigoshop'),
 			'TWD' => __('Taiwan New Dollars', 'jigoshop'),
-			'THB' => __('Thai Baht', 'jigoshop') )
+			'THB' => __('Thai Baht', 'jigoshop') 
+			)
 		)
 	),
 	
