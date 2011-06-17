@@ -79,9 +79,9 @@ jQuery(function(){
 			
 			subtotal = itemTotal;
 			
-			if (jigoshop_wp.prices_include_tax == 'yes')
+			/*if (jigoshop_wp.prices_include_tax == 'yes')
 				total = parseFloat(subtotal) - parseFloat(discount) + parseFloat(shipping) + parseFloat(shipping_tax);
-			else
+			else*/
 				total = parseFloat(subtotal) + parseFloat(tax) - parseFloat(discount) + parseFloat(shipping) + parseFloat(shipping_tax);
 			
 			if (total < 0 ) total = 0;

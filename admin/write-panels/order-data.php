@@ -272,7 +272,7 @@ function jigoshop_order_items_meta_box($post) {
 						<td class="product-id"><input type="text" name="item_id[]" placeholder="<?php _e('ID', 'jigoshop'); ?>" value="<?php echo $item['id']; ?>" /></td>
 						<td class="name"><input type="text" name="item_name[]" placeholder="<?php _e('Item Name', 'jigoshop'); ?>" value="<?php echo $item['name']; ?>" /></td>
 						<td class="quantity"><input type="text" name="item_quantity[]" placeholder="<?php _e('Quantity e.g. 2', 'jigoshop'); ?>" value="<?php echo $item['qty']; ?>" /></td>
-						<td class="cost"><input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit e.g. 2.99', 'jigoshop'); ?>" value="<?php echo $item['cost']; ?>" /></td>
+						<td class="cost"><input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit ex. tax e.g. 2.99', 'jigoshop'); ?>" value="<?php echo $item['cost']; ?>" /></td>
 						<td class="tax"><input type="text" name="item_tax_rate[]" placeholder="<?php _e('Tax Rate e.g. 20.0000', 'jigoshop'); ?>" value="<?php echo $item['taxrate']; ?>" /></td>
 						<td class="center"><button type="button" class="remove_row button">&times;</button></td>
 					</tr>
@@ -287,7 +287,7 @@ function jigoshop_order_items_meta_box($post) {
 	</p>
 	<dl class="totals">
 		<dt><?php _e('Subtotal:', 'jigoshop'); ?></dt>
-		<dd><input type="text" id="order_subtotal" name="order_subtotal" placeholder="0.00 <?php if (get_option('jigoshop_prices_include_tax')=='yes') _e('(inc. tax)', 'jigoshop'); else _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo $data['order_subtotal']; ?>" class="first" /></dd>
+		<dd><input type="text" id="order_subtotal" name="order_subtotal" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo $data['order_subtotal']; ?>" class="first" /></dd>
 		
 		<dt><?php _e('Shipping &amp; Handling:', 'jigoshop'); ?></dt>
 		<dd><input type="text" id="order_shipping" name="order_shipping" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo $data['order_shipping']; ?>" class="first" /> <input type="text" name="shipping_method" id="shipping_method" value="<?php echo $data['shipping_method']; ?>" class="last" placeholder="<?php _e('Shipping method...', 'jigoshop'); ?>" /></dd>

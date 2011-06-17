@@ -15,7 +15,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	array( 'type' => 'tab', 'tabname' => __('General', 'jigoshop') ),
 
 	array( 'name' => __('General Options', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
-
+	
 	array(  
 		'name' => __('Enable SKU field','jigoshop'),
 		'desc' 		=> '',
@@ -128,6 +128,20 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'css' 		=> 'width:300px;',
 		'type' 		=> 'text',
 		'std' 		=> ''
+	),
+	
+	array(  
+		'name' => __('Disable Jigoshop frontend.css','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Useful if you want to disable Jigoshop styles and theme it yourself via your theme.','jigoshop'),
+		'id' 		=> 'jigoshop_disable_css',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(  
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
 	),
 	
 	array( 'type' => 'tabend'),

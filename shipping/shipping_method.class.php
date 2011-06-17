@@ -31,7 +31,7 @@ class jigoshop_shipping_method {
 		endif; 
 		
 		if (is_array($ship_to_countries)) :
-			if (!in_array(jigoshop_customer::get_country(), $ship_to_countries)) return false;
+			if (!in_array(jigoshop_customer::get_shipping_country(), $ship_to_countries)) return false;
 		endif;
 		
 		return true;

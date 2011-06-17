@@ -263,7 +263,7 @@ class jigoshop_cart {
 							
 						endif;
 						
-						if (get_option('jigoshop_prices_include_tax')=='yes' && defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT && jigoshop_customer::is_customer_outside_base()) :
+						if (get_option('jigoshop_prices_include_tax')=='yes' && /*defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT &&*/ jigoshop_customer::is_customer_outside_base()) :
 							
 							/**
 							 * Our prices include tax so we need to take the base tax rate into consideration of our shop's country
@@ -280,7 +280,7 @@ class jigoshop_cart {
 							
 							// Finally, update $total_item_price to reflect tax amounts
 							$total_item_price = ($total_item_price - $base_tax_amount + $tax_amount);
-						
+							
 						endif;
 						
 						self::$cart_contents_tax = self::$cart_contents_tax + $tax_amount;

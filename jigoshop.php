@@ -67,12 +67,15 @@ Tested up to: 3.1.3
 		
 		// Init class singletons
 		$jigoshop_customer 			= jigoshop_customer::get();				// Customer class, sorts out session data such as location
-		$jigoshop_cart 				= jigoshop_cart::get();					// Cart class, stores the cart contents
 		$jigoshop_shipping 			= jigoshop_shipping::get();				// Shipping class. loads and stores shipping methods
 		$jigoshop_payment_gateways 	= jigoshop_payment_gateways::get();		// Payment gateways class. loads and stores payment methods
+		$jigoshop_cart 				= jigoshop_cart::get();					// Cart class, stores the cart contents
 		
 		// Constants
-		if (!defined('JIGOSHOP_USE_CSS')) define('JIGOSHOP_USE_CSS', true);
+		if (!defined('JIGOSHOP_USE_CSS')) :
+			if (get_option('jigoshop_disable_css')=='yes') define('JIGOSHOP_USE_CSS', false);
+			else define('JIGOSHOP_USE_CSS', true);
+		endif;
 		if (!defined('JIGOSHOP_TEMPLATE_URL')) define('JIGOSHOP_TEMPLATE_URL', 'jigoshop/'); // Trailing slash is important :)
 		
 		// Init

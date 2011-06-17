@@ -162,21 +162,26 @@ function update_checkout() {
 
 	var method = jQuery('#shipping_method').val();
 	
+	var country 	= jQuery('#billing-country').val();
+	var state 		= jQuery('#billing-state').val();
+	var postcode 	= jQuery('input#billing-postcode').val();
+		
 	if (jQuery('#shiptobilling input').is(':checked') || jQuery('#shiptobilling input').size()==0) {
-		var country 	= jQuery('#billing-country').val();
-		var state 		= jQuery('#billing-state').val();
-		var postcode 	= jQuery('input#billing-postcode').val();
+		var s_country 	= jQuery('#billing-country').val();
+		var s_state 	= jQuery('#billing-state').val();
+		var s_postcode 	= jQuery('input#billing-postcode').val();
+		
 	} else {
-		var country 	= jQuery('#shipping-country').val();
-		var state 		= jQuery('#shipping-state').val();
-		var postcode 	= jQuery('input#shipping-postcode').val();
+		var s_country 	= jQuery('#shipping-country').val();
+		var s_state 	= jQuery('#shipping-state').val();
+		var s_postcode 	= jQuery('input#shipping-postcode').val();
 	}
 	
 	jQuery('#order_methods, #order_review').block({ message: null, overlayCSS: { background: '#fff url(<?php echo jigoshop::plugin_url(); ?>/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
 	jQuery.ajax({
 		type: 		'POST',
 		url: 		'<?php echo jigoshop_get_template_file_url('checkout/review_order.php', true); ?>',
-		data: 		{ shipping_method: method, country: country, state: state, postcode: postcode },
+		data: 		{ shipping_method: method, country: country, state: state, postcode: postcode, s_country: s_country, s_state: s_state, s_postcode: s_postcode },
 		success: 	function( code ) {
 						jQuery('#order_methods, #order_review').remove();
 						jQuery('#order_review_heading').after(code);

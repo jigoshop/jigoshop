@@ -18,6 +18,10 @@
 	if (isset($_POST['state'])) jigoshop_customer::set_state( $_POST['state'] );
 	if (isset($_POST['postcode'])) jigoshop_customer::set_postcode( $_POST['postcode'] );
 	
+	if (isset($_POST['s_country'])) jigoshop_customer::set_shipping_country( $_POST['s_country'] );
+	if (isset($_POST['s_state'])) jigoshop_customer::set_shipping_state( $_POST['s_state'] );
+	if (isset($_POST['s_postcode'])) jigoshop_customer::set_shipping_postcode( $_POST['s_postcode'] );
+	
 	jigoshop_cart::calculate_totals();
 ?>
 <div id="order_review">

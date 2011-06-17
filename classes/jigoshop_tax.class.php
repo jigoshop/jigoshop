@@ -99,8 +99,8 @@ class jigoshop_tax {
 	 */
 	function get_rate( $tax_class = '' ) {
 		
-		/* Checkout uses customer location, otherwise use store base rate */
-		if (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT) :
+		/* Checkout uses customer location, otherwise use store base rate 
+		if (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT) :*/
 			
 			$country 	= jigoshop_customer::get_country();
 			$state 		= jigoshop_customer::get_state();
@@ -109,11 +109,11 @@ class jigoshop_tax {
 			
 			return $rate['rate'];
 		
-		else :
+		/*else :
 			
 			return $this->get_shop_base_rate( $tax_class );
 			
-		endif;
+		endif;*/
 
 	}
 	
