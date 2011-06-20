@@ -146,6 +146,7 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * Added body classes based on page
 * Unlimited download fix
 * Lost password link on my-account login
+* weight calc fix
 
 = 0.9.7.6 =
 

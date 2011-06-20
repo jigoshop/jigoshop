@@ -245,8 +245,8 @@ class jigoshop_cart {
 				
 				self::$cart_contents_count ++;
 				
-				self::$cart_contents_weight = self::$cart_contents_weight + $_product->get_weight();
-				
+				self::$cart_contents_weight = self::$cart_contents_weight + ($_product->get_weight() * $values['quantity']);
+
 				$total_item_price = $_product->get_price() * $values['quantity'] * 100; // Into pounds
 
 				if ( get_option('jigoshop_calc_taxes')=='yes') :
