@@ -357,20 +357,20 @@ function get_jigoshop_currency_symbol() {
 function jigoshop_price( $price ) {
 	$currency_pos = get_option('jigoshop_currency_pos');
 	$currency_symbol = get_jigoshop_currency_symbol();
-	$price = (double) $price;
+	$price = number_format( (double) $price,  get_option('jigoshop_price_num_decimals'), get_option('jigoshop_price_decimal_sep'), get_option('jigoshop_price_thousand_sep') );
 	
 	switch ($currency_pos) :
 		case 'left' :
-			return $currency_symbol.number_format($price, 2);
+			return $currency_symbol . $price;
 		break;
 		case 'right' :
-			return number_format($price, 2).$currency_symbol;
+			return $price . $currency_symbol;
 		break;
 		case 'left_space' :
-			return $currency_symbol.' '.number_format($price, 2);
+			return $currency_symbol . ' ' . $price;
 		break;
 		case 'right_space' :
-			return number_format($price, 2).' '.$currency_symbol;
+			return $price . ' ' . $currency_symbol;
 		break;
 	endswitch;
 }

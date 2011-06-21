@@ -117,13 +117,25 @@ function jigoshop_update_options($options) {
 				if (isset($_POST[$value['id']])) $selected_countries = $_POST[$value['id']]; else $selected_countries = array();
 				update_option($value['id'], $selected_countries);
 			
-            else :
-	            if(isset($value['id']) && isset($_POST[$value['id']])) {
+			/* price separators get a special treatment as they should allow a spaces (don't trim) */
+			elseif ( isset($value['id']) && ( $value['id'] == 'jigoshop_price_thousand_sep' || $value['id'] == 'jigoshop_price_decimal_sep' ) ):
+				
+				if( isset( $_POST[ $value['id'] ] )  ) {
+					update_option($value['id'], $_POST[$value['id']] );
+				} else {
+	                @delete_option($value['id']);
+	            }
+	            
+        	else :
+			    
+        		if(isset($value['id']) && isset($_POST[$value['id']])) {
 	            	update_option($value['id'], jigowatt_clean($_POST[$value['id']]));
 	            } else {
 	                @delete_option($value['id']);
 	            }
-            endif;
+            
+	        endif;
+	        
         }
         
         do_action('jigoshop_update_options');
@@ -169,7 +181,7 @@ function jigoshop_admin_fields($options) {
 		            case 'text':
 		            	?><tr>
 		                    <td class="titledesc"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
-		                    <td class="forminp"><input name="<?php echo $value['id'] ?>" id="<?php echo $value['id'] ?>" type="<?php echo $value['type'] ?>" style="<?php echo $value['css'] ?>" value="<?php if (get_option( $value['id'])) echo get_option( $value['id'] ); else echo $value['std'] ?>" /><br /><small><?php echo $value['desc'] ?></small></td>
+		                    <td class="forminp"><input name="<?php echo $value['id'] ?>" id="<?php echo $value['id'] ?>" type="<?php echo $value['type'] ?>" style="<?php echo $value['css'] ?>" value="<?php if ( get_option( $value['id']) !== false && get_option( $value['id']) !== null ) echo get_option( $value['id'] ); else echo $value['std'] ?>" /><br /><small><?php echo $value['desc'] ?></small></td>
 		                </tr><?php
 		            break;
 		            case 'select':
