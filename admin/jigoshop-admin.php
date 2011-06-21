@@ -8,21 +8,20 @@
  * @category 	Admin
  * @package 	JigoShop
  */
- 
-function jigoshop_activation_hook() {
-	add_action('init', 'install_jigoshop', 10);
-} 
- 
-function load_jigoshop_admin() {
-	require_once ( 'jigoshop-admin-dashboard.php' );
-	require_once ( 'jigoshop-admin-settings-options.php' );
-	require_once ( 'jigoshop-install.php' );
-	require_once ( 'jigoshop-write-panels.php' );
-	require_once ( 'jigoshop-admin-settings.php' );
-	require_once ( 'jigoshop-admin-attributes.php' );
-	require_once ( 'jigoshop-admin-post-types.php' );
+
+require_once ( 'jigoshop-install.php' );
+
+require_once ( 'jigoshop-admin-dashboard.php' );
+require_once ( 'jigoshop-write-panels.php' );
+require_once ( 'jigoshop-admin-settings.php' );
+require_once ( 'jigoshop-admin-attributes.php' );
+require_once ( 'jigoshop-admin-post-types.php' );
+	
+
+function jigoshop_admin_init () {
+	require_once ( 'jigoshop-admin-settings-options.php' );	
 }
-if (is_admin()) add_action('init', 'load_jigoshop_admin');
+add_action('admin_init', 'jigoshop_admin_init');
 
 /**
  * Admin Menus
@@ -42,6 +41,7 @@ function jigoshop_admin_menu() {
     add_submenu_page('jigoshop', __('System Info','jigoshop'), __('System Info','jigoshop'), 'manage_options', 'sysinfo', 'jigoshop_system_info');
     add_submenu_page('edit.php?post_type=product', __('Attributes','jigoshop'), __('Attributes','jigoshop'), 'manage_options', 'attributes', 'jigoshop_attributes');
 }
+
 function jigoshop_admin_menu_order( $menu_order ) {
 
 	// Initialize our custom order array
@@ -67,6 +67,7 @@ function jigoshop_admin_menu_order( $menu_order ) {
 	// Return order
 	return $jigoshop_menu_order;
 }
+
 function jigoshop_admin_custom_menu_order() {
 	if ( !current_user_can( 'manage_options' ) ) return false;
 
