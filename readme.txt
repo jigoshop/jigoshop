@@ -147,6 +147,9 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * Unlimited download fix
 * Lost password link on my-account login
 * weight calc fix
+* Fixes inconsistent page slugs (- instead of _)
+* init changes
+* options for foreign currencies
 
 = 0.9.7.6 =
 
