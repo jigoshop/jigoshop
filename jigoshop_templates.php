@@ -8,58 +8,46 @@
 ################################################################################
 
 function jigoshop_template_loader( $template ) {
-	if ( is_single() && get_post_type() == 'product' ) :
+	
+	if ( is_single() && get_post_type() == 'product' ) {
 		
 		jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-product' ) );
 		
-		$template = JIGOSHOP_TEMPLATE_URL . 'single-product.php';
+		$template = locate_template( JIGOSHOP_TEMPLATE_URL . 'single-product.php' );
 		
-		if (!locate_template(array( $template ), false, false)) :
-			$template = jigoshop::plugin_path() . '/templates/single-product.php';
-		else :
-			$template = locate_template(array( $template ), false, false);
-		endif;
-
-	elseif ( is_tax('product_cat') ) :
+		if ( ! $template ) $template = jigoshop::plugin_path() . '/templates/single-product.php';
+		
+	}
+	elseif ( is_tax('product_cat') ) {
 		
 		jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-product_cat' ) );
 		
-		$template = JIGOSHOP_TEMPLATE_URL . 'taxonomy-product_cat.php';
+		$template = locate_template( JIGOSHOP_TEMPLATE_URL . 'taxonomy-product_cat.php' );
 		
-		if (!locate_template(array( $template ), false, false)) :
-			$template = jigoshop::plugin_path() . '/templates/taxonomy-product_cat.php';
-		else :
-			$template = locate_template(array( $template ), false, false);
-		endif;
-
-	elseif ( is_tax('product_tag') ) :
+		if ( ! $template ) $template = jigoshop::plugin_path() . '/templates/taxonomy-product_cat.php';
+	}
+	elseif ( is_tax('product_tag') ) {
 		
 		jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-product_tag' ) );
 		
-		$template = JIGOSHOP_TEMPLATE_URL . 'taxonomy-product_tag.php';
+		$template = locate_template( JIGOSHOP_TEMPLATE_URL . 'taxonomy-product_tag.php' );
 		
-		if (!locate_template(array( $template ), false, false)) :
-			$template = jigoshop::plugin_path() . '/templates/taxonomy-product_tag.php';
-		else :
-			$template = locate_template(array( $template ), false, false);
-		endif;
-
-	elseif ( is_post_type_archive('product') ) :
+		if ( ! $template ) $template = jigoshop::plugin_path() . '/templates/taxonomy-product_tag.php';
+	}
+	elseif ( is_post_type_archive('product') ) {
 		
 		jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-products' ) );
 		
-		$template = JIGOSHOP_TEMPLATE_URL . 'archive-product.php';
+		$template = locate_template( JIGOSHOP_TEMPLATE_URL . 'archive-product.php' );
 		
-		if (!locate_template(array( $template ), false, false)) :
-			$template = jigoshop::plugin_path() . '/templates/archive-product.php';
-		else :
-			$template = locate_template(array( $template ), false, false);
-		endif;
-
-	endif;
+		if ( ! $template ) $template = jigoshop::plugin_path() . '/templates/archive-product.php';
+		
+	}
+	
 	return $template;
+
 }
-add_filter('template_include','jigoshop_template_loader');
+add_filter( 'template_include', 'jigoshop_template_loader' );
 
 ################################################################################
 // Get template part (for templates like loop)

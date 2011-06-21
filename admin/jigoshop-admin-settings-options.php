@@ -326,6 +326,36 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		)
 	),
 	
+	array(  
+		'name' => __('Thounsand separator', 'jigoshop'),
+		'desc' 		=> __('This set the thounsand separator of the displayed prices.', 'jigoshop'),
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_price_thousand_sep',
+		'css' 		=> 'width:30px;',
+		'std' 		=> ',',
+		'type' 		=> 'text',
+	),
+	
+	array(  
+		'name' => __('Decimal separator', 'jigoshop'),
+		'desc' 		=> __('This set the decimal point separator of the displayed prices.', 'jigoshop'),
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_price_decimal_sep',
+		'css' 		=> 'width:30px;',
+		'std' 		=> '.',
+		'type' 		=> 'text',
+	),
+	
+	array(  
+		'name' => __('Number of decimals', 'jigoshop'),
+		'desc' 		=> __('This set the number of decimal points of the displayed prices.', 'jigoshop'),
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_price_num_decimals',
+		'css' 		=> 'width:30px;',
+		'std' 		=> '2',
+		'type' 		=> 'text',
+	),
+	
 	array( 'type' => 'tabend'),
 	
 	array( 'type' => 'tab', 'tabname' => __('Coupons', 'jigoshop') ),
