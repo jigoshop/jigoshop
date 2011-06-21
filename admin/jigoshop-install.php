@@ -17,6 +17,12 @@
  * @since 		1.0
  */
 function install_jigoshop() {
+	
+	// Get options and define post types before we start
+	require_once ( 'jigoshop-admin-settings-options.php' );	
+	jigoshop_post_type();
+	
+	// Do install
 	jigoshop_default_options();
 	jigoshop_create_pages();
 	jigoshop_tables_install();
@@ -31,7 +37,6 @@ function install_jigoshop() {
 	// Flush Rules
 	flush_rewrite_rules();
 }
-register_activation_hook( __FILE__, 'install_jigoshop' );
 
 /**
  * Default options

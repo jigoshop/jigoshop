@@ -9,6 +9,8 @@
  * @package 	JigoShop
  */
 
+
+
 require_once ( 'jigoshop-install.php' );
 
 require_once ( 'jigoshop-admin-dashboard.php' );

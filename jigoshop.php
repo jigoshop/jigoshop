@@ -15,7 +15,8 @@ Tested up to: 3.1.3
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
-	
+
+register_activation_hook( __FILE__, 'install_jigoshop' );
 
 /**
  * Include core files and classes
@@ -355,9 +356,11 @@ function get_jigoshop_currency_symbol() {
 }
 
 function jigoshop_price( $price ) {
+
+	$num_decimals = (int) get_option('jigoshop_price_num_decimals');
 	$currency_pos = get_option('jigoshop_currency_pos');
 	$currency_symbol = get_jigoshop_currency_symbol();
-	$price = number_format( (double) $price,  get_option('jigoshop_price_num_decimals'), get_option('jigoshop_price_decimal_sep'), get_option('jigoshop_price_thousand_sep') );
+	$price = number_format( $price, $num_decimals, get_option('jigoshop_price_decimal_sep'), get_option('jigoshop_price_thousand_sep') );
 	
 	switch ($currency_pos) :
 		case 'left' :
