@@ -150,6 +150,8 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * Fixes inconsistent page slugs (- instead of _)
 * init changes
 * options for foreign currencies
+* Added german localization by AlistarMclean
+* Removed IE6 stuff from fancybox to speed it up
 
 = 0.9.7.6 =
 

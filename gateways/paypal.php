@@ -136,7 +136,6 @@ class paypal extends jigoshop_payment_gateway {
 				'charset' 				=> 'UTF-8',
 				'rm' 					=> 2,
 				'upload' 				=> 1,
-				'no_shipping' 			=> 1,
 				'return' 				=> add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink(get_option('jigoshop_thanks_page_id')))),
 				//'cancel_return'			=> $order->get_cancel_order_url(),
 				'cancel_return'			=> home_url(),
@@ -146,6 +145,9 @@ class paypal extends jigoshop_payment_gateway {
 				
 				// IPN
 				'notify_url'			=> trailingslashit(get_bloginfo('wpurl')).'?paypalListener=paypal_standard_IPN',
+				
+				//'address_override'		=> 1,
+				'no_shipping' 			=> 1,
 				
 				// Address info
 				'first_name'			=> $order->billing_first_name,
