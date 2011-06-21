@@ -31,6 +31,7 @@ function install_jigoshop() {
 	// Flush Rules
 	flush_rewrite_rules();
 }
+register_activation_hook( __FILE__, 'install_jigoshop' );
 
 /**
  * Default options
@@ -124,7 +125,7 @@ function jigoshop_create_pages() {
     	update_option('jigoshop_checkout_page_id', $page_found);
     }
     
-    $slug = esc_sql( _x('order-tracking', 'page_slug', 'jigoshop') );
+    $slug = esc_sql( _x('order_tracking', 'page_slug', 'jigoshop') );
     $page_found = $wpdb->get_var("SELECT ID FROM " . $wpdb->posts . " WHERE post_name = '$slug' LIMIT 1");
 
     if(!$page_found) {
