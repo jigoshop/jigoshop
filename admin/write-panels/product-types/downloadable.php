@@ -71,7 +71,7 @@ add_action('product_type_selector', 'downloadable_product_type_selector');
 function process_product_meta_downloadable( $data, $post_id ) {
 	
 	if (isset($_POST['file_path']) && $_POST['file_path']) update_post_meta( $post_id, 'file_path', $_POST['file_path'] );
-	if (isset($_POST['download_limit']) && $_POST['download_limit']) update_post_meta( $post_id, 'download_limit', $_POST['download_limit'] );
+	if (isset($_POST['download_limit'])) update_post_meta( $post_id, 'download_limit', $_POST['download_limit'] );
 	
 	return $data;
 
