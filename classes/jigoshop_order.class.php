@@ -225,7 +225,7 @@ class jigoshop_order {
 				if ($_product->exists) :
 			
 					if ($_product->is_type('downloadable')) :
-						$return .= PHP_EOL . ' - ' . $order->get_downloadable_file_url( $item['id'] ) . '';
+						$return .= PHP_EOL . ' - ' . $this->get_downloadable_file_url( $item['id'] ) . '';
 					endif;
 		
 				endif;	
