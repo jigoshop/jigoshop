@@ -18,6 +18,8 @@ class paypal extends jigoshop_payment_gateway {
 		$this->testurl 		= 'https://www.sandbox.paypal.com/webscr';
 		$this->testmode		= get_option('jigoshop_paypal_testmode');		
 		
+		$this->send_shipping = get_option('jigoshop_paypal_send_shipping');
+		
 		add_action( 'init', array(&$this, 'check_ipn_response') );
 		add_action('valid-paypal-standard-ipn-request', array(&$this, 'successful_request') );
 		
@@ -27,6 +29,7 @@ class paypal extends jigoshop_payment_gateway {
 		add_option('jigoshop_paypal_title', 'PayPal');
 		add_option('jigoshop_paypal_description', 'Pay via PayPal; you can pay with your credit card if you don\'t have a PayPal account');
 		add_option('jigoshop_paypal_testmode', 'no');
+		add_option('jigoshop_paypal_send_shipping', 'no');
 		
 		add_action('receipt_paypal', array(&$this, 'receipt_page'));
     } 
@@ -66,6 +69,15 @@ class paypal extends jigoshop_payment_gateway {
 	        </td>
 	    </tr>
 	    <tr>
+	        <td class="titledesc"><a href="#" tip="<?php _e('If your checkout page does not ask for shipping details, or if you do not want to send shipping information to PayPal, set this option to no. If you enable this option PayPal may restrict where things can be sent, and will prevent some orders going through for your protection.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Send shipping details to PayPal', 'jigoshop') ?>:</td>
+	        <td class="forminp">
+		        <select name="jigoshop_paypal_send_shipping" id="jigoshop_paypal_send_shipping" style="min-width:100px;">
+		            <option value="yes" <?php if (get_option('jigoshop_paypal_send_shipping') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
+		            <option value="no" <?php if (get_option('jigoshop_paypal_send_shipping') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
+		        </select>
+	        </td>
+	    </tr>
+	    <tr>
 	        <td class="titledesc"><?php _e('Enable PayPal sandbox', 'jigoshop') ?>:</td>
 	        <td class="forminp">
 		        <select name="jigoshop_paypal_testmode" id="jigoshop_paypal_testmode" style="min-width:100px;">
@@ -94,6 +106,7 @@ class paypal extends jigoshop_payment_gateway {
    		if(isset($_POST['jigoshop_paypal_email'])) update_option('jigoshop_paypal_email', jigowatt_clean($_POST['jigoshop_paypal_email'])); else @delete_option('jigoshop_paypal_email');
    		if(isset($_POST['jigoshop_paypal_description'])) update_option('jigoshop_paypal_description', jigowatt_clean($_POST['jigoshop_paypal_description'])); else @delete_option('jigoshop_paypal_description');
    		if(isset($_POST['jigoshop_paypal_testmode'])) update_option('jigoshop_paypal_testmode', jigowatt_clean($_POST['jigoshop_paypal_testmode'])); else @delete_option('jigoshop_paypal_testmode');
+   		if(isset($_POST['jigoshop_paypal_send_shipping'])) update_option('jigoshop_paypal_send_shipping', jigowatt_clean($_POST['jigoshop_paypal_send_shipping'])); else @delete_option('jigoshop_paypal_send_shipping');
     }
     
 	/**
@@ -110,7 +123,7 @@ class paypal extends jigoshop_payment_gateway {
 		endif;
 		
 		$shipping_name = explode(' ', $order->shipping_method);
-
+		
 		if (in_array($order->billing_country, array('US','CA'))) :
 			$phone_args = array(
 				'night_phone_a' => substr($order->billing_phone,0,3),
@@ -146,9 +159,6 @@ class paypal extends jigoshop_payment_gateway {
 				// IPN
 				'notify_url'			=> trailingslashit(get_bloginfo('wpurl')).'?paypalListener=paypal_standard_IPN',
 				
-				//'address_override'		=> 1,
-				'no_shipping' 			=> 1,
-				
 				// Address info
 				'first_name'			=> $order->billing_first_name,
 				'last_name'				=> $order->billing_last_name,
@@ -170,6 +180,13 @@ class paypal extends jigoshop_payment_gateway {
 			), 
 			$phone_args
 		);
+		
+		if ($this->send_shipping=='yes') :
+			$paypal_args['no_shipping'] = 0;
+			$paypal_args['address_override'] = 1;
+		else :
+			$paypal_args['no_shipping'] = 1;
+		endif;
 		
 		// Cart Contents
 		$item_loop = 0;
