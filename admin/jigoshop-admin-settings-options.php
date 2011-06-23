@@ -327,7 +327,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 	
 	array(  
-		'name' => __('Thounsand separator', 'jigoshop'),
+		'name' => __('Thousand separator', 'jigoshop'),
 		'desc' 		=> __('This sets the thousand separator of displayed prices.', 'jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_price_thousand_sep',
