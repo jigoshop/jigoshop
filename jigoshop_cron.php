@@ -25,7 +25,7 @@ function jigoshop_update_sale_prices() {
 	$sale_expired = $wpdb->get_results("
 		SELECT post_id FROM $wpdb->postmeta
 		WHERE meta_key = 'sale_price_dates_to'
-		AND meta_value > ".strtotime('NOW')."
+		AND meta_value < ".strtotime('NOW')."
 	");
 	if ($sale_expired) foreach ($sale_expired as $product) :
 	
