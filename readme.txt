@@ -138,6 +138,7 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * Changed 'download remaining' database field into a varchar
 * localisation issues
 * ui.css cut down
+* Fixed edit address and change password nonce fields
 
 = 0.9.7.8 =
 

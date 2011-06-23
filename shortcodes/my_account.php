@@ -290,7 +290,7 @@ function jigoshop_edit_address() {
 				</p>
 				<div class="clear"></div>
 			<?php endif; ?>
-			<?php jigoshop::nonce_field('edit-address', 'edit_address') ?>
+			<?php jigoshop::nonce_field('edit_address') ?>
 			<input type="submit" class="button" name="save_address" value="<?php _e('Save Address', 'jigoshop'); ?>" />
 	
 		</form>
@@ -354,7 +354,7 @@ function jigoshop_change_password() {
 				<span class="input-text"><input type="password" name="password-2" id="password-2" /></span>
 			</p>
 			<div class="clear"></div>
-			<?php jigoshop::nonce_field('change-password', 'change_password')?>
+			<?php jigoshop::nonce_field('change_password')?>
 			<p><input type="submit" class="button" name="save_password" value="<?php _e('Save', 'jigoshop'); ?>" /></p>
 	
 		</form>
