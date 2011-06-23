@@ -54,6 +54,8 @@ function jigoshop_add_to_cart( $url = false ) {
 			
 		endif;
 		
+		$url = apply_filters('add_to_cart_redirect', $url);
+		
 		// If has custom URL redirect there
 		if ( $url ) {
 			wp_safe_redirect( $url );
