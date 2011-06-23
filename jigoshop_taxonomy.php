@@ -213,8 +213,8 @@ function jigoshop_post_type() {
  * Add a table to $wpdb to benefit from wordpress meta api
  */
 function taxonomy_metadata_wpdbfix() {
-  global $wpdb;
-  $wpdb->jigoshop_termmeta = "{$wpdb->prefix}jigoshop_termmeta";
+	global $wpdb;
+	$wpdb->jigoshop_termmeta = "{$wpdb->prefix}jigoshop_termmeta";
 }
 add_action('init','taxonomy_metadata_wpdbfix');
 add_action('switch_blog','taxonomy_metadata_wpdbfix');
@@ -234,19 +234,18 @@ function jigoshop_terms_clauses($clauses, $taxonomies, $args ) {
 	// wordpress should give us the taxonomies asked when calling the get_terms function
 	if( !in_array('product_cat', (array)$taxonomies) ) return $clauses;
 	
+	// query order
+	if( isset($args['menu_order']) && !$args['menu_order']) return $clauses; // menu_order is false so we do not add order clause
+	
 	// query fields
 	if( strpos('COUNT(*)', $clauses['fields']) === false ) $clauses['fields']  .= ', tm.* ';
 
 	//query join
 	$clauses['join'] .= " LEFT JOIN {$wpdb->jigoshop_termmeta} AS tm ON (t.term_id = tm.jigoshop_term_id AND tm.meta_key = 'order') ";
 	
-	// query order
-	if( isset($args['menu_order']) && ! $args['menu_order']) return $clauses; // menu_order is false whe do not add order clause
-	
 	// default to ASC
 	if( ! isset($args['menu_order']) || ! in_array( strtoupper($args['menu_order']), array('ASC', 'DESC')) ) $args['menu_order'] = 'ASC';
 
-	
 	$order = "ORDER BY CAST(tm.meta_value AS SIGNED) " . $args['menu_order'];
 	
 	if ( $clauses['orderby'] ):
@@ -290,12 +289,14 @@ add_action("create_product_cat", 'jigoshop_create_product_cat');
  * 
  * @param int $term_id
  */
-function jigoshop_delete_product_cat ($term_id) {
+function jigoshop_delete_product_cat($term_id) {
 	
-	if(!(int)$term_id) return;
+	$term_id = (int) $term_id;
+	
+	if(!$term_id) return;
 	
 	global $wpdb;
-	$wpdb->query("DELETE FROM {$wpdb->jigoshop_termmeta} WHERE `jigoshop_term_id` = " . (int)$term_id);
+	$wpdb->query("DELETE FROM {$wpdb->jigoshop_termmeta} WHERE `jigoshop_term_id` = " . $term_id);
 	
 }
 add_action("delete_product_cat", 'jigoshop_delete_product_cat');
@@ -333,7 +334,7 @@ function jigoshop_order_categories ( $the_term, $next_id, $index=0, $terms=null 
 		$index++;
 		$index = jigoshop_set_category_order($term->term_id, $index);
 		
-		// if that term has children we walk thru them
+		// if that term has children we walk through them
 		$children = get_terms('product_cat', "parent={$term->term_id}&menu_order=ASC&hide_empty=0");
 		if( !empty($children) ) {
 			$index = jigoshop_order_categories ( $the_term, $next_id, $index, $children );	

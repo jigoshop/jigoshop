@@ -1,9 +1,9 @@
- === Jigoshop - WordPress eCommerce ===
+=== Jigoshop - WordPress eCommerce ===
 Contributors: jigowatt
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal
 Requires at least: 3.1
 Tested up to: 3.1.3
-Stable tag: 0.9.7.8
+Stable tag: 0.9.8
  
 A feature packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customisability. 
 
@@ -131,6 +131,10 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 9. Checkout
 
 == Changelog ==
+
+= 0.9.8 =
+
+* Tweaked category order code
 
 = 0.9.7.8 =
 
