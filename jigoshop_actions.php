@@ -288,7 +288,7 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 				
 				$limit = trim(get_post_meta($_product->id, 'download_limit', true));
 				
-				if ($limit) :
+				if (!empty($limit)) :
 					$limit = (int) $limit;
 				else :
 					$limit = '';
@@ -299,7 +299,7 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 					'product_id' => $_product->id, 
 					'user_id' => $order->user_id,
 					'user_email' => $user_email,
-					'order_key' => $order->order_key,
+					'order_key' => $order->order_key.'3',
 					'downloads_remaining' => $limit
 				), array( 
 					'%s', 

@@ -135,6 +135,7 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 = 0.9.8 =
 
 * Tweaked category order code
+* Changed 'download remaining' database field into a varchar
 
 = 0.9.7.8 =
 
