@@ -13,8 +13,8 @@ class Jigoshop_Widget_Tag_Cloud extends WP_Widget {
 
 	/** constructor */
 	function Jigoshop_Widget_Tag_Cloud() {
-		$widget_ops = array( 'description' => __( "Your most used product tags in cloud format") );
-		parent::WP_Widget('tag_cloud', __('Product Tag Cloud'), $widget_ops);
+		$widget_ops = array( 'description' => __( "Your most used product tags in cloud format", 'jigoshop') );
+		parent::WP_Widget('tag_cloud', __('Product Tag Cloud', 'jigoshop'), $widget_ops);
 	}
 	
 	/** @see WP_Widget::widget */
@@ -25,7 +25,7 @@ class Jigoshop_Widget_Tag_Cloud extends WP_Widget {
 			$title = $instance['title'];
 		} else {
 			if ( 'product_tag' == $current_taxonomy ) {
-				$title = __('Product Tags');
+				$title = __('Product Tags', 'jigoshop');
 			} else {
 				$tax = get_taxonomy($current_taxonomy);
 				$title = $tax->labels->name;
@@ -53,7 +53,7 @@ class Jigoshop_Widget_Tag_Cloud extends WP_Widget {
 	function form( $instance ) {
 		$current_taxonomy = $this->_get_current_taxonomy($instance);
 ?>
-	<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:') ?></label>
+	<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'jigoshop') ?></label>
 	<input type="text" class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" value="<?php if (isset ( $instance['title'])) {echo esc_attr( $instance['title'] );} ?>" /></p>
 	<?php
 	}

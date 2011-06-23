@@ -13,8 +13,8 @@ class Jigoshop_Widget_Product_Search extends WP_Widget {
 
 	/** constructor */
 	function Jigoshop_Widget_Product_Search() {
-		$widget_ops = array( 'description' => __( "Search box for products only.") );
-		parent::WP_Widget('product_search', __('Product Search'), $widget_ops);
+		$widget_ops = array( 'description' => __( "Search box for products only.", 'jigoshop') );
+		parent::WP_Widget('product_search', __('Product Search', 'jigoshop'), $widget_ops);
 	}
 
 	/** @see WP_Widget::widget */
@@ -52,7 +52,7 @@ class Jigoshop_Widget_Product_Search extends WP_Widget {
 	function form( $instance ) {
 		global $wpdb;
 		?>
-			<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:') ?></label>
+			<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'jigoshop') ?></label>
 			<input type="text" class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" value="<?php if (isset ( $instance['title'])) {echo esc_attr( $instance['title'] );} ?>" /></p>
 		<?php
 	}

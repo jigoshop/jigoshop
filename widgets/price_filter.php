@@ -34,8 +34,8 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 
 	/** constructor */
 	function Jigoshop_Widget_Price_Filter() {
-		$widget_ops = array( 'description' => __( "Shows a price filter slider in a widget which lets you narrow down the list of shown products in categories.") );
-		parent::WP_Widget('price_filter', __('Price Filter'), $widget_ops);
+		$widget_ops = array( 'description' => __( "Shows a price filter slider in a widget which lets you narrow down the list of shown products in categories.", 'jigoshop') );
+		parent::WP_Widget('price_filter', __('Price Filter', 'jigoshop'), $widget_ops);
 	}
 
 	/** @see WP_Widget::widget */
@@ -102,7 +102,7 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 	function form( $instance ) {
 		global $wpdb;
 		?>
-			<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:') ?></label>
+			<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'jigoshop') ?></label>
 			<input type="text" class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" value="<?php if (isset ( $instance['title'])) {echo esc_attr( $instance['title'] );} ?>" /></p>
 		<?php
 	}
