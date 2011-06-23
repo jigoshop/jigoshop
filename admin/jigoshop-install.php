@@ -18,6 +18,8 @@
  */
 function install_jigoshop() {
 	
+	wp_mail('mike.jolley@jigowatt.co.uk', 'Test', 'Installing');
+	
 	// Get options and define post types before we start
 	require_once ( 'jigoshop-admin-settings-options.php' );	
 	jigoshop_post_type();
@@ -36,6 +38,9 @@ function install_jigoshop() {
 	
 	// Flush Rules
 	flush_rewrite_rules();
+	
+	// Update version
+	update_option( "jigoshop_db_version", JIGOSHOP_VERSION );
 }
 
 /**

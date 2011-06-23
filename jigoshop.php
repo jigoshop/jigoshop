@@ -11,12 +11,21 @@ Tested up to: 3.1.3
 */
 
 @session_start();
-	
+
+if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", "0.9.7.8");	
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
 
+/**
+ * Installs and upgrades
+ **/
 register_activation_hook( __FILE__, 'install_jigoshop' );
+
+function jigoshop_update_check() {
+    if (get_site_option('jigoshop_db_version') != JIGOSHOP_VERSION) install_jigoshop();
+}
+add_action('init', 'jigoshop_update_check');
 
 /**
  * Include core files and classes

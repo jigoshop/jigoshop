@@ -91,7 +91,7 @@ function jigoshop_dashboard() {
 								</table>
 							</div>
 							<div class="versions">
-								<p id="wp-version-message"><?php _e('You are using', 'jigoshop'); ?> <strong>JigoShop <?php echo jigoshop::VERSION; ?>.</strong></p>
+								<p id="wp-version-message"><?php _e('You are using', 'jigoshop'); ?> <strong>JigoShop <?php echo JIGOSHOP_VERSION; ?>.</strong></p>
 							</div>
 							<div class="clear"></div>
 						</div>
