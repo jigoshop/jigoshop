@@ -35,6 +35,44 @@ function jigoshop_recent_products( $atts ) {
 	return ob_get_clean();
 }
 
+### Single Product ############################################################
+
+function jigoshop_product($atts){
+  if (empty($atts)) return;
+  
+  $args = array(
+    'post_type' => 'product',
+    'posts_per_page' => 1,
+    'post_status' => 'publish',
+    'meta_query' => array(
+			array(
+				'key' => 'visibility',
+				'value' => array('catalog', 'visible'),
+				'compare' => 'IN'
+			)
+		)
+  );
+  
+  if(isset($atts['sku'])){
+    $args['meta_query'][] = array(
+      'key' => 'sku',
+      'value' => $atts['sku'],
+      'compare' => '='
+    );
+  }
+  
+  if(isset($atts['id'])){
+    $args['p'] = $atts['id'];
+  }
+  
+  query_posts($args);
+	ob_start();
+	jigoshop_get_template_part( 'loop', 'shop' );
+	wp_reset_query();
+	
+	return ob_get_clean();  
+}
+
 ### Featured Products #########################################################
 
 function jigoshop_featured_products( $atts ) {
@@ -75,6 +113,7 @@ function jigoshop_featured_products( $atts ) {
 
 ### Shortcodes #########################################################
 
+add_shortcode('product', 'jigoshop_product');
 add_shortcode('recent_products', 'jigoshop_recent_products');
 add_shortcode('featured_products', 'jigoshop_featured_products');
 add_shortcode('jigoshop_cart', 'jigoshop_cart');
