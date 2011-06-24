@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-24 10:53+1100\n"
+"POT-Creation-Date: 2011-06-24 17:53+1100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Laurent Dinclaux <lox@knc.nc>\n"
 "Language-Team: \n"
@@ -3138,9 +3138,17 @@ msgstr ""
 msgid "Base Country/Region"
 msgstr ""
 
+#: admin/jigoshop-admin-settings-options.php:64
+msgid "This is the base country for your business. Tax rates will be based on this country."
+msgstr ""
+
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:72
 msgid "Allowed Countries"
+msgstr ""
+
+#: admin/jigoshop-admin-settings-options.php:74
+msgid "These are countries that you are willing to ship to."
 msgstr ""
 
 # @ jigoshop
