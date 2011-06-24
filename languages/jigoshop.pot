@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-24 18:38+1100\n"
+"POT-Creation-Date: 2011-06-24 19:32+1100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Laurent Dinclaux <lox@knc.nc>\n"
 "Language-Team: \n"
@@ -4582,6 +4582,14 @@ msgstr ""
 msgid "Your order has already been paid for. Please contact us if you need assistance."
 msgstr ""
 
+#: gateways/paypal.php:29
+msgid "PayPal"
+msgstr ""
+
+#: gateways/paypal.php:30
+msgid "Pay via PayPal; you can pay with your credit card if you don't have a PayPal account"
+msgstr ""
+
 # @ jigoshop
 #: gateways/paypal.php:43
 msgid "PayPal standard"
@@ -4733,8 +4741,13 @@ msgid "Skrill exception"
 msgstr ""
 
 # @ jigoshop
+#: gateways/cheque.php:19
 #: gateways/cheque.php:31
 msgid "Cheque Payment"
+msgstr ""
+
+#: gateways/cheque.php:20
+msgid "Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode."
 msgstr ""
 
 # @ jigoshop
