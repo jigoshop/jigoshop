@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Jigoshop\n"
-"Report-Msgid-Bugs-To: http://jigoshop.com/forums/\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tags/jigoshop?forum_id=10\n"
 "POT-Creation-Date: 2011-06-13 01:20+1100\n"
-"PO-Revision-Date: 2011-06-23 11:19+0100\n"
+"PO-Revision-Date: 2011-06-24 14:21+0100\n"
 "Last-Translator: David Decker <deckerweb.mobil@googlemail.com>\n"
 "Language-Team: DECKERWEB <deckerweb.mobil@googlemail.com>\n"
 "MIME-Version: 1.0\n"
@@ -5195,3 +5195,4 @@ msgstr "Telefon:"
 #: templates/login.php:15
 msgid "Lost Password?"
 msgstr "Passwort vergessen?"
+
