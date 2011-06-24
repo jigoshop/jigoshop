@@ -80,7 +80,7 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 
 		endif;
 
-		$cache[$args['widget_id']] = ob_get_flush();
+		if (isset($args['widget_id']) && isset($cache[$args['widget_id']])) $cache[$args['widget_id']] = ob_get_flush();
 		wp_cache_set('widget_recent_products', $cache, 'widget');
 	}
 
