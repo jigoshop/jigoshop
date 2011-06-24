@@ -422,7 +422,7 @@ class jigoshop_countries {
 	}
 	
 	/** Outputs the list of countries and states for use in dropdown boxes */
-	function country_dropdown_options( $selected_country = '', $selected_state = '' ) {
+	function country_dropdown_options( $selected_country = '', $selected_state = '', $escape=false ) {
 		
 		$countries = self::$countries;
 		asort($countries);
@@ -438,13 +438,13 @@ class jigoshop_countries {
     					
     					if ($selected_country==$key && $selected_state==$state_key) echo ' selected="selected"';
     					
-    					echo '>'.$value.' &mdash; '.$state_value.'</option>';
+    					echo '>'.$value.' &mdash; '. ($escape ? esc_js($state_value) : $state_value) .'</option>';
     				endforeach;
     			echo '</optgroup>';
 			else :
     			echo '<option';
     			if ($selected_country==$key && $selected_state=='*') echo ' selected="selected"';
-    			echo ' value="'.$key.'">'. __($value, 'jigoshop') .'</option>';
+    			echo ' value="'.$key.'">'. ($escape ? esc_js( __($value, 'jigoshop') ) : __($value, 'jigoshop') ) .'</option>';
 			endif;
 		endforeach;
 	}
