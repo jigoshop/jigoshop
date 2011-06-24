@@ -61,7 +61,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	array(  
 		'name' => __('Base Country/Region','jigoshop'),
 		'desc' 		=> '',
-		'tip' 		=> 'This is the base county for your business. Tax rates will be based on this country.',
+		'tip' 		=> __('This is the base country for your business. Tax rates will be based on this country.','jigoshop'),
 		'id' 		=> 'jigoshop_default_country',
 		'css' 		=> '',
 		'std' 		=> 'GB',
@@ -71,7 +71,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	array(  
 		'name' => __('Allowed Countries','jigoshop'),
 		'desc' 		=> '',
-		'tip' 		=> 'These are countries that you are willing to ship to.',
+		'tip' 		=> __('These are countries that you are willing to ship to.','jigoshop'),
 		'id' 		=> 'jigoshop_allowed_countries',
 		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'all',
