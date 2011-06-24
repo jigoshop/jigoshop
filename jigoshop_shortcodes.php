@@ -27,7 +27,60 @@ function jigoshop_recent_products( $atts ) {
 			)
 		)
 	);
+	
 	query_posts($args);
+	ob_start();
+	jigoshop_get_template_part( 'loop', 'shop' );
+	wp_reset_query();
+	
+	return ob_get_clean();
+}
+
+### Multiple Products #########################################################
+
+function jigoshop_products($atts){
+  global $columns;
+	
+  if (empty($atts)) return;
+  
+	extract(shortcode_atts(array(
+		'columns' 	=> '4',
+	  'orderby'   => 'title',
+	  'order'     => 'asc'
+	), $atts));
+	
+  $args = array(
+		'post_type'	=> 'product',
+		'post_status' => 'publish',
+		'ignore_sticky_posts'	=> 1,
+		'orderby' => $orderby,
+		'order' => $order,
+		'meta_query' => array(
+			array(
+				'key' => 'visibility',
+				'value' => array('catalog', 'visible'),
+				'compare' => 'IN'
+			)
+		)
+	);
+	
+	if(isset($atts['skus'])){
+	  $skus = explode(',', $atts['skus']);
+	  array_walk($skus, create_function('&$val', '$val = trim($val);'));
+    $args['meta_query'][] = array(
+      'key' => 'sku',
+      'value' => $skus,
+      'compare' => 'IN'
+    );
+  }
+	
+	if(isset($atts['ids'])){
+	  $ids = explode(',', $atts['ids']);
+	  array_walk($ids, create_function('&$val', '$val = trim($val);'));
+    $args['post__in'] = $ids;
+	}
+	
+  query_posts($args);
 	ob_start();
 	jigoshop_get_template_part( 'loop', 'shop' );
 	wp_reset_query();
@@ -114,6 +167,7 @@ function jigoshop_featured_products( $atts ) {
 ### Shortcodes #########################################################
 
 add_shortcode('product', 'jigoshop_product');
+add_shortcode('products', 'jigoshop_products');
 add_shortcode('recent_products', 'jigoshop_recent_products');
 add_shortcode('featured_products', 'jigoshop_featured_products');
 add_shortcode('jigoshop_cart', 'jigoshop_cart');
