@@ -24,17 +24,17 @@ function downloadable_product_type_options() {
 
 			// File URL
 			$file_path = get_post_meta($post->ID, 'file_path', true);
-			$field = array( 'id' => 'file_path', 'label' => 'File path:' );
+			$field = array( 'id' => 'file_path', 'label' => __('File path', 'jigoshop') );
 			echo '<p class="form-field">
-				<label for="'.$field['id'].'">'.$field['label'].'</label>
+				<label for="'.$field['id'].'">'.$field['label'].':</label>
 				<span style="float:left">'.ABSPATH.'</span><input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_path.'" placeholder="'.__('path to file on your server', 'jigoshop').'" /></p>';
 				
 			// Download Limit
 			$download_limit = get_post_meta($post->ID, 'download_limit', true);
-			$field = array( 'id' => 'download_limit', 'label' => 'Download Limit:' );
+			$field = array( 'id' => 'download_limit', 'label' => __('Download Limit', 'jigoshop') );
 			echo '<p class="form-field">
-				<label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$download_limit.'" /> <span class="description">Leave blank for unlimited re-downloads.</span></p>';
+				<label for="'.$field['id'].'">'.$field['label'].':</label>
+				<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$download_limit.'" /> <span class="description">' . __('Leave blank for unlimited re-downloads.', 'jigoshop') . '</span></p>';
 
 		?>
 	</div>

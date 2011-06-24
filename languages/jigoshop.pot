@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-25 08:04+1100\n"
+"POT-Creation-Date: 2011-06-25 08:24+1100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Laurent Dinclaux <lox@knc.nc>\n"
 "Language-Team: \n"
@@ -2562,9 +2562,18 @@ msgstr ""
 msgid "Move to Trash"
 msgstr ""
 
+#: admin/write-panels/product-type.php:31
+msgid "Parent post"
+msgstr ""
+
 # @ jigoshop
 #: admin/write-panels/product-type.php:32
 msgid "Choose a grouped product&hellip;"
+msgstr ""
+
+#: admin/write-panels/product-type.php:61
+msgctxt "ordering"
+msgid "Order"
 msgstr ""
 
 # @ jigoshop
@@ -2572,9 +2581,21 @@ msgstr ""
 msgid "Product SKU must be unique."
 msgstr ""
 
+#: admin/write-panels/product-types/downloadable.php:27
+msgid "File path"
+msgstr ""
+
 # @ jigoshop
 #: admin/write-panels/product-types/downloadable.php:30
 msgid "path to file on your server"
+msgstr ""
+
+#: admin/write-panels/product-types/downloadable.php:34
+msgid "Download Limit"
+msgstr ""
+
+#: admin/write-panels/product-types/downloadable.php:37
+msgid "Leave blank for unlimited re-downloads."
 msgstr ""
 
 # @ jigoshop

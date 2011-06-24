@@ -164,7 +164,7 @@ function jigoshop_product_data_box() {
 			echo '<div class="stock_fields">';
 			
 			// Stock
-			$field = array( 'id' => 'stock', 'label' => _('Stock Qty', 'jigoshop') );
+			$field = array( 'id' => 'stock', 'label' => __('Stock Qty', 'jigoshop') );
 			echo '	<p class="form-field">
 						<label for="'.$field['id'].'">'.$field['label'].': <em class="req" title="'.__('Required', 'jigoshop') . '">*</em></label>
 						<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="';
