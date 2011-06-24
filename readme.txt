@@ -141,6 +141,8 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * Fixed edit address and change password nonce fields
 * Hook for add to cart redirect
 * Fixes to sale dates logic
+* New product preview shortcodes
+* option to hide hidden products in recent products widget
 
 = 0.9.7.8 =
 
