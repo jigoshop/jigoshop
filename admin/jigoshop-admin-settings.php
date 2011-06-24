@@ -402,7 +402,7 @@ function jigoshop_admin_fields($options) {
 				                        			echo '<option value="'.sanitize_title($class).'">'.$class.'</option>';
 				                        		endforeach;
 				                        	?></select><select name="tax_country[' + size + ']" title="Country"><?php
-				                        		jigoshop_countries::country_dropdown_options();
+				                        		jigoshop_countries::country_dropdown_options('','',true);
 				                        	?></select><input type="text" class="text" name="tax_rate[' + size + ']" title="<?php _e('Rate', 'jigoshop'); ?>" placeholder="<?php _e('Rate', 'jigoshop'); ?>" maxlength="8" />%\
 				                        	<label><input type="checkbox" name="tax_shipping[' + size + ']" /> <?php _e('Apply to shipping', 'jigoshop'); ?></label>\
 				                        	<a href="#" class="remove button">&times;</a>\
