@@ -99,8 +99,8 @@ class flat_rate extends jigoshop_shipping_method {
 	        <td class="titledesc"><?php _e('Tax Status', 'jigoshop') ?>:</td>
 	        <td class="forminp">
 	        	<select name="jigoshop_flat_rate_tax_status">
-	        		<option value="taxable" <?php if (get_option('jigoshop_flat_rate_tax_status')=='taxable') echo 'selected="selected"'; ?>>Taxable</option>
-	        		<option value="none" <?php if (get_option('jigoshop_flat_rate_tax_status')=='none') echo 'selected="selected"'; ?>>None</option>
+	        		<option value="taxable" <?php if (get_option('jigoshop_flat_rate_tax_status')=='taxable') echo 'selected="selected"'; ?>><?php _e('Taxable', 'jigoshop'); ?></option>
+	        		<option value="none" <?php if (get_option('jigoshop_flat_rate_tax_status')=='none') echo 'selected="selected"'; ?>><?php _e('None', 'jigoshop'); ?></option>
 	        	</select>
 	        </td>
 	    </tr>
