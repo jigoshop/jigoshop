@@ -152,7 +152,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	
 	array(  
 		'name' => __('Cart Page','jigoshop'),
-		'desc' 		=> 'Your page should contain [jigoshop_cart]',
+		'desc' 		=> __('Your page should contain [jigoshop_cart]','jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_cart_page_id',
 		'css' 		=> 'min-width:50px;',
@@ -162,7 +162,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	
 	array(  
 		'name' => __('Checkout Page','jigoshop'),
-		'desc' 		=> 'Your page should contain [jigoshop_checkout]',
+		'desc' 		=> __('Your page should contain [jigoshop_checkout]','jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_checkout_page_id',
 		'css' 		=> 'min-width:50px;',
@@ -172,7 +172,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	
 	array(  
 		'name' => __('Pay Page','jigoshop'),
-		'desc' 		=> 'Your page should contain [jigoshop_pay] and usually have "Checkout" as the parent.',
+		'desc' 		=> __('Your page should contain [jigoshop_pay] and usually have "Checkout" as the parent.','jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_pay_page_id',
 		'css' 		=> 'min-width:50px;',
@@ -182,7 +182,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	
 	array(  
 		'name' => __('Thanks Page','jigoshop'),
-		'desc' 		=> 'Your page should contain [jigoshop_thankyou] and usually have "Checkout" as the parent.',
+		'desc' 		=> __('Your page should contain [jigoshop_thankyou] and usually have "Checkout" as the parent.','jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_thanks_page_id',
 		'css' 		=> 'min-width:50px;',
@@ -192,7 +192,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	
 	array(  
 		'name' => __('My Account Page','jigoshop'),
-		'desc' 		=> 'Your page should contain [jigoshop_my_account]',
+		'desc' 		=> __('Your page should contain [jigoshop_my_account]','jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_myaccount_page_id',
 		'css' 		=> 'min-width:50px;',
@@ -202,7 +202,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	
 	array(  
 		'name' => __('Edit Address Page','jigoshop'),
-		'desc' 		=> 'Your page should contain [jigoshop_edit_address] and usually have "My Account" as the parent.',
+		'desc' 		=> __('Your page should contain [jigoshop_edit_address] and usually have "My Account" as the parent.','jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_edit_address_page_id',
 		'css' 		=> 'min-width:50px;',
@@ -212,7 +212,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	
 	array(  
 		'name' => __('View Order Page','jigoshop'),
-		'desc' 		=> 'Your page should contain [jigoshop_view_order] and usually have "My Account" as the parent.',
+		'desc' 		=> __('Your page should contain [jigoshop_view_order] and usually have "My Account" as the parent.','jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_view_order_page_id',
 		'css' 		=> 'min-width:50px;',
@@ -222,7 +222,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	
 	array(  
 		'name' => __('Change Password Page','jigoshop'),
-		'desc' 		=> 'Your page should contain [jigoshop_change_password] and usually have "My Account" as the parent.',
+		'desc' 		=> __('Your page should contain [jigoshop_change_password] and usually have "My Account" as the parent.','jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_change_password_page_id',
 		'css' 		=> 'min-width:50px;',

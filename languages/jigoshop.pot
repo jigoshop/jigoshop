@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-24 17:53+1100\n"
+"POT-Creation-Date: 2011-06-24 18:01+1100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Laurent Dinclaux <lox@knc.nc>\n"
 "Language-Team: \n"
@@ -3217,32 +3217,64 @@ msgstr ""
 msgid "Cart Page"
 msgstr ""
 
+#: admin/jigoshop-admin-settings-options.php:155
+msgid "Your page should contain [jigoshop_cart]"
+msgstr ""
+
 #: admin/jigoshop-admin-settings-options.php:164
 msgid "Checkout Page"
+msgstr ""
+
+#: admin/jigoshop-admin-settings-options.php:165
+msgid "Your page should contain [jigoshop_checkout]"
 msgstr ""
 
 #: admin/jigoshop-admin-settings-options.php:174
 msgid "Pay Page"
 msgstr ""
 
+#: admin/jigoshop-admin-settings-options.php:175
+msgid "Your page should contain [jigoshop_pay] and usually have \"Checkout\" as the parent."
+msgstr ""
+
 #: admin/jigoshop-admin-settings-options.php:184
 msgid "Thanks Page"
+msgstr ""
+
+#: admin/jigoshop-admin-settings-options.php:185
+msgid "Your page should contain [jigoshop_thankyou] and usually have \"Checkout\" as the parent."
 msgstr ""
 
 #: admin/jigoshop-admin-settings-options.php:194
 msgid "My Account Page"
 msgstr ""
 
+#: admin/jigoshop-admin-settings-options.php:195
+msgid "Your page should contain [jigoshop_my_account]"
+msgstr ""
+
 #: admin/jigoshop-admin-settings-options.php:204
 msgid "Edit Address Page"
+msgstr ""
+
+#: admin/jigoshop-admin-settings-options.php:205
+msgid "Your page should contain [jigoshop_edit_address] and usually have \"My Account\" as the parent."
 msgstr ""
 
 #: admin/jigoshop-admin-settings-options.php:214
 msgid "View Order Page"
 msgstr ""
 
+#: admin/jigoshop-admin-settings-options.php:215
+msgid "Your page should contain [jigoshop_view_order] and usually have \"My Account\" as the parent."
+msgstr ""
+
 #: admin/jigoshop-admin-settings-options.php:224
 msgid "Change Password Page"
+msgstr ""
+
+#: admin/jigoshop-admin-settings-options.php:225
+msgid "Your page should contain [jigoshop_change_password] and usually have \"My Account\" as the parent."
 msgstr ""
 
 # @ jigoshop
