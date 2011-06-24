@@ -16,8 +16,8 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 
 		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
 		add_option('jigoshop_cheque_enabled', 'yes');
-		add_option('jigoshop_cheque_title', 'Cheque Payment');
-		add_option('jigoshop_cheque_description', 'Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.');
+		add_option('jigoshop_cheque_title', __('Cheque Payment', 'jigoshop') );
+		add_option('jigoshop_cheque_description', __('Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'jigoshop'));
     
     	add_action('thankyou_cheque', array(&$this, 'thankyou_page'));
     } 
