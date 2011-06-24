@@ -44,7 +44,23 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 		else if ( $number > 15 )
 			$number = 15;
 
-		$r = new WP_Query(array('showposts' => $number, 'nopaging' => 0, 'post_status' => 'publish', 'post_type' => 'product'));
+    $show_variations = $instance['show_variations'] ? '1' : '0';
+
+    $args = array('showposts' => $number, 'nopaging' => 0, 'post_status' => 'publish', 'post_type' => 'product');
+
+    if($show_variations=='0'){
+      $args['meta_query'] = array(
+			  array(
+				  'key' => 'visibility',
+				  'value' => array('catalog', 'visible'),
+				  'compare' => 'IN'
+			  )
+		  );
+		  $args['parent'] = '0';
+    }
+
+		$r = new WP_Query($args);
+		
 		if ($r->have_posts()) :
 ?>
 		<?php echo $before_widget; ?>
@@ -72,7 +88,9 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 	function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		$instance['title'] = strip_tags($new_instance['title']);
-		$instance['number'] = (int) $new_instance['number'];
+		$instance['number'] = (int) $new_instance['number'];		
+		$instance['show_variations'] = !empty($new_instance['show_variations']) ? 1 : 0;
+
 		$this->flush_widget_cache();
 
 		$alloptions = wp_cache_get( 'alloptions', 'options' );
@@ -90,12 +108,18 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 		$title = isset($instance['title']) ? esc_attr($instance['title']) : '';
 		if ( !isset($instance['number']) || !$number = (int) $instance['number'] )
 			$number = 5;
+
+		$show_variations = isset( $instance['show_variations'] ) ? (bool) $instance['show_variations'] : false;
 ?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'jigoshop'); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
 
 		<p><label for="<?php echo $this->get_field_id('number'); ?>"><?php _e('Number of products to show:', 'jigoshop'); ?></label>
 		<input id="<?php echo $this->get_field_id('number'); ?>" name="<?php echo $this->get_field_name('number'); ?>" type="text" value="<?php echo $number; ?>" size="3" /></p>
+
+    <p><input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('show_variations'); ?>" name="<?php echo $this->get_field_name('show_variations'); ?>"<?php checked( $show_variations ); ?> />
+		<label for="<?php echo $this->get_field_id('show_variations'); ?>"><?php _e( 'Show hidden product variations', 'jigoshop' ); ?></label><br />
+
 <?php
 	}
 } // class Jigoshop_Widget_Recent_Products
