@@ -136,6 +136,8 @@ class jigoshop_product {
 		if (empty($this->post)) :
 			$this->post = get_post( $this->id );
 		endif;
+		
+		return $this->post;
 	}
 	
 	/** Get the title of the post */
