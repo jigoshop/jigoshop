@@ -48,8 +48,8 @@ function jigoshop_product_data_box() {
 			
 			// Product Type
 			if ($terms = wp_get_object_terms( $thepostid, 'product_type' )) $product_type = current($terms)->slug; else $product_type = 'simple';
-			$field = array( 'id' => 'product-type', 'label' => 'Product Type' );
-			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].' <em class="req" title="Required">*</em></label><select id="'.$field['id'].'" name="'.$field['id'].'">';
+			$field = array( 'id' => 'product-type', 'label' => __('Product Type', 'jigoshop') );
+			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].' <em class="req" title="'.__('Required', 'jigoshop') . '">*</em></label><select id="'.$field['id'].'" name="'.$field['id'].'">';
 
 			echo '<option value="simple" '; if ($product_type=='simple') echo 'selected="selected"'; echo '>'.__('Simple','jigoshop').'</option>';
 			
@@ -58,36 +58,36 @@ function jigoshop_product_data_box() {
 			echo '</select></p>';
 			
 			// Summary
-			echo '<p class="form-field"><label for="excerpt">Summary:</label>
-			<textarea name="excerpt" id="excerpt" placeholder="Add a summary for your product &ndash; this is a quick description to encourage users to view the product.">'.esc_html( $post->post_excerpt ).'</textarea></p>';
+			echo '<p class="form-field"><label for="excerpt">' . __('Summary', 'jigoshop') . ':</label>
+			<textarea name="excerpt" id="excerpt" placeholder="' . __('Add a summary for your product &ndash; this is a quick description to encourage users to view the product.', 'jigoshop') . '">'.esc_html( $post->post_excerpt ).'</textarea></p>';
 			
 			// SKU
-			$field = array( 'id' => 'sku', 'label' => 'SKU:' );
+			$field = array( 'id' => 'sku', 'label' => __('SKU', 'jigoshop') );
 			$SKU = get_post_meta($thepostid, 'SKU', true);
 			echo '<p class="form-field">
-				<label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$SKU.'" /> <span class="description">Leave blank to use product ID</span></p>';
+				<label for="'.$field['id'].'">'.$field['label'].':</label>
+				<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$SKU.'" /> <span class="description">' . __('Leave blank to use product ID', 'jigoshop') . '</span></p>';
 				 
 			// Weight
-			$field = array( 'id' => 'weight', 'label' => 'Weight ('.get_option('jigoshop_weight_unit').'):' );
+			$field = array( 'id' => 'weight', 'label' => __('Weight', 'jigoshop') . ' ('.get_option('jigoshop_weight_unit').'):' );
 			echo '<p class="form-field">
 				<label for="'.$field['id'].'">'.$field['label'].'</label>
 				<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" placeholder="0.00" /></p>';
 			
 			// Featured
-			$field = array( 'id' => 'featured', 'label' => 'Featured?' );
+			$field = array( 'id' => 'featured', 'label' => __('Featured?', 'jigoshop') );
 			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label><select name="'.$field['id'].'">';
-			echo '<option value="no" '; if (isset($featured) && $featured=='no') echo 'selected="selected"'; echo '>No</option>';
-			echo '<option value="yes" '; if (isset($featured) && $featured=='yes') echo 'selected="selected"'; echo '>Yes</option>';
+			echo '<option value="no" '; if (isset($featured) && $featured=='no') echo 'selected="selected"'; echo '>' . __('No', 'jigoshop') . '</option>';
+			echo '<option value="yes" '; if (isset($featured) && $featured=='yes') echo 'selected="selected"'; echo '>' . __('Yes', 'jigoshop') . '</option>';
 			echo '</select></p>';
 			
 			// Visibility
-			$field = array( 'id' => 'visibility', 'label' => 'Visibility:' );
-			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label><select name="'.$field['id'].'">';
-			echo '<option value="visible" '; if (isset($visibility) && $visibility=='visible') echo 'selected="selected"'; echo '>Catalog &amp; Search</option>';
-			echo '<option value="catalog" '; if (isset($visibility) && $visibility=='catalog') echo 'selected="selected"'; echo '>Catalog</option>';
-			echo '<option value="search" '; if (isset($visibility) && $visibility=='search') echo 'selected="selected"'; echo '>Search</option>';
-			echo '<option value="hidden" '; if (isset($visibility) && $visibility=='hidden') echo 'selected="selected"'; echo '>Hidden</option>';
+			$field = array( 'id' => 'visibility', 'label' => __('Visibility', 'jigoshop') );
+			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].':</label><select name="'.$field['id'].'">';
+			echo '<option value="visible" '; if (isset($visibility) && $visibility=='visible') echo 'selected="selected"'; echo '>' . __('Catalog &amp; Search', 'jigoshop') . '</option>';
+			echo '<option value="catalog" '; if (isset($visibility) && $visibility=='catalog') echo 'selected="selected"'; echo '>' . __('Catalog', 'jigoshop') . '</option>';
+			echo '<option value="search" '; if (isset($visibility) && $visibility=='search') echo 'selected="selected"'; echo '>' . __('Search', 'jigoshop') . '</option>';
+			echo '<option value="hidden" '; if (isset($visibility) && $visibility=='hidden') echo 'selected="selected"'; echo '>' . __('Hidden', 'jigoshop') . '</option>';
 			echo '</select></p>';
 			?>
 		</div>
@@ -95,46 +95,46 @@ function jigoshop_product_data_box() {
 			
 			<?php 
 			// Price
-			$field = array( 'id' => 'regular_price', 'label' => 'Regular Price ('.get_jigoshop_currency_symbol().'):' );
+			$field = array( 'id' => 'regular_price', 'label' => __('Regular Price', 'jigoshop') . ' ('.get_jigoshop_currency_symbol().'):' );
 			echo '	<p class="form-field">
 						<label for="'.$field['id'].'">'.$field['label'].'</label>
 						<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" placeholder="0.00" /></p>';
 			
 			// Special Price
-			$field = array( 'id' => 'sale_price', 'label' => 'Sale Price ('.get_jigoshop_currency_symbol().'):' );
+			$field = array( 'id' => 'sale_price', 'label' => __('Sale Price', 'jigoshop') . ' ('.get_jigoshop_currency_symbol().'):' );
 			echo '	<p class="form-field">
 						<label for="'.$field['id'].'">'.$field['label'].'</label>
 						<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" placeholder="0.00" /></p>';
 					
 			// Special Price date range
-			$field = array( 'id' => 'sale_price_dates', 'label' => 'Sale Price Dates:' );
+			$field = array( 'id' => 'sale_price_dates', 'label' => __('Sale Price Dates', 'jigoshop') );
 			
 			$sale_price_dates_from = get_post_meta($thepostid, 'sale_price_dates_from', true);
 			$sale_price_dates_to = get_post_meta($thepostid, 'sale_price_dates_to', true);
 			
 			echo '	<p class="form-field">
-						<label for="'.$field['id'].'_from">'.$field['label'].'</label>
+						<label for="'.$field['id'].'_from">'.$field['label'].':</label>
 						<input type="text" class="short date-pick" name="'.$field['id'].'_from" id="'.$field['id'].'_from" value="';
 			if ($sale_price_dates_from) echo date('Y-m-d', $sale_price_dates_from);
-			echo '" placeholder="From&hellip;" maxlength="10" />
+			echo '" placeholder="' . __('From&hellip;', 'jigoshop') . '" maxlength="10" />
 						<input type="text" class="short date-pick" name="'.$field['id'].'_to" id="'.$field['id'].'_to" value="';
 			if ($sale_price_dates_to) echo date('Y-m-d', $sale_price_dates_to);
-			echo '" placeholder="To&hellip;" maxlength="10" />
-						<span class="description">Date format: <code>YYYY-MM-DD</code></span>
+			echo '" placeholder="' . __('To&hellip;', 'jigoshop') . '" maxlength="10" />
+						<span class="description">' . __('Date format', 'jigoshop') . ': <code>YYYY-MM-DD</code></span>
 					</p>';
 					
 			// Tax
 			$_tax = new jigoshop_tax();
 			
-			$field = array( 'id' => 'tax_status', 'label' => 'Tax Status:' );
-			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label><select name="'.$field['id'].'">';
-			echo '<option value="taxable" '; if (isset($data[$field['id']]) && $data[$field['id']]=='taxable') echo 'selected="selected"'; echo '>Taxable</option>';
-			echo '<option value="shipping" '; if (isset($data[$field['id']]) && $data[$field['id']]=='shipping') echo 'selected="selected"'; echo '>Shipping only</option>';
-			echo '<option value="none" '; if (isset($data[$field['id']]) && $data[$field['id']]=='none') echo 'selected="selected"'; echo '>None</option>';
+			$field = array( 'id' => 'tax_status', 'label' => __('Tax Status', 'jigoshop') );
+			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].':</label><select name="'.$field['id'].'">';
+			echo '<option value="taxable" '; if (isset($data[$field['id']]) && $data[$field['id']]=='taxable') echo 'selected="selected"'; echo '>' . __('Taxable', 'jigoshop') . '</option>';
+			echo '<option value="shipping" '; if (isset($data[$field['id']]) && $data[$field['id']]=='shipping') echo 'selected="selected"'; echo '>' . __('Shipping only', 'jigoshop') . '</option>';
+			echo '<option value="none" '; if (isset($data[$field['id']]) && $data[$field['id']]=='none') echo 'selected="selected"'; echo '>' . __('None', 'jigoshop') . '</option>';
 			echo '</select></p>';
 			
-			$field = array( 'id' => 'tax_class', 'label' => 'Tax Class:' );
-			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label><select name="'.$field['id'].'">';
+			$field = array( 'id' => 'tax_class', 'label' => __('Tax Class', 'jigoshop') );
+			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].':</label><select name="'.$field['id'].'">';
 			echo '<option value="" '; if (isset($data[$field['id']]) && $data[$field['id']]=='') echo 'selected="selected"'; echo '>'.__('Standard', 'jigoshop').'</option>';
 			$tax_classes = $_tax->get_tax_classes();
     		if ($tax_classes) foreach ($tax_classes as $class) :
@@ -149,14 +149,14 @@ function jigoshop_product_data_box() {
 			
 			<?php
 			// manage stock
-			$field = array( 'id' => 'manage_stock', 'label' => 'Manage stock?' );
-			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].' <em class="req" title="Required">*</em></label><input type="checkbox" class="checkbox" name="'.$field['id'].'" id="'.$field['id'].'"';
+			$field = array( 'id' => 'manage_stock', 'label' => __('Manage stock?', 'jigoshop') );
+			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].' <em class="req" title="' .__('Required', 'jigoshop') . '">*</em></label><input type="checkbox" class="checkbox" name="'.$field['id'].'" id="'.$field['id'].'"';
 			if (isset($data[$field['id']]) && $data[$field['id']]=='yes') echo 'checked="checked"';
 			echo ' /></p>';
 			
 			// Stock status
 			$field = array( 'id' => 'stock_status', 'label' => 'Stock status:' );
-			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].' <em class="req" title="Required">*</em></label><select name="'.$field['id'].'">';
+			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].' <em class="req" title="'.__('Required', 'jigoshop') . '">*</em></label><select name="'.$field['id'].'">';
 			echo '<option value="instock" '; if (isset($data[$field['id']]) && $data[$field['id']]=='instock') echo 'selected="selected"'; echo '>In stock</option>';
 			echo '<option value="outofstock" '; if (isset($data[$field['id']]) && $data[$field['id']]=='outofstock') echo 'selected="selected"'; echo '>Out of stock</option>';
 			echo '</select></p>';
@@ -164,9 +164,9 @@ function jigoshop_product_data_box() {
 			echo '<div class="stock_fields">';
 			
 			// Stock
-			$field = array( 'id' => 'stock', 'label' => 'Stock Qty:' );
+			$field = array( 'id' => 'stock', 'label' => __('Stock Qty', 'jigoshop') );
 			echo '	<p class="form-field">
-						<label for="'.$field['id'].'">'.$field['label'].' <em class="req" title="Required">*</em></label>
+						<label for="'.$field['id'].'">'.$field['label'].': <em class="req" title="'.__('Required', 'jigoshop') . '">*</em></label>
 						<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="';
 			
 			$stock = get_post_meta($post->ID, 'stock', true);
@@ -177,11 +177,11 @@ function jigoshop_product_data_box() {
 					</p>';
 
 			// Backorders?
-			$field = array( 'id' => 'backorders', 'label' => 'Allow Backorders?' );
-			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].' <em class="req" title="Required">*</em></label><select name="'.$field['id'].'">';
-			echo '<option value="no" '; if (isset($data[$field['id']]) && $data[$field['id']]=='no') echo 'selected="selected"'; echo '>Do not allow</option>';
-			echo '<option value="notify" '; if (isset($data[$field['id']]) && $data[$field['id']]=='notify') echo 'selected="selected"'; echo '>Allow, but notify customer</option>';
-			echo '<option value="yes" '; if (isset($data[$field['id']]) && $data[$field['id']]=='yes') echo 'selected="selected"'; echo '>Allow</option>';
+			$field = array( 'id' => 'backorders', 'label' => __('Allow Backorders?', 'jigoshop') );
+			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].' <em class="req" title="'.__('Required', 'jigoshop') . '">*</em></label><select name="'.$field['id'].'">';
+			echo '<option value="no" '; if (isset($data[$field['id']]) && $data[$field['id']]=='no') echo 'selected="selected"'; echo '>' . __('Do not allow', 'jigoshop') . '</option>';
+			echo '<option value="notify" '; if (isset($data[$field['id']]) && $data[$field['id']]=='notify') echo 'selected="selected"'; echo '>' . __('Allow, but notify customer', 'jigoshop') . '</option>';
+			echo '<option value="yes" '; if (isset($data[$field['id']]) && $data[$field['id']]=='yes') echo 'selected="selected"'; echo '>' . __('Allow', 'jigoshop') . '</option>';
 			echo '</select></p>';
 			
 			echo '</div>';

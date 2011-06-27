@@ -28,7 +28,7 @@ function jigoshop_product_type_options_box() {
 			$posts_in = (array) get_objects_in_term( get_term_by( 'slug', 'grouped', 'product_type' )->term_id, 'product_type' );
 			$posts_in = array_unique($posts_in);
 			
-			$field = array( 'id' => 'parent_id', 'label' => 'Parent post' );
+			$field = array( 'id' => 'parent_id', 'label' => __('Parent post', 'jigoshop') );
 			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label><select id="'.$field['id'].'" name="'.$field['id'].'"><option value="">'.__('Choose a grouped product&hellip;', 'jigoshop').'</option>';
 
 			if (sizeof($posts_in)>0) :
@@ -58,9 +58,9 @@ function jigoshop_product_type_options_box() {
 			
 			// Ordering
 			$menu_order = $post->menu_order;
-			$field = array( 'id' => 'menu_order', 'label' => 'Order:' );
+			$field = array( 'id' => 'menu_order', 'label' => _x('Order', 'ordering', 'jigoshop') );
 			echo '<p class="form-field">
-				<label for="'.$field['id'].'">'.$field['label'].'</label>
+				<label for="'.$field['id'].'">'.$field['label'].':</label>
 				<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$menu_order.'" /></p>';
 
 		?>
