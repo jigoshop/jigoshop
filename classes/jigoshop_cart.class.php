@@ -36,8 +36,6 @@ class jigoshop_cart {
 		self::get_cart_from_session();
 		
 		if ( isset($_SESSION['coupons']) ) self::$applied_coupons = $_SESSION['coupons'];
-
-		if (sizeof(self::$cart_contents)>0) self::calculate_totals();
 		
 	}
 	
@@ -222,7 +220,7 @@ class jigoshop_cart {
 	}
 	
 	/** calculate totals for the items in the cart */
-	function calculate_totals() {
+	public static function calculate_totals() {
 		
 		$_tax = &new jigoshop_tax();
 
