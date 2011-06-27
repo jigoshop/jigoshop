@@ -65,7 +65,8 @@
 								else :
 									echo jigoshop_price($method->shipping_total);
 								endif; */
-								echo jigoshop_price($method->shipping_total).__(' (ex. tax)', 'jigoshop');
+								echo jigoshop_price($method->shipping_total);
+								if ($method->shipping_tax>0) : __(' (ex. tax)', 'jigoshop'); endif;
 							else :
 								echo __('Free', 'jigoshop');
 							endif;
@@ -114,7 +115,7 @@
 							<tr>
 								<td>'.$_product->get_title().'</td>
 								<td>'.$values['quantity'].'</td>
-								<td>'.jigoshop_price($_product->get_price_excluding_tax()*$values['quantity']).' '.__(' <small>(ex. tax)</small>', 'jigoshop').'</td>
+								<td>'.jigoshop_price($_product->get_price_excluding_tax()*$values['quantity'], array('ex_tax_label' => 1)).'</td>
 							</tr>';
 					endif;
 				endforeach; 
