@@ -240,16 +240,33 @@ function jigoshop_download_product() {
             endswitch;
 
             if (!file_exists($file_path)) wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
+			
+			@ini_set('zlib.output_compression', 'Off');
+			@set_time_limit(0);
+			@session_start();					
+			@session_cache_limiter('none');		
+			@set_magic_quotes_runtime(0);
+			@ob_end_clean();
+			@session_write_close();
+			
+			header("Pragma: no-cache");
+			header("Expires: 0");
+			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+			header("Robots: none");
+			header("Content-Type: ".$ctype."");
+			header("Content-Description: File Transfer");	
+							
+          	if (strstr($_SERVER['HTTP_USER_AGENT'], "MSIE")) {
+			    // workaround for IE filename bug with multiple periods / multiple dots in filename
+			    $iefilename = preg_replace('/\./', '%2e', basename($file_path), substr_count(basename($file_path), '.') - 1);
+			    header("Content-Disposition: attachment; filename=\"".$iefilename."\";");
+			} else {
+			    header("Content-Disposition: attachment; filename=\"".basename($file_path)."\";");
+			}
 
-            header("Pragma: public");
-            header("Expires: 0");
-            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-            header("Cache-Control: private", false);
-            header("Content-Type: $ctype");
-            header("Content-Disposition: attachment; filename=\"".basename($file_path)."\";");
-            header("Content-Transfer-Encoding: binary");
+			header("Content-Transfer-Encoding: binary");
+							
             header("Content-Length: ".@filesize($file_path));
-            set_time_limit(0);
             @readfile("$file_path") or wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
 			exit;
 			
