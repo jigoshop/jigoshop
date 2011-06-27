@@ -171,6 +171,14 @@ function jigoshop_admin_fields($options) {
 		    $counter = 1;
 		    foreach ($options as $value) :
 		        switch($value['type']) :
+					case 'string':
+						?>
+						<tr>
+							<td class="titledesc"><?php echo $value['name']; ?></td>
+							<td class="forminp"><?php echo $value['desc']; ?></td>
+						</tr>
+						<?php
+					break;
 		            case 'tab':
 		                echo '<div id="'.$value['type'].$counter.'" class="panel">';
 		                echo '<table class="widefat fixed" style="width:850px; margin-bottom:20px;">'. "\n\n";
