@@ -143,6 +143,7 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * Fixes to sale dates logic
 * New product preview shortcodes
 * option to hide hidden products in recent products widget
+* Breadcrumbs add shop base if chosen as a base
 
 = 0.9.7.8 =
 
