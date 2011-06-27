@@ -161,6 +161,7 @@ function jigoshop_write_panel_scripts() {
 	
 }
 add_action('admin_print_scripts-post.php', 'jigoshop_write_panel_scripts');
+add_action('admin_print_scripts-post-new.php', 'jigoshop_write_panel_scripts');
 
 /**
  * Meta scripts

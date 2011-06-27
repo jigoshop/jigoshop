@@ -20,7 +20,7 @@ function grouped_product_type_options() {
 	?>
 	<div id="grouped_product_options">
 		<?php
-			_e('Grouped products have no specific options &mdash; you can add simple products to this grouped product by editing them and setting their <code>parent product</code> option.');
+			_e('Grouped products have no specific options &mdash; you can add simple products to this grouped product by editing them and setting their <code>parent product</code> option.', 'jigoshop');
 		?>
 	</div>
 	<?php

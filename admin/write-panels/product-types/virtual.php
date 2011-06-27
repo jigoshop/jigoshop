@@ -20,7 +20,7 @@ function virtual_product_type_options() {
 	?>
 	<div id="virtual_product_options">
 		<?php
-			_e('Virtual products have no specific options.');
+			_e('Virtual products have no specific options.', 'jigoshop');
 		?>
 	</div>
 	<?php
