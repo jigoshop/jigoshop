@@ -380,8 +380,13 @@ function get_jigoshop_currency_symbol() {
 	return apply_filters('jigoshop_currency_symbol', $currency_symbol, $currency);
 }
 
-function jigoshop_price( $price ) {
-
+function jigoshop_price( $price, $args = array() ) {
+	
+	extract(shortcode_atts(array(
+		'ex_tax_label' 	=> '0'
+	), $args));
+	
+	$return = '';
 	$num_decimals = (int) get_option('jigoshop_price_num_decimals');
 	$currency_pos = get_option('jigoshop_currency_pos');
 	$currency_symbol = get_jigoshop_currency_symbol();
@@ -389,18 +394,22 @@ function jigoshop_price( $price ) {
 	
 	switch ($currency_pos) :
 		case 'left' :
-			return $currency_symbol . $price;
+			$return = $currency_symbol . $price;
 		break;
 		case 'right' :
-			return $price . $currency_symbol;
+			$return = $price . $currency_symbol;
 		break;
 		case 'left_space' :
-			return $currency_symbol . ' ' . $price;
+			$return = $currency_symbol . ' ' . $price;
 		break;
 		case 'right_space' :
-			return $price . ' ' . $currency_symbol;
+			$return = $price . ' ' . $currency_symbol;
 		break;
 	endswitch;
+	
+	if ($ex_tax_label && get_option('jigoshop_calc_taxes')=='yes') $return .= __(' <small>(ex. tax)</small>', 'jigoshop');
+	
+	return $return;
 }
 
 function jigoshop_let_to_num($v) {

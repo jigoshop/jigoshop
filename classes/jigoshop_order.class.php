@@ -218,7 +218,7 @@ class jigoshop_order {
 				
 			endif;
 			
-			$return .= ' - ' . jigoshop_price( $item['cost']*$item['qty'] ) . __(' (ex. tax)', 'jigoshop');
+			$return .= ' - ' . strip_tags(jigoshop_price( $item['cost']*$item['qty'], array('ex_tax_label' => 1 )));
 			
 			if ($show_download_links) :
 				
