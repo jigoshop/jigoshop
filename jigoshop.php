@@ -110,7 +110,8 @@ add_action('plugins_loaded', 'jigoshop_cart::calculate_totals', 2); // After met
 
 if (get_option('jigoshop_force_ssl_checkout')=='yes') add_action( 'wp_head', 'jigoshop_force_ssl');
 
-add_action( 'wp_footer', 'jigowatt_sharethis' );
+add_action( 'wp_footer', 'jigoshop_demo_store' );
+add_action( 'wp_footer', 'jigoshop_sharethis' );
 
 /**
  * IIS compat fix/fallback
@@ -279,10 +280,23 @@ function jigoshop_script_query_string($src)
 }
 
 /* 
-	jigowatt_sharethis
-		Adds social sharing code to footer
+	jigoshop_demo_store
+	Adds a demo store banner to the site
 */
-function jigowatt_sharethis() {
+function jigoshop_demo_store() {
+	
+	if (get_option('jigoshop_demo_store')=='yes') :
+		
+		echo '<p class="demo_store">'.__('This is a demo store for testing purposes &mdash; no orders shall be fulfilled.', 'jigoshop').'</p>';
+		
+	endif;
+}
+
+/* 
+	jigoshop_sharethis
+	Adds social sharing code to footer
+*/
+function jigoshop_sharethis() {
 	if (is_single() && get_option('jigoshop_sharethis')) :
 		
 		echo '<script type="text/javascript" src="https://w.sharethis.com/button/buttons.js"></script><script type="text/javascript">stLight.options({publisher:"'.get_option('jigoshop_sharethis').'", onhover: false});</script>';
