@@ -103,8 +103,10 @@ add_image_size( 'shop_large', jigoshop::get_var('shop_large_w'), jigoshop::get_v
 /**
  * Filters and hooks
  **/
-	
 add_action('init', 'jigoshop_init', 0);
+add_action('plugins_loaded', 'jigoshop_shipping::init', 1); 		// Load shipping methods - some may be added by plugins
+add_action('plugins_loaded', 'jigoshop_payment_gateways::init', 1); // Load payment methods - some may be added by plugins
+add_action('plugins_loaded', 'jigoshop_cart::calculate_totals', 2); // After methods are loaded we'll want to calc the totals of the cart
 
 if (get_option('jigoshop_force_ssl_checkout')=='yes') add_action( 'wp_head', 'jigoshop_force_ssl');
 

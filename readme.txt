@@ -144,6 +144,7 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * New product preview shortcodes
 * option to hide hidden products in recent products widget
 * Breadcrumbs add shop base if chosen as a base
+* Tweaked gateway/shipping loading code to work with plugins
 
 = 0.9.7.8 =
 
