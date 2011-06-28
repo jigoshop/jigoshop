@@ -186,7 +186,7 @@ class jigoshop {
 		$name = '_n';
 		$action = 'jigoshop-' . $action;
 		
-		if( $error_message === false ) $error_message = __('You have taken too long. Please refresh the page and retry.', 'jigoshop'); 
+		if( $error_message === false ) $error_message = __('Action failed. Please refresh the page and retry.', 'jigoshop'); 
 		
 		if(!in_array($method, array('_GET', '_POST', '_REQUEST'))) $method = '_POST';
 		
