@@ -60,11 +60,6 @@
 							echo '>'.$method->title.' &ndash; ';
 							
 							if ($method->shipping_total>0) :
-								/*if (get_option('jigoshop_prices_include_tax')=='yes') :
-									echo jigoshop_price($method->shipping_total + $method->shipping_tax);
-								else :
-									echo jigoshop_price($method->shipping_total);
-								endif; */
 								echo jigoshop_price($method->shipping_total);
 								if ($method->shipping_tax>0) : __(' (ex. tax)', 'jigoshop'); endif;
 							else :

@@ -152,7 +152,9 @@ div.product div.social iframe {
   margin-top: 3px;
 }
 div.product #tabs {
-  margin: 0 0 1em !important;
+  clear: both;
+  padding: 1em 0 0 0;
+  margin: 0 0 1em 0;
 }
 div.product #tabs ul.tabs {
   -webkit-border-top-left-radius: 3px;

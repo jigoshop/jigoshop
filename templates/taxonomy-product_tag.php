@@ -1,17 +1,1 @@
-<?php 
-
-get_header();
-
-do_action('before_shop');
-	  
-global $taxonomy;
-
-$taxonomy = 'product_tag';
-
-include('product_taxonomy.php');
-
-get_sidebar('shop');
-
-get_footer(); 
-
-?>
+<?php jigoshop_get_template( 'product_taxonomy.php' ); ?>

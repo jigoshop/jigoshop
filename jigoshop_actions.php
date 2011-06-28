@@ -16,9 +16,9 @@
 /**
  * Add to cart
  **/
-add_action( 'init', 'jigoshop_add_to_cart' );
+add_action( 'init', 'jigoshop_add_to_cart_action' );
 
-function jigoshop_add_to_cart( $url = false ) {
+function jigoshop_add_to_cart_action( $url = false ) {
 	
 	if (isset($_GET['add-to-cart']) && $_GET['add-to-cart']) :
 	

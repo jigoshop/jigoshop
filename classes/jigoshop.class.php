@@ -137,7 +137,7 @@ class jigoshop {
 	 *
 	 * @return   bool
 	 */
-	function show_messages() {
+	public static function show_messages() {
 	
 		if (isset(self::$errors) && sizeof(self::$errors)>0) :
 			echo '<div class="jigoshop_error">'.self::$errors[0].'</div>';

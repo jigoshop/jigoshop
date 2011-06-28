@@ -178,7 +178,7 @@ function jigoshop_cart( $atts ) {
 		?>
 		</div>
 		
-		<?php jigoshop_get_template( 'cart/shipping_calculator.php' ); ?>
+		<?php jigoshop_shipping_calculator(); ?>
 		
 	</div>
 	<?php		
