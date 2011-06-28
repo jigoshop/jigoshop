@@ -255,9 +255,9 @@ span.onsale {
   top: 0;
   right: 320px;
   margin: -6px 0 0 0;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
 }
 .products ul, ul.products {
   margin: 0 0 14px !important;
