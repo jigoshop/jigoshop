@@ -5,6 +5,7 @@
  * Various hooks Jigoshop uses to do stuff. index:
  *
  *		- Add to Cart
+ *		- Clear cart
  *		- Restore an order via a link
  *		- Cancel a pending order
  *		- Download a file
@@ -77,6 +78,27 @@ function jigoshop_add_to_cart( $url = false ) {
 	
 }
 
+/**
+ * Clear cart
+ **/
+add_action( 'wp_header', 'jigoshop_clear_cart_on_return' );
+
+function jigoshop_clear_cart_on_return() {
+
+	if (is_page(get_option('jigoshop_thanks_page_id'))) :
+	
+		if (isset($_GET['order'])) $order_id = $_GET['order']; else $order_id = 0;
+		if (isset($_GET['key'])) $order_key = $_GET['key']; else $order_key = '';
+		if ($order_id > 0) :
+			$order = &new jigoshop_order( $order_id );
+			if ($order->order_key == $order_key) :
+				jigoshop_cart::empty_cart();
+			endif;
+		endif;
+		
+	endif;
+
+}
 
 /**
  * Clear the cart after payment - order will be processing or complete
