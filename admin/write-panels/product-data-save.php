@@ -99,18 +99,9 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 	// Special handling of certain fields
 		
 		$product_type = stripslashes( $_POST['product-type'] );
-
-		switch($product_type) :
-			case "grouped" :
-			case "configurable" :
-			case "virtual" :
-			case "downloadable" :
-				wp_set_object_terms($post_id, $product_type, 'product_type');
-			break;
-			default : // Simple
-				wp_set_object_terms($post_id, 'simple', 'product_type');
-			break;
-		endswitch;
+		
+		// Save product type
+		wp_set_object_terms($post_id, $product_type, 'product_type');
 		
 		// visibility
 		$visibility = stripslashes( $_POST['visibility'] );
