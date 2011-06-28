@@ -191,36 +191,36 @@ function jigoshop_edit_address() {
 			
 			<p class="form-row form-row-first">
 				<label for="address-first_name"><?php _e('First Name', 'jigoshop'); ?> <span class="required">*</span></label>
-				<span class="input-text"><input type="text" name="address-first_name" id="address-first_name" placeholder="<?php _e('First Name', 'jigoshop'); ?>" value="<?php echo $address['first_name']; ?>" /></span>
+				<input type="text" class="input-text" name="address-first_name" id="address-first_name" placeholder="<?php _e('First Name', 'jigoshop'); ?>" value="<?php echo $address['first_name']; ?>" />
 			</p>
 			<p class="form-row form-row-last">
 				<label for="address-last_name"><?php _e('Last Name', 'jigoshop'); ?> <span class="required">*</span></label>
-				<span class="input-text"><input type="text" name="address-last_name" id="address-last_name" placeholder="<?php _e('Last Name', 'jigoshop'); ?>" value="<?php echo $address['last_name']; ?>" /></span>
+				<input type="text" class="input-text" name="address-last_name" id="address-last_name" placeholder="<?php _e('Last Name', 'jigoshop'); ?>" value="<?php echo $address['last_name']; ?>" />
 			</p>
 			<div class="clear"></div>
 			
 			<p class="form-row columned">
 				<label for="address-company"><?php _e('Company', 'jigoshop'); ?></label>
-				<span class="input-text"><input type="text" name="address-company" id="address-company" placeholder="<?php _e('Company', 'jigoshop'); ?>" value="<?php echo $address['company']; ?>" /></span>
+				<input type="text" class="input-text" name="address-company" id="address-company" placeholder="<?php _e('Company', 'jigoshop'); ?>" value="<?php echo $address['company']; ?>" />
 			</p>
 			
 			<p class="form-row form-row-first">
 				<label for="address-address"><?php _e('Address', 'jigoshop'); ?> <span class="required">*</span></label>
-				<span class="input-text"><input type="text" name="address-address" id="address-address" placeholder="<?php _e('1 Infinite Loop', 'jigoshop'); ?>" value="<?php echo $address['address']; ?>" /></span>
+				<input type="text" class="input-text" name="address-address" id="address-address" placeholder="<?php _e('1 Infinite Loop', 'jigoshop'); ?>" value="<?php echo $address['address']; ?>" />
 			</p>
 			<p class="form-row form-row-last">
 				<label for="address-address2" class="hidden"><?php _e('Address 2', 'jigoshop'); ?></label>
-				<span class="input-text"><input type="text" name="address-address2" id="address-address2" placeholder="<?php _e('Cupertino', 'jigoshop'); ?>" value="<?php echo $address['address2']; ?>" /></span>
+				<input type="text" class="input-text" name="address-address2" id="address-address2" placeholder="<?php _e('Cupertino', 'jigoshop'); ?>" value="<?php echo $address['address2']; ?>" />
 			</p>
 			<div class="clear"></div>
 			
 			<p class="form-row form-row-first">
 				<label for="address-city"><?php _e('City', 'jigoshop'); ?> <span class="required">*</span></label>
-				<span class="input-text"><input type="text" name="address-city" id="address-city" placeholder="<?php _e('City', 'jigoshop'); ?>" value="<?php echo $address['city']; ?>" /></span>
+				<input type="text" class="input-text" name="address-city" id="address-city" placeholder="<?php _e('City', 'jigoshop'); ?>" value="<?php echo $address['city']; ?>" />
 			</p>
 			<p class="form-row form-row-last">
 				<label for="address-postcode"><?php _e('Postcode', 'jigoshop'); ?> <span class="required">*</span></label>
-				<span class="input-text"><input type="text" name="address-postcode" id="address-postcode" placeholder="123456" value="<?php echo $address['postcode']; ?>" /></span>
+				<input type="text" class="input-text" name="address-postcode" id="address-postcode" placeholder="123456" value="<?php echo $address['postcode']; ?>" />
 			</p>
 			<div class="clear"></div>
 			
@@ -252,23 +252,17 @@ function jigoshop_edit_address() {
 					if (isset( $states[$current_cc][$current_r] )) :
 						// Dropdown
 						?>
-						<span>
-							<select name="address-state" id="address-state"><option value=""><?php _e('Select a state&hellip;', 'jigoshop'); ?></option><?php
+						<select name="address-state" id="address-state"><option value=""><?php _e('Select a state&hellip;', 'jigoshop'); ?></option><?php
 								foreach($states[$current_cc] as $key=>$value) :
 									echo '<option value="'.$key.'"';
 									if ($current_r==$key) echo 'selected="selected"';
 									echo '>'.$value.'</option>';
 								endforeach;
-							?></select>
-						</span>
+						?></select>
 						<?php
 					else :
 						// Input
-						?>
-						<span class="input-text">
-							<input type="text" value="<?php echo $current_r; ?>" placeholder="<?php _e('state', 'jigoshop'); ?>" name="address-state" id="address-state" />
-						</span>
-						<?php
+						?><input type="text" class="input-text" value="<?php echo $current_r; ?>" placeholder="<?php _e('state', 'jigoshop'); ?>" name="address-state" id="address-state" /><?php
 					endif;
 				?>
 			</p>
@@ -277,16 +271,16 @@ function jigoshop_edit_address() {
 			<?php if ($load_address=='billing') : ?>
 				<p class="form-row columned">
 					<label for="address-email"><?php _e('Email Address', 'jigoshop'); ?> <span class="required">*</span></label>
-					<span class="input-text"><input type="text" name="address-email" id="address-email" placeholder="<?php _e('you@yourdomain.com', 'jigoshop'); ?>" value="<?php echo $address['email']; ?>" /></span>
+					<input type="text" class="input-text" name="address-email" id="address-email" placeholder="<?php _e('you@yourdomain.com', 'jigoshop'); ?>" value="<?php echo $address['email']; ?>" />
 				</p>
 				
 				<p class="form-row form-row-first">
 					<label for="address-phone"><?php _e('Phone', 'jigoshop'); ?> <span class="required">*</span></label>
-					<span class="input-text"><input type="text" name="address-phone" id="address-phone" placeholder="0123456789" value="<?php echo $address['phone']; ?>" /></span>
+					<input type="text" class="input-text" name="address-phone" id="address-phone" placeholder="0123456789" value="<?php echo $address['phone']; ?>" />
 				</p>
 				<p class="form-row form-row-last">	
 					<label for="address-fax"><?php _e('Fax', 'jigoshop'); ?></label>
-					<span class="input-text"><input type="text" name="address-fax" id="address-fax" placeholder="0123456789" value="<?php echo $address['fax']; ?>" /></span>
+					<input type="text" class="input-text" name="address-fax" id="address-fax" placeholder="0123456789" value="<?php echo $address['fax']; ?>" />
 				</p>
 				<div class="clear"></div>
 			<?php endif; ?>
@@ -347,11 +341,11 @@ function jigoshop_change_password() {
 	
 			<p class="form-row form-row-first">
 				<label for="password-1"><?php _e('New password', 'jigoshop'); ?> <span class="required">*</span></label>
-				<span class="input-text"><input type="password" name="password-1" id="password-1" /></span>
+				<input type="password" class="input-text" name="password-1" id="password-1" />
 			</p>
 			<p class="form-row form-row-last">
 				<label for="password-2"><?php _e('Re-enter new password', 'jigoshop'); ?> <span class="required">*</span></label>
-				<span class="input-text"><input type="password" name="password-2" id="password-2" /></span>
+				<input type="password" class="input-text" name="password-2" id="password-2" />
 			</p>
 			<div class="clear"></div>
 			<?php jigoshop::nonce_field('change_password')?>

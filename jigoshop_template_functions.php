@@ -6,7 +6,7 @@
 /**
  * Jigoshop Product Thumbnail
  **/
-if (!function_exists('jigoshop_login_form')) {
+if (!function_exists('jigoshop_get_product_thumbnail')) {
 	function jigoshop_get_product_thumbnail( $size = 'shop_small', $placeholder_width = 0, $placeholder_height = 0 ) {
 		
 		global $post;
@@ -64,15 +64,13 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 						else :
 							// Input
 							?>
-							<span class="input-text">
-								<input type="text" value="<?php echo $current_r; ?>" placeholder="<?php _e('state', 'jigoshop'); ?>" name="calc_shipping_state" id="calc_shipping_state" />
-							</span>
+							<input type="text" class="input-text" value="<?php echo $current_r; ?>" placeholder="<?php _e('state', 'jigoshop'); ?>" name="calc_shipping_state" id="calc_shipping_state" />
 							<?php
 						endif;
 					?>
 				</p>
 				<p class="form-row col-2">
-					<span class="input-text"><input type="text" value="<?php echo jigoshop_customer::get_shipping_postcode(); ?>" placeholder="<?php _e('Postcode/Zip', 'jigoshop'); ?>" title="<?php _e('Postcode', 'jigoshop'); ?>" name="calc_shipping_postcode" id="calc_shipping_postcode" /></span>
+					<input type="text" class="input-text" value="<?php echo jigoshop_customer::get_shipping_postcode(); ?>" placeholder="<?php _e('Postcode/Zip', 'jigoshop'); ?>" title="<?php _e('Postcode', 'jigoshop'); ?>" name="calc_shipping_postcode" id="calc_shipping_postcode" />
 				</p>
 			</div>
 			<p><button type="submit" name="calc_shipping" value="1" class="button"><?php _e('Update Totals', 'jigoshop'); ?></button></p>
@@ -93,11 +91,11 @@ if (!function_exists('jigoshop_login_form')) {
 		<form method="post" class="login">
 			<p class="form-row form-row-first">
 				<label for="username"><?php _e('Username', 'jigoshop'); ?> <span class="required">*</span></label>
-				<span class="input-text"><input type="text" name="username" id="username" /></span>
+				<input type="text" class="input-text" name="username" id="username" />
 			</p>
 			<p class="form-row form-row-last">
 				<label for="password"><?php _e('Password', 'jigoshop'); ?> <span class="required">*</span></label>
-				<span class="input-text"><input type="password" name="password" id="password" /></span>
+				<input class="input-text" type="password" name="password" id="password" />
 			</p>
 			<div class="clear"></div>
 			

@@ -185,18 +185,16 @@ class jigoshop_checkout {
 					
 				if (isset( $states[$current_cc][$current_r] )) :
 					// Dropdown
-					$field .= '<span><select name="'.$args['name'].'" id="'.$args['name'].'"><option value="">'.__('Select a state&hellip;', 'jigoshop').'</option>';
+					$field .= '<select name="'.$args['name'].'" id="'.$args['name'].'"><option value="">'.__('Select a state&hellip;', 'jigoshop').'</option>';
 					foreach($states[$current_cc] as $key=>$value) :
 						$field .= '<option value="'.$key.'"';
 						if ($current_r==$key) $field .= 'selected="selected"';
 						$field .= '>'.__($value, 'jigoshop').'</option>';
 					endforeach;
-					$field .= '</select></span>';
+					$field .= '</select>';
 				else :
 					// Input
-					$field .= '<span class="input-text">
-						<input type="text" value="'.$current_r.'" placeholder="'.__('State/County', 'jigoshop').'" name="'.$args['name'].'" id="'.$args['name'].'" />
-					</span>';
+					$field .= '<input type="text" class="input-text" value="'.$current_r.'" placeholder="'.__('State/County', 'jigoshop').'" name="'.$args['name'].'" id="'.$args['name'].'" />';
 				endif;
 	
 				$field .= '</p>'.$after;
@@ -206,7 +204,7 @@ class jigoshop_checkout {
 				
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="'.$args['name'].'" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
-					<span class="input-text"><textarea name="'.$args['name'].'" id="'.$args['name'].'" placeholder="'.$args['placeholder'].'" cols="5" rows="2">'. $this->get_value( $args['name'] ).'</textarea></span>
+					<textarea name="'.$args['name'].'" class="input-text" id="'.$args['name'].'" placeholder="'.$args['placeholder'].'" cols="5" rows="2">'. $this->get_value( $args['name'] ).'</textarea>
 				</p>'.$after;
 				
 			break;
@@ -214,7 +212,7 @@ class jigoshop_checkout {
 			
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="'.$args['name'].'" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
-					<span class="input-text"><input type="'.$args['type'].'" name="'.$args['name'].'" id="'.$args['name'].'" placeholder="'.$args['placeholder'].'" value="'. $this->get_value( $args['name'] ).'" /></span>
+					<input type="'.$args['type'].'" class="input-text" name="'.$args['name'].'" id="'.$args['name'].'" placeholder="'.$args['placeholder'].'" value="'. $this->get_value( $args['name'] ).'" />
 				</p>'.$after;
 				
 			break;

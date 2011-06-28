@@ -107,14 +107,12 @@ jQuery(function(){
 				// Change for select
 				jQuery(state_box).replaceWith('<select name="' + input_name + '" id="' + input_id + '"><option value=""><?php _e('Select a state&hellip;', 'jigoshop'); ?></option></select>');
 				state_box = jQuery('#' + jQuery(this).attr('rel'));
-				jQuery(state_box).parent().removeClass('input-text');
 			}
 			jQuery(state_box).append(options);
 		} else {
 			if (jQuery(state_box).is('select')) {
 				jQuery(state_box).replaceWith('<input type="text" placeholder="<?php _e('state', 'jigoshop'); ?>" name="' + input_name + '" id="' + input_id + '" />');
 				state_box = jQuery('#' + jQuery(this).attr('rel'));
-				jQuery(state_box).parent().addClass('input-text');
 			}
 		}
 		
