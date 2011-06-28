@@ -30,7 +30,9 @@
 				<p class="price"><?php echo $_product->get_price_html(); ?></p>
 				
 				<?php if ($post->post_excerpt) echo wpautop(wptexturize($post->post_excerpt)); ?>
-
+				
+				<?php do_action( 'jigoshop_template_single_before_button' ); ?>
+				
 				<?php
 					if ( $_product->is_type('simple') ) jigoshop_get_template( 'product/simple/add-to-cart.php' );
 					elseif ( $_product->is_type('downloadable') ) jigoshop_get_template( 'product/downloadable/add-to-cart.php' );

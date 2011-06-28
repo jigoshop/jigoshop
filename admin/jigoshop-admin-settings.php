@@ -171,6 +171,14 @@ function jigoshop_admin_fields($options) {
 		    $counter = 1;
 		    foreach ($options as $value) :
 		        switch($value['type']) :
+					case 'string':
+						?>
+						<tr>
+							<td class="titledesc"><?php echo $value['name']; ?></td>
+							<td class="forminp"><?php echo $value['desc']; ?></td>
+						</tr>
+						<?php
+					break;
 		            case 'tab':
 		                echo '<div id="'.$value['type'].$counter.'" class="panel">';
 		                echo '<table class="widefat fixed" style="width:850px; margin-bottom:20px;">'. "\n\n";
@@ -203,7 +211,7 @@ function jigoshop_admin_fields($options) {
 		            	?><tr>
 		                    <td class="titledesc"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
 		                    <td class="forminp">
-		                        <textarea name="<?php echo $value['id'] ?>" id="<?php echo $value['id'] ?>" style="<?php echo $value['css'] ?>"><?php if (get_option($value['id'])) echo stripslashes(get_option($value['id'])); else echo $value['std']; ?></textarea>
+		                        <textarea <?php if ( isset($value['args']) ) echo $value['args'] . ' '; ?>name="<?php echo $value['id'] ?>" id="<?php echo $value['id'] ?>" style="<?php echo $value['css'] ?>"><?php if (get_option($value['id'])) echo stripslashes(get_option($value['id'])); else echo $value['std']; ?></textarea>
 		                        <br /><small><?php echo $value['desc'] ?></small>
 		                    </td>
 		                </tr><?php

@@ -116,6 +116,8 @@ function jigoshop_cart( $atts ) {
 					endif;
 				endforeach; 
 			endif;
+			
+			do_action( 'jigoshop_shop_table_cart' );
 			?>
 			<tr>
 				<td colspan="6" class="actions">

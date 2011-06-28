@@ -57,6 +57,10 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 	
 			echo ':</strong> '.jigoshop_cart::get_cart_total();
 			
+			echo '</p>';
+			
+			do_action( 'jigoshop_widget_shopping_cart_before_buttons' );
+			
 			echo '<p class="buttons"><a href="'.jigoshop_cart::get_cart_url().'" class="button">'.__('View Cart &rarr;','jigoshop').'</a> <a href="'.jigoshop_cart::get_checkout_url().'" class="button checkout">'.__('Checkout &rarr;','jigoshop').'</a></p>';
 		endif;
 		echo $after_widget;
