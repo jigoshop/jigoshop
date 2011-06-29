@@ -282,15 +282,15 @@ class jigoshop_cart {
 							$total_item_price = ($total_item_price - $base_tax_amount + $tax_amount);
 							
 						endif;
-						
-						self::$cart_contents_tax = self::$cart_contents_tax + $tax_amount;
-					
+
 					endif;
 					
 				endif;
 				
 				$total_item_price 			= $total_item_price / 100; // Back to pounds
-				self::$cart_contents_tax 	= self::$cart_contents_tax / 100; // Back to pounds
+				$tax_amount 				= $tax_amount / 100; // Back to pounds
+				
+				self::$cart_contents_tax = self::$cart_contents_tax + $tax_amount;
 								
 				self::$cart_contents_total = self::$cart_contents_total + $total_item_price;
 				self::$cart_contents_total_ex_tax = self::$cart_contents_total_ex_tax + ($_product->get_price_excluding_tax() * $values['quantity']);
@@ -324,7 +324,7 @@ class jigoshop_cart {
 			$coupon = jigoshop_coupons::get_coupon($code);
 			if (jigoshop_coupons::is_valid($code)) :
 
-				if ($coupon['type']=='fixed_cart') :
+				if ($coupon['type']=='fixed_cart') : 
 					self::$discount_total = self::$discount_total + $coupon['amount'];
 				elseif ($coupon['type']=='percent') :
 					self::$discount_total = self::$discount_total + ( self::$subtotal / 100 ) * $coupon['amount'];
