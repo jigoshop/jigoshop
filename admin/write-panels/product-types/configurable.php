@@ -8,7 +8,7 @@
 function configurable_product_type_options() {
 	global $post;
 	?>
-	<div id="configurations" class="panel">
+	<div id="configurable_product_options" class="panel">
 		
 		<p class="description" style="padding:0;"><?php _e('Add pricing/inventory for product variations. All fields are optional; leave blank to use attributes from the main product data. <strong>Note:</strong> Please save your product attributes in the "Product Data" panel first.', 'jigoshop'); ?></p>
 		
@@ -69,8 +69,9 @@ function configurable_product_write_panel_js( $product_type ) {
 	
 	?>
 	jQuery(function(){
+		
 		// CONFIGURABLE PRODUCT PANEL
-		jQuery('button.add_configuration').click(function(){
+		jQuery('button.add_configuration').live('click', function(){
 		
 			jQuery('.jigoshop_configurations').append('<div class="jigoshop_configuration">\
 				<p>\
@@ -99,6 +100,11 @@ function configurable_product_write_panel_js( $product_type ) {
 			return false;
 		
 		});
+		
+		jQuery('button.remove_config').live('click', function(){
+			jQuery(this).parent().parent().remove();
+		});
+		
 	});
 	<?php
 	
