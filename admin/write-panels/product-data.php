@@ -199,6 +199,7 @@ function jigoshop_product_data_box() {
 							<th width="180"><?php _e('Name', 'jigoshop'); ?></th>
 							<th><?php _e('Value', 'jigoshop'); ?></th>
 							<th class="center" width="1%"><?php _e('Visible?', 'jigoshop'); ?></th>
+							<th class="center" width="1%"><?php _e('Variation?', 'jigoshop'); ?></th>
 							<th class="center" width="1%"><?php _e('Remove', 'jigoshop'); ?></th>
 						</tr>
 					</thead>
@@ -216,6 +217,7 @@ function jigoshop_product_data_box() {
 						    		$attribute_nicename = strtolower(sanitize_title($tax->attribute_name));
 						    		if (isset($attributes[$attribute_nicename])) $attribute = $attributes[$attribute_nicename];
 						    		if (isset($attribute['visible']) && $attribute['visible']=='yes') $checked = 'checked="checked"'; else $checked = '';
+						    		if (isset($attribute['variation']) && $attribute['variation']=='yes') $checked2 = 'checked="checked"'; else $checked2 = '';
 						    		
 						    		$values = wp_get_post_terms( $thepostid, 'product_attribute_'.strtolower(sanitize_title($tax->attribute_name)) );
 						    		$value = array();
@@ -257,6 +259,7 @@ function jigoshop_product_data_box() {
 										<?php endif; ?>
 										</td>
 										<td class="center"><input type="checkbox" <?php echo $checked; ?> name="attribute_visibility[<?php echo $i; ?>]" value="1" /></td>
+										<td class="center"><input type="checkbox" <?php echo $checked2; ?> name="attribute_variation[<?php echo $i; ?>]" value="1" /></td>
 										<td class="center"><button type="button" class="hide_row button">&times;</button></td>
 									</tr><?php
 						    	endforeach;
@@ -268,7 +271,9 @@ function jigoshop_product_data_box() {
 								
 								$i++; 
 								
-								if ($attribute['visible']=='yes') $checked = 'checked="checked"'; else $checked = '';
+								if (isset($attribute['visible']) && $attribute['visible']=='yes') $checked = 'checked="checked"'; else $checked = '';
+								if (isset($attribute['variation']) && $attribute['variation']=='yes') $checked2 = 'checked="checked"'; else $checked2 = '';
+								
 								?><tr rel="<?php if (isset($attribute['position'])) echo $attribute['position']; else echo '0'; ?>">
 									<td class="center">
 										<button type="button" class="move_up button">&uarr;</button><button type="button" class="move_down button">&darr;</button>
@@ -280,6 +285,7 @@ function jigoshop_product_data_box() {
 									</td>
 									<td><input type="text" name="attribute_values[<?php echo $i; ?>]" value="<?php echo $attribute['value']; ?>" /></td>
 									<td class="center"><input type="checkbox" <?php echo $checked; ?> name="attribute_visibility[<?php echo $i; ?>]" value="1" /></td>
+									<td class="center"><input type="checkbox" <?php echo $checked2; ?> name="attribute_variation[<?php echo $i; ?>]" value="1" /></td>
 									<td class="center"><button type="button" class="remove_row button">&times;</button></td>
 								</tr><?php
 							endforeach;
