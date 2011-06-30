@@ -1,0 +1,249 @@
+<?php
+
+/**
+ * DIBS FlexWin Gateway
+ **/
+class dibs extends jigoshop_payment_gateway {
+		
+	public function __construct() {
+		$this->id = 'dibs';
+		$this->icon = '';
+		$this->has_fields = false;
+		$this->enabled = get_option('jigoshop_dibs_enabled');
+		$this->title = get_option('jigoshop_dibs_title');
+		$this->merchant = get_option('jigoshop_dibs_merchant');
+		$this->description  = get_option('jigoshop_dibs_description');
+		$this->testmode = get_option('jigoshop_dibs_testmode');
+		
+		add_action('init', array(&$this, 'check_callback') );
+		add_action('valid-dibs-callback', array(&$this, 'successful_request') );
+		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
+		add_action('receipt_dibs', array(&$this, 'receipt_page'));
+		
+		add_option('jigoshop_dibs_enabled', 'yes');
+		add_option('jigoshop_dibs_merchant', '');
+		add_option('jigoshop_dibs_title', __('DIBS', 'jigoshop') );
+		add_option('jigoshop_dibs_description', __("Pay via DIBS using credit card or bank transfer.", 'jigoshop') );
+		add_option('jigoshop_dibs_testmode', 'no');
+	}
+    
+	/**
+	* Admin Panel Options 
+	* - Options for bits like 'title' and availability on a country-by-country basis
+	**/
+	public function admin_options() {
+		?>
+		<thead><tr><th scope="col" width="200px"><?php _e('DIBS FlexWin', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('', 'jigoshop'); ?></th></tr></thead>
+		<tr>
+			<td class="titledesc"><?php _e('Enable DIBS FlexWin', 'jigoshop') ?>:</td>
+			<td class="forminp">
+				<select name="jigoshop_dibs_enabled" id="jigoshop_dibs_enabled" style="min-width:100px;">
+					<option value="yes" <?php if (get_option('jigoshop_dibs_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
+					<option value="no" <?php if (get_option('jigoshop_dibs_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="titledesc"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?>:</td>
+			<td class="forminp">
+				<input class="input-text" type="text" name="jigoshop_dibs_title" id="jigoshop_dibs_title" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_dibs_title')) echo $value; else echo 'DIBS'; ?>" />
+			</td>
+		</tr>
+		<tr>
+			<td class="titledesc"><a href="#" tip="<?php _e('This controls the description which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Description', 'jigoshop') ?>:</td>
+			<td class="forminp">
+				<input class="input-text wide-input" type="text" name="jigoshop_dibs_description" id="jigoshop_dibs_description" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_dibs_description')) echo $value; ?>" />
+			</td>
+		</tr>
+		<tr>
+			<td class="titledesc"><a href="#" tip="<?php _e('Please enter your DIBS merchant id; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('DIBS Merchant id', 'jigoshop') ?>:</td>
+			<td class="forminp">
+				<input class="input-text" type="text" name="jigoshop_dibs_merchant" id="jigoshop_dibs_merchant" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_dibs_merchant')) echo $value; ?>" />
+			</td>
+		</tr>
+		<tr>
+			<td class="titledesc"><?php _e('Enable test mode', 'jigoshop') ?>:</td>
+			<td class="forminp">
+				<select name="jigoshop_dibs_testmode" id="jigoshop_dibs_testmode" style="min-width:100px;">
+					<option value="yes" <?php if (get_option('jigoshop_dibs_testmode') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
+					<option value="no" <?php if (get_option('jigoshop_dibs_testmode') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
+				</select>
+			</td>
+		</tr>
+		<?php
+	}
+
+	/**
+	* There are no payment fields for paypal, but we want to show the description if set.
+	**/
+	function payment_fields() {
+		if ($jigoshop_dibs_description = get_option('jigoshop_dibs_description')) echo wpautop(wptexturize($jigoshop_dibs_description));
+	}
+
+	/**
+	* Admin Panel Options Processing
+	* - Saves the options to the DB
+	**/
+	public function process_admin_options() {
+		if(isset($_POST['jigoshop_dibs_enabled'])) update_option('jigoshop_dibs_enabled', jigowatt_clean($_POST['jigoshop_dibs_enabled'])); else @delete_option('jigoshop_dibs_enabled');
+		if(isset($_POST['jigoshop_dibs_title'])) update_option('jigoshop_dibs_title', jigowatt_clean($_POST['jigoshop_dibs_title'])); else @delete_option('jigoshop_dibs_title');
+		if(isset($_POST['jigoshop_dibs_merchant'])) update_option('jigoshop_dibs_merchant', jigowatt_clean($_POST['jigoshop_dibs_merchant'])); else @delete_option('jigoshop_dibs_merchant');
+		if(isset($_POST['jigoshop_dibs_description'])) update_option('jigoshop_dibs_description', jigowatt_clean($_POST['jigoshop_dibs_description'])); else @delete_option('jigoshop_dibs_description');
+		if(isset($_POST['jigoshop_dibs_testmode'])) update_option('jigoshop_dibs_testmode', jigowatt_clean($_POST['jigoshop_dibs_testmode'])); else @delete_option('jigoshop_dibs_testmode');
+	}
+
+	/**
+	* Generate the paypal button link
+	**/
+	public function generate_form( $order_id ) {
+		
+		$order = &new jigoshop_order( $order_id );
+		
+		$action_adr = 'https://payment.architrade.com/paymentweb/start.action';
+		
+		$args =
+			array(
+				// Merchant
+				'merchant' => $this->merchant,
+				'decorator' => 'default',
+				
+				// Session
+				'lang' => 'sv',
+				
+				// Order
+				'amount' => $order->order_total * 100,
+				'orderid' => $order_id,
+				'uniqueoid' => $order->order_key,
+				'currency' => get_option('jigoshop_currency'),
+				'ordertext' => 'TEST',
+				
+				// URLs
+				'accepturl' => add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink(get_option('jigoshop_thanks_page_id')))),
+				'cancelurl' => $order->get_cancel_order_url(),
+				'callbackurl' => trailingslashit(get_bloginfo('wpurl')).'?dibsListener=dibs_callback',
+				
+				// Extra
+				//'invoice' => $order->order_key,
+				
+		);
+		
+		if( !empty($_SERVER['HTTP_CLIENT_IP']) ) {
+			$args['ip'] = $_SERVER['HTTP_CLIENT_IP'];
+		}
+		
+		if ( $this->testmode == 'yes' ) {
+			$args['test'] = 'yes';
+		}
+		
+		$fields = '';
+		foreach ($args as $key => $value) {
+			$fields .= '<input type="hidden" name="'.$key.'" value="'.$value.'" />';
+		}
+		
+		return '<form action="'.$action_adr.'" method="post" id="dibs_payment_form">
+				' . $fields . '
+				<input type="submit" class="button-alt" id="submit_dibs_payment_form" value="'.__('Pay via DIBS', 'jigoshop').'" /> <a class="button cancel" href="'.$order->get_cancel_order_url().'">'.__('Cancel order &amp; restore cart', 'jigoshop').'</a>
+				<script type="text/javascript">
+					jQuery(function(){
+						jQuery("body").block(
+							{ 
+								message: "<img src=\"'.jigoshop::plugin_url().'/assets/images/ajax-loader.gif\" alt=\"Redirecting...\" />'.__('Thank you for your order. We are now redirecting you to DIBS to make payment.', 'jigoshop').'", 
+								overlayCSS: 
+								{ 
+									background: "#fff", 
+									opacity: 0.6 
+								},
+								css: { 
+							        padding:        20, 
+							        textAlign:      "center", 
+							        color:          "#555", 
+							        border:         "3px solid #aaa", 
+							        backgroundColor:"#fff", 
+							        cursor:         "wait" 
+							    } 
+							});
+						jQuery("#submit_dibs_payment_form").click();
+					});
+				</script>
+			</form>';
+		
+	}
+	
+	/**
+	 * Process the payment and return the result
+	 **/
+	function process_payment( $order_id ) {
+		
+		$order = &new jigoshop_order( $order_id );
+		
+		return array(
+			'result' => 'success',
+			'redirect' => add_query_arg('order', $order->id, add_query_arg('key', $order->order_key, get_permalink(get_option('jigoshop_pay_page_id'))))
+		);
+		
+	}
+	
+	/**
+	* receipt_page
+	**/
+	function receipt_page( $order ) {
+		
+		echo '<p>'.__('Thank you for your order, please click the button below to pay with DIBS.', 'jigoshop').'</p>';
+		
+		echo $this->generate_form( $order );
+		
+	}
+	
+	/**
+	* Check for PayPal IPN Response
+	**/
+	function check_callback() {
+		if (isset($_GET['dibsListener']) && $_GET['dibsListener'] == 'dibs_callback') {
+			
+			$_POST = stripslashes_deep($_POST);
+			
+			// TODO MD5 verify
+			
+			do_action("valid-dibs-callback", $_POST);
+			
+		}
+	}
+
+	/**
+	* Successful Payment!
+	**/
+	function successful_request( $posted ) {
+		
+		// Custom holds post ID
+		if ( !empty($posted['transact']) && !empty($posted['orderid']) && is_numeric($posted['orderid']) ) {
+			
+			$order = new jigoshop_order( (int) $posted['orderid'] );
+			
+			if ($order->order_key !== $posted['uniqueoid']) exit;
+			
+			// Sandbox fix
+			//if ($posted['test']=='yes' && $posted['payment_status']=='Pending') $posted['payment_status'] = 'completed';
+			
+			if ($order->status !== 'completed') {
+				
+				$order->add_order_note( __('Callback payment completed', 'jigoshop') );
+				$order->payment_complete();
+				
+			}
+			
+			exit;
+			
+		}
+		
+	}
+
+}
+
+/**
+ * Add the gateway to JigoShop
+ **/
+function add_dibs_gateway( $methods ) {
+	$methods[] = 'dibs'; return $methods;
+}
+
+add_filter('jigoshop_payment_gateways', 'add_dibs_gateway' );
