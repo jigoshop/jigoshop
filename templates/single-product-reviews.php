@@ -98,13 +98,15 @@
 ?><div class="clear"></div></div>
 <script type="text/javascript">
 /* <![CDATA[ */
-	jQuery('#review_form_wrapper').hide();
-	jQuery('a.show_review_form').fancybox({
-		'transitionIn'	:	'elastic',
-		'transitionOut'	:	'elastic',
-		'speedIn'		:	600, 
-		'speedOut'		:	200, 
-		'overlayShow'	:	true
+	jQuery(function(){
+		jQuery('#review_form_wrapper').hide();
+		jQuery('a.show_review_form').fancybox({
+			'transitionIn'	:	'elastic',
+			'transitionOut'	:	'elastic',
+			'speedIn'		:	600, 
+			'speedOut'		:	200, 
+			'overlayShow'	:	true
+		});
 	});
 /* ]]> */
 </script>
