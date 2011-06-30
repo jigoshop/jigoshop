@@ -18,11 +18,17 @@ function configurable_product_type_options() {
 					<button type="button" class="remove_config button"><?php _e('Remove', 'jigoshop'); ?></button>
 					<strong><?php _e('Configuration:', 'jigoshop'); ?></strong>
 					<?php
+						$attributes = maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) );
 						if (isset($attributes) && sizeof($attributes)>0) foreach ($attributes as $attribute) :
-							$options = explode("\n", $attribute[1]);
-							if (sizeof($options)>0) :
-								echo '<select name="'.sanitize_title($attribute[0]).'"><option value="">'.$attribute[0].'&hellip;</option><option>'.implode('</option><option>', $options).'</option></select>';
-							endif;
+							
+							if ( $attribute['variation']!=='yes' ) continue;
+							
+							$options = $attribute['value'];
+							
+							if (!is_array($options)) $options = explode(',', $options);
+							
+							echo '<select name="'.sanitize_title($attribute['name']).'"><option value="">'.$attribute['name'].'&hellip;</option><option>'.implode('</option><option>', $options).'</option></select>';
+
 						endforeach;
 					?>
 				</p>
@@ -30,10 +36,10 @@ function configurable_product_type_options() {
 					<tbody>	
 						<tr>
 							<td><label><?php _e('SKU:', 'jigoshop'); ?></label><input type="text" size="5" name="configurable_sku[]" /></td>
-							<td><label><?php _e('Weight', 'jigoshop').' ('.get_option('jigoshop_weight_unit').'):'; ?></label><input type="text" size="5" name="configurable_weight[]" /></td>
-							<td><label><?php _e('Price:', 'jigoshop'); ?></label><input type="text" size="5" name="configurable_price[]" /></td>
-							<td><label><?php _e('Sale price:', 'jigoshop'); ?></label><input type="text" size="5" name="configurable_saleprice[]" /></td>
+							<td><label><?php _e('Weight variation', 'jigoshop').' ('.get_option('jigoshop_weight_unit').'):'; ?></label><input type="text" size="5" name="configurable_weight[]" placeholder="<?php _e('Weight (e.g. 10, -5)', 'jigoshop'); ?>" /></td>
+							<td><label><?php _e('Price variation:', 'jigoshop'); ?></label><input type="text" size="5" name="configurable_price[]" placeholder="<?php _e('Price (e.g. 5.99, -2.99)', 'jigoshop'); ?>" /></td>
 							<td><label><?php _e('Stock Qty:', 'jigoshop'); ?></label><input type="text" size="5" name="configurable_stock[]" /></td>
+							<td><label><?php _e('Image:', 'jigoshop'); ?></label><?php echo optionsframework_medialibrary_uploader( 'configurable_image', '', null ); ?></td>
 						</tr>		
 					</tbody>
 				</table>
@@ -67,6 +73,7 @@ add_action('product_type_selector', 'configurable_product_type_selector');
  **/
 function configurable_product_write_panel_js( $product_type ) {
 	
+	global $post;
 	?>
 	jQuery(function(){
 		
@@ -77,12 +84,18 @@ function configurable_product_write_panel_js( $product_type ) {
 				<p>\
 					<button type="button" class="remove_config button"><?php _e('Remove', 'jigoshop'); ?></button>\
 					<strong><?php _e('Configuration:', 'jigoshop'); ?></strong><?php
+						
+						/*$attributes = maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) );
 						if (isset($attributes) && sizeof($attributes)>0) foreach ($attributes as $attribute) :
+							
+							var_dump($attribute);
+							
 							$options = explode("\n", $attribute[1]);
 							if (sizeof($options)>0) :
 								echo '<select name="'.sanitize_title($attribute[0]).'"><option value="">'.$attribute[0].'&hellip;</option><option>'.implode('</option><option>', $options).'</option></select>\\';
 							endif;
-						endforeach;
+						endforeach;*/
+						
 				?></p>\
 				<table cellpadding="0" cellspacing="0" class="jigoshop_configurable_attributes">\
 					<tbody>	\
@@ -102,7 +115,11 @@ function configurable_product_write_panel_js( $product_type ) {
 		});
 		
 		jQuery('button.remove_config').live('click', function(){
-			jQuery(this).parent().parent().remove();
+			var answer = confirm('<?php _e('Are you sure you want to remove this configuration?', 'jigoshop'); ?>');
+			if (answer){
+				jQuery(this).parent().parent().remove();
+			}
+			return false;
 		});
 		
 	});
