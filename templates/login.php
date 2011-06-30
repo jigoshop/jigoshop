@@ -1,1 +1,0 @@
-<?php jigoshop_login_form(); ?>

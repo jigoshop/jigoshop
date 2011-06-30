@@ -9,6 +9,8 @@
 	<?php echo wpautop(wptexturize($term->description)); ?>
 	
 	<?php jigoshop_get_template_part( 'loop', 'shop' ); ?>
+	
+	<?php do_action('jigoshop_pagination'); ?>
 
 <?php do_action('jigoshop_after_main_content'); // </div></div> ?>
 

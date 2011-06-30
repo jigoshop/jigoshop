@@ -37,12 +37,19 @@ function jigoshop_add_to_cart_action( $url = false ) {
 			// Group add to cart
 			if (isset($_POST['quantity']) && is_array($_POST['quantity'])) :
 				
+				$total_quantity = 0;
+				
 				foreach ($_POST['quantity'] as $item => $quantity) :
 					if ($quantity>0) :
 						jigoshop_cart::add_to_cart($item, $quantity);
 						jigoshop::add_message( sprintf(__('<a href="%s" class="button">View Cart &rarr;</a> Product successfully added to your basket.', 'jigoshop'), jigoshop_cart::get_cart_url()) );
+						$total_quantity = $total_quantity + $quantity;
 					endif;
 				endforeach;
+				
+				if ($total_quantity==0) :
+					jigoshop::add_error( __('Please choose a quantity&hellip;', 'jigoshop') );
+				endif;
 			
 			elseif ($_GET['product']) :
 				

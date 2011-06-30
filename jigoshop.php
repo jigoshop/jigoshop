@@ -3,7 +3,7 @@
 Plugin Name: Jigoshop - WordPress eCommerce
 Plugin URI: http://jigoshop.com
 Description: An eCommerce plugin for wordpress.
-Version: 0.9.7.8
+Version: 0.9.8
 Author: Jigowatt
 Author URI: http://jigowatt.co.uk
 Requires at least: 3.1
@@ -12,7 +12,7 @@ Tested up to: 3.1.3
 
 @session_start();
 
-if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", "0.9.7.8");	
+if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", "0.9.8");	
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
@@ -25,7 +25,7 @@ register_activation_hook( __FILE__, 'install_jigoshop' );
 function jigoshop_update_check() {
     if (get_site_option('jigoshop_db_version') != JIGOSHOP_VERSION) install_jigoshop();
 }
-add_action('init', 'jigoshop_update_check');
+if (is_admin()) add_action('init', 'jigoshop_update_check');
 
 /**
  * Include core files and classes
@@ -35,9 +35,8 @@ include_once( 'classes/jigoshop.class.php' );
 include_once( 'jigoshop_taxonomy.php' );
 include_once( 'jigoshop_widgets.php' );
 include_once( 'jigoshop_shortcodes.php' );
-include_once( 'jigoshop_template_actions.php' );
-include_once( 'jigoshop_template_functions.php' );
 include_once( 'jigoshop_templates.php' );
+include_once( 'jigoshop_template_actions.php' );
 include_once( 'jigoshop_emails.php' );
 include_once( 'jigoshop_query.php' );
 include_once( 'jigoshop_cron.php' );
@@ -212,6 +211,9 @@ add_action('import_start', 'jigoshop_import_start');
 function jigoshop_init() {
 	
 	jigoshop_post_type();
+	
+	// Include template functions here so they are pluggable by themes
+	include_once( 'jigoshop_template_functions.php' );
 	
 	@ob_start();
 	

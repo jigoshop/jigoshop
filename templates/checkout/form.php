@@ -1,4 +1,4 @@
-<?php if (!is_user_logged_in()) jigoshop_get_template('checkout/login.php'); ?>
+<?php do_action('before_checkout_form'); ?>
 
 <form name="checkout" method="post" class="checkout" action="<?php echo jigoshop_cart::get_checkout_url(); ?>">
 	
@@ -20,3 +20,5 @@
 	<?php jigoshop_get_template('checkout/review_order.php'); ?>
 	
 </form>
+
+<?php do_action('after_checkout_form'); ?>

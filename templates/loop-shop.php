@@ -1,12 +1,15 @@
 <?php
 
+global $columns, $post, $per_page, $wp_query;
+
 do_action('jigoshop_before_shop_loop');
 
-global $columns, $post, $per_page;
-
 $loop = 0;
-if (!isset($columns) || !$columns) $columns = 4;
-if (!isset($per_page) || !$per_page) $per_page = get_option('posts_per_page');
+
+if (!isset($columns) || !$columns) $columns = apply_filters('loop_shop_columns', 4);
+if (!isset($per_page) || !$per_page) $per_page = apply_filters('loop_shop_per_page', get_option('posts_per_page'));
+
+if ($per_page > get_option('posts_per_page')) query_posts( array_merge( $wp_query->query, array( 'posts_per_page' => $per_page ) ) );
 
 ob_start();
 

@@ -134,7 +134,7 @@ function jigoshop_my_account( $atts ) {
 		
 	else :
 		
-		jigoshop_get_template('login.php');
+		jigoshop_login_form();
 		
 	endif;
 	

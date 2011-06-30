@@ -18,8 +18,6 @@
  */
 function install_jigoshop() {
 	
-	wp_mail('mike.jolley@jigowatt.co.uk', 'Test', 'Installing');
-	
 	// Get options and define post types before we start
 	require_once ( 'jigoshop-admin-settings-options.php' );	
 	jigoshop_post_type();
