@@ -2,7 +2,10 @@
 function jigoshop_my_account( $atts ) {
 	
 	extract(shortcode_atts(array(
+    'recent_orders' => 5
 	), $atts));
+
+  $recent_orders = ('all' == $recent_orders) ? -1 : $recent_orders;
 	
 	ob_start();
 	
@@ -43,7 +46,7 @@ function jigoshop_my_account( $atts ) {
 			
 			<tbody><?php
 				$jigoshop_orders = &new jigoshop_orders();
-				$jigoshop_orders->get_customer_orders( get_current_user_id() );
+				$jigoshop_orders->get_customer_orders( get_current_user_id(), $recent_orders );
 				if ($jigoshop_orders->orders) foreach ($jigoshop_orders->orders as $order) :
 					?><tr class="order">
 						<td><?php echo $order->id; ?></td>
