@@ -173,7 +173,9 @@
 				<input type="checkbox" class="input-checkbox" name="terms" <?php if (isset($_POST['terms'])) echo 'checked="checked"'; ?> id="terms" />
 			</p>
 			<?php endif; ?>
-
+			
+			<?php do_action( 'jigoshop_review_order_after_submit' ); ?>
+			
 		</div>
 
 	</div>
