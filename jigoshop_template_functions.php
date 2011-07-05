@@ -8,12 +8,14 @@
  **/
 if (!function_exists('jigoshop_output_content_wrapper')) {
 	function jigoshop_output_content_wrapper() {	
-		echo '<div id="container"><div id="content" role="main">';	
+		if(  get_option('template') === 'twentyeleven' ) echo '<section id="primary"><div id="content" role="main">';
+		else echo '<div id="container"><div id="content" role="main">';	
 	}
 }
 if (!function_exists('jigoshop_output_content_wrapper_end')) {
 	function jigoshop_output_content_wrapper_end() {	
-		echo '</div></div>';	
+		if(  get_option('template') === 'twentyeleven' ) echo  '</section></div>';
+		else echo '</div></div>';	
 	}
 }
 
