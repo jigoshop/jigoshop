@@ -85,8 +85,8 @@ add_filter('comments_template', 'jigoshop_comments_template' );
 ################################################################################
 
 function jigoshop_get_template($template_name) {
-	if (file_exists( STYLESHEETPATH . '/' . JIGOSHOP_TEMPLATE_URL . $template_name )) include( STYLESHEETPATH . '/' . JIGOSHOP_TEMPLATE_URL . $template_name ); 
-	elseif (file_exists( STYLESHEETPATH . '/' . $template_name )) include( STYLESHEETPATH . '/' . $template_name ); 
+	if (file_exists( STYLESHEETPATH . '/' . JIGOSHOP_TEMPLATE_URL . $template_name )) load_template( STYLESHEETPATH . '/' . JIGOSHOP_TEMPLATE_URL . $template_name ); 
+	elseif (file_exists( STYLESHEETPATH . '/' . $template_name )) load_template( STYLESHEETPATH . '/' . $template_name ); 
 	else load_template( jigoshop::plugin_path() . '/templates/' . $template_name );
 }
 
