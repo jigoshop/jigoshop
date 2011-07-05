@@ -1,4 +1,4 @@
-jQuery(function(){
+jQuery( function($){
 
 	// TABS
 	jQuery('ul.tabs').show();
