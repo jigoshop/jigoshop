@@ -241,7 +241,7 @@ class jigoshop_cart {
 			$_product = $values['data'];
 			if ($_product->exists() && $values['quantity']>0) :
 				
-				self::$cart_contents_count ++;
+				self::$cart_contents_count = self::$cart_contents_count + $values['quantity'];
 				
 				self::$cart_contents_weight = self::$cart_contents_weight + ($_product->get_weight() * $values['quantity']);
 
