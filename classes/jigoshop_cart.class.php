@@ -168,6 +168,7 @@ class jigoshop_cart {
 	function needs_shipping() {
 	
 		if (!jigoshop_shipping::$enabled) return false;
+		if (!is_array(self::$cart_contents)) return false;
 	
 		$needs_shipping = false;
 		
