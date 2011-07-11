@@ -56,7 +56,7 @@ add_filter( 'template_include', 'jigoshop_template_loader' );
 function jigoshop_get_template_part( $slug, $name = '' ) {
 	if ($name=='shop') :
 		if (!locate_template(array( 'loop-shop.php', JIGOSHOP_TEMPLATE_URL . 'loop-shop.php' ))) :
-			require(jigoshop::plugin_path() . '/templates/loop-shop.php');
+			load_template( jigoshop::plugin_path() . '/templates/loop-shop.php' );
 			return;
 		endif;
 	endif;
@@ -85,9 +85,9 @@ add_filter('comments_template', 'jigoshop_comments_template' );
 ################################################################################
 
 function jigoshop_get_template($template_name) {
-	if (file_exists( STYLESHEETPATH . '/' . JIGOSHOP_TEMPLATE_URL . $template_name )) include( STYLESHEETPATH . '/' . JIGOSHOP_TEMPLATE_URL . $template_name ); 
-	elseif (file_exists( STYLESHEETPATH . '/' . $template_name )) include( STYLESHEETPATH . '/' . $template_name ); 
-	else include( jigoshop::plugin_path() . '/templates/' . $template_name );
+	if (file_exists( STYLESHEETPATH . '/' . JIGOSHOP_TEMPLATE_URL . $template_name )) load_template( STYLESHEETPATH . '/' . JIGOSHOP_TEMPLATE_URL . $template_name ); 
+	elseif (file_exists( STYLESHEETPATH . '/' . $template_name )) load_template( STYLESHEETPATH . '/' . $template_name ); 
+	else load_template( jigoshop::plugin_path() . '/templates/' . $template_name );
 }
 
 ################################################################################
