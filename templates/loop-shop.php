@@ -1,6 +1,6 @@
 <?php
 
-global $columns, $post, $per_page, $wp_query;
+global $columns, $per_page;
 
 do_action('jigoshop_before_shop_loop');
 

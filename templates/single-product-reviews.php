@@ -1,7 +1,5 @@
 <?php if ( comments_open() ) : ?><div id="reviews"><?php 
 	
-	global $post, $wpdb;
-	
 	echo '<div id="comments">';
 	
 	$count = $wpdb->get_var("

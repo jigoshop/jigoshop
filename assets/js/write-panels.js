@@ -1,4 +1,4 @@
-jQuery(function(){
+jQuery( function($){
 
 	// TABS
 	jQuery('ul.tabs').show();
@@ -123,28 +123,28 @@ jQuery(function(){
 	});
 	
 	// PRODUCT TYPE SPECIFIC OPTIONS
-	jQuery('select#product-type').change(function(){
+	$('select#product-type').change(function(){
+		
 		// Get value
 		var select_val = jQuery(this).val();
+		
 		// Hide options
-		jQuery('#configurable_product_options, #simple_product_options, #grouped_product_options, #downloadable_product_options, #virtual_product_options').hide();
+		$('#jigoshop-product-type-options .inside > div').hide();
+		$('#'+select_val+'_product_options').show();
+		
 		// Show option
 		if (select_val=='configurable') {
 			jQuery('.inventory_tab, .pricing_tab').show();
-			jQuery('#configurable_product_options').show();
 		} else if (select_val=='simple') {
 			jQuery('.inventory_tab, .pricing_tab').show();
-			jQuery('#simple_product_options').show();
 		} else if (select_val=='grouped') {
 			jQuery('.inventory_tab, .pricing_tab').hide();
-			jQuery('#grouped_product_options').show();
 		} else if (select_val=='downloadable') {
 			jQuery('.inventory_tab, .pricing_tab').show();
-			jQuery('#downloadable_product_options').show();
 		} else if (select_val=='virtual') {
 			jQuery('.inventory_tab, .pricing_tab').show();
-			jQuery('#virtual_product_options').show();
 		}
+		
 	}).change();
 	
 	
