@@ -1,7 +1,7 @@
 === Jigoshop - WordPress eCommerce ===
 Contributors: jigowatt
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal
-Requires at least: 3.1
+Requires at least: 3.2
 Tested up to: 3.1.3
 Stable tag: 0.9.8
  
