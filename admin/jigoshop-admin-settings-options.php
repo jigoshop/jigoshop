@@ -17,6 +17,20 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	array( 'name' => __('General Options', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
 	
 	array(  
+		'name' => __('Demo store','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Enable this option to show a banner at the top of the page stating its a demo store.','jigoshop'),
+		'id' 		=> 'jigoshop_demo_store',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(  
+			'yes' => __('Yes', 'jigoshop'),
+			'no'  => __('No', 'jigoshop')
+		)
+	),
+
+	array(  
 		'name' => __('Enable SKU field','jigoshop'),
 		'desc' 		=> '',
 		'tip' 		=> __('Turning off the SKU field will give products an SKU of their post id.','jigoshop'),
@@ -250,7 +264,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	array(  
 		'name' => __('Prepend shop categories/tags with base page?','jigoshop'),
 		'desc' 		=> sprintf( __("IMPORTANT: You must <a target='_blank' href='%s'>re-save your permalinks</a> for this change to take effect.",'jigoshop'), 'options-permalink.php' ),
-		'tip' 		=> __('If set to yes, categories will show up as "your_base_page/shop_category" instead of just "shop_category".', 'jigoshop'),
+		'tip' 		=> __('If set to yes, categories will show up as your_base_page/shop_category instead of just shop_category.', 'jigoshop'),
 		'id' 		=> 'jigoshop_prepend_shop_page_to_urls',
 		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'no',

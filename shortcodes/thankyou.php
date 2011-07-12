@@ -14,11 +14,8 @@ function jigoshop_thankyou() {
 	if ($order_id > 0) :
 	
 		$order = &new jigoshop_order( $order_id );
-	
-		if ($order->order_key == $order_key) :
 		
-			// Clear cart since the order process must of completed
-			jigoshop_cart::empty_cart();
+		if ($order->order_key == $order_key) :
 	
 			?>
 			<ul class="order_details">

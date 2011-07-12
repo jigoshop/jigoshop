@@ -186,13 +186,17 @@ class jigoshop {
 		$name = '_n';
 		$action = 'jigoshop-' . $action;
 		
-		if( $error_message === false ) $error_message = __('You have taken too long. Please refresh the page and retry.', 'jigoshop'); 
+		if( $error_message === false ) $error_message = __('Action failed. Please refresh the page and retry.', 'jigoshop'); 
 		
 		if(!in_array($method, array('_GET', '_POST', '_REQUEST'))) $method = '_POST';
 		
+		/*
 		$request = $GLOBALS[$method];
 		
 		if ( isset($request[$name]) && wp_verify_nonce($request[$name], $action) ) return true;
+		*/
+		
+		if ( isset($_REQUEST[$name]) && wp_verify_nonce($_REQUEST[$name], $action) ) return true;
 		
 		if( $error_message ) jigoshop::add_error( $error_message );
 		

@@ -1,16 +1,23 @@
 <?php
-function jigoshop_breadcrumb( $delimiter = ' &rsaquo; ', $wrap_before = '<div id="breadcrumb">', $wrap_after = '</div>', $before = '', $after = '', $home = 'Home' ) {
+function jigoshop_breadcrumb( $delimiter = ' &rsaquo; ', $wrap_before = '<div id="breadcrumb">', $wrap_after = '</div>', $before = '', $after = '', $home = null ) {
  	
  	global $post, $wp_query, $author;
  	
+ 	if( !$home ) $home = _x('Home', 'breadcrumb', 'jigoshop'); 	
+ 	
  	$home_link = home_url();
+ 	
+ 	$prepend = '';
+ 	
+ 	if ( get_option('jigoshop_prepend_shop_page_to_urls')=="yes" && get_option('jigoshop_shop_page_id') )
+ 		$prepend =  $before . '<a href="' . get_permalink( get_option('jigoshop_shop_page_id') ) . '">' . get_the_title( get_option('jigoshop_shop_page_id') ) . '</a> ' . $after . $delimiter;
  	
 	if ( !is_home() && !is_front_page() || is_paged() ) :
  
 		echo $wrap_before;
  
-		echo $before . '<a class="home" href="' . $home_link . '">' . $home . '</a> ' . $after . $delimiter;
- 
+		echo $before  . '<a class="home" href="' . $home_link . '">' . $home . '</a> '  . $after . $delimiter ;
+ 		
 		if ( is_category() ) :
       
       		$cat_obj = $wp_query->get_queried_object();
@@ -39,17 +46,17 @@ function jigoshop_breadcrumb( $delimiter = ' &rsaquo; ', $wrap_before = '<div id
 				$parents = array_reverse($parents);
 				foreach ($parents as $parent):
 					$item = get_term_by( 'id', $parent, get_query_var( 'taxonomy' ));
-					echo $before . '<a href="' . get_term_link( $item->slug, 'product_cat' ) . '">' . $item->name . '</a>' . $after . $delimiter;
+					echo $before .  '<a href="' . get_term_link( $item->slug, 'product_cat' ) . '">' . $item->name . '</a>' . $after . $delimiter;
 				endforeach;
 			endif;
 
  			$queried_object = $wp_query->get_queried_object();
-      		echo $before . $queried_object->name . $after;
+      		echo $prepend . $before . $queried_object->name . $after;
       	
       	elseif ( is_tax('product_tag') ) :
 			
  			$queried_object = $wp_query->get_queried_object();
-      		echo $before . __('Products tagged &ldquo;', 'jigoshop') . $queried_object->name . '&rdquo;' . $after;
+      		echo $prepend . $before . __('Products tagged &ldquo;', 'jigoshop') . $queried_object->name . '&rdquo;' . $after;
 			
  		elseif ( is_day() ) :
  		
@@ -68,13 +75,15 @@ function jigoshop_breadcrumb( $delimiter = ' &rsaquo; ', $wrap_before = '<div id
  		
  		elseif ( is_post_type_archive('product') ) :
 
+ 			$_name = get_option('jigoshop_shop_page_id') ? get_the_title( get_option('jigoshop_shop_page_id') ) : ucwords(get_option('jigoshop_shop_slug'));
+ 		
  			if (is_search()) :
  				
- 				echo $before . '<a href="' . get_post_type_archive_link('product') . '">' . ucwords(get_option('jigoshop_shop_slug')) . '</a>' . $delimiter . __('Search results for &ldquo;', 'jigoshop') . get_search_query() . '&rdquo;' . $after;
+ 				echo $before . '<a href="' . get_post_type_archive_link('product') . '">' . $_name . '</a>' . $delimiter . __('Search results for &ldquo;', 'jigoshop') . get_search_query() . '&rdquo;' . $after;
  			
  			else :
  			
- 				echo $before . '<a href="' . get_post_type_archive_link('product') . '">' . ucwords(get_option('jigoshop_shop_slug')) . '</a>' . $after;
+ 				echo $before . '<a href="' . get_post_type_archive_link('product') . '">' . $_name . '</a>' . $after;
  			
  			endif;
  		
@@ -83,6 +92,7 @@ function jigoshop_breadcrumb( $delimiter = ' &rsaquo; ', $wrap_before = '<div id
 			if ( get_post_type() == 'product' ) :
 				
        			//echo $before . '<a href="' . get_post_type_archive_link('product') . '">' . ucwords(get_option('jigoshop_shop_slug')) . '</a>' . $after . $delimiter;
+       			echo $prepend;
        			
        			if ($terms = wp_get_object_terms( $post->ID, 'product_cat' )) :
 					$term = current($terms);

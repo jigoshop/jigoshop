@@ -519,7 +519,6 @@ ul.recent-orders li .refunded, ul.recent-orders li .cancelled {
 }
 .jigoshop #tabs-wrap {
   background: #ececec;
-  width: 850px;
   padding: 7px 9px;
   overflow: hidden;
   margin-top: 0.5em !important;
@@ -852,7 +851,7 @@ div.multi_select_products_wrapper {
   text-align: right;
   float: left;
   width: 36%;
-  line-height: 24px;
+  line-height: 30px;
 }
 .jigoshop_configuration table td input {
   float: right;

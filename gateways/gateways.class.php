@@ -7,8 +7,8 @@ class jigoshop_payment_gateways {
 	
 	private static $instance;
 	static $payment_gateways;
-    
-    public function __construct() {
+   
+   public static function init() {
     	
     	$load_gateways = apply_filters('jigoshop_payment_gateways', array());
 		

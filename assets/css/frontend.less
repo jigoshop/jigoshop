@@ -50,10 +50,18 @@
     -webkit-box-shadow: @shadow_x @shadow_y @shadow_rad @shadow_color;
     -moz-box-shadow: @shadow_x @shadow_y @shadow_rad @shadow_color;
 }
-.inset_shadow(@shadow_x:3px, @shadow_y:3px, @shadow_rad:3px, @shadow_color:#888) {
-    box-shadow: inset @shadow_x @shadow_y @shadow_rad @shadow_color;
-    -webkit-box-shadow: inset @shadow_x @shadow_y @shadow_rad @shadow_color;
-    -moz-box-shadow: inset @shadow_x @shadow_y @shadow_rad @shadow_color;
+.inset_box_shadow(@shadow_x:3px, @shadow_y:3px, @shadow_rad:3px, @shadow_in:3px, @shadow_color:#888) {
+	box-shadow:inset @shadow_x @shadow_y @shadow_rad @shadow_in @shadow_color;
+	-webkit-box-shadow:inset @shadow_x @shadow_y @shadow_rad @shadow_in @shadow_color;
+	-moz-box-shadow:inset @shadow_x @shadow_y @shadow_rad @shadow_in @shadow_color;
+}
+
+.vertical_gradient(@from: #000, @to: #FFF) {
+	background: @from;
+	background: -webkit-gradient(linear, left top, left bottom, from(@from), to(@to));
+	background: -webkit-linear-gradient(@from, @to);
+	background: -moz-linear-gradient(center top, @from 0%, @to 100%);
+	background: -moz-gradient(center top, @from 0%, @to 100%);
 }
 .clearfix() { overflow: hidden; zoom: 1; }
 
@@ -66,7 +74,7 @@
 	padding:10px 20px;
 	border:1px solid #EEEAC1;
 	color:#747165;
-	.inset_shadow(0, 0, 0, 1px, #FFFFCC);
+	.inset_box_shadow(0, 0, 0, 1px, #FFFFCC);
 	a {
 		color:#93864E;
 	}
@@ -96,6 +104,21 @@ div.jigoshop_message {
 p small {
 	color: #999;
 }
+
+p.demo_store {
+	position: fixed;
+	top:0;
+	width: 100%;
+	font-size: 12px;
+	text-align: center;
+	.vertical_gradient(#F7F5C6, #EEEAC1);
+	padding:8px 0;
+	border:1px solid #EEEAC1;
+	color:#747165;
+	z-index: 999999;
+	.inset_box_shadow(0, 0, 0, 3px, rgba(255,255,255,0.3));
+}
+
 small.note {
 	display: block;
 	color: #999;
@@ -940,7 +963,7 @@ form.login {
 		width: 96%;
 		background: #f5f5f5;
 		border: 1px solid #eee;
-		.inset_shadow(0, 1px, 1px, rgba(255,255,255,0.5));
+		.inset_box_shadow(0, 1px, 1px, rgba(255,255,255,0.5));
 		padding: 1em 2% 0;
 		margin: 1em 0 1em 0;
 		font-size: 0.92em;
@@ -1102,7 +1125,7 @@ div.shipping-address {
 			padding: 0 6px 0 18px;
 			border: 1px solid #3399cc;
 			background: #3399cc url(../images/cross_white.png) no-repeat 6px center;
-			.inset_shadow(0, 1px, 1px, rgba(255,255,255,0.5));
+			.inset_box_shadow(0, 1px, 1px, rgba(255,255,255,0.5));
 			color: #fff;
 			.border_radius(3px);
 		}

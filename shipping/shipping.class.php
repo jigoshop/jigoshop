@@ -10,9 +10,9 @@ class jigoshop_shipping {
 	public static $shipping_tax 		= 0;
 	public static $shipping_label		= null;
 	
-	public function __construct() { 
-	
-    	if (get_option('jigoshop_calc_shipping')!='no') self::$enabled = true; 
+    public static function init() {
+		
+		if (get_option('jigoshop_calc_shipping')!='no') self::$enabled = true; 
 		
 		do_action('jigoshop_shipping_init');
 		
@@ -23,8 +23,8 @@ class jigoshop_shipping {
 			self::$shipping_methods[] = &new $method();
 			
 		endforeach;
-				
-    } 
+		
+	}
     
     public static function get() {
         if (!isset(self::$_instance)) {

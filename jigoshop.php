@@ -103,12 +103,15 @@ add_image_size( 'shop_large', jigoshop::get_var('shop_large_w'), jigoshop::get_v
 /**
  * Filters and hooks
  **/
-	
 add_action('init', 'jigoshop_init', 0);
+add_action('plugins_loaded', 'jigoshop_shipping::init', 1); 		// Load shipping methods - some may be added by plugins
+add_action('plugins_loaded', 'jigoshop_payment_gateways::init', 1); // Load payment methods - some may be added by plugins
+add_action('plugins_loaded', 'jigoshop_cart::calculate_totals', 2); // After methods are loaded we'll want to calc the totals of the cart
 
 if (get_option('jigoshop_force_ssl_checkout')=='yes') add_action( 'wp_head', 'jigoshop_force_ssl');
 
-add_action( 'wp_footer', 'jigowatt_sharethis' );
+add_action( 'wp_footer', 'jigoshop_demo_store' );
+add_action( 'wp_footer', 'jigoshop_sharethis' );
 
 /**
  * IIS compat fix/fallback
@@ -277,10 +280,23 @@ function jigoshop_script_query_string($src)
 }
 
 /* 
-	jigowatt_sharethis
-		Adds social sharing code to footer
+	jigoshop_demo_store
+	Adds a demo store banner to the site
 */
-function jigowatt_sharethis() {
+function jigoshop_demo_store() {
+	
+	if (get_option('jigoshop_demo_store')=='yes') :
+		
+		echo '<p class="demo_store">'.__('This is a demo store for testing purposes &mdash; no orders shall be fulfilled.', 'jigoshop').'</p>';
+		
+	endif;
+}
+
+/* 
+	jigoshop_sharethis
+	Adds social sharing code to footer
+*/
+function jigoshop_sharethis() {
 	if (is_single() && get_option('jigoshop_sharethis')) :
 		
 		echo '<script type="text/javascript" src="https://w.sharethis.com/button/buttons.js"></script><script type="text/javascript">stLight.options({publisher:"'.get_option('jigoshop_sharethis').'", onhover: false});</script>';
@@ -364,8 +380,13 @@ function get_jigoshop_currency_symbol() {
 	return apply_filters('jigoshop_currency_symbol', $currency_symbol, $currency);
 }
 
-function jigoshop_price( $price ) {
-
+function jigoshop_price( $price, $args = array() ) {
+	
+	extract(shortcode_atts(array(
+		'ex_tax_label' 	=> '0'
+	), $args));
+	
+	$return = '';
 	$num_decimals = (int) get_option('jigoshop_price_num_decimals');
 	$currency_pos = get_option('jigoshop_currency_pos');
 	$currency_symbol = get_jigoshop_currency_symbol();
@@ -373,18 +394,22 @@ function jigoshop_price( $price ) {
 	
 	switch ($currency_pos) :
 		case 'left' :
-			return $currency_symbol . $price;
+			$return = $currency_symbol . $price;
 		break;
 		case 'right' :
-			return $price . $currency_symbol;
+			$return = $price . $currency_symbol;
 		break;
 		case 'left_space' :
-			return $currency_symbol . ' ' . $price;
+			$return = $currency_symbol . ' ' . $price;
 		break;
 		case 'right_space' :
-			return $price . ' ' . $currency_symbol;
+			$return = $price . ' ' . $currency_symbol;
 		break;
 	endswitch;
+	
+	if ($ex_tax_label && get_option('jigoshop_calc_taxes')=='yes') $return .= __(' <small>(ex. tax)</small>', 'jigoshop');
+	
+	return $return;
 }
 
 function jigoshop_let_to_num($v) {

@@ -162,7 +162,7 @@ function jigoshop_admin_fields($options) {
 		    $counter = 1;
 		    echo '<ul class="tabs">';
 		    foreach ($options as $value) {
-		        if (in_array('tab', $value)) :
+		        if ( 'tab' == $value['type'] ) :
 		            echo '<li><a href="#'.$value['type'].$counter.'">'.$value['tabname'].'</a></li>'. "\n";
 		            $counter = $counter + 1;
 		        endif;

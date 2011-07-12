@@ -14,6 +14,7 @@ include('write-panels/product-data-save.php');
 include('write-panels/product-type.php');
 include('write-panels/order-data.php');
 include('write-panels/order-data-save.php');
+include('write-panels/medialibrary-uploader.php');
 
 /**
  * Init the meta boxes
@@ -146,6 +147,10 @@ function jigoshop_write_panel_scripts() {
 	wp_register_script('jigoshop-writepanel', jigoshop::plugin_url() . '/assets/js/write-panels.js', array('jquery'));
 	wp_enqueue_script('jigoshop-writepanel');
 	
+	wp_register_script( 'medialibrary-uploader', jigoshop::plugin_url() . '/assets/js/medialibrary-uploader.js', array( 'jquery', 'thickbox' ) );
+	wp_enqueue_script( 'medialibrary-uploader' );
+	wp_enqueue_script( 'media-upload' );
+	
 	$data = array( 'remove_item_notice' =>  __("Remove this item? If you have previously reduced this item's stock, or this order was submitted by a customer, will need to manually restore the item's stock.", 'jigoshop'),
 				   'cart_total' => __("Calc totals based on order items, discount amount, and shipping?", 'jigoshop'),
 				   'copy_billing' => __("Copy billing information to shipping information? This will remove any currently entered shipping information.", 'jigoshop'),
@@ -161,6 +166,7 @@ function jigoshop_write_panel_scripts() {
 	
 }
 add_action('admin_print_scripts-post.php', 'jigoshop_write_panel_scripts');
+add_action('admin_print_scripts-post-new.php', 'jigoshop_write_panel_scripts');
 
 /**
  * Meta scripts

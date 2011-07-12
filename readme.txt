@@ -134,6 +134,8 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 
 = 0.9.8 =
 
+* Major changes to template code in an attempt to make it more flexible and easier to theme from the plugin
+* Form code changes making things more semantic
 * Tweaked category order code
 * Changed 'download remaining' database field into a varchar
 * localisation issues
@@ -143,6 +145,10 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * Fixes to sale dates logic
 * New product preview shortcodes
 * option to hide hidden products in recent products widget
+* Breadcrumbs add shop base if chosen as a base
+* Tweaked gateway/shipping loading code to work with plugins
+* Demo store banner added
+* postcode accepts hyphens
 
 = 0.9.7.8 =
 

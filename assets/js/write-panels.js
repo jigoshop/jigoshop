@@ -271,12 +271,6 @@ jQuery(function(){
 			jQuery(row).before(next_row);
 			row_indexes();
 		});
-	
-	// CONFIGURABLE PRODUCT PANEL
-	jQuery('button.link_all').click(function(){
-	
-		jQuery('#configurations').block({ message: null, overlayCSS: { background: '#fff', opacity: 0.6 } });
-	
-	});
+
 
 });

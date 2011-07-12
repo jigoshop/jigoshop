@@ -150,8 +150,8 @@ class paypal extends jigoshop_payment_gateway {
 				'rm' 					=> 2,
 				'upload' 				=> 1,
 				'return' 				=> add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink(get_option('jigoshop_thanks_page_id')))),
-				//'cancel_return'			=> $order->get_cancel_order_url(),
-				'cancel_return'			=> home_url(),
+				'cancel_return'			=> $order->get_cancel_order_url(),
+				//'cancel_return'			=> home_url(),
 				
 				// Order key
 				'custom'				=> $order_id,
