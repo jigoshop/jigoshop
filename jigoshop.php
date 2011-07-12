@@ -3,7 +3,7 @@
 Plugin Name: Jigoshop - WordPress eCommerce
 Plugin URI: http://jigoshop.com
 Description: An eCommerce plugin for wordpress.
-Version: 0.9.8
+Version: 0.9.8.1
 Author: Jigowatt
 Author URI: http://jigowatt.co.uk
 Requires at least: 3.1
@@ -12,7 +12,7 @@ Tested up to: 3.1.3
 
 @session_start();
 
-if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", "0.9.8");	
+if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", "0.9.8.1");	
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');

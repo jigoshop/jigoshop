@@ -4,6 +4,32 @@
  **/
 
 /**
+ * Front page archive/shop template
+ */
+if (!function_exists('jigoshop_front_page_archive')) {
+	function jigoshop_front_page_archive() {
+			
+		global $paged;
+		
+		if (is_front_page() && is_page( get_option('jigoshop_shop_page_id') )) :
+			
+			if ( get_query_var('paged') ) {
+			    $paged = get_query_var('paged');
+			} else if ( get_query_var('page') ) {
+			    $paged = get_query_var('page');
+			} else {
+			    $paged = 1;
+			}
+			
+			query_posts( array( 'post_type' => 'product', 'paged' => $paged ) );
+
+		endif;
+	}
+}
+add_action('wp_head', 'jigoshop_front_page_archive', 0);
+
+
+/**
  * Content Wrappers
  **/
 if (!function_exists('jigoshop_output_content_wrapper')) {
@@ -517,7 +543,7 @@ if (!function_exists('jigoshop_checkout_login_form')) {
 if (!function_exists('jigoshop_breadcrumb')) {
 	function jigoshop_breadcrumb( $delimiter = ' &rsaquo; ', $wrap_before = '<div id="breadcrumb">', $wrap_after = '</div>', $before = '', $after = '', $home = null ) {
 	 	
-	 	global $post, $wp_query, $author;
+	 	global $post, $wp_query, $author, $paged;
 	 	
 	 	if( !$home ) $home = _x('Home', 'breadcrumb', 'jigoshop'); 	
 	 	
@@ -525,11 +551,12 @@ if (!function_exists('jigoshop_breadcrumb')) {
 	 	
 	 	$prepend = '';
 	 	
-	 	if ( get_option('jigoshop_prepend_shop_page_to_urls')=="yes" && get_option('jigoshop_shop_page_id') )
+	 	if ( get_option('jigoshop_prepend_shop_page_to_urls')=="yes" && get_option('jigoshop_shop_page_id') && get_option('page_on_front') !== get_option('jigoshop_shop_page_id') )
 	 		$prepend =  $before . '<a href="' . get_permalink( get_option('jigoshop_shop_page_id') ) . '">' . get_the_title( get_option('jigoshop_shop_page_id') ) . '</a> ' . $after . $delimiter;
+
 	 	
-		if ( !is_home() && !is_front_page() || is_paged() ) :
-	 
+	 	if ( (!is_home() && !is_front_page() && !(is_post_type_archive() && get_option('page_on_front')==get_option('jigoshop_shop_page_id'))) || is_paged() ) :
+	 	
 			echo $wrap_before;
 	 
 			echo $before  . '<a class="home" href="' . $home_link . '">' . $home . '</a> '  . $after . $delimiter ;
@@ -589,8 +616,8 @@ if (!function_exists('jigoshop_breadcrumb')) {
 	
 				echo $before . get_the_time('Y') . $after;
 	 		
-	 		elseif ( is_post_type_archive('product') ) :
-	
+	 		elseif ( is_post_type_archive('product') && get_option('page_on_front') !== get_option('jigoshop_shop_page_id') ) :
+			
 	 			$_name = get_option('jigoshop_shop_page_id') ? get_the_title( get_option('jigoshop_shop_page_id') ) : ucwords(get_option('jigoshop_shop_slug'));
 	 		
 	 			if (is_search()) :
