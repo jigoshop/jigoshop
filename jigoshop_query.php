@@ -8,7 +8,7 @@ function jigoshop_get_products_in_view() {
 	
 	$all_post_ids = array();
 	
-	if (is_tax( 'product_cat' ) || is_post_type_archive('product') || is_tax( 'product_tag' )) :
+	if (is_tax( 'product_cat' ) || is_post_type_archive('product') || is_page( get_option('jigoshop_shop_page_id') ) || is_tax( 'product_tag' )) :
 	
 		$all_post_ids = jigoshop_get_post_ids();
 	
@@ -26,7 +26,7 @@ function jigoshop_filter_loop() {
 	
 	global $wp_query, $all_post_ids; 
 	
-	if (is_tax( 'product_cat' ) || is_post_type_archive('product') || is_tax( 'product_tag' )) :
+	if (is_tax( 'product_cat' ) || is_post_type_archive('product') || is_page( get_option('jigoshop_shop_page_id') ) || is_tax( 'product_tag' )) :
 		
 		$filters = array();
 		$filters = apply_filters('loop-shop-query', $filters);

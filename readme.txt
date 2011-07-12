@@ -3,7 +3,7 @@ Contributors: jigowatt
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal
 Requires at least: 3.1
 Tested up to: 3.2
-Stable tag: 0.9.8
+Stable tag: 0.9.8.1
  
 A feature packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customisability. 
 
@@ -52,6 +52,7 @@ Find out more on the official <a href="http://jigoshop.com" title="WordPress eCo
 = Official Jigoshop themes =
 
 * <a href="http://jigoshop.com/themes/jigotheme/" title="Premium WordPress eComemrce theme for Jigoshop">Jigotheme</a> - Our flagship premium theme complete with mobile optimisation.
+* <a href="http://jigoshop.com/themes/origin/" title="Premium WordPress eComemrce theme for Jigoshop">Origin</a> - A clean, minimalist theme for WordPress/Jigoshop.
 
 = Official Jigoshop Extensions =
 
@@ -134,6 +135,11 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 9. Checkout
 
 == Changelog ==
+
+= 0.9.8.1 =
+* Changes to allow new product types to be added by plugins
+* Twenty Eleven fixes
+* Front page shop support
 
 = 0.9.8 =
 
