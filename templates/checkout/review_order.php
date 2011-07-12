@@ -162,13 +162,17 @@
 			<?php jigoshop::nonce_field('process_checkout')?>
 			<input type="submit" class="button-alt" name="place_order" id="place_order" value="<?php _e('Place order', 'jigoshop'); ?>" />
 			
+			<?php do_action( 'jigoshop_review_order_before_submit' ); ?>
+			
 			<?php if (get_option('jigoshop_terms_page_id')>0) : ?>
 			<p class="form-row terms">
 				<label for="terms" class="checkbox"><?php _e('I accept the', 'jigoshop'); ?> <a href="<?php echo get_permalink(get_option('jigoshop_terms_page_id')); ?>" target="_blank"><?php _e('terms &amp; conditions', 'jigoshop'); ?></a></label>
 				<input type="checkbox" class="input-checkbox" name="terms" <?php if (isset($_POST['terms'])) echo 'checked="checked"'; ?> id="terms" />
 			</p>
 			<?php endif; ?>
-
+			
+			<?php do_action( 'jigoshop_review_order_after_submit' ); ?>
+			
 		</div>
 
 	</div>
