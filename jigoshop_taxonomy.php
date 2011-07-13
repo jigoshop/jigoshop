@@ -8,7 +8,7 @@ function jigoshop_post_type() {
 	
 	$shop_page_id = get_option('jigoshop_shop_page_id');
 	
-	$base_slug = $shop_page_id && get_page_uri( get_option('jigoshop_shop_page_id') ) ? get_page_uri( get_option('jigoshop_shop_page_id') ) : 'shop';
+	$base_slug = get_post($shop_page_id) && get_page_uri( $shop_page_id ) ? get_page_uri( $shop_page_id ) : 'shop';
 	
 	if (get_option('jigoshop_prepend_shop_page_to_urls')=="yes") :
 		$category_base = trailingslashit($base_slug);
