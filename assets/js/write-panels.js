@@ -124,7 +124,7 @@ jQuery( function($){
 	
 	// PRODUCT TYPE SPECIFIC OPTIONS
 	$('select#product-type').change(function(){
-		console.log(this);
+		
 		// Get value
 		var select_val = jQuery(this).val();
 		
