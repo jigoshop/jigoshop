@@ -127,7 +127,7 @@ jQuery( function($){
 		
 		// Get value
 		var select_val = jQuery(this).val();
-		
+		console.log(select_val);
 		// Hide options
 		$('#jigoshop-product-type-options .inside > div').hide();
 		$('#'+select_val+'_product_options').show();
