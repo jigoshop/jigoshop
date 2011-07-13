@@ -135,41 +135,12 @@ class jigoshop_order {
 	/** Gets subtotal */
 	function get_subtotal_to_display() {
 		
-		//if (get_option('jigoshop_display_totals_tax')=='excluding') :
-				
-			/*if (get_option('jigoshop_prices_include_tax')=='yes') :
-				
-				$subtotal = jigoshop_price($this->order_subtotal - $this->order_tax);
-				
-			else :
-				
-				$subtotal = jigoshop_price($this->order_subtotal);
-				
-			endif;*/
 			
 			$subtotal = jigoshop_price($this->order_subtotal);
 			
 			if ($this->order_tax>0) :
 				$subtotal .= __(' <small>(ex. tax)</small>', 'jigoshop');
 			endif;
-			
-		/*else :
-			
-			if (get_option('jigoshop_prices_include_tax')=='yes') :
-				
-				$subtotal = jigoshop_price($this->order_subtotal);
-				
-			else :
-				
-				$subtotal = jigoshop_price($this->order_subtotal + $this->order_tax);
-				
-			endif;
-			
-			if ($this->order_tax>0) :
-				$subtotal .= __(' <small>(inc. tax)</small>', 'jigoshop');
-			endif;
-			
-		endif;*/
 		
 		return $subtotal;
 	}
@@ -178,22 +149,11 @@ class jigoshop_order {
 	function get_shipping_to_display() {
 		
 		if ($this->order_shipping > 0) :
-			
-			//if (get_option('jigoshop_display_totals_tax')=='excluding') :
-				
+
 				$shipping = jigoshop_price($this->order_shipping);
 				if ($this->order_shipping_tax > 0) :
 					$shipping .= sprintf(__(' <small>(ex. tax) via %s</small>', 'jigoshop'), ucwords($this->shipping_method));
 				endif;
-				
-			/*else :
-				
-				$shipping = jigoshop_price($this->order_shipping + $this->order_shipping_tax);
-				if ($this->order_shipping_tax > 0) :
-					$shipping .= sprintf(__(' <small>(inc. tax) via %s</small>', 'jigoshop'), ucwords($this->shipping_method));
-				endif;
-				
-			endif;*/
 
 		else :
 			$shipping = __('Free!', 'jigoshop');
@@ -335,7 +295,9 @@ class jigoshop_order {
 	 * @param   string	$note	Optional note to add
 	 */
 	function cancel_order( $note = '' ) {
-	
+		
+		unset($_SESSION['order_awaiting_payment']);
+		
 		$this->update_status('cancelled', $note);
 		
 	}
@@ -348,6 +310,8 @@ class jigoshop_order {
 	 * Stock levels are reduced at this point
 	 */
 	function payment_complete() {
+		
+		unset($_SESSION['order_awaiting_payment']);
 		
 		$downloadable_order = false;
 		

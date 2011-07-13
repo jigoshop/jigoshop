@@ -7,7 +7,7 @@ class paypal extends jigoshop_payment_gateway {
 		
 	public function __construct() { 
         $this->id			= 'paypal';
-        $this->icon 		= 'icons/paypal.png';
+        $this->icon 		= jigoshop::plugin_url() . '/assets/images/icons/paypal.png';
         $this->has_fields 	= false;
       	$this->enabled		= get_option('jigoshop_paypal_enabled');
 		$this->title 		= get_option('jigoshop_paypal_title');

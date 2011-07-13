@@ -32,7 +32,7 @@ class jigoshop_payment_gateway {
 	
 	function icon() {
 		if ($this->icon) :
-			return '<img src="'. jigoshop::plugin_url() . '/assets/images/' . $this->icon.'" alt="'.$this->title.'" />';
+			return '<img src="'. $this->icon.'" alt="'.$this->title.'" />';
 		endif;
 	}
 	

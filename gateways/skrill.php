@@ -7,7 +7,7 @@ class skrill extends jigoshop_payment_gateway {
 	public function __construct() { 
         $this->id			= 'skrill';
         $this->title 		= 'Skrill';
-        $this->icon 		= 'icons/skrill.png';
+        $this->icon 		= jigoshop::plugin_url() . '/assets/images/icons/skrill.png';
         $this->has_fields 	= false;
       	$this->enabled		= get_option('jigoshop_skrill_enabled');
 		$this->title 		= get_option('jigoshop_skrill_title');

@@ -552,16 +552,23 @@ class jigoshop_checkout {
 					endforeach;
 					
 					if (jigoshop::error_count()>0) break;
-
-					// Insert the post data
 					
-					$order_id = wp_insert_post( $order_data );
+					// Insert or update the post data
+					if (isset($_SESSION['order_awaiting_payment']) && $_SESSION['order_awaiting_payment'] > 0) :
+						
+						$order_id = (int) $_SESSION['order_awaiting_payment'];
+						$order_data['ID'] = $order_id;
+						wp_update_post( $order_data );
 					
-					if (is_wp_error($order_id)) :
-						jigoshop::add_error( 'Error: Unable to create order. Please try again.' );
-		                break;
+					else :
+						$order_id = wp_insert_post( $order_data );
+						
+						if (is_wp_error($order_id)) :
+							jigoshop::add_error( 'Error: Unable to create order. Please try again.' );
+			                break;
+						endif;
 					endif;
-					
+
 					// Update post meta
 					update_post_meta( $order_id, 'order_data', $data );
 					update_post_meta( $order_id, 'order_key', uniqid('order_') );
@@ -576,7 +583,7 @@ class jigoshop_checkout {
 
 					if (jigoshop_cart::needs_payment()) :
 						
-						// Store Order ID in session 
+						// Store Order ID in session so it can be re-used after payment failure
 						$_SESSION['order_awaiting_payment'] = $order_id;
 					
 						// Process Payment
