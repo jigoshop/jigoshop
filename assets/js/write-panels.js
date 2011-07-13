@@ -124,7 +124,7 @@ jQuery( function($){
 	
 	// PRODUCT TYPE SPECIFIC OPTIONS
 	$('select#product-type').change(function(){
-		
+		console.log(this);
 		// Get value
 		var select_val = jQuery(this).val();
 		
@@ -145,9 +145,10 @@ jQuery( function($){
 			jQuery('.inventory_tab, .pricing_tab').show();
 		}
 		
+		$('body').trigger('jigoshop-product-type-change', select_val, $(this) );
+		
 	}).change();
-	
-	
+
 	// STOCK OPTIONS
 	jQuery('input#manage_stock').change(function(){
 		if (jQuery(this).is(':checked')) jQuery('div.stock_fields').show();
