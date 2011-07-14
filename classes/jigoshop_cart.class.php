@@ -289,7 +289,7 @@ class jigoshop_cart {
 				endif;
 				
 				$total_item_price 			= $total_item_price / 100; // Back to pounds
-				$tax_amount 				= $tax_amount / 100; // Back to pounds
+				$tax_amount 				= ( isset($tax_amount) ? $tax_amount : 0 ) / 100; // Back to pounds
 				
 				self::$cart_contents_tax = self::$cart_contents_tax + $tax_amount;
 								
