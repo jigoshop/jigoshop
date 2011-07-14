@@ -64,15 +64,25 @@ function jigoshop_product_data_box() {
 			// SKU
 			$field = array( 'id' => 'sku', 'label' => __('SKU', 'jigoshop') );
 			$SKU = get_post_meta($thepostid, 'SKU', true);
-			echo '<p class="form-field">
-				<label for="'.$field['id'].'">'.$field['label'].':</label>
-				<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$SKU.'" /> <span class="description">' . __('Leave blank to use product ID', 'jigoshop') . '</span></p>';
-				 
+			
+			if( get_option('jigoshop_enable_sku', true) !== 'no' ) :
+				echo '<p class="form-field">
+					<label for="'.$field['id'].'">'.$field['label'].':</label>
+					<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$SKU.'" /> <span class="description">' . __('Leave blank to use product ID', 'jigoshop') . '</span></p>';
+			else:
+				echo '<input type="hidden" name="'.$field['id'].'" value="'.$SKU.'" />';
+			endif;
+			
 			// Weight
 			$field = array( 'id' => 'weight', 'label' => __('Weight', 'jigoshop') . ' ('.get_option('jigoshop_weight_unit').'):' );
-			echo '<p class="form-field">
-				<label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" placeholder="0.00" /></p>';
+			 
+			if( get_option('jigoshop_enable_weight', true) !== 'no' ) :
+				echo '<p class="form-field">
+					<label for="'.$field['id'].'">'.$field['label'].'</label>
+					<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" placeholder="0.00" /></p>';
+			else:
+				echo '<input type="hidden" name="'.$field['id'].'" value="'.$data[$field['id']].'" />';
+			endif;
 			
 			// Featured
 			$field = array( 'id' => 'featured', 'label' => __('Featured?', 'jigoshop') );
