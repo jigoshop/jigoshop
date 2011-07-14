@@ -244,6 +244,13 @@ if (!function_exists('jigoshop_simple_add_to_cart')) {
 		<?php
 	}
 }
+if (!function_exists('jigoshop_simple_add_to_cart')) {
+	function jigoshop_virtual_add_to_cart() {
+
+		jigoshop_simple_add_to_cart();
+		
+	}
+}
 if (!function_exists('jigoshop_downloadable_add_to_cart')) {
 	function jigoshop_downloadable_add_to_cart() {
 
