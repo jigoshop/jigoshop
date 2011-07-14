@@ -437,7 +437,7 @@ function jigoshop_let_to_num($v) {
 }
 
 function jigowatt_clean( $var ) {
-	return stripslashes(trim($var));
+	return strip_tags(stripslashes(trim($var)));
 }
 
 global $jigoshop_body_classes;
