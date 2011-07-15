@@ -78,7 +78,7 @@ function jigoshop_create_pages() {
 	        'post_author' => 1,
 	        'post_name' => $slug,
 	        'post_title' => __('Shop', 'jigoshop'),
-	        'post_content' => 'This page holds your shop front page',
+	        'post_content' => '',
 	        'comment_status' => 'closed'
         );
         $page_id = wp_insert_post($page_data);

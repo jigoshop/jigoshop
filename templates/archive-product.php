@@ -7,6 +7,12 @@
 	<?php else : ?>
 		<h1 class="page-title"><?php _e('All Products', 'jigoshop'); ?></h1>
 	<?php endif; ?>
+	
+	<?php 
+		$shop_page_id = get_option('jigoshop_shop_page_id');
+		$shop_page = get_post($shop_page_id);
+		echo apply_filters('the_content', $shop_page->post_content);
+	?>
 
 	<?php jigoshop_get_template_part( 'loop', 'shop' ); ?>
 	

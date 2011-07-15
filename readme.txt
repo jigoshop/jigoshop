@@ -141,6 +141,7 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * Twenty Eleven fixes
 * Front page shop support
 * virtual add to cart
+* Shop page can show content
 
 = 0.9.8 =
 
