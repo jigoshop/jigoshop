@@ -142,6 +142,7 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * Front page shop support
 * virtual add to cart
 * Shop page can show content
+* SKU display options
 
 = 0.9.8 =
 
