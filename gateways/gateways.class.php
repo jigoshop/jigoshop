@@ -32,11 +32,13 @@ class jigoshop_payment_gateways {
 		
 		$_available_gateways = array();
 		
-		foreach ( self::$payment_gateways as $gateway ) :
-			
-			$_available_gateways[$gateway->id] = $gateway;
-			
-		endforeach;
+		if (sizeof(self::$payment_gateways) > 0) :
+			foreach ( self::$payment_gateways as $gateway ) :
+				
+				$_available_gateways[$gateway->id] = $gateway;
+				
+			endforeach;
+		endif;
 
 		return $_available_gateways;
 	}
