@@ -9,7 +9,9 @@ function jigoshop_recent_products( $atts ) {
 	
 	extract(shortcode_atts(array(
 		'per_page' 	=> '12',
-		'columns' 	=> '4'
+		'columns' 	=> '4',
+		'orderby' => 'date',
+		'order' => 'desc'
 	), $atts));
 	
 	$args = array(
@@ -17,8 +19,8 @@ function jigoshop_recent_products( $atts ) {
 		'post_status' => 'publish',
 		'ignore_sticky_posts'	=> 1,
 		'posts_per_page' => $per_page,
-		'orderby' => 'date',
-		'order' => 'desc',
+		'orderby' => $orderby,
+		'order' => $order,
 		'meta_query' => array(
 			array(
 				'key' => 'visibility',
@@ -134,7 +136,9 @@ function jigoshop_featured_products( $atts ) {
 	
 	extract(shortcode_atts(array(
 		'per_page' 	=> '12',
-		'columns' 	=> '4'
+		'columns' 	=> '4',
+		'orderby' => 'date',
+		'order' => 'desc'
 	), $atts));
 	
 	$args = array(
@@ -142,8 +146,8 @@ function jigoshop_featured_products( $atts ) {
 		'post_status' => 'publish',
 		'ignore_sticky_posts'	=> 1,
 		'posts_per_page' => $per_page,
-		'orderby' => 'date',
-		'order' => 'desc',
+		'orderby' => $orderby,
+		'order' => $order,
 		'meta_query' => array(
 			array(
 				'key' => 'visibility',
