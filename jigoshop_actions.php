@@ -173,7 +173,7 @@ function jigoshop_process_login() {
  * Process ajax checkout form
  */
 add_action('wp_ajax_jigoshop-checkout', 'jigoshop_process_checkout');
-add_action('wp_ajax_jigoshop-checkout', 'jigoshop_process_checkout');
+add_action('wp_ajax_nopriv_jigoshop-checkout', 'jigoshop_process_checkout');
 
 function jigoshop_process_checkout () {
 	include_once jigoshop::plugin_path() . '/classes/jigoshop_checkout.class.php';
