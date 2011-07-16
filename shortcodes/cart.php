@@ -1,9 +1,7 @@
 <?php
 
 function get_jigoshop_cart( $atts ) {
-	ob_start();
-	jigoshop_cart( $atts );
-	return ob_get_clean();
+	return jigoshop::shortcode_wrapper('jigoshop_cart', $atts);
 }
 
 function jigoshop_cart( $atts ) {

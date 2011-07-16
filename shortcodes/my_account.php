@@ -1,13 +1,15 @@
 <?php
+
+function get_jigoshop_my_account ( $atts ) {
+	return jigoshop::shortcode_wrapper('jigoshop_my_account', $atts); 
+}	
 function jigoshop_my_account( $atts ) {
 	
 	extract(shortcode_atts(array(
     'recent_orders' => 5
 	), $atts));
 
-  $recent_orders = ('all' == $recent_orders) ? -1 : $recent_orders;
-	
-	ob_start();
+  	$recent_orders = ('all' == $recent_orders) ? -1 : $recent_orders;
 	
 	global $post, $current_user;
 
@@ -137,11 +139,12 @@ function jigoshop_my_account( $atts ) {
 		jigoshop_login_form();
 		
 	endif;
-	
-	return ob_get_clean();		
-	
+		
 }
 
+function get_jigoshop_edit_address () {
+	return jigoshop::shortcode_wrapper('jigoshop_edit_address'); 
+}	
 function jigoshop_edit_address() {
 	
 	$user_id = get_current_user_id();
@@ -301,7 +304,9 @@ function jigoshop_edit_address() {
 	endif;
 }
 
-
+function get_jigoshop_change_password () {
+	return jigoshop::shortcode_wrapper('jigoshop_change_password'); 
+}	
 function jigoshop_change_password() {
 
 	$user_id = get_current_user_id();
@@ -366,6 +371,9 @@ function jigoshop_change_password() {
 	
 }
 
+function get_jigoshop_view_order () {
+	return jigoshop::shortcode_wrapper('jigoshop_view_order'); 
+}	
 
 function jigoshop_view_order() {
 	

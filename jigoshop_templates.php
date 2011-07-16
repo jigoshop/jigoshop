@@ -56,7 +56,7 @@ add_filter( 'template_include', 'jigoshop_template_loader' );
 function jigoshop_get_template_part( $slug, $name = '' ) {
 	if ($name=='shop') :
 		if (!locate_template(array( 'loop-shop.php', JIGOSHOP_TEMPLATE_URL . 'loop-shop.php' ))) :
-			load_template( jigoshop::plugin_path() . '/templates/loop-shop.php' );
+			load_template( jigoshop::plugin_path() . '/templates/loop-shop.php',false );
 			return;
 		endif;
 	endif;

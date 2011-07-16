@@ -11,6 +11,7 @@
 class jigoshop {
 	
 	private static $_instance;
+	private static $_cache;
 	
 	public static $errors = array();
 	public static $messages = array();
@@ -217,4 +218,34 @@ class jigoshop {
 		return $location;
 	}
 	
+	static public function shortcode_wrapper ($function, $atts=array()) {
+		if( $content = jigoshop::cache_get( $function . '-shortcode', $atts ) ) return $content;
+		
+		ob_start();
+		call_user_func($function, $atts);
+		return jigoshop::cache( $function . '-shortcode', ob_get_clean(), $atts);
+	}
+	
+	/**
+	 * Cache API
+	 */
+	
+	public static function cache ( $id, $data, $args=array() ) {
+
+		if( ! isset(self::$_cache[ $id ]) ) self::$_cache[ $id ] = array();
+		
+		if( empty($args) ) self::$_cache[ $id ][0] = $data;
+		else self::$_cache[ $id ][ serialize($args) ] = $data;
+		
+		return $data;
+		
+	}
+	public static function cache_get ( $id, $args=array() ) {
+
+		if( ! isset(self::$_cache[ $id ]) ) return null;
+		
+		if( empty($args) && isset(self::$_cache[ $id ][0]) ) return self::$_cache[ $id ][0];
+		elseif ( isset(self::$_cache[ $id ][ serialize($args) ] ) ) return self::$_cache[ $id ][ serialize($args) ];
+		
+	}
 }

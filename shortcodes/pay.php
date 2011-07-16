@@ -1,9 +1,7 @@
 <?php
 
 function get_jigoshop_pay( $atts ) {
-	ob_start();
-	jigoshop_pay( $atts );
-	return ob_get_clean();
+	return jigoshop::shortcode_wrapper('jigoshop_pay', $atts); 
 }
 
 /**

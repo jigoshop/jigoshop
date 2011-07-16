@@ -254,7 +254,7 @@ jQuery(function(){
 		jQuery(form).block({ message: null, overlayCSS: { background: '#fff url(<?php echo jigoshop::plugin_url(); ?>/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
 		jQuery.ajax({
 			type: 		'POST',
-			url: 		jQuery(form).attr('action'),
+			url: 		'<?php echo admin_url('admin-ajax.php?action=jigoshop-checkout') ?>',
 			data: 		jQuery(form).serialize(),
 			success: 	function( code ) {
 							jQuery('.jigoshop_error, .jigoshop_message').remove();

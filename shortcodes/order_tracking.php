@@ -1,10 +1,13 @@
 <?php
+
+function get_jigoshop_order_tracking ($atts) {
+	return jigoshop::shortcode_wrapper('jigoshop_order_tracking', $atts); 
+}
+
 function jigoshop_order_tracking( $atts ) {
 	
 	extract(shortcode_atts(array(
 	), $atts));
-	
-	ob_start();
 	
 	global $post;
 	
@@ -123,8 +126,6 @@ function jigoshop_order_tracking( $atts ) {
 		</form>
 		<?php
 		
-	endif;
-	
-	return ob_get_clean();		
+	endif;	
 	
 }
