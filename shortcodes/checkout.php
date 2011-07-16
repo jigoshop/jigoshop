@@ -1,4 +1,11 @@
 <?php
+
+function get_jigoshop_checkout( $atts ) {
+	ob_start();
+	jigoshop_checkout( $atts );
+	return ob_get_clean();
+}
+
 function jigoshop_checkout( $atts ) {
 
 	if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
@@ -10,7 +17,7 @@ function jigoshop_checkout( $atts ) {
 	
 	$non_js_checkout = (isset($_POST['update_totals']) && $_POST['update_totals']) ? true : false;
 	
-	$_checkout = &new jigoshop_checkout();
+	$_checkout = jigoshop_checkout::instance();
 	
 	$_checkout->process_checkout();
 	
@@ -22,6 +29,6 @@ function jigoshop_checkout( $atts ) {
 	
 	jigoshop::show_messages();
 	
-	jigoshop_get_template('checkout/form.php');
+	jigoshop_get_template('checkout/form.php', false);
 	
 }

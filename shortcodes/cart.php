@@ -1,4 +1,11 @@
 <?php
+
+function get_jigoshop_cart( $atts ) {
+	ob_start();
+	jigoshop_cart( $atts );
+	return ob_get_clean();
+}
+
 function jigoshop_cart( $atts ) {
 	
 	$errors = array();

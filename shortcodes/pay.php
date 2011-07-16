@@ -1,5 +1,11 @@
 <?php
 
+function get_jigoshop_pay( $atts ) {
+	ob_start();
+	jigoshop_pay( $atts );
+	return ob_get_clean();
+}
+
 /**
  * Outputs the pay page - payment gateways can hook in here to show payment forms etc
  **/
