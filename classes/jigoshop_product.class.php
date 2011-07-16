@@ -113,6 +113,11 @@ class jigoshop_product {
 		return false;
 	}
 	
+	/** Returns whether or not the product has any child product */
+	function has_child () {
+		return sizeof($this->children) ? true : false;
+	}
+	
 	/** Returns whether or not the product post exists */
 	function exists() {
 		if ($this->exists) return true;
@@ -148,7 +153,7 @@ class jigoshop_product {
 	
 	/** Get the add to url */
 	function add_to_cart_url() {
-		if ($this->is_type('grouped')) :
+		if ( $this->has_child() ) :
 			$url = add_query_arg('add-to-cart', 'group');
 			$url = add_query_arg('product', $this->id, $url);
 		else :
@@ -359,7 +364,7 @@ class jigoshop_product {
 	/** Returns the price in html format */
 	function get_price_html() {
 		$price = '';
-		if ($this->is_type('grouped')) :
+		if ( $this->has_child() ) :
 			
 			$min_price = '';
 			$max_price = '';
