@@ -170,7 +170,7 @@ class jigoshop_order {
 		foreach($this->items as $item) : 
 			$_product = &new jigoshop_product( $item['id'] );
 			
-			$return .= $item['qty'] . ' x ' . apply_filter('jigoshop_order_product_title', $item['name'], $_product);
+			$return .= $item['qty'] . ' x ' . apply_filters('jigoshop_order_product_title', $item['name'], $_product);
 			
 			if ($show_sku) :
 				

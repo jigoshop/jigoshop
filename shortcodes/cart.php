@@ -113,7 +113,7 @@ function jigoshop_cart( $atts ) {
 						else echo '<img src="'.jigoshop::plugin_url(). '/assets/images/placeholder.png" alt="Placeholder" width="'.jigoshop::get_var('shop_tiny_w').'" height="'.jigoshop::get_var('shop_tiny_h').'" />'; 
 							
 						echo '	</a></td>
-								<td class="product-name"><a href="'.get_permalink($item_id).'">' . apply_filter('jigoshop_cart_product_title', $_product->get_title(), $_product) . '</a></td>
+								<td class="product-name"><a href="'.get_permalink($item_id).'">' . apply_filters('jigoshop_cart_product_title', $_product->get_title(), $_product) . '</a></td>
 								<td class="product-price">'.jigoshop_price($_product->get_price()).'</td>
 								<td class="product-quantity"><div class="quantity"><input name="cart['.$item_id.'][qty]" value="'.$values['quantity'].'" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div></td>
 								<td class="product-subtotal">'.jigoshop_price($_product->get_price()*$values['quantity']).'</td>
