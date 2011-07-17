@@ -146,9 +146,9 @@ class jigoshop_product {
 	}
 	
 	/** Get the title of the post */
-	function get_title() {
+	function get_title () {
 		$this->get_post_data();
-		return $this->post->post_title;
+		return apply_filter('jigoshop_product_title', $this->post->post_title, $this);
 	}
 	
 	/** Get the add to url */
