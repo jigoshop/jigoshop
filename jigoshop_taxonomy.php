@@ -3,7 +3,7 @@
  * Custom Post Types
  **/
 function jigoshop_post_type() {
-
+do_action('lox');
 	global $wpdb;
 	
 	$shop_page_id = get_option('jigoshop_shop_page_id');
