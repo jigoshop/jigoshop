@@ -17,8 +17,10 @@ class jigoshop_checkout {
 	var $must_create_account;
 	var $creating_account;
 	
+	protected static $instance;
+	
 	/** constructor */
-	function __construct () {
+	protected function __construct () {
 		
 		add_action('jigoshop_checkout_billing',array(&$this,'checkout_form_billing'));
 		add_action('jigoshop_checkout_shipping',array(&$this,'checkout_form_shipping'));
@@ -52,6 +54,15 @@ class jigoshop_checkout {
 			array( 'type'=> 'country', 'name'=>'shipping-country', 'label' => __('Country', 'jigoshop'), 'required' => true, 'class' => array('form-row-first'), 'rel' => 'shipping-state' ),
 			array( 'type'=> 'state', 'name'=>'shipping-state', 'label' => __('State/County', 'jigoshop'), 'required' => true, 'class' => array('form-row-last'), 'rel' => 'shipping-country' )
 		);
+	}
+	
+	public static function instance () {
+		if(!self::$instance) {
+			$class = __CLASS__;
+			self::$instance = new $class;
+		}
+		
+		return self::$instance;
 	}
 	
 	/** Output the billing information form */

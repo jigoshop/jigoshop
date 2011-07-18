@@ -1,5 +1,9 @@
 <?php
 
+function get_jigoshop_pay( $atts ) {
+	return jigoshop::shortcode_wrapper('jigoshop_pay', $atts); 
+}
+
 /**
  * Outputs the pay page - payment gateways can hook in here to show payment forms etc
  **/

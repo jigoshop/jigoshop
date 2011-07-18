@@ -31,11 +31,7 @@ class jigoshop_cart {
 	/** constructor */
 	function __construct() {
 		
-		self::$applied_coupons = array();
-		
-		self::get_cart_from_session();
-		
-		if ( isset($_SESSION['coupons']) ) self::$applied_coupons = $_SESSION['coupons'];
+		add_action('init', array($this, 'init'), 1);
 		
 	}
 	
@@ -46,6 +42,14 @@ class jigoshop_cart {
             self::$_instance = new $c;
         }
         return self::$_instance;
+    }
+    
+    public function init () {
+  		self::$applied_coupons = array();
+		
+		self::get_cart_from_session();
+		
+		if ( isset($_SESSION['coupons']) ) self::$applied_coupons = $_SESSION['coupons'];
     }
 	
 	/** Gets the cart data from the PHP session */
