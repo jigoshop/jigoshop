@@ -86,6 +86,7 @@ function jigoshop_get_post_ids() {
 	$args = array_merge(
 		$wp_query->query,
 		array(
+			'page_id' => '',
 			'posts_per_page' => -1,
 			'post_type' => 'product',
 			'post_status' => 'publish',

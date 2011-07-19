@@ -143,6 +143,7 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * virtual add to cart
 * Shop page can show content
 * SKU display options
+* Fixes for default permalinks
 
 = 0.9.8 =
 

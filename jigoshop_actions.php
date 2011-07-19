@@ -4,6 +4,7 @@
  *
  * Various hooks Jigoshop uses to do stuff. index:
  *
+ *		- When default permalinks are enabled, redirect shop page to post type archive url
  *		- Add to Cart
  *		- Clear cart
  *		- Restore an order via a link
@@ -12,6 +13,21 @@
  *		- Order Status completed - GIVE DOWNLOADABLE PRODUCT ACCESS TO CUSTOMER
  *
  **/
+
+
+/**
+ * When default permalinks are enabled, redirect shop page to post type archive url
+ **/
+if (get_option( 'permalink_structure' )=="") add_action( 'init', 'jigoshop_shop_page_archive_redirect' );
+
+function jigoshop_shop_page_archive_redirect() {
+	
+	if ( isset($_GET['page_id']) && $_GET['page_id'] == get_option('jigoshop_shop_page_id') ) :
+		wp_safe_redirect( get_post_type_archive_link('product') );
+		exit;
+	endif;
+	
+}
 
 /**
  * Add to cart

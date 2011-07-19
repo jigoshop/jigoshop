@@ -76,7 +76,15 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 			)
 		)"));
 		
-		echo '<form method="get">
+		if (defined('SHOP_IS_ON_FRONT')) :
+			$link = '';
+		elseif (is_post_type_archive('product') || is_page( get_option('jigoshop_shop_page_id') )) :
+			$link = get_post_type_archive_link('product');
+		else :					
+			$link = get_term_link( get_query_var('term'), get_query_var('taxonomy') );
+		endif;
+		
+		echo '<form method="get" action="'.$link.'">
 			<div class="price_slider_wrapper">
 				<div class="price_slider"></div>
 				<div class="price_slider_amount">

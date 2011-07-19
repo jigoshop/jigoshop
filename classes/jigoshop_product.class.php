@@ -289,7 +289,7 @@ class jigoshop_product {
 	
 	/** Returns whether or not the product is on sale */
 	function is_on_sale() {
-		if ( $this->data['sale_price'] && $this->data['sale_price']==$this->price ) :
+		if ( isset($this->data['sale_price']) && $this->data['sale_price']==$this->price ) :
 			return true;
 		endif;
 		return false;

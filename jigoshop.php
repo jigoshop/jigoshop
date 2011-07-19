@@ -202,6 +202,7 @@ function jigoshop_import_start() {
 add_action('import_start', 'jigoshop_import_start');
  
  
+
 ### Functions #########################################################
 
 function jigoshop_init() {
@@ -213,7 +214,7 @@ function jigoshop_init() {
 	add_image_size( 'shop_thumbnail', jigoshop::get_var('shop_thumbnail_w'), jigoshop::get_var('shop_thumbnail_h'), 'true' );
 	add_image_size( 'shop_small', jigoshop::get_var('shop_small_w'), jigoshop::get_var('shop_small_h'), 'true' );
 	add_image_size( 'shop_large', jigoshop::get_var('shop_large_w'), jigoshop::get_var('shop_large_h'), 'true' );
-	
+
 	// Include template functions here so they are pluggable by themes
 	include_once( 'jigoshop_template_functions.php' );
 	
