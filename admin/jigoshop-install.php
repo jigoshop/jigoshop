@@ -35,7 +35,7 @@ function install_jigoshop() {
 	update_option('jigoshop_update_sale_prices', 'no');
 	
 	// Flush Rules
-	flush_rewrite_rules();
+	flush_rewrite_rules( false );
 	
 	// Update version
 	update_option( "jigoshop_db_version", JIGOSHOP_VERSION );
