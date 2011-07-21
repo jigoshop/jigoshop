@@ -237,6 +237,8 @@ class jigoshop_checkout {
 	
 		global $wpdb;
 		
+		do_action('jigoshop_before_checkout_process');
+		
 		if (isset($_POST) && $_POST && !isset($_POST['login'])) :
 
 			jigoshop_cart::calculate_totals();
