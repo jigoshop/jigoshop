@@ -14,6 +14,8 @@ class dibs extends jigoshop_payment_gateway {
 		$this->merchant = get_option('jigoshop_dibs_merchant');
 		$this->description  = get_option('jigoshop_dibs_description');
 		$this->testmode = get_option('jigoshop_dibs_testmode');
+		$this->key1 = get_option('jigoshop_dibs_key1');
+		$this->key2 = get_option('jigoshop_dibs_key2');
 		
 		add_action('init', array(&$this, 'check_callback') );
 		add_action('valid-dibs-callback', array(&$this, 'successful_request') );
@@ -22,6 +24,8 @@ class dibs extends jigoshop_payment_gateway {
 		
 		add_option('jigoshop_dibs_enabled', 'yes');
 		add_option('jigoshop_dibs_merchant', '');
+		add_option('jigoshop_dibs_key1', '');
+		add_option('jigoshop_dibs_key2', '');
 		add_option('jigoshop_dibs_title', __('DIBS', 'jigoshop') );
 		add_option('jigoshop_dibs_description', __("Pay via DIBS using credit card or bank transfer.", 'jigoshop') );
 		add_option('jigoshop_dibs_testmode', 'no');
@@ -62,6 +66,18 @@ class dibs extends jigoshop_payment_gateway {
 			</td>
 		</tr>
 		<tr>
+			<td class="titledesc"><a href="#" tip="<?php _e('Please enter your DIBS MD5 key #1; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('DIBS MD5 Key 1', 'jigoshop') ?>:</td>
+			<td class="forminp">
+				<input class="input-text" type="text" name="jigoshop_dibs_key1" id="jigoshop_dibs_key1" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_dibs_key1')) echo $value; ?>" />
+			</td>
+		</tr>
+		<tr>
+			<td class="titledesc"><a href="#" tip="<?php _e('Please enter your DIBS MD5 key #2; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('DIBS MD5 Key 2', 'jigoshop') ?>:</td>
+			<td class="forminp">
+				<input class="input-text" type="text" name="jigoshop_dibs_key2" id="jigoshop_dibs_key2" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_dibs_key2')) echo $value; ?>" />
+			</td>
+		</tr>
+		<tr>
 			<td class="titledesc"><?php _e('Enable test mode', 'jigoshop') ?>:</td>
 			<td class="forminp">
 				<select name="jigoshop_dibs_testmode" id="jigoshop_dibs_testmode" style="min-width:100px;">
@@ -88,6 +104,8 @@ class dibs extends jigoshop_payment_gateway {
 		if(isset($_POST['jigoshop_dibs_enabled'])) update_option('jigoshop_dibs_enabled', jigowatt_clean($_POST['jigoshop_dibs_enabled'])); else @delete_option('jigoshop_dibs_enabled');
 		if(isset($_POST['jigoshop_dibs_title'])) update_option('jigoshop_dibs_title', jigowatt_clean($_POST['jigoshop_dibs_title'])); else @delete_option('jigoshop_dibs_title');
 		if(isset($_POST['jigoshop_dibs_merchant'])) update_option('jigoshop_dibs_merchant', jigowatt_clean($_POST['jigoshop_dibs_merchant'])); else @delete_option('jigoshop_dibs_merchant');
+		if(isset($_POST['jigoshop_dibs_key1'])) update_option('jigoshop_dibs_key1', jigowatt_clean($_POST['jigoshop_dibs_key1'])); else @delete_option('jigoshop_dibs_key1');
+		if(isset($_POST['jigoshop_dibs_key2'])) update_option('jigoshop_dibs_key2', jigowatt_clean($_POST['jigoshop_dibs_key2'])); else @delete_option('jigoshop_dibs_key2');
 		if(isset($_POST['jigoshop_dibs_description'])) update_option('jigoshop_dibs_description', jigowatt_clean($_POST['jigoshop_dibs_description'])); else @delete_option('jigoshop_dibs_description');
 		if(isset($_POST['jigoshop_dibs_testmode'])) update_option('jigoshop_dibs_testmode', jigowatt_clean($_POST['jigoshop_dibs_testmode'])); else @delete_option('jigoshop_dibs_testmode');
 	}
@@ -122,10 +140,16 @@ class dibs extends jigoshop_payment_gateway {
 				'cancelurl' => $order->get_cancel_order_url(),
 				'callbackurl' => trailingslashit(get_bloginfo('wpurl')).'?dibsListener=dibs_callback',
 				
+
+				
 				// Extra
 				//'invoice' => $order->order_key,
 				
 		);
+		
+		// Calculate key
+		// MD5(k2 + MD5(k1 + "merchant=123456&orderid=12345& currency=208&amount=9995")) 
+		$args['md5key'] = MD5(get_option('jigoshop_dibs_key2') . MD5(get_option('jigoshop_dibs_key1') . 'merchant=' . $args['merchant'] . '&orderid=' . $args['orderid'] . '&currency=' . $args['currency'] . '&amount=' . $args['amount']));
 		
 		if( !empty($_SERVER['HTTP_CLIENT_IP']) ) {
 			$args['ip'] = $_SERVER['HTTP_CLIENT_IP'];
