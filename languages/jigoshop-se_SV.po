@@ -26,17 +26,17 @@ msgstr "Produktkategori"
 # @ jigoshop
 #: jigoshop_taxonomy.php:26
 msgid "Product Category"
-msgstr ""
+msgstr "Produktkategori"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:27
 msgid "Search Product Categories"
-msgstr ""
+msgstr "Sök produktkategorier"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:28
 msgid "All Product Categories"
-msgstr ""
+msgstr "Alla produktkategorier"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:29
@@ -51,22 +51,22 @@ msgstr ""
 # @ jigoshop
 #: jigoshop_taxonomy.php:31
 msgid "Edit Product Category"
-msgstr ""
+msgstr "Redigera produktkategori"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:32
 msgid "Update Product Category"
-msgstr ""
+msgstr "Uppdatera produktkategori"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:33
 msgid "Add New Product Category"
-msgstr ""
+msgstr "Skapa ny produktkategori"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:34
 msgid "New Product Category Name"
-msgstr ""
+msgstr "Nytt namn på produktkategori"
 
 #: jigoshop_taxonomy.php:38
 msgctxt "slug"
@@ -77,23 +77,23 @@ msgstr ""
 # @ default
 #: jigoshop_taxonomy.php:47
 msgid "Product Tags"
-msgstr ""
+msgstr "Produkttaggar"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:48
 #: admin/jigoshop-admin-dashboard.php:58
 msgid "Product Tag"
-msgstr ""
+msgstr "Produkttagg"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:49
 msgid "Search Product Tags"
-msgstr ""
+msgstr "Sök produkttaggar"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:50
 msgid "All Product Tags"
-msgstr ""
+msgstr "Alla produkttaggar"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:51
@@ -108,22 +108,22 @@ msgstr ""
 # @ jigoshop
 #: jigoshop_taxonomy.php:53
 msgid "Edit Product Tag"
-msgstr ""
+msgstr "Redigera produkttagg"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:54
 msgid "Update Product Tag"
-msgstr ""
+msgstr "Uppdatera produkttagg"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:55
 msgid "Add New Product Tag"
-msgstr ""
+msgstr "Skapa ny produkttagg"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:56
 msgid "New Product Tag Name"
-msgstr ""
+msgstr "Nytt namn på produkttag"
 
 #: jigoshop_taxonomy.php:60
 msgctxt "slug"
@@ -134,13 +134,13 @@ msgstr ""
 #: jigoshop_taxonomy.php:79
 #: jigoshop.php:170
 msgid "Search "
-msgstr ""
+msgstr "Sök"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:80
 #: jigoshop.php:171
 msgid "All "
-msgstr ""
+msgstr "Alla"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:81
@@ -154,83 +154,83 @@ msgstr ""
 #: jigoshop_taxonomy.php:83
 #: jigoshop.php:174
 msgid "Edit "
-msgstr ""
+msgstr "Redigera"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:84
 #: jigoshop.php:175
 msgid "Update "
-msgstr ""
+msgstr "Uppdatera"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:85
 #: jigoshop.php:176
 msgid "Add New "
-msgstr ""
+msgstr "Skapa ny"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:86
 #: jigoshop.php:177
 msgid "New "
-msgstr ""
+msgstr "Ny"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:102
 #: admin/jigoshop-admin-dashboard.php:46
 msgid "Products"
-msgstr ""
+msgstr "Produkter"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:103
 msgid "Product"
-msgstr ""
+msgstr "Produkt"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:104
 msgid "Add Product"
-msgstr ""
+msgstr "Lägg till produkt"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:105
 msgid "Add New Product"
-msgstr ""
+msgstr "Skapa ny produkt"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:106
 #: jigoshop_taxonomy.php:149
 msgid "Edit"
-msgstr ""
+msgstr "Redigera"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:107
 msgid "Edit Product"
-msgstr ""
+msgstr "Redigera produkt"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:108
 msgid "New Product"
-msgstr ""
+msgstr "Ny produkt"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:109
 #: jigoshop_taxonomy.php:110
 msgid "View Product"
-msgstr ""
+msgstr "Visa produkt"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:111
 msgid "Search Products"
-msgstr ""
+msgstr "Sök produkter"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:112
 msgid "No Products found"
-msgstr ""
+msgstr "Hittade inga produkter"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:113
 msgid "No Products found in trash"
-msgstr ""
+msgstr "Hittade inga produkter i papperskorgen"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:114
@@ -240,13 +240,13 @@ msgstr ""
 # @ jigoshop
 #: jigoshop_taxonomy.php:116
 msgid "This is where you can add new products to your store."
-msgstr ""
+msgstr "Här kan du lägga till nya proudkter i din affär."
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:145
 #: admin/jigoshop-admin-dashboard.php:70
 msgid "Orders"
-msgstr ""
+msgstr "Beställningar"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:146
