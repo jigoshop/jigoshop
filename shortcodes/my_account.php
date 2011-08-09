@@ -52,7 +52,7 @@ function jigoshop_my_account( $atts ) {
 				if ($jigoshop_orders->orders) foreach ($jigoshop_orders->orders as $order) :
 					?><tr class="order">
 						<td><?php echo $order->id; ?></td>
-						<td><time title="<?php echo date_i18n('F j, Y, g:i a', strtotime($order->order_date)); ?>"><?php echo date_i18n('F j, Y, g:i a', strtotime($order->order_date)); ?></time></td>
+						<td><time title="<?php echo date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($order->order_date)); ?>"><?php echo date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($order->order_date)); ?></time></td>
 						<td><address><?php if ($order->formatted_shipping_address) echo $order->formatted_shipping_address; else echo '&ndash;'; ?></address></td>
 						<td><?php echo jigoshop_price($order->order_total); ?></td>
 						<td><?php echo $order->status; ?></td>
@@ -387,7 +387,7 @@ function jigoshop_view_order() {
 
 		if ( $order_id>0 && $order->user_id == get_current_user_id() ) :
 
-			echo '<p>' . sprintf( __('Order <mark>#%s</mark> made on <mark>%s</mark>', 'jigoshop'), $order->id, date_i18n('F j, Y, g:i a', strtotime($order->order_date)) );
+			echo '<p>' . sprintf( __('Order <mark>#%s</mark> made on <mark>%s</mark>', 'jigoshop'), $order->id, date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($order->order_date)) );
 
 			echo sprintf( __('. Order status: <mark>%s</mark>', 'jigoshop'), $order->status );
 
