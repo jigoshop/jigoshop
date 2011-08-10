@@ -90,7 +90,7 @@ class dibs extends jigoshop_payment_gateway {
 	}
 
 	/**
-	* There are no payment fields for paypal, but we want to show the description if set.
+	* There are no payment fields for dibs, but we want to show the description if set.
 	**/
 	function payment_fields() {
 		if ($jigoshop_dibs_description = get_option('jigoshop_dibs_description')) echo wpautop(wptexturize($jigoshop_dibs_description));
@@ -111,7 +111,7 @@ class dibs extends jigoshop_payment_gateway {
 	}
 
 	/**
-	* Generate the paypal button link
+	* Generate the dibs button link
 	**/
 	public function generate_form( $order_id ) {
 		
@@ -140,15 +140,10 @@ class dibs extends jigoshop_payment_gateway {
 				'cancelurl' => $order->get_cancel_order_url(),
 				'callbackurl' => trailingslashit(get_bloginfo('wpurl')).'?dibsListener=dibs_callback',
 				
-
-				
-				// Extra
-				//'invoice' => $order->order_key,
-				
 		);
 		
 		// Calculate key
-		// MD5(k2 + MD5(k1 + "merchant=123456&orderid=12345& currency=208&amount=9995")) 
+		// http://tech.dibs.dk/dibs_api/other_features/md5-key_control/
 		$args['md5key'] = MD5(get_option('jigoshop_dibs_key2') . MD5(get_option('jigoshop_dibs_key1') . 'merchant=' . $args['merchant'] . '&orderid=' . $args['orderid'] . '&currency=' . $args['currency'] . '&amount=' . $args['amount']));
 		
 		if( !empty($_SERVER['HTTP_CLIENT_IP']) ) {
@@ -219,7 +214,7 @@ class dibs extends jigoshop_payment_gateway {
 	}
 	
 	/**
-	* Check for PayPal IPN Response
+	* Check for DIBS Response
 	**/
 	function check_callback() {
 		if (isset($_GET['dibsListener']) && $_GET['dibsListener'] == 'dibs_callback') {
