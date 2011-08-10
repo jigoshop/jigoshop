@@ -1,22 +1,31 @@
 <?php
 /**
- * ACTIONS
+ * Various hooks Jigoshop core uses
  *
- * Various hooks Jigoshop uses to do stuff. index:
+ * DISCLAIMER
  *
- *		- When default permalinks are enabled, redirect shop page to post type archive url
- *		- Add to Cart
- *		- Clear cart
- *		- Restore an order via a link
- *		- Cancel a pending order
- *		- Download a file
- *		- Order Status completed - GIVE DOWNLOADABLE PRODUCT ACCESS TO CUSTOMER
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
  *
- **/
-
+ * @package    Jigoshop
+ * @category   Core
+ * @author     Jigowatt
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
+ */
 
 /**
+ *	- When default permalinks are enabled, redirect shop page to post type archive url
+ *	- Add to Cart
+ *	- Clear cart
+ *	- Restore an order via a link
+ *	- Cancel a pending order
+ *	- Download a file
+ *	- Order Status completed - GIVE DOWNLOADABLE PRODUCT ACCESS TO CUSTOMER
+ *
  * When default permalinks are enabled, redirect shop page to post type archive url
+ *
  **/
 if (get_option( 'permalink_structure' )=="") add_action( 'init', 'jigoshop_shop_page_archive_redirect' );
 

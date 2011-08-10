@@ -18,8 +18,6 @@
  */
 
 /**
- * Attributes admin panel
- * 
  * Shows the created attributes and lets you add new ones.
  * The added attributes are stored in the database and can be used for layered navigation.
  *

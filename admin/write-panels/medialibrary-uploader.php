@@ -1,11 +1,19 @@
 <?php
-
 /**
- * WooThemes Media Library-driven AJAX File Uploader Module (2010-11-05)
+ * Media Library-driven AJAX File Uploader Module
  *
- * Slightly modified for use in the Options Framework and modified again for Jigoshop :)
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package    Jigoshop
+ * @category   Admin
+ * @author     Jigowatt
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
  */
-
 
 /**
  * Sets up a custom post type to attach image to.  This allows us to have
