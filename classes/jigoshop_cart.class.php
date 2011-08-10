@@ -1,14 +1,15 @@
 <?php
 /**
  * Jigoshop cart
- * @class 		jigoshop_cart
  * 
  * The JigoShop cart class stores cart data and active coupons as well as handling customer sessions and some cart related urls.
  * The cart class also has a price calculation function which calls upon other classes to calcualte totals.
  *
- * @author 		Jigowatt
- * @category 	Classes
- * @package 	JigoShop
+ * @package			JigoShop
+ * @category		Cart
+ * @author			Jigowatt
+ * @copyright		Copyright (c) 2011 Jigowatt Ltd.
+ * @license			http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_cart {
 	
