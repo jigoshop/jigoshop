@@ -553,11 +553,11 @@ function jigoshop_dashboard() {
 				     			
 				     			<p><g:plusone size="medium" href="http://jigoshop.com/"></g:plusone><script type="text/javascript" src="https://apis.google.com/js/plusone.js">{lang: 'en-GB'}</script></p>
 				     			
-				     			<h4><?php _e('Jigoshop is bought to you by&hellip;', 'jigoshop'); ?></h4>
+				     			<h4><?php _e('Jigoshop is brought to you by&hellip;', 'jigoshop'); ?></h4>
 
-				     			<p><a href="http://jigowatt.co.uk/"><img src="<?php echo jigoshop::plugin_url(); ?>/assets/images/jigowatt.png" alt="Jigowatt" /></a></p>
+				     			<p><a href="http://jigowatt.co.uk/" title="Jigoshop is brought to you by Jigowatt"><img src="<?php echo jigoshop::plugin_url(); ?>/assets/images/jigowatt.png" alt="Jigowatt" /></a></p>
 				     			
-				     			<p>From design to deployment Jigowatt delivers expert solutions to enterprise customers using Magento & WordPress open source platforms.</p>
+				     			<p><?php _e('From design to deployment Jigowatt delivers expert solutions to enterprise customers using Magento & WordPress open source platforms.') ?></p>
 				     			
 				     		</div>
 				     		<div class="clear"></div>
