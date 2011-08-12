@@ -136,9 +136,10 @@ class dibs extends jigoshop_payment_gateway {
 				'ordertext' => 'TEST',
 				
 				// URLs
+				// TODO these urls will probably not work since DIBS ignores the query
 				'accepturl' => add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink(get_option('jigoshop_thanks_page_id')))),
 				'cancelurl' => $order->get_cancel_order_url(),
-				'callbackurl' => trailingslashit(get_bloginfo('wpurl')).'?dibsListener=dibs_callback',
+				'callbackurl' => site_url('/jigoshop/dibscallback.php'),
 				
 		);
 		
@@ -217,7 +218,7 @@ class dibs extends jigoshop_payment_gateway {
 	* Check for DIBS Response
 	**/
 	function check_callback() {
-		if (isset($_GET['dibsListener']) && $_GET['dibsListener'] == 'dibs_callback') {
+		if ($_SERVER["REQUEST_URI"] == site_url('/jigoshop/dibscallback.php')) {
 			
 			error_log('Dibs callback!');
 			error_log(print_r($_POST,true));
