@@ -221,15 +221,19 @@ add_action('import_start', 'jigoshop_import_start');
 
 ### Functions #########################################################
 
+function jigoshop_set_image_sizes(){
+	add_image_size( 'shop_tiny', get_option('jigoshop_shop_tiny_w'), get_option('jigoshop_shop_tiny_h'), 'true' );
+	add_image_size( 'shop_thumbnail', get_option('jigoshop_shop_thumbnail_w'), get_option('jigoshop_shop_thumbnail_h'), 'true' );
+	add_image_size( 'shop_small', get_option('jigoshop_shop_small_w'), get_option('jigoshop_shop_small_h'), 'true' );
+	add_image_size( 'shop_large', get_option('jigoshop_shop_large_w'), get_option('jigoshop_shop_large_h'), 'true' );
+}
+
 function jigoshop_init() {
 	
 	jigoshop_post_type();
 	
 	// Image sizes
-	add_image_size( 'shop_tiny', jigoshop::get_var('shop_tiny_w'), jigoshop::get_var('shop_tiny_h'), 'true' );
-	add_image_size( 'shop_thumbnail', jigoshop::get_var('shop_thumbnail_w'), jigoshop::get_var('shop_thumbnail_h'), 'true' );
-	add_image_size( 'shop_small', jigoshop::get_var('shop_small_w'), jigoshop::get_var('shop_small_h'), 'true' );
-	add_image_size( 'shop_large', jigoshop::get_var('shop_large_w'), jigoshop::get_var('shop_large_h'), 'true' );
+	jigoshop_set_image_sizes();
 
 	// Include template functions here so they are pluggable by themes
 	include_once( 'jigoshop_template_functions.php' );

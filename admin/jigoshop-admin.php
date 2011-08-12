@@ -23,7 +23,7 @@ require_once ( 'jigoshop-admin-attributes.php' );
 require_once ( 'jigoshop-admin-post-types.php' );
 
 function jigoshop_admin_init () {
-	require_once ( 'jigoshop-admin-settings-options.php' );	
+	require_once ( 'jigoshop-admin-settings-options.php' );
 }
 
 add_action('admin_init', 'jigoshop_admin_init');
