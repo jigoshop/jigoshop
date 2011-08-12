@@ -219,6 +219,9 @@ class dibs extends jigoshop_payment_gateway {
 	function check_callback() {
 		if (isset($_GET['dibsListener']) && $_GET['dibsListener'] == 'dibs_callback') {
 			
+			error_log('Dibs callback!');
+			error_log(print_r($_POST,true));
+			
 			$_POST = stripslashes_deep($_POST);
 			
 			// TODO MD5 verify
