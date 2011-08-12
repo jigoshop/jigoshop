@@ -2,13 +2,29 @@
 /*
 Plugin Name: Jigoshop - WordPress eCommerce
 Plugin URI: http://jigoshop.com
-Description: An eCommerce plugin for wordpress.
+Description: An eCommerce plugin for WordPress.
 Version: 0.9.8.1
 Author: Jigowatt
 Author URI: http://jigowatt.co.uk
 Requires at least: 3.1
 Tested up to: 3.1.3
 */
+
+/**
+ * Jigoshop
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package    Jigoshop
+ * @category   Core
+ * @author     Jigowatt
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
+ */
 
 @session_start();
 

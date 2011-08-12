@@ -1,28 +1,31 @@
 <?php
 /**
- * JigoShop Admin
- * 
  * Main admin file which loads all settings panels and sets up the menus.
  *
- * @author 		Jigowatt
- * @category 	Admin
- * @package 	JigoShop
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package    Jigoshop
+ * @category   Admin
+ * @author     Jigowatt
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
  */
 
-
-
 require_once ( 'jigoshop-install.php' );
-
 require_once ( 'jigoshop-admin-dashboard.php' );
 require_once ( 'jigoshop-write-panels.php' );
 require_once ( 'jigoshop-admin-settings.php' );
 require_once ( 'jigoshop-admin-attributes.php' );
 require_once ( 'jigoshop-admin-post-types.php' );
-	
 
 function jigoshop_admin_init () {
 	require_once ( 'jigoshop-admin-settings-options.php' );	
 }
+
 add_action('admin_init', 'jigoshop_admin_init');
 
 /**
@@ -114,6 +117,7 @@ function jigoshop_system_info() {
 	<div class="wrap jigoshop">
 		<div class="icon32 icon32-jigoshop-debug" id="icon-jigoshop"><br/></div>
 	    <h2><?php _e('System Information','jigoshop') ?></h2>
+	    <p>Use the information below when submitting technical support requests via the Jigoshop community / premium <a href="http://jigoshop.com/forums/" title="Jigoshop Support Forums" target="_blank">support forums</a>.</p>
 		<div id="tabs-wrap">
 			<ul class="tabs">
 				<li><a href="#versions"><?php _e('Environment', 'jigoshop'); ?></a></li>
@@ -123,7 +127,7 @@ function jigoshop_system_info() {
 				<table class="widefat fixed" style="width:850px;">
 		            <thead>		            
 		            	<tr>
-		                    <th scope="col" width="200px"><?php _e('Versions','jigoshop')?></th>
+		                    <th scope="col" width="200px"><?php _e('Software Versions','jigoshop')?></th>
 		                    <th scope="col">&nbsp;</th>
 		                </tr>
 		           	</thead>
@@ -139,8 +143,8 @@ function jigoshop_system_info() {
 		            </tbody>
 		            <thead>
 		                <tr>
-		                    <th scope="col" width="200px"><?php _e('Server','jigoshop')?></th>
-		                    <th scope="col">&nbsp;</th>
+		                    <td scope="col" width="200px"><?php _e('Server','jigoshop')?></td>
+		                    <td scope="col"><?php echo (defined('PHP_OS')) ? (string)(PHP_OS) : 'N/A' ?></td>
 		                </tr>
 		            </thead>
 		           	<tbody>
@@ -182,11 +186,11 @@ function jigoshop_system_info() {
 		                </tr>
 		                 <tr>
 		                    <td class="titledesc"><?php _e('WP_DEBUG','jigoshop')?></td>
-		                    <td class="forminp"><?php if (WP_DEBUG) echo __('On', 'jigoshop'); else __('Off', 'jigoshop'); ?></td>
+		                    <td class="forminp"><?php echo (WP_DEBUG === true ) ? __('On', 'jigoshop') : __('Off', 'jigoshop') ?></td>
 		                </tr>
 		                <tr>
 		                    <td class="titledesc"><?php _e('DISPLAY_ERRORS','jigoshop')?></td>
-		                    <td class="forminp"><?php if(function_exists('phpversion')) echo ini_get('display_errors'); ?></td>
+		                    <td class="forminp"><?php echo (ini_get('display_errors')) ? 'On (' . ini_get('display_errors') . ')' : 'N/A' ?></td>
 		                </tr>
 		                <tr>
 		                    <td class="titledesc"><?php _e('FSOCKOPEN','jigoshop')?></td>

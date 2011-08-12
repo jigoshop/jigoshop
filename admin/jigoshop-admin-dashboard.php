@@ -1,10 +1,18 @@
 <?php
-/**
+ /**
  * Functions used for displaying the jigoshop dashboard
  *
- * @author 		Jigowatt
- * @category 	Admin
- * @package 	JigoShop
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package    Jigoshop
+ * @category   Admin
+ * @author     Jigowatt
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -18,8 +26,7 @@
  * @since 		1.0
  * @usedby 		jigoshop_admin_menu()
  */
-function jigoshop_dashboard() {
-	?>
+function jigoshop_dashboard() { ?>
 	<div class="wrap jigoshop">
         <div class="icon32 jigoshop_icon"><br/></div>
 		<h2><?php _e('Jigoshop Dashboard','jigoshop'); ?></h2>
@@ -525,31 +532,30 @@ function jigoshop_dashboard() {
 				     			<li><a href="http://jigoshop.com/extend/extensions/"><?php _e('Jigoshop Extensions', 'jigoshop'); ?></a> &ndash; <?php _e('Extend Jigoshop with extra plugins and modules.', 'jigoshop'); ?></li>
 				     			<li><a href="http://jigoshop.com/extend/themes/"><?php _e('Jigoshop Themes', 'jigoshop'); ?></a> &ndash; <?php _e('Extend Jigoshop with themes.', 'jigoshop'); ?></li>
 				     			<li><a href="http://twitter.com/#!/jigoshop"><?php _e('@Jigoshop', 'jigoshop'); ?></a> &ndash; <?php _e('Follow us on Twitter.', 'jigoshop'); ?></li>
-				     			<li><a href="https://github.com/mikejolley/Jigoshop"><?php _e('Jigoshop on Github', 'jigoshop'); ?></a> &ndash; <?php _e('Help extend Jigoshop.', 'jigoshop'); ?></li>
+				     			<li><a href="https://github.com/jigoshop/Jigoshop"><?php _e('Jigoshop on Github', 'jigoshop'); ?></a> &ndash; <?php _e('Help extend Jigoshop.', 'jigoshop'); ?></li>
 				     			<li><a href="http://wordpress.org/extend/plugins/jigoshop/"><?php _e('Jigoshop on WordPress.org', 'jigoshop'); ?></a> &ndash; <?php _e('Leave us a rating!', 'jigoshop'); ?></li>
 				     		</ul>
 				     		<div class="social">
 				     			
-				     			<h4 class="first"><?php _e('Show your support &amp; Help promote Jigoshop!', 'jigoshop'); ?></h4>
+				     			<h4 class="first"><?php _e('Jigoshop Project', 'jigoshop') ?></h4>
+				     			<p><?php _e('Join our growing developer community today, contribute to the jigoshop project via GitHub.') ?></p>
 				     			
-				     			<form action="https://www.paypal.com/cgi-bin/webscr" method="post" style="margin: 0 0 1em 0;">
-									<input type="hidden" name="cmd" value="_s-xclick">
-									<input type="hidden" name="hosted_button_id" value="TKRER2WH7UAD6">
-									<input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online." style="margin:0; padding:0; ">
-									<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
-								</form>
+				     			<p><a href="https://github.com/jigoshop/Jigoshop" class="gitforked-button gitforked-forks gitforked-watchers">Fork</a></p>
+				     			<script src="http://gitforked.com/api/1.1/button.js" type="text/javascript"></script>
+				     			
+				     			<h4><?php _e('Jigoshop Social', 'jigoshop'); ?></h4>
+				     			
+				     			<div id="fb-root"></div><script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:like href="http://jigoshop.com" send="true" layout="button_count" width="250" show_faces="true" action="like" font="arial"></fb:like>
 								
-				     			<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fjigoshop.com&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font=segoe+ui&amp;height=24" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:24px;" allowTransparency="true"></iframe>
-				     			
 				     			<p><a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jigoshop.com/" data-text="Jigoshop: A WordPress eCommerce solution that works" data-count="horizontal" data-via="jigoshop" data-related="Jigowatt:Creators">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script></p>
 				     			
 				     			<p><g:plusone size="medium" href="http://jigoshop.com/"></g:plusone><script type="text/javascript" src="https://apis.google.com/js/plusone.js">{lang: 'en-GB'}</script></p>
 				     			
-				     			<h4><?php _e('Jigoshop is bought to you by&hellip;', 'jigoshop'); ?></h4>
+				     			<h4><?php _e('Brought to you by', 'jigoshop'); ?></h4>
 
-				     			<p><a href="http://jigowatt.co.uk/"><img src="<?php echo jigoshop::plugin_url(); ?>/assets/images/jigowatt.png" alt="Jigowatt" /></a></p>
+				     			<p><a href="http://jigowatt.co.uk/" title="Jigoshop is brought to you by Jigowatt"><img src="<?php echo jigoshop::plugin_url(); ?>/assets/images/jigowatt.png" alt="Jigowatt" /></a></p>
 				     			
-				     			<p>From design to deployment Jigowatt delivers expert solutions to enterprise customers using Magento & WordPress open source platforms.</p>
+				     			<p><?php _e('From design to deployment Jigowatt delivers expert solutions to enterprise customers using Magento & WordPress open source platforms.') ?></p>
 				     			
 				     		</div>
 				     		<div class="clear"></div>
@@ -560,5 +566,4 @@ function jigoshop_dashboard() {
 			</div>
 		</div>
 	</div>
-	<?php
-}
+<?php } ?>
