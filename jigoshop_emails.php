@@ -215,7 +215,7 @@ function jigoshop_pay_for_order_customer_notification( $order_id ) {
 
 	$subject = '[' . get_bloginfo('name') . '] ' . __('Pay for Order','jigoshop');
 
-	$customer_message = sprintf( __("An order has been created for you on &ldquo;%s&rdquo;. To pay for this order please use the following link: %s",'jigoshop') . PHP_EOL . PHP_EOL, get_bloginfo('name'), $order->get_checkout_payment_url() );
+	$customer_message = sprintf( __("An order has been created for you on \"%s\". To pay for this order please use the following link: %s",'jigoshop') . PHP_EOL . PHP_EOL, get_bloginfo('name'), $order->get_checkout_payment_url() );
 
 	$message 	 = '=====================================================================' . PHP_EOL;
 	$message 	.= __('ORDER #: ','jigoshop') . $order->id . '' . PHP_EOL;
