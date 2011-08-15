@@ -218,6 +218,7 @@ class dibs extends jigoshop_payment_gateway {
 	* Check for DIBS Response
 	**/
 	function check_callback() {
+		error_log(site_url('/jigoshop/dibscallback.php'));
 		if ($_SERVER["REQUEST_URI"] == site_url('/jigoshop/dibscallback.php')) {
 			
 			error_log('Dibs callback!');
