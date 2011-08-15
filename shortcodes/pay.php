@@ -108,7 +108,7 @@ function jigoshop_pay() {
 					</li>
 					<li class="date">
 						<?php _e('Date:', 'jigoshop'); ?>
-						<strong><?php echo date('d.m.Y', strtotime($order->order_date)); ?></strong>
+						<strong><?php echo date(get_option('date_format'), strtotime($order->order_date)); ?></strong>
 					</li>
 					<li class="total">
 						<?php _e('Total:', 'jigoshop'); ?>
