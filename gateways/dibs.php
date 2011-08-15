@@ -229,6 +229,9 @@ class dibs extends jigoshop_payment_gateway {
 			
 			do_action("valid-dibs-callback", $_POST);
 			
+			header("Status: 200");
+			die('Callback success');
+			
 		}
 	}
 
