@@ -404,8 +404,8 @@ if (!function_exists('jigoshop_get_product_thumbnail')) {
 
 		global $post;
 
-		if (!$placeholder_width) $placeholder_width = jigoshop::get_var('shop_small_w');
-		if (!$placeholder_height) $placeholder_height = jigoshop::get_var('shop_small_h');
+		if (!$placeholder_width) $placeholder_width = get_option('jigoshop_shop_small_w');
+		if (!$placeholder_height) $placeholder_height = get_option('jigoshop_shop_small_h');
 
 		if ( has_post_thumbnail() ) return get_the_post_thumbnail($post->ID, $size); else return '<img src="'.jigoshop::plugin_url(). '/assets/images/placeholder.png" alt="Placeholder" width="'.$placeholder_width.'" height="'.$placeholder_height.'" />';
 

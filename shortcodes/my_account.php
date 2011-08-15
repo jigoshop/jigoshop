@@ -14,7 +14,7 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
- 
+
 function get_jigoshop_my_account ( $atts ) {
 	return jigoshop::shortcode_wrapper('jigoshop_my_account', $atts);
 }

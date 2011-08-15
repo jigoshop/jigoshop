@@ -125,7 +125,7 @@ function jigoshop_cart( $atts ) {
 								<td class="product-thumbnail"><a href="'.get_permalink($item_id).'">';
 						
 						if (has_post_thumbnail($item_id)) echo get_the_post_thumbnail($item_id, 'shop_tiny'); 
-						else echo '<img src="'.jigoshop::plugin_url(). '/assets/images/placeholder.png" alt="Placeholder" width="'.jigoshop::get_var('shop_tiny_w').'" height="'.jigoshop::get_var('shop_tiny_h').'" />'; 
+						else echo '<img src="'.jigoshop::plugin_url(). '/assets/images/placeholder.png" alt="Placeholder" width="'.get_option('jigoshop_shop_tiny_w').'" height="'.get_option('jigoshop_shop_tiny_h').'" />';
 							
 						echo '	</a></td>
 								<td class="product-name"><a href="'.get_permalink($item_id).'">' . apply_filters('jigoshop_cart_product_title', $_product->get_title(), $_product) . '</a></td>

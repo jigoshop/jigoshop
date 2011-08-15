@@ -34,7 +34,7 @@ class jigoshop {
 	const SHOP_THUMBNAIL_H = '90';
 	const SHOP_LARGE_W = '300';
 	const SHOP_LARGE_H = '300';
-	
+
 	/** constructor */
 	function __construct () {
 		global $wpdb;
@@ -103,7 +103,7 @@ class jigoshop {
 		endswitch;
 		return apply_filters( 'jigoshop_get_var_'.$var, $return );
 	}
-	
+
 	/**
 	 * Add an error
 	 *
