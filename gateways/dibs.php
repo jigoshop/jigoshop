@@ -218,8 +218,7 @@ class dibs extends jigoshop_payment_gateway {
 	* Check for DIBS Response
 	**/
 	function check_callback() {
-		//error_log($_SERVER["REQUEST_URI"] . ' = ' .site_url('/jigoshop/dibscallback.php'));
-		if ($_SERVER["REQUEST_URI"] == site_url('/jigoshop/dibscallback.php')) {
+		if ( mb_strpos($_SERVER["REQUEST_URI"], '/jigoshop/dibscallback.php' ) {
 			
 			error_log('Dibs callback!');
 			error_log(print_r($_POST,true));
@@ -229,10 +228,6 @@ class dibs extends jigoshop_payment_gateway {
 			// TODO MD5 verify
 			
 			do_action("valid-dibs-callback", $_POST);
-			
-			header("Status: 200");
-			die('Callback success');
-			
 		}
 	}
 
