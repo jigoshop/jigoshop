@@ -1337,7 +1337,7 @@ msgstr "I lager?"
 #: admin/jigoshop-admin-settings-options.php:377
 #: admin/write-panels/product-data.php:41
 msgid "Inventory"
-msgstr "Förråd"
+msgstr "Lager"
 
 # @ jigoshop
 #: admin/jigoshop-admin-post-types.php:34
