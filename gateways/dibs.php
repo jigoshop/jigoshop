@@ -239,9 +239,13 @@ class dibs extends jigoshop_payment_gateway {
 			
 			// Verify MD5 checksum
 			// http://tech.dibs.dk/dibs_api/other_features/md5-key_control/
-			$md5 = MD5(get_option('jigoshop_dibs_key2') . MD5(get_option('jigoshop_dibs_key1') . 'transact='. $posted['transact'] . '&amount=' . $posted['amount'] . '&currency=' . $posted['currency']));
+			$key1 = get_option('jigoshop_dibs_key1');
+			$key2 = get_option('jigoshop_dibs_key2');
+			$vars = 'transact='. $posted['transact'] . '&amount=' . $posted['amount'] . '&currency=' . $posted['currency'];
+			$md5 = MD5($key2 . MD5($key1 . $vars));
 			
 			error_log('Posted: '.print_r($posted,true));
+			error_log("Key1: $key1  Key2: $key2  Vars: $vars");
 			error_log("Check: $md5 ".$posted['authkey']);
 			
 			if($posted['authkey'] != $md5) {
