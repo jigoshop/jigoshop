@@ -262,14 +262,9 @@ class dibs extends jigoshop_payment_gateway {
 			$vars = 'transact='. $posted['transact'] . '&amount=' . $posted['amount'] . '&currency=' . $posted['currency'];
 			$md5 = MD5($key2 . MD5($key1 . $vars));
 			
-			error_log('Posted: '.print_r($posted,true));
-			error_log("Key1: $key1  Key2: $key2  Vars: $vars");
-			error_log("Check: $md5 ".$posted['authkey']);
-			
 			if($posted['authkey'] != $md5) {
 				error_log('MD5 check failed for Dibs callback with order_id:'.$posted['orderid']);
-				// For some reason this MD5 stuff wont work, so accept anyway.
-				// exit();
+				exit();
 			}
 			
 			$order = new jigoshop_order( (int) $posted['orderid'] );
