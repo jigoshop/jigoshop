@@ -136,10 +136,11 @@ class dibs extends jigoshop_payment_gateway {
 				'ordertext' => 'TEST',
 				
 				// URLs
-				// TODO these urls will probably not work since DIBS ignores the querystring
+				'callbackurl' => site_url('/jigoshop/dibscallback.php'),
+				
+				// TODO these urls will not work correctly since DIBS ignores the querystring
 				'accepturl' => add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink(get_option('jigoshop_thanks_page_id')))),
 				'cancelurl' => $order->get_cancel_order_url(),
-				'callbackurl' => site_url('/jigoshop/dibscallback.php'),
 				
 		);
 		
@@ -221,7 +222,6 @@ class dibs extends jigoshop_payment_gateway {
 		if ( mb_strpos($_SERVER["REQUEST_URI"], '/jigoshop/dibscallback.php') ) {
 			
 			error_log('Dibs callback!');
-			error_log(print_r($_POST,true));
 			
 			$_POST = stripslashes_deep($_POST);
 			
@@ -240,6 +240,9 @@ class dibs extends jigoshop_payment_gateway {
 			// Verify MD5 checksum
 			// http://tech.dibs.dk/dibs_api/other_features/md5-key_control/
 			$md5 = MD5(get_option('jigoshop_dibs_key2') . MD5(get_option('jigoshop_dibs_key1') . 'transact='. $posted['transact'] . '&amount=' . $posted['amount'] . '&currency=' . $posted['currency']));
+			
+			error_log('Posted: '.print_r($posted,true));
+			error_log("Check: $md5 ".$posted['authkey']);
 			
 			if($posted['authkey'] != $md5) {
 				error_log('MD5 check failed for Dibs callback with order_id:'.$posted['orderid']);
