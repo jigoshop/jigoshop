@@ -225,7 +225,6 @@ class dibs extends jigoshop_payment_gateway {
 			
 			$_POST = stripslashes_deep($_POST);
 			
-			
 			do_action("valid-dibs-callback", $_POST);
 		}
 	}
@@ -242,7 +241,7 @@ class dibs extends jigoshop_payment_gateway {
 			// http://tech.dibs.dk/dibs_api/other_features/md5-key_control/
 			$md5 = MD5(get_option('jigoshop_dibs_key2') . MD5(get_option('jigoshop_dibs_key1') . 'transact='. $posted['transact'] . '&amount=' . $posted['amount'] . '&currency=' . $posted['currency']));
 			
-			if($posted['dibsmd5'] != $md5) {
+			if($posted['authkey'] != $md5) {
 				error_log('MD5 check failed for Dibs callback with order_id:'.$posted['orderid']);
 				exit();
 			}
