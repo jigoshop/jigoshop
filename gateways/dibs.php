@@ -119,6 +119,23 @@ class dibs extends jigoshop_payment_gateway {
 		
 		$action_adr = 'https://payment.architrade.com/paymentweb/start.action';
 		
+		// Dibs currency codes http://tech.dibs.dk/toolbox/currency_codes/
+		$dibs_currency = array(
+			'DKK' => '208', // Danish Kroner
+			'EUR' => '978', // Euro
+			'USD' => '840', // US Dollar $
+			'GBP' => '826', // English Pound £
+			'SEK' => '752', // Swedish Kroner
+			'AUD' => '036', // Australian Dollar
+			'CAD' => '124', // Canadian Dollar
+			'ISK' => '352', // Icelandic Kroner
+			'JPY' => '392', // Japanese Yen
+			'NZD' => '554', // New Zealand Dollar
+			'NOK' => '578', // Norwegian Kroner
+			'CHF' => '756', // Swiss Franc
+			'TRY' => '949', // Turkish Lire
+		);
+		
 		$args =
 			array(
 				// Merchant
@@ -132,7 +149,7 @@ class dibs extends jigoshop_payment_gateway {
 				'amount' => $order->order_total * 100,
 				'orderid' => $order_id,
 				'uniqueoid' => $order->order_key,
-				'currency' => get_option('jigoshop_currency'),
+				'currency' => $dibs_currency[get_option('jigoshop_currency')],
 				'ordertext' => 'TEST',
 				
 				// URLs
@@ -143,6 +160,7 @@ class dibs extends jigoshop_payment_gateway {
 				'cancelurl' => $order->get_cancel_order_url(),
 				
 		);
+		
 		
 		// Calculate key
 		// http://tech.dibs.dk/dibs_api/other_features/md5-key_control/
