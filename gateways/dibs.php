@@ -136,7 +136,7 @@ class dibs extends jigoshop_payment_gateway {
 				'ordertext' => 'TEST',
 				
 				// URLs
-				// TODO these urls will probably not work since DIBS ignores the query
+				// TODO these urls will probably not work since DIBS ignores the querystring
 				'accepturl' => add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink(get_option('jigoshop_thanks_page_id')))),
 				'cancelurl' => $order->get_cancel_order_url(),
 				'callbackurl' => site_url('/jigoshop/dibscallback.php'),
@@ -225,7 +225,6 @@ class dibs extends jigoshop_payment_gateway {
 			
 			$_POST = stripslashes_deep($_POST);
 			
-			// TODO MD5 verify
 			
 			do_action("valid-dibs-callback", $_POST);
 		}
@@ -239,18 +238,27 @@ class dibs extends jigoshop_payment_gateway {
 		// Custom holds post ID
 		if ( !empty($posted['transact']) && !empty($posted['orderid']) && is_numeric($posted['orderid']) ) {
 			
+			// Verify MD5 checksum
+			// http://tech.dibs.dk/dibs_api/other_features/md5-key_control/
+			$md5 = MD5(get_option('jigoshop_dibs_key2') . MD5(get_option('jigoshop_dibs_key1') . 'transact='. $posted['transact'] . '&amount=' . $posted['amount'] . '&currency=' . $posted['currency']));
+			
+			if($posted['dibsmd5'] != $md5) {
+				error_log('MD5 check failed for Dibs callback with order_id:'.$posted['orderid']);
+				exit();
+			}
+			
 			$order = new jigoshop_order( (int) $posted['orderid'] );
-			
-			if ($order->order_key !== $posted['uniqueoid']) exit;
-			
-			// Sandbox fix
-			//if ($posted['test']=='yes' && $posted['payment_status']=='Pending') $posted['payment_status'] = 'completed';
-			
+		
+			if ($order->order_key !== $posted['uniqueoid']) {
+				error_log('Unique ID check failed for Dibs callback with order_id:'.$posted['orderid']);
+				exit;
+			}
+		
 			if ($order->status !== 'completed') {
-				
+			
 				$order->add_order_note( __('Callback payment completed', 'jigoshop') );
 				$order->payment_complete();
-				
+			
 			}
 			
 			exit;
