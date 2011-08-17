@@ -2,20 +2,12 @@
 /**
  * Functions for the settings page in admin.
  * 
- * The settings page contains options for the Jigoshop plugin - this file contains functions to display
+ * The settings page contains options for the JigoShop plugin - this file contains functions to display
  * and save the list of options.
  *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Admin
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @author 		Jigowatt
+ * @category 	Admin
+ * @package 	JigoShop
  */
 
 /**
@@ -242,6 +234,7 @@ function jigoshop_admin_fields($options) {
 		            case 'text':
 		            	?><tr>
 		                    <td class="titledesc"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
+
 		                    <td class="forminp"><input name="<?php echo $value['id'] ?>" id="<?php echo $value['id'] ?>" type="<?php echo $value['type'] ?>" style="<?php echo $value['css'] ?>"
 								value="<?php if ( get_option( $value['id']) !== false && get_option( $value['id']) !== null ) echo get_option( $value['id'] ); else echo $value['std'] ?>" /><br /><small><?php echo $value['desc'] ?></small></td>
 		                </tr><?php

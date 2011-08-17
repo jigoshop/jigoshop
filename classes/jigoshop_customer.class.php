@@ -1,20 +1,13 @@
 <?php
 /**
- * Customer Class
+ * Customer
+ * @class jigoshop_customer
  * 
  * The JigoShop custoemr class handles storage of the current customer's data, such as location.
  *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Customer
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @author 		Jigowatt
+ * @category 	Classes
+ * @package 	JigoShop
  */
 class jigoshop_customer {
 	
@@ -132,7 +125,7 @@ class jigoshop_customer {
 	}
 	
 	/** Sets session data for the location */
-	public static function set_shipping_location( $country, $state, $postcode = '' ) {
+	public static function set_shipping_location( $country, $state = '', $postcode = '' ) {
 		$data = (array) $_SESSION['customer'];
 		
 		$data['shipping_country'] = $country;
@@ -170,28 +163,28 @@ class jigoshop_customer {
 		
 		if (is_user_logged_in()) :
 		
-			$results = $wpdb->get_results( "SELECT * FROM ".$wpdb->prefix."jigoshop_downloadable_product_permissions WHERE user_id = ".get_current_user_id().";" );
-			
-			$user_info = get_userdata(get_current_user_id());
-			
-			if ($results) foreach ($results as $result) :
-			
-				$_product = &new jigoshop_product( $result->product_id );
-				
-				if ($_product->exists) :
-					$download_name = $_product->get_title();
-				else :
-					$download_name = '#' . $result->product_id;
-				endif;
-				
-				$downloads[] = array(
-					'download_url' => add_query_arg('download_file', $result->product_id, add_query_arg('order', $result->order_key, add_query_arg('email', $user_info->user_email, home_url()))),
-					'product_id' => $result->product_id,
-					'download_name' => $download_name,
-					'order_key' => $result->order_key,
-					'downloads_remaining' => $result->downloads_remaining
-				);
-				
+			$jigoshop_orders = &new jigoshop_orders();
+			$jigoshop_orders->get_customer_orders( get_current_user_id() );
+			if ($jigoshop_orders->orders) foreach ($jigoshop_orders->orders as $order) :
+				if ( $order->status == 'completed' ) {
+					$results = $wpdb->get_results( "SELECT * FROM ".$wpdb->prefix."jigoshop_downloadable_product_permissions WHERE order_key = \"".$order->order_key."\" AND user_id = ".get_current_user_id().";" );
+					$user_info = get_userdata(get_current_user_id());
+					if ($results) foreach ($results as $result) :
+							$_product = &new jigoshop_product( $result->product_id );
+							if ($_product->exists) :
+								$download_name = $_product->get_title();
+							else :
+								$download_name = '#' . $result->product_id;
+							endif;
+							$downloads[] = array(
+								'download_url' => add_query_arg('download_file', $result->product_id, add_query_arg('order', $result->order_key, add_query_arg('email', $user_info->user_email, home_url()))),
+								'product_id' => $result->product_id,
+								'download_name' => $download_name,
+								'order_key' => $result->order_key,
+								'downloads_remaining' => $result->downloads_remaining
+							);
+					endforeach;
+				}
 			endforeach;
 		
 		endif;

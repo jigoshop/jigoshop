@@ -1,20 +1,5 @@
 <?php
-/**
- * My Account shortcode
- *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Customer
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
- */
- 
+
 function get_jigoshop_my_account ( $atts ) {
 	return jigoshop::shortcode_wrapper('jigoshop_my_account', $atts); 
 }	
@@ -67,7 +52,7 @@ function jigoshop_my_account( $atts ) {
 				if ($jigoshop_orders->orders) foreach ($jigoshop_orders->orders as $order) :
 					?><tr class="order">
 						<td><?php echo $order->id; ?></td>
-						<td><time title="<?php echo strtotime($order->order_date); ?>"><?php echo date(get_option('date_format'), strtotime($order->order_date)); ?></time></td>
+						<td><time title="<?php echo strtotime($order->order_date); ?>"><?php echo date('d.m.Y', strtotime($order->order_date)); ?></time></td>
 						<td><address><?php if ($order->formatted_shipping_address) echo $order->formatted_shipping_address; else echo '&ndash;'; ?></address></td>
 						<td><?php echo jigoshop_price($order->order_total); ?></td>
 						<td><?php echo $order->status; ?></td>
@@ -402,7 +387,7 @@ function jigoshop_view_order() {
 		
 		if ( $order_id>0 && $order->user_id == get_current_user_id() ) :
 			
-			echo '<p>' . sprintf( __('Order <mark>#%s</mark> made on <mark>%s</mark>', 'jigoshop'), $order->id, date(get_option('date_format'), strtotime($order->order_date)) );
+			echo '<p>' . sprintf( __('Order <mark>#%s</mark> made on <mark>%s</mark>', 'jigoshop'), $order->id, date('d.m.Y', strtotime($order->order_date)) );
 			
 			echo sprintf( __('. Order status: <mark>%s</mark>', 'jigoshop'), $order->status );
 			
@@ -448,10 +433,24 @@ function jigoshop_view_order() {
 				<tbody>
 					<?php
 					if (sizeof($order->items)>0) : 
+					
 						foreach($order->items as $item) : 
+						
+							if (isset($item['variation_id']) && $item['variation_id'] > 0) :
+								$_product = &new jigoshop_product_variation( $item['variation_id'] );
+							else :
+								$_product = &new jigoshop_product( $item['id'] );
+							endif;
+						
 							echo '
 								<tr>
-									<td>'.$item['name'].'</td>
+									<td class="product-name">'.$item['name'];
+							
+							if (isset($_product->variation_data)) :
+								echo jigoshop_get_formatted_variation( $_product->variation_data );
+							endif;
+							
+							echo '	</td>
 									<td>'.$item['qty'].'</td>
 									<td>'.jigoshop_price( $item['cost']*$item['qty'], array('ex_tax_label' => 1) ).'</td>
 								</tr>';

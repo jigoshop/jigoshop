@@ -1,19 +1,12 @@
 <?php
 /**
  * Layered Navigation Widget
- *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Widgets
- * @author     Jigowatt
- * @since	   1.0
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * 
+ * @package		JigoShop
+ * @category	Widgets
+ * @author		Jigowatt
+ * @since		1.0
+ * 
  */
  
 class Jigoshop_Widget_Layered_Nav extends WP_Widget {

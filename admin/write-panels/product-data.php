@@ -4,17 +4,9 @@
  * 
  * Function for displaying the product data meta boxes
  *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Admin
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @author 		Jigowatt
+ * @category 	Admin Write Panels
+ * @package 	JigoShop
  */
  
 /**
@@ -64,6 +56,46 @@ function jigoshop_product_data_box() {
 			do_action('product_type_selector', $product_type);
 
 			echo '</select></p>';
+			
+			// List Grouped products
+			$posts_in = (array) get_objects_in_term( get_term_by( 'slug', 'grouped', 'product_type' )->term_id, 'product_type' );
+			$posts_in = array_unique($posts_in);
+			
+			$field = array( 'id' => 'parent_id', 'label' => __('Parent post', 'jigoshop') );
+			echo '<p class="form-field parent_id_field"><label for="'.$field['id'].'">'.$field['label'].'</label><select id="'.$field['id'].'" name="'.$field['id'].'"><option value="">'.__('Choose a grouped product&hellip;', 'jigoshop').'</option>';
+
+			if (sizeof($posts_in)>0) :
+				$args = array(
+					'post_type'	=> 'product',
+					'post_status' => 'publish',
+					'numberposts' => -1,
+					'orderby' => 'title',
+					'order' => 'asc',
+					'post_parent' => 0,
+					'include' => $posts_in,
+				);
+				$grouped_products = get_posts($args);
+				$loop = 0;
+				if ($grouped_products) : foreach ($grouped_products as $product) :
+					
+					if ($product->ID==$post->ID) continue;
+					
+					echo '<option value="'.$product->ID.'" ';
+					if ($post->post_parent==$product->ID) echo 'selected="selected"';
+					echo '>'.$product->post_title.'</option>';
+			
+				endforeach; endif; 
+			endif;
+
+			echo '</select></p>';
+			
+			// Ordering
+			$menu_order = $post->menu_order;
+			$field = array( 'id' => 'menu_order', 'label' => _x('Post Order', 'ordering', 'jigoshop') );
+			echo '<p class="form-field menu_order_field">
+				<label for="'.$field['id'].'">'.$field['label'].':</label>
+				<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$menu_order.'" /></p>';
+			
 			
 			// Summary
 			echo '<p class="form-field"><label for="excerpt">' . __('Summary', 'jigoshop') . ':</label>
