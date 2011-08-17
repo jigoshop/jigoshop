@@ -172,6 +172,20 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		)
 	),
 	
+	array(  
+		'name' => __('Go directly to checkout after add to cart','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Useful if most customers only buy one product.','jigoshop'),
+		'id' 		=> 'jigoshop_directly_to_checkout',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(  
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
+	),
+	
 	array( 'type' => 'tabend'),
 	
 	array( 'type' => 'tab', 'tabname' => __('Pages', 'jigoshop') ),
