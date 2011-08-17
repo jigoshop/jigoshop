@@ -296,22 +296,42 @@ function jigoshop_product_data_box() {
 											<input type="hidden" name="attribute_is_taxonomy[<?php echo $i; ?>]" value="1" />
 										</td>
 										<td>
-										<?php if ($tax->attribute_type=="select" || $tax->attribute_type=="multiselect") : ?>
-											<select <?php if ($tax->attribute_type=="multiselect") echo 'multiple="multiple" class="multiselect" name="attribute_values['.$i.'][]"'; else echo 'name="attribute_values['.$i.']"'; ?>>
-												<?php if ($tax->attribute_type=="select") : ?><option value=""><?php _e('Choose an option&hellip;', 'jigoshop'); ?></option><?php endif; ?>
+										<?php if ($tax->attribute_type=="select") : ?>
+											<select name="attribute_values[<?php echo $i ?>]">
+												<option value=""><?php _e('Choose an option&hellip;', 'jigoshop'); ?></option>
 												<?php
 												if (taxonomy_exists('product_attribute_'.strtolower(sanitize_title($tax->attribute_name)))) :
 					        						$terms = get_terms( 'product_attribute_'.strtolower(sanitize_title($tax->attribute_name)), 'orderby=name&hide_empty=0' );
 					        						if ($terms) :
-						        						foreach ($terms as $term) :
-						        							echo '<option value="'.$term->slug.'" ';
-						        							if (in_array($term->slug, $value)) echo 'selected="selected"';
-						        							echo '>'.$term->name.'</option>';
+														foreach ($terms as $term) :
+															printf('<option value="%s" %s>%s</option>'
+																, $term->slug
+																, selected(in_array($term->slug, $value), true, false)
+																, $term->name);
 														endforeach;
 													endif;
 												endif;
 												?>			
 											</select>
+										<?php elseif ($tax->attribute_type=="multiselect") : ?>
+											<div class="multiselect">
+												<?php
+												if (taxonomy_exists('product_attribute_'.strtolower(sanitize_title($tax->attribute_name)))) :
+					        						$terms = get_terms( 'product_attribute_'.strtolower(sanitize_title($tax->attribute_name)), 'orderby=name&hide_empty=0' );
+					        						if ($terms) :
+						        						foreach ($terms as $term) :
+															$checked = checked(in_array($term->slug, $value), true, false);
+															printf('<label %s><input type="checkbox" name="attribute_values[%d][]" value="%s" %s/> %s</label>'
+																, !empty($checked) ? 'class="selected"' : ''
+																, $i
+																, $term->slug
+																, $checked
+																, $term->name);
+														endforeach;
+													endif;
+												endif;
+												?>
+											</div>
 										<?php elseif ($tax->attribute_type=="text") : ?>
 											<input type="text" name="attribute_values[<?php echo $i; ?>]" value="<?php if (isset($attribute['value'])) echo $attribute['value']; ?>" placeholder="<?php _e('Comma separate terms', 'jigoshop'); ?>" />
 										<?php endif; ?>

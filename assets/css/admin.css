@@ -901,20 +901,27 @@ div.multi_select_products_wrapper {
   height: 60px;
   background: #000;
 }
-.button.move_up{
-	-webkit-border-bottom-left-radius: 2px;
-	-webkit-border-bottom-right-radius: 2px;
-	-moz-border-radius-bottomleft: 2px;
-	-moz-border-radius-bottomright: 2px;
-	border-bottom-left-radius: 2px;
-	border-bottom-right-radius: 2px;
+table.jigoshop_attributes div.multiselect {
+  overflow: auto;
+  height: 120px;
+  border: 1px solid #dfdfdf;
+  background-color: white;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -o-border-radius: 3px;
+  -khtml-border-radius: 3px;
+  border-radius: 3px;
 }
-.button.move_down{
-	-webkit-border-top-left-radius: 2px;
-	-webkit-border-top-right-radius: 2px;
-	-moz-border-radius-topleft: 2px;
-	-moz-border-radius-topright: 2px;
-	border-top-left-radius: 2px;
-	border-top-right-radius: 2px;
-	margin-top:-1px;
+table.jigoshop_attributes div.multiselect label {
+  display: block;
+  border-bottom: 1px solid #DFDFDF;
+  padding: 4px;
+}
+table.jigoshop_attributes div.multiselect label.selected {
+  background-color: #EAF2FA;
+}
+table.jigoshop_attributes div.multiselect input {
+  vertical-align: bottom;
+  position: relative;
+  width: auto !important;
 }

@@ -296,5 +296,13 @@ jQuery( function($){
 			row_indexes();
 		});
 
+		jQuery('div.multiselect input').click(function(){
+			if ($(this).is(':checked')){
+				$(this).parent().addClass('selected');
+			} else {
+				$(this).parent().removeClass('selected');
+			}
+		});
+
 
 });
