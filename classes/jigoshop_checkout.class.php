@@ -420,6 +420,9 @@ class jigoshop_checkout {
 						endif;
 						
 					endif;
+					
+					$shipping_first_name = $shipping_last_name = $shipping_company = $shipping_address_1 = 
+					$shipping_address_2 = $shipping_city = $shipping_state = $shipping_postcode = $shipping_country = '';
 
 					// Get shipping/billing
 					if ( !empty($this->posted['shiptobilling']) ) :
