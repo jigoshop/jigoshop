@@ -1,19 +1,7 @@
 <?php
 /**
- * Functions used in template files
- *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Core
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
- */
+ * FUNCTIONS USED IN TEMPLATE FILES
+ **/
 
 /**
  * Front page archive/shop template
@@ -227,7 +215,7 @@ if (!function_exists('jigoshop_template_single_sharing')) {
 		if (get_option('jigoshop_sharethis')) :
 			echo '<div class="social">
 				<iframe src="https://www.facebook.com/plugins/like.php?href='.urlencode(get_permalink($post->ID)).'&amp;layout=button_count&amp;show_faces=false&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
-				<span class="st_email"></span><span class="st_twitter"></span><span class="st_sharethis"></span>
+				<span class="st_twitter"></span><span class="st_email"></span><span class="st_sharethis"></span><span class="st_plusone_button"></span>
 			</div>';
 		endif;
 
@@ -303,6 +291,45 @@ if (!function_exists('jigoshop_grouped_add_to_cart')) {
 				</tbody>
 			</table>
 			<button type="submit" class="button-alt"><?php _e('Add to cart', 'jigoshop'); ?></button>
+			<?php do_action('jigoshop_add_to_cart_form'); ?>
+		</form>
+		<?php
+	}
+}
+if (!function_exists('jigoshop_variable_add_to_cart')) {
+	function jigoshop_variable_add_to_cart() {
+
+		global $post, $_product;
+
+		$attributes = maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) );
+		if (!isset($attributes)) $attributes = array();
+
+		?>
+		<form action="<?php echo $_product->add_to_cart_url(); ?>" class="variations_form cart" method="post">
+
+			<table class="variations" cellspacing="0">
+				<tbody>
+				<?php
+					foreach ($attributes as $attribute) :
+
+						if ( $attribute['variation']!=='yes' ) continue;
+
+						$options = $attribute['value'];
+
+						if (!is_array($options)) $options = explode(',', $options);
+
+						echo '<tr><td><label for="'.sanitize_title($attribute['name']).'">'.ucfirst($attribute['name']).'</label></td><td><select id="'.sanitize_title($attribute['name']).'" name="tax_'.sanitize_title($attribute['name']).'"><option value="">'.__('Choose an option', 'jigoshop').'&hellip;</option><option>'.implode('</option><option>', $options).'</option></select></td></tr>';
+
+					endforeach;
+				?>
+				</tbody>
+			</table>
+			<div class="single_variation"></div>
+			<div class="variations_button" style="display:none;">
+
+				<div class="quantity"><input name="quantity" value="1" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div>
+				<button type="submit" class="button-alt"><?php _e('Add to cart', 'jigoshop'); ?></button>
+			</div>
 			<?php do_action('jigoshop_add_to_cart_form'); ?>
 		</form>
 		<?php

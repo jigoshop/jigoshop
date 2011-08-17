@@ -1,19 +1,13 @@
 <?php
 /**
  * Product Class
+ * @class jigoshop_product
+ *
  * The JigoShop product class handles individual product data.
  *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Catalog
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @author 		Jigowatt
+ * @category 	Classes
+ * @package 	JigoShop
  */
 class jigoshop_product {
 
@@ -38,9 +32,9 @@ class jigoshop_product {
 	 */
 	function jigoshop_product( $id ) {
 
-		$product_custom_fields = get_post_custom( $id );
-
 		$this->id = $id;
+
+		$product_custom_fields = get_post_custom( $this->id );
 
 		if (isset($product_custom_fields['SKU'][0]) && !empty($product_custom_fields['SKU'][0])) $this->sku = $product_custom_fields['SKU'][0]; else $this->sku = $this->id;
 
@@ -66,20 +60,41 @@ class jigoshop_product {
 			$this->product_type = 'simple';
 		endif;
 
-		$this->children = array();
-
-		if ( $children_products =& get_children( 'post_parent='.$id.'&post_type=product&orderby=menu_order&order=ASC' ) ) :
-			if ($children_products) foreach ($children_products as $child) :
-				$child->product = &new jigoshop_product( $child->ID );
-			endforeach;
-			$this->children = (array) $children_products;
-		endif;
+		$this->get_children();
 
 		if ($this->data) :
 			$this->exists = true;
 		else :
 			$this->exists = false;
 		endif;
+	}
+
+	/** Returns the product's children */
+	function get_children() {
+
+		if (!is_array($this->children)) :
+
+			$this->children = array();
+
+			if ($this->is_type('variable')) $child_post_type = 'product_variation'; else $child_post_type = 'product';
+
+			if ( $children_products =& get_children( 'post_parent='.$this->id.'&post_type='.$child_post_type.'&orderby=menu_order&order=ASC' ) ) :
+
+				if ($children_products) foreach ($children_products as $child) :
+
+					if ($this->is_type('variable')) :
+						$child->product = &new jigoshop_product_variation( $child->ID );
+					else :
+						$child->product = &new jigoshop_product( $child->ID );
+					endif;
+
+				endforeach;
+				$this->children = (array) $children_products;
+			endif;
+
+		endif;
+
+		return $this->children;
 	}
 
 	/**
@@ -159,7 +174,11 @@ class jigoshop_product {
 
 	/** Get the add to url */
 	function add_to_cart_url() {
-		if ( $this->has_child() ) :
+
+		if ($this->is_type('variable')) :
+			$url = add_query_arg('add-to-cart', 'variation');
+			$url = add_query_arg('product', $this->id, $url);
+		elseif ( $this->has_child() ) :
 			$url = add_query_arg('add-to-cart', 'group');
 			$url = add_query_arg('product', $this->id, $url);
 		else :
@@ -295,9 +314,24 @@ class jigoshop_product {
 
 	/** Returns whether or not the product is on sale */
 	function is_on_sale() {
-		if ( isset($this->data['sale_price']) && $this->data['sale_price']==$this->price ) :
-			return true;
+
+		if ( $this->has_child() ) :
+
+			$onsale = false;
+
+			foreach ($this->children as $child) :
+				if ( isset($child->product->data['sale_price']) && $child->product->data['sale_price']==$child->product->price ) :
+					return true;
+				endif;
+			endforeach;
+
+		else :
+
+			if ( isset($this->data['sale_price']) && $this->data['sale_price'] != '' && $this->data['sale_price']==$this->price ) :
+				return true;
+			endif;
 		endif;
+
 		return false;
 	}
 
@@ -339,24 +373,15 @@ class jigoshop_product {
 
 		if (get_option('jigoshop_prices_include_tax')=='yes') :
 
-			if ( $this->is_taxable() && get_option('jigoshop_calc_taxes')=='yes') :
-
-				$_tax = &new jigoshop_tax();
-
-				// Get rate for base country
-				$rate = $_tax->get_shop_base_rate( $this->data['tax_class'] );
-
-				//echo '-> Product Rate: ' . $rate . '<br/>';
+			if ( $rate = $this->get_tax_base_rate() ) :
 
 				if ( $rate>0 ) :
 
+					$_tax = &new jigoshop_tax();
+
 					$tax_amount = $_tax->calc_tax( $price, $rate, true );
 
-					//echo '-> Product Tax Rate: ' . $tax_amount . '<br/>';
-
 					$price = $price - $tax_amount;
-
-					//echo '-> Price: ' . $price . '<br/>';
 
 				endif;
 
@@ -365,6 +390,20 @@ class jigoshop_product {
 		endif;
 
 		return $price;
+	}
+
+	/** Returns the base tax rate */
+	function get_tax_base_rate() {
+
+		if ( $this->is_taxable() && get_option('jigoshop_calc_taxes')=='yes') :
+
+			$_tax = &new jigoshop_tax();
+			$rate = $_tax->get_shop_base_rate( $this->data['tax_class'] );
+
+			return $rate;
+
+		endif;
+
 	}
 
 	/** Returns the price in html format */
@@ -382,6 +421,9 @@ class jigoshop_product {
 			endforeach;
 
 			$price .= '<span class="from">' . __('From: ', 'jigoshop') . '</span>' . jigoshop_price($min_price);
+		elseif ($this->is_type('variable')) :
+
+			$price .= '<span class="from">' . __('From: ', 'jigoshop') . '</span>' . jigoshop_price($this->get_price());
 
 		else :
 			if ($this->price) :
@@ -397,12 +439,12 @@ class jigoshop_product {
 
 	/** Returns the upsell product ids */
 	function get_upsells() {
-		return (array) $this->data['upsell_ids'];
+		if (isset($this->data['upsell_ids'])) return (array) $this->data['upsell_ids']; else return array();
 	}
 
 	/** Returns the crosssell product ids */
 	function get_cross_sells() {
-		return (array) $this->data['crosssell_ids'];
+		if (isset($this->data['crosssell_ids'])) return (array) $this->data['crosssell_ids']; else return array();
 	}
 
 	/** Returns the product categories */
@@ -512,4 +554,5 @@ class jigoshop_product {
 
 		endif;
 	}
+
 }

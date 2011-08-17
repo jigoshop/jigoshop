@@ -449,14 +449,24 @@ function jigoshop_view_order() {
 				<tbody>
 					<?php
 					if (sizeof($order->items)>0) :
+
 						foreach($order->items as $item) :
-							// only display either the SKU if available or product ID
-							// there may more elegant ways to get this ... looking
-							$this_product = new jigoshop_product( $item['id'] );
+
+							if (isset($item['variation_id']) && $item['variation_id'] > 0) :
+								$_product = &new jigoshop_product_variation( $item['variation_id'] );
+							else :
+								$_product = &new jigoshop_product( $item['id'] );
+							endif;
+
 							echo '
 								<tr>
-									<td>'.$this_product->sku.'</td>
-									<td>'.$item['name'].'</td>
+									<td class="product-name">'.$item['name'];
+
+							if (isset($_product->variation_data)) :
+								echo jigoshop_get_formatted_variation( $_product->variation_data );
+							endif;
+
+							echo '	</td>
 									<td>'.$item['qty'].'</td>
 									<td>'.jigoshop_price( $item['cost']*$item['qty'], array('ex_tax_label' => 1) ).'</td>
 								</tr>';

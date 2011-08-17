@@ -1,20 +1,4 @@
-<?php    
-/**
- * Shipping class
- *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Checkout
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
- */
-   
+<?php      
 class jigoshop_shipping {
 	
 	private static $_instance;
@@ -124,5 +108,11 @@ class jigoshop_shipping {
 		endif;
 		
 	}
-
+	
+	function reset_shipping() {
+		self::$shipping_total = 0;
+		self::$shipping_tax = 0;
+		self::$shipping_label = null;
+	}
+	
 }

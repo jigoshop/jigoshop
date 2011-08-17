@@ -69,31 +69,41 @@
 	}
 	.buttons {
 		float: left;
+		padding-left: 6px;
+		vertical-align: top;
+		.item_id {
+			width: 300px;
+			vertical-align: top;
+		}
+		button {
+			margin: 2px 0 0 0;
+		}
+	}
+	.buttons-alt {
+		float: right;
+		padding-right: 6px;
+	}
+	h3 small {
+		color: #999;
 	}
 }
 dl.totals {
-	float: right;
-	clear: right;
-	width: 520px;
 	margin: 6px 6px 0;
+	float: left;
 	dt {
-		font-size: 1.2em;
-		width: 200px;
 		float: left;
+		width: 100%;
+		font-size: 1.2em;
 		font-weight: bold;
-		text-align: right;
-		clear: right;
 		line-height: 2em;
 	}
 	dd {
-		width: 300px;
-		padding-left: 20px;
-		float: right;
-		text-align: left;
 		line-height: 2em;
 		font-size: 1.2em;
+		float: left;
+		width: 100%;
 		input {
-			width: 300px;
+			width: 100%;
 			vertical-align: middle;
 			float: left;
 			font-size: 1em;
@@ -140,8 +150,16 @@ dl.totals {
 		.name {
 			min-width: 100px;
 		}
-		.center {
+		.center, .variation-id, .product-id, .product-sku {
 			text-align: center;
+		}
+		table.meta {
+			tr {
+				td {
+					padding: 1px 4px 1px 0;
+					border: 0;
+				}
+			}
 		}
 	}
 }
@@ -779,7 +797,7 @@ a.tips {
 	width: 50%;
 	float: left;
 }
-.jigoshop_options_panel .checkbox {
+.jigoshop_options_panel .checkbox, table.jigoshop_variable_attributes .checkbox {
 	vertical-align: middle;
 	margin: 7px 0;
 }
@@ -793,26 +811,26 @@ a.tips {
 #jigoshop_attributes {
 	padding: 12px;
 }
-.jigoshop_attributes_wrapper, .jigoshop_configurable_attributes_wrapper {
+.jigoshop_attributes_wrapper, .jigoshop_variable_attributes_wrapper {
 	margin-bottom: 7px;
 	border: 1px solid #ececec;
 }
-table.jigoshop_attributes, table.jigoshop_configurable_attributes {
+table.jigoshop_attributes, table.jigoshop_variable_attributes {
 	width: 100%;
 }
-table.jigoshop_attributes thead th, table.jigoshop_configurable_attributes thead th {
+table.jigoshop_attributes thead th, table.jigoshop_variable_attributes thead th {
 	background: #ececec;
 	padding: 7px 9px;
 	font-size: 11px;
 	text-align: left;
 }
-table.jigoshop_attributes td, table.jigoshop_configurable_attributes td {
+table.jigoshop_attributes td, table.jigoshop_variable_attributes td {
 	padding: 2px 9px;
 	text-align: left;
 	vertical-align: middle;
 	border-bottom: 1px dotted #ececec;
 }
-table.jigoshop_attributes td input, table.jigoshop_configurable_attributes td input, table.jigoshop_configurable_attributes td textarea {
+table.jigoshop_attributes td input, table.jigoshop_variable_attributes td input, table.jigoshop_variable_attributes td textarea {
 	width: 100%;
 }
 table.jigoshop_attributes td select { 
@@ -821,7 +839,7 @@ table.jigoshop_attributes td select {
 table.jigoshop_attributes td select.multiselect {
 	height: 8em !important;
 }
-table.jigoshop_attributes td input, table.jigoshop_configurable_attributes td input, table.jigoshop_configurable_attributes td textarea {
+table.jigoshop_attributes td input, table.jigoshop_variable_attributes td input, table.jigoshop_variable_attributes td textarea {
 	font-size: 14px;
 	padding: 4px;
 	color: #555;
@@ -834,7 +852,7 @@ table.jigoshop_attributes .taxonomy td.name {
 table.jigoshop_attributes .center {
 	text-align: center;
 }
-#jigoshop_attributes select.attribute_taxonomy, button.add_attribute, button.add_configurable_attribute, button.add_configuration {
+#jigoshop_attributes select.attribute_taxonomy, button.add_attribute, button.add_variable_attribute, button.add_configuration {
 	float: right;
 }
 
@@ -891,13 +909,20 @@ div.multi_select_products_wrapper {
 	float: left;
 }
 
-#grouped_product_options, #virtual_product_options {
+#grouped_product_options, #virtual_product_options, #simple_product_options {
 	padding: 12px;
 	font-style: italic;
 	color: #666;
 }
 
 /* Configuration */
+#variable_product_options {
+	p.description {
+		float: left;
+		padding: 0;
+		margin: 0;
+	}
+}
 .jigoshop_configuration {
 	background: #ececec;
 	border: 1px solid #ececec;
@@ -910,19 +935,35 @@ div.multi_select_products_wrapper {
 	}
 	table td {
 		background: #fff;
-		padding: 6px 12px;
+		padding: 6px 6px;
+		vertical-align: middle;
 		label {
-			color: #ccc;
+			color: #999;
 			font-size: 10px;
 			text-transform: uppercase;
-			text-align: right;
-			float: left;
-			width: 36%;
-			line-height: 30px;
+			text-align: left;
+			display: block;
+			line-height: 16px;
 		}
 		input {
-			float: right;
-			width: 60%;
+			float: left;
+			width: 100%;
+		}
+		&.upload_image {
+			width: 1%;
+			white-space: nowrap;
+			img {
+				float: none;
+				margin-right: 6px;
+				vertical-align: middle;
+			}
+			.button {
+				margin: 0;
+				padding: 4px 10px;
+				width: auto;
+				float: none;
+				vertical-align: middle;
+			}
 		}
 	}
 }
