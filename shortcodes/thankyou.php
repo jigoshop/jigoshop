@@ -1,19 +1,4 @@
 <?php
-/**
- * Thank you shortcode
- *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Checkout
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
- */
 
 function get_jigoshop_thankyou( $atts ) {
 	return jigoshop::shortcode_wrapper('jigoshop_thankyou', $atts); 
@@ -44,7 +29,7 @@ function jigoshop_thankyou() {
 				</li>
 				<li class="date">
 					<?php _e('Date:', 'jigoshop'); ?>
-					<strong><?php echo date(get_option('date_format'), strtotime($order->order_date)); ?></strong>
+					<strong><?php echo date('d.m.Y', strtotime($order->order_date)); ?></strong>
 				</li>
 				<li class="total">
 					<?php _e('Total:', 'jigoshop'); ?>

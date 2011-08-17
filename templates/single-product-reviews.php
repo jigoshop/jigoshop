@@ -1,21 +1,4 @@
-<?php
-/**
- * Product reviews template
- *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Catalog
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
- */
-
-if ( comments_open() ) : ?><div id="reviews"><?php 
+<?php if ( comments_open() ) : ?><div id="reviews"><?php 
 	
 	echo '<div id="comments">';
 	
@@ -24,6 +7,7 @@ if ( comments_open() ) : ?><div id="reviews"><?php
 		LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
 		WHERE meta_key = 'rating'
 		AND comment_post_ID = $post->ID
+		AND comment_approved = '1'
 		AND meta_value > 0
 	");
 	
@@ -32,6 +16,7 @@ if ( comments_open() ) : ?><div id="reviews"><?php
 		LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
 		WHERE meta_key = 'rating'
 		AND comment_post_ID = $post->ID
+		AND comment_approved = '1'
 	");
 	
 	if ( $count>0 ) :

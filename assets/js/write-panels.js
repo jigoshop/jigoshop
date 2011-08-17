@@ -17,7 +17,7 @@ jQuery( function($){
 	// ORDERS
 	
 	jQuery('#order_items_list button.remove_row').live('click', function(){
-		var answer = confirm(jigoshop_wp.remove_item_notice);
+		var answer = confirm(params.remove_item_notice);
 		if (answer){
 			jQuery(this).parent().parent().remove();
 		}
@@ -25,10 +25,10 @@ jQuery( function($){
 	});
 	
 	jQuery('button.calc_totals').live('click', function(){
-		var answer = confirm(jigoshop_wp.cart_total);
+		var answer = confirm(params.cart_total);
 		if (answer){
 			
-			var item_count = jQuery('#order_items_list tr').size();
+			var item_count = jQuery('#order_items_list tr.item').size();
 			var subtotal = 0;
 			var discount = jQuery('input#order_discount').val();
 			var shipping = jQuery('input#order_shipping').val();
@@ -52,30 +52,26 @@ jQuery( function($){
 					if (!itemCost) itemCost = 0;
 					if (!itemTax) itemTax = 0;
 					
-					totalItemCost = itemCost * itemQty;
-					
 					totalItemTax = 0;
+					
+					totalItemCost = itemCost * itemQty;
 					
 					if (itemTax && itemTax>0) {
 						
-						taxRate = Math.round( ((itemTax / 100) + 1) *100)/100; // tax rate to 2 decimal places
+						//taxRate = Math.round( ((itemTax / 100) + 1) * 100)/100; // tax rate to 2 decimal places
 						
-						totalItemCost = totalItemCost * 100;
+						taxRate = itemTax/100;
 						
-						totalItemTax = Math.round(totalItemCost*taxRate);
+						//totalItemTax = itemCost * taxRate;
 						
-						//totalCostExTax = Math.round( (totalItemCost / taxRate) *100 )/100; // 2 decimal places
+						itemCost = (itemCost * taxRate);
 						
-						//totalCostExTax = totalCostExTax / 100;
+						totalItemTax = Math.round(itemCost*Math.pow(10,2))/Math.pow(10,2);
 						
-						totalItemTax = totalItemTax - totalItemCost;
+						alert(totalItemTax);
 						
-						totalItemCost = totalItemCost / 100;
-						
-						totalItemTax = totalItemTax / 100;
-						
-						//totalItemTax = totalItemCost - totalCostExTax;
-						
+						totalItemTax = totalItemTax * itemQty;
+
 					}
 					
 					itemTotal = itemTotal + totalItemCost;
@@ -86,10 +82,7 @@ jQuery( function($){
 			
 			subtotal = itemTotal;
 			
-			/*if (jigoshop_wp.prices_include_tax == 'yes')
-				total = parseFloat(subtotal) - parseFloat(discount) + parseFloat(shipping) + parseFloat(shipping_tax);
-			else*/
-				total = parseFloat(subtotal) + parseFloat(tax) - parseFloat(discount) + parseFloat(shipping) + parseFloat(shipping_tax);
+			total = parseFloat(subtotal) + parseFloat(tax) - parseFloat(discount) + parseFloat(shipping) + parseFloat(shipping_tax);
 			
 			if (total < 0 ) total = 0;
 
@@ -103,11 +96,41 @@ jQuery( function($){
 	});
 	
 	jQuery('button.add_shop_order_item').click(function(){
-		jQuery('table.jigoshop_order_items tbody').append('<tr><td><input type="text" name="item_id[]" placeholder="'+jigoshop_wp.ID+'" value="" /></td><td><input type="text" name="item_name[]" placeholder="'+jigoshop_wp.item_name+'" value="" /></td><td><input type="text" name="item_quantity[]" placeholder="'+jigoshop_wp.quantity+'" value="" /></td><td><input type="text" name="item_cost[]" placeholder="'+jigoshop_wp.cost_unit+'" value="" /></td><td><input type="text" name="item_tax_rate[]" placeholder="'+jigoshop_wp.tax_rate+'" value="" /></td><td class="center"><button type="button" class="remove_row button">&times;</button></td></tr>');
+		
+		var item_id = jQuery('select.item_id').val();
+		
+		if (item_id) {
+
+			jQuery('table.jigoshop_order_items').block({ message: null, overlayCSS: { background: '#fff url(' + params.plugin_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
+			
+			var data = {
+				action: 		'jigoshop_add_order_item',
+				item_to_add: 	jQuery('select.item_id').val(),
+				security: 		params.add_order_item_nonce
+			};
+
+			jQuery.post( params.ajax_url, data, function(response) {
+				
+				jQuery('table.jigoshop_order_items tbody#order_items_list').append( response );
+				jQuery('table.jigoshop_order_items').unblock();
+				jQuery('select.item_id').css('border-color', '').val('');
+			
+			});
+
+		} else {
+			jQuery('select.item_id').css('border-color', 'red');
+		}
+
+	});
+	
+	jQuery('button.add_meta').live('click', function(){
+		
+		jQuery(this).parent().parent().parent().parent().append('<tr><td><input type="text" name="meta_name[][]" placeholder="' + params.meta_name + '" /></td><td><input type="text" name="meta_value[][]" placeholder="' + params.meta_value + '" /></td></tr>');
+		
 	});
 	
 	jQuery('button.billing-same-as-shipping').live('click', function(){
-		var answer = confirm(jigoshop_wp.copy_billing);
+		var answer = confirm(params.copy_billing);
 		if (answer){
 			jQuery('input#shipping_first_name').val( jQuery('input#billing_first_name').val() );
 			jQuery('input#shipping_last_name').val( jQuery('input#billing_last_name').val() );
@@ -133,16 +156,21 @@ jQuery( function($){
 		$('#'+select_val+'_product_options').show();
 		
 		// Show option
-		if (select_val=='configurable') {
+		if (select_val=='variable') {
 			jQuery('.inventory_tab, .pricing_tab').show();
+			jQuery('.menu_order_field, .parent_id_field').val('').hide();
 		} else if (select_val=='simple') {
 			jQuery('.inventory_tab, .pricing_tab').show();
+			jQuery('.menu_order_field, .parent_id_field').show();
 		} else if (select_val=='grouped') {
 			jQuery('.inventory_tab, .pricing_tab').hide();
+			jQuery('.menu_order_field, .parent_id_field').val('').hide();
 		} else if (select_val=='downloadable') {
 			jQuery('.inventory_tab, .pricing_tab').show();
+			jQuery('.menu_order_field, .parent_id_field').show();
 		} else if (select_val=='virtual') {
 			jQuery('.inventory_tab, .pricing_tab').show();
+			jQuery('.menu_order_field, .parent_id_field').show();
 		}
 		
 		$('body').trigger('jigoshop-product-type-change', select_val, $(this) );
@@ -197,7 +225,7 @@ jQuery( function($){
 		
 		// Show
 		function show_attribute_table() {
-			jQuery('table.jigoshop_attributes, table.jigoshop_configurable_attributes').each(function(){
+			jQuery('table.jigoshop_attributes, table.jigoshop_variable_attributes').each(function(){
 				if (jQuery('tbody tr', this).size()==0) 
 					jQuery(this).parent().hide();
 				else 
@@ -220,7 +248,7 @@ jQuery( function($){
 			if (!attribute_type) {
 				
 				// Add custom attribute row
-				jQuery('table.jigoshop_attributes tbody').append('<tr><td class="center"><button type="button" class="button move_up">&uarr;</button><button type="button" class="move_down button">&darr;</button><input type="hidden" name="attribute_position[' + size + ']" class="attribute_position" value="' + size + '" /></td><td><input type="text" name="attribute_names[' + size + ']" /><input type="hidden" name="attribute_is_taxonomy[' + size + ']" value="0" /></td><td><input type="text" name="attribute_values[' + size + ']" /></td><td class="center"><input type="checkbox" checked="checked" name="attribute_visibility[' + size + ']" value="1" /></td><td class="center"><button type="button" class="remove_row button">&times;</button></td></tr>');
+				jQuery('table.jigoshop_attributes tbody').append('<tr><td class="center"><button type="button" class="button move_up">&uarr;</button><button type="button" class="move_down button">&darr;</button><input type="hidden" name="attribute_position[' + size + ']" class="attribute_position" value="' + size + '" /></td><td><input type="text" name="attribute_names[' + size + ']" /><input type="hidden" name="attribute_is_taxonomy[' + size + ']" value="0" /></td><td><input type="text" name="attribute_values[' + size + ']" /></td><td class="center"><input type="checkbox" checked="checked" name="attribute_visibility[' + size + ']" value="1" /></td><td class="center"><input type="checkbox" name="attribute_variation[' + size + ']" value="1" /></td><td class="center"><button type="button" class="remove_row button">&times;</button></td></tr>');
 				
 			} else {
 				
@@ -238,16 +266,11 @@ jQuery( function($){
 		jQuery('button.hide_row').live('click', function(){
 			var answer = confirm("Remove this attribute?")
 			if (answer){
-				jQuery(this).parent().parent().find('select').val('');
+				jQuery(this).parent().parent().find('select, input[type=text]').val('');
 				jQuery(this).parent().parent().hide();
 				show_attribute_table();
 			}
 			return false;
-		});
-		
-		jQuery('button.add_configurable_attribute').click(function(){
-			jQuery('table.jigoshop_configurable_attributes tbody').append('<tr><td><button type="button" class="move_up button">&uarr;</button><button type="button" class="move_down button">&darr;</button></td><td><input type="text" name="configurable_attribute_names[]" /></td><td><textarea rows="3" cols="20" name="configurable_attribute_values[]"></textarea></td><td><button type="button" class="remove_row button">&times;</button></td></tr>');
-			show_attribute_table();	
 		});
 		
 		jQuery('#attributes_list button.remove_row').live('click', function(){

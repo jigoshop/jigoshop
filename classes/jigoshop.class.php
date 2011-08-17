@@ -1,18 +1,12 @@
 <?php
 /**
- * Contains the most low level methods & helpers in Jigoshop
+ * Contains the main functions for jigoshop, stores variables, and handles error messages
  *
- * DISCLAIMER
  *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Core
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		JigoShop
+ * @category	Core
+ * @author		Jigowatt
+ * @since		1.0
  */
 class jigoshop {
 	
@@ -67,7 +61,13 @@ class jigoshop {
 	 */
 	public static function plugin_url() { 
 		if(self::$plugin_url) return self::$plugin_url;
-		return self::$plugin_url = WP_PLUGIN_URL . "/" . plugin_basename( dirname(dirname(__FILE__))); 
+		
+		if (is_ssl()) :
+			return self::$plugin_url = str_replace('http://', 'https://', WP_PLUGIN_URL) . "/" . plugin_basename( dirname(dirname(__FILE__))); 
+		else :
+			return self::$plugin_url = WP_PLUGIN_URL . "/" . plugin_basename( dirname(dirname(__FILE__))); 
+		endif;
+		
 	}
 	
 	/**
@@ -78,6 +78,16 @@ class jigoshop {
 	public static function plugin_path() { 	
 		if(self::$plugin_path) return self::$plugin_path;
 		return self::$plugin_path = WP_PLUGIN_DIR . "/" . plugin_basename( dirname(dirname(__FILE__))); 
+	 }
+	 
+	/**
+	 * Return the URL with https if SSL is on
+	 *
+	 * @return  string	url
+	 */
+	public static function force_ssl( $url ) { 	
+		if (is_ssl()) $url = str_replace('http:', 'https:', $url);
+		return $url;
 	 }
 	
 	/**

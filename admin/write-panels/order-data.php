@@ -4,17 +4,9 @@
  * 
  * Functions for displaying the order data meta box
  *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Admin
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @author 		Jigowatt
+ * @category 	Admin Write Panels
+ * @package 	JigoShop
  */
 
 /**
@@ -249,24 +241,19 @@ function jigoshop_order_data_meta_box($post) {
  */
 function jigoshop_order_items_meta_box($post) {
 	
-	$data = maybe_unserialize( get_post_meta($post->ID, 'order_data', true) );
 	$order_items = (array) maybe_unserialize( get_post_meta($post->ID, 'order_items', true) );
-
-	if (!isset($data['shipping_method'])) $data['shipping_method'] = '';
-	if (!isset($data['payment_method'])) $data['payment_method'] = '';
-	if (!isset($data['order_subtotal'])) $data['order_subtotal'] = '';
-	if (!isset($data['order_shipping'])) $data['order_shipping'] = '';
-	if (!isset($data['order_discount'])) $data['order_discount'] = '';
-	if (!isset($data['order_tax'])) $data['order_tax'] = '';
-	if (!isset($data['order_total'])) $data['order_total'] = '';
-	if (!isset($data['order_shipping_tax'])) $data['order_shipping_tax'] = '';
 	?>
 	<div class="jigoshop_order_items_wrapper">
 		<table cellpadding="0" cellspacing="0" class="jigoshop_order_items">
 			<thead>
 				<tr>
-					<th class="product-id"><?php _e('Product ID', 'jigoshop'); ?></th>
+					<th class="product-id"><?php _e('ID', 'jigoshop'); ?></th>
+					<th class="variation-id"><?php _e('Variation ID', 'jigoshop'); ?></th>
+					<th class="product-sku"><?php _e('SKU', 'jigoshop'); ?></th>
 					<th class="name"><?php _e('Name', 'jigoshop'); ?></th>
+					<th class="variation"><?php _e('Variation', 'jigoshop'); ?></th>
+					<th class="meta"><?php _e('Order Item Meta', 'jigoshop'); ?></th>
+					<?php do_action('jigoshop_admin_order_item_headers'); ?>
 					<th class="quantity"><?php _e('Quantity', 'jigoshop'); ?></th>
 					<th class="cost"><?php _e('Cost', 'jigoshop'); ?></th>
 					<th class="tax"><?php _e('Tax Rate', 'jigoshop'); ?></th>
@@ -275,44 +262,99 @@ function jigoshop_order_items_meta_box($post) {
 			</thead>
 			<tbody id="order_items_list">	
 				
-				<?php if (sizeof($order_items)>0 && isset($order_items[0]['id'])) foreach ($order_items as $item) : ?>
-					<tr>
-						<td class="product-id"><input type="text" name="item_id[]" placeholder="<?php _e('ID', 'jigoshop'); ?>" value="<?php echo $item['id']; ?>" /></td>
-						<td class="name"><input type="text" name="item_name[]" placeholder="<?php _e('Item Name', 'jigoshop'); ?>" value="<?php echo $item['name']; ?>" /></td>
+				<?php if (sizeof($order_items)>0 && isset($order_items[0]['id'])) foreach ($order_items as $item) : 
+					
+					if (isset($item['variation_id']) && $item['variation_id'] > 0) :
+						$_product = &new jigoshop_product_variation( $item['variation_id'] );
+					else :
+						$_product = &new jigoshop_product( $item['id'] );
+					endif;
+
+					?>
+					<tr class="item">
+						<td class="product-id"><?php echo $item['id']; ?></td>
+						<td class="variation-id"><?php if ($item['variation_id']) echo $item['variation_id']; else echo '-'; ?></td>
+						<td class="product-sku"><?php if ($_product->sku) echo $_product->sku; ?></td>
+						<td class="name"><a href="<?php echo admin_url('post.php?post='. $_product->id .'&action=edit'); ?>"><?php echo $item['name']; ?></a></td>
+						<td class="variation"><?php
+							if (isset($_product->variation_data)) :
+								echo jigoshop_get_formatted_variation( $_product->variation_data, true );
+							else :
+								echo '-';
+							endif;
+						?></td>
+						<td>
+							<table class="meta" cellspacing="0">
+								<tfoot>
+									<tr>
+										<td colspan="3"><button class="add_meta button"><?php _e('Add meta', 'jigoshop'); ?></button></td>
+									</tr>
+								</tfoot>
+								<tbody></tbody>
+							</table>
+						</td>
+						<?php do_action('jigoshop_admin_order_item_values', $_product, $item); ?>
 						<td class="quantity"><input type="text" name="item_quantity[]" placeholder="<?php _e('Quantity e.g. 2', 'jigoshop'); ?>" value="<?php echo $item['qty']; ?>" /></td>
 						<td class="cost"><input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit ex. tax e.g. 2.99', 'jigoshop'); ?>" value="<?php echo $item['cost']; ?>" /></td>
 						<td class="tax"><input type="text" name="item_tax_rate[]" placeholder="<?php _e('Tax Rate e.g. 20.0000', 'jigoshop'); ?>" value="<?php echo $item['taxrate']; ?>" /></td>
-						<td class="center"><button type="button" class="remove_row button">&times;</button></td>
+						<td class="center">
+							<input type="hidden" name="item_id[]" value="<?php echo $item['id']; ?>" />
+							<input type="hidden" name="item_name[]" value="<?php echo $item['name']; ?>" />
+							<button type="button" class="remove_row button">&times;</button>
+						</td>
 					</tr>
 				<?php endforeach; ?>
-					
 			</tbody>
 		</table>
 	</div>
 	<p class="buttons">
+		<select name="item_id" class="item_id">
+			<?php
+				$args = array(
+					'post_type' 		=> 'product',
+					'posts_per_page' 	=> -1,
+					'post_status'		=> 'publish',
+					'post_parent'		=> 0,
+					'order'				=> 'ASC',
+					'orderby'			=> 'title'
+				);
+				$products = get_posts( $args );
+				
+				if ($products) foreach ($products as $product) :
+					
+					$sku = get_post_meta($product->ID, 'SKU', true);
+					
+					if ($sku) $sku = ' SKU: '.$sku;
+					
+					echo '<option value="'.$product->ID.'">'.$product->post_title.$sku.' (#'.$product->ID.''.$sku.')</option>';
+					
+					$args_get_children = array(
+						'post_type' => array( 'product_variation', 'product' ),
+						'posts_per_page' 	=> -1,
+						'order'				=> 'ASC',
+						'orderby'			=> 'title',
+						'post_parent'		=> $product->ID
+					);	
+						
+					if ( $children_products =& get_children( $args_get_children ) ) :
+		
+						foreach ($children_products as $child) :
+							
+							echo '<option value="'.$child->ID.'">&nbsp;&nbsp;&mdash;&nbsp;'.$child->post_title.'</option>';
+							
+						endforeach;
+						
+					endif;
+					
+				endforeach;
+			?>
+		</select>
+		
 		<button type="button" class="button button-primary add_shop_order_item"><?php _e('Add item', 'jigoshop'); ?></button>
+	</p>
+	<p class="buttons buttons-alt">
 		<button type="button" class="button button calc_totals"><?php _e('Calculate totals', 'jigoshop'); ?></button>
 	</p>
-	<dl class="totals">
-		<dt><?php _e('Subtotal:', 'jigoshop'); ?></dt>
-		<dd><input type="text" id="order_subtotal" name="order_subtotal" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo $data['order_subtotal']; ?>" class="first" /></dd>
-		
-		<dt><?php _e('Shipping &amp; Handling:', 'jigoshop'); ?></dt>
-		<dd><input type="text" id="order_shipping" name="order_shipping" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo $data['order_shipping']; ?>" class="first" /> <input type="text" name="shipping_method" id="shipping_method" value="<?php echo $data['shipping_method']; ?>" class="last" placeholder="<?php _e('Shipping method...', 'jigoshop'); ?>" /></dd>
-		
-		<dt><?php _e('Order shipping tax:', 'jigoshop'); ?></dt>
-		<dd><input type="text" id="order_shipping_tax" name="order_shipping_tax" placeholder="0.00" value="<?php echo $data['order_shipping_tax']; ?>" class="first" /></dd>
-		
-		<dt><?php _e('Tax:', 'jigoshop'); ?></dt>
-		<dd><input type="text" id="order_tax" name="order_tax" placeholder="0.00" value="<?php echo $data['order_tax']; ?>" class="first" /></dd>
-		
-		<dt><?php _e('Discount:', 'jigoshop'); ?></dt>
-		<dd><input type="text" id="order_discount" name="order_discount" placeholder="0.00" value="<?php echo $data['order_discount']; ?>" /></dd>
-		
-		<dt><?php _e('Total:', 'jigoshop'); ?></dt>
-		<dd><input type="text" id="order_total" name="order_total" placeholder="0.00" value="<?php echo $data['order_total']; ?>" class="first" /> <input type="text" name="payment_method" id="payment_method" value="<?php echo $data['payment_method']; ?>" class="last" placeholder="<?php _e('Payment method...', 'jigoshop'); ?>" /></dd>
-				
-	</dl>
 	
 	<div class="clear"></div>
 	<?php
@@ -348,5 +390,49 @@ function jigoshop_order_actions_meta_box($post) {
 		} ?>
 		</li>
 	</ul>
+	<?php
+}
+
+/**
+ * Order totals meta box
+ * 
+ * Displays the order totals meta box
+ *
+ * @since 		1.0
+ */
+function jigoshop_order_totals_meta_box($post) {
+	
+	$data = maybe_unserialize( get_post_meta($post->ID, 'order_data', true) );
+	
+	if (!isset($data['shipping_method'])) $data['shipping_method'] = '';
+	if (!isset($data['payment_method'])) $data['payment_method'] = '';
+	if (!isset($data['order_subtotal'])) $data['order_subtotal'] = '';
+	if (!isset($data['order_shipping'])) $data['order_shipping'] = '';
+	if (!isset($data['order_discount'])) $data['order_discount'] = '';
+	if (!isset($data['order_tax'])) $data['order_tax'] = '';
+	if (!isset($data['order_total'])) $data['order_total'] = '';
+	if (!isset($data['order_shipping_tax'])) $data['order_shipping_tax'] = '';
+	?>
+	<dl class="totals">
+		<dt><?php _e('Subtotal:', 'jigoshop'); ?></dt>
+		<dd><input type="text" id="order_subtotal" name="order_subtotal" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo $data['order_subtotal']; ?>" class="first" /></dd>
+		
+		<dt><?php _e('Shipping &amp; Handling:', 'jigoshop'); ?></dt>
+		<dd><input type="text" id="order_shipping" name="order_shipping" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo $data['order_shipping']; ?>" class="first" /> <input type="text" name="shipping_method" id="shipping_method" value="<?php echo $data['shipping_method']; ?>" class="last" placeholder="<?php _e('Shipping method...', 'jigoshop'); ?>" /></dd>
+		
+		<dt><?php _e('Order shipping tax:', 'jigoshop'); ?></dt>
+		<dd><input type="text" id="order_shipping_tax" name="order_shipping_tax" placeholder="0.00" value="<?php echo $data['order_shipping_tax']; ?>" class="first" /></dd>
+		
+		<dt><?php _e('Tax:', 'jigoshop'); ?></dt>
+		<dd><input type="text" id="order_tax" name="order_tax" placeholder="0.00" value="<?php echo $data['order_tax']; ?>" class="first" /></dd>
+		
+		<dt><?php _e('Discount:', 'jigoshop'); ?></dt>
+		<dd><input type="text" id="order_discount" name="order_discount" placeholder="0.00" value="<?php echo $data['order_discount']; ?>" /></dd>
+		
+		<dt><?php _e('Total:', 'jigoshop'); ?></dt>
+		<dd><input type="text" id="order_total" name="order_total" placeholder="0.00" value="<?php echo $data['order_total']; ?>" class="first" /> <input type="text" name="payment_method" id="payment_method" value="<?php echo $data['payment_method']; ?>" class="last" placeholder="<?php _e('Payment method...', 'jigoshop'); ?>" /></dd>
+				
+	</dl>
+	<div class="clear"></div>
 	<?php
 }

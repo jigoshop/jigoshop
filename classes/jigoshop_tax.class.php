@@ -1,21 +1,13 @@
 <?php
 /**
- * Tax Class
+ * Contains tax calculations
  *
- * Calculates tax added value from a total
- *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Checkout
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		JigoShop
+ * @category	Tax
+ * @author		Jigowatt
+ * @since		1.0
  */
+
 class jigoshop_tax {
 	
 	var $total;
@@ -236,9 +228,10 @@ class jigoshop_tax {
 
 			$math_rate = ($math_rate / 100) + 1;
 
-			$price_ex = round($price / $math_rate);
-
-			$tax_amount = round($price - $price_ex);
+			//$price_ex = round($price / $math_rate);
+			//$tax_amount = round($price - $price_ex);
+			$price_ex = ($price / $math_rate);
+			$tax_amount = ($price - $price_ex);
 			
 		else :
 			$tax_amount = $price * ($rate/100);
@@ -246,7 +239,8 @@ class jigoshop_tax {
 
 		$tax_amount = $tax_amount / 100; // Back to pounds
 		
-		return number_format($tax_amount, 2, '.', '');
+		return number_format($tax_amount, 4, '.', '');
+		//return number_format($tax_amount, 2, '.', '');
 	}
 	
 	/**
