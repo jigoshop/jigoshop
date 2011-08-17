@@ -911,6 +911,7 @@ table.jigoshop_attributes div.multiselect {
   -o-border-radius: 3px;
   -khtml-border-radius: 3px;
   border-radius: 3px;
+  margin: 5px 0;
 }
 table.jigoshop_attributes div.multiselect label {
   display: block;
