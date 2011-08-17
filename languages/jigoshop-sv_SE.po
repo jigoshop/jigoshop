@@ -15,6 +15,8 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
 "X-Poedit-Basepath: ..\n"
 "X-Textdomain-Support: yes\n"
+"X-Poedit-Language: Swedish\n"
+"X-Poedit-Country: SWEDEN\n"
 "X-Poedit-SearchPath-0: .\n"
 
 # @ jigoshop
@@ -550,17 +552,17 @@ msgstr "En beställning har skapats för dig på \"% s\". För att betala för d
 # @ jigoshop
 #: jigoshop_emails.php:232
 msgid "Product low in stock"
-msgstr "Få exemplar av produkten i lager"
+msgstr "Produkten är nästan slut"
 
 # @ jigoshop
 #: jigoshop_emails.php:233
 msgid "is low in stock."
-msgstr "finns i få exemplar i lager."
+msgstr "är nästan slut."
 
 # @ jigoshop
 #: jigoshop_emails.php:244
 msgid "Product out of stock"
-msgstr "Produkten slut i lager"
+msgstr "Produkten har sålt slut"
 
 # @ jigoshop
 #: jigoshop_emails.php:245
