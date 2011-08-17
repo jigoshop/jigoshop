@@ -328,10 +328,9 @@ class jigoshop_product {
 			
 		else :
 		
-			if ( isset($this->data['sale_price']) && $this->data['sale_price']==$this->price ) :
+			if ( isset($this->data['sale_price']) && $this->data['sale_price'] != '' && $this->data['sale_price']==$this->price ) :
 				return true;
 			endif;
-		
 		endif;
 
 		return false;

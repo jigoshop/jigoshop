@@ -2,17 +2,17 @@
 /*
 Plugin Name: Jigoshop - WordPress eCommerce
 Plugin URI: http://jigoshop.com
-Description: An eCommerce plugin for wordpress.
-Version: 0.9.9
+Description: An eCommerce plugin for WordPress.
+Version: 1.0-Kaboom1 (RC1)
 Author: Jigowatt
 Author URI: http://jigowatt.co.uk
 Requires at least: 3.1
-Tested up to: 3.1.3
+Tested up to: 3.2.1
 */
 
 @session_start();
 
-if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", "0.9.9");	
+if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", "1.0 Kaboom 1");	
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
@@ -220,15 +220,19 @@ add_action('import_start', 'jigoshop_import_start');
 
 ### Functions #########################################################
 
+function jigoshop_set_image_sizes(){
+	add_image_size( 'shop_tiny', get_option('jigoshop_shop_tiny_w'), get_option('jigoshop_shop_tiny_h'), 'true' );
+	add_image_size( 'shop_thumbnail', get_option('jigoshop_shop_thumbnail_w'), get_option('jigoshop_shop_thumbnail_h'), 'true' );
+	add_image_size( 'shop_small', get_option('jigoshop_shop_small_w'), get_option('jigoshop_shop_small_h'), 'true' );
+	add_image_size( 'shop_large', get_option('jigoshop_shop_large_w'), get_option('jigoshop_shop_large_h'), 'true' );
+}
+
 function jigoshop_init() {
 	
 	jigoshop_post_type();
 	
 	// Image sizes
-	add_image_size( 'shop_tiny', jigoshop::get_var('shop_tiny_w'), jigoshop::get_var('shop_tiny_h'), 'true' );
-	add_image_size( 'shop_thumbnail', jigoshop::get_var('shop_thumbnail_w'), jigoshop::get_var('shop_thumbnail_h'), 'true' );
-	add_image_size( 'shop_small', jigoshop::get_var('shop_small_w'), jigoshop::get_var('shop_small_h'), 'true' );
-	add_image_size( 'shop_large', jigoshop::get_var('shop_large_w'), jigoshop::get_var('shop_large_h'), 'true' );
+	jigoshop_set_image_sizes();
 
 	// Include template functions here so they are pluggable by themes
 	include_once( 'jigoshop_template_functions.php' );
