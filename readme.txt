@@ -3,11 +3,7 @@ Contributors: jigowatt
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal
 Requires at least: 3.1
 Tested up to: 3.2.1
-<<<<<<< HEAD
-Stable tag: 0.9.9
-=======
 Stable tag: 1.0-Kaboom1 (RC1)
->>>>>>> 66620f56266a90da727b869a59410774a5d83768
 
 A feature packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customisability.
 
