@@ -733,6 +733,7 @@ a.tips {
 .jigoshop_options_panel .checkbox, table.jigoshop_variable_attributes .checkbox {
   vertical-align: middle;
   margin: 7px 0;
+  width: auto;
 }
 .jigoshop_options_panel select {
   float: left;
