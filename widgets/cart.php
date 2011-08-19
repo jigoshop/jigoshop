@@ -32,18 +32,19 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 		if ( $title ) echo $before_title . $title . $after_title;
 		
 		echo '<ul class="cart_list">';
+		
 		if (sizeof(jigoshop_cart::$cart_contents)>0) : foreach (jigoshop_cart::$cart_contents as $item_id => $values) :
 			$_product = $values['data'];
 			if ($_product->exists() && $values['quantity']>0) :
 				echo '<li><a href="'.get_permalink($item_id).'">';
 				
-				if (has_post_thumbnail($item_id)) echo get_the_post_thumbnail($item_id, 'shop_tiny'); 
-				else echo '<img src="'.jigoshop::plugin_url(). '/assets/images/placeholder.png" alt="Placeholder" width="'.get_option('jigoshop_shop_tiny_w').'" height="'.get_option('jigoshop_shop_tiny_h').'" />';
+				echo (has_post_thumbnail($_product->product_id)) ? get_the_post_thumbnail($_product->product_id, 'shop_tiny') : '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.get_option('jigoshop_shop_tiny_w').'" height="'.get_option('jigoshop_shop_tiny_h').'" />';
 				
 				echo apply_filters('jigoshop_cart_widget_product_title', $_product->get_title(), $_product).'</a> '.$values['quantity'].' &times; '.jigoshop_price($_product->get_price()).'</li>';
 			endif;
 		endforeach; 
 		else: echo '<li class="empty">'.__('No products in the cart.','jigoshop').'</li>'; endif;
+		
 		echo '</ul>';
 		
 		if (sizeof(jigoshop_cart::$cart_contents)>0) :
