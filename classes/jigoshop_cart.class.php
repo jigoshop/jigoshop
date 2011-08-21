@@ -73,7 +73,7 @@ class jigoshop_cart {
 					self::$cart_contents[] = array(
 						'product_id'	=> $values['product_id'],
 						'variation_id'	=> $values['variation_id'],
-						'variation' 	=> $values['variation'],
+                        'variation'     => $values['variation'],
 						'quantity' 		=> $values['quantity'],
 						'data'			=> $_product
 					);
@@ -104,57 +104,66 @@ class jigoshop_cart {
 		unset($_SESSION['coupons']);
 	}
 	
-	/** Check if product is in the cart */
-	function find_product_in_cart( $product_id, $variation = '' ) {
-		
-		foreach (self::$cart_contents as $cart_item_key => $cart_item) :
-			
-			if ($variation) :				
-				if ($cart_item['product_id'] == $product_id && $cart_item['variation']==$variation) :
-					return $cart_item_key;
-				endif;
-			else :
-				if ($cart_item['product_id'] == $product_id) :
-					return $cart_item_key;
-				endif;
-			endif;
-			
-		endforeach;
-	}
+	/**
+     * Check if product is in the cart and return cart item key
+     * 
+     * @param int $product_id
+     * @param int $variation_id optional variation id
+     * @param array $variation array of attributre values
+     * @return int|null
+     */
+	function find_product_in_cart($product_id, $variation_id, $variation = array()) {
+
+        foreach (self::$cart_contents as $cart_item_key => $cart_item) {
+            if (empty($variation_id) && $cart_item['product_id'] == $product_id) {
+                    return $cart_item_key;
+            } else if($cart_item['product_id'] == $product_id && $cart_item['variation_id'] == $variation_id) {
+                if($variation == $cart_item['variation']) {
+                    return $cart_item_key;
+                }
+            }
+        }
+        
+        return NULL;
+    }
 	
 	/**
 	 * Add a product to the cart
 	 *
 	 * @param   string	product_id	contains the id of the product to add to the cart
 	 * @param   string	quantity	contains the quantity of the item to add
+     * @param   int     variation_id
+     * @param   array   variation attribute values
 	 */
-	function add_to_cart( $product_id, $quantity = 1, $variation = '', $variation_id = '' ) {
-		
-		$found_cart_item_key = self::find_product_in_cart($product_id, $variation);
-		
-		if (is_numeric($found_cart_item_key)) :
-			
-			$quantity = $quantity + self::$cart_contents[$found_cart_item_key]['quantity'];
-			
-			self::$cart_contents[$found_cart_item_key]['quantity'] = $quantity;
-			
-		else :
-			
-			$cart_item_key = sizeof(self::$cart_contents);
-			
-			$data = &new jigoshop_product( $product_id );
-				
-			self::$cart_contents[$cart_item_key] = array(
-				'product_id'	=> $product_id,
-				'variation_id'	=> $variation_id,
-				'variation' 	=> $variation,
-				'quantity' 		=> $quantity,
-				'data'			=> $data
-			);
-			
-		endif;
-		
-		self::set_session();
+	function add_to_cart( $product_id, $quantity = 1, $variation_id = '', $variation = array()) {
+        
+        if ($quantity < 0) {
+            $quantity = 0;
+        }
+
+        $found_cart_item_key = self::find_product_in_cart($product_id, $variation_id, $variation);
+
+        //if product is already in the cart change its quantity
+        if (is_numeric($found_cart_item_key)) {
+
+            $quantity = (int)$quantity + self::$cart_contents[$found_cart_item_key]['quantity'];
+
+            self::set_quantity($found_cart_item_key, $quantity);
+        } else {//othervise add new product to the cart
+            $cart_item_key = sizeof(self::$cart_contents);
+
+            $data = &new jigoshop_product($product_id);
+
+            self::$cart_contents[$cart_item_key] = array(
+                'product_id'   => $product_id,
+                'variation_id' => $variation_id,
+                'variation'    => $variation,
+                'quantity'     => (int) $quantity,
+                'data'         => $data
+            );
+        }
+
+        self::set_session();
 	}
 	
 	/**

@@ -315,6 +315,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
                 $vattrs = $variation->get_variation_attributes();
                 $availability = $variation->get_availability();
                 
+                //@todo needs to be moved to jigoshop_product_variation class
                 if (has_post_thumbnail($variation->get_variation_id())) {
                     $attachment_id = get_post_thumbnail_id( $variation->get_variation_id() );
                     $large_thumbnail_size = apply_filters('single_product_large_thumbnail_size', 'shop_large');
@@ -325,7 +326,8 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
                     $image_link = '';
                 }
 
-                $variationsAvaiable[$variation->get_variation_id()] = array(
+                $variationsAvaiable[] = array(
+                    'variation_id' => $variation->get_variation_id(),
                     'attributes' => $vattrs,
                     'image_src' => $image,
                     'image_link' => $image_link,
@@ -360,6 +362,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 			</table>
 			<div class="single_variation"></div>
 			<div class="variations_button" style="display:none;">
+                <input type="hidden" name="variation_id" value="" />
                 <div class="quantity"><input name="quantity" value="1" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div>
 				<button type="submit" class="button-alt"><?php _e('Add to cart', 'jigoshop'); ?></button>
 			</div>

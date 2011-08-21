@@ -575,12 +575,12 @@ class jigoshop_product {
 	}
     
     /**
-     * Return an array of avaiable variations (and their stock qty) for a variable product.
+     * Returns an array of avaiable values for attributes used in product variations
      * 
      * @todo Note that this is 'variable product' specific, and should be moved to separate class
      * with all 'variable product' logic form other methods in this class.
      * 
-     * @return two dimensional array of avaiable variations
+     * @return two dimensional array of attributes and their available values
      */   
     function get_avaiable_attributes_variations() {
         if (!$this->is_type('variable') || !$this->has_child()) {

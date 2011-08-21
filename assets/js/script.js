@@ -231,6 +231,7 @@ jQuery(function(){
     
     //when one of attributes is changed - check everything to show only valid options
     function check_variations() {
+        jQuery('form input[name=variation_id]').val('');
         jQuery('.single_variation').text('');
         jQuery('.variations_button, .single_variation').slideUp();
         
@@ -248,7 +249,10 @@ jQuery(function(){
         var matching_variations = find_matching_variations(current_settings);
         
         if(all_set) {
-            show_variation(matching_variations.pop());
+            var variation = matching_variations.pop();
+            
+            jQuery('form input[name=variation_id]').val(variation.variation_id);
+            show_variation(variation);
         } else {
             update_variation_values(matching_variations);
         }

@@ -4,7 +4,6 @@
  *
  * Various hooks Jigoshop uses to do stuff. index:
  *
- *		- Get variation
  *		- Add order item
  *		- When default permalinks are enabled, redirect shop page to post type archive url
  *		- Add to Cart
@@ -166,131 +165,124 @@ function jigoshop_update_cart_action() {
  **/
 add_action( 'init', 'jigoshop_add_to_cart_action' );
 
-function jigoshop_add_to_cart_action( $url = false ) {
-	
-	if (isset($_GET['add-to-cart']) && $_GET['add-to-cart']) :
-	
-		if ( !jigoshop::verify_nonce('add_to_cart', '_GET') ) :
+function jigoshop_add_to_cart_action($url = false)
+{
+    //if required param is not set or nonce is invalid then just ignore whole function
+    if (empty($_GET['add-to-cart']) || !jigoshop::verify_nonce('add_to_cart', '_GET')) {
+        return;
+    }
 
-		elseif (is_numeric($_GET['add-to-cart'])) :
-		
-			$quantity = 1;
-			if (isset($_POST['quantity'])) $quantity = $_POST['quantity'];
-			jigoshop_cart::add_to_cart($_GET['add-to-cart'], $quantity);
-			
-			if( get_option('jigoshop_directly_to_checkout', 'no') == 'no' ) :
-				jigoshop::add_message( sprintf(__('<a href="%s" class="button">View Cart &rarr;</a> Product successfully added to your basket.', 'jigoshop'), jigoshop_cart::get_cart_url()) );
-			endif;
-		
-		elseif ($_GET['add-to-cart']=='variation') :
-			
-			// Variation add to cart
-			if (isset($_POST['quantity']) && $_POST['quantity']) :
-				
-				$product_id = (int) $_GET['product'];
-				$quantity 	= ($_POST['quantity']) ? $_POST['quantity'] : 1;
-				$attributes = (array) maybe_unserialize( get_post_meta($product_id, 'product_attributes', true) );
-				$variations = array();
-				$all_variations_set = true;
-				$variation_id = 0;
-				
-				foreach ($attributes as $attribute) :
-								
-					if ( $attribute['variation']!=='yes' ) continue;
-					
-					if (isset($_POST[ 'tax_' . sanitize_title($attribute['name']) ]) && $_POST[ 'tax_' . sanitize_title($attribute['name']) ]) :
-						$variations['tax_' .sanitize_title($attribute['name'])] = $_POST[ 'tax_' . sanitize_title($attribute['name']) ];
-					else :
-						$all_variations_set = false;
-					endif;
+    //single product
+    if (is_numeric($_GET['add-to-cart'])) {
+        $product_id = (int) $_GET['add-to-cart'];
+        $quantity = 1;
+        if (isset($_POST['quantity'])) {
+            $quantity = (int) $_POST['quantity'];
+        }
 
-				endforeach;
-				
-				if (!$all_variations_set) :
-					jigoshop::add_error( __('Please choose product options&hellip;', 'jigoshop') );
-				else :
-					// Find matching variation
-					$variation_id = jigoshop_find_variation( $variations );
-					
-					if ($variation_id>0) :
-						// Add to cart
-						jigoshop_cart::add_to_cart($product_id, $quantity, $variations, $variation_id);
-						jigoshop::add_message( sprintf(__('<a href="%s" class="button">View Cart &rarr;</a> Product successfully added to your basket.', 'jigoshop'), jigoshop_cart::get_cart_url()) );
-					else :
-						jigoshop::add_error( __('Sorry, this variation is not available.', 'jigoshop') );
-					endif;
-				endif;
-			
-			elseif ($_GET['product']) :
-				
-				/* Link on product pages */
-				jigoshop::add_error( __('Please choose product options&hellip;', 'jigoshop') );
-				wp_redirect( get_permalink( $_GET['product'] ) );
-				exit;
-			
-			endif; 
-		
-		elseif ($_GET['add-to-cart']=='group') :
-			
-			// Group add to cart
-			if (isset($_POST['quantity']) && is_array($_POST['quantity'])) :
-				
-				$total_quantity = 0;
-				
-				foreach ($_POST['quantity'] as $item => $quantity) :
-					if ($quantity>0) :
-						jigoshop_cart::add_to_cart($item, $quantity);
-						
-						if( get_option('jigoshop_directly_to_checkout', 'no') == 'no' ) {
-							jigoshop::add_message( sprintf(__('<a href="%s" class="button">View Cart &rarr;</a> Product successfully added to your basket.', 'jigoshop'), jigoshop_cart::get_cart_url()) );
-						}
-						
-						$total_quantity = $total_quantity + $quantity;
-					endif;
-				endforeach;
-				
-				if ($total_quantity==0) :
-					jigoshop::add_error( __('Please choose a quantity&hellip;', 'jigoshop') );
-				endif;
-			
-			elseif ($_GET['product']) :
-				
-				/* Link on product pages */
-				jigoshop::add_error( __('Please choose a product&hellip;', 'jigoshop') );
-				wp_redirect( get_permalink( $_GET['product'] ) );
-				exit;
-			
-			endif; 
-			
-		endif;
-		
-		$url = apply_filters('add_to_cart_redirect', $url);
-		
-		// If has custom URL redirect there
-		if ( $url ) {
-			wp_safe_redirect( $url );
-			exit;
-		}
-		
-		// Redirect directly to checkout if no error messages
-		else if ( get_option('jigoshop_directly_to_checkout', 'no') == 'yes' && jigoshop::error_count() == 0 ) {
-			wp_safe_redirect( jigoshop_cart::get_checkout_url() );
-			exit;
-		}
-		
-		// Otherwise redirect to where they came
-		else if ( isset($_SERVER['HTTP_REFERER'])) {
-			wp_safe_redirect($_SERVER['HTTP_REFERER']);
-			exit;
-		}
-		
-		// If all else fails redirect to root
-		else {
-			wp_safe_redirect('/');
-			exit;
-		}
-	endif;
-	
+        jigoshop_cart::add_to_cart($product_id, $quantity);
+
+        if (get_option('jigoshop_directly_to_checkout', 'no') == 'no') {
+            jigoshop::add_message(sprintf(__('<a href="%s" class="button">View Cart &rarr;</a> Product successfully added to your basket.', 'jigoshop'), jigoshop_cart::get_cart_url()));
+        }
+    } else if ($_GET['add-to-cart'] == 'variation') { //variable product variation
+
+        //variaton wasn't selected but user managed to submit a form
+        if (empty($_POST['variation_id']) || !is_numeric($_POST['variation_id'])) {
+            /* Link on product pages */
+            jigoshop::add_error(__('Please choose product options&hellip;', 'jigoshop'));
+            wp_redirect(get_permalink($_GET['product']));
+            exit;
+        } else {
+            $product_id = (int) $_GET['product'];
+            $variation_id = (int) $_POST['variation_id'];
+            $quantity = 1;
+            if (isset($_POST['quantity'])) {
+                $quantity = (int) $_POST['quantity'];
+            }
+
+            $attributes = (array) maybe_unserialize(get_post_meta($product_id, 'product_attributes', true));
+            $variations = array();
+            $all_variations_set = true;
+
+            foreach ($attributes as $attribute) {
+
+                if ($attribute['variation'] !== 'yes') {
+                    continue;
+                }
+
+                $attr_name = 'tax_' . sanitize_title($attribute['name']);
+                if (!empty($_POST[$attr_name])) {
+                    $variations[$attr_name] = $_POST[$attr_name];
+                } else {
+                    $all_variations_set = false;
+                }
+            }
+
+            if ($all_variations_set && $variation_id > 0) { //all variation options are set
+                jigoshop_cart::add_to_cart($product_id, $quantity, $variation_id, $variations);
+
+                if (get_option('jigoshop_directly_to_checkout', 'no') == 'no') {
+                    jigoshop::add_message(sprintf(__('<a href="%s" class="button">View Cart &rarr;</a> Product successfully added to your basket.', 'jigoshop'), jigoshop_cart::get_cart_url()));
+                }
+            } else {
+                /* Link on product pages */
+                jigoshop::add_error(__('Please choose product options&hellip;', 'jigoshop'));
+                wp_redirect(get_permalink($_GET['product']));
+                exit;
+            }
+        }
+    } else if ($_GET['add-to-cart'] == 'group') { //grouped product
+        // Group add to cart
+        if (isset($_POST['quantity']) && is_array($_POST['quantity'])) {
+
+            $total_quantity = 0;
+
+            foreach ($_POST['quantity'] as $item => $quantity) {
+                $quantity = (int)$quantity;
+                
+                if ($quantity > 0) {
+                    jigoshop_cart::add_to_cart($item, $quantity);
+
+                    $total_quantity = $total_quantity + $quantity;
+                }
+            }
+
+            if ($total_quantity == 0) {
+                jigoshop::add_error(__('Please choose a quantity&hellip;', 'jigoshop'));
+            } else {
+                if (get_option('jigoshop_directly_to_checkout', 'no') == 'no') {
+                    jigoshop::add_message(sprintf(__('<a href="%s" class="button">View Cart &rarr;</a> Product successfully added to your basket.', 'jigoshop'), jigoshop_cart::get_cart_url()));
+                }
+            }
+        } else if ($_GET['product']) {
+            /* Link on product pages */
+            jigoshop::add_error(__('Please choose a product&hellip;', 'jigoshop'));
+            wp_redirect(get_permalink($_GET['product']));
+            exit;
+        }
+    }
+
+    $url = apply_filters('add_to_cart_redirect', $url);
+
+    // If has custom URL redirect there
+    if ($url) {
+        wp_safe_redirect($url);
+    }
+    // Redirect directly to checkout if no error messages
+    else if (get_option('jigoshop_directly_to_checkout', 'no') == 'yes' && jigoshop::error_count() == 0) {
+        wp_safe_redirect(jigoshop_cart::get_checkout_url());
+    }
+    // Otherwise redirect to where they came
+    else if (isset($_SERVER['HTTP_REFERER'])) {
+        wp_safe_redirect($_SERVER['HTTP_REFERER']);
+    }
+    // If all else fails redirect to root
+    else {
+        wp_redirect(home_url());
+    }
+
+    exit;
 }
 
 /**

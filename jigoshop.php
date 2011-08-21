@@ -290,7 +290,6 @@ function jigoshop_frontend_scripts() {
 		'countries' 					=> json_encode(jigoshop_countries::$states),
 		'select_state_text' 			=> __('Select a state&hellip;', 'jigoshop'),
 		'state_text' 					=> __('state', 'jigoshop'),
-		'variation_not_available_text' 	=> __('This variation is not available.', 'jigoshop'),
 		'plugin_url' 					=> jigoshop::plugin_url(),
 		'ajax_url' 						=> admin_url('admin-ajax.php'),
 		'get_variation_nonce' 			=> wp_create_nonce("get-variation"),

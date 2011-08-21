@@ -1,4 +1,5 @@
-<?php 
+<?php
+//@fixme this file is outdated (comparing to script.js), it duplicates code and, as far as I can see, it is never being used - do we need it?
 	header("Content-type: text/javascript"); 
 	if (isset($_GET['load_scripts'])) $load_scripts = explode(',', $_GET['load_scripts']); else $load_scripts = array();
 ?>
