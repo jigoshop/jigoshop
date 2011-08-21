@@ -102,6 +102,24 @@ class jigoshop_product_variation extends jigoshop_product {
 		endif;
 		return $this->variation;
 	}
+    
+    /**
+     * Get variation ID
+     * 
+     * @return int
+     */
+    function get_variation_id() {
+        return (int)$this->variation_id;
+    }
+    
+    /**
+     * Get variation attribute values
+     * 
+     * @return two dimensional array array of attributes and their values for this variation
+     */
+    function get_variation_attributes() {
+        return $this->variation_data;
+    }
 	
 	/** Returns the product's price */
 	function get_price() {

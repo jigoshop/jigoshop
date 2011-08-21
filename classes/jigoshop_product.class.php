@@ -68,6 +68,15 @@ class jigoshop_product {
 			$this->exists = false;	
 		endif;
 	}
+    
+    /**
+     * Get SKU (Stock-keeping unit) - product uniqe ID
+     * 
+     * @return mixed
+     */
+    function get_sku() {
+        return $this->sku;
+    }
 	
 	/** Returns the product's children */
 	function get_children() {
@@ -240,6 +249,15 @@ class jigoshop_product {
 		return false;
 		
 	}
+    
+    /**
+     * Returns number of items available for sale.
+     * 
+     * @return int
+     */
+    function get_stock_quantity() {
+        return (int)$this->stock;
+    }
 	
 	/** Returns the availability of the product */
 	function get_availability() {
@@ -555,5 +573,72 @@ class jigoshop_product {
 
 		endif;
 	}
+    
+    /**
+     * Return an array of avaiable variations (and their stock qty) for a variable product.
+     * 
+     * @todo Note that this is 'variable product' specific, and should be moved to separate class
+     * with all 'variable product' logic form other methods in this class.
+     * 
+     * @return two dimensional array of avaiable variations
+     */   
+    function get_avaiable_attributes_variations() {
+        if (!$this->is_type('variable') || !$this->has_child()) {
+            return array();
+        }
+        
+        $attributes = $this->get_attributes();
+        
+        if(!is_array($attributes)) {
+            return array();
+        }
+        
+        $avaiable = array();
+        $children = $this->get_children();
+        
+        foreach ($attributes as $attribute) {
+            if ($attribute['variation'] !== 'yes') {
+                continue;
+            }
+
+            $values = array();
+            $name = 'tax_'.$attribute['name'];
+
+            foreach ($children as $child) {
+                /* @var $variation jigoshop_product_variation */
+                $variation = $child->product;
+
+                if ($variation instanceof jigoshop_product_variation) {
+                    $attributes = $variation->get_variation_attributes();
+
+                    if (is_array($attributes)) {
+                        foreach ($attributes as $aname => $avalue) {
+                            if ($aname == $name) {
+                                $values[] = $avalue;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            //empty value indicates that all options for given attribute are avaiable
+            if(in_array('', $values)) {
+                $options = $attribute['value'];
+						
+                if (!is_array($options)) {
+                    $options = explode(',', $options);
+                }
+                
+                $values = $options;
+            }
+              
+            //make sure values are unique
+            $values = array_unique($values);
+            
+            $avaiable[$attribute['name']] = $values;
+        }
+        
+        return $avaiable;
+    }
 
 }

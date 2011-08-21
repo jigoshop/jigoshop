@@ -16,63 +16,6 @@
  *
  **/
 
-
-/**
- * Get variation
- *
- * Get variation price etc when using frontend form
- *
- * @since 		1.0
- */
-add_action('wp_ajax_jigoshop_get_variation', 'display_variation_data');
-add_action('wp_ajax_nopriv_jigoshop_get_variation', 'display_variation_data');
-
-function display_variation_data() {
-	
-	check_ajax_referer( 'get-variation', 'security' );
-	
-	// get variation terms
-	$variation_query 	= array();
-	$variation_data 	= array();
-	parse_str( $_POST['variation_data'], $variation_data );
-	
-	$variation_id = jigoshop_find_variation( $variation_data );
-	
-	if (!$variation_id) die();
-	
-	$_product = &new jigoshop_product_variation($variation_id);
-	
-	$availability = $_product->get_availability();
-	
-	if ($availability['availability']) :
-		$availability_html = '<p class="stock '.$availability['class'].'">'. $availability['availability'].'</p>';
-	else :
-		$availability_html = '';
-	endif;
-	
-	if (has_post_thumbnail($variation_id)) :
-		$attachment_id = get_post_thumbnail_id( $variation_id );
-		$large_thumbnail_size = apply_filters('single_product_large_thumbnail_size', 'shop_large');
-		$image = current(wp_get_attachment_image_src( $attachment_id, $large_thumbnail_size));
-		$image_link = current(wp_get_attachment_image_src( $attachment_id, 'full'));
-	else :
-		$image = '';
-		$image_link = '';
-	endif;
-	
-	$data = array(
-		'price_html' 		=> '<span class="price">'.$_product->get_price_html().'</span>',
-		'availability_html' => $availability_html,
-		'image_src'			=> $image,
-		'image_link'		=> $image_link
-	);
-	
-	echo json_encode( $data );
-
-	// Quit out
-	die();
-}
-
 /**
  * Add order item
  *
