@@ -722,8 +722,12 @@ a.tips {
 .jigoshop_options_panel textarea, .jigoshop_options_panel input, .jigoshop_options_panel select {
   margin: 0;
 }
+#general_product_data #excerpt {
+	width: 80%;
+	height: 6em;
+}
 .jigoshop_options_panel textarea {
-  width: 50% !important;
+  width: 50%;
   float: left;
 }
 .jigoshop_options_panel input {
