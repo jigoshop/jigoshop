@@ -330,6 +330,7 @@ class jigoshop_product {
 			if ( isset($this->data['sale_price']) && $this->data['sale_price'] != '' && $this->data['sale_price']==$this->price ) :
 				return true;
 			endif;
+
 		endif;
 
 		return false;
@@ -409,31 +410,29 @@ class jigoshop_product {
 	/** Returns the price in html format */
 	function get_price_html() {
 		$price = '';
-		if ( $this->has_child() ) :
 
+		if ( $this->has_child() ) :		/* only used on initial parent product display */
 			$min_price = '';
 			$max_price = '';
-
 			foreach ($this->children as $child) :
 				$child_price = $child->product->get_price();
 				if ($child_price<$min_price || $min_price == '') $min_price = $child_price;
 				if ($child_price>$max_price || $max_price == '') $max_price = $child_price;
 			endforeach;
-
 			$price .= '<span class="from">' . __('From: ', 'jigoshop') . '</span>' . jigoshop_price($min_price);
-		elseif ($this->is_type('variable')) :
 
-			$price .= '<span class="from">' . __('From: ', 'jigoshop') . '</span>' . jigoshop_price($this->get_price());
+		else :							/* format parent pricing only, variations do their own */
 
-		else :
 			if ($this->price) :
 				if ($this->is_on_sale() && isset($this->data['regular_price'])) :
+
 					$price .= '<del>'.jigoshop_price( $this->data['regular_price'] ).'</del> <ins>'.jigoshop_price($this->get_price()).'</ins>';
 				else :
 					$price .= jigoshop_price($this->get_price());
 				endif;
 			endif;
 		endif;
+
 		return $price;
 	}
 
