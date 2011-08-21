@@ -146,6 +146,13 @@ class jigoshop_product_variation extends jigoshop_product {
 
 	}
 
+	/** Returns the product's price excluding tax */
+	function get_price_excluding_tax() {
+		$price = $this->get_price();
+		// parent class calculates tax here ??? -- need to rework this, good for now
+		return $price;
+	}
+
 	/** Returns the price in html format */
 	function get_price_html() {
 		$price = '';
