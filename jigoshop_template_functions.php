@@ -298,35 +298,35 @@ if (!function_exists('jigoshop_grouped_add_to_cart')) {
 }
 if (!function_exists('jigoshop_variable_add_to_cart')) {
 	function jigoshop_variable_add_to_cart() {
-		
+
 		global $post, $_product;
-		
+
 		$attributes = maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) );
 		if (!isset($attributes)) $attributes = array();
 
 		?>
 		<form action="<?php echo $_product->add_to_cart_url(); ?>" class="variations_form cart" method="post">
-			
+
 			<table class="variations" cellspacing="0">
 				<tbody>
 				<?php
 					foreach ($attributes as $attribute) :
-								
+
 						if ( $attribute['variation']!=='yes' ) continue;
-						
+
 						$options = $attribute['value'];
-						
+
 						if (!is_array($options)) $options = explode(',', $options);
-						
+
 						echo '<tr><td><label for="'.sanitize_title($attribute['name']).'">'.ucfirst($attribute['name']).'</label></td><td><select id="'.sanitize_title($attribute['name']).'" name="tax_'.sanitize_title($attribute['name']).'"><option value="">'.__('Choose an option', 'jigoshop').'&hellip;</option><option>'.implode('</option><option>', $options).'</option></select></td></tr>';
-	
+
 					endforeach;
 				?>
 				</tbody>
 			</table>
 			<div class="single_variation"></div>
 			<div class="variations_button" style="display:none;">
-				
+
 				<div class="quantity"><input name="quantity" value="1" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div>
 				<button type="submit" class="button-alt"><?php _e('Add to cart', 'jigoshop'); ?></button>
 			</div>
@@ -430,10 +430,10 @@ if (!function_exists('jigoshop_get_product_thumbnail')) {
 	function jigoshop_get_product_thumbnail( $size = 'shop_small', $placeholder_width = 0, $placeholder_height = 0 ) {
 
 		global $post;
-		
+
 		if (!$placeholder_width) $placeholder_width = get_option('jigoshop_shop_small_w');
 		if (!$placeholder_height) $placeholder_height = get_option('jigoshop_shop_small_h');
-		
+
 		if ( has_post_thumbnail() ) return get_the_post_thumbnail($post->ID, $size); else return '<img src="'.jigoshop::plugin_url(). '/assets/images/placeholder.png" alt="Placeholder" width="'.$placeholder_width.'" height="'.$placeholder_height.'" />';
 
 	}
