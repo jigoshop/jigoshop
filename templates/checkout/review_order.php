@@ -1,20 +1,4 @@
 <?php
-/**
- * Review order form template
- *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Checkout
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
- */
- 
 	if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
 	
 	if (!defined('ABSPATH')) :
@@ -124,7 +108,7 @@
 					if ($_product->exists() && $values['quantity']>0) :
 						echo '
 							<tr>
-								<td>'.$_product->get_title().'</td>
+								<td class="product-name">'.$_product->get_title().jigoshop_get_formatted_variation( $values['variation'] ).'</td>
 								<td>'.$values['quantity'].'</td>
 								<td>'.jigoshop_price($_product->get_price_excluding_tax()*$values['quantity'], array('ex_tax_label' => 1)).'</td>
 							</tr>';

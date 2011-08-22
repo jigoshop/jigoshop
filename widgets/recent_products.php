@@ -1,21 +1,14 @@
 <?php
 /**
  * Recent Products Widget
- *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Widgets
- * @author     Jigowatt
- * @since	   1.0
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * 
+ * @package		JigoShop
+ * @category	Widgets
+ * @author		Jigowatt
+ * @since		1.0
+ * 
  */
- 
+
 class Jigoshop_Widget_Recent_Products extends WP_Widget {
 
 	/** constructor */
@@ -75,7 +68,7 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 		<ul class="product_list_widget">
 		<?php  while ($r->have_posts()) : $r->the_post(); $_product = &new jigoshop_product(get_the_ID()); ?>
 		<li><a href="<?php the_permalink() ?>" title="<?php echo esc_attr(get_the_title() ? get_the_title() : get_the_ID()); ?>">
-			<?php if (has_post_thumbnail()) the_post_thumbnail('shop_tiny'); else echo '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.jigoshop::get_var('shop_tiny_w').'px" height="'.jigoshop::get_var('shop_tiny_h').'px" />'; ?>
+			<?php if (has_post_thumbnail()) the_post_thumbnail('shop_tiny'); else echo '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.get_option('jigoshop_shop_tiny_w').'px" height="'.get_option('jigoshop_shop_tiny_h').'px" />'; ?>
 			<?php if ( get_the_title() ) the_title(); else the_ID(); ?>
 		</a> <?php echo $_product->get_price_html(); ?></li>
 		<?php endwhile; ?>
