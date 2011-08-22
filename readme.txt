@@ -1,9 +1,9 @@
 === Jigoshop - WordPress eCommerce ===
-Contributors: Jigoshop
+Contributors: jigowatt
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal
 Requires at least: 3.1
-Tested up to: 3.2
-Stable tag: 0.9.8.1
+Tested up to: 3.2.1
+Stable tag: 1.0-Kaboom1 (RC1)
  
 A feature packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customisability. 
 
@@ -57,7 +57,6 @@ Find out more on the official <a href="http://jigoshop.com" title="WordPress eCo
 = Official Jigoshop Extensions =
 
 * <a href="http://jigoshop.com/extensions/sagepay-form/" title="SagePay Form payment gateway extension of Jigoshop">SagePay Form</a> - SagePay Form payment gateway.
-* <a href="http://jigoshop.com/blog/extensions/authorize-net/" title="Authorize.net payment gateway extension of Jigoshop">Authorize.net</a> - Authorize.net payment gateway.
 * <a href="http://jigoshop.com/extensions/jigoshop-html-email/" title="Jigoshop HTML Emails">Jigoshop HTML Emails</a> - Give your Jigoshop emails a makeover
 * <a href="http://jigoshop.com/extensions/jigoshop-meta-tags/" title="Simple SEO Meta Tags">Simple SEO Meta Tags</a> - Add meta data to your individual product pages
 * <a href="http://jigoshop.com/extensions/table-rate-shipping/" title="Table Rate Shippin">Table Rate Shipping</a> - Define separate shipping rates for regions based on either price, weight or the number of items in a cart
@@ -136,6 +135,22 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 9. Checkout
 
 == Changelog ==
+= 0.9.9 =
+* Added Dutch translation
+* Various bug fixes
+
+= 0.9.9 = 
+* PRODUCT VARIATIONS
+* Revamped order items panel
+* Grouped products can contain downloadable, simple, or virtual products
+* Changed mail from/to for store
+* Download limiter fix
+* Settings strip slashes
+* Moved update/remove from cart code so totals are updated and shipping is updated
+* Fixed 'needs shipping' for downloadable products
+* Made my account downloads respect order status
+* Filter for ship to billing defaults
+* Optimised scripts.js (no longer a php file)
 
 = 0.9.8.1 =
 * Changes to allow new product types to be added by plugins
@@ -145,6 +160,9 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * Shop page can show content
 * SKU display options
 * Fixes for default permalinks
+* Better ajax handling
+* Better shortcode handling with cache
+* Filters added to email contents
 
 = 0.9.8 =
 

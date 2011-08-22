@@ -1,21 +1,11 @@
 <?php
-/**
+
+### Templates ##################################################################
+/*
  * Templates are in the 'templates' folder. jigoshop looks for theme 
- *
- * Overides in /theme/jigoshop/ by default, but can be overwritten with JIGOSHOP_TEMPLATE_URL
- *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Core
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
- */
+ * overides in /theme/jigoshop/ by default  but this can be overwritten with JIGOSHOP_TEMPLATE_URL
+*/
+################################################################################
 
 function jigoshop_template_loader( $template ) {
 	

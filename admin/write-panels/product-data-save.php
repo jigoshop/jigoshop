@@ -4,24 +4,16 @@
  * 
  * Function for processing and storing all product data.
  *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Admin
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @author 		Jigowatt
+ * @category 	Admin Write Panels
+ * @package 	JigoShop
  */
 
 add_action('jigoshop_process_product_meta', 'jigoshop_process_product_meta', 1, 2);
 
 function jigoshop_process_product_meta( $post_id, $post ) {
 	global $wpdb;
-	
+
 	$jigoshop_errors = array();
 	
 	// Get old data + attributes
@@ -207,7 +199,7 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 		$data = apply_filters( 'process_product_meta', $data, $post_id );
 		
 		// Apply filter to data for product type
-		$data = apply_filters( 'process_product_meta_' . $product_type, $data, $post_id );
+		$data = apply_filters( 'filter_product_meta_' . $product_type, $data, $post_id );
 		
 		// Do action for product type
 		do_action( 'process_product_meta_' . $product_type, $data, $post_id );

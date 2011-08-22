@@ -1,13 +1,5 @@
 <?php 
-	if (!defined('ABSPATH')) :
-		define('WP_INSTALLING', true); // Prevent all plugins loading!! This is a nasty hack, but it does make the file load much faster.
-		$root = dirname(dirname(dirname(dirname(dirname(dirname(__FILE__))))));
-		require_once( $root.'/wp-load.php' );
-		require_once( $root.'/wp-includes/wp-db.php' );
-		require_once( dirname(dirname(dirname(__FILE__))).'/jigoshop.php' );
-	endif;
 	header("Content-type: text/javascript"); 
-	
 	if (isset($_GET['load_scripts'])) $load_scripts = explode(',', $_GET['load_scripts']); else $load_scripts = array();
 ?>
 
@@ -54,12 +46,12 @@ jQuery(function(){
 		max: max_price,
 		values: [ current_min_price, current_max_price ],
 		create : function( event, ui ) {
-			jQuery( ".price_slider_amount span" ).html( "<?php echo get_jigoshop_currency_symbol(); ?>" + current_min_price + " - <?php echo get_jigoshop_currency_symbol(); ?>" + current_max_price );
+			jQuery( ".price_slider_amount span" ).html( params.currency_symbol + current_min_price + " - " + params.currency_symbol + current_max_price );
 			jQuery( ".price_slider_amount #min_price" ).val(current_min_price);
 			jQuery( ".price_slider_amount #max_price" ).val(current_max_price);
 		},
 		slide: function( event, ui ) {
-			jQuery( ".price_slider_amount span" ).html( "<?php echo get_jigoshop_currency_symbol(); ?>" + ui.values[ 0 ] + " - <?php echo get_jigoshop_currency_symbol(); ?>" + ui.values[ 1 ] );
+			jQuery( ".price_slider_amount span" ).html( params.currency_symbol + ui.values[ 0 ] + " - " + params.currency_symbol + ui.values[ 1 ] );
 			jQuery( "input#min_price" ).val(ui.values[ 0 ]);
 			jQuery( "input#max_price" ).val(ui.values[ 1 ]);
 		}
@@ -87,7 +79,7 @@ jQuery(function(){
 	});
 	
 	/* states */
-	var states = jQuery.parseJSON('<?php echo json_encode(jigoshop_countries::$states); ?>');			
+	var states = jQuery.parseJSON( params.countries );			
 	
 	jQuery('select.country_to_state').change(function(){
 		
@@ -105,13 +97,13 @@ jQuery(function(){
 			}
 			if (jQuery(state_box).is('input')) {
 				// Change for select
-				jQuery(state_box).replaceWith('<select name="' + input_name + '" id="' + input_id + '"><option value=""><?php _e('Select a state&hellip;', 'jigoshop'); ?></option></select>');
+				jQuery(state_box).replaceWith('<select name="' + input_name + '" id="' + input_id + '"><option value="">' + params.select_state_text + '</option></select>');
 				state_box = jQuery('#' + jQuery(this).attr('rel'));
 			}
 			jQuery(state_box).append(options);
 		} else {
 			if (jQuery(state_box).is('select')) {
-				jQuery(state_box).replaceWith('<input type="text" placeholder="<?php _e('state', 'jigoshop'); ?>" name="' + input_name + '" id="' + input_id + '" />');
+				jQuery(state_box).replaceWith('<input type="text" placeholder="' + params.state_text + '" name="' + input_name + '" id="' + input_id + '" />');
 				state_box = jQuery('#' + jQuery(this).attr('rel'));
 			}
 		}
@@ -149,6 +141,57 @@ jQuery(function(){
 
 	jQuery(".shipping-calculator-button").click(function() { return false; });
 	
+	// Variations
+	
+	function check_variations() {
+		
+		var not_set = false;
+		
+		jQuery('.variations select').each(function(){
+			if (jQuery(this).val()=="") not_set = true;
+		});
+		
+		jQuery('.variations_button, .single_variation').slideUp();
+		
+		if (!not_set) {
+			
+			jQuery('.variations').block({ message: null, overlayCSS: { background: '#fff url(' + params.plugin_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
+			
+			var data = {
+				action: 		'jigoshop_get_variation',
+				variation_data: jQuery('form.variations_form').serialize(),
+				security: 		params.get_variation_nonce
+			};
+
+			jQuery.post( params.ajax_url, data, function(response) {
+				
+				if (response.length > 1) {
+				
+					variation_response = jQuery.parseJSON( response );
+
+					jQuery('.single_variation').html( variation_response.price_html + variation_response.availability_html );
+					
+					//variation_response.image_src;
+					
+					jQuery('.variations_button, .single_variation').slideDown();
+				} else {
+					jQuery('.single_variation').slideDown();
+					jQuery('.single_variation').html( '<p>' + params.variation_not_available_text + '</p>' );
+				}
+								
+				jQuery('.variations').unblock();
+			});
+		
+		} else {
+			jQuery('.variations_button').hide();
+		}
+		
+	}
+	
+	jQuery('.variations select').change(function(){
+		check_variations();
+	});
+	
 });
 
 <?php if (in_array('checkout', $load_scripts)) : ?>
@@ -174,10 +217,10 @@ function update_checkout() {
 		var s_postcode 	= jQuery('input#shipping-postcode').val();
 	}
 	
-	jQuery('#order_methods, #order_review').block({ message: null, overlayCSS: { background: '#fff url(<?php echo jigoshop::plugin_url(); ?>/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
+	jQuery('#order_methods, #order_review').block({ message: null, overlayCSS: { background: '#fff url(' + params.plugin_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
 	jQuery.ajax({
 		type: 		'POST',
-		url: 		'<?php echo jigoshop_get_template_file_url('checkout/review_order.php', true); ?>',
+		url: 		params.review_order_url,
 		data: 		{ shipping_method: method, country: country, state: state, postcode: postcode, s_country: s_country, s_state: s_state, s_postcode: s_postcode },
 		success: 	function( code ) {
 						jQuery('#order_methods, #order_review').remove();
@@ -206,7 +249,7 @@ jQuery(function(){
 		}
 	}).change();
 	
-	<?php if (get_option('jigoshop_enable_guest_checkout')=='yes') : ?>
+	if (params.option_guest_checkout=='yes') {
 		
 		jQuery('div.create-account').hide();
 		
@@ -217,7 +260,7 @@ jQuery(function(){
 			}
 		}).change();
 	
-	<?php endif; ?>
+	}
 	
 	jQuery('.payment_methods input.input-radio').live('click', function(){
 		jQuery('div.payment_box').hide();
@@ -251,10 +294,10 @@ jQuery(function(){
 	/* AJAX Form Submission */
 	jQuery('form.checkout').submit(function(){
 		var form = this;
-		jQuery(form).block({ message: null, overlayCSS: { background: '#fff url(<?php echo jigoshop::plugin_url(); ?>/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
+		jQuery(form).block({ message: null, overlayCSS: { background: '#fff url(' + params.plugin_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
 		jQuery.ajax({
 			type: 		'POST',
-			url: 		'<?php echo admin_url('admin-ajax.php?action=jigoshop-checkout') ?>',
+			url: 		params.checkout_url,
 			data: 		jQuery(form).serialize(),
 			success: 	function( code ) {
 							jQuery('.jigoshop_error, .jigoshop_message').remove();
@@ -275,4 +318,4 @@ jQuery(function(){
 
 });
 
-<?php endif; exit; ?>
+<?php endif; ?>
