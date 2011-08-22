@@ -15,6 +15,8 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
 "X-Poedit-Basepath: ..\n"
 "X-Textdomain-Support: yes\n"
+"X-Poedit-Language: Swedish\n"
+"X-Poedit-Country: SWEDEN\n"
 "X-Poedit-SearchPath-0: .\n"
 
 # @ jigoshop
@@ -550,17 +552,17 @@ msgstr "En beställning har skapats för dig på \"% s\". För att betala för d
 # @ jigoshop
 #: jigoshop_emails.php:232
 msgid "Product low in stock"
-msgstr "Få exemplar av produkten i lager"
+msgstr "Produkten är nästan slut"
 
 # @ jigoshop
 #: jigoshop_emails.php:233
 msgid "is low in stock."
-msgstr "finns i få exemplar i lager."
+msgstr "är nästan slut."
 
 # @ jigoshop
 #: jigoshop_emails.php:244
 msgid "Product out of stock"
-msgstr "Produkten slut i lager"
+msgstr "Produkten har sålt slut"
 
 # @ jigoshop
 #: jigoshop_emails.php:245
@@ -773,12 +775,12 @@ msgstr "Hanteringsavgift"
 # @ jigoshop
 #: assets/js/script.js.php:108
 msgid "Select a state&hellip;"
-msgstr "Markera ett läge&hellip;"
+msgstr "Markera en stad&hellip;"
 
 # @ jigoshop
 #: assets/js/script.js.php:115
 msgid "state"
-msgstr "läge"
+msgstr "stad"
 
 # @ jigoshop
 #: admin/jigoshop-admin-dashboard.php:25
@@ -2484,7 +2486,7 @@ msgstr "Lägg till artikel"
 # @ jigoshop
 #: admin/write-panels/order-data.php:286
 msgid "Calculate totals"
-msgstr "Beräkna summor"
+msgstr "Beräkna totalbelopp"
 
 # @ jigoshop
 #: admin/write-panels/order-data.php:290
@@ -2686,7 +2688,7 @@ msgstr "Land"
 #: classes/jigoshop_checkout.class.php:53
 #: classes/jigoshop_checkout.class.php:198
 msgid "State/County"
-msgstr "Stat/Län"
+msgstr "Stad"
 
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:40
@@ -3287,7 +3289,7 @@ msgstr "Nytt lösenord"
 # @ jigoshop
 #: shortcodes/my_account.php:353
 msgid "Re-enter new password"
-msgstr "Ange det nya lösenordet"
+msgstr "Ange det nya lösenordet igen"
 
 # @ jigoshop
 #: shortcodes/my_account.php:358
@@ -3314,7 +3316,7 @@ msgstr "Antal"
 # @ jigoshop
 #: shortcodes/my_account.php:397
 msgid "Totals"
-msgstr "Summor"
+msgstr "Totalbelopp"
 
 # @ jigoshop
 #: shortcodes/my_account.php:418
@@ -3391,7 +3393,7 @@ msgstr "Gå till kassan &rarr;"
 # @ jigoshop
 #: shortcodes/cart.php:142
 msgid "Cart Totals"
-msgstr "Kundvagn summor"
+msgstr "Kundvagn totalbelopp"
 
 #: shortcodes/cart.php:155
 #, php-format
@@ -3757,7 +3759,7 @@ msgstr "Eftersom din webbläsare inte stöder JavaScript, eller det är inaktive
 # @ jigoshop
 #: templates/checkout/review_order.php:164
 msgid "Update totals"
-msgstr "Uppdatera summor"
+msgstr "Uppdatera totalbelopp"
 
 # @ jigoshop
 #: templates/checkout/review_order.php:167
@@ -3797,7 +3799,7 @@ msgstr "Postnummer"
 # @ jigoshop
 #: templates/cart/shipping_calculator.php:52
 msgid "Update Totals"
-msgstr "Uppdatera summor"
+msgstr "Uppdatera totalbelopp"
 
 # @ jigoshop
 #: templates/product/description.php:1
