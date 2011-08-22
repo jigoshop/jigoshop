@@ -1,22 +1,8 @@
 <?php
 /**
- * $options_settings variable contains all the options used on the Jigoshop settings page
- *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Admin
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
- */
- 
-/**
  * options_settings
+ * 
+ * This variable contains all the options used on the jigpshop settings page
  *
  * @since 		1.0
  * @category 	Admin
@@ -172,6 +158,20 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		)
 	),
 	
+	array(  
+		'name' => __('Go directly to checkout after add to cart','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Useful if most customers only buy one product.','jigoshop'),
+		'id' 		=> 'jigoshop_directly_to_checkout',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(  
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
+	),
+	
 	array( 'type' => 'tabend'),
 	
 	array( 'type' => 'tab', 'tabname' => __('Pages', 'jigoshop') ),
@@ -258,6 +258,92 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'std' 		=> ''
 	),	
 	
+	array( 'type' => 'tabend'),
+
+	array( 'type' => 'tab', 'tabname' => __('Images', 'jigoshop') ),
+
+	array( 'name' => __('Image Options', 'jigoshop'), 'type' => 'title','desc' => '', 'id' => '' ),
+
+	array(
+		'name' 		=> __('Tiny Image Width','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_shop_tiny_w',
+		'css' 		=> 'min-width:200px;',
+		'type' 		=> 'text',
+		'std' 		=> 36
+	),
+
+	array(
+		'name' 		=> __('Tiny Image Height','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_shop_tiny_h',
+		'css' 		=> 'min-width:200px;',
+		'type' 		=> 'text',
+		'std' 		=> 36
+	),
+
+	array(
+		'name' 		=> __('Thumbnail Image Width','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_shop_thumbnail_w',
+		'css' 		=> 'min-width:200px;',
+		'type' 		=> 'text',
+		'std' 		=> 90
+	),
+
+	array(
+		'name' 		=> __('Thumbnail Image Height','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_shop_thumbnail_h',
+		'css' 		=> 'min-width:200px;',
+		'type' 		=> 'text',
+		'std' 		=> 90
+	),
+
+	array(
+		'name' 		=> __('Small Image Width','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_shop_small_w',
+		'css' 		=> 'min-width:200px;',
+		'type' 		=> 'text',
+		'std' 		=> 150
+	),
+
+	array(
+		'name' 		=> __('Small Image Height','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_shop_small_h',
+		'css' 		=> 'min-width:200px;',
+		'type' 		=> 'text',
+		'std' 		=> 150
+	),
+
+	array(
+		'name' 		=> __('Large Image Width','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_shop_large_w',
+		'css' 		=> 'min-width:200px;',
+		'type' 		=> 'text',
+		'std' 		=> 300
+	),
+
+	array(
+		'name' 		=> __('Thumbnail Image Height','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_shop_large_h',
+		'css' 		=> 'min-width:200px;',
+		'type' 		=> 'text',
+		'std' 		=> 300
+	),
+
 	array( 'type' => 'tabend'),
 	
 	array( 'type' 		=> 'tab', 'tabname' => __('Catalog', 'jigoshop') ),

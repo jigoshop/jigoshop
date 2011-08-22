@@ -4,18 +4,11 @@
  *
  * Displays shopping cart widget
  *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Widgets
- * @author     Jigowatt
- * @since	   1.0
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		JigoShop
+ * @category	Widgets
+ * @author		Jigowatt
+ * @since		1.0
+ * 
  */
  
 class Jigoshop_Widget_Cart extends WP_Widget {
@@ -45,7 +38,7 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 				echo '<li><a href="'.get_permalink($item_id).'">';
 				
 				if (has_post_thumbnail($item_id)) echo get_the_post_thumbnail($item_id, 'shop_tiny'); 
-				else echo '<img src="'.jigoshop::plugin_url(). '/assets/images/placeholder.png" alt="Placeholder" width="'.jigoshop::get_var('shop_tiny_w').'" height="'.jigoshop::get_var('shop_tiny_h').'" />'; 
+				else echo '<img src="'.jigoshop::plugin_url(). '/assets/images/placeholder.png" alt="Placeholder" width="'.get_option('jigoshop_shop_tiny_w').'" height="'.get_option('jigoshop_shop_tiny_h').'" />';
 				
 				echo apply_filters('jigoshop_cart_widget_product_title', $_product->get_title(), $_product).'</a> '.$values['quantity'].' &times; '.jigoshop_price($_product->get_price()).'</li>';
 			endif;

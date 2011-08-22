@@ -1,30 +1,14 @@
 <?php
 /**
- * Jigoshop Taxonomy
- *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Core
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
- */
-
-/**
  * Custom Post Types
  **/
 function jigoshop_post_type() {
-do_action('lox');
+
 	global $wpdb;
 	
 	$shop_page_id = get_option('jigoshop_shop_page_id');
 	
-	$base_slug = get_post($shop_page_id) && get_page_uri( $shop_page_id ) ? get_page_uri( $shop_page_id ) : 'shop';
+	$base_slug = $shop_page_id && get_page_uri( $shop_page_id ) ? get_page_uri( $shop_page_id ) : 'shop';
 	
 	if (get_option('jigoshop_prepend_shop_page_to_urls')=="yes") :
 		$category_base = trailingslashit($base_slug);
@@ -142,6 +126,37 @@ do_action('lox');
 			'supports' => array( 'title', 'editor', 'thumbnail', 'comments'/*, 'page-attributes'*/ ),
 			'has_archive' => $base_slug,
 			'show_in_nav_menus' => false,
+		)
+	);
+	
+	register_post_type( "product_variation",
+		array(
+			'labels' => array(
+				'name' => __( 'Variations', 'jigoshop' ),
+				'singular_name' => __( 'Variation', 'jigoshop' ),
+				'add_new' => __( 'Add Variation', 'jigoshop' ),
+				'add_new_item' => __( 'Add New Variation', 'jigoshop' ),
+				'edit' => __( 'Edit', 'jigoshop' ),
+				'edit_item' => __( 'Edit Variation', 'jigoshop' ),
+				'new_item' => __( 'New Variation', 'jigoshop' ),
+				'view' => __( 'View Variation', 'jigoshop' ),
+				'view_item' => __( 'View Variation', 'jigoshop' ),
+				'search_items' => __( 'Search Variations', 'jigoshop' ),
+				'not_found' => __( 'No Variations found', 'jigoshop' ),
+				'not_found_in_trash' => __( 'No Variations found in trash', 'jigoshop' ),
+				'parent' => __( 'Parent Variation', 'jigoshop' )
+			),
+			'public' => true,
+			'show_ui' => true,
+			'capability_type' => 'post',
+			'publicly_queryable' => true,
+			'exclude_from_search' => true,
+			'hierarchical' => false,
+			'rewrite' => false,
+			'query_var' => true,			
+			'supports' => array( 'title', 'editor', 'custom-fields' ),
+			'show_in_nav_menus' => false,
+			'show_in_menu' => 'edit.php?post_type=product'
 		)
 	);
 	

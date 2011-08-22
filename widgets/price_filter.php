@@ -1,23 +1,4 @@
-<?php
-/**
- * Price Filter Widget
- * 
- * Generates a range slider to filter products by price
- *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Widgets
- * @author     Jigowatt
- * @since	   1.0
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
- */
- 
+<?php 
 function jigoshop_price_filter_init() {
 	
 	unset($_SESSION['min_price']);
@@ -35,8 +16,19 @@ function jigoshop_price_filter_init() {
 	endif;
 	
 }
-
 add_action('init', 'jigoshop_price_filter_init');
+
+/**
+ * Price Filter Widget
+ * 
+ * Generates a range slider to filter products by price
+ *
+ * @package		JigoShop
+ * @category	Widgets
+ * @author		Jigowatt
+ * @since		1.0
+ * 
+ */
 
 class Jigoshop_Widget_Price_Filter extends WP_Widget {
 
@@ -96,7 +88,7 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 			<div class="price_slider_wrapper">
 				<div class="price_slider"></div>
 				<div class="price_slider_amount">
-					<button type="submit" class="button">Filter</button>'.__('Price: ', 'jigoshop').'<span></span>
+					<button type="submit" class="button">'.__('Filter: ', 'jigoshop').'</button>'.__('Price: ', 'jigoshop').'<span></span>
 					<input type="hidden" id="max_price" name="max_price" value="'.$max.'" />
 					<input type="hidden" id="min_price" name="min_price" value="'.$min.'" />
 					'.$fields.'

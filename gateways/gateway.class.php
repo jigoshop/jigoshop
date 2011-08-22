@@ -1,20 +1,8 @@
 <?php
+
 /**
  * Jigoshop Payment Gateway class
- *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Checkout
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
- */
-
+ **/
 class jigoshop_payment_gateway {
 	
 	var $id;
@@ -44,7 +32,7 @@ class jigoshop_payment_gateway {
 	
 	function icon() {
 		if ($this->icon) :
-			return '<img src="'. $this->icon.'" alt="'.$this->title.'" />';
+			return '<img src="'. jigoshop::force_ssl($this->icon).'" alt="'.$this->title.'" />';
 		endif;
 	}
 	

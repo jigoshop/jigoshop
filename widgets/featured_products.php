@@ -3,19 +3,12 @@
  * Featured Products Widget
  *
  * Gets and displays featured products in an unordered list
- *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Widgets
- * @author     Jigowatt
- * @since	   1.0
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * 
+ * @package		JigoShop
+ * @category	Widgets
+ * @author		Jigowatt
+ * @since		1.0
+ * 
  */
 
 class Jigoshop_Widget_Featured_Products extends WP_Widget {
@@ -62,7 +55,7 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 		<?php foreach ($featured_posts as $r) : $_product = &new jigoshop_product( $r->ID ); ?>
 		
 		<li><a href="<?php echo get_permalink( $r->ID ) ?>" title="<?php echo esc_attr($r->post_title ? $r->post_title : $r->ID); ?>">
-			<?php if (has_post_thumbnail( $r->ID )) echo get_the_post_thumbnail($r->ID, 'shop_tiny'); else echo '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.jigoshop::get_var('shop_tiny_w').'px" height="'.jigoshop::get_var('shop_tiny_h').'px" />'; ?>
+			<?php if (has_post_thumbnail( $r->ID )) echo get_the_post_thumbnail($r->ID, 'shop_tiny'); else echo '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.get_option('jigoshop_shop_tiny_w').'px" height="'.get_option('jigoshop_shop_tiny_h').'px" />'; ?>
 			<?php if ( $r->post_title ) echo $r->post_title; else echo $r->ID; ?>
 		</a> <?php echo $_product->get_price_html(); ?></li>
 		

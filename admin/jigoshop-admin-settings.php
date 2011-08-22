@@ -2,20 +2,12 @@
 /**
  * Functions for the settings page in admin.
  * 
- * The settings page contains options for the Jigoshop plugin - this file contains functions to display
+ * The settings page contains options for the JigoShop plugin - this file contains functions to display
  * and save the list of options.
  *
- * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
- * please use our GitHub repository to publish essential changes for consideration.
- *
- * @package    Jigoshop
- * @category   Admin
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @author 		Jigowatt
+ * @category 	Admin
+ * @package 	JigoShop
  */
 
 /**
@@ -30,6 +22,9 @@
  */
 function jigoshop_update_options($options) {
     if(isset($_POST['submitted']) && $_POST['submitted'] == 'yes') {
+
+		$update_image_meta = false;
+
         foreach ($options as $value) {
         	if (isset($value['id']) && $value['id']=='jigoshop_tax_rates') :
         	
@@ -133,8 +128,26 @@ function jigoshop_update_options($options) {
 				} else {
 	                @delete_option($value['id']);
 	            }
-	            
-        	else :
+
+			/* image values can not be empty, if empty fallback to default values */
+			elseif ( isset($value['id']) && preg_match('/^jigoshop_shop_(tiny|thumbnail|small|large)_(h|w)$/', $value['id']) ):
+
+				$old_val = get_option($value['id'], false);
+				$size = intval( jigowatt_clean($_POST[$value['id']]) );
+
+				if (!$size && $old_val !== false || $size == $old_val){
+					continue;
+				} else if (!$size) {
+					$var_name = str_replace('jigoshop_', '', $value['id']);
+					$size = jigoshop::get_var($var_name);
+					$update_image_meta = true;
+				} else {
+					$update_image_meta = true;
+				}
+
+				update_option($value['id'], $size);
+
+        	else:
 			    
         		if(isset($value['id']) && isset($_POST[$value['id']])) {
 	            	update_option($value['id'], jigowatt_clean($_POST[$value['id']]));
@@ -145,7 +158,31 @@ function jigoshop_update_options($options) {
 	        endif;
 	        
         }
-        
+
+		if ($update_image_meta){
+
+			// reset the image sizes to generate the new metadata
+			jigoshop_set_image_sizes();
+			
+			$posts = get_posts('post_type=product&post_status=publish&posts_per_page=-1');
+
+			foreach ( (array) $posts as $post) {
+				$images =& get_children("post_parent={$post->ID}&post_type=attachment&post_mime_type=image");
+
+				foreach ( (array) $images as $image) {
+					$fullsizepath = get_attached_file($image->ID);
+
+					if (false !== $fullsizepath || file_exists($fullsizepath)) {
+						$metadata = wp_generate_attachment_metadata($image->ID, $fullsizepath);
+
+						if (!is_wp_error($metadata) && !empty($metadata)) {
+							wp_update_attachment_metadata($image->ID, $metadata);
+						}
+					}
+				}
+			}
+		}
+
         do_action('jigoshop_update_options');
         
         echo '<div id="message" class="updated fade"><p><strong>'.__('Your settings have been saved.','jigoshop').'</strong></p></div>';
@@ -197,7 +234,9 @@ function jigoshop_admin_fields($options) {
 		            case 'text':
 		            	?><tr>
 		                    <td class="titledesc"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
-		                    <td class="forminp"><input name="<?php echo $value['id'] ?>" id="<?php echo $value['id'] ?>" type="<?php echo $value['type'] ?>" style="<?php echo $value['css'] ?>" value="<?php if ( get_option( $value['id']) !== false && get_option( $value['id']) !== null ) echo get_option( $value['id'] ); else echo $value['std'] ?>" /><br /><small><?php echo $value['desc'] ?></small></td>
+
+		                    <td class="forminp"><input name="<?php echo $value['id'] ?>" id="<?php echo $value['id'] ?>" type="<?php echo $value['type'] ?>" style="<?php echo $value['css'] ?>"
+								value="<?php if ( get_option( $value['id']) !== false && get_option( $value['id']) !== null ) echo get_option( $value['id'] ); else echo $value['std'] ?>" /><br /><small><?php echo $value['desc'] ?></small></td>
 		                </tr><?php
 		            break;
 		            case 'select':
