@@ -53,7 +53,7 @@ function jigoshop_admin_menu_order( $menu_order ) {
 	// Loop through menu order and do some rearranging
 	foreach ( $menu_order as $index => $item ) :
 
-		if ( ( ( 'jigoshop' ) == $item ) ) :
+		if ( 'jigoshop' == $item ) :
 			$jigoshop_menu_order[] = 'separator-jigoshop';
 			unset( $menu_order[$jigoshop_separator] );
 		endif;

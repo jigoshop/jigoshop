@@ -439,7 +439,7 @@ function jigoshop_download_product() {
 		$email = urldecode( $_GET['email'] );
 		
 		if (!is_email($email)) wp_safe_redirect( home_url() );
-		
+        
 		$downloads_remaining = $wpdb->get_var( $wpdb->prepare("
 			SELECT downloads_remaining 
 			FROM ".$wpdb->prefix."jigoshop_downloadable_product_permissions
@@ -448,10 +448,11 @@ function jigoshop_download_product() {
 			AND product_id = '$download_file'
 		;") );
 		
-		if ($downloads_remaining=='0') :
-			wp_die( sprintf(__('Sorry, you have reached your download limit for this file. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
+        if ($downloads_remaining == NULL) :
+            wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
+		elseif ($downloads_remaining == '0') :
+            wp_die( sprintf(__('Sorry, you have reached your download limit for this file. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
 		else :
-			
 			if ($downloads_remaining>0) :
 				$wpdb->update( $wpdb->prefix . "jigoshop_downloadable_product_permissions", array( 
 					'downloads_remaining' => $downloads_remaining - 1, 
@@ -466,6 +467,10 @@ function jigoshop_download_product() {
 			$file_path = ABSPATH . get_post_meta($download_file, 'file_path', true);			
 			
             $file_path = realpath($file_path);
+            
+            if (!file_exists($file_path) || is_dir($file_path) || !is_readable($file_path)) {
+                wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
+            }
 
             $file_extension = strtolower(substr(strrchr($file_path,"."),1));
 
@@ -481,9 +486,7 @@ function jigoshop_download_product() {
                 case "jpe": case "jpeg": case "jpg": $ctype="image/jpg"; break;
                 default: $ctype="application/force-download";
             endswitch;
-
-            if (!file_exists($file_path)) wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
-			
+            
 			@ini_set('zlib.output_compression', 'Off');
 			@set_time_limit(0);
 			@session_start();					
