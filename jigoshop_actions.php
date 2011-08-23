@@ -286,7 +286,9 @@ function jigoshop_add_to_cart_action( $url = false ) {
 					if ($variation_id>0) :
 						// Add to cart
 						jigoshop_cart::add_to_cart($product_id, $quantity, $variations, $variation_id);
-						jigoshop::add_message( sprintf(__('<a href="%s" class="button">View Cart &rarr;</a> Product successfully added to your basket.', 'jigoshop'), jigoshop_cart::get_cart_url()) );
+						if( get_option('jigoshop_directly_to_checkout', 'no') == 'no' ) :
+							jigoshop::add_message( sprintf(__('<a href="%s" class="button">View Cart &rarr;</a> Product successfully added to your basket.', 'jigoshop'), jigoshop_cart::get_cart_url()) );
+						endif;
 					else :
 						jigoshop::add_error( __('Sorry, this variation is not available.', 'jigoshop') );
 					endif;
