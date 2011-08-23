@@ -1,11 +1,11 @@
 <?php
 
-### Templates ##################################################################
+//### Templates ##################################################################
 /*
  * Templates are in the 'templates' folder. jigoshop looks for theme 
  * overides in /theme/jigoshop/ by default  but this can be overwritten with JIGOSHOP_TEMPLATE_URL
 */
-################################################################################
+//################################################################################
 
 function jigoshop_template_loader( $template ) {
 	
@@ -49,9 +49,9 @@ function jigoshop_template_loader( $template ) {
 }
 add_filter( 'template_include', 'jigoshop_template_loader' );
 
-################################################################################
+//################################################################################
 // Get template part (for templates like loop)
-################################################################################
+//################################################################################
 
 function jigoshop_get_template_part( $slug, $name = '' ) {
 	if ($name=='shop') :
@@ -63,9 +63,9 @@ function jigoshop_get_template_part( $slug, $name = '' ) {
 	get_template_part( JIGOSHOP_TEMPLATE_URL . $slug, $name );
 }
 
-################################################################################
+//################################################################################
 // Get the reviews template (comments)
-################################################################################
+//################################################################################
 
 function jigoshop_comments_template($template) {
 		
@@ -80,9 +80,9 @@ function jigoshop_comments_template($template) {
 add_filter('comments_template', 'jigoshop_comments_template' );
 
 
-################################################################################
+//################################################################################
 // Get other templates (e.g. product attributes)
-################################################################################
+//################################################################################
 
 function jigoshop_get_template($template_name, $require_once = true) {
 	if (file_exists( STYLESHEETPATH . '/' . JIGOSHOP_TEMPLATE_URL . $template_name )) load_template( STYLESHEETPATH . '/' . JIGOSHOP_TEMPLATE_URL . $template_name, $require_once ); 
@@ -90,9 +90,9 @@ function jigoshop_get_template($template_name, $require_once = true) {
 	else load_template( jigoshop::plugin_path() . '/templates/' . $template_name , $require_once);
 }
 
-################################################################################
+//################################################################################
 // Get other templates (e.g. product attributes) - path
-################################################################################
+//################################################################################
 
 function jigoshop_get_template_file_url($template_name, $ssl = false) {
 	if (file_exists( STYLESHEETPATH . '/' . JIGOSHOP_TEMPLATE_URL . $template_name )) 

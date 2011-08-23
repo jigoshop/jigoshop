@@ -218,7 +218,7 @@ add_action('import_start', 'jigoshop_import_start');
  
  
 
-### Functions #########################################################
+//### Functions #########################################################
 
 function jigoshop_set_image_sizes(){
 	add_image_size( 'shop_tiny', get_option('jigoshop_shop_tiny_w'), get_option('jigoshop_shop_tiny_h'), 'true' );
@@ -559,7 +559,7 @@ function jigoshop_body_class($classes) {
 }
 add_filter('body_class','jigoshop_body_class');
 
-### Extra Review Field in comments #########################################################
+//### Extra Review Field in comments #########################################################
 
 function jigoshop_add_comment_rating($comment_id) {
 	if ( isset($_POST['rating']) ) :
@@ -582,7 +582,7 @@ function jigoshop_check_comment_rating($comment_data) {
 }
 add_filter('preprocess_comment', 'jigoshop_check_comment_rating', 0);	
 
-### Comments #########################################################
+//### Comments #########################################################
 
 function jigoshop_comments($comment, $args, $depth) {
 	$GLOBALS['comment'] = $comment; global $post; ?>
@@ -611,7 +611,7 @@ function jigoshop_comments($comment, $args, $depth) {
 	<?php
 }
 
-### Exclude order comments from front end #########################################################
+//### Exclude order comments from front end #########################################################
 
 function jigoshop_exclude_order_comments( $clauses ) {
 	

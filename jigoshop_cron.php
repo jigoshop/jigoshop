@@ -1,6 +1,6 @@
 <?php
 
-### Update price if on sale
+//### Update price if on sale
 
 function jigoshop_update_sale_prices() {
 	

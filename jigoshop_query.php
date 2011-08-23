@@ -1,6 +1,6 @@
 <?php
  
-### Get unfiltered list of posts in current view for use in loop + widgets
+//### Get unfiltered list of posts in current view for use in loop + widgets
 
 function jigoshop_get_products_in_view() {
 	
@@ -20,7 +20,7 @@ function jigoshop_get_products_in_view() {
 
 add_action('wp_head', 'jigoshop_get_products_in_view', 0);
 
-### Do Filters/Layered Nav
+//### Do Filters/Layered Nav
 
 function jigoshop_filter_loop() {
 	
@@ -46,7 +46,7 @@ function jigoshop_filter_loop() {
 
 add_action('wp_head', 'jigoshop_filter_loop');
 
-### Layered Nav Init
+//### Layered Nav Init
 
 function jigoshop_layered_nav_init() {
 
@@ -69,7 +69,7 @@ function jigoshop_layered_nav_init() {
 add_action('init', 'jigoshop_layered_nav_init', 1);
 
 
-### Get post ID's to filter from
+//### Get post ID's to filter from
 
 function jigoshop_get_post_ids() {
 	
@@ -110,7 +110,7 @@ function jigoshop_get_post_ids() {
 	return $queried_post_ids;
 }
 
-### Layered Nav
+//### Layered Nav
 
 function jigoshop_layered_nav_query( $filtered_posts ) {
 	
@@ -151,7 +151,7 @@ function jigoshop_layered_nav_query( $filtered_posts ) {
 add_filter('loop-shop-posts-in', 'jigoshop_layered_nav_query');
 
 
-### Price Filtering
+//### Price Filtering
 
 function jigoshop_price_filter( $filtered_posts ) {
 

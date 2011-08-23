@@ -9,8 +9,6 @@
  * @package 	JigoShop
  */
 
-
-
 require_once ( 'jigoshop-install.php' );
 
 require_once ( 'jigoshop-admin-dashboard.php' );
@@ -18,11 +16,11 @@ require_once ( 'jigoshop-write-panels.php' );
 require_once ( 'jigoshop-admin-settings.php' );
 require_once ( 'jigoshop-admin-attributes.php' );
 require_once ( 'jigoshop-admin-post-types.php' );
-	
 
 function jigoshop_admin_init () {
 	require_once ( 'jigoshop-admin-settings-options.php' );
 }
+
 add_action('admin_init', 'jigoshop_admin_init');
 
 /**
@@ -71,10 +69,9 @@ function jigoshop_admin_menu_order( $menu_order ) {
 }
 
 function jigoshop_admin_custom_menu_order() {
-	if ( !current_user_can( 'manage_options' ) ) return false;
-
-	return true;
+	return current_user_can( 'manage_options' );
 }
+
 add_action('admin_menu', 'jigoshop_admin_menu');
 add_action('menu_order', 'jigoshop_admin_menu_order');
 add_action('custom_menu_order', 'jigoshop_admin_custom_menu_order');

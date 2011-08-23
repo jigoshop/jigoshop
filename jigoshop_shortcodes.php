@@ -1,7 +1,7 @@
 <?php
 foreach(glob( dirname(__FILE__)."/shortcodes/*.php" ) as $filename) include_once($filename);
 
-### Recent Products #########################################################
+//### Recent Products #########################################################
 
 function jigoshop_recent_products( $atts ) {
 	
@@ -38,7 +38,7 @@ function jigoshop_recent_products( $atts ) {
 	return ob_get_clean();
 }
 
-### Multiple Products #########################################################
+//### Multiple Products #########################################################
 
 function jigoshop_products($atts){
 	global $columns;
@@ -90,7 +90,7 @@ function jigoshop_products($atts){
 	return ob_get_clean();
 }
 
-### Single Product ############################################################
+//### Single Product ############################################################
 
 function jigoshop_product($atts){
   	if (empty($atts)) return;
@@ -128,7 +128,7 @@ function jigoshop_product($atts){
 	return ob_get_clean();  
 }
 
-### Featured Products #########################################################
+//### Featured Products #########################################################
 
 function jigoshop_featured_products( $atts ) {
 	
@@ -168,7 +168,7 @@ function jigoshop_featured_products( $atts ) {
 	return ob_get_clean();
 }
 
-### Shortcodes #########################################################
+//### Shortcodes #########################################################
 
 add_shortcode('product', 'jigoshop_product');
 add_shortcode('products', 'jigoshop_products');
