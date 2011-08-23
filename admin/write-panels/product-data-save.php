@@ -4,9 +4,17 @@
  * 
  * Function for processing and storing all product data.
  *
- * @author 		Jigowatt
- * @category 	Admin Write Panels
- * @package 	JigoShop
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package    Jigoshop
+ * @category   Admin
+ * @author     Jigowatt
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
  */
 
 add_action('jigoshop_process_product_meta', 'jigoshop_process_product_meta', 1, 2);

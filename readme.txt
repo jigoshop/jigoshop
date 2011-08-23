@@ -1,5 +1,4 @@
 === Jigoshop - WordPress eCommerce ===
-Contributors: jigowatt
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal
 Requires at least: 3.1
 Tested up to: 3.2.1
@@ -120,7 +119,7 @@ We offer optimised hosting packages starting from 10 GBP per month at http://jig
 
 = I need support! = 
 
-We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">community forum</a> for getting help from other users, however, if you want priority, dedicated support from us we offer support packages - see our website for details. 
+We have a <a href="http://jigoshop.com/forums" title="Jigoshop support forum">community forum</a> for getting help from other users, however, if you want priority, dedicated support from us we offer support packages - see our website for details. 
 
 == Screenshots ==
 
@@ -135,12 +134,9 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 9. Checkout
 
 == Changelog ==
-= 0.9.9 =
+= 1.0 Kaboom 1 =
 * Added Dutch translation
-* Various bug fixes
-
-= 0.9.9 = 
-* PRODUCT VARIATIONS
+* Product Variations
 * Revamped order items panel
 * Grouped products can contain downloadable, simple, or virtual products
 * Changed mail from/to for store
