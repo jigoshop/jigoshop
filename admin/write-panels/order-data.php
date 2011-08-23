@@ -116,61 +116,27 @@ function jigoshop_order_data_meta_box($post) {
 		</div>
 		
 		<div id="order_customer_billing_data" class="panel jigoshop_options_panel"><?php
+        
+                $billing_fields = array(
+                    'first_name' => __('First Name', 'jigoshop'),
+                    'last_name' => __('First Name', 'jigoshop'),
+                    'company' => __('Company', 'jigoshop'),
+                    'address_1' => __('Address 1', 'jigoshop'),
+                    'address_2' => __('Address 2', 'jigoshop'),
+                    'city' => __('City', 'jigoshop'),
+                    'postcode' => __('Postcode', 'jigoshop'),
+                    'country' => __('Country', 'jigoshop'),
+                    'state' => __('State/Country', 'jigoshop'),
+                    'email' => __('Email Address', 'jigoshop'),
+                    'phone' => __('Tel', 'jigoshop'),
+                ); 
 				
-				// First Name
-				$field = array( 'id' => 'billing_first_name', 'label' => 'First Name:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-				
-				// Last Name
-				$field = array( 'id' => 'billing_last_name', 'label' => 'Last Name:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-				
-				// Company
-				$field = array( 'id' => 'billing_company', 'label' => 'Company:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-				
-				// Address 1
-				$field = array( 'id' => 'billing_address_1', 'label' => 'Address 1:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-				
-				// Address 2
-				$field = array( 'id' => 'billing_address_2', 'label' => 'Address 2:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-				
-				// City
-				$field = array( 'id' => 'billing_city', 'label' => 'City:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-				
-				// Postcode
-				$field = array( 'id' => 'billing_postcode', 'label' => 'Postcode:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-				
-				// Country
-				$field = array( 'id' => 'billing_country', 'label' => 'Country:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-				
-				// State
-				$field = array( 'id' => 'billing_state', 'label' => 'State/County:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-				
-				// Email
-				$field = array( 'id' => 'billing_email', 'label' => 'Email Address:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-				
-				// Tel
-				$field = array( 'id' => 'billing_phone', 'label' => 'Tel:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
+                foreach($billing_fields as $field_id => $field_desc) {
+                    $field_id = 'billing_' . $field_id;
+                    
+                    echo '<p class="form-field"><label for="'.$field_id.'">'.$field_desc.':</label>
+				<input type="text" name="'.$field_id.'" id="'.$field_id.'" value="'.$data[$field_id].'" /></p>';
+                }
 				
 			?>
 		</div>
@@ -179,52 +145,25 @@ function jigoshop_order_data_meta_box($post) {
 		
 			<p class="form-field"><button class="button billing-same-as-shipping"><?php _e('Copy billing address to shipping address', 'jigoshop'); ?></button></p>
 			<?php
+            
+                $shipping_fields = array(
+                    'first_name' => __('First Name', 'jigoshop'),
+                    'last_name' => __('First Name', 'jigoshop'),
+                    'company' => __('Company', 'jigoshop'),
+                    'address_1' => __('Address 1', 'jigoshop'),
+                    'address_2' => __('Address 2', 'jigoshop'),
+                    'city' => __('City', 'jigoshop'),
+                    'postcode' => __('Postcode', 'jigoshop'),
+                    'country' => __('Country', 'jigoshop'),
+                    'state' => __('State/Country', 'jigoshop')
+                ); 
 				
-				// First Name
-				$field = array( 'id' => 'shipping_first_name', 'label' => 'First Name:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-				
-				// Last Name
-				$field = array( 'id' => 'shipping_last_name', 'label' => 'Last Name:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-				
-				// Company
-				$field = array( 'id' => 'shipping_company', 'label' => 'Company:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-				
-				// Address 1
-				$field = array( 'id' => 'shipping_address_1', 'label' => 'Address 1:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-				
-				// Address 2
-				$field = array( 'id' => 'shipping_address_2', 'label' => 'Address 2:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-				
-				// City
-				$field = array( 'id' => 'shipping_city', 'label' => 'City:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-				
-				// Postcode
-				$field = array( 'id' => 'shipping_postcode', 'label' => 'Postcode:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-				
-				// Country
-				$field = array( 'id' => 'shipping_country', 'label' => 'Country:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-				
-				// State
-				$field = array( 'id' => 'shipping_state', 'label' => 'State/County:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-				
+                foreach($shipping_fields as $field_id => $field_desc) {
+                    $field_id = 'shipping_' . $field_id;
+                    
+                    echo '<p class="form-field"><label for="'.$field_id.'">'.$field_desc.':</label>
+				<input type="text" name="'.$field_id.'" id="'.$field_id.'" value="'.$data[$field_id].'" /></p>';
+                }
 			?>
 		</div>
 	</div>
