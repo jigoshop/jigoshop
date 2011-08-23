@@ -287,6 +287,7 @@ function jigoshop_frontend_scripts() {
 	/* Script.js variables */
 	$params = array(
 		'currency_symbol' 				=> get_jigoshop_currency_symbol(),
+		'currency_pos' 					=> get_option('jigoshop_currency_pos'),		
 		'countries' 					=> json_encode(jigoshop_countries::$states),
 		'select_state_text' 			=> __('Select a state&hellip;', 'jigoshop'),
 		'state_text' 					=> __('state', 'jigoshop'),
