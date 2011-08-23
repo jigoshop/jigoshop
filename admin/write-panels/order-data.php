@@ -100,7 +100,7 @@ function jigoshop_order_data_meta_box($post) {
             
                 $billing_fields = array(
                     'first_name' => __('First Name', 'jigoshop'),
-                    'last_name' => __('First Name', 'jigoshop'),
+                    'last_name' => __('Last Name', 'jigoshop'),
                     'company' => __('Company', 'jigoshop'),
                     'address_1' => __('Address 1', 'jigoshop'),
                     'address_2' => __('Address 2', 'jigoshop'),
@@ -135,7 +135,7 @@ function jigoshop_order_data_meta_box($post) {
             
                 $shipping_fields = array(
                     'first_name' => __('First Name', 'jigoshop'),
-                    'last_name' => __('First Name', 'jigoshop'),
+                    'last_name' => __('Last Name', 'jigoshop'),
                     'company' => __('Company', 'jigoshop'),
                     'address_1' => __('Address 1', 'jigoshop'),
                     'address_2' => __('Address 2', 'jigoshop'),
