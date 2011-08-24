@@ -235,11 +235,43 @@ add_action('import_start', 'jigoshop_import_start');
 
 ### Functions #########################################################
 
+/**
+ * Set Jigoshop Product Image Sizes for WordPress based on Admin->Jigoshop->Settings->Images
+ * @since 1.0
+ **/
 function jigoshop_set_image_sizes(){
 	add_image_size( 'shop_tiny', get_option('jigoshop_shop_tiny_w'), get_option('jigoshop_shop_tiny_h'), 'true' );
 	add_image_size( 'shop_thumbnail', get_option('jigoshop_shop_thumbnail_w'), get_option('jigoshop_shop_thumbnail_h'), 'true' );
 	add_image_size( 'shop_small', get_option('jigoshop_shop_small_w'), get_option('jigoshop_shop_small_h'), 'true' );
 	add_image_size( 'shop_large', get_option('jigoshop_shop_large_w'), get_option('jigoshop_shop_large_h'), 'true' );
+}
+
+/**
+ * Get Jigoshop Product Image Size based on Admin->Jigoshop->Settings->Images
+ * @param string $size - one of the 4 defined Jigoshop image sizes
+ * @return array - an array containing the width and height of the required size
+ * @since 1.0
+ **/
+function jigoshop_get_image_size( $size ) {
+	switch ( $size ) :
+		case 'shop_tiny':
+			$image_size = array( get_option('jigoshop_shop_tiny_w'), get_option('jigoshop_shop_tiny_h') );
+			break;
+		case 'shop_thumbnail':
+			$image_size = array( get_option('jigoshop_shop_thumbnail_w'), get_option('jigoshop_shop_thumbnail_h') );
+			break;
+		case 'shop_small':
+			$image_size = array( get_option('jigoshop_shop_small_w'), get_option('jigoshop_shop_small_h') );
+			break;
+		case 'shop_large':
+			$image_size = array( get_option('jigoshop_shop_large_w'), get_option('jigoshop_shop_large_h') );
+			break;
+		default:
+			$image_size = array( get_option('jigoshop_shop_small_w'), get_option('jigoshop_shop_small_h') );
+			break;
+	endswitch;
+
+	return $image_size;
 }
 
 function jigoshop_init() {

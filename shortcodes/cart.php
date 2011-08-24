@@ -103,7 +103,7 @@ function jigoshop_cart( $atts ) {
 
 						if ($values['variation_id'] && has_post_thumbnail($values['variation_id'])) echo get_the_post_thumbnail($values['variation_id'], 'shop_tiny');
 						elseif (has_post_thumbnail($values['product_id'])) echo get_the_post_thumbnail($values['product_id'], 'shop_tiny');
-						else echo '<img src="'.jigoshop::plugin_url(). '/assets/images/placeholder.png" alt="Placeholder" width="'.jigoshop::get_var('shop_tiny_w').'" height="'.jigoshop::get_var('shop_tiny_h').'" />';
+						else echo jigoshop_get_image_placeholder( 'shop_tiny' );
 
 						echo '	</a></td>
 								<td class="product-name">

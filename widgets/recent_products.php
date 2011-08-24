@@ -42,7 +42,7 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 
 		ob_start();
 		extract($args);
-		
+
 		$title = apply_filters('widget_title', empty($instance['title']) ? __('New Products', 'jigoshop') : $instance['title'], $instance, $this->id_base);
 		if ( !$number = (int) $instance['number'] )
 			$number = 10;
@@ -67,7 +67,7 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
     }
 
 		$r = new WP_Query($args);
-		
+
 		if ($r->have_posts()) :
 ?>
 		<?php echo $before_widget; ?>
@@ -75,7 +75,7 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 		<ul class="product_list_widget">
 		<?php  while ($r->have_posts()) : $r->the_post(); $_product = &new jigoshop_product(get_the_ID()); ?>
 		<li><a href="<?php the_permalink() ?>" title="<?php echo esc_attr(get_the_title() ? get_the_title() : get_the_ID()); ?>">
-			<?php if (has_post_thumbnail()) the_post_thumbnail('shop_tiny'); else echo '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.get_option('jigoshop_shop_tiny_w').'px" height="'.get_option('jigoshop_shop_tiny_h').'px" />'; ?>
+			<?php if (has_post_thumbnail()) the_post_thumbnail('shop_tiny'); else echo jigoshop_get_image_placeholder( 'shop_tiny' ); ?>
 			<?php if ( get_the_title() ) the_title(); else the_ID(); ?>
 		</a> <?php echo $_product->get_price_html(); ?></li>
 		<?php endwhile; ?>
@@ -95,7 +95,7 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 	function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		$instance['title'] = strip_tags($new_instance['title']);
-		$instance['number'] = (int) $new_instance['number'];		
+		$instance['number'] = (int) $new_instance['number'];
 		$instance['show_variations'] = !empty($new_instance['show_variations']) ? 1 : 0;
 
 		$this->flush_widget_cache();

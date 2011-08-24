@@ -177,7 +177,6 @@ class jigoshop_product {
 		return apply_filters('jigoshop_product_title', $this->post->post_title, $this);
 	}
 
-
 	/** Get the add to url */
 	function add_to_cart_url() {
 
