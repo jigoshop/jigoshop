@@ -412,6 +412,7 @@ function jigoshop_view_order() {
 			<table class="shop_table">
 				<thead>
 					<tr>
+						<th><?php _e('ID/SKU', 'jigoshop'); ?></th>
 						<th><?php _e('Product', 'jigoshop'); ?></th>
 						<th><?php _e('Qty', 'jigoshop'); ?></th>
 						<th><?php _e('Totals', 'jigoshop'); ?></th>
@@ -419,52 +420,52 @@ function jigoshop_view_order() {
 				</thead>
 				<tfoot>
 					<tr>
-						<td colspan="2"><?php _e('Subtotal', 'jigoshop'); ?></td>
-						<td><?php echo $order->get_subtotal_to_display(); ?></td>
+						<td colspan="3"><strong><?php _e('Subtotal', 'jigoshop'); ?></strong></td>
+						<td><strong><?php echo $order->get_subtotal_to_display(); ?></strong></td>
 					</tr>
 					<?php if ($order->order_shipping>0) : ?><tr>
-						<td colspan="2"><?php _e('Shipping', 'jigoshop'); ?></td>
+						<td colspan="3"><?php _e('Shipping', 'jigoshop'); ?></td>
 						<td><?php echo $order->get_shipping_to_display(); ?></small></td>
 					</tr><?php endif; ?>
 					<?php if ($order->get_total_tax()>0) : ?><tr>
-						<td colspan="2"><?php _e('Tax', 'jigoshop'); ?></td>
+						<td colspan="3"><?php _e('Tax', 'jigoshop'); ?></td>
 						<td><?php echo jigoshop_price($order->get_total_tax()); ?></td>
 					</tr><?php endif; ?>
 					<?php if ($order->order_discount>0) : ?><tr class="discount">
-						<td colspan="2"><?php _e('Discount', 'jigoshop'); ?></td>
+						<td colspan="3"><?php _e('Discount', 'jigoshop'); ?></td>
 						<td>-<?php echo jigoshop_price($order->order_discount); ?></td>
 					</tr><?php endif; ?>
 					<tr>
-						<td colspan="2"><strong><?php _e('Grand Total', 'jigoshop'); ?></strong></td>
+						<td colspan="3"><strong><?php _e('Grand Total', 'jigoshop'); ?></strong></td>
 						<td><strong><?php echo jigoshop_price($order->order_total); ?></strong></td>
 					</tr>
 					<?php if ($order->customer_note) : ?>
 					<tr>
-						<td><?php _e('Note:', 'jigoshop'); ?></td>
-						<td colspan="2"><?php echo wpautop(wptexturize($order->customer_note)); ?></td>
+						<td><strong><?php _e('Note:', 'jigoshop'); ?></strong></td>
+						<td colspan="3" style="text-align: left;"><?php echo wpautop(wptexturize($order->customer_note)); ?></td>
 					</tr>
 					<?php endif; ?>
 				</tfoot>
 				<tbody>
 					<?php
-					if (sizeof($order->items)>0) : 
-					
-						foreach($order->items as $item) : 
-						
+					if (sizeof($order->items)>0) :
+
+						foreach($order->items as $item) :
+
 							if (isset($item['variation_id']) && $item['variation_id'] > 0) :
 								$_product = &new jigoshop_product_variation( $item['variation_id'] );
 							else :
 								$_product = &new jigoshop_product( $item['id'] );
 							endif;
-						
+
 							echo '
 								<tr>
 									<td class="product-name">'.$item['name'];
-							
+
 							if (isset($_product->variation_data)) :
 								echo jigoshop_get_formatted_variation( $_product->variation_data );
 							endif;
-							
+
 							echo '	</td>
 									<td>'.$item['qty'].'</td>
 									<td>'.jigoshop_price( $item['cost']*$item['qty'], array('ex_tax_label' => 1) ).'</td>
