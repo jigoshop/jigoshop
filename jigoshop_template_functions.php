@@ -119,12 +119,14 @@ if (!function_exists('jigoshop_show_product_images')) {
 		$thumb_id = 0;
 		if (has_post_thumbnail()) :
 			$thumb_id = get_post_thumbnail_id();
-			$large_thumbnail_size = apply_filters('single_product_large_thumbnail_size', 'shop_large');
+			// since there are now user settings for sizes, shouldn't need filters -JAP-
+			//$large_thumbnail_size = apply_filters('single_product_large_thumbnail_size', 'shop_large');
+			$large_thumbnail_size = jigoshop_get_image_size( 'shop_large' );
 			echo '<a href="'.wp_get_attachment_url($thumb_id).'" class="zoom" rel="thumbnails">';
 			the_post_thumbnail($large_thumbnail_size);
 			echo '</a>';
 		else :
-			echo '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" />';
+			echo jigoshop_get_image_placeholder( 'shop_large' );
 		endif;
 
 		do_action('jigoshop_product_thumbnails');
@@ -141,11 +143,15 @@ if (!function_exists('jigoshop_show_product_thumbnails')) {
 		echo '<div class="thumbnails">';
 
 		$thumb_id = get_post_thumbnail_id();
-		$small_thumbnail_size = apply_filters('single_product_small_thumbnail_size', 'shop_thumbnail');
+		// since there are now user settings for sizes, shouldn't need filters -JAP-
+		//$small_thumbnail_size = apply_filters('single_product_small_thumbnail_size', 'shop_thumbnail');
+		$small_thumbnail_size = jigoshop_get_image_size( 'shop_thumbnail' );
 		$args = array( 'post_type' => 'attachment', 'numberposts' => -1, 'post_status' => null, 'post_parent' => $post->ID, 'orderby' => 'id', 'order' => 'asc' );
 		$attachments = get_posts($args);
 		if ($attachments) :
 			$loop = 0;
+			// with user settings for images sizes, the following foreach could be broken, need testing
+			// added filter to override image count per row, maybe need user setting here too?  -JAP-
 			$columns = apply_filters( 'single_thumbnail_columns', 3 );
 			foreach ( $attachments as $attachment ) :
 
@@ -310,35 +316,35 @@ if (!function_exists('jigoshop_grouped_add_to_cart')) {
 }
 if (!function_exists('jigoshop_variable_add_to_cart')) {
 	function jigoshop_variable_add_to_cart() {
-		
+
 		global $post, $_product;
-		
+
 		$attributes = maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) );
 		if (!isset($attributes)) $attributes = array();
 
 		?>
 		<form action="<?php echo $_product->add_to_cart_url(); ?>" class="variations_form cart" method="post">
-			
+
 			<table class="variations" cellspacing="0">
 				<tbody>
 				<?php
 					foreach ($attributes as $attribute) :
-								
+
 						if ( $attribute['variation']!=='yes' ) continue;
-						
+
 						$options = $attribute['value'];
-						
+
 						if (!is_array($options)) $options = explode(',', $options);
-						
+
 						echo '<tr><td><label for="'.sanitize_title($attribute['name']).'">'.ucfirst($attribute['name']).'</label></td><td><select id="'.sanitize_title($attribute['name']).'" name="tax_'.sanitize_title($attribute['name']).'"><option value="">'.__('Choose an option', 'jigoshop').'&hellip;</option><option>'.implode('</option><option>', $options).'</option></select></td></tr>';
-	
+
 					endforeach;
 				?>
 				</tbody>
 			</table>
 			<div class="single_variation"></div>
 			<div class="variations_button" style="display:none;">
-				
+
 				<div class="quantity"><input name="quantity" value="1" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div>
 				<button type="submit" class="button-alt"><?php _e('Add to cart', 'jigoshop'); ?></button>
 			</div>
@@ -439,15 +445,25 @@ if (!function_exists('jigoshop_product_reviews_panel')) {
  * Jigoshop Product Thumbnail
  **/
 if (!function_exists('jigoshop_get_product_thumbnail')) {
-	function jigoshop_get_product_thumbnail( $size = 'shop_small', $placeholder_width = 0, $placeholder_height = 0 ) {
+	function jigoshop_get_product_thumbnail( $size = 'shop_small' ) {
 
 		global $post;
-		
-		if (!$placeholder_width) $placeholder_width = get_option('jigoshop_shop_small_w');
-		if (!$placeholder_height) $placeholder_height = get_option('jigoshop_shop_small_h');
-		
-		if ( has_post_thumbnail() ) return get_the_post_thumbnail($post->ID, $size); else return '<img src="'.jigoshop::plugin_url(). '/assets/images/placeholder.png" alt="Placeholder" width="'.$placeholder_width.'" height="'.$placeholder_height.'" />';
 
+		if ( has_post_thumbnail() )
+			return get_the_post_thumbnail($post->ID, $size);
+		else
+			return jigoshop_get_image_placeholder( $size );
+	}
+}
+
+/**
+ * Jigoshop Product Image Placeholder
+ * @since 1.0
+ **/
+if (!function_exists('jigoshop_get_image_placeholder')) {
+	function jigoshop_get_image_placeholder( $size = 'shop_small' ) {
+		$image_size = jigoshop_get_image_size( $size );
+		return '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.$image_size[0].'px" height="'.$image_size[1].'px" />';
 	}
 }
 
