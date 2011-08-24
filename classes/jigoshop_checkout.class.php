@@ -120,7 +120,9 @@ class jigoshop_checkout {
 		if (jigoshop_cart::needs_shipping() && !jigoshop_cart::ship_to_billing_address_only()) :
 			
 			echo '<p class="form-row" id="shiptobilling"><input class="input-checkbox" ';
-			if ($this->get_value('shiptobilling') || !$_POST) echo 'checked="checked" '; 
+			
+			if (!$_POST) $shiptobilling = apply_filters('shiptobilling_default', 1); else $shiptobilling = $this->get_value('shiptobilling');
+			if ($shiptobilling) echo 'checked="checked" '; 
 			echo 'type="checkbox" name="shiptobilling" /> <label for="shiptobilling" class="checkbox">'.__('Ship to same address?', 'jigoshop').'</label></p>';
 			
 			echo '<h3>'.__('Shipping Address', 'jigoshop').'</h3>';
@@ -243,8 +245,6 @@ class jigoshop_checkout {
 	function process_checkout() {
 	
 		global $wpdb;
-		
-		do_action('jigoshop_before_checkout_process');
 		
 		if (isset($_POST) && $_POST && !isset($_POST['login'])) :
 
@@ -420,6 +420,9 @@ class jigoshop_checkout {
 						endif;
 						
 					endif;
+					
+					$shipping_first_name = $shipping_last_name = $shipping_company = $shipping_address_1 = 
+					$shipping_address_2 = $shipping_city = $shipping_state = $shipping_postcode = $shipping_country = '';
 
 					// Get shipping/billing
 					if ( !empty($this->posted['shiptobilling']) ) :
@@ -532,7 +535,7 @@ class jigoshop_checkout {
 					// Cart items
 					$order_items = array();
 					
-					foreach (jigoshop_cart::$cart_contents as $item_id => $values) :
+					foreach (jigoshop_cart::$cart_contents as $cart_item_key => $values) :
 						
 						$_product = $values['data'];
 			
@@ -542,13 +545,14 @@ class jigoshop_checkout {
 							$rate = $_tax->get_rate( $_product->data['tax_class'] );
 						endif;
 						
-						$order_items[] = array(
-					 		'id' 		=> $item_id,
-					 		'name' 		=> $_product->get_title(),
-					 		'qty' 		=> (int) $values['quantity'],
-					 		'cost' 		=> $_product->get_price_excluding_tax(),
-					 		'taxrate' 	=> $rate
-					 	);
+						$order_items[] = apply_filters('new_order_item', array(
+					 		'id' 			=> $values['product_id'],
+					 		'variation_id' 	=> $values['variation_id'],
+					 		'name' 			=> $_product->get_title(),
+					 		'qty' 			=> (int) $values['quantity'],
+					 		'cost' 			=> $_product->get_price_excluding_tax(),
+					 		'taxrate' 		=> $rate
+					 	));
 					 	
 					 	// Check stock levels
 					 	if ($_product->managing_stock()) :
@@ -667,7 +671,17 @@ class jigoshop_checkout {
 		if (isset( $this->posted[$input] ) && !empty($this->posted[$input])) :
 			return $this->posted[$input];
 		elseif (is_user_logged_in()) :
-			return get_user_meta( get_current_user_id(), $input, true );
+			if (get_user_meta( get_current_user_id(), $input, true )) return get_user_meta( get_current_user_id(), $input, true );
+			
+			$current_user = wp_get_current_user();
+
+			switch ( $input ) :
+				
+				case "billing-email" :
+					return $current_user->user_email;
+				break;
+				
+			endswitch;
 		endif;
 	}
 }

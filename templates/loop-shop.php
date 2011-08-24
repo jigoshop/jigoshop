@@ -14,7 +14,9 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
+?>
 
+<?php
 global $columns, $per_page;
 
 do_action('jigoshop_before_shop_loop');

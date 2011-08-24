@@ -65,6 +65,46 @@ function jigoshop_product_data_box() {
 
 			echo '</select></p>';
 			
+			// List Grouped products
+			$posts_in = (array) get_objects_in_term( get_term_by( 'slug', 'grouped', 'product_type' )->term_id, 'product_type' );
+			$posts_in = array_unique($posts_in);
+			
+			$field = array( 'id' => 'parent_id', 'label' => __('Parent post', 'jigoshop') );
+			echo '<p class="form-field parent_id_field"><label for="'.$field['id'].'">'.$field['label'].'</label><select id="'.$field['id'].'" name="'.$field['id'].'"><option value="">'.__('Choose a grouped product&hellip;', 'jigoshop').'</option>';
+
+			if (sizeof($posts_in)>0) :
+				$args = array(
+					'post_type'	=> 'product',
+					'post_status' => 'publish',
+					'numberposts' => -1,
+					'orderby' => 'title',
+					'order' => 'asc',
+					'post_parent' => 0,
+					'include' => $posts_in,
+				);
+				$grouped_products = get_posts($args);
+				$loop = 0;
+				if ($grouped_products) : foreach ($grouped_products as $product) :
+					
+					if ($product->ID==$post->ID) continue;
+					
+					echo '<option value="'.$product->ID.'" ';
+					if ($post->post_parent==$product->ID) echo 'selected="selected"';
+					echo '>'.$product->post_title.'</option>';
+			
+				endforeach; endif; 
+			endif;
+
+			echo '</select></p>';
+			
+			// Ordering
+			$menu_order = $post->menu_order;
+			$field = array( 'id' => 'menu_order', 'label' => _x('Post Order', 'ordering', 'jigoshop') );
+			echo '<p class="form-field menu_order_field">
+				<label for="'.$field['id'].'">'.$field['label'].':</label>
+				<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$menu_order.'" /></p>';
+			
+			
 			// Summary
 			echo '<p class="form-field"><label for="excerpt">' . __('Summary', 'jigoshop') . ':</label>
 			<textarea name="excerpt" id="excerpt" placeholder="' . __('Add a summary for your product &ndash; this is a quick description to encourage users to view the product.', 'jigoshop') . '">'.esc_html( $post->post_excerpt ).'</textarea></p>';

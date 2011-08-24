@@ -84,8 +84,21 @@ function jigoshop_order_tracking( $atts ) {
 						<?php
 						foreach($order->items as $order_item) :
 
-							$_product = &new jigoshop_product( $order_item['id'] );
+							if (isset($order_item['variation_id']) && $order_item['variation_id'] > 0) :
+								$_product = &new jigoshop_product_variation( $order_item['variation_id'] );
+							else :
+								$_product = &new jigoshop_product( $order_item['id'] );
+							endif;
+
 							echo '<tr>';
+							echo '<td class="product-name">'.$_product->get_title();
+
+							if (isset($_product->variation_data)) :
+								echo jigoshop_get_formatted_variation( $_product->variation_data );
+							endif;
+
+							echo '</td>';
+
 							echo '<td>'.$_product->sku.'</td>';
 							echo '<td>'.$_product->get_title().'</td>';
 							echo '<td>'.jigoshop_price($_product->get_price()).'</td>';

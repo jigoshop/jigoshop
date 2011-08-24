@@ -14,9 +14,11 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
- 
+
 /**
  * options_settings
+ * 
+ * This variable contains all the options used on the jigpshop settings page
  *
  * @since 		1.0
  * @category 	Admin
@@ -163,6 +165,20 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'desc' 		=> '',
 		'tip' 		=> __('Useful if you want to disable Jigoshop styles and theme it yourself via your theme.','jigoshop'),
 		'id' 		=> 'jigoshop_disable_css',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(  
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
+	),
+	
+	array(  
+		'name' => __('Go directly to checkout after add to cart','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Useful if most customers only buy one product.','jigoshop'),
+		'id' 		=> 'jigoshop_directly_to_checkout',
 		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'no',
 		'type' 		=> 'select',

@@ -2,8 +2,6 @@
 /**
  * Featured Products Widget
  *
- * Gets and displays featured products in an unordered list
- *
  * DISCLAIMER
  *
  * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer

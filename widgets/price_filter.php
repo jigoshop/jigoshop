@@ -17,7 +17,7 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
- 
+  
 function jigoshop_price_filter_init() {
 	
 	unset($_SESSION['min_price']);
@@ -35,7 +35,6 @@ function jigoshop_price_filter_init() {
 	endif;
 	
 }
-
 add_action('init', 'jigoshop_price_filter_init');
 
 class Jigoshop_Widget_Price_Filter extends WP_Widget {

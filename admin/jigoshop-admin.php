@@ -25,7 +25,6 @@ require_once ( 'jigoshop-admin-post-types.php' );
 function jigoshop_admin_init () {
 	require_once ( 'jigoshop-admin-settings-options.php' );
 }
-
 add_action('admin_init', 'jigoshop_admin_init');
 
 /**
@@ -143,8 +142,8 @@ function jigoshop_system_info() {
 		            </tbody>
 		            <thead>
 		                <tr>
-		                    <td scope="col" width="200px"><?php _e('Server','jigoshop')?></td>
-		                    <td scope="col"><?php echo (defined('PHP_OS')) ? (string)(PHP_OS) : 'N/A' ?></td>
+		                    <th scope="col" width="200px"><?php _e('Server','jigoshop')?></th>
+		                    <th scope="col"><?php echo (defined('PHP_OS')) ? (string)(PHP_OS) : 'N/A'; ?></th>
 		                </tr>
 		            </thead>
 		           	<tbody>
@@ -186,11 +185,11 @@ function jigoshop_system_info() {
 		                </tr>
 		                 <tr>
 		                    <td class="titledesc"><?php _e('WP_DEBUG','jigoshop')?></td>
-		                    <td class="forminp"><?php echo (WP_DEBUG === true ) ? __('On', 'jigoshop') : __('Off', 'jigoshop') ?></td>
+		                    <td class="forminp"><?php echo (WP_DEBUG) ? __('On', 'jigoshop') : __('Off', 'jigoshop'); ?></td>
 		                </tr>
 		                <tr>
 		                    <td class="titledesc"><?php _e('DISPLAY_ERRORS','jigoshop')?></td>
-		                    <td class="forminp"><?php echo (ini_get('display_errors')) ? 'On (' . ini_get('display_errors') . ')' : 'N/A' ?></td>
+		                    <td class="forminp"><?php echo (ini_get('display_errors')) ? 'On (' . ini_get('display_errors') . ')' : 'N/A'; ?></td>
 		                </tr>
 		                <tr>
 		                    <td class="titledesc"><?php _e('FSOCKOPEN','jigoshop')?></td>

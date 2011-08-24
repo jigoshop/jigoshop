@@ -15,7 +15,7 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
- 
+
 class Jigoshop_Widget_Recent_Products extends WP_Widget {
 
 	/** constructor */

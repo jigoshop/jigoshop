@@ -14,10 +14,9 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
-
-global $order;
-
 ?>
+
+<?php global $order; ?>
 <form id="order_review" method="post">
 	
 	<table class="shop_table">

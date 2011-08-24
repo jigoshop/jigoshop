@@ -1,6 +1,6 @@
 <?php
 /**
- * Jigoshop queries
+ * Jigoshop Queries
  *
  * DISCLAIMER
  *
@@ -15,6 +15,62 @@
  * @license    http://jigoshop.com/license/commercial-edition
  */
 
+/**
+ * Find and get a specific variation
+ * 
+ * @since 		1.0
+ */
+function jigoshop_find_variation( $variation_data = array() ) {
+
+	foreach ($variation_data as $key => $value) :
+		
+		if (!strstr($key, 'tax_')) continue;
+		
+		$variation_query[] = array(
+			'key' 		=> $key,
+			'value' 	=> array( $value ),
+			'compare'	=> 'IN'
+		);
+		
+	endforeach;
+	
+	// do the query
+	$args = array(
+		'post_type' 		=> 'product_variation',
+		'orderby'			=> 'id',
+		'order'				=> 'desc',
+		'posts_per_page'	=> 1,
+		'meta_query' 		=> $variation_query
+	);
+	$posts = get_posts( $args );
+	
+	if (!$posts) :
+	
+		// Wildcard search
+		$variation_query = array();
+		foreach ($variation_data as $key => $value) :
+			
+			if (!strstr($key, 'tax_')) continue;
+			
+			$variation_query[] = array(
+				'key' 		=> $key,
+				'value' 	=> array( $value, '' ),
+				'compare'	=> 'IN'
+			);
+			
+		endforeach;
+		$args['meta_query'] = $variation_query;
+		
+		$posts = get_posts( $args );
+		
+	endif;
+	
+	if (!$posts) return false;
+	
+	return $posts[0]->ID;
+	
+}
+ 
 ### Get unfiltered list of posts in current view for use in loop + widgets
 
 function jigoshop_get_products_in_view() {

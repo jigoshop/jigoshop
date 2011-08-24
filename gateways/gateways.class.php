@@ -14,7 +14,6 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
-
 class jigoshop_payment_gateways {
 	
 	private static $instance;
