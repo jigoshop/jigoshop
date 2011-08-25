@@ -152,10 +152,10 @@ class jigoshop_product {
 		return $this->post;
 	}
 	
-	/** Get the title of the post */
-	function get_title () {
+	/** Get the title of the post */	
+	function get_title () {		
 		$this->get_post_data();
-		return apply_filters('jigoshop_product_title', $this->post->post_title, $this);
+		return apply_filters('jigoshop_product_title', get_the_title($this->post->ID), $this);
 	}
 	
 	/** Get the add to url */
