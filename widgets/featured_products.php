@@ -59,9 +59,9 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 		<ul class="product_list_widget">
 		<?php foreach ($featured_posts as $r) : $_product = &new jigoshop_product( $r->ID ); ?>
 
-		<li><a href="<?php echo get_permalink( $r->ID ) ?>" title="<?php echo esc_attr($r->post_title ? $r->post_title : $r->ID); ?>">
+		<li><a href="<?php echo get_permalink( $r->ID ) ?>" title="<?php echo esc_attr(get_the_title($r->post_title ? $r->post_title : $r->ID)); ?>">
 			<?php if (has_post_thumbnail( $r->ID )) echo get_the_post_thumbnail($r->ID, 'shop_tiny'); else echo jigoshop_get_image_placeholder( 'shop_tiny' ); ?>
-			<?php if ( $r->post_title ) echo $r->post_title; else echo $r->ID; ?>
+			<?php if ( $r->post_title ) echo esc_attr(get_the_post_thumbnail($r->post_title)); else echo $r->ID; ?>
 		</a> <?php echo $_product->get_price_html(); ?></li>
 
 		<?php endforeach; ?>
