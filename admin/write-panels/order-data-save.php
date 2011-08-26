@@ -21,6 +21,9 @@ function jigoshop_process_shop_order_meta($post_id, $post)
 
     // Get old data + attributes
     $data = (array) maybe_unserialize(get_post_meta($post_id, 'order_data', true));
+    
+    //Get old order items
+    $old_order_items = (array) maybe_unserialize(get_post_meta($post_id, 'order_items', true));
 
     // Add/Replace data to array
     $order_fields = array(
@@ -67,10 +70,10 @@ function jigoshop_process_shop_order_meta($post_id, $post)
 
     // Order items
     $order_items = array();
-
+    
     if (isset($_POST['item_id'])) {
         $item_id = $_POST['item_id'];
-        $item_variation = $_POST['item_variation'];
+        $item_variation = $_POST['item_variation_id'];
         $item_name = $_POST['item_name'];
         $item_quantity = $_POST['item_quantity'];
         $item_cost = $_POST['item_cost'];
@@ -78,16 +81,31 @@ function jigoshop_process_shop_order_meta($post_id, $post)
 
         for ($i = 0; $i < count($item_id); $i++) {
 
-            if (!isset($item_id[$i]) || !isset($item_name[$i]) || !isset($item_quantity[$i]) || !isset($item_cost[$i]) || !isset($item_tax_rate[$i])  || !isset($item_variation[$i])) {
+            if (!isset($item_id[$i]) || !isset($item_name[$i]) || !isset($item_quantity[$i]) || !isset($item_cost[$i]) || !isset($item_tax_rate[$i])) {
                 continue;
+            }
+            
+            $variation_id = '';
+            $variation = '';
+            if(!empty($item_variation[$i])) {
+                $variation_id = (int)$item_variation[$i];
+                
+                //if this is a variation, we should check if it is an old one
+                //and copy the 'variation' field describing details of variation
+                foreach($old_order_items as $old_item) {
+                    if($old_item['variation_id'] == $variation_id) {
+                        $variation = $old_item['variation'];
+                    }
+                }
             }
 
             $order_items[] = apply_filters('update_order_item', array(
                 'id' => htmlspecialchars(stripslashes($item_id[$i])),
-                'variation_id' => (int) $item_variation[$i],
+                'variation_id' => $variation_id,
+                'variation' => $variation,
                 'name' => htmlspecialchars(stripslashes($item_name[$i])),
                 'qty' => (int) $item_quantity[$i],
-                'cost' => number_format(jigowatt_clean($item_cost[$i]), 2),
+                'cost' => number_format((float)jigowatt_clean($item_cost[$i]), 2),
                 'taxrate' => number_format(jigowatt_clean($item_tax_rate[$i]), 4)
                 ));
         }
@@ -96,7 +114,6 @@ function jigoshop_process_shop_order_meta($post_id, $post)
     // Save
     update_post_meta($post_id, 'order_data', $data);
     update_post_meta($post_id, 'order_items', $order_items);
-
 
     // Handle button actions
 
@@ -168,7 +185,7 @@ function jigoshop_process_shop_order_meta($post_id, $post)
     }
 
     // Error Handling
-    if (sizeof($jigoshop_errors) > 0) {
+    if (count($jigoshop_errors) > 0) {
         update_option('jigoshop_errors', $jigoshop_errors);
     }
 }

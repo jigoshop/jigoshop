@@ -94,6 +94,7 @@ function jigoshop_add_order_item() {
 		<td class="center">
 			<input type="hidden" name="item_id[]" value="<?php echo $_product->id; ?>" />
 			<input type="hidden" name="item_name[]" value="<?php echo $_product->get_title(); ?>" />
+            <input type="hidden" name="item_variation_id[]" value="<?php if ($_product->variation_id) echo $_product->variation_id; else echo ''; ?>" />
 			<button type="button" class="remove_row button">&times;</button>
 		</td>
 	</tr>

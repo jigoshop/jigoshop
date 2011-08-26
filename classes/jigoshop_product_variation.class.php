@@ -120,39 +120,48 @@ class jigoshop_product_variation extends jigoshop_product {
     function get_variation_attributes() {
         return $this->variation_data;
     }
+    
+    /**
+     * Update values of variation attributes using given values
+     * 
+     * @param array $data array of attributes and values
+     */
+    function set_variation_attributes(array $data) {
+        foreach($this->variation_data as $attribute=>$value) {
+            if(isset($data[$attribute])) {
+                $this->variation_data[$attribute] = $data[$attribute];
+            }
+        }
+    }
 	
 	/** Returns the product's price */
 	function get_price() {
-		
-		if ($this->variation_has_price) :
-			if ($this->variation_has_sale_price) :
-				return $this->data['sale_price'];
-			else :
-				return $this->price;
-			endif;
-		else :
-			return parent::get_price();
-		endif;
-		
-	}
+
+        if ($this->variation_has_price) {
+            if ($this->variation_has_sale_price) {
+                return $this->data['sale_price'];
+            }
+            
+            return $this->price;
+        }
+
+        return parent::get_price();
+    }
 	
 	/** Returns the price in html format */
 	function get_price_html() {
-		if ($this->variation_has_price) :
-			$price = '';
-			
-			if ($this->price) :
-				if ($this->variation_has_sale_price) :
-					$price .= '<del>'.jigoshop_price( $this->price ).'</del> <ins>'.jigoshop_price( $this->data['sale_price'] ).'</ins>';
-				else :
-					$price .= jigoshop_price( $this->price );
-				endif;
-			endif;
+		if ($this->variation_has_price) {
+			if ($this->price) {
+				if ($this->variation_has_sale_price) {
+					return '<del>'.jigoshop_price( $this->price ).'</del> <ins>'.jigoshop_price( $this->data['sale_price'] ).'</ins>';
+                }
+				return jigoshop_price( $this->price );
+            }
 	
-			return $price;
-		else :
-			return jigoshop_price(parent::get_price());
-		endif;
+			return '';
+        }
+        
+		return jigoshop_price(parent::get_price());
 	}
 	
 	/**

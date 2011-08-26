@@ -173,6 +173,7 @@ function jigoshop_order_data_meta_box($post) {
 function jigoshop_order_items_meta_box($post) {
 	
 	$order_items = (array) maybe_unserialize( get_post_meta($post->ID, 'order_items', true) );
+
 	?>
 	<div class="jigoshop_order_items_wrapper">
 		<table cellpadding="0" cellspacing="0" class="jigoshop_order_items">
@@ -195,11 +196,14 @@ function jigoshop_order_items_meta_box($post) {
 				
 				<?php if (sizeof($order_items)>0 && isset($order_items[0]['id'])) foreach ($order_items as $item) : 
 					
-					if (isset($item['variation_id']) && $item['variation_id'] > 0) :
+					if (isset($item['variation_id']) && $item['variation_id'] > 0) {
 						$_product = &new jigoshop_product_variation( $item['variation_id'] );
-					else :
+                        if(is_array($item['variation'])) {
+                            $_product->set_variation_attributes($item['variation']);
+                        }
+                    } else {
 						$_product = &new jigoshop_product( $item['id'] );
-					endif;
+                    }
 
 					?>
 					<tr class="item">
@@ -225,12 +229,19 @@ function jigoshop_order_items_meta_box($post) {
 							</table>
 						</td>
 						<?php do_action('jigoshop_admin_order_item_values', $_product, $item); ?>
-						<td class="quantity"><input type="text" name="item_quantity[]" placeholder="<?php _e('Quantity e.g. 2', 'jigoshop'); ?>" value="<?php echo $item['qty']; ?>" /></td>
-						<td class="cost"><input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit ex. tax e.g. 2.99', 'jigoshop'); ?>" value="<?php echo $item['cost']; ?>" /></td>
-						<td class="tax"><input type="text" name="item_tax_rate[]" placeholder="<?php _e('Tax Rate e.g. 20.0000', 'jigoshop'); ?>" value="<?php echo $item['taxrate']; ?>" /></td>
+						<td class="quantity">
+                            <input type="text" name="item_quantity[]" placeholder="<?php _e('Quantity e.g. 2', 'jigoshop'); ?>" value="<?php echo $item['qty']; ?>" />
+                        </td>
+						<td class="cost">
+                            <input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit ex. tax e.g. 2.99', 'jigoshop'); ?>" value="<?php echo $item['cost']; ?>" />
+                        </td>
+						<td class="tax">
+                            <input type="text" name="item_tax_rate[]" placeholder="<?php _e('Tax Rate e.g. 20.0000', 'jigoshop'); ?>" value="<?php echo $item['taxrate']; ?>" />
+                        </td>
 						<td class="center">
 							<input type="hidden" name="item_id[]" value="<?php echo $item['id']; ?>" />
 							<input type="hidden" name="item_name[]" value="<?php echo $item['name']; ?>" />
+                            <input type="hidden" name="item_variation_id[]" value="<?php if ($item['variation_id']) echo $item['variation_id']; else echo ''; ?>" />
 							<button type="button" class="remove_row button">&times;</button>
 						</td>
 					</tr>
@@ -239,7 +250,7 @@ function jigoshop_order_items_meta_box($post) {
 		</table>
 	</div>
 	<p class="buttons">
-		<select name="item_id" class="item_id">
+		<select class="item_id">
 			<?php
 				$args = array(
 					'post_type' 		=> 'product',
