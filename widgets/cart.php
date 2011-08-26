@@ -43,7 +43,7 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 		if (sizeof(jigoshop_cart::$cart_contents)>0) : foreach (jigoshop_cart::$cart_contents as $item_id => $values) :
 			$_product = $values['data'];
 			if ($_product->exists() && $values['quantity']>0) :
-				echo '<li><a href="'.get_permalink($item_id).'">';
+				echo '<li><a href="'.get_permalink($values['product_id']).'">';
 
 				if (has_post_thumbnail($values['product_id'])) echo get_the_post_thumbnail($values['product_id'], 'shop_tiny');
 				else echo jigoshop_get_image_placeholder( 'shop_tiny' );
