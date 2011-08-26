@@ -117,7 +117,7 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 		if ($this->iban) $bank_info .= wptexturize($this->iban) . '<br />';
 		if ($this->bic) $bank_info .= wptexturize($this->bic) . '<br />';
 		
-		if ($this->description) echo wpautop(wptexturize($this->description . __(' These details are also be shown on the confirmation page.')));
+		if ($this->description) echo ' ' . wpautop(wptexturize($this->description . __('These details are also be shown on the confirmation page.')));
 		if ($bank_info) echo wpautop($bank_info);
 		if ($this->additional) echo wpautop(wptexturize($this->additional));
 	}
