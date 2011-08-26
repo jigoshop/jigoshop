@@ -21,7 +21,7 @@
 	
 	if (!defined('ABSPATH')) :
 		define('DOING_AJAX', true);
-		$root = '/var/www/jigoshop/';dirname(dirname(dirname(dirname(dirname(dirname(__FILE__))))));
+		$root = dirname(dirname(dirname(dirname(dirname(dirname(__FILE__))))));
 		require_once( $root.'/wp-load.php' );
 	endif;
 	
