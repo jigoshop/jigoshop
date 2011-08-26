@@ -18,7 +18,7 @@
 /**
  * options_settings
  *
- * This variable contains all the options used on the jigpshop settings page
+ * This variable contains all the options used on the jigoshop settings page
  *
  * @since 		1.0
  * @category 	Admin
@@ -316,6 +316,35 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'args'		=> 'show_option_none=' . __('None', 'jigoshop'),
 	),
 
+	array(
+		'name' => __('Catalog Sort OrderBy','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Determines the display sort order of products for the Shop, Categories, and Tag pages.','jigoshop'),
+		'id' 		=> 'jigoshop_catalog_sort_orderby',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'post_date',
+		'type' 		=> 'select',
+		'options' => array(
+			'post_date' => __('Creation Date', 'jigoshop'),
+			'title'  => __('Product Title', 'jigoshop'),
+			'menu_order'  => __('Product Post Order', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Catalog Sort Direction','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Determines whether the catalog sort orderby is ascending or descending.','jigoshop'),
+		'id' 		=> 'jigoshop_catalog_sort_direction',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'asc',
+		'type' 		=> 'select',
+		'options' => array(
+			'asc' => __('Ascending', 'jigoshop'),
+			'desc'  => __('Descending', 'jigoshop')
+		)
+	),
+
 	array(	'name' => __('Pricing Options', 'jigoshop'), 'type' 		=> 'title','desc' 		=> '', 'id' 		=> '' ),
 
 	array(
@@ -448,7 +477,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(
 		'name' 		=> __('Catalog Image Width','jigoshop'),
-		'desc' 		=> __('Default = 150px - will require a CSS over-ride in your theme.','jigoshop'),
+		'desc' 		=> __('Default = 150px - will require a CSS over-ride in your theme as well.','jigoshop'),
 		'tip' 		=> __('Set the width of the catalog image for Shop, Categories, Tags, and Related Products.','jigoshop'),
 		'id' 		=> 'jigoshop_shop_small_w',
 		'css' 		=> 'min-width:200px;',
@@ -458,7 +487,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(
 		'name' 		=> __('Catalog Image Height','jigoshop'),
-		'desc' 		=> __('Default = 150px - will require a CSS over-ride in your theme.','jigoshop'),
+		'desc' 		=> __('Default = 150px - will require a CSS over-ride in your theme as well.','jigoshop'),
 		'tip' 		=> __('Set the height of the catalog image for Shop, Categories, Tags, and Related Products.','jigoshop'),
 		'id' 		=> 'jigoshop_shop_small_h',
 		'css' 		=> 'min-width:200px;',
