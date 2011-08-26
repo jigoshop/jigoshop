@@ -1,12 +1,18 @@
 <?php
 /**
- * JigoShop Install
- * 
  * Plugin install script which adds default pages, taxonomies, and database tables
  *
- * @author 		Jigowatt
- * @category 	Admin
- * @package 	JigoShop
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package    Jigoshop
+ * @category   Admin
+ * @author     Jigowatt
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -35,8 +41,7 @@ function install_jigoshop() {
 	update_option('jigoshop_update_sale_prices', 'no');
 	
 	// Flush Rules
-	global $wp_rewrite;
-	$wp_rewrite->flush_rules();
+	flush_rewrite_rules( false );
 	
 	// Update version
 	update_option( "jigoshop_db_version", JIGOSHOP_VERSION );

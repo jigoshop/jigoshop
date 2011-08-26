@@ -1,9 +1,27 @@
 <?php
+/**
+ * Review order form template
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package    Jigoshop
+ * @category   Checkout
+ * @author     Jigowatt
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
+ */
+?>
+
+<?php
 	if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
 	
 	if (!defined('ABSPATH')) :
 		define('DOING_AJAX', true);
-		$root = dirname(dirname(dirname(dirname(dirname(dirname(__FILE__))))));
+		$root = '/var/www/jigoshop/';dirname(dirname(dirname(dirname(dirname(dirname(__FILE__))))));
 		require_once( $root.'/wp-load.php' );
 	endif;
 	

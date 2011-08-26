@@ -1,11 +1,10 @@
 === Jigoshop - WordPress eCommerce ===
-Contributors: jigowatt
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal
 Requires at least: 3.1
 Tested up to: 3.2.1
 Stable tag: 1.0-Kaboom1 (RC1)
- 
-A feature packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customisability. 
+
+A feature packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customisability.
 
 == Description ==
 
@@ -102,25 +101,25 @@ If you need a theme built, or have a theme that needs styling, give us a shout a
 
 Jigoshop comes with a .po file and is localisation ready. If you'd like to share your localisation with us please get in touch!
 
-= Do you have an X payment gateway = 
+= Do you have an X payment gateway =
 
 We will be introducing payment gateways incrementally, however, not all will be in the free version. If you want to request a payment gateway, or you have built one and you would like to share it with us, please get in touch.
 
-= Do I have access to my order and product data? = 
+= Do I have access to my order and product data? =
 
 Orders and products are stored as custom post types in the WordPress database; you have full control of them and can import/export using WordPress' functions.
 
-= Will tax settings work in my country? = 
+= Will tax settings work in my country? =
 
 Jigoshop has a flexible tax rule system which allows you to define tax rates per country - it should allow you to do what you want.
 
-= I need hosting! = 
+= I need hosting! =
 
 We offer optimised hosting packages starting from 10 GBP per month at http://jigowatt.co.uk
 
-= I need support! = 
+= I need support! =
 
-We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">community forum</a> for getting help from other users, however, if you want priority, dedicated support from us we offer support packages - see our website for details. 
+We have a <a href="http://jigoshop.com/forums" title="Jigoshop support forum">community forum</a> for getting help from other users, however, if you want priority, dedicated support from us we offer support packages - see our website for details.
 
 == Screenshots ==
 
@@ -135,12 +134,9 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 9. Checkout
 
 == Changelog ==
-= 0.9.9 =
+= 1.0 Kaboom 1 =
 * Added Dutch translation
-* Various bug fixes
-
-= 0.9.9 = 
-* PRODUCT VARIATIONS
+* Product Variations
 * Revamped order items panel
 * Grouped products can contain downloadable, simple, or virtual products
 * Changed mail from/to for store

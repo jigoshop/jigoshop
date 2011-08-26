@@ -1,12 +1,20 @@
 <?php
 /**
- * JigoShop Write Panels
+ * Jigoshop Write Panels
  * 
  * Sets up the write panels used by products and orders (custom post types)
  *
- * @author 		Jigowatt
- * @category 	Admin Write Panels
- * @package 	JigoShop
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package    Jigoshop
+ * @category   Admin
+ * @author     Jigowatt
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
  */
 
 include('write-panels/product-data.php');
@@ -75,6 +83,7 @@ function jigoshop_product_data( $data ) {
 		switch($product_type) :
 			case "grouped" :
 			case "variable" :
+			case "downloadable" :
 				$data['post_parent'] = 0;
 			break;
 		endswitch;

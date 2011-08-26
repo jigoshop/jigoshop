@@ -1,7 +1,19 @@
 <?php
 /**
- * FUNCTIONS USED IN TEMPLATE FILES
- **/
+ * Functions used in template files
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package    Jigoshop
+ * @category   Core
+ * @author     Jigowatt
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
+ */
 
 /**
  * Front page archive/shop template
@@ -107,12 +119,14 @@ if (!function_exists('jigoshop_show_product_images')) {
 		$thumb_id = 0;
 		if (has_post_thumbnail()) :
 			$thumb_id = get_post_thumbnail_id();
-			$large_thumbnail_size = apply_filters('single_product_large_thumbnail_size', 'shop_large');
+			// since there are now user settings for sizes, shouldn't need filters -JAP-
+			//$large_thumbnail_size = apply_filters('single_product_large_thumbnail_size', 'shop_large');
+			$large_thumbnail_size = jigoshop_get_image_size( 'shop_large' );
 			echo '<a href="'.wp_get_attachment_url($thumb_id).'" class="zoom" rel="thumbnails">';
 			the_post_thumbnail($large_thumbnail_size);
 			echo '</a>';
 		else :
-			echo '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" />';
+			echo jigoshop_get_image_placeholder( 'shop_large' );
 		endif;
 
 		do_action('jigoshop_product_thumbnails');
@@ -129,11 +143,15 @@ if (!function_exists('jigoshop_show_product_thumbnails')) {
 		echo '<div class="thumbnails">';
 
 		$thumb_id = get_post_thumbnail_id();
-		$small_thumbnail_size = apply_filters('single_product_small_thumbnail_size', 'shop_thumbnail');
+		// since there are now user settings for sizes, shouldn't need filters -JAP-
+		//$small_thumbnail_size = apply_filters('single_product_small_thumbnail_size', 'shop_thumbnail');
+		$small_thumbnail_size = jigoshop_get_image_size( 'shop_thumbnail' );
 		$args = array( 'post_type' => 'attachment', 'numberposts' => -1, 'post_status' => null, 'post_parent' => $post->ID, 'orderby' => 'id', 'order' => 'asc' );
 		$attachments = get_posts($args);
 		if ($attachments) :
 			$loop = 0;
+			// with user settings for images sizes, the following foreach could be broken, need testing
+			// added filter to override image count per row, maybe need user setting here too?  -JAP-
 			$columns = apply_filters( 'single_thumbnail_columns', 3 );
 			foreach ( $attachments as $attachment ) :
 
@@ -298,7 +316,7 @@ if (!function_exists('jigoshop_grouped_add_to_cart')) {
 }
 if (!function_exists('jigoshop_variable_add_to_cart')) {
 	function jigoshop_variable_add_to_cart() {
-		
+
 		global $post, $_product;
 		
 		$attributes = $_product->get_avaiable_attributes_variations();
@@ -336,12 +354,13 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
                 );
             }
         }
+
 		?>
         <script>
             var product_variations = <?php echo json_encode($variationsAvaiable) ?>;
         </script>
 		<form action="<?php echo $_product->add_to_cart_url(); ?>" class="variations_form cart" method="post">
-			
+
 			<table class="variations" cellspacing="0">
 				<tbody>
 				<?php foreach ($attributes as $aname => $aoptions):?>
@@ -463,15 +482,25 @@ if (!function_exists('jigoshop_product_reviews_panel')) {
  * Jigoshop Product Thumbnail
  **/
 if (!function_exists('jigoshop_get_product_thumbnail')) {
-	function jigoshop_get_product_thumbnail( $size = 'shop_small', $placeholder_width = 0, $placeholder_height = 0 ) {
+	function jigoshop_get_product_thumbnail( $size = 'shop_small' ) {
 
 		global $post;
-		
-		if (!$placeholder_width) $placeholder_width = get_option('jigoshop_shop_small_w');
-		if (!$placeholder_height) $placeholder_height = get_option('jigoshop_shop_small_h');
-		
-		if ( has_post_thumbnail() ) return get_the_post_thumbnail($post->ID, $size); else return '<img src="'.jigoshop::plugin_url(). '/assets/images/placeholder.png" alt="Placeholder" width="'.$placeholder_width.'" height="'.$placeholder_height.'" />';
 
+		if ( has_post_thumbnail() )
+			return get_the_post_thumbnail($post->ID, $size);
+		else
+			return jigoshop_get_image_placeholder( $size );
+	}
+}
+
+/**
+ * Jigoshop Product Image Placeholder
+ * @since 1.0
+ **/
+if (!function_exists('jigoshop_get_image_placeholder')) {
+	function jigoshop_get_image_placeholder( $size = 'shop_small' ) {
+		$image_size = jigoshop_get_image_size( $size );
+		return '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.$image_size[0].'px" height="'.$image_size[1].'px" />';
 	}
 }
 

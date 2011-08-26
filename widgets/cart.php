@@ -4,15 +4,22 @@
  *
  * Displays shopping cart widget
  *
- * @package		JigoShop
- * @category	Widgets
- * @author		Jigowatt
- * @since		1.0
- * 
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package    Jigoshop
+ * @category   Widgets
+ * @author     Jigowatt
+ * @since	   1.0
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
  */
- 
+
 class Jigoshop_Widget_Cart extends WP_Widget {
-	
+
 	/** constructor */
 	function Jigoshop_Widget_Cart() {
 		$widget_ops = array( 'description' => __( "Shopping Cart for the sidebar.", 'jigoshop') );
@@ -23,45 +30,46 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 	function widget( $args, $instance ) {
 
 		if (is_cart()) return;
-		
+
 		extract($args);
 		if ( !empty($instance['title']) ) $title = $instance['title']; else $title = __('Cart', 'jigoshop');
 		$title = apply_filters('widget_title', $title, $instance, $this->id_base);
 
 		echo $before_widget;
 		if ( $title ) echo $before_title . $title . $after_title;
-		
+
 		echo '<ul class="cart_list">';
-		
+
 		if (sizeof(jigoshop_cart::$cart_contents)>0) : foreach (jigoshop_cart::$cart_contents as $item_id => $values) :
 			$_product = $values['data'];
 			if ($_product->exists() && $values['quantity']>0) :
 				echo '<li><a href="'.get_permalink($item_id).'">';
-				
-				echo (has_post_thumbnail($_product->product_id)) ? get_the_post_thumbnail($_product->product_id, 'shop_tiny') : '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.get_option('jigoshop_shop_tiny_w').'" height="'.get_option('jigoshop_shop_tiny_h').'" />';
-				
+
+				if (has_post_thumbnail($item_id)) echo get_the_post_thumbnail($item_id, 'shop_tiny');
+				else echo jigoshop_get_image_placeholder( 'shop_tiny' );
+
 				echo apply_filters('jigoshop_cart_widget_product_title', $_product->get_title(), $_product).'</a> '.$values['quantity'].' &times; '.jigoshop_price($_product->get_price()).'</li>';
 			endif;
-		endforeach; 
+		endforeach;
 		else: echo '<li class="empty">'.__('No products in the cart.','jigoshop').'</li>'; endif;
-		
+
 		echo '</ul>';
-		
+
 		if (sizeof(jigoshop_cart::$cart_contents)>0) :
 			echo '<p class="total"><strong>';
-			
+
 			if (get_option('js_prices_include_tax')=='yes') :
 				_e('Total', 'jigoshop');
 			else :
 				_e('Subtotal', 'jigoshop');
 			endif;
-	
+
 			echo ':</strong> '.jigoshop_cart::get_cart_total();
-			
+
 			echo '</p>';
-			
+
 			do_action( 'jigoshop_widget_shopping_cart_before_buttons' );
-			
+
 			echo '<p class="buttons"><a href="'.jigoshop_cart::get_cart_url().'" class="button">'.__('View Cart &rarr;','jigoshop').'</a> <a href="'.jigoshop_cart::get_checkout_url().'" class="button checkout">'.__('Checkout &rarr;','jigoshop').'</a></p>';
 		endif;
 		echo $after_widget;

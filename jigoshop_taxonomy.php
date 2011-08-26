@@ -1,5 +1,21 @@
 <?php
 /**
+ * Jigoshop Taxonomy
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package    Jigoshop
+ * @category   Core
+ * @author     Jigowatt
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
+ */
+
+/**
  * Custom Post Types
  **/
 function jigoshop_post_type() {
@@ -8,7 +24,8 @@ function jigoshop_post_type() {
 	
 	$shop_page_id = get_option('jigoshop_shop_page_id');
 	
-	$base_slug = $shop_page_id && get_page_uri( $shop_page_id ) ? get_page_uri( $shop_page_id ) : 'shop';
+	
+	$base_slug = $shop_page_id && $base_page = get_page( $shop_page_id ) ? get_page_uri( $shop_page_id ) : 'shop';
 	
 	if (get_option('jigoshop_prepend_shop_page_to_urls')=="yes") :
 		$category_base = trailingslashit($base_slug);

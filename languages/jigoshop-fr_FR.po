@@ -164,7 +164,7 @@ msgstr "Mettre à jour"
 #: jigoshop_taxonomy.php:85
 #: jigoshop.php:179
 msgid "Add New "
-msgstr "Ajouter un nouveau"
+msgstr "Ajouter un nouveau "
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:86
