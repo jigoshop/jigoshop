@@ -90,7 +90,7 @@ class jigoshop_product_variation extends jigoshop_product {
             $this->visibility = $parent_custom_fields['visibility'][0];
             
             //if the main product is visible, but vairiation is not enabled make it hidden
-            if($this->visibility == 'public' && $this->variation->post_status == 'private') {
+            if($this->visibility == 'visible' && $this->variation->post_status == 'private') {
                 $this->visibility = 'hidden';
             }
         }
@@ -127,9 +127,10 @@ class jigoshop_product_variation extends jigoshop_product {
 
 	/** Get the product's post data */
 	function get_variation_post_data() {
-		if (empty($this->variation)) :
+		if (empty($this->variation)) {
 			$this->variation = get_post( $this->variation_id );
-		endif;
+        }
+        
 		return $this->variation;
 	}
     
@@ -140,6 +141,15 @@ class jigoshop_product_variation extends jigoshop_product {
      */
     function get_variation_id() {
         return (int)$this->variation_id;
+    }
+    
+    /**
+     * Is variation visible/enabled?
+     * 
+     * @return bool
+     */
+    function is_visible() {
+        return ($this->visibility == 'visible') ? true : false;
     }
     
     /**

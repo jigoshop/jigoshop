@@ -625,7 +625,7 @@ class jigoshop_product {
                 /* @var $variation jigoshop_product_variation */
                 $variation = $child->product;
 
-                if ($variation instanceof jigoshop_product_variation) {
+                if ($variation instanceof jigoshop_product_variation && $variation->is_visible()) {
                     $attributes = $variation->get_variation_attributes();
 
                     if (is_array($attributes)) {
