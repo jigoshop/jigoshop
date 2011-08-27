@@ -244,14 +244,11 @@ class jigoshop_product {
 	/** Returns whether or not the product has enough stock for the order */
 	function has_enough_stock( $quantity ) {
 
-		if ($this->backorders_allowed()) return true;
-
-		if ($this->stock >= $quantity) :
+		if ($this->backorders_allowed() || $this->stock >= $quantity) {
 			return true;
-		endif;
+        }
 
 		return false;
-
 	}
     
     /**
@@ -321,7 +318,10 @@ class jigoshop_product {
 
 	/** Returns whether or not the product is featured */
 	function is_featured() {
-		if (get_post_meta($this->id, 'featured', true)=='yes') return true;
+		if (get_post_meta($this->id, 'featured', true)=='yes') {
+            return true;
+        }
+        
 		return false;
 	}
 

@@ -107,6 +107,7 @@ add_action('jigoshop_product_type_options_box', 'variable_product_type_options')
  * 
  * Javascript for the variable product type
  *
+ * @todo this needs to be moved to some javascript file
  * @since 		1.0
  */
 function variable_product_write_panel_js() {
