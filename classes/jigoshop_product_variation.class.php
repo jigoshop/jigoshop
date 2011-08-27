@@ -33,33 +33,48 @@ class jigoshop_product_variation extends jigoshop_product {
 	 * @param   int		$id		ID of the product to load
 	 */
 	function jigoshop_product_variation( $variation_id ) {
-		
+		//load variation data
 		$this->variation_id = $variation_id;
-	
 		$product_custom_fields = get_post_custom( $this->variation_id );
-		
-		$this->variation_data = array();
-		
-		foreach ($product_custom_fields as $name => $value) :
-			
-			if (!strstr($name, 'tax_')) continue;
-			
-			$this->variation_data[$name] = $value[0];
-			
-		endforeach;
-
 		$this->get_variation_post_data();
-		
-		/* Get main product data from parent */
+        
+        //load variation parent data
+        //@todo this data are already loaded in the most cases, we should think about passing parent product object to constructor
 		$this->id = $this->variation->post_parent;
-		
 		$parent_custom_fields = get_post_custom( $this->id );
 
+        /*
+         * Set variation information by combining variation options and parent options
+         */
         $this->sku = $this->id;
-		if (isset($parent_custom_fields['SKU'][0]) &&!empty($parent_custom_fields['SKU'][0])) {
+        if (isset($product_custom_fields['SKU'][0]) && !empty($product_custom_fields['SKU'][0])) {
+            $this->variation_has_sku = true;
+			$this->sku = $product_custom_fields['SKU'][0];
+        } else if (isset($parent_custom_fields['SKU'][0]) &&!empty($parent_custom_fields['SKU'][0])) {
             $this->sku = $parent_custom_fields['SKU'][0];
         }
+        
+        $this->stock = 0;
+		if (isset($product_custom_fields['stock'][0]) && !empty($product_custom_fields['stock'][0])) {
+			$this->variation_has_stock = true;
+			$this->stock = $product_custom_fields['stock'][0];
+        } else if (isset($parent_custom_fields['stock'][0])) {
+            $this->stock = $parent_custom_fields['stock'][0];
+        }
 
+        $this->price = 0;
+        if (isset($product_custom_fields['price'][0]) && !empty($product_custom_fields['price'][0])) {
+			$this->variation_has_price = true;
+			$this->price = $product_custom_fields['price'][0];
+        } else if (isset($parent_custom_fields['price'][0])) {
+            $this->price = $parent_custom_fields['price'][0];
+        }
+        
+        if (isset($product_custom_fields['sale_price'][0]) && !empty($product_custom_fields['sale_price'][0])) {
+			$this->variation_has_sale_price = true;
+			$this->data['sale_price'] = $product_custom_fields['sale_price'][0];
+        }
+        
         $this->data = '';
         if (isset($parent_custom_fields['product_data'][0])) {
             $this->data = maybe_unserialize($parent_custom_fields['product_data'][0]);
@@ -70,19 +85,25 @@ class jigoshop_product_variation extends jigoshop_product {
             $this->attributes = maybe_unserialize($parent_custom_fields['product_attributes'][0]);
         }
 
-        $this->price = 0;
-        if (isset($parent_custom_fields['price'][0])) {
-            $this->price = $parent_custom_fields['price'][0];
-        }
-
         $this->visibility = 'hidden';
         if (isset($parent_custom_fields['visibility'][0])) {
             $this->visibility = $parent_custom_fields['visibility'][0];
         }
         
-        $this->stock = 0;
-        if (isset($parent_custom_fields['stock'][0])) {
-            $this->stock = $parent_custom_fields['stock'][0];
+        if (isset($product_custom_fields['weight'][0]) && !empty($product_custom_fields['weight'][0])) {
+			$this->variation_has_weight = true;
+			$this->data['weight'] = $product_custom_fields['weight'][0];
+        }
+        
+        //process variation data
+		$this->variation_data = array();
+		
+		foreach ($product_custom_fields as $name => $value) {
+			if (!strstr($name, 'tax_')) {
+                continue;
+            }
+			
+			$this->variation_data[$name] = $value[0];
         }
         
 		// Again just in case, to fix WP bug
@@ -90,39 +111,13 @@ class jigoshop_product_variation extends jigoshop_product {
 		$this->attributes = maybe_unserialize( $this->attributes );
 		$this->product_type = 'variable';
 			
-		if ($this->data) :
+		if ($this->data) {
 			$this->exists = true;		
-		else :
+        } else {
 			$this->exists = false;	
-		endif;
+        }
 		
 		//parent::jigoshop_product( $this->variation->post_parent );
-		
-		/* Pverride parent data with variation */
-		if (isset($product_custom_fields['SKU'][0]) && !empty($product_custom_fields['SKU'][0])) :
-			$this->variation_has_sku = true;
-			$this->sku = $product_custom_fields['SKU'][0];
-		endif;
-		
-		if (isset($product_custom_fields['stock'][0]) && !empty($product_custom_fields['stock'][0])) :
-			$this->variation_has_stock = true;
-			$this->stock = $product_custom_fields['stock'][0];
-		endif;
-		
-		if (isset($product_custom_fields['weight'][0]) && !empty($product_custom_fields['weight'][0])) :
-			$this->variation_has_weight = true;
-			$this->data['weight'] = $product_custom_fields['weight'][0];
-		endif;
-		
-		if (isset($product_custom_fields['price'][0]) && !empty($product_custom_fields['price'][0])) :
-			$this->variation_has_price = true;
-			$this->price = $product_custom_fields['price'][0];
-		endif;
-		
-		if (isset($product_custom_fields['sale_price'][0]) && !empty($product_custom_fields['sale_price'][0])) :
-			$this->variation_has_sale_price = true;
-			$this->data['sale_price'] = $product_custom_fields['sale_price'][0];
-		endif;
 	}
 
 	/** Get the product's post data */
