@@ -143,31 +143,44 @@ class jigoshop_product {
 	 * @param   string		$type		Type to check against
 	 */
 	function is_type( $type ) {
-		if (is_array($type) && in_array($this->product_type, $type)) return true;
-		elseif ($this->product_type==$type) return true;
+		if (is_array($type) && in_array($this->product_type, $type)) {
+            return true;
+        } else if ($this->product_type == $type) {
+            return true;
+        }
+        
 		return false;
 	}
 
 	/** Returns whether or not the product has any child product */
 	function has_child () {
-		return sizeof($this->children) ? true : false;
+        if(is_array($this->children) && count($this->children) > 0) {
+            return true;
+        }
+        
+		return false;
 	}
 
 	/** Returns whether or not the product post exists */
 	function exists() {
-		if ($this->exists) return true;
-		return false;
+		return ($this->exists);
 	}
 
 	/** Returns whether or not the product is taxable */
 	function is_taxable() {
-		if (isset($this->data['tax_status']) && $this->data['tax_status']=='taxable') return true;
+		if (isset($this->data['tax_status']) && $this->data['tax_status']=='taxable') {
+            return true;
+        }
+        
 		return false;
 	}
 
 	/** Returns whether or not the product shipping is taxable */
 	function is_shipping_taxable() {
-		if (isset($this->data['tax_status']) && ($this->data['tax_status']=='taxable' || $this->data['tax_status']=='shipping')) return true;
+		if (isset($this->data['tax_status']) && ($this->data['tax_status']=='taxable' || $this->data['tax_status']=='shipping')) {
+            return true;
+        }
+        
 		return false;
 	}
 

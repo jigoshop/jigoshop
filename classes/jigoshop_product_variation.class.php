@@ -55,13 +55,36 @@ class jigoshop_product_variation extends jigoshop_product {
 		
 		$parent_custom_fields = get_post_custom( $this->id );
 
-		if (isset($parent_custom_fields['SKU'][0]) && !empty($parent_custom_fields['SKU'][0])) $this->sku = $parent_custom_fields['SKU'][0]; else $this->sku = $this->id;
-		if (isset($parent_custom_fields['product_data'][0])) $this->data = maybe_unserialize( $parent_custom_fields['product_data'][0] ); else $this->data = '';
-		if (isset($parent_custom_fields['product_attributes'][0])) $this->attributes = maybe_unserialize( $parent_custom_fields['product_attributes'][0] ); else $this->attributes = array();		
-		if (isset($parent_custom_fields['price'][0])) $this->price = $parent_custom_fields['price'][0]; else $this->price = 0;
-		if (isset($parent_custom_fields['visibility'][0])) $this->visibility = $parent_custom_fields['visibility'][0]; else $this->visibility = 'hidden';
-		if (isset($parent_custom_fields['stock'][0])) $this->stock = $parent_custom_fields['stock'][0]; else $this->stock = 0;
-		
+        $this->sku = $this->id;
+		if (isset($parent_custom_fields['SKU'][0]) &&!empty($parent_custom_fields['SKU'][0])) {
+            $this->sku = $parent_custom_fields['SKU'][0];
+        }
+
+        $this->data = '';
+        if (isset($parent_custom_fields['product_data'][0])) {
+            $this->data = maybe_unserialize($parent_custom_fields['product_data'][0]);
+        }
+        
+        $this->attributes = array();
+        if (isset($parent_custom_fields['product_attributes'][0])) {
+            $this->attributes = maybe_unserialize($parent_custom_fields['product_attributes'][0]);
+        }
+
+        $this->price = 0;
+        if (isset($parent_custom_fields['price'][0])) {
+            $this->price = $parent_custom_fields['price'][0];
+        }
+
+        $this->visibility = 'hidden';
+        if (isset($parent_custom_fields['visibility'][0])) {
+            $this->visibility = $parent_custom_fields['visibility'][0];
+        }
+        
+        $this->stock = 0;
+        if (isset($parent_custom_fields['stock'][0])) {
+            $this->stock = $parent_custom_fields['stock'][0];
+        }
+        
 		// Again just in case, to fix WP bug
 		$this->data = maybe_unserialize( $this->data );
 		$this->attributes = maybe_unserialize( $this->attributes );
