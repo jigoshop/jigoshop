@@ -88,6 +88,11 @@ class jigoshop_product_variation extends jigoshop_product {
         $this->visibility = 'hidden';
         if (isset($parent_custom_fields['visibility'][0])) {
             $this->visibility = $parent_custom_fields['visibility'][0];
+            
+            //if the main product is visible, but vairiation is not enabled make it hidden
+            if($this->visibility == 'public' && $this->variation->post_status == 'private') {
+                $this->visibility = 'hidden';
+            }
         }
         
         if (isset($product_custom_fields['weight'][0]) && !empty($product_custom_fields['weight'][0])) {
