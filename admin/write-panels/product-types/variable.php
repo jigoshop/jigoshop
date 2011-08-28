@@ -341,15 +341,17 @@ function process_product_meta_variable( $data, $post_id ) {
     $variable_price = $_POST['variable_price'];
     $variable_sale_price = $_POST['variable_sale_price'];
     $upload_image_id = $_POST['upload_image_id'];
-    if (isset($_POST['variable_enabled']))
+    if (isset($_POST['variable_enabled'])) {
         $variable_enabled = $_POST['variable_enabled'];
+    }
 
     $attributes = maybe_unserialize(get_post_meta($post_id, 'product_attributes', true));
 
     if (empty($attributes)) {
         $attributes = array();
     }
-
+    
+    $attributes_values = array();
     for ($i = 0; $i < count($variable_sku); $i++) {
 
         $variation_id = (int) $variable_post_id[$i];
@@ -363,6 +365,8 @@ function process_product_meta_variable( $data, $post_id ) {
 
         // Generate a useful post title
         $title = array();
+        // Clean up attributes values
+        $clean_attributes = array();
 
         foreach ($attributes as $attribute) {
             if ($attribute['variation'] == 'yes') {
@@ -370,13 +374,40 @@ function process_product_meta_variable( $data, $post_id ) {
                 $attribute_field = 'tax_' . sanitize_title($attribute['name']);
 
                 if (isset($_POST[$attribute_field][$i])) {
-                    $value = trim($_POST['tax_' . sanitize_title($attribute['name'])][$i]);
+                    $value = trim($_POST[$attribute_field][$i]);
 
                     if (!empty($value)) {
                         $title[] = ucfirst($attribute['name']) . ': ' . $value;
                     }
                 }
+                
+                $clean_attributes[$attribute['name']] = $value;
             }
+        }
+
+        if ($post_status == 'publish') {
+            //check if attributes for this variation are not already covered by other variation
+            foreach ($attributes_values as $variation_attributes) {
+                $duplicate = true;
+
+                foreach ($variation_attributes as $attribute_name => $attribute_value) {
+                    $attribute_value2 = $clean_attributes[$attribute_name];
+
+                    if (!empty($attribute_value) && !empty($attribute_value2) && $attribute_value != $attribute_value2) {
+                        $duplicate = false;
+                        break;
+                    }
+                }
+
+                //this variation was already covered
+                if ($duplicate) {
+                    //disable variation
+                    $post_status = 'private';
+                    break;
+                }
+            }
+        
+            $attributes_values[] = $clean_attributes;
         }
 
         $sku_string = '#' . $variation_id;
@@ -384,9 +415,9 @@ function process_product_meta_variable( $data, $post_id ) {
             $sku_string .= ' SKU: ' . $variable_sku[$i];
         }
 
-        // Update or Add post
         $post_title = '#' . $post_id . ' ' . __('Variation') . ' (' . $sku_string . ') - ' . implode(', ', $title);
 
+        // Update or Add post
         if (!$variation_id) { //create variation
             $variation_id = wp_insert_post(array(
                 'post_title' => $post_title,
@@ -411,19 +442,10 @@ function process_product_meta_variable( $data, $post_id ) {
         update_post_meta($variation_id, 'weight', $variable_weight[$i]);
         update_post_meta($variation_id, 'stock', $variable_stock[$i]);
         update_post_meta($variation_id, '_thumbnail_id', $upload_image_id[$i]);
-
-        // Update taxonomies
-        foreach ($attributes as $attribute) {
-            if ($attribute['variation'] == 'yes') {
-                $value = '';
-                $attribute_field = 'tax_' . sanitize_title($attribute['name']);
-
-                if (isset($_POST[$attribute_field][$i])) {
-                    $value = trim($_POST['tax_' . sanitize_title($attribute['name'])][$i]);
-                }
-
-                update_post_meta($variation_id, $attribute_field, $value);
-            }
+        
+        // Update taxonomies (save attributes)
+        foreach($clean_attributes as $attribute => $value) {
+            update_post_meta($variation_id, 'tax_' . $attribute, $value);
         }
     }
 }
