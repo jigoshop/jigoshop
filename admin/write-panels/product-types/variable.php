@@ -345,6 +345,7 @@ function process_product_meta_variable( $data, $post_id ) {
         $variable_enabled = $_POST['variable_enabled'];
     }
 
+    $errors = array();
     $attributes = maybe_unserialize(get_post_meta($post_id, 'product_attributes', true));
 
     if (empty($attributes)) {
@@ -403,6 +404,8 @@ function process_product_meta_variable( $data, $post_id ) {
                 if ($duplicate) {
                     //disable variation
                     $post_status = 'private';
+                    //set error message
+                    $errors[] = sprintf(__('Variation #%s was disabled as it is already covered by other variation.', 'jigoshop'), $variation_id);
                     break;
                 }
             }
@@ -448,5 +451,7 @@ function process_product_meta_variable( $data, $post_id ) {
             update_post_meta($variation_id, 'tax_' . $attribute, $value);
         }
     }
+    
+    return $errors;
 }
 add_action('process_product_meta_variable', 'process_product_meta_variable', 1, 2);

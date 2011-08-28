@@ -220,7 +220,13 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 		$data = apply_filters( 'filter_product_meta_' . $product_type, $data, $post_id );
 		
 		// Do action for product type
-		do_action( 'process_product_meta_' . $product_type, $data, $post_id );
+        if(function_exists('process_product_meta_' . $product_type)) {            
+            $meta_errors = call_user_func('process_product_meta_' . $product_type, $data, $post_id);
+            
+            if(is_array($meta_errors)) {
+                $jigoshop_errors = array_merge($jigoshop_errors, $meta_errors);
+            }
+        }
 		
 	// Save
 	update_post_meta( $post_id, 'product_attributes', $attributes );
