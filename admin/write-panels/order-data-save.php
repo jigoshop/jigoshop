@@ -105,9 +105,12 @@ function jigoshop_process_shop_order_meta($post_id, $post)
                 
                 //if this is a variation, we should check if it is an old one
                 //and copy the 'variation' field describing details of variation
-                foreach($old_order_items as $old_item) {
+                foreach($old_order_items as $old_item_index => $old_item) {
                     if($old_item['variation_id'] == $variation_id) {
                         $variation = $old_item['variation'];
+                        
+                        unset($old_order_items[$old_item_index]);
+                        break;
                     }
                 }
             }
