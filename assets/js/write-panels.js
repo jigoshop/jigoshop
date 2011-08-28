@@ -154,7 +154,7 @@ jQuery( function($){
 		// Hide options
 		$('#jigoshop-product-type-options .inside > div').hide();
 		$('#'+select_val+'_product_options').show();
-
+		
 		// Show option
 		if (select_val=='variable') {
 			jQuery('.inventory_tab, .pricing_tab').show();

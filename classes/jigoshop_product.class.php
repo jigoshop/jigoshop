@@ -468,6 +468,11 @@ class jigoshop_product {
 				else :
 					$price .= jigoshop_price($this->get_price());
 				endif;
+
+			elseif ($this->price === '' ):
+				$price = __('Price Not Announced');
+			elseif ($this->price === '0' ):
+				$price = __('Free');			
 			endif;
 		endif;
 		return $price;

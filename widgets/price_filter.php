@@ -95,7 +95,7 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 			<div class="price_slider_wrapper">
 				<div class="price_slider"></div>
 				<div class="price_slider_amount">
-					<button type="submit" class="button">Filter</button>'.__('Price: ', 'jigoshop').'<span></span>
+					<button type="submit" class="button">'.__('Filter', 'jigoshop').'</button>'.__('Price: ', 'jigoshop').'<span></span>
 					<input type="hidden" id="max_price" name="max_price" value="'.$max.'" />
 					<input type="hidden" id="min_price" name="min_price" value="'.$min.'" />
 					'.$fields.'
