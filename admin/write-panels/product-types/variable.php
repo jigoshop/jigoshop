@@ -107,6 +107,7 @@ add_action('jigoshop_product_type_options_box', 'variable_product_type_options')
  * 
  * Javascript for the variable product type
  *
+ * @todo this needs to be moved to some javascript file
  * @since 		1.0
  */
 function variable_product_write_panel_js() {
@@ -329,83 +330,128 @@ add_action('product_type_selector', 'variable_product_type_selector');
  */
 function process_product_meta_variable( $data, $post_id ) {
 	
-	if (isset($_POST['variable_sku'])) :
-		
-		$variable_post_id 	= $_POST['variable_post_id'];
-		$variable_sku 		= $_POST['variable_sku'];
-		$variable_weight	= $_POST['variable_weight'];
-		$variable_stock 	= $_POST['variable_stock'];
-		$variable_price 	= $_POST['variable_price'];
-		$variable_sale_price= $_POST['variable_sale_price'];
-		$upload_image_id		= $_POST['upload_image_id'];
-		if (isset($_POST['variable_enabled'])) $variable_enabled = $_POST['variable_enabled'];
-		
-		$attributes = maybe_unserialize( get_post_meta($post_id, 'product_attributes', true) );
-		if (!isset($attributes)) $attributes = array();
-		
-		for ($i=0; $i<sizeof($variable_sku); $i++) :
-			
-			$variation_id = (int) $variable_post_id[$i];
+     if (!isset($_POST['variable_sku'])) {
+        return;
+    }
 
-			// Enabled or disabled
-			if (isset($variable_enabled[$i])) $post_status = 'publish'; else $post_status = 'private';
-			
-			// Generate a useful post title
-			$title = array();
-			
-			foreach ($attributes as $attribute) :
-				if ( $attribute['variation']=='yes' ) :
-					$value = trim($_POST[ 'tax_' . sanitize_title($attribute['name']) ][$i]);
-					if ($value) $title[] = ucfirst($attribute['name']).': '.$value;
-				endif;
-			endforeach;
-			
-			$sku_string = '#'.$variation_id;
-			if ($variable_sku[$i]) $sku_string .= ' SKU: ' . $variable_sku[$i];
-			
-			// Update or Add post
-			if (!$variation_id) :
-				
-				$variation = array(
-					'post_title' => '#' . $post_id . ' Variation ('.$sku_string.') - ' . implode(', ', $title),
-					'post_content' => '',
-					'post_status' => $post_status,
-					'post_author' => get_current_user_id(),
-					'post_parent' => $post_id,
-					'post_type' => 'product_variation'
-				);
-				$variation_id = wp_insert_post( $variation );
+    $variable_post_id = $_POST['variable_post_id'];
+    $variable_sku = $_POST['variable_sku'];
+    $variable_weight = $_POST['variable_weight'];
+    $variable_stock = $_POST['variable_stock'];
+    $variable_price = $_POST['variable_price'];
+    $variable_sale_price = $_POST['variable_sale_price'];
+    $upload_image_id = $_POST['upload_image_id'];
+    if (isset($_POST['variable_enabled'])) {
+        $variable_enabled = $_POST['variable_enabled'];
+    }
 
-			else :
-				
-				global $wpdb;
-				$wpdb->update( $wpdb->posts, array( 'post_status' => $post_status, 'post_title' => '#' . $post_id . ' Variation ('.$sku_string.') - ' . implode(', ', $title) ), array( 'ID' => $variation_id ) );
-			
-			endif;
+    $errors = array();
+    $attributes = maybe_unserialize(get_post_meta($post_id, 'product_attributes', true));
 
-			// Update post meta
-			update_post_meta( $variation_id, 'SKU', $variable_sku[$i] );
-			update_post_meta( $variation_id, 'price', $variable_price[$i] );
-			update_post_meta( $variation_id, 'sale_price', $variable_sale_price[$i] );
-			update_post_meta( $variation_id, 'weight', $variable_weight[$i] );
-			update_post_meta( $variation_id, 'stock', $variable_stock[$i] );
-			update_post_meta( $variation_id, '_thumbnail_id', $upload_image_id[$i] );
-			
-			// Update taxonomies
-			foreach ($attributes as $attribute) :
-							
-				if ( $attribute['variation']=='yes' ) :
-				
-					$value = trim($_POST[ 'tax_' . sanitize_title($attribute['name']) ][$i]);
-					
-					update_post_meta( $variation_id, 'tax_' . sanitize_title($attribute['name']), $value );
-				
-				endif;
+    if (empty($attributes)) {
+        $attributes = array();
+    }
+    
+    $attributes_values = array();
+    for ($i = 0; $i < count($variable_sku); $i++) {
 
-			endforeach;
-		 	
-		 endfor; 
-	endif;
+        $variation_id = (int) $variable_post_id[$i];
 
+        // Enabled or disabled
+        if (isset($variable_enabled[$i])) {
+            $post_status = 'publish';
+        } else {
+            $post_status = 'private';
+        }
+
+        // Generate a useful post title
+        $title = array();
+        // Clean up attributes values
+        $clean_attributes = array();
+
+        foreach ($attributes as $attribute) {
+            if ($attribute['variation'] == 'yes') {
+                $value = '';
+                $attribute_field = 'tax_' . sanitize_title($attribute['name']);
+
+                if (isset($_POST[$attribute_field][$i])) {
+                    $value = trim($_POST[$attribute_field][$i]);
+
+                    if (!empty($value)) {
+                        $title[] = ucfirst($attribute['name']) . ': ' . $value;
+                    }
+                }
+                
+                $clean_attributes[$attribute['name']] = $value;
+            }
+        }
+
+        if ($post_status == 'publish') {
+            //check if attributes for this variation are not already covered by other variation
+            foreach ($attributes_values as $variation_attributes) {
+                $duplicate = true;
+
+                foreach ($variation_attributes as $attribute_name => $attribute_value) {
+                    $attribute_value2 = $clean_attributes[$attribute_name];
+
+                    if (!empty($attribute_value) && !empty($attribute_value2) && $attribute_value != $attribute_value2) {
+                        $duplicate = false;
+                        break;
+                    }
+                }
+
+                //this variation was already covered
+                if ($duplicate) {
+                    //disable variation
+                    $post_status = 'private';
+                    //set error message
+                    $errors[] = sprintf(__('Variation #%s was disabled as it is already covered by other variation.', 'jigoshop'), $variation_id);
+                    break;
+                }
+            }
+        
+            $attributes_values[] = $clean_attributes;
+        }
+
+        $sku_string = '#' . $variation_id;
+        if ($variable_sku[$i]) {
+            $sku_string .= ' SKU: ' . $variable_sku[$i];
+        }
+
+        $post_title = '#' . $post_id . ' ' . __('Variation') . ' (' . $sku_string . ') - ' . implode(', ', $title);
+
+        // Update or Add post
+        if (!$variation_id) { //create variation
+            $variation_id = wp_insert_post(array(
+                'post_title' => $post_title,
+                'post_content' => '',
+                'post_status' => $post_status,
+                'post_author' => get_current_user_id(),
+                'post_parent' => $post_id,
+                'post_type' => 'product_variation'
+                ));
+        } else { //update variation
+            global $wpdb;
+
+            $wpdb->update($wpdb->posts, array(
+                'post_status' => $post_status,
+                'post_title' => $post_title), array('ID' => $variation_id));
+        }
+
+        // Update post meta
+        update_post_meta($variation_id, 'SKU', $variable_sku[$i]);
+        update_post_meta($variation_id, 'price', $variable_price[$i]);
+        update_post_meta($variation_id, 'sale_price', $variable_sale_price[$i]);
+        update_post_meta($variation_id, 'weight', $variable_weight[$i]);
+        update_post_meta($variation_id, 'stock', $variable_stock[$i]);
+        update_post_meta($variation_id, '_thumbnail_id', $upload_image_id[$i]);
+        
+        // Update taxonomies (save attributes)
+        foreach($clean_attributes as $attribute => $value) {
+            update_post_meta($variation_id, 'tax_' . $attribute, $value);
+        }
+    }
+    
+    return $errors;
 }
 add_action('process_product_meta_variable', 'process_product_meta_variable', 1, 2);

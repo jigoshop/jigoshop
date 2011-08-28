@@ -28,32 +28,11 @@ function jigoshop_order_data_meta_box($post) {
 
 	global $post, $wpdb, $thepostid;
 	add_action('admin_footer', 'jigoshop_meta_scripts');
+	
+	wp_nonce_field('jigoshop_save_data', 'jigoshop_meta_nonce');
 
-	wp_nonce_field( 'jigoshop_save_data', 'jigoshop_meta_nonce' );
-
-	$data = (array) maybe_unserialize( get_post_meta($post->ID, 'order_data', true) );
-
-	if (!isset($data['billing_first_name'])) $data['billing_first_name'] = '';
-	if (!isset($data['billing_last_name'])) $data['billing_last_name'] = '';
-	if (!isset($data['billing_company'])) $data['billing_company'] = '';
-	if (!isset($data['billing_address_1'])) $data['billing_address_1'] = '';
-	if (!isset($data['billing_address_2'])) $data['billing_address_2'] = '';
-	if (!isset($data['billing_city'])) $data['billing_city'] = '';
-	if (!isset($data['billing_postcode'])) $data['billing_postcode'] = '';
-	if (!isset($data['billing_country'])) $data['billing_country'] = '';
-	if (!isset($data['billing_state'])) $data['billing_state'] = '';
-	if (!isset($data['billing_email'])) $data['billing_email'] = '';
-	if (!isset($data['billing_phone'])) $data['billing_phone'] = '';
-	if (!isset($data['shipping_first_name'])) $data['shipping_first_name'] = '';
-	if (!isset($data['shipping_last_name'])) $data['shipping_last_name'] = '';
-	if (!isset($data['shipping_company'])) $data['shipping_company'] = '';
-	if (!isset($data['shipping_address_1'])) $data['shipping_address_1'] = '';
-	if (!isset($data['shipping_address_2'])) $data['shipping_address_2'] = '';
-	if (!isset($data['shipping_city'])) $data['shipping_city'] = '';
-	if (!isset($data['shipping_postcode'])) $data['shipping_postcode'] = '';
-	if (!isset($data['shipping_country'])) $data['shipping_country'] = '';
-	if (!isset($data['shipping_state'])) $data['shipping_state'] = '';
-
+    $data = (array) maybe_unserialize( get_post_meta($post->ID, 'order_data', true) );
+	
 	$data['customer_user'] = (int) get_post_meta($post->ID, 'customer_user', true);
 
 	$order_status = wp_get_post_terms($post->ID, 'shop_order_status');
@@ -122,64 +101,37 @@ function jigoshop_order_data_meta_box($post) {
 			<p class="form-field"><label for="excerpt"><?php _e('Customer Note:', 'jigoshop') ?></label>
 			<textarea rows="1" cols="40" name="excerpt" tabindex="6" id="excerpt" placeholder="<?php _e('Customer\'s notes about the order', 'jigoshop'); ?>"><?php echo $post->post_excerpt; ?></textarea></p>
 		</div>
-
-		<div id="order_customer_billing_data" class="panel jigoshop_options_panel"><?php
-
-				// First Name
-				$field = array( 'id' => 'billing_first_name', 'label' => 'First Name:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-
-				// Last Name
-				$field = array( 'id' => 'billing_last_name', 'label' => 'Last Name:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-
-				// Company
-				$field = array( 'id' => 'billing_company', 'label' => 'Company:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-
-				// Address 1
-				$field = array( 'id' => 'billing_address_1', 'label' => 'Address 1:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-
-				// Address 2
-				$field = array( 'id' => 'billing_address_2', 'label' => 'Address 2:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-
-				// City
-				$field = array( 'id' => 'billing_city', 'label' => 'City:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-
-				// Postcode
-				$field = array( 'id' => 'billing_postcode', 'label' => 'Postcode:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-
-				// Country
-				$field = array( 'id' => 'billing_country', 'label' => 'Country:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-
-				// State
-				$field = array( 'id' => 'billing_state', 'label' => 'State/County:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-
-				// Email
-				$field = array( 'id' => 'billing_email', 'label' => 'Email Address:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-
-				// Tel
-				$field = array( 'id' => 'billing_phone', 'label' => 'Tel:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-
+		
+		<div id="order_customer_billing_data" class="panel jigoshop_options_panel">
+            <?php
+            //display billing fieds and values
+            
+                $billing_fields = array(
+                    'first_name' => __('First Name', 'jigoshop'),
+                    'last_name' => __('Last Name', 'jigoshop'),
+                    'company' => __('Company', 'jigoshop'),
+                    'address_1' => __('Address 1', 'jigoshop'),
+                    'address_2' => __('Address 2', 'jigoshop'),
+                    'city' => __('City', 'jigoshop'),
+                    'postcode' => __('Postcode', 'jigoshop'),
+                    'country' => __('Country', 'jigoshop'),
+                    'state' => __('State/Country', 'jigoshop'),
+                    'email' => __('Email Address', 'jigoshop'),
+                    'phone' => __('Tel', 'jigoshop'),
+                );
+    
+                foreach($billing_fields as $field_id => $field_desc) {
+                    $field_id = 'billing_' . $field_id;
+                    $field_value = '';
+                    
+                    if(isset($data[$field_id])) {
+                        $field_value = $data[$field_id];
+                    }
+                    
+                    echo '<p class="form-field"><label for="'.$field_id.'">'.$field_desc.':</label>
+				<input type="text" name="'.$field_id.'" id="'.$field_id.'" value="'.$field_value.'" /></p>';
+                }
+				
 			?>
 		</div>
 
@@ -187,52 +139,31 @@ function jigoshop_order_data_meta_box($post) {
 
 			<p class="form-field"><button class="button billing-same-as-shipping"><?php _e('Copy billing address to shipping address', 'jigoshop'); ?></button></p>
 			<?php
-
-				// First Name
-				$field = array( 'id' => 'shipping_first_name', 'label' => 'First Name:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-
-				// Last Name
-				$field = array( 'id' => 'shipping_last_name', 'label' => 'Last Name:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-
-				// Company
-				$field = array( 'id' => 'shipping_company', 'label' => 'Company:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-
-				// Address 1
-				$field = array( 'id' => 'shipping_address_1', 'label' => 'Address 1:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-
-				// Address 2
-				$field = array( 'id' => 'shipping_address_2', 'label' => 'Address 2:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-
-				// City
-				$field = array( 'id' => 'shipping_city', 'label' => 'City:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-
-				// Postcode
-				$field = array( 'id' => 'shipping_postcode', 'label' => 'Postcode:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-
-				// Country
-				$field = array( 'id' => 'shipping_country', 'label' => 'Country:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-
-				// State
-				$field = array( 'id' => 'shipping_state', 'label' => 'State/County:' );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label>
-				<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" /></p>';
-
+            //display shipping fieds and values
+            
+                $shipping_fields = array(
+                    'first_name' => __('First Name', 'jigoshop'),
+                    'last_name' => __('Last Name', 'jigoshop'),
+                    'company' => __('Company', 'jigoshop'),
+                    'address_1' => __('Address 1', 'jigoshop'),
+                    'address_2' => __('Address 2', 'jigoshop'),
+                    'city' => __('City', 'jigoshop'),
+                    'postcode' => __('Postcode', 'jigoshop'),
+                    'country' => __('Country', 'jigoshop'),
+                    'state' => __('State/Country', 'jigoshop')
+                );
+    
+                foreach($shipping_fields as $field_id => $field_desc) {
+                    $field_id = 'shipping_' . $field_id;
+                    $field_value = '';
+                    
+                    if(isset($data[$field_id])) {
+                        $field_value = $data[$field_id];
+                    }
+                    
+                    echo '<p class="form-field"><label for="'.$field_id.'">'.$field_desc.':</label>
+				<input type="text" name="'.$field_id.'" id="'.$field_id.'" value="'.$field_value.'" /></p>';
+                }
 			?>
 		</div>
 	</div>
@@ -250,6 +181,7 @@ function jigoshop_order_data_meta_box($post) {
 function jigoshop_order_items_meta_box($post) {
 
 	$order_items = (array) maybe_unserialize( get_post_meta($post->ID, 'order_items', true) );
+
 	?>
 	<div class="jigoshop_order_items_wrapper">
 		<table cellpadding="0" cellspacing="0" class="jigoshop_order_items">
@@ -268,15 +200,18 @@ function jigoshop_order_items_meta_box($post) {
 					<th class="center" width="1%"><?php _e('Remove', 'jigoshop'); ?></th>
 				</tr>
 			</thead>
-			<tbody id="order_items_list">
-
-				<?php if (sizeof($order_items)>0 && isset($order_items[0]['id'])) foreach ($order_items as $item) :
-
-					if (isset($item['variation_id']) && $item['variation_id'] > 0) :
+			<tbody id="order_items_list">	
+				
+				<?php if (sizeof($order_items)>0 && isset($order_items[0]['id'])) foreach ($order_items as $item) : 
+					
+					if (isset($item['variation_id']) && $item['variation_id'] > 0) {
 						$_product = &new jigoshop_product_variation( $item['variation_id'] );
-					else :
+                        if(is_array($item['variation'])) {
+                            $_product->set_variation_attributes($item['variation']);
+                        }
+                    } else {
 						$_product = &new jigoshop_product( $item['id'] );
-					endif;
+                    }
 
 					?>
 					<tr class="item">
@@ -302,12 +237,19 @@ function jigoshop_order_items_meta_box($post) {
 							</table>
 						</td>
 						<?php do_action('jigoshop_admin_order_item_values', $_product, $item); ?>
-						<td class="quantity"><input type="text" name="item_quantity[]" placeholder="<?php _e('Quantity e.g. 2', 'jigoshop'); ?>" value="<?php echo $item['qty']; ?>" /></td>
-						<td class="cost"><input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit ex. tax e.g. 2.99', 'jigoshop'); ?>" value="<?php echo $item['cost']; ?>" /></td>
-						<td class="tax"><input type="text" name="item_tax_rate[]" placeholder="<?php _e('Tax Rate e.g. 20.0000', 'jigoshop'); ?>" value="<?php echo $item['taxrate']; ?>" /></td>
+						<td class="quantity">
+                            <input type="text" name="item_quantity[]" placeholder="<?php _e('Quantity e.g. 2', 'jigoshop'); ?>" value="<?php echo $item['qty']; ?>" />
+                        </td>
+						<td class="cost">
+                            <input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit ex. tax e.g. 2.99', 'jigoshop'); ?>" value="<?php echo $item['cost']; ?>" />
+                        </td>
+						<td class="tax">
+                            <input type="text" name="item_tax_rate[]" placeholder="<?php _e('Tax Rate e.g. 20.0000', 'jigoshop'); ?>" value="<?php echo $item['taxrate']; ?>" />
+                        </td>
 						<td class="center">
 							<input type="hidden" name="item_id[]" value="<?php echo $item['id']; ?>" />
 							<input type="hidden" name="item_name[]" value="<?php echo $item['name']; ?>" />
+                            <input type="hidden" name="item_variation_id[]" value="<?php if ($item['variation_id']) echo $item['variation_id']; else echo ''; ?>" />
 							<button type="button" class="remove_row button">&times;</button>
 						</td>
 					</tr>
@@ -316,7 +258,7 @@ function jigoshop_order_items_meta_box($post) {
 		</table>
 	</div>
 	<p class="buttons">
-		<select name="item_id" class="item_id">
+		<select class="item_id">
 			<?php
 				$args = array(
 					'post_type' 		=> 'product',

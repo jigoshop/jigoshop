@@ -330,34 +330,71 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 	function jigoshop_variable_add_to_cart() {
 
 		global $post, $_product;
+		
+		$attributes = $_product->get_avaiable_attributes_variations();
+        
+        //get all variations avaiable as an array for easy usage by javascript
+        $variationsAvaiable = array();
+        $children = $_product->get_children();
+        
+        foreach($children as $child) {
+            /* @var $variation jigoshop_product_variation */
+            $variation = $child->product;
+            
+            if($variation instanceof jigoshop_product_variation && $variation->is_visible()) {
+                $vattrs = $variation->get_variation_attributes();
+                $availability = $variation->get_availability();
+                
+                //@todo needs to be moved to jigoshop_product_variation class
+                if (has_post_thumbnail($variation->get_variation_id())) {
+                    $attachment_id = get_post_thumbnail_id( $variation->get_variation_id() );
+                    $large_thumbnail_size = apply_filters('single_product_large_thumbnail_size', 'shop_large');
+                    $image = current(wp_get_attachment_image_src( $attachment_id, $large_thumbnail_size));
+                    $image_link = current(wp_get_attachment_image_src( $attachment_id, 'full'));
+                } else {
+                    $image = '';
+                    $image_link = '';
+                }
 
-		$attributes = maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) );
-		if (!isset($attributes)) $attributes = array();
+                $variationsAvaiable[] = array(
+                    'variation_id' => $variation->get_variation_id(),
+                    'attributes' => $vattrs,
+                    'image_src' => $image,
+                    'image_link' => $image_link,
+                    'price_html' => '<span class="price">'.$_product->get_price_html().'</span>',
+                    'availability_html' => '<p class="stock '.$availability['class'].'">'. $availability['availability'].'</p>',
+                );
+            }
+        }
 
 		?>
+        <script>
+            var product_variations = <?php echo json_encode($variationsAvaiable) ?>;
+        </script>
 		<form action="<?php echo $_product->add_to_cart_url(); ?>" class="variations_form cart" method="post">
 
 			<table class="variations" cellspacing="0">
 				<tbody>
-				<?php
-					foreach ($attributes as $attribute) :
-
-						if ( $attribute['variation']!=='yes' ) continue;
-
-						$options = $attribute['value'];
-
-						if (!is_array($options)) $options = explode(',', $options);
-
-						echo '<tr><td><label for="'.sanitize_title($attribute['name']).'">'.ucfirst($attribute['name']).'</label></td><td><select id="'.sanitize_title($attribute['name']).'" name="tax_'.sanitize_title($attribute['name']).'"><option value="">'.__('Choose an option', 'jigoshop').'&hellip;</option><option>'.implode('</option><option>', $options).'</option></select></td></tr>';
-
-					endforeach;
-				?>
+				<?php foreach ($attributes as $aname => $aoptions):?>
+                    <tr>
+                        <td><label for="<?php echo sanitize_title($aname); ?>"><?php ucfirst($aname)?></label></td>
+                        <td><select id="<?php echo sanitize_title($aname); ?>" name="tax_<?php echo sanitize_title($aname); ?>">
+                                <option value=""><?php echo __('Choose an option', 'jigoshop') ?>&hellip;</option>
+                                <?php if(is_array($aoptions)): ?>
+                                    <?php foreach($aoptions as $option): ?>
+                                <option><?php echo $option; ?></option>
+                                    <?php endforeach;?>
+                                <?php endif;?>
+                        </td>
+                    </tr>
+	
+                <?php endforeach;?>
 				</tbody>
 			</table>
 			<div class="single_variation"></div>
 			<div class="variations_button" style="display:none;">
-
-				<div class="quantity"><input name="quantity" value="1" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div>
+                <input type="hidden" name="variation_id" value="" />
+                <div class="quantity"><input name="quantity" value="1" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div>
 				<button type="submit" class="button-alt"><?php _e('Add to cart', 'jigoshop'); ?></button>
 			</div>
 			<?php do_action('jigoshop_add_to_cart_form'); ?>

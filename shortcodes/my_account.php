@@ -454,6 +454,10 @@ function jigoshop_view_order() {
 
 							if (isset($item['variation_id']) && $item['variation_id'] > 0) :
 								$_product = &new jigoshop_product_variation( $item['variation_id'] );
+                            
+                                if(is_array($item['variation'])) :
+                                    $_product->set_variation_attributes($item['variation']);
+                                endif;
 							else :
 								$_product = &new jigoshop_product( $item['id'] );
 							endif;
