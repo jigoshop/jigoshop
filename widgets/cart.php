@@ -138,10 +138,10 @@ class Jigoshop_Widget_Cart extends WP_Widget {
     	// Get values from instance
     	$title = (isset($instance['title'])) ? esc_attr($instance['title']) : null;
     
-    	// Print form
-    	echo '<p>'
-				.'<label for="' . $this->get_field_id('title') . '">' . _e('Title:', 'jigoshop') . '</label>'
-				.'<input type="text" class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" value="' . $title . '" />';
+    	// Widget title
+    	echo '<p>';
+		echo '<label for="' . $this->get_field_id('title') . '">' . _e('Title:', 'jigoshop') . '</label>';
+		echo '<input type="text" class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" value="' . $title . '" />';
        	echo '</p>';
     }
 

@@ -191,7 +191,7 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 	public function form( $instance ) {
 	
 		// Get instance data
-		$title = isset($instance['title']) ? esc_attr($instance['title']) : '';
+		$title = isset($instance['title']) ? esc_attr($instance['title']) : null;
 		$number = isset($instance['number']) ? abs($instance['number']) : 5;
 		$show_variations = (bool) $instance['show_variations'];
 		

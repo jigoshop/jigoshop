@@ -18,54 +18,86 @@
  
 class Jigoshop_Widget_Tag_Cloud extends WP_Widget {
 
-	/** constructor */
-	function Jigoshop_Widget_Tag_Cloud() {
-		$widget_ops = array( 'description' => __( "Your most used product tags in cloud format", 'jigoshop') );
-		parent::WP_Widget('tag_cloud', __('Product Tag Cloud', 'jigoshop'), $widget_ops);
+	/**
+	 * Constructor
+	 * 
+	 * Setup the widget with the available options
+	 */
+	public function __construct() {
+	
+		$options = array(
+			'description' => __( "Your most used product tags in cloud format", 'jigoshop'),
+		);
+		
+		// Create the widget
+		parent::__construct('tag_cloud', __('Product Tag Cloud', 'jigoshop'), $options);
 	}
 	
-	/** @see WP_Widget::widget */
-	function widget( $args, $instance ) {
+	/**
+	 * Widget
+	 * 
+	 * Display the widget in the sidebar
+	 *
+	 * @param	array	sidebar arguments
+	 * @param	array	instance
+	 */
+	public function widget( $args, $instance ) {
+	
+		// Extract the widget arguments
 		extract($args);
-		$current_taxonomy = $this->_get_current_taxonomy($instance);
-		if ( !empty($instance['title']) ) {
-			$title = $instance['title'];
-		} else {
-			if ( 'product_tag' == $current_taxonomy ) {
-				$title = __('Product Tags', 'jigoshop');
-			} else {
-				$tax = get_taxonomy($current_taxonomy);
-				$title = $tax->labels->name;
-			}
-		}
+		
+		// Set the widget title
+		$title = ( ! empty($instance['title']) ) ? $instance['title'] : __('Product Tags', 'jigoshop');
 		$title = apply_filters('widget_title', $title, $instance, $this->id_base);
 
+		// Print the widget wrapper & title
 		echo $before_widget;
-		if ( $title )
-			echo $before_title . $title . $after_title;
+		echo $before_title . $title . $after_title;
+
+		// Print tag cloud with wrapper		
 		echo '<div class="tagcloud">';
-		wp_tag_cloud( apply_filters('widget_tag_cloud_args', array('taxonomy' => $current_taxonomy) ) );
+		wp_tag_cloud( apply_filters('widget_tag_cloud_args', array('taxonomy' => 'product_tag') ) );
 		echo "</div>\n";
+		
+		// Print closing widget wrapper
 		echo $after_widget;
 	}
 	
-	/** @see WP_Widget::update */
-	function update( $new_instance, $old_instance ) {
+	/**
+	 * Update
+	 * 
+	 * Handles the processing of information entered in the wordpress admin
+	 *
+	 * @param	array	new instance
+	 * @param	array	old instance
+	 * @return	array	instance
+	 */
+	public function update( $new_instance, $old_instance ) {
+		$instance = $old_instance;
+		
+		// Save new values
 		$instance['title'] = strip_tags(stripslashes($new_instance['title']));
 		$instance['taxonomy'] = stripslashes($new_instance['taxonomy']);
+		
 		return $instance;
 	}
 
-	/** @see WP_Widget::form */
-	function form( $instance ) {
+	/**
+	 * Form
+	 * 
+	 * Displays the form for the wordpress admin
+	 *
+	 * @param	array	instance
+	 */
+	public function form( $instance ) {
+		$title = (isset($instance['title'])) ? esc_attr($instance['title']) : null;
 		$current_taxonomy = $this->_get_current_taxonomy($instance);
-?>
-	<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'jigoshop') ?></label>
-	<input type="text" class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" value="<?php if (isset ( $instance['title'])) {echo esc_attr( $instance['title'] );} ?>" /></p>
-	<?php
+		
+		// Widget title
+		echo '<p>';
+		echo '<label for="' . $this->get_field_id('title') . '">' . __('Title:', 'jigoshop') . '</label>';
+		echo '<input type="text" class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" value="' . $title .'" />';
+		echo '</p>';
 	}
-
-	function _get_current_taxonomy($instance) {
-		return 'product_tag';
-	}
+	
 } // class Jigoshop_Widget_Tag_Cloud
