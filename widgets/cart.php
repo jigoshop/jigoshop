@@ -20,7 +20,7 @@
 class Jigoshop_Widget_Cart extends WP_Widget {
 
     /**
-     * Jigoshop_Widget_Cart
+     * Constructor
      * 
      * Setup the widget with the available options
      */
