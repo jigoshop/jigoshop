@@ -68,7 +68,8 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 		extract($args);
 
 		// Set the widget title
-		$title = apply_filters('widget_title', ($instance['title']) ? $instance['title'] : __('New Products', 'jigoshop'), $instance, $this->id_base);
+		$title = ($instance['title']) ? $instance['title'] : __('New Products', 'jigoshop');
+		$title = apply_filters('widget_title', $title, $instance, $this->id_base);
 		
 		// Set number of products to fetch
 		if ( ! $number = $instance['number'] ) {
@@ -79,8 +80,6 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 		// Set up query
     	$args = array(
     		'showposts'		=> $number,
-    		'nopaging'		=> false,
-    		'post_status'	=> 'publish',
     		'post_type'		=> 'product',
     	);
     	
@@ -192,7 +191,10 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 	
 		// Get instance data
 		$title = isset($instance['title']) ? esc_attr($instance['title']) : null;
-		$number = isset($instance['number']) ? abs($instance['number']) : 5;
+		
+		$number = apply_filters('jigoshop_widget_featured_default_number', 5s, $instance, $this->id_base);
+		$number = isset($instance['number']) ? abs($instance['number']) : $number;
+		
 		$show_variations = (bool) $instance['show_variations'];
 		
 		// Widget Title
