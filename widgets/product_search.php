@@ -24,10 +24,12 @@ class Jigoshop_Widget_Product_Search extends WP_Widget {
 	 * Setup the widget with the available options
 	 */
 	public function __construct() {
+	
 		$options = array(
 			'description' => __( "Search box for products only.", 'jigoshop'),
 		);
 		
+		// Create the widget
 		parent::__construct('product_search', __('Product Search', 'jigoshop'), $options);
 	}
 

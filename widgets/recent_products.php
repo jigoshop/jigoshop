@@ -210,7 +210,7 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 		// Show variations?
 		echo '<p>';
 		echo '<input type="checkbox" class="checkbox" id="' . $this->get_field_id('show_variations') . '" name="' . $this->get_field_name('show_variations') . '"' . checked( $show_variations ) . '/>';
-		echo '<label for="' . $this->get_field_id('show_variations') . '">' . __( ' Show hidden product variations', 'jigoshop' ) . '</label>';
+		echo '<label for="' . $this->get_field_id('show_variations') . '"> ' . __( 'Show hidden product variations', 'jigoshop' ) . '</label>';
 		echo '</p>';
 
 	}

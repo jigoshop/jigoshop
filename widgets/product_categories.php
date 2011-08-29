@@ -18,31 +18,71 @@
  
 class Jigoshop_Widget_Product_Categories extends WP_Widget {
 
-	/** constructor */
-	function Jigoshop_Widget_Product_Categories() {
-		$widget_ops = array( 'classname' => 'widget_product_categories', 'description' => __( "A list or dropdown of product categories", 'jigoshop' ) );
-		parent::WP_Widget('product_categories', __('Product Categories', 'jigoshop'), $widget_ops);
+	/**
+	 * Constructor
+	 * 
+	 * Setup the widget with the available options
+	 */
+	public function __construct() {
+	
+		$options = array(
+			'classname' => 'widget_product_categories',
+			'description' => __( "A list or dropdown of product categories", 'jigoshop' ),
+		);
+		
+		// Create the widget
+		parent::__construct('product_categories', __('Product Categories', 'jigoshop'), $options);
 	}
 
-	/** @see WP_Widget::widget */
-	function widget( $args, $instance ) {
+	/**
+	 * Widget
+	 * 
+	 * Display the widget in the sidebar
+	 *
+	 * @param	array	sidebar arguments
+	 * @param	array	instance
+	 */
+	public function widget( $args, $instance ) {
+	
+		// Extract the widget arguments
 		extract( $args );
 
-		$title = apply_filters('widget_title', empty( $instance['title'] ) ? __( 'Product Categories', 'jigoshop' ) : $instance['title'], $instance, $this->id_base);
-		$c = $instance['count'] ? '1' : '0';
-		$h = $instance['hierarchical'] ? '1' : '0';
-		$d = $instance['dropdown'] ? '1' : '0';
+		// Set the widget title
+		$title = ( ! empty($instance['title']) ) ? $instance['title'] : __('Product Categories', 'jigoshop');
+		$title = apply_filters('widget_title', $title, $instance, $this->id_base);
+		
+		// Get options
+		$count			= (bool) $instance['count'];
+		$is_hierarchial = (bool) $instance['hierarchical'];
+		$is_dropdown	= (bool) $instance['dropdown'];
 
+		// Print the widget wrapper & title
 		echo $before_widget;
-		if ( $title )
-			echo $before_title . $title . $after_title;
+		echo $before_title . $title . $after_title;
 
-		$cat_args = array('orderby' => 'name', 'show_count' => $c, 'hierarchical' => $h, 'taxonomy' => 'product_cat');
+		// Define options for the list
+		$args = array(
+			'orderby'		=> 'name',
+			'show_count'	=> $count,
+			'hierarchical'	=> $is_hierarchial,
+			'taxonomy'		=> 'product_cat',
+			'title_li'		=> null,
+		);
 
-		if ( $d ) {
-
+		// Output as dropdown or unordered list
+		if( $is_dropdown ) {
+		
+			// Set up arguements
+			unset($args['title_li']);
+			$args['name'] = 'dropdown_product_cat';
+			
+			// Print dropdown
+			// wp_dropdown_categories($args); Commented out due to wordpress bug 13258 not supporting custom taxonomies
+			// See: http://core.trac.wordpress.org/ticket/13258
+			
 			$terms = get_terms('product_cat');
 			$output = "<select name='product_cat' id='dropdown_product_cat'>";
+			// TODO: Be better to make this all products link
 			$output .= '<option value="">'.__('Select Category', 'jigoshop').'</option>';
 			foreach($terms as $term){
 				$root_url = get_bloginfo('url');
@@ -50,12 +90,15 @@ class Jigoshop_Widget_Product_Categories extends WP_Widget {
 				$term_slug=$term->slug;
 				$term_name =$term->name;
 				$link = $term_slug;
-				$output .="<option value='".$link."'>".$term_name."</option>";
+				$selected = (strpos($_SERVER['REQUEST_URI'], $term_slug)) ? 'selected' : null;
+				
+				$output .='<option value="'.$link.'" ' . $selected . '>'.$term_name.'</option>';
 			}
 			$output .="</select>";
 			echo $output;
 			
-			?>
+			// TODO: Move this javascript to its own file (plugins.js?)
+		?>
 			<script type='text/javascript'>
 			/* <![CDATA[ */
 				var dropdown = document.getElementById("dropdown_product_cat");
@@ -67,25 +110,32 @@ class Jigoshop_Widget_Product_Categories extends WP_Widget {
 				dropdown.onchange = onCatChange;
 			/* ]]> */
 			</script>
-			<?php
-			
+		<?php	
 		} else {
-?>
-		<ul>
-<?php
-		$cat_args['title_li'] = '';
-		wp_list_categories(apply_filters('widget_product_categories_args', $cat_args));
-?>
-		</ul>
-<?php
+		
+			// Print list of categories
+			echo '<ul>';
+			wp_list_categories(apply_filters('widget_product_categories_args', $args));
+			echo '</ul>';
 		}
-
+		
+		// Print closing widget wrapper
 		echo $after_widget;
 	}
 
-	/** @see WP_Widget::update */
+	/**
+	 * Update
+	 * 
+	 * Handles the processing of information entered in the wordpress admin
+	 *
+	 * @param	array	new instance
+	 * @param	array	old instance
+	 * @return	array	instance
+	 */
 	function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
+		
+		// Update values
 		$instance['title'] = strip_tags($new_instance['title']);
 		$instance['count'] = !empty($new_instance['count']) ? 1 : 0;
 		$instance['hierarchical'] = !empty($new_instance['hierarchical']) ? 1 : 0;
@@ -94,27 +144,44 @@ class Jigoshop_Widget_Product_Categories extends WP_Widget {
 		return $instance;
 	}
 	
-	/** @see WP_Widget::form */
+	/**
+	 * Form
+	 * 
+	 * Displays the form for the wordpress admin
+	 *
+	 * @param	array	instance
+	 */
 	function form( $instance ) {
-		//Defaults
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '') );
-		$title = esc_attr( $instance['title'] );
-		$count = isset($instance['count']) ? (bool) $instance['count'] :false;
-		$hierarchical = isset( $instance['hierarchical'] ) ? (bool) $instance['hierarchical'] : false;
-		$dropdown = isset( $instance['dropdown'] ) ? (bool) $instance['dropdown'] : false;
-?>
-		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e( 'Title:', 'jigoshop' ); ?></label>
-		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
-
-		<p><input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('dropdown'); ?>" name="<?php echo $this->get_field_name('dropdown'); ?>"<?php checked( $dropdown ); ?> />
-		<label for="<?php echo $this->get_field_id('dropdown'); ?>"><?php _e( 'Show as dropdown', 'jigoshop' ); ?></label><br />
-
-		<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('count'); ?>" name="<?php echo $this->get_field_name('count'); ?>"<?php checked( $count ); ?> />
-		<label for="<?php echo $this->get_field_id('count'); ?>"><?php _e( 'Show post counts', 'jigoshop' ); ?></label><br />
-
-		<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('hierarchical'); ?>" name="<?php echo $this->get_field_name('hierarchical'); ?>"<?php checked( $hierarchical ); ?> />
-		<label for="<?php echo $this->get_field_id('hierarchical'); ?>"><?php _e( 'Show hierarchy', 'jigoshop' ); ?></label></p>
-<?php
+		
+		// Get values from instance
+		$title			= (isset($instance['title'])) ? esc_attr($instance['title']) : null;
+		$count			= (bool) $instance['count'];
+		$hierarchical	= (bool) $instance['hierarchical'];
+		$dropdown		= (bool) $instance['dropdown'];
+		
+		// Widget title
+		echo '<p>';
+		echo '<label for="' . $this->get_field_id('title') . '"> ' . _e('Title:', 'jigoshop') . '</label>';
+		echo '<input type="text" class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" value="' . $title . '" />';
+		echo '</p>';
+		
+		// As a dropdown?
+		echo '<p>';
+		echo '<input type="checkbox" class="checkbox" id="' . $this->get_field_id('dropdown') . '" name="' . $this->get_field_name('dropdown') . '"' . ( $dropdown ? 'checked' : null ) . '/>';
+		echo '<label for="' . $this->get_field_id('dropdown') . '"> ' . __( 'Show as dropdown', 'jigoshop' ) . '</label>';
+		echo '</p>';
+		
+		// Show product count?
+		echo '<p>';
+		echo '<input type="checkbox" class="checkbox" id="' . $this->get_field_id('count') . '" name="' . $this->get_field_name('count') . '"' . ( $count ? 'checked' : null ) . '/>';
+		echo '<label for="' . $this->get_field_id('count') . '"> ' . __( 'Show product counts', 'jigoshop' ) . '</label>';
+		echo '</p>';
+		
+		// Is hierarchical?
+		echo '<p>';
+		echo '<input type="checkbox" class="checkbox" id="' . $this->get_field_id('hierarchical') . '" name="' . $this->get_field_name('hierarchical') . '"' . ( $hierarchical ? 'checked' : null ) . '/>';
+		echo '<label for="' . $this->get_field_id('hierarchical') . '"> ' . __( 'Show hierarchy', 'jigoshop' ) . '</label>';
+		echo '</p>';
 	}
 
 } // class Jigoshop_Widget_Product_Categories

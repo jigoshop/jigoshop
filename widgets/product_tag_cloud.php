@@ -91,7 +91,6 @@ class Jigoshop_Widget_Tag_Cloud extends WP_Widget {
 	 */
 	public function form( $instance ) {
 		$title = (isset($instance['title'])) ? esc_attr($instance['title']) : null;
-		$current_taxonomy = $this->_get_current_taxonomy($instance);
 		
 		// Widget title
 		echo '<p>';
