@@ -274,6 +274,17 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'std' 		=> ''
 	),
 
+	array(
+		'name' => __('Terms page ID', 'jigoshop'),
+		'desc' 		=> __('If you define a "Terms" page the customer will be asked if they accept them when checking out.', 'jigoshop'),
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_terms_page_id',
+		'css' 		=> 'min-width:50px;',
+		'std' 		=> '',
+		'type' 		=> 'single_select_page',
+		'args'		=> 'show_option_none=' . __('None', 'jigoshop'),
+	),
+
 	array( 'type' => 'tabend'),
 
 	array( 'type' 		=> 'tab', 'tabname' => __('Catalog', 'jigoshop') ),
@@ -306,17 +317,6 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name' => __('Terms page ID', 'jigoshop'),
-		'desc' 		=> __('If you define a "Terms" page the customer will be asked if they accept them when checking out.', 'jigoshop'),
-		'tip' 		=> '',
-		'id' 		=> 'jigoshop_terms_page_id',
-		'css' 		=> 'min-width:50px;',
-		'std' 		=> '',
-		'type' 		=> 'single_select_page',
-		'args'		=> 'show_option_none=' . __('None', 'jigoshop'),
-	),
-
-	array(
 		'name' => __('Catalog Sort OrderBy','jigoshop'),
 		'desc' 		=> '',
 		'tip' 		=> __('Determines the display sort order of products for the Shop, Categories, and Tag pages.','jigoshop'),
@@ -343,6 +343,26 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 			'asc' => __('Ascending', 'jigoshop'),
 			'desc'  => __('Descending', 'jigoshop')
 		)
+	),
+
+	array(
+		'name' => __('Catalog Products Per Row','jigoshop'),
+		'desc' 		=> __('Default = 4 -- adjust this for Image Tab->Catalog Image Size adjustments.','jigoshop'),
+		'tip' 		=> __('Determines how many products to show on one display row for Shop, Category and Tag pages.','jigoshop'),
+		'id' 		=> 'jigoshop_catalog_columns',
+		'css' 		=> 'width:30px;',
+		'std' 		=> '4',
+		'type' 		=> 'text',
+	),
+
+	array(
+		'name' => __('Catalog Products Per Page','jigoshop'),
+		'desc' 		=> __('Default = 12','jigoshop'),
+		'tip' 		=> __('Determines how many products to display on Shop, Category and Tag pages before needing next and previous page navigation.','jigoshop'),
+		'id' 		=> 'jigoshop_catalog_per_page',
+		'css' 		=> 'width:30px;',
+		'std' 		=> '12',
+		'type' 		=> 'text',
 	),
 
 	array(	'name' => __('Pricing Options', 'jigoshop'), 'type' 		=> 'title','desc' 		=> '', 'id' 		=> '' ),
@@ -477,7 +497,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(
 		'name' 		=> __('Catalog Image Width','jigoshop'),
-		'desc' 		=> __('Default = 150px - will require a CSS over-ride in your theme as well.','jigoshop'),
+		'desc' 		=> __('Default = 150px','jigoshop'),
 		'tip' 		=> __('Set the width of the catalog image for Shop, Categories, Tags, and Related Products.','jigoshop'),
 		'id' 		=> 'jigoshop_shop_small_w',
 		'css' 		=> 'min-width:200px;',
@@ -487,7 +507,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(
 		'name' 		=> __('Catalog Image Height','jigoshop'),
-		'desc' 		=> __('Default = 150px - will require a CSS over-ride in your theme as well.','jigoshop'),
+		'desc' 		=> __('Default = 150px','jigoshop'),
 		'tip' 		=> __('Set the height of the catalog image for Shop, Categories, Tags, and Related Products.','jigoshop'),
 		'id' 		=> 'jigoshop_shop_small_h',
 		'css' 		=> 'min-width:200px;',
