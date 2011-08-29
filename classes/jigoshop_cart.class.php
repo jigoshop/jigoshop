@@ -139,7 +139,15 @@ class jigoshop_cart {
 		
 		$found_cart_item_key = self::find_product_in_cart($product_id, $variation);
 		
-		if (is_numeric($found_cart_item_key)) :
+		$product = &new jigoshop_product( $product_id );
+
+		// prevents adding products with no price to the cart
+		if( $product->get_price() === '' ) { 
+			jigoshop::add_error( __('You cannot had this product to your cart because its price is not yet announced', 'jigoshop') );
+			return false; 
+		}
+		
+		if ( is_numeric($found_cart_item_key) ) :
 			
 			$quantity = $quantity + self::$cart_contents[$found_cart_item_key]['quantity'];
 			
