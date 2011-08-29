@@ -192,7 +192,7 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 		// Get instance data
 		$title = isset($instance['title']) ? esc_attr($instance['title']) : null;
 		
-		$number = apply_filters('jigoshop_widget_featured_default_number', 5s, $instance, $this->id_base);
+		$number = apply_filters('jigoshop_widget_featured_default_number', 5, $instance, $this->id_base);
 		$number = isset($instance['number']) ? abs($instance['number']) : $number;
 		
 		$show_variations = (bool) $instance['show_variations'];

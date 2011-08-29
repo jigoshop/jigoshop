@@ -25,13 +25,13 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 	 */
 	public function __construct() {
 	
-		$widget_ops = array(
+		$options = array(
 			'classname' => 'widget_featured_products',
 			'description' => __( "Featured products on your site", 'jigoshop')
 		);
 		
 		// Create the widget
-		parent::__construct('featured-products', __('Featured Products', 'jigoshop'), $widget_ops);
+		parent::__construct('featured-products', __('Featured Products', 'jigoshop'), $options);
 
 		// Flush cache after every save
 		add_action( 'save_post', array(&$this, 'flush_widget_cache') );
