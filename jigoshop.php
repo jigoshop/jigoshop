@@ -432,11 +432,17 @@ function jigoshop_force_ssl_images( $content ) {
 	endif;
 	return $content;
 }
+
 add_filter('post_thumbnail_html', 'jigoshop_force_ssl_images');
 add_filter('widget_text', 'jigoshop_force_ssl_images');
 add_filter('wp_get_attachment_url', 'jigoshop_force_ssl_images');
 add_filter('wp_get_attachment_image_attributes', 'jigoshop_force_ssl_images');
 add_filter('wp_get_attachment_url', 'jigoshop_force_ssl_images');
+
+add_filter( 'loop-shop-query', create_function( '', 'return array("orderby" => "'.get_option('jigoshop_catalog_sort_orderby').'","order" => "'.get_option('jigoshop_catalog_sort_direction').'");' ) );
+add_filter( 'loop_shop_columns', create_function( '', 'return '.get_option('jigoshop_catalog_columns').';' ) );
+add_filter( 'loop_shop_per_page', create_function( '', 'return '.get_option('jigoshop_catalog_per_page').';' ) );
+
 
 function get_jigoshop_currency_symbol() {
 	$currency = get_option('jigoshop_currency');
