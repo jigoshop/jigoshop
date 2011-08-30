@@ -356,10 +356,10 @@ function jigoshop_frontend_scripts() {
 	);
 
 	if (isset($_SESSION['min_price'])) :
-		$params['min_price'] = $_SESSION['min_price'];
+		$params['min_price'] = $_GET['min_price'];
 	endif;
 	if (isset($_SESSION['max_price'])) :
-		$params['max_price'] = $_SESSION['max_price'];
+		$params['max_price'] = $_GET['max_price'];
 	endif;
 
 	if ( is_page(get_option('jigoshop_checkout_page_id')) || is_page(get_option('jigoshop_pay_page_id')) ) :
