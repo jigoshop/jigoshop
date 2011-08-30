@@ -107,6 +107,14 @@ endif;
 if (!defined('JIGOSHOP_TEMPLATE_URL')) define('JIGOSHOP_TEMPLATE_URL', 'jigoshop/'); // Trailing slash is important :)
 
 /**
+ * IIS compat fix/fallback
+ **/
+if (!isset($_SERVER['REQUEST_URI'])) {
+	$_SERVER['REQUEST_URI'] = substr($_SERVER['PHP_SELF'],1 );
+	if (isset($_SERVER['QUERY_STRING'])) { $_SERVER['REQUEST_URI'].='?'.$_SERVER['QUERY_STRING']; }
+}
+
+/**
  * Add post thumbnail support to wordpress
  **/
 add_theme_support( 'post-thumbnails' );
@@ -123,14 +131,15 @@ if (get_option('jigoshop_force_ssl_checkout')=='yes') add_action( 'wp_head', 'ji
 add_action( 'wp_footer', 'jigoshop_demo_store' );
 add_action( 'wp_footer', 'jigoshop_sharethis' );
 
-/**
- * IIS compat fix/fallback
- **/
+add_filter('post_thumbnail_html', 'jigoshop_force_ssl_images');
+add_filter('widget_text', 'jigoshop_force_ssl_images');
+add_filter('wp_get_attachment_url', 'jigoshop_force_ssl_images');
+add_filter('wp_get_attachment_image_attributes', 'jigoshop_force_ssl_images');
+add_filter('wp_get_attachment_url', 'jigoshop_force_ssl_images');
 
-if (!isset($_SERVER['REQUEST_URI'])) {
-	$_SERVER['REQUEST_URI'] = substr($_SERVER['PHP_SELF'],1 );
-	if (isset($_SERVER['QUERY_STRING'])) { $_SERVER['REQUEST_URI'].='?'.$_SERVER['QUERY_STRING']; }
-}
+add_filter( 'loop-shop-query', create_function( '', 'return array("orderby" => "'.get_option('jigoshop_catalog_sort_orderby').'","order" => "'.get_option('jigoshop_catalog_sort_direction').'");' ) );
+add_filter( 'loop_shop_columns', create_function( '', 'return '.get_option('jigoshop_catalog_columns').';' ) );
+add_filter( 'loop_shop_per_page', create_function( '', 'return '.get_option('jigoshop_catalog_per_page').';' ) );
 
 /**
  * Mail from name/email
@@ -396,16 +405,48 @@ function jigoshop_sharethis() {
 	endif;
 }
 
+function is_shop() {
+	// NOTE: is_page(get_option('jigoshop_shop_page_id'))
+	// the above is used a lot through the codebase, should be thoroughly checked  -JAP-
+	// it consistently fails for me and a check of jigoshop_page_body_classes() for the inclusion
+	// of the class 'jigoshop-shop' on Shop pages should confirm this in other themes
+	// the following reliably works though
+	return is_post_type_archive( 'product' );
+}
+
+function is_product_category() {
+	return is_tax( 'product_cat' );
+}
+
+function is_product_tag() {
+	return is_tax( 'product_tag' );
+}
+
+function is_product() {
+	return is_singular( array('product') );
+}
+
+function is_product_list() {
+	$is_list = false;
+	$is_list |= is_product_tag();
+	$is_list |= is_product_category();
+	return $is_list;
+}
+
+function is_jigoshop_content_wrapped() {
+	$is_wrapped = false;
+	$is_wrapped |= is_shop();
+	$is_wrapped |= is_product_list();
+	$is_wrapped |= is_product();
+	return $is_wrapped;
+}
+
 function is_cart() {
-	if (is_page(get_option('jigoshop_cart_page_id'))) return true;
-	return false;
+	return is_page( get_option( 'jigoshop_cart_page_id' ));
 }
 
 function is_checkout() {
-	if (
-		is_page(get_option('jigoshop_checkout_page_id'))
-	) return true;
-	return false;
+	return is_page( get_option( 'jigoshop_checkout_page_id' ));
 }
 
 if (!function_exists('is_ajax')) {
@@ -432,17 +473,6 @@ function jigoshop_force_ssl_images( $content ) {
 	endif;
 	return $content;
 }
-
-add_filter('post_thumbnail_html', 'jigoshop_force_ssl_images');
-add_filter('widget_text', 'jigoshop_force_ssl_images');
-add_filter('wp_get_attachment_url', 'jigoshop_force_ssl_images');
-add_filter('wp_get_attachment_image_attributes', 'jigoshop_force_ssl_images');
-add_filter('wp_get_attachment_url', 'jigoshop_force_ssl_images');
-
-add_filter( 'loop-shop-query', create_function( '', 'return array("orderby" => "'.get_option('jigoshop_catalog_sort_orderby').'","order" => "'.get_option('jigoshop_catalog_sort_direction').'");' ) );
-add_filter( 'loop_shop_columns', create_function( '', 'return '.get_option('jigoshop_catalog_columns').';' ) );
-add_filter( 'loop_shop_per_page', create_function( '', 'return '.get_option('jigoshop_catalog_per_page').';' ) );
-
 
 function get_jigoshop_currency_symbol() {
 	$currency = get_option('jigoshop_currency');
