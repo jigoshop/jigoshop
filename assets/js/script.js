@@ -142,84 +142,145 @@ jQuery(function(){
 	
 	// Stop anchors moving the viewport
 
-	jQuery(".shipping-calculator-button").click(function() { return false; });
+	jQuery(".shipping-calculator-button").click(function() {return false;});
 	
-	// Variations
-	
-	function check_variations() {
-		
-		var not_set = false;
-		
+    /*################# VARIATIONS ###################*/
+    
+    //check if two arrays of attributes match
+    function variations_match(attrs1, attrs2) {        
+        var match = true;
+        for(name in attrs1) {
+            var val1 = attrs1[name];
+            var val2 = attrs2[name];
+            
+            if(val1.length != 0 && val2.length != 0 && val1 != val2) {
+                match = false;
+            }
+        }
+        
+        return match;
+    }
+    
+    //search for matching variations for given set of attributes
+    function find_matching_variations(settings) {
+        var matching = [];
+        
+        for(variation_sku in product_variations) {
+            var variation = product_variations[variation_sku];
+            
+            if(variations_match(variation.attributes, settings)) {
+                matching.push(variation);
+            }
+        }
+        
+        return matching;
+    }
+    
+    //disable option fields that are unavaiable for current set of attributes
+    function update_variation_values(variations) {
+        
+        var current_attr_select = jQuery('.variations select').not('[disabled]').last();
+        current_attr_select.find('option:gt(0)').attr('disabled', 'disabled');
+        
+        var current_attr_name = current_attr_select.attr('name');
+        
+        for(num in variations) {
+            var attributes = variations[num].attributes;
+            
+            for(attr_name in attributes) {
+                var attr_val = attributes[attr_name];
+                
+                if(attr_name == current_attr_name) {
+                    current_attr_select.find('option:contains("'+attr_val+'")').removeAttr('disabled');
+                }
+            }
+        }
+        
+    }
+    
+    //show single variation details (price, stock, image)
+    function show_variation(variation) {
+        var img = jQuery('div.images img:eq(0)');
+        var link = jQuery('div.images a.zoom');
+        var o_src = jQuery(img).attr('original-src');
+        var o_link = jQuery(link).attr('original-href');
+					
+        var variation_image = variation.image_src;
+        var variation_link = variation.image_link;
+
+        jQuery('.single_variation').html( variation.price_html + variation.availability_html );
+					
+        if (!o_src) {
+            jQuery(img).attr('original-src', jQuery(img).attr('src'));
+        }
+					
+        if (!o_link) {
+            jQuery(link).attr('original-href', jQuery(link).attr('href'));
+        }
+					
+        if (variation_image.length > 1) {	
+            jQuery(img).attr('src', variation_image);
+            jQuery(link).attr('href', variation_link);
+        } else {
+            jQuery(img).attr('src', o_src);
+            jQuery(link).attr('href', o_link);
+        }
+
+        jQuery('.variations_button, .single_variation').slideDown();
+    }
+    
+    //when one of attributes is changed - check everything to show only valid options
+    function check_variations() {
+        jQuery('form input[name=variation_id]').val('');
+        jQuery('.single_variation').text('');
+        jQuery('.variations_button, .single_variation').slideUp();
+        
+		var all_set = true;
+		var current_settings = {};
+        
 		jQuery('.variations select').each(function(){
-			if (jQuery(this).val()=="") not_set = true;
+			if (jQuery(this).val().length == 0) {
+                all_set = false;
+            }
+            
+            current_settings[jQuery(this).attr('name')] = jQuery(this).val();
 		});
-		
-		jQuery('.variations_button, .single_variation').slideUp();
-		
-		if (!not_set) {
-			
-			jQuery('.variations').block({ message: null, overlayCSS: { background: '#fff url(' + params.plugin_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
-			
-			var data = {
-				action: 		'jigoshop_get_variation',
-				variation_data: jQuery('form.variations_form').serialize(),
-				security: 		params.get_variation_nonce
-			};
-
-			jQuery.post( params.ajax_url, data, function(response) {
-				
-				var img = jQuery('div.images img:eq(0)');
-				var link = jQuery('div.images a.zoom');
-				var o_src = jQuery(img).attr('original-src');
-				var o_link = jQuery(link).attr('original-href');
-
-				if (response.length > 1) {
-				
-					variation_response = jQuery.parseJSON( response );
-					
-					var variation_image = variation_response.image_src;
-					var variation_link = variation_response.image_link;
-
-					jQuery('.single_variation').html( variation_response.price_html + variation_response.availability_html );
-					
-					if (!o_src) {
-						jQuery(img).attr('original-src', jQuery(img).attr('src'));
-					}
-					
-					if (!o_link) {
-						jQuery(link).attr('original-href', jQuery(link).attr('href'));
-					}
-					
-					if (variation_image.length > 1) {	
-						jQuery(img).attr('src', variation_image);
-						jQuery(link).attr('href', variation_link);
-					} else {
-						jQuery(img).attr('src', o_src);
-						jQuery(link).attr('href', o_link);
-					}
-
-					jQuery('.variations_button, .single_variation').slideDown();
-				} else {
-					if (o_src) {
-						jQuery(img).attr('src', o_src);
-						jQuery(link).attr('href', o_link);
-					}
-					jQuery('.single_variation').slideDown();
-					jQuery('.single_variation').html( '<p>' + params.variation_not_available_text + '</p>' );
-				}
-								
-				jQuery('.variations').unblock();
-			});
-		
-		} else {
-			jQuery('.variations_button').hide();
-		}
-		
-	}
+        
+        var matching_variations = find_matching_variations(current_settings);
+        
+        if(all_set) {
+            var variation = matching_variations.pop();
+            
+            jQuery('form input[name=variation_id]').val(variation.variation_id);
+            show_variation(variation);
+        } else {
+            update_variation_values(matching_variations);
+        }
+    }
 	
 	jQuery('.variations select').change(function(){
-		check_variations();
+        //make sure that only selects before this one, and one after this are enabled
+        var num = jQuery(this).data('num');
+        
+        if(jQuery(this).val().length > 0) {
+            num += 1;
+        }
+        
+        var selects = jQuery('.variations select');
+        selects.filter(':lt('+num+')').removeAttr('disabled');
+        selects.filter(':eq('+num+')').removeAttr('disabled').val('');
+        selects.filter(':gt('+num+')').attr('disabled', 'disabled').val('');
+        
+		check_variations(jQuery(this));
 	});
+    
+    //disable all but first select field
+    jQuery('.variations select:gt(0)').attr('disabled', 'disabled');
+    
+    //numerate all selects
+    jQuery.each(jQuery('.variations select'), function(i, item){
+        jQuery(item).data('num', i);
+    });
 	
 });
 
@@ -246,11 +307,11 @@ if (params.is_checkout==1) {
 			var s_postcode 	= jQuery('input#shipping-postcode').val();
 		}
 		
-		jQuery('#order_methods, #order_review').block({ message: null, overlayCSS: { background: '#fff url(' + params.plugin_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
+		jQuery('#order_methods, #order_review').block({message: null, overlayCSS: {background: '#fff url(' + params.plugin_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
 		jQuery.ajax({
 			type: 		'POST',
 			url: 		params.review_order_url,
-			data: 		{ shipping_method: method, country: country, state: state, postcode: postcode, s_country: s_country, s_state: s_state, s_postcode: s_postcode },
+			data: 		{shipping_method: method, country: country, state: state, postcode: postcode, s_country: s_country, s_state: s_state, s_postcode: s_postcode},
 			success: 	function( code ) {
 							jQuery('#order_methods, #order_review').remove();
 							jQuery('#order_review_heading').after(code);
@@ -323,7 +384,7 @@ if (params.is_checkout==1) {
 		/* AJAX Form Submission */
 		jQuery('form.checkout').submit(function(){
 			var form = this;
-			jQuery(form).block({ message: null, overlayCSS: { background: '#fff url(' + params.plugin_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
+			jQuery(form).block({message: null, overlayCSS: {background: '#fff url(' + params.plugin_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
 			jQuery.ajax({
 				type: 		'POST',
 				url: 		params.checkout_url,
@@ -337,7 +398,7 @@ if (params.is_checkout==1) {
 								catch(err) {
 								  	jQuery(form).prepend( code );
 									jQuery(form).unblock(); 
-									jQuery.scrollTo(jQuery(form).parent(), { easing:'swing' });
+									jQuery.scrollTo(jQuery(form).parent(), {easing:'swing'});
 								}
 							},
 				dataType: 	"html"

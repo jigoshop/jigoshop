@@ -233,7 +233,7 @@ add_action('import_start', 'jigoshop_import_start');
 
 
 
-### Functions #########################################################
+//### Functions #########################################################
 
 /**
  * Set Jigoshop Product Image Sizes for WordPress based on Admin->Jigoshop->Settings->Images
@@ -337,7 +337,6 @@ function jigoshop_frontend_scripts() {
 		'countries' 					=> json_encode(jigoshop_countries::$states),
 		'select_state_text' 			=> __('Select a state&hellip;', 'jigoshop'),
 		'state_text' 					=> __('state', 'jigoshop'),
-		'variation_not_available_text' 	=> __('This variation is not available.', 'jigoshop'),
 		'plugin_url' 					=> jigoshop::plugin_url(),
 		'ajax_url' 						=> admin_url('admin-ajax.php'),
 		'get_variation_nonce' 			=> wp_create_nonce("get-variation"),
@@ -607,7 +606,7 @@ function jigoshop_body_class($classes) {
 }
 add_filter('body_class','jigoshop_body_class');
 
-### Extra Review Field in comments #########################################################
+//### Extra Review Field in comments #########################################################
 
 function jigoshop_add_comment_rating($comment_id) {
 	if ( isset($_POST['rating']) ) :
@@ -630,7 +629,7 @@ function jigoshop_check_comment_rating($comment_data) {
 }
 add_filter('preprocess_comment', 'jigoshop_check_comment_rating', 0);
 
-### Comments #########################################################
+//### Comments #########################################################
 
 function jigoshop_comments($comment, $args, $depth) {
 	$GLOBALS['comment'] = $comment; global $post; ?>
@@ -659,7 +658,7 @@ function jigoshop_comments($comment, $args, $depth) {
 	<?php
 }
 
-### Exclude order comments from front end #########################################################
+//### Exclude order comments from front end #########################################################
 
 function jigoshop_exclude_order_comments( $clauses ) {
 
