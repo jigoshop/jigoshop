@@ -54,7 +54,7 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 		}
 
 		// Set the widget title
-		$title = ($instance['title']) ? $instance['title'] : __('Price by price', 'jigoshop');
+		$title = ($instance['title']) ? $instance['title'] : __('Filter by price', 'jigoshop');
 		$title = apply_filters('widget_title', $title, $instance, $this->id_base);
 		
 		// Print the widget wrapper & title
@@ -86,7 +86,7 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 		$min = 0;
 		
 		// TODO: Optimize this query
-		$max = ceil($wpdb->get_var("SELECT max(meta_value) 
+		$max = ceil($wpdb->get_var("SELECT max(meta_value + 0) 
 		FROM $wpdb->posts
 		LEFT JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id
 		WHERE meta_key = 'price' AND (
