@@ -377,7 +377,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 				<tbody>
 				<?php foreach ($attributes as $aname => $aoptions):?>
                     <tr>
-                        <td><label for="<?php echo sanitize_title($aname); ?>"><?php ucfirst($aname)?></label></td>
+                        <td><label for="<?php echo sanitize_title($aname); ?>"><?php echo ucfirst($aname)?></label></td>
                         <td><select id="<?php echo sanitize_title($aname); ?>" name="tax_<?php echo sanitize_title($aname); ?>">
                                 <option value=""><?php echo __('Choose an option', 'jigoshop') ?>&hellip;</option>
                                 <?php if(is_array($aoptions)): ?>
