@@ -46,14 +46,12 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 	
 		// Extract the widget arguments
 		extract($args);
+		global $_chosen_attributes, $wpdb, $all_post_ids;
 		
 		// Hide widget if is not a product
 		if ( ! is_tax('product_cat') AND ! is_post_type_archive('product') AND ! is_tax('product_tag') ) {
 			return false;
 		}
-		
-		// Obtain variables from global scope
-		global $_chosen_attributes, $wpdb, $all_post_ids;
 
 		// Set the widget title
 		$title = ($instance['title']) ? $instance['title'] : __('Price by price', 'jigoshop');
@@ -125,7 +123,7 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 	 * @param	array	old instance
 	 * @return	array	instance
 	 */
-	function update( $new_instance, $old_instance ) {
+	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		$instance['title'] = strip_tags(stripslashes($new_instance['title']));
 		return $instance;
@@ -138,7 +136,7 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 	 *
 	 * @param	array	instance
 	 */
-	function form( $instance ) {
+	public function form( $instance ) {
 		// Get values from instance
 		$title = (isset($instance['title'])) ? esc_attr($instance['title']) : null;
 		
