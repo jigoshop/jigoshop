@@ -20,6 +20,7 @@ function variable_product_type_options() {
 	global $post;
 	
 	$attributes = maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) );
+
 	if (!isset($attributes)) $attributes = array();
 	?>
 	<div id="variable_product_options" class="panel">
@@ -60,7 +61,7 @@ function variable_product_type_options() {
 								
 								if (!is_array($options)) $options = explode(',', $options);
 								
-								echo '<select name="tax_' . sanitize_title($attribute['name']).'['.$loop.']"><option value="">'.__('Any ', 'jigoshop').$attribute['name'].'&hellip;</option>';
+								echo '<select name="tax_' . sanitize_title($attribute['name']) . '['.$loop.']"><option value="">'.__('Any ', 'jigoshop').$attribute['name'].'&hellip;</option>';
 								
 								foreach($options as $option) :
 									$option = trim($option);
@@ -448,10 +449,9 @@ function process_product_meta_variable( $data, $post_id ) {
         
         // Update taxonomies (save attributes)
         foreach($clean_attributes as $attribute => $value) {
-            update_post_meta($variation_id, 'tax_' . $attribute, $value);
+            update_post_meta($variation_id, 'tax_' . sanitize_title($attribute), $value);
         }
     }
-    
     return $errors;
 }
 add_action('process_product_meta_variable', 'process_product_meta_variable', 1, 2);

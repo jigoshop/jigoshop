@@ -361,7 +361,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
                     'attributes' => $vattrs,
                     'image_src' => $image,
                     'image_link' => $image_link,
-                    'price_html' => '<span class="price">'.$_product->get_price_html().'</span>',
+                    'price_html' => '<span class="price">'.$variation->get_price_html().'</span>',
                     'availability_html' => '<p class="stock '.$availability['class'].'">'. $availability['availability'].'</p>',
                 );
             }
