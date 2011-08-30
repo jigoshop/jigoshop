@@ -25,6 +25,7 @@ require_once ( 'jigoshop-admin-post-types.php' );
 function jigoshop_admin_init () {
 	require_once ( 'jigoshop-admin-settings-options.php' );
 }
+
 add_action('admin_init', 'jigoshop_admin_init');
 
 /**
@@ -57,7 +58,7 @@ function jigoshop_admin_menu_order( $menu_order ) {
 	// Loop through menu order and do some rearranging
 	foreach ( $menu_order as $index => $item ) :
 
-		if ( ( ( 'jigoshop' ) == $item ) ) :
+		if ( 'jigoshop' == $item ) :
 			$jigoshop_menu_order[] = 'separator-jigoshop';
 			unset( $menu_order[$jigoshop_separator] );
 		endif;
@@ -73,10 +74,9 @@ function jigoshop_admin_menu_order( $menu_order ) {
 }
 
 function jigoshop_admin_custom_menu_order() {
-	if ( !current_user_can( 'manage_options' ) ) return false;
-
-	return true;
+	return current_user_can( 'manage_options' );
 }
+
 add_action('admin_menu', 'jigoshop_admin_menu');
 add_action('menu_order', 'jigoshop_admin_menu_order');
 add_action('custom_menu_order', 'jigoshop_admin_custom_menu_order');
