@@ -630,6 +630,7 @@ class jigoshop_product {
                 /* @var $variation jigoshop_product_variation */
                 $variation = $child->product;
 
+                //check attributes of all variations that are visible (enabled)
                 if ($variation instanceof jigoshop_product_variation && $variation->is_visible()) {
                     $attributes = $variation->get_variation_attributes();
 
