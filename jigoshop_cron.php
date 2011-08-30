@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Cron Task
  *
@@ -18,6 +19,7 @@
 /**
  *	Update price if on sale
  */
+
 function jigoshop_update_sale_prices() {
 	
 	global $wpdb;

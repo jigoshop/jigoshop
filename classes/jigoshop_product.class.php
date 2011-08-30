@@ -73,7 +73,16 @@ class jigoshop_product {
 			$this->exists = false;
 		endif;
 	}
-
+    
+    /**
+     * Get SKU (Stock-keeping unit) - product uniqe ID
+     * 
+     * @return mixed
+     */
+    function get_sku() {
+        return $this->sku;
+    }
+	
 	/** Returns the product's children */
 	function get_children() {
 
@@ -134,31 +143,44 @@ class jigoshop_product {
 	 * @param   string		$type		Type to check against
 	 */
 	function is_type( $type ) {
-		if (is_array($type) && in_array($this->product_type, $type)) return true;
-		elseif ($this->product_type==$type) return true;
+		if (is_array($type) && in_array($this->product_type, $type)) {
+            return true;
+        } else if ($this->product_type == $type) {
+            return true;
+        }
+        
 		return false;
 	}
 
 	/** Returns whether or not the product has any child product */
 	function has_child () {
-		return sizeof($this->children) ? true : false;
+        if(is_array($this->children) && count($this->children) > 0) {
+            return true;
+        }
+        
+		return false;
 	}
 
 	/** Returns whether or not the product post exists */
 	function exists() {
-		if ($this->exists) return true;
-		return false;
+		return ($this->exists);
 	}
 
 	/** Returns whether or not the product is taxable */
 	function is_taxable() {
-		if (isset($this->data['tax_status']) && $this->data['tax_status']=='taxable') return true;
+		if (isset($this->data['tax_status']) && $this->data['tax_status']=='taxable') {
+            return true;
+        }
+        
 		return false;
 	}
 
 	/** Returns whether or not the product shipping is taxable */
 	function is_shipping_taxable() {
-		if (isset($this->data['tax_status']) && ($this->data['tax_status']=='taxable' || $this->data['tax_status']=='shipping')) return true;
+		if (isset($this->data['tax_status']) && ($this->data['tax_status']=='taxable' || $this->data['tax_status']=='shipping')) {
+            return true;
+        }
+        
 		return false;
 	}
 
@@ -235,16 +257,22 @@ class jigoshop_product {
 	/** Returns whether or not the product has enough stock for the order */
 	function has_enough_stock( $quantity ) {
 
-		if ($this->backorders_allowed()) return true;
-
-		if ($this->stock >= $quantity) :
+		if ($this->backorders_allowed() || $this->stock >= $quantity) {
 			return true;
-		endif;
+        }
 
 		return false;
-
 	}
-
+    
+    /**
+     * Returns number of items available for sale.
+     * 
+     * @return int
+     */
+    function get_stock_quantity() {
+        return (int)$this->stock;
+    }
+	
 	/** Returns the availability of the product */
 	function get_availability() {
 
@@ -303,7 +331,10 @@ class jigoshop_product {
 
 	/** Returns whether or not the product is featured */
 	function is_featured() {
-		if (get_post_meta($this->id, 'featured', true)=='yes') return true;
+		if (get_post_meta($this->id, 'featured', true)=='yes') {
+            return true;
+        }
+        
 		return false;
 	}
 
@@ -564,5 +595,73 @@ class jigoshop_product {
 
 		endif;
 	}
+    
+    /**
+     * Returns an array of available values for attributes used in product variations
+     * 
+     * @todo Note that this is 'variable product' specific, and should be moved to separate class
+     * with all 'variable product' logic form other methods in this class.
+     * 
+     * @return two dimensional array of attributes and their available values
+     */   
+    function get_available_attributes_variations() {
+        if (!$this->is_type('variable') || !$this->has_child()) {
+            return array();
+        }
+        
+        $attributes = $this->get_attributes();
+        
+        if(!is_array($attributes)) {
+            return array();
+        }
+        
+        $available = array();
+        $children = $this->get_children();
+        
+        foreach ($attributes as $attribute) {
+            if ($attribute['variation'] !== 'yes') {
+                continue;
+            }
+
+            $values = array();
+            $name = 'tax_'.sanitize_title($attribute['name']);
+
+            foreach ($children as $child) {
+                /* @var $variation jigoshop_product_variation */
+                $variation = $child->product;
+
+                //check attributes of all variations that are visible (enabled)
+                if ($variation instanceof jigoshop_product_variation && $variation->is_visible()) {
+                    $attributes = $variation->get_variation_attributes();
+
+                    if (is_array($attributes)) {
+                        foreach ($attributes as $aname => $avalue) {
+                            if ($aname == $name) {
+                                $values[] = $avalue;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            //empty value indicates that all options for given attribute are available
+            if(in_array('', $values)) {
+                $options = $attribute['value'];
+						
+                if (!is_array($options)) {
+                    $options = explode(',', $options);
+                }
+                
+                $values = $options;
+            }
+              
+            //make sure values are unique
+            $values = array_unique($values);
+            
+            $available[$attribute['name']] = $values;
+        }
+        
+        return $available;
+    }
 
 }

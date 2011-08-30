@@ -96,24 +96,37 @@ function jigoshop_cart( $atts ) {
 				foreach (jigoshop_cart::$cart_contents as $cart_item_key => $values) :
 					$_product = $values['data'];
 					if ($_product->exists() && $values['quantity']>0) :
-						echo '
+                        
+                        $additional_description = '';
+                        if($_product instanceof jigoshop_product_variation && is_array($values['variation'])) {
+                            $additional_description = jigoshop_get_formatted_variation( $values['variation'] );
+                        }
+                        
+?>
 							<tr>
-								<td class="product-remove"><a href="'.jigoshop_cart::get_remove_url($cart_item_key).'" class="remove" title="Remove this item">&times;</a></td>
-								<td class="product-thumbnail"><a href="'.get_permalink($values['product_id']).'">';
+								<td class="product-remove"><a href="<?php echo jigoshop_cart::get_remove_url($cart_item_key); ?>" class="remove" title="<?php echo __('Remove this item.', 'jigoshop'); ?>">&times;</a></td>
+								<td class="product-thumbnail"><a href="<?php get_permalink($values['product_id']); ?>">
+						<?php
+						if ($values['variation_id'] && has_post_thumbnail($values['variation_id'])) {
+                            echo get_the_post_thumbnail($values['variation_id'], 'shop_tiny'); 
+                        } else if (has_post_thumbnail($values['product_id'])) {
+                            echo get_the_post_thumbnail($values['product_id'], 'shop_tiny'); 
+                        } else {
+                            echo '<img src="'.jigoshop::plugin_url(). '/assets/images/placeholder.png" alt="Placeholder" width="'.jigoshop::get_var('shop_tiny_w').'" height="'.jigoshop::get_var('shop_tiny_h').'" />'; 
+                        }
+                        ?>
+							
+                                </a></td>
 
-						if ($values['variation_id'] && has_post_thumbnail($values['variation_id'])) echo get_the_post_thumbnail($values['variation_id'], 'shop_tiny');
-						elseif (has_post_thumbnail($values['product_id'])) echo get_the_post_thumbnail($values['product_id'], 'shop_tiny');
-						else echo jigoshop_get_image_placeholder( 'shop_tiny' );
-
-						echo '	</a></td>
 								<td class="product-name">
-									<a href="'.get_permalink($values['product_id']).'">' . apply_filters('jigoshop_cart_product_title', $_product->get_title(), $_product) . '</a>
-									'.jigoshop_get_formatted_variation( $values['variation'] ).'
+									<a href="<?php echo get_permalink($values['product_id']); ?>"><?php echo apply_filters('jigoshop_cart_product_title', $_product->get_title(), $_product); ?></a>
+									<?php echo $additional_description; ?>
 								</td>
-								<td class="product-price">'.jigoshop_price($_product->get_price()).'</td>
-								<td class="product-quantity"><div class="quantity"><input name="cart['.$cart_item_key.'][qty]" value="'.$values['quantity'].'" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div></td>
-								<td class="product-subtotal">'.jigoshop_price($_product->get_price()*$values['quantity']).'</td>
-							</tr>';
+								<td class="product-price"><?php echo jigoshop_price($_product->get_price()); ?></td>
+								<td class="product-quantity"><div class="quantity"><input name="cart[<?php echo $cart_item_key?>][qty]" value="<?php echo $values['quantity']; ?>" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div></td>
+								<td class="product-subtotal"><?php echo jigoshop_price($_product->get_price()*$values['quantity']); ?></td>
+							</tr>
+                            <?php
 					endif;
 				endforeach;
 			endif;
