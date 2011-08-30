@@ -331,10 +331,10 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 
 		global $post, $_product;
 		
-		$attributes = $_product->get_avaiable_attributes_variations();
+		$attributes = $_product->get_available_attributes_variations();
         
-        //get all variations avaiable as an array for easy usage by javascript
-        $variationsAvaiable = array();
+        //get all variations available as an array for easy usage by javascript
+        $variationsAvailable = array();
         $children = $_product->get_children();
         
         foreach($children as $child) {
@@ -356,7 +356,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
                     $image_link = '';
                 }
 
-                $variationsAvaiable[] = array(
+                $variationsAvailable[] = array(
                     'variation_id' => $variation->get_variation_id(),
                     'attributes' => $vattrs,
                     'image_src' => $image,
@@ -369,7 +369,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 
 		?>
         <script>
-            var product_variations = <?php echo json_encode($variationsAvaiable) ?>;
+            var product_variations = <?php echo json_encode($variationsAvailable) ?>;
         </script>
 		<form action="<?php echo $_product->add_to_cart_url(); ?>" class="variations_form cart" method="post">
 

@@ -597,14 +597,14 @@ class jigoshop_product {
 	}
     
     /**
-     * Returns an array of avaiable values for attributes used in product variations
+     * Returns an array of available values for attributes used in product variations
      * 
      * @todo Note that this is 'variable product' specific, and should be moved to separate class
      * with all 'variable product' logic form other methods in this class.
      * 
      * @return two dimensional array of attributes and their available values
      */   
-    function get_avaiable_attributes_variations() {
+    function get_available_attributes_variations() {
         if (!$this->is_type('variable') || !$this->has_child()) {
             return array();
         }
@@ -615,7 +615,7 @@ class jigoshop_product {
             return array();
         }
         
-        $avaiable = array();
+        $available = array();
         $children = $this->get_children();
         
         foreach ($attributes as $attribute) {
@@ -643,7 +643,7 @@ class jigoshop_product {
                 }
             }
             
-            //empty value indicates that all options for given attribute are avaiable
+            //empty value indicates that all options for given attribute are available
             if(in_array('', $values)) {
                 $options = $attribute['value'];
 						
@@ -657,10 +657,10 @@ class jigoshop_product {
             //make sure values are unique
             $values = array_unique($values);
             
-            $avaiable[$attribute['name']] = $values;
+            $available[$attribute['name']] = $values;
         }
         
-        return $avaiable;
+        return $available;
     }
 
 }
