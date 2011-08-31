@@ -145,6 +145,7 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * Shop page can show content
 * SKU display options
 * Fixes for default permalinks
+* Temporary fix for attribute name length error #56
 
 = 0.9.8 =
 
