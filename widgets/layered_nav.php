@@ -1,12 +1,19 @@
 <?php
 /**
  * Layered Navigation Widget
- * 
- * @package		JigoShop
- * @category	Widgets
- * @author		Jigowatt
- * @since		1.0
- * 
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package    Jigoshop
+ * @category   Widgets
+ * @author     Jigowatt
+ * @since	   1.0
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
  */
  
 class Jigoshop_Widget_Layered_Nav extends WP_Widget {
@@ -69,7 +76,9 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 				if (!in_array($term->term_id, $current_filter)) $current_filter[] = $term->term_id;
 				
 				// Base Link decided by current page
-				if (is_post_type_archive('product')) :
+				if (defined('SHOP_IS_ON_FRONT')) :
+					$link = '';
+				elseif (is_post_type_archive('product') || is_page( get_option('jigoshop_shop_page_id') )) :
 					$link = get_post_type_archive_link('product');
 				else :					
 					$link = get_term_link( get_query_var('term'), get_query_var('taxonomy') );

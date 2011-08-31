@@ -1,13 +1,20 @@
 <?php
 /**
- * Order
- * @class jigoshop_order
+ * Order Class
  * 
  * The JigoShop order class handles order data.
  *
- * @author 		Jigowatt
- * @category 	Classes
- * @package 	JigoShop
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package    Jigoshop
+ * @category   Customer
+ * @author     Jigowatt
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_order {
 	
@@ -170,7 +177,7 @@ class jigoshop_order {
 		foreach($this->items as $item) : 
 			$_product = &new jigoshop_product( $item['id'] );
 			
-			$return .= $item['qty'] . ' x ' . $item['name'];
+			$return .= $item['qty'] . ' x ' . apply_filters('jigoshop_order_product_title', $item['name'], $_product);
 			
 			if ($show_sku) :
 				

@@ -1,4 +1,24 @@
 <?php
+/**
+ * Cart shortcode
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package    Jigoshop
+ * @category   Checkout
+ * @author     Jigowatt
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
+ */
+ 
+function get_jigoshop_cart( $atts ) {
+	return jigoshop::shortcode_wrapper('jigoshop_cart', $atts);
+}
+
 function jigoshop_cart( $atts ) {
 	
 	$errors = array();
@@ -108,7 +128,7 @@ function jigoshop_cart( $atts ) {
 						else echo '<img src="'.jigoshop::plugin_url(). '/assets/images/placeholder.png" alt="Placeholder" width="'.jigoshop::get_var('shop_tiny_w').'" height="'.jigoshop::get_var('shop_tiny_h').'" />'; 
 							
 						echo '	</a></td>
-								<td class="product-name"><a href="'.get_permalink($item_id).'">'.$_product->get_title().'</a></td>
+								<td class="product-name"><a href="'.get_permalink($item_id).'">' . apply_filters('jigoshop_cart_product_title', $_product->get_title(), $_product) . '</a></td>
 								<td class="product-price">'.jigoshop_price($_product->get_price()).'</td>
 								<td class="product-quantity"><div class="quantity"><input name="cart['.$item_id.'][qty]" value="'.$values['quantity'].'" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div></td>
 								<td class="product-subtotal">'.jigoshop_price($_product->get_price()*$values['quantity']).'</td>

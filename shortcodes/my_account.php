@@ -1,13 +1,30 @@
 <?php
+/**
+ * My Account shortcode
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package    Jigoshop
+ * @category   Customer
+ * @author     Jigowatt
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
+ */
+ 
+function get_jigoshop_my_account ( $atts ) {
+	return jigoshop::shortcode_wrapper('jigoshop_my_account', $atts); 
+}	
 function jigoshop_my_account( $atts ) {
 	
 	extract(shortcode_atts(array(
     'recent_orders' => 5
 	), $atts));
 
-  $recent_orders = ('all' == $recent_orders) ? -1 : $recent_orders;
-	
-	ob_start();
+  	$recent_orders = ('all' == $recent_orders) ? -1 : $recent_orders;
 	
 	global $post, $current_user;
 
@@ -50,7 +67,7 @@ function jigoshop_my_account( $atts ) {
 				if ($jigoshop_orders->orders) foreach ($jigoshop_orders->orders as $order) :
 					?><tr class="order">
 						<td><?php echo $order->id; ?></td>
-						<td><time title="<?php echo strtotime($order->order_date); ?>"><?php echo date('d.m.Y', strtotime($order->order_date)); ?></time></td>
+						<td><time title="<?php echo strtotime($order->order_date); ?>"><?php echo date(get_option('date_format'), strtotime($order->order_date)); ?></time></td>
 						<td><address><?php if ($order->formatted_shipping_address) echo $order->formatted_shipping_address; else echo '&ndash;'; ?></address></td>
 						<td><?php echo jigoshop_price($order->order_total); ?></td>
 						<td><?php echo $order->status; ?></td>
@@ -137,11 +154,12 @@ function jigoshop_my_account( $atts ) {
 		jigoshop_login_form();
 		
 	endif;
-	
-	return ob_get_clean();		
-	
+		
 }
 
+function get_jigoshop_edit_address () {
+	return jigoshop::shortcode_wrapper('jigoshop_edit_address'); 
+}	
 function jigoshop_edit_address() {
 	
 	$user_id = get_current_user_id();
@@ -301,7 +319,9 @@ function jigoshop_edit_address() {
 	endif;
 }
 
-
+function get_jigoshop_change_password () {
+	return jigoshop::shortcode_wrapper('jigoshop_change_password'); 
+}	
 function jigoshop_change_password() {
 
 	$user_id = get_current_user_id();
@@ -366,6 +386,9 @@ function jigoshop_change_password() {
 	
 }
 
+function get_jigoshop_view_order () {
+	return jigoshop::shortcode_wrapper('jigoshop_view_order'); 
+}	
 
 function jigoshop_view_order() {
 	
@@ -379,7 +402,7 @@ function jigoshop_view_order() {
 		
 		if ( $order_id>0 && $order->user_id == get_current_user_id() ) :
 			
-			echo '<p>' . sprintf( __('Order <mark>#%s</mark> made on <mark>%s</mark>', 'jigoshop'), $order->id, date('d.m.Y', strtotime($order->order_date)) );
+			echo '<p>' . sprintf( __('Order <mark>#%s</mark> made on <mark>%s</mark>', 'jigoshop'), $order->id, date(get_option('date_format'), strtotime($order->order_date)) );
 			
 			echo sprintf( __('. Order status: <mark>%s</mark>', 'jigoshop'), $order->status );
 			

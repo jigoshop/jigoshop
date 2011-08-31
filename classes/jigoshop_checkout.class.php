@@ -1,13 +1,20 @@
 <?php
 /**
- * Checkout
- * @class jigoshop_checkout
+ * Checkout Class
  * 
  * The JigoShop checkout class handles the checkout process, collecting user data and processing the payment.
  *
- * @author 		Jigowatt
- * @category 	Classes
- * @package 	JigoShop
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package    Jigoshop
+ * @category   Checkout
+ * @author     Jigowatt
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_checkout {
 	
@@ -17,8 +24,10 @@ class jigoshop_checkout {
 	var $must_create_account;
 	var $creating_account;
 	
+	protected static $instance;
+	
 	/** constructor */
-	function __construct () {
+	protected function __construct () {
 		
 		add_action('jigoshop_checkout_billing',array(&$this,'checkout_form_billing'));
 		add_action('jigoshop_checkout_shipping',array(&$this,'checkout_form_shipping'));
@@ -52,6 +61,15 @@ class jigoshop_checkout {
 			array( 'type'=> 'country', 'name'=>'shipping-country', 'label' => __('Country', 'jigoshop'), 'required' => true, 'class' => array('form-row-first'), 'rel' => 'shipping-state' ),
 			array( 'type'=> 'state', 'name'=>'shipping-state', 'label' => __('State/County', 'jigoshop'), 'required' => true, 'class' => array('form-row-last'), 'rel' => 'shipping-country' )
 		);
+	}
+	
+	public static function instance () {
+		if(!self::$instance) {
+			$class = __CLASS__;
+			self::$instance = new $class;
+		}
+		
+		return self::$instance;
 	}
 	
 	/** Output the billing information form */
@@ -225,6 +243,8 @@ class jigoshop_checkout {
 	function process_checkout() {
 	
 		global $wpdb;
+		
+		do_action('jigoshop_before_checkout_process');
 		
 		if (isset($_POST) && $_POST && !isset($_POST['login'])) :
 

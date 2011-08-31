@@ -2,13 +2,29 @@
 /*
 Plugin Name: Jigoshop - WordPress eCommerce
 Plugin URI: http://jigoshop.com
-Description: An eCommerce plugin for wordpress.
+Description: An eCommerce plugin for WordPress.
 Version: 0.9.8.1
 Author: Jigowatt
 Author URI: http://jigowatt.co.uk
 Requires at least: 3.1
 Tested up to: 3.1.3
 */
+
+/**
+ * Jigoshop
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package    Jigoshop
+ * @category   Core
+ * @author     Jigowatt
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
+ */
 
 @session_start();
 
@@ -202,6 +218,7 @@ function jigoshop_import_start() {
 add_action('import_start', 'jigoshop_import_start');
  
  
+
 ### Functions #########################################################
 
 function jigoshop_init() {
@@ -213,7 +230,7 @@ function jigoshop_init() {
 	add_image_size( 'shop_thumbnail', jigoshop::get_var('shop_thumbnail_w'), jigoshop::get_var('shop_thumbnail_h'), 'true' );
 	add_image_size( 'shop_small', jigoshop::get_var('shop_small_w'), jigoshop::get_var('shop_small_h'), 'true' );
 	add_image_size( 'shop_large', jigoshop::get_var('shop_large_w'), jigoshop::get_var('shop_large_h'), 'true' );
-	
+
 	// Include template functions here so they are pluggable by themes
 	include_once( 'jigoshop_template_functions.php' );
 	

@@ -519,6 +519,7 @@ ul.recent-orders li .refunded, ul.recent-orders li .cancelled {
 }
 .jigoshop #tabs-wrap {
   background: #ececec;
+  width: 850px;
   padding: 7px 9px;
   overflow: hidden;
   margin-top: 0.5em !important;

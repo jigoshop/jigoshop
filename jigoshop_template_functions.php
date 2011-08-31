@@ -1,7 +1,19 @@
 <?php
 /**
- * FUNCTIONS USED IN TEMPLATE FILES
- **/
+ * Functions used in template files
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package    Jigoshop
+ * @category   Core
+ * @author     Jigowatt
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
+ */
 
 /**
  * Front page archive/shop template
@@ -11,7 +23,7 @@ if (!function_exists('jigoshop_front_page_archive')) {
 			
 		global $paged;
 		
-		if (is_front_page() && is_page( get_option('jigoshop_shop_page_id') )) :
+		if ( is_front_page() && is_page( get_option('jigoshop_shop_page_id') )) :
 			
 			if ( get_query_var('paged') ) {
 			    $paged = get_query_var('paged');
@@ -21,7 +33,9 @@ if (!function_exists('jigoshop_front_page_archive')) {
 			    $paged = 1;
 			}
 			
-			query_posts( array( 'post_type' => 'product', 'paged' => $paged ) );
+			query_posts( array( 'page_id' => '', 'post_type' => 'product', 'paged' => $paged ) );
+			
+			define('SHOP_IS_ON_FRONT', true);
 
 		endif;
 	}

@@ -1,13 +1,20 @@
 <?php
 /**
  * Product Class
- * @class jigoshop_product
  * 
  * The JigoShop product class handles individual product data.
  *
- * @author 		Jigowatt
- * @category 	Classes
- * @package 	JigoShop
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package    Jigoshop
+ * @category   Catalog
+ * @author     Jigowatt
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_product {
 	
@@ -113,6 +120,11 @@ class jigoshop_product {
 		return false;
 	}
 	
+	/** Returns whether or not the product has any child product */
+	function has_child () {
+		return sizeof($this->children) ? true : false;
+	}
+	
 	/** Returns whether or not the product post exists */
 	function exists() {
 		if ($this->exists) return true;
@@ -141,14 +153,14 @@ class jigoshop_product {
 	}
 	
 	/** Get the title of the post */
-	function get_title() {
+	function get_title () {
 		$this->get_post_data();
-		return $this->post->post_title;
+		return apply_filters('jigoshop_product_title', $this->post->post_title, $this);
 	}
 	
 	/** Get the add to url */
 	function add_to_cart_url() {
-		if ($this->is_type('grouped')) :
+		if ( $this->has_child() ) :
 			$url = add_query_arg('add-to-cart', 'group');
 			$url = add_query_arg('product', $this->id, $url);
 		else :
@@ -284,7 +296,7 @@ class jigoshop_product {
 	
 	/** Returns whether or not the product is on sale */
 	function is_on_sale() {
-		if ( $this->data['sale_price'] && $this->data['sale_price']==$this->price ) :
+		if ( isset($this->data['sale_price']) && $this->data['sale_price']==$this->price ) :
 			return true;
 		endif;
 		return false;
@@ -359,7 +371,7 @@ class jigoshop_product {
 	/** Returns the price in html format */
 	function get_price_html() {
 		$price = '';
-		if ($this->is_type('grouped')) :
+		if ( $this->has_child() ) :
 			
 			$min_price = '';
 			$max_price = '';

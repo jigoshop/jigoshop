@@ -1,5 +1,5 @@
 === Jigoshop - WordPress eCommerce ===
-Contributors: jigowatt
+Contributors: Jigoshop
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal
 Requires at least: 3.1
 Tested up to: 3.2
@@ -57,6 +57,7 @@ Find out more on the official <a href="http://jigoshop.com" title="WordPress eCo
 = Official Jigoshop Extensions =
 
 * <a href="http://jigoshop.com/extensions/sagepay-form/" title="SagePay Form payment gateway extension of Jigoshop">SagePay Form</a> - SagePay Form payment gateway.
+* <a href="http://jigoshop.com/blog/extensions/authorize-net/" title="Authorize.net payment gateway extension of Jigoshop">Authorize.net</a> - Authorize.net payment gateway.
 * <a href="http://jigoshop.com/extensions/jigoshop-html-email/" title="Jigoshop HTML Emails">Jigoshop HTML Emails</a> - Give your Jigoshop emails a makeover
 * <a href="http://jigoshop.com/extensions/jigoshop-meta-tags/" title="Simple SEO Meta Tags">Simple SEO Meta Tags</a> - Add meta data to your individual product pages
 * <a href="http://jigoshop.com/extensions/table-rate-shipping/" title="Table Rate Shippin">Table Rate Shipping</a> - Define separate shipping rates for regions based on either price, weight or the number of items in a cart
@@ -143,6 +144,7 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * virtual add to cart
 * Shop page can show content
 * SKU display options
+* Fixes for default permalinks
 
 = 0.9.8 =
 

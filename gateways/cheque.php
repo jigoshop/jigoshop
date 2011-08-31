@@ -1,8 +1,20 @@
 <?php
-/*
-Provides a Cheque Payment Gateway for testing purposes.
-Created by Andrew Benbow (andrew@chromeorange.co.uk)
-*/
+/**
+ * Cheque Payment Gateway (BETA)
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package    Jigoshop
+ * @category   Checkout
+ * @author     Andrew Benbow
+ * @copyright  Copyright © 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
+ */
+
 class jigoshop_cheque extends jigoshop_payment_gateway {
 		
 	public function __construct() { 

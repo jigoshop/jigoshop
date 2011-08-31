@@ -1,4 +1,19 @@
 <?php
+/**
+ * Jigoshop queries
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package    Jigoshop
+ * @category   Core
+ * @author     Jigowatt
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
+ */
 
 ### Get unfiltered list of posts in current view for use in loop + widgets
 
@@ -86,6 +101,7 @@ function jigoshop_get_post_ids() {
 	$args = array_merge(
 		$wp_query->query,
 		array(
+			'page_id' => '',
 			'posts_per_page' => -1,
 			'post_type' => 'product',
 			'post_status' => 'publish',
