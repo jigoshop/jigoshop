@@ -1,4 +1,4 @@
-<?php
+<?php defined('ABSPATH') or die('No direct script access.');
 
 /**
  * Templates are in the 'templates' folder. jigoshop looks for theme
