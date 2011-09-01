@@ -36,7 +36,7 @@ class jigoshop {
 	const SHOP_LARGE_H = '300';
 
 	/** constructor */
-	function __construct () {
+	private function __construct () {
 		global $wpdb;
 		
 		// Vars
@@ -50,6 +50,8 @@ class jigoshop {
 		// Hooks
 		add_filter('wp_redirect', array(&$this, 'redirect'), 1, 2);
 	}
+    
+    private function __clone(){}
 	
 	/** get */
 	public static function get() {
