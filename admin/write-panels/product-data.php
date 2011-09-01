@@ -332,6 +332,11 @@ function jigoshop_product_data_box() {
 												endif;
 												?>
 											</div>
+											<div class="multiselect-controls">
+												<a class="check-all" href="#">Check All</a>&nbsp;|
+												<a class="uncheck-all" href="#">Uncheck All</a>&nbsp;|
+												<a class="toggle" href="#">Toggle</a>
+											</div>
 										<?php elseif ($tax->attribute_type=="text") : ?>
 											<input type="text" name="attribute_values[<?php echo $i; ?>]" value="<?php if (isset($attribute['value'])) echo $attribute['value']; ?>" placeholder="<?php _e('Comma separate terms', 'jigoshop'); ?>" />
 										<?php endif; ?>

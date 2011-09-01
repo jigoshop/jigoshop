@@ -932,3 +932,9 @@ table.jigoshop_attributes div.multiselect input {
   left: 0;
   width: auto !important;
 }
+table.jigoshop_attributes div.multiselect-controls {
+  margin-bottom: 4px;
+}
+table.jigoshop_attributes div.multiselect-controls a {
+  text-decoration: none;
+}

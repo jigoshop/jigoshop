@@ -296,12 +296,31 @@ jQuery( function($){
 			row_indexes();
 		});
 
-		jQuery('div.multiselect input').click(function(){
+		var multiselectClicked = function(){
 			if ($(this).is(':checked')){
 				$(this).parent().addClass('selected');
 			} else {
 				$(this).parent().removeClass('selected');
 			}
+		};
+
+		jQuery('div.multiselect input').click(multiselectClicked);
+
+		jQuery('div.multiselect-controls a').click(function(){
+			var items = $(this).parent().prev().find('input[type=checkbox]');
+			if ($(this).hasClass('toggle')){
+				items.each(function(){
+					$(this).attr('checked', !$(this).is(':checked'));
+					multiselectClicked.call(this);
+				});
+			} else if ($(this).hasClass('check-all')){
+				items.attr('checked', true);
+				items.parent().addClass('selected');
+			} else if ($(this).hasClass('uncheck-all')){
+				items.attr('checked', false);
+				items.parent().removeClass('selected');
+			}
+			return false;
 		});
 
 
