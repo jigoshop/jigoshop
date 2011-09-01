@@ -21,7 +21,7 @@ class jigoshop {
 	
 	public static $errors = array();
 	public static $messages = array();
-	public static $attribute_taxonomies;
+	private static $attribute_taxonomies = NULL;
 	
 	public static $plugin_url;
 	public static $plugin_path;
@@ -36,11 +36,8 @@ class jigoshop {
 	const SHOP_LARGE_H = '300';
 
 	/** constructor */
-	private function __construct () {
-		global $wpdb;
-		
+	private function __construct () {		
 		// Vars
-		self::$attribute_taxonomies = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."jigoshop_attribute_taxonomies;");
 		if (isset($_SESSION['errors'])) self::$errors = $_SESSION['errors'];
 		if (isset($_SESSION['messages'])) self::$messages = $_SESSION['messages'];
 		
@@ -60,6 +57,21 @@ class jigoshop {
             self::$_instance = new $c;
         }
         return self::$_instance;
+    }
+    
+    /**
+     * Get attribute taxonomies. Taxonomies are lazy loaded.
+     * 
+     * @return array of stdClass objects representing attributes
+     */
+    public static function getAttributeTaxonomies() {
+        global $wpdb;
+                
+        if(self::$attribute_taxonomies === NULL) {
+            self::$attribute_taxonomies = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."jigoshop_attribute_taxonomies;"); 
+        }
+        
+        return self::$attribute_taxonomies;
     }
 	
 	/**
