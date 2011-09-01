@@ -16,35 +16,35 @@
  */
 
 function get_jigoshop_order_tracking ($atts) {
-	return jigoshop::shortcode_wrapper('jigoshop_order_tracking', $atts); 
+	return jigoshop::shortcode_wrapper('jigoshop_order_tracking', $atts);
 }
 
 function jigoshop_order_tracking( $atts ) {
-	
+
 	extract(shortcode_atts(array(
 	), $atts));
-	
+
 	global $post;
-	
+
 	if ($_POST) :
-		
+
 		$order = &new jigoshop_order();
-		
+
 		if (isset($_POST['orderid']) && $_POST['orderid'] > 0) $order->id = (int) $_POST['orderid']; else $order->id = 0;
 		if (isset($_POST['order_email']) && $_POST['order_email']) $order_email = trim($_POST['order_email']); else $order_email = '';
-		
+
 		if ( !jigoshop::verify_nonce('order_tracking') ):
-		
+
 			echo '<p>'.__('You have taken too long. Please refresh the page and retry.', 'jigoshop').'</p>';
-				
+
 		elseif ($order->id && $order_email && $order->get_order( $order->id )) :
 
 			if ($order->billing_email == $order_email) :
-		
+
 				echo '<p>'.sprintf( __('Order #%s which was made %s has the status &ldquo;%s&rdquo;', 'jigoshop'), $order->id, human_time_diff(strtotime($order->order_date), current_time('timestamp')).__(' ago', 'jigoshop'), $order->status );
-			
+
 				if ($order->status == 'completed') echo __(' and was completed ', 'jigoshop').human_time_diff(strtotime($order->completed_date), current_time('timestamp')).__(' ago', 'jigoshop');
-			
+
 				echo '.</p>';
 
 				?>
@@ -52,8 +52,8 @@ function jigoshop_order_tracking( $atts ) {
 				<table class="shop_table">
 					<thead>
 						<tr>
+							<th><?php _e('ID/SKU', 'jigoshop'); ?></th>
 							<th><?php _e('Title', 'jigoshop'); ?></th>
-							<th><?php _e('SKU', 'jigoshop'); ?></th>
 							<th><?php _e('Price', 'jigoshop'); ?></th>
 							<th><?php _e('Quantity', 'jigoshop'); ?></th>
 						</tr>
@@ -82,22 +82,35 @@ function jigoshop_order_tracking( $atts ) {
 					</tfoot>
 					<tbody>
 						<?php
-						foreach($order->items as $order_item) : 
-						
-							$_product = &new jigoshop_product( $order_item['id'] );
+						foreach($order->items as $order_item) :
+
+							if (isset($order_item['variation_id']) && $order_item['variation_id'] > 0) :
+								$_product = &new jigoshop_product_variation( $order_item['variation_id'] );
+							else :
+								$_product = &new jigoshop_product( $order_item['id'] );
+							endif;
+
 							echo '<tr>';
-							echo '<td>'.$_product->get_title().'</td>';
+							echo '<td class="product-name">'.$_product->get_title();
+
+							if (isset($_product->variation_data)) :
+								echo jigoshop_get_formatted_variation( $_product->variation_data );
+							endif;
+
+							echo '</td>';
+
 							echo '<td>'.$_product->sku.'</td>';
+							echo '<td>'.$_product->get_title().'</td>';
 							echo '<td>'.jigoshop_price($_product->get_price()).'</td>';
 							echo '<td>'.$order_item['qty'].'</td>';
-							
+
 							echo '</tr>';
-								
+
 						endforeach;
 						?>
 					</tbody>
 				</table>
-				
+
 				<div style="width: 49%; float:left;">
 					<h2><?php _e('Billing Address', 'jigoshop'); ?></h2>
 					<p><?php
@@ -118,21 +131,21 @@ function jigoshop_order_tracking( $atts ) {
 				</div>
 				<div class="clear"></div>
 				<?php
-				
+
 			else :
 				echo '<p>'.__('Sorry, we could not find that order id in our database. <a href="'.get_permalink($post->ID).'">Want to retry?</a>', 'jigoshop').'</p>';
 			endif;
 		else :
 			echo '<p>'.__('Sorry, we could not find that order id in our database. <a href="'.get_permalink($post->ID).'">Want to retry?</a>', 'jigoshop').'</p>';
-		endif;	
-	
+		endif;
+
 	else :
-	
+
 		?>
 		<form action="<?php echo get_permalink($post->ID); ?>" method="post" class="track_order">
-			
+
 			<p><?php _e('To track your order please enter your Order ID in the box below and press return. This was given to you on your receipt and in the confirmation email you should have received.', 'jigoshop'); ?></p>
-			
+
 			<p class="form-row form-row-first"><label for="orderid"><?php _e('Order ID', 'jigoshop'); ?></label> <input class="input-text" type="text" name="orderid" id="orderid" placeholder="<?php _e('Found in your order confirmation email.', 'jigoshop'); ?>" /></p>
 			<p class="form-row form-row-last"><label for="order_email"><?php _e('Billing Email', 'jigoshop'); ?></label> <input class="input-text" type="text" name="order_email" id="order_email" placeholder="<?php _e('Email you used during checkout.', 'jigoshop'); ?>" /></p>
 			<div class="clear"></div>
@@ -140,7 +153,7 @@ function jigoshop_order_tracking( $atts ) {
 			<?php jigoshop::nonce_field('order_tracking') ?>
 		</form>
 		<?php
-		
-	endif;	
-	
+
+	endif;
+
 }

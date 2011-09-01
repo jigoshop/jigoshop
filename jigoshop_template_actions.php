@@ -61,6 +61,7 @@ add_action( 'simple_add_to_cart', 'jigoshop_simple_add_to_cart' );
 add_action( 'virtual_add_to_cart', 'jigoshop_simple_add_to_cart' ); 
 add_action( 'downloadable_add_to_cart', 'jigoshop_downloadable_add_to_cart' ); 
 add_action( 'grouped_add_to_cart', 'jigoshop_grouped_add_to_cart' ); 
+add_action( 'variable_add_to_cart', 'jigoshop_variable_add_to_cart' ); 
 
 /* Product Add to Cart forms */
 add_action( 'jigoshop_add_to_cart_form', 'jigoshop_add_to_cart_form_nonce', 10);

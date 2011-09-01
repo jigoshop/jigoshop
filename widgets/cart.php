@@ -17,74 +17,132 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
- 
 class Jigoshop_Widget_Cart extends WP_Widget {
-	
-	/** constructor */
-	function Jigoshop_Widget_Cart() {
-		$widget_ops = array( 'description' => __( "Shopping Cart for the sidebar.", 'jigoshop') );
-		parent::WP_Widget('shopping_cart', __('Shopping Cart', 'jigoshop'), $widget_ops);
-	}
 
-	/** @see WP_Widget::widget */
-	function widget( $args, $instance ) {
+    /**
+     * Constructor
+     * 
+     * Setup the widget with the available options
+     */
+    public function __construct() {
+    	
+        $options = array(
+        	'description' => __("Shopping Cart for the sidebar.", 'jigoshop')
+        );
+        
+        // Create the widget
+        parent::__construct('shopping_cart', __('Shopping Cart', 'jigoshop'), $options);
+    }
 
-		if (is_cart()) return;
+    /**
+     * Widget
+     * 
+     * Display the widget in the sidebar
+     *
+     * @param	array	sidebar arguments
+     * @param	array	instance
+     */
+    public function widget($args, $instance) {
+
+		// Hide widget if page is the cart
+        if (is_cart())
+            return false;
+
+        extract($args);
+        
+        // Set the widget title
+        $title = ( ! empty($instance['title']) ) ? $instance['title'] : __('Cart', 'jigoshop');
+        $title = apply_filters('widget_title', $title, $instance, $this->id_base);
+
+		// Print the widget wrapper & title
+        echo $before_widget;
+        echo $before_title . $title . $after_title;
+        
+        // Get the contents of the cart
+        $cart_contents = jigoshop_cart::$cart_contents;
+        
+        // If there are items in the cart print out a list of products
+        if (sizeof($cart_contents) > 0) {
+        	
+        	echo '<ul class="cart_list">'; // Open the list
+        
+            foreach ($cart_contents as $key => $value) {
+            	// Get product instance
+                $_product = $value['data'];
+                
+                if ($_product->exists() AND $value['quantity'] > 0) {
+                    echo '<li><a href="' . get_permalink($_product->id) . '">';
+					
+					// Print the product thumbnail image if exists else display placeholder
+                    echo (has_post_thumbnail($_product->id))
+                    		? get_the_post_thumbnail($_product->id, 'shop_tiny') 
+                    		: jigoshop_get_image_placeholder( 'shop_tiny' );
+
+					// Print the product title
+                    echo apply_filters('jigoshop_cart_widget_product_title', $_product->get_title(), $_product);
+                    echo '</a>';
+                    
+                    // Print the quantity & price per product
+                    echo $value['quantity'].' &times; '.jigoshop_price($_product->get_price());
+                    echo '</li>';
+                }
+            }
+            
+            echo '</ul>'; // Close the list
+            
+            // Print the cart total
+            echo '<p class="total"><strong>';
+            	_e( ((get_option('jigoshop_prices_include_tax') == 'yes') ? 'Total' : 'Subtotal'), 'jigoshop');
+            	echo ':</strong> ' . jigoshop_cart::get_cart_total();
+            echo '</p>';
+
+            do_action('jigoshop_widget_shopping_cart_before_buttons');
+
+			// Print view cart & checkout buttons
+            echo '<p class="buttons">'
+					.'<a href="' . jigoshop_cart::get_cart_url() . '" class="button">' . __('View Cart &rarr;', 'jigoshop') . '</a>'
+					.'<a href="' . jigoshop_cart::get_checkout_url() . '" class="button checkout">' . __('Checkout &rarr;', 'jigoshop') . '</a>';
+            echo '</p>';
+            
+        } else {
+        	echo '<span class="empty">' . __('No products in the cart.', 'jigoshop') . '</span>';
+        }
 		
-		extract($args);
-		if ( !empty($instance['title']) ) $title = $instance['title']; else $title = __('Cart', 'jigoshop');
-		$title = apply_filters('widget_title', $title, $instance, $this->id_base);
+		// Print closing widget wrapper
+        echo $after_widget;
+    }
 
-		echo $before_widget;
-		if ( $title ) echo $before_title . $title . $after_title;
-		
-		echo '<ul class="cart_list">';
-		if (sizeof(jigoshop_cart::$cart_contents)>0) : foreach (jigoshop_cart::$cart_contents as $item_id => $values) :
-			$_product = $values['data'];
-			if ($_product->exists() && $values['quantity']>0) :
-				echo '<li><a href="'.get_permalink($item_id).'">';
-				
-				if (has_post_thumbnail($values['product_id'])) echo get_the_post_thumbnail($values['product_id'], 'shop_tiny');  
-				else echo '<img src="'.jigoshop::plugin_url(). '/assets/images/placeholder.png" alt="Placeholder" width="'.jigoshop::get_var('shop_tiny_w').'" height="'.jigoshop::get_var('shop_tiny_h').'" />'; 
-				
-				echo apply_filters('jigoshop_cart_widget_product_title', $_product->get_title(), $_product).'</a> '.$values['quantity'].' &times; '.jigoshop_price($_product->get_price()).'</li>';
-			endif;
-		endforeach; 
-		else: echo '<li class="empty">'.__('No products in the cart.','jigoshop').'</li>'; endif;
-		echo '</ul>';
-		
-		if (sizeof(jigoshop_cart::$cart_contents)>0) :
-			echo '<p class="total"><strong>';
-			
-			if (get_option('js_prices_include_tax')=='yes') :
-				_e('Total', 'jigoshop');
-			else :
-				_e('Subtotal', 'jigoshop');
-			endif;
-	
-			echo ':</strong> '.jigoshop_cart::get_cart_total();
-			
-			echo '</p>';
-			
-			do_action( 'jigoshop_widget_shopping_cart_before_buttons' );
-			
-			echo '<p class="buttons"><a href="'.jigoshop_cart::get_cart_url().'" class="button">'.__('View Cart &rarr;','jigoshop').'</a> <a href="'.jigoshop_cart::get_checkout_url().'" class="button checkout">'.__('Checkout &rarr;','jigoshop').'</a></p>';
-		endif;
-		echo $after_widget;
-	}
+    /**
+     * Update
+     * 
+     * Handles the processing of information entered in the wordpress admin
+     *
+     * @param	array	new instance
+     * @param	array	old instance
+     * @return	array	instance
+     */
+    public function update($new_instance, $old_instance) {
+    	$instance = $old_instance;
+        $instance['title'] = strip_tags(stripslashes($new_instance['title']));
+        return $instance;
+    }
 
-	/** @see WP_Widget::update */
-	function update( $new_instance, $old_instance ) {
-		$instance['title'] = strip_tags(stripslashes($new_instance['title']));
-		return $instance;
-	}
-
-	/** @see WP_Widget::form */
-	function form( $instance ) {
-	?>
-	<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'jigoshop') ?></label>
-	<input type="text" class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" value="<?php if (isset ( $instance['title'])) {echo esc_attr( $instance['title'] );} ?>" /></p>
-	<?php
-	}
+    /**
+     * Form
+     * 
+     * Displays the form for the wordpress admin
+     *
+     * @param	array	instance
+     */
+    public function form($instance) {
+    	// Get values from instance
+    	$title = (isset($instance['title'])) ? esc_attr($instance['title']) : null;
+    
+    	// Widget title
+    	echo '<p>';
+		echo '<label for="' . $this->get_field_id('title') . '">' . _e('Title:', 'jigoshop') . '</label>';
+		echo '<input type="text" class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" value="' . $title . '" />';
+       	echo '</p>';
+    }
 
 } // class Jigoshop_Widget_Cart

@@ -15,11 +15,47 @@
  * @author     Jigowatt
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
- */
-
+ 
 /**
  * Custom columns
  **/
+ function jigoshop_edit_variation_columns($columns){
+	
+	$columns = array();
+	
+	$columns["cb"] = "<input type=\"checkbox\" />";
+	$columns["thumb"] = __("Thumb", 'jigoshop');
+	$columns["id"] = __("ID", 'jigoshop');
+	$columns["title"] = __("Name", 'jigoshop');
+	$columns["parent"] = __("Parent Product", 'jigoshop');
+
+	return $columns;
+}
+add_filter('manage_edit-product_variation_columns', 'jigoshop_edit_variation_columns');
+
+function jigoshop_custom_variation_columns($column) {
+	global $post;
+	$product = &new jigoshop_product($post->ID);
+
+	switch ($column) {
+		case "thumb" :
+			if (has_post_thumbnail($post->ID)) :
+				echo get_the_post_thumbnail($post->ID, 'shop_tiny');
+			endif;
+		break;
+		case "id" :
+			echo '#'.$post->ID;
+		break;
+		case "parent" :
+			if ($post->post_parent) :
+				$parent = get_post( $post->post_parent );
+				echo '#'.$parent->ID.' &mdash; <a href="'.admin_url('post.php?post='.$parent->ID.'&action=edit').'">'.$parent->post_title.'</a>';
+			endif;
+		break;
+	}
+}
+add_action('manage_product_variation_posts_custom_column', 'jigoshop_custom_variation_columns', 2);
+
 function jigoshop_edit_product_columns($columns){
 	
 	$columns = array();

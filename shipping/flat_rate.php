@@ -60,23 +60,23 @@ class flat_rate extends jigoshop_shipping_method {
 				if ($_product->exists() && $values['quantity']>0) :
 					
 					$item_shipping_price = ($this->cost + $this->get_fee( $this->fee, $_product->get_price() )) * $values['quantity'];
-					if ($_product->is_type( 'simple' )) {
-						$this->shipping_total = $this->shipping_total + $item_shipping_price;
+					
+					$this->shipping_total = $this->shipping_total + $item_shipping_price;
 
-						if ( $_product->is_shipping_taxable() && $this->tax_status=='taxable' ) :
+					if ( $_product->is_shipping_taxable() && $this->tax_status=='taxable' ) :
+					
+						$rate = $_tax->get_shipping_tax_rate( $_product->data['tax_class'] );
 						
-							$rate = $_tax->get_shipping_tax_rate( $_product->data['tax_class'] );
-							
-							if ($rate>0) :
-							
-								$tax_amount = $_tax->calc_shipping_tax( $item_shipping_price, $rate );
-							
-								$this->shipping_tax = $this->shipping_tax + $tax_amount;
-							
-							endif;
+						if ($rate>0) :
+						
+							$tax_amount = $_tax->calc_shipping_tax( $item_shipping_price, $rate );
+						
+							$this->shipping_tax = $this->shipping_tax + $tax_amount;
 						
 						endif;
-					}
+					
+					endif;
+					
 				endif;
 			endforeach; endif;
 		endif;			

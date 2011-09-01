@@ -1,11 +1,10 @@
 === Jigoshop - WordPress eCommerce ===
-Contributors: Jigoshop
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal
 Requires at least: 3.1
-Tested up to: 3.2
-Stable tag: 0.9.8.1
- 
-A feature packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customisability. 
+Tested up to: 3.2.1
+Stable tag: 1.0-Kaboom1 (RC1)
+
+A feature packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customisability.
 
 == Description ==
 
@@ -57,7 +56,6 @@ Find out more on the official <a href="http://jigoshop.com" title="WordPress eCo
 = Official Jigoshop Extensions =
 
 * <a href="http://jigoshop.com/extensions/sagepay-form/" title="SagePay Form payment gateway extension of Jigoshop">SagePay Form</a> - SagePay Form payment gateway.
-* <a href="http://jigoshop.com/blog/extensions/authorize-net/" title="Authorize.net payment gateway extension of Jigoshop">Authorize.net</a> - Authorize.net payment gateway.
 * <a href="http://jigoshop.com/extensions/jigoshop-html-email/" title="Jigoshop HTML Emails">Jigoshop HTML Emails</a> - Give your Jigoshop emails a makeover
 * <a href="http://jigoshop.com/extensions/jigoshop-meta-tags/" title="Simple SEO Meta Tags">Simple SEO Meta Tags</a> - Add meta data to your individual product pages
 * <a href="http://jigoshop.com/extensions/table-rate-shipping/" title="Table Rate Shippin">Table Rate Shipping</a> - Define separate shipping rates for regions based on either price, weight or the number of items in a cart
@@ -103,25 +101,25 @@ If you need a theme built, or have a theme that needs styling, give us a shout a
 
 Jigoshop comes with a .po file and is localisation ready. If you'd like to share your localisation with us please get in touch!
 
-= Do you have an X payment gateway = 
+= Do you have an X payment gateway =
 
 We will be introducing payment gateways incrementally, however, not all will be in the free version. If you want to request a payment gateway, or you have built one and you would like to share it with us, please get in touch.
 
-= Do I have access to my order and product data? = 
+= Do I have access to my order and product data? =
 
 Orders and products are stored as custom post types in the WordPress database; you have full control of them and can import/export using WordPress' functions.
 
-= Will tax settings work in my country? = 
+= Will tax settings work in my country? =
 
 Jigoshop has a flexible tax rule system which allows you to define tax rates per country - it should allow you to do what you want.
 
-= I need hosting! = 
+= I need hosting! =
 
 We offer optimised hosting packages starting from 10 GBP per month at http://jigowatt.co.uk
 
-= I need support! = 
+= I need support! =
 
-We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">community forum</a> for getting help from other users, however, if you want priority, dedicated support from us we offer support packages - see our website for details. 
+We have a <a href="http://jigoshop.com/forums" title="Jigoshop support forum">community forum</a> for getting help from other users, however, if you want priority, dedicated support from us we offer support packages - see our website for details.
 
 == Screenshots ==
 
@@ -136,6 +134,19 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 9. Checkout
 
 == Changelog ==
+= 1.0 Kaboom 1 =
+* Added Dutch translation
+* Product Variations
+* Revamped order items panel
+* Grouped products can contain downloadable, simple, or virtual products
+* Changed mail from/to for store
+* Download limiter fix
+* Settings strip slashes
+* Moved update/remove from cart code so totals are updated and shipping is updated
+* Fixed 'needs shipping' for downloadable products
+* Made my account downloads respect order status
+* Filter for ship to billing defaults
+* Optimised scripts.js (no longer a php file)
 
 = 0.9.8.1 =
 * Changes to allow new product types to be added by plugins
@@ -145,6 +156,9 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * Shop page can show content
 * SKU display options
 * Fixes for default permalinks
+* Better ajax handling
+* Better shortcode handling with cache
+* Filters added to email contents
 
 = 0.9.8 =
 
