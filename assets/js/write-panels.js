@@ -295,6 +295,18 @@ jQuery( function($){
 			jQuery(row).before(next_row);
 			row_indexes();
 		});
-
-
+        
+        //when product type is changed to variable product, we should disable 'select' attributes
+        function update_attributes_list() {
+            if(jQuery('#product-type').val() == 'variable') {
+                jQuery('.attribute_taxonomy option[data-type=select]').attr('disabled', 'disabled');
+            } else {
+                jQuery('.attribute_taxonomy option[data-type=select]').removeAttr('disabled');
+            }
+        }
+        
+        jQuery('#product-type').change(function(){
+            update_attributes_list();
+        });
+        update_attributes_list();
 });
