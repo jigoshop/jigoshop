@@ -11,10 +11,9 @@
  * @package    Jigoshop
  * @category   Checkout
  * @author     Andrew Benbow
- * @copyright  Copyright © 2011 Jigowatt Ltd.
+ * @copyright  Copyright ¬© 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
-
 class jigoshop_cheque extends jigoshop_payment_gateway {
 		
 	public function __construct() { 

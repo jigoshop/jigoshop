@@ -70,13 +70,13 @@ small.note {
 #breadcrumb {
   overflow: hidden;
   zoom: 1;
-  margin: 0 0 1em !important;
+  margin: 0 0 1em;
   padding: 0;
   font-size: 0.92em;
-  color: #999 !important;
+  color: #999;
 }
 #breadcrumb a {
-  color: #999 !important;
+  color: #999;
 }
 /* =Product Page
 -------------------------------------------------------------- */
@@ -166,9 +166,9 @@ div.product #tabs ul.tabs {
   background: #ddd;
   overflow: hidden;
   zoom: 1;
-  margin: 0 !important;
+  margin: 0;
   padding: 4px 4px 0;
-  list-style: none outside !important;
+  list-style: none outside;
 }
 div.product #tabs ul.tabs li {
   float: left;
@@ -223,10 +223,10 @@ form.cart div.quantity {
 }
 form.cart table {
   font-size: 12px;
-  border-width: 0 0 1px 0 !important;
+  border-width: 0 0 1px 0;
 }
 form.cart table td {
-  padding: 4px 4px 4px 0 !important;
+  padding: 4px 4px 4px 0;
 }
 form.cart table div.quantity {
   float: none;
@@ -237,10 +237,17 @@ form.cart table small.stock {
   display: block;
   float: none;
 }
+form.cart .variations label {
+  font-weight: bold;
+}
+form.cart .variations select {
+  width: 100%;
+  float: left;
+}
 form.cart .button {
   vertical-align: middle;
   float: left;
-  margin: 2px 0 !important;
+  margin: 2px 0;
 }
 span.onsale {
   background: green;
@@ -260,8 +267,8 @@ span.onsale {
   border-radius: 20px;
 }
 .products ul, ul.products {
-  margin: 0 0 14px !important;
-  padding: 0 !important;
+  margin: 0 0 14px;
+  padding: 0;
   list-style: none;
   float: left;
 }
@@ -271,7 +278,7 @@ span.onsale {
 .products li {
   float: left;
   margin: 0 10px 20px 0;
-  padding: 0 !important;
+  padding: 0;
   position: relative;
   width: 150px;
 }
@@ -285,10 +292,10 @@ span.onsale {
   text-decoration: none;
 }
 .products li a img {
-  width: 150px !important;
-  height: 150px !important;
+  width: 150px;
+  height: 150px;
   display: block;
-  margin: 0 0 8px !important;
+  margin: 0 0 8px;
   border: 1px solid #ddd;
 }
 .products li a:hover img {
@@ -326,27 +333,27 @@ span.onsale {
   margin-right: 0;
 }
 table.shop_attributes {
-  border: 0 !important;
-  border-top: 1px dotted #ccc !important;
+  border: 0;
+  border-top: 1px dotted #ccc;
 }
 table.shop_attributes th {
   width: 150px;
   font-weight: bold;
   padding: 8px;
-  color: black !important;
+  color: black;
   border-bottom: 1px dotted #ccc;
-  margin: 0 !important;
+  margin: 0;
   line-height: 1.5em;
 }
 table.shop_attributes td {
   font-style: italic;
-  padding: 0 !important;
+  padding: 0;
   border-bottom: 1px dotted #ccc;
-  margin: 0 !important;
+  margin: 0;
   line-height: 1.5em;
 }
 table.shop_attributes td p {
-  margin: 0 !important;
+  margin: 0;
   padding: 8px;
 }
 table.shop_attributes .alt td, table.shop_attributes .alt th {
@@ -358,15 +365,15 @@ a.button,
 button.button,
 input.button,
 #review_form #submit {
-  color: #fff !important;
+  color: #fff;
   background: #ff9c07;
   padding: 6px;
-  line-height: 1em !important;
+  line-height: 1em;
   margin: 4px 2px 0 0;
   float: left;
-  font-size: 12px !important;
-  width: auto !important;
-  vertical-align: middle !important;
+  font-size: 12px;
+  width: auto;
+  vertical-align: middle;
   text-align: center;
   text-decoration: none;
   border: none;
@@ -387,15 +394,15 @@ input.button:hover,
   float: none;
 }
 .button-alt {
-  color: #fff !important;
+  color: #fff;
   background: #069bcd;
   padding: 6px;
-  line-height: 1em !important;
+  line-height: 1em;
   margin: 4px 2px 0 0;
   float: left;
-  font-size: 12px !important;
-  width: auto !important;
-  vertical-align: middle !important;
+  font-size: 12px;
+  width: auto;
+  vertical-align: middle;
   text-align: center;
   text-decoration: none;
   border: none;
@@ -440,7 +447,7 @@ input.button:hover,
 #reviews #comments ol.commentlist {
   overflow: hidden;
   zoom: 1;
-  margin: 0 !important;
+  margin: 0;
 }
 #reviews #comments ol.commentlist li {
   padding: 00;
@@ -499,11 +506,11 @@ input.button:hover,
   overflow: hidden;
   zoom: 1;
   border: 1px solid #E7E7E7;
-  margin: 0 !important;
+  margin: 0;
   padding: 10px 20px 20px;
 }
 #review_form #respond p {
-  margin: 0 0 10px !important;
+  margin: 0 0 10px;
 }
 p.stars {
   overflow: hidden;
@@ -569,11 +576,11 @@ table.shop_table th {
   font-size: 12px;
   font-weight: bold;
   line-height: 18px;
-  padding: 9px 12px !important;
+  padding: 9px 12px;
 }
 table.shop_table td {
   border-top: 1px solid #E7E7E7;
-  padding: 6px 12px !important;
+  padding: 6px 12px;
   vertical-align: middle;
 }
 table.shop_table td a.button {
@@ -586,7 +593,7 @@ table.my_account_orders {
   font-size: 0.85em;
 }
 table.my_account_orders th, table.my_account_orders td {
-  padding: 4px 8px !important;
+  padding: 4px 8px;
   vertical-align: top;
 }
 table.my_account_orders .button {
@@ -596,13 +603,13 @@ table.my_account_orders .button {
 /* =Cart Sidebar
 -------------------------------------------------------------- */
 ul.cart_list, ul.product_list_widget {
-  list-style: none outside !important;
-  padding: 0 !important;
-  margin: 0 !important;
+  list-style: none outside;
+  padding: 0;
+  margin: 0;
 }
 ul.cart_list li, ul.product_list_widget li {
-  padding: 4px 0 !important;
-  margin: 0 !important;
+  padding: 4px 0;
+  margin: 0;
   overflow: hidden;
   zoom: 1;
 }
@@ -618,7 +625,7 @@ ul.cart_list li img, ul.product_list_widget li img {
 .widget_shopping_cart .total {
   border-top: 3px double #ddd;
   padding: 4px 0 0;
-  margin: 0 !important;
+  margin: 0;
 }
 .widget_shopping_cart .total strong {
   min-width: 40px;
@@ -653,13 +660,27 @@ td.actions .coupon label {
   display: none;
 }
 td.actions .coupon .input-text {
-  width: 80px !important;
+  width: 80px;
   float: left;
-  margin: 1px 6px 0 0 !important;
+  margin: 1px 6px 0 0;
 }
 td.actions .button-alt {
   float: right;
   margin: 2px 0 0 6px;
+}
+td.product-name dl.variation {
+  margin: 0;
+}
+td.product-name dl.variation dt {
+  font-weight: bold;
+  display: inline;
+  margin: 0 4px 0 0;
+  padding: 0;
+}
+td.product-name dl.variation dd {
+  display: inline;
+  margin: 0 12px 0 0;
+  padding: 0;
 }
 td.quantity {
   min-width: 80px;
@@ -673,17 +694,17 @@ td.quantity {
   width: 20px;
   display: inline;
   padding: 1px 5px 2px;
-  line-height: 1em !important;
+  line-height: 1em;
   vertical-align: middle;
 }
 .quantity input.plus, .quantity input.minus {
   background: #ccc;
   padding: 4px;
   vertical-align: middle;
-  line-height: 1em !important;
+  line-height: 1em;
   border: none;
   width: 20px;
-  color: #fff !important;
+  color: #fff;
   cursor: pointer;
 }
 .quantity input.minus {
@@ -707,9 +728,9 @@ td.quantity {
 }
 .cart input {
   width: 100px;
-  margin: 0 !important;
+  margin: 0;
   vertical-align: middle;
-  line-height: 1em !important;
+  line-height: 1em;
 }
 .col2-set {
   overflow: hidden;
@@ -747,8 +768,8 @@ td.quantity {
   margin: 20px 0 0 0;
 }
 .cart-collaterals .shipping_calculator .button {
-  width: 225px !important;
-  float: none !important;
+  width: 225px;
+  float: none;
   display: block;
 }
 .cart-collaterals .shipping_calculator .col2-set .col-1, .cart-collaterals .shipping_calculator .col2-set .col-2 {
@@ -760,21 +781,21 @@ td.quantity {
   text-align: right;
 }
 .cart-collaterals .cart_totals p {
-  margin: 0 !important;
+  margin: 0;
 }
 .cart-collaterals .cart_totals table {
   border-collapse: separate;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  margin: 0 0 6px !important;
+  margin: 0 0 6px;
   padding: 0;
 }
 .cart-collaterals .cart_totals table tr:first-child th, .cart-collaterals .cart_totals table tr:first-child td {
-  border-top: 0 !important;
+  border-top: 0;
 }
 .cart-collaterals .cart_totals table td, .cart-collaterals .cart_totals table th {
-  padding: 6px 12px !important;
+  padding: 6px 12px;
 }
 .cart-collaterals .cart_totals table small {
   display: block;
@@ -798,7 +819,7 @@ td.quantity {
   overflow: hidden;
   zoom: 1;
   padding: 3px;
-  margin: 0 0 6px !important;
+  margin: 0 0 6px;
 }
 .form-row label {
   display: block;
@@ -809,7 +830,7 @@ td.quantity {
 .form-row select {
   width: 100%;
   cursor: pointer;
-  margin: 0 !important;
+  margin: 0;
 }
 .form-row .required {
   color: #c00;
@@ -903,17 +924,17 @@ form.login {
   text-align: left;
   padding: 1em;
   border-bottom: 1px solid #eee;
-  margin: 0 !important;
+  margin: 0;
   list-style: none outside;
 }
 #payment ul.payment_methods li {
   line-height: 2em;
   text-align: left;
-  margin: 0 !important;
+  margin: 0;
   font-weight: normal;
 }
 #payment ul.payment_methods li input {
-  margin: 0 1em 0 0 !important;
+  margin: 0 1em 0 0;
 }
 #payment ul.payment_methods li img {
   vertical-align: middle;
@@ -929,7 +950,7 @@ form.login {
   margin: 0;
 }
 #payment .terms {
-  padding: 0 1em 0 !important;
+  padding: 0 1em 0;
   text-align: right;
 }
 #payment div.payment_box {
@@ -980,8 +1001,8 @@ div.shipping-address {
 }
 #shiptobilling {
   float: right;
-  line-height: 1.62em !important;
-  margin: 0 0 0 0 !important;
+  line-height: 1.62em;
+  margin: 0 0 0 0;
   padding: 0;
 }
 #shiptobilling label {
@@ -1040,23 +1061,23 @@ div.shipping-address {
 -------------------------------------------------------------- */
 .widget_price_filter .price_slider_wrapper .button {
   float: right;
-  margin: 0 !important;
+  margin: 0;
 }
 .widget_price_filter .price_slider_wrapper .price_slider {
   margin: 1em .6em .6em;
 }
 .widget_price_filter .price_slider_wrapper .price_slider .ui-slider-handle {
-  outline: 0 !important;
+  outline: 0;
 }
 .widget_price_filter .price_slider_wrapper .price_slider_amount {
   overflow: hidden;
   line-height: 2em;
 }
 .widget_layered_nav ul {
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-  list-style: none outside !important;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: none outside;
 }
 .widget_layered_nav ul li {
   overflow: hidden;

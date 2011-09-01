@@ -14,7 +14,6 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
-
 class paypal extends jigoshop_payment_gateway {
 		
 	public function __construct() { 

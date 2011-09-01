@@ -14,9 +14,9 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
+?>
 
-do_action('before_checkout_form');
-
+<?php do_action('before_checkout_form');
 // filter hook for include new pages inside the payment method
 $get_checkout_url = apply_filters( 'jigoshop_get_checkout_url', jigoshop_cart::get_checkout_url() ); ?>
 

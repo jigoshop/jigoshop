@@ -23,7 +23,7 @@ require_once ( 'jigoshop-admin-attributes.php' );
 require_once ( 'jigoshop-admin-post-types.php' );
 
 function jigoshop_admin_init () {
-	require_once ( 'jigoshop-admin-settings-options.php' );	
+	require_once ( 'jigoshop-admin-settings-options.php' );
 }
 
 add_action('admin_init', 'jigoshop_admin_init');
@@ -58,7 +58,7 @@ function jigoshop_admin_menu_order( $menu_order ) {
 	// Loop through menu order and do some rearranging
 	foreach ( $menu_order as $index => $item ) :
 
-		if ( ( ( 'jigoshop' ) == $item ) ) :
+		if ( 'jigoshop' == $item ) :
 			$jigoshop_menu_order[] = 'separator-jigoshop';
 			unset( $menu_order[$jigoshop_separator] );
 		endif;
@@ -74,10 +74,9 @@ function jigoshop_admin_menu_order( $menu_order ) {
 }
 
 function jigoshop_admin_custom_menu_order() {
-	if ( !current_user_can( 'manage_options' ) ) return false;
-
-	return true;
+	return current_user_can( 'manage_options' );
 }
+
 add_action('admin_menu', 'jigoshop_admin_menu');
 add_action('menu_order', 'jigoshop_admin_menu_order');
 add_action('custom_menu_order', 'jigoshop_admin_custom_menu_order');
@@ -143,8 +142,8 @@ function jigoshop_system_info() {
 		            </tbody>
 		            <thead>
 		                <tr>
-		                    <td scope="col" width="200px"><?php _e('Server','jigoshop')?></td>
-		                    <td scope="col"><?php echo (defined('PHP_OS')) ? (string)(PHP_OS) : 'N/A' ?></td>
+		                    <th scope="col" width="200px"><?php _e('Server','jigoshop')?></th>
+		                    <th scope="col"><?php echo (defined('PHP_OS')) ? (string)(PHP_OS) : 'N/A'; ?></th>
 		                </tr>
 		            </thead>
 		           	<tbody>
@@ -186,11 +185,11 @@ function jigoshop_system_info() {
 		                </tr>
 		                 <tr>
 		                    <td class="titledesc"><?php _e('WP_DEBUG','jigoshop')?></td>
-		                    <td class="forminp"><?php echo (WP_DEBUG === true ) ? __('On', 'jigoshop') : __('Off', 'jigoshop') ?></td>
+		                    <td class="forminp"><?php echo (WP_DEBUG) ? __('On', 'jigoshop') : __('Off', 'jigoshop'); ?></td>
 		                </tr>
 		                <tr>
 		                    <td class="titledesc"><?php _e('DISPLAY_ERRORS','jigoshop')?></td>
-		                    <td class="forminp"><?php echo (ini_get('display_errors')) ? 'On (' . ini_get('display_errors') . ')' : 'N/A' ?></td>
+		                    <td class="forminp"><?php echo (ini_get('display_errors')) ? 'On (' . ini_get('display_errors') . ')' : 'N/A'; ?></td>
 		                </tr>
 		                <tr>
 		                    <td class="titledesc"><?php _e('FSOCKOPEN','jigoshop')?></td>

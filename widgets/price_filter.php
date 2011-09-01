@@ -17,62 +17,75 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
- 
-function jigoshop_price_filter_init() {
-	
-	unset($_SESSION['min_price']);
-	unset($_SESSION['max_price']);
-	
-	if (isset($_GET['min_price'])) :
-		
-		$_SESSION['min_price'] = $_GET['min_price'];
-		
-	endif;
-	if (isset($_GET['max_price'])) :
-		
-		$_SESSION['max_price'] = $_GET['max_price'];
-		
-	endif;
-	
-}
-
-add_action('init', 'jigoshop_price_filter_init');
-
 class Jigoshop_Widget_Price_Filter extends WP_Widget {
 
-	/** constructor */
-	function Jigoshop_Widget_Price_Filter() {
-		$widget_ops = array( 'description' => __( "Shows a price filter slider in a widget which lets you narrow down the list of shown products in categories.", 'jigoshop') );
-		parent::WP_Widget('price_filter', __('Price Filter', 'jigoshop'), $widget_ops);
+	/**
+	 * Constructor
+	 * 
+	 * Setup the widget with the available options
+	 */
+	public function __construct() {
+
+		$options = array(
+			'description' => __( "Shows a price filter slider in a widget which lets you narrow down the list of shown products in categories.", 'jigoshop'),
+		);
+		
+		// Create the widget
+		parent::__construct('price_filter', __('Price Filter', 'jigoshop'), $options);
 	}
 
-	/** @see WP_Widget::widget */
-	function widget( $args, $instance ) {
+	/**
+	 * Widget
+	 * 
+	 * Display the widget in the sidebar
+	 *
+	 * @param	array	sidebar arguments
+	 * @param	array	instance
+	 */
+	public function widget( $args, $instance ) {
+	
+		// Extract the widget arguments
 		extract($args);
-		
-		if (!is_tax( 'product_cat' ) && !is_post_type_archive('product') && !is_tax( 'product_tag' )) return;
-		
 		global $_chosen_attributes, $wpdb, $all_post_ids;
-				
-		$title = $instance['title'];
+		
+		// Hide widget if is not a product
+		if ( ! is_tax('product_cat') AND ! is_post_type_archive('product') AND ! is_tax('product_tag') ) {
+			return false;
+		}
+
+		// Set the widget title
+		$title = ($instance['title']) ? $instance['title'] : __('Filter by price', 'jigoshop');
 		$title = apply_filters('widget_title', $title, $instance, $this->id_base);
 		
-		echo $before_widget . $before_title . $title . $after_title;
+		// Print the widget wrapper & title
+		echo $before_widget;
+		echo $before_title . $title . $after_title;
 		
 		// Remember current filters/search
 		$fields = '';
 		
-		if (get_search_query()) $fields = '<input type="hidden" name="s" value="'.get_search_query().'" />';
-		if (isset($_GET['post_type'])) $fields .= '<input type="hidden" name="post_type" value="'.$_GET['post_type'].'" />';
+		// If there is a search query save into hidden field
+		if (get_search_query()) {
+			$fields = '<input type="hidden" name="s" value="'.get_search_query().'" />';
+		}
 		
-		if ($_chosen_attributes) foreach ($_chosen_attributes as $attribute => $value) :
+		// If there is a post_type save into a hidden field
+		if (isset($_GET['post_type'])) {
+			$fields .= '<input type="hidden" name="post_type" value="'.$_GET['post_type'].'" />';
+		}
 		
-			$fields .= '<input type="hidden" name="'.str_replace('product_attribute_', 'filter_', $attribute).'" value="'.implode(',', $value).'" />';
+		// Save each chosen attribute in a hidden field
+		if ($_chosen_attributes) {
+			foreach ($_chosen_attributes as $key => $value) {
+				$fields .= '<input type="hidden" name="'.str_replace('product_attribute_', 'filter_', $key).'" value="'.implode(',', $value).'" />';
+			}
+		}
 		
-		endforeach;
-		
+		// Set mimium price
+		// TODO: Find minimum price instead
 		$min = 0;
 		
+		// TODO: Optimize this query
 		$max = ceil($wpdb->get_var("SELECT max(meta_value + 0) 
 		FROM $wpdb->posts
 		LEFT JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id
@@ -84,19 +97,12 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 			)
 		)"));
 		
-		if (defined('SHOP_IS_ON_FRONT')) :
-			$link = '';
-		elseif (is_post_type_archive('product') || is_page( get_option('jigoshop_shop_page_id') )) :
-			$link = get_post_type_archive_link('product');
-		else :					
-			$link = get_term_link( get_query_var('term'), get_query_var('taxonomy') );
-		endif;
-		
-		echo '<form method="get" action="'.$link.'">
+		// Print the form
+		echo '<form method="get" action="'. $_SERVER['PHP_SELF'] . '">
 			<div class="price_slider_wrapper">
 				<div class="price_slider"></div>
 				<div class="price_slider_amount">
-					<button type="submit" class="button">Filter</button>'.__('Price: ', 'jigoshop').'<span></span>
+					<button type="submit" class="button">'.__('Filter', 'jigoshop').'</button>'.__('Price: ', 'jigoshop').'<span></span>
 					<input type="hidden" id="max_price" name="max_price" value="'.$max.'" />
 					<input type="hidden" id="min_price" name="min_price" value="'.$min.'" />
 					'.$fields.'
@@ -104,22 +110,40 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 			</div>
 		</form>';
 		
+		// Print closing widget wrapper
 		echo $after_widget;
 	}
 
-	/** @see WP_Widget::update */
-	function update( $new_instance, $old_instance ) {
-		if (!isset($new_instance['title']) || empty($new_instance['title'])) $new_instance['title'] = __('Filter by price', 'jigoshop');
+	/**
+	 * Update
+	 * 
+	 * Handles the processing of information entered in the wordpress admin
+	 *
+	 * @param	array	new instance
+	 * @param	array	old instance
+	 * @return	array	instance
+	 */
+	public function update( $new_instance, $old_instance ) {
+		$instance = $old_instance;
 		$instance['title'] = strip_tags(stripslashes($new_instance['title']));
 		return $instance;
 	}
 
-	/** @see WP_Widget::form */
-	function form( $instance ) {
-		global $wpdb;
-		?>
-			<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'jigoshop') ?></label>
-			<input type="text" class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" value="<?php if (isset ( $instance['title'])) {echo esc_attr( $instance['title'] );} ?>" /></p>
-		<?php
+	/**
+	 * Form
+	 * 
+	 * Displays the form for the wordpress admin
+	 *
+	 * @param	array	instance
+	 */
+	public function form( $instance ) {
+		// Get values from instance
+		$title = (isset($instance['title'])) ? esc_attr($instance['title']) : null;
+		
+		// Widget title
+		echo '<p>';
+		echo '<label for="' . $this->get_field_id('title') . '"> ' . _e('Title:', 'jigoshop') . '</label>';
+		echo '<input type="text" class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" value="' . $title . '" />';
+		echo '</p>';
 	}
 } // class Jigoshop_Widget_Price_Filter
