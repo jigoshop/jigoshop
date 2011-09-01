@@ -272,12 +272,12 @@ function jigoshop_product_data_box() {
 							if ( $attribute_taxonomies ) :
 						    	foreach ($attribute_taxonomies as $tax) : $i++;
 						    							    	
-						    		$attribute_nicename = strtolower(sanitize_title($tax->attribute_name));
+						    		$attribute_nicename = sanitize_title($tax->attribute_name);
 						    		if (isset($attributes[$attribute_nicename])) $attribute = $attributes[$attribute_nicename];
 						    		if (isset($attribute['visible']) && $attribute['visible']=='yes') $checked = 'checked="checked"'; else $checked = '';
 						    		if (isset($attribute['variation']) && $attribute['variation']=='yes') $checked2 = 'checked="checked"'; else $checked2 = '';
 						    		
-						    		$values = wp_get_post_terms( $thepostid, 'product_attribute_'.strtolower(sanitize_title($tax->attribute_name)) );
+						    		$values = wp_get_post_terms( $thepostid, 'product_attribute_'.sanitize_title($tax->attribute_name) );
 						    		$value = array();
 						    		if (!is_wp_error($values) && $values) :
 						    			foreach ($values as $v) :
@@ -285,7 +285,7 @@ function jigoshop_product_data_box() {
 						    			endforeach;
 						    		endif;
 						    		
-						    		?><tr class="taxonomy <?php echo strtolower(sanitize_title($tax->attribute_name)); ?>" rel="<?php if (isset($attribute['position'])) echo $attribute['position']; else echo '0'; ?>" <?php if (!$value || sizeof($value)==0) echo 'style="display:none"'; ?>>
+						    		?><tr class="taxonomy <?php echo sanitize_title($tax->attribute_name); ?>" rel="<?php if (isset($attribute['position'])) echo $attribute['position']; else echo '0'; ?>" <?php if (!$value || sizeof($value)==0) echo 'style="display:none"'; ?>>
 										<td class="center">
 											<button type="button" class="move_up button">&uarr;</button><button type="button" class="move_down button">&darr;</button>
 											<input type="hidden" name="attribute_position[<?php echo $i; ?>]" class="attribute_position" value="<?php if (isset($attribute['position'])) echo $attribute['position']; else echo '0'; ?>" />
@@ -300,8 +300,8 @@ function jigoshop_product_data_box() {
 											<select <?php if ($tax->attribute_type=="multiselect") echo 'multiple="multiple" class="multiselect" name="attribute_values['.$i.'][]"'; else echo 'name="attribute_values['.$i.']"'; ?>>
 												<?php if ($tax->attribute_type=="select") : ?><option value=""><?php _e('Choose an option&hellip;', 'jigoshop'); ?></option><?php endif; ?>
 												<?php
-												if (taxonomy_exists('product_attribute_'.strtolower(sanitize_title($tax->attribute_name)))) :
-					        						$terms = get_terms( 'product_attribute_'.strtolower(sanitize_title($tax->attribute_name)), 'orderby=name&hide_empty=0' );
+												if (taxonomy_exists('product_attribute_'.sanitize_title($tax->attribute_name))) :
+					        						$terms = get_terms( 'product_attribute_'.sanitize_title($tax->attribute_name), 'orderby=name&hide_empty=0' );
 					        						if ($terms) :
 						        						foreach ($terms as $term) :
 						        							echo '<option value="'.$term->slug.'" ';
@@ -357,7 +357,7 @@ function jigoshop_product_data_box() {
 				<?php
 					if ( $attribute_taxonomies ) :
 				    	foreach ($attribute_taxonomies as $tax) :
-				    		echo '<option value="'.strtolower(sanitize_title($tax->attribute_name)).'">'.$tax->attribute_name.'</option>';
+				    		echo '<option value="'.sanitize_title($tax->attribute_name).'" data-type="'.$tax->attribute_type.'">'.$tax->attribute_name.'</option>';
 				    	endforeach;
 				    endif;
 				?>
