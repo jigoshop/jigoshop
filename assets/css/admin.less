@@ -977,7 +977,7 @@ div.multi_select_products_wrapper {
 
 table.jigoshop_attributes div.multiselect {
 	overflow:auto;
-	height:120px;
+	height:100px;
 	border:1px solid #dfdfdf;
 	background-color:white;
 	-moz-border-radius:3px;
@@ -989,9 +989,9 @@ table.jigoshop_attributes div.multiselect {
 
 	label{
 		display:block;
+		position:relative;
 		border-bottom: 1px solid #DFDFDF;
-		padding: 4px;
-
+		padding:3px;
 		&.selected {
 			background-color:#EAF2FA;
 		}
@@ -999,9 +999,11 @@ table.jigoshop_attributes div.multiselect {
 
 	input{
 		vertical-align: bottom;
+		margin:0 5px 0 0;
+		padding:0;
 		position: relative;
+		top:0;
+		left:0;
 		width:auto !important;
-
-
 	}
 }

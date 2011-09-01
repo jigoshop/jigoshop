@@ -320,7 +320,7 @@ function jigoshop_product_data_box() {
 					        						$terms = get_terms( 'product_attribute_'.strtolower(sanitize_title($tax->attribute_name)), 'orderby=name&hide_empty=0' );
 					        						if ($terms) :
 						        						foreach ($terms as $term) :
-															$checked = checked(in_array($term->slug, $value), true, false);
+															$checked = checked(in_array($term->slug, $value) || (!$value || sizeof($value)==0), true, false);
 															printf('<label %s><input type="checkbox" name="attribute_values[%d][]" value="%s" %s/> %s</label>'
 																, !empty($checked) ? 'class="selected"' : ''
 																, $i

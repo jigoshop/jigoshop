@@ -266,7 +266,7 @@ jQuery( function($){
 		jQuery('button.hide_row').live('click', function(){
 			var answer = confirm("Remove this attribute?")
 			if (answer){
-				jQuery(this).parent().parent().find('select, input[type=text]').val('');
+				jQuery(this).parent().parent().find('select, input[type=text], input[type=checkbox]').val('');
 				jQuery(this).parent().parent().hide();
 				show_attribute_table();
 			}
