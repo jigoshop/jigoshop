@@ -33,7 +33,7 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 		global $_chosen_attributes, $wpdb, $all_post_ids;
 				
 		$title = $instance['title'];
-		$taxonomy = 'product_attribute_'.strtolower(sanitize_title($instance['attribute']));
+		$taxonomy = 'pa_'.strtolower(sanitize_title($instance['attribute']));
 		
 		if (!taxonomy_exists($taxonomy)) return;
 
@@ -87,7 +87,7 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 				// All current filters
 				if ($_chosen_attributes) foreach ($_chosen_attributes as $name => $value) :
 					if ($name!==$taxonomy) :
-						$link = add_query_arg( strtolower(sanitize_title(str_replace('product_attribute_', 'filter_', $name))), implode(',', $value), $link );
+						$link = add_query_arg( strtolower(sanitize_title(str_replace('pa_', 'filter_', $name))), implode(',', $value), $link );
 					endif;
 				endforeach;
 				
@@ -164,7 +164,7 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 				$attribute_taxonomies = jigoshop::$attribute_taxonomies;
 				if ( $attribute_taxonomies ) :
 					foreach ($attribute_taxonomies as $tax) :
-						if (taxonomy_exists('product_attribute_'.strtolower(sanitize_title($tax->attribute_name)))) :
+						if (taxonomy_exists('pa_'.strtolower(sanitize_title($tax->attribute_name)))) :
 							
 							echo '<option value="'.$tax->attribute_name.'" ';
 							if (isset($instance['attribute']) && $instance['attribute']==$tax->attribute_name) :
