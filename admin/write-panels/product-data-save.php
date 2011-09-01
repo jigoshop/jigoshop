@@ -73,13 +73,13 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 			 	endif;
 			 	
 			 	if (empty($attribute_values[$i]) || ( is_array($attribute_values[$i]) && sizeof($attribute_values[$i])==0) ) :
-			 		if ($is_taxonomy=='yes' && taxonomy_exists('product_attribute_'.strtolower(sanitize_title($attribute_names[$i])))) :
-			 			wp_set_object_terms( $post_id, 0, 'product_attribute_'.strtolower(sanitize_title($attribute_names[$i])) );
+			 		if ($is_taxonomy=='yes' && taxonomy_exists('product_attribute_'.sanitize_title($attribute_names[$i]))) :
+			 			wp_set_object_terms( $post_id, 0, 'product_attribute_'.sanitize_title($attribute_names[$i]) );
 			 		endif;
 			 		continue;
 			 	endif;
 			 	
-			 	$attributes[ strtolower(sanitize_title( $attribute_names[$i] )) ] = array(
+			 	$attributes[ sanitize_title( $attribute_names[$i] ) ] = array(
 			 		'name' => htmlspecialchars(stripslashes($attribute_names[$i])), 
 			 		'value' => $attribute_values[$i],
 			 		'position' => $attribute_position[$i],
@@ -93,9 +93,9 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 			 		$tax = $attribute_names[$i];
 			 		$value = $attribute_values[$i];
 			 		
-			 		if (taxonomy_exists('product_attribute_'.strtolower(sanitize_title($tax)))) :
+			 		if (taxonomy_exists('product_attribute_'.sanitize_title($tax))) :
 			 			
-			 			wp_set_object_terms( $post_id, $value, 'product_attribute_'.strtolower(sanitize_title($tax)) );
+			 			wp_set_object_terms( $post_id, $value, 'product_attribute_'.sanitize_title($tax) );
 			 			
 			 		endif;
 			 		
