@@ -289,11 +289,20 @@ jQuery( function($){
 			jQuery(row).after(prev_row);
 			row_indexes();
 		});
+
 		jQuery('button.move_down').live('click', function(){
 			var row = jQuery(this).parent().parent();
 			var next_row = jQuery(row).next('tr');
 			jQuery(row).before(next_row);
 			row_indexes();
+		});
+
+		jQuery('#product-type').change(function(){
+			if($(this).val() == 'variable') {
+				$('.attribute_taxonomy option[data-type=select]').attr('disabled', 'disabled');
+			} else {
+				$('.attribute_taxonomy option[data-type=select]').removeAttr('disabled');
+			}
 		});
 
 		var multiselectClicked = function(){

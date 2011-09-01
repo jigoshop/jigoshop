@@ -73,8 +73,8 @@ function jigoshop_find_variation( $variation_data = array() ) {
 
 }
 
+/**********  this appears unused?  -JAP-  **********/
 //### Get unfiltered list of posts in current view for use in loop + widgets
-
 function jigoshop_get_products_in_view() {
 
 	global $all_post_ids;
@@ -90,79 +90,55 @@ function jigoshop_get_products_in_view() {
 	$all_post_ids[] = 0;
 
 }
+// disabling the action hook, monitoring ...-JAP-
+//add_action('wp_head', 'jigoshop_get_products_in_view', 0);
 
-add_action('wp_head', 'jigoshop_get_products_in_view', 0);
 
-//### Do Filters/Layered Nav
-
-function jigoshop_filter_loop() {
-
-	global $wp_query, $all_post_ids;
-
-//	if (is_tax( 'product_cat' ) || is_post_type_archive('product') || is_page( get_option('jigoshop_shop_page_id') ) || is_tax( 'product_tag' )) :
-	if ( !is_shop() AND !is_product_list() ) return;
-
-		$filters = array();
-		$filters = apply_filters('loop-shop-query', $filters);
-
-		//$post_ids = jigoshop_get_post_ids();
-//		$post_ids = $all_post_ids;
-//		$post_ids = apply_filters('loop-shop-posts-in', $post_ids);
-//		$filters = array_merge($filters, array(
-//			'post__in' => $post_ids
-//		));
-
-//		$per_page = array( 'posts_per_page' => apply_filters('loop_shop_per_page', get_option('posts_per_page')));
-		$per_page = array( 'posts_per_page' => apply_filters('loop_shop_per_page', get_option('jigoshop_catalog_per_page')));
-
-		$args = array_merge( $wp_query->query, $filters, $per_page );
-
-		query_posts( $args );
-//	endif;
-}
-//add_action('wp_head', 'jigoshop_filter_loop');
-
-function jigoshop_parse_query( $query ) {
-
-    if ( !$query->is_post_type_archive( 'product' )
-    	OR !$query->is_tax( 'product_cat' )
-    	OR !$query->is_tax( 'product_tag' ) ) return;
-
-    $in = array( 'visible' );
-    if ( is_search() ) $in[] = 'search';
-    if ( !is_search() ) $in[] = 'catalog';
-
-    $meta = $query->get( 'meta_query' );
-    $meta[] = array(
-        'key' => 'visibility',
-        'value' => $in,
-        'compare' => 'IN'
-    );
-
-    $query->set( 'meta_query', $meta );
-}
-add_filter( 'parse_query', 'jigoshop_parse_query' );
-
-function jigoshop_alter_query( $request ) {
+/**
+ * Prior to WordPress executing the main Catalog query, add in any further modifications to the query.
+ * The post_type is already set to 'product'.  We'll look for published products, retrieving the amount
+ * and sort based on Jigoshop Admin Settings.  We hook into the WP 'request' hook so this is done once
+ * only just prior to WordPress calling query_posts().
+ *
+ * @param array $request - the object array representing the current WordPress query
+ * @return array - the finished query object array is returned for WordPress to use
+ * @since 1.0
+ **/
+function jigoshop_filter_catalog_query( $request ) {
 
 	$this_query = new WP_Query();
     $this_query->parse_query( $request );
 
+	// we only work on Jigoshop product lists [ is_shop() and is_product_list() ]
     if ( $this_query->is_post_type_archive( 'product' )
     	OR $this_query->is_tax( 'product_cat' )
     	OR $this_query->is_tax( 'product_tag' ) ) :
 
-        $request['posts_per_page'] = apply_filters('loop_shop_per_page', get_option('jigoshop_catalog_per_page'));
+        $request['post_status'] = 'publish';
+        $request['posts_per_page'] = apply_filters( 'loop_shop_per_page', get_option( 'jigoshop_catalog_per_page' ));
+
 		$filters = array();
-		$filters = apply_filters('loop-shop-query', $filters);
+		$filters = apply_filters( 'loop-shop-query', $filters );
 		foreach( $filters as $key => $value ) :
 			$request[$key] = $value;
 		endforeach;
+
+	    $in = array( 'visible' );
+	    if ( is_search() ) $in[] = 'search';
+	    if ( !is_search() ) $in[] = 'catalog';
+	    $meta = $this_query->get( 'meta_query' );
+	    $meta[] = array(
+	        'key' => 'visibility',
+	        'value' => $in,
+	        'compare' => 'IN'
+	    );	
+		$request['meta_query'] = $meta;
 	endif;
 
     return $request;
 }
-add_filter( 'request', 'jigoshop_alter_query' );
+add_filter( 'request', 'jigoshop_filter_catalog_query' );
+
 
 //### Layered Nav Init
 
@@ -170,7 +146,7 @@ function jigoshop_layered_nav_init() {
 
 	global $_chosen_attributes, $wpdb;
 
-	$attribute_taxonomies = jigoshop::$attribute_taxonomies;
+	$attribute_taxonomies = jigoshop::getAttributeTaxonomies();
 	if ( $attribute_taxonomies ) :
 		foreach ($attribute_taxonomies as $tax) :
 
@@ -187,8 +163,8 @@ function jigoshop_layered_nav_init() {
 add_action('init', 'jigoshop_layered_nav_init', 1);
 
 
+/**********  this appears unused?  -JAP-  **********/
 //### Get post ID's to filter from
-
 function jigoshop_get_post_ids() {
 
 	global $wpdb;
