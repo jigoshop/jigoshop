@@ -264,7 +264,7 @@ function jigoshop_product_data_box() {
 					        						$terms = get_terms( 'pa_'.strtolower(sanitize_title($tax->attribute_name)), 'orderby=name&hide_empty=0' );
 					        						if ($terms) :
 						        						foreach ($terms as $term) :
-						        							echo '<option value="'.$term->slug.'" ';
+						        							echo '<option value="'.$term->name.'" ';
 						        							if (in_array($term->slug, $value)) echo 'selected="selected"';
 						        							echo '>'.$term->name.'</option>';
 														endforeach;

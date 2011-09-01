@@ -82,18 +82,6 @@ function jigoshop_attributes() {
 				
 				endif;
 				
-				// New taxonomy prefix
-				/*$taxonomy = 'pa_'.strtolower(sanitize_title($att_name));
-				
-				if (taxonomy_exists($taxonomy)) :
-				
-					$terms = get_terms($taxonomy, 'orderby=name&hide_empty=0'); 
-					foreach ($terms as $term) {
-						wp_delete_term( $term->term_id, $taxonomy );
-					}
-				
-				endif;*/
-				
 				wp_safe_redirect( get_admin_url() . 'admin.php?page=attributes' );
 				exit;
 										
