@@ -342,7 +342,11 @@ function jigoshop_product_data_box() {
 										<?php endif; ?>
 										</td>
 										<td class="center"><input type="checkbox" <?php echo $checked; ?> name="attribute_visibility[<?php echo $i; ?>]" value="1" /></td>
+										<?php if ($tax->attribute_type=="select") : ?>
+										<td class="center"><input type="checkbox" disabled="disabled" /></td>
+										<?php else: ?>
 										<td class="center"><input type="checkbox" <?php echo $checked2; ?> name="attribute_variation[<?php echo $i; ?>]" value="1" /></td>
+										<?php endif; ?>
 										<td class="center"><button type="button" class="hide_row button">&times;</button></td>
 									</tr><?php
 						    	endforeach;
