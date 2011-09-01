@@ -297,14 +297,6 @@ jQuery( function($){
 			row_indexes();
 		});
 
-		jQuery('#product-type').change(function(){
-			if($(this).val() == 'variable') {
-				$('.attribute_taxonomy option[data-type=select]').attr('disabled', 'disabled');
-			} else {
-				$('.attribute_taxonomy option[data-type=select]').removeAttr('disabled');
-			}
-		});
-
 		var multiselectClicked = function(){
 			if ($(this).is(':checked')){
 				$(this).parent().addClass('selected');
