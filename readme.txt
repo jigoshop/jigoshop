@@ -2,7 +2,7 @@
 Contributors: Jigoshop
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal
 Requires at least: 3.1
-Tested up to: 3.2
+Tested up to: 3.2.1
 Stable tag: 0.9.8.1
  
 A feature packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customisability. 
@@ -146,6 +146,7 @@ We have a <a href="http://jigoshop.com/forum" title="Jigoshop support forum">com
 * SKU display options
 * Fixes for default permalinks
 * Temporary fix for attribute name length error #56
+* Fix for attribute value as a slug #50
 
 = 0.9.8 =
 
