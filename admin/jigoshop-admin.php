@@ -308,3 +308,33 @@ function jigoshop_categories_ordering () {
 	
 }
 add_action('wp_ajax_jigoshop-categories-ordering', 'jigoshop_categories_ordering');
+
+
+if (!function_exists('boolval')) {
+	/**
+	 * Helper function to get the boolean value of a variable. If not strict, this function will return true
+	 * if the variable is not false and not empty. If strict, the value of the variable must exactly match a
+	 * value in the true test array to evaluate to true
+	 * 
+	 * @param $in The input variable
+	 * @param bool $strict
+	 * @return bool|null|string
+	 */
+	function boolval($in, $strict = false) {
+		if (is_bool($in)){
+			return $in;
+		}
+		$in = strtolower($in);
+		$out = null;
+		if (in_array($in, array('false', 'no', 'n', 'off', '0', 0, null), true)) {
+			$out = false;
+		} else if ($strict) {
+			if (in_array($in, array('true', 'yes', 'y', 'on', '1', 1), true)) {
+				$out = true;
+			}
+		} else {
+			$out = ($in ? true : false);
+		}
+		return $out;
+	}
+}
