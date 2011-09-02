@@ -392,3 +392,59 @@ function jigoshop_set_category_order ($term_id, $index, $recursive=false) {
 	return $index;
 
 }
+
+/**
+ * Properly sets the WP Nav Menus items classes for jigoshop queried objects
+ * 
+ * @param array $menu_item
+ * @param array $args
+ * @TODO set parent items classes when the shop page is not at the nav menu root
+ */
+function jigoshop_nav_menu_items_classes ($menu_items, $args) {
+	
+	$shop_page_id = (int) get_option('jigoshop_shop_page_id');
+	
+	// only add nav menu classes if the queried object is a jigoshop object
+	if( empty( $shop_page_id ) 
+		|| (!is_post_type_archive('product') && !is_product() && !is_product_category() && !is_product_tag()) ) return $menu_items;
+
+	$home_page_id = (int) get_option( 'page_for_posts' );
+			
+	foreach ( (array) $menu_items as $key => $menu_item ) {
+
+		$classes = (array) $menu_item->classes;
+
+		// unset classes set by WP on the home page item
+		if ( (is_post_type_archive('product') || is_product() || is_product_category() || is_product_tag() ) 
+			 && $home_page_id == $menu_item->object_id ) {
+
+			$menu_items[$key]->current = false;
+			unset( $classes[ array_search('current_page_parent', $classes) ] );
+			unset( $classes[ array_search('current-menu-item', $classes) ] );
+		
+		}
+		
+		// is products archive
+		if (  is_post_type_archive('product') && $shop_page_id == $menu_item->object_id ) {
+
+			$menu_items[$key]->current = true;
+			$classes[] = 'current-menu-item';
+			$classes[] = 'current_page_item';
+		
+		}
+		
+		// is another jigoshop object
+		elseif ( (is_product() || is_product_category() || is_product_tag()) && $shop_page_id == $menu_item->object_id ) {
+
+			$classes[] = 'current_page_parent';
+			$classes[] = 'current_menu_parent';		
+		
+		}
+	
+		$menu_items[$key]->classes = array_unique( $classes );
+	}
+	
+	return $menu_items;
+}
+
+add_filter( 'wp_nav_menu_objects',  'jigoshop_nav_menu_items_classes', 2, 20 );
