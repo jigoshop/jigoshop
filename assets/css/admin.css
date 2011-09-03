@@ -733,6 +733,7 @@ a.tips {
 .jigoshop_options_panel .checkbox, table.jigoshop_variable_attributes .checkbox {
   vertical-align: middle;
   margin: 7px 0;
+  width: auto;
 }
 .jigoshop_options_panel select {
   float: left;
@@ -901,20 +902,40 @@ div.multi_select_products_wrapper {
   height: 60px;
   background: #000;
 }
-.button.move_up{
-	-webkit-border-bottom-left-radius: 2px;
-	-webkit-border-bottom-right-radius: 2px;
-	-moz-border-radius-bottomleft: 2px;
-	-moz-border-radius-bottomright: 2px;
-	border-bottom-left-radius: 2px;
-	border-bottom-right-radius: 2px;
+table.jigoshop_attributes div.multiselect {
+  overflow: auto;
+  height: 100px;
+  border: 1px solid #dfdfdf;
+  background-color: white;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -o-border-radius: 3px;
+  -khtml-border-radius: 3px;
+  border-radius: 3px;
+  margin: 5px 0;
 }
-.button.move_down{
-	-webkit-border-top-left-radius: 2px;
-	-webkit-border-top-right-radius: 2px;
-	-moz-border-radius-topleft: 2px;
-	-moz-border-radius-topright: 2px;
-	border-top-left-radius: 2px;
-	border-top-right-radius: 2px;
-	margin-top:-1px;
+table.jigoshop_attributes div.multiselect label {
+  display: block;
+  position: relative;
+  border-bottom: 1px solid #DFDFDF;
+  padding: 3px;
+}
+table.jigoshop_attributes div.multiselect label.selected {
+  background-color: #EAF2FA;
+}
+table.jigoshop_attributes div.multiselect input {
+  vertical-align: bottom;
+  margin: 0 5px 0 0;
+  padding: 0;
+  position: relative;
+  top: 0;
+  left: 0;
+  width: auto !important;
+}
+table.jigoshop_attributes div.multiselect-controls {
+  margin-bottom: 4px;
+}
+table.jigoshop_attributes div.multiselect-controls a {
+  text-decoration: none;
+  font-size: 12px;
 }
