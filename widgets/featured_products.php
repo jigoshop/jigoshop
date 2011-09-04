@@ -75,7 +75,7 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 		$number = $instance['number'];
 		
 		// Set up query
-		$args = array(
+		$query_args = array(
 			'showposts' => $number,
 			'post_type' => 'product',
 			'meta_key' => 'featured',
@@ -83,7 +83,7 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 		);
 		
 		// Run the query
-		$q = new WP_Query($args);
+		$q = new WP_Query($query_args);
 		
 		if ( $q->have_posts() ) {
 			
@@ -98,7 +98,7 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 			while($q->have_posts()) : $q->the_post();  
 				
 				// Get the product instance
-				$_product = new jigoshop_product(get_the_ID);
+				$_product = new jigoshop_product(get_the_ID());
 				
 				echo '<li>';
 					// Print the product image & title with a link to the permalink
