@@ -78,14 +78,14 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 		$number = apply_filters('jigoshop_widget_recent_default_number', $number, $instance, $this->id_base);
 
 		// Set up query
-    	$args = array(
+    	$query_args = array(
     		'showposts'		=> $number,
     		'post_type'		=> 'product',
     	);
     	
     	// Show variations of products?
     	if( ! $instance['show_variations']) {
-    		$args['meta_query'] = array(
+    		$query_args['meta_query'] = array(
     			array(
     				'key'		=> 'visibility',
     				'value'		=> array('catalog', 'visible'),
@@ -93,11 +93,11 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
     			),
     		);
     		
-    		$args['parent'] = false;
+    		$query_args['parent'] = false;
     	}
 
 		// Run the query
-		$q = new WP_Query($args);
+		$q = new WP_Query($query_args);
 		
 		// If there are products
 		if($q->have_posts()) {
