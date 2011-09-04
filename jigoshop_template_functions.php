@@ -54,7 +54,7 @@ if (!function_exists('jigoshop_output_content_wrapper')) {
 }
 if (!function_exists('jigoshop_output_content_wrapper_end')) {
 	function jigoshop_output_content_wrapper_end() {
-		if(  get_option('template') === 'twentyeleven' ) echo  '</section></div>';
+		if(  get_option('template') === 'twentyeleven' ) echo  '</div></section>';
 		else echo '</div></div>';
 	}
 }
@@ -858,10 +858,14 @@ if (!function_exists('jigoshop_breadcrumb')) {
 	}
 }
 
-
+/**
+ * Hook to remove the 'singular' class, for the twenty eleven theme, to properly display the sidebar
+ * 
+ * @param array $classes
+ */
 function jigoshop_body_classes ($classes) {
 
-	if( ! is_singular('product') ) return $classes;
+	if( ! is_jigoshop() ) return $classes;
 
 	$key = array_search('singular', $classes);
 	if ( $key !== false ) unset($classes[$key]);

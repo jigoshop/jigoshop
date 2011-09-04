@@ -113,19 +113,18 @@
 
 	echo '</div></div>';
 	
-?><div class="clear"></div></div>
-<script type="text/javascript">
-/* <![CDATA[ */
-	jQuery(function(){
-		jQuery('#review_form_wrapper').hide();
-		jQuery('a.show_review_form').fancybox({
-			'transitionIn'	:	'elastic',
-			'transitionOut'	:	'elastic',
-			'speedIn'		:	600, 
-			'speedOut'		:	200, 
-			'overlayShow'	:	true
-		});
+	jigoshop_script_loader::instance()->add_inline ( "
+jQuery(function($){
+	$('#review_form_wrapper').hide();
+	$('a.show_review_form').fancybox({
+		'transitionIn'	:	'elastic',
+		'transitionOut'	:	'elastic',
+		'speedIn'		:	600, 
+		'speedOut'		:	200, 
+		'overlayShow'	:	true
 	});
-/* ]]> */
-</script>
+});	
+" );
+	
+?><div class="clear"></div></div>
 <?php endif; ?>
