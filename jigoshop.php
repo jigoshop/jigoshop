@@ -432,12 +432,19 @@ function is_product_list() {
 	return $is_list;
 }
 
-function is_jigoshop_content_wrapped() {
+function is_jigoshop() {
 	$is_wrapped = false;
 	$is_wrapped |= is_shop();
 	$is_wrapped |= is_product_list();
 	$is_wrapped |= is_product();
 	return $is_wrapped;
+}
+
+/**
+ * @deprecated Use is_jigoshop() instead
+ */
+function is_jigoshop_content_wrapped() {
+	return is_jigoshop();
 }
 
 function is_cart() {
