@@ -5,7 +5,7 @@ jQuery.fn.animateHighlight = function(highlightColor, duration) {
     this.stop().css("background-color", highlightBg).animate({backgroundColor: originalBg}, animateMs);
 };
 
-jQuery(function(){
+jQuery(document).ready(function($) {
 	
 	// Lightbox
 	jQuery('a.zoom').fancybox({
