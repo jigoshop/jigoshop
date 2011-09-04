@@ -329,5 +329,11 @@ jQuery( function($){
 			return false;
 		});
 
-
+		$('#product-type').change(function(){
+			if ($(this).val() == 'variable'){
+				$('td.variation, th.variation', '#jigoshop_attributes_table').show();
+			} else {
+				$('td.variation, th.variation', '#jigoshop_attributes_table').hide();
+			}
+		}).change();
 });
