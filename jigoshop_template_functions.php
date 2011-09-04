@@ -49,13 +49,13 @@ add_action('wp_head', 'jigoshop_front_page_archive', 0);
 if (!function_exists('jigoshop_output_content_wrapper')) {
 	function jigoshop_output_content_wrapper() {
 		if(  get_option('template') === 'twentyeleven' ) echo '<section id="primary"><div id="content" role="main">';
-		else echo '<div id="container"><div id="content" role="main">';
+		else echo '<div id="container"><div id="content" role="main">';  /* twenty-ten */
 	}
 }
 if (!function_exists('jigoshop_output_content_wrapper_end')) {
 	function jigoshop_output_content_wrapper_end() {
 		if(  get_option('template') === 'twentyeleven' ) echo  '</div></section>';
-		else echo '</div></div>';
+		else echo '</div></div>';  /* twenty-ten */
 	}
 }
 
