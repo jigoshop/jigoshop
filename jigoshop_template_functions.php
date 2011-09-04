@@ -865,7 +865,7 @@ if (!function_exists('jigoshop_breadcrumb')) {
  */
 function jigoshop_body_classes ($classes) {
 
-	if( ! is_post_type_archive('product') && ! is_product() && ! is_product_category() && ! is_product_tag() ) return $classes;
+	if( ! is_jigoshop() ) return $classes;
 
 	$key = array_search('singular', $classes);
 	if ( $key !== false ) unset($classes[$key]);
