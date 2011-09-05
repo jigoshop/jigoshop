@@ -38,9 +38,9 @@ add_action('admin_init', 'jigoshop_admin_init');
 function jigoshop_admin_menu() {
 	global $menu;
 	
-	$menu[] = array( '', 'read', 'separator-jigoshop', '', 'wp-menu-separator' );
+	$menu[] = array( '', 'read', 'separator-jigoshop', '', 'wp-menu-separator jigoshop' );
 	
-    add_menu_page(__('Jigoshop'), __('Jigoshop'), 'manage_options', 'jigoshop' , 'jigoshop_dashboard', jigoshop::plugin_url() . '/assets/images/icons/menu_icons.png', 56);
+    add_menu_page(__('Jigoshop'), __('Jigoshop'), 'manage_options', 'jigoshop' , 'jigoshop_dashboard', jigoshop::plugin_url() . '/assets/images/icons/menu_icons.png', 55);
     add_submenu_page('jigoshop', __('Dashboard', 'jigoshop'), __('Dashboard', 'jigoshop'), 'manage_options', 'jigoshop', 'jigoshop_dashboard'); 
     add_submenu_page('jigoshop', __('General Settings', 'jigoshop'),  __('Settings', 'jigoshop') , 'manage_options', 'settings', 'jigoshop_settings');
     add_submenu_page('jigoshop', __('System Info','jigoshop'), __('System Info','jigoshop'), 'manage_options', 'sysinfo', 'jigoshop_system_info');
@@ -51,19 +51,26 @@ function jigoshop_admin_menu_order( $menu_order ) {
 
 	// Initialize our custom order array
 	$jigoshop_menu_order = array();
-
+var_dump($menu_order);
 	// Get the index of our custom separator
 	$jigoshop_separator = array_search( 'separator-jigoshop', $menu_order );
-
+	$jigoshop_product = array_search( 'edit.php?post_type=product', $menu_order );
+	$jigoshop_order = array_search( 'edit.php?post_type=shop_order', $menu_order );
+	
 	// Loop through menu order and do some rearranging
 	foreach ( $menu_order as $index => $item ) :
 
 		if ( 'jigoshop' == $item ) :
 			$jigoshop_menu_order[] = 'separator-jigoshop';
+			$jigoshop_menu_order[] = $item;
+			$jigoshop_menu_order[] = 'edit.php?post_type=product';
+			$jigoshop_menu_order[] = 'edit.php?post_type=shop_order';
+			
 			unset( $menu_order[$jigoshop_separator] );
-		endif;
-
-		if ( !in_array( $item, array( 'separator-jigoshop' ) ) ) :
+			unset( $menu_order[$jigoshop_product] );
+			unset( $menu_order[$jigoshop_order] );
+			
+		elseif ( !in_array( $item, array( 'separator-jigoshop' ) ) ) :
 			$jigoshop_menu_order[] = $item;
 		endif;
 
