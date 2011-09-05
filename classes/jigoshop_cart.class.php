@@ -290,23 +290,17 @@ class jigoshop_cart {
 	
 	/** looks through the cart to check each item is in stock */
 	function check_cart_item_stock() {
-		$error = new WP_Error();
-		foreach (self::$cart_contents as $cart_item_key => $values) :
-			$_product = $values['data'];
-			if ($_product->managing_stock()) :
-				if ($_product->is_in_stock() && $_product->has_enough_stock( $values['quantity'] )) :
-					// :)
-				else :
-					$error->add( 'out-of-stock', sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologise for any inconvenience caused.', 'jigoshop'), $_product->get_title() ) );
-					return $error;
-				endif;
-			else :
-				if (!$_product->is_in_stock()) :
-					$error->add( 'out-of-stock', sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologise for any inconvenience caused.', 'jigoshop'), $_product->get_title() ) );
-					return $error;
-				endif;
-			endif;
-		endforeach;
+
+		foreach (self::$cart_contents as $cart_item_key => $values) {
+            $_product = $values['data'];
+
+            if (!$_product->is_in_stock() || ($_product->managing_stock() && !$_product->has_enough_stock($values['quantity']))) {
+                $error = new WP_Error();
+                $error->add('out-of-stock', sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologise for any inconvenience caused.', 'jigoshop'), $_product->get_title()));
+                return $error;
+            }
+        }
+        
 		return true;
 	}
 	
