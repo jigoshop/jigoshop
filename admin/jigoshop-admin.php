@@ -51,7 +51,7 @@ function jigoshop_admin_menu_order( $menu_order ) {
 
 	// Initialize our custom order array
 	$jigoshop_menu_order = array();
-var_dump($menu_order);
+	
 	// Get the index of our custom separator
 	$jigoshop_separator = array_search( 'separator-jigoshop', $menu_order );
 	$jigoshop_product = array_search( 'edit.php?post_type=product', $menu_order );
