@@ -191,11 +191,5 @@ add_action('admin_print_scripts-post-new.php', 'jigoshop_write_panel_scripts');
  * @since 		1.0
  */
 function jigoshop_meta_scripts() {
-	?>
-	<script type="text/javascript">
-		jQuery(function(){
-			<?php do_action('product_write_panel_js'); ?>
-		});
-	</script>
-	<?php
+	do_action('product_write_panel_js');
 }

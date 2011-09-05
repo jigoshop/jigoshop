@@ -19,7 +19,7 @@
 function variable_product_type_options() {
 	global $post;
 	
-	$attributes = maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) );
+	$attributes = get_post_meta($post->ID, 'product_attributes', true);
 
 	if (!isset($attributes)) $attributes = array();
 	?>
@@ -102,7 +102,8 @@ function variable_product_type_options() {
 }
 add_action('jigoshop_product_type_options_box', 'variable_product_type_options');
 
- 
+
+
 /**
  * Product Type Javascript
  * 
@@ -113,10 +114,11 @@ add_action('jigoshop_product_type_options_box', 'variable_product_type_options')
  */
 function variable_product_write_panel_js() {
 	global $post;
-	
+
 	$attributes = maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) );
 	if (!isset($attributes)) $attributes = array();
 	?>
+<script type="text/javascript">
 	jQuery(function(){
 		
 		jQuery('button.add_configuration').live('click', function(){
@@ -249,8 +251,8 @@ function variable_product_write_panel_js() {
 		}
 
 	});
+	</script>
 	<?php
-	
 }
 add_action('product_write_panel_js', 'variable_product_write_panel_js');
 
