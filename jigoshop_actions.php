@@ -1,4 +1,4 @@
-<?php
+<?php defined('ABSPATH') or die('No direct script access.');
 /**
  * Various hooks Jigoshop core uses
  *

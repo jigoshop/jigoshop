@@ -1,4 +1,4 @@
-<?php
+<?php defined('ABSPATH') or die('No direct script access.');
 /**
  * $options_settings variable contains all the options used on the Jigoshop settings page
  *

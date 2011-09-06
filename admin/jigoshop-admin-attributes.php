@@ -1,4 +1,4 @@
-<?php
+<?php defined('ABSPATH') or die('No direct script access.');
 /**
  * Functions used for the attributes section in WordPress Admin
  * 

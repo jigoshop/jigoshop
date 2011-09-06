@@ -1,4 +1,4 @@
-<?php
+<?php defined('ABSPATH') or die('No direct script access.');
 /**
  * Countries translations.
  * This file is not included anywhere. It exists solely for use by xgettext.

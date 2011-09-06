@@ -1,4 +1,4 @@
-<?php
+<?php defined('ABSPATH') or die('No direct script access.');
 /**
  * Main admin file which loads all settings panels and sets up the menus.
  *

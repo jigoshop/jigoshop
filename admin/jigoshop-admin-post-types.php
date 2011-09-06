@@ -1,4 +1,4 @@
-<?php
+<?php defined('ABSPATH') or die('No direct script access.');
 /**
  * Functions used for custom post types in admin 
  *
@@ -15,6 +15,7 @@
  * @author     Jigowatt
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
+ */
  
 /**
  * Custom columns
