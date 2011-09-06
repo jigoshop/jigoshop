@@ -310,6 +310,79 @@ function jigoshop_categories_ordering () {
 add_action('wp_ajax_jigoshop-categories-ordering', 'jigoshop_categories_ordering');
 
 
+/**
+ * Outputs the media upload image as a preview
+ * @param array $args The attachment id or url to use for the image
+ * @return string
+ */
+function jigoshop_custom_image($args=array()) {
+	require_once (ABSPATH . '/wp-admin/includes/image.php');
+
+	$defaults = array('url'=>'', 'echo'=>true, 'width'=>60, 'height'=>60, 'size_name'=>'jigoshop_media_preview');
+	$args = wp_parse_args($args, $defaults);
+
+	extract($args);
+
+	if (isset($_POST['url']) || isset($_POST['wpid']) && defined('DOING_AJAX') && DOING_AJAX){
+		if (isset($_POST['wpid'])){
+			$default = 'wpid';
+		} else {
+			$default = 'url';
+		}
+
+		$default = isset($_POST[$default]) ? $_POST[$default] : '';
+		$width   = isset($_POST['width']) ? $_POST['width'] : $width;
+		$height  = isset($_POST['height']) ? $_POST['height'] : $height;
+	}
+
+	$src = jigoshop_custom_image_src($default, $width, $height);
+
+	if ($echo){
+		echo '<img src="' . $src . '" width="' . $width . '" height="' . $height . '" class="jigoshop-media-preview"/>';
+	}
+
+	if (defined('DOING_AJAX') && DOING_AJAX){
+		exit();
+	} else {
+		return $src;
+	}
+}
+add_action('wp_ajax_jigoshop_media_preview', 'jigoshop_custom_image');
+
+function jigoshop_custom_image_src($file, $width, $height){
+	$upload_dir = wp_upload_dir();
+	if (is_numeric($file)){
+		$file = wp_get_attachment_url($file);
+	}
+
+	if (preg_match('/^http/', $file)){
+		$upload_dir = wp_upload_dir();
+		$file = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $file);
+	}
+
+	$suffix = "{$width}x{$height}";
+	$info = pathinfo($file);
+	$dir = $info['dirname'];
+	$ext = $info['extension'];
+	$name = wp_basename($file, ".$ext");
+
+	$destfilename = "{$dir}/{$name}-{$suffix}.{$ext}";
+
+	if (file_exists($destfilename)){
+		$imagepath = str_replace($upload_dir['basedir'], $upload_dir['baseurl'], $destfilename);
+		return $imagepath;
+	} else {
+		$thumb = image_resize($file, $width, $height, true);
+		if (is_wp_error($thumb)){
+			$imagepath = jigoshop::plugin_url().'/assets/images/placeholder.png';
+		} else {
+			$imagepath = str_replace($upload_dir['basedir'], $upload_dir['baseurl'], $thumb);
+		}
+		return $imagepath;
+	}
+}
+
+
 if (!function_exists('boolval')) {
 	/**
 	 * Helper function to get the boolean value of a variable. If not strict, this function will return true
