@@ -74,6 +74,7 @@ function jigoshop_cart( $atts ) {
 
 	if (sizeof(jigoshop_cart::$cart_contents)==0) :
 		echo '<p>'.__('Your cart is empty.', 'jigoshop').'</p>';
+		echo '<p><a class="button" href="'.get_permalink(get_option('jigoshop_shop_page_id')).'">'.__('&larr; Return To Shop', 'jigoshop').'</a></p>';
 		return;
 	endif;
 
