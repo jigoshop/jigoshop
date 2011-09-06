@@ -16,93 +16,133 @@
  *
  * @since 		1.0
  */
-function variable_product_type_options() {
+function variable_product_type_options($post_id=null, $variation_id=null) {
 	global $post;
-	
-	$attributes = get_post_meta($post->ID, 'product_attributes', true);
 
-	if (!isset($attributes)) $attributes = array();
-	?>
+	if ($post_id == null){
+		$post_id = $post->ID;
+	}
+
+	$img_upload_src = get_upload_iframe_src('image');
+	add_image_size('jigoshop_variation_size', 60, 60, true);
+
+	// Get the parent post attributes
+	$attributes = get_post_meta($post_id, 'product_attributes', true);
+
+	// Only render the wrapper div if it's not a single variation request
+	if ($variation_id === null): ?>
 	<div id="variable_product_options" class="panel">
+	<?php endif; ?>
 		
 		<div class="jigoshop_configurations">
 			<?php
+			// All variations for this product
 			$args = array(
 				'post_type'	=> 'product_variation',
 				'post_status' => array('private', 'publish'),
 				'numberposts' => -1,
 				'orderby' => 'id',
 				'order' => 'asc',
-				'post_parent' => $post->ID
+				'post_parent' => $post_id
 			);
+
+			// Limit to a specific variation
+			if ($variation_id !== null){
+				$args['p'] = $variation_id;
+			}
+
 			$variations = get_posts($args);
-			$loop = 0;
+
 			if ($variations) foreach ($variations as $variation) : 
 			
 				$variation_data = get_post_custom( $variation->ID );
-				$image = '';
-				if (isset($variation_data['_thumbnail_id'][0])) :
-					$image = wp_get_attachment_url( $variation_data['_thumbnail_id'][0] );
-				endif;
-				
-				if (!$image) $image = jigoshop::plugin_url().'/assets/images/placeholder.png';
+				$image = jigoshop_custom_image_src($variation_data['_thumbnail_id'][0], 60, 60);
+
 				?>
 				<div class="jigoshop_configuration">
 					<p>
 						<button type="button" class="remove_variation button" rel="<?php echo $variation->ID; ?>"><?php _e('Remove', 'jigoshop'); ?></button>
 						<strong>#<?php echo $variation->ID; ?> &mdash; <?php _e('Variation:', 'jigoshop'); ?></strong>
 						<?php
-							foreach ($attributes as $attribute) :
+							foreach ((array) $attributes as $attribute) :
 								
-								if ( $attribute['variation']!=='yes' ) continue;
+								if ( !boolval($attribute['variation']) ) {
+									continue;
+								}
 								
 								$options = $attribute['value'];
+								if (!is_array($options)) {
+									$options = explode(',', $options);
+								}
+
 								$value = get_post_meta( $variation->ID, 'tax_' . sanitize_title($attribute['name']), true );
-								
-								if (!is_array($options)) $options = explode(',', $options);
-								
-								echo '<select name="tax_' . sanitize_title($attribute['name']) . '['.$loop.']"><option value="">'.__('Any ', 'jigoshop').$attribute['name'].'&hellip;</option>';
-								
+
+								printf('<select name="%s[]"><option value="">%s</option>'
+									,'tax_' . sanitize_title($attribute['name'])
+									, __('Any ', 'jigoshop').$attribute['name'].'&hellip;');
+
 								foreach($options as $option) :
 									$option = trim($option);
-									echo '<option ';
-									selected($value, $option);
-									echo ' value="'.$option.'">'.ucfirst($option).'</option>';
+									printf('<option %s value="%s">%s</option>'
+										, selected($value, $option, false)
+										, $option
+										, ucfirst($option));
 								endforeach;	
 									
 								echo '</select>';
 	
 							endforeach;
+
+						$variation_upload_src = str_replace('post_id='.$post_id, 'post_id='.$variation->ID, $img_upload_src)
 						?>
-						<input type="hidden" name="variable_post_id[<?php echo $loop; ?>]" value="<?php echo $variation->ID; ?>" />
+						<input type="hidden" name="variable_post_id[]" value="<?php echo $variation->ID; ?>" />
 					</p>
 					<table cellpadding="0" cellspacing="0" class="jigoshop_variable_attributes">
 						<tbody>	
 							<tr>
-								<td class="upload_image"><img src="<?php echo $image ?>" width="60px" height="60px" /><input type="hidden" name="upload_image_id[<?php echo $loop; ?>]" class="upload_image_id" value="<?php if (isset($variation_data['_thumbnail_id'][0])) echo $variation_data['_thumbnail_id'][0]; ?>" /><input type="button" rel="<?php echo $variation->ID; ?>" class="upload_image_button button" value="<?php _e('Product Image', 'jigoshop'); ?>" /></td>
-								<td><label><?php _e('SKU:', 'jigoshop'); ?></label><input type="text" size="5" name="variable_sku[<?php echo $loop; ?>]" value="<?php if (isset($variation_data['SKU'][0])) echo $variation_data['SKU'][0]; ?>" /></td>
-								<td><label><?php _e('Weight', 'jigoshop').' ('.get_option('jigoshop_weight_unit').'):'; ?></label><input type="text" size="5" name="variable_weight[<?php echo $loop; ?>]" value="<?php if (isset($variation_data['weight'][0])) echo $variation_data['weight'][0]; ?>" /></td>
-								<td><label><?php _e('Stock Qty:', 'jigoshop'); ?></label><input type="text" size="5" name="variable_stock[<?php echo $loop; ?>]" value="<?php if (isset($variation_data['stock'][0])) echo $variation_data['stock'][0]; ?>" /></td>
-								<td><label><?php _e('Price:', 'jigoshop'); ?></label><input type="text" size="5" name="variable_price[<?php echo $loop; ?>]" placeholder="<?php _e('e.g. 29.99', 'jigoshop'); ?>" value="<?php if (isset($variation_data['price'][0])) echo $variation_data['price'][0]; ?>" /></td>
-								<td><label><?php _e('Sale Price:', 'jigoshop'); ?></label><input type="text" size="5" name="variable_sale_price[<?php echo $loop; ?>]" placeholder="<?php _e('e.g. 29.99', 'jigoshop'); ?>" value="<?php if (isset($variation_data['sale_price'][0])) echo $variation_data['sale_price'][0]; ?>" /></td>
-								<td><label><?php _e('Enabled', 'jigoshop'); ?></label><input type="checkbox" class="checkbox" name="variable_enabled[<?php echo $loop; ?>]" <?php checked($variation->post_status, 'publish'); ?> /></td>
+								<td class="upload_image">
+									<a rel="<?php echo $variation->ID; ?>" title="<?php _e('Click to choose image','jigoshop') ?>" class="upload_image_button media-preview" href="<?php echo $variation_upload_src; ?>">
+										<img src="<?php echo $image ?>" width="60px" height="60px" alt="Product Variation Image" />
+									</a>
+									<input type="hidden" name="upload_image_id[]" class="upload_image_id" value="<?php if (isset($variation_data['_thumbnail_id'][0])) echo $variation_data['_thumbnail_id'][0]; ?>" />
+								</td>
+								<td>
+									<label><?php _e('SKU:', 'jigoshop'); ?></label>
+									<input type="text" size="5" name="variable_sku[]" value="<?php if (isset($variation_data['SKU'][0])) echo $variation_data['SKU'][0]; ?>" />
+								</td>
+								<td>
+									<label><?php _e('Weight', 'jigoshop').' ('.get_option('jigoshop_weight_unit').'):'; ?></label><input type="text" size="5" name="variable_weight[]" value="<?php if (isset($variation_data['weight'][0])) echo $variation_data['weight'][0]; ?>" /></td>
+								<td>
+									<label><?php _e('Stock Qty:', 'jigoshop'); ?></label>
+									<input type="text" size="5" name="variable_stock[]" value="<?php if (isset($variation_data['stock'][0])) echo $variation_data['stock'][0]; ?>" />
+								</td>
+								<td>
+									<label><?php _e('Price:', 'jigoshop'); ?></label>
+									<input type="text" size="5" name="variable_price[]" placeholder="<?php _e('e.g. 29.99', 'jigoshop'); ?>" value="<?php if (isset($variation_data['price'][0])) echo $variation_data['price'][0]; ?>" />
+								</td>
+								<td>
+									<label><?php _e('Sale Price:', 'jigoshop'); ?></label>
+									<input type="text" size="5" name="variable_sale_price[]" placeholder="<?php _e('e.g. 29.99', 'jigoshop'); ?>" value="<?php if (isset($variation_data['sale_price'][0])) echo $variation_data['sale_price'][0]; ?>" />
+								</td>
+								<td>
+									<label><?php _e('Enabled', 'jigoshop'); ?></label>
+									<input type="checkbox" class="checkbox" name="variable_enabled[]" <?php checked($variation->post_status, 'publish'); ?> />
+								</td>
 							</tr>		
 						</tbody>
 					</table>
 				</div>
-			<?php $loop++; endforeach; ?>
+			<?php endforeach; ?>
 		</div>
-		<p class="description"><?php _e('Add (optional) pricing/inventory for product variations. You must save your product attributes in the "Product Data" panel to make them available for selection.', 'jigoshop'); ?></p>
 
+	<?php if ($variation_id === null): // Only render the buttons not a single variation request ?>
+		<p class="description"><?php _e('Add (optional) pricing/inventory for product variations. You must save your product attributes in the "Product Data" panel to make them available for selection.', 'jigoshop'); ?></p>
 		<button type="button" class="button button-primary add_configuration"><?php _e('Add Configuration', 'jigoshop'); ?></button>
-		
 		<div class="clear"></div>
 	</div>
-	<?php
+	<?php endif;
 }
 add_action('jigoshop_product_type_options_box', 'variable_product_type_options');
-
-
 
 /**
  * Product Type Javascript
@@ -113,146 +153,138 @@ add_action('jigoshop_product_type_options_box', 'variable_product_type_options')
  * @since 		1.0
  */
 function variable_product_write_panel_js() {
-	global $post;
-
-	$attributes = maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) );
-	if (!isset($attributes)) $attributes = array();
-	?>
+	global $post; ?>
 <script type="text/javascript">
-	jQuery(function(){
-		
-		jQuery('button.add_configuration').live('click', function(){
-		
-			jQuery('.jigoshop_configurations').block({ message: null, overlayCSS: { background: '#fff url(<?php echo jigoshop::plugin_url(); ?>/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
-					
+(function($) {
+
+	if (!$.jigoshop){
+		$.jigoshop={};
+	}
+
+	$.extend($.jigoshop, {
+
+		loadMediaPreview:function(preview, value) {
 			var data = {
-				action: 'jigoshop_add_variation',
-				post_id: <?php echo $post->ID; ?>,
-				security: '<?php echo wp_create_nonce("add-variation"); ?>'
+				action:'jigoshop_media_preview',
+				url: value,
+				width: 60,
+				height: 60
 			};
 
-			jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
-				
-				var variation_id = parseInt(response);
-				
-				var loop = jQuery('.jigoshop_configuration').size();
-				
-				jQuery('.jigoshop_configurations').append('<div class="jigoshop_configuration">\
-					<p>\
-						<button type="button" class="remove_variation button"><?php _e('Remove', 'jigoshop'); ?></button>\
-						<strong><?php _e('Variation:', 'jigoshop'); ?></strong>\
-						<?php
-							if ($attributes) foreach ($attributes as $attribute) :
-								
-								if ( $attribute['variation']!=='yes' ) continue;
-								
-								$options = $attribute['value'];
-								if (!is_array($options)) $options = explode(',', $options);
-								
-								echo '<select name="tax_' . sanitize_title($attribute['name']).'[\' + loop + \']"><option value="">'.__('Any ', 'jigoshop').$attribute['name'].'&hellip;</option>';
-								
-								foreach($options as $option) :
-									echo '<option value="'.trim($option).'">'.ucfirst(trim($option)).'</option>';
-								endforeach;	
-									
-								echo '</select>';
-	
-							endforeach;
-					?><input type="hidden" name="variable_post_id[' + loop + ']" value="' + variation_id + '" /></p>\
-					<table cellpadding="0" cellspacing="0" class="jigoshop_variable_attributes">\
-						<tbody>\
-							<tr>\
-								<td class="upload_image"><img src="<?php echo jigoshop::plugin_url().'/assets/images/placeholder.png' ?>" width="60px" height="60px" /><input type="hidden" name="upload_image_id[' + loop + ']" class="upload_image_id" /><input type="button" class="upload_image_button button" rel="" value="<?php _e('Product Image', 'jigoshop'); ?>" /></td>\
-								<td><label><?php _e('SKU:', 'jigoshop'); ?></label><input type="text" size="5" name="variable_sku[' + loop + ']" /></td>\
-								<td><label><?php _e('Weight', 'jigoshop').' ('.get_option('jigoshop_weight_unit').'):'; ?></label><input type="text" size="5" name="variable_weight[' + loop + ']" /></td>\
-								<td><label><?php _e('Stock Qty:', 'jigoshop'); ?></label><input type="text" size="5" name="variable_stock[' + loop + ']" /></td>\
-								<td><label><?php _e('Price:', 'jigoshop'); ?></label><input type="text" size="5" name="variable_price[' + loop + ']" placeholder="<?php _e('e.g. 29.99', 'jigoshop'); ?>" /></td>\
-								<td><label><?php _e('Sale Price:', 'jigoshop'); ?></label><input type="text" size="5" name="variable_sale_price[' + loop + ']" placeholder="<?php _e('e.g. 29.99', 'jigoshop'); ?>" /></td>\
-								<td><label><?php _e('Enabled', 'jigoshop'); ?></label><input type="checkbox" class="checkbox" name="variable_enabled[' + loop + ']" checked="checked" /></td>\
-							</tr>\
-						</tbody>\
-					</table>\
-				</div>');
-				
-				jQuery('.jigoshop_configurations').unblock();
-
-			});
-
-			return false;
-		
-		});
-		
-		jQuery('button.remove_variation').live('click', function(){
-			var answer = confirm('<?php _e('Are you sure you want to remove this variation?', 'jigoshop'); ?>');
-			if (answer){
-				
-				var el = jQuery(this).parent().parent();
-				
-				var variation = jQuery(this).attr('rel');
-				
-				if (variation>0) {
-				
-					jQuery(el).block({ message: null, overlayCSS: { background: '#fff url(<?php echo jigoshop::plugin_url(); ?>/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
-					
-					var data = {
-						action: 'jigoshop_remove_variation',
-						variation_id: variation,
-						security: '<?php echo wp_create_nonce("delete-variation"); ?>'
-					};
-	
-					jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
-						// Success
-						jQuery(el).fadeOut('300', function(){
-							jQuery(el).remove();
-						});
-					});
-					
-				} else {
-					jQuery(el).fadeOut('300', function(){
-						jQuery(el).remove();
-					});
-				}
-				
+			// Extra data provided?
+			if (arguments.length > 2) {
+				$.extend(data, arguments[2]);
 			}
-			return false;
-		});
-		
-		var current_field_wrapper;
-		
-		window.send_to_editor_default = window.send_to_editor;
 
-		jQuery('.upload_image_button').live('click', function(){
-			
-			var post_id = jQuery(this).attr('rel');
-			
-			var parent = jQuery(this).parent();
-			
-			current_field_wrapper = parent;
-			
-			window.send_to_editor = window.send_to_cproduct;
-			
-			formfield = jQuery('.upload_image_id', parent).attr('name');
-			tb_show('', 'media-upload.php?post_id=' + post_id + '&amp;type=image&amp;TB_iframe=true');
-			return false;
-		});
+			preview.load(ajaxurl, data);
+		},
 
-		window.send_to_cproduct = function(html) {
-			
-			imgurl = jQuery('img', html).attr('src');
-			imgclass = jQuery('img', html).attr('class');
-			imgid = parseInt(imgclass.replace(/\D/g, ''), 10);
-			
-			jQuery('.upload_image_id', current_field_wrapper).val(imgid);
-
-			jQuery('img', current_field_wrapper).attr('src', imgurl);
-			tb_remove();
-			window.send_to_editor = window.send_to_editor_default;
-			
+		sendToEditor : function(target, fn) {
+			$.data(document, 'jigoshop_media_override', target);
+			$(target).bind('send_to_editor.jigoshop', function(event, html){
+				fn.call(this, event, html);
+				$(target).unbind('send_to_editor.jigoshop');
+				$.data(document, 'jigoshop_media_override', null);
+			});
 		}
-
 	});
-	</script>
-	<?php
+
+	var blockUiParams = {
+		message: null,
+		applyPlatformOpacityRules: false,
+		overlayCSS: {
+			background: '#fff url(<?php echo jigoshop::plugin_url(); ?>/assets/images/ajax-loader.gif) no-repeat center',
+			opacity: 0.6
+		}
+	};
+
+	$('button.add_configuration').live('click', function(){
+		$('.jigoshop_configurations').block(blockUiParams);
+
+		var data = {
+			action: 'jigoshop_add_variation',
+			post_id: <?php echo $post->ID; ?>,
+			security: '<?php echo wp_create_nonce("add-variation"); ?>'
+		};
+
+		$.post( ajaxurl, data, function(response) {
+			if (response.length > 0){
+				$('.jigoshop_configurations').append(response).unblock();
+			}
+		}, 'html');
+
+		return false;
+	});
+
+	$('button.remove_variation').live('click', function(){
+		var answer = confirm('<?php _e('Are you sure you want to remove this variation?', 'jigoshop'); ?>');
+		if (answer){
+
+			var el = jQuery(this).parent().parent();
+			var variation = jQuery(this).attr('rel');
+
+			if (variation > 0) {
+				$(el).block(blockUiParams);
+
+				var data = {
+					action: 'jigoshop_remove_variation',
+					variation_id: variation,
+					security: '<?php echo wp_create_nonce("delete-variation"); ?>'
+				};
+
+				$.post( ajaxurl, data, function(response) {
+					if (response && response.error){
+						alert(response.error);
+					} else {
+						$(el).fadeOut('300', function(){ $(el).remove(); });
+					}
+				}, 'json');
+
+			} else {
+				$(el).fadeOut('300', function(){ $(el).remove(); });
+			}
+
+		}
+		return false;
+	});
+
+	$('.upload_image_button').live('click', function(){
+		var target = $(this);
+		var previewContainer = $(this);
+
+		$.jigoshop.sendToEditor(previewContainer, function(event, html){
+			var jqel  = $(html);
+			var link  = $(jqel).attr('href');
+			var match = $(jqel).children('img:first-child').attr('class').match(/wp-image-([0-9]+)/);
+			var wpid  = parseInt(match[1]);
+
+			previewContainer.next().val(wpid);
+			$.jigoshop.loadMediaPreview(previewContainer, wpid);
+		});
+
+		var href = $(this).attr('href');
+		tb_show('Select Variation Image', $(this).attr('href'), null);
+		return false;
+	});
+
+	// On document ready
+	$(function(){
+
+		// override the default send_to_editor function with our own
+		window._send_to_editor = window.send_to_editor;
+		window.send_to_editor = function(html) {
+			var override = $($.data(document, 'jigoshop_media_override'));
+			if (override.length > 0) {
+				override.trigger('send_to_editor.jigoshop', [html]);
+				tb_remove();
+			} else {
+				window._send_to_editor(html);
+			}
+		};
+	});
+
+})(jQuery);
+</script><?php
 }
 add_action('product_write_panel_js', 'variable_product_write_panel_js');
 
@@ -268,7 +300,11 @@ function jigoshop_remove_variation() {
 	
 	check_ajax_referer( 'delete-variation', 'security' );
 	$variation_id = intval( $_POST['variation_id'] );
-	wp_delete_post( $variation_id );
+	$result = wp_delete_post( $variation_id );
+	if ($result === false){
+		$error = array('error'=>__('There was an error while attempting to remove this variation, please try again','jigoshop'));
+		echo json_encode($error);
+	}
 	die();
 	
 }
@@ -296,14 +332,11 @@ function jigoshop_add_variation() {
 		'post_type' => 'product_variation'
 	);
 	$variation_id = wp_insert_post( $variation );
-	
-	echo $variation_id;
+
+	variable_product_type_options($post_id, $variation_id);
 	
 	die();
-	
 }
-
-
 
 /**
  * Product Type selector
@@ -315,9 +348,7 @@ function jigoshop_add_variation() {
  * @param 		string $product_type Passed the current product type so that if it keeps its selected state
  */
 function variable_product_type_selector( $product_type ) {
-	
-	echo '<option value="variable" '; if ($product_type=='variable') echo 'selected="selected"'; echo '>'.__('Variable','jigoshop').'</option>';
-
+	printf('<option %s value="variable">%s</option>', selected($product_type == 'variable', true, false), __('Variable','jigoshop'));
 }
 add_action('product_type_selector', 'variable_product_type_selector');
 
