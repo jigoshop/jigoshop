@@ -22,10 +22,17 @@ function variable_product_type_options($post_id=null, $variation_id=null) {
 	if ($post_id == null){
 		$post_id = $post->ID;
 	}
+
+	$img_upload_src = get_upload_iframe_src('image');
+	add_image_size('jigoshop_variation_size', 60, 60, true);
+
 	// Get the parent post attributes
 	$attributes = get_post_meta($post_id, 'product_attributes', true);
-	?>
+
+	// Only render the wrapper div if it's not a single variation request
+	if ($variation_id === null): ?>
 	<div id="variable_product_options" class="panel">
+	<?php endif; ?>
 		
 		<div class="jigoshop_configurations">
 			<?php
@@ -49,12 +56,8 @@ function variable_product_type_options($post_id=null, $variation_id=null) {
 			if ($variations) foreach ($variations as $variation) : 
 			
 				$variation_data = get_post_custom( $variation->ID );
-				$image = '';
-				if (isset($variation_data['_thumbnail_id'][0])) :
-					$image = wp_get_attachment_url( $variation_data['_thumbnail_id'][0] );
-				endif;
-				
-				if (!$image) $image = jigoshop::plugin_url().'/assets/images/placeholder.png';
+				$image = jigoshop_custom_image_src($variation_data['_thumbnail_id'][0], 60, 60);
+
 				?>
 				<div class="jigoshop_configuration">
 					<p>
@@ -89,6 +92,8 @@ function variable_product_type_options($post_id=null, $variation_id=null) {
 								echo '</select>';
 	
 							endforeach;
+
+						$variation_upload_src = str_replace('post_id='.$post_id, 'post_id='.$variation->ID, $img_upload_src)
 						?>
 						<input type="hidden" name="variable_post_id[]" value="<?php echo $variation->ID; ?>" />
 					</p>
@@ -96,9 +101,10 @@ function variable_product_type_options($post_id=null, $variation_id=null) {
 						<tbody>	
 							<tr>
 								<td class="upload_image">
-									<img src="<?php echo $image ?>" width="60px" height="60px" alt="Product Variation Image" />
+									<a rel="<?php echo $variation->ID; ?>" title="<?php _e('Click to choose image','jigoshop') ?>" class="upload_image_button media-preview" href="<?php echo $variation_upload_src; ?>">
+										<img src="<?php echo $image ?>" width="60px" height="60px" alt="Product Variation Image" />
+									</a>
 									<input type="hidden" name="upload_image_id[]" class="upload_image_id" value="<?php if (isset($variation_data['_thumbnail_id'][0])) echo $variation_data['_thumbnail_id'][0]; ?>" />
-									<input type="button" rel="<?php echo $variation->ID; ?>" class="upload_image_button button" value="<?php _e('Product Image', 'jigoshop'); ?>" />
 								</td>
 								<td>
 									<label><?php _e('SKU:', 'jigoshop'); ?></label>
@@ -128,17 +134,15 @@ function variable_product_type_options($post_id=null, $variation_id=null) {
 				</div>
 			<?php endforeach; ?>
 		</div>
-		<p class="description"><?php _e('Add (optional) pricing/inventory for product variations. You must save your product attributes in the "Product Data" panel to make them available for selection.', 'jigoshop'); ?></p>
 
+	<?php if ($variation_id === null): // Only render the buttons not a single variation request ?>
+		<p class="description"><?php _e('Add (optional) pricing/inventory for product variations. You must save your product attributes in the "Product Data" panel to make them available for selection.', 'jigoshop'); ?></p>
 		<button type="button" class="button button-primary add_configuration"><?php _e('Add Configuration', 'jigoshop'); ?></button>
-		
 		<div class="clear"></div>
 	</div>
-	<?php
+	<?php endif;
 }
 add_action('jigoshop_product_type_options_box', 'variable_product_type_options');
-
-
 
 /**
  * Product Type Javascript
@@ -152,6 +156,38 @@ function variable_product_write_panel_js() {
 	global $post; ?>
 <script type="text/javascript">
 (function($) {
+
+	if (!$.jigoshop){
+		$.jigoshop={};
+	}
+
+	$.extend($.jigoshop, {
+
+		loadMediaPreview:function(preview, value) {
+			var data = {
+				action:'jigoshop_media_preview',
+				url: value,
+				width: 60,
+				height: 60
+			};
+
+			// Extra data provided?
+			if (arguments.length > 2) {
+				$.extend(data, arguments[2]);
+			}
+
+			preview.load(ajaxurl, data);
+		},
+
+		sendToEditor : function(target, fn) {
+			$.data(document, 'jigoshop_media_override', target);
+			$(target).bind('send_to_editor.jigoshop', function(event, html){
+				fn.call(this, event, html);
+				$(target).unbind('send_to_editor.jigoshop');
+				$.data(document, 'jigoshop_media_override', null);
+			});
+		}
+	});
 
 	var blockUiParams = {
 		message: null,
@@ -185,11 +221,9 @@ function variable_product_write_panel_js() {
 		if (answer){
 
 			var el = jQuery(this).parent().parent();
-
 			var variation = jQuery(this).attr('rel');
 
 			if (variation > 0) {
-
 				$(el).block(blockUiParams);
 
 				var data = {
@@ -214,40 +248,39 @@ function variable_product_write_panel_js() {
 		return false;
 	});
 
-	// On document ready
-	$(function(){
-		var current_field_wrapper;
+	$('.upload_image_button').live('click', function(){
+		var target = $(this);
+		var previewContainer = $(this);
 
-		window.send_to_editor_default = window.send_to_editor;
+		$.jigoshop.sendToEditor(previewContainer, function(event, html){
+			var jqel  = $(html);
+			var link  = $(jqel).attr('href');
+			var match = $(jqel).children('img:first-child').attr('class').match(/wp-image-([0-9]+)/);
+			var wpid  = parseInt(match[1]);
 
-		jQuery('.upload_image_button').live('click', function(){
-
-			var post_id = jQuery(this).attr('rel');
-
-			var parent = jQuery(this).parent();
-
-			current_field_wrapper = parent;
-
-			window.send_to_editor = window.send_to_cproduct;
-
-			formfield = jQuery('.upload_image_id', parent).attr('name');
-			tb_show('', 'media-upload.php?post_id=' + post_id + '&amp;type=image&amp;TB_iframe=true');
-			return false;
+			previewContainer.next().val(wpid);
+			$.jigoshop.loadMediaPreview(previewContainer, wpid);
 		});
 
-		window.send_to_cproduct = function(html) {
+		var href = $(this).attr('href');
+		tb_show('Select Variation Image', $(this).attr('href'), null);
+		return false;
+	});
 
-			imgurl = jQuery('img', html).attr('src');
-			imgclass = jQuery('img', html).attr('class');
-			imgid = parseInt(imgclass.replace(/\D/g, ''), 10);
+	// On document ready
+	$(function(){
 
-			jQuery('.upload_image_id', current_field_wrapper).val(imgid);
-
-			jQuery('img', current_field_wrapper).attr('src', imgurl);
-			tb_remove();
-			window.send_to_editor = window.send_to_editor_default;
-
-		}
+		// override the default send_to_editor function with our own
+		window._send_to_editor = window.send_to_editor;
+		window.send_to_editor = function(html) {
+			var override = $($.data(document, 'jigoshop_media_override'));
+			if (override.length > 0) {
+				override.trigger('send_to_editor.jigoshop', [html]);
+				tb_remove();
+			} else {
+				window._send_to_editor(html);
+			}
+		};
 	});
 
 })(jQuery);
@@ -304,8 +337,6 @@ function jigoshop_add_variation() {
 	
 	die();
 }
-
-
 
 /**
  * Product Type selector
