@@ -306,7 +306,7 @@ function jigoshop_product_data_box() {
 					        						if ($terms) :
 														foreach ($terms as $term) :
 															printf('<option value="%s" %s>%s</option>'
-																, $term->slug
+																, $term->name
 																, selected(in_array($term->slug, $value), true, false)
 																, $term->name);
 														endforeach;

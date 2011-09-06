@@ -26,6 +26,7 @@ class jigoshop_cart {
 	public static $cart_contents_count;
 	public static $cart_contents_tax;
 	public static $cart_contents;
+	public static $cart_dl_count;
 	public static $total;
 	public static $subtotal;
 	public static $subtotal_ex_tax;
@@ -37,9 +38,7 @@ class jigoshop_cart {
 	
 	/** constructor */
 	function __construct() {
-
 		add_action('init', array($this, 'init'), 1);
-
 	}
 	
 	/** get class instance */
@@ -328,6 +327,7 @@ class jigoshop_cart {
 		self::$subtotal_ex_tax = 0;
 		self::$discount_total = 0;
 		self::$shipping_total = 0;
+		self::$cart_dl_count = 0;
 		
 		if (sizeof(self::$cart_contents)>0) : foreach (self::$cart_contents as $cart_item_key => $values) :
 			$_product = $values['data'];
@@ -335,6 +335,11 @@ class jigoshop_cart {
 				
 				self::$cart_contents_count = self::$cart_contents_count + $values['quantity'];
 				
+				// If product is downloadable don't apply to product
+				if( $_product->product_type == 'downloadable' ) {
+					self::$cart_dl_count = self::$cart_dl_count + $values['quantity'];
+				}
+
 				self::$cart_contents_weight = self::$cart_contents_weight + ($_product->get_weight() * $values['quantity']);
 
 				$total_item_price = $_product->get_price() * $values['quantity'] * 100; // Into pounds
