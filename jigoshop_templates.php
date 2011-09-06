@@ -31,7 +31,7 @@ function jigoshop_template_loader( $template ) {
 	}
 	elseif ( is_tax('product_cat') ) {
 
-		jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-product_cat' ) );
+		jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-products', 'jigoshop-product_cat' ) );
 
 		global $query_string;	/* should have 'product_cat=category' with hyphenated multi-words */
 		$category = explode( '=', $query_string );
@@ -48,7 +48,7 @@ function jigoshop_template_loader( $template ) {
 	}
 	elseif ( is_tax('product_tag') ) {
 
-		jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-product_tag' ) );
+		jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-products', 'jigoshop-product_tag' ) );
 
 		global $query_string;	/* should have 'product_tag=tagname' with hyphenated multi-words */
 		$tag = explode( '=', $query_string );
@@ -63,9 +63,9 @@ function jigoshop_template_loader( $template ) {
 
 		if ( ! $template ) $template = jigoshop::plugin_path() . '/templates/taxonomy-product_tag.php';
 	}
-	elseif ( is_post_type_archive('product') ||  is_page( get_option('jigoshop_shop_page_id') )) {
+	elseif ( is_shop() ) {
 
-		jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-products' ) );
+		jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-shop', 'jigoshop-products' ) );
 
 		$template = locate_template( array( 'archive-product.php', JIGOSHOP_TEMPLATE_URL . 'archive-product.php' ) );
 

@@ -73,7 +73,10 @@ function jigoshop_find_variation( $variation_data = array() ) {
 
 }
 
-/**********  this appears unused?  -JAP-  **********/
+// is used by the layered_nav widget and the price filter widget as they access the global $all_post_ids
+// this runs on wp_head for every page load, could get expensive with a large database -JAP-
+// this answers the question for our 'just plain ugly' friend on why ID's are gathered
+//
 //### Get unfiltered list of posts in current view for use in loop + widgets
 function jigoshop_get_products_in_view() {
 
@@ -81,7 +84,7 @@ function jigoshop_get_products_in_view() {
 
 	$all_post_ids = array();
 
-	if (is_tax( 'product_cat' ) || is_post_type_archive('product') || is_page( get_option('jigoshop_shop_page_id') ) || is_tax( 'product_tag' )) :
+	if ( is_shop() || is_product_category() || is_product_tag() ) :
 
 		$all_post_ids = jigoshop_get_post_ids();
 
@@ -90,8 +93,7 @@ function jigoshop_get_products_in_view() {
 	$all_post_ids[] = 0;
 
 }
-// disabling the action hook, monitoring ...-JAP-
-//add_action('wp_head', 'jigoshop_get_products_in_view', 0);
+add_action( 'wp_head', 'jigoshop_get_products_in_view', 0 );
 
 
 /**
@@ -110,6 +112,7 @@ function jigoshop_filter_catalog_query( $request ) {
     $this_query->parse_query( $request );
 
 	// we only work on Jigoshop product lists [ is_shop() and is_product_list() ]
+	// WordPress search is ignored and WILL show products no matter their Product Visibility setting
     if ( $this_query->is_post_type_archive( 'product' )
     	OR $this_query->is_tax( 'product_cat' )
     	OR $this_query->is_tax( 'product_tag' ) ) :
@@ -124,8 +127,10 @@ function jigoshop_filter_catalog_query( $request ) {
 		endforeach;
 
 	    $in = array( 'visible' );
+	    /* TODO: this never gets hit even with either Jigoshop search or WP search -JAP- */
 	    if ( is_search() ) $in[] = 'search';
-	    if ( !is_search() ) $in[] = 'catalog';
+	    /* TODO: this is always added -JAP- */
+	    if ( ! is_search() ) $in[] = 'catalog';
 	    $meta = $this_query->get( 'meta_query' );
 	    $meta[] = array(
 	        'key' => 'visibility',
@@ -163,7 +168,6 @@ function jigoshop_layered_nav_init() {
 add_action('init', 'jigoshop_layered_nav_init', 1);
 
 
-/**********  this appears unused?  -JAP-  **********/
 //### Get post ID's to filter from
 function jigoshop_get_post_ids() {
 
