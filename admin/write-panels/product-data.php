@@ -307,6 +307,7 @@ function jigoshop_product_data_box() {
 																, $term->name
 																, selected(in_array($term->slug, $value), true, false)
 																, $term->name);
+														endforeach;
 													endif;
 												endif;
 												?>			
