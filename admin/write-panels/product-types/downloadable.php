@@ -43,7 +43,7 @@ function downloadable_product_type_options() {
 			echo '<p class="form-field">
 				<label for="'.$field['id'].'">'.$field['label'].':</label>
 				<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$download_limit.'" /> <span class="description">' . __('Leave blank for unlimited re-downloads.', 'jigoshop') . '</span></p>';
-
+			do_action( 'additional_downloadable_product_type_options' )
 		?>
 	</div>
 	<?php

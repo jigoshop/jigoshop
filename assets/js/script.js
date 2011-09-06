@@ -201,7 +201,7 @@ jQuery(function(){
     //show single variation details (price, stock, image)
     function show_variation(variation) {
         var img = jQuery('div.images img:eq(0)');
-        var link = jQuery('div.images a.zoom');
+        var link = jQuery('div.images a.zoom:eq(0)');
         var o_src = jQuery(img).attr('original-src');
         var o_link = jQuery(link).attr('original-href');
 					

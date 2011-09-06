@@ -151,7 +151,7 @@ function jigoshop_layered_nav_init() {
 
 	global $_chosen_attributes, $wpdb;
 
-	$attribute_taxonomies = jigoshop::$attribute_taxonomies;
+	$attribute_taxonomies = jigoshop::getAttributeTaxonomies();
 	if ( $attribute_taxonomies ) :
 		foreach ($attribute_taxonomies as $tax) :
 

@@ -203,7 +203,7 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 		
 		// Get values from instance
 		$title = (isset($instance['title'])) ? esc_attr($instance['title']) : null;
-		$attr_tax = jigoshop::$attribute_taxonomies;
+		$attr_tax = jigoshop::getAttributeTaxonomies();
 				
 		// Widget title
 		echo '<p>';
