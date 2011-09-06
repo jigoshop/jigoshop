@@ -139,7 +139,7 @@ function jigoshop_filter_catalog_query( $request ) {
 	    );	
 		$request['meta_query'] = $meta;
 	endif;
-
+	
     return $request;
 }
 add_filter( 'request', 'jigoshop_filter_catalog_query' );
