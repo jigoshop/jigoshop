@@ -401,8 +401,12 @@ function jigoshop_sharethis() {
 	endif;
 }
 
-// evaluates to true only on the Shop page, not Product categories and tags
-// is used to replace is_page( get_option( 'jigoshop_shop_page_id' ) )
+/**
+ * Evaluates to true only on the Shop page, not Product categories and tags
+ * Note:is used to replace is_page( get_option( 'jigoshop_shop_page_id' ) )
+ * 
+ * @return bool
+ */ 
 function is_shop() {
 	return is_post_type_archive( 'product' );
 }
