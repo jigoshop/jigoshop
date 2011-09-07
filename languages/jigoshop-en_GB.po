@@ -2475,7 +2475,7 @@ msgstr ""
 #: jigoshop_actions.php:40
 #, php-format
 #@ jigoshop
-msgid "<a href=\"%s\" class=\"button\">View Cart &rarr;</a> Product successfully added to your basket."
+msgid "<a href=\"%s\" class=\"button\">View Cart &rarr;</a> Product successfully added to your cart."
 msgstr ""
 
 #: jigoshop_actions.php:47
