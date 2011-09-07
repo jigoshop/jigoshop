@@ -264,8 +264,6 @@ jQuery( function($){
 					+ '<td class="center variation"><input type="checkbox" name="attribute_variation[' + size + ']" value="1" /></td>'
 					+ '<td class="center"><button type="button" class="remove_row button">&times;</button></td></tr>');
 
-				// Trigger change to hide the variation column
-				$('#product-type').change();
 			} else {
 				// Find taxonomy row
 				thisrow = theList.find('tr.' + attribute);
@@ -280,6 +278,9 @@ jQuery( function($){
 			}
 
 			thisrow.appendTo(theList).show();
+
+			// Trigger change to hide the variation column
+			$('#product-type').change();
 
 			row_indexes();
 			show_attribute_table();
