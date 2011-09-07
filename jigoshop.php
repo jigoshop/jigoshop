@@ -404,8 +404,12 @@ function jigoshop_sharethis() {
 	endif;
 }
 
-// evaluates to true only on the Shop page, not Product categories and tags
-// is used to replace is_page( get_option( 'jigoshop_shop_page_id' ) )
+/**
+ * Evaluates to true only on the Shop page, not Product categories and tags
+ * Note:is used to replace is_page( get_option( 'jigoshop_shop_page_id' ) )
+ * 
+ * @return bool
+ */
 function is_shop() {
 	return is_post_type_archive( 'product' );
 }
@@ -429,12 +433,19 @@ function is_product_list() {
 	return $is_list;
 }
 
-function is_jigoshop_content_wrapped() {
+function is_jigoshop() {
 	$is_wrapped = false;
 	$is_wrapped |= is_shop();
 	$is_wrapped |= is_product_list();
 	$is_wrapped |= is_product();
 	return $is_wrapped;
+}
+
+/**
+ * @deprecated Use is_jigoshop() instead
+ */
+function is_jigoshop_content_wrapped() {
+	return is_jigoshop();
 }
 
 function is_cart() {

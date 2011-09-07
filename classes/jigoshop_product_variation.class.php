@@ -72,7 +72,7 @@ class jigoshop_product_variation extends jigoshop_product {
         
         if (isset($product_custom_fields['sale_price'][0]) && !empty($product_custom_fields['sale_price'][0])) {
 			$this->variation_has_sale_price = true;
-			$this->data['sale_price'] = $product_custom_fields['sale_price'][0];
+			$this->sale_price = $product_custom_fields['sale_price'][0];
         }
         
         $this->data = '';
@@ -179,7 +179,7 @@ class jigoshop_product_variation extends jigoshop_product {
 
         if ($this->variation_has_price) {
             if ($this->variation_has_sale_price) {
-                return $this->data['sale_price'];
+                return $this->sale_price;
             }
             
             return $this->price;
@@ -193,7 +193,7 @@ class jigoshop_product_variation extends jigoshop_product {
 		if ($this->variation_has_price) {
 			if ($this->price) {
 				if ($this->variation_has_sale_price) {
-					return '<del>'.jigoshop_price( $this->price ).'</del> <ins>'.jigoshop_price( $this->data['sale_price'] ).'</ins>';
+					return '<del>'.jigoshop_price( $this->price ).'</del> <ins>'.jigoshop_price( $this->sale_price ).'</ins>';
                 }
 				return jigoshop_price( $this->price );
             }

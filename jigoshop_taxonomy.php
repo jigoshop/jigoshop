@@ -23,7 +23,7 @@ function jigoshop_post_type() {
 	global $wpdb;
 	
 	$shop_page_id = get_option('jigoshop_shop_page_id');
-	
+
 	$base_slug = ($shop_page_id && $base_page = get_page( $shop_page_id )) ? get_page_uri( $shop_page_id ) : 'shop';
 	
 	if (get_option('jigoshop_prepend_shop_page_to_urls')=="yes") :
@@ -135,7 +135,6 @@ function jigoshop_post_type() {
 			'capability_type' => 'post',
 			'publicly_queryable' => true,
 			'exclude_from_search' => false,
-			'menu_position' => 57,
 			'hierarchical' => true,
 			'rewrite' => array( 'slug' => $base_slug, 'with_front' => false ),
 			'query_var' => true,			
@@ -209,7 +208,6 @@ function jigoshop_post_type() {
 			'capability_type' => 'post',
 			'publicly_queryable' => false,
 			'exclude_from_search' => true,
-			'menu_position' => 58,
 			'hierarchical' => false,
 			'show_in_nav_menus' => false,
 			'rewrite' => false,
@@ -436,8 +434,7 @@ function jigoshop_nav_menu_items_classes ($menu_items, $args) {
 	$shop_page_id = (int) get_option('jigoshop_shop_page_id');
 	
 	// only add nav menu classes if the queried object is a jigoshop object
-	if( empty( $shop_page_id ) 
-		|| (!is_post_type_archive('product') && !is_product() && !is_product_category() && !is_product_tag()) ) return $menu_items;
+	if( empty( $shop_page_id ) || ! is_jigoshop() ) return $menu_items;
 
 	$home_page_id = (int) get_option( 'page_for_posts' );
 			
@@ -446,8 +443,7 @@ function jigoshop_nav_menu_items_classes ($menu_items, $args) {
 		$classes = (array) $menu_item->classes;
 
 		// unset classes set by WP on the home page item
-		if ( (is_post_type_archive('product') || is_product() || is_product_category() || is_product_tag() ) 
-			 && $home_page_id == $menu_item->object_id ) {
+		if ( is_jigoshop() && $home_page_id == $menu_item->object_id ) {
 
 			$menu_items[$key]->current = false;
 			unset( $classes[ array_search('current_page_parent', $classes) ] );
