@@ -504,7 +504,7 @@ msgstr "Page"
 #: jigoshop_actions.php:33
 #: jigoshop_actions.php:45
 #, php-format
-msgid "<a href=\"%s\" class=\"button\">View Cart &rarr;</a> Product successfully added to your basket."
+msgid "<a href=\"%s\" class=\"button\">View Cart &rarr;</a> Product successfully added to your cart."
 msgstr "<a href=\"%s\" class=\"button\">Voir le panier &rarr;</a> L'article a correctement été ajouté à votre panier."
 
 # @ jigoshop

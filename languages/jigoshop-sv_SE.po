@@ -360,7 +360,7 @@ msgstr "Nytt beställningsstatusnamn"
 #: jigoshop_actions.php:32
 #: jigoshop_actions.php:42
 #, php-format
-msgid "<a href=\"%s\" class=\"button\">View Cart &rarr;</a> Product successfully added to your basket."
+msgid "<a href=\"%s\" class=\"button\">View Cart &rarr;</a> Product successfully added to your cart."
 msgstr "<a href=\"%s\" class=\"button\">Visa kundvagn &rarr;</a> Produkten har lagts i din kundvagn."
 
 # @ jigoshop
