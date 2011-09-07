@@ -404,6 +404,12 @@ function jigoshop_sharethis() {
 	endif;
 }
 
+/**
+ * Evaluates to true only on the Shop page, not Product categories and tags
+ * Note:is used to replace is_page( get_option( 'jigoshop_shop_page_id' ) )
+ * 
+ * @return bool
+ */
 function is_shop() {
 	// NOTE: is_page(get_option('jigoshop_shop_page_id'))
 	// the above is used a lot through the codebase, should be thoroughly checked  -JAP-
