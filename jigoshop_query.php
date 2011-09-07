@@ -18,7 +18,8 @@
 
 /**
  * Find and get a specific variation
- * @todo unused, needed?
+ *
+ * @todo unused, needed?  (seconded -JAP-)
  *
  * @since 		1.0
  */
@@ -73,83 +74,104 @@ function jigoshop_find_variation( $variation_data = array() ) {
 
 }
 
-// is used by the layered_nav widget and the price filter widget as they access the global $all_post_ids
-// this runs on wp_head for every page load, could get expensive with a large database -JAP-
-// this answers the question for our 'just plain ugly' friend on why ID's are gathered
-//
-//### Get unfiltered list of posts in current view for use in loop + widgets
-function jigoshop_get_products_in_view() {
+/**
+ * used by the layered_nav widget and the price filter widget as they access the global ($all_post_ids)
+ * ($all_post_ids also referenced but not used in jigoshop_product.class.php)
+ * is run on the 'request' filter with highest priority to ensure it runs before main filter_catalog_query
+ * gathers all product ID's into a global variable for use elsewhere ($all_post_ids)
+ * calls jigoshop_get_product_ids() with a formed query to gather the id's
+ *
+ * @param array $request - the array representing the current WordPress request eg. post_type => 'product'
+ * @return array - unaltered array of the intial request
+ * @since 1.0
+ * @TODO: implement better mechanism for gathering ID's for the widgets -JAP-
+ *        This whole file should be wrapped in a class with protected variables and 
+ *        proper set and get methods.
+ **/
+function jigoshop_get_product_ids_in_view( $request ) {
 
 	global $all_post_ids;
 
 	$all_post_ids = array();
 
-	if ( is_shop() || is_product_category() || is_product_tag() ) :
+	$this_query = new WP_Query();
+    $this_query->parse_query( $request );
 
-		$all_post_ids = jigoshop_get_post_ids();
+    if ( $this_query->is_post_type_archive( 'product' )
+    	OR $this_query->is_tax( 'product_cat' )
+    	OR $this_query->is_tax( 'product_tag' ) ) :
 
+		$all_post_ids = jigoshop_get_product_ids( $request );
 	endif;
 
 	$all_post_ids[] = 0;
 
+	return $request;
 }
-add_action( 'wp_head', 'jigoshop_get_products_in_view', 0 );
-
+add_filter( 'request', 'jigoshop_get_product_ids_in_view', 0 );
 
 /**
  * Prior to WordPress executing the main Catalog query, add in any further modifications to the query.
  * The post_type is already set to 'product'.  We'll look for published products, retrieving the amount
- * and sort based on Jigoshop Admin Settings.  We hook into the WP 'request' hook so this is done once
- * only just prior to WordPress calling query_posts().
+ * and sort based on Jigoshop Admin Settings.  We'll also use specific product ID's determined by widgets
+ * We tap into the WP 'request' filter with a normal priority so this is done once only prior to query_posts().
  *
- * @param array $request - the object array representing the current WordPress query
+ * @param array $request - the array representing the current WordPress request eg. post_type => 'product'
  * @return array - the finished query object array is returned for WordPress to use
  * @since 1.0
  **/
 function jigoshop_filter_catalog_query( $request ) {
 
+	global $all_post_ids;
+	
 	$this_query = new WP_Query();
     $this_query->parse_query( $request );
 
 	// we only work on Jigoshop product lists [ is_shop() and is_product_list() ]
-	// WordPress search is ignored and WILL show products no matter their Product Visibility setting
     if ( $this_query->is_post_type_archive( 'product' )
     	OR $this_query->is_tax( 'product_cat' )
     	OR $this_query->is_tax( 'product_tag' ) ) :
 
         $request['post_status'] = 'publish';
         $request['posts_per_page'] = apply_filters( 'loop_shop_per_page', get_option( 'jigoshop_catalog_per_page' ));
-
-		$filters = array();
-		$filters = apply_filters( 'loop-shop-query', $filters );
-		foreach( $filters as $key => $value ) :
-			$request[$key] = $value;
-		endforeach;
-
+		
+		// form the meta query for Product Visibility
+		// by default, product_type 'hidden' products are ignored
+		// if we only look for product_type 'visible', 'catalog' only or 'search' only products won't appear
 	    $in = array( 'visible' );
-	    /* TODO: this never gets hit even with either Jigoshop search or WP search -JAP- */
-	    if ( is_search() ) $in[] = 'search';
-	    /* TODO: this is always added -JAP- */
-	    if ( ! is_search() ) $in[] = 'catalog';
+	    if ( $this_query->is_search || isset( $request['s'] )) $in[] = 'search';
+	    if ( ! $this_query->is_search && ! isset( $request['s'] ) ) $in[] = 'catalog';
 	    $meta = $this_query->get( 'meta_query' );
 	    $meta[] = array(
 	        'key' => 'visibility',
 	        'value' => $in,
 	        'compare' => 'IN'
 	    );	
-		$request['meta_query'] = $meta;
+		$request['meta_query'] = $meta;		/* set the meta */
+		
+		// establish any filters for orderby, order and anything else added to the filter
+		$filters = array();
+		$filters = apply_filters( 'loop-shop-query', $filters );
+		foreach( $filters as $key => $value ) :
+			$request[$key] = $value;
+		endforeach;
+		
+		// both the layered nav and price filter widgets tap into this filter
+		// they modify the query for specific product ID's
+		$post_ids = apply_filters( 'loop-shop-posts-in', $all_post_ids );
+		$request['post__in'] = $post_ids;
+		
 	endif;
 	
-    return $request;
+    return $request;		/* give it back to WordPress for query_posts() */
 }
-add_filter( 'request', 'jigoshop_filter_catalog_query' );
+add_filter( 'request', 'jigoshop_filter_catalog_query', 10 );
 
 
 //### Layered Nav Init
-
 function jigoshop_layered_nav_init() {
 
-	global $_chosen_attributes, $wpdb;
+	global $_chosen_attributes;
 
 	$attribute_taxonomies = jigoshop::getAttributeTaxonomies();
 	if ( $attribute_taxonomies ) :
@@ -168,51 +190,60 @@ function jigoshop_layered_nav_init() {
 add_action('init', 'jigoshop_layered_nav_init', 1);
 
 
-//### Get post ID's to filter from
-function jigoshop_get_post_ids() {
+/**
+ * used by the layered_nav widget and the price filter widget as they access the global ($all_post_ids)
+ * this is only called from jigoshop_get_product_ids_in_view() on the 'request' filter
+ * only implemented this way for now to make things functional as per prior releases
+ *
+ * @param array $request - the array representing the current WordPress request eg. post_type => 'product'
+ * @return array - an array of product ID's
+ * @since 1.0
+ * @TODO: implement better mechanism for gathering ID's for the widgets -JAP-
+ **/
+function jigoshop_get_product_ids( $request ) {
 
-	global $wpdb;
-
-	$in = array('visible');
-	if (is_search()) $in[] = 'search';
-	if (!is_search()) $in[] = 'catalog';
-
-	// WP Query to get all queried post ids
-
-	global $wp_query;
-
-	$args = array_merge(
-		$wp_query->query,
-		array(
-			'page_id' => '',
-			'posts_per_page' => -1,
-			'post_type' => 'product',
-			'post_status' => 'publish',
-			'meta_query' => array(
-				array(
-					'key' => 'visibility',
-					'value' => $in,
-					'compare' => 'IN'
+	$this_query = new WP_Query();
+    $this_query->parse_query( $request );
+	
+    if ( $this_query->is_post_type_archive( 'product' )
+    	OR $this_query->is_tax( 'product_cat' )
+    	OR $this_query->is_tax( 'product_tag' ) ) :
+		
+		$in = array('visible');
+	    if ( $this_query->is_search || isset( $request['s'] )) $in[] = 'search';
+	    if ( ! $this_query->is_search && ! isset( $request['s'] ) ) $in[] = 'catalog';
+		
+		$args = array_merge(
+			$this_query->query,
+			array(
+				'page_id' => '',
+				'posts_per_page' => -1,
+				'post_type' => 'product',
+				'post_status' => 'publish',
+				'meta_query' => array(
+					array(
+						'key' => 'visibility',
+						'value' => $in,
+						'compare' => 'IN'
+					)
 				)
 			)
-		)
-	);
-	$custom_query  = new WP_Query( $args );
-
-	$queried_post_ids = array();
-
-	foreach ($custom_query->posts as $p) $queried_post_ids[] = $p->ID;
-
-	wp_reset_query();
-
+		);
+		$custom_query  = new WP_Query( $args );
+		
+		$queried_post_ids = array();
+		
+		foreach ($custom_query->posts as $p) $queried_post_ids[] = $p->ID;
+		
+	endif;
+	
 	return $queried_post_ids;
 }
 
 //### Layered Nav
-
 function jigoshop_layered_nav_query( $filtered_posts ) {
 
-	global $_chosen_attributes, $wpdb;
+	global $_chosen_attributes;
 
 	if (sizeof($_chosen_attributes)>0) :
 
@@ -245,12 +276,10 @@ function jigoshop_layered_nav_query( $filtered_posts ) {
 
 	return $filtered_posts;
 }
-
 add_filter('loop-shop-posts-in', 'jigoshop_layered_nav_query');
 
 
 //### Price Filtering
-
 function jigoshop_price_filter( $filtered_posts ) {
 
 	if (isset($_GET['max_price']) && isset($_GET['min_price'])) :
@@ -314,5 +343,4 @@ function jigoshop_price_filter( $filtered_posts ) {
 
 	return $filtered_posts;
 }
-
-add_filter('loop-shop-posts-in', 'jigoshop_price_filter');
+add_filter( 'loop-shop-posts-in', 'jigoshop_price_filter' );
