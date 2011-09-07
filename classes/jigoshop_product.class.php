@@ -514,7 +514,7 @@ class jigoshop_product {
 
 	/** Get and return related products */
 	function get_related( $limit = 5 ) {
-		global $wpdb, $all_post_ids;
+		global $wpdb, $all_post_ids; /* $all_post_ids doesn't appear to be used in this file, checking -JAP- */
 		// Related products are found from category and tag
 		$tags_array = array(0);
 		$cats_array = array(0);
