@@ -411,11 +411,6 @@ function jigoshop_sharethis() {
  * @return bool
  */
 function is_shop() {
-	// NOTE: is_page(get_option('jigoshop_shop_page_id'))
-	// the above is used a lot through the codebase, should be thoroughly checked  -JAP-
-	// it consistently fails for me and a check of jigoshop_page_body_classes() for the inclusion
-	// of the class 'jigoshop-shop' on Shop pages should confirm this in other themes
-	// the following reliably works though
 	return is_post_type_archive( 'product' );
 }
 
@@ -626,10 +621,13 @@ function jigoshop_page_body_classes() {
 
 	if (is_page(get_option('jigoshop_thanks_page_id'))) jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-thanks' ) );
 
-	if (is_page(get_option('jigoshop_shop_page_id'))) jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-shop' ) );
-
-	if (is_page(get_option('jigoshop_myaccount_page_id')) || is_page(get_option('jigoshop_edit_address_page_id')) || is_page(get_option('jigoshop_view_order_page_id')) || is_page(get_option('jigoshop_change_password_page_id'))) jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-myaccount' ) );
-
+	if ( is_page( get_option('jigoshop_myaccount_page_id'))
+		|| is_page( get_option('jigoshop_edit_address_page_id'))
+		|| is_page( get_option('jigoshop_view_order_page_id'))
+		|| is_page( get_option('jigoshop_change_password_page_id'))) :
+		
+		jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-myaccount' ) );
+	endif;
 }
 add_action('wp_head', 'jigoshop_page_body_classes');
 
@@ -639,8 +637,7 @@ function jigoshop_add_body_class( $class = array() ) {
 
 	$jigoshop_body_classes = (array) $jigoshop_body_classes;
 
-	$jigoshop_body_classes = array_merge($class, $jigoshop_body_classes);
-
+	$jigoshop_body_classes = array_unique( array_merge( $class, $jigoshop_body_classes ));
 }
 
 function jigoshop_body_class($classes) {
@@ -649,7 +646,7 @@ function jigoshop_body_class($classes) {
 
 	$jigoshop_body_classes = (array) $jigoshop_body_classes;
 
-	$classes = array_merge($classes, $jigoshop_body_classes);
+	$classes = array_unique( array_merge( $classes, $jigoshop_body_classes ));
 
 	return $classes;
 }
