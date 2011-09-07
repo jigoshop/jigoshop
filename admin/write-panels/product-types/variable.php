@@ -31,11 +31,9 @@ function variable_product_type_options($post_id=null, $variation_id=null) {
 
 	// Only render the wrapper div if it's not a single variation request
 	if ($variation_id === null): ?>
-	<div id="variable_product_options" class="panel">
-	<?php endif; ?>
-		
-		<div class="jigoshop_configurations">
-			<?php
+		<div id="variable_product_options" class="panel"><div class="jigoshop_configurations">
+	<?php endif;
+
 			// All variations for this product
 			$args = array(
 				'post_type'	=> 'product_variation',
@@ -133,9 +131,8 @@ function variable_product_type_options($post_id=null, $variation_id=null) {
 					</table>
 				</div>
 			<?php endforeach; ?>
-		</div>
-
 	<?php if ($variation_id === null): // Only render the buttons not a single variation request ?>
+		</div><!-- .jigoshop_configurations -->
 		<p class="description"><?php _e('Add (optional) pricing/inventory for product variations. You must save your product attributes in the "Product Data" panel to make them available for selection.', 'jigoshop'); ?></p>
 		<button type="button" class="button button-primary add_configuration"><?php _e('Add Configuration', 'jigoshop'); ?></button>
 		<div class="clear"></div>
