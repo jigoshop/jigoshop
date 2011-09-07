@@ -689,7 +689,7 @@ td.product-name dl.variation dd {
   margin: 0 12px 0 0;
   padding: 0;
 }
-td.quantity {
+.quantity {
   min-width: 80px;
 }
 .quantity input {
@@ -700,8 +700,9 @@ td.quantity {
   border: 1px solid #ccc;
   width: 20px;
   display: inline;
-  padding: 1px 5px 2px;
+  padding: 2px 5px 2px;
   line-height: 1em;
+  text-align: right;
   vertical-align: middle;
 }
 .quantity input.plus, .quantity input.minus {
@@ -734,10 +735,12 @@ td.quantity {
   background: #f93;
 }
 .cart input {
-  width: 100px;
+  width: auto;
   margin: 0;
   vertical-align: middle;
   line-height: 1em;
+  font-size: 12px !important; /* needed for twenty-ten, matches .button-alt */
+  line-height: 1em !important; /* needed for twenty-ten, matches .button-alt */
 }
 .col2-set {
   overflow: hidden;
@@ -1084,7 +1087,7 @@ div.shipping-address {
   margin: 0;
   padding: 0;
   border: 0;
-  list-style: none outside;
+  list-style: none outside !important;
 }
 .widget_layered_nav ul li {
   overflow: hidden;
