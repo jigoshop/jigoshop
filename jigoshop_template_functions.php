@@ -22,8 +22,14 @@ if (!function_exists('jigoshop_front_page_archive')) {
 	function jigoshop_front_page_archive() {
 
 		global $paged;
-
-		if ( is_front_page() && is_page( get_option('jigoshop_shop_page_id') )) :
+		
+		// TODO: broken
+		// is_page() fails for this - still testing -JAP-
+		// is_shop() works, but only with a [recent_products] shortcode on the Shop page
+		// however, if shortcode is used when not front page, double product listings appear
+		//
+//		if ( is_front_page() && is_page( get_option('jigoshop_shop_page_id') )) :
+		if ( is_front_page() && is_shop() ) :
 
 			if ( get_query_var('paged') ) {
 			    $paged = get_query_var('paged');
@@ -49,13 +55,13 @@ add_action('wp_head', 'jigoshop_front_page_archive', 0);
 if (!function_exists('jigoshop_output_content_wrapper')) {
 	function jigoshop_output_content_wrapper() {
 		if(  get_option('template') === 'twentyeleven' ) echo '<section id="primary"><div id="content" role="main">';
-		else echo '<div id="container"><div id="content" role="main">';
+		else echo '<div id="container"><div id="content" role="main">';  /* twenty-ten */
 	}
 }
 if (!function_exists('jigoshop_output_content_wrapper_end')) {
 	function jigoshop_output_content_wrapper_end() {
 		if(  get_option('template') === 'twentyeleven' ) echo  '</section></div>';
-		else echo '</div></div>';
+		else echo '</div></div>';  /* twenty-ten */
 	}
 }
 
