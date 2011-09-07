@@ -235,45 +235,78 @@ jQuery( function($){
 		show_attribute_table();
 
 		function row_indexes() {
-			jQuery('#attributes_list tr').each(function(index, el){ jQuery('.attribute_position', el).val( parseInt( jQuery(el).index('#attributes_list tr') ) ); });
-		};
+			$('#attributes_list tr .attribute_position').each(function(index, el){
+				$(this).val( index );
+			});
+		}
 
 		// Add rows
 		jQuery('button.add_attribute').click(function(){
+			var attribute = $('#jigoshop-select-attribute').val(),
+				selected = $('#jigoshop-select-attribute').find(':selected'),
+				theList = $('#attributes_list'),
+				thisrow = null;
 
-			var attribute = $('select.attribute_taxonomy').val();
-			var type = $('select.attribute_taxonomy').find(':selected').data('type');
+			// Get the type
+			var type = selected.data('type');
 
 			if (!attribute) {
-				var size = jQuery('table.jigoshop_attributes tbody tr').size();
+
+				var size = jQuery('#attributes_list tr').length;
 				// Add custom attribute row
-				$('#attributes_list').append('<tr><td class="center"><button type="button" class="button move_up">&uarr;</button><button type="button" class="move_down button">&darr;</button><input type="hidden" name="attribute_position[' + size + ']" class="attribute_position" value="' + size + '" /></td><td><input type="text" name="attribute_names[' + size + ']" /><input type="hidden" name="attribute_is_taxonomy[' + size + ']" value="0" /></td><td><input type="text" name="attribute_values[' + size + ']" /></td><td class="center"><input type="checkbox" checked="checked" name="attribute_visibility[' + size + ']" value="1" /></td><td class="center"><input type="checkbox" name="attribute_variation[' + size + ']" value="1" /></td><td class="center"><button type="button" class="remove_row button">&times;</button></td></tr>');
+				thisrow = $('<tr>'
+					+ '<td class="no-taxonomy custom center"><button type="button" class="button move_up">&uarr;</button><button type="button" class="move_down button">&darr;</button><input type="hidden" name="attribute_position[' + size + ']" class="attribute_position" value="' + size + '" /></td>'
+					+ '<td class="name">'
+						+ '<input type="text" name="attribute_names[' + size + ']" />'
+						+ '<input type="hidden" name="attribute_is_taxonomy[' + size + ']" value="0" />'
+					+ '<td><input type="text" name="attribute_values[' + size + ']" /></td>'
+					+ '<td class="center visibility"><input type="checkbox" checked="checked" name="attribute_visibility[' + size + ']" value="1" /></td>'
+					+ '<td class="center variation"><input type="checkbox" name="attribute_variation[' + size + ']" value="1" /></td>'
+					+ '<td class="center"><button type="button" class="remove_row button">&times;</button></td></tr>');
 
+				// Trigger change to hide the variation column
+				$('#product-type').change();
 			} else {
-
-				// Reveal taxonomy row
-				var thisrow = jQuery('#attributes_list tr.' + attribute);
-
+				// Find taxonomy row
+				thisrow = theList.find('tr.' + attribute);
+				thisrow.find('input[name^=attribute_enabled]').val(1);
 				// Enable all mutiselect items by default
 				if (type == 'multiselect'){
 					thisrow.find('td.control .multiselect-controls a.check-all').click();
 				}
 
-				$('table.jigoshop_attributes tbody').append( thisrow );
-				$(thisrow).show();
-				row_indexes();
-
+				// Disable option for selected type and reset the select box
+				selected.attr('disabled',true).parent().val('');
 			}
 
+			thisrow.appendTo(theList).show();
+
+			row_indexes();
 			show_attribute_table();
 		});
 
-		jQuery('button.hide_row').live('click', function(){
-			var answer = confirm("Remove this attribute?")
-			if (answer){
-				jQuery(this).parent().parent().find('select, input[type=text], input[type=checkbox]').val('');
-				jQuery(this).parent().parent().hide();
+		// Hide and remove attributes
+		jQuery('#attributes_list button.hide_row, #attributes_list button.remove_row').live('click', function(){
+			if (confirm("Remove this attribute?")){
+				if ($(this).hasClass('hide_row')){
+					// Reset attribute values since it's no longer in use
+					var thisrow = $(this).parent().parent();
+					thisrow.hide().find('select, input[type=text], input[type=checkbox]').val('');
+
+					var container = thisrow.find('td.name');
+					// Set this attribute to disabled
+					container.find('input[name^=attribute_enabled]').val('');
+					// Set the select option to enabled
+					var nicename = container.find('input[name^=attribute_name]').data('nicename');
+					$('#jigoshop-select-attribute option[value="'+ nicename +'"]').attr('disabled',false);
+				} else {
+					$(this).parent().parent().remove();
+				}
+
+				$('div.attribute-warn').fadeOut();
+
 				show_attribute_table();
+				row_indexes();
 			}
 			return false;
 		});

@@ -292,7 +292,7 @@ function jigoshop_product_data_box() {
 										</td>
 										<td class="name">
 											<?php echo $tax->attribute_name; ?> 
-											<input type="hidden" name="attribute_names[<?php echo $i; ?>]" value="<?php echo $tax->attribute_name; ?>" />
+											<input type="hidden" name="attribute_names[<?php echo $i; ?>]" value="<?php echo $tax->attribute_name; ?>" data-nicename="<?php echo $attribute_nicename ?>"/>
 											<input type="hidden" name="attribute_is_taxonomy[<?php echo $i; ?>]" value="1" />
 											<input type="hidden" name="attribute_enabled[<?php echo $i; ?>]" value="1" />
 										</td>
