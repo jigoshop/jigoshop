@@ -277,7 +277,7 @@ function jigoshop_get_current_post_type() {
  * @returns		notice
  */
 function permalink_save_twice_notice() {
-	if( strpos($_POST['_wp_http_referer'], 'options-permalink.php') ) {
+	if( isset($_POST['_wp_http_referer']) AND strpos($_POST['_wp_http_referer'], 'options-permalink.php') ) {
 		print_r('<div id="message" class="updated"><p>Note: Please make sure you save your permalink settings <strong>twice</strong> in order for them to be applied correctly in Jigoshop</p></div>');
 	}
 }
