@@ -219,7 +219,7 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 			foreach($attr_tax as $tax) {
 				
 				if (taxonomy_exists('product_attribute_'.strtolower(sanitize_title($tax->attribute_name)))) {
-					echo '<option value="' . $tax->attribute_name . '" ' . ($instance['attribute'] == $tax->attribute_name ? 'selected' : null) . '>';
+					echo '<option value="' . $tax->attribute_name . '" ' . (isset($instance['attribute']) && $instance['attribute'] == $tax->attribute_name ? 'selected' : null) . '>';
 					echo $tax->attribute_name;
 					echo '</option>';
 				}
