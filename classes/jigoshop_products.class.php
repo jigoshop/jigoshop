@@ -36,7 +36,6 @@ class jigoshop_products {
 		
 		$args = array(
 			'post_type'	=> 'product',
-			'post_status' => 'publish',
 			'posts_per_page' => -1,
 			'ignore_sticky_posts'	=> 1,
 			'meta_query' => array(
