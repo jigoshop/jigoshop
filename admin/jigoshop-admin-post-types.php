@@ -43,12 +43,12 @@ function jigoshop_custom_product_views( $views ) {
 	
 	// format links for each nav menu item we are adding
 	// WP intially passes an 'All', but doesn't include product-type=hidden? Redo our own for now
-	$views['all'] = '<a href="edit.php?post_type=product&amp;product_type='.urlencode('simple,variable,grouped,downloadable,virtual').'" class="'.$all.'">All <span class="count">('.$jigoshop_products->publish_count.')</span></a>';
-	$views['simple'] = '<a href="edit.php?post_type=product&amp;product_type=simple" class="'.$simple.'">Simple <span class="count">('.$jigoshop_products->simple_count.')</span></a>';
-	$views['variable'] = '<a href="edit.php?post_type=product&amp;product_type=variable" class="'.$variable.'">Variable <span class="count">('.$jigoshop_products->variable_count.')</span></a>';
-	$views['grouped'] = '<a href="edit.php?post_type=product&amp;product_type=grouped" class="'.$grouped.'">Grouped <span class="count">('.$jigoshop_products->grouped_count.')</span></a>';
-	$views['downloadable'] = '<a href="edit.php?post_type=product&amp;product_type=downloadable" class="'.$downloadable.'">Downloadable <span class="count">('.$jigoshop_products->downloadable_count.')</span></a>';
-	$views['virtual'] = '<a href="edit.php?post_type=product&amp;product_type=virtual" class="'.$virtual.'">Virtual <span class="count">('.$jigoshop_products->virtual_count.')</span></a>';
+	$views['all'] = '<a href="edit.php?post_type=product&amp;product_type='.urlencode('simple,variable,grouped,downloadable,virtual').'" class="'.$all.'">'.__('All','jigoshop').' <span class="count">('.$jigoshop_products->publish_count.')</span></a>';
+	$views['simple'] = '<a href="edit.php?post_type=product&amp;product_type=simple" class="'.$simple.'">'.__('Simple','jigoshop').' <span class="count">('.$jigoshop_products->simple_count.')</span></a>';
+	$views['variable'] = '<a href="edit.php?post_type=product&amp;product_type=variable" class="'.$variable.'">'.__('Variable','jigoshop').' <span class="count">('.$jigoshop_products->variable_count.')</span></a>';
+	$views['grouped'] = '<a href="edit.php?post_type=product&amp;product_type=grouped" class="'.$grouped.'">'.__('Grouped','jigoshop').' <span class="count">('.$jigoshop_products->grouped_count.')</span></a>';
+	$views['downloadable'] = '<a href="edit.php?post_type=product&amp;product_type=downloadable" class="'.$downloadable.'">'.__('Downloadable','jigoshop').' <span class="count">('.$jigoshop_products->downloadable_count.')</span></a>';
+	$views['virtual'] = '<a href="edit.php?post_type=product&amp;product_type=virtual" class="'.$virtual.'">'.__('Virtual','jigoshop').' <span class="count">('.$jigoshop_products->virtual_count.')</span></a>';
 	
 	// if any of our nav menu items are active, unset 'current' class from 'All'
 /*
