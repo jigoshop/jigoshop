@@ -132,22 +132,15 @@ function jigoshop_filter_catalog_query( $request ) {
     	OR $this_query->is_tax( 'product_cat' )
     	OR $this_query->is_tax( 'product_tag' ) ) :
 
-        $request['post_status'] = 'publish';
-        $request['posts_per_page'] = apply_filters( 'loop_shop_per_page', get_option( 'jigoshop_catalog_per_page' ));
+        if ( ! $this_query->is_admin ) :	/* only apply these to the front end */
+        	$request['post_status'] = 'publish';
+        	$request['posts_per_page'] = apply_filters( 'loop_shop_per_page', get_option( 'jigoshop_catalog_per_page' ));
+			
+			// modify the query for specific product ID's for layered nav and price filter widgets
+			$request['post__in'] = apply_filters( 'loop-shop-posts-in', $all_post_ids );
+		endif;
 		
-		// form the meta query for Product Visibility
-		// by default, product_type 'hidden' products are ignored
-		// if we only look for product_type 'visible', 'catalog' only or 'search' only products won't appear
-	    $in = array( 'visible' );
-	    if ( $this_query->is_search || isset( $request['s'] )) $in[] = 'search';
-	    if ( ! $this_query->is_search && ! isset( $request['s'] ) ) $in[] = 'catalog';
-	    $meta = $this_query->get( 'meta_query' );
-	    $meta[] = array(
-	        'key' => 'visibility',
-	        'value' => $in,
-	        'compare' => 'IN'
-	    );	
-		$request['meta_query'] = $meta;		/* set the meta */
+		$request['meta_query'] = jigoshop_filter_meta_query( $this_query );
 		
 		// establish any filters for orderby, order and anything else added to the filter
 		$filters = array();
@@ -156,16 +149,40 @@ function jigoshop_filter_catalog_query( $request ) {
 			$request[$key] = $value;
 		endforeach;
 		
-		// both the layered nav and price filter widgets tap into this filter
-		// they modify the query for specific product ID's
-		$post_ids = apply_filters( 'loop-shop-posts-in', $all_post_ids );
-		$request['post__in'] = $post_ids;
-		
 	endif;
 	
     return $request;		/* give it back to WordPress for query_posts() */
 }
 add_filter( 'request', 'jigoshop_filter_catalog_query', 10 );
+
+
+/**
+ * Forms the meta query for visibility of products in both the Admin and Front end.
+ *
+ * @param array $this_query - WP_Query object array
+ * @return array - the finished meta query for visibility array
+ * @since 1.0
+ **/
+function jigoshop_filter_meta_query( $this_query ) {
+
+	$in = array( 'visible' );
+	if ( $this_query->is_admin ) :
+		$in[] = 'hidden';
+		$in[] = 'search';
+		$in[] = 'catalog';
+	else :
+		if ( $this_query->is_search || isset( $request['s'] )) $in[] = 'search';
+		if ( ! $this_query->is_search && ! isset( $request['s'] ) ) $in[] = 'catalog';
+	endif;
+	$meta = $this_query->get( 'meta_query' );
+	$meta[] = array(
+		'key' => 'visibility',
+		'value' => $in,
+		'compare' => 'IN'
+	);
+	
+	return $meta;
+}
 
 
 //### Layered Nav Init
@@ -209,10 +226,6 @@ function jigoshop_get_product_ids( $request ) {
     	OR $this_query->is_tax( 'product_cat' )
     	OR $this_query->is_tax( 'product_tag' ) ) :
 		
-		$in = array('visible');
-	    if ( $this_query->is_search || isset( $request['s'] )) $in[] = 'search';
-	    if ( ! $this_query->is_search && ! isset( $request['s'] ) ) $in[] = 'catalog';
-		
 		$args = array_merge(
 			$this_query->query,
 			array(
@@ -220,13 +233,7 @@ function jigoshop_get_product_ids( $request ) {
 				'posts_per_page' => -1,
 				'post_type' => 'product',
 				'post_status' => 'publish',
-				'meta_query' => array(
-					array(
-						'key' => 'visibility',
-						'value' => $in,
-						'compare' => 'IN'
-					)
-				)
+				'meta_query' => jigoshop_filter_meta_query( $this_query )
 			)
 		);
 		$custom_query  = new WP_Query( $args );
