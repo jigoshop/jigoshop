@@ -54,7 +54,8 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 		
 		if (isset($_POST['attribute_names'])) :
 			 $attribute_names = $_POST['attribute_names'];
-			 $attribute_values = $_POST['attribute_values'];
+			 if (isset($_POST['attribute_values'])) $attribute_values = $_POST['attribute_values'];
+			 else $attribute_values = null;
 			 if (isset($_POST['attribute_visibility'])) $attribute_visibility = $_POST['attribute_visibility'];
 			 if (isset($_POST['attribute_variation'])) $attribute_variation = $_POST['attribute_variation'];
 			 $attribute_is_taxonomy = $_POST['attribute_is_taxonomy'];
