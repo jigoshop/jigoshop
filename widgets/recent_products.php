@@ -30,7 +30,7 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 			'description'	=> __( "The most recent products on your site", 'jigoshop')
 		);
 		
-		parent::__construct('recent-products', __('New Products', 'jigoshop'), $options);
+		parent::__construct('recent-products', __('Jigoshop: New Products', 'jigoshop'), $options);
 
 		// Flush cache after every save
 		add_action( 'save_post', array(&$this, 'flush_widget_cache') );
@@ -78,14 +78,23 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 		$number = apply_filters('jigoshop_widget_recent_default_number', $number, $instance, $this->id_base);
 
 		// Set up query
-    	$args = array(
+    	$query_args = array(
     		'showposts'		=> $number,
     		'post_type'		=> 'product',
+    		'post_status'	=> 'publish',
+    		'meta_query'	=> array(
+    			array(
+    				'key'		=> 'visibility',
+    				'value'		=> array('catalog', 'visible'),
+    				'compare'	=> 'IN',
+    			),
+    		)
     	);
     	
-    	// Show variations of products?
+    	// Show variations of products?  TODO: fix this -JAP-
+/*
     	if( ! $instance['show_variations']) {
-    		$args['meta_query'] = array(
+    		$query_args['meta_query'] = array(
     			array(
     				'key'		=> 'visibility',
     				'value'		=> array('catalog', 'visible'),
@@ -93,11 +102,12 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
     			),
     		);
     		
-    		$args['parent'] = false;
+    		$query_args['parent'] = false;
     	}
+*/
 
 		// Run the query
-		$q = new WP_Query($args);
+		$q = new WP_Query($query_args);
 		
 		// If there are products
 		if($q->have_posts()) {
@@ -195,7 +205,7 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 		$number = apply_filters('jigoshop_widget_featured_default_number', 5, $instance, $this->id_base);
 		$number = isset($instance['number']) ? abs($instance['number']) : $number;
 		
-		$show_variations = (bool) $instance['show_variations'];
+		$show_variations = (bool) isset($instance['show_variations']) ? $instance['show_variations'] : false;
 		
 		// Widget Title
 		echo '<p>';

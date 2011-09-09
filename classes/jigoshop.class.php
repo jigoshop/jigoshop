@@ -82,12 +82,8 @@ class jigoshop {
 	public static function plugin_url() { 
 		if(self::$plugin_url) return self::$plugin_url;
 		
-		if (is_ssl()) :
-			return self::$plugin_url = str_replace('http://', 'https://', WP_PLUGIN_URL) . "/" . plugin_basename( dirname(dirname(__FILE__))); 
-		else :
-			return self::$plugin_url = WP_PLUGIN_URL . "/" . plugin_basename( dirname(dirname(__FILE__))); 
-		endif;
-		
+		// Untested in a wild environment needs further work
+		return self::$plugin_url = plugins_url(null, dirname(__FILE__));
 	}
 	
 	/**

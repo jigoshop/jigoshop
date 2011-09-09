@@ -339,15 +339,15 @@ function jigoshop_product_data_box() {
 												<a class="toggle" href="#">Toggle</a>
 											</div>
 										<?php elseif ($tax->attribute_type=="text") : ?>
-											<input type="text" name="attribute_values[<?php echo $i; ?>]" value="<?php if (isset($attribute['value'])) echo $attribute['value']; ?>" placeholder="<?php _e('Comma separate terms', 'jigoshop'); ?>" />
+											<input type="text" name="attribute_values[<?php echo $i; ?>]" value="<?php echo isset($attribute['value']) ? esc_attr($attribute['value']) : ''; ?>" placeholder="<?php _e('Comma separate terms', 'jigoshop'); ?>" />
 										<?php endif; ?>
 										</td>
-										<td class="center visibility"><input type="checkbox" <?php checked(boolval($attribute['visible']) || !isset($attribute['visible']), true); ?> name="attribute_visibility[<?php echo $i; ?>]" value="1" /></td>
+										<td class="center visibility"><input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['visible'] : 0 ), true); ?> name="attribute_visibility[<?php echo $i; ?>]" value="1" /></td>
 
 										<?php if ($tax->attribute_type=="select") : // always disable variation for select elements ?>
 										<td class="center variation"><input type="checkbox" disabled="disabled" /></td>
 										<?php else: ?>
-										<td class="center variation"><input type="checkbox" <?php checked(boolval($attribute['variation']) || !isset($attribute['variation']), true); ?> name="attribute_variation[<?php echo $i; ?>]" value="1" /></td>
+										<td class="center variation"><input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['variation'] : 0 ), true); ?> name="attribute_variation[<?php echo $i; ?>]" value="1" /></td>
 										<?php endif; ?>
 
 										<td class="center hiderow"><button type="button" class="hide_row button">&times;</button></td>

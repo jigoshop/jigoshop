@@ -31,7 +31,7 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 		);
 		
 		// Create the widget
-		parent::__construct('featured-products', __('Featured Products', 'jigoshop'), $options);
+		parent::__construct('featured-products', __('Jigoshop: Featured Products', 'jigoshop'), $options);
 
 		// Flush cache after every save
 		add_action( 'save_post', array(&$this, 'flush_widget_cache') );
@@ -68,22 +68,30 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 		extract($args);
 		
 		// Set the widget title
-		$title = ($instance['title']) ? $instance['title'] : __('Featured Products', 'jigoshop');
+		$title = (isset($instance['title'])) ? $instance['title'] : __('Featured Products', 'jigoshop');
 		$title = apply_filters('widget_title', $title, $instance, $this->id_base);
 		
 		// Set number of products to fetch
-		$number = $instance['number'];
+		$number = isset($instance['number']) ? $instance['number'] : 0;
 		
 		// Set up query
-		$args = array(
-			'showposts' => $number,
-			'post_type' => 'product',
-			'meta_key' => 'featured',
-			'meta_value' => 'yes',
+		$query_args = array(
+			'showposts'		=> $number,
+			'post_type'		=> 'product',
+			'post_status'	=> 'publish',
+			'meta_key'		=> 'featured',
+			'meta_value'	=> 'yes',
+    		'meta_query'	=> array(
+    			array(
+    				'key'		=> 'visibility',
+    				'value'		=> array('catalog', 'visible'),
+    				'compare'	=> 'IN',
+    			),
+    		)
 		);
 		
 		// Run the query
-		$q = new WP_Query($args);
+		$q = new WP_Query($query_args);
 		
 		if ( $q->have_posts() ) {
 			
@@ -98,7 +106,7 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 			while($q->have_posts()) : $q->the_post();  
 				
 				// Get the product instance
-				$_product = new jigoshop_product(get_the_ID);
+				$_product = new jigoshop_product(get_the_ID());
 				
 				echo '<li>';
 					// Print the product image & title with a link to the permalink

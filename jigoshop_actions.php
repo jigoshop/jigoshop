@@ -187,6 +187,8 @@ function jigoshop_add_to_cart_action($url = false)
         return;
     }
 
+    $product_added = false;
+    
     //single product
     if (is_numeric($_GET['add-to-cart'])) {
         $product_id = (int) $_GET['add-to-cart'];
@@ -196,10 +198,8 @@ function jigoshop_add_to_cart_action($url = false)
         }
 
         jigoshop_cart::add_to_cart($product_id, $quantity);
-
-        if (get_option('jigoshop_directly_to_checkout', 'no') == 'no') {
-            jigoshop::add_message(sprintf(__('<a href="%s" class="button">View Cart &rarr;</a> Product successfully added to your basket.', 'jigoshop'), jigoshop_cart::get_cart_url()));
-        }
+        
+        $product_added = true;
     } else if ($_GET['add-to-cart'] == 'variation') { //variable product variation
 
         //variaton wasn't selected but user managed to submit a form
@@ -237,9 +237,7 @@ function jigoshop_add_to_cart_action($url = false)
             if ($all_variations_set && $variation_id > 0) { //all variation options are set
                 jigoshop_cart::add_to_cart($product_id, $quantity, $variation_id, $variations);
 
-                if (get_option('jigoshop_directly_to_checkout', 'no') == 'no') {
-                    jigoshop::add_message(sprintf(__('<a href="%s" class="button">View Cart &rarr;</a> Product successfully added to your basket.', 'jigoshop'), jigoshop_cart::get_cart_url()));
-                }
+                $product_added = true;
             } else {
                 /* Link on product pages */
                 jigoshop::add_error(__('Please choose product options&hellip;', 'jigoshop'));
@@ -266,15 +264,23 @@ function jigoshop_add_to_cart_action($url = false)
             if ($total_quantity == 0) {
                 jigoshop::add_error(__('Please choose a quantity&hellip;', 'jigoshop'));
             } else {
-                if (get_option('jigoshop_directly_to_checkout', 'no') == 'no') {
-                    jigoshop::add_message(sprintf(__('<a href="%s" class="button">View Cart &rarr;</a> Product successfully added to your basket.', 'jigoshop'), jigoshop_cart::get_cart_url()));
-                }
+                $product_added = true;
             }
         } else if ($_GET['product']) {
             /* Link on product pages */
             jigoshop::add_error(__('Please choose a product&hellip;', 'jigoshop'));
             wp_redirect(get_permalink($_GET['product']));
             exit;
+        }
+    }
+    
+    //if product was successfully added to the cart
+    if ($product_added && get_option('jigoshop_directly_to_checkout', 'no') == 'no') {
+        $result = jigoshop_cart::check_cart_item_stock();
+        if (is_wp_error($result)) {
+            jigoshop::add_error( $result->get_error_message() );
+        } else {
+            jigoshop::add_message(sprintf(__('<a href="%s" class="button">View Cart &rarr;</a> Product successfully added to your cart.', 'jigoshop'), jigoshop_cart::get_cart_url()));
         }
     }
 

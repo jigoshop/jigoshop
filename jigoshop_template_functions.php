@@ -22,8 +22,14 @@ if (!function_exists('jigoshop_front_page_archive')) {
 	function jigoshop_front_page_archive() {
 
 		global $paged;
-
-		if ( is_front_page() && is_page( get_option('jigoshop_shop_page_id') )) :
+		
+		// TODO: broken
+		// is_page() fails for this - still testing -JAP-
+		// is_shop() works, but only with a [recent_products] shortcode on the Shop page
+		// however, if shortcode is used when not front page, double product listings appear
+		//
+//		if ( is_front_page() && is_page( get_option('jigoshop_shop_page_id') )) :
+		if ( is_front_page() && is_shop() ) :
 
 			if ( get_query_var('paged') ) {
 			    $paged = get_query_var('paged');
@@ -49,13 +55,13 @@ add_action('wp_head', 'jigoshop_front_page_archive', 0);
 if (!function_exists('jigoshop_output_content_wrapper')) {
 	function jigoshop_output_content_wrapper() {
 		if(  get_option('template') === 'twentyeleven' ) echo '<section id="primary"><div id="content" role="main">';
-		else echo '<div id="container"><div id="content" role="main">';
+		else echo '<div id="container"><div id="content" role="main">';  /* twenty-ten */
 	}
 }
 if (!function_exists('jigoshop_output_content_wrapper_end')) {
 	function jigoshop_output_content_wrapper_end() {
-		if(  get_option('template') === 'twentyeleven' ) echo  '</section></div>';
-		else echo '</div></div>';
+		if(  get_option('template') === 'twentyeleven' ) echo  '</div></section>';
+		else echo '</div></div>'; /* twenty-ten */
 	}
 }
 
@@ -858,10 +864,14 @@ if (!function_exists('jigoshop_breadcrumb')) {
 	}
 }
 
-
+/**
+ * Hook to remove the 'singular' class, for the twenty eleven theme, to properly display the sidebar
+ * 
+ * @param array $classes
+ */
 function jigoshop_body_classes ($classes) {
 
-	if( ! is_singular('product') ) return $classes;
+	if( ! is_jigoshop() ) return $classes;
 
 	$key = array_search('singular', $classes);
 	if ( $key !== false ) unset($classes[$key]);
