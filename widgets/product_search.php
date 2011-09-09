@@ -30,7 +30,7 @@ class Jigoshop_Widget_Product_Search extends WP_Widget {
 		);
 		
 		// Create the widget
-		parent::__construct('product_search', __('Product Search', 'jigoshop'), $options);
+		parent::__construct('product_search', __('Jigoshop: Product Search', 'jigoshop'), $options);
 	}
 
 	/**

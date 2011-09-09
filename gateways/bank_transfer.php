@@ -110,7 +110,7 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 	* There are no payment fields for Bank Transfers, we need to show bank details instead.
 	**/
 	function payment_fields() {
-		$bank_info;
+		$bank_info = null;
 		if ($this->bank_name) $bank_info .= '<strong>' . wptexturize($this->bank_name) . '</strong><br />';
 		if ($this->acc_number) $bank_info .= wptexturize($this->acc_number) . '<br />';
 		if ($this->sort_code) $bank_info .= wptexturize($this->sort_code) . '<br />';
@@ -122,7 +122,7 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 	}
 	
 	function thankyou_page() {
-		$bank_info;
+		$bank_info = null;
 		if ($this->bank_name) $bank_info .= '<strong>' . wptexturize($this->bank_name) . '</strong><br />';
 		if ($this->acc_number) $bank_info .= wptexturize($this->acc_number) . '<br />';
 		if ($this->sort_code) $bank_info .= wptexturize($this->sort_code) . '<br />';

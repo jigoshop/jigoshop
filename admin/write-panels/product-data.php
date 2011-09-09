@@ -345,7 +345,7 @@ function jigoshop_product_data_box() {
 										<?php if ($tax->attribute_type=="select") : // always disable variation for select elements ?>
 										<td class="center variation"><input type="checkbox" disabled="disabled" /></td>
 										<?php else: ?>
-										<td class="center variation"><input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['visible'] : 0 ), true); ?> name="attribute_variation[<?php echo $i; ?>]" value="1" /></td>
+										<td class="center variation"><input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['variation'] : 0 ), true); ?> name="attribute_variation[<?php echo $i; ?>]" value="1" /></td>
 										<?php endif; ?>
 
 										<td class="center hiderow"><button type="button" class="hide_row button">&times;</button></td>

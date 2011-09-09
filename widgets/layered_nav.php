@@ -29,7 +29,7 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 		);
 		
 		// Create the widget
-		parent::__construct('layered_nav', __('Layered Nav', 'jigoshop'), $options);
+		parent::__construct('layered_nav', __('Jigoshop: Layered Nav', 'jigoshop'), $options);
 	}
 
 	/**

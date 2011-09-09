@@ -30,7 +30,7 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 			'description'	=> __( "The most recent products on your site", 'jigoshop')
 		);
 		
-		parent::__construct('recent-products', __('New Products', 'jigoshop'), $options);
+		parent::__construct('recent-products', __('Jigoshop: New Products', 'jigoshop'), $options);
 
 		// Flush cache after every save
 		add_action( 'save_post', array(&$this, 'flush_widget_cache') );
