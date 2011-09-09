@@ -23,42 +23,30 @@
  * @return array $views - our modifications to the list
  * @since 1.0
  * TODO: possibly add items for catalog, search, hidden
- * TODO: 'All' doesn't always show all, product_type=hidden don't appear on first pass
- * TODO: trash seems to be broken, listing of trash products fails, can't get products out of trash
  **/
 function jigoshop_custom_product_views( $views ) {
 
 	$jigoshop_products = &new jigoshop_products();	/* count and group all products */
 	
 	// determine 'current' class for active nav menu item
-	$all = (isset($_GET['product_type']) && $_GET['product_type']=='simple,variable,grouped,downloadable,virtual') ? 'current' : '';
 	$simple = (isset($_GET['product_type']) && $_GET['product_type']=='simple') ? 'current' : '';
 	$variable = (isset($_GET['product_type']) && $_GET['product_type']=='variable') ? 'current' : '';
 	$grouped = (isset($_GET['product_type']) && $_GET['product_type']=='grouped') ? 'current' : '';
 	$downloadable = (isset($_GET['product_type']) && $_GET['product_type']=='downloadable') ? 'current' : '';
 	$virtual = (isset($_GET['product_type']) && $_GET['product_type']=='virtual') ? 'current' : '';
 
-	$draft = (isset($_GET['post_status']) && $_GET['post_status']=='draft') ? 'current' : '';
-	$trash = (isset($_GET['post_status']) && $_GET['post_status']=='trash') ? 'current' : '';
-	
 	// format links for each nav menu item we are adding
-	// WP intially passes an 'All', but doesn't include product-type=hidden? Redo our own for now
-	$views['all'] = '<a href="edit.php?post_type=product&amp;product_type='.urlencode('simple,variable,grouped,downloadable,virtual').'" class="'.$all.'">All <span class="count">('.$jigoshop_products->publish_count.')</span></a>';
-	$views['simple'] = '<a href="edit.php?post_type=product&amp;product_type=simple" class="'.$simple.'">Simple <span class="count">('.$jigoshop_products->simple_count.')</span></a>';
-	$views['variable'] = '<a href="edit.php?post_type=product&amp;product_type=variable" class="'.$variable.'">Variable <span class="count">('.$jigoshop_products->variable_count.')</span></a>';
-	$views['grouped'] = '<a href="edit.php?post_type=product&amp;product_type=grouped" class="'.$grouped.'">Grouped <span class="count">('.$jigoshop_products->grouped_count.')</span></a>';
-	$views['downloadable'] = '<a href="edit.php?post_type=product&amp;product_type=downloadable" class="'.$downloadable.'">Downloadable <span class="count">('.$jigoshop_products->downloadable_count.')</span></a>';
-	$views['virtual'] = '<a href="edit.php?post_type=product&amp;product_type=virtual" class="'.$virtual.'">Virtual <span class="count">('.$jigoshop_products->virtual_count.')</span></a>';
+	$views['simple'] = '<a href="edit.php?post_type=product&amp;product_type=simple" class="'.$simple.'">'.__('Simple','jigoshop').' <span class="count">('.$jigoshop_products->simple_count.')</span></a>';
+	$views['variable'] = '<a href="edit.php?post_type=product&amp;product_type=variable" class="'.$variable.'">'.__('Variable','jigoshop').' <span class="count">('.$jigoshop_products->variable_count.')</span></a>';
+	$views['grouped'] = '<a href="edit.php?post_type=product&amp;product_type=grouped" class="'.$grouped.'">'.__('Grouped','jigoshop').' <span class="count">('.$jigoshop_products->grouped_count.')</span></a>';
+	$views['downloadable'] = '<a href="edit.php?post_type=product&amp;product_type=downloadable" class="'.$downloadable.'">'.__('Downloadable','jigoshop').' <span class="count">('.$jigoshop_products->downloadable_count.')</span></a>';
+	$views['virtual'] = '<a href="edit.php?post_type=product&amp;product_type=virtual" class="'.$virtual.'">'.__('Virtual','jigoshop').' <span class="count">('.$jigoshop_products->virtual_count.')</span></a>';
 	
 	// if any of our nav menu items are active, unset 'current' class from 'All'
-/*
-	if ( $simple || $variable || $grouped || $downloadable || $virtual || $draft || $trash ) :
+	if ( $simple || $variable || $grouped || $downloadable || $virtual ) :
 		$views['all'] = str_replace( 'current', '', $views['all'] );
 	endif;	
-*/
 
-	unset( $views['publish'] );	/* we won't show a 'Published' nav item, it doesn't show 'hidden' either */
-	
 	// re-arrange the order for these to appear at end of the nav menu
 	if ( isset( $views['draft'] )) :
 		$draft = $views['draft'];

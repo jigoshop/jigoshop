@@ -49,7 +49,7 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 		global $_chosen_attributes, $wpdb, $all_post_ids;
 		
 		// Hide widget if not product related
-		if ( ! is_tax('product_cat') AND ! is_post_type_archive('product') AND ! is_tax('product_tag') )
+		if ( ! is_product_list() )
 			return false;
 
 		// Set the widget title
@@ -219,7 +219,7 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 			foreach($attr_tax as $tax) {
 				
 				if (taxonomy_exists('product_attribute_'.strtolower(sanitize_title($tax->attribute_name)))) {
-					echo '<option value="' . $tax->attribute_name . '" ' . ($instance['attribute'] == $tax->attribute_name ? 'selected' : null) . '>';
+					echo '<option value="' . $tax->attribute_name . '" ' . (isset($instance['attribute']) && $instance['attribute'] == $tax->attribute_name ? 'selected' : null) . '>';
 					echo $tax->attribute_name;
 					echo '</option>';
 				}

@@ -68,18 +68,26 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 		extract($args);
 		
 		// Set the widget title
-		$title = ($instance['title']) ? $instance['title'] : __('Featured Products', 'jigoshop');
+		$title = (isset($instance['title'])) ? $instance['title'] : __('Featured Products', 'jigoshop');
 		$title = apply_filters('widget_title', $title, $instance, $this->id_base);
 		
 		// Set number of products to fetch
-		$number = $instance['number'];
+		$number = isset($instance['number']) ? $instance['number'] : 0;
 		
 		// Set up query
 		$query_args = array(
-			'showposts' => $number,
-			'post_type' => 'product',
-			'meta_key' => 'featured',
-			'meta_value' => 'yes',
+			'showposts'		=> $number,
+			'post_type'		=> 'product',
+			'post_status'	=> 'publish',
+			'meta_key'		=> 'featured',
+			'meta_value'	=> 'yes',
+    		'meta_query'	=> array(
+    			array(
+    				'key'		=> 'visibility',
+    				'value'		=> array('catalog', 'visible'),
+    				'compare'	=> 'IN',
+    			),
+    		)
 		);
 		
 		// Run the query

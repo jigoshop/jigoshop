@@ -409,33 +409,59 @@ function jigoshop_sharethis() {
  * Note:is used to replace is_page( get_option( 'jigoshop_shop_page_id' ) )
  * 
  * @return bool
+ * @since 1.0
  */
 function is_shop() {
 	return is_post_type_archive( 'product' );
 }
 
+/**
+ * Evaluates to true only on the Category Pages
+ * 
+ * @return bool
+ * @since 1.0
+ */
 function is_product_category() {
 	return is_tax( 'product_cat' );
 }
 
+/**
+ * Evaluates to true only on the Tag Pages
+ * 
+ * @return bool
+ * @since 1.0
+ */
 function is_product_tag() {
 	return is_tax( 'product_tag' );
 }
 
+/**
+ * Evaluates to true only on the Single Product Page
+ * 
+ * @return bool
+ * @since 1.0
+ */
 function is_product() {
 	return is_singular( array('product') );
 }
 
+/**
+ * Evaluates to true only on Shop, Product Category, and Product Tag pages
+ * 
+ * @return bool
+ * @since 1.0
+ */
 function is_product_list() {
 	$is_list = false;
+	$is_list |= is_shop();
 	$is_list |= is_product_tag();
 	$is_list |= is_product_category();
 	return $is_list;
 }
 
+// TODO: doesn't reflect All Jigoshop pages
 function is_jigoshop() {
 	$is_wrapped = false;
-	$is_wrapped |= is_shop();
 	$is_wrapped |= is_product_list();
 	$is_wrapped |= is_product();
 	return $is_wrapped;
@@ -444,6 +470,7 @@ function is_jigoshop() {
 /**
  * @deprecated Use is_jigoshop() instead
  */
+// TODO: intent for theme developers is for content wrapped only.  jigoshop does not content wrap all pages
 function is_jigoshop_content_wrapped() {
 	return is_jigoshop();
 }
@@ -492,9 +519,11 @@ function get_jigoshop_currency_symbol() {
 		case 'NZD' :
 		case 'HKD' :
 		case 'SGD' :
-		case 'USD' : $currency_symbol = '&#36;'; break;
-		case 'EUR' : $currency_symbol = '&euro;'; break;
-		case 'JPY' : $currency_symbol = '&yen;'; break;
+		case 'USD' : $currency_symbol = '&#36;'; break; /* Dollar Sign */
+		case 'EUR' : $currency_symbol = '&euro;'; break; /* European Euro */
+		case 'JPY' : $currency_symbol = '&yen;'; break; /* Japanese Yen */
+		case 'IDR' : $currency_symbol = '&#52;'; break; /* Indonesia Rupiah */
+		case 'RUB' : $currency_symbol = '&#440;'; break; /* Russia Ruble */
 
 		case 'CZK' :
 		case 'DKK' :

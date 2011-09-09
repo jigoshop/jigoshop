@@ -52,9 +52,9 @@ class Jigoshop_Widget_Product_Categories extends WP_Widget {
 		$title = apply_filters('widget_title', $title, $instance, $this->id_base);
 		
 		// Get options
-		$count			= (bool) $instance['count'];
-		$is_hierarchial = (bool) $instance['hierarchical'];
-		$is_dropdown	= (bool) $instance['dropdown'];
+		$count			= (bool) isset($instance['count']) ? $instance['count'] : false;
+		$is_hierarchial = (bool) isset($instance['hierarchical']) ? $instance['hierarchical'] : false;
+		$is_dropdown	= (bool) isset($instance['dropdown']) ? $instance['dropdown'] : false;
 
 		// Print the widget wrapper & title
 		echo $before_widget;
@@ -155,9 +155,9 @@ class Jigoshop_Widget_Product_Categories extends WP_Widget {
 		
 		// Get values from instance
 		$title			= (isset($instance['title'])) ? esc_attr($instance['title']) : null;
-		$count			= (bool) $instance['count'];
-		$hierarchical	= (bool) $instance['hierarchical'];
-		$dropdown		= (bool) $instance['dropdown'];
+		$count			= (bool) isset($instance['count']) ? $instance['count'] : false;
+		$hierarchical	= (bool) isset($instance['hierarchical']) ? $instance['hierarchical'] : false;
+		$dropdown		= (bool) isset($instance['dropdown']) ? $instance['dropdown'] : false;
 		
 		// Widget title
 		echo '<p>';

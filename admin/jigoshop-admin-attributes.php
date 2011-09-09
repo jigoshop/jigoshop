@@ -43,6 +43,8 @@ function jigoshop_attributes() {
 			wp_safe_redirect( get_admin_url() . 'admin.php?page=attributes' );
 			exit;
 			
+		else :
+			print_r('<div id="message" class="error"><p>'.__('That attribute already exists, no additions were made.', 'jigoshop' ).'</p></div>');
 		endif;
 		
 	elseif (isset($_POST['save_attribute']) && $_POST['save_attribute'] && isset($_GET['edit'])) :
