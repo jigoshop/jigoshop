@@ -31,7 +31,7 @@ class Jigoshop_Widget_Product_Categories extends WP_Widget {
 		);
 		
 		// Create the widget
-		parent::__construct('product_categories', __('Product Categories', 'jigoshop'), $options);
+		parent::__construct('product_categories', __('Jigoshop: Product Categories', 'jigoshop'), $options);
 	}
 
 	/**
