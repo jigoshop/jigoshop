@@ -76,10 +76,18 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 		
 		// Set up query
 		$query_args = array(
-			'showposts' => $number,
-			'post_type' => 'product',
-			'meta_key' => 'featured',
-			'meta_value' => 'yes',
+			'showposts'		=> $number,
+			'post_type'		=> 'product',
+			'post_status'	=> 'publish',
+			'meta_key'		=> 'featured',
+			'meta_value'	=> 'yes',
+    		'meta_query'	=> array(
+    			array(
+    				'key'		=> 'visibility',
+    				'value'		=> array('catalog', 'visible'),
+    				'compare'	=> 'IN',
+    			),
+    		)
 		);
 		
 		// Run the query

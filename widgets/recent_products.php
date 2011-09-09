@@ -81,9 +81,18 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
     	$query_args = array(
     		'showposts'		=> $number,
     		'post_type'		=> 'product',
+    		'post_status'	=> 'publish',
+    		'meta_query'	=> array(
+    			array(
+    				'key'		=> 'visibility',
+    				'value'		=> array('catalog', 'visible'),
+    				'compare'	=> 'IN',
+    			),
+    		)
     	);
     	
-    	// Show variations of products?
+    	// Show variations of products?  TODO: fix this -JAP-
+/*
     	if( ! $instance['show_variations']) {
     		$query_args['meta_query'] = array(
     			array(
@@ -95,6 +104,7 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
     		
     		$query_args['parent'] = false;
     	}
+*/
 
 		// Run the query
 		$q = new WP_Query($query_args);
