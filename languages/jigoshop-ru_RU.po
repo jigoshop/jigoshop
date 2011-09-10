@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Jigoshop\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-09-11 01:48+0500\n"
-"PO-Revision-Date: 2011-09-11 01:57+0500\n"
+"PO-Revision-Date: 2011-09-11 02:19+0500\n"
 "Last-Translator: Almaz <AlmazWorks@gmail.com>\n"
 "Language-Team: AlmazWorks <almazworks@gmail.com>\n"
 "Language: \n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Poedit-Language: Russian\n"
 "X-Poedit-Country: RUSSIAN FEDERATION\n"
 "X-Poedit-Basepath: .\n"
-"X-Poedit-SearchPath-0: /home/almaz/w/jigoshop\n"
+"X-Poedit-SearchPath-0: /home/almaz/jigoshop\n"
 
 # @ jigoshop
 #: jigoshop.php:208
@@ -68,7 +68,7 @@ msgstr "Создать "
 #: jigoshop_template_functions.php:597
 #: shortcodes/my_account.php:276
 msgid "Select a state&hellip;"
-msgstr "Выберите состояние ..."
+msgstr "Выберите регион&hellip;"
 
 # @ jigoshop
 #: jigoshop.php:348
@@ -985,7 +985,7 @@ msgstr "Адрес доставки"
 # @ jigoshop
 #: shortcodes/my_account.php:143
 msgid "You have not set up a shipping address yet."
-msgstr "Вы не установили адрес доставки еще."
+msgstr "Вы еще не указали адрес доставки."
 
 # @ jigoshop
 #: shortcodes/my_account.php:214
@@ -1231,32 +1231,32 @@ msgstr "Количество"
 #: shortcodes/order_tracking.php:136
 #: shortcodes/order_tracking.php:139
 msgid "Sorry, we could not find that order id in our database. <a href=\""
-msgstr "Извините, но в нашей базе данных ничего не найдено (?). <a href=\""
+msgstr "Извините, но в нашей базе данных ничего подобного не найдено(?). <a href=\""
 
 # @ jigoshop
 #: shortcodes/order_tracking.php:147
 msgid "To track your order please enter your Order ID in the box below and press return. This was given to you on your receipt and in the confirmation email you should have received."
-msgstr "Чтобы отследить ваш заказ пожалуйста, введите Ваш номер заказа в поле ниже и нажмите ввод. Это была дана вам на вашем получения и в подтверждение по электронной почте вы должны были получить."
+msgstr "Чтобы отследить ваш заказ пожалуйста, введите его номер в поле ниже и нажмите ввод. Номер был выслан вам на электронную почту по завершении оформления заказа."
 
 # @ jigoshop
 #: shortcodes/order_tracking.php:149
 msgid "Order ID"
-msgstr "Order ID"
+msgstr "Номер заказа"
 
 # @ jigoshop
 #: shortcodes/order_tracking.php:149
 msgid "Found in your order confirmation email."
-msgstr "Найдено в вашей электронной почте подтверждение заказа."
+msgstr "Найдено в вашем письме подтверждения заказа(?)."
 
 # @ jigoshop
 #: shortcodes/order_tracking.php:150
 msgid "Billing Email"
-msgstr "Платежная Email"
+msgstr "Платежный Email"
 
 # @ jigoshop
 #: shortcodes/order_tracking.php:150
 msgid "Email you used during checkout."
-msgstr "Email Вы использовали во время контроля."
+msgstr "Email, который вы использовали во время оформления заказа."
 
 # @ jigoshop
 #: shortcodes/order_tracking.php:152
@@ -1272,7 +1272,7 @@ msgstr "Пожалуйста, введите почтовый индекс."
 #: shortcodes/cart.php:56
 #: shortcodes/cart.php:62
 msgid "Shipping costs updated."
-msgstr "Стоимость доставки обновлен."
+msgstr "Стоимость доставки обновлена."
 
 # @ jigoshop
 #: shortcodes/cart.php:76
@@ -3639,7 +3639,7 @@ msgstr "Рейтинг"
 # @ jigoshop
 #: templates/single-product-reviews.php:103
 msgid "Rate..."
-msgstr "Оценить..."
+msgstr "Оценить&hellip;"
 
 # @ jigoshop
 #: templates/single-product-reviews.php:104
@@ -4434,7 +4434,7 @@ msgstr "Product Discount"
 #: admin/jigoshop-admin-settings.php:369
 #: admin/jigoshop-admin-settings.php:400
 msgid "1, 2, 3"
-msgstr "1, 2, 3..."
+msgstr "1, 2, 3&hellip;"
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings.php:373
@@ -5252,7 +5252,7 @@ msgstr "Если цены указаны с учетом налогов, то н
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:710
 msgid "Cart totals display..."
-msgstr "Итог корзины выводит..."
+msgstr "Итог корзины выводит&hellip;"
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:712
@@ -5810,7 +5810,7 @@ msgstr "Доставка и обработка:"
 # @ jigoshop
 #: admin/write-panels/order-data.php:371
 msgid "Shipping method..."
-msgstr "Способ доставки ..."
+msgstr "Способ доставки&hellip;"
 
 # @ jigoshop
 #: admin/write-panels/order-data.php:373
@@ -5820,7 +5820,7 @@ msgstr "Налоговых заказ доставки:"
 # @ jigoshop
 #: admin/write-panels/order-data.php:383
 msgid "Payment method..."
-msgstr "Методы оплаты ..."
+msgstr "Методы оплаты&hellip;"
 
 # @ jigoshop
 #: admin/write-panels/product-types/virtual.php:31
