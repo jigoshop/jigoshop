@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Jigoshop\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-09-11 01:48+0500\n"
-"PO-Revision-Date: 2011-09-11 02:19+0500\n"
+"PO-Revision-Date: 2011-09-11 03:02+0500\n"
 "Last-Translator: Almaz <AlmazWorks@gmail.com>\n"
 "Language-Team: AlmazWorks <almazworks@gmail.com>\n"
 "Language: \n"
@@ -1642,7 +1642,7 @@ msgstr "Все обслуживаемые страны"
 #: shipping/free_shipping.php:69
 #: shipping/free_shipping.php:77
 msgid "Specific Countries"
-msgstr "Отдельные Страны"
+msgstr "Обслуживаемые страны"
 
 # @ jigoshop
 #: shipping/free_shipping.php:42
@@ -1682,7 +1682,7 @@ msgstr " "
 # @ jigoshop
 #: classes/jigoshop_countries.class.php:564
 msgid "All states"
-msgstr "Все государства"
+msgstr "Все регионы"
 
 # @ jigoshop
 #: classes/jigoshop_product.class.php:324
@@ -1706,13 +1706,13 @@ msgstr "доступный"
 # @ jigoshop
 #: classes/jigoshop_product.class.php:336
 msgid " (backorders allowed)"
-msgstr "(Backorders допускается)"
+msgstr "(заказ с отложенной доставкой допустим)(?)"
 
 # @ jigoshop
 #: classes/jigoshop_product.class.php:347
 #: classes/jigoshop_product.class.php:359
 msgid "Available on backorder"
-msgstr "Доступно на освобождающийся домен"
+msgstr "Доступно в заказе с отложенной доставкой (?)"
 
 # @ jigoshop
 #: classes/jigoshop_product.class.php:472
@@ -1811,12 +1811,12 @@ msgstr "(billing) не является допустимым числом."
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:291
 msgid " (billing) is not a valid email address."
-msgstr "(billing) не является адрес электронной почты."
+msgstr "(billing) некорректный адрес электронной почты."
 
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:294
 msgid " (billing) is not a valid postcode/ZIP."
-msgstr "(billing) не является допустимым индекс / ZIP."
+msgstr "(billing) некорректный почтовый индекс."
 
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:315
@@ -1826,7 +1826,7 @@ msgstr "(shipping) является обязательным полем."
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:320
 msgid " (shipping) is not a valid postcode/ZIP."
-msgstr "(shipping) не является допустимым индекс / ZIP."
+msgstr "(shipping) некорректный почтовый индекс."
 
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:343
@@ -1841,17 +1841,17 @@ msgstr "Пожалуйста, введите пароль учетной зап�
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:349
 msgid "Invalid email/username."
-msgstr "Неправильный адрес / имя пользователя."
+msgstr "Неправильный email/имя пользователя."
 
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:351
 msgid "An account is already registered with that username. Please choose another."
-msgstr "Счет уже зарегистрирован, что имя пользователя. Пожалуйста, выберите другое."
+msgstr "Учетная запись с таким именем пользователя уже зарегистрирована. Пожалуйста, выберите другое."
 
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:356
 msgid "An account is already registered with your email address. Please login."
-msgstr "Учетная запись уже зарегистрирована ваш электронный адрес. Пожалуйста, авторизуйтесь."
+msgstr "Учетная запись на ваш электронный адрес уже зарегистрирована. Пожалуйста, авторизуйтесь."
 
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:361
@@ -4489,7 +4489,7 @@ msgstr "Удалить это правило?"
 #: admin/jigoshop-admin-settings-options.php:31
 #: admin/write-panels/product-data.php:47
 msgid "General"
-msgstr "Общее"
+msgstr "Основное"
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:33
