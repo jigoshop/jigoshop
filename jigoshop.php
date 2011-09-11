@@ -590,10 +590,13 @@ function jigoshop_get_formatted_variation( $variation = '', $flat = false ) {
 
 		foreach ($variation as $name => $value) :
 
+            $taxonomy = get_taxonomy($name);
+            $term = get_term_by('slug', $value, $name);
+        
 			if ($flat) :
-				$varation_list[] = ucfirst(str_replace('tax_', '', $name)).': '.ucfirst($value);
+				$varation_list[] = $taxonomy->labels->name.': '.$term->name;
 			else :
-				$varation_list[] = '<dt>'.ucfirst(str_replace('tax_', '', $name)).':</dt><dd>'.ucfirst($value).'</dd>';
+				$varation_list[] = '<dt>'.$taxonomy->labels->name.':</dt><dd>'.$term->name.'</dd>';
 			endif;
 
 		endforeach;

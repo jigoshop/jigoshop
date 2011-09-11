@@ -19,10 +19,29 @@
 function variable_product_type_options() {
 	global $post;
 	
-	$attributes = maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) );
-	$_has_variation_attributes = false;
+	$all_attributes = maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) );
+	if (!isset($all_attributes)) {
+        $all_attributes = array();
+    }
+    
+    $variation_attributes = array();
+    //get only variation attributes 
+    foreach ($all_attributes as $attribute) {
+        if ($attribute['variation'] !== 'yes') {
+            continue;
+        }
+        
+        $attribute_name = $attribute['name'];
 
-	if (!isset($attributes)) $attributes = array();
+        //load attribute
+        if (taxonomy_exists('product_attribute_' . sanitize_title($attribute_name))) {
+            $terms = get_terms('product_attribute_' . sanitize_title($attribute_name), 'orderby=name&hide_empty=0');
+            
+            $attribute['options'] = $terms;
+            $variation_attributes[] = $attribute;
+        }
+    }
+
 	?>
 	<div id="variable_product_options" class="panel">
 		
@@ -53,24 +72,19 @@ function variable_product_type_options() {
 						<button type="button" class="remove_variation button" rel="<?php echo $variation->ID; ?>"><?php _e('Remove', 'jigoshop'); ?></button>
 						<strong>#<?php echo $variation->ID; ?> &mdash; <?php _e('Variation:', 'jigoshop'); ?></strong>
 						<?php
-							foreach ($attributes as $attribute) :
+							foreach ($variation_attributes as $attribute) :
+                                $attribute_name = $attribute['name'];
+                                $attribute_taxonomy = 'product_attribute_' . sanitize_title($attribute_name);
+								$attribute_options = $attribute['options'];
+                                
+								$variable_value = get_post_meta( $variation->ID, $attribute_taxonomy, true );
 								
-								if ( $attribute['variation']!=='yes' ) continue;
+								echo '<select name="' . $attribute_taxonomy . '['.$loop.']"><option value="">'.__('Any ', 'jigoshop').$attribute['name'].'&hellip;</option>';
 								
-								$_has_variation_attributes = true;
-								
-								$options = $attribute['value'];
-								$value = get_post_meta( $variation->ID, 'tax_' . sanitize_title($attribute['name']), true );
-								
-								if (!is_array($options)) $options = explode(',', $options);
-								
-								echo '<select name="tax_' . sanitize_title($attribute['name']) . '['.$loop.']"><option value="">'.__('Any ', 'jigoshop').$attribute['name'].'&hellip;</option>';
-								
-								foreach($options as $option) :
-									$option = trim($option);
+								foreach($attribute_options as $option) :
 									echo '<option ';
-									selected($value, $option);
-									echo ' value="'.$option.'">'.ucfirst($option).'</option>';
+									selected($variable_value, $option->slug);
+									echo ' value="'.$option->slug.'">'.$option->name.'</option>';
 								endforeach;	
 									
 								echo '</select>';
@@ -97,7 +111,7 @@ function variable_product_type_options() {
 		</div>
 		<p class="description"><?php _e('Add (optional) pricing/inventory for product variations. You must save your product attributes in the "Product Data" panel to make them available for selection.', 'jigoshop'); ?></p>
 
-		<?php if( $_has_variation_attributes ): ?>
+		<?php if( !empty($variation_attributes) ): ?>
 		<button type="button" class="button button-primary add_configuration"><?php _e('Add Configuration', 'jigoshop'); ?></button>
 		<?php else: ?>
 		<button type="button" class="button button-primary add_configuration" disabled="disabled"><?php _e('Add Configuration', 'jigoshop'); ?></button>
@@ -380,17 +394,20 @@ function process_product_meta_variable( $data, $post_id ) {
         foreach ($attributes as $attribute) {
             if ($attribute['variation'] == 'yes') {
                 $value = '';
-                $attribute_field = 'tax_' . sanitize_title($attribute['name']);
+                $attribute_name = $attribute['name'];
+                //taxonomy name
+                $attribute_field = 'product_attribute_' . sanitize_title($attribute_name);
 
                 if (isset($_POST[$attribute_field][$i])) {
-                    $value = trim($_POST[$attribute_field][$i]);
+                    //term slug
+                    $value = $_POST[$attribute_field][$i];
 
                     if (!empty($value)) {
-                        $title[] = ucfirst($attribute['name']) . ': ' . $value;
+                        $title[] = $attribute['name'] . ': ' . $value;
                     }
                 }
                 
-                $clean_attributes[$attribute['name']] = $value;
+                $clean_attributes[$attribute_field] = $value;
             }
         }
 
@@ -417,8 +434,6 @@ function process_product_meta_variable( $data, $post_id ) {
                     break;
                 }
             }
-        
-            $attributes_values[] = $clean_attributes;
         }
 
         $sku_string = '#' . $variation_id;
@@ -455,8 +470,8 @@ function process_product_meta_variable( $data, $post_id ) {
         update_post_meta($variation_id, '_thumbnail_id', $upload_image_id[$i]);
         
         // Update taxonomies (save attributes)
-        foreach($clean_attributes as $attribute => $value) {
-            update_post_meta($variation_id, 'tax_' . sanitize_title($attribute), $value);
+        foreach($clean_attributes as $attribute => $value) { 
+            update_post_meta($variation_id, $attribute, $value);
         }
     }
     return $errors;

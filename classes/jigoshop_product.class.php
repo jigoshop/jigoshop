@@ -650,7 +650,7 @@ class jigoshop_product {
             }
 
             $values = array();
-            $name = 'tax_'.sanitize_title($attribute['name']);
+            $name = 'product_attribute_' . sanitize_title($attribute['name']);
 
             foreach ($children as $child) {
                 /* @var $variation jigoshop_product_variation */
