@@ -609,11 +609,35 @@ class jigoshop_product {
 				if ($alt==1) echo 'alt';
 				echo '"><th>'.wptexturize($attribute['name']).'</th><td>';
 
-				if (is_array($attribute['value'])) {
-                    $attribute['value'] = implode(', ', $attribute['value']);
+                $value = $attribute['value'];
+                
+                //if taxonomy we should replace all term slugs with original names
+                if($attribute['is_taxonomy'] == 'yes') {
+                    if(!is_array($value)) {
+                        $value = array($value);
+                    }
+                    
+                    $taxonomy_name = 'product_attribute_' . sanitize_title($attribute['name']);
+                    
+                    $new_value = array();
+                    foreach($value as $term_slug) {
+                        $term = get_term_by('slug', $term_slug, $taxonomy_name);
+                        
+                        if($term) {
+                            $new_value[] = $term->name;
+                        } else {
+                            //@hack for text attributes search for term doesn't make sense but we are unable to determinate if current attribute is of type 'text' (they do have 'is_taxonomy' set to 'yes')
+                            $new_value[] = $term_slug;
+                        }
+                    }
+                    $value = $new_value;
+                }
+                
+                if (is_array($value)) {
+                    $value = implode(', ', $value);
                 }
 
-				echo wpautop(wptexturize($attribute['value']));
+				echo wpautop(wptexturize($value));
 
 				echo '</td></tr>';
             }
@@ -650,7 +674,7 @@ class jigoshop_product {
             }
 
             $values = array();
-            $name = 'tax_'.sanitize_title($attribute['name']);
+            $name = 'product_attribute_' . sanitize_title($attribute['name']);
 
             foreach ($children as $child) {
                 /* @var $variation jigoshop_product_variation */

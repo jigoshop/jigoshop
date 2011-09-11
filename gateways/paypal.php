@@ -217,14 +217,10 @@ class paypal extends jigoshop_payment_gateway {
                 
                 //if variation, insert variation details into product title
                 if ($_product instanceof jigoshop_product_variation) {
-                    $variation_details = array();
+                    $attributes = $_product->get_variation_attributes();
                     
-                    foreach ($_product->get_variation_attributes() as $name => $value) {
-                        $variation_details[] = ucfirst(str_replace('tax_', '', $name)) . ': ' . ucfirst($value);
-                    }
-
-                    if (count($variation_details) > 0) {
-                        $title .= ' (' . implode(', ', $variation_details) . ')';
+                    if (!empty($attributes)) {
+                        $title .= ' (' . jigoshop_get_formatted_variation($attributes, true) . ')';
                     }
                 }
 				

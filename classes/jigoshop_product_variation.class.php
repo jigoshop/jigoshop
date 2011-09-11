@@ -104,7 +104,7 @@ class jigoshop_product_variation extends jigoshop_product {
 		$this->variation_data = array();
 		
 		foreach ($product_custom_fields as $name => $value) {
-			if (!strstr($name, 'tax_')) {
+			if (strpos($name, 'product_attribute_') !== 0) {
                 continue;
             }
 			

@@ -27,7 +27,7 @@ function jigoshop_find_variation( $variation_data = array() ) {
 
 	foreach ($variation_data as $key => $value) :
 
-		if (!strstr($key, 'tax_')) continue;
+		if (!strstr($key, 'product_attribute_')) continue;
 
 		$variation_query[] = array(
 			'key' 		=> $key,
@@ -53,7 +53,7 @@ function jigoshop_find_variation( $variation_data = array() ) {
 		$variation_query = array();
 		foreach ($variation_data as $key => $value) :
 
-			if (!strstr($key, 'tax_')) continue;
+			if (!strstr($key, 'product_attribute_')) continue;
 
 			$variation_query[] = array(
 				'key' 		=> $key,

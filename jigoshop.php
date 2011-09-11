@@ -576,7 +576,13 @@ function jigoshop_price( $price, $args = array() ) {
 	return $return;
 }
 
-/** Show variation info if set */
+/**
+ * Show variation details - attributes and values
+ * 
+ * @param type $variation array of attribute names and values
+ * @param type $flat if TRUE simple string will be produced, if FALSE HTML will be produced
+ * @return string 
+ */
 function jigoshop_get_formatted_variation( $variation = '', $flat = false ) {
 	if ($variation && is_array($variation)) :
 
@@ -590,10 +596,13 @@ function jigoshop_get_formatted_variation( $variation = '', $flat = false ) {
 
 		foreach ($variation as $name => $value) :
 
+            $taxonomy = get_taxonomy($name);
+            $term = get_term_by('slug', $value, $name);
+        
 			if ($flat) :
-				$varation_list[] = ucfirst(str_replace('tax_', '', $name)).': '.ucfirst($value);
+				$varation_list[] = $taxonomy->labels->name.': '.$term->name;
 			else :
-				$varation_list[] = '<dt>'.ucfirst(str_replace('tax_', '', $name)).':</dt><dd>'.ucfirst($value).'</dd>';
+				$varation_list[] = '<dt>'.$taxonomy->labels->name.':</dt><dd>'.$term->name.'</dd>';
 			endif;
 
 		endforeach;

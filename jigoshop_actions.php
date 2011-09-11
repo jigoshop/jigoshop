@@ -226,7 +226,7 @@ function jigoshop_add_to_cart_action($url = false)
                     continue;
                 }
 
-                $attr_name = 'tax_' . sanitize_title($attribute['name']);
+                $attr_name = 'product_attribute_' . sanitize_title($attribute['name']);
                 if (!empty($_POST[$attr_name])) {
                     $variations[$attr_name] = $_POST[$attr_name];
                 } else {

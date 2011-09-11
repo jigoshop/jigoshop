@@ -381,14 +381,18 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 
 			<table class="variations" cellspacing="0">
 				<tbody>
-				<?php foreach ($attributes as $aname => $aoptions):?>
+				<?php foreach ($attributes as $aname => $aoptions):
+                    $taxonomy_name = 'product_attribute_' . sanitize_title($aname);
+                    ?>
                     <tr>
                         <td><label for="<?php echo sanitize_title($aname); ?>"><?php echo ucfirst($aname)?></label></td>
-                        <td><select id="<?php echo sanitize_title($aname); ?>" name="tax_<?php echo sanitize_title($aname); ?>">
+                        <td><select id="<?php echo sanitize_title($aname); ?>" name="<?php echo $taxonomy_name; ?>">
                                 <option value=""><?php echo __('Choose an option', 'jigoshop') ?>&hellip;</option>
                                 <?php if(is_array($aoptions)): ?>
-                                    <?php foreach($aoptions as $option): ?>
-                                <option><?php echo $option; ?></option>
+                                    <?php foreach($aoptions as $option): 
+                                        $term = get_term_by('slug', $option, $taxonomy_name);
+                                        ?>
+                                <option value="<?php echo $term->slug;?>"><?php echo $term->name; ?></option>
                                     <?php endforeach;?>
                                 <?php endif;?>
                         </td>
