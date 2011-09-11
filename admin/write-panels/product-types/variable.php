@@ -20,7 +20,14 @@ function variable_product_type_options() {
 	global $post;
 	
 	$attributes = maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) );
+
 	$_has_variation_attributes = false;
+	foreach((array) $attributes as $attribute){
+		if (boolval($attribute['variation'])){
+			$_has_variation_attributes = true;
+			break;
+		}
+	}
 
 	if (!isset($attributes)) $attributes = array();
 	?>
@@ -56,8 +63,6 @@ function variable_product_type_options() {
 							foreach ($attributes as $attribute) :
 								
 								if ( $attribute['variation']!=='yes' ) continue;
-								
-								$_has_variation_attributes = true;
 								
 								$options = $attribute['value'];
 								$value = get_post_meta( $variation->ID, 'tax_' . sanitize_title($attribute['name']), true );
