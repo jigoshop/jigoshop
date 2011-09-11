@@ -386,8 +386,6 @@ function process_product_meta_variable( $data, $post_id ) {
             $post_status = 'private';
         }
 
-        // Generate a useful post title
-        $title = array();
         // Clean up attributes values
         $clean_attributes = array();
 
@@ -401,10 +399,6 @@ function process_product_meta_variable( $data, $post_id ) {
                 if (isset($_POST[$attribute_field][$i])) {
                     //term slug
                     $value = $_POST[$attribute_field][$i];
-
-                    if (!empty($value)) {
-                        $title[] = $attribute['name'] . ': ' . $value;
-                    }
                 }
                 
                 $clean_attributes[$attribute_field] = $value;
@@ -434,6 +428,8 @@ function process_product_meta_variable( $data, $post_id ) {
                     break;
                 }
             }
+            
+            $attributes_values[] = $clean_attributes;
         }
 
         $sku_string = '#' . $variation_id;
@@ -441,7 +437,7 @@ function process_product_meta_variable( $data, $post_id ) {
             $sku_string .= ' SKU: ' . $variable_sku[$i];
         }
 
-        $post_title = '#' . $post_id . ' ' . __('Variation') . ' (' . $sku_string . ') - ' . implode(', ', $title);
+        $post_title = '#' . $post_id . ' ' . __('Variation') . ' (' . $sku_string . ') - ' . jigoshop_get_formatted_variation($clean_attributes, true);
 
         // Update or Add post
         if (!$variation_id) { //create variation

@@ -576,7 +576,13 @@ function jigoshop_price( $price, $args = array() ) {
 	return $return;
 }
 
-/** Show variation info if set */
+/**
+ * Show variation details - attributes and values
+ * 
+ * @param type $variation array of attribute names and values
+ * @param type $flat if TRUE simple string will be produced, if FALSE HTML will be produced
+ * @return string 
+ */
 function jigoshop_get_formatted_variation( $variation = '', $flat = false ) {
 	if ($variation && is_array($variation)) :
 
