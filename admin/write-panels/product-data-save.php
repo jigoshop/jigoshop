@@ -79,39 +79,33 @@ function jigoshop_process_product_meta( $post_id, $post ) {
             $visible = isset($attribute_visibility[$i]) ? 'yes' : 'no';
             $variation = isset($attribute_variation[$i]) ? 'yes' : 'no';
             $is_taxonomy = isset($attribute_is_taxonomy[$i]) ? 'yes' : 'no';
+            $name = $attribute_names[$i];
+            $value = $attribute_values[$i];
+            $taxonomy_name = 'product_attribute_' . sanitize_title($name);
 
-            if (is_array($attribute_values[$i])) {
-                $attribute_values[$i] = array_map('htmlspecialchars', array_map('stripslashes', $attribute_values[$i]));
+            if (is_array($value)) {
+                $value = array_map('htmlspecialchars', array_map('stripslashes', $value));
             } else {
-                $attribute_values[$i] = trim(htmlspecialchars(stripslashes($attribute_values[$i])));
+                $value = trim(htmlspecialchars(stripslashes($value)));
             }
 
-            if (empty($attribute_values[$i]) || ( is_array($attribute_values[$i]) && sizeof($attribute_values[$i]) == 0)) {
-                if ($is_taxonomy == 'yes' && taxonomy_exists('product_attribute_' . sanitize_title($attribute_names[$i]))) {
-                    wp_set_object_terms($post_id, 0, 'product_attribute_' . sanitize_title($attribute_names[$i]));
+            if ($is_taxonomy == 'yes' && taxonomy_exists($taxonomy_name)) {
+                if(empty($value)) {
+                    wp_set_object_terms($post_id, 0, $taxonomy_name);
+                    continue;
+                } else {
+                    wp_set_object_terms($post_id, $value, $taxonomy_name);
                 }
-
-                continue;
             }
 
-            $attributes[sanitize_title($attribute_names[$i])] = array(
-                'name' => htmlspecialchars(stripslashes($attribute_names[$i])),
+            $attributes[sanitize_title($name)] = array(
+                'name' => htmlspecialchars(stripslashes($name)),
                 'value' => $attribute_values[$i],
                 'position' => $attribute_position[$i],
                 'visible' => $visible,
                 'variation' => $variation,
                 'is_taxonomy' => $is_taxonomy
             );
-
-            if ($is_taxonomy == 'yes') {
-                // Update post terms
-                $tax = $attribute_names[$i];
-                $value = $attribute_values[$i];
-
-                if (taxonomy_exists('product_attribute_' . sanitize_title($tax))) {
-                    wp_set_object_terms($post_id, $value, 'product_attribute_' . sanitize_title($tax));
-                }
-            }
         }
     }
 
