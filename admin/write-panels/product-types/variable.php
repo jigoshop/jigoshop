@@ -26,19 +26,21 @@ function variable_product_type_options() {
     
     $variation_attributes = array();
     //get only variation attributes 
-    foreach ($all_attributes as $attribute) {
-        if ($attribute['variation'] !== 'yes') {
-            continue;
-        }
-        
-        $attribute_name = $attribute['name'];
+    if (is_array($all_attributes)) {
+        foreach ($all_attributes as $attribute) {
+            if ($attribute['variation'] !== 'yes') {
+                continue;
+            }
 
-        //load attribute
-        if (taxonomy_exists('product_attribute_' . sanitize_title($attribute_name))) {
-            $terms = get_terms('product_attribute_' . sanitize_title($attribute_name), 'orderby=name&hide_empty=0');
-            
-            $attribute['options'] = $terms;
-            $variation_attributes[] = $attribute;
+            $attribute_name = $attribute['name'];
+
+            //load attribute
+            if (taxonomy_exists('product_attribute_' . sanitize_title($attribute_name))) {
+                $terms = get_terms('product_attribute_' . sanitize_title($attribute_name), 'orderby=name&hide_empty=0');
+
+                $attribute['options'] = $terms;
+                $variation_attributes[] = $attribute;
+            }
         }
     }
 
@@ -78,10 +80,11 @@ function variable_product_type_options() {
 								$attribute_options = $attribute['options'];
                                 
 								$variable_value = get_post_meta( $variation->ID, $attribute_taxonomy, true );
+								$options = $attribute['options'];
 								
 								echo '<select name="' . $attribute_taxonomy . '['.$loop.']"><option value="">'.__('Any ', 'jigoshop').$attribute['name'].'&hellip;</option>';
 								
-								foreach($attribute_options as $option) :
+								foreach($options as $option) :
 									echo '<option ';
 									selected($variable_value, $option->slug);
 									echo ' value="'.$option->slug.'">'.$option->name.'</option>';
@@ -109,13 +112,9 @@ function variable_product_type_options() {
 				</div>
 			<?php $loop++; endforeach; ?>
 		</div>
-		<p class="description"><?php _e('Add (optional) pricing/inventory for product variations. You must save your product attributes in the "Product Data" panel to make them available for selection.', 'jigoshop'); ?></p>
+		<p class="description"><?php _e('Add (optional) pricing/inventory for product variations.<br/>You <b>must</b> save your product attributes in the "Product Data" panel <b>first</b> & <b>mark them for variation</b> to make them available for selection.</strong>', 'jigoshop'); ?></p>
 
-		<?php if( !empty($variation_attributes) ): ?>
 		<button type="button" class="button button-primary add_configuration"><?php _e('Add Configuration', 'jigoshop'); ?></button>
-		<?php else: ?>
-		<button type="button" class="button button-primary add_configuration" disabled="disabled"><?php _e('Add Configuration', 'jigoshop'); ?></button>
-		<?php endif; ?>
 		
 		<div class="clear"></div>
 	</div>

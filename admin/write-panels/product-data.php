@@ -274,7 +274,7 @@ function jigoshop_product_data_box() {
 						    							    	
 						    		$attribute_nicename = sanitize_title($tax->attribute_name);
                                     $attribute = NULL;
-                                    $value = NULL;
+                                    $value = array();
                                     
 						    		if (isset($attributes[$attribute_nicename])) :
                                         $attribute = $attributes[$attribute_nicename];
