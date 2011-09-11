@@ -265,7 +265,7 @@ function jigoshop_product_data_box() {
 						<?php
 							$attribute_taxonomies = jigoshop::getAttributeTaxonomies();
 							$attributes = get_post_meta($post->ID, 'product_attributes', true);
-
+                            
 							$i = -1;
 							
 							// Taxonomies
@@ -273,15 +273,24 @@ function jigoshop_product_data_box() {
 						    	foreach ($attribute_taxonomies as $tax) : $i++;
 						    							    	
 						    		$attribute_nicename = sanitize_title($tax->attribute_name);
-						    		if (isset($attributes[$attribute_nicename])) $attribute = $attributes[$attribute_nicename];
+                                    $attribute = NULL;
+                                    $value = NULL;
+                                    
+						    		if (isset($attributes[$attribute_nicename])) :
+                                        $attribute = $attributes[$attribute_nicename];
 
-						    		$values = wp_get_post_terms( $thepostid, 'product_attribute_'.$attribute_nicename );
-						    		$value = array();
-						    		if (!is_wp_error($values) && $values) :
-						    			foreach ($values as $v) :
-						    				$value[] = $v->slug;
-						    			endforeach;
-						    		endif;
+                                        if($tax->attribute_type != 'text') :
+                                            $values = wp_get_post_terms( $thepostid, 'product_attribute_'.$attribute_nicename );
+                                            $value = array();
+                                            if (!is_wp_error($values) && $values) :
+                                                foreach ($values as $v) :
+                                                    $value[] = $v->slug;
+                                                endforeach;
+                                            endif;
+                                        else:
+                                            $value = $attribute['value'];
+                                        endif;
+                                    endif;
 						    		
 						    		?><tr class="taxonomy <?php echo sanitize_title($tax->attribute_name); ?>" rel="<?php if (isset($attribute['position'])) echo $attribute['position']; else echo '0'; ?>" <?php if (!$value || sizeof($value)==0) echo 'style="display:none"'; ?>>
 										<td class="center">
@@ -342,10 +351,10 @@ function jigoshop_product_data_box() {
 										</td>
 										<td class="center visibility"><input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['visible'] : 0 ), true); ?> name="attribute_visibility[<?php echo $i; ?>]" value="1" /></td>
 
-										<?php if ($tax->attribute_type=="select") : // always disable variation for select elements ?>
-										<td class="center variation"><input type="checkbox" disabled="disabled" /></td>
-										<?php else: ?>
+										<?php if ($tax->attribute_type=="multiselect") : // enabled only for multiselect ?>
 										<td class="center variation"><input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['variation'] : 0 ), true); ?> name="attribute_variation[<?php echo $i; ?>]" value="1" /></td>
+										<?php else: ?>
+										<td class="center variation"><input type="checkbox" disabled="disabled" /></td>
 										<?php endif; ?>
 
 										<td class="center hiderow"><button type="button" class="hide_row button">&times;</button></td>

@@ -108,7 +108,8 @@ function jigoshop_process_product_meta( $post_id, $post ) {
             );
         }
     }
-
+    
+    //sort attributes using 'position' field
     if (!function_exists('attributes_cmp')) {
 
         function attributes_cmp($a, $b)
@@ -121,7 +122,7 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 
     }
     uasort($attributes, 'attributes_cmp');
-	
+    
 		// Product type
 		$product_type = sanitize_title( stripslashes( $_POST['product-type'] ) );
 		if( !$product_type ) $product_type = 'simple';

@@ -622,7 +622,13 @@ class jigoshop_product {
                     $new_value = array();
                     foreach($value as $term_slug) {
                         $term = get_term_by('slug', $term_slug, $taxonomy_name);
-                        $new_value[] = $term->name;
+                        
+                        if($term) {
+                            $new_value[] = $term->name;
+                        } else {
+                            //@hack for text attributes search for term doesn't make sense but we are unable to determinate if current attribute is of type 'text' (they do have 'is_taxonomy' set to 'yes')
+                            $new_value[] = $term_slug;
+                        }
                     }
                     $value = $new_value;
                 }
