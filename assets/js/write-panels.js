@@ -217,8 +217,8 @@ jQuery( function($){
 		// Initial order
 		var jigoshop_attributes_table_items = jQuery('#attributes_list').children('tr').get();
 		jigoshop_attributes_table_items.sort(function(a, b) {
-		   var compA = jQuery(a).attr('rel');
-		   var compB = jQuery(b).attr('rel');
+		   var compA = Number(jQuery(a).attr('rel'));
+		   var compB = Number(jQuery(b).attr('rel'));
 		   return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
 		})
 		jQuery(jigoshop_attributes_table_items).each( function(idx, itm) { jQuery('#attributes_list').append(itm); } );
