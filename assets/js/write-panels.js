@@ -290,14 +290,14 @@ jQuery( function($){
 
 		jQuery('button.move_up').live('click', function(){
 			var row = jQuery(this).parent().parent();
-			var prev_row = jQuery(row).prev('tr');
+			var prev_row = jQuery(row).prevAll('tr:visible:eq(0)');
 			jQuery(row).after(prev_row);
 			row_indexes();
 		});
 
 		jQuery('button.move_down').live('click', function(){
 			var row = jQuery(this).parent().parent();
-			var next_row = jQuery(row).next('tr');
+			var next_row = jQuery(row).nextAll('tr:visible:eq(0)');
 			jQuery(row).before(next_row);
 			row_indexes();
 		});
