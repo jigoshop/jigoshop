@@ -275,7 +275,7 @@ function jigoshop_product_data_box() {
 						    		$attribute_nicename = sanitize_title($tax->attribute_name);
 						    		if (isset($attributes[$attribute_nicename])) $attribute = $attributes[$attribute_nicename];
 
-						    		$values = wp_get_post_terms( $thepostid, 'product_attribute_'.sanitize_title($tax->attribute_name) );
+						    		$values = wp_get_post_terms( $thepostid, 'product_attribute_'.$attribute_nicename );
 						    		$value = array();
 						    		if (!is_wp_error($values) && $values) :
 						    			foreach ($values as $v) :
