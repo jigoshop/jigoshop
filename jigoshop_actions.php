@@ -276,12 +276,7 @@ function jigoshop_add_to_cart_action($url = false)
     
     //if product was successfully added to the cart
     if ($product_added && get_option('jigoshop_directly_to_checkout', 'no') == 'no') {
-        $result = jigoshop_cart::check_cart_item_stock();
-        if (is_wp_error($result)) {
-            jigoshop::add_error( $result->get_error_message() );
-        } else {
-            jigoshop::add_message(sprintf(__('<a href="%s" class="button">View Cart &rarr;</a> Product successfully added to your cart.', 'jigoshop'), jigoshop_cart::get_cart_url()));
-        }
+		jigoshop::add_message(sprintf(__('<a href="%s" class="button">View Cart &rarr;</a> Product successfully added to your cart.', 'jigoshop'), jigoshop_cart::get_cart_url()));
     }
 
     $url = apply_filters('add_to_cart_redirect', $url);

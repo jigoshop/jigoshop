@@ -29,6 +29,7 @@
  * @param 		array $options List of options to go through and save
  */
 function jigoshop_update_options($options) {
+	
     if(isset($_POST['submitted']) && $_POST['submitted'] == 'yes') {
 
 		$update_image_meta = false;
@@ -509,7 +510,7 @@ function jigoshop_admin_fields($options) {
 		<p class="submit"><input name="save" type="submit" value="<?php _e('Save changes','jigoshop') ?>" /></p>
 	</div>
 	<script type="text/javascript">
-	jQuery(function() {
+	jQuery(function($) {
 	    // Tabs
 		jQuery('ul.tabs').show();
 		jQuery('ul.tabs li:first').addClass('active');
@@ -540,9 +541,13 @@ function jigoshop_admin_fields($options) {
 			}
 		}).change();
 
+		// permalink double save hack
+		$.get('<?php echo admin_url('options-permalink.php') ?>');
+
 	});
 	</script>
 	<?php
+	flush_rewrite_rules();
 }
 
 

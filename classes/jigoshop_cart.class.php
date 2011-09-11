@@ -166,13 +166,27 @@ class jigoshop_cart {
 			return false; 
 		}
 
+		// prevents adding products to the cart without enough quantity on hand
+		$in_cart_qty = is_numeric( $found_cart_item_key )
+			? self::$cart_contents[$found_cart_item_key]['quantity']
+			: 0;
+		if ( $product->managing_stock() && ! $product->has_enough_stock( $quantity + $in_cart_qty ) ) { 
+			if ( $in_cart_qty > 0 )
+				jigoshop::add_error( sprintf(__('We are sorry.  We do not have enough "%s" to fill your request.  You have %d of them in your Cart and we have %d available at this time.', 'jigoshop'), $product->get_title(), $in_cart_qty, $product->get_stock_quantity() ) );
+			else
+				jigoshop::add_error( sprintf(__('We are sorry.  We do not have enough "%s" to fill your request. There are only %d left in stock.', 'jigoshop'), $product->get_title(), $product->get_stock_quantity() ) );
+			return false; 
+		}
+
         //if product is already in the cart change its quantity
         if (is_numeric($found_cart_item_key)) {
 
             $quantity = (int)$quantity + self::$cart_contents[$found_cart_item_key]['quantity'];
 
             self::set_quantity($found_cart_item_key, $quantity);
+            
         } else {//othervise add new product to the cart
+        
             $cart_item_key = sizeof(self::$cart_contents);
 
             $data = &new jigoshop_product($product_id);
@@ -296,7 +310,7 @@ class jigoshop_cart {
 
             if (!$_product->is_in_stock() || ($_product->managing_stock() && !$_product->has_enough_stock($values['quantity']))) {
                 $error = new WP_Error();
-                $error->add('out-of-stock', sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologise for any inconvenience caused.', 'jigoshop'), $_product->get_title()));
+                $error->add('out-of-stock', sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. We only have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title(), $_product->get_stock_quantity() ));
                 return $error;
             }
         }

@@ -393,7 +393,10 @@ class jigoshop_product {
 	function is_on_sale() {
         if ($this->has_child()) {
             foreach ($this->children as $child) {
-                if (isset($child->product->data['sale_price']) && $child->product->data['sale_price'] != $child->product->price) {
+            	
+            	// Previously this grabbed from product->data[] but sale price was undefined.
+            	// @TODO: Investigate the reason why the data[] had undefined items & duplicates (studioromeo)
+                if (isset($child->product->sale_price) && ($child->product->sale_price != $child->product->price)) {
                     return true;
                 }
             }
