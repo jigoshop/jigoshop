@@ -22,7 +22,7 @@ function variable_product_type_options() {
 	$attributes = maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) );
 
 	$_has_variation_attributes = false;
-	foreach($attributes as $attribute){
+	foreach((array) $attributes as $attribute){
 		if (boolval($attribute['variation'])){
 			$_has_variation_attributes = true;
 			break;
