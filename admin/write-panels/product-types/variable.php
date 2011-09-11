@@ -22,11 +22,19 @@ function variable_product_type_options($post_id=null, $variation_id=null) {
 	if ($post_id == null){
 		$post_id = $post->ID;
 	}
-	$img_upload_src = get_upload_iframe_src('image');
-	$_has_variation_attributes = false;
 
 	// Get the parent post attributes
 	$attributes = get_post_meta($post_id, 'product_attributes', true);
+
+	$_has_variation_attributes = false;
+	foreach((array) $attributes as $attribute){
+		if (boolval($attribute['variation'])){
+			$_has_variation_attributes = true;
+			break;
+		}
+	}
+
+	$img_upload_src = get_upload_iframe_src('image');
 
 	// Only render the wrapper div if it's not a single variation request
 	if ($variation_id === null): ?>
@@ -66,8 +74,6 @@ function variable_product_type_options($post_id=null, $variation_id=null) {
 								if ( !boolval($attribute['variation']) ) {
 									continue;
 								}
-								
-								$_has_variation_attributes = true;
 								
 								$options = $attribute['value'];
 								if (!is_array($options)) {
