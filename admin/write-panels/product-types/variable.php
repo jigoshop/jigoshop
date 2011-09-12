@@ -61,7 +61,12 @@ function variable_product_type_options($post_id=null, $variation_id=null) {
 			if ($variations) foreach ($variations as $variation) : 
 			
 				$variation_data = get_post_custom( $variation->ID );
-				$image = jigoshop_custom_image_src($variation_data['_thumbnail_id'][0], 60, 60);
+				if (isset($variation_data['_thumbnail_id'])){
+					$image = jigoshop_custom_image_src($variation_data['_thumbnail_id'][0], 60, 60);
+				} else {
+					$image = jigoshop_custom_image_src(null, 60, 60);
+				}
+
 
 				?>
 				<div class="jigoshop_configuration">
