@@ -67,7 +67,7 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 		
 		if ($_chosen_attributes) foreach ($_chosen_attributes as $attribute => $value) :
 		
-			$fields .= '<input type="hidden" name="'.str_replace('product_attribute_', 'filter_', $attribute).'" value="'.implode(',', $value).'" />';
+			$fields .= '<input type="hidden" name="'.str_replace('pa_', 'filter_', $attribute).'" value="'.implode(',', $value).'" />';
 		
 		endforeach;
 		
