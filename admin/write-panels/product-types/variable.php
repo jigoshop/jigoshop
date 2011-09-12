@@ -8,18 +8,15 @@
  * @category 	Admin Write Panel Product Types
  * @package 	JigoShop
  */
- 
+
 /**
- * Product Options
+ * Returns variation attributes and avaiable options for each attribute;
  * 
- * Product Options for the variable product type
- *
- * @since 		1.0
+ * @param int $id
+ * @return array 
  */
-function variable_product_type_options() {
-	global $post;
-	
-	$all_attributes = maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) );
+function load_variation_attributes($id) {
+    $all_attributes = maybe_unserialize( get_post_meta($id, 'product_attributes', true) );
 	if (!isset($all_attributes)) {
         $all_attributes = array();
     }
@@ -33,16 +30,39 @@ function variable_product_type_options() {
             }
 
             $attribute_name = $attribute['name'];
+            $attribute_values = $attribute['value'];
 
-            //load attribute
-            if (taxonomy_exists('product_attribute_' . sanitize_title($attribute_name))) {
-                $terms = get_terms('product_attribute_' . sanitize_title($attribute_name), 'orderby=name&hide_empty=0');
+            //load attribute values
+            $taxonomy_name = 'product_attribute_' . sanitize_title($attribute_name);
+            if (taxonomy_exists($taxonomy_name)) {
+                $terms = array();
+                
+                if(is_array($attribute_values)) {
+                    foreach($attribute_values as $value) {
+                        $terms[] = get_term_by('slug', $value, $taxonomy_name);
+                    }
+                }
 
                 $attribute['options'] = $terms;
                 $variation_attributes[] = $attribute;
             }
         }
     }
+    
+    return $variation_attributes;
+}
+
+/**
+ * Product Options
+ * 
+ * Product Options for the variable product type
+ *
+ * @since 		1.0
+ */
+function variable_product_type_options() {
+	global $post;
+	
+	$variation_attributes = load_variation_attributes($post->ID);
 
 	?>
 	<div id="variable_product_options" class="panel">
@@ -133,9 +153,8 @@ add_action('jigoshop_product_type_options_box', 'variable_product_type_options')
  */
 function variable_product_write_panel_js() {
 	global $post;
-	
-	$attributes = maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) );
-	if (!isset($attributes)) $attributes = array();
+    
+	$variation_attributes = load_variation_attributes($post->ID);
 	?>
 	jQuery(function(){
 		
@@ -159,24 +178,25 @@ function variable_product_write_panel_js() {
 					<p>\
 						<button type="button" class="remove_variation button"><?php _e('Remove', 'jigoshop'); ?></button>\
 						<strong><?php _e('Variation:', 'jigoshop'); ?></strong>\
-						<?php
-							if ($attributes) foreach ($attributes as $attribute) :
+                    <?php
+							foreach ($variation_attributes as $attribute) :
+                                $attribute_name = $attribute['name'];
+                                $attribute_taxonomy = 'product_attribute_' . sanitize_title($attribute_name);
+								$attribute_options = $attribute['options'];
+                                
+								$variable_value = get_post_meta( $variation->ID, $attribute_taxonomy, true );
+								$options = $attribute['options'];
 								
-								if ( $attribute['variation']!=='yes' ) continue;
-								
-								$options = $attribute['value'];
-								if (!is_array($options)) $options = explode(',', $options);
-								
-								echo '<select name="tax_' . sanitize_title($attribute['name']).'[\' + loop + \']"><option value="">'.__('Any ', 'jigoshop').$attribute['name'].'&hellip;</option>';
+								echo '<select name="' . $attribute_taxonomy . '[\' + loop + \']"><option value="">'.__('Any ', 'jigoshop').$attribute['name'].'&hellip;</option>';
 								
 								foreach($options as $option) :
-									echo '<option value="'.trim($option).'">'.ucfirst(trim($option)).'</option>';
+									echo '<option value="'.$option->slug.'">'.$option->name.'</option>';
 								endforeach;	
 									
 								echo '</select>';
 	
 							endforeach;
-					?><input type="hidden" name="variable_post_id[' + loop + ']" value="' + variation_id + '" /></p>\
+						?><input type="hidden" name="variable_post_id[' + loop + ']" value="' + variation_id + '" /></p>\
 					<table cellpadding="0" cellspacing="0" class="jigoshop_variable_attributes">\
 						<tbody>\
 							<tr>\
@@ -372,7 +392,7 @@ function process_product_meta_variable( $data, $post_id ) {
     if (empty($attributes)) {
         $attributes = array();
     }
-    
+
     $attributes_values = array();
     for ($i = 0; $i < count($variable_sku); $i++) {
 
