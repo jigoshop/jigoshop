@@ -28,8 +28,8 @@ if (!function_exists('jigoshop_front_page_archive')) {
 		// is_shop() works, but only with a [recent_products] shortcode on the Shop page
 		// however, if shortcode is used when not front page, double product listings appear
 		//
-//		if ( is_front_page() && is_page( get_option('jigoshop_shop_page_id') )) :
-		if ( is_front_page() && is_shop() ) :
+		if ( is_front_page() && is_page( get_option('jigoshop_shop_page_id') )) :
+//		if ( is_front_page() && is_shop() ) :
 
 			if ( get_query_var('paged') ) {
 			    $paged = get_query_var('paged');
