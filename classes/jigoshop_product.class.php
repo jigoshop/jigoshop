@@ -399,6 +399,11 @@ class jigoshop_product {
                 if (isset($child->product->sale_price) && ($child->product->sale_price != $child->product->price)) {
                     return true;
                 }
+                
+                // Quick patch
+                if (!empty($this->sale_price) && $this->sale_price != $this->price) {
+                    return true;
+                }
             }
         } else if (!empty($this->sale_price) && $this->sale_price != $this->price) {
             return true;
