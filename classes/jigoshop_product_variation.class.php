@@ -185,17 +185,7 @@ class jigoshop_product_variation extends jigoshop_product {
 	
 		if ( $this->variation_has_price ) :
 			if ( $this->variation_has_sale_price ) :
-				
-				$custom_fields = get_post_custom( $this->id );
-				$date_from = (int)$custom_fields['sale_price_dates_from'][0];
-				$date_to = (int)$custom_fields['sale_price_dates_to'][0];
-				$current_time = strtotime( 'NOW' );
-
-				if ( $date_to == 0 && $date_from == 0 )	/* no parent dates set, it's on sale */
-					$on_sale = true;
-				else if ( $date_from == 0 || ( $date_from > 0 && $date_from < $current_time ))
-					if ( $date_to == 0 || $date_to > $current_time )
-						$on_sale = true;
+				$on_sale = $this->in_sale_date_range();
 			endif;
 		endif;
 		
@@ -206,7 +196,7 @@ class jigoshop_product_variation extends jigoshop_product {
 	function get_price() {
 
         if ($this->variation_has_price) {
-            if ($this->variation_has_sale_price && $this->variation_is_on_sale()) {
+            if ($this->variation_is_on_sale()) {
                 return $this->sale_price;
             }
             
@@ -220,7 +210,7 @@ class jigoshop_product_variation extends jigoshop_product {
 	function get_price_html() {
 		if ($this->variation_has_price) {
 			if ($this->price) {
-				if ($this->variation_has_sale_price && $this->variation_is_on_sale()) {
+				if ($this->variation_is_on_sale()) {
 					return '<del>'.jigoshop_price( $this->price ).'</del> <ins>'.jigoshop_price( $this->sale_price ).'</ins>';
                 }
 				return jigoshop_price( $this->price );

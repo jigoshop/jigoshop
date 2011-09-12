@@ -386,6 +386,20 @@ class jigoshop_product {
 		if ($this->visibility=='catalog' && !is_search()) return true;
 	}
 
+	/** Returns whether or not a sale price is valid based on product sale date settings */
+	function in_sale_date_range() {
+		$in_range = false;
+		$custom_fields = get_post_custom( $this->id );
+		$date_from = (int)$custom_fields['sale_price_dates_from'][0];
+		$date_to = (int)$custom_fields['sale_price_dates_to'][0];
+		$current_time = strtotime( 'NOW' );
+		if ( $date_to == 0 && $date_from == 0 ) $in_range = true;
+		else if ( $date_from == 0 || ( $date_from > 0 && $date_from < $current_time )) :
+			if ( $date_to == 0 || $date_to > $current_time ) $in_range = true;
+		endif;
+		return $in_range;
+	}
+	
     /**
      * Returns whether or not the product is on sale.
      * If one of the child products is on sale, product is considered to be on sale.
@@ -405,16 +419,7 @@ class jigoshop_product {
 		// the kids may or may not have a sale price
 		// we need to check the parent anyway and logical OR the results in
 		if ( ! empty( $this->sale_price )) {
-		
-			$custom_fields = get_post_custom( $this->id );
-			$date_from = (int)$custom_fields['sale_price_dates_from'][0];
-			$date_to = (int)$custom_fields['sale_price_dates_to'][0];
-			$current_time = strtotime( 'NOW' );
-			if ( $date_to == 0 && $date_from == 0 )
-				$on_sale |= true;
-			else if ( $date_from == 0 || ( $date_from > 0 && $date_from < $current_time ))
-				if ( $date_to == 0 || $date_to > $current_time )
-					$on_sale |= true;
+			$on_sale |= $this->in_sale_date_range();
 		}
 		
 		return $on_sale;
@@ -431,7 +436,7 @@ class jigoshop_product {
 
 	/** Returns the product's price */
 	function get_price() {
-        if(!empty($this->sale_price)) {
+        if(!empty($this->sale_price) && $this->in_sale_date_range()) {
             return $this->sale_price;
         }
         
@@ -489,7 +494,7 @@ class jigoshop_product {
             } else if ($this->price === '0') {
                 $price_html = __('Free');
             } else {
-                if ($this->is_on_sale() && $this->price) {
+                if (!empty($this->sale_price) && !empty($this->price) && $this->in_sale_date_range()) {
                     $price_html .= '<del>' . jigoshop_price($this->price) . '</del> <ins>' . jigoshop_price($this->sale_price) . '</ins>';
                 } else {
                     $price_html .= jigoshop_price($this->get_price());
