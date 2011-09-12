@@ -29,9 +29,9 @@ class jigoshop_product {
 	protected $price;
     protected $sale_price;
     
-    //@fixme are these two variables ever used?
-	var $sale_price_dates_to;
-	var $sale_price_dates_from;
+    //@fixme are these two variables ever used?  --  (No  -JAP-)
+//	var $sale_price_dates_to;
+//	var $sale_price_dates_from;
 
 	/**
 	 * Loads all product data from custom fields
@@ -387,29 +387,37 @@ class jigoshop_product {
 	}
 
     /**
-     * Returns whether or not the product is on sale. If one of child products is on sale, product is considered to be on sale.
+     * Returns whether or not the product is on sale.
+     * If one of the child products is on sale, product is considered to be on sale.
+     *
      * @return bool
      */
 	function is_on_sale() {
-        if ($this->has_child()) {
-            foreach ($this->children as $child) {
-            	
-            	// Previously this grabbed from product->data[] but sale price was undefined.
-            	// @TODO: Investigate the reason why the data[] had undefined items & duplicates (studioromeo)
-                if (isset($child->product->sale_price) && ($child->product->sale_price != $child->product->price)) {
-                    return true;
-                }
-                
-                // Quick patch
-                if (!empty($this->sale_price) && $this->sale_price != $this->price) {
-                    return true;
-                }
-            }
-        } else if (!empty($this->sale_price) && $this->sale_price != $this->price) {
-            return true;
-        }
-
-        return false;
+		
+		$on_sale = false;
+		
+		if ($this->has_child()) {
+			foreach ($this->children as $child) {
+				$on_sale = $child->product->variation_is_on_sale();
+				if ( $on_sale ) break;
+			}
+		}
+		// the kids may or may not have a sale price
+		// we need to check the parent anyway and logical OR the results in
+		if ( ! empty( $this->sale_price )) {
+		
+			$custom_fields = get_post_custom( $this->id );
+			$date_from = (int)$custom_fields['sale_price_dates_from'][0];
+			$date_to = (int)$custom_fields['sale_price_dates_to'][0];
+			$current_time = strtotime( 'NOW' );
+			if ( $date_to == 0 && $date_from == 0 )
+				$on_sale |= true;
+			else if ( $date_from == 0 || ( $date_from > 0 && $date_from < $current_time ))
+				if ( $date_to == 0 || $date_to > $current_time )
+					$on_sale |= true;
+		}
+		
+		return $on_sale;
 	}
 
 	/** Returns the product's weight */
