@@ -486,7 +486,10 @@ class jigoshop_product {
             $child_prices = array();
 
             foreach ($this->children as $child) {
-                $child_prices[] = (float)$child->product->get_price();
+                // Nasty hack to prevent disabled variations from affecting the price
+                if($child->product->variation->post_status == 'publish') {
+                    $child_prices[] = (float)$child->product->get_price();
+                }
             }
             
             sort($child_prices);
