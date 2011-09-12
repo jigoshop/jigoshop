@@ -14,7 +14,7 @@
  * Author:				Jigowatt
  * Author URI:			http://jigowatt.co.uk
  *
- * Version:				1.0-Kaboom1 (RC1)
+ * Version:				0.9.9
  * Requires at least:	3.1
  * Tested up to:		3.2.1
  *
@@ -27,7 +27,7 @@
 
 @session_start();
 
-if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", "1.0 Kaboom 1");
+if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", "0.9.9");
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
@@ -756,7 +756,6 @@ if (!is_admin()) add_filter('comments_clauses', 'jigoshop_exclude_order_comments
 
 ### Update data ################################################################################
 function rename_attributes() {
-	
 	if( get_option('run_once', true) ) {
 	
 		// Update dataset to be prefixed with pa_ instead
@@ -777,7 +776,7 @@ function rename_attributes() {
 			);
 		}
 		
-		update_option('run_once', false);
+		add_option('run_once', 0);
 	}
 }
 add_action('init', 'rename_attributes');
