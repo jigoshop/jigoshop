@@ -412,8 +412,13 @@ class jigoshop_product {
 		
 		if ($this->has_child()) {
 			foreach ($this->children as $child) {
-				$on_sale = $child->product->variation_is_on_sale();
-				if ( $on_sale ) break;
+				if( $this->product_type != 'grouped') {
+					$on_sale = $child->product->variation_is_on_sale();
+					if ( $on_sale ) break;
+				} else {
+					$on_sale = $child->product->is_on_sale();
+					if ( $on_sale ) break;
+				}
 			}
 		}
 		// the kids may or may not have a sale price
@@ -481,7 +486,10 @@ class jigoshop_product {
             $child_prices = array();
 
             foreach ($this->children as $child) {
-                $child_prices[] = (float)$child->product->get_price();
+                // Nasty hack to prevent disabled variations from affecting the price
+                if($child->product->variation->post_status == 'publish') {
+                    $child_prices[] = (float)$child->product->get_price();
+                }
             }
             
             sort($child_prices);
