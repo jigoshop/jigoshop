@@ -174,11 +174,29 @@ class jigoshop_product_variation extends jigoshop_product {
         }
     }
 	
+	/**
+	 * Determines whether this variation is on Sale
+	 * 
+	 * @return boolean - true or false depending on variation sale price and parent dates
+	 */
+	function variation_is_on_sale() {
+	
+		$on_sale = false;
+	
+		if ( $this->variation_has_price ) :
+			if ( $this->variation_has_sale_price ) :
+				$on_sale = $this->in_sale_date_range();
+			endif;
+		endif;
+		
+		return $on_sale;
+	}
+	
 	/** Returns the product's price */
 	function get_price() {
 
         if ($this->variation_has_price) {
-            if ($this->variation_has_sale_price) {
+            if ($this->variation_is_on_sale()) {
                 return $this->sale_price;
             }
             
@@ -192,7 +210,7 @@ class jigoshop_product_variation extends jigoshop_product {
 	function get_price_html() {
 		if ($this->variation_has_price) {
 			if ($this->price) {
-				if ($this->variation_has_sale_price) {
+				if ($this->variation_is_on_sale()) {
 					return '<del>'.jigoshop_price( $this->price ).'</del> <ins>'.jigoshop_price( $this->sale_price ).'</ins>';
                 }
 				return jigoshop_price( $this->price );
