@@ -54,7 +54,7 @@ include_once( 'jigoshop_templates.php' );
 include_once( 'jigoshop_template_actions.php' );
 include_once( 'jigoshop_emails.php' );
 include_once( 'jigoshop_query.php' );
-include_once( 'jigoshop_cron.php' );
+//include_once( 'jigoshop_cron.php' );	/* we should no longer need this, unhooking for testing -JAP- */
 include_once( 'jigoshop_actions.php' );
 include_once( 'gateways/gateways.class.php' );
 include_once( 'gateways/gateway.class.php' );
