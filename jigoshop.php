@@ -187,12 +187,12 @@ function jigoshop_import_start() {
 
 						$domain = $term['domain'];
 
-						if (strstr($domain, 'product_attribute_')) :
+						if (strstr($domain, 'pa_')) :
 
 							// Make sure it exists!
 							if (!taxonomy_exists( $domain )) :
 
-								$nicename = ucfirst(str_replace('product_attribute_', '', $domain));
+								$nicename = ucfirst(str_replace('pa_', '', $domain));
 
 								// Create the taxonomy
 								$wpdb->insert( $wpdb->prefix . "jigoshop_attribute_taxonomies", array( 'attribute_name' => $nicename, 'attribute_type' => 'text' ), array( '%s', '%s' ) );
@@ -754,5 +754,30 @@ function jigoshop_exclude_order_comments( $clauses ) {
 }
 if (!is_admin()) add_filter('comments_clauses', 'jigoshop_exclude_order_comments');
 
-
-
+### Update data ################################################################################
+function rename_attributes() {
+	
+	if( get_option('run_once', true) ) {
+	
+		// Update dataset to be prefixed with pa_ instead
+		global $wpdb;
+		
+		$q = $wpdb->get_results("SELECT * 
+			FROM $wpdb->term_taxonomy
+			WHERE taxonomy LIKE 'product_attribute_%'
+		");
+		
+		foreach($q as $item) {
+			$taxonomy = str_replace('product_attribute_', 'pa_', $item->taxonomy);
+			
+			$wpdb->update(
+				$wpdb->term_taxonomy,
+				array('taxonomy' => $taxonomy),
+				array('term_taxonomy_id' => $item->term_taxonomy_id)
+			);
+		}
+		
+		update_option('run_once', false);
+	}
+}
+add_action('init', 'rename_attributes');
