@@ -48,6 +48,9 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 
 	/** @see WP_Widget::widget */
 	function widget( $args, $instance ) {
+		
+		global $jigoshop_query;
+		
 		extract($args);
 		
 		if (!is_tax( 'product_cat' ) && !is_post_type_archive('product') && !is_tax( 'product_tag' )) return;
@@ -77,9 +80,9 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 		FROM $wpdb->posts
 		LEFT JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id
 		WHERE meta_key = 'price' AND (
-			$wpdb->posts.ID IN (".implode(',', $all_post_ids).") 
+			$wpdb->posts.ID IN (".implode(',', $jigoshop_query->posts_in_view()).") 
 			OR (
-				$wpdb->posts.post_parent IN (".implode(',', $all_post_ids).")
+				$wpdb->posts.post_parent IN (".implode(',', $jigoshop_query->posts_in_view()).")
 				AND $wpdb->posts.post_parent != 0
 			)
 		)"));

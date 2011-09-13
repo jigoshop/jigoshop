@@ -46,7 +46,7 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 		
 		// Extract the widget arguments
 		extract($args);
-		global $_chosen_attributes, $wpdb, $all_post_ids;
+		global $_chosen_attributes, $wpdb, $jigoshop_query;
 		
 		// Hide widget if not product related
 		if ( ! is_product_list() )
@@ -81,15 +81,12 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 			echo "<ul>";
 
 			// Reduce count based on chosen attributes
-			$all_post_ids = jigoshop_layered_nav_query( $all_post_ids );
-			$all_post_ids = jigoshop_price_filter( $all_post_ids );
-
 			foreach ($terms as $term) {
 			
 				$_products_in_term = get_objects_in_term( $term->term_id, $taxonomy );
 				
 				// Get product count & set flag
-				$count = sizeof(array_intersect($_products_in_term, $all_post_ids));
+				$count = sizeof(array_intersect($_products_in_term, $jigoshop_query->posts_in_view()));
 				$has_products = (bool) $count;
 				
 				if ($has_products) $found = true;

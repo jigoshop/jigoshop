@@ -61,6 +61,10 @@ include_once( 'gateways/gateway.class.php' );
 include_once( 'shipping/shipping.class.php' );
 include_once( 'shipping/shipping_method.class.php' );
 
+include_once( 'classes/query.php' );
+$jigoshop_query = jigoshop_query::instance();
+
+
 /**
  * Include admin area
  **/
