@@ -21,7 +21,7 @@ class Jigoshop_Widget_Tag_Cloud extends WP_Widget {
 	/** constructor */
 	function Jigoshop_Widget_Tag_Cloud() {
 		$widget_ops = array( 'description' => __( "Your most used product tags in cloud format", 'jigoshop') );
-		parent::WP_Widget('tag_cloud', __('Product Tag Cloud', 'jigoshop'), $widget_ops);
+		parent::WP_Widget('product_tag_cloud', __('Product Tag Cloud', 'jigoshop'), $widget_ops);
 	}
 	
 	/** @see WP_Widget::widget */
