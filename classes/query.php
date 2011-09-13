@@ -140,10 +140,11 @@ class jigoshop_query extends jigoshop_singleton {
 		
 		$request['posts_per_page'] = -1;
 		$request['cache_results'] = false;
+		$request['fields'] = 'ids';
 		
 		$wp_query = new WP_Query($request);
 		
-		foreach ( $wp_query->posts as $post ) $this->all_posts_in_view[] = $post->ID;
+		$this->all_posts_in_view = $wp_query->posts;
 				
 	}
 	
