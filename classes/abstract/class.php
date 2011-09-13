@@ -1,9 +1,7 @@
 <?php
 
 /**
- * Abstract Class extended by all jigoshop classes providing usefull methods
- * 
- * @author Gecka
+ * Abstract Class extended by most jigoshop classes providing usefull methods
  */
 abstract class jigoshop_class {
 	

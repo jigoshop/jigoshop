@@ -2,12 +2,18 @@
 
 require_once 'abstract/singleton.php';
 
+/**
+ * Main jigoshop catalog query class
+ */
 class jigoshop_query extends jigoshop_singleton {
 	
 	private $original_query;
 	
 	private $all_posts_in_view;
 	
+	/**
+	 * Singleton constructor
+	 */
 	protected function __construct () {
 		
 		/* first parses the orginal request in a WP_Query instance 
@@ -63,8 +69,13 @@ class jigoshop_query extends jigoshop_singleton {
 	}
 	
 	/**
+	 * Alters the main wordpress query when in a jigoshop page
 	 * 
-	 * Enter description here ...
+	 * The meta-query and the tax_query can be filtered using the loop_shop_tax-query and the
+	 * loop_shop_tax_meta-query filters
+	 * 
+	 * The whole resulting request can be filtered using the jigoshop-request filter
+	 * 
 	 * @param array $request
 	 */
 	public function request ( $request ) {
@@ -86,6 +97,10 @@ class jigoshop_query extends jigoshop_singleton {
 		return apply_filters('jigoshop-request', $request);	/* give it back to WordPress for query_posts() */
 	}
 	
+	/**
+	 * This function build the taxonomy query
+	 * @param array $request
+	 */
 	private function tax_query ( $request ) {
 		
 		$tax_query = array('relation' => 'AND');
@@ -110,6 +125,10 @@ class jigoshop_query extends jigoshop_singleton {
 		return $tax_query;
 	}
 	
+	/**
+	 * This function build the meta query
+	 * @param array $request
+	 */
 	private function meta_query( $request ) {
 	
 		$in = array( 'visible' );
@@ -136,6 +155,14 @@ class jigoshop_query extends jigoshop_singleton {
 		return $meta;
 	}
 	
+	/**
+	 * Gather all posts ids in current view, regardlesss of paging. 
+	 * 
+	 * This is usefull for filters to filter the products by price, by attributes etc..
+	 * e.g. price filter widget
+	 * 
+	 * @param array $request The jigoshop request parameters
+	 */
 	private function set_all_posts_in_view ($request) {
 		
 		$request['posts_per_page'] = -1;
@@ -148,6 +175,10 @@ class jigoshop_query extends jigoshop_singleton {
 				
 	}
 	
+	/**
+	 * Returns all posts ids in current view, regardlesss of paging.
+	 * @return array
+	 */
 	public function posts_in_view () {
 		return $this->all_posts_in_view;
 	}
