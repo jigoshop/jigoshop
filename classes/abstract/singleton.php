@@ -4,9 +4,6 @@ require_once 'class.php';
 
 /**
  * Abstract singleton class
- * 
- * @author Gecka
- *
  */
 class jigoshop_singleton extends jigoshop_class {
 
