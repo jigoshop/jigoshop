@@ -371,16 +371,24 @@ function jigoshop_custom_image($args=array()) {
 add_action('wp_ajax_jigoshop_media_preview', 'jigoshop_custom_image');
 
 function jigoshop_custom_image_src($file, $width, $height){
+	// If no file is provided just send the placeholder image back
+	if ($file === null){
+		return jigoshop::plugin_url().'/assets/images/placeholder.png';
+	}
+
 	$upload_dir = wp_upload_dir();
+	// Its an attachment image id
 	if (is_numeric($file)){
 		$file = wp_get_attachment_url($file);
 	}
 
+	// Any http url image
 	if (preg_match('/^http/', $file)){
 		$upload_dir = wp_upload_dir();
 		$file = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $file);
 	}
 
+	// Check to see if the custom size image file was already created
 	$suffix = "{$width}x{$height}";
 	$info = pathinfo($file);
 	$dir = $info['dirname'];
