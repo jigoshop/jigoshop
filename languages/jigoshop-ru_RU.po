@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Jigoshop - WordPress eCommerce Plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-09-14 18:11+0500\n"
-"PO-Revision-Date: 2011-09-14 18:53+0500\n"
+"PO-Revision-Date: 2011-09-14 19:13+0500\n"
 "Last-Translator: Almaz <AlmazWorks@gmail.com>\n"
 "Language-Team: AlmazWorks <almazworks@gmail.com>\n"
 "Language: \n"
@@ -3646,7 +3646,7 @@ msgstr "Добавить отзыв"
 # @ jigoshop
 #: templates/single-product-reviews.php:79
 msgid "Be the first to review "
-msgstr "Опубликуйте отзыв первым"
+msgstr "Напишите отзыв первым"
 
 # @ jigoshop
 #: templates/single-product-reviews.php:81
@@ -3684,12 +3684,12 @@ msgstr "Оценить&hellip;"
 # @ jigoshop
 #: templates/single-product-reviews.php:104
 msgid "Perfect"
-msgstr "Совершенный"
+msgstr "Прекрасный"
 
 # @ jigoshop
 #: templates/single-product-reviews.php:105
 msgid "Good"
-msgstr "Хорошо"
+msgstr "Хороший"
 
 # @ jigoshop
 #: templates/single-product-reviews.php:106
@@ -3699,7 +3699,7 @@ msgstr "Средний"
 # @ jigoshop
 #: templates/single-product-reviews.php:107
 msgid "Not that bad"
-msgstr "Не так уж и плохо"
+msgstr "Так себе"
 
 # @ jigoshop
 #: templates/single-product-reviews.php:108
