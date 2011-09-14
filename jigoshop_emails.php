@@ -20,7 +20,7 @@
  **/
 add_action('jigoshop_low_stock_notification', 'jigoshop_low_stock_notification');
 add_action('jigoshop_no_stock_notification', 'jigoshop_no_stock_notification');
-add_action('jigoshop_product_on_backorder_notification', 'jigoshop_product_on_backorder_notification', 1, 2);
+add_action('jigoshop_product_on_backorder_notification', 'jigoshop_product_on_backorder_notification', 1, 3);
 
 
 /**
@@ -230,7 +230,7 @@ function jigoshop_pay_for_order_customer_notification( $order_id ) {
 	$message .= PHP_EOL . __('Subtotal:','jigoshop') . "\t\t\t" . $order->get_subtotal_to_display() . PHP_EOL;
 	if ($order->order_shipping > 0) $message .= __('Shipping:','jigoshop') . "\t\t\t" . $order->get_shipping_to_display() . PHP_EOL;
 	if ($order->order_discount > 0) $message .= __('Discount:','jigoshop') . "\t\t\t" . jigoshop_price($order->order_discount) . PHP_EOL;
-	if ($order->get_total_tax() > 0) $message .= __('Tax:','jigoshop') . "\t\t\t\t\t" . jigoshop_price($order->get_total_tax()) . PHP_EOL;
+	if ($order->get_total_tax() > 0) $message .= __('Tax:','jigoshop') . "\t\t\t\t" . jigoshop_price($order->get_total_tax()) . PHP_EOL;
 	$message .= __('Total:','jigoshop') . "\t\t\t\t" . jigoshop_price($order->order_total) . ' - via ' . ucwords($order->payment_method) . PHP_EOL . PHP_EOL;
 
 	$customer_message = html_entity_decode( strip_tags( $customer_message.$message ) );
@@ -264,12 +264,70 @@ function jigoshop_no_stock_notification( $product ) {
 
 
 /**
- * Backorder notification email
- **/
-function jigoshop_product_on_backorder_notification( $product, $amount ) {
+ * Backorder notification emails
+ * an email is sent to the admin notifying which product is backordered with an amount needed to fill the order
+ * an email -may- be sent to the customer notifying them of the same
+ * if sent, an email is sent to the customer for each item backordered in the order
+ *
+ * @param string $order_id - the System Order number (ID)
+ * @param string $product - the Product ID on backorder
+ * @param string $amount - the count of the product needed to fill the order
+**/
+function jigoshop_product_on_backorder_notification( $order_id, $product, $amount ) {
+	// notify the admin
 	$_product = &new jigoshop_product($product);
-	$subject = '[' . get_bloginfo('name') . '] ' . __('Product Backorder','jigoshop');
-	$message = $amount . __(' units of #', 'jigoshop') . $_product->id .' '. $_product->get_title() . ' ('. $_product->sku.') ' . __('have been backordered.', 'jigoshop');
+	$subject = '[' . get_bloginfo('name') . '] ' . sprintf(__('Product Backorder on Order #%s','jigoshop'), $order_id );
+	$message = sprintf( __( "%s units of #%s %s (#%s) are needed to fill Order #%s.", 'jigoshop' ), abs( $amount ), $_product->id, $_product->get_title(), $_product->sku, $order_id );
 	$message = wordwrap( html_entity_decode( strip_tags( $message ) ), 70 );
 	wp_mail( get_option('admin_email'), $subject, $message );
+	
+	// notify the customer if required
+	if ( $_product->data['backorders']=='notify') :
+		$order = &new jigoshop_order( $order_id );
+	
+		$subject = '[' . get_bloginfo('name') . '] ' . sprintf(__('Product Backorder on Order #%d','jigoshop'), $order_id );
+	
+		$message 	 = sprintf(__( "Thank you for your Order #%d. Unfortunately, the following item was found to be on backorder.", 'jigoshop' ), $order_id );
+		
+		$message	.= PHP_EOL . PHP_EOL;
+		$message 	.= '=====================================================================' . PHP_EOL;
+		$message 	.= __('ORDER #: ','jigoshop') . $order->id . '' . PHP_EOL;
+		$message 	.= '=====================================================================' . PHP_EOL;
+	
+		$message 	.= sprintf( __( "%d units of #%d %s (#%s) have been backordered.", 'jigoshop' ), abs( $amount ), $_product->id, $_product->get_title(), $_product->sku );
+	
+		$message	.= PHP_EOL . PHP_EOL;
+		if ($order->customer_note) :
+			$message .= PHP_EOL . __('Note:','jigoshop') .$order->customer_note . PHP_EOL;
+		endif;
+	
+		$message 	.= '=====================================================================' . PHP_EOL;
+		$message .= __('CUSTOMER DETAILS','jigoshop') . PHP_EOL;
+		$message 	.= '=====================================================================' . PHP_EOL;
+	
+		if ($order->billing_email) $message .= __('Email:','jigoshop') . "\t\t\t\t" . $order->billing_email . PHP_EOL;
+		if ($order->billing_phone) $message .= __('Tel:','jigoshop') . "\t\t\t\t\t" . $order->billing_phone . PHP_EOL;
+	
+		$message .= PHP_EOL;
+	
+		$message 	.= '=====================================================================' . PHP_EOL;
+		$message .= __('BILLING ADDRESS','jigoshop') . PHP_EOL;
+		$message 	.= '=====================================================================' . PHP_EOL;
+	
+		$message .= $order->billing_first_name . ' ' . $order->billing_last_name . PHP_EOL;
+		if ($order->billing_company) $message .= $order->billing_company . PHP_EOL;
+		$message .= $order->formatted_billing_address . PHP_EOL . PHP_EOL;
+	
+		$message 	.= '=====================================================================' . PHP_EOL;
+		$message .= __('SHIPPING ADDRESS','jigoshop') . PHP_EOL;
+		$message 	.= '=====================================================================' . PHP_EOL;
+	
+		$message .= $order->shipping_first_name . ' ' . $order->shipping_last_name . PHP_EOL;
+		if ($order->shipping_company) $message .= $order->shipping_company . PHP_EOL;
+		$message .= $order->formatted_shipping_address . PHP_EOL . PHP_EOL;
+	
+		$message = html_entity_decode( strip_tags( $message ) );
+	
+		wp_mail( $order->billing_email, $subject, $message );
+	endif;
 }

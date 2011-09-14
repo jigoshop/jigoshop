@@ -26,13 +26,6 @@ function variable_product_type_options($post_id=null, $variation_id=null) {
 	// Get the parent post attributes
 	$attributes = get_post_meta($post_id, 'product_attributes', true);
 
-	$_has_variation_attributes = false;
-	foreach((array) $attributes as $attribute){
-		if (boolval($attribute['variation'])){
-			$_has_variation_attributes = true;
-			break;
-		}
-	}
 
 	$img_upload_src = get_upload_iframe_src('image');
 
@@ -144,12 +137,8 @@ function variable_product_type_options($post_id=null, $variation_id=null) {
 			<?php endforeach; ?>
 	<?php if ($variation_id === null): // Only render the buttons not a single variation request ?>
 		</div><!-- .jigoshop_configurations -->
-		<p class="description"><?php _e('Add (optional) pricing/inventory for product variations. You must save your product attributes in the "Product Data" panel to make them available for selection.', 'jigoshop'); ?></p>
-		<?php if( $_has_variation_attributes ): ?>
+		<p class="description"><?php _e('Add (optional) pricing/inventory for product variations.<br/>You <b>must</b> save your product attributes in the "Product Data" panel <b>first</b> & <b>mark them for variation</b> to make them available for selection.</strong>', 'jigoshop'); ?></p>
 		<button type="button" class="button button-primary add_configuration"><?php _e('Add Configuration', 'jigoshop'); ?></button>
-		<?php else: ?>
-		<button type="button" class="button button-primary add_configuration" disabled="disabled"><?php _e('Add Configuration', 'jigoshop'); ?></button>
-		<?php endif; ?>
 		<div class="clear"></div>
 	</div>
 	<?php endif;

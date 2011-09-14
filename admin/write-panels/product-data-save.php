@@ -74,8 +74,8 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 			 	endif;
 			 	
 			 	if (empty($attribute_values[$i]) || ( is_array($attribute_values[$i]) && sizeof($attribute_values[$i])==0) ) :
-			 		if ($is_taxonomy=='yes' && taxonomy_exists('product_attribute_'.sanitize_title($attribute_names[$i]))) :
-			 			wp_set_object_terms( $post_id, 0, 'product_attribute_'.sanitize_title($attribute_names[$i]) );
+			 		if ($is_taxonomy=='yes' && taxonomy_exists('pa_'.sanitize_title($attribute_names[$i]))) :
+			 			wp_set_object_terms( $post_id, 0, 'pa_'.sanitize_title($attribute_names[$i]) );
 			 		endif;
 			 		continue;
 			 	endif;
@@ -94,9 +94,9 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 			 		$tax = $attribute_names[$i];
 			 		$value = $attribute_values[$i];
 			 		
-			 		if (taxonomy_exists('product_attribute_'.sanitize_title($tax))) :
+			 		if (taxonomy_exists('pa_'.sanitize_title($tax))) :
 			 			
-			 			wp_set_object_terms( $post_id, $value, 'product_attribute_'.sanitize_title($tax) );
+			 			wp_set_object_terms( $post_id, $value, 'pa_'.sanitize_title($tax) );
 			 			
 			 		endif;
 			 		

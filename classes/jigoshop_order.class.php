@@ -388,7 +388,7 @@ class jigoshop_order {
 					$this->add_order_note( sprintf( __('Item #%s stock reduced from %s to %s.', 'jigoshop'), $item['id'], $old_stock, $new_quantity) );
 						
 					if ($new_quantity<0) :
-						do_action('jigoshop_product_on_backorder_notification', $item['id'], $item['qty']);
+						do_action('jigoshop_product_on_backorder_notification', $this->id, $item['id'], $item['qty']);
 					endif;
 					
 					// stock status notifications

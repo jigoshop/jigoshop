@@ -29,9 +29,9 @@ class jigoshop_product {
 	protected $price;
     protected $sale_price;
     
-    //@fixme are these two variables ever used?
-	var $sale_price_dates_to;
-	var $sale_price_dates_from;
+    //@fixme are these two variables ever used?  --  (No  -JAP-)
+//	var $sale_price_dates_to;
+//	var $sale_price_dates_from;
 
 	/**
 	 * Loads all product data from custom fields
@@ -386,25 +386,48 @@ class jigoshop_product {
 		if ($this->visibility=='catalog' && !is_search()) return true;
 	}
 
+	/** Returns whether or not a sale price is valid based on product sale date settings */
+	function in_sale_date_range() {
+		$in_range = false;
+		$custom_fields = get_post_custom( $this->id );
+		$date_from = (int)$custom_fields['sale_price_dates_from'][0];
+		$date_to = (int)$custom_fields['sale_price_dates_to'][0];
+		$current_time = strtotime( 'NOW' );
+		if ( $date_to == 0 && $date_from == 0 ) $in_range = true;
+		else if ( $date_from == 0 || ( $date_from > 0 && $date_from < $current_time )) :
+			if ( $date_to == 0 || $date_to > $current_time ) $in_range = true;
+		endif;
+		return $in_range;
+	}
+	
     /**
-     * Returns whether or not the product is on sale. If one of child products is on sale, product is considered to be on sale.
+     * Returns whether or not the product is on sale.
+     * If one of the child products is on sale, product is considered to be on sale.
+     *
      * @return bool
      */
 	function is_on_sale() {
-        if ($this->has_child()) {
-            foreach ($this->children as $child) {
-            	
-            	// Previously this grabbed from product->data[] but sale price was undefined.
-            	// @TODO: Investigate the reason why the data[] had undefined items & duplicates (studioromeo)
-                if (isset($child->product->sale_price) && ($child->product->sale_price != $child->product->price)) {
-                    return true;
-                }
-            }
-        } else if (!empty($this->sale_price) && $this->sale_price != $this->price) {
-            return true;
-        }
-
-        return false;
+		
+		$on_sale = false;
+		
+		if ($this->has_child()) {
+			foreach ($this->children as $child) {
+				if( $this->product_type != 'grouped') {
+					$on_sale = $child->product->variation_is_on_sale();
+					if ( $on_sale ) break;
+				} else {
+					$on_sale = $child->product->is_on_sale();
+					if ( $on_sale ) break;
+				}
+			}
+		}
+		// the kids may or may not have a sale price
+		// we need to check the parent anyway and logical OR the results in
+		if ( ! empty( $this->sale_price )) {
+			$on_sale |= $this->in_sale_date_range();
+		}
+		
+		return $on_sale;
 	}
 
 	/** Returns the product's weight */
@@ -418,7 +441,7 @@ class jigoshop_product {
 
 	/** Returns the product's price */
 	function get_price() {
-        if(!empty($this->sale_price)) {
+        if(!empty($this->sale_price) && $this->in_sale_date_range()) {
             return $this->sale_price;
         }
         
@@ -463,7 +486,13 @@ class jigoshop_product {
             $child_prices = array();
 
             foreach ($this->children as $child) {
-                $child_prices[] = (float)$child->product->get_price();
+      
+                // Nasty hack to prevent disabled variations from affecting the price
+                if($this->product_type != 'grouped' && $child->product->variation->post_status == 'publish') {
+                    $child_prices[] = (float)$child->product->get_price();
+                } elseif($this->product_type == 'grouped') {
+                    $child_prices[] = (float)$child->product->get_price();
+                }
             }
             
             sort($child_prices);
@@ -476,7 +505,7 @@ class jigoshop_product {
             } else if ($this->price === '0') {
                 $price_html = __('Free');
             } else {
-                if ($this->is_on_sale() && $this->price) {
+                if (!empty($this->sale_price) && !empty($this->price) && $this->in_sale_date_range()) {
                     $price_html .= '<del>' . jigoshop_price($this->price) . '</del> <ins>' . jigoshop_price($this->sale_price) . '</ins>';
                 } else {
                     $price_html .= jigoshop_price($this->get_price());

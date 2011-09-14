@@ -217,8 +217,8 @@ jQuery( function($){
 		// Initial order
 		var jigoshop_attributes_table_items = jQuery('#attributes_list').children('tr').get();
 		jigoshop_attributes_table_items.sort(function(a, b) {
-		   var compA = jQuery(a).attr('rel');
-		   var compB = jQuery(b).attr('rel');
+		   var compA = Number(jQuery(a).attr('rel'));
+		   var compB = Number(jQuery(b).attr('rel'));
 		   return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
 		})
 		jQuery(jigoshop_attributes_table_items).each( function(idx, itm) { jQuery('#attributes_list').append(itm); } );
@@ -324,14 +324,14 @@ jQuery( function($){
 
 		jQuery('button.move_up').live('click', function(){
 			var row = jQuery(this).parent().parent();
-			var prev_row = jQuery(row).prev('tr');
+			var prev_row = jQuery(row).prevAll('tr:visible:eq(0)');
 			jQuery(row).after(prev_row);
 			row_indexes();
 		});
 
 		jQuery('button.move_down').live('click', function(){
 			var row = jQuery(this).parent().parent();
-			var next_row = jQuery(row).next('tr');
+			var next_row = jQuery(row).nextAll('tr:visible:eq(0)');
 			jQuery(row).before(next_row);
 			row_indexes();
 		});

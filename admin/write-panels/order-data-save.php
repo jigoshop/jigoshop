@@ -152,8 +152,10 @@ function jigoshop_process_shop_order_meta($post_id, $post)
                     $order->add_order_note(sprintf(__('Item #%s stock reduced from %s to %s.', 'jigoshop'), $order_item['id'], $old_stock, $new_quantity));
 
                     if ($new_quantity < 0) {
-                        do_action('jigoshop_product_on_backorder_notification', $order_item['id'], $values['quantity']);
-                    }
+                    	if ( $old_stock < 0 ) $backorder_qty = $order_item['qty'];
+                    	else $backorder_qty = $old_stock - $order_item['qty'];
+						do_action( 'jigoshop_product_on_backorder_notification', $post_id, $order_item['id'], $backorder_qty );
+                   }
 
                     // stock status notifications
                     if (get_option('jigoshop_notify_no_stock_amount') && get_option('jigoshop_notify_no_stock_amount') >= $new_quantity) {

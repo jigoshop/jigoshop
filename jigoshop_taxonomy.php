@@ -81,7 +81,7 @@ function jigoshop_post_type() {
 	if ( $attribute_taxonomies ) :
 		foreach ($attribute_taxonomies as $tax) :
 	    	
-	    	$name = 'product_attribute_'.strtolower(sanitize_title($tax->attribute_name));
+	    	$name = 'pa_'.strtolower(sanitize_title($tax->attribute_name));
 	    	$hierarchical = true;
 	    	if ($name) :
 
