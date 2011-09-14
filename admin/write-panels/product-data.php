@@ -275,7 +275,7 @@ function jigoshop_product_data_box() {
 						    		$attribute_nicename = sanitize_title($tax->attribute_name);
 						    		if (isset($attributes[$attribute_nicename])) $attribute = $attributes[$attribute_nicename];
 
-						    		$values = wp_get_post_terms( $thepostid, 'product_attribute_'.sanitize_title($tax->attribute_name) );
+						    		$values = wp_get_post_terms( $thepostid, 'pa_'.sanitize_title($tax->attribute_name) );
 						    		$value = array();
 						    		if (!is_wp_error($values) && $values) :
 						    			foreach ($values as $v) :
@@ -299,8 +299,8 @@ function jigoshop_product_data_box() {
 											<select name="attribute_values[<?php echo $i ?>]">
 												<option value=""><?php _e('Choose an option&hellip;', 'jigoshop'); ?></option>
 												<?php
-												if (taxonomy_exists('product_attribute_'.sanitize_title($tax->attribute_name))) :
-					        						$terms = get_terms( 'product_attribute_'.sanitize_title($tax->attribute_name), 'orderby=name&hide_empty=0' );
+												if (taxonomy_exists('pa_'.sanitize_title($tax->attribute_name))) :
+					        						$terms = get_terms( 'pa_'.sanitize_title($tax->attribute_name), 'orderby=name&hide_empty=0' );
 					        						if ($terms) :
 														foreach ($terms as $term) :
 															printf('<option value="%s" %s>%s</option>'
@@ -315,8 +315,8 @@ function jigoshop_product_data_box() {
 										<?php elseif ($tax->attribute_type=="multiselect") : ?>
 											<div class="multiselect">
 												<?php
-												if (taxonomy_exists('product_attribute_'.strtolower(sanitize_title($tax->attribute_name)))) :
-					        						$terms = get_terms( 'product_attribute_'.strtolower(sanitize_title($tax->attribute_name)), 'orderby=name&hide_empty=0' );
+												if (taxonomy_exists('pa_'.strtolower(sanitize_title($tax->attribute_name)))) :
+					        						$terms = get_terms( 'pa_'.strtolower(sanitize_title($tax->attribute_name)), 'orderby=name&hide_empty=0' );
 					        						if ($terms) :
 						        						foreach ($terms as $term) :
 															$checked = checked(in_array($term->slug, $value), true, false);
@@ -332,9 +332,9 @@ function jigoshop_product_data_box() {
 												?>
 											</div>
 											<div class="multiselect-controls">
-												<a class="check-all" href="#">Check All</a>&nbsp;|
-												<a class="uncheck-all" href="#">Uncheck All</a>&nbsp;|
-												<a class="toggle" href="#">Toggle</a>
+												<a class="check-all" href="#"><?php _e('Check All'); ?></a>&nbsp;|
+												<a class="uncheck-all" href="#"><?php _e('Uncheck All');?></a>&nbsp;|
+												<a class="toggle" href="#"><?php _e('Toggle');?></a>
 											</div>
 										<?php elseif ($tax->attribute_type=="text") : ?>
 											<input type="text" name="attribute_values[<?php echo $i; ?>]" value="<?php echo isset($attribute['value']) ? esc_attr($attribute['value']) : ''; ?>" placeholder="<?php _e('Comma separate terms', 'jigoshop'); ?>" />

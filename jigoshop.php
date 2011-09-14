@@ -14,7 +14,7 @@
  * Author:				Jigowatt
  * Author URI:			http://jigowatt.co.uk
  *
- * Version:				1.0-Kaboom1 (RC1)
+ * Version:				0.9.9
  * Requires at least:	3.1
  * Tested up to:		3.2.1
  *
@@ -27,7 +27,7 @@
 
 @session_start();
 
-if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", "1.0 Kaboom 1");
+if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", "0.9.9");
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
@@ -54,7 +54,7 @@ include_once( 'jigoshop_templates.php' );
 include_once( 'jigoshop_template_actions.php' );
 include_once( 'jigoshop_emails.php' );
 include_once( 'jigoshop_query.php' );
-include_once( 'jigoshop_cron.php' );
+//include_once( 'jigoshop_cron.php' );	/* we should no longer need this, unhooking for testing -JAP- */
 include_once( 'jigoshop_actions.php' );
 include_once( 'gateways/gateways.class.php' );
 include_once( 'gateways/gateway.class.php' );
@@ -187,12 +187,12 @@ function jigoshop_import_start() {
 
 						$domain = $term['domain'];
 
-						if (strstr($domain, 'product_attribute_')) :
+						if (strstr($domain, 'pa_')) :
 
 							// Make sure it exists!
 							if (!taxonomy_exists( $domain )) :
 
-								$nicename = ucfirst(str_replace('product_attribute_', '', $domain));
+								$nicename = ucfirst(str_replace('pa_', '', $domain));
 
 								// Create the taxonomy
 								$wpdb->insert( $wpdb->prefix . "jigoshop_attribute_taxonomies", array( 'attribute_name' => $nicename, 'attribute_type' => 'text' ), array( '%s', '%s' ) );
@@ -754,5 +754,29 @@ function jigoshop_exclude_order_comments( $clauses ) {
 }
 if (!is_admin()) add_filter('comments_clauses', 'jigoshop_exclude_order_comments');
 
-
-
+### Update data ################################################################################
+function rename_attributes() {
+	if( get_option('run_once', true) ) {
+	
+		// Update dataset to be prefixed with pa_ instead
+		global $wpdb;
+		
+		$q = $wpdb->get_results("SELECT * 
+			FROM $wpdb->term_taxonomy
+			WHERE taxonomy LIKE 'product_attribute_%'
+		");
+		
+		foreach($q as $item) {
+			$taxonomy = str_replace('product_attribute_', 'pa_', $item->taxonomy);
+			
+			$wpdb->update(
+				$wpdb->term_taxonomy,
+				array('taxonomy' => $taxonomy),
+				array('term_taxonomy_id' => $item->term_taxonomy_id)
+			);
+		}
+		
+		add_option('run_once', 0);
+	}
+}
+add_action('init', 'rename_attributes');

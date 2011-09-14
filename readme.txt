@@ -2,7 +2,7 @@
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal
 Requires at least: 3.1
 Tested up to: 3.2.1
-Stable tag: 1.0-Kaboom1 (RC1)
+Stable tag: 0.9.9
 
 A feature packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customisability.
 
@@ -29,7 +29,7 @@ Find out more on the official <a href="http://jigoshop.com" title="WordPress eCo
 = Jigoshop core features: =
 
 * Sell physical, digital and virtual products
-* Simple, grouped and configurable&dagger; products
+* Simple, grouped and configurable products
 * Discount coupon management
 * Automatic related products
 * Product reviews / hreviews
@@ -46,8 +46,6 @@ Find out more on the official <a href="http://jigoshop.com" title="WordPress eCo
 * Moneybookers / Skrill
 * Cheque payments
 
-(&dagger;) Coming soon
-
 = Official Jigoshop themes =
 
 * <a href="http://jigoshop.com/themes/jigotheme/" title="Premium WordPress eComemrce theme for Jigoshop">Jigotheme</a> - Our flagship premium theme complete with mobile optimisation.
@@ -58,7 +56,7 @@ Find out more on the official <a href="http://jigoshop.com" title="WordPress eCo
 * <a href="http://jigoshop.com/extensions/sagepay-form/" title="SagePay Form payment gateway extension of Jigoshop">SagePay Form</a> - SagePay Form payment gateway.
 * <a href="http://jigoshop.com/extensions/jigoshop-html-email/" title="Jigoshop HTML Emails">Jigoshop HTML Emails</a> - Give your Jigoshop emails a makeover
 * <a href="http://jigoshop.com/extensions/jigoshop-meta-tags/" title="Simple SEO Meta Tags">Simple SEO Meta Tags</a> - Add meta data to your individual product pages
-* <a href="http://jigoshop.com/extensions/table-rate-shipping/" title="Table Rate Shippin">Table Rate Shipping</a> - Define separate shipping rates for regions based on either price, weight or the number of items in a cart
+* <a href="http://jigoshop.com/extensions/table-rate-shipping/" title="Table Rate Shipping">Table Rate Shipping</a> - Define separate shipping rates for regions based on either price, weight or the number of items in a cart
 * <a href="http://jigoshop.com/extensions/jigoshop-up-sell-cross-sell/" title="Up-sell and Cross-sells">Up-sells &amp; Cross-sells</a> - Maximise your stores potential and increase average shopping cart totals by up-selling and cross-selling your products
 
 
@@ -134,21 +132,31 @@ We have a <a href="http://jigoshop.com/forums" title="Jigoshop support forum">co
 9. Checkout
 
 == Changelog ==
-= 1.0 Kaboom 1 =
+= 0.9.9 =
+* Configurable Products
+* Global image sizes can now be declared from the panel.
+* Rows & Columns can now be set in the admin
+* Added Bank transfers gateway
 * Added Dutch translation
-* Product Variations
+* Added Swedish translation
+* Added German translation by deckerweb
 * Revamped order items panel
+* Settings strip slashes
+* Improved French translations
+* Added SSL auto detection for assets
+* New DIBS gateway for nordic countries
+* Support for direct checkout
+* Fixes twenty/10/11 support
+* Fixed permalink double save when changing the base page
+* Moved update/remove from cart code so totals are updated and shipping is updated
+* Fixed 'needs shipping' for downloadable products
 * Grouped products can contain downloadable, simple, or virtual products
 * Changed mail from/to for store
 * Download limiter fix
-* Settings strip slashes
-* Moved update/remove from cart code so totals are updated and shipping is updated
-* Fixed 'needs shipping' for downloadable products
 * Made my account downloads respect order status
 * Filter for ship to billing defaults
-* Optimised scripts.js (no longer a php file)
-
-= 0.9.8.1 =
+* Improvements to shipping class for table rate shipping
+* Optimized scripts.js (no longer a php file)
 * Changes to allow new product types to be added by plugins
 * Twenty Eleven fixes
 * Front page shop support
@@ -159,6 +167,7 @@ We have a <a href="http://jigoshop.com/forums" title="Jigoshop support forum">co
 * Better ajax handling
 * Better shortcode handling with cache
 * Filters added to email contents
+* Various other minor bug fixes (https://github.com/jigoshop/jigoshop/issues?milestone=6&state=closed)
 
 = 0.9.8 =
 

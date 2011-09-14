@@ -20,7 +20,6 @@ function variable_product_type_options() {
 	global $post;
 	
 	$attributes = maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) );
-	$_has_variation_attributes = false;
 
 	if (!isset($attributes)) $attributes = array();
 	?>
@@ -56,8 +55,6 @@ function variable_product_type_options() {
 							foreach ($attributes as $attribute) :
 								
 								if ( $attribute['variation']!=='yes' ) continue;
-								
-								$_has_variation_attributes = true;
 								
 								$options = $attribute['value'];
 								$value = get_post_meta( $variation->ID, 'tax_' . sanitize_title($attribute['name']), true );
@@ -95,13 +92,9 @@ function variable_product_type_options() {
 				</div>
 			<?php $loop++; endforeach; ?>
 		</div>
-		<p class="description"><?php _e('Add (optional) pricing/inventory for product variations. You must save your product attributes in the "Product Data" panel to make them available for selection.', 'jigoshop'); ?></p>
+		<p class="description"><?php _e('Add (optional) pricing/inventory for product variations.<br/>You <b>must</b> save your product attributes in the "Product Data" panel <b>first</b> & <b>mark them for variation</b> to make them available for selection.</strong>', 'jigoshop'); ?></p>
 
-		<?php if( $_has_variation_attributes ): ?>
 		<button type="button" class="button button-primary add_configuration"><?php _e('Add Configuration', 'jigoshop'); ?></button>
-		<?php else: ?>
-		<button type="button" class="button button-primary add_configuration" disabled="disabled"><?php _e('Add Configuration', 'jigoshop'); ?></button>
-		<?php endif; ?>
 		
 		<div class="clear"></div>
 	</div>
