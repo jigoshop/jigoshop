@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Jigoshop\n"
+"Project-Id-Version: Jigoshop - WordPress eCommerce Plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-11 01:48+0500\n"
-"PO-Revision-Date: 2011-09-11 03:02+0500\n"
+"POT-Creation-Date: 2011-09-14 18:11+0500\n"
+"PO-Revision-Date: 2011-09-14 18:53+0500\n"
 "Last-Translator: Almaz <AlmazWorks@gmail.com>\n"
 "Language-Team: AlmazWorks <almazworks@gmail.com>\n"
 "Language: \n"
@@ -139,6 +139,7 @@ msgstr ". Их порядок выглядит следующим образом
 #: jigoshop_emails.php:103
 #: jigoshop_emails.php:163
 #: jigoshop_emails.php:221
+#: jigoshop_emails.php:294
 msgid "ORDER #: "
 msgstr "ЗАКАЗ №: "
 
@@ -147,6 +148,7 @@ msgstr "ЗАКАЗ №: "
 #: jigoshop_emails.php:109
 #: jigoshop_emails.php:169
 #: jigoshop_emails.php:227
+#: jigoshop_emails.php:301
 #: shortcodes/my_account.php:444
 msgid "Note:"
 msgstr "Примечание:"
@@ -196,6 +198,7 @@ msgstr "Всего:"
 #: jigoshop_emails.php:58
 #: jigoshop_emails.php:119
 #: jigoshop_emails.php:179
+#: jigoshop_emails.php:305
 msgid "CUSTOMER DETAILS"
 msgstr "РЕКВИЗИТЫ КЛИЕНТА"
 
@@ -203,6 +206,7 @@ msgstr "РЕКВИЗИТЫ КЛИЕНТА"
 #: jigoshop_emails.php:61
 #: jigoshop_emails.php:122
 #: jigoshop_emails.php:182
+#: jigoshop_emails.php:308
 #: shortcodes/my_account.php:488
 msgid "Email:"
 msgstr "Email:"
@@ -211,6 +215,7 @@ msgstr "Email:"
 #: jigoshop_emails.php:62
 #: jigoshop_emails.php:123
 #: jigoshop_emails.php:183
+#: jigoshop_emails.php:309
 msgid "Tel:"
 msgstr "Тел:"
 
@@ -218,6 +223,7 @@ msgstr "Тел:"
 #: jigoshop_emails.php:67
 #: jigoshop_emails.php:128
 #: jigoshop_emails.php:188
+#: jigoshop_emails.php:314
 msgid "BILLING ADDRESS"
 msgstr "Адрес для выставления счета"
 
@@ -225,6 +231,7 @@ msgstr "Адрес для выставления счета"
 #: jigoshop_emails.php:75
 #: jigoshop_emails.php:136
 #: jigoshop_emails.php:196
+#: jigoshop_emails.php:322
 msgid "SHIPPING ADDRESS"
 msgstr "АДРЕС ДОСТАВКИ"
 
@@ -246,7 +253,7 @@ msgstr "Заказ завершен"
 # @ jigoshop
 #: jigoshop_emails.php:160
 msgid "Your order is complete. Your order's details are below:"
-msgstr "Ваш заказ завершен. Детали Вашего заказа, приведены ниже:"
+msgstr "Ваш заказ завершен. Детали вашего заказа, приведены ниже:"
 
 # @ jigoshop
 #: jigoshop_emails.php:216
@@ -257,7 +264,7 @@ msgstr "Оплатить заказ"
 #: jigoshop_emails.php:218
 #, php-format
 msgid "An order has been created for you on \"%s\". To pay for this order please use the following link: %s"
-msgstr "Заказ был создан для Вас в &ldquo;%s&rdquo;. Чтобы оплатить этот заказ, пожалуйста, используйте следующую ссылку: %s"
+msgstr "Ваш заказ был создан в &ldquo;%s&rdquo;. Чтобы оплатить этот заказ, пожалуйста, используйте следующую ссылку: %s"
 
 # @ jigoshop
 #: jigoshop_emails.php:247
@@ -280,19 +287,32 @@ msgid "is out of stock."
 msgstr "есть в наличии."
 
 # @ jigoshop
-#: jigoshop_emails.php:271
-msgid "Product Backorder"
-msgstr "Товар освобождающегося"
+#: jigoshop_emails.php:279
+#, php-format
+msgid "Product Backorder on Order #%s"
+msgstr "Отложенная доставка товара для заказа #%s"
+
+#: jigoshop_emails.php:280
+#, php-format
+msgid "%s units of #%s %s (#%s) are needed to fill Order #%s."
+msgstr "%s едениц товара #%s %s (#%s) необходимо для выполнения заказа #%s."
 
 # @ jigoshop
-#: jigoshop_emails.php:272
-msgid " units of #"
-msgstr "единиц #"
+#: jigoshop_emails.php:288
+#, php-format
+msgid "Product Backorder on Order #%d"
+msgstr "Отложенная доставка товара для заказа #%d"
+
+#: jigoshop_emails.php:290
+#, php-format
+msgid "Thank you for your Order #%d. Unfortunately, the following item was found to be on backorder."
+msgstr "Благодарим вас за ваш заказ #%d. К сожалению, следующие товары оказались отложенными."
 
 # @ jigoshop
-#: jigoshop_emails.php:272
-msgid "have been backordered."
-msgstr "Были Освобождающиеся."
+#: jigoshop_emails.php:297
+#, php-format
+msgid "%d units of #%d %s (#%s) have been backordered."
+msgstr "%d едениц товара #%d %s (#%s) были отмечены для отложенной доставки."
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:41
@@ -647,7 +667,7 @@ msgstr "Новое имя статуса заказа"
 # @ jigoshop
 #: jigoshop_template_functions.php:73
 msgid "Sale!"
-msgstr "!"
+msgstr "Скидка!"
 
 # @ jigoshop
 #: jigoshop_template_functions.php:95
@@ -836,52 +856,52 @@ msgid "Please choose a product&hellip;"
 msgstr "Пожалуйста, выберите товар&hellip;"
 
 # @ jigoshop
-#: jigoshop_actions.php:283
+#: jigoshop_actions.php:279
 #, php-format
 msgid "<a href=\"%s\" class=\"button\">View Cart &rarr;</a> Product successfully added to your cart."
 msgstr "<a href=\"%s\" class=\"button\">Просмотр корзины &rarr;</a> Товар успешно добавлен в корзину."
 
 # @ jigoshop
-#: jigoshop_actions.php:366
+#: jigoshop_actions.php:361
 msgid "Username is required."
 msgstr "Имя пользователя не требуется."
 
 # @ jigoshop
-#: jigoshop_actions.php:367
+#: jigoshop_actions.php:362
 msgid "Password is required."
 msgstr "Пароль не требуется."
 
 # @ jigoshop
-#: jigoshop_actions.php:425
+#: jigoshop_actions.php:420
 msgid "Order cancelled by customer."
 msgstr "Заказ отменен клиентом."
 
 # @ jigoshop
-#: jigoshop_actions.php:428
+#: jigoshop_actions.php:423
 msgid "Your order was cancelled."
 msgstr "Ваш заказ был отменен."
 
 # @ jigoshop
-#: jigoshop_actions.php:432
+#: jigoshop_actions.php:427
 msgid "Your order is no longer pending and could not be cancelled. Please contact us if you need assistance."
 msgstr "Ваш заказ уже не до и не могло быть отменено. Пожалуйста, свяжитесь с нами, если вам нужна помощь."
 
 # @ jigoshop
-#: jigoshop_actions.php:436
+#: jigoshop_actions.php:431
 #: shortcodes/pay.php:85
 msgid "Invalid order."
 msgstr "Недопустимые порядке."
 
 # @ jigoshop
-#: jigoshop_actions.php:473
-#: jigoshop_actions.php:493
-#: jigoshop_actions.php:537
+#: jigoshop_actions.php:468
+#: jigoshop_actions.php:488
+#: jigoshop_actions.php:532
 #, php-format
 msgid "File not found. <a href=\"%s\">Go to homepage &rarr;</a>"
 msgstr "Файл не найден. <a href=\"%s\">Перейти на главную страницу &rarr;</a>"
 
 # @ jigoshop
-#: jigoshop_actions.php:475
+#: jigoshop_actions.php:470
 #, php-format
 msgid "Sorry, you have reached your download limit for this file. <a href=\"%s\">Go to homepage &rarr;</a>"
 msgstr "К сожалению, вы достигли предела загрузки для этого файла. <a href=\"%s\">Перейти на главную страницу &rarr;</a>"
@@ -890,7 +910,7 @@ msgstr "К сожалению, вы достигли предела загруз
 #: shortcodes/my_account.php:38
 #, php-format
 msgid "Hello, <strong>%s</strong>. From your account dashboard you can view your recent orders, manage your shipping and billing addresses and <a href=\"%s\">change your password</a>."
-msgstr "Здравствуйте <strong>%s</strong>. В панели управления вашей учетной записи вы можете просмотреть последние заказы, корректировать адреса доставки и оплаты, а также <a href=\"%s\">изменять свой пароль</a>."
+msgstr "Здравствуйте <strong>%s</strong>. В панели управления вашей учетной записи вы можете просмотреть последние заказы, корректировать адреса доставки и оплаты, а также <a href=\"%s\">изменить свой пароль</a>."
 
 # @ jigoshop
 #: shortcodes/my_account.php:42
@@ -1069,7 +1089,7 @@ msgstr "Пароли не совпадают."
 # @ jigoshop
 #: shortcodes/my_account.php:352
 msgid "Please enter your password."
-msgstr "Пожалуйста, введите Ваш пароль."
+msgstr "Пожалуйста, введите ваш пароль."
 
 # @ jigoshop
 #: shortcodes/my_account.php:366
@@ -1715,16 +1735,16 @@ msgid "Available on backorder"
 msgstr "Доступно в заказе с отложенной доставкой (?)"
 
 # @ jigoshop
-#: classes/jigoshop_product.class.php:472
+#: classes/jigoshop_product.class.php:501
 msgid "From: "
 msgstr "От: "
 
-#: classes/jigoshop_product.class.php:475
+#: classes/jigoshop_product.class.php:504
 msgid "Price Not Announced"
 msgstr "Цена еще не объявлена"
 
 # @ jigoshop
-#: classes/jigoshop_product.class.php:477
+#: classes/jigoshop_product.class.php:506
 msgid "Free"
 msgstr "Бесплатно"
 
@@ -1876,50 +1896,70 @@ msgstr "<strong>ОШИБКА:</strong> Регистрация не может б
 
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:562
-#: classes/jigoshop_checkout.class.php:570
-#: classes/jigoshop_cart.class.php:299
 #, php-format
-msgid "Sorry, we do not have enough \"%s\" in stock to fulfill your order. Please edit your cart and try again. We apologise for any inconvenience caused."
-msgstr "К сожалению, у нас недостаточно товара \"%s\" на складе, чтобы выполнить Ваш заказ. Пожалуйста скорректируйте ваш заказ и попробуйте еще раз. Приносим свои извинения за доставленные неудобства."
+msgid "Sorry, we do not have enough \"%s\" in stock to fulfill your order.  We have %d available at this time. Please edit your cart and try again.We apologize for any inconvenience caused."
+msgstr "К сожалению, у нас недостаточно товара \"%s\" на складе, чтобы выполнить ваш заказ. В данный момент мы имеем лишь %d. Пожалуйста скорректируйте ваш заказ и попробуйте еще раз. Приносим свои извинения за доставленные неудобства."
+
+# @ jigoshop
+#: classes/jigoshop_checkout.class.php:570
+#, php-format
+msgid "Sorry, we do not have enough \"%s\" in stock to fulfill your order. We have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused."
+msgstr "К сожалению, у нас недостаточно товара \"%s\" на складе, чтобы выполнить ваш заказ. В данный момент мы имеем лишь %d. Пожалуйста скорректируйте ваш заказ и попробуйте еще раз. Приносим свои извинения за доставленные неудобства."
 
 #: classes/jigoshop_cart.class.php:165
 msgid "You cannot add this product to your cart because its price is not yet announced"
 msgstr "Вы не можете добавить этот товар в корзину, так как его цена пока не объявлена!"
 
+#: classes/jigoshop_cart.class.php:175
+#, php-format
+msgid "We are sorry.  We do not have enough \"%s\" to fill your request.  You have %d of them in your Cart and we have %d available at this time."
+msgstr "Приносим свои извинения. У нас недостаточно товара \"%s\" , чтобы заполнить ваш запрос. Вы положили в свою корзину %d, а у нас в наличии %d."
+
+#: classes/jigoshop_cart.class.php:177
+#, php-format
+msgid "We are sorry.  We do not have enough \"%s\" to fill your request. There are only %d left in stock."
+msgstr "Приносим свои извинения. У нас недостаточно товара \"%s\" , чтобы заполнить ваш запрос. У нас на складе осталось %d."
+
 # @ jigoshop
-#: classes/jigoshop_cart.class.php:480
-#: classes/jigoshop_cart.class.php:512
+#: classes/jigoshop_cart.class.php:313
+#, php-format
+msgid "Sorry, we do not have enough \"%s\" in stock to fulfill your order. We only have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused."
+msgstr "К сожалению, у нас недостаточно товара \"%s\" на складе, чтобы выполнить ваш заказ. В данный момент мы имеем лишь %d. Пожалуйста скорректируйте ваш заказ и попробуйте еще раз. Приносим свои извинения за доставленные неудобства."
+
+# @ jigoshop
+#: classes/jigoshop_cart.class.php:494
+#: classes/jigoshop_cart.class.php:526
 msgid " <small>(inc. tax)</small>"
 msgstr "<small>(включая налоги)</small>"
 
 # @ jigoshop
-#: classes/jigoshop_cart.class.php:519
+#: classes/jigoshop_cart.class.php:533
 #: classes/jigoshop_order.class.php:166
 msgid "Free!"
 msgstr "Бесплатно!"
 
 # @ jigoshop
-#: classes/jigoshop_cart.class.php:527
+#: classes/jigoshop_cart.class.php:541
 msgid "via "
 msgstr "через "
 
 # @ jigoshop
-#: classes/jigoshop_cart.class.php:544
+#: classes/jigoshop_cart.class.php:558
 msgid "Discount code already applied!"
 msgstr "Код скидки уже применяется!"
 
 # @ jigoshop
-#: classes/jigoshop_cart.class.php:550
+#: classes/jigoshop_cart.class.php:564
 msgid "Invalid coupon."
 msgstr "Некорректный купон."
 
 # @ jigoshop
-#: classes/jigoshop_cart.class.php:568
+#: classes/jigoshop_cart.class.php:582
 msgid "Discount code applied successfully."
 msgstr "Код скидки применяется успешно."
 
 # @ jigoshop
-#: classes/jigoshop_cart.class.php:572
+#: classes/jigoshop_cart.class.php:586
 msgid "Coupon does not exist!"
 msgstr "Купон не существует!"
 
@@ -3226,7 +3266,7 @@ msgstr "PayPal"
 # @ jigoshop
 #: gateways/paypal.php:41
 msgid "Pay via PayPal; you can pay with your credit card if you don't have a PayPal account"
-msgstr "Оплата через PayPal, вы можете оплатить с помощью кредитной карты, если у Вас нет PayPal счета"
+msgstr "Оплата через PayPal, вы можете оплатить с помощью кредитной карты, если у вас нет PayPal счета"
 
 # @ jigoshop
 #: gateways/paypal.php:54
@@ -3252,7 +3292,7 @@ msgstr "Сообщение, которое выводится пользоват
 # @ jigoshop
 #: gateways/paypal.php:77
 msgid "Please enter your PayPal email address; this is needed in order to take payment!"
-msgstr "Пожалуйста, введите Ваш адрес электронной почты PayPal, это необходимо для проведения платежа!"
+msgstr "Пожалуйста, введите ваш адрес электронной почты PayPal, это необходимо для проведения платежа!"
 
 # @ jigoshop
 #: gateways/paypal.php:77
@@ -3298,7 +3338,7 @@ msgstr "Спасибо за ваш заказ. Сейчас вы будете п
 # @ jigoshop
 #: gateways/paypal.php:298
 msgid "Thank you for your order, please click the button below to pay with PayPal."
-msgstr "Спасибо за Ваш заказ, пожалуйста, нажмите кнопку ниже, чтобы произвести платеж через PayPal."
+msgstr "Спасибо за ваш заказ, пожалуйста, нажмите кнопку ниже, чтобы произвести платеж через PayPal."
 
 # @ jigoshop
 #: gateways/paypal.php:380
@@ -3435,7 +3475,7 @@ msgstr "Включить DIBS FlexWin"
 # @ jigoshop
 #: gateways/dibs.php:63
 msgid "Please enter your DIBS merchant id; this is needed in order to take payment!"
-msgstr "Пожалуйста, введите Ваш идентификатор продавца DIBS, это необходимо для того, чтобы принять платеж!"
+msgstr "Пожалуйста, введите ваш идентификатор продавца DIBS, это необходимо для того, чтобы принять платеж!"
 
 # @ jigoshop
 #: gateways/dibs.php:63
@@ -3485,7 +3525,7 @@ msgstr "Спасибо за ваш заказ. Сейчас вы будете п
 # @ jigoshop
 #: gateways/dibs.php:230
 msgid "Thank you for your order, please click the button below to pay with DIBS."
-msgstr "Спасибо за Ваш заказ, пожалуйста, нажмите кнопку ниже, чтобы оплатить через DIBS."
+msgstr "Спасибо за ваш заказ, пожалуйста, нажмите кнопку ниже, чтобы оплатить через DIBS."
 
 # @ jigoshop
 #: gateways/dibs.php:279
@@ -3510,7 +3550,7 @@ msgstr "Включить Skrill"
 # @ jigoshop
 #: gateways/skrill.php:67
 msgid "Please enter your skrill email address; this is needed in order to take payment!"
-msgstr "Пожалуйста, введите Ваш адрес электронной почты Skrill; это необходимо для того, чтобы принять платеж!"
+msgstr "Пожалуйста, введите ваш адрес электронной почты Skrill; это необходимо для того, чтобы принять платеж!"
 
 # @ jigoshop
 #: gateways/skrill.php:67
@@ -3720,7 +3760,7 @@ msgstr "К сожалению, в нашем магазине не предус�
 # @ jigoshop
 #: templates/checkout/review_order.php:178
 msgid "Since your browser does not support JavaScript, or it is disabled, please ensure you click the <em>Update Totals</em> button before placing your order. You may be charged more than the amount stated above if you fail to do so."
-msgstr "Так как Ваш браузер не поддерживает JavaScript, или он отключен, пожалуйста, убедитесь, что вы нажмите кнопку <em>Обновление итога</em> перед оформлением заказа. В заказе может быть указана большая сумма, чем та, что указана выше."
+msgstr "Так как ваш браузер не поддерживает JavaScript, или он отключен, пожалуйста, убедитесь, что вы нажмите кнопку <em>Обновление итога</em> перед оформлением заказа. В заказе может быть указана большая сумма, чем та, что указана выше."
 
 # @ jigoshop
 #: templates/checkout/review_order.php:178
@@ -4549,7 +4589,7 @@ msgstr "Основная страна/регион"
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:94
 msgid "This is the base country for your business. Tax rates will be based on this country."
-msgstr "Это базовая страна для Вашего бизнеса. Налоговые ставки будут основываться на этой стране."
+msgstr "Это базовая страна для вашего бизнеса. Налоговые ставки будут основываться на этой стране."
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:102
@@ -4609,7 +4649,7 @@ msgstr "Откл. Jigoshop frontend.css"
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:166
 msgid "Useful if you want to disable Jigoshop styles and theme it yourself via your theme."
-msgstr "Полезно, если вы хотите отключить Jigoshop стили и темы сами по вашей теме."
+msgstr "Полезно, если вы хотите отключить стандартные стили Jigoshop и задействовать стили используемой на сайте темы."
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:178
@@ -4699,7 +4739,7 @@ msgstr "Страница просмотра заказа"
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:259
 msgid "Your page should contain [jigoshop_view_order] and usually have \"My Account\" as the parent."
-msgstr "Ваша страница должна содержать [jigoshop_view_order] и, как правило,  быть дочерней по отношению к \"Учетная запись\"."
+msgstr "Ваша страница должна содержать [jigoshop_view_order] и, как правило, быть дочерней по отношению к \"Учетная запись\"."
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:268
@@ -5156,7 +5196,7 @@ msgstr "Параметры инвентаризации"
 #: admin/jigoshop-admin-settings-options.php:564
 #: admin/write-panels/product-data.php:210
 msgid "Manage stock?"
-msgstr "Управление запасом?"
+msgstr "Учет запасов?"
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:565
@@ -5166,7 +5206,7 @@ msgstr "Если вы не корректируете запасы товара,
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:566
 msgid "You can manage stock on a per-item basis if you leave this option on."
-msgstr "Вы можете управлять запасом каждого отдельного наименования товара, если вы оставите эту опцию."
+msgstr "Вы можете следить за запасом каждого товара, если включите эту опцию."
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:578
@@ -5447,7 +5487,7 @@ msgid "Simple products have no specific options."
 msgstr "Простые товары не имеют спецификаций."
 
 # @ jigoshop
-#: admin/write-panels/product-data-save.php:137
+#: admin/write-panels/product-data-save.php:138
 msgid "Product SKU must be unique."
 msgstr "Артикул товара должен быть уникальным."
 
@@ -5457,30 +5497,30 @@ msgid "Manually reducing stock."
 msgstr "Вручную сокращении запасов."
 
 # @ jigoshop
-#: admin/write-panels/order-data-save.php:167
-#: admin/write-panels/order-data-save.php:192
+#: admin/write-panels/order-data-save.php:169
+#: admin/write-panels/order-data-save.php:194
 #, php-format
 msgid "Item %s %s not found, skipping."
 msgstr "Пункт %s %s не найден, пропущено."
 
 # @ jigoshop
-#: admin/write-panels/order-data-save.php:171
+#: admin/write-panels/order-data-save.php:173
 msgid "Manual stock reduction complete."
 msgstr "Ручное сокращение запаса завершено."
 
 # @ jigoshop
-#: admin/write-panels/order-data-save.php:174
+#: admin/write-panels/order-data-save.php:176
 msgid "Manually restoring stock."
 msgstr "Ручное восстановление запасов."
 
 # @ jigoshop
-#: admin/write-panels/order-data-save.php:188
+#: admin/write-panels/order-data-save.php:190
 #, php-format
 msgid "Item #%s stock increased from %s to %s."
 msgstr "Запас товара #%s увеличился с %s до %s."
 
 # @ jigoshop
-#: admin/write-panels/order-data-save.php:196
+#: admin/write-panels/order-data-save.php:198
 msgid "Manual stock restore complete."
 msgstr "Ручное восстановление запасов завершено."
 
@@ -5542,8 +5582,8 @@ msgstr "Оставьте пустым, чтобы использовать ко�
 
 # @ jigoshop
 #: admin/write-panels/product-data.php:125
-#: admin/write-panels/product-types/variable.php:87
-#: admin/write-panels/product-types/variable.php:172
+#: admin/write-panels/product-types/variable.php:84
+#: admin/write-panels/product-types/variable.php:165
 msgid "Weight"
 msgstr "Вес"
 
@@ -5650,8 +5690,8 @@ msgstr "Изменение?"
 # @ jigoshop
 #: admin/write-panels/product-data.php:261
 #: admin/write-panels/order-data.php:200
-#: admin/write-panels/product-types/variable.php:53
-#: admin/write-panels/product-types/variable.php:147
+#: admin/write-panels/product-types/variable.php:52
+#: admin/write-panels/product-types/variable.php:140
 msgid "Remove"
 msgstr "Удалить"
 
@@ -5659,6 +5699,18 @@ msgstr "Удалить"
 #: admin/write-panels/product-data.php:300
 msgid "Choose an option&hellip;"
 msgstr "Выберите вариант&hellip;"
+
+#: admin/write-panels/product-data.php:335
+msgid "Check All"
+msgstr "Отметить все"
+
+#: admin/write-panels/product-data.php:336
+msgid "Uncheck All"
+msgstr "Снять все отметки"
+
+#: admin/write-panels/product-data.php:337
+msgid "Toggle"
+msgstr "Переключать"
 
 # @ jigoshop
 #: admin/write-panels/product-data.php:340
@@ -5833,77 +5885,76 @@ msgid "Grouped products have no specific options &mdash; you can add simple prod
 msgstr "Группировка товаров, которые не имеют спецификаций; вы можете добавлять простые товары к этому сгруппированному товару, задавая им опцию <code>Родительский товар</code>."
 
 # @ jigoshop
-#: admin/write-panels/product-types/variable.php:54
-#: admin/write-panels/product-types/variable.php:148
+#: admin/write-panels/product-types/variable.php:53
+#: admin/write-panels/product-types/variable.php:141
 msgid "Variation:"
 msgstr "Вариант:"
 
 # @ jigoshop
-#: admin/write-panels/product-types/variable.php:67
-#: admin/write-panels/product-types/variable.php:157
+#: admin/write-panels/product-types/variable.php:64
+#: admin/write-panels/product-types/variable.php:150
 msgid "Any "
 msgstr "Любой "
 
 # @ jigoshop
-#: admin/write-panels/product-types/variable.php:85
-#: admin/write-panels/product-types/variable.php:170
+#: admin/write-panels/product-types/variable.php:82
+#: admin/write-panels/product-types/variable.php:163
 msgid "Product Image"
 msgstr "Изображение товара"
 
 # @ jigoshop
-#: admin/write-panels/product-types/variable.php:86
-#: admin/write-panels/product-types/variable.php:171
+#: admin/write-panels/product-types/variable.php:83
+#: admin/write-panels/product-types/variable.php:164
 msgid "SKU:"
 msgstr "Артикул:"
 
 # @ jigoshop
-#: admin/write-panels/product-types/variable.php:88
-#: admin/write-panels/product-types/variable.php:173
+#: admin/write-panels/product-types/variable.php:85
+#: admin/write-panels/product-types/variable.php:166
 msgid "Stock Qty:"
 msgstr "Кол-во в запасе:"
 
 # @ jigoshop
-#: admin/write-panels/product-types/variable.php:89
-#: admin/write-panels/product-types/variable.php:174
+#: admin/write-panels/product-types/variable.php:86
+#: admin/write-panels/product-types/variable.php:167
 msgid "Price:"
 msgstr "Цена:"
 
 # @ jigoshop
-#: admin/write-panels/product-types/variable.php:89
-#: admin/write-panels/product-types/variable.php:90
-#: admin/write-panels/product-types/variable.php:174
-#: admin/write-panels/product-types/variable.php:175
+#: admin/write-panels/product-types/variable.php:86
+#: admin/write-panels/product-types/variable.php:87
+#: admin/write-panels/product-types/variable.php:167
+#: admin/write-panels/product-types/variable.php:168
 msgid "e.g. 29.99"
 msgstr "напр. 29,99"
 
 # @ jigoshop
-#: admin/write-panels/product-types/variable.php:90
-#: admin/write-panels/product-types/variable.php:175
+#: admin/write-panels/product-types/variable.php:87
+#: admin/write-panels/product-types/variable.php:168
 msgid "Sale Price:"
 msgstr "Распродажная цена:"
 
 # @ jigoshop
-#: admin/write-panels/product-types/variable.php:91
-#: admin/write-panels/product-types/variable.php:176
+#: admin/write-panels/product-types/variable.php:88
+#: admin/write-panels/product-types/variable.php:169
 msgid "Enabled"
 msgstr "Включено"
 
 # @ jigoshop
-#: admin/write-panels/product-types/variable.php:98
-msgid "Add (optional) pricing/inventory for product variations. You must save your product attributes in the \"Product Data\" panel to make them available for selection."
-msgstr "Добавить (опционально) цены/инвентаризацию для вариантов товара. Вы должны сохранить атрибуты товара в панели \"Данные о товаре\", чтобы сделать их доступными для выбора."
+#: admin/write-panels/product-types/variable.php:95
+msgid "Add (optional) pricing/inventory for product variations.<br/>You <b>must</b> save your product attributes in the \"Product Data\" panel <b>first</b> & <b>mark them for variation</b> to make them available for selection.</strong>"
+msgstr "Добавить (опционально) цены/запас для вариантов товара. <br />Перед этим вы <b>должны</b> сохранить атрибуты товара в панели \"Данные о товаре\" и <b>отметить их для вариантов</b>, чтобы сделать их доступными для выбора.</strong>"
 
-#: admin/write-panels/product-types/variable.php:101
-#: admin/write-panels/product-types/variable.php:103
+#: admin/write-panels/product-types/variable.php:97
 msgid "Add Configuration"
 msgstr "Добавить Конфигурацию"
 
 # @ jigoshop
-#: admin/write-panels/product-types/variable.php:191
+#: admin/write-panels/product-types/variable.php:184
 msgid "Are you sure you want to remove this variation?"
 msgstr "Вы действительно хотите удалить этот вариант?"
 
-#: admin/write-panels/product-types/variable.php:416
+#: admin/write-panels/product-types/variable.php:409
 #, php-format
 msgid "Variation #%s was disabled as it is already covered by other variation."
 msgstr "Вариант #%s был отключен, так как был задействован другой вариант. (?)"
