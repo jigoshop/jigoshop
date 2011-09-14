@@ -339,24 +339,18 @@ add_action('wp_ajax_jigoshop-categories-ordering', 'jigoshop_categories_ordering
 function jigoshop_custom_image($args=array()) {
 	require_once (ABSPATH . '/wp-admin/includes/image.php');
 
-	$defaults = array('url'=>'', 'echo'=>true, 'width'=>60, 'height'=>60, 'size_name'=>'jigoshop_media_preview');
+	$defaults = array('image'=>null, 'echo'=>true, 'width'=>60, 'height'=>60);
 	$args = wp_parse_args($args, $defaults);
 
 	extract($args);
 
-	if (isset($_POST['url']) || isset($_POST['wpid']) && defined('DOING_AJAX') && DOING_AJAX){
-		if (isset($_POST['wpid'])){
-			$default = 'wpid';
-		} else {
-			$default = 'url';
-		}
-
-		$default = isset($_POST[$default]) ? $_POST[$default] : '';
+	if (isset($_POST['image']) && defined('DOING_AJAX') && DOING_AJAX){
+		$image = isset($_POST['image']) ? $_POST['image'] : null;
 		$width   = isset($_POST['width']) ? $_POST['width'] : $width;
 		$height  = isset($_POST['height']) ? $_POST['height'] : $height;
 	}
 
-	$src = jigoshop_custom_image_src($default, $width, $height);
+	$src = jigoshop_custom_image_src($image, $width, $height);
 
 	if ($echo){
 		echo '<img src="' . $src . '" width="' . $width . '" height="' . $height . '" class="jigoshop-media-preview"/>';

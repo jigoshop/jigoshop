@@ -162,7 +162,7 @@ function variable_product_write_panel_js() {
 		loadMediaPreview:function(preview, value) {
 			var data = {
 				action:'jigoshop_media_preview',
-				url: value,
+				image: value,
 				width: 60,
 				height: 60
 			};
