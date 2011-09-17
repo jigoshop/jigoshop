@@ -27,6 +27,7 @@ class jigoshop_cart {
 	public static $cart_contents_tax;
 	public static $cart_contents;
 	public static $cart_dl_count;
+	public static $cart_contents_total_ex_dl;
 	public static $total;
 	public static $subtotal;
 	public static $subtotal_ex_tax;
@@ -336,6 +337,7 @@ class jigoshop_cart {
 		self::$discount_total = 0;
 		self::$shipping_total = 0;
 		self::$cart_dl_count = 0;
+		self::$cart_contents_total_ex_dl = 0; /* for table rate shipping */
 		
 		if (sizeof(self::$cart_contents)>0) : foreach (self::$cart_contents as $cart_item_key => $values) :
 			$_product = $values['data'];
@@ -347,9 +349,11 @@ class jigoshop_cart {
 				if( $_product->product_type == 'downloadable' ) {
 					self::$cart_dl_count = self::$cart_dl_count + $values['quantity'];
 				}
-
-				self::$cart_contents_weight = self::$cart_contents_weight + ($_product->get_weight() * $values['quantity']);
-
+				else {
+					// If product is downloadable don't apply to weight
+					self::$cart_contents_weight = self::$cart_contents_weight + ($_product->get_weight() * $values['quantity']);
+				}
+				
 				$total_item_price = $_product->get_price() * $values['quantity'] * 100; // Into pounds
 
 				if ( get_option('jigoshop_calc_taxes')=='yes') :
@@ -398,6 +402,9 @@ class jigoshop_cart {
 				self::$cart_contents_tax = self::$cart_contents_tax + $tax_amount;
 								
 				self::$cart_contents_total = self::$cart_contents_total + $total_item_price;
+				if( $_product->product_type <> 'downloadable' ) {
+					self::$cart_contents_total_ex_dl = self::$cart_contents_total_ex_dl + $total_item_price;
+				}
 				self::$cart_contents_total_ex_tax = self::$cart_contents_total_ex_tax + ($_product->get_price_excluding_tax() * $values['quantity']);
 				
 				// Product Discounts
