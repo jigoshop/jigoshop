@@ -103,6 +103,15 @@ class jigoshop_cart {
 	 * @param   string	quantity	contains the quantity of the item to add
 	 */
 	function add_to_cart( $product_id, $quantity = 1 ) {
+		
+		$product = &new jigoshop_product( $product_id );
+
+		// prevents adding products with no price to the cart
+		if( $product->get_price() === '' ) {
+			jigoshop::add_error( __('You cannot had this product to your cart because its price is not yet announced', 'jigoshop') );
+			return false;
+		}
+		
 		if (isset(self::$cart_contents[$product_id])) :
 			$quantity = $quantity + self::$cart_contents[$product_id]['quantity'];
 			self::$cart_contents[$product_id]['quantity'] = $quantity;

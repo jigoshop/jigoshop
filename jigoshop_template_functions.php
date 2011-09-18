@@ -81,7 +81,11 @@ if (!function_exists('jigoshop_get_sidebar')) {
  * Products Loop
  **/
 if (!function_exists('jigoshop_template_loop_add_to_cart')) {
-	function jigoshop_template_loop_add_to_cart( $post, $_product ) {		
+	function jigoshop_template_loop_add_to_cart( $post, $_product ) {
+
+		// do not show "add to cart" button if product's price isn't announced
+		if( $_product->get_price() === '') return;
+		
 		?><a href="<?php echo $_product->add_to_cart_url(); ?>" class="button"><?php _e('Add to cart', 'jigoshop'); ?></a><?php
 	}
 }
@@ -247,6 +251,9 @@ if (!function_exists('jigoshop_simple_add_to_cart')) {
 
 		global $_product; $availability = $_product->get_availability();
 
+		// do not show "add to cart" button if product's price isn't announced
+		if( $_product->get_price() === '') return;
+		
 		if ($availability['availability']) : ?><p class="stock <?php echo $availability['class'] ?>"><?php echo $availability['availability']; ?></p><?php endif;
 		
 		?>			
@@ -270,6 +277,9 @@ if (!function_exists('jigoshop_downloadable_add_to_cart')) {
 
 		global $_product; $availability = $_product->get_availability();
 
+		// do not show "add to cart" button if product's price isn't announced
+		if( $_product->get_price() === '') return;
+		
 		if ($availability['availability']) : ?><p class="stock <?php echo $availability['class'] ?>"><?php echo $availability['availability']; ?></p><?php endif;
 		
 		?>						
