@@ -105,6 +105,10 @@ if (!defined('JIGOSHOP_USE_CSS')) :
 	if (get_option('jigoshop_disable_css')=='yes') define('JIGOSHOP_USE_CSS', false);
 	else define('JIGOSHOP_USE_CSS', true);
 endif;
+if (!defined('JIGOSHOP_LOAD_FANCYBOX')) :
+	if (get_option('jigoshop_disable_fancybox')=='yes') define('JIGOSHOP_LOAD_FANCYBOX', false);
+	else define('JIGOSHOP_LOAD_FANCYBOX', true);
+endif;
 if (!defined('JIGOSHOP_TEMPLATE_URL')) define('JIGOSHOP_TEMPLATE_URL', 'jigoshop/'); // Trailing slash is important :)
 		
 /**
@@ -245,9 +249,7 @@ function jigoshop_init() {
 	$css = file_exists(get_stylesheet_directory() . '/jigoshop/style.css') ? get_stylesheet_directory_uri() . '/jigoshop/style.css' : jigoshop::plugin_url() . '/assets/css/frontend.css';
     if (JIGOSHOP_USE_CSS) wp_register_style('jigoshop_frontend_styles', $css );
     
-    wp_register_style('jigoshop_fancybox_styles', jigoshop::plugin_url() . '/assets/css/fancybox.css');
     wp_register_style('jqueryui_styles', jigoshop::plugin_url() . '/assets/css/ui.css');
-    wp_register_script( 'fancybox', jigoshop::plugin_url() . '/assets/js/jquery.fancybox-1.3.4.pack.js', 'jquery', '1.0' );
     wp_register_script( 'blockui', jigoshop::plugin_url() . '/assets/js/blockui.js', 'jquery', '1.0' );
     wp_register_script( 'cookie', jigoshop::plugin_url() . '/assets/js/cookie.js', 'jquery', '1.0' );
     wp_register_script( 'scrollto', jigoshop::plugin_url() . '/assets/js/scrollto.js', 'jquery', 'jquery', '1.0' );
@@ -270,11 +272,19 @@ function jigoshop_init() {
     else :
     
     	wp_enqueue_style('jigoshop_frontend_styles');
-    	wp_enqueue_style('jigoshop_fancybox_styles');
     	wp_enqueue_style('jqueryui_styles');
+    	
     	wp_enqueue_script('jquery');
     	wp_enqueue_script('jqueryui');
-    	wp_enqueue_script('fancybox');
+    	
+    	if( JIGOSHOP_LOAD_FANCYBOX ) {
+    		wp_register_style('jigoshop_fancybox_styles', jigoshop::plugin_url() . '/assets/css/fancybox.css');
+    		wp_enqueue_style('jigoshop_fancybox_styles');
+    		
+    		wp_register_script( 'fancybox', jigoshop::plugin_url() . '/assets/js/jquery.fancybox-1.3.4.pack.js', 'jquery', '1.0' );
+    		wp_enqueue_script('fancybox');
+    	}
+    	
     	wp_enqueue_script('blockui');
     	wp_enqueue_script('cookie');
     	wp_enqueue_script('scrollto');
