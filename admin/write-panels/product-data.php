@@ -257,7 +257,7 @@ function jigoshop_product_data_box() {
 							<th width="180"><?php _e('Name', 'jigoshop'); ?></th>
 							<th><?php _e('Value', 'jigoshop'); ?></th>
 							<th class="center" width="1%"><?php _e('Visible?', 'jigoshop'); ?></th>
-							<!--th class="center" width="1%"><?php _e('Variation?', 'jigoshop'); ?></th-->
+							<th class="center" width="1%"><?php _e('Variation?', 'jigoshop'); ?></th>
 							<th class="center" width="1%"><?php _e('Remove', 'jigoshop'); ?></th>
 						</tr>
 					</thead>
