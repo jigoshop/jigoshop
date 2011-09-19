@@ -18,49 +18,89 @@
 
 class Jigoshop_Widget_Product_Search extends WP_Widget {
 
-	/** constructor */
-	function Jigoshop_Widget_Product_Search() {
-		$widget_ops = array( 'description' => __( "Search box for products only.", 'jigoshop') );
-		parent::WP_Widget('product_search', __('Product Search', 'jigoshop'), $widget_ops);
+	/**
+	 * Constructor
+	 * 
+	 * Setup the widget with the available options
+	 */
+	public function __construct() {
+	
+		$options = array(
+			'description' => __( "Search box for products only.", 'jigoshop'),
+		);
+		
+		// Create the widget
+		parent::__construct('product_search', __('Jigoshop: Product Search', 'jigoshop'), $options);
 	}
 
-	/** @see WP_Widget::widget */
-	function widget( $args, $instance ) {
+	/**
+	 * Widget
+	 * 
+	 * Display the widget in the sidebar
+	 *
+	 * @param	array	sidebar arguments
+	 * @param	array	instance
+	 */
+	public function widget( $args, $instance ) {
+	
+		// Extract the widget arguments
 		extract($args);
 
-		$title = $instance['title'];
+		// Set the widget title
+		$title = ( ! empty($instance['title']) ) ? $instance['title'] : __('Product Search', 'jigoshop');
 		$title = apply_filters('widget_title', $title, $instance, $this->id_base);
 		
+		// Print the widget wrapper & title
 		echo $before_widget;
+		echo $before_title . $title . $after_title;
 		
-		if ($title) echo $before_title . $title . $after_title;
+		// Construct the form
+		$form = '<form role="search" method="get" id="searchform" action="' . home_url() . '">';
+		$form .= '<div>';
+			$form .= '<label class="screen-reader-text" for="s">' . __('Search for:', 'jigoshop') . '</label>';
+			$form .= '<input type="text" value="' . get_search_query() . '" name="s" id="s" placeholder="' . __('Search for products', 'jigoshop') . '" />';
+			$form .= '<input type="submit" id="searchsubmit" value="' . __('Search', 'jigoshop') . '" />';
+			$form .= '<input type="hidden" name="post_type" value="product" />';
+		$form .= '</div>';
+		$form .= '</form>';
 		
-		?>
-		<form role="search" method="get" id="searchform" action="<?php echo home_url(); ?>">
-			<div>
-				<label class="screen-reader-text" for="s"><?php _e('Search for:', 'jigoshop'); ?></label>
-				<input type="text" value="<?php the_search_query(); ?>" name="s" id="s" placeholder="<?php _e('Search for products', 'jigoshop'); ?>" />
-				<input type="submit" id="searchsubmit" value="<?php _e('Search', 'jigoshop'); ?>" />
-				<input type="hidden" name="post_type" value="product" />
-			</div>
-		</form>
-		<?php
+		// Apply a filter to allow for additional fields
+		echo apply_filters('jigoshop_product_search_form', $form, $instance, $this->id_base);
 		
+		// Print closing widget wrapper
 		echo $after_widget;
 	}
 
-	/** @see WP_Widget::update */
-	function update( $new_instance, $old_instance ) {
+	/**
+	 * Update
+	 * 
+	 * Handles the processing of information entered in the wordpress admin
+	 *
+	 * @param	array	new instance
+	 * @param	array	old instance
+	 * @return	array	instance
+	 */
+	public function update( $new_instance, $old_instance ) {
+		$instance = $old_instance;
 		$instance['title'] = strip_tags(stripslashes($new_instance['title']));
 		return $instance;
 	}
 
-	/** @see WP_Widget::form */
-	function form( $instance ) {
-		global $wpdb;
-		?>
-			<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'jigoshop') ?></label>
-			<input type="text" class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" value="<?php if (isset ( $instance['title'])) {echo esc_attr( $instance['title'] );} ?>" /></p>
-		<?php
+	/**
+	 * Form
+	 * 
+	 * Displays the form for the wordpress admin
+	 *
+	 * @param	array	instance
+	 */
+	public function form($instance) {
+		// Get values from instance
+		$title = (isset($instance['title'])) ? esc_attr($instance['title']) : null;
+	
+		// Widget title
+		echo '<p>';
+		echo '<label for="' . $this->get_field_id('title') . '">' . _e('Title:', 'jigoshop') . '</label>';
+		echo '<input type="text" class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" value="' . $title . '" />';
+	   	echo '</p>';
 	}
 } // Jigoshop_Widget_Product_Search

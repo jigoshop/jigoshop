@@ -16,6 +16,7 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
+
 class jigoshop_tax {
 	
 	var $total;
@@ -236,9 +237,10 @@ class jigoshop_tax {
 
 			$math_rate = ($math_rate / 100) + 1;
 
-			$price_ex = round($price / $math_rate);
-
-			$tax_amount = round($price - $price_ex);
+			//$price_ex = round($price / $math_rate);
+			//$tax_amount = round($price - $price_ex);
+			$price_ex = ($price / $math_rate);
+			$tax_amount = ($price - $price_ex);
 			
 		else :
 			$tax_amount = $price * ($rate/100);
@@ -246,7 +248,8 @@ class jigoshop_tax {
 
 		$tax_amount = $tax_amount / 100; // Back to pounds
 		
-		return number_format($tax_amount, 2, '.', '');
+		return number_format($tax_amount, 4, '.', '');
+		//return number_format($tax_amount, 2, '.', '');
 	}
 	
 	/**

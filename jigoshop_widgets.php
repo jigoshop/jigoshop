@@ -14,7 +14,7 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
- 
+
 foreach(glob( dirname(__FILE__)."/widgets/*.php" ) as $filename) include_once($filename);
 
 function jigoshop_register_widgets() {

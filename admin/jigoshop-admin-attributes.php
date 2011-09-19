@@ -34,7 +34,7 @@ function jigoshop_attributes() {
 		$attribute_type = (string) $_POST['attribute_type'];
 		if (isset($_POST['show-on-product-page']) && $_POST['show-on-product-page']) $product_page = 1; else $product_page = 0;
 		
-		if ($attribute_name && $attribute_type && !taxonomy_exists('pa_'.strtolower(sanitize_title($attribute_name))) && !taxonomy_exists('pa_'.strtolower(sanitize_title($attribute_name)))) :
+		if ($attribute_name && $attribute_type && !taxonomy_exists('pa_'.strtolower(sanitize_title($attribute_name)))) :
 		
 			$wpdb->insert( $wpdb->prefix . "jigoshop_attribute_taxonomies", array( 'attribute_name' => $attribute_name, 'attribute_type' => $attribute_type ), array( '%s', '%s' ) );
 			
@@ -43,6 +43,8 @@ function jigoshop_attributes() {
 			wp_safe_redirect( get_admin_url() . 'admin.php?page=attributes' );
 			exit;
 			
+		else :
+			print_r('<div id="message" class="error"><p>'.__('That attribute already exists, no additions were made.', 'jigoshop' ).'</p></div>');
 		endif;
 		
 	elseif (isset($_POST['save_attribute']) && $_POST['save_attribute'] && isset($_GET['edit'])) :
@@ -174,7 +176,7 @@ function jigoshop_add_attribute() {
 				        </thead>
 				        <tbody>
 				        	<?php
-				        		$attribute_taxonomies = jigoshop::$attribute_taxonomies;
+				        		$attribute_taxonomies = jigoshop::getAttributeTaxonomies();
 				        		if ( $attribute_taxonomies ) :
 				        			foreach ($attribute_taxonomies as $tax) :
 				        				?><tr>

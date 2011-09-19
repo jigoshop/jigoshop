@@ -43,7 +43,7 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 	/** constructor */
 	function Jigoshop_Widget_Price_Filter() {
 		$widget_ops = array( 'description' => __( "Shows a price filter slider in a widget which lets you narrow down the list of shown products in categories.", 'jigoshop') );
-		parent::WP_Widget('price_filter', __('Price Filter', 'jigoshop'), $widget_ops);
+		parent::WP_Widget('price_filter', __('Jigoshop: Price Filter', 'jigoshop'), $widget_ops);
 	}
 
 	/** @see WP_Widget::widget */

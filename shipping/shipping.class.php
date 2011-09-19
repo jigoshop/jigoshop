@@ -1,4 +1,4 @@
-<?php    
+<?php
 /**
  * Shipping class
  *
@@ -13,8 +13,7 @@
  * @author     Jigowatt
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
- */
-   
+ */     
 class jigoshop_shipping {
 	
 	private static $_instance;
@@ -124,5 +123,11 @@ class jigoshop_shipping {
 		endif;
 		
 	}
-
+	
+	function reset_shipping() {
+		self::$shipping_total = 0;
+		self::$shipping_tax = 0;
+		self::$shipping_label = null;
+	}
+	
 }

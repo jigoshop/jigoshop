@@ -24,6 +24,8 @@
  */
 function install_jigoshop() {
 	
+	jigoshop_tables_install();		/* we need tables installed first to eliminate installation errors */
+
 	// Get options and define post types before we start
 	require_once ( 'jigoshop-admin-settings-options.php' );	
 	jigoshop_post_type();
@@ -31,9 +33,8 @@ function install_jigoshop() {
 	// Do install
 	jigoshop_default_options();
 	jigoshop_create_pages();
-	jigoshop_tables_install();
 	
-	jigoshop_post_type();
+	jigoshop_post_type();			/* TODO: do we need this 2nd call to this?  -JAP- */
 	jigoshop_default_taxonomies();
 	
 	// Clear cron
