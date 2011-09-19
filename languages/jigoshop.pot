@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Jigoshop\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-19 11:08+1100\n"
+"POT-Creation-Date: 2011-09-19 11:22+1100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Laurent Dinclaux <lox@knc.nc>\n"
 "Language-Team: Jigoshop <contact@jigoshop.com>\n"
@@ -3079,7 +3079,7 @@ msgid "All states"
 msgstr ""
 
 #: classes/jigoshop_cart.class.php:111
-msgid "You cannot had this product to your cart because its price is not yet announced"
+msgid "You cannot add this product to your cart because its price is not yet announced"
 msgstr ""
 
 # @ jigoshop
