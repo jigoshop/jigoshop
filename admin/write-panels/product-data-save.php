@@ -19,9 +19,10 @@
 
 add_action('jigoshop_process_product_meta', 'jigoshop_process_product_meta', 1, 2);
 
+//@this needs refactoring pretty bad
 function jigoshop_process_product_meta( $post_id, $post ) {
 	global $wpdb;
-	
+
 	$jigoshop_errors = array();
 	
 	// Get old data + attributes
@@ -29,22 +30,32 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 	$attributes = (array) maybe_unserialize( get_post_meta($post_id, 'product_attributes', true) );
 	
 	// Add/Replace data to array
-	$data['regular_price']			= stripslashes( $_POST['regular_price'] );
-	$data['sale_price'] 			= stripslashes( $_POST['sale_price'] );
-	$data['weight'] 				= stripslashes( $_POST['weight'] );
-	$data['tax_status'] 			= stripslashes( $_POST['tax_status'] );
-	$data['tax_class'] 				= stripslashes( $_POST['tax_class'] );
-	if (isset($_POST['stock_status'])) $data['stock_status'] = stripslashes( $_POST['stock_status'] );
+    $product_fields = array(
+        'regular_price',
+        'sale_price',
+        'weight',
+        'tax_status',
+        'tax_class',
+        'stock_status'
+    );
+    
+    //run stripslashes on all valid fields
+    foreach ($product_fields as $field_name) {
+        $field_value = '';
+        if(isset($_POST[$field_name])) {
+            $field_value = $_POST[$field_name];
+        }
+        
+        $data[$field_name] = stripslashes($field_value);
+    }
 
-	// Attributes
-	
-		$attributes = array();
-		
-		//var_dump($_POST['attribute_values']);
+    // Attributes
+    $attributes = array();
 		
 		if (isset($_POST['attribute_names'])) :
 			 $attribute_names = $_POST['attribute_names'];
-			 $attribute_values = $_POST['attribute_values'];
+			 if (isset($_POST['attribute_values'])) $attribute_values = $_POST['attribute_values'];
+			 else $attribute_values = null;
 			 if (isset($_POST['attribute_visibility'])) $attribute_visibility = $_POST['attribute_visibility'];
 			 if (isset($_POST['attribute_variation'])) $attribute_variation = $_POST['attribute_variation'];
 			 $attribute_is_taxonomy = $_POST['attribute_is_taxonomy'];
@@ -63,13 +74,13 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 			 	endif;
 			 	
 			 	if (empty($attribute_values[$i]) || ( is_array($attribute_values[$i]) && sizeof($attribute_values[$i])==0) ) :
-			 		if ($is_taxonomy=='yes' && taxonomy_exists('pa_'.strtolower(sanitize_title($attribute_names[$i])))) :
-			 			wp_set_object_terms( $post_id, 0, 'pa_'.strtolower(sanitize_title($attribute_names[$i])) );
+			 		if ($is_taxonomy=='yes' && taxonomy_exists('pa_'.sanitize_title($attribute_names[$i]))) :
+			 			wp_set_object_terms( $post_id, 0, 'pa_'.sanitize_title($attribute_names[$i]) );
 			 		endif;
 			 		continue;
 			 	endif;
 			 	
-			 	$attributes[ strtolower(sanitize_title( $attribute_names[$i] )) ] = array(
+			 	$attributes[ sanitize_title( $attribute_names[$i] ) ] = array(
 			 		'name' => htmlspecialchars(stripslashes($attribute_names[$i])), 
 			 		'value' => $attribute_values[$i],
 			 		'position' => $attribute_position[$i],
@@ -83,9 +94,9 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 			 		$tax = $attribute_names[$i];
 			 		$value = $attribute_values[$i];
 			 		
-			 		if (taxonomy_exists('pa_'.strtolower(sanitize_title($tax)))) :
+			 		if (taxonomy_exists('pa_'.sanitize_title($tax))) :
 			 			
-			 			wp_set_object_terms( $post_id, $value, 'pa_'.strtolower(sanitize_title($tax)) );
+			 			wp_set_object_terms( $post_id, $value, 'pa_'.sanitize_title($tax) );
 			 			
 			 		endif;
 			 		
@@ -207,10 +218,16 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 		$data = apply_filters( 'process_product_meta', $data, $post_id );
 		
 		// Apply filter to data for product type
-		$data = apply_filters( 'process_product_meta_' . $product_type, $data, $post_id );
+		$data = apply_filters( 'filter_product_meta_' . $product_type, $data, $post_id );
 		
 		// Do action for product type
-		do_action( 'process_product_meta_' . $product_type, $data, $post_id );
+        if(function_exists('process_product_meta_' . $product_type)) {            
+            $meta_errors = call_user_func('process_product_meta_' . $product_type, $data, $post_id);
+            
+            if(is_array($meta_errors)) {
+                $jigoshop_errors = array_merge($jigoshop_errors, $meta_errors);
+            }
+        }
 		
 	// Save
 	update_post_meta( $post_id, 'product_attributes', $attributes );

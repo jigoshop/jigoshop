@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Cron Task
  *
@@ -14,10 +15,11 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
-
+ 
 /**
- * Update price if on sale
+ *	Update price if on sale
  */
+
 function jigoshop_update_sale_prices() {
 	
 	global $wpdb;

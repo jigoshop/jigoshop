@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * Functions used for displaying the jigoshop dashboard
  *
  * DISCLAIMER
@@ -26,7 +26,8 @@
  * @since 		1.0
  * @usedby 		jigoshop_admin_menu()
  */
-function jigoshop_dashboard() { ?>
+function jigoshop_dashboard() {
+	?>
 	<div class="wrap jigoshop">
         <div class="icon32 jigoshop_icon"><br/></div>
 		<h2><?php _e('Jigoshop Dashboard','jigoshop'); ?></h2>
@@ -66,7 +67,7 @@ function jigoshop_dashboard() { ?>
 										</tr>
 										<tr>
 											<td class="first b"><a href="admin.php?page=attributes"><?php 
-												echo sizeof(jigoshop::$attribute_taxonomies);
+												echo count(jigoshop::getAttributeTaxonomies());
 											?></a></td>
 											<td class="t"><a href="admin.php?page=attributes"><?php _e('Attribute taxonomies', 'jigoshop'); ?></a></td>
 										</tr>
@@ -144,10 +145,10 @@ function jigoshop_dashboard() { ?>
 							<?php
 							
 							$lowstockamount = get_option('jigoshop_notify_low_stock_amount');
-							if (!$lowstockamount) $lowstockamount = 1;
+							if (!is_numeric($lowstockamount)) $lowstockamount = 1;
 							
 							$nostockamount = get_option('jigoshop_notify_no_stock_amount');
-							if (!$nostockamount) $nostockamount = 1;
+							if (!is_numeric($nostockamount)) $nostockamount = 1;
 							
 							$outofstock = array();
 							$lowinstock = array();
@@ -547,15 +548,17 @@ function jigoshop_dashboard() { ?>
 				     			
 				     			<div id="fb-root"></div><script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:like href="http://jigoshop.com" send="true" layout="button_count" width="250" show_faces="true" action="like" font="arial"></fb:like>
 								
+				     			<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fjigoshop.com&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font=segoe+ui&amp;height=24" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:24px;" allowTransparency="true"></iframe>
+				     			
 				     			<p><a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jigoshop.com/" data-text="Jigoshop: A WordPress eCommerce solution that works" data-count="horizontal" data-via="jigoshop" data-related="Jigowatt:Creators">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script></p>
 				     			
 				     			<p><g:plusone size="medium" href="http://jigoshop.com/"></g:plusone><script type="text/javascript" src="https://apis.google.com/js/plusone.js">{lang: 'en-GB'}</script></p>
 				     			
-				     			<h4><?php _e('Brought to you by', 'jigoshop'); ?></h4>
+				     			<h4><?php _e('Jigoshop is bought to you by&hellip;', 'jigoshop'); ?></h4>
 
-				     			<p><a href="http://jigowatt.co.uk/" title="Jigoshop is brought to you by Jigowatt"><img src="<?php echo jigoshop::plugin_url(); ?>/assets/images/jigowatt.png" alt="Jigowatt" /></a></p>
+				     			<p><a href="http://jigowatt.co.uk/"><img src="<?php echo jigoshop::plugin_url(); ?>/assets/images/jigowatt.png" alt="Jigowatt" /></a></p>
 				     			
-				     			<p><?php _e('From design to deployment Jigowatt delivers expert solutions to enterprise customers using Magento & WordPress open source platforms.') ?></p>
+				     			<p>From design to deployment Jigowatt delivers expert solutions to enterprise customers using Magento & WordPress open source platforms.</p>
 				     			
 				     		</div>
 				     		<div class="clear"></div>
@@ -566,4 +569,5 @@ function jigoshop_dashboard() { ?>
 			</div>
 		</div>
 	</div>
-<?php } ?>
+	<?php
+}

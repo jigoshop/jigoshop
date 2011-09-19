@@ -110,20 +110,19 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 	* There are no payment fields for Bank Transfers, we need to show bank details instead.
 	**/
 	function payment_fields() {
-		$bank_info;
+		$bank_info = null;
 		if ($this->bank_name) $bank_info .= '<strong>' . wptexturize($this->bank_name) . '</strong><br />';
 		if ($this->acc_number) $bank_info .= wptexturize($this->acc_number) . '<br />';
 		if ($this->sort_code) $bank_info .= wptexturize($this->sort_code) . '<br />';
 		if ($this->iban) $bank_info .= wptexturize($this->iban) . '<br />';
 		if ($this->bic) $bank_info .= wptexturize($this->bic) . '<br />';
-		
 		if ($this->description) echo wpautop(wptexturize($this->description . __(' These details are also be shown on the confirmation page.')));
-		if ($bank_info) echo wpautop($bank_info);
+		if (!empty($bank_info)) echo wpautop($bank_info);
 		if ($this->additional) echo wpautop(wptexturize($this->additional));
 	}
 	
 	function thankyou_page() {
-		$bank_info;
+		$bank_info = null;
 		if ($this->bank_name) $bank_info .= '<strong>' . wptexturize($this->bank_name) . '</strong><br />';
 		if ($this->acc_number) $bank_info .= wptexturize($this->acc_number) . '<br />';
 		if ($this->sort_code) $bank_info .= wptexturize($this->sort_code) . '<br />';

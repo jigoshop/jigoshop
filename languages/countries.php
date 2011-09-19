@@ -17,10 +17,6 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
- 
-/* 
- * @TODO write States translation strings 
- */
 
 __('Andorra', 'jigoshop');
 __('United Arab Emirates', 'jigoshop');

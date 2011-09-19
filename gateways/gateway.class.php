@@ -14,7 +14,6 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
-
 class jigoshop_payment_gateway {
 	
 	var $id;
@@ -44,7 +43,7 @@ class jigoshop_payment_gateway {
 	
 	function icon() {
 		if ($this->icon) :
-			return '<img src="'. $this->icon.'" alt="'.$this->title.'" />';
+			return '<img src="'. jigoshop::force_ssl($this->icon).'" alt="'.$this->title.'" />';
 		endif;
 	}
 	

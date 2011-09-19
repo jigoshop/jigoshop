@@ -19,12 +19,12 @@
  * Custom Post Types
  **/
 function jigoshop_post_type() {
-do_action('lox');
+
 	global $wpdb;
 	
 	$shop_page_id = get_option('jigoshop_shop_page_id');
-	
-	$base_slug = get_post($shop_page_id) && get_page_uri( $shop_page_id ) ? get_page_uri( $shop_page_id ) : 'shop';
+
+	$base_slug = ($shop_page_id && $base_page = get_page( $shop_page_id )) ? get_page_uri( $shop_page_id ) : 'shop';
 	
 	if (get_option('jigoshop_prepend_shop_page_to_urls')=="yes") :
 		$category_base = trailingslashit($base_slug);
@@ -77,7 +77,7 @@ do_action('lox');
         )
     );
     
-    $attribute_taxonomies = jigoshop::$attribute_taxonomies;    
+    $attribute_taxonomies = jigoshop::getAttributeTaxonomies();    
 	if ( $attribute_taxonomies ) :
 		foreach ($attribute_taxonomies as $tax) :
 	    	
@@ -135,13 +135,43 @@ do_action('lox');
 			'capability_type' => 'post',
 			'publicly_queryable' => true,
 			'exclude_from_search' => false,
-			'menu_position' => 57,
 			'hierarchical' => true,
 			'rewrite' => array( 'slug' => $base_slug, 'with_front' => false ),
 			'query_var' => true,			
 			'supports' => array( 'title', 'editor', 'thumbnail', 'comments'/*, 'page-attributes'*/ ),
 			'has_archive' => $base_slug,
 			'show_in_nav_menus' => false,
+		)
+	);
+	
+	register_post_type( "product_variation",
+		array(
+			'labels' => array(
+				'name' => __( 'Variations', 'jigoshop' ),
+				'singular_name' => __( 'Variation', 'jigoshop' ),
+				'add_new' => __( 'Add Variation', 'jigoshop' ),
+				'add_new_item' => __( 'Add New Variation', 'jigoshop' ),
+				'edit' => __( 'Edit', 'jigoshop' ),
+				'edit_item' => __( 'Edit Variation', 'jigoshop' ),
+				'new_item' => __( 'New Variation', 'jigoshop' ),
+				'view' => __( 'View Variation', 'jigoshop' ),
+				'view_item' => __( 'View Variation', 'jigoshop' ),
+				'search_items' => __( 'Search Variations', 'jigoshop' ),
+				'not_found' => __( 'No Variations found', 'jigoshop' ),
+				'not_found_in_trash' => __( 'No Variations found in trash', 'jigoshop' ),
+				'parent' => __( 'Parent Variation', 'jigoshop' )
+			),
+			'public' => true,
+			'show_ui' => true,
+			'capability_type' => 'post',
+			'publicly_queryable' => true,
+			'exclude_from_search' => true,
+			'hierarchical' => false,
+			'rewrite' => false,
+			'query_var' => true,			
+			'supports' => array( 'title', 'editor', 'custom-fields' ),
+			'show_in_nav_menus' => false,
+			'show_in_menu' => 'edit.php?post_type=product'
 		)
 	);
 	
@@ -178,7 +208,6 @@ do_action('lox');
 			'capability_type' => 'post',
 			'publicly_queryable' => false,
 			'exclude_from_search' => true,
-			'menu_position' => 58,
 			'hierarchical' => false,
 			'show_in_nav_menus' => false,
 			'rewrite' => false,
@@ -392,3 +421,57 @@ function jigoshop_set_category_order ($term_id, $index, $recursive=false) {
 	return $index;
 
 }
+
+/**
+ * Properly sets the WP Nav Menus items classes for jigoshop queried objects
+ * 
+ * @param array $menu_item
+ * @param array $args
+ * @TODO set parent items classes when the shop page is not at the nav menu root
+ */
+function jigoshop_nav_menu_items_classes ($menu_items, $args) {
+	
+	$shop_page_id = (int) get_option('jigoshop_shop_page_id');
+	
+	// only add nav menu classes if the queried object is a jigoshop object
+	if( empty( $shop_page_id ) || ! is_jigoshop() ) return $menu_items;
+
+	$home_page_id = (int) get_option( 'page_for_posts' );
+			
+	foreach ( (array) $menu_items as $key => $menu_item ) {
+
+		$classes = (array) $menu_item->classes;
+
+		// unset classes set by WP on the home page item
+		if ( is_jigoshop() && $home_page_id == $menu_item->object_id ) {
+
+			$menu_items[$key]->current = false;
+			unset( $classes[ array_search('current_page_parent', $classes) ] );
+			unset( $classes[ array_search('current-menu-item', $classes) ] );
+		
+		}
+		
+		// is products archive
+		if (  is_post_type_archive('product') && $shop_page_id == $menu_item->object_id ) {
+
+			$menu_items[$key]->current = true;
+			$classes[] = 'current-menu-item';
+			$classes[] = 'current_page_item';
+		
+		}
+		
+		// is another jigoshop object
+		elseif ( (is_product() || is_product_category() || is_product_tag()) && $shop_page_id == $menu_item->object_id ) {
+
+			$classes[] = 'current_page_parent';
+			$classes[] = 'current_menu_parent';		
+		
+		}
+	
+		$menu_items[$key]->classes = array_unique( $classes );
+	}
+	
+	return $menu_items;
+}
+
+add_filter( 'wp_nav_menu_objects',  'jigoshop_nav_menu_items_classes', 2, 20 );

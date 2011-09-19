@@ -63,32 +63,42 @@
 }
 #jigoshop-order-items .buttons {
   float: left;
+  padding-left: 6px;
+  vertical-align: top;
+}
+#jigoshop-order-items .buttons .item_id {
+  width: 300px;
+  vertical-align: top;
+}
+#jigoshop-order-items .buttons button {
+  margin: 2px 0 0 0;
+}
+#jigoshop-order-items .buttons-alt {
+  float: right;
+  padding-right: 6px;
+}
+#jigoshop-order-items h3 small {
+  color: #999;
 }
 dl.totals {
-  float: right;
-  clear: right;
-  width: 520px;
   margin: 6px 6px 0;
+  float: left;
 }
 dl.totals dt {
-  font-size: 1.2em;
-  width: 200px;
   float: left;
+  width: 100%;
+  font-size: 1.2em;
   font-weight: bold;
-  text-align: right;
-  clear: right;
   line-height: 2em;
 }
 dl.totals dd {
-  width: 300px;
-  padding-left: 20px;
-  float: right;
-  text-align: left;
   line-height: 2em;
   font-size: 1.2em;
+  float: left;
+  width: 100%;
 }
 dl.totals dd input {
-  width: 300px;
+  width: 100%;
   vertical-align: middle;
   float: left;
   font-size: 1em;
@@ -135,8 +145,15 @@ dl.totals dd input.last {
 .jigoshop_order_items_wrapper table.jigoshop_order_items .name {
   min-width: 100px;
 }
-.jigoshop_order_items_wrapper table.jigoshop_order_items .center {
+.jigoshop_order_items_wrapper table.jigoshop_order_items .center,
+.jigoshop_order_items_wrapper table.jigoshop_order_items .variation-id,
+.jigoshop_order_items_wrapper table.jigoshop_order_items .product-id,
+.jigoshop_order_items_wrapper table.jigoshop_order_items .product-sku {
   text-align: center;
+}
+.jigoshop_order_items_wrapper table.jigoshop_order_items table.meta tr td {
+  padding: 1px 4px 1px 0;
+  border: 0;
 }
 .jigoshop-order-panel {
   overflow: hidden;
@@ -713,9 +730,10 @@ a.tips {
   width: 50%;
   float: left;
 }
-.jigoshop_options_panel .checkbox {
+.jigoshop_options_panel .checkbox, table.jigoshop_variable_attributes .checkbox {
   vertical-align: middle;
   margin: 7px 0;
+  width: auto;
 }
 .jigoshop_options_panel select {
   float: left;
@@ -726,26 +744,26 @@ a.tips {
 #jigoshop_attributes {
   padding: 12px;
 }
-.jigoshop_attributes_wrapper, .jigoshop_configurable_attributes_wrapper {
+.jigoshop_attributes_wrapper, .jigoshop_variable_attributes_wrapper {
   margin-bottom: 7px;
   border: 1px solid #ececec;
 }
-table.jigoshop_attributes, table.jigoshop_configurable_attributes {
+table.jigoshop_attributes, table.jigoshop_variable_attributes {
   width: 100%;
 }
-table.jigoshop_attributes thead th, table.jigoshop_configurable_attributes thead th {
+table.jigoshop_attributes thead th, table.jigoshop_variable_attributes thead th {
   background: #ececec;
   padding: 7px 9px;
   font-size: 11px;
   text-align: left;
 }
-table.jigoshop_attributes td, table.jigoshop_configurable_attributes td {
+table.jigoshop_attributes td, table.jigoshop_variable_attributes td {
   padding: 2px 9px;
   text-align: left;
   vertical-align: middle;
   border-bottom: 1px dotted #ececec;
 }
-table.jigoshop_attributes td input, table.jigoshop_configurable_attributes td input, table.jigoshop_configurable_attributes td textarea {
+table.jigoshop_attributes td input, table.jigoshop_variable_attributes td input, table.jigoshop_variable_attributes td textarea {
   width: 100%;
 }
 table.jigoshop_attributes td select {
@@ -754,7 +772,7 @@ table.jigoshop_attributes td select {
 table.jigoshop_attributes td select.multiselect {
   height: 8em !important;
 }
-table.jigoshop_attributes td input, table.jigoshop_configurable_attributes td input, table.jigoshop_configurable_attributes td textarea {
+table.jigoshop_attributes td input, table.jigoshop_variable_attributes td input, table.jigoshop_variable_attributes td textarea {
   font-size: 14px;
   padding: 4px;
   color: #555;
@@ -769,7 +787,7 @@ table.jigoshop_attributes .center {
 }
 #jigoshop_attributes select.attribute_taxonomy,
 button.add_attribute,
-button.add_configurable_attribute,
+button.add_variable_attribute,
 button.add_configuration {
   float: right;
 }
@@ -824,12 +842,17 @@ div.multi_select_products_wrapper {
   width: 140px;
   float: left;
 }
-#grouped_product_options, #virtual_product_options {
+#grouped_product_options, #virtual_product_options, #simple_product_options {
   padding: 12px;
   font-style: italic;
   color: #666;
 }
 /* Configuration */
+#variable_product_options p.description {
+  float: left;
+  padding: 0;
+  margin: 0;
+}
 .jigoshop_configuration {
   background: #ececec;
   border: 1px solid #ececec;
@@ -843,23 +866,76 @@ div.multi_select_products_wrapper {
 }
 .jigoshop_configuration table td {
   background: #fff;
-  padding: 6px 12px;
+  padding: 6px 6px;
+  vertical-align: middle;
 }
 .jigoshop_configuration table td label {
-  color: #ccc;
+  color: #999;
   font-size: 10px;
   text-transform: uppercase;
-  text-align: right;
-  float: left;
-  width: 36%;
-  line-height: 30px;
+  text-align: left;
+  display: block;
+  line-height: 16px;
 }
 .jigoshop_configuration table td input {
-  float: right;
-  width: 60%;
+  float: left;
+  width: 100%;
+}
+.jigoshop_configuration table td.upload_image {
+  width: 1%;
+  white-space: nowrap;
+}
+.jigoshop_configuration table td.upload_image img {
+  float: none;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.jigoshop_configuration table td.upload_image .button {
+  margin: 0;
+  padding: 4px 10px;
+  width: auto;
+  float: none;
+  vertical-align: middle;
 }
 .widefat .product-cat-placeholder {
   outline: 1px dotted #A0C443;
   height: 60px;
   background: #000;
+}
+table.jigoshop_attributes div.multiselect {
+  overflow: auto;
+  height: 100px;
+  border: 1px solid #dfdfdf;
+  background-color: white;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -o-border-radius: 3px;
+  -khtml-border-radius: 3px;
+  border-radius: 3px;
+  margin: 5px 0;
+}
+table.jigoshop_attributes div.multiselect label {
+  display: block;
+  position: relative;
+  border-bottom: 1px solid #DFDFDF;
+  padding: 3px;
+}
+table.jigoshop_attributes div.multiselect label.selected {
+  background-color: #EAF2FA;
+}
+table.jigoshop_attributes div.multiselect input {
+  vertical-align: bottom;
+  margin: 0 5px 0 0;
+  padding: 0;
+  position: relative;
+  top: 0;
+  left: 0;
+  width: auto !important;
+}
+table.jigoshop_attributes div.multiselect-controls {
+  margin-bottom: 4px;
+}
+table.jigoshop_attributes div.multiselect-controls a {
+  text-decoration: none;
+  font-size: 12px;
 }
