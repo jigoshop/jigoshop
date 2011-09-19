@@ -108,7 +108,7 @@ class jigoshop_cart {
 
 		// prevents adding products with no price to the cart
 		if( $product->get_price() === '' ) {
-			jigoshop::add_error( __('You cannot had this product to your cart because its price is not yet announced', 'jigoshop') );
+			jigoshop::add_error( __('You cannot add this product to your cart because its price is not yet announced', 'jigoshop') );
 			return false;
 		}
 		
