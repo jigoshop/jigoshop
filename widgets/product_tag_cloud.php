@@ -30,7 +30,7 @@ class Jigoshop_Widget_Tag_Cloud extends WP_Widget {
 		);
 		
 		// Create the widget
-		parent::__construct('tag_cloud', __('Jigoshop: Product Tag Cloud', 'jigoshop'), $options);
+		parent::__construct('product_tag_cloud', __('Jigoshop: Product Tag Cloud', 'jigoshop'), $options);
 	}
 	
 	/**

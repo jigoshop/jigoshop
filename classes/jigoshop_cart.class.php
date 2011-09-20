@@ -202,6 +202,7 @@ class jigoshop_cart {
 
         self::set_session();
         return true;
+
 	}
 
 	/**
