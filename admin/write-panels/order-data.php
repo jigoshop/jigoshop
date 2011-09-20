@@ -115,7 +115,7 @@ function jigoshop_order_data_meta_box($post) {
                     'city' => __('City', 'jigoshop'),
                     'postcode' => __('Postcode', 'jigoshop'),
                     'country' => __('Country', 'jigoshop'),
-                    'state' => __('State/Country', 'jigoshop'),
+                    'state' => __('State/County', 'jigoshop'),
                     'email' => __('Email Address', 'jigoshop'),
                     'phone' => __('Tel', 'jigoshop'),
                 );
@@ -150,7 +150,7 @@ function jigoshop_order_data_meta_box($post) {
                     'city' => __('City', 'jigoshop'),
                     'postcode' => __('Postcode', 'jigoshop'),
                     'country' => __('Country', 'jigoshop'),
-                    'state' => __('State/Country', 'jigoshop')
+                    'state' => __('State/County', 'jigoshop')
                 );
     
                 foreach($shipping_fields as $field_id => $field_desc) {
