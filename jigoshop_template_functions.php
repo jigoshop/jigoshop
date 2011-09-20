@@ -513,7 +513,7 @@ if (!function_exists('jigoshop_get_product_thumbnail')) {
 
 /**
  * Jigoshop Product Image Placeholder
- * @since 1.0
+ * @since 0.9.9
  **/
 if (!function_exists('jigoshop_get_image_placeholder')) {
 	function jigoshop_get_image_placeholder( $size = 'shop_small' ) {

@@ -678,6 +678,17 @@ td.actions .button-alt {
   float: right;
   margin: 2px 0 0 6px;
 }
+td.applied-coupons {
+  font-size: 12px;
+  text-align: left;
+}
+td.applied-coupons span.applied-coupons-label {
+  font-weight: 700;
+}
+td.applied-coupons span.applied-coupons-values {
+  margin-left: 5px;
+  font-style: italic;
+}
 td.product-name dl.variation {
   margin: 0;
 }

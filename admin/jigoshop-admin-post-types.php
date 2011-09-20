@@ -21,7 +21,7 @@
  *
  * @param array $views - WordPress's current view list (All | Published) in link format
  * @return array $views - our modifications to the list
- * @since 1.0
+ * @since 0.9.9
  * TODO: possibly add items for catalog, search, hidden
  **/
 function jigoshop_custom_product_views( $views ) {

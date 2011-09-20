@@ -542,12 +542,11 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array( 'type' => 'tab', 'tabname' => __('Coupons', 'jigoshop') ),
 
-	array( 'name' => __('Coupon Codes', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
+	array( 'name' => __('Coupon Codes', 'jigoshop'), 'type' => 'title', 'desc' 		=> __('<p>Coupons allow you to give your customers special offers and discounts. Leave product IDs blank to apply to all products in the cart. Separate each product ID with a comma.</p><p>Use either flat rates or percentage discounts for both cart totals and individual products. (do not enter a % sign, just a number). Product percentage discounts <strong>must</strong> have a product ID to be applied, otherwise use Cart Percentage Discounts for all products.</p><p>"<em>Individual use only</em>" means <strong>only</strong> that coupon will be allowed for the whole cart.  If you have several of these, the last one entered by the customer will be used.</p>','jigoshop') ),
 
 	array(
 		'name' => __('Coupons','jigoshop'),
 		'desc' 		=> __('All fields are required.','jigoshop'),
-		'tip' 		=> __('Coupons allow you to give customers special offers and discounts. Leave product IDs blank to apply to all products/items in the cart.','jigoshop'),
 		'id' 		=> 'jigoshop_coupons',
 		'css' 		=> 'min-width:50px;',
 		'type' 		=> 'coupons',
