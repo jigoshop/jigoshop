@@ -187,6 +187,20 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 			'yes' => __('Yes', 'jigoshop')
 		)
 	),
+	
+	array(
+		'name' => __('Disable bundled Fancybox script and css','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Useful if or one of your plugin already loads the Fancybox script and css. But be care, Jigoshop will still try to open products thumbnails using it.','jigoshop'),
+		'id' 		=> 'jigoshop_disable_fancybox',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
+	),
 
 	array( 'type' => 'tabend'),
 
