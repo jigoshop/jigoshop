@@ -63,7 +63,7 @@ function jigoshop_template_loader( $template ) {
 
 		if ( ! $template ) $template = jigoshop::plugin_path() . '/templates/taxonomy-product_tag.php';
 	}
-	elseif ( is_post_type_archive('product') ||  is_page( get_option('jigoshop_shop_page_id') )) {
+	elseif ( is_post_type_archive('product') ||  is_page( get_option('jigoshop_shop_page_id') ) || $GLOBALS['jigoshop_query']->is_archive() ) {
 
 		jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-shop', 'jigoshop-products' ) );
 
