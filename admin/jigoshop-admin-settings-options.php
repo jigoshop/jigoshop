@@ -296,7 +296,6 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'css' 		=> 'min-width:50px;',
 		'std' 		=> '',
 		'type' 		=> 'single_select_page',
-		'name' 		=> __('Large Image Height','jigoshop'),
 		'args'		=> 'show_option_none=' . __('None', 'jigoshop'),
 	),
 
