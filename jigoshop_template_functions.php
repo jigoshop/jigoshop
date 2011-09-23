@@ -89,8 +89,15 @@ if (!function_exists('jigoshop_get_sidebar')) {
 if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 	function jigoshop_template_loop_add_to_cart( $post, $_product ) {
 		
+		
 		// do not show "add to cart" button if product's price isn't announced
-		if( $_product->get_price() === '') return;
+		if( $_product->get_price() === '' AND ! ($_product->is_type('variable') OR $_product->is_type('grouped')) ) return;
+		
+		// TODO: this could use refactoring / cleaning up
+		if( $_product->is_type('variable') OR $_product->is_type('grouped') ) {
+			echo '<a href="'. get_permalink($_product->id).'" class="button">'.__('Select', 'jigoshop').'</a>';
+			return;
+		}
 		
 		?><a href="<?php echo $_product->add_to_cart_url(); ?>" class="button"><?php _e('Add to cart', 'jigoshop'); ?></a><?php
 	}
