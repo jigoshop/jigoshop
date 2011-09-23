@@ -250,7 +250,7 @@ add_action('import_start', 'jigoshop_import_start');
 
 /**
  * Set Jigoshop Product Image Sizes for WordPress based on Admin->Jigoshop->Settings->Images
- * @since 1.0
+ * @since 0.9.9
  **/
 function jigoshop_set_image_sizes(){
 	add_image_size( 'shop_tiny', get_option('jigoshop_shop_tiny_w'), get_option('jigoshop_shop_tiny_h'), 'true' );
@@ -263,7 +263,7 @@ function jigoshop_set_image_sizes(){
  * Get Jigoshop Product Image Size based on Admin->Jigoshop->Settings->Images
  * @param string $size - one of the 4 defined Jigoshop image sizes
  * @return array - an array containing the width and height of the required size
- * @since 1.0
+ * @since 0.9.9
  **/
 function jigoshop_get_image_size( $size ) {
 	switch ( $size ) :
@@ -419,7 +419,7 @@ function jigoshop_sharethis() {
  * Note:is used to replace is_page( get_option( 'jigoshop_shop_page_id' ) )
  * 
  * @return bool
- * @since 1.0
+ * @since 0.9.9
  */
 function is_shop() {
 	return is_post_type_archive( 'product' );
@@ -429,7 +429,7 @@ function is_shop() {
  * Evaluates to true only on the Category Pages
  * 
  * @return bool
- * @since 1.0
+ * @since 0.9.9
  */
 function is_product_category() {
 	return is_tax( 'product_cat' );
@@ -439,7 +439,7 @@ function is_product_category() {
  * Evaluates to true only on the Tag Pages
  * 
  * @return bool
- * @since 1.0
+ * @since 0.9.9
  */
 function is_product_tag() {
 	return is_tax( 'product_tag' );
@@ -449,7 +449,7 @@ function is_product_tag() {
  * Evaluates to true only on the Single Product Page
  * 
  * @return bool
- * @since 1.0
+ * @since 0.9.9
  */
 function is_product() {
 	return is_singular( array('product') );
@@ -459,7 +459,7 @@ function is_product() {
  * Evaluates to true only on Shop, Product Category, and Product Tag pages
  * 
  * @return bool
- * @since 1.0
+ * @since 0.9.9
  */
 function is_product_list() {
 	$is_list = false;

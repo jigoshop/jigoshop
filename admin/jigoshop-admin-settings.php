@@ -336,7 +336,7 @@ function jigoshop_admin_fields($options) {
 		            	$coupons = new jigoshop_coupons();
 		            	$coupon_codes = $coupons->get_coupons();
 		            	?><tr>
-		                    <td class="titledesc"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
+		                    <td class="titledesc"><?php echo $value['name'] ?>:</td>
 		                    <td class="forminp" id="coupon_codes">
 		                    	<table class="coupon_rows" cellspacing="0">
 			                    	<thead>
@@ -358,15 +358,17 @@ function jigoshop_admin_fields($options) {
 			                    		$discount_types = array(
 			                    			'fixed_cart' 	=> __('Cart Discount', 'jigoshop'),
 			                    			'percent' 		=> __('Cart % Discount', 'jigoshop'),
-			                    			'fixed_product'	=> __('Product Discount', 'jigoshop')
+			                    			'fixed_product'	=> __('Product Discount', 'jigoshop'),
+			                    			'percent_product'	=> __('Product % Discount', 'jigoshop')
 			                    		);
 
 			                    		foreach ($discount_types as $type => $label) :
 			                    			$selected = ($coupon['type']==$type) ? 'selected="selected"' : '';
 			                    			echo '<option value="'.$type.'" '.$selected.'>'.$label.'</option>';
 			                    		endforeach;
-
-			                    		echo '</select></td><td><input type="text" value="'.$coupon['amount'].'" name="coupon_amount['.$i.']" title="'.__('Coupon Amount', 'jigoshop').'" placeholder="'.__('Coupon Amount', 'jigoshop').'" class="text" /></td><td><input type="text" value="'.implode(', ', $coupon['products']).'" name="product_ids['.$i.']" placeholder="'.__('1, 2, 3', 'jigoshop').'" class="text" /></td><td><label><input type="checkbox" name="individual['.$i.']" ';
+			                    		echo '</select></td>
+			                    			<td><input type="text" value="'.$coupon['amount'].'" name="coupon_amount['.$i.']" title="'.__('Coupon Amount', 'jigoshop').'" placeholder="'.__('Coupon Amount', 'jigoshop').'" class="text" /></td>
+			                    			<td><input type="text" value="'.implode(', ', $coupon['products']).'" name="product_ids['.$i.']" placeholder="'.__('1, 2, 3', 'jigoshop').'" class="text" /></td><td><label><input type="checkbox" name="individual['.$i.']" ';
 
 					                    if (isset($coupon['individual_use']) && $coupon['individual_use']=='yes') echo 'checked="checked"';
 

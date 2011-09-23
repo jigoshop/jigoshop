@@ -18,31 +18,54 @@
  */
 class jigoshop_coupons {
 	
-	/** get coupons from the options database */
+	/**
+	 * get coupons from the options database
+	 *
+	 * @return array - the stored coupons array
+	 * @since 0.9.8
+	 */
 	function get_coupons() {
 		$coupons = get_option('jigoshop_coupons') ? $coupons = (array) get_option('jigoshop_coupons') : $coupons = array();
 		return $coupons;
 	}
 	
-	/** get coupon with $code */
-	function get_coupon($code) {
+	/**
+	 * get a coupon containing a specific code
+	 * also used to determine if a valid coupon code as false is returned if not
+	 *
+	 * @param string $code - the coupon code to retrieve
+	 * @return array - the stored coupon entry from the coupons array or false if no coupon code exists
+	 * @since 0.9.8
+	 */
+	function get_coupon( $code ) {
 		$coupons = get_option('jigoshop_coupons') ? $coupons = (array) get_option('jigoshop_coupons') : $coupons = array();
-		if (isset($coupons[$code])) return $coupons[$code];
+		if ( isset( $coupons[$code] )) return $coupons[$code];
 		return false;
 	}
 	
-	/** Check coupon is valid by looking at cart */
-	function is_valid($code) {
+	/**
+	 * get a coupon containing a specific code and verify the product applies to this coupon
+	 * this will usually be called for Coupon type = 'Product Discount' to match the product ID
+	 *
+	 * @param string $code - the coupon code to retrieve
+	 * @param array $product - the Cart $values entry for this product
+	 * @return boolean - whether this product is applicable to this coupon based on product ID and variation ID
+	 * @since 0.9.9.1
+	 */
+	function is_valid_product( $code, $product ) {
+		$valid = false;
 		$coupon = self::get_coupon($code);
 		if (sizeof($coupon['products'])>0) :
-			$valid = false;
-			if (sizeof(jigoshop_cart::$cart_contents)>0) : foreach (jigoshop_cart::$cart_contents as $item_id => $values) :
-				if (in_array($item_id, $coupon['products'])) :
+			if ( in_array( $product['product_id'], $coupon['products'] )) :
+				$valid = true;
+			endif;
+			if ( $product['variation_id'] <> '' ) :
+				if ( in_array( $product['variation_id'], $coupon['products'] )) :
 					$valid = true;
 				endif;
-			endforeach; endif;
-			return $valid;
+			endif;
 		endif;
-		return true;
+		return $valid;
 	}
+
 }
