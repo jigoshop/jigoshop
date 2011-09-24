@@ -464,9 +464,7 @@ function jigoshop_download_product() {
 			AND product_id = '$download_file'
 		;") );
 		
-        if ($downloads_remaining == NULL) :
-            wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
-		elseif ($downloads_remaining == '0') :
+		if ($downloads_remaining == '0') :
             wp_die( sprintf(__('Sorry, you have reached your download limit for this file. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
 		else :
 			if ($downloads_remaining>0) :
