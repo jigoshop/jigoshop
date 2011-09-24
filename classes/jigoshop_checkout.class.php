@@ -532,6 +532,12 @@ class jigoshop_checkout {
 					$data['order_shipping_tax']		= number_format(jigoshop_cart::$shipping_tax_total, 2, '.', '');
 					$data['order_total']			= number_format(jigoshop_cart::$total, 2, '.', '');
 					
+					$applied_coupons = array();
+					foreach ( jigoshop_cart::$applied_coupons as $coupon ) :
+						$applied_coupons[] = jigoshop_coupons::get_coupon( $coupon );
+					endforeach;
+					$data['order_discount_coupons']	= $applied_coupons;
+					
 					// Cart items
 					$order_items = array();
 					

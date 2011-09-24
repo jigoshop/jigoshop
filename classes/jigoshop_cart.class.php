@@ -595,13 +595,13 @@ class jigoshop_cart {
 			// Check it can be used with cart
 			// get_coupon() checks for valid coupon. don't go any further without one
 			if ( ! jigoshop_coupons::get_coupon( $coupon_code ) ) :
-				jigoshop::add_error( __('Invalid coupon.', 'jigoshop') );
+				jigoshop::add_error( __('Invalid coupon!', 'jigoshop') );
 				return false;
 			endif;
 			
 			// if it's a percentage discount for products, make sure it's for a specific product, not all products
 			if ( $the_coupon['type']=='percent_product' && sizeof($the_coupon['products'])==0) :
-				jigoshop::add_error( __('Invalid coupon.', 'jigoshop') );
+				jigoshop::add_error( __('Invalid coupon!', 'jigoshop') );
 				return false;
 			endif;
 			
@@ -624,7 +624,7 @@ class jigoshop_cart {
 			return true;
 
 		else :
-			jigoshop::add_error( __('Coupon does not exist!', 'jigoshop') );
+			jigoshop::add_error( __('Coupon does not exist or is no longer valid!', 'jigoshop') );
 			return false;
 		endif;
 		return false;

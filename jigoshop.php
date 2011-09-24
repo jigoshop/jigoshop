@@ -525,16 +525,19 @@ function get_jigoshop_currency_symbol() {
 		case 'AUD' :
 		case 'BRL' :
 		case 'CAD' :
+		case 'HKD' :
 		case 'MXN' :
 		case 'NZD' :
-		case 'HKD' :
 		case 'SGD' :
 		case 'USD' : $currency_symbol = '&#36;'; break; /* Dollar Sign */
+		
 		case 'EUR' : $currency_symbol = '&euro;'; break; /* European Euro */
-		case 'JPY' : $currency_symbol = '&yen;'; break; /* Japanese Yen */
 		case 'IDR' : $currency_symbol = '&#52;'; break; /* Indonesia Rupiah */
+		case 'JPY' : $currency_symbol = '&yen;'; break; /* Japanese Yen */
 		case 'RUB' : $currency_symbol = '&#440;'; break; /* Russia Ruble */
+		case 'TRY' : $currency_symbol = '&#54;'; break; /* Turkey Lira */
 
+		case 'CHF' :
 		case 'CZK' :
 		case 'DKK' :
 		case 'HUF' :
@@ -544,9 +547,8 @@ function get_jigoshop_currency_symbol() {
 		case 'PHP' :
 		case 'PLN' :
 		case 'SEK' :
-		case 'CHF' :
-		case 'TWD' :
-		case 'THB' : $currency_symbol = $currency; break;
+		case 'THB' :
+		case 'TWD' : $currency_symbol = $currency; break;
 
 		case 'GBP' :
 		default    : $currency_symbol = '&pound;'; break;
