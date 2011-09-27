@@ -576,10 +576,10 @@ function get_jigoshop_currency_symbol() {
 		case 'USD' : $currency_symbol = '&#36;'; break; /* Dollar Sign */
 		
 		case 'EUR' : $currency_symbol = '&euro;'; break; /* European Euro */
-		case 'IDR' : $currency_symbol = '&#52;'; break; /* Indonesia Rupiah */
+		case 'IDR' : $currency_symbol = '&#82;&#112;'; break; /* Indonesia Rupiah */
 		case 'JPY' : $currency_symbol = '&yen;'; break; /* Japanese Yen */
-		case 'RUB' : $currency_symbol = '&#440;'; break; /* Russia Ruble */
-		case 'TRY' : $currency_symbol = '&#54;'; break; /* Turkey Lira */
+		case 'RUB' : $currency_symbol = '&#1088;&#1091;&#1073;'; break; /* Russia Ruble */
+		case 'TRY' : $currency_symbol = '&#8356;'; break; /* Turkey Lira */
 
 		case 'CHF' :
 		case 'CZK' :

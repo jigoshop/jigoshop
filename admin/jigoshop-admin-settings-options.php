@@ -410,7 +410,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 			'DKK' => __('Danish Krone', 'jigoshop'),
 			'HKD' => __('Hong Kong Dollar (&#36;)', 'jigoshop'),
 			'HUF' => __('Hungarian Forint', 'jigoshop'),
-			'IDR' => __('Indonesia Rupiah (&#52;)', 'jigoshop'),
+			'IDR' => __('Indonesia Rupiah (&#82;&#112;)', 'jigoshop'),
 			'ILS' => __('Israeli Shekel', 'jigoshop'),
 			'JPY' => __('Japanese Yen (&yen;)', 'jigoshop'),
 			'MYR' => __('Malaysian Ringgits', 'jigoshop'),
@@ -419,13 +419,13 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 			'NOK' => __('Norwegian Krone', 'jigoshop'),
 			'PHP' => __('Philippine Pesos', 'jigoshop'),
 			'PLN' => __('Polish Zloty', 'jigoshop'),
-			'RUB' => __('Russian Ruble (&#440;)', 'jigoshop'),
+			'RUB' => __('Russian Ruble (&#1088;&#1091;&#1073;)', 'jigoshop'),
 			'SGD' => __('Singapore Dollar (&#36;)', 'jigoshop'),
 			'SEK' => __('Swedish Krona', 'jigoshop'),
 			'CHF' => __('Swiss Franc', 'jigoshop'),
 			'TWD' => __('Taiwan New Dollars', 'jigoshop'),
 			'THB' => __('Thai Baht', 'jigoshop'),
-			'TRY' => __('Turkish Lira (&#54;)', 'jigoshop')
+			'TRY' => __('Turkish Lira (&#8356;)', 'jigoshop')
 			)
 		)
 	),
