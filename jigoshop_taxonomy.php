@@ -433,17 +433,18 @@ function jigoshop_nav_menu_items_classes ($menu_items, $args) {
 	
 	$shop_page_id = (int) get_option('jigoshop_shop_page_id');
 	
-	// only add nav menu classes if the queried object is a jigoshop object
-	if( empty( $shop_page_id ) || ! is_jigoshop() ) return $menu_items;
+	// only add nav menu classes if the queried object is the Shop page or derivative (Product, Category, Tag)
+	if( empty( $shop_page_id ) || ! is_content_wrapped() ) return $menu_items;
 
 	$home_page_id = (int) get_option( 'page_for_posts' );
-			
+
 	foreach ( (array) $menu_items as $key => $menu_item ) {
 
 		$classes = (array) $menu_item->classes;
 
 		// unset classes set by WP on the home page item
-		if ( is_jigoshop() && $home_page_id == $menu_item->object_id ) {
+		// shouldn't need a content wrap check as we can't get here without it  -JAP-
+		if ( is_content_wrapped() && $home_page_id == $menu_item->object_id ) {
 
 			$menu_items[$key]->current = false;
 			unset( $classes[ array_search('current_page_parent', $classes) ] );
@@ -452,7 +453,7 @@ function jigoshop_nav_menu_items_classes ($menu_items, $args) {
 		}
 		
 		// is products archive
-		if (  is_post_type_archive('product') && $shop_page_id == $menu_item->object_id ) {
+		if ( is_shop() && $shop_page_id == $menu_item->object_id ) {
 
 			$menu_items[$key]->current = true;
 			$classes[] = 'current-menu-item';
@@ -474,4 +475,4 @@ function jigoshop_nav_menu_items_classes ($menu_items, $args) {
 	return $menu_items;
 }
 
-add_filter( 'wp_nav_menu_objects',  'jigoshop_nav_menu_items_classes', 2, 20 );
+add_filter( 'wp_nav_menu_objects',  'jigoshop_nav_menu_items_classes', 20, 2 );

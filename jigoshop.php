@@ -470,6 +470,8 @@ function is_product_list() {
 }
 
 // TODO: doesn't reflect All Jigoshop pages
+// as of 0.9.9.1, I'll leave this as is for now, it -will- change.  -JAP-
+// at this time, it is not used within the codebase, 'is_content_wrapped' contains this functionality
 function is_jigoshop() {
 	$is_wrapped = false;
 	$is_wrapped |= is_product_list();

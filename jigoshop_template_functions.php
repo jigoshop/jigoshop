@@ -878,7 +878,7 @@ if (!function_exists('jigoshop_breadcrumb')) {
  */
 function jigoshop_body_classes ($classes) {
 
-	if( ! is_jigoshop() ) return $classes;
+	if( ! is_content_wrapped() ) return $classes;
 
 	$key = array_search('singular', $classes);
 	if ( $key !== false ) unset($classes[$key]);
