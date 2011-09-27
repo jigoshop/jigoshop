@@ -46,6 +46,7 @@ if (is_admin()) add_action('init', 'jigoshop_update_check');
  * Include core files and classes
  **/
 
+include_once( 'classes/jigoshop_sanitize.class.php' );
 include_once( 'classes/jigoshop.class.php' );
 include_once( 'jigoshop_taxonomy.php' );
 include_once( 'jigoshop_widgets.php' );
@@ -54,7 +55,7 @@ include_once( 'jigoshop_templates.php' );
 include_once( 'jigoshop_template_actions.php' );
 include_once( 'jigoshop_emails.php' );
 include_once( 'jigoshop_query.php' );
-//include_once( 'jigoshop_cron.php' );	/* we should no longer need this, unhooking for testing -JAP- */
+//include_once( 'jigoshop_cron.php' );	/* we may use this at some point, leaving -JAP- */
 include_once( 'jigoshop_actions.php' );
 include_once( 'gateways/gateways.class.php' );
 include_once( 'gateways/gateway.class.php' );
