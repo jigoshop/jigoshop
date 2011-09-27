@@ -289,6 +289,16 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
+		'name' => __('Track Order Page','jigoshop'),
+		'desc' 		=> __('Your page should contain [jigoshop_order_tracking].','jigoshop'),
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_track_order_page_id',
+		'css' 		=> 'min-width:50px;',
+		'type' 		=> 'single_select_page',
+		'std' 		=> ''
+	),
+
+	array(
 		'name' => __('Terms page ID', 'jigoshop'),
 		'desc' 		=> __('If you define a "Terms" page the customer will be asked if they accept them when checking out.', 'jigoshop'),
 		'tip' 		=> '',

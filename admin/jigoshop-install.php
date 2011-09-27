@@ -155,6 +155,11 @@ function jigoshop_create_pages() {
 	        'comment_status' => 'closed'
         );
         $page_id = wp_insert_post($page_data);
+        
+        update_option('jigoshop_track_order_page_id', $page_id);
+
+    } else {
+    	update_option('jigoshop_track_order_page_id', $page_found);
     } 
     
     $slug = esc_sql( _x('my-account', 'page_slug', 'jigoshop') );
