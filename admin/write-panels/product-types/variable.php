@@ -63,13 +63,13 @@ function variable_product_type_options() {
 								
 								echo '<select name="tax_' . sanitize_title($attribute['name']) . '['.$loop.']"><option value="">'.__('Any ', 'jigoshop').$attribute['name'].'&hellip;</option>';
 								
-								foreach($options as $option) :
-									$option = trim($option);
+								foreach ( $options as $option ) :
+									$option = trim( $option );
 									echo '<option ';
-									selected($value, $option);
-									echo ' value="'.$option.'">'.ucfirst($option).'</option>';
+									selected( $value, $option );
+									echo ' value="'.$option.'">'.get_term_by( 'slug', $option, 'pa_'.strtolower( sanitize_title($attribute['name']) ))->name.'</option>';
 								endforeach;	
-									
+								
 								echo '</select>';
 	
 							endforeach;
@@ -147,12 +147,17 @@ function variable_product_write_panel_js() {
 								$options = $attribute['value'];
 								if (!is_array($options)) $options = explode(',', $options);
 								
-								echo '<select name="tax_' . sanitize_title($attribute['name']).'[\' + loop + \']"><option value="">'.__('Any ', 'jigoshop').$attribute['name'].'&hellip;</option>';
+								$sanitized_name = sanitize_title($attribute['name']);
 								
-								foreach($options as $option) :
-									echo '<option value="'.trim($option).'">'.ucfirst(trim($option)).'</option>';
-								endforeach;	
-									
+								echo '<select name="tax_' . $sanitized_name .'[\' + loop + \']"><option value="">'.__('Any ', 'jigoshop').$attribute['name'].'&hellip;</option>';
+								
+								if ( taxonomy_exists( 'pa_'.$sanitized_name )) :
+									$terms = get_terms( 'pa_'.$sanitized_name, 'orderby=name&hide_empty=0' );
+									foreach ( $terms as $term ):
+										echo '<option value="'.$term->slug.'">'.$term->name.'</option>';
+									endforeach;
+								endif;
+
 								echo '</select>';
 	
 							endforeach;

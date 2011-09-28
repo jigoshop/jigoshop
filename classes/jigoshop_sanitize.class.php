@@ -31,17 +31,35 @@ class Sanitize {
 			foreach ( $input as $key => $value ) {
 				$input[$key] = $this->_sanitize( $value );
 			}
+			return $input;
 		}
 		return stripslashes( htmlentities( strip_tags( trim( $input ))));
 	}
 
+	public function __isset( $key )
+	{
+		return isset( $this->_fields[$key] );
+	}
+	
+	public function __unset( $key )
+	{
+		if ( array_key_exists( $key, $this->_fields )) {
+			unset( $this->_fields[$key] );
+		}
+	}
+	
 	public function __get( $key )
 	{
-		if ( array_key_exists( $key, $this->_fields ) && !empty( $this->_fields[$key] )) {
+		if ( array_key_exists( $key, $this->_fields ) && ! empty( $this->_fields[$key] )) {
 			return $this->_fields[$key];
 		} else {
 			return null;
 		}
+	}
+	
+	public function __set( $key, $value )
+	{
+		$this->_fields[$this->_sanitize( $key )] = $this->_sanitize( $value );
 	}
 	
 }
