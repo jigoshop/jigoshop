@@ -120,9 +120,20 @@ if (!isset($_SERVER['REQUEST_URI'])) {
 }
 
 /**
- * Add post thumbnail support to wordpress
+ * Add post thumbnail support to WordPress if needed
  **/
-add_theme_support( 'post-thumbnails' );
+function jigoshop_check_thumbnail_support() {
+	if ( ! current_theme_supports( 'post-thumbnails' ) ) {
+		add_theme_support( 'post-thumbnails' );
+		add_action( 'init', 'jigoshop_remove_post_type_thumbnail_support' );
+	}
+}
+add_action( 'after_setup_theme', 'jigoshop_check_thumbnail_support', 99 );
+
+function jigoshop_remove_post_type_thumbnail_support() {
+	remove_post_type_support( 'post', 'thumbnail' );
+	remove_post_type_support( 'page', 'thumbnail' );
+}
 
 /**
  * Filters and hooks
