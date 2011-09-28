@@ -100,9 +100,10 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 		jigoshop_cart::empty_cart();
 			
 		// Return thankyou redirect
+		$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', get_option( 'jigoshop_thanks_page_id' ) );
 		return array(
 			'result' 	=> 'success',
-			'redirect'	=> add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink(get_option('jigoshop_thanks_page_id'))))
+			'redirect'	=> add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink( $checkout_redirect )))
 		);
 		
 	}
