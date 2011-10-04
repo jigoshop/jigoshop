@@ -234,12 +234,10 @@ class jigoshop_tax {
 
 		if ($price_includes_tax) :
 
-			$rate = ($rate / 100) + 1;
-
-			//$price_ex = round($price / $rate);
-			//$tax_amount = round($price - $price_ex);
-			$price_ex = ($price / $rate);
-			$tax_amount = ($price - $price_ex);
+			//$price_excluding_tax = round($price / ( 1 + ($rate / 100)));
+			//$tax_amount = round($price - $price_excluding_tax);
+			$price_excluding_tax = ($price / ( 1 + ($rate / 100)));
+			$tax_amount = ($price - $price_excluding_tax);
 			
 		else :
 			$tax_amount = $price * ($rate/100);
