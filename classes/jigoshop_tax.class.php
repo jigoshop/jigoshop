@@ -234,8 +234,6 @@ class jigoshop_tax {
 
 		if ($price_includes_tax) :
 
-			//$price_excluding_tax = round($price / ( 1 + ($rate / 100)));
-			//$tax_amount = round($price - $price_excluding_tax);
 			$price_excluding_tax = ($price / ( 1 + ($rate / 100)));
 			$tax_amount = ($price - $price_excluding_tax);
 			
@@ -245,8 +243,8 @@ class jigoshop_tax {
 
 		$tax_amount = $tax_amount / 100; // Back to pounds
 		
+		// use 4 decimal precision to avoid rounding errors:
 		return number_format($tax_amount, 4, '.', '');
-		//return number_format($tax_amount, 2, '.', '');
 	}
 	
 	/**
