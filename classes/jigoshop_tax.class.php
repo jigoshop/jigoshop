@@ -229,7 +229,7 @@ class jigoshop_tax {
 	 */
 	function calc_tax( $price, $rate, $price_includes_tax = true ) {
 	
-		// To avoid float roudning errors, work with integers (pence)
+		// To avoid float rounding errors, work with integers (pence)
 		$price = round($price * 100, 0);
 		$math_rate = $rate;
 
