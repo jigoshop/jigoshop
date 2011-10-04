@@ -231,15 +231,14 @@ class jigoshop_tax {
 	
 		// To avoid float roudning errors, work with integers (pence)
 		$price = round($price * 100, 0);
-		$math_rate = $rate;
 
 		if ($price_includes_tax) :
 
-			$math_rate = ($math_rate / 100) + 1;
+			$rate = ($rate / 100) + 1;
 
-			//$price_ex = round($price / $math_rate);
+			//$price_ex = round($price / $rate);
 			//$tax_amount = round($price - $price_ex);
-			$price_ex = ($price / $math_rate);
+			$price_ex = ($price / $rate);
 			$tax_amount = ($price - $price_ex);
 			
 		else :
