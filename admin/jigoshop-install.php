@@ -24,28 +24,34 @@
  */
 function install_jigoshop() {
 	
-	jigoshop_tables_install();		/* we need tables installed first to eliminate installation errors */
-
-	// Get options and define post types before we start
-	require_once ( 'jigoshop-admin-settings-options.php' );	
-	jigoshop_post_type();
 	
-	// Do install
-	jigoshop_default_options();
-	jigoshop_create_pages();
+	if( ! get_option('jigoshop_installed')) {
+		jigoshop_tables_install();		/* we need tables installed first to eliminate installation errors */
 	
-	jigoshop_post_type();			/* TODO: do we need this 2nd call to this?  -JAP- */
-	jigoshop_default_taxonomies();
-	
-	// Clear cron
-	wp_clear_scheduled_hook('jigoshop_update_sale_prices_schedule_check');
-	update_option('jigoshop_update_sale_prices', 'no');
-	
-	// Flush Rules
-	flush_rewrite_rules( false );
-	
-	// Update version
-	update_option( "jigoshop_db_version", JIGOSHOP_VERSION );
+		// Get options and define post types before we start
+		require_once ( 'jigoshop-admin-settings-options.php' );	
+		jigoshop_post_type();
+		
+		// Do install
+		jigoshop_default_options();
+		jigoshop_create_pages();
+		
+		jigoshop_post_type();			/* TODO: do we need this 2nd call to this?  -JAP- */
+		jigoshop_default_taxonomies();
+		
+		// Clear cron
+		wp_clear_scheduled_hook('jigoshop_update_sale_prices_schedule_check');
+		update_option('jigoshop_update_sale_prices', 'no');
+		
+		// Flush Rules
+		flush_rewrite_rules( false );
+		
+		// Update version
+		update_option( "jigoshop_db_version", JIGOSHOP_VERSION );
+		
+		// Set as installed
+		update_option( 'jigoshop_installed', 1 );
+	}
 }
 
 /**
