@@ -231,16 +231,11 @@ class jigoshop_tax {
 	
 		// To avoid float roudning errors, work with integers (pence)
 		$price = round($price * 100, 0);
-		$math_rate = $rate;
 
 		if ($price_includes_tax) :
 
-			$math_rate = ($math_rate / 100) + 1;
-
-			//$price_ex = round($price / $math_rate);
-			//$tax_amount = round($price - $price_ex);
-			$price_ex = ($price / $math_rate);
-			$tax_amount = ($price - $price_ex);
+			$price_excluding_tax = ($price / ( 1 + ($rate / 100)));
+			$tax_amount = ($price - $price_excluding_tax);
 			
 		else :
 			$tax_amount = $price * ($rate/100);
@@ -248,8 +243,8 @@ class jigoshop_tax {
 
 		$tax_amount = $tax_amount / 100; // Back to pounds
 		
+		// use 4 decimal precision to avoid rounding errors:
 		return number_format($tax_amount, 4, '.', '');
-		//return number_format($tax_amount, 2, '.', '');
 	}
 	
 	/**
