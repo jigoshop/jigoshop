@@ -394,8 +394,8 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
                         <td><label for="<?php echo $sanitized_name; ?>"><?php echo $aname; ?></label></td>
                         <td><select id="<?php echo $sanitized_name; ?>" name="tax_<?php echo $sanitized_name; ?>">
 							<option value=""><?php echo __('Choose an option', 'jigoshop') ?>&hellip;</option>
-							<?php if ( taxonomy_exists( 'pa_'.strtolower( $sanitized_name ))) : ?>
-								<?php $terms = get_terms( 'pa_'.strtolower( $sanitized_name ), 'orderby=name&hide_empty=0' ); ?>
+							<?php if ( taxonomy_exists( 'pa_'.$sanitized_name )) : ?>
+								<?php $terms = get_terms( 'pa_'.$sanitized_name, array( 'orderby' => 'slug', 'hide_empty' => '0' ) ); ?>
 								<?php foreach ( $terms as $term ): ?>
 									<option value="<?php echo $term->slug; ?>"><?php echo $term->name; ?></option>
 								<?php endforeach;?>

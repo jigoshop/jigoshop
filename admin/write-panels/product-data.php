@@ -299,8 +299,9 @@ function jigoshop_product_data_box() {
 											<select name="attribute_values[<?php echo $i ?>]">
 												<option value=""><?php _e('Choose an option&hellip;', 'jigoshop'); ?></option>
 												<?php
-												if (taxonomy_exists('pa_'.sanitize_title($tax->attribute_name))) :
-					        						$terms = get_terms( 'pa_'.sanitize_title($tax->attribute_name), 'orderby=name&hide_empty=0' );
+												$sanitized_title = sanitize_title($tax->attribute_name);
+												if (taxonomy_exists('pa_'.$sanitized_title)) :
+					        						$terms = get_terms( 'pa_'.$sanitized_title, array( 'orderby' => 'slug', 'hide_empty' => '0' ) );
 					        						if ($terms) :
 														foreach ($terms as $term) :
 															printf('<option value="%s" %s>%s</option>'
@@ -315,8 +316,9 @@ function jigoshop_product_data_box() {
 										<?php elseif ($tax->attribute_type=="multiselect") : ?>
 											<div class="multiselect">
 												<?php
-												if (taxonomy_exists('pa_'.strtolower(sanitize_title($tax->attribute_name)))) :
-					        						$terms = get_terms( 'pa_'.strtolower(sanitize_title($tax->attribute_name)), 'orderby=name&hide_empty=0' );
+												$sanitized_title = sanitize_title($tax->attribute_name);
+												if (taxonomy_exists('pa_'.$sanitized_title)) :
+					        						$terms = get_terms( 'pa_'.$sanitized_title, array( 'orderby' => 'slug', 'hide_empty' => '0' ) );
 					        						if ($terms) :
 						        						foreach ($terms as $term) :
 															$checked = checked(in_array($term->slug, $value), true, false);

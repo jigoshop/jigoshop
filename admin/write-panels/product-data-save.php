@@ -114,7 +114,7 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 			}
 		}
 		uasort($attributes, 'attributes_cmp');
-	
+
 		// Product type
 		$product_type = sanitize_title( stripslashes( $_POST['product-type'] ) );
 		if( !$product_type ) $product_type = 'simple';
@@ -230,7 +230,11 @@ function jigoshop_process_product_meta( $post_id, $post ) {
         }
 		
 	// Save
-	update_post_meta( $post_id, 'product_attributes', $attributes );
+//	if ( count( $attributes ) ) :
+		update_post_meta( $post_id, 'product_attributes', $attributes );
+//	else :
+//		delete_post_meta( $post_id, 'product_attributes' );
+//	endif;
 	update_post_meta( $post_id, 'product_data', $data );
 	update_option('jigoshop_errors', $jigoshop_errors);
 }
