@@ -19,7 +19,6 @@
 
 class jigoshop_tax {
 	
-	var $total;
 	var $rates;
 	
 	/**
