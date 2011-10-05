@@ -124,12 +124,15 @@ function jigoshop_get_template($template_name, $require_once = true) {
 //################################################################################
 
 function jigoshop_get_template_file_url($template_name, $ssl = false) {
-	if (file_exists( STYLESHEETPATH . '/' . JIGOSHOP_TEMPLATE_URL . $template_name ))
-		$return = get_bloginfo('template_url') . '/' . JIGOSHOP_TEMPLATE_URL . $template_name;
-	elseif (file_exists( STYLESHEETPATH . '/' . $template_name ))
-		$return = get_bloginfo('template_url') . '/' . $template_name;
-	else
+	if (file_exists( STYLESHEETPATH . '/' . JIGOSHOP_TEMPLATE_URL . $template_name )) :
+		$file_path = STYLESHEETPATH . '/' . JIGOSHOP_TEMPLATE_URL . $template_name;
+		$return = str_replace($_SERVER['DOCUMENT_ROOT'], '', $file_path);
+	elseif (file_exists( STYLESHEETPATH . '/' . $template_name )) :
+		$file_path = STYLESHEETPATH . '/' . $template_name;
+		$return = str_replace($_SERVER['DOCUMENT_ROOT'], '', $file_path);
+	else :
 		$return = jigoshop::plugin_url() . '/templates/' . $template_name;
+	endif;
 
 	if (get_option('jigoshop_force_ssl_checkout')=='yes' || is_ssl()) :
 		if ($ssl) $return = str_replace('http:', 'https:', $return);
