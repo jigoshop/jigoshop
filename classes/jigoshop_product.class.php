@@ -16,16 +16,16 @@
  */
 class jigoshop_product {
 
-	var $id;
-	var $exists;
-	var $data;
-	var $sku;
-	var $attributes;
-	var $post;
-	var $stock;
-	var $children;
-	var $visibility;
-	var $product_type;
+	public $id;
+	public $exists;
+	public $data;
+	public $sku;
+	protected $attributes;
+	private $post;
+	public $stock;
+	public $children;
+	protected $visibility;
+	public $product_type;
 	protected $price;
     protected $sale_price;
     
