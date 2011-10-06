@@ -24,23 +24,17 @@
  */
 function install_jigoshop() {
 	
-	if( ! get_option('jigoshop_installed', false) ) {
-		jigoshop_tables_install();		/* we need tables installed first to eliminate installation errors */
+	jigoshop_tables_install();		/* we need tables installed first to eliminate installation errors */
+
+	// Get options
+	require_once ( 'jigoshop-admin-settings-options.php' );	
 	
-		// Get options and define post types before we start
-		require_once ( 'jigoshop-admin-settings-options.php' );	
-		jigoshop_post_type();
-		
-		// Do install
-		jigoshop_default_options();
-		jigoshop_create_pages();
-		
-		//jigoshop_post_type();			/* TODO: do we need this 2nd call to this?  -JAP- */
-		jigoshop_default_taxonomies();
-		
-		// Update installed flag
-		update_option('jigoshop_installed', true);
-	}
+	// Do install
+	jigoshop_default_options();
+	jigoshop_create_pages();
+	
+	jigoshop_post_type();
+	jigoshop_default_taxonomies();
 	
 	// Clear cron
 	wp_clear_scheduled_hook('jigoshop_update_sale_prices_schedule_check');
@@ -72,239 +66,107 @@ function jigoshop_default_options() {
 /**
  * Create pages
  * 
- * Creates pages that the plugin relies on, storing page id's in variables.
+ * Creates pages that the plugin relies on, storing page id's in options.
  *
- * @since 		1.0
+ * @since 		0.9.9.1
  */
 function jigoshop_create_pages() {
+
+	// start out with basic page parameters, modify as we go
+	$page_data = array(
+		'post_status' => 'publish',
+		'post_type' => 'page',
+		'post_author' => 1,
+		'post_name' => '',
+		'post_title' => __('Shop', 'jigoshop'),
+		'post_content' => '',
+		'comment_status' => 'closed'
+	);
+	jigoshop_create_single_page( 'shop', 'jigoshop_shop_page_id', $page_data );
+	
+	$page_data['post_title'] = __('Cart', 'jigoshop');
+	$page_data['post_content'] = '[jigoshop_cart]';
+	jigoshop_create_single_page( 'cart', 'jigoshop_cart_page_id', $page_data );
+
+	$page_data['post_title'] = __('Track your order', 'jigoshop');
+	$page_data['post_content'] = '[jigoshop_order_tracking]';
+	jigoshop_create_single_page( 'order-tracking', 'jigoshop_track_order_page_id', $page_data );
+	
+	$page_data['post_title'] = __('My Account', 'jigoshop');
+	$page_data['post_content'] = '[jigoshop_my_account]';
+	jigoshop_create_single_page( 'my-account', 'jigoshop_myaccount_page_id', $page_data );
+	
+	$page_data['post_title'] = __('Edit My Address', 'jigoshop');
+	$page_data['post_content'] = '[jigoshop_edit_address]';
+	$page_data['post_parent'] = get_option( 'jigoshop_myaccount_page_id' );
+	jigoshop_create_single_page( 'edit-address', 'jigoshop_edit_address_page_id', $page_data );
+
+	$page_data['post_title'] = __('Change Password', 'jigoshop');
+	$page_data['post_content'] = '[jigoshop_change_password]';
+	$page_data['post_parent'] = get_option( 'jigoshop_myaccount_page_id' );
+	jigoshop_create_single_page( 'change-password', 'jigoshop_change_password_page_id', $page_data );
+
+	$page_data['post_title'] = __('View Order', 'jigoshop');
+	$page_data['post_content'] = '[jigoshop_view_order]';
+	$page_data['post_parent'] = get_option( 'jigoshop_myaccount_page_id' );
+	jigoshop_create_single_page( 'view-order', 'jigoshop_view_order_page_id', $page_data );
+
+	$page_data['post_title'] = __('Checkout', 'jigoshop');
+	$page_data['post_content'] = '[jigoshop_checkout]';
+	unset( $page_data['post_parent'] );
+	jigoshop_create_single_page( 'checkout', 'jigoshop_checkout_page_id', $page_data );
+	
+	$page_data['post_title'] = __('Checkout &rarr; Pay', 'jigoshop');
+	$page_data['post_content'] = '[jigoshop_pay]';
+	$page_data['post_parent'] = get_option( 'jigoshop_checkout_page_id' );
+	jigoshop_create_single_page( 'pay', 'jigoshop_pay_page_id', $page_data );
+	
+	$page_data['post_title'] = __('Thank you', 'jigoshop');
+	$page_data['post_content'] = '[jigoshop_thankyou]';
+	$page_data['post_parent'] = get_option( 'jigoshop_checkout_page_id' );
+	jigoshop_create_single_page( 'thanks', 'jigoshop_thanks_page_id', $page_data );
+	
+}
+
+/**
+ * Install a single Jigoshop Page if required
+ * 
+ * @param string $page_slug - is the slug for the page to create (shop|cart|thank-you|etc)
+ * @param string $page_option - the database options entry for page ID storage 
+ * @param array $page_data - preset default parameters for creating the page - this will finish the slug
+ *
+ * @since 0.9.9.1
+ */
+function jigoshop_create_single_page( $page_slug, $page_option, $page_data ) {
+
     global $wpdb;
+    
+    $slug = esc_sql( _x( $page_slug, 'page_slug', 'jigoshop' ) );
+	$page_found = $wpdb->get_var("SELECT ID FROM " . $wpdb->posts . " WHERE post_name = '$slug' AND post_status = 'publish' LIMIT 1");
+	$page_options_id = get_option( $page_option );
 	
-    $slug = esc_sql( _x('shop', 'page_slug', 'jigoshop') );
-	$page_found = $wpdb->get_var("SELECT ID FROM " . $wpdb->posts . " WHERE post_name = '$slug' LIMIT 1");
-
-    if(!$page_found) {
-
-        $page_data = array(
-	        'post_status' => 'publish',
-	        'post_type' => 'page',
-	        'post_author' => 1,
-	        'post_name' => $slug,
-	        'post_title' => __('Shop', 'jigoshop'),
-	        'post_content' => '',
-	        'comment_status' => 'closed'
-        );
-        $page_id = wp_insert_post($page_data);
-
-        update_option('jigoshop_shop_page_id', $page_id);
-
-    } else {
-    	update_option('jigoshop_shop_page_id', $page_found);
+    if ( ! $page_found )
+    {
+		$create_page = true;
+		if ( $page_options_id <> '' ) :
+			$page_found = $wpdb->get_var( "SELECT ID FROM " . $wpdb->posts . " WHERE ID = '$page_options_id' AND post_status = 'publish' LIMIT 1" );
+			if ( $page_found ) $create_page = false;
+		endif;
+		if ( $create_page ) :
+			$page_data['post_name'] = $slug;
+			$page_options_id = wp_insert_post( $page_data );
+		endif;
+        update_option( $page_option, $page_options_id );
     }
-    
-    $slug = esc_sql( _x('cart', 'page_slug', 'jigoshop') );
-    $page_found = $wpdb->get_var("SELECT ID FROM " . $wpdb->posts . " WHERE post_name = '$slug' LIMIT 1");
-
-    if(!$page_found) {
-
-        $page_data = array(
-	        'post_status' => 'publish',
-	        'post_type' => 'page',
-	        'post_author' => 1,
-	        'post_name' => $slug,
-	        'post_title' => __('Cart', 'jigoshop'),
-	        'post_content' => '[jigoshop_cart]',
-	        'comment_status' => 'closed'
-        );
-        $page_id = wp_insert_post($page_data);
-
-        update_option('jigoshop_cart_page_id', $page_id);
-
-    } else {
-    	update_option('jigoshop_cart_page_id', $page_found);
+    else
+    {
+    	if ( $page_options_id == "" ) :
+    		update_option('jigoshop_shop_page_id', $page_found);
+    	else :
+    		// we have the slug page, another page may be actual page (eg: 'shop|store|etc') in options.
+    		// Do we need to check for that page.
+    	endif;
     }
-    
-    $slug = esc_sql( _x('checkout', 'page_slug', 'jigoshop') );
-    $page_found = $wpdb->get_var("SELECT ID FROM " . $wpdb->posts . " WHERE post_name = '$slug' LIMIT 1");
-
-    if(!$page_found) {
-
-        $page_data = array(
-	        'post_status' => 'publish',
-	        'post_type' => 'page',
-	        'post_author' => 1,
-	        'post_name' => $slug,
-	        'post_title' => __('Checkout', 'jigoshop'),
-	        'post_content' => '[jigoshop_checkout]',
-	        'comment_status' => 'closed'
-        );
-        $page_id = wp_insert_post($page_data);
-
-        update_option('jigoshop_checkout_page_id', $page_id);
-
-    } else {
-    	update_option('jigoshop_checkout_page_id', $page_found);
-    }
-    
-    $slug = esc_sql( _x('order-tracking', 'page_slug', 'jigoshop') );
-    $page_found = $wpdb->get_var("SELECT ID FROM " . $wpdb->posts . " WHERE post_name = '$slug' LIMIT 1");
-
-    if(!$page_found) {
-
-        $page_data = array(
-	        'post_status' => 'publish',
-	        'post_type' => 'page',
-	        'post_author' => 1,
-	        'post_name' => $slug,
-	        'post_title' => __('Track your order', 'jigoshop'),
-	        'post_content' => '[jigoshop_order_tracking]',
-	        'comment_status' => 'closed'
-        );
-        $page_id = wp_insert_post($page_data);
-        
-        update_option('jigoshop_track_order_page_id', $page_id);
-
-    } else {
-    	update_option('jigoshop_track_order_page_id', $page_found);
-    } 
-    
-    $slug = esc_sql( _x('my-account', 'page_slug', 'jigoshop') );
-    $page_found = $wpdb->get_var("SELECT ID FROM " . $wpdb->posts . " WHERE post_name = '$slug' LIMIT 1");
-
-    if(!$page_found) {
-
-        $page_data = array(
-	        'post_status' => 'publish',
-	        'post_type' => 'page',
-	        'post_author' => 1,
-	        'post_name' => $slug,
-	        'post_title' => __('My Account', 'jigoshop'),
-	        'post_content' => '[jigoshop_my_account]',
-	        'comment_status' => 'closed'
-        );
-        $page_id = wp_insert_post($page_data);
-        
-        update_option('jigoshop_myaccount_page_id', $page_id);
-
-    } else {
-    	update_option('jigoshop_myaccount_page_id', $page_found);
-    } 
-    
-    $slug = esc_sql( _x('edit-address', 'page_slug', 'jigoshop') );
-    $page_found = $wpdb->get_var("SELECT ID FROM " . $wpdb->posts . " WHERE post_name = '$slug' LIMIT 1");
-
-    if(!$page_found) {
-
-        $page_data = array(
-	        'post_status' => 'publish',
-	        'post_type' => 'page',
-	        'post_parent' => get_option('jigoshop_myaccount_page_id'),
-	        'post_author' => 1,
-	        'post_name' => $slug,
-	        'post_title' => __('Edit My Address', 'jigoshop'),
-	        'post_content' => '[jigoshop_edit_address]',
-	        'comment_status' => 'closed'
-        );
-        $page_id = wp_insert_post($page_data);
-        
-        update_option('jigoshop_edit_address_page_id', $page_id);
-
-    } else {
-    	update_option('jigoshop_edit_address_page_id', $page_found);
-    } 
-    
-    $slug = esc_sql( _x('view-order', 'page_slug', 'jigoshop') );
-    $page_found = $wpdb->get_var("SELECT ID FROM " . $wpdb->posts . " WHERE post_name = '$slug' LIMIT 1");
-
-    if(!$page_found) {
-
-        $page_data = array(
-	        'post_status' => 'publish',
-	        'post_type' => 'page',
-	        'post_parent' => get_option('jigoshop_myaccount_page_id'),
-	        'post_author' => 1,
-	        'post_name' => $slug,
-	        'post_title' => __('View Order', 'jigoshop'),
-	        'post_content' => '[jigoshop_view_order]',
-	        'comment_status' => 'closed'
-        );
-        $page_id = wp_insert_post($page_data);
-        
-        update_option('jigoshop_view_order_page_id', $page_id);
-
-    } else {
-    	update_option('jigoshop_view_order_page_id', $page_found);
-    } 
-    
-    $slug = esc_sql( _x('change-password', 'page_slug', 'jigoshop') );
-    $page_found = $wpdb->get_var("SELECT ID FROM " . $wpdb->posts . " WHERE post_name = '$slug' LIMIT 1");
-
-    if(!$page_found) {
-
-        $page_data = array(
-	        'post_status' => 'publish',
-	        'post_type' => 'page',
-	        'post_parent' => get_option('jigoshop_myaccount_page_id'),
-	        'post_author' => 1,
-	        'post_name' => $slug,
-	        'post_title' => __('Change Password', 'jigoshop'),
-	        'post_content' => '[jigoshop_change_password]',
-	        'comment_status' => 'closed'
-        );
-        $page_id = wp_insert_post($page_data);
-        
-        update_option('jigoshop_change_password_page_id', $page_id);
-
-    } else {
-    	update_option('jigoshop_change_password_page_id', $page_found);
-    }
-    
-    $slug = esc_sql( _x('pay', 'page_slug', 'jigoshop') );
-    $page_found = $wpdb->get_var("SELECT ID FROM " . $wpdb->posts . " WHERE post_name = '$slug' LIMIT 1");
-
-    if(!$page_found) {
-
-        $page_data = array(
-	        'post_status' => 'publish',
-	        'post_type' => 'page',
-	        'post_parent' => get_option('jigoshop_checkout_page_id'),
-	        'post_author' => 1,
-	        'post_name' => $slug,
-	        'post_title' => __('Checkout &rarr; Pay', 'jigoshop'),
-	        'post_content' => '[jigoshop_pay]',
-	        'comment_status' => 'closed'
-        );
-        $page_id = wp_insert_post($page_data);
-
-        update_option('jigoshop_pay_page_id', $page_id);
-
-    } else {
-    	update_option('jigoshop_pay_page_id', $page_found);
-    }
-    
-    // Thank you Page
-    $slug = esc_sql( _x('thanks', 'page_slug', 'jigoshop') );
-    $page_found = $wpdb->get_var("SELECT ID FROM " . $wpdb->posts . " WHERE post_name = '$slug' LIMIT 1");
-
-	if(!$page_found) {
-	
-	    $page_data = array(
-	        'post_status' => 'publish',
-	        'post_type' => 'page',
-	        'post_parent' => get_option('jigoshop_checkout_page_id'),
-	        'post_author' => 1,
-	        'post_name' => $slug,
-	        'post_title' => __('Thank you', 'jigoshop'),
-	        'post_content' => '[jigoshop_thankyou]',
-	        'comment_status' => 'closed'
-	    );
-	    $page_id = wp_insert_post($page_data);
-	
-	    update_option('jigoshop_thanks_page_id', $page_id);
-	
-	} else {
-		update_option('jigoshop_thanks_page_id', $page_found);
-	}
-    
 }
 
 /**
