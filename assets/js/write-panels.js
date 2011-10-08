@@ -123,8 +123,8 @@ jQuery( function($){
 
 	});
 
-	jQuery('button.add_meta').live('click', function(){
-
+	jQuery('button.add_meta').live('click', function(e){
+		e.preventDefault();
 		jQuery(this).parent().parent().parent().parent().append('<tr><td><input type="text" name="meta_name[][]" placeholder="' + params.meta_name + '" /></td><td><input type="text" name="meta_value[][]" placeholder="' + params.meta_value + '" /></td></tr>');
 
 	});

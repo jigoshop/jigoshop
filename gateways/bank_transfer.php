@@ -111,26 +111,28 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 	**/
 	function payment_fields() {
 		$bank_info = null;
-		if ($this->bank_name) $bank_info .= '<strong>' . wptexturize($this->bank_name) . '</strong><br />';
-		if ($this->acc_number) $bank_info .= wptexturize($this->acc_number) . '<br />';
-		if ($this->sort_code) $bank_info .= wptexturize($this->sort_code) . '<br />';
-		if ($this->iban) $bank_info .= wptexturize($this->iban) . '<br />';
-		if ($this->bic) $bank_info .= wptexturize($this->bic) . '<br />';
-		if ($this->description) echo wpautop(wptexturize($this->description . __(' These details are also be shown on the confirmation page.')));
+		if ($this->bank_name) $bank_info .= 'Bank Name: <strong>' . wptexturize($this->bank_name) . '</strong><br />';
+		if ($this->acc_number) $bank_info .= 'Account Number: <strong>'.wptexturize($this->acc_number) . '</strong><br />';
+		if ($this->sort_code) $bank_info .= 'Sort Code: <strong>'. wptexturize($this->sort_code) . '</strong><br />';
+		if ($this->iban) $bank_info .= 'IBAN: <strong>'.wptexturize($this->iban) . '</strong><br />';
+		if ($this->bic) $bank_info .= 'BIC: <strong>'.wptexturize($this->bic) . '</strong><br />';
+		if ($this->description) echo wpautop(wptexturize($this->description . __('These details are also to be shown on the confirmation page.')));
 		if (!empty($bank_info)) echo wpautop($bank_info);
+		if ($this->additional) echo wpautop('<strong>Additional Information</strong>:');
 		if ($this->additional) echo wpautop(wptexturize($this->additional));
 	}
 	
 	function thankyou_page() {
 		$bank_info = null;
-		if ($this->bank_name) $bank_info .= '<strong>' . wptexturize($this->bank_name) . '</strong><br />';
-		if ($this->acc_number) $bank_info .= wptexturize($this->acc_number) . '<br />';
-		if ($this->sort_code) $bank_info .= wptexturize($this->sort_code) . '<br />';
-		if ($this->iban) $bank_info .= wptexturize($this->iban) . '<br />';
-		if ($this->bic) $bank_info .= wptexturize($this->bic) . '<br />';
+		if ($this->bank_name) $bank_info .= 'Bank Name: <strong>' . wptexturize($this->bank_name) . '</strong><br />';
+		if ($this->acc_number) $bank_info .= 'Account Number: <strong>'.wptexturize($this->acc_number) . '</strong><br />';
+		if ($this->sort_code) $bank_info .= 'Sort Code: <strong>'. wptexturize($this->sort_code) . '</strong><br />';
+		if ($this->iban) $bank_info .= 'IBAN: <strong>'.wptexturize($this->iban) . '</strong><br />';
+		if ($this->bic) $bank_info .= 'BIC: <strong>'.wptexturize($this->bic) . '</strong><br />';
 		
 		if ($this->description) echo wpautop(wptexturize($this->description));
 		if ($bank_info) echo wpautop($bank_info);
+		if ($this->additional) echo wpautop('<strong>Additional Information</strong>:');
 		if ($this->additional) echo wpautop(wptexturize($this->additional));
 	}
     
@@ -167,10 +169,10 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 		$order = &new jigoshop_order( $order_id );
 		$order->update_status('on-hold', __('Awaiting Bank Transfer', 'jigoshop'));
 		jigoshop_cart::empty_cart();
-			
+		$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', get_option( 'jigoshop_thanks_page_id' ) );
 		return array(
 			'result' 	=> 'success',
-			'redirect'	=> add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink(get_option('jigoshop_thanks_page_id'))))
+			'redirect'	=> add_query_arg( 'key', $order->order_key, add_query_arg( 'order', $order_id, get_permalink( $checkout_redirect ) ) )
 		);
 		
 	}

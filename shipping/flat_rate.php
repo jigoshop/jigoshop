@@ -57,7 +57,7 @@ class flat_rate extends jigoshop_shipping_method {
 			// Shipping per item
 			if (sizeof(jigoshop_cart::$cart_contents)>0) : foreach (jigoshop_cart::$cart_contents as $item_id => $values) :
 				$_product = $values['data'];
-				if ($_product->exists() && $values['quantity']>0) :
+				if ($_product->exists() && $values['quantity']>0 && $_product->product_type <> 'downloadable') :
 					
 					$item_shipping_price = ($this->cost + $this->get_fee( $this->fee, $_product->get_price() )) * $values['quantity'];
 					

@@ -151,6 +151,9 @@ class paypal extends jigoshop_payment_gateway {
 			);
 		endif;		
 		
+		// filter redirect page
+		$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', get_option( 'jigoshop_thanks_page_id' ) );
+		
 		$paypal_args = array_merge(
 			array(
 				'cmd' 					=> '_cart',
@@ -160,7 +163,7 @@ class paypal extends jigoshop_payment_gateway {
 				'charset' 				=> 'UTF-8',
 				'rm' 					=> 2,
 				'upload' 				=> 1,
-				'return' 				=> add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink(get_option('jigoshop_thanks_page_id')))),
+				'return' 				=> add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink( $checkout_redirect ))),
 				'cancel_return'			=> $order->get_cancel_order_url(),
 				//'cancel_return'			=> home_url(),
 				
@@ -230,8 +233,7 @@ class paypal extends jigoshop_payment_gateway {
 				
 				$paypal_args['item_name_'.$item_loop] = $title;
 				$paypal_args['quantity_'.$item_loop] = $item['qty'];
-				$paypal_args['amount_'.$item_loop] = $_product->get_price_excluding_tax();
-				
+				$paypal_args['amount_'.$item_loop] = number_format($_product->get_price_excluding_tax(), 2); //Apparently, Paypal did not like "28.4525" as the amount. Changing that to "28.45" fixed the issue.				
 			endif;
 		endforeach; endif;
        

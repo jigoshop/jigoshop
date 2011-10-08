@@ -130,7 +130,7 @@ function jigoshop_system_info() {
 				<li><a href="#debugging"><?php _e('Debugging', 'jigoshop'); ?></a></li>
 			</ul>
 			<div id="versions" class="panel">
-				<table class="widefat fixed" style="width:850px;">
+				<table class="widefat fixed">
 		            <thead>		            
 		            	<tr>
 		                    <th scope="col" width="200px"><?php _e('Software Versions','jigoshop')?></th>
@@ -166,7 +166,7 @@ function jigoshop_system_info() {
 		        </table>
 			</div>
 			<div id="debugging" class="panel">
-				<table class="widefat fixed" style="width:850px;">
+				<table class="widefat fixed">
 		            <tbody>
 		            	<tr>
 		                    <th scope="col" width="200px"><?php _e('Debug Information','jigoshop')?></th>
@@ -306,6 +306,16 @@ function jigoshop_categories_scripts () {
 	
 }
 add_action('admin_footer-edit-tags.php', 'jigoshop_categories_scripts');
+
+/**
+ * Load needed scripts for Settings Coupons
+ */
+function jigoshop_admin_coupons_scripts () {
+	wp_register_script('jigoshop-date', jigoshop::plugin_url() . '/assets/js/date.js');
+	wp_register_script('jigoshop-datepicker', jigoshop::plugin_url() . '/assets/js/datepicker.js', array('jquery', 'jigoshop-date'));
+	wp_enqueue_script('jigoshop-datepicker');
+}
+add_action("admin_print_scripts-jigoshop_page_settings", 'jigoshop_admin_coupons_scripts');
 
 /**
  * Ajax request handling for categories ordering

@@ -532,6 +532,12 @@ class jigoshop_checkout {
 					$data['order_shipping_tax']		= number_format(jigoshop_cart::$shipping_tax_total, 2, '.', '');
 					$data['order_total']			= number_format(jigoshop_cart::$total, 2, '.', '');
 					
+					$applied_coupons = array();
+					foreach ( jigoshop_cart::$applied_coupons as $coupon ) :
+						$applied_coupons[] = jigoshop_coupons::get_coupon( $coupon );
+					endforeach;
+					$data['order_discount_coupons']	= $applied_coupons;
+					
 					// Cart items
 					$order_items = array();
 					
@@ -637,12 +643,13 @@ class jigoshop_checkout {
 						jigoshop_cart::empty_cart();
 						
 						// Redirect to success/confirmation/payment page
+						$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', get_option( 'jigoshop_thanks_page_id' ) );
 						if (is_ajax()) : 
 							ob_clean();
-							echo json_encode( array('redirect'	=> get_permalink(get_option('jigoshop_thanks_page_id'))) );
+							echo json_encode( array( 'redirect'	=> get_permalink( $checkout_redirect ) ) );
 							exit;
 						else :
-							wp_safe_redirect( get_permalink(get_option('jigoshop_thanks_page_id')) );
+							wp_safe_redirect( get_permalink( $checkout_redirect ) );
 							exit;
 						endif;
 						

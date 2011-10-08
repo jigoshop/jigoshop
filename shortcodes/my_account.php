@@ -464,6 +464,7 @@ function jigoshop_view_order() {
 
 							echo '
 								<tr>
+								    <td>'.$_product->get_sku().'</td>
 									<td class="product-name">'.$item['name'];
 
 							if (isset($_product->variation_data)) :

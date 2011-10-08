@@ -507,16 +507,16 @@ ul.recent-orders li .refunded, ul.recent-orders li .cancelled {
 }
 /* Settings */
 .jigoshop table.widefat {
-  width: 850px;
+  width: 950px;
   margin-top: 0.5em !important;
 }
 .jigoshop table.widefat .button {
   float: left;
-  margin: 0 3px 3px 0 !important;
+  margin: 0 3px 3px 0;
 }
 .jigoshop table.widefat .button-right {
   float: right;
-  margin: 0 0 3px 3px !important;
+  margin: 0 0 3px 3px;
 }
 .jigoshop table.widefat td, .jigoshop table.widefat th {
   padding: 9px 9px;
@@ -536,7 +536,7 @@ ul.recent-orders li .refunded, ul.recent-orders li .cancelled {
 }
 .jigoshop #tabs-wrap {
   background: #ececec;
-  width: 850px;
+  width: 950px;
   padding: 7px 9px;
   overflow: hidden;
   margin-top: 0.5em !important;
@@ -609,8 +609,27 @@ p.taxrow label input {
   border: 0;
   vertical-align: middle;
 }
+.jigoshop table.widefat table.coupon_rows a.dp-choose-date {
+  float: left;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin: 4px 9px 0 3px;
+  display: block;
+  text-indent: -2000px;
+  overflow: hidden;
+  background: url(../images/calendar.png) no-repeat;
+}
+.jigoshop table.widefat table.coupon_rows a.dp-choose-date.dp-disabled {
+  background-position: 0 -20px;
+  cursor: default;
+}
+.jigoshop table.widefat table.coupon_rows input.dp-applied {
+  width: 140px;
+  float: left;
+}
 .jigoshop table.widefat table.coupon_rows tbody td input.text {
-  width: 95px;
+  width: 85px;
 }
 a.tips {
   height: 16px;
