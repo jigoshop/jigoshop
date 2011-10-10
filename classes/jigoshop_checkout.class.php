@@ -18,11 +18,11 @@
  */
 class jigoshop_checkout {
 	
-	var $posted;
-	var $billing_fields;
-	var $shipping_fields;
-	var $must_create_account;
-	var $creating_account;
+	private $posted;
+	private $billing_fields;
+	private $shipping_fields;
+	private $must_create_account;
+	private $creating_account;
 	
 	protected static $instance;
 	
