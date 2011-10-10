@@ -376,7 +376,14 @@ function jigoshop_order_totals_meta_box($post) {
 		<dt><?php _e('Tax:', 'jigoshop'); ?></dt>
 		<dd><input type="text" id="order_tax" name="order_tax" placeholder="0.00" value="<?php echo $data['order_tax']; ?>" class="first" /></dd>
 
-		<dt><?php _e('Discount:', 'jigoshop'); ?></dt>
+		<?php
+			$coupons = array();
+			$applied_coupons = $data['order_discount_coupons'];
+			foreach ( $applied_coupons as $coupon ) {
+				$coupons[] = $coupon['code'];
+			}
+		?>
+		<dt><?php _e('Discount: ', 'jigoshop'); ?><span class="applied-coupons-values"><?php echo implode( ',', $coupons ); ?></span></dt>
 		<dd><input type="text" id="order_discount" name="order_discount" placeholder="0.00" value="<?php echo $data['order_discount']; ?>" /></dd>
 
 		<dt><?php _e('Total:', 'jigoshop'); ?></dt>
