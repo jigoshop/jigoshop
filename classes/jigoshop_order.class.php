@@ -191,7 +191,7 @@ class jigoshop_order {
 			
 			$_product = $this->get_product_from_item( $item );
 
-			$return .= $item['qty'] . ' x ' . apply_filters('jigoshop_order_product_title', $item['name'], $_product);
+			$return .= $item['qty'] . ' x ' . html_entity_decode(apply_filters('jigoshop_order_product_title', $item['name'], $_product), ENT_QUOTES, 'UTF-8'); /* might need users default charset -JAP- */
 			
 			if ($show_sku) :
 				

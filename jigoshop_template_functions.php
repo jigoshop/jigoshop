@@ -388,16 +388,18 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 
 			<table class="variations" cellspacing="0">
 				<tbody>
-				<?php foreach ($attributes as $aname => $aoptions):?>
+				<?php foreach ( $attributes as $aname => $avalues ): ?>
                     <tr>
-                        <td><label for="<?php echo sanitize_title($aname); ?>"><?php echo ucfirst($aname)?></label></td>
-                        <td><select id="<?php echo sanitize_title($aname); ?>" name="tax_<?php echo sanitize_title($aname); ?>">
-                                <option value=""><?php echo __('Choose an option', 'jigoshop') ?>&hellip;</option>
-                                <?php if(is_array($aoptions)): ?>
-                                    <?php foreach($aoptions as $option): ?>
-                                <option><?php echo $option; ?></option>
-                                    <?php endforeach;?>
-                                <?php endif;?>
+                    	<?php $sanitized_name = sanitize_title( $aname ); ?>
+                        <td><label for="<?php echo $sanitized_name; ?>"><?php echo $aname; ?></label></td>
+                        <td><select id="<?php echo $sanitized_name; ?>" name="tax_<?php echo $sanitized_name; ?>">
+							<option value=""><?php echo __('Choose an option', 'jigoshop') ?>&hellip;</option>
+							<?php if ( taxonomy_exists( 'pa_'.$sanitized_name )) : ?>
+								<?php $terms = get_terms( 'pa_'.$sanitized_name, array( 'orderby' => 'slug', 'hide_empty' => '0' ) ); ?>
+								<?php foreach ( $terms as $term ): ?>
+									<option value="<?php echo $term->slug; ?>"><?php echo $term->name; ?></option>
+								<?php endforeach;?>
+							<?php endif;?>
                         </td>
                     </tr>
 	
@@ -878,7 +880,7 @@ if (!function_exists('jigoshop_breadcrumb')) {
  */
 function jigoshop_body_classes ($classes) {
 
-	if( ! is_jigoshop() ) return $classes;
+	if( ! is_content_wrapped() ) return $classes;
 
 	$key = array_search('singular', $classes);
 	if ( $key !== false ) unset($classes[$key]);

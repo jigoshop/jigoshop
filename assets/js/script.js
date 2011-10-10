@@ -184,15 +184,19 @@ jQuery(function(){
         
         var current_attr_name = current_attr_select.attr('name');
         
-        for(num in variations) {
+        for ( num in variations ) {
             var attributes = variations[num].attributes;
             
             for(attr_name in attributes) {
                 var attr_val = attributes[attr_name];
                 
-                if(attr_name == current_attr_name) {
-                    current_attr_select.find('option:contains("'+attr_val+'")').removeAttr('disabled');
+                if ( attr_name == current_attr_name ) {
+                    current_attr_select.find('option[value="'+attr_val+'"]').removeAttr('disabled');
                 }
+            }
+            // if they are all disabled, we should enable all of them? -JAP-
+            if ( jQuery(current_attr_select+':disabled').size() == current_attr_select.find('option:gt(0)').size() ) {
+            	current_attr_select.find('option:gt(0)').removeAttr('disabled');
             }
         }
         
