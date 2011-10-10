@@ -2,7 +2,7 @@
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal
 Requires at least: 3.1
 Tested up to: 3.2.1
-Stable tag: 0.9.9
+Stable tag: 0.9.9.1
 
 A feature packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customisability.
 
@@ -132,6 +132,17 @@ We have a <a href="http://jigoshop.com/forums" title="Jigoshop support forum">co
 9. Checkout
 
 == Changelog ==
+= 0.9.9.1 =
+* Now saves coupon data in order panel
+* Added body classes to track order page
+* Added Russian Translation
+* Fixed downloadable files not found
+* Fixed install duplicates
+* Added labels to bank transfer gateway
+* Attributes are no longer using the slug
+* Minor GUI Tweaks
+* Other fixes (https://github.com/jigoshop/jigoshop/issues?milestone=7&state=closed)
+
 = 0.9.9 =
 * Configurable Products
 * Global image sizes can now be declared from the panel.

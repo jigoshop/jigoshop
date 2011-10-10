@@ -89,8 +89,15 @@ if (!function_exists('jigoshop_get_sidebar')) {
 if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 	function jigoshop_template_loop_add_to_cart( $post, $_product ) {
 		
+		
 		// do not show "add to cart" button if product's price isn't announced
-		if( $_product->get_price() === '') return;
+		if( $_product->get_price() === '' AND ! ($_product->is_type('variable') OR $_product->is_type('grouped')) ) return;
+		
+		// TODO: this could use refactoring / cleaning up
+		if( $_product->is_type('variable') OR $_product->is_type('grouped') ) {
+			echo '<a href="'. get_permalink($_product->id).'" class="button">'.__('Select', 'jigoshop').'</a>';
+			return;
+		}
 		
 		?><a href="<?php echo $_product->add_to_cart_url(); ?>" class="button"><?php _e('Add to cart', 'jigoshop'); ?></a><?php
 	}
@@ -381,16 +388,18 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 
 			<table class="variations" cellspacing="0">
 				<tbody>
-				<?php foreach ($attributes as $aname => $aoptions):?>
+				<?php foreach ( $attributes as $aname => $avalues ): ?>
                     <tr>
-                        <td><label for="<?php echo sanitize_title($aname); ?>"><?php echo ucfirst($aname)?></label></td>
-                        <td><select id="<?php echo sanitize_title($aname); ?>" name="tax_<?php echo sanitize_title($aname); ?>">
-                                <option value=""><?php echo __('Choose an option', 'jigoshop') ?>&hellip;</option>
-                                <?php if(is_array($aoptions)): ?>
-                                    <?php foreach($aoptions as $option): ?>
-                                <option><?php echo $option; ?></option>
-                                    <?php endforeach;?>
-                                <?php endif;?>
+                    	<?php $sanitized_name = sanitize_title( $aname ); ?>
+                        <td><label for="<?php echo $sanitized_name; ?>"><?php echo $aname; ?></label></td>
+                        <td><select id="<?php echo $sanitized_name; ?>" name="tax_<?php echo $sanitized_name; ?>">
+							<option value=""><?php echo __('Choose an option', 'jigoshop') ?>&hellip;</option>
+							<?php if ( taxonomy_exists( 'pa_'.$sanitized_name )) : ?>
+								<?php $terms = get_terms( 'pa_'.$sanitized_name, array( 'orderby' => 'slug', 'hide_empty' => '0' ) ); ?>
+								<?php foreach ( $terms as $term ): ?>
+									<option value="<?php echo $term->slug; ?>"><?php echo $term->name; ?></option>
+								<?php endforeach;?>
+							<?php endif;?>
                         </td>
                     </tr>
 	
@@ -513,7 +522,7 @@ if (!function_exists('jigoshop_get_product_thumbnail')) {
 
 /**
  * Jigoshop Product Image Placeholder
- * @since 1.0
+ * @since 0.9.9
  **/
 if (!function_exists('jigoshop_get_image_placeholder')) {
 	function jigoshop_get_image_placeholder( $size = 'shop_small' ) {
@@ -871,7 +880,7 @@ if (!function_exists('jigoshop_breadcrumb')) {
  */
 function jigoshop_body_classes ($classes) {
 
-	if( ! is_jigoshop() ) return $classes;
+	if( ! is_content_wrapped() ) return $classes;
 
 	$key = array_search('singular', $classes);
 	if ( $key !== false ) unset($classes[$key]);
