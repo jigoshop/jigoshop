@@ -155,15 +155,15 @@ function jigoshop_create_single_page( $page_slug, $page_option, $page_data ) {
 		if ( $create_page ) :
 			$page_data['post_name'] = $slug;
 			$page_options_id = wp_insert_post( $page_data );
+			update_option( $page_option, $page_options_id );
 		endif;
-        update_option( $page_option, $page_options_id );
     }
     else
     {
     	if ( $page_options_id == "" ) :
-    		update_option('jigoshop_shop_page_id', $page_found);
+    		update_option( $page_option, $page_found );
     	else :
-    		// we have the slug page, another page may be actual page (eg: 'shop|store|etc') in options.
+    		// we have the slug page, another page may be actual page in options (eg: 'shop|store|etc').
     		// Do we need to check for that page.
     	endif;
     }
