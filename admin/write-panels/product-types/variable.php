@@ -54,20 +54,30 @@ function variable_product_type_options() {
 						<?php
 							foreach ($attributes as $attribute) :
 								
-								if ( $attribute['variation']!=='yes' ) continue;
+								if ( $attribute['variation'] !== 'yes' ) continue;
 								
 								$options = $attribute['value'];
 								$value = get_post_meta( $variation->ID, 'tax_' . sanitize_title($attribute['name']), true );
 								
-								if (!is_array($options)) $options = explode(',', $options);
+								$custom_attribute = false;
+								if ( ! is_array( $options )) :
+									$options = explode( ',', $options );
+									$custom_attribute = true;
+								endif;
 								
-								echo '<select name="tax_' . sanitize_title($attribute['name']) . '['.$loop.']"><option value="">'.__('Any ', 'jigoshop').$attribute['name'].'&hellip;</option>';
+								echo '<select name="tax_' . sanitize_title($attribute['name']) . '['.$loop.']"><option value="">'.__('Any ', 'jigoshop').$attribute['name'].' &hellip;</option>';
 								
 								foreach ( $options as $option ) :
-									$option = trim( $option );
-									echo '<option ';
-									selected( $value, $option );
-									echo ' value="'.$option.'">'.get_term_by( 'slug', $option, 'pa_'.strtolower( sanitize_title($attribute['name']) ))->name.'</option>';
+									if ( $custom_attribute ) :
+										$prettyname = $option;
+									else :
+										$prettyname = get_term_by( 'slug', $option, 'pa_'.sanitize_title( $attribute['name'] ))->name;
+									endif;
+									$option = sanitize_title( $option ); /* custom attributes need sanitizing */
+									$output = '<option ';
+									$output .= selected( $value, $option );
+									$output .= ' value="'.$option.'">'.$prettyname.'</option>';
+									echo $output;
 								endforeach;	
 								
 								echo '</select>';

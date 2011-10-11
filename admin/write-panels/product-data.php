@@ -265,7 +265,7 @@ function jigoshop_product_data_box() {
 						<?php
 							$attribute_taxonomies = jigoshop::getAttributeTaxonomies();
 							$attributes = get_post_meta($post->ID, 'product_attributes', true);
-
+							
 							$i = -1;
 							
 							// Taxonomies
@@ -368,6 +368,10 @@ function jigoshop_product_data_box() {
 									</td>
 									<td>
 										<input type="text" name="attribute_names[<?php echo $i; ?>]" value="<?php echo $attribute['name']; ?>" />
+										<?php
+										//	we don't set this a a taxonomy? value="0" -JAP-
+										//	yet it could be if custom text attribute is used for a variation?
+										?>
 										<input type="hidden" name="attribute_is_taxonomy[<?php echo $i; ?>]" value="0" />
 									</td>
 									<td><input type="text" name="attribute_values[<?php echo $i; ?>]" value="<?php echo $attribute['value']; ?>" /></td>
