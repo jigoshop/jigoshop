@@ -136,18 +136,18 @@ function jigoshop_filter_catalog_query( $request ) {
         	$request['post_status'] = 'publish';
         	$request['posts_per_page'] = apply_filters( 'loop_shop_per_page', get_option( 'jigoshop_catalog_per_page' ));
 			
+			// establish any filters for orderby, order and anything else added to the filter
+			$filters = array();
+			$filters = apply_filters( 'loop-shop-query', $filters );
+			foreach( $filters as $key => $value ) :
+				$request[$key] = $value;
+			endforeach;
+			
 			// modify the query for specific product ID's for layered nav and price filter widgets
 			$request['post__in'] = apply_filters( 'loop-shop-posts-in', $all_post_ids );
 		endif;
 		
 		$request['meta_query'] = jigoshop_filter_meta_query( $this_query );
-		
-		// establish any filters for orderby, order and anything else added to the filter
-		$filters = array();
-		$filters = apply_filters( 'loop-shop-query', $filters );
-		foreach( $filters as $key => $value ) :
-			$request[$key] = $value;
-		endforeach;
 		
 	endif;
 	

@@ -371,6 +371,7 @@ function jigoshop_product_data_box() {
 										<?php
 										//	we don't set this a a taxonomy? value="0" -JAP-
 										//	yet it could be if custom text attribute is used for a variation?
+										//	because it's not a tax, we have no way to get the Pretty name on the front end
 										?>
 										<input type="hidden" name="attribute_is_taxonomy[<?php echo $i; ?>]" value="0" />
 									</td>
