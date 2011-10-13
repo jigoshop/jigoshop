@@ -74,9 +74,8 @@ class Jigoshop_Widget_Cart extends WP_Widget {
                     echo '<li><a href="' . get_permalink($_product->id) . '">';
 					
 					// Print the product thumbnail image if exists else display placeholder
-                    echo (has_post_thumbnail($_product->id))
-                    		? get_the_post_thumbnail($_product->id, 'shop_tiny') 
-                    		: jigoshop_get_image_placeholder( 'shop_tiny' );
+                    if (has_post_thumbnail($_product->id))
+                    		echo get_the_post_thumbnail($_product->id, 'shop_tiny');
 
 					// Print the product title
                     echo apply_filters('jigoshop_cart_widget_product_title', $_product->get_title(), $_product);

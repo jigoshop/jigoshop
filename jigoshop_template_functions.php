@@ -131,10 +131,10 @@ if (!function_exists('jigoshop_show_product_images')) {
 
 		global $_product, $post;
 
-		echo '<div class="images">';
 
 		$thumb_id = 0;
 		if (has_post_thumbnail()) :
+			echo '<div class="images">';
 			$thumb_id = get_post_thumbnail_id();
 			// since there are now user settings for sizes, shouldn't need filters -JAP-
 			//$large_thumbnail_size = apply_filters('single_product_large_thumbnail_size', 'shop_large');
@@ -142,13 +142,11 @@ if (!function_exists('jigoshop_show_product_images')) {
 			echo '<a href="'.wp_get_attachment_url($thumb_id).'" class="zoom" rel="thumbnails">';
 			the_post_thumbnail($large_thumbnail_size);
 			echo '</a>';
-		else :
-			echo jigoshop_get_image_placeholder( 'shop_large' );
+			do_action('jigoshop_product_thumbnails');
+
+			echo '</div>';
 		endif;
 
-		do_action('jigoshop_product_thumbnails');
-
-		echo '</div>';
 
 	}
 }
@@ -515,19 +513,6 @@ if (!function_exists('jigoshop_get_product_thumbnail')) {
 
 		if ( has_post_thumbnail() )
 			return get_the_post_thumbnail($post->ID, $size);
-		else
-			return jigoshop_get_image_placeholder( $size );
-	}
-}
-
-/**
- * Jigoshop Product Image Placeholder
- * @since 0.9.9
- **/
-if (!function_exists('jigoshop_get_image_placeholder')) {
-	function jigoshop_get_image_placeholder( $size = 'shop_small' ) {
-		$image_size = jigoshop_get_image_size( $size );
-		return '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.$image_size[0].'px" height="'.$image_size[1].'px" />';
 	}
 }
 

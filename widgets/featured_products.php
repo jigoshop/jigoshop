@@ -111,7 +111,7 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 				echo '<li>';
 					// Print the product image & title with a link to the permalink
 					echo '<a href="'.get_permalink().'" title="'.esc_attr(get_the_title()).'">';
-					echo (has_post_thumbnail()) ? the_post_thumbnail('shop_tiny') : jigoshop_get_image_placeholder('shop_tiny');
+					if (has_post_thumbnail()) echo the_post_thumbnail('shop_tiny');
 					echo the_title();
 					echo '</a>';
 
