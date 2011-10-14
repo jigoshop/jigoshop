@@ -58,7 +58,7 @@
 				<td><?php echo jigoshop_cart::get_cart_subtotal(); ?></td>
 			</tr>
 			
-			<?php  if (jigoshop_cart::needs_shipping()) : ?>
+			<?php  if (jigoshop_cart::needs_shipping()) : ?><tr>
 				<td colspan="2"><?php _e('Shipping', 'jigoshop'); ?></td>
 				<td>
 				<?php
@@ -101,8 +101,7 @@
 					endif;
 			
 				?></td>
-
-			<?php endif; ?>
+			</tr><?php endif; ?>
 			
 			<?php if (jigoshop_cart::get_cart_tax()) : ?><tr>
 				<td colspan="2"><?php _e('Tax', 'jigoshop'); ?></td>
