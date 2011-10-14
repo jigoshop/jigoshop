@@ -184,7 +184,8 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'type' 		=> 'select',
 		'options' => array(
 			'no'  => __('No', 'jigoshop'),
-			'yes' => __('Yes', 'jigoshop')
+			'yes' => __('Yes', 'jigoshop'),
+      'cart' => __('Redirect to Cart', 'jigoshop'),
 		)
 	),
 	
