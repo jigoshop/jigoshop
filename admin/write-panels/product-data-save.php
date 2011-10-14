@@ -19,7 +19,7 @@
 
 add_action('jigoshop_process_product_meta', 'jigoshop_process_product_meta', 1, 2);
 
-//@this needs refactoring pretty bad
+//@this needs refactoring pretty bad  -- (really bad -JAP-)
 function jigoshop_process_product_meta( $post_id, $post ) {
 	global $wpdb;
 
@@ -53,56 +53,56 @@ function jigoshop_process_product_meta( $post_id, $post ) {
     $attributes = array();
 		
 		if (isset($_POST['attribute_names'])) :
-			 $attribute_names = $_POST['attribute_names'];
-			 if (isset($_POST['attribute_values'])) $attribute_values = $_POST['attribute_values'];
-			 else $attribute_values = null;
-			 if (isset($_POST['attribute_visibility'])) $attribute_visibility = $_POST['attribute_visibility'];
-			 if (isset($_POST['attribute_variation'])) $attribute_variation = $_POST['attribute_variation'];
-			 $attribute_is_taxonomy = $_POST['attribute_is_taxonomy'];
-			 $attribute_position = $_POST['attribute_position'];
-	
-			 for ($i=0; $i<sizeof($attribute_names); $i++) :
-			 	if (!($attribute_names[$i])) continue;
-			 	if (isset($attribute_visibility[$i])) $visible = 'yes'; else $visible = 'no';
-			 	if (isset($attribute_variation[$i])) $variation = 'yes'; else $variation = 'no';
-			 	if ($attribute_is_taxonomy[$i]) $is_taxonomy = 'yes'; else $is_taxonomy = 'no';
-			 	
-			 	if (is_array($attribute_values[$i])) :
-			 		$attribute_values[$i] = array_map('htmlspecialchars', array_map('stripslashes', $attribute_values[$i]));
-			 	else :
-			 		$attribute_values[$i] = trim(htmlspecialchars(stripslashes($attribute_values[$i])));
-			 	endif;
-			 	
-			 	if (empty($attribute_values[$i]) || ( is_array($attribute_values[$i]) && sizeof($attribute_values[$i])==0) ) :
-			 		if ($is_taxonomy=='yes' && taxonomy_exists('pa_'.sanitize_title($attribute_names[$i]))) :
-			 			wp_set_object_terms( $post_id, 0, 'pa_'.sanitize_title($attribute_names[$i]) );
-			 		endif;
-			 		continue;
-			 	endif;
-			 	
-			 	$attributes[ sanitize_title( $attribute_names[$i] ) ] = array(
-			 		'name' => htmlspecialchars(stripslashes($attribute_names[$i])), 
-			 		'value' => $attribute_values[$i],
-			 		'position' => $attribute_position[$i],
-			 		'visible' => $visible,
-			 		'variation' => $variation,
-			 		'is_taxonomy' => $is_taxonomy
-			 	);
-			 	
-			 	if ($is_taxonomy=='yes') :
-			 		// Update post terms
-			 		$tax = $attribute_names[$i];
-			 		$value = $attribute_values[$i];
-			 		
-			 		if (taxonomy_exists('pa_'.sanitize_title($tax))) :
-			 			
-			 			wp_set_object_terms( $post_id, $value, 'pa_'.sanitize_title($tax) );
-			 			
-			 		endif;
-			 		
-			 	endif;
-			 	
-			 endfor; 
+			$attribute_names = $_POST['attribute_names'];
+			if (isset($_POST['attribute_values'])) $attribute_values = $_POST['attribute_values'];
+			else $attribute_values = null;
+			if (isset($_POST['attribute_visibility'])) $attribute_visibility = $_POST['attribute_visibility'];
+			if (isset($_POST['attribute_variation'])) $attribute_variation = $_POST['attribute_variation'];
+			$attribute_is_taxonomy = $_POST['attribute_is_taxonomy'];
+			$attribute_position = $_POST['attribute_position'];
+			
+			for ($i=0; $i<sizeof($attribute_names); $i++) :
+				if (!($attribute_names[$i])) continue;
+				if (isset($attribute_visibility[$i])) $visible = 'yes'; else $visible = 'no';
+				if (isset($attribute_variation[$i])) $variation = 'yes'; else $variation = 'no';
+				if ($attribute_is_taxonomy[$i]) $is_taxonomy = 'yes'; else $is_taxonomy = 'no';
+				
+				if (is_array($attribute_values[$i])) :
+					$attribute_values[$i] = array_map('htmlspecialchars', array_map('stripslashes', $attribute_values[$i]));
+				else :
+					$attribute_values[$i] = trim(htmlspecialchars(stripslashes($attribute_values[$i])));
+				endif;
+				
+				if (empty($attribute_values[$i]) || ( is_array($attribute_values[$i]) && sizeof($attribute_values[$i])==0) ) :
+					if ($is_taxonomy=='yes' && taxonomy_exists('pa_'.sanitize_title($attribute_names[$i]))) :
+						wp_set_object_terms( $post_id, 0, 'pa_'.sanitize_title($attribute_names[$i]) );
+					endif;
+					continue;
+				endif;
+				
+				$attributes[ sanitize_title( $attribute_names[$i] ) ] = array(
+					'name' => htmlspecialchars(stripslashes($attribute_names[$i])), 
+					'value' => $attribute_values[$i],
+					'position' => $attribute_position[$i],
+					'visible' => $visible,
+					'variation' => $variation,
+					'is_taxonomy' => $is_taxonomy
+				);
+				
+				if ($is_taxonomy=='yes') :
+					// Update post terms
+					$tax = $attribute_names[$i];
+					$value = $attribute_values[$i];
+					
+					if (taxonomy_exists('pa_'.sanitize_title($tax))) :
+						
+						wp_set_object_terms( $post_id, $value, 'pa_'.sanitize_title($tax) );
+						
+					endif;
+					
+				endif;
+				
+			endfor; 
 		endif;	
 		
 		if (!function_exists('attributes_cmp')) {
@@ -114,7 +114,7 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 			}
 		}
 		uasort($attributes, 'attributes_cmp');
-
+		
 		// Product type
 		$product_type = sanitize_title( stripslashes( $_POST['product-type'] ) );
 		if( !$product_type ) $product_type = 'simple';

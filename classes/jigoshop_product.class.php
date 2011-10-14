@@ -705,10 +705,10 @@ class jigoshop_product {
 
                 //check attributes of all variations that are visible (enabled)
                 if ($variation instanceof jigoshop_product_variation && $variation->is_visible()) {
-                    $attributes = $variation->get_variation_attributes();
-
-                    if (is_array($attributes)) {
-                        foreach ($attributes as $aname => $avalue) {
+                    $options = $variation->get_variation_attributes();
+					
+                    if (is_array($options)) {
+                        foreach ($options as $aname => $avalue) {
                             if ($aname == $name) {
                                 $values[] = $avalue;
                             }
@@ -720,11 +720,10 @@ class jigoshop_product {
             //empty value indicates that all options for given attribute are available
             if(in_array('', $values)) {
                 $options = $attribute['value'];
-						
                 if (!is_array($options)) {
                     $options = explode(',', $options);
                 }
-                
+				
                 $values = $options;
             }
               

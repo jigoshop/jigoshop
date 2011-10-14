@@ -196,7 +196,7 @@ jQuery(function(){
             }
             // if they are all disabled, we should enable all of them? -JAP-
             if ( jQuery(current_attr_select+':disabled').size() == current_attr_select.find('option:gt(0)').size() ) {
-            	current_attr_select.find('option:gt(0)').removeAttr('disabled');
+           		current_attr_select.find('option:gt(0)').removeAttr('disabled');
             }
         }
         
