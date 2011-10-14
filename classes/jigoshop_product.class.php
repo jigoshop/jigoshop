@@ -15,24 +15,22 @@
  * @license    http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_product {
-
+	
+	// reseting these all to public for now, fatal errors from certain places that direct access
+	// the whole class needs refactoring  -JAP-
 	public $id;
 	public $exists;
 	public $data;
 	public $sku;
-	protected $attributes;
-	private $post;
+	public $attributes;
+	public $post;
 	public $stock;
 	public $children;
-	protected $visibility;
+	public $visibility;
 	public $product_type;
-	protected $price;
-    protected $sale_price;
+	public $price;
+    public $sale_price;
     
-    //@fixme are these two variables ever used?  --  (No  -JAP-)
-//	var $sale_price_dates_to;
-//	var $sale_price_dates_from;
-
 	/**
 	 * Loads all product data from custom fields
 	 *
