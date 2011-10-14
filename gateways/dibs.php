@@ -135,6 +135,8 @@ class dibs extends jigoshop_payment_gateway {
 			'CHF' => '756', // Swiss Franc
 			'TRY' => '949', // Turkish Lire
 		);
+		// filter redirect page
+		$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', get_option( 'jigoshop_thanks_page_id' ) );
 		
 		$args =
 			array(
@@ -156,7 +158,7 @@ class dibs extends jigoshop_payment_gateway {
 				'callbackurl' => site_url('/jigoshop/dibscallback.php'),
 				
 				// TODO these urls will not work correctly since DIBS ignores the querystring
-				'accepturl' => add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink(get_option('jigoshop_thanks_page_id')))),
+				'accepturl' => add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink($checkout_redirect))),
 				'cancelurl' => $order->get_cancel_order_url(),
 				
 		);

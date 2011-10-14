@@ -151,6 +151,9 @@ class paypal extends jigoshop_payment_gateway {
 			);
 		endif;		
 		
+		// filter redirect page
+		$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', get_option( 'jigoshop_thanks_page_id' ) );
+		
 		$paypal_args = array_merge(
 			array(
 				'cmd' 					=> '_cart',
@@ -160,7 +163,7 @@ class paypal extends jigoshop_payment_gateway {
 				'charset' 				=> 'UTF-8',
 				'rm' 					=> 2,
 				'upload' 				=> 1,
-				'return' 				=> add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink(get_option('jigoshop_thanks_page_id')))),
+				'return' 				=> add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink( $checkout_redirect ))),
 				'cancel_return'			=> $order->get_cancel_order_url(),
 				//'cancel_return'			=> home_url(),
 				

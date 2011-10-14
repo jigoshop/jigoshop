@@ -18,11 +18,11 @@
  */
 class jigoshop_checkout {
 	
-	var $posted;
-	var $billing_fields;
-	var $shipping_fields;
-	var $must_create_account;
-	var $creating_account;
+	private $posted;
+	private $billing_fields;
+	private $shipping_fields;
+	private $must_create_account;
+	private $creating_account;
 	
 	protected static $instance;
 	
@@ -643,12 +643,13 @@ class jigoshop_checkout {
 						jigoshop_cart::empty_cart();
 						
 						// Redirect to success/confirmation/payment page
+						$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', get_option( 'jigoshop_thanks_page_id' ) );
 						if (is_ajax()) : 
 							ob_clean();
-							echo json_encode( array('redirect'	=> get_permalink(get_option('jigoshop_thanks_page_id'))) );
+							echo json_encode( array( 'redirect'	=> get_permalink( $checkout_redirect ) ) );
 							exit;
 						else :
-							wp_safe_redirect( get_permalink(get_option('jigoshop_thanks_page_id')) );
+							wp_safe_redirect( get_permalink( $checkout_redirect ) );
 							exit;
 						endif;
 						
