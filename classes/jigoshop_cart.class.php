@@ -17,15 +17,16 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
-class jigoshop_cart {
 
-	private static $_instance;
+require_once 'abstract/jigoshop_singleton.php';
+
+class jigoshop_cart extends jigoshop_singleton {
+
 	public static $cart_contents_total;
 	public static $cart_contents_total_ex_tax;
 	public static $cart_contents_weight;
 	public static $cart_contents_count;
 	public static $cart_contents_tax;
-	public static $cart_contents;
 	public static $cart_dl_count;
 	public static $cart_contents_total_ex_dl;
 	public static $total;
@@ -36,34 +37,23 @@ class jigoshop_cart {
 	public static $shipping_total;
 	public static $shipping_tax_total;
 	public static $applied_coupons;
+	public static $cart_contents;
 
 	/** constructor */
-	function __construct() {
-		add_action('init', array($this, 'init'), 1);
-	}
-
-	/** get class instance */
-	public static function get() {
-        if (!isset(self::$_instance)) {
-            $c = __CLASS__;
-            self::$_instance = new $c;
-        }
-        return self::$_instance;
-    }
-
-    public function init () {
-  		self::$applied_coupons = array();
-
+	protected function __construct() {
+	
 		self::get_cart_from_session();
+
+  		self::$applied_coupons = array();
 
 		if ( isset($_SESSION['coupons']) ) self::$applied_coupons = $_SESSION['coupons'];
 		
 		self::calculate_totals();
-    }
-
+	}
+	
 	/** Gets the cart data from the PHP session */
 	function get_cart_from_session() {
-
+	
 		if ( isset($_SESSION['cart']) && is_array($_SESSION['cart']) ) :
 			$cart = $_SESSION['cart'];
 			
@@ -120,7 +110,7 @@ class jigoshop_cart {
      * @return int|null
      */
 	function find_product_in_cart($product_id, $variation_id, $variation = array()) {
-
+	
         foreach (self::$cart_contents as $cart_item_key => $cart_item) {
             if (empty($variation_id) && $cart_item['product_id'] == $product_id) {
                     return $cart_item_key;
@@ -143,7 +133,7 @@ class jigoshop_cart {
      * @param   array   variation attribute values
 	 */
 	function add_to_cart( $product_id, $quantity = 1, $variation_id = '', $variation = array()) {
-        
+	
         if ($quantity < 0) {
             $quantity = 0;
         }

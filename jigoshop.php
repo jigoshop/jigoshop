@@ -98,7 +98,7 @@ $jigoshop 					= jigoshop::get();
 $jigoshop_customer 			= jigoshop_customer::get();				// Customer class, sorts out session data such as location
 $jigoshop_shipping 			= jigoshop_shipping::get();				// Shipping class. loads and stores shipping methods
 $jigoshop_payment_gateways 	= jigoshop_payment_gateways::get();		// Payment gateways class. loads and stores payment methods
-$jigoshop_cart 				= jigoshop_cart::get();					// Cart class, stores the cart contents
+$jigoshop_cart 				= jigoshop_cart::instance();			// Cart class, stores the cart contents
 
 // Constants
 if (!defined('JIGOSHOP_USE_CSS')) :
