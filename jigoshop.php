@@ -574,6 +574,7 @@ function jigoshop_force_ssl_images( $content ) {
 	return $content;
 }
 
+// http://www.xe.com/symbols.php
 function get_jigoshop_currency_symbol() {
 	$currency = get_option('jigoshop_currency');
 	$currency_symbol = '';
@@ -589,6 +590,7 @@ function get_jigoshop_currency_symbol() {
 		
 		case 'EUR' : $currency_symbol = '&euro;'; break; /* European Euro */
 		case 'IDR' : $currency_symbol = '&#82;&#112;'; break; /* Indonesia Rupiah */
+		case 'HUF' : $currency_symbol = '&#70;&#116;'; break; /* Hungary Forint */
 		case 'JPY' : $currency_symbol = '&yen;'; break; /* Japanese Yen */
 		case 'RUB' : $currency_symbol = '&#1088;&#1091;&#1073;'; break; /* Russia Ruble */
 		case 'TRY' : $currency_symbol = '&#8356;'; break; /* Turkey Lira */
@@ -596,7 +598,6 @@ function get_jigoshop_currency_symbol() {
 		case 'CHF' :
 		case 'CZK' :
 		case 'DKK' :
-		case 'HUF' :
 		case 'ILS' :
 		case 'MYR' :
 		case 'NOK' :
