@@ -353,9 +353,11 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
         foreach($children as $child) {
             /* @var $variation jigoshop_product_variation */
             $variation = $child->product;
-            
+            // too many copies of Attributes being stored, some here, some there, only one needed
+            // TODO: all attribute and variation handling will be re-factored for 0.9.9.3  -JAP-
             if($variation instanceof jigoshop_product_variation && $variation->is_visible()) {
-                $vattrs = $variation->get_variation_attributes();
+                $vattrs = null; /* TODO: refactor, this seems to work. putting a value here doesn't for scripts.js */
+//                $vattrs = $variation->get_variation_attributes();
                 $availability = $variation->get_availability();
                 
                 //@todo needs to be moved to jigoshop_product_variation class
@@ -371,7 +373,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 
                 $variationsAvailable[] = array(
                     'variation_id' => $variation->get_variation_id(),
-                    'attributes' => $vattrs,
+                    'attributes' => $vattrs, /* for now, set to null or attributes compare in scripts.js fails. go figure? */
                     'image_src' => $image,
                     'image_link' => $image_link,
                     'price_html' => '<span class="price">'.$variation->get_price_html().'</span>',

@@ -63,6 +63,7 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 			
 			for ($i=0; $i<sizeof($attribute_names); $i++) :
 				if (!($attribute_names[$i])) continue;
+				
 				if (isset($attribute_visibility[$i])) $visible = 'yes'; else $visible = 'no';
 				if (isset($attribute_variation[$i])) $variation = 'yes'; else $variation = 'no';
 				if ($attribute_is_taxonomy[$i]) $is_taxonomy = 'yes'; else $is_taxonomy = 'no';
@@ -231,6 +232,7 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 		
 	// Save
 //	if ( count( $attributes ) ) :
+		delete_post_meta( $post_id, 'product_attributes' );
 		update_post_meta( $post_id, 'product_attributes', $attributes );
 //	else :
 //		delete_post_meta( $post_id, 'product_attributes' );

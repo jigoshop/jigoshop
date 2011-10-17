@@ -271,7 +271,7 @@ function jigoshop_product_data_box() {
 							// Taxonomies
 							if ( $attribute_taxonomies ) :
 						    	foreach ($attribute_taxonomies as $tax) : $i++;
-						    							    	
+									
 						    		$attribute_nicename = sanitize_title($tax->attribute_name);
 						    		if (isset($attributes[$attribute_nicename])) $attribute = $attributes[$attribute_nicename];
 
@@ -345,9 +345,9 @@ function jigoshop_product_data_box() {
 										<td class="center visibility"><input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['visible'] : 0 ), true); ?> name="attribute_visibility[<?php echo $i; ?>]" value="1" /></td>
 
 										<?php if ($tax->attribute_type=="select") : // always disable variation for select elements ?>
-										<td class="center variation"><input type="checkbox" disabled="disabled" /></td>
+											<td class="center variation"><input type="checkbox" disabled="disabled" /></td>
 										<?php else: ?>
-										<td class="center variation"><input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['variation'] : 0 ), true); ?> name="attribute_variation[<?php echo $i; ?>]" value="1" /></td>
+											<td class="center variation"><input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['variation'] : 0 ), true); ?> name="attribute_variation[<?php echo $i; ?>]" value="1" /></td>
 										<?php endif; ?>
 
 										<td class="center hiderow"><button type="button" class="hide_row button">&times;</button></td>
