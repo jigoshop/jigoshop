@@ -14,9 +14,11 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
-class jigoshop {
+
+require_once 'abstract/jigoshop_singleton.php';
+
+class jigoshop extends jigoshop_singleton {
 	
-	private static $_instance;
 	private static $_cache;
 	
 	public static $errors = array();
@@ -36,28 +38,17 @@ class jigoshop {
 	const SHOP_LARGE_H = '300';
 
 	/** constructor */
-	private function __construct () {		
-		// Vars
+	protected function __construct() {		
+		
 		if (isset($_SESSION['errors'])) self::$errors = $_SESSION['errors'];
 		if (isset($_SESSION['messages'])) self::$messages = $_SESSION['messages'];
 		
 		unset($_SESSION['messages']);
 		unset($_SESSION['errors']);
 		
-		// Hooks
-		add_filter('wp_redirect', array(&$this, 'redirect'), 1, 2);
+		// uses jigoshop_base_class to provide class address for the filter
+		self::add_filter( 'wp_redirect', 'redirect', 1, 2 );
 	}
-    
-    private function __clone(){}
-	
-	/** get */
-	public static function get() {
-        if (!isset(self::$_instance)) {
-            $c = __CLASS__;
-            self::$_instance = new $c;
-        }
-        return self::$_instance;
-    }
     
     /**
      * Get attribute taxonomies. Taxonomies are lazy loaded.
@@ -135,17 +126,17 @@ class jigoshop {
 	 *
 	 * @param   string	error
 	 */
-	function add_error( $error ) { self::$errors[] = $error; }
+	public static function add_error( $error ) { self::$errors[] = $error; }
 	
 	/**
 	 * Add a message
 	 *
 	 * @param   string	message
 	 */
-	function add_message( $message ) { self::$messages[] = $message; }
+	public static function add_message( $message ) { self::$messages[] = $message; }
 	
 	/** Clear messages and errors from the session data */
-	function clear_messages() {
+	public static function clear_messages() {
 		self::$errors = self::$messages = array();
 		unset($_SESSION['messages']);
 		unset($_SESSION['errors']);
@@ -156,14 +147,14 @@ class jigoshop {
 	 *
 	 * @return   int
 	 */
-	function error_count() { return sizeof(self::$errors); }
+	public static function error_count() { return sizeof(self::$errors); }
 	
 	/**
 	 * Get message count
 	 *
 	 * @return   int
 	 */
-	function message_count() { return sizeof(self::$messages); }
+	public static function message_count() { return sizeof(self::$messages); }
 	
 	/**
 	 * Output the errors and messages
@@ -185,7 +176,7 @@ class jigoshop {
 		endif;
 	}
 	
-	public static function nonce_field ($action, $referer = true , $echo = true) {
+	public static function nonce_field($action, $referer = true , $echo = true) {
 		
 		$name = '_n';
 		$action = 'jigoshop-' . $action;
@@ -194,7 +185,7 @@ class jigoshop {
 		
 	}
 	
-	public static function nonce_url ($action, $url = '') {
+	public static function nonce_url($action, $url = '') {
 		
 		$name = '_n';
 		$action = 'jigoshop-' . $action;
@@ -244,13 +235,13 @@ class jigoshop {
 	 * @param   status
 	 * @return  location
 	 */
-	function redirect( $location, $status ) {
+	public static function redirect( $location, $status = NULL ) {
 		$_SESSION['errors'] = self::$errors;
 		$_SESSION['messages'] = self::$messages;
 		return $location;
 	}
 	
-	static public function shortcode_wrapper ($function, $atts=array()) {
+	public static function shortcode_wrapper ($function, $atts=array()) {
 		if( $content = jigoshop::cache_get( $function . '-shortcode', $atts ) ) return $content;
 		
 		ob_start();
@@ -262,7 +253,7 @@ class jigoshop {
 	 * Cache API
 	 */
 	
-	public static function cache ( $id, $data, $args=array() ) {
+	public static function cache( $id, $data, $args=array() ) {
 
 		if( ! isset(self::$_cache[ $id ]) ) self::$_cache[ $id ] = array();
 		
@@ -272,7 +263,7 @@ class jigoshop {
 		return $data;
 		
 	}
-	public static function cache_get ( $id, $args=array() ) {
+	public static function cache_get( $id, $args=array() ) {
 
 		if( ! isset(self::$_cache[ $id ]) ) return null;
 		

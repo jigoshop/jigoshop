@@ -16,12 +16,13 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
-class jigoshop_customer {
-	
-	private static $_instance;
+
+require_once 'abstract/jigoshop_singleton.php';
+
+class jigoshop_customer extends jigoshop_singleton {
 	
 	/** constructor */
-	function __construct() {
+	protected function __construct() {
 		
 		if ( !isset($_SESSION['customer']) ) :
 			
@@ -47,15 +48,6 @@ class jigoshop_customer {
 		
 	}
 	
-	/** get class instance */
-	public static function get() {
-        if (!isset(self::$_instance)) {
-            $c = __CLASS__;
-            self::$_instance = new $c;
-        }
-        return self::$_instance;
-    }
-    
     /** Is customer outside base country? */
 	public static function is_customer_outside_base() {
 		if (isset($_SESSION['customer']['country'])) :

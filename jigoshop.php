@@ -68,7 +68,7 @@ include_once( 'shipping/shipping_method.class.php' );
 if (is_admin()) include_once( 'admin/jigoshop-admin.php' );
 
 /**
- * Include all classes, dro-ins and shipping/gateways modules
+ * Include all classes, drop-ins and shipping/gateways modules
  */
 $include_files = array();
 
@@ -92,10 +92,11 @@ if ($include_files) :
 	endforeach;
 endif;
 
-$jigoshop 					= jigoshop::get();
-
-// Init class singletons
-$jigoshop_customer 			= jigoshop_customer::get();				// Customer class, sorts out session data such as location
+// TODO: as of 0.9.9.2 and prior, Singletons are in use. -JAP-
+// These should be looked into being re-factored to allow for easier and more effective Unit Testing.
+// Dependency Injection:  http://components.symfony-project.org/dependency-injection/trunk/book/01-Dependency-Injection
+$jigoshop 					= jigoshop::instance();
+$jigoshop_customer 			= jigoshop_customer::instance();		// Customer class, sorts out session data such as location
 $jigoshop_shipping 			= jigoshop_shipping::get();				// Shipping class. loads and stores shipping methods
 $jigoshop_payment_gateways 	= jigoshop_payment_gateways::get();		// Payment gateways class. loads and stores payment methods
 $jigoshop_cart 				= jigoshop_cart::instance();			// Cart class, stores the cart contents
