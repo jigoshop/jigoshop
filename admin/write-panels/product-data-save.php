@@ -49,7 +49,7 @@ function jigoshop_process_product_meta( $post_id, $post ) {
         $data[$field_name] = stripslashes($field_value);
     }
 
-    // Attributes
+    // Attributes -- TODO: this needs refactoring -JAP- */
     $attributes = array();
 		
 		if (isset($_POST['attribute_names'])) :
@@ -68,12 +68,13 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 				if (isset($attribute_variation[$i])) $variation = 'yes'; else $variation = 'no';
 				if ($attribute_is_taxonomy[$i]) $is_taxonomy = 'yes'; else $is_taxonomy = 'no';
 				
-				if (is_array($attribute_values[$i])) :
-					$attribute_values[$i] = array_map('htmlspecialchars', array_map('stripslashes', $attribute_values[$i]));
-				else :
-					$attribute_values[$i] = trim(htmlspecialchars(stripslashes($attribute_values[$i])));
+				if ( ! empty( $attribute_values[$i] ) ) : /* for 'undefined' suppressions, shouldn't need this, but ... */
+					if (is_array($attribute_values[$i])) :
+						$attribute_values[$i] = array_map('htmlspecialchars', array_map('stripslashes', $attribute_values[$i]));
+					else :
+						$attribute_values[$i] = trim(htmlspecialchars(stripslashes($attribute_values[$i])));
+					endif;
 				endif;
-				
 				if (empty($attribute_values[$i]) || ( is_array($attribute_values[$i]) && sizeof($attribute_values[$i])==0) ) :
 					if ($is_taxonomy=='yes' && taxonomy_exists('pa_'.sanitize_title($attribute_names[$i]))) :
 						wp_set_object_terms( $post_id, 0, 'pa_'.sanitize_title($attribute_names[$i]) );
