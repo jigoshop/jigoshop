@@ -279,7 +279,7 @@ class jigoshop_cart extends jigoshop_singleton {
 	/** looks through the cart to see if shipping is actually required */
 	function needs_shipping() {
 
-		if (!jigoshop_shipping::$enabled) return false;
+		if (!jigoshop_shipping::is_enabled()) return false;
 		if (!is_array(self::$cart_contents)) return false;
 
 		$needs_shipping = false;
@@ -435,9 +435,9 @@ class jigoshop_cart extends jigoshop_singleton {
 		// Cart Shipping
 		if (self::needs_shipping()) jigoshop_shipping::calculate_shipping(); else jigoshop_shipping::reset_shipping();
 		
-		self::$shipping_total = jigoshop_shipping::$shipping_total;
+		self::$shipping_total = jigoshop_shipping::get_total();
 
-		self::$shipping_tax_total = jigoshop_shipping::$shipping_tax;
+		self::$shipping_tax_total = jigoshop_shipping::get_tax();
 
 		self::$tax_total = self::$cart_contents_tax;
 
@@ -463,9 +463,9 @@ class jigoshop_cart extends jigoshop_singleton {
 
 		// Total
 		if (get_option('jigoshop_prices_include_tax')=='yes') :
-			self::$total = self::$subtotal + self::$shipping_tax_total - self::$discount_total + jigoshop_shipping::$shipping_total;
+			self::$total = self::$subtotal + self::$shipping_tax_total - self::$discount_total + jigoshop_shipping::get_total();
 		else :
-			self::$total = self::$subtotal + self::$tax_total + self::$shipping_tax_total - self::$discount_total + jigoshop_shipping::$shipping_total;
+			self::$total = self::$subtotal + self::$tax_total + self::$shipping_tax_total - self::$discount_total + jigoshop_shipping::get_total();
 		endif;
 
 		if (self::$total < 0) self::$total = 0;
@@ -531,12 +531,12 @@ class jigoshop_cart extends jigoshop_singleton {
 
 	/** gets the shipping total (after calculation) */
 	function get_cart_shipping_total() {
-		if (isset(jigoshop_shipping::$shipping_label)) :
-			if (jigoshop_shipping::$shipping_total>0) :
+		if ( jigoshop_shipping::get_label() ) :
+			if (jigoshop_shipping::get_total()>0) :
 
 				if (get_option('jigoshop_display_totals_tax')=='excluding') :
 
-					$return = jigoshop_price(jigoshop_shipping::$shipping_total);
+					$return = jigoshop_price(jigoshop_shipping::get_total());
 					if (self::$shipping_tax_total>0) :
 						$return .= __(' <small>(ex. tax)</small>', 'jigoshop');
 					endif;
@@ -544,7 +544,7 @@ class jigoshop_cart extends jigoshop_singleton {
 
 				else :
 
-					$return = jigoshop_price(jigoshop_shipping::$shipping_total + jigoshop_shipping::$shipping_tax);
+					$return = jigoshop_price(jigoshop_shipping::get_total() + jigoshop_shipping::get_tax());
 					if (self::$shipping_tax_total>0) :
 						$return .= __(' <small>(inc. tax)</small>', 'jigoshop');
 					endif;
@@ -560,8 +560,8 @@ class jigoshop_cart extends jigoshop_singleton {
 
 	/** gets title of the chosen shipping method */
 	function get_cart_shipping_title() {
-		if (isset(jigoshop_shipping::$shipping_label)) :
-			return __('via ','jigoshop') . jigoshop_shipping::$shipping_label;
+		if ( jigoshop_shipping::get_label() ) :
+			return __('via ','jigoshop') . jigoshop_shipping::get_label();
 		endif;
 		return false;
 	}

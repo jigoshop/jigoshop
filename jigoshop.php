@@ -55,12 +55,12 @@ include_once( 'jigoshop_templates.php' );
 include_once( 'jigoshop_template_actions.php' );
 include_once( 'jigoshop_emails.php' );
 include_once( 'jigoshop_query.php' );
-//include_once( 'jigoshop_cron.php' );	/* we may use this at some point, leaving -JAP- */
 include_once( 'jigoshop_actions.php' );
 include_once( 'gateways/gateways.class.php' );
 include_once( 'gateways/gateway.class.php' );
-include_once( 'shipping/shipping.class.php' );
+include_once( 'classes/jigoshop_shipping.class.php' );
 include_once( 'shipping/shipping_method.class.php' );
+//include_once( 'jigoshop_cron.php' );	/* we may use this at some point, leaving -JAP- */
 
 /**
  * Include admin area
@@ -97,7 +97,7 @@ endif;
 // Dependency Injection:  http://components.symfony-project.org/dependency-injection/trunk/book/01-Dependency-Injection
 $jigoshop 					= jigoshop::instance();
 $jigoshop_customer 			= jigoshop_customer::instance();		// Customer class, sorts out session data such as location
-$jigoshop_shipping 			= jigoshop_shipping::get();				// Shipping class. loads and stores shipping methods
+$jigoshop_shipping 			= jigoshop_shipping::instance();		// Shipping class. loads and stores shipping methods
 $jigoshop_payment_gateways 	= jigoshop_payment_gateways::get();		// Payment gateways class. loads and stores payment methods
 $jigoshop_cart 				= jigoshop_cart::instance();			// Cart class, stores the cart contents
 
@@ -140,7 +140,7 @@ function jigoshop_remove_post_type_thumbnail_support() {
  * Filters and hooks
  **/
 add_action('init', 'jigoshop_init', 0);
-add_action('plugins_loaded', 'jigoshop_shipping::init', 1); 		// Load shipping methods - some may be added by plugins
+add_action('plugins_loaded', 'jigoshop_shipping::method_inits', 1); // Load shipping methods - some may be added by plugins
 add_action('plugins_loaded', 'jigoshop_payment_gateways::init', 1); // Load payment methods - some may be added by plugins
 
 if (get_option('jigoshop_force_ssl_checkout')=='yes') add_action( 'wp_head', 'jigoshop_force_ssl');

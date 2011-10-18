@@ -584,7 +584,7 @@ if (!function_exists('jigoshop_related_products')) {
  **/
 if (!function_exists('jigoshop_shipping_calculator')) {
 	function jigoshop_shipping_calculator() {
-		if (jigoshop_shipping::$enabled && get_option('jigoshop_enable_shipping_calc')=='yes' && jigoshop_cart::needs_shipping()) :
+		if (jigoshop_shipping::is_enabled() && get_option('jigoshop_enable_shipping_calc')=='yes' && jigoshop_cart::needs_shipping()) :
 		?>
 		<form class="shipping_calculator" action="<?php echo jigoshop_cart::get_cart_url(); ?>" method="post">
 			<h2><a href="#" class="shipping-calculator-button"><?php _e('Calculate Shipping', 'jigoshop'); ?> <span>&darr;</span></a></h2>

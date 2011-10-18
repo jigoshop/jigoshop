@@ -14,42 +14,68 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */     
-class jigoshop_shipping {
+
+require_once 'abstract/jigoshop_singleton.php';
+
+class jigoshop_shipping extends jigoshop_singleton {
 	
-	private static $_instance;
+	protected static $enabled			= false;
+	protected static $shipping_methods 	= array();
+	protected static $chosen_method		= null;
+	protected static $shipping_total	= 0;
+	protected static $shipping_tax 		= 0;
+	protected static $shipping_label	= null;
 	
-	public static $enabled			= false;
-	public static $shipping_methods 	= array();
-	public static $chosen_method		= null;
-	public static $shipping_total 	= 0;
-	public static $shipping_tax 		= 0;
-	public static $shipping_label		= null;
 	
-    public static function init() {
+	/** Constructor */
+    protected function __construct() {
+    
+		if ( get_option('jigoshop_calc_shipping') != 'no' ) self::$enabled = true;
 		
-		if (get_option('jigoshop_calc_shipping')!='no') self::$enabled = true; 
+		// ensure low priority to force recalc after all shipping plugins are loaded
+		self::add_action( 'plugins_loaded', 'calculate_shipping', 999 );
+	}
+	
+	
+	/**
+	 * This is called from the 'plugins_loaded' action hook so shipping plugins can get hooked in.
+	 * After all plugins are loaded, our constructor will force recalculation of shipping to ensure
+	 *     that the Cart and Checkout properly show shipping on the first and subsequent passes.
+	 */
+    public static function method_inits() {
+    
+		do_action( 'jigoshop_shipping_init' ); /* loaded plugins for shipping inits */
 		
-		do_action('jigoshop_shipping_init');
-		
-		$load_methods = apply_filters('jigoshop_shipping_methods', array());
+		$load_methods = apply_filters( 'jigoshop_shipping_methods', array() );
 		
 		foreach ($load_methods as $method) :
-		
 			self::$shipping_methods[] = &new $method();
-			
 		endforeach;
 		
-	}
-    
-    public static function get() {
-        if (!isset(self::$_instance)) {
-            $c = __CLASS__;
-            self::$_instance = new $c;
-        }
-        return self::$_instance;
     }
+    
+    
+	public static function is_enabled() {
+		return self::$enabled;
+	}
 	
-	function get_available_shipping_methods() {
+	
+	public static function get_total() {
+		return self::$shipping_total;
+	}
+	
+	
+	public static function get_tax() {
+		return self::$shipping_tax;
+	}
+	
+	
+	public static function get_label() {
+		return self::$shipping_label;
+	}
+	
+	
+	public static function get_available_shipping_methods() {
 
 		if (self::$enabled=='yes') :
 		
@@ -66,7 +92,8 @@ class jigoshop_shipping {
 		endif;
 	}
 	
-	function reset_shipping_methods() {
+	
+	public static function reset_shipping_methods() {
 		foreach ( self::$shipping_methods as $method ) :
 			$method->chosen = false;
 			$method->shipping_total = 0;
@@ -74,7 +101,8 @@ class jigoshop_shipping {
 		endforeach;
 	}
 	
-	function calculate_shipping() {
+	
+	public static function calculate_shipping() {
 		
 		if (self::$enabled=='yes') :
 		
@@ -124,7 +152,8 @@ class jigoshop_shipping {
 		
 	}
 	
-	function reset_shipping() {
+	
+	public static function reset_shipping() {
 		self::$shipping_total = 0;
 		self::$shipping_tax = 0;
 		self::$shipping_label = null;
