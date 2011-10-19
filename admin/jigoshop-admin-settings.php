@@ -590,7 +590,7 @@ function jigoshop_admin_fields($options) {
 		            break;
 		            case "shipping_options" :
 
-		            	foreach (jigoshop_shipping::$shipping_methods as $method) :
+		            	foreach (jigoshop_shipping::get_all_methods() as $method) :
 
 		            		$method->admin_options();
 

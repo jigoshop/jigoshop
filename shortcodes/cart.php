@@ -31,7 +31,7 @@ function jigoshop_cart( $atts ) {
 	// Update Shipping
 	elseif (isset($_POST['calc_shipping']) && $_POST['calc_shipping'] && jigoshop::verify_nonce('cart')) :
 
-		unset($_SESSION['_chosen_method_id']);
+		unset($_SESSION['chosen_shipping_method_id']);
 		$country 	= $_POST['calc_shipping_country'];
 		$state 		= $_POST['calc_shipping_state'];
 

@@ -30,7 +30,7 @@
 		exit;
 	endif;
 	
-	if (isset($_POST['shipping_method'])) $_SESSION['_chosen_method_id'] = $_POST['shipping_method'];
+	if (isset($_POST['shipping_method'])) $_SESSION['chosen_shipping_method_id'] = $_POST['shipping_method'];
 	
 	if (isset($_POST['country'])) jigoshop_customer::set_country( $_POST['country'] );
 	if (isset($_POST['state'])) jigoshop_customer::set_state( $_POST['state'] );

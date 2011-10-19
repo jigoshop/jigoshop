@@ -30,7 +30,7 @@ class jigoshop_shipping extends jigoshop_singleton {
 	/** Constructor */
     protected function __construct() {
     
-		if ( get_option('jigoshop_calc_shipping') != 'no' ) self::$enabled = true;
+		if ( get_option( 'jigoshop_calc_shipping' ) != 'no' ) self::$enabled = true;
 		
 		// ensure low priority to force recalc after all shipping plugins are loaded
 		self::add_action( 'plugins_loaded', 'calculate_shipping', 999 );
@@ -48,7 +48,7 @@ class jigoshop_shipping extends jigoshop_singleton {
 		
 		$load_methods = apply_filters( 'jigoshop_shipping_methods', array() );
 		
-		foreach ($load_methods as $method) :
+		foreach ( $load_methods as $method ) :
 			self::$shipping_methods[] = &new $method();
 		endforeach;
 		
@@ -75,21 +75,27 @@ class jigoshop_shipping extends jigoshop_singleton {
 	}
 	
 	
+	public static function get_all_methods() {
+		return self::$shipping_methods;
+	}
+	
+	
 	public static function get_available_shipping_methods() {
-
-		if (self::$enabled=='yes') :
+	
+		$_available_methods = array();
 		
-			$_available_methods = array();
+		if ( self::$enabled == 'yes' ) :
 		
 			foreach ( self::$shipping_methods as $method ) :
 				
-				if ($method->is_available()) $_available_methods[$method->id] = $method;
+				if ( $method->is_available() ) $_available_methods[$method->id] = $method;
 				
 			endforeach;
-
-			return $_available_methods;
 			
 		endif;
+		
+		return $_available_methods;
+		
 	}
 	
 	
@@ -104,48 +110,46 @@ class jigoshop_shipping extends jigoshop_singleton {
 	
 	public static function calculate_shipping() {
 		
-		if (self::$enabled=='yes') :
+		if ( self::$enabled == 'yes' ) :
 		
+			self::reset_shipping_methods();
+			
 			self::$shipping_total = 0;
 			self::$shipping_tax = 0;
 			self::$shipping_label = null;
 			$_cheapest_fee = '';
 			$_cheapest_method = '';
-			if (isset($_SESSION['_chosen_method_id'])) $chosen_method = $_SESSION['_chosen_method_id']; else $chosen_method = '';
-			$calc_cheapest = false;
 			
-			if (!$chosen_method || empty($chosen_method)) $calc_cheapest = true;
+			if ( isset( $_SESSION['chosen_shipping_method_id'] )) $chosen_method = $_SESSION['chosen_shipping_method_id'];
+			else $chosen_method = '';
 			
-			self::reset_shipping_methods();
+			$calc_cheapest = false; /* bug for free shipping is here -JAP- */
+			
+			if ( ! $chosen_method || empty( $chosen_method )) $calc_cheapest = true;
 			
 			$_available_methods = self::get_available_shipping_methods();
 			
-			if (sizeof($_available_methods)>0) :
+			foreach ( $_available_methods as $method ) :
+				$method->calculate_shipping();
+				$fee = $method->shipping_total;
+				if ( $fee < $_cheapest_fee || ! is_numeric( $_cheapest_fee )) :
+					$_cheapest_fee = $fee;
+					$_cheapest_method = $method->id;
+				endif;
+			endforeach;
 			
-				foreach ($_available_methods as $method) :
-					
-					$method->calculate_shipping();
-					$fee = $method->shipping_total;
-					if ($fee < $_cheapest_fee || !is_numeric($_cheapest_fee)) :
-						$_cheapest_fee = $fee;
-						$_cheapest_method = $method->id;
-					endif;
-					
-				endforeach;
+//			if ( $calc_cheapest || ! isset( $_available_methods[$chosen_method] )) :
+//			if ( ! isset( $_available_methods[$chosen_method] )) :
+				$chosen_method = $_cheapest_method;
+//			endif;
+			
+			if ( $chosen_method ) :
 				
-				// Default to cheapest
-				if ($calc_cheapest || !isset($_available_methods[$chosen_method])) :
-					$chosen_method = $_cheapest_method;
-				endif;
+				$_available_methods[$chosen_method]->choose();
+				self::$shipping_total 	= $_available_methods[$chosen_method]->shipping_total;
+				self::$shipping_tax 	= $_available_methods[$chosen_method]->shipping_tax;
+				self::$shipping_label 	= $_available_methods[$chosen_method]->title;
 				
-				if ($chosen_method) :
-					
-					$_available_methods[$chosen_method]->choose();
-					self::$shipping_total 	= $_available_methods[$chosen_method]->shipping_total;
-					self::$shipping_tax 	= $_available_methods[$chosen_method]->shipping_tax;
-					self::$shipping_label 	= $_available_methods[$chosen_method]->title;
-					
-				endif;
 			endif;
 
 		endif;

@@ -68,7 +68,7 @@ class jigoshop_shipping_method {
     
     public function choose() {
     	$this->chosen = true;
-    	$_SESSION['_chosen_method_id'] = $this->id;
+    	$_SESSION['chosen_shipping_method_id'] = $this->id;
     }
     
     public function admin_options() {}
