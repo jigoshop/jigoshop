@@ -79,11 +79,11 @@ class Jigoshop_Widget_Cart extends WP_Widget {
                     		: jigoshop_get_image_placeholder( 'shop_tiny' );
 
 					// Print the product title
-                    echo apply_filters('jigoshop_cart_widget_product_title', $_product->get_title(), $_product);
+                    echo '<span class="js_widget_product_title">' . apply_filters('jigoshop_cart_widget_product_title', $_product->get_title(), $_product) . '</span>';
                     echo '</a>';
                     
                     // Print the quantity & price per product
-                    echo $value['quantity'].' &times; '.jigoshop_price($_product->get_price());
+                    echo '<span class="js_widget_product_price">' . $value['quantity'].' &times; '.jigoshop_price($_product->get_price()) . '</span>';
                     echo '</li>';
                 }
             }
