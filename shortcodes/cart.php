@@ -141,6 +141,13 @@ function jigoshop_cart( $atts ) {
 						<input type="submit" class="button" name="apply_coupon" value="<?php _e('Apply Coupon', 'jigoshop'); ?>" />
 					</div>
 					<?php jigoshop::nonce_field('cart') ?>
+					<?php
+					$shop_page_id = get_option('jigoshop_shop_page_id');
+					$shop_url = ($shop_page_id && get_page( $shop_page_id ))
+					          ? get_page_uri( $shop_page_id )
+					          : 'shop'; ?>
+					<a href="<?php echo "/$shop_url"; ?>" class="button">Return to Shop</a>
+
 					<input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" /> <a href="<?php echo jigoshop_cart::get_checkout_url(); ?>" class="checkout-button button-alt"><?php _e('Proceed to Checkout &rarr;', 'jigoshop'); ?></a>
 				</td>
 			</tr>
