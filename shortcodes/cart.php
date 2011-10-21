@@ -106,7 +106,7 @@ function jigoshop_cart( $atts ) {
 ?>
 							<tr>
 								<td class="product-remove"><a href="<?php echo jigoshop_cart::get_remove_url($cart_item_key); ?>" class="remove" title="<?php echo __('Remove this item.', 'jigoshop'); ?>">&times;</a></td>
-								<td class="product-thumbnail"><a href="<?php get_permalink($values['product_id']); ?>">
+								<td class="product-thumbnail"><a href="<?php echo get_permalink($values['product_id']); ?>">
 						<?php
 						if ($values['variation_id'] && has_post_thumbnail($values['variation_id'])) {
                             echo get_the_post_thumbnail($values['variation_id'], 'shop_tiny'); 
