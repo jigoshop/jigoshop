@@ -593,6 +593,8 @@ function get_jigoshop_currency_symbol() {
 		
 		case 'EUR' : $currency_symbol = '&euro;'; break; /* European Euro */
 		case 'IDR' : $currency_symbol = '&#82;&#112;'; break; /* Indonesia Rupiah */
+		case 'INR' : $currency_symbol = '&#8360;'; break; /* India Rupee */
+		case 'HRK' : $currency_symbol = '&#107;&#110;'; break; /* Croatia Kuna */
 		case 'HUF' : $currency_symbol = '&#70;&#116;'; break; /* Hungary Forint */
 		case 'JPY' : $currency_symbol = '&yen;'; break; /* Japanese Yen */
 		case 'RUB' : $currency_symbol = '&#1088;&#1091;&#1073;'; break; /* Russia Ruble */
