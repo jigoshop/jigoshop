@@ -17,8 +17,6 @@
  * @license    http://jigoshop.com/license/commercial-edition
  */
 
-require_once 'abstract/jigoshop_singleton.php';
-
 class jigoshop_customer extends jigoshop_singleton {
 	
 	/** constructor */

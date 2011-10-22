@@ -15,8 +15,6 @@
  * @license    http://jigoshop.com/license/commercial-edition
  */     
 
-require_once 'abstract/jigoshop_singleton.php';
-
 class jigoshop_shipping extends jigoshop_singleton {
 	
 	protected static $enabled			= false;

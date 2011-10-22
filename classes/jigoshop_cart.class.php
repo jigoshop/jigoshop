@@ -18,8 +18,6 @@
  * @license    http://jigoshop.com/license/commercial-edition
  */
 
-require_once 'abstract/jigoshop_singleton.php';
-
 class jigoshop_cart extends jigoshop_singleton {
 
 	public static $cart_contents_total;

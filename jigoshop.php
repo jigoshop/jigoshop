@@ -46,6 +46,8 @@ if (is_admin()) add_action('init', 'jigoshop_update_check');
  * Include core files and classes
  **/
 
+include_once( 'classes/abstract/jigoshop_base.class.php' );
+include_once( 'classes/abstract/jigoshop_singleton.php' );
 include_once( 'classes/jigoshop_sanitize.class.php' );
 include_once( 'classes/jigoshop.class.php' );
 include_once( 'jigoshop_taxonomy.php' );
