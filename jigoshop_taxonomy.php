@@ -77,7 +77,7 @@ function jigoshop_post_type() {
         )
     );
     
-    $attribute_taxonomies = jigoshop::getAttributeTaxonomies();    
+    $attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();    
 	if ( $attribute_taxonomies ) :
 		foreach ($attribute_taxonomies as $tax) :
 	    	

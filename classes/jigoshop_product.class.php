@@ -16,6 +16,7 @@
  */
 class jigoshop_product {
 	
+	private static $attribute_taxonomies = NULL;
 	// reseting these all to public for now, fatal errors from certain places that direct access
 	// the whole class needs refactoring  -JAP-
 	public $id;
@@ -734,4 +735,19 @@ class jigoshop_product {
         return $available;
     }
 
+    /**
+     * Get attribute taxonomies. Taxonomies are lazy loaded.
+     * 
+     * @return array of stdClass objects representing attributes
+     */
+    public static function getAttributeTaxonomies() {
+        global $wpdb;
+                
+        if(self::$attribute_taxonomies === NULL) {
+            self::$attribute_taxonomies = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."jigoshop_attribute_taxonomies;"); 
+        }
+        
+        return self::$attribute_taxonomies;
+    }
+	
 }

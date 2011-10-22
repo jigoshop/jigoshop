@@ -176,7 +176,7 @@ function jigoshop_add_attribute() {
 				        </thead>
 				        <tbody>
 				        	<?php
-				        		$attribute_taxonomies = jigoshop::getAttributeTaxonomies();
+				        		$attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();
 				        		if ( $attribute_taxonomies ) :
 				        			foreach ($attribute_taxonomies as $tax) :
 				        				?><tr>

@@ -190,7 +190,7 @@ function jigoshop_layered_nav_init() {
 
 	global $_chosen_attributes;
 
-	$attribute_taxonomies = jigoshop::getAttributeTaxonomies();
+	$attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();
 	if ( $attribute_taxonomies ) :
 		foreach ($attribute_taxonomies as $tax) :
 

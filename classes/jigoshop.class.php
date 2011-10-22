@@ -21,7 +21,6 @@ class jigoshop extends jigoshop_singleton {
 	
 	public static $errors = array();
 	public static $messages = array();
-	private static $attribute_taxonomies = NULL;
 	
 	public static $plugin_url;
 	public static $plugin_path;
@@ -48,21 +47,15 @@ class jigoshop extends jigoshop_singleton {
 		self::add_filter( 'wp_redirect', 'redirect', 1, 2 );
 	}
     
-    /**
-     * Get attribute taxonomies. Taxonomies are lazy loaded.
-     * 
-     * @return array of stdClass objects representing attributes
-     */
+	/**
+	 * This is deprecated as of ver 0.9.9.2 - use jigoshop_product.class version.
+	 *
+	 * @deprecated
+	 */
     public static function getAttributeTaxonomies() {
-        global $wpdb;
-                
-        if(self::$attribute_taxonomies === NULL) {
-            self::$attribute_taxonomies = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."jigoshop_attribute_taxonomies;"); 
-        }
-        
-        return self::$attribute_taxonomies;
+        return jigoshop_product::getAttributeTaxonomies();
     }
-	
+
 	/**
 	 * Get the plugin url
 	 *

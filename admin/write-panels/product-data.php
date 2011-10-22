@@ -263,7 +263,7 @@ function jigoshop_product_data_box() {
 					</thead>
 					<tbody id="attributes_list">	
 						<?php
-							$attribute_taxonomies = jigoshop::getAttributeTaxonomies();
+							$attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();
 							$attributes = get_post_meta($post->ID, 'product_attributes', true);
 							
 							$i = -1;

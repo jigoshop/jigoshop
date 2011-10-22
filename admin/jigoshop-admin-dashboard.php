@@ -67,7 +67,7 @@ function jigoshop_dashboard() {
 										</tr>
 										<tr>
 											<td class="first b"><a href="admin.php?page=attributes"><?php 
-												echo count(jigoshop::getAttributeTaxonomies());
+												echo count( jigoshop_product::getAttributeTaxonomies());
 											?></a></td>
 											<td class="t"><a href="admin.php?page=attributes"><?php _e('Attribute taxonomies', 'jigoshop'); ?></a></td>
 										</tr>
