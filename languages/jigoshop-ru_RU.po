@@ -1768,7 +1768,7 @@ msgstr "Номер телефона"
 
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:80
-msgid "Billing &amp Shipping"
+msgid "Billing &amp; Shipping"
 msgstr "Оплата и Доставка"
 
 # @ jigoshop

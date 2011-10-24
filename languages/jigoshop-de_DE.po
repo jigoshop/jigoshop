@@ -5001,8 +5001,8 @@ msgstr "danke"
 
 #@ jigoshop
 #: classes/jigoshop_checkout.class.php:80
-msgid "Billing &amp Shipping"
-msgstr "Rechnung &amp Versand"
+msgid "Billing &amp; Shipping"
+msgstr "Rechnung &amp; Versand"
 
 #@ jigoshop
 #: classes/jigoshop_checkout.class.php:140

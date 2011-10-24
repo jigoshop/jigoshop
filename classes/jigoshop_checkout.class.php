@@ -77,7 +77,7 @@ class jigoshop_checkout {
 		
 		if (jigoshop_cart::ship_to_billing_address_only()) :
 			
-			echo '<h3>'.__('Billing &amp Shipping', 'jigoshop').'</h3>';
+			echo '<h3>'.__('Billing &amp; Shipping', 'jigoshop').'</h3>';
 			
 		else : 
 		
