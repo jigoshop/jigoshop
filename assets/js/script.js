@@ -166,11 +166,7 @@ jQuery(function(){
 		var matching = [];
 		
 		for(variation_sku in product_variations) {
-			console.log("variation_sku");
-			console.log(variation_sku);
 			var variation = product_variations[variation_sku];
-			console.log("variation");
-			console.log(variation);
 			if(variations_match(variation.attributes, attributes)) {
 				matching.push(variation);
 			}

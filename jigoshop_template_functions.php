@@ -93,7 +93,6 @@ if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 		// do not show "add to cart" button if product's price isn't announced
 		if( $_product->get_price() === '' AND ! ($_product->is_type('variable') OR $_product->is_type('grouped')) ) return;
 		
-		// TODO: this could use refactoring / cleaning up
 		if( $_product->is_type('variable') OR $_product->is_type('grouped') ) {
 			echo '<a href="'. get_permalink($_product->id).'" class="button">'.__('Select', 'jigoshop').'</a>';
 			return;
@@ -353,11 +352,8 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
         foreach($children as $child) {
             /* @var $variation jigoshop_product_variation */
             $variation = $child->product;
-            // too many copies of Attributes being stored, some here, some there, only one needed
-            // TODO: all attribute and variation handling will be re-factored for 0.9.9.3  -JAP-
             if($variation instanceof jigoshop_product_variation && $variation->is_visible()) {
-                $vattrs = null; /* TODO: refactor, this seems to work. putting a value here doesn't for scripts.js */
-//                $vattrs = $variation->get_variation_attributes();
+                $vattrs = $variation->get_variation_attributes();
                 $availability = $variation->get_availability();
                 
                 //@todo needs to be moved to jigoshop_product_variation class

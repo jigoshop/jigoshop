@@ -20,7 +20,8 @@ function variable_product_type_options() {
 	global $post;
 	
 	$attributes = maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) );
-
+//logme( "VARIABLE.PHP --variable_product_type_options" );
+//logme( $attributes );
 	if (!isset($attributes)) $attributes = array();
 	?>
 	<div id="variable_product_options" class="panel">
@@ -363,7 +364,8 @@ function process_product_meta_variable( $data, $post_id ) {
 
     $errors = array();
     $attributes = maybe_unserialize(get_post_meta($post_id, 'product_attributes', true));
-
+//logme( "VARIABLE.PHP -- process_product_meta_variable" );
+//logme( $attributes );
     if (empty($attributes)) {
         $attributes = array();
     }
