@@ -33,12 +33,14 @@ function jigoshop_template_loader( $template ) {
 
 		jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-products', 'jigoshop-product_cat' ) );
 
-		global $query_string;	/* should have 'product_cat=category' with hyphenated multi-words */
-		$category = explode( '=', $query_string );
-		$slug = $category[1];
+		global $posts;
 		$templates = array();
- 		$templates[] = 'taxonomy-product_cat-' . $slug . '.php';
- 		$templates[] = JIGOSHOP_TEMPLATE_URL . 'taxonomy-product_cat-' . $slug . '.php';
+		if ( count( $posts ) ) {
+			$category = get_the_terms( $posts[0]->ID, 'product_cat' );
+			$slug = $category[key($category)]->slug;
+ 			$templates[] = 'taxonomy-product_cat-' . $slug . '.php';
+ 			$templates[] = JIGOSHOP_TEMPLATE_URL . 'taxonomy-product_cat-' . $slug . '.php';
+		}
  		$templates[] = 'taxonomy-product_cat.php';
  		$templates[] = JIGOSHOP_TEMPLATE_URL . 'taxonomy-product_cat.php';
 
@@ -50,12 +52,14 @@ function jigoshop_template_loader( $template ) {
 
 		jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-products', 'jigoshop-product_tag' ) );
 
-		global $query_string;	/* should have 'product_tag=tagname' with hyphenated multi-words */
-		$tag = explode( '=', $query_string );
-		$slug = $tag[1];
+		global $posts;
 		$templates = array();
- 		$templates[] = 'taxonomy-product_tag-' . $slug . '.php';
- 		$templates[] = JIGOSHOP_TEMPLATE_URL . 'taxonomy-product_tag-' . $slug . '.php';
+		if ( count( $posts ) ) {
+			$tag = get_the_terms( $posts[0]->ID, 'product_tag' );
+			$slug = $tag[key($tag)]->slug;
+ 			$templates[] = 'taxonomy-product_tag-' . $slug . '.php';
+ 			$templates[] = JIGOSHOP_TEMPLATE_URL . 'taxonomy-product_tag-' . $slug . '.php';
+		}
  		$templates[] = 'taxonomy-product_tag.php';
  		$templates[] = JIGOSHOP_TEMPLATE_URL . 'taxonomy-product_tag.php';
 
