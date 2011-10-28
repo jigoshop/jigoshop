@@ -83,7 +83,8 @@ class jigoshop_shipping {
 			self::$shipping_label = null;
 			$_cheapest_fee = '';
 			$_cheapest_method = '';
-			if (isset($_SESSION['_chosen_method_id'])) $chosen_method = $_SESSION['_chosen_method_id']; else $chosen_method = '';
+                        $chosen_method = '';
+                        
 			$calc_cheapest = false;
 			
 			if (!$chosen_method || empty($chosen_method)) $calc_cheapest = true;
@@ -109,7 +110,7 @@ class jigoshop_shipping {
 				if ($calc_cheapest || !isset($_available_methods[$chosen_method])) :
 					$chosen_method = $_cheapest_method;
 				endif;
-				
+
 				if ($chosen_method) :
 					
 					$_available_methods[$chosen_method]->choose();

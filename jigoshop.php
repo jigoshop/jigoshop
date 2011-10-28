@@ -373,7 +373,8 @@ function jigoshop_frontend_scripts() {
 		'get_variation_nonce' 			=> wp_create_nonce("get-variation"),
 		'review_order_url'				=> jigoshop_get_template_file_url('checkout/review_order.php', true),
 		'option_guest_checkout'			=> get_option('jigoshop_enable_guest_checkout'),
-		'checkout_url'					=> admin_url('admin-ajax.php?action=jigoshop-checkout')
+		'checkout_url'					=> admin_url('admin-ajax.php?action=jigoshop-checkout'),
+                'bundled_fancybox_disabled' => get_option('jigoshop_disable_fancybox')
 	);
 
 	if (isset($_SESSION['min_price'])) :
