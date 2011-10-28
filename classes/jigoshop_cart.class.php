@@ -19,7 +19,7 @@
  */
 class jigoshop_cart {
 
-	private static $_instance;
+	public static $_instance;
 	public static $cart_contents_total;
 	public static $cart_contents_total_ex_tax;
 	public static $cart_contents_weight;

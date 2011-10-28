@@ -19,7 +19,7 @@
 
 class jigoshop_tax {
 	
-	private $rates;
+	public $rates;
 	
 	/**
 	 * Get the current tax class

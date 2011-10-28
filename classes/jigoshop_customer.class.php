@@ -18,7 +18,7 @@
  */
 class jigoshop_customer {
 	
-	private static $_instance;
+	public static $_instance;
 	
 	/** constructor */
 	function __construct() {

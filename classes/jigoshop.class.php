@@ -16,12 +16,12 @@
  */
 class jigoshop {
 	
-	private static $_instance;
-	private static $_cache;
+	public static $_instance;
+	public static $_cache;
 	
 	public static $errors = array();
 	public static $messages = array();
-	private static $attribute_taxonomies = NULL;
+	public static $attribute_taxonomies = NULL;
 	
 	public static $plugin_url;
 	public static $plugin_path;

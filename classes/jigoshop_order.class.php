@@ -18,7 +18,7 @@
  */
 class jigoshop_order {
 	
-	private $_data = array();
+	public $_data = array();
 	
 	public function __get($variable) {
 		return isset($this->_data[$variable]) ? $this->_data[$variable] : null;
