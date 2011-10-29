@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: Jigoshop - WordPress eCommerce Plugin\n"
 "Report-Msgid-Bugs-To: http://jigoshop.com/forums/\n"
 "POT-Creation-Date: 2011-06-13 01:20+1100\n"
-"PO-Revision-Date: 2011-09-23 16:41+0100\n"
-"Last-Translator: David Decker <deckerweb.mobil@googlemail.com>\n"
+"PO-Revision-Date: 2011-10-29 13:13+0100\n"
+"Last-Translator: \n"
 "Language-Team: DECKERWEB <deckerweb.mobil@googlemail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -149,53 +149,53 @@ msgstr "Neuer Produktkategorie-Name"
 #: jigoshop_taxonomy.php:63
 #: widgets/product_tag_cloud.php:50
 msgid "Product Tags"
-msgstr "Produkt-Schlagworte"
+msgstr "Produkttags"
 
 #@ jigoshop
 #: admin/jigoshop-admin-dashboard.php:66
 #: jigoshop_taxonomy.php:64
 msgid "Product Tag"
-msgstr "Produkt-Schlagwort"
+msgstr "Produkttag"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:65
 msgid "Search Product Tags"
-msgstr "Durchsuche Produkt-Schlagworte"
+msgstr "Durchsuche Produkttags"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:66
 msgid "All Product Tags"
-msgstr "Alle Produkt-Schlagworte"
+msgstr "Alle Produkttags"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:67
 msgid "Parent Product Tag"
-msgstr "&Uuml;bergeordnetes Produkt-Schlagwort"
+msgstr "&Uuml;bergeordnetes Produkttag"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:68
 msgid "Parent Product Tag:"
-msgstr "&Uuml;bergeordnetes Produkt-Schlagwort:"
+msgstr "&Uuml;bergeordnetes Produkttag:"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:69
 msgid "Edit Product Tag"
-msgstr "Bearbeite Produkt-Schlagwort"
+msgstr "Bearbeite Produkttag"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:70
 msgid "Update Product Tag"
-msgstr "Aktualisiere Produkt-Schlagwort"
+msgstr "Aktualisiere Produkttag"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:71
 msgid "Add New Product Tag"
-msgstr "Neues Produkt-Schlagwort hinzuf&uuml;gen"
+msgstr "Neues Produkttag hinzuf&uuml;gen"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:72
 msgid "New Product Tag Name"
-msgstr "Neuer Produkt-Schlagwort-Namen"
+msgstr "Neuer Produkttag-Name"
 
 #@ jigoshop
 #: admin/jigoshop-admin-dashboard.php:54
@@ -392,7 +392,7 @@ msgstr "Neuer Bestellstatus-Name"
 #@ jigoshop
 #: jigoshop_template_functions.php:733
 msgid "Products tagged &ldquo;"
-msgstr "Verschlagwortete Produkte &ldquo;"
+msgstr "Produkte getaggt &ldquo;"
 
 #@ jigoshop
 #: jigoshop_template_functions.php:756
@@ -408,7 +408,7 @@ msgstr "Inhalt nicht gefunden (Systemfehler 404)"
 #@ jigoshop
 #: jigoshop_template_functions.php:845
 msgid "Posts tagged &ldquo;"
-msgstr "Beitr&auml;ge verschlagwortet &ldquo;"
+msgstr "Beitr&auml;ge getaggt &ldquo;"
 
 #@ jigoshop
 #: jigoshop_template_functions.php:850
@@ -641,7 +641,7 @@ msgstr "Datei nicht gefunden. <a href=\"%s\">Zur&uuml;ck zur Startseite &rarr;</
 #@ jigoshop
 #: widgets/product_tag_cloud.php:29
 msgid "Your most used product tags in cloud format"
-msgstr "Ihre meistgenutzten Produkt-Schlagworte als Schlagwortwolke (Tagcloud)"
+msgstr "Ihre meistgenutzten Produkttags als Tag-Cloud"
 
 #@ jigoshop
 #: widgets/cart.php:143
@@ -989,7 +989,7 @@ msgstr "Botswana"
 #@ jigoshop
 #: languages/countries.php:56
 msgid "Belarus"
-msgstr "Wei&szlig;russland"
+msgstr "Weissrussland"
 
 #@ jigoshop
 #: languages/countries.php:57
@@ -2221,7 +2221,7 @@ msgstr "Zahlung mittels Scheck aktivieren"
 #@ jigoshop
 #: gateways/cheque.php:59
 msgid "Let the customer know the payee and where they should be sending the cheque too and that their order won't be shipping until you receive it."
-msgstr "Teilen Sie dem Kunde den Zahlungsempf&auml;nger mit und ebenso, wohin der Check gesandt werden soll. Weisen Sie au&szlig;erdem darauf hin, dass die Bestellung nicht versandt wird, solange die Zahlung nicht eingegangen ist."
+msgstr "Teilen Sie dem Kunde den Zahlungsempf&auml;nger mit und ebenso, wohin der Check gesandt werden soll. Weisen Sie ausserdem darauf hin, dass die Bestellung nicht versandt wird, solange die Zahlung nicht eingegangen ist."
 
 #@ jigoshop
 #: gateways/bank_transfer.php:65
@@ -2436,7 +2436,7 @@ msgstr "Adresse"
 #: classes/jigoshop_checkout.class.php:43
 #: classes/jigoshop_checkout.class.php:57
 msgid "Address 1"
-msgstr "Stra&szlig;e und Hausnummer"
+msgstr "Strasse und Hausnummer"
 
 #@ jigoshop
 #: admin/write-panels/order-data.php:114
@@ -2769,7 +2769,7 @@ msgstr "1, 2, 3"
 #: admin/jigoshop-admin-settings.php:373
 #: admin/jigoshop-admin-settings.php:401
 msgid "Individual use only"
-msgstr "Ausschlie&szlig;lich individuelle Verwendung"
+msgstr "Ausschliesslich individuelle Verwendung"
 
 #@ jigoshop
 #: admin/jigoshop-admin-settings.php:378
@@ -2854,7 +2854,7 @@ msgstr "Kategorie"
 #@ jigoshop
 #: admin/jigoshop-admin-post-types.php:116
 msgid "Tags"
-msgstr "Schlagworte"
+msgstr "Tags"
 
 #@ jigoshop
 #: admin/jigoshop-admin-post-types.php:117
@@ -3285,7 +3285,7 @@ msgstr "Wenn Sie eine \"AGB\"-Seite festlegen, wird der Kunde gebeten, diese zu 
 #: admin/write-panels/product-data.php:191
 #: shipping/flat_rate.php:118
 msgid "None"
-msgstr "mehrwertsteuerfrei"
+msgstr "Keine"
 
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:369
@@ -3545,7 +3545,7 @@ msgstr "Mehrwertsteuersatz berechnen"
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:683
 msgid "Only set this to no if you are exclusively selling non-taxable items."
-msgstr "Setzen Sie dies nur auf 'Nein', wenn Sie ausschlie&szlig;lich <em>nicht-besteuerbare</em> Artikel verkaufen."
+msgstr "Setzen Sie dies nur auf 'Nein', wenn Sie ausschliesslich <em>nicht-besteuerbare</em> Artikel verkaufen."
 
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:684
@@ -3590,12 +3590,12 @@ msgstr "Zus&auml;tzliche Mehrwertsteuerklassen"
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:725
 msgid "List 1 per line. This is in addition to the default <em>Standard Rate</em>."
-msgstr "1 pro Zeile auflisten. Dies ist zus&auml;tzlich zum standardm&auml;&szlig;igen <em>regul&auml;ren Mehrwertsteuersatz</em>."
+msgstr "1 pro Zeile auflisten. Dies ist zus&auml;tzlich zum standardm&auml;ssigen <em>regul&auml;ren Mehrwertsteuersatz</em>."
 
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:726
 msgid "List product and shipping tax classes here, e.g. Zero Tax, Reduced Rate."
-msgstr "Produkt- und Versand-Mehrwertsteuerklassen hier auflisten, z.B. Keine MwSt., erm&auml;&szlig;igter Satz, usw."
+msgstr "Produkt- und Versand-Mehrwertsteuerklassen hier auflisten, z.B. Keine MwSt., erm&auml;ssigter Satz, usw."
 
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:734
@@ -3689,7 +3689,7 @@ msgstr "Neues Merkmal hinzuf&uuml;gen"
 #@ jigoshop
 #: admin/jigoshop-admin-attributes.php:218
 msgid "Attributes let you define extra product data, such as size or colour. You can use these attributes in the shop sidebar using the \"layered nav\" widgets. Please note: you cannot rename an attribute later on."
-msgstr "Mit Merkmalen lassen sich zus&auml;tzliche Produktdaten wie Gr&ouml;&szlig;e und Farbe bestimmen. Sie k&ouml;nnen diese Merkmale in der Shop-Sidebar benutzen, wenn Sie die \"Ebenen-Navigation (Layered Nav)\" Widgets einsetzen. -- <strong>Info:</strong> Au&szlig;erdem werden Merkmale des Feldtyps 'Mehrfachauswahlfeld' f&uuml;r die Produktvariationen (konfigurierbare Produkte) ben&ouml;tigt. -- <strong>Bitte beachten Sie:</strong> Sie k&ouml;nnen den Namen eines Merkmals nachtr&auml;glich nicht mehr ver&auml;ndern."
+msgstr "Mit Merkmalen lassen sich zus&auml;tzliche Produktdaten wie Gr&ouml;sse und Farbe bestimmen. Sie k&ouml;nnen diese Merkmale in der Shop-Sidebar benutzen, wenn Sie die \"Ebenen-Navigation (Layered Nav)\" Widgets einsetzen. -- <strong>Info:</strong> Ausserdem werden Merkmale des Feldtyps 'Mehrfachauswahlfeld' f&uuml;r die Produktvariationen (konfigurierbare Produkte) ben&ouml;tigt. -- <strong>Bitte beachten Sie:</strong> Sie k&ouml;nnen den Namen eines Merkmals nachtr&auml;glich nicht mehr ver&auml;ndern."
 
 #@ jigoshop
 #: admin/jigoshop-admin-attributes.php:222
@@ -4304,7 +4304,7 @@ msgstr "Warenkorb aktualisieren"
 #@ jigoshop
 #: shortcodes/cart.php:143
 msgid "Proceed to Checkout &rarr;"
-msgstr "Zur Kasse gehen &rarr;"
+msgstr "Zur Kasse gehen"
 
 #@ jigoshop
 #: shortcodes/cart.php:159
@@ -4476,7 +4476,7 @@ msgstr "Meine Adressen"
 #@ jigoshop
 #: shortcodes/my_account.php:88
 msgid "The following addresses will be used on the checkout page by default."
-msgstr "Die folgende Adressen wird standardm&auml;&szlig;ig an der Kasse ausgew&auml;hlt."
+msgstr "Die folgende Adressen wird standardm&auml;ssig an der Kasse ausgew&auml;hlt."
 
 #@ jigoshop
 #: shortcodes/my_account.php:114
@@ -4666,13 +4666,13 @@ msgstr "Keine Produkte gefunden, die Ihren Kriterien entsprechen."
 #: jigoshop_template_functions.php:433
 #: templates/single-product-reviews.php:69
 msgid "Next <span class=\"meta-nav\">&rarr;</span>"
-msgstr "Weiter <span class=\"meta-nav\">&rarr;</span>"
+msgstr "<span>Weiter</span>"
 
 #@ jigoshop
 #: jigoshop_template_functions.php:434
 #: templates/single-product-reviews.php:68
 msgid "<span class=\"meta-nav\">&larr;</span> Previous"
-msgstr "<span class=\"meta-nav\">&larr;</span> Zur&uuml;ck"
+msgstr "<span>Zur&uuml;ck</span>"
 
 #@ jigoshop
 #: jigoshop_template_functions.php:457
@@ -4876,7 +4876,7 @@ msgstr "Ich akzeptiere die"
 #@ jigoshop
 #: templates/checkout/review_order.php:187
 msgid "terms &amp; conditions"
-msgstr "Allgemeinen Gesch&auml;ftsbedingungen inkl. Widerrufsbelehrung"
+msgstr "Allgemeinen Gesch&auml;ftsbedingungen"
 
 #@ jigoshop
 #: templates/checkout/pay_for_order.php:102
@@ -5364,7 +5364,7 @@ msgstr "Erlauben"
 #@ jigoshop
 #: admin/write-panels/product-data.php:260
 msgid "Variation?"
-msgstr "Schwankung?"
+msgstr "Variation?"
 
 #@ jigoshop
 #: admin/write-panels/product-data.php:72
@@ -5455,7 +5455,7 @@ msgstr "Vorschaubild, H&ouml;he"
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:522
 msgid "Large Image Width"
-msgstr "Gro&szlig;es Produktbild, Breite"
+msgstr "Grosses Produktbild, Breite"
 
 #@ jigoshop
 #: admin/jigoshop-write-panels.php:41
@@ -5571,7 +5571,7 @@ msgstr "Konfiguration hinzuf&uuml;gen"
 #@ jigoshop
 #: admin/write-panels/product-types/variable.php:184
 msgid "Are you sure you want to remove this variation?"
-msgstr "Sind Sie sicher, dass diese Variation entfernen wollen?"
+msgstr "Sind Sie sicher, dass Sie diese Variation entfernen wollen?"
 
 #@ jigoshop
 #: admin/jigoshop-admin-post-types.php:40
@@ -5841,7 +5841,7 @@ msgstr "Jigoshop - Soziale Netzwerke"
 #: admin/jigoshop-admin-settings-options.php:285
 #: admin/jigoshop-admin-settings-options.php:532
 msgid "Large Image Height"
-msgstr "Gro&szlig;es Produktbild, H&ouml;he:"
+msgstr "Grosses Produktbild, H&ouml;he:"
 
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:321
@@ -5851,7 +5851,7 @@ msgstr "Produktkatalog sortieren nach"
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:323
 msgid "Determines the display sort order of products for the Shop, Categories, and Tag pages."
-msgstr "Legt die Sortierung von Produkten im Shop fest. Dieselbe Einstellung gilt f&uuml;r die Archivseiten der Produktkategorien und Produktschlagworten."
+msgstr "Legt die Sortierung von Produkten im Shop fest. Dieselbe Einstellung gilt f&uuml;r die Archivseiten der Produktkategorien und Produkttags."
 
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:329
@@ -5896,12 +5896,12 @@ msgstr "Katalogprodukte pro Zeile"
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:351
 msgid "Default = 4 -- adjust this for Image Tab->Catalog Image Size adjustments."
-msgstr "Standard = 4 -- justieren Sie dies in Verbindungen mit den Bildgr&ouml;&szlig;eneinstellungen hier unter 'Bilder'."
+msgstr "Standard = 4 -- justieren Sie dies in Verbindungen mit den Bildgr&ouml;sseneinstellungen hier unter 'Bilder'."
 
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:352
 msgid "Determines how many products to show on one display row for Shop, Category and Tag pages."
-msgstr "Legt fest, wieviele Produkte pro Zeile auf einer Shop-Seite sowie auf den Archivseiten f&uuml;r Produktkategorien und Produktschlagworten angezeigt werden."
+msgstr "Legt fest, wieviele Produkte pro Zeile auf einer Shop-Seite sowie auf den Archivseiten f&uuml;r Produktkategorien und Produkttags angezeigt werden."
 
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:360
@@ -5916,7 +5916,7 @@ msgstr "Standard = 12"
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:362
 msgid "Determines how many products to display on Shop, Category and Tag pages before needing next and previous page navigation."
-msgstr "Legt fest, wieviele Produkte insgesamt pro Seite angezeigt werden, bevor die Seitennavigation ('Seite vor' / 'Seite zur&uuml;ck') ben&ouml;tigt wird. Diese Einstellung gilt f&uuml;r die Shop-Seiten sowie die Archivseiten der Produktkategorien und Produktschlagworte."
+msgstr "Legt fest, wieviele Produkte insgesamt pro Seite angezeigt werden, bevor die Seitennavigation ('Seite vor' / 'Seite zur&uuml;ck') ben&ouml;tigt wird. Diese Einstellung gilt f&uuml;r die Shop-Seiten sowie die Archivseiten der Produktkategorien und Produkttags."
 
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:390
@@ -5931,7 +5931,7 @@ msgstr "Russischer Rubel (&#440;)"
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:459
 msgid "Large variations from the defaults could require CSS modifications in your Theme."
-msgstr "Gro&szlig;e Abweichungen von den Standardwerten k&ouml;nnen CSS-Modifikationen in Ihrem Template erforderlich machen!"
+msgstr "Grosse Abweichungen von den Standardwerten k&ouml;nnen CSS-Modifikationen in Ihrem Template erforderlich machen!"
 
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:463
@@ -5979,7 +5979,7 @@ msgstr "Standard = 150px"
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:504
 msgid "Set the width of the catalog image for Shop, Categories, Tags, and Related Products."
-msgstr "Legt die <em>Breite</em> des Produktkatalogbildes fest. - Wird genutzt im Shop (auf den regul&auml;ren Produktseiten), auf den Archivseiten der Produktkategorien und Produktschlagworten sowie bei den &auml;hnlichen Produkten (Empfehlungen/ Verkn&uuml;pfungen)."
+msgstr "Legt die <em>Breite</em> des Produktkatalogbildes fest. - Wird genutzt im Shop (auf den regul&auml;ren Produktseiten), auf den Archivseiten der Produktkategorien und Produkttags sowie bei den &auml;hnlichen Produkten (Empfehlungen/ Verkn&uuml;pfungen)."
 
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:512
@@ -5989,7 +5989,7 @@ msgstr "Katalogbild, H&ouml;he"
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:514
 msgid "Set the height of the catalog image for Shop, Categories, Tags, and Related Products."
-msgstr "Legt die <em>H&ouml;he</em> des Produktkatalogbildes fest. - Wird genutzt im Shop (auf den regul&auml;ren Produktseiten), auf den Archivseiten der Produktkategorien und Produktschlagworten sowie bei den &auml;hnlichen Produkten (Empfehlungen/ Verkn&uuml;pfungen)."
+msgstr "Legt die <em>H&ouml;he</em> des Produktkatalogbildes fest. - Wird genutzt im Shop (auf den regul&auml;ren Produktseiten), auf den Archivseiten der Produktkategorien und Produkttags sowie bei den &auml;hnlichen Produkten (Empfehlungen/ Verkn&uuml;pfungen)."
 
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:523
@@ -6000,12 +6000,12 @@ msgstr "Standard = 300px"
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:524
 msgid "Set the width of the Single Product page large or Featured image."
-msgstr "Legt die <em>Breite</em> des Produktbildes fest. - Wird genutzt auf der einzelnen Produktseite als gro&szlig;es Produktbild bzw. als Featured-Bild."
+msgstr "Legt die <em>Breite</em> des Produktbildes fest. - Wird genutzt auf der einzelnen Produktseite als grosses Produktbild bzw. als Featured-Bild."
 
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:534
 msgid "Set the height of the Single Product page large or Featured image."
-msgstr "Legt die <em>H&ouml;he</em> des Produktbildes fest. - Wird genutzt auf der einzelnen Produktseite als gro&szlig;es Produktbild bzw. als Featured-Bild."
+msgstr "Legt die <em>H&ouml;he</em> des Produktbildes fest. - Wird genutzt auf der einzelnen Produktseite als grosses Produktbild bzw. als Featured-Bild."
 
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:549
@@ -6068,7 +6068,7 @@ msgstr "F&uuml;gen Sie (optionale) Preise/ Bestandsmengen f&uuml;r Produktvariat
 #: admin/write-panels/product-types/variable.php:409
 #, php-format
 msgid "Variation #%s was disabled as it is already covered by other variation."
-msgstr "Die Variation #%s wurde deaktiviert, da sie bereits durch eine andere Variation abgedeckt wird."
+msgstr "Die Variation #%s wurde deaktiviert, weil sie bereits durch eine andere abgedeckt wird."
 
 #@ jigoshop
 #: classes/jigoshop_cart.class.php:165
@@ -6160,7 +6160,7 @@ msgstr "%d Einheiten von #%d %s (#%s) wurden nachbestellt."
 #@ jigoshop
 #: shortcodes/cart.php:77
 msgid "&larr; Return To Shop"
-msgstr "&larr; Zur&uuml;ck zum Shop"
+msgstr "Zur&uuml;ck zum Shop"
 
 #@ jigoshop
 #: shortcodes/cart.php:108
@@ -6170,7 +6170,7 @@ msgstr "Dieses Produkt entfernen."
 #@ jigoshop
 #: shortcodes/thankyou.php:71
 msgid "&larr; Continue Shopping"
-msgstr "&larr; Weiter einkaufen"
+msgstr "Weiter einkaufen"
 
 #@ jigoshop
 #: widgets/cart.php:34
@@ -6210,7 +6210,7 @@ msgstr "Jigoshop: Produktsuche"
 #@ jigoshop
 #: widgets/product_tag_cloud.php:33
 msgid "Jigoshop: Product Tag Cloud"
-msgstr "Jigoshop: Produktschlagwortwolke"
+msgstr "Jigoshop: Produkttag-Cloud"
 
 #@ jigoshop
 #: widgets/recent_products.php:33
