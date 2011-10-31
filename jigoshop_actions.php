@@ -289,6 +289,12 @@ function jigoshop_add_to_cart_action($url = false)
     else if (get_option('jigoshop_directly_to_checkout', 'no') == 'yes' && jigoshop::error_count() == 0) {
         wp_safe_redirect(jigoshop_cart::get_checkout_url());
     }
+    // Redirect directly to cart if no error messages
+    else if (get_option('jigoshop_directly_to_checkout', 'cart') == 'cart'
+             && jigoshop::error_count() == 0
+    ) {
+        wp_safe_redirect(jigoshop_cart::get_cart_url());
+    }
     // Otherwise redirect to where they came
     else if (isset($_SERVER['HTTP_REFERER'])) {
         wp_safe_redirect($_SERVER['HTTP_REFERER']);
