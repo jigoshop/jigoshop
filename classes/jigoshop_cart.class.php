@@ -20,6 +20,7 @@
 
 class jigoshop_cart extends jigoshop_singleton {
 
+>>>>>>> 94cf67915022f3b5f3a17798311c7d33f4e2fb48
 	public static $cart_contents_total;
 	public static $cart_contents_total_ex_tax;
 	public static $cart_contents_weight;

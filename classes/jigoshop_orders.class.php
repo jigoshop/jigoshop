@@ -19,7 +19,7 @@
 class jigoshop_orders {
 
 	public $orders;
-	private $count;
+	public $count;
 	public $completed_count;
 	public $pending_count;
 	public $cancelled_count;
