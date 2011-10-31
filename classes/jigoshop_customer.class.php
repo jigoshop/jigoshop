@@ -48,21 +48,16 @@ class jigoshop_customer extends jigoshop_singleton {
 	
     /** Is customer outside base country? */
 	public static function is_customer_outside_base() {
-		if (isset($_SESSION['customer']['country'])) :
+		$outside = false;
+		if ( self::get_country() ) :
 			
-			$default = get_option('jigoshop_default_country');
-        	if (strstr($default, ':')) :
-        		$country = current(explode(':', $default));
-        		$state = end(explode(':', $default));
-        	else :
-        		$country = $default;
-        		$state = '';
-        	endif;
-        	
-			if ($country!==$_SESSION['customer']['country']) return true;
+			$shopcountry = jigoshop_countries::get_base_country();
+			$shopstate = jigoshop_countries::get_base_state();
 			
+			if ( $shopcountry !== self::get_country() ) $outside = true;
+			if ( $shopstate !== self::get_state() ) $outside = true;
 		endif;
-		return false;
+		return $outside;
 	}
 	
 	/** Gets the state from the current session */
