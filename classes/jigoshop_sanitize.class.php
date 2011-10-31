@@ -28,6 +28,16 @@ class jigoshop_sanitize {
 	}
 	
 	
+	/**
+	 * Sanitize or clean an input field.
+	 * Removes leading and trailing white space, all html and php tags, encodes any html entities
+	 *     using the default (ENT_COMPAT | ENT_HTML401), and unquotes any quoted strings. 
+	 *
+	 * @param object $input - The object to sanitize.
+	 * @return object - The sanitized object.
+	 * 
+	 * @since 0.9.9.2
+	 */
 	private function _sanitize( $input )
 	{
 		$input = $this->_fixIncompleteObject( $input );
@@ -39,6 +49,7 @@ class jigoshop_sanitize {
 			}
 			return $output;
 		}
+//		return stripslashes( trim( $input ));
 		return stripslashes( htmlentities( strip_tags( trim( $input ))));
 	}
 	
