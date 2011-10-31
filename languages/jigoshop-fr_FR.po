@@ -2931,8 +2931,8 @@ msgid "Phone number"
 msgstr "Numéro de téléphone"
 
 #: classes/jigoshop_checkout.class.php:62
-msgid "Billing &amp Shipping"
-msgstr "Facturation &amp Livraison"
+msgid "Billing &amp; Shipping"
+msgstr "Facturation &amp; Livraison"
 
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:82

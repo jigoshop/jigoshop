@@ -5027,7 +5027,7 @@ msgstr "gracias"
 
 #@ jigoshop
 #: classes/jigoshop_checkout.class.php:62
-msgid "Billing &amp Shipping"
+msgid "Billing &amp; Shipping"
 msgstr "Facturación y envío"
 
 #@ jigoshop
