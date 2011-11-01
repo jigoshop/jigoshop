@@ -596,7 +596,7 @@ table.shop_table td {
 table.shop_table td a.button {
   margin: 0 3px;
 }
-table.shop_table tfoot td {
+table.shop_table tbody td, table.shop_table tfoot td {
   font-weight: bold;
 }
 table.my_account_orders {
