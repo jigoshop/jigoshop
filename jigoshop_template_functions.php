@@ -99,7 +99,12 @@ if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 			return;
 		}
 		
-		?><a href="<?php echo $_product->add_to_cart_url(); ?>" class="button"><?php _e('Add to cart', 'jigoshop'); ?></a><?php
+                if ($_product->is_in_stock()) {
+                    echo '<a href="'.$_product->add_to_cart_url().'" class="button">'.__('Add to cart', 'jigoshop').'</a>';
+                } else {
+                    echo '<p class="stock out-of-stock">'.__('Out of stock', 'jigoshop').'</p>';
+                }
+                
 	}
 }
 if (!function_exists('jigoshop_template_loop_product_thumbnail')) {
