@@ -581,6 +581,7 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 			<h2><a href="#" class="shipping-calculator-button"><?php _e('Calculate Shipping', 'jigoshop'); ?> <span>&darr;</span></a></h2>
 			<section class="shipping-calculator-form">
 			<p class="form-row">
+                            <?php if (jigoshop_countries::count_allowed_countries() > 1) : ?>
 				<select name="calc_shipping_country" id="calc_shipping_country" class="country_to_state" rel="calc_shipping_state">
 					<option value=""><?php _e('Select a country&hellip;', 'jigoshop'); ?></option>
 					<?php
@@ -591,6 +592,11 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 						endforeach;
 					?>
 				</select>
+                            <?php else : ?>
+                                <?php $allowed_country = jigoshop_countries::get_allowed_countries(); ?>
+                                <label for="calc_shipping_country"><?php echo current($allowed_country) ?></label>
+                                <input type="hidden" name="calc_shipping_country" value="<?php echo key($allowed_country) ?>" />
+                            <?php endif; ?>
 			</p>
 			<div class="col2-set">
 				<p class="form-row col-1">

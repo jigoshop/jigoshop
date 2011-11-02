@@ -577,5 +577,17 @@ class jigoshop_countries {
 			endif;
 		endforeach;
 	}
+        
+        /**
+         * Counts all allowed coutries
+         * 
+         * @return int number of allowed countries 
+         */
+        function count_allowed_countries()
+        {
+            $allowed_countries = get_option('jigoshop_specific_allowed_countries');
+            
+            return count($allowed_countries);
+        }
 }
 
