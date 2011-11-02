@@ -24,7 +24,7 @@ class jigoshop_product {
 	private $post;
 	public $stock;
 	public $children;
-	protected $visibility;
+	public $visibility;
 	public $product_type;
 	protected $price;
     protected $sale_price;

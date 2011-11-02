@@ -199,9 +199,13 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 		
 		if (get_option('jigoshop_manage_stock')=='yes') :
 			// Manage Stock Checkbox
+                    
+                        // Check for "instock" or non-positive stock value
+                        $stock = ($_POST['stock_status'] != 'instock' || $_POST['stock'] <= 0) ? 0 : $_POST['stock'] ;
+                        
 			if ($product_type!=='grouped' && isset($_POST['manage_stock']) && $_POST['manage_stock']) :
 
-				update_post_meta( $post_id, 'stock', $_POST['stock'] );
+				update_post_meta( $post_id, 'stock', $stock );
 				$data['manage_stock'] = 'yes';
 				$data['backorders'] = stripslashes( $_POST['backorders'] );
 				
