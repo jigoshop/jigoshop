@@ -20,8 +20,6 @@ function variable_product_type_options() {
 	global $post;
 	
 	$attributes = maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) );
-//logme( "VARIABLE.PHP --variable_product_type_options" );
-//logme( $attributes );
 	if (!isset($attributes)) $attributes = array();
 	?>
 	<div id="variable_product_options" class="panel">
@@ -163,7 +161,7 @@ function variable_product_write_panel_js() {
 								echo '<select name="tax_' . $sanitized_name .'[\' + loop + \']"><option value="">'.__('Any ', 'jigoshop').$attribute['name'].'&hellip;</option>';
 								
 								if ( taxonomy_exists( 'pa_'.$sanitized_name )) :
-									$terms = get_terms( 'pa_'.$sanitized_name, 'orderby=name&hide_empty=0' );
+									$terms = get_terms( 'pa_'.$sanitized_name, 'orderby=slug&hide_empty=1' );
 									foreach ( $terms as $term ):
 										echo '<option value="'.$term->slug.'">'.$term->name.'</option>';
 									endforeach;
@@ -364,8 +362,6 @@ function process_product_meta_variable( $data, $post_id ) {
 
     $errors = array();
     $attributes = maybe_unserialize(get_post_meta($post_id, 'product_attributes', true));
-//logme( "VARIABLE.PHP -- process_product_meta_variable" );
-//logme( $attributes );
     if (empty($attributes)) {
         $attributes = array();
     }

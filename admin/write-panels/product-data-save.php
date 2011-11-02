@@ -167,8 +167,6 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 	}
 	uasort( $new_attributes, 'attributes_cmp' );
 	update_post_meta( $post_id, 'product_attributes', $new_attributes );
-	logme( "NEW Attributes" );
-	logme( get_post_meta( $post_id, 'product_attributes', true ));
 	
 	
 	$savedata = apply_filters( 'process_product_meta', $savedata, $post_id );
@@ -182,8 +180,6 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 		}
 	}
 	
-	logme( "NEW Save Data" );
-	logme( $savedata );
 	update_post_meta( $post_id, 'product_data', $savedata );
 	update_option( 'jigoshop_errors', $jigoshop_errors );
 
