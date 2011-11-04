@@ -419,7 +419,7 @@ function process_product_meta_variable( $data, $post_id ) {
                     //disable variation
                     $post_status = 'private';
                     //set error message
-                    $errors[] = sprintf(__('Variation #%s was disabled as it is already covered by other variation.', 'jigoshop'), $variation_id);
+                    $errors[] = sprintf(__('Variation #%s was disabled as it is already covered by another variation.', 'jigoshop'), $variation_id);
                     break;
                 }
             }

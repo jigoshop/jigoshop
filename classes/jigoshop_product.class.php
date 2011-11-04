@@ -730,8 +730,10 @@ class jigoshop_product {
                 }
             }
             
+			sort( $values );
+			
             //empty value indicates that all options for given attribute are available
-            if(in_array('', $values)) {
+            if ( in_array(  '', $values)) {
                 $options = $attribute['value'];
                 if (!is_array($options)) {
                     $options = explode(',', $options);
@@ -742,7 +744,7 @@ class jigoshop_product {
               
             //make sure values are unique
             $values = array_unique($values);
-            
+
             $available[$attribute['name']] = $values;
         }
         

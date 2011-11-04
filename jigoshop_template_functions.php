@@ -369,7 +369,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 
                 $variationsAvailable[] = array(
                     'variation_id' => $variation->get_variation_id(),
-                    'attributes' => $vattrs, /* for now, set to null or attributes compare in scripts.js fails. go figure? */
+                    'attributes' => $vattrs,
                     'image_src' => $image,
                     'image_link' => $image_link,
                     'price_html' => '<span class="price">'.$variation->get_price_html().'</span>',
