@@ -114,6 +114,7 @@ dl.totals dd input.last {
 }
 .jigoshop_order_items_wrapper {
   margin: 0;
+  overflow: auto;
 }
 .jigoshop_order_items_wrapper table.jigoshop_order_items {
   width: 100%;
