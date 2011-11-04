@@ -8,13 +8,15 @@ jQuery.fn.animateHighlight = function(highlightColor, duration) {
 jQuery(function(){
 	
 	// Lightbox
-	jQuery('a.zoom').fancybox({
-		'transitionIn'	:	'elastic',
-		'transitionOut'	:	'elastic',
-		'speedIn'		:	600, 
-		'speedOut'		:	200, 
-		'overlayShow'	:	true
-	});
+	if (params.load_fancybox) {
+		jQuery('a.zoom').fancybox({
+			'transitionIn'	:	'elastic',
+			'transitionOut'	:	'elastic',
+			'speedIn'		:	600, 
+			'speedOut'		:	200, 
+			'overlayShow'	:	true
+		});
+	}
 	
 	// Star ratings
 	jQuery('#rating').hide().before('<p class="stars"><span><a class="star-1" href="#">1</a><a class="star-2" href="#">2</a><a class="star-3" href="#">3</a><a class="star-4" href="#">4</a><a class="star-5" href="#">5</a></span></p>');
