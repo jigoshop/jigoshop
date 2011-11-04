@@ -222,7 +222,7 @@ dl.totals dd input.last {
   width: 60px !important;
 }
 .widefat .column-total_cost {
-  width: 150px !important;
+  width: 250px !important;
 }
 .widefat .column-order_title {
   width: 120px;
@@ -324,6 +324,9 @@ table.wp-list-table span.na {
 }
 table.wp-list-table .column-featured, table.wp-list-table .column-sellable, table.wp-list-table .column-is_in_stock {
   text-align: center !important;
+}
+div.star img {
+  margin: 0;
 }
 /* Dashboard */
 #jigoshop_dashboard {
@@ -507,16 +510,16 @@ ul.recent-orders li .refunded, ul.recent-orders li .cancelled {
 }
 /* Settings */
 .jigoshop table.widefat {
-  width: 950px;
+  width: 850px;
   margin-top: 0.5em !important;
 }
 .jigoshop table.widefat .button {
   float: left;
-  margin: 0 3px 3px 0;
+  margin: 0 3px 3px 0 !important;
 }
 .jigoshop table.widefat .button-right {
   float: right;
-  margin: 0 0 3px 3px;
+  margin: 0 0 3px 3px !important;
 }
 .jigoshop table.widefat td, .jigoshop table.widefat th {
   padding: 9px 9px;
@@ -536,7 +539,7 @@ ul.recent-orders li .refunded, ul.recent-orders li .cancelled {
 }
 .jigoshop #tabs-wrap {
   background: #ececec;
-  width: 950px;
+  width: 850px;
   padding: 7px 9px;
   overflow: hidden;
   margin-top: 0.5em !important;
@@ -609,27 +612,8 @@ p.taxrow label input {
   border: 0;
   vertical-align: middle;
 }
-.jigoshop table.widefat table.coupon_rows a.dp-choose-date {
-  float: left;
-  width: 16px;
-  height: 16px;
-  padding: 0;
-  margin: 4px 9px 0 3px;
-  display: block;
-  text-indent: -2000px;
-  overflow: hidden;
-  background: url(../images/calendar.png) no-repeat;
-}
-.jigoshop table.widefat table.coupon_rows a.dp-choose-date.dp-disabled {
-  background-position: 0 -20px;
-  cursor: default;
-}
-.jigoshop table.widefat table.coupon_rows input.dp-applied {
-  width: 140px;
-  float: left;
-}
 .jigoshop table.widefat table.coupon_rows tbody td input.text {
-  width: 85px;
+  width: 95px;
 }
 a.tips {
   height: 16px;
