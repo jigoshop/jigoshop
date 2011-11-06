@@ -673,6 +673,7 @@ function jigoshop_get_formatted_variation( $variation = '', $flat = false ) {
 				foreach ( $terms as $term ) :
 					if ( $term->slug == $value ) $value = $term->name;
 				endforeach;
+				$name = get_taxonomy( 'pa_'.$name )->labels->name;
 			endif;
 
 			if ($flat) :
