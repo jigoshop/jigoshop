@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Jigoshop - WordPress eCommerce Plugin\n"
 "Report-Msgid-Bugs-To: http://jigoshop.com/forums/\n"
 "POT-Creation-Date: 2011-06-13 01:20+1100\n"
-"PO-Revision-Date: 2011-11-01 10:22+0100\n"
+"PO-Revision-Date: 2011-11-06 19:30+0100\n"
 "Last-Translator: \n"
 "Language-Team: DECKERWEB <deckerweb.mobil@googlemail.com>\n"
 "MIME-Version: 1.0\n"
@@ -98,104 +98,104 @@ msgstr "auf"
 #: jigoshop_taxonomy.php:41
 #: widgets/product_categories.php:51
 msgid "Product Categories"
-msgstr "Produktkategorien"
+msgstr "Kategorien"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:42
 msgid "Product Category"
-msgstr "Produktkategorie"
+msgstr "Kategorie"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:43
 msgid "Search Product Categories"
-msgstr "Durchsuche Produktkategorien"
+msgstr "Kategorien suchen"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:44
 msgid "All Product Categories"
-msgstr "Alle Produktkategorien"
+msgstr "Alle Kategorien"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:45
 msgid "Parent Product Category"
-msgstr "&Uuml;bergeordneter Produktkategorie"
+msgstr "&Uuml;bergeordneter Kategorie"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:46
 msgid "Parent Product Category:"
-msgstr "&Uuml;bergeordnete Produktkategorie:"
+msgstr "&Uuml;bergeordnete Kategorie:"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:47
 msgid "Edit Product Category"
-msgstr "Bearbeite Produktkategorie"
+msgstr "Bearbeite Kategorie"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:48
 msgid "Update Product Category"
-msgstr "Aktualisiere Produktkategorie"
+msgstr "Aktualisiere Kategorie"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:49
 msgid "Add New Product Category"
-msgstr "F&uuml;ge Neue Produktkategorie hinzu"
+msgstr "Neue Kategorie hinzuf&uuml;gen"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:50
 msgid "New Product Category Name"
-msgstr "Neuer Produktkategorie-Name"
+msgstr "Neuer Kategorie-Name"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:63
 #: widgets/product_tag_cloud.php:50
 msgid "Product Tags"
-msgstr "Produkt-Schlagworte"
+msgstr "Schlagw&ouml;rter"
 
 #@ jigoshop
 #: admin/jigoshop-admin-dashboard.php:66
 #: jigoshop_taxonomy.php:64
 msgid "Product Tag"
-msgstr "Produkt-Schlagwort"
+msgstr "Schlagwort"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:65
 msgid "Search Product Tags"
-msgstr "Durchsuche Produkt-Schlagworte"
+msgstr "Schlagw&ouml;rter suchen"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:66
 msgid "All Product Tags"
-msgstr "Alle Produkt-Schlagworte"
+msgstr "Alle Schlagw&ouml;rter"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:67
 msgid "Parent Product Tag"
-msgstr "&Uuml;bergeordnetes Produkt-Schlagwort"
+msgstr "&Uuml;bergeordnetes Schlagwort"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:68
 msgid "Parent Product Tag:"
-msgstr "&Uuml;bergeordnetes Produkt-Schlagwort:"
+msgstr "&Uuml;bergeordnetes Schlagwort:"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:69
 msgid "Edit Product Tag"
-msgstr "Bearbeite Produkt-Schlagwort"
+msgstr "Bearbeite Schlagwort"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:70
 msgid "Update Product Tag"
-msgstr "Aktualisiere Produkt-Schlagwort"
+msgstr "Aktualisiere Schlagwort"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:71
 msgid "Add New Product Tag"
-msgstr "Neues Produkt-Schlagwort hinzuf&uuml;gen"
+msgstr "Neues Schlagwort hinzuf&uuml;gen"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:72
 msgid "New Product Tag Name"
-msgstr "Neuer Produkt-Schlagwort-Namen"
+msgstr "Neuer Schlagwortname"
 
 #@ jigoshop
 #: admin/jigoshop-admin-dashboard.php:54
@@ -214,12 +214,12 @@ msgstr "Produkt"
 #@ jigoshop
 #: jigoshop_taxonomy.php:120
 msgid "Add Product"
-msgstr "Produkt hinzuf&uuml;gen"
+msgstr "Erstellen"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:121
 msgid "Add New Product"
-msgstr "Neues Produkt hinzuf&uuml;gen"
+msgstr "Neues Produkt erstellen"
 
 #@ jigoshop
 #: admin/jigoshop-admin-attributes.php:185
@@ -250,7 +250,7 @@ msgstr "Produkt anzeigen"
 #@ jigoshop
 #: jigoshop_taxonomy.php:127
 msgid "Search Products"
-msgstr "Suche Produkt"
+msgstr "Produkte suchen"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:128
@@ -290,12 +290,12 @@ msgstr "Bestellung"
 #@ jigoshop
 #: jigoshop_taxonomy.php:193
 msgid "Add Order"
-msgstr "Bestellung hinzuf&uuml;gen"
+msgstr "Erstellen"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:194
 msgid "Add New Order"
-msgstr "Neue Bestellung hinzuf&uuml;gen"
+msgstr "Neue Bestellung erstellen"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:196
@@ -317,7 +317,7 @@ msgstr "Bestellung anzeigen"
 #@ jigoshop
 #: jigoshop_taxonomy.php:200
 msgid "Search Orders"
-msgstr "Durchsuche Bestellungen"
+msgstr "Bestellungen suchen"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:201
@@ -352,7 +352,7 @@ msgstr "Bestellstatus"
 #@ jigoshop
 #: jigoshop_taxonomy.php:228
 msgid "Search Order statuses"
-msgstr "Durchsuche Bestellstatus"
+msgstr "Bestellstatus suchen"
 
 #@ jigoshop
 #: jigoshop_taxonomy.php:229
@@ -392,7 +392,7 @@ msgstr "Neuer Bestellstatus-Name"
 #@ jigoshop
 #: jigoshop_template_functions.php:733
 msgid "Products tagged &ldquo;"
-msgstr "Verschlagwortete Produkte &ldquo;"
+msgstr "VerSchlagw&ouml;rterte Produkte &ldquo;"
 
 #@ jigoshop
 #: jigoshop_template_functions.php:756
@@ -408,7 +408,7 @@ msgstr "Inhalt nicht gefunden (Systemfehler 404)"
 #@ jigoshop
 #: jigoshop_template_functions.php:845
 msgid "Posts tagged &ldquo;"
-msgstr "Beitr&auml;ge verschlagwortet &ldquo;"
+msgstr "Beitr&auml;ge verSchlagw&ouml;rtert &ldquo;"
 
 #@ jigoshop
 #: jigoshop_template_functions.php:850
@@ -641,7 +641,7 @@ msgstr "Datei nicht gefunden. <a href=\"%s\">Zur&uuml;ck zur Startseite &rarr;</
 #@ jigoshop
 #: widgets/product_tag_cloud.php:29
 msgid "Your most used product tags in cloud format"
-msgstr "Ihre meistgenutzten Produkt-Schlagworte als Schlagwortwolke (Tagcloud)"
+msgstr "Ihre meistgenutzten Schlagw&ouml;rter als Schlagwortwolke (Tagcloud)"
 
 #@ jigoshop
 #: widgets/cart.php:143
@@ -753,7 +753,7 @@ msgstr "Anzahl anzuzeigender Produkte:"
 #@ jigoshop
 #: widgets/product_categories.php:30
 msgid "A list or dropdown of product categories"
-msgstr "Liste oder Dropdown der Produktkategorien"
+msgstr "Liste oder Dropdown der Kategorien"
 
 #@ jigoshop
 #: widgets/product_categories.php:86
@@ -2854,7 +2854,7 @@ msgstr "Kategorie"
 #@ jigoshop
 #: admin/jigoshop-admin-post-types.php:116
 msgid "Tags"
-msgstr "Schlagworte"
+msgstr "Schlagw&ouml;rter"
 
 #@ jigoshop
 #: admin/jigoshop-admin-post-types.php:117
@@ -5851,7 +5851,7 @@ msgstr "Produktkatalog sortieren nach"
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:323
 msgid "Determines the display sort order of products for the Shop, Categories, and Tag pages."
-msgstr "Legt die Sortierung von Produkten im Shop fest. Dieselbe Einstellung gilt f&uuml;r die Archivseiten der Produktkategorien und Produktschlagworten."
+msgstr "Legt die Sortierung von Produkten im Shop fest. Dieselbe Einstellung gilt f&uuml;r die Archivseiten der Kategorien und Schlagw&ouml;rter."
 
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:329
@@ -5901,7 +5901,7 @@ msgstr "Standard = 4 -- justieren Sie dies in Verbindungen mit den Bildgr&ouml;s
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:352
 msgid "Determines how many products to show on one display row for Shop, Category and Tag pages."
-msgstr "Legt fest, wieviele Produkte pro Zeile auf einer Shop-Seite sowie auf den Archivseiten f&uuml;r Produktkategorien und Produktschlagworten angezeigt werden."
+msgstr "Legt fest, wieviele Produkte pro Zeile auf einer Shop-Seite sowie auf den Archivseiten f&uuml;r Kategorien und Schlagw&ouml;rter angezeigt werden."
 
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:360
@@ -5916,7 +5916,7 @@ msgstr "Standard = 12"
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:362
 msgid "Determines how many products to display on Shop, Category and Tag pages before needing next and previous page navigation."
-msgstr "Legt fest, wieviele Produkte insgesamt pro Seite angezeigt werden, bevor die Seitennavigation ('Seite vor' / 'Seite zur&uuml;ck') ben&ouml;tigt wird. Diese Einstellung gilt f&uuml;r die Shop-Seiten sowie die Archivseiten der Produktkategorien und Produktschlagworte."
+msgstr "Legt fest, wieviele Produkte insgesamt pro Seite angezeigt werden, bevor die Seitennavigation ('Seite vor' / 'Seite zur&uuml;ck') ben&ouml;tigt wird. Diese Einstellung gilt f&uuml;r die Shop-Seiten sowie die Archivseiten der Kategorien und Schlagw&ouml;rter."
 
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:390
@@ -5979,7 +5979,7 @@ msgstr "Standard = 150px"
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:504
 msgid "Set the width of the catalog image for Shop, Categories, Tags, and Related Products."
-msgstr "Legt die <em>Breite</em> des Produktkatalogbildes fest. - Wird genutzt im Shop (auf den regul&auml;ren Produktseiten), auf den Archivseiten der Produktkategorien und Produktschlagworten sowie bei den &auml;hnlichen Produkten (Empfehlungen/ Verkn&uuml;pfungen)."
+msgstr "Legt die <em>Breite</em> des Produktkatalogbildes fest. - Wird genutzt im Shop (auf den regul&auml;ren Produktseiten), auf den Archivseiten der Kategorien und Schlagw&ouml;rter sowie bei den &auml;hnlichen Produkten (Empfehlungen/ Verkn&uuml;pfungen)."
 
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:512
@@ -5989,7 +5989,7 @@ msgstr "Katalogbild, H&ouml;he"
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:514
 msgid "Set the height of the catalog image for Shop, Categories, Tags, and Related Products."
-msgstr "Legt die <em>H&ouml;he</em> des Produktkatalogbildes fest. - Wird genutzt im Shop (auf den regul&auml;ren Produktseiten), auf den Archivseiten der Produktkategorien und Produktschlagworten sowie bei den &auml;hnlichen Produkten (Empfehlungen/ Verkn&uuml;pfungen)."
+msgstr "Legt die <em>H&ouml;he</em> des Produktkatalogbildes fest. - Wird genutzt im Shop (auf den regul&auml;ren Produktseiten), auf den Archivseiten der Kategorien und Schlagw&ouml;rter sowie bei den &auml;hnlichen Produkten (Empfehlungen/ Verkn&uuml;pfungen)."
 
 #@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:523
@@ -6195,7 +6195,7 @@ msgstr "Jigoshop: Preisfilter"
 #@ jigoshop
 #: widgets/product_categories.php:34
 msgid "Jigoshop: Product Categories"
-msgstr "Jigoshop: Produktkategorien"
+msgstr "Jigoshop: Kategorien"
 
 #@ jigoshop
 #: widgets/product_categories.php:177
@@ -6210,7 +6210,7 @@ msgstr "Jigoshop: Produktsuche"
 #@ jigoshop
 #: widgets/product_tag_cloud.php:33
 msgid "Jigoshop: Product Tag Cloud"
-msgstr "Jigoshop: Produktschlagwortwolke"
+msgstr "Jigoshop: Schlagwortwolke"
 
 #@ jigoshop
 #: widgets/recent_products.php:33
