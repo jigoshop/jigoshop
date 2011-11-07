@@ -2,7 +2,7 @@
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal
 Requires at least: 3.1
 Tested up to: 3.2.1
-Stable tag: 0.9.9.1
+Stable tag: 0.9.9.2
 
 A feature packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customisability.
 
@@ -132,7 +132,29 @@ We have a <a href="http://jigoshop.com/forums" title="Jigoshop support forum">co
 9. Checkout
 
 == Changelog ==
+= 0.9.9.2 =
+* Variations only show 'From' if prices actually vary
+* Display applied coupons on Admin orders
+* Improve installation and page creation, ignore trashed pages
+* Repair Admin product list pagination
+* Add program hooks to emails to allow output customization
+* Fixes for attributes and variations
+* updated Spanish translations
+* Hungarian Translation by Kristóf Gruber
+* Hungarian, Croatian and Indian currencies
+* repair free shipping
+* added css classes to widget titles, prices, etc., for easier styling
+* add product category shortcode
+* repair and allow category and tag templates in themes
+* begin Tax rework, allow out of state tax and tax based on shipping address
+* more internationalization for text translations
+* lots of internal code restructuring
+* numerous small bug fixes
+
+
 = 0.9.9.1 =
+* Added date ranges for coupons
+* Display coupons used on the Cart
 * Now saves coupon data in order panel
 * Added body classes to track order page
 * Added Russian Translation
