@@ -50,6 +50,8 @@ class jigoshop_checkout {
 			array( 'name'=>'billing-phone', 'validate' => 'phone', 'label' => __('Phone', 'jigoshop'), 'placeholder' => __('Phone number', 'jigoshop'), 'required' => true, 'class' => array('form-row-last') )
 		);
 		
+		$this->billing_fields = apply_filters( 'jigoshop_blilling_fields', $this->billing_fields );
+		
 		$this->shipping_fields = array(
 			array( 'name'=>'shipping-first_name', 'label' => __('First Name', 'jigoshop'), 'placeholder' => __('First Name', 'jigoshop'), 'required' => true, 'class' => array('form-row-first') ),
 			array( 'name'=>'shipping-last_name', 'label' => __('Last Name', 'jigoshop'), 'placeholder' => __('Last Name', 'jigoshop'), 'required' => true, 'class' => array('form-row-last') ),
@@ -61,6 +63,8 @@ class jigoshop_checkout {
 			array( 'type'=> 'country', 'name'=>'shipping-country', 'label' => __('Country', 'jigoshop'), 'required' => true, 'class' => array('form-row-first'), 'rel' => 'shipping-state' ),
 			array( 'type'=> 'state', 'name'=>'shipping-state', 'label' => __('State/County', 'jigoshop'), 'required' => true, 'class' => array('form-row-last'), 'rel' => 'shipping-country' )
 		);
+		
+		$this->shipping_fields = apply_filters( 'jigoshop_shipping_fields', $this->shipping_fields );
 	}
 	
 	public static function instance () {
@@ -87,6 +91,7 @@ class jigoshop_checkout {
 		
 		// Billing Details
 		foreach ($this->billing_fields as $field) :
+			$field = apply_filters( 'jigoshop_billing_field', $field );
 			$this->checkout_form_field( $field );
 		endforeach;
 		
@@ -128,11 +133,13 @@ class jigoshop_checkout {
 			echo '<h3>'.__('Shipping Address', 'jigoshop').'</h3>';
 			
 			echo'<div class="shipping-address">';
-					
+			
+			
 				foreach ($this->shipping_fields as $field) :
+					$field = apply_filters( 'jigoshop_shipping_field', $field );
 					$this->checkout_form_field( $field );
 				endforeach;
-								
+
 			echo'</div>';
 		
 		elseif (jigoshop_cart::ship_to_billing_address_only()) :
@@ -271,6 +278,7 @@ class jigoshop_checkout {
 			
 			// Billing Information
 			foreach ($this->billing_fields as $field) :
+				$field = apply_filters( 'jigoshop_billing_field', $field );
 				
 				$this->posted[$field['name']] = isset($_POST[$field['name']]) ? jigowatt_clean($_POST[$field['name']]) : '';
 				
@@ -304,6 +312,8 @@ class jigoshop_checkout {
 			if (jigoshop_cart::needs_shipping() && !jigoshop_cart::ship_to_billing_address_only() && empty($this->posted['shiptobilling'])) :
 				
 				foreach ($this->shipping_fields as $field) :
+					$field = apply_filters( 'jigoshop_shipping_field', $field );
+				
 					if (isset( $_POST[$field['name']] )) $this->posted[$field['name']] = jigowatt_clean($_POST[$field['name']]); else $this->posted[$field['name']] = '';
 					
 					// Format

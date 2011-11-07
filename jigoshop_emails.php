@@ -201,6 +201,7 @@ function jigoshop_completed_order_customer_notification( $order_id ) {
 	$message .= $order->formatted_shipping_address . PHP_EOL . PHP_EOL;
 
 	$message = html_entity_decode( strip_tags( $message ) );
+	$message = apply_filters( 'jigoshop_completed_order_customer_notification_mail_message', $order_id, $message );
 
 	wp_mail( $order->billing_email, $subject, $message );
 }
