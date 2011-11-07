@@ -117,6 +117,7 @@ function jigoshop_post_type() {
 			'labels' => array(
 				'name' => __( 'Products', 'jigoshop' ),
 				'singular_name' => __( 'Product', 'jigoshop' ),
+				'all_items' => __( 'All Products', 'jigoshop' ),
 				'add_new' => __( 'Add Product', 'jigoshop' ),
 				'add_new_item' => __( 'Add New Product', 'jigoshop' ),
 				'edit' => __( 'Edit', 'jigoshop' ),
@@ -190,6 +191,7 @@ function jigoshop_post_type() {
 			'labels' => array(
 				'name' => __( 'Orders', 'jigoshop' ),
 				'singular_name' => __( 'Order', 'jigoshop' ),
+				'all_items' => __( 'All Orders', 'jigoshop' ),
 				'add_new' => __( 'Add Order', 'jigoshop' ),
 				'add_new_item' => __( 'Add New Order', 'jigoshop' ),
 				'edit' => __( 'Edit', 'jigoshop' ),
