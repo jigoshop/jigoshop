@@ -44,7 +44,9 @@ p small {
 p.demo_store {
   position: fixed;
   top: 0;
-  width: 100%;
+  left: 50%;
+  width: 450px;
+  margin-left: -225px;
   font-size: 12px;
   text-align: center;
   background: #f7f5c6;
