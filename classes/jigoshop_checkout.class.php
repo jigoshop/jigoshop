@@ -16,16 +16,15 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
-class jigoshop_checkout {
+
+class jigoshop_checkout extends jigoshop_singleton {
 	
 	public $posted;
 	public $billing_fields;
 	public $shipping_fields;
 	public $must_create_account;
 	public $creating_account;
-	
-	protected static $instance;
-	
+		
 	/** constructor */
 	protected function __construct () {
 		
@@ -62,16 +61,7 @@ class jigoshop_checkout {
 			array( 'type'=> 'state', 'name'=>'shipping-state', 'label' => __('State/County', 'jigoshop'), 'required' => true, 'class' => array('form-row-last'), 'rel' => 'shipping-country' )
 		);
 	}
-	
-	public static function instance () {
-		if(!self::$instance) {
-			$class = __CLASS__;
-			self::$instance = new $class;
-		}
 		
-		return self::$instance;
-	}
-	
 	/** Output the billing information form */
 	function checkout_form_billing() {
 		

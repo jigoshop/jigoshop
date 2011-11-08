@@ -100,7 +100,7 @@ endif;
 $jigoshop 					= jigoshop::instance();
 $jigoshop_customer 			= jigoshop_customer::instance();		// Customer class, sorts out session data such as location
 $jigoshop_shipping 			= jigoshop_shipping::instance();		// Shipping class. loads and stores shipping methods
-$jigoshop_payment_gateways 	= jigoshop_payment_gateways::get();		// Payment gateways class. loads and stores payment methods
+$jigoshop_payment_gateways 	= jigoshop_payment_gateways::instance();// Payment gateways class. loads and stores payment methods
 $jigoshop_cart 				= jigoshop_cart::instance();			// Cart class, stores the cart contents
 
 // Constants
