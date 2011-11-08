@@ -50,7 +50,7 @@ class jigoshop_checkout {
 			array( 'name'=>'billing-phone', 'validate' => 'phone', 'label' => __('Phone', 'jigoshop'), 'placeholder' => __('Phone number', 'jigoshop'), 'required' => true, 'class' => array('form-row-last') )
 		);
 		
-		$this->billing_fields = apply_filters( 'jigoshop_blilling_fields', $this->billing_fields );
+		$this->billing_fields = apply_filters( 'jigoshop_billing_fields', $this->billing_fields );
 		
 		$this->shipping_fields = array(
 			array( 'name'=>'shipping-first_name', 'label' => __('First Name', 'jigoshop'), 'placeholder' => __('First Name', 'jigoshop'), 'required' => true, 'class' => array('form-row-first') ),
