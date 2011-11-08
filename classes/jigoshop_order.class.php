@@ -191,7 +191,7 @@ class jigoshop_order {
 			
 			$_product = $this->get_product_from_item( $item );
 
-			$return .= $item['qty'] . ' x ' . html_entity_decode(apply_filters('jigoshop_order_product_title', $item['name'], $_product), ENT_QUOTES, 'UTF-8'); /* might need users default charset -JAP- */
+			$return .= $item['qty'] . ' x ' . html_entity_decode(apply_filters('jigoshop_order_product_title', $item['name'], $_product), ENT_QUOTES, 'UTF-8');
 			
 			if ($show_sku) :
 				
@@ -199,7 +199,7 @@ class jigoshop_order {
 				
 			endif;
 			
-			$return .= ' - ' . strip_tags(jigoshop_price( $item['cost']*$item['qty'], array('ex_tax_label' => 1 )));
+			$return .= ' - ' . html_entity_decode(strip_tags(jigoshop_price( $item['cost']*$item['qty'], array('ex_tax_label' => 1 ))), ENT_COMPAT, 'UTF-8');
 			
 			if (isset($_product->variation_data)) :
 				$return .= PHP_EOL . jigoshop_get_formatted_variation( $_product->variation_data, true );
