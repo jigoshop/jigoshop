@@ -123,7 +123,7 @@ function jigoshop_system_info() {
 	<div class="wrap jigoshop">
 		<div class="icon32 icon32-jigoshop-debug" id="icon-jigoshop"><br/></div>
 	    <h2><?php _e('System Information','jigoshop') ?></h2>
-	    <p>Use the information below when submitting technical support requests via the Jigoshop community / premium <a href="http://jigoshop.com/forums/" title="Jigoshop Support Forums" target="_blank">support forums</a>.</p>
+	    <p>Use the information below when submitting technical support requests via <a href="http://support.jigoshop.com/" title="Jigoshop Support" target="_blank">Jigoshop Support</a>.</p>
 		<div id="tabs-wrap">
 			<ul class="tabs">
 				<li><a href="#versions"><?php _e('Environment', 'jigoshop'); ?></a></li>
