@@ -82,6 +82,8 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
     		'showposts'		=> $number,
     		'post_type'		=> 'product',
     		'post_status'	=> 'publish',
+    		'orderby'		=> 'date',
+    		'order'			=> 'desc',
     		'meta_query'	=> array(
     			array(
     				'key'		=> 'visibility',

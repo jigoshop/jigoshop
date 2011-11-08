@@ -79,6 +79,8 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 			'showposts'		=> $number,
 			'post_type'		=> 'product',
 			'post_status'	=> 'publish',
+			'orderby'		=> get_option('jigoshop_catalog_sort_orderby'),
+			'order'			=> get_option('jigoshop_catalog_sort_direction'),
 			'meta_key'		=> 'featured',
 			'meta_value'	=> 'yes',
     		'meta_query'	=> array(
