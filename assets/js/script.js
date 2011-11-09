@@ -29,8 +29,8 @@ jQuery(function(){
 	});
 
 	// Price slider
-	var min_price = jQuery('.price_slider_amount #min_price').val();
-	var max_price = jQuery('.price_slider_amount #max_price').val();
+	var min_price = parseInt(jQuery('.price_slider_amount #min_price').val());
+	var max_price = parseInt(jQuery('.price_slider_amount #max_price').val());
 	
 	if (params.min_price) {
 		current_min_price = params.min_price;
