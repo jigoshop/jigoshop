@@ -99,7 +99,7 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 			
 			// Print the widget wrapper & title
 			echo $before_widget;
-			echo $before_title . $title . $after_title; 
+			echo $before_title . ($title ? $title : __('Featured Products')) . $after_title; 
 			
 			// Open the list
 			echo '<ul class="product_list_widget">';
