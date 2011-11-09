@@ -2,7 +2,7 @@
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal
 Requires at least: 3.1
 Tested up to: 3.3 Beta 3
-Stable tag: 0.9.9.2
+Stable tag: 0.9.9.3
 
 A feature packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customisability.
 
@@ -132,6 +132,9 @@ We have a <a href="http://jigoshop.com/forums" title="Jigoshop support forum">co
 9. Checkout
 
 == Changelog ==
+= 0.9.9.3 =
+* Fixed SVN error
+
 = 0.9.9.2 =
 * Add new Product Category shortcode
 * Hungarian Translation by Kristóf Gruber

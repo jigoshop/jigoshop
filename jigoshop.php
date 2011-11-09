@@ -14,7 +14,7 @@
  * Author:				Jigowatt
  * Author URI:			http://jigowatt.co.uk
  *
- * Version:				0.9.9.2
+ * Version:				0.9.9.3
  * Requires at least:	3.1
  * Tested up to:		3.3 Beta 3
  *
@@ -27,7 +27,7 @@
 
 @session_start();
 
-if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", "0.9.9.2");
+if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", "0.9.9.3");
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
