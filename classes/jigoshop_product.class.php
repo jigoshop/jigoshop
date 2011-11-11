@@ -266,6 +266,10 @@ class jigoshop_product {
 	function is_in_stock() {
 
 		if( $this->managing_stock() ) {
+		
+			// First check if we allow backorders
+			if( $this->backorders_allowed() )
+				return true;
 
 			// If we have variations
 			if( $this->has_child() ) {
@@ -281,9 +285,9 @@ class jigoshop_product {
 
 			} else {
 
-				if ($this->data['stock_status'] != 'instock')
+				if ( $this->data['stock_status'] != 'instock' )
 					return false;
-				else if( ! $this->backorders_allowed() AND $this->stock <= 0 )
+				else if( $this->stock <= 0 )
 					return false;
 
 			}
