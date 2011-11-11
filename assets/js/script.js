@@ -259,7 +259,6 @@ jQuery(function(){
 			
 			current_attributes[jQuery(this).attr('name')] = jQuery(this).val();
 		});
-		console.log(current_attributes);
 		var matching_variations = find_matching_variations(current_attributes);
 		
 		if(all_set) {
