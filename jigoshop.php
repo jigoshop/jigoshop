@@ -80,6 +80,9 @@ $include_files = array_merge($include_files, (array) glob( dirname(__FILE__)."/c
 // Shipping
 $include_files = array_merge($include_files, (array) glob( dirname(__FILE__)."/shipping/*.php" ));
 
+// Shipping calculator
+$include_files = array_merge($include_files, (array) glob( dirname(__FILE__)."/classes/shipping_calculator/*.php" ));
+
 // Payment Gateways
 $include_files = array_merge($include_files, (array) glob( dirname(__FILE__)."/gateways/*.php" ));
 
