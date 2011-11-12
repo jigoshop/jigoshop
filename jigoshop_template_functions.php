@@ -629,6 +629,29 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 					<input type="text" class="input-text" value="<?php echo jigoshop_customer::get_shipping_postcode(); ?>" placeholder="<?php _e('Postcode/Zip', 'jigoshop'); ?>" title="<?php _e('Postcode', 'jigoshop'); ?>" name="calc_shipping_postcode" id="calc_shipping_postcode" />
 				</p>
 			</div>
+			<?php
+			//TODO: us shipping requires postal code. Other shipping services may require state. Need to think about this more
+			if (jigoshop_customer::get_shipping_postcode() && jigoshop_shipping::$has_calculable_shipping() && jigoshop_shipping::get_total() > 0) :
+				$available_methods = jigoshop_shipping::$get_available_shipping_methods();
+				foreach ( $available_methods as $method ) :
+					if ( $method->enabled ) :
+					?>
+					<div class="col2-set">
+						<p class="form-row col-1">
+							<?php 
+							echo '<input type="radio" name="shipping_rates" value="' . $method->id . ':' . $method->shipping_total . '"';
+							if ( $method->is_chosen() ) echo 'checked>'; else echo '>'; 
+							echo $method->title;
+							?>
+							<?php //TODO: change this echo statement for $ sign. Need to internationalize it ?>
+						<p class="form-row col-2"><?php  echo '$' . $flat_rate_obj->shipping_total; ?>
+					</div>
+					<?php
+					endif;
+				endforeach;
+			endif;
+			?>
+			
 			<p><button type="submit" name="calc_shipping" value="1" class="button"><?php _e('Update Totals', 'jigoshop'); ?></button></p>
 			<?php jigoshop::nonce_field('cart') ?>
 			</section>
