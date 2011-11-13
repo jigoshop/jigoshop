@@ -23,6 +23,7 @@ class jigoshop_shipping extends jigoshop_singleton {
 	protected static $shipping_total	= 0;
 	protected static $shipping_tax 		= 0;
 	protected static $shipping_label	= null;
+	protected static $has_calculable_shipping	= false;
 	
 	
 	/** Constructor */
@@ -77,6 +78,9 @@ class jigoshop_shipping extends jigoshop_singleton {
 		return self::$shipping_methods;
 	}
 	
+	public static function has_calculable_shipping() {
+		return self::$has_calculable_shipping;
+	}
 	
 	public static function get_available_shipping_methods() {
 	
@@ -86,7 +90,10 @@ class jigoshop_shipping extends jigoshop_singleton {
 		
 			foreach ( self::$shipping_methods as $method ) :
 				
-				if ( $method->is_available() ) $_available_methods[$method->id] = $method;
+				if ( $method->is_available() ) :
+					$_available_methods[$method->id] = $method;
+					if ($method instanceof iCalculableShipping) self::$has_calculable_shipping = true;
+				endif;
 				
 			endforeach;
 			
@@ -112,9 +119,7 @@ class jigoshop_shipping extends jigoshop_singleton {
 		
 			self::reset_shipping_methods();
 			
-			self::$shipping_total = 0;
-			self::$shipping_tax = 0;
-			self::$shipping_label = null;
+			self::reset_shipping();
 			$_cheapest_fee = '';
 			$_cheapest_method = '';
 			
@@ -159,6 +164,7 @@ class jigoshop_shipping extends jigoshop_singleton {
 		self::$shipping_total = 0;
 		self::$shipping_tax = 0;
 		self::$shipping_label = null;
+		self::$has_calculable_shipping = false;
 	}
 	
 }
