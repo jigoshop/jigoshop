@@ -192,7 +192,7 @@ function jigoshop_order_items_meta_box($post) {
 					<th class="product-sku"><?php _e('SKU', 'jigoshop'); ?></th>
 					<th class="name"><?php _e('Name', 'jigoshop'); ?></th>
 					<th class="variation"><?php _e('Variation', 'jigoshop'); ?></th>
-					<th class="meta"><?php _e('Order Item Meta', 'jigoshop'); ?></th>
+					<!--<th class="meta"><?php _e('Order Item Meta', 'jigoshop'); ?></th>-->
 					<?php do_action('jigoshop_admin_order_item_headers'); ?>
 					<th class="quantity"><?php _e('Quantity', 'jigoshop'); ?></th>
 					<th class="cost"><?php _e('Cost', 'jigoshop'); ?></th>
@@ -226,7 +226,7 @@ function jigoshop_order_items_meta_box($post) {
 								echo '-';
 							endif;
 						?></td>
-						<td>
+						<!--<td>
 							<table class="meta" cellspacing="0">
 								<tfoot>
 									<tr>
@@ -235,7 +235,7 @@ function jigoshop_order_items_meta_box($post) {
 								</tfoot>
 								<tbody></tbody>
 							</table>
-						</td>
+						</td>-->
 						<?php do_action('jigoshop_admin_order_item_values', $_product, $item); ?>
 						<td class="quantity">
                             <input type="text" name="item_quantity[]" placeholder="<?php _e('Quantity e.g. 2', 'jigoshop'); ?>" value="<?php echo $item['qty']; ?>" />
@@ -378,9 +378,10 @@ function jigoshop_order_totals_meta_box($post) {
 
 		<?php
 			$coupons = array();
-			$applied_coupons = $data['order_discount_coupons'];
-			foreach ( $applied_coupons as $coupon ) {
-				$coupons[] = $coupon['code'];
+			if( ! empty($data['order_discount_coupons']) ) {
+				foreach ( $data['order_discount_coupons'] as $coupon ) {
+					$coupons[] = $coupon['code'];
+				}
 			}
 		?>
 		<dt><?php _e('Discount: ', 'jigoshop'); ?><span class="applied-coupons-values"><?php echo implode( ',', $coupons ); ?></span></dt>
