@@ -378,7 +378,8 @@ function jigoshop_order_totals_meta_box($post) {
 
 		<?php
 			$coupons = array();
-			$applied_coupons = $data['order_discount_coupons'];
+			if ( isset( $data['order_discount_coupons'] ) ) $applied_coupons = $data['order_discount_coupons'];
+			else $applied_coupons = array();
 			foreach ( $applied_coupons as $coupon ) {
 				$coupons[] = $coupon['code'];
 			}
