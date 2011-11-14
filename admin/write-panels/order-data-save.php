@@ -158,7 +158,7 @@ function jigoshop_process_shop_order_meta($post_id, $post)
                    }
 
                     // stock status notifications
-                    if (get_option('jigoshop_notify_no_stock_amount') && get_option('jigoshop_notify_no_stock_amount') >= $new_quantity) {
+                    if (get_option('jigoshop_notify_no_stock_amount') >= 0 && get_option('jigoshop_notify_no_stock_amount') >= $new_quantity) {
                         do_action('jigoshop_no_stock_notification', $order_item['id']);
                     } else if (get_option('jigoshop_notify_low_stock_amount') && get_option('jigoshop_notify_low_stock_amount') >= $new_quantity) {
                         do_action('jigoshop_low_stock_notification', $order_item['id']);
