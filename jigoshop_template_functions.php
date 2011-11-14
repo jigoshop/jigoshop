@@ -89,16 +89,22 @@ if (!function_exists('jigoshop_get_sidebar')) {
 if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 	function jigoshop_template_loop_add_to_cart( $post, $_product ) {
 		
-		
 		// do not show "add to cart" button if product's price isn't announced
 		if( $_product->get_price() === '' AND ! ($_product->is_type('variable') OR $_product->is_type('grouped')) ) return;
 		
-		if( $_product->is_type('variable') OR $_product->is_type('grouped') ) {
-			echo '<a href="'. get_permalink($_product->id).'" class="button">'.__('Select', 'jigoshop').'</a>';
-			return;
-		}
+		?>
+			<?php if( $_product->is_in_stock() ): ?>
+			
+				<?php if( $_product->is_type('variable') OR $_product->is_type('grouped') ): ?>
+					<a href="<?php get_permalink($_product->id) ?>" class="button"><?php _e('Select', 'jigoshop') ?></a>
+				<?php else: ?>
+					<a href="<?php echo $_product->add_to_cart_url(); ?>" class="button"><?php _e('Add to cart', 'jigoshop'); ?></a>
+				<?php endif; ?>
+			<?php else: ?>
+				<span class="nostock"><?php _e('Out of Stock', 'jigoshop') ?></span>
+			<?php endif; ?>
 		
-		?><a href="<?php echo $_product->add_to_cart_url(); ?>" class="button"><?php _e('Add to cart', 'jigoshop'); ?></a><?php
+		<?php
 	}
 }
 if (!function_exists('jigoshop_template_loop_product_thumbnail')) {
