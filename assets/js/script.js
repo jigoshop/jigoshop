@@ -232,7 +232,7 @@ jQuery(function(){
 			jQuery(link).attr('original-href', jQuery(link).attr('href'));
 		}
 					
-		if (variation_image.length > 1) {	
+		if (variation_image && variation_image.length > 1) {	
 			jQuery(img).attr('src', variation_image);
 			jQuery(link).attr('href', variation_link);
 		} else {
