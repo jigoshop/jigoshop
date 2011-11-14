@@ -111,26 +111,28 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 	**/
 	function payment_fields() {
 		$bank_info = null;
-		if ($this->bank_name) $bank_info .= '<strong>' . wptexturize($this->bank_name) . '</strong><br />';
-		if ($this->acc_number) $bank_info .= wptexturize($this->acc_number) . '<br />';
-		if ($this->sort_code) $bank_info .= wptexturize($this->sort_code) . '<br />';
-		if ($this->iban) $bank_info .= wptexturize($this->iban) . '<br />';
-		if ($this->bic) $bank_info .= wptexturize($this->bic) . '<br />';
-		if ($this->description) echo wpautop(wptexturize($this->description . __(' These details are also be shown on the confirmation page.')));
+		if ($this->bank_name) $bank_info .= '<strong>'.__('Bank Name', 'jigoshop').'</strong>: ' . wptexturize($this->bank_name) . '<br />';
+		if ($this->acc_number) $bank_info .= '<strong>'.__('Account Number', 'jigoshop').'</strong>: '.wptexturize($this->acc_number) . '<br />';
+		if ($this->sort_code) $bank_info .= '<strong>'.__('Sort Code', 'jigoshop').'</strong>: '. wptexturize($this->sort_code) . '<br />';
+		if ($this->iban) $bank_info .= '<strong>'.__('IBAN', 'jigoshop').'</strong>: '.wptexturize($this->iban) . '<br />';
+		if ($this->bic) $bank_info .= '<strong>'.__('BIC', 'jigoshop').'</strong>: '.wptexturize($this->bic) . '<br />';
+		if ($this->description) echo wpautop(wptexturize($this->description));
 		if (!empty($bank_info)) echo wpautop($bank_info);
+		if ($this->additional) echo wpautop('<strong>'.__('Additional Information', 'jigoshop').'</strong>:');
 		if ($this->additional) echo wpautop(wptexturize($this->additional));
 	}
 	
 	function thankyou_page() {
 		$bank_info = null;
-		if ($this->bank_name) $bank_info .= '<strong>' . wptexturize($this->bank_name) . '</strong><br />';
-		if ($this->acc_number) $bank_info .= wptexturize($this->acc_number) . '<br />';
-		if ($this->sort_code) $bank_info .= wptexturize($this->sort_code) . '<br />';
-		if ($this->iban) $bank_info .= wptexturize($this->iban) . '<br />';
-		if ($this->bic) $bank_info .= wptexturize($this->bic) . '<br />';
+		if ($this->bank_name) $bank_info .= '<strong>'.__('Bank Name', 'jigoshop').'</strong>: ' . wptexturize($this->bank_name) . '<br />';
+		if ($this->acc_number) $bank_info .= '<strong>'.__('Account Number', 'jigoshop').'</strong>: '.wptexturize($this->acc_number) . '<br />';
+		if ($this->sort_code) $bank_info .= '<strong>'.__('Sort Code', 'jigoshop').'</strong>: '. wptexturize($this->sort_code) . '<br />';
+		if ($this->iban) $bank_info .= '<strong>'.__('IBAN', 'jigoshop').'</strong>: '.wptexturize($this->iban) . '<br />';
+		if ($this->bic) $bank_info .= '<strong>'.__('BIC', 'jigoshop').'</strong>: '.wptexturize($this->bic) . '<br />';
 		
 		if ($this->description) echo wpautop(wptexturize($this->description));
 		if ($bank_info) echo wpautop($bank_info);
+		if ($this->additional) echo wpautop('<strong>'.__('Additional Information', 'jigoshop').'</strong>:');
 		if ($this->additional) echo wpautop(wptexturize($this->additional));
 	}
     

@@ -83,7 +83,7 @@ function jigoshop_find_variation( $variation_data = array() ) {
  *
  * @param array $request - the array representing the current WordPress request eg. post_type => 'product'
  * @return array - unaltered array of the intial request
- * @since 1.0
+ * @since 0.9.9
  * @TODO: implement better mechanism for gathering ID's for the widgets -JAP-
  *        This whole file should be wrapped in a class with protected variables and 
  *        proper set and get methods.
@@ -118,7 +118,7 @@ add_filter( 'request', 'jigoshop_get_product_ids_in_view', 0 );
  *
  * @param array $request - the array representing the current WordPress request eg. post_type => 'product'
  * @return array - the finished query object array is returned for WordPress to use
- * @since 1.0
+ * @since 0.9.9
  **/
 function jigoshop_filter_catalog_query( $request ) {
 
@@ -136,18 +136,18 @@ function jigoshop_filter_catalog_query( $request ) {
         	$request['post_status'] = 'publish';
         	$request['posts_per_page'] = apply_filters( 'loop_shop_per_page', get_option( 'jigoshop_catalog_per_page' ));
 			
+			// establish any filters for orderby, order and anything else added to the filter
+			$filters = array();
+			$filters = apply_filters( 'loop-shop-query', $filters );
+			foreach( $filters as $key => $value ) :
+				$request[$key] = $value;
+			endforeach;
+			
 			// modify the query for specific product ID's for layered nav and price filter widgets
 			$request['post__in'] = apply_filters( 'loop-shop-posts-in', $all_post_ids );
 		endif;
 		
 		$request['meta_query'] = jigoshop_filter_meta_query( $this_query );
-		
-		// establish any filters for orderby, order and anything else added to the filter
-		$filters = array();
-		$filters = apply_filters( 'loop-shop-query', $filters );
-		foreach( $filters as $key => $value ) :
-			$request[$key] = $value;
-		endforeach;
 		
 	endif;
 	
@@ -161,7 +161,7 @@ add_filter( 'request', 'jigoshop_filter_catalog_query', 10 );
  *
  * @param array $this_query - WP_Query object array
  * @return array - the finished meta query for visibility array
- * @since 1.0
+ * @since 0.9.9
  **/
 function jigoshop_filter_meta_query( $this_query ) {
 
@@ -190,7 +190,7 @@ function jigoshop_layered_nav_init() {
 
 	global $_chosen_attributes;
 
-	$attribute_taxonomies = jigoshop::getAttributeTaxonomies();
+	$attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();
 	if ( $attribute_taxonomies ) :
 		foreach ($attribute_taxonomies as $tax) :
 
@@ -214,7 +214,7 @@ add_action('init', 'jigoshop_layered_nav_init', 1);
  *
  * @param array $request - the array representing the current WordPress request eg. post_type => 'product'
  * @return array - an array of product ID's
- * @since 1.0
+ * @since 0.9.9
  * @TODO: implement better mechanism for gathering ID's for the widgets -JAP-
  **/
 function jigoshop_get_product_ids( $request ) {

@@ -79,6 +79,8 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 			'showposts'		=> $number,
 			'post_type'		=> 'product',
 			'post_status'	=> 'publish',
+			'orderby'		=> get_option('jigoshop_catalog_sort_orderby'),
+			'order'			=> get_option('jigoshop_catalog_sort_direction'),
 			'meta_key'		=> 'featured',
 			'meta_value'	=> 'yes',
     		'meta_query'	=> array(
@@ -97,7 +99,7 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 			
 			// Print the widget wrapper & title
 			echo $before_widget;
-			echo $before_title . $title . $after_title; 
+			echo $before_title . ($title ? $title : __('Featured Products')) . $after_title; 
 			
 			// Open the list
 			echo '<ul class="product_list_widget">';
@@ -112,11 +114,11 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 					// Print the product image & title with a link to the permalink
 					echo '<a href="'.get_permalink().'" title="'.esc_attr(get_the_title()).'">';
 					echo (has_post_thumbnail()) ? the_post_thumbnail('shop_tiny') : jigoshop_get_image_placeholder('shop_tiny');
-					echo the_title();
+					echo '<span class="js_widget_product_title">' . get_the_title() . '</span>';
 					echo '</a>';
 
 					// Print the price with html wrappers
-					echo $_product->get_price_html();
+					echo '<span class="js_widget_product_price">' . $_product->get_price_html() . '</span>';
 				echo '</li>';
 			endwhile;
 			

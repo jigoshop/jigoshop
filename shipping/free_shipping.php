@@ -23,7 +23,7 @@ class free_shipping extends jigoshop_shipping_method {
 		$this->min_amount 	= get_option('jigoshop_free_shipping_minimum_amount');
 		$this->availability = get_option('jigoshop_free_shipping_availability');
 		$this->countries 	= get_option('jigoshop_free_shipping_countries');
-		if (isset($_SESSION['_chosen_method_id']) && $_SESSION['_chosen_method_id']==$this->id) $this->chosen = true;
+		if (isset($_SESSION['chosen_shipping_method_id']) && $_SESSION['chosen_shipping_method_id']==$this->id) $this->chosen = true;
 		
 		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
 		

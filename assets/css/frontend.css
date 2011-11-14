@@ -44,7 +44,9 @@ p small {
 p.demo_store {
   position: fixed;
   top: 0;
-  width: 100%;
+  left: 50%;
+  width: 450px;
+  margin-left: -225px;
   font-size: 12px;
   text-align: center;
   background: #f7f5c6;
@@ -596,7 +598,7 @@ table.shop_table td {
 table.shop_table td a.button {
   margin: 0 3px;
 }
-table.shop_table tfoot td {
+table.shop_table tbody td, table.shop_table tfoot td {
   font-weight: bold;
 }
 table.my_account_orders {
@@ -677,6 +679,17 @@ td.actions .coupon .input-text {
 td.actions .button-alt {
   float: right;
   margin: 2px 0 0 6px;
+}
+td.applied-coupons {
+  font-size: 12px;
+  text-align: left;
+}
+td.applied-coupons span.applied-coupons-label {
+  font-weight: 700;
+}
+td.applied-coupons span.applied-coupons-values {
+  margin-left: 5px;
+  font-style: italic;
 }
 td.product-name dl.variation {
   margin: 0;

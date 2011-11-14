@@ -289,6 +289,12 @@ function jigoshop_add_to_cart_action($url = false)
     else if (get_option('jigoshop_directly_to_checkout', 'no') == 'yes' && jigoshop::error_count() == 0) {
         wp_safe_redirect(jigoshop_cart::get_checkout_url());
     }
+    // Redirect directly to cart if no error messages
+    else if (get_option('jigoshop_directly_to_checkout', 'cart') == 'cart'
+             && jigoshop::error_count() == 0
+    ) {
+        wp_safe_redirect(jigoshop_cart::get_cart_url());
+    }
     // Otherwise redirect to where they came
     else if (isset($_SERVER['HTTP_REFERER'])) {
         wp_safe_redirect($_SERVER['HTTP_REFERER']);
@@ -464,9 +470,7 @@ function jigoshop_download_product() {
 			AND product_id = '$download_file'
 		;") );
 		
-        if ($downloads_remaining == NULL) :
-            wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
-		elseif ($downloads_remaining == '0') :
+		if ($downloads_remaining == '0') :
             wp_die( sprintf(__('Sorry, you have reached your download limit for this file. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
 		else :
 			if ($downloads_remaining>0) :

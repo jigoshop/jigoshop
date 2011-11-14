@@ -16,16 +16,15 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
-class jigoshop_checkout {
+
+class jigoshop_checkout extends jigoshop_singleton {
 	
-	var $posted;
-	var $billing_fields;
-	var $shipping_fields;
-	var $must_create_account;
-	var $creating_account;
-	
-	protected static $instance;
-	
+	public $posted;
+	public $billing_fields;
+	public $shipping_fields;
+	public $must_create_account;
+	public $creating_account;
+		
 	/** constructor */
 	protected function __construct () {
 		
@@ -66,22 +65,13 @@ class jigoshop_checkout {
 		
 		$this->shipping_fields = apply_filters( 'jigoshop_shipping_fields', $this->shipping_fields );
 	}
-	
-	public static function instance () {
-		if(!self::$instance) {
-			$class = __CLASS__;
-			self::$instance = new $class;
-		}
 		
-		return self::$instance;
-	}
-	
 	/** Output the billing information form */
 	function checkout_form_billing() {
 		
 		if (jigoshop_cart::ship_to_billing_address_only()) :
 			
-			echo '<h3>'.__('Billing &amp Shipping', 'jigoshop').'</h3>';
+			echo '<h3>'.__('Billing &amp; Shipping', 'jigoshop').'</h3>';
 			
 		else : 
 		
@@ -122,7 +112,9 @@ class jigoshop_checkout {
 	function checkout_form_shipping() {
 		
 		// Shipping Details
-		if (jigoshop_cart::needs_shipping() && !jigoshop_cart::ship_to_billing_address_only()) :
+//		if (jigoshop_cart::needs_shipping() && !jigoshop_cart::ship_to_billing_address_only()) :
+		// even if not calculating shipping, we still need to display second shipping address for free shipping
+		if (!jigoshop_cart::ship_to_billing_address_only()) :
 			
 			echo '<p class="form-row" id="shiptobilling"><input class="input-checkbox" ';
 			
@@ -148,7 +140,7 @@ class jigoshop_checkout {
 		
 		endif;
 		
-		$this->checkout_form_field( array( 'type' => 'textarea', 'class' => array('notes'),  'name' => 'order_comments', 'label' => __('Order Notes', 'jigoshop'), 'placeholder' => __('Notes about your order, e.g. special notes for delivery.', 'jigoshop') ) );
+		$this->checkout_form_field( array( 'type' => 'textarea', 'class' => array('notes'),  'name' => 'order_comments', 'label' => __('Order Notes', 'jigoshop'), 'placeholder' => __('Notes about your order.', 'jigoshop') ) );
 		
 	}
 
@@ -542,6 +534,12 @@ class jigoshop_checkout {
 					$data['order_shipping_tax']		= number_format(jigoshop_cart::$shipping_tax_total, 2, '.', '');
 					$data['order_total']			= number_format(jigoshop_cart::$total, 2, '.', '');
 					
+					$applied_coupons = array();
+					foreach ( jigoshop_cart::$applied_coupons as $coupon ) :
+						$applied_coupons[] = jigoshop_coupons::get_coupon( $coupon );
+					endforeach;
+					$data['order_discount_coupons']	= $applied_coupons;
+					
 					// Cart items
 					$order_items = array();
 					
@@ -589,20 +587,22 @@ class jigoshop_checkout {
 					if (jigoshop::error_count()>0) break;
 					
 					// Insert or update the post data
-					if (isset($_SESSION['order_awaiting_payment']) && $_SESSION['order_awaiting_payment'] > 0) :
-						
-						$order_id = (int) $_SESSION['order_awaiting_payment'];
-						$order_data['ID'] = $order_id;
-						wp_update_post( $order_data );
-					
-					else :
+					// @TODO: This first bit over-writes an existing uncompleted order.  Do we want this?  -JAP-
+					// UPDATE: commenting out for now. multiple orders now created. 
+// 					if (isset($_SESSION['order_awaiting_payment']) && $_SESSION['order_awaiting_payment'] > 0) :
+// 						
+// 						$order_id = (int) $_SESSION['order_awaiting_payment'];
+// 						$order_data['ID'] = $order_id;
+// 						wp_update_post( $order_data );
+// 					
+// 					else :
 						$order_id = wp_insert_post( $order_data );
 						
 						if (is_wp_error($order_id)) :
 							jigoshop::add_error( 'Error: Unable to create order. Please try again.' );
 			                break;
 						endif;
-					endif;
+//					endif;
 
 					// Update post meta
 					update_post_meta( $order_id, 'order_data', $data );

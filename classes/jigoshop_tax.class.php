@@ -19,8 +19,7 @@
 
 class jigoshop_tax {
 	
-	var $total;
-	var $rates;
+	public $rates;
 	
 	/**
 	 * Get the current tax class
@@ -109,20 +108,20 @@ class jigoshop_tax {
 	function get_rate( $tax_class = '' ) {
 		
 		/* Checkout uses customer location, otherwise use store base rate */
-		if ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT ) :
+//		if ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT ) :
 			
-			$country 	= jigoshop_customer::get_country();
-			$state 		= jigoshop_customer::get_state();
+			$country 	= jigoshop_customer::get_shipping_country();
+			$state 		= jigoshop_customer::get_shipping_state();
 			
 			$rate = $this->find_rate( $country, $state, $tax_class );
 			
 			return $rate['rate'];
 		
-		else :
+//		else :
 			
-			return $this->get_shop_base_rate( $tax_class );
+//			return $this->get_shop_base_rate( $tax_class );
 			
-		endif;
+//		endif;
 
 	}
 	
@@ -229,18 +228,13 @@ class jigoshop_tax {
 	 */
 	function calc_tax( $price, $rate, $price_includes_tax = true ) {
 	
-		// To avoid float roudning errors, work with integers (pence)
+		// To avoid float rounding errors, work with integers (pence)
 		$price = round($price * 100, 0);
-		$math_rate = $rate;
 
 		if ($price_includes_tax) :
 
-			$math_rate = ($math_rate / 100) + 1;
-
-			//$price_ex = round($price / $math_rate);
-			//$tax_amount = round($price - $price_ex);
-			$price_ex = ($price / $math_rate);
-			$tax_amount = ($price - $price_ex);
+			$price_excluding_tax = ($price / ( 1 + ($rate / 100)));
+			$tax_amount = ($price - $price_excluding_tax);
 			
 		else :
 			$tax_amount = $price * ($rate/100);
@@ -248,8 +242,8 @@ class jigoshop_tax {
 
 		$tax_amount = $tax_amount / 100; // Back to pounds
 		
+		// use 4 decimal precision to avoid rounding errors:
 		return number_format($tax_amount, 4, '.', '');
-		//return number_format($tax_amount, 2, '.', '');
 	}
 	
 	/**

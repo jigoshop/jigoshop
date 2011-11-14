@@ -30,7 +30,7 @@
 		exit;
 	endif;
 	
-	if (isset($_POST['shipping_method'])) $_SESSION['_chosen_method_id'] = $_POST['shipping_method'];
+	if (isset($_POST['shipping_method'])) $_SESSION['chosen_shipping_method_id'] = $_POST['shipping_method'];
 	
 	if (isset($_POST['country'])) jigoshop_customer::set_country( $_POST['country'] );
 	if (isset($_POST['state'])) jigoshop_customer::set_state( $_POST['state'] );
@@ -58,7 +58,7 @@
 				<td><?php echo jigoshop_cart::get_cart_subtotal(); ?></td>
 			</tr>
 			
-			<?php  if (jigoshop_cart::needs_shipping()) : ?>
+			<?php  if (jigoshop_cart::needs_shipping()) : ?><tr>
 				<td colspan="2"><?php _e('Shipping', 'jigoshop'); ?></td>
 				<td>
 				<?php
@@ -101,8 +101,7 @@
 					endif;
 			
 				?></td>
-
-			<?php endif; ?>
+			</tr><?php endif; ?>
 			
 			<?php if (jigoshop_cart::get_cart_tax()) : ?><tr>
 				<td colspan="2"><?php _e('Tax', 'jigoshop'); ?></td>

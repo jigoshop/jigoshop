@@ -123,14 +123,14 @@ function jigoshop_system_info() {
 	<div class="wrap jigoshop">
 		<div class="icon32 icon32-jigoshop-debug" id="icon-jigoshop"><br/></div>
 	    <h2><?php _e('System Information','jigoshop') ?></h2>
-	    <p>Use the information below when submitting technical support requests via the Jigoshop community / premium <a href="http://jigoshop.com/forums/" title="Jigoshop Support Forums" target="_blank">support forums</a>.</p>
+	    <p>Use the information below when submitting technical support requests via <a href="http://support.jigoshop.com/" title="Jigoshop Support" target="_blank">Jigoshop Support</a>.</p>
 		<div id="tabs-wrap">
 			<ul class="tabs">
 				<li><a href="#versions"><?php _e('Environment', 'jigoshop'); ?></a></li>
 				<li><a href="#debugging"><?php _e('Debugging', 'jigoshop'); ?></a></li>
 			</ul>
 			<div id="versions" class="panel">
-				<table class="widefat fixed" style="width:850px;">
+				<table class="widefat fixed">
 		            <thead>		            
 		            	<tr>
 		                    <th scope="col" width="200px"><?php _e('Software Versions','jigoshop')?></th>
@@ -166,7 +166,7 @@ function jigoshop_system_info() {
 		        </table>
 			</div>
 			<div id="debugging" class="panel">
-				<table class="widefat fixed" style="width:850px;">
+				<table class="widefat fixed">
 		            <tbody>
 		            	<tr>
 		                    <th scope="col" width="200px"><?php _e('Debug Information','jigoshop')?></th>
@@ -306,6 +306,16 @@ function jigoshop_categories_scripts () {
 	
 }
 add_action('admin_footer-edit-tags.php', 'jigoshop_categories_scripts');
+
+/**
+ * Load needed scripts for Settings Coupons
+ */
+function jigoshop_admin_coupons_scripts () {
+	wp_register_script('jigoshop-date', jigoshop::plugin_url() . '/assets/js/date.js');
+	wp_register_script('jigoshop-datepicker', jigoshop::plugin_url() . '/assets/js/datepicker.js', array('jquery', 'jigoshop-date'));
+	wp_enqueue_script('jigoshop-datepicker');
+}
+add_action("admin_print_scripts-jigoshop_page_settings", 'jigoshop_admin_coupons_scripts');
 
 /**
  * Ajax request handling for categories ordering

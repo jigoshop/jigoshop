@@ -89,8 +89,14 @@ if (!function_exists('jigoshop_get_sidebar')) {
 if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 	function jigoshop_template_loop_add_to_cart( $post, $_product ) {
 		
+		
 		// do not show "add to cart" button if product's price isn't announced
-		if( $_product->get_price() === '') return;
+		if( $_product->get_price() === '' AND ! ($_product->is_type('variable') OR $_product->is_type('grouped')) ) return;
+		
+		if( $_product->is_type('variable') OR $_product->is_type('grouped') ) {
+			echo '<a href="'. get_permalink($_product->id).'" class="button">'.__('Select', 'jigoshop').'</a>';
+			return;
+		}
 		
 		?><a href="<?php echo $_product->add_to_cart_url(); ?>" class="button"><?php _e('Add to cart', 'jigoshop'); ?></a><?php
 	}
@@ -231,7 +237,7 @@ if (!function_exists('jigoshop_template_single_meta')) {
 	function jigoshop_template_single_meta( $post, $_product ) {
 
 		?>
-		<div class="product_meta"><?php if ($_product->is_type('simple') && get_option('jigoshop_enable_sku')=='yes') : ?><span class="sku">SKU: <?php echo $_product->sku; ?>.</span><?php endif; ?><?php echo $_product->get_categories( ', ', ' <span class="posted_in">Posted in ', '.</span>'); ?><?php echo $_product->get_tags( ', ', ' <span class="tagged_as">Tagged as ', '.</span>'); ?></div>
+		<div class="product_meta"><?php if ($_product->is_type('simple') && get_option('jigoshop_enable_sku')=='yes') : ?><span class="sku">SKU: <?php echo $_product->sku; ?>.</span><?php endif; ?><?php echo $_product->get_categories( ', ', ' <span class="posted_in">' . __( 'Posted in ', 'jigoshop' ) . '', '.</span>'); ?><?php echo $_product->get_tags( ', ', ' <span class="tagged_as">' . __( 'Tagged as ', 'jigoshop' ) . '', '.</span>'); ?></div>
 		<?php
 
 	}
@@ -346,7 +352,6 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
         foreach($children as $child) {
             /* @var $variation jigoshop_product_variation */
             $variation = $child->product;
-            
             if($variation instanceof jigoshop_product_variation && $variation->is_visible()) {
                 $vattrs = $variation->get_variation_attributes();
                 $availability = $variation->get_availability();
@@ -381,19 +386,28 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 
 			<table class="variations" cellspacing="0">
 				<tbody>
-				<?php foreach ($attributes as $aname => $aoptions):?>
+				<?php foreach ( $attributes as $aname => $avalues ): ?>
                     <tr>
-                        <td><label for="<?php echo sanitize_title($aname); ?>"><?php echo ucfirst($aname)?></label></td>
-                        <td><select id="<?php echo sanitize_title($aname); ?>" name="tax_<?php echo sanitize_title($aname); ?>">
-                                <option value=""><?php echo __('Choose an option', 'jigoshop') ?>&hellip;</option>
-                                <?php if(is_array($aoptions)): ?>
-                                    <?php foreach($aoptions as $option): ?>
-                                <option><?php echo $option; ?></option>
-                                    <?php endforeach;?>
-                                <?php endif;?>
+                    	<?php $sanitized_name = sanitize_title( $aname ); ?>
+                        <td><label for="<?php echo $sanitized_name; ?>"><?php echo $aname; ?></label></td>
+                        <td><select id="<?php echo $sanitized_name; ?>" name="tax_<?php echo $sanitized_name; ?>">
+							<option value=""><?php echo __('Choose an option ', 'jigoshop') ?>&hellip;</option>
+							<?php foreach ( $avalues as $value ) : ?>
+								<?php if ( taxonomy_exists( 'pa_'.$sanitized_name )) : ?>
+									<?php $term = get_term_by( 'slug', $value, 'pa_'.$sanitized_name ); ?>
+									<option value="<?php echo $term->slug; ?>"><?php echo $term->name; ?></option>
+								<?php else : ?>
+									<?php
+									//	this should be a custom text attribute with values (one,two,three)
+									//	we have no way to get the pretty name instead of the slug?  -JAP-
+									//	perhaps we need to be creating a taxonomy for these? (currently we don't)
+									//	it will show pretty name if no option selected on variation, 'Choose Any [attr]'
+									?>
+									<option value="<?php echo sanitize_title( $value ); ?>"><?php echo $value; ?></option>
+								<?php endif;?>
+							<?php endforeach; ?>
                         </td>
                     </tr>
-	
                 <?php endforeach;?>
 				</tbody>
 			</table>
@@ -513,7 +527,7 @@ if (!function_exists('jigoshop_get_product_thumbnail')) {
 
 /**
  * Jigoshop Product Image Placeholder
- * @since 1.0
+ * @since 0.9.9
  **/
 if (!function_exists('jigoshop_get_image_placeholder')) {
 	function jigoshop_get_image_placeholder( $size = 'shop_small' ) {
@@ -566,7 +580,7 @@ if (!function_exists('jigoshop_related_products')) {
  **/
 if (!function_exists('jigoshop_shipping_calculator')) {
 	function jigoshop_shipping_calculator() {
-		if (jigoshop_shipping::$enabled && get_option('jigoshop_enable_shipping_calc')=='yes' && jigoshop_cart::needs_shipping()) :
+		if (jigoshop_shipping::is_enabled() && get_option('jigoshop_enable_shipping_calc')=='yes' && jigoshop_cart::needs_shipping()) :
 		?>
 		<form class="shipping_calculator" action="<?php echo jigoshop_cart::get_cart_url(); ?>" method="post">
 			<h2><a href="#" class="shipping-calculator-button"><?php _e('Calculate Shipping', 'jigoshop'); ?> <span>&darr;</span></a></h2>
@@ -647,7 +661,7 @@ if (!function_exists('jigoshop_login_form')) {
 			<p class="form-row">
 				<?php jigoshop::nonce_field('login', 'login') ?>
 				<input type="submit" class="button" name="login" value="<?php _e('Login', 'jigoshop'); ?>" />
-				<a class="lost_password" href="<?php echo home_url('wp-login.php?action=lostpassword'); ?>"><?php _e('Lost Password?', 'jigoshop'); ?></a>
+				<a class="lost_password" href="<?php echo wp_lostpassword_url( get_permalink() ); ?>"><?php _e('Lost Password?', 'jigoshop'); ?></a>
 			</p>
 		</form>
 		<?php
@@ -871,7 +885,7 @@ if (!function_exists('jigoshop_breadcrumb')) {
  */
 function jigoshop_body_classes ($classes) {
 
-	if( ! is_jigoshop() ) return $classes;
+	if( ! is_content_wrapped() ) return $classes;
 
 	$key = array_search('singular', $classes);
 	if ( $key !== false ) unset($classes[$key]);

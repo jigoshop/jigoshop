@@ -18,14 +18,14 @@
  */
 class jigoshop_product_variation extends jigoshop_product {
 	
-	var $variation;
-	var $variation_data;
-	var $variation_id;
-	var $variation_has_weight;
-	var $variation_has_price;
-	var $variation_has_sale_price;
-	var $variation_has_stock;
-	var $variation_has_sku;
+	public $variation;
+	public $variation_data;
+	public $variation_id;
+	public $variation_has_weight;
+	public $variation_has_price;
+	public $variation_has_sale_price;
+	public $variation_has_stock;
+	public $variation_has_sku;
 	
 	/**
 	 * Loads all product data from custom fields

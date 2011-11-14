@@ -74,6 +74,7 @@ function jigoshop_attributes() {
 				
 				$taxonomy = 'pa_'.strtolower(sanitize_title($att_name));
 				
+				// Old taxonomy prefix left in for backwards compatibility
 				if (taxonomy_exists($taxonomy)) :
 				
 					$terms = get_terms($taxonomy, 'orderby=name&hide_empty=0'); 
@@ -175,7 +176,7 @@ function jigoshop_add_attribute() {
 				        </thead>
 				        <tbody>
 				        	<?php
-				        		$attribute_taxonomies = jigoshop::getAttributeTaxonomies();
+				        		$attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();
 				        		if ( $attribute_taxonomies ) :
 				        			foreach ($attribute_taxonomies as $tax) :
 				        				?><tr>

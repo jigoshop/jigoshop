@@ -184,6 +184,21 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'type' 		=> 'select',
 		'options' => array(
 			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop'),
+      'cart' => __('Redirect to Cart', 'jigoshop'),
+		)
+	),
+	
+	array(
+		'name' => __('Disable bundled Fancybox','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Useful if or one of your plugin already loads the Fancybox script and css. But be care, Jigoshop will still try to open products thumbnails using it.','jigoshop'),
+		'id' 		=> 'jigoshop_disable_fancybox',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'no'  => __('No', 'jigoshop'),
 			'yes' => __('Yes', 'jigoshop')
 		)
 	),
@@ -269,6 +284,16 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'desc' 		=> __('Your page should contain [jigoshop_change_password] and usually have "My Account" as the parent.','jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_change_password_page_id',
+		'css' 		=> 'min-width:50px;',
+		'type' 		=> 'single_select_page',
+		'std' 		=> ''
+	),
+
+	array(
+		'name' => __('Track Order Page','jigoshop'),
+		'desc' 		=> __('Your page should contain [jigoshop_order_tracking].','jigoshop'),
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_track_order_page_id',
 		'css' 		=> 'min-width:50px;',
 		'type' 		=> 'single_select_page',
 		'std' 		=> ''
@@ -385,8 +410,10 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 			'CZK' => __('Czech Koruna', 'jigoshop'),
 			'DKK' => __('Danish Krone', 'jigoshop'),
 			'HKD' => __('Hong Kong Dollar (&#36;)', 'jigoshop'),
-			'HUF' => __('Hungarian Forint', 'jigoshop'),
-			'IDR' => __('Indonesia Rupiah (&#52;)', 'jigoshop'),
+			'HUF' => __('Hungarian Forint (&#70;&#116;)', 'jigoshop'),
+			'HRK' => __('Croatian Kuna (&#107;&#110;)', 'jigoshop'),
+			'IDR' => __('Indonesia Rupiah (&#82;&#112;)', 'jigoshop'),
+			'INR' => __('Indian Rupee (&#8360;)', 'jigoshop'),
 			'ILS' => __('Israeli Shekel', 'jigoshop'),
 			'JPY' => __('Japanese Yen (&yen;)', 'jigoshop'),
 			'MYR' => __('Malaysian Ringgits', 'jigoshop'),
@@ -395,12 +422,13 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 			'NOK' => __('Norwegian Krone', 'jigoshop'),
 			'PHP' => __('Philippine Pesos', 'jigoshop'),
 			'PLN' => __('Polish Zloty', 'jigoshop'),
-			'RUB' => __('Russian Ruble (&#440;)', 'jigoshop'),
+			'RUB' => __('Russian Ruble (&#1088;&#1091;&#1073;)', 'jigoshop'),
 			'SGD' => __('Singapore Dollar (&#36;)', 'jigoshop'),
 			'SEK' => __('Swedish Krona', 'jigoshop'),
 			'CHF' => __('Swiss Franc', 'jigoshop'),
 			'TWD' => __('Taiwan New Dollars', 'jigoshop'),
-			'THB' => __('Thai Baht', 'jigoshop')
+			'THB' => __('Thai Baht', 'jigoshop'),
+			'TRY' => __('Turkish Lira (&#8356;)', 'jigoshop')
 			)
 		)
 	),
@@ -541,12 +569,11 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array( 'type' => 'tab', 'tabname' => __('Coupons', 'jigoshop') ),
 
-	array( 'name' => __('Coupon Codes', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
+	array( 'name' => __('Coupon Information', 'jigoshop'), 'type' => 'title', 'desc' 		=> __('<br /><div>Coupons allow you to give your customers special offers and discounts. Leave product ID&#39;s blank to apply to all products in the cart. Separate each product ID with a comma.</div><br /><div>Use either flat rates or percentage discounts for both cart totals and individual products. (do not enter a % sign, just a number). Product percentage discounts <strong>must</strong> have a product ID to be applied, otherwise use Cart Percentage Discount for all products.</div><br /><div>"<em>Alone</em>" means <strong>only</strong> that coupon will be allowed for the whole cart.  If you have several of these, the last one entered by the customer will be used.</div>','jigoshop') ),
 
 	array(
 		'name' => __('Coupons','jigoshop'),
 		'desc' 		=> __('All fields are required.','jigoshop'),
-		'tip' 		=> __('Coupons allow you to give customers special offers and discounts. Leave product IDs blank to apply to all products/items in the cart.','jigoshop'),
 		'id' 		=> 'jigoshop_coupons',
 		'css' 		=> 'min-width:50px;',
 		'type' 		=> 'coupons',

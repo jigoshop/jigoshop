@@ -42,6 +42,7 @@ class flat_rate extends jigoshop_shipping_method {
     	
     	if ($this->type=='order') :
 			// Shipping for whole order
+			// TODO: if you have one product in the cart and it is downloadable, shipping is applied  -JAP-
 			$this->shipping_total = $this->cost + $this->get_fee( $this->fee, jigoshop_cart::$cart_contents_total );
 			
 			if ( get_option('jigoshop_calc_taxes')=='yes' && $this->tax_status=='taxable' ) :
@@ -57,7 +58,7 @@ class flat_rate extends jigoshop_shipping_method {
 			// Shipping per item
 			if (sizeof(jigoshop_cart::$cart_contents)>0) : foreach (jigoshop_cart::$cart_contents as $item_id => $values) :
 				$_product = $values['data'];
-				if ($_product->exists() && $values['quantity']>0) :
+				if ($_product->exists() && $values['quantity']>0 && $_product->product_type <> 'downloadable') :
 					
 					$item_shipping_price = ($this->cost + $this->get_fee( $this->fee, $_product->get_price() )) * $values['quantity'];
 					

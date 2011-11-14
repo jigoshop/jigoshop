@@ -114,6 +114,7 @@ dl.totals dd input.last {
 }
 .jigoshop_order_items_wrapper {
   margin: 0;
+  overflow: auto;
 }
 .jigoshop_order_items_wrapper table.jigoshop_order_items {
   width: 100%;
@@ -222,7 +223,7 @@ dl.totals dd input.last {
   width: 60px !important;
 }
 .widefat .column-total_cost {
-  width: 150px !important;
+  width: 250px !important;
 }
 .widefat .column-order_title {
   width: 120px;
@@ -324,6 +325,9 @@ table.wp-list-table span.na {
 }
 table.wp-list-table .column-featured, table.wp-list-table .column-sellable, table.wp-list-table .column-is_in_stock {
   text-align: center !important;
+}
+div.star img {
+  margin: 0;
 }
 /* Dashboard */
 #jigoshop_dashboard {
@@ -545,6 +549,7 @@ ul.recent-orders li .refunded, ul.recent-orders li .cancelled {
 }
 .jigoshop #tabs-wrap ul.tabs {
   padding: 0;
+  margin: 0;
 }
 .jigoshop #tabs-wrap table {
   margin: 0 0 5px !important;
