@@ -324,6 +324,20 @@ class jigoshop_cart extends jigoshop_singleton {
 		return true;
 	}
 
+         /** 
+          * This function is called in order to update the shipping total on the cart based on what
+          * the customer has selected for a shipping method.
+          * 
+          * @method_id the id from the shipping method that the customer has selected
+          * @service_id is the id to find the user selected service from the method
+          */
+	public static function update_shipping_totals_user_selected($method_id, $service_id) {
+		jigoshop_shipping::update_shipping_user_selected($method_id, $service_id);
+		self::$shipping_total = jigoshop_shipping::get_total();
+		self::$shipping_tax_total = jigoshop_shipping::get_tax(); //TODO: this will be a bug since the user is selecting a different rate
+		self::set_total();
+	}
+
 	/** calculate totals for the items in the cart */
 	public static function calculate_totals() {
 
@@ -460,6 +474,14 @@ class jigoshop_cart extends jigoshop_singleton {
 		endforeach;
 
 		// Total
+                  self::set_total();
+
+	}
+
+         /**
+          * set the total price on the cart
+          */ 
+	private static function set_total() {
 		if (get_option('jigoshop_prices_include_tax')=='yes') :
 			self::$total = self::$subtotal + self::$shipping_tax_total - self::$discount_total + jigoshop_shipping::get_total();
 		else :
