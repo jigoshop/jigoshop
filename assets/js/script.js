@@ -143,6 +143,26 @@ jQuery(function(){
 	// Stop anchors moving the viewport
 
 	jQuery(".shipping-calculator-button").click(function() {return false;});
+
+         //TODO: still work in progress here. Just need to parse out the return data. change ajax call to post
+	jQuery("input[name=shipping_rates]").click(function(){
+		var dataString = 'shipping_rates=' + jQuery(this).val();
+		var cart_url = jQuery("input[name=cart-url]").val();
+		jQuery.ajax({  
+			type: "POST",  
+			url: cart_url,  
+			data: dataString,  
+			success: function(ret) {
+				//var jqObj = jQuery(ret);
+				//jQuery('div.cart_totals').replaceWith(
+
+				//console.log(jqObj.html() );
+				//jQuery('td .cart-row-shipping').html(&#36;0.71 <small>via USPS shipping</small></td>  
+			}  
+		});
+  
+	});
+         
 	
 	/*################# VARIATIONS ###################*/
 	
@@ -248,7 +268,6 @@ jQuery(function(){
 			
 			current_attributes[jQuery(this).attr('name')] = jQuery(this).val();
 		});
-		console.log(current_attributes);
 		var matching_variations = find_matching_variations(current_attributes);
 		
 		if(all_set) {
