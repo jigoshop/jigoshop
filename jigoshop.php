@@ -626,11 +626,14 @@ function jigoshop_price( $price, $args = array() ) {
 	), $args));
 
 	$return = '';
-	$num_decimals = (int) get_option('jigoshop_price_num_decimals');
 	$currency_pos = get_option('jigoshop_currency_pos');
 	$currency_symbol = get_jigoshop_currency_symbol();
-	$price = str_replace(array(get_option('jigoshop_price_thousand_sep'),get_option('jigoshop_price_decimal_sep')),array('','.'),$price);
-	$price = number_format( (double) $price, $num_decimals, get_option('jigoshop_price_decimal_sep'), get_option('jigoshop_price_thousand_sep') );
+	$price = number_format(
+		(double) $price, 
+		(int) get_option('jigoshop_price_num_decimals'), 
+		get_option('jigoshop_price_decimal_sep'), 
+		get_option('jigoshop_price_thousand_sep')
+	);
 
 	switch ($currency_pos) :
 		case 'left' :
