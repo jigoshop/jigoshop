@@ -395,24 +395,26 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 				<?php foreach ( $attributes as $aname => $avalues ): ?>
                     <tr>
                     	<?php $sanitized_name = sanitize_title( $aname ); ?>
-                        <td><label for="<?php echo $sanitized_name; ?>"><?php echo $aname; ?></label></td>
-                        <td><select id="<?php echo $sanitized_name; ?>" name="tax_<?php echo $sanitized_name; ?>">
-							<option value=""><?php echo __('Choose an option ', 'jigoshop') ?>&hellip;</option>
-							<?php foreach ( $avalues as $value ) : ?>
-								<?php if ( taxonomy_exists( 'pa_'.$sanitized_name )) : ?>
-									<?php $term = get_term_by( 'slug', $value, 'pa_'.$sanitized_name ); ?>
-									<option value="<?php echo $term->slug; ?>"><?php echo $term->name; ?></option>
-								<?php else : ?>
-									<?php
-									//	this should be a custom text attribute with values (one,two,three)
-									//	we have no way to get the pretty name instead of the slug?  -JAP-
-									//	perhaps we need to be creating a taxonomy for these? (currently we don't)
-									//	it will show pretty name if no option selected on variation, 'Choose Any [attr]'
-									?>
-									<option value="<?php echo sanitize_title( $value ); ?>"><?php echo $value; ?></option>
-								<?php endif;?>
-							<?php endforeach; ?>
-                        </td>
+                        <?php if( taxonomy_exists( 'pa_'.$sanitized_name )) : ?>
+	                        <td><label for="<?php echo $sanitized_name; ?>"><?php echo $aname; ?></label></td>
+	                        <td><select id="<?php echo $sanitized_name; ?>" name="tax_<?php echo $sanitized_name; ?>">
+								<option value=""><?php echo __('Choose an option ', 'jigoshop') ?>&hellip;</option>
+								<?php foreach ( $avalues as $value ) : ?>
+									<?php if ( taxonomy_exists( 'pa_'.$sanitized_name )) : ?>
+										<?php $term = get_term_by( 'slug', $value, 'pa_'.$sanitized_name ); ?>
+										<option value="<?php echo $term->slug; ?>"><?php echo $term->name; ?></option>
+									<?php else : ?>
+										<?php
+										//	this should be a custom text attribute with values (one,two,three)
+										//	we have no way to get the pretty name instead of the slug?  -JAP-
+										//	perhaps we need to be creating a taxonomy for these? (currently we don't)
+										//	it will show pretty name if no option selected on variation, 'Choose Any [attr]'
+										?>
+										<option value="<?php echo sanitize_title( $value ); ?>"><?php echo $value; ?></option>
+									<?php endif;?>
+								<?php endforeach; ?>
+	                        </td>
+	                 <?php endif;?>
                     </tr>
                 <?php endforeach;?>
 				</tbody>
