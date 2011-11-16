@@ -404,9 +404,12 @@ function jigoshop_admin_fields($options) {
 										/* <![CDATA[ */
 											jQuery(function() {
 												// DATE PICKER FIELDS
-												Date.firstDayOfWeek = 1;
-												Date.format = 'yyyy-mm-dd';
-												jQuery('.date-pick').datePicker();
+//												Date.firstDayOfWeek = 1;
+//												Date.format = 'yyyy-mm-dd';
+//												jQuery('.date-pick').datePicker();
+												jQuery('.date-pick').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
+												
+/* 
 												jQuery('#coupon_date_from[<?php echo $i; ?>]').bind(
 													'dpClosed',
 													function(e, selectedDates)
@@ -429,6 +432,8 @@ function jigoshop_admin_fields($options) {
 														}
 													}
 												);
+
+ */
 											});
 											/* ]]> */
 										</script>
@@ -475,9 +480,12 @@ function jigoshop_admin_fields($options) {
 
 									jQuery(function() {
 										// DATE PICKER FIELDS
-										Date.firstDayOfWeek = 1;
-										Date.format = 'yyyy-mm-dd';
-										jQuery('.date-pick').datePicker();
+//										Date.firstDayOfWeek = 1;
+//										Date.format = 'yyyy-mm-dd';
+//										jQuery('.date-pick').datePicker();
+										jQuery('.date-pick').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
+										
+/* 
 										jQuery('#coupon_date_from[' + size + ']').bind(
 											'dpClosed',
 											function(e, selectedDates)
@@ -500,6 +508,8 @@ function jigoshop_admin_fields($options) {
 												}
 											}
 										);
+
+ */
 									});
 
 									return false;

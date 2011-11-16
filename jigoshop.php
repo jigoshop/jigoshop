@@ -325,9 +325,9 @@ function jigoshop_init() {
 
     if (is_admin()) :
     	wp_register_style('jigoshop_admin_styles', jigoshop::plugin_url() . '/assets/css/admin.css');
-   		wp_register_style('jigoshop_admin_datepicker_styles', jigoshop::plugin_url() . '/assets/css/datepicker.css');
     	wp_enqueue_style('jigoshop_admin_styles');
-    	wp_enqueue_style('jigoshop_admin_datepicker_styles');
+   		wp_register_style('jquery-ui-datepicker-styles', jigoshop::plugin_url() . '/assets/css/jquery-ui-datepicker-1.8.16.css');
+    	wp_enqueue_style('jquery-ui-datepicker-styles');
     else :
     	wp_register_style( 'jqueryui_styles', jigoshop::plugin_url() . '/assets/css/ui.css' );
 
@@ -344,6 +344,8 @@ function jigoshop_init() {
 
 function jigoshop_admin_scripts() {
 
+    wp_register_script('jquery-ui-datepicker', jigoshop::plugin_url() . '/assets/js/jquery-ui-datepicker-1.8.16.min.js', array( 'jquery' ), '1.8.16', true );
+    wp_enqueue_script('jquery-ui-datepicker');
 	wp_register_script( 'jigoshop_backend', jigoshop::plugin_url() . '/assets/js/jigoshop_backend.js', array('jquery'), '1.0' );
     wp_enqueue_script('jigoshop_backend');
 
