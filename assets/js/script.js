@@ -153,11 +153,8 @@ jQuery(function(){
 			url: cart_url,  
 			data: dataString,  
 			success: function(ret) {
-				//var jqObj = jQuery(ret);
-				//jQuery('div.cart_totals').replaceWith(
-
-				//console.log(jqObj.html() );
-				//jQuery('td .cart-row-shipping').html(&#36;0.71 <small>via USPS shipping</small></td>  
+				var jqObj = jQuery(ret);
+				jQuery('.cart_totals').html(jqObj.find('.cart_totals'));
 			}  
 		});
   
