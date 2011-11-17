@@ -45,7 +45,7 @@ class jigoshop_shipping extends jigoshop_singleton {
 	
 		do_action( 'jigoshop_shipping_init' ); /* loaded plugins for shipping inits */
 		
-		init_shipping_methods();
+		self::init_shipping_methods();
 		
 	}
 
