@@ -144,8 +144,8 @@ jQuery(function(){
 
 	jQuery(".shipping-calculator-button").click(function() {return false;});
 
-         //TODO: still work in progress here. Just need to parse out the return data. change ajax call to post
 	jQuery("input[name=shipping_rates]").click(function(){
+		jQuery('.cart_totals').fadeOut(); // to show user something is happening
 		var dataString = 'shipping_rates=' + jQuery(this).val();
 		var cart_url = jQuery("input[name=cart-url]").val();
 		jQuery.ajax({  
@@ -154,7 +154,8 @@ jQuery(function(){
 			data: dataString,  
 			success: function(ret) {
 				var jqObj = jQuery(ret);
-				jQuery('.cart_totals').html(jqObj.find('.cart_totals'));
+				// allows feedback to the user to show something is happening. 
+				jQuery('.cart_totals').html(jqObj.find('.cart_totals')).fadeIn();
 			}  
 		});
   
