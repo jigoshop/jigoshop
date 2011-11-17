@@ -41,18 +41,13 @@ class jigoshop_shipping extends jigoshop_singleton {
 	 * After all plugins are loaded, our constructor will force recalculation of shipping to ensure
 	 *     that the Cart and Checkout properly show shipping on the first and subsequent passes.
 	 */
-	public static function method_inits() {
-	
+    public static function method_inits() {
+    
 		do_action( 'jigoshop_shipping_init' ); /* loaded plugins for shipping inits */
 		
-		self::init_shipping_methods();
-		
-	}
-
-	/**
-	* pulled out of the method_inits function so that it can be called within this class if the
-	* shipping method array hasn't been yet initialized 
-	*/
+		self::init_shipping_methods();		
+    }
+    
 	private static function init_shipping_methods() {
 		$load_methods = apply_filters( 'jigoshop_shipping_methods', array() );
 		
@@ -61,7 +56,7 @@ class jigoshop_shipping extends jigoshop_singleton {
 		endforeach;
 	
 	}
-    
+	    
 	public static function is_enabled() {
 		return self::$enabled;
 	}
@@ -93,6 +88,7 @@ class jigoshop_shipping extends jigoshop_singleton {
 		return self::$has_calculable_shipping;
 	}
 	
+	
 	public static function get_available_shipping_methods() {
 	
 		$_available_methods = array();
@@ -120,40 +116,40 @@ class jigoshop_shipping extends jigoshop_singleton {
 			$method->chosen = false;
 			$method->shipping_total = 0;
 			$method->shipping_tax = 0;
-                           if ($method instanceof jigoshop_calculable_shipping) $method->reset_rates();
+			if ($method instanceof jigoshop_calculable_shipping) $method->reset_rates();
 		endforeach;
 	}
 	
-
-         /**
-          * This function is to update the shipping totals that the user has selected.
-          * @selected_method_id the shipping method id chosen by the customer
-          * @service_id the service id of the shipping method that was chosen by the customer
-          * TODO: This function needs a little more work...especially with tax           
-          */ 
+	/**
+	 * instead of going through the calculations each time, we just want to use what the user has
+	 * already selected. Find out if user has taken a method that wasn't previously selected by
+	 * the auto chooser.
+	 * @selected_method_id - the id of the method chosen by the user
+	 * @service_id - the service id of the chosen method
+	 */
 	public static function update_shipping_user_selected($selected_method_id, $service_id) {
 	
 		if ( self::$enabled ) :
-			$selected_method = self::get_selected_method($selected_method_id);
-			if (isset($selected_method)) :
-				if (!$seleted_method->chosen) :
-					self::reset_chosen_shipping_methods();
-					$selected_method->choose();
-					self::$shipping_label = $selected_method->title;
-					self::$shipping_tax = $selected_method->shipping_tax; //TODO: fix this. shipping_tax needs to change because the shipping total has changed. Should go below, and recalculate tax
-				endif;
-				
-				// set shipping total here, because it needs to be set regardless if the method was chosen previously 
-				// or not
-				if (isset($service_id)) :
-					self::$shipping_total = $selected_method->get_chosen_price($service_id);
-				else :
-					self::$shipping_total = $selected_method->shipping_total;
-				endif;
-			endif;
-		endif;
-	}
+                    
+                    $_available_methods = self::get_available_shipping_methods();
+                    
+                    if (!$_available_methods[$selected_method_id]->is_chosen()) :
+                        self::reset_chosen_shipping_methods();
+                        $_available_methods[$selected_method_id]->choose();
+                        self::$shipping_label = $_available_methods[$selected_method_id]->title;
+                        self::$shipping_tax = $_available_methods[$selected_method_id]->shipping_tax; //TODO: fix shipping tax. Will need to recalculate
+                    endif;    
 
+		    // need to set shipping_total regardless if method had been previously chosen or not
+                    if (isset($service_id)) :
+                            self::$shipping_total = $_available_methods[$selected_method_id]->get_chosen_price($service_id);
+                    else :
+                            self::$shipping_total = $_available_methods[$selected_method_id]->shipping_total;
+                    endif;
+                       
+                endif;
+	}
+	
 	/**
 	 * used during user selectable. If a user chooses a different shipping method than
 	 * was automatically selected, then the auto selected method must change to false
@@ -164,27 +160,7 @@ class jigoshop_shipping extends jigoshop_singleton {
 		endforeach;
 	}
 	
-         /**
-          * This returns the method from the available methods for shipping based on the 
-          * method id selected
-          * @selected_method_id the shipping method chosen by the customer
-          */
-	private static function get_selected_method($selected_method_id) {
-		if ( self::$enabled ) :
-		
-			foreach ( self::$shipping_methods as $method ) :
-				
-				if ( $method->id == $selected_method_id ) :
-					return $method;
-				endif;
-				
-			endforeach;
-			
-		endif;
-		return NULL;
-	}	
-
-         public static function calculate_shipping() {
+	public static function calculate_shipping() {
 		
 		if ( self::$enabled == 'yes' ) :
 		
@@ -206,7 +182,7 @@ class jigoshop_shipping extends jigoshop_singleton {
 			foreach ( $_available_methods as $method ) :
 				$method->calculate_shipping();
 				$fee = $method->shipping_total;
-				if ( $fee < $_cheapest_fee || ! is_numeric( $_cheapest_fee )) :
+				if ( $fee >= 0 && $fee < $_cheapest_fee || ! is_numeric( $_cheapest_fee )) :
 					$_cheapest_fee = $fee;
 					$_cheapest_method = $method->id;
 				endif;
