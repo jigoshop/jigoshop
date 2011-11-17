@@ -154,11 +154,12 @@ class jigoshop_product {
 	function reduce_stock( $by = 1 ) {
 		if ($this->managing_stock()) {
 			$reduce_to = $this->stock - $by;
-			update_post_meta($this->id, 'stock', $reduce_to);
-			return $reduce_to;
 			$amount_sold = $this->stock_sold + $by;
+			update_post_meta($this->id, 'stock', $reduce_to);
 			update_post_meta($this->id, 'stock_sold', $amount_sold);
-        }
+			return $reduce_to;
+
+      		}
 	}
 
 	/**
@@ -169,11 +170,11 @@ class jigoshop_product {
 	function increase_stock( $by = 1 ) {
 		if ($this->managing_stock()) {
 			$increase_to = $this->stock + $by;
-			update_post_meta($this->id, 'stock', $increase_to);
-			return $increase_to;
 			$amount_sold = $this->stock_sold - $by;
+			update_post_meta($this->id, 'stock', $increase_to);
 			update_post_meta($this->id, 'stock_sold', $amount_sold);
-        }
+      			return $increase_to;      		
+		}
 	}
 
 	/**
