@@ -147,7 +147,7 @@ class jigoshop_product {
     }
 
 	/**
-	 * Reduce stock level of the product
+	 * Reduce stock level of the product & increase Amount Sold
 	 *
 	 * @param   int		$by		Amount to reduce by
 	 */
@@ -156,11 +156,13 @@ class jigoshop_product {
 			$reduce_to = $this->stock - $by;
 			update_post_meta($this->id, 'stock', $reduce_to);
 			return $reduce_to;
+			$amount_sold = $this->stock_sold + $by;
+			update_post_meta($this->id, 'stock_sold', $amount_sold);
         }
 	}
 
 	/**
-	 * Increase stock level of the product
+	 * Increase stock level of the product & decrease Amount Sold
 	 *
 	 * @param   int		$by		Amount to increase by
 	 */
@@ -169,6 +171,8 @@ class jigoshop_product {
 			$increase_to = $this->stock + $by;
 			update_post_meta($this->id, 'stock', $increase_to);
 			return $increase_to;
+			$amount_sold = $this->stock_sold - $by;
+			update_post_meta($this->id, 'stock_sold', $amount_sold);
         }
 	}
 
