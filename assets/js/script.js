@@ -145,7 +145,7 @@ jQuery(function(){
 	jQuery(".shipping-calculator-button").click(function() {return false;});
 
 	jQuery("input[name=shipping_rates]").click(function(){
-		jQuery('.cart_totals').fadeOut(); // to show user something is happening
+		jQuery('.cart_totals table').replaceWith('<div class="cart_img"><img src="' + params.plugin_url + '/assets/images/cart-loader.gif" /></div>');
 		var dataString = 'shipping_rates=' + jQuery(this).val();
 		var cart_url = jQuery("input[name=cart-url]").val();
 		jQuery.ajax({  
@@ -154,11 +154,12 @@ jQuery(function(){
 			data: dataString,  
 			success: function(ret) {
 				var jqObj = jQuery(ret);
-				// allows feedback to the user to show something is happening. 
-				jQuery('.cart_totals').html(jqObj.find('.cart_totals')).fadeIn();
+				jQuery('.cart_img').replaceWith(jqObj.find('.cart_totals table'));
+				// I want something to show user that the values are changing
+				
 			}  
 		});
-  
+ 
 	});
          
 	
