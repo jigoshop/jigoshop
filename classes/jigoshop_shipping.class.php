@@ -81,7 +81,7 @@ class jigoshop_shipping extends jigoshop_singleton {
 	
 	
 	public static function get_all_methods() {
-		if (self::$shipping_methods == NULL) {
+		if (self::$shipping_methods == NULL || !self::$shipping_methods) {
 			self::init_shipping_methods();
 		}
 		return self::$shipping_methods;
