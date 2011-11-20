@@ -309,10 +309,32 @@ class jigoshop_order {
 				do_action( 'order_status_'.$this->status.'_to_'.$new_status->slug, $this->id );
 				$this->add_order_note( $note . sprintf( __('Order status changed from %s to %s.', 'jigoshop'), $this->status, $new_status->slug ) );
 				clean_term_cache( '', 'shop_order_status' );
+
+				// If completed add completion date to order
+				if( $new_status->slug === 'completed' ) {
+					update_post_meta( $this->id, '_js_completed_date', current_time('timestamp'));
+					$this->add_sale(); // Add the sale to the records
+				}
 			endif;
 		
 		endif;
 		
+	}
+
+	/**
+	 * Adds a sale to the record
+	 *
+	 * @return void
+	 **/
+	function add_sale() {
+
+		if( $this->items ) {
+			foreach($this->items as $item) {
+				$sales =		abs(get_post_meta($item['id'], 'total_sales', true));
+				$sales +=	abs($item['qty']);
+				update_post_meta($item['id'], '_js_total_sales', $sales);
+			}
+		}
 	}
 	
 	/**
@@ -366,6 +388,9 @@ class jigoshop_order {
 		
 		// Payment is complete so reduce stock levels
 		$this->reduce_order_stock();
+
+		// Add the sale
+		$this->add_sale();
 		
 	}
 	
