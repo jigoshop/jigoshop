@@ -69,7 +69,7 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 
 		// Set the widget title
 		$title = apply_filters('widget_title', 
-			($instance['title']) ? $instance['title'] : __('New Products', 'jigoshop'), 
+			($instance['title']) ? $instance['title'] : __('Best Sellers', 'jigoshop'), 
 			$instance, $this->id_base);
 		
 		// Set number of products to fetch
@@ -161,8 +161,8 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 
 		// Remove the cache entry from the options array
 		$alloptions = wp_cache_get( 'alloptions', 'options' );
-		if ( isset($alloptions['widget_recent_products']) ) {
-			delete_option('widget_recent_products');
+		if ( isset($alloptions['widget_best_sellers']) ) {
+			delete_option('widget_best_sellers');
 		}
 
 		return $instance;
@@ -174,7 +174,7 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 	 * Flushes the cached output
 	 */
 	public function flush_widget_cache() {
-		wp_cache_delete('widget_recent_products', 'widget');
+		wp_cache_delete('widget_best_sellers', 'widget');
 	}
 
 	/**
