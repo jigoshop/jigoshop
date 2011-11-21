@@ -31,7 +31,7 @@ class jigoshop_shipping_method {
 	
     public function is_available() {
     	
-    	if ($this->enabled=="no") return false;
+    	if ($this->get_enabled()=="no") return false;
     	
 		if (isset(jigoshop_cart::$cart_contents_total) && isset($this->min_amount) && $this->min_amount && $this->min_amount > jigoshop_cart::$cart_contents_total) return false;
 		
@@ -52,6 +52,11 @@ class jigoshop_shipping_method {
 		return true;
 		
     } 
+    
+    // gets overridden by child class calculable method
+    public function get_enabled() {
+        return $this->enabled;
+    }
     
     public function get_fee( $fee, $total ) {
 		if (strstr($fee, '%')) :

@@ -145,6 +145,25 @@ jQuery(function(){
 	// Stop anchors moving the viewport
 
 	jQuery(".shipping-calculator-button").click(function() {return false;});
+
+	jQuery("input[name=shipping_rates]").click(function(){
+		jQuery('.cart_totals table').replaceWith('<div class="cart_img"><img src="' + params.plugin_url + '/assets/images/cart-loader.gif" /></div>');
+		var dataString = 'shipping_rates=' + jQuery(this).val();
+		var cart_url = jQuery("input[name=cart-url]").val();
+		jQuery.ajax({  
+			type: "POST",  
+			url: cart_url,  
+			data: dataString,  
+			success: function(ret) {
+				var jqObj = jQuery(ret);
+				jQuery('.cart_img').replaceWith(jqObj.find('.cart_totals table'));
+				// I want something to show user that the values are changing
+				
+			}  
+		});
+ 
+	});
+         
 	
 	/*################# VARIATIONS ###################*/
 	

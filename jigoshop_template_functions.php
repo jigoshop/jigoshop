@@ -636,6 +636,51 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 				</p>
 			</div>
 			<p><button type="submit" name="calc_shipping" value="1" class="button"><?php _e('Update Totals', 'jigoshop'); ?></button></p>
+			<p>
+			<?php //TODO: add title to this section
+			if (jigoshop_customer::get_shipping_postcode() && jigoshop_shipping::has_calculable_shipping() && jigoshop_shipping::get_total() > 0) :
+				$available_methods = jigoshop_shipping::get_available_shipping_methods();
+				foreach ( $available_methods as $method ) :
+					if ( $method instanceof jigoshop_calculable_shipping ) :
+					
+						$calculated_rates = $method->get_rates();
+						$cheapest_rate = $method->get_cheapest_rate();
+						for ($i = 0; $i < count($calculated_rates); $i++) {
+						?>
+							<div class="col2-set">
+								<p class="form-row col-1">
+									
+									<?php 
+									echo '<input type="radio" name="shipping_rates" value="' . $method->id . ':' . $calculated_rates[$i]['service'] . ':' . $calculated_rates[$i]['price'] . '"' . 'class="shipping_select"';
+									if ( $cheapest_rate['service'] == $calculated_rates[$i]['service'] && $method->is_chosen() ) echo 'checked>'; else echo '>'; 
+									echo $calculated_rates[$i]['service'] . ' via ' . $method->title;
+									?>
+								<p class="form-row col-2"><?php  echo jigoshop_price($calculated_rates[$i]['price']); ?>
+							</div> 
+						<?php
+						}
+						
+ //TODO: does this really need to be here? It's probably better to leave only calculable shipping methods and not add
+ // the extras in as user selectable. Comment out for now. Require feedback
+					else :
+					?>
+					<div class="col2-set">
+						<p class="form-row col-1">
+							<?php 
+							// value has :: as there are no services on non calculable methods, since they are identified by the id
+						//	echo '<input type="radio" name="shipping_rates" value="' . $method->id . '::' . $method->shipping_total . '"' . 'class="shipping_select"';
+						//	if ( $method->is_chosen() ) echo 'checked>'; else echo '>'; 
+						//	echo $method->title;
+							?>
+						<p class="form-row col-2"><?php//  echo jigoshop_price($method->shipping_total); 
+						?>
+					</div>
+					<?php
+					endif;
+				endforeach;
+			endif;
+			?>
+			<input type="hidden" name="cart-url" value="<?php echo jigoshop_cart::get_cart_url() ?>">
 			<?php jigoshop::nonce_field('cart') ?>
 			</section>
 		</form>

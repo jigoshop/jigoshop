@@ -63,6 +63,12 @@ function jigoshop_cart( $atts ) {
 
 		endif;
 
+	elseif (isset($_POST['shipping_rates'])) :
+	
+		$rates_params = explode(":", $_POST['shipping_rates']);
+		
+		jigoshop_cart::update_shipping_totals_user_selected($rates_params[0], $rates_params[1]);
+
 	endif;
 
 	$result = jigoshop_cart::check_cart_item_stock();
