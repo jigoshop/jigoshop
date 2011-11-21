@@ -118,9 +118,6 @@ function jigoshop_constants() {
 	define('JIGOSHOP_TEMPLATE_URL', apply_filters('jigoshop_template_url', 'jigoshop/') ); // Trailing slash is important :)
 }
 
-//echo 'called plugin';
-
-
 /**
  * IIS compat fix/fallback
  **/
