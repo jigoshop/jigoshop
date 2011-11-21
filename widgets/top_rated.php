@@ -26,7 +26,7 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 	 */
 	public function __construct() {
 		$options = array(
-			'classname'		=> 'widget_top_rated',
+			'classname'	=> 'widget_top_rated',
 			'description'	=> __( "The best of the best on your site", 'jigoshop')
 		);
 		
@@ -69,7 +69,7 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 
 		// Set the widget title
 		$title = apply_filters('widget_title', 
-			($instance['title']) ? $instance['title'] : __('New Products', 'jigoshop'), 
+			($instance['title']) ? $instance['title'] : __('Top Rated Products', 'jigoshop'), 
 			$instance, $this->id_base);
 
 		// Set number of products to fetch
@@ -86,7 +86,7 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
     	$query_args = array(
     		'showposts'		=> $number,
     		'post_type'		=> 'product',
-    		'post_status'	=> 'publish',
+    		'post_status'		=> 'publish',
     	);
 
     	// Run the query
@@ -170,7 +170,6 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 		// Save the new values
 		$instance['title'] = strip_tags($new_instance['title']);
 		$instance['number'] = abs($new_instance['number']);
-		// $instance['show_variations'] = (bool) $new_instance['show_variations'];
 
 		// Flush the cache
 		$this->flush_widget_cache();
@@ -190,7 +189,7 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 	 * Flushes the cached output
 	 */
 	public function flush_widget_cache() {
-		wp_cache_delete('widget_recent_products', 'widget');
+		wp_cache_delete('widget_top_rated', 'widget');
 	}
 
 	/**
