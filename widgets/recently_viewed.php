@@ -1,6 +1,6 @@
 <?php
 /**
- * Recent Products Widget
+ * Recently Viewed Products Widget
  *
  * DISCLAIMER
  *
@@ -8,21 +8,25 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Widgets
- * @author     Jigowatt
- * @since	   1.0
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package	Jigoshop
+ * @category	Widgets
+ * @author	Jigowatt
+ * @since	1.0
+ * @copyright	Copyright (c) 2011 Jigowatt Ltd.
+ * @license	http://jigoshop.com/license/commercial-edition
  */
  
  class Jigoshop_Widget_Recently_Viewed_Products extends WP_Widget {
 
- 	public $instance;
-
+ 	/**
+	 * Constructor
+	 * 
+	 * Setup the widget with the available options
+	 * Add actions to clear the cache whenever a post is saved|deleted or a theme is switched
+	 */
 	public function __construct() {
 		$options = array(
-			'classname'		=> 'widget_recently_viewed_products',
+			'classname'	=> 'widget_recently_viewed_products',
 			'description'	=> __( "A list of your customers most recently viewed products", 'jigoshop')
 		);
 		
@@ -38,10 +42,19 @@
 		add_action( 'jigoshop_before_single_product', array(&$this, 'jigoshop_product_view_tracker'), 10, 2);
 	}
 
+	/**
+	 * Widget
+	 * 
+	 * Display the widget in the sidebar
+	 * Save output to the cache if empty
+	 *
+	 * @param	array	sidebar arguments
+	 * @param	array	instance
+	 */
 	public function widget($args, $instance) {
 
 		// Get the most recently viewed products from the cache
-		//$cache = wp_cache_get('widget_recently_viewed_products', 'widget');
+		$cache = wp_cache_get('widget_recently_viewed_products', 'widget');
 		$cache = null;
 
 		// If no entry exists use array
@@ -76,12 +89,12 @@
 
 		// Set up query
 		$query_args = array(
-			'showposts'		=> $number,
-			'post_type'		=> 'product',
+			'showposts'	=> $number,
+			'post_type'	=> 'product',
 			'post_status'	=> 'publish',
-			'nopaging'		=> true, // give me the gravy!
-			'post__in'		=> $_SESSION['recently_viewed_products'],
-			'orderby'		=> 'date', // TODO: Not ideal as it doesn't order latest first
+			'nopaging'	=> true, // give me the gravy!
+			'post__in'	=> $_SESSION['recently_viewed_products'],
+			'orderby'	=> 'date', // TODO: Not ideal as it doesn't order latest first
 			'meta_query'	=> array(
 				array(
 					'key'		=> 'visibility',
@@ -142,7 +155,6 @@
 		// Save the new values
 		$instance['title'] = strip_tags($new_instance['title']);
 		$instance['number'] = abs($new_instance['number']);
-		$instance['show_variations'] = (bool) $new_instance['show_variations'];
 
 		// Flush the cache
 		$this->flush_widget_cache();
@@ -152,8 +164,8 @@
 
 		// Remove the cache entry from the options array
 		$alloptions = wp_cache_get( 'alloptions', 'options' );
-		if ( isset($alloptions['widget_recent_products']) ) {
-			delete_option('widget_recent_products');
+		if ( isset($alloptions['widget_recently_viewed_products']) ) {
+			delete_option('widget_recently_viewed_products');
 		}
 
 		return $instance;
@@ -165,7 +177,7 @@
 	 * Flushes the cached output
 	 */
 	public function flush_widget_cache() {
-		wp_cache_delete('widget_recent_products', 'widget');
+		wp_cache_delete('widget_recently_viewed_products', 'widget');
 	}
 
 	/**
@@ -180,8 +192,6 @@
 			return false; // stop the show!
 		}
 
-		// TODO this isn't the most efficient way... if it fails we should stop right?
-
 		// Check if we already have some data
 		if( ! is_array($_SESSION['recently_viewed_products']) ) {
 				$_SESSION['recently_viewed_products'] = array();
@@ -192,7 +202,6 @@
 			$_SESSION['recently_viewed_products'][] = $post->ID;
 		}
 
-		// TODO: Figure out a way of getting the $number from the instance here
 		if( sizeof($_SESSION['recently_viewed_products']) > $number ) {
 			array_shift($_SESSION['recently_viewed_products']);
 		}
@@ -210,8 +219,6 @@
 		$title = isset($instance['title']) ? esc_attr($instance['title']) : null;
 		$number = isset($instance['number']) ? abs($instance['number']) : 5;
 		
-		$show_variations = isset($instance['show_variations']) ? (bool)$instance['show_variations'] : false;
-		
 		// Widget Title
 		echo '<p>';
 		echo '<label for="' . $this->get_field_id('title') . '">' . _e('Title:', 'jigoshop') . '</label>';
@@ -222,12 +229,6 @@
 		echo '<p>';
 		echo '<label for="' . $this->get_field_id('number') . '">' . _e('Number of products to show:', 'jigoshop') . '</label>';
 		echo '<input id="' . $this->get_field_id('number') . '" name="' . $this->get_field_name('number') . '" type="text" value="' . $number . '" size="3" />';
-		echo '</p>';
-		
-		// Show variations?
-		echo '<p>';
-		echo '<input type="checkbox" class="checkbox" id="' . $this->get_field_id('show_variations') . '" name="' . $this->get_field_name('show_variations') . '"' . checked( $show_variations ) . '/>';
-		echo '<label for="' . $this->get_field_id('show_variations') . '"> ' . __( 'Show hidden product variations', 'jigoshop' ) . '</label>';
 		echo '</p>';
 	}
  }
