@@ -45,6 +45,12 @@ class inspire extends jigoshop_payment_gateway
         add_option('jigoshop_inspire_gateway_url', 'https://secure.inspiregateway.net/gateway/transact.dll');
         add_option('jigoshop_inspire_cvv', 'yes');
         add_option('jigoshop_inspire_test_mode', 'no');
+	add_option('jigoshop_inspire_card_types', array(
+		'MasterCard' => 'MasterCard',
+		'Visa' => 'Visa',
+		'Discover' => 'Discover',
+		'American Express' => 'American Express'
+	));
     }
 
     /**

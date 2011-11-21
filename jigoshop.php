@@ -722,7 +722,15 @@ function jigoshop_let_to_num($v) {
 }
 
 function jigowatt_clean( $var ) {
-	return strip_tags(stripslashes(trim($var)));
+	if (is_array($var)) {
+		foreach ($var as $key => $value) {
+			$var[$key] = strip_tags(stripslashes(trim($value)));
+		}
+	} else {
+		$var = strip_tags(stripslashes(trim($var)));
+	}
+	
+	return $var;
 }
 
 global $jigoshop_body_classes;
