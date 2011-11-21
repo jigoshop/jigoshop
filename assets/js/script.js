@@ -167,8 +167,8 @@ jQuery(function(){
 	function find_matching_variations(attributes) {
 		var matching = [];
 		
-		for(variation_sku in product_variations) {
-			var variation = product_variations[variation_sku];
+		for(i = 0; i < product_variations.length; i++) {			
+			var variation = product_variations[i];
 			if(variations_match(variation.attributes, attributes)) {
 				matching.push(variation);
 			}
