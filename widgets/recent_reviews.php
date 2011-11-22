@@ -116,6 +116,8 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 				// Apply star size
 				$star_size = apply_filters('jigoshop_star_rating_size_recent_reviews', 16);
 
+				$rating = get_comment_meta( $comment->comment_ID, 'rating', true );
+
 				echo '<li>';
 					// Print the product image & title with a link to the permalink
 					echo '<a href="'.esc_url( get_comment_link($comment->comment_ID) ).'">';
