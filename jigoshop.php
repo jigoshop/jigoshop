@@ -485,14 +485,20 @@ function is_product_list() {
 	return $is_list;
 }
 
-// TODO: doesn't reflect All Jigoshop pages
-// as of 0.9.9.1, I'll leave this as is for now, it -will- change.  -JAP-
-// at this time, it is not used within the codebase, 'is_content_wrapped' contains this functionality
+/**
+ * Evaluates to true for all Jigoshop pages
+ * 
+ * @return bool
+ * @since 0.9.9
+ */
 function is_jigoshop() {
-	$is_wrapped = false;
-	$is_wrapped |= is_product_list();
-	$is_wrapped |= is_product();
-	return $is_wrapped;
+	$is_jigo = false;
+	$is_jigo |= is_content_wrapped();
+	$is_jigo |= is_account();
+	$is_jigo |= is_cart();
+	$is_jigo |= is_checkout();
+	$is_jigo |= is_order_tracker();
+	return $is_jigo;
 }
 
 /**
