@@ -326,8 +326,8 @@ function jigoshop_init() {
     if (is_admin()) :
     	wp_register_style('jigoshop_admin_styles', jigoshop::plugin_url() . '/assets/css/admin.css');
     	wp_enqueue_style('jigoshop_admin_styles');
-   		wp_register_style('jquery-ui-datepicker-styles', jigoshop::plugin_url() . '/assets/css/jquery-ui-datepicker-1.8.16.css');
-    	wp_enqueue_style('jquery-ui-datepicker-styles');
+   		wp_register_style('jquery-ui-jigoshop-styles', jigoshop::plugin_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css');
+    	wp_enqueue_style('jquery-ui-jigoshop-styles');
     else :
     	wp_register_style( 'jqueryui_styles', jigoshop::plugin_url() . '/assets/css/ui.css' );
 
