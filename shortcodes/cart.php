@@ -21,7 +21,8 @@ function get_jigoshop_cart( $atts ) {
 function jigoshop_cart( $atts ) {
 
 	$errors = array();
-
+	unset($_SESSION['selected_rate_id']);
+	
 	// Process Discount Codes
 	if (isset($_POST['apply_coupon']) && $_POST['apply_coupon'] && jigoshop::verify_nonce('cart')) :
 
@@ -50,9 +51,6 @@ function jigoshop_cart( $atts ) {
 			jigoshop_customer::set_location( $country, $state, $postcode );
 			jigoshop_customer::set_shipping_location( $country, $state, $postcode );
 
-			// Re-calc price
-			jigoshop_cart::calculate_totals();
-
 			jigoshop::add_message(  __('Shipping costs updated.', 'jigoshop') );
 
 		else :
@@ -63,7 +61,23 @@ function jigoshop_cart( $atts ) {
 
 		endif;
 
+	elseif (isset($_POST['shipping_rates'])) :
+	
+		$rates_params = explode(":", $_POST['shipping_rates']);
+        
+                if ($rates_params[1] != NULL) :
+	                $_SESSION['selected_rate_id'] = $rates_params[1];
+	        else :
+	        	$_SESSION['selected_rate_id'] = 'no_rate_id'; // where are constants stored? to find out
+	        endif;
+                
+                $available_methods = jigoshop_shipping::get_available_shipping_methods();
+                $available_methods[$rates_params[0]]->choose(); // choses the method selected by user.
+
 	endif;
+
+	// Re-Calc prices. This needs to happen every time the cart page is loaded and after checking post results. It will happen twice for coupon. 
+	jigoshop_cart::calculate_totals(); 
 
 	$result = jigoshop_cart::check_cart_item_stock();
 	if (is_wp_error($result)) :
