@@ -146,6 +146,22 @@ jQuery(function(){
 
 	jQuery(".shipping-calculator-button").click(function() {return false;});
 	
+	jQuery("input[name=shipping_rates]").click(function(){
+		var dataString = 'shipping_rates=' + jQuery(this).val();
+		var cart_url = jQuery("input[name=cart-url]").val();
+		jQuery('.cart_totals_table').block({message: null, overlayCSS: {background: '#fff url(' + params.plugin_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
+		jQuery.ajax({  
+			type: "POST",  
+			url: cart_url,  
+			data: dataString,  
+			success: function(ret) {
+				var jqObj = jQuery(ret);
+				jQuery('.cart_totals_table').replaceWith(jqObj.find('.cart_totals_table'));
+				jQuery('.cart_totals_table').unblock();
+			}  
+		});
+	});
+	
 	/*################# VARIATIONS ###################*/
 	
 	//check if two arrays of attributes match
