@@ -31,7 +31,7 @@ class jigoshop_shipping_method {
 	
     public function is_available() {
     	
-    	if ($this->enabled=="no") return false;
+    	if ($this->get_enabled()=="no") return false;
     	
 		if (isset(jigoshop_cart::$cart_contents_total_ex_dl) && isset($this->min_amount) && $this->min_amount && $this->min_amount > jigoshop_cart::$cart_contents_total_ex_dl) return false;
 		
@@ -53,6 +53,10 @@ class jigoshop_shipping_method {
 		
     } 
     
+    public function get_enabled() {
+        return $this->enabled;
+    }    
+    
     public function get_fee( $fee, $total ) {
 		if (strstr($fee, '%')) :
 			return ($total/100) * str_replace('%', '', $fee);
@@ -69,6 +73,12 @@ class jigoshop_shipping_method {
     public function choose() {
     	$this->chosen = true;
     	$_SESSION['chosen_shipping_method_id'] = $this->id;
+    }
+    
+    public function reset_method() {
+    	$this->chosen = false;
+    	$this->shipping_total = 0;
+    	$this->shipping_tax = 0;
     }
     
     public function admin_options() {}
