@@ -190,34 +190,37 @@ function jigoshop_cart( $atts ) {
 		if ($available_methods || !jigoshop_customer::get_shipping_country() || !jigoshop_shipping::is_enabled() ) :
 			?>
 			<h2><?php _e('Cart Totals', 'jigoshop'); ?></h2>
-			<table cellspacing="0" cellpadding="0">
-				<tbody>
-					<tr>
-						<th class="cart-row-subtotal-title"><?php _e('Subtotal', 'jigoshop'); ?></th>
-						<td class="cart-row-subtotal"><?php echo jigoshop_cart::get_cart_subtotal(); ?></td>
-					</tr>
-
-					<?php if (jigoshop_cart::get_cart_shipping_total()) : ?><tr>
-						<th class="cart-row-shipping-title"><?php _e('Shipping', 'jigoshop'); ?> <small><?php echo jigoshop_countries::shipping_to_prefix().' '.__(jigoshop_countries::$countries[ jigoshop_customer::get_shipping_country() ], 'jigoshop'); ?></small></th>
-						<td class="cart-row-shipping"><?php echo jigoshop_cart::get_cart_shipping_total(); ?> <small><?php echo jigoshop_cart::get_cart_shipping_title(); ?></small></td>
-					</tr><?php endif; ?>
-					<?php if (jigoshop_cart::get_cart_tax()) : ?><tr>
-						<th class="cart-row-tax-title"><?php _e('Tax', 'jigoshop'); ?> <?php if (jigoshop_customer::is_customer_outside_base()) : ?><small><?php echo sprintf(__('estimated for %s', 'jigoshop'), jigoshop_countries::estimated_for_prefix() . __(jigoshop_countries::$countries[ jigoshop_countries::get_base_country() ], 'jigoshop') ); ?></small><?php endif; ?></th>
-						<td class="cart-row-tax"><?php
-							echo jigoshop_cart::get_cart_tax();
-						?></td>
-					</tr><?php endif; ?>
-
-					<?php if (jigoshop_cart::get_total_discount()) : ?><tr class="discount">
-						<th class="cart-row-discount-title"><?php _e('Discount', 'jigoshop'); ?></th>
-						<td class="cart-row-discount">-<?php echo jigoshop_cart::get_total_discount(); ?></td>
-					</tr><?php endif; ?>
-					<tr>
-						<th class="cart-row-total-title"><strong><?php _e('Total', 'jigoshop'); ?></strong></th>
-						<td class="cart-row-total"><strong><?php echo jigoshop_cart::get_total(); ?></strong></td>
-					</tr>
-				</tbody>
-			</table>
+			
+			<div class="cart_totals_table">
+				<table cellspacing="0" cellpadding="0">
+					<tbody>
+						<tr>
+							<th class="cart-row-subtotal-title"><?php _e('Subtotal', 'jigoshop'); ?></th>
+							<td class="cart-row-subtotal"><?php echo jigoshop_cart::get_cart_subtotal(); ?></td>
+						</tr>
+	
+						<?php if (jigoshop_cart::get_cart_shipping_total()) : ?><tr>
+							<th class="cart-row-shipping-title"><?php _e('Shipping', 'jigoshop'); ?> <small><?php echo jigoshop_countries::shipping_to_prefix().' '.jigoshop_countries::$countries[ jigoshop_customer::get_shipping_country() ]; ?></small></th>
+							<td class="cart-row-shipping"><?php echo jigoshop_cart::get_cart_shipping_total(); ?> <small><?php echo jigoshop_cart::get_cart_shipping_title(); ?></small></td>
+						</tr><?php endif; ?>
+						<?php if (jigoshop_cart::get_cart_tax()) : ?><tr>
+							<th class="cart-row-tax-title"><?php _e('Tax', 'jigoshop'); ?> <?php if (jigoshop_customer::is_customer_outside_base()) : ?><small><?php echo sprintf(__('estimated for %s', 'jigoshop'), jigoshop_countries::estimated_for_prefix() . jigoshop_countries::$countries[ jigoshop_countries::get_base_country() ] ); ?></small><?php endif; ?></th>
+							<td class="cart-row-tax"><?php
+								echo jigoshop_cart::get_cart_tax();
+							?></td>
+						</tr><?php endif; ?>
+	
+						<?php if (jigoshop_cart::get_total_discount()) : ?><tr class="discount">
+							<th class="cart-row-discount-title"><?php _e('Discount', 'jigoshop'); ?></th>
+							<td class="cart-row-discount">-<?php echo jigoshop_cart::get_total_discount(); ?></td>
+						</tr><?php endif; ?>
+						<tr>
+							<th class="cart-row-total-title"><strong><?php _e('Total', 'jigoshop'); ?></strong></th>
+							<td class="cart-row-total"><strong><?php echo jigoshop_cart::get_total(); ?></strong></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 
 			<?php
 			else :
