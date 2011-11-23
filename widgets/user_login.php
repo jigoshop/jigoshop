@@ -93,7 +93,7 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 			// Submit button & forgot password link
 			echo '<p>';
 			echo '<input type="submit" name="submit" value="'.__('Login', 'jigoshop').'" class="input-submit" />';
-			echo '<a href="'.wp_lostpassword_url().'">'.__('Forgotten?', 'jigoshop').'</a>';
+			echo '<a href="'.wp_lostpassword_url($redirect_to).'">'.__('Forgotten?', 'jigoshop').'</a>';
 			echo '</p>';
 
 			echo '</form>';
