@@ -42,7 +42,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 			array( 'name'=>'billing-address', 'label' => __('Address', 'jigoshop'), 'placeholder' => __('Address 1', 'jigoshop'), 'required' => true, 'class' => array('form-row-first') ),
 			array( 'name'=>'billing-address-2', 'label' => __('Address 2', 'jigoshop'), 'placeholder' => __('Address 2', 'jigoshop'), 'class' => array('form-row-last'), 'label_class' => array('hidden') ),
 			array( 'name'=>'billing-city', 'label' => __('City', 'jigoshop'), 'placeholder' => __('City', 'jigoshop'), 'required' => true, 'class' => array('form-row-first') ),
-			array( 'validate' => 'postcode', 'format' => 'postcode', 'name'=>'billing-postcode', 'label' => __('Postcode', 'jigoshop'), 'placeholder' => __('Postcode', 'jigoshop'), 'required' => true, 'class' => array('form-row-last') ),
+			array( 'type'=>'postcode', 'validate' => 'postcode', 'format' => 'postcode', 'name'=>'billing-postcode', 'label' => __('Postcode', 'jigoshop'), 'placeholder' => __('Postcode', 'jigoshop'), 'required' => true, 'class' => array('form-row-last') ),
 			array( 'type'=> 'country', 'name'=>'billing-country', 'label' => __('Country', 'jigoshop'), 'required' => true, 'class' => array('form-row-first'), 'rel' => 'billing-state' ),
 			array( 'type'=> 'state', 'name'=>'billing-state', 'label' => __('State/County', 'jigoshop'), 'required' => true, 'class' => array('form-row-last'), 'rel' => 'billing-country' ),
 			array( 'name'=>'billing-email', 'validate' => 'email', 'label' => __('Email Address', 'jigoshop'), 'placeholder' => __('you@yourdomain.com', 'jigoshop'), 'required' => true, 'class' => array('form-row-first') ),
@@ -58,7 +58,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 			array( 'name'=>'shipping-address', 'label' => __('Address', 'jigoshop'), 'placeholder' => __('Address 1', 'jigoshop'), 'required' => true, 'class' => array('form-row-first') ),
 			array( 'name'=>'shipping-address-2', 'label' => __('Address 2', 'jigoshop'), 'placeholder' => __('Address 2', 'jigoshop'), 'class' => array('form-row-last'), 'label_class' => array('hidden') ),
 			array( 'name'=>'shipping-city', 'label' => __('City', 'jigoshop'), 'placeholder' => __('City', 'jigoshop'), 'required' => true, 'class' => array('form-row-first') ),
-			array( 'validate' => 'postcode', 'format' => 'postcode', 'name'=>'shipping-postcode', 'label' => __('Postcode', 'jigoshop'), 'placeholder' => __('Postcode', 'jigoshop'), 'required' => true, 'class' => array('form-row-last') ),
+			array( 'type'=>'postcode', 'validate' => 'postcode', 'format' => 'postcode', 'name'=>'shipping-postcode', 'label' => __('Postcode', 'jigoshop'), 'placeholder' => __('Postcode', 'jigoshop'), 'required' => true, 'class' => array('form-row-last') ),
 			array( 'type'=> 'country', 'name'=>'shipping-country', 'label' => __('Country', 'jigoshop'), 'required' => true, 'class' => array('form-row-first'), 'rel' => 'shipping-state' ),
 			array( 'type'=> 'state', 'name'=>'shipping-state', 'label' => __('State/County', 'jigoshop'), 'required' => true, 'class' => array('form-row-last'), 'rel' => 'shipping-country' )
 		);
@@ -219,6 +219,19 @@ class jigoshop_checkout extends jigoshop_singleton {
 				$field .= '</p>'.$after;
 				
 			break;
+			case "postcode" :
+				$current_pc = $this->get_value($args['name']);
+				$is_shipping_pc = strpos($args['name'], 'shipping');
+				if (!$current_pc) :
+					if ($is_shipping_pc === false) $current_pc = jigoshop_customer::get_postcode();
+					else $current_pc = jigoshop_customer::get_shipping_postcode();
+				endif;
+				
+				$field = '<p class="form-row '.implode(' ', $args['class']).'">
+					<label for="'.$args['name'].'" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
+					<input type="'.$args['type'].'" class="input-text" name="'.$args['name'].'" id="'.$args['name'].'" placeholder="'.$args['placeholder'].'" value="'. $current_pc.'" />
+				</p>'.$after;
+			break;
 			case "textarea" :
 				
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
@@ -258,7 +271,15 @@ class jigoshop_checkout extends jigoshop_singleton {
 			// Checkout fields
 			$this->posted['shiptobilling'] = isset($_POST['shiptobilling']) ? jigowatt_clean($_POST['shiptobilling']) : '';
 			$this->posted['payment_method'] = isset($_POST['payment_method']) ? jigowatt_clean($_POST['payment_method']) : '';
-			$this->posted['shipping_method'] = isset($_POST['shipping_method']) ? jigowatt_clean($_POST['shipping_method']) : '';
+			if (isset($_POST['shipping_method'])) :
+				$shipping_method = jigowatt_clean($_POST['shipping_method']);
+				$shipping_data = explode(":", $shipping_method);
+				$this->posted['shipping_method'] = $shipping_data[0];
+				$this->posted['shipping_service'] = $shipping_data[1];
+			else :
+				$this->posted['shipping_method'] = '';
+				$this->posted['shipping_service'] = '';
+			endif;
 			$this->posted['order_comments'] = isset($_POST['order_comments']) ? jigowatt_clean($_POST['order_comments']) : '';
 			$this->posted['terms'] = isset($_POST['terms']) ? jigowatt_clean($_POST['terms']) : '';
 			$this->posted['createaccount'] = isset($_POST['createaccount']) ? jigowatt_clean($_POST['createaccount']) : '';
@@ -526,6 +547,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 					$data['shipping_country']		= $shipping_country;
 					$data['shipping_state']			= $shipping_state;
 					$data['shipping_method']		= $this->posted['shipping_method'];
+					$data['shipping_service']		= $this->posted['shipping_service'];
 					$data['payment_method']			= $this->posted['payment_method'];
 					$data['order_subtotal']			= number_format(jigoshop_cart::$subtotal_ex_tax, 2, '.', '');
 					$data['order_shipping']			= number_format(jigoshop_cart::$shipping_total, 2, '.', '');
