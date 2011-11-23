@@ -350,6 +350,7 @@ function jigoshop_order_totals_meta_box($post) {
 	$data = maybe_unserialize( get_post_meta($post->ID, 'order_data', true) );
 
 	if (!isset($data['shipping_method'])) $data['shipping_method'] = '';
+	if (!isset($data['shipping_service'])) $data['shipping_service'] = '';
 	if (!isset($data['payment_method'])) $data['payment_method'] = '';
 	if (!isset($data['order_subtotal'])) $data['order_subtotal'] = '';
 	if (!isset($data['order_shipping'])) $data['order_shipping'] = '';
@@ -381,15 +382,22 @@ function jigoshop_order_totals_meta_box($post) {
 			<input type="text" id="order_shipping" name="order_shipping" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo $data['order_shipping']; ?>" class="first" /> <input type="text" name="shipping_method" id="shipping_method" value="<?php echo $data['shipping_method']; ?>" class="last" placeholder="<?php _e('Shipping Method', 'jigoshop'); ?>" />
 		</li>
 
-		<li class="left">
-			<label><?php _e('Shipping Tax:', 'jigoshop'); ?></label>
-			<input type="text" id="order_shipping_tax" name="order_shipping_tax" placeholder="0.00" value="<?php echo $data['order_shipping_tax']; ?>" class="first" />
-		</li>
-
-		<li class="right">
-			<label><?php _e('Tax:', 'jigoshop'); ?></label>
-			<input type="text" id="order_tax" name="order_tax" placeholder="0.00" value="<?php echo $data['order_tax']; ?>" class="first" />
-		</li>
+		<dt><?php _e('Shipping &amp; Handling:', 'jigoshop'); ?></dt>
+		<dd><input type="text" id="order_shipping" name="order_shipping" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo $data['order_shipping']; ?>" class="first" /> 
+		<?php
+		if ($data['shipping_service']) : 
+		?>
+		<input type="text" name="shipping_method" id="shipping_method" value="<?php echo $data['shipping_service'] . ' via ' . $data['shipping_method']; ?>" class="last" placeholder="<?php _e('Shipping method...', 'jigoshop'); ?>" />
+		<?php
+		else : 
+		?>
+		<input type="text" name="shipping_method" id="shipping_method" value="<?php echo $data['shipping_method']; ?>" class="last" placeholder="<?php _e('Shipping method...', 'jigoshop'); ?>" />
+		<?php
+		endif;
+		?>
+		</dd>
+		<dt><?php _e('Order shipping tax:', 'jigoshop'); ?></dt>
+		<dd><input type="text" id="order_shipping_tax" name="order_shipping_tax" placeholder="0.00" value="<?php echo $data['order_shipping_tax']; ?>" class="first" /></dd>
 
 		<li>
 			<label><?php _e('Total:', 'jigoshop'); ?></label>
