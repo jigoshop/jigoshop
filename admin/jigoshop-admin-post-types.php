@@ -257,8 +257,18 @@ function jigoshop_custom_order_columns($column) {
 				<dt><?php _e('Payment:', 'jigoshop'); ?></dt>
 				<dd><?php echo $order->payment_method; ?></dd>
         		<dt><?php _e('Shipping:', 'jigoshop'); ?></dt>
+        			<?php
+        			if ($order->shipping_service) :
+        			?>
+				<dd><?php echo $order->shipping_service . ' via ' . $order->shipping_method; ?></dd>
+				<?php 
+				else :
+				?>
 				<dd><?php echo $order->shipping_method; ?></dd>
-        	</dl>
+				<?php
+				endif;
+				?>
+        		</dl>
         	<?php
 		break;
 		case "total_cost" :
