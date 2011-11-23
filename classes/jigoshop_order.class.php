@@ -80,6 +80,7 @@ class jigoshop_order {
 		$this->shipping_state 		= (string) $this->get_value_from_data('shipping_state');
 
 		$this->shipping_method 		= (string) $this->get_value_from_data('shipping_method');
+		$this->shipping_service		= (string) $this->get_value_from_data('shipping_service');
 		$this->payment_method 		= (string) $this->get_value_from_data('payment_method');
 		
 		$this->order_subtotal 		= (string) $this->get_value_from_data('order_subtotal');
@@ -159,7 +160,11 @@ class jigoshop_order {
 
 				$shipping = jigoshop_price($this->order_shipping);
 				if ($this->order_shipping_tax > 0) :
-					$shipping .= sprintf(__(' <small>(ex. tax) via %s</small>', 'jigoshop'), ucwords($this->shipping_method));
+					if ($this->shipping_service != NULL || $this->shipping_service) :
+						$shipping .= sprintf(__(' <small>(ex. tax) %s via %s</small>', 'jigoshop'), ucwords($this->shipping_service), ucwords($this->shipping_method));
+					else :
+						$shipping .= sprintf(__(' <small>(ex. tax) via %s</small>', 'jigoshop'), ucwords($this->shipping_method));
+					endif;
 				endif;
 
 		else :
