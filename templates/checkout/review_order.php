@@ -15,6 +15,36 @@
  * @license    http://jigoshop.com/license/commercial-edition
  */
 ?>
+
+<?php
+	if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
+	
+	if (!defined('ABSPATH')) :
+		define('DOING_AJAX', true);
+		$root = dirname(dirname(dirname(dirname(dirname(dirname(__FILE__))))));
+		require_once( $root.'/wp-load.php' );
+	endif;
+	
+	if (sizeof(jigoshop_cart::$cart_contents)==0) :
+		echo '<p class="error">'.__('Sorry, your session has expired.', 'jigoshop').' <a href="'.home_url().'">'.__('Return to homepage &rarr;', 'jigoshop').'</a></p>';
+		exit;
+	endif;
+	
+	if (isset($_POST['shipping_method'])) :
+		$shipping_method = explode(":", $_POST['shipping_method']);
+	 	$_SESSION['chosen_shipping_method_id'] = $shipping_method[0];
+	endif;
+	
+	if (isset($_POST['country'])) jigoshop_customer::set_country( $_POST['country'] );
+	if (isset($_POST['state'])) jigoshop_customer::set_state( $_POST['state'] );
+	if (isset($_POST['postcode'])) jigoshop_customer::set_postcode( $_POST['postcode'] );
+	
+	if (isset($_POST['s_country'])) jigoshop_customer::set_shipping_country( $_POST['s_country'] );
+	if (isset($_POST['s_state'])) jigoshop_customer::set_shipping_state( $_POST['s_state'] );
+	if (isset($_POST['s_postcode'])) jigoshop_customer::set_shipping_postcode( $_POST['s_postcode'] );
+	
+	jigoshop_cart::calculate_totals();
+?>
 <div id="order_review">
 	
 	<table class="shop_table">
@@ -45,20 +75,40 @@
 						
 						foreach ($available_methods as $method ) :
 							
-							echo '<option value="'.$method->id.'" ';
-							
-							if ($method->chosen) echo 'selected="selected"';
-							
-							echo '>'.$method->title.' &ndash; ';
-							
-							if ($method->shipping_total>0) :
-								echo jigoshop_price($method->shipping_total);
-								if ($method->shipping_tax>0) : __(' (ex. tax)', 'jigoshop'); endif;
+							if ($method instanceof jigoshop_calculable_shipping) :
+								if ($method->is_chosen()) :
+									$selected_service = NULL;
+									if (isset($_SESSION['selected_rate_id']) && $_SESSION['selected_rate_id']) :
+										$selected_service = $method->get_selected_service($_SESSION['selected_rate_id']);
+									else :
+										$selected_service = $method->get_cheapest_service();
+									endif;
+									for ($i=0; $i<$method->get_rates_amount(); $i++) {
+										echo '<option value="'.$method->id.':'.$method->get_selected_service($i).'" '; 
+										if ($method->get_selected_service($i) == $selected_service) :
+											echo 'selected="selected"';
+										endif;
+										echo '>'.$method->get_selected_service($i) . ' via ' . $method->title.' &ndash; ';
+										echo jigoshop_price($method->get_selected_price($i));
+										if ($method->shipping_tax>0) : __(' (ex. tax)', 'jigoshop'); endif;
+										echo '</option>';
+									}
+								endif;										 
 							else :
-								echo __('Free', 'jigoshop');
+								echo '<option value="'.$method->id.':" '; 
+								if ($method->is_chosen()) echo 'selected="selected"';
+								
+								echo '>'.$method->title.' &ndash; ';
+								
+								if ($method->shipping_total>0) :
+									echo jigoshop_price($method->shipping_total);
+									if ($method->shipping_tax>0) : __(' (ex. tax)', 'jigoshop'); endif;
+								else :
+									echo __('Free', 'jigoshop');
+								endif;
+								
+								echo '</option>';
 							endif;
-							
-							echo '</option>';
 
 						endforeach;
 						
