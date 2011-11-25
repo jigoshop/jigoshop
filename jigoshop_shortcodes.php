@@ -26,8 +26,8 @@ function jigoshop_recent_products( $atts ) {
 	extract( shortcode_atts( array(
 		'per_page' 	=> get_option('jigoshop_catalog_per_page'),
 		'columns' 	=> get_option('jigoshop_catalog_columns'),
-		'orderby'	=> get_option('jigoshop_catalog_sort_orderby'),
-		'order'		=> get_option('jigoshop_catalog_sort_direction')
+		'orderby'	=> 'date',
+		'order'		=> 'desc'
 	), $atts));
 	
 	$args = array(
