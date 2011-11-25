@@ -287,8 +287,8 @@ function permalink_save_twice_notice() {
 		print_r('<div id="message" class="updated"><p>'.__('Note: Please make sure you save your permalink settings <strong>twice</strong> in order for them to be applied correctly in Jigoshop', 'jigoshop' ).'</p></div>');
 	}
 }
-
-add_action('admin_notices', 'permalink_save_twice_notice');
+// this seems fixed as of WP 3.3, commenting out for now to test -JAP-
+//add_action('admin_notices', 'permalink_save_twice_notice');
 
 /**
  * Categories ordering
