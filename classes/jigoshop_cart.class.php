@@ -292,7 +292,7 @@ class jigoshop_cart extends jigoshop_singleton {
 				$needs_shipping = true;
 			endif;
 		endforeach;
-
+		
 		return $needs_shipping;
 	}
 
@@ -344,6 +344,7 @@ class jigoshop_cart extends jigoshop_singleton {
 		self::$shipping_total = 0;
 		self::$cart_dl_count = 0;
 		self::$cart_contents_total_ex_dl = 0; /* for table rate shipping */
+		jigoshop_shipping::reset_shipping();
 	}
 	
 	/** calculate totals for the items in the cart */
@@ -440,7 +441,8 @@ class jigoshop_cart extends jigoshop_singleton {
 		endforeach;
 		
 		// Cart Shipping
-		if (self::needs_shipping()) jigoshop_shipping::calculate_shipping(); else jigoshop_shipping::reset_shipping();
+		if (self::needs_shipping()) jigoshop_shipping::calculate_shipping();
+		else jigoshop_shipping::reset_shipping();
 		
 		self::$shipping_total = jigoshop_shipping::get_total();
 
