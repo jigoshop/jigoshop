@@ -374,7 +374,8 @@ class jigoshop_cart extends jigoshop_singleton {
 				}
 				
 				$total_item_price = $_product->get_price() * $values['quantity'] * 100; // Into pounds
-
+				$tax_amount = null;
+				
 				if ( get_option('jigoshop_calc_taxes')=='yes') :
 
 					if ( $_product->is_taxable() ) :
@@ -415,8 +416,8 @@ class jigoshop_cart extends jigoshop_singleton {
 
 				endif;
 
-				$total_item_price 			= $total_item_price / 100; // Back to pounds
-				$tax_amount 				= ( isset($tax_amount) ? $tax_amount : 0 ) / 100; // Back to pounds
+				$total_item_price 	= $total_item_price / 100; // Back to pounds
+				$tax_amount 		= ( isset($tax_amount) ? $tax_amount : 0 ) / 100; // Back to pounds
 
 				self::$cart_contents_tax = self::$cart_contents_tax + $tax_amount;
 
