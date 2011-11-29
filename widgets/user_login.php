@@ -60,7 +60,7 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 
 			// Create the default set of links
 			$links = apply_filters('jigoshop_widget_logout_user_links', array(
-				__('My Account', 'jigoshop')	=> get_permalink(get_option('jigoshop_myaccount_page_id')),
+				__('My Account', 'jigoshop')		=> get_permalink(get_option('jigoshop_myaccount_page_id')),
 				__('Change Password', 'jigoshop')	=> get_permalink(get_option('jigoshop_change_password_page_id')),
 				__('Logout', 'jigoshop')			=> wp_logout_url(home_url()),
 			));
@@ -75,13 +75,14 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 
 			// Get redirect URI
 			$redirect_to = apply_filters( 'jigoshop_widget_login_redirect', get_permalink(get_option('jigoshop_myaccount_page_id')) );
+			$user_login = isset($user_login) ? $user_login : null;
 
 			echo '<form action="'.wp_login_url($redirect_to).'" method="post">';
 			
 			// Username
 			echo '<p>';
 			echo '<label for="log">'.__('Username', 'jigoshop').'</label>';
-			echo '<input type="text" name="log" id="log" value="'.wp_specialchars(stripslashes($user_login), true).'" size="20" class="input-text" />';
+			echo '<input type="text" name="log" id="log" value="'.esc_html(stripslashes($user_login), true).'" size="20" class="input-text" />';
 			echo '</p>';
 
 			// Password
@@ -154,13 +155,13 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 		// Widget Title for Guests
 		echo '<p>';
 		echo '<label for="' . $this->get_field_id('title_guest') . '">' . _e('Title (Logged Out):', 'jigoshop') . '</label>';
-		echo '<input class="widefat" id="' . $this->get_field_id('title_guest') . '" name="' . $this->get_field_name('title_guest') . '" type="text" value="'. $title_guest .'" />';
+		echo '<input class="widefat" id="' . $this->get_field_id('title_guest') . '" name="' . $this->get_field_name('title_guest') . '" type="text" value="'. esc_attr($title_guest) .'" />';
 		echo '</p>';
 
 		// Widget Title for Users
 		echo '<p>';
 		echo '<label for="' . $this->get_field_id('title_user') . '">' . _e('Title (Logged In):', 'jigoshop') . '</label>';
-		echo '<input class="widefat" id="' . $this->get_field_id('title_user') . '" name="' . $this->get_field_name('title_user') . '" type="text" value="'. $title_user .'" />';
+		echo '<input class="widefat" id="' . $this->get_field_id('title_user') . '" name="' . $this->get_field_name('title_user') . '" type="text" value="'. esc_attr($title_user) .'" />';
 		echo '</p>';
 
 	}
