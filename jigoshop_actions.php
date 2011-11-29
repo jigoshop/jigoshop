@@ -399,9 +399,9 @@ add_action('wp_ajax_nopriv_jigoshop-checkout', 'jigoshop_process_checkout');
 
 function jigoshop_process_checkout () {
 	include_once jigoshop::plugin_path() . '/classes/jigoshop_checkout.class.php';
-
+	
 	jigoshop_checkout::instance()->process_checkout();
-
+	
 	die(0);
 }
 
