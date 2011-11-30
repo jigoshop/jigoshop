@@ -138,7 +138,11 @@ class jigoshop_shipping extends jigoshop_singleton {
 			
 //			if ( $calc_cheapest || ! isset( $_available_methods[$chosen_method] )) :
 //			if ( ! isset( $_available_methods[$chosen_method] )) :
+			if(!$chosen_method ) {
 				$chosen_method = $_cheapest_method;
+			} else {
+				$chosen_method = $_available_methods[$chosen_method]->id;
+			}
 //			endif;
 			
 			if ( $chosen_method ) :
