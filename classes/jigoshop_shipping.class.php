@@ -29,11 +29,10 @@ class jigoshop_shipping extends jigoshop_singleton {
 	/** Constructor */
     protected function __construct() {
     
-		self::shipping_inits();
-		if ( get_option( 'jigoshop_calc_shipping' ) != 'no' ) :
-			self::$enabled = true;
-		endif;
-	
+		if ( get_option( 'jigoshop_calc_shipping' ) != 'no' ) self::$enabled = true;
+		
+		// ensure low priority to force recalc after all shipping plugins are loaded
+		self::add_action( 'plugins_loaded', 'calculate_shipping', 998 );
 	}
 	
 	
