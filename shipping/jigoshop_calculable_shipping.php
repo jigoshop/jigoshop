@@ -39,25 +39,31 @@
 		$services_to_use = $this->filter_services();
 		
                 $this->has_error = false;
-                foreach($services_to_use as $current_service) {
+                
+                if ( $services_to_use != NULL || $services_to_use ) :
+                    
+                    foreach($services_to_use as $current_service) :
 
-			// create request input for shipping service
-			$request = $this->create_mail_request($current_service);
+                            // create request input for shipping service
+                            $request = $this->create_mail_request($current_service);
 
-			// send to shipping server and get xml back
-			$post_response = $this->send_to_shipping_server($request);
+                            // send to shipping server and get xml back
+                            $post_response = $this->send_to_shipping_server($request);
 
-			// convert xml into an array 
-			$xml_response = $this->convert_xml_to_array($post_response);
-			
-			// sums up the rates from flattened array, and generates amounts. 
-			$rate = $this->retrieve_rate_from_response($xml_response);
-			
-			// rate should never be 0 or less from shipping API's
-			if ($rate > 0) :
-				array_push($this->rates, array('service' => $current_service, 'price' => $rate ));
-			endif;
-		}
+                            // convert xml into an array 
+                            $xml_response = $this->convert_xml_to_array($post_response);
+
+                            // sums up the rates from flattened array, and generates amounts. 
+                            $rate = $this->retrieve_rate_from_response($xml_response);
+
+                            // rate should never be 0 or less from shipping API's
+                            if ($rate > 0) :
+                                    array_push($this->rates, array('service' => $current_service, 'price' => $rate ));
+                            endif;
+                            
+                    endforeach;
+                    
+                endif;
                 
                 // service returned an error since no rates were calculated
                 if (($this->rates == NULL || !$this->rates) && !$this->has_error ) :

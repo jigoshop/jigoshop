@@ -32,7 +32,7 @@ class jigoshop_shipping extends jigoshop_singleton {
 		if ( get_option( 'jigoshop_calc_shipping' ) != 'no' ) self::$enabled = true;
 		
 		// ensure low priority to force recalc after all shipping plugins are loaded
-		self::add_action( 'plugins_loaded', 'calculate_shipping', 999 );
+		self::add_action( 'plugins_loaded', 'calculate_shipping', 998 );
 	}
 	
 	
