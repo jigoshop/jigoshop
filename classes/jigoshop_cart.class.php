@@ -57,20 +57,14 @@ class jigoshop_cart extends jigoshop_singleton {
 			
 			foreach ($cart as $key => $values) :
 			
-				if ($values['variation_id']>0) :
-					$_product = &new jigoshop_product_variation($values['variation_id']);
-				else :
-					$_product = &new jigoshop_product($values['product_id']);
-				endif;
+				if ($values['data']->exists() && $values['quantity']>0) :
 				
-				if ($_product->exists && $values['quantity']>0) :
-				
-					self::$cart_contents[] = array(
+					self::$cart_contents[$key] = array(
 						'product_id'	=> $values['product_id'],
 						'variation_id'	=> $values['variation_id'],
                         'variation'     => $values['variation'],
 						'quantity' 		=> $values['quantity'],
-						'data'			=> $_product
+						'data'			=> $values['data']
 					);
 
 				endif;
@@ -181,15 +175,13 @@ class jigoshop_cart extends jigoshop_singleton {
         } else {//othervise add new product to the cart
         
             $cart_item_key = sizeof(self::$cart_contents);
-
-            $data = &new jigoshop_product($product_id);
 			
             self::$cart_contents[$cart_item_key] = array(
                 'product_id'   => $product_id,
                 'variation_id' => $variation_id,
                 'variation'    => $variation,
                 'quantity'     => (int) $quantity,
-                'data'         => $data
+                'data'         => $product
             );
         }
 
