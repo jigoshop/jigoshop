@@ -94,15 +94,6 @@ if ($include_files) :
 	endforeach;
 endif;
 
-// TODO: as of 0.9.9.2 and prior, Singletons are in use. -JAP-
-// These should be looked into being re-factored to allow for easier and more effective Unit Testing.
-// Dependency Injection:  http://components.symfony-project.org/dependency-injection/trunk/book/01-Dependency-Injection
-$jigoshop 					= jigoshop::instance();
-$jigoshop_customer 			= jigoshop_customer::instance();		// Customer class, sorts out session data such as location
-$jigoshop_shipping 			= jigoshop_shipping::instance();		// Shipping class. loads and stores shipping methods
-$jigoshop_payment_gateways 	= jigoshop_payment_gateways::instance();// Payment gateways class. loads and stores payment methods
-$jigoshop_cart 				= jigoshop_cart::instance();			// Cart class, stores the cart contents
-
 // Constants
 if (!defined('JIGOSHOP_USE_CSS')) :
 	if (get_option('jigoshop_disable_css')=='yes') define('JIGOSHOP_USE_CSS', false);
@@ -305,6 +296,19 @@ function jigoshop_get_image_size( $size ) {
 function jigoshop_init() {
 
 	jigoshop_post_type();
+	
+	// fixes #326 - downloadable products charging shipping
+	// add singletons in jigoshop_init so that the taxonomies are loaded before calling them.
+	
+	// TODO: as of 0.9.9.2 and prior, Singletons are in use. -JAP-
+	// These should be looked into being re-factored to allow for easier and more effective Unit Testing.
+	// Dependency Injection:  http://components.symfony-project.org/dependency-injection/trunk/book/01-Dependency-Injection
+	$jigoshop 					= jigoshop::instance();
+	$jigoshop_customer 			= jigoshop_customer::instance();		// Customer class, sorts out session data such as location
+	$jigoshop_shipping 			= jigoshop_shipping::instance();		// Shipping class. loads and stores shipping methods
+	$jigoshop_payment_gateways 	= jigoshop_payment_gateways::instance();// Payment gateways class. loads and stores payment methods
+	$jigoshop_cart 				= jigoshop_cart::instance();			// Cart class, stores the cart contents
+
 
 	// Image sizes
 	jigoshop_set_image_sizes();
