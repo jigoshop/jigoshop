@@ -28,38 +28,31 @@ class jigoshop_shipping extends jigoshop_singleton {
 	/** Constructor */
     protected function __construct() {
     
-		if ( get_option( 'jigoshop_calc_shipping' ) != 'no' ) self::$enabled = true;
-		
-		// ensure low priority to force recalc after all shipping plugins are loaded
-		self::add_action( 'plugins_loaded', 'calculate_shipping', 999 );
+		if ( get_option( 'jigoshop_calc_shipping' ) != 'no' ) :
+			self::$enabled = true;
+			self::shipping_inits();
+			self::calculate_shipping();
+		endif;
+	
 	}
 	
 	
 	/**
-	 * This is called from the 'plugins_loaded' action hook so shipping plugins can get hooked in.
-	 * After all plugins are loaded, our constructor will force recalculation of shipping to ensure
-	 *     that the Cart and Checkout properly show shipping on the first and subsequent passes.
+	 * Initialize all shipping modules.
 	 */
-    public static function method_inits() {
+    private static function shipping_inits() {
     
 		do_action( 'jigoshop_shipping_init' ); /* loaded plugins for shipping inits */
 		
-		self::init_shipping_methods();
+	    $load_methods = apply_filters( 'jigoshop_shipping_methods', array() );
+		
+	    foreach ( $load_methods as $method ) :
+			self::$shipping_methods[] = &new $method();
+	    endforeach;
+	    
     }
     
-	/**
-	 * pulled out of the method_inits function so that it can be called within this class if the
-	 * shipping method array hasn't been yet initialized 
-	 */
-  	private static function init_shipping_methods() {    
-	     $load_methods = apply_filters( 'jigoshop_shipping_methods', array() );
 	
-	     foreach ( $load_methods as $method ) :
-	       self::$shipping_methods[] = &new $method();
-	     endforeach;	
-  	}
-  	
-  	
 	public static function is_enabled() {
 		return self::$enabled;
 	}
