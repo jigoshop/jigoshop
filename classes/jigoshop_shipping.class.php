@@ -168,7 +168,7 @@ class jigoshop_shipping extends jigoshop_singleton {
                                     endforeach;
 
                                     // select chosen method
-                                    if ($_available_methods[$chosen_method]->is_available()) :
+                                    if ($_available_methods[$chosen_method] && $_available_methods[$chosen_method]->is_available()) :
                                             $chosen_method = $_available_methods[$chosen_method]->id;
 
                                     // error returned from service api. Need to auto calculate cheapest method now
