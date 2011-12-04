@@ -347,10 +347,10 @@ class jigoshop_checkout extends jigoshop_singleton {
 						break;
 					endswitch;
 					
-				endforeach;
+				endforeach; 
 			
 			endif;
-
+				
 			if (is_user_logged_in()) :
 				$this->creating_account = false;
 			elseif (isset($this->posted['createaccount']) && $this->posted['createaccount']) :
@@ -403,7 +403,10 @@ class jigoshop_checkout extends jigoshop_singleton {
 					$available_gateways[$this->posted['payment_method']]->validate_fields();
 				endif;
 			endif;
-					
+			
+			// hook, to be able to use the validation, but to be able to do something different afterwards
+			do_action( 'jigoshop_after_checkout_validation', $this->posted, $_POST, jigoshop::error_count() );
+			
 			if (!isset($_POST['update_totals']) && jigoshop::error_count()==0) :
 				
 				$user_id = get_current_user_id();

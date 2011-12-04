@@ -132,6 +132,13 @@ We have a <a href="http://jigoshop.com/forums" title="Jigoshop support forum">co
 9. Checkout
 
 == Changelog ==
+= 0.9.9.4 =
+* added option for out of stock notification that sets products to hidden after Order quantity processing
+* added support for backorders on variations
+* fixed several javascript errors preventing variations from working
+* changed datepicker to work with WordPress 3.3
+
+
 = 0.9.9.3 =
 * Fixed SVN error
 

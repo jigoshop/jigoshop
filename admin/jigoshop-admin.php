@@ -287,8 +287,8 @@ function permalink_save_twice_notice() {
 		print_r('<div id="message" class="updated"><p>'.__('Note: Please make sure you save your permalink settings <strong>twice</strong> in order for them to be applied correctly in Jigoshop', 'jigoshop' ).'</p></div>');
 	}
 }
-
-add_action('admin_notices', 'permalink_save_twice_notice');
+// this seems fixed as of WP 3.3, commenting out for now to test -JAP-
+//add_action('admin_notices', 'permalink_save_twice_notice');
 
 /**
  * Categories ordering
@@ -306,16 +306,6 @@ function jigoshop_categories_scripts () {
 	
 }
 add_action('admin_footer-edit-tags.php', 'jigoshop_categories_scripts');
-
-/**
- * Load needed scripts for Settings Coupons
- */
-function jigoshop_admin_coupons_scripts () {
-	wp_register_script('jigoshop-date', jigoshop::plugin_url() . '/assets/js/date.js');
-	wp_register_script('jigoshop-datepicker', jigoshop::plugin_url() . '/assets/js/datepicker.js', array('jquery', 'jigoshop-date'));
-	wp_enqueue_script('jigoshop-datepicker');
-}
-add_action("admin_print_scripts-jigoshop_page_settings", 'jigoshop_admin_coupons_scripts');
 
 /**
  * Ajax request handling for categories ordering

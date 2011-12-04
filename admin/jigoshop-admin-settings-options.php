@@ -648,6 +648,20 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'std' 		=> '0'
 	),
 
+	array(
+		'name' => __('Out of stock hidden','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> 'When the Out of Stock Threshold (above) is reached, set the product visibility to hidden so that it will not appear on the Catalog or Shop product lists.',
+		'id' 		=> 'jigoshop_hide_no_stock_product',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
+	),
+
 	array( 'type' => 'tabend'),
 
 	array( 'type' 		=> 'tab', 'tabname' => __('Shipping', 'jigoshop') ),

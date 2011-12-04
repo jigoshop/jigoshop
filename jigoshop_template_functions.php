@@ -165,15 +165,11 @@ if (!function_exists('jigoshop_show_product_thumbnails')) {
 		echo '<div class="thumbnails">';
 
 		$thumb_id = get_post_thumbnail_id();
-		// since there are now user settings for sizes, shouldn't need filters -JAP-
-		//$small_thumbnail_size = apply_filters('single_product_small_thumbnail_size', 'shop_thumbnail');
 		$small_thumbnail_size = jigoshop_get_image_size( 'shop_thumbnail' );
-		$args = array( 'post_type' => 'attachment', 'numberposts' => -1, 'post_status' => null, 'post_parent' => $post->ID, 'orderby' => 'id', 'order' => 'asc' );
+		$args = array( 'post_type' => 'attachment', 'numberposts' => -1, 'post_status' => null, 'post_parent' => $post->ID, 'orderby' => 'menu_order', 'order' => 'asc' );
 		$attachments = get_posts($args);
 		if ($attachments) :
 			$loop = 0;
-			// with user settings for images sizes, the following foreach could be broken, need testing
-			// added filter to override image count per row, maybe need user setting here too?  -JAP-
 			$columns = apply_filters( 'single_thumbnail_columns', 3 );
 			foreach ( $attachments as $attachment ) :
 

@@ -147,11 +147,6 @@ function jigoshop_write_panel_scripts() {
 	
 	if( $post_type !== 'product' && $post_type !== 'shop_order' ) return;
 	
-	wp_register_script('jigoshop-date', jigoshop::plugin_url() . '/assets/js/date.js');
-	wp_register_script('jigoshop-datepicker', jigoshop::plugin_url() . '/assets/js/datepicker.js', array('jquery', 'jigoshop-date'));
-	
-	wp_enqueue_script('jigoshop-datepicker');
-	
 	wp_register_script('jigoshop-writepanel', jigoshop::plugin_url() . '/assets/js/write-panels.js', array('jquery'));
 	wp_enqueue_script('jigoshop-writepanel');
 	

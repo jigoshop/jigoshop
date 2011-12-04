@@ -25,8 +25,6 @@
  * @license    			http://jigoshop.com/license/commercial-edition
  */
 
-@session_start();
-
 if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", "0.9.9.3");
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
@@ -94,15 +92,6 @@ if ($include_files) :
 	endforeach;
 endif;
 
-// TODO: as of 0.9.9.2 and prior, Singletons are in use. -JAP-
-// These should be looked into being re-factored to allow for easier and more effective Unit Testing.
-// Dependency Injection:  http://components.symfony-project.org/dependency-injection/trunk/book/01-Dependency-Injection
-$jigoshop 					= jigoshop::instance();
-$jigoshop_customer 			= jigoshop_customer::instance();		// Customer class, sorts out session data such as location
-$jigoshop_shipping 			= jigoshop_shipping::instance();		// Shipping class. loads and stores shipping methods
-$jigoshop_payment_gateways 	= jigoshop_payment_gateways::instance();// Payment gateways class. loads and stores payment methods
-$jigoshop_cart 				= jigoshop_cart::instance();			// Cart class, stores the cart contents
-
 // Constants
 if (!defined('JIGOSHOP_USE_CSS')) :
 	if (get_option('jigoshop_disable_css')=='yes') define('JIGOSHOP_USE_CSS', false);
@@ -142,8 +131,6 @@ function jigoshop_remove_post_type_thumbnail_support() {
  * Filters and hooks
  **/
 add_action('init', 'jigoshop_init', 0);
-add_action('plugins_loaded', 'jigoshop_shipping::method_inits', 1); // Load shipping methods - some may be added by plugins
-add_action('plugins_loaded', 'jigoshop_payment_gateways::init', 1); // Load payment methods - some may be added by plugins
 
 if (get_option('jigoshop_force_ssl_checkout')=='yes') add_action( 'wp_head', 'jigoshop_force_ssl');
 
@@ -304,7 +291,20 @@ function jigoshop_get_image_size( $size ) {
 
 function jigoshop_init() {
 
-	jigoshop_post_type();
+	jigoshop_post_type();	/* register taxonomies */
+	
+	session_start();		/* start session here after all classes are loaded to eliminate __PHP_Incomplete_Class warnings */
+	
+	// add Singletons here so that the taxonomies are loaded before calling them.
+	// TODO: as of 0.9.9.2 and prior, Singletons are in use. -JAP-
+	// These should be looked into being re-factored to allow for easier and more effective Unit Testing.
+	// Dependency Injection:  http://components.symfony-project.org/dependency-injection/trunk/book/01-Dependency-Injection
+	$jigoshop 					= jigoshop::instance();
+	$jigoshop_customer 			= jigoshop_customer::instance();		// Customer class, sorts out session data such as location
+	$jigoshop_shipping 			= jigoshop_shipping::instance();		// Shipping class. loads and stores shipping methods
+	$jigoshop_payment_gateways 	= jigoshop_payment_gateways::instance();// Payment gateways class. loads and stores payment methods
+	$jigoshop_cart 				= jigoshop_cart::instance();			// Cart class, stores the cart contents
+
 
 	// Image sizes
 	jigoshop_set_image_sizes();
@@ -325,9 +325,9 @@ function jigoshop_init() {
 
     if (is_admin()) :
     	wp_register_style('jigoshop_admin_styles', jigoshop::plugin_url() . '/assets/css/admin.css');
-   		wp_register_style('jigoshop_admin_datepicker_styles', jigoshop::plugin_url() . '/assets/css/datepicker.css');
     	wp_enqueue_style('jigoshop_admin_styles');
-    	wp_enqueue_style('jigoshop_admin_datepicker_styles');
+   		wp_register_style('jquery-ui-jigoshop-styles', jigoshop::plugin_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css');
+    	wp_enqueue_style('jquery-ui-jigoshop-styles');
     else :
     	wp_register_style( 'jqueryui_styles', jigoshop::plugin_url() . '/assets/css/ui.css' );
 
@@ -344,6 +344,8 @@ function jigoshop_init() {
 
 function jigoshop_admin_scripts() {
 
+    wp_register_script('jquery-ui-datepicker', jigoshop::plugin_url() . '/assets/js/jquery-ui-datepicker-1.8.16.min.js', array( 'jquery' ), '1.8.16', true );
+    wp_enqueue_script('jquery-ui-datepicker');
 	wp_register_script( 'jigoshop_backend', jigoshop::plugin_url() . '/assets/js/jigoshop_backend.js', array('jquery'), '1.0' );
     wp_enqueue_script('jigoshop_backend');
 
@@ -485,14 +487,20 @@ function is_product_list() {
 	return $is_list;
 }
 
-// TODO: doesn't reflect All Jigoshop pages
-// as of 0.9.9.1, I'll leave this as is for now, it -will- change.  -JAP-
-// at this time, it is not used within the codebase, 'is_content_wrapped' contains this functionality
+/**
+ * Evaluates to true for all Jigoshop pages
+ * 
+ * @return bool
+ * @since 0.9.9
+ */
 function is_jigoshop() {
-	$is_wrapped = false;
-	$is_wrapped |= is_product_list();
-	$is_wrapped |= is_product();
-	return $is_wrapped;
+	$is_jigo = false;
+	$is_jigo |= is_content_wrapped();
+	$is_jigo |= is_account();
+	$is_jigo |= is_cart();
+	$is_jigo |= is_checkout();
+	$is_jigo |= is_order_tracker();
+	return $is_jigo;
 }
 
 /**
@@ -768,6 +776,13 @@ function jigoshop_body_class($classes) {
 	return $classes;
 }
 add_filter('body_class','jigoshop_body_class');
+
+function jigoshop_hide_out_of_stock_product( $item_id ) {
+	update_post_meta( $item_id, 'visibility', 'hidden' );
+}
+if ( get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) :
+	add_action( 'jigoshop_no_stock_notification', 'jigoshop_hide_out_of_stock_product' );
+endif;
 
 //### Extra Review Field in comments #########################################################
 

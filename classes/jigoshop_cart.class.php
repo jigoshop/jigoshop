@@ -55,22 +55,16 @@ class jigoshop_cart extends jigoshop_singleton {
 		if ( isset($_SESSION['cart']) && is_array($_SESSION['cart']) ) :
 			$cart = $_SESSION['cart'];
 			
-			foreach ($cart as $values) :
+			foreach ($cart as $key => $values) :
 			
-				if ($values['variation_id']>0) :
-					$_product = &new jigoshop_product_variation($values['variation_id']);
-				else :
-					$_product = &new jigoshop_product($values['product_id']);
-				endif;
+				if ($values['data']->exists() && $values['quantity']>0) :
 				
-				if ($_product->exists) :
-				
-					self::$cart_contents[] = array(
+					self::$cart_contents[$key] = array(
 						'product_id'	=> $values['product_id'],
 						'variation_id'	=> $values['variation_id'],
                         'variation'     => $values['variation'],
 						'quantity' 		=> $values['quantity'],
-						'data'			=> $_product
+						'data'			=> $values['data']
 					);
 
 				endif;
@@ -85,16 +79,20 @@ class jigoshop_cart extends jigoshop_singleton {
 
 	/** sets the php session data for the cart and coupon */
 	function set_session() {
-		$cart = array();
-
+	
 		$_SESSION['cart'] = self::$cart_contents;
 		
 		$_SESSION['coupons'] = self::$applied_coupons;
+		
 		self::calculate_totals();
+		
 	}
 
 	/** Empty the cart */
 	function empty_cart() {
+		self::$cart_contents = array();
+		self::$applied_coupons = array();
+		self::reset_totals();
 		unset($_SESSION['cart']);
 		unset($_SESSION['coupons']);
 	}
@@ -177,15 +175,13 @@ class jigoshop_cart extends jigoshop_singleton {
         } else {//othervise add new product to the cart
         
             $cart_item_key = sizeof(self::$cart_contents);
-
-            $data = &new jigoshop_product($product_id);
-
+			
             self::$cart_contents[$cart_item_key] = array(
                 'product_id'   => $product_id,
                 'variation_id' => $variation_id,
                 'variation'    => $variation,
                 'quantity'     => (int) $quantity,
-                'data'         => $data
+                'data'         => $product
             );
         }
 
@@ -294,7 +290,7 @@ class jigoshop_cart extends jigoshop_singleton {
 				$needs_shipping = true;
 			endif;
 		endforeach;
-
+		
 		return $needs_shipping;
 	}
 
@@ -329,12 +325,9 @@ class jigoshop_cart extends jigoshop_singleton {
         
 		return true;
 	}
-
-	/** calculate totals for the items in the cart */
-	public static function calculate_totals() {
-
-		$_tax = &new jigoshop_tax();
-
+	
+	/** reset all Cart totals */
+	function reset_totals() {
 		self::$total = 0;
 		self::$cart_contents_total = 0;
 		self::$cart_contents_total_ex_tax = 0;
@@ -349,15 +342,24 @@ class jigoshop_cart extends jigoshop_singleton {
 		self::$shipping_total = 0;
 		self::$cart_dl_count = 0;
 		self::$cart_contents_total_ex_dl = 0; /* for table rate shipping */
+		jigoshop_shipping::reset_shipping();
+	}
+	
+	/** calculate totals for the items in the cart */
+	function calculate_totals() {
+		
+		self::reset_totals();
+		
+		$_tax = &new jigoshop_tax();
 		
 		if ( ! count( self::$cart_contents ) ) :
-			self::clear_cache(); /* no items, make sure applied coupons and session data reset, nothing to calculate */
+			self::empty_cart(); /* no items, make sure applied coupons and session data reset, nothing to calculate */
 			return;
 		endif;
 		foreach (self::$cart_contents as $cart_item_key => $values) :
 			$_product = $values['data'];
 			if ($_product->exists() && $values['quantity']>0) :
-
+				
 				self::$cart_contents_count = self::$cart_contents_count + $values['quantity'];
 				
 				// If product is downloadable don't apply to product
@@ -370,7 +372,8 @@ class jigoshop_cart extends jigoshop_singleton {
 				}
 				
 				$total_item_price = $_product->get_price() * $values['quantity'] * 100; // Into pounds
-
+				$tax_amount = null;
+				
 				if ( get_option('jigoshop_calc_taxes')=='yes') :
 
 					if ( $_product->is_taxable() ) :
@@ -411,8 +414,8 @@ class jigoshop_cart extends jigoshop_singleton {
 
 				endif;
 
-				$total_item_price 			= $total_item_price / 100; // Back to pounds
-				$tax_amount 				= ( isset($tax_amount) ? $tax_amount : 0 ) / 100; // Back to pounds
+				$total_item_price 	= $total_item_price / 100; // Back to pounds
+				$tax_amount 		= ( isset($tax_amount) ? $tax_amount : 0 ) / 100; // Back to pounds
 
 				self::$cart_contents_tax = self::$cart_contents_tax + $tax_amount;
 
@@ -437,7 +440,8 @@ class jigoshop_cart extends jigoshop_singleton {
 		endforeach;
 		
 		// Cart Shipping
-		if (self::needs_shipping()) jigoshop_shipping::calculate_shipping(); else jigoshop_shipping::reset_shipping();
+		if (self::needs_shipping()) jigoshop_shipping::calculate_shipping();
+		else jigoshop_shipping::reset_shipping();
 		
 		self::$shipping_total = jigoshop_shipping::get_total();
 
@@ -636,12 +640,4 @@ class jigoshop_cart extends jigoshop_singleton {
 		if (self::$discount_total) return jigoshop_price(self::$discount_total); else return false;
 	}
 	
-	/** clears the cart/coupon data */
-	function clear_cache() {
-		self::$cart_contents = array();
-		self::$applied_coupons = array();
-		unset( $_SESSION['cart'] );
-		unset( $_SESSION['coupons'] );
-	}
-
 }

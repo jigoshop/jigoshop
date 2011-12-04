@@ -42,8 +42,9 @@
 	if (isset($_POST['s_country'])) jigoshop_customer::set_shipping_country( $_POST['s_country'] );
 	if (isset($_POST['s_state'])) jigoshop_customer::set_shipping_state( $_POST['s_state'] );
 	if (isset($_POST['s_postcode'])) jigoshop_customer::set_shipping_postcode( $_POST['s_postcode'] );
-	
+					
 	jigoshop_cart::calculate_totals();
+	
 ?>
 <div id="order_review">
 	
@@ -60,13 +61,14 @@
 				<td colspan="2"><?php _e('Subtotal', 'jigoshop'); ?></td>
 				<td><?php echo jigoshop_cart::get_cart_subtotal(); ?></td>
 			</tr>
-			
+					
 			<?php  if (jigoshop_cart::needs_shipping()) : ?><tr>
 				<td colspan="2"><?php _e('Shipping', 'jigoshop'); ?></td>
 				<td>
 				<?php
-				
+					
 					$available_methods = jigoshop_shipping::get_available_shipping_methods();
+					
 					
 					if (sizeof($available_methods)>0) :
 						
@@ -130,7 +132,7 @@
 				<td colspan="2"><?php _e('Tax', 'jigoshop'); ?></td>
 				<td><?php echo jigoshop_cart::get_cart_tax(); ?></td>
 			</tr><?php endif; ?>
-
+            <?php do_action( 'jigoshop_after_review_order_items' ); ?>
 			<?php if (jigoshop_cart::get_total_discount()) : ?><tr class="discount">
 				<td colspan="2"><?php _e('Discount', 'jigoshop'); ?></td>
 				<td>-<?php echo jigoshop_cart::get_total_discount(); ?></td>
@@ -200,7 +202,10 @@
 			<noscript><?php _e('Since your browser does not support JavaScript, or it is disabled, please ensure you click the <em>Update Totals</em> button before placing your order. You may be charged more than the amount stated above if you fail to do so.', 'jigoshop'); ?><br/><input type="submit" class="button-alt" name="update_totals" value="<?php _e('Update totals', 'jigoshop'); ?>" /></noscript>
 		
 			<?php jigoshop::nonce_field('process_checkout')?>
-			<input type="submit" class="button-alt" name="place_order" id="place_order" value="<?php _e('Place order', 'jigoshop'); ?>" />
+			
+			<?php  $order_button_text = apply_filters( 'jigoshop_order_button_text', __( 'Place order', 'jigoshop') ); ?>
+			
+			<input type="submit" class="button-alt" name="place_order" id="place_order" value="<?php echo $order_button_text; ?>" />
 			
 			<?php do_action( 'jigoshop_review_order_before_submit' ); ?>
 			
