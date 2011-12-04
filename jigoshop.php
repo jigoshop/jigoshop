@@ -25,8 +25,6 @@
  * @license    			http://jigoshop.com/license/commercial-edition
  */
 
-@session_start();
-
 if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", "0.9.9.3");
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
@@ -295,11 +293,11 @@ function jigoshop_get_image_size( $size ) {
 
 function jigoshop_init() {
 
-	jigoshop_post_type();
+	jigoshop_post_type();	/* register taxonomies */
 	
-	// fixes #326 - downloadable products charging shipping
-	// add singletons in jigoshop_init so that the taxonomies are loaded before calling them.
+	session_start();		/* start session here after all classes are loaded to eliminate __PHP_Incomplete_Class warnings */
 	
+	// add Singletons here so that the taxonomies are loaded before calling them.
 	// TODO: as of 0.9.9.2 and prior, Singletons are in use. -JAP-
 	// These should be looked into being re-factored to allow for easier and more effective Unit Testing.
 	// Dependency Injection:  http://components.symfony-project.org/dependency-injection/trunk/book/01-Dependency-Injection
