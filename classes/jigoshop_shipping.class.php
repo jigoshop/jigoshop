@@ -153,23 +153,24 @@ class jigoshop_shipping extends jigoshop_singleton {
 
 				if (isset($_SESSION['selected_rate_id'])) :
 
-						//make sure all methods are re-calculated since prices have been reset. Otherwise the other shipping
-						//method prices will show free
-						foreach ( $_available_methods as $method ) : 
-								$method->calculate_shipping();
-						endforeach;
+					//make sure all methods are re-calculated since prices have been reset. Otherwise the other shipping
+					//method prices will show free
+					foreach ( $_available_methods as $method ) : 
+							$method->calculate_shipping();
+					endforeach;
 
-						// select chosen method
-						if ($_available_methods[$chosen_method]->is_available()) :
-								$chosen_method = $_available_methods[$chosen_method]->id;
+					// select chosen method
+					if ($_available_methods[$chosen_method] && $_available_methods[$chosen_method]->is_available()) :
+							$chosen_method = $_available_methods[$chosen_method]->id;
 
-						// error returned from service api. Need to auto calculate cheapest method now
-						else :
+					// error returned from service api. Need to auto calculate cheapest method now
+					else :
 
-								// need to recreate available methods since some calculable ones have been disabled
-								$_available_methods = self::get_available_shipping_methods(); 
-								$chosen_method = self::get_cheapest_method($_available_methods); 
-						endif;
+							// need to recreate available methods since some calculable ones have been disabled
+							$_available_methods = self::get_available_shipping_methods(); 
+							$chosen_method = self::get_cheapest_method($_available_methods); 
+					endif;
+
 				else :
 						// current jigoshop functionality
 						$_cheapest_method = self::get_cheapest_method($_available_methods);
