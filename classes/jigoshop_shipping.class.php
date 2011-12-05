@@ -28,9 +28,9 @@ class jigoshop_shipping extends jigoshop_singleton {
 	/** Constructor */
     protected function __construct() {
     
+		self::shipping_inits();
 		if ( get_option( 'jigoshop_calc_shipping' ) != 'no' ) :
 			self::$enabled = true;
-			self::shipping_inits();
 			self::calculate_shipping();
 		endif;
 	
