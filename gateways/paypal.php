@@ -313,7 +313,7 @@ class paypal extends jigoshop_payment_gateway {
         $_POST['cmd'] = '_notify-validate';
 
         // Send back post vars to paypal
-        $params = array( 'body' => $_POST );
+        $params = array( 'body' => $_POST, 'sslverify' => apply_filters('https_local_ssl_verify', false));
 
         // Get url
        	if ( $this->testmode == 'yes' ):
