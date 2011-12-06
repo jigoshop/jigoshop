@@ -80,6 +80,10 @@ class jigoshop_cart extends jigoshop_singleton {
 	/** sets the php session data for the cart and coupon */
 	function set_session() {
 	
+		// we get here from cart additions, quantity adjustments, and coupon additions
+		// reset any chosen shipping methods as these adjustments can effect shipping (free shipping)
+		unset( $_SESSION['chosen_shipping_method_id'] );
+
 		$_SESSION['cart'] = self::$cart_contents;
 		
 		$_SESSION['coupons'] = self::$applied_coupons;
@@ -95,6 +99,7 @@ class jigoshop_cart extends jigoshop_singleton {
 		self::reset_totals();
 		unset($_SESSION['cart']);
 		unset($_SESSION['coupons']);
+		unset( $_SESSION['chosen_shipping_method_id'] );
 	}
 
 	/**

@@ -160,7 +160,6 @@ class jigoshop_shipping extends jigoshop_singleton {
 	
 	
 	public static function reset_shipping() {
-		unset( $_SESSION['chosen_shipping_method_id'] );
 		self::$shipping_total = 0;
 		self::$shipping_tax = 0;
 		self::$shipping_label = null;
