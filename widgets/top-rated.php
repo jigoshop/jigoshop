@@ -26,16 +26,16 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 	 */
 	public function __construct() {
 		$options = array(
-			'classname'	=> 'widget_top_rated',
-			'description'	=> __( "The best of the best on your site", 'jigoshop')
+			'classname'		=> 'widget_top_rated',
+			'description'	=> __( "The best of the best on your site", 'jigoshop' )
 		);
 		
-		parent::__construct('top-rated', __('Jigoshop: Top Rated Products', 'jigoshop'), $options);
+		parent::__construct( 'top-rated', __( 'Jigoshop: Top Rated Products', 'jigoshop' ), $options );
 
 		// Flush cache after every save
-		add_action( 'save_post', array(&$this, 'flush_widget_cache') );
-		add_action( 'deleted_post', array(&$this, 'flush_widget_cache') );
-		add_action( 'switch_theme', array(&$this, 'flush_widget_cache') );
+		add_action( 'save_post', array( &$this, 'flush_widget_cache' ) );
+		add_action( 'deleted_post', array( &$this, 'flush_widget_cache' ) );
+		add_action( 'switch_theme', array( &$this, 'flush_widget_cache' ) );
 	}
 
 	/**
@@ -47,53 +47,56 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 	 * @param	array	sidebar arguments
 	 * @param	array	instance
 	 */
-	public function widget($args, $instance) {
+	public function widget( $args, $instance ) {
 
 		// Get the most recent products from the cache
-		$cache = wp_cache_get('widget_recent_products', 'widget');
+		$cache = wp_cache_get( 'widget_recent_products', 'widget' );
 		
 		// If no entry exists use array
-		if ( ! is_array($cache) ) {
+		if ( ! is_array( $cache ) ) {
 			$cache = array();
 		}
 
 		// If cached get from the cache
-		if ( isset($cache[$args['widget_id']]) ) {
+		if ( isset( $cache[$args['widget_id']] ) ) {
 			echo $cache[$args['widget_id']];
 			return false;
 		}
 
 		// Start buffering
 		ob_start();
-		extract($args);
+		extract( $args );
 
 		// Set the widget title
-		$title = apply_filters('widget_title', 
-			($instance['title']) ? $instance['title'] : __('Top Rated Products', 'jigoshop'), 
-			$instance, $this->id_base);
+		$title = apply_filters(
+			'widget_title', 
+			($instance['title']) ? $instance['title'] : __( 'Top Rated Products', 'jigoshop' ), 
+			$instance,
+			$this->id_base
+		);
 
 		// Set number of products to fetch
-		if ( ! $number = abs($instance['number']) ) {
+		if ( ! $number = absint( $instance['number'] ) ) {
 			$number = 10;
 		}
 
 		// TODO: There must be a better way to do this
 		// Set up query
 		// Filter the $wpdb query
-		add_filter( 'posts_clauses', array(&$this, 'order_by_rating') );
+		add_filter( 'posts_clauses', array( &$this, 'order_by_rating' ) );
 
 		// TODO: Add meta query to not include invisible products
     	$query_args = array(
     		'showposts'		=> $number,
     		'post_type'		=> 'product',
-    		'post_status'		=> 'publish',
+    		'post_status'	=> 'publish',
     	);
 
     	// Run the query
-		$q = new WP_Query($query_args);
+		$q = new WP_Query( $query_args );
 
 		// If there are products
-		if($q->have_posts()) {
+		if( $q->have_posts() ) {
 
 			// Print the widget wrapper & title
 			echo $before_widget;
@@ -103,16 +106,17 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 			echo '<ul class="product_list_widget">';
 
 			// Print out each product
-			while($q->have_posts()) : $q->the_post(); $_product = new jigoshop_product($q->post->ID);
+			while( $q->have_posts() ) : $q->the_post(); $_product = new jigoshop_product( $q->post->ID );
 			echo '<li>';
 					// Print the product image & title with a link to the permalink
-					echo '<a href="'.get_permalink().'" title="'.esc_attr(get_the_title()).'">';
-					echo (has_post_thumbnail()) ? the_post_thumbnail('shop_tiny') : jigoshop_get_image_placeholder('shop_tiny');
+					echo '<a href="'.esc_url( get_permalink() ).'" title="'.esc_attr( get_the_title() ).'">';
+					echo ( has_post_thumbnail() ) ? the_post_thumbnail( 'shop_tiny' ) : jigoshop_get_image_placeholder( 'shop_tiny' );
 					echo '<span class="js_widget_product_title">' . get_the_title() . '</span>';
 					echo '</a>';
 					
 					// Print the average rating with html wrappers
-					echo $_product->get_rating_html('sidebar');
+					echo $_product->get_rating_html( 'sidebar' );
+
 					// Print the price with html wrappers
 					echo '<span class="js_widget_product_price">' . $_product->get_price_html() . '</span>';
 				echo '</li>';
@@ -125,12 +129,12 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 			
 			// Reset the global $the_post as this query will have stomped on it
 			wp_reset_query();
-			remove_filter( 'posts_clauses', array(&$this, 'order_by_rating_post_clauses') );
+			remove_filter( 'posts_clauses', array( &$this, 'order_by_rating_post_clauses' ) );
 		}
 		
 		// Flush output buffer and save to cache
 		$cache[$args['widget_id']] = ob_get_flush();
-		wp_cache_set('widget_recent_products', $cache, 'widget');
+		wp_cache_set( 'widget_recent_products', $cache, 'widget' );
 	}
 
 	// TODO: Look at a better way of doing this
@@ -168,16 +172,16 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 		$instance = $old_instance;
 		
 		// Save the new values
-		$instance['title'] = strip_tags($new_instance['title']);
-		$instance['number'] = abs($new_instance['number']);
+		$instance['title']	= strip_tags( $new_instance['title'] );
+		$instance['number']	= absint( $new_instance['number'] );
 
 		// Flush the cache
 		$this->flush_widget_cache();
 
 		// Remove the cache entry from the options array
 		$alloptions = wp_cache_get( 'alloptions', 'options' );
-		if ( isset($alloptions['widget_top_rated']) ) {
-			delete_option('widget_top_rated');
+		if ( isset( $alloptions['widget_top_rated'] ) ) {
+			delete_option( 'widget_top_rated' );
 		}
 
 		return $instance;
@@ -186,10 +190,10 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 	/**
 	 * Flush Widget Cache
 	 * 
-	 * Flushes the cached output
+	 * Used to flush the cached output
 	 */
-	public function flush_widget_cache() {
-		wp_cache_delete('widget_top_rated', 'widget');
+	private function flush_widget_cache() {
+		wp_cache_delete( 'widget_top_rated', 'widget' );
 	}
 
 	/**
@@ -202,21 +206,21 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 	public function form( $instance ) {
 	
 		// Get instance data
-		$title = isset($instance['title']) ? esc_attr($instance['title']) : null;
-		
-		$number = apply_filters('jigoshop_widget_featured_default_number', 5, $instance, $this->id_base);
-		$number = isset($instance['number']) ? abs($instance['number']) : $number;
+		$title	= isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : null;
+		$number = isset( $instance['number'] ) ? absint( $instance['number'] ) : null;
 		
 		// Widget Title
-		echo '<p>';
-		echo '<label for="' . $this->get_field_id('title') . '">' . _e('Title:', 'jigoshop') . '</label>';
-		echo '<input class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" type="text" value="'. $title .'" />';
-		echo '</p>';
-		
+		echo "
+		<p>
+			<label for='{$this->get_field_id( 'title' )}'>" . __( 'Title:', 'jigoshop' ) . "</label>
+			<input class='widefat' id='{$this->get_field_id( 'title' )}' name='{$this->get_field_name( 'title' )}' type='text' value='{$title}' />
+		</p>";
+
 		// Number of posts to fetch
-		echo '<p>';
-		echo '<label for="' . $this->get_field_id('number') . '">' . _e('Number of products to show:', 'jigoshop') . '</label>';
-		echo '<input id="' . $this->get_field_id('number') . '" name="' . $this->get_field_name('number') . '" type="text" value="' . $number . '" size="3" />';
-		echo '</p>';
+		echo "
+		<p>
+			<label for='{$this->get_field_id( 'number' )}'>" . __( 'Number of products to show:', 'jigoshop' ) . "</label>
+			<input id='{$this->get_field_id( 'number' )}' name='{$this->get_field_name( 'number' )}' type='number' value='{$number}' />
+		</p>";
 	}
 }
