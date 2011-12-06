@@ -140,22 +140,21 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 	// TODO: Look at a better way of doing this
 	// Shouldn't we be left joining products onto comments rather than comments onto products?
 	// Reason: Not all products have comments & its a waste of query time
-	public function order_by_rating( $args ) {
-
+	public function order_by_rating( $clauses, $wp_query ) {
 		global $wpdb;
 
-		$args['where'] .= " AND $wpdb->commentmeta.meta_key = 'rating' ";
+		$clauses['where'] .= " AND $wpdb->commentmeta.meta_key = 'rating' ";
 		
-		$args['join'] = "
-			LEFT JOIN $wpdb->comments ON($wpdb->posts.ID = $wpdb->comments.comment_post_ID)
-			LEFT JOIN $wpdb->commentmeta ON($wpdb->comments.comment_ID = $wpdb->commentmeta.comment_id)
+		$clauses['join'] = "
+			INNER JOIN $wpdb->comments ON($wpdb->posts.ID = $wpdb->comments.comment_post_ID)
+			INNER JOIN $wpdb->commentmeta ON($wpdb->comments.comment_ID = $wpdb->commentmeta.comment_id)
 		";
 	
-		$args['orderby'] = "$wpdb->commentmeta.meta_value DESC";
+		$clauses['orderby'] = "$wpdb->commentmeta.meta_value DESC";
 		
-		$args['groupby'] = "$wpdb->posts.ID";
+		$clauses['groupby'] = "$wpdb->posts.ID";
 		
-		return $args;
+		return $clauses;
 	}
 
 	/**
@@ -208,6 +207,14 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 		// Get instance data
 		$title	= isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : null;
 		$number = isset( $instance['number'] ) ? absint( $instance['number'] ) : null;
+
+		
+		// $name = 'what';
+		// echo strtr('Hello :name', 
+		// 	array(':name' => $name));
+
+		// echo strtr('<label for=":field_name">:label</label><input name=":field_name" />',
+		// 	array(':field_name' => 'myfield', ':label' => 'this is cool'));
 		
 		// Widget Title
 		echo "
