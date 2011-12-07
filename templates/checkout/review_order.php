@@ -143,8 +143,8 @@
 				if ($available_gateways) : 
 					// Chosen Method
 					if (sizeof($available_gateways)) {
-						if( isset( $_POST[ 'payment_method' ] ) && isset( $available_gateways [ $_POST['payment_method'] ] ) ) {
-							$available_gateways [ $_POST[ 'payment_method' ] ]->set_current();
+						if( isset( $_POST[ 'payment_method' ] ) && isset( $available_gateways[ $_POST['payment_method'] ] ) ) {
+							$available_gateways[ $_POST[ 'payment_method' ] ]->set_current();
 						} else {
 							current($available_gateways)->set_current();
 						}	
