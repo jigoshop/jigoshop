@@ -44,12 +44,14 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 	update_post_meta( $post_id, 'visibility', sanitize_text_field($_POST['visibility']));
 	update_post_meta( $post_id, 'featured', sanitize_text_field($_POST['featured']));
 
+	/// ********************************************************************************
 	/// WARNING: Depreciated code
+	/// ********************************************************************************
 	$newdata = new jigoshop_sanitize( $_POST );
 	$savedata = (array) get_post_meta( $post_id, 'product_data', true );
 	//update_post_meta( $post_id, 'visibility', $newdata->__get( 'visibility' ));
 	//update_post_meta( $post_id, 'featured', $newdata->__get( 'featured' ));
-	/// End
+	/// ********************************************************************************
 	
 	// Set the unique SKU (checks it too!)
 	$SKU = get_post_meta( $post_id, 'SKU', true );
@@ -69,7 +71,9 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 		endif;
 	endif;
 
+	/// ********************************************************************************
 	/// WARNING: Depreciated code
+	/// ********************************************************************************
 	$product_fields = array(
 		'regular_price',
 		'sale_price',
@@ -81,7 +85,7 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 	foreach ( $product_fields as $field_name ) {
 		$savedata[$field_name] = $newdata->__get( $field_name );
 	}
-	/// End
+	/// ********************************************************************************
 
 	// #TODO: We need this but why?
 	$product_type = sanitize_title( $newdata->__get( 'product-type' ));
@@ -89,9 +93,12 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 	
 	if ( $product_type !== 'grouped' OR $product_type !== 'variable' ) :
 		
+		/// ********************************************************************************
 		/// WARNING: Depreciated code
+		/// ********************************************************************************
 		$date_from = $newdata->__get( 'sale_price_dates_from' );
 		$date_to = $newdata->__get( 'sale_price_dates_to' );
+		/// ********************************************************************************
 
 		// Configure from/to dates
 		$date_from	= isset($_POST['sale_price_dates_from']) ? strtotime($_POST['sale_price_dates_from']) : null;
@@ -109,7 +116,9 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 			update_post_meta( $post_id, 'sale_price_dates_from', time());
 		}
 
+		/// ********************************************************************************
 		/// WARNING: Depreciated code
+		/// ********************************************************************************
 		if ( $savedata['sale_price'] AND $date_to == '' AND $date_from == '' ) :
 			update_post_meta( $post_id, 'price', $savedata['sale_price'] );
 		else :
@@ -127,7 +136,7 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 			update_post_meta( $post_id, 'sale_price_dates_from', '' );
 			update_post_meta( $post_id, 'sale_price_dates_to', '' );
 		endif;
-		/// END
+		/// ********************************************************************************
 	
 	else :
 
@@ -233,10 +242,12 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 	uasort( $new_attributes, 'attributes_cmp' );
 	update_post_meta( $post_id, 'product_attributes', $new_attributes );
 	
+	/// ********************************************************************************
 	/// WARNING: Depreciated code
+	/// ********************************************************************************
 	$savedata = apply_filters( 'process_product_meta', $savedata, $post_id );
 	$savedata = apply_filters( 'filter_product_meta_' . $product_type, $savedata, $post_id );
-	/// END
+	/// ********************************************************************************
 
 	do_action( 'jigoshop_process_product_meta_'.$product_type, $post_id );
 	
@@ -248,8 +259,11 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 		}
 	}
 	
+	/// ********************************************************************************
 	/// WARNING: Depreciated code
+	/// ********************************************************************************
 	update_post_meta( $post_id, 'product_data', $savedata );
+	/// ********************************************************************************
 
 	// Save errors
 	update_option( 'jigoshop_errors', $jigoshop_errors );
