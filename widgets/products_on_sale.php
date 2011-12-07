@@ -10,49 +10,49 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Widgets
- * @author     Jigowatt
- * @since	   1.0
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package 	Jigoshop
+ * @category	Widgets
+ * @author 	Jigowatt
+ * @since 	1.0
+ * @copyright 	Copyright (c) 2011 Jigowatt Ltd.
+ * @license 	http://jigoshop.com/license/commercial-edition
  */
  class Jigoshop_Widget_Products_On_Sale extends WP_Widget {
 
- 	/**
-     * Constructor
-     * 
-     * Setup the widget with the available options
-     */
-    public function __construct() {
-    	
-        $options = array(
-        	'classname'		=> 'widget_products_on_sale',
-			'description'	=> __( "Display a list of products currently onsale", 'jigoshop')
-        );
-        
-        // Create the widget
-        parent::__construct('products-onsale', __('Jigoshop: Products On-Sale', 'jigoshop'), $options);
-
-        // Flush cache after every save
-		add_action( 'save_post', array(&$this, 'flush_widget_cache') );
-		add_action( 'deleted_post', array(&$this, 'flush_widget_cache') );
-		add_action( 'switch_theme', array(&$this, 'flush_widget_cache') );
-    }
-
-    /**
-	 * Widget
+   	/**
+	 * Constructor
 	 * 
-	 * Display the widget in the sidebar
-	 * Save output to the cache if empty
-	 *
-	 * @param	array	sidebar arguments
-	 * @param	array	instance
+	 * Setup the widget with the available options
+	 * Add actions to clear the cache whenever a post is saved|deleted or a theme is switched
 	 */
-	public function widget($args, $instance) {
+    	public function __construct() {
+		$options = array(
+			'classname'	=> 'widget_products_on_sale',
+			'description'	=> __( 'Display a list of products currently onsale', 'jigoshop' )
+		);
+
+		// Create the widget
+		parent::__construct( 'products-onsale', __( 'Jigoshop: Products On-Sale', 'jigoshop' ), $options );
+
+		// Flush cache after every save
+		add_action( 'save_post', array( &$this, 'flush_widget_cache' ) );
+		add_action( 'deleted_post', array( &$this, 'flush_widget_cache' ) );
+		add_action( 'switch_theme', array( &$this, 'flush_widget_cache' ) );
+   	}
+
+	/**
+	* Widget
+	* 
+ 	* Display the widget in the sidebar
+ 	* Save output to the cache if empty
+	*
+ 	* @param	array	sidebar arguments
+ 	* @param	array	instance
+ 	*/
+	public function widget( $args, $instance ) {
 
 		// Get the most recent products from the cache
-		$cache = wp_cache_get('widget_recent_products', 'widget');
+		$cache = wp_cache_get( 'widget_recent_products', 'widget' );
 
 		// If no entry exists use array
 		if ( ! is_array($cache) ) {
@@ -67,43 +67,46 @@
 
 		// Start buffering
 		ob_start();
-		extract($args);
+		extract( $args );
 
 		// Set the widget title
-		$title = apply_filters('widget_title', 
-			($instance['title']) ? $instance['title'] : __('Special Offers', 'jigoshop'), 
-			$instance, $this->id_base);
+		$title = apply_filters(
+			'widget_title', 
+			( $instance['title'] ) ? $instance['title'] : __( 'Special Offers', 'jigoshop' ), 
+			$instance,
+			$this->id_base
+		);
 
 		// Set number of products to fetch
-		if( ! $number = abs($instance['number']) ) {
-			$number = apply_filters('jigoshop_widget_recent_default_number', 10, $instance, $this->id_base);
+		if( ! $number = absint( $instance['number'] ) ) {
+			$number = 5;
 		}
 
 		// Set up query
-    	$query_args = array(
-    		'showposts'		=> $number,
-    		'post_type'		=> 'product',
-    		'post_status'	=> 'publish',
-    		'orderby'		=> 'rand',
-    		'meta_query'	=> array(
-    			array(
-    				'key'		=> 'visibility',
-    				'value'		=> array('catalog', 'visible'),
-    				'compare'	=> 'IN',
-    			),
-    			array(
-		    	'key' => 'sale_price',
-		        'value' 	=> 0, 
-				'compare' 	=> '>=', // TODO: Is this right? We can have sale items that are temporarily free right?
-				'type'		=> 'NUMERIC'
-		    	)
-    		)
-    	);
+		$query_args = array(
+			'showposts'		=> $number,
+			'post_type'		=> 'product',
+			'post_status'		=> 'publish',
+			'orderby'		=> 'rand',
+			'meta_query'		=> array(
+				array(
+					'key'		=> 'visibility',
+					'value'		=> array( 'catalog', 'visible' ),
+					'compare'	=> 'IN',
+				),
+				array(
+					'key'		=> 'sale_price',
+					'value' 		=> 0,
+					'compare'	=> '>=', // TODO: Is this right? We can have sale items that are temporarily free right?
+					'type'		=> 'NUMERIC'
+			    	)
+			)
+		);
 
-    	$q = new WP_Query($query_args);
+		$q = new WP_Query( $query_args );
 
-    	// If there are products
-		if($q->have_posts()) {
+		// If there are products
+		if( $q->have_posts() ) {
 
 			// Print the widget wrapper & title
 			echo $before_widget;
@@ -116,12 +119,17 @@
 			while($q->have_posts()) : $q->the_post();  
 				
 				// Get new jigoshop_product instance
-				$_product = new jigoshop_product(get_the_ID());
+				$_product = new jigoshop_product( get_the_ID() );
 			
 				echo '<li>';
 					// Print the product image & title with a link to the permalink
-					echo '<a href="'.get_permalink().'" title="'.esc_attr(get_the_title()).'">';
-					echo (has_post_thumbnail()) ? the_post_thumbnail('shop_tiny') : jigoshop_get_image_placeholder('shop_tiny');
+					echo '<a href="'.get_permalink().'" title="'.esc_attr( get_the_title() ).'">';
+					
+					// Print the product image
+					echo ( has_post_thumbnail() ) 
+						? the_post_thumbnail( 'shop_tiny' )
+						: jigoshop_get_image_placeholder( 'shop_tiny' );
+
 					echo '<span class="js_widget_product_title">' . get_the_title() . '</span>';
 					echo '</a>';
 					
@@ -140,7 +148,7 @@
 		}
 	}
 
-    /**
+	/**
 	 * Update
 	 * 
 	 * Handles the processing of information entered in the wordpress admin
@@ -154,28 +162,28 @@
 		$instance = $old_instance;
 		
 		// Save the new values
-		$instance['title'] = strip_tags($new_instance['title']);
-		$instance['number'] = abs($new_instance['number']);
+		$instance['title'] = strip_tags( $new_instance['title'] );
+		$instance['number'] = absint( $new_instance['number'] );
 
 		// Flush the cache
 		$this->flush_widget_cache();
 
 		// Remove the cache entry from the options array
 		$alloptions = wp_cache_get( 'alloptions', 'options' );
-		if ( isset($alloptions['widget_recent_products']) ) {
-			delete_option('widget_recent_products');
+		if ( isset( $alloptions['widget_recent_products'] ) ) {
+			delete_option( 'widget_recent_products' );
 		}
 
 		return $instance;
 	}
 
-    /**
+	/**
 	 * Flush Widget Cache
 	 * 
 	 * Flushes the cached output
 	 */
 	public function flush_widget_cache() {
-		wp_cache_delete('widget_recent_products', 'widget');
+		wp_cache_delete( 'widget_recent_products', 'widget' );
 	}
 
 	/**
@@ -188,19 +196,21 @@
 	public function form( $instance ) {
 
 		// Get instance data
-		$title = isset($instance['title']) ? esc_attr($instance['title']) : null;
-		$number = isset($instance['number']) ? abs($instance['number']) : 5;
+		$title 		= isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : null;
+		$number 	= isset( $instance['number'] ) ? absint( $instance['number'] ) : 5;
 
 		// Widget Title
-		echo '<p>';
-		echo '<label for="' . $this->get_field_id('title') . '">' . _e('Title:', 'jigoshop') . '</label>';
-		echo '<input class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" type="text" value="'. $title .'" />';
-		echo '</p>';
+		echo "
+		<p>
+			<label for='{$this->get_field_id( 'title' )}'>" . __( 'Title:', 'jigoshop' ) . "</label>
+			<input class='widefat' id='{$this->get_field_id( 'title' )}' name='{$this->get_field_name( 'title' )}' type='text' value='{$title}' />
+		</p>";
 
 		// Number of posts to fetch
-		echo '<p>';
-		echo '<label for="' . $this->get_field_id('number') . '">' . _e('Number of products to show:', 'jigoshop') . '</label>';
-		echo '<input id="' . $this->get_field_id('number') . '" name="' . $this->get_field_name('number') . '" type="text" value="' . $number . '" size="3" />';
-		echo '</p>';
+		echo "
+		<p>
+			<label for='{$this->get_field_id( 'number' )}'>" . __( 'Number of products to show:', 'jigoshop' ) . "</label>
+			<input id='{$this->get_field_id( 'number' )}' name='{$this->get_field_name( 'number' )}' type='number' min='1' value='{$number}' />
+		</p>";
 	}
  }
