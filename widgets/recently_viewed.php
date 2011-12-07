@@ -27,19 +27,19 @@
 	public function __construct() {
 		$options = array(
 			'classname'	=> 'widget_recently_viewed_products',
-			'description'	=> __( "A list of your customers most recently viewed products", 'jigoshop')
+			'description'	=> __( 'A list of your customers most recently viewed products', 'jigoshop' )
 		);
 		
 		// Create the widget
-		parent::__construct('recently_viewed_products', __('Jigoshop: Recently Viewed'), $options);
+		parent::__construct( 'recently_viewed_products', __( 'Jigoshop: Recently Viewed', 'jigoshop' ), $options );
 		
 		// Flush cache after every save
-		add_action( 'save_post', array(&$this, 'flush_widget_cache') );
-		add_action( 'deleted_post', array(&$this, 'flush_widget_cache') );
-		add_action( 'switch_theme', array(&$this, 'flush_widget_cache') );
+		add_action( 'save_post', array( &$this, 'flush_widget_cache' ) );
+		add_action( 'deleted_post', array( &$this, 'flush_widget_cache' ) );
+		add_action( 'switch_theme', array( &$this, 'flush_widget_cache' ) );
 
 		// Attach the tracker to the product view action
-		add_action( 'jigoshop_before_single_product', array(&$this, 'jigoshop_product_view_tracker'), 10, 2);
+		add_action( 'jigoshop_before_single_product', array( &$this, 'jigoshop_product_view_tracker' ), 10, 2 );
 	}
 
 	/**
@@ -51,40 +51,41 @@
 	 * @param	array	sidebar arguments
 	 * @param	array	instance
 	 */
-	public function widget($args, $instance) {
+	public function widget( $args, $instance ) {
 
 		// Get the most recently viewed products from the cache
-		$cache = wp_cache_get('widget_recently_viewed_products', 'widget');
-		$cache = null;
+		$cache = wp_cache_get( 'widget_recently_viewed_products', 'widget' );
 
 		// If no entry exists use array
-		if ( ! is_array($cache) ) {
+		if ( ! is_array( $cache ) ) {
 			$cache = array();
 		}
 
 		// If cached get from the cache
-		if ( isset($cache[$args['widget_id']]) ) {
+		if ( isset( $cache[$args['widget_id']] ) ) {
 			echo $cache[$args['widget_id']];
 			return false;
 		}
 		
 		// Check if session contains recently viewed products
-		if ( ! isset($_SESSION['recently_viewed_products']) OR ! sizeof($_SESSION['recently_viewed_products']) ) {
+		if ( empty( $_SESSION['recently_viewed_products'] ) )
 			return false;
-		}
 
 		// Start buffering the output
 		ob_start();
 		extract($args);
 
 		// Set the widget title
-		$title = apply_filters('widget_title', 
+		$title = apply_filters(
+			'widget_title', 
 			($instance['title']) ? $instance['title'] : __('Recently Viewed Products', 'jigoshop'), 
-			$instance, $this->id_base);
+			$instance,
+			$this->id_base
+		);
 
 		// Set number of products to fetch
-		if( ! $number = abs($instance['number']) ) {
-			$number = apply_filters('jigoshop_widget_recent_default_number', 10, $instance, $this->id_base);
+		if( ! $number = absint( $instance['number'] ) ) {
+			$number = 5;
 		}
 
 		// Set up query
@@ -92,7 +93,7 @@
 			'showposts'	=> $number,
 			'post_type'	=> 'product',
 			'post_status'	=> 'publish',
-			'nopaging'	=> true, // give me the gravy!
+			'nopaging'	=> true,
 			'post__in'	=> $_SESSION['recently_viewed_products'],
 			'orderby'	=> 'date', // TODO: Not ideal as it doesn't order latest first
 			'meta_query'	=> array(
@@ -105,9 +106,9 @@
 		);
 
 		// Run the query
-		$q = new WP_Query($query_args);
+		$q = new WP_Query( $query_args );
 
-		if($q->have_posts()) {
+		if( $q->have_posts() ) {
 				
 			// Print the widget wrapper & title
 			echo $before_widget;
@@ -117,16 +118,21 @@
 			echo '<ul class="product_list_widget recently_viewed_products">';
 			
 			// Print out each produt
-			while($q->have_posts()) : $q->the_post();
+			while( $q->have_posts() ) : $q->the_post();
 			
 				// Get new jigoshop_product instance
 				$_product = new jigoshop_product(get_the_ID());
 			 	
 			 	echo '<li>';
 			 		
-			 		//print the product image & title with a permalink
-			 		echo '<a href="'.get_permalink().'" title="'.esc_attr(get_the_title()).'">';
-					echo (has_post_thumbnail()) ? the_post_thumbnail('shop_tiny') : jigoshop_get_image_placeholder('shop_tiny');
+			 		//print the product title with a permalink
+			 		echo '<a href="'.get_permalink().'" title="'.esc_attr( get_the_title() ).'">';
+
+			 		// Print the product image
+					echo (has_post_thumbnail()) 
+						? the_post_thumbnail('shop_tiny')
+						: jigoshop_get_image_placeholder('shop_tiny');
+
 					echo '<span class="js_widget_product_title">' . get_the_title() . '</span>';
 					echo '</a>';
 
@@ -146,26 +152,26 @@
 
 		// Flush output buffer and save to cache
 		$cache[$args['widget_id']] = ob_get_flush();
-		wp_cache_set('widget_recent_products', $cache, 'widget');
+		wp_cache_set( 'widget_recent_products', $cache, 'widget' );
 	}
 	
 	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		
 		// Save the new values
-		$instance['title'] = strip_tags($new_instance['title']);
-		$instance['number'] = abs($new_instance['number']);
+		$instance['title'] = strip_tags( $new_instance['title'] );
+		$instance['number'] = absint( $new_instance['number'] );
 
 		// Flush the cache
 		$this->flush_widget_cache();
 
 		// Unset the session array
-		unset($_SESSION['recently_viewed_products']);
+		unset( $_SESSION['recently_viewed_products'] );
 
 		// Remove the cache entry from the options array
 		$alloptions = wp_cache_get( 'alloptions', 'options' );
-		if ( isset($alloptions['widget_recently_viewed_products']) ) {
-			delete_option('widget_recently_viewed_products');
+		if ( isset( $alloptions['widget_recently_viewed_products'] ) ) {
+			delete_option( 'widget_recently_viewed_products' );
 		}
 
 		return $instance;
@@ -177,7 +183,7 @@
 	 * Flushes the cached output
 	 */
 	public function flush_widget_cache() {
-		wp_cache_delete('widget_recently_viewed_products', 'widget');
+		wp_cache_delete( 'widget_recently_viewed_products', 'widget' );
 	}
 
 	/**
@@ -186,23 +192,21 @@
 	 * @return void
 	 **/
 	public function jigoshop_product_view_tracker( $post, $_product ) {
-
 		$instance = get_option('widget_recently_viewed_products');
-		if( ! $number = $instance[2]['number']) { // is this always 2?
+		if( ! $number = $instance[2]['number']) // is this always 2?
 			return false; // stop the show!
-		}
 
 		// Check if we already have some data
-		if( ! is_array($_SESSION['recently_viewed_products']) ) {
-				$_SESSION['recently_viewed_products'] = array();
+		if( ! is_array( $_SESSION['recently_viewed_products']) ) {
+			$_SESSION['recently_viewed_products'] = array();
 		}
 
 		// If the product isn't in the list, add it
-		if( ! in_array($post->ID, $_SESSION['recently_viewed_products']) ) {
+		if( ! in_array( $post->ID, $_SESSION['recently_viewed_products']) ) {
 			$_SESSION['recently_viewed_products'][] = $post->ID;
 		}
 
-		if( sizeof($_SESSION['recently_viewed_products']) > $number ) {
+		if( sizeof( $_SESSION['recently_viewed_products']) > $number ) {
 			array_shift($_SESSION['recently_viewed_products']);
 		}
 	}
@@ -216,19 +220,21 @@
 	 */
 	public function form( $instance ) {
 		// Get instance data
-		$title = isset($instance['title']) ? esc_attr($instance['title']) : null;
-		$number = isset($instance['number']) ? abs($instance['number']) : 5;
-		
+		$title = isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : null;
+		$number = isset( $instance['number'] ) ? absint( $instance['number'] ) : 5;
+
 		// Widget Title
-		echo '<p>';
-		echo '<label for="' . $this->get_field_id('title') . '">' . _e('Title:', 'jigoshop') . '</label>';
-		echo '<input class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" type="text" value="'. $title .'" />';
-		echo '</p>';
+		echo "
+		<p>
+			<label for='{$this->get_field_id( 'title' )}'>" . __( 'Title:', 'jigoshop' ) . "</label>
+			<input class='widefat' id='{$this->get_field_id( 'title' )}' name='{$this->get_field_name( 'title' )}' type='text' value='{$title}' />
+		</p>";
 		
 		// Number of posts to fetch
-		echo '<p>';
-		echo '<label for="' . $this->get_field_id('number') . '">' . _e('Number of products to show:', 'jigoshop') . '</label>';
-		echo '<input id="' . $this->get_field_id('number') . '" name="' . $this->get_field_name('number') . '" type="text" value="' . $number . '" size="3" />';
-		echo '</p>';
+		echo "
+		<p>
+			<label for='{$this->get_field_id( 'number' )}'>" . __( 'Number of products to show:', 'jigoshop' ) . "</label>
+			<input id='{$this->get_field_id( 'number' )}' name='{$this->get_field_name( 'number' )}' type='number' value='{$number}' />
+		</p>";
 	}
  }
