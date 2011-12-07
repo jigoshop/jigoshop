@@ -8,12 +8,12 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Widgets
- * @author     Jigowatt
- * @since	   1.0
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package 	Jigoshop
+ * @category  	Widgets
+ * @author 	Jigowatt
+ * @since 	1.0
+ * @copyright	Copyright (c) 2011 Jigowatt Ltd.
+ * @license 	http://jigoshop.com/license/commercial-edition
  */
 
 class Jigoshop_Widget_User_Login extends WP_Widget {
@@ -26,11 +26,11 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 	 */
 	public function __construct() {
 		$options = array(
-			'classname'		=> 'widget_user_login',
-			'description'	=> __( "Displays a handy login form for users", 'jigoshop')
+			'classname'	=> 'widget_user_login',
+			'description'	=> __( 'Displays a handy login form for users', 'jigoshop' )
 		);
 		
-		parent::__construct('user-login', __('Jigoshop: Login', 'jigoshop'), $options);
+		parent::__construct( 'user-login', __( 'Jigoshop: Login', 'jigoshop' ), $options );
 	}
 
 	/**
@@ -42,9 +42,9 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 	 * @param	array	sidebar arguments
 	 * @param	array	instance
 	 */
-	public function widget($args, $instance) {
+	public function widget( $args, $instance ) {
 	
-		extract($args);
+		extract( $args );
 
 		// Print the widget wrapper
 		echo $before_widget;
@@ -55,64 +55,73 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 			global $current_user;
 
 			// Print title
-			$title = ($instance['title_user']) ? $instance['title_user'] : __('Hey %s!', 'jigoshop');
-			echo $before_title . sprintf( $title, ucwords($current_user->display_name) ) . $after_title;
+			$title = ( $instance['title_user'] ) ? $instance['title_user'] : __( 'Hey %s!', 'jigoshop' );
+			echo $before_title . sprintf( $title, ucwords( $current_user->display_name ) ) . $after_title;
 
 			// Create the default set of links
-			$links = apply_filters('jigoshop_widget_logout_user_links', array(
-				__('My Account', 'jigoshop')		=> get_permalink(get_option('jigoshop_myaccount_page_id')),
-				__('Change Password', 'jigoshop')	=> get_permalink(get_option('jigoshop_change_password_page_id')),
-				__('Logout', 'jigoshop')			=> wp_logout_url(home_url()),
+			$links = apply_filters( 'jigoshop_widget_logout_user_links' , array(
+				__( 'My Account', 'jigoshop' )		=> get_permalink( get_option( 'jigoshop_myaccount_page_id' ) ),
+				__( 'Change Password', 'jigoshop' )	=> get_permalink( get_option( 'jigoshop_change_password_page_id' ) ),
+				__( 'Logout', 'jigoshop' )		=> wp_logout_url( home_url() ),
 			));
 
 		} else {
 
 			// Print title
-			$title = ($instance['title_guest']) ? $instance['title_guest'] : __('Login', 'jigoshop');
+			$title = ( $instance['title_guest'] ) ? $instance['title_guest'] : __( 'Login', 'jigoshop' );
 			echo $before_title . $title . $after_title;
 
-			do_action('jigoshop_widget_login_before_form');
+			do_action( 'jigoshop_widget_login_before_form' );
 
 			// Get redirect URI
-			$redirect_to = apply_filters( 'jigoshop_widget_login_redirect', get_permalink(get_option('jigoshop_myaccount_page_id')) );
-			$user_login = isset($user_login) ? $user_login : null;
+			$redirect_to = apply_filters( 'jigoshop_widget_login_redirect', get_permalink( get_option( 'jigoshop_myaccount_page_id' ) ) );
+			$user_login = isset( $user_login ) ? $user_login : null;
 
-			echo '<form action="'.wp_login_url($redirect_to).'" method="post">';
+			echo "<form action='".wp_login_url( $redirect_to )."' method='post'>";
 			
 			// Username
-			echo '<p>';
-			echo '<label for="log">'.__('Username', 'jigoshop').'</label>';
-			echo '<input type="text" name="log" id="log" value="'.esc_html(stripslashes($user_login), true).'" size="20" class="input-text" />';
-			echo '</p>';
+			echo "
+			<p>
+				<label for='log'>".__( 'Username', 'jigoshop' )."</label>
+				<input type='text' name='log' id='log' class='input-text' />
+			</p>
+			";
 
 			// Password
-			echo '<p>';
-			echo '<label for="user_login">'.__('Password', 'jigoshop').'</label>';
-			echo '<input type="password" name="pwd" id="pwd" size="20" class="input-text" />';
-			echo '</p>';
+			echo "
+			<p>
+				<label for='user_login'>".__( 'Password', 'jigoshop' )."</label>
+				<input type='password' name='pwd' id='pwd' class='input-text' />
+			</p>
+			";
 
-			// Submit button & forgot password link
-			echo '<p>';
-			echo '<input type="submit" name="submit" value="'.__('Login', 'jigoshop').'" class="input-submit" />';
-			echo '<a href="'.wp_lostpassword_url($redirect_to).'">'.__('Forgotten?', 'jigoshop').'</a>';
-			echo '</p>';
+			echo "
+			<p>
+				<input type='submit' name='submit' value='".__( 'Login', 'jigoshop' )."' class='input-submit' />
+				<a href='".wp_lostpassword_url( $redirect_to )."'>".__( 'Forgotten?', 'jigoshop' )."</a>
+			</p>
+			";
 
-			echo '</form>';
+			echo "</form>";
 
-			do_action('jigoshop_widget_login_after_form');
+			do_action( 'jigoshop_widget_login_after_form' );
 
-			$links = apply_filters( 'jigoshop_widget_login_user_links', array());
+			$links = apply_filters( 'jigoshop_widget_login_user_links', array() );
 		}
 
 		// Loop & print out the links
 		if( $links ) {
-			echo '<ul class="pagenav">'; // TODO: Consider html5 markup? -Rob
+			echo "
+			<nav role='navigation'>
+				<ul class='pagenav'>";
 
-			foreach( $links as $title => $href ) {
-				echo "<li><a href='$href'>$title</a></li>";
-			}
+				foreach( $links as $title => $href ) {
+					echo "<li><a title='Go to {$title}' href='{$href}'>{$title}</a></li>";
+				}
 
-			echo '</ul>';
+			echo "
+				</ul>
+			</nav>";
 		}
 
 		// Print closing widget wrapper
@@ -133,8 +142,8 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 		$instance = $old_instance;
 		
 		// Save the new values
-		$instance['title_guest'] = strip_tags($new_instance['title_guest']);
-		$instance['title_user']	 = strip_tags($new_instance['title_user']);
+		$instance['title_guest']	= strip_tags( $new_instance['title_guest'] );
+		$instance['title_user']	= strip_tags( $new_instance['title_user'] );
 
 		return $instance;
 	}
@@ -149,21 +158,24 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 	public function form( $instance ) {
 	
 		// Get instance data
-		$title_guest = isset($instance['title_guest']) ? esc_attr($instance['title_guest']) : null;
-		$title_user	 = isset($instance['title_user']) ? esc_attr($instance['title_user']) : null;
+		$title_guest 	= isset( $instance['title_guest'] ) ? esc_attr( $instance['title_guest'] ) : null;
+		$title_user	= isset( $instance['title_user'] ) ? esc_attr( $instance['title_user'] ) : null;
 		
-		// Widget Title for Guests
-		echo '<p>';
-		echo '<label for="' . $this->get_field_id('title_guest') . '">' . _e('Title (Logged Out):', 'jigoshop') . '</label>';
-		echo '<input class="widefat" id="' . $this->get_field_id('title_guest') . '" name="' . $this->get_field_name('title_guest') . '" type="text" value="'. esc_attr($title_guest) .'" />';
-		echo '</p>';
+		// Title for Guests
+		echo "
+		<p>
+			<label for='{$this->get_field_id('title_guest')}'>".__( 'Title (Logged Out):', 'jigoshop' )."</label>
+			<input class='widefat' id='{$this->get_field_id('title_guest')}' name='{$this->get_field_name('title_guest')}' type='text' value='{$title_guest}' />
+		</p>
+		";
 
-		// Widget Title for Users
-		echo '<p>';
-		echo '<label for="' . $this->get_field_id('title_user') . '">' . _e('Title (Logged In):', 'jigoshop') . '</label>';
-		echo '<input class="widefat" id="' . $this->get_field_id('title_user') . '" name="' . $this->get_field_name('title_user') . '" type="text" value="'. esc_attr($title_user) .'" />';
-		echo '</p>';
-
+		// Title for Users
+		echo "
+		<p>
+			<label for='{$this->get_field_id('title_user')}'>".__( 'Title (Logged In):', 'jigoshop' )."</label>
+			<input class='widefat' id='{$this->get_field_id('title_user')}' name='{$this->get_field_name('title_user')}' type='text' value='{$title_user}' />
+		</p>
+		";
 	}
 	
 } // class Jigoshop_Widget_Recent_Products
