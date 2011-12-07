@@ -336,8 +336,8 @@ class jigoshop_order {
 
 		if( $this->items ) {
 			foreach($this->items as $item) {
-				$sales =		abs(get_post_meta($item['id'], 'total_sales', true));
-				$sales +=	abs($item['qty']);
+				$sales =	absint(get_post_meta($item['id'], 'total_sales', true));
+				$sales +=	absint($item['qty']);
 				update_post_meta($item['id'], '_js_total_sales', $sales);
 			}
 		}
