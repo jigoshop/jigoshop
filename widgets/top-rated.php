@@ -8,12 +8,12 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Widgets
- * @author     Jigowatt
- * @since	   1.0
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package 	Jigoshop
+ * @category 	Widgets
+ * @author 	Jigowatt
+ * @since 	1.0
+ * @copyright 	Copyright (c) 2011 Jigowatt Ltd.
+ * @license 	http://jigoshop.com/license/commercial-edition
  */
 
 class Jigoshop_Widget_Top_Rated extends WP_Widget {
@@ -26,8 +26,8 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 	 */
 	public function __construct() {
 		$options = array(
-			'classname'		=> 'widget_top_rated',
-			'description'	=> __( "The best of the best on your site", 'jigoshop' )
+			'classname'	=> 'widget_top_rated',
+			'description'	=> __( 'The best of the best on your site', 'jigoshop' )
 		);
 		
 		parent::__construct( 'top-rated', __( 'Jigoshop: Top Rated Products', 'jigoshop' ), $options );
@@ -77,22 +77,28 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 
 		// Set number of products to fetch
 		if ( ! $number = absint( $instance['number'] ) ) {
-			$number = 10;
+			$number = 5;
 		}
 
-		// TODO: There must be a better way to do this
 		// Set up query
 		// Filter the $wpdb query
 		add_filter( 'posts_clauses', array( &$this, 'order_by_rating' ) );
 
-		// TODO: Add meta query to not include invisible products
-    	$query_args = array(
-    		'showposts'		=> $number,
-    		'post_type'		=> 'product',
-    		'post_status'	=> 'publish',
-    	);
+		// TODO: Only display products that are in stock
+	    	$query_args = array(
+	    		'showposts'	=> $number,
+	    		'post_type'	=> 'product',
+	    		'post_status'	=> 'publish',
+	    		'meta_query'	=> array(
+	    			array(
+	    				'key'		=> 'visibility',
+	    				'value'		=> array( 'catalog', 'visible' ),
+	    				'compare'	=> 'IN',
+	    			),
+    			)
+	    	);
 
-    	// Run the query
+    		// Run the query
 		$q = new WP_Query( $query_args );
 
 		// If there are products
@@ -108,18 +114,23 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 			// Print out each product
 			while( $q->have_posts() ) : $q->the_post(); $_product = new jigoshop_product( $q->post->ID );
 			echo '<li>';
-					// Print the product image & title with a link to the permalink
-					echo '<a href="'.esc_url( get_permalink() ).'" title="'.esc_attr( get_the_title() ).'">';
-					echo ( has_post_thumbnail() ) ? the_post_thumbnail( 'shop_tiny' ) : jigoshop_get_image_placeholder( 'shop_tiny' );
-					echo '<span class="js_widget_product_title">' . get_the_title() . '</span>';
-					echo '</a>';
-					
-					// Print the average rating with html wrappers
-					echo $_product->get_rating_html( 'sidebar' );
+				// Print the title with a link to the permalink
+				echo '<a href="'.esc_url( get_permalink() ).'" title="'.esc_attr( get_the_title() ).'">';
 
-					// Print the price with html wrappers
-					echo '<span class="js_widget_product_price">' . $_product->get_price_html() . '</span>';
-				echo '</li>';
+				// Print the product image
+				echo ( has_post_thumbnail() ) 
+					? the_post_thumbnail( 'shop_tiny' )
+					: jigoshop_get_image_placeholder( 'shop_tiny' );
+
+				echo '<span class="js_widget_product_title">' . get_the_title() . '</span>';
+				echo '</a>';
+				
+				// Print the average rating with html wrappers
+				echo $_product->get_rating_html( 'sidebar' );
+
+				// Print the price with html wrappers
+				echo '<span class="js_widget_product_price">' . $_product->get_price_html() . '</span>';
+			echo '</li>';
 			endwhile;
 
 			echo '</ul>'; // Close the list
@@ -137,22 +148,21 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 		wp_cache_set( 'widget_recent_products', $cache, 'widget' );
 	}
 
-	// TODO: Look at a better way of doing this
 	// Shouldn't we be left joining products onto comments rather than comments onto products?
 	// Reason: Not all products have comments & its a waste of query time
-	public function order_by_rating( $clauses, $wp_query ) {
+	public function order_by_rating( $clauses ) {
 		global $wpdb;
 
-		$clauses['where'] .= " AND $wpdb->commentmeta.meta_key = 'rating' ";
+		$clauses['where'] 	.= " AND $wpdb->commentmeta.meta_key = 'rating' ";
 		
-		$clauses['join'] = "
-			INNER JOIN $wpdb->comments ON($wpdb->posts.ID = $wpdb->comments.comment_post_ID)
-			INNER JOIN $wpdb->commentmeta ON($wpdb->comments.comment_ID = $wpdb->commentmeta.comment_id)
+		$clauses['join']		.= "
+			LEFT JOIN $wpdb->comments ON($wpdb->posts.ID = $wpdb->comments.comment_post_ID)
+			LEFT JOIN $wpdb->commentmeta ON($wpdb->comments.comment_ID = $wpdb->commentmeta.comment_id)
 		";
 	
-		$clauses['orderby'] = "$wpdb->commentmeta.meta_value DESC";
+		$clauses['orderby']	= "$wpdb->commentmeta.meta_value DESC";
 		
-		$clauses['groupby'] = "$wpdb->posts.ID";
+		$clauses['groupby']	= "$wpdb->posts.ID";
 		
 		return $clauses;
 	}
@@ -205,16 +215,8 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 	public function form( $instance ) {
 	
 		// Get instance data
-		$title	= isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : null;
-		$number = isset( $instance['number'] ) ? absint( $instance['number'] ) : null;
-
-		
-		// $name = 'what';
-		// echo strtr('Hello :name', 
-		// 	array(':name' => $name));
-
-		// echo strtr('<label for=":field_name">:label</label><input name=":field_name" />',
-		// 	array(':field_name' => 'myfield', ':label' => 'this is cool'));
+		$title 		= isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : null;
+		$number 	= isset( $instance['number'] ) ? absint( $instance['number'] ) : 5;
 		
 		// Widget Title
 		echo "
