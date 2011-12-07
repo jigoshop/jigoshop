@@ -8,17 +8,12 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Widgets
- * @author     Jigowatt
- * @since	   1.0
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
- */
-
-/*
- * TODO: Rewrite seems to interfere with this.. why? -Rob
- * TODO: Images seem fucked too
+ * @package 	Jigoshop
+ * @category  	Widgets
+ * @author    	Jigowatt
+ * @since 	1.0
+ * @copyright 	Copyright (c) 2011 Jigowatt Ltd.
+ * @license   	http://jigoshop.com/license/commercial-edition
  */
 
 class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
@@ -31,16 +26,16 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 	 */
 	public function __construct() {
 		$options = array(
-			'classname'		=> 'widget_recent_reviews',
-			'description'	=> __( "Display a list of your most recent product reviews", 'jigoshop')
+			'classname'	=> 'widget_recent_reviews',
+			'description'	=> __( 'Display a list of your most recent product reviews', 'jigoshop' )
 		);
 		
-		parent::__construct('recent-reviews', __('Jigoshop: Recent Reviews', 'jigoshop'), $options);
+		parent::__construct( 'recent-reviews', __( 'Jigoshop: Recent Reviews', 'jigoshop' ), $options );
 
 		// Flush cache after every save
-		add_action( 'save_post', array(&$this, 'flush_widget_cache') );
-		add_action( 'deleted_post', array(&$this, 'flush_widget_cache') );
-		add_action( 'switch_theme', array(&$this, 'flush_widget_cache') );
+		add_action( 'save_post', array( &$this, 'flush_widget_cache' ) );
+		add_action( 'deleted_post', array( &$this, 'flush_widget_cache' ) );
+		add_action( 'switch_theme', array( &$this, 'flush_widget_cache' ) );
 	}
 
 	/**
@@ -52,18 +47,18 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 	 * @param	array	sidebar arguments
 	 * @param	array	instance
 	 */
-	public function widget($args, $instance) {
+	public function widget( $args, $instance ) {
 	
 		// Get the most recent products from the cache
-		$cache = wp_cache_get('widget_recent_reviews', 'widget');
+		$cache = wp_cache_get( 'widget_recent_reviews', 'widget' );
 		
 		// If no entry exists use array
-		if ( ! is_array($cache) ) {
+		if ( ! is_array( $cache ) ) {
 			$cache = array();
 		}
 
 		// If cached get from the cache
-		if ( isset($cache[$args['widget_id']]) ) {
+		if ( isset( $cache[$args['widget_id']] ) ) {
 			echo $cache[$args['widget_id']];
 			return false;
 		}
@@ -73,23 +68,27 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 		extract($args);
 
 		// Set the widget title
-		$title = ($instance['title']) ? $instance['title'] : __('Recent Reviews', 'jigoshop');
-		$title = apply_filters('widget_title', $title, $instance, $this->id_base);
+		$title = apply_filters(
+			'widget_title', 
+			($instance['title']) ? $instance['title'] : __( 'Recent Reviews', 'jigoshop' ), 
+			$instance,
+			$this->id_base
+		);
 		
 		// Set number of products to fetch
-		if ( ! $number = abs($instance['number']) ) {
-			$number = 10;
+		if ( ! $number = absint( $instance['number'] ) ) {
+			$number = 5;
 		}
 
 		// Modify get_comments query to only include products which are visible
-		add_filter( 'comments_clauses', array(&$this, 'where_product_is_visible') );
+		add_filter( 'comments_clauses', array( &$this, 'where_product_is_visible' ) );
 
 		// Get the latest reviews
 		$comments = get_comments(array(
-			'number'		=> $number,
+			'number'	=> $number,
 			'status'		=> 'approve',
 			'post_status'	=> 'publish',
-			'post_type'		=> 'product',
+			'post_type'	=> 'product',
 		));
 		
 		// If there are products
@@ -121,17 +120,23 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 				echo '<li>';
 					// Print the product image & title with a link to the permalink
 					echo '<a href="'.esc_url( get_comment_link($comment->comment_ID) ).'">';
-					echo (has_post_thumbnail($_product->id)) ? get_the_post_thumbnail($_product->id,'shop_tiny') : jigoshop_get_image_placeholder('shop_tiny');
+
+					// Print the product image
+					echo ( has_post_thumbnail( $_product->id ) ) 
+						? get_the_post_thumbnail( $_product->id,'shop_tiny' )
+						: jigoshop_get_image_placeholder( 'shop_tiny' );
+
 					echo '<span class="js_widget_product_title">' . $_product->get_title() . '</span>';
 					echo '</a>';
 
 					// Print the star rating
-					echo 	'<div class="star-rating" title="'.$rating.'">
-								<span style="width:'.($rating*$star_size).'px">'.$rating.' '.__('out of 5', 'jigoshop').'</span>
-							</div>';
+					echo "
+					<div class='star-rating' title='{$rating}'>
+						<span style='width:{($rating*$star_size)}px;'>{$rating} ".__( 'out of 5', 'jigoshop' )."</span>
+					</div>";
 					
 					// Print the author
-					echo sprintf(_x('by %1$s', 'woothemes'), get_comment_author());
+					printf( _x('by %1$s', 'jigoshop' ), get_comment_author() );
 
 				echo '</li>';
 			}
@@ -140,13 +145,14 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 			
 			// Print closing widget wrapper
 			echo $after_widget;
+
 			// Remove the filter on comments to stop other queries from being manipulated
 			remove_filter( 'comments_clauses', array(&$this, 'where_product_is_visible') );
 		}
 		
 		// Flush output buffer and save to cache
 		$cache[$args['widget_id']] = ob_get_flush();
-		wp_cache_set('widget_recent_reviews', $cache, 'widget');
+		wp_cache_set( 'widget_recent_reviews', $cache, 'widget' );
 	}
 
 	/**
@@ -163,16 +169,16 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 		$instance = $old_instance;
 		
 		// Save the new values
-		$instance['title'] = strip_tags($new_instance['title']);
-		$instance['number'] = abs($new_instance['number']);
+		$instance['title'] = strip_tags( $new_instance['title'] );
+		$instance['number'] = absint( $new_instance['number'] );
 
 		// Flush the cache
 		$this->flush_widget_cache();
 
 		// Remove the cache entry from the options array
 		$alloptions = wp_cache_get( 'alloptions', 'options' );
-		if ( isset($alloptions['widget_recent_reviews']) ) {
-			delete_option('widget_recent_reviews');
+		if ( isset( $alloptions['widget_recent_reviews'] ) ) {
+			delete_option( 'widget_recent_reviews' );
 		}
 
 		return $instance;
@@ -184,14 +190,14 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 	 * @param 	array 	Query Arguments
 	 * @return 	array
 	 */
-	public function where_product_is_visible( $args ) {
+	public function where_product_is_visible( $clauses ) {
 		global $wpdb;
 
 		// Only fetch comments whose products are visible
-		$args['where'] .= " AND $wpdb->postmeta.meta_value = 'visible'";
-		$args['join'] .= "LEFT JOIN $wpdb->postmeta ON($wpdb->comments.comment_post_ID = $wpdb->postmeta.post_id AND $wpdb->postmeta.meta_key = 'visibility')";;
+		$clauses['where']	.= " AND $wpdb->postmeta.meta_value = 'visible'";
+		$clauses['join']		.= "LEFT JOIN $wpdb->postmeta ON($wpdb->comments.comment_post_ID = $wpdb->postmeta.post_id AND $wpdb->postmeta.meta_key = 'visibility')";;
 
-		return $args;
+		return $clauses;
 	}
 	
 	/**
@@ -200,7 +206,7 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 	 * Flushes the cached output
 	 */
 	public function flush_widget_cache() {
-		wp_cache_delete('widget_recent_reviews', 'widget');
+		wp_cache_delete( 'widget_recent_reviews', 'widget' );
 	}
 
 	/**
@@ -213,22 +219,22 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 	public function form( $instance ) {
 	
 		// Get instance data
-		$title = isset($instance['title']) ? esc_attr($instance['title']) : null;
-		
-		$number = apply_filters('jigoshop_widget_featured_default_number', 5, $instance, $this->id_base);
-		$number = isset($instance['number']) ? abs($instance['number']) : $number;
+		$title 		= isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : null;
+		$number 	= isset( $instance['number'] ) ? absint( $instance['number'] ) : 5;
 		
 		// Widget Title
-		echo '<p>';
-		echo '<label for="' . $this->get_field_id('title') . '">' . _e('Title:', 'jigoshop') . '</label>';
-		echo '<input class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" type="text" value="'. $title .'" />';
-		echo '</p>';
-		
+		echo "
+		<p>
+			<label for='{$this->get_field_id( 'title' )}'>" . __( 'Title:', 'jigoshop' ) . "</label>
+			<input class='widefat' id='{$this->get_field_id( 'title' )}' name='{$this->get_field_name( 'title' )}' type='text' value='{$title}' />
+		</p>";
+
 		// Number of posts to fetch
-		echo '<p>';
-		echo '<label for="' . $this->get_field_id('number') . '">' . _e('Number of products to show:', 'jigoshop') . '</label>';
-		echo '<input id="' . $this->get_field_id('number') . '" name="' . $this->get_field_name('number') . '" type="text" value="' . $number . '" size="3" />';
-		echo '</p>';
+		echo "
+		<p>
+			<label for='{$this->get_field_id( 'number' )}'>" . __( 'Number of products to show:', 'jigoshop' ) . "</label>
+			<input id='{$this->get_field_id( 'number' )}' name='{$this->get_field_name( 'number' )}' type='number' value='{$number}' />
+		</p>";
 
 	}
 	
