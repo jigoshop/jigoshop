@@ -159,7 +159,7 @@ function jigoshop_mail_from_name( $name ) {
 	return $name;
 }
 function jigoshop_mail_from( $email ) {
-	$email = get_option('admin_email');
+	$email = get_option('jigoshop_email');
 	return $email;
 }
 
