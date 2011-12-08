@@ -112,18 +112,20 @@ class jigoshop_shipping extends jigoshop_singleton {
 	private static function get_cheapest_method($available_methods) {
 		$_cheapest_fee = '';
 		$_cheapest_method = '';
-		
+		self::$has_calculable_shipping = false;
+
 		foreach ( $available_methods as $method ) :
 			$method->calculate_shipping();
                         
-                        // calculable shipping methods toggle availability if error has occurred.
-                        if ( $method->is_available() ) :
-                            $fee = $method->shipping_total;
-                            if ( $fee >= 0 && $fee < $_cheapest_fee || ! is_numeric( $_cheapest_fee )) :
-                                    $_cheapest_fee = $fee;
-                                    $_cheapest_method = $method->id;
-                            endif;
-                        endif;
+			// calculable shipping methods toggle availability if error has occurred.
+			if ( $method->is_available() ) :
+				if ( $method instanceof jigoshop_calculable_shipping ) self::$has_calculable_shipping = true;
+				$fee = $method->shipping_total;
+				if ( $fee >= 0 && $fee < $_cheapest_fee || ! is_numeric( $_cheapest_fee )) :
+						$_cheapest_fee = $fee;
+						$_cheapest_method = $method->id;
+				endif;
+			endif;
 		endforeach;
 
 		return $_cheapest_method;
