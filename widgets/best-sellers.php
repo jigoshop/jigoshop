@@ -8,14 +8,13 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package 	Jigoshop
- * @category 	Widgets
- * @author 	Jigowatt
- * @since 	1.0
- * @copyright 	Copyright (c) 2011 Jigowatt Ltd.
- * @license 	http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Widgets
+ * @author		Jigowatt
+ * @since		1.0
+ * @copyright	Copyright (c) 2011 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
-
 class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 
 	/**
@@ -26,14 +25,15 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 	 */
 	public function __construct() {
 		$options = array(
-			'classname'	=> 'widget_best_sellers',
-			'description'	=> __( 'Lists the best selling products', 'jigoshop')
+			'classname'		=> 'jigoshop_best_sellers',
+			'description'	=> __( 'Lists the best selling products', 'jigoshop' )
 		);
-		
-		parent::__construct( 'recent-products', __( 'Jigoshop: Best Sellers', 'jigoshop' ), $options );
+
+		// Create the widget
+		parent::__construct( 'jigoshop_best_sellers', __( 'Jigoshop: Best Sellers', 'jigoshop' ), $options );
 
 		// Flush cache after every save
-		add_action( 'save_post', array( &$this, 'flush_widget_cache' ) );
+		add_action( 'save_post',	array( &$this, 'flush_widget_cache' ) );
 		add_action( 'deleted_post', array( &$this, 'flush_widget_cache' ) );
 		add_action( 'switch_theme', array( &$this, 'flush_widget_cache' ) );
 	}
@@ -48,14 +48,9 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 	 * @param	array	instance
 	 */
 	public function widget( $args, $instance ) {
-	
-		// Get the most recent products from the cache
-		$cache = wp_cache_get( 'widget_best_sellers', 'widget' );
-		
-		// If no entry exists use array
-		if ( ! is_array( $cache ) ) {
-			$cache = array();
-		}
+
+		// Get the best selling products from the transient
+		$cache = get_transient( 'jigoshop_widget_cache' );
 
 		// If cached get from the cache
 		if ( isset( $cache[$args['widget_id']] ) ) {
@@ -81,45 +76,45 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 		}
 
 		// Set up query
-	    	$query_args = array(
-	    		'showposts'	=> $number,
-	    		'post_type'	=> 'product',
-	    		'post_status'	=> 'publish',
-	    		'meta_key'	=> '_js_total_sales',
-	    		'orderby'	=> 'meta_value',
-	    		'nopaging'	=> true,
-	    		'meta_query'	=> array(
-	    			array(
-	    				'key'		=> 'visibility',
-	    				'value'		=> array('catalog', 'visible'),
-	    				'compare'	=> 'IN',
-	    			),
-	    		)
-	    	);
+		$query_args = array(
+			'showposts'	=> $number,
+			'post_type'	=> 'product',
+			'post_status'	=> 'publish',
+			'meta_key'	=> '_js_total_sales',
+			'orderby'	=> 'meta_value',
+			'nopaging'	=> true,
+			'meta_query'	=> array(
+				array(
+					'key'		=> 'visibility',
+					'value'		=> array('catalog', 'visible'),
+					'compare'	=> 'IN',
+				),
+			)
+		);
 
 		// Run the query
 		$q = new WP_Query( $query_args );
-		
+
 		// If there are products
 		if( $q->have_posts() ) {
-		
+
 			// Print the widget wrapper & title
 			echo $before_widget;
 			echo $before_title . $title . $after_title; 
-			
+
 			// Open the list
 			echo '<ul class="product_list_widget">';
-			
+
 			// Print out each product
-			while($q->have_posts()) : $q->the_post();  
-				
+			while( $q->have_posts() ) : $q->the_post();  
+
 				// Get new jigoshop_product instance
 				$_product = new jigoshop_product( get_the_ID() );
-			
+
 				echo '<li>';
 					// Print the product image & title with a link to the permalink
-					echo '<a href="'.get_permalink().'" title="'.esc_attr( get_the_title() ).'">';
-					
+					echo '<a href="' . get_permalink() . '" title="' . esc_attr( get_the_title() ) . '">';
+
 					// Print the product image
 					echo ( has_post_thumbnail() ) 
 						? the_post_thumbnail( 'shop_tiny' )
@@ -127,24 +122,24 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 
 					echo '<span class="js_widget_product_title">' . get_the_title() . '</span>';
 					echo '</a>';
-					
+
 					// Print the price with html wrappers
 					echo '<span class="js_widget_product_price">' . $_product->get_price_html() . '</span>';
 				echo '</li>';
 			endwhile;
-			
+
 			echo '</ul>'; // Close the list
-			
+
 			// Print closing widget wrapper
 			echo $after_widget;
-			
+
 			// Reset the global $the_post as this query will have stomped on it
 			wp_reset_postdata();
 		}
-		
-		// Flush output buffer and save to cache
+
+		// Flush output buffer and save to transient cache
 		$cache[$args['widget_id']] = ob_get_flush();
-		wp_cache_set( 'widget_best_sellers', $cache, 'widget' );
+		set_transient( 'jigoshop_widget_cache', $cache, 3600*3 ); // 3 hours ahead
 	}
 
 	/**
@@ -159,7 +154,7 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
-		
+
 		// Save the new values
 		$instance['title'] = strip_tags( $new_instance['title'] );
 		$instance['number'] = absint( $new_instance['number'] );
@@ -167,22 +162,16 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 		// Flush the cache
 		$this->flush_widget_cache();
 
-		// Remove the cache entry from the options array
-		$alloptions = wp_cache_get( 'alloptions', 'options' );
-		if ( isset( $alloptions['widget_best_sellers'] ) ) {
-			delete_option( 'widget_best_sellers' );
-		}
-
 		return $instance;
 	}
-	
+
 	/**
 	 * Flush Widget Cache
 	 * 
 	 * Flushes the cached output
 	 */
 	public function flush_widget_cache() {
-		wp_cache_delete( 'widget_best_sellers', 'widget' );
+		delete_transient( 'jigoshop_widget_cache' );
 	}
 
 	/**
@@ -193,7 +182,7 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 	 * @param	array	instance
 	 */
 	public function form( $instance ) {
-	
+
 		// Get instance data
 		$title 		= isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : null;
 		$number 	= isset( $instance['number'] ) ? absint( $instance['number'] ) : 5;
@@ -214,4 +203,4 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 
 	}
 	
-} // class Jigoshop_Widget_Recent_Products
+} // class Jigoshop_Widget_Best_Sellers
