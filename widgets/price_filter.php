@@ -25,12 +25,12 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 	 */
 	public function __construct() {
 		$options = array(
-			'classname'		=> 'price_filter',
+			'classname'		=> 'jigoshop_price_filter',
 			'description'	=> __( 'Outputs a price filter slider', 'jigoshop' )
 		);
 
 		// Create the widget
-		parent::__construct( 'price_filter', __( 'Jigoshop: Price Filter', 'jigoshop' ), $options );
+		parent::__construct( 'jigoshop_price_filter', __( 'Jigoshop: Price Filter', 'jigoshop' ), $options );
 
 		// Add price filter init to init hook
 		add_action('init', array( &$this, 'jigoshop_price_filter_init') );
