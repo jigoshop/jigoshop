@@ -194,7 +194,9 @@ function jigoshop_product_data_box() {
 			echo '<option value="none" '; if (isset($data[$field['id']]) && $data[$field['id']]=='none') echo 'selected="selected"'; echo '>' . __('None', 'jigoshop') . '</option>';
 			echo '</select></p>';
 			
+                        //TODO: need to think how to populate this new array with the old one. Used to be id=>'tax_class'
 			$field = array( 'id' => 'tax_classes', 'label' => __('Tax Classes', 'jigoshop') );
+                        
                         // TODO: this section needs to be styled better. I would like it to be similar to the select multi-countries
                         // but since each form field is using <p> instead of a table, I cannot use the div. Just adding it to the code
                         // for now, but this should change.

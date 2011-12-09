@@ -83,10 +83,11 @@ class jigoshop_order {
 		$this->payment_method 		= (string) $this->get_value_from_data('payment_method');
 		
 		$this->order_subtotal 		= (string) $this->get_value_from_data('order_subtotal');
-		
+		$this->order_subtotal_inc_tax   = (string) $this->get_value_from_data('order_subtotal_inc_tax');
+                
 		$this->order_shipping 		= (string) $this->get_value_from_data('order_shipping');
 		$this->order_discount 		= (string) $this->get_value_from_data('order_discount');
-		$this->order_tax 			= (string) $this->get_value_from_data('order_tax');
+		$this->order_tax 		= $this->get_order_tax_array('order_tax');
 		$this->order_shipping_tax	= (string) $this->get_value_from_data('order_shipping_tax');
 		$this->order_total 			= (string) $this->get_value_from_data('order_total');
 	
@@ -129,17 +130,48 @@ class jigoshop_order {
 		endif;
 			
 	}
+        
+        private function get_order_tax_array( $key ) {
+            $array_string = $this->get_value_from_data($key);
+            $divisor = $this->get_value_from_data('order_tax_divisor');
+            return jigoshop_tax::get_taxes_as_array($array_string, $divisor);
+        }
 	
 	function get_value_from_data( $key ) {
 		if (isset($this->order_data[$key])) return $this->order_data[$key]; else return '';
 	}
 	
 	/** Gets shipping and product tax */
+        //TODO: used on paypal at the moment. Do we need this?
 	function get_total_tax() {
-		return $this->order_tax + $this->order_shipping_tax;
+                $order_tax = 0;
+                foreach ($this->get_tax_classes() as $tax_class) :
+                    $order_tax += $this->order_tax[$tax_class]['amount'];
+                endforeach;
+		return $order_tax + $this->order_shipping_tax;
 	}
 	
-	/** Gets subtotal */
+        public function get_tax_classes() {
+            return array_keys($this->order_tax);
+        }
+        
+        public function tax_class_is_retail($tax_class) {
+            return $this->order_tax[$tax_class]['retail'];
+        }
+        
+        public function get_tax_rate($tax_class) {
+            return $this->order_tax[$tax_class]['rate'];
+        }
+        
+        public function get_tax_amount($tax_class) {
+            return jigoshop_price(number_format($this->order_tax[$tax_class]['amount'], 2, '.', ''));
+        }
+        
+        public function get_tax_class_for_display($tax_class) {
+            return $this->order_tax[$tax_class]['display'];
+        }
+        
+        /** Gets subtotal */
 	function get_subtotal_to_display() {
 		
 			
