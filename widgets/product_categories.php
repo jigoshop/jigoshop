@@ -26,8 +26,8 @@ class Jigoshop_Widget_Product_Categories extends WP_Widget {
 	 */
 	public function __construct() {
 		$options = array(
-			'classname' => 'jigoshop_product_categories',
-			'description' => __( 'A list or dropdown of product categories', 'jigoshop' ),
+			'classname'		=> 'jigoshop_product_categories',
+			'description'	=> __( 'A list or dropdown of product categories', 'jigoshop' ),
 		);
 
 		// Create the widget
