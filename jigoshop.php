@@ -50,34 +50,8 @@ include_once( 'classes/abstract/jigoshop_singleton.php' );
 include_once( 'classes/jigoshop_sanitize.class.php' );
 include_once( 'classes/jigoshop_validation.class.php' );
 include_once( 'jigoshop_taxonomy.php' );
+include_once( 'widgets/init.php' );
 
-include_once( 'classes/jigoshop_countries.class.php' );
-include_once( 'classes/jigoshop_customer.class.php' );
-include_once( 'classes/jigoshop_product.class.php' );
-include_once( 'classes/jigoshop_product_variation.class.php' );
-include_once( 'classes/jigoshop_order.class.php' );
-include_once( 'classes/jigoshop_orders.class.php' );
-include_once( 'classes/jigoshop_tax.class.php' );
-include_once( 'classes/jigoshop_shipping.class.php' );
-include_once( 'classes/jigoshop_coupons.class.php' );
-
-include_once( 'gateways/gateways.class.php' );
-include_once( 'gateways/gateway.class.php' );
-include_once( 'gateways/bank_transfer.php' );
-include_once( 'gateways/cheque.php' );
-include_once( 'gateways/dibs.php' );
-include_once( 'gateways/paypal.php' );
-include_once( 'gateways/skrill.php' );
-
-include_once( 'shipping/shipping_method.class.php' );
-include_once( 'shipping/flat_rate.php' );
-include_once( 'shipping/free_shipping.php' );
-
-include_once( 'classes/jigoshop.class.php' );
-include_once( 'classes/jigoshop_cart.class.php' );
-include_once( 'classes/jigoshop_checkout.class.php' );
-
-include_once( 'jigoshop_widgets.php' );
 include_once( 'jigoshop_shortcodes.php' );
 include_once( 'jigoshop_templates.php' );
 include_once( 'jigoshop_template_actions.php' );

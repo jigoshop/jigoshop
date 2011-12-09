@@ -8,14 +8,25 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Core
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Core
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
-
-foreach(glob( dirname(__FILE__)."/widgets/*.php" ) as $filename) include_once($filename);
+include_once( 'best-sellers.php' );
+include_once( 'cart.php' );
+include_once( 'featured-products.php' );
+include_once( 'layered_nav.php' );
+include_once( 'price-filter.php' );
+include_once( 'product_categories.php' );
+include_once( 'product_search.php' );
+include_once( 'product_tag_cloud.php' );
+include_once( 'recent_products.php' );
+include_once( 'recent_reviews.php' );
+include_once( 'recently_viewed.php' );
+include_once( 'top-rated.php' );
+include_once( 'user_login.php' );
 
 function jigoshop_register_widgets() {
 	register_widget('Jigoshop_Widget_Recent_Products');
