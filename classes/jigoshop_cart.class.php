@@ -45,8 +45,6 @@ class jigoshop_cart extends jigoshop_singleton {
 
   		self::$applied_coupons = array();
                 
-                self::$tax_totals = array();
-
 		if ( isset($_SESSION['coupons']) ) self::$applied_coupons = $_SESSION['coupons'];
 		
                 self::$tax = new jigoshop_tax(100); //initialize tax on the cart with divisor of 100
