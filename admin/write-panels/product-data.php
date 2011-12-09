@@ -172,17 +172,40 @@ function jigoshop_product_data_box() {
 					'none'		=> 'None'
 				) );
 
+			$field = array( 'id' => 'tax_classes', 'label' => __('Tax Classes', 'jigoshop') );
+            // TODO: this section needs to be styled better. I would like it to be similar to the select multi-countries
+            // but since each form field is using <p> instead of a table, I cannot use the div. Just adding it to the code
+            // for now, but this should change.
+            // Also adding Standard to the tax_classes may not be the way to go. I haven't thought about Standard tax rate 
+            // yet.
+            $tax_classes = $_tax->get_tax_classes();
+            array_unshift($tax_classes, __('Standard', 'jigoshop')); //TODO: think how to use Standard
+            $selections = $data[$field['id']];
+            echo '<p class="form-field">
+            	<label for="'.$field['id'].'">'.$field['label'].':</label>';
+                echo '<span>';
+                if ($tax_classes) foreach ($tax_classes as $tax_class) :
+                    echo '<span><label><input type="checkbox" name="tax_classes[]" value="'. sanitize_title($tax_class) .'" ';
+                    if (in_array(sanitize_title($tax_class), $selections)) :
+                        echo 'checked="checked"';
+                    endif;
+	            echo ' />'. __($tax_class, 'jigoshop') .'</label></span>';
+            endforeach;
+       		echo '</span>
+       			</p>';	
+
 			// Tax Classes
 			$options = array( null => 'Standard' );
 
 			// Get all tax classes
 			$_tax = new jigoshop_tax();
 			$tax_classes = $_tax->get_tax_classes();
+
 			if( $tax_classes) foreach( $tax_classes as $class ) {
 				$options[sanitize_title($class)] = $class;
 			}
 
-			echo jigoshop_form::select( 'tax_class', 'Tax Class', $options );
+			echo jigoshop_form::select( 'tax_classes', 'Tax Classes', $options );
 			?>
 			</fieldset>
 
@@ -290,19 +313,19 @@ function jigoshop_product_data_box() {
 		<div id="files" class="panel jigoshop_options_panel">
 			<fieldset>
 			<?php 
-				// DOWNLOADABLE OPTIONS
-				// File URL
-				// TODO: Refactor this into a helper
-				$file_path = get_post_meta($post->ID, 'file_path', true);
-				$field = array( 'id' => 'file_path', 'label' => __('File Path', 'jigoshop') );
-				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].':</label>
-					<input type="text" class="file_path" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_path.'" placeholder="'.site_url().'" />
-					<input type="button"  class="upload_file_button button" data-postid="'.$post->ID.'" value="'.__('Upload a file', 'jigoshop').'" />
-				</p>';
+			// DOWNLOADABLE OPTIONS
+			// File URL
+			// TODO: Refactor this into a helper
+			$file_path = get_post_meta($post->ID, 'file_path', true);
+			$field = array( 'id' => 'file_path', 'label' => __('File Path', 'jigoshop') );
+			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].':</label>
+				<input type="text" class="file_path" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_path.'" placeholder="'.site_url().'" />
+				<input type="button"  class="upload_file_button button" data-postid="'.$post->ID.'" value="'.__('Upload a file', 'jigoshop').'" />
+			</p>';
 
-				// Download Limit
-				echo jigoshop_form::input( 'download_limit', 'Download Limit', 'Leave blank for unlimited re-downloads' );
-				do_action( 'additional_downloadable_product_type_options' )
+			// Download Limit
+			echo jigoshop_form::input( 'download_limit', 'Download Limit', 'Leave blank for unlimited re-downloads' );
+			do_action( 'additional_downloadable_product_type_options' )
 			?>
 			</fieldset>
 		</div>
