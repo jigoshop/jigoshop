@@ -51,7 +51,7 @@ include_once( 'classes/abstract/jigoshop_singleton.php' );
 include_once( 'classes/jigoshop_sanitize.class.php' );
 include_once( 'classes/jigoshop.class.php' );
 include_once( 'jigoshop_taxonomy.php' );
-include_once( 'jigoshop_widgets.php' );
+include_once( 'widgets/init.php' );
 include_once( 'jigoshop_shortcodes.php' );
 include_once( 'jigoshop_templates.php' );
 include_once( 'jigoshop_template_actions.php' );
