@@ -113,7 +113,7 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 
 				echo '<li>';
 					// Print the product image & title with a link to the permalink
-					echo '<a href="' . get_permalink() . '" title="' . esc_attr( get_the_title() ) . '">';
+					echo '<a href="' . esc_attr( get_permalink() ) . '" title="' . esc_attr( get_the_title() ) . '">';
 
 					// Print the product image
 					echo ( has_post_thumbnail() ) 
