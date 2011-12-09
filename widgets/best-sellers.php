@@ -108,7 +108,7 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 			// Print out each product
 			while( $q->have_posts() ) : $q->the_post();  
 
-				// Get new jigoshop_product instance
+				// Get a new jigoshop_product instance
 				$_product = new jigoshop_product( get_the_ID() );
 
 				echo '<li>';
@@ -200,7 +200,6 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 			<label for='{$this->get_field_id( 'number' )}'>" . __( 'Number of products to show:', 'jigoshop' ) . "</label>
 			<input id='{$this->get_field_id( 'number' )}' name='{$this->get_field_name( 'number' )}' type='number' min='1' value='{$number}' />
 		</p>";
-
 	}
 	
 } // class Jigoshop_Widget_Best_Sellers

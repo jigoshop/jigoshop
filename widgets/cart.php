@@ -30,7 +30,7 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 		);
 
 		// Create the widget
-		parent::__construct( 'jigoshop-cart', __( 'Jigoshop: Cart', 'jigoshop' ), $options );
+		parent::__construct( 'jigoshop_cart', __( 'Jigoshop: Cart', 'jigoshop' ), $options );
 	}
 
 	/**
