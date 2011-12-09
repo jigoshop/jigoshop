@@ -18,6 +18,36 @@
  * @license    http://jigoshop.com/license/commercial-edition
  */
 
+ /**
+  * Defines a custom sort for the tax_rates array. The sort that is needed is that the array is sorted
+  * by country, followed by state, followed by retail. The difference is that retail must be sorted based
+  * on retail = yes before retail = no. Ultimately, the purpose of the sort is to make sure that country, state
+  * are all consecutive in the array, and that within those groups, retail = 'no' always appears last. This is
+  * so that tax classes that apply taxes after other taxes get applied to the retail value will be executed
+  * last.
+  * <br>
+  * <pre>
+  * eg. country = 'CA', state = 'QC', retail = 'no'<br>
+  *     country = 'CA', state = 'QC', retail = 'yes'<br>
+  * 
+  * will be sorted to have <br>
+  *     country = 'CA', state = 'QC', retail = 'yes'<br>
+  *     country = 'CA', state = 'QC', retail = 'no' <br>
+  * </pre>
+  * 
+  * @param type $a the first object to compare with (our inner array)
+  * @param type $b the second object to compare with (our inner array)
+  * @return type int the results of strcmp
+  */
+ function csort_tax_rates($a,$b) {
+
+     $str1 .= $a['country'] . $a['state'] . ($a['retail'] == 'yes' ? 'a' : 'b');
+     $str2 .= $b['country'] . $b['state'] . ($b['retail'] == 'yes' ? 'a' : 'b');
+
+     return strcmp($str1, $str2);
+
+ }
+ 
 /**
  * Update options
  *
@@ -43,12 +73,14 @@ function jigoshop_update_options() {
         		$tax_rate = array();
         		$tax_rates = array();
         		$tax_shipping = array();
+                        $tax_retail = array();
 
 				if (isset($_POST['tax_class'])) $tax_classes = $_POST['tax_class'];
 				if (isset($_POST['tax_country'])) $tax_countries = $_POST['tax_country'];
 				if (isset($_POST['tax_rate'])) $tax_rate = $_POST['tax_rate'];
 				if (isset($_POST['tax_shipping'])) $tax_shipping = $_POST['tax_shipping'];
-
+                                if (isset($_POST['tax_retail'])) $tax_retail = $_POST['tax_retail'];
+                                
 				for ($i=0; $i<sizeof($tax_classes); $i++) :
 
 					if (isset($tax_classes[$i]) && isset($tax_countries[$i]) && isset($tax_rate[$i]) && $tax_rate[$i] && is_numeric($tax_rate[$i])) :
@@ -59,7 +91,8 @@ function jigoshop_update_options() {
 						$class = jigowatt_clean($tax_classes[$i]);
 
 						if (isset($tax_shipping[$i]) && $tax_shipping[$i]) $shipping = 'yes'; else $shipping = 'no';
-
+                                                if (isset($tax_retail[$i]) && $tax_retail[$i]) $retail = 'yes'; else $retail = 'no';
+                                                
 						// Get state from country input if defined
 						if (strstr($country, ':')) :
 							$cr = explode(':', $country);
@@ -72,13 +105,17 @@ function jigoshop_update_options() {
 							'state' => $state,
 							'rate' => $rate,
 							'shipping' => $shipping,
-							'class' => $class
+							'class' => $class,
+                                                        'retail' => $retail
 						);
 
 					endif;
 
 				endfor;
 
+                                // apply a custom sort to the tax_rates array.
+                                usort($tax_rates, "csort_tax_rates");
+                                
 				update_option($value['id'], $tax_rates);
 
 			elseif (isset($value['id']) && $value['id']=='jigoshop_coupons') :
@@ -558,7 +595,11 @@ function jigoshop_admin_fields($options) {
 
 					                    if (isset($rate['shipping']) && $rate['shipping']=='yes') echo 'checked="checked"';
 
-					                    echo ' /> '.__('Apply to shipping', 'jigoshop').'</label><a href="#" class="remove button">&times;</a></p>';
+					                    echo ' /> '.__('Apply to shipping', 'jigoshop').'</label><label><input type="checkbox" name="tax_retail['.$i.']" ';
+                                                                
+					                    if (isset($rate['retail']) && $rate['retail']=='yes') echo 'checked="checked"';
+
+					                    echo ' /> '.__('Apply to retail', 'jigoshop').'</label><a href="#" class="remove button">&times;</a></p>';
 			                    	endforeach;
 			                    	?>
 		                        </div>
@@ -583,7 +624,7 @@ function jigoshop_admin_fields($options) {
 				                        		jigoshop_countries::country_dropdown_options('','',true);
 				                        	?></select><input type="text" class="text" name="tax_rate[' + size + ']" title="<?php _e('Rate', 'jigoshop'); ?>" placeholder="<?php _e('Rate', 'jigoshop'); ?>" maxlength="8" />%\
 				                        	<label><input type="checkbox" name="tax_shipping[' + size + ']" /> <?php _e('Apply to shipping', 'jigoshop'); ?></label>\
-				                        	<a href="#" class="remove button">&times;</a>\
+				                        	<label><input type="checkbox" name="tax_retail[' + size + ']" checked="checked" /> <?php _e('Apply to retail', 'jigoshop'); ?></label><a href="#" class="remove button">&times;</a>\
 			                        </p>').appendTo('#tax_rates div.taxrows');
 									return false;
 								});

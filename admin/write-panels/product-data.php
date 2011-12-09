@@ -172,27 +172,27 @@ function jigoshop_product_data_box() {
 					'none'		=> 'None'
 				) );
 
+			//TODO: need to think how to populate this new array with the old one. Used to be id=>'tax_class'
 			$field = array( 'id' => 'tax_classes', 'label' => __('Tax Classes', 'jigoshop') );
-            // TODO: this section needs to be styled better. I would like it to be similar to the select multi-countries
-            // but since each form field is using <p> instead of a table, I cannot use the div. Just adding it to the code
-            // for now, but this should change.
-            // Also adding Standard to the tax_classes may not be the way to go. I haven't thought about Standard tax rate 
-            // yet.
-            $tax_classes = $_tax->get_tax_classes();
-            array_unshift($tax_classes, __('Standard', 'jigoshop')); //TODO: think how to use Standard
-            $selections = $data[$field['id']];
-            echo '<p class="form-field">
-            	<label for="'.$field['id'].'">'.$field['label'].':</label>';
-                echo '<span>';
-                if ($tax_classes) foreach ($tax_classes as $tax_class) :
-                    echo '<span><label><input type="checkbox" name="tax_classes[]" value="'. sanitize_title($tax_class) .'" ';
-                    if (in_array(sanitize_title($tax_class), $selections)) :
-                        echo 'checked="checked"';
-                    endif;
-	            echo ' />'. __($tax_class, 'jigoshop') .'</label></span>';
-            endforeach;
-       		echo '</span>
-       			</p>';	
+                        
+                        // TODO: this section needs to be styled better. I would like it to be similar to the select multi-countries
+                        // but since each form field is using <p> instead of a table, I cannot use the div. Just adding it to the code
+                        // for now, but this should change.
+                        // Also adding Standard to the tax_classes may not be the way to go. I haven't thought about Standard tax rate 
+                        // yet.
+                        $tax_classes = $_tax->get_tax_classes();
+                        array_unshift($tax_classes, __('Standard', 'jigoshop')); //TODO: think how to use Standard
+                        $selections = $data[$field['id']];
+                        echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].':</label>';
+                        echo '<span>';
+                        if ($tax_classes) foreach ($tax_classes as $tax_class) :
+	                        echo '<span><label><input type="checkbox" name="tax_classes[]" value="'. sanitize_title($tax_class) .'" ';
+	                        if (in_array(sanitize_title($tax_class), $selections)) :
+	                            echo 'checked="checked"';
+	                        endif;
+	                        echo ' />'. __($tax_class, 'jigoshop') .'</label></span>';
+            		endforeach;
+       			echo '</span></p>';	
 
 			// Tax Classes
 			$options = array( null => 'Standard' );
@@ -313,6 +313,7 @@ function jigoshop_product_data_box() {
 		<div id="files" class="panel jigoshop_options_panel">
 			<fieldset>
 			<?php 
+
 			// DOWNLOADABLE OPTIONS
 			// File URL
 			// TODO: Refactor this into a helper
@@ -325,7 +326,7 @@ function jigoshop_product_data_box() {
 
 			// Download Limit
 			echo jigoshop_form::input( 'download_limit', 'Download Limit', 'Leave blank for unlimited re-downloads' );
-			do_action( 'additional_downloadable_product_type_options' )
+			do_action( 'additional_downloadable_product_type_options' );
 			?>
 			</fieldset>
 		</div>
