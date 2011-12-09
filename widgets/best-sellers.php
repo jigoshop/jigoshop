@@ -100,7 +100,7 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 
 			// Print the widget wrapper & title
 			echo $before_widget;
-			echo $before_title . $title . $after_title; 
+			echo $before_title . $title . $after_title;
 
 			// Open the list
 			echo '<ul class="product_list_widget">';
