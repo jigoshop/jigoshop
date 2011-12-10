@@ -170,7 +170,7 @@ function jigoshop_product_data_box() {
 					'taxable'	=> 'Taxable',
 					'shipping'	=> 'Shipping',
 					'none'		=> 'None'
-				) );
+				), $data[$field['id']] );
 
 			//TODO: need to think how to populate this new array with the old one. Used to be id=>'tax_class'
 			$field = array( 'id' => 'tax_classes', 'label' => __('Tax Classes', 'jigoshop') );
@@ -178,32 +178,19 @@ function jigoshop_product_data_box() {
                         // TODO: this section needs to be styled better. I would like it to be similar to the select multi-countries
                         // but since each form field is using <p> instead of a table, I cannot use the div. Just adding it to the code
                         // for now, but this should change.
-                        // Also adding Standard to the tax_classes may not be the way to go. I haven't thought about Standard tax rate 
-                        // yet.
                         $tax_classes = $_tax->get_tax_classes();
-                        array_unshift($tax_classes, __('Standard', 'jigoshop')); //TODO: think how to use Standard
                         $selections = $data[$field['id']];
                         echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].':</label>';
-                        echo '<span>';
+			echo '<span><label><input type="checkbox" name="'.$field['id'].'[]" value="" '; if (isset($selections) && in_array('', $selections)) echo 'checked="checked"'; echo '/>'.__('Standard', 'jigoshop').'</label></span>';
+                        
                         if ($tax_classes) foreach ($tax_classes as $tax_class) :
-	                        echo '<span><label><input type="checkbox" name="tax_classes[]" value="'. sanitize_title($tax_class) .'" ';
+	                        echo '<span><label><input type="checkbox" name="'.$field['id'].'[]" value="'. sanitize_title($tax_class) .'" ';
 	                        if (in_array(sanitize_title($tax_class), $selections)) :
 	                            echo 'checked="checked"';
 	                        endif;
 	                        echo ' />'. __($tax_class, 'jigoshop') .'</label></span>';
             		endforeach;
-       			echo '</span></p>';	
-
-			// Tax Classes
-			$options = array( null => 'Standard' );
-
-			// Get all tax classes
-			$_tax = new jigoshop_tax();
-			$tax_classes = $_tax->get_tax_classes();
-
-			if( $tax_classes) foreach( $tax_classes as $class ) {
-				$options[sanitize_title($class)] = $class;
-			}
+       			echo '</span></p>';
 
 			echo jigoshop_form::select( 'tax_classes', 'Tax Classes', $options );
 			?>

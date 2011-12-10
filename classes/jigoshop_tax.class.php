@@ -25,7 +25,7 @@ class jigoshop_tax {
         private $retail_tax_amount;
         private $imploded_tax_amounts;
         private $tax_divisor;
-        private $total_tax_amount;
+        private $total_tax_rate;
 	
         /**
          * sets up current tax class without a divisor. May or may not have
@@ -39,7 +39,7 @@ class jigoshop_tax {
             $this->tax_amounts = array();
             $this->retail_tax_amount = 0;
             $this->imploded_tax_amounts = '';
-            $this->total_tax_amount = 0; //curently not including shipping tax
+            $this->total_tax_rate = 0; //curently not including shipping tax
         }
 	
         /**
@@ -105,7 +105,7 @@ class jigoshop_tax {
         // the grandtotal was the total of the cart without the rest. Still this is not a good way of figuring out the tax rate.
         // Ultimately, fixing the admin panel to show all tax classes applied will be the best way.
         public function get_total_tax_rate() {
-            return $this->total_tax_amount;
+            return $this->total_tax_rate;
         }  
         
         /**
@@ -134,10 +134,10 @@ class jigoshop_tax {
 		$tax_rates_array = array();
 		if ($tax_rates && is_array($tax_rates) && sizeof($tax_rates)>0) foreach( $tax_rates as $rate ) :
 			if ($rate['class']) :
-				$tax_rates_array[$rate['country']][$rate['state']][$rate['class']] = array( 'rate' => $rate['rate'], 'shipping' => $rate['shipping'] );
+				$tax_rates_array[$rate['country']][$rate['state']][$rate['class']] = array( 'rate' => $rate['rate'], 'shipping' => $rate['shipping'], 'retail' => $rate['retail'] , 'label' => $rate['label']);
 			else :
 				// Standard Rate
-				$tax_rates_array[$rate['country']][$rate['state']]['*'] = $rate['rate'] = array( 'rate' => $rate['rate'], 'shipping' => $rate['shipping'] );
+				$tax_rates_array[$rate['country']][$rate['state']]['*'] = $rate['rate'] = array( 'rate' => $rate['rate'], 'shipping' => $rate['shipping'], 'retail' => $rate['retail'] , 'label' => $rate['label'] );
 			endif;
 		endforeach;
 		return $tax_rates_array;
@@ -194,6 +194,13 @@ class jigoshop_tax {
 
         }
         
+        private function get_online_label_for_customer($class) {
+            $country = jigoshop_customer::get_shipping_country();
+            $state = jigoshop_customer::get_shipping_state();
+            
+            return $this->rates[$country][$state][$class]['label'];
+        }
+        
         /**
          * gets the tax classes for the shops base country and state
          * @return type array of tax classes
@@ -206,7 +213,10 @@ class jigoshop_tax {
         }
         
         /**
-         * determines if tax is applied to retail value or not
+         * determines if tax is applied to retail value or not. Since tax classes
+         * are ordered according if they applied to retail or not, this will be false
+         * when all tax calculations are completed if there was mixed class types.
+         * 
          * @return type boolean true if applied to retail, otherwise false
          */
         public function is_applied_to_retail() {
@@ -219,26 +229,6 @@ class jigoshop_tax {
          */
         public function get_retail_tax_amount() {
             return ($this->tax_divisor > 0 ? $this->retail_tax_amount / $this->tax_divisor : $this->retail_tax_amount);
-        }
-        
-        /**
-         * find the tax class that is unsanitized to be used in display
-         * @param type $sanitized_tax_class the sanitized tax class to match with
-         * @return type string the tax class that matches the stanitized_tax_class
-         * which is not sanitized.
-         */
-        private function find_unsanitized_tax_class($sanitized_tax_class) {
-            $unsanitized_tax_classes = $this->get_tax_classes();
-            $unsanitized_return = null;
-            
-            if ($unsanitized_tax_classes) foreach ($unsanitized_tax_classes as $key=>$unsanitized_tax_class) :
-                if ( sanitize_title($unsanitized_tax_class) == $sanitized_tax_class ) :
-                    $unsanitized_return = $unsanitized_tax_classes[$key];
-                    break;
-                endif;
-            endforeach;
-            
-            return $unsanitized_return;
         }
         
         /**
@@ -258,7 +248,7 @@ class jigoshop_tax {
             if ($this->get_tax_classes_for_customer()) foreach ($this->get_tax_classes_for_customer() as $tax_class) :
 
                 // make sure that the product is charging this particular tax_class. 
-                // TODO: remember standard rate here. 
+                // TODO: remember standard rate here. //should work on standard since it will be added to the product if existing
                 if (!in_array($tax_class, $tax_classes))
                     return;
 
@@ -270,7 +260,7 @@ class jigoshop_tax {
                         $tax_amount[$tax_class]['amount'] = $tax;
                         $tax_amount[$tax_class]['rate'] = $rate;
                         $tax_amount[$tax_class]['retail'] = true;
-                        $tax_amount[$tax_class]['display'] = $this->find_unsanitized_tax_class($tax_class);
+                        $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
                         $retail_tax_amount += $tax;
                         $total_tax += $tax;
                     endif;
@@ -280,7 +270,7 @@ class jigoshop_tax {
                         $tax_amount[$tax_class]['amount'] = $tax;
                         $tax_amount[$tax_class]['rate'] = $rate;
                         $tax_amount[$tax_class]['retail'] = false;
-                        $tax_amount[$tax_class]['display'] = $this->find_unsanitized_tax_class($tax_class);
+                        $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
                         $total_tax += $tax;
                     endif;
                 endif;
@@ -290,7 +280,7 @@ class jigoshop_tax {
             $this->retail_tax_amount = $retail_tax_amount;
             $this->tax_amounts = $tax_amount;
             $this->imploded_tax_amounts = $this->array_implode($this->tax_amounts);
-            $this->total_tax_amount = round($total_tax / $total_item_price * 100, 2); //TODO: add shipping tax to this
+            $this->total_tax_rate = round($total_tax / $total_item_price * 100, 2); //TODO: add shipping tax to this
             
         }
         
