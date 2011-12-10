@@ -14,19 +14,19 @@
  * @copyright	Copyright (c) 2011 Jigowatt Ltd.
  * @license		http://jigoshop.com/license/commercial-edition
  */
-include_once( 'best-sellers.php' );
-include_once( 'cart.php' );
-include_once( 'featured-products.php' );
-include_once( 'layered_nav.php' );
-include_once( 'price-filter.php' );
-include_once( 'product_categories.php' );
-include_once( 'product_search.php' );
-include_once( 'product_tag_cloud.php' );
-include_once( 'recent_products.php' );
-include_once( 'recent_reviews.php' );
-include_once( 'recently_viewed.php' );
-include_once( 'top-rated.php' );
-include_once( 'user_login.php' );
+require_once( 'best-sellers.php' );
+require_once( 'cart.php' );
+require_once( 'featured-products.php' );
+require_once( 'layered_nav.php' );
+require_once( 'price-filter.php' );
+require_once( 'product-categories.php' );
+require_once( 'product_search.php' );
+require_once( 'product_tag_cloud.php' );
+require_once( 'recent_products.php' );
+require_once( 'recent_reviews.php' );
+require_once( 'recently_viewed.php' );
+require_once( 'top-rated.php' );
+require_once( 'user_login.php' );
 
 function jigoshop_register_widgets() {
 	register_widget('Jigoshop_Widget_Recent_Products');
