@@ -78,6 +78,7 @@ function jigoshop_update_options() {
 				if (isset($_POST['tax_class'])) $tax_classes = $_POST['tax_class'];
 				if (isset($_POST['tax_country'])) $tax_countries = $_POST['tax_country'];
 				if (isset($_POST['tax_rate'])) $tax_rate = $_POST['tax_rate'];
+                                if (isset($_POST['tax_label'])) $tax_label = trim($_POST['tax_label']);
 				if (isset($_POST['tax_shipping'])) $tax_shipping = $_POST['tax_shipping'];
                                 if (isset($_POST['tax_retail'])) $tax_retail = $_POST['tax_retail'];
                                 
@@ -86,6 +87,7 @@ function jigoshop_update_options() {
 					if (isset($tax_classes[$i]) && isset($tax_countries[$i]) && isset($tax_rate[$i]) && $tax_rate[$i] && is_numeric($tax_rate[$i])) :
 
 						$country = jigowatt_clean($tax_countries[$i]);
+                                                $label = $tax_label[$i];
 						$state = '*';
 						$rate = number_format(jigowatt_clean($tax_rate[$i]), 4);
 						$class = jigowatt_clean($tax_classes[$i]);
@@ -102,6 +104,7 @@ function jigoshop_update_options() {
 
 						$tax_rates[] = array(
 							'country' => $country,
+                                                        'label' => $label,
 							'state' => $state,
 							'rate' => $rate,
 							'shipping' => $shipping,
@@ -577,7 +580,7 @@ function jigoshop_admin_fields($options) {
 			                    	<?php
 			                    	$i = -1;
 			                    	if ($tax_rates && is_array($tax_rates) && sizeof($tax_rates)>0) foreach( $tax_rates as $rate ) : $i++;
-			                    		echo '<p class="taxrow"><select name="tax_class['.$i.']" title="Tax Class"><option value="">'.__('Standard Rate', 'jigoshop').'</option>';
+			                    		echo '<p class="taxrow"><select name="tax_classes['.$i.']" title="Tax Classes"><option value="">'.__('Standard Rate', 'jigoshop').'</option>';
 
 			                    		if ($tax_classes) foreach ($tax_classes as $class) :
 					                        echo '<option value="'.sanitize_title($class).'"';
@@ -587,6 +590,8 @@ function jigoshop_admin_fields($options) {
 					                        echo '>'.$class.'</option>';
 					                    endforeach;
 
+                                                            echo '</select><input type="text" class="text" value="'.$rate['label'].'" name="tax_label['.$i.']" title="'.__('Online Label', 'jigoshop').'" placeholder="'.__('Online Label', 'jigoshop').'" maxlength="15" />';
+                                                            
 					                    echo '</select><select name="tax_country['.$i.']" title="Country">';
 
 					                    jigoshop_countries::country_dropdown_options($rate['country'], $rate['state']);
@@ -614,13 +619,14 @@ function jigoshop_admin_fields($options) {
 
 									// Add the row
 									jQuery('<p class="taxrow"> \
-				                        <select name="tax_class[' + size + ']" title="Tax Class"> \
+				                        <select name="tax_classes[' + size + ']" title="Tax Classes"> \
 				                        	<option value=""><?php _e('Standard Rate', 'jigoshop'); ?></option><?php
 				                        		$tax_classes = $_tax->get_tax_classes();
 				                        		if ($tax_classes) foreach ($tax_classes as $class) :
 				                        			echo '<option value="'.sanitize_title($class).'">'.$class.'</option>';
 				                        		endforeach;
-				                        	?></select><select name="tax_country[' + size + ']" title="Country"><?php
+                                                                ?></select><input type="text" class="text" name="tax_label[' + size + ']" title="<?php _e('Online Label', 'jigoshop'); ?>" placeholder="<?php _e('Online Label', 'jigoshop'); ?>" maxlength="15" />\
+				                        	</select><select name="tax_country[' + size + ']" title="Country"><?php
 				                        		jigoshop_countries::country_dropdown_options('','',true);
 				                        	?></select><input type="text" class="text" name="tax_rate[' + size + ']" title="<?php _e('Rate', 'jigoshop'); ?>" placeholder="<?php _e('Rate', 'jigoshop'); ?>" maxlength="8" />%\
 				                        	<label><input type="checkbox" name="tax_shipping[' + size + ']" /> <?php _e('Apply to shipping', 'jigoshop'); ?></label>\

@@ -397,10 +397,7 @@ class jigoshop_cart extends jigoshop_singleton {
 
 				$total_item_price 	= $total_item_price / 100; // Back to pounds
 
-                                // tax classes are sorted so that non retail taxes get applied 
-                                // last. Therefore if any were in the array, they will have 
-                                // triggered a false in is_applied_to_reatil
-                                if ( self::$tax->get_retail_tax_amount() ) :
+                                if (self::$tax->get_retail_tax_amount()) :
                                     self::$subtotal_inc_tax += self::$tax->get_retail_tax_amount() + $total_item_price;
                                 endif;
 
@@ -534,9 +531,15 @@ class jigoshop_cart extends jigoshop_singleton {
 */
         }
 
-        /** gets the cart subtotal including retail taxes (after calculation) */
-        function get_subtotal_inc_tax() {
-            return (self::$subtotal_inc_tax ? jigoshop_price(self::$subtotal_inc_tax) : false);
+        /** 
+         * gets the cart subtotal including retail taxes (after calculation) if necessary. 
+         * Since the tax rates loop in order of retail tax first followed by non retail tax,
+         * if is_applied_to_retail is false, then we need to return subtotal with tax, otherwise
+         * don't return it. If only non retail tax is applied, this function will always return
+         * false which is good.
+         */
+        public static function get_subtotal_inc_tax() {
+            return (self::$tax->is_applied_to_retail() ? false : jigoshop_price(self::$subtotal_inc_tax));
         }
         
         public static function get_tax_class_for_display($tax_class) {
