@@ -14,6 +14,178 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
+/*class jigoshop_product_2 {
+	private $ID;
+    private $exists; // ??
+    private $attributes;
+    private $children;
+    private $post; // ??
+    private $sku;
+    private $visiblity;
+    private $stock;
+
+    private $weight;
+    private $length;
+    private $height;
+
+    private $ID;
+
+    private $up_sells
+    private $cross_sells
+    
+    public function __construct( int $ID ) {
+
+    	$this->ID = $ID;
+
+    	$data = get_post_custom( $this->ID );
+    	$this->exists = ! empty( $data );
+
+    	$defaults = array(
+    		'sku'		=> $this->ID,
+    		'featured'	=> false,
+    		'visiblity'	=> 'visible',
+    		'stock'		=> 0,
+    		//ect
+	    );
+
+	    $data = array_intersect( $defaults, $data );
+
+	    foreach( $data as $key => $value ) {
+	    	$this->$key = $value;
+	    }
+    }
+
+    public function get_sku() {
+    	return $this->sku;
+    }
+
+    // TODO: Clean up & refactor this.
+    public function thumbnail( $size = 'shop_thumbnail' ) {
+    	
+    	if( has_post_thumbnail( $this->ID ) {
+    		return get_the_post_thumbnail( $this->ID, $size );
+    	} else if( ($parent_ID = wp_get_post_parent_id( $this->ID )) && has_post_thumbnail( $parent_ID ) ) {
+    		return get_the_post_thumbnail( $this->ID, $size );
+    	} else {
+    		$image_size = jigoshop_get_image_size( $size ); // Needs refactoring
+			return '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.$image_size[0].'px" height="'.$image_size[1].'px" />';
+    	}
+    }
+
+    public function get_attribute( $key ) {
+
+    	if( isset($this->attributes[$key]) )
+    		return $this->attributes[$key];
+    	
+    	return false;
+    }
+
+    public function has_attributes() {
+    	
+    	if( ! empty($this->attributes) )
+    		return true
+    	
+    	return false;
+    }
+
+    public function get_related( int $limit = 5 ) {
+
+    	if( empty( $this->cats ) || empty( $this->tags ) )
+    		return false;
+    	
+    	$query = array(
+	    	'posts_per_page'	=> $limit,
+	    	'post_type'			=> 'product',
+	    	'fields'				=> 'ids',
+	    	'meta_query'		=> array(
+	    			// TODO:: ADD QUERY
+		    ),
+		    'tax_query'			=> array(
+		    	'relation'			=> 'OR',
+		    	array(
+		    		'taxonomy'		=> 'product_cat',
+		    		'field'			=> 'id',
+		    		'terms'			=> $this->cats
+		    	),
+		    	array(
+		    		'taxonomy'		=> 'product_tag',
+		    		'field'			=> 'id',
+		    		'terms'			=> $this->tags
+		    	),
+		    ),
+	    );
+
+	   return new WP_Query( $query );
+    }
+
+
+    public function exists() {
+    	return (bool) $this->exists;
+    }
+
+    public function is_taxable() {
+    	// ?
+    }
+
+    public function get_stock_quantity() {
+    	return (int) $this->stock;
+    }
+
+    public function is_featured() {
+    	return (bool) $this->featured;
+    }
+
+    public function is_visible( ) {
+
+    	if( (bool) $this->stock )
+    		return false;
+
+    	switch($this->visiblity) {
+    		case 'hidden':
+    			return false; 
+    		break;
+    		case 'search':
+    			return is_search();
+    		break;
+    		case 'catalog':
+    			return ! is_search(); // don't display in search results
+    		break;
+    		default:
+    			return true; // By default always display a product
+    	}
+
+    }
+
+    public function get_weight() {
+    	return $this->weight;
+    }
+
+    public function get_price( $force_sale = false ) {
+
+    	if(  ) // IS ON SALE
+    		return $this->sale_price;
+    	
+    	return $this->regular_price;
+    }
+
+    // TODO: is this spelt right?
+    public function get_up_sells() {
+    	return $this->up_sells;
+    }
+
+    public function get_cross_sells( ) {
+    	return $this->cross_sells;
+    }
+
+    public function get_categories( $sep = ', ' $before = null, $after = null ) {
+    	return get_the_term_list( $this->ID, 'product_cat', $before, $sep, $after );
+    }
+
+    public function get_tags( $sep = ', ' $before = null, $after = null ) {
+    	return get_the_term_list( $this->ID, 'product_tag', $before, $sep, $after );
+    }
+}*/
+
 class jigoshop_product {
 	
 	private static $attribute_taxonomies = NULL;
@@ -31,7 +203,7 @@ class jigoshop_product {
 	public $product_type;
 	public $price;
     	public $sale_price;
-    
+
 	/**
 	 * Loads all product data from custom fields
 	 *
