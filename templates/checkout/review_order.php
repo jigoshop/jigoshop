@@ -28,7 +28,11 @@
 		exit;
 	endif;
 	
-	if (isset($_POST['shipping_method'])) $_SESSION['chosen_shipping_method_id'] = $_POST['shipping_method'];
+	if (isset($_POST['shipping_method'])) :
+		$shipping_method = explode(":", $_POST['shipping_method']);
+	 	$_SESSION['chosen_shipping_method_id'] = $shipping_method[0];
+	endif;
+	
 	if (isset($_POST['country'])) jigoshop_customer::set_country( $_POST['country'] );
 	if (isset($_POST['state'])) jigoshop_customer::set_state( $_POST['state'] );
 	if (isset($_POST['postcode'])) jigoshop_customer::set_postcode( $_POST['postcode'] );
@@ -70,20 +74,40 @@
 						
 						foreach ($available_methods as $method ) :
 							
-							echo '<option value="'.$method->id.'" ';
-							
-							if ($method->chosen) echo 'selected="selected"';
-							
-							echo '>'.$method->title.' &ndash; ';
-							
-							if ($method->shipping_total>0) :
-								echo jigoshop_price($method->shipping_total);
-								if ($method->shipping_tax>0) : __(' (ex. tax)', 'jigoshop'); endif;
+							if ($method instanceof jigoshop_calculable_shipping) :
+								if ($method->is_chosen()) :
+									$selected_service = NULL;
+									if (isset($_SESSION['selected_rate_id']) && $_SESSION['selected_rate_id']) :
+										$selected_service = $method->get_selected_service($_SESSION['selected_rate_id']);
+									else :
+										$selected_service = $method->get_cheapest_service();
+									endif;
+									for ($i=0; $i<$method->get_rates_amount(); $i++) {
+										echo '<option value="'.$method->id.':'.$method->get_selected_service($i).'" '; 
+										if ($method->get_selected_service($i) == $selected_service) :
+											echo 'selected="selected"';
+										endif;
+										echo '>'.$method->get_selected_service($i) . ' via ' . $method->title.' &ndash; ';
+										echo jigoshop_price($method->get_selected_price($i));
+										if ($method->shipping_tax>0) : __(' (ex. tax)', 'jigoshop'); endif;
+										echo '</option>';
+									}
+								endif;										 
 							else :
-								echo __('Free', 'jigoshop');
+								echo '<option value="'.$method->id.':" '; 
+								if ($method->is_chosen()) echo 'selected="selected"';
+								
+								echo '>'.$method->title.' &ndash; ';
+								
+								if ($method->shipping_total>0) :
+									echo jigoshop_price($method->shipping_total);
+									if ($method->shipping_tax>0) : __(' (ex. tax)', 'jigoshop'); endif;
+								else :
+									echo __('Free', 'jigoshop');
+								endif;
+								
+								echo '</option>';
 							endif;
-							
-							echo '</option>';
 
 						endforeach;
 						

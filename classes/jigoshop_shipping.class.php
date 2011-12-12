@@ -23,6 +23,7 @@ class jigoshop_shipping extends jigoshop_singleton {
 	protected static $shipping_total	= 0;
 	protected static $shipping_tax 		= 0;
 	protected static $shipping_label	= null;
+	protected static $has_calculable_shipping	= false;
 	
 	
 	/** Constructor */
@@ -78,6 +79,10 @@ class jigoshop_shipping extends jigoshop_singleton {
 	}
 	
 	
+	public static function has_calculable_shipping() {
+		return self::$has_calculable_shipping;
+	}
+	
 	public static function get_available_shipping_methods() {
 	
 		$_available_methods = array();
@@ -87,8 +92,8 @@ class jigoshop_shipping extends jigoshop_singleton {
 			foreach ( self::get_all_methods() as $method ) :
 				
 				if ( $method->is_available() ) :
-					$method->calculate_shipping();
 					$_available_methods[$method->id] = $method;
+					if ($method instanceof jigoshop_calculable_shipping) self::$has_calculable_shipping = true;
 				endif;
 				
 			endforeach;
@@ -101,60 +106,106 @@ class jigoshop_shipping extends jigoshop_singleton {
 	
 	
 	public static function reset_shipping_methods() {
-		foreach ( self::get_all_methods() as $method ) :
-			$method->chosen = false;
-			$method->shipping_total = 0;
-			$method->shipping_tax = 0;
+		foreach ( self::$shipping_methods as $method ) :
+			$method->reset_method();
 		endforeach;
 	}
 	
+	private static function get_cheapest_method($available_methods) {
+		$_cheapest_fee = '';
+		$_cheapest_method = '';
+		self::$has_calculable_shipping = false;
+
+		foreach ( $available_methods as $method ) :
+			$method->calculate_shipping();
+                        
+			// calculable shipping methods toggle availability if error has occurred.
+			if ( $method->is_available() ) :
+				if ( $method instanceof jigoshop_calculable_shipping ) self::$has_calculable_shipping = true;
+				$fee = $method->shipping_total;
+				if ( $fee >= 0 && $fee < $_cheapest_fee || ! is_numeric( $_cheapest_fee )) :
+						$_cheapest_fee = $fee;
+						$_cheapest_method = $method->id;
+				endif;
+			endif;
+		endforeach;
+
+		return $_cheapest_method;
+	}
 	
 	public static function calculate_shipping() {
 		
 		if ( self::$enabled == 'yes' ) :
 		
-			self::$shipping_total = 0;
-			self::$shipping_tax = 0;
-			self::$shipping_label = null;
-			$_cheapest_fee = '';
-			$_cheapest_method = '';
-			$calc_cheapest = false;
-						
-			if ( isset( $_SESSION['chosen_shipping_method_id'] )) $chosen_method = $_SESSION['chosen_shipping_method_id'];
-			else $chosen_method = '';
-			
-			if ( empty( $chosen_method )) :
-				$calc_cheapest = true;
-			endif;
-			
 			self::reset_shipping_methods();
 			
-			$_available_methods = self::get_available_shipping_methods();
-			
-			if ( sizeof( $_available_methods ) > 0 ) :
-			
-				foreach ( $_available_methods as $method_id => $method ) :
-					$fee = $method->shipping_total;
-					if ( $fee < $_cheapest_fee || !is_numeric( $_cheapest_fee )) :
-						$_cheapest_fee = $fee;
-						$_cheapest_method = $method_id;
-					endif;
-				endforeach;
-				
-				if ( $calc_cheapest || !isset( $_available_methods[$chosen_method] )) :
-					$chosen_method = $_cheapest_method;
-				endif;
-				
-				if ( $chosen_method ) :
-					$_available_methods[$chosen_method]->choose();
-					$_SESSION['chosen_shipping_method_id'] = $chosen_method;
-					self::$shipping_total 	= $_available_methods[$chosen_method]->shipping_total;
-					self::$shipping_tax 	= $_available_methods[$chosen_method]->shipping_tax;
-					self::$shipping_label 	= $_available_methods[$chosen_method]->title;
-					
-				endif;
+			self::reset_shipping(); // do not reset session (chosen_shipping_method_id)
+			$calc_cheapest = false;
+                        
+			if ( isset( $_SESSION['chosen_shipping_method_id'] )) :
+				$chosen_method = $_SESSION['chosen_shipping_method_id'];
+			else :
+				$chosen_method = '';
+				$calc_cheapest = true;
 			endif;
-		endif;
+                        
+			$_available_methods = self::get_available_shipping_methods();
+                        
+			if ( sizeof($_available_methods) > 0 ) :
+
+				if (isset($_SESSION['selected_rate_id'])) :
+
+					//make sure all methods are re-calculated since prices have been reset. Otherwise the other shipping
+					//method prices will show free
+					foreach ( $_available_methods as $method ) : 
+							$method->calculate_shipping();
+					endforeach;
+
+					// select chosen method
+					if ($_available_methods[$chosen_method] && $_available_methods[$chosen_method]->is_available()) :
+							$chosen_method = $_available_methods[$chosen_method]->id;
+
+					// error returned from service api. Need to auto calculate cheapest method now
+					else :
+
+							// need to recreate available methods since some calculable ones have been disabled
+							$_available_methods = self::get_available_shipping_methods(); 
+							$chosen_method = self::get_cheapest_method($_available_methods); 
+					endif;
+
+				else :
+						// current jigoshop functionality
+						$_cheapest_method = self::get_cheapest_method($_available_methods);
+						if ( $calc_cheapest || !isset( $_available_methods[$chosen_method] )) :
+							$chosen_method = $_cheapest_method;
+						endif;
+				endif;			
+
+				if ( $chosen_method ) :
+					
+						//sets session in the method choose()
+						$_available_methods[$chosen_method]->choose();
+				
+						// if selected_rate_id has been set, it means there are calculable shipping methods
+						if (isset($_SESSION['selected_rate_id'])) : 
+								if ($_SESSION['selected_rate_id'] != 'no_rate_id' && $_available_methods[$chosen_method] instanceof jigoshop_calculable_shipping) :
+										self::$shipping_total = $_available_methods[$chosen_method]->get_selected_price($_SESSION['selected_rate_id']);
+								else :
+										self::$shipping_total = $_available_methods[$chosen_method]->shipping_total;
+								endif;
+
+						else :
+								self::$shipping_total = $_available_methods[$chosen_method]->shipping_total;
+						endif;
+						
+						self::$shipping_tax = $_available_methods[$chosen_method]->shipping_tax;
+						self::$shipping_label = $_available_methods[$chosen_method]->title;
+
+				endif;
+				
+			endif; //sizeof available methods
+                      
+		endif; //self enabled == 'yes'
 		
 	}
 	
@@ -163,6 +214,7 @@ class jigoshop_shipping extends jigoshop_singleton {
 		self::$shipping_total = 0;
 		self::$shipping_tax = 0;
 		self::$shipping_label = null;
+		self::$has_calculable_shipping = false;		
 	}
 	
 }

@@ -21,7 +21,8 @@ function get_jigoshop_cart( $atts ) {
 function jigoshop_cart( $atts ) {
 
 	$errors = array();
-
+	unset($_SESSION['selected_rate_id']);
+	
 	// Process Discount Codes
 	if (isset($_POST['apply_coupon']) && $_POST['apply_coupon'] && jigoshop::verify_nonce('cart')) :
 
@@ -50,9 +51,6 @@ function jigoshop_cart( $atts ) {
 			jigoshop_customer::set_location( $country, $state, $postcode );
 			jigoshop_customer::set_shipping_location( $country, $state, $postcode );
 
-			// Re-calc price
-			jigoshop_cart::calculate_totals();
-
 			jigoshop::add_message(  __('Shipping costs updated.', 'jigoshop') );
 
 		else :
@@ -63,7 +61,23 @@ function jigoshop_cart( $atts ) {
 
 		endif;
 
+	elseif (isset($_POST['shipping_rates'])) :
+	
+		$rates_params = explode(":", $_POST['shipping_rates']);
+        
+                if ($rates_params[1] != NULL) :
+	                $_SESSION['selected_rate_id'] = $rates_params[1];
+	        else :
+	        	$_SESSION['selected_rate_id'] = 'no_rate_id'; // where are constants stored? to find out
+	        endif;
+                
+                $available_methods = jigoshop_shipping::get_available_shipping_methods();
+                $available_methods[$rates_params[0]]->choose(); // choses the method selected by user.
+
 	endif;
+
+	// Re-Calc prices. This needs to happen every time the cart page is loaded and after checking post results. It will happen twice for coupon. 
+	jigoshop_cart::calculate_totals(); 
 
 	$result = jigoshop_cart::check_cart_item_stock();
 	if (is_wp_error($result)) :
@@ -176,35 +190,36 @@ function jigoshop_cart( $atts ) {
 		if ($available_methods || !jigoshop_customer::get_shipping_country() || !jigoshop_shipping::is_enabled() ) :
 			?>
 			<h2><?php _e('Cart Totals', 'jigoshop'); ?></h2>
-			<table cellspacing="0" cellpadding="0">
-				<tbody>
-					<tr>
-						<th class="cart-row-subtotal-title"><?php _e('Subtotal', 'jigoshop'); ?></th>
-						<td class="cart-row-subtotal"><?php echo jigoshop_cart::get_cart_subtotal(); ?></td>
-					</tr>
-
-					<?php if (jigoshop_cart::get_cart_shipping_total()) : ?><tr>
-						<th class="cart-row-shipping-title"><?php _e('Shipping', 'jigoshop'); ?> <small><?php echo jigoshop_countries::shipping_to_prefix().' '.jigoshop_countries::$countries[ jigoshop_customer::get_shipping_country() ]; ?></small></th>
-						<td class="cart-row-shipping"><?php echo jigoshop_cart::get_cart_shipping_total(); ?> <small><?php echo jigoshop_cart::get_cart_shipping_title(); ?></small></td>
-					</tr><?php endif; ?>
-					<?php if (jigoshop_cart::get_cart_tax()) : ?><tr>
-						<th class="cart-row-tax-title"><?php _e('Tax', 'jigoshop'); ?> <?php if (jigoshop_customer::is_customer_outside_base()) : ?><small><?php echo sprintf(__('estimated for %s', 'jigoshop'), jigoshop_countries::estimated_for_prefix() . jigoshop_countries::$countries[ jigoshop_countries::get_base_country() ] ); ?></small><?php endif; ?></th>
-						<td class="cart-row-tax"><?php
-							echo jigoshop_cart::get_cart_tax();
-						?></td>
-					</tr><?php endif; ?>
-
-					<?php if (jigoshop_cart::get_total_discount()) : ?><tr class="discount">
-						<th class="cart-row-discount-title"><?php _e('Discount', 'jigoshop'); ?></th>
-						<td class="cart-row-discount">-<?php echo jigoshop_cart::get_total_discount(); ?></td>
-					</tr><?php endif; ?>
-					<tr>
-						<th class="cart-row-total-title"><strong><?php _e('Total', 'jigoshop'); ?></strong></th>
-						<td class="cart-row-total"><strong><?php echo jigoshop_cart::get_total(); ?></strong></td>
-					</tr>
-				</tbody>
-			</table>
-
+			<div class="cart_totals_table">
+				<table cellspacing="0" cellpadding="0">
+					<tbody>
+						<tr>
+							<th class="cart-row-subtotal-title"><?php _e('Subtotal', 'jigoshop'); ?></th>
+							<td class="cart-row-subtotal"><?php echo jigoshop_cart::get_cart_subtotal(); ?></td>
+						</tr>
+	
+						<?php if (jigoshop_cart::get_cart_shipping_total()) : ?><tr>
+							<th class="cart-row-shipping-title"><?php _e('Shipping', 'jigoshop'); ?> <small><?php echo jigoshop_countries::shipping_to_prefix().' '.jigoshop_countries::$countries[ jigoshop_customer::get_shipping_country() ]; ?></small></th>
+							<td class="cart-row-shipping"><?php echo jigoshop_cart::get_cart_shipping_total(); ?> <small><?php echo jigoshop_cart::get_cart_shipping_title(); ?></small></td>
+						</tr><?php endif; ?>
+						<?php if (jigoshop_cart::get_cart_tax()) : ?><tr>
+							<th class="cart-row-tax-title"><?php _e('Tax', 'jigoshop'); ?> <?php if (jigoshop_customer::is_customer_outside_base()) : ?><small><?php echo sprintf(__('estimated for %s', 'jigoshop'), jigoshop_countries::estimated_for_prefix() . jigoshop_countries::$countries[ jigoshop_countries::get_base_country() ] ); ?></small><?php endif; ?></th>
+							<td class="cart-row-tax"><?php
+								echo jigoshop_cart::get_cart_tax();
+							?></td>
+						</tr><?php endif; ?>
+	
+						<?php if (jigoshop_cart::get_total_discount()) : ?><tr class="discount">
+							<th class="cart-row-discount-title"><?php _e('Discount', 'jigoshop'); ?></th>
+							<td class="cart-row-discount">-<?php echo jigoshop_cart::get_total_discount(); ?></td>
+						</tr><?php endif; ?>
+						<tr>
+							<th class="cart-row-total-title"><strong><?php _e('Total', 'jigoshop'); ?></strong></th>
+							<td class="cart-row-total"><strong><?php echo jigoshop_cart::get_total(); ?></strong></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 			<?php
 			else :
 				echo '<p>'.__('Sorry, it seems that there are no available shipping methods to your location. Please contact us if you require assistance or wish to make alternate arrangements.', 'jigoshop').'</p>';

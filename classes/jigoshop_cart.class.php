@@ -46,7 +46,7 @@ class jigoshop_cart extends jigoshop_singleton {
 
 		if ( isset($_SESSION['coupons']) ) self::$applied_coupons = $_SESSION['coupons'];
 		
-		self::calculate_totals();
+		self::add_action( 'plugins_loaded', 'calculate_totals', 999 );
 	}
 	
 	/** Gets the cart data from the PHP session */
@@ -191,7 +191,10 @@ class jigoshop_cart extends jigoshop_singleton {
         }
 
         self::set_session();
-        return true;
+
+        // user might have gone shopping again, will need to recalculate totals for user selected shipping
+        unset($_SESSION['selected_rate_id']);
+	return true;
 	}
 
 	/**
@@ -225,7 +228,10 @@ class jigoshop_cart extends jigoshop_singleton {
 		endif;
 
 		self::set_session();
-	}
+		
+	        // user might have gone shopping again, will need to recalculate totals for user selected shipping
+	        unset($_SESSION['selected_rate_id']);
+	 }
 
 	/**
 	 * Returns the contents of the cart
