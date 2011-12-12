@@ -190,7 +190,7 @@ class jigoshop_product_meta
 				$value = null; // Set as null
 			}
 
-			$attributes[ $attr_names[$key] ] = array(
+			$attributes[ sanitize_title($attr_names[$key]) ] = array(
 				'name'			=> $attr_names[$key],
 				'value'			=> $value,
 				'position'		=> (int)  $attr_position[$key],
@@ -218,7 +218,7 @@ class jigoshop_product_meta
 	}
 } new jigoshop_product_meta();
 
-
+/*
 add_action( 'jigoshop_process_product_meta', 'jigoshop_process_product_meta', 1, 2 );
 
 function jigoshop_process_product_meta( $post_id, $post ) {
@@ -387,4 +387,4 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 	update_post_meta( $post_id, 'product_data', $savedata );
 	update_option( 'jigoshop_errors', $jigoshop_errors );
 
-}
+}*/
