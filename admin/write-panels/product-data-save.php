@@ -21,7 +21,7 @@
 class jigoshop_product_meta
 {
 	public function __construct() {
-		add_action( 'jigoshop_process_product_meta', array(&$this, 'save', 1, 2 ));
+		add_action( 'jigoshop_process_product_meta', array(&$this, 'save'), 1, 2 );
 	}
 
 	public function save( $post_id, $post ) {
@@ -39,7 +39,7 @@ class jigoshop_product_meta
 		update_post_meta( $post_id, 'tax_status',		$_POST['tax_status']);
 		update_post_meta( $post_id, 'tax_class',			$_POST['tax_class']);
 
-		update_post_meta( $post_id, 'visiblity',			$_POST['visiblity']);
+		update_post_meta( $post_id, 'visibility',		$_POST['visibility']);
 		update_post_meta( $post_id, 'featured',			(isset($_POST['featured']) ? 'yes' : 'no') );
 
 		( $this->is_unique_sku( $post_id, $_POST['sku'] ) )
@@ -82,18 +82,15 @@ class jigoshop_product_meta
 	 **/
 	private function process_sale_dates( array $post ) {
 		if ( $post['product-type'] !== 'grouped' ) {
-			$array = array();
+			$array = array(
+				'sale_price_dates_from'		=> false,
+				'sale_price_dates_to'		=> false,
+			);
 			
-			if( ! $sale_start && ! $sale_end ) {
-				$array['sale_price_dates_from'] = false;
-				$array['sale_price_dates_to'] = false;
-			}
-			else {
+			if( $sale_end = strtotime($post['sale_price_dates_to']) ) {
 				$sale_start	= isset($post['sale_price_dates_from']) 
 					? strtotime($post['sale_price_dates_from'])
 					: time();
-
-				$sale_end	= strtotime($post['sale_price_dates_to']);
 
 				$array['sale_price_dates_from'] = $sale_start;
 				$array['sale_price_dates_to'] = $sale_end;
@@ -110,7 +107,12 @@ class jigoshop_product_meta
 	 * @return	array
 	 **/
 	private function process_stock( array $post ) {
-		$array = array();
+		$array = array(
+			'stock'			=> false,
+			'manage_stock' 	=> false,
+			'backorders'	=> false,
+			'stock_status'	=> $post['stock_status'],
+		);
 
 		if ( ! get_option('jigoshop_manage_stock', false) )
 			return false;
@@ -124,10 +126,12 @@ class jigoshop_product_meta
 			$array['manage_stock'] = 'yes'; // should be true
 			$array['backorders'] = $post['backorders']; // should have a space
 
-			if ( $post['product-type'] !== 'variable' && $post['backorders'] == 'no' && (bool) $post['stock'] ) {
+			if ( $post['product-type'] !== 'variable' && $post['stock'] < 0 && $post['backorders'] == 'no') {
 				$array['stock_status'] = 'outofstock';
 			}
 		}
+
+		// What about if there is no managing of stock?
 
 		return $array;
 	}
