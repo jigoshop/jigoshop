@@ -26,10 +26,10 @@ class jigoshop_product_meta
 
 	public function save( $post_id, $post ) {
 
-		// This should really be product_type
-		$product_type = $_POST['product-type'];
-		wp_set_object_terms( $post_id, sanitize_title($product_type), 'product_type');
+		// Set the product type
+		wp_set_object_terms( $post_id, sanitize_title($_POST['product-type']), 'product_type');
 
+		// Process general product data
 		// How to sanitize this block?
 		update_post_meta( $post_id, 'regular_price',		$_POST['regular_price']);
 		update_post_meta( $post_id, 'sale_price',		$_POST['sale_price']);
@@ -42,10 +42,12 @@ class jigoshop_product_meta
 		update_post_meta( $post_id, 'visibility',		$_POST['visibility']);
 		update_post_meta( $post_id, 'featured',			(isset($_POST['featured']) ? 'yes' : 'no') );
 
+		// Process the SKU
 		( $this->is_unique_sku( $post_id, $_POST['sku'] ) )
 			? update_post_meta( $post_id, 'sku', $_POST['sku'])
 			: delete_post_meta( $post_id, 'sku' );
 
+		// Process the attributes
 		update_post_meta( $post_id, 'product_attributes', $this->process_attributes($_POST, $post_id));
 
 		// Process the stock information
@@ -71,9 +73,9 @@ class jigoshop_product_meta
 			: delete_post_meta( $post_id, 'crosssell_ids' );
 
 		// Do action for product type
-		do_action( 'jigoshop_process_product_meta_' . $product_type, $post_id );
+		do_action( 'jigoshop_process_product_meta_' . $_POST['product-type'], $post_id );
 	}
-
+	
 	/**
 	 * Processes the sale dates
 	 *
@@ -81,57 +83,59 @@ class jigoshop_product_meta
 	 * @return	array
 	 **/
 	private function process_sale_dates( array $post ) {
-		if ( $post['product-type'] !== 'grouped' ) {
-			$array = array(
-				'sale_price_dates_from'		=> false,
-				'sale_price_dates_to'		=> false,
-			);
-			
+
+		// Set the default values
+		$array = array(
+			'sale_price_dates_from'		=> false,
+			'sale_price_dates_to'		=> false,
+		);
+
+		// If our product is grouped remove the dates
+		if( $post['product-type'] !== 'grouped' ) {
+
+			// Only set sale dates if we have an end
+			// Set start as current time if null
 			if( $sale_end = strtotime($post['sale_price_dates_to']) ) {
-				$sale_start	= isset($post['sale_price_dates_from']) 
+				$sale_start	= ($post['sale_price_dates_from']) 
 					? strtotime($post['sale_price_dates_from'])
 					: time();
 
 				$array['sale_price_dates_from'] = $sale_start;
 				$array['sale_price_dates_to'] = $sale_end;
 			}
-
-			return $array;
 		}
+
+		return $array;
 	}
 
 	/**
-	 * Processes the stock options (Not sure if i like this? shouldn't we be removing data if its unused?)
+	 * Processes the stock options
 	 *
 	 * @param	array		The postback
 	 * @return	array
 	 **/
 	private function process_stock( array $post ) {
-		$array = array(
-			'stock'			=> false,
-			'manage_stock' 	=> false,
-			'backorders'	=> false,
-			'stock_status'	=> $post['stock_status'],
-		);
 
+		// If the global stock switch is off
 		if ( ! get_option('jigoshop_manage_stock', false) )
 			return false;
 
+		// Don't hold stock info for external & grouped products
 		if( $post['product-type'] === 'external' || $post['product-type'] === 'grouped' )
 			return false;
 
-		if( (bool) $post['manage_stock'] ) {
+		// Always return the stock switch
+		$array = array(
+			'manage_stock' 	=> (bool) $post['manage_stock'],
+		);
 
-			$array['stock'] = $post['stock'];
-			$array['manage_stock'] = 'yes'; // should be true
-			$array['backorders'] = $post['backorders']; // should have a space
-
-			if ( $post['product-type'] !== 'variable' && $post['stock'] < 0 && $post['backorders'] == 'no') {
-				$array['stock_status'] = 'outofstock';
-			}
+		// Store suitable stock data
+		if( $array['manage_stock'] ) {
+			$array['stock'] 		= $post['stock'];
+			$array['backorders']	= $post['backorders']; // should have a space
+		} else {
+			$array['stock_status']	= $post['stock_status'];
 		}
-
-		// What about if there is no managing of stock?
 
 		return $array;
 	}
@@ -146,18 +150,22 @@ class jigoshop_product_meta
 	private function is_unique_sku( $post_id, $new_sku ) {
 		global $wpdb;
 
-		// Get the sku from the post meta table
-		$sku = get_post_meta( $post_id, 'sku', true );
-
+		// Check for an SKU value
 		if ( ! $new_sku )
 			return false;
 
+		// Skip check if sku is the same 
+		if( $new_sku === get_post_meta( $post_id, 'sku', true ) )
+			return true;
+
 		// Check that the new sku does not already exist as a meta value or a post ID
-		$_unique_meta = $wpdb->prepare("SELECT COUNT(1) FROM $wpdb->postmeta WHERE meta_key = 'sku' AND 'meta_value' => '%s';", $new_sku);
-		$_unique_post_id = $wpdb->prepare("SELECT COUNT(1) FROM $wpdb->posts WHERE ID='%s' AND ID!='%s' AND post_type='product';", $new_sku, $post_id);
+		$_unique_meta = $wpdb->prepare("SELECT COUNT(1) FROM $wpdb->postmeta WHERE meta_key = 'sku' AND 'meta_value' = '%s';", $new_sku);
+		$_unique_post_id = $wpdb->prepare("SELECT COUNT(1) FROM $wpdb->posts WHERE ID='%s' AND ID!='%s' AND post_type = 'product';", $new_sku, $post_id);
 
 		if ( $wpdb->get_var($_unique_meta) || $wpdb->get_var($_unique_post_id) )
 			return new WP_Error( 'jigoshop_unique_sku', __('Product SKU must be unique', 'jigoshop') );
+
+		return true;
 	}
 
 	/**
