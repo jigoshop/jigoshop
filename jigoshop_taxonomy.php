@@ -139,7 +139,7 @@ function jigoshop_post_type() {
 			'hierarchical' => true,
 			'rewrite' => array( 'slug' => $base_slug, 'with_front' => false ),
 			'query_var' => true,			
-			'supports' => array( 'title', 'editor', 'thumbnail', 'comments'/*, 'page-attributes'*/ ),
+			'supports' => array( 'title', 'editor', 'thumbnail', 'comments', 'excerpt',/*, 'page-attributes'*/ ),
 			'has_archive' => $base_slug,
 			'show_in_nav_menus' => false,
 		)

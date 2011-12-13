@@ -108,9 +108,6 @@ function jigoshop_product_data_box() {
 				<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$menu_order.'" /></p>';
 			
 			
-			// Summary
-			echo '<p class="form-field"><label for="excerpt">' . __('Summary', 'jigoshop') . ':</label>
-			<textarea name="excerpt" id="excerpt" placeholder="' . __('Add a summary for your product &ndash; this is a quick description to encourage users to view the product.', 'jigoshop') . '">'.esc_html( $post->post_excerpt ).'</textarea></p>';
 			
 			// SKU
 			$field = array( 'id' => 'sku', 'label' => __('SKU', 'jigoshop') );
