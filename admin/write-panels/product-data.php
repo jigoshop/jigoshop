@@ -90,15 +90,14 @@ function jigoshop_product_data_box() {
 			do_action('product_type_selector', $product_type);
 
 			echo '</select></p>';
-			
-			// List Grouped products
+
+			// Grouped Products
+			// TODO: Needs refactoring & a bit of love
 			$posts_in = (array) get_objects_in_term( get_term_by( 'slug', 'grouped', 'product_type' )->term_id, 'product_type' );
 			$posts_in = array_unique($posts_in);
-			
-			$field = array( 'id' => 'parent_id', 'label' => __('Parent post', 'jigoshop') );
-			echo '<p class="form-field parent_id_field"><label for="'.$field['id'].'">'.$field['label'].'</label><select id="'.$field['id'].'" name="'.$field['id'].'"><option value="">'.__('Choose a grouped product&hellip;', 'jigoshop').'</option>';
 
-			if (sizeof($posts_in)>0) :
+			if( (bool) $posts_in ) {
+
 				$args = array(
 					'post_type'	=> 'product',
 					'post_status' => 'publish',
@@ -108,20 +107,23 @@ function jigoshop_product_data_box() {
 					'post_parent' => 0,
 					'include' => $posts_in,
 				);
-				$grouped_products = get_posts($args);
-				$loop = 0;
-				if ($grouped_products) : foreach ($grouped_products as $product) :
-					
-					if ($product->ID==$post->ID) continue;
-					
-					echo '<option value="'.$product->ID.'" ';
-					if ($post->post_parent==$product->ID) echo 'selected="selected"';
-					echo '>'.$product->post_title.'</option>';
-			
-				endforeach; endif; 
-			endif;
 
-			echo '</select></p>';
+				$grouped_products = get_posts($args);
+
+				$options = array(
+					null		=> 'Pick a Product Group &hellip;'
+				);
+
+				if( $grouped_products ) foreach( $grouped_products as $product ) {
+					if ($product->ID==$post->ID) continue;
+
+					$options[$product->ID] = $product->post_title;
+				}
+				// Only echo the form if we have grouped products
+				echo jigoshop_form::select( 'parent_id', 'Product Group', $options );
+			}
+
+			
 			
 			// Ordering
 			echo jigoshop_form::input( 'menu_order', 'Sort Order', false, $post->menu_order );
