@@ -215,7 +215,7 @@ class jigoshop_form {
 		$html .= "<input type='text' class='{$class}' name='{$ID}' id='{$ID}' value='{$value}' />";
 
 		if ( $desc ) {
-			$html .= "<span class='description'>$description</span>";
+			$html .= "<span class='description'>$desc</span>";
 		}
 
 		$html .= "</p>";
