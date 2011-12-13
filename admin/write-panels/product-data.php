@@ -137,22 +137,22 @@ function jigoshop_product_data_box() {
 			if( get_option('jigoshop_enable_weight') !== 'no' ) {
 				echo jigoshop_form::input( 'weight', 'Weight' ); // Missing placeholder attribute 0.00
 			}
-			
+
 			// Featured
-			$field = array( 'id' => 'featured', 'label' => __('Featured?', 'jigoshop') );
-			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].'</label><select name="'.$field['id'].'">';
-			echo '<option value="no" '; if (isset($featured) && $featured=='no') echo 'selected="selected"'; echo '>' . __('No', 'jigoshop') . '</option>';
-			echo '<option value="yes" '; if (isset($featured) && $featured=='yes') echo 'selected="selected"'; echo '>' . __('Yes', 'jigoshop') . '</option>';
-			echo '</select></p>';
-			
+			echo jigoshop_form::select( 'featured', 'Featured?', 
+				array(
+					false	=> 'No',
+					true	=> 'Yes'
+				) );
+
 			// Visibility
-			$field = array( 'id' => 'visibility', 'label' => __('Visibility', 'jigoshop') );
-			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].':</label><select name="'.$field['id'].'">';
-			echo '<option value="visible" '; if (isset($visibility) && $visibility=='visible') echo 'selected="selected"'; echo '>' . __('Catalog &amp; Search', 'jigoshop') . '</option>';
-			echo '<option value="catalog" '; if (isset($visibility) && $visibility=='catalog') echo 'selected="selected"'; echo '>' . __('Catalog', 'jigoshop') . '</option>';
-			echo '<option value="search" '; if (isset($visibility) && $visibility=='search') echo 'selected="selected"'; echo '>' . __('Search', 'jigoshop') . '</option>';
-			echo '<option value="hidden" '; if (isset($visibility) && $visibility=='hidden') echo 'selected="selected"'; echo '>' . __('Hidden', 'jigoshop') . '</option>';
-			echo '</select></p>';
+			echo jigoshop_form::select( 'visibility', 'Visibility',
+				array(
+					'visible'	=> 'Catalog & Search',
+					'catalog'	=> 'Catalog Only',
+					'search'	=> 'Search Only',
+					'Hidden'	=> 'Hidden'
+				) );
 			?>
 		</div>
 		<div id="pricing_product_data" class="panel jigoshop_options_panel">

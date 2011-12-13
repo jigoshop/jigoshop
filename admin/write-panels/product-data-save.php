@@ -40,7 +40,7 @@ class jigoshop_product_meta
 		update_post_meta( $post_id, 'tax_class',			$_POST['tax_class']);
 
 		update_post_meta( $post_id, 'visibility',		$_POST['visibility']);
-		update_post_meta( $post_id, 'featured',			(isset($_POST['featured']) ? 'yes' : 'no') );
+		update_post_meta( $post_id, 'featured',			$_POST['featured']);
 
 		// Process the SKU
 		( $this->is_unique_sku( $post_id, $_POST['sku'] ) )
