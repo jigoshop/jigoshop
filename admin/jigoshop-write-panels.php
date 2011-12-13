@@ -221,4 +221,34 @@ class jigoshop_form {
 		$html .= "</p>";
 		return $html;
 	}
+
+	public static function select( $ID, $label, $options, $desc = FALSE, $class = 'select short' ) {
+		global $post;
+
+		$selected = ($selected) ? $selected : get_post_meta($post->ID, $ID, true);
+
+		$html .= "<p class='form-field {$ID}_field'>";
+		$html .= "<label for='{$ID}'>$label</label>";
+		$html .= "<select id='{$ID}' name='{$ID}' class='{$class}'>";
+
+		foreach( $options as $value => $label ) {
+			$mark = '';
+
+			// Not the best way but has to be done because selected() echos
+			if( $selected == $value ) {
+				$mark = 'selected="selected"';
+			}
+
+			$html .= "<option value='{$value}' {$mark}>{$label}</option>";
+		}
+
+		$html .= "</select>";
+
+		if ( $desc ) {
+			$html .= "<span class='description'>$desc</span>";
+		}
+
+		$html .= "</p>";
+		return $html;
+	}
 }
