@@ -159,8 +159,8 @@ class jigoshop_product_meta
 			return true;
 
 		// Check that the new sku does not already exist as a meta value or a post ID
-		$_unique_meta = $wpdb->prepare("SELECT COUNT(1) FROM $wpdb->postmeta WHERE meta_key = 'sku' AND 'meta_value' = '%s';", $new_sku);
-		$_unique_post_id = $wpdb->prepare("SELECT COUNT(1) FROM $wpdb->posts WHERE ID='%s' AND ID!='%s' AND post_type = 'product';", $new_sku, $post_id);
+		$_unique_meta = $wpdb->prepare("SELECT COUNT(1) FROM $wpdb->postmeta WHERE meta_key = 'sku' AND meta_value = %s", $new_sku);
+		$_unique_post_id = $wpdb->prepare("SELECT COUNT(1) FROM $wpdb->posts WHERE ID = %s AND ID != %s AND post_type = 'product'", $new_sku, $post_id);
 
 		if ( $wpdb->get_var($_unique_meta) || $wpdb->get_var($_unique_post_id) )
 			return new WP_Error( 'jigoshop_unique_sku', __('Product SKU must be unique', 'jigoshop') );
