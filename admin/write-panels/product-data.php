@@ -27,30 +27,45 @@
 function jigoshop_product_data_box() {
 
 	global $post, $wpdb, $thepostid;
-	
-	
 	add_action('admin_footer', 'jigoshop_meta_scripts');
-	
 	wp_nonce_field( 'jigoshop_save_data', 'jigoshop_meta_nonce' );
-	
-	$data = (array) maybe_unserialize( get_post_meta($post->ID, 'product_data', true) );
-	$featured = (string) get_post_meta( $post->ID, 'featured', true );
-	$visibility = (string) get_post_meta( $post->ID, 'visibility', true);
-	
-	if (!isset($data['weight'])) $data['weight'] = '';
-	if (!isset($data['regular_price'])) $data['regular_price'] = '';
-	if (!isset($data['sale_price'])) $data['sale_price'] = '';
-	
+
 	$thepostid = $post->ID;
+
+	$data = get_post_custom( $thepostid );
+
+	
+	//$data = (array) maybe_unserialize( get_post_meta($post->ID, 'product_data', true) );
+	//$featured = (string) get_post_meta( $post->ID, 'featured', true );
+	//$visibility = (string) get_post_meta( $post->ID, 'visibility', true);
+	
+	//if (!isset($data['weight'])) $data['weight'] = '';
+	//if (!isset($data['regular_price'])) $data['regular_price'] = '';
+	//if (!isset($data['sale_price'])) $data['sale_price'] = '';
+	
+	
 	
 	?>
 	<div class="panel-wrap product_data">
-	
+
 		<ul class="product_data_tabs tabs" style="display:none;">
-			<li class="active"><a href="#general_product_data"><?php _e('General', 'jigoshop'); ?></a></li>
-			<li class="pricing_tab"><a href="#pricing_product_data"><?php _e('Pricing', 'jigoshop'); ?></a></li>
-			<?php if (get_option('jigoshop_manage_stock')=='yes') : ?><li class="inventory_tab"><a href="#inventory_product_data"><?php _e('Inventory', 'jigoshop'); ?></a></li><?php endif; ?>
-			<li><a href="#jigoshop_attributes"><?php _e('Attributes', 'jigoshop'); ?></a></li>
+			<li class="active">
+				<a href="#general_product_data"><?php _e('General', 'jigoshop'); ?></a>
+			</li>
+
+			<li class="pricing_tab">
+				<a href="#pricing_product_data"><?php _e('Pricing', 'jigoshop'); ?></a>
+			</li>
+
+			<?php if (get_option('jigoshop_manage_stock')) : ?>
+			<li class="inventory_tab">
+				<a href="#inventory_product_data"><?php _e('Inventory', 'jigoshop'); ?></a>
+			</li>
+			<?php endif; ?>
+
+			<li>
+				<a href="#jigoshop_attributes"><?php _e('Attributes', 'jigoshop'); ?></a>
+			</li>
 			
 			<?php do_action('product_write_panel_tabs'); ?>
 		</ul>
@@ -58,9 +73,17 @@ function jigoshop_product_data_box() {
 		<div id="general_product_data" class="panel jigoshop_options_panel"><?php
 			
 			// Product Type
-			if ($terms = wp_get_object_terms( $thepostid, 'product_type' )) $product_type = current($terms)->slug; else $product_type = 'simple';
-			$field = array( 'id' => 'product-type', 'label' => __('Product Type', 'jigoshop') );
-			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].' <em class="req" title="'.__('Required', 'jigoshop') . '">*</em></label><select id="'.$field['id'].'" name="'.$field['id'].'">';
+			$terms = wp_get_object_terms( $thepostid, 'product_type' );
+			$product_type = ($terms) ? current($terms)->slug : 'simple';
+
+			$field = array( 
+				'id' 	=> 'product-type',
+				'label' => __('Product Type', 'jigoshop')
+			);
+
+			echo '<p class="form-field">
+				<label for="'.$field['id'].'">'.$field['label'].' <em class="req" title="'.__('Required', 'jigoshop') . '">*</em></label>
+				<select id="'.$field['id'].'" name="'.$field['id'].'">';
 
 			echo '<option value="simple" '; if ($product_type=='simple') echo 'selected="selected"'; echo '>'.__('Simple','jigoshop').'</option>';
 			
@@ -101,13 +124,7 @@ function jigoshop_product_data_box() {
 			echo '</select></p>';
 			
 			// Ordering
-			$menu_order = $post->menu_order;
-			$field = array( 'id' => 'menu_order', 'label' => _x('Post Order', 'ordering', 'jigoshop') );
-			echo '<p class="form-field menu_order_field">
-				<label for="'.$field['id'].'">'.$field['label'].':</label>
-				<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$menu_order.'" /></p>';
-			
-			
+			echo jigoshop_form::input('menu_order', 'Sort Order', false, $post->menu_order );
 			
 			// SKU
 			$field = array( 'id' => 'sku', 'label' => __('SKU', 'jigoshop') );
