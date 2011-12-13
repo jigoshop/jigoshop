@@ -124,30 +124,19 @@ function jigoshop_product_data_box() {
 			echo '</select></p>';
 			
 			// Ordering
-			echo jigoshop_form::input('menu_order', 'Sort Order', false, $post->menu_order );
-			
+			echo jigoshop_form::input( 'menu_order', 'Sort Order', false, $post->menu_order );
+
 			// SKU
-			$field = array( 'id' => 'sku', 'label' => __('SKU', 'jigoshop') );
-			$SKU = get_post_meta($thepostid, 'SKU', true);
-			
-			if( get_option('jigoshop_enable_sku', true) !== 'no' ) :
-				echo '<p class="form-field">
-					<label for="'.$field['id'].'">'.$field['label'].':</label>
-					<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$SKU.'" /> <span class="description">' . __('Leave blank to use product ID', 'jigoshop') . '</span></p>';
-			else:
-				echo '<input type="hidden" name="'.$field['id'].'" value="'.$SKU.'" />';
-			endif;
-			
+			// TODO: Do we need this check? Why are we disabling the SKU? -Rob
+			if ( get_option('jigoshop_enable_sku') !== 'no' ) {
+				echo jigoshop_form::input( 'sku', 'SKU', 'Leave blank to use product ID' );
+			}
+
 			// Weight
-			$field = array( 'id' => 'weight', 'label' => __('Weight', 'jigoshop') . ' ('.get_option('jigoshop_weight_unit').'):' );
-			 
-			if( get_option('jigoshop_enable_weight', true) !== 'no' ) :
-				echo '<p class="form-field">
-					<label for="'.$field['id'].'">'.$field['label'].'</label>
-					<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" placeholder="0.00" /></p>';
-			else:
-				echo '<input type="hidden" name="'.$field['id'].'" value="'.$data[$field['id']].'" />';
-			endif;
+			// TODO: Do we need this check? -Rob
+			if( get_option('jigoshop_enable_weight') !== 'no' ) {
+				echo jigoshop_form::input( 'weight', 'Weight' ); // Missing placeholder attribute 0.00
+			}
 			
 			// Featured
 			$field = array( 'id' => 'featured', 'label' => __('Featured?', 'jigoshop') );
