@@ -169,31 +169,44 @@ class jigoshop_product {
 
 	/**
 	 * Reduce stock level of the product
+	 * Acts as an alias for modify_stock()
 	 *
 	 * @param   int		$by		Amount to reduce by
+	 * @return	int
 	 */
-	public function reduce_stock( $by = 1 ) {
-
-		if ($this->managing_stock()) {
-			
-			$this->stock - $by;
-			
-			//update_post_meta($this->id, 'stock', $reduce_to);
-			//return $reduce_to;
-		}
+	public function reduce_stock( $by = -1 ) {
+		return $this->modify_stock( -$by );
 	}
 
 	/**
 	 * Increase stock level of the product
+	 * Acts as an alias for modify_stock()
 	 *
 	 * @param   int		$by		Amount to increase by
+	 * @return	int
 	 */
-	function increase_stock( $by = 1 ) {
-		if ($this->managing_stock()) {
-			$increase_to = $this->stock + $by;
-			update_post_meta($this->id, 'stock', $increase_to);
-			return $increase_to;
-		}
+	public function increase_stock( $by = 1 ) {
+		return $this->modify_stock( $by );
+	}
+
+	/**
+	 * Modifies the stock levels
+	 *
+	 * @param   int		$by		Amount to modify
+	 * @return	int
+	 */
+	public function modify_stock( $by ) {
+
+		// Only do this if we're updating
+		if ( ! $this->managing_stock() )
+			return false;
+		
+		// +- = minus
+		$this->stock = $this->stock + $by;
+		
+		// Update & return the new value
+		update_post_meta( $this->id, 'stock', $this->stock )
+		return $this->stock;
 	}
 
 	/**
