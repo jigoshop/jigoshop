@@ -63,9 +63,7 @@ class jigoshop_product_meta
 		
 		// Process the sale dates
 		foreach( $this->process_sale_dates( $_POST ) as $key => $value ) {
-			( $value )
-				? update_post_meta( $post_id, $key, $value )
-				: delete_post_meta( $post_id, $key );
+			update_post_meta( $post_id, $key, $value );
 		}
 
 		// Process upsells
