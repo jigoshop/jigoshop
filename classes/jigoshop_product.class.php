@@ -44,7 +44,7 @@ class jigoshop_product {
 	private $manage_stock		= false;
 	private $stock_status		= 'instock';
 	private $backorders;
-	private $stock;
+	public $stock; // : admin/jigoshop-admin-post-types.php on line 180
 
 	private	$attributes			= array();
 
@@ -58,38 +58,39 @@ class jigoshop_product {
 		// Grab the product ID & get the product meta data
 		// TODO: Change to uppercase for consistency sake
 		$this->id = (int) $ID;
-		$product_meta = get_post_custom( $this->id );
+		$meta = get_post_custom( $this->id );
 
 		// Check if the product has meta data attached
 		// If not then it might not be a product
-		$this->exists = (bool) $product_meta;
+		$this->exists = (bool) $meta;
 
 		// Get the product type
+		// TODO: for some reason this is invalid on first run?
 		$terms = wp_get_object_terms( $this->id, 'product_type', array('fields' => 'names') );
 		if( ! is_wp_error($terms) )
 			$this->product_type = sanitize_title($terms[0]); // should throw error if something has gone wrong
 
 		// Define data
-		$this->regular_price				= $product_meta['regular_price'][0];
-		$this->sale_price				= $product_meta['sale_price'][0];
-		$this->sale_price_dates_from		= $product_meta['sale_price_dates_from'][0];
-		$this->sale_price_dates_to		= $product_meta['sale_price_dates_to'][0];
+		$this->regular_price				= isset($meta['regular_price'][0]) ? $meta['regular_price'][0] : null;
+		$this->sale_price				= isset($meta['sale_price'][0]) 	? $meta['sale_price'][0] : null;
+		$this->sale_price_dates_from		= isset($meta['sale_price_dates_from'][0]) ? $meta['sale_price_dates_from'][0] : null;
+		$this->sale_price_dates_to		= isset($meta['sale_price_dates_to'][0]) ? $meta['sale_price_dates_to'][0] : null;
 
-		$this->n_weight					= $product_meta['weight'][0];
+		$this->n_weight					= isset($meta['weight'][0]) ? $meta['weight'][0] : null;
 
-		$this->n_tax_status				= $product_meta['tax_status'][0];
-		$this->n_tax_class				= $product_meta['tax_class'][0];
+		$this->n_tax_status				= isset($meta['tax_status'][0]) ? $meta['tax_status'][0] : null;
+		$this->n_tax_class				= isset($meta['tax_class'][0]) ? $meta['tax_class'][0] : null;
 
-		$this->visibility				= $product_meta['visibility'][0];
-		$this->n_featured				= $product_meta['featured'][0];
+		$this->visibility				= isset($meta['visibility'][0]) ? $meta['visibility'][0] : null;
+		$this->n_featured				= isset($meta['featured'][0]) ? $meta['featured'][0] : null;
 
-		$this->manage_stock				= $product_meta['manage_stock'][0];
-		$this->stock_status				= $product_meta['stock_status'][0];
-		$this->backorders				= $product_meta['backorders'][0];
-		$this->stock					= $product_meta['stock'][0];
+		$this->manage_stock				= isset($meta['manage_stock'][0]) ? $meta['manage_stock'][0] : null;
+		$this->stock_status				= isset($meta['stock_status'][0]) ? $meta['stock_status'][0] : null;
+		$this->backorders				= isset($meta['backorders'][0]) ? $meta['backorders'][0] : null;
+		$this->stock					= isset($meta['stock'][0]) ? $meta['stock'][0] : null;
 
 		// Get the attributes
-		$this->attributes = maybe_unserialize( $product_meta['product_attributes'][0] );
+		$this->attributes = maybe_unserialize( $meta['product_attributes'][0] );
 
 		// OLD
 		$this->get_children();
