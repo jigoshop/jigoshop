@@ -30,12 +30,11 @@ class jigoshop_product {
 	public $visibility;
 	public $product_type;
 	public $price;
-    public $sale_price;
 
-	private $n_regular_price	;
-	private $n_sale_price;
-	private $n_sale_price_dates_from	;
-	private $n_sale_price_dates_to;
+	private $regular_price	;
+	private $sale_price;
+	private $sale_price_dates_from	;
+	private $sale_price_dates_to;
 
 	private $n_weight;
 
@@ -86,10 +85,10 @@ class jigoshop_product {
 		$this->exists = (bool) $product_meta;
 
 		// Define data
-		$this->n_regular_price			= $product_meta['regular_price'][0];
-		$this->n_sale_price 				= $product_meta['sale_price'][0];
-		$this->n_sale_price_dates_from 	= $product_meta['sale_price_dates_from'][0];
-		$this->n_sale_price_dates_to		= $product_meta['sale_price_dates_to'][0];
+		$this->regular_price				= $product_meta['regular_price'][0];
+		$this->sale_price 				= $product_meta['sale_price'][0];
+		$this->sale_price_dates_from 	= $product_meta['sale_price_dates_from'][0];
+		$this->sale_price_dates_to		= $product_meta['sale_price_dates_to'][0];
 
 		$this->n_weight					= $product_meta['weight'][0];
 
@@ -123,28 +122,10 @@ class jigoshop_product {
             $this->attributes = maybe_unserialize( $product_custom_fields['product_attributes'][0] );
         }
         
-		// Again just in case, to fix WP bug
-		$this->data = maybe_unserialize( $this->data );
-		$this->attributes = maybe_unserialize( $this->attributes );
-
-        $this->price = NULL;
-		if (isset($this->data['regular_price'])) {
-            $this->price = $this->data['regular_price'];
-        }
-
-        $this->sale_price = NULL;
-		if (isset($this->data['sale_price'])) {
-            $this->sale_price = $this->data['sale_price'];
-        }
 
         $this->visibility = 'hidden';
 		if (isset($product_custom_fields['visibility'][0])) {
             $this->visibility = $product_custom_fields['visibility'][0];
-        }
-
-        $this->stock = 0;
-		if (isset($product_custom_fields['stock'][0])) {
-            $this->stock = $product_custom_fields['stock'][0];
         }
 
 		$terms = wp_get_object_terms( $ID, 'product_type' );
@@ -156,12 +137,6 @@ class jigoshop_product {
         }
 
 		$this->get_children();
-
-		if ($this->data) {
-			$this->exists = true;
-        } else {
-			$this->exists = false;
-        }
 	}
     
     /**
@@ -261,9 +236,13 @@ class jigoshop_product {
 		return false;
 	}
 
-	/** Returns whether or not the product post exists */
-	function exists() {
-		return ($this->exists);
+	/**
+	 * Checks to see if a product exists
+	 *
+	 * @return	bool
+	 */
+	public function exists() {
+		return (bool) $this->exists;
 	}
 
 	/** Returns whether or not the product is taxable */
@@ -464,76 +443,71 @@ class jigoshop_product {
 		return false;
 	}
 
-	/** Returns whether or not the product is visible */
-	function is_visible() {
-		if ($this->visibility=='hidden') return false;
-		if ($this->visibility=='visible') return true;
-		if ($this->visibility=='search' && is_search()) return true;
-		if ($this->visibility=='search' && !is_search()) return false;
-		if ($this->visibility=='catalog' && is_search()) return false;
-		if ($this->visibility=='catalog' && !is_search()) return true;
-	}
+	/**
+	 * Checks if the product is visibile
+	 *
+	 * @return		bool
+	 */
+	public function is_visible( ) {
 
-	/** Returns whether or not a sale price is valid based on product sale date settings */
-	function in_sale_date_range() {
-		$in_range = false;
-		$custom_fields = get_post_custom( $this->id );
-		$date_from = (int)$custom_fields['sale_price_dates_from'][0];
-		$date_to = (int)$custom_fields['sale_price_dates_to'][0];
-		$current_time = strtotime( 'NOW' );
-		if ( $date_to == 0 && $date_from == 0 ) $in_range = true;
-		else if ( $date_from == 0 || ( $date_from > 0 && $date_from < $current_time )) :
-			if ( $date_to == 0 || $date_to > $current_time ) $in_range = true;
-		endif;
-		return $in_range;
+		// Disabled due to incorrect stock handling -Rob
+		//if( (bool) $this->n_stock )
+		//	return false;
+
+		switch($this->n_visiblity) {
+			case 'hidden':
+				return false; 
+			break;
+			case 'search':
+				return is_search();
+			break;
+			case 'catalog':
+				return ! is_search(); // don't display in search results
+			break;
+			default:
+				return true; // By default always display a product
+		}
 	}
 	
     /**
      * Returns whether or not the product is on sale.
      * If one of the child products is on sale, product is considered to be on sale.
      *
+     * TODO: Check children for sale items
+     *
      * @return bool
      */
-	function is_on_sale() {
+	public function is_on_sale() {
 		
-		$on_sale = false;
-		
-		if ($this->has_child()) {
-			foreach ($this->children as $child) {
-				if( $this->product_type != 'grouped') {
-					$on_sale = $child->product->variation_is_on_sale();
-					if ( $on_sale ) break;
-				} else {
-					$on_sale = $child->product->is_on_sale();
-					if ( $on_sale ) break;
-				}
-			}
-		}
-		// the kids may or may not have a sale price
-		// we need to check the parent anyway and logical OR the results in
-		if ( ! empty( $this->sale_price )) {
-			$on_sale |= $this->in_sale_date_range();
-		}
-		
-		return $on_sale;
+		$time = current_time('timestamp');
+
+		// Check if the sale is still in range (if we have a range)
+		if ( $this->sale_price_dates_from 	<= $time && 
+			 $this->sale_price_dates_to 		>= $time &&
+			 $this->sale_price)
+			return true;
+
+		// Otherwise if we have a sale price
+		if ( ! $this->sale_price_dates_to && $this->sale_price )
+			return true;
+
+		// Just incase return false
+		return false;
 	}
 
-	/** Returns the product's weight */
-	function get_weight() {
-		if ($this->data['weight']) {
-            return $this->data['weight'];
-        }
-        
-        return NULL;
+	/**
+	 * Returns the product's weight
+	 * @deprecated not required since we can just call $this->weight if the var is public
+	 *
+	 * @return	mixed	weight
+	 */
+	public function get_weight() {
+		return $this->n_weight;
 	}
 
 	/** Returns the product's price */
 	function get_price() {
-        if(!empty($this->sale_price) && $this->in_sale_date_range()) {
-            return $this->sale_price;
-        }
-        
-		return $this->price;
+		return ($this->is_on_sale()) ? $this->sale_price : $this->regular_price;
 	}
 
 	/** Returns the price (excluding tax) */
