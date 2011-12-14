@@ -110,9 +110,7 @@ function jigoshop_product_data_box() {
 
 				$grouped_products = get_posts($args);
 
-				$options = array(
-					null		=> 'Pick a Product Group &hellip;'
-				);
+				$options = array( null => 'Pick a Product Group &hellip;' );
 
 				if( $grouped_products ) foreach( $grouped_products as $product ) {
 					if ($product->ID==$post->ID) continue;
@@ -122,8 +120,6 @@ function jigoshop_product_data_box() {
 				// Only echo the form if we have grouped products
 				echo jigoshop_form::select( 'parent_id', 'Product Group', $options );
 			}
-
-			
 			
 			// Ordering
 			echo jigoshop_form::input( 'menu_order', 'Sort Order', false, $post->menu_order );
@@ -159,20 +155,15 @@ function jigoshop_product_data_box() {
 		</div>
 		<div id="pricing_product_data" class="panel jigoshop_options_panel">
 			
-			<?php 
-			// Price
-			$field = array( 'id' => 'regular_price', 'label' => __('Regular Price', 'jigoshop') . ' ('.get_jigoshop_currency_symbol().'):' );
-			echo '	<p class="form-field">
-						<label for="'.$field['id'].'">'.$field['label'].'</label>
-						<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" placeholder="0.00" /></p>';
-			
-			// Special Price
-			$field = array( 'id' => 'sale_price', 'label' => __('Sale Price', 'jigoshop') . ' ('.get_jigoshop_currency_symbol().'):' );
-			echo '	<p class="form-field">
-						<label for="'.$field['id'].'">'.$field['label'].'</label>
-						<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" placeholder="0.00" /></p>';
-					
-			// Special Price date range
+			<?php
+			// Regular Price
+			echo jigoshop_form::input( 'regular_price', 'Regular Price' );
+
+			// Sale Price
+			echo jigoshop_form::input( 'sale_price', 'Sale Price' );
+
+			// Sale Price date range
+			// TODO: Convert this to a helper somehow?
 			$field = array( 'id' => 'sale_price_dates', 'label' => __('Sale Price Dates', 'jigoshop') );
 			
 			$sale_price_dates_from = get_post_meta($thepostid, 'sale_price_dates_from', true);
@@ -188,25 +179,26 @@ function jigoshop_product_data_box() {
 			echo '" placeholder="' . __('To&hellip;', 'jigoshop') . '" maxlength="10" />
 						<span class="description">' . __('Date format', 'jigoshop') . ': <code>YYYY-MM-DD</code></span>
 					</p>';
-					
-			// Tax
+
+			// Tax Status
+			echo jigoshop_form::select( 'tax_status', 'Tax Status',
+				array(
+					'taxable'	=> 'Taxable',
+					'shipping'	=> 'Shipping',
+					'none'		=> 'None'
+				) );
+
+			// Tax Classes
+			$options = array( null => 'Standard' );
+
+			// Get all tax classes
 			$_tax = new jigoshop_tax();
-			
-			$field = array( 'id' => 'tax_status', 'label' => __('Tax Status', 'jigoshop') );
-			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].':</label><select name="'.$field['id'].'">';
-			echo '<option value="taxable" '; if (isset($data[$field['id']]) && $data[$field['id']]=='taxable') echo 'selected="selected"'; echo '>' . __('Taxable', 'jigoshop') . '</option>';
-			echo '<option value="shipping" '; if (isset($data[$field['id']]) && $data[$field['id']]=='shipping') echo 'selected="selected"'; echo '>' . __('Shipping only', 'jigoshop') . '</option>';
-			echo '<option value="none" '; if (isset($data[$field['id']]) && $data[$field['id']]=='none') echo 'selected="selected"'; echo '>' . __('None', 'jigoshop') . '</option>';
-			echo '</select></p>';
-			
-			$field = array( 'id' => 'tax_class', 'label' => __('Tax Class', 'jigoshop') );
-			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].':</label><select name="'.$field['id'].'">';
-			echo '<option value="" '; if (isset($data[$field['id']]) && $data[$field['id']]=='') echo 'selected="selected"'; echo '>'.__('Standard', 'jigoshop').'</option>';
 			$tax_classes = $_tax->get_tax_classes();
-    		if ($tax_classes) foreach ($tax_classes as $class) :
-    			echo '<option value="'.sanitize_title($class).'" '; if (isset($data[$field['id']]) && $data[$field['id']]==sanitize_title($class)) echo 'selected="selected"'; echo '>'.$class.'</option>';
-    		endforeach;
-			echo '</select></p>';
+			if( $tax_classes) foreach( $tax_classes as $class ) {
+				$options[sanitize_title($class)] = $class;
+			}
+
+			echo jigoshop_form::select( 'tax_class', 'Tax Class', $options );
 			?>
 			
 		</div>
