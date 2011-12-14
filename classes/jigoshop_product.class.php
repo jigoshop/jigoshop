@@ -346,28 +346,34 @@ class jigoshop_product {
 	 */
 	public function backorders_allowed() {
 
-		if ( $this->backorders == 'yes' || $this->backorders == 'notify' )
+		if ( $this->backorders == 'yes' || $this->backorders_require_notification() )
 			return true;
 
 		return false;
 	}
 
-	/** Returns whether or not the product needs to notify the customer on backorder */
-	function backorders_require_notification() {
-		if ($this->data['backorders']=='notify') {
-			return true;
-		}
-		
-		return false;
+	/**
+	 * Returns whether or not the product needs to notify the customer on backorder
+	 *
+	 * @TODO: Consider a shorter method name?
+	 * 
+	 * @return	bool
+	 */
+	public function backorders_require_notification() {
+
+		return (bool) $this->backorders == 'notify';
 	}
 
-	/** Returns whether or not the product has enough stock for the order */
-	function has_enough_stock( $quantity ) {
-		if ($this->backorders_allowed() || $this->stock >= $quantity) {
-			return true;
-		}
+	/**
+	 * Returns whether or not the product has enough stock for the order
+	 *
+	 * @TODO: Consider a shorter method name?
+	 * 
+	 * @return	bool
+	 */
+	public function has_enough_stock( $quantity ) {
 
-		return false;
+		return ($this->backorders_allowed() || $this->stock >= $quantity)
 	}
 	
 	/**
@@ -375,8 +381,8 @@ class jigoshop_product {
 	 * 
 	 * @return int
 	 */
-	function get_stock_quantity() {
-		return (int)$this->stock;
+	public function get_stock_quantity() {
+		return (int) $this->stock;
 	}
 	
 	/** Returns the availability of the product */
