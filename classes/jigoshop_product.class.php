@@ -361,7 +361,7 @@ class jigoshop_product {
 	 */
 	public function backorders_require_notification() {
 
-		return (bool) $this->backorders == 'notify';
+		return ($this->backorders == 'notify');
 	}
 
 	/**
@@ -373,7 +373,7 @@ class jigoshop_product {
 	 */
 	public function has_enough_stock( $quantity ) {
 
-		return ($this->backorders_allowed() || $this->stock >= $quantity)
+		return ($this->backorders_allowed() || $this->stock >= $quantity);
 	}
 	
 	/**
