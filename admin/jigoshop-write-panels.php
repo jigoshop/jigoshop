@@ -209,6 +209,7 @@ class jigoshop_form {
 		$value = ($value) ? esc_attr($value) : get_post_meta($post->ID, $ID, true);
 		$desc  = ($desc)  ? esc_html($desc) : false;
 		$label = __($label, 'jigoshop');
+		$html  = '';
 
 		$html .= "<p class='form-field {$ID}_field'>";
 		$html .= "<label for='{$ID}'>$label</label>";
@@ -226,6 +227,9 @@ class jigoshop_form {
 		global $post;
 
 		$selected = get_post_meta($post->ID, $ID, true);
+		$desc  = ($desc)  ? esc_html($desc) : false;
+		$label = __($label, 'jigoshop');
+		$html = '';
 
 		$html .= "<p class='form-field {$ID}_field'>";
 		$html .= "<label for='{$ID}'>$label</label>";
@@ -256,6 +260,9 @@ class jigoshop_form {
 		global $post;
 
 		$value = ($value) ? $value : get_post_meta($post->ID, $ID, true);
+		$desc  = ($desc)  ? esc_html($desc) : false;
+		$label = __($label, 'jigoshop');
+		$html = '';
 
 		$mark = '';
 		if( $value ) {
