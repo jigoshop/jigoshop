@@ -53,7 +53,8 @@ function variable_product_type_options() {
 						<?php
 							foreach ($attributes as $attribute) :
 								
-								if ( $attribute['variation'] !== 'yes' ) continue;
+								// If not variable attribute then skip
+								if ( ! $attribute['variation'] ) continue;
 								
 								$options = $attribute['value'];
 								$value = get_post_meta( $variation->ID, 'tax_' . sanitize_title($attribute['name']), true );
@@ -63,6 +64,9 @@ function variable_product_type_options() {
 									$options = explode( ',', $options );
 									$custom_attribute = true;
 								endif;
+
+								var_dump($value);
+								exit();
 								
 								echo '<select name="tax_' . sanitize_title($attribute['name']) . '['.$loop.']"><option value="">'.__('Any ', 'jigoshop').$attribute['name'].' &hellip;</option>';
 								
