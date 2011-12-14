@@ -40,7 +40,7 @@ function jigoshop_admin_menu() {
 	
 	$menu[] = array( '', 'read', 'separator-jigoshop', '', 'wp-menu-separator jigoshop' );
 	
-    add_menu_page(__('Jigoshop'), __('Jigoshop'), 'manage_options', 'jigoshop' , 'jigoshop_dashboard', jigoshop::plugin_url() . '/assets/images/icons/menu_icons.png', 55);
+    add_menu_page(__('Jigoshop'), __('Jigoshop'), 'manage_options', 'jigoshop' , 'jigoshop_dashboard', jigoshop::assets_url() . '/assets/images/icons/menu_icons.png', 55);
     add_submenu_page('jigoshop', __('Dashboard', 'jigoshop'), __('Dashboard', 'jigoshop'), 'manage_options', 'jigoshop', 'jigoshop_dashboard'); 
     add_submenu_page('jigoshop', __('General Settings', 'jigoshop'),  __('Settings', 'jigoshop') , 'manage_options', 'settings', 'jigoshop_settings');
     add_submenu_page('jigoshop', __('System Info','jigoshop'), __('System Info','jigoshop'), 'manage_options', 'sysinfo', 'jigoshop_system_info');
@@ -301,7 +301,7 @@ function jigoshop_categories_scripts () {
 	
 	if( !isset($_GET['taxonomy']) || $_GET['taxonomy'] !== 'product_cat') return;
 	
-	wp_register_script('jigoshop-categories-ordering', jigoshop::plugin_url() . '/assets/js/categories-ordering.js', array('jquery-ui-sortable'));
+	wp_register_script('jigoshop-categories-ordering', jigoshop::assets_url() . '/assets/js/categories-ordering.js', array('jquery-ui-sortable'));
 	wp_print_scripts('jigoshop-categories-ordering');
 	
 }

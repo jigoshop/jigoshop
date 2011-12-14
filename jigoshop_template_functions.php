@@ -531,7 +531,7 @@ if (!function_exists('jigoshop_get_product_thumbnail')) {
 if (!function_exists('jigoshop_get_image_placeholder')) {
 	function jigoshop_get_image_placeholder( $size = 'shop_small' ) {
 		$image_size = jigoshop_get_image_size( $size );
-		return '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.$image_size[0].'px" height="'.$image_size[1].'px" />';
+		return '<img src="'.jigoshop::assets_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.$image_size[0].'px" height="'.$image_size[1].'px" />';
 	}
 }
 
@@ -891,3 +891,11 @@ function jigoshop_body_classes ($classes) {
 	return $classes;
 
 }
+
+/**
+ * Order review table for checkout
+ **/
+function jigoshop_order_review() {
+	jigoshop_get_template('checkout/review_order.php', false);
+}
+
