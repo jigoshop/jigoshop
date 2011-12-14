@@ -50,7 +50,7 @@ class jigoshop_sanitize {
 			return $output;
 		}
 //		return stripslashes( trim( $input ));
-		return stripslashes( htmlentities( strip_tags( trim( $input ))));
+		return stripslashes( strip_tags( trim( $input )));
 	}
 	
 	
