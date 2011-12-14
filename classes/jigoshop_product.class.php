@@ -16,19 +16,15 @@
  */
 class jigoshop_product {
 	
+	// LEGACY
 	private static $attribute_taxonomies = NULL;
-	// reseting these all to public for now, fatal errors from certain places that direct access
-	// the whole class needs refactoring  -JAP-
-	public $id;
-	public $exists;
-	public $data;
-	public $sku;
-	public $post;
-	public $stock;
 	public $children;
-	public $visibility;
-	public $product_type;
-	public $price;
+	//
+
+	public $id; // : jigoshop_template_functions.php on line 99
+	private $exists;
+	public $product_type; // : jigoshop_template_functions.php on line 271
+	public $sku; // : jigoshop_template_functions.php on line 246
 
 	private $regular_price;
 	private $sale_price;
@@ -40,7 +36,7 @@ class jigoshop_product {
 	private $n_tax_status		= 'taxable';
 	private $n_tax_class	;
 
-	private $n_visiblity			= 'visible';
+	private $visiblity			= 'visible';
 	private $n_featured			= false;
 
 	private $n_manage_stock		= false;
@@ -55,16 +51,23 @@ class jigoshop_product {
 	 *
 	 * @param   int		$id		ID of the product to load
 	 */
-	function jigoshop_product( $ID ) {
+	public function __construct( $ID ) {
 
-		$this->id = (int) $ID; // TODO: Change to uppercase for consistency sake
-
+		// Grab the product ID & get the product meta data
+		// TODO: Change to uppercase for consistency sake
+		$this->id = (int) $ID;
 		$product_meta = get_post_custom( $this->id );
-		$product_custom_fields = get_post_custom( $this->id );
 
 		// Check if the product has meta data attached
 		// If not then it might not be a product
 		$this->exists = (bool) $product_meta;
+
+		// Get the product type
+		$terms = wp_get_object_terms( $this->id, 'product_type', array('fields' => 'names') );
+		if( is_wp_error($terms) )
+			throw $terms;
+
+		$this->product_type = sanitize_title($terms[0]); // should throw error if something has gone wrong
 
 		// Define data
 		$this->regular_price				= $product_meta['regular_price'][0];
@@ -77,48 +80,44 @@ class jigoshop_product {
 		$this->n_tax_status				= $product_meta['tax_status'][0];
 		$this->n_tax_class				= $product_meta['tax_class'][0];
 
-		$this->n_visiblity				= $product_meta['visibility'][0];
+		$this->visiblity					= $product_meta['visibility'][0];
 		$this->n_featured				= $product_meta['featured'][0];
 
-		$this->n_visiblity				= $product_meta['visibility'][0];
+		$this->n_manage_stock			= $product_meta['manage_stock'][0];
 		$this->n_stock_status			= $product_meta['stock_status'][0];
 		$this->n_backorders				= $product_meta['backorders'][0];
 		$this->n_stock					= $product_meta['stock'][0];
 
+		// Get the attributes
 		$this->attributes = maybe_unserialize( $product_meta['product_attributes'][0] );
 
-		// OLD;
-
-		$this->sku = $this->id;
-		if (isset($product_custom_fields['SKU'][0]) && !empty($product_custom_fields['SKU'][0])) {
-			$this->sku = $product_custom_fields['SKU'][0];
-		}
-
-		$this->data = '';
-		if (isset($product_custom_fields['product_data'][0])) {
-			$this->data = maybe_unserialize( $product_custom_fields['product_data'][0] );
-		}
-
-		$this->attributes = array();
-		if (isset($product_custom_fields['product_attributes'][0])) {
-			$this->attributes = maybe_unserialize( $product_custom_fields['product_attributes'][0] );
-		}
-		
-
-		$this->visibility = 'hidden';
-		if (isset($product_custom_fields['visibility'][0])) {
-			$this->visibility = $product_custom_fields['visibility'][0];
-		}
-
-		$terms = wp_get_object_terms( $ID, 'product_type' );
-		if (!is_wp_error($terms) && $terms) {
-			$term = current($terms);
-			$this->product_type = $term->slug;
-		} else {
-			$this->product_type = 'simple';
-		}
-
+		// OLD
 		$this->get_children();
+
+
+		return $this;
+	}
+
+	/**
+	 * Get the main product image or parents image
+	 *
+	 * @return		html
+	 **/
+	public function get_image( $size = 'shop_thumbnail' ) {
+
+		// Get the image size
+		$size = jigoshop_get_image_size( $size );
+
+		// If product has an image
+		if( has_post_thumbnail( $this->id ) )
+    		return get_the_post_thumbnail( $this->id, $size );
+
+    	// If product has a parent and that has an image display that
+    	if( ($parent_ID = wp_get_post_parent_id( $this->id )) && has_post_thumbnail( $parent_ID ) )
+    		return get_the_post_thumbnail( $this->id, $size );
+    	
+    	// Otherwise just return a placeholder
+		return '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.$image_size[0].'px" height="'.$image_size[1].'px" />';
 	}
 	
 	/**
@@ -126,7 +125,7 @@ class jigoshop_product {
 	 * 
 	 * @return mixed
 	 */
-	function get_sku() {
+	public function get_sku() {
 		return $this->sku;
 	}
 	
@@ -173,11 +172,14 @@ class jigoshop_product {
 	 *
 	 * @param   int		$by		Amount to reduce by
 	 */
-	function reduce_stock( $by = 1 ) {
+	public function reduce_stock( $by = 1 ) {
+
 		if ($this->managing_stock()) {
-			$reduce_to = $this->stock - $by;
-			update_post_meta($this->id, 'stock', $reduce_to);
-			return $reduce_to;
+			
+			$this->stock - $by;
+			
+			//update_post_meta($this->id, 'stock', $reduce_to);
+			//return $reduce_to;
 		}
 	}
 
@@ -277,15 +279,18 @@ class jigoshop_product {
 		return $url;
 	}
 
-	/** Returns whether or not the product is stock managed */
-	function managing_stock() {
-		if (get_option('jigoshop_manage_stock') == 'yes') {
-			if (isset($this->data['manage_stock']) && $this->data['manage_stock'] == 'yes') {
-				return true;
-			}
-		}
+	/**
+	 * Check if we are managing stock
+	 *
+	 * @return	bool
+	 */
+	public function managing_stock() {
 
-		return false;
+		// If we're not managing stock at all
+		if (get_option('jigoshop_manage_stock') != 'yes')
+			return false;
+
+		return (bool) $this->manage_stock;
 	}
 
 	/** Returns whether or not the product is in stock */
@@ -436,7 +441,7 @@ class jigoshop_product {
 		//if( (bool) $this->n_stock )
 		//	return false;
 
-		switch($this->n_visiblity) {
+		switch($this->visiblity) {
 			case 'hidden':
 				return false; 
 			break;
@@ -487,10 +492,7 @@ class jigoshop_product {
 		return $this->n_weight;
 	}
 
-	/** Returns the product's price */
-	function get_price() {
-		return ($this->is_on_sale()) ? $this->sale_price : $this->regular_price;
-	}
+	
 
 	/** Returns the price (excluding tax) */
 	function get_price_excluding_tax() {
@@ -540,57 +542,39 @@ class jigoshop_product {
 		return $percentage_text;
 	}
 
+	/**
+	 * Returns the products current price
+	 *
+	 * @return	int
+	 */
+	public function get_price() {
+		return ($this->is_on_sale()) ? $this->sale_price : $this->regular_price;
+	}
+
 	/** Returns the price in html format */
+	// Doesn't work for variable/grouped products
 	function get_price_html()
 	{
-		$price_html = '';
-		
-		if ($this->has_child()) {
-			$child_prices = array();
-			$previous_price = -1.0;
-			$has_price_variation = false;
+		$html = null;
 
-			foreach ($this->children as $child) {
-	  
-				// Nasty hack to prevent disabled variations from affecting the price
-			if($this->product_type == 'grouped' || 
-				($this->product_type != 'grouped' && $child->product->variation->post_status == 'publish') ) {
-				$child_prices[] = (float)$child->product->get_price();
-				
-				// check for a price variation on the product variations
-				if ($previous_price > 0.0 && $previous_price != (float)$child->product->get_price()) {
-					$has_price_variation = true;
-				}
-				$previous_price = (float)$child->product->get_price();
-				
-			}
-			}
-			
-			// only add from to tag when there is a price variation on variable products
-			if ($has_price_variation) {
-			sort($child_prices);
-			$lowest_price = $child_prices[0];
-		$price_html .= '<span class="from">' . __('From: ', 'jigoshop') . '</span>' . jigoshop_price($lowest_price);
+		if ( ! $this->regular_price )
+			$html = __( 'Price Not Announced', 'jigoshop' );
+
+		if ( $this->get_price() == 0 ) 
+			$html = __( 'Free', 'jigoshop' );
+
+		if ( $this->is_on_sale() ) {
+			$html = '
+				<del>' . jigoshop_price( $this->regular_price ) . '</del>
+				<ins>' . jigoshop_price( $this->sale_price ) . '</ins>';
 		}
-		// otherwise return price from product
 		else {
-			$price_html .= jigoshop_price($this->get_price());
-		}
-		} else {
-			if ($this->price === '') {
-				$price_html = __('Price Not Announced');
-			} else if ($this->price === '0') {
-				$price_html = __('Free');
-			} else {
-				if (!empty($this->sale_price) && !empty($this->price) && $this->in_sale_date_range()) {
-					$price_html .= '<del>' . jigoshop_price($this->price) . '</del> <ins>' . jigoshop_price($this->sale_price) . '</ins>';
-				} else {
-					$price_html .= jigoshop_price($this->get_price());
-				}
-			}
+			$html = jigoshop_price( $this->regular_price );
 		}
 
-		return $price_html;
+		return $html;
+		
+		
 	}
 
 	/** Returns the upsell product ids */
@@ -623,6 +607,8 @@ class jigoshop_product {
 
 	/**
 	 * Gets all products which have a common category or tag
+	 * 
+	 * TODO: Add stock check?
 	 *
 	 * @return	array
 	 */
