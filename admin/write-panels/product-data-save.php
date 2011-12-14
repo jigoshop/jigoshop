@@ -194,8 +194,9 @@ class jigoshop_product_meta
 		foreach( $attr_values as $key => $value ) {
 
 			// If attribute is standard then create the relationship
-			if ( (bool) $attr_is_tax[$key] ) {
-				wp_set_object_terms( $post_id, $value, $attr_names[$key] );
+			if ( (bool) $attr_is_tax[$key] && taxonomy_exists('pa_'.sanitize_title($attr_names[$key])) ) {
+				// TODO: Adding pa and sanitizing fixes the bug but why not automatic?
+				wp_set_object_terms( $post_id, $value, 'pa_'.sanitize_title($attr_names[$key]) );
 				$value = null; // Set as null
 			}
 
