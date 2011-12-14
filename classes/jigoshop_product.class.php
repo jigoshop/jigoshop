@@ -205,7 +205,7 @@ class jigoshop_product {
 		$this->stock = $this->stock + $by;
 		
 		// Update & return the new value
-		update_post_meta( $this->id, 'stock', $this->stock )
+		update_post_meta( $this->id, 'stock', $this->stock );
 		return $this->stock;
 	}
 
