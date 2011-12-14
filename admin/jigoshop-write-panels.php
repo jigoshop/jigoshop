@@ -225,7 +225,7 @@ class jigoshop_form {
 	public static function select( $ID, $label, $options, $desc = FALSE, $class = 'select short' ) {
 		global $post;
 
-		$selected = ($selected) ? $selected : get_post_meta($post->ID, $ID, true);
+		$selected = get_post_meta($post->ID, $ID, true);
 
 		$html .= "<p class='form-field {$ID}_field'>";
 		$html .= "<label for='{$ID}'>$label</label>";
@@ -243,6 +243,28 @@ class jigoshop_form {
 		}
 
 		$html .= "</select>";
+
+		if ( $desc ) {
+			$html .= "<span class='description'>$desc</span>";
+		}
+
+		$html .= "</p>";
+		return $html;
+	}
+
+	public static function checkbox( $ID, $label, $value = FALSE, $desc = FALSE, $class = 'checkbox' ) {
+		global $post;
+
+		$value = ($value) ? $value : get_post_meta($post->ID, $ID, true);
+
+		$mark = '';
+		if( $value ) {
+			$mark = 'checked="checked"';
+		}
+
+		$html .= "<p class='form-field {$ID}_field'>";
+		$html .= "<label for='{$ID}'>$label</label>";
+		$html .= "<input type='checkbox' name='{$ID}' class='{$class}' id='{$ID}' {$mark} />";
 
 		if ( $desc ) {
 			$html .= "<span class='description'>$desc</span>";
