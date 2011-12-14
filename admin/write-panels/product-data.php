@@ -235,7 +235,12 @@ function jigoshop_product_data_box() {
 			?>
 
 		</div>
-		<?php endif; ?>
+		<?php endif; 
+
+		// Attributs begin here
+		// TODO: Much love needs to be applied here
+
+		?>
 		<div id="jigoshop_attributes" class="panel">
 		
 			<div class="jigoshop_attributes_wrapper">

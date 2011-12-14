@@ -204,8 +204,8 @@ class jigoshop_product_meta
 				'name'			=> $attr_names[$key],
 				'value'			=> $value,
 				'position'		=> (int)  $attr_position[$key],
-				'is_visible'		=> (bool) $attr_visibility[$key],
-				'is_variation'	=> (bool) $attr_variation[$key],
+				'visible'		=> (bool) $attr_visibility[$key],
+				'variation'		=> (bool) $attr_variation[$key],
 				'is_taxonomy'	=> (bool) $attr_is_tax[$key]
 			);
 		}
