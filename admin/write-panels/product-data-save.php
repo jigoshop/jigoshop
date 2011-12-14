@@ -102,7 +102,7 @@ class jigoshop_product_meta
 			if( $sale_end = strtotime($post['sale_price_dates_to']) ) {
 				$sale_start	= ($post['sale_price_dates_from']) 
 					? strtotime($post['sale_price_dates_from'])
-					: time();
+					: current_time('timestamp');
 
 				$array['sale_price_dates_from'] = $sale_start;
 				$array['sale_price_dates_to'] = $sale_end;
