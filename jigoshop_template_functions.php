@@ -502,7 +502,7 @@ if (!function_exists('jigoshop_product_attributes_panel')) {
 		global $_product;
 		echo '<div class="panel" id="tab-attributes">';
 		echo '<h2>' . apply_filters('jigoshop_product_description_heading', __('Additional Information', 'jigoshop')) . '</h2>';
-		$_product->list_attributes();
+		echo $_product->list_attributes();
 		echo '</div>';
 	}
 }

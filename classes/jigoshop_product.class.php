@@ -14,178 +14,6 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
-/*class jigoshop_product_2 {
-	private $ID;
-    private $exists; // ??
-    private $attributes;
-    private $children;
-    private $post; // ??
-    private $sku;
-    private $visiblity;
-    private $stock;
-
-    private $weight;
-    private $length;
-    private $height;
-
-    private $ID;
-
-    private $up_sells
-    private $cross_sells
-    
-    public function __construct( int $ID ) {
-
-    	$this->ID = $ID;
-
-    	$data = get_post_custom( $this->ID );
-    	$this->exists = ! empty( $data );
-
-    	$defaults = array(
-    		'sku'		=> $this->ID,
-    		'featured'	=> false,
-    		'visiblity'	=> 'visible',
-    		'stock'		=> 0,
-    		//ect
-	    );
-
-	    $data = array_intersect( $defaults, $data );
-
-	    foreach( $data as $key => $value ) {
-	    	$this->$key = $value;
-	    }
-    }
-
-    public function get_sku() {
-    	return $this->sku;
-    }
-
-    // TODO: Clean up & refactor this.
-    public function thumbnail( $size = 'shop_thumbnail' ) {
-    	
-    	if( has_post_thumbnail( $this->ID ) {
-    		return get_the_post_thumbnail( $this->ID, $size );
-    	} else if( ($parent_ID = wp_get_post_parent_id( $this->ID )) && has_post_thumbnail( $parent_ID ) ) {
-    		return get_the_post_thumbnail( $this->ID, $size );
-    	} else {
-    		$image_size = jigoshop_get_image_size( $size ); // Needs refactoring
-			return '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.$image_size[0].'px" height="'.$image_size[1].'px" />';
-    	}
-    }
-
-    public function get_attribute( $key ) {
-
-    	if( isset($this->attributes[$key]) )
-    		return $this->attributes[$key];
-    	
-    	return false;
-    }
-
-    public function has_attributes() {
-    	
-    	if( ! empty($this->attributes) )
-    		return true
-    	
-    	return false;
-    }
-
-    public function get_related( int $limit = 5 ) {
-
-    	if( empty( $this->cats ) || empty( $this->tags ) )
-    		return false;
-    	
-    	$query = array(
-	    	'posts_per_page'	=> $limit,
-	    	'post_type'			=> 'product',
-	    	'fields'				=> 'ids',
-	    	'meta_query'		=> array(
-	    			// TODO:: ADD QUERY
-		    ),
-		    'tax_query'			=> array(
-		    	'relation'			=> 'OR',
-		    	array(
-		    		'taxonomy'		=> 'product_cat',
-		    		'field'			=> 'id',
-		    		'terms'			=> $this->cats
-		    	),
-		    	array(
-		    		'taxonomy'		=> 'product_tag',
-		    		'field'			=> 'id',
-		    		'terms'			=> $this->tags
-		    	),
-		    ),
-	    );
-
-	   return new WP_Query( $query );
-    }
-
-
-    public function exists() {
-    	return (bool) $this->exists;
-    }
-
-    public function is_taxable() {
-    	// ?
-    }
-
-    public function get_stock_quantity() {
-    	return (int) $this->stock;
-    }
-
-    public function is_featured() {
-    	return (bool) $this->featured;
-    }
-
-    public function is_visible( ) {
-
-    	if( (bool) $this->stock )
-    		return false;
-
-    	switch($this->visiblity) {
-    		case 'hidden':
-    			return false; 
-    		break;
-    		case 'search':
-    			return is_search();
-    		break;
-    		case 'catalog':
-    			return ! is_search(); // don't display in search results
-    		break;
-    		default:
-    			return true; // By default always display a product
-    	}
-
-    }
-
-    public function get_weight() {
-    	return $this->weight;
-    }
-
-    public function get_price( $force_sale = false ) {
-
-    	if(  ) // IS ON SALE
-    		return $this->sale_price;
-    	
-    	return $this->regular_price;
-    }
-
-    // TODO: is this spelt right?
-    public function get_up_sells() {
-    	return $this->up_sells;
-    }
-
-    public function get_cross_sells( ) {
-    	return $this->cross_sells;
-    }
-
-    public function get_categories( $sep = ', ' $before = null, $after = null ) {
-    	return get_the_term_list( $this->ID, 'product_cat', $before, $sep, $after );
-    }
-
-    public function get_tags( $sep = ', ' $before = null, $after = null ) {
-    	return get_the_term_list( $this->ID, 'product_tag', $before, $sep, $after );
-    }
-}*/
-
 class jigoshop_product {
 	
 	private static $attribute_taxonomies = NULL;
@@ -202,18 +30,83 @@ class jigoshop_product {
 	public $visibility;
 	public $product_type;
 	public $price;
-    	public $sale_price;
+    public $sale_price;
+
+	private $n_regular_price	;
+	private $n_sale_price;
+	private $n_sale_price_dates_from	;
+	private $n_sale_price_dates_to;
+
+	private $n_weight;
+
+	private $n_tax_status		= 'taxable';
+	private $n_tax_class	;
+
+	private $n_visiblity			= 'visible';
+	private $n_featured			= false;
+
+	private $n_manage_stock		= false;
+	private $n_stock_status		= 'instock';
+	private $n_backorders;
+	private $n_stock;
+
+	private	$n_attributes		= array();
+
+	/*private $_fields = array(
+		'sku'						=> null,
+		'visibility'					=> 'visible',
+		'manage_stock'				=> false,
+		'stock_status'				=> 'instock',
+		'backorders'				=> 'no',
+		'stock'						=> 0,
+		'weight'					=> null,
+		'featured'					=> false,
+		'regular_price'				=> null,
+		'sale_price'					=> null,
+		'tax_status'				=> 'taxable',
+		'tax_class'					=> null,
+		'sale_price_dates_from'		=> null,
+		'sale_price_dates_to'		=> null,
+	);*/
 
 	/**
 	 * Loads all product data from custom fields
 	 *
 	 * @param   int		$id		ID of the product to load
 	 */
-	function jigoshop_product( $id ) {
+	function jigoshop_product( $ID ) {
 
-		$this->id = $id;
+		$this->id = (int) $ID; // TODO: Change to uppercase for consistency sake
 
+		$product_meta = get_post_custom( $this->id );
 		$product_custom_fields = get_post_custom( $this->id );
+
+		// Check if the product has meta data attached
+		// If not then it might not be a product
+		$this->exists = (bool) $product_meta;
+
+		// Define data
+		$this->n_regular_price			= $product_meta['regular_price'][0];
+		$this->n_sale_price 				= $product_meta['sale_price'][0];
+		$this->n_sale_price_dates_from 	= $product_meta['sale_price_dates_from'][0];
+		$this->n_sale_price_dates_to		= $product_meta['sale_price_dates_to'][0];
+
+		$this->n_weight					= $product_meta['weight'][0];
+
+		$this->n_tax_status				= $product_meta['tax_status'][0];
+		$this->n_tax_class				= $product_meta['tax_class'][0];
+
+		$this->n_visiblity				= $product_meta['visibility'][0];
+		$this->n_featured				= $product_meta['featured'][0];
+
+		$this->n_visiblity				= $product_meta['visibility'][0];
+		$this->n_stock_status			= $product_meta['stock_status'][0];
+		$this->n_backorders				= $product_meta['backorders'][0];
+		$this->n_stock					= $product_meta['stock'][0];
+
+		$this->n_attributes = maybe_unserialize( $product_meta['product_attributes'][0] );
+
+		// OLD;
 
         $this->sku = $this->id;
 		if (isset($product_custom_fields['SKU'][0]) && !empty($product_custom_fields['SKU'][0])) {
@@ -830,71 +723,82 @@ class jigoshop_product {
 		return $related;
 	}
 
-	/** Returns product attributes */
-	function get_attributes() {
-		return $this->attributes;
+	/**
+	 * Gets the attached product attributes
+	 *
+	 * @return	array
+	 **/
+	public function get_attributes() {
+		return $this->n_attributes;
 	}
 
-	/** Returns whether or not the product has any attributes set */
-	function has_attributes() {
-		if (isset($this->attributes) && count($this->attributes) > 0) {
-            foreach ($this->attributes as $attribute) {
-                if ($attribute['visible'] == 'yes') {
-                    return true;
-                }
-            }
-        }
+	/**
+	 * Checks for any visible attributes attached to the product
+	 *
+	 * @return	boolean
+	 **/
+	public function has_attributes() {
+		if ( (bool) $this->n_attributes ) {
+			foreach( $this->n_attributes as $attribute ) {
+				return (bool) $attribute['visible'];
+			}
+		}
 
-        return false;
+		return false;
 	}
 
-	/** Lists a table of attributes for the product page */
+	/**
+	 * Lists attributes in a html table
+	 *
+	 * @return	html
+	 **/
 	function list_attributes() {
-		$attributes = $this->get_attributes();
-        
-		if ($attributes && count($attributes)>0) {
 
-			echo '<table cellspacing="0" class="shop_attributes">';
-			$alt = 1;
-			foreach ($attributes as $attribute) {
-				if ($attribute['visible'] == 'no') {
-                    continue;
-                }
-                
-				$alt = $alt*-1;
-				echo '<tr class="';
-				if ($alt==1) echo 'alt';
-				echo '"><th>'.wptexturize($attribute['name']).'</th><td>';
+		// Check that we have some attributes that are visible
+		if ( ! $this->has_attributes() )
+			return false;
 
-                $value = $attribute['value'];
-                
-                // if taxonomy we should replace all term slugs with original names
-                if ( $attribute['is_taxonomy'] == 'yes' ) {
-                    if ( ! is_array( $value )) {
-                        $value = array( $value );
-                    }
-                    
-                    $taxonomy_name = 'pa_' . sanitize_title( $attribute['name'] );
-                    
-                    $new_value = array();
-                    foreach ( $value as $term_slug ) {
-                        $term = get_term_by( 'slug', $term_slug, $taxonomy_name );
-                        $new_value[] = $term->name;
-                    }
-                    $value = $new_value;
-                }
-                
-                if ( is_array($value ) ) {
-                    $value = implode( ', ', $value );
-                }
+		// Start the html output
+		$html = '<table cellspacing="0" class="shop_attributes">';
 
-				echo wpautop( wptexturize( $value ));
+		foreach( $this->n_attributes as $attr ) {
 
-				echo '</td></tr>';
-            }
-			echo '</table>';
+			// If attribute is invisible skip
+			if ( ! $attr['visible'] )
+				continue;
 
-        }
+			// Get Title & Value from attribute array
+			$name = wptexturize($attr['name']);
+			$value = null;
+
+			if ( (bool) $attr['is_taxonomy'] ) {
+
+				// Get the taxonomy terms
+				$product_terms = wp_get_post_terms( $this->id, 'pa_'.sanitize_title($attr['name']) );
+
+				// Convert them into a string
+				$terms = array();
+
+				foreach( $product_terms as $term ) {
+					$terms[] = $term->name;
+				}
+
+				$value = implode(', ', $terms);
+			}
+			else {
+				$value = wptexturize($attr['value']);
+			}
+
+			// Generat the remaining html
+			$html .= "
+			<tr>
+				<th>$name</th>
+				<td>$value</td>
+			</tr>";
+		}
+		
+		$html .= '</table>';
+		return $html;
 	}
     
     /**
