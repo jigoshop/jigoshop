@@ -22,9 +22,11 @@ class jigoshop_product {
 	//
 
 	public $id; // : jigoshop_template_functions.php on line 99
-	private $exists;
+	public $exists; // : jigoshop_cart.class.php on line 66
 	public $product_type; // : jigoshop_template_functions.php on line 271
 	public $sku; // : jigoshop_template_functions.php on line 246
+
+	public $data; // jigoshop_tax.class.php on line 186
 
 	private $regular_price;
 	private $sale_price;
@@ -36,7 +38,7 @@ class jigoshop_product {
 	private $n_tax_status		= 'taxable';
 	private $n_tax_class	;
 
-	private $visiblity			= 'visible';
+	public $visibility			= 'visible'; // : admin/jigoshop-admin-post-types.php on line 168
 	private $n_featured			= false;
 
 	private $manage_stock		= false;
@@ -64,10 +66,8 @@ class jigoshop_product {
 
 		// Get the product type
 		$terms = wp_get_object_terms( $this->id, 'product_type', array('fields' => 'names') );
-		if( is_wp_error($terms) )
-			throw $terms;
-
-		$this->product_type = sanitize_title($terms[0]); // should throw error if something has gone wrong
+		if( ! is_wp_error($terms) )
+			$this->product_type = sanitize_title($terms[0]); // should throw error if something has gone wrong
 
 		// Define data
 		$this->regular_price				= $product_meta['regular_price'][0];
@@ -80,7 +80,7 @@ class jigoshop_product {
 		$this->n_tax_status				= $product_meta['tax_status'][0];
 		$this->n_tax_class				= $product_meta['tax_class'][0];
 
-		$this->visiblity					= $product_meta['visibility'][0];
+		$this->visibility				= $product_meta['visibility'][0];
 		$this->n_featured				= $product_meta['featured'][0];
 
 		$this->manage_stock				= $product_meta['manage_stock'][0];
@@ -93,7 +93,6 @@ class jigoshop_product {
 
 		// OLD
 		$this->get_children();
-
 
 		return $this;
 	}
@@ -460,7 +459,7 @@ class jigoshop_product {
 		//if( (bool) $this->n_stock )
 		//	return false;
 
-		switch($this->visiblity) {
+		switch($this->visibility) {
 			case 'hidden':
 				return false; 
 			break;
