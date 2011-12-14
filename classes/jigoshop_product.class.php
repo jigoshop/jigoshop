@@ -39,10 +39,10 @@ class jigoshop_product {
 	private $visiblity			= 'visible';
 	private $n_featured			= false;
 
-	private $n_manage_stock		= false;
-	private $n_stock_status		= 'instock';
-	private $n_backorders;
-	private $n_stock;
+	private $manage_stock		= false;
+	private $stock_status		= 'instock';
+	private $backorders;
+	private $stock;
 
 	private	$attributes			= array();
 
@@ -83,10 +83,10 @@ class jigoshop_product {
 		$this->visiblity					= $product_meta['visibility'][0];
 		$this->n_featured				= $product_meta['featured'][0];
 
-		$this->n_manage_stock			= $product_meta['manage_stock'][0];
-		$this->n_stock_status			= $product_meta['stock_status'][0];
-		$this->n_backorders				= $product_meta['backorders'][0];
-		$this->n_stock					= $product_meta['stock'][0];
+		$this->manage_stock				= $product_meta['manage_stock'][0];
+		$this->stock_status				= $product_meta['stock_status'][0];
+		$this->backorders				= $product_meta['backorders'][0];
+		$this->stock					= $product_meta['stock'][0];
 
 		// Get the attributes
 		$this->attributes = maybe_unserialize( $product_meta['product_attributes'][0] );
@@ -293,15 +293,29 @@ class jigoshop_product {
 		return (bool) $this->manage_stock;
 	}
 
-	/** Returns whether or not the product is in stock */
-	function is_in_stock() {
+	/**
+	 * Returns whether or not the product is in stock 
+	 * 
+	 * @return	bool
+	 */
+	public function is_in_stock() {
 
-		if( $this->managing_stock() ) {
+		// If we arent managing stock then it should always be in stock
+		if( ! $this->managing_stock() || $this->stock_status == 'instock' )
+			return true;
+
+		// Check if we allow backorders
+		if( $this->backorders_allowed() )
+			return true;
+
+		// Check if we have stock
+		if( (bool) $this->stock )
+			return true;
 		
-			// First check if we allow backorders
-			if( $this->backorders_allowed() )
-				return true;
+		return false;
 
+
+			/** TODO: Add Support for variations
 			// If we have variations
 			if( $this->has_child() ) {
 
@@ -321,21 +335,20 @@ class jigoshop_product {
 				else if( $this->stock <= 0 )
 					return false;
 
-			}
-
-		}
-
-		// Always return true if all other checks pass
-		return true;
+			} **/
 
 	}
 
-	/** Returns whether or not the product can be backordered */
-	function backorders_allowed() {
-		if ($this->data['backorders']=='yes' || $this->data['backorders']=='notify') {
+	/**
+	 * Returns whether or not the product can be backordered 
+	 * 
+	 * @return	bool
+	 */
+	public function backorders_allowed() {
+
+		if ( $this->backorders == 'yes' || $this->backorders == 'notify' )
 			return true;
-		}
-		
+
 		return false;
 	}
 
