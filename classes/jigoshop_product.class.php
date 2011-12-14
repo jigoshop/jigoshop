@@ -23,7 +23,6 @@ class jigoshop_product {
 	public $exists;
 	public $data;
 	public $sku;
-	public $attributes;
 	public $post;
 	public $stock;
 	public $children;
@@ -31,7 +30,7 @@ class jigoshop_product {
 	public $product_type;
 	public $price;
 
-	private $regular_price	;
+	private $regular_price;
 	private $sale_price;
 	private $sale_price_dates_from	;
 	private $sale_price_dates_to;
@@ -49,24 +48,7 @@ class jigoshop_product {
 	private $n_backorders;
 	private $n_stock;
 
-	private	$n_attributes		= array();
-
-	/*private $_fields = array(
-		'sku'						=> null,
-		'visibility'					=> 'visible',
-		'manage_stock'				=> false,
-		'stock_status'				=> 'instock',
-		'backorders'				=> 'no',
-		'stock'						=> 0,
-		'weight'					=> null,
-		'featured'					=> false,
-		'regular_price'				=> null,
-		'sale_price'					=> null,
-		'tax_status'				=> 'taxable',
-		'tax_class'					=> null,
-		'sale_price_dates_from'		=> null,
-		'sale_price_dates_to'		=> null,
-	);*/
+	private	$attributes			= array();
 
 	/**
 	 * Loads all product data from custom fields
@@ -86,8 +68,8 @@ class jigoshop_product {
 
 		// Define data
 		$this->regular_price				= $product_meta['regular_price'][0];
-		$this->sale_price 				= $product_meta['sale_price'][0];
-		$this->sale_price_dates_from 	= $product_meta['sale_price_dates_from'][0];
+		$this->sale_price				= $product_meta['sale_price'][0];
+		$this->sale_price_dates_from		= $product_meta['sale_price_dates_from'][0];
 		$this->sale_price_dates_to		= $product_meta['sale_price_dates_to'][0];
 
 		$this->n_weight					= $product_meta['weight'][0];
@@ -103,88 +85,88 @@ class jigoshop_product {
 		$this->n_backorders				= $product_meta['backorders'][0];
 		$this->n_stock					= $product_meta['stock'][0];
 
-		$this->n_attributes = maybe_unserialize( $product_meta['product_attributes'][0] );
+		$this->attributes = maybe_unserialize( $product_meta['product_attributes'][0] );
 
 		// OLD;
 
-        $this->sku = $this->id;
+		$this->sku = $this->id;
 		if (isset($product_custom_fields['SKU'][0]) && !empty($product_custom_fields['SKU'][0])) {
-            $this->sku = $product_custom_fields['SKU'][0];
-        }
+			$this->sku = $product_custom_fields['SKU'][0];
+		}
 
-        $this->data = '';
+		$this->data = '';
 		if (isset($product_custom_fields['product_data'][0])) {
-            $this->data = maybe_unserialize( $product_custom_fields['product_data'][0] );
-        }
+			$this->data = maybe_unserialize( $product_custom_fields['product_data'][0] );
+		}
 
-        $this->attributes = array();
+		$this->attributes = array();
 		if (isset($product_custom_fields['product_attributes'][0])) {
-            $this->attributes = maybe_unserialize( $product_custom_fields['product_attributes'][0] );
-        }
-        
+			$this->attributes = maybe_unserialize( $product_custom_fields['product_attributes'][0] );
+		}
+		
 
-        $this->visibility = 'hidden';
+		$this->visibility = 'hidden';
 		if (isset($product_custom_fields['visibility'][0])) {
-            $this->visibility = $product_custom_fields['visibility'][0];
-        }
+			$this->visibility = $product_custom_fields['visibility'][0];
+		}
 
 		$terms = wp_get_object_terms( $ID, 'product_type' );
 		if (!is_wp_error($terms) && $terms) {
 			$term = current($terms);
 			$this->product_type = $term->slug;
-        } else {
+		} else {
 			$this->product_type = 'simple';
-        }
+		}
 
 		$this->get_children();
 	}
-    
-    /**
-     * Get SKU (Stock-keeping unit) - product uniqe ID
-     * 
-     * @return mixed
-     */
-    function get_sku() {
-        return $this->sku;
-    }
 	
-    /**
-     * Returns the product's children
-     * 
-     * @return array stdClass objects array
-     */
-    function get_children() {
+	/**
+	 * Get SKU (Stock-keeping unit) - product uniqe ID
+	 * 
+	 * @return mixed
+	 */
+	function get_sku() {
+		return $this->sku;
+	}
+	
+	/**
+	 * Returns the product's children
+	 * 
+	 * @return array stdClass objects array
+	 */
+	function get_children() {
 
-        //load the children if not yet loaded
-        if (!is_array($this->children)) {
+		//load the children if not yet loaded
+		if (!is_array($this->children)) {
 
-            $this->children = array();
+			$this->children = array();
 
-            if ($this->is_type('variable')) {
-                $child_post_type = 'product_variation';
-            } else {
-                $child_post_type = 'product';
-            }
+			if ($this->is_type('variable')) {
+				$child_post_type = 'product_variation';
+			} else {
+				$child_post_type = 'product';
+			}
 
-            $children_products = &get_children('post_parent=' . $this->id . '&post_type=' . $child_post_type . '&orderby=menu_order&order=ASC');
+			$children_products = &get_children('post_parent=' . $this->id . '&post_type=' . $child_post_type . '&orderby=menu_order&order=ASC');
 
-            if (is_array($children_products)) {
-                
-                //@fixme we just retrieved all the data about product children from DB, and we construct jigoshop_product* objects passing only ID to the constructor. In the constructor each product data will be retrieved *again* in the *seperate* queries. Performance fix needed (probably passing whole $child istead of $child->ID will do).
-                foreach ($children_products as $child) {
-                    if ($this->is_type('variable')) {
-                        $child->product = &new jigoshop_product_variation($child->ID);
-                    } else {
-                        $child->product = &new jigoshop_product($child->ID);
-                    }
-                }
+			if (is_array($children_products)) {
+				
+				//@fixme we just retrieved all the data about product children from DB, and we construct jigoshop_product* objects passing only ID to the constructor. In the constructor each product data will be retrieved *again* in the *seperate* queries. Performance fix needed (probably passing whole $child istead of $child->ID will do).
+				foreach ($children_products as $child) {
+					if ($this->is_type('variable')) {
+						$child->product = &new jigoshop_product_variation($child->ID);
+					} else {
+						$child->product = &new jigoshop_product($child->ID);
+					}
+				}
 
-                $this->children = (array) $children_products;
-            }
-        }
-        
-        return $this->children;
-    }
+				$this->children = (array) $children_products;
+			}
+		}
+		
+		return $this->children;
+	}
 
 	/**
 	 * Reduce stock level of the product
@@ -196,7 +178,7 @@ class jigoshop_product {
 			$reduce_to = $this->stock - $by;
 			update_post_meta($this->id, 'stock', $reduce_to);
 			return $reduce_to;
-        }
+		}
 	}
 
 	/**
@@ -209,7 +191,7 @@ class jigoshop_product {
 			$increase_to = $this->stock + $by;
 			update_post_meta($this->id, 'stock', $increase_to);
 			return $increase_to;
-        }
+		}
 	}
 
 	/**
@@ -219,20 +201,20 @@ class jigoshop_product {
 	 */
 	function is_type( $type ) {
 		if (is_array($type) && in_array($this->product_type, $type)) {
-            return true;
-        } else if ($this->product_type == $type) {
-            return true;
-        }
-        
+			return true;
+		} else if ($this->product_type == $type) {
+			return true;
+		}
+		
 		return false;
 	}
 
 	/** Returns whether or not the product has any child product */
 	function has_child () {
-        if(is_array($this->children) && count($this->children) > 0) {
-            return true;
-        }
-        
+		if(is_array($this->children) && count($this->children) > 0) {
+			return true;
+		}
+		
 		return false;
 	}
 
@@ -248,18 +230,18 @@ class jigoshop_product {
 	/** Returns whether or not the product is taxable */
 	function is_taxable() {
 		if (isset($this->data['tax_status']) && $this->data['tax_status']=='taxable') {
-            return true;
-        }
-        
+			return true;
+		}
+		
 		return false;
 	}
 
 	/** Returns whether or not the product shipping is taxable */
 	function is_shipping_taxable() {
 		if (isset($this->data['tax_status']) && ($this->data['tax_status']=='taxable' || $this->data['tax_status']=='shipping')) {
-            return true;
-        }
-        
+			return true;
+		}
+		
 		return false;
 	}
 
@@ -267,7 +249,7 @@ class jigoshop_product {
 	function get_post_data() {
 		if (empty($this->post)) {
 			$this->post = get_post( $this->id );
-        }
+		}
 
 		return $this->post;
 	}
@@ -284,12 +266,12 @@ class jigoshop_product {
 		if ($this->is_type('variable')) {
 			$url = add_query_arg('add-to-cart', 'variation');
 			$url = add_query_arg('product', $this->id, $url);
-        } else if ( $this->has_child() ) {
+		} else if ( $this->has_child() ) {
 			$url = add_query_arg('add-to-cart', 'group');
 			$url = add_query_arg('product', $this->id, $url);
-        } else {
+		} else {
 			$url = add_query_arg('add-to-cart', $this->id);
-        }
+		}
 
 		$url = jigoshop::nonce_url( 'add_to_cart', $url );
 		return $url;
@@ -298,12 +280,12 @@ class jigoshop_product {
 	/** Returns whether or not the product is stock managed */
 	function managing_stock() {
 		if (get_option('jigoshop_manage_stock') == 'yes') {
-            if (isset($this->data['manage_stock']) && $this->data['manage_stock'] == 'yes') {
-                return true;
-            }
-        }
+			if (isset($this->data['manage_stock']) && $this->data['manage_stock'] == 'yes') {
+				return true;
+			}
+		}
 
-        return false;
+		return false;
 	}
 
 	/** Returns whether or not the product is in stock */
@@ -346,18 +328,18 @@ class jigoshop_product {
 	/** Returns whether or not the product can be backordered */
 	function backorders_allowed() {
 		if ($this->data['backorders']=='yes' || $this->data['backorders']=='notify') {
-            return true;
-        }
-        
+			return true;
+		}
+		
 		return false;
 	}
 
 	/** Returns whether or not the product needs to notify the customer on backorder */
 	function backorders_require_notification() {
 		if ($this->data['backorders']=='notify') {
-            return true;
-        }
-        
+			return true;
+		}
+		
 		return false;
 	}
 
@@ -365,19 +347,19 @@ class jigoshop_product {
 	function has_enough_stock( $quantity ) {
 		if ($this->backorders_allowed() || $this->stock >= $quantity) {
 			return true;
-        }
+		}
 
 		return false;
 	}
-    
-    /**
-     * Returns number of items available for sale.
-     * 
-     * @return int
-     */
-    function get_stock_quantity() {
-        return (int)$this->stock;
-    }
+	
+	/**
+	 * Returns number of items available for sale.
+	 * 
+	 * @return int
+	 */
+	function get_stock_quantity() {
+		return (int)$this->stock;
+	}
 	
 	/** Returns the availability of the product */
 	function get_availability() {
@@ -437,9 +419,9 @@ class jigoshop_product {
 	/** Returns whether or not the product is featured */
 	function is_featured() {
 		if (get_post_meta($this->id, 'featured', true)=='yes') {
-            return true;
-        }
-        
+			return true;
+		}
+		
 		return false;
 	}
 
@@ -469,14 +451,14 @@ class jigoshop_product {
 		}
 	}
 	
-    /**
-     * Returns whether or not the product is on sale.
-     * If one of the child products is on sale, product is considered to be on sale.
-     *
-     * TODO: Check children for sale items
-     *
-     * @return bool
-     */
+	/**
+	 * Returns whether or not the product is on sale.
+	 * If one of the child products is on sale, product is considered to be on sale.
+	 *
+	 * TODO: Check children for sale items
+	 *
+	 * @return bool
+	 */
 	public function is_on_sale() {
 		
 		$time = current_time('timestamp');
@@ -514,29 +496,29 @@ class jigoshop_product {
 	function get_price_excluding_tax() {
 		$price = $this->get_price();
 
-        if (get_option('jigoshop_prices_include_tax') == 'yes') {
-            $rate = $this->get_tax_base_rate();
+		if (get_option('jigoshop_prices_include_tax') == 'yes') {
+			$rate = $this->get_tax_base_rate();
 
-            if ($rate && $rate > 0) {
-                $_tax = &new jigoshop_tax();
-                $tax_amount = $_tax->calc_tax($price, $rate, true);
-                $price = $price - $tax_amount;
-            }
-        }
+			if ($rate && $rate > 0) {
+				$_tax = &new jigoshop_tax();
+				$tax_amount = $_tax->calc_tax($price, $rate, true);
+				$price = $price - $tax_amount;
+			}
+		}
 
-        return $price;
+		return $price;
 	}
 
 	/** Returns the base tax rate */
 	function get_tax_base_rate() {
 		if ($this->is_taxable() && get_option('jigoshop_calc_taxes') == 'yes') {
-            $_tax = &new jigoshop_tax();
-            $rate = $_tax->get_shop_base_rate($this->data['tax_class']);
+			$_tax = &new jigoshop_tax();
+			$rate = $_tax->get_shop_base_rate($this->data['tax_class']);
 
-            return $rate;
-        }
+			return $rate;
+		}
 
-        return NULL;
+		return NULL;
 	}
 	/** Returns the percentage saved on sale products */
 	function get_percentage()
@@ -560,73 +542,73 @@ class jigoshop_product {
 
 	/** Returns the price in html format */
 	function get_price_html()
-    {
-        $price_html = '';
-        
-        if ($this->has_child()) {
-            $child_prices = array();
-            $previous_price = -1.0;
-            $has_price_variation = false;
+	{
+		$price_html = '';
+		
+		if ($this->has_child()) {
+			$child_prices = array();
+			$previous_price = -1.0;
+			$has_price_variation = false;
 
-            foreach ($this->children as $child) {
-      
-                // Nasty hack to prevent disabled variations from affecting the price
-      		if($this->product_type == 'grouped' || 
-      			($this->product_type != 'grouped' && $child->product->variation->post_status == 'publish') ) {
-      		    $child_prices[] = (float)$child->product->get_price();
-      		    
-      		    // check for a price variation on the product variations
-      		    if ($previous_price > 0.0 && $previous_price != (float)$child->product->get_price()) {
-      		    	$has_price_variation = true;
-      		    }
-      		    $previous_price = (float)$child->product->get_price();
-      		    
-      		}
-            }
-            
-            // only add from to tag when there is a price variation on variable products
-            if ($has_price_variation) {
-	        sort($child_prices);
-	        $lowest_price = $child_prices[0];
+			foreach ($this->children as $child) {
+	  
+				// Nasty hack to prevent disabled variations from affecting the price
+			if($this->product_type == 'grouped' || 
+				($this->product_type != 'grouped' && $child->product->variation->post_status == 'publish') ) {
+				$child_prices[] = (float)$child->product->get_price();
+				
+				// check for a price variation on the product variations
+				if ($previous_price > 0.0 && $previous_price != (float)$child->product->get_price()) {
+					$has_price_variation = true;
+				}
+				$previous_price = (float)$child->product->get_price();
+				
+			}
+			}
+			
+			// only add from to tag when there is a price variation on variable products
+			if ($has_price_variation) {
+			sort($child_prices);
+			$lowest_price = $child_prices[0];
 		$price_html .= '<span class="from">' . __('From: ', 'jigoshop') . '</span>' . jigoshop_price($lowest_price);
-	    }
-	    // otherwise return price from product
-	    else {
-	    	$price_html .= jigoshop_price($this->get_price());
-	    }
-        } else {
-            if ($this->price === '') {
-                $price_html = __('Price Not Announced');
-            } else if ($this->price === '0') {
-                $price_html = __('Free');
-            } else {
-                if (!empty($this->sale_price) && !empty($this->price) && $this->in_sale_date_range()) {
-                    $price_html .= '<del>' . jigoshop_price($this->price) . '</del> <ins>' . jigoshop_price($this->sale_price) . '</ins>';
-                } else {
-                    $price_html .= jigoshop_price($this->get_price());
-                }
-            }
-        }
+		}
+		// otherwise return price from product
+		else {
+			$price_html .= jigoshop_price($this->get_price());
+		}
+		} else {
+			if ($this->price === '') {
+				$price_html = __('Price Not Announced');
+			} else if ($this->price === '0') {
+				$price_html = __('Free');
+			} else {
+				if (!empty($this->sale_price) && !empty($this->price) && $this->in_sale_date_range()) {
+					$price_html .= '<del>' . jigoshop_price($this->price) . '</del> <ins>' . jigoshop_price($this->sale_price) . '</ins>';
+				} else {
+					$price_html .= jigoshop_price($this->get_price());
+				}
+			}
+		}
 
-        return $price_html;
-    }
+		return $price_html;
+	}
 
 	/** Returns the upsell product ids */
 	function get_upsells() {
 		if (isset($this->data['upsell_ids'])) {
-            return (array) $this->data['upsell_ids']; 
-        }
-        
-        return array();
+			return (array) $this->data['upsell_ids']; 
+		}
+		
+		return array();
 	}
 
 	/** Returns the crosssell product ids */
 	function get_cross_sells() {
 		if (isset($this->data['crosssell_ids'])) {
-            return (array) $this->data['crosssell_ids'];
-        }
-        
-        return array();
+			return (array) $this->data['crosssell_ids'];
+		}
+		
+		return array();
 	}
 
 	/** Returns the product categories */
@@ -639,62 +621,54 @@ class jigoshop_product {
 		return get_the_term_list($this->id, 'product_tag', $before, $sep, $after);
 	}
 
-	/** Get and return related products */
-	function get_related( $limit = 5 ) {
-		global $wpdb, $all_post_ids; /* $all_post_ids doesn't appear to be used in this file, checking -JAP- */
-		// Related products are found from category and tag
-		$tags_array = array(0);
-		$cats_array = array(0);
-		$tags = '';
-		$cats = '';
+	/**
+	 * Gets all products which have a common category or tag
+	 *
+	 * @return	array
+	 */
+	public function get_related( $limit = 5 ) {
 
-		// Get tags
-		$terms = wp_get_post_terms($this->id, 'product_tag');
-		foreach ($terms as $term) {
-			$tags_array[] = $term->term_id;
-		}
-		$tags = implode(',', $tags_array);
+		// Get the tags & categories
+		$tags = wp_get_post_terms($this->id, 'product_tag', array('fields' => 'ids'));
+		$cats = wp_get_post_terms($this->id, 'product_cat', array('fields' => 'ids'));
 
-		$terms = wp_get_post_terms($this->id, 'product_cat');
-		foreach ($terms as $term) {
-			$cats_array[] = $term->term_id;
-		}
-		$cats = implode(',', $cats_array);
+		// No queries if we don't have any tags/categories
+		if( empty( $cats ) || empty( $tags ) )
+			return array();
+		
+		// Only get related posts that are in stock & visible
+		$query = array(
+			'posts_per_page'	=> $limit,
+			'post_type'			=> 'product',
+			'fields'				=> 'ids',
+			'orderby'			=> 'rand',
+			'meta_query'		=> array(
+				array(
+					'key'		=> 'visibility',
+					'value'		=> array( 'catalog', 'visible' ),
+					'compare'	=> 'IN',
+				),
+			),
+			'tax_query'			=> array(
+				'relation'			=> 'OR',
+				array(
+					'taxonomy'		=> 'product_cat',
+					'field'			=> 'id',
+					'terms'			=> $cats
+				),
+				array(
+					'taxonomy'		=> 'product_tag',
+					'field'			=> 'id',
+					'terms'			=> $tags
+				),
+			),
+		);
 
-		$q = "
-			SELECT p.ID
-			FROM $wpdb->term_taxonomy AS tt, $wpdb->term_relationships AS tr, $wpdb->posts AS p, $wpdb->postmeta AS pm
-			WHERE
-				p.ID != $this->id
-				AND p.post_status = 'publish'
-				AND p.post_date_gmt < NOW()
-				AND p.post_type = 'product'
-				AND pm.meta_key = 'visibility'
-				AND pm.meta_value IN ('visible', 'catalog')
-				AND pm.post_id = p.ID
-				AND
-				(
-					(
-						tt.taxonomy ='product_cat'
-						AND tt.term_taxonomy_id = tr.term_taxonomy_id
-						AND tr.object_id  = p.ID
-						AND tt.term_id IN ($cats)
-					)
-					OR
-					(
-						tt.taxonomy ='product_tag'
-						AND tt.term_taxonomy_id = tr.term_taxonomy_id
-						AND tr.object_id  = p.ID
-						AND tt.term_id IN ($tags)
-					)
-				)
-			GROUP BY tr.object_id
-			ORDER BY RAND()
-			LIMIT $limit;";
+		// Run the query
+		$q = get_posts( $query );
+		wp_reset_postdata();
 
-		$related = $wpdb->get_col($q);
-
-		return $related;
+		return $q;
 	}
 
 	/**
@@ -703,7 +677,7 @@ class jigoshop_product {
 	 * @return	array
 	 **/
 	public function get_attributes() {
-		return $this->n_attributes;
+		return $this->attributes;
 	}
 
 	/**
@@ -712,8 +686,8 @@ class jigoshop_product {
 	 * @return	boolean
 	 **/
 	public function has_attributes() {
-		if ( (bool) $this->n_attributes ) {
-			foreach( $this->n_attributes as $attribute ) {
+		if ( (bool) $this->attributes ) {
+			foreach( $this->attributes as $attribute ) {
 				return (bool) $attribute['visible'];
 			}
 		}
@@ -735,7 +709,7 @@ class jigoshop_product {
 		// Start the html output
 		$html = '<table cellspacing="0" class="shop_attributes">';
 
-		foreach( $this->n_attributes as $attr ) {
+		foreach( $this->attributes as $attr ) {
 
 			// If attribute is invisible skip
 			if ( ! $attr['visible'] )
@@ -774,89 +748,89 @@ class jigoshop_product {
 		$html .= '</table>';
 		return $html;
 	}
-    
-    /**
-     * Returns an array of available values for attributes used in product variations
-     * 
-     * @todo Note that this is 'variable product' specific, and should be moved to separate class
-     * with all 'variable product' logic form other methods in this class.
-     * 
-     * @return two dimensional array of attributes and their available values
-     */   
-    function get_available_attributes_variations() {
-        if (!$this->is_type('variable') || !$this->has_child()) {
-            return array();
-        }
-        
-        $attributes = $this->get_attributes();
-        
-        if(!is_array($attributes)) {
-            return array();
-        }
-        
-        $available = array();
-        $children = $this->get_children();
-        
-        foreach ($attributes as $attribute) {
-            if ($attribute['variation'] !== 'yes') {
-                continue;
-            }
+	
+	/**
+	 * Returns an array of available values for attributes used in product variations
+	 * 
+	 * @todo Note that this is 'variable product' specific, and should be moved to separate class
+	 * with all 'variable product' logic form other methods in this class.
+	 * 
+	 * @return two dimensional array of attributes and their available values
+	 */   
+	function get_available_attributes_variations() {
+		if (!$this->is_type('variable') || !$this->has_child()) {
+			return array();
+		}
+		
+		$attributes = $this->get_attributes();
+		
+		if(!is_array($attributes)) {
+			return array();
+		}
+		
+		$available = array();
+		$children = $this->get_children();
+		
+		foreach ($attributes as $attribute) {
+			if ($attribute['variation'] !== 'yes') {
+				continue;
+			}
 
-            $values = array();
-            $name = 'tax_'.sanitize_title($attribute['name']);
+			$values = array();
+			$name = 'tax_'.sanitize_title($attribute['name']);
 
-            foreach ($children as $child) {
-                /* @var $variation jigoshop_product_variation */
-                $variation = $child->product;
+			foreach ($children as $child) {
+				/* @var $variation jigoshop_product_variation */
+				$variation = $child->product;
 
-                //check attributes of all variations that are visible (enabled)
-                if ($variation instanceof jigoshop_product_variation && $variation->is_visible()) {
-                    $options = $variation->get_variation_attributes();
+				//check attributes of all variations that are visible (enabled)
+				if ($variation instanceof jigoshop_product_variation && $variation->is_visible()) {
+					$options = $variation->get_variation_attributes();
 					
-                    if (is_array($options)) {
-                        foreach ($options as $aname => $avalue) {
-                            if ($aname == $name) {
-                                $values[] = $avalue;
-                            }
-                        }
-                    }
-                }
-            }
-            
+					if (is_array($options)) {
+						foreach ($options as $aname => $avalue) {
+							if ($aname == $name) {
+								$values[] = $avalue;
+							}
+						}
+					}
+				}
+			}
+			
 			sort( $values );
 			
-            //empty value indicates that all options for given attribute are available
-            if ( in_array(  '', $values)) {
-                $options = $attribute['value'];
-                if (!is_array($options)) {
-                    $options = explode(',', $options);
-                }
+			//empty value indicates that all options for given attribute are available
+			if ( in_array(  '', $values)) {
+				$options = $attribute['value'];
+				if (!is_array($options)) {
+					$options = explode(',', $options);
+				}
 				
-                $values = $options;
-            }
-              
-            //make sure values are unique
-            $values = array_unique($values);
+				$values = $options;
+			}
+			  
+			//make sure values are unique
+			$values = array_unique($values);
 
-            $available[$attribute['name']] = $values;
-        }
-        
-        return $available;
-    }
+			$available[$attribute['name']] = $values;
+		}
+		
+		return $available;
+	}
 
-    /**
-     * Get attribute taxonomies. Taxonomies are lazy loaded.
-     * 
-     * @return array of stdClass objects representing attributes
-     */
-    public static function getAttributeTaxonomies() {
-        global $wpdb;
-                
-        if(self::$attribute_taxonomies === NULL) {
-            self::$attribute_taxonomies = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."jigoshop_attribute_taxonomies;"); 
-        }
-        
-        return self::$attribute_taxonomies;
-    }
+	/**
+	 * Get attribute taxonomies. Taxonomies are lazy loaded.
+	 * 
+	 * @return array of stdClass objects representing attributes
+	 */
+	public static function getAttributeTaxonomies() {
+		global $wpdb;
+				
+		if(self::$attribute_taxonomies === NULL) {
+			self::$attribute_taxonomies = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."jigoshop_attribute_taxonomies;"); 
+		}
+		
+		return self::$attribute_taxonomies;
+	}
 	
 }
