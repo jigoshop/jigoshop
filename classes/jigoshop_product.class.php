@@ -147,7 +147,7 @@ class jigoshop_product {
             $this->stock = $product_custom_fields['stock'][0];
         }
 
-		$terms = wp_get_object_terms( $id, 'product_type' );
+		$terms = wp_get_object_terms( $ID, 'product_type' );
 		if (!is_wp_error($terms) && $terms) {
 			$term = current($terms);
 			$this->product_type = $term->slug;
