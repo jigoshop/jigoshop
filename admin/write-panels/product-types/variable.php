@@ -55,8 +55,27 @@ function variable_product_type_options() {
 								
 								// If not variable attribute then skip
 								if ( ! $attribute['variation'] ) continue;
+
+								echo '<select name="tax_' . sanitize_title($attribute['name']) . '['.$loop.']"><option value="">'.__('Any ', 'jigoshop').$attribute['name'].' &hellip;</option>';
+
+								if ( $attribute['is_taxonomy']) {
+									
+									$product_terms = wp_get_post_terms( $post->ID, 'pa_'.sanitize_title($attribute['name']));
+									foreach( $product_terms as $term ) {
+										echo "<option value='{$term->slug}'>{$term->name}</option>";
+									}
+								}
+								else {
+									$options = explode('|', $attribute['value']);
+									foreach( $options as $option ) {
+										$option = trim($option);
+										echo "<option value='{$option}'>{$option}</option>";
+									}
+								}
+
+								echo '</select>';
 								
-								$options = $attribute['value'];
+								/*$options = $attribute['value'];
 								$value = get_post_meta( $variation->ID, 'tax_' . sanitize_title($attribute['name']), true );
 								
 								$custom_attribute = false;
@@ -65,9 +84,7 @@ function variable_product_type_options() {
 									$custom_attribute = true;
 								endif;
 
-								var_dump($value);
-								exit();
-								
+							
 								echo '<select name="tax_' . sanitize_title($attribute['name']) . '['.$loop.']"><option value="">'.__('Any ', 'jigoshop').$attribute['name'].' &hellip;</option>';
 								
 								foreach ( $options as $option ) :
@@ -77,11 +94,11 @@ function variable_product_type_options() {
 										$prettyname = get_term_by( 'slug', $option, 'pa_'.sanitize_title( $attribute['name'] ))->name;
 									endif;
 									$option = sanitize_title( $option ); /* custom attributes need sanitizing */
-									$output = '<option ';
+								/*	$output = '<option ';
 									$output .= selected( $value, $option );
 									$output .= ' value="'.$option.'">'.$prettyname.'</option>';
 									echo $output;
-								endforeach;	
+								endforeach;	*/
 								
 								echo '</select>';
 	
