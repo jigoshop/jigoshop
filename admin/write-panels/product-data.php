@@ -30,21 +30,7 @@ function jigoshop_product_data_box() {
 	add_action('admin_footer', 'jigoshop_meta_scripts');
 	wp_nonce_field( 'jigoshop_save_data', 'jigoshop_meta_nonce' );
 
-	$thepostid = $post->ID;
-
-	$data = get_post_custom( $thepostid );
-
-	
-	//$data = (array) maybe_unserialize( get_post_meta($post->ID, 'product_data', true) );
-	//$featured = (string) get_post_meta( $post->ID, 'featured', true );
-	//$visibility = (string) get_post_meta( $post->ID, 'visibility', true);
-	
-	//if (!isset($data['weight'])) $data['weight'] = '';
-	//if (!isset($data['regular_price'])) $data['regular_price'] = '';
-	//if (!isset($data['sale_price'])) $data['sale_price'] = '';
-	
-	
-	
+	$thepostid = $post->ID;	
 	?>
 	<div class="panel-wrap product_data">
 
@@ -83,7 +69,7 @@ function jigoshop_product_data_box() {
 
 			echo '<p class="form-field">
 				<label for="'.$field['id'].'">'.$field['label'].' <em class="req" title="'.__('Required', 'jigoshop') . '">*</em></label>
-				<select id="'.$field['id'].'" name="'.$field['id'].'">';
+				<select id="'.$field['id'].'" name="'.$field['id'].'" class="select short">';
 
 			echo '<option value="simple" '; if ($product_type=='simple') echo 'selected="selected"'; echo '>'.__('Simple','jigoshop').'</option>';
 			
