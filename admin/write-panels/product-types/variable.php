@@ -66,7 +66,7 @@ function variable_product_type_options() {
 									}
 								}
 								else {
-									$options = explode('|', $attribute['value']);
+									$options = explode(', ', $attribute['value']);
 									foreach( $options as $option ) {
 										$option = trim($option);
 										echo "<option value='{$option}'>{$option}</option>";
