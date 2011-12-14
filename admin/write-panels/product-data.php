@@ -200,51 +200,40 @@ function jigoshop_product_data_box() {
 
 			echo jigoshop_form::select( 'tax_class', 'Tax Class', $options );
 			?>
-			
+
 		</div>
 		<?php if (get_option('jigoshop_manage_stock')=='yes') : ?>
 		<div id="inventory_product_data" class="panel jigoshop_options_panel">
-			
+
 			<?php
 			// manage stock
-			$field = array( 'id' => 'manage_stock', 'label' => __('Manage stock?', 'jigoshop') );
-			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].' <em class="req" title="' .__('Required', 'jigoshop') . '">*</em></label><input type="checkbox" class="checkbox" name="'.$field['id'].'" id="'.$field['id'].'"';
-			if (isset($data[$field['id']]) && $data[$field['id']]=='yes') echo 'checked="checked"';
-			echo ' /></p>';
-			
-			// Stock status
-			$field = array( 'id' => 'stock_status', 'label' => 'Stock status:' );
-			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].' <em class="req" title="'.__('Required', 'jigoshop') . '">*</em></label><select name="'.$field['id'].'">';
-			echo '<option value="instock" '; if (isset($data[$field['id']]) && $data[$field['id']]=='instock') echo 'selected="selected"'; echo '>In stock</option>';
-			echo '<option value="outofstock" '; if (isset($data[$field['id']]) && $data[$field['id']]=='outofstock') echo 'selected="selected"'; echo '>Out of stock</option>';
-			echo '</select></p>';
-			
-			echo '<div class="stock_fields">';
-			
-			// Stock
-			$field = array( 'id' => 'stock', 'label' => __('Stock Qty', 'jigoshop') );
-			echo '	<p class="form-field">
-						<label for="'.$field['id'].'">'.$field['label'].': <em class="req" title="'.__('Required', 'jigoshop') . '">*</em></label>
-						<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="';
-			
-			$stock = get_post_meta($post->ID, 'stock', true);
-    		if (!$stock) $stock = 0;
-    		echo $stock;
-						
-			echo '" />
-					</p>';
+			echo jigoshop_form::checkbox( 'manage_stock', 'Manage Stock?' );
 
-			// Backorders?
-			$field = array( 'id' => 'backorders', 'label' => __('Allow Backorders?', 'jigoshop') );
-			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].' <em class="req" title="'.__('Required', 'jigoshop') . '">*</em></label><select name="'.$field['id'].'">';
-			echo '<option value="no" '; if (isset($data[$field['id']]) && $data[$field['id']]=='no') echo 'selected="selected"'; echo '>' . __('Do not allow', 'jigoshop') . '</option>';
-			echo '<option value="notify" '; if (isset($data[$field['id']]) && $data[$field['id']]=='notify') echo 'selected="selected"'; echo '>' . __('Allow, but notify customer', 'jigoshop') . '</option>';
-			echo '<option value="yes" '; if (isset($data[$field['id']]) && $data[$field['id']]=='yes') echo 'selected="selected"'; echo '>' . __('Allow', 'jigoshop') . '</option>';
-			echo '</select></p>';
-			
+			// Stock Status
+			// TODO: These values should be true/false
+			echo jigoshop_form::select( 'stock_status', 'Stock Status', 
+				array(
+					'instock'		=> 'In Stock',
+					'outofstock'	=> 'Out of Stock'
+				) );
+
+			echo '<div class="stock_fields">';
+
+			// Stock
+			// TODO: Missing default value of 0
+			echo jigoshop_form::input( 'stock', 'Stock Quantity' );
+
+			// Backorders
+			echo jigoshop_form::select( 'backorders', 'Allow Backorders?',
+				array(
+					'no'		=> 'Do not allow',
+					'notify'	=> 'Allow, but notify customer',
+					'yes'		=> 'Allow'
+				) );
+
 			echo '</div>';
-			?>			
-			
+			?>
+
 		</div>
 		<?php endif; ?>
 		<div id="jigoshop_attributes" class="panel">

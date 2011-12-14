@@ -133,6 +133,7 @@ class jigoshop_product_meta
 		if( $array['manage_stock'] ) {
 			$array['stock'] 		= $post['stock'];
 			$array['backorders']	= $post['backorders']; // should have a space
+			$array['stock_status']	= -1; // Discount if stock is managed
 		} else {
 			$array['stock_status']	= $post['stock_status'];
 		}
