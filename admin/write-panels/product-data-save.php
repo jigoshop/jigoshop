@@ -42,6 +42,12 @@ class jigoshop_product_meta
 		update_post_meta( $post_id, 'visibility',		$_POST['visibility']);
 		update_post_meta( $post_id, 'featured',			$_POST['featured']);
 
+		// Downloadable Only
+		if( $_POST['product-type'] == 'downloadable' ) {
+			update_post_meta( $post_id, 'file_path',			$_POST['file_path']);
+			update_post_meta( $post_id, 'download_limit',	$_POST['download_limit']);
+		}
+
 		// Process the SKU
 		( $this->is_unique_sku( $post_id, $_POST['sku'] ) )
 			? update_post_meta( $post_id, 'sku', $_POST['sku'])
