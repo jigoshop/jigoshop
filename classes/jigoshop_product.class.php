@@ -527,8 +527,6 @@ class jigoshop_product {
 		return $this->weight;
 	}
 
-	
-
 	/** Returns the price (excluding tax) */
 	function get_price_excluding_tax() {
 		$price = $this->get_price();
@@ -586,6 +584,17 @@ class jigoshop_product {
 	 */
 	public function get_price() {
 		return ($this->is_on_sale()) ? $this->sale_price : $this->regular_price;
+	}
+
+	/**
+	 * Adjust the products price during runtime
+	 *
+	 * @param	mixed
+	 * @return	void
+	 */
+	public function adjust_price( $new_price ) {
+			$this->sale_price += $new_price;
+			$this->regular_price += $new_price;
 	}
 
 	/**
