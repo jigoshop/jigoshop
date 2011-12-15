@@ -715,6 +715,23 @@ class jigoshop_product {
 	}
 
 	/**
+	 * Gets a single product attribute
+	 *
+	 * @return	string|array
+	 **/
+	public function get_attribute( $key ) {
+
+		// Get the attribute in question & sanitize just incase
+		$attr = $this->attributes[sanitize_title($key)];
+
+		// If its a taxonomy return that
+		if( $attr['is_taxonomy'] )
+			return wp_get_post_terms( $this->id, 'pa_'.sanitize_title($attr['name']) );
+
+		return $attr['value'];
+	}
+
+	/**
 	 * Gets the attached product attributes
 	 *
 	 * @return	array
