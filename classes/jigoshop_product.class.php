@@ -927,7 +927,7 @@ class jigoshop_product {
 			}
 			else {
 				if( ! $attribute['is_taxonomy'] ) {
-					$options = explode(', ', $attributes['value']);
+					$options = explode(', ', $attribute['value']);
 					$options = array_map('trim', $options);
 					$values = array_intersect( $options, $values );
 				}
