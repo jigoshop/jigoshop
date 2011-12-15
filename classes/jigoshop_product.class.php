@@ -546,35 +546,37 @@ class jigoshop_product {
 		return $price;
 	}
 
-	/** Returns the base tax rate */
-	function get_tax_base_rate() {
+	/**
+	 * Returns the base tax rate
+	 *
+	 * @return	???
+	 */
+	public function get_tax_base_rate() {
+
 		if ($this->is_taxable() && get_option('jigoshop_calc_taxes') == 'yes') {
-			$_tax = &new jigoshop_tax();
-			$rate = $_tax->get_shop_base_rate($this->data['tax_class']);
-
-			return $rate;
+			$_tax = new jigoshop_tax();
+			return $_tax->get_shop_base_rate($this->data['tax_class']);
 		}
 
-		return NULL;
+		return false;
 	}
-	/** Returns the percentage saved on sale products */
-	function get_percentage()
-	{
-		$percentage_text = '';
-	
-		if (!empty($this->sale_price) && !empty($this->price) && $this->in_sale_date_range()) {
-			
-			$currency_symbol = get_jigoshop_currency_symbol();
-			
-			$percentage_a = str_replace($currency_symbol, '', jigoshop_price($this->price));
-			$percentage_b = str_replace($currency_symbol, '', jigoshop_price($this->sale_price));
-			$calc_a = (($percentage_a - $percentage_b)/$percentage_a)*100;
-			$percentage = round($calc_a);
-			$percentage_text .= $percentage.'%';
-			
+
+	/**
+	 * Returns the percentage saved on sale products
+	 * @note was called get_percentage()
+	 *
+	 * @return	string
+	 */
+	public function get_percentage_sale() {
+
+		if ( $this->is_on_sale() ) {
+			// 100% - sale price percentage over regular price
+			$percentage = 100 - ( ($this->sale_price / $this->regular_price) * 100);
+
+			// Round & return
+			return round($percentage).'%';
 		}
-	
-		return $percentage_text;
+
 	}
 
 	/**
@@ -586,9 +588,14 @@ class jigoshop_product {
 		return ($this->is_on_sale()) ? $this->sale_price : $this->regular_price;
 	}
 
-	/** Returns the price in html format */
-	// Doesn't work for variable/grouped products
-	function get_price_html()
+	/**
+	 * Returns the price in html format
+	 *
+	 * @todo	Add support for grouped/variable products
+	 *
+	 * @return	html
+	 */
+	public function get_price_html()
 	{
 		$html = null;
 
@@ -608,12 +615,10 @@ class jigoshop_product {
 		}
 
 		return $html;
-		
-		
 	}
 
 	/** Returns the upsell product ids */
-	function get_upsells() {
+	public function get_upsells() {
 		if (isset($this->data['upsell_ids'])) {
 			return (array) $this->data['upsell_ids']; 
 		}
