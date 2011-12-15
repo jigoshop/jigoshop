@@ -171,8 +171,8 @@ function variable_product_write_panel_js() {
 						<strong><?php _e('Variation:', 'jigoshop'); ?></strong>\
 						<?php
 							if ($attributes) foreach ($attributes as $attribute) :
-								
-								if ( $attribute['variation']!=='yes' ) continue;
+
+								if ( ! $attribute['variation'] ) continue;
 								
 								$options = $attribute['value'];
 								if (!is_array($options)) $options = explode(',', $options);
