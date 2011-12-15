@@ -1,3 +1,4 @@
+/* This beautiful CSS-File has been crafted with LESS (lesscss.org) and compiled by simpLESS (wearekiss.com/simpless) */
 #toplevel_page_jigoshop .wp-menu-image {
   background: url(../images/icons/menu_icons.png) no-repeat 0px -32px !important;
 }
@@ -13,16 +14,16 @@
 #menu-posts-product:hover .wp-menu-image, #menu-posts-product.wp-has-current-submenu .wp-menu-image {
   background: url(../images/icons/menu_icons.png) no-repeat -35px 0px !important;
 }
-#menu-posts-shoporder .wp-menu-image {
+#menu-posts-shop_order .wp-menu-image {
   background: url(../images/icons/menu_icons.png) no-repeat -70px -32px !important;
 }
-#menu-posts-shoporder:hover .wp-menu-image, #menu-posts-shoporder.wp-has-current-submenu .wp-menu-image {
+#menu-posts-shop_order:hover .wp-menu-image, #menu-posts-shop_order.wp-has-current-submenu .wp-menu-image {
   background: url(../images/icons/menu_icons.png) no-repeat -70px 0px !important;
 }
 #icon-jigoshop,
 .jigoshop_icon,
 .icon32-posts-product,
-.icon32-posts-shoporder {
+.icon32-posts-shop_order {
   background-image: url(../images/icons/jigoshop-icons.png) !important;
   background-position: -11px -5px;
 }
@@ -32,7 +33,7 @@
 .icon32-posts-product {
   background-position: -69px -5px !important;
 }
-.icon32-posts-shoporder {
+.icon32-posts-shop_order {
   background-position: -127px -5px !important;
 }
 .icon32-attributes {
@@ -80,37 +81,50 @@
 #jigoshop-order-items h3 small {
   color: #999;
 }
-dl.totals {
+ul.totals {
   margin: 6px 6px 0;
   float: left;
 }
-dl.totals dt {
+ul.totals li {
   float: left;
+  clear: both;
   width: 100%;
   font-size: 1.2em;
-  font-weight: bold;
-  line-height: 2em;
+  line-height: 1.2;
+  margin: 0;
+  padding: 0 0 9px;
 }
-dl.totals dd {
-  line-height: 2em;
-  font-size: 1.2em;
+ul.totals li label {
+  display: block;
+  font-size: 0.8em;
+  padding: 0 0 2px;
+  color: #333;
+}
+ul.totals li input {
+  width: 100%;
+  margin: 0;
+}
+ul.totals li input.first {
+  width: 49%;
+}
+ul.totals li input.last {
+  width: 49%;
+}
+ul.totals li.left {
   float: left;
+  width: 49%;
+  clear: none;
+}
+ul.totals li.left input {
   width: 100%;
 }
-dl.totals dd input {
-  width: 100%;
-  vertical-align: middle;
-  float: left;
-  font-size: 1em;
-  margin: 0 !important;
-}
-dl.totals dd input.first {
-  width: 49%;
-  float: left;
-}
-dl.totals dd input.last {
-  width: 49%;
+ul.totals li.right {
   float: right;
+  width: 49%;
+  clear: none;
+}
+ul.totals li.right input {
+  width: 100%;
 }
 .jigoshop_order_items_wrapper {
   margin: 0;
@@ -516,11 +530,11 @@ ul.recent-orders li .refunded, ul.recent-orders li .cancelled {
 }
 .jigoshop table.widefat .button {
   float: left;
-  margin: 0 3px 3px 0 !important;
+  margin: 0 3px 3px 0;
 }
 .jigoshop table.widefat .button-right {
   float: right;
-  margin: 0 0 3px 3px !important;
+  margin: 0 0 3px 3px;
 }
 .jigoshop table.widefat td, .jigoshop table.widefat th {
   padding: 9px 9px;
@@ -602,6 +616,25 @@ p.taxrow label input {
   border: 0 !important;
   width: 100%;
 }
+.jigoshop table.widefat table.coupon_rows a.dp-choose-date {
+  float: left;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin: 4px 9px 0 3px;
+  display: block;
+  text-indent: -2000px;
+  overflow: hidden;
+  background: url(../images/calendar.png) no-repeat;
+}
+.jigoshop table.widefat table.coupon_rows a.dp-choose-date.disabled {
+  background-position: 0 -20px;
+  cursor: default;
+}
+.jigoshop table.widefat table.coupon_rows input.dp-applied {
+  width: 140px;
+  float: left;
+}
 .jigoshop table.widefat table.coupon_rows thead th {
   padding: 1px;
   border: 0;
@@ -615,7 +648,7 @@ p.taxrow label input {
   vertical-align: middle;
 }
 .jigoshop table.widefat table.coupon_rows tbody td input.text {
-  width: 95px;
+  width: 85px;
 }
 a.tips {
   height: 16px;
@@ -652,10 +685,9 @@ a.tips {
   background: #ececec;
   padding: 7px 9px 0;
   margin: 0;
-  line-height: 1;
   overflow: hidden;
   zoom: 1;
-
+  line-height: 1;
 }
 #jigoshop-product-data ul.product_data_tabs li, .jigoshop ul.tabs li {
   float: left;

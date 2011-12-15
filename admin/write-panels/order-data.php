@@ -362,35 +362,46 @@ function jigoshop_order_totals_meta_box($post) {
 	if (!isset($data['order_tax'])) $data['order_tax'] = '';
 	if (!isset($data['order_total'])) $data['order_total'] = '';
 	if (!isset($data['order_shipping_tax'])) $data['order_shipping_tax'] = '';
+
+	$coupons = array();
+	if( ! empty($data['order_discount_coupons']) ) {
+		foreach ( $data['order_discount_coupons'] as $coupon ) {
+			$coupons[] = $coupon['code'];
+		}
+	}
 	?>
-	<dl class="totals">
-		<dt><?php _e('Subtotal:', 'jigoshop'); ?></dt>
-		<dd><input type="text" id="order_subtotal" name="order_subtotal" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo $data['order_subtotal']; ?>" class="first" /></dd>
+	<ul class="totals">
+		<li>
+			<label><?php _e('Subtotal:', 'jigoshop'); ?></label>
+			<input type="text" id="order_subtotal" name="order_subtotal" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo $data['order_subtotal']; ?>" class="first" />
+		</li>
 
-		<dt><?php _e('Shipping &amp; Handling:', 'jigoshop'); ?></dt>
-		<dd><input type="text" id="order_shipping" name="order_shipping" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo $data['order_shipping']; ?>" class="first" /> <input type="text" name="shipping_method" id="shipping_method" value="<?php echo $data['shipping_method']; ?>" class="last" placeholder="<?php _e('Shipping method...', 'jigoshop'); ?>" /></dd>
+		<li>
+			<label><?php _e('Shipping:', 'jigoshop'); ?></label>
+			<input type="text" id="order_shipping" name="order_shipping" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo $data['order_shipping']; ?>" class="first" /> <input type="text" name="shipping_method" id="shipping_method" value="<?php echo $data['shipping_method']; ?>" class="last" placeholder="<?php _e('Shipping Method', 'jigoshop'); ?>" />
+		</li>
 
-		<dt><?php _e('Order shipping tax:', 'jigoshop'); ?></dt>
-		<dd><input type="text" id="order_shipping_tax" name="order_shipping_tax" placeholder="0.00" value="<?php echo $data['order_shipping_tax']; ?>" class="first" /></dd>
+		<li class="left">
+			<label><?php _e('Order shipping tax:', 'jigoshop'); ?></label>
+			<input type="text" id="order_shipping_tax" name="order_shipping_tax" placeholder="0.00" value="<?php echo $data['order_shipping_tax']; ?>" class="first" />
+		</li>
 
-		<dt><?php _e('Tax:', 'jigoshop'); ?></dt>
-		<dd><input type="text" id="order_tax" name="order_tax" placeholder="0.00" value="<?php echo $data['order_tax']; ?>" class="first" /></dd>
+		<li class="right">
+			<label><?php _e('Tax:', 'jigoshop'); ?></label>
+			<input type="text" id="order_tax" name="order_tax" placeholder="0.00" value="<?php echo $data['order_tax']; ?>" class="first" />
+		</li>
 
-		<?php
-			$coupons = array();
-			if( ! empty($data['order_discount_coupons']) ) {
-				foreach ( $data['order_discount_coupons'] as $coupon ) {
-					$coupons[] = $coupon['code'];
-				}
-			}
-		?>
-		<dt><?php _e('Discount: ', 'jigoshop'); ?><span class="applied-coupons-values"><?php echo implode( ',', $coupons ); ?></span></dt>
-		<dd><input type="text" id="order_discount" name="order_discount" placeholder="0.00" value="<?php echo $data['order_discount']; ?>" /></dd>
+		<li>
+			<label><?php _e('Discount: ', 'jigoshop'); ?><span class="applied-coupons-values"><?php echo implode( ',', $coupons ); ?></span></label>
+			<input type="text" id="order_discount" name="order_discount" placeholder="0.00" value="<?php echo $data['order_discount']; ?>" />
+		</li>
 
-		<dt><?php _e('Total:', 'jigoshop'); ?></dt>
-		<dd><input type="text" id="order_total" name="order_total" placeholder="0.00" value="<?php echo $data['order_total']; ?>" class="first" /> <input type="text" name="payment_method" id="payment_method" value="<?php echo $data['payment_method']; ?>" class="last" placeholder="<?php _e('Payment method...', 'jigoshop'); ?>" /></dd>
+		<li>
+			<label><?php _e('Total:', 'jigoshop'); ?></label>
+			<input type="text" id="order_total" name="order_total" placeholder="0.00" value="<?php echo $data['order_total']; ?>" class="first" /> <input type="text" name="payment_method" id="payment_method" value="<?php echo $data['payment_method']; ?>" class="last" placeholder="<?php _e('Payment Method', 'jigoshop'); ?>" />
+		</li>
 
-	</dl>
+	</ul>
 	<div class="clear"></div>
 	<?php
 }
