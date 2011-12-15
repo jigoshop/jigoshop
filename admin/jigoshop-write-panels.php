@@ -218,10 +218,10 @@ class jigoshop_form {
 		return $html;
 	}
 
-	public static function select( $ID, $label, $options, $desc = FALSE, $class = 'select short' ) {
+	public static function select( $ID, $label, $options, $selected = false,  $desc = FALSE, $class = 'select short' ) {
 		global $post;
 
-		$selected = get_post_meta($post->ID, $ID, true);
+		$selected = ($selected) ? $selected : get_post_meta($post->ID, $ID, true);
 		$desc  = ($desc)  ? esc_html($desc) : false;
 		$label = __($label, 'jigoshop');
 		$html = '';
