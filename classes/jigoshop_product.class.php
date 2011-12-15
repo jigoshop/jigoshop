@@ -18,7 +18,6 @@ class jigoshop_product {
 	
 	// LEGACY
 	private static $attribute_taxonomies = NULL;
-	
 	//
 
 	public $id; // : jigoshop_template_functions.php on line 99 // This is just an alias for $this->ID
@@ -34,7 +33,7 @@ class jigoshop_product {
 
 	private $regular_price;
 	private $sale_price;
-	private $sale_price_dates_from	;
+	private $sale_price_dates_from;
 	private $sale_price_dates_to;
 
 	private $weight;
@@ -65,8 +64,12 @@ class jigoshop_product {
 		// TODO: Change to uppercase for consistency sake
 		$this->ID = (int) $ID;
 		$this->id = $this->ID;
-		$meta = get_post_custom( $this->ID );
-		$this->meta = $meta;
+
+		if ( ! $this->meta ) {
+			$this->meta = get_post_custom( $this->ID );
+		}
+
+		$meta = $this->meta;
 
 		// Check if the product has meta data attached
 		// If not then it might not be a product
@@ -75,8 +78,8 @@ class jigoshop_product {
 		// Get the product type
 		// TODO: for some reason this is invalid on first run?
 		$terms = wp_get_object_terms( $this->ID, 'product_type', array('fields' => 'names') );
-		if( ! is_wp_error($terms) )
-			$this->product_type = sanitize_title($terms[0]); // should throw error if something has gone wrong
+		
+		$this->product_type = (isset($terms[0]) ? sanitize_title($terms[0]) : 'simple');
 
 		// Define data
 		$this->regular_price				= isset($meta['regular_price'][0]) ? $meta['regular_price'][0] : null;
@@ -96,12 +99,6 @@ class jigoshop_product {
 		$this->stock_status				= isset($meta['stock_status'][0]) ? $meta['stock_status'][0] : null;
 		$this->backorders				= isset($meta['backorders'][0]) ? $meta['backorders'][0] : null;
 		$this->stock					= isset($meta['stock'][0]) ? $meta['stock'][0] : null;
-
-		// Get the attributes
-		$this->attributes = maybe_unserialize( $meta['product_attributes'][0] );
-
-		// OLD
-		$this->get_children();
 
 		return $this;
 	}
@@ -158,7 +155,7 @@ class jigoshop_product {
 			'post_type'			=> ($this->is_type('variable')) ? 'product_variation' : 'product',
 			'orderby'			=> 'menu_order',
 			'order'				=> 'ASC',
-			'fields'				=> 'ID',
+			'fields'				=> 'ids',
 			'post_status'		=> 'any',
 			'numberposts'		=> -1
 		));
@@ -745,7 +742,8 @@ class jigoshop_product {
 	public function get_attribute( $key ) {
 
 		// Get the attribute in question & sanitize just incase
-		$attr = $this->attributes[sanitize_title($key)];
+		$attributes = $this->get_attributes();
+		$attr = $attributes[sanitize_title($key)];
 
 		// If its a taxonomy return that
 		if( $attr['is_taxonomy'] )
@@ -760,6 +758,11 @@ class jigoshop_product {
 	 * @return	array
 	 **/
 	public function get_attributes() {
+
+		// Get the attributes
+		if ( ! $this->attributes )
+			$this->attributes = maybe_unserialize( $this->meta['product_attributes'][0] );
+
 		return $this->attributes;
 	}
 
@@ -769,8 +772,8 @@ class jigoshop_product {
 	 * @return	boolean
 	 **/
 	public function has_attributes() {
-		if ( (bool) $this->attributes ) {
-			foreach( $this->attributes as $attribute ) {
+		if ( (bool) $this->get_attributes() ) {
+			foreach( $this->get_attributes() as $attribute ) {
 				return (bool) $attribute['visible'];
 			}
 		}
@@ -792,7 +795,7 @@ class jigoshop_product {
 		// Start the html output
 		$html = '<table cellspacing="0" class="shop_attributes">';
 
-		foreach( $this->attributes as $attr ) {
+		foreach( $this->get_attributes() as $attr ) {
 
 			// If attribute is invisible skip
 			if ( ! $attr['visible'] )

@@ -357,7 +357,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
         
         foreach($children as $child) {
             /* @var $variation jigoshop_product_variation */
-            $variation = $child->product;
+            $variation = $_product->get_child( $child );
             if($variation instanceof jigoshop_product_variation && $variation->is_visible()) {
                 $vattrs = $variation->get_variation_attributes();
                 $availability = $variation->get_availability();
