@@ -27,19 +27,20 @@ class jigoshop_product {
 	public $sku; // : jigoshop_template_functions.php on line 246
 
 	public $data; // jigoshop_tax.class.php on line 186
+	public $post; // for get_title()
 
 	private $regular_price;
 	private $sale_price;
 	private $sale_price_dates_from	;
 	private $sale_price_dates_to;
 
-	private $n_weight;
+	private $weight;
 
-	private $n_tax_status		= 'taxable';
-	private $n_tax_class	;
+	private $tax_status		= 'taxable';
+	private $tax_class;
 
 	public $visibility			= 'visible'; // : admin/jigoshop-admin-post-types.php on line 168
-	private $n_featured			= false;
+	private $featured			= false;
 
 	private $manage_stock		= false;
 	private $stock_status		= 'instock';
@@ -51,7 +52,8 @@ class jigoshop_product {
 	/**
 	 * Loads all product data from custom fields
 	 *
-	 * @param   int		$id		ID of the product to load
+	 * @param   int		ID of the product to load
+	 * @return	jigoshop_product
 	 */
 	public function __construct( $ID ) {
 
@@ -76,13 +78,13 @@ class jigoshop_product {
 		$this->sale_price_dates_from		= isset($meta['sale_price_dates_from'][0]) ? $meta['sale_price_dates_from'][0] : null;
 		$this->sale_price_dates_to		= isset($meta['sale_price_dates_to'][0]) ? $meta['sale_price_dates_to'][0] : null;
 
-		$this->n_weight					= isset($meta['weight'][0]) ? $meta['weight'][0] : null;
+		$this->weight					= isset($meta['weight'][0]) ? $meta['weight'][0] : null;
 
-		$this->n_tax_status				= isset($meta['tax_status'][0]) ? $meta['tax_status'][0] : null;
-		$this->n_tax_class				= isset($meta['tax_class'][0]) ? $meta['tax_class'][0] : null;
+		$this->tax_status				= isset($meta['tax_status'][0]) ? $meta['tax_status'][0] : null;
+		$this->tax_class					= isset($meta['tax_class'][0]) ? $meta['tax_class'][0] : null;
 
 		$this->visibility				= isset($meta['visibility'][0]) ? $meta['visibility'][0] : null;
-		$this->n_featured				= isset($meta['featured'][0]) ? $meta['featured'][0] : null;
+		$this->featured					= isset($meta['featured'][0]) ? $meta['featured'][0] : null;
 
 		$this->manage_stock				= isset($meta['manage_stock'][0]) ? $meta['manage_stock'][0] : null;
 		$this->stock_status				= isset($meta['stock_status'][0]) ? $meta['stock_status'][0] : null;
@@ -171,7 +173,7 @@ class jigoshop_product {
 	 * Reduce stock level of the product
 	 * Acts as an alias for modify_stock()
 	 *
-	 * @param   int		$by		Amount to reduce by
+	 * @param   int		Amount to reduce by
 	 * @return	int
 	 */
 	public function reduce_stock( $by = -1 ) {
@@ -182,7 +184,7 @@ class jigoshop_product {
 	 * Increase stock level of the product
 	 * Acts as an alias for modify_stock()
 	 *
-	 * @param   int		$by		Amount to increase by
+	 * @param   int		Amount to increase by
 	 * @return	int
 	 */
 	public function increase_stock( $by = 1 ) {
@@ -192,7 +194,7 @@ class jigoshop_product {
 	/**
 	 * Modifies the stock levels
 	 *
-	 * @param   int		$by		Amount to modify
+	 * @param   int		Amount to modify
 	 * @return	int
 	 */
 	public function modify_stock( $by ) {
@@ -212,25 +214,27 @@ class jigoshop_product {
 	/**
 	 * Checks the product type
 	 *
-	 * @param   string		$type		Type to check against
+	 * @param   string		Type to check against
+	 * @return	bool
 	 */
-	function is_type( $type ) {
-		if (is_array($type) && in_array($this->product_type, $type)) {
+	public function is_type( $type ) {
+
+		if ( is_array($type) && in_array($this->product_type, $type) )
 			return true;
-		} else if ($this->product_type == $type) {
+		
+		if ($this->product_type == $type)
 			return true;
-		}
 		
 		return false;
 	}
 
-	/** Returns whether or not the product has any child product */
-	function has_child () {
-		if(is_array($this->children) && count($this->children) > 0) {
-			return true;
-		}
-		
-		return false;
+	/**
+	 * Returns whether or not the product has any child product
+	 *
+	 * @return	bool
+	 */
+	public function has_child () {
+		return (bool) $this->children;
 	}
 
 	/**
@@ -242,26 +246,32 @@ class jigoshop_product {
 		return (bool) $this->exists;
 	}
 
-	/** Returns whether or not the product is taxable */
-	function is_taxable() {
-		if (isset($this->data['tax_status']) && $this->data['tax_status']=='taxable') {
-			return true;
-		}
-		
-		return false;
+	/**
+	 * Returns whether or not the product is taxable
+	 *
+	 * @return	bool
+	 */
+	public function is_taxable() {
+		return ( $this->tax_status == 'taxable' );
 	}
 
-	/** Returns whether or not the product shipping is taxable */
-	function is_shipping_taxable() {
-		if (isset($this->data['tax_status']) && ($this->data['tax_status']=='taxable' || $this->data['tax_status']=='shipping')) {
-			return true;
-		}
-		
-		return false;
+	/**
+	 * Returns whether or not the product shipping is taxable
+	 *
+	 * @return	bool
+	 */
+	public function is_shipping_taxable() {
+		return ( $this->is_taxable() || $this->tax_status == 'shipping' );
 	}
 
-	/** Get the product's post data */
-	function get_post_data() {
+	/**
+	 * Get the product's post data
+	 * @deprecated Should be using WP native the_title() right? -Rob
+	 * @note: Only used for get_title()
+	 *
+	 * @return	object
+	 */
+	public function get_post_data() {
 		if (empty($this->post)) {
 			$this->post = get_post( $this->id );
 		}
@@ -269,22 +279,35 @@ class jigoshop_product {
 		return $this->post;
 	}
 
-	/** Get the title of the post */
-	function get_title() {
+	/**
+	 * Get the product's post data
+	 * @deprecated Should be using WP native the_title() right? -Rob
+	 * @note: Only used for get_title()
+	 *
+	 * @return	string
+	 */
+	public function get_title() {
 		$this->get_post_data();
 		return apply_filters('jigoshop_product_title', get_the_title($this->post->ID), $this);
 	}
 
-	/** Get the add to url */
-	function add_to_cart_url() {
+	/** 
+	 * Get the add to url
+	 * @todo look at this function closer
+	 *
+	 * @return	mixed
+	 */
+	public function add_to_cart_url() {
 
 		if ($this->is_type('variable')) {
 			$url = add_query_arg('add-to-cart', 'variation');
 			$url = add_query_arg('product', $this->id, $url);
-		} else if ( $this->has_child() ) {
+		}
+		else if ( $this->has_child() ) {
 			$url = add_query_arg('add-to-cart', 'group');
 			$url = add_query_arg('product', $this->id, $url);
-		} else {
+		}
+		else {
 			$url = add_query_arg('add-to-cart', $this->id);
 		}
 
@@ -314,15 +337,15 @@ class jigoshop_product {
 	public function is_in_stock() {
 
 		// If we arent managing stock then it should always be in stock
-		if( ! $this->managing_stock() || $this->stock_status == 'instock' )
+		if( ! $this->managing_stock() && $this->stock_status == 'instock' )
 			return true;
 
 		// Check if we allow backorders
-		if( $this->backorders_allowed() )
+		if( $this->managing_stock() && $this->backorders_allowed() )
 			return true;
 
 		// Check if we have stock
-		if( (bool) $this->stock )
+		if( $this->managing_stock() && $this->stock )
 			return true;
 		
 		return false;
@@ -398,68 +421,48 @@ class jigoshop_product {
 		return (int) $this->stock;
 	}
 	
-	/** Returns the availability of the product */
-	function get_availability() {
-		$availability = "";
-		$class = "";
+	/**
+	 * Returns a string representing the availability of the product 
+	 * 
+	 * @return	string
+	 */
+	public function get_availability() {
 
-		if (!$this->managing_stock()) :
-			if ($this->is_in_stock()) :
-				//$availability = __('In stock', 'jigoshop'); /* Lets not bother showing stock if its not managed and is available */
-			else :
-				$availability = __('Out of stock', 'jigoshop');
-				$class = 'out-of-stock';
-			endif;
-		else :
-			if ($this->is_in_stock()) :
-				if ($this->stock > 0) :
-					$availability = __('In stock', 'jigoshop');
+		// Start as in stock
+		$notice = array(
+			'availability'	=> __( 'In Stock', 'jigoshop' ),
+			'class'			=> null,
+		);
 
-					if ($this->backorders_allowed()) :
-						if ($this->backorders_require_notification()) :
-							$availability .= ' &ndash; '.$this->stock.' ';
-							$availability .= __('available', 'jigoshop');
-							$availability .= __(' (backorders allowed)', 'jigoshop');
-						endif;
-					else :
-						$availability .= ' &ndash; '.$this->stock.' ';
-						$availability .= __('available', 'jigoshop');
-					endif;
+		// If stock is being managed & has stock
+		if ( $this->managing_stock() && $this->stock ) {
+			$notice['availability'] .= " &ndash; {$this->stock} ".__(' available', 'jigoshop' );
 
-				else :
+			// If customers require backorder notification
+			if ( $this->backorders_allowed() && $this->backorders_require_notification() ) {
+				$notice['availability'] = $notice['availability'] .' ('.__('backorders allowed','jigoshop').')';
+			}
+		}
+		else if ( $this->backorders_allowed() && $this->backorders_require_notification() ) {
+				$notice['availability']	= __( 'Available on Backorder', 'jigoshop' );
+		}
 
-					if ($this->backorders_allowed()) :
-						if ($this->backorders_require_notification()) :
-							$availability = __('Available on backorder', 'jigoshop');
-						else :
-							$availability = __('In stock', 'jigoshop');
-						endif;
-					else :
-						$availability = __('Out of stock', 'jigoshop');
-						$class = 'out-of-stock';
-					endif;
+		// Declare out of stock if we don't have any stock
+		if ( ! $this->is_in_stock() ) {
+			$notice['availability']	= __( 'Out of Stock', 'jigoshop' );
+			$notice['class']		= 'out-of-stock';
+		}
 
-				endif;
-			else :
-				if ($this->backorders_allowed()) :
-					$availability = __('Available on backorder', 'jigoshop');
-				else :
-					$availability = __('Out of stock', 'jigoshop');
-					$class = 'out-of-stock';
-				endif;
-			endif;
-		endif;
-
-		return array( 'availability' => $availability, 'class' => $class);
+		return $notice;
 	}
 
-	/** Returns whether or not the product is featured */
-	function is_featured() {
-		if (get_post_meta($this->id, 'featured', true)=='yes') {
-			return true;
-		}
-		
-		return false;
+	/**
+	 * Returns whether or not the product is featured
+	 * 
+	 * @return	bool
+	 */
+	public function is_featured() {
+		return (bool) $this->featured;
 	}
 
 	/**
@@ -470,7 +473,7 @@ class jigoshop_product {
 	public function is_visible( ) {
 
 		// Disabled due to incorrect stock handling -Rob
-		//if( (bool) $this->n_stock )
+		//if( (bool) $this->stock )
 		//	return false;
 
 		switch($this->visibility) {
@@ -521,7 +524,7 @@ class jigoshop_product {
 	 * @return	mixed	weight
 	 */
 	public function get_weight() {
-		return $this->n_weight;
+		return $this->weight;
 	}
 
 	
