@@ -253,8 +253,8 @@ class jigoshop_product {
 	 *
 	 * @return	bool
 	 */
-	public function has_child () {
-		return (bool) $this->children;
+	public function has_child() {
+		return (bool) $this->get_children();
 	}
 
 	/**
@@ -844,6 +844,8 @@ class jigoshop_product {
 	 * @return two dimensional array of attributes and their available values
 	 */   
 	function get_available_attributes_variations() {
+
+		error_log($this->has_child());
 		if (!$this->is_type('variable') || !$this->has_child()) {
 			return array();
 		}
@@ -854,21 +856,72 @@ class jigoshop_product {
 			return array();
 		}
 		
-		$available = array();
+		$available_attributes = array();
 		$children = $this->get_children();
+
 		
 		foreach ($attributes as $attribute) {
-			if ($attribute['variation'] !== 'yes') {
-				continue;
-			}
+			
+			// If we don't have any variations
+			if ( ! $attribute['variation']) continue;
 
 			$values = array();
-			$name = 'tax_'.sanitize_title($attribute['name']);
+
+			$attr_name = 'tax_'.sanitize_title($attribute['name']);
+
+
 
 			foreach ($children as $child) {
-				/* @var $variation jigoshop_product_variation */
-				$variation = $child->product;
 
+				// Check if variation is disabled
+				if ( get_post_status( $child ) != 'publish' ) continue;
+
+				// Get the variation & all attributes associated
+				$child = $this->get_child( $child );
+				$options = $child->get_variation_attributes();
+
+				if ( is_array($options)) {
+					foreach($options as $key => $value) {
+						if ( $key == $attr_name )
+							$values[] = $value;
+					}
+				}
+			}
+
+			//empty value indicates that all options for given attribute are available
+			if( in_array('', $values) ) {
+
+				if ( $attribute['is_taxonomy'] ) {
+					$options = array();
+					$terms = wp_get_post_terms( $this->ID, 'pa_'.sanitize_title($attribute['name']) );
+
+					foreach($terms as $term) {
+						$options[] = $term->slug;
+					}
+				}
+				else {
+					$options = explode(', ', $attribute['value']);
+				}
+
+				$options = array_map('trim', $options);
+				$values = array_unique($options);
+			}
+			else {
+				if( ! $attribute['is_taxonomy'] ) {
+					$options = explode(', ', $attributes['value']);
+					$options = array_map('trim', $options);
+					$values = array_intersect( $options, $values );
+				}
+
+				$values = array_unique($values);
+			}
+
+			$available_attributes[$attribute['name']] = array_unique($values);
+		}
+
+		return $available_attributes;
+	}
+/*
 				//check attributes of all variations that are visible (enabled)
 				if ($variation instanceof jigoshop_product_variation && $variation->is_visible()) {
 					$options = $variation->get_variation_attributes();
@@ -885,7 +938,7 @@ class jigoshop_product {
 			
 			sort( $values );
 			
-			//empty value indicates that all options for given attribute are available
+			
 			if ( in_array(  '', $values)) {
 				$options = $attribute['value'];
 				if (!is_array($options)) {
@@ -902,7 +955,7 @@ class jigoshop_product {
 		}
 		
 		return $available;
-	}
+	}*/
 
 	/**
 	 * Get attribute taxonomies. Taxonomies are lazy loaded.
