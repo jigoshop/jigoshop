@@ -635,13 +635,21 @@ class jigoshop_product {
 		return $this->cross_sells;
 	}
 
-	/** Returns the product categories */
-	function get_categories( $sep = ', ', $before = '', $after = '' ) {
+	/**
+	 * Returns the product categories
+	 *
+	 * @return	HTML
+	 */
+	public function get_categories( $sep = ', ', $before = '', $after = '' ) {
 		return get_the_term_list($this->id, 'product_cat', $before, $sep, $after);
 	}
 
-	/** Returns the product tags */
-	function get_tags( $sep = ', ', $before = '', $after = '' ) {
+	/**
+	 * Returns the product tags
+	 *
+	 * @return	HTML
+	 */
+	public function get_tags( $sep = ', ', $before = '', $after = '' ) {
 		return get_the_term_list($this->id, 'product_tag', $before, $sep, $after);
 	}
 
@@ -726,7 +734,7 @@ class jigoshop_product {
 	 *
 	 * @return	html
 	 **/
-	function list_attributes() {
+	public function list_attributes() {
 
 		// Check that we have some attributes that are visible
 		if ( ! $this->has_attributes() )
