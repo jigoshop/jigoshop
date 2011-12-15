@@ -617,22 +617,22 @@ class jigoshop_product {
 		return $html;
 	}
 
-	/** Returns the upsell product ids */
+	/**
+	 * Returns the upsell product ids
+	 *
+	 * @return	mixed
+	 */
 	public function get_upsells() {
-		if (isset($this->data['upsell_ids'])) {
-			return (array) $this->data['upsell_ids']; 
-		}
-		
-		return array();
+		return $this->up_sells;
 	}
 
-	/** Returns the crosssell product ids */
-	function get_cross_sells() {
-		if (isset($this->data['crosssell_ids'])) {
-			return (array) $this->data['crosssell_ids'];
-		}
-		
-		return array();
+	/**
+	 * Returns the cross_sells product ids
+	 *
+	 * @return	mixed
+	 */
+	public function get_cross_sells() {
+		return $this->cross_sells;
 	}
 
 	/** Returns the product categories */
