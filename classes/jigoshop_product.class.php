@@ -21,7 +21,7 @@ class jigoshop_product {
 	//
 
 	public $id; // : jigoshop_template_functions.php on line 99 // This is just an alias for $this->ID
-	private $ID;
+	public $ID;
 	public $exists; // : jigoshop_cart.class.php on line 66
 	public $product_type; // : jigoshop_template_functions.php on line 271
 	public $sku; // : jigoshop_template_functions.php on line 246
@@ -350,11 +350,25 @@ class jigoshop_product {
 	}
 
 	/**
-	 * Returns whether or not the product is in stock 
+	 * Returns whether or not the product is in stock
+	 *
+	 * @todo	Add support for variations
 	 * 
 	 * @return	bool
 	 */
 	public function is_in_stock() {
+
+		if ( $this->is_type( 'grouped' ) ) {
+			foreach( $this->get_children() as $child_ID ) {
+
+				// Get the children
+				$child = $this->get_child( $child_ID );
+
+				// If one of our children is in stock then return true
+				if ( $child->is_in_stock() )
+					return true;
+			}
+		}
 
 		// If we arent managing stock then it should always be in stock
 		if( ! $this->managing_stock() && $this->stock_status == 'instock' )
@@ -369,30 +383,6 @@ class jigoshop_product {
 			return true;
 		
 		return false;
-
-
-			/** TODO: Add Support for variations
-			// If we have variations
-			if( $this->has_child() ) {
-
-				// Loop through children and in this case look for a product with stock
-				foreach($this->children as $child) {
-					if( ! $child->product->stock <= 0 )
-						return true;
-				}
-
-				// By default for variations return out of stock
-				return false;
-
-			} else {
-
-				if ( $this->data['stock_status'] != 'instock' )
-					return false;
-				else if( $this->stock <= 0 )
-					return false;
-
-			} **/
-
 	}
 
 	/**
@@ -513,13 +503,22 @@ class jigoshop_product {
 	
 	/**
 	 * Returns whether or not the product is on sale.
-	 * If one of the child products is on sale, product is considered to be on sale.
-	 *
-	 * TODO: Check children for sale items
+	 * If one of the child products is on sale, product is considered to be on sale
 	 *
 	 * @return bool
 	 */
 	public function is_on_sale() {
+
+		// Check child products for items on sale
+		if ( $this->is_type('grouped') ) {
+
+			foreach( $this->get_children() as $child_ID ) {
+
+				$child = $this->get_child( $child_ID );
+				if( $child->is_on_sale() )
+					return true;
+			}
+		}
 		
 		$time = current_time('timestamp');
 
@@ -613,8 +612,12 @@ class jigoshop_product {
 	 * @return	void
 	 */
 	public function adjust_price( $new_price ) {
+
+		// Only adjust sale price if we are on sale
+		if($this->sale_price) 
 			$this->sale_price += $new_price;
-			$this->regular_price += $new_price;
+
+		$this->regular_price += $new_price;
 	}
 
 	/**
@@ -624,10 +627,29 @@ class jigoshop_product {
 	 *
 	 * @return	html
 	 */
-	public function get_price_html()
-	{
+	public function get_price_html() {
+
 		$html = null;
 
+		// First check if the product is grouped
+		if ( $this->is_type('grouped') ) {
+
+			$array = array();
+			foreach ( $this->get_children() as $child_ID ) {
+				$child = $this->get_child($child_ID); 
+				
+				// Only get prices that are in stock
+				if ( $child->is_in_stock() ) {
+					$array[] = $child->get_price();
+				}
+			}
+			sort($array);
+
+			$html = '<span class="from">' . _x('From:', 'jigoshop') . '</span> ';
+			return $html . jigoshop_price( $array[0] );
+		}
+
+		// For standard products
 		if ( ! $this->regular_price )
 			$html = __( 'Price Not Announced', 'jigoshop' );
 
