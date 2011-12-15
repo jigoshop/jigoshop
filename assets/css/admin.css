@@ -511,7 +511,7 @@ ul.recent-orders li .refunded, ul.recent-orders li .cancelled {
 }
 /* Settings */
 .jigoshop table.widefat {
-  width: 850px;
+  width: 950px;
   margin-top: 0.5em !important;
 }
 .jigoshop table.widefat .button {
@@ -540,7 +540,7 @@ ul.recent-orders li .refunded, ul.recent-orders li .cancelled {
 }
 .jigoshop #tabs-wrap {
   background: #ececec;
-  width: 850px;
+  width: 950px;
   padding: 7px 9px;
   overflow: hidden;
   margin-top: 0.5em !important;
@@ -651,9 +651,11 @@ a.tips {
 #jigoshop-product-data ul.product_data_tabs, .jigoshop ul.tabs {
   background: #ececec;
   padding: 7px 9px 0;
+  margin: 0;
+  line-height: 1;
   overflow: hidden;
   zoom: 1;
-  line-height: 1em;
+
 }
 #jigoshop-product-data ul.product_data_tabs li, .jigoshop ul.tabs li {
   float: left;

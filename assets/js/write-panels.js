@@ -191,6 +191,11 @@ jQuery( function($){
 
 
 	// DATE PICKER FIELDS
+	jQuery('.date-pick').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
+/*
+For WordPress 3.3, the datepicker.js that Jigoshop was using is broken
+unhooking for now and using jquery-ui-datepicker
+
 	Date.firstDayOfWeek = 1;
 	Date.format = 'yyyy-mm-dd';
 	jQuery('.date-pick').datePicker();
@@ -216,6 +221,7 @@ jQuery( function($){
 			}
 		}
 	);
+*/
 
 
 	// ATTRIBUTE TABLES
