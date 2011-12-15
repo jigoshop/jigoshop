@@ -91,7 +91,7 @@ function jigoshop_add_order_item() {
 				echo '-';
 			endif;
 		?></td>
-		<td>
+		<!--<td>
 			<table class="meta" cellspacing="0">
 				<tfoot>
 					<tr>
@@ -100,7 +100,7 @@ function jigoshop_add_order_item() {
 				</tfoot>
 				<tbody></tbody>
 			</table>
-		</td>
+		</td>-->
 		<?php do_action('jigoshop_admin_order_item_values', $_product); ?>
 		<td class="quantity"><input type="text" name="item_quantity[]" placeholder="<?php _e('Quantity e.g. 2', 'jigoshop'); ?>" value="1" /></td>
 		<td class="cost"><input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit ex. tax e.g. 2.99', 'jigoshop'); ?>" value="<?php echo $_product->get_price(); ?>" /></td>
