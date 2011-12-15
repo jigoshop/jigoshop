@@ -229,7 +229,7 @@ class jigoshop_product {
 	 */
 	public function requires_shipping() {
 		// If it's virtual or downloadable dont require shipping
-		if ( $this->is_type( array('downloadable', 'virtual') )
+		if ( $this->is_type( array('downloadable', 'virtual') ) )
 			return false;
 
 		return true;
