@@ -52,9 +52,11 @@ function variable_product_type_options() {
 						<strong>#<?php echo $variation->ID; ?> &mdash; <?php _e('Variation:', 'jigoshop'); ?></strong>
 						<?php
 							foreach ($attributes as $attribute) :
-								
 								// If not variable attribute then skip
 								if ( ! $attribute['variation'] ) continue;
+
+								// Get current value for variation (if set)
+								$selected = get_post_meta( $variation->ID, 'tax_' . sanitize_title($attribute['name']), true );
 
 								echo '<select name="tax_' . sanitize_title($attribute['name']) . '['.$loop.']"><option value="">'.__('Any ', 'jigoshop').$attribute['name'].' &hellip;</option>';
 
@@ -62,14 +64,14 @@ function variable_product_type_options() {
 									
 									$product_terms = wp_get_post_terms( $post->ID, 'pa_'.sanitize_title($attribute['name']));
 									foreach( $product_terms as $term ) {
-										echo "<option value='{$term->slug}'>{$term->name}</option>";
+										echo '<option value="'.$term->slug.'" '.selected($selected, $term->slug, false).'>'.$term->name.'</option>';
 									}
 								}
 								else {
 									$options = explode(', ', $attribute['value']);
 									foreach( $options as $option ) {
 										$option = trim($option);
-										echo "<option value='{$option}'>{$option}</option>";
+										echo '<option '.selected($selected, $option, false).' value="'.$option.'">'.$option.'</option>';
 									}
 								}
 
@@ -364,7 +366,7 @@ add_action('product_type_selector', 'variable_product_type_selector');
  * @param 		array $data The $data being saved
  * @param 		int $post_id The post id of the post being saved
  */
-function process_product_meta_variable( $data, $post_id ) {
+function process_product_meta_variable( $post_id ) {
 	
      if (!isset($_POST['variable_sku'])) {
         return;
@@ -405,7 +407,7 @@ function process_product_meta_variable( $data, $post_id ) {
         $clean_attributes = array();
 
         foreach ($attributes as $attribute) {
-            if ($attribute['variation'] == 'yes') {
+            if ($attribute['variation']) {
                 $value = '';
                 $attribute_field = 'tax_' . sanitize_title($attribute['name']);
 
@@ -488,4 +490,4 @@ function process_product_meta_variable( $data, $post_id ) {
     }
     return $errors;
 }
-add_action('process_product_meta_variable', 'process_product_meta_variable', 1, 2);
+add_action('jigoshop_process_product_meta_variable', 'process_product_meta_variable', 1, 2);
