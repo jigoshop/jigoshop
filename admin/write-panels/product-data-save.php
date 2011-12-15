@@ -176,6 +176,8 @@ class jigoshop_product_meta
 	/**
 	 * Processes the attribute data from postback into an array
 	 *
+	 * @todo		increase efficiency of this function
+	 *
 	 * @param		$post			the postback
 	 * @param		$post_id		Post ID
 	 * @return 		array

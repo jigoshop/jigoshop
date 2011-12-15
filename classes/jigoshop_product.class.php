@@ -867,7 +867,6 @@ class jigoshop_product {
 	 */   
 	function get_available_attributes_variations() {
 
-		error_log($this->has_child());
 		if (!$this->is_type('variable') || !$this->has_child()) {
 			return array();
 		}
@@ -890,8 +889,6 @@ class jigoshop_product {
 			$values = array();
 
 			$attr_name = 'tax_'.sanitize_title($attribute['name']);
-
-
 
 			foreach ($children as $child) {
 
