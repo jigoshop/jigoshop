@@ -163,7 +163,7 @@ function jigoshop_post_type() {
 				'parent' => __( 'Parent Variation', 'jigoshop' )
 			),
 			'public' => true,
-			'show_ui' => true,
+			'show_ui' => false,
 			'capability_type' => 'post',
 			'publicly_queryable' => true,
 			'exclude_from_search' => true,
