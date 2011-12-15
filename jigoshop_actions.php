@@ -399,9 +399,9 @@ add_action('wp_ajax_nopriv_jigoshop-checkout', 'jigoshop_process_checkout');
 
 function jigoshop_process_checkout () {
 	include_once jigoshop::plugin_path() . '/classes/jigoshop_checkout.class.php';
-
+	
 	jigoshop_checkout::instance()->process_checkout();
-
+	
 	die(0);
 }
 
@@ -513,6 +513,7 @@ function jigoshop_download_product() {
 			@session_cache_limiter('none');
 			@set_magic_quotes_runtime(0);
 			@ob_end_clean();
+			if (ob_get_level()) @ob_end_clean();
 			@session_write_close();
 
 			header("Pragma: no-cache");

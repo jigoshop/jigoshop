@@ -557,9 +557,9 @@ class jigoshop_product {
 	    }
         } else {
             if ($this->price === '') {
-                $price_html = __('Price Not Announced');
+                $price_html = __('Price Not Announced', 'jigoshop');
             } else if ($this->price === '0') {
-                $price_html = __('Free');
+                $price_html = __('Free', 'jigoshop');
             } else {
                 if (!empty($this->sale_price) && !empty($this->price) && $this->in_sale_date_range()) {
                     $price_html .= '<del>' . jigoshop_price($this->price) . '</del> <ins>' . jigoshop_price($this->sale_price) . '</ins>';

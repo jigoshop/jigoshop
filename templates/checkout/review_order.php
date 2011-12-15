@@ -14,9 +14,7 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
-?>
 
-<?php
 	if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
 	
 	if (!defined('ABSPATH')) :
@@ -31,7 +29,6 @@
 	endif;
 	
 	if (isset($_POST['shipping_method'])) $_SESSION['chosen_shipping_method_id'] = $_POST['shipping_method'];
-	
 	if (isset($_POST['country'])) jigoshop_customer::set_country( $_POST['country'] );
 	if (isset($_POST['state'])) jigoshop_customer::set_state( $_POST['state'] );
 	if (isset($_POST['postcode'])) jigoshop_customer::set_postcode( $_POST['postcode'] );
@@ -39,8 +36,9 @@
 	if (isset($_POST['s_country'])) jigoshop_customer::set_shipping_country( $_POST['s_country'] );
 	if (isset($_POST['s_state'])) jigoshop_customer::set_shipping_state( $_POST['s_state'] );
 	if (isset($_POST['s_postcode'])) jigoshop_customer::set_shipping_postcode( $_POST['s_postcode'] );
-	
+					
 	jigoshop_cart::calculate_totals();
+	
 ?>
 <div id="order_review">
 	
@@ -57,13 +55,14 @@
 				<td colspan="2"><?php _e('Subtotal', 'jigoshop'); ?></td>
 				<td><?php echo jigoshop_cart::get_cart_subtotal(); ?></td>
 			</tr>
-			
+					
 			<?php  if (jigoshop_cart::needs_shipping()) : ?><tr>
 				<td colspan="2"><?php _e('Shipping', 'jigoshop'); ?></td>
 				<td>
 				<?php
-				
+					
 					$available_methods = jigoshop_shipping::get_available_shipping_methods();
+					
 					
 					if (sizeof($available_methods)>0) :
 						
@@ -107,7 +106,7 @@
 				<td colspan="2"><?php _e('Tax', 'jigoshop'); ?></td>
 				<td><?php echo jigoshop_cart::get_cart_tax(); ?></td>
 			</tr><?php endif; ?>
-
+            <?php do_action( 'jigoshop_after_review_order_items' ); ?>
 			<?php if (jigoshop_cart::get_total_discount()) : ?><tr class="discount">
 				<td colspan="2"><?php _e('Discount', 'jigoshop'); ?></td>
 				<td>-<?php echo jigoshop_cart::get_total_discount(); ?></td>
@@ -143,7 +142,13 @@
 				$available_gateways = jigoshop_payment_gateways::get_available_payment_gateways();
 				if ($available_gateways) : 
 					// Chosen Method
-					if (sizeof($available_gateways)) current($available_gateways)->set_current();
+					if (sizeof($available_gateways)) {
+						if( isset( $_POST[ 'payment_method' ] ) && isset( $available_gateways[ $_POST['payment_method'] ] ) ) {
+							$available_gateways[ $_POST[ 'payment_method' ] ]->set_current();
+						} else {
+							current($available_gateways)->set_current();
+						}	
+					}
 					foreach ($available_gateways as $gateway ) :
 						?>
 						<li>
@@ -177,7 +182,10 @@
 			<noscript><?php _e('Since your browser does not support JavaScript, or it is disabled, please ensure you click the <em>Update Totals</em> button before placing your order. You may be charged more than the amount stated above if you fail to do so.', 'jigoshop'); ?><br/><input type="submit" class="button-alt" name="update_totals" value="<?php _e('Update totals', 'jigoshop'); ?>" /></noscript>
 		
 			<?php jigoshop::nonce_field('process_checkout')?>
-			<input type="submit" class="button-alt" name="place_order" id="place_order" value="<?php _e('Place order', 'jigoshop'); ?>" />
+			
+			<?php  $order_button_text = apply_filters( 'jigoshop_order_button_text', __( 'Place order', 'jigoshop') ); ?>
+			
+			<input type="submit" class="button-alt" name="place_order" id="place_order" value="<?php echo $order_button_text; ?>" />
 			
 			<?php do_action( 'jigoshop_review_order_before_submit' ); ?>
 			

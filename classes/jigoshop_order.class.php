@@ -210,6 +210,7 @@ class jigoshop_order {
 				if ($_product->exists) :
 			
 					if ($_product->is_type('downloadable')) :
+						$return .= PHP_EOL . 'Your download link for this file is:';
 						$return .= PHP_EOL . ' - ' . $this->get_downloadable_file_url( $item['id'] ) . '';
 					endif;
 		
@@ -393,7 +394,7 @@ class jigoshop_order {
 					endif;
 					
 					// stock status notifications
-					if (get_option('jigoshop_notify_no_stock_amount') && get_option('jigoshop_notify_no_stock_amount')>=$new_quantity) :
+                    if (get_option('jigoshop_notify_no_stock_amount') >= 0 && get_option('jigoshop_notify_no_stock_amount') >= $new_quantity) :
 						do_action('jigoshop_no_stock_notification', $item['id']);
 					elseif (get_option('jigoshop_notify_low_stock_amount') && get_option('jigoshop_notify_low_stock_amount')>=$new_quantity) :
 						do_action('jigoshop_low_stock_notification', $item['id']);
