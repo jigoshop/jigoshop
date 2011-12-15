@@ -18,16 +18,19 @@ class jigoshop_product {
 	
 	// LEGACY
 	private static $attribute_taxonomies = NULL;
-	public $children;
+	
 	//
 
-	public $id; // : jigoshop_template_functions.php on line 99
+	public $id; // : jigoshop_template_functions.php on line 99 // This is just an alias for $this->ID
+	private $ID;
 	public $exists; // : jigoshop_cart.class.php on line 66
 	public $product_type; // : jigoshop_template_functions.php on line 271
 	public $sku; // : jigoshop_template_functions.php on line 246
 
 	public $data; // jigoshop_tax.class.php on line 186
 	public $post; // for get_title()
+
+	public $meta; // for get_child()
 
 	private $regular_price;
 	private $sale_price;
@@ -48,6 +51,7 @@ class jigoshop_product {
 	public $stock; // : admin/jigoshop-admin-post-types.php on line 180
 
 	private	$attributes			= array();
+	public $children				= array(); // : jigoshop_template_functions.php on line 328
 
 	/**
 	 * Loads all product data from custom fields
@@ -59,8 +63,10 @@ class jigoshop_product {
 
 		// Grab the product ID & get the product meta data
 		// TODO: Change to uppercase for consistency sake
-		$this->id = (int) $ID;
-		$meta = get_post_custom( $this->id );
+		$this->ID = (int) $ID;
+		$this->id = $this->ID;
+		$meta = get_post_custom( $this->ID );
+		$this->meta = $meta;
 
 		// Check if the product has meta data attached
 		// If not then it might not be a product
@@ -68,7 +74,7 @@ class jigoshop_product {
 
 		// Get the product type
 		// TODO: for some reason this is invalid on first run?
-		$terms = wp_get_object_terms( $this->id, 'product_type', array('fields' => 'names') );
+		$terms = wp_get_object_terms( $this->ID, 'product_type', array('fields' => 'names') );
 		if( ! is_wp_error($terms) )
 			$this->product_type = sanitize_title($terms[0]); // should throw error if something has gone wrong
 
@@ -111,12 +117,12 @@ class jigoshop_product {
 		$size = jigoshop_get_image_size( $size );
 
 		// If product has an image
-		if( has_post_thumbnail( $this->id ) )
-    		return get_the_post_thumbnail( $this->id, $size );
+		if( has_post_thumbnail( $this->ID ) )
+    		return get_the_post_thumbnail( $this->ID, $size );
 
     	// If product has a parent and that has an image display that
-    	if( ($parent_ID = wp_get_post_parent_id( $this->id )) && has_post_thumbnail( $parent_ID ) )
-    		return get_the_post_thumbnail( $this->id, $size );
+    	if( ($parent_ID = wp_get_post_parent_id( $this->ID )) && has_post_thumbnail( $parent_ID ) )
+    		return get_the_post_thumbnail( $this->ID, $size );
     	
     	// Otherwise just return a placeholder
 		return '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.$image_size[0].'px" height="'.$image_size[1].'px" />';
@@ -134,39 +140,44 @@ class jigoshop_product {
 	/**
 	 * Returns the product's children
 	 * 
-	 * @return array stdClass objects array
+	 * @return	array		Child IDs
 	 */
-	function get_children() {
+	public function get_children() {
 
-		//load the children if not yet loaded
-		if (!is_array($this->children)) {
-
-			$this->children = array();
-
-			if ($this->is_type('variable')) {
-				$child_post_type = 'product_variation';
-			} else {
-				$child_post_type = 'product';
-			}
-
-			$children_products = &get_children('post_parent=' . $this->id . '&post_type=' . $child_post_type . '&orderby=menu_order&order=ASC');
-
-			if (is_array($children_products)) {
-				
-				//@fixme we just retrieved all the data about product children from DB, and we construct jigoshop_product* objects passing only ID to the constructor. In the constructor each product data will be retrieved *again* in the *seperate* queries. Performance fix needed (probably passing whole $child istead of $child->ID will do).
-				foreach ($children_products as $child) {
-					if ($this->is_type('variable')) {
-						$child->product = &new jigoshop_product_variation($child->ID);
-					} else {
-						$child->product = &new jigoshop_product($child->ID);
-					}
-				}
-
-				$this->children = (array) $children_products;
-			}
-		}
+		// Check if the product type can hold child products
+		if ( ! $this->is_type( array('variable', 'grouped') ) )
+			return false;
 		
+		// Stop here if we already have the children
+		if ( ! empty($this->children) )
+			return $this->children;
+
+		// Get the child IDs
+		$this->children = get_posts(array(
+			'post_parent'		=> $this->ID,
+			'post_type'			=> ($this->is_type('variable')) ? 'product_variation' : 'product',
+			'orderby'			=> 'menu_order',
+			'order'				=> 'ASC',
+			'fields'				=> 'ID',
+			'post_status'		=> 'any',
+			'numberposts'		=> -1
+		));
+
 		return $this->children;
+	}
+
+	/**
+	 * Return an instance of a child
+	 *
+	 * @param	int		Child Product ID
+	 * @return	jigoshop_product|jigoshop_product_variation
+	 */
+	public function get_child( $child_ID ) {
+
+		if ( $this->is_type('variable') )
+			return new jigoshop_product_variation( $child_ID, $this->ID, $this->meta);
+
+		return new jigoshop_product( $child_ID );
 	}
 
 	/**
@@ -207,10 +218,22 @@ class jigoshop_product {
 		$this->stock = $this->stock + $by;
 		
 		// Update & return the new value
-		update_post_meta( $this->id, 'stock', $this->stock );
+		update_post_meta( $this->ID, 'stock', $this->stock );
 		return $this->stock;
 	}
 
+	/**
+	 * Checks if a product requires shipping
+	 *
+	 * @return	bool
+	 */
+	public function requires_shipping() {
+		// If it's virtual or downloadable dont require shipping
+		if ( $this->is_type( array('downloadable', 'virtual') )
+			return false;
+
+		return true;
+	}
 	/**
 	 * Checks the product type
 	 *
@@ -273,7 +296,7 @@ class jigoshop_product {
 	 */
 	public function get_post_data() {
 		if (empty($this->post)) {
-			$this->post = get_post( $this->id );
+			$this->post = get_post( $this->ID );
 		}
 
 		return $this->post;
@@ -301,14 +324,14 @@ class jigoshop_product {
 
 		if ($this->is_type('variable')) {
 			$url = add_query_arg('add-to-cart', 'variation');
-			$url = add_query_arg('product', $this->id, $url);
+			$url = add_query_arg('product', $this->ID, $url);
 		}
 		else if ( $this->has_child() ) {
 			$url = add_query_arg('add-to-cart', 'group');
-			$url = add_query_arg('product', $this->id, $url);
+			$url = add_query_arg('product', $this->ID, $url);
 		}
 		else {
-			$url = add_query_arg('add-to-cart', $this->id);
+			$url = add_query_arg('add-to-cart', $this->ID);
 		}
 
 		$url = jigoshop::nonce_url( 'add_to_cart', $url );
@@ -650,7 +673,7 @@ class jigoshop_product {
 	 * @return	HTML
 	 */
 	public function get_categories( $sep = ', ', $before = '', $after = '' ) {
-		return get_the_term_list($this->id, 'product_cat', $before, $sep, $after);
+		return get_the_term_list($this->ID, 'product_cat', $before, $sep, $after);
 	}
 
 	/**
@@ -659,7 +682,7 @@ class jigoshop_product {
 	 * @return	HTML
 	 */
 	public function get_tags( $sep = ', ', $before = '', $after = '' ) {
-		return get_the_term_list($this->id, 'product_tag', $before, $sep, $after);
+		return get_the_term_list($this->ID, 'product_tag', $before, $sep, $after);
 	}
 
 	/**
@@ -672,8 +695,8 @@ class jigoshop_product {
 	public function get_related( $limit = 5 ) {
 
 		// Get the tags & categories
-		$tags = wp_get_post_terms($this->id, 'product_tag', array('fields' => 'ids'));
-		$cats = wp_get_post_terms($this->id, 'product_cat', array('fields' => 'ids'));
+		$tags = wp_get_post_terms($this->ID, 'product_tag', array('fields' => 'ids'));
+		$cats = wp_get_post_terms($this->ID, 'product_cat', array('fields' => 'ids'));
 
 		// No queries if we don't have any tags/categories
 		if( empty( $cats ) || empty( $tags ) )
@@ -726,7 +749,7 @@ class jigoshop_product {
 
 		// If its a taxonomy return that
 		if( $attr['is_taxonomy'] )
-			return wp_get_post_terms( $this->id, 'pa_'.sanitize_title($attr['name']) );
+			return wp_get_post_terms( $this->ID, 'pa_'.sanitize_title($attr['name']) );
 
 		return $attr['value'];
 	}
@@ -782,7 +805,7 @@ class jigoshop_product {
 			if ( (bool) $attr['is_taxonomy'] ) {
 
 				// Get the taxonomy terms
-				$product_terms = wp_get_post_terms( $this->id, 'pa_'.sanitize_title($attr['name']) );
+				$product_terms = wp_get_post_terms( $this->ID, 'pa_'.sanitize_title($attr['name']) );
 
 				// Convert them into a string
 				$terms = array();
