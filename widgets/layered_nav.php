@@ -77,6 +77,10 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 			echo $before_widget;
 			echo $before_title . $title . $after_title;
 			
+			//Remove param link
+			$remove_link = remove_query_arg('filter_'.strtolower(sanitize_title($instance['attribute'])));
+			echo "<a class=\"layerd_nav_clear\" href=\"{$remove_link}\">Clear</a>";
+			
 			// Open the list
 			echo "<ul>";
 

@@ -48,6 +48,7 @@ class jigoshop_product {
 	private $stock_status		= 'instock';
 	private $backorders;
 	public $stock; // : admin/jigoshop-admin-post-types.php on line 180
+	private $stock_sold;
 
 	private	$attributes			= array();
 	public $children				= array(); // : jigoshop_template_functions.php on line 328
@@ -99,6 +100,7 @@ class jigoshop_product {
 		$this->stock_status				= isset($meta['stock_status'][0]) ? $meta['stock_status'][0] : null;
 		$this->backorders				= isset($meta['backorders'][0]) ? $meta['backorders'][0] : null;
 		$this->stock					= isset($meta['stock'][0]) ? $meta['stock'][0] : null;
+		$this->stock_sold				= isset($meta['stock_sold'][0]) ? $meta['stock_sold'][0] : null;
 
 		return $this;
 	}
@@ -213,9 +215,11 @@ class jigoshop_product {
 		
 		// +- = minus
 		$this->stock = $this->stock + $by;
+		$amount_sold = $this->stock_sold + $by;
 		
 		// Update & return the new value
 		update_post_meta( $this->ID, 'stock', $this->stock );
+		update_post_meta( $this->ID, 'stock_sold', $amount_sold );
 		return $this->stock;
 	}
 
