@@ -371,9 +371,14 @@ function jigoshop_order_totals_meta_box($post) {
 	}
 	?>
 	<ul class="totals">
-		<li>
+		<li class="left">
 			<label><?php _e('Subtotal:', 'jigoshop'); ?></label>
 			<input type="text" id="order_subtotal" name="order_subtotal" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo $data['order_subtotal']; ?>" class="first" />
+		</li>
+
+		<li class="right">
+			<label><?php _e('Discount: ', 'jigoshop'); ?><span class="applied-coupons-values"><?php echo implode( ',', $coupons ); ?></span></label>
+			<input type="text" id="order_discount" name="order_discount" placeholder="0.00" value="<?php echo $data['order_discount']; ?>" />
 		</li>
 
 		<li>
@@ -382,18 +387,13 @@ function jigoshop_order_totals_meta_box($post) {
 		</li>
 
 		<li class="left">
-			<label><?php _e('Order shipping tax:', 'jigoshop'); ?></label>
+			<label><?php _e('Shipping Tax:', 'jigoshop'); ?></label>
 			<input type="text" id="order_shipping_tax" name="order_shipping_tax" placeholder="0.00" value="<?php echo $data['order_shipping_tax']; ?>" class="first" />
 		</li>
 
 		<li class="right">
 			<label><?php _e('Tax:', 'jigoshop'); ?></label>
 			<input type="text" id="order_tax" name="order_tax" placeholder="0.00" value="<?php echo $data['order_tax']; ?>" class="first" />
-		</li>
-
-		<li>
-			<label><?php _e('Discount: ', 'jigoshop'); ?><span class="applied-coupons-values"><?php echo implode( ',', $coupons ); ?></span></label>
-			<input type="text" id="order_discount" name="order_discount" placeholder="0.00" value="<?php echo $data['order_discount']; ?>" />
 		</li>
 
 		<li>
