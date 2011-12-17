@@ -8,6 +8,139 @@
  * @category 	Admin Write Panel Product Types
  * @package 	JigoShop
  */
+
+class variable_options
+{
+	public function __construct() {
+		add_action('jigoshop_product_type_options_box', array(&$this, 'variable_product_type_options'));
+	}
+
+	public function variable_product_type_options() {
+		global $post;
+
+		$attributes = (array) maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) );
+
+		echo '<div id="variable_product_options" class="panel">';
+		if ( ! $this->has_variable_attributes( $attributes ) ) {
+			echo "
+			<div class='inline updated'>
+				<p>" . __('Before you can start adding variations you must set up and save some variable attributes via the <strong>Attributes</strong> tab.', 'jigoshop') . "</p>
+			</div>";
+		}
+		else {
+
+			// Print the bulk editing
+			echo "
+			<p class='bulk_edit'>
+				<strong>".__('Bulk edit:', 'jigoshop')."</strong>
+				<a class='button set set_all_prices' href='#'>".__('Prices', 'jigoshop')."</a>
+				<a class='button set set_all_sale_prices' href='#'>".__('Sale prices', 'jigoshop')."</a>
+				<a class='button set set_all_stock' href='#'>".__('Stock', 'jigoshop')."</a>
+				<a class='button toggle toggle_downloadable' href='#'>".__('Downloadable', 'jigoshop')."</a>
+				<a class='button toggle toggle_virtual' href='#'>".__('Virtual', 'jigoshop')."</a>
+				<a class='button toggle toggle_enabled' href='#'>".__('Enabled', 'jigoshop')."</a>
+				<a class='button set set_all_paths' href='#'>".__('File paths', 'jigoshop')."</a>
+				<a class='button set set_all_limits' href='#'>".__('Download limits', 'woothemes')."</a>
+			</p>";
+
+			// TODO: Class name change for consistency variation not configuration
+			echo "<div class='jigoshop_configurations'>";
+
+			// Get all variations of the product
+			$variations = get_posts(array(
+				'post_type'		=> 'product_variation',
+				'post_status' 	=> array('private', 'publish'),
+				'numberposts' 	=> -1,
+				'orderby' 		=> 'id',
+				'order' 		=> 'asc',
+				'post_parent' 	=> $post->ID
+			));
+
+			if ( $variations ) foreach( $variations as $variation ) {
+
+				// Get the variation meta
+				$meta = get_post_custom( $variation->ID );
+
+				// Get the image if we have one
+				$image = jigoshop::plugin_url().'/assets/images/placeholder.png';
+				if ( $image_id = $meta['_thumbnail_id'][0] ) {
+					$image = wp_get_attachment_url( $image_id );
+				}
+
+				echo "
+				<div class='jigoshop_configuration'>
+					<p>
+						<button type='button' class='remove_variation button' rel='{$variation->ID}'>" . __('Remove', 'jigoshop') . "</button>
+						<strong>#{$variation->ID} &mdash; " . __('Variation:', 'jigoshop') . "</strong>";
+
+					
+						echo $this->attribute_selector( $attributes, $variation );
+
+				
+				echo "
+					<p>
+				</div>";
+			}
+
+		}
+		echo '</div>';
+
+	}
+
+	// I don't know if i like this seperation yet -Rob
+	private function attribute_selector( $attributes, $variation ) {
+		global $post;
+
+		$html = null;
+
+		// Attribute Variation Selector
+		foreach ( $attributes as $attr ) {
+
+			// If not variable attribute then skip
+			if ( ! $attr['variation'] )
+				continue;
+
+			// Get current value for variation (if set)
+			$selected = get_post_meta( $variation->ID, 'tax_' . sanitize_title($attr['name']), true );
+
+			$html .= '<select name="variation['.$variation->ID.'][tax_' . sanitize_title($attr['name']) . ']" >
+				<option value="">Any</option>';
+
+			// Get terms for attribute taxonomy or value if its a custom attribute
+			if ( $attr['is_taxonomy'] ) {
+				$options = wp_get_post_terms( $post->ID, 'pa_'.sanitize_title($attr['name']));
+				foreach( $options as $option ) {
+					$html .= '<option value="'.$option->slug.'" '.selected($selected, $option->slug, false).'>'.$option->name.'</option>';
+				}
+			}
+			else {
+				$options = explode(', ', $attr['value']);
+				foreach( $options as $option ) {
+					$option = trim($option);
+					$html .= '<option '.selected($selected, $option, false).' value="'.$option.'">'.$option.'</option>';
+				}
+			}
+
+			$html .= '</select>';
+		}
+
+		return $html;
+
+	}
+
+	// Refactoring needed
+	private function has_variable_attributes( array $attributes ) {
+		if ( ! $attributes )
+			return false;
+
+		foreach ( $attributes as $attribute ) {
+			if ( $attribute['variation'] )
+				return true;
+		}
+
+		return false;
+	}
+} new variable_options();
  
 /**
  * Product Options
@@ -471,6 +604,9 @@ class jigoshop_prduct_meta_variable
  * @param 		int $post_id The post id of the post being saved
  */
 function process_product_meta_variable( $post_id ) {
+
+	var_dump($_POST);
+	exit();
 
 	if ( ! isset( $_POST['variable_sku'] ) )
 		return false;
