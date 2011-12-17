@@ -356,6 +356,110 @@ function variable_product_type_selector( $product_type ) {
 }
 add_action('product_type_selector', 'variable_product_type_selector');
 
+// Possibility to reuse old saving functions for new contexts?
+// class jigoshop_product_meta_variable extends jigoshop_product_meta
+class jigoshop_prduct_meta_variable
+{
+	public function __construct() {
+		add_action('jigoshop_process_product_meta_variable', array(&$this,'process_product_meta_variable'), 1, 2);
+	}
+
+	public function process_product_meta_variable( $post_id, $post ) {
+
+		// these should be a multi dimensional array
+		$variable_post_id		= $_POST['variable_post_id'];
+    	$variable_sku			= $_POST['variable_sku'];
+    	$variable_weight			= $_POST['variable_weight'];
+    	$variable_stock			= $_POST['variable_stock'];
+   		$variable_price			= $_POST['variable_price'];
+    	$variable_sale_price		= $_POST['variable_sale_price'];
+
+    	for ( $i = 0; $i < count($variable_sku); $i++ ) {
+
+    		// Get the ID
+    		$variation_ID = (int) $variable_post_id[$i];
+
+    		// Enabled or disabled variation?
+    		$post_status = ($variable_enabled[$i]) ? 'publish' : 'private';
+    		
+    		// Generate a useful post title
+    		// ???
+    		/*foreach ($attributes as $attribute) :
+				if ( $attribute['is_variation'] ) :
+					$value = esc_attr(trim($_POST[ 'attribute_' . sanitize_title($attribute['name']) ][$i]));
+					if ($value) :
+						$title[] = $woocommerce->attribute_label($attribute['name']).': '.$value;
+					endif;
+				endif;
+			endforeach;*/
+
+			$sku_string = "#{$variation_ID}";
+
+			if ( $variable_sku[$i] ) {
+				$sku_string .= ' SKU: ' . $variable_sku[$i];
+			}
+
+			// Update or Add post
+			$variation = array(
+				'post_title'		=> '#' . $post_id . ' Variation (' . $sku_string . ')' .' Title',
+				'post_status'	=> 'publish', // change to $post_status	
+			);
+
+			if ( ! $variation_id ) {
+				$variation['post_author']	= get_current_user_id();
+				$variation['post_parent']	= $post_id;
+				$variation['post_content']	= null;
+				$variation['post_type']		= 'product_variation';
+
+			}
+			else {
+				global $wpdb;
+				$wpdb->update( $wpdb->posts, $variation, array( 'ID' => $variation_id ) );
+			}
+			// End variation post
+
+			update_post_meta( $variation_id, 'sku', $variable_sku[$i] );
+			update_post_meta( $variation_id, 'price', $variable_sku[$i] );
+			update_post_meta( $variation_id, 'sale_price', $variable_sku[$i] );
+			
+			update_post_meta( $variation_id, 'weight', $variable_sku[$i] );
+			update_post_meta( $variation_id, 'length', $variable_sku[$i] );
+			update_post_meta( $variation_id, 'height', $variable_sku[$i] );
+			update_post_meta( $variation_id, 'width', $variable_sku[$i] );
+
+			update_post_meta( $variation_id, 'stock', $variable_sku[$i] );
+			update_post_meta( $variation_id, '_thumbnail_id', $variable_sku[$i] );
+
+			// TODO:: Add support for dl/virtual products
+
+
+			// Refresh attributes
+			$variation_custom_fields = get_post_custom( $variation_id );
+			
+			// Remove all
+			foreach ($variation_custom_fields as $name => $value) :
+				if (!strstr($name, 'tax_')) continue;
+				delete_post_meta( $variation_id, $name );
+			endforeach;
+
+			// Update taxonomies
+			foreach ($attributes as $attribute) :
+							
+				if ( $attribute['is_variation'] ) :
+				
+					$value = esc_attr(trim($_POST[ 'attribute_' . sanitize_title($attribute['name']) ][$i]));
+					
+					update_post_meta( $variation_id, 'attribute_' . sanitize_title($attribute['name']), $value );
+				
+				endif;
+
+			endforeach;
+
+    	}
+		
+	}
+}
+
 /**
  * Process meta
  * 
@@ -367,10 +471,10 @@ add_action('product_type_selector', 'variable_product_type_selector');
  * @param 		int $post_id The post id of the post being saved
  */
 function process_product_meta_variable( $post_id ) {
+
+	if ( ! isset( $_POST['variable_sku'] ) )
+		return false;
 	
-     if (!isset($_POST['variable_sku'])) {
-        return;
-    }
 
     $variable_post_id = $_POST['variable_post_id'];
     $variable_sku = $_POST['variable_sku'];
@@ -388,6 +492,8 @@ function process_product_meta_variable( $post_id ) {
     if (empty($attributes)) {
         $attributes = array();
     }
+
+    error_log(count($variable_sku));
     
     $attributes_values = array();
     for ($i = 0; $i < count($variable_sku); $i++) {
