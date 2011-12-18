@@ -102,6 +102,11 @@ class jigoshop_product {
 		$this->stock					= isset($meta['stock'][0]) ? $meta['stock'][0] : null;
 		$this->stock_sold				= isset($meta['stock_sold'][0]) ? $meta['stock_sold'][0] : null;
 
+		foreach( $this->get_children() as $child_ID ) {
+			$child = $this->get_child($child_ID);
+			var_dump($child);
+		}
+
 		return $this;
 	}
 

@@ -18,73 +18,144 @@ class variable_options
 	public function variable_product_type_options() {
 		global $post;
 
+		// Get the attributes
 		$attributes = (array) maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) );
 
-		echo '<div id="variable_product_options" class="panel">';
-		if ( ! $this->has_variable_attributes( $attributes ) ) {
-			echo "
-			<div class='inline updated'>
-				<p>" . __('Before you can start adding variations you must set up and save some variable attributes via the <strong>Attributes</strong> tab.', 'jigoshop') . "</p>
-			</div>";
-		}
-		else {
+		// Get all variations of the product
+		$variations = get_posts(array(
+			'post_type'		=> 'product_variation',
+			'post_status' 	=> array('private', 'publish'),
+			'numberposts' 	=> -1,
+			'orderby' 		=> 'id',
+			'order' 		=> 'asc',
+			'post_parent' 	=> $post->ID
+		));
 
-			// Print the bulk editing
-			echo "
+		// Don't display anything if we have no variations
+		if ( ! $variations )
+			return false;
+
+		// END LOGIC BEGIN WRITE HTML
+		?>
+
+		<div id="variable_product_options" class="panel">
+		<?php if ( $this->has_variable_attributes( $attributes ) ): ?>
+
 			<p class='bulk_edit'>
-				<strong>".__('Bulk edit:', 'jigoshop')."</strong>
-				<a class='button set set_all_prices' href='#'>".__('Prices', 'jigoshop')."</a>
-				<a class='button set set_all_sale_prices' href='#'>".__('Sale prices', 'jigoshop')."</a>
-				<a class='button set set_all_stock' href='#'>".__('Stock', 'jigoshop')."</a>
-				<a class='button toggle toggle_downloadable' href='#'>".__('Downloadable', 'jigoshop')."</a>
-				<a class='button toggle toggle_virtual' href='#'>".__('Virtual', 'jigoshop')."</a>
-				<a class='button toggle toggle_enabled' href='#'>".__('Enabled', 'jigoshop')."</a>
-				<a class='button set set_all_paths' href='#'>".__('File paths', 'jigoshop')."</a>
-				<a class='button set set_all_limits' href='#'>".__('Download limits', 'woothemes')."</a>
-			</p>";
+				<strong><?php _e('Bulk edit:', 'jigoshop'); ?></strong>
+				<a class="button set set_all_prices" href="#"><?php _e('Prices', 'jigoshop'); ?></a>
+				<a class="button set set_all_sale_prices" href="#"><?php _e('Sale prices', 'jigoshop'); ?></a>
+				<a class="button set set_all_stock" href="#"><?php _e('Stock', 'jigoshop'); ?></a>
+				<a class="button toggle toggle_downloadable" href="#"><?php _e('Downloadable', 'jigoshop'); ?></a>
+				<a class="button toggle toggle_virtual" href="#"><?php _e('Virtual', 'jigoshop'); ?></a>
+				<a class="button toggle toggle_enabled" href="#"><?php _e('Enabled', 'jigoshop'); ?></a>
+				<a class="button set set_all_paths" href="#"><?php _e('File paths', 'jigoshop'); ?></a>
+				<a class="button set set_all_limits" href="#"><?php _e('Download limits', 'woothemes'); ?></a>
+			</p>
 
-			// TODO: Class name change for consistency variation not configuration
-			echo "<div class='jigoshop_configurations'>";
+			<div class="jigoshop_configurations">
 
-			// Get all variations of the product
-			$variations = get_posts(array(
-				'post_type'		=> 'product_variation',
-				'post_status' 	=> array('private', 'publish'),
-				'numberposts' 	=> -1,
-				'orderby' 		=> 'id',
-				'order' 		=> 'asc',
-				'post_parent' 	=> $post->ID
-			));
+				<?php foreach( $variations as $variation ): ?>
 
-			if ( $variations ) foreach( $variations as $variation ) {
+				<?php
 
-				// Get the variation meta
-				$meta = get_post_custom( $variation->ID );
+					// GET THE DATA
+					// Get the variation meta
+					$meta = get_post_custom( $variation->ID );
 
-				// Get the image if we have one
-				$image = jigoshop::plugin_url().'/assets/images/placeholder.png';
-				if ( $image_id = $meta['_thumbnail_id'][0] ) {
-					$image = wp_get_attachment_url( $image_id );
-				}
-
-				echo "
-				<div class='jigoshop_configuration'>
+					// Get the image url if we have one
+					$image = jigoshop::plugin_url().'/assets/images/placeholder.png';
+					if ( $image_id = $meta['_thumbnail_id'][0] ) {
+						$image = wp_get_attachment_url( $image_id );
+					}
+				?>
+				<div class="jigoshop_configuration">
 					<p>
-						<button type='button' class='remove_variation button' rel='{$variation->ID}'>" . __('Remove', 'jigoshop') . "</button>
-						<strong>#{$variation->ID} &mdash; " . __('Variation:', 'jigoshop') . "</strong>";
+						<button type="button" class="remove_variation button" rel="<?php echo $variation->ID; ?>"><?php _e('Remove', 'jigoshop'); ?></button>
+						<strong>#<?php echo $variation->ID; ?> &mdash; <?php _e('Variation:', 'jigoshop'); ?></strong>
+						<?php echo $this->attribute_selector($attributes, $variation); ?>
+					</p>
 
-					
-						echo $this->attribute_selector( $attributes, $variation );
+					<table cellpadding="0" cellspacing="0" class="jigoshop_variable_attributes">
+						<tbody>
+							<tr>
 
-				
-				echo "
-					<p>
-				</div>";
-			}
+								<td class="upload_image" rowspan="2">
+									<a href="#" class="upload_image_button <?php if ($image) echo 'remove'; ?>" rel="<?php echo $variation->ID; ?>">
+										<img src="<?php echo $image ?>" width="60px" height="60px" />
+										<input type="hidden" name="<?php echo $this->field_name('image_id', $variation) ?>" class="upload_image_id" value="<?php echo $image_id; ?>" />
+										<!-- TODO: APPEND THIS IN JS <span class="overlay"></span> -->
+									</a>
+								</td>
 
-		}
-		echo '</div>';
+								<td>
+									<label><?php _e('SKU:', 'jigoshop'); ?>
+										<input type="text" size="5" name="<?php echo $this->field_name('sku', $variation) ?>" value="<?php echo isset($meta['sku'][0]) ? $meta['sku'][0] : null; ?>" />
+									</label>
+								</td>
 
+								<td>
+									<label><?php _e('Stock Qty:', 'jigoshop'); ?>
+										<input type="text" size="5" name="<?php echo $this->field_name('stock', $variation) ?>" value="<?php echo isset($meta['stock'][0]) ? $meta['stock'][0] : null; ?>" />
+									</label>
+								</td>
+
+								<td>
+									<label><?php _e('Weight', 'jigoshop') ?>
+										<input type="text" size="5" name="<?php echo $this->field_name('weight', $variation) ?>" value="<?php echo isset($meta['weight'][0]) ? $meta['weight'][0] : null; ?>" />
+									</label>
+								</td>
+
+								<?php // TODO: Add lxhxw here ?>
+
+								<td>
+									<label><?php _e('Price:', 'jigoshop'); ?>
+										<input type="text" size="5" name="<?php echo $this->field_name('regular_price', $variation) ?>" value="<?php echo isset($meta['regular_price'][0]) ? $meta['regular_price'][0] : null; ?>" />
+									</label>
+								</td>
+
+								<td>
+									<label><?php _e('Sale Price:', 'jigoshop'); ?>
+										<input type="text" size="5" name="<?php echo $this->field_name('sale_price', $variation) ?>" value="<?php echo isset($meta['sale_price'][0]) ? $meta['sale_price'][0] : null; ?>" />
+									</label>
+								</td>
+
+								<td>
+									<label><?php _e('Enabled', 'jigoshop'); ?>
+										<input type="checkbox" class="checkbox" name="<?php echo $this->field_name('enabled', $variation) ?>" <?php checked($variation->post_status, 'publish'); ?> />
+									</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="6"><span><?php //todo ?></span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<?php endforeach; ?>
+			</div>
+			<button type="button" class="button button-primary add_configuration <?php disabled($this->has_variable_attributes($attributes), false); ?>"><?php _e('Add Variation', 'jigoshop'); ?></button>
+
+			<div class="clear" />
+
+
+		<?php else : ?>
+
+			<div class='inline updated'>
+				<p><?php _e('Before you can start adding variations you must set up and save some variable attributes via the Attributes tab', 'jigoshop' ); ?></p>
+			</div>
+
+		<?php endif; ?>
+
+		</div>
+		</div>
+
+	<?php
+
+	}
+
+	private function field_name( $name, $variation ) {
+		return "variation[{$variation->ID}][{$name}]";
 	}
 
 	// I don't know if i like this seperation yet -Rob
@@ -265,7 +336,7 @@ function variable_product_type_options() {
 	</div>
 	<?php
 }
-add_action('jigoshop_product_type_options_box', 'variable_product_type_options');
+//add_action('jigoshop_product_type_options_box', 'variable_product_type_options');
 
  
 /**
