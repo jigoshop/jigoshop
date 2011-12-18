@@ -41,7 +41,7 @@ class variable_options
 		<div id="variable_product_options" class="panel">
 		<?php if ( $this->has_variable_attributes( $attributes ) ): ?>
 
-			<p class='bulk_edit'>
+			<!-- <p class='bulk_edit'>
 				<strong><?php _e('Bulk edit:', 'jigoshop'); ?></strong>
 				<a class="button set set_all_prices" href="#"><?php _e('Prices', 'jigoshop'); ?></a>
 				<a class="button set set_all_sale_prices" href="#"><?php _e('Sale prices', 'jigoshop'); ?></a>
@@ -51,7 +51,7 @@ class variable_options
 				<a class="button toggle toggle_enabled" href="#"><?php _e('Enabled', 'jigoshop'); ?></a>
 				<a class="button set set_all_paths" href="#"><?php _e('File paths', 'jigoshop'); ?></a>
 				<a class="button set set_all_limits" href="#"><?php _e('Download limits', 'woothemes'); ?></a>
-			</p>
+			</p> -->
 
 			<div class="jigoshop_configurations">
 
@@ -565,8 +565,27 @@ add_action('product_type_selector', 'variable_product_type_selector');
 class jigoshop_prduct_meta_variable
 {
 	public function __construct() {
-		add_action('jigoshop_process_product_meta_variable', array(&$this,'process_product_meta_variable'), 1, 2);
+		//add_action('jigoshop_process_product_meta_variable', array(&$this,'process_product_meta_variable'), 1, 2);
+		add_action('jigoshop_process_product_meta_variable', array(&$this,'process_variable_meta'), 1, 2);
 	}
+
+	public function process_variable_meta( $post_id, $post ) {
+		//var_dump($_POST['variation']);
+
+		foreach( $_POST['variation'] as $id => $meta ) {
+			
+			var_dump($meta);
+
+			update_post_meta( $id, 'sku', $meta['sku'] );
+			update_post_meta( $id, 'regular_price', $meta['regular_price'] );
+			update_post_meta( $id, 'sale_price', $meta['sale_price'] );
+
+
+			//var_dump($id);
+			//var_dump($variation);
+		}
+		exit();
+	} 
 
 	public function process_product_meta_variable( $post_id, $post ) {
 
@@ -662,7 +681,7 @@ class jigoshop_prduct_meta_variable
     	}
 		
 	}
-}
+} new jigoshop_prduct_meta_variable();
 
 /**
  * Process meta
@@ -676,8 +695,8 @@ class jigoshop_prduct_meta_variable
  */
 function process_product_meta_variable( $post_id ) {
 
-	var_dump($_POST);
-	exit();
+	//var_dump($_POST);
+	//exit();
 
 	if ( ! isset( $_POST['variable_sku'] ) )
 		return false;
