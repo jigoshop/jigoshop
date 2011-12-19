@@ -304,7 +304,7 @@ if (params.is_checkout==1) {
 
 	function update_checkout() {
 	
-		if (jqxhr) jgxhr.abort();
+		if (jqxhr) jqxhr.abort();
 		
 		var method		= jQuery('#shipping_method').val();
 		var country 	= jQuery('#billing-country').val();
@@ -337,7 +337,7 @@ if (params.is_checkout==1) {
 			post_data:			jQuery('form.checkout').serialize()
 		};
 		
-		jgxhr = jQuery.ajax({
+		jqxhr = jQuery.ajax({
 			type: 		'POST',
 			url: 		params.ajax_url,
 			data: 		data,
