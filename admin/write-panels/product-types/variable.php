@@ -24,7 +24,7 @@ class variable_options
 		// Get all variations of the product
 		$variations = get_posts(array(
 			'post_type'		=> 'product_variation',
-			'post_status' 	=> array('private', 'publish'),
+			'post_status' 	=> array('draft', 'publish'),
 			'numberposts' 	=> -1,
 			'orderby' 		=> 'id',
 			'order' 		=> 'asc',
@@ -83,7 +83,7 @@ class variable_options
 								<td class="upload_image" rowspan="2">
 									<a href="#" class="upload_image_button <?php if ($image) echo 'remove'; ?>" rel="<?php echo $variation->ID; ?>">
 										<img src="<?php echo $image ?>" width="60px" height="60px" />
-										<input type="hidden" name="<?php echo $this->field_name('image_id', $variation) ?>" class="upload_image_id" value="<?php echo $image_id; ?>" />
+										<input type="hidden" name="<?php echo $this->field_name('_thumbnail_id', $variation) ?>" class="upload_image_id" value="<?php echo $image_id; ?>" />
 										<!-- TODO: APPEND THIS IN JS <span class="overlay"></span> -->
 									</a>
 								</td>
@@ -155,7 +155,7 @@ class variable_options
 	}
 
 	private function field_name( $name, $variation ) {
-		return "variation[{$variation->ID}][{$name}]";
+		return "variations[{$variation->ID}][{$name}]";
 	}
 
 	// I don't know if i like this seperation yet -Rob
@@ -174,7 +174,7 @@ class variable_options
 			// Get current value for variation (if set)
 			$selected = get_post_meta( $variation->ID, 'tax_' . sanitize_title($attr['name']), true );
 
-			$html .= '<select name="variation['.$variation->ID.'][tax_' . sanitize_title($attr['name']) . ']" >
+			$html .= '<select name="' . $this->field_name('tax_' . sanitize_title($attr['name']), $variation) . '" >
 				<option value="">Any</option>';
 
 			// Get terms for attribute taxonomy or value if its a custom attribute
@@ -542,8 +542,6 @@ function jigoshop_add_variation() {
 	
 }
 
-
-
 /**
  * Product Type selector
  * 
@@ -566,120 +564,66 @@ class jigoshop_prduct_meta_variable
 {
 	public function __construct() {
 		//add_action('jigoshop_process_product_meta_variable', array(&$this,'process_product_meta_variable'), 1, 2);
-		add_action('jigoshop_process_product_meta_variable', array(&$this,'process_variable_meta'), 1, 2);
+		add_action('jigoshop_process_product_meta_variable', array(&$this,'process_variable_meta'), 1, 1);
 	}
 
-	public function process_variable_meta( $post_id, $post ) {
-		//var_dump($_POST['variation']);
+	public function process_variable_meta( $parent_id ) {
+		global $wpdb;
 
-		foreach( $_POST['variation'] as $id => $meta ) {
+		// Do not run if there are no variations
+		if ( ! isset($_POST['variations']) )
+			return false;
+
+		// Get the attributes to be used later
+		$attributes = (array) maybe_unserialize( get_post_meta($parent_id, 'product_attributes', true) );
+
+		foreach( $_POST['variations'] as $ID => $meta ) {
 			
-			var_dump($meta);
+			// Update the post data
+			// TODO: Set up titles as #SKU #Variation1 ..2..3
+			$wpdb->update( $wpdb->posts, array(
+				'post_title'		=> "#{$parent_id}: Variation: #{$ID}",
+				'post_status'	=> isset($meta['enabled']) ? 'publish' : 'draft'
+			), array( 'ID' => $ID ) );
 
-			update_post_meta( $id, 'sku', $meta['sku'] );
-			update_post_meta( $id, 'regular_price', $meta['regular_price'] );
-			update_post_meta( $id, 'sale_price', $meta['sale_price'] );
+			// Set variation meta data
+			update_post_meta( $ID, 'sku',			$meta['sku'] );
+			update_post_meta( $ID, 'regular_price',	$meta['regular_price'] );
+			update_post_meta( $ID, 'sale_price',		$meta['sale_price'] );
 
+			update_post_meta( $ID, 'weight',		$meta['weight'] );
+			// update_post_meta( $ID, 'length',		$meta['length'] );
+			// update_post_meta( $ID, 'height',		$meta['height'] );
+			// update_post_meta( $ID, 'width',		$meta['width'] );
 
-			//var_dump($id);
-			//var_dump($variation);
-		}
-		exit();
-	} 
+			update_post_meta( $ID, 'stock',			$meta['stock'] );
+			update_post_meta( $ID, '_thumbnail_id',	$meta['_thumbnail_id'] );
 
-	public function process_product_meta_variable( $post_id, $post ) {
+			// Refresh taxonomy attributes
+			$current_meta = get_post_custom( $ID );
 
-		// these should be a multi dimensional array
-		$variable_post_id		= $_POST['variable_post_id'];
-    	$variable_sku			= $_POST['variable_sku'];
-    	$variable_weight			= $_POST['variable_weight'];
-    	$variable_stock			= $_POST['variable_stock'];
-   		$variable_price			= $_POST['variable_price'];
-    	$variable_sale_price		= $_POST['variable_sale_price'];
+			foreach ($current_meta as $name => $value) {
+				// Skip if there are no attributes
+				if ( ! strstr($name, 'tax_'))
+					continue;
 
-    	for ( $i = 0; $i < count($variable_sku); $i++ ) {
-
-    		// Get the ID
-    		$variation_ID = (int) $variable_post_id[$i];
-
-    		// Enabled or disabled variation?
-    		$post_status = ($variable_enabled[$i]) ? 'publish' : 'private';
-    		
-    		// Generate a useful post title
-    		// ???
-    		/*foreach ($attributes as $attribute) :
-				if ( $attribute['is_variation'] ) :
-					$value = esc_attr(trim($_POST[ 'attribute_' . sanitize_title($attribute['name']) ][$i]));
-					if ($value) :
-						$title[] = $woocommerce->attribute_label($attribute['name']).': '.$value;
-					endif;
-				endif;
-			endforeach;*/
-
-			$sku_string = "#{$variation_ID}";
-
-			if ( $variable_sku[$i] ) {
-				$sku_string .= ' SKU: ' . $variable_sku[$i];
+				// Remove the attribute
+				delete_post_meta( $ID, $name );
 			}
-
-			// Update or Add post
-			$variation = array(
-				'post_title'		=> '#' . $post_id . ' Variation (' . $sku_string . ')' .' Title',
-				'post_status'	=> 'publish', // change to $post_status	
-			);
-
-			if ( ! $variation_id ) {
-				$variation['post_author']	= get_current_user_id();
-				$variation['post_parent']	= $post_id;
-				$variation['post_content']	= null;
-				$variation['post_type']		= 'product_variation';
-
-			}
-			else {
-				global $wpdb;
-				$wpdb->update( $wpdb->posts, $variation, array( 'ID' => $variation_id ) );
-			}
-			// End variation post
-
-			update_post_meta( $variation_id, 'sku', $variable_sku[$i] );
-			update_post_meta( $variation_id, 'price', $variable_sku[$i] );
-			update_post_meta( $variation_id, 'sale_price', $variable_sku[$i] );
-			
-			update_post_meta( $variation_id, 'weight', $variable_sku[$i] );
-			update_post_meta( $variation_id, 'length', $variable_sku[$i] );
-			update_post_meta( $variation_id, 'height', $variable_sku[$i] );
-			update_post_meta( $variation_id, 'width', $variable_sku[$i] );
-
-			update_post_meta( $variation_id, 'stock', $variable_sku[$i] );
-			update_post_meta( $variation_id, '_thumbnail_id', $variable_sku[$i] );
-
-			// TODO:: Add support for dl/virtual products
-
-
-			// Refresh attributes
-			$variation_custom_fields = get_post_custom( $variation_id );
-			
-			// Remove all
-			foreach ($variation_custom_fields as $name => $value) :
-				if (!strstr($name, 'tax_')) continue;
-				delete_post_meta( $variation_id, $name );
-			endforeach;
 
 			// Update taxonomies
-			foreach ($attributes as $attribute) :
-							
-				if ( $attribute['is_variation'] ) :
-				
-					$value = esc_attr(trim($_POST[ 'attribute_' . sanitize_title($attribute['name']) ][$i]));
-					
-					update_post_meta( $variation_id, 'attribute_' . sanitize_title($attribute['name']), $value );
-				
-				endif;
+			foreach ( $attributes as $attribute ) {
 
-			endforeach;
-
-    	}
-		
+				// Skip if attribute is not for variation
+				if ( ! $attribute['variation'] )
+					continue;
+				
+				// Set the data
+				$key = 'tax_' . sanitize_title($attribute['name']);
+				update_post_meta( $ID, $key, $meta[$key]);
+			}
+		}
+		exit();
 	}
 } new jigoshop_prduct_meta_variable();
 
@@ -822,4 +766,4 @@ function process_product_meta_variable( $post_id ) {
     }
     return $errors;
 }
-add_action('jigoshop_process_product_meta_variable', 'process_product_meta_variable', 1, 2);
+//add_action('jigoshop_process_product_meta_variable', 'process_product_meta_variable', 1, 2);
