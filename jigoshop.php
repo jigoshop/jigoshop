@@ -101,7 +101,11 @@ if (!defined('JIGOSHOP_LOAD_FANCYBOX')) :
 	if (get_option('jigoshop_disable_fancybox')=='yes') define('JIGOSHOP_LOAD_FANCYBOX', false);
 	else define('JIGOSHOP_LOAD_FANCYBOX', true);
 endif;
-if (!defined('JIGOSHOP_TEMPLATE_URL')) define('JIGOSHOP_TEMPLATE_URL', 'jigoshop/'); // Trailing slash is important :)
+
+add_action('init', 'jigoshop_constants');
+function jigoshop_constants() {
+	define('JIGOSHOP_TEMPLATE_URL', apply_filters('jigoshop_template_url', 'jigoshop/') ); // Trailing slash is important :)
+}
 
 /**
  * IIS compat fix/fallback
