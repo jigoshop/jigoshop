@@ -44,7 +44,7 @@ function variable_product_type_options() {
 					$image = wp_get_attachment_url( $variation_data['_thumbnail_id'][0] );
 				endif;
 				
-				if (!$image) $image = jigoshop::plugin_url().'/assets/images/placeholder.png';
+				if (!$image) $image = jigoshop::assets_url().'/assets/images/placeholder.png';
 				?>
 				<div class="jigoshop_configuration">
 					<p>
@@ -130,7 +130,7 @@ function variable_product_write_panel_js() {
 		
 		jQuery('button.add_configuration').live('click', function(){
 		
-			jQuery('.jigoshop_configurations').block({ message: null, overlayCSS: { background: '#fff url(<?php echo jigoshop::plugin_url(); ?>/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
+			jQuery('.jigoshop_configurations').block({ message: null, overlayCSS: { background: '#fff url(<?php echo jigoshop::assets_url(); ?>/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
 					
 			var data = {
 				action: 'jigoshop_add_variation',
@@ -174,7 +174,7 @@ function variable_product_write_panel_js() {
 					<table cellpadding="0" cellspacing="0" class="jigoshop_variable_attributes">\
 						<tbody>\
 							<tr>\
-								<td class="upload_image"><img src="<?php echo jigoshop::plugin_url().'/assets/images/placeholder.png' ?>" width="60px" height="60px" /><input type="hidden" name="upload_image_id[' + loop + ']" class="upload_image_id" /><input type="button" class="upload_image_button button" rel="" value="<?php _e('Product Image', 'jigoshop'); ?>" /></td>\
+								<td class="upload_image"><img src="<?php echo jigoshop::assets_url().'/assets/images/placeholder.png' ?>" width="60px" height="60px" /><input type="hidden" name="upload_image_id[' + loop + ']" class="upload_image_id" /><input type="button" class="upload_image_button button" rel="" value="<?php _e('Product Image', 'jigoshop'); ?>" /></td>\
 								<td><label><?php _e('SKU:', 'jigoshop'); ?></label><input type="text" size="5" name="variable_sku[' + loop + ']" /></td>\
 								<td><label><?php _e('Weight', 'jigoshop').' ('.get_option('jigoshop_weight_unit').'):'; ?></label><input type="text" size="5" name="variable_weight[' + loop + ']" /></td>\
 								<td><label><?php _e('Stock Qty:', 'jigoshop'); ?></label><input type="text" size="5" name="variable_stock[' + loop + ']" /></td>\
@@ -204,7 +204,7 @@ function variable_product_write_panel_js() {
 				
 				if (variation>0) {
 				
-					jQuery(el).block({ message: null, overlayCSS: { background: '#fff url(<?php echo jigoshop::plugin_url(); ?>/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
+					jQuery(el).block({ message: null, overlayCSS: { background: '#fff url(<?php echo jigoshop::assets_url(); ?>/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
 					
 					var data = {
 						action: 'jigoshop_remove_variation',

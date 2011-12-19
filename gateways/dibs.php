@@ -188,7 +188,7 @@ class dibs extends jigoshop_payment_gateway {
 					jQuery(function(){
 						jQuery("body").block(
 							{ 
-								message: "<img src=\"'.jigoshop::plugin_url().'/assets/images/ajax-loader.gif\" alt=\"Redirecting...\" />'.__('Thank you for your order. We are now redirecting you to DIBS to make payment.', 'jigoshop').'", 
+								message: "<img src=\"'.jigoshop::assets_url().'/assets/images/ajax-loader.gif\" alt=\"Redirecting...\" />'.__('Thank you for your order. We are now redirecting you to DIBS to make payment.', 'jigoshop').'", 
 								overlayCSS: 
 								{ 
 									background: "#fff", 

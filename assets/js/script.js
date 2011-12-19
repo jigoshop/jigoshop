@@ -300,11 +300,13 @@ jQuery(function(){
 if (params.is_checkout==1) {
 
 	var updateTimer;
-	
+	var jqxhr;
+
 	function update_checkout() {
 	
-		var method = jQuery('#shipping_method').val();
+		if (jqxhr) jgxhr.abort();
 		
+		var method		= jQuery('#shipping_method').val();
 		var country 	= jQuery('#billing-country').val();
 		var state 		= jQuery('#billing-state').val();
 		var postcode 	= jQuery('input#billing-postcode').val();
@@ -320,19 +322,32 @@ if (params.is_checkout==1) {
 			var s_postcode 	= jQuery('input#shipping-postcode').val();
 		}
 		
-		jQuery('#order_methods, #order_review').block({message: null, overlayCSS: {background: '#fff url(' + params.plugin_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
-		jQuery.ajax({
+		jQuery('#order_methods, #order_review').block({message: null, overlayCSS: {background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
+
+		var data = {
+			action: 			'jigoshop_update_order_review',
+			security: 			params.update_order_review_nonce,
+			shipping_method: 	method, 
+			country: 			country, 
+			state: 				state, 
+			postcode: 			postcode, 
+			s_country: 			s_country, 
+			s_state: 			s_state, 
+			s_postcode: 		s_postcode,
+			post_data:			jQuery('form.checkout').serialize()
+		};
+		
+		jgxhr = jQuery.ajax({
 			type: 		'POST',
-			url: 		params.review_order_url,
-			data: 		{shipping_method: method, country: country, state: state, postcode: postcode, s_country: s_country, s_state: s_state, s_postcode: s_postcode},
-			success: 	function( code ) {
-							jQuery('#order_methods, #order_review').remove();
-							jQuery('#order_review_heading').after(code);
-							jQuery('#order_review input[name=payment_method]:checked').click();
-						},
-			dataType: 	"html"
+			url: 		params.ajax_url,
+			data: 		data,
+			success: 	function( response ) {
+				jQuery('#order_methods, #order_review').remove();
+				jQuery('#order_review_heading').after(response);
+				jQuery('#order_review input[name=payment_method]:checked').click();
+			}
 		});
-	
+
 	}
 		
 	jQuery(function(){
@@ -397,7 +412,7 @@ if (params.is_checkout==1) {
 		/* AJAX Form Submission */
 		jQuery('form.checkout').submit(function(){
 			var form = this;
-			jQuery(form).block({message: null, overlayCSS: {background: '#fff url(' + params.plugin_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
+			jQuery(form).block({message: null, overlayCSS: {background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
 			jQuery.ajax({
 				type: 		'POST',
 				url: 		params.checkout_url,
