@@ -348,7 +348,7 @@ class jigoshop_prduct_meta_variable extends jigoshop_product_meta
 				<div class="jigoshop_configuration">
 					<p>
 						<button type="button" class="remove_variation button" rel="<?php echo $variation->ID; ?>"><?php _e('Remove', 'jigoshop'); ?></button>
-						<strong>#<?php echo $variation->ID; ?> &mdash; <?php _e('Variation:', 'jigoshop'); ?></strong>
+						
 						<?php echo $this->attribute_selector($attributes, $variation); ?>
 					</p>
 
@@ -365,13 +365,13 @@ class jigoshop_prduct_meta_variable extends jigoshop_product_meta
 								</td>
 
 								<td>
-									<label><?php _e('SKU:', 'jigoshop'); ?>
+									<label><?php _e('SKU', 'jigoshop'); ?>
 										<input type="text" size="5" name="<?php echo $this->field_name('sku', $variation) ?>" value="<?php echo isset($meta['sku'][0]) ? $meta['sku'][0] : null; ?>" />
 									</label>
 								</td>
 
 								<td>
-									<label><?php _e('Stock Qty:', 'jigoshop'); ?>
+									<label><?php _e('Stock Qty', 'jigoshop'); ?>
 										<input type="text" size="5" name="<?php echo $this->field_name('stock', $variation) ?>" value="<?php echo isset($meta['stock'][0]) ? $meta['stock'][0] : null; ?>" />
 									</label>
 								</td>
@@ -385,13 +385,13 @@ class jigoshop_prduct_meta_variable extends jigoshop_product_meta
 								<?php // TODO: Add lxhxw here ?>
 
 								<td>
-									<label><?php _e('Price:', 'jigoshop'); ?>
+									<label><?php _e('Price', 'jigoshop'); ?>
 										<input type="text" size="5" name="<?php echo $this->field_name('regular_price', $variation) ?>" value="<?php echo isset($meta['regular_price'][0]) ? $meta['regular_price'][0] : null; ?>" />
 									</label>
 								</td>
 
 								<td>
-									<label><?php _e('Sale Price:', 'jigoshop'); ?>
+									<label><?php _e('Sale Price', 'jigoshop'); ?>
 										<input type="text" size="5" name="<?php echo $this->field_name('sale_price', $variation) ?>" value="<?php echo isset($meta['sale_price'][0]) ? $meta['sale_price'][0] : null; ?>" />
 									</label>
 								</td>
@@ -463,7 +463,7 @@ class jigoshop_prduct_meta_variable extends jigoshop_product_meta
 			$selected = get_post_meta( $variation->ID, 'tax_' . sanitize_title($attr['name']), true );
 
 			$html .= '<select name="' . $this->field_name('tax_' . sanitize_title($attr['name']), $variation) . '" >
-				<option value="">Any</option>';
+				<option value="">Any ' . sanitize_title($attr['name']) . '</option>';
 
 			// Get terms for attribute taxonomy or value if its a custom attribute
 			if ( $attr['is_taxonomy'] ) {
