@@ -31,7 +31,6 @@ class jigoshop_shipping extends jigoshop_singleton {
 		self::shipping_inits();
 		if ( get_option( 'jigoshop_calc_shipping' ) != 'no' ) :
 			self::$enabled = true;
-			self::calculate_shipping();
 		endif;
 	
 	}
@@ -120,8 +119,11 @@ class jigoshop_shipping extends jigoshop_singleton {
 			$_cheapest_method = '';
 			$calc_cheapest = false;
 						
-			if ( isset( $_SESSION['chosen_shipping_method_id'] )) $chosen_method = $_SESSION['chosen_shipping_method_id'];
-			else $chosen_method = '';
+			if ( isset( $_SESSION['chosen_shipping_method_id'] )) :
+				$chosen_method = $_SESSION['chosen_shipping_method_id'];
+			else :
+				$chosen_method = '';
+			endif;
 			
 			if ( empty( $chosen_method )) :
 				$calc_cheapest = true;
@@ -147,7 +149,6 @@ class jigoshop_shipping extends jigoshop_singleton {
 				
 				if ( $chosen_method ) :
 					$_available_methods[$chosen_method]->choose();
-					$_SESSION['chosen_shipping_method_id'] = $chosen_method;
 					self::$shipping_total 	= $_available_methods[$chosen_method]->shipping_total;
 					self::$shipping_tax 	= $_available_methods[$chosen_method]->shipping_tax;
 					self::$shipping_label 	= $_available_methods[$chosen_method]->title;

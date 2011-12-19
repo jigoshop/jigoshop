@@ -46,7 +46,7 @@ class jigoshop_cart extends jigoshop_singleton {
 
 		if ( isset($_SESSION['coupons']) ) self::$applied_coupons = $_SESSION['coupons'];
 		
-		self::calculate_totals();
+		self::add_action( 'template_redirect', 'calculate_totals' );
 	}
 	
 	/** Gets the cart data from the PHP session */
