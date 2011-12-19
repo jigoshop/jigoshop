@@ -165,39 +165,27 @@ function variable_product_write_panel_js() {
 }
 add_action('product_write_panel_js', 'variable_product_write_panel_js');
 
-/**
- * Product Type selector
- * 
- * Adds this product type to the product type selector in the product options meta box
- *
- * @since 		1.0
- *
- * @param 		string $product_type Passed the current product type so that if it keeps its selected state
- */
-function variable_product_type_selector( $product_type ) {
-	
-	echo '<option value="variable" '; if ($product_type=='variable') echo 'selected="selected"'; echo '>'.__('Variable','jigoshop').'</option>';
-
-}
-add_action('product_type_selector', 'variable_product_type_selector');
-
-
-
-
-	
-
 	
 
 
-// Possibility to reuse old saving functions for new contexts?
-// class jigoshop_product_meta_variable extends jigoshop_product_meta
-class jigoshop_prduct_meta_variable
+
+class jigoshop_prduct_meta_variable extends jigoshop_product_meta
 {
 	public function __construct() {
-		add_action( 'jigoshop_process_product_meta_variable', array(&$this,'save'), 1 );
-		add_action( 'jigoshop_product_type_options_box', array(&$this, 'display') );
-		add_action( 'wp_ajax_jigoshop_add_variation', array(&$this, 'create') );
-		add_action( 'wp_ajax_jigoshop_remove_variation', array(&$this, 'remove') );
+		add_action( 'product_type_selector', 					array(&$this,'register') );
+		add_action( 'jigoshop_process_product_meta_variable',	array(&$this, 'save'), 1 );
+		add_action( 'jigoshop_product_type_options_box',		array(&$this, 'display') );
+		add_action( 'wp_ajax_jigoshop_add_variation',			array(&$this, 'create') );
+		add_action( 'wp_ajax_jigoshop_remove_variation',		array(&$this, 'remove') );
+	}
+
+	/**
+	 * Echos a variable type option for the product type selector
+	 *
+	 * @return		void
+	 */
+	public function register( $type ) {
+		echo '<option value="variable" ' . selected($type, 'variable', false) . '>' . __('Variable', 'jigoshop') . '</option>';
 	}
 
 	/**
