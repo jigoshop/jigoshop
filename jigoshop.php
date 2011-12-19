@@ -149,7 +149,7 @@ function jigoshop_mail_from_name( $name ) {
 add_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name' );
 
 function jigoshop_mail_from( $email ) {
-	$email = get_option('admin_email');
+	$email = get_option('jigoshop_email');
 	return $email;
 }
 add_filter( 'wp_mail_from', 'jigoshop_mail_from' );

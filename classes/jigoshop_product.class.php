@@ -147,29 +147,34 @@ class jigoshop_product {
     }
 
 	/**
-	 * Reduce stock level of the product
+	 * Reduce stock level of the product & increase Amount Sold
 	 *
 	 * @param   int		$by		Amount to reduce by
 	 */
 	function reduce_stock( $by = 1 ) {
 		if ($this->managing_stock()) {
 			$reduce_to = $this->stock - $by;
+			$amount_sold = $this->stock_sold + $by;
 			update_post_meta($this->id, 'stock', $reduce_to);
+			update_post_meta($this->id, 'stock_sold', $amount_sold);
 			return $reduce_to;
-        }
+
+      		}
 	}
 
 	/**
-	 * Increase stock level of the product
+	 * Increase stock level of the product & decrease Amount Sold
 	 *
 	 * @param   int		$by		Amount to increase by
 	 */
 	function increase_stock( $by = 1 ) {
 		if ($this->managing_stock()) {
 			$increase_to = $this->stock + $by;
+			$amount_sold = $this->stock_sold - $by;
 			update_post_meta($this->id, 'stock', $increase_to);
-			return $increase_to;
-        }
+			update_post_meta($this->id, 'stock_sold', $amount_sold);
+      			return $increase_to;      		
+		}
 	}
 
 	/**
@@ -557,9 +562,9 @@ class jigoshop_product {
 	    }
         } else {
             if ($this->price === '') {
-                $price_html = __('Price Not Announced');
+                $price_html = __('Price Not Announced', 'jigoshop');
             } else if ($this->price === '0') {
-                $price_html = __('Free');
+                $price_html = __('Free', 'jigoshop');
             } else {
                 if (!empty($this->sale_price) && !empty($this->price) && $this->in_sale_date_range()) {
                     $price_html .= '<del>' . jigoshop_price($this->price) . '</del> <ins>' . jigoshop_price($this->sale_price) . '</ins>';

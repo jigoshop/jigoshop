@@ -543,6 +543,7 @@ function jigoshop_download_product() {
 			@session_cache_limiter('none');
 			@set_magic_quotes_runtime(0);
 			@ob_end_clean();
+			if (ob_get_level()) @ob_end_clean();
 			@session_write_close();
 
 			header("Pragma: no-cache");
