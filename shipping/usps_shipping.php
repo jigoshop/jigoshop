@@ -1,8 +1,8 @@
 <?php
 /**
- * USPS shipping
+ * Canada Post shipping
  *
- * This class handles talking to USPS to find the rates of shipping 
+ * This class handles talking to Canada Post to find the rates of shipping 
  * to a particular address from a specified address.
  *
  * @package    Jigoshop
@@ -40,8 +40,6 @@ class usps_shipping extends jigoshop_calculable_shipping {
     	
     	if ($cheapest_price != NULL) :
     		$this->shipping_total = $cheapest_price;
-    	else :
-    		$this->enabled='no';  // return invalid amount for jigoshop_shipping to not include in calculation of cheapest shipping
     	endif;
  		
     } 
@@ -76,7 +74,7 @@ class usps_shipping extends jigoshop_calculable_shipping {
 	 * can be used for calculating different attributes. Also, there should be the ability to add extra services to the shipping. 
 	 * Eg. add insurance, Add tracking if not already present, etc.
 	 */
-	protected function create_mail_request($service)
+	protected function create_mail_request($service = '')
 	{
 		$xml = 'API=RateV4&XML=<RateV4Request USERID="'.$this->user_id.'">';
 
@@ -164,7 +162,7 @@ class usps_shipping extends jigoshop_calculable_shipping {
 	/** 
 	 * retrieve the rates into an array from the xml response
 	 */
-	protected function retrieve_rate_from_response($xml_response) {
+	protected function retrieve_rate_from_response($xml_response, $service = '') {
 	
 		$rate = -1; // on error, -1 will be returned
 

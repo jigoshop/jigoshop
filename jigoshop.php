@@ -60,6 +60,7 @@ include_once( 'gateways/gateways.class.php' );
 include_once( 'gateways/gateway.class.php' );
 include_once( 'classes/jigoshop_shipping.class.php' );
 include_once( 'shipping/shipping_method.class.php' );
+include_once( 'shipping/jigoshop_calculable_shipping.php' );
 //include_once( 'jigoshop_cron.php' );	/* we may use this at some point, leaving -JAP- */
 
 /**

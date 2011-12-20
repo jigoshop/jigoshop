@@ -46,7 +46,11 @@ class jigoshop_cart extends jigoshop_singleton {
 
 		if ( isset($_SESSION['coupons']) ) self::$applied_coupons = $_SESSION['coupons'];
 		
-		self::add_action( 'plugins_loaded', 'calculate_totals', 999 );
+                // needed to calculate cart total for cart widget. Separated from calculate_totals
+                // so that shipping doesn't need to be calculated so many times. Calling the server
+                // api's ofter per page request isn't a good idea.
+                self::calculate_cart_total(); 
+		
 	}
 	
 	/** Gets the cart data from the PHP session */
@@ -84,7 +88,11 @@ class jigoshop_cart extends jigoshop_singleton {
 		
 		$_SESSION['coupons'] = self::$applied_coupons;
 		
-		self::calculate_totals();
+                // This has to be tested. I believe all that needs to be calculated at time of setting session
+                // is really the cart total and not shipping. All functions that use set_session are functions
+                // that either add to the cart or apply coupons, etc. If the cart page is reloaded, the full
+                // calculate_totals is already called.
+		self::calculate_cart_total();
 		
 	}
 
@@ -233,7 +241,7 @@ class jigoshop_cart extends jigoshop_singleton {
 	 *
 	 * @return   array	cart_contents
 	 */
-	function get_cart() {
+	static function get_cart() {
 		return self::$cart_contents;
 	}
 
@@ -345,10 +353,9 @@ class jigoshop_cart extends jigoshop_singleton {
 		jigoshop_shipping::reset_shipping();
 	}
 	
-	/** calculate totals for the items in the cart */
-	function calculate_totals() {
-		
-		self::reset_totals();
+        private static function calculate_cart_total() {
+
+                self::reset_totals();
 		
 		$_tax = &new jigoshop_tax();
 		
@@ -438,6 +445,15 @@ class jigoshop_cart extends jigoshop_singleton {
 
 			endif;
 		endforeach;
+            
+        }
+	/** calculate totals for the items in the cart */
+	function calculate_totals() {
+		
+                // extracted cart totals so that the constructor can call it, rather than 
+                // this full method. Cart totals are needed for cart widget and themes.
+                // Don't want to call shipping api's multiple times per page load
+                self::calculate_cart_total();
 		
 		// Cart Shipping
 		if (self::needs_shipping()) jigoshop_shipping::calculate_shipping();
@@ -478,6 +494,11 @@ class jigoshop_cart extends jigoshop_singleton {
 
 		if (self::$total < 0) self::$total = 0;
 	}
+        
+        /** gets cart contents total excluding tax. Shipping methods use this, and the contents total are calculated ahead of shipping */
+        public static function get_cart_contents_total_excluding_tax() {
+            return self::$cart_contents_total_ex_tax;
+        }
 
 	/** gets the total (after calculation) */
 	function get_total() {
