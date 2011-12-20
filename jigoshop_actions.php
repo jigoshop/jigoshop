@@ -321,8 +321,14 @@ function jigoshop_ajax_update_order_review() {
 	do_action('jigoshop_checkout_update_order_review', $_POST['post_data']);
 	
         if (isset($_POST['shipping_method'])) :
+            
 		$shipping_method = explode(":", $_POST['shipping_method']);
 	 	$_SESSION['chosen_shipping_method_id'] = $shipping_method[0];
+                
+                if ($shipping_method[2]) :
+                    $_SESSION['selected_rate_id'] = $shipping_method[2];
+                endif;
+                
 	endif;
 
 	if (isset($_POST['country'])) jigoshop_customer::set_country( $_POST['country'] );

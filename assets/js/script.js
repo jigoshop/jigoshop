@@ -149,7 +149,7 @@ jQuery(function(){
 	jQuery("input[name=shipping_rates]").click(function(){
 		var dataString = 'shipping_rates=' + jQuery(this).val();
 		var cart_url = jQuery("input[name=cart-url]").val();
-		jQuery('.cart_totals_table').block({message: null, overlayCSS: {background: '#fff url(' + params.plugin_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
+		jQuery('.cart_totals_table').block({message: null, overlayCSS: {background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
 		jQuery.ajax({  
 			type: "POST",  
 			url: cart_url,  
