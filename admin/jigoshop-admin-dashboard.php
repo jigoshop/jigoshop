@@ -556,7 +556,7 @@ function jigoshop_dashboard() {
 				     			
 				     			<h4><?php _e('Jigoshop is bought to you by&hellip;', 'jigoshop'); ?></h4>
 
-				     			<p><a href="http://jigowatt.co.uk/"><img src="<?php echo jigoshop::plugin_url(); ?>/assets/images/jigowatt.png" alt="Jigowatt" /></a></p>
+				     			<p><a href="http://jigowatt.co.uk/"><img src="<?php echo jigoshop::assets_url(); ?>/assets/images/jigowatt.png" alt="Jigowatt" /></a></p>
 				     			
 				     			<p>From design to deployment Jigowatt delivers expert solutions to enterprise customers using Magento & WordPress open source platforms.</p>
 				     			

@@ -307,6 +307,36 @@ function jigoshop_add_to_cart_action($url = false)
     exit;
 }
 
+function jigoshop_ajax_update_order_review() {
+	
+	check_ajax_referer( 'update-order-review', 'security' );
+	
+	if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
+	
+	if (sizeof(jigoshop_cart::$cart_contents)==0) :
+		echo '<p class="error">'.__('Sorry, your session has expired.', 'jigoshop').' <a href="'.home_url().'">'.__('Return to homepage &rarr;', 'jigoshop').'</a></p>';
+		exit;
+	endif;
+	
+	do_action('jigoshop_checkout_update_order_review', $_POST['post_data']);
+
+	if (isset($_POST['shipping_method'])) $_SESSION['chosen_shipping_method_id'] = $_POST['shipping_method'];
+	if (isset($_POST['country'])) jigoshop_customer::set_country( $_POST['country'] );
+	if (isset($_POST['state'])) jigoshop_customer::set_state( $_POST['state'] );
+	if (isset($_POST['postcode'])) jigoshop_customer::set_postcode( $_POST['postcode'] );
+	if (isset($_POST['s_country'])) jigoshop_customer::set_shipping_country( $_POST['s_country'] );
+	if (isset($_POST['s_state'])) jigoshop_customer::set_shipping_state( $_POST['s_state'] );
+	if (isset($_POST['s_postcode'])) jigoshop_customer::set_shipping_postcode( $_POST['s_postcode'] );
+					
+	jigoshop_cart::calculate_totals();
+
+	do_action('jigoshop_checkout_order_review');
+
+	die();
+}
+add_action('wp_ajax_jigoshop_update_order_review', 'jigoshop_ajax_update_order_review');
+add_action('wp_ajax_nopriv_jigoshop_update_order_review', 'jigoshop_ajax_update_order_review');
+
 /**
  * Clear cart
  **/
@@ -513,6 +543,7 @@ function jigoshop_download_product() {
 			@session_cache_limiter('none');
 			@set_magic_quotes_runtime(0);
 			@ob_end_clean();
+			if (ob_get_level()) @ob_end_clean();
 			@session_write_close();
 
 			header("Pragma: no-cache");

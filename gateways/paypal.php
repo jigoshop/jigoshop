@@ -18,7 +18,7 @@ class paypal extends jigoshop_payment_gateway {
 		
 	public function __construct() { 
         $this->id			= 'paypal';
-        $this->icon 		= jigoshop::plugin_url() . '/assets/images/icons/paypal.png';
+        $this->icon 		= jigoshop::assets_url() . '/assets/images/icons/paypal.png';
         $this->has_fields 	= false;
       	$this->enabled		= get_option('jigoshop_paypal_enabled');
 		$this->title 		= get_option('jigoshop_paypal_title');
@@ -257,7 +257,7 @@ class paypal extends jigoshop_payment_gateway {
 					jQuery(function(){
 						jQuery("body").block(
 							{ 
-								message: "<img src=\"'.jigoshop::plugin_url().'/assets/images/ajax-loader.gif\" alt=\"Redirecting...\" />'.__('Thank you for your order. We are now redirecting you to PayPal to make payment.', 'jigoshop').'", 
+								message: "<img src=\"'.jigoshop::assets_url().'/assets/images/ajax-loader.gif\" alt=\"Redirecting...\" />'.__('Thank you for your order. We are now redirecting you to PayPal to make payment.', 'jigoshop').'", 
 								overlayCSS: 
 								{ 
 									background: "#fff", 
@@ -313,7 +313,7 @@ class paypal extends jigoshop_payment_gateway {
         $_POST['cmd'] = '_notify-validate';
 
         // Send back post vars to paypal
-        $params = array( 'body' => $_POST );
+        $params = array( 'body' => $_POST, 'sslverify' => apply_filters('https_local_ssl_verify', false));
 
         // Get url
        	if ( $this->testmode == 'yes' ):

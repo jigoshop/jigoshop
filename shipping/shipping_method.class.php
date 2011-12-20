@@ -33,7 +33,7 @@ class jigoshop_shipping_method {
     	
     	if ($this->get_enabled()=="no") return false;
     	
-		if (isset(jigoshop_cart::$cart_contents_total) && isset($this->min_amount) && $this->min_amount && $this->min_amount > jigoshop_cart::$cart_contents_total) return false;
+		if (isset(jigoshop_cart::$cart_contents_total_ex_dl) && isset($this->min_amount) && $this->min_amount && $this->min_amount > jigoshop_cart::$cart_contents_total_ex_dl) return false;
 		
 		$ship_to_countries = '';
 		

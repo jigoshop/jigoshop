@@ -80,6 +80,7 @@ add_action( 'jigoshop_product_tab_panels', 'jigoshop_product_reviews_panel', 30 
 
 /* Checkout */
 add_action( 'before_checkout_form', 'jigoshop_checkout_login_form', 10 );
+add_action( 'jigoshop_checkout_order_review', 'jigoshop_order_review', 10 );
 
 /* Remove the singular class for jigoshop single product */
 add_action( 'after_setup_theme', 'jigoshop_body_classes_check' );

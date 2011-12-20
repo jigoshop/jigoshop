@@ -29,12 +29,12 @@ class jigoshop_shipping extends jigoshop_singleton {
 	/** Constructor */
     protected function __construct() {
     
+		self::shipping_inits();
 		if ( get_option( 'jigoshop_calc_shipping' ) != 'no' ) :
 			self::$enabled = true;
-			self::shipping_inits();
 		endif;
 	
-	}
+    }
 	
 	
 	/**
@@ -144,7 +144,6 @@ class jigoshop_shipping extends jigoshop_singleton {
 		if ( self::$enabled == 'yes' ) :
 		
 			self::reset_shipping_methods();
-			
 			self::reset_shipping(); // do not reset session (chosen_shipping_method_id)
 			$calc_cheapest = false;
                         
@@ -185,7 +184,7 @@ class jigoshop_shipping extends jigoshop_singleton {
 				endif;			
 
 				if ( $chosen_method ) :
-					
+
 						//sets session in the method choose()
 						$_available_methods[$chosen_method]->choose();
 				

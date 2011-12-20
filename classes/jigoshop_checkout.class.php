@@ -426,7 +426,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 			                $user_pass = $this->posted['account-password'];
 			                $user_id = wp_create_user( $this->posted['account-username'], $user_pass, $this->posted['billing-email'] );
 			                if ( !$user_id ) {
-			                	jigoshop::add_error( sprintf(__('<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the <a href="mailto:%s">webmaster</a> !', 'jigoshop'), get_option('admin_email')));
+			                	jigoshop::add_error( sprintf(__('<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the <a href="mailto:%s">webmaster</a> !', 'jigoshop'), get_option('jigoshop_email')));
 			                    break;
 			                }
 		

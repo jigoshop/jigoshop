@@ -28,13 +28,14 @@
  *
  * @param 		array $options List of options to go through and save
  */
-function jigoshop_update_options($options) {
+function jigoshop_update_options() {
+	global $options_settings;
 	
     if(isset($_POST['submitted']) && $_POST['submitted'] == 'yes') {
 		
 		$update_image_meta = false;
 
-        foreach ($options as $value) {
+        foreach ($options_settings as $value) {
         	if (isset($value['id']) && $value['id']=='jigoshop_tax_rates') :
 
         		$tax_classes = array();
@@ -206,6 +207,7 @@ function jigoshop_update_options($options) {
         echo '<div id="message" class="updated fade"><p><strong>'.__('Your settings have been saved.','jigoshop').'</strong></p></div>';
     }
 }
+add_action( 'load-jigoshop_page_settings', 'jigoshop_update_options' );
 
 /**
  * Admin fields
@@ -673,9 +675,9 @@ function jigoshop_admin_fields($options) {
  */
 function jigoshop_settings() {
     global $options_settings;
-    jigoshop_update_options($options_settings);
+	
 	?>
-	<script type="text/javascript" src="<?php echo jigoshop::plugin_url(); ?>/assets/js/easyTooltip.js"></script>
+	<script type="text/javascript" src="<?php echo jigoshop::assets_url(); ?>/assets/js/easyTooltip.js"></script>
 	<div class="wrap jigoshop">
         <div class="icon32 icon32-jigoshop-settings" id="icon-jigoshop"><br/></div>
 		<h2><?php _e('General Settings','jigoshop'); ?></h2>
