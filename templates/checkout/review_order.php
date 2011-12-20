@@ -72,7 +72,7 @@
 							if ($method instanceof jigoshop_calculable_shipping) :
 								if ($method->is_chosen()) :
 									$selected_service = NULL;
-									if (isset($_SESSION['selected_rate_id']) && $_SESSION['selected_rate_id']) :
+									if (is_numeric($_SESSION['selected_rate_id'])) :
 										$selected_service = $method->get_selected_service($_SESSION['selected_rate_id']);
 									else :
 										$selected_service = $method->get_cheapest_service();

@@ -324,7 +324,7 @@ function jigoshop_ajax_update_order_review() {
 		$shipping_method = explode(":", $_POST['shipping_method']);
 	 	$_SESSION['chosen_shipping_method_id'] = $shipping_method[0];
                 
-                if ($shipping_method[2]) :
+                if (is_numeric($shipping_method[2])) :
                     $_SESSION['selected_rate_id'] = $shipping_method[2];
                 endif;
                 
