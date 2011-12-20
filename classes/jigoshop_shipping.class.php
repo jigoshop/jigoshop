@@ -29,10 +29,11 @@ class jigoshop_shipping extends jigoshop_singleton {
 	/** Constructor */
     protected function __construct() {
     
-		if ( get_option( 'jigoshop_calc_shipping' ) != 'no' ) self::$enabled = true;
-		
-		// ensure low priority to force recalc after all shipping plugins are loaded
-		self::add_action( 'plugins_loaded', 'calculate_shipping', 998 );
+		if ( get_option( 'jigoshop_calc_shipping' ) != 'no' ) :
+			self::$enabled = true;
+			self::shipping_inits();
+		endif;
+	
 	}
 	
 	
@@ -117,15 +118,22 @@ class jigoshop_shipping extends jigoshop_singleton {
 		foreach ( $available_methods as $method ) :
 			$method->calculate_shipping();
                         
-			// calculable shipping methods toggle availability if error has occurred.
-			if ( $method->is_available() ) :
-				if ( $method instanceof jigoshop_calculable_shipping ) self::$has_calculable_shipping = true;
-				$fee = $method->shipping_total;
-				if ( $fee >= 0 && $fee < $_cheapest_fee || ! is_numeric( $_cheapest_fee )) :
-						$_cheapest_fee = $fee;
-						$_cheapest_method = $method->id;
-				endif;
-			endif;
+			if ( $method instanceof jigoshop_calculable_shipping ) :
+                                if ( !$method->has_error() ) :
+                                        self::$has_calculable_shipping = true;
+                                        $fee = $method->shipping_total;
+                                        if ( $fee >= 0 && $fee < $_cheapest_fee || ! is_numeric( $_cheapest_fee )) :
+                                                $_cheapest_fee = $fee;
+                                                $_cheapest_method = $method->id;
+                                        endif;
+                                endif;
+                        else : // handle normal shipping methods
+                                $fee = $method->shipping_total;
+                                if ( $fee >= 0 && $fee < $_cheapest_fee || ! is_numeric( $_cheapest_fee )) :
+                                        $_cheapest_fee = $fee;
+                                        $_cheapest_method = $method->id;
+                                endif;
+                        endif;
 		endforeach;
 
 		return $_cheapest_method;
@@ -153,18 +161,14 @@ class jigoshop_shipping extends jigoshop_singleton {
 			
                             if (isset($_SESSION['selected_rate_id'])) :
 
-                                    //make sure all methods are re-calculated since prices have been reset. Otherwise the other shipping
-                                    //method prices will show free
-                                    foreach ( $_available_methods as $method ) : 
-                                            $method->calculate_shipping();
-                                    endforeach;
+					// select chosen method
+					if ($_available_methods[$chosen_method] && !$_available_methods[$chosen_method]->has_error()) :
+							$chosen_method = $_available_methods[$chosen_method]->id;
 
-                                    // select chosen method
-                                    if ($_available_methods[$chosen_method] && $_available_methods[$chosen_method]->is_available()) :
-                                            $chosen_method = $_available_methods[$chosen_method]->id;
-
-                                    // error returned from service api. Need to auto calculate cheapest method now
-                                    else :
+					// error returned from service api. Need to auto calculate cheapest method now
+					else :
+							$chosen_method = self::get_cheapest_method($_available_methods); 
+					endif;
 
                                             // need to recreate available methods since some calculable ones have been disabled
                                             $_available_methods = self::get_available_shipping_methods(); 
@@ -178,25 +182,28 @@ class jigoshop_shipping extends jigoshop_singleton {
                                     endif;
                             endif;			
 
-                            if ( $chosen_method ) :
-                                
-                                    //sets session in the method choose()
-                                    $_available_methods[$chosen_method]->choose();
-                            
-                                    // if selected_rate_id has been set, it means there are calculable shipping methods
-                                    if (isset($_SESSION['selected_rate_id'])) : 
-                                            if ($_SESSION['selected_rate_id'] != 'no_rate_id' && $_available_methods[$chosen_method] instanceof jigoshop_calculable_shipping) :
-                                                    self::$shipping_total = $_available_methods[$chosen_method]->get_selected_price($_SESSION['selected_rate_id']);
-                                            else :
-                                                    self::$shipping_total = $_available_methods[$chosen_method]->shipping_total;
-                                            endif;
 
-                                    else :
-                                            self::$shipping_total = $_available_methods[$chosen_method]->shipping_total;
-                                    endif;
-                                    
-                                    self::$shipping_tax = $_available_methods[$chosen_method]->shipping_tax;
-                                    self::$shipping_label = $_available_methods[$chosen_method]->title;
+				if ( $chosen_method ) :
+					
+						//sets session in the method choose()
+						$_available_methods[$chosen_method]->choose();
+				
+						// if selected_rate_id has been set, it means there are calculable shipping methods
+						if (isset($_SESSION['selected_rate_id'])) : 
+								if ($_SESSION['selected_rate_id'] != 'no_rate_id' && $_available_methods[$chosen_method] instanceof jigoshop_calculable_shipping) :
+										self::$shipping_total = $_available_methods[$chosen_method]->get_selected_price($_SESSION['selected_rate_id']);
+                                                                                self::$shipping_tax = $_available_methods[$chosen_method]->get_selected_tax($_SESSION['selected_rate_id']);
+								else :
+										self::$shipping_total = $_available_methods[$chosen_method]->shipping_total;
+                                                                                self::$shipping_tax = $_available_methods[$chosen_method]->shipping_tax;
+								endif;
+
+						else :
+								self::$shipping_total = $_available_methods[$chosen_method]->shipping_total;
+                                                                self::$shipping_tax = $_available_methods[$chosen_method]->shipping_tax;
+						endif;
+						
+						self::$shipping_label = $_available_methods[$chosen_method]->title;
 
                             endif;
                             

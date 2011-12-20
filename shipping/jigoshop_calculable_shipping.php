@@ -23,11 +23,16 @@
 	protected $services; // services that have been selected to be used by wp-admin
 	protected $rates; // the rates in array format 
         protected $has_error; // determines if an error was returned from shipping APIs
+        protected $tax_status; // determines if tax should be calculated
 	
 	/** constructor */
 	protected function __construct() {
 		$this->rates = array();
 	}
+        
+        protected function get_ship_to_countries() {
+            return parent::get_ship_to_countries();
+        }
 
 	/** 
 	 * template method that determines the algorithm to send data to and from the shipping
@@ -40,29 +45,73 @@
 		
                 $this->has_error = false;
                 
-                if ( $services_to_use != NULL || $services_to_use ) :
-                    
+                // canada post will return all services you have chosen in your online account in the response.
+                // most configurations happen on canada post site. Therefore any other services that do something
+                // similar, we don't want to take the approach that there are services to loop through here.
+                if ( $services_to_use ) :
+                                
                     foreach($services_to_use as $current_service) :
 
                             // create request input for shipping service
                             $request = $this->create_mail_request($current_service);
 
-                            // send to shipping server and get xml back
-                            $post_response = $this->send_to_shipping_server($request);
+                            if ( $request ) :
 
-                            // convert xml into an array 
-                            $xml_response = $this->convert_xml_to_array($post_response);
+                                // send to shipping server and get xml back
+                                $post_response = $this->send_to_shipping_server($request);
 
-                            // sums up the rates from flattened array, and generates amounts. 
-                            $rate = $this->retrieve_rate_from_response($xml_response);
+                                // convert xml into an array 
+                                $xml_response = $this->convert_xml_to_array($post_response);
+
+                                // sums up the rates from flattened array, and generates amounts. 
+                                $rate = $this->retrieve_rate_from_response($xml_response);
+                                
+                                $tax = 0;
+                                if ( get_option('jigoshop_calc_taxes')=='yes' && $this->tax_status=='taxable' ) :
+                                    $tax = $this->calculate_shipping_tax($rate);
+                                endif;                                
+
+                                // rate should never be 0 or less from shipping API's
+                                if ($rate > 0) :
+                                        $this->rates[] = array('service' => $current_service, 'price' => $rate, 'tax' => $tax );
+                                endif;
+                           
+                           endif;                            
+                           
+                    endforeach;
+
+                else :
+                     // create request input for shipping service
+                    $request = $this->create_mail_request();
+
+                    if ($request) :
+                        
+                        // send to shipping server and get xml back
+                        $post_response = $this->send_to_shipping_server($request);
+                    
+                        // convert xml into an array 
+                        $xml_response = $this->convert_xml_to_array($post_response);
+
+                        // services are obtained from response
+                        $services = $this->get_services_from_response($xml_response);
+
+                        foreach($services as $current_service) :
+                            $rate = $this->retrieve_rate_from_response($xml_response, $current_service);
+                            
+                            $tax = 0;
+                            if ( get_option('jigoshop_calc_taxes')=='yes' && $this->tax_status=='taxable' ) :
+                                $tax = $this->calculate_shipping_tax($rate);
+                            endif;                                
 
                             // rate should never be 0 or less from shipping API's
                             if ($rate > 0) :
-                                    array_push($this->rates, array('service' => $current_service, 'price' => $rate ));
+                                    $this->rates[] = array('service' => $current_service, 'price' => $rate, 'tax' => $tax);
                             endif;
-                            
-                    endforeach;
-                    
+
+                        endforeach;
+                   
+                    endif;
+                   
                 endif;
                 
                 // service returned an error since no rates were calculated
@@ -72,7 +121,33 @@
 
                 
 	 }
-
+         
+        protected function calculate_shipping_tax($rate) {
+            
+            $_tax = new jigoshop_tax(); 
+            
+            $tax_rate = $_tax->get_shipping_tax_rate();
+            
+            if ($tax_rate>0) :
+                return $_tax->calc_shipping_tax( $rate, $tax_rate );
+            endif;
+            
+            return 0;
+        }
+         
+        /**
+         * This function can be overridden by subclasses if it is needed. 
+         * 
+         * @param type $array_response the response from the shipping api's converted
+         * to array format
+         */
+        protected function get_services_from_response($array_response) {
+            // added hook for subclasses to retrieve services from the response
+            // no need to add logic here as it is meant to be overridden. Not abstract
+            // because not all subclasses would need to implement
+            return array(); // return empty array
+        }
+        
 	/** 
 	 * If there are rules that determine which shipping services can be used based on weight
 	 * of package, size, etc, then this method is used to determine that.
@@ -85,7 +160,7 @@
 	 * create the request input that needs to be sent to the shipping server.
 	 * @return - the request data to be sent to the shipping server. Most likely xml
 	 */
-	abstract protected function create_mail_request($service);
+	abstract protected function create_mail_request($service = '');
 
 	protected function send_to_shipping_server($xml)
 	{
@@ -151,7 +226,7 @@
 	 * 
 	 * @return the rate from the response
 	 */
-	abstract protected function retrieve_rate_from_response($xml_response);
+	abstract protected function retrieve_rate_from_response($array_response, $service = '');
 	
 	/** Gets the from zip or pac code. Used by child classes */
 	protected function get_from_zip_or_pac() {
@@ -183,14 +258,8 @@
                 $this->has_error = false;
 	}
 	
-        public function get_enabled() {
-            if ($this->has_error) :
-                $this->enabled = 'no';
-            else :
-                $this->enabled = 'yes';
-            endif;
-            
-            return $this->enabled;
+        public function has_error() {
+            return $this->has_error;
         }
         
         private function get_selected_rate($rate_index) {
@@ -207,7 +276,7 @@
 		$cheapest_rate;
 		if ($this->rates != NULL) :
 			for ($i = 0; $i < count($this->rates); $i++) {
-				if (!isset($cheapest_rate) || $this->rates[$i]['price'] < $cheapest_rate[$i]['price']) :
+				if (!isset($cheapest_rate) || $this->rates[$i]['price'] < $cheapest_rate['price']) :
 					$cheapest_rate = $this->rates[$i];
 				endif;
 			}
@@ -221,10 +290,17 @@
 		return ($my_cheapest_rate == NULL ? NULL : $my_cheapest_rate['service']);
 	}
 	
-	public function get_cheapest_price() {
+	protected function get_cheapest_price() {
 		$my_cheapest_rate = $this->get_cheapest_rate();
 		return ($my_cheapest_rate == NULL ? NULL : $my_cheapest_rate['price']);
 	}
+        
+        protected function get_cheapest_price_tax() {
+            $my_cheapest_rate = $this->get_cheapest_rate();
+            return ($my_cheapest_rate == NULL ? NULL : $my_cheapest_rate['tax']);
+        }
+	
+        
 	
 	/**
 	 * Retrieves the service name from the rate array based on the service selected
@@ -242,5 +318,10 @@
 	public function get_selected_price($rate_index) {
 		$my_rate = $this->get_selected_rate($rate_index);
 		return ($my_rate == NULL ? NULL : $my_rate['price']);
-	}		
+	}
+        
+        public function get_selected_tax($rate_index) {
+            $my_rate = $this->get_selected_rate($rate_index);
+            return ($my_rate == NULL ? NULL : $my_rate['tax']);
+        }
 } 
