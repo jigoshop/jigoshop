@@ -85,15 +85,10 @@ function jigoshop_order_data_meta_box($post) {
 			<select id="customer_user" name="customer_user">
 				<option value=""><?php _e('Guest', 'jigoshop') ?></option>
 				<?php
-					$users = $wpdb->get_col( $wpdb->prepare("SELECT $wpdb->users.ID FROM $wpdb->users ORDER BY %s ASC", 'display_name' ));
-
-					foreach ( $users as $user_id ) :
-
-						$user = get_userdata( $user_id );
-						echo '<option value="'.$user->ID.'" ';
-						if ($user->ID==$data['customer_user']) echo 'selected="selected"';
-						echo '>' . $user->display_name . ' ('.$user->user_email.')</option>';
-
+					$users = new WP_User_Query( array( 'orderby' => 'display_name' ) );
+					$users = $users->get_results();
+					if ($users) foreach ( $users as $user ) :
+						echo '<option value="'.$user->ID.'" '; selected($data['customer_user'], $user->ID); echo '>' . $user->display_name . ' ('.$user->user_email.')</option>';
 					endforeach;
 				?>
 			</select></p>
