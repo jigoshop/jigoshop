@@ -310,7 +310,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name' => __('Terms page ID', 'jigoshop'),
+		'name' => __('Terms Page', 'jigoshop'),
 		'desc' 		=> __('If you define a "Terms" page the customer will be asked if they accept them when checking out.', 'jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_terms_page_id',
