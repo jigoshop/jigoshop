@@ -322,7 +322,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array( 'type' => 'tabend'),
 
-	array( 'type' 		=> 'tab', 'tabname' => __('Catalog', 'jigoshop') ),
+	array( 'type' 		=> 'tab', 'tabname' => __('Catalog &amp; Pricing', 'jigoshop') ),
 
 	array(	'name' => __('Catalog Options', 'jigoshop'), 'type' 		=> 'title','desc' 		=> '', 'id' 		=> '' ),
 
