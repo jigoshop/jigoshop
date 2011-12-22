@@ -260,15 +260,15 @@ function jigoshop_product_add_to_cart_url( $atts ) {
 	return esc_url( $_product->add_to_cart_url() );
 }
 
-//### Cart button + Price for single product #########################################################
+//### Cart button + optional price for single product #########################################################
 
 function jigoshop_product_add_to_cart( $atts ) {
 
 	if (empty($atts)) return;
 
 	global $wpdb;
-
-	if (!$atts['style']) $atts['style'] = 'border:4px solid #ccc; padding: 12px;';
+	
+	if (!$atts['class']) $atts['class'] = 'product';
 
 	if ($atts['id']) :
 		$product_meta = get_post( $atts['id'] );
@@ -287,9 +287,9 @@ function jigoshop_product_add_to_cart( $atts ) {
 
 	ob_start();
 	?>
-	<p class="product" style="<?php echo $atts['style']; ?>">
-
-		<?php echo $_product->get_price_html(); ?>
+	<p class="<?php echo $atts['class']; ?>">
+	
+		<?php if ($atts['price'] != 'no') echo $_product->get_price_html(); ?>
 
 		<?php jigoshop_template_loop_add_to_cart( $product_meta, $_product ); ?>
 
