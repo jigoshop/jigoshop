@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Core
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Core
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 
 foreach(glob( dirname(__FILE__)."/shortcodes/*.php" ) as $filename) include_once($filename);
@@ -59,7 +59,7 @@ function jigoshop_recent_products( $atts ) {
 function jigoshop_products( $atts ){
 	global $columns;
 
-  	if ( empty( $atts )) return;
+	if ( empty( $atts )) return;
 
 	extract( shortcode_atts( array(
 		'per_page' 	=> get_option('jigoshop_catalog_per_page'),
@@ -68,7 +68,7 @@ function jigoshop_products( $atts ){
 		'order'		=> get_option('jigoshop_catalog_sort_direction')
 	), $atts));
 
-  	$args = array(
+	$args = array(
 		'post_type'	=> 'product',
 		'post_status' => 'publish',
 		'ignore_sticky_posts' => 1,
@@ -85,22 +85,22 @@ function jigoshop_products( $atts ){
 
 	if ( isset( $atts['skus'] )){
 		$skus = explode( ',', $atts['skus'] );
-	  	array_walk( $skus, create_function('&$val', '$val = trim($val);') );
-    	$args['meta_query'][] = array(
-      		'key' => 'sku',
-      		'value' => $skus,
-      		'compare' => 'IN'
-    	);
-  	}
+		array_walk( $skus, create_function('&$val', '$val = trim($val);') );
+		$args['meta_query'][] = array(
+			'key' => 'sku',
+			'value' => $skus,
+			'compare' => 'IN'
+		);
+	}
 
 	if ( isset( $atts['ids'] )){
 		$ids = explode( ',', $atts['ids'] );
-	  	array_walk( $ids, create_function('&$val', '$val = trim($val);') );
-    	$args['post__in'] = $ids;
+		array_walk( $ids, create_function('&$val', '$val = trim($val);') );
+		$args['post__in'] = $ids;
 	}
 
-  	query_posts( $args );
-  	ob_start();
+	query_posts( $args );
+	ob_start();
 	jigoshop_get_template_part( 'loop', 'shop' );
 	wp_reset_query();
 
@@ -111,35 +111,35 @@ function jigoshop_products( $atts ){
 
 function jigoshop_product( $atts ){
 
-  	if ( empty( $atts )) return;
+	if ( empty( $atts )) return;
 
-  	$args = array(
-    	'post_type' => 'product',
-    	'posts_per_page' => 1,
-    	'post_status' => 'publish',
-    	'meta_query' => array(
+	$args = array(
+		'post_type' => 'product',
+		'posts_per_page' => 1,
+		'post_status' => 'publish',
+		'meta_query' => array(
 			array(
 				'key' => 'visibility',
 				'value' => array( 'catalog', 'visible' ),
 				'compare' => 'IN'
 			)
 		)
-  	);
+	);
 
-  	if ( isset( $atts['sku'] )){
-    	$args['meta_query'][] = array(
-      		'key' => 'sku',
-      		'value' => $atts['sku'],
-      		'compare' => '='
-    	);
-  	}
+	if ( isset( $atts['sku'] )){
+		$args['meta_query'][] = array(
+			'key' => 'sku',
+			'value' => $atts['sku'],
+			'compare' => '='
+		);
+	}
 
-  	if ( isset( $atts['id'] )){
-    	$args['p'] = $atts['id'];
-  	}
+	if ( isset( $atts['id'] )){
+		$args['p'] = $atts['id'];
+	}
 
-  	query_posts( $args );
-  	ob_start();
+	query_posts( $args );
+	ob_start();
 	jigoshop_get_template_part( 'loop', 'shop' );
 	wp_reset_query();
 
@@ -240,22 +240,22 @@ function jigoshop_product_category( $atts ) {
 
 function jigoshop_product_add_to_cart_url( $atts ) {
 
-  	if ( empty( $atts ) ) return;
+	if ( empty( $atts ) ) return;
 
-  	global $wpdb;
+	global $wpdb;
 
-  	if ($atts['id']) :
-  		$product_data = get_post( $atts['id'] );
+	if ($atts['id']) :
+		$product_meta = get_post( $atts['id'] );
 	elseif ($atts['sku']) :
-		$product_id = $wpdb->get_var($wpdb->prepare("SELECT post_id FROM $wpdb->postmeta WHERE meta_key='sku' AND meta_value='%s' LIMIT 1", $atts['sku']));
-		$product_data = get_post( $product_id );
+		$product_id = $wpdb->get_var($wpdb->prepare("SELECT post_id FROM $wpdb->postmeta WHERE meta_key='sku' AND meta_value=%s LIMIT 1", $atts['sku']));
+		$product_meta = get_post( $product_id );
 	else :
 		return;
 	endif;
 
-	if ($product_data->post_type!=='product') return;
+	if ($product_meta->post_type!=='product') return;
 
-	$_product = &new jigoshop_product( $product_data->ID );
+	$_product = new jigoshop_product( $product_meta->ID );
 
 	return esc_url( $_product->add_to_cart_url() );
 }
@@ -264,24 +264,24 @@ function jigoshop_product_add_to_cart_url( $atts ) {
 
 function jigoshop_product_add_to_cart( $atts ) {
 
-  	if (empty($atts)) return;
+	if (empty($atts)) return;
 
-  	global $wpdb;
+	global $wpdb;
 
-  	if (!$atts['style']) $atts['style'] = 'border:4px solid #ccc; padding: 12px;';
+	if (!$atts['style']) $atts['style'] = 'border:4px solid #ccc; padding: 12px;';
 
-  	if ($atts['id']) :
-  		$product_data = get_post( $atts['id'] );
+	if ($atts['id']) :
+		$product_meta = get_post( $atts['id'] );
 	elseif ($atts['sku']) :
-		$product_id = $wpdb->get_var($wpdb->prepare("SELECT post_id FROM $wpdb->postmeta WHERE meta_key='sku' AND meta_value='%s' LIMIT 1", $atts['sku']));
-		$product_data = get_post( $product_id );
+		$product_id = $wpdb->get_var($wpdb->prepare("SELECT post_id FROM $wpdb->postmeta WHERE meta_key='sku' AND meta_value=%s LIMIT 1", $atts['sku']));
+		$product_meta = get_post( $product_id );
 	else :
 		return;
 	endif;
 
-	if ($product_data->post_type!=='product') return;
+	if ($product_meta->post_type!=='product') return;
 
-	$_product = &new jigoshop_product( $product_data->ID );
+	$_product = new jigoshop_product( $product_meta->ID );
 
 	if (!$_product->is_visible()) continue;
 
@@ -291,7 +291,7 @@ function jigoshop_product_add_to_cart( $atts ) {
 
 		<?php echo $_product->get_price_html(); ?>
 
-		<?php jigoshop_template_loop_add_to_cart( $product_data, $_product ); ?>
+		<?php jigoshop_template_loop_add_to_cart( $product_meta, $_product ); ?>
 
 	</p><?php
 
