@@ -635,7 +635,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name' => __('Out-of-stock notification','jigoshop'),
+		'name' => __('Out of stock notification','jigoshop'),
 		'desc' 		=> '',
 		'tip' 		=> __('Set the minimum threshold for this below.', 'jigoshop'),
 		'id' 		=> 'jigoshop_notify_no_stock',
