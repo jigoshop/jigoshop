@@ -29,7 +29,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	public function admin_enqueue_scripts() {
 		global $post;
 
-		wp_enqueue_script('jigoshop-variable-js', jigoshop::plugin_url() . '/assets/js/variable.js', array('jquery'));
+		wp_enqueue_script('jigoshop-variable-js', jigoshop::plugin_url() . '/assets/js/variable.js', array('jquery'), true);
 
 		// Shouldn't we namespace? -Rob
 		wp_localize_script( 'jigoshop-variable-js', 'varmeta', array(
