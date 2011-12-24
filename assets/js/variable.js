@@ -1,8 +1,6 @@
 (function($) {
 	// NOTE: varmeta is a temporary name.. this should be a global jigoshop var
 
-	
-
 	$('button.remove_variation').live('click', function(e) {
 
 		// Disable default action
@@ -43,5 +41,57 @@
 		}
 	});
 
+
+	$('.upload_image_button').live('click', function(e) {
+
+		// Disable default action
+		e.preventDefault();
+		
+		// Set up variables
+		var $this		= $(this);
+			$img		= $this.find('img');
+			$imgID		= $this.find('input');
+			$parent		= $this.parent();
+			post_id		= $this.attr('rel');
+			formfield	= $('.upload_image_id').attr('name');
+
+		// Remove the image
+		if ( $this.is('.remove') ) {
+
+			// Set the hidden input value as null
+			$imgID.val(null);
+
+			// Replace the image with the placeholder
+			$img.attr('src', varmeta.plugin_url+'/assets/images/placeholder.png');
+			$this.removeClass('remove');
+		}
+		else {
+
+			window.send_to_editor = function( html ) {
+
+				// Set up variables
+				var $img		= $(html).find('img');
+					imgsrc		= $img.attr('src');
+					imgclass		= $img.attr('class');
+					imgid 		= parseInt(imgclass.replace(/\D/g, ''), 10);
+
+				// Set the vhidden input value with the thumb ID
+				$imgID.val(imgid);
+
+				// Replace the image with a preview of the image
+				$('img', $parent).attr('src', imgsrc);
+				$this.addClass('remove');
+
+				// Hide thickbox
+				tb_remove();
+			}
+
+			// Why do we need this? -Rob
+			// formfield = $('.upload_image_id', $parent).attr('name');
+
+			// Show thickbox
+			tb_show('', 'media-upload.php?post_id'+post_id+'&type=image&TB_iframe=true');
+		}
+	});
 
 })(window.jQuery);

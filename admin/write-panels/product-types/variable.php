@@ -77,38 +77,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			
 			});
 			
-			var current_field_wrapper;
 			
-			window.send_to_editor_default = window.send_to_editor;
-
-			jQuery('.upload_image_button').live('click', function(){
-				
-				var post_id = jQuery(this).attr('rel');
-				
-				var parent = jQuery(this).parent();
-				
-				current_field_wrapper = parent;
-				
-				window.send_to_editor = window.send_to_cproduct;
-				
-				formfield = jQuery('.upload_image_id', parent).attr('name');
-				tb_show('', 'media-upload.php?post_id=' + post_id + '&amp;type=image&amp;TB_iframe=true');
-				return false;
-			});
-
-			window.send_to_cproduct = function(html) {
-				
-				imgurl = jQuery('img', html).attr('src');
-				imgclass = jQuery('img', html).attr('class');
-				imgid = parseInt(imgclass.replace(/\D/g, ''), 10);
-				
-				jQuery('.upload_image_id', current_field_wrapper).val(imgid);
-
-				jQuery('img', current_field_wrapper).attr('src', imgurl);
-				tb_remove();
-				window.send_to_editor = window.send_to_editor_default;
-				
-			}
 
 		});
 		<?php
@@ -282,7 +251,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 				<tbody>
 					<tr>
 						<td class="upload_image" rowspan="2">
-							<a href="#" class="upload_image_button <?php if ($image) echo 'remove'; ?>" rel="<?php echo $variation->ID; ?>">
+							<a href="#" class="upload_image_button <?php if ($image_id) echo 'remove'; ?>" rel="<?php echo $variation->ID; ?>">
 								<img src="<?php echo $image ?>" width="60px" height="60px" />
 								<input type="hidden" name="<?php echo $this->field_name('_thumbnail_id', $variation) ?>" class="upload_image_id" value="<?php echo $image_id; ?>" />
 								<!-- TODO: APPEND THIS IN JS <span class="overlay"></span> -->
