@@ -306,7 +306,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 					<tr>
 						<td class="upload_image" rowspan="2">
 							<a href="#" class="upload_image_button <?php if ($image_id) echo 'remove'; ?>" rel="<?php echo $variation->ID; ?>">
-								<img src="<?php echo $image ?>" width="60px" height="60px" />
+								<img src="<?php echo $image ?>" width="60px" />
 								<input type="hidden" name="<?php echo $this->field_name('_thumbnail_id', $variation) ?>" class="upload_image_id" value="<?php echo $image_id; ?>" />
 								<!-- TODO: APPEND THIS IN JS <span class="overlay"></span> -->
 							</a>
