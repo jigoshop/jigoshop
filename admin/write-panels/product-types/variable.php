@@ -37,9 +37,9 @@ class jigoshop_prduct_meta_variable extends jigoshop_product_meta
 
 			
 			
-			jQuery('button.add_configuration').live('click', function(){
+			jQuery('button.add_variation').live('click', function(){
 			
-				jQuery('.jigoshop_configurations').block({ message: null, overlayCSS: { background: '#fff url(<?php echo jigoshop::plugin_url(); ?>/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
+				jQuery('.jigoshop_variations').block({ message: null, overlayCSS: { background: '#fff url(<?php echo jigoshop::plugin_url(); ?>/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
 				
 				var data2 = {
 					action: 'jigoshop_variable_generate_panel',
@@ -49,9 +49,9 @@ class jigoshop_prduct_meta_variable extends jigoshop_product_meta
 				};
 
 				jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data2, function(response) {
-					jQuery('.jigoshop_configurations').append( jQuery(response) );
+					jQuery('.jigoshop_variations').append( jQuery(response) );
 
-					jQuery('.jigoshop_configurations').unblock();
+					jQuery('.jigoshop_variations').unblock();
 				});
 
 				/*var data = {
@@ -64,13 +64,13 @@ class jigoshop_prduct_meta_variable extends jigoshop_product_meta
 					
 					var variation_id = parseInt(response);
 					
-					var loop = jQuery('.jigoshop_configuration').size();
+					var loop = jQuery('.jigoshop_variation').size();
 
 
 					
-					jQuery('.jigoshop_configurations').append('');
+					jQuery('.jigoshop_variations').append('');
 					
-					jQuery('.jigoshop_configurations').unblock();
+					jQuery('.jigoshop_variations').unblock();
 
 				});*/
 
@@ -170,7 +170,7 @@ class jigoshop_prduct_meta_variable extends jigoshop_product_meta
 		check_ajax_referer( 'delete-variation', 'security' );
 		$variation_id = intval( $_POST['variation_id'] );
 		wp_delete_post( $variation_id );
-		die();
+		exit;
 	}
 
 	/**
@@ -269,7 +269,7 @@ class jigoshop_prduct_meta_variable extends jigoshop_product_meta
 
 		echo "
 		<div id='variable_product_options' class='panel'>
-			<div class='jigoshop_configurations'>
+			<div class='jigoshop_variations'>
 		";
 			foreach( $variations as $variation ) {
 				echo $this->generate_panel($attributes, $variation);
@@ -277,37 +277,38 @@ class jigoshop_prduct_meta_variable extends jigoshop_product_meta
 
 		echo "
 			</div>
-			<button type='button' class='button button-primary add_configuration {disabled($this->has_variable_attributes($attributes), false)}'>" . __('Add Variation', 'jigoshop') . "</button>
+			<button type='button' class='button button-primary add_variation {disabled($this->has_variable_attributes($attributes), false)}'>" . __('Add Variation', 'jigoshop') . "</button>
 			<div class='clear'>&nbsp;</div>
 		</div>
 		";
 	}
 
-	public function generate_panel($attributes, $variation = null) { ?>
-		<?php
+	public function generate_panel($attributes, $variation = null) {
 
-			// Check the ajax request is genuine & obtain the attributes
-			if ( is_ajax() ) {
-				check_ajax_referer( 'add-variation', 'security' );
-				$attributes = $_POST['attributes'];
-			}
+		// Set the default image as the placeholder
+		$image = jigoshop::plugin_url().'/assets/images/placeholder.png';
 
-			// GET THE DATA
+		// Check the ajax request is genuine & obtain the attributes
+		if ( is_ajax() ) {
+			check_ajax_referer( 'add-variation', 'security' );
+
+			$attributes = $_POST['attributes'];
+
+			$variation = new stdClass;
+			$variation->ID = uniqid();
+			$variation->post_status = 'publish';
+		}
+		else {
+
 			// Get the variation meta
-			if ( $variation ) {
-				$meta = get_post_custom( $variation->ID );
-			} else {
-				$variation = new stdClass;
-				$variation->ID = uniqid();
-			}
+			$meta = get_post_custom( $variation->ID );
 
-			// Get the image url if we have one
-			$image = jigoshop::plugin_url().'/assets/images/placeholder.png';
-			if ( $meta['_thumbnail_id'][0] ) {
+			// If variation has a thumbnail display that
+			if ( $meta['_thumbnail_id'][0] )
 				$image = wp_get_attachment_url( $meta['_thumbnail_id'][0] );
-			}
+		}
 		?>
-		<div class="jigoshop_configuration">
+		<div class="jigoshop_variation">
 			<p>
 				<button type="button" class="remove_variation button" rel="<?php echo $variation->ID; ?>"><?php _e('Remove', 'jigoshop'); ?></button>
 				<?php echo $this->attribute_selector($attributes, $variation); ?>
@@ -369,6 +370,8 @@ class jigoshop_prduct_meta_variable extends jigoshop_product_meta
 			</table>
 		</div>
 	<?php
+		if ( is_ajax() )
+			exit;
 	}
 
 	/**
@@ -391,7 +394,6 @@ class jigoshop_prduct_meta_variable extends jigoshop_product_meta
 	 */
 	private function attribute_selector( $attributes, $variation = null ) {
 		global $post;
-
 		$html = null;
 
 		// Post object doesn't exist if we're ajaxing
@@ -410,24 +412,30 @@ class jigoshop_prduct_meta_variable extends jigoshop_product_meta
 				$selected = get_post_meta( $variation->ID, 'tax_' . sanitize_title($attr['name']), true );
 			}
 
+			// Open the select & set a default value
 			$html .= '<select name="' . $this->field_name('tax_' . sanitize_title($attr['name']), $variation) . '" >
-				<option value="">Any ' . sanitize_title($attr['name']) . '</option>';
+						<option value="">Any ' . sanitize_title($attr['name']) . '</option>';
 
 			// Get terms for attribute taxonomy or value if its a custom attribute
 			if ( $attr['is_taxonomy'] ) {
+
 				$options = wp_get_post_terms( $post->ID, 'pa_'.sanitize_title($attr['name']));
 				foreach( $options as $option ) {
 					$html .= '<option value="'.$option->slug.'" '.selected($selected, $option->slug, false).'>'.$option->name.'</option>';
 				}
+
 			}
 			else {
+
 				$options = explode(', ', $attr['value']);
 				foreach( $options as $option ) {
 					$option = trim($option);
 					$html .= '<option '.selected($selected, $option, false).' value="'.$option.'">'.$option.'</option>';
 				}
+
 			}
 
+			// Close the select
 			$html .= '</select>';
 		}
 
