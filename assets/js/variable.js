@@ -7,16 +7,11 @@
 		// Disable default action
 		e.preventDefault();
 
-		$variations = $('.jigoshop_variations');
-
-		// Start the block to simulate AJAX requests
-		$variations.block({ message: null, overlayCSS: { background: '#fff url('+varmeta.plugin_url+'/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
-
+		// Replace the ID with a unique ID
 		html = varmeta.actions.create.panel.replace(/__ID__/gi, i++ +'_new');
 
 		// Append a new variation panel
-		$variations.append( html );
-		$variations.unblock();
+		$('.jigoshop_variations').append( html );
 
 	});
 
