@@ -54,26 +54,6 @@ class jigoshop_prduct_meta_variable extends jigoshop_product_meta
 					jQuery('.jigoshop_variations').unblock();
 				});
 
-				/*var data = {
-					action: 'jigoshop_add_variation',
-					post_id: <?php echo $post->ID; ?>,
-					security: '<?php echo wp_create_nonce("add-variation"); ?>'
-				};
-
-				jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
-					
-					var variation_id = parseInt(response);
-					
-					var loop = jQuery('.jigoshop_variation').size();
-
-
-					
-					jQuery('.jigoshop_variations').append('');
-					
-					jQuery('.jigoshop_variations').unblock();
-
-				});*/
-
 				return false;
 			
 			});
@@ -304,8 +284,8 @@ class jigoshop_prduct_meta_variable extends jigoshop_product_meta
 			$meta = get_post_custom( $variation->ID );
 
 			// If variation has a thumbnail display that
-			if ( $meta['_thumbnail_id'][0] )
-				$image = wp_get_attachment_url( $meta['_thumbnail_id'][0] );
+			if ( $image_id = $meta['_thumbnail_id'][0] )
+				$image = wp_get_attachment_url( $image_id );
 		}
 		?>
 		<div class="jigoshop_variation">
