@@ -9,7 +9,7 @@
  * @package 	JigoShop
  */
 
-class jigoshop_prduct_meta_variable extends jigoshop_product_meta
+class jigoshop_product_meta_variable extends jigoshop_product_meta
 {
 	public function __construct() {
 		add_action( 'product_type_selector', 					array(&$this, 'register') );
@@ -18,6 +18,27 @@ class jigoshop_prduct_meta_variable extends jigoshop_product_meta
 		add_action( 'wp_ajax_jigoshop_remove_variation',		array(&$this, 'remove') );
 		add_action( 'product_write_panel_js',					array(&$this, 'variable_write_panel_js') );
 		add_action( 'wp_ajax_jigoshop_variable_generate_panel',	array(&$this, 'generate_panel') );
+
+		add_action( 'admin_enqueue_scripts', array(&$this, 'enqueue_meta_scripts') );
+	}
+
+	public function enqueue_meta_scripts() {
+		global $post;
+
+		wp_enqueue_script('jigoshop-variable-js', jigoshop::plugin_url() . '/assets/js/variable.js', array('jquery'));
+
+		// Shouldn't we namespace? -Rob
+		wp_localize_script( 'jigoshop-variable-js', 'varmeta', array(
+			'plugin_url'		=> jigoshop::plugin_url(),
+			'ajax_url'		=> admin_url('admin-ajax.php'),
+			'actions'		=> array(
+				'remove'		=> array(
+					'action'		=> 'jigoshop_remove_variation',
+					'nonce'			=> wp_create_nonce("delete-variation"),
+					'confirm'		=> __('Are you sure you want to remove this variation?', 'jigoshop'),
+				),
+			),
+		));
 	}
 
 	/**
@@ -35,8 +56,6 @@ class jigoshop_prduct_meta_variable extends jigoshop_product_meta
 		?>
 		jQuery(function(){
 
-			
-			
 			jQuery('button.add_variation').live('click', function(){
 			
 				jQuery('.jigoshop_variations').block({ message: null, overlayCSS: { background: '#fff url(<?php echo jigoshop::plugin_url(); ?>/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
@@ -56,41 +75,6 @@ class jigoshop_prduct_meta_variable extends jigoshop_product_meta
 
 				return false;
 			
-			});
-			
-			jQuery('button.remove_variation').live('click', function(){
-				var answer = confirm('<?php _e('Are you sure you want to remove this variation?', 'jigoshop'); ?>');
-				if (answer){
-					
-					var el = jQuery(this).parent().parent();
-					
-					var variation = jQuery(this).attr('rel');
-					
-					if (variation>0) {
-					
-						jQuery(el).block({ message: null, overlayCSS: { background: '#fff url(<?php echo jigoshop::plugin_url(); ?>/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
-						
-						var data = {
-							action: 'jigoshop_remove_variation',
-							variation_id: variation,
-							security: '<?php echo wp_create_nonce("delete-variation"); ?>'
-						};
-		
-						jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
-							// Success
-							jQuery(el).fadeOut('300', function(){
-								jQuery(el).remove();
-							});
-						});
-						
-					} else {
-						jQuery(el).fadeOut('300', function(){
-							jQuery(el).remove();
-						});
-					}
-					
-				}
-				return false;
 			});
 			
 			var current_field_wrapper;
@@ -148,8 +132,8 @@ class jigoshop_prduct_meta_variable extends jigoshop_product_meta
 	 */
 	public function remove() {
 		check_ajax_referer( 'delete-variation', 'security' );
-		$variation_id = intval( $_POST['variation_id'] );
-		wp_delete_post( $variation_id );
+		$ID = intval( $_POST['variation_id'] );
+		wp_delete_post( $ID );
 		exit;
 	}
 
@@ -439,4 +423,4 @@ class jigoshop_prduct_meta_variable extends jigoshop_product_meta
 
 		return false;
 	}
-} new jigoshop_prduct_meta_variable();
+} new jigoshop_product_meta_variable();
