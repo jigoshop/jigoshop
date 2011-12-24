@@ -15,12 +15,18 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 		add_action( 'product_type_selector', 					array(&$this, 'register') );
 		add_action( 'jigoshop_process_product_meta_variable',	array(&$this, 'save'), 1 );
 		add_action( 'jigoshop_product_type_options_box',		array(&$this, 'display') );
-		add_action( 'admin_enqueue_scripts', 					array(&$this, 'enqueue_scripts') );
+		add_action( 'admin_enqueue_scripts', 					array(&$this, 'admin_enqueue_scripts') );
 
 		add_action( 'wp_ajax_jigoshop_remove_variation',		array(&$this, 'remove') );
 	}
 
-	public function enqueue_scripts() {
+	/**
+	 * Registers scripts for use in the admin
+	 * Also localizes variables for use in the javascript, essential for variation addition
+	 *
+	 * @return		void
+	 */
+	public function admin_enqueue_scripts() {
 		global $post;
 
 		wp_enqueue_script('jigoshop-variable-js', jigoshop::plugin_url() . '/assets/js/variable.js', array('jquery'));
@@ -54,14 +60,15 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 	/**
 	 * Removes a product variation via XHR
-	 * @todo		check this
 	 *
 	 * @return		void
 	 */
 	public function remove() {
 		check_ajax_referer( 'delete-variation', 'security' );
+
 		$ID = intval( $_POST['variation_id'] );
 		wp_delete_post( $ID );
+
 		exit;
 	}
 
@@ -256,6 +263,13 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 		return false;
 	}
 
+	/**
+	 * Generates a variation panel
+	 *
+	 * @param		array		attributes
+	 * @param		object		variation
+	 * @return		HTML
+	 */
 	private function generate_panel($attributes, $variation = null) {
 
 		// Set the default image as the placeholder
