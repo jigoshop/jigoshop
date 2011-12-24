@@ -267,22 +267,20 @@ class jigoshop_prduct_meta_variable extends jigoshop_product_meta
 		if ( ! $variations )
 			return false;
 
-		?>
+		echo "
+		<div id='variable_product_options' class='panel'>
+			<div class='jigoshop_configurations'>
+		";
+			foreach( $variations as $variation ) {
+				echo $this->generate_panel($attributes, $variation);
+			}
 
-		<div id="variable_product_options" class="panel">
-			<div class="jigoshop_configurations">
-				
-				<?php foreach( $variations as $variation ): ?>
-
-					<?php echo $this->generate_panel($attributes, $variation); ?>
-
-				<?php endforeach; ?>
-
+		echo "
 			</div>
-			<button type="button" class="button button-primary add_configuration <?php disabled($this->has_variable_attributes($attributes), false); ?>"><?php _e('Add Variation', 'jigoshop'); ?></button>
-			<div class="clear">&nbsp;</div>
+			<button type='button' class='button button-primary add_configuration {disabled($this->has_variable_attributes($attributes), false)}'>" . __('Add Variation', 'jigoshop') . "</button>
+			<div class='clear'>&nbsp;</div>
 		</div>
-		<?php
+		";
 	}
 
 	public function generate_panel($attributes, $variation = null) { ?>
