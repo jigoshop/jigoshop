@@ -1,8 +1,7 @@
 (function($) {
-	// NOTE: varmeta is a temporary name.. this should be a global jigoshop var
+	// @todo: varmeta is a temporary name.. this should be a global jigoshop var
 
-	console.log(varmeta);
-			
+	var i = 0;
 	$('button.add_variation').live('click', function(e) {
 
 		// Disable default action
@@ -13,22 +12,11 @@
 		// Start the block to simulate AJAX requests
 		$variations.block({ message: null, overlayCSS: { background: '#fff url('+varmeta.plugin_url+'/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
 
-		// Set up the variables
-		var data = {
-			action: 	varmeta.actions.create.action,
-			post: 		varmeta.actions.create.post,
-			attributes: varmeta.actions.create.attributes,
-			security:	varmeta.actions.create.nonce,
-		}
+		html = varmeta.actions.create.panel.replace(/__ID__/gi, i++ +'_new');
 
-		$variations.append( varmeta.actions.create.test );
+		// Append a new variation panel
+		$variations.append( html );
 		$variations.unblock();
-
-		// Get a panel via XHR and append it to the end of the collection
-		// $.post(varmeta.ajax_url, data, function(response) {
-		// 	$variations.append( $(response) );
-		// 	$variations.unblock();
-		// });
 
 	});
 
