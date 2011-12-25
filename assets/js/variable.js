@@ -1,6 +1,21 @@
 (function($) {
 	// @todo: varmeta is a temporary name.. this should be a global jigoshop var
 
+	$(document).ready(function(){
+		$('.product_type').change(function(){
+			
+			var cls = '.'+$(this).val();
+			console.log(cls);
+
+			 $(this).parent().parent().parent()
+				.find('.options').hide();
+
+			var $tr = $(this).parent().parent().parent()
+				.find(cls).show();
+		});
+	});
+	
+
 	var i = 0;
 	$('button.add_variation').live('click', function(e) {
 

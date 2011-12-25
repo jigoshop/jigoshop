@@ -350,7 +350,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 								$product_type = ($terms) ? current($terms)->slug : 'simple';
 							?>
 							<label><?php _e('Type', 'jigoshop') ?></label>
-							<select name="<?php echo $this->field_name('product-type', $variation) ?>">
+							<select class="product_type" name="<?php echo $this->field_name('product-type', $variation) ?>">
 								<option value="simple" <?php selected('simple', $product_type) ?>>Simple</option>
 								<option value="downloadable" <?php selected('downloadable', $product_type) ?>>Downloadable</option>
 								<option value="virtual" <?php selected('virtual', $product_type) ?>>Virtual</option>
@@ -387,7 +387,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 							</label>
 						</td>
 					</tr>
-					<tr>
+					<tr class="simple options" style="display:none;">
 						<td>
 							<label><?php _e('Weight', 'jigoshop') ?>
 								<input type="text" size="5" name="<?php echo $this->field_name('weight', $variation) ?>" value="<?php echo isset($meta['weight'][0]) ? $meta['weight'][0] : null; ?>" />
@@ -398,14 +398,30 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 							<input type="text" name="<?php echo $this->field_name('length', $variation) ?>" style="width: 32%" size="6" placeholder="Length" value="<?php echo isset($meta['length'][0]) ? $meta['length'][0] : null; ?>" />
 							<input type="text" name="<?php echo $this->field_name('width', $variation) ?>" style="width: 32%" size="6" placeholder="Width" value="<?php echo isset($meta['width'][0]) ? $meta['width'][0] : null; ?>" />
 							<input type="text" name="<?php echo $this->field_name('height', $variation) ?>" style="width: 32%" size="6" placeholder="Height" value="<?php echo isset($meta['height'][0]) ? $meta['height'][0] : null; ?>" />
+							<td colspan="3">
+								&nbsp;
+							</td>
 						</td>
+					</tr>
+					<tr class="downloadable options" style="display:none;">
 						<td colspan="2">
 							<label><?php _e('File Location', 'jigoshop') ?>
 								<input type="text" name="<?php echo $this->field_name('file_path', $variation) ?>" value="<?php echo isset($meta['file_path'][0]) ? $meta['file_path'][0] : null; ?>" />
 							</label>
 						</td>
 						<td>
-							&nbsp;
+							<label>&nbsp;
+								<input type="submit" class="button-secondary" value="Upload">
+							</label>
+						</td>
+						<td colspan="4">
+								&nbsp;
+						</td>
+					</tr>
+					<tr class="virtual options" style="display: table-row;">
+						<td colspan="7">
+							<label>&nbsp;</label>
+							Virtual Products have no extra options
 						</td>
 					</tr>
 				</tbody>
