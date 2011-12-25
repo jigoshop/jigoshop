@@ -168,7 +168,21 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 		?>
 
 		<div id='variable_product_options' class='panel'>
-			<button type='button' class='button button-primary add_variation <?php disabled($this->has_variable_attributes($attributes), false) ?>'><?php _e('Add Variation', 'jigoshop') ?></button>
+			<div class="controls">
+				<select name="action">
+					<option value=""><?php _e('Bulk Actions', 'jigoshop') ?></option>
+					<option value=""><?php _e('Set all Prices', 'jigoshop') ?></option>
+					<option value=""><?php _e('Set all Sale Prices', 'jigoshop') ?></option>
+					<option value=""><?php _e('Set all Stock', 'jigoshop') ?></option>
+					<option value=""><?php _e('Set all Width', 'jigoshop') ?></option>
+					<option value=""><?php _e('Set all Length', 'jigoshop') ?></option>
+					<option value=""><?php _e('Set all Height', 'jigoshop') ?></option>
+					<option value=""><?php _e('Toggle Downloadables', 'jigoshop') ?></option>
+					<option value=""><?php _e('Toggle Virtual', 'jigoshop') ?></option>
+				</select>
+				<input id="doaction" type="submit" class="button-secondary" value="Apply">
+				<button type='button' class='button button-primary add_variation <?php disabled($this->has_variable_attributes($attributes), false) ?>'><?php _e('Add Variation', 'jigoshop') ?></button>
+			</div>
 			<div class='clear'>&nbsp;</div>
 			<div class='jigoshop_variations'>
 			<?php
@@ -177,7 +191,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 				}
 			?>
 			</div>
-			
+
 		</div>
 	<?php
 	}
@@ -307,7 +321,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 					<tr>
 						<td class="upload_image" rowspan="2">
 							<a href="#" class="upload_image_button <?php if ($image_id) echo 'remove'; ?>" rel="<?php echo $variation->ID; ?>">
-								<img src="<?php echo $image ?>" width="60px" />
+								<img src="<?php echo $image ?>" width="70px" />
 								<input type="hidden" name="<?php echo $this->field_name('_thumbnail_id', $variation) ?>" class="upload_image_id" value="<?php echo $image_id; ?>" />
 								<!-- TODO: APPEND THIS IN JS <span class="overlay"></span> -->
 							</a>
@@ -331,8 +345,6 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 							</label>
 						</td>
 
-						<?php // TODO: Add lxhxw here ?>
-
 						<td>
 							<label><?php _e('Price', 'jigoshop'); ?>
 								<input type="text" size="5" name="<?php echo $this->field_name('regular_price', $variation) ?>" value="<?php echo isset($meta['regular_price'][0]) ? $meta['regular_price'][0] : null; ?>" />
@@ -352,7 +364,28 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 						</td>
 					</tr>
 					<tr>
-						<td colspan="6"><span><?php //todo ?></span></td>
+						<td>
+							<label><?php _e('Type', 'jigoshop') ?></label>
+							<select>
+								<option>Simple</option>
+								<option>Downloadable</option>
+								<option>Virtual</option>
+							</select>
+						</td>
+						<td colspan="2">
+							<label><?php _e('Dimensions (lxwxh)', 'jigoshop') ?></label>
+							<input type="text" class="input-text" style="width: 32%" size="6" placeholder="Width" />
+							<input type="text" class="input-text" style="width: 32%" size="6" placeholder="Length" />
+							<input type="text" class="input-text" style="width: 32%" size="6" placeholder="Height" />
+						</td>
+						<td colspan="2">
+							<label><?php _e('File Location', 'jigoshop') ?>
+								<input type="text" class="input-text" />
+							</label>
+						</td>
+						<td>
+							&nbsp;
+						</td>
 					</tr>
 				</tbody>
 			</table>
