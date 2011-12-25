@@ -333,6 +333,15 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 						</td>
 
 						<td>
+							<label><?php _e('Type', 'jigoshop') ?></label>
+							<select>
+								<option>Simple</option>
+								<option>Downloadable</option>
+								<option>Virtual</option>
+							</select>
+						</td>
+
+						<td>
 							<label><?php _e('SKU', 'jigoshop'); ?>
 								<input type="text" size="5" name="<?php echo $this->field_name('sku', $variation) ?>" value="<?php echo isset($meta['sku'][0]) ? $meta['sku'][0] : null; ?>" />
 							</label>
@@ -341,12 +350,6 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 						<td>
 							<label><?php _e('Stock Qty', 'jigoshop'); ?>
 								<input type="text" size="5" name="<?php echo $this->field_name('stock', $variation) ?>" value="<?php echo isset($meta['stock'][0]) ? $meta['stock'][0] : null; ?>" />
-							</label>
-						</td>
-
-						<td>
-							<label><?php _e('Weight', 'jigoshop') ?>
-								<input type="text" size="5" name="<?php echo $this->field_name('weight', $variation) ?>" value="<?php echo isset($meta['weight'][0]) ? $meta['weight'][0] : null; ?>" />
 							</label>
 						</td>
 
@@ -370,12 +373,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 					</tr>
 					<tr>
 						<td>
-							<label><?php _e('Type', 'jigoshop') ?></label>
-							<select>
-								<option>Simple</option>
-								<option>Downloadable</option>
-								<option>Virtual</option>
-							</select>
+							<label><?php _e('Weight', 'jigoshop') ?>
+								<input type="text" size="5" name="<?php echo $this->field_name('weight', $variation) ?>" value="<?php echo isset($meta['weight'][0]) ? $meta['weight'][0] : null; ?>" />
+							</label>
 						</td>
 						<td colspan="2">
 							<label><?php _e('Dimensions (lxwxh)', 'jigoshop') ?></label>
