@@ -33,7 +33,8 @@
 				};
 			
 			// If the variation already exists
-			if ( variation ) {
+			if ( variation.indexOf('_new') < 0 ) {
+				
 				// Start the block to simulate AJAX requests
 				$parent.block({ message: null, overlayCSS: { background: '#fff url('+varmeta.plugin_url+'/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
 
