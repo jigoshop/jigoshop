@@ -161,13 +161,10 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			'post_parent' 	=> $post->ID
 		));
 
-		// Don't display anything if we have no variations
-		if ( ! $variations )
-			return false;
-
 		?>
 
 		<div id='variable_product_options' class='panel'>
+			<?php if ( $this->has_variable_attributes($attributes) ): ?>
 			<div class="controls">
 				<select name="action">
 					<option value=""><?php _e('Bulk Actions', 'jigoshop') ?></option>
@@ -181,17 +178,22 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 					<option value=""><?php _e('Toggle Virtual', 'jigoshop') ?></option>
 				</select>
 				<input id="doaction" type="submit" class="button-secondary" value="Apply">
-				<button type='button' class='button button-primary add_variation <?php disabled($this->has_variable_attributes($attributes), false) ?>'><?php _e('Add Variation', 'jigoshop') ?></button>
+
+				<button type='button' class='button button-primary add_variation'<?php disabled($this->has_variable_attributes($attributes), false) ?>><?php _e('Add Variation', 'jigoshop') ?></button>
 			</div>
 			<div class='clear'>&nbsp;</div>
 			<div class='jigoshop_variations'>
 			<?php
-				foreach( $variations as $variation ) {
-					echo $this->generate_panel($attributes, $variation);
+				if( $variations ) {
+					foreach( $variations as $variation ) {
+						echo $this->generate_panel($attributes, $variation);
+					}
 				}
 			?>
 			</div>
-
+			<?php else: ?>
+			Doh! Seems like we need some variable attributes first
+			<?php endif; ?>
 		</div>
 	<?php
 	}
@@ -263,10 +265,10 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	/**
 	 * Checks all the product attributes for variation defined attributes
 	 *
-	 * @param		array		Attributes
+	 * @param		mixed		Attributes
 	 * @return		bool
 	 */
-	private function has_variable_attributes( array $attributes ) {
+	private function has_variable_attributes( $attributes ) {
 		if ( ! $attributes )
 			return false;
 
@@ -286,6 +288,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	 * @return		HTML
 	 */
 	private function generate_panel($attributes, $variation = null) {
+
+		if ( ! $this->has_variable_attributes($attributes) )
+			return false;
 
 		// Set the default image as the placeholder
 		$image = jigoshop::plugin_url().'/assets/images/placeholder.png';
