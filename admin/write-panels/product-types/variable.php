@@ -124,6 +124,12 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			update_post_meta( $ID, 'stock',			$meta['stock'] );
 			update_post_meta( $ID, '_thumbnail_id',	$meta['_thumbnail_id'] );
 
+			// Downloadable Only
+			if( $meta['product-type'] == 'downloadable' ) {
+				update_post_meta( $ID, 'file_path',			$meta['file_path']);
+				update_post_meta( $ID, 'download_limit',		$meta['download_limit']);
+			}
+
 			// Refresh taxonomy attributes
 			$current_meta = get_post_custom( $ID );
 
@@ -395,7 +401,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 						</td>
 						<td colspan="2">
 							<label><?php _e('File Location', 'jigoshop') ?>
-								<input type="text" class="input-text" />
+								<input type="text" name="<?php echo $this->field_name('file_path', $variation) ?>" value="<?php echo isset($meta['file_path'][0]) ? $meta['file_path'][0] : null; ?>" />
 							</label>
 						</td>
 						<td>
