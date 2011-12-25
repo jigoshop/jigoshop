@@ -11,7 +11,7 @@
 		html = varmeta.actions.create.panel.replace(/__ID__/gi, i++ +'_new');
 
 		// Append a new variation panel
-		$('.jigoshop_variations').append( html );
+		$('.jigoshop_variations').prepend( html );
 
 	});
 
