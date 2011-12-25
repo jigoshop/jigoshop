@@ -11,7 +11,7 @@
 		html = varmeta.actions.create.panel.replace(/__ID__/gi, i++ +'_new');
 
 		// Append a new variation panel
-		$('.jigoshop_variations').prepend( html );
+		$(html).hide().prependTo('.jigoshop_variations').slideDown('fast');
 
 	});
 
@@ -39,7 +39,7 @@
 
 				// Remove the variation from the posts array
 				$.post(varmeta.ajax_url, data, function(response) {
-					$parent.fadeOut(175, function() {
+					$parent.fadeOut('fast', function() {
 						$parent.remove();
 					});
 				});
@@ -48,7 +48,7 @@
 			else {
 
 				// Variation hasn't been saved so just remove the panel
-				$parent.fadeOut(175, function() {
+				$parent.fadeOut('fast', function() {
 					$parent.remove();
 				});
 			}
