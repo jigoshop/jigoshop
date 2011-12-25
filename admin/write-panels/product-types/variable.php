@@ -106,15 +106,19 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 				), array( 'ID' => $ID ) );
 			}
 
+			// Set the product type
+			// NOTE: I think this will work, not sure -Rob
+			wp_set_object_terms( $ID, sanitize_title($meta['product-type']), 'product_type');
+
 			// Set variation meta data
 			update_post_meta( $ID, 'sku',			$meta['sku'] );
 			update_post_meta( $ID, 'regular_price',	$meta['regular_price'] );
 			update_post_meta( $ID, 'sale_price',		$meta['sale_price'] );
 
 			update_post_meta( $ID, 'weight',		$meta['weight'] );
-			update_post_meta( $ID, 'length',		$meta['length'] );
+			update_post_meta( $ID, 'length',			$meta['length'] );
 			update_post_meta( $ID, 'height',		$meta['height'] );
-			update_post_meta( $ID, 'width',		$meta['width'] );
+			update_post_meta( $ID, 'width',			$meta['width'] );
 
 			update_post_meta( $ID, 'stock',			$meta['stock'] );
 			update_post_meta( $ID, '_thumbnail_id',	$meta['_thumbnail_id'] );
@@ -334,11 +338,15 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 						</td>
 
 						<td>
+							<?php
+								$terms = wp_get_object_terms( $variation->ID, 'product_type' );
+								$product_type = ($terms) ? current($terms)->slug : 'simple';
+							?>
 							<label><?php _e('Type', 'jigoshop') ?></label>
-							<select>
-								<option>Simple</option>
-								<option>Downloadable</option>
-								<option>Virtual</option>
+							<select name="<?php echo $this->field_name('product-type', $variation) ?>">
+								<option value="simple" <?php selected('simple', $product_type) ?>>Simple</option>
+								<option value="downloadable" <?php selected('downloadable', $product_type) ?>>Downloadable</option>
+								<option value="virtual" <?php selected('virtual', $product_type) ?>>Virtual</option>
 							</select>
 						</td>
 
