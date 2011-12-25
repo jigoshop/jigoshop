@@ -168,15 +168,16 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			<div class="controls">
 				<select name="variation_actions">
 					<option value=""><?php _e('Bulk Actions', 'jigoshop') ?></option>
+					<option value=""><?php _e('Clear All', 'jigoshop') ?></option>
 					<option value=""><?php _e('Set all Prices', 'jigoshop') ?></option>
 					<option value=""><?php _e('Set all Sale Prices', 'jigoshop') ?></option>
 					<option value=""><?php _e('Set all Stock', 'jigoshop') ?></option>
+					<option value=""><?php _e('Set all Weight', 'jigoshop') ?></option>
 					<option value=""><?php _e('Set all Width', 'jigoshop') ?></option>
 					<option value=""><?php _e('Set all Length', 'jigoshop') ?></option>
 					<option value=""><?php _e('Set all Height', 'jigoshop') ?></option>
-					<option value=""><?php _e('Toggle Downloadables', 'jigoshop') ?></option>
-					<option value=""><?php _e('Toggle Virtual', 'jigoshop') ?></option>
 				</select>
+
 				<input id="do_actions" type="submit" class="button-secondary" value="Apply">
 
 				<button type='button' class='button button-primary add_variation'<?php disabled($this->has_variable_attributes($attributes), false) ?>><?php _e('Add Variation', 'jigoshop') ?></button>
@@ -273,7 +274,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			return false;
 
 		foreach ( $attributes as $attribute ) {
-			if ( $attribute['variation'] )
+			if ( isset($attribute['variation']) && $attribute['variation'] )
 				return true;
 		}
 
