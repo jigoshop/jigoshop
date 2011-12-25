@@ -15,7 +15,6 @@
 
 	});
 
-
 	$('button.remove_variation').live('click', function(e) {
 
 		// Disable default action
@@ -34,13 +33,13 @@
 			
 			// If the variation already exists
 			if ( variation.indexOf('_new') < 0 ) {
-				
+
 				// Start the block to simulate AJAX requests
 				$parent.block({ message: null, overlayCSS: { background: '#fff url('+varmeta.plugin_url+'/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
 
 				// Remove the variation from the posts array
 				$.post(varmeta.ajax_url, data, function(response) {
-					$parent.fadeOut('300', function() {
+					$parent.fadeOut(175, function() {
 						$parent.remove();
 					});
 				});
@@ -49,7 +48,7 @@
 			else {
 
 				// Variation hasn't been saved so just remove the panel
-				$parent.fadeOut('300', function() {
+				$parent.fadeOut(175, function() {
 					$parent.remove();
 				});
 			}
