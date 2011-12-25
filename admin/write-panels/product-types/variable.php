@@ -67,6 +67,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 		check_ajax_referer( 'delete-variation', 'security' );
 
 		$ID = intval( $_POST['variation_id'] );
+		wp_set_object_terms( $ID, null, 'product_type'); // Remove object terms
 		wp_delete_post( $ID );
 
 		exit;
