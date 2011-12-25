@@ -112,9 +112,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			update_post_meta( $ID, 'sale_price',		$meta['sale_price'] );
 
 			update_post_meta( $ID, 'weight',		$meta['weight'] );
-			// update_post_meta( $ID, 'length',		$meta['length'] );
-			// update_post_meta( $ID, 'height',		$meta['height'] );
-			// update_post_meta( $ID, 'width',		$meta['width'] );
+			update_post_meta( $ID, 'length',		$meta['length'] );
+			update_post_meta( $ID, 'height',		$meta['height'] );
+			update_post_meta( $ID, 'width',		$meta['width'] );
 
 			update_post_meta( $ID, 'stock',			$meta['stock'] );
 			update_post_meta( $ID, '_thumbnail_id',	$meta['_thumbnail_id'] );
@@ -166,7 +166,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 		<div id='variable_product_options' class='panel'>
 			<?php if ( $this->has_variable_attributes($attributes) ): ?>
 			<div class="controls">
-				<select name="action">
+				<select name="variation_actions">
 					<option value=""><?php _e('Bulk Actions', 'jigoshop') ?></option>
 					<option value=""><?php _e('Set all Prices', 'jigoshop') ?></option>
 					<option value=""><?php _e('Set all Sale Prices', 'jigoshop') ?></option>
@@ -177,7 +177,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 					<option value=""><?php _e('Toggle Downloadables', 'jigoshop') ?></option>
 					<option value=""><?php _e('Toggle Virtual', 'jigoshop') ?></option>
 				</select>
-				<input id="doaction" type="submit" class="button-secondary" value="Apply">
+				<input id="do_actions" type="submit" class="button-secondary" value="Apply">
 
 				<button type='button' class='button button-primary add_variation'<?php disabled($this->has_variable_attributes($attributes), false) ?>><?php _e('Add Variation', 'jigoshop') ?></button>
 			</div>
@@ -379,9 +379,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 						</td>
 						<td colspan="2">
 							<label><?php _e('Dimensions (lxwxh)', 'jigoshop') ?></label>
-							<input type="text" class="input-text" style="width: 32%" size="6" placeholder="Width" />
-							<input type="text" class="input-text" style="width: 32%" size="6" placeholder="Length" />
-							<input type="text" class="input-text" style="width: 32%" size="6" placeholder="Height" />
+							<input type="text" name="<?php echo $this->field_name('length', $variation) ?>" style="width: 32%" size="6" placeholder="Length" value="<?php echo isset($meta['length'][0]) ? $meta['length'][0] : null; ?>" />
+							<input type="text" name="<?php echo $this->field_name('width', $variation) ?>" style="width: 32%" size="6" placeholder="Width" value="<?php echo isset($meta['width'][0]) ? $meta['width'][0] : null; ?>" />
+							<input type="text" name="<?php echo $this->field_name('height', $variation) ?>" style="width: 32%" size="6" placeholder="Height" value="<?php echo isset($meta['height'][0]) ? $meta['height'][0] : null; ?>" />
 						</td>
 						<td colspan="2">
 							<label><?php _e('File Location', 'jigoshop') ?>
