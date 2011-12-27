@@ -363,7 +363,19 @@ function jigoshop_order_totals_meta_box($post) {
 	if (!isset($data['order_tax'])) $data['order_tax'] = '';
 	if (!isset($data['order_total'])) $data['order_total'] = '';
 	if (!isset($data['order_shipping_tax'])) $data['order_shipping_tax'] = '';
-	?>
+
+        $tax_data = array();
+        if ($data['order_tax']) :
+            $tax_data = jigoshop_tax::get_taxes_as_array($data['order_tax'], $data['order_tax_divisor']);
+        endif;
+        
+        $tax_amount = 0;
+        
+        foreach ($tax_data as $tax_class=>$value) :
+            $tax_amount += $tax_data[$tax_class]['amount'];
+        endforeach;
+        
+        ?>
 	<dl class="totals">
 		<dt><?php _e('Subtotal:', 'jigoshop'); ?></dt>
 		<dd><input type="text" id="order_subtotal" name="order_subtotal" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo $data['order_subtotal']; ?>" class="first" /></dd>
@@ -386,7 +398,7 @@ function jigoshop_order_totals_meta_box($post) {
 		<dd><input type="text" id="order_shipping_tax" name="order_shipping_tax" placeholder="0.00" value="<?php echo $data['order_shipping_tax']; ?>" class="first" /></dd>
 
 		<dt><?php _e('Tax:', 'jigoshop'); ?></dt>
-		<dd><input type="text" id="order_tax" name="order_tax" placeholder="0.00" value="<?php echo $data['order_tax']; ?>" class="first" /></dd>
+		<dd><input type="text" id="order_tax" name="order_tax" placeholder="0.00" value="<?php echo number_format($tax_amount, 2, '.', ''); ?>" class="first" /></dd>
 
 		<?php
 			$coupons = array();

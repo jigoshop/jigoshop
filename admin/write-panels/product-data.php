@@ -194,15 +194,26 @@ function jigoshop_product_data_box() {
 			echo '<option value="none" '; if (isset($data[$field['id']]) && $data[$field['id']]=='none') echo 'selected="selected"'; echo '>' . __('None', 'jigoshop') . '</option>';
 			echo '</select></p>';
 			
-			$field = array( 'id' => 'tax_class', 'label' => __('Tax Class', 'jigoshop') );
-			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].':</label><select name="'.$field['id'].'">';
-			echo '<option value="" '; if (isset($data[$field['id']]) && $data[$field['id']]=='') echo 'selected="selected"'; echo '>'.__('Standard', 'jigoshop').'</option>';
-			$tax_classes = $_tax->get_tax_classes();
-    		if ($tax_classes) foreach ($tax_classes as $class) :
-    			echo '<option value="'.sanitize_title($class).'" '; if (isset($data[$field['id']]) && $data[$field['id']]==sanitize_title($class)) echo 'selected="selected"'; echo '>'.$class.'</option>';
-    		endforeach;
-			echo '</select></p>';
-			?>
+			$field = array( 'id' => 'tax_classes', 'label' => __('Tax Classes', 'jigoshop') );
+                        
+                        // TODO: this section needs to be styled better. I would like it to be similar to the select multi-countries
+                        // but since each form field is using <p> instead of a table, I cannot use the div. Just adding it to the code
+                        // for now, but this should change.
+                        $tax_classes = $_tax->get_tax_classes();
+                        $selections = $data[$field['id']];
+                        echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].':</label>';
+			echo '<span><label><input type="checkbox" name="'.$field['id'].'[]" value="" '; if (isset($selections) && in_array('', $selections)) echo 'checked="checked"'; echo '/>'.__('Standard', 'jigoshop').'</label></span>';
+                        
+                        if ($tax_classes) foreach ($tax_classes as $tax_class) :
+	                        echo '<span><label><input type="checkbox" name="'.$field['id'].'[]" value="'. sanitize_title($tax_class) .'" ';
+	                        if (in_array(sanitize_title($tax_class), $selections)) :
+	                            echo 'checked="checked"';
+	                        endif;
+	                        echo ' />'. __($tax_class, 'jigoshop') .'</label></span>';
+            		endforeach;
+       			echo '</p>';	
+                        
+                        ?>
 			
 		</div>
 		<?php if (get_option('jigoshop_manage_stock')=='yes') : ?>

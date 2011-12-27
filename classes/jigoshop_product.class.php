@@ -478,32 +478,70 @@ class jigoshop_product {
 
 	/** Returns the price (excluding tax) */
 	function get_price_excluding_tax() {
-		$price = $this->get_price();
+            
+            $price = $this->get_price();
 
-        if (get_option('jigoshop_prices_include_tax') == 'yes') {
-            $rate = $this->get_tax_base_rate();
+            if (get_option('jigoshop_prices_include_tax') == 'yes') :
+                $rates = $this->get_tax_base_rate();
+            
+                // rates array sorted so that taxes applied to retail value come first. To reverse taxes
+                // need to reverse this array
+                $new_rates = array_reverse($rates, true);
 
-            if ($rate && $rate > 0) {
-                $_tax = &new jigoshop_tax();
-                $tax_amount = $_tax->calc_tax($price, $rate, true);
-                $price = $price - $tax_amount;
-            }
+                $tax_applied_after_retail = 0;
+                $tax_totals = 0;
+                
+                if ($new_rates) :
+                    
+                    $_tax = &new jigoshop_tax();
+                
+                    foreach ( $new_rates as $key=>$value ) :
+
+                        //means that this tax was applied to total including any retail taxes added
+                        if (!$value['is_retail']) :
+                            $tax_amount[$key] = $_tax->calc_tax($price, $value['rate'], true);
+                            $tax_applied_after_retail += $tax_amount[$key];
+                            $tax_totals += $tax_amount[$key];
+                        else :
+                            $tax_totals += $_tax->calc_tax($price - $tax_applied_after_retail, $value['rate'], true);
+                        endif;
+
+                    endforeach;
+                    
+                    $price = $price - $tax_totals;
+                
+                endif;
+                
+            endif;
+
+            return $price;
+            
         }
-
-        return $price;
-	}
 
 	/** Returns the base tax rate */
 	function get_tax_base_rate() {
-		if ($this->is_taxable() && get_option('jigoshop_calc_taxes') == 'yes') {
-            $_tax = &new jigoshop_tax();
-            $rate = $_tax->get_shop_base_rate($this->data['tax_class']);
+            $rate = NULL;
+            
+            if ($this->is_taxable() && get_option('jigoshop_calc_taxes') == 'yes') :
+                $_tax = &new jigoshop_tax();
+                
+                if ($_tax->get_tax_classes_for_base()) foreach ( $_tax->get_tax_classes_for_base() as $tax_class ) :
+                    
+                    //TODO: remember standard rate.
+                    if ( !in_array($tax_class, $this->data['tax_classes'])) continue;
+                    $my_rate = $_tax->get_shop_base_rate($tax_class);
+                    
+                    if ($my_rate > 0) :
+                        $rate[$tax_class] = array('rate'=>$my_rate, 'is_retail'=>$_tax->is_applied_to_retail());
+                    endif;
+                    
+                endforeach;
+           
+            endif;
 
             return $rate;
         }
 
-        return NULL;
-	}
 	/** Returns the percentage saved on sale products */
 	function get_percentage()
 	{
