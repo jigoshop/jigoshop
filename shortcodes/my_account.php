@@ -101,7 +101,7 @@ function jigoshop_my_account( $atts ) {
 							get_user_meta( get_current_user_id(), 'billing-first_name', true ) . ' ' . get_user_meta( get_current_user_id(), 'billing-last_name', true )
 							,get_user_meta( get_current_user_id(), 'billing-company', true )
 							,get_user_meta( get_current_user_id(), 'billing-address', true )
-							,get_user_meta( get_current_user_id(), 'billing-address-2', true )
+							,get_user_meta( get_current_user_id(), 'billing-address2', true )
 							,get_user_meta( get_current_user_id(), 'billing-city', true )
 							,get_user_meta( get_current_user_id(), 'billing-state', true )
 							,get_user_meta( get_current_user_id(), 'billing-postcode', true )
@@ -130,7 +130,7 @@ function jigoshop_my_account( $atts ) {
 							get_user_meta( get_current_user_id(), 'shipping-first_name', true ) . ' ' . get_user_meta( get_current_user_id(), 'shipping-last_name', true )
 							,get_user_meta( get_current_user_id(), 'shipping-company', true )
 							,get_user_meta( get_current_user_id(), 'shipping-address', true )
-							,get_user_meta( get_current_user_id(), 'shipping-address-2', true )
+							,get_user_meta( get_current_user_id(), 'shipping-address2', true )
 							,get_user_meta( get_current_user_id(), 'shipping-city', true )
 							,get_user_meta( get_current_user_id(), 'shipping-state', true )
 							,get_user_meta( get_current_user_id(), 'shipping-postcode', true )
@@ -454,7 +454,7 @@ function jigoshop_view_order() {
 
 							if (isset($item['variation_id']) && $item['variation_id'] > 0) :
 								$_product = &new jigoshop_product_variation( $item['variation_id'] );
-                            
+
                                 if(is_array($item['variation'])) :
                                     $_product->set_variation_attributes($item['variation']);
                                 endif;
