@@ -1,7 +1,7 @@
 (function($) {
 	// @todo: varmeta is a temporary name.. this should be a global jigoshop var
 
-	$(document).ready(function() {
+	$(function() {
 		
 		// This is a unique ID for add_variation
 		var ID = 0;
@@ -125,5 +125,6 @@
 			}
 		});
 	});
+
 
 })(window.jQuery);
