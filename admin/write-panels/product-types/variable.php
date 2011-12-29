@@ -179,7 +179,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			<div class="controls">
 				<select name="variation_actions">
 					<option value="default"><?php _e('Bulk Actions', 'jigoshop') ?></option>
-					<option value="clear_all"><?php _e('Clear All', 'jigoshop') ?></option>
+					<option value="remove_all"><?php _e('Remove All Variations', 'jigoshop') ?></option>
 					<option value="set_all_regular_prices"><?php _e('Set all Prices', 'jigoshop') ?></option>
 					<option value="set_all_sale_prices"><?php _e('Set all Sale Prices', 'jigoshop') ?></option>
 					<option value="set_all_stock"><?php _e('Set all Stock', 'jigoshop') ?></option>
@@ -327,9 +327,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 		// Start buffering the output
 		ob_start();
 		?>
-		<div class="jigoshop_variation">
+		<div class="jigoshop_variation" rel="<?php echo $variation->ID; ?>">
 			<p>
-				<button type="button" class="remove_variation button" rel="<?php echo $variation->ID; ?>"><?php _e('Remove', 'jigoshop'); ?></button>
+				<button type="button" class="remove_variation button"><?php _e('Remove', 'jigoshop'); ?></button>
 				<?php echo $this->attribute_selector($attributes, $variation); ?>
 			</p>
 

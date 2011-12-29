@@ -36,52 +36,14 @@
 		// @todo: this should be an ID
 		.on('click', '.remove_variation', function(e) {
 
-			console.log($(this));
-
-			//$(this).trigger('remove_variation');
-			
-		})
-
-		.on('remove_variation', function(e) {
-
-			console.log(e);
 			// Disable default action
 			e.preventDefault();
 
 			// Only remove if the user is sure
 			if ( ! confirm(varmeta.actions.remove.confirm) )
 				return false;
-			
-			// Set up the variables
-			var $parent		= $(this).parent().parent();
-				variation	= $(this).attr('rel');
-				data 		= {
-					action: varmeta.actions.remove.action,
-					variation_id: variation,
-					security: varmeta.actions.remove.nonce,
-				};
-			
-			// If the variation already exists
-			if ( variation.indexOf('_new') < 0 ) {
 
-				// Start the block to simulate AJAX requests
-				$parent.block({ message: null, overlayCSS: { background: '#fff url('+varmeta.plugin_url+'/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
-
-				// Remove the variation from the posts array
-				$.post(varmeta.ajax_url, data, function(response) {
-					$parent.fadeOut('slow', function() {
-						$parent.remove();
-					});
-				});
-
-			} 
-			else {
-
-				// Variation hasn't been saved so just remove the panel
-				$parent.fadeOut('slow', function() {
-					$parent.remove();
-				});
-			}
+			remove_variation($(this).parent().parent());			
 		})
 
 		.on('click', '.upload_image_button', function(e) {
@@ -150,8 +112,14 @@
 		})
 
 		.on({
-			clear_all: function(e) {
-				$('.jigoshop_variation').each()
+			remove_all: function(e) {
+
+				if( ! confirm( 'Are you sure you want to delete all variations' ) )
+					return false;
+
+				$('.jigoshop_variation').each( function() {
+					remove_variation( $(this) );
+				});
 			},
 			set_all_regular_prices: function(e) {
 				value = prompt('Enter a regular price');
@@ -186,5 +154,38 @@
 			}
 		});
 	});
+
+	function remove_variation( $panel ) {
+		
+		// Set up the variables
+		var variation	= $panel.attr('rel');
+			data 		= {
+				action: varmeta.actions.remove.action,
+				variation_id: variation,
+				security: varmeta.actions.remove.nonce,
+			};
+		
+		// If the variation already exists
+		if ( variation.indexOf('_new') < 0 ) {
+
+			// Start the block to simulate AJAX requests
+			$panel.block({ message: null, overlayCSS: { background: '#fff url('+varmeta.plugin_url+'/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
+
+			// Remove the variation from the posts array
+			$.post(varmeta.ajax_url, data, function(response) {
+				$panel.fadeOut('slow', function() {
+					$panel.remove();
+				});
+			});
+
+		} 
+		else {
+
+			// Variation hasn't been saved so just remove the panel
+			$panel.fadeOut('slow', function() {
+				$panel.remove();
+			});
+		}
+	}
 
 })(window.jQuery);
