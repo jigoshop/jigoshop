@@ -178,15 +178,15 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			<?php if ( $this->has_variable_attributes($attributes) ): ?>
 			<div class="controls">
 				<select name="variation_actions">
-					<option value=""><?php _e('Bulk Actions', 'jigoshop') ?></option>
-					<option value=""><?php _e('Clear All', 'jigoshop') ?></option>
-					<option value=""><?php _e('Set all Prices', 'jigoshop') ?></option>
-					<option value=""><?php _e('Set all Sale Prices', 'jigoshop') ?></option>
-					<option value=""><?php _e('Set all Stock', 'jigoshop') ?></option>
-					<option value=""><?php _e('Set all Weight', 'jigoshop') ?></option>
-					<option value=""><?php _e('Set all Width', 'jigoshop') ?></option>
-					<option value=""><?php _e('Set all Length', 'jigoshop') ?></option>
-					<option value=""><?php _e('Set all Height', 'jigoshop') ?></option>
+					<option value="default"><?php _e('Bulk Actions', 'jigoshop') ?></option>
+					<option value="clear_all"><?php _e('Clear All', 'jigoshop') ?></option>
+					<option value="set_all_regular_prices"><?php _e('Set all Prices', 'jigoshop') ?></option>
+					<option value="set_all_sale_prices"><?php _e('Set all Sale Prices', 'jigoshop') ?></option>
+					<option value="set_all_stock"><?php _e('Set all Stock', 'jigoshop') ?></option>
+					<option value="set_all_weight"><?php _e('Set all Weight', 'jigoshop') ?></option>
+					<option value="set_all_width"><?php _e('Set all Width', 'jigoshop') ?></option>
+					<option value="set_all_length"><?php _e('Set all Length', 'jigoshop') ?></option>
+					<option value="set_all_height"><?php _e('Set all Height', 'jigoshop') ?></option>
 				</select>
 
 				<input id="do_actions" type="submit" class="button-secondary" value="Apply">

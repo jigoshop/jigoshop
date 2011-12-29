@@ -35,6 +35,16 @@
 
 		// @todo: this should be an ID
 		.on('click', '.remove_variation', function(e) {
+
+			console.log($(this));
+
+			//$(this).trigger('remove_variation');
+			
+		})
+
+		.on('remove_variation', function(e) {
+
+			console.log(e);
 			// Disable default action
 			e.preventDefault();
 
@@ -75,6 +85,7 @@
 		})
 
 		.on('click', '.upload_image_button', function(e) {
+
 			// Disable default action
 			e.preventDefault();
 			
@@ -123,8 +134,57 @@
 				// Show thickbox
 				tb_show('', 'media-upload.php?post_id'+post_id+'&type=image&TB_iframe=true');
 			}
+		})
+
+		.on('click', '#do_actions', function(e) {
+
+			// Disable default action
+			e.preventDefault();
+
+			if ( ! $('.jigoshop_variation').size() )
+				return alert('Variations required');
+			
+			// Cache variables
+			var $this = $(this);
+			$this.trigger( $this.prev().val() );
+		})
+
+		.on({
+			clear_all: function(e) {
+				$('.jigoshop_variation').each()
+			},
+			set_all_regular_prices: function(e) {
+				value = prompt('Enter a regular price');
+				$(' input[name*="regular_price"] ').val( value );
+			},
+			set_all_sale_prices: function(e) {
+				value = prompt('Enter a sale price');
+				$(' input[name*="sale_price"] ').val( value );
+			},
+			set_all_stock: function(e) {
+				value = prompt('Enter a stock value');
+				$(' input[name*="stock"] ').val( value );
+			},
+			set_all_weight: function(e) {
+				value = prompt('Enter a weight value');
+				$(' input[name*="weight"] ').val( value );
+			},
+			set_all_width: function(e) {
+				value = prompt('Enter a width value');
+				$(' input[name*="width"] ').val( value );
+			},
+			set_all_length: function(e) {
+				value = prompt('Enter a length value');
+				$(' input[name*="length"] ').val( value );
+			},
+			set_all_height: function(e) {
+				value = prompt('Enter a height value');
+				$(' input[name*="height"] ').val( value );
+			},
+			default: function (e) {
+				alert('Default clicked');
+			}
 		});
 	});
-
 
 })(window.jQuery);
