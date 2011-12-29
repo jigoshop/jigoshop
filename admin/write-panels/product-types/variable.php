@@ -12,10 +12,10 @@
 class jigoshop_product_meta_variable extends jigoshop_product_meta
 {
 	public function __construct() {
-		add_action( 'product_type_selector', 					array(&$this, 'register') );
+		add_action( 'product_type_selector', 				array(&$this, 'register') );
 		add_action( 'jigoshop_process_product_meta_variable',	array(&$this, 'save'), 1 );
 		add_action( 'jigoshop_product_type_options_box',		array(&$this, 'display') );
-		add_action( 'admin_enqueue_scripts', 					array(&$this, 'admin_enqueue_scripts') );
+		add_action( 'admin_enqueue_scripts', 				array(&$this, 'admin_enqueue_scripts') );
 
 		add_action( 'wp_ajax_jigoshop_remove_variation',		array(&$this, 'remove') );
 	}
@@ -387,7 +387,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 							</label>
 						</td>
 					</tr>
-					<tr class="simple options" style="display:none;">
+					<tr class="simple options" style="display: table-row;">
 						<td>
 							<label><?php _e('Weight', 'jigoshop') ?>
 								<input type="text" size="5" name="<?php echo $this->field_name('weight', $variation) ?>" value="<?php echo isset($meta['weight'][0]) ? $meta['weight'][0] : null; ?>" />
@@ -418,10 +418,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 								&nbsp;
 						</td>
 					</tr>
-					<tr class="virtual options" style="display: table-row;">
+					<tr class="virtual options" style="display: none;">
 						<td colspan="7">
-							<label>&nbsp;</label>
-							Virtual Products have no extra options
+							&nbsp;
 						</td>
 					</tr>
 				</tbody>

@@ -1,21 +1,23 @@
 (function($) {
 	// @todo: varmeta is a temporary name.. this should be a global jigoshop var
 
-	$(document).ready(function(){
-		$('.product_type').change(function(){
+	$(document).ready(function() {
+		
+		$('.jigoshop_variations').on('change', '.product_type', function() {
 			
-			var cls = '.'+$(this).val();
-			console.log(cls);
 
-			 $(this).parent().parent().parent()
-				.find('.options').hide();
-
-			var $tr = $(this).parent().parent().parent()
-				.find(cls).show();
+			var $this	= $(this);
+		 	      panel	= '.'+$this.val();
+		 	      $root	= $this.parent().parent().parent()
+			
+			// Hide all the panels first then show the relevant one
+			// TODO: can this be improved anyway?
+			$root.find('.options').hide();
+			$root.find(panel).show();
 		});
 	});
+		
 	
-
 	var i = 0;
 	$('button.add_variation').live('click', function(e) {
 
