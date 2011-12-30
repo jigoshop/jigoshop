@@ -30,13 +30,28 @@ function downloadable_product_type_options() {
 	<div id="downloadable_product_options" class="panel jigoshop_options_panel">
 		<?php
 
-			// File URL
+			// File Use (Download Method)
+			$file_method = get_post_meta($post->ID, 'file_method', true);
+			$field = array( 'id' => 'file_method', 'label' => __('Download Method', 'jigoshop') );
+			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].':</label><select name="'.$field['id'].'">';
+			echo '<option value="internal" '; if (isset($file_method) && $file_method=='internal') echo 'selected="selected"'; echo '>' . __('Internal Path', 'jigoshop') . '</option>';			
+			echo '<option value="external" '; if (isset($file_method) && $file_method=='external') echo 'selected="selected"'; echo '>' . __('External URL', 'jigoshop') . '</option>';
+			echo '</select></p>';
+
+			// File Path (Internal Path)
 			$file_path = get_post_meta($post->ID, 'file_path', true);
-			$field = array( 'id' => 'file_path', 'label' => __('File path', 'jigoshop') );
+			$field = array( 'id' => 'file_path', 'label' => __('Internal Path', 'jigoshop') );
 			echo '<p class="form-field">
 				<label for="'.$field['id'].'">'.$field['label'].':</label>
 				<span style="float:left">'.ABSPATH.'</span><input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_path.'" placeholder="'.__('path to file on your server', 'jigoshop').'" /></p>';
-				
+
+			// File URL (External URL)
+			$file_url = get_post_meta($post->ID, 'file_url', true);
+			$field = array( 'id' => 'file_url', 'label' => __('External URL', 'jigoshop') );
+			echo '<p class="form-field">
+				<label for="'.$field['id'].'">'.$field['label'].':</label>
+				<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_url.'" placeholder="'.__('An external URL to the file', 'jigoshop').'" /><span class="description">' . __('Note: This URL will be visible to the customer.', 'jigoshop') . '</span></p>';
+
 			// Download Limit
 			$download_limit = get_post_meta($post->ID, 'download_limit', true);
 			$field = array( 'id' => 'download_limit', 'label' => __('Download Limit', 'jigoshop') );
@@ -77,8 +92,10 @@ add_action('product_type_selector', 'downloadable_product_type_selector');
  * @param 		int $post_id The post id of the post being saved
  */
 function filter_product_meta_downloadable( $data, $post_id ) {
-	
-	if (isset($_POST['file_path']) && $_POST['file_path']) update_post_meta( $post_id, 'file_path', $_POST['file_path'] );
+
+	if (isset($_POST['file_method']) && $_POST['file_method']) update_post_meta( $post_id, 'file_method', $_POST['file_method'] );	
+	if (isset($_POST['file_path'])) update_post_meta( $post_id, 'file_path', $_POST['file_path'] );
+	if (isset($_POST['file_url'])) update_post_meta( $post_id, 'file_url', $_POST['file_url'] );
 	if (isset($_POST['download_limit'])) update_post_meta( $post_id, 'download_limit', $_POST['download_limit'] );
 	
 	return $data;

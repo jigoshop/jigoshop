@@ -51,9 +51,9 @@ class paypal extends jigoshop_payment_gateway {
 	 **/
 	public function admin_options() {
     	?>
-    	<thead><tr><th scope="col" width="200px"><?php _e('PayPal standard', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('PayPal standard works by sending the user to <a href="https://www.paypal.com/uk/mrb/pal=JFC9L8JJUZZK2">PayPal</a> to enter their payment information.', 'jigoshop'); ?></th></tr></thead>
+    	<thead><tr><th scope="col" width="200px"><?php _e('PayPal Standard', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('PayPal Standard works by sending the user to <a href="https://www.paypal.com/uk/mrb/pal=JFC9L8JJUZZK2">PayPal</a> to enter their payment information.', 'jigoshop'); ?></th></tr></thead>
     	<tr>
-	        <td class="titledesc"><?php _e('Enable PayPal standard', 'jigoshop') ?>:</td>
+	        <td class="titledesc"><?php _e('Enable PayPal Standard', 'jigoshop') ?>:</td>
 	        <td class="forminp">
 		        <select name="jigoshop_paypal_enabled" id="jigoshop_paypal_enabled" style="min-width:100px;">
 		            <option value="yes" <?php if (get_option('jigoshop_paypal_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>

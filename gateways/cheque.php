@@ -39,7 +39,7 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 	 **/
 	public function admin_options() {
     	?>
-    	<thead><tr><th scope="col" width="200px"><?php _e('Cheque Payment', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('Allows cheque payments. Why would you take cheques in this day and age? Well you probably wouldn\'t but it does allow you to make test purchases without having to use the sandbox area of a payment gateway which is useful for demonstrating to clients and for testing order emails and the \'success\' pages etc.', 'jigoshop'); ?></th></tr></thead>
+    	<thead><tr><th scope="col" width="200px"><?php _e('Cheque Payment', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('Allows cheque payments. Allows you to make test purchases without having to use the sandbox area of a payment gateway. Quite useful for demonstrating to clients and for testing order emails and the \'success\' pages etc.', 'jigoshop'); ?></th></tr></thead>
     	<tr>
 	        <td class="titledesc"><?php _e('Enable Cheque Payment', 'jigoshop') ?>:</td>
 	        <td class="forminp">
