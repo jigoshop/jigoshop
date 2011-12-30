@@ -378,6 +378,16 @@ function jigoshop_bulk_actions( $actions ) {
 add_filter( 'bulk_actions-edit-shop_order', 'jigoshop_bulk_actions' );
 
 /**
+ * Adds downloadable product support for thickbox
+ * @todo: not sure if this is the best place for this?
+ */
+function jigoshop_media_upload_downloadable_product() {
+	do_action('media_upload_file');
+}
+
+add_action('media_upload_downloadable_product', 'jigoshop_media_upload_downloadable_product');
+
+/**
  * Order messages
  **/
 function jigoshop_post_updated_messages( $messages ) {

@@ -90,12 +90,36 @@
 					tb_remove();
 				}
 
-				// Why do we need this? -Rob
+				// @todo: Why do we need this? -Rob
 				// formfield = $('.upload_image_id', $parent).attr('name');
 
 				// Show thickbox
 				tb_show('', 'media-upload.php?post_id'+post_id+'&type=image&TB_iframe=true');
 			}
+		})
+
+		.on('click', '.upload_file_button', function(e) {
+
+			// Disable default action
+			e.preventDefault();
+
+			// Set up variables
+			var post_id = $(this).parents('.jigoshop_variation').attr('rel');
+			
+			window.send_to_editor = function(html) {
+
+				// Attach the file URI to the relevant 
+				$(this).prev().val( $(html).attr('href') );
+
+				// Hide thickbox
+				tb_remove();
+			}
+
+			// @todo: Why do we need this? -Rob
+			// formfield = $(parent).attr('name');
+			
+			// Show thickbox
+			tb_show('', 'media-upload.php?post_id=' + post_id + '&type=downloadable_product&from=jigoshop_variation&TB_iframe=true');
 		})
 
 		.on('click', '#do_actions', function(e) {
@@ -113,7 +137,6 @@
 
 		.on({
 			remove_all: function(e) {
-
 				if( ! confirm( 'Are you sure you want to delete all variations' ) )
 					return false;
 
@@ -153,6 +176,7 @@
 				alert('Default clicked');
 			}
 		});
+
 	});
 
 	function remove_variation( $panel ) {

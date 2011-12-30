@@ -404,17 +404,18 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 						</td>
 					</tr>
 					<tr class="downloadable options" style="display:none;">
-						<td colspan="2">
+						<td colspan="3">
 							<label><?php _e('File Location', 'jigoshop') ?>
 								<input type="text" name="<?php echo $this->field_name('file_path', $variation) ?>" value="<?php echo isset($meta['file_path'][0]) ? $meta['file_path'][0] : null; ?>" />
+								<input type="submit" class="upload_file_button button-secondary" value="Upload">
 							</label>
 						</td>
 						<td>
-							<label>&nbsp;
-								<input type="submit" class="button-secondary" value="Upload">
+							<label><?php _e('Download Limit', 'jigoshop') ?>
+								<input type="text" name="<?php echo $this->field_name('download_limit', $variation) ?>" value="<?php echo isset($meta['file_path'][0]) ? $meta['download_limit'][0] : null; ?>" />
 							</label>
 						</td>
-						<td colspan="4">
+						<td colspan="3">
 								&nbsp;
 						</td>
 					</tr>
