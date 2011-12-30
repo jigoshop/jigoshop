@@ -17,16 +17,16 @@
     background: url(../images/icons/menu_icons.png) no-repeat -35px 0px !important;
 }
 
-#menu-posts-shoporder .wp-menu-image {
+#menu-posts-shop_order .wp-menu-image {
     background: url(../images/icons/menu_icons.png) no-repeat -70px -32px !important;
 }
-#menu-posts-shoporder:hover .wp-menu-image,
-#menu-posts-shoporder.wp-has-current-submenu .wp-menu-image {
+#menu-posts-shop_order:hover .wp-menu-image,
+#menu-posts-shop_order.wp-has-current-submenu .wp-menu-image {
     background: url(../images/icons/menu_icons.png) no-repeat -70px 0px !important;
 }
 
 
-#icon-jigoshop, .jigoshop_icon, .icon32-posts-product, .icon32-posts-shoporder {
+#icon-jigoshop, .jigoshop_icon, .icon32-posts-product, .icon32-posts-shop_order {
 	background-image: url(../images/icons/jigoshop-icons.png) !important;
 	background-position: -11px -5px;
 }
@@ -36,7 +36,7 @@
 .icon32-posts-product {
 	background-position: -69px -5px !important;
 }
-.icon32-posts-shoporder {
+.icon32-posts-shop_order {
 	background-position: -127px -5px !important;
 }
 .icon32-attributes {
@@ -87,40 +87,57 @@
 		color: #999;
 	}
 }
-dl.totals {
+ul.totals {
 	margin: 6px 6px 0;
 	float: left;
-	dt {
+	li {
 		float: left;
+		clear: both;
 		width: 100%;
 		font-size: 1.2em;
-		font-weight: bold;
-		line-height: 2em;
-	}
-	dd {
-		line-height: 2em;
-		font-size: 1.2em;
-		float: left;
-		width: 100%;
+		line-height: 1.2;
+		margin: 0;
+		padding: 0 0 9px;
+
+		label {
+			display: block;
+			font-size: 0.8em;
+			padding: 0 0 2px;
+			color: #333;
+		}
 		input {
 			width: 100%;
-			vertical-align: middle;
-			float: left;
-			font-size: 1em;
-			margin: 0 !important;
+			margin: 0;
+
+			&.first {
+				width: 49%;
+			}
+			&.last {
+				width: 49%;
+			}
 		}
-		input.first {
-			width: 49%;
-			float: left;
+	}
+
+	li.left {
+		float:left;
+		width: 49%;
+		clear: none;
+		input {
+			width: 100%;
 		}
-		input.last {
-			width: 49%;
-			float: right;
+	}
+	li.right {
+		float: right;
+		width: 49%;
+		clear: none;
+		input {
+			width: 100%;
 		}
 	}
 }
 .jigoshop_order_items_wrapper {
 	margin: 0;
+	overflow: auto;
 	table.jigoshop_order_items {
 		width: 100%;
 		background: #fff;
@@ -563,11 +580,11 @@ ul.recent-orders {
 	margin-top: 0.5em !important;
 	.button {
 		float: left;
-		margin: 0 3px 3px 0 !important;
+		margin: 0 3px 3px 0;
 	}
 	.button-right {
 		float: right;
-		margin: 0 0 3px 3px !important;
+		margin: 0 0 3px 3px;
 	}
 	td, th {
 		padding: 9px 9px;
@@ -656,6 +673,26 @@ p.taxrow label {
 	table.coupon_rows {
 		border: 0 !important;
 		width: 100%;
+		a.dp-choose-date {
+			float: left;
+			width: 16px;
+			height: 16px;
+			padding: 0;
+			margin: 4px 9px 0 3px;
+			display: block;
+			text-indent: -2000px;
+			overflow: hidden;
+			background: url(../images/calendar.png) no-repeat;
+
+			&.disabled {
+				background-position: 0 -20px;
+				cursor: default;
+			}
+		}
+		input.dp-applied {
+			width: 140px;
+			float: left;
+		}
 		thead {
 			th {
 				padding: 1px;
@@ -671,7 +708,7 @@ p.taxrow label {
 				border: 0;
 				vertical-align: middle;
 				input.text {
-					width: 95px;
+					width: 85px;
 				}
 			}
 		}
@@ -714,9 +751,10 @@ a.tips {
 #jigoshop-product-data ul.product_data_tabs, .jigoshop ul.tabs {
 	background: #ececec;
 	padding: 7px 9px 0;
+	margin: 0;
 	overflow: hidden;
 	zoom: 1;
-	line-height: 1em;
+	line-height: 1;
 }
 #jigoshop-product-data ul.product_data_tabs li, .jigoshop ul.tabs li {
 	float: left;
