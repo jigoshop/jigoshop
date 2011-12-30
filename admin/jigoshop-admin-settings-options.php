@@ -90,11 +90,39 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_weight_unit',
 		'css' 		=> 'min-width:200px;',
-		'std' 		=> 'GBP',
+		'std' 		=> 'kg',
 		'type' 		=> 'select',
 		'options' => array(
 			'kg' => __('kg', 'jigoshop'),
 			'lbs' => __('lbs', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Enable product dimensions','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_enable_dimensions',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'yes',
+		'type' 		=> 'select',
+		'options' => array(
+			'yes' => __('Yes', 'jigoshop'),
+			'no'  => __('No', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Dimensions Unit', 'jigoshop'),
+		'desc' 		=> __("This controls what units you will define dimensions in.", 'jigoshop'),
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_dimension_unit',
+		'css' 		=> 'min-width:200px;',
+		'std' 		=> 'cm',
+		'type' 		=> 'select',
+		'options' => array(
+			'cm' => __('centimeters', 'jigoshop'),
+			'in' => __('inches', 'jigoshop')
 		)
 	),
 

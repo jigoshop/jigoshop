@@ -59,6 +59,9 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 		'regular_price',
 		'sale_price',
 		'weight',
+		'length',
+		'width',
+		'height',
 		'tax_status',
 		'tax_class',
 		'stock_status'
