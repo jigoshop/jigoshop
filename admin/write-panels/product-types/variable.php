@@ -177,8 +177,13 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 		<div id='variable_product_options' class='panel'>
 			<?php if ( $this->has_variable_attributes($attributes) ): ?>
 			<div class="controls">
+				<select>
+					<option>Select Default Variation</option>
+					<option>Red, TShirt, Orange Green Yellow </option>
+				</select>
 				<select name="variation_actions">
 					<option value="default"><?php _e('Bulk Actions', 'jigoshop') ?></option>
+					<option value="remove_all"><?php _e('Add All Variations', 'jigoshop') ?></option>
 					<option value="remove_all"><?php _e('Remove All Variations', 'jigoshop') ?></option>
 					<option value="set_all_regular_prices"><?php _e('Set all Prices', 'jigoshop') ?></option>
 					<option value="set_all_sale_prices"><?php _e('Set all Sale Prices', 'jigoshop') ?></option>
@@ -188,7 +193,6 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 					<option value="set_all_length"><?php _e('Set all Length', 'jigoshop') ?></option>
 					<option value="set_all_height"><?php _e('Set all Height', 'jigoshop') ?></option>
 				</select>
-
 				<input id="do_actions" type="submit" class="button-secondary" value="Apply">
 
 				<button type='button' class='button button-primary add_variation'<?php disabled($this->has_variable_attributes($attributes), false) ?>><?php _e('Add Variation', 'jigoshop') ?></button>
@@ -387,7 +391,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 							</label>
 						</td>
 					</tr>
-					<tr class="simple options" style="display: table-row;">
+					<tr class="simple options" <?php echo ('simple' == $product_type ? 'style="display: table-row;"' : 'style="display: none;"');?>>
 						<td>
 							<label><?php _e('Weight', 'jigoshop') ?>
 								<input type="text" size="5" name="<?php echo $this->field_name('weight', $variation) ?>" value="<?php echo isset($meta['weight'][0]) ? $meta['weight'][0] : null; ?>" />
@@ -403,7 +407,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 							</td>
 						</td>
 					</tr>
-					<tr class="downloadable options" style="display:none;">
+					<tr class="downloadable options" <?php echo ('downloadable' == $product_type) ? 'style="display: table-row;"' : 'style="display: none !important;"';?>>
 						<td colspan="3">
 							<label><?php _e('File Location', 'jigoshop') ?>
 								<input type="text" name="<?php echo $this->field_name('file_path', $variation) ?>" value="<?php echo isset($meta['file_path'][0]) ? $meta['file_path'][0] : null; ?>" />
@@ -419,7 +423,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 								&nbsp;
 						</td>
 					</tr>
-					<tr class="virtual options" style="display: none;">
+					<tr class="virtual options" <?php echo ('virtual' == $product_type ? 'style="display: table-row;"' : 'style="display: none;"');?>>
 						<td colspan="7">
 							&nbsp;
 						</td>
