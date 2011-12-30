@@ -135,6 +135,7 @@ We have a <a href="http://jigoshop.com/forums" title="Jigoshop support forum">co
 = 0.9.9.4 =
 * added option for out of stock notification that sets products to hidden after Order quantity processing
 * added support for backorders on variations
+* added product dimensions for length, width, and height
 * product thumbnails will now order themselves based on WordPress Gallery Order
 * products can now display a percentage saved for products on sale
 * changed datepicker to work with WordPress 3.3

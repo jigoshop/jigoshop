@@ -239,13 +239,16 @@ if (!function_exists('jigoshop_template_single_meta')) {
 		if ($_product->is_type('simple') && get_option('jigoshop_enable_sku')=='yes') :
 			echo '<div class="sku">SKU: ' . $_product->sku . '</div>';
 		endif;
-		if (get_option('jigoshop_enable_weight')=='yes' && $_product->data['weight'] != '') :
+		if (get_option('jigoshop_enable_weight')=='yes' && !empty($_product->data['weight']) ) :
 			echo '<div class="weight">' . __('Weight: ', 'jigoshop') . $_product->data['weight'] . ' ' . get_option('jigoshop_weight_unit') . '</div>';
 		endif;
 		if (get_option('jigoshop_enable_dimensions')=='yes') :
-			echo '<div class="length">' . __('Length: ', 'jigoshop') . $_product->data['length'] . ' ' . get_option('jigoshop_dimension_unit') . '</div>';
-			echo '<div class="width">' . __('Width: ', 'jigoshop') . $_product->data['width'] . ' ' . get_option('jigoshop_dimension_unit') . '</div>';
-			echo '<div class="height">' . __('Height: ', 'jgioshop') . $_product->data['height'] . ' ' . get_option('jigoshop_dimension_unit') . '</div>';
+			if ( !empty($_product->data['length']) )
+				echo '<div class="length">' . __('Length: ', 'jigoshop') . $_product->data['length'] . ' ' . get_option('jigoshop_dimension_unit') . '</div>';
+			if ( !empty($_product->data['width']) )
+				echo '<div class="width">' . __('Width: ', 'jigoshop') . $_product->data['width'] . ' ' . get_option('jigoshop_dimension_unit') . '</div>';
+			if ( !empty($_product->data['height']) )
+				echo '<div class="height">' . __('Height: ', 'jgioshop') . $_product->data['height'] . ' ' . get_option('jigoshop_dimension_unit') . '</div>';
 		endif;
 		echo $_product->get_categories( ', ', ' <div class="posted_in">' . __( 'Posted in ', 'jigoshop' ) . '', '.</div>');
 		echo $_product->get_tags( ', ', ' <div class="tagged_as">' . __( 'Tagged as ', 'jigoshop' ) . '', '.</div>');
