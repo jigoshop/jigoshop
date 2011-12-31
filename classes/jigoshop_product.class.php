@@ -31,8 +31,8 @@ class jigoshop_product {
 
 	public $meta; // for get_child()
 
-	private $regular_price;
-	private $sale_price;
+	protected $regular_price;
+	protected $sale_price;
 	private $sale_price_dates_from;
 	private $sale_price_dates_to;
 
@@ -101,11 +101,6 @@ class jigoshop_product {
 		$this->backorders				= isset($meta['backorders'][0]) ? $meta['backorders'][0] : null;
 		$this->stock					= isset($meta['stock'][0]) ? $meta['stock'][0] : null;
 		$this->stock_sold				= isset($meta['stock_sold'][0]) ? $meta['stock_sold'][0] : null;
-
-		foreach( $this->get_children() as $child_ID ) {
-			$child = $this->get_child($child_ID);
-			var_dump($child);
-		}
 
 		return $this;
 	}

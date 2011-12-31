@@ -18,21 +18,51 @@
  */
 class jigoshop_product_variation extends jigoshop_product {
 	
-	public $variation;
-	public $variation_data;
-	public $variation_id;
-	public $variation_has_weight;
-	public $variation_has_price;
-	public $variation_has_sale_price;
-	public $variation_has_stock;
-	public $variation_has_sku;
+	// public $variation;
+	// public $variation_data;
+	// public $variation_id;
+	// public $variation_has_weight;
+	// public $variation_has_price;
+	// public $variation_has_sale_price;
+	// public $variation_has_stock;
+	// public $variation_has_sku;
+
+	// Other bits & bobs;
+	private $parent_id;
+	private $variation_data;
+
+	public function __construct( $ID ) {
+
+		$meta = get_post_custom( $ID );
+
+		// @todo: Why are we doing this? -Rob
+		$this->parent_id = wp_get_post_parent_id( $ID );
+		parent::__construct( $this->parent_id );
+
+		$this->meta = array_merge($this->meta, $meta);
+		$this->variation_data = maybe_unserialize($this->meta['variation_data'][0]);
+		parent::__construct( $ID );
+		
+		var_dump($this);
+
+		
+
+		// Override with the variation data
+		//parent::__construct( $ID );
+
+		// Get the variation data
+
+		//$this->variation_data = $this->meta['variation_data'][0];
+
+		//var_dump($this);
+	}
 	
 	/**
 	 * Loads all product data from custom fields
 	 *
 	 * @param   int		$id		ID of the product to load
 	 */
-	function jigoshop_product_variation( $variation_id ) {
+	/*function jigoshop_product_variation( $variation_id ) {
 		//load variation data
 		$this->variation_id = $variation_id;
 		$product_custom_fields = get_post_custom( $this->variation_id );
@@ -45,7 +75,7 @@ class jigoshop_product_variation extends jigoshop_product {
 
         /*
          * Set variation information by combining variation options and parent options
-         */
+         
         $this->sku = $this->id;
         if (isset($product_custom_fields['SKU'][0]) && !empty($product_custom_fields['SKU'][0])) {
             $this->variation_has_sku = true;
@@ -123,7 +153,7 @@ class jigoshop_product_variation extends jigoshop_product {
         }
 		
 		//parent::jigoshop_product( $this->variation->post_parent );
-	}
+	}*/
 
 	/** Get the product's post data */
 	function get_variation_post_data() {
