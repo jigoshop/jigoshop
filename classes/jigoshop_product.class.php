@@ -605,6 +605,49 @@ class jigoshop_product {
 		return get_the_term_list($this->id, 'product_tag', $before, $sep, $after);
 	}
 
+	// Returns the product rating in html format
+	// TODO: optimize this code
+	function get_rating_html( $location = '' ) {
+		
+		if( $location ) 
+			$location = '_'.$location;
+		$star_size = apply_filters('jigoshop_star_rating_size'.$location, 16);
+		
+		global $wpdb;
+
+		// Do we really need this? -Rob
+		$count = $wpdb->get_var("
+			SELECT COUNT(meta_value) FROM $wpdb->commentmeta 
+			LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
+			WHERE meta_key = 'rating'
+			AND comment_post_ID = $this->id
+			AND comment_approved = '1'
+			AND meta_value > 0
+		");
+		
+		$ratings = $wpdb->get_var("
+			SELECT SUM(meta_value) FROM $wpdb->commentmeta 
+			LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
+			WHERE meta_key = 'rating'
+			AND comment_post_ID = $this->id
+			AND comment_approved = '1'
+		");
+	
+		// If we don't have any posts
+		if ( ! (bool)$count )
+			return false;
+
+		// Figure out the average rating
+		$average_rating = number_format($ratings / $count, 2);
+
+		// If we don't have an average rating
+		if( ! (bool)$average_rating )
+			return false;
+
+		// If all goes well echo out the html
+		return '<div class="star-rating" title="'.sprintf(__('Rated %s out of 5', 'jigoshop'), $average_rating).'"><span style="width:'.($average_rating*$star_size).'px"><span class="rating">'.$average_rating.'</span> '.__('out of 5', 'jigoshop').'</span></div>';
+	}
+
 	/** Get and return related products */
 	function get_related( $limit = 5 ) {
 		global $wpdb, $all_post_ids; /* $all_post_ids doesn't appear to be used in this file, checking -JAP- */
