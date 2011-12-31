@@ -26,6 +26,7 @@ class jigoshop_tax {
     private $imploded_tax_amounts;
     private $tax_divisor;
     private $total_tax_rate;
+    private $shipping_tax_class;
 
     /**
      * sets up current tax class without a divisor. May or may not have
@@ -39,7 +40,8 @@ class jigoshop_tax {
         $this->tax_amounts = array();
         $this->retail_tax_amount = 0;
         $this->imploded_tax_amounts = '';
-        $this->total_tax_rate = 0; //curently not including shipping tax
+        $this->total_tax_rate = 0; 
+        $this->shipping_tax_class = '';
     }
 
     /**
@@ -177,7 +179,9 @@ class jigoshop_tax {
             endif;
         endif;
 
-        if (array_key_exists('retail', $rate)) :
+        // if apply_to_retail has been set to false, don't reset it. 
+        // eg. Shipping tax could reset it to true again
+        if (array_key_exists('retail', $rate) && $this->apply_to_retail) :
             $this->apply_to_retail = ( $rate['retail'] == 'yes' ? true : false );
         endif;
 
@@ -191,14 +195,14 @@ class jigoshop_tax {
      */
     public function get_tax_classes_for_customer() {
         $country = jigoshop_customer::get_shipping_country();
-        $state = jigoshop_customer::get_shipping_state();
+        $state = (jigoshop_customer::get_shipping_state() ? jigoshop_customer::get_shipping_state() : '*');
 
         return array_keys($this->rates[$country][$state]);
     }
 
-    private function get_online_label_for_customer($class) {
+    private function get_online_label_for_customer($class = '*') {
         $country = jigoshop_customer::get_shipping_country();
-        $state = jigoshop_customer::get_shipping_state();
+        $state = (jigoshop_customer::get_shipping_state() ? jigoshop_customer::get_shipping_state() : '*');
 
         return $this->rates[$country][$state][$class]['label'];
     }
@@ -209,7 +213,7 @@ class jigoshop_tax {
      */
     public function get_tax_classes_for_base() {
         $country = jigoshop_countries::get_base_country();
-        $state = jigoshop_countries::get_base_state();
+        $state = (jigoshop_countries::get_base_state() ? jigoshop_countries::get_base_state() : '*');
 
         return array_keys($this->rates[$country][$state]);
     }
@@ -286,6 +290,20 @@ class jigoshop_tax {
         $this->total_tax_rate = round($total_tax / $total_item_price * 100, 2); //TODO: add shipping tax to this
     }
 
+    // TODO: prices include tax?? Do we worry about shipping tax?
+    public function update_tax_amount_with_shipping_tax($total_price) {
+        $this->update_tax_amount($this->shipping_tax_class, $total_price);
+    }
+    
+    //TODO: what about prices_include_tax??? What happens here? does shipping affect those prices?
+    public function update_tax_amount($tax_class, $total_price) {
+        if ($tax_class) :
+            $tax_rate = $this->get_rate($tax_class);
+            $tax = $this->calc_tax($total_price, $tax_rate, false);//for now just don't include taxes in price.
+            $this->tax_amounts[$tax_class]['amount'] = $tax;
+            $this->imploded_tax_amounts = $this->array_implode($this->tax_amounts);
+        endif;
+    }
     /**
      * retrieve the tax classes that have been applied to the items
      * @return type array of tax classes
@@ -308,8 +326,18 @@ class jigoshop_tax {
      * @param type $tax_class the tax class to retrieve the tax amount for
      * @return type returns the tax amount with 2 decimal places
      */
-    function get_tax_amount($tax_class) {
+    function get_tax_amount($tax_class, $has_shipping_tax = true) {
         return ($this->tax_divisor > 0 ? $this->tax_amounts[$tax_class]['amount'] / $this->tax_divisor : $this->tax_amounts[$tax_class]['amount']);
+
+/*        if ($has_shipping_tax) :
+            if ($this->shipping_tax_class == $tax_class) :
+                return ($this->tax_divisor > 0 ? ($this->tax_amounts[$tax_class]['amount'] + (jigoshop_shipping::get_tax() * $this->tax_divisor)) / $this->tax_divisor : $this->tax_amounts[$tax_class]['amount'] + jigoshop_shipping::get_tax());
+            else :
+                return ($this->tax_divisor > 0 ? $this->tax_amounts[$tax_class]['amount'] / $this->tax_divisor : $this->tax_amounts[$tax_class]['amount']);
+            endif;
+        else :
+        endif;
+*/
     }
 
     /**
@@ -331,6 +359,10 @@ class jigoshop_tax {
      */
     function is_tax_retail($tax_class) {
         return $this->tax_amounts[$tax_class]['retail'];
+    }
+    
+    function is_shipping_tax_retail() {
+        return $this->is_tax_retail($this->shipping_tax_class);
     }
 
     /**
@@ -380,24 +412,28 @@ class jigoshop_tax {
      */
     function get_shipping_tax_rate($tax_class = '') {
 
+        $this->shipping_tax_class = '';
         //Should always use shipping country and shipping state to apply taxes
         $country = jigoshop_customer::get_shipping_country();
         $state = jigoshop_customer::get_shipping_state();
 
         // If we are here then shipping is taxable - work it out
-
         if ($tax_class) :
 
             // This will be per item shipping
             $rate = $this->find_rate($country, $state, $tax_class);
 
             if (isset($rate['shipping']) && $rate['shipping'] == 'yes') :
+                $this->shipping_tax_class = $tax_class;
                 return $rate['rate'];
             else :
                 // Get standard rate
                 $rate = $this->find_rate($country, $state);
-                if (isset($rate['shipping']) && $rate['shipping'] == 'yes')
+                if (isset($rate['shipping']) && $rate['shipping'] == 'yes') :
+                    $this->shipping_tax_class = 'standard';
                     return $rate['rate'];
+                endif;
+                    
             endif;
 
         else :
@@ -413,14 +449,18 @@ class jigoshop_tax {
                 foreach (jigoshop_cart::$cart_contents as $item) :
 
                     //TODO: will need to work out this logic, since data is now data['tax_classes']
-                    if ($item['data']->data['tax_class']) :
+                    if ($item['data']->data['tax_classes']) :
+                        
+                        foreach($item['data']->data['tax_classes'] as $key=>$tax_class) :
+                            $found_rate = $this->find_rate($country, $state, $tax_class);
 
-                        $found_rate = $this->find_rate($country, $state, $item['data']->data['tax_class']);
-
-                        $found_rates[] = $found_rate['rate'];
-
-                        if (isset($found_rate['shipping']) && $found_rate['shipping'] == 'yes')
-                            $found_shipping_rates[] = $found_rate['rate'];
+                            if (isset($found_rate['shipping']) && $found_rate['shipping'] == 'yes') :
+                                $this->shipping_tax_class = $tax_class;
+                                //$found_rates[] = $found_rate['rate'];
+                                $found_shipping_rates[] = $found_rate['rate'];
+                            endif;
+                            
+                        endforeach;
 
                     endif;
 
@@ -428,25 +468,30 @@ class jigoshop_tax {
                 
             endif;
 
-            if (sizeof($found_rates) > 0 && sizeof($found_shipping_rates) > 0) :
-
-                rsort($found_rates);
+           // if (sizeof($found_rates) > 0 && sizeof($found_shipping_rates) > 0) :
+            if (sizeof($found_shipping_rates) > 0) :
+                //TODO: I don't think we really need to do a standard rate here.
+                // rsort($found_rates);
                 rsort($found_shipping_rates);
-
-                if ($found_rates[0] == $found_shipping_rates[0]) :
-                    return $found_shipping_rates[0];
-                else :
+                return $found_shipping_rates[0];
+               // if ($found_rates[0] == $found_shipping_rates[0]) :
+               //     return $found_shipping_rates[0];
+               // else :
                     // Use standard rate
-                    $rate = $this->find_rate($country, $state);
-                    if (isset($rate['shipping']) && $rate['shipping'] == 'yes')
-                        return $rate['rate'];
-                endif;
+                //    $rate = $this->find_rate($country, $state);
+               //     if (isset($rate['shipping']) && $rate['shipping'] == 'yes') :
+               //         $this->shipping_tax_class = 'standard';
+               //         return $rate['rate'];
+               //     endif;
+               // endif;
 
             else :
                 // Use standard rate
                 $rate = $this->find_rate($country, $state);
-                if (isset($rate['shipping']) && $rate['shipping'] == 'yes')
+                if (isset($rate['shipping']) && $rate['shipping'] == 'yes') :
+                    $this->shipping_tax_class = 'standard';
                     return $rate['rate'];
+                endif;
             endif;
 
         endif;
@@ -493,7 +538,7 @@ class jigoshop_tax {
         $rate = round($rate, 4);
 
         $tax_amount = $price * ($rate / 100);
-
+        
         return round($tax_amount, 2);
     }
 
