@@ -179,7 +179,6 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			<div class="controls">
 				<select name="variation_actions">
 					<option value="default"><?php _e('Bulk Actions', 'jigoshop') ?></option>
-					<option value="remove_all"><?php _e('Add All Variations', 'jigoshop') ?></option>
 					<option value="remove_all"><?php _e('Remove All Variations', 'jigoshop') ?></option>
 					<option value="set_all_regular_prices"><?php _e('Set all Prices', 'jigoshop') ?></option>
 					<option value="set_all_sale_prices"><?php _e('Set all Sale Prices', 'jigoshop') ?></option>
