@@ -19,6 +19,144 @@ function get_jigoshop_my_account($atts) {
     return jigoshop::shortcode_wrapper('jigoshop_my_account', $atts);
 }
 
+function jigoshop_my_account( $atts ) {
+
+	extract(shortcode_atts(array(
+    'recent_orders' => 5
+	), $atts));
+
+  	$recent_orders = ('all' == $recent_orders) ? -1 : $recent_orders;
+
+	global $post, $current_user;
+
+	get_currentuserinfo();
+
+	jigoshop::show_messages();
+
+	if (is_user_logged_in()) :
+
+		?>
+		<p><?php echo sprintf( __('Hello, <strong>%s</strong>. From your account dashboard you can view your recent orders, manage your shipping and billing addresses and <a href="%s">change your password</a>.', 'jigoshop'), $current_user->display_name, get_permalink(get_option('jigoshop_change_password_page_id'))); ?></p>
+
+
+		<?php if ($downloads = jigoshop_customer::get_downloadable_products()) : ?>
+		<h2><?php _e('Available downloads', 'jigoshop'); ?></h2>
+		<ul class="digital-downloads">
+			<?php foreach ($downloads as $download) : ?>
+				<li><?php if (is_numeric($download['downloads_remaining'])) : ?><span class="count"><?php echo $download['downloads_remaining'] . _n(' download Remaining', ' downloads Remaining', $download['downloads_remaining'], 'jigoshop'); ?></span><?php endif; ?> <a href="<?php echo $download['download_url']; ?>"><?php echo $download['download_name']; ?></a></li>
+			<?php endforeach; ?>
+		</ul>
+		<?php endif; ?>
+
+
+		<h2><?php _e('Recent Orders', 'jigoshop'); ?></h2>
+		<table class="shop_table my_account_orders">
+
+			<thead>
+				<tr>
+					<th><span class="nobr"><?php _e('#', 'jigoshop'); ?></span></th>
+					<th><span class="nobr"><?php _e('Date', 'jigoshop'); ?></span></th>
+					<th><span class="nobr"><?php _e('Ship to', 'jigoshop'); ?></span></th>
+					<th><span class="nobr"><?php _e('Total', 'jigoshop'); ?></span></th>
+					<th colspan="2"><span class="nobr"><?php _e('Status', 'jigoshop'); ?></span></th>
+				</tr>
+			</thead>
+
+			<tbody><?php
+				$jigoshop_orders = &new jigoshop_orders();
+				$jigoshop_orders->get_customer_orders( get_current_user_id(), $recent_orders );
+				if ($jigoshop_orders->orders) foreach ($jigoshop_orders->orders as $order) :
+					?><tr class="order">
+						<td><?php echo $order->id; ?></td>
+						<td><time title="<?php echo date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($order->order_date)); ?>"><?php echo date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($order->order_date)); ?></time></td>
+						<td><address><?php if ($order->formatted_shipping_address) echo $order->formatted_shipping_address; else echo '&ndash;'; ?></address></td>
+						<td><?php echo jigoshop_price($order->order_total); ?></td>
+						<td><?php echo $order->status; ?></td>
+						<td style="text-align:right; white-space:nowrap;">
+							<?php if ($order->status=='pending') : ?>
+								<a href="<?php echo $order->get_checkout_payment_url(); ?>" class="button pay"><?php _e('Pay', 'jigoshop'); ?></a>
+								<a href="<?php echo $order->get_cancel_order_url(); ?>" class="button cancel"><?php _e('Cancel', 'jigoshop'); ?></a>
+							<?php endif; ?>
+							<a href="<?php echo add_query_arg('order', $order->id, get_permalink(get_option('jigoshop_view_order_page_id'))); ?>" class="button"><?php _e('View', 'jigoshop'); ?></a>
+						</td>
+					</tr><?php
+				endforeach;
+			?></tbody>
+
+		</table>
+
+		<h2><?php _e('My Addresses', 'jigoshop'); ?></h2>
+		<p><?php _e('The following addresses will be used on the checkout page by default.', 'jigoshop'); ?></p>
+		<div class="col2-set addresses">
+
+			<div class="col-1">
+
+				<header class="title">
+					<h3><?php _e('Billing Address', 'jigoshop'); ?></h3>
+					<a href="<?php echo add_query_arg('address', 'billing', get_permalink(get_option('jigoshop_edit_address_page_id'))); ?>" class="edit"><?php _e('Edit', 'jigoshop'); ?></a>
+				</header>
+				<address>
+					<?php
+						if (isset(jigoshop_countries::$countries->countries[get_user_meta( get_current_user_id(), 'billing-country', true )])) $country = jigoshop_countries::$countries->countries[get_user_meta( get_current_user_id(), 'billing-country', true )]; else $country = '';
+						$address = array(
+							get_user_meta( get_current_user_id(), 'billing-first_name', true ) . ' ' . get_user_meta( get_current_user_id(), 'billing-last_name', true )
+							,get_user_meta( get_current_user_id(), 'billing-company', true )
+							,get_user_meta( get_current_user_id(), 'billing-address', true )
+							,get_user_meta( get_current_user_id(), 'billing-address2', true )
+							,get_user_meta( get_current_user_id(), 'billing-city', true )
+							,get_user_meta( get_current_user_id(), 'billing-state', true )
+							,get_user_meta( get_current_user_id(), 'billing-postcode', true )
+							,$country
+						);
+						$address = array_map('trim', $address);
+						$formatted_address = array();
+						foreach ($address as $part) if (!empty($part)) $formatted_address[] = $part;
+						$formatted_address = implode(', ', $formatted_address);
+						if (!$formatted_address) _e('You have not set up a billing address yet.', 'jigoshop'); else echo $formatted_address;
+					?>
+				</address>
+
+			</div><!-- /.col-1 -->
+
+			<div class="col-2">
+
+				<header class="title">
+					<h3><?php _e('Shipping Address', 'jigoshop'); ?></h3>
+					<a href="<?php echo add_query_arg('address', 'shipping', get_permalink(get_option('jigoshop_edit_address_page_id'))); ?>" class="edit"><?php _e('Edit', 'jigoshop'); ?></a>
+				</header>
+				<address>
+					<?php
+						if (isset(jigoshop_countries::$countries->countries[get_user_meta( get_current_user_id(), 'shipping-country', true )])) $country = jigoshop_countries::$countries->countries[get_user_meta( get_current_user_id(), 'shipping-country', true )]; else $country = '';
+						$address = array(
+							get_user_meta( get_current_user_id(), 'shipping-first_name', true ) . ' ' . get_user_meta( get_current_user_id(), 'shipping-last_name', true )
+							,get_user_meta( get_current_user_id(), 'shipping-company', true )
+							,get_user_meta( get_current_user_id(), 'shipping-address', true )
+							,get_user_meta( get_current_user_id(), 'shipping-address2', true )
+							,get_user_meta( get_current_user_id(), 'shipping-city', true )
+							,get_user_meta( get_current_user_id(), 'shipping-state', true )
+							,get_user_meta( get_current_user_id(), 'shipping-postcode', true )
+							,$country
+						);
+						$address = array_map('trim', $address);
+						$formatted_address = array();
+						foreach ($address as $part) if (!empty($part)) $formatted_address[] = $part;
+						$formatted_address = implode(', ', $formatted_address);
+						if (!$formatted_address) _e('You have not set up a shipping address yet.', 'jigoshop'); else echo $formatted_address;
+					?>
+				</address>
+
+			</div><!-- /.col-2 -->
+
+		</div><!-- /.col2-set -->
+		<?php
+
+	else :
+
+		jigoshop_login_form();
+
+	endif;
+}
+
 function jigoshop_my_account($atts) {
 
     extract(shortcode_atts(array(
@@ -618,4 +756,6 @@ function jigoshop_view_order() {
         exit;
 
     endif;
+
+    
 }

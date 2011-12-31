@@ -45,7 +45,7 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 	 **/
 	public function admin_options() {
     	?>
-    	<thead><tr><th scope="col" width="200px"><?php _e('Bank Transfer', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('Accept Bank Transfers as a method of payment, there is no automated process associated with this, you must manually process when you receive payment.', 'jigoshop'); ?></th></tr></thead>
+    	<thead><tr><th scope="col" width="200px"><?php _e('Bank Transfer', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('Accept Bank Transfers as a method of payment. There is no automated process associated with this, you must manually process an order when you receive payment.', 'jigoshop'); ?></th></tr></thead>
     	<tr>
 	        <td class="titledesc"><?php _e('Enable Bank Transfer', 'jigoshop') ?>:</td>
 	        <td class="forminp">

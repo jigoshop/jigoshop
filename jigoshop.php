@@ -16,7 +16,7 @@
  *
  * Version:				0.9.9.3
  * Requires at least:	3.1
- * Tested up to:		3.3 Beta 3
+ * Tested up to:		3.3
  *
  * @package    			Jigoshop
  * @category   			Core
@@ -25,7 +25,7 @@
  * @license    			http://jigoshop.com/license/commercial-edition
  */
 
-if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", "0.9.9.3");
+if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", "0.9.9.4 RC1");
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
@@ -33,22 +33,52 @@ load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) )
 /**
  * Installs and upgrades
  **/
-register_activation_hook( __FILE__, 'install_jigoshop' );
-
 function jigoshop_update_check() {
     if (get_site_option('jigoshop_db_version') != JIGOSHOP_VERSION) install_jigoshop();
 }
-if (is_admin()) add_action('init', 'jigoshop_update_check');
+if ( is_admin() ) {
+	include_once( 'admin/jigoshop-admin.php' );
+	register_activation_hook( __FILE__, 'install_jigoshop' );
+	add_action('init', 'jigoshop_update_check', 0);
+}
 
 /**
  * Include core files and classes
  **/
-
 include_once( 'classes/abstract/jigoshop_base.class.php' );
 include_once( 'classes/abstract/jigoshop_singleton.php' );
 include_once( 'classes/jigoshop_sanitize.class.php' );
-include_once( 'classes/jigoshop.class.php' );
+include_once( 'classes/jigoshop_validation.class.php' );
 include_once( 'jigoshop_taxonomy.php' );
+
+include_once( 'classes/jigoshop_countries.class.php' );
+include_once( 'classes/jigoshop_customer.class.php' );
+include_once( 'classes/jigoshop_product.class.php' );
+include_once( 'classes/jigoshop_product_variation.class.php' );
+include_once( 'classes/jigoshop_products.class.php' );
+include_once( 'classes/jigoshop_order.class.php' );
+include_once( 'classes/jigoshop_orders.class.php' );
+include_once( 'classes/jigoshop_tax.class.php' );
+include_once( 'classes/jigoshop_shipping.class.php' );
+include_once( 'classes/jigoshop_coupons.class.php' );
+
+include_once( 'gateways/gateways.class.php' );
+include_once( 'gateways/gateway.class.php' );
+include_once( 'gateways/bank_transfer.php' );
+include_once( 'gateways/cheque.php' );
+include_once( 'gateways/dibs.php' );
+include_once( 'gateways/paypal.php' );
+include_once( 'gateways/skrill.php' );
+
+include_once( 'shipping/shipping_method.class.php' );
+include_once( 'shipping/jigoshop_calculable_shipping.php' );
+include_once( 'shipping/flat_rate.php' );
+include_once( 'shipping/free_shipping.php' );
+
+include_once( 'classes/jigoshop.class.php' );
+include_once( 'classes/jigoshop_cart.class.php' );
+include_once( 'classes/jigoshop_checkout.class.php' );
+
 include_once( 'jigoshop_widgets.php' );
 include_once( 'jigoshop_shortcodes.php' );
 include_once( 'jigoshop_templates.php' );
@@ -56,42 +86,7 @@ include_once( 'jigoshop_template_actions.php' );
 include_once( 'jigoshop_emails.php' );
 include_once( 'jigoshop_query.php' );
 include_once( 'jigoshop_actions.php' );
-include_once( 'gateways/gateways.class.php' );
-include_once( 'gateways/gateway.class.php' );
-include_once( 'classes/jigoshop_shipping.class.php' );
-include_once( 'shipping/shipping_method.class.php' );
-include_once( 'shipping/jigoshop_calculable_shipping.php' );
 //include_once( 'jigoshop_cron.php' );	/* we may use this at some point, leaving -JAP- */
-
-/**
- * Include admin area
- **/
-if (is_admin()) include_once( 'admin/jigoshop-admin.php' );
-
-/**
- * Include all classes, drop-ins and shipping/gateways modules
- */
-$include_files = array();
-
-// Classes
-$include_files = array_merge($include_files, (array) glob( dirname(__FILE__)."/classes/*.php" ));
-
-// Shipping
-$include_files = array_merge($include_files, (array) glob( dirname(__FILE__)."/shipping/*.php" ));
-
-// Payment Gateways
-$include_files = array_merge($include_files, (array) glob( dirname(__FILE__)."/gateways/*.php" ));
-
-// Drop-ins (addons, premium features etc)
-$include_files = array_merge($include_files, (array) glob( dirname(__FILE__)."/drop-ins/*.php" ));
-
-if ($include_files) :
-	foreach($include_files as $filename) :
-		if (!empty($filename) && strstr($filename, 'php')) :
-			include_once($filename);
-		endif;
-	endforeach;
-endif;
 
 // Constants
 if (!defined('JIGOSHOP_USE_CSS')) :
@@ -102,11 +97,7 @@ if (!defined('JIGOSHOP_LOAD_FANCYBOX')) :
 	if (get_option('jigoshop_disable_fancybox')=='yes') define('JIGOSHOP_LOAD_FANCYBOX', false);
 	else define('JIGOSHOP_LOAD_FANCYBOX', true);
 endif;
-
-add_action('init', 'jigoshop_constants');
-function jigoshop_constants() {
-	define('JIGOSHOP_TEMPLATE_URL', apply_filters('jigoshop_template_url', 'jigoshop/') ); // Trailing slash is important :)
-}
+if ( !defined('JIGOSHOP_TEMPLATE_URL') ) define('JIGOSHOP_TEMPLATE_URL', 'jigoshop/');
 
 /**
  * IIS compat fix/fallback
@@ -122,22 +113,13 @@ if (!isset($_SERVER['REQUEST_URI'])) {
 function jigoshop_check_thumbnail_support() {
 	if ( ! current_theme_supports( 'post-thumbnails' ) ) {
 		add_theme_support( 'post-thumbnails' );
-		add_action( 'init', 'jigoshop_remove_post_type_thumbnail_support' );
+		remove_post_type_support( 'post', 'thumbnail' );
+		remove_post_type_support( 'page', 'thumbnail' );
+	} else {
+		add_post_type_support( 'product', 'thumbnail' );
 	}
 }
 add_action( 'after_setup_theme', 'jigoshop_check_thumbnail_support', 99 );
-
-function jigoshop_remove_post_type_thumbnail_support() {
-	remove_post_type_support( 'post', 'thumbnail' );
-	remove_post_type_support( 'page', 'thumbnail' );
-}
-
-/**
- * Filters and hooks
- **/
-add_filter( 'loop-shop-query', create_function( '', 'return array("orderby" => "'.get_option('jigoshop_catalog_sort_orderby').'","order" => "'.get_option('jigoshop_catalog_sort_direction').'");' ) );
-add_filter( 'loop_shop_columns', create_function( '', 'return '.get_option('jigoshop_catalog_columns').';' ) );
-add_filter( 'loop_shop_per_page', create_function( '', 'return '.get_option('jigoshop_catalog_per_page').';' ) );
 
 /**
  * Mail from name/email
@@ -154,94 +136,6 @@ function jigoshop_mail_from( $email ) {
 	return $email;
 }
 add_filter( 'wp_mail_from', 'jigoshop_mail_from' );
-
-/**
- * Support for Import/Export
- *
- * WordPress import should work - however, it fails to import custom product attribute taxonomies.
- * This code grabs the file before it is imported and ensures the taxonomies are created.
- **/
-
-function jigoshop_import_start() {
-
-	global $wpdb;
-
-	$id = (int) $_POST['import_id'];
-	$file = get_attached_file( $id );
-
-	$parser = new WXR_Parser();
-	$import_data = $parser->parse( $file );
-
-	if (isset($import_data['posts'])) :
-		$posts = $import_data['posts'];
-
-		if ($posts && sizeof($posts)>0) foreach ($posts as $post) :
-
-			if ($post['post_type']=='product') :
-
-				if ($post['terms'] && sizeof($post['terms'])>0) :
-
-					foreach ($post['terms'] as $term) :
-
-						$domain = $term['domain'];
-
-						if (strstr($domain, 'pa_')) :
-
-							// Make sure it exists!
-							if (!taxonomy_exists( $domain )) :
-
-								$nicename = sanitize_title(str_replace('pa_', '', $domain));
-
-								$exists_in_db = $wpdb->get_var("SELECT attribute_id FROM ".$wpdb->prefix . "jigoshop_attribute_taxonomies WHERE attribute_name = '".$nicename."';");
-
-								// Create the taxonomy
-								if (!$exists_in_db) :
-									$wpdb->insert( $wpdb->prefix . "jigoshop_attribute_taxonomies", array( 'attribute_name' => $nicename, 'attribute_type' => 'select' ), array( '%s', '%s' ) );
-								endif;
-
-								// Register the taxonomy now so that the import works!
-								register_taxonomy( $domain,
-							        array('product'),
-							        array(
-							            'hierarchical' => true,
-							            'labels' => array(
-							                    'name' => $nicename,
-							                    'singular_name' => $nicename,
-							                    'search_items' =>  __( 'Search ', 'jigoshop') . $nicename,
-							                    'all_items' => __( 'All ', 'jigoshop') . $nicename,
-							                    'parent_item' => __( 'Parent ', 'jigoshop') . $nicename,
-							                    'parent_item_colon' => __( 'Parent ', 'jigoshop') . $nicename . ':',
-							                    'edit_item' => __( 'Edit ', 'jigoshop') . $nicename,
-							                    'update_item' => __( 'Update ', 'jigoshop') . $nicename,
-							                    'add_new_item' => __( 'Add New ', 'jigoshop') . $nicename,
-							                    'new_item_name' => __( 'New ', 'jigoshop') . $nicename
-							            ),
-							            'show_ui' => false,
-							            'query_var' => true,
-							            'rewrite' => array( 'slug' => strtolower(sanitize_title($nicename)), 'with_front' => false, 'hierarchical' => true ),
-							        )
-							    );
-
-								update_option('jigowatt_update_rewrite_rules', '1');
-
-							endif;
-
-						endif;
-
-					endforeach;
-
-				endif;
-
-			endif;
-
-		endforeach;
-
-	endif;
-
-}
-
-add_action('import_start', 'jigoshop_import_start');
-
 
 
 //### Functions #########################################################
@@ -287,6 +181,8 @@ function jigoshop_get_image_size( $size ) {
 
 function jigoshop_init() {
 	
+	/* ensure nothing is output to the browser prior to this (other than headers) */
+	ob_start();
 	/* start session here after all classes are loaded to eliminate __PHP_Incomplete_Class warnings */
 	if ( !session_id() ) session_start();
 	
@@ -305,8 +201,6 @@ function jigoshop_init() {
 
 	// Include template functions here so they are pluggable by themes
 	include_once( 'jigoshop_template_functions.php' );
-
-	@ob_start();
 
 	add_role('customer', 'Customer', array(
 	    'read' => true,
@@ -901,3 +795,89 @@ function rename_attributes() {
 	}
 }
 add_action('init', 'rename_attributes');
+
+/**
+ * Support for Import/Export
+ *
+ * WordPress import should work - however, it fails to import custom product attribute taxonomies.
+ * This code grabs the file before it is imported and ensures the taxonomies are created.
+ **/
+function jigoshop_import_start() {
+
+	global $wpdb;
+
+	$id = (int) $_POST['import_id'];
+	$file = get_attached_file( $id );
+
+	$parser = new WXR_Parser();
+	$import_data = $parser->parse( $file );
+
+	if (isset($import_data['posts'])) :
+		$posts = $import_data['posts'];
+
+		if ($posts && sizeof($posts)>0) foreach ($posts as $post) :
+
+			if ($post['post_type']=='product') :
+
+				if ($post['terms'] && sizeof($post['terms'])>0) :
+
+					foreach ($post['terms'] as $term) :
+
+						$domain = $term['domain'];
+
+						if (strstr($domain, 'pa_')) :
+
+							// Make sure it exists!
+							if (!taxonomy_exists( $domain )) :
+
+								$nicename = sanitize_title(str_replace('pa_', '', $domain));
+
+								$exists_in_db = $wpdb->get_var("SELECT attribute_id FROM ".$wpdb->prefix . "jigoshop_attribute_taxonomies WHERE attribute_name = '".$nicename."';");
+
+								// Create the taxonomy
+								if (!$exists_in_db) :
+									$wpdb->insert( $wpdb->prefix . "jigoshop_attribute_taxonomies", array( 'attribute_name' => $nicename, 'attribute_type' => 'select' ), array( '%s', '%s' ) );
+								endif;
+
+								// Register the taxonomy now so that the import works!
+								register_taxonomy( $domain,
+							        array('product'),
+							        array(
+							            'hierarchical' => true,
+							            'labels' => array(
+							                    'name' => $nicename,
+							                    'singular_name' => $nicename,
+							                    'search_items' =>  __( 'Search ', 'jigoshop') . $nicename,
+							                    'all_items' => __( 'All ', 'jigoshop') . $nicename,
+							                    'parent_item' => __( 'Parent ', 'jigoshop') . $nicename,
+							                    'parent_item_colon' => __( 'Parent ', 'jigoshop') . $nicename . ':',
+							                    'edit_item' => __( 'Edit ', 'jigoshop') . $nicename,
+							                    'update_item' => __( 'Update ', 'jigoshop') . $nicename,
+							                    'add_new_item' => __( 'Add New ', 'jigoshop') . $nicename,
+							                    'new_item_name' => __( 'New ', 'jigoshop') . $nicename
+							            ),
+							            'show_ui' => false,
+							            'query_var' => true,
+							            'rewrite' => array( 'slug' => strtolower(sanitize_title($nicename)), 'with_front' => false, 'hierarchical' => true ),
+							        )
+							    );
+
+								update_option('jigowatt_update_rewrite_rules', '1');
+
+							endif;
+
+						endif;
+
+					endforeach;
+
+				endif;
+
+			endif;
+
+		endforeach;
+
+	endif;
+
+}
+add_action('import_start', 'jigoshop_import_start');
+

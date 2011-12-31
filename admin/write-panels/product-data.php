@@ -72,7 +72,7 @@ function jigoshop_product_data_box() {
 			$posts_in = (array) get_objects_in_term( get_term_by( 'slug', 'grouped', 'product_type' )->term_id, 'product_type' );
 			$posts_in = array_unique($posts_in);
 			
-			$field = array( 'id' => 'parent_id', 'label' => __('Parent post', 'jigoshop') );
+			$field = array( 'id' => 'parent_id', 'label' => __('Parent Product', 'jigoshop') );
 			echo '<p class="form-field parent_id_field"><label for="'.$field['id'].'">'.$field['label'].'</label><select id="'.$field['id'].'" name="'.$field['id'].'"><option value="">'.__('Choose a grouped product&hellip;', 'jigoshop').'</option>';
 
 			if (sizeof($posts_in)>0) :
@@ -110,7 +110,7 @@ function jigoshop_product_data_box() {
 			
 			// Summary
 			echo '<p class="form-field"><label for="excerpt">' . __('Summary', 'jigoshop') . ':</label>
-			<textarea name="excerpt" id="excerpt" placeholder="' . __('Add a summary for your product &ndash; this is a quick description to encourage users to view the product.', 'jigoshop') . '">'.esc_html( $post->post_excerpt ).'</textarea></p>';
+			<textarea name="excerpt" id="excerpt" placeholder="' . __('Add a summary for your product &ndash; this is a quick description to encourage users to purchase the product.', 'jigoshop') . '">'.esc_html( $post->post_excerpt ).'</textarea></p>';
 			
 			// SKU
 			$field = array( 'id' => 'sku', 'label' => __('SKU', 'jigoshop') );
@@ -131,6 +131,32 @@ function jigoshop_product_data_box() {
 				echo '<p class="form-field">
 					<label for="'.$field['id'].'">'.$field['label'].'</label>
 					<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" placeholder="0.00" /></p>';
+			else:
+				echo '<input type="hidden" name="'.$field['id'].'" value="'.$data[$field['id']].'" />';
+			endif;
+			
+			// Dimensions
+			$field = array( 'id' => 'length', 'label' => __('Length', 'jigoshop') . ' ('.get_option('jigoshop_dimension_unit').'):' );
+			if( get_option('jigoshop_enable_dimensions', true) !== 'no' ) :
+				echo '<p class="form-field">
+					<label for="'.$field['id'].'">'.$field['label'].'</label>
+					<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" placeholder="" /></p>';
+			else:
+				echo '<input type="hidden" name="'.$field['id'].'" value="'.$data[$field['id']].'" />';
+			endif;
+			$field = array( 'id' => 'width', 'label' => __('Width', 'jigoshop') . ' ('.get_option('jigoshop_dimension_unit').'):' );
+			if( get_option('jigoshop_enable_dimensions', true) !== 'no' ) :
+				echo '<p class="form-field">
+					<label for="'.$field['id'].'">'.$field['label'].'</label>
+					<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" placeholder="" /></p>';
+			else:
+				echo '<input type="hidden" name="'.$field['id'].'" value="'.$data[$field['id']].'" />';
+			endif;
+			$field = array( 'id' => 'height', 'label' => __('Height', 'jigoshop') . ' ('.get_option('jigoshop_dimension_unit').'):' );
+			if( get_option('jigoshop_enable_dimensions', true) !== 'no' ) :
+				echo '<p class="form-field">
+					<label for="'.$field['id'].'">'.$field['label'].'</label>
+					<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" placeholder="" /></p>';
 			else:
 				echo '<input type="hidden" name="'.$field['id'].'" value="'.$data[$field['id']].'" />';
 			endif;

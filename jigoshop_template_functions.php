@@ -235,9 +235,24 @@ if (!function_exists('jigoshop_template_single_excerpt')) {
 if (!function_exists('jigoshop_template_single_meta')) {
 	function jigoshop_template_single_meta( $post, $_product ) {
 
-		?>
-		<div class="product_meta"><?php if ($_product->is_type('simple') && get_option('jigoshop_enable_sku')=='yes') : ?><span class="sku">SKU: <?php echo $_product->sku; ?>.</span><?php endif; if(get_option('jigoshop_enable_weight')=='yes') : ?><span class="weight">Weight: <?php echo $_product->data['weight'].' '.get_option('jigoshop_weight_unit'); ?>.</span><?php endif; echo $_product->get_categories( ', ', ' <span class="posted_in">' . __( 'Posted in ', 'jigoshop' ) . '', '.</span>'); ?><?php echo $_product->get_tags( ', ', ' <span class="tagged_as">' . __( 'Tagged as ', 'jigoshop' ) . '', '.</span>'); ?></div>
-		<?php
+		echo '<div class="product_meta">';
+		if ($_product->is_type('simple') && get_option('jigoshop_enable_sku')=='yes') :
+			echo '<div class="sku">SKU: ' . $_product->sku . '</div>';
+		endif;
+		if (get_option('jigoshop_enable_weight')=='yes' && !empty($_product->data['weight']) ) :
+			echo '<div class="weight">' . __('Weight: ', 'jigoshop') . $_product->data['weight'] . ' ' . get_option('jigoshop_weight_unit') . '</div>';
+		endif;
+		if (get_option('jigoshop_enable_dimensions')=='yes') :
+			if ( !empty($_product->data['length']) )
+				echo '<div class="length">' . __('Length: ', 'jigoshop') . $_product->data['length'] . ' ' . get_option('jigoshop_dimension_unit') . '</div>';
+			if ( !empty($_product->data['width']) )
+				echo '<div class="width">' . __('Width: ', 'jigoshop') . $_product->data['width'] . ' ' . get_option('jigoshop_dimension_unit') . '</div>';
+			if ( !empty($_product->data['height']) )
+				echo '<div class="height">' . __('Height: ', 'jgioshop') . $_product->data['height'] . ' ' . get_option('jigoshop_dimension_unit') . '</div>';
+		endif;
+		echo $_product->get_categories( ', ', ' <div class="posted_in">' . __( 'Posted in ', 'jigoshop' ) . '', '.</div>');
+		echo $_product->get_tags( ', ', ' <div class="tagged_as">' . __( 'Tagged as ', 'jigoshop' ) . '', '.</div>');
+		echo '</div>';
 
 	}
 }

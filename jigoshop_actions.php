@@ -91,7 +91,7 @@ function jigoshop_add_order_item() {
 				echo '-';
 			endif;
 		?></td>
-		<td>
+		<!--<td>
 			<table class="meta" cellspacing="0">
 				<tfoot>
 					<tr>
@@ -100,7 +100,7 @@ function jigoshop_add_order_item() {
 				</tfoot>
 				<tbody></tbody>
 			</table>
-		</td>
+		</td>-->
 		<?php do_action('jigoshop_admin_order_item_values', $_product); ?>
 		<td class="quantity"><input type="text" name="item_quantity[]" placeholder="<?php _e('Quantity e.g. 2', 'jigoshop'); ?>" value="1" /></td>
 		<td class="cost"><input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit ex. tax e.g. 2.99', 'jigoshop'); ?>" value="<?php echo $_product->get_price(); ?>" /></td>
@@ -523,59 +523,78 @@ function jigoshop_download_product() {
 				), array( '%d' ), array( '%s', '%s', '%d' ) );
 			endif;
 
-			// Download the file
-			$file_path = ABSPATH . get_post_meta($download_file, 'file_path', true);
 
-            $file_path = realpath($file_path);
-            
-            if (!file_exists($file_path) || is_dir($file_path) || !is_readable($file_path)) {
-                wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
-            }
+			// Download method
+			$file_method = get_post_meta($download_file, 'file_method', true);
 
-            $file_extension = strtolower(substr(strrchr($file_path,"."),1));
+			if($file_method == 'internal') {
 
-            switch ($file_extension) :
-                case "pdf": $ctype="application/pdf"; break;
-                case "exe": $ctype="application/octet-stream"; break;
-                case "zip": $ctype="application/zip"; break;
-                case "doc": $ctype="application/msword"; break;
-                case "xls": $ctype="application/vnd.ms-excel"; break;
-                case "ppt": $ctype="application/vnd.ms-powerpoint"; break;
-                case "gif": $ctype="image/gif"; break;
-                case "png": $ctype="image/png"; break;
-                case "jpe": case "jpeg": case "jpg": $ctype="image/jpg"; break;
-                default: $ctype="application/force-download";
-            endswitch;
+				$file_path = ABSPATH . get_post_meta($download_file, 'file_path', true);
+				if (!$file_path) wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
+				$file_path = realpath($file_path);
 
-			@ini_set('zlib.output_compression', 'Off');
-			@set_time_limit(0);
-			@session_start();
-			@session_cache_limiter('none');
-			@set_magic_quotes_runtime(0);
-			@ob_end_clean();
-			if (ob_get_level()) @ob_end_clean();
-			@session_write_close();
+				if (!file_exists($file_path) || is_dir($file_path) || !is_readable($file_path)) {
+					wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
+				}
 
-			header("Pragma: no-cache");
-			header("Expires: 0");
-			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-			header("Robots: none");
-			header("Content-Type: ".$ctype."");
-			header("Content-Description: File Transfer");
+				$file_extension = strtolower(substr(strrchr($file_path,"."),1));
 
-          	if (strstr($_SERVER['HTTP_USER_AGENT'], "MSIE")) {
-			    // workaround for IE filename bug with multiple periods / multiple dots in filename
-			    $iefilename = preg_replace('/\./', '%2e', basename($file_path), substr_count(basename($file_path), '.') - 1);
-			    header("Content-Disposition: attachment; filename=\"".$iefilename."\";");
-			} else {
-			    header("Content-Disposition: attachment; filename=\"".basename($file_path)."\";");
+				switch ($file_extension) :
+					case "pdf": $ctype="application/pdf"; break;
+					case "exe": $ctype="application/octet-stream"; break;
+					case "zip": $ctype="application/zip"; break;
+					case "doc": $ctype="application/msword"; break;
+					case "xls": $ctype="application/vnd.ms-excel"; break;
+					case "ppt": $ctype="application/vnd.ms-powerpoint"; break;
+					case "gif": $ctype="image/gif"; break;
+					case "png": $ctype="image/png"; break;
+					case "jpe": case "jpeg": case "jpg": $ctype="image/jpg"; break;
+					default: $ctype="application/force-download";
+				endswitch;
+
+				@ini_set('zlib.output_compression', 'Off');
+				@set_time_limit(0);
+				@session_start();
+				@session_cache_limiter('none');
+				@set_magic_quotes_runtime(0);
+				@ob_end_clean();
+				if (ob_get_level()) @ob_end_clean();
+				@session_write_close();
+
+				header("Pragma: no-cache");
+				header("Expires: 0");
+				header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+				header("Robots: none");
+				header("Content-Type: ".$ctype."");
+				header("Content-Description: File Transfer");
+
+				if (strstr($_SERVER['HTTP_USER_AGENT'], "MSIE")) {
+					// workaround for IE filename bug with multiple periods / multiple dots in filename
+					$iefilename = preg_replace('/\./', '%2e', basename($file_path), substr_count(basename($file_path), '.') - 1);
+					header("Content-Disposition: attachment; filename=\"".$iefilename."\";");
+				} else {
+					header("Content-Disposition: attachment; filename=\"".basename($file_path)."\";");
+				}
+
+				header("Content-Transfer-Encoding: binary");
+
+				header("Content-Length: ".@filesize($file_path));
+				@readfile("$file_path") or wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
+				exit;
 			}
 
-			header("Content-Transfer-Encoding: binary");
+			else if($file_method == 'external') {
+			
+				// Check if it's a valid web address
+				$file_url = esc_url(get_post_meta($download_file, 'file_url', true));
 
-            header("Content-Length: ".@filesize($file_path));
-            @readfile("$file_path") or wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
-			exit;
+				if($file_url) {
+					header("Location: $file_url");
+					exit();
+				} else {
+					wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
+				}
+			}
 
 		endif;
 

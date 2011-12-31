@@ -258,6 +258,8 @@ class jigoshop_checkout extends jigoshop_singleton {
 	
 		global $wpdb;
 		
+		if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
+
 		if (isset($_POST) && $_POST && !isset($_POST['login'])) :
 
 			jigoshop_cart::calculate_totals();
