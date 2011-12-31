@@ -133,26 +133,20 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			// Refresh taxonomy attributes
 			$current_meta = get_post_custom( $ID );
 
-			foreach ($current_meta as $name => $value) {
-				// Skip if there are no attributes
-				if ( ! strstr($name, 'tax_'))
-					continue;
+			// Remove the current data
+			delete_post_meta( $ID, 'variation_data' );
 
-				// Remove the attribute
-				delete_post_meta( $ID, $name );
+			
+			// Remove all non variable attributes
+			foreach ( $attributes as $key => $attribute ) {
+
+				// Unset if attribute is not for variation
+				if ( ! $attribute['variation'] ) {
+					unset($attributes[$key]);
+				}
 			}
 
-			// Update taxonomies
-			foreach ( $attributes as $attribute ) {
-
-				// Skip if attribute is not for variation
-				if ( ! $attribute['variation'] )
-					continue;
-				
-				// Set the data
-				$key = 'tax_' . sanitize_title($attribute['name']);
-				update_post_meta( $ID, $key, $meta[$key]);
-			}
+			update_post_meta( $ID, 'variation_data', $attributes );
 		}
 	}
 
