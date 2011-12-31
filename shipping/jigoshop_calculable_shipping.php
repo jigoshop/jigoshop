@@ -124,7 +124,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
 
     protected function calculate_shipping_tax($rate) {
 
-        $_tax = new jigoshop_tax();
+        $_tax = $this->get_tax();
 
         $tax_rate = $_tax->get_shipping_tax_rate();
 

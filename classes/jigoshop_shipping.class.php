@@ -99,12 +99,19 @@ class jigoshop_shipping extends jigoshop_singleton {
         endforeach;
     }
 
-    private static function get_cheapest_method($available_methods) {
+    /**
+     * finds the cheapest shipping method
+     * @param type $available_methods all methods that are available
+     * @param type $tax jigoshop_tax class instance
+     * @return type the cheapest shipping method being used
+     */
+    private static function get_cheapest_method($available_methods, $tax) {
         $_cheapest_fee = '';
         $_cheapest_method = '';
         self::$has_calculable_shipping = false;
 
         foreach ($available_methods as $method) :
+            $method->set_tax($tax);
             $method->calculate_shipping();
 
             if ($method instanceof jigoshop_calculable_shipping) :
@@ -128,7 +135,12 @@ class jigoshop_shipping extends jigoshop_singleton {
         return $_cheapest_method;
     }
 
-    public static function calculate_shipping() {
+    /** 
+     * Calculate the shipping price
+     * 
+     * @param type $tax jigoshop_tax class instance
+     */
+    public static function calculate_shipping($tax) {
 
         if (self::$enabled == 'yes') :
 
@@ -152,6 +164,7 @@ class jigoshop_shipping extends jigoshop_singleton {
                     //make sure all methods are re-calculated since prices have been reset. Otherwise the other shipping
                     //method prices will show free
                     foreach ($_available_methods as $method) :
+                        $method->set_tax($tax);
                         $method->calculate_shipping();
                     endforeach;
 
@@ -161,12 +174,12 @@ class jigoshop_shipping extends jigoshop_singleton {
 
                     // error returned from service api. Need to auto calculate cheapest method now
                     else :
-                        $chosen_method = self::get_cheapest_method($_available_methods);
+                        $chosen_method = self::get_cheapest_method($_available_methods, $tax);
                     endif;
 
                 else :
                     // current jigoshop functionality
-                    $_cheapest_method = self::get_cheapest_method($_available_methods);
+                    $_cheapest_method = self::get_cheapest_method($_available_methods, $tax);
                     if ($calc_cheapest || !isset($_available_methods[$chosen_method])) :
                         $chosen_method = $_cheapest_method;
                     endif;

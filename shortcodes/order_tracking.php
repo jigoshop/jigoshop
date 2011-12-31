@@ -69,7 +69,10 @@ function jigoshop_order_tracking( $atts ) {
                                             </tr>                                    
                                         <?php
                                             if ( $order->order_subtotal_inc_tax ) :
-
+                                                if ($order->order_shipping>0) : ?><tr>
+                                                        <td colspan="3"><?php _e('Shipping', 'jigoshop'); ?></td>
+                                                        <td><?php echo $order->get_shipping_to_display(); ?></td>
+                                                </tr><?php endif;
                                                 foreach ( $order->get_tax_classes() as $tax_class ) :
                                                     if ( $order->tax_class_is_retail($tax_class) ) :
                                                         ?>
@@ -84,11 +87,14 @@ function jigoshop_order_tracking( $atts ) {
                                                     <td colspan="3"><?php _e('Subtotal', 'jigoshop'); ?></td>
                                                     <td><?php echo jigoshop_price($order->order_subtotal_inc_tax); ?></td>
                                                 </tr>
-                                      <?php endif;
+                                      <?php 
+                                      else :
                                             if ($order->order_shipping>0) : ?><tr>
                                                     <td colspan="3"><?php _e('Shipping', 'jigoshop'); ?></td>
                                                     <td><?php echo $order->get_shipping_to_display(); ?></td>
-                                            </tr><?php endif;
+                                            </tr>
+                                      <?php endif;
+                                      endif;                            
                                             if ( $order->order_subtotal_inc_tax ) :
                                                 foreach ( $order->get_tax_classes() as $tax_class ) :
                                                     if ( !$order->tax_class_is_retail($tax_class) ) :
