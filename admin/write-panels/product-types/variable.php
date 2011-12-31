@@ -12,10 +12,10 @@
 class jigoshop_product_meta_variable extends jigoshop_product_meta
 {
 	public function __construct() {
-		add_action( 'product_type_selector', 				array(&$this, 'register') );
+		add_action( 'product_type_selector', 					array(&$this, 'register') );
 		add_action( 'jigoshop_process_product_meta_variable',	array(&$this, 'save'), 1 );
 		add_action( 'jigoshop_product_type_options_box',		array(&$this, 'display') );
-		add_action( 'admin_enqueue_scripts', 				array(&$this, 'admin_enqueue_scripts') );
+		add_action( 'admin_enqueue_scripts', 					array(&$this, 'admin_enqueue_scripts') );
 
 		add_action( 'wp_ajax_jigoshop_remove_variation',		array(&$this, 'remove') );
 	}
@@ -177,10 +177,6 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 		<div id='variable_product_options' class='panel'>
 			<?php if ( $this->has_variable_attributes($attributes) ): ?>
 			<div class="controls">
-				<select>
-					<option>Select Default Variation</option>
-					<option>Red, TShirt, Orange Green Yellow </option>
-				</select>
 				<select name="variation_actions">
 					<option value="default"><?php _e('Bulk Actions', 'jigoshop') ?></option>
 					<option value="remove_all"><?php _e('Add All Variations', 'jigoshop') ?></option>
@@ -363,25 +359,25 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 						<td>
 							<label><?php _e('SKU', 'jigoshop'); ?>
-								<input type="text" size="5" name="<?php echo $this->field_name('sku', $variation) ?>" value="<?php echo isset($meta['sku'][0]) ? $meta['sku'][0] : null; ?>" />
+								<input type="text" name="<?php echo $this->field_name('sku', $variation) ?>" value="<?php echo isset($meta['sku'][0]) ? $meta['sku'][0] : null; ?>" />
 							</label>
 						</td>
 
 						<td>
 							<label><?php _e('Stock Qty', 'jigoshop'); ?>
-								<input type="text" size="5" name="<?php echo $this->field_name('stock', $variation) ?>" value="<?php echo isset($meta['stock'][0]) ? $meta['stock'][0] : null; ?>" />
+								<input type="text" name="<?php echo $this->field_name('stock', $variation) ?>" value="<?php echo isset($meta['stock'][0]) ? $meta['stock'][0] : null; ?>" />
 							</label>
 						</td>
 
 						<td>
 							<label><?php _e('Price', 'jigoshop'); ?>
-								<input type="text" size="5" name="<?php echo $this->field_name('regular_price', $variation) ?>" value="<?php echo isset($meta['regular_price'][0]) ? $meta['regular_price'][0] : null; ?>" />
+								<input type="text" name="<?php echo $this->field_name('regular_price', $variation) ?>" value="<?php echo isset($meta['regular_price'][0]) ? $meta['regular_price'][0] : null; ?>" />
 							</label>
 						</td>
 
 						<td>
 							<label><?php _e('Sale Price', 'jigoshop'); ?>
-								<input type="text" size="5" name="<?php echo $this->field_name('sale_price', $variation) ?>" value="<?php echo isset($meta['sale_price'][0]) ? $meta['sale_price'][0] : null; ?>" />
+								<input type="text" name="<?php echo $this->field_name('sale_price', $variation) ?>" value="<?php echo isset($meta['sale_price'][0]) ? $meta['sale_price'][0] : null; ?>" />
 							</label>
 						</td>
 
@@ -394,37 +390,33 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 					<tr class="simple options" <?php echo ('simple' == $product_type ? 'style="display: table-row;"' : 'style="display: none;"');?>>
 						<td>
 							<label><?php _e('Weight', 'jigoshop') ?>
-								<input type="text" size="5" name="<?php echo $this->field_name('weight', $variation) ?>" value="<?php echo isset($meta['weight'][0]) ? $meta['weight'][0] : null; ?>" />
+								<input type="text" name="<?php echo $this->field_name('weight', $variation) ?>" value="<?php echo isset($meta['weight'][0]) ? $meta['weight'][0] : null; ?>" />
 							</label>
 						</td>
-						<td colspan="2">
+						<td colspan="4" class="dimensions">
 							<label><?php _e('Dimensions (lxwxh)', 'jigoshop') ?></label>
-							<input type="text" name="<?php echo $this->field_name('length', $variation) ?>" style="width: 32%" size="6" placeholder="Length" value="<?php echo isset($meta['length'][0]) ? $meta['length'][0] : null; ?>" />
-							<input type="text" name="<?php echo $this->field_name('width', $variation) ?>" style="width: 32%" size="6" placeholder="Width" value="<?php echo isset($meta['width'][0]) ? $meta['width'][0] : null; ?>" />
-							<input type="text" name="<?php echo $this->field_name('height', $variation) ?>" style="width: 32%" size="6" placeholder="Height" value="<?php echo isset($meta['height'][0]) ? $meta['height'][0] : null; ?>" />
+							<input type="text" name="<?php echo $this->field_name('length', $variation) ?>" placeholder="Length" value="<?php echo isset($meta['length'][0]) ? $meta['length'][0] : null; ?>" />
+							<input type="text" name="<?php echo $this->field_name('width', $variation) ?>" placeholder="Width" value="<?php echo isset($meta['width'][0]) ? $meta['width'][0] : null; ?>" />
+							<input type="text" name="<?php echo $this->field_name('height', $variation) ?>" placeholder="Height" value="<?php echo isset($meta['height'][0]) ? $meta['height'][0] : null; ?>" />
 							<td colspan="3">
 								&nbsp;
 							</td>
 						</td>
 					</tr>
 					<tr class="downloadable options" <?php echo ('downloadable' == $product_type) ? 'style="display: table-row;"' : 'style="display: none !important;"';?>>
-						<td colspan="3">
-							<label><?php _e('File Location', 'jigoshop') ?>
-								<input type="text" name="<?php echo $this->field_name('file_path', $variation) ?>" value="<?php echo isset($meta['file_path'][0]) ? $meta['file_path'][0] : null; ?>" />
-								<input type="submit" class="upload_file_button button-secondary" value="Upload">
-							</label>
+						<td colspan="4" class="download_file">
+							<label><?php _e('File Location', 'jigoshop') ?></label>
+							<input type="text" name="<?php echo $this->field_name('file_path', $variation) ?>" value="<?php echo isset($meta['file_path'][0]) ? $meta['file_path'][0] : null; ?>" />
+							<input type="submit" class="upload_file_button button-secondary" value="Upload">
 						</td>
-						<td>
-							<label><?php _e('Download Limit', 'jigoshop') ?>
+						<td colspan="2">
+							<label><?php _e('Re-downloads Limit', 'jigoshop') ?>
 								<input type="text" name="<?php echo $this->field_name('download_limit', $variation) ?>" value="<?php echo isset($meta['file_path'][0]) ? $meta['download_limit'][0] : null; ?>" />
 							</label>
 						</td>
-						<td colspan="3">
-								&nbsp;
-						</td>
 					</tr>
 					<tr class="virtual options" <?php echo ('virtual' == $product_type ? 'style="display: table-row;"' : 'style="display: none;"');?>>
-						<td colspan="7">
+						<td colspan="6">
 							&nbsp;
 						</td>
 					</tr>
