@@ -230,6 +230,10 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 		global $post;
 		$html = null;
 
+		if ( ! is_ajax() ) {
+			$variation_data = get_post_meta( $variation->ID, 'variation_data' );
+		}
+
 		// Attribute Variation Selector
 		foreach ( $attributes as $attr ) {
 
@@ -239,7 +243,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 			// Get current value for variation (if set)
 			if ( ! is_ajax() ) {
-				$selected = get_post_meta( $variation->ID, 'tax_' . sanitize_title($attr['name']), true );
+				$selected = $variation_data[0][ 'tax_' . sanitize_title($attr['name']) ];
 			}
 
 			// Open the select & set a default value

@@ -636,7 +636,7 @@ class jigoshop_product {
 		$html = null;
 
 		// First check if the product is grouped
-		if ( $this->is_type('grouped') ) {
+		if ( $this->is_type( array('grouped', 'variable') ) ) {
 
 			$array = array();
 			foreach ( $this->get_children() as $child_ID ) {

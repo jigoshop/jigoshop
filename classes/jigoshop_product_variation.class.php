@@ -39,11 +39,17 @@ class jigoshop_product_variation extends jigoshop_product {
 		$this->parent_id = wp_get_post_parent_id( $ID );
 		parent::__construct( $this->parent_id );
 
-		$this->meta = array_merge($this->meta, $meta);
+		foreach( $meta as $key => $array ) {
+
+			if( $array[0] )
+				$this->meta[$key] = $array;
+		}
+
 		$this->variation_data = maybe_unserialize($this->meta['variation_data'][0]);
 		parent::__construct( $ID );
 		
-		var_dump($this);
+
+		return $this;
 
 		
 
@@ -156,21 +162,24 @@ class jigoshop_product_variation extends jigoshop_product {
 	}*/
 
 	/** Get the product's post data */
-	function get_variation_post_data() {
-		if (empty($this->variation)) {
-			$this->variation = get_post( $this->variation_id );
-        }
+
+	/// FAR AS I CAN TELL THIS IS NEVER USED -Rob
+
+	// function get_variation_post_data() {
+	// 	if (empty($this->variation)) {
+	// 		$this->variation = get_post( $this->variation_id );
+ //        }
         
-		return $this->variation;
-	}
+	// 	return $this->variation;
+	// }
     
     /**
      * Get variation ID
      * 
      * @return int
      */
-    function get_variation_id() {
-        return (int)$this->variation_id;
+    public function get_variation_id() {
+        return (int) $this->ID;
     }
     
     /**
@@ -178,16 +187,17 @@ class jigoshop_product_variation extends jigoshop_product {
      * 
      * @return bool
      */
-    function is_visible() {
-        return ($this->visibility == 'visible') ? true : false;
-    }
+    // function is_visible() {
+    //     return ($this->visibility == 'visible') ? true : false;
+    // }
     
     /**
      * Get variation attribute values
      * 
+     * @uses for get_available_attributes_variations()
      * @return two dimensional array array of attributes and their values for this variation
      */
-    function get_variation_attributes() {
+    public function get_variation_attributes() {
         return $this->variation_data;
     }
     
@@ -209,81 +219,81 @@ class jigoshop_product_variation extends jigoshop_product {
 	 * 
 	 * @return boolean - true or false depending on variation sale price and parent dates
 	 */
-	function variation_is_on_sale() {
+	// function variation_is_on_sale() {
 	
-		$on_sale = false;
+	// 	$on_sale = false;
 	
-		if ( $this->variation_has_price ) :
-			if ( $this->variation_has_sale_price ) :
-				$on_sale = $this->in_sale_date_range();
-			endif;
-		endif;
+	// 	if ( $this->variation_has_price ) :
+	// 		if ( $this->variation_has_sale_price ) :
+	// 			$on_sale = $this->in_sale_date_range();
+	// 		endif;
+	// 	endif;
 		
-		return $on_sale;
-	}
+	// 	return $on_sale;
+	// }
 	
 	/** Returns the product's price */
-	function get_price() {
+	// function get_price() {
 
-        if ($this->variation_has_price) {
-            if ($this->variation_is_on_sale()) {
-                return $this->sale_price;
-            }
+ //        if ($this->variation_has_price) {
+ //            if ($this->variation_is_on_sale()) {
+ //                return $this->sale_price;
+ //            }
             
-            return $this->price;
-        }
+ //            return $this->price;
+ //        }
 
-        return parent::get_price();
-    }
+ //        return parent::get_price();
+ //    }
 	
 	/** Returns the price in html format */
-	function get_price_html() {
-		if ($this->variation_has_price) {
-			if ($this->price) {
-				if ($this->variation_is_on_sale()) {
-					return '<del>'.jigoshop_price( $this->price ).'</del> <ins>'.jigoshop_price( $this->sale_price ).'</ins>';
-                }
-				return jigoshop_price( $this->price );
-            }
+	// function get_price_html() {
+	// 	if ($this->variation_has_price) {
+	// 		if ($this->price) {
+	// 			if ($this->variation_is_on_sale()) {
+	// 				return '<del>'.jigoshop_price( $this->price ).'</del> <ins>'.jigoshop_price( $this->sale_price ).'</ins>';
+ //                }
+	// 			return jigoshop_price( $this->price );
+ //            }
 	
-			return '';
-        }
+	// 		return '';
+ //        }
         
-		return jigoshop_price(parent::get_price());
-	}
+	// 	return jigoshop_price(parent::get_price());
+	// }
 	
 	/**
 	 * Reduce stock level of the product
 	 *
 	 * @param   int		$by		Amount to reduce by
 	 */
-	function reduce_stock( $by = 1 ) {
-		if ($this->variation_has_stock) :
-			if ($this->managing_stock()) :
-				$reduce_to = $this->stock - $by;
-				update_post_meta($this->variation_id, 'stock', $reduce_to);
-				return $reduce_to;
-			endif;
-		else :
-			return parent::reduce_stock( $by );
-		endif;
-	}
+	// function reduce_stock( $by = 1 ) {
+	// 	if ($this->variation_has_stock) :
+	// 		if ($this->managing_stock()) :
+	// 			$reduce_to = $this->stock - $by;
+	// 			update_post_meta($this->variation_id, 'stock', $reduce_to);
+	// 			return $reduce_to;
+	// 		endif;
+	// 	else :
+	// 		return parent::reduce_stock( $by );
+	// 	endif;
+	// }
 	
 	/**
 	 * Increase stock level of the product
 	 *
 	 * @param   int		$by		Amount to increase by
 	 */
-	function increase_stock( $by = 1 ) {
-		if ($this->variation_has_stock) :
-			if ($this->managing_stock()) :
-				$increase_to = $this->stock + $by;
-				update_post_meta($this->variation_id, 'stock', $increase_to);
-				return $increase_to;
-			endif;
-		else :
-			return parent::increase_stock( $by );
-		endif;
-	}
+	// function increase_stock( $by = 1 ) {
+	// 	if ($this->variation_has_stock) :
+	// 		if ($this->managing_stock()) :
+	// 			$increase_to = $this->stock + $by;
+	// 			update_post_meta($this->variation_id, 'stock', $increase_to);
+	// 			return $increase_to;
+	// 		endif;
+	// 	else :
+	// 		return parent::increase_stock( $by );
+	// 	endif;
+	// }
 
 }
