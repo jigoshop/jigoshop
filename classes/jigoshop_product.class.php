@@ -560,31 +560,30 @@ class jigoshop_product {
             $has_price_variation = false;
 
             foreach ($this->children as $child) {
-      
                 // Nasty hack to prevent disabled variations from affecting the price
-      		if($this->product_type == 'grouped' || 
-      			($this->product_type != 'grouped' && $child->product->variation->post_status == 'publish') ) {
-      		    $child_prices[] = (float)$child->product->get_price();
-      		    
-      		    // check for a price variation on the product variations
-      		    if ($previous_price > 0.0 && $previous_price != (float)$child->product->get_price()) {
-      		    	$has_price_variation = true;
-      		    }
-      		    $previous_price = (float)$child->product->get_price();
-      		    
-      		}
+				if ($this->product_type == 'grouped'
+					|| (($this->product_type != 'grouped'
+						&& $child->product->variation->post_status == 'publish'))) {
+					
+					$child_prices[] = (float)$child->product->get_price();
+					
+					// check for a price variation on the product variations
+					if ($previous_price > 0.0 && $previous_price != (float)$child->product->get_price()) {
+						$has_price_variation = true;
+					}
+					$previous_price = (float)$child->product->get_price();
+				}
             }
             
-            // only add from to tag when there is a price variation on variable products
-            if ($has_price_variation) {
-	        sort($child_prices);
-	        $lowest_price = $child_prices[0];
-		$price_html .= '<span class="from">' . __('From: ', 'jigoshop') . '</span>' . jigoshop_price($lowest_price);
-	    }
-	    // otherwise return price from product
-	    else {
-	    	$price_html .= jigoshop_price($this->get_price());
-	    }
+            // only add from to tag when there is a price variation on variable products (or it's a Grouped product)
+            if ($has_price_variation || $this->product_type == 'grouped') {
+	        	sort($child_prices);
+	        	$lowest_price = $child_prices[0];
+				$price_html .= '<span class="from">' . __('From: ', 'jigoshop') . '</span>' . jigoshop_price($lowest_price);
+			} else {
+				// otherwise return price from product
+				$price_html .= jigoshop_price($this->get_price());
+			}
         } else {
             if ($this->price === '') {
                 $price_html = __('Price Not Announced', 'jigoshop');
