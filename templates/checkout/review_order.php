@@ -310,6 +310,5 @@
 		</div>
 
 	</div>
-	
->>>>>>> upstream/dev
+
 </div>
