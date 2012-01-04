@@ -228,11 +228,11 @@ function jigoshop_product_data_box() {
                         $tax_classes = $_tax->get_tax_classes();
                         $selections = $data[$field['id']];
                         echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].':</label>';
-			echo '<span><label><input type="checkbox" name="'.$field['id'].'[]" value="" '; if (isset($selections) && in_array('', $selections)) echo 'checked="checked"'; echo '/>'.__('Standard', 'jigoshop').'</label></span>';
+			echo '<span><label><input type="checkbox" name="'.$field['id'].'[]" value="" '; if ($selections && in_array('', $selections)) echo 'checked="checked"'; echo '/>'.__('Standard', 'jigoshop').'</label></span>';
                         
                         if ($tax_classes) foreach ($tax_classes as $tax_class) :
 	                        echo '<span><label><input type="checkbox" name="'.$field['id'].'[]" value="'. sanitize_title($tax_class) .'" ';
-	                        if (in_array(sanitize_title($tax_class), $selections)) :
+	                        if ($selections && in_array(sanitize_title($tax_class), $selections)) :
 	                            echo 'checked="checked"';
 	                        endif;
 	                        echo ' />'. __($tax_class, 'jigoshop') .'</label></span>';
