@@ -322,10 +322,11 @@ if (params.is_checkout==1) {
 	
 		if (jqxhr) jqxhr.abort();
 		
-		var method		= jQuery('#shipping_method').val();
-		var country 	= jQuery('#billing-country').val();
-		var state 		= jQuery('#billing-state').val();
-		var postcode 	= jQuery('input#billing-postcode').val();
+		var method		   = jQuery('#shipping_method').val();
+		var payment_method = jQuery('input[name=payment_method]:checked').val();
+		var country 	   = jQuery('#billing-country').val();
+		var state 		   = jQuery('#billing-state').val();
+		var postcode 	   = jQuery('input#billing-postcode').val();
 			
 		if (jQuery('#shiptobilling input').is(':checked') || jQuery('#shiptobilling input').size()==0) {
 			var s_country 	= jQuery('#billing-country').val();
@@ -350,6 +351,7 @@ if (params.is_checkout==1) {
 			s_country: 			s_country, 
 			s_state: 			s_state, 
 			s_postcode: 		s_postcode,
+			payment_method:     payment_method,
 			post_data:			jQuery('form.checkout').serialize()
 		};
 		

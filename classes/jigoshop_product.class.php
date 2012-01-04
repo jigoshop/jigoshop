@@ -17,8 +17,6 @@
 class jigoshop_product {
 	
 	private static $attribute_taxonomies = NULL;
-	// reseting these all to public for now, fatal errors from certain places that direct access
-	// the whole class needs refactoring  -JAP-
 	public $id;
 	public $exists;
 	public $data;
@@ -30,7 +28,7 @@ class jigoshop_product {
 	public $visibility;
 	public $product_type;
 	public $price;
-    	public $sale_price;
+    public $sale_price;
     
 	/**
 	 * Loads all product data from custom fields
@@ -460,8 +458,35 @@ class jigoshop_product {
 
 	/** Returns the product's weight */
 	function get_weight() {
-		if ($this->data['weight']) {
+		if (isset($this->data['weight'])) {
             return $this->data['weight'];
+        }
+        
+        return NULL;
+	}
+
+	/** Returns the product's length */
+	function get_length() {
+		if (isset($this->data['length'])) {
+            return $this->data['length'];
+        }
+        
+        return NULL;
+	}
+
+	/** Returns the product's width */
+	function get_width() {
+		if (isset($this->data['width'])) {
+            return $this->data['width'];
+        }
+        
+        return NULL;
+	}
+
+	/** Returns the product's height */
+	function get_height() {
+		if (isset($this->data['height'])) {
+            return $this->data['height'];
         }
         
         return NULL;
