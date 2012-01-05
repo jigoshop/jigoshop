@@ -194,6 +194,7 @@ jQuery( function($){
 	var dates = $( "#sale_price_dates_from, #sale_price_dates_to" ).datepicker({
 		dateFormat: 'yy-mm-dd',
 		gotoCurrent: true,
+		hideIfNoPrevNext: true,
 		numberOfMonths: 1,
 		onSelect: function( selectedDate ) {
 			var option = this.id == "sale_price_dates_from" ? "minDate" : "maxDate",
