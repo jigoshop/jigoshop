@@ -561,7 +561,7 @@ class jigoshop_product {
 			$rate = $this->get_tax_base_rate();
 
 			if ($rate && $rate > 0) {
-				$_tax = &new jigoshop_tax();
+				$_tax = new jigoshop_tax();
 				$tax_amount = $_tax->calc_tax($price, $rate, true);
 				$price = $price - $tax_amount;
 			}

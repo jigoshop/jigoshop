@@ -79,7 +79,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	 * @param		int		Product ID
 	 * @return		void
 	 */
-	public function save( $parent_id ) {
+	public function save( $parent_id, $post ) {
 		global $wpdb;
 
 		// Do not run if there are no variations
@@ -351,7 +351,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 								$terms = wp_get_object_terms( $variation->ID, 'product_type' );
 								$product_type = ($terms) ? current($terms)->slug : 'simple';
 							?>
-							<label><?php _e('Type', 'jigoshop') ?></label>
+							<label class="clearlabel"><?php _e('Type', 'jigoshop') ?></label>
 							<select class="product_type" name="<?php echo $this->field_name('product-type', $variation) ?>">
 								<option value="simple" <?php selected('simple', $product_type) ?>>Simple</option>
 								<option value="downloadable" <?php selected('downloadable', $product_type) ?>>Downloadable</option>
@@ -407,7 +407,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 					</tr>
 					<tr class="downloadable options" <?php echo ('downloadable' == $product_type) ? 'style="display: table-row;"' : 'style="display: none !important;"';?>>
 						<td colspan="4" class="download_file">
-							<label><?php _e('File Location', 'jigoshop') ?></label>
+							<label class="clearlabel"><?php _e('File Location', 'jigoshop') ?></label>
 							<input type="text" name="<?php echo $this->field_name('file_path', $variation) ?>" value="<?php echo isset($meta['file_path'][0]) ? $meta['file_path'][0] : null; ?>" />
 							<input type="submit" class="upload_file_button button-secondary" value="Upload">
 						</td>
