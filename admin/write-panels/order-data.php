@@ -218,7 +218,7 @@ function jigoshop_order_items_meta_box($post) {
 						<td class="product-id"><?php echo $item['id']; ?></td>
 						<td class="variation-id"><?php if ( isset($item['variation_id']) ) echo $item['variation_id']; else echo '-'; ?></td>
 						<td class="product-sku"><?php if ($_product->sku) echo $_product->sku; ?></td>
-						<td class="name"><a href="<?php echo admin_url('post.php?post='. $_product->id .'&action=edit'); ?>"><?php echo $item['name']; ?></a></td>
+						<td class="name"><a href="<?php echo admin_url('post.php?post='. $_product->id .'&action=edit'); ?>"><?php echo get_the_title($item['id']); ?></a></td>
 						<td class="variation"><?php
 							if (isset($_product->variation_data)) :
 								echo jigoshop_get_formatted_variation( $_product->variation_data, true );
@@ -289,8 +289,8 @@ function jigoshop_order_items_meta_box($post) {
 					if ( $children_products =& get_children( $args_get_children ) ) :
 
 						foreach ($children_products as $child) :
-
-							echo '<option value="'.$child->ID.'">&nbsp;&nbsp;&mdash;&nbsp;'.$child->post_title.'</option>';
+							$child = new jigoshop_product_variation($child->ID);
+							echo '<option value="'.$child->ID.'">&nbsp;&nbsp;&mdash;&nbsp;'.implode(',', $child->get_variation_attributes()).'</option>';
 
 						endforeach;
 

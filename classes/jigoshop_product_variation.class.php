@@ -28,8 +28,8 @@ class jigoshop_product_variation extends jigoshop_product {
 	// public $variation_has_sku;
 
 	// Other bits & bobs;
-	private $parent_id;
-	private $variation_data;
+	public $parent_id;
+	public $variation_data; // for order_tracking.php
 
 	public function __construct( $ID ) {
 

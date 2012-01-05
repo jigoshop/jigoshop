@@ -91,16 +91,19 @@ function jigoshop_order_tracking( $atts ) {
 							endif;
 
 							echo '<tr>';
-							echo '<td class="product-name">'.$_product->get_title();
-
-							if (isset($_product->variation_data)) :
-								echo jigoshop_get_formatted_variation( $_product->variation_data );
-							endif;
-
-							echo '</td>';
 
 							echo '<td>'.$_product->sku.'</td>';
-							echo '<td>'.$_product->get_title().'</td>';
+							echo '<td>';
+								if( $_product instanceof jigoshop_product_variation ) {
+								echo get_the_title($_product->parent_id);
+								} else {
+									echo $_product->get_title();
+								}
+
+								if (isset($_product->variation_data)) :
+									echo jigoshop_get_formatted_variation( $_product->get_variation_attributes() );
+								endif;
+							echo'</td>';
 							echo '<td>'.jigoshop_price($_product->get_price()).'</td>';
 							echo '<td>'.$order_item['qty'].'</td>';
 
