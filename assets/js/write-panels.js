@@ -196,6 +196,7 @@ jQuery( function($){
 		gotoCurrent: true,
 		hideIfNoPrevNext: true,
 		numberOfMonths: 1,
+		minDate: 'today',
 		onSelect: function( selectedDate ) {
 			var option = this.id == "sale_price_dates_from" ? "minDate" : "maxDate",
 				instance = $( this ).data( "datepicker" ),
