@@ -324,11 +324,11 @@ class jigoshop_product {
 	 */
 	public function add_to_cart_url() {
 
-		if ($this->is_type('variable')) {
-			$url = add_query_arg('add-to-cart', 'variation');
-			$url = add_query_arg('product', $this->ID, $url);
-		}
-		else if ( $this->has_child() ) {
+		// if ($this->is_type('variable')) {
+		// 	$url = add_query_arg('add-to-cart', 'variation');
+		// 	$url = add_query_arg('product', $this->ID, $url);
+		// }
+		if ( $this->has_child() ) {
 			$url = add_query_arg('add-to-cart', 'group');
 			$url = add_query_arg('product', $this->ID, $url);
 		}
@@ -429,7 +429,7 @@ class jigoshop_product {
 	
 	/**
 	 * Returns number of items available for sale.
-	 * 
+	 * @todo rename to get_stock()
 	 * @return int
 	 */
 	public function get_stock_quantity() {
@@ -570,7 +570,7 @@ class jigoshop_product {
 
 	/**
 	 * Returns the base tax rate
-	 *
+	 * @todo why is this here? shouldn't it be in the tax class?
 	 * @return	???
 	 */
 	public function get_tax_base_rate() {
@@ -637,7 +637,7 @@ class jigoshop_product {
 		$html = null;
 
 		// First check if the product is grouped
-		if ( $this->is_type( array('grouped', 'variable') ) ) {
+		if ( $this->is_type( array('grouped') ) ) {
 
 			$array = array();
 			foreach ( $this->get_children() as $child_ID ) {

@@ -50,9 +50,6 @@ class jigoshop_product_variation extends jigoshop_product {
         $this->ID = $parent_id;
         $this->id = $parent_id;
 
-        var_dump( $this->increase_stock() );
-
-
 		return $this;
 	}
     
