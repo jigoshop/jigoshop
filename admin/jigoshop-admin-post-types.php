@@ -15,53 +15,31 @@
  * @author     Jigowatt
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
- 
+ */
+
 /**
- * Product page filters - adds navigation menu items for Product Groupings on the Product Listing page
- *
- * @param array $views - WordPress's current view list (All | Published) in link format
- * @return array $views - our modifications to the list
- * @since 0.9.9
- * TODO: possibly add items for catalog, search, hidden
+ * Filter products by type
  **/
-function jigoshop_custom_product_views( $views ) {
+add_action('restrict_manage_posts', 'jigoshop_filter_products_type');
 
-	$jigoshop_products = &new jigoshop_products();	/* count and group all products */
-	
-	// determine 'current' class for active nav menu item
-	$simple = (isset($_GET['product_type']) && $_GET['product_type']=='simple') ? 'current' : '';
-	$variable = (isset($_GET['product_type']) && $_GET['product_type']=='variable') ? 'current' : '';
-	$grouped = (isset($_GET['product_type']) && $_GET['product_type']=='grouped') ? 'current' : '';
-	$downloadable = (isset($_GET['product_type']) && $_GET['product_type']=='downloadable') ? 'current' : '';
-	$virtual = (isset($_GET['product_type']) && $_GET['product_type']=='virtual') ? 'current' : '';
+function jigoshop_filter_products_type() {
+    global $typenow, $wp_query;
 
-	// format links for each nav menu item we are adding
-	$views['simple'] = '<a href="edit.php?post_type=product&amp;product_type=simple" class="'.$simple.'">'.__('Simple','jigoshop').' <span class="count">('.$jigoshop_products->simple_count.')</span></a>';
-	$views['variable'] = '<a href="edit.php?post_type=product&amp;product_type=variable" class="'.$variable.'">'.__('Variable','jigoshop').' <span class="count">('.$jigoshop_products->variable_count.')</span></a>';
-	$views['grouped'] = '<a href="edit.php?post_type=product&amp;product_type=grouped" class="'.$grouped.'">'.__('Grouped','jigoshop').' <span class="count">('.$jigoshop_products->grouped_count.')</span></a>';
-	$views['downloadable'] = '<a href="edit.php?post_type=product&amp;product_type=downloadable" class="'.$downloadable.'">'.__('Downloadable','jigoshop').' <span class="count">('.$jigoshop_products->downloadable_count.')</span></a>';
-	$views['virtual'] = '<a href="edit.php?post_type=product&amp;product_type=virtual" class="'.$virtual.'">'.__('Virtual','jigoshop').' <span class="count">('.$jigoshop_products->virtual_count.')</span></a>';
-	
-	// if any of our nav menu items are active, unset 'current' class from 'All'
-	if ( $simple || $variable || $grouped || $downloadable || $virtual ) :
-		$views['all'] = str_replace( 'current', '', $views['all'] );
-	endif;	
+    if ( $typenow != 'product' )
+    	return false;
+    	
+	// Get all active terms
+	$terms = get_terms('product_type');
 
-	// re-arrange the order for these to appear at end of the nav menu
-	if ( isset( $views['draft'] )) :
-		$draft = $views['draft'];
-		unset( $views['draft'] );
-		$views['draft'] = $draft;
-	endif;
-	if ( isset( $views['trash'] )) :
-		$trash = $views['trash'];
-		unset( $views['trash'] );
-		$views['trash'] = $trash;
-	endif;
-	
-	return $views;
+	echo "<select name='product_type' id='dropdown_product_type'>";
+	echo "<option value='0'>" . __('Show all types', 'jigoshop') . "</option>";
+
+	foreach($terms as $term) {
+		echo "<option value='{$term->slug}' ".selected($term->slug, $wp_query->query['product_type'], false).">".ucfirst($term->name)."</option>";
+	}
+
+	echo "</select>";
 }
-add_filter( 'views_edit-product', 'jigoshop_custom_product_views' );
 
 /**
  * Custom columns
@@ -130,7 +108,7 @@ add_filter('manage_edit-product_columns', 'jigoshop_edit_product_columns');
 
 function jigoshop_custom_product_columns($column) {
 	global $post;
-	$product = &new jigoshop_product($post->ID);
+	$product = new jigoshop_product($post->ID);
 
 	switch ($column) {
 		case "thumb" :
