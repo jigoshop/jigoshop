@@ -191,38 +191,20 @@ jQuery( function($){
 
 
 	// DATE PICKER FIELDS
-	jQuery('.date-pick').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
-/*
-For WordPress 3.3, the datepicker.js that Jigoshop was using is broken
-unhooking for now and using jquery-ui-datepicker
-
-	Date.firstDayOfWeek = 1;
-	Date.format = 'yyyy-mm-dd';
-	jQuery('.date-pick').datePicker();
-	jQuery('#sale_price_dates_from').bind(
-		'dpClosed',
-		function(e, selectedDates)
-		{
-			var d = selectedDates[0];
-			if (d) {
-				d = new Date(d);
-				jQuery('#sale_price_dates_to').dpSetStartDate(d.addDays(1).asString());
-			}
+	var dates = $( "#sale_price_dates_from, #sale_price_dates_to" ).datepicker({
+		dateFormat: 'yy-mm-dd',
+		gotoCurrent: true,
+		numberOfMonths: 1,
+		onSelect: function( selectedDate ) {
+			var option = this.id == "sale_price_dates_from" ? "minDate" : "maxDate",
+				instance = $( this ).data( "datepicker" ),
+				date = $.datepicker.parseDate(
+					instance.settings.dateFormat ||
+					$.datepicker._defaults.dateFormat,
+					selectedDate, instance.settings );
+			dates.not( this ).datepicker( "option", option, date );
 		}
-	);
-	jQuery('#sale_price_dates_to').bind(
-		'dpClosed',
-		function(e, selectedDates)
-		{
-			var d = selectedDates[0];
-			if (d) {
-				d = new Date(d);
-				jQuery('#sale_price_dates_from').dpSetEndDate(d.addDays(-1).asString());
-			}
-		}
-	);
-*/
-
+	});
 
 	// ATTRIBUTE TABLES
 
