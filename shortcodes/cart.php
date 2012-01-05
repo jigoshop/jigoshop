@@ -94,7 +94,6 @@ function jigoshop_cart( $atts ) {
 		</thead>
 		<tbody>
 			<?php
-			var_dump(jigoshop_cart::$cart_contents);
 			if (sizeof(jigoshop_cart::$cart_contents)>0) :
 				foreach (jigoshop_cart::$cart_contents as $cart_item_key => $values) :
 					$_product = $values['data'];
@@ -122,13 +121,7 @@ function jigoshop_cart( $atts ) {
                                 </a></td>
 
 								<td class="product-name">
-									<a href="<?php echo get_permalink($values['product_id']); ?>">
-										<?php if( $_product instanceof jigoshop_product_variation ): ?>
-											<?php echo get_the_title($_product->post->post_parent); ?>
-										<?php else: ?>
-											<?php echo apply_filters('jigoshop_cart_product_title', $_product->get_title(), $_product); ?>
-										<?php endif; ?>
-									</a>
+									<a href="<?php echo get_permalink($values['product_id']); ?>"><?php echo apply_filters('jigoshop_cart_product_title', $_product->get_title(), $_product); ?></a>
 									<?php echo $additional_description; ?>
 								</td>
 								<td class="product-price"><?php echo jigoshop_price($_product->get_price()); ?></td>
