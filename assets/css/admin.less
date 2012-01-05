@@ -894,7 +894,7 @@ table.jigoshop_attributes .taxonomy td.name {
 table.jigoshop_attributes .center {
 	text-align: center;
 }
-#jigoshop_attributes select.attribute_taxonomy, button.add_attribute, button.add_variable_attribute, button.add_configuration {
+#jigoshop_attributes select.attribute_taxonomy, button.add_attribute, button.add_variable_attribute, button.add_variation {
 	float: right;
 }
 
@@ -965,7 +965,10 @@ div.multi_select_products_wrapper {
 		margin: 0;
 	}
 }
-.jigoshop_configuration {
+.jigoshop_variations {
+	overflow: auto;
+}
+.jigoshop_variation {
 	background: #ececec;
 	border: 1px solid #ececec;
 	margin: 0 0 8px;
@@ -979,11 +982,14 @@ div.multi_select_products_wrapper {
 		background: #fff;
 		padding: 6px 6px;
 		vertical-align: middle;
+		width: 90px;
+
 		label {
 			color: #999;
 			font-size: 10px;
 			text-transform: uppercase;
 			text-align: left;
+			float: left;
 			display: block;
 			line-height: 16px;
 		}
@@ -992,22 +998,43 @@ div.multi_select_products_wrapper {
 			width: 100%;
 		}
 		&.upload_image {
-			width: 1%;
+			width: 93px;
 			white-space: nowrap;
+			vertical-align: top;
 			img {
 				float: none;
-				margin-right: 6px;
-				vertical-align: middle;
+				vertical-align: top;
 			}
 			.button {
 				margin: 0;
-				padding: 4px 10px;
 				width: auto;
 				float: none;
 				vertical-align: middle;
 			}
 		}
-	}
+
+		&.download_file {
+			label {
+				float: none;
+			}
+			input {
+				width: 70%;
+			}
+			input.upload_file_button {
+				width: 25%;
+				float:right;
+			}
+		}
+
+		&.dimensions {
+			label {
+				float: none;
+			}
+			input {
+				width: 32.5%;
+			}
+		}
+	}	
 }
 
 .widefat .product-cat-placeholder {

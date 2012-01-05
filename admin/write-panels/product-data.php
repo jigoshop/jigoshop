@@ -16,6 +16,30 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
+
+/**
+ * Change label for insert buttons
+ */
+add_filter( 'gettext', 'jigoshop_change_insert_into_post', null, 2 );
+
+function jigoshop_change_insert_into_post( $translation, $original ) {
+
+	// Check if the translation is correct
+    if( ! isset( $_REQUEST['from'] ) || $original != 'Insert into Post' ) 
+    	return $translation;
+
+    // Modify text based on context
+    switch ($_REQUEST['from']) {
+    	case 'jigoshop_variation':
+    		return __('Attach to Variation', 'jigoshop' );
+    	break;
+    	case 'jigoshop_product':
+    		return __('Attach to Product', 'jigoshop' );
+    	break;
+    	default:
+    		return $translation;
+    }
+}
  
 /**
  * Product data box

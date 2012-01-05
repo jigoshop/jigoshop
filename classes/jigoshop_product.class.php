@@ -31,8 +31,8 @@ class jigoshop_product {
 
 	public $meta; // for get_child()
 
-	private $regular_price;
-	private $sale_price;
+	protected $regular_price;
+	protected $sale_price;
 	private $sale_price_dates_from;
 	private $sale_price_dates_to;
 
@@ -63,8 +63,10 @@ class jigoshop_product {
 
 		// Grab the product ID & get the product meta data
 		// TODO: Change to uppercase for consistency sake
-		$this->ID = (int) $ID;
-		$this->id = $this->ID;
+		if( ! $this->ID ) {
+			$this->ID = (int) $ID;
+			$this->id = $this->ID;
+		}
 
 		if ( ! $this->meta ) {
 			$this->meta = get_post_custom( $this->ID );
@@ -93,6 +95,7 @@ class jigoshop_product {
 		$this->tax_status				= isset($meta['tax_status'][0]) ? $meta['tax_status'][0] : null;
 		$this->tax_class					= isset($meta['tax_class'][0]) ? $meta['tax_class'][0] : null;
 
+		$this->sku						= isset($meta['sku'][0]) ? $meta['sku'][0] : $this->ID;
 		$this->visibility				= isset($meta['visibility'][0]) ? $meta['visibility'][0] : null;
 		$this->featured					= isset($meta['featured'][0]) ? $meta['featured'][0] : null;
 
@@ -636,7 +639,7 @@ class jigoshop_product {
 		$html = null;
 
 		// First check if the product is grouped
-		if ( $this->is_type('grouped') ) {
+		if ( $this->is_type( array('grouped', 'variable') ) ) {
 
 			$array = array();
 			foreach ( $this->get_children() as $child_ID ) {

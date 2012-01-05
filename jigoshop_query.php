@@ -147,7 +147,8 @@ function jigoshop_filter_catalog_query( $request ) {
 			$request['post__in'] = apply_filters( 'loop-shop-posts-in', $all_post_ids );
 		endif;
 		
-		$request['meta_query'] = jigoshop_filter_meta_query( $this_query );
+		// @todo: Appending rather than replacing seems to fix the disappearing drafts bug -Rob
+		$request['meta_query'] .= jigoshop_filter_meta_query( $this_query );
 		
 	endif;
 	
