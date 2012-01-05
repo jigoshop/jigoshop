@@ -63,10 +63,8 @@ class jigoshop_product {
 
 		// Grab the product ID & get the product meta data
 		// TODO: Change to uppercase for consistency sake
-		if( ! $this->ID ) {
-			$this->ID = (int) $ID;
-			$this->id = $this->ID;
-		}
+		$this->ID = (int) $ID;
+		$this->id = $this->ID;
 
 		if ( ! $this->meta ) {
 			$this->meta = get_post_custom( $this->ID );

@@ -30,7 +30,8 @@ class jigoshop_product_variation extends jigoshop_product {
 	public function __construct( $ID ) {
 
 		// Setup the product
-		parent::__construct( wp_get_post_parent_id( $ID ) );
+        $parent_id = wp_get_post_parent_id( $ID );
+		parent::__construct( $parent_id );
 
 		// Get the meta & for each meta item overwrite with the variations ID
 		$meta = get_post_custom( $ID );
@@ -44,6 +45,13 @@ class jigoshop_product_variation extends jigoshop_product {
 		$this->variation_id = $ID;
 		$this->variation_data = maybe_unserialize($this->meta['variation_data'][0]);
 		parent::__construct( $ID );
+        
+        // Restore the parent ID
+        $this->ID = $parent_id;
+        $this->id = $parent_id;
+
+        var_dump( $this->increase_stock() );
+
 
 		return $this;
 	}
@@ -65,6 +73,28 @@ class jigoshop_product_variation extends jigoshop_product {
      */
     public function get_variation_attributes() {
         return $this->variation_data; // @todo: This returns blank if its set to catch all, how would we deal with that?
+    }
+
+    /**
+     * Modifies the stock levels for variations
+     *
+     * @param   int     Amount to modify
+     * @return  int
+     */
+    public function modify_stock( $by ) {
+
+        // Only do this if we're updating
+        if ( ! $this->managing_stock() )
+            return false;
+        
+        // +- = minus
+        $this->stock = $this->stock + $by;
+        $amount_sold = $this->stock_sold + $by;
+        
+        // Update & return the new value
+        update_post_meta( $this->variation_id, 'stock', $this->stock );
+        update_post_meta( $this->variation_id, 'stock_sold', $amount_sold );
+        return $this->stock;
     }
     
     /**
