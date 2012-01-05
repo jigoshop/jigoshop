@@ -93,6 +93,7 @@ class jigoshop_product {
 		$this->tax_status				= isset($meta['tax_status'][0]) ? $meta['tax_status'][0] : null;
 		$this->tax_class					= isset($meta['tax_class'][0]) ? $meta['tax_class'][0] : null;
 
+		$this->sku						= isset($meta['sku'][0]) ? $meta['sku'][0] : $this->ID;
 		$this->visibility				= isset($meta['visibility'][0]) ? $meta['visibility'][0] : null;
 		$this->featured					= isset($meta['featured'][0]) ? $meta['featured'][0] : null;
 
