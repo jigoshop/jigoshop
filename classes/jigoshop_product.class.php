@@ -36,6 +36,9 @@ class jigoshop_product {
 	private $sale_price_dates_to;
 
 	private $weight;
+	private $length;
+	private $width;
+	private $height;
 
 	private $tax_status			= 'taxable';
 	private $tax_class;
@@ -88,6 +91,9 @@ class jigoshop_product {
 		$this->sale_price_dates_to		= isset($meta['sale_price_dates_to'][0]) ? $meta['sale_price_dates_to'][0] : null;
 
 		$this->weight					= isset($meta['weight'][0]) ? $meta['weight'][0] : null;
+		$this->length					= isset($meta['length'][0]) ? $meta['length'][0] : null;
+		$this->width					= isset($meta['width'][0]) ? $meta['width'][0] : null;
+		$this->height					= isset($meta['height'][0]) ? $meta['height'][0] : null;
 
 		$this->tax_status				= isset($meta['tax_status'][0]) ? $meta['tax_status'][0] : null;
 		$this->tax_class					= isset($meta['tax_class'][0]) ? $meta['tax_class'][0] : null;
@@ -688,32 +694,36 @@ class jigoshop_product {
 	 */
 	public function get_cross_sells() {
 		return $this->cross_sells;
-
-	/** Returns the product's length */
-	function get_length() {
-		if (isset($this->data['length'])) {
-            return $this->data['length'];
-        }
-        
-        return NULL;
 	}
 
-	/** Returns the product's width */
-	function get_width() {
-		if (isset($this->data['width'])) {
-            return $this->data['width'];
-        }
-        
-        return NULL;
+	/**
+	 * Returns the product's length
+	 * @deprecated not required since we can just call $this->weight if the var is public
+	 *
+	 * @return	mixed	length
+	 */
+	public function get_length() {
+		return $this->length;
 	}
 
-	/** Returns the product's height */
-	function get_height() {
-		if (isset($this->data['height'])) {
-            return $this->data['height'];
-        }
-        
-        return NULL;
+	/**
+	 * Returns the product's width
+	 * @deprecated not required since we can just call $this->weight if the var is public
+	 *
+	 * @return	mixed	width
+	 */
+	public function get_width() {
+		return $this->width;
+	}
+
+	/**
+	 * Returns the product's height
+	 * @deprecated not required since we can just call $this->weight if the var is public
+	 *
+	 * @return	mixed	height
+	 */
+	public function get_height() {
+		return $this->height;
 	}
 
 	/**

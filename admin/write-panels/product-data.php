@@ -147,30 +147,11 @@ function jigoshop_product_data_box() {
 			}
 
 			// Dimensions
-			$field = array( 'id' => 'length', 'label' => __('Length', 'jigoshop') . ' ('.get_option('jigoshop_dimension_unit').'):' );
-			if( get_option('jigoshop_enable_dimensions', true) !== 'no' ) :
-				echo '<p class="form-field">
-					<label for="'.$field['id'].'">'.$field['label'].'</label>
-					<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" placeholder="" /></p>';
-			else:
-				echo '<input type="hidden" name="'.$field['id'].'" value="'.$data[$field['id']].'" />';
-			endif;
-			$field = array( 'id' => 'width', 'label' => __('Width', 'jigoshop') . ' ('.get_option('jigoshop_dimension_unit').'):' );
-			if( get_option('jigoshop_enable_dimensions', true) !== 'no' ) :
-				echo '<p class="form-field">
-					<label for="'.$field['id'].'">'.$field['label'].'</label>
-					<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" placeholder="" /></p>';
-			else:
-				echo '<input type="hidden" name="'.$field['id'].'" value="'.$data[$field['id']].'" />';
-			endif;
-			$field = array( 'id' => 'height', 'label' => __('Height', 'jigoshop') . ' ('.get_option('jigoshop_dimension_unit').'):' );
-			if( get_option('jigoshop_enable_dimensions', true) !== 'no' ) :
-				echo '<p class="form-field">
-					<label for="'.$field['id'].'">'.$field['label'].'</label>
-					<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$data[$field['id']].'" placeholder="" /></p>';
-			else:
-				echo '<input type="hidden" name="'.$field['id'].'" value="'.$data[$field['id']].'" />';
-			endif;
+			if( get_option('jigoshop_enable_dimensions', true) !== 'no' ) {
+				echo jigoshop_form::input( 'length', 'Length' ); // Missing Unit // get_option('jigoshop_dimension_unit')
+				echo jigoshop_form::input( 'width', 'Width' ); // Missing Unit // get_option('jigoshop_dimension_unit')
+				echo jigoshop_form::input( 'height', 'Height' ); // Missing Unit // get_option('jigoshop_dimension_unit')
+			}
 			
 			// Featured
 			echo jigoshop_form::select( 'featured', 'Featured?', 
