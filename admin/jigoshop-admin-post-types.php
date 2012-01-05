@@ -138,8 +138,8 @@ function jigoshop_custom_product_columns($column) {
 		case "featured" :
 			$url = wp_nonce_url( admin_url('admin-ajax.php?action=jigoshop-feature-product&product_id=' . $post->ID) );
 			echo '<a href="'.$url.'" title="'.__('Change','jigoshop') .'">';
-			if ($product->is_featured()) echo '<a href="'.$url.'"><img src="'.jigoshop::plugin_url().'/assets/images/success.gif" alt="yes" />';
-			else echo '<img src="'.jigoshop::plugin_url().'/assets/images/success-off.gif" alt="no" />';
+			if ($product->is_featured()) echo '<a href="'.$url.'"><img src="'.jigoshop::assets_url().'/assets/images/success.gif" alt="yes" />';
+			else echo '<img src="'.jigoshop::assets_url().'/assets/images/success-off.gif" alt="no" />';
 			echo '</a>';
 		break;
 		case "visibility" :
@@ -150,7 +150,7 @@ function jigoshop_custom_product_columns($column) {
 			endif;
 		break;
 		case "is_in_stock" :
-			if ( !$product->is_type( 'grouped' ) && $product->is_in_stock() ) echo '<img src="'.jigoshop::plugin_url().'/assets/images/success.gif" alt="yes" />';
+			if ( !$product->is_type( 'grouped' ) && $product->is_in_stock() ) echo '<img src="'.jigoshop::assets_url().'/assets/images/success.gif" alt="yes" />';
 			else echo '<span class="na">&ndash;</span>';
 		break;
 		case "inventory" :

@@ -57,15 +57,25 @@ class jigoshop extends jigoshop_singleton {
     }
 
 	/**
+	 * Get the assets url
+	 * Provide a filter to allow asset location elsewhere such as on a CDN
+	 *
+	 * @return  string	url
+	 */
+	public static function assets_url() { 
+		return apply_filters( 'jigoshop_assets_url', self::plugin_url() );
+	}
+
+	/**
 	 * Get the plugin url
 	 *
 	 * @return  string	url
 	 */
 	public static function plugin_url() { 
-		if(self::$plugin_url) return self::$plugin_url;
-		
-		// Untested in a wild environment needs further work
-		return self::$plugin_url = plugins_url(null, dirname(__FILE__));
+		if ( empty( self::$plugin_url )) :
+			self::$plugin_url = self::force_ssl( plugins_url( null, dirname(__FILE__)));
+		endif;
+		return self::$plugin_url;
 	}
 	
 	/**
@@ -204,12 +214,6 @@ class jigoshop extends jigoshop_singleton {
 		if( $error_message === false ) $error_message = __('Action failed. Please refresh the page and retry.', 'jigoshop'); 
 		
 		if(!in_array($method, array('_GET', '_POST', '_REQUEST'))) $method = '_POST';
-		
-		/*
-		$request = $GLOBALS[$method];
-		
-		if ( isset($request[$name]) && wp_verify_nonce($request[$name], $action) ) return true;
-		*/
 		
 		if ( isset($_REQUEST[$name]) && wp_verify_nonce($_REQUEST[$name], $action) ) return true;
 		

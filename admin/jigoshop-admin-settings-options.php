@@ -99,6 +99,34 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
+		'name' => __('Enable product dimensions','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_enable_dimensions',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'yes',
+		'type' 		=> 'select',
+		'options' => array(
+			'yes' => __('Yes', 'jigoshop'),
+			'no'  => __('No', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Dimensions Unit', 'jigoshop'),
+		'desc' 		=> __("This controls what units you will define dimensions in.", 'jigoshop'),
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_dimension_unit',
+		'css' 		=> 'min-width:200px;',
+		'std' 		=> 'cm',
+		'type' 		=> 'select',
+		'options' => array(
+			'cm' => __('centimeters', 'jigoshop'),
+			'in' => __('inches', 'jigoshop')
+		)
+	),
+
+	array(
 		'name' => __('Base Country/Region','jigoshop'),
 		'desc' 		=> '',
 		'tip' 		=> __('This is the base country for your business. Tax rates will be based on this country.','jigoshop'),
@@ -310,7 +338,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name' => __('Terms page ID', 'jigoshop'),
+		'name' => __('Terms Page', 'jigoshop'),
 		'desc' 		=> __('If you define a "Terms" page the customer will be asked if they accept them when checking out.', 'jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_terms_page_id',
@@ -322,7 +350,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array( 'type' => 'tabend'),
 
-	array( 'type' 		=> 'tab', 'tabname' => __('Catalog', 'jigoshop') ),
+	array( 'type' 		=> 'tab', 'tabname' => __('Catalog &amp; Pricing', 'jigoshop') ),
 
 	array(	'name' => __('Catalog Options', 'jigoshop'), 'type' 		=> 'title','desc' 		=> '', 'id' 		=> '' ),
 
@@ -635,7 +663,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name' => __('Out-of-stock notification','jigoshop'),
+		'name' => __('Out of stock notification','jigoshop'),
 		'desc' 		=> '',
 		'tip' 		=> __('Set the minimum threshold for this below.', 'jigoshop'),
 		'id' 		=> 'jigoshop_notify_no_stock',

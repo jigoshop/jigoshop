@@ -101,7 +101,7 @@ jQuery( function($){
 
 		if (item_id) {
 
-			jQuery('table.jigoshop_order_items').block({ message: null, overlayCSS: { background: '#fff url(' + params.plugin_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
+			jQuery('table.jigoshop_order_items').block({ message: null, overlayCSS: { background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
 
 			var data = {
 				action: 		'jigoshop_add_order_item',

@@ -18,7 +18,6 @@ class jigoshop_product {
 	
 	// LEGACY
 	private static $attribute_taxonomies = NULL;
-	//
 
 	public $id; // : jigoshop_template_functions.php on line 99 // This is just an alias for $this->ID
 	public $ID;
@@ -38,7 +37,7 @@ class jigoshop_product {
 
 	private $weight;
 
-	private $tax_status		= 'taxable';
+	private $tax_status			= 'taxable';
 	private $tax_class;
 
 	public $visibility			= 'visible'; // : admin/jigoshop-admin-post-types.php on line 168
@@ -689,6 +688,32 @@ class jigoshop_product {
 	 */
 	public function get_cross_sells() {
 		return $this->cross_sells;
+
+	/** Returns the product's length */
+	function get_length() {
+		if (isset($this->data['length'])) {
+            return $this->data['length'];
+        }
+        
+        return NULL;
+	}
+
+	/** Returns the product's width */
+	function get_width() {
+		if (isset($this->data['width'])) {
+            return $this->data['width'];
+        }
+        
+        return NULL;
+	}
+
+	/** Returns the product's height */
+	function get_height() {
+		if (isset($this->data['height'])) {
+            return $this->data['height'];
+        }
+        
+        return NULL;
 	}
 
 	/**

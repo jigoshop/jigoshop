@@ -15,6 +15,11 @@
  * @license    http://jigoshop.com/license/commercial-edition
  */
 
+/* Catalog Filters */
+add_filter( 'loop-shop-query', create_function( '', 'return array("orderby" => "'.get_option('jigoshop_catalog_sort_orderby').'","order" => "'.get_option('jigoshop_catalog_sort_direction').'");' ) );
+add_filter( 'loop_shop_columns', create_function( '', 'return '.get_option('jigoshop_catalog_columns').';' ) );
+add_filter( 'loop_shop_per_page', create_function( '', 'return '.get_option('jigoshop_catalog_per_page').';' ) );
+
 /* Content Wrappers */
 add_action( 'jigoshop_before_main_content', 'jigoshop_output_content_wrapper', 10);
 add_action( 'jigoshop_after_main_content', 'jigoshop_output_content_wrapper_end', 10);
@@ -80,6 +85,7 @@ add_action( 'jigoshop_product_tab_panels', 'jigoshop_product_reviews_panel', 30 
 
 /* Checkout */
 add_action( 'before_checkout_form', 'jigoshop_checkout_login_form', 10 );
+add_action( 'jigoshop_checkout_order_review', 'jigoshop_order_review', 10 );
 
 /* Remove the singular class for jigoshop single product */
 add_action( 'after_setup_theme', 'jigoshop_body_classes_check' );

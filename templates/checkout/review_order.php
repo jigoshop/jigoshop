@@ -14,31 +14,6 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
-
-	if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
-	
-	if (!defined('ABSPATH')) :
-		define('DOING_AJAX', true);
-		$root = dirname(dirname(dirname(dirname(dirname(dirname(__FILE__))))));
-		require_once( $root.'/wp-load.php' );
-	endif;
-	
-	if (sizeof(jigoshop_cart::$cart_contents)==0) :
-		echo '<p class="error">'.__('Sorry, your session has expired.', 'jigoshop').' <a href="'.home_url().'">'.__('Return to homepage &rarr;', 'jigoshop').'</a></p>';
-		exit;
-	endif;
-	
-	if (isset($_POST['shipping_method'])) $_SESSION['chosen_shipping_method_id'] = $_POST['shipping_method'];
-	if (isset($_POST['country'])) jigoshop_customer::set_country( $_POST['country'] );
-	if (isset($_POST['state'])) jigoshop_customer::set_state( $_POST['state'] );
-	if (isset($_POST['postcode'])) jigoshop_customer::set_postcode( $_POST['postcode'] );
-	
-	if (isset($_POST['s_country'])) jigoshop_customer::set_shipping_country( $_POST['s_country'] );
-	if (isset($_POST['s_state'])) jigoshop_customer::set_shipping_state( $_POST['s_state'] );
-	if (isset($_POST['s_postcode'])) jigoshop_customer::set_shipping_postcode( $_POST['s_postcode'] );
-					
-	jigoshop_cart::calculate_totals();
-	
 ?>
 <div id="order_review">
 	
@@ -183,10 +158,6 @@
 		
 			<?php jigoshop::nonce_field('process_checkout')?>
 			
-			<?php  $order_button_text = apply_filters( 'jigoshop_order_button_text', __( 'Place order', 'jigoshop') ); ?>
-			
-			<input type="submit" class="button-alt" name="place_order" id="place_order" value="<?php echo $order_button_text; ?>" />
-			
 			<?php do_action( 'jigoshop_review_order_before_submit' ); ?>
 			
 			<?php if (get_option('jigoshop_terms_page_id')>0) : ?>
@@ -195,6 +166,9 @@
 				<input type="checkbox" class="input-checkbox" name="terms" <?php if (isset($_POST['terms'])) echo 'checked="checked"'; ?> id="terms" />
 			</p>
 			<?php endif; ?>
+			
+			<?php $order_button_text = apply_filters( 'jigoshop_order_button_text', __( 'Place order', 'jigoshop') ); ?>
+			<input type="submit" class="button-alt" name="place_order" id="place_order" value="<?php echo $order_button_text; ?>" />
 			
 			<?php do_action( 'jigoshop_review_order_after_submit' ); ?>
 			

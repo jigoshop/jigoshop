@@ -147,7 +147,7 @@ function jigoshop_write_panel_scripts() {
 	
 	if( $post_type !== 'product' && $post_type !== 'shop_order' ) return;
 	
-	wp_register_script('jigoshop-writepanel', jigoshop::plugin_url() . '/assets/js/write-panels.js', array('jquery'));
+	wp_register_script('jigoshop-writepanel', jigoshop::assets_url() . '/assets/js/write-panels.js', array('jquery'));
 	wp_enqueue_script('jigoshop-writepanel');
 	
 	wp_enqueue_script('media-upload');
@@ -166,7 +166,7 @@ function jigoshop_write_panel_scripts() {
 		'tax_rate' 						=> __('Tax Rate e.g. 20.0000', 'jigoshop'),
 		'meta_name'						=> __('Meta Name', 'jigoshop'),
 		'meta_value'					=> __('Meta Value', 'jigoshop'),
-		'plugin_url' 					=> jigoshop::plugin_url(),
+		'assets_url' 					=> jigoshop::assets_url(),
 		'ajax_url' 						=> admin_url('admin-ajax.php'),
 		'add_order_item_nonce' 			=> wp_create_nonce("add-order-item")
 	 );

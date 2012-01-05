@@ -29,15 +29,21 @@ function downloadable_product_type_options() {
 	?>
 	<div id="downloadable_product_options" class="panel jigoshop_options_panel">
 		<?php
-
 			// File URL
 			// TODO: Refactor this into a helper
 			$file_path = get_post_meta($post->ID, 'file_path', true);
-			$field = array( 'id' => 'file_path', 'label' => __('File path', 'jigoshop') );
+			$field = array( 'id' => 'file_path', 'label' => __('Internal Path', 'jigoshop') );
 			echo '<p class="form-field">
 				<label for="'.$field['id'].'">'.$field['label'].':</label>
 				<span style="float:left">'.ABSPATH.'</span><input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_path.'" placeholder="'.__('path to file on your server', 'jigoshop').'" /></p>';
-				
+
+			// File URL (External URL)
+			$file_url = get_post_meta($post->ID, 'file_url', true);
+			$field = array( 'id' => 'file_url', 'label' => __('External URL', 'jigoshop') );
+			echo '<p class="form-field">
+				<label for="'.$field['id'].'">'.$field['label'].':</label>
+				<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_url.'" placeholder="'.__('An external URL to the file', 'jigoshop').'" /><span class="description">' . __('Note: This URL will be visible to the customer.', 'jigoshop') . '</span></p>';
+
 			// Download Limit
 			echo jigoshop_form::input( 'download_limit', 'Download Limit', 'Leave blank for unlimited re-downloads' );
 			do_action( 'additional_downloadable_product_type_options' )

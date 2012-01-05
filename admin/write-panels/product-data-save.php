@@ -35,6 +35,9 @@ class jigoshop_product_meta
 		update_post_meta( $post_id, 'sale_price',		$_POST['sale_price']);
 
 		update_post_meta( $post_id, 'weight',			$_POST['weight']);
+		update_post_meta( $post_id, 'length',			$_POST['length']);
+		update_post_meta( $post_id, 'width',			$_POST['width']);
+		update_post_meta( $post_id, 'height',			$_POST['height']);
 
 		update_post_meta( $post_id, 'tax_status',		$_POST['tax_status']);
 		update_post_meta( $post_id, 'tax_class',			$_POST['tax_class']);

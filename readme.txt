@@ -135,9 +135,27 @@ We have a <a href="http://jigoshop.com/forums" title="Jigoshop support forum">co
 = 0.9.9.4 =
 * added option for out of stock notification that sets products to hidden after Order quantity processing
 * added support for backorders on variations
-* fixed several javascript errors preventing variations from working
+* added product dimensions for length, width, and height
+* product thumbnails will now order themselves based on WordPress Gallery Order
+* products can now display a percentage saved for products on sale
 * changed datepicker to work with WordPress 3.3
-
+* shipping is no longer always forced to the cheapest method
+* fix downloadable products, no longer charged shipping either singly or in a mixed cart
+* internal restructuring and code cleanup for shipping
+* fixed several javascript errors preventing variations from working
+* fixed 404 errors on checkout review order
+* fixed successful paypal orders still marked as pending instead of processing
+* fixed order complete Emails
+* fixed add to cart and Select buttons on Shop page with incorrect URL's
+* fixed tax calculations for taxable and non taxable products (minor tax no longer applied to non taxable)
+* fixed coupon display in the Admin settings
+* fixed coupon errors if no coupons in the Admin
+* fix recent products shortcode
+* cart now always shows correct totals without having to click update totals button
+* enhancements to internal page determination functions for theme developers
+* updated German translations
+* a number of other small bug fixes
+* a number of security enhancements
 
 = 0.9.9.3 =
 * Fixed SVN error

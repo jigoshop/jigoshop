@@ -42,7 +42,6 @@ class flat_rate extends jigoshop_shipping_method {
     	
     	if ($this->type=='order') :
 			// Shipping for whole order
-			// TODO: if you have one product in the cart and it is downloadable, shipping is applied  -JAP-
 			$this->shipping_total = $this->cost + $this->get_fee( $this->fee, jigoshop_cart::$cart_contents_total );
 			
 			if ( get_option('jigoshop_calc_taxes')=='yes' && $this->tax_status=='taxable' ) :
