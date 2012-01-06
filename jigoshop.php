@@ -8,14 +8,14 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * Plugin Name:		Jigoshop - WordPress eCommerce
+ * Plugin Name:			Jigoshop - WordPress eCommerce
  * Plugin URI:			http://jigoshop.com
  * Description:			An eCommerce plugin for WordPress.
- * Author:			Jigowatt
+ * Author:				Jigowatt
  * Author URI:			http://jigowatt.co.uk
  *
- * Version:			Dev
- * Requires at least:		3.1
+ * Version:				Dev
+ * Requires at least:	3.1
  * Tested up to:		trunk
  *
  * @package    			Jigoshop
@@ -55,7 +55,6 @@ include_once( 'classes/jigoshop_countries.class.php' );
 include_once( 'classes/jigoshop_customer.class.php' );
 include_once( 'classes/jigoshop_product.class.php' );
 include_once( 'classes/jigoshop_product_variation.class.php' );
-include_once( 'classes/jigoshop_products.class.php' );
 include_once( 'classes/jigoshop_order.class.php' );
 include_once( 'classes/jigoshop_orders.class.php' );
 include_once( 'classes/jigoshop_tax.class.php' );
