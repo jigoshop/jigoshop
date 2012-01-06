@@ -430,7 +430,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 							</td>
 						</td>
 					</tr>
-					<tr class="downloadable options" <?php echo ('downloadable' == $product_type) ? 'style="display: table-row;"' : 'style="display: none !important;"';?>>
+					<tr class="downloadable options" <?php echo ('downloadable' == $product_type) ? 'style="display: table-row;"' : 'style="display: none;"';?>>
 						<td colspan="4" class="download_file">
 							<label class="clearlabel"><?php _e('File Location', 'jigoshop') ?></label>
 							<input type="text" name="<?php echo $this->field_name('file_path', $variation) ?>" value="<?php echo isset($meta['file_path'][0]) ? $meta['file_path'][0] : null; ?>" />
