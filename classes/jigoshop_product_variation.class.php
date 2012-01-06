@@ -24,8 +24,8 @@ class jigoshop_product_variation extends jigoshop_product {
 	/**
 	 * Extends the parent constructor to overwrite with variable data
 	 *
-	 * @param   int		ID of the product to load
-	 * @return	jigoshop_product_variation
+	 * @param   int     ID of the product to load
+	 * @return  object
 	 */
 	public function __construct( $ID ) {
 
@@ -43,7 +43,7 @@ class jigoshop_product_variation extends jigoshop_product {
 
 		// Merge with the variation data
 		$this->variation_id = $ID;
-		$this->variation_data = maybe_unserialize($this->meta['variation_data'][0]);
+		$this->variation_data = maybe_unserialize( $this->meta['variation_data'][0] );
 		parent::__construct( $ID );
         
         // Restore the parent ID
@@ -56,7 +56,7 @@ class jigoshop_product_variation extends jigoshop_product {
     /**
      * Get variation ID
      * 
-     * @return int
+     * @return  int
      */
     public function get_variation_id() {
         return (int) $this->variation_id;
@@ -65,8 +65,8 @@ class jigoshop_product_variation extends jigoshop_product {
     /**
      * Get variation attribute values
      * 
-     * @uses for get_available_attributes_variations()
-     * @return two dimensional array array of attributes and their values for this variation
+     * @uses    for get_available_attributes_variations()
+     * @return  two dimensional array array of attributes and their values for this variation
      */
     public function get_variation_attributes() {
         return $this->variation_data; // @todo: This returns blank if its set to catch all, how would we deal with that?
@@ -75,7 +75,7 @@ class jigoshop_product_variation extends jigoshop_product {
     /**
      * Modifies the stock levels for variations
      *
-     * @param   int     Amount to modify
+     * @param   int   Amount to modify
      * @return  int
      */
     public function modify_stock( $by ) {
@@ -96,9 +96,9 @@ class jigoshop_product_variation extends jigoshop_product {
     
     /**
      * Update values of variation attributes using given values
-     * @todo: Why do we need this?
+     * TODO: Why do we need this?
      *
-     * @param array $data array of attributes and values
+     * @param   array $data array of attributes and values
      */
     function set_variation_attributes(array $data) {
         foreach($this->variation_data as $attribute=>$value) {
