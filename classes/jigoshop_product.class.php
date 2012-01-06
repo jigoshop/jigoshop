@@ -40,20 +40,20 @@ class jigoshop_product {
 	private $width;
 	private $height;
 
-	private $tax_status			= 'taxable';
+	private $tax_status		= 'taxable';
 	private $tax_class;
 
-	public $visibility			= 'visible'; // : admin/jigoshop-admin-post-types.php on line 168
-	private $featured			= false;
+	public $visibility		= 'visible'; // : admin/jigoshop-admin-post-types.php on line 168
+	private $featured		= false;
 
-	private $manage_stock		= false;
-	private $stock_status		= 'instock';
+	private $manage_stock	= false;
+	private $stock_status	= 'instock';
 	private $backorders;
 	public $stock; // : admin/jigoshop-admin-post-types.php on line 180
 	private $stock_sold;
 
-	private	$attributes			= array();
-	public $children			= array(); // : jigoshop_template_functions.php on line 328
+	private	$attributes		= array();
+	public $children		= array(); // : jigoshop_template_functions.php on line 328
 
 	/**
 	 * Loads all product data from custom fields
