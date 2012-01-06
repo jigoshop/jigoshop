@@ -80,6 +80,10 @@ function jigoshop_product_data_box() {
 			<li>	
 				<a href="#grouped"><?php _e('Grouped', 'jigoshop') ?></a>
 			</li>
+
+			<li>	
+				<a href="#files"><?php _e('File', 'jigoshop') ?></a>
+			</li>
 			
 			<?php //do_action('jigoshop_product_write_panel_tabs'); ?>
 			<?php //do_action('product_write_panel_tabs'); // Legacy ?>
@@ -156,37 +160,12 @@ function jigoshop_product_data_box() {
 				}
 			?>
 			</fieldset>
-
-			<?php // DOWNLOADABLE OPTIONS
-				// File URL
-				// TODO: Refactor this into a helper
-				// $file_path = get_post_meta($post->ID, 'file_path', true);
-				// $field = array( 'id' => 'file_path', 'label' => __('Internal Path', 'jigoshop') );
-				// echo '<p class="form-field">
-				// 	<label for="'.$field['id'].'">'.$field['label'].':</label>
-				// 	<span style="float:left">'.ABSPATH.'</span><input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_path.'" placeholder="'.__('path to file on your server', 'jigoshop').'" /></p>';
-
-				// // File URL (External URL)
-				// $file_url = get_post_meta($post->ID, 'file_url', true);
-				// $field = array( 'id' => 'file_url', 'label' => __('External URL', 'jigoshop') );
-				// echo '<p class="form-field">
-				// 	<label for="'.$field['id'].'">'.$field['label'].':</label>
-				// 	<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_url.'" placeholder="'.__('An external URL to the file', 'jigoshop').'" /><span class="description">' . __('Note: This URL will be visible to the customer.', 'jigoshop') . '</span></p>';
-
-				// // Download Limit
-				// echo jigoshop_form::input( 'download_limit', 'Download Limit', 'Leave blank for unlimited re-downloads' );
-				// do_action( 'additional_downloadable_product_type_options' )
-			?>
 		</div>
 		<div id="tax" class="panel jigoshop_options_panel">
 			<fieldset>
 			<?php
 				// Featured
-				echo jigoshop_form::select( 'featured', 'Featured?', 
-					array(
-						false	=> 'No',
-						true	=> 'Yes'
-					) );
+				echo jigoshop_form::checkbox( 'featured', 'Featured?');
 
 				// Visibility
 				echo jigoshop_form::select( 'visibility', 'Visibility',
@@ -461,6 +440,34 @@ function jigoshop_product_data_box() {
 			// Ordering
 			echo jigoshop_form::input( 'menu_order', 'Sort Order', false, $post->menu_order );
 			?>
+		</div>
+
+		<div id="files" class="panel jigoshop_options_panel">
+			<fieldset>
+			<?php 
+				// DOWNLOADABLE OPTIONS
+				// File URL
+				// TODO: Refactor this into a helper
+				echo jigoshop_form::input( 'file_path', __('File Path', 'jigoshop') );
+
+				// $file_path = get_post_meta($post->ID, 'file_path', true);
+				// $field = array( 'id' => 'file_path', 'label' => __('Internal Path', 'jigoshop') );
+				// echo '<p class="form-field">
+				// 	<label for="'.$field['id'].'">'.$field['label'].':</label>
+				// 	<span style="float:left">'.ABSPATH.'</span><input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_path.'" placeholder="'.__('path to file on your server', 'jigoshop').'" /></p>';
+
+				// File URL (External URL)
+				// $file_url = get_post_meta($post->ID, 'file_url', true);
+				// $field = array( 'id' => 'file_url', 'label' => __('External URL', 'jigoshop') );
+				// echo '<p class="form-field">
+				// 	<label for="'.$field['id'].'">'.$field['label'].':</label>
+				// 	<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_url.'" placeholder="'.__('An external URL to the file', 'jigoshop').'" /><span class="description">' . __('Note: This URL will be visible to the customer.', 'jigoshop') . '</span></p>';
+
+				// Download Limit
+				echo jigoshop_form::input( 'download_limit', 'Download Limit', 'Leave blank for unlimited re-downloads' );
+				do_action( 'additional_downloadable_product_type_options' )
+			?>
+			</fieldset>
 		</div>
 		
 		<?php //do_action('jigoshop_product_write_panels'); ?>
