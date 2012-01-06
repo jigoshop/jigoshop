@@ -368,7 +368,7 @@ class jigoshop_product {
 	 */
 	public function is_in_stock() {
 
-		if ( $this->is_type( 'grouped', 'variable' ) ) {
+		if ( $this->is_type( array('grouped', 'variable') ) ) {
 			foreach( $this->get_children() as $child_ID ) {
 
 				// Get the children
