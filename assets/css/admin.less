@@ -797,6 +797,14 @@ a.tips {
 .jigoshop_page_settings .jigoshop_options_panel, .panel {
 	padding: 0;
 }
+.panel fieldset {
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #dfdfdf;
+
+	&:last-child {
+		border-bottom: none;
+	}
+}
 #jigoshop-product-type-options .panel, #jigoshop-product-specs .inside {
 	padding: 9px;
 	margin: 0;
@@ -804,7 +812,7 @@ a.tips {
 .jigoshop_options_panel p, #jigoshop-product-type-options .panel p {
 	overflow: hidden;
 	zoom: 1;
-	margin: 0 0 9px;
+	margin: 9px 0;
 	font-size: 12px;
 	padding: 7px 9px;
 	line-height: 24px;

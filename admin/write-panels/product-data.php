@@ -56,167 +56,150 @@ function jigoshop_product_data_box() {
 
 	$thepostid = $post->ID;	
 	?>
-	<div class="panel-wrap product_data">
 
+	<div class="panels">
 		<ul class="product_data_tabs tabs" style="display:none;">
 			<li class="active">
-				<a href="#general_product_data"><?php _e('General', 'jigoshop'); ?></a>
+				<a href="#general"><?php _e('General', 'jigoshop'); ?></a>
 			</li>
 
-			<li class="pricing_tab">
-				<a href="#pricing_product_data"><?php _e('Pricing', 'jigoshop'); ?></a>
+			<li>
+				<a href="#tax"><?php _e('Display & Tax', 'jigoshop') ?></a>
 			</li>
 
 			<?php if (get_option('jigoshop_manage_stock')) : ?>
-			<li class="inventory_tab">
-				<a href="#inventory_product_data"><?php _e('Inventory', 'jigoshop'); ?></a>
+			<li>
+				<a href="#inventory"><?php _e('Inventory', 'jigoshop'); ?></a>
 			</li>
 			<?php endif; ?>
 
 			<li>
-				<a href="#jigoshop_attributes"><?php _e('Attributes', 'jigoshop'); ?></a>
+				<a href="#attributes"><?php _e('Attributes', 'jigoshop'); ?></a>
+			</li>
+
+			<li>	
+				<a href="#grouped"><?php _e('Grouped', 'jigoshop') ?></a>
 			</li>
 			
-			<?php do_action('jigoshop_product_write_panel_tabs'); ?>
-			<?php do_action('product_write_panel_tabs'); // Legacy ?>
-
+			<?php //do_action('jigoshop_product_write_panel_tabs'); ?>
+			<?php //do_action('product_write_panel_tabs'); // Legacy ?>
 		</ul>
 		
-		<div id="general_product_data" class="panel jigoshop_options_panel"><?php
-			
-			// Product Type
-			$terms = wp_get_object_terms( $thepostid, 'product_type' );
-			$product_type = ($terms) ? current($terms)->slug : 'simple';
+		<div id="general" class="panel jigoshop_options_panel">
+			<fieldset>
+			<?php	
+				// Product Type
+				$terms = wp_get_object_terms( $thepostid, 'product_type' );
+				$product_type = ($terms) ? current($terms)->slug : 'simple';
 
-			echo jigoshop_form::select(
-				'product-type', 
-				__('Product Type', 'jigoshop'),
-				apply_filters('jigoshop_product_type_selector', array(
-					'simple'			=> __('Simple', 'jigoshop'),
-					'downloadable'	=> __('Downloadable', 'jigoshop'),
-					'grouped'		=> __('Grouped', 'jigoshop'),
-					'virtual'		=> __('Virtual', 'jigoshop'),
-					'variable'		=> __('Variable', 'jigoshop'),
-				)),
-				$product_type
-			);
-
-			// Grouped Products
-			// TODO: Needs refactoring & a bit of love
-			$posts_in = (array) get_objects_in_term( get_term_by( 'slug', 'grouped', 'product_type' )->term_id, 'product_type' );
-			$posts_in = array_unique($posts_in);
-
-			if( (bool) $posts_in ) {
-
-				$args = array(
-					'post_type'	=> 'product',
-					'post_status' => 'publish',
-					'numberposts' => -1,
-					'orderby' => 'title',
-					'order' => 'asc',
-					'post_parent' => 0,
-					'include' => $posts_in,
+				echo jigoshop_form::select(
+					'product-type', 
+					__('Product Type', 'jigoshop'),
+					apply_filters('jigoshop_product_type_selector', array(
+						'simple'			=> __('Simple', 'jigoshop'),
+						'downloadable'	=> __('Downloadable', 'jigoshop'),
+						'grouped'		=> __('Grouped', 'jigoshop'),
+						'virtual'		=> __('Virtual', 'jigoshop'),
+						'variable'		=> __('Variable', 'jigoshop'),
+					)),
+					$product_type
 				);
 
-				$grouped_products = get_posts($args);
-
-				$options = array( null => 'Pick a Product Group &hellip;' );
-
-				if( $grouped_products ) foreach( $grouped_products as $product ) {
-					if ($product->ID==$post->ID) continue;
-
-					$options[$product->ID] = $product->post_title;
+				// SKU
+				if ( get_option('jigoshop_enable_sku') !== 'no' ) {
+					echo jigoshop_form::input( 'sku', 'SKU', 'Leave blank to use product ID' );
 				}
-				// Only echo the form if we have grouped products
-				echo jigoshop_form::select( 'parent_id', 'Product Group', $options, $post->post_parent );
-			}
-			
-			// Ordering
-			echo jigoshop_form::input( 'menu_order', 'Sort Order', false, $post->menu_order );
-
-			// SKU
-			// TODO: Do we need this check? Why are we disabling the SKU? -Rob
-			if ( get_option('jigoshop_enable_sku') !== 'no' ) {
-				echo jigoshop_form::input( 'sku', 'SKU', 'Leave blank to use product ID' );
-			}
-
-			// Weight
-			// TODO: Do we need this check? -Rob
-			if( get_option('jigoshop_enable_weight') !== 'no' ) {
-				echo jigoshop_form::input( 'weight', 'Weight' ); // Missing placeholder attribute 0.00
-			}
-
-			// Dimensions
-			if( get_option('jigoshop_enable_dimensions', true) !== 'no' ) {
-				echo jigoshop_form::input( 'length', 'Length' ); // Missing Unit // get_option('jigoshop_dimension_unit')
-				echo jigoshop_form::input( 'width', 'Width' ); // Missing Unit // get_option('jigoshop_dimension_unit')
-				echo jigoshop_form::input( 'height', 'Height' ); // Missing Unit // get_option('jigoshop_dimension_unit')
-			}
-			
-			// Featured
-			echo jigoshop_form::select( 'featured', 'Featured?', 
-				array(
-					false	=> 'No',
-					true	=> 'Yes'
-				) );
-
-			// Visibility
-			echo jigoshop_form::select( 'visibility', 'Visibility',
-				array(
-					'visible'	=> 'Catalog & Search',
-					'catalog'	=> 'Catalog Only',
-					'search'	=> 'Search Only',
-					'Hidden'	=> 'Hidden'
-				) );
 			?>
+			</fieldset>
+
+			<fieldset>
+			<?php
+				// Regular Price
+				echo jigoshop_form::input( 'regular_price', 'Regular Price' );
+
+				// Sale Price
+				echo jigoshop_form::input( 'sale_price', 'Sale Price' );
+
+				// Sale Price date range
+				// TODO: Convert this to a helper somehow?
+				$field = array( 'id' => 'sale_price_dates', 'label' => __('Sale Price Dates', 'jigoshop') );
+				
+				$sale_price_dates_from = get_post_meta($thepostid, 'sale_price_dates_from', true);
+				$sale_price_dates_to = get_post_meta($thepostid, 'sale_price_dates_to', true);
+				
+				echo '	<p class="form-field">
+							<label for="'.$field['id'].'_from">'.$field['label'].':</label>
+							<input type="text" class="short date-pick" name="'.$field['id'].'_from" id="'.$field['id'].'_from" value="';
+				if ($sale_price_dates_from) echo date('Y-m-d', $sale_price_dates_from);
+				echo '" placeholder="' . __('From&hellip;', 'jigoshop') . '" maxlength="10" />
+							<input type="text" class="short date-pick" name="'.$field['id'].'_to" id="'.$field['id'].'_to" value="';
+				if ($sale_price_dates_to) echo date('Y-m-d', $sale_price_dates_to);
+				echo '" placeholder="' . __('To&hellip;', 'jigoshop') . '" maxlength="10" />
+							<span class="description">' . __('Date format', 'jigoshop') . ': <code>YYYY-MM-DD</code></span>
+						</p>';
+			?>
+			</fieldset>
+
+			<fieldset>
+			<?php
+				// Weight
+				// TODO: Do we need this check? -Rob
+				if( get_option('jigoshop_enable_weight') !== 'no' ) {
+					echo jigoshop_form::input( 'weight', 'Weight' ); // Missing placeholder attribute 0.00
+				}
+
+				// Dimensions
+				if( get_option('jigoshop_enable_dimensions', true) !== 'no' ) {
+					echo jigoshop_form::input( 'length', 'Dimensions' ); // Missing Unit // get_option('jigoshop_dimension_unit')
+					//echo jigoshop_form::input( 'width', 'Width' ); // Missing Unit // get_option('jigoshop_dimension_unit')
+					//echo jigoshop_form::input( 'height', 'Height' ); // Missing Unit // get_option('jigoshop_dimension_unit')
+				}
+			?>
+			</fieldset>
 
 			<?php // DOWNLOADABLE OPTIONS
 				// File URL
 				// TODO: Refactor this into a helper
-				$file_path = get_post_meta($post->ID, 'file_path', true);
-				$field = array( 'id' => 'file_path', 'label' => __('Internal Path', 'jigoshop') );
-				echo '<p class="form-field">
-					<label for="'.$field['id'].'">'.$field['label'].':</label>
-					<span style="float:left">'.ABSPATH.'</span><input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_path.'" placeholder="'.__('path to file on your server', 'jigoshop').'" /></p>';
+				// $file_path = get_post_meta($post->ID, 'file_path', true);
+				// $field = array( 'id' => 'file_path', 'label' => __('Internal Path', 'jigoshop') );
+				// echo '<p class="form-field">
+				// 	<label for="'.$field['id'].'">'.$field['label'].':</label>
+				// 	<span style="float:left">'.ABSPATH.'</span><input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_path.'" placeholder="'.__('path to file on your server', 'jigoshop').'" /></p>';
 
-				// File URL (External URL)
-				$file_url = get_post_meta($post->ID, 'file_url', true);
-				$field = array( 'id' => 'file_url', 'label' => __('External URL', 'jigoshop') );
-				echo '<p class="form-field">
-					<label for="'.$field['id'].'">'.$field['label'].':</label>
-					<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_url.'" placeholder="'.__('An external URL to the file', 'jigoshop').'" /><span class="description">' . __('Note: This URL will be visible to the customer.', 'jigoshop') . '</span></p>';
+				// // File URL (External URL)
+				// $file_url = get_post_meta($post->ID, 'file_url', true);
+				// $field = array( 'id' => 'file_url', 'label' => __('External URL', 'jigoshop') );
+				// echo '<p class="form-field">
+				// 	<label for="'.$field['id'].'">'.$field['label'].':</label>
+				// 	<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_url.'" placeholder="'.__('An external URL to the file', 'jigoshop').'" /><span class="description">' . __('Note: This URL will be visible to the customer.', 'jigoshop') . '</span></p>';
 
-				// Download Limit
-				echo jigoshop_form::input( 'download_limit', 'Download Limit', 'Leave blank for unlimited re-downloads' );
-				do_action( 'additional_downloadable_product_type_options' )
+				// // Download Limit
+				// echo jigoshop_form::input( 'download_limit', 'Download Limit', 'Leave blank for unlimited re-downloads' );
+				// do_action( 'additional_downloadable_product_type_options' )
 			?>
 		</div>
-		<div id="pricing_product_data" class="panel jigoshop_options_panel">
-			
+		<div id="tax" class="panel jigoshop_options_panel">
+			<fieldset>
 			<?php
-			// Regular Price
-			echo jigoshop_form::input( 'regular_price', 'Regular Price' );
+				// Featured
+				echo jigoshop_form::select( 'featured', 'Featured?', 
+					array(
+						false	=> 'No',
+						true	=> 'Yes'
+					) );
 
-			// Sale Price
-			echo jigoshop_form::input( 'sale_price', 'Sale Price' );
-
-			// Sale Price date range
-			// TODO: Convert this to a helper somehow?
-			$field = array( 'id' => 'sale_price_dates', 'label' => __('Sale Price Dates', 'jigoshop') );
-			
-			$sale_price_dates_from = get_post_meta($thepostid, 'sale_price_dates_from', true);
-			$sale_price_dates_to = get_post_meta($thepostid, 'sale_price_dates_to', true);
-			
-			echo '	<p class="form-field">
-						<label for="'.$field['id'].'_from">'.$field['label'].':</label>
-						<input type="text" class="short date-pick" name="'.$field['id'].'_from" id="'.$field['id'].'_from" value="';
-			if ($sale_price_dates_from) echo date('Y-m-d', $sale_price_dates_from);
-			echo '" placeholder="' . __('From&hellip;', 'jigoshop') . '" maxlength="10" />
-						<input type="text" class="short date-pick" name="'.$field['id'].'_to" id="'.$field['id'].'_to" value="';
-			if ($sale_price_dates_to) echo date('Y-m-d', $sale_price_dates_to);
-			echo '" placeholder="' . __('To&hellip;', 'jigoshop') . '" maxlength="10" />
-						<span class="description">' . __('Date format', 'jigoshop') . ': <code>YYYY-MM-DD</code></span>
-					</p>';
+				// Visibility
+				echo jigoshop_form::select( 'visibility', 'Visibility',
+					array(
+						'visible'	=> 'Catalog & Search',
+						'catalog'	=> 'Catalog Only',
+						'search'	=> 'Search Only',
+						'Hidden'	=> 'Hidden'
+					) );
+			?>
+			</fieldset>
+			<fieldset>
+			<?php
 
 			// Tax Status
 			echo jigoshop_form::select( 'tax_status', 'Tax Status',
@@ -238,15 +221,19 @@ function jigoshop_product_data_box() {
 
 			echo jigoshop_form::select( 'tax_class', 'Tax Class', $options );
 			?>
-
+			</fieldset>
 		</div>
 		<?php if (get_option('jigoshop_manage_stock')=='yes') : ?>
-		<div id="inventory_product_data" class="panel jigoshop_options_panel">
-
+		<div id="inventory" class="panel jigoshop_options_panel">
+			<fieldset>
 			<?php
 			// manage stock
 			echo jigoshop_form::checkbox( 'manage_stock', 'Manage Stock?' );
 
+			?>
+			</fieldset>
+			<fieldset>
+			<?php
 			// Stock Status
 			// TODO: These values should be true/false
 			echo jigoshop_form::select( 'stock_status', 'Stock Status', 
@@ -271,7 +258,7 @@ function jigoshop_product_data_box() {
 
 			echo '</div>';
 			?>
-
+			</fieldset>
 		</div>
 		<?php endif; 
 
@@ -279,8 +266,18 @@ function jigoshop_product_data_box() {
 		// TODO: Much love needs to be applied here
 
 		?>
-		<div id="jigoshop_attributes" class="panel">
-		
+		<div id="attributes" class="panel">
+			<button type="button" class="button button-primary add_attribute"><?php _e('Add', 'jigoshop'); ?></button>
+			<select name="attribute_taxonomy" class="attribute_taxonomy">
+				<option value="" data-type="custom"><?php _e('Custom product attribute', 'jigoshop'); ?></option>
+				<?php
+					if ( $attribute_taxonomies ) :
+				    	foreach ($attribute_taxonomies as $tax) :
+				    		echo '<option value="'.sanitize_title($tax->attribute_name).'" data-type="'.$tax->attribute_type.'">'.$tax->attribute_name.'</option>';
+				    	endforeach;
+				    endif;
+				?>
+			</select>
 			<div class="jigoshop_attributes_wrapper">
 				<table cellpadding="0" cellspacing="0" class="jigoshop_attributes">
 					<thead>
@@ -426,23 +423,48 @@ function jigoshop_product_data_box() {
 					</tbody>
 				</table>
 			</div>
-			<button type="button" class="button button-primary add_attribute"><?php _e('Add', 'jigoshop'); ?></button>
-			<select name="attribute_taxonomy" class="attribute_taxonomy">
-				<option value="" data-type="custom"><?php _e('Custom product attribute', 'jigoshop'); ?></option>
-				<?php
-					if ( $attribute_taxonomies ) :
-				    	foreach ($attribute_taxonomies as $tax) :
-				    		echo '<option value="'.sanitize_title($tax->attribute_name).'" data-type="'.$tax->attribute_type.'">'.$tax->attribute_name.'</option>';
-				    	endforeach;
-				    endif;
-				?>
-			</select>
 			<div class="clear"></div>
-		</div>	
+		</div>
+
+		<div id="grouped" class="panel jigoshop_options_panel">
+			<?php
+			// Grouped Products
+			// TODO: Needs refactoring & a bit of love
+			$posts_in = (array) get_objects_in_term( get_term_by( 'slug', 'grouped', 'product_type' )->term_id, 'product_type' );
+			$posts_in = array_unique($posts_in);
+
+			if( ! (bool) $posts_in ) {
+
+				$args = array(
+					'post_type'	=> 'product',
+					'post_status' => 'publish',
+					'numberposts' => -1,
+					'orderby' => 'title',
+					'order' => 'asc',
+					'post_parent' => 0,
+					'include' => $posts_in,
+				);
+
+				$grouped_products = get_posts($args);
+
+				$options = array( null => 'Pick a Product Group &hellip;' );
+
+				if( $grouped_products ) foreach( $grouped_products as $product ) {
+					if ($product->ID==$post->ID) continue;
+
+					$options[$product->ID] = $product->post_title;
+				}
+				// Only echo the form if we have grouped products
+				echo jigoshop_form::select( 'parent_id', 'Product Group', $options, $post->post_parent );
+			}
+			
+			// Ordering
+			echo jigoshop_form::input( 'menu_order', 'Sort Order', false, $post->menu_order );
+			?>
+		</div>
 		
-		<?php do_action('jigoshop_product_write_panels'); ?>
-		<?php do_action('product_write_panels'); ?>
-		
+		<?php //do_action('jigoshop_product_write_panels'); ?>
+		<?php //do_action('product_write_panels'); ?>
 	</div>
 	<?php
 }

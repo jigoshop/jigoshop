@@ -2,12 +2,12 @@ jQuery( function($){
 
 	// TABS
 	jQuery('ul.tabs').show();
-	jQuery('div.panel-wrap').each(function(){
+	jQuery('div.panels').each(function(){
 		jQuery('div.panel:not(div.panel:first)', this).hide();
 	});
 
 	jQuery('ul.tabs a').click(function(){
-		var panel_wrap =  jQuery(this).closest('div.panel-wrap');
+		var panel_wrap =  jQuery(this).closest('div.panels');
 		jQuery('ul.tabs li', panel_wrap).removeClass('active');
 		jQuery(this).parent().addClass('active');
 		jQuery('div.panel', panel_wrap).hide();
@@ -335,7 +335,8 @@ jQuery( function($){
 (function($) {
 	
 	$(function() {
-		$('.variable, .grouped, .downloadable').hide();
+		// disabled this because it affects variations
+		//$('.variable, .grouped, .downloadable').hide();
 		$(document)
 		.on('change', '#product-type', function(e) {
 
