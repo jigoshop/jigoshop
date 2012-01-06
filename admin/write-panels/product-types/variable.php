@@ -4,27 +4,35 @@
  * 
  * Functions specific to variable products (for the write panels)
  *
- * @author 		Jigowatt
- * @category 	Admin Write Panel Product Types
- * @package 	JigoShop
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package    Jigoshop
+ * @category   Admin
+ * @author     Jigowatt
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @license    http://jigoshop.com/license/commercial-edition
  */
 
 class jigoshop_product_meta_variable extends jigoshop_product_meta
 {
 	public function __construct() {
-		add_action( 'product_type_selector', 					array(&$this, 'register') );
-		add_action( 'jigoshop_process_product_meta_variable',	array(&$this, 'save'), 1 );
-		add_action( 'jigoshop_product_type_options_box',		array(&$this, 'display') );
-		add_action( 'admin_enqueue_scripts', 					array(&$this, 'admin_enqueue_scripts') );
+		add_action( 'product_type_selector',                   array(&$this, 'register') );
+		add_action( 'jigoshop_process_product_meta_variable',  array(&$this, 'save'), 1 );
+		add_action( 'jigoshop_product_type_options_box',       array(&$this, 'display') );
+		add_action( 'admin_enqueue_scripts',                   array(&$this, 'admin_enqueue_scripts') );
 
-		add_action( 'wp_ajax_jigoshop_remove_variation',		array(&$this, 'remove') );
+		add_action( 'wp_ajax_jigoshop_remove_variation',       array(&$this, 'remove') );
 	}
 
 	/**
 	 * Registers scripts for use in the admin
 	 * Also localizes variables for use in the javascript, essential for variation addition
 	 *
-	 * @return		void
+	 * @return  void
 	 */
 	public function admin_enqueue_scripts() {
 		global $post;
@@ -33,28 +41,28 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 		// Shouldn't we namespace? -Rob
 		wp_localize_script( 'jigoshop-variable-js', 'varmeta', array(
-			'plugin_url'		=> jigoshop::plugin_url(),
-			'ajax_url'		=> admin_url('admin-ajax.php'),
-			'i18n'			=> array(
-				'variations_required'	=> __('You need to add some variations first', 'jigoshop'),
-				'remove_all'		=> __('Are you sure you want to delete all variations', 'jigoshop'),
-				'set_regular_price'	=> __('Enter a regular price', 'jigoshop'),
-				'set_sale_price'		=> __('Enter a sale price', 'jigoshop'),
-				'set_stock'		=> __('Enter a stock value', 'jigoshop'),
-				'set_weight'		=> __('Enter a weight value', 'jigoshop'),
-				'set_width'		=> __('Enter a width value', 'jigoshop'),
-				'set_length'		=> __('Enter a length value', 'jigoshop'),
-				'set_height'		=> __('Enter a height value', 'jigoshop'),
+			'plugin_url'  => jigoshop::plugin_url(),
+			'ajax_url'    => admin_url('admin-ajax.php'),
+			'i18n'        => array(
+				'variations_required' => __('You need to add some variations first', 'jigoshop'),
+				'remove_all'          => __('Are you sure you want to delete all variations', 'jigoshop'),
+				'set_regular_price'   => __('Enter a regular price', 'jigoshop'),
+				'set_sale_price'      => __('Enter a sale price', 'jigoshop'),
+				'set_stock'           => __('Enter a stock value', 'jigoshop'),
+				'set_weight'          => __('Enter a weight value', 'jigoshop'),
+				'set_width'           => __('Enter a width value', 'jigoshop'),
+				'set_length'          => __('Enter a length value', 'jigoshop'),
+				'set_height'          => __('Enter a height value', 'jigoshop'),
 			),
-			'actions'		=> array(
-				'remove'		=> array(
-					'action'		=> 'jigoshop_remove_variation',
-					'nonce'			=> wp_create_nonce("delete-variation"),
-					'confirm'		=> __('Are you sure you want to remove this variation?', 'jigoshop'),
+			'actions'     => array(
+				'remove'      => array(
+					'action'        => 'jigoshop_remove_variation',
+					'nonce'         => wp_create_nonce("delete-variation"),
+					'confirm'       => __('Are you sure you want to remove this variation?', 'jigoshop'),
 				),
-				'create'		=> array(
-					'action'		=> 'jigoshop_create_variation',
-					'panel'			=> $this->generate_panel(maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) ))
+				'create'  => array(
+					'action'        => 'jigoshop_create_variation',
+					'panel'         => $this->generate_panel(maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) ))
 				)
 			)
 		));
@@ -63,7 +71,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	/**
 	 * Echos a variable type option for the product type selector
 	 *
-	 * @return		void
+	 * @return  void
 	 */
 	public function register( $type ) {
 		echo '<option value="variable" ' . selected($type, 'variable', false) . '>' . __('Variable', 'jigoshop') . '</option>';
@@ -72,7 +80,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	/**
 	 * Removes a product variation via XHR
 	 *
-	 * @return		void
+	 * @return  void
 	 */
 	public function remove() {
 		check_ajax_referer( 'delete-variation', 'security' );
@@ -87,8 +95,8 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	/**
 	 * Process the product variable meta
 	 *
-	 * @param		int		Product ID
-	 * @return		void
+	 * @param   int   Product ID
+	 * @return  void
 	 */
 	public function save( $parent_id, $post ) {
 		global $wpdb;
@@ -105,17 +113,17 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			// Update post data or Add post if new
 			if ( strpos($ID, '_new') ) {
 				$ID = wp_insert_post( array(
-					'post_title'		=> "#{$parent_id}: Child Variation",
-					'post_status'	=> isset($meta['enabled']) ? 'publish' : 'draft',
-					'post_parent'	=> $parent_id,
-					'post_type'		=> 'product_variation'
+					'post_title'  => "#{$parent_id}: Child Variation",
+					'post_status' => isset($meta['enabled']) ? 'publish' : 'draft',
+					'post_parent' => $parent_id,
+					'post_type'   => 'product_variation'
 				));
 			}
 			else {
 				$wpdb->update( $wpdb->posts, array(
-					'post_title'		=> "#{$parent_id}: Child Variation",
-					'post_status'	=> isset($meta['enabled']) ? 'publish' : 'draft'
-				), array( 'ID' => $ID ) );
+					'post_title'  => "#{$parent_id}: Child Variation",
+					'post_status' => isset($meta['enabled']) ? 'publish' : 'draft'
+				), array( 'ID'    => $ID ) );
 			}
 
 			// Set the product type
@@ -123,22 +131,22 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			wp_set_object_terms( $ID, sanitize_title($meta['product-type']), 'product_type');
 
 			// Set variation meta data
-			update_post_meta( $ID, 'sku',			$meta['sku'] );
-			update_post_meta( $ID, 'regular_price',	$meta['regular_price'] );
-			update_post_meta( $ID, 'sale_price',		$meta['sale_price'] );
+			update_post_meta( $ID, 'sku',           $meta['sku'] );
+			update_post_meta( $ID, 'regular_price', $meta['regular_price'] );
+			update_post_meta( $ID, 'sale_price',    $meta['sale_price'] );
 
-			update_post_meta( $ID, 'weight',		$meta['weight'] );
-			update_post_meta( $ID, 'length',			$meta['length'] );
-			update_post_meta( $ID, 'height',		$meta['height'] );
-			update_post_meta( $ID, 'width',			$meta['width'] );
+			update_post_meta( $ID, 'weight',        $meta['weight'] );
+			update_post_meta( $ID, 'length',        $meta['length'] );
+			update_post_meta( $ID, 'height',        $meta['height'] );
+			update_post_meta( $ID, 'width',         $meta['width'] );
 
-			update_post_meta( $ID, 'stock',			$meta['stock'] );
-			update_post_meta( $ID, '_thumbnail_id',	$meta['_thumbnail_id'] );
+			update_post_meta( $ID, 'stock',         $meta['stock'] );
+			update_post_meta( $ID, '_thumbnail_id', $meta['_thumbnail_id'] );
 
 			// Downloadable Only
 			if( $meta['product-type'] == 'downloadable' ) {
-				update_post_meta( $ID, 'file_path',			$meta['file_path']);
-				update_post_meta( $ID, 'download_limit',		$meta['download_limit']);
+				update_post_meta( $ID, 'file_path',      $meta['file_path']);
+				update_post_meta( $ID, 'download_limit', $meta['download_limit']);
 			}
 
 			// Refresh taxonomy attributes
@@ -172,18 +180,18 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 		// Get all variations of the product
 		$variations = get_posts(array(
-			'post_type'		=> 'product_variation',
-			'post_status' 	=> array('draft', 'publish'),
-			'numberposts' 	=> -1,
-			'orderby' 		=> 'id',
-			'order' 		=> 'desc',
-			'post_parent' 	=> $post->ID
+			'post_type'   => 'product_variation',
+			'post_status' => array('draft', 'publish'),
+			'numberposts' => -1,
+			'orderby'     => 'id',
+			'order'       => 'desc',
+			'post_parent' => $post->ID
 		));
 
 		?>
 
 		<div id='variable_product_options' class='panel'>
-			<?php if ( $this->has_variable_attributes($attributes) ): ?>
+			<?php if ( $this->has_variable_attributes( $attributes ) ): ?>
 			<div class="controls">
 				<select name="variation_actions">
 					<option value="default"><?php _e('Bulk Actions', 'jigoshop') ?></option>
@@ -212,8 +220,6 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 				}
 			?>
 			</div>
-			<?php else: ?>
-			Doh! Seems like we need some variable attributes first
 			<?php endif; ?>
 		</div>
 	<?php
@@ -222,9 +228,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	/**
 	 * Returns a specially formatted field name for variations
 	 *
-	 * @param		string		Field Name
-	 * @param		object		Variation Post Object
-	 * @return		string
+	 * @param   string   Field Name
+	 * @param   object   Variation Post Object
+	 * @return  string
 	 */
 	private function field_name( $name, $variation = null ) {
 		return "variations[{$variation->ID}][{$name}]";
@@ -233,9 +239,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	/**
 	 * Returns all the possible variable attributes in select form
 	 *
-	 * @param		array		Attributes array
-	 * @param		object		Variation Post Object
-	 * @return		HTML
+	 * @param   array    Attributes array
+	 * @param   object   Variation Post Object
+	 * @return  HTML
 	 */
 	private function attribute_selector( $attributes, $variation = null ) {
 		global $post;
@@ -290,8 +296,8 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	/**
 	 * Checks all the product attributes for variation defined attributes
 	 *
-	 * @param		mixed		Attributes
-	 * @return		bool
+	 * @param   mixed   Attributes
+	 * @return  bool
 	 */
 	private function has_variable_attributes( $attributes ) {
 		if ( ! $attributes )
@@ -308,9 +314,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	/**
 	 * Generates a variation panel
 	 *
-	 * @param		array		attributes
-	 * @param		object		variation
-	 * @return		HTML
+	 * @param   array    attributes
+	 * @param   object   variation
+	 * @return  HTML
 	 */
 	private function generate_panel($attributes, $variation = null) {
 
