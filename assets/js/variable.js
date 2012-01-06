@@ -128,7 +128,7 @@
 			e.preventDefault();
 
 			if ( ! $('.jigoshop_variation').size() )
-				return alert('Variations required');
+				return alert( varmeta.i18n.variations_required );
 			
 			// Cache variables
 			var $this = $(this);
@@ -137,7 +137,8 @@
 
 		.on({
 			remove_all: function(e) {
-				if( ! confirm( 'Are you sure you want to delete all variations' ) )
+				console.log(varmeta);
+				if( ! confirm( varmeta.i18n.remove_all ) )
 					return false;
 
 				$('.jigoshop_variation').each( function() {
@@ -145,35 +146,32 @@
 				});
 			},
 			set_all_regular_prices: function(e) {
-				value = prompt('Enter a regular price');
+				value = prompt( varmeta.i18n.set_regular_price );
 				$(' input[name*="regular_price"] ').val( value );
 			},
 			set_all_sale_prices: function(e) {
-				value = prompt('Enter a sale price');
+				value = prompt( varmeta.i18n.set_sale_price );
 				$(' input[name*="sale_price"] ').val( value );
 			},
 			set_all_stock: function(e) {
-				value = prompt('Enter a stock value');
+				value = prompt( varmeta.i18n.set_stock );
 				$(' input[name*="stock"] ').val( value );
 			},
 			set_all_weight: function(e) {
-				value = prompt('Enter a weight value');
+				value = prompt( varmeta.i18n.set_weight );
 				$(' input[name*="weight"] ').val( value );
 			},
 			set_all_width: function(e) {
-				value = prompt('Enter a width value');
+				value = prompt( varmeta.i18n.set_width );
 				$(' input[name*="width"] ').val( value );
 			},
 			set_all_length: function(e) {
-				value = prompt('Enter a length value');
+				value = prompt( varmeta.i18n.set_length );
 				$(' input[name*="length"] ').val( value );
 			},
 			set_all_height: function(e) {
-				value = prompt('Enter a height value');
+				value = prompt( varmeta.i18n.set_height );
 				$(' input[name*="height"] ').val( value );
-			},
-			default: function (e) {
-				alert('Default clicked');
 			}
 		});
 
