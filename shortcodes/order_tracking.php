@@ -136,6 +136,8 @@ function jigoshop_order_tracking( $atts ) {
 							endif;
 
 							echo '<tr>';
+
+							echo '<td>'.$_product->sku.'</td>';
 							echo '<td class="product-name">'.$_product->get_title();
 
 							if (isset($_product->variation_data)) :
@@ -144,7 +146,6 @@ function jigoshop_order_tracking( $atts ) {
 
 							echo '</td>';
 
-							echo '<td>'.$_product->sku.'</td>';
 							echo '<td>'.$_product->get_title().'</td>';
 							echo '<td>'.jigoshop_price($_product->get_price()).'</td>';
 							echo '<td>'.$order_item['qty'].'</td>';
