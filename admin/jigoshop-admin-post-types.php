@@ -24,6 +24,10 @@
  * @since 0.9.9
  * TODO: possibly add items for catalog, search, hidden
  **/
+
+/**
+ * Product page filters
+ **/
 function jigoshop_custom_product_views( $views ) {
 
 	$jigoshop_products = &new jigoshop_products();	/* count and group all products */
@@ -62,6 +66,33 @@ function jigoshop_custom_product_views( $views ) {
 	return $views;
 }
 add_filter( 'views_edit-product', 'jigoshop_custom_product_views' );
+
+function jigoshop_custom_product_category_filter() {
+	global $typenow;
+	
+	if ($typenow == 'product') {
+		// create an array of taxonomy slugs you want to filter by.
+		// if you want to retrieve all taxonomies, could use 
+		// get_taxonomies() to build the list.
+		$filters = array('product_cat');
+		
+		foreach ($filters as $tax_slug) {
+			$tax_obj = get_taxonomy($tax_slug);
+			$tax_name = $tax_obj->labels->name;
+			$terms = get_terms($tax_slug);
+
+			if(!empty($terms)) {
+				echo '<select name="' . $tax_slug . '" id="' . $tax_slug . '" class="postform">';
+				echo '<option value="">' . __('View all', 'jigoshop') . ' ' . $tax_name . '</option>';
+				foreach ($terms as $term) {
+					echo '<option value="' . $term->slug . '"' . ( $_GET[$tax_slug] == $term->slug ? ' selected="selected"' : '' ) . '>' . $term->name .' (' . $term->count . ')</option>';
+				}
+				echo '</select>';
+			}
+		}
+	}
+}
+add_action('restrict_manage_posts', 'jigoshop_custom_product_category_filter');
 
 /**
  * Custom columns
