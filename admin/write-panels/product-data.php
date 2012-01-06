@@ -85,8 +85,8 @@ function jigoshop_product_data_box() {
 				<a href="#files"><?php _e('File', 'jigoshop') ?></a>
 			</li>
 			
-			<?php //do_action('jigoshop_product_write_panel_tabs'); ?>
-			<?php //do_action('product_write_panel_tabs'); // Legacy ?>
+			<?php do_action('jigoshop_product_write_panel_tabs'); ?>
+			<?php do_action('product_write_panel_tabs'); // Legacy ?>
 		</ul>
 		
 		<div id="general" class="panel jigoshop_options_panel">
@@ -246,17 +246,19 @@ function jigoshop_product_data_box() {
 
 		?>
 		<div id="attributes" class="panel">
-			<button type="button" class="button button-primary add_attribute"><?php _e('Add', 'jigoshop'); ?></button>
-			<select name="attribute_taxonomy" class="attribute_taxonomy">
-				<option value="" data-type="custom"><?php _e('Custom product attribute', 'jigoshop'); ?></option>
-				<?php
-					if ( $attribute_taxonomies ) :
-				    	foreach ($attribute_taxonomies as $tax) :
-				    		echo '<option value="'.sanitize_title($tax->attribute_name).'" data-type="'.$tax->attribute_type.'">'.$tax->attribute_name.'</option>';
-				    	endforeach;
-				    endif;
-				?>
-			</select>
+			<div class="toolbar">
+				<button type="button" class="button button-primary add_attribute"><?php _e('Add Attribute', 'jigoshop'); ?></button>
+				<select name="attribute_taxonomy" class="attribute_taxonomy">
+					<option value="" data-type="custom"><?php _e('Custom product attribute', 'jigoshop'); ?></option>
+					<?php
+						if ( $attribute_taxonomies ) :
+					    	foreach ($attribute_taxonomies as $tax) :
+					    		echo '<option value="'.sanitize_title($tax->attribute_name).'" data-type="'.$tax->attribute_type.'">'.$tax->attribute_name.'</option>';
+					    	endforeach;
+					    endif;
+					?>
+				</select>
+			</div>
 			<div class="jigoshop_attributes_wrapper">
 				<table cellpadding="0" cellspacing="0" class="jigoshop_attributes">
 					<thead>
@@ -470,8 +472,8 @@ function jigoshop_product_data_box() {
 			</fieldset>
 		</div>
 		
-		<?php //do_action('jigoshop_product_write_panels'); ?>
-		<?php //do_action('product_write_panels'); ?>
+		<?php do_action('jigoshop_product_write_panels'); ?>
+		<?php do_action('product_write_panels'); ?>
 	</div>
 	<?php
 }

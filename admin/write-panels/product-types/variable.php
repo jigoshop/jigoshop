@@ -200,7 +200,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 		<div id='variable_product_options' class='panel'>
 			<?php if ( $this->has_variable_attributes( $attributes ) ): ?>
-			<div class="controls">
+			<div class="toolbar">
 				<select name="variation_actions">
 					<option value="default"><?php _e('Bulk Actions', 'jigoshop') ?></option>
 					<option value="remove_all"><?php _e('Remove All Variations', 'jigoshop') ?></option>
@@ -218,7 +218,6 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 				<button type='button' class='button button-primary add_variation'<?php disabled($this->has_variable_attributes($attributes), false) ?>><?php _e('Add Variation', 'jigoshop') ?></button>
 			</div>
-			<div class='clear'>&nbsp;</div>
 			<div class='jigoshop_variations'>
 			<?php
 				if( $variations ) {
