@@ -149,9 +149,9 @@ class jigoshop_product_meta
 	/**
 	 * Check if an SKU is unique to both the posts & post_meta tables
 	 *
-	 * @param		$post_id		Post ID
-	 * @param		$new_sku		The SKU to be checked
-	 * @return 		boolean|WP_error
+	 * @param   $post_id   Post ID
+	 * @param   $new_sku   The SKU to be checked
+	 * @return  boolean
 	 **/
 	private function is_unique_sku( $post_id, $new_sku ) {
 		global $wpdb;
@@ -177,11 +177,11 @@ class jigoshop_product_meta
 	/**
 	 * Processes the attribute data from postback into an array
 	 *
-	 * @todo		increase efficiency of this function
+	 * TODO: increase efficiency of this function
 	 *
-	 * @param		$post			the postback
-	 * @param		$post_id		Post ID
-	 * @return 		array
+	 * @param   $post      the postback
+	 * @param   $post_id   Post ID
+	 * @return  array
 	 **/
 	private function process_attributes( array $post, $post_id ) {
 
@@ -225,9 +225,9 @@ class jigoshop_product_meta
 	/**
 	 * Callback function to help sort the attributes array by position
 	 *
-	 * @param		$a		Master comparable
-	 * @param		$b		Slave comparable
-	 * @return		int
+	 * @param   $a   Master comparable
+	 * @param   $b   Slave comparable
+	 * @return  int
 	 **/
 	private function sort_attributes( $a, $b ) {
 		if ($a['position'] == $b['position'])
