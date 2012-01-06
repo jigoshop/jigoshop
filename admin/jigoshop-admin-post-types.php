@@ -24,7 +24,7 @@
  * @since 0.9.9
  * TODO: possibly add items for catalog, search, hidden
  **/
- 
+
 /**
  * Product page filters
  **/
