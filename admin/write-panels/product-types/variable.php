@@ -176,7 +176,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			'post_status' 	=> array('draft', 'publish'),
 			'numberposts' 	=> -1,
 			'orderby' 		=> 'id',
-			'order' 		=> 'asc',
+			'order' 		=> 'desc',
 			'post_parent' 	=> $post->ID
 		));
 
