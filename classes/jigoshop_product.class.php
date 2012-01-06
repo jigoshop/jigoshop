@@ -123,14 +123,14 @@ class jigoshop_product {
 
 		// If product has an image
 		if( has_post_thumbnail( $this->ID ) )
-    		return get_the_post_thumbnail( $this->ID, $size );
+		return get_the_post_thumbnail( $this->ID, $size );
 
-    	// If product has a parent and that has an image display that
-    	if( ($parent_ID = wp_get_post_parent_id( $this->ID )) && has_post_thumbnail( $parent_ID ) )
-    		return get_the_post_thumbnail( $this->ID, $size );
-    	
-    	// Otherwise just return a placeholder
-		return '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.$image_size[0].'px" height="'.$image_size[1].'px" />';
+		// If product has a parent and that has an image display that
+		if( ($parent_ID = wp_get_post_parent_id( $this->ID )) && has_post_thumbnail( $parent_ID ) )
+			return get_the_post_thumbnail( $this->ID, $size );
+		
+		// Otherwise just return a placeholder
+			return '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.$image_size[0].'px" height="'.$image_size[1].'px" />';
 	}
 	
 	/**
