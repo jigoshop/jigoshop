@@ -5,6 +5,7 @@ jQuery( function($){
 	jQuery('div.panel-wrap').each(function(){
 		jQuery('div.panel:not(div.panel:first)', this).hide();
 	});
+
 	jQuery('ul.tabs a').click(function(){
 		var panel_wrap =  jQuery(this).closest('div.panel-wrap');
 		jQuery('ul.tabs li', panel_wrap).removeClass('active');
@@ -13,7 +14,6 @@ jQuery( function($){
 		jQuery( jQuery(this).attr('href') ).show();
 		return false;
 	});
-
 	// ORDERS
 
 	jQuery('#order_items_list button.remove_row').live('click', function(){
@@ -177,6 +177,8 @@ jQuery( function($){
 
 	}).change();
 
+	
+
 	// STOCK OPTIONS
 	jQuery('input#manage_stock').change(function(){
 		if (jQuery(this).is(':checked')) {
@@ -327,3 +329,31 @@ jQuery( function($){
 
 
 });
+
+
+
+(function($) {
+	
+	$(function() {
+		$('.variable, .grouped, .downloadable').hide();
+		$(document)
+		.on('change', '#product-type', function(e) {
+
+			var selected = $(this).val();
+			$('.variable, .grouped, .downloadable').hide();
+
+			$('.'+selected).show();
+
+			// switch(selected) {
+			// 	case 'variable':
+			// 		$('.variable').show();
+			// 		break;
+			// }
+
+
+		});
+
+	});
+
+
+})(window.jQuery);

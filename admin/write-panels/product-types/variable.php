@@ -20,12 +20,20 @@
 class jigoshop_product_meta_variable extends jigoshop_product_meta
 {
 	public function __construct() {
-		add_action( 'product_type_selector',                   array(&$this, 'register') );
 		add_action( 'jigoshop_process_product_meta_variable',  array(&$this, 'save'), 1 );
-		add_action( 'jigoshop_product_type_options_box',       array(&$this, 'display') );
+		add_action( 'jigoshop_product_write_panels',	           array(&$this, 'display') );
 		add_action( 'admin_enqueue_scripts',                   array(&$this, 'admin_enqueue_scripts') );
 
 		add_action( 'wp_ajax_jigoshop_remove_variation',       array(&$this, 'remove') );
+
+		add_action( 'jigoshop_product_write_panel_tabs', array(&$this, 'test') );
+
+	}
+
+	public function test() {
+		echo '<li class="variable">
+				<a href="#variable_product_options">Variations</a>
+			</li>';
 	}
 
 	/**

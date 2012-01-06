@@ -77,7 +77,9 @@ function jigoshop_product_data_box() {
 				<a href="#jigoshop_attributes"><?php _e('Attributes', 'jigoshop'); ?></a>
 			</li>
 			
-			<?php do_action('product_write_panel_tabs'); ?>
+			<?php do_action('jigoshop_product_write_panel_tabs'); ?>
+			<?php do_action('product_write_panel_tabs'); // Legacy ?>
+
 		</ul>
 		
 		<div id="general_product_data" class="panel jigoshop_options_panel"><?php
@@ -86,20 +88,18 @@ function jigoshop_product_data_box() {
 			$terms = wp_get_object_terms( $thepostid, 'product_type' );
 			$product_type = ($terms) ? current($terms)->slug : 'simple';
 
-			$field = array( 
-				'id' 	=> 'product-type',
-				'label' => __('Product Type', 'jigoshop')
+			echo jigoshop_form::select(
+				'product-type', 
+				__('Product Type', 'jigoshop'),
+				apply_filters('jigoshop_product_type_selector', array(
+					'simple'			=> __('Simple', 'jigoshop'),
+					'downloadable'	=> __('Downloadable', 'jigoshop'),
+					'grouped'		=> __('Grouped', 'jigoshop'),
+					'virtual'		=> __('Virtual', 'jigoshop'),
+					'variable'		=> __('Variable', 'jigoshop'),
+				)),
+				$product_type
 			);
-
-			echo '<p class="form-field">
-				<label for="'.$field['id'].'">'.$field['label'].' <em class="req" title="'.__('Required', 'jigoshop') . '">*</em></label>
-				<select id="'.$field['id'].'" name="'.$field['id'].'" class="select short">';
-
-			echo '<option value="simple" '; if ($product_type=='simple') echo 'selected="selected"'; echo '>'.__('Simple','jigoshop').'</option>';
-			
-			do_action('product_type_selector', $product_type);
-
-			echo '</select></p>';
 
 			// Grouped Products
 			// TODO: Needs refactoring & a bit of love
@@ -168,6 +168,27 @@ function jigoshop_product_data_box() {
 					'search'	=> 'Search Only',
 					'Hidden'	=> 'Hidden'
 				) );
+			?>
+
+			<?php // DOWNLOADABLE OPTIONS
+				// File URL
+				// TODO: Refactor this into a helper
+				$file_path = get_post_meta($post->ID, 'file_path', true);
+				$field = array( 'id' => 'file_path', 'label' => __('Internal Path', 'jigoshop') );
+				echo '<p class="form-field">
+					<label for="'.$field['id'].'">'.$field['label'].':</label>
+					<span style="float:left">'.ABSPATH.'</span><input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_path.'" placeholder="'.__('path to file on your server', 'jigoshop').'" /></p>';
+
+				// File URL (External URL)
+				$file_url = get_post_meta($post->ID, 'file_url', true);
+				$field = array( 'id' => 'file_url', 'label' => __('External URL', 'jigoshop') );
+				echo '<p class="form-field">
+					<label for="'.$field['id'].'">'.$field['label'].':</label>
+					<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_url.'" placeholder="'.__('An external URL to the file', 'jigoshop').'" /><span class="description">' . __('Note: This URL will be visible to the customer.', 'jigoshop') . '</span></p>';
+
+				// Download Limit
+				echo jigoshop_form::input( 'download_limit', 'Download Limit', 'Leave blank for unlimited re-downloads' );
+				do_action( 'additional_downloadable_product_type_options' )
 			?>
 		</div>
 		<div id="pricing_product_data" class="panel jigoshop_options_panel">
@@ -419,6 +440,7 @@ function jigoshop_product_data_box() {
 			<div class="clear"></div>
 		</div>	
 		
+		<?php do_action('jigoshop_product_write_panels'); ?>
 		<?php do_action('product_write_panels'); ?>
 		
 	</div>
