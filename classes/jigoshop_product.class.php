@@ -53,7 +53,7 @@ class jigoshop_product {
 	private $stock_sold;
 
 	private	$attributes			= array();
-	public $children				= array(); // : jigoshop_template_functions.php on line 328
+	public $children			= array(); // : jigoshop_template_functions.php on line 328
 
 	/**
 	 * Loads all product data from custom fields
