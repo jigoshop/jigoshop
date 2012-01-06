@@ -159,13 +159,13 @@ class jigoshop_product {
 
 		// Get the child IDs
 		$this->children = get_posts(array(
-			'post_parent'		=> $this->ID,
-			'post_type'			=> ($this->is_type('variable')) ? 'product_variation' : 'product',
-			'orderby'			=> 'menu_order',
-			'order'				=> 'ASC',
-			'fields'				=> 'ids',
-			'post_status'		=> 'any',
-			'numberposts'		=> -1
+			'post_parent'  => $this->ID,
+			'post_type'    => ($this->is_type('variable')) ? 'product_variation' : 'product',
+			'orderby'      => 'menu_order',
+			'order'        => 'ASC',
+			'fields'       => 'ids',
+			'post_status'  => 'any',
+			'numberposts'  => -1
 		));
 
 		return $this->children;

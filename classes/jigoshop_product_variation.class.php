@@ -63,9 +63,9 @@ class jigoshop_product_variation extends jigoshop_product {
 	}
 
 	/**
-	 * Get variation attribute values
-	 * 
+	 * Get variation attribute values 
 	 * @uses    for get_available_attributes_variations()
+	 *
 	 * @return  two dimensional array array of attributes and their values for this variation
 	 */
 	public function get_variation_attributes() {
