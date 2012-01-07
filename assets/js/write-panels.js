@@ -222,15 +222,15 @@ jQuery( function($){
 		jQuery(jigoshop_attributes_table_items).each( function(idx, itm) { jQuery('#attributes_list').append(itm); } );
 
 		// Show
-		function show_attribute_table() {
-			jQuery('table.jigoshop_attributes, table.jigoshop_variable_attributes').each(function(){
-				if (jQuery('tbody tr', this).size()==0)
-					jQuery(this).parent().hide();
-				else
-					jQuery(this).parent().show();
-			});
-		}
-		show_attribute_table();
+		// function show_attribute_table() {
+		// 	jQuery('table.jigoshop_attributes, table.jigoshop_variable_attributes').each(function(){
+		// 		if (jQuery('tbody tr', this).size()==0)
+		// 			jQuery(this).parent().hide();
+		// 		else
+		// 			jQuery(this).parent().show();
+		// 	});
+		// }
+		// show_attribute_table();
 
 		function row_indexes() {
 			jQuery('#attributes_list tr').each(function(index, el){ jQuery('.attribute_position', el).val( parseInt( jQuery(el).index('#attributes_list tr') ) ); });
@@ -250,41 +250,42 @@ jQuery( function($){
 
 				var size = jQuery('table.jigoshop_attributes tbody tr').size();
 				// Reveal taxonomy row
-				var thisrow = jQuery('#attributes_list tr.' + attribute);
+				var thisrow = jQuery('.attribute.' + attribute);
 
 				// Enable all mutiselect items by default
-				if (type == 'multiselect'){
-					thisrow.find('td.control .multiselect-controls a.check-all').click();
-				}
+				// if (type == 'multiselect'){
+				// 	thisrow.find('td.control .multiselect-controls a.check-all').click();
+				// }
 
-				jQuery('table.jigoshop_attributes tbody').append( thisrow );
+				//jQuery('table.jigoshop_attributes tbody').append( thisrow );
 				jQuery(thisrow).show();
 				row_indexes();
 
 			}
 
-			show_attribute_table();
+			//show_attribute_table();
 		});
 
 		jQuery('button.hide_row').live('click', function(){
 			var answer = confirm("Remove this attribute?")
 			if (answer){
-				jQuery(this).parent().parent().find('select, input[type=text], input[type=checkbox]').val('');
-				jQuery(this).parent().parent().hide();
+				jQuery(this).parent().find('select, input[type=text], input[type=checkbox]').val('');
+				jQuery(this).parent().hide();
 				show_attribute_table();
 			}
 			return false;
 		});
 
-		jQuery('#attributes_list button.remove_row').live('click', function(){
-			var answer = confirm("Remove this attribute?")
-			if (answer){
-				jQuery(this).parent().parent().remove();
-				show_attribute_table();
-				row_indexes();
-			}
-			return false;
-		});
+		// jQuery('#attributes_list button.remove_row').live('click', function(){
+		// 	var answer = confirm("Remove this attribute?")
+		// 	if (answer){
+		// 		jQuery(this).parent().find('select, input[type=text], input[type=checkbox]').val('');
+		// 		jQuery(this).parent().hide();
+		// 		//show_attribute_table();
+		// 		row_indexes();
+		// 	}
+		// 	return false;
+		// });
 
 		jQuery('button.move_up').live('click', function(){
 			var row = jQuery(this).parent().parent();
@@ -352,6 +353,19 @@ jQuery( function($){
 			// }
 
 
+		});
+
+		$('.jigoshop_attributes_wrapper').sortable({
+			items:'.attribute',
+			// containment: 'parent', // Applies strict containment meaning only vertical movement is capable
+			handle: '.handle',
+			distance: 15,
+			placeholder: "ui-state-highlight",
+			forcePlaceholderSize: true,
+			stop:function(event,ui){
+				ui.item.removeAttr('style');
+				row_indexes();
+			}
 		});
 
 	});

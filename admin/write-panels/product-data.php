@@ -251,6 +251,7 @@ function jigoshop_product_data_box() {
 				<select name="attribute_taxonomy" class="attribute_taxonomy">
 					<option value="" data-type="custom"><?php _e('Custom product attribute', 'jigoshop'); ?></option>
 					<?php
+						$attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();
 						if ( $attribute_taxonomies ) :
 					    	foreach ($attribute_taxonomies as $tax) :
 					    		echo '<option value="'.sanitize_title($tax->attribute_name).'" data-type="'.$tax->attribute_type.'">'.$tax->attribute_name.'</option>';
@@ -260,7 +261,7 @@ function jigoshop_product_data_box() {
 				</select>
 			</div>
 			<div class="jigoshop_attributes_wrapper">
-				<table cellpadding="0" cellspacing="0" class="jigoshop_attributes">
+				<?php /**<table cellpadding="0" cellspacing="0" class="jigoshop_attributes" style="display: none;">
 					<thead>
 						<tr>
 							<th class="center" width="60"><?php _e('Order', 'jigoshop'); ?></th>
@@ -271,12 +272,10 @@ function jigoshop_product_data_box() {
 							<th class="center" width="1%"><?php _e('Remove', 'jigoshop'); ?></th>
 						</tr>
 					</thead>
-					
 					<tbody id="attributes_list">	
 						<?php
-							$attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();
-							$attributes = get_post_meta($post->ID, 'product_attributes', true);
 							
+							$attributes = get_post_meta($post->ID, 'product_attributes', true);
 							$i = -1;
 							
 							// Taxonomies
@@ -298,8 +297,8 @@ function jigoshop_product_data_box() {
 						    		
 						    		?><tr class="taxonomy <?php echo $attribute_taxonomy_name; ?>" rel="<?php echo $position; ?>" <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
 						    			
-										<td class="center">
-											<button type="button" class="move_up button">&uarr;</button><button type="button" class="move_down button">&darr;</button>
+										<td class="handle center">
+											<a href="#">X</a>
 											<input type="hidden" name="attribute_position[<?php echo $i; ?>]" class="attribute_position" value="<?php echo $position; ?>" />
 										</td>
 										
@@ -329,6 +328,7 @@ function jigoshop_product_data_box() {
 												?>			
 											</select>
 										<?php elseif ($tax->attribute_type=="multiselect") : ?>
+										<?php /*
 											<div class="multiselect">
 												<?php
 												if (taxonomy_exists('pa_'.$attribute_taxonomy_name)) :
@@ -351,7 +351,7 @@ function jigoshop_product_data_box() {
 												<a class="check-all" href="#"><?php _e('Check All'); ?></a>&nbsp;|
 												<a class="uncheck-all" href="#"><?php _e('Uncheck All');?></a>&nbsp;|
 												<a class="toggle" href="#"><?php _e('Toggle');?></a>
-											</div>
+											</div> ?>
 										<?php elseif ($tax->attribute_type=="text") : ?>
 											<input type="text" name="attribute_values[<?php echo $i; ?>]" value="<?php 												
 												if ($allterms) :
@@ -402,7 +402,122 @@ function jigoshop_product_data_box() {
 							endforeach;
 						?>			
 					</tbody>
-				</table>
+				</table> **/ ?>
+				<?php
+					// TODO: This needs refactoring
+
+					// This is getting all the taxonomies
+					$attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();
+
+					// This is whats applied to the product
+					$attributes = get_post_meta($post->ID, 'product_attributes', true);
+					
+					$i = -1;
+
+					foreach ($attribute_taxonomies as $tax) : $i++;
+
+					$attribute_taxonomy_name = sanitize_title($tax->attribute_name);
+		    		if (isset($attributes[$attribute_taxonomy_name])) $attribute = $attributes[$attribute_taxonomy_name];
+					$position = (isset($attribute['position'])) ? $attribute['position'] : 0;
+					
+		    		$allterms = wp_get_post_terms( $thepostid, 'pa_'.$attribute_taxonomy_name );
+
+		    		$has_terms = ( is_wp_error( $allterms ) || !$allterms || sizeof( $allterms ) == 0 ) ? 0 : 1;
+		    		$term_slugs = array();
+		    		if ( !is_wp_error( $allterms ) && $allterms ) :
+		    			foreach ($allterms as $term) :
+		    				$term_slugs[] = $term->slug;
+		    			endforeach;
+		    		endif;
+				?>
+				<div class="postbox attribute closed <?php echo $attribute_taxonomy_name; ?>" rel="<?php echo $position; ?>"  <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
+					<button type="button" class="hide_row button">Remove</button>
+					<h3 class="handle"><?php echo $tax->attribute_name; ?></h3>
+
+					<input type="hidden" name="attribute_names[<?php echo $i; ?>]" value="<?php echo $tax->attribute_name; ?>" />
+					<input type="hidden" name="attribute_is_taxonomy[<?php echo $i; ?>]" value="1" />
+					<input type="hidden" name="attribute_enabled[<?php echo $i; ?>]" value="1" />
+					<input type="hidden" name="attribute_position[<?php echo $i; ?>]" class="attribute_position" value="<?php echo $position; ?>" />
+
+					<div class="inside">
+						<table>
+							<tr>
+								<td class="control">
+										<?php if ($tax->attribute_type=="select") : ?>
+											<select name="attribute_values[<?php echo $i ?>]">
+												<option value=""><?php _e('Choose an option&hellip;', 'jigoshop'); ?></option>
+												<?php
+												if (taxonomy_exists('pa_'.$attribute_taxonomy_name)) :
+					        						$terms = get_terms( 'pa_'.$attribute_taxonomy_name, array( 'orderby' => 'slug', 'hide_empty' => '0' ) );
+					        						if ($terms) :
+														foreach ($terms as $term) :
+															printf('<option value="%s" %s>%s</option>'
+																, $term->name
+																, selected(in_array($term->slug, $term_slugs), true, false)
+																, $term->name);
+														endforeach;
+													endif;
+												endif;
+												?>			
+											</select>
+
+										<?php elseif ($tax->attribute_type=="multiselect") : ?>
+
+											<div class="multiselect">
+												<?php
+												if (taxonomy_exists('pa_'.$attribute_taxonomy_name)) :
+					        						$terms = get_terms( 'pa_'.$attribute_taxonomy_name, array( 'orderby' => 'slug', 'hide_empty' => '0' ) );
+					        						if ($terms) :
+						        						foreach ($terms as $term) :
+															$checked = checked(in_array($term->slug, $term_slugs), true, false);
+															printf('<label %s><input type="checkbox" name="attribute_values[%d][]" value="%s" %s/> %s</label>'
+																, !empty($checked) ? 'class="selected"' : ''
+																, $i
+																, $term->slug
+																, $checked
+																, $term->name);
+														endforeach;
+													endif;
+												endif;
+												?>
+											</div>
+											<div class="multiselect-controls">
+												<a class="check-all" href="#"><?php _e('Check All'); ?></a>&nbsp;|
+												<a class="uncheck-all" href="#"><?php _e('Uncheck All');?></a>&nbsp;|
+												<a class="toggle" href="#"><?php _e('Toggle');?></a>
+											</div>
+
+										<?php elseif ($tax->attribute_type=="text") : ?>
+
+											<input type="text" name="attribute_values[<?php echo $i; ?>]" value="<?php 												
+												if ($allterms) :
+													$prettynames = array();
+													foreach ($allterms as $term) :
+														$prettynames[] = $term->name;
+													endforeach;
+													echo implode(',', $prettynames);
+												endif;
+											?>" placeholder="<?php _e('Comma separate terms', 'jigoshop'); ?>" />		
+								
+										<?php endif; ?>
+								</td>
+								<td>
+									<label>Visible?
+										<input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['visible'] : 0 ), true); ?> name="attribute_visibility[<?php echo $i; ?>]" value="1" />
+									</label>
+
+									<?php if ($tax->attribute_type!="select") : // always disable variation for select elements ?>
+									<label>Variation
+										<input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['variation'] : 0 ), true); ?> name="attribute_variation[<?php echo $i; ?>]" value="1" />
+									</label>
+									<?php endif; ?>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<?php endforeach; ?>
+
 			</div>
 			<div class="clear"></div>
 		</div>
