@@ -29,7 +29,7 @@
         </thead>
         <tfoot>
             <tr>
-                <?php if ($order->order_subtotal_inc_tax) : ?>
+                <?php if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) : ?>
                     <td colspan="2"><?php _e('Retail Price', 'jigoshop'); ?></td>
                 <?php else : ?>
                     <td colspan="2"><?php _e('Subtotal', 'jigoshop'); ?></td>
@@ -37,15 +37,15 @@
                 <td><?php echo $order->get_subtotal_to_display(); ?></td>
             </tr>
             <?php
-            if ($order->order_subtotal_inc_tax) :
+            if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) :
                 if ($order->order_shipping > 0) :
                     ?><tr>
                         <td colspan="2"><?php _e('Shipping', 'jigoshop'); ?></td>
                         <td><?php echo $order->get_shipping_to_display(); ?></small></td>
                     </tr><?php
-        endif;
-        foreach ($order->get_tax_classes() as $tax_class) :
-            if ($order->tax_class_is_retail($tax_class)) :
+                endif;
+                foreach ($order->get_tax_classes() as $tax_class) :
+                    if ($order->tax_class_is_retail($tax_class)) :
                         ?>
                         <tr>
                             <td colspan="2"><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></td>
@@ -65,30 +65,32 @@
                         <td colspan="2"><?php _e('Shipping', 'jigoshop'); ?></td>
                         <td><?php echo $order->get_shipping_to_display(); ?></small></td>
                     </tr><?php
-        endif;
-    endif;
-    if ($order->order_subtotal_inc_tax) :
-        foreach ($order->get_tax_classes() as $tax_class) :
-            if (!$order->tax_class_is_retail($tax_class)) :
-                        ?>
+                endif;
+            endif;
+            if (get_option('jigoshop_calc_taxes') == 'yes') :
+                if ($order->order_subtotal_inc_tax) :
+                    foreach ($order->get_tax_classes() as $tax_class) :
+                        if (!$order->tax_class_is_retail($tax_class)) :
+                            ?>
 
+                            <tr>
+                                <td colspan="2"><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></td>
+                                <td><?php echo $order->get_tax_amount($tax_class) ?></td>
+                            </tr>
+                            <?php
+                        endif;
+                    endforeach;
+                else :
+                    foreach ($order->get_tax_classes() as $tax_class) :
+                        ?>
                         <tr>
                             <td colspan="2"><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></td>
                             <td><?php echo $order->get_tax_amount($tax_class) ?></td>
-                        </tr>
-                        <?php
-                    endif;
-                endforeach;
-            else :
-                foreach ($order->get_tax_classes() as $tax_class) :
-                    ?>
-                    <tr>
-                        <td colspan="2"><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></td>
-                        <td><?php echo $order->get_tax_amount($tax_class) ?></td>
-                    </tr>    
-                <?php endforeach;
-            endif; ?>
-            <?php if ($order->order_discount > 0) : ?><tr class="discount">
+                        </tr>    
+                    <?php endforeach;
+                endif; 
+            endif; 
+            if ($order->order_discount > 0) : ?><tr class="discount">
                     <td colspan="2"><?php _e('Discount', 'jigoshop'); ?></td>
                     <td>-<?php echo jigoshop_price($order->order_discount); ?></td>
                 </tr><?php endif; ?>
