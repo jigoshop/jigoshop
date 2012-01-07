@@ -27,7 +27,7 @@
         </thead>
         <tfoot>
             <tr>
-                <?php if (jigoshop_cart::get_subtotal_inc_tax()) : ?>
+                <?php if (get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::get_subtotal_inc_tax()) : ?>
                     <td colspan="2"><?php _e('Retail Price', 'jigoshop'); ?></td>
                 <?php else : ?>
                     <td colspan="2"><?php _e('Subtotal', 'jigoshop'); ?></td>
@@ -36,7 +36,7 @@
             </tr>
 
             <?php
-            if (jigoshop_cart::get_subtotal_inc_tax()) :
+            if (get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::get_subtotal_inc_tax()) :
                 if (jigoshop_cart::needs_shipping()) :
                     ?><tr>
                         <td colspan="2"><?php _e('Shipping', 'jigoshop'); ?></td>
@@ -191,28 +191,29 @@
                     </tr><?php
                 endif;
             endif;
+            if (get_option('jigoshop_calc_taxes') == 'yes') :
+                if (jigoshop_cart::get_subtotal_inc_tax()) :
+                    foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
+                        if (!jigoshop_cart::is_tax_retail($tax_class)) :
+                                    ?>
 
-            if (jigoshop_cart::get_subtotal_inc_tax()) :
-                foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
-                    if (!jigoshop_cart::is_tax_retail($tax_class)) :
-                                ?>
-
+                            <tr>
+                                <td colspan="2"><?php echo jigoshop_cart::get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%):'; ?></th>
+                                <td><?php echo jigoshop_cart::get_tax_amount($tax_class) ?></td>
+                            </tr>
+                            <?php
+                        endif;
+                    endforeach;
+                else :
+                    foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
+                        ?>
                         <tr>
-                            <td colspan="2"><?php echo jigoshop_cart::get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%):'; ?></th>
+                            <td colspan="2"><?php echo jigoshop_cart::get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%):'; ?></td>
                             <td><?php echo jigoshop_cart::get_tax_amount($tax_class) ?></td>
-                        </tr>
+                        </tr>    
                         <?php
-                    endif;
-                endforeach;
-            else :
-                foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
-                    ?>
-                    <tr>
-                        <td colspan="2"><?php echo jigoshop_cart::get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%):'; ?></td>
-                        <td><?php echo jigoshop_cart::get_tax_amount($tax_class) ?></td>
-                    </tr>    
-                    <?php
-                endforeach;
+                    endforeach;
+                endif;
             endif;
             ?>			
 
