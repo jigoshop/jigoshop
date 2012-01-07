@@ -168,6 +168,7 @@ function jigoshop_custom_product_columns($column) {
 		break;
 	}
 }
+// NOTE: This causes a large spike in queries, however they are cached so the performance hit is minimal ~20ms -Rob
 add_action('manage_product_posts_custom_column', 'jigoshop_custom_product_columns', 2);
 
 function jigoshop_edit_order_columns($columns){
