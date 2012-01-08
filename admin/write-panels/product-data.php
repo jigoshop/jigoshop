@@ -355,6 +355,9 @@ function display_attribute() { ?>
 		// This is getting all the taxonomies
 		$attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();
 
+		// Sneaky way of doing sort by desc
+		$attribute_taxonomies = array_reverse($attribute_taxonomies);
+
 		// This is whats applied to the product
 		$attributes = get_post_meta($post->ID, 'product_attributes', true);
 		
@@ -375,7 +378,7 @@ function display_attribute() { ?>
 			endforeach;
 		endif;
 	?>
-	<div class="postbox attribute closed <?php echo $attribute_taxonomy_name; ?>" rel="<?php echo $position; ?>"  <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
+	<div class="postbox attribute <?php if ( $has_terms ) echo 'closed'; ?> <?php echo $attribute_taxonomy_name; ?>" rel="<?php echo $position; ?>"  <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
 		<button type="button" class="hide_row button">Remove</button>
 		<h3 class="handle"><?php echo $tax->attribute_name; ?></h3>
 

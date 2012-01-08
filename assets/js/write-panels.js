@@ -213,27 +213,31 @@ jQuery( function($){
 	// ATTRIBUTE TABLES
 
 		// Initial order
-		var jigoshop_attributes_table_items = jQuery('#attributes_list').children('tr').get();
+		var jigoshop_attributes_table_items = jQuery('.jigoshop_attributes_wrapper').children('.attribute').get();
 		jigoshop_attributes_table_items.sort(function(a, b) {
 		   var compA = Number(jQuery(a).attr('rel'));
 		   var compB = Number(jQuery(b).attr('rel'));
 		   return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
 		})
-		jQuery(jigoshop_attributes_table_items).each( function(idx, itm) { jQuery('#attributes_list').append(itm); } );
+		jQuery(jigoshop_attributes_table_items).each( function(idx, itm) { jQuery('.jigoshop_attributes_wrapper').append(itm); } );
 
 		// Show
-		// function show_attribute_table() {
-		// 	jQuery('table.jigoshop_attributes, table.jigoshop_variable_attributes').each(function(){
-		// 		if (jQuery('tbody tr', this).size()==0)
-		// 			jQuery(this).parent().hide();
-		// 		else
-		// 			jQuery(this).parent().show();
-		// 	});
-		// }
-		// show_attribute_table();
+		function show_attribute_table() {
+			jQuery('table.jigoshop_attributes, table.jigoshop_variable_attributes').each(function(){
+				if (jQuery('tbody tr', this).size()==0)
+					jQuery(this).parent().hide();
+				else
+					jQuery(this).parent().show();
+			});
+		}
+		show_attribute_table();
 
 		function row_indexes() {
-			jQuery('#attributes_list tr').each(function(index, el){ jQuery('.attribute_position', el).val( parseInt( jQuery(el).index('#attributes_list tr') ) ); });
+			jQuery('.jigoshop_attributes_wrapper .attribute').each(function(index, el) {
+					jQuery('.attribute_position', el).val( 
+						parseInt( jQuery(el).index('.jigoshop_attributes_wrapper .attribute') ) 
+					); 
+			});
 		};
 
 		// Add rows
@@ -253,24 +257,24 @@ jQuery( function($){
 				var thisrow = jQuery('.attribute.' + attribute);
 
 				// Enable all mutiselect items by default
-				// if (type == 'multiselect'){
-				// 	thisrow.find('td.control .multiselect-controls a.check-all').click();
-				// }
+				if (type == 'multiselect'){
+					thisrow.find('td.control .multiselect-controls a.check-all').click();
+				}
 
-				//jQuery('table.jigoshop_attributes tbody').append( thisrow );
-				jQuery(thisrow).show();
+				jQuery('.jigoshop_attributes_wrapper').prepend( thisrow );
+				jQuery(thisrow).slideDown('fast');
 				row_indexes();
 
 			}
 
-			//show_attribute_table();
+			show_attribute_table();
 		});
 
 		jQuery('button.hide_row').live('click', function(){
 			var answer = confirm("Remove this attribute?")
 			if (answer){
 				jQuery(this).parent().find('select, input[type=text], input[type=checkbox]').val('');
-				jQuery(this).parent().hide();
+				jQuery(this).parent().fadeOut('slow');
 				show_attribute_table();
 			}
 			return false;
@@ -287,19 +291,20 @@ jQuery( function($){
 		// 	return false;
 		// });
 
-		jQuery('button.move_up').live('click', function(){
-			var row = jQuery(this).parent().parent();
-			var prev_row = jQuery(row).prevAll('tr:visible:eq(0)');
-			jQuery(row).after(prev_row);
-			row_indexes();
-		});
+		// These have been replaced by jquery ui sortable
+		// jQuery('button.move_up').live('click', function(){
+		// 	var row = jQuery(this).parent().parent();
+		// 	var prev_row = jQuery(row).prevAll('tr:visible:eq(0)');
+		// 	jQuery(row).after(prev_row);
+		// 	row_indexes();
+		// });
 
-		jQuery('button.move_down').live('click', function(){
-			var row = jQuery(this).parent().parent();
-			var next_row = jQuery(row).nextAll('tr:visible:eq(0)');
-			jQuery(row).before(next_row);
-			row_indexes();
-		});
+		// jQuery('button.move_down').live('click', function(){
+		// 	var row = jQuery(this).parent().parent();
+		// 	var next_row = jQuery(row).nextAll('tr:visible:eq(0)');
+		// 	jQuery(row).before(next_row);
+		// 	row_indexes();
+		// });
 
 		var multiselectClicked = function(){
 			if ($(this).is(':checked')){
@@ -372,3 +377,12 @@ jQuery( function($){
 
 
 })(window.jQuery);
+
+// Written twice due to partial rewrite
+function row_indexes() {
+	jQuery('.jigoshop_attributes_wrapper .attribute').each(function(index, el) {
+			jQuery('.attribute_position', el).val( 
+				parseInt( jQuery(el).index('.jigoshop_attributes_wrapper .attribute') ) 
+			); 
+	});
+};
