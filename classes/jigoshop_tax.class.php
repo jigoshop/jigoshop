@@ -234,9 +234,22 @@ class jigoshop_tax {
      * @return type float value of retail tax
      */
     public function get_retail_tax_amount() {
-        return ($this->tax_divisor > 0 ? $this->retail_tax_amount / $this->tax_divisor : $this->retail_tax_amount);
+        return ($this->tax_divisor > 0 ? number_format($this->retail_tax_amount / $this->tax_divisor, 2, '.', '') : number_format($this->retail_tax_amount, 2, '.', ''));
     }
 
+    /**
+     * gets the amount of tax that has been applied to non retail value
+     * @return type float value of non retail tax
+     */
+    public function get_non_retail_tax_amount() {
+        $tax_amount = 0;
+        foreach ($this->get_applied_tax_classes() as $tax_class) :
+            $tax_amount += $this->tax_amounts[$tax_class]['amount'];
+        endforeach;
+        
+        return ($this->tax_divisor > 0 ? number_format(($tax_amount / $this->tax_divisor) - $this->get_retail_tax_amount(), 2, '.', '') : number_format($tax_amount - $this->get_retail_tax_amount, 2, '.', ''));
+    }
+    
     /**
      * calculates the taxes on the total item price and creates the tax data array
      * 
@@ -287,7 +300,7 @@ class jigoshop_tax {
         $this->retail_tax_amount = $retail_tax_amount;
         $this->tax_amounts = $tax_amount;
         $this->imploded_tax_amounts = $this->array_implode($this->tax_amounts);
-        $this->total_tax_rate = round($total_tax / $total_item_price * 100, 2); //TODO: add shipping tax to this
+        $this->total_tax_rate = round($total_tax / $total_item_price * 100, 2); 
     }
 
     // TODO: prices include tax?? Do we worry about shipping tax?
@@ -302,6 +315,15 @@ class jigoshop_tax {
             $tax = $this->calc_tax($total_price, $tax_rate, false);//for now just don't include taxes in price.
             $this->tax_amounts[$tax_class]['amount'] = $tax;
             $this->imploded_tax_amounts = $this->array_implode($this->tax_amounts);
+            
+            $retail_tax = 0;
+            foreach($this->get_applied_tax_classes() as $tax_class) :
+                if ($this->tax_amounts[$tax_class]['retail']) :
+                    $retail_tax += $this->tax_amounts[$tax_class]['amount'];
+                endif;
+            endforeach;
+            
+            $this->retail_tax_amount = $retail_tax;
         endif;
     }
     /**

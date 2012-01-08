@@ -386,8 +386,8 @@ class jigoshop_cart extends jigoshop_singleton {
 
                     $total_item_price = $_product->get_price() * $values['quantity'] * 100; // Into pounds
                     if ($_product->is_taxable()) :
-
-                        if (get_option('jigoshop_prices_include_tax') == 'yes' && jigoshop_customer::is_customer_outside_base() && defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT) :
+                        
+                        if (get_option('jigoshop_prices_include_tax') == 'yes' && jigoshop_customer::is_customer_outside_base() && (get_option('jigoshop_enable_shipping_calc')=='yes' ||  (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT ))) :
 
                             $total_item_price = $_product->get_price_excluding_tax() * $values['quantity'] * 100;
 
@@ -396,7 +396,7 @@ class jigoshop_cart extends jigoshop_singleton {
                             // now add customer taxes back into the total item price because customer is outside base
                             // and we asked to have prices include taxes
                             foreach (self::get_applied_tax_classes() as $tax_class) :
-                                $total_item_price += self::get_tax_amount($tax_class, false);
+                                $total_item_price += self::get_tax_amount($tax_class, false) * 100; // keep tax with multiplier too
                             endforeach;
 
                         else :
@@ -408,9 +408,14 @@ class jigoshop_cart extends jigoshop_singleton {
                 endif;
 
                 $total_item_price = $total_item_price / 100; // Back to pounds
-
+                //$total_item_price = number_format($total_item_price, 2, '.', '');
+                
                 if (self::$tax->get_retail_tax_amount()) :
-                    self::$subtotal_inc_tax += self::$tax->get_retail_tax_amount() + $total_item_price;
+                    if (get_option('jigoshop_prices_include_tax') == 'yes') :
+                        self::$subtotal_inc_tax += $total_item_price - self::$tax->get_non_retail_tax_amount();
+                    else :
+                        self::$subtotal_inc_tax += self::$tax->get_retail_tax_amount() + $total_item_price;
+                    endif;
                 endif;
 
                 self::$cart_contents_total = self::$cart_contents_total + $total_item_price;
@@ -455,10 +460,18 @@ class jigoshop_cart extends jigoshop_singleton {
 
         self::$shipping_tax_total = jigoshop_shipping::get_tax();
         
-        self::$tax->update_tax_amount_with_shipping_tax((self::$cart_contents_total + self::$shipping_total) * 100);
+        if (get_option('jigoshop_prices_include_tax') == 'yes') :
+            self::$tax->update_tax_amount_with_shipping_tax((self::$cart_contents_total_ex_tax + self::$shipping_total) * 100);
+        else :
+            self::$tax->update_tax_amount_with_shipping_tax((self::$cart_contents_total + self::$shipping_total) * 100);
+        endif;
 
         if (self::$tax->is_shipping_tax_retail()) :
-            self::$subtotal_inc_tax += self::$shipping_tax_total + self::$shipping_total;
+            if (get_option('jigoshop_prices_include_tax') == 'yes') :
+                self::$subtotal_inc_tax = self::$cart_contents_total_ex_tax + self::$shipping_total + self::$tax->get_retail_tax_amount();
+            else :
+                self::$subtotal_inc_tax += self::$shipping_tax_total + self::$shipping_total;
+            endif;            
         endif;
 
         // Subtotal
@@ -483,25 +496,21 @@ class jigoshop_cart extends jigoshop_singleton {
             endforeach;
 
         // Total
-        if (get_option('jigoshop_prices_include_tax') == 'yes') :
-            self::$total = self::$subtotal + self::$shipping_tax_total - self::$discount_total + jigoshop_shipping::get_total();
-        else :
+       if (self::get_subtotal_inc_tax()) :
+            self::$total = self::$subtotal_inc_tax - self::$discount_total; // subtotal_inc_tax includes shipping
 
-            if (self::get_subtotal_inc_tax()) :
-                self::$total = self::$subtotal_inc_tax - self::$discount_total; // subtotal_inc_tax includes shipping
-                foreach (self::get_applied_tax_classes() as $tax_class) :
-                    if (!self::is_tax_retail($tax_class)) : //tax added on retail tax and subtotal
-                        self::$tax->update_tax_amount($tax_class, self::$subtotal_inc_tax * 100);
-                        self::$total += self::get_tax_amount($tax_class, false);
-                    endif;
-                endforeach;
-            else :
-                self::$total = self::$subtotal + self::$shipping_tax_total - self::$discount_total + jigoshop_shipping::get_total();
-                foreach (self::get_applied_tax_classes() as $tax_class) :
+            foreach (self::get_applied_tax_classes() as $tax_class) :
+                if (!self::is_tax_retail($tax_class)) : //tax added on retail tax and subtotal
+                    self::$tax->update_tax_amount($tax_class, self::$subtotal_inc_tax * 100);
                     self::$total += self::get_tax_amount($tax_class, false);
-                endforeach;
-            endif;
+                endif;
+            endforeach;
 
+        else :
+            self::$total = self::$subtotal + self::$shipping_tax_total - self::$discount_total + jigoshop_shipping::get_total();
+            foreach (self::get_applied_tax_classes() as $tax_class) :
+                self::$total += self::get_tax_amount($tax_class, false);
+            endforeach;
         endif;
 
         if (self::$total < 0)
@@ -526,47 +535,52 @@ class jigoshop_cart extends jigoshop_singleton {
     /** gets the sub total (after calculation) */
     function get_cart_subtotal() {
 
-        return jigoshop_price(self::$subtotal);
+        //return jigoshop_price(self::$subtotal);
         //TODO: still need to see if we need this display or not
         // if we still need these tags, we'll likely need to add a parameter
         // to this method to indicate if subtotal is retail or not
-        /* 		
-          if (get_option('jigoshop_display_totals_tax')=='excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
+        
+        $cart_contents_total_ex_tax = self::$cart_contents_total_ex_tax;
+        $subtotal = self::$subtotal;
+        $subtotal_inc_tax = self::$subtotal_inc_tax;
 
-          if (get_option('jigoshop_prices_include_tax')=='yes') :
+        if (get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
 
-          $return = jigoshop_price(self::$subtotal - self::$tax_total);
+            if (get_option('jigoshop_prices_include_tax') == 'yes') :
 
-          else :
+                $return = jigoshop_price(self::$cart_contents_total_ex_tax);
 
-          $return = jigoshop_price(self::$subtotal);
+            else :
 
-          endif;
+                $return = jigoshop_price(self::$subtotal);
 
-          if (self::$tax_total>0) :
-          $return .= __(' <small>(ex. tax)</small>', 'jigoshop');
-          endif;
-          return $return;
+            endif;
+            
+            
 
-          else :
+            if (self::$subtotal - self::$cart_contents_total_ex_tax > 0) :
+                $return .= __(' <small>(ex. tax)</small>', 'jigoshop');
+            endif;
+            return $return;
 
-          if (get_option('jigoshop_prices_include_tax')=='yes') :
+        else :
 
-          $return = jigoshop_price(self::$subtotal);
+            if (get_option('jigoshop_prices_include_tax') == 'yes') :
 
-          else :
+                $return = jigoshop_price(self::$subtotal);
 
-          $return = jigoshop_price(self::$subtotal + self::$tax_total);
+            else :
+                //don't use accessor function here, as it may not be right
+                $return = jigoshop_price(self::$subtotal_inc_tax);
 
-          endif;
+            endif;
 
-          if (self::$tax_total>0) :
-          $return .= __(' <small>(inc. tax)</small>', 'jigoshop');
-          endif;
-          return $return;
+            if (self::$subtotal_inc_tax - self::$subtotal > 0) :
+                $return .= __(' <small>(inc. tax)</small>', 'jigoshop');
+            endif;
+            return $return;
 
-          endif;
-         */
+        endif;
     }
 
     /**
