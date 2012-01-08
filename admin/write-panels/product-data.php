@@ -390,6 +390,9 @@ function display_attribute() { ?>
 		<div class="inside">
 			<table>
 				<tr>
+					<td>
+						<input type="text" name="attribute_names[<?php echo $i; ?>]" value="<?php echo $tax->attribute_name; ?>" disabled="disabled" />
+					</td>
 					<td class="control">
 							<?php if ($tax->attribute_type=="select") : ?>
 								<select name="attribute_values[<?php echo $i ?>]">
