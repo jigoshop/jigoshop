@@ -907,18 +907,41 @@ a.tips {
 
 	.inside {
 		padding: 10px !important; /* this is because of #jigoshop-product-data .inside */
-		background: #fff;
+		// background: #fff;
 
 		td {
 			vertical-align: top;
 		}
 
-		.control {
-			//width: 100%;
-			vertical-align: bottom;
+		.options {
+			margin-right: 10px;
+			div {
+				margin: 10px;
+				margin-left: 0;
+
+				label {
+					float: left;
+					clear: left;
+					margin-bottom: 10px;
+				}
+				input {
+					margin-right: 5px;
+				}
+			}
+			
+		}
+
+		.value {
+			width: 100%;
+			//vertical-align: bottom;
 
 			select {
-				//width: 95%;
+				width: 100%;
+			}
+
+			textarea {
+				width: 100%;
+				height: 80px;
 			}
 		}
 	}
@@ -1130,7 +1153,7 @@ div.multi_select_products_wrapper {
 	-o-border-radius:3px;
 	-khtml-border-radius:3px;
 	border-radius:3px;
-	margin: 5px 0;
+	margin-bottom: 5px;
 
 	label{
 		display:block;
@@ -1151,6 +1174,9 @@ div.multi_select_products_wrapper {
 		left:0;
 		width:auto !important;
 	}
+}
+.attribute div.multiselect.show_all_enabled {
+	height: auto;
 }
 
 .attribute div.multiselect-controls{

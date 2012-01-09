@@ -390,10 +390,22 @@ function display_attribute() { ?>
 		<div class="inside">
 			<table>
 				<tr>
-					<td>
-						<input type="text" name="attribute_names[<?php echo $i; ?>]" value="<?php echo $tax->attribute_name; ?>" disabled="disabled" />
+					<td class="options">
+						<input type="text" class="attribute-name" name="attribute_names[<?php echo $i; ?>]" value="<?php echo $tax->attribute_name; ?>" disabled="disabled" />
+
+						<div>
+							<label>
+								<input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['visible'] : 0 ), true); ?> name="attribute_visibility[<?php echo $i; ?>]" value="1" /><?php _e('Display on product page', 'jigoshop'); ?>
+							</label>
+
+							<?php if ($tax->attribute_type!="select") : // always disable variation for select elements ?>
+							<label>
+								<input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['variation'] : 0 ), true); ?> name="attribute_variation[<?php echo $i; ?>]" value="1" /><?php _e('Is for variations', 'jigoshop'); ?>
+							</label>
+							<?php endif; ?>
+						</div>
 					</td>
-					<td class="control">
+					<td class="value">
 							<?php if ($tax->attribute_type=="select") : ?>
 								<select name="attribute_values[<?php echo $i ?>]">
 									<option value=""><?php _e('Choose an option&hellip;', 'jigoshop'); ?></option>
@@ -435,7 +447,8 @@ function display_attribute() { ?>
 								<div class="multiselect-controls">
 									<a class="check-all" href="#"><?php _e('Check All'); ?></a>&nbsp;|
 									<a class="uncheck-all" href="#"><?php _e('Uncheck All');?></a>&nbsp;|
-									<a class="toggle" href="#"><?php _e('Toggle');?></a>
+									<a class="toggle" href="#"><?php _e('Toggle');?></a>&nbsp;|
+									<a class="show-all" href="#"><?php _e('Show all'); ?></a>
 								</div>
 
 							<?php elseif ($tax->attribute_type=="text") : ?>
@@ -453,15 +466,7 @@ function display_attribute() { ?>
 							<?php endif; ?>
 					</td>
 					<td>
-						<label>Visible?
-							<input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['visible'] : 0 ), true); ?> name="attribute_visibility[<?php echo $i; ?>]" value="1" />
-						</label>
-
-						<?php if ($tax->attribute_type!="select") : // always disable variation for select elements ?>
-						<label>Variation
-							<input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['variation'] : 0 ), true); ?> name="attribute_variation[<?php echo $i; ?>]" value="1" />
-						</label>
-						<?php endif; ?>
+						
 					</td>
 				</tr>
 			</table>
