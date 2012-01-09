@@ -527,6 +527,7 @@ function jigoshop_price( $price, $args = array() ) {
 	$return = '';
 	$currency_pos = get_option('jigoshop_currency_pos');
 	$currency_symbol = get_jigoshop_currency_symbol();
+	$currency_unit = get_option('jigoshop_currency');
 	$price = number_format(
 		(double) $price, 
 		(int) get_option('jigoshop_price_num_decimals'), 
@@ -541,11 +542,17 @@ function jigoshop_price( $price, $args = array() ) {
 		case 'right' :
 			$return = $price . $currency_symbol;
 		break;
+		case 'both' :
+			$return = $currency_symbol . $price . $currency_unit;
+		break;
 		case 'left_space' :
 			$return = $currency_symbol . ' ' . $price;
 		break;
 		case 'right_space' :
 			$return = $price . ' ' . $currency_symbol;
+		break;
+		case 'both_space' :
+			$return = $currency_symbol . ' ' . $price . ' ' . $currency_unit;
 		break;
 	endswitch;
 

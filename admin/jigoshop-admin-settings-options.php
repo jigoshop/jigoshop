@@ -472,9 +472,9 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name' => __('Currency Position', 'jigoshop'),
-		'desc' 		=> __("This controls the position of the currency symbol.", 'jigoshop'),
-		'tip' 		=> '',
+		'name' => __('Currency Display', 'jigoshop'),
+		'desc' 		=> __("This controls the display of the currency symbol and optionally currency code.", 'jigoshop'),
+		'tip' 		=> '$0.40 - Left<br/>0.40$ - Right<br/>$ 0.40 - Left with space<br/>0.40 $ - Right with space<br/>$ 0.40 USD - Symbol and Code with space<br/>$0.40USD - Symbol and Code',
 		'id' 		=> 'jigoshop_currency_pos',
 		'css' 		=> 'min-width:200px;',
 		'std' 		=> 'left',
@@ -482,8 +482,10 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'options' => array(
 			'left' => __('Left', 'jigoshop'),
 			'right' => __('Right', 'jigoshop'),
-			'left_space' => __('Left (with space)', 'jigoshop'),
-			'right_space' => __('Right (with space)', 'jigoshop')
+			'left_space' => __('Left with space', 'jigoshop'),
+			'right_space' => __('Right with space', 'jigoshop'),
+			'both' => __('Symbol and Code'),			
+			'both_space' => __('Symbol and Code with space')
 		)
 	),
 
