@@ -25,6 +25,7 @@ require_once ( 'jigoshop-admin-post-types.php' );
 function jigoshop_admin_init () {
 	require_once ( 'jigoshop-admin-settings-options.php' );
 }
+add_action('admin_init', 'jigoshop_admin_init');
 
 function jigoshop_get_plugin_data( $key = 'Version' ) {
 	$data = get_plugin_data( jigoshop::plugin_path().'/jigoshop.php' );
