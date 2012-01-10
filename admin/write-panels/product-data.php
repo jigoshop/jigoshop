@@ -324,6 +324,7 @@ add_action('jigoshop_attributes_display', 'attributes_display');
 function attributes_display() { ?>
 	
 	<div class="toolbar">
+		
 		<button type="button" class="button button-primary add_attribute"><?php _e('Add Attribute', 'jigoshop'); ?></button>
 		<select name="attribute_taxonomy" class="attribute_taxonomy">
 			<option value="" data-type="custom"><?php _e('Custom product attribute', 'jigoshop'); ?></option>
@@ -336,6 +337,7 @@ function attributes_display() { ?>
 			    endif;
 			?>
 		</select>
+		
 	</div>
 	<div class="jigoshop_attributes_wrapper">
 		
@@ -380,6 +382,7 @@ function display_attribute() { ?>
 	?>
 	<div class="postbox attribute <?php if ( $has_terms ) echo 'closed'; ?> <?php echo $attribute_taxonomy_name; ?>" rel="<?php echo $position; ?>"  <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
 		<button type="button" class="hide_row button">Remove</button>
+		<div class="handlediv" title="Click to toggle"><br></div>
 		<h3 class="handle"><?php echo $tax->attribute_name; ?></h3>
 
 		<input type="hidden" name="attribute_names[<?php echo $i; ?>]" value="<?php echo $tax->attribute_name; ?>" />

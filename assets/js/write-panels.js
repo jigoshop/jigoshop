@@ -240,6 +240,10 @@ jQuery( function($){
 			});
 		};
 
+		jQuery('.custom .handle, .custom .handlediv').live('click', function(){
+			jQuery(this).parent().toggleClass('closed');
+		});
+
 		// Add rows
 		jQuery('button.add_attribute').click(function(){
 
@@ -249,9 +253,10 @@ jQuery( function($){
 			if (!attribute) {
 				var size = jQuery('.attribute').size();
 				// Add custom attribute row
-				jQuery('.jigoshop_attributes_wrapper').prepend('\
-					<div class="postbox attribute">\
+				var $custom_panel = jQuery('\
+					<div class="postbox attribute custom">\
 						<button type="button" class="hide_row button">Remove</button>\
+						<div class="handlediv" title="Click to toggle"><br></div>\
 						<h3 class="handle">Custom</h3>\
 \
 						<input type="hidden" name="attribute_is_taxonomy[' + size + ']" value="0">\
@@ -266,11 +271,13 @@ jQuery( function($){
 										<div>\
 											<label>\
 												<input type="checkbox" checked="checked" name="attribute_visibility[' + size + ']" value="1">\
-											</label>Display on product page\
+												Display on product page\
+											</label>\
 \
 											<label>\
 												<input type="checkbox" checked="checked" name="attribute_variation[' + size + ']" value="1">\
-											</label>Is for variations\
+												Is for variations\
+											</label>\
 										</div>\
 									</td>\
 									<td class="value">\
@@ -283,6 +290,8 @@ jQuery( function($){
 						</div>\
 					</div>\
 				');
+
+				$custom_panel.hide().prependTo('.jigoshop_attributes_wrapper').slideDown( 150 );
 				// jQuery('.attribute').append('
 				// 	<tr>
 				// 		<td class="center">
