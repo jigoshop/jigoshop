@@ -1,11 +1,6 @@
-# Jigoshop - WordPress eCommerce
-A feature packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customisability.
+# [Jigoshop - WordPress eCommerce](http://jigoshop.com)
 
-## Description
-
-Set up shop in minutes with physical and downloadable products or even services. Jigoshop provides you with the features necessary to set up an eCommerce web site lickety-split.
-
-With the option to create a multitude of product types and apply detailed attributes customers can easily refine your catalog, ensuring they find what they're looking for in just a couple of clicks.
+Jigoshop is a featured packed eCommerce plugin built upon Wordpress core functionality ensuring excellent performance and customisability. Set up a shop in minutes with physical & downloadable products or even services.
 
 There are integrated worldwide payment and shipping options to cater for a global audience.
 
@@ -13,11 +8,9 @@ Inside the custom dashboard you get sortable sales graphs, incoming order / revi
 
 Manage your stock levels and customer orders easily. Jigoshop has been engineered to make the boring parts of eCommerce, well, less boring!
 
-Built upon the WordPress core you get all the benefits of this global leading platform: free, easy to use, secure, highly customisable and with a great support community to hold your hand.
-
 Styled to work with Twenty Ten, setting up a clean stylish store is easy.
 
-Find out more on the official <a href="http://jigoshop.com" title="WordPress eCommerce">Jigoshop web site</a>.
+Find out more on the official [Jigoshop web site](http://jigoshop.com).
 
 ### Jigoshop core features:
 
