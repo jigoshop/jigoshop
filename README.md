@@ -32,7 +32,7 @@ Anyone and everyone is welcome to contribute. Jigoshop wouldn't be what it is to
 * Mailing list: http://jigoshop.com/group
 * Twitter: http://twitter.com/jigoshop
 
-### Features
+## Feature List
 
 * Sell physical, digital and virtual products
 * Simple, grouped and configurable products
