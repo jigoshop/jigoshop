@@ -1,4 +1,4 @@
-## [Jigoshop - WordPress eCommerce](http://jigoshop.com)
+# [Jigoshop - WordPress eCommerce](http://jigoshop.com)
 
 Jigoshop is a featured packed eCommerce plugin built upon Wordpress core functionality ensuring excellent performance and customisability. Set up a shop in minutes with physical & downloadable products or even services.
 
@@ -12,13 +12,13 @@ Styled to work with Twenty Ten, setting up a clean stylish store is easy.
 
 Find out more on the official [Jigoshop web site](http://jigoshop.com).
 
-### Quick Start
+## Quick Start
 
 Clone the git repo - `git clone git://github.com/jigoshop/jigoshop.git` - or [download it](https://github.com/jigoshop/jigoshop/zipball/master) into your WordPress plugins directory
 
 Activate the plugin & enjoy!
 
-### Contributing
+## Contributing
 Anyone and everyone is welcome to contribute. Jigoshop wouldn't be what it is today without the github community. There are several ways you can help out:
 
 1. Raising [issues](https://github.com/jigoshop/jigoshop/issues) on GitHub.
