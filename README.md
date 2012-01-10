@@ -18,6 +18,20 @@ Clone the git repo - `git clone git://github.com/jigoshop/jigoshop.git` - or [do
 
 Activate the plugin & enjoy!
 
+## Contributing
+Anyone and everyone is welcome to contribute. Jigoshop wouldn't be what it is today without the github community. There are several ways you can help out:
+
+1. Raising [issues](https://github.com/jigoshop/jigoshop/issues) on GitHub.
+2. Sending pull requests for bug fixes or new features and improvements.
+
+## Project information
+
+* Source: http://github.com/jigoshop/jigoshop
+* Web: http://jigoshop.com
+* Docs: http://jigoshop.com/docs
+* Mailing list: http://jigoshop.com/group
+* Twitter: http://twitter.com/jigoshop
+
 ### Features
 
 * Sell physical, digital and virtual products
@@ -37,26 +51,3 @@ Activate the plugin & enjoy!
 * PayPal standard
 * Moneybookers / Skrill
 * Cheque payments
-
-## Contributing
-Anyone and everyone is welcome to contribute. Jigoshop wouldn't be what it is today without the github community. There are several ways you can help out:
-
-1. Raising [issues](https://github.com/jigoshop/jigoshop/issues) on GitHub.
-2. Sending pull requests for bug fixes or new features and improvements.
-
-### Minimum Requirements
-
-* A WordPress install!
-* PHP version 5.2.4 or greater
-* MySQL version 5.0 or greater
-* The mod_rewrite Apache module (for permalinks)
-* fsockopen support (for payment gateway IPN access)
-* We recommend a Linux based server rather than a Windows server (Windows servers can have PHP configuration problems, especially with mail).
-
-### Upgrading Jigoshop
-
-After upgrading Jigoshop plugin files, be sure to re-activate the plugin to ensure new components are installed correctly.
-
-### Setting up and configuring Jigoshop
-
-You can find the Jigoshop usage guide <a href="http://jigoshop.com/user-guide/" title="Jigoshop usage guide">on our web site</a>
