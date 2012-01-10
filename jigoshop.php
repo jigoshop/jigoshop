@@ -14,7 +14,7 @@
  * Author:				Jigowatt
  * Author URI:			http://jigowatt.co.uk
  *
- * Version:				0.9.9.3
+ * Version:				1.0
  * Requires at least:	3.1
  * Tested up to:		3.3
  *
@@ -25,7 +25,7 @@
  * @license    			http://jigoshop.com/license/commercial-edition
  */
 
-if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", "0.9.9.4 RC1");
+if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1202010);
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
@@ -774,33 +774,6 @@ function jigoshop_exclude_order_comments( $clauses ) {
 
 }
 if (!is_admin()) add_filter('comments_clauses', 'jigoshop_exclude_order_comments');
-
-### Update data ################################################################################
-function rename_attributes() {
-	if( get_option('run_once', true) ) {
-	
-		// Update dataset to be prefixed with pa_ instead
-		global $wpdb;
-		
-		$q = $wpdb->get_results("SELECT * 
-			FROM $wpdb->term_taxonomy
-			WHERE taxonomy LIKE 'product_attribute_%'
-		");
-		
-		foreach($q as $item) {
-			$taxonomy = str_replace('product_attribute_', 'pa_', $item->taxonomy);
-			
-			$wpdb->update(
-				$wpdb->term_taxonomy,
-				array('taxonomy' => $taxonomy),
-				array('term_taxonomy_id' => $item->term_taxonomy_id)
-			);
-		}
-		
-		add_option('run_once', 0);
-	}
-}
-add_action('init', 'rename_attributes');
 
 /**
  * Support for Import/Export
