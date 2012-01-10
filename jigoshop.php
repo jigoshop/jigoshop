@@ -30,7 +30,7 @@ if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
 
-if ( ! is_numeric(get_site_option('jigoshop_db_version')) || get_site_option('jigoshop_db_version') < JIGOSHOP_VERSION ) {
+if ( get_site_option('jigoshop_db_version') < JIGOSHOP_VERSION ) {
 	require_once('jigoshop_upgrade.php');
 	jigoshop_upgrade();
 }
