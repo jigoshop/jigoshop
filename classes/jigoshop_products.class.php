@@ -19,6 +19,7 @@
 class jigoshop_products {
 
 	var $simple_count;
+	var $external_count;
 	var $variable_count;
 	var $grouped_count;
 	var $downloadable_count;
@@ -58,6 +59,10 @@ class jigoshop_products {
 		$this_query = new WP_Query( $args );
 		$this->simple_count = $this_query->post_count;
 
+		$args['tax_query'][0]['terms'] = 'external';
+		$this_query = new WP_Query( $args );
+		$this->simple_count = $this_query->post_count;
+
 		$args['tax_query'][0]['terms'] = 'variable';
 		$this_query = new WP_Query( $args );
 		$this->variable_count = $this_query->post_count;
@@ -90,6 +95,7 @@ class jigoshop_products {
 		
 		// these return incorrect results for hidden and trashed items -- checking -JAP-
 //		$this->simple_count			= get_term_by( 'slug', 'simple', 'product_type' )->count;
+//		$this->external_count		= get_term_by( 'slug', 'external', 'product_type' )->count;
 //		$this->variable_count		= get_term_by( 'slug', 'variable', 'product_type' )->count;
 //		$this->grouped_count		= get_term_by( 'slug', 'grouped', 'product_type' )->count;
 //		$this->downloadable_count	= get_term_by( 'slug', 'downloadable', 'product_type' )->count;

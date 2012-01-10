@@ -95,6 +95,8 @@ if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 		if ( $_product->is_in_stock() ) :
 			if ( $_product->is_type('variable') OR $_product->is_type('grouped') ) :
 				$output = '<a href="'.get_permalink($_product->id).'" class="button">'.__('Select', 'jigoshop').'</a>';
+			elseif ( $_product->is_type('external') ) :
+				$output = '<a href="'.get_post_meta( $_product->id, 'product_url', true ).'" class="button">'.__('Buy product', 'jigoshop').'</a>';
 			else :
 				$output = '<a href="'.$_product->add_to_cart_url().'" class="button">'.__('Add to cart', 'jigoshop').'</a>';
 			endif;
@@ -296,6 +298,20 @@ if (!function_exists('jigoshop_simple_add_to_cart')) {
 		 	<button type="submit" class="button-alt"><?php _e('Add to cart', 'jigoshop'); ?></button>
 		 	<?php do_action('jigoshop_add_to_cart_form'); ?>
 		</form>
+		<?php
+	}
+}
+if (!function_exists('jigoshop_external_add_to_cart')) {
+	function jigoshop_external_add_to_cart() {
+
+		global $_product; $product_url = get_post_meta( $_product->id, 'product_url', true );
+
+		if (!$product_url) return;
+
+		?>
+
+		<p class="cart"><a href="<?php echo $product_url; ?>" rel="nofollow" class="button alt"><?php _e('Buy product', 'jigoshop'); ?></a></p>
+
 		<?php
 	}
 }

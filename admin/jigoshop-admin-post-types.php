@@ -30,6 +30,7 @@ function jigoshop_custom_product_views( $views ) {
 	
 	// determine 'current' class for active nav menu item
 	$simple = (isset($_GET['product_type']) && $_GET['product_type']=='simple') ? 'current' : '';
+	$external = (isset($_GET['product_type']) && $_GET['product_type']=='external') ? 'current' : '';
 	$variable = (isset($_GET['product_type']) && $_GET['product_type']=='variable') ? 'current' : '';
 	$grouped = (isset($_GET['product_type']) && $_GET['product_type']=='grouped') ? 'current' : '';
 	$downloadable = (isset($_GET['product_type']) && $_GET['product_type']=='downloadable') ? 'current' : '';
@@ -37,13 +38,14 @@ function jigoshop_custom_product_views( $views ) {
 
 	// format links for each nav menu item we are adding
 	$views['simple'] = '<a href="edit.php?post_type=product&amp;product_type=simple" class="'.$simple.'">'.__('Simple','jigoshop').' <span class="count">('.$jigoshop_products->simple_count.')</span></a>';
+	$views['external'] = '<a href="edit.php?post_type=product&amp;product_type=simple" class="'.$simple.'">'.__('External','jigoshop').' <span class="count">('.$jigoshop_products->external_count.')</span></a>';	
 	$views['variable'] = '<a href="edit.php?post_type=product&amp;product_type=variable" class="'.$variable.'">'.__('Variable','jigoshop').' <span class="count">('.$jigoshop_products->variable_count.')</span></a>';
 	$views['grouped'] = '<a href="edit.php?post_type=product&amp;product_type=grouped" class="'.$grouped.'">'.__('Grouped','jigoshop').' <span class="count">('.$jigoshop_products->grouped_count.')</span></a>';
 	$views['downloadable'] = '<a href="edit.php?post_type=product&amp;product_type=downloadable" class="'.$downloadable.'">'.__('Downloadable','jigoshop').' <span class="count">('.$jigoshop_products->downloadable_count.')</span></a>';
 	$views['virtual'] = '<a href="edit.php?post_type=product&amp;product_type=virtual" class="'.$virtual.'">'.__('Virtual','jigoshop').' <span class="count">('.$jigoshop_products->virtual_count.')</span></a>';
 	
 	// if any of our nav menu items are active, unset 'current' class from 'All'
-	if ( $simple || $variable || $grouped || $downloadable || $virtual ) :
+	if ( $simple || $external || $variable || $grouped || $downloadable || $virtual ) :
 		$views['all'] = str_replace( 'current', '', $views['all'] );
 	endif;	
 
