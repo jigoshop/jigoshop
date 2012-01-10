@@ -28,7 +28,7 @@ Anyone and everyone is welcome to contribute. Jigoshop wouldn't be what it is to
 
 * Source: http://github.com/jigoshop/jigoshop
 * Web: http://jigoshop.com
-* Docs: http://jigoshop.com/docs
+* Docs: http://forum.jigoshop.com/kb
 * Twitter: http://twitter.com/jigoshop
 
 ### Features
