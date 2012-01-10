@@ -1,4 +1,4 @@
-<?php
+<?php defined('ABSPATH') or die('No direct script access.');
 /**
  * Jigoshop Upgrade API
  * 
@@ -21,13 +21,13 @@
  * @since 2.1.0
  * @return null
 */
-function upgrade_all() {
+function jigoshop_upgrade() {
 
 	// Get the db version
 	$jigoshop_db_version = get_site_option( 'jigoshop_db_version' );
 
 	// 'Cause we aint got shiz to do
-	if ( $jigoshop_db_version == 1202010 );
+	if ( $jigoshop_db_version == JIGOSHOP_VERSION );
 		return false;
 
 	if ( ! is_numeric($jigoshop_db_version) ) {
@@ -43,13 +43,13 @@ function upgrade_all() {
 	}
 
 	// Update the db option
-	update_site_option( 'jigoshop_db_version', 1202010 );
+	update_site_option( 'jigoshop_db_version', JIGOSHOP_VERSION );
 }
 
 /**
  * Updates jigoshop db version to a numeric value for better comparison
  */
-function convert_db_version() {
+function jigoshop_convert_db_version() {
 	global $wpdb;
 
 	$jigoshop_db_version = get_site_option('jigoshop_db_version');
@@ -111,7 +111,7 @@ function convert_db_version() {
  *
  * @since 0.9.9
  */
-function upgrade_99() {
+function jigoshop_upgrade_99() {
 	global $wpdb;
 
 	$q = $wpdb->get_results("SELECT * 
@@ -135,7 +135,7 @@ function upgrade_99() {
  *
  * @since 1.0.0
  */
-function upgrade_100() {
+function jigoshop_upgrade_100() {
 	global $wpdb;
 
 	// Run upgrade
