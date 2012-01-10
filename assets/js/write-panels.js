@@ -244,6 +244,16 @@ jQuery( function($){
 			jQuery(this).parent().toggleClass('closed');
 		});
 
+		jQuery('.attribute-name').live('keyup', function(e) {
+
+			if( ! $(this).val() )
+				val = 'Custom Attribute';
+			else
+				val = $(this).val();
+
+			$(this).parents('.attribute').find('.handle').text(val);
+		});
+
 		// Add rows
 		jQuery('button.add_attribute').click(function(){
 
@@ -257,7 +267,7 @@ jQuery( function($){
 					<div class="postbox attribute custom">\
 						<button type="button" class="hide_row button">Remove</button>\
 						<div class="handlediv" title="Click to toggle"><br></div>\
-						<h3 class="handle">Custom</h3>\
+						<h3 class="handle">Custom Attribute</h3>\
 \
 						<input type="hidden" name="attribute_is_taxonomy[' + size + ']" value="0">\
 						<input type="hidden" name="attribute_enabled[' + size + ']" value="1">\
@@ -267,7 +277,7 @@ jQuery( function($){
 							<table>\
 								<tr>\
 									<td class="options">\
-										<input class="attribute-name" type="text" name="attribute_names[' + size + ']" />\
+										<input class="attribute-name" type="text" name="attribute_names[' + size + ']" autofocus="autofocus" tabindex="'+size+'" />\
 										<div>\
 											<label>\
 												<input type="checkbox" checked="checked" name="attribute_visibility[' + size + ']" value="1">\
@@ -282,7 +292,7 @@ jQuery( function($){
 									</td>\
 									<td class="value">\
 											\
-										<textarea name="attribute_values[' + size + ']"></textarea>\
+										<textarea name="attribute_values[' + size + ']" tabindex="'+size+'"></textarea>\
 										\
 									</td>\
 								</tr>\
@@ -291,7 +301,8 @@ jQuery( function($){
 					</div>\
 				');
 
-				$custom_panel.hide().prependTo('.jigoshop_attributes_wrapper').slideDown( 150 );
+				$custom_panel.hide().prependTo('.jigoshop_attributes_wrapper').slideDown( 150 ).find('.attribute-name').focus();
+
 				// jQuery('.attribute').append('
 				// 	<tr>
 				// 		<td class="center">
