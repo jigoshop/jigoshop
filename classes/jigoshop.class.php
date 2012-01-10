@@ -109,7 +109,6 @@ class jigoshop extends jigoshop_singleton {
 	public static function get_var($var) {
 		$return = '';
 		switch ($var) :
-			case "version" : $return = JIGOSHOP_VERSION; break;
 			case "shop_small_w" : $return = self::SHOP_SMALL_W; break;
 			case "shop_small_h" : $return = self::SHOP_SMALL_H; break;
 			case "shop_tiny_w" : $return = self::SHOP_TINY_W; break;
