@@ -27,19 +27,19 @@ function jigoshop_upgrade() {
 	$jigoshop_db_version = get_site_option( 'jigoshop_db_version' );
 
 	// 'Cause we aint got shiz to do
-	if ( $jigoshop_db_version == JIGOSHOP_VERSION );
+	if ( $jigoshop_db_version == JIGOSHOP_VERSION )
 		return false;
 
 	if ( ! is_numeric($jigoshop_db_version) ) {
-		convert_db_version();
+		jigoshop_convert_db_version();
 	}
 
 	if ( $jigoshop_db_version < 1109200 ) {
-		upgrade_99();
+		jigoshop_upgrade_99();
 	}
 
 	if ( $jigoshop_db_version < 1202010 ) {
-		upgrade_100();
+		jigoshop_upgrade_100();
 	}
 
 	// Update the db option
