@@ -203,6 +203,10 @@ class jigoshop_product_meta
 
 		foreach( $attr_values as $key => $value ) {
 
+			// Skip if no value
+			if ( ! $value )
+				continue;
+
 			// If attribute is standard then create the relationship
 			if ( (bool) $attr_is_tax[$key] && taxonomy_exists('pa_'.sanitize_title($attr_names[$key])) ) {
 				// TODO: Adding pa and sanitizing fixes the bug but why not automatic?

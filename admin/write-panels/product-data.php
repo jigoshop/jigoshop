@@ -468,8 +468,51 @@ function display_attribute() { ?>
 					
 							<?php endif; ?>
 					</td>
-					<td>
-						
+				</tr>
+			</table>
+		</div>
+	</div>
+	<?php endforeach; ?>
+	<?php
+	// Custom Attributes
+	if ( $attributes ) foreach ($attributes as $attribute) : 
+		if ($attribute['is_taxonomy']) continue;
+		
+		$i++;
+
+		$position = (isset($attribute['position'])) ? $attribute['position'] : 0;
+		
+	?>
+	<div class="postbox attribute closed <?php echo sanitize_title($attribute['name']); ?>" rel="<?php echo isset($attribute['position']) ? $attribute['position'] : 0; ?>">
+		<button type="button" class="hide_row button">Remove</button>
+		<div class="handlediv" title="Click to toggle"><br></div>
+		<h3 class="handle"><?php echo esc_attr( $attribute['name'] ); ?></h3>
+
+		<input type="hidden" name="attribute_is_taxonomy[<?php echo $i; ?>]" value="0" />
+		<input type="hidden" name="attribute_enabled[<?php echo $i; ?>]" value="1" />
+		<input type="hidden" name="attribute_position[<?php echo $i; ?>]" class="attribute_position" value="<?php echo $position; ?>" />
+
+		<div class="inside">
+			<table>
+				<tr>
+					<td class="options">
+						<input type="text" class="attribute-name" name="attribute_names[<?php echo $i; ?>]" value="<?php echo esc_attr( $attribute['name'] ); ?>" />
+
+						<div>
+							<label>
+								<input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['visible'] : 0 ), true); ?> name="attribute_visibility[<?php echo $i; ?>]" value="1" /><?php _e('Display on product page', 'jigoshop'); ?>
+							</label>
+
+							<?php if ($tax->attribute_type!="select") : // always disable variation for select elements ?>
+							<label>
+								<input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['variation'] : 0 ), true); ?> name="attribute_variation[<?php echo $i; ?>]" value="1" /><?php _e('Is for variations', 'jigoshop'); ?>
+							</label>
+							<?php endif; ?>
+						</div>
+					</td>
+
+					<td class="value">
+						<textarea name="attribute_values[<?php echo $i; ?>]" cols="5" rows="2"><?php echo esc_textarea( $attribute['value'] ); ?></textarea>
 					</td>
 				</tr>
 			</table>
