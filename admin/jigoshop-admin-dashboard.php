@@ -102,7 +102,7 @@ function jigoshop_dashboard() {
 								<p id="wp-version-message"><?php _e('You are using', 'jigoshop'); ?> <strong>JigoShop 
 									<?php
 										echo jigoshop_get_plugin_data();
-									?>.</strong></p>
+									?></strong></p>
 							</div>
 							<div class="clear"></div>
 						</div>
