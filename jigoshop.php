@@ -487,37 +487,39 @@ function get_jigoshop_currency_symbol() {
 	$currency = get_option('jigoshop_currency');
 	$currency_symbol = '';
 	switch ($currency) :
-		case 'AUD' :
-		case 'BRL' :
-		case 'CAD' :
-		case 'HKD' :
-		case 'MXN' :
-		case 'NZD' :
-		case 'SGD' :
-		case 'USD' : $currency_symbol = '&#36;'; break; /* Dollar Sign */
-		
-		case 'EUR' : $currency_symbol = '&euro;'; break; /* European Euro */
-		case 'IDR' : $currency_symbol = '&#82;&#112;'; break; /* Indonesia Rupiah */
-		case 'INR' : $currency_symbol = '&#8360;'; break; /* India Rupee */
-		case 'HRK' : $currency_symbol = '&#107;&#110;'; break; /* Croatia Kuna */
-		case 'HUF' : $currency_symbol = '&#70;&#116;'; break; /* Hungary Forint */
-		case 'JPY' : $currency_symbol = '&yen;'; break; /* Japanese Yen */
-		case 'RUB' : $currency_symbol = '&#1088;&#1091;&#1073;'; break; /* Russia Ruble */
-		case 'TRY' : $currency_symbol = '&#8356;'; break; /* Turkey Lira */
-
-		case 'CHF' :
-		case 'CZK' :
-		case 'DKK' :
-		case 'ILS' :
-		case 'MYR' :
-		case 'NOK' :
-		case 'PHP' :
-		case 'PLN' :
-		case 'SEK' :
-		case 'THB' :
-		case 'TWD' : $currency_symbol = $currency; break;
-
-		case 'GBP' :
+		case 'AED' : $currency_symbol = '&#1583;&#46;&#1573;'; break;
+		case 'AUD' : $currency_symbol = '&#36;'; break;
+		case 'BRL' : $currency_symbol = '&#82;&#36;'; break;
+		case 'CAD' : $currency_symbol = '&#36;'; break;
+		case 'CHF' : $currency_symbol = '&#8355;'; break;
+		case 'CNY' : $currency_symbol = '&#165;'; break;
+		case 'CZK' : $currency_symbol = '&#75;&#269;'; break;
+		case 'DKK' : $currency_symbol = 'kr'; break;
+		case 'EUR' : $currency_symbol = '&euro;'; break;
+		case 'GBP' : $currency_symbol = '&pound;'; break;
+		case 'HKD' : $currency_symbol = '&#36;'; break;
+		case 'HRK' : $currency_symbol = '&#107;&#110;'; break;
+		case 'HUF' : $currency_symbol = '&#70;&#116;'; break;
+		case 'IDR' : $currency_symbol = '&#82;&#112;'; break;
+		case 'ILS' : $currency_symbol = '&#8362;'; break;
+		case 'INR' : $currency_symbol = '&#8360;'; break;
+		case 'JPY' : $currency_symbol = '&yen;'; break;
+		case 'MXN' : $currency_symbol = '&#162;'; break;
+		case 'MYR' : $currency_symbol = 'RM'; break;
+		case 'NGN' : $currency_symbol = '&#8358;'; break;
+		case 'NOK' : $currency_symbol = 'kr'; break;
+		case 'NZD' : $currency_symbol = '&#36;'; break;
+		case 'PHP' : $currency_symbol = '&#8369;'; break;
+		case 'PLN' : $currency_symbol = '&#122;&#322;'; break;
+		case 'RON' : $currency_symbol = '&#108;&#101;&#105;'; break;
+		case 'RUB' : $currency_symbol = '&#1088;&#1091;&#1073;'; break;
+		case 'SEK' : $currency_symbol = 'kr'; break;
+		case 'SGD' : $currency_symbol = '&#36;'; break;
+		case 'THB' : $currency_symbol = '&#3647;'; break;
+		case 'TRY' : $currency_symbol = '&#8356;'; break;
+		case 'TWD' : $currency_symbol = '&#78;&#84;&#36;'; break;
+		case 'USD' : $currency_symbol = '&#36;'; break;
+		case 'ZAR' : $currency_symbol = 'R'; break;
 		default    : $currency_symbol = '&pound;'; break;
 	endswitch;
 	return apply_filters('jigoshop_currency_symbol', $currency_symbol, $currency);
