@@ -299,7 +299,7 @@ class jigoshop_tax {
                         $tax_amount[$tax_class]['rate'] = $rate;
                         $tax_amount[$tax_class]['retail'] = false;
                         $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
-                        $total_tax += round($tax);
+                        $total_tax += $tax;
                         $this->has_tax = true;
                     endif;
                 endif;
