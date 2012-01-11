@@ -117,7 +117,8 @@ We offer optimised hosting packages starting from 10 GBP per month at http://jig
 
 = I need support! =
 
-We have a <a href="http://jigoshop.com/forums" title="Jigoshop support forum">community forum</a> for getting help from other users, however, if you want priority, dedicated support from us we offer support packages - see our website for details.
+We have a <a href="http://forum.jigoshop.com" title="Jigoshop support forum">community forum</a> for getting help from other users.
+However, if you want priority, dedicated support from Jigoshop staff, we do offer <a href="http://jigoshop.com/support/" title="Jigoshop Premium Support">support packages</a>.
 
 == Screenshots ==
 
