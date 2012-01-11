@@ -393,18 +393,16 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
         }
 
 		?>
-        <script>
+        <script type="text/javascript">
             var product_variations = <?php echo json_encode($variationsAvailable) ?>;
         </script>
 		<form action="<?php echo $_product->add_to_cart_url(); ?>" class="variations_form cart" method="post">
-
-			<table class="variations" cellspacing="0">
-				<tbody>
+			<fieldset class="variations">
 				<?php foreach ( $attributes as $aname => $avalues ): ?>
-                    <tr>
-                    	<?php $sanitized_name = sanitize_title( $aname ); ?>
-                        <td><label for="<?php echo $sanitized_name; ?>"><?php echo $aname; ?></label></td>
-                        <td><select id="<?php echo $sanitized_name; ?>" name="tax_<?php echo $sanitized_name; ?>">
+					<?php $sanitized_name = sanitize_title( $aname ); ?>
+					<div>
+						<span class="select_label"><?php echo $aname; ?></span>
+						<select id="<?php echo $sanitized_name; ?>" name="tax_<?php echo $sanitized_name; ?>">
 							<option value=""><?php echo __('Choose an option ', 'jigoshop') ?>&hellip;</option>
 							<?php foreach ( $avalues as $value ) : ?>
 								<?php if ( taxonomy_exists( 'pa_'.$sanitized_name )) : ?>
@@ -420,16 +418,15 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 									<option value="<?php echo sanitize_title( $value ); ?>"><?php echo $value; ?></option>
 								<?php endif;?>
 							<?php endforeach; ?>
-                        </td>
-                    </tr>
+						</select>
+					</div>
                 <?php endforeach;?>
-				</tbody>
-			</table>
+			</fieldset>
 			<div class="single_variation"></div>
 			<div class="variations_button" style="display:none;">
                 <input type="hidden" name="variation_id" value="" />
                 <div class="quantity"><input name="quantity" value="1" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div>
-				<button type="submit" class="button-alt"><?php _e('Add to cart', 'jigoshop'); ?></button>
+				<input type="submit" class="button-alt" value="<?php _e('Add to cart', 'jigoshop'); ?>" />
 			</div>
 			<?php do_action('jigoshop_add_to_cart_form'); ?>
 		</form>
