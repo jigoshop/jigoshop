@@ -27,6 +27,7 @@ class jigoshop_tax {
     private $tax_divisor;
     private $total_tax_rate;
     private $shipping_tax_class;
+    private $has_tax;
 
     /**
      * sets up current tax class without a divisor. May or may not have
@@ -42,6 +43,7 @@ class jigoshop_tax {
         $this->imploded_tax_amounts = '';
         $this->total_tax_rate = 0; 
         $this->shipping_tax_class = '';
+        $this->has_tax = false;
     }
 
     /**
@@ -63,6 +65,10 @@ class jigoshop_tax {
             $array_string[] = "{$key}{$glue}{$val}";
         }
         return implode('|', $array_string);
+    }
+    
+    public function has_tax() {
+        return $this->has_tax;
     }
 
     /**
@@ -262,7 +268,8 @@ class jigoshop_tax {
         $tax_amount = array();
         $retail_tax_amount = 0;
         $total_tax = 0;
-
+        $this->has_tax = false;
+        
         // using order of tax classes for customer since order is important
         if ($this->get_tax_classes_for_customer())
             foreach ($this->get_tax_classes_for_customer() as $tax_class) :
@@ -275,7 +282,7 @@ class jigoshop_tax {
                 $rate = $this->get_rate($tax_class);
 
                 if ($this->is_applied_to_retail()) :
-                    $tax = $this->calc_tax($total_item_price, $rate, $prices_include_tax);
+                    $tax = round($this->calc_tax($total_item_price, $rate, $prices_include_tax));
                     if ($tax > 0) :
                         $tax_amount[$tax_class]['amount'] = $tax;
                         $tax_amount[$tax_class]['rate'] = $rate;
@@ -283,15 +290,17 @@ class jigoshop_tax {
                         $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
                         $retail_tax_amount += $tax;
                         $total_tax += $tax;
+                        $this->has_tax = true;
                     endif;
                 else :
-                    $tax = $this->calc_tax($total_item_price + $retail_tax_amount, $rate, $prices_include_tax);
+                    $tax = round($this->calc_tax($total_item_price + $retail_tax_amount, $rate, $prices_include_tax));
                     if ($tax > 0) :
                         $tax_amount[$tax_class]['amount'] = $tax;
                         $tax_amount[$tax_class]['rate'] = $rate;
                         $tax_amount[$tax_class]['retail'] = false;
                         $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
-                        $total_tax += $tax;
+                        $total_tax += round($tax);
+                        $this->has_tax = true;
                     endif;
                 endif;
 
@@ -303,17 +312,21 @@ class jigoshop_tax {
         $this->total_tax_rate = round($total_tax / $total_item_price * 100, 2); 
     }
 
-    // TODO: prices include tax?? Do we worry about shipping tax?
-    public function update_tax_amount_with_shipping_tax($total_price) {
-        $this->update_tax_amount($this->shipping_tax_class, $total_price);
+    public function update_tax_amount_with_shipping_tax($tax_amount) {
+        $this->update_tax_amount($this->shipping_tax_class, round($tax_amount), false);
     }
     
-    //TODO: what about prices_include_tax??? What happens here? does shipping affect those prices?
-    public function update_tax_amount($tax_class, $total_price) {
+    public function update_tax_amount($tax_class, $amount, $recalculate_tax = true) {
         if ($tax_class) :
-            $tax_rate = $this->get_rate($tax_class);
-            $tax = $this->calc_tax($total_price, $tax_rate, false);//for now just don't include taxes in price.
-            $this->tax_amounts[$tax_class]['amount'] = $tax;
+            
+            if ($recalculate_tax) :
+                $rate = $this->get_rate($tax_class);
+                $tax = round($this->calc_tax($amount, $rate, $prices_include_tax));
+                $this->tax_amounts[$tax_class]['amount'] = $tax;
+            else :
+                $this->tax_amounts[$tax_class]['amount'] += $amount;
+            endif;
+
             $this->imploded_tax_amounts = $this->array_implode($this->tax_amounts);
             
             $retail_tax = 0;
@@ -350,16 +363,6 @@ class jigoshop_tax {
      */
     function get_tax_amount($tax_class, $has_shipping_tax = true) {
         return ($this->tax_divisor > 0 ? $this->tax_amounts[$tax_class]['amount'] / $this->tax_divisor : $this->tax_amounts[$tax_class]['amount']);
-
-/*        if ($has_shipping_tax) :
-            if ($this->shipping_tax_class == $tax_class) :
-                return ($this->tax_divisor > 0 ? ($this->tax_amounts[$tax_class]['amount'] + (jigoshop_shipping::get_tax() * $this->tax_divisor)) / $this->tax_divisor : $this->tax_amounts[$tax_class]['amount'] + jigoshop_shipping::get_tax());
-            else :
-                return ($this->tax_divisor > 0 ? $this->tax_amounts[$tax_class]['amount'] / $this->tax_divisor : $this->tax_amounts[$tax_class]['amount']);
-            endif;
-        else :
-        endif;
-*/
     }
 
     /**

@@ -32,6 +32,11 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
         $this->rates = array();
     }
 
+    public function is_available() {
+        $is_available = parent::is_available();
+        return ($this->has_error ? false : $is_available);
+    }
+    
     protected function get_ship_to_countries() {
         return parent::get_ship_to_countries();
     }
