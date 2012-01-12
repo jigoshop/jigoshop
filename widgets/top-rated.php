@@ -201,7 +201,7 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 	 * 
 	 * Used to flush the cached output
 	 */
-	private function flush_widget_cache() {
+	public function flush_widget_cache() {
 		wp_cache_delete( 'widget_top_rated', 'widget' );
 	}
 
