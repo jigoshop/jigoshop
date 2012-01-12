@@ -1,19 +1,36 @@
+(function($) {
+	
+	// On document Load
+	$(function() {
+		
+		// Tabs
+		var $tabs = $('.tabs');
+
+		// First show tabs & hide each panel
+		$tabs.show();
+		$('div.panels').each(function(){
+			$('div.panel:not(div.panel:first)', this).hide();
+		});
+
+		$tabs.find('a').on('click', function(e){
+			e.preventDefault();
+
+			var $panels = $(this).closest('.panels');
+			$('.tabs li', $panels).removeClass('active');
+			$(this).parent().addClass('active');
+			$('div.panel', $panels).hide();
+			$( $(this).attr('href') ).show();
+		});
+
+	});
+
+
+})(window.jQuery);
+
 jQuery( function($){
 
 	// TABS
-	jQuery('ul.tabs').show();
-	jQuery('div.panels').each(function(){
-		jQuery('div.panel:not(div.panel:first)', this).hide();
-	});
-
-	jQuery('ul.tabs a').click(function(){
-		var panel_wrap =  jQuery(this).closest('div.panels');
-		jQuery('ul.tabs li', panel_wrap).removeClass('active');
-		jQuery(this).parent().addClass('active');
-		jQuery('div.panel', panel_wrap).hide();
-		jQuery( jQuery(this).attr('href') ).show();
-		return false;
-	});
+	
 	// ORDERS
 
 	jQuery('#order_items_list button.remove_row').live('click', function(){
