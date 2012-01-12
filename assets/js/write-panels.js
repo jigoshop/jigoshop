@@ -9,6 +9,9 @@
 		// Set up jigoshop datepicker
 		jigoshop_date_picker();
 
+		// Jigoshop stock options
+		jigoshop_stock_options();
+
 	});
 
 	function jigoshop_start_tabs() {
@@ -29,6 +32,19 @@
 			$('div.panel', $panels).hide();
 			$( $(this).attr('href') ).show();
 		});
+	}
+
+	function jigoshop_stock_options() {
+		$('#manage_stock').on('change',function() {
+			if ($(this).is(':checked')) {
+				$('div.stock_fields').show();
+				$('.stock_status_field').hide();
+			}
+			else {
+				$('div.stock_fields').hide();
+				$('.stock_status_field').show();
+			}
+		}).change();
 	}
 
 	function jigoshop_date_picker() {
@@ -221,17 +237,7 @@ jQuery( function($){
 
 	
 
-	// STOCK OPTIONS
-	jQuery('input#manage_stock').change(function(){
-		if (jQuery(this).is(':checked')) {
-			jQuery('div.stock_fields').show();
-			jQuery('.stock_status_field').hide();
-		}
-		else {
-			jQuery('div.stock_fields').hide();
-			jQuery('.stock_status_field').show();
-		}
-	}).change();
+	
 
 
 	
