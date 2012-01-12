@@ -134,14 +134,23 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 
 == Changelog ==
 = 1.0 =
+* added new feature for downloadable products: external URL or internal downloads
 * added new widget Jigoshop Login
 * added new widget Recently Viewed products
 * added new widget Recently Reviewed products
 * added new widget Best Selling products
 * added new widget Top Rated products
+* added new shortcode Add to Cart Button
+* added new shortcode Add to Cart URL
+* added new dimension options to products (Length / Width / Height)
 * added Admin Product List display products by Category
 * added currency symbols for all countries
+* added a couple new currencies
 * added Romanian translations
+* fixed cyrillic characters & accents in attribute / variation names
+* fixed users creating a new account now only if WP registration is allowed
+* fixed several 404 Jigoshop links
+* fixed My Account page not showing Address 2
 
 = 0.9.9.4 RC2 (not publicly released via WordPress) =
 * added option for out of stock notification that sets products to hidden after Order quantity processing
