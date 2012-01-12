@@ -641,7 +641,7 @@ class jigoshop_cart extends jigoshop_singleton {
         if (jigoshop_shipping::get_label()) :
             if (jigoshop_shipping::get_total() > 0) :
 
-                if (get_option('jigoshop_display_totals_tax') == 'excluding') :
+                if (get_option('jigoshop_display_totals_tax') == 'excluding'  || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
 
                     $return = ($for_display ? jigoshop_price(self::$shipping_total) : self::$shipping_total);
                     if (self::$shipping_tax_total > 0 && $for_display) :

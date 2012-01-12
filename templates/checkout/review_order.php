@@ -66,7 +66,7 @@
                                                 endif;
                                                 echo '>' . $method->get_selected_service($i) . ' via ' . $method->title . ' &ndash; ';
                                                 echo jigoshop_price($method->get_selected_price($i));
-                                                if ($method->shipping_tax > 0) : __(' (ex. tax)', 'jigoshop');
+                                                if ($method->shipping_tax > 0) : echo __(' (ex. tax)', 'jigoshop');
                                                 endif;
                                                 echo '</option>';
                                             }
@@ -80,7 +80,7 @@
 
                                         if ($method->shipping_total > 0) :
                                             echo jigoshop_price($method->shipping_total);
-                                            if ($method->shipping_tax > 0) : __(' (ex. tax)', 'jigoshop');
+                                            if ($method->shipping_tax > 0) : echo __(' (ex. tax)', 'jigoshop');
                                             endif;
                                         else :
                                             echo __('Free', 'jigoshop');
@@ -151,7 +151,7 @@
                                                 endif;
                                                 echo '>' . $method->get_selected_service($i) . ' via ' . $method->title . ' &ndash; ';
                                                 echo jigoshop_price($method->get_selected_price($i));
-                                                if ($method->shipping_tax > 0) : __(' (ex. tax)', 'jigoshop');
+                                                if ($method->shipping_tax > 0) : echo __(' (ex. tax)', 'jigoshop');
                                                 endif;
                                                 echo '</option>';
                                             }
@@ -165,7 +165,7 @@
 
                                         if ($method->shipping_total > 0) :
                                             echo jigoshop_price($method->shipping_total);
-                                            if ($method->shipping_tax > 0) : __(' (ex. tax)', 'jigoshop');
+                                            if ($method->shipping_tax > 0) : echo __(' (ex. tax)', 'jigoshop');
                                             endif;
                                         else :
                                             echo __('Free', 'jigoshop');
