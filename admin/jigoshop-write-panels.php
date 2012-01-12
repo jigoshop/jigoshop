@@ -198,7 +198,7 @@ function jigoshop_meta_scripts() {
 // TODO: Refactor Me
 class jigoshop_form {
 
-	public static function input( $ID, $label, $desc = FALSE, $value = NULL, $class = 'short' ) {
+	public static function input( $ID, $label, $desc = FALSE, $value = NULL, $class = 'short', $placeholder = null ) {
 		global $post;
 
 		$value = ($value) ? esc_attr($value) : get_post_meta($post->ID, $ID, true);
@@ -208,7 +208,7 @@ class jigoshop_form {
 
 		$html .= "<p class='form-field {$ID}_field'>";
 		$html .= "<label for='{$ID}'>$label</label>";
-		$html .= "<input type='text' class='{$class}' name='{$ID}' id='{$ID}' value='{$value}' />";
+		$html .= "<input type='text' class='{$class}' name='{$ID}' id='{$ID}' value='{$value}' placeholder='{$placeholder}' />";
 
 		if ( $desc ) {
 			$html .= "<span class='description'>$desc</span>";

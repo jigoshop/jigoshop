@@ -111,7 +111,7 @@ function jigoshop_product_data_box() {
 
 				// SKU
 				if ( get_option('jigoshop_enable_sku') !== 'no' ) {
-					echo jigoshop_form::input( 'sku', 'SKU', 'Leave blank to use product ID' );
+					echo jigoshop_form::input( 'sku', 'SKU', null, null, 'short', $post->ID );
 				}
 			?>
 			</fieldset>
