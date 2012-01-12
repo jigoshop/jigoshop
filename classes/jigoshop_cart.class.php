@@ -51,7 +51,6 @@ class jigoshop_cart extends jigoshop_singleton {
 	
 	/** Gets the cart data from the PHP session */
 	function get_cart_from_session() {
-	
 		if ( isset($_SESSION['cart']) && is_array($_SESSION['cart']) ) :
 			$cart = $_SESSION['cart'];
 			
@@ -73,7 +72,6 @@ class jigoshop_cart extends jigoshop_singleton {
 		else :
 			self::$cart_contents = array();
 		endif;
-		
 		if (!is_array(self::$cart_contents)) self::$cart_contents = array();
 	}
 
@@ -257,7 +255,7 @@ class jigoshop_cart extends jigoshop_singleton {
 	/** gets the url to the cart page */
 	function get_cart_url() {
 		$cart_page_id = get_option('jigoshop_cart_page_id');
-		if ($cart_page_id) return get_permalink($cart_page_id);
+		if ($cart_page_id) return apply_filters('jigoshop_get_cart_url', get_permalink($cart_page_id));
 	}
 
 	/** gets the url to the checkout page */
@@ -265,14 +263,14 @@ class jigoshop_cart extends jigoshop_singleton {
 		$checkout_page_id = get_option('jigoshop_checkout_page_id');
 		if ($checkout_page_id) :
 			if (is_ssl()) return str_replace('http:', 'https:', get_permalink($checkout_page_id));
-			return get_permalink($checkout_page_id);
+			return apply_filters('jigoshop_get_checkout_url', get_permalink($checkout_page_id));
 		endif;
 	}
 
 	/** gets the url to remove an item from the cart */
 	function get_remove_url( $cart_item_key ) {
 		$cart_page_id = get_option('jigoshop_cart_page_id');
-		if ($cart_page_id) return jigoshop::nonce_url( 'cart', add_query_arg('remove_item', $cart_item_key, get_permalink($cart_page_id)));
+		if ($cart_page_id) return apply_filters('jigoshop_get_remove_url', jigoshop::nonce_url( 'cart', add_query_arg('remove_item', $cart_item_key, get_permalink($cart_page_id))));
 	}
 
 	/** looks through the cart to see if shipping is actually required */
