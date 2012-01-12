@@ -529,9 +529,10 @@ function jigoshop_dashboard() {
 				     			<li><a href="http://jigoshop.com/"><?php _e('Jigoshop', 'jigoshop'); ?></a> &ndash; <?php _e('Learn more about the Jigoshop plugin', 'jigoshop'); ?></li>
 				     			<li><a href="http://jigoshop.com/tour/"><?php _e('Tour', 'jigoshop'); ?></a> &ndash; <?php _e('Take a tour of the plugin', 'jigoshop'); ?></li>
 				     			<li><a href="http://forum.jigoshop.com/kb"><?php _e('Documentation', 'jigoshop'); ?></a> &ndash; <?php _e('Stuck? Read the plugin\'s documentation.', 'jigoshop'); ?></li>
-				     			<li><a href="http://forum.jigoshop.com/"><?php _e('Forums', 'jigoshop'); ?></a> &ndash; <?php _e('Help from the community or our dedicated support team.', 'jigoshop'); ?></li>
-				     			<li><a href="http://jigoshop.com/extend/extensions/"><?php _e('Jigoshop Extensions', 'jigoshop'); ?></a> &ndash; <?php _e('Extend Jigoshop with extra plugins and modules.', 'jigoshop'); ?></li>
-				     			<li><a href="http://jigoshop.com/extend/themes/"><?php _e('Jigoshop Themes', 'jigoshop'); ?></a> &ndash; <?php _e('Extend Jigoshop with themes.', 'jigoshop'); ?></li>
+				     			<li><a href="http://forum.jigoshop.com/"><?php _e('Forum', 'jigoshop'); ?></a> &ndash; <?php _e('Get help from the community.', 'jigoshop'); ?></li>
+				     			<li><a href="http://jigoshop.com/support"><?php _e('Support', 'jigoshop'); ?></a> &ndash; <?php _e('Receive priority, technical help from our dedicated support team.', 'jigoshop'); ?></li>
+				     			<li><a href="http://jigoshop.com/extend/extensions/"><?php _e('Extensions', 'jigoshop'); ?></a> &ndash; <?php _e('Extend Jigoshop with extra plugins and modules.', 'jigoshop'); ?></li>
+				     			<li><a href="http://jigoshop.com/extend/themes/"><?php _e('Themes', 'jigoshop'); ?></a> &ndash; <?php _e('Extend Jigoshop with themes.', 'jigoshop'); ?></li>
 				     			<li><a href="http://twitter.com/#!/jigoshop"><?php _e('@Jigoshop', 'jigoshop'); ?></a> &ndash; <?php _e('Follow us on Twitter.', 'jigoshop'); ?></li>
 				     			<li><a href="https://github.com/jigoshop/Jigoshop"><?php _e('Jigoshop on Github', 'jigoshop'); ?></a> &ndash; <?php _e('Help extend Jigoshop.', 'jigoshop'); ?></li>
 				     			<li><a href="http://wordpress.org/extend/plugins/jigoshop/"><?php _e('Jigoshop on WordPress.org', 'jigoshop'); ?></a> &ndash; <?php _e('Leave us a rating!', 'jigoshop'); ?></li>

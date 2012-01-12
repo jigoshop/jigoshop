@@ -165,9 +165,19 @@ class jigoshop_checkout extends jigoshop_singleton {
 		
 		$args = wp_parse_args( $args, $defaults );
 
-		if ($args['required']) $required = ' <span class="required">*</span>'; else $required = '';
+		if ($args['required']) { 
+			$required = ' <span class="required">*</span>'; 
+			$input_required = ' input-required';
+		} else {
+			$required = '';
+			$input_required = '';
+		}
 		
-		if (in_array('form-row-last', $args['class'])) $after = '<div class="clear"></div>'; else $after = '';
+		if (in_array('form-row-last', $args['class'])) {
+			$after = '<div class="clear"></div>'; 
+		} else {
+			$after = '';
+		}
 		
 		$field = '';
 		
@@ -176,7 +186,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 				
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="'.$args['name'].'" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
-					<select name="'.$args['name'].'" id="'.$args['name'].'" class="country_to_state" rel="'.$args['rel'].'">
+					<select name="'.$args['name'].'" id="'.$args['name'].'" class="country_to_state'.$input_required.'" rel="'.$args['rel'].'">
 						<option value="">'.__('Select a country&hellip;', 'jigoshop').'</option>';
 				
 				foreach(jigoshop_countries::get_allowed_countries() as $key=>$value) :
@@ -204,7 +214,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 					
 				if (isset( $states[$current_cc][$current_r] )) :
 					// Dropdown
-					$field .= '<select name="'.$args['name'].'" id="'.$args['name'].'"><option value="">'.__('Select a state&hellip;', 'jigoshop').'</option>';
+					$field .= '<select name="'.$args['name'].'" id="'.$args['name'].'" class="'.$input_required.'"><option value="">'.__('Select a state&hellip;', 'jigoshop').'</option>';
 					foreach($states[$current_cc] as $key=>$value) :
 						$field .= '<option value="'.$key.'"';
 						if ($current_r==$key) $field .= 'selected="selected"';
@@ -223,7 +233,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 				
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="'.$args['name'].'" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
-					<textarea name="'.$args['name'].'" class="input-text" id="'.$args['name'].'" placeholder="'.$args['placeholder'].'" cols="5" rows="2">'. $this->get_value( $args['name'] ).'</textarea>
+					<textarea name="'.$args['name'].'" class="input-text'.$input_required.'" id="'.$args['name'].'" placeholder="'.$args['placeholder'].'" cols="5" rows="2">'. $this->get_value( $args['name'] ).'</textarea>
 				</p>'.$after;
 				
 			break;
@@ -231,7 +241,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 			
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="'.$args['name'].'" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
-					<input type="'.$args['type'].'" class="input-text" name="'.$args['name'].'" id="'.$args['name'].'" placeholder="'.$args['placeholder'].'" value="'. $this->get_value( $args['name'] ).'" />
+					<input type="'.$args['type'].'" class="input-text'.$input_required.'" name="'.$args['name'].'" id="'.$args['name'].'" placeholder="'.$args['placeholder'].'" value="'. $this->get_value( $args['name'] ).'" />
 				</p>'.$after;
 				
 			break;

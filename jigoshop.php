@@ -14,9 +14,9 @@
  * Author:				Jigowatt
  * Author URI:			http://jigowatt.co.uk
  *
- * Version:				0.9.9.3
+ * Version:				0.9.9.4
  * Requires at least:	3.1
- * Tested up to:		3.3
+ * Tested up to:		3.3.1
  *
  * @package    			Jigoshop
  * @category   			Core
@@ -25,7 +25,7 @@
  * @license    			http://jigoshop.com/license/commercial-edition
  */
 
-if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", "0.9.9.4 RC1");
+if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", "0.9.9.4 RC2");
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');

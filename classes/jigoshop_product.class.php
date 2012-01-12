@@ -17,8 +17,6 @@
 class jigoshop_product {
 	
 	private static $attribute_taxonomies = NULL;
-	// reseting these all to public for now, fatal errors from certain places that direct access
-	// the whole class needs refactoring  -JAP-
 	public $id;
 	public $exists;
 	public $data;
@@ -30,7 +28,7 @@ class jigoshop_product {
 	public $visibility;
 	public $product_type;
 	public $price;
-    	public $sale_price;
+    public $sale_price;
     
 	/**
 	 * Loads all product data from custom fields
@@ -460,8 +458,35 @@ class jigoshop_product {
 
 	/** Returns the product's weight */
 	function get_weight() {
-		if ($this->data['weight']) {
+		if (isset($this->data['weight'])) {
             return $this->data['weight'];
+        }
+        
+        return NULL;
+	}
+
+	/** Returns the product's length */
+	function get_length() {
+		if (isset($this->data['length'])) {
+            return $this->data['length'];
+        }
+        
+        return NULL;
+	}
+
+	/** Returns the product's width */
+	function get_width() {
+		if (isset($this->data['width'])) {
+            return $this->data['width'];
+        }
+        
+        return NULL;
+	}
+
+	/** Returns the product's height */
+	function get_height() {
+		if (isset($this->data['height'])) {
+            return $this->data['height'];
         }
         
         return NULL;
@@ -535,31 +560,30 @@ class jigoshop_product {
             $has_price_variation = false;
 
             foreach ($this->children as $child) {
-      
                 // Nasty hack to prevent disabled variations from affecting the price
-      		if($this->product_type == 'grouped' || 
-      			($this->product_type != 'grouped' && $child->product->variation->post_status == 'publish') ) {
-      		    $child_prices[] = (float)$child->product->get_price();
-      		    
-      		    // check for a price variation on the product variations
-      		    if ($previous_price > 0.0 && $previous_price != (float)$child->product->get_price()) {
-      		    	$has_price_variation = true;
-      		    }
-      		    $previous_price = (float)$child->product->get_price();
-      		    
-      		}
+				if ($this->product_type == 'grouped'
+					|| (($this->product_type != 'grouped'
+						&& $child->product->variation->post_status == 'publish'))) {
+					
+					$child_prices[] = (float)$child->product->get_price();
+					
+					// check for a price variation on the product variations
+					if ($previous_price > 0.0 && $previous_price != (float)$child->product->get_price()) {
+						$has_price_variation = true;
+					}
+					$previous_price = (float)$child->product->get_price();
+				}
             }
             
-            // only add from to tag when there is a price variation on variable products
-            if ($has_price_variation) {
-	        sort($child_prices);
-	        $lowest_price = $child_prices[0];
-		$price_html .= '<span class="from">' . __('From: ', 'jigoshop') . '</span>' . jigoshop_price($lowest_price);
-	    }
-	    // otherwise return price from product
-	    else {
-	    	$price_html .= jigoshop_price($this->get_price());
-	    }
+            // only add from to tag when there is a price variation on variable products (or it's a Grouped product)
+            if ($has_price_variation || $this->product_type == 'grouped') {
+	        	sort($child_prices);
+	        	$lowest_price = $child_prices[0];
+				$price_html .= '<span class="from">' . __('From: ', 'jigoshop') . '</span>' . jigoshop_price($lowest_price);
+			} else {
+				// otherwise return price from product
+				$price_html .= jigoshop_price($this->get_price());
+			}
         } else {
             if ($this->price === '') {
                 $price_html = __('Price Not Announced', 'jigoshop');

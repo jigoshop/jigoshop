@@ -158,10 +158,6 @@
 		
 			<?php jigoshop::nonce_field('process_checkout')?>
 			
-			<?php  $order_button_text = apply_filters( 'jigoshop_order_button_text', __( 'Place order', 'jigoshop') ); ?>
-			
-			<input type="submit" class="button-alt" name="place_order" id="place_order" value="<?php echo $order_button_text; ?>" />
-			
 			<?php do_action( 'jigoshop_review_order_before_submit' ); ?>
 			
 			<?php if (get_option('jigoshop_terms_page_id')>0) : ?>
@@ -170,6 +166,9 @@
 				<input type="checkbox" class="input-checkbox" name="terms" <?php if (isset($_POST['terms'])) echo 'checked="checked"'; ?> id="terms" />
 			</p>
 			<?php endif; ?>
+			
+			<?php $order_button_text = apply_filters( 'jigoshop_order_button_text', __( 'Place order', 'jigoshop') ); ?>
+			<input type="submit" class="button-alt" name="place_order" id="place_order" value="<?php echo $order_button_text; ?>" />
 			
 			<?php do_action( 'jigoshop_review_order_after_submit' ); ?>
 			

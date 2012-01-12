@@ -239,16 +239,16 @@ if (!function_exists('jigoshop_template_single_meta')) {
 		if ($_product->is_type('simple') && get_option('jigoshop_enable_sku')=='yes') :
 			echo '<div class="sku">SKU: ' . $_product->sku . '</div>';
 		endif;
-		if (get_option('jigoshop_enable_weight')=='yes' && !empty($_product->data['weight']) ) :
-			echo '<div class="weight">' . __('Weight: ', 'jigoshop') . $_product->data['weight'] . ' ' . get_option('jigoshop_weight_unit') . '</div>';
+		if (get_option('jigoshop_enable_weight')=='yes' && $_product->get_weight() ) :
+			echo '<div class="weight">' . __('Weight: ', 'jigoshop') . $_product->get_weight() . ' ' . get_option('jigoshop_weight_unit') . '</div>';
 		endif;
 		if (get_option('jigoshop_enable_dimensions')=='yes') :
-			if ( !empty($_product->data['length']) )
-				echo '<div class="length">' . __('Length: ', 'jigoshop') . $_product->data['length'] . ' ' . get_option('jigoshop_dimension_unit') . '</div>';
-			if ( !empty($_product->data['width']) )
-				echo '<div class="width">' . __('Width: ', 'jigoshop') . $_product->data['width'] . ' ' . get_option('jigoshop_dimension_unit') . '</div>';
-			if ( !empty($_product->data['height']) )
-				echo '<div class="height">' . __('Height: ', 'jgioshop') . $_product->data['height'] . ' ' . get_option('jigoshop_dimension_unit') . '</div>';
+			if ( $_product->get_length() )
+				echo '<div class="length">' . __('Length: ', 'jigoshop') . $_product->get_length() . ' ' . get_option('jigoshop_dimension_unit') . '</div>';
+			if ( $_product->get_width() )
+				echo '<div class="width">' . __('Width: ', 'jigoshop') . $_product->get_width() . ' ' . get_option('jigoshop_dimension_unit') . '</div>';
+			if ( $_product->get_height() )
+				echo '<div class="height">' . __('Height: ', 'jgioshop') . $_product->get_height() . ' ' . get_option('jigoshop_dimension_unit') . '</div>';
 		endif;
 		echo $_product->get_categories( ', ', ' <div class="posted_in">' . __( 'Posted in ', 'jigoshop' ) . '', '.</div>');
 		echo $_product->get_tags( ', ', ' <div class="tagged_as">' . __( 'Tagged as ', 'jigoshop' ) . '', '.</div>');
@@ -393,18 +393,16 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
         }
 
 		?>
-        <script>
+        <script type="text/javascript">
             var product_variations = <?php echo json_encode($variationsAvailable) ?>;
         </script>
 		<form action="<?php echo $_product->add_to_cart_url(); ?>" class="variations_form cart" method="post">
-
-			<table class="variations" cellspacing="0">
-				<tbody>
+			<fieldset class="variations">
 				<?php foreach ( $attributes as $aname => $avalues ): ?>
-                    <tr>
-                    	<?php $sanitized_name = sanitize_title( $aname ); ?>
-                        <td><label for="<?php echo $sanitized_name; ?>"><?php echo $aname; ?></label></td>
-                        <td><select id="<?php echo $sanitized_name; ?>" name="tax_<?php echo $sanitized_name; ?>">
+					<?php $sanitized_name = sanitize_title( $aname ); ?>
+					<div>
+						<span class="select_label"><?php echo $aname; ?></span>
+						<select id="<?php echo $sanitized_name; ?>" name="tax_<?php echo $sanitized_name; ?>">
 							<option value=""><?php echo __('Choose an option ', 'jigoshop') ?>&hellip;</option>
 							<?php foreach ( $avalues as $value ) : ?>
 								<?php if ( taxonomy_exists( 'pa_'.$sanitized_name )) : ?>
@@ -420,16 +418,15 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 									<option value="<?php echo sanitize_title( $value ); ?>"><?php echo $value; ?></option>
 								<?php endif;?>
 							<?php endforeach; ?>
-                        </td>
-                    </tr>
+						</select>
+					</div>
                 <?php endforeach;?>
-				</tbody>
-			</table>
+			</fieldset>
 			<div class="single_variation"></div>
 			<div class="variations_button" style="display:none;">
                 <input type="hidden" name="variation_id" value="" />
                 <div class="quantity"><input name="quantity" value="1" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div>
-				<button type="submit" class="button-alt"><?php _e('Add to cart', 'jigoshop'); ?></button>
+				<input type="submit" class="button-alt" value="<?php _e('Add to cart', 'jigoshop'); ?>" />
 			</div>
 			<?php do_action('jigoshop_add_to_cart_form'); ?>
 		</form>
