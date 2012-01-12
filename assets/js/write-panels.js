@@ -257,6 +257,7 @@ jQuery( function($){
 		// Add rows
 		jQuery('button.add_attribute').click(function(){
 
+			$('.demo').remove();
 			var attribute = $('select.attribute_taxonomy').val();
 			var type = $('select.attribute_taxonomy').find(':selected').data('type');
 

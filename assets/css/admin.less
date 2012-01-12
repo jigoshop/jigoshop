@@ -1203,3 +1203,32 @@ div.multi_select_products_wrapper {
 		font-size:12px;
 	}
 }
+
+.demo { 
+	position: relative;
+	.attribute {
+		opacity: 0.50;
+		-moz-opacity: 0.50;
+		filter:alpha(opacity=50);
+	}
+	.overlay {
+		position: absolute;
+		top: 0;
+		left:0;
+		right:0;
+		bottom:0;
+		z-index: 9999;
+		line-height: 180px;
+		text-align: center;
+		text-decoration:none;
+	}
+
+	span {
+		background-color: rgba(25,25,25,0.8);
+		color: #fff;
+		padding: 10px 20px;
+		border-radius: 30px;
+		font-size: 1.2em;
+		font-weight:bold;
+	}
+}

@@ -350,6 +350,52 @@ function attributes_display() { ?>
 
 add_action('jigoshop_display_attribute', 'display_attribute');
 function display_attribute() { ?>
+
+	<div class="demo">
+		<a href="http://forum.jigoshop.com/kb" target="_blank" class="overlay"><span>Click me to learn more about attributes</span></a>
+		<div class="postbox attribute  size" rel="0" style="">
+			<button type="button" class="hide_row button">Remove</button>
+			<div class="handlediv" title="Click to toggle"><br></div>
+			<h3 class="handle">Size</h3>
+
+			<div class="inside">
+				<table>
+					<tr>
+						<td class="options">
+							<input type="text" class="attribute-name" value="Size" disabled="disabled" />
+
+							<div>
+								<label>
+									<input type="checkbox" value="1" checked="checked" />
+									Display on product page
+								</label>
+
+							</div>
+						</td>
+						<td class="value">
+							<select>
+								<option>Choose an option…</option>			
+							</select>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+
+		<div class="postbox attribute  size" rel="0" style="">
+			<button type="button" class="hide_row button">Remove</button>
+			<div class="handlediv" title="Click to toggle"><br></div>
+			<h3 class="handle">Colour</h3>
+		</div>
+
+		<div class="postbox attribute  size" rel="0" style="">
+			<button type="button" class="hide_row button">Remove</button>
+			<div class="handlediv" title="Click to toggle"><br></div>
+			<h3 class="handle">Material</h3>
+		</div>
+	</div>
+	
+
 	<?php
 		global $post;
 		// TODO: This needs refactoring
@@ -455,8 +501,8 @@ function display_attribute() { ?>
 								</div>
 
 							<?php elseif ($tax->attribute_type=="text") : ?>
-
-								<input type="text" name="attribute_values[<?php echo $i; ?>]" value="<?php 												
+								<textarea name="attribute_values[<?php echo $i; ?>]">
+									<?php 												
 									if ($allterms) :
 										$prettynames = array();
 										foreach ($allterms as $term) :
@@ -464,8 +510,8 @@ function display_attribute() { ?>
 										endforeach;
 										echo implode(',', $prettynames);
 									endif;
-								?>" placeholder="<?php _e('Comma separate terms', 'jigoshop'); ?>" />		
-					
+									?>
+								</textarea>
 							<?php endif; ?>
 					</td>
 				</tr>
