@@ -132,7 +132,17 @@ We have a <a href="http://jigoshop.com/forums" title="Jigoshop support forum">co
 9. Checkout
 
 == Changelog ==
-= 0.9.9.4 =
+= 1.0 =
+* added new widget Jigoshop Login
+* added new widget Recently Viewed products
+* added new widget Recently Reviewed products
+* added new widget Best Selling products
+* added new widget Top Rated products
+* added Admin Product List display products by Category
+* added currency symbols for all countries
+* added Romanian translations
+
+= 0.9.9.4 RC2 (not publicly released via WordPress) =
 * added option for out of stock notification that sets products to hidden after Order quantity processing
 * added support for backorders on variations
 * added product dimensions for length, width, and height
@@ -151,6 +161,8 @@ We have a <a href="http://jigoshop.com/forums" title="Jigoshop support forum">co
 * fixed coupon display in the Admin settings
 * fixed coupon errors if no coupons in the Admin
 * fix recent products shortcode
+* fix certain browser attribute display problems on single product pages
+* fix Grouped products not showing prices on Shop page
 * cart now always shows correct totals without having to click update totals button
 * enhancements to internal page determination functions for theme developers
 * updated German translations
