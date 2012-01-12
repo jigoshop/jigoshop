@@ -262,9 +262,11 @@ jQuery( function($){
 			var type = $('select.attribute_taxonomy').find(':selected').data('type');
 
 			// Disable select option
-			$('select.attribute_taxonomy')
-				.find('option:selected').attr('disabled', true)
-				.parent().val(null);
+			if( $('select.attribute_taxonomy option:selected').val() ) {
+				$('select.attribute_taxonomy')
+					.find('option:selected').attr('disabled', true)
+					.parent().val(null);
+			}
 
 			if (!attribute) {
 				var size = jQuery('.attribute').size();
