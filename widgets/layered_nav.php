@@ -53,8 +53,13 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 			return false;
 
 		// Set the widget title
-		$title = ($instance['title']) ? $instance['title'] : apply_filters('widget_title', '', $instance, $this->id_base);
-		
+		$title = apply_filters(
+			'widget_title', 
+			( $instance['title'] ) ? $instance['title'] : __( 'Filter by Attributes', 'jigoshop' ), 
+			$instance,
+			$this->id_base
+		);
+
 		// Check if taxonomy exists
 		$taxonomy = 'pa_'.strtolower(sanitize_title($instance['attribute']));
 		if ( ! taxonomy_exists($taxonomy) )
