@@ -2,8 +2,16 @@
 	
 	// On document Load
 	$(function() {
-		
-		// Tabs
+
+		// Set up tabs
+		jigoshop_start_tabs();
+
+		// Set up jigoshop datepicker
+		jigoshop_date_picker();
+
+	});
+
+	function jigoshop_start_tabs() {
 		var $tabs = $('.tabs');
 
 		// First show tabs & hide each panel
@@ -21,16 +29,33 @@
 			$('div.panel', $panels).hide();
 			$( $(this).attr('href') ).show();
 		});
+	}
 
-	});
+	function jigoshop_date_picker() {
+		var dates = $( "#sale_price_dates_from, #sale_price_dates_to" ).datepicker({
+			dateFormat: 'yy-mm-dd',
+			gotoCurrent: true,
+			hideIfNoPrevNext: true,
+			numberOfMonths: 1,
+			minDate: 'today',
+			onSelect: function( selectedDate ) {
+				var option = this.id == "sale_price_dates_from" ? "minDate" : "maxDate",
+					instance = $( this ).data( "datepicker" ),
+					date = $.datepicker.parseDate(
+						instance.settings.dateFormat ||
+						$.datepicker._defaults.dateFormat,
+						selectedDate, instance.settings );
+				dates.not( this ).datepicker( "option", option, date );
+			}
+		});
+	}
 
 
 })(window.jQuery);
 
 jQuery( function($){
 
-	// TABS
-	
+
 	// ORDERS
 
 	jQuery('#order_items_list button.remove_row').live('click', function(){
@@ -209,23 +234,7 @@ jQuery( function($){
 	}).change();
 
 
-	// DATE PICKER FIELDS
-	var dates = $( "#sale_price_dates_from, #sale_price_dates_to" ).datepicker({
-		dateFormat: 'yy-mm-dd',
-		gotoCurrent: true,
-		hideIfNoPrevNext: true,
-		numberOfMonths: 1,
-		minDate: 'today',
-		onSelect: function( selectedDate ) {
-			var option = this.id == "sale_price_dates_from" ? "minDate" : "maxDate",
-				instance = $( this ).data( "datepicker" ),
-				date = $.datepicker.parseDate(
-					instance.settings.dateFormat ||
-					$.datepicker._defaults.dateFormat,
-					selectedDate, instance.settings );
-			dates.not( this ).datepicker( "option", option, date );
-		}
-	});
+	
 
 	// ATTRIBUTE TABLES
 
