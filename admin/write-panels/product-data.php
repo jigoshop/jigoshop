@@ -353,45 +353,47 @@ function display_attribute() { ?>
 
 	<div class="demo">
 		<a href="http://forum.jigoshop.com/kb" target="_blank" class="overlay"><span>Click me to learn more about Attributes</span></a>
-		<div class="postbox attribute  size" rel="0" style="">
-			<button type="button" class="hide_row button">Remove</button>
-			<div class="handlediv" title="Click to toggle"><br></div>
-			<h3 class="handle">Size</h3>
+		<div class="inside">
+			<div class="postbox attribute">
+				<button type="button" class="hide_row button">Remove</button>
+				<div class="handlediv" title="Click to toggle"><br></div>
+				<h3 class="handle">Size</h3>
 
-			<div class="inside">
-				<table>
-					<tr>
-						<td class="options">
-							<input type="text" class="attribute-name" value="Size" disabled="disabled" />
+				<div class="inside">
+					<table>
+						<tr>
+							<td class="options">
+								<input type="text" class="attribute-name" value="Size" disabled="disabled" />
 
-							<div>
-								<label>
-									<input type="checkbox" value="1" checked="checked" />
-									Display on product page
-								</label>
+								<div>
+									<label>
+										<input type="checkbox" value="1" checked="checked" />
+										Display on product page
+									</label>
 
-							</div>
-						</td>
-						<td class="value">
-							<select>
-								<option>Choose an option…</option>			
-							</select>
-						</td>
-					</tr>
-				</table>
+								</div>
+							</td>
+							<td class="value">
+								<select>
+									<option>Choose an option…</option>			
+								</select>
+							</td>
+						</tr>
+					</table>
+				</div>
 			</div>
-		</div>
 
-		<div class="postbox attribute  size" rel="0" style="">
-			<button type="button" class="hide_row button">Remove</button>
-			<div class="handlediv" title="Click to toggle"><br></div>
-			<h3 class="handle">Colour</h3>
-		</div>
+			<div class="postbox attribute">
+				<button type="button" class="hide_row button">Remove</button>
+				<div class="handlediv" title="Click to toggle"><br></div>
+				<h3 class="handle">Colour</h3>
+			</div>
 
-		<div class="postbox attribute  size" rel="0" style="">
-			<button type="button" class="hide_row button">Remove</button>
-			<div class="handlediv" title="Click to toggle"><br></div>
-			<h3 class="handle">Material</h3>
+			<div class="postbox attribute">
+				<button type="button" class="hide_row button">Remove</button>
+				<div class="handlediv" title="Click to toggle"><br></div>
+				<h3 class="handle">Material</h3>
+			</div>
 		</div>
 	</div>
 	
