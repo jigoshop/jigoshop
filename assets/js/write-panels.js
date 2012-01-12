@@ -240,19 +240,42 @@ jQuery( function($){
 			});
 		};
 
+		jQuery('.custom .handle, .custom .handlediv').live('click', function(){
+			jQuery(this).parent().toggleClass('closed');
+		});
+
+		jQuery('.attribute-name').live('keyup', function(e) {
+
+			if( ! $(this).val() )
+				val = 'Custom Attribute';
+			else
+				val = $(this).val();
+
+			$(this).parents('.attribute').find('.handle').text(val);
+		});
+
 		// Add rows
 		jQuery('button.add_attribute').click(function(){
 
+			$('.demo').remove();
 			var attribute = $('select.attribute_taxonomy').val();
 			var type = $('select.attribute_taxonomy').find(':selected').data('type');
+
+			// Disable select option
+			if( $('select.attribute_taxonomy option:selected').val() ) {
+				$('select.attribute_taxonomy')
+					.find('option:selected').attr('disabled', true)
+					.parent().val(null);
+			}
 
 			if (!attribute) {
 				var size = jQuery('.attribute').size();
 				// Add custom attribute row
-				jQuery('.jigoshop_attributes_wrapper').prepend('\
-					<div class="postbox attribute">\
+				var $custom_panel = jQuery('\
+					<div class="postbox attribute custom">\
 						<button type="button" class="hide_row button">Remove</button>\
-						<h3 class="handle">Custom</h3>\
+						<div class="handlediv" title="Click to toggle"><br></div>\
+						<h3 class="handle">Custom Attribute</h3>\
 \
 						<input type="hidden" name="attribute_is_taxonomy[' + size + ']" value="0">\
 						<input type="hidden" name="attribute_enabled[' + size + ']" value="1">\
@@ -261,28 +284,33 @@ jQuery( function($){
 						<div class="inside">\
 							<table>\
 								<tr>\
-									<td>\
-										<input type="text" name="attribute_names[' + size + ']" />\
-									</td>\
-									<td class="control">\
-											\
-										<input type="text" name="attribute_values[' + size + ']" />\
-										\
-									</td>\
-									<td>\
-										<label>Visible?\
-											<input type="checkbox" checked="checked" name="attribute_visibility[' + size + ']" value="1">\
-										</label>\
+									<td class="options">\
+										<input class="attribute-name" type="text" name="attribute_names[' + size + ']" autofocus="autofocus" tabindex="'+size+'" />\
+										<div>\
+											<label>\
+												<input type="checkbox" checked="checked" name="attribute_visibility[' + size + ']" value="1">\
+												Display on product page\
+											</label>\
 \
-										<label>Variation\
-											<input type="checkbox" checked="checked" name="attribute_variation[' + size + ']" value="1">\
-										</label>\
+											<label>\
+												<input type="checkbox" checked="checked" name="attribute_variation[' + size + ']" value="1">\
+												Is for variations\
+											</label>\
+										</div>\
+									</td>\
+									<td class="value">\
+											\
+										<textarea name="attribute_values[' + size + ']" tabindex="'+size+'"></textarea>\
+										\
 									</td>\
 								</tr>\
 							</table>\
 						</div>\
 					</div>\
 				');
+
+				$custom_panel.hide().prependTo('.jigoshop_attributes_wrapper').slideDown( 150 ).find('.attribute-name').focus();
+
 				// jQuery('.attribute').append('
 				// 	<tr>
 				// 		<td class="center">
@@ -316,7 +344,7 @@ jQuery( function($){
 
 				// Enable all mutiselect items by default
 				if (type == 'multiselect'){
-					thisrow.find('td.control .multiselect-controls a.check-all').click();
+					thisrow.find('td.value .multiselect-controls a.check-all').click();
 				}
 
 				jQuery('.jigoshop_attributes_wrapper').prepend( thisrow );
@@ -327,6 +355,7 @@ jQuery( function($){
 
 			show_attribute_table();
 		});
+
 
 		jQuery('button.hide_row').live('click', function(){
 			var answer = confirm("Remove this attribute?")
@@ -387,6 +416,9 @@ jQuery( function($){
 			} else if ($(this).hasClass('uncheck-all')){
 				items.attr('checked', false);
 				items.parent().removeClass('selected');
+			} else if ($(this).hasClass('show-all')) {
+				$(this).parent().prev().addClass('show_all_enabled');
+				$(this).remove();
 			}
 			return false;
 		});

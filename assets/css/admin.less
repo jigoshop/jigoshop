@@ -748,6 +748,17 @@ a.tips {
 }
 
 /* Write Panels */
+#jigoshop-product-data:hover{
+	.postbox{
+		&:hover .handlediv{
+				display: block;
+		}
+
+		.handlediv{
+			display:none;
+		}
+	}
+}
 #jigoshop-product-data ul.product_data_tabs, .jigoshop ul.tabs {
 	background: #ececec;
 	padding: 7px 9px 0;
@@ -907,18 +918,47 @@ a.tips {
 
 	.inside {
 		padding: 10px !important; /* this is because of #jigoshop-product-data .inside */
-		background: #fff;
+		// background: #fff;
 
 		td {
 			vertical-align: top;
 		}
 
-		.control {
-			//width: 100%;
-			vertical-align: bottom;
+		input[disabled] {
+			border-color: #eee;
+			color: #444;
+			cursor: not-allowed;
+		}
+
+		.options {
+			margin-right: 10px;
+			div {
+				margin: 10px;
+				margin-left: 0;
+
+				label {
+					float: left;
+					clear: left;
+					margin-bottom: 10px;
+				}
+				input {
+					margin-right: 5px;
+				}
+			}
+			
+		}
+
+		.value {
+			width: 100%;
+			//vertical-align: bottom;
 
 			select {
-				//width: 95%;
+				width: 100%;
+			}
+
+			textarea {
+				width: 100%;
+				height: 80px;
 			}
 		}
 	}
@@ -1130,7 +1170,7 @@ div.multi_select_products_wrapper {
 	-o-border-radius:3px;
 	-khtml-border-radius:3px;
 	border-radius:3px;
-	margin: 5px 0;
+	margin-bottom: 5px;
 
 	label{
 		display:block;
@@ -1152,11 +1192,48 @@ div.multi_select_products_wrapper {
 		width:auto !important;
 	}
 }
+.attribute div.multiselect.show_all_enabled {
+	height: auto;
+}
 
 .attribute div.multiselect-controls{
     margin-bottom:4px;
 	a {
 		text-decoration:none;
 		font-size:12px;
+	}
+}
+
+.demo { 
+	position: relative;
+	.inside {
+		opacity: 0.40;
+		-moz-opacity: 0.40;
+		filter:alpha(opacity=40);
+	}
+	.overlay {
+		position: absolute;
+		top: 0;
+		left:0;
+		right:0;
+		bottom:0;
+		z-index: 9999;
+		line-height: 180px;
+		text-align: center;
+		text-decoration:none;
+
+
+		&:hover span {
+			background-color: #A0C443;
+		}
+	}
+
+	span {
+		background-color: rgba(25,25,25,0.8);
+		color: #fff;
+		padding: 10px 20px;
+		border-radius: 30px;
+		font-size: 1.2em;
+		font-weight:bold;
 	}
 }
