@@ -53,7 +53,7 @@ function jigoshop_order_data_meta_box($post) {
 	<style type="text/css">
 		#titlediv, #major-publishing-actions, #minor-publishing-actions { display:none }
 	</style>
-	<div class="panel-wrap jigoshop">
+	<div class="panels jigoshop">
 		<input name="post_title" type="hidden" value="<?php echo $order_title; ?>" />
 		<input name="post_status" type="hidden" value="publish" />
 
