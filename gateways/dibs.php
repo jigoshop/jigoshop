@@ -219,7 +219,7 @@ class dibs extends jigoshop_payment_gateway {
 		
 		return array(
 			'result' => 'success',
-			'redirect' => add_query_arg('order', $order->id, add_query_arg('key', $order->order_key, get_permalink(get_option('jigoshop_pay_page_id'))))
+			'redirect' => add_query_arg('order', $order->id, add_query_arg('key', $order->order_key, apply_filters('jigoshop_get_return_url', get_permalink(get_option('jigoshop_pay_page_id')))))
 		);
 		
 	}

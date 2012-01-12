@@ -88,7 +88,7 @@ function jigoshop_cart( $atts ) {
 
 	if (sizeof(jigoshop_cart::$cart_contents)==0) :
 		echo '<p>'.__('Your cart is empty.', 'jigoshop').'</p>';
-		echo '<p><a class="button" href="'.get_permalink(get_option('jigoshop_shop_page_id')).'">'.__('&larr; Return To Shop', 'jigoshop').'</a></p>';
+		echo '<p><a class="button" href="'.apply_filters('jigoshop_get_shop_page_id', get_permalink(get_option('jigoshop_shop_page_id'))).'">'.__('&larr; Return To Shop', 'jigoshop').'</a></p>';
 		return;
 	endif;
 
@@ -121,7 +121,7 @@ function jigoshop_cart( $atts ) {
 ?>
 							<tr>
 								<td class="product-remove"><a href="<?php echo jigoshop_cart::get_remove_url($cart_item_key); ?>" class="remove" title="<?php echo __('Remove this item.', 'jigoshop'); ?>">&times;</a></td>
-								<td class="product-thumbnail"><a href="<?php echo get_permalink($values['product_id']); ?>">
+								<td class="product-thumbnail"><a href="<?php echo apply_filters('jigoshop_product_url_display_in_cart', get_permalink($values['product_id']), $values['product_id']); ?>">
 						<?php
 						if ($values['variation_id'] && has_post_thumbnail($values['variation_id'])) {
                             echo get_the_post_thumbnail($values['variation_id'], 'shop_tiny'); 
@@ -135,7 +135,7 @@ function jigoshop_cart( $atts ) {
                                 </a></td>
 
 								<td class="product-name">
-									<a href="<?php echo get_permalink($values['product_id']); ?>"><?php echo apply_filters('jigoshop_cart_product_title', $_product->get_title(), $_product); ?></a>
+									<a href="<?php echo apply_filters('jigoshop_product_url_display_in_cart', get_permalink($values['product_id']), $values['product_id']); ?>"><?php echo apply_filters('jigoshop_cart_product_title', $_product->get_title(), $_product); ?></a>
 									<?php echo $additional_description; ?>
 								</td>
 								<td class="product-price"><?php echo jigoshop_price($_product->get_price()); ?></td>

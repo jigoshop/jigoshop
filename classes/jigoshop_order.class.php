@@ -30,7 +30,7 @@ class jigoshop_order {
 	
 	/** Get the order if ID is passed, otherwise the order is new and empty */
 	function jigoshop_order( $id='' ) {
-		if ($id>0) $this->get_order( $id );
+		if ($id>0) apply_filters('jigoshop_get_order', $this->get_order( $id ), $id);
 	}
 	
 	/** Gets an order from the database */
@@ -267,7 +267,7 @@ class jigoshop_order {
 	/**  Generates a URL so that a customer can checkout/pay for their (unpaid - pending) order via a link */
 	function get_checkout_payment_url() {
 		
-		$payment_page = get_permalink(get_option('jigoshop_pay_page_id'));
+		$payment_page = apply_filters('jigoshop_get_checkout_payment_url', get_permalink(get_option('jigoshop_pay_page_id')));
 		
 		if (get_option('jigoshop_force_ssl_checkout')=='yes' || is_ssl()) $payment_page = str_replace('http:', 'https:', $payment_page);
 	
@@ -277,7 +277,7 @@ class jigoshop_order {
 	
 	/** Generates a URL so that a customer can cancel their (unpaid - pending) order */
 	function get_cancel_order_url() {
-		return jigoshop::nonce_url( 'cancel_order', add_query_arg('cancel_order', 'true', add_query_arg('order', $this->order_key, add_query_arg('order_id', $this->id, home_url()))));
+		return apply_filters('jigoshop_get_cancel_order', jigoshop::nonce_url( 'cancel_order', add_query_arg('cancel_order', 'true', add_query_arg('order', $this->order_key, add_query_arg('order_id', $this->id, home_url())))));
 	}
 	
 	

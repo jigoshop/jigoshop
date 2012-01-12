@@ -267,6 +267,8 @@ function jigoshop_frontend_scripts() {
 	else :
 		$params['is_checkout'] = 0;
 	endif;
+	
+	$params = apply_filters('jigoshop_params', $params);
 
 	wp_localize_script( 'jigoshop_script', 'params', $params );
 
