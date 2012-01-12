@@ -86,7 +86,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 		endforeach;
 		
 		// Registration Form
-		if (!is_user_logged_in()) :
+		if (!is_user_logged_in() && get_option('users_can_register')) :
 		
 			if (get_option('jigoshop_enable_guest_checkout')=='yes') :
 				
