@@ -352,7 +352,7 @@ add_action('jigoshop_display_attribute', 'display_attribute');
 function display_attribute() { ?>
 
 	<div class="demo">
-		<a href="http://forum.jigoshop.com/kb" target="_blank" class="overlay"><span>Click me to learn more about attributes</span></a>
+		<a href="http://forum.jigoshop.com/kb" target="_blank" class="overlay"><span>Click me to learn more about Attributes</span></a>
 		<div class="postbox attribute  size" rel="0" style="">
 			<button type="button" class="hide_row button">Remove</button>
 			<div class="handlediv" title="Click to toggle"><br></div>
