@@ -202,7 +202,6 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 		?>
 
 		<div id='variable_product_options' class='panel'>
-			<?php if ( $this->has_variable_attributes( $attributes ) ): ?>
 			<div class="toolbar">
 				<select name="variation_actions">
 					<option value="default"><?php _e('Bulk Actions', 'jigoshop') ?></option>
@@ -223,94 +222,93 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			</div>
 			<div class='jigoshop_variations'>
 
-			<div class="demo">
-				<a href="http://forum.jigoshop.com/kb" target="_blank" class="overlay"><span>Click me to learn more about Variations</span></a>
-				<div class="inside">			
-					<div class="jigoshop_variation" rel="0_new" style="">
-						<p>
-							<button type="button" class="remove_variation button">Remove</button>
-							<select>
-									<option value="Medium">Medium</option>
-							</select>
-						</p>
+				<div class="demo">
+					<a href="http://forum.jigoshop.com/kb" target="_blank" class="overlay"><span>Click me to learn more about Variations</span></a>
+					<div class="inside">			
+						<div class="jigoshop_variation" rel="0_new" style="">
+							<p>
+								<button type="button" class="remove_variation button">Remove</button>
+								<select>
+										<option value="Medium">Medium</option>
+								</select>
+							</p>
 
-						<table cellspacing="0" cellpadding="0" class="jigoshop_variable_attributes">
-							<tr>
-								<td class="upload_image" rowspan="2">
-									<a href="#" class="upload_image_button " rel="0_new">
-										<img src="http://localhost:8888/_js/_trunk/wp-content/plugins/jigoshop/assets/images/placeholder.png" width="93px">
-										<input type="hidden" class="upload_image_id" value="">
-										<!-- TODO: APPEND THIS IN JS <span class="overlay"></span> -->
-									</a>
-								</td>
-
-								<td>
-									<label class="clearlabel">Type</label>
-									<select class="product_type">
-										<option value="simple">Simple</option>
-									</select>
-								</td>
-
-								<td>
-									<label>SKU
-										<input type="text" value="SKU1" />
-									</label>
-								</td>
-
-								<td>
-									<label>Stock Qty	
-										<input type="text" value="12">
-									</label>
-								</td>
-
-								<td>
-									<label>Price	
-										<input type="text" value="19.99">
-									</label>
-								</td>
-
-								<td>
-									<label>Sale Price
-										<input type="text" value="13.99">
-									</label>
-								</td>
-
-								<td>
-									<label>Enabled
-										<input type="checkbox" class="checkbox" checked="checked">
-									</label>
-								</td>
-							</tr>
-							<tr class="simple options">
-								<td>
-									<label>Weight
-										<input type="text" value="22.5">
-									</label>
-								</td>
-									<td colspan="4" class="dimensions">
-										<label>Dimensions (lxwxh)</label>
-										<input type="text" placeholder="Length" value="">
-										<input type="text" placeholder="Width" value="">
-										<input type="text" placeholder="Height" value="">
+							<table cellspacing="0" cellpadding="0" class="jigoshop_variable_attributes">
+								<tr>
+									<td class="upload_image" rowspan="2">
+										<a href="#" class="upload_image_button " rel="0_new">
+											<img src="http://localhost:8888/_js/_trunk/wp-content/plugins/jigoshop/assets/images/placeholder.png" width="93px">
+											<input type="hidden" class="upload_image_id" value="">
+											<!-- TODO: APPEND THIS IN JS <span class="overlay"></span> -->
+										</a>
 									</td>
-									<td colspan="3">&nbsp;</td>
-							</tr>
-						</table>
+
+									<td>
+										<label class="clearlabel">Type</label>
+										<select class="product_type">
+											<option value="simple">Simple</option>
+										</select>
+									</td>
+
+									<td>
+										<label>SKU
+											<input type="text" value="SKU1" />
+										</label>
+									</td>
+
+									<td>
+										<label>Stock Qty	
+											<input type="text" value="12">
+										</label>
+									</td>
+
+									<td>
+										<label>Price	
+											<input type="text" value="19.99">
+										</label>
+									</td>
+
+									<td>
+										<label>Sale Price
+											<input type="text" value="13.99">
+										</label>
+									</td>
+
+									<td>
+										<label>Enabled
+											<input type="checkbox" class="checkbox" checked="checked">
+										</label>
+									</td>
+								</tr>
+								<tr class="simple options">
+									<td>
+										<label>Weight
+											<input type="text" value="22.5">
+										</label>
+									</td>
+										<td colspan="4" class="dimensions">
+											<label>Dimensions (lxwxh)</label>
+											<input type="text" placeholder="Length" value="">
+											<input type="text" placeholder="Width" value="">
+											<input type="text" placeholder="Height" value="">
+										</td>
+										<td colspan="3">&nbsp;</td>
+								</tr>
+							</table>
+						</div>
 					</div>
 				</div>
+
+				<?php if ( $this->has_variable_attributes( $attributes ) ): ?>
+					<?php
+						if( $variations ) {
+							foreach( $variations as $variation ) {
+								echo $this->generate_panel($attributes, $variation);
+							}
+						}
+					?>
+				<?php endif; ?>
 			</div>
-
-
-
-			<?php
-				if( $variations ) {
-					foreach( $variations as $variation ) {
-						echo $this->generate_panel($attributes, $variation);
-					}
-				}
-			?>
-			</div>
-			<?php endif; ?>
 		</div>
 	<?php
 	}
