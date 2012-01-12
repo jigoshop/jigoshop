@@ -233,7 +233,7 @@ class jigoshop extends jigoshop_singleton {
 	public static function redirect( $location, $status = NULL ) {
 		$_SESSION['errors'] = self::$errors;
 		$_SESSION['messages'] = self::$messages;
-		return $location;
+		return apply_filters('jigoshop_session_location_filter', $location);
 	}
 	
 	public static function shortcode_wrapper ($function, $atts=array()) {

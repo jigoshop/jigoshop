@@ -644,10 +644,10 @@ class jigoshop_checkout extends jigoshop_singleton {
 						
 							if (is_ajax()) : 
 								ob_clean();
-								echo json_encode($result);
+								echo json_encode(apply_filters('jigoshop_is_ajax_payment_successful', $result));
 								exit;
 							else :
-								wp_safe_redirect( $result['redirect'] );
+								wp_safe_redirect( apply_filters('jigoshop_is_ajax_payment_successful', $result['redirect']) );
 								exit;
 							endif;
 							
