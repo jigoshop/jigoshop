@@ -163,25 +163,17 @@ class jigoshop_tax {
      * @param	object	Tax Class
      * @return  int
      */
-    private function find_rate($country, $state = '*', $tax_class = '') {
+    private function find_rate($country, $state = '*', $tax_class = '*') {
 
         $rate['rate'] = 0;
 
         if (isset($this->rates[$country][$state])) :
-            if ($tax_class) :
-                if (isset($this->rates[$country][$state][$tax_class])) :
-                    $rate = $this->rates[$country][$state][$tax_class];
-                endif;
-            else :
-                $rate = $this->rates[$country][$state]['*'];
+            if ($tax_class && isset($this->rates[$country][$state][$tax_class])) :
+                $rate = $this->rates[$country][$state][$tax_class];
             endif;
         elseif (isset($this->rates[$country]['*'])) :
-            if ($tax_class) :
-                if (isset($this->rates[$country]['*'][$tax_class])) :
-                    $rate = $this->rates[$country]['*'][$tax_class];
-                endif;
-            else :
-                $rate = $this->rates[$country]['*']['*'];
+            if ($tax_class && isset($this->rates[$country]['*'][$tax_class])) :
+                $rate = $this->rates[$country]['*'][$tax_class];
             endif;
         endif;
 
@@ -275,8 +267,7 @@ class jigoshop_tax {
             foreach ($this->get_tax_classes_for_customer() as $tax_class) :
 
                 // make sure that the product is charging this particular tax_class. 
-                // TODO: remember standard rate here. //should work on standard since it will be added to the product if existing
-                if (!in_array($tax_class, $tax_classes))
+                if ($tax_class != '*' && !in_array($tax_class, $tax_classes))
                     return;
 
                 $rate = $this->get_rate($tax_class);
@@ -396,7 +387,7 @@ class jigoshop_tax {
      * @param   object	Tax Class
      * @return  int
      */
-    function get_rate($tax_class = '') {
+    function get_rate($tax_class = '*') {
 
         /* Checkout uses customer location, otherwise use store base rate */
 //		if ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT ) :
@@ -419,7 +410,7 @@ class jigoshop_tax {
      * @param   object	Tax Class
      * @return  int
      */
-    function get_shop_base_rate($tax_class = '') {
+    function get_shop_base_rate($tax_class = '*') {
 
         $country = jigoshop_countries::get_base_country();
         $state = jigoshop_countries::get_base_state();
@@ -435,10 +426,10 @@ class jigoshop_tax {
      * @param   object	Tax Class
      * @return  mixed		
      */
-    function get_shipping_tax_rate($tax_class = '') {
+    function get_shipping_tax_rate($tax_class = '*') {
 
         $this->shipping_tax_class = '';
-        //Should always use shipping country and shipping state to apply taxes
+        //Should always use shipping country and shipping state to apply taxes... unless we are assuming customer is from home base
         $country = jigoshop_customer::get_shipping_country();
         $state = jigoshop_customer::get_shipping_state();
 
@@ -473,7 +464,6 @@ class jigoshop_tax {
                 
                 foreach (jigoshop_cart::$cart_contents as $item) :
 
-                    //TODO: will need to work out this logic, since data is now data['tax_classes']
                     if ($item['data']->data['tax_classes']) :
                         
                         foreach($item['data']->data['tax_classes'] as $key=>$tax_class) :
@@ -481,7 +471,6 @@ class jigoshop_tax {
 
                             if (isset($found_rate['shipping']) && $found_rate['shipping'] == 'yes') :
                                 $this->shipping_tax_class = $tax_class;
-                                //$found_rates[] = $found_rate['rate'];
                                 $found_shipping_rates[] = $found_rate['rate'];
                             endif;
                             
@@ -514,7 +503,7 @@ class jigoshop_tax {
                 // Use standard rate
                 $rate = $this->find_rate($country, $state);
                 if (isset($rate['shipping']) && $rate['shipping'] == 'yes') :
-                    $this->shipping_tax_class = 'standard';
+                    $this->shipping_tax_class = '*'; //standard rate
                     return $rate['rate'];
                 endif;
             endif;
