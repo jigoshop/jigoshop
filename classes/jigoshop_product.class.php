@@ -329,13 +329,13 @@ class jigoshop_product {
 	 */
 	public function add_to_cart_url() {
 
-		// if ($this->is_type('variable')) {
-		// 	$url = add_query_arg('add-to-cart', 'variation');
-		// 	$url = add_query_arg('product', $this->ID, $url);
-		// }
 		if ( $this->has_child() ) {
 			$url = add_query_arg('add-to-cart', 'group');
 			$url = add_query_arg('product', $this->ID, $url);
+
+			if ($this->is_type('variable')) {
+				$url = add_query_arg('add-to-cart', 'variation');
+			}
 		}
 		else {
 			$url = add_query_arg('add-to-cart', $this->ID);
