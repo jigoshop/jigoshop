@@ -71,7 +71,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 					'nonce'         => wp_create_nonce("delete-variation"),
 					'confirm'       => __('Are you sure you want to remove this variation?', 'jigoshop'),
 				),
-				'create'  => array(
+				'create'      => array(
 					'action'        => 'jigoshop_create_variation',
 					'panel'         => $this->generate_panel(maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) ))
 				)
@@ -109,7 +109,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	 * @param   int   Product ID
 	 * @return  void
 	 */
-	public function save( $parent_id, $post ) {
+	public function save( $parent_id ) {
 		global $wpdb;
 
 		// Do not run if there are no variations
