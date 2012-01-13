@@ -1,4 +1,5 @@
 <?php
+
 /**
  * My Account shortcode
  *
@@ -14,10 +15,10 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
-
-function get_jigoshop_my_account ( $atts ) {
-	return jigoshop::shortcode_wrapper('jigoshop_my_account', $atts);
+function get_jigoshop_my_account($atts) {
+    return jigoshop::shortcode_wrapper('jigoshop_my_account', $atts);
 }
+
 function jigoshop_my_account( $atts ) {
 
 	extract(shortcode_atts(array(
@@ -154,12 +155,12 @@ function jigoshop_my_account( $atts ) {
 		jigoshop_login_form();
 
 	endif;
-
 }
 
-function get_jigoshop_edit_address () {
-	return jigoshop::shortcode_wrapper('jigoshop_edit_address');
+function get_jigoshop_edit_address() {
+    return jigoshop::shortcode_wrapper('jigoshop_edit_address');
 }
+
 function jigoshop_edit_address() {
 
 	$user_id = get_current_user_id();
@@ -315,49 +316,50 @@ function jigoshop_edit_address() {
 
 		wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(get_option('jigoshop_myaccount_page_id')) ));
 		exit;
-
-	endif;
+    endif;
 }
 
-function get_jigoshop_change_password () {
-	return jigoshop::shortcode_wrapper('jigoshop_change_password');
+function get_jigoshop_change_password() {
+    return jigoshop::shortcode_wrapper('jigoshop_change_password');
 }
+
 function jigoshop_change_password() {
 
-	$user_id = get_current_user_id();
+    $user_id = get_current_user_id();
 
-	if (is_user_logged_in()) :
+    if (is_user_logged_in()) :
 
-		if ($_POST) :
+        if ($_POST) :
 
-			if ($user_id>0 && jigoshop::verify_nonce('change_password')) :
+            if ($user_id > 0 && jigoshop::verify_nonce('change_password')) :
 
-				if ( $_POST['password-1'] && $_POST['password-2']  ) :
+                if ($_POST['password-1'] && $_POST['password-2']) :
 
-					if ( $_POST['password-1']==$_POST['password-2'] ) :
+                    if ($_POST['password-1'] == $_POST['password-2']) :
 
-						wp_update_user( array ('ID' => $user_id, 'user_pass' => $_POST['password-1']) ) ;
+                        wp_update_user(array('ID' => $user_id, 'user_pass' => $_POST['password-1']));
+						
+                        wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(get_option('jigoshop_myaccount_page_id')) ));
 
-						wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(get_option('jigoshop_myaccount_page_id')) ));
-						exit;
+                        exit;
 
-					else :
+                    else :
 
-						jigoshop::add_error( __('Passwords do not match.','jigoshop') );
+                        jigoshop::add_error(__('Passwords do not match.', 'jigoshop'));
 
-					endif;
+                    endif;
 
-				else :
+                else :
 
-					jigoshop::add_error( __('Please enter your password.','jigoshop') );
+                    jigoshop::add_error(__('Please enter your password.', 'jigoshop'));
 
-				endif;
+                endif;
 
-			endif;
+            endif;
 
-		endif;
-
-		jigoshop::show_messages();
+        endif;
+        
+        jigoshop::show_messages();
 
 		?>
 		<form action="<?php echo apply_filters('jigoshop_get_change_password_page_id', get_permalink(get_option('jigoshop_change_password_page_id'))); ?>" method="post">
@@ -375,167 +377,221 @@ function jigoshop_change_password() {
 			<p><input type="submit" class="button" name="save_password" value="<?php _e('Save', 'jigoshop'); ?>" /></p>
 
 		</form>
+        
 		<?php
-
-	else :
-
+    else :
 		wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(get_option('jigoshop_myaccount_page_id')) ));
 		exit;
-
-	endif;
-
+    
+    endif;
 }
 
-function get_jigoshop_view_order () {
-	return jigoshop::shortcode_wrapper('jigoshop_view_order');
+function get_jigoshop_view_order() {
+    return jigoshop::shortcode_wrapper('jigoshop_view_order');
 }
 
 function jigoshop_view_order() {
 
-	$user_id = get_current_user_id();
+    $user_id = get_current_user_id();
 
-	if (is_user_logged_in()) :
+    if (is_user_logged_in()) :
 
-		if (isset($_GET['order'])) $order_id = (int) $_GET['order']; else $order_id = 0;
+        if (isset($_GET['order']))
+            $order_id = (int) $_GET['order']; else
+            $order_id = 0;
 
-		$order = &new jigoshop_order( $order_id );
+        $order = &new jigoshop_order($order_id);
 
-		if ( $order_id>0 && $order->user_id == get_current_user_id() ) :
+        if ($order_id > 0 && $order->user_id == get_current_user_id()) :
 
-			echo '<p>' . sprintf( __('Order <mark>#%s</mark> made on <mark>%s</mark>', 'jigoshop'), $order->id, date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($order->order_date)) );
+            echo '<p>' . sprintf(__('Order <mark>#%s</mark> made on <mark>%s</mark>', 'jigoshop'), $order->id, date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($order->order_date)));
 
-			echo sprintf( __('. Order status: <mark>%s</mark>', 'jigoshop'), $order->status );
+            echo sprintf(__('. Order status: <mark>%s</mark>', 'jigoshop'), $order->status);
 
-			echo '.</p>';
+            echo '.</p>';
+            ?>
+            <table class="shop_table">
+                <thead>
+                    <tr>
+                        <th><?php _e('ID/SKU', 'jigoshop'); ?></th>
+                        <th><?php _e('Product', 'jigoshop'); ?></th>
+                        <th><?php _e('Qty', 'jigoshop'); ?></th>
+                        <th><?php _e('Totals', 'jigoshop'); ?></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                    <?php if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) : ?>
+                            <td colspan="3"><strong><?php _e('Retail Price', 'jigoshop'); ?></strong></td>
+                    <?php else : ?>
+                            <td colspan="3"><strong><?php _e('Subtotal', 'jigoshop'); ?></strong></td>
+                    <?php endif; ?>
+                        <td><strong><?php echo $order->get_subtotal_to_display(); ?></strong></td>
+                    </tr>                                    
+            <?php
+            if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) :
+                if ($order->order_shipping > 0) :
+                    ?><tr>
+                                <td colspan="3"><?php _e('Shipping', 'jigoshop'); ?></td>
+                                <td><?php echo $order->get_shipping_to_display(); ?></small></td>
+                            </tr><?php
+                endif;
+                foreach ($order->get_tax_classes() as $tax_class) :
+                    if ($order->tax_class_is_retail($tax_class)) :
+                        ?>
+                                <tr>
+                                    <td colspan="3"><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></td>
+                                    <td><?php echo $order->get_tax_amount($tax_class) ?></td>
+                                </tr>
+                        <?php
+                    endif;
+                endforeach;
+                ?><tr>
+                            <td colspan="3"><strong><?php _e('Subtotal', 'jigoshop'); ?></strong></td>
+                            <td><strong><?php echo jigoshop_price($order->order_subtotal_inc_tax); ?></strong></td>
+                        </tr>
+                <?php
+            else:
+                if ($order->order_shipping > 0) :
+                    ?><tr>
+                                <td colspan="3"><?php _e('Shipping', 'jigoshop'); ?></td>
+                                <td><?php echo $order->get_shipping_to_display(); ?></small></td>
+                            </tr><?php
+                endif;
+            endif;
+            if (get_option('jigoshop_calc_taxes') == 'yes') :
+                if ($order->order_subtotal_inc_tax) :
+                    foreach ($order->get_tax_classes() as $tax_class) :
+                        if (!$order->tax_class_is_retail($tax_class)) :
+                            ?>
 
-			?>
-			<table class="shop_table">
-				<thead>
-					<tr>
-						<th><?php _e('ID/SKU', 'jigoshop'); ?></th>
-						<th><?php _e('Product', 'jigoshop'); ?></th>
-						<th><?php _e('Qty', 'jigoshop'); ?></th>
-						<th><?php _e('Totals', 'jigoshop'); ?></th>
-					</tr>
-				</thead>
-				<tfoot>
-					<tr>
-						<td colspan="3"><strong><?php _e('Subtotal', 'jigoshop'); ?></strong></td>
-						<td><strong><?php echo $order->get_subtotal_to_display(); ?></strong></td>
-					</tr>
-					<?php if ($order->order_shipping>0) : ?><tr>
-						<td colspan="3"><?php _e('Shipping', 'jigoshop'); ?></td>
-						<td><?php echo $order->get_shipping_to_display(); ?></small></td>
-					</tr><?php endif; ?>
-					<?php if ($order->get_total_tax()>0) : ?><tr>
-						<td colspan="3"><?php _e('Tax', 'jigoshop'); ?></td>
-						<td><?php echo jigoshop_price($order->get_total_tax()); ?></td>
-					</tr><?php endif; ?>
-					<?php if ($order->order_discount>0) : ?><tr class="discount">
-						<td colspan="3"><?php _e('Discount', 'jigoshop'); ?></td>
-						<td>-<?php echo jigoshop_price($order->order_discount); ?></td>
-					</tr><?php endif; ?>
-					<tr>
-						<td colspan="3"><strong><?php _e('Grand Total', 'jigoshop'); ?></strong></td>
-						<td><strong><?php echo jigoshop_price($order->order_total); ?></strong></td>
-					</tr>
-					<?php if ($order->customer_note) : ?>
-					<tr>
-						<td><strong><?php _e('Note:', 'jigoshop'); ?></strong></td>
-						<td colspan="3" style="text-align: left;"><?php echo wpautop(wptexturize($order->customer_note)); ?></td>
-					</tr>
-					<?php endif; ?>
-				</tfoot>
-				<tbody>
-					<?php
-					if (sizeof($order->items)>0) :
+                                    <tr>
+                                        <td colspan="3"><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></td>
+                                        <td><?php echo $order->get_tax_amount($tax_class) ?></td>
+                                    </tr>
+                                    <?php
+                                endif;
+                            endforeach;
+                        else :
+                            foreach ($order->get_tax_classes() as $tax_class) :
+                                ?>
+                                <tr>
+                                    <td colspan="3"><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></td>
+                                    <td><?php echo $order->get_tax_amount($tax_class) ?></td>
+                                </tr>    
+                    <?php endforeach;
+                endif;
+            endif;
+            if ($order->order_discount > 0) : ?><tr class="discount">
+                            <td colspan="3"><?php _e('Discount', 'jigoshop'); ?></td>
+                            <td>-<?php echo jigoshop_price($order->order_discount); ?></td>
+                        </tr><?php endif; ?>
+                    <tr>
+                        <td colspan="3"><strong><?php _e('Grand Total', 'jigoshop'); ?></strong></td>
+                        <td><strong><?php echo jigoshop_price($order->order_total); ?></strong></td>
+                    </tr>
+                    <?php if ($order->customer_note) : ?>
+                        <tr>
+                            <td><strong><?php _e('Note:', 'jigoshop'); ?></strong></td>
+                            <td colspan="3" style="text-align: left;"><?php echo wpautop(wptexturize($order->customer_note)); ?></td>
+                        </tr>
+                    <?php endif; ?>
+                </tfoot>
+                <tbody>
+                    <?php
+                    if (sizeof($order->items) > 0) :
 
-						foreach($order->items as $item) :
+                        foreach ($order->items as $item) :
 
-							if (isset($item['variation_id']) && $item['variation_id'] > 0) :
-								$_product = &new jigoshop_product_variation( $item['variation_id'] );
+                            if (isset($item['variation_id']) && $item['variation_id'] > 0) :
+                                $_product = &new jigoshop_product_variation($item['variation_id']);
 
-                                if(is_array($item['variation'])) :
+                                if (is_array($item['variation'])) :
                                     $_product->set_variation_attributes($item['variation']);
                                 endif;
-							else :
-								$_product = &new jigoshop_product( $item['id'] );
-							endif;
+                            else :
+                                $_product = &new jigoshop_product($item['id']);
+                            endif;
 
-							echo '
+                            echo '
 								<tr>
-								    <td>'.$_product->get_sku().'</td>
-									<td class="product-name">'.$item['name'];
+								    <td>' . $_product->get_sku() . '</td>
+									<td class="product-name">' . $item['name'];
 
-							if (isset($_product->variation_data)) :
-								echo jigoshop_get_formatted_variation( $_product->variation_data );
-							endif;
+                            if (isset($_product->variation_data)) :
+                                echo jigoshop_get_formatted_variation($_product->variation_data);
+                            endif;
 
-							echo '	</td>
-									<td>'.$item['qty'].'</td>
-									<td>'.jigoshop_price( $item['cost']*$item['qty'], array('ex_tax_label' => 1) ).'</td>
+                            echo '	</td>
+									<td>' . $item['qty'] . '</td>
+									<td>' . jigoshop_price($item['cost'] * $item['qty'], array('ex_tax_label' => 1)) . '</td>
 								</tr>';
-						endforeach;
-					endif;
-					?>
-				</tbody>
-			</table>
+                        endforeach;
+                    endif;
+                    ?>
+                </tbody>
+            </table>
 
-			<header>
-				<h2><?php _e('Customer details', 'jigoshop'); ?></h2>
-			</header>
-			<dl>
-			<?php
-				if ($order->billing_email) echo '<dt>'.__('Email:', 'jigoshop').'</dt><dd>'.$order->billing_email.'</dd>';
-				if ($order->billing_phone) echo '<dt>'.__('Telephone:', 'jigoshop').'</dt><dd>'.$order->billing_phone.'</dd>';
-			?>
-			</dl>
+            <header>
+                <h2><?php _e('Customer details', 'jigoshop'); ?></h2>
+            </header>
+            <dl>
+                <?php
+                if ($order->billing_email)
+                    echo '<dt>' . __('Email:', 'jigoshop') . '</dt><dd>' . $order->billing_email . '</dd>';
+                if ($order->billing_phone)
+                    echo '<dt>' . __('Telephone:', 'jigoshop') . '</dt><dd>' . $order->billing_phone . '</dd>';
+                ?>
+            </dl>
 
-			<div class="col2-set addresses">
+            <div class="col2-set addresses">
 
-				<div class="col-1">
+                <div class="col-1">
 
-					<header class="title">
-						<h3><?php _e('Shipping Address', 'jigoshop'); ?></h3>
-					</header>
-					<address><p>
-						<?php
-							if (!$order->formatted_shipping_address) _e('N/A', 'jigoshop'); else echo $order->formatted_shipping_address;
-						?>
-					</p></address>
+                    <header class="title">
+                        <h3><?php _e('Shipping Address', 'jigoshop'); ?></h3>
+                    </header>
+                    <address><p>
+            <?php
+            if (!$order->formatted_shipping_address)
+                _e('N/A', 'jigoshop'); else
+                echo $order->formatted_shipping_address;
+            ?>
+                        </p></address>
 
-				</div><!-- /.col-1 -->
+                </div><!-- /.col-1 -->
 
-				<div class="col-2">
+                <div class="col-2">
 
-					<header class="title">
-						<h3><?php _e('Billing Address', 'jigoshop'); ?></h3>
-					</header>
-					<address><p>
-						<?php
-							if (!$order->formatted_billing_address) _e('N/A', 'jigoshop'); else echo $order->formatted_billing_address;
-						?>
-					</p></address>
+                    <header class="title">
+                        <h3><?php _e('Billing Address', 'jigoshop'); ?></h3>
+                    </header>
+                    <address><p>
+            <?php
+            if (!$order->formatted_billing_address)
+                _e('N/A', 'jigoshop'); else
+                echo $order->formatted_billing_address;
+            ?>
+                        </p></address>
 
-				</div><!-- /.col-2 -->
+                </div><!-- /.col-2 -->
 
-			</div><!-- /.col2-set -->
+            </div><!-- /.col2-set -->
 
-			<div class="clear"></div>
+            <div class="clear"></div>
 
-			<?php
-
-		else :
+            <?php
+        else :
 
 			wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(get_option('jigoshop_myaccount_page_id')) ));
 			exit;
 
-		endif;
+        endif;
 
-	else :
+    else :
 
 		wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(get_option('jigoshop_myaccount_page_id')) ));
 		exit;
-
-	endif;
+    endif;
+    
 }

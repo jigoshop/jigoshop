@@ -641,6 +641,57 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 				</p>
 			</div>
 			<p><button type="submit" name="calc_shipping" value="1" class="button"><?php _e('Update Totals', 'jigoshop'); ?></button></p>
+			<p>
+			<?php
+			if (jigoshop_shipping::has_calculable_shipping() && jigoshop_shipping::get_total() > 0) :
+				$available_methods = jigoshop_shipping::get_available_shipping_methods();
+				foreach ( $available_methods as $method ) :
+					if ( $method instanceof jigoshop_calculable_shipping ) :
+
+						for ($i = 0; $i < $method->get_rates_amount(); $i++) {
+						?>
+							<div class="col2-set">
+								<p class="form-row col-1">
+									
+									<?php 
+									echo '<input type="radio" name="shipping_rates" value="' . $method->id . ':' . $i . '"' . ' class="shipping_select"';
+									if ( $method->get_cheapest_service() == $method->get_selected_service($i) && $method->is_chosen() ) echo ' checked>'; else echo '>'; 
+									echo $method->get_selected_service($i) . ' via ' . $method->title;
+									?>
+								<p class="form-row col-2"><?php  
+									echo jigoshop_price($method->get_selected_price($i)); 
+									if ($method->shipping_tax>0) : __(' (ex. tax)', 'jigoshop'); endif;
+									?>
+							</div> 
+						<?php
+						}
+						
+					else :
+					?>
+					<div class="col2-set">
+						<p class="form-row col-1">
+							<?php 
+							// value has : as there are no services on non calculable methods, since they are identified only by the id
+							echo '<input type="radio" name="shipping_rates" value="' . $method->id . ':" class="shipping_select"';
+							if ( $method->is_chosen() ) echo 'checked>'; else echo '>'; 
+							echo $method->title;
+
+							?>
+						<p class="form-row col-2"><?php 
+							if ($method->shipping_total>0) :
+								echo jigoshop_price($method->shipping_total);
+								if ($method->shipping_tax>0) : __(' (ex. tax)', 'jigoshop'); endif;
+							else :
+								echo __('Free', 'jigoshop');
+							endif;						
+						?>
+					</div>
+					<?php
+					endif;
+				endforeach;
+			endif;
+			?>
+			<input type="hidden" name="cart-url" value="<?php echo jigoshop_cart::get_cart_url() ?>">
 			<?php jigoshop::nonce_field('cart') ?>
 			</section>
 		</form>

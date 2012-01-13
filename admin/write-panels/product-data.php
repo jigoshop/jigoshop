@@ -220,15 +220,26 @@ function jigoshop_product_data_box() {
 			echo '<option value="none" '; if (isset($data[$field['id']]) && $data[$field['id']]=='none') echo 'selected="selected"'; echo '>' . __('None', 'jigoshop') . '</option>';
 			echo '</select></p>';
 			
-			$field = array( 'id' => 'tax_class', 'label' => __('Tax Class', 'jigoshop') );
-			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].':</label><select name="'.$field['id'].'">';
-			echo '<option value="" '; if (isset($data[$field['id']]) && $data[$field['id']]=='') echo 'selected="selected"'; echo '>'.__('Standard', 'jigoshop').'</option>';
-			$tax_classes = $_tax->get_tax_classes();
-    		if ($tax_classes) foreach ($tax_classes as $class) :
-    			echo '<option value="'.sanitize_title($class).'" '; if (isset($data[$field['id']]) && $data[$field['id']]==sanitize_title($class)) echo 'selected="selected"'; echo '>'.$class.'</option>';
-    		endforeach;
-			echo '</select></p>';
-			?>
+			$field = array( 'id' => 'tax_classes', 'label' => __('Tax Classes', 'jigoshop') );
+                        
+            $tax_classes = $_tax->get_tax_classes();
+            $selections = $data[$field['id']];
+            echo '<p><label for="'.$field['id'].'">'.$field['label'].':</label>';
+
+			echo '<input type="checkbox" class="checkbox" name="'.$field['id'].'[]" value="" '; if ($selections && in_array('', $selections)) echo 'checked="checked"'; echo '/><span class="checkbox-label">'.__('Standard', 'jigoshop').'</span></p>';
+                        
+            if ($tax_classes) :
+                
+                foreach ($tax_classes as $tax_class) :
+                    echo '<p><label for="'.$field['id'].'">&nbsp;</label><input type="checkbox" class="checkbox" name="'.$field['id'].'[]" value="'. sanitize_title($tax_class) .'" ';
+                    if ($selections && in_array(sanitize_title($tax_class), $selections)) :
+                        echo 'checked="checked"';
+                    endif;
+                    echo ' /><span class="checkbox-label">'. __($tax_class, 'jigoshop') .'</span></p>';
+                endforeach;
+                
+            endif;
+            ?>
 			
 		</div>
 		<?php if (get_option('jigoshop_manage_stock')=='yes') : ?>

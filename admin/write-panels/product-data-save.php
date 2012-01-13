@@ -63,7 +63,7 @@ function jigoshop_process_product_meta( $post_id, $post ) {
 		'width',
 		'height',
 		'tax_status',
-		'tax_class',
+		'tax_classes',
 		'stock_status'
 	);
 	foreach ( $product_fields as $field_name ) {

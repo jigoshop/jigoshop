@@ -35,7 +35,7 @@ class flat_rate extends jigoshop_shipping_method {
     
     public function calculate_shipping() {
     	
-    	$_tax = &new jigoshop_tax();
+    	$_tax = $this->get_tax();
     	
     	$this->shipping_total 	= 0;
 		$this->shipping_tax 	= 0;
