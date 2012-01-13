@@ -632,8 +632,16 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 
 	if (sizeof($order->items)>0) foreach ($order->items as $item) :
 
-		if ($item['id']>0) :
-			$_product = &new jigoshop_product( $item['id'] );
+		// if ($item['id']>0) :
+
+			// @todo: Bit of a hack could be improved as id is null/0
+			if ( isset($item['variation_id']) ) {
+				$_product = &new jigoshop_product_variation( $item['variation_id'] );
+				$product_id = $_product->variation_id;
+			} else {
+				$_product = &new jigoshop_product( $item['id'] );
+				$product_id = $_product->ID;
+			}
 
 			if ( $_product->exists && $_product->is_type('downloadable') ) :
 
@@ -658,7 +666,7 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 
 				// Downloadable product - give access to the customer
 				$wpdb->insert( $wpdb->prefix . 'jigoshop_downloadable_product_permissions', array(
-					'product_id' => $_product->id,
+					'product_id' => $product_id,
 					'user_id' => $order->user_id,
 					'user_email' => $user_email,
 					'order_key' => $order->order_key,
@@ -673,7 +681,7 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 
 			endif;
 
-		endif;
+		// endif;
 
 	endforeach;
 }
