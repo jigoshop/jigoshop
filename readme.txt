@@ -151,6 +151,11 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * fixed users creating a new account now only if WP registration is allowed
 * fixed several 404 Jigoshop links
 * fixed My Account page not showing Address 2
+* added calculable shipping so that services such as FedEx, UPS, etc. can be plugged in
+* added brand new tax features including
+* multi-tax classes can be specified on product (good for Canadian, US tax laws)
+* ability to define tax label for view
+* shows tax percentage in view
 
 = 0.9.9.4 RC2 (not publicly released via WordPress) =
 * added option for out of stock notification that sets products to hidden after Order quantity processing
