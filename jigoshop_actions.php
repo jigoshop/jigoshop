@@ -490,15 +490,33 @@ function jigoshop_download_product() {
 		$order = urldecode( $_GET['order'] );
 		$email = urldecode( $_GET['email'] );
 
-		if (!is_email($email)) wp_safe_redirect( home_url() );
+		if (!is_email($email)) :
+			wp_die( __('Invalid email address.', 'jigoshop') . ' <a href="'.home_url().'">' . __('Go to homepage &rarr;', 'jigoshop') . '</a>' );
+		endif;
 
-		$downloads_remaining = $wpdb->get_var( $wpdb->prepare("
-			SELECT downloads_remaining
+		$download_result = $wpdb->get_row( $wpdb->prepare("
+			SELECT downloads_remaining 
 			FROM ".$wpdb->prefix."jigoshop_downloadable_product_permissions
-			WHERE user_email = '$email'
-			AND order_key = '$order'
-			AND product_id = '$download_file'
-		;") );
+			WHERE user_email = %s
+			AND order_key = %s
+			AND product_id = %s
+		;", $email, $order, $download_file ) );
+
+		if (!$download_result) :
+			wp_die( __('Invalid download.', 'jigoshop') . ' <a href="'.home_url().'">' . __('Go to homepage &rarr;', 'jigoshop') . '</a>' );
+			exit;
+		endif;
+		
+		$order_id = $download_result->order_id;
+		$downloads_remaining = $download_result->downloads_remaining;
+		
+		if ($order_id) :
+			$order = new jigoshop_order( $order_id );
+			if ($order->status!='completed' && $order->status!='processing' && $order->status!='publish') :
+				wp_die( __('Invalid order.', 'jigoshop') . ' <a href="'.home_url().'">' . __('Go to homepage &rarr;', 'jigoshop') . '</a>' );
+				exit;
+			endif;
+		endif;
 		
 		if ($downloads_remaining == '0') :
             wp_die( sprintf(__('Sorry, you have reached your download limit for this file. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
@@ -513,79 +531,88 @@ function jigoshop_download_product() {
 				), array( '%d' ), array( '%s', '%s', '%d' ) );
 			endif;
 
+			$file_path = get_post_meta($download_file, 'file_path', true);
+				
+			if (!$file_path) wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
 
-			// Download method
-			$file_method = get_post_meta($download_file, 'file_method', true);
+			// Get URLS with https
+			$site_url = site_url();
+			$network_url = network_admin_url();
+			if (is_ssl()) :
+				$site_url = str_replace('https:', 'http:', $site_url);
+				$network_url = str_replace('https:', 'http:', $network_url);
+			endif;
 
-			if($file_method == 'internal') {
+			if (!is_multisite()) :	
+				$file_path = str_replace(trailingslashit($site_url), ABSPATH, $file_path);
+			else :
+				$upload_dir = wp_upload_dir();
+				
+				// Try to replace network url
+				$file_path = str_replace(trailingslashit($network_url), ABSPATH, $file_path);
+				
+				// Now try to replace upload URL
+				$file_path = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $file_path);
+			endif;
 
-				$file_path = ABSPATH . get_post_meta($download_file, 'file_path', true);
-				if (!$file_path) wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
+			// See if its local or remote
+			if (strstr($file_path, 'http:') || strstr($file_path, 'https:') || strstr($file_path, 'ftp:')) :
+				$remote_file = true;
+			else :
+				$remote_file = false;
 				$file_path = realpath($file_path);
+			endif;
 
-				if (!file_exists($file_path) || is_dir($file_path) || !is_readable($file_path)) {
-					wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
-				}
+			// Download the file
+			$file_extension = strtolower(substr(strrchr($file_path,"."),1));
 
-				$file_extension = strtolower(substr(strrchr($file_path,"."),1));
+			switch ($file_extension) :
+				case "pdf": $ctype="application/pdf"; break;
+				case "exe": $ctype="application/octet-stream"; break;
+				case "zip": $ctype="application/zip"; break;
+				case "doc": $ctype="application/msword"; break;
+				case "xls": $ctype="application/vnd.ms-excel"; break;
+				case "ppt": $ctype="application/vnd.ms-powerpoint"; break;
+				case "gif": $ctype="image/gif"; break;
+				case "png": $ctype="image/png"; break;
+				case "jpe": case "jpeg": case "jpg": $ctype="image/jpg"; break;
+				default: $ctype="application/force-download";
+			endswitch;
 
-				switch ($file_extension) :
-					case "pdf": $ctype="application/pdf"; break;
-					case "exe": $ctype="application/octet-stream"; break;
-					case "zip": $ctype="application/zip"; break;
-					case "doc": $ctype="application/msword"; break;
-					case "xls": $ctype="application/vnd.ms-excel"; break;
-					case "ppt": $ctype="application/vnd.ms-powerpoint"; break;
-					case "gif": $ctype="image/gif"; break;
-					case "png": $ctype="image/png"; break;
-					case "jpe": case "jpeg": case "jpg": $ctype="image/jpg"; break;
-					default: $ctype="application/force-download";
-				endswitch;
+			@ini_set('zlib.output_compression', 'Off');
+			@set_time_limit(0);
+			@session_start();
+			@session_cache_limiter('none');
+			@set_magic_quotes_runtime(0);
+			@ob_end_clean();
+			if (ob_get_level()) @ob_end_clean();
+			@session_write_close();
 
-				@ini_set('zlib.output_compression', 'Off');
-				@set_time_limit(0);
-				@session_start();
-				@session_cache_limiter('none');
-				@set_magic_quotes_runtime(0);
-				@ob_end_clean();
-				if (ob_get_level()) @ob_end_clean();
-				@session_write_close();
+			header("Pragma: no-cache");
+			header("Expires: 0");
+			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+			header("Robots: none");
+			header("Content-Type: ".$ctype."");
+			header("Content-Description: File Transfer");
+			header("Content-Transfer-Encoding: binary");
 
-				header("Pragma: no-cache");
-				header("Expires: 0");
-				header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-				header("Robots: none");
-				header("Content-Type: ".$ctype."");
-				header("Content-Description: File Transfer");
-
-				if (strstr($_SERVER['HTTP_USER_AGENT'], "MSIE")) {
-					// workaround for IE filename bug with multiple periods / multiple dots in filename
-					$iefilename = preg_replace('/\./', '%2e', basename($file_path), substr_count(basename($file_path), '.') - 1);
-					header("Content-Disposition: attachment; filename=\"".$iefilename."\";");
-				} else {
-					header("Content-Disposition: attachment; filename=\"".basename($file_path)."\";");
-				}
-
-				header("Content-Transfer-Encoding: binary");
-
-				header("Content-Length: ".@filesize($file_path));
-				@readfile("$file_path") or wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
-				exit;
+			if (strstr($_SERVER['HTTP_USER_AGENT'], "MSIE")) {
+				// workaround for IE filename bug with multiple periods / multiple dots in filename
+				$iefilename = preg_replace('/\./', '%2e', basename($file_path), substr_count(basename($file_path), '.') - 1);
+				header("Content-Disposition: attachment; filename=\"".$iefilename."\";");
+			} else {
+				header("Content-Disposition: attachment; filename=\"".basename($file_path)."\";");
 			}
 
-			else if($file_method == 'external') {
+			header("Content-Length: ".@filesize($file_path));
 			
-				// Check if it's a valid web address
-				$file_url = esc_url(get_post_meta($download_file, 'file_url', true));
 
-				if($file_url) {
-					header("Location: $file_url");
-					exit();
-				} else {
-					wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
-				}
+			if ( $remote_file ) {
+				 header('Location: '.$file_path);
+			} else {
+				@readfile("$file_path") or wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
 			}
-
+			exit;
 		endif;
 
 	endif;
