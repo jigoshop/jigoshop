@@ -18,130 +18,131 @@ function get_jigoshop_cart( $atts ) {
 	return jigoshop::shortcode_wrapper('jigoshop_cart', $atts);
 }
 
-function jigoshop_cart( $atts ) {
+function jigoshop_cart($atts) {
 
-	$errors = array();
-	unset($_SESSION['selected_rate_id']);
-	
-	// Process Discount Codes
-	if (isset($_POST['apply_coupon']) && $_POST['apply_coupon'] && jigoshop::verify_nonce('cart')) :
+    $errors = array();
+    unset($_SESSION['selected_rate_id']);
 
-		$coupon_code = stripslashes(trim($_POST['coupon_code']));
-		jigoshop_cart::add_discount($coupon_code);
+    // Process Discount Codes
+    if (isset($_POST['apply_coupon']) && $_POST['apply_coupon'] && jigoshop::verify_nonce('cart')) :
 
-	// Update Shipping
-	elseif (isset($_POST['calc_shipping']) && $_POST['calc_shipping'] && jigoshop::verify_nonce('cart')) :
+        $coupon_code = stripslashes(trim($_POST['coupon_code']));
+        jigoshop_cart::add_discount($coupon_code);
 
-		unset($_SESSION['chosen_shipping_method_id']);
-		$country 	= $_POST['calc_shipping_country'];
-		$state 		= $_POST['calc_shipping_state'];
+    // Update Shipping
+    elseif (isset($_POST['calc_shipping']) && $_POST['calc_shipping'] && jigoshop::verify_nonce('cart')) :
 
-		$postcode 	= $_POST['calc_shipping_postcode'];
+        unset($_SESSION['chosen_shipping_method_id']);
+        $country = $_POST['calc_shipping_country'];
+        $state = $_POST['calc_shipping_state'];
 
-		if ($postcode && !jigoshop_validation::is_postcode( $postcode, $country )) :
-			jigoshop::add_error( __('Please enter a valid postcode/ZIP.','jigoshop') );
-			$postcode = '';
-		elseif ($postcode) :
-			$postcode = jigoshop_validation::format_postcode( $postcode, $country );
-		endif;
+        $postcode = $_POST['calc_shipping_postcode'];
 
-		if ($country) :
+        if ($postcode && !jigoshop_validation::is_postcode($postcode, $country)) :
+            jigoshop::add_error(__('Please enter a valid postcode/ZIP.', 'jigoshop'));
+            $postcode = '';
+        elseif ($postcode) :
+            $postcode = jigoshop_validation::format_postcode($postcode, $country);
+        endif;
 
-			// Update customer location
-			jigoshop_customer::set_location( $country, $state, $postcode );
-			jigoshop_customer::set_shipping_location( $country, $state, $postcode );
+        if ($country) :
 
-			jigoshop::add_message(  __('Shipping costs updated.', 'jigoshop') );
+            // Update customer location
+            jigoshop_customer::set_location($country, $state, $postcode);
+            jigoshop_customer::set_shipping_location($country, $state, $postcode);
 
-		else :
+            jigoshop::add_message(__('Shipping costs updated.', 'jigoshop'));
 
-			jigoshop_customer::set_shipping_location( '', '', '' );
+        else :
 
-			jigoshop::add_message(  __('Shipping costs updated.', 'jigoshop') );
+            jigoshop_customer::set_shipping_location('', '', '');
 
-		endif;
+            jigoshop::add_message(__('Shipping costs updated.', 'jigoshop'));
 
-	elseif (isset($_POST['shipping_rates'])) :
-	
-		$rates_params = explode(":", $_POST['shipping_rates']);
-        
-                if ($rates_params[1] != NULL) :
-	                $_SESSION['selected_rate_id'] = $rates_params[1];
-	        else :
-	        	$_SESSION['selected_rate_id'] = 'no_rate_id'; // where are constants stored? to find out
-	        endif;
-                
-                $available_methods = jigoshop_shipping::get_available_shipping_methods();
-                $available_methods[$rates_params[0]]->choose(); // choses the method selected by user.
+        endif;
 
-	endif;
+    elseif (isset($_POST['shipping_rates'])) :
 
-	// Re-Calc prices. This needs to happen every time the cart page is loaded and after checking post results. It will happen twice for coupon. 
-	jigoshop_cart::calculate_totals(); 
+        $rates_params = explode(":", $_POST['shipping_rates']);
 
-	$result = jigoshop_cart::check_cart_item_stock();
-	if (is_wp_error($result)) :
-		jigoshop::add_error( $result->get_error_message() );
-	endif;
+        if ($rates_params[1] != NULL) :
+            $_SESSION['selected_rate_id'] = $rates_params[1];
+        else :
+            $_SESSION['selected_rate_id'] = 'no_rate_id'; // where are constants stored? to find out
+        endif;
 
-	jigoshop::show_messages();
+        $available_methods = jigoshop_shipping::get_available_shipping_methods();
+        $available_methods[$rates_params[0]]->choose(); // choses the method selected by user.
 
-	if (sizeof(jigoshop_cart::$cart_contents)==0) :
-		echo '<p>'.__('Your cart is empty.', 'jigoshop').'</p>';
-		echo '<p><a class="button" href="'.apply_filters('jigoshop_get_shop_page_id', get_permalink(get_option('jigoshop_shop_page_id'))).'">'.__('&larr; Return To Shop', 'jigoshop').'</a></p>';
-		return;
-	endif;
+    endif;
 
-	?>
-	<form action="<?php echo jigoshop_cart::get_cart_url(); ?>" method="post">
-	<table class="shop_table cart" cellspacing="0">
-		<thead>
-			<tr>
-				<th class="product-remove"></th>
-				<th class="product-thumbnail"></th>
-				<th class="product-name"><span class="nobr"><?php _e('Product Name', 'jigoshop'); ?></span></th>
-				<th class="product-price"><span class="nobr"><?php _e('Unit Price', 'jigoshop'); ?></span></th>
-				<th class="product-quantity"><?php _e('Quantity', 'jigoshop'); ?></th>
-				<th class="product-subtotal"><?php _e('Price', 'jigoshop'); ?></th>
-			</tr>
-			<?php do_action( 'jigoshop_shop_table_cart_head' ); ?>
-		</thead>
-		<tbody>
-			<?php
-			if (sizeof(jigoshop_cart::$cart_contents)>0) :
-				foreach (jigoshop_cart::$cart_contents as $cart_item_key => $values) :
-					$_product = $values['data'];
-					if ($_product->exists() && $values['quantity']>0) :
-                        
-                        $additional_description = '';
-                        if($_product instanceof jigoshop_product_variation && is_array($values['variation'])) {
-                            $additional_description = jigoshop_get_formatted_variation( $_product->get_variation_attributes() );
-                        }
-                        
-?>
-							<tr>
-								<td class="product-remove"><a href="<?php echo jigoshop_cart::get_remove_url($cart_item_key); ?>" class="remove" title="<?php echo __('Remove this item.', 'jigoshop'); ?>">&times;</a></td>
-								<td class="product-thumbnail"><a href="<?php echo apply_filters('jigoshop_product_url_display_in_cart', get_permalink($values['product_id']), $values['product_id']); ?>">
-						<?php
-						if ($values['variation_id'] && has_post_thumbnail($values['variation_id'])) {
-                            echo get_the_post_thumbnail($values['variation_id'], 'shop_tiny'); 
-                        } else if (has_post_thumbnail($values['product_id'])) {
-                            echo get_the_post_thumbnail($values['product_id'], 'shop_tiny'); 
-                        } else {
-                            echo '<img src="'.jigoshop::assets_url(). '/assets/images/placeholder.png" alt="Placeholder" width="'.jigoshop::get_var('shop_tiny_w').'" height="'.jigoshop::get_var('shop_tiny_h').'" />'; 
-                        }
-                        ?>
-							
-                                </a></td>
+    // Re-Calc prices. This needs to happen every time the cart page is loaded and after checking post results. It will happen twice for coupon. 
+    jigoshop_cart::calculate_totals();
 
-								<td class="product-name">
-									<a href="<?php echo apply_filters('jigoshop_product_url_display_in_cart', get_permalink($values['product_id']), $values['product_id']); ?>"><?php echo apply_filters('jigoshop_cart_product_title', $_product->get_title(), $_product); ?></a>
-									<?php echo $additional_description; ?>
-								</td>
-								<td class="product-price"><?php echo jigoshop_price($_product->get_price()); ?></td>
-								<td class="product-quantity"><div class="quantity"><input name="cart[<?php echo $cart_item_key?>][qty]" value="<?php echo $values['quantity']; ?>" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div></td>
-								<td class="product-subtotal"><?php echo jigoshop_price($_product->get_price()*$values['quantity']); ?></td>
-							</tr>
+    $result = jigoshop_cart::check_cart_item_stock();
+    if (is_wp_error($result)) :
+        jigoshop::add_error($result->get_error_message());
+    endif;
+
+    jigoshop::show_messages();
+
+    if (sizeof(jigoshop_cart::$cart_contents) == 0) :
+        echo '<p>' . __('Your cart is empty.', 'jigoshop') . '</p>';
+        echo '<p><a class="button" href="'.get_permalink(get_option('jigoshop_shop_page_id')).'">'.__('&larr; Return To Shop', 'jigoshop').'</a></p>';
+        //echo '<p><a class="button" href="'.apply_filters('jigoshop_get_shop_page_id', get_permalink(get_option('jigoshop_shop_page_id'))) . '">' . __('&larr; Return To Shop', 'jigoshop') . '</a></p>';
+        return;
+    endif;
+    ?>
+    <form action="<?php echo jigoshop_cart::get_cart_url(); ?>" method="post">
+        <table class="shop_table cart" cellspacing="0">
+            <thead>
+                <tr>
+                    <th class="product-remove"></th>
+                    <th class="product-thumbnail"></th>
+                    <th class="product-name"><span class="nobr"><?php _e('Product Name', 'jigoshop'); ?></span></th>
+                    <th class="product-price"><span class="nobr"><?php _e('Unit Price', 'jigoshop'); ?></span></th>
+                    <th class="product-quantity"><?php _e('Quantity', 'jigoshop'); ?></th>
+                    <th class="product-subtotal"><?php _e('Price', 'jigoshop'); ?></th>
+                </tr>
+                <?php do_action('jigoshop_shop_table_cart_head'); ?>
+            </thead>
+            <tbody>
+                <?php
+                if (sizeof(jigoshop_cart::$cart_contents) > 0) :
+                    foreach (jigoshop_cart::$cart_contents as $cart_item_key => $values) :
+                        $_product = $values['data'];
+                        if ($_product->exists() && $values['quantity'] > 0) :
+
+                            $additional_description = '';
+                            if ($_product instanceof jigoshop_product_variation && is_array($values['variation'])) {
+                                $additional_description = jigoshop_get_formatted_variation($values['variation']);
+                            }
+                            ?>
+                            <tr>
+                                <td class="product-remove"><a href="<?php echo jigoshop_cart::get_remove_url($cart_item_key); ?>" class="remove" title="<?php echo __('Remove this item.', 'jigoshop'); ?>">&times;</a></td>
+                                <td class="product-thumbnail"><a href="<?php echo get_permalink($values['product_id']); ?>">
+                                <!--<td class="product-thumbnail"><a href="<?php //echo apply_filters('jigoshop_product_url_display_in_cart', get_permalink($values['product_id']), $values['product_id']); ?>">-->
+                                        <?php
+                                        if ($values['variation_id'] && has_post_thumbnail($values['variation_id'])) {
+                                            echo get_the_post_thumbnail($values['variation_id'], 'shop_tiny');
+                                        } else if (has_post_thumbnail($values['product_id'])) {
+                                            echo get_the_post_thumbnail($values['product_id'], 'shop_tiny');
+                                        } else {
+                                            echo '<img src="' . jigoshop::assets_url() . '/assets/images/placeholder.png" alt="Placeholder" width="' . jigoshop::get_var('shop_tiny_w') . '" height="' . jigoshop::get_var('shop_tiny_h') . '" />';
+                                        }
+                                        ?>
+
+                                    </a></td>
+
+                                <td class="product-name">
+                                    <!--<a href="<?php //echo get_apply_filters('jigoshop_product_url_display_in_cart', get_permalink($values['product_id']), $values['product_id']); ?>"><?php //echo apply_filters('jigoshop_cart_product_title', $_product->get_title(), $_product); ?></a>-->
+                                    <a href="<?php echo get_permalink($values['product_id']); ?>"><?php echo apply_filters('jigoshop_cart_product_title', $_product->get_title(), $_product); ?></a>
+                                    <?php echo $additional_description; ?>
+                                </td>
+                                <td class="product-price"><?php echo jigoshop_price($_product->get_price()); ?></td>
+                                <td class="product-quantity"><div class="quantity"><input name="cart[<?php echo $cart_item_key ?>][qty]" value="<?php echo $values['quantity']; ?>" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div></td>
+                                <td class="product-subtotal"><?php echo jigoshop_price($_product->get_price() * $values['quantity']); ?></td>
+                            </tr>
                             <?php
                         endif;
                     endforeach;
