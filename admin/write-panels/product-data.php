@@ -243,12 +243,8 @@ function jigoshop_product_data_box() {
 			?>
 			</fieldset>
 		</div>
-		<?php endif; 
-
-		// Attributs begin here
-		// TODO: Much love needs to be applied here
-
-		?>
+		<?php endif; ?>
+		
 		<div id="attributes" class="panel">
 			<?php do_action('jigoshop_attributes_display'); ?>
 		</div>
