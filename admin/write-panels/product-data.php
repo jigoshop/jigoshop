@@ -343,54 +343,6 @@ function attributes_display() { ?>
 
 add_action('jigoshop_display_attribute', 'display_attribute');
 function display_attribute() { ?>
-
-	<div class="demo">
-		<a href="http://forum.jigoshop.com/kb" target="_blank" class="overlay"><span>Click me to learn more about Attributes</span></a>
-		<div class="inside">
-			<div class="postbox attribute">
-				<button type="button" class="hide_row button">Remove</button>
-				<div class="handlediv" title="Click to toggle"><br></div>
-				<h3 class="handle">Size</h3>
-
-				<div class="inside">
-					<table>
-						<tr>
-							<td class="options">
-								<input type="text" class="attribute-name" value="Size" disabled="disabled" />
-
-								<div>
-									<label>
-										<input type="checkbox" value="1" checked="checked" />
-										Display on product page
-									</label>
-
-								</div>
-							</td>
-							<td class="value">
-								<select>
-									<option>Choose an option…</option>			
-								</select>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</div>
-
-			<div class="postbox attribute">
-				<button type="button" class="hide_row button">Remove</button>
-				<div class="handlediv" title="Click to toggle"><br></div>
-				<h3 class="handle">Colour</h3>
-			</div>
-
-			<div class="postbox attribute">
-				<button type="button" class="hide_row button">Remove</button>
-				<div class="handlediv" title="Click to toggle"><br></div>
-				<h3 class="handle">Material</h3>
-			</div>
-		</div>
-	</div>
-	
-
 	<?php
 		global $post;
 		// TODO: This needs refactoring
@@ -404,6 +356,56 @@ function display_attribute() { ?>
 		// This is whats applied to the product
 		$attributes = get_post_meta($post->ID, 'product_attributes', true);
 		
+
+	?>
+	<?php if( ! $attributes ): ?>
+		<div class="demo attribute">
+			<a href="http://forum.jigoshop.com/kb" target="_blank" class="overlay"><span>Click me to learn more about Attributes</span></a>
+			<div class="inside">
+				<div class="postbox attribute">
+					<button type="button" class="hide_row button">Remove</button>
+					<div class="handlediv" title="Click to toggle"><br></div>
+					<h3 class="handle">Size</h3>
+
+					<div class="inside">
+						<table>
+							<tr>
+								<td class="options">
+									<input type="text" class="attribute-name" value="Size" disabled="disabled" />
+
+									<div>
+										<label>
+											<input type="checkbox" value="1" checked="checked" />
+											Display on product page
+										</label>
+
+									</div>
+								</td>
+								<td class="value">
+									<select>
+										<option>Choose an option…</option>			
+									</select>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+
+				<div class="postbox attribute">
+					<button type="button" class="hide_row button">Remove</button>
+					<div class="handlediv" title="Click to toggle"><br></div>
+					<h3 class="handle">Colour</h3>
+				</div>
+
+				<div class="postbox attribute">
+					<button type="button" class="hide_row button">Remove</button>
+					<div class="handlediv" title="Click to toggle"><br></div>
+					<h3 class="handle">Material</h3>
+				</div>
+			</div>
+		</div>
+	<?php endif; ?>
+	<?php
 		$i = -1;
 		foreach ($attribute_taxonomies as $tax) : $i++;
 
@@ -421,6 +423,7 @@ function display_attribute() { ?>
 			endforeach;
 		endif;
 	?>
+
 	<div class="postbox attribute <?php if ( $has_terms ) echo 'closed'; ?> <?php echo $attribute_taxonomy_name; ?>" rel="<?php echo $position; ?>"  <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
 		<button type="button" class="hide_row button">Remove</button>
 		<div class="handlediv" title="Click to toggle"><br></div>

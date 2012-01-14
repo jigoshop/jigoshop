@@ -222,7 +222,8 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			</div>
 			<div class='jigoshop_variations'>
 
-				<div class="demo">
+				<?php if ( ! $variations ): ?>
+				<div class="demo variation">
 					<a href="http://forum.jigoshop.com/kb" target="_blank" class="overlay"><span>Click me to learn more about Variations</span></a>
 					<div class="inside">			
 						<div class="jigoshop_variation" rel="0_new" style="">
@@ -298,6 +299,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 						</div>
 					</div>
 				</div>
+				<?php endif; ?>
 
 				<?php if ( $this->has_variable_attributes( $attributes ) ): ?>
 					<?php
