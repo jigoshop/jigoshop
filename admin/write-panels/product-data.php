@@ -147,7 +147,6 @@ function jigoshop_product_data_box() {
 			<fieldset>
 			<?php
 				// Weight
-				// TODO: Do we need this check? -Rob
 				if( get_option('jigoshop_enable_weight') !== 'no' ) {
 					echo jigoshop_form::input( 'weight', 'Weight' ); // Missing placeholder attribute 0.00
 				}
