@@ -3,6 +3,8 @@
 	// On document Load
 	$(function() {
 
+		$('.backorders_field').hide();
+
 		// Set up tabs
 		jigoshop_start_tabs();
 
@@ -49,11 +51,14 @@
 	function jigoshop_stock_options() {
 		$('#manage_stock').on('change',function() {
 			if ($(this).is(':checked')) {
-				$('div.stock_fields').show();
 				$('.stock_status_field').hide();
+				$('.stock_field').show();
+				$('.backorders_field').slideDown(100);
+				$('#stock').focus();
 			}
 			else {
-				$('div.stock_fields').hide();
+				$('.backorders_field').slideUp(100);
+				$('.stock_field').hide();
 				$('.stock_status_field').show();
 			}
 		}).change();
