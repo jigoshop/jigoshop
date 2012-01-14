@@ -237,7 +237,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 								<tr>
 									<td class="upload_image" rowspan="2">
 										<a href="#" class="upload_image_button " rel="0_new">
-											<img src="http://localhost:8888/_js/_trunk/wp-content/plugins/jigoshop/assets/images/placeholder.png" width="93px">
+											<img src="<?php echo jigoshop::assets_url().'/assets/images/placeholder.png' ?>" width="93px">
 											<input type="hidden" class="upload_image_id" value="">
 											<!-- TODO: APPEND THIS IN JS <span class="overlay"></span> -->
 										</a>

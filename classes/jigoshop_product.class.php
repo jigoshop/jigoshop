@@ -323,7 +323,6 @@ class jigoshop_product {
 
 	/** 
 	 * Get the add to url
-	 * TODO: look at this function closer
 	 *
 	 * @return  mixed
 	 */
@@ -361,8 +360,6 @@ class jigoshop_product {
 
 	/**
 	 * Returns whether or not the product is in stock
-	 *
-	 * TODO:    Add support for variations
 	 * 
 	 * @return  bool
 	 */
@@ -633,8 +630,6 @@ class jigoshop_product {
 
 	/**
 	 * Returns the price in html format
-	 *
-	 * TODO: Add support for grouped/variable products
 	 *
 	 * @return  html
 	 */
