@@ -287,7 +287,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 										</label>
 									</td>
 										<td colspan="4" class="dimensions">
-											<label>Dimensions (lxwxh)</label>
+											<label>Dimensions <?php echo '('.get_option('jigoshop_dimension_unit'). ')' ?></label>
 											<input type="text" placeholder="Length" value="">
 											<input type="text" placeholder="Width" value="">
 											<input type="text" placeholder="Height" value="">
@@ -501,7 +501,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 							</label>
 						</td>
 						<td colspan="4" class="dimensions">
-							<label><?php _e('Dimensions (lxwxh)', 'jigoshop') ?></label>
+							<label><?php _e('Dimensions', 'jigoshop') ?> <?php echo '('.get_option('jigoshop_dimension_unit'). ')' ?></label>
 							<input type="text" name="<?php echo $this->field_name('length', $variation) ?>" placeholder="Length" value="<?php echo isset($meta['length'][0]) ? $meta['length'][0] : null; ?>" />
 							<input type="text" name="<?php echo $this->field_name('width', $variation) ?>" placeholder="Width" value="<?php echo isset($meta['width'][0]) ? $meta['width'][0] : null; ?>" />
 							<input type="text" name="<?php echo $this->field_name('height', $variation) ?>" placeholder="Height" value="<?php echo isset($meta['height'][0]) ? $meta['height'][0] : null; ?>" />

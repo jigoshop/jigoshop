@@ -153,9 +153,14 @@ function jigoshop_product_data_box() {
 
 				// Dimensions
 				if( get_option('jigoshop_enable_dimensions', true) !== 'no' ) {
-					echo jigoshop_form::input( 'length', 'Dimensions' ); // Missing Unit // get_option('jigoshop_dimension_unit')
-					//echo jigoshop_form::input( 'width', 'Width' ); // Missing Unit // get_option('jigoshop_dimension_unit')
-					//echo jigoshop_form::input( 'height', 'Height' ); // Missing Unit // get_option('jigoshop_dimension_unit')
+					echo '
+					<p class="form-field dimensions_field">
+						<label for"product_length">'. __('Dimensions', 'jigoshop') . ' ('.get_option('jigoshop_dimension_unit').')' . '</label>
+						<input type="text" name="length" class="short" value="' . get_post_meta( $thepostid, 'length', true ) . '" placeholder="'. __('Length', 'jigoshop') . '" />
+						<input type="text" name="width" class="short" value="' . get_post_meta( $thepostid, 'width', true ) . '" placeholder="'. __('Width', 'jigoshop') . '" />
+						<input type="text" name="height" class="short" value="' . get_post_meta( $thepostid, 'height', true ) . '" placeholder="'. __('Height', 'jigoshop') . '" />
+					</p>
+					';
 				}
 			?>
 			</fieldset>
