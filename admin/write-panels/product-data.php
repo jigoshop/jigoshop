@@ -169,7 +169,7 @@ function jigoshop_product_data_box() {
 			<fieldset>
 			<?php
 				// Featured
-				echo jigoshop_form::checkbox( 'featured', 'Featured?');
+				echo jigoshop_form::checkbox( 'featured', 'Featured?', false, __('Enable this option to feature this product', 'jigoshop') );
 
 				// Visibility
 				echo jigoshop_form::select( 'visibility', 'Visibility',
