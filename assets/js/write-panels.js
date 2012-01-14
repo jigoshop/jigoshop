@@ -9,8 +9,8 @@
 		// Setup options
 		jigoshop_product_type_options();
 
-		// Set up jigoshop datepicker
-		jigoshop_date_picker();
+		// Set up jigoshop sale datepicker
+		jigoshop_sale_picker();
 
 		// Jigoshop stock options
 		jigoshop_stock_options();
@@ -67,7 +67,38 @@
 		}).change();
 	}
 
-	function jigoshop_date_picker() {
+	function jigoshop_sale_picker() {
+		// Sale price schedule
+		var sale_schedule_set = false;
+		$('.sale_price_dates_fields input').each(function(){
+			if ( $(this).val() ) {
+				sale_schedule_set = true;
+			}
+		});
+		if (sale_schedule_set) {
+			$('.sale_schedule').hide();
+			$('.sale_price_dates_fields').show();
+		} else {
+			$('.sale_schedule').show();
+			$('.sale_price_dates_fields').hide();
+		}
+		
+		$('.sale_schedule').click(function(e){
+			e.preventDefault();
+			$(this).hide();
+			$('.sale_price_dates_fields').slideDown(100, function(){
+				$('#sale_price_dates_from').focus();
+			});
+		});
+		
+		$('.cancel_sale_schedule').click(function(e){
+			e.preventDefault();
+			$('.sale_schedule').show();
+			$('.sale_price_dates_fields').slideUp(100, function() {
+				$(this).closest('p').find('input').val(null);
+			});
+		});
+
 		var dates = $( "#sale_price_dates_from, #sale_price_dates_to" ).datepicker({
 			dateFormat: 'yy-mm-dd',
 			gotoCurrent: true,

@@ -202,7 +202,7 @@ class jigoshop_form {
 		global $post;
 
 		$value = ($value) ? esc_attr($value) : get_post_meta($post->ID, $ID, true);
-		$desc  = ($desc)  ? esc_html($desc) : false;
+		$desc  = ($desc)  ? $desc : false;
 		$label = __($label, 'jigoshop');
 		$html  = '';
 
@@ -211,7 +211,7 @@ class jigoshop_form {
 		$html .= "<input type='text' class='{$class}' name='{$ID}' id='{$ID}' value='{$value}' placeholder='{$placeholder}' />";
 
 		if ( $desc ) {
-			$html .= "<span class='description'>$desc</span>";
+			$html .= "$desc";
 		}
 
 		$html .= "</p>";

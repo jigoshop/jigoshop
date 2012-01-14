@@ -122,7 +122,7 @@ function jigoshop_product_data_box() {
 				echo jigoshop_form::input( 'regular_price', 'Regular Price' );
 
 				// Sale Price
-				echo jigoshop_form::input( 'sale_price', 'Sale Price' );
+				echo jigoshop_form::input( 'sale_price', 'Sale Price', '<a href="#" class="sale_schedule">Schedule</a>' );
 
 				// Sale Price date range
 				// TODO: Convert this to a helper somehow?
@@ -131,15 +131,15 @@ function jigoshop_product_data_box() {
 				$sale_price_dates_from = get_post_meta($thepostid, 'sale_price_dates_from', true);
 				$sale_price_dates_to = get_post_meta($thepostid, 'sale_price_dates_to', true);
 				
-				echo '	<p class="form-field">
+				echo '	<p class="form-field sale_price_dates_fields">
 							<label for="'.$field['id'].'_from">'.$field['label'].':</label>
 							<input type="text" class="short date-pick" name="'.$field['id'].'_from" id="'.$field['id'].'_from" value="';
 				if ($sale_price_dates_from) echo date('Y-m-d', $sale_price_dates_from);
-				echo '" placeholder="' . __('From&hellip;', 'jigoshop') . '" maxlength="10" />
+				echo '" placeholder="' . __('From', 'jigoshop') . ' (' . date('Y-m-d'). ')" maxlength="10" />
 							<input type="text" class="short date-pick" name="'.$field['id'].'_to" id="'.$field['id'].'_to" value="';
 				if ($sale_price_dates_to) echo date('Y-m-d', $sale_price_dates_to);
-				echo '" placeholder="' . __('To&hellip;', 'jigoshop') . '" maxlength="10" />
-							<span class="description">' . __('Date format', 'jigoshop') . ': <code>YYYY-MM-DD</code></span>
+				echo '" placeholder="' . __('To', 'jigoshop') . ' (' . date('Y-m-d'). ')" maxlength="10" />
+							<a href="#" class="cancel_sale_schedule">Cancel</a>
 						</p>';
 			?>
 			</fieldset>
