@@ -296,7 +296,7 @@ function jigoshop_product_data_box() {
 				$file_path = get_post_meta($post->ID, 'file_path', true);
 				$field = array( 'id' => 'file_path', 'label' => __('File Path', 'jigoshop') );
 				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].':</label>
-					<input type="text" class="short file_path" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_path.'" placeholder="'.site_url().'" />
+					<input type="text" class="file_path" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_path.'" placeholder="'.site_url().'" />
 					<input type="button"  class="upload_file_button button" data-postid="'.$post->ID.'" value="'.__('Upload a file', 'jigoshop').'" />
 				</p>';
 
