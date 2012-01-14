@@ -102,7 +102,6 @@ function jigoshop_update_options() {
 
                         $country = jigowatt_clean($tax_countries[$i]);
                         $label = trim($tax_label[$i]);
-                        //$state = '*'; no longer needed
                         $state = '';
                         $rate = number_format(jigowatt_clean($tax_rate[$i]), 4);
                         $class = jigowatt_clean($tax_classes[$i]);
@@ -679,14 +678,12 @@ function jigoshop_admin_fields($options) {
                         if ($rate['is_all_states']) :
                             if (is_array($applied_all_states) && !in_array($rate['country'], $applied_all_states)) :
                                 $applied_all_states[] = $rate['country'];
-                                $state = '*'; // all states
-                                jigoshop_countries::country_dropdown_options($rate['country'], $state);
+                                jigoshop_countries::country_dropdown_options($rate['country'], '*'); //all-states
                             else :
                                 continue;
                             endif;
                         else :
-                            $state = $rate['state'];
-                            jigoshop_countries::country_dropdown_options($rate['country'], $state);
+                            jigoshop_countries::country_dropdown_options($rate['country'], $rate['state']);
                         endif;
                             
                         echo '</select><input type="text" class="text" value="' . $rate['rate'] . '" name="tax_rate[' . $i . ']" title="' . __('Rate', 'jigoshop') . '" placeholder="' . __('Rate', 'jigoshop') . '" maxlength="8" />% <label><input type="checkbox" name="tax_shipping[' . $i . ']" ';
