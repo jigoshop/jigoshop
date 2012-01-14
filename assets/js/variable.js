@@ -104,12 +104,14 @@
 			e.preventDefault();
 
 			// Set up variables
-			var post_id = $(this).parents('.jigoshop_variation').attr('rel');
-			
+			var $this   = $(this);
+			    $file   = $this.prev();
+			    post_id = $this.parents('.jigoshop_variation').attr('rel');
+
 			window.send_to_editor = function(html) {
 
 				// Attach the file URI to the relevant 
-				$(this).prev().val( $(html).attr('href') );
+				$file.val( $(html).attr('href') );
 
 				// Hide thickbox
 				tb_remove();
