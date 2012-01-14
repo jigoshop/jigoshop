@@ -95,7 +95,8 @@
 			e.preventDefault();
 			$('.sale_schedule').show();
 			$('.sale_price_dates_fields').slideUp(100, function() {
-				$(this).closest('p').find('input').val(null);
+				var option = this.id == "sale_price_dates_from" ? "minDate" : "maxDate";
+				$(this).closest('p').find('input').datepicker( "option", option, null ).val(null);
 			});
 		});
 
