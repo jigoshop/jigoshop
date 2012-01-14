@@ -40,7 +40,9 @@
  * @return type int the results of strcmp
  */
 function csort_tax_rates($a, $b) {
-
+    $str1 = '';
+    $str2 = '';
+    
     $str1 .= $a['country'] . $a['state'] . ($a['retail'] == 'yes' ? 'a' : 'b');
     $str2 .= $b['country'] . $b['state'] . ($b['retail'] == 'yes' ? 'a' : 'b');
 
@@ -100,7 +102,8 @@ function jigoshop_update_options() {
 
                         $country = jigowatt_clean($tax_countries[$i]);
                         $label = trim($tax_label[$i]);
-                        $state = '*';
+                        //$state = '*'; no longer needed
+                        $state = '';
                         $rate = number_format(jigowatt_clean($tax_rate[$i]), 4);
                         $class = jigowatt_clean($tax_classes[$i]);
 
@@ -118,15 +121,34 @@ function jigoshop_update_options() {
                             $state = end($cr);
                         endif;
 
-                        $tax_rates[] = array(
-                            'country' => $country,
-                            'label' => $label,
-                            'state' => $state,
-                            'rate' => $rate,
-                            'shipping' => $shipping,
-                            'class' => $class,
-                            'retail' => $retail
-                        );
+                        if (!$state && jigoshop_countries::country_has_states($country)) :
+
+                            foreach (array_keys(jigoshop_countries::$states[$country]) as $st) :
+                                $tax_rates[] = array(
+                                    'country' => $country,
+                                    'label' => $label,
+                                    'state' => $st,
+                                    'rate' => $rate,
+                                    'shipping' => $shipping,
+                                    'class' => $class,
+                                    'retail' => $retail,
+                                    'is_all_states' => true //determines if admin panel should show 'all_states'
+                                );
+                            endforeach;
+
+                        else :
+                             $tax_rates[] = array(
+                                'country' => $country,
+                                'label' => $label,
+                                'state' => $state,
+                                'rate' => $rate,
+                                'shipping' => $shipping,
+                                'class' => $class,
+                                'retail' => $retail,
+                                'is_all_states' => false //determines if admin panel should show 'all_states'
+                            );                               
+                        endif;
+
 
                     endif;
 
@@ -621,6 +643,7 @@ function jigoshop_admin_fields($options) {
                                 $_tax = new jigoshop_tax();
                                 $tax_classes = $_tax->get_tax_classes();
                                 $tax_rates = get_option('jigoshop_tax_rates');
+                                $applied_all_states = array();
                                 ?><tr>
                         <td class="titledesc"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
                         <td class="forminp" id="tax_rates">
@@ -628,7 +651,15 @@ function jigoshop_admin_fields($options) {
                 <?php
                 $i = -1;
                 if ($tax_rates && is_array($tax_rates) && sizeof($tax_rates) > 0)
-                    foreach ($tax_rates as $rate) : $i++;
+                    foreach ($tax_rates as $rate) : 
+                        if ($rate['is_all_states']) :
+                            if (in_array($rate['country'], $applied_all_states)) :
+                                continue;
+                            endif;
+                        endif;
+                        
+                        $i++;// increment counter after check for all states having been applied
+                        
                         echo '<p class="taxrow"><select name="tax_classes[' . $i . ']" title="Tax Classes"><option value="">' . __('Standard Rate', 'jigoshop') . '</option>';
 
                         if ($tax_classes)
@@ -644,9 +675,20 @@ function jigoshop_admin_fields($options) {
                         echo '</select><input type="text" class="text" value="' . $rate['label'] . '" name="tax_label[' . $i . ']" title="' . __('Online Label', 'jigoshop') . '" placeholder="' . __('Online Label', 'jigoshop') . '" maxlength="15" />';
 
                         echo '</select><select name="tax_country[' . $i . ']" title="Country">';
-
-                        jigoshop_countries::country_dropdown_options($rate['country'], $rate['state']);
-
+                            
+                        if ($rate['is_all_states']) :
+                            if (is_array($applied_all_states) && !in_array($rate['country'], $applied_all_states)) :
+                                $applied_all_states[] = $rate['country'];
+                                $state = '*'; // all states
+                                jigoshop_countries::country_dropdown_options($rate['country'], $state);
+                            else :
+                                continue;
+                            endif;
+                        else :
+                            $state = $rate['state'];
+                            jigoshop_countries::country_dropdown_options($rate['country'], $state);
+                        endif;
+                            
                         echo '</select><input type="text" class="text" value="' . $rate['rate'] . '" name="tax_rate[' . $i . ']" title="' . __('Rate', 'jigoshop') . '" placeholder="' . __('Rate', 'jigoshop') . '" maxlength="8" />% <label><input type="checkbox" name="tax_shipping[' . $i . ']" ';
 
                         if (isset($rate['shipping']) && $rate['shipping'] == 'yes')
@@ -765,6 +807,10 @@ function jigoshop_admin_fields($options) {
     flush_rewrite_rules();
 }
 
+
+function update_for_all_states($tax_rates) {
+    
+}
 /**
  * Settings page
  *
