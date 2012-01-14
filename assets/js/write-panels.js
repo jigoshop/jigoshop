@@ -72,11 +72,13 @@
 			$('body').removeClass('simple_product downloadable_product grouped_product virtual_product variable_product')
 				.addClass( $(this).val() + '_product' );
 
-			if ( $(this).val() == 'downloadable' || $(this).val() == 'virtual') {
-				$('.form_tax_tab a').text('Tax')
-			} else {
+			if ( $(this).val() == 'simple' ) {
 				$('.form_tax_tab a').text('Form & Tax');
+			} else {
+				$('.form_tax_tab a').text('Tax')
 			}
+		
+
 
 		}).change();
 	}
