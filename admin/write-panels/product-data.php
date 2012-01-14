@@ -424,7 +424,7 @@ function display_attribute() { ?>
 		endif;
 	?>
 
-	<div class="postbox attribute <?php if ( $has_terms ) echo 'closed'; ?> <?php echo $attribute_taxonomy_name; ?>" rel="<?php echo $position; ?>"  <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
+	<div class="postbox attribute <?php if ( $has_terms ) echo 'closed'; ?> <?php echo $attribute_taxonomy_name; ?>" data-attribute-name="<?php echo $attribute_taxonomy_name; ?>" rel="<?php echo $position; ?>"  <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
 		<button type="button" class="hide_row button">Remove</button>
 		<div class="handlediv" title="Click to toggle"><br></div>
 		<h3 class="handle"><?php echo $tax->attribute_name; ?></h3>
@@ -446,7 +446,7 @@ function display_attribute() { ?>
 							</label>
 
 							<?php if ($tax->attribute_type!="select") : // always disable variation for select elements ?>
-							<label>
+							<label class="attribute_is_variable">
 								<input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['variation'] : 0 ), true); ?> name="attribute_variation[<?php echo $i; ?>]" value="1" /><?php _e('Is for variations', 'jigoshop'); ?>
 							</label>
 							<?php endif; ?>
@@ -548,7 +548,7 @@ function display_attribute() { ?>
 							</label>
 
 							<?php if ($tax->attribute_type!="select") : // always disable variation for select elements ?>
-							<label>
+							<label class="attribute_is_variable">
 								<input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['variation'] : 0 ), true); ?> name="attribute_variation[<?php echo $i; ?>]" value="1" /><?php _e('Is for variations', 'jigoshop'); ?>
 							</label>
 							<?php endif; ?>
