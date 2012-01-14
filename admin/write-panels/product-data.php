@@ -63,25 +63,25 @@ function jigoshop_product_data_box() {
 				<a href="#general"><?php _e('General', 'jigoshop'); ?></a>
 			</li>
 
-			<li>
+			<li class="form_tax_tab">
 				<a href="#tax"><?php _e('Form & Tax', 'jigoshop') ?></a>
 			</li>
 
 			<?php if (get_option('jigoshop_manage_stock')) : ?>
-			<li>
+			<li class="inventory_tab">
 				<a href="#inventory"><?php _e('Inventory', 'jigoshop'); ?></a>
 			</li>
 			<?php endif; ?>
 
-			<li>
+			<li class="attributes_tab">
 				<a href="#attributes"><?php _e('Attributes', 'jigoshop'); ?></a>
 			</li>
 
-			<li>	
-				<a href="#grouped"><?php _e('Grouped', 'jigoshop') ?></a>
+			<li class="grouped_tab">	
+				<a href="#grouped"><?php _e('Grouping', 'jigoshop') ?></a>
 			</li>
 
-			<li>	
+			<li class="file_tab">	
 				<a href="#files"><?php _e('File', 'jigoshop') ?></a>
 			</li>
 			
@@ -116,7 +116,7 @@ function jigoshop_product_data_box() {
 			?>
 			</fieldset>
 
-			<fieldset>
+			<fieldset id="price_fieldset">
 			<?php
 				// Regular Price
 				echo jigoshop_form::input( 'regular_price', 'Regular Price', null, null, 'short', null, array('after_label' => ' ('.get_jigoshop_currency_symbol().')') );
@@ -161,7 +161,7 @@ function jigoshop_product_data_box() {
 			</fieldset>
 		</div>
 		<div id="tax" class="panel jigoshop_options_panel">
-			<fieldset>
+			<fieldset id="form_fieldset">
 			<?php
 				// Weight
 				if( get_option('jigoshop_enable_weight') !== 'no' ) {

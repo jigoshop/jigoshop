@@ -1243,3 +1243,43 @@ div.multi_select_products_wrapper {
 		font-weight:bold;
 	}
 }
+
+/* Hidden Tabs Ect Settings */
+.simple_product {
+	.file_tab, .variable_tab {
+		display: none;
+	}
+}
+.downloadable_product, .virtual_product {
+
+	.variable_tab {
+		display: none
+	}
+
+	#form_fieldset {
+		display: none;
+	}
+}
+.grouped_product {
+
+	.form_tax_tab, .file_tab, .inventory_tab, .variable_tab, .grouped_tab {
+		display: none;
+	}
+}
+.variable_product {
+
+	.file_tab {
+		display: none;
+	}
+
+	#form_fieldset, {
+		display: none;
+	}
+
+	.regular_price_field, .sale_price_field, .cancel_sale_schedule {
+		display: none;
+	}
+	.sale_price_dates_fields {
+		display: block !important;
+	}
+}

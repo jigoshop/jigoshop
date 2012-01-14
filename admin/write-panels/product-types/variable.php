@@ -34,7 +34,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	 * @return  void
 	 */
 	public function register_tab() {
-		echo '<li class="variable">
+		echo '<li class="variable_tab">
 				<a href="#variable_product_options">Variations</a>
 			</li>';
 	}
