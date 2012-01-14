@@ -26,6 +26,8 @@
 		// Attributes
 		jigoshop_attributes();
 
+		// File Upload
+		jigoshop_file_upload();
 	});
 
 	function jigoshop_start_tabs() {
@@ -413,6 +415,31 @@
 				$(this).parent().prev().addClass('show_all_enabled');
 				$(this).remove();
 			}
+		});
+	}
+
+	function jigoshop_file_upload() {
+		$('.upload_file_button').click( function(e) {
+
+			// Disable default action
+			e.preventDefault();
+
+			// Set up variables
+			var $this   = $(this);
+			    $file   = $this.prev();
+			    post_id = $this.data('postid');
+
+			window.send_to_editor = function(html) {
+
+				// Attach the file URI to the relevant 
+				$file.val( $(html).attr('href') );
+
+				// Hide thickbox
+				tb_remove();
+			}
+			
+			// Show thickbox
+			tb_show('', 'media-upload.php?post_id=' + post_id + '&type=downloadable_product&from=jigoshop_product&TB_iframe=true');
 		});
 	}
 

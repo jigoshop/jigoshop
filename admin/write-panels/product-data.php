@@ -64,7 +64,7 @@ function jigoshop_product_data_box() {
 			</li>
 
 			<li>
-				<a href="#tax"><?php _e('Display & Tax', 'jigoshop') ?></a>
+				<a href="#tax"><?php _e('Form & Tax', 'jigoshop') ?></a>
 			</li>
 
 			<?php if (get_option('jigoshop_manage_stock')) : ?>
@@ -119,10 +119,10 @@ function jigoshop_product_data_box() {
 			<fieldset>
 			<?php
 				// Regular Price
-				echo jigoshop_form::input( 'regular_price', 'Regular Price' );
+				echo jigoshop_form::input( 'regular_price', 'Regular Price', null, null, 'short', null, array('after_label' => ' ('.get_jigoshop_currency_symbol().')') );
 
 				// Sale Price
-				echo jigoshop_form::input( 'sale_price', 'Sale Price', '<a href="#" class="sale_schedule">Schedule</a>' );
+				echo jigoshop_form::input( 'sale_price', 'Sale Price', '<a href="#" class="sale_schedule">Schedule</a>', null, 'short', null, array('after_label' => ' ('.get_jigoshop_currency_symbol().')' ));
 
 				// Sale Price date range
 				// TODO: Convert this to a helper somehow?
@@ -146,9 +146,26 @@ function jigoshop_product_data_box() {
 
 			<fieldset>
 			<?php
+				// Featured
+				echo jigoshop_form::checkbox( 'featured', 'Featured?', false, __('Enable this option to feature this product', 'jigoshop') );
+
+				// Visibility
+				/*echo jigoshop_form::select( 'visibility', 'Visibility',
+					array(
+						'visible'	=> 'Catalog & Search',
+						'catalog'	=> 'Catalog Only',
+						'search'	=> 'Search Only',
+						'Hidden'	=> 'Hidden'
+					) );*/
+			?>
+			</fieldset>
+		</div>
+		<div id="tax" class="panel jigoshop_options_panel">
+			<fieldset>
+			<?php
 				// Weight
 				if( get_option('jigoshop_enable_weight') !== 'no' ) {
-					echo jigoshop_form::input( 'weight', 'Weight' ); // Missing placeholder attribute 0.00
+					echo jigoshop_form::input( 'weight', 'Weight', null, null, 'short', '0.00', array('after_label' => ' ('.get_option('jigoshop_weight_unit').')') ); // Missing placeholder attribute 0.00
 				}
 
 				// Dimensions
@@ -164,23 +181,7 @@ function jigoshop_product_data_box() {
 				}
 			?>
 			</fieldset>
-		</div>
-		<div id="tax" class="panel jigoshop_options_panel">
-			<fieldset>
-			<?php
-				// Featured
-				echo jigoshop_form::checkbox( 'featured', 'Featured?', false, __('Enable this option to feature this product', 'jigoshop') );
 
-				// Visibility
-				echo jigoshop_form::select( 'visibility', 'Visibility',
-					array(
-						'visible'	=> 'Catalog & Search',
-						'catalog'	=> 'Catalog Only',
-						'search'	=> 'Search Only',
-						'Hidden'	=> 'Hidden'
-					) );
-			?>
-			</fieldset>
 			<fieldset>
 			<?php
 
@@ -244,7 +245,7 @@ function jigoshop_product_data_box() {
 			</fieldset>
 		</div>
 		<?php endif; ?>
-		
+
 		<div id="attributes" class="panel">
 			<?php do_action('jigoshop_attributes_display'); ?>
 		</div>
@@ -292,20 +293,12 @@ function jigoshop_product_data_box() {
 				// DOWNLOADABLE OPTIONS
 				// File URL
 				// TODO: Refactor this into a helper
-				echo jigoshop_form::input( 'file_path', __('File Path', 'jigoshop') );
-
-				// $file_path = get_post_meta($post->ID, 'file_path', true);
-				// $field = array( 'id' => 'file_path', 'label' => __('Internal Path', 'jigoshop') );
-				// echo '<p class="form-field">
-				// 	<label for="'.$field['id'].'">'.$field['label'].':</label>
-				// 	<span style="float:left">'.ABSPATH.'</span><input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_path.'" placeholder="'.__('path to file on your server', 'jigoshop').'" /></p>';
-
-				// File URL (External URL)
-				// $file_url = get_post_meta($post->ID, 'file_url', true);
-				// $field = array( 'id' => 'file_url', 'label' => __('External URL', 'jigoshop') );
-				// echo '<p class="form-field">
-				// 	<label for="'.$field['id'].'">'.$field['label'].':</label>
-				// 	<input type="text" class="short" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_url.'" placeholder="'.__('An external URL to the file', 'jigoshop').'" /><span class="description">' . __('Note: This URL will be visible to the customer.', 'jigoshop') . '</span></p>';
+				$file_path = get_post_meta($post->ID, 'file_path', true);
+				$field = array( 'id' => 'file_path', 'label' => __('File Path', 'jigoshop') );
+				echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].':</label>
+					<input type="text" class="short file_path" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_path.'" placeholder="'.site_url().'" />
+					<input type="button"  class="upload_file_button button" data-postid="'.$post->ID.'" value="'.__('Upload a file', 'jigoshop').'" />
+				</p>';
 
 				// Download Limit
 				echo jigoshop_form::input( 'download_limit', 'Download Limit', 'Leave blank for unlimited re-downloads' );
