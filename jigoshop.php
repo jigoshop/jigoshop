@@ -207,15 +207,15 @@ function jigoshop_init() {
 	));
 
 	$css = file_exists(get_stylesheet_directory() . '/jigoshop/style.css') ? get_stylesheet_directory_uri() . '/jigoshop/style.css' : jigoshop::assets_url() . '/assets/css/frontend.css';
-    if (JIGOSHOP_USE_CSS) wp_register_style('jigoshop_frontend_styles', $css );
+    if (JIGOSHOP_USE_CSS) wp_register_style('jigoshop_frontend_styles', $css, false, '1.0' );
 
     if (is_admin()) :
-    	wp_register_style('jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css');
+    	wp_register_style('jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css', false, '1.0');
     	wp_enqueue_style('jigoshop_admin_styles');
-   		wp_register_style('jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css');
+   		wp_register_style('jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css', false, '0.13');
     	wp_enqueue_style('jquery-ui-jigoshop-styles');
     else :
-    	wp_register_style( 'jqueryui_styles', jigoshop::assets_url() . '/assets/css/ui.css' );
+    	wp_register_style( 'jqueryui_styles', jigoshop::assets_url() . '/assets/css/ui.css', '1.0' );
 
     	wp_enqueue_style('jigoshop_frontend_styles');
     	wp_enqueue_style('jqueryui_styles');
