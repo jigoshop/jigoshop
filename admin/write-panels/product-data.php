@@ -238,7 +238,7 @@ function jigoshop_product_data_box() {
 					'no'		=> 'Do not allow',
 					'notify'	=> 'Allow, but notify customer',
 					'yes'		=> 'Allow'
-				) );
+				), false, false, 'select' );
 
 			echo '</div>';
 			?>
