@@ -212,7 +212,7 @@ function jigoshop_product_data_box() {
 			<fieldset>
 			<?php
 			// manage stock
-			echo jigoshop_form::checkbox( 'manage_stock', 'Manage Stock?' );
+			echo jigoshop_form::checkbox( 'manage_stock', 'Manage Stock?', false, __('Let Jigoshop handle stock management for me', 'jigoshop') );
 
 			?>
 			</fieldset>

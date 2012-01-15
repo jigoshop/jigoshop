@@ -272,7 +272,7 @@ class jigoshop_form {
 		$html .= "<input type='checkbox' name='{$ID}' class='{$class}' id='{$ID}' {$mark} />";
 
 		if ( $desc ) {
-			$html .= "<span class='description'>$desc</span>";
+			$html .= "<label for='{$ID}' class='description'>$desc</label>";
 		}
 
 		$html .= "</p>";
