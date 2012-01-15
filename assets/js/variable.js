@@ -26,6 +26,9 @@
 			// Disable default action
 			e.preventDefault();
 
+			// Remove the demo if it exists
+			$('.demo.variation').remove();
+
 			// Replace the ID with a unique ID
 			html = varmeta.actions.create.panel.replace(/__ID__/gi, ID++ +'_new');
 
