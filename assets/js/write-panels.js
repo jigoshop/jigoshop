@@ -379,7 +379,9 @@
 					</div>\
 				');
 
-				$custom_panel.hide().prependTo('.jigoshop_attributes_wrapper').slideDown( 150 ).find('.attribute-name').focus();
+				$custom_panel.hide().prependTo('.jigoshop_attributes_wrapper').slideDown( 150, function() {
+					$(this).find('.attribute-name').focus()
+				});
 
 			} else {
 
