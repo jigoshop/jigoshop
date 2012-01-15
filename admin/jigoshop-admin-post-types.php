@@ -279,6 +279,81 @@ function jigoshop_custom_order_columns($column) {
 }
 add_action('manage_shop_order_posts_custom_column', 'jigoshop_custom_order_columns', 2);
 
+/**
+ * Search by SKU or ID for products. Adapted from code by BenIrvin (Admin Search by ID)
+ */
+if (is_admin()) :
+	add_action( 'parse_request', 'jigoshop_admin_product_search' );
+	add_filter( 'get_search_query', 'jigoshop_admin_product_search_label' );
+endif;
+
+function jigoshop_admin_product_search( $wp ) {
+	global $pagenow, $wpdb;
+	
+	if( 'edit.php' != $pagenow )
+		return false;
+
+	if( ! isset( $wp->query_vars['s'] ) )
+		return false;
+
+	if ( $wp->query_vars['post_type'] != 'product' )
+		return false;
+
+	if( 'ID:' == substr( $wp->query_vars['s'], 0, 3 ) ) {
+
+		$id = absint( substr( $wp->query_vars['s'], 3 ) );
+			
+		if( ! $id )
+			return false; 
+		
+		unset( $wp->query_vars['s'] );
+		$wp->query_vars['p'] = $id;
+	}	
+	elseif( 'SKU:' == substr( $wp->query_vars['s'], 0, 4 ) ) {
+		
+		$sku = trim( substr( $wp->query_vars['s'], 4 ) );
+			
+		if( ! $sku )
+			return false; 
+		
+		$id = $wpdb->get_var('SELECT post_id FROM '.$wpdb->postmeta.' WHERE meta_key="sku" AND meta_value LIKE "%'.$sku.'%";');
+		
+		if( ! $id )
+			return false; 
+
+		unset( $wp->query_vars['s'] );
+		$wp->query_vars['p'] = $id;
+		$wp->query_vars['sku'] = $sku;
+		
+	}
+}
+
+function jigoshop_admin_product_search_label($query) {
+	global $pagenow, $typenow, $wp;
+
+    if ( 'edit.php' != $pagenow ) 
+    	return $query;
+    if ( $typenow != 'product' )
+    	return $query;
+	
+	$s = get_query_var( 's' );
+	if ( $s )
+		return $query;
+	
+	$sku = get_query_var( 'sku' );
+	if($sku) {
+		$post_type = get_post_type_object($wp->query_vars['post_type']);
+		return sprintf(__("[%s with SKU of %s]", 'jigoshop'), $post_type->labels->singular_name, $sku);
+	}
+	
+	$p = get_query_var( 'p' );
+	if ($p) {
+		$post_type = get_post_type_object($wp->query_vars['post_type']);
+		return sprintf(__("[%s with ID of %d]", 'jigoshop'), $post_type->labels->singular_name, $p);
+	}
+	
+	return $query;
+}
 
 /**
  * Order page filters
