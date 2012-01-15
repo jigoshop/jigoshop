@@ -116,7 +116,6 @@ function jigoshop_add_order_item() {
 
 	// Quit out
 	die();
-
 }
 
 
@@ -684,4 +683,70 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 		// endif;
 
 	endforeach;
+}
+
+/**
+ * Jigoshop Dropdown categories
+ * 
+ * @see     http://core.trac.wordpress.org/ticket/13258
+ * @param   integer   Show Product Count?
+ * @param   integer   Show Hierarchy?
+ * @return  void
+ */
+function jigoshop_product_dropdown_categories( $show_counts = true, $hierarchal = true ) {
+	global $wp_query;
+	
+	$r = array();
+	$r['pad_counts'] = 1;
+	$r['hierarchal'] = $hierarchal;
+	$r['hide_empty'] = 1;
+	$r['show_count'] = 1;
+	$r['selected']   = (isset($wp_query->query['product_cat'])) ? $wp_query->query['product_cat'] : '';
+	
+	$terms = get_terms( 'product_cat', $r );
+	if (!$terms) return;
+	
+	$output  = "<select name='product_cat' id='dropdown_product_cat'>";
+	$output .= '<option value="">'.__('Select a category', 'jigoshop').'</option>';
+	$output .= jigoshop_walk_category_dropdown_tree( $terms, 0, $r );
+	$output .="</select>";
+	
+	echo $output;
+}
+
+/**
+ * Walk the Product Categories.
+ */
+function jigoshop_walk_category_dropdown_tree() {
+	$args = func_get_args();
+	// the user's options are the third parameter
+	if ( empty($args[2]['walker']) || !is_a($args[2]['walker'], 'Walker') )
+		$walker = new Jigoshop_Walker_CategoryDropdown;
+	else
+		$walker = $args[2]['walker'];
+
+	return call_user_func_array(array( &$walker, 'walk' ), $args );
+}
+
+/**
+ * Create HTML dropdown list of Product Categories.
+ */
+class Jigoshop_Walker_CategoryDropdown extends Walker {
+
+	var $tree_type = 'category';
+	var $db_fields = array ('parent' => 'parent', 'id' => 'term_id', 'slug' => 'slug' );
+
+	function start_el(&$output, $category, $depth, $args) {
+		$pad = str_repeat('&nbsp;', $depth * 3);
+
+		$cat_name = apply_filters('list_product_cats', $category->name, $category);
+		$output .= "\t<option class=\"level-$depth\" value=\"".$category->slug."\"";
+		if ( $category->slug == $args['selected'] )
+			$output .= ' selected="selected"';
+		$output .= '>';
+		$output .= $pad.$cat_name;
+		if ( $args['show_count'] )
+			$output .= '&nbsp;('. $category->count .')';
+		$output .= "</option>\n";
+	}
 }

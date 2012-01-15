@@ -73,29 +73,13 @@ class Jigoshop_Widget_Product_Categories extends WP_Widget {
 		if( $is_dropdown ) {
 		
 			// Set up arguements
-			unset($args['title_li']);
 			$args['name'] = 'dropdown_product_cat';
 			
 			// Print dropdown
 			// wp_dropdown_categories($args); Commented out due to wordpress bug 13258 not supporting custom taxonomies
 			// See: http://core.trac.wordpress.org/ticket/13258
 			
-			$terms = get_terms('product_cat');
-			$output = "<select name='product_cat' id='dropdown_product_cat'>";
-			// TODO: Be better to make this all products link
-			$output .= '<option value="">'.__('Select Category', 'jigoshop').'</option>';
-			foreach($terms as $term){
-				$root_url = get_bloginfo('url');
-				$term_taxonomy=$term->taxonomy;
-				$term_slug=$term->slug;
-				$term_name =$term->name;
-				$link = $term_slug;
-				$selected = (strpos($_SERVER['REQUEST_URI'], $term_slug)) ? 'selected' : null;
-				
-				$output .='<option value="'.$link.'" ' . $selected . '>'.$term_name.'</option>';
-			}
-			$output .="</select>";
-			echo $output;
+			jigoshop_product_dropdown_categories( $args['show_count'], $args['hierarchical'] );
 			
 			// TODO: Move this javascript to its own file (plugins.js?)
 		?>
@@ -110,7 +94,7 @@ class Jigoshop_Widget_Product_Categories extends WP_Widget {
 				dropdown.onchange = onCatChange;
 			/* ]]> */
 			</script>
-		<?php	
+		<?php
 		} else {
 		
 			// Print list of categories

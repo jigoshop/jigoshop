@@ -18,30 +18,6 @@
  */
 
 /**
- * Filter products by type
- **/
-add_action('restrict_manage_posts', 'jigoshop_filter_products_type');
-
-function jigoshop_filter_products_type() {
-    global $typenow, $wp_query;
-
-    if ( $typenow != 'product' )
-    	return false;
-    	
-	// Get all active terms
-	$terms = get_terms('product_type');
-
-	echo "<select name='product_type' id='dropdown_product_type'>";
-	echo "<option value='0'>" . __('Show all types', 'jigoshop') . "</option>";
-
-	foreach($terms as $term) {
-		echo "<option value='{$term->slug}' ".selected($term->slug, $wp_query->query['product_type'], false).">".ucfirst($term->name)."</option>";
-	}
-
-	echo "</select>";
-}
-
-/**
  * Custom columns
  **/
  function jigoshop_edit_product_columns($columns){
@@ -50,7 +26,7 @@ function jigoshop_filter_products_type() {
 	
 	$columns["cb"]    = "<input type=\"checkbox\" />";
 
-	$columns["thumb"] = __("Image", 'woocommerce');
+	$columns["thumb"] = __("Image", 'jigoshop');
 	$columns["title"] = __("Name", 'jigoshop');
 
 	$columns["featured"] = __("Featured", 'jigoshop');
@@ -152,6 +128,42 @@ function jigoshop_custom_product_columns($column) {
 			endif;
 		break;
 	}
+}
+
+/**
+ * Filter products by category, uses slugs for option values.
+ * Props to: Andrew Benbow - chromeorange.co.uk
+ **/
+add_action('restrict_manage_posts','jigoshop_products_by_category');
+function jigoshop_products_by_category() {
+	global $typenow, $wp_query;
+
+    if ( $typenow=='product' )
+		jigoshop_product_dropdown_categories();
+}
+
+/**
+ * Filter products by type
+ **/
+add_action('restrict_manage_posts', 'jigoshop_filter_products_type');
+
+function jigoshop_filter_products_type() {
+    global $typenow, $wp_query;
+
+    if ( $typenow != 'product' )
+    	return false;
+    	
+	// Get all active terms
+	$terms = get_terms('product_type');
+
+	echo "<select name='product_type' id='dropdown_product_type'>";
+	echo "<option value='0'>" . __('Show all types', 'jigoshop') . "</option>";
+
+	foreach($terms as $term) {
+		echo "<option value='{$term->slug}' ".selected($term->slug, $wp_query->query['product_type'], false).">".ucfirst($term->name)."</option>";
+	}
+
+	echo "</select>";
 }
 // NOTE: This causes a large spike in queries, however they are cached so the performance hit is minimal ~20ms -Rob
 add_action('manage_product_posts_custom_column', 'jigoshop_custom_product_columns', 2);
