@@ -44,63 +44,32 @@ function jigoshop_filter_products_type() {
 /**
  * Custom columns
  **/
- function jigoshop_edit_variation_columns($columns){
+ function jigoshop_edit_product_columns($columns){
 	
 	$columns = array();
 	
-	$columns["cb"] = "<input type=\"checkbox\" />";
-	$columns["thumb"] = __("Thumb", 'jigoshop');
-	$columns["id"] = __("ID", 'jigoshop');
+	$columns["cb"]    = "<input type=\"checkbox\" />";
+
+	$columns["thumb"] = __("Image", 'woocommerce');
 	$columns["title"] = __("Name", 'jigoshop');
-	$columns["parent"] = __("Parent Product", 'jigoshop');
 
-	return $columns;
-}
-add_filter('manage_edit-product_variation_columns', 'jigoshop_edit_variation_columns');
-
-function jigoshop_custom_variation_columns($column) {
-	global $post;
-	$product = &new jigoshop_product($post->ID);
-
-	switch ($column) {
-		case "thumb" :
-			if (has_post_thumbnail($post->ID)) :
-				echo get_the_post_thumbnail($post->ID, 'shop_tiny');
-			endif;
-		break;
-		case "id" :
-			echo '#'.$post->ID;
-		break;
-		case "parent" :
-			if ($post->post_parent) :
-				$parent = get_post( $post->post_parent );
-				echo '#'.$parent->ID.' &mdash; <a href="'.admin_url('post.php?post='.$parent->ID.'&action=edit').'">'.$parent->post_title.'</a>';
-			endif;
-		break;
-	}
-}
-add_action('manage_product_variation_posts_custom_column', 'jigoshop_custom_variation_columns', 2);
-
-function jigoshop_edit_product_columns($columns){
-	
-	$columns = array();
-	
-	$columns["cb"] = "<input type=\"checkbox\" />";
-	$columns["thumb"] = __("Thumb", 'jigoshop');
-	$columns["title"] = __("Name", 'jigoshop');
-	$columns["product_type"] = __("Type", 'jigoshop');
-	$columns["sku"] = __("ID/SKU", 'jigoshop');
-	$columns["product_cat"] = __("Category", 'jigoshop');
-	$columns["product_tags"] = __("Tags", 'jigoshop');
-	$columns["visibility"] = __("Visibility", 'jigoshop');
 	$columns["featured"] = __("Featured", 'jigoshop');
 	
-	if (get_option('jigoshop_manage_stock')=='yes') :
-		$columns["is_in_stock"] = __("In Stock?", 'jigoshop');
-		$columns["inventory"] = __("Inventory", 'jigoshop');
-	endif;
+	$columns["product-type"] = __("Type", 'jigoshop');
+	if( get_option('jigoshop_enable_sku', true) == 'yes' ) {
+		$columns["product-type"] .= ' &amp; ' . __("SKU", 'jigoshop');
+	}
+
+	//$columns["product-cat"] = __("Category", 'jigoshop');
+	//$columns["product-tags"] = __("Tags", 'jigoshop');
+	
+	if ( get_option('jigoshop_manage_stock')=='yes' ) {
+	 	$columns["stock"] = __("Stock", 'jigoshop');
+	}
 	
 	$columns["price"] = __("Price", 'jigoshop');
+
+	$columns["product-date"] = __("Date", 'jigoshop');
 	
 	return $columns;
 }
@@ -112,28 +81,16 @@ function jigoshop_custom_product_columns($column) {
 
 	switch ($column) {
 		case "thumb" :
-			if (has_post_thumbnail($post->ID)) :
-				echo get_the_post_thumbnail($post->ID, 'shop_tiny');
-			endif;
-		break;
-		case "summary" :
-			echo $post->post_excerpt;
+			echo jigoshop_get_product_thumbnail( 'shop_tiny' );
 		break;
 		case "price":
 			echo $product->get_price_html();	
 		break;
-		case "product_cat" :
+		case "product-cat" :
 			echo get_the_term_list($post->ID, 'product_cat', '', ', ','');
 		break;
-		case "product_tags" :
+		case "product-tags" :
 			echo get_the_term_list($post->ID, 'product_tag', '', ', ','');
-		break;
-		case "sku" :
-			if ( $sku = get_post_meta( $post->ID, 'SKU', true )) :
-				echo '#'.$post->ID.' - SKU: ' . $sku;	
-			else :
-				echo '#'.$post->ID;
-			endif;
 		break;
 		case "featured" :
 			$url = wp_nonce_url( admin_url('admin-ajax.php?action=jigoshop-feature-product&product_id=' . $post->ID) );
@@ -142,29 +99,57 @@ function jigoshop_custom_product_columns($column) {
 			else echo '<img src="'.jigoshop::assets_url().'/assets/images/success-off.gif" alt="no" />';
 			echo '</a>';
 		break;
-		case "visibility" :
-			if ( $this_data = $product->visibility ) :
-				echo $this_data;	
-			else :
-				echo '<span class="na">&ndash;</span>';
-			endif;
+		case "stock" :
+			if ( ! $product->is_type( 'grouped' ) && $product->is_in_stock() ) {
+				if ( $product->managing_stock() ) {
+					echo $product->stock.' '.__('In Stock', 'jigoshop');	
+				} else {
+					echo __('In Stock', 'jigoshop');
+				}
+			} else {
+				echo '<strong class="attention">' . __('Out of Stock', 'jigoshop') . '</strong>';
+			}	
 		break;
-		case "is_in_stock" :
-			if ( !$product->is_type( 'grouped' ) && $product->is_in_stock() ) echo '<img src="'.jigoshop::assets_url().'/assets/images/success.gif" alt="yes" />';
-			else echo '<span class="na">&ndash;</span>';
-		break;
-		case "inventory" :
-			if ( $product->managing_stock() ) :
-				echo $product->stock.' in stock';	
-			else :
-				echo '<span class="na">&ndash;</span>';
-			endif;
-		break;
-		case "product_type" :
+		case "product-type" :
 			echo ucwords($product->product_type);
+			echo '<br/>';
+			if ( $sku = get_post_meta( $post->ID, 'SKU', true )) {
+				echo $sku;
+			}
+			else {
+				echo $post->ID;
+			}
 		break;
-		case "id" :
-			echo '#'.$post->ID;
+		case "product-date" :
+			if ( '0000-00-00 00:00:00' == $post->post_date ) :
+				$t_time = $h_time = __( 'Unpublished', 'jigoshop' );
+				$time_diff = 0;
+			else :
+				$t_time = get_the_time( __( 'Y/m/d g:i:s A', 'jigoshop' ) );
+				$m_time = $post->post_date;
+				$time = get_post_time( 'G', true, $post );
+
+				$time_diff = time() - $time;
+
+				if ( $time_diff > 0 && $time_diff < 24*60*60 )
+					$h_time = sprintf( __( '%s ago', 'jigoshop' ), human_time_diff( $time ) );
+				else
+					$h_time = mysql2date( __( 'Y/m/d', 'jigoshop' ), $m_time );
+			endif;
+
+			echo '<abbr title="' . $t_time . '">' . apply_filters( 'post_date_column_time', $h_time, $post ) . '</abbr><br />';
+			
+			if ( 'publish' == $post->post_status ) :
+				_e( 'Published', 'jigoshop' );
+			elseif ( 'future' == $post->post_status ) :
+				if ( $time_diff > 0 ) :
+					echo '<strong class="attention">' . __( 'Missed schedule', 'jigoshop' ) . '</strong>';
+				else :
+					_e( 'Scheduled', 'jigoshop' );
+				endif;
+			else :
+				_e( 'Last Modified', 'jigoshop' );
+			endif;
 		break;
 	}
 }

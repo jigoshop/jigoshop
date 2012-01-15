@@ -353,13 +353,20 @@ ul.subsubsub {
 }
 
 /* Product list */
+.fixed {
+	.column-sku, .column-product-type, .column-price, .column-stock, .column-product-date, .column-product-cat, .column-product-tags {
+		width: 15%;
+	}
+
+	.column-featured {
+		width: 75px;
+	}
+}
+
 table.wp-list-table .column-thumb {
 	width: 66px;
 	text-align: center;
 	white-space: nowrap
-}
-table.wp-list-table .column-sku {
-	width: 100px;
 }
 table.wp-list-table img {
 	margin: 2px 0;
