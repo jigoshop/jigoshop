@@ -63,8 +63,8 @@ function jigoshop_product_data_box() {
 				<a href="#general"><?php _e('General', 'jigoshop'); ?></a>
 			</li>
 
-			<li class="form_tax_tab">
-				<a href="#tax"><?php _e('Form & Tax', 'jigoshop') ?></a>
+			<li class="tax_form_tab">
+				<a href="#tax"><?php _e('Tax & Form', 'jigoshop') ?></a>
 			</li>
 
 			<?php if (get_option('jigoshop_manage_stock')) : ?>
