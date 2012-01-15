@@ -271,7 +271,7 @@ function jigoshop_product_data_box() {
 
 				$grouped_products = get_posts($args);
 
-				$options = array( null => 'Pick a Product Group &hellip;' );
+				$options = array( null => '&ndash; Pick a Product Group &ndash;' );
 
 				if( $grouped_products ) foreach( $grouped_products as $product ) {
 					if ($product->ID==$post->ID) continue;
@@ -279,7 +279,7 @@ function jigoshop_product_data_box() {
 					$options[$product->ID] = $product->post_title;
 				}
 				// Only echo the form if we have grouped products
-				echo jigoshop_form::select( 'parent_id', 'Product Group', $options, $post->post_parent );
+				echo jigoshop_form::select( 'parent_id', 'Product Group', $options, $post->post_parent, false, 'select' );
 			}
 			
 			// Ordering
