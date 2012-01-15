@@ -161,27 +161,6 @@ function jigoshop_product_data_box() {
 			</fieldset>
 		</div>
 		<div id="tax" class="panel jigoshop_options_panel">
-			<fieldset id="form_fieldset">
-			<?php
-				// Weight
-				if( get_option('jigoshop_enable_weight') !== 'no' ) {
-					echo jigoshop_form::input( 'weight', 'Weight', null, null, 'short', '0.00', array('after_label' => ' ('.get_option('jigoshop_weight_unit').')') ); // Missing placeholder attribute 0.00
-				}
-
-				// Dimensions
-				if( get_option('jigoshop_enable_dimensions', true) !== 'no' ) {
-					echo '
-					<p class="form-field dimensions_field">
-						<label for"product_length">'. __('Dimensions', 'jigoshop') . ' ('.get_option('jigoshop_dimension_unit').')' . '</label>
-						<input type="text" name="length" class="short" value="' . get_post_meta( $thepostid, 'length', true ) . '" placeholder="'. __('Length', 'jigoshop') . '" />
-						<input type="text" name="width" class="short" value="' . get_post_meta( $thepostid, 'width', true ) . '" placeholder="'. __('Width', 'jigoshop') . '" />
-						<input type="text" name="height" class="short" value="' . get_post_meta( $thepostid, 'height', true ) . '" placeholder="'. __('Height', 'jigoshop') . '" />
-					</p>
-					';
-				}
-			?>
-			</fieldset>
-
 			<fieldset>
 			<?php
 
@@ -204,6 +183,27 @@ function jigoshop_product_data_box() {
 			}
 
 			echo jigoshop_form::select( 'tax_class', 'Tax Class', $options );
+			?>
+			</fieldset>
+
+			<fieldset id="form_fieldset">
+			<?php
+				// Weight
+				if( get_option('jigoshop_enable_weight') !== 'no' ) {
+					echo jigoshop_form::input( 'weight', 'Weight', null, null, 'short', '0.00', array('after_label' => ' ('.get_option('jigoshop_weight_unit').')') ); // Missing placeholder attribute 0.00
+				}
+
+				// Dimensions
+				if( get_option('jigoshop_enable_dimensions', true) !== 'no' ) {
+					echo '
+					<p class="form-field dimensions_field">
+						<label for"product_length">'. __('Dimensions', 'jigoshop') . ' ('.get_option('jigoshop_dimension_unit').')' . '</label>
+						<input type="text" name="length" class="short" value="' . get_post_meta( $thepostid, 'length', true ) . '" placeholder="'. __('Length', 'jigoshop') . '" />
+						<input type="text" name="width" class="short" value="' . get_post_meta( $thepostid, 'width', true ) . '" placeholder="'. __('Width', 'jigoshop') . '" />
+						<input type="text" name="height" class="short" value="' . get_post_meta( $thepostid, 'height', true ) . '" placeholder="'. __('Height', 'jigoshop') . '" />
+					</p>
+					';
+				}
 			?>
 			</fieldset>
 		</div>
