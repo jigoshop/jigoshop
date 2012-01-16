@@ -29,7 +29,6 @@ require_once( 'recently_viewed.php' );
 require_once( 'top-rated.php' );
 require_once( 'user_login.php' );
 
-
 function jigoshop_register_widgets() {
 	register_widget('Jigoshop_Widget_Recent_Products');
 	register_widget('Jigoshop_Widget_Featured_Products');
@@ -40,10 +39,10 @@ function jigoshop_register_widgets() {
 	register_widget('Jigoshop_Widget_Price_Filter');
 	register_widget('Jigoshop_Widget_Product_Search');
 	register_widget('Jigoshop_Widget_Products_On_Sale');
-	register_widget('Jigoshop_Widget_Recently_Viewed_Products');
 	register_widget('Jigoshop_Widget_Top_Rated');
-	register_widget('Jigoshop_Widget_Best_Sellers');
-	register_widget('Jigoshop_Widget_Recent_Reviews');
 	register_widget('Jigoshop_Widget_User_Login');
+	register_widget('Jigoshop_Widget_Recently_Viewed_Products');
+	register_widget('Jigoshop_Widget_Recent_Reviews');
+	register_widget('Jigoshop_Widget_Best_Sellers');
 }
 add_action('widgets_init', 'jigoshop_register_widgets');
