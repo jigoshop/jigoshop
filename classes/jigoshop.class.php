@@ -109,7 +109,6 @@ class jigoshop extends jigoshop_singleton {
 	public static function get_var($var) {
 		$return = '';
 		switch ($var) :
-			case "version" : $return = JIGOSHOP_VERSION; break;
 			case "shop_small_w" : $return = self::SHOP_SMALL_W; break;
 			case "shop_small_h" : $return = self::SHOP_SMALL_H; break;
 			case "shop_tiny_w" : $return = self::SHOP_TINY_W; break;
@@ -233,7 +232,7 @@ class jigoshop extends jigoshop_singleton {
 	public static function redirect( $location, $status = NULL ) {
 		$_SESSION['errors'] = self::$errors;
 		$_SESSION['messages'] = self::$messages;
-		return $location;
+		return apply_filters('jigoshop_session_location_filter', $location);
 	}
 	
 	public static function shortcode_wrapper ($function, $atts=array()) {

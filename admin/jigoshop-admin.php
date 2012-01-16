@@ -25,8 +25,13 @@ require_once ( 'jigoshop-admin-post-types.php' );
 function jigoshop_admin_init () {
 	require_once ( 'jigoshop-admin-settings-options.php' );
 }
-
 add_action('admin_init', 'jigoshop_admin_init');
+
+function jigoshop_get_plugin_data( $key = 'Version' ) {
+	$data = get_plugin_data( jigoshop::plugin_path().'/jigoshop.php' );
+
+	return $data[$key];
+}
 
 /**
  * Admin Menus
@@ -123,7 +128,7 @@ function jigoshop_system_info() {
 	<div class="wrap jigoshop">
 		<div class="icon32 icon32-jigoshop-debug" id="icon-jigoshop"><br/></div>
 	    <h2><?php _e('System Information','jigoshop') ?></h2>
-	    <p>Use the information below when submitting technical support requests via <a href="http://support.jigoshop.com/" title="Jigoshop Support" target="_blank">Jigoshop Support</a>.</p>
+	    <p>Use the information below when submitting technical support requests via <a href="http://jigoshop.com/support/" title="Jigoshop Support" target="_blank">Jigoshop Support</a>.</p>
 		<div id="tabs-wrap">
 			<ul class="tabs">
 				<li><a href="#versions"><?php _e('Environment', 'jigoshop'); ?></a></li>
@@ -140,7 +145,7 @@ function jigoshop_system_info() {
 		           	<tbody>
 		                <tr>
 		                    <td class="titledesc"><?php _e('Jigoshop Version','jigoshop')?></td>
-		                    <td class="forminp"><?php echo jigoshop::get_var('version'); ?></td>
+		                    <td class="forminp"><?php echo jigoshop_get_plugin_data(); ?></td>
 		                </tr>
 		                <tr>
 		                    <td class="titledesc"><?php _e('WordPress Version','jigoshop')?></td>

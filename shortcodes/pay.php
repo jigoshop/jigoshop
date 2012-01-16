@@ -133,14 +133,14 @@ function jigoshop_pay() {
 
 			else :
 
-				wp_safe_redirect( get_permalink(get_option('jigoshop_myaccount_page_id')) );
+				wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(get_option('jigoshop_myaccount_page_id'))) );
 				exit;
 
 			endif;
 
 		else :
 
-			wp_safe_redirect( get_permalink(get_option('jigoshop_myaccount_page_id')) );
+			wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(get_option('jigoshop_myaccount_page_id'))) );
 			exit;
 
 		endif;

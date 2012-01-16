@@ -69,6 +69,6 @@ function jigoshop_thankyou() {
 
 	endif;
 	
-	echo '<p><a class="button" href="'.get_permalink(get_option('jigoshop_shop_page_id')).'">'.__('&larr; Continue Shopping', 'jigoshop').'</a></p>';
+	echo '<p><a class="button" href="'.apply_filters('jigoshop_get_shop_page_id', get_permalink(get_option('jigoshop_shop_page_id'))).'">'.__('&larr; Continue Shopping', 'jigoshop').'</a></p>';
 
 }

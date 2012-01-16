@@ -14,9 +14,9 @@
  * Author:				Jigowatt
  * Author URI:			http://jigowatt.co.uk
  *
- * Version:				0.9.9.3
+ * Version:				1.0
  * Requires at least:	3.1
- * Tested up to:		3.3
+ * Tested up to:		3.3.1
  *
  * @package    			Jigoshop
  * @category   			Core
@@ -25,10 +25,15 @@
  * @license    			http://jigoshop.com/license/commercial-edition
  */
 
-if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", "0.9.9.4 RC1");
+if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1202010);
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
+
+if ( get_site_option('jigoshop_db_version') < JIGOSHOP_VERSION ) {
+	require_once('jigoshop_upgrade.php');
+	jigoshop_upgrade();
+}
 
 /**
  * Installs and upgrades
@@ -55,7 +60,6 @@ include_once( 'classes/jigoshop_countries.class.php' );
 include_once( 'classes/jigoshop_customer.class.php' );
 include_once( 'classes/jigoshop_product.class.php' );
 include_once( 'classes/jigoshop_product_variation.class.php' );
-include_once( 'classes/jigoshop_products.class.php' );
 include_once( 'classes/jigoshop_order.class.php' );
 include_once( 'classes/jigoshop_orders.class.php' );
 include_once( 'classes/jigoshop_tax.class.php' );
@@ -71,6 +75,7 @@ include_once( 'gateways/paypal.php' );
 include_once( 'gateways/skrill.php' );
 
 include_once( 'shipping/shipping_method.class.php' );
+include_once( 'shipping/jigoshop_calculable_shipping.php' );
 include_once( 'shipping/flat_rate.php' );
 include_once( 'shipping/free_shipping.php' );
 
@@ -78,7 +83,8 @@ include_once( 'classes/jigoshop.class.php' );
 include_once( 'classes/jigoshop_cart.class.php' );
 include_once( 'classes/jigoshop_checkout.class.php' );
 
-include_once( 'jigoshop_widgets.php' );
+include_once( 'widgets/init.php' );
+
 include_once( 'jigoshop_shortcodes.php' );
 include_once( 'jigoshop_templates.php' );
 include_once( 'jigoshop_template_actions.php' );
@@ -282,6 +288,8 @@ function jigoshop_frontend_scripts() {
 	else :
 		$params['is_checkout'] = 0;
 	endif;
+	
+	$params = apply_filters('jigoshop_params', $params);
 
 	wp_localize_script( 'jigoshop_script', 'params', $params );
 
@@ -502,37 +510,39 @@ function get_jigoshop_currency_symbol() {
 	$currency = get_option('jigoshop_currency');
 	$currency_symbol = '';
 	switch ($currency) :
-		case 'AUD' :
-		case 'BRL' :
-		case 'CAD' :
-		case 'HKD' :
-		case 'MXN' :
-		case 'NZD' :
-		case 'SGD' :
-		case 'USD' : $currency_symbol = '&#36;'; break; /* Dollar Sign */
-		
-		case 'EUR' : $currency_symbol = '&euro;'; break; /* European Euro */
-		case 'IDR' : $currency_symbol = '&#82;&#112;'; break; /* Indonesia Rupiah */
-		case 'INR' : $currency_symbol = '&#8360;'; break; /* India Rupee */
-		case 'HRK' : $currency_symbol = '&#107;&#110;'; break; /* Croatia Kuna */
-		case 'HUF' : $currency_symbol = '&#70;&#116;'; break; /* Hungary Forint */
-		case 'JPY' : $currency_symbol = '&yen;'; break; /* Japanese Yen */
-		case 'RUB' : $currency_symbol = '&#1088;&#1091;&#1073;'; break; /* Russia Ruble */
-		case 'TRY' : $currency_symbol = '&#8356;'; break; /* Turkey Lira */
-
-		case 'CHF' :
-		case 'CZK' :
-		case 'DKK' :
-		case 'ILS' :
-		case 'MYR' :
-		case 'NOK' :
-		case 'PHP' :
-		case 'PLN' :
-		case 'SEK' :
-		case 'THB' :
-		case 'TWD' : $currency_symbol = $currency; break;
-
-		case 'GBP' :
+		case 'AED' : $currency_symbol = '&#1583;&#46;&#1573;'; break;
+		case 'AUD' : $currency_symbol = '&#36;'; break;
+		case 'BRL' : $currency_symbol = '&#82;&#36;'; break;
+		case 'CAD' : $currency_symbol = '&#36;'; break;
+		case 'CHF' : $currency_symbol = '&#8355;'; break;
+		case 'CNY' : $currency_symbol = '&#165;'; break;
+		case 'CZK' : $currency_symbol = '&#75;&#269;'; break;
+		case 'DKK' : $currency_symbol = 'kr'; break;
+		case 'EUR' : $currency_symbol = '&euro;'; break;
+		case 'GBP' : $currency_symbol = '&pound;'; break;
+		case 'HKD' : $currency_symbol = '&#36;'; break;
+		case 'HRK' : $currency_symbol = '&#107;&#110;'; break;
+		case 'HUF' : $currency_symbol = '&#70;&#116;'; break;
+		case 'IDR' : $currency_symbol = '&#82;&#112;'; break;
+		case 'ILS' : $currency_symbol = '&#8362;'; break;
+		case 'INR' : $currency_symbol = '&#8360;'; break;
+		case 'JPY' : $currency_symbol = '&yen;'; break;
+		case 'MXN' : $currency_symbol = '&#162;'; break;
+		case 'MYR' : $currency_symbol = 'RM'; break;
+		case 'NGN' : $currency_symbol = '&#8358;'; break;
+		case 'NOK' : $currency_symbol = 'kr'; break;
+		case 'NZD' : $currency_symbol = '&#36;'; break;
+		case 'PHP' : $currency_symbol = '&#8369;'; break;
+		case 'PLN' : $currency_symbol = '&#122;&#322;'; break;
+		case 'RON' : $currency_symbol = '&#108;&#101;&#105;'; break;
+		case 'RUB' : $currency_symbol = '&#1088;&#1091;&#1073;'; break;
+		case 'SEK' : $currency_symbol = 'kr'; break;
+		case 'SGD' : $currency_symbol = '&#36;'; break;
+		case 'THB' : $currency_symbol = '&#3647;'; break;
+		case 'TRY' : $currency_symbol = '&#8356;'; break;
+		case 'TWD' : $currency_symbol = '&#78;&#84;&#36;'; break;
+		case 'USD' : $currency_symbol = '&#36;'; break;
+		case 'ZAR' : $currency_symbol = 'R'; break;
 		default    : $currency_symbol = '&pound;'; break;
 	endswitch;
 	return apply_filters('jigoshop_currency_symbol', $currency_symbol, $currency);
@@ -775,33 +785,6 @@ function jigoshop_exclude_order_comments( $clauses ) {
 }
 if (!is_admin()) add_filter('comments_clauses', 'jigoshop_exclude_order_comments');
 
-### Update data ################################################################################
-function rename_attributes() {
-	if( get_option('run_once', true) ) {
-	
-		// Update dataset to be prefixed with pa_ instead
-		global $wpdb;
-		
-		$q = $wpdb->get_results("SELECT * 
-			FROM $wpdb->term_taxonomy
-			WHERE taxonomy LIKE 'product_attribute_%'
-		");
-		
-		foreach($q as $item) {
-			$taxonomy = str_replace('product_attribute_', 'pa_', $item->taxonomy);
-			
-			$wpdb->update(
-				$wpdb->term_taxonomy,
-				array('taxonomy' => $taxonomy),
-				array('term_taxonomy_id' => $item->term_taxonomy_id)
-			);
-		}
-		
-		add_option('run_once', 0);
-	}
-}
-add_action('init', 'rename_attributes');
-
 /**
  * Support for Import/Export
  *
@@ -886,4 +869,3 @@ function jigoshop_import_start() {
 
 }
 add_action('import_start', 'jigoshop_import_start');
-
