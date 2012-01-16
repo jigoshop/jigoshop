@@ -150,13 +150,13 @@ function jigoshop_product_data_box() {
 				echo jigoshop_form::checkbox( 'featured', 'Featured?', false, __('Enable this option to feature this product', 'jigoshop') );
 
 				// Visibility
-				/*echo jigoshop_form::select( 'visibility', 'Visibility',
+				echo jigoshop_form::select( 'visibility', 'Visibility',
 					array(
 						'visible'	=> 'Catalog & Search',
 						'catalog'	=> 'Catalog Only',
 						'search'	=> 'Search Only',
 						'Hidden'	=> 'Hidden'
-					) );*/
+					) );
 			?>
 			</fieldset>
 		</div>
@@ -177,7 +177,7 @@ function jigoshop_product_data_box() {
 	                        
 	            $_tax = new jigoshop_tax();
 	            $tax_classes = $_tax->get_tax_classes();
-	            $selections = $data[$field['id']];
+	            $selections = get_post_meta($post->ID, 'tax_classes', true);
 	            echo '<p><label for="'.$field['id'].'">'.$field['label'].':</label>';
 
 				echo '<input type="checkbox" class="checkbox" name="'.$field['id'].'[]" value="" '; if ($selections && in_array('', $selections)) echo 'checked="checked"'; echo '/><span class="checkbox-label">'.__('Standard', 'jigoshop').'</span></p>';

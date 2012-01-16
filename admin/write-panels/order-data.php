@@ -350,6 +350,7 @@ function jigoshop_order_totals_meta_box($post) {
 	$data = maybe_unserialize( get_post_meta($post->ID, 'order_data', true) );
 
 	if (!isset($data['shipping_method'])) $data['shipping_method'] = '';
+	if (!isset($data['shipping_service'])) $data['shipping_service'] = '';
 	if (!isset($data['payment_method'])) $data['payment_method'] = '';
 	if (!isset($data['order_subtotal'])) $data['order_subtotal'] = '';
 	if (!isset($data['order_shipping'])) $data['order_shipping'] = '';

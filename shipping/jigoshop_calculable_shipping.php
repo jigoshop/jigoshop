@@ -1,7 +1,7 @@
 <?php
 
 /**
- * calculable shipping. This class allows the ability to plugin to the shipping to use
+ * calculable shipping. This class allows the ability to plugin 
  * shipping services in order to retrieve shipping information from their servers. 
  *
  * DISCLAIMER
@@ -141,9 +141,12 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
     }
 
     /**
-     * This function can be overridden by subclasses if it is needed. 
+     * This function can be overridden by subclasses if it is needed. If shipping
+     * services return all of their services in one reponse xml file, then use this
+     * method to handle that task by retrieving the services and returning them in
+     * an array.
      * 
-     * @param type $array_response the response from the shipping api's converted
+     * @param array array_response the response from the shipping api's converted
      * to array format
      */
     protected function get_services_from_response($array_response) {
@@ -155,7 +158,8 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
 
     /**
      * If there are rules that determine which shipping services can be used based on weight
-     * of package, size, etc, then this method is used to determine that.
+     * of package, size, etc, then this method is used to determine that and remove
+     * shipping services that cannot be used because criteria has failed.
      *
      * @return array of services to use for rate calculation
      */
