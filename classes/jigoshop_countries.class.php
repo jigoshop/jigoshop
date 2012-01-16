@@ -477,6 +477,10 @@ class jigoshop_countries {
 		)
 	);
 	
+    static function country_has_states($country_code) {
+        return (self::$states[$country_code] && is_array(self::$states[$country_code]));
+    }
+    
 	/** get base country */
 	function get_base_country() {
 		$default = get_option('jigoshop_default_country');
@@ -559,20 +563,20 @@ class jigoshop_countries {
 		if ( $countries ) foreach ( $countries as $key=>$value) :
 			if ( $states =  self::get_states($key) ) :
 				echo '<optgroup label="'.$value.'">';
-    				echo '<option value="'.$key.'"';
-    				if ($selected_country==$key && $selected_state=='*') echo ' selected="selected"';
-    				echo '>'.$value.' &mdash; '.__('All states', 'jigoshop').'</option>';
-    				foreach ($states as $state_key=>$state_value) :
-    					echo '<option value="'.$key.':'.$state_key.'"';
+    			echo '<option value="'.$key.'"';
+    			if ($selected_country==$key && $selected_state=='*') echo ' selected="selected"';
+    			echo '>'.$value.' &mdash; '.__('All states', 'jigoshop').'</option>';
+    			foreach ($states as $state_key=>$state_value) :
+    				echo '<option value="'.$key.':'.$state_key.'"';
     					
-    					if ($selected_country==$key && $selected_state==$state_key) echo ' selected="selected"';
+    				if ($selected_country==$key && $selected_state==$state_key) echo ' selected="selected"';
     					
-    					echo '>'.$value.' &mdash; '. ($escape ? esc_js($state_value) : $state_value) .'</option>';
-    				endforeach;
+    				echo '>'.$value.' &mdash; '. ($escape ? esc_js($state_value) : $state_value) .'</option>';
+    			endforeach;
     			echo '</optgroup>';
 			else :
     			echo '<option';
-    			if ($selected_country==$key && $selected_state=='*') echo ' selected="selected"';
+    			if ($selected_country==$key && $selected_state=='') echo ' selected="selected"';
     			echo ' value="'.$key.'">'. ($escape ? esc_js( __($value, 'jigoshop') ) : __($value, 'jigoshop') ) .'</option>';
 			endif;
 		endforeach;

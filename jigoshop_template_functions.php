@@ -90,21 +90,18 @@ if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 	function jigoshop_template_loop_add_to_cart( $post, $_product ) {
 		
 		// do not show "add to cart" button if product's price isn't announced
-		if( $_product->get_price() === '' AND ! ($_product->is_type('variable') OR $_product->is_type('grouped')) ) return;
+		if ( $_product->get_price() === '' AND ! ($_product->is_type('variable') OR $_product->is_type('grouped')) ) return;
 		
-		?>
-			<?php if( $_product->is_in_stock() ): ?>
-			
-				<?php if( $_product->is_type('variable') OR $_product->is_type('grouped') ): ?>
-					<a href="<?php get_permalink($_product->id) ?>" class="button"><?php _e('Select', 'jigoshop') ?></a>
-				<?php else: ?>
-					<a href="<?php echo $_product->add_to_cart_url(); ?>" class="button"><?php _e('Add to cart', 'jigoshop'); ?></a>
-				<?php endif; ?>
-			<?php else: ?>
-				<span class="nostock"><?php _e('Out of Stock', 'jigoshop') ?></span>
-			<?php endif; ?>
-		
-		<?php
+		if ( $_product->is_in_stock() ) :
+			if ( $_product->is_type('variable') OR $_product->is_type('grouped') ) :
+				$output = '<a href="'.get_permalink($_product->id).'" class="button">'.__('Select', 'jigoshop').'</a>';
+			else :
+				$output = '<a href="'.$_product->add_to_cart_url().'" class="button">'.__('Add to cart', 'jigoshop').'</a>';
+			endif;
+		else :
+			$output = '<span class="nostock">'.__('Out of Stock', 'jigoshop').'</span>';
+		endif;
+		echo $output;
 	}
 }
 if (!function_exists('jigoshop_template_loop_product_thumbnail')) {
@@ -165,15 +162,11 @@ if (!function_exists('jigoshop_show_product_thumbnails')) {
 		echo '<div class="thumbnails">';
 
 		$thumb_id = get_post_thumbnail_id();
-		// since there are now user settings for sizes, shouldn't need filters -JAP-
-		//$small_thumbnail_size = apply_filters('single_product_small_thumbnail_size', 'shop_thumbnail');
 		$small_thumbnail_size = jigoshop_get_image_size( 'shop_thumbnail' );
-		$args = array( 'post_type' => 'attachment', 'numberposts' => -1, 'post_status' => null, 'post_parent' => $post->ID, 'orderby' => 'id', 'order' => 'asc' );
+		$args = array( 'post_type' => 'attachment', 'numberposts' => -1, 'post_status' => null, 'post_parent' => $post->ID, 'orderby' => 'menu_order', 'order' => 'asc' );
 		$attachments = get_posts($args);
 		if ($attachments) :
 			$loop = 0;
-			// with user settings for images sizes, the following foreach could be broken, need testing
-			// added filter to override image count per row, maybe need user setting here too?  -JAP-
 			$columns = apply_filters( 'single_thumbnail_columns', 3 );
 			foreach ( $attachments as $attachment ) :
 
@@ -242,9 +235,24 @@ if (!function_exists('jigoshop_template_single_excerpt')) {
 if (!function_exists('jigoshop_template_single_meta')) {
 	function jigoshop_template_single_meta( $post, $_product ) {
 
-		?>
-		<div class="product_meta"><?php if ($_product->is_type('simple') && get_option('jigoshop_enable_sku')=='yes') : ?><span class="sku">SKU: <?php echo $_product->sku; ?>.</span><?php endif; ?><?php echo $_product->get_categories( ', ', ' <span class="posted_in">' . __( 'Posted in ', 'jigoshop' ) . '', '.</span>'); ?><?php echo $_product->get_tags( ', ', ' <span class="tagged_as">' . __( 'Tagged as ', 'jigoshop' ) . '', '.</span>'); ?></div>
-		<?php
+		echo '<div class="product_meta">';
+		if ($_product->is_type('simple') && get_option('jigoshop_enable_sku')=='yes') :
+			echo '<div class="sku">SKU: ' . $_product->sku . '</div>';
+		endif;
+		if (get_option('jigoshop_enable_weight')=='yes' && $_product->get_weight() ) :
+			echo '<div class="weight">' . __('Weight: ', 'jigoshop') . $_product->get_weight() . ' ' . get_option('jigoshop_weight_unit') . '</div>';
+		endif;
+		if (get_option('jigoshop_enable_dimensions')=='yes') :
+			if ( $_product->get_length() )
+				echo '<div class="length">' . __('Length: ', 'jigoshop') . $_product->get_length() . ' ' . get_option('jigoshop_dimension_unit') . '</div>';
+			if ( $_product->get_width() )
+				echo '<div class="width">' . __('Width: ', 'jigoshop') . $_product->get_width() . ' ' . get_option('jigoshop_dimension_unit') . '</div>';
+			if ( $_product->get_height() )
+				echo '<div class="height">' . __('Height: ', 'jgioshop') . $_product->get_height() . ' ' . get_option('jigoshop_dimension_unit') . '</div>';
+		endif;
+		echo $_product->get_categories( ', ', ' <div class="posted_in">' . __( 'Posted in ', 'jigoshop' ) . '', '.</div>');
+		echo $_product->get_tags( ', ', ' <div class="tagged_as">' . __( 'Tagged as ', 'jigoshop' ) . '', '.</div>');
+		echo '</div>';
 
 	}
 }
@@ -325,15 +333,15 @@ if (!function_exists('jigoshop_grouped_add_to_cart')) {
 		<form action="<?php echo $_product->add_to_cart_url(); ?>" class="cart" method="post">
 			<table cellspacing="0">
 				<tbody>
-					<?php foreach ($_product->children as $child) : $child_product = &new jigoshop_product( $child->ID ); $cavailability = $child_product->get_availability(); ?>
+					<?php foreach ($_product->get_children() as $child_ID) : $child = $_product->get_child($child_ID); $cavailability = $child->get_availability(); ?>
 						<tr>
 							<td><div class="quantity"><input name="quantity[<?php echo $child->ID; ?>]" value="0" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div></td>
-							<td><label for="product-<?php echo $child_product->id; ?>"><?php
-								if ($child_product->is_visible()) echo '<a href="'.get_permalink($child->ID).'">';
-								echo $child_product->get_title();
-								if ($child_product->is_visible()) echo '</a>';
+							<td><label for="product-<?php echo $child->id; ?>"><?php
+								if ($child->is_visible()) echo '<a href="'.get_permalink($child->ID).'">';
+								echo $child->get_title();
+								if ($child->is_visible()) echo '</a>';
 							?></label></td>
-							<td class="price"><?php echo $child_product->get_price_html(); ?><small class="stock <?php echo $cavailability['class'] ?>"><?php echo $cavailability['availability']; ?></small></td>
+							<td class="price"><?php echo $child->get_price_html(); ?><small class="stock <?php echo $cavailability['class'] ?>"><?php echo $cavailability['availability']; ?></small></td>
 						</tr>
 					<?php endforeach; ?>
 				</tbody>
@@ -357,7 +365,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
         
         foreach($children as $child) {
             /* @var $variation jigoshop_product_variation */
-            $variation = $child->product;
+            $variation = $_product->get_child( $child );
             if($variation instanceof jigoshop_product_variation && $variation->is_visible()) {
                 $vattrs = $variation->get_variation_attributes();
                 $availability = $variation->get_availability();
@@ -385,18 +393,16 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
         }
 
 		?>
-        <script>
+        <script type="text/javascript">
             var product_variations = <?php echo json_encode($variationsAvailable) ?>;
         </script>
 		<form action="<?php echo $_product->add_to_cart_url(); ?>" class="variations_form cart" method="post">
-
-			<table class="variations" cellspacing="0">
-				<tbody>
+			<fieldset class="variations">
 				<?php foreach ( $attributes as $aname => $avalues ): ?>
-                    <tr>
-                    	<?php $sanitized_name = sanitize_title( $aname ); ?>
-                        <td><label for="<?php echo $sanitized_name; ?>"><?php echo $aname; ?></label></td>
-                        <td><select id="<?php echo $sanitized_name; ?>" name="tax_<?php echo $sanitized_name; ?>">
+					<?php $sanitized_name = sanitize_title( $aname ); ?>
+					<div>
+						<span class="select_label"><?php echo $aname; ?></span>
+						<select id="<?php echo $sanitized_name; ?>" name="tax_<?php echo $sanitized_name; ?>">
 							<option value=""><?php echo __('Choose an option ', 'jigoshop') ?>&hellip;</option>
 							<?php foreach ( $avalues as $value ) : ?>
 								<?php if ( taxonomy_exists( 'pa_'.$sanitized_name )) : ?>
@@ -412,16 +418,15 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 									<option value="<?php echo sanitize_title( $value ); ?>"><?php echo $value; ?></option>
 								<?php endif;?>
 							<?php endforeach; ?>
-                        </td>
-                    </tr>
+						</select>
+					</div>
                 <?php endforeach;?>
-				</tbody>
-			</table>
+			</fieldset>
 			<div class="single_variation"></div>
 			<div class="variations_button" style="display:none;">
                 <input type="hidden" name="variation_id" value="" />
                 <div class="quantity"><input name="quantity" value="1" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div>
-				<button type="submit" class="button-alt"><?php _e('Add to cart', 'jigoshop'); ?></button>
+				<input type="submit" class="button-alt" value="<?php _e('Add to cart', 'jigoshop'); ?>" />
 			</div>
 			<?php do_action('jigoshop_add_to_cart_form'); ?>
 		</form>
@@ -502,7 +507,7 @@ if (!function_exists('jigoshop_product_attributes_panel')) {
 		global $_product;
 		echo '<div class="panel" id="tab-attributes">';
 		echo '<h2>' . apply_filters('jigoshop_product_description_heading', __('Additional Information', 'jigoshop')) . '</h2>';
-		$_product->list_attributes();
+		echo $_product->list_attributes();
 		echo '</div>';
 	}
 }
@@ -538,7 +543,7 @@ if (!function_exists('jigoshop_get_product_thumbnail')) {
 if (!function_exists('jigoshop_get_image_placeholder')) {
 	function jigoshop_get_image_placeholder( $size = 'shop_small' ) {
 		$image_size = jigoshop_get_image_size( $size );
-		return '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.$image_size[0].'px" height="'.$image_size[1].'px" />';
+		return '<img src="'.jigoshop::assets_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.$image_size[0].'px" height="'.$image_size[1].'px" />';
 	}
 }
 
@@ -636,6 +641,57 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 				</p>
 			</div>
 			<p><button type="submit" name="calc_shipping" value="1" class="button"><?php _e('Update Totals', 'jigoshop'); ?></button></p>
+			<p>
+			<?php
+			if (jigoshop_shipping::has_calculable_shipping() && jigoshop_shipping::get_total() > 0) :
+				$available_methods = jigoshop_shipping::get_available_shipping_methods();
+				foreach ( $available_methods as $method ) :
+					if ( $method instanceof jigoshop_calculable_shipping ) :
+
+						for ($i = 0; $i < $method->get_rates_amount(); $i++) {
+						?>
+							<div class="col2-set">
+								<p class="form-row col-1">
+									
+									<?php 
+									echo '<input type="radio" name="shipping_rates" value="' . $method->id . ':' . $i . '"' . ' class="shipping_select"';
+									if ( $method->get_cheapest_service() == $method->get_selected_service($i) && $method->is_chosen() ) echo ' checked>'; else echo '>'; 
+									echo $method->get_selected_service($i) . ' via ' . $method->title;
+									?>
+								<p class="form-row col-2"><?php  
+									echo jigoshop_price($method->get_selected_price($i)); 
+									if ($method->shipping_tax>0) : __(' (ex. tax)', 'jigoshop'); endif;
+									?>
+							</div> 
+						<?php
+						}
+						
+					else :
+					?>
+					<div class="col2-set">
+						<p class="form-row col-1">
+							<?php 
+							// value has : as there are no services on non calculable methods, since they are identified only by the id
+							echo '<input type="radio" name="shipping_rates" value="' . $method->id . ':" class="shipping_select"';
+							if ( $method->is_chosen() ) echo 'checked>'; else echo '>'; 
+							echo $method->title;
+
+							?>
+						<p class="form-row col-2"><?php 
+							if ($method->shipping_total>0) :
+								echo jigoshop_price($method->shipping_total);
+								if ($method->shipping_tax>0) : __(' (ex. tax)', 'jigoshop'); endif;
+							else :
+								echo __('Free', 'jigoshop');
+							endif;						
+						?>
+					</div>
+					<?php
+					endif;
+				endforeach;
+			endif;
+			?>
+			<input type="hidden" name="cart-url" value="<?php echo jigoshop_cart::get_cart_url() ?>">
 			<?php jigoshop::nonce_field('cart') ?>
 			</section>
 		</form>
@@ -898,3 +954,11 @@ function jigoshop_body_classes ($classes) {
 	return $classes;
 
 }
+
+/**
+ * Order review table for checkout
+ **/
+function jigoshop_order_review() {
+	jigoshop_get_template('checkout/review_order.php', false);
+}
+

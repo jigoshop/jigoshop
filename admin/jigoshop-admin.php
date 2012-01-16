@@ -25,8 +25,13 @@ require_once ( 'jigoshop-admin-post-types.php' );
 function jigoshop_admin_init () {
 	require_once ( 'jigoshop-admin-settings-options.php' );
 }
-
 add_action('admin_init', 'jigoshop_admin_init');
+
+function jigoshop_get_plugin_data( $key = 'Version' ) {
+	$data = get_plugin_data( jigoshop::plugin_path().'/jigoshop.php' );
+
+	return $data[$key];
+}
 
 /**
  * Admin Menus
@@ -40,7 +45,7 @@ function jigoshop_admin_menu() {
 	
 	$menu[] = array( '', 'read', 'separator-jigoshop', '', 'wp-menu-separator jigoshop' );
 	
-    add_menu_page(__('Jigoshop'), __('Jigoshop'), 'manage_options', 'jigoshop' , 'jigoshop_dashboard', jigoshop::plugin_url() . '/assets/images/icons/menu_icons.png', 55);
+    add_menu_page(__('Jigoshop'), __('Jigoshop'), 'manage_options', 'jigoshop' , 'jigoshop_dashboard', jigoshop::assets_url() . '/assets/images/icons/menu_icons.png', 55);
     add_submenu_page('jigoshop', __('Dashboard', 'jigoshop'), __('Dashboard', 'jigoshop'), 'manage_options', 'jigoshop', 'jigoshop_dashboard'); 
     add_submenu_page('jigoshop', __('General Settings', 'jigoshop'),  __('Settings', 'jigoshop') , 'manage_options', 'settings', 'jigoshop_settings');
     add_submenu_page('jigoshop', __('System Info','jigoshop'), __('System Info','jigoshop'), 'manage_options', 'sysinfo', 'jigoshop_system_info');
@@ -123,7 +128,7 @@ function jigoshop_system_info() {
 	<div class="wrap jigoshop">
 		<div class="icon32 icon32-jigoshop-debug" id="icon-jigoshop"><br/></div>
 	    <h2><?php _e('System Information','jigoshop') ?></h2>
-	    <p>Use the information below when submitting technical support requests via <a href="http://support.jigoshop.com/" title="Jigoshop Support" target="_blank">Jigoshop Support</a>.</p>
+	    <p>Use the information below when submitting technical support requests via <a href="http://jigoshop.com/support/" title="Jigoshop Support" target="_blank">Jigoshop Support</a>.</p>
 		<div id="tabs-wrap">
 			<ul class="tabs">
 				<li><a href="#versions"><?php _e('Environment', 'jigoshop'); ?></a></li>
@@ -140,7 +145,7 @@ function jigoshop_system_info() {
 		           	<tbody>
 		                <tr>
 		                    <td class="titledesc"><?php _e('Jigoshop Version','jigoshop')?></td>
-		                    <td class="forminp"><?php echo jigoshop::get_var('version'); ?></td>
+		                    <td class="forminp"><?php echo jigoshop_get_plugin_data(); ?></td>
 		                </tr>
 		                <tr>
 		                    <td class="titledesc"><?php _e('WordPress Version','jigoshop')?></td>
@@ -287,8 +292,8 @@ function permalink_save_twice_notice() {
 		print_r('<div id="message" class="updated"><p>'.__('Note: Please make sure you save your permalink settings <strong>twice</strong> in order for them to be applied correctly in Jigoshop', 'jigoshop' ).'</p></div>');
 	}
 }
-
-add_action('admin_notices', 'permalink_save_twice_notice');
+// this seems fixed as of WP 3.3, commenting out for now to test -JAP-
+//add_action('admin_notices', 'permalink_save_twice_notice');
 
 /**
  * Categories ordering
@@ -301,21 +306,11 @@ function jigoshop_categories_scripts () {
 	
 	if( !isset($_GET['taxonomy']) || $_GET['taxonomy'] !== 'product_cat') return;
 	
-	wp_register_script('jigoshop-categories-ordering', jigoshop::plugin_url() . '/assets/js/categories-ordering.js', array('jquery-ui-sortable'));
+	wp_register_script('jigoshop-categories-ordering', jigoshop::assets_url() . '/assets/js/categories-ordering.js', array('jquery-ui-sortable'));
 	wp_print_scripts('jigoshop-categories-ordering');
 	
 }
 add_action('admin_footer-edit-tags.php', 'jigoshop_categories_scripts');
-
-/**
- * Load needed scripts for Settings Coupons
- */
-function jigoshop_admin_coupons_scripts () {
-	wp_register_script('jigoshop-date', jigoshop::plugin_url() . '/assets/js/date.js');
-	wp_register_script('jigoshop-datepicker', jigoshop::plugin_url() . '/assets/js/datepicker.js', array('jquery', 'jigoshop-date'));
-	wp_enqueue_script('jigoshop-datepicker');
-}
-add_action("admin_print_scripts-jigoshop_page_settings", 'jigoshop_admin_coupons_scripts');
 
 /**
  * Ajax request handling for categories ordering

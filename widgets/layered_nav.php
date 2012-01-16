@@ -53,8 +53,13 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 			return false;
 
 		// Set the widget title
-		$title = ($instance['title']) ? $instance['title'] : apply_filters('widget_title', '', $instance, $this->id_base);
-		
+		$title = apply_filters(
+			'widget_title', 
+			( $instance['title'] ) ? $instance['title'] : __( 'Filter by Attributes', 'jigoshop' ), 
+			$instance,
+			$this->id_base
+		);
+
 		// Check if taxonomy exists
 		$taxonomy = 'pa_'.strtolower(sanitize_title($instance['attribute']));
 		if ( ! taxonomy_exists($taxonomy) )
@@ -76,6 +81,10 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 			// Print the widget wrapper & title
 			echo $before_widget;
 			echo $before_title . $title . $after_title;
+			
+			//Remove param link
+			$remove_link = remove_query_arg('filter_'.strtolower(sanitize_title($instance['attribute'])));
+			echo "<a class=\"layerd_nav_clear\" href=\"{$remove_link}\">Clear</a>";
 			
 			// Open the list
 			echo "<ul>";

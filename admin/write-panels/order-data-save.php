@@ -122,7 +122,7 @@ function jigoshop_process_shop_order_meta($post_id, $post)
                 'name' => htmlspecialchars(stripslashes($item_name[$i])),
                 'qty' => (int) $item_quantity[$i],
                 'cost' => number_format((float)jigowatt_clean($item_cost[$i]), 2),
-                'taxrate' => number_format(jigowatt_clean($item_tax_rate[$i]), 4)
+                'taxrate' => number_format((float)jigowatt_clean($item_tax_rate[$i]), 4)
                 ));
         }
     }

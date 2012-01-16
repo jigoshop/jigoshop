@@ -17,9 +17,17 @@
  
 class jigoshop_payment_gateways extends jigoshop_singleton {
 	
-   static $payment_gateways;
-   
-   public static function init() {
+	protected static $payment_gateways;
+	
+	
+	/** Constructor */
+    protected function __construct() {
+    
+		self::gateway_inits();
+	
+	}
+	
+	private static function gateway_inits() {
     	
     	$load_gateways = apply_filters('jigoshop_payment_gateways', array());
 		

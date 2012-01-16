@@ -33,6 +33,16 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	array( 'name' => __('General Options', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
 
 	array(
+		'name' => __('Send Jigoshop emails from','jigoshop'),
+		'desc' 		=> __(''),
+		'tip' 		=> __('The email used to send all Jigoshop related emails, such as order confirmations and notices.','jigoshop'),
+		'id' 		=> 'jigoshop_email',
+		'css' 		=> 'width:250px;',
+		'type' 		=> 'text',
+		'std' 		=> get_option('admin_email')
+	),
+
+	array(
 		'name' => __('Demo store','jigoshop'),
 		'desc' 		=> '',
 		'tip' 		=> __('Enable this option to show a banner at the top of the page stating its a demo store.','jigoshop'),
@@ -52,7 +62,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'tip' 		=> __('Turning off the SKU field will give products an SKU of their post id.','jigoshop'),
 		'id' 		=> 'jigoshop_enable_sku',
 		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'yes',
+		'std' 		=> 'no',
 		'type' 		=> 'select',
 		'options' => array(
 			'yes' => __('Yes', 'jigoshop'),
@@ -80,11 +90,39 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_weight_unit',
 		'css' 		=> 'min-width:200px;',
-		'std' 		=> 'GBP',
+		'std' 		=> 'kg',
 		'type' 		=> 'select',
 		'options' => array(
 			'kg' => __('kg', 'jigoshop'),
 			'lbs' => __('lbs', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Enable product dimensions','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_enable_dimensions',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'yes',
+		'type' 		=> 'select',
+		'options' => array(
+			'yes' => __('Yes', 'jigoshop'),
+			'no'  => __('No', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Dimensions Unit', 'jigoshop'),
+		'desc' 		=> __("This controls what units you will define dimensions in.", 'jigoshop'),
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_dimension_unit',
+		'css' 		=> 'min-width:200px;',
+		'std' 		=> 'cm',
+		'type' 		=> 'select',
+		'options' => array(
+			'cm' => __('centimeters', 'jigoshop'),
+			'in' => __('inches', 'jigoshop')
 		)
 	),
 
@@ -300,7 +338,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name' => __('Terms page ID', 'jigoshop'),
+		'name' => __('Terms Page', 'jigoshop'),
 		'desc' 		=> __('If you define a "Terms" page the customer will be asked if they accept them when checking out.', 'jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_terms_page_id',
@@ -312,7 +350,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array( 'type' => 'tabend'),
 
-	array( 'type' 		=> 'tab', 'tabname' => __('Catalog', 'jigoshop') ),
+	array( 'type' 		=> 'tab', 'tabname' => __('Catalog &amp; Pricing', 'jigoshop') ),
 
 	array(	'name' => __('Catalog Options', 'jigoshop'), 'type' 		=> 'title','desc' 		=> '', 'id' 		=> '' ),
 
@@ -401,42 +439,47 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'std' 		=> 'GBP',
 		'type' 		=> 'select',
 		'options' => apply_filters('jigoshop_currencies', array(
-			'USD' => __('US Dollars (&#36;)', 'jigoshop'),
-			'EUR' => __('Euros (&euro;)', 'jigoshop'),
+			'AED' => __('United Arab Emirates dirham (&#1583;&#46;&#1573;)', 'jigoshop'),
+			'AUD' => __('Australian Dollar (&#36;)', 'jigoshop'),
+			'BRL' => __('Brazilian Real (&#82;&#36;)', 'jigoshop'),
+			'CAD' => __('Canadian Dollar (&#36;)', 'jigoshop'),
+			'CHF' => __('Swiss Franc (&#8355;)', 'jigoshop'),
+			'CNY' => __('Chinese yuan (&#165;)', 'jigoshop'),
+			'CZK' => __('Czech Koruna (&#75;&#269;)', 'jigoshop'),
+			'DKK' => __('Danish Krone (kr)', 'jigoshop'),
+			'EUR' => __('Euro (&euro;)', 'jigoshop'),
 			'GBP' => __('Pounds Sterling (&pound;)', 'jigoshop'),
-			'AUD' => __('Australian Dollars (&#36;)', 'jigoshop'),
-			'BRL' => __('Brazilian Real (&#36;)', 'jigoshop'),
-			'CAD' => __('Canadian Dollars (&#36;)', 'jigoshop'),
-			'CZK' => __('Czech Koruna', 'jigoshop'),
-			'DKK' => __('Danish Krone', 'jigoshop'),
 			'HKD' => __('Hong Kong Dollar (&#36;)', 'jigoshop'),
-			'HUF' => __('Hungarian Forint (&#70;&#116;)', 'jigoshop'),
 			'HRK' => __('Croatian Kuna (&#107;&#110;)', 'jigoshop'),
+			'HUF' => __('Hungarian Forint (&#70;&#116;)', 'jigoshop'),
 			'IDR' => __('Indonesia Rupiah (&#82;&#112;)', 'jigoshop'),
+			'ILS' => __('Israeli Shekel (&#8362;)', 'jigoshop'),
 			'INR' => __('Indian Rupee (&#8360;)', 'jigoshop'),
-			'ILS' => __('Israeli Shekel', 'jigoshop'),
 			'JPY' => __('Japanese Yen (&yen;)', 'jigoshop'),
-			'MYR' => __('Malaysian Ringgits', 'jigoshop'),
 			'MXN' => __('Mexican Peso (&#36;)', 'jigoshop'),
+			'MYR' => __('Malaysian Ringgits (RM)', 'jigoshop'),
+			'NGN' => __('Nigerian Naira (&#8358;)', 'jigoshop'),
+			'NOK' => __('Norwegian Krone (kr)', 'jigoshop'),
 			'NZD' => __('New Zealand Dollar (&#36;)', 'jigoshop'),
-			'NOK' => __('Norwegian Krone', 'jigoshop'),
-			'PHP' => __('Philippine Pesos', 'jigoshop'),
-			'PLN' => __('Polish Zloty', 'jigoshop'),
+			'PHP' => __('Philippine Pesos (&#8369;)', 'jigoshop'),
+			'PLN' => __('Polish Zloty (&#122;&#322;)', 'jigoshop'),
+			'RON' => __('Romanian New Leu (&#108;&#101;&#105;)', 'jigoshop'),
 			'RUB' => __('Russian Ruble (&#1088;&#1091;&#1073;)', 'jigoshop'),
+			'SEK' => __('Swedish Krona (kr)', 'jigoshop'),
 			'SGD' => __('Singapore Dollar (&#36;)', 'jigoshop'),
-			'SEK' => __('Swedish Krona', 'jigoshop'),
-			'CHF' => __('Swiss Franc', 'jigoshop'),
-			'TWD' => __('Taiwan New Dollars', 'jigoshop'),
-			'THB' => __('Thai Baht', 'jigoshop'),
-			'TRY' => __('Turkish Lira (&#8356;)', 'jigoshop')
+			'THB' => __('Thai Baht (&#3647;)', 'jigoshop'),
+			'TRY' => __('Turkish Lira (&#8356;)', 'jigoshop'),
+			'TWD' => __('Taiwan New Dollar (&#36;)', 'jigoshop'),
+			'USD' => __('US Dollar (&#36;)', 'jigoshop'),
+			'ZAR' => __('South African rand (R)', 'jigoshop')
 			)
 		)
 	),
 
 	array(
-		'name' => __('Currency Position', 'jigoshop'),
-		'desc' 		=> __("This controls the position of the currency symbol.", 'jigoshop'),
-		'tip' 		=> '',
+		'name' => __('Currency Display', 'jigoshop'),
+		'desc' 		=> __("This controls the display of the currency symbol and optionally currency code.", 'jigoshop'),
+		'tip' 		=> '$0.40 - Left<br/>0.40$ - Right<br/>$ 0.40 - Left with space<br/>0.40 $ - Right with space<br/>$ 0.40 USD - Symbol and Code with space<br/>$0.40USD - Symbol and Code',
 		'id' 		=> 'jigoshop_currency_pos',
 		'css' 		=> 'min-width:200px;',
 		'std' 		=> 'left',
@@ -444,8 +487,10 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'options' => array(
 			'left' => __('Left', 'jigoshop'),
 			'right' => __('Right', 'jigoshop'),
-			'left_space' => __('Left (with space)', 'jigoshop'),
-			'right_space' => __('Right (with space)', 'jigoshop')
+			'left_space' => __('Left with space', 'jigoshop'),
+			'right_space' => __('Right with space', 'jigoshop'),
+			'both' => __('Symbol and Code'),			
+			'both_space' => __('Symbol and Code with space')
 		)
 	),
 
@@ -625,7 +670,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name' => __('Out-of-stock notification','jigoshop'),
+		'name' => __('Out of stock notification','jigoshop'),
 		'desc' 		=> '',
 		'tip' 		=> __('Set the minimum threshold for this below.', 'jigoshop'),
 		'id' 		=> 'jigoshop_notify_no_stock',
@@ -646,6 +691,20 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'css' 		=> 'min-width:50px;',
 		'type' 		=> 'text',
 		'std' 		=> '0'
+	),
+
+	array(
+		'name' => __('Out of stock hidden','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> 'When the Out of Stock Threshold (above) is reached, set the product visibility to hidden so that it will not appear on the Catalog or Shop product lists.',
+		'id' 		=> 'jigoshop_hide_no_stock_product',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
 	),
 
 	array( 'type' => 'tabend'),

@@ -15,119 +15,229 @@
  * @license    http://jigoshop.com/license/commercial-edition
  */
 ?>
-
-<?php
-	if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
-	
-	if (!defined('ABSPATH')) :
-		define('DOING_AJAX', true);
-		$root = dirname(dirname(dirname(dirname(dirname(dirname(__FILE__))))));
-		require_once( $root.'/wp-load.php' );
-	endif;
-	
-	if (sizeof(jigoshop_cart::$cart_contents)==0) :
-		echo '<p class="error">'.__('Sorry, your session has expired.', 'jigoshop').' <a href="'.home_url().'">'.__('Return to homepage &rarr;', 'jigoshop').'</a></p>';
-		exit;
-	endif;
-	
-	if (isset($_POST['shipping_method'])) $_SESSION['chosen_shipping_method_id'] = $_POST['shipping_method'];
-	
-	if (isset($_POST['country'])) jigoshop_customer::set_country( $_POST['country'] );
-	if (isset($_POST['state'])) jigoshop_customer::set_state( $_POST['state'] );
-	if (isset($_POST['postcode'])) jigoshop_customer::set_postcode( $_POST['postcode'] );
-	
-	if (isset($_POST['s_country'])) jigoshop_customer::set_shipping_country( $_POST['s_country'] );
-	if (isset($_POST['s_state'])) jigoshop_customer::set_shipping_state( $_POST['s_state'] );
-	if (isset($_POST['s_postcode'])) jigoshop_customer::set_shipping_postcode( $_POST['s_postcode'] );
-	
-	jigoshop_cart::calculate_totals();
-?>
 <div id="order_review">
-	
-	<table class="shop_table">
-		<thead>
-			<tr>
-				<th><?php _e('Product', 'jigoshop'); ?></th>
-				<th><?php _e('Qty', 'jigoshop'); ?></th>
-				<th><?php _e('Totals', 'jigoshop'); ?></th>
-			</tr>
-		</thead>
-		<tfoot>
-			<tr>
-				<td colspan="2"><?php _e('Subtotal', 'jigoshop'); ?></td>
-				<td><?php echo jigoshop_cart::get_cart_subtotal(); ?></td>
-			</tr>
-			
-			<?php  if (jigoshop_cart::needs_shipping()) : ?><tr>
-				<td colspan="2"><?php _e('Shipping', 'jigoshop'); ?></td>
-				<td>
-				<?php
-				
-					$available_methods = jigoshop_shipping::get_available_shipping_methods();
-					
-					if (sizeof($available_methods)>0) :
-						
-						echo '<select name="shipping_method" id="shipping_method">';
-						
-						foreach ($available_methods as $method ) :
-							
-							echo '<option value="'.$method->id.'" ';
-							
-							if ($method->chosen) echo 'selected="selected"';
-							
-							echo '>'.$method->title.' &ndash; ';
-							
-							if ($method->shipping_total>0) :
-								echo jigoshop_price($method->shipping_total);
-								if ($method->shipping_tax>0) : __(' (ex. tax)', 'jigoshop'); endif;
-							else :
-								echo __('Free', 'jigoshop');
-							endif;
-							
-							echo '</option>';
 
-						endforeach;
-						
-						echo '</select>';
-						
-					else :
-						
-						if ( !jigoshop_customer::get_country() ) :
-							echo '<p>'.__('Please fill in your details above to see available shipping methods.', 'jigoshop').'</p>';
-						else :
-							echo '<p>'.__('Sorry, it seems that there are no available shipping methods for your state. Please contact us if you require assistance or wish to make alternate arrangements.', 'jigoshop').'</p>';
-						endif;
-						
-					endif;
-			
-				?></td>
-			</tr><?php endif; ?>
-			
-			<?php if (jigoshop_cart::get_cart_tax()) : ?><tr>
-				<td colspan="2"><?php _e('Tax', 'jigoshop'); ?></td>
-				<td><?php echo jigoshop_cart::get_cart_tax(); ?></td>
-			</tr><?php endif; ?>
+    <table class="shop_table">
+        <thead>
+            <tr>
+                <th><?php _e('Product', 'jigoshop'); ?></th>
+                <th><?php _e('Qty', 'jigoshop'); ?></th>
+                <th><?php _e('Totals', 'jigoshop'); ?></th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <?php if (get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::get_subtotal_inc_tax()) : ?>
+                    <td colspan="2"><?php _e('Retail Price', 'jigoshop'); ?></td>
+                <?php else : ?>
+                    <td colspan="2"><?php _e('Subtotal', 'jigoshop'); ?></td>
+                <?php endif; ?>
+                <td><?php echo jigoshop_cart::get_cart_subtotal(); ?></td>
+            </tr>
 
-			<?php if (jigoshop_cart::get_total_discount()) : ?><tr class="discount">
-				<td colspan="2"><?php _e('Discount', 'jigoshop'); ?></td>
-				<td>-<?php echo jigoshop_cart::get_total_discount(); ?></td>
-			</tr><?php endif; ?>
-			<tr>
-				<td colspan="2"><strong><?php _e('Grand Total', 'jigoshop'); ?></strong></td>
-				<td><strong><?php echo jigoshop_cart::get_total(); ?></strong></td>
-			</tr>
-		</tfoot>
-		<tbody>
-			<?php
-			if (sizeof(jigoshop_cart::$cart_contents)>0) : 
-				foreach (jigoshop_cart::$cart_contents as $item_id => $values) :
-					$_product = $values['data'];
-					if ($_product->exists() && $values['quantity']>0) :
-						echo '
+            <?php
+            if (get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::get_subtotal_inc_tax()) :
+                if (jigoshop_cart::needs_shipping()) :
+                    ?><tr>
+                        <td colspan="2"><?php _e('Shipping', 'jigoshop'); ?></td>
+                        <td>
+                            <?php
+                            $available_methods = jigoshop_shipping::get_available_shipping_methods();
+
+
+                            if (sizeof($available_methods) > 0) :
+
+                                echo '<select name="shipping_method" id="shipping_method">';
+
+                                foreach ($available_methods as $method) :
+
+                                    if ($method instanceof jigoshop_calculable_shipping) :
+                                        if ($method->is_chosen()) :
+                                            $selected_service = NULL;
+                                            if (is_numeric($_SESSION['selected_rate_id'])) :
+                                                $selected_service = $method->get_selected_service($_SESSION['selected_rate_id']);
+                                            else :
+                                                $selected_service = $method->get_cheapest_service();
+                                            endif;
+                                            for ($i = 0; $i < $method->get_rates_amount(); $i++) {
+                                                echo '<option value="' . $method->id . ':' . $method->get_selected_service($i) . ':' . $i . '" ';
+                                                if ($method->get_selected_service($i) == $selected_service) :
+                                                    echo 'selected="selected"';
+                                                endif;
+                                                echo '>' . $method->get_selected_service($i) . ' via ' . $method->title . ' &ndash; ';
+                                                echo jigoshop_price($method->get_selected_price($i));
+                                                if ($method->shipping_tax > 0) : echo __(' (ex. tax)', 'jigoshop');
+                                                endif;
+                                                echo '</option>';
+                                            }
+                                        endif;
+                                    else :
+                                        echo '<option value="' . $method->id . '::" ';
+                                        if ($method->is_chosen())
+                                            echo 'selected="selected"';
+
+                                        echo '>' . $method->title . ' &ndash; ';
+
+                                        if ($method->shipping_total > 0) :
+                                            echo jigoshop_price($method->shipping_total);
+                                            if ($method->shipping_tax > 0) : echo __(' (ex. tax)', 'jigoshop');
+                                            endif;
+                                        else :
+                                            echo __('Free', 'jigoshop');
+                                        endif;
+
+                                        echo '</option>';
+                                    endif;
+
+                                endforeach;
+
+                                echo '</select>';
+
+                            else :
+
+                                if (!jigoshop_customer::get_country()) :
+                                    echo '<p>' . __('Please fill in your details above to see available shipping methods.', 'jigoshop') . '</p>';
+                                else :
+                                    echo '<p>' . __('Sorry, it seems that there are no available shipping methods for your state. Please contact us if you require assistance or wish to make alternate arrangements.', 'jigoshop') . '</p>';
+                                endif;
+
+                            endif;
+                            ?></td>
+                    </tr>
+                    <?php
+                endif;
+                foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
+                    if (jigoshop_cart::is_tax_retail($tax_class)) :
+                        ?>
+                        <tr>
+                            <td colspan="2"><?php echo jigoshop_cart::get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%):'; ?></td>
+                            <td><?php echo jigoshop_cart::get_tax_amount($tax_class) ?></td>
+                        </tr>
+                        <?php
+                    endif;
+                endforeach;
+                ?><tr>
+                    <td colspan="2"><?php _e('Subtotal', 'jigoshop'); ?></td>
+                    <td><?php echo jigoshop_cart::get_subtotal_inc_tax(); ?></td>
+                </tr>
+                <?php
+            else :
+                if (jigoshop_cart::needs_shipping()) :
+                    ?><tr>
+                        <td colspan="2"><?php _e('Shipping', 'jigoshop'); ?></td>
+                        <td>
+                            <?php
+                            $available_methods = jigoshop_shipping::get_available_shipping_methods();
+
+
+                            if (sizeof($available_methods) > 0) :
+
+                                echo '<select name="shipping_method" id="shipping_method">';
+
+                                foreach ($available_methods as $method) :
+
+                                    if ($method instanceof jigoshop_calculable_shipping) :
+                                        if ($method->is_chosen()) :
+                                            $selected_service = NULL;
+                                            if (is_numeric($_SESSION['selected_rate_id'])) :
+                                                $selected_service = $method->get_selected_service($_SESSION['selected_rate_id']);
+                                            else :
+                                                $selected_service = $method->get_cheapest_service();
+                                            endif;
+                                            for ($i = 0; $i < $method->get_rates_amount(); $i++) {
+                                                echo '<option value="' . $method->id . ':' . $method->get_selected_service($i) . ':' . $i . '" ';
+                                                if ($method->get_selected_service($i) == $selected_service) :
+                                                    echo 'selected="selected"';
+                                                endif;
+                                                echo '>' . $method->get_selected_service($i) . ' via ' . $method->title . ' &ndash; ';
+                                                echo jigoshop_price($method->get_selected_price($i));
+                                                if ($method->shipping_tax > 0) : echo __(' (ex. tax)', 'jigoshop');
+                                                endif;
+                                                echo '</option>';
+                                            }
+                                        endif;
+                                    else :
+                                        echo '<option value="' . $method->id . '::" ';
+                                        if ($method->is_chosen())
+                                            echo 'selected="selected"';
+
+                                        echo '>' . $method->title . ' &ndash; ';
+
+                                        if ($method->shipping_total > 0) :
+                                            echo jigoshop_price($method->shipping_total);
+                                            if ($method->shipping_tax > 0) : echo __(' (ex. tax)', 'jigoshop');
+                                            endif;
+                                        else :
+                                            echo __('Free', 'jigoshop');
+                                        endif;
+
+                                        echo '</option>';
+                                    endif;
+
+                                endforeach;
+
+                                echo '</select>';
+
+                            else :
+
+                                if (!jigoshop_customer::get_country()) :
+                                    echo '<p>' . __('Please fill in your details above to see available shipping methods.', 'jigoshop') . '</p>';
+                                else :
+                                    echo '<p>' . __('Sorry, it seems that there are no available shipping methods for your state. Please contact us if you require assistance or wish to make alternate arrangements.', 'jigoshop') . '</p>';
+                                endif;
+
+                            endif;
+                            ?></td>
+                    </tr><?php
+                endif;
+            endif;
+            if (get_option('jigoshop_calc_taxes') == 'yes') :
+                if (jigoshop_cart::get_subtotal_inc_tax()) :
+                    foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
+                        if (!jigoshop_cart::is_tax_retail($tax_class)) :
+                                    ?>
+
+                            <tr>
+                                <td colspan="2"><?php echo jigoshop_cart::get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%):'; ?></th>
+                                <td><?php echo jigoshop_cart::get_tax_amount($tax_class) ?></td>
+                            </tr>
+                            <?php
+                        endif;
+                    endforeach;
+                else :
+                    foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
+                        ?>
+                        <tr>
+                            <td colspan="2"><?php echo jigoshop_cart::get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%):'; ?></td>
+                            <td><?php echo jigoshop_cart::get_tax_amount($tax_class) ?></td>
+                        </tr>    
+                        <?php
+                    endforeach;
+                endif;
+            endif;
+            ?>			
+
+            <?php do_action('jigoshop_after_review_order_items'); ?>
+            <?php if (jigoshop_cart::get_total_discount()) : ?><tr class="discount">
+                    <td colspan="2"><?php _e('Discount', 'jigoshop'); ?></td>
+                    <td>-<?php echo jigoshop_cart::get_total_discount(); ?></td>
+                </tr><?php endif; ?>
+            <tr>
+                <td colspan="2"><strong><?php _e('Grand Total', 'jigoshop'); ?></strong></td>
+                <td><strong><?php echo jigoshop_cart::get_total(); ?></strong></td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <?php
+            if (sizeof(jigoshop_cart::$cart_contents) > 0) :
+                foreach (jigoshop_cart::$cart_contents as $item_id => $values) :
+                    $_product = $values['data'];
+                    if ($_product->exists() && $values['quantity'] > 0) :
+                        echo '
 							<tr>
-								<td class="product-name">'.$_product->get_title().jigoshop_get_formatted_variation( $values['variation'] ).'</td>
-								<td>'.$values['quantity'].'</td>
-								<td>'.jigoshop_price($_product->get_price_excluding_tax()*$values['quantity'], array('ex_tax_label' => 1)).'</td>
+								<td class="product-name">' . $_product->get_title() . jigoshop_get_formatted_variation($values['variation']) . '</td>
+								<td>' . $values['quantity'] . '</td>
+								<td>' . jigoshop_price($_product->get_price_excluding_tax() * $values['quantity'], array('ex_tax_label' => 1)) . '</td>
 							</tr>';
 					endif;
 				endforeach; 
@@ -143,7 +253,13 @@
 				$available_gateways = jigoshop_payment_gateways::get_available_payment_gateways();
 				if ($available_gateways) : 
 					// Chosen Method
-					if (sizeof($available_gateways)) current($available_gateways)->set_current();
+					if (sizeof($available_gateways)) {
+						if( isset( $_POST[ 'payment_method' ] ) && isset( $available_gateways[ $_POST['payment_method'] ] ) ) {
+							$available_gateways[ $_POST[ 'payment_method' ] ]->set_current();
+						} else {
+							current($available_gateways)->set_current();
+						}	
+					}
 					foreach ($available_gateways as $gateway ) :
 						?>
 						<li>
@@ -177,7 +293,6 @@
 			<noscript><?php _e('Since your browser does not support JavaScript, or it is disabled, please ensure you click the <em>Update Totals</em> button before placing your order. You may be charged more than the amount stated above if you fail to do so.', 'jigoshop'); ?><br/><input type="submit" class="button-alt" name="update_totals" value="<?php _e('Update totals', 'jigoshop'); ?>" /></noscript>
 		
 			<?php jigoshop::nonce_field('process_checkout')?>
-			<input type="submit" class="button-alt" name="place_order" id="place_order" value="<?php _e('Place order', 'jigoshop'); ?>" />
 			
 			<?php do_action( 'jigoshop_review_order_before_submit' ); ?>
 			
@@ -188,10 +303,13 @@
 			</p>
 			<?php endif; ?>
 			
+			<?php $order_button_text = apply_filters( 'jigoshop_order_button_text', __( 'Place order', 'jigoshop') ); ?>
+			<input type="submit" class="button-alt" name="place_order" id="place_order" value="<?php echo $order_button_text; ?>" />
+			
 			<?php do_action( 'jigoshop_review_order_after_submit' ); ?>
 			
 		</div>
 
 	</div>
-	
+
 </div>

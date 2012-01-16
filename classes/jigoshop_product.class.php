@@ -16,797 +16,1052 @@
  */
 class jigoshop_product {
 	
+	// LEGACY
 	private static $attribute_taxonomies = NULL;
-	// reseting these all to public for now, fatal errors from certain places that direct access
-	// the whole class needs refactoring  -JAP-
-	public $id;
-	public $exists;
-	public $data;
-	public $sku;
-	public $attributes;
-	public $post;
-	public $stock;
-	public $children;
-	public $visibility;
-	public $product_type;
-	public $price;
-    	public $sale_price;
-    
+
+	public $id;           // : jigoshop_template_functions.php on line 99 // This is just an alias for $this->ID
+	public $ID;
+	public $exists;       // : jigoshop_cart.class.php on line 66
+	public $product_type; // : jigoshop_template_functions.php on line 271
+	public $sku;          // : jigoshop_template_functions.php on line 246
+
+	public $data;         // jigoshop_tax.class.php on line 186
+	public $post;         // for get_title()
+
+	public $meta;         // for get_child()
+
+	protected $regular_price;
+	protected $sale_price;
+	private   $sale_price_dates_from;
+	private   $sale_price_dates_to;
+
+	private $weight;
+	private $length;
+	private $width;
+	private $height;
+
+	private $tax_status   = 'taxable';
+	private $tax_class;
+
+	public  $visibility   = 'visible'; // : admin/jigoshop-admin-post-types.php on line 168
+	private $featured     = false;
+
+	private $manage_stock = false;
+	private $stock_status = 'instock';
+	private $backorders;
+	public  $stock;       // : admin/jigoshop-admin-post-types.php on line 180
+	private $stock_sold;
+
+	private	$attributes   = array();
+	public  $children     = array(); // : jigoshop_template_functions.php on line 328
+
 	/**
 	 * Loads all product data from custom fields
 	 *
-	 * @param   int		$id		ID of the product to load
+	 * @param   int               ID of the product to load
+	 * @return  jigoshop_product
 	 */
-	function jigoshop_product( $id ) {
+	public function __construct( $ID ) {
 
-		$this->id = $id;
+		// Grab the product ID & get the product meta data
+		// TODO: Change to uppercase for consistency sake
+		$this->ID = (int) $ID;
+		$this->id = $this->ID;
 
-		$product_custom_fields = get_post_custom( $this->id );
+		if ( ! $this->meta ) {
+			$this->meta = get_post_custom( $this->ID );
+		}
 
-        $this->sku = $this->id;
-		if (isset($product_custom_fields['SKU'][0]) && !empty($product_custom_fields['SKU'][0])) {
-            $this->sku = $product_custom_fields['SKU'][0];
-        }
+		$meta = $this->meta;
 
-        $this->data = '';
-		if (isset($product_custom_fields['product_data'][0])) {
-            $this->data = maybe_unserialize( $product_custom_fields['product_data'][0] );
-        }
+		// Check if the product has meta data attached
+		// If not then it might not be a product
+		$this->exists = (bool) $meta;
 
-        $this->attributes = array();
-		if (isset($product_custom_fields['product_attributes'][0])) {
-            $this->attributes = maybe_unserialize( $product_custom_fields['product_attributes'][0] );
-        }
-        
-		// Again just in case, to fix WP bug
-		$this->data = maybe_unserialize( $this->data );
-		$this->attributes = maybe_unserialize( $this->attributes );
+		// Get the product type
+		// @TODO: for some reason this is invalid on first run?
+		$terms = wp_get_object_terms( $this->ID, 'product_type', array('fields' => 'names') );
+		
+		$this->product_type = (isset($terms[0]) ? sanitize_title($terms[0]) : 'simple');
 
-        $this->price = NULL;
-		if (isset($this->data['regular_price'])) {
-            $this->price = $this->data['regular_price'];
-        }
+		// Define data
+		$this->regular_price         = isset($meta['regular_price'][0]) ? $meta['regular_price'][0] : null;
+		$this->sale_price            = isset($meta['sale_price'][0]) 	? $meta['sale_price'][0] : null;
+		$this->sale_price_dates_from = isset($meta['sale_price_dates_from'][0]) ? $meta['sale_price_dates_from'][0] : null;
+		$this->sale_price_dates_to   = isset($meta['sale_price_dates_to'][0]) ? $meta['sale_price_dates_to'][0] : null;
 
-        $this->sale_price = NULL;
-		if (isset($this->data['sale_price'])) {
-            $this->sale_price = $this->data['sale_price'];
-        }
+		$this->weight                = isset($meta['weight'][0]) ? $meta['weight'][0] : null;
+		$this->length                = isset($meta['length'][0]) ? $meta['length'][0] : null;
+		$this->width                 = isset($meta['width'][0]) ? $meta['width'][0] : null;
+		$this->height                = isset($meta['height'][0]) ? $meta['height'][0] : null;
 
-        $this->visibility = 'hidden';
-		if (isset($product_custom_fields['visibility'][0])) {
-            $this->visibility = $product_custom_fields['visibility'][0];
-        }
+		$this->tax_status            = isset($meta['tax_status'][0]) ? $meta['tax_status'][0] : null;
+		$this->tax_class             = isset($meta['tax_class'][0]) ? $meta['tax_class'][0] : null;
 
-        $this->stock = 0;
-		if (isset($product_custom_fields['stock'][0])) {
-            $this->stock = $product_custom_fields['stock'][0];
-        }
+		$this->sku                   = isset($meta['sku'][0]) ? $meta['sku'][0] : $this->ID;
+		$this->visibility            = isset($meta['visibility'][0]) ? $meta['visibility'][0] : null;
+		$this->featured              = isset($meta['featured'][0]) ? $meta['featured'][0] : null;
 
-		$terms = wp_get_object_terms( $id, 'product_type' );
-		if (!is_wp_error($terms) && $terms) {
-			$term = current($terms);
-			$this->product_type = $term->slug;
-        } else {
-			$this->product_type = 'simple';
-        }
+		$this->manage_stock          = isset($meta['manage_stock'][0]) ? $meta['manage_stock'][0] : null;
+		$this->stock_status          = isset($meta['stock_status'][0]) ? $meta['stock_status'][0] : null;
+		$this->backorders            = isset($meta['backorders'][0]) ? $meta['backorders'][0] : null;
+		$this->stock                 = isset($meta['stock'][0]) ? $meta['stock'][0] : null;
+		$this->stock_sold            = isset($meta['stock_sold'][0]) ? $meta['stock_sold'][0] : null;
 
-		$this->get_children();
-
-		if ($this->data) {
-			$this->exists = true;
-        } else {
-			$this->exists = false;
-        }
+		return $this;
 	}
-    
-    /**
-     * Get SKU (Stock-keeping unit) - product uniqe ID
-     * 
-     * @return mixed
-     */
-    function get_sku() {
-        return $this->sku;
-    }
+
+	/**
+	 * Get the main product image or parents image
+	 *
+	 * @return   html
+	 **/
+	public function get_image( $size = 'shop_thumbnail' ) {
+
+		// Get the image size
+		$size = jigoshop_get_image_size( $size );
+
+		// If product has an image
+		if( has_post_thumbnail( $this->ID ) )
+		return get_the_post_thumbnail( $this->ID, $size );
+
+		// If product has a parent and that has an image display that
+		if( ($parent_ID = wp_get_post_parent_id( $this->ID )) && has_post_thumbnail( $parent_ID ) )
+			return get_the_post_thumbnail( $this->ID, $size );
+		
+		// Otherwise just return a placeholder
+			return '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.$image_size[0].'px" height="'.$image_size[1].'px" />';
+	}
 	
-    /**
-     * Returns the product's children
-     * 
-     * @return array stdClass objects array
-     */
-    function get_children() {
+	/**
+	 * Get SKU (Stock-keeping unit) - product uniqe ID
+	 * 
+	 * @return   mixed
+	 */
+	public function get_sku() {
+		return $this->sku;
+	}
+	
+	/**
+	 * Returns the product's children
+	 * 
+	 * @return   array   Child IDs
+	 */
+	public function get_children() {
 
-        //load the children if not yet loaded
-        if (!is_array($this->children)) {
+		// Check if the product type can hold child products
+		if ( ! $this->is_type( array('variable', 'grouped') ) )
+			return false;
+		
+		// Stop here if we already have the children
+		if ( ! empty($this->children) )
+			return $this->children;
 
-            $this->children = array();
+		// Get the child IDs
+		$this->children = get_posts(array(
+			'post_parent'  => $this->ID,
+			'post_type'    => ($this->is_type('variable')) ? 'product_variation' : 'product',
+			'orderby'      => 'menu_order',
+			'order'        => 'ASC',
+			'fields'       => 'ids',
+			'post_status'  => 'any',
+			'numberposts'  => -1
+		));
 
-            if ($this->is_type('variable')) {
-                $child_post_type = 'product_variation';
-            } else {
-                $child_post_type = 'product';
-            }
+		return $this->children;
+	}
 
-            $children_products = &get_children('post_parent=' . $this->id . '&post_type=' . $child_post_type . '&orderby=menu_order&order=ASC');
+	/**
+	 * Return an instance of a child
+	 *
+	 * @param   int               Child Product ID
+	 * @return  jigoshop_product
+	 */
+	public function get_child( $child_ID ) {
 
-            if (is_array($children_products)) {
-                
-                //@fixme we just retrieved all the data about product children from DB, and we construct jigoshop_product* objects passing only ID to the constructor. In the constructor each product data will be retrieved *again* in the *seperate* queries. Performance fix needed (probably passing whole $child istead of $child->ID will do).
-                foreach ($children_products as $child) {
-                    if ($this->is_type('variable')) {
-                        $child->product = &new jigoshop_product_variation($child->ID);
-                    } else {
-                        $child->product = &new jigoshop_product($child->ID);
-                    }
-                }
+		if ( $this->is_type('variable') )
+			return new jigoshop_product_variation( $child_ID );
 
-                $this->children = (array) $children_products;
-            }
-        }
-        
-        return $this->children;
-    }
+		return new jigoshop_product( $child_ID );
+	}
 
 	/**
 	 * Reduce stock level of the product
+	 * Acts as an alias for modify_stock()
 	 *
-	 * @param   int		$by		Amount to reduce by
+	 * @param   int   Amount to reduce by
+	 * @return  int
 	 */
-	function reduce_stock( $by = 1 ) {
-		if ($this->managing_stock()) {
-			$reduce_to = $this->stock - $by;
-			update_post_meta($this->id, 'stock', $reduce_to);
-			return $reduce_to;
-        }
+	public function reduce_stock( $by = -1 ) {
+		return $this->modify_stock( -$by );
 	}
 
 	/**
 	 * Increase stock level of the product
+	 * Acts as an alias for modify_stock()
 	 *
-	 * @param   int		$by		Amount to increase by
+	 * @param   int   Amount to increase by
+	 * @return  int
 	 */
-	function increase_stock( $by = 1 ) {
-		if ($this->managing_stock()) {
-			$increase_to = $this->stock + $by;
-			update_post_meta($this->id, 'stock', $increase_to);
-			return $increase_to;
-        }
+	public function increase_stock( $by = 1 ) {
+		return $this->modify_stock( $by );
 	}
 
 	/**
+	 * Modifies the stock levels
+	 *
+	 * @param   int   Amount to modify
+	 * @return  int
+	 */
+	public function modify_stock( $by ) {
+
+		// Only do this if we're updating
+		if ( ! $this->managing_stock() )
+			return false;
+		
+		// +- = minus
+		$this->stock = $this->stock + $by;
+		$amount_sold = $this->stock_sold + $by;
+		
+		// Update & return the new value
+		update_post_meta( $this->ID, 'stock', $this->stock );
+		update_post_meta( $this->ID, 'stock_sold', $amount_sold );
+		return $this->stock;
+	}
+
+	/**
+	 * Checks if a product requires shipping
+	 *
+	 * @return   bool
+	 */
+	public function requires_shipping() {
+		// If it's virtual or downloadable dont require shipping
+		if ( $this->is_type( array('downloadable', 'virtual') ) )
+			return false;
+
+		return true;
+	}
+	/**
 	 * Checks the product type
 	 *
-	 * @param   string		$type		Type to check against
+	 * @param   string   Type to check against
+	 * @return  bool
 	 */
-	function is_type( $type ) {
-		if (is_array($type) && in_array($this->product_type, $type)) {
-            return true;
-        } else if ($this->product_type == $type) {
-            return true;
-        }
-        
+	public function is_type( $type ) {
+
+		if ( is_array($type) && in_array($this->product_type, $type) )
+			return true;
+		
+		if ($this->product_type == $type)
+			return true;
+		
 		return false;
 	}
 
-	/** Returns whether or not the product has any child product */
-	function has_child () {
-        if(is_array($this->children) && count($this->children) > 0) {
-            return true;
-        }
-        
-		return false;
+	/**
+	 * Returns whether or not the product has any child product
+	 *
+	 * @return  bool
+	 */
+	public function has_child() {
+		return (bool) $this->get_children();
 	}
 
-	/** Returns whether or not the product post exists */
-	function exists() {
-		return ($this->exists);
+	/**
+	 * Checks to see if a product exists
+	 *
+	 * @return  bool
+	 */
+	public function exists() {
+		return (bool) $this->exists;
 	}
 
-	/** Returns whether or not the product is taxable */
-	function is_taxable() {
-		if (isset($this->data['tax_status']) && $this->data['tax_status']=='taxable') {
-            return true;
-        }
-        
-		return false;
+	/**
+	 * Returns whether or not the product is taxable
+	 *
+	 * @return  bool
+	 */
+	public function is_taxable() {
+		return ( $this->tax_status == 'taxable' );
 	}
 
-	/** Returns whether or not the product shipping is taxable */
-	function is_shipping_taxable() {
-		if (isset($this->data['tax_status']) && ($this->data['tax_status']=='taxable' || $this->data['tax_status']=='shipping')) {
-            return true;
-        }
-        
-		return false;
+	/**
+	 * Returns whether or not the product shipping is taxable
+	 *
+	 * @return  bool
+	 */
+	public function is_shipping_taxable() {
+		return ( $this->is_taxable() || $this->tax_status == 'shipping' );
 	}
 
-	/** Get the product's post data */
-	function get_post_data() {
+	/**
+	 * Get the product's post data
+	 * @deprecated Should be using WP native the_title() right? -Rob
+	 * NOTE: Only used for get_title()
+	 *
+	 * @return  object
+	 */
+	public function get_post_data() {
 		if (empty($this->post)) {
-			$this->post = get_post( $this->id );
-        }
+			$this->post = get_post( $this->ID );
+		}
 
 		return $this->post;
 	}
 
-	/** Get the title of the post */
-	function get_title() {
+	/**
+	 * Get the product's post data
+	 * @deprecated Should be using WP native the_title() right? -Rob
+	 * NOTE: Only used for get_title()
+	 *
+	 * @return  string
+	 */
+	public function get_title() {
 		$this->get_post_data();
 		return apply_filters('jigoshop_product_title', get_the_title($this->post->ID), $this);
 	}
 
-	/** Get the add to url */
-	function add_to_cart_url() {
+	/** 
+	 * Get the add to url
+	 *
+	 * @return  mixed
+	 */
+	public function add_to_cart_url() {
 
-		if ($this->is_type('variable')) {
-			$url = add_query_arg('add-to-cart', 'variation');
-			$url = add_query_arg('product', $this->id, $url);
-        } else if ( $this->has_child() ) {
+		if ( $this->has_child() ) {
 			$url = add_query_arg('add-to-cart', 'group');
-			$url = add_query_arg('product', $this->id, $url);
-        } else {
-			$url = add_query_arg('add-to-cart', $this->id);
-        }
+			$url = add_query_arg('product', $this->ID, $url);
+
+			if ($this->is_type('variable')) {
+				$url = add_query_arg('add-to-cart', 'variation');
+			}
+		}
+		else {
+			$url = add_query_arg('add-to-cart', $this->ID);
+		}
 
 		$url = jigoshop::nonce_url( 'add_to_cart', $url );
 		return $url;
 	}
 
-	/** Returns whether or not the product is stock managed */
-	function managing_stock() {
-		if (get_option('jigoshop_manage_stock') == 'yes') {
-            if (isset($this->data['manage_stock']) && $this->data['manage_stock'] == 'yes') {
-                return true;
-            }
-        }
+	/**
+	 * Check if we are managing stock
+	 *
+	 * @return  bool
+	 */
+	public function managing_stock() {
 
-        return false;
+		// If we're not managing stock at all
+		if (get_option('jigoshop_manage_stock') != 'yes')
+			return false;
+
+		return (bool) $this->manage_stock;
 	}
 
-	/** Returns whether or not the product is in stock */
-	function is_in_stock() {
+	/**
+	 * Returns whether or not the product is in stock
+	 * 
+	 * @return  bool
+	 */
+	public function is_in_stock() {
 
-		if( $this->managing_stock() ) {
-		
-			// First check if we allow backorders
-			if( $this->backorders_allowed() )
-				return true;
+		if ( $this->is_type( array('grouped', 'variable') ) ) {
+			foreach( $this->get_children() as $child_ID ) {
 
-			// If we have variations
-			if( $this->has_child() ) {
+				// Get the children
+				$child = $this->get_child( $child_ID );
 
-				// Loop through children and in this case look for a product with stock
-				foreach($this->children as $child) {
-					if( ! $child->product->stock <= 0 )
-						return true;
-				}
-
-				// By default for variations return out of stock
-				return false;
-
-			} else {
-
-				if ( $this->data['stock_status'] != 'instock' )
-					return false;
-				else if( $this->stock <= 0 )
-					return false;
-
+				// If one of our children is in stock then return true
+				if ( $child->is_in_stock() )
+					return true;
 			}
-
 		}
 
-		// Always return true if all other checks pass
-		return true;
-
-	}
-
-	/** Returns whether or not the product can be backordered */
-	function backorders_allowed() {
-		if ($this->data['backorders']=='yes' || $this->data['backorders']=='notify') {
-            return true;
-        }
-        
-		return false;
-	}
-
-	/** Returns whether or not the product needs to notify the customer on backorder */
-	function backorders_require_notification() {
-		if ($this->data['backorders']=='notify') {
-            return true;
-        }
-        
-		return false;
-	}
-
-	/** Returns whether or not the product has enough stock for the order */
-	function has_enough_stock( $quantity ) {
-		if ($this->backorders_allowed() || $this->stock >= $quantity) {
+		// If we arent managing stock then it should always be in stock
+		if( ! $this->managing_stock() && $this->stock_status == 'instock' )
 			return true;
-        }
 
-		return false;
-	}
-    
-    /**
-     * Returns number of items available for sale.
-     * 
-     * @return int
-     */
-    function get_stock_quantity() {
-        return (int)$this->stock;
-    }
-	
-	/** Returns the availability of the product */
-	function get_availability() {
-		$availability = "";
-		$class = "";
+		// Check if we allow backorders
+		if( $this->managing_stock() && $this->backorders_allowed() )
+			return true;
 
-		if (!$this->managing_stock()) :
-			if ($this->is_in_stock()) :
-				//$availability = __('In stock', 'jigoshop'); /* Lets not bother showing stock if its not managed and is available */
-			else :
-				$availability = __('Out of stock', 'jigoshop');
-				$class = 'out-of-stock';
-			endif;
-		else :
-			if ($this->is_in_stock()) :
-				if ($this->stock > 0) :
-					$availability = __('In stock', 'jigoshop');
-
-					if ($this->backorders_allowed()) :
-						if ($this->backorders_require_notification()) :
-							$availability .= ' &ndash; '.$this->stock.' ';
-							$availability .= __('available', 'jigoshop');
-							$availability .= __(' (backorders allowed)', 'jigoshop');
-						endif;
-					else :
-						$availability .= ' &ndash; '.$this->stock.' ';
-						$availability .= __('available', 'jigoshop');
-					endif;
-
-				else :
-
-					if ($this->backorders_allowed()) :
-						if ($this->backorders_require_notification()) :
-							$availability = __('Available on backorder', 'jigoshop');
-						else :
-							$availability = __('In stock', 'jigoshop');
-						endif;
-					else :
-						$availability = __('Out of stock', 'jigoshop');
-						$class = 'out-of-stock';
-					endif;
-
-				endif;
-			else :
-				if ($this->backorders_allowed()) :
-					$availability = __('Available on backorder', 'jigoshop');
-				else :
-					$availability = __('Out of stock', 'jigoshop');
-					$class = 'out-of-stock';
-				endif;
-			endif;
-		endif;
-
-		return array( 'availability' => $availability, 'class' => $class);
-	}
-
-	/** Returns whether or not the product is featured */
-	function is_featured() {
-		if (get_post_meta($this->id, 'featured', true)=='yes') {
-            return true;
-        }
-        
+		// Check if we have stock
+		if( $this->managing_stock() && $this->stock )
+			return true;
+		
 		return false;
 	}
 
-	/** Returns whether or not the product is visible */
-	function is_visible() {
-		if ($this->visibility=='hidden') return false;
-		if ($this->visibility=='visible') return true;
-		if ($this->visibility=='search' && is_search()) return true;
-		if ($this->visibility=='search' && !is_search()) return false;
-		if ($this->visibility=='catalog' && is_search()) return false;
-		if ($this->visibility=='catalog' && !is_search()) return true;
+	/**
+	 * Returns whether or not the product can be backordered 
+	 * 
+	 * @return  bool
+	 */
+	public function backorders_allowed() {
+
+		if ( $this->backorders == 'yes' || $this->backorders_require_notification() )
+			return true;
+
+		return false;
 	}
 
-	/** Returns whether or not a sale price is valid based on product sale date settings */
-	function in_sale_date_range() {
-		$in_range = false;
-		$custom_fields = get_post_custom( $this->id );
-		$date_from = (int)$custom_fields['sale_price_dates_from'][0];
-		$date_to = (int)$custom_fields['sale_price_dates_to'][0];
-		$current_time = strtotime( 'NOW' );
-		if ( $date_to == 0 && $date_from == 0 ) $in_range = true;
-		else if ( $date_from == 0 || ( $date_from > 0 && $date_from < $current_time )) :
-			if ( $date_to == 0 || $date_to > $current_time ) $in_range = true;
-		endif;
-		return $in_range;
+	/**
+	 * Returns whether or not the product needs to notify the customer on backorder
+	 *
+	 * TODO: Consider a shorter method name?
+	 * 
+	 * @return  bool
+	 */
+	public function backorders_require_notification() {
+
+		return ($this->backorders == 'notify');
+	}
+
+	/**
+	 * Returns whether or not the product has enough stock for the order
+	 *
+	 * TODO: Consider a shorter method name?
+	 * 
+	 * @return  bool
+	 */
+	public function has_enough_stock( $quantity ) {
+
+		return ($this->backorders_allowed() || $this->stock >= $quantity);
 	}
 	
-    /**
-     * Returns whether or not the product is on sale.
-     * If one of the child products is on sale, product is considered to be on sale.
-     *
-     * @return bool
-     */
-	function is_on_sale() {
-		
-		$on_sale = false;
-		
-		if ($this->has_child()) {
-			foreach ($this->children as $child) {
-				if( $this->product_type != 'grouped') {
-					$on_sale = $child->product->variation_is_on_sale();
-					if ( $on_sale ) break;
-				} else {
-					$on_sale = $child->product->is_on_sale();
-					if ( $on_sale ) break;
-				}
+	/**
+	 * Returns number of items available for sale.
+	 * TODO:    rename to get_stock()
+	 * @return  int
+	 */
+	public function get_stock_quantity() {
+		return (int) $this->stock;
+	}
+	
+	/**
+	 * Returns a string representing the availability of the product 
+	 * 
+	 * @return  string
+	 */
+	public function get_availability() {
+
+		// Start as in stock
+		$notice = array(
+			'availability'	=> __( 'In Stock', 'jigoshop' ),
+			'class'			=> null,
+		);
+
+		// If stock is being managed & has stock
+		if ( $this->managing_stock() && $this->stock ) {
+			$notice['availability'] .= " &ndash; {$this->stock} ".__(' available', 'jigoshop' );
+
+			// If customers require backorder notification
+			if ( $this->backorders_allowed() && $this->backorders_require_notification() ) {
+				$notice['availability'] = $notice['availability'] .' ('.__('backorders allowed','jigoshop').')';
 			}
 		}
-		// the kids may or may not have a sale price
-		// we need to check the parent anyway and logical OR the results in
-		if ( ! empty( $this->sale_price )) {
-			$on_sale |= $this->in_sale_date_range();
+		else if ( $this->backorders_allowed() && $this->backorders_require_notification() ) {
+				$notice['availability']	= __( 'Available on Backorder', 'jigoshop' );
+		}
+
+		// Declare out of stock if we don't have any stock
+		if ( ! $this->is_in_stock() ) {
+			$notice['availability']	= __( 'Out of Stock', 'jigoshop' );
+			$notice['class']		= 'out-of-stock';
+		}
+
+		return $notice;
+	}
+
+	/**
+	 * Returns whether or not the product is featured
+	 * 
+	 * @return  bool
+	 */
+	public function is_featured() {
+		return (bool) $this->featured;
+	}
+
+	/**
+	 * Checks if the product is visibile
+	 *
+	 * @return  bool
+	 */
+	public function is_visible( ) {
+
+		// Disabled due to incorrect stock handling -Rob
+		//if( (bool) $this->stock )
+		//	return false;
+
+		switch($this->visibility) {
+			case 'hidden':
+				return false; 
+			break;
+			case 'search':
+				return is_search();
+			break;
+			case 'catalog':
+				return ! is_search(); // don't display in search results
+			break;
+			default:
+				return true; // By default always display a product
+		}
+	}
+	
+	/**
+	 * Returns whether or not the product is on sale.
+	 * If one of the child products is on sale, product is considered to be on sale
+	 *
+	 * @return  bool
+	 */
+	public function is_on_sale() {
+
+		// Check child products for items on sale
+		if ( $this->is_type('grouped', 'variable') ) {
+
+			foreach( $this->get_children() as $child_ID ) {
+
+				$child = $this->get_child( $child_ID );
+				if( $child->is_on_sale() )
+					return true;
+			}
 		}
 		
-		return $on_sale;
+		$time = current_time('timestamp');
+
+		// Check if the sale is still in range (if we have a range)
+		if ( $this->sale_price_dates_from 	<= $time && 
+			 $this->sale_price_dates_to 		>= $time &&
+			 $this->sale_price)
+			return true;
+
+		// Otherwise if we have a sale price
+		if ( ! $this->sale_price_dates_to && $this->sale_price )
+			return true;
+
+		// Just incase return false
+		return false;
 	}
 
-	/** Returns the product's weight */
-	function get_weight() {
-		if ($this->data['weight']) {
-            return $this->data['weight'];
-        }
-        
-        return NULL;
-	}
-
-	/** Returns the product's price */
-	function get_price() {
-        if(!empty($this->sale_price) && $this->in_sale_date_range()) {
-            return $this->sale_price;
-        }
-        
-		return $this->price;
+	/**
+	 * Returns the product's weight
+	 * @deprecated not required since we can just call $this->weight if the var is public
+	 *
+	 * @return  mixed   weight
+	 */
+	public function get_weight() {
+		return $this->weight;
 	}
 
 	/** Returns the price (excluding tax) */
 	function get_price_excluding_tax() {
-		$price = $this->get_price();
-
-        if (get_option('jigoshop_prices_include_tax') == 'yes') {
-            $rate = $this->get_tax_base_rate();
-
-            if ($rate && $rate > 0) {
-                $_tax = &new jigoshop_tax();
-                $tax_amount = $_tax->calc_tax($price, $rate, true);
-                $price = $price - $tax_amount;
-            }
-        }
-
-        return $price;
-	}
-
-	/** Returns the base tax rate */
-	function get_tax_base_rate() {
-		if ($this->is_taxable() && get_option('jigoshop_calc_taxes') == 'yes') {
-            $_tax = &new jigoshop_tax();
-            $rate = $_tax->get_shop_base_rate($this->data['tax_class']);
-
-            return $rate;
-        }
-
-        return NULL;
-	}
-	/** Returns the percentage saved on sale products */
-	function get_percentage()
-	{
-		$percentage_text = '';
-	
-		if (!empty($this->sale_price) && !empty($this->price) && $this->in_sale_date_range()) {
-			
-			$currency_symbol = get_jigoshop_currency_symbol();
-			
-			$percentage_a = str_replace($currency_symbol, '', jigoshop_price($this->price));
-			$percentage_b = str_replace($currency_symbol, '', jigoshop_price($this->sale_price));
-			$calc_a = (($percentage_a - $percentage_b)/$percentage_a)*100;
-			$percentage = round($calc_a);
-			$percentage_text .= $percentage.'%';
-			
-		}
-	
-		return $percentage_text;
-	}
-
-	/** Returns the price in html format */
-	function get_price_html()
-    {
-        $price_html = '';
-        
-        if ($this->has_child()) {
-            $child_prices = array();
-            $previous_price = -1.0;
-            $has_price_variation = false;
-
-            foreach ($this->children as $child) {
-      
-                // Nasty hack to prevent disabled variations from affecting the price
-      		if($this->product_type == 'grouped' || 
-      			($this->product_type != 'grouped' && $child->product->variation->post_status == 'publish') ) {
-      		    $child_prices[] = (float)$child->product->get_price();
-      		    
-      		    // check for a price variation on the product variations
-      		    if ($previous_price > 0.0 && $previous_price != (float)$child->product->get_price()) {
-      		    	$has_price_variation = true;
-      		    }
-      		    $previous_price = (float)$child->product->get_price();
-      		    
-      		}
-            }
             
-            // only add from to tag when there is a price variation on variable products
-            if ($has_price_variation) {
-	        sort($child_prices);
-	        $lowest_price = $child_prices[0];
-		$price_html .= '<span class="from">' . __('From: ', 'jigoshop') . '</span>' . jigoshop_price($lowest_price);
-	    }
-	    // otherwise return price from product
-	    else {
-	    	$price_html .= jigoshop_price($this->get_price());
-	    }
-        } else {
-            if ($this->price === '') {
-                $price_html = __('Price Not Announced');
-            } else if ($this->price === '0') {
-                $price_html = __('Free');
-            } else {
-                if (!empty($this->sale_price) && !empty($this->price) && $this->in_sale_date_range()) {
-                    $price_html .= '<del>' . jigoshop_price($this->price) . '</del> <ins>' . jigoshop_price($this->sale_price) . '</ins>';
-                } else {
-                    $price_html .= jigoshop_price($this->get_price());
-                }
-            }
-        }
+        $price = $this->get_price();
 
-        return $price_html;
+        if (get_option('jigoshop_prices_include_tax') == 'yes') :
+            $rates = (array) $this->get_tax_base_rate();
+        
+            // rates array sorted so that taxes applied to retail value come first. To reverse taxes
+            // need to reverse this array
+            $new_rates = array_reverse($rates, true);
+
+            $tax_applied_after_retail = 0;
+            $tax_totals = 0;
+            
+            if ($new_rates) :
+                
+                $_tax = &new jigoshop_tax();
+            
+                foreach ( $new_rates as $key=>$value ) :
+
+                    //means that this tax was applied to total including any retail taxes added
+                    if (!$value['is_retail']) :
+                        $tax_amount[$key] = $_tax->calc_tax($price, $value['rate'], true);
+                        $tax_applied_after_retail += $tax_amount[$key];
+                        $tax_totals += $tax_amount[$key];
+                    else :
+                        $tax_totals += $_tax->calc_tax($price - $tax_applied_after_retail, $value['rate'], true);
+                    endif;
+
+                endforeach;
+                
+                $price = $price - $tax_totals;
+            
+            endif;
+            
+        endif;
+
+            return $price;
+            
     }
 
-	/** Returns the upsell product ids */
-	function get_upsells() {
-		if (isset($this->data['upsell_ids'])) {
-            return (array) $this->data['upsell_ids']; 
-        }
-        
-        return array();
+	/**
+	 * Returns the base tax rate
+	 * TODO: why is this here? shouldn't it be in the tax class?
+	 *
+	 * @return  ???|false
+	 */
+	public function get_tax_base_rate() {
+
+		$rate = NULL;
+            
+        if ($this->is_taxable() && get_option('jigoshop_calc_taxes') == 'yes') :
+            $_tax = &new jigoshop_tax();
+            
+            if ($_tax->get_tax_classes_for_base()) foreach ( $_tax->get_tax_classes_for_base() as $tax_class ) :
+                
+                //TODO: remember standard rate.
+                if ( !in_array($tax_class, $this->data['tax_classes'])) continue;
+                $my_rate = $_tax->get_shop_base_rate($tax_class);
+                
+                if ($my_rate > 0) :
+                    $rate[$tax_class] = array('rate'=>$my_rate, 'is_retail'=>$_tax->is_applied_to_retail());
+                endif;
+                
+            endforeach;
+       
+        endif;
+
+        return $rate;
 	}
 
-	/** Returns the crosssell product ids */
-	function get_cross_sells() {
-		if (isset($this->data['crosssell_ids'])) {
-            return (array) $this->data['crosssell_ids'];
-        }
-        
-        return array();
-	}
+	/**
+	 * Returns the percentage saved on sale products
+	 * @note was called get_percentage()
+	 *
+	 * @return  string
+	 */
+	public function get_percentage_sale() {
 
-	/** Returns the product categories */
-	function get_categories( $sep = ', ', $before = '', $after = '' ) {
-		return get_the_term_list($this->id, 'product_cat', $before, $sep, $after);
-	}
+		if ( $this->is_on_sale() ) {
+			// 100% - sale price percentage over regular price
+			$percentage = 100 - ( ($this->sale_price / $this->regular_price) * 100);
 
-	/** Returns the product tags */
-	function get_tags( $sep = ', ', $before = '', $after = '' ) {
-		return get_the_term_list($this->id, 'product_tag', $before, $sep, $after);
-	}
-
-	/** Get and return related products */
-	function get_related( $limit = 5 ) {
-		global $wpdb, $all_post_ids; /* $all_post_ids doesn't appear to be used in this file, checking -JAP- */
-		// Related products are found from category and tag
-		$tags_array = array(0);
-		$cats_array = array(0);
-		$tags = '';
-		$cats = '';
-
-		// Get tags
-		$terms = wp_get_post_terms($this->id, 'product_tag');
-		foreach ($terms as $term) {
-			$tags_array[] = $term->term_id;
+			// Round & return
+			return round($percentage).'%';
 		}
-		$tags = implode(',', $tags_array);
-
-		$terms = wp_get_post_terms($this->id, 'product_cat');
-		foreach ($terms as $term) {
-			$cats_array[] = $term->term_id;
-		}
-		$cats = implode(',', $cats_array);
-
-		$q = "
-			SELECT p.ID
-			FROM $wpdb->term_taxonomy AS tt, $wpdb->term_relationships AS tr, $wpdb->posts AS p, $wpdb->postmeta AS pm
-			WHERE
-				p.ID != $this->id
-				AND p.post_status = 'publish'
-				AND p.post_date_gmt < NOW()
-				AND p.post_type = 'product'
-				AND pm.meta_key = 'visibility'
-				AND pm.meta_value IN ('visible', 'catalog')
-				AND pm.post_id = p.ID
-				AND
-				(
-					(
-						tt.taxonomy ='product_cat'
-						AND tt.term_taxonomy_id = tr.term_taxonomy_id
-						AND tr.object_id  = p.ID
-						AND tt.term_id IN ($cats)
-					)
-					OR
-					(
-						tt.taxonomy ='product_tag'
-						AND tt.term_taxonomy_id = tr.term_taxonomy_id
-						AND tr.object_id  = p.ID
-						AND tt.term_id IN ($tags)
-					)
-				)
-			GROUP BY tr.object_id
-			ORDER BY RAND()
-			LIMIT $limit;";
-
-		$related = $wpdb->get_col($q);
-
-		return $related;
 	}
 
-	/** Returns product attributes */
-	function get_attributes() {
+	/**
+	 * Returns the products current price
+	 *
+	 * @return  int
+	 */
+	public function get_price() {
+		return ($this->is_on_sale()) ? $this->sale_price : $this->regular_price;
+	}
+
+	/**
+	 * Adjust the products price during runtime
+	 *
+	 * @param   mixed
+	 * @return  void
+	 */
+	public function adjust_price( $new_price ) {
+
+		// Only adjust sale price if we are on sale
+		if($this->sale_price) 
+			$this->sale_price += $new_price;
+
+		$this->regular_price += $new_price;
+	}
+
+	/**
+	 * Returns the price in html format
+	 *
+	 * @return  html
+	 */
+	public function get_price_html() {
+
+		$html = null;
+
+		// First check if the product is grouped
+		if ( $this->is_type( array('grouped', 'variable') ) ) {
+
+			$array = array();
+			foreach ( $this->get_children() as $child_ID ) {
+				$child = $this->get_child($child_ID); 
+				
+				// Only get prices that are in stock
+				if ( $child->is_in_stock() ) {
+					$array[] = $child->get_price();
+				}
+			}
+			sort($array);
+
+			$html = '<span class="from">' . _x('From:', 'jigoshop') . '</span> ';
+			return $html . jigoshop_price( $array[0] );
+		}
+
+		// For standard products
+		if ( ! $this->regular_price )
+			$html = __( 'Price Not Announced', 'jigoshop' );
+
+		if ( $this->get_price() == 0 ) 
+			$html = __( 'Free', 'jigoshop' );
+
+		if ( $this->is_on_sale() ) {
+			$html = '
+				<del>' . jigoshop_price( $this->regular_price ) . '</del>
+				<ins>' . jigoshop_price( $this->sale_price ) . '</ins>';
+		}
+		else {
+			$html = jigoshop_price( $this->regular_price );
+		}
+
+		return $html;
+	}
+
+	/**
+	 * Returns the upsell product ids
+	 *
+	 * @return  mixed
+	 */
+	public function get_upsells() {
+		return $this->up_sells;
+	}
+
+	/**
+	 * Returns the cross_sells product ids
+	 *
+	 * @return  mixed
+	 */
+	public function get_cross_sells() {
+		return $this->cross_sells;
+	}
+
+	/**
+	 * Returns the product's length
+	 * @deprecated not required since we can just call $this->weight if the var is public
+	 *
+	 * @return  mixed   length
+	 */
+	public function get_length() {
+		return $this->length;
+	}
+
+	/**
+	 * Returns the product's width
+	 * @deprecated not required since we can just call $this->weight if the var is public
+	 *
+	 * @return  mixed   width
+	 */
+	public function get_width() {
+		return $this->width;
+	}
+
+	/**
+	 * Returns the product's height
+	 * @deprecated not required since we can just call $this->weight if the var is public
+	 *
+	 * @return  mixed   height
+	 */
+	public function get_height() {
+		return $this->height;
+	}
+
+	/**
+	 * Returns the product categories
+	 *
+	 * @return  HTML
+	 */
+	public function get_categories( $sep = ', ', $before = '', $after = '' ) {
+		return get_the_term_list($this->ID, 'product_cat', $before, $sep, $after);
+	}
+
+	/**
+	 * Returns the product tags
+	 *
+	 * @return  HTML
+	 */
+	public function get_tags( $sep = ', ', $before = '', $after = '' ) {
+		return get_the_term_list($this->ID, 'product_tag', $before, $sep, $after);
+	}
+
+	/**
+	 * Gets all products which have a common category or tag
+	 * TODO: Add stock check?
+	 *
+	 * @return	array
+	 */
+	public function get_related( $limit = 5 ) {
+
+		// Get the tags & categories
+		$tags = wp_get_post_terms($this->ID, 'product_tag', array('fields' => 'ids'));
+		$cats = wp_get_post_terms($this->ID, 'product_cat', array('fields' => 'ids'));
+
+		// No queries if we don't have any tags/categories
+		if( empty( $cats ) || empty( $tags ) )
+			return array();
+		
+		// Only get related posts that are in stock & visible
+		$query = array(
+			'posts_per_page' => $limit,
+			'post_type'      => 'product',
+			'fields'         => 'ids',
+			'orderby'        => 'rand',
+			'meta_query'     => array(
+				array(
+					'key'       => 'visibility',
+					'value'     => array( 'catalog', 'visible' ),
+					'compare'   => 'IN',
+				),
+			),
+			'tax_query'       => array(
+				'relation'       => 'OR',
+				array(
+					'taxonomy'   => 'product_cat',
+					'field'      => 'id',
+					'terms'      => $cats
+				),
+				array(
+					'taxonomy'   => 'product_tag',
+					'field'      => 'id',
+					'terms'      => $tags
+				),
+			),
+		);
+
+		// Run the query
+		$q = get_posts( $query );
+		wp_reset_postdata();
+
+		return $q;
+	}
+
+	/**
+	 * Gets a single product attribute
+	 *
+	 * @return  string|array
+	 **/
+	public function get_attribute( $key ) {
+
+		// Get the attribute in question & sanitize just incase
+		$attributes = $this->get_attributes();
+		$attr = $attributes[sanitize_title($key)];
+
+		// If its a taxonomy return that
+		if( $attr['is_taxonomy'] )
+			return wp_get_post_terms( $this->ID, 'pa_'.sanitize_title($attr['name']) );
+
+		return $attr['value'];
+	}
+
+	/**
+	 * Gets the attached product attributes
+	 *
+	 * @return  array
+	 **/
+	public function get_attributes() {
+
+		// Get the attributes
+		if ( ! $this->attributes )
+			$this->attributes = maybe_unserialize( $this->meta['product_attributes'][0] );
+
 		return $this->attributes;
 	}
 
-	/** Returns whether or not the product has any attributes set */
-	function has_attributes() {
-		if (isset($this->attributes) && count($this->attributes) > 0) {
-            foreach ($this->attributes as $attribute) {
-                if ($attribute['visible'] == 'yes') {
-                    return true;
-                }
-            }
-        }
+	/**
+	 * Checks for any visible attributes attached to the product
+	 *
+	 * @return  boolean
+	 **/
+	public function has_attributes() {
+		if ( (bool) $this->get_attributes() ) {
+			foreach( $this->get_attributes() as $attribute ) {
+				return (bool) $attribute['visible'];
+			}
+		}
 
-        return false;
+		return false;
 	}
 
-	/** Lists a table of attributes for the product page */
-	function list_attributes() {
+	/**
+	 * Lists attributes in a html table
+	 *
+	 * @return  html
+	 **/
+	public function list_attributes() {
+
+		// Check that we have some attributes that are visible
+		if ( ! $this->has_attributes() )
+			return false;
+
+		// Start the html output
+		$html = '<table cellspacing="0" class="shop_attributes">';
+
+		foreach( $this->get_attributes() as $attr ) {
+
+			// If attribute is invisible skip
+			if ( ! $attr['visible'] )
+				continue;
+
+			// Get Title & Value from attribute array
+			$name = wptexturize($attr['name']);
+			$value = null;
+
+			if ( (bool) $attr['is_taxonomy'] ) {
+
+				// Get the taxonomy terms
+				$product_terms = wp_get_post_terms( $this->ID, 'pa_'.sanitize_title($attr['name']) );
+
+				// Convert them into a string
+				$terms = array();
+
+				foreach( $product_terms as $term ) {
+					$terms[] = $term->name;
+				}
+
+				$value = implode(', ', $terms);
+			}
+			else {
+				$value = wptexturize($attr['value']);
+			}
+
+			// Generat the remaining html
+			$html .= "
+			<tr>
+				<th>$name</th>
+				<td>$value</td>
+			</tr>";
+		}
+		
+		$html .= '</table>';
+		return $html;
+	}
+	
+	/**
+	 * Returns an array of available values for attributes used in product variations
+	 * 
+	 * TODO: Note that this is 'variable product' specific, and should be moved to separate class
+	 * with all 'variable product' logic form other methods in this class.
+	 * 
+	 * @return   two dimensional array of attributes and their available values
+	 */   
+	function get_available_attributes_variations() {
+
+		if (!$this->is_type('variable') || !$this->has_child()) {
+			return array();
+		}
+		
 		$attributes = $this->get_attributes();
-        
-		if ($attributes && count($attributes)>0) {
+		
+		if(!is_array($attributes)) {
+			return array();
+		}
+		
+		$available_attributes = array();
+		$children = $this->get_children();
 
-			echo '<table cellspacing="0" class="shop_attributes">';
-			$alt = 1;
-			foreach ($attributes as $attribute) {
-				if ($attribute['visible'] == 'no') {
-                    continue;
-                }
-                
-				$alt = $alt*-1;
-				echo '<tr class="';
-				if ($alt==1) echo 'alt';
-				echo '"><th>'.wptexturize($attribute['name']).'</th><td>';
+		
+		foreach ($attributes as $attribute) {
+			
+			// If we don't have any variations
+			if ( ! $attribute['variation']) continue;
 
-                $value = $attribute['value'];
-                
-                // if taxonomy we should replace all term slugs with original names
-                if ( $attribute['is_taxonomy'] == 'yes' ) {
-                    if ( ! is_array( $value )) {
-                        $value = array( $value );
-                    }
-                    
-                    $taxonomy_name = 'pa_' . sanitize_title( $attribute['name'] );
-                    
-                    $new_value = array();
-                    foreach ( $value as $term_slug ) {
-                        $term = get_term_by( 'slug', $term_slug, $taxonomy_name );
-                        $new_value[] = $term->name;
-                    }
-                    $value = $new_value;
-                }
-                
-                if ( is_array($value ) ) {
-                    $value = implode( ', ', $value );
-                }
+			$values = array();
 
-				echo wpautop( wptexturize( $value ));
+			$attr_name = 'tax_'.sanitize_title($attribute['name']);
 
-				echo '</td></tr>';
-            }
-			echo '</table>';
+			foreach ($children as $child) {
 
-        }
+				// Check if variation is disabled
+				if ( get_post_status( $child ) != 'publish' ) continue;
+
+				// Get the variation & all attributes associated
+				$child = $this->get_child( $child );
+				$options = $child->get_variation_attributes();
+
+				if ( is_array($options)) {
+					foreach($options as $key => $value) {
+						if ( $key == $attr_name )
+							$values[] = $value;
+					}
+				}
+			}
+
+			//empty value indicates that all options for given attribute are available
+			if( in_array('', $values) ) {
+
+				if ( $attribute['is_taxonomy'] ) {
+					$options = array();
+					$terms = wp_get_post_terms( $this->ID, 'pa_'.sanitize_title($attribute['name']) );
+
+					foreach($terms as $term) {
+						$options[] = $term->slug;
+					}
+				}
+				else {
+					$options = explode(', ', $attribute['value']);
+				}
+
+				$options = array_map('trim', $options);
+				$values = array_unique($options);
+			}
+			else {
+				if( ! $attribute['is_taxonomy'] ) {
+					$options = explode(', ', $attribute['value']);
+					$options = array_map('trim', $options);
+					$values = array_intersect( $options, $values );
+				}
+
+				$values = array_unique($values);
+			}
+
+			$available_attributes[$attribute['name']] = array_unique($values);
+		}
+
+		return $available_attributes;
 	}
-    
-    /**
-     * Returns an array of available values for attributes used in product variations
-     * 
-     * @todo Note that this is 'variable product' specific, and should be moved to separate class
-     * with all 'variable product' logic form other methods in this class.
-     * 
-     * @return two dimensional array of attributes and their available values
-     */   
-    function get_available_attributes_variations() {
-        if (!$this->is_type('variable') || !$this->has_child()) {
-            return array();
-        }
-        
-        $attributes = $this->get_attributes();
-        
-        if(!is_array($attributes)) {
-            return array();
-        }
-        
-        $available = array();
-        $children = $this->get_children();
-        
-        foreach ($attributes as $attribute) {
-            if ($attribute['variation'] !== 'yes') {
-                continue;
-            }
-
-            $values = array();
-            $name = 'tax_'.sanitize_title($attribute['name']);
-
-            foreach ($children as $child) {
-                /* @var $variation jigoshop_product_variation */
-                $variation = $child->product;
-
-                //check attributes of all variations that are visible (enabled)
-                if ($variation instanceof jigoshop_product_variation && $variation->is_visible()) {
-                    $options = $variation->get_variation_attributes();
+/*
+				//check attributes of all variations that are visible (enabled)
+				if ($variation instanceof jigoshop_product_variation && $variation->is_visible()) {
+					$options = $variation->get_variation_attributes();
 					
-                    if (is_array($options)) {
-                        foreach ($options as $aname => $avalue) {
-                            if ($aname == $name) {
-                                $values[] = $avalue;
-                            }
-                        }
-                    }
-                }
-            }
-            
+					if (is_array($options)) {
+						foreach ($options as $aname => $avalue) {
+							if ($aname == $name) {
+								$values[] = $avalue;
+							}
+						}
+					}
+				}
+			}
+			
 			sort( $values );
 			
-            //empty value indicates that all options for given attribute are available
-            if ( in_array(  '', $values)) {
-                $options = $attribute['value'];
-                if (!is_array($options)) {
-                    $options = explode(',', $options);
-                }
+			
+			if ( in_array(  '', $values)) {
+				$options = $attribute['value'];
+				if (!is_array($options)) {
+					$options = explode(',', $options);
+				}
 				
-                $values = $options;
-            }
-              
-            //make sure values are unique
-            $values = array_unique($values);
+				$values = $options;
+			}
+			  
+			//make sure values are unique
+			$values = array_unique($values);
 
-            $available[$attribute['name']] = $values;
-        }
-        
-        return $available;
-    }
+			$available[$attribute['name']] = $values;
+		}
+		
+		return $available;
+	}*/
 
-    /**
-     * Get attribute taxonomies. Taxonomies are lazy loaded.
-     * 
-     * @return array of stdClass objects representing attributes
-     */
-    public static function getAttributeTaxonomies() {
-        global $wpdb;
-                
-        if(self::$attribute_taxonomies === NULL) {
-            self::$attribute_taxonomies = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."jigoshop_attribute_taxonomies;"); 
-        }
-        
-        return self::$attribute_taxonomies;
-    }
+	/**
+	 * Get attribute taxonomies. Taxonomies are lazy loaded.
+	 * 
+	 * @return  array of stdClass objects representing attributes
+	 */
+	public static function getAttributeTaxonomies() {
+		global $wpdb;
+				
+		if(self::$attribute_taxonomies === NULL) {
+			self::$attribute_taxonomies = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."jigoshop_attribute_taxonomies;"); 
+		}
+		
+		return self::$attribute_taxonomies;
+	}
 	
 }

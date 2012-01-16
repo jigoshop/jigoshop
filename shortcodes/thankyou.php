@@ -23,8 +23,9 @@ function get_jigoshop_thankyou( $atts ) {
  * Outputs the thankyou page
  **/
 function jigoshop_thankyou() {
-
-	_e('<p>Thank you. Your order has been processed successfully.</p>', 'jigoshop');
+	
+	$thankyou_message = __('<p>Thank you. Your order has been processed successfully.</p>', 'jigoshop');
+	echo apply_filters( 'jigoshop_thankyou_message', $thankyou_message );
 
 	// Pay for order after checkout step
 	if (isset($_GET['order'])) $order_id = $_GET['order']; else $order_id = 0;
@@ -68,6 +69,6 @@ function jigoshop_thankyou() {
 
 	endif;
 	
-	echo '<p><a class="button" href="'.get_permalink(get_option('jigoshop_shop_page_id')).'">'.__('&larr; Continue Shopping', 'jigoshop').'</a></p>';
+	echo '<p><a class="button" href="'.apply_filters('jigoshop_get_shop_page_id', get_permalink(get_option('jigoshop_shop_page_id'))).'">'.__('&larr; Continue Shopping', 'jigoshop').'</a></p>';
 
 }

@@ -139,7 +139,7 @@ function jigoshop_post_type() {
 			'hierarchical' => true,
 			'rewrite' => array( 'slug' => $base_slug, 'with_front' => false ),
 			'query_var' => true,			
-			'supports' => array( 'title', 'editor', 'thumbnail', 'comments'/*, 'page-attributes'*/ ),
+			'supports' => array( 'title', 'editor', 'thumbnail', 'comments', 'excerpt',/*, 'page-attributes'*/ ),
 			'has_archive' => $base_slug,
 			'show_in_nav_menus' => false,
 		)
@@ -163,7 +163,7 @@ function jigoshop_post_type() {
 				'parent' => __( 'Parent Variation', 'jigoshop' )
 			),
 			'public' => true,
-			'show_ui' => true,
+			'show_ui' => false,
 			'capability_type' => 'post',
 			'publicly_queryable' => true,
 			'exclude_from_search' => true,

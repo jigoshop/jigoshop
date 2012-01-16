@@ -91,7 +91,7 @@ function jigoshop_add_order_item() {
 				echo '-';
 			endif;
 		?></td>
-		<td>
+		<!--<td>
 			<table class="meta" cellspacing="0">
 				<tfoot>
 					<tr>
@@ -100,7 +100,7 @@ function jigoshop_add_order_item() {
 				</tfoot>
 				<tbody></tbody>
 			</table>
-		</td>
+		</td>-->
 		<?php do_action('jigoshop_admin_order_item_values', $_product); ?>
 		<td class="quantity"><input type="text" name="item_quantity[]" placeholder="<?php _e('Quantity e.g. 2', 'jigoshop'); ?>" value="1" /></td>
 		<td class="cost"><input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit ex. tax e.g. 2.99', 'jigoshop'); ?>" value="<?php echo $_product->get_price(); ?>" /></td>
@@ -116,7 +116,6 @@ function jigoshop_add_order_item() {
 
 	// Quit out
 	die();
-
 }
 
 
@@ -191,7 +190,7 @@ function jigoshop_add_to_cart_action($url = false)
     
     //single product
     if (is_numeric($_GET['add-to-cart'])) {
-        $product_id = (int) $_GET['add-to-cart'];
+        $product_id = apply_filters('jigoshop_product_id_add_to_cart_filter', (int) $_GET['add-to-cart']);
         $quantity = 1;
         if (isset($_POST['quantity'])) {
             $quantity = (int) $_POST['quantity'];
@@ -209,7 +208,7 @@ function jigoshop_add_to_cart_action($url = false)
             wp_redirect(get_permalink($_GET['product']));
             exit;
         } else {
-            $product_id = (int) $_GET['product'];
+            $product_id = apply_filters('jigoshop_product_id_add_to_cart_filter', (int) $_GET['product']);
             $variation_id = (int) $_POST['variation_id'];
             $quantity = 1;
             if (isset($_POST['quantity'])) {
@@ -241,7 +240,7 @@ function jigoshop_add_to_cart_action($url = false)
             } else {
                 /* Link on product pages */
                 jigoshop::add_error(__('Please choose product options&hellip;', 'jigoshop'));
-                wp_redirect(get_permalink($_GET['product']));
+                wp_redirect(apply_filters('jigoshop_product_id_add_to_cart_filter', get_permalink($_GET['product'])));
                 exit;
             }
         }
@@ -306,6 +305,46 @@ function jigoshop_add_to_cart_action($url = false)
 
     exit;
 }
+
+function jigoshop_ajax_update_order_review() {
+	
+	check_ajax_referer( 'update-order-review', 'security' );
+	
+	if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
+	
+	if (sizeof(jigoshop_cart::$cart_contents)==0) :
+		echo '<p class="error">'.__('Sorry, your session has expired.', 'jigoshop').' <a href="'.home_url().'">'.__('Return to homepage &rarr;', 'jigoshop').'</a></p>';
+		exit;
+	endif;
+	
+	do_action('jigoshop_checkout_update_order_review', $_POST['post_data']);
+	
+        if (isset($_POST['shipping_method'])) :
+            
+		$shipping_method = explode(":", $_POST['shipping_method']);
+	 	$_SESSION['chosen_shipping_method_id'] = $shipping_method[0];
+                
+                if (is_numeric($shipping_method[2])) :
+                    $_SESSION['selected_rate_id'] = $shipping_method[2];
+                endif;
+                
+	endif;
+
+	if (isset($_POST['country'])) jigoshop_customer::set_country( $_POST['country'] );
+	if (isset($_POST['state'])) jigoshop_customer::set_state( $_POST['state'] );
+	if (isset($_POST['postcode'])) jigoshop_customer::set_postcode( $_POST['postcode'] );
+	if (isset($_POST['s_country'])) jigoshop_customer::set_shipping_country( $_POST['s_country'] );
+	if (isset($_POST['s_state'])) jigoshop_customer::set_shipping_state( $_POST['s_state'] );
+	if (isset($_POST['s_postcode'])) jigoshop_customer::set_shipping_postcode( $_POST['s_postcode'] );
+					
+	jigoshop_cart::calculate_totals();
+
+	do_action('jigoshop_checkout_order_review');
+
+	die();
+}
+add_action('wp_ajax_jigoshop_update_order_review', 'jigoshop_ajax_update_order_review');
+add_action('wp_ajax_nopriv_jigoshop_update_order_review', 'jigoshop_ajax_update_order_review');
 
 /**
  * Clear cart
@@ -382,7 +421,7 @@ function jigoshop_process_login() {
 					wp_safe_redirect($_SERVER['HTTP_REFERER']);
 					exit;
 				}
-				wp_redirect(get_permalink(get_option('jigoshop_myaccount_page_id')));
+				wp_redirect(apply_filters('jigoshop_get_myaccount_page_id', get_permalink(get_option('jigoshop_myaccount_page_id'))));
 				exit;
 			endif;
 
@@ -399,9 +438,9 @@ add_action('wp_ajax_nopriv_jigoshop-checkout', 'jigoshop_process_checkout');
 
 function jigoshop_process_checkout () {
 	include_once jigoshop::plugin_path() . '/classes/jigoshop_checkout.class.php';
-
+	
 	jigoshop_checkout::instance()->process_checkout();
-
+	
 	die(0);
 }
 
@@ -460,15 +499,33 @@ function jigoshop_download_product() {
 		$order = urldecode( $_GET['order'] );
 		$email = urldecode( $_GET['email'] );
 
-		if (!is_email($email)) wp_safe_redirect( home_url() );
+		if (!is_email($email)) :
+			wp_die( __('Invalid email address.', 'jigoshop') . ' <a href="'.home_url().'">' . __('Go to homepage &rarr;', 'jigoshop') . '</a>' );
+		endif;
 
-		$downloads_remaining = $wpdb->get_var( $wpdb->prepare("
-			SELECT downloads_remaining
+		$download_result = $wpdb->get_row( $wpdb->prepare("
+			SELECT downloads_remaining 
 			FROM ".$wpdb->prefix."jigoshop_downloadable_product_permissions
-			WHERE user_email = '$email'
-			AND order_key = '$order'
-			AND product_id = '$download_file'
-		;") );
+			WHERE user_email = %s
+			AND order_key = %s
+			AND product_id = %s
+		;", $email, $order, $download_file ) );
+
+		if (!$download_result) :
+			wp_die( __('Invalid download.', 'jigoshop') . ' <a href="'.home_url().'">' . __('Go to homepage &rarr;', 'jigoshop') . '</a>' );
+			exit;
+		endif;
+		
+		$order_id = $download_result->order_id;
+		$downloads_remaining = $download_result->downloads_remaining;
+		
+		if ($order_id) :
+			$order = new jigoshop_order( $order_id );
+			if ($order->status!='completed' && $order->status!='processing' && $order->status!='publish') :
+				wp_die( __('Invalid order.', 'jigoshop') . ' <a href="'.home_url().'">' . __('Go to homepage &rarr;', 'jigoshop') . '</a>' );
+				exit;
+			endif;
+		endif;
 		
 		if ($downloads_remaining == '0') :
             wp_die( sprintf(__('Sorry, you have reached your download limit for this file. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
@@ -483,29 +540,53 @@ function jigoshop_download_product() {
 				), array( '%d' ), array( '%s', '%s', '%d' ) );
 			endif;
 
+			$file_path = get_post_meta($download_file, 'file_path', true);
+				
+			if (!$file_path) wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
+
+			// Get URLS with https
+			$site_url = site_url();
+			$network_url = network_admin_url();
+			if (is_ssl()) :
+				$site_url = str_replace('https:', 'http:', $site_url);
+				$network_url = str_replace('https:', 'http:', $network_url);
+			endif;
+
+			if (!is_multisite()) :	
+				$file_path = str_replace(trailingslashit($site_url), ABSPATH, $file_path);
+			else :
+				$upload_dir = wp_upload_dir();
+				
+				// Try to replace network url
+				$file_path = str_replace(trailingslashit($network_url), ABSPATH, $file_path);
+				
+				// Now try to replace upload URL
+				$file_path = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $file_path);
+			endif;
+
+			// See if its local or remote
+			if (strstr($file_path, 'http:') || strstr($file_path, 'https:') || strstr($file_path, 'ftp:')) :
+				$remote_file = true;
+			else :
+				$remote_file = false;
+				$file_path = realpath($file_path);
+			endif;
+
 			// Download the file
-			$file_path = ABSPATH . get_post_meta($download_file, 'file_path', true);
+			$file_extension = strtolower(substr(strrchr($file_path,"."),1));
 
-            $file_path = realpath($file_path);
-            
-            if (!file_exists($file_path) || is_dir($file_path) || !is_readable($file_path)) {
-                wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
-            }
-
-            $file_extension = strtolower(substr(strrchr($file_path,"."),1));
-
-            switch ($file_extension) :
-                case "pdf": $ctype="application/pdf"; break;
-                case "exe": $ctype="application/octet-stream"; break;
-                case "zip": $ctype="application/zip"; break;
-                case "doc": $ctype="application/msword"; break;
-                case "xls": $ctype="application/vnd.ms-excel"; break;
-                case "ppt": $ctype="application/vnd.ms-powerpoint"; break;
-                case "gif": $ctype="image/gif"; break;
-                case "png": $ctype="image/png"; break;
-                case "jpe": case "jpeg": case "jpg": $ctype="image/jpg"; break;
-                default: $ctype="application/force-download";
-            endswitch;
+			switch ($file_extension) :
+				case "pdf": $ctype="application/pdf"; break;
+				case "exe": $ctype="application/octet-stream"; break;
+				case "zip": $ctype="application/zip"; break;
+				case "doc": $ctype="application/msword"; break;
+				case "xls": $ctype="application/vnd.ms-excel"; break;
+				case "ppt": $ctype="application/vnd.ms-powerpoint"; break;
+				case "gif": $ctype="image/gif"; break;
+				case "png": $ctype="image/png"; break;
+				case "jpe": case "jpeg": case "jpg": $ctype="image/jpg"; break;
+				default: $ctype="application/force-download";
+			endswitch;
 
 			@ini_set('zlib.output_compression', 'Off');
 			@set_time_limit(0);
@@ -513,6 +594,7 @@ function jigoshop_download_product() {
 			@session_cache_limiter('none');
 			@set_magic_quotes_runtime(0);
 			@ob_end_clean();
+			if (ob_get_level()) @ob_end_clean();
 			@session_write_close();
 
 			header("Pragma: no-cache");
@@ -521,21 +603,25 @@ function jigoshop_download_product() {
 			header("Robots: none");
 			header("Content-Type: ".$ctype."");
 			header("Content-Description: File Transfer");
-
-          	if (strstr($_SERVER['HTTP_USER_AGENT'], "MSIE")) {
-			    // workaround for IE filename bug with multiple periods / multiple dots in filename
-			    $iefilename = preg_replace('/\./', '%2e', basename($file_path), substr_count(basename($file_path), '.') - 1);
-			    header("Content-Disposition: attachment; filename=\"".$iefilename."\";");
-			} else {
-			    header("Content-Disposition: attachment; filename=\"".basename($file_path)."\";");
-			}
-
 			header("Content-Transfer-Encoding: binary");
 
-            header("Content-Length: ".@filesize($file_path));
-            @readfile("$file_path") or wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
-			exit;
+			if (strstr($_SERVER['HTTP_USER_AGENT'], "MSIE")) {
+				// workaround for IE filename bug with multiple periods / multiple dots in filename
+				$iefilename = preg_replace('/\./', '%2e', basename($file_path), substr_count(basename($file_path), '.') - 1);
+				header("Content-Disposition: attachment; filename=\"".$iefilename."\";");
+			} else {
+				header("Content-Disposition: attachment; filename=\"".basename($file_path)."\";");
+			}
 
+			header("Content-Length: ".@filesize($file_path));
+			
+
+			if ( $remote_file ) {
+				 header('Location: '.$file_path);
+			} else {
+				@readfile("$file_path") or wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
+			}
+			exit;
 		endif;
 
 	endif;
@@ -555,8 +641,16 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 
 	if (sizeof($order->items)>0) foreach ($order->items as $item) :
 
-		if ($item['id']>0) :
-			$_product = &new jigoshop_product( $item['id'] );
+		// if ($item['id']>0) :
+
+			// @todo: Bit of a hack could be improved as id is null/0
+			if ( isset($item['variation_id']) ) {
+				$_product = &new jigoshop_product_variation( $item['variation_id'] );
+				$product_id = $_product->variation_id;
+			} else {
+				$_product = &new jigoshop_product( $item['id'] );
+				$product_id = $_product->ID;
+			}
 
 			if ( $_product->exists && $_product->is_type('downloadable') ) :
 
@@ -581,7 +675,7 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 
 				// Downloadable product - give access to the customer
 				$wpdb->insert( $wpdb->prefix . 'jigoshop_downloadable_product_permissions', array(
-					'product_id' => $_product->id,
+					'product_id' => $product_id,
 					'user_id' => $order->user_id,
 					'user_email' => $user_email,
 					'order_key' => $order->order_key,
@@ -596,7 +690,73 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 
 			endif;
 
-		endif;
+		// endif;
 
 	endforeach;
+}
+
+/**
+ * Jigoshop Dropdown categories
+ * 
+ * @see     http://core.trac.wordpress.org/ticket/13258
+ * @param   integer   Show Product Count?
+ * @param   integer   Show Hierarchy?
+ * @return  void
+ */
+function jigoshop_product_dropdown_categories( $show_counts = true, $hierarchal = true ) {
+	global $wp_query;
+	
+	$r = array();
+	$r['pad_counts'] = 1;
+	$r['hierarchal'] = $hierarchal;
+	$r['hide_empty'] = 1;
+	$r['show_count'] = 1;
+	$r['selected']   = (isset($wp_query->query['product_cat'])) ? $wp_query->query['product_cat'] : '';
+	
+	$terms = get_terms( 'product_cat', $r );
+	if (!$terms) return;
+	
+	$output  = "<select name='product_cat' id='dropdown_product_cat'>";
+	$output .= '<option value="">'.__('Select a category', 'jigoshop').'</option>';
+	$output .= jigoshop_walk_category_dropdown_tree( $terms, 0, $r );
+	$output .="</select>";
+	
+	echo $output;
+}
+
+/**
+ * Walk the Product Categories.
+ */
+function jigoshop_walk_category_dropdown_tree() {
+	$args = func_get_args();
+	// the user's options are the third parameter
+	if ( empty($args[2]['walker']) || !is_a($args[2]['walker'], 'Walker') )
+		$walker = new Jigoshop_Walker_CategoryDropdown;
+	else
+		$walker = $args[2]['walker'];
+
+	return call_user_func_array(array( &$walker, 'walk' ), $args );
+}
+
+/**
+ * Create HTML dropdown list of Product Categories.
+ */
+class Jigoshop_Walker_CategoryDropdown extends Walker {
+
+	var $tree_type = 'category';
+	var $db_fields = array ('parent' => 'parent', 'id' => 'term_id', 'slug' => 'slug' );
+
+	function start_el(&$output, $category, $depth, $args) {
+		$pad = str_repeat('&nbsp;', $depth * 3);
+
+		$cat_name = apply_filters('list_product_cats', $category->name, $category);
+		$output .= "\t<option class=\"level-$depth\" value=\"".$category->slug."\"";
+		if ( $category->slug == $args['selected'] )
+			$output .= ' selected="selected"';
+		$output .= '>';
+		$output .= $pad.$cat_name;
+		if ( $args['show_count'] )
+			$output .= '&nbsp;('. $category->count .')';
+		$output .= "</option>\n";
+	}
 }
