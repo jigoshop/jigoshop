@@ -71,15 +71,6 @@
 
 			$('body').removeClass('simple_product downloadable_product grouped_product virtual_product variable_product')
 				.addClass( $(this).val() + '_product' );
-
-			if ( $(this).val() == 'simple' ) {
-				$('.tax_form_tab a').text('Tax & Form');
-			} else {
-				$('.tax_form_tab a').text('Tax')
-			}
-		
-
-
 		}).change();
 	}
 

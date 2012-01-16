@@ -59,12 +59,12 @@ function jigoshop_product_data_box() {
 
 	<div class="panels">
 		<ul class="product_data_tabs tabs" style="display:none;">
-			<li class="active">
+			<li class="general_tab active">
 				<a href="#general"><?php _e('General', 'jigoshop'); ?></a>
 			</li>
 
-			<li class="tax_form_tab">
-				<a href="#tax"><?php _e('Tax & Form', 'jigoshop') ?></a>
+			<li class="advanced_tab">
+				<a href="#tax"><?php _e('Advanced', 'jigoshop') ?></a>
 			</li>
 
 			<?php if (get_option('jigoshop_manage_stock')) : ?>
@@ -148,15 +148,6 @@ function jigoshop_product_data_box() {
 			<?php
 				// Featured
 				echo jigoshop_form::checkbox( 'featured', 'Featured?', false, __('Enable this option to feature this product', 'jigoshop') );
-
-				// Visibility
-				echo jigoshop_form::select( 'visibility', 'Visibility',
-					array(
-						'visible'	=> 'Catalog & Search',
-						'catalog'	=> 'Catalog Only',
-						'search'	=> 'Search Only',
-						'Hidden'	=> 'Hidden'
-					) );
 			?>
 			</fieldset>
 		</div>
@@ -198,6 +189,7 @@ function jigoshop_product_data_box() {
 			?>
 			</fieldset>
 
+			<?php if( get_option('jigoshop_enable_weight') !== 'no' || get_option('jigoshop_enable_dimensions', true) !== 'no' ): ?>
 			<fieldset id="form_fieldset">
 			<?php
 				// Weight
@@ -216,6 +208,20 @@ function jigoshop_product_data_box() {
 					</p>
 					';
 				}
+			?>
+			</fieldset>
+			<?php endif; ?>
+
+			<fieldset>
+			<?php
+				// Visibility
+				echo jigoshop_form::select( 'visibility', 'Visibility',
+					array(
+						'visible'	=> 'Catalog & Search',
+						'catalog'	=> 'Catalog Only',
+						'search'	=> 'Search Only',
+						'Hidden'	=> 'Hidden'
+					) );
 			?>
 			</fieldset>
 		</div>
