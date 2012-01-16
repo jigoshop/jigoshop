@@ -171,7 +171,7 @@ function jigoshop_product_data_box() {
 	            <?php
 	            	$_tax = new jigoshop_tax();
 	            	$tax_classes = $_tax->get_tax_classes();
-	            	$selections = get_post_meta($post->ID, 'tax_classes', true);
+	            	$selections = (array) get_post_meta($post->ID, 'tax_classes', true);
 	            	
 	            	$checked = checked(in_array('', $selections), true, false);
 
