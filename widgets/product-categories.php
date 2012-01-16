@@ -100,7 +100,7 @@ class Jigoshop_Widget_Product_Categories extends WP_Widget {
 			// See: http://core.trac.wordpress.org/ticket/13258
 			
 			jigoshop_product_dropdown_categories( $args['show_count'], $args['hierarchical'] );
-			
+
 			// TODO: Move this javascript to its own file (plugins.js?)
 		?>
 			<script type='text/javascript'>

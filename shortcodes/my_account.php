@@ -356,7 +356,6 @@ function jigoshop_change_password() {
                 endif;
 
             endif;
-
         endif;
         
         jigoshop::show_messages();
@@ -593,5 +592,4 @@ function jigoshop_view_order() {
 		wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(get_option('jigoshop_myaccount_page_id')) ));
 		exit;
     endif;
-    
 }

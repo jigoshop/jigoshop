@@ -380,7 +380,7 @@ function jigoshop_order_totals_meta_box($post) {
 		<li>
 			<label><?php _e('Shipping:', 'jigoshop'); ?></label>
 			<input type="text" id="order_shipping" name="order_shipping" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo $data['order_shipping']; ?>" class="first" /> <input type="text" name="shipping_method" id="shipping_method" value="<?php echo $data['shipping_method']; ?>" class="last" placeholder="<?php _e('Shipping Method', 'jigoshop'); ?>" />
-		</li>
+        </li>
 
 		<li class="left">
 			<label><?php _e('Shipping Tax:', 'jigoshop'); ?></label>

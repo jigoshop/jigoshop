@@ -193,7 +193,8 @@ function jigoshop_update_options() {
                         $amount = jigowatt_clean($coupon_amount[$i]);
 
                         if (isset($product_ids[$i]) && $product_ids[$i])
-                            $products = array_map('trim', explode(',', $product_ids[$i])); else
+                            $products = array_map('trim', explode(',', $product_ids[$i])); 
+                        else
                             $products = array();
 
                         if (isset($date_from[$i]) && $date_from[$i]) :

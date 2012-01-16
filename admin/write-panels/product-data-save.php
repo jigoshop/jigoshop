@@ -24,9 +24,6 @@ class jigoshop_product_meta
 
 	public function save( $post_id, $post ) {
 
-		//var_dump($_POST);
-		//exit();
-
 		// Set the product type
 		wp_set_object_terms( $post_id, sanitize_title($_POST['product-type']), 'product_type');
 
