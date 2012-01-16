@@ -436,7 +436,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 		// Start buffering the output
 		ob_start();
 		?>
-		<div class="jigoshop_variation postbox" rel="<?php echo $variation->ID; ?>">
+		<div class="jigoshop_variation postbox closed" rel="<?php echo $variation->ID; ?>">
 			<button type="button" class="remove_variation button"><?php _e('Remove', 'jigoshop'); ?></button>
 			<div class="handlediv" title="Click to toggle"><br></div>
 			<h3 class="handle"><?php echo $this->attribute_selector($attributes, $variation); ?></h3>
