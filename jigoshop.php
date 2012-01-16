@@ -55,6 +55,34 @@ include_once( 'classes/abstract/jigoshop_singleton.php' );
 include_once( 'classes/jigoshop_sanitize.class.php' );
 include_once( 'classes/jigoshop_validation.class.php' );
 include_once( 'jigoshop_taxonomy.php' );
+
+include_once( 'classes/jigoshop_countries.class.php' );
+include_once( 'classes/jigoshop_customer.class.php' );
+include_once( 'classes/jigoshop_product.class.php' );
+include_once( 'classes/jigoshop_product_variation.class.php' );
+include_once( 'classes/jigoshop_order.class.php' );
+include_once( 'classes/jigoshop_orders.class.php' );
+include_once( 'classes/jigoshop_tax.class.php' );
+include_once( 'classes/jigoshop_shipping.class.php' );
+include_once( 'classes/jigoshop_coupons.class.php' );
+
+include_once( 'gateways/gateways.class.php' );
+include_once( 'gateways/gateway.class.php' );
+include_once( 'gateways/bank_transfer.php' );
+include_once( 'gateways/cheque.php' );
+include_once( 'gateways/dibs.php' );
+include_once( 'gateways/paypal.php' );
+include_once( 'gateways/skrill.php' );
+
+include_once( 'shipping/shipping_method.class.php' );
+include_once( 'shipping/jigoshop_calculable_shipping.php' );
+include_once( 'shipping/flat_rate.php' );
+include_once( 'shipping/free_shipping.php' );
+
+include_once( 'classes/jigoshop.class.php' );
+include_once( 'classes/jigoshop_cart.class.php' );
+include_once( 'classes/jigoshop_checkout.class.php' );
+
 include_once( 'widgets/init.php' );
 
 include_once( 'jigoshop_shortcodes.php' );
@@ -63,13 +91,6 @@ include_once( 'jigoshop_template_actions.php' );
 include_once( 'jigoshop_emails.php' );
 include_once( 'jigoshop_query.php' );
 include_once( 'jigoshop_actions.php' );
-
-include_once( 'gateways/gateways.class.php' );
-include_once( 'gateways/gateway.class.php' );
-include_once( 'classes/jigoshop_shipping.class.php' );
-include_once( 'shipping/shipping_method.class.php' );
-include_once( 'shipping/jigoshop_calculable_shipping.php' );
-
 //include_once( 'jigoshop_cron.php' );	/* we may use this at some point, leaving -JAP- */
 
 // Constants
@@ -193,15 +214,15 @@ function jigoshop_init() {
 	));
 
 	$css = file_exists(get_stylesheet_directory() . '/jigoshop/style.css') ? get_stylesheet_directory_uri() . '/jigoshop/style.css' : jigoshop::assets_url() . '/assets/css/frontend.css';
-    if (JIGOSHOP_USE_CSS) wp_register_style('jigoshop_frontend_styles', $css, false, '1.0' );
+    if (JIGOSHOP_USE_CSS) wp_register_style('jigoshop_frontend_styles', $css );
 
     if (is_admin()) :
-    	wp_register_style('jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css', false, '1.0');
+    	wp_register_style('jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css');
     	wp_enqueue_style('jigoshop_admin_styles');
-   		wp_register_style('jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css', false, '0.23');
+   		wp_register_style('jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css');
     	wp_enqueue_style('jquery-ui-jigoshop-styles');
     else :
-    	wp_register_style( 'jqueryui_styles', jigoshop::assets_url() . '/assets/css/ui.css', '1.0' );
+    	wp_register_style( 'jqueryui_styles', jigoshop::assets_url() . '/assets/css/ui.css' );
 
     	wp_enqueue_style('jigoshop_frontend_styles');
     	wp_enqueue_style('jqueryui_styles');
@@ -848,4 +869,3 @@ function jigoshop_import_start() {
 
 }
 add_action('import_start', 'jigoshop_import_start');
-

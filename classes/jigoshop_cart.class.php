@@ -20,87 +20,102 @@
  */
 class jigoshop_cart extends jigoshop_singleton {
 
-	public static $cart_contents_total;
-	public static $cart_contents_total_ex_tax;
-	public static $cart_contents_weight;
-	public static $cart_contents_count;
-	public static $cart_contents_tax;
-	public static $cart_dl_count;
-	public static $cart_contents_total_ex_dl;
-	public static $total;
-	public static $subtotal;
-	public static $subtotal_ex_tax;
-	public static $tax_total;
-	public static $discount_total;
-	public static $shipping_total;
-	public static $shipping_tax_total;
-	public static $applied_coupons;
-	public static $cart_contents;
+    public static $cart_contents_total;
+    public static $cart_contents_total_ex_tax;
+    public static $cart_contents_weight;
+    public static $cart_contents_count;
+    public static $cart_dl_count;
+    public static $cart_contents_total_ex_dl;
+    public static $total;
+    public static $subtotal;
+    public static $subtotal_ex_tax;
+    public static $discount_total;
+    public static $shipping_total;
+    public static $shipping_tax_total;
+    public static $applied_coupons;
+    public static $cart_contents;
 
-	/** constructor */
-	protected function __construct() {
-	
-		self::get_cart_from_session();
+    private static $subtotal_inc_tax;
+    private static $tax;
 
-  		self::$applied_coupons = array();
+    /** constructor */
+    protected function __construct() {
 
-		if ( isset($_SESSION['coupons']) ) self::$applied_coupons = $_SESSION['coupons'];
-		
-		self::add_action( 'template_redirect', 'calculate_totals' );
-	}
-	
-	/** Gets the cart data from the PHP session */
-	function get_cart_from_session() {
-		if ( isset($_SESSION['cart']) && is_array($_SESSION['cart']) ) :
-			$cart = $_SESSION['cart'];
-			
-			foreach ($cart as $key => $values) :
-			
-				if ($values['data']->exists() && $values['quantity']>0) :
-				
-					self::$cart_contents[$key] = array(
-						'product_id'	=> $values['product_id'],
-						'variation_id'	=> $values['variation_id'],
+        self::get_cart_from_session();
+
+        self::$applied_coupons = array();
+
+        if (isset($_SESSION['coupons']))
+            self::$applied_coupons = $_SESSION['coupons'];
+
+        self::$tax = new jigoshop_tax(100); //initialize tax on the cart with divisor of 100
+    
+        // needed to calculate cart total for cart widget. Separated from calculate_totals
+        // so that shipping doesn't need to be calculated so many times. Calling the server
+        // api's ofter per page request isn't a good idea.
+        self::calculate_cart_total();
+    }
+
+    /** Gets the cart data from the PHP session */
+    function get_cart_from_session() {
+
+        if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) :
+            $cart = $_SESSION['cart'];
+
+            foreach ($cart as $key => $values) :
+
+                if ($values['data']->exists() && $values['quantity'] > 0) :
+
+                    self::$cart_contents[$key] = array(
+                        'product_id'    => $values['product_id'],
+                        'variation_id'  => $values['variation_id'],
                         'variation'     => $values['variation'],
-						'quantity' 		=> $values['quantity'],
-						'data'			=> $values['data']
-					);
+                        'quantity'      => $values['quantity'],
+                        'data'          => $values['data']
+                    );
 
-				endif;
-			endforeach;
+                endif;
+            endforeach;
 
-		else :
-			self::$cart_contents = array();
-		endif;
-		if (!is_array(self::$cart_contents)) self::$cart_contents = array();
-	}
+        else :
+            self::$cart_contents = array();
+        endif;
 
-	/** sets the php session data for the cart and coupon */
-	function set_session() {
-	
-		// we get here from cart additions, quantity adjustments, and coupon additions
-		// reset any chosen shipping methods as these adjustments can effect shipping (free shipping)
-		unset( $_SESSION['chosen_shipping_method_id'] );
+        if (!is_array(self::$cart_contents))
+            self::$cart_contents = array();
+    }
 
-		$_SESSION['cart'] = self::$cart_contents;
-		
-		$_SESSION['coupons'] = self::$applied_coupons;
-		
-		self::calculate_totals();
-		
-	}
+    /** sets the php session data for the cart and coupon */
+    function set_session() {
 
-	/** Empty the cart */
-	function empty_cart() {
-		self::$cart_contents = array();
-		self::$applied_coupons = array();
-		self::reset_totals();
-		unset($_SESSION['cart']);
-		unset($_SESSION['coupons']);
-		unset( $_SESSION['chosen_shipping_method_id'] );
-	}
+        // we get here from cart additions, quantity adjustments, and coupon additions
+        // reset any chosen shipping methods as these adjustments can effect shipping (free shipping)
+        unset($_SESSION['chosen_shipping_method_id']);
+        unset($_SESSION['selected_rate_id']); // calculable shipping 
 
-	/**
+        $_SESSION['cart'] = self::$cart_contents;
+
+        $_SESSION['coupons'] = self::$applied_coupons;
+
+        // This has to be tested. I believe all that needs to be calculated at time of setting session
+        // is really the cart total and not shipping. All functions that use set_session are functions
+        // that either add to the cart or apply coupons, etc. If the cart page is reloaded, the full
+        // calculate_totals is already called.
+        self::calculate_cart_total();
+    }
+
+    /** Empty the cart */
+    function empty_cart() {
+        self::$cart_contents = array();
+        self::$applied_coupons = array();
+        self::reset_totals();
+        unset($_SESSION['cart']);
+        unset($_SESSION['coupons']);
+        unset($_SESSION['chosen_shipping_method_id']);
+        unset($_SESSION['selected_rate_id']);
+    }
+
+    /**
      * Check if product is in the cart and return cart item key
      * 
      * @param int $product_id
@@ -187,127 +202,135 @@ class jigoshop_cart extends jigoshop_singleton {
         self::set_session();
 
         return true;
-	}
+    }
 
-	/**
-	 * Set the quantity for an item in the cart
-	 * Remove the item from the cart if no quantity
-	 * Also remove any product discounts if applied
-	 *
-	 * @param   string	cart_item_key	contains the id of the cart item
-	 * @param   string	quantity	contains the quantity of the item
-	 */
-	function set_quantity( $cart_item, $quantity = 1 ) {
-		if ($quantity==0 || $quantity<0) :
-			$_product = self::$cart_contents[$cart_item];
-			if (self::$applied_coupons) :
-				foreach (self::$applied_coupons as $key => $code) :
-					$coupon = jigoshop_coupons::get_coupon($code);
-					if ( jigoshop_coupons::is_valid_product( $code, $_product ) ) :
-						if ( $coupon['type']=='fixed_product' ) {
-							self::$discount_total = self::$discount_total - ( $coupon['amount'] * $_product['quantity'] );
-							unset(self::$applied_coupons[$key]);
-						} else if ( $coupon['type']=='percent_product' ) {
-							self::$discount_total = self::$discount_total - (( $_product['data']->get_price() / 100 ) * $coupon['amount']);
-							unset(self::$applied_coupons[$key]);
-						}
-					endif;
-				endforeach;
-			endif;
-			unset(self::$cart_contents[$cart_item]);
-		else :
-			self::$cart_contents[$cart_item]['quantity'] = $quantity;
-		endif;
+    /**
+     * Set the quantity for an item in the cart
+     * Remove the item from the cart if no quantity
+     * Also remove any product discounts if applied
+     *
+     * @param   string	cart_item_key	contains the id of the cart item
+     * @param   string	quantity	contains the quantity of the item
+     */
+    function set_quantity($cart_item, $quantity = 1) {
+        if ($quantity == 0 || $quantity < 0) :
+            $_product = self::$cart_contents[$cart_item];
+            if (self::$applied_coupons) :
+                foreach (self::$applied_coupons as $key => $code) :
+                    $coupon = jigoshop_coupons::get_coupon($code);
+                    if (jigoshop_coupons::is_valid_product($code, $_product)) :
+                        if ($coupon['type'] == 'fixed_product') {
+                            self::$discount_total = self::$discount_total - ( $coupon['amount'] * $_product['quantity'] );
+                            unset(self::$applied_coupons[$key]);
+                        } else if ($coupon['type'] == 'percent_product') {
+                            self::$discount_total = self::$discount_total - (( $_product['data']->get_price() / 100 ) * $coupon['amount']);
+                            unset(self::$applied_coupons[$key]);
+                        }
+                    endif;
+                endforeach;
+            endif;
+            unset(self::$cart_contents[$cart_item]);
+        else :
+            self::$cart_contents[$cart_item]['quantity'] = $quantity;
+        endif;
 
-		self::set_session();
-	}
+        self::set_session();
+    }
 
-	/**
-	 * Returns the contents of the cart
-	 *
-	 * @return   array	cart_contents
-	 */
-	function get_cart() {
-		return self::$cart_contents;
-	}
+    /**
+     * Returns the contents of the cart
+     *
+     * @return   array	cart_contents
+     */
+    static function get_cart() {
+        return self::$cart_contents;
+    }
 
-	/**
-	 * Gets cross sells based on the items in the cart
-	 *
-	 * @return   array	cross_sells	item ids of cross sells
-	 */
-	function get_cross_sells() {
-		$cross_sells = array();
-		$in_cart = array();
-		if (sizeof(self::$cart_contents)>0) : foreach (self::$cart_contents as $cart_item_key => $values) :
-			if ($values['quantity']>0) :
-				$cross_sells = array_merge($values['data']->get_cross_sells(), $cross_sells);
-				$in_cart[] = $values['product_id'];
-			endif;
-		endforeach; endif;
-		$cross_sells = array_diff($cross_sells, $in_cart);
-		return $cross_sells;
-	}
+    /**
+     * Gets cross sells based on the items in the cart
+     *
+     * @return   array	cross_sells	item ids of cross sells
+     */
+    function get_cross_sells() {
+        $cross_sells = array();
+        $in_cart = array();
+        if (sizeof(self::$cart_contents) > 0) : foreach (self::$cart_contents as $cart_item_key => $values) :
+                if ($values['quantity'] > 0) :
+                    $cross_sells = array_merge($values['data']->get_cross_sells(), $cross_sells);
+                    $in_cart[] = $values['product_id'];
+                endif;
+            endforeach;
+        endif;
+        $cross_sells = array_diff($cross_sells, $in_cart);
+        return $cross_sells;
+    }
 
-	/** gets the url to the cart page */
-	function get_cart_url() {
-		$cart_page_id = get_option('jigoshop_cart_page_id');
-		if ($cart_page_id) return apply_filters('jigoshop_get_cart_url', get_permalink($cart_page_id));
-	}
+    /** gets the url to the cart page */
+    function get_cart_url() {
+        $cart_page_id = get_option('jigoshop_cart_page_id');
+        if ($cart_page_id)
+            return apply_filters('jigoshop_get_cart_url', get_permalink($cart_page_id));
+    }
 
-	/** gets the url to the checkout page */
-	function get_checkout_url() {
-		$checkout_page_id = get_option('jigoshop_checkout_page_id');
-		if ($checkout_page_id) :
-			if (is_ssl()) return str_replace('http:', 'https:', get_permalink($checkout_page_id));
-			return apply_filters('jigoshop_get_checkout_url', get_permalink($checkout_page_id));
-		endif;
-	}
+    /** gets the url to the checkout page */
+    function get_checkout_url() {
+        $checkout_page_id = get_option('jigoshop_checkout_page_id');
+        if ($checkout_page_id) :
+            if (is_ssl())
+                return str_replace('http:', 'https:', get_permalink($checkout_page_id));
+            return apply_filters('jigoshop_get_checkout_url', get_permalink($checkout_page_id));
+        endif;
+    }
 
-	/** gets the url to remove an item from the cart */
-	function get_remove_url( $cart_item_key ) {
-		$cart_page_id = get_option('jigoshop_cart_page_id');
-		if ($cart_page_id) return apply_filters('jigoshop_get_remove_url', jigoshop::nonce_url( 'cart', add_query_arg('remove_item', $cart_item_key, get_permalink($cart_page_id))));
-	}
+    /** gets the url to remove an item from the cart */
+    function get_remove_url($cart_item_key) {
+        $cart_page_id = get_option('jigoshop_cart_page_id');
+        if ($cart_page_id)
+            return apply_filters('jigoshop_get_remove_url', jigoshop::nonce_url( 'cart', add_query_arg('remove_item', $cart_item_key, get_permalink($cart_page_id))));
+    }
 
-	/** looks through the cart to see if shipping is actually required */
-	function needs_shipping() {
+    /** looks through the cart to see if shipping is actually required */
+    function needs_shipping() {
 
-		if (!jigoshop_shipping::is_enabled()) return false;
-		if (!is_array(self::$cart_contents)) return false;
+        if (!jigoshop_shipping::is_enabled())
+            return false;
+        if (!is_array(self::$cart_contents))
+            return false;
 
-		$needs_shipping = false;
-		
-		foreach (self::$cart_contents as $cart_item_key => $values) :
-			$_product = $values['data'];
-			if ( $_product->is_type( 'simple' ) || $_product->is_type( 'variable' ) ) :
-				$needs_shipping = true;
-			endif;
-		endforeach;
-		
-		return $needs_shipping;
-	}
+        $needs_shipping = false;
 
-	/** Sees if we need a shipping address */
-	function ship_to_billing_address_only() {
+        foreach (self::$cart_contents as $cart_item_key => $values) :
+            $_product = $values['data'];
+            if ($_product->is_type('simple') || $_product->is_type('variable')) :
+                $needs_shipping = true;
+            endif;
+        endforeach;
 
-		$ship_to_billing_address_only = get_option('jigoshop_ship_to_billing_address_only');
+        return $needs_shipping;
+    }
 
-		if ($ship_to_billing_address_only=='yes') return true;
+    /** Sees if we need a shipping address */
+    function ship_to_billing_address_only() {
 
-		return false;
-	}
+        $ship_to_billing_address_only = get_option('jigoshop_ship_to_billing_address_only');
 
-	/** looks at the totals to see if payment is actually required */
-	function needs_payment() {
-		if ( self::$total > 0 ) return true;
-		return false;
-	}
+        if ($ship_to_billing_address_only == 'yes')
+            return true;
 
-	/** looks through the cart to check each item is in stock */
-	function check_cart_item_stock() {
+        return false;
+    }
 
-		foreach (self::$cart_contents as $cart_item_key => $values) {
+    /** looks at the totals to see if payment is actually required */
+    function needs_payment() {
+        if (self::$total > 0)
+            return true;
+        return false;
+    }
+
+    /** looks through the cart to check each item is in stock */
+    function check_cart_item_stock() {
+
+        foreach (self::$cart_contents as $cart_item_key => $values) {
             $_product = $values['data'];
 
             if (!$_product->is_in_stock() || ($_product->managing_stock() && !$_product->has_enough_stock($values['quantity']))) {
@@ -410,7 +433,7 @@ class jigoshop_cart extends jigoshop_singleton {
                 self::$cart_contents_total_ex_tax = self::$cart_contents_total_ex_tax + ($_product->get_price_excluding_tax() * $values['quantity']);
 
                 // Product Discounts for specific product ID's
-                if (self::$applied_coupons)
+                if (self::$applied_coupons) :
                     foreach (self::$applied_coupons as $code) :
                         $coupon = jigoshop_coupons::get_coupon($code);
                         if (jigoshop_coupons::is_valid_product($code, $values)) {
@@ -420,7 +443,7 @@ class jigoshop_cart extends jigoshop_singleton {
                                 self::$discount_total += (( $values['data']->get_price() / 100 ) * $coupon['amount']);
                         }
                     endforeach;
-
+                endif;
             endif;
         endforeach;
     }
@@ -434,10 +457,11 @@ class jigoshop_cart extends jigoshop_singleton {
         self::calculate_cart_total();
 
         // Cart Shipping
-        if (self::needs_shipping())
+        if (self::needs_shipping()) :
             jigoshop_shipping::calculate_shipping(self::$tax);
-        else
+        else :
             jigoshop_shipping::reset_shipping();
+        endif;
 
         self::$shipping_total = jigoshop_shipping::get_total();
 

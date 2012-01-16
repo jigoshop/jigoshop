@@ -164,35 +164,36 @@ function jigoshop_product_data_box() {
 			<fieldset>
 			<?php
 
-			// Tax Status
-			echo jigoshop_form::select( 'tax_status', 'Tax Status',
-				array(
-					'taxable'	=> 'Taxable',
-					'shipping'	=> 'Shipping',
-					'none'		=> 'None'
-				), $data[$field['id']] );
+				// Tax Status
+				echo jigoshop_form::select( 'tax_status', 'Tax Status',
+					array(
+						'taxable'	=> 'Taxable',
+						'shipping'	=> 'Shipping',
+						'none'		=> 'None'
+					), $data[$field['id']] );
 
-			//TODO: need to think how to populate this new array with the old one. Used to be id=>'tax_class'
-			$field = array( 'id' => 'tax_classes', 'label' => __('Tax Classes', 'jigoshop') );
-                        
+				//TODO: need to think how to populate this new array with the old one. Used to be id=>'tax_class'
+				$field = array( 'id' => 'tax_classes', 'label' => __('Tax Classes', 'jigoshop') );
+	                        
+	            $_tax = new jigoshop_tax();
+	            $tax_classes = $_tax->get_tax_classes();
+	            $selections = $data[$field['id']];
+	            echo '<p><label for="'.$field['id'].'">'.$field['label'].':</label>';
 
-            $tax_classes = $_tax->get_tax_classes();
-            $selections = $data[$field['id']];
-            echo '<p><label for="'.$field['id'].'">'.$field['label'].':</label>';
-
-			echo '<input type="checkbox" class="checkbox" name="'.$field['id'].'[]" value="" '; if ($selections && in_array('', $selections)) echo 'checked="checked"'; echo '/><span class="checkbox-label">'.__('Standard', 'jigoshop').'</span></p>';
-                        
-            if ($tax_classes) :
-                
-                foreach ($tax_classes as $tax_class) :
-                    echo '<p><label for="'.$field['id'].'">&nbsp;</label><input type="checkbox" class="checkbox" name="'.$field['id'].'[]" value="'. sanitize_title($tax_class) .'" ';
-                    if ($selections && in_array(sanitize_title($tax_class), $selections)) :
-                        echo 'checked="checked"';
-                    endif;
-                    echo ' /><span class="checkbox-label">'. __($tax_class, 'jigoshop') .'</span></p>';
-                endforeach;
-                
-            endif;
+				echo '<input type="checkbox" class="checkbox" name="'.$field['id'].'[]" value="" '; if ($selections && in_array('', $selections)) echo 'checked="checked"'; echo '/><span class="checkbox-label">'.__('Standard', 'jigoshop').'</span></p>';
+	                        
+	            if ($tax_classes) :
+	                
+	                foreach ($tax_classes as $tax_class) :
+	                    echo '<p><label for="'.$field['id'].'">&nbsp;</label><input type="checkbox" class="checkbox" name="'.$field['id'].'[]" value="'. sanitize_title($tax_class) .'" ';
+	                    if ($selections && in_array(sanitize_title($tax_class), $selections)) :
+	                        echo 'checked="checked"';
+	                    endif;
+	                    echo ' /><span class="checkbox-label">'. __($tax_class, 'jigoshop') .'</span></p>';
+	                endforeach;
+	                
+	            endif;
+	            echo '</p>';
 
 			?>
 			</fieldset>
@@ -343,164 +344,8 @@ function attributes_display() { ?>
 			?>
 		</select>
 		
-			<div class="jigoshop_attributes_wrapper">
-				<table cellpadding="0" cellspacing="0" class="jigoshop_attributes">
-					<thead>
-						<tr>
-							<th class="center" width="60"><?php _e('Order', 'jigoshop'); ?></th>
-							<th width="180"><?php _e('Name', 'jigoshop'); ?></th>
-							<th><?php _e('Value', 'jigoshop'); ?></th>
-							<th class="center" width="1%"><?php _e('Visible?', 'jigoshop'); ?></th>
-							<th class="center" width="1%"><?php _e('Variation?', 'jigoshop'); ?></th>
-							<th class="center" width="1%"><?php _e('Remove', 'jigoshop'); ?></th>
-						</tr>
-					</thead>
-					
-					<tbody id="attributes_list">	
-						<?php
-							$attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();
-							$attributes = get_post_meta($post->ID, 'product_attributes', true);
-							
-							$i = -1;
-							
-							// Taxonomies
-							if ( $attribute_taxonomies ) :
-						    	foreach ($attribute_taxonomies as $tax) : $i++;
-									
-						    		$attribute_taxonomy_name = sanitize_title($tax->attribute_name);
-						    		if (isset($attributes[$attribute_taxonomy_name])) $attribute = $attributes[$attribute_taxonomy_name];
-									$position = (isset($attribute['position'])) ? $attribute['position'] : 0;
-									
-						    		$allterms = wp_get_post_terms( $thepostid, 'pa_'.$attribute_taxonomy_name );
-						    		$has_terms = ( is_wp_error( $allterms ) || !$allterms || sizeof( $allterms ) == 0 ) ? 0 : 1;
-						    		$term_slugs = array();
-						    		if ( !is_wp_error( $allterms ) && $allterms ) :
-						    			foreach ($allterms as $term) :
-						    				$term_slugs[] = $term->slug;
-						    			endforeach;
-						    		endif;
-						    		
-						    		?><tr class="taxonomy <?php echo str_replace('%','',$attribute_taxonomy_name); ?>" rel="<?php echo $position; ?>" <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
-
-										<td class="center">
-											<button type="button" class="move_up button">&uarr;</button><button type="button" class="move_down button">&darr;</button>
-											<input type="hidden" name="attribute_position[<?php echo $i; ?>]" class="attribute_position" value="<?php echo $position; ?>" />
-										</td>
-										
-										<td class="name">
-											<?php echo $tax->attribute_name; ?> 
-											<input type="hidden" name="attribute_names[<?php echo $i; ?>]" value="<?php echo $tax->attribute_name; ?>" />
-											<input type="hidden" name="attribute_is_taxonomy[<?php echo $i; ?>]" value="1" />
-											<input type="hidden" name="attribute_enabled[<?php echo $i; ?>]" value="1" />
-										</td>
-										
-										<td class="control">
-										<?php if ($tax->attribute_type=="select") : ?>
-											<select name="attribute_values[<?php echo $i ?>]">
-												<option value=""><?php _e('Choose an option&hellip;', 'jigoshop'); ?></option>
-												<?php
-												if (taxonomy_exists('pa_'.$attribute_taxonomy_name)) :
-					        						$terms = get_terms( 'pa_'.$attribute_taxonomy_name, array( 'orderby' => 'slug', 'hide_empty' => '0' ) );
-					        						if ($terms) :
-														foreach ($terms as $term) :
-															printf('<option value="%s" %s>%s</option>'
-																, $term->name
-																, selected(in_array($term->slug, $term_slugs), true, false)
-																, $term->name);
-														endforeach;
-													endif;
-												endif;
-												?>			
-											</select>
-										<?php elseif ($tax->attribute_type=="multiselect") : ?>
-											<div class="multiselect">
-												<?php
-												if (taxonomy_exists('pa_'.$attribute_taxonomy_name)) :
-					        						$terms = get_terms( 'pa_'.$attribute_taxonomy_name, array( 'orderby' => 'slug', 'hide_empty' => '0' ) );
-					        						if ($terms) :
-						        						foreach ($terms as $term) :
-															$checked = checked(in_array($term->slug, $term_slugs), true, false);
-															printf('<label %s><input type="checkbox" name="attribute_values[%d][]" value="%s" %s/> %s</label>'
-																, !empty($checked) ? 'class="selected"' : ''
-																, $i
-																, $term->slug
-																, $checked
-																, $term->name);
-														endforeach;
-													endif;
-												endif;
-												?>
-											</div>
-											<div class="multiselect-controls">
-												<a class="check-all" href="#"><?php _e('Check All'); ?></a>&nbsp;|
-												<a class="uncheck-all" href="#"><?php _e('Uncheck All');?></a>&nbsp;|
-												<a class="toggle" href="#"><?php _e('Toggle');?></a>
-											</div>
-										<?php elseif ($tax->attribute_type=="text") : ?>
-											<input type="text" name="attribute_values[<?php echo $i; ?>]" value="<?php 												
-												if ($allterms) :
-													$prettynames = array();
-													foreach ($allterms as $term) :
-														$prettynames[] = $term->name;
-													endforeach;
-													echo implode(',', $prettynames);
-												endif;
-											?>" placeholder="<?php _e('Comma separate terms', 'jigoshop'); ?>" />										
-										<?php endif; ?>
-										</td>
-										
-										<td class="center visibility"><input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['visible'] : 0 ), true); ?> name="attribute_visibility[<?php echo $i; ?>]" value="1" /></td>
-
-										<?php if ($tax->attribute_type=="select") : // always disable variation for select elements ?>
-											<td class="center variation"><input type="checkbox" disabled="disabled" /></td>
-										<?php else: ?>
-											<td class="center variation"><input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['variation'] : 0 ), true); ?> name="attribute_variation[<?php echo $i; ?>]" value="1" /></td>
-										<?php endif; ?>
-
-										<td class="center hiderow"><button type="button" class="hide_row button">&times;</button></td>
-									</tr><?php
-						    	endforeach;
-						    endif;
-							
-							// Attributes
-							if ($attributes && sizeof($attributes)>0) foreach ($attributes as $attribute) : 
-								if (boolval($attribute['is_taxonomy'])) continue;
-								
-								$i++; 
-								$position = (isset($attribute['position'])) ? $attribute['position'] : 0;
-
-								?><tr rel="<?php echo $position; ?>">
-									<td class="center">
-										<button type="button" class="move_up button">&uarr;</button><button type="button" class="move_down button">&darr;</button>
-										<input type="hidden" name="attribute_position[<?php echo $i; ?>]" class="attribute_position" value="<?php echo $position; ?>" />
-									</td>
-									<td>
-										<input type="text" name="attribute_names[<?php echo $i; ?>]" value="<?php echo $attribute['name']; ?>" />
-										<input type="hidden" name="attribute_is_taxonomy[<?php echo $i; ?>]" value="0" />
-									</td>
-									<td><input type="text" name="attribute_values[<?php echo $i; ?>]" value="<?php echo $attribute['value']; ?>" /></td>
-									<td class="center"><input type="checkbox" <?php checked(boolval($attribute['visible']), true); ?> name="attribute_visibility[<?php echo $i; ?>]" value="1" /></td>
-									<td class="center"><input type="checkbox" <?php checked(boolval($attribute['variation']), true); ?> name="attribute_variation[<?php echo $i; ?>]" value="1" /></td>
-									<td class="center"><button type="button" class="remove_row button">&times;</button></td>
-								</tr><?php
-							endforeach;
-						?>			
-					</tbody>
-				</table>
-			</div>
-			<button type="button" class="button button-primary add_attribute"><?php _e('Add', 'jigoshop'); ?></button>
-			<select name="attribute_taxonomy" class="attribute_taxonomy">
-				<option value="" data-type="custom"><?php _e('Custom product attribute', 'jigoshop'); ?></option>
-				<?php
-					if ( $attribute_taxonomies ) :
-				    	foreach ($attribute_taxonomies as $tax) :
-				    		echo '<option value="'.str_replace('%','',sanitize_title($tax->attribute_name)).'" data-type="'.$tax->attribute_type.'">'.$tax->attribute_name.'</option>';
-				    	endforeach;
-				    endif;
-				?>
-			</select>
-			<div class="clear"></div>
-		</div>
+	</div>
+	<div class="jigoshop_attributes_wrapper">
 		
 		<?php do_action('jigoshop_display_attribute'); ?>
 
@@ -523,7 +368,7 @@ function display_attribute() { ?>
 
 		// This is whats applied to the product
 		$attributes = get_post_meta($post->ID, 'product_attributes', true);
-		
+
 
 	?>
 	<?php if( ! $attributes ): ?>
@@ -580,7 +425,7 @@ function display_attribute() { ?>
 		$attribute_taxonomy_name = sanitize_title($tax->attribute_name);
 		if (isset($attributes[$attribute_taxonomy_name])) $attribute = $attributes[$attribute_taxonomy_name];
 		$position = (isset($attribute['position'])) ? $attribute['position'] : 0;
-		
+
 		$allterms = wp_get_post_terms( $post->ID, 'pa_'.$attribute_taxonomy_name );
 
 		$has_terms = ( is_wp_error( $allterms ) || !$allterms || sizeof( $allterms ) == 0 ) ? 0 : 1;
@@ -689,11 +534,11 @@ function display_attribute() { ?>
 	// Custom Attributes
 	if ( $attributes ) foreach ($attributes as $attribute) : 
 		if ($attribute['is_taxonomy']) continue;
-		
+
 		$i++;
 
 		$position = (isset($attribute['position'])) ? $attribute['position'] : 0;
-		
+
 	?>
 	<div class="postbox attribute closed <?php echo sanitize_title($attribute['name']); ?>" rel="<?php echo isset($attribute['position']) ? $attribute['position'] : 0; ?>">
 		<button type="button" class="hide_row button">Remove</button>
