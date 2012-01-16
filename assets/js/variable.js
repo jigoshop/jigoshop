@@ -46,7 +46,7 @@
 			if ( ! confirm(varmeta.actions.remove.confirm) )
 				return false;
 
-			remove_variation($(this).parent().parent());			
+			remove_variation($(this).parent());			
 		})
 
 		.on('click', '.upload_image_button', function(e) {
