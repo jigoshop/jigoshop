@@ -558,7 +558,7 @@ class jigoshop_product {
 		$price = $this->get_price();
 
         if (get_option('jigoshop_prices_include_tax') == 'yes') :
-            $rates = $this->get_tax_base_rate();
+            $rates = (array) $this->get_tax_base_rate();
         
             // rates array sorted so that taxes applied to retail value come first. To reverse taxes
             // need to reverse this array
