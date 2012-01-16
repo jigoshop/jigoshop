@@ -403,9 +403,9 @@
 			}
 		};
 
-		$('div.multiselect input').click(multiselectClicked);
+		$('.multiselect input').click(multiselectClicked);
 
-		$('div.multiselect-controls a').click(function(e) {
+		$('.multiselect-controls a').click(function(e) {
 			e.preventDefault();
 			var items = $(this).parent().prev().find('input[type=checkbox]');
 			if ($(this).hasClass('toggle')){

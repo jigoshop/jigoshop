@@ -163,30 +163,42 @@ function jigoshop_product_data_box() {
 						'none'		=> 'None'
 					), $data[$field['id']] );
 
-				//TODO: need to think how to populate this new array with the old one. Used to be id=>'tax_class'
-				$field = array( 'id' => 'tax_classes', 'label' => __('Tax Classes', 'jigoshop') );
-	                        
-	            $_tax = new jigoshop_tax();
-	            $tax_classes = $_tax->get_tax_classes();
-	            $selections = get_post_meta($post->ID, 'tax_classes', true);
-	            echo '<p><label for="'.$field['id'].'">'.$field['label'].':</label>';
+	            ?>
 
-				echo '<input type="checkbox" class="checkbox" name="'.$field['id'].'[]" value="" '; if ($selections && in_array('', $selections)) echo 'checked="checked"'; echo '/><span class="checkbox-label">'.__('Standard', 'jigoshop').'</span></p>';
-	                        
-	            if ($tax_classes) :
-	                
-	                foreach ($tax_classes as $tax_class) :
-	                    echo '<p><label for="'.$field['id'].'">&nbsp;</label><input type="checkbox" class="checkbox" name="'.$field['id'].'[]" value="'. sanitize_title($tax_class) .'" ';
-	                    if ($selections && in_array(sanitize_title($tax_class), $selections)) :
-	                        echo 'checked="checked"';
-	                    endif;
-	                    echo ' /><span class="checkbox-label">'. __($tax_class, 'jigoshop') .'</span></p>';
-	                endforeach;
-	                
-	            endif;
-	            echo '</p>';
+	            <p class="form_field tax_classes_field">
+	            	<label for="tax_classes"><?php _e('Tax Classes', 'jigoshop'); ?></label>
+	            	<span class="multiselect short">
+	            <?php
+	            	$_tax = new jigoshop_tax();
+	            	$tax_classes = $_tax->get_tax_classes();
+	            	$selections = get_post_meta($post->ID, 'tax_classes', true);
+	            	
+	            	$checked = checked(in_array('', $selections), true, false);
 
-			?>
+	            	printf('<label %s><input type="checkbox" name="tax_classes[]" value="%s" %s/> %s</label>'
+								, !empty($checked) ? 'class="selected"' : ''
+								, null
+								, $checked
+								, __('Standard', 'jigoshop'));
+
+	            	if( $tax_classes ) {
+
+	            		foreach ($tax_classes as $tax_class) {
+	            			$checked = checked(in_array(sanitize_title($tax_class), $selections), true, false);
+	            			printf('<label %s><input type="checkbox" name="tax_classes[]" value="%s" %s/> %s</label>'
+								, !empty($checked) ? 'class="selected"' : ''
+								, sanitize_title($tax_class)
+								, $checked
+								, __($tax_class, 'jigoshop'));
+	            		}
+	            	}
+	            ?>
+	            	</span>
+	            	<span class="multiselect-controls">
+						<a class="check-all" href="#"><?php _e('Check All'); ?></a>&nbsp;|
+						<a class="uncheck-all" href="#"><?php _e('Uncheck All');?></a>
+					</span>
+				</p>
 			</fieldset>
 
 			<?php if( get_option('jigoshop_enable_weight') !== 'no' || get_option('jigoshop_enable_dimensions', true) !== 'no' ): ?>
