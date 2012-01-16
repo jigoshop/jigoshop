@@ -86,7 +86,7 @@
 		$query_args = array(
 			'showposts'		=> $number,
 			'post_type'		=> 'product',
-			'post_status'		=> 'publish',
+			'post_status'	=> 'publish',
 			'orderby'		=> 'rand',
 			'meta_query'		=> array(
 				array(
@@ -97,7 +97,7 @@
 				array(
 					'key'		=> 'sale_price',
 					'value' 		=> 0,
-					'compare'	=> '>=', // TODO: Is this right? We can have sale items that are temporarily free right?
+					'compare'	=> '>', // TODO: Is this right? We can have sale items that are temporarily free right?
 					'type'		=> 'NUMERIC'
 			    	)
 			)
