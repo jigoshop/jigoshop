@@ -414,7 +414,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'tip' 		=> __('Determines how many products to show on one display row for Shop, Category and Tag pages.','jigoshop'),
 		'id' 		=> 'jigoshop_catalog_columns',
 		'css' 		=> 'width:30px;',
-		'std' 		=> '4',
+		'std' 		=> '3',
 		'type' 		=> 'text',
 	),
 

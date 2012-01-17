@@ -48,9 +48,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	public function admin_enqueue_scripts( $hook ) {
 		global $post;
 		
-		/* for RHR issue #48, don't load jigoshop-variable-javascript for non-product pages in the Admin */
-		if ( $hook != 'edit.php' || ( isset( $_GET['post_type'] ) && ($_GET['post_type'] != 'product' ))) return;
-		//if ( ! isset( $post ) || ! is_object( $post ) ) return; /* for RHR issue #48 */
+		// Don't enqueue script if not on product edit screen
+		if ( $hook != 'post.php' || $post->post_type != 'product' )
+			return false;
 		
 		wp_enqueue_script('jigoshop-variable-js', jigoshop::assets_url() . '/assets/js/variable.js', array('jquery'), true);
 
