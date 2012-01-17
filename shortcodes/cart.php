@@ -14,8 +14,8 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
-function get_jigoshop_cart( $atts ) {
-	return jigoshop::shortcode_wrapper('jigoshop_cart', $atts);
+function get_jigoshop_cart($atts) {
+    return jigoshop::shortcode_wrapper('jigoshop_cart', $atts);
 }
 
 function jigoshop_cart($atts) {
@@ -114,7 +114,7 @@ function jigoshop_cart($atts) {
 
                             $additional_description = '';
                             if ($_product instanceof jigoshop_product_variation && is_array($values['variation'])) {
-                                $additional_description = jigoshop_get_formatted_variation($values['variation']);
+                                $additional_description = jigoshop_get_formatted_variation($_product->get_variation_attributes());
                             }
                             ?>
                             <tr>

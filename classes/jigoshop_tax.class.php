@@ -195,7 +195,9 @@ class jigoshop_tax {
         $country = jigoshop_customer::get_shipping_country();
         $state = (jigoshop_customer::get_shipping_state() ? jigoshop_customer::get_shipping_state() : '*');
 
-        return array_keys($this->rates[$country][$state]);
+        $tax_classes = (array) $this->rates[$country][$state];
+        
+        return array_keys( $tax_classes );
     }
 
     private function get_online_label_for_customer($class = '*') {
@@ -213,7 +215,9 @@ class jigoshop_tax {
         $country = jigoshop_countries::get_base_country();
         $state = (jigoshop_countries::get_base_state() ? jigoshop_countries::get_base_state() : '*');
 
-        return array_keys($this->rates[$country][$state]);
+        $tax_classes = (array) $this->rates[$country][$state];
+
+        return array_keys($tax_classes);
     }
 
     /**

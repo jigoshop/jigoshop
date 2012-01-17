@@ -308,8 +308,11 @@
 			e.preventDefault();
 			var answer = confirm("Remove this attribute?")
 			if (answer){
-				$(this).parent().find('select, input[type=text], input[type=checkbox]').val('');
-				$(this).parent().fadeOut('slow');
+				$parent = $(this).parent();
+				$parent.fadeOut('slow', function() {
+					$parent.find('select, input[type=text], input[type=checkbox], textarea').not('.attribute-name').val(null);
+				});
+				
 
 				// Re-enable the option
 				$("select.attribute_taxonomy option[value='"+$(this).parent().data('attribute-name')+"']").attr('disabled', false);
@@ -403,9 +406,9 @@
 			}
 		};
 
-		$('div.multiselect input').click(multiselectClicked);
+		$('.multiselect input').click(multiselectClicked);
 
-		$('div.multiselect-controls a').click(function(e) {
+		$('.multiselect-controls a').click(function(e) {
 			e.preventDefault();
 			var items = $(this).parent().prev().find('input[type=checkbox]');
 			if ($(this).hasClass('toggle')){

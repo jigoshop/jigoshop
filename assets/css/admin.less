@@ -906,6 +906,7 @@ a.tips {
 }
 .jigoshop_options_panel .short {
 	width: 20%;
+	min-width: 125px;
 	margin-right: 10px;
 }
 
@@ -931,14 +932,15 @@ a.tips {
 	margin-bottom: 5px;
 
 	h3 {
-		font-size: 13px !important;
+		font-size: 12px !important;
 		font-family: sans-serif !important;
+		padding: 10px !important;
 		margin-bottom: 5px;
 	}
 
 	.hide_row {
 		float:right;
-		margin: 3px
+		margin: 5px
 	}
 
 	.inside {
@@ -1103,22 +1105,28 @@ div.multi_select_products_wrapper {
 .jigoshop_variations {
 	overflow: auto;
 	margin-top: 1px;
+	margin: 9px;
 }
 .jigoshop_variation {
-	background: #white;
-	border: 1px solid #e6e6e6;
-	margin: 9px;
-	border-radius: 3px;
-	p {
-		margin: 0;
-		padding: 3px;
-		display: block;
-		border-bottom: 1px solid #dfdfdf;
-		background: -webkit-linear-gradient(top, #f4F4F4, #ECECEC);
-		button {
-			float: right;
-		}
+	
+	margin-bottom: 5px;
+
+	h3 {
+		font-size: 12px !important;
+		font-family: sans-serif !important;
+		cursor: pointer !important;
+		padding: 3px !important;
 	}
+
+	.button {
+		float: right;
+		margin: 5px;
+	}
+
+	.handlediv {
+		margin-top: 1px;
+	}
+
 	table td {
 		background: #fff;
 		padding: 6px 6px;
@@ -1185,7 +1193,32 @@ div.multi_select_products_wrapper {
 	background: #000;
 }
 
-.attribute div.multiselect {
+.tax_classes_field {
+	
+	.multiselect {
+		float: left;
+		display: inline-block;
+		height: 75px;
+
+		label {
+			width: auto;
+			float: none;
+			line-height: 1em;
+			height: 1em;
+			padding: 5px;
+		}
+	}
+
+	.multiselect-controls {
+		float: left;
+		clear: left;
+		margin-left: 150px;
+	}	
+
+
+}
+
+.multiselect {
 	overflow:auto;
 	height:100px;
 	border:1px solid #dfdfdf;
@@ -1217,11 +1250,11 @@ div.multi_select_products_wrapper {
 		width:auto !important;
 	}
 }
-.attribute div.multiselect.show_all_enabled {
+.multiselect.show_all_enabled {
 	height: auto;
 }
 
-.attribute div.multiselect-controls{
+.multiselect-controls{
     margin-bottom:4px;
 	a {
 		text-decoration:none;

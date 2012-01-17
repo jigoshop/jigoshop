@@ -555,10 +555,11 @@ class jigoshop_product {
 
 	/** Returns the price (excluding tax) */
 	function get_price_excluding_tax() {
-		$price = $this->get_price();
+            
+        $price = $this->get_price();
 
         if (get_option('jigoshop_prices_include_tax') == 'yes') :
-            $rates = $this->get_tax_base_rate();
+            $rates = (array) $this->get_tax_base_rate();
         
             // rates array sorted so that taxes applied to retail value come first. To reverse taxes
             // need to reverse this array
@@ -590,8 +591,9 @@ class jigoshop_product {
             
         endif;
 
-        return $price;
-	}
+            return $price;
+            
+    }
 
 	/**
 	 * Returns the base tax rate
@@ -638,7 +640,6 @@ class jigoshop_product {
 			// Round & return
 			return round($percentage).'%';
 		}
-
 	}
 
 	/**

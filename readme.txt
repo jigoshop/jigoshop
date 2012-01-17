@@ -147,6 +147,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * added currency symbols for all countries
 * added a couple new currencies
 * added Romanian translations
+* added multi-lingual functionality with the WordPress WPML plugin
 * fixed cyrillic characters & accents in attribute / variation names
 * fixed users creating a new account now only if WP registration is allowed
 * fixed several 404 Jigoshop links
