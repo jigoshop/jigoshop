@@ -130,7 +130,7 @@ class jigoshop_product {
 			return get_the_post_thumbnail( $this->ID, $size );
 		
 		// Otherwise just return a placeholder
-			return '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.$image_size[0].'px" height="'.$image_size[1].'px" />';
+			return '<img src="'.jigoshop::assets_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.$image_size[0].'px" height="'.$image_size[1].'px" />';
 	}
 	
 	/**

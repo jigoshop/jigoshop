@@ -48,11 +48,11 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	public function admin_enqueue_scripts() {
 		global $post;
 
-		wp_enqueue_script('jigoshop-variable-js', jigoshop::plugin_url() . '/assets/js/variable.js', array('jquery'), true);
+		wp_enqueue_script('jigoshop-variable-js', jigoshop::assets_url() . '/assets/js/variable.js', array('jquery'), true);
 
 		// Shouldn't we namespace? -Rob
 		wp_localize_script( 'jigoshop-variable-js', 'varmeta', array(
-			'plugin_url'  => jigoshop::plugin_url(),
+			'assets_url'  => jigoshop::assets_url(),
 			'ajax_url'    => admin_url('admin-ajax.php'),
 			'i18n'        => array(
 				'variations_required' => __('You need to add some variations first', 'jigoshop'),
@@ -414,7 +414,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			return false;
 
 		// Set the default image as the placeholder
-		$image = jigoshop::plugin_url().'/assets/images/placeholder.png';
+		$image = jigoshop::assets_url().'/assets/images/placeholder.png';
 
 		if ( ! $variation ) {
 

@@ -69,7 +69,7 @@
 				$imgID.val(null);
 
 				// Replace the image with the placeholder
-				$img.attr('src', varmeta.plugin_url+'/assets/images/placeholder.png');
+				$img.attr('src', varmeta.assets_url+'/assets/images/placeholder.png');
 				$this.removeClass('remove');
 			}
 			else {
@@ -196,7 +196,7 @@
 		if ( variation.indexOf('_new') < 0 ) {
 
 			// Start the block to simulate AJAX requests
-			$panel.block({ message: null, overlayCSS: { background: '#fff url('+varmeta.plugin_url+'/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
+			$panel.block({ message: null, overlayCSS: { background: '#fff url('+varmeta.assets_url+'/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
 
 			// Remove the variation from the posts array
 			$.post(varmeta.ajax_url, data, function(response) {

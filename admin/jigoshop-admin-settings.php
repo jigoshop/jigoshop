@@ -818,7 +818,7 @@ function update_for_all_states($tax_rates) {
 function jigoshop_settings() {
     global $options_settings;
     ?>
-    <script type="text/javascript" src="<?php echo jigoshop::plugin_url(); ?>/assets/js/easyTooltip.js"></script>
+    <script type="text/javascript" src="<?php echo jigoshop::assets_url(); ?>/assets/js/easyTooltip.js"></script>
     <div class="wrap jigoshop">
         <div class="icon32 icon32-jigoshop-settings" id="icon-jigoshop"><br/></div>
         <h2><?php _e('General Settings', 'jigoshop'); ?></h2>
