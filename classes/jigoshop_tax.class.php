@@ -317,7 +317,11 @@ class jigoshop_tax {
     }
 
     public function update_tax_amount_with_shipping_tax($tax_amount) {
-        $this->update_tax_amount($this->shipping_tax_class, round($tax_amount), false);
+        // shipping taxes may not be checked, and if they aren't, there will be no shipping tax class. Don't update
+        // as the amount will be 0
+        if ($this->shipping_tax_class) :
+            $this->update_tax_amount($this->shipping_tax_class, round($tax_amount), false);
+        endif;
     }
     
     public function update_tax_amount($tax_class, $amount, $recalculate_tax = true) {
@@ -460,7 +464,7 @@ class jigoshop_tax {
                 // Get standard rate
                 $rate = $this->find_rate($country, $state);
                 if (isset($rate['shipping']) && $rate['shipping'] == 'yes') :
-                    $this->shipping_tax_class = 'standard';
+                    $this->shipping_tax_class = '*'; //standard rate
                     return $rate['rate'];
                 endif;
                     
