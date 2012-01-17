@@ -96,10 +96,22 @@
 				),
 				array(
 					'key'		=> 'sale_price',
-					'value' 		=> 0,
+					'value' 	=> 0,
 					'compare'	=> '>', // TODO: Is this right? We can have sale items that are temporarily free right?
 					'type'		=> 'NUMERIC'
-			    	)
+			    ),
+			    array(
+			    	'key'		=> 'sale_price_dates_to',
+			    	'value'		=> time(),
+			    	'compare'	=> '>',
+			    	'type'		=> 'NUMERIC'
+			    ),
+			    array(
+			    	'key'		=> 'sale_price_dates_from',
+			    	'value'		=> time(),
+			    	'compare'	=> '<',
+			    	'type'		=> 'NUMERIC'
+			    ),
 			)
 		);
 
