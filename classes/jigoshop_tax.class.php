@@ -398,7 +398,7 @@ class jigoshop_tax {
     /**
      * Get the current taxation rate using find_rate()
      *
-     * @param   object	Tax Class
+     * @param   string	tax_class the tax class to find rate on
      * @return  int
      */
     function get_rate($tax_class = '*') {
@@ -421,7 +421,7 @@ class jigoshop_tax {
     /**
      * Get the shop's taxation rate using find_rate()
      *
-     * @param   object	Tax Class
+     * @param   string	tax_class is the tax class (not object)
      * @return  int
      */
     function get_shop_base_rate($tax_class = '*') {
@@ -437,10 +437,10 @@ class jigoshop_tax {
     /**
      * Get the tax rate based on the country and state. 
      *
-     * @param   object	Tax Class
+     * @param   string	tax_class is the tax class that has shipping tax applied
      * @return  mixed		
      */
-    function get_shipping_tax_rate($tax_class = '*') {
+    function get_shipping_tax_rate($tax_class = '') {
 
         $this->shipping_tax_class = '';
         //Should always use shipping country and shipping state to apply taxes... unless we are assuming customer is from home base
