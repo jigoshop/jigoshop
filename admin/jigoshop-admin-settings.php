@@ -102,7 +102,7 @@ function jigoshop_update_options() {
 
                         $country = jigowatt_clean($tax_countries[$i]);
                         $label = trim($tax_label[$i]);
-                        $state = '';
+                        $state = '*'; // countries with no states have to have a character for products. Therefore use *
                         $rate = number_format(jigowatt_clean($tax_rate[$i]), 4);
                         $class = jigowatt_clean($tax_classes[$i]);
 
@@ -120,7 +120,7 @@ function jigoshop_update_options() {
                             $state = end($cr);
                         endif;
 
-                        if (!$state && jigoshop_countries::country_has_states($country)) :
+                        if ($state == '*' && jigoshop_countries::country_has_states($country)) : // handle all-states
 
                             foreach (array_keys(jigoshop_countries::$states[$country]) as $st) :
                                 $tax_rates[] = array(
@@ -136,6 +136,7 @@ function jigoshop_update_options() {
                             endforeach;
 
                         else :
+                            
                              $tax_rates[] = array(
                                 'country' => $country,
                                 'label' => $label,
@@ -659,7 +660,7 @@ function jigoshop_admin_fields($options) {
                         
                         $i++;// increment counter after check for all states having been applied
                         
-                        echo '<p class="taxrow"><select name="tax_classes[' . $i . ']" title="Tax Classes"><option value="">' . __('Standard Rate', 'jigoshop') . '</option>';
+                        echo '<p class="taxrow"><select name="tax_classes[' . $i . ']" title="Tax Classes"><option value="*">' . __('Standard Rate', 'jigoshop') . '</option>';
 
                         if ($tax_classes)
                             foreach ($tax_classes as $class) :
@@ -712,7 +713,7 @@ function jigoshop_admin_fields($options) {
                                 // Add the row
                                 jQuery('<p class="taxrow"> \
                                     <select name="tax_classes[' + size + ']" title="Tax Classes"> \
-                                        <option value=""><?php _e('Standard Rate', 'jigoshop'); ?></option><?php
+                                        <option value="*"><?php _e('Standard Rate', 'jigoshop'); ?></option><?php
                 $tax_classes = $_tax->get_tax_classes();
                 if ($tax_classes)
                     foreach ($tax_classes as $class) :
@@ -804,10 +805,6 @@ function jigoshop_admin_fields($options) {
     flush_rewrite_rules();
 }
 
-
-function update_for_all_states($tax_rates) {
-    
-}
 /**
  * Settings page
  *

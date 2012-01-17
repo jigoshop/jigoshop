@@ -561,17 +561,17 @@ class jigoshop_product {
         if (get_option('jigoshop_prices_include_tax') == 'yes') :
             $rates = (array) $this->get_tax_base_rate();
         
-            // rates array sorted so that taxes applied to retail value come first. To reverse taxes
-            // need to reverse this array
-            $new_rates = array_reverse($rates, true);
+            if (count($rates > 0)) :
 
-            $tax_applied_after_retail = 0;
-            $tax_totals = 0;
-            
-            if ($new_rates) :
-                
+                // rates array sorted so that taxes applied to retail value come first. To reverse taxes
+                // need to reverse this array
+                $new_rates = array_reverse($rates, true);
+
+                $tax_applied_after_retail = 0;
+                $tax_totals = 0;
+
                 $_tax = &new jigoshop_tax();
-            
+
                 foreach ( $new_rates as $key=>$value ) :
 
                     //means that this tax was applied to total including any retail taxes added
@@ -584,14 +584,14 @@ class jigoshop_product {
                     endif;
 
                 endforeach;
-                
+
                 $price = $price - $tax_totals;
             
             endif;
             
         endif;
 
-            return $price;
+        return $price;
             
     }
 
@@ -603,15 +603,14 @@ class jigoshop_product {
 	 */
 	public function get_tax_base_rate() {
 
-		$rate = NULL;
+		$rate = array();
             
         if ($this->is_taxable() && get_option('jigoshop_calc_taxes') == 'yes') :
             $_tax = &new jigoshop_tax();
             
             if ($_tax->get_tax_classes_for_base()) foreach ( $_tax->get_tax_classes_for_base() as $tax_class ) :
                 
-                //TODO: remember standard rate.
-                if ( !in_array($tax_class, $this->data['tax_classes'])) continue;
+                if ( !in_array($tax_class, $this->get_tax_classes())) continue;
                 $my_rate = $_tax->get_shop_base_rate($tax_class);
                 
                 if ($my_rate > 0) :
@@ -759,7 +758,14 @@ class jigoshop_product {
 	public function get_height() {
 		return $this->height;
 	}
-
+    
+    /**
+     * Returns the tax classes
+     * @return array the tax classes on the product 
+     */
+    public function get_tax_classes() {
+        return (array) get_post_meta($this->ID, 'tax_classes', true);
+    }
 	/**
 	 * Returns the product categories
 	 *
