@@ -59,6 +59,12 @@ class jigoshop_order {
 		$this->items 				= (array) get_post_meta( $this->id, 'order_items', true );
 		$this->order_data			= (array) maybe_unserialize( get_post_meta( $this->id, 'order_data', true ) );
 
+		// Check that the order_key has been properly set
+		if($this->order_key == '') {
+			$this->order_key = uniqid('order_');
+			update_post_meta( $this->id, 'order_key', $this->order_key );
+		}
+
 		$this->billing_first_name 	= (string) $this->get_value_from_data('billing_first_name');
 		$this->billing_last_name 	= (string) $this->get_value_from_data('billing_last_name');
 		$this->billing_company	 	= (string) $this->get_value_from_data('billing_company');
