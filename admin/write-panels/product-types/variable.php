@@ -22,7 +22,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	public function __construct() {
 		add_action( 'jigoshop_product_write_panel_tabs',       array(&$this, 'register_tab') );
 		add_action( 'jigoshop_process_product_meta_variable',  array(&$this, 'save'), 1 );
-		add_action( 'jigoshop_product_write_panels',	           array(&$this, 'display') );
+		add_action( 'jigoshop_product_write_panels',	       array(&$this, 'display') );
 		add_action( 'admin_enqueue_scripts',                   array(&$this, 'admin_enqueue_scripts') );
 
 		add_action( 'wp_ajax_jigoshop_remove_variation',       array(&$this, 'remove') );
@@ -45,9 +45,13 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	 *
 	 * @return  void
 	 */
-	public function admin_enqueue_scripts() {
+	public function admin_enqueue_scripts( $hook ) {
 		global $post;
-
+		
+		/* for RHR issue #48, don't load jigoshop-variable-javascript for non-product pages in the Admin */
+		if ( $hook != 'edit.php' || ( isset( $_GET['post_type'] ) && ($_GET['post_type'] != 'product' ))) return;
+		//if ( ! isset( $post ) || ! is_object( $post ) ) return; /* for RHR issue #48 */
+		
 		wp_enqueue_script('jigoshop-variable-js', jigoshop::assets_url() . '/assets/js/variable.js', array('jquery'), true);
 
 		// Shouldn't we namespace? -Rob
