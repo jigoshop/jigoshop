@@ -321,8 +321,12 @@ class jigoshop_order {
 	function get_cancel_order_url() {
 		return apply_filters('jigoshop_get_cancel_order', jigoshop::nonce_url( 'cancel_order', add_query_arg('cancel_order', 'true', add_query_arg('order', $this->order_key, add_query_arg('order_id', $this->id, home_url())))));
 	}
-
-
+	
+	/** URL for cancelling an order using POST */
+	function get_cancel_order_post_url() {
+		return site_url('/jigoshop/cancel_order.php');
+	}
+	
 	/** Gets a downloadable products file url */
 	function get_downloadable_file_url( $item_id ) {
 
