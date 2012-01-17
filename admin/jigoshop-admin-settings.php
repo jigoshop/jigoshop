@@ -805,10 +805,6 @@ function jigoshop_admin_fields($options) {
     flush_rewrite_rules();
 }
 
-
-function update_for_all_states($tax_rates) {
-    
-}
 /**
  * Settings page
  *
