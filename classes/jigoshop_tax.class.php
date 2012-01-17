@@ -271,8 +271,8 @@ class jigoshop_tax {
             foreach ($this->get_tax_classes_for_customer() as $tax_class) :
 
                 // make sure that the product is charging this particular tax_class. 
-                if ($tax_class != '*' && !in_array($tax_class, $tax_classes))
-                    return;
+                if (!in_array($tax_class, $tax_classes))
+                    continue;
 
                 $rate = $this->get_rate($tax_class);
 
@@ -468,9 +468,9 @@ class jigoshop_tax {
                 
                 foreach (jigoshop_cart::$cart_contents as $item) :
 
-                    if ($item['data']->data['tax_classes']) :
+                    if ($item['data']->get_tax_classes()) :
                         
-                        foreach($item['data']->data['tax_classes'] as $key=>$tax_class) :
+                        foreach($item['data']->get_tax_classes() as $key=>$tax_class) :
                             $found_rate = $this->find_rate($country, $state, $tax_class);
 
                             if (isset($found_rate['shipping']) && $found_rate['shipping'] == 'yes') :

@@ -173,11 +173,11 @@ function jigoshop_product_data_box() {
 	            	$tax_classes = $_tax->get_tax_classes();
 	            	$selections = (array) get_post_meta($post->ID, 'tax_classes', true);
 	            	
-	            	$checked = checked(in_array('', $selections), true, false);
+	            	$checked = checked(in_array('*', $selections), true, false);
 
 	            	printf('<label %s><input type="checkbox" name="tax_classes[]" value="%s" %s/> %s</label>'
 								, !empty($checked) ? 'class="selected"' : ''
-								, null
+								, '*'
 								, $checked
 								, __('Standard', 'jigoshop'));
 
