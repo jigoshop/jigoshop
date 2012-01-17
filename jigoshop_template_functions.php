@@ -469,6 +469,8 @@ if (!function_exists('jigoshop_pagination')) {
  **/
 if (!function_exists('jigoshop_product_description_tab')) {
 	function jigoshop_product_description_tab( $current_tab ) {
+			if( ! $post->post_content )
+				return false;
 		?>
 		<li <?php if ($current_tab=='#tab-description') echo 'class="active"'; ?>><a href="#tab-description"><?php _e('Description', 'jigoshop'); ?></a></li>
 		<?php
