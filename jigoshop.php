@@ -8,21 +8,21 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * Plugin Name:			Jigoshop - WordPress eCommerce
- * Plugin URI:			http://jigoshop.com
- * Description:			An eCommerce plugin for WordPress.
- * Author:				Jigowatt
- * Author URI:			http://jigowatt.co.uk
+ * Plugin Name:        Jigoshop - WordPress eCommerce
+ * Plugin URI:         http://jigoshop.com
+ * Description:        An eCommerce plugin for WordPress.
+ * Author:             Jigowatt
+ * Author URI:         http://jigowatt.co.uk
  *
- * Version:				1.0
- * Requires at least:	3.1
- * Tested up to:		3.3.1
+ * Version:            1.0
+ * Requires at least:  3.1
+ * Tested up to:       3.3.1
  *
- * @package    			Jigoshop
- * @category   			Core
- * @author     			Jigowatt
- * @copyright  			Copyright (c) 2011 Jigowatt Ltd.
- * @license    			http://jigoshop.com/license/commercial-edition
+ * @package            Jigoshop
+ * @category           Core
+ * @author             Jigowatt
+ * @copyright          Copyright (c) 2011 Jigowatt Ltd.
+ * @license            http://jigoshop.com/license/commercial-edition
  */
 
 if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1202010);
@@ -30,22 +30,44 @@ if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
 
-if ( get_site_option('jigoshop_db_version') < JIGOSHOP_VERSION ) {
-	error_log('UPGRADING...');
-	require_once('jigoshop_upgrade.php');
-	jigoshop_upgrade();
-}
-
-/**
- * Installs and upgrades
- **/
-function jigoshop_update_check() {
-    if (get_site_option('jigoshop_db_version') != JIGOSHOP_VERSION) install_jigoshop();
-}
+// Load administration & check if we need to install
 if ( is_admin() ) {
 	include_once( 'admin/jigoshop-admin.php' );
 	register_activation_hook( __FILE__, 'install_jigoshop' );
 	add_action('init', 'jigoshop_update_check', 0);
+}
+
+function jigoshop_update_check() {
+    if ( ! get_site_option('jigoshop_db_version') ) install_jigoshop();
+}
+
+// Run database upgrade if required
+if ( is_admin() && get_site_option('jigoshop_db_version') < JIGOSHOP_VERSION ) {
+
+	if ( isset($_GET['jigoshop_update_db']) && (bool) $_GET['jigoshop_update_db'] ) {
+		require_once('jigoshop_upgrade.php');
+		$response = jigoshop_upgrade();
+
+		// If we succesfull inform the user
+		if ( $response ) {
+			echo '
+				<div class="updated">
+					<p>Horray! The database was succesfully updated, happy days</p>
+				</div>
+			';
+		}
+	}
+
+	else {
+		echo '
+			<div class="updated">
+				<p>Uh oh! Looks like your Jigoshop database needs updating, just to be safe <strong>please backup your database</strong> before clicking this button!</p>
+				<p>
+					<a class="button-primary" href="' . add_query_arg('jigoshop_update_db', 'true') . '">Update Database</a>
+				</p>
+			</div>
+		';
+	}
 }
 
 /**
