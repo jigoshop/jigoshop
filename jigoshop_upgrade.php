@@ -163,6 +163,11 @@ function jigoshop_upgrade_100() {
 			update_post_meta( $post->ID, 'featured', false);
 		}
 
+		// Convert the filepath to url
+		$file_path = get_post_meta( $post->ID, 'file_path', true );
+		error_log(ABSPATH);
+		update_post_meta( $post->ID, 'file_path', site_url().'/'.$file_path );
+
 		// Unserialize all product_data keys to individual key => value pairs
 		$product_data = get_post_meta( $post->ID, 'product_data', true );
 		foreach( $product_data as $key => $value ) {
