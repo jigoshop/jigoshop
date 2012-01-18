@@ -163,6 +163,14 @@ function jigoshop_upgrade_100() {
 			update_post_meta( $post->ID, 'featured', false);
 		}
 
+		// Convert manage stock to true/false
+		$manage_stock = get_post_meta( $post->ID, 'manage_stock', true );
+
+		if( $manage_stock == 'yes' )
+			update_post_meta( $post->ID, 'manage_stock', true );
+		else
+			update_post_meta( $post->ID, 'manage_stock', false );
+
 		// Unserialize all product_data keys to individual key => value pairs
 		$product_data = get_post_meta( $post->ID, 'product_data', true );
 		foreach( $product_data as $key => $value ) {
