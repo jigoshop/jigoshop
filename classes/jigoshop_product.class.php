@@ -517,7 +517,7 @@ class jigoshop_product {
 	public function is_on_sale() {
 
 		// Check child products for items on sale
-		if ( $this->is_type('grouped', 'variable') ) {
+		if ( $this->is_type( array('grouped', 'variable') ) ) {
 
 			foreach( $this->get_children() as $child_ID ) {
 

@@ -22,6 +22,7 @@ require_once( 'price-filter.php' );
 require_once( 'product-categories.php' );
 require_once( 'product_search.php' );
 require_once( 'product_tag_cloud.php' );
+require_once( 'products_on_sale.php' );
 require_once( 'recent_products.php' );
 require_once( 'recent_reviews.php' );
 require_once( 'recently_viewed.php' );
@@ -37,6 +38,7 @@ function jigoshop_register_widgets() {
 	register_widget('Jigoshop_Widget_Layered_Nav');
 	register_widget('Jigoshop_Widget_Price_Filter');
 	register_widget('Jigoshop_Widget_Product_Search');
+	register_widget('Jigoshop_Widget_Products_On_Sale');
 	register_widget('Jigoshop_Widget_Top_Rated');
 	register_widget('Jigoshop_Widget_User_Login');
 	register_widget('Jigoshop_Widget_Recently_Viewed_Products');
