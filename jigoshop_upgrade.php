@@ -154,6 +154,15 @@ function jigoshop_upgrade_100() {
 		// Convert SKU key to lowercase
 		$wpdb->update( $wpdb->postmeta, array('meta_key' => 'sku'), array('post_id' => $post->ID, 'meta_key' => 'sku') );
 
+		// Convert featured to true/false
+		$featured = get_post_meta( $post->ID, 'featured', true);
+
+		if ( $featured == 'yes' )
+			update_post_meta( $post->ID, 'featured', true );
+		else {
+			update_post_meta( $post->ID, 'featured', false);
+		}
+
 		// Unserialize all product_data keys to individual key => value pairs
 		$product_data = get_post_meta( $post->ID, 'product_data', true );
 		foreach( $product_data as $key => $value ) {
@@ -165,8 +174,12 @@ function jigoshop_upgrade_100() {
 			// We now call it tax_classes & its an array
 			if ( $key == 'tax_class' ) {
 				delete_post_meta( $post->ID, $key );
-				error_log($value);
-				$value = (array) ($value) ? $value : '*';
+
+				if ( $value )
+					$value = (array) $value;
+				else
+					$value = array('*');
+
 				$key = 'tax_classes';
 			}
 
