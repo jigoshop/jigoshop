@@ -25,7 +25,7 @@
 	 * Setup the widget with the available options
 	 * Add actions to clear the cache whenever a post is saved|deleted or a theme is switched
 	 */
-    	public function __construct() {
+    public function __construct() {
 		$options = array(
 			'classname'	=> 'widget_products_on_sale',
 			'description'	=> __( 'Display a list of products currently onsale', 'jigoshop' )
@@ -99,19 +99,7 @@
 					'value' 	=> 0,
 					'compare'	=> '>', // TODO: Is this right? We can have sale items that are temporarily free right?
 					'type'		=> 'NUMERIC'
-			    ),
-			    array(
-			    	'key'		=> 'sale_price_dates_to',
-			    	'value'		=> time(),
-			    	'compare'	=> '>',
-			    	'type'		=> 'NUMERIC'
-			    ),
-			    array(
-			    	'key'		=> 'sale_price_dates_from',
-			    	'value'		=> time(),
-			    	'compare'	=> '<',
-			    	'type'		=> 'NUMERIC'
-			    ),
+			    )
 			)
 		);
 
@@ -132,6 +120,10 @@
 				
 				// Get new jigoshop_product instance
 				$_product = new jigoshop_product( get_the_ID() );
+
+				// Skip if not on sale
+				if ( ! $_product->is_on_sale() )
+					continue;
 			
 				echo '<li>';
 					// Print the product image & title with a link to the permalink
