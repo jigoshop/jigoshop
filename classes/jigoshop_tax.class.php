@@ -317,7 +317,11 @@ class jigoshop_tax {
     }
 
     public function update_tax_amount_with_shipping_tax($tax_amount) {
-        $this->update_tax_amount($this->shipping_tax_class, round($tax_amount), false);
+        // shipping taxes may not be checked, and if they aren't, there will be no shipping tax class. Don't update
+        // as the amount will be 0
+        if ($this->shipping_tax_class) :
+            $this->update_tax_amount($this->shipping_tax_class, round($tax_amount), false);
+        endif;
     }
     
     public function update_tax_amount($tax_class, $amount, $recalculate_tax = true) {
@@ -398,7 +402,7 @@ class jigoshop_tax {
     /**
      * Get the current taxation rate using find_rate()
      *
-     * @param   object	Tax Class
+     * @param   string	tax_class the tax class to find rate on
      * @return  int
      */
     function get_rate($tax_class = '*') {
@@ -421,7 +425,7 @@ class jigoshop_tax {
     /**
      * Get the shop's taxation rate using find_rate()
      *
-     * @param   object	Tax Class
+     * @param   string	tax_class is the tax class (not object)
      * @return  int
      */
     function get_shop_base_rate($tax_class = '*') {
@@ -437,10 +441,10 @@ class jigoshop_tax {
     /**
      * Get the tax rate based on the country and state. 
      *
-     * @param   object	Tax Class
+     * @param   string	tax_class is the tax class that has shipping tax applied
      * @return  mixed		
      */
-    function get_shipping_tax_rate($tax_class = '*') {
+    function get_shipping_tax_rate($tax_class = '') {
 
         $this->shipping_tax_class = '';
         //Should always use shipping country and shipping state to apply taxes... unless we are assuming customer is from home base
@@ -460,7 +464,7 @@ class jigoshop_tax {
                 // Get standard rate
                 $rate = $this->find_rate($country, $state);
                 if (isset($rate['shipping']) && $rate['shipping'] == 'yes') :
-                    $this->shipping_tax_class = 'standard';
+                    $this->shipping_tax_class = '*'; //standard rate
                     return $rate['rate'];
                 endif;
                     
