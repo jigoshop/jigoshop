@@ -94,12 +94,6 @@
 					'value'		=> array( 'catalog', 'visible' ),
 					'compare'	=> 'IN',
 				),
-				array(
-					'key'		=> 'sale_price',
-					'value' 	=> 0,
-					'compare'	=> '>', // TODO: Is this right? We can have sale items that are temporarily free right?
-					'type'		=> 'NUMERIC'
-			    )
 			)
 		);
 
