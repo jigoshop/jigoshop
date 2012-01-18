@@ -139,4 +139,42 @@ function jigoshop_upgrade_100() {
 	global $wpdb;
 
 	// Run upgrade
+
+	$args = array(
+		'post_type'	  => 'product',
+		'numberposts' => -1,
+	);
+
+	error_log('UPGRADE 100...');
+
+	$posts = get_posts( $args );
+
+	foreach( $posts as $post ) {
+
+		// Convert SKU key to lowercase
+		$wpdb->update( $wpdb->postmeta, array('meta_key' => 'sku'), array('post_id' => $post->ID, 'meta_key' => 'sku') );
+
+		// Unserialize all product_data keys to individual key => value pairs
+		$product_data = get_post_meta( $post->ID, 'product_data', true );
+		foreach( $product_data as $key => $value ) {
+
+			// Convert all keys to lowercase
+			// @todo: Needs testing especially with 3rd party plugins using product_data
+			$key = strtolower($key);
+
+			// We now call it tax_classes & its an array
+			if ( $key == 'tax_class' ) {
+				delete_post_meta( $post->ID, $key );
+				error_log($value);
+				$value = (array) ($value) ? $value : '*';
+				$key = 'tax_classes';
+			}
+
+			// Create the meta
+			update_post_meta( $post->ID, $key, $value );	
+
+			// Remove the old meta
+			delete_post_meta( $post->ID, 'product_data' );
+		}
+	}
 }
