@@ -205,7 +205,6 @@ function jigoshop_upgrade_100() {
 		update_post_meta( $post->ID, 'product_attributes', $product_attributes );
 	}
 
-
 	// Variations
 	$args = array(
 		'post_type'	  => 'product_variation',
