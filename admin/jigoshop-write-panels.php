@@ -269,7 +269,7 @@ class jigoshop_form {
 
 		$html .= "<p class='form-field {$ID}_field'>";
 		$html .= "<label for='{$ID}'>$label</label>";
-		$html .= "<input type='checkbox' name='{$ID}' class='{$class}' id='{$ID}' {$mark} />";
+		$html .= "<input type='checkbox' name='{$ID}' value='1' class='{$class}' id='{$ID}' {$mark} />";
 
 		if ( $desc ) {
 			$html .= "<label for='{$ID}' class='description'>$desc</label>";

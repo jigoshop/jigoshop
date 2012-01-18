@@ -394,7 +394,7 @@ class jigoshop_cart extends jigoshop_singleton {
 
                             $total_item_price = $_product->get_price_excluding_tax() * $values['quantity'] * 100;
 
-                            self::$tax->calculate_tax_amounts($total_item_price, $_product->data['tax_classes'], false);
+                            self::$tax->calculate_tax_amounts($total_item_price, $_product->get_tax_classes(), false);
 
                             // now add customer taxes back into the total item price because customer is outside base
                             // and we asked to have prices include taxes
@@ -403,7 +403,7 @@ class jigoshop_cart extends jigoshop_singleton {
                             endforeach;
 
                         else :
-                            self::$tax->calculate_tax_amounts($total_item_price, $_product->data['tax_classes'], get_option('jigoshop_prices_include_tax') == 'yes');
+                            self::$tax->calculate_tax_amounts($total_item_price, $_product->get_tax_classes(), get_option('jigoshop_prices_include_tax') == 'yes');
                         endif;
 
                     endif;

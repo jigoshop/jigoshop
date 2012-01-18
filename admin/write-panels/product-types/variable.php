@@ -22,7 +22,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	public function __construct() {
 		add_action( 'jigoshop_product_write_panel_tabs',       array(&$this, 'register_tab') );
 		add_action( 'jigoshop_process_product_meta_variable',  array(&$this, 'save'), 1 );
-		add_action( 'jigoshop_product_write_panels',	           array(&$this, 'display') );
+		add_action( 'jigoshop_product_write_panels',	       array(&$this, 'display') );
 		add_action( 'admin_enqueue_scripts',                   array(&$this, 'admin_enqueue_scripts') );
 
 		add_action( 'wp_ajax_jigoshop_remove_variation',       array(&$this, 'remove') );
@@ -45,14 +45,18 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	 *
 	 * @return  void
 	 */
-	public function admin_enqueue_scripts() {
+	public function admin_enqueue_scripts( $hook ) {
 		global $post;
-
-		wp_enqueue_script('jigoshop-variable-js', jigoshop::plugin_url() . '/assets/js/variable.js', array('jquery'), true);
+		
+		// Don't enqueue script if not on product edit screen
+		if ( $hook != 'post.php' || $post->post_type != 'product' )
+			return false;
+		
+		wp_enqueue_script('jigoshop-variable-js', jigoshop::assets_url() . '/assets/js/variable.js', array('jquery'), true);
 
 		// Shouldn't we namespace? -Rob
 		wp_localize_script( 'jigoshop-variable-js', 'varmeta', array(
-			'plugin_url'  => jigoshop::plugin_url(),
+			'assets_url'  => jigoshop::assets_url(),
 			'ajax_url'    => admin_url('admin-ajax.php'),
 			'i18n'        => array(
 				'variations_required' => __('You need to add some variations first', 'jigoshop'),
@@ -414,7 +418,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			return false;
 
 		// Set the default image as the placeholder
-		$image = jigoshop::plugin_url().'/assets/images/placeholder.png';
+		$image = jigoshop::assets_url().'/assets/images/placeholder.png';
 
 		if ( ! $variation ) {
 

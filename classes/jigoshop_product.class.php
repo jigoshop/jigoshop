@@ -130,7 +130,7 @@ class jigoshop_product {
 			return get_the_post_thumbnail( $this->ID, $size );
 		
 		// Otherwise just return a placeholder
-			return '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.$image_size[0].'px" height="'.$image_size[1].'px" />';
+			return '<img src="'.jigoshop::assets_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.$image_size[0].'px" height="'.$image_size[1].'px" />';
 	}
 	
 	/**
@@ -517,7 +517,7 @@ class jigoshop_product {
 	public function is_on_sale() {
 
 		// Check child products for items on sale
-		if ( $this->is_type('grouped', 'variable') ) {
+		if ( $this->is_type( array('grouped', 'variable') ) ) {
 
 			foreach( $this->get_children() as $child_ID ) {
 
@@ -561,17 +561,17 @@ class jigoshop_product {
         if (get_option('jigoshop_prices_include_tax') == 'yes') :
             $rates = (array) $this->get_tax_base_rate();
         
-            // rates array sorted so that taxes applied to retail value come first. To reverse taxes
-            // need to reverse this array
-            $new_rates = array_reverse($rates, true);
+            if (count($rates > 0)) :
 
-            $tax_applied_after_retail = 0;
-            $tax_totals = 0;
-            
-            if ($new_rates) :
-                
+                // rates array sorted so that taxes applied to retail value come first. To reverse taxes
+                // need to reverse this array
+                $new_rates = array_reverse($rates, true);
+
+                $tax_applied_after_retail = 0;
+                $tax_totals = 0;
+
                 $_tax = &new jigoshop_tax();
-            
+
                 foreach ( $new_rates as $key=>$value ) :
 
                     //means that this tax was applied to total including any retail taxes added
@@ -584,14 +584,14 @@ class jigoshop_product {
                     endif;
 
                 endforeach;
-                
+
                 $price = $price - $tax_totals;
             
             endif;
             
         endif;
 
-            return $price;
+        return $price;
             
     }
 
@@ -603,15 +603,14 @@ class jigoshop_product {
 	 */
 	public function get_tax_base_rate() {
 
-		$rate = NULL;
+		$rate = array();
             
         if ($this->is_taxable() && get_option('jigoshop_calc_taxes') == 'yes') :
             $_tax = &new jigoshop_tax();
             
             if ($_tax->get_tax_classes_for_base()) foreach ( $_tax->get_tax_classes_for_base() as $tax_class ) :
                 
-                //TODO: remember standard rate.
-                if ( !in_array($tax_class, $this->data['tax_classes'])) continue;
+                if ( !in_array($tax_class, $this->get_tax_classes())) continue;
                 $my_rate = $_tax->get_shop_base_rate($tax_class);
                 
                 if ($my_rate > 0) :
@@ -759,7 +758,14 @@ class jigoshop_product {
 	public function get_height() {
 		return $this->height;
 	}
-
+    
+    /**
+     * Returns the tax classes
+     * @return array the tax classes on the product 
+     */
+    public function get_tax_classes() {
+        return (array) get_post_meta($this->ID, 'tax_classes', true);
+    }
 	/**
 	 * Returns the product categories
 	 *
@@ -776,6 +782,49 @@ class jigoshop_product {
 	 */
 	public function get_tags( $sep = ', ', $before = '', $after = '' ) {
 		return get_the_term_list($this->ID, 'product_tag', $before, $sep, $after);
+	}
+
+	// Returns the product rating in html format
+	// TODO: optimize this code
+	public function get_rating_html( $location = '' ) {
+
+		if( $location ) 
+			$location = '_'.$location;
+		$star_size = apply_filters('jigoshop_star_rating_size'.$location, 16);
+
+		global $wpdb;
+
+		// Do we really need this? -Rob
+		$count = $wpdb->get_var("
+			SELECT COUNT(meta_value) FROM $wpdb->commentmeta 
+			LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
+			WHERE meta_key = 'rating'
+			AND comment_post_ID = $this->id
+			AND comment_approved = '1'
+			AND meta_value > 0
+		");
+
+		$ratings = $wpdb->get_var("
+			SELECT SUM(meta_value) FROM $wpdb->commentmeta 
+			LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
+			WHERE meta_key = 'rating'
+			AND comment_post_ID = $this->id
+			AND comment_approved = '1'
+		");
+
+		// If we don't have any posts
+		if ( ! (bool)$count )
+			return false;
+
+		// Figure out the average rating
+		$average_rating = number_format($ratings / $count, 2);
+
+		// If we don't have an average rating
+		if( ! (bool)$average_rating )
+			return false;
+
+		// If all goes well echo out the html
+		return '<div class="star-rating" title="'.sprintf(__('Rated %s out of 5', 'jigoshop'), $average_rating).'"><span style="width:'.($average_rating*$star_size).'px"><span class="rating">'.$average_rating.'</span> '.__('out of 5', 'jigoshop').'</span></div>';
 	}
 
 	/**

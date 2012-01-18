@@ -173,11 +173,11 @@ function jigoshop_product_data_box() {
 	            	$tax_classes = $_tax->get_tax_classes();
 	            	$selections = (array) get_post_meta($post->ID, 'tax_classes', true);
 	            	
-	            	$checked = checked(in_array('', $selections), true, false);
+	            	$checked = checked(in_array('*', $selections), true, false);
 
 	            	printf('<label %s><input type="checkbox" name="tax_classes[]" value="%s" %s/> %s</label>'
 								, !empty($checked) ? 'class="selected"' : ''
-								, null
+								, '*'
 								, $checked
 								, __('Standard', 'jigoshop'));
 
@@ -356,7 +356,7 @@ function attributes_display() { ?>
 				$attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();
 				if ( $attribute_taxonomies ) :
 			    	foreach ($attribute_taxonomies as $tax) :
-			    		echo '<option value="'.sanitize_title($tax->attribute_name).'" data-type="'.$tax->attribute_type.'">'.$tax->attribute_name.'</option>';
+						echo '<option value="'.str_replace('%','',sanitize_title($tax->attribute_name)).'" data-type="'.$tax->attribute_type.'">'.$tax->attribute_name.'</option>';
 			    	endforeach;
 			    endif;
 			?>
@@ -455,7 +455,7 @@ function display_attribute() { ?>
 		endif;
 	?>
 
-	<div class="postbox attribute <?php if ( $has_terms ) echo 'closed'; ?> <?php echo $attribute_taxonomy_name; ?>" data-attribute-name="<?php echo $attribute_taxonomy_name; ?>" rel="<?php echo $position; ?>"  <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
+	<div class="postbox attribute <?php if ( $has_terms ) echo 'closed'; ?> <?php echo str_replace('%','',$attribute_taxonomy_name); ?>" data-attribute-name="<?php echo $attribute_taxonomy_name; ?>" rel="<?php echo $position; ?>"  <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
 		<button type="button" class="hide_row button">Remove</button>
 		<div class="handlediv" title="Click to toggle"><br></div>
 		<h3 class="handle"><?php echo $tax->attribute_name; ?></h3>
