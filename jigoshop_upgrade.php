@@ -1,4 +1,4 @@
-<?php defined('ABSPATH') or die('No direct script access.');
+<?php
 /**
  * Jigoshop Upgrade API
  * 
@@ -14,6 +14,9 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
+
+/** Load WordPress Bootstrap */
+require( '/Network/Servers/jigowatt.local/Users/robrhoades/Sites/_/legacy/wp-load.php' );
 
 /**
  * Run Jigoshop Upgrade functions.
@@ -241,3 +244,61 @@ function jigoshop_upgrade_100() {
 		update_post_meta( $post->ID, 'variation_data', $variation_data );
 	}
 }
+
+
+// -----------------------------------------------------------------------------------------------------------------------
+ 
+if ( isset( $_GET['jigoshop_step'] ) )
+	$step = $_GET['jigoshop_step'];
+else
+	$step = 0;
+
+$step = (int) $step;
+
+@header( 'Content-Type: ' . get_option( 'html_type' ) . '; charset=' . get_option( 'blog_charset' ) );
+
+ ?>
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="<?php bloginfo( 'html_type' ); ?>; charset=<?php echo get_option( 'blog_charset' ); ?>" />
+	<title><?php _e( 'WordPress &rsaquo; Update' ); ?></title>
+	<?php
+	wp_admin_css( 'install', true );
+	wp_admin_css( 'ie', true );
+	?>
+</head>
+<body>
+	<h1 id="logo"><img alt="WordPress" src="<?php echo WP_PLUGIN_URL.'/jigoshop/assets/images/jigoshop.png' ?>" /></h1>
+
+	<?php
+	if( $step == 0 ):
+		$goback = stripslashes( wp_get_referer() );
+		$goback = esc_url_raw( $goback );
+		$goback = urlencode( $goback );
+	?>
+	<h2><?php _e( 'Database Update Required' ); ?></h2>
+	<p><?php _e( 'Jigoshop has been updated! Before we send you on your way, we have to update your database to the newest version.', 'jigoshop' ); ?></p>
+	<p><?php _e( 'Before you begin the update please make sure you have backed up your database', 'jigoshop' ); ?>
+	<p><?php _e( 'The update process may take a little while, so please be patient.', 'jigoshop' ); ?></p>
+	<p class="step"><a class="button" href="<?php echo WP_PLUGIN_URL.'/jigoshop/' ?>jigoshop_upgrade.php?jigoshop_step=1&amp;backto=<?php echo $goback; ?>"><?php _e( 'Update Jigoshop Database', 'jigoshop' ); ?></a></p>
+	
+	<?php elseif( $step == 1 ):
+		error_log('calling');
+		jigoshop_upgrade();
+
+		$backto = !empty($_GET['backto']) ? stripslashes( urldecode( $_GET['backto'] ) ) : get_option( 'home' ) . '/';
+		$backto = esc_url( $backto );
+		$backto = wp_validate_redirect($backto, get_option( 'home' ) . '/');
+	?>
+	<h2><?php _e( 'Update Complete' ); ?></h2>
+		<p><?php _e( 'Your Jigoshop database has been successfully updated!', 'jigoshop' ); ?></p>
+		<p class="step"><a class="button" href="<?php echo $backto; ?>"><?php _e( 'Continue' ); ?></a></p>
+
+	<?php endif; ?>
+</body>
+</html>
+
+<?php exit; ?>
