@@ -30,10 +30,15 @@ if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
 
-if ( get_site_option('jigoshop_db_version') < JIGOSHOP_VERSION ) {
+if ( is_admin() && get_site_option('jigoshop_db_version') < JIGOSHOP_VERSION ) {
 	error_log('UPGRADING...');
 	require_once('jigoshop_upgrade.php');
-	//jigoshop_upgrade();
+
+	?>
+	<div class="updated">  
+		<p>Uh oh! Looks like your Jigoshop database needs updating, just to be safe <strong>please backup your database</strong> before clicking this button! <a class="button-primary" >Update Database</a></p>
+	</div>
+	<?php
 }
 
 /**
@@ -44,8 +49,8 @@ function jigoshop_update_check() {
 }
 if ( is_admin() ) {
 	include_once( 'admin/jigoshop-admin.php' );
-	register_activation_hook( __FILE__, 'install_jigoshop' );
-	add_action('init', 'jigoshop_update_check', 0);
+	//register_activation_hook( __FILE__, 'install_jigoshop' );
+	//add_action('init', 'jigoshop_update_check', 0);
 }
 
 /**
