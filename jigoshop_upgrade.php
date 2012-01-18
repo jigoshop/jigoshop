@@ -146,8 +146,6 @@ function jigoshop_upgrade_100() {
 		'numberposts' => -1,
 	);
 
-	error_log('UPGRADE 100...');
-
 	$posts = get_posts( $args );
 
 	foreach( $posts as $post ) {
@@ -166,7 +164,6 @@ function jigoshop_upgrade_100() {
 
 		// Convert the filepath to url
 		$file_path = get_post_meta( $post->ID, 'file_path', true );
-		error_log(ABSPATH);
 		update_post_meta( $post->ID, 'file_path', site_url().'/'.$file_path );
 
 		// Unserialize all product_data keys to individual key => value pairs
