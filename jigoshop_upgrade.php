@@ -43,6 +43,8 @@ function jigoshop_upgrade() {
 
 	// Update the db option
 	update_site_option( 'jigoshop_db_version', JIGOSHOP_VERSION );
+
+	return true;
 }
 
 /**
