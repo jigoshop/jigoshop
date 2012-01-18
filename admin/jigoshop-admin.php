@@ -33,6 +33,23 @@ function jigoshop_get_plugin_data( $key = 'Version' ) {
 	return $data[$key];
 }
 
+
+/**
+ * Redirect to settings after installation
+ */
+function install_jigoshop_redirect() {
+	global $pagenow;
+
+	if ( is_admin() && isset( $_GET['activate'] ) && ($_GET['activate'] == true) && $pagenow == 'plugins.php' && get_option( "jigoshop_db_version" ) ) {
+		
+		// Redirect to settings
+		wp_redirect(admin_url('admin.php?page=settings&installed=true'));
+		exit;
+		
+	}
+}
+add_action('admin_init', 'install_jigoshop_redirect');
+
 /**
  * Admin Menus
  * 
@@ -280,20 +297,6 @@ function jigoshop_get_current_post_type() {
     
     return '';
 }
-
-/**
- * Permalink structure needs to be saved twice for structure to take effect
- * Common bug with wordpress 3.1+ as of yet unresolved
- *
- * @returns		notice
- */
-function permalink_save_twice_notice() {
-	if( isset($_POST['_wp_http_referer']) && strpos($_POST['_wp_http_referer'], 'options-permalink.php') ) {
-		print_r('<div id="message" class="updated"><p>'.__('Note: Please make sure you save your permalink settings <strong>twice</strong> in order for them to be applied correctly in Jigoshop', 'jigoshop' ).'</p></div>');
-	}
-}
-// this seems fixed as of WP 3.3, commenting out for now to test -JAP-
-//add_action('admin_notices', 'permalink_save_twice_notice');
 
 /**
  * Categories ordering

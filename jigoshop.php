@@ -30,6 +30,17 @@ if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
 
+// Load administration & check if we need to install
+if ( is_admin() ) {
+	include_once( 'admin/jigoshop-admin.php' );
+	register_activation_hook( __FILE__, 'install_jigoshop' );
+	add_action('init', 'jigoshop_update_check', 0);
+}
+
+function jigoshop_update_check() {
+    if ( ! get_site_option('jigoshop_db_version') ) install_jigoshop();
+}
+
 // Run database upgrade if required
 if ( is_admin() && get_site_option('jigoshop_db_version') < JIGOSHOP_VERSION ) {
 
@@ -57,18 +68,6 @@ if ( is_admin() && get_site_option('jigoshop_db_version') < JIGOSHOP_VERSION ) {
 			</div>
 		';
 	}
-}
-
-/**
- * Installs and upgrades
- **/
-function jigoshop_update_check() {
-    if (get_site_option('jigoshop_db_version') != JIGOSHOP_VERSION) install_jigoshop();
-}
-if ( is_admin() ) {
-	include_once( 'admin/jigoshop-admin.php' );
-	//register_activation_hook( __FILE__, 'install_jigoshop' );
-	//add_action('init', 'jigoshop_update_check', 0);
 }
 
 /**
