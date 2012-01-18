@@ -163,14 +163,6 @@ function jigoshop_upgrade_100() {
 			update_post_meta( $post->ID, 'featured', false);
 		}
 
-		// Convert manage stock to true/false
-		$manage_stock = get_post_meta( $post->ID, 'manage_stock', true );
-
-		if( $manage_stock == 'yes' )
-			update_post_meta( $post->ID, 'manage_stock', true );
-		else
-			update_post_meta( $post->ID, 'manage_stock', false );
-
 		// Unserialize all product_data keys to individual key => value pairs
 		$product_data = get_post_meta( $post->ID, 'product_data', true );
 		foreach( $product_data as $key => $value ) {
@@ -181,7 +173,6 @@ function jigoshop_upgrade_100() {
 
 			// We now call it tax_classes & its an array
 			if ( $key == 'tax_class' ) {
-				delete_post_meta( $post->ID, $key );
 
 				if ( $value )
 					$value = (array) $value;
@@ -189,6 +180,11 @@ function jigoshop_upgrade_100() {
 					$value = array('*');
 
 				$key = 'tax_classes';
+			}
+
+			// Convert manage stock to true/false
+			if ( $key == 'manage_stock' ) {
+				$value = ( $value == 'yes' ) ? true : false;
 			}
 
 			// Create the meta
