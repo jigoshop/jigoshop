@@ -34,42 +34,7 @@ load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) )
 if ( is_admin() ) {
 	include_once( 'admin/jigoshop-admin.php' );
 	register_activation_hook( __FILE__, 'install_jigoshop' );
-	add_action('init', 'jigoshop_update_check', 0);
 }
-
-function jigoshop_update_check() {
-    if ( ! get_site_option('jigoshop_db_version') ) install_jigoshop();
-}
-
-// Run database upgrade if required
-if ( is_admin() && get_site_option('jigoshop_db_version') < JIGOSHOP_VERSION ) {
-
-	if ( isset($_GET['jigoshop_update_db']) && (bool) $_GET['jigoshop_update_db'] ) {
-		require_once('jigoshop_upgrade.php');
-		$response = jigoshop_upgrade();
-
-		// If we succesfull inform the user
-		if ( $response ) {
-			echo '
-				<div class="updated">
-					<p>Horray! The database was succesfully updated, happy days</p>
-				</div>
-			';
-		}
-	}
-
-	else {
-		echo '
-			<div class="updated">
-				<p>Uh oh! Looks like your Jigoshop database needs updating, just to be safe <strong>please backup your database</strong> before clicking this button!</p>
-				<p>
-					<a class="button-primary" href="' . add_query_arg('jigoshop_update_db', 'true') . '">Update Database</a>
-				</p>
-			</div>
-		';
-	}
-}
-
 /**
  * Include core files and classes
  **/
