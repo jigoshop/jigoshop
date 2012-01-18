@@ -189,5 +189,19 @@ function jigoshop_upgrade_100() {
 			// Remove the old meta
 			delete_post_meta( $post->ID, 'product_data' );
 		}
+
+		$product_attributes = get_post_meta( $post->ID, 'product_attributes', true );
+
+		foreach( $product_attributes as $key => $attribute ) {
+
+			// We use true/false for these now
+			$attribute['visible']     = ( $attribute['visible'] == 'yes' ) ? true : false;
+			$attribute['variation']   = ( $attribute['variation'] == 'yes' ) ? true : false;
+			$attribute['is_taxonomy'] = ( $attribute['is_taxonomy'] == 'yes' ) ? true : false;
+
+			$product_attributes[$key] = $attribute;
+		}
+
+		update_post_meta( $post->ID, 'product_attributes', $product_attributes );
 	}
 }
