@@ -204,4 +204,32 @@ function jigoshop_upgrade_100() {
 
 		update_post_meta( $post->ID, 'product_attributes', $product_attributes );
 	}
+
+
+	// Variations
+	$args = array(
+		'post_type'	  => 'product_variation',
+		'numberposts' => -1,
+	);
+
+	$posts = get_posts( $args );
+
+	foreach( $posts as $post ) {
+
+		// Convert SKU key to lowercase
+		$wpdb->update( $wpdb->postmeta, array('meta_key' => 'sku'), array('post_id' => $post->ID, 'meta_key' => 'sku') );
+
+		// Convert 'price' key to regular_price
+		$wpdb->update( $wpdb->postmeta, array('meta_key' => 'regular_price'), array('post_id' => $post->ID, 'meta_key' => 'price') );
+
+		$taxes = $wpdb->get_results("SELECT * FROM {$wpdb->postmeta} WHERE post_id = {$post->ID} AND meta_key LIKE 'tax_%' ");
+
+		$variation_data = array();
+		foreach( $taxes as $tax ) {
+			$variation_data[$tax->meta_key] = $tax->meta_value;
+			delete_post_meta( $post->ID, $tax->meta_key );
+		}
+
+		update_post_meta( $post->ID, 'variation_data', $variation_data );
+	}
 }
