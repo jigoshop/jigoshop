@@ -210,27 +210,30 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 		$attr_tax = jigoshop_product::getAttributeTaxonomies();
 				
 		// Widget title
-		echo '<p>';
-		echo '<label for="' . $this->get_field_id('title') . '"> ' . _e('Title:', 'jigoshop') . '</label>';
-		echo '<input type="text" class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" value="' . $title . '" />';
-		echo '</p>';
-		
-		// Print attribute selector
-		if ( ! empty($attr_tax) ) {
-			echo '<p>';
-			echo '<label for="' . $this->get_field_id('attribute') . '">' . __('Attribute:', 'jigoshop') . '</label> ';
-			echo '<select id="' . $this->get_field_id('attribute') . '" name="' . $this->get_field_name('attribute') . '">';
-			foreach($attr_tax as $tax) {
-				
-				if (taxonomy_exists('pa_'.strtolower(sanitize_title($tax->attribute_name)))) {
-					echo '<option value="' . $tax->attribute_name . '" ' . (isset($instance['attribute']) && $instance['attribute'] == $tax->attribute_name ? 'selected' : null) . '>';
-					echo $tax->attribute_name;
-					echo '</option>';
-				}
-			}
-			
-			echo '</select>';
-			echo '</p>';
-		}
+		?>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id('title') ); ?>"> <?php _e('Title:', 'jigoshop'); ?></label>
+			<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id('title') ); ?>" name="<?php echo esc_attr( $this->get_field_name('title') ); ?>" value="<?php echo $title; ?>" />
+		</p>
+		<?php 
+		// Print attribute selector 
+		if ( ! empty($attr_tax) ) : 
+		?>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id('attribute') ); ?>"><?php _e('Attribute:', 'jigoshop'); ?></label>
+			<select id="<?php echo esc_attr( $this->get_field_id('attribute') ); ?>" name="<?php echo esc_attr( $this->get_field_name('attribute') ); ?>">
+			<?php 
+			foreach($attr_tax as $tax) :
+				if (taxonomy_exists('pa_'.strtolower(sanitize_title($tax->attribute_name)))) :
+				?>
+				<option value="<?php echo esc_attr( $tax->attribute_name ); ?>" <?php if(isset($instance['attribute']) && $instance['attribute'] == $tax->attribute_name) : ?>selected<?php endif; ?>><?php echo $tax->attribute_name; ?></option>
+				<?php
+				endif;
+			endforeach;
+			?>
+			</select>
+		</p>
+		<?php
+		endif;
 	}
 } // class Jigoshop_Widget_Layered_Nav

@@ -188,15 +188,16 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 		$number = isset($instance['number']) ? abs($instance['number']) : $number;
 		
 		// Widget Title
-		echo '<p>';
-		echo '<label for="' . $this->get_field_id('title') . '">' . _e('Title:', 'jigoshop') . '</label>';
-		echo '<input class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" type="text" value="'. $title .'" />';
-		echo '</p>';
-		
-		// Number of posts to fetch
-		echo '<p>';
-		echo '<label for="' . $this->get_field_id('number') . '">' . _e('Number of products to show:', 'jigoshop') . '</label>';
-		echo '<input id="' . $this->get_field_id('number') . '" name="' . $this->get_field_name('number') . '" type="text" value="' . $number . '" size="3" />';
-		echo '</p>';
+		?>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id('title') ); ?>"><?php _e('Title:', 'jigoshop'); ?></label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id('title') ); ?>" name="<?php echo esc_attr( $this->get_field_name('title') ); ?>" type="text" value="<?php echo $title; ?>" />
+		</p>
+		<?php // Number of posts to fetch ?>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id('number') ); ?>"><?php _e('Number of products to show:', 'jigoshop'); ?></label>
+			<input id="<?php echo esc_attr( $this->get_field_id('number') ); ?>" name="<?php echo esc_attr( $this->get_field_name('number') ); ?>" type="text" value="<?php echo $number; ?>" size="3" />
+		</p>
+		<?php
 	}
 } // class Jigoshop_Widget_Featured_Products

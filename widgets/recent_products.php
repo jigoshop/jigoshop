@@ -210,23 +210,22 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 		$show_variations = (bool) isset($instance['show_variations']) ? $instance['show_variations'] : false;
 		
 		// Widget Title
-		echo '<p>';
-		echo '<label for="' . $this->get_field_id('title') . '">' . _e('Title:', 'jigoshop') . '</label>';
-		echo '<input class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" type="text" value="'. $title .'" />';
-		echo '</p>';
-		
-		// Number of posts to fetch
-		echo '<p>';
-		echo '<label for="' . $this->get_field_id('number') . '">' . _e('Number of products to show:', 'jigoshop') . '</label>';
-		echo '<input id="' . $this->get_field_id('number') . '" name="' . $this->get_field_name('number') . '" type="text" value="' . $number . '" size="3" />';
-		echo '</p>';
-		
-		// Show variations?
-		echo '<p>';
-		echo '<input type="checkbox" class="checkbox" id="' . $this->get_field_id('show_variations') . '" name="' . $this->get_field_name('show_variations') . '"' . checked( $show_variations ) . '/>';
-		echo '<label for="' . $this->get_field_id('show_variations') . '"> ' . __( 'Show hidden product variations', 'jigoshop' ) . '</label>';
-		echo '</p>';
-
+		?>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id('title') ); ?>"><?php _e('Title:', 'jigoshop'); ?></label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id('title') ); ?>" name="<?php echo esc_attr( $this->get_field_name('title') ); ?>" type="text" value="<?php echo $title; ?>" />
+		</p>
+		<?php // Number of posts to fetch ?>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id('number') ); ?>"><?php _e('Number of products to show:', 'jigoshop'); ?></label>
+			<input id="<?php echo esc_attr( $this->get_field_id('number') ); ?>" name="<?php echo esc_attr( $this->get_field_name('number') ); ?>" type="text" value="<?php echo $number; ?>" size="3" />
+		</p>
+		<?php // Show variations ?>
+		<p>
+			<input type="checkbox" class="checkbox" id="<?php echo esc_attr( $this->get_field_id('show_variations') ); ?>" name="<?php echo esc_attr( $this->get_field_name('show_variations') ); ?>" <?php checked( $show_variations ); ?> />
+			<label for="<?php echo esc_attr( $this->get_field_id('show_variations') ); ?>"><?php _e( 'Show hidden product variations', 'jigoshop' ); ?></label>
+		</p>
+		<?php
 	}
 	
 } // class Jigoshop_Widget_Recent_Products

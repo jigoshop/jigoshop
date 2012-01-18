@@ -547,12 +547,7 @@ function jigoshop_price( $price, $args = array() ) {
 	$return = '';
 	$currency_pos = get_option('jigoshop_currency_pos');
 	$currency_symbol = get_jigoshop_currency_symbol();
-	$price = number_format(
-		(double) $price, 
-		(int) get_option('jigoshop_price_num_decimals'), 
-		get_option('jigoshop_price_decimal_sep'), 
-		get_option('jigoshop_price_thousand_sep')
-	);
+	$price = number_format(	(double) $price, (int) get_option('jigoshop_price_num_decimals'), stripslashes(get_option('jigoshop_price_decimal_sep')), stripslashes(get_option('jigoshop_price_thousand_sep')));
 
 	switch ($currency_pos) :
 		case 'left' :
@@ -729,7 +724,7 @@ function jigoshop_comments($comment, $args, $depth) {
   			<?php echo get_avatar( $comment, $size='60' ); ?>
 
 			<div class="comment-text">
-				<div class="star-rating" title="<?php echo get_comment_meta( $comment->comment_ID, 'rating', true ); ?>">
+				<div class="star-rating" title="<?php echo esc_attr( get_comment_meta( $comment->comment_ID, 'rating', true ) ); ?>">
 					<span style="width:<?php echo get_comment_meta( $comment->comment_ID, 'rating', true )*16; ?>px"><?php echo get_comment_meta( $comment->comment_ID, 'rating', true ); ?> <?php _e('out of 5', 'jigoshop'); ?></span>
 				</div>
 				<?php if ($comment->comment_approved == '0') : ?>

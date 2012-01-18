@@ -160,28 +160,27 @@ class Jigoshop_Widget_Product_Categories extends WP_Widget {
 		$dropdown		= (bool) isset($instance['dropdown']) ? $instance['dropdown'] : false;
 		
 		// Widget title
-		echo '<p>';
-		echo '<label for="' . $this->get_field_id('title') . '"> ' . _e('Title:', 'jigoshop') . '</label>';
-		echo '<input type="text" class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" value="' . $title . '" />';
-		echo '</p>';
-		
-		// As a dropdown?
-		echo '<p>';
-		echo '<input type="checkbox" class="checkbox" id="' . $this->get_field_id('dropdown') . '" name="' . $this->get_field_name('dropdown') . '"' . ( $dropdown ? 'checked' : null ) . '/>';
-		echo '<label for="' . $this->get_field_id('dropdown') . '"> ' . __( 'Show as dropdown', 'jigoshop' ) . '</label>';
-		echo '</p>';
-		
-		// Show product count?
-		echo '<p>';
-		echo '<input type="checkbox" class="checkbox" id="' . $this->get_field_id('count') . '" name="' . $this->get_field_name('count') . '"' . ( $count ? 'checked' : null ) . '/>';
-		echo '<label for="' . $this->get_field_id('count') . '"> ' . __( 'Show product counts', 'jigoshop' ) . '</label>';
-		echo '</p>';
-		
-		// Is hierarchical?
-		echo '<p>';
-		echo '<input type="checkbox" class="checkbox" id="' . $this->get_field_id('hierarchical') . '" name="' . $this->get_field_name('hierarchical') . '"' . ( $hierarchical ? 'checked' : null ) . '/>';
-		echo '<label for="' . $this->get_field_id('hierarchical') . '"> ' . __( 'Show hierarchy', 'jigoshop' ) . '</label>';
-		echo '</p>';
+		?>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id('title') ); ?>"><?php _e('Title:', 'jigoshop'); ?></label>
+			<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id('title') ); ?>" name="<?php echo esc_attr( $this->get_field_name('title') ); ?>" value="<?php echo $title; ?>" />
+		</p>
+		<?php // As a dropdown ?>
+		<p>
+			<input type="checkbox" class="checkbox" id="<?php echo esc_attr( $this->get_field_id('dropdown') ); ?>" name="<?php echo esc_attr( $this->get_field_name('dropdown') ); ?>" <?php checked( $dropdown ); ?> />
+			<label for="<?php echo esc_attr( $this->get_field_id('dropdown') ); ?>"><?php _e( 'Show as dropdown', 'jigoshop' ); ?></label>
+		</p>
+		<?php // Show product count ?>
+		<p>
+			<input type="checkbox" class="checkbox" id="<?php echo esc_attr( $this->get_field_id('count') ); ?>" name="<?php echo esc_attr( $this->get_field_name('count') ); ?>" <?php checked( $count ); ?> />
+			<label for="<?php echo esc_attr( $this->get_field_id('count') ); ?>"><?php _e( 'Show product counts', 'jigoshop' ); ?></label>
+		</p>
+		<?php // Is hierarchical ?>
+		<p>
+			<input type="checkbox" class="checkbox" id="<?php echo esc_attr( $this->get_field_id('hierarchical') ); ?>" name="<?php echo esc_attr( $this->get_field_name('hierarchical') ); ?>" <?php checked( $hierarchical ); ?> />
+			<label for="<?php echo esc_attr( $this->get_field_id('hierarchical') ); ?>"><?php _e( 'Show hierarchy', 'jigoshop' ); ?></label>
+		</p>
+		<?php
 	}
 
 } // class Jigoshop_Widget_Product_Categories
