@@ -255,8 +255,7 @@ function jigoshop_admin_fields($options) {
 		            	?><tr>
 		                    <td class="titledesc"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
 
-		                    <td class="forminp"><input name="<?php echo $value['id'] ?>" id="<?php echo $value['id'] ?>" type="<?php echo $value['type'] ?>" style="<?php echo $value['css'] ?>"
-								value="<?php if ( get_option( $value['id']) !== false && get_option( $value['id']) !== null ) echo get_option( $value['id'] ); else echo $value['std'] ?>" /><br /><small><?php echo $value['desc'] ?></small></td>
+		                    <td class="forminp"><input name="<?php echo $value['id'] ?>" id="<?php echo $value['id'] ?>" type="<?php echo $value['type'] ?>" style="<?php echo $value['css'] ?>" value="<?php if ( get_option( $value['id']) !== false && get_option( $value['id']) !== null ) echo esc_attr( stripslashes( get_option( $value['id'] ) ) ); else echo $value['std'] ?>" /><br /><small><?php echo $value['desc'] ?></small></td>
 		                </tr><?php
 		            break;
 		            case 'select':
@@ -266,7 +265,7 @@ function jigoshop_admin_fields($options) {
 		                        <?php
 		                        foreach ($value['options'] as $key => $val) {
 		                        ?>
-		                            <option value="<?php echo $key ?>" <?php if (get_option($value['id']) == $key) { ?> selected="selected" <?php } ?>><?php echo ucfirst($val) ?></option>
+		                            <option value="<?php echo esc_attr( $key ); ?>" <?php if (get_option($value['id']) == $key) { ?> selected="selected" <?php } ?>><?php echo ucfirst($val) ?></option>
 		                        <?php
 		                        }
 		                        ?>
