@@ -59,7 +59,7 @@ class jigoshop_cart extends jigoshop_singleton {
     /** Gets the cart data from the PHP session */
     function get_cart_from_session() {
 
-        if (isset( jigoshop_session::instance()->cart ) && is_array( jigoshop_session::instance()->cart )) :
+        if ( is_array( jigoshop_session::instance()->cart )) :
             $cart = jigoshop_session::instance()->cart;
 
             foreach ($cart as $key => $values) :
