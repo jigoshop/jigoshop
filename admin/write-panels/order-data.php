@@ -348,25 +348,8 @@ function jigoshop_order_actions_meta_box($post) {
 function jigoshop_order_totals_meta_box($post) {
 
     $_order = new jigoshop_order($post->ID);
-	/*$data = maybe_unserialize( get_post_meta($post->ID, 'order_data', true) );
 
-	if (!isset($data['shipping_method'])) $data['shipping_method'] = '';
-	if (!isset($data['shipping_service'])) $data['shipping_service'] = '';
-	if (!isset($data['payment_method'])) $data['payment_method'] = '';
-	if (!isset($data['order_subtotal'])) $data['order_subtotal'] = '';
-	if (!isset($data['order_shipping'])) $data['order_shipping'] = '';
-	if (!isset($data['order_discount'])) $data['order_discount'] = '';
-	if (!isset($data['order_tax'])) $data['order_tax'] = '';
-	if (!isset($data['order_total'])) $data['order_total'] = '';
-	if (!isset($data['order_shipping_tax'])) $data['order_shipping_tax'] = '';
-    
-	$coupons = array();
-	if( ! empty($data['order_discount_coupons']) ) {
-		foreach ( $data['order_discount_coupons'] as $coupon ) {
-			$coupons[] = $coupon['code'];
-		}
-	}*/
- 	$coupons = array();
+    $coupons = array();
     $order_discount_coupons = (array)$_order->get_value_from_data('order_discount_coupons');
 	if( ! empty( $order_discount_coupons )) {
 		foreach ( $order_discount_coupons as $coupon ) {
