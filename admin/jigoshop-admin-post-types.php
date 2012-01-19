@@ -96,6 +96,8 @@ function jigoshop_custom_product_columns($column) {
 			else {
 				echo $post->ID;
 			}
+			echo '<br/>';
+			if ( $product->visibility != 'visible' ) echo '<span class="attention">'.ucwords($product->visibility).'</span>';
 		break;
 		case "product-date" :
 			if ( '0000-00-00 00:00:00' == $post->post_date ) :
