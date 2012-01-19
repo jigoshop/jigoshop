@@ -948,7 +948,7 @@ class jigoshop_product {
 		if ( get_option('jigoshop_enable_weight') != 'yes' )
 			return false;
 
-		return $this->get_weight();
+		return (bool) $this->get_weight();
 	}
 
 	/**
