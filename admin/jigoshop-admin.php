@@ -298,8 +298,7 @@ function jigoshop_feature_product () {
 	
 	$product = new jigoshop_product($post->ID);
 
-	if ($product->is_featured()) update_post_meta($post->ID, 'featured', 'no');
-	else update_post_meta($post->ID, 'featured', 'yes');
+	update_post_meta( $post->ID, 'featured', ! $product->is_featured() );
 	
 	$sendback = remove_query_arg( array('trashed', 'untrashed', 'deleted', 'ids'), wp_get_referer() );
 	wp_safe_redirect( $sendback );
