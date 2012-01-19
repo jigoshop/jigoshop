@@ -421,18 +421,6 @@ function display_attribute() { ?>
 						</table>
 					</div>
 				</div>
-
-				<div class="postbox attribute">
-					<button type="button" class="hide_row button">Remove</button>
-					<div class="handlediv" title="Click to toggle"><br></div>
-					<h3 class="handle">Colour</h3>
-				</div>
-
-				<div class="postbox attribute">
-					<button type="button" class="hide_row button">Remove</button>
-					<div class="handlediv" title="Click to toggle"><br></div>
-					<h3 class="handle">Material</h3>
-				</div>
 			</div>
 		</div>
 	<?php endif; ?>

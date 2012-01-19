@@ -1,4 +1,4 @@
-<?php defined('ABSPATH') or die('No direct script access.');
+<?php
 /**
  * Jigoshop Upgrade API
  * 
@@ -18,8 +18,7 @@
 /**
  * Run Jigoshop Upgrade functions.
  *
- * @since 2.1.0
- * @return null
+ * @return void
 */
 function jigoshop_upgrade() {
 
@@ -44,6 +43,8 @@ function jigoshop_upgrade() {
 
 	// Update the db option
 	update_site_option( 'jigoshop_db_version', JIGOSHOP_VERSION );
+
+	return true;
 }
 
 /**
@@ -139,4 +140,102 @@ function jigoshop_upgrade_100() {
 	global $wpdb;
 
 	// Run upgrade
+
+	$args = array(
+		'post_type'	  => 'product',
+		'numberposts' => -1,
+	);
+
+	$posts = get_posts( $args );
+
+	foreach( $posts as $post ) {
+
+		// Convert SKU key to lowercase
+		$wpdb->update( $wpdb->postmeta, array('meta_key' => 'sku'), array('post_id' => $post->ID, 'meta_key' => 'sku') );
+
+		// Convert featured to true/false
+		$featured = get_post_meta( $post->ID, 'featured', true);
+
+		if ( $featured == 'yes' )
+			update_post_meta( $post->ID, 'featured', true );
+		else {
+			update_post_meta( $post->ID, 'featured', false);
+		}
+
+		// Convert the filepath to url
+		$file_path = get_post_meta( $post->ID, 'file_path', true );
+		update_post_meta( $post->ID, 'file_path', site_url().'/'.$file_path );
+
+		// Unserialize all product_data keys to individual key => value pairs
+		$product_data = get_post_meta( $post->ID, 'product_data', true );
+		foreach( $product_data as $key => $value ) {
+
+			// Convert all keys to lowercase
+			// @todo: Needs testing especially with 3rd party plugins using product_data
+			$key = strtolower($key);
+
+			// We now call it tax_classes & its an array
+			if ( $key == 'tax_class' ) {
+
+				if ( $value )
+					$value = (array) $value;
+				else
+					$value = array('*');
+
+				$key = 'tax_classes';
+			}
+
+			// Convert manage stock to true/false
+			if ( $key == 'manage_stock' ) {
+				$value = ( $value == 'yes' ) ? true : false;
+			}
+
+			// Create the meta
+			update_post_meta( $post->ID, $key, $value );	
+
+			// Remove the old meta
+			delete_post_meta( $post->ID, 'product_data' );
+		}
+
+		$product_attributes = get_post_meta( $post->ID, 'product_attributes', true );
+
+		foreach( $product_attributes as $key => $attribute ) {
+
+			// We use true/false for these now
+			$attribute['visible']     = ( $attribute['visible'] == 'yes' ) ? true : false;
+			$attribute['variation']   = ( $attribute['variation'] == 'yes' ) ? true : false;
+			$attribute['is_taxonomy'] = ( $attribute['is_taxonomy'] == 'yes' ) ? true : false;
+
+			$product_attributes[$key] = $attribute;
+		}
+
+		update_post_meta( $post->ID, 'product_attributes', $product_attributes );
+	}
+
+	// Variations
+	$args = array(
+		'post_type'	  => 'product_variation',
+		'numberposts' => -1,
+	);
+
+	$posts = get_posts( $args );
+
+	foreach( $posts as $post ) {
+
+		// Convert SKU key to lowercase
+		$wpdb->update( $wpdb->postmeta, array('meta_key' => 'sku'), array('post_id' => $post->ID, 'meta_key' => 'sku') );
+
+		// Convert 'price' key to regular_price
+		$wpdb->update( $wpdb->postmeta, array('meta_key' => 'regular_price'), array('post_id' => $post->ID, 'meta_key' => 'price') );
+
+		$taxes = $wpdb->get_results("SELECT * FROM {$wpdb->postmeta} WHERE post_id = {$post->ID} AND meta_key LIKE 'tax_%' ");
+
+		$variation_data = array();
+		foreach( $taxes as $tax ) {
+			$variation_data[$tax->meta_key] = $tax->meta_value;
+			delete_post_meta( $post->ID, $tax->meta_key );
+		}
+
+		update_post_meta( $post->ID, 'variation_data', $variation_data );
+	}
 }
