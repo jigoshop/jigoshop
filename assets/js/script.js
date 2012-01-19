@@ -108,7 +108,7 @@ jQuery(function(){
 			jQuery(state_box).append(options);
 		} else {
 			if (jQuery(state_box).is('select')) {
-				jQuery(state_box).replaceWith('<input type="text" placeholder="' + params.state_text + '" name="' + input_name + '" id="' + input_id + '" />');
+				jQuery(state_box).replaceWith('<input class="input-text" type="text" placeholder="' + params.state_text + '" name="' + input_name + '" id="' + input_id + '" />');
 				state_box = jQuery('#' + jQuery(this).attr('rel'));
 			}
 		}
