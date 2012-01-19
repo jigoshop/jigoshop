@@ -317,7 +317,41 @@ class jigoshop_tax {
         $this->retail_tax_amount = $retail_tax_amount;
         $this->tax_amounts = $tax_amount;
         $this->imploded_tax_amounts = $this->array_implode($this->tax_amounts);
-        $this->total_tax_rate = ($total_item_price ? round($total_tax / $total_item_price * 100, 2) : 0); 
+        $this->total_tax_rate = ($total_item_price ? round($total_tax / $total_item_price * 100, 4) : 0); 
+    }
+
+    /**
+     * calculates the total tax rate that is applied to a product from the applied 
+     * tax classes defined on the product.
+     * 
+     * @param array the product rates array
+     * @return mixed null if no taxes or array is null, otherwise the total tax rate to apply
+     */
+    public static function calculate_total_tax_rate($product_rates_array) {
+        
+        $tax_rate = null;
+        if ($product_rates_array && is_array($product_rates_array)) :
+            
+            if (get_option('jigoshop_calc_taxes') == 'yes') :
+                
+                if (!empty($product_rates_array)) :
+                    $tax_rate = 0;
+                
+                    foreach($product_rates_array as $tax_class => $value) :
+                       if (jigoshop_product::get_product_retail_tax($tax_class, $product_rates_array)) :
+                           $tax_rate += round(jigoshop_product::get_product_tax_rate($tax_class, $product_rates_array), 4);
+                       else :
+                           $tax_rate += round((100 + $tax_rate) * (jigoshop_product::get_product_tax_rate($tax_class, $product_rates_array) / 100), 4);
+                       endif; 
+                    endforeach;
+                    
+                endif;
+                
+            endif;
+        endif;
+        
+        return $tax_rate;
+            
     }
 
     public function update_tax_amount_with_shipping_tax($tax_amount) {

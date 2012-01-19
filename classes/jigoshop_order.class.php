@@ -155,7 +155,7 @@ class jigoshop_order {
             
         endif;
         
-        return jigoshop_price($order_tax, array(with_currency => false));
+        return jigoshop_price($order_tax, array('with_currency' => false));
 	}
 	
         public function get_tax_classes() {

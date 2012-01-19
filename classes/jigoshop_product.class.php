@@ -623,6 +623,37 @@ class jigoshop_product {
 
         return $rate;
 	}
+    
+    /**
+     * This function returns the tax rate for a particular tax_class applied to the product
+     * 
+     * @param string tax_class the class of tax to find
+     * @param array product_tax_rates the tax rates applied to the product
+     * @return double the tax rate percentage
+     */
+    public static function get_product_tax_rate($tax_class, $product_tax_rates) {
+        
+        if ($tax_class && $product_tax_rates && is_array($product_tax_rates)) :
+            return $product_tax_rates[$tax_class]['rate'];
+        endif;
+        
+        return (double) 0;
+    }
+    
+    /**
+     * Returns true if the tax is applied to the retail value of the product. 
+     * @param string tax_class the tax class return value on
+     * @param array product_tax_rates the array of tax rates on the product
+     * @return bool true if tax class taxes the retail value of product. False otherwise. Default true.
+     */
+    public static function get_product_retail_tax($tax_class, $product_tax_rates) {
+        
+        if ($tax_class && $product_tax_rates && is_array($product_tax_rates)) :
+            return $product_tax_rates[$tax_class]['is_retail'];
+        endif;
+        
+        return true;  // default to true for retail tax, or non compound tax  
+    }
 
 	/**
 	 * Returns the percentage saved on sale products
