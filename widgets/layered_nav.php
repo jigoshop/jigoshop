@@ -90,8 +90,8 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 			echo "<ul>";
 
 			// Reduce count based on chosen attributes
-			$all_post_ids = jigoshop_layered_nav_query( $all_post_ids );
-			$all_post_ids = jigoshop_price_filter( $all_post_ids );
+			$all_post_ids = jigoshop_layered_nav_query( (array)$all_post_ids );
+			$all_post_ids = jigoshop_price_filter( (array)$all_post_ids );
 
 			foreach ($terms as $term) {
 			
@@ -239,3 +239,60 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 		}
 	}
 } // class Jigoshop_Widget_Layered_Nav
+
+function jigoshop_layered_nav_query( $filtered_posts ) {
+
+	global $_chosen_attributes;
+
+	if (sizeof($_chosen_attributes)>0) :
+
+		$matched_products = array();
+		$filtered = false;
+
+		foreach ($_chosen_attributes as $attribute => $values) :
+			if (sizeof($values)>0) :
+				foreach ($values as $value) :
+
+					$posts = get_objects_in_term( $value, $attribute );
+					if (!is_wp_error($posts) && (sizeof($matched_products)>0 || $filtered)) :
+						$matched_products = array_intersect($posts, $matched_products);
+					elseif (!is_wp_error($posts)) :
+						$matched_products = $posts;
+					endif;
+
+					$filtered = true;
+
+				endforeach;
+			endif;
+		endforeach;
+
+		if ($filtered) :
+			$matched_products[] = 0;
+			$filtered_posts = array_intersect($filtered_posts, $matched_products);
+		endif;
+
+	endif;
+
+	return $filtered_posts;
+}
+add_filter( 'loop-shop-posts-in', 'jigoshop_layered_nav_query' );
+
+function jigoshop_layered_nav_init() {
+
+	global $_chosen_attributes;
+
+	$attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();
+	if ( $attribute_taxonomies ) :
+		foreach ($attribute_taxonomies as $tax) :
+
+	    	$attribute = strtolower(sanitize_title($tax->attribute_name));
+	    	$taxonomy = 'pa_' . $attribute;
+	    	$name = 'filter_' . $attribute;
+
+	    	if (isset($_GET[$name]) && taxonomy_exists($taxonomy)) $_chosen_attributes[$taxonomy] = explode(',', $_GET[$name] );
+
+	    endforeach;
+    endif;
+
+}
+add_action('init', 'jigoshop_layered_nav_init', 1);

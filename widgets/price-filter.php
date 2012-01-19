@@ -161,3 +161,68 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 		</p>";
 	}
 } // class Jigoshop_Widget_Price_Filter
+
+function jigoshop_price_filter( $filtered_posts ) {
+
+	if (isset($_GET['max_price']) && isset($_GET['min_price'])) :
+
+		$matched_products = array( 0 );
+
+		$matched_products_query = get_posts(array(
+			'post_type' => 'product',
+			'post_status' => 'publish',
+			'posts_per_page' => -1,
+			'meta_query' => array(
+				array(
+					'key' => 'price',
+					'value' => array( $_GET['min_price'], $_GET['max_price'] ),
+					'type' => 'NUMERIC',
+					'compare' => 'BETWEEN'
+				)
+			),
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'product_type',
+					'field' => 'slug',
+					'terms' => 'grouped',
+					'operator' => 'NOT IN'
+				)
+			)
+		));
+
+		if ($matched_products_query) :
+
+			foreach ($matched_products_query as $product) :
+				$matched_products[] = $product->ID;
+			endforeach;
+
+		endif;
+
+		// Get grouped product ids
+		$grouped_products = get_objects_in_term( get_term_by('slug', 'grouped', 'product_type')->term_id, 'product_type' );
+
+		if ($grouped_products) foreach ($grouped_products as $grouped_product) :
+
+			$children = get_children( 'post_parent='.$grouped_product.'&post_type=product' );
+
+			if ($children) foreach ($children as $product) :
+				$price = get_post_meta( $product->ID, 'price', true);
+
+				if ($price<=$_GET['max_price'] && $price>=$_GET['min_price']) :
+
+					$matched_products[] = $grouped_product;
+
+					break;
+
+				endif;
+			endforeach;
+
+		endforeach;
+
+		$filtered_posts = array_intersect($matched_products, $filtered_posts);
+
+	endif;
+
+	return $filtered_posts;
+}
+add_filter( 'loop-shop-posts-in', 'jigoshop_price_filter' );
