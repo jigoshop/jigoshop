@@ -53,6 +53,7 @@ include_once( 'classes/jigoshop_orders.class.php' );
 include_once( 'classes/jigoshop_tax.class.php' );
 include_once( 'classes/jigoshop_shipping.class.php' );
 include_once( 'classes/jigoshop_coupons.class.php' );
+include_once( 'classes/jigoshop_session.class.php' );
 
 include_once( 'gateways/gateways.class.php' );
 include_once( 'gateways/gateway.class.php' );
@@ -176,8 +177,6 @@ function jigoshop_init() {
 	
 	/* ensure nothing is output to the browser prior to this (other than headers) */
 	ob_start();
-	/* start session here after all classes are loaded to eliminate __PHP_Incomplete_Class warnings */
-	if ( !session_id() ) session_start();
 	
 	jigoshop_post_type();	/* register taxonomies */
 	
