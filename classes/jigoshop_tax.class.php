@@ -175,6 +175,10 @@ class jigoshop_tax {
 
         $rate['rate'] = 0;
 
+        if (!jigoshop_countries::country_has_states($country)) :
+            $state = '*'; // make sure $state is set to * if user has input some value for a state
+        endif;
+        
         if (isset($this->rates[$country][$state])) :
             if ($tax_class && isset($this->rates[$country][$state][$tax_class])) :
                 $rate = $this->rates[$country][$state][$tax_class];
@@ -201,18 +205,18 @@ class jigoshop_tax {
      */
     public function get_tax_classes_for_customer() {
         $country = jigoshop_customer::get_shipping_country();
-        $state = (jigoshop_customer::get_shipping_state() ? jigoshop_customer::get_shipping_state() : '*');
+        $state = (jigoshop_customer::get_shipping_state() && jigoshop_countries::country_has_states($country)? jigoshop_customer::get_shipping_state() : '*');
 
-        $tax_classes = $this->rates[$country][$state];
+        $tax_classes = (isset($this->rates[$country]) ? $this->rates[$country][$state] : false);
         
         return ($tax_classes && is_array($tax_classes) ? array_keys( $tax_classes ) : array());
     }
 
     private function get_online_label_for_customer($class = '*') {
         $country = jigoshop_customer::get_shipping_country();
-        $state = (jigoshop_customer::get_shipping_state() ? jigoshop_customer::get_shipping_state() : '*');
+        $state = (jigoshop_customer::get_shipping_state() && jigoshop_countries::country_has_states($country) ? jigoshop_customer::get_shipping_state() : '*');
 
-        return $this->rates[$country][$state][$class]['label'];
+        return (isset($this->rates[$country]) ? $this->rates[$country][$state][$class]['label'] : 'Tax');
     }
 
     /**
@@ -221,9 +225,9 @@ class jigoshop_tax {
      */
     public function get_tax_classes_for_base() {
         $country = jigoshop_countries::get_base_country();
-        $state = (jigoshop_countries::get_base_state() ? jigoshop_countries::get_base_state() : '*');
+        $state = (jigoshop_countries::get_base_state() && jigoshop_countries::country_has_states($country) ? jigoshop_countries::get_base_state() : '*');
 
-        $tax_classes = $this->rates[$country][$state];
+        $tax_classes = (isset($this->rates[$country]) ? $this->rates[$country][$state] : false);
 
         return ($tax_classes && is_array($tax_classes) ? array_keys($tax_classes) : array());
     }
@@ -352,7 +356,7 @@ class jigoshop_tax {
      * @return type array of tax classes
      */
     public function get_applied_tax_classes() {
-        return array_keys($this->tax_amounts);
+        return ($this->tax_amounts && is_array($this->tax_amounts) ? array_keys($this->tax_amounts) : array());
     }
 
     /**
@@ -361,7 +365,7 @@ class jigoshop_tax {
      * @return string which is the unsanitized tax class
      */
     public function get_tax_class_for_display($tax_class) {
-        return $this->tax_amounts[$tax_class]['display'];
+        return (isset($this->tax_amounts[$tax_class]) ? $this->tax_amounts[$tax_class]['display'] : 'Tax');
     }
 
     /**
@@ -371,7 +375,7 @@ class jigoshop_tax {
      * @return type returns the tax amount with 2 decimal places
      */
     function get_tax_amount($tax_class, $has_shipping_tax = true) {
-        return ($this->tax_divisor > 0 ? $this->tax_amounts[$tax_class]['amount'] / $this->tax_divisor : $this->tax_amounts[$tax_class]['amount']);
+        return ($this->tax_divisor > 0 ? (isset($this->tax_amounts[$tax_class]) ? $this->tax_amounts[$tax_class]['amount'] : 0) / $this->tax_divisor : (isset($this->tax_amounts[$tax_class]) ? $this->tax_amounts[$tax_class]['amount'] : 0));
     }
 
     /**
@@ -380,7 +384,7 @@ class jigoshop_tax {
      * @return the rate of tax
      */
     function get_tax_rate($tax_class) {
-        return $this->tax_amounts[$tax_class]['rate'];
+        return (isset($this->tax_amounts[$tax_class]) ? $this->tax_amounts[$tax_class]['rate'] : 0);
     }
 
     /**
@@ -389,10 +393,10 @@ class jigoshop_tax {
      * retail price of the item.
      * 
      * @param string tax_class the class to find if retail tax or not
-     * @return bool true if retail tax otherwise false
+     * @return bool true if retail tax otherwise false. Defaults to true
      */
     function is_tax_retail($tax_class) {
-        return $this->tax_amounts[$tax_class]['retail'];
+        return (isset($this->tax_amounts[$tax_class]) ? $this->tax_amounts[$tax_class]['retail'] : true);
     }
     
     function is_shipping_tax_retail() {

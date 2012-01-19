@@ -608,7 +608,7 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 						$current_r = jigoshop_customer::get_shipping_state();
 						$states = jigoshop_countries::$states;
 
-						if (isset( $states[$current_cc][$current_r] )) :
+						if (jigoshop_countries::country_has_states($current_cc)) :
 							// Dropdown
 							?>
 							<span>
