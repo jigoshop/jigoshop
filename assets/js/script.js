@@ -453,5 +453,10 @@ if (params.is_checkout==1) {
 		});
 	
 	});
-	
 }
+
+//message fade in
+jQuery(document).ready(function(){
+	jQuery('.jigoshop_error, .jigoshop_message').css('opacity', 0);
+	setTimeout(function(){jQuery('.jigoshop_error, .jigoshop_message').animate({opacity:1}, 1500);},100);
+});
