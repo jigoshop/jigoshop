@@ -34,4 +34,12 @@ class jigoshop_session extends jigoshop_singleton {
 		return $value;
 	}
 
+	public function __isset( $key ) {
+		return isset($_SESSION['jigoshop'][JIGOSHOP_VERSION][$key]);
+	}
+
+	public function __unset( $key ) {
+		unset($_SESSION['jigoshop'][JIGOSHOP_VERSION][$key]);
+	}
+
 } // End jigoshop_session
