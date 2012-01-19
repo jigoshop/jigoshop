@@ -54,8 +54,8 @@
                                     if ($method instanceof jigoshop_calculable_shipping) :
                                         if ($method->is_chosen()) :
                                             $selected_service = NULL;
-                                            if (is_numeric($_SESSION['selected_rate_id'])) :
-                                                $selected_service = $method->get_selected_service($_SESSION['selected_rate_id']);
+                                            if (is_numeric(jigoshop_session::instance()->selected_rate_id)) :
+                                                $selected_service = $method->get_selected_service( jigoshop_session::instance()->selected_rate_id);
                                             else :
                                                 $selected_service = $method->get_cheapest_service();
                                             endif;
@@ -139,8 +139,8 @@
                                     if ($method instanceof jigoshop_calculable_shipping) :
                                         if ($method->is_chosen()) :
                                             $selected_service = NULL;
-                                            if (is_numeric($_SESSION['selected_rate_id'])) :
-                                                $selected_service = $method->get_selected_service($_SESSION['selected_rate_id']);
+                                            if (is_numeric( jigoshop_session::instance()->selected_rate_id )) :
+                                                $selected_service = $method->get_selected_service( jigoshop_session::instance()->selected_rate_id );
                                             else :
                                                 $selected_service = $method->get_cheapest_service();
                                             endif;

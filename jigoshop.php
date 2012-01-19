@@ -178,6 +178,8 @@ function jigoshop_init() {
 	/* ensure nothing is output to the browser prior to this (other than headers) */
 	ob_start();
 	
+	jigoshop_session::instance()->test = 'val';
+	
 	jigoshop_post_type();	/* register taxonomies */
 	
 	// add Singletons here so that the taxonomies are loaded before calling them.
@@ -263,10 +265,10 @@ function jigoshop_frontend_scripts() {
 		'load_fancybox'					=> JIGOSHOP_LOAD_FANCYBOX
 	);
 
-	if (isset($_SESSION['min_price'])) :
+	if (isset( jigoshop_session::instance()->min_price )) :
 		$params['min_price'] = $_GET['min_price'];
 	endif;
-	if (isset($_SESSION['max_price'])) :
+	if (isset( jigoshop_session::instance()->max_price )) :
 		$params['max_price'] = $_GET['max_price'];
 	endif;
 

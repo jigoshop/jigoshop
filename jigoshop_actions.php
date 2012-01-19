@@ -322,10 +322,10 @@ function jigoshop_ajax_update_order_review() {
         if (isset($_POST['shipping_method'])) :
             
 		$shipping_method = explode(":", $_POST['shipping_method']);
-	 	$_SESSION['chosen_shipping_method_id'] = $shipping_method[0];
+	 	jigoshop_session::instance()->chosen_shipping_method_id = $shipping_method[0];
                 
                 if (is_numeric($shipping_method[2])) :
-                    $_SESSION['selected_rate_id'] = $shipping_method[2];
+                    jigoshop_session::instance()->selected_rate_id = $shipping_method[2];
                 endif;
                 
 	endif;
@@ -375,15 +375,15 @@ add_action( 'init', 'jigoshop_clear_cart_after_payment' );
 
 function jigoshop_clear_cart_after_payment( $url = false ) {
 
-	if (isset($_SESSION['order_awaiting_payment']) && $_SESSION['order_awaiting_payment'] > 0) :
+	if (isset( jigoshop_session::instance()->order_awaiting_payment ) && jigoshop_session::instance()->order_awaiting_payment > 0) :
 
-		$order = &new jigoshop_order($_SESSION['order_awaiting_payment']);
+		$order = &new jigoshop_order( jigoshop_session::instance()->order_awaiting_payment );
 
 		if ($order->id > 0 && ($order->status=='completed' || $order->status=='processing')) :
 
 			jigoshop_cart::empty_cart();
 
-			unset($_SESSION['order_awaiting_payment']);
+			unset( jigoshop_session::instance()->order_awaiting_payment );
 
 		endif;
 

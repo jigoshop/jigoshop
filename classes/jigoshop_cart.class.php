@@ -45,8 +45,8 @@ class jigoshop_cart extends jigoshop_singleton {
 
         self::$applied_coupons = array();
 
-        if (isset($_SESSION['coupons']))
-            self::$applied_coupons = $_SESSION['coupons'];
+        if (isset( jigoshop_session::instance()->coupons ))
+            self::$applied_coupons = jigoshop_session::instance()->coupons;
 
         self::$tax = new jigoshop_tax(100); //initialize tax on the cart with divisor of 100
     
@@ -59,8 +59,8 @@ class jigoshop_cart extends jigoshop_singleton {
     /** Gets the cart data from the PHP session */
     function get_cart_from_session() {
 
-        if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) :
-            $cart = $_SESSION['cart'];
+        if (isset( jigoshop_session::instance()->cart ) && is_array( jigoshop_session::instance()->cart )) :
+            $cart = jigoshop_session::instance()->cart;
 
             foreach ($cart as $key => $values) :
 
@@ -90,12 +90,12 @@ class jigoshop_cart extends jigoshop_singleton {
 
         // we get here from cart additions, quantity adjustments, and coupon additions
         // reset any chosen shipping methods as these adjustments can effect shipping (free shipping)
-        unset($_SESSION['chosen_shipping_method_id']);
-        unset($_SESSION['selected_rate_id']); // calculable shipping 
+        unset( jigoshop_session::instance()->chosen_shipping_method_id );
+        unset( jigoshop_session::instance()->selected_rate_id ); // calculable shipping 
 
-        $_SESSION['cart'] = self::$cart_contents;
+        jigoshop_session::instance()->cart = self::$cart_contents;
 
-        $_SESSION['coupons'] = self::$applied_coupons;
+        jigoshop_session::instance()->coupons = self::$applied_coupons;
 
         // This has to be tested. I believe all that needs to be calculated at time of setting session
         // is really the cart total and not shipping. All functions that use set_session are functions
@@ -109,10 +109,10 @@ class jigoshop_cart extends jigoshop_singleton {
         self::$cart_contents = array();
         self::$applied_coupons = array();
         self::reset_totals();
-        unset($_SESSION['cart']);
-        unset($_SESSION['coupons']);
-        unset($_SESSION['chosen_shipping_method_id']);
-        unset($_SESSION['selected_rate_id']);
+        unset(jigoshop_session::instance()->cart);
+        unset(jigoshop_session::instance()->coupons);
+        unset(jigoshop_session::instance()->chosen_shipping_method_id);
+        unset(jigoshop_session::instance()->selected_rate_id);
     }
 
     /**
