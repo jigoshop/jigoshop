@@ -882,7 +882,7 @@ class jigoshop_product {
 	 * Gets a single product attribute
 	 *
 	 * @return  string|array
-	 **/
+	 */
 	public function get_attribute( $key ) {
 
 		// Get the attribute in question & sanitize just incase
@@ -900,7 +900,7 @@ class jigoshop_product {
 	 * Gets the attached product attributes
 	 *
 	 * @return  array
-	 **/
+	 */
 	public function get_attributes() {
 
 		// Get the attributes
@@ -914,7 +914,7 @@ class jigoshop_product {
 	 * Checks for any visible attributes attached to the product
 	 *
 	 * @return  boolean
-	 **/
+	 */
 	public function has_attributes() {
 		if ( (bool) $this->get_attributes() ) {
 			foreach( $this->get_attributes() as $attribute ) {
@@ -926,6 +926,32 @@ class jigoshop_product {
 	}
 
 	/**
+	 * Checks if the product has dimensions
+	 *
+	 * @return  bool
+	 */
+	public function has_dimensions() {
+
+		if ( get_option('jigoshop_enable_dimensions') != 'yes' )
+			return false;
+
+		return ( $this->get_length() || $this->get_width() || $this->get_height() );
+	}
+
+	/**
+	 * Checks if the product has weight
+	 *
+	 * @return  bool
+	 */
+	public function has_weight() {
+
+		if ( get_option('jigoshop_enable_weight') != 'yes' )
+			return false;
+
+		return $this->get_weight();
+	}
+
+	/**
 	 * Lists attributes in a html table
 	 *
 	 * @return  html
@@ -933,11 +959,26 @@ class jigoshop_product {
 	public function list_attributes() {
 
 		// Check that we have some attributes that are visible
-		if ( ! $this->has_attributes() )
+		if ( !( $this->has_attributes() || $this->has_dimensions() || $this->has_weight() ) )
 			return false;
 
 		// Start the html output
 		$html = '<table cellspacing="0" class="shop_attributes">';
+
+		// Output weight if we have it
+		if (get_option('jigoshop_enable_weight')=='yes' && $this->get_weight() ) {
+			$html .= '<tr><th>'.__('Weight', 'jigoshop').'</th><td>'. $this->get_weight() . get_option('jigoshop_weight_unit') .'</td></tr>';
+		}
+
+		// Output dimensions if we have it
+		if (get_option('jigoshop_enable_dimensions')=='yes') {
+			if ( $this->get_length() )
+				$html .= '<tr><th>'.__('Length', 'jigoshop').'</th><td>'. $this->get_length() . get_option('jigoshop_dimension_unit') .'</td></tr>';
+			if ( $this->get_width() )
+				$html .= '<tr><th>'.__('Width', 'jigoshop').'</th><td>'. $this->get_width() . get_option('jigoshop_dimension_unit') .'</td></tr>';
+			if ( $this->get_height() )
+				$html .= '<tr><th>'.__('Height', 'jigoshop').'</th><td>'. $this->get_height() . get_option('jigoshop_dimension_unit') .'</td></tr>';
+		}
 
 		foreach( $this->get_attributes() as $attr ) {
 
