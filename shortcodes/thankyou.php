@@ -64,6 +64,7 @@ function jigoshop_thankyou() {
 			<?php
 
 			do_action( 'thankyou_' . $order->payment_method, $order_id );
+			do_action( 'jigoshop_thankyou', $order->id );
 
 		endif;
 
