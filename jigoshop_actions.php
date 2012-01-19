@@ -696,6 +696,44 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 }
 
 /**
+ * Google Analytics standard tracking
+ *
+ * @return  void
+ */
+add_action( 'wp_footer', 'jigoshop_ga_tracking' );
+function jigoshop_ga_tracking() {
+	
+	// If admin don't track..shouldn't require this
+	if ( is_admin() )
+		return false;
+	
+	$tracking_id = get_option('jigoshop_ga_id');
+	
+	if ( ! $tracking_id )
+		return false;
+	
+	$loggedin = (is_user_logged_in()) ? 'yes' : 'no';
+
+	if ( is_user_logged_in() ) {
+		$user_id 		= get_current_user_id();
+		$current_user 	= get_user_by('id', $user_id);
+		$username 		= $current_user->user_login;
+	}
+	else {
+		$user_id 		= null;
+		$username 		= __('Guest', 'jigoshop');
+	}
+	?>
+	<script>
+	    var _gaq=[['_setAccount','<?php echo $tracking_id; ?>'],['_setCustomVar',1,'logged-in','<?php echo $loggedin; ?>',1],['_setCustomVar',2,'user-id','<?php echo $user_id; ?>',1],['_setCustomVar',3, 'username','<?php echo $username; ?>',1],['_trackPageview']];
+	    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+	    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+	    s.parentNode.insertBefore(g,s)}(document,'script'));
+  	</script>
+	<?php
+}
+
+/**
  * Jigoshop Dropdown categories
  * 
  * @see     http://core.trac.wordpress.org/ticket/13258
