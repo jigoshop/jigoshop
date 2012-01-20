@@ -140,7 +140,56 @@ function jigoshop_upgrade_100() {
 	global $wpdb;
 
 	// Run upgrade
-
+    
+    // upgrade option jigoshop_tax_rates
+    $jigoshop_tax_rates = get_site_option('jigoshop_tax_rates');
+    $tax_rates = array();
+    
+    if ($jigoshop_tax_rates && is_array($jigoshop_tax_rates)) :
+        
+        foreach($jigoshop_tax_rates as $key) :
+            $country = $key['country'];
+            $state = $key['state'];
+            $rate = $key['rate'];
+            $shipping = $key['shipping'];
+            $class = $key['class'];
+            
+            // convert all-states
+            if (jigoshop_countries::country_has_states($country) && $state == '*') :
+                foreach (array_keys(jigoshop_countries::$states[$country]) as $st) :
+                    $tax_rates[] = array(
+                                    'country' => $country,
+                                    'label' => '', // no label created as of yet
+                                    'state' => $st,
+                                    'rate' => $rate,
+                                    'shipping' => $shipping,
+                                    'class' => $class,
+                                    'compound' => 'no', //no such thing as compound taxes, so value is no
+                                    'is_all_states' => true //determines if admin panel should show 'all_states'
+                                );
+                endforeach;
+                
+            else : // do normal tax_rates array with the additional parameters
+                    $tax_rates[] = array(
+                                    'country' => $country,
+                                    'label' => '', // no label created as of yet
+                                    'state' => $state,
+                                    'rate' => $rate,
+                                    'shipping' => $shipping,
+                                    'class' => $class,
+                                    'compound' => 'no', //no such thing as compound taxes, so value is no
+                                    'is_all_states' => false //determines if admin panel should show 'all_states'
+                                );
+                
+            endif;
+        endforeach;
+    
+    endif;
+    
+    update_option('jigoshop_tax_rates', $tax_rates);
+    
+    // convert products
+    
 	$args = array(
 		'post_type'	  => 'product',
 		'numberposts' => -1,
