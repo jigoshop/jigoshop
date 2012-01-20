@@ -256,9 +256,14 @@ function jigoshop_upgrade_100() {
 			foreach( $product_attributes as $key => $attribute ) {
 
 				// We use true/false for these now
-				$attribute['visible']     = ( $attribute['visible'] == 'yes' ) ? true : false;
-				$attribute['variation']   = ( $attribute['variation'] == 'yes' ) ? true : false;
-				$attribute['is_taxonomy'] = ( $attribute['is_taxonomy'] == 'yes' ) ? true : false;
+				if ( isset( $attribute['visible'] ) )
+					$attribute['visible']     = ( $attribute['visible'] == 'yes' ) ? true : false;
+
+				if ( isset( $attribute['variation'] ) )
+					$attribute['variation']   = ( $attribute['variation'] == 'yes' ) ? true : false;
+				
+				if ( isset( $attribute['is_taxonomy'] ) )
+					$attribute['is_taxonomy'] = ( $attribute['is_taxonomy'] == 'yes' ) ? true : false;
 
 				$product_attributes[$key] = $attribute;
 			}
