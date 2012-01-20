@@ -102,11 +102,14 @@ div.product {
 		float: left;
 		width: 250px;
 		margin-bottom: 10px;
+
 		img {
 			border: 1px solid @gray15;
 			background: #f5f5f5;
 			padding: 6px;
 			display: block;
+			max-width:95%;
+			height:auto;
 		}
 		div.thumbnails {
 			padding-top: 10px;
@@ -130,6 +133,10 @@ div.product {
 	div.summary {
 		float: right;
 		width: 314px;
+
+		table{
+			width:100%;
+		}
 	}
 	div.social {
 		text-align: right;
@@ -227,7 +234,7 @@ form.cart {
 		div.quantity {
 			float: none;
 			margin: 0;
-			width: 72px;
+			width: 75px;
 		}
 		small.stock {
 			display: block;
