@@ -126,13 +126,13 @@ function jigoshop_product_data_box() {
 
 				// Sale Price date range
 				// TODO: Convert this to a helper somehow?
-				$field = array( 'id' => 'sale_price_dates', 'label' => __('Sale Price Dates', 'jigoshop') );
+				$field = array( 'id' => 'sale_price_dates', 'label' => __('On Sale Between', 'jigoshop') );
 				
 				$sale_price_dates_from = get_post_meta($thepostid, 'sale_price_dates_from', true);
 				$sale_price_dates_to = get_post_meta($thepostid, 'sale_price_dates_to', true);
 				
 				echo '	<p class="form-field sale_price_dates_fields">
-							<label for="'.$field['id'].'_from">'.$field['label'].':</label>
+							<label for="'.$field['id'].'_from">'.$field['label'].'</label>
 							<input type="text" class="short date-pick" name="'.$field['id'].'_from" id="'.$field['id'].'_from" value="';
 				if ($sale_price_dates_from) echo date('Y-m-d', $sale_price_dates_from);
 				echo '" placeholder="' . __('From', 'jigoshop') . ' (' . date('Y-m-d'). ')" maxlength="10" />
