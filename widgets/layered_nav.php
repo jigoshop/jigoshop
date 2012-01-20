@@ -46,7 +46,7 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 		
 		// Extract the widget arguments
 		extract($args);
-		global $_chosen_attributes, $wpdb, $all_post_ids;
+		global $_chosen_attributes, $wpdb, $jigoshop_all_post_ids_in_view;
 		
 		// Hide widget if not product related
 		if ( ! is_product_list() )
@@ -89,23 +89,19 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 			// Open the list
 			echo "<ul>";
 
-			// Reduce count based on chosen attributes
-			$all_post_ids = jigoshop_layered_nav_query( (array)$all_post_ids );
-			$all_post_ids = jigoshop_price_filter( (array)$all_post_ids );
-
 			foreach ($terms as $term) {
 			
 				$_products_in_term = get_objects_in_term( $term->term_id, $taxonomy );
 				
 				// Get product count & set flag
-				$count = sizeof(array_intersect($_products_in_term, $all_post_ids));
+				$count = sizeof(array_intersect($_products_in_term, $jigoshop_all_post_ids_in_view ));
 				$has_products = (bool) $count;
 				
 				if ($has_products) $found = true;
 				
 				$class = '';
 				
-				$arg = 'filter_'.strtolower(sanitize_title($instance['attribute']));
+				$arg = 'filter_'.sanitize_title($instance['attribute']);
 				
 				if (isset($_GET[ $arg ])) $current_filter = explode(',', $_GET[ $arg ]); else $current_filter = array();
 				
@@ -280,12 +276,14 @@ add_filter( 'loop-shop-posts-in', 'jigoshop_layered_nav_query' );
 function jigoshop_layered_nav_init() {
 
 	global $_chosen_attributes;
-
+	
+	$_chosen_attributes = array();
+	
 	$attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();
 	if ( $attribute_taxonomies ) :
 		foreach ($attribute_taxonomies as $tax) :
 
-	    	$attribute = strtolower(sanitize_title($tax->attribute_name));
+	    	$attribute = sanitize_title($tax->attribute_name);
 	    	$taxonomy = 'pa_' . $attribute;
 	    	$name = 'filter_' . $attribute;
 
@@ -295,4 +293,4 @@ function jigoshop_layered_nav_init() {
     endif;
 
 }
-add_action('init', 'jigoshop_layered_nav_init', 1);
+add_action( 'init', 'jigoshop_layered_nav_init', 1 );

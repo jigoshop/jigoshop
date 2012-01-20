@@ -67,7 +67,7 @@ include_once( 'shipping/jigoshop_calculable_shipping.php' );
 include_once( 'shipping/flat_rate.php' );
 include_once( 'shipping/free_shipping.php' );
 
-include_once( 'classes/jigoshop_catalog_query.php' );
+include_once( 'classes/jigoshop_query.class.php' );
 include_once( 'classes/jigoshop.class.php' );
 include_once( 'classes/jigoshop_cart.class.php' );
 include_once( 'classes/jigoshop_checkout.class.php' );
@@ -79,7 +79,6 @@ include_once( 'jigoshop_templates.php' );
 include_once( 'jigoshop_template_actions.php' );
 include_once( 'jigoshop_emails.php' );
 include_once( 'jigoshop_actions.php' );
-//include_once( 'jigoshop_query.php' );
 //include_once( 'jigoshop_cron.php' );	/* we may use this at some point, leaving -JAP- */
 
 // Constants

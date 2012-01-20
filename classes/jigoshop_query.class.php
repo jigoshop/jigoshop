@@ -27,8 +27,6 @@ class jigoshop_catalog_query extends jigoshop_singleton {
 	 */
 	protected function __construct() {
 		
-		$this->all_posts_in_view = array();
-		
 		// parses the orginal request into a WP_Query instance to access useful boolean methods
 		// use the highest priority to get it done first
 		self::add_filter( 'request', 'parse_original_request', 0 );
@@ -53,20 +51,6 @@ class jigoshop_catalog_query extends jigoshop_singleton {
 		return $this->original_query->is_post_type_archive( 'product' ) 
 			 	|| $this->original_query->is_tax( 'product_cat' )
 		 	 	|| $this->original_query->is_tax( 'product_tag' );
-	}
-	
-	
-	/*
-	 * Is this query for a single Product
-	 *
-	 * @return bool
-	 *
-	 * @since 1.0
-	 */
-	public function is_product() {
-	
-		return $this->original_query->is_singular;
-		
 	}
 	
 	
@@ -109,7 +93,7 @@ class jigoshop_catalog_query extends jigoshop_singleton {
 	
 	
 	/**
-	 * Alters the main wordpress query when on a Jigoshop page.
+	 * Alters the main wordpress query when on a Jigoshop product listing.
 	 * 
 	 * The meta-query and tax_query can be filtered using the 'loop_shop_tax_query' and 'loop_shop_tax_meta_query' filters.
 	 * 
@@ -126,7 +110,7 @@ class jigoshop_catalog_query extends jigoshop_singleton {
 	 */
 	public function catalog_query_filter( $request ) {
 		
-		global $all_post_ids;
+		global $jigoshop_all_post_ids_in_view;
 		
 		// we only work on Jigoshop product lists
 		if ( ! $this->is_product_list() ) return $request; 
@@ -145,11 +129,8 @@ class jigoshop_catalog_query extends jigoshop_singleton {
 		
 		$request['meta_query'] = apply_filters( 'loop_shop_tax_meta_query', $this->meta_query( $request ));
 		
-		$this->set_all_posts_in_view( $request );
-		
 		// modify the query for specific product ID's for layered nav and price filter widgets
-		$request['post__in'] = apply_filters( 'loop-shop-posts-in', $all_post_ids );
-//		$request['post__in'] = self::posts_in_view();
+		$request['post__in'] = apply_filters( 'loop-shop-posts-in', $jigoshop_all_post_ids_in_view );
 		
 		return apply_filters( 'jigoshop-request', $request );	/* give it back to WordPress for query_posts() */
 	}
@@ -214,93 +195,27 @@ class jigoshop_catalog_query extends jigoshop_singleton {
 	
 	
 	/**
-	 * Gather all posts ids in current view, regardlesss of paging. 
-	 * 
-	 * This is useful for filtering the products by price, by attributes etc.
-	 * e.g. price filter widget
-	 * 
-	 * @param array $request
-	 *
-	 * @since 1.0
-	 */
-	private function set_all_posts_in_view( $request ) {
-		
-		$request['posts_per_page'] = -1;
-		$request['cache_results'] = false;
-		$request['fields'] = 'ids';
-		
-		$wp_query = new WP_Query( $request );
-		
-		$this->all_posts_in_view = $wp_query->posts;
-				
-	}
-	
-	
-	/**
-	 * Returns all posts ids in current view, regardlesss of paging.
-	 *
-	 * @return array
-	 *
-	 * @since 1.0
-	 */
-	public function posts_in_view() {
-	
-		return $this->all_posts_in_view;
-		
-	}
-	
-	/**
 	 * used by the layered_nav widget and the price filter widget as they access the global ($all_post_ids)
-	 * ($all_post_ids also referenced but not used in jigoshop_product.class.php)
 	 * is run on the 'request' filter with highest priority to ensure it runs before main filter_catalog_query
 	 * gathers all product ID's into a global variable for use elsewhere ($all_post_ids)
-	 * calls jigoshop_get_product_ids() with a formed query to gather the id's
 	 *
 	 * @param array $request - the array representing the current WordPress request eg. post_type => 'product'
 	 * @return array - unaltered array of the intial request
 	 * @since 0.9.9
-	 * @TODO: implement better mechanism for gathering ID's for the widgets -JAP-
 	 **/
 	function jigoshop_get_product_ids_in_view( $request ) {
 	
-		global $all_post_ids;
+		global $jigoshop_all_post_ids_in_view;
 	
-		$all_post_ids = array();
+		$jigoshop_all_post_ids_in_view = array();
 	
 		$this_query = new WP_Query();
 		$this_query->parse_query( $request );
 	
 		if ( $this_query->is_post_type_archive( 'product' )
-			OR $this_query->is_tax( 'product_cat' )
-			OR $this_query->is_tax( 'product_tag' ) ) :
+			|| $this_query->is_tax( 'product_cat' )
+			|| $this_query->is_tax( 'product_tag' ) ) :
 	
-			$all_post_ids = self::jigoshop_get_product_ids( $request );
-		endif;
-	
-		$all_post_ids[] = 0;
-	
-		return $request;
-	}
-
-	/**
-	 * used by the layered_nav widget and the price filter widget as they access the global ($all_post_ids)
-	 * this is only called from jigoshop_get_product_ids_in_view() on the 'request' filter
-	 * only implemented this way for now to make things functional as per prior releases
-	 *
-	 * @param array $request - the array representing the current WordPress request eg. post_type => 'product'
-	 * @return array - an array of product ID's
-	 * @since 0.9.9
-	 * @TODO: implement better mechanism for gathering ID's for the widgets -JAP-
-	 **/
-	function jigoshop_get_product_ids( $request ) {
-	
-		$this_query = new WP_Query();
-		$this_query->parse_query( $request );
-		
-		if ( $this_query->is_post_type_archive( 'product' )
-			OR $this_query->is_tax( 'product_cat' )
-			OR $this_query->is_tax( 'product_tag' ) ) :
-			
 			$args = array_merge(
 				$this_query->query,
 				array(
@@ -313,13 +228,13 @@ class jigoshop_catalog_query extends jigoshop_singleton {
 			);
 			$custom_query  = new WP_Query( $args );
 			
-			$queried_post_ids = array();
-			
-			foreach ($custom_query->posts as $p) $queried_post_ids[] = $p->ID;
-			
+			foreach ($custom_query->posts as $p) $jigoshop_all_post_ids_in_view[] = $p->ID;
+
 		endif;
-		
-		return $queried_post_ids;
-	}
 	
+		$jigoshop_all_post_ids_in_view[] = 0;
+	
+		return $request;
+	}
+
 }
