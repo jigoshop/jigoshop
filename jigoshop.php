@@ -539,43 +539,51 @@ function get_jigoshop_currency_symbol() {
 function jigoshop_price( $price, $args = array() ) {
 
 	extract(shortcode_atts(array(
-		'ex_tax_label' 	=> '0'
+		'ex_tax_label' 	=> '0',
+        'with_currency' => true
 	), $args));
 
 	$return = '';
-	$currency_pos = get_option('jigoshop_currency_pos');
-	$currency_symbol = get_jigoshop_currency_symbol();
-	$currency_unit = get_option('jigoshop_currency');
 	$price = number_format(
 		(double) $price, 
 		(int) get_option('jigoshop_price_num_decimals'), 
 		get_option('jigoshop_price_decimal_sep'), 
 		get_option('jigoshop_price_thousand_sep')
 	);
+    
+    $return = $price;
+    
+    if ($with_currency) :
+        
+        $currency_pos = get_option('jigoshop_currency_pos');
+        $currency_symbol = get_jigoshop_currency_symbol();
+        $currency_unit = get_option('jigoshop_currency');
 
-	switch ($currency_pos) :
-		case 'left' :
-			$return = $currency_symbol . $price;
-		break;
-		case 'right' :
-			$return = $price . $currency_symbol;
-		break;
-		case 'both' :
-			$return = $currency_symbol . $price . $currency_unit;
-		break;
-		case 'left_space' :
-			$return = $currency_symbol . ' ' . $price;
-		break;
-		case 'right_space' :
-			$return = $price . ' ' . $currency_symbol;
-		break;
-		case 'both_space' :
-			$return = $currency_symbol . ' ' . $price . ' ' . $currency_unit;
-		break;
-	endswitch;
-
-	if ($ex_tax_label && get_option('jigoshop_calc_taxes')=='yes') $return .= __(' <small>(ex. tax)</small>', 'jigoshop');
-
+        switch ($currency_pos) :
+            case 'left' :
+                $return = $currency_symbol . $price;
+            break;
+            case 'right' :
+                $return = $price . $currency_symbol;
+            break;
+            case 'both' :
+                $return = $currency_symbol . $price . $currency_unit;
+            break;
+            case 'left_space' :
+                $return = $currency_symbol . ' ' . $price;
+            break;
+            case 'right_space' :
+                $return = $price . ' ' . $currency_symbol;
+            break;
+            case 'both_space' :
+                $return = $currency_symbol . ' ' . $price . ' ' . $currency_unit;
+            break;
+        endswitch;
+    
+        // only show (ex. tax) if we are going to show the price with currency as well. Otherwise we just want the formatted price
+        if ($ex_tax_label && get_option('jigoshop_calc_taxes')=='yes') $return .= __(' <small>(ex. tax)</small>', 'jigoshop');
+    endif;
+    
 	return $return;
 }
 

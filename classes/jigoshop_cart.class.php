@@ -412,11 +412,11 @@ class jigoshop_cart extends jigoshop_singleton {
 
                 $total_item_price = $total_item_price / 100; // Back to pounds
                 
-                if (get_option('jigoshop_calc_taxes') == 'yes' && self::$tax->get_retail_tax_amount()) :
+                if (get_option('jigoshop_calc_taxes') == 'yes' && self::$tax->get_non_compounded_tax_amount()) :
                     if (get_option('jigoshop_prices_include_tax') == 'yes') :
-                        self::$subtotal_inc_tax += $total_item_price - self::$tax->get_non_retail_tax_amount();
+                        self::$subtotal_inc_tax += $total_item_price - self::$tax->get_compound_tax_amount();
                     else :
-                        self::$subtotal_inc_tax += self::$tax->get_retail_tax_amount() + $total_item_price;
+                        self::$subtotal_inc_tax += self::$tax->get_non_compounded_tax_amount() + $total_item_price;
                     endif;
                 endif;
 
@@ -470,7 +470,7 @@ class jigoshop_cart extends jigoshop_singleton {
 
             self::$tax->update_tax_amount_with_shipping_tax(self::$shipping_tax_total * 100);
 
-            if (self::$tax->is_shipping_tax_retail() && get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
+            if (self::$tax->is_shipping_tax_non_compounded() && get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
                 self::$subtotal_inc_tax += self::$shipping_tax_total;
             endif;
         endif;
@@ -497,10 +497,10 @@ class jigoshop_cart extends jigoshop_singleton {
             endforeach;
             
             
-        if (get_option('jigoshop_calc_taxes') == 'yes' && self::get_subtotal_inc_tax()) : // defines if there are mixed tax classes (both retail and non retail)
+        if (get_option('jigoshop_calc_taxes') == 'yes' && self::get_subtotal_inc_tax()) : // defines if there are mixed tax classes (with compounding taxes)
 
             foreach (self::get_applied_tax_classes() as $tax_class) :
-                if (!self::is_tax_retail($tax_class)) : //tax added on retail tax and subtotal
+                if (!self::is_not_compounded_tax($tax_class)) : //tax compounded
                     if (get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
                         self::$tax->update_tax_amount($tax_class, (self::$subtotal_inc_tax + self::$shipping_total) * 100);
                     else :
@@ -509,17 +509,22 @@ class jigoshop_cart extends jigoshop_singleton {
                 endif;
             endforeach;       
         endif;
+        
+        $subtotal = self::get_cart_subtotal(false);
+        $shipping = self::get_cart_shipping_total(false);
+        $non_compound = self::$tax->get_non_compounded_tax_amount();
+        $compound = self::$tax->get_compound_tax_amount();
             
         // Total
         self::$total = self::get_cart_subtotal(false) + self::get_cart_shipping_total(false) - self::$discount_total;
 
         if (get_option('jigoshop_calc_taxes') == 'yes') :
             if (get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
-                self::$total += self::$tax->get_retail_tax_amount() + self::$tax->get_non_retail_tax_amount();
+                self::$total += self::$tax->get_non_compounded_tax_amount() + self::$tax->get_compound_tax_amount();
             else :
 
                 if (self::get_subtotal_inc_tax()) :
-                    self::$total += self::$tax->get_non_retail_tax_amount();
+                    self::$total += self::$tax->get_compound_tax_amount();
                 endif;
 
             endif;
@@ -591,18 +596,18 @@ class jigoshop_cart extends jigoshop_singleton {
     }
 
     /**
-     * gets the cart subtotal including retail taxes (after calculation) if necessary. 
-     * Since the tax rates loop in order of retail tax first followed by non retail tax,
-     * if is_applied_to_retail is false, then we need to return subtotal with tax, otherwise
-     * don't return it. If only non retail tax is applied, this function will always return
+     * gets the cart subtotal including compound taxes (after calculation) if necessary. 
+     * Since the tax rates loop in order of compound tax last
+     * if is_compound_tax is true, then we need to return subtotal with tax, otherwise
+     * don't return it. If only non compounded tax is applied, this function will always return
      * false which is good.
      */
     public static function get_subtotal_inc_tax($use_price = true) {
         
-        if (self::$tax->is_applied_to_retail() || get_option('jigoshop_calc_taxes') == 'no') return false;
+        if (!self::$tax->is_compound_tax() || get_option('jigoshop_calc_taxes') == 'no') return false;
         
         if (get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
-            $return = ($use_price ? jigoshop_price(self::get_cart_subtotal(false) + self::get_cart_shipping_total(false) + self::$tax->get_retail_tax_amount()) : number_format(self::get_cart_subtotal(false) + self::get_cart_shipping_total(false) + self::$tax->get_retail_tax_amount(), 2, '.', ''));
+            $return = ($use_price ? jigoshop_price(self::get_cart_subtotal(false) + self::get_cart_shipping_total(false) + self::$tax->get_non_compounded_tax_amount()) : number_format(self::get_cart_subtotal(false) + self::get_cart_shipping_total(false) + self::$tax->get_non_compounded_tax_amount(), 2, '.', ''));
         else:
             $return = ($use_price ? jigoshop_price(self::get_cart_subtotal(false) + self::get_cart_shipping_total(false)) : number_format(self::get_cart_subtotal(false) + self::get_cart_shipping_total(false), 2, '.', ''));
         endif;
@@ -648,8 +653,8 @@ class jigoshop_cart extends jigoshop_singleton {
         return self::$tax->get_tax_divisor();
     }
 
-    public static function is_tax_retail($tax_class) {
-        return self::$tax->is_tax_retail($tax_class);
+    public static function is_not_compounded_tax($tax_class) {
+        return self::$tax->is_tax_non_compounded($tax_class);
     }
 
     /** gets the shipping total (after calculation) */

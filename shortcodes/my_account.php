@@ -436,7 +436,7 @@ function jigoshop_view_order() {
                             </tr><?php
                 endif;
                 foreach ($order->get_tax_classes() as $tax_class) :
-                    if ($order->tax_class_is_retail($tax_class)) :
+                    if ($order->tax_class_is_not_compound($tax_class)) :
                         ?>
                                 <tr>
                                     <td colspan="3"><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></td>
@@ -461,7 +461,7 @@ function jigoshop_view_order() {
             if (get_option('jigoshop_calc_taxes') == 'yes') :
                 if ($order->order_subtotal_inc_tax) :
                     foreach ($order->get_tax_classes() as $tax_class) :
-                        if (!$order->tax_class_is_retail($tax_class)) :
+                        if (!$order->tax_class_is_not_compound($tax_class)) :
                             ?>
 
                                     <tr>

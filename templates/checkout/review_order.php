@@ -107,7 +107,7 @@
                     <?php
                 endif;
                 foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
-                    if (jigoshop_cart::is_tax_retail($tax_class)) :
+                    if (jigoshop_cart::is_not_compounded_tax($tax_class)) :
                         ?>
                         <tr>
                             <td colspan="2"><?php echo jigoshop_cart::get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%):'; ?></td>
@@ -194,7 +194,7 @@
             if (get_option('jigoshop_calc_taxes') == 'yes') :
                 if (jigoshop_cart::get_subtotal_inc_tax()) :
                     foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
-                        if (!jigoshop_cart::is_tax_retail($tax_class)) :
+                        if (!jigoshop_cart::is_not_compounded_tax($tax_class)) :
                                     ?>
 
                             <tr>

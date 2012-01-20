@@ -56,10 +56,13 @@ function jigoshop_process_shop_order_meta($post_id, $post)
         'shipping_country',
         'shipping_state',
         'shipping_method',
+        'shipping_service',
         'payment_method',
         'order_subtotal',
+        'order_subtotal_inc_tax',
         'order_shipping',
         'order_discount',
+        'order_discount_coupons',
         'order_tax',
         'order_shipping_tax',
         'order_total'
