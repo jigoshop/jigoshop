@@ -71,8 +71,8 @@ function jigoshop_my_account( $atts ) {
 						<td><time title="<?php echo date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($order->order_date)); ?>"><?php echo date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($order->order_date)); ?></time></td>
 						<td><address><?php if ($order->formatted_shipping_address) echo $order->formatted_shipping_address; else echo '&ndash;'; ?></address></td>
 						<td><?php echo jigoshop_price($order->order_total); ?></td>
-						<td><?php echo $order->status; ?></td>
-						<td style="text-align:right; white-space:nowrap;">
+						<td class="nobr"><?php echo $order->status; ?></td>
+						<td class="nobr alignright">
 							<?php if ($order->status=='pending') : ?>
 								<a href="<?php echo $order->get_checkout_payment_url(); ?>" class="button pay"><?php _e('Pay', 'jigoshop'); ?></a>
 								<a href="<?php echo $order->get_cancel_order_url(); ?>" class="button cancel"><?php _e('Cancel', 'jigoshop'); ?></a>
