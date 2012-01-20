@@ -27,14 +27,16 @@ class jigoshop_catalog_query extends jigoshop_singleton {
 	 */
 	protected function __construct() {
 		
+		$this->all_posts_in_view = array();
+		
 		// parses the orginal request into a WP_Query instance to access useful boolean methods
 		// use the highest priority to get it done first
-		self::add_action( 'request', 'parse_original_request', 0 );
+		self::add_filter( 'request', 'parse_original_request', 0 );
 		
 		// alters the original request with a default priority
-		self::add_action( 'request', 'catalog_query_filter' );
+		self::add_filter( 'request', 'catalog_query_filter' );
 		
-		self::add_filter( 'request', 'jigoshop_get_product_ids_in_view', 0 );
+		self::add_filter( 'request', 'jigoshop_get_product_ids_in_view', 1 );
 
 	}
 	
@@ -139,14 +141,15 @@ class jigoshop_catalog_query extends jigoshop_singleton {
 			$request[$key] = $value;
 		endforeach;
 		
-		$this->set_all_posts_in_view( $request );
-		
 		$request['tax_query'] = apply_filters( 'loop_shop_tax_query', $this->tax_query( $request ));
 		
 		$request['meta_query'] = apply_filters( 'loop_shop_tax_meta_query', $this->meta_query( $request ));
 		
+		$this->set_all_posts_in_view( $request );
+		
 		// modify the query for specific product ID's for layered nav and price filter widgets
 		$request['post__in'] = apply_filters( 'loop-shop-posts-in', $all_post_ids );
+//		$request['post__in'] = self::posts_in_view();
 		
 		return apply_filters( 'jigoshop-request', $request );	/* give it back to WordPress for query_posts() */
 	}
