@@ -227,79 +227,84 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			<div class='jigoshop_variations'>
 
 				<?php if ( ! $variations ): ?>
-				<div class="demo variation">
-					<a href="http://forum.jigoshop.com/kb" target="_blank" class="overlay"><span>Click me to learn more about Variations</span></a>
+
+
+				<div class="demo variation ">
+					<a href="http://forum.jigoshop.com/kb/creating-products/variable-products" target="_blank" class="overlay"><span>Click me to learn more about Variations</span></a>
 					<div class="inside">			
-						<div class="jigoshop_variation" rel="0_new" style="">
-							<p>
-								<button type="button" class="remove_variation button">Remove</button>
+						<div class="jigoshop_variation postbox">
+							<button type="button" class="remove_variation button">Remove</button>
+							<div class="handlediv" title="Click to toggle"><br></div>
+							<h3 class="handle">
 								<select>
 										<option value="Medium">Medium</option>
 								</select>
-							</p>
+							</h3>
 
-							<table cellspacing="0" cellpadding="0" class="jigoshop_variable_attributes">
-								<tr>
-									<td class="upload_image" rowspan="2">
-										<a href="#" class="upload_image_button " rel="0_new">
-											<img src="<?php echo jigoshop::assets_url().'/assets/images/placeholder.png' ?>" width="93px">
-											<input type="hidden" class="upload_image_id" value="">
-											<!-- TODO: APPEND THIS IN JS <span class="overlay"></span> -->
-										</a>
-									</td>
-
-									<td>
-										<label class="clearlabel">Type</label>
-										<select class="product_type">
-											<option value="simple">Simple</option>
-										</select>
-									</td>
-
-									<td>
-										<label>SKU
-											<input type="text" value="SKU1" />
-										</label>
-									</td>
-
-									<td>
-										<label>Stock Qty	
-											<input type="text" value="12">
-										</label>
-									</td>
-
-									<td>
-										<label>Price	
-											<input type="text" value="19.99">
-										</label>
-									</td>
-
-									<td>
-										<label>Sale Price
-											<input type="text" value="13.99">
-										</label>
-									</td>
-
-									<td>
-										<label>Enabled
-											<input type="checkbox" class="checkbox" checked="checked">
-										</label>
-									</td>
-								</tr>
-								<tr class="simple options">
-									<td>
-										<label>Weight
-											<input type="text" value="22.5">
-										</label>
-									</td>
-										<td colspan="4" class="dimensions">
-											<label>Dimensions <?php echo '('.get_option('jigoshop_dimension_unit'). ')' ?></label>
-											<input type="text" placeholder="Length" value="">
-											<input type="text" placeholder="Width" value="">
-											<input type="text" placeholder="Height" value="">
+							<div class="inside">
+								<table cellspacing="0" cellpadding="0" class="jigoshop_variable_attributes">
+									<tr>
+										<td class="upload_image" rowspan="2">
+											<a href="#" class="upload_image_button " rel="0_new">
+												<img src="<?php echo jigoshop::assets_url().'/assets/images/placeholder.png' ?>" width="93px">
+												<input type="hidden" class="upload_image_id" value="">
+												<!-- TODO: APPEND THIS IN JS <span class="overlay"></span> -->
+											</a>
 										</td>
-										<td colspan="3">&nbsp;</td>
-								</tr>
-							</table>
+
+										<td>
+											<label class="clearlabel">Type</label>
+											<select class="product_type">
+												<option value="simple">Simple</option>
+											</select>
+										</td>
+
+										<td>
+											<label>SKU
+												<input type="text" value="SKU1" />
+											</label>
+										</td>
+
+										<td>
+											<label>Stock Qty	
+												<input type="text" value="12">
+											</label>
+										</td>
+
+										<td>
+											<label>Price	
+												<input type="text" value="19.99">
+											</label>
+										</td>
+
+										<td>
+											<label>Sale Price
+												<input type="text" value="13.99">
+											</label>
+										</td>
+
+										<td>
+											<label>Enabled
+												<input type="checkbox" class="checkbox" checked="checked">
+											</label>
+										</td>
+									</tr>
+									<tr class="simple options">
+										<td>
+											<label>Weight
+												<input type="text" value="22.5">
+											</label>
+										</td>
+											<td colspan="4" class="dimensions">
+												<label>Dimensions <?php echo '('.get_option('jigoshop_dimension_unit'). ')' ?></label>
+												<input type="text" placeholder="Length" value="">
+												<input type="text" placeholder="Width" value="">
+												<input type="text" placeholder="Height" value="">
+											</td>
+											<td colspan="3">&nbsp;</td>
+									</tr>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
