@@ -50,7 +50,7 @@ function install_jigoshop_redirect() {
 }
 add_action('admin_init', 'install_jigoshop_redirect');
 
-add_action('admin_notices', 'jigoshop_update', 0);
+add_action('admin_notices', 'jigoshop_update');
 function jigoshop_update() {
 	// Run database upgrade if required
 	if ( is_admin() && get_site_option('jigoshop_db_version') < JIGOSHOP_VERSION ) {
