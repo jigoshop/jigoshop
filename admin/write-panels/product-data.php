@@ -85,7 +85,7 @@ function jigoshop_product_data_help ( $post_type , $post ) {
 		<p>Variations are a very powerful aspect of Jigoshop, they allow customers to pick a specific variant of the product. For example a Shirt could come in sizes Small, Medium & Large each with varying stocks & pricing.</p>
 		<p>Variations currently come in 3 different types, Simple, Downloadable & Virtual. These types behave much the same as their main product counter parts which enables you to create powerful combinations. For example when selling a book what format it arrives in (Printed or e-Book)</p>
 		<p>To create variations you must first add & save your attributes for variation. Once this has been done you can then add & configure as many variations as there are combinations.</p>
-		<p><strong>For more information</strong> <a href="http://forum.jigoshop.com/kb/http://forum.jigoshop.com/kb/creating-products/variable-products">click here to learn more about variable products</a></p>
+		<p><strong>For more information</strong> <a href="http://forum.jigoshop.com/kb/creating-products/variable-products">click here to learn more about variable products</a></p>
 	';
 
 	$sidebar_content = '
