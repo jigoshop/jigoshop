@@ -183,10 +183,12 @@ function jigoshop_upgrade_100() {
                 
             endif;
         endforeach;
-    
+        
+        update_option('jigoshop_tax_rates', $tax_rates);
+        
     endif;
     
-    update_option('jigoshop_tax_rates', $tax_rates);
+    
     
     // convert products
     
