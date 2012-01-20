@@ -163,8 +163,8 @@ class jigoshop_order {
             return ($this->order_tax && is_array($this->order_tax) ? array_keys($this->order_tax) : array());
         }
         
-        public function tax_class_is_retail($tax_class) {
-            return $this->order_tax[$tax_class]['retail'];
+        public function tax_class_is_not_compound($tax_class) {
+            return !$this->order_tax[$tax_class]['compound'];
         }
         
         public function get_tax_rate($tax_class) {

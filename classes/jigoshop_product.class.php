@@ -574,13 +574,12 @@ class jigoshop_product {
 
                 foreach ( $new_rates as $key=>$value ) :
 
-                    //means that this tax was applied to total including any retail taxes added
-                    if (!$value['is_retail']) :
+                    if ($value['is_not_compound_tax']) :
+                        $tax_totals += $_tax->calc_tax($price - $tax_applied_after_retail, $value['rate'], true);
+                    else :
                         $tax_amount[$key] = $_tax->calc_tax($price, $value['rate'], true);
                         $tax_applied_after_retail += $tax_amount[$key];
                         $tax_totals += $tax_amount[$key];
-                    else :
-                        $tax_totals += $_tax->calc_tax($price - $tax_applied_after_retail, $value['rate'], true);
                     endif;
 
                 endforeach;
@@ -614,7 +613,7 @@ class jigoshop_product {
                 $my_rate = $_tax->get_shop_base_rate($tax_class);
                 
                 if ($my_rate > 0) :
-                    $rate[$tax_class] = array('rate'=>$my_rate, 'is_retail'=>$_tax->is_applied_to_retail());
+                    $rate[$tax_class] = array('rate'=>$my_rate, 'is_not_compound_tax'=>!$_tax->is_compound_tax());
                 endif;
                 
             endforeach;
@@ -641,18 +640,18 @@ class jigoshop_product {
     }
     
     /**
-     * Returns true if the tax is applied to the retail value of the product. 
+     * Returns true if the tax is not compounded. 
      * @param string tax_class the tax class return value on
      * @param array product_tax_rates the array of tax rates on the product
-     * @return bool true if tax class taxes the retail value of product. False otherwise. Default true.
+     * @return bool true if tax class is not compounded. False otherwise. Default true.
      */
-    public static function get_product_retail_tax($tax_class, $product_tax_rates) {
+    public static function get_non_compounded_tax($tax_class, $product_tax_rates) {
         
         if ($tax_class && $product_tax_rates && is_array($product_tax_rates)) :
-            return $product_tax_rates[$tax_class]['is_retail'];
+            return $product_tax_rates[$tax_class]['is_not_compound_tax'];
         endif;
         
-        return true;  // default to true for retail tax, or non compound tax  
+        return true;  // default to true for non compound tax  
     }
 
 	/**

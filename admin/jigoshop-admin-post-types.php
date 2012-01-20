@@ -299,7 +299,7 @@ function jigoshop_custom_order_columns($column) {
                         <?php
                     endif;
                     foreach ($order->get_tax_classes() as $tax_class) :
-                        if ($order->tax_class_is_retail($tax_class)) :
+                        if ($order->tax_class_is_not_compound($tax_class)) :
                             ?>
                             <tr>
                                 <th><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></th>
@@ -325,7 +325,7 @@ function jigoshop_custom_order_columns($column) {
                 if (get_option('jigoshop_calc_taxes') == 'yes') :
                     if ($order->order_subtotal_inc_tax) :
                         foreach ($order->get_tax_classes() as $tax_class) :
-                            if (!$order->tax_class_is_retail($tax_class)) :
+                            if (!$order->tax_class_is_not_compound($tax_class)) :
                                 ?>
 
                                 <tr>
