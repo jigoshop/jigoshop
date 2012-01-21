@@ -459,7 +459,7 @@ function display_attribute() { ?>
 
 						<div>
 							<label>
-								<input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['visible'] : 0 ), true); ?> name="attribute_visibility[<?php echo $i; ?>]" value="1" /><?php _e('Display on product page', 'jigoshop'); ?>
+								<input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['visible'] : 1 ), true); ?> name="attribute_visibility[<?php echo $i; ?>]" value="1" /><?php _e('Display on product page', 'jigoshop'); ?>
 							</label>
 
 							<?php if ($tax->attribute_type!="select") : // always disable variation for select elements ?>
