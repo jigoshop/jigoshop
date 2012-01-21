@@ -21,7 +21,7 @@ function get_jigoshop_cart($atts) {
 function jigoshop_cart($atts) {
 
     $errors = array();
-    unset($_SESSION['selected_rate_id']);
+    unset(jigoshop_session::instance()->selected_rate_id);
 
     // Process Discount Codes
     if (isset($_POST['apply_coupon']) && $_POST['apply_coupon'] && jigoshop::verify_nonce('cart')) :
@@ -32,7 +32,7 @@ function jigoshop_cart($atts) {
     // Update Shipping
     elseif (isset($_POST['calc_shipping']) && $_POST['calc_shipping'] && jigoshop::verify_nonce('cart')) :
 
-        unset($_SESSION['chosen_shipping_method_id']);
+        unset( jigoshop_session::instance()->chosen_shipping_method_id );
         $country = $_POST['calc_shipping_country'];
         $state = $_POST['calc_shipping_state'];
 
@@ -66,9 +66,9 @@ function jigoshop_cart($atts) {
         $rates_params = explode(":", $_POST['shipping_rates']);
 
         if ($rates_params[1] != NULL) :
-            $_SESSION['selected_rate_id'] = $rates_params[1];
+            jigoshop_session::instance()->selected_rate_id = $rates_params[1];
         else :
-            $_SESSION['selected_rate_id'] = 'no_rate_id'; // where are constants stored? to find out
+            jigoshop_session::instance()->selected_rate_id = 'no_rate_id'; // where are constants stored? to find out
         endif;
 
         $available_methods = jigoshop_shipping::get_available_shipping_methods();

@@ -656,7 +656,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 					if (jigoshop_cart::needs_payment()) :
 						
 						// Store Order ID in session so it can be re-used after payment failure
-						$_SESSION['order_awaiting_payment'] = $order_id;
+						jigoshop_session::instance()->order_awaiting_payment = $order_id;
 					
 						// Process Payment
 						$result = $available_gateways[$this->posted['payment_method']]->process_payment( $order_id );

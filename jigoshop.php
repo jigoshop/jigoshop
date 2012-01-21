@@ -53,6 +53,7 @@ include_once( 'classes/jigoshop_orders.class.php' );
 include_once( 'classes/jigoshop_tax.class.php' );
 include_once( 'classes/jigoshop_shipping.class.php' );
 include_once( 'classes/jigoshop_coupons.class.php' );
+include_once( 'classes/jigoshop_session.class.php' );
 
 include_once( 'gateways/gateways.class.php' );
 include_once( 'gateways/gateway.class.php' );
@@ -176,8 +177,8 @@ function jigoshop_init() {
 	
 	/* ensure nothing is output to the browser prior to this (other than headers) */
 	ob_start();
-	/* start session here after all classes are loaded to eliminate __PHP_Incomplete_Class warnings */
-	if ( !session_id() ) session_start();
+	
+	jigoshop_session::instance()->test = 'val';
 	
     $array = array(0 => "3.15");
     
@@ -272,10 +273,10 @@ function jigoshop_frontend_scripts() {
 		'load_fancybox'					=> JIGOSHOP_LOAD_FANCYBOX
 	);
 
-	if (isset($_SESSION['min_price'])) :
+	if (isset( jigoshop_session::instance()->min_price )) :
 		$params['min_price'] = $_GET['min_price'];
 	endif;
-	if (isset($_SESSION['max_price'])) :
+	if (isset( jigoshop_session::instance()->max_price )) :
 		$params['max_price'] = $_GET['max_price'];
 	endif;
 

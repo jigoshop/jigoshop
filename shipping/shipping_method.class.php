@@ -100,7 +100,7 @@ class jigoshop_shipping_method {
     
     public function choose() {
     	$this->chosen = true;
-    	$_SESSION['chosen_shipping_method_id'] = $this->id;
+    	jigoshop_session::instance()->chosen_shipping_method_id = $this->id;
     }
     
     public function reset_method() {
