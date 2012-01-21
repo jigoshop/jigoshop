@@ -470,62 +470,62 @@ function display_attribute() { ?>
 						</div>
 					</td>
 					<td class="value">
-							<?php if ($tax->attribute_type=="select") : ?>
-								<select name="attribute_values[<?php echo $i ?>]">
-									<option value=""><?php _e('Choose an option&hellip;', 'jigoshop'); ?></option>
-									<?php
-									if (taxonomy_exists('pa_'.$attribute_taxonomy_name)) :
-		        						$terms = get_terms( 'pa_'.$attribute_taxonomy_name, array( 'orderby' => 'slug', 'hide_empty' => '0' ) );
-		        						if ($terms) :
-											foreach ($terms as $term) :
-												printf('<option value="%s" %s>%s</option>'
-													, $term->name
-													, selected(in_array($term->slug, $term_slugs), true, false)
-													, $term->name);
-											endforeach;
-										endif;
-									endif;
-									?>			
-								</select>
-
-							<?php elseif ($tax->attribute_type=="multiselect") : ?>
-
-								<div class="multiselect">
-									<?php
-									if (taxonomy_exists('pa_'.$attribute_taxonomy_name)) :
-		        						$terms = get_terms( 'pa_'.$attribute_taxonomy_name, array( 'orderby' => 'slug', 'hide_empty' => '0' ) );
-		        						if ($terms) :
-			        						foreach ($terms as $term) :
-												$checked = checked(in_array($term->slug, $term_slugs), true, false);
-												printf('<label %s><input type="checkbox" name="attribute_values[%d][]" value="%s" %s/> %s</label>'
-													, !empty($checked) ? 'class="selected"' : ''
-													, $i
-													, $term->slug
-													, $checked
-													, $term->name);
-											endforeach;
-										endif;
-									endif;
-									?>
-								</div>
-								<div class="multiselect-controls">
-									<a class="check-all" href="#"><?php _e('Check All'); ?></a>&nbsp;|
-									<a class="uncheck-all" href="#"><?php _e('Uncheck All');?></a>&nbsp;|
-									<a class="toggle" href="#"><?php _e('Toggle');?></a>&nbsp;|
-									<a class="show-all" href="#"><?php _e('Show all'); ?></a>
-								</div>
-
-							<?php elseif ($tax->attribute_type=="text") : ?>
-								<textarea name="attribute_values[<?php echo $i; ?>]"><?php
-									if ($allterms) :
-										$prettynames = array();
-										foreach ($allterms as $term) :
-											$prettynames[] = $term->name;
+						<?php if ($tax->attribute_type=="select") : ?>
+							<select name="attribute_values[<?php echo $i ?>]">
+								<option value=""><?php _e('Choose an option&hellip;', 'jigoshop'); ?></option>
+								<?php
+								if (taxonomy_exists('pa_'.$attribute_taxonomy_name)) :
+	        						$terms = get_terms( 'pa_'.$attribute_taxonomy_name, array( 'orderby' => 'slug', 'hide_empty' => '0' ) );
+	        						if ($terms) :
+										foreach ($terms as $term) :
+											printf('<option value="%s" %s>%s</option>'
+												, $term->name
+												, selected(in_array($term->slug, $term_slugs), true, false)
+												, $term->name);
 										endforeach;
-										echo implode(',', $prettynames);
 									endif;
-								?></textarea>
-							<?php endif; ?>
+								endif;
+								?>			
+							</select>
+
+						<?php elseif ($tax->attribute_type=="multiselect") : ?>
+
+							<div class="multiselect">
+								<?php
+								if (taxonomy_exists('pa_'.$attribute_taxonomy_name)) :
+	        						$terms = get_terms( 'pa_'.$attribute_taxonomy_name, array( 'orderby' => 'slug', 'hide_empty' => '0' ) );
+	        						if ($terms) :
+		        						foreach ($terms as $term) :
+											$checked = checked(in_array($term->slug, $term_slugs), true, false);
+											printf('<label %s><input type="checkbox" name="attribute_values[%d][]" value="%s" %s/> %s</label>'
+												, !empty($checked) ? 'class="selected"' : ''
+												, $i
+												, $term->slug
+												, $checked
+												, $term->name);
+										endforeach;
+									endif;
+								endif;
+								?>
+							</div>
+							<div class="multiselect-controls">
+								<a class="check-all" href="#"><?php _e('Check All'); ?></a>&nbsp;|
+								<a class="uncheck-all" href="#"><?php _e('Uncheck All');?></a>&nbsp;|
+								<a class="toggle" href="#"><?php _e('Toggle');?></a>&nbsp;|
+								<a class="show-all" href="#"><?php _e('Show all'); ?></a>
+							</div>
+
+						<?php elseif ($tax->attribute_type=="text") : ?>
+							<textarea name="attribute_values[<?php echo $i; ?>]"><?php
+								if ($allterms) :
+									$prettynames = array();
+									foreach ($allterms as $term) :
+										$prettynames[] = $term->name;
+									endforeach;
+									echo implode(',', $prettynames);
+								endif;
+							?></textarea>
+						<?php endif; ?>
 					</td>
 				</tr>
 			</table>
