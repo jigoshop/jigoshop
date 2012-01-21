@@ -53,6 +53,7 @@ include_once( 'classes/jigoshop_orders.class.php' );
 include_once( 'classes/jigoshop_tax.class.php' );
 include_once( 'classes/jigoshop_shipping.class.php' );
 include_once( 'classes/jigoshop_coupons.class.php' );
+include_once( 'classes/jigoshop_session.class.php' );
 
 include_once( 'gateways/gateways.class.php' );
 include_once( 'gateways/gateway.class.php' );
@@ -176,9 +177,14 @@ function jigoshop_init() {
 	
 	/* ensure nothing is output to the browser prior to this (other than headers) */
 	ob_start();
-	/* start session here after all classes are loaded to eliminate __PHP_Incomplete_Class warnings */
-	if ( !session_id() ) session_start();
 	
+	jigoshop_session::instance()->test = 'val';
+	
+    $array = array(0 => "3.15");
+    
+    foreach ($array as $a) :
+        $an = explode(':', $a);
+    endforeach;
 	jigoshop_post_type();	/* register taxonomies */
 	
 	// add Singletons here so that the taxonomies are loaded before calling them.
@@ -206,12 +212,7 @@ function jigoshop_init() {
 	$css = file_exists(get_stylesheet_directory() . '/jigoshop/style.css') ? get_stylesheet_directory_uri() . '/jigoshop/style.css' : jigoshop::assets_url() . '/assets/css/frontend.css';
     if (JIGOSHOP_USE_CSS) wp_register_style('jigoshop_frontend_styles', $css );
 
-    if (is_admin()) :
-    	wp_register_style('jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css');
-    	wp_enqueue_style('jigoshop_admin_styles');
-   		wp_register_style('jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css');
-    	wp_enqueue_style('jquery-ui-jigoshop-styles');
-    else :
+    if ( !is_admin()) :
     	wp_register_style( 'jqueryui_styles', jigoshop::assets_url() . '/assets/css/ui.css' );
 
     	wp_enqueue_style('jigoshop_frontend_styles');
@@ -225,6 +226,14 @@ function jigoshop_init() {
     endif;
 }
 add_action('init', 'jigoshop_init', 0);
+
+add_action( 'admin_enqueue_scripts', 'jigoshop_admin_styles' );
+function jigoshop_admin_styles() {
+	wp_register_style('jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css');
+    wp_enqueue_style('jigoshop_admin_styles');
+   	wp_register_style('jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css');
+    wp_enqueue_style('jquery-ui-jigoshop-styles');
+}
 
 function jigoshop_admin_scripts() {
 
@@ -266,10 +275,10 @@ function jigoshop_frontend_scripts() {
 		'load_fancybox'					=> JIGOSHOP_LOAD_FANCYBOX
 	);
 
-	if (isset($_SESSION['min_price'])) :
+	if (isset( jigoshop_session::instance()->min_price )) :
 		$params['min_price'] = $_GET['min_price'];
 	endif;
-	if (isset($_SESSION['max_price'])) :
+	if (isset( jigoshop_session::instance()->max_price )) :
 		$params['max_price'] = $_GET['max_price'];
 	endif;
 

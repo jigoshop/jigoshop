@@ -85,19 +85,17 @@ function jigoshop_custom_product_columns($column) {
 				}
 			} else {
 				echo '<strong class="attention">' . __('Out of Stock', 'jigoshop') . '</strong>';
-			}	
+			}
 		break;
 		case "product-type" :
 			echo ucwords($product->product_type);
 			echo '<br/>';
-			if ( $sku = get_post_meta( $post->ID, 'SKU', true )) {
+			if ( $sku = get_post_meta( $post->ID, 'sku', true )) {
 				echo $sku;
 			}
 			else {
 				echo $post->ID;
 			}
-			echo '<br/>';
-			if ( $product->visibility != 'visible' ) echo '<span class="attention">'.ucwords($product->visibility).'</span>';
 		break;
 		case "product-date" :
 			if ( '0000-00-00 00:00:00' == $post->post_date ) :

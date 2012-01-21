@@ -129,15 +129,15 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 
 	public function jigoshop_price_filter_init() {
 
-		unset($_SESSION['min_price']);
-		unset($_SESSION['max_price']);
+		unset(jigoshop_session::instance()->min_price);
+		unset(jigoshop_session::instance()->max_price);
 
 		if ( isset( $_GET['min_price'] ) ) {	
-			$_SESSION['min_price'] = $_GET['min_price'];
+			jigoshop_session::instance()->min_price = $_GET['min_price'];
 		}
 
 		if ( isset( $_GET['max_price'] ) ) {
-			$_SESSION['max_price'] = $_GET['max_price'];	
+			jigoshop_session::instance()->max_price = $_GET['max_price'];	
 		}
 	} 
 

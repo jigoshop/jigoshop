@@ -45,8 +45,8 @@ class jigoshop_cart extends jigoshop_singleton {
 
         self::$applied_coupons = array();
 
-        if (isset($_SESSION['coupons']))
-            self::$applied_coupons = $_SESSION['coupons'];
+        if (isset( jigoshop_session::instance()->coupons ))
+            self::$applied_coupons = jigoshop_session::instance()->coupons;
 
         self::$tax = new jigoshop_tax(100); //initialize tax on the cart with divisor of 100
     
@@ -59,8 +59,8 @@ class jigoshop_cart extends jigoshop_singleton {
     /** Gets the cart data from the PHP session */
     function get_cart_from_session() {
 
-        if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) :
-            $cart = $_SESSION['cart'];
+        if (isset( jigoshop_session::instance()->cart ) && is_array( jigoshop_session::instance()->cart )) :
+            $cart = jigoshop_session::instance()->cart;
 
             foreach ($cart as $key => $values) :
 
@@ -90,12 +90,12 @@ class jigoshop_cart extends jigoshop_singleton {
 
         // we get here from cart additions, quantity adjustments, and coupon additions
         // reset any chosen shipping methods as these adjustments can effect shipping (free shipping)
-        unset($_SESSION['chosen_shipping_method_id']);
-        unset($_SESSION['selected_rate_id']); // calculable shipping 
+        unset( jigoshop_session::instance()->chosen_shipping_method_id );
+        unset( jigoshop_session::instance()->selected_rate_id ); // calculable shipping 
 
-        $_SESSION['cart'] = self::$cart_contents;
+        jigoshop_session::instance()->cart = self::$cart_contents;
 
-        $_SESSION['coupons'] = self::$applied_coupons;
+        jigoshop_session::instance()->coupons = self::$applied_coupons;
 
         // This has to be tested. I believe all that needs to be calculated at time of setting session
         // is really the cart total and not shipping. All functions that use set_session are functions
@@ -109,10 +109,10 @@ class jigoshop_cart extends jigoshop_singleton {
         self::$cart_contents = array();
         self::$applied_coupons = array();
         self::reset_totals();
-        unset($_SESSION['cart']);
-        unset($_SESSION['coupons']);
-        unset($_SESSION['chosen_shipping_method_id']);
-        unset($_SESSION['selected_rate_id']);
+        unset(jigoshop_session::instance()->cart);
+        unset(jigoshop_session::instance()->coupons);
+        unset(jigoshop_session::instance()->chosen_shipping_method_id);
+        unset(jigoshop_session::instance()->selected_rate_id);
     }
 
     /**
@@ -390,7 +390,7 @@ class jigoshop_cart extends jigoshop_singleton {
 
                     if ($_product->is_taxable()) :
                         
-                        if (get_option('jigoshop_prices_include_tax') == 'yes' && jigoshop_customer::is_customer_outside_base() && (get_option('jigoshop_enable_shipping_calc')=='yes' ||  (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT ))) :
+                        if (get_option('jigoshop_prices_include_tax') == 'yes' && jigoshop_customer::is_customer_shipping_outside_base() && (get_option('jigoshop_enable_shipping_calc')=='yes' ||  (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT ))) :
 
                             $total_item_price = $_product->get_price_excluding_tax() * $values['quantity'] * 100;
 
@@ -448,6 +448,9 @@ class jigoshop_cart extends jigoshop_singleton {
         endforeach;
     }
 
+    public static function tax_calculated_from_base() {
+        return self::$tax->is_base_calculation();
+    }
     /** calculate totals for the items in the cart */
     function calculate_totals() {
 
@@ -616,8 +619,19 @@ class jigoshop_cart extends jigoshop_singleton {
         
     }
 
-    public static function get_tax_class_for_display($tax_class) {
-        return self::$tax->get_tax_class_for_display($tax_class);
+    public static function get_tax_for_display($tax_class) {
+
+        $return = '';
+
+        if (jigoshop_cart::get_tax_rate($tax_class) > 0) :
+            $return = self::$tax->get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%):';
+
+            if (jigoshop_cart::tax_calculated_from_base()) :
+                $return .= '<small>' . sprintf(__('estimated for %s', 'jigoshop'), jigoshop_countries::estimated_for_prefix() . jigoshop_countries::$countries[ jigoshop_countries::get_base_country() ] ) . '</small>';
+            endif; 
+        endif;
+        
+        return $return;
     }
 
     // after calculation. Used with admin pages only

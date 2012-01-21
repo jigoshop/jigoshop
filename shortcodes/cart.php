@@ -21,7 +21,7 @@ function get_jigoshop_cart($atts) {
 function jigoshop_cart($atts) {
 
     $errors = array();
-    unset($_SESSION['selected_rate_id']);
+    unset(jigoshop_session::instance()->selected_rate_id);
 
     // Process Discount Codes
     if (isset($_POST['apply_coupon']) && $_POST['apply_coupon'] && jigoshop::verify_nonce('cart')) :
@@ -32,7 +32,7 @@ function jigoshop_cart($atts) {
     // Update Shipping
     elseif (isset($_POST['calc_shipping']) && $_POST['calc_shipping'] && jigoshop::verify_nonce('cart')) :
 
-        unset($_SESSION['chosen_shipping_method_id']);
+        unset( jigoshop_session::instance()->chosen_shipping_method_id );
         $country = $_POST['calc_shipping_country'];
         $state = $_POST['calc_shipping_state'];
 
@@ -66,9 +66,9 @@ function jigoshop_cart($atts) {
         $rates_params = explode(":", $_POST['shipping_rates']);
 
         if ($rates_params[1] != NULL) :
-            $_SESSION['selected_rate_id'] = $rates_params[1];
+            jigoshop_session::instance()->selected_rate_id = $rates_params[1];
         else :
-            $_SESSION['selected_rate_id'] = 'no_rate_id'; // where are constants stored? to find out
+            jigoshop_session::instance()->selected_rate_id = 'no_rate_id'; // where are constants stored? to find out
         endif;
 
         $available_methods = jigoshop_shipping::get_available_shipping_methods();
@@ -213,7 +213,7 @@ function jigoshop_cart($atts) {
                                     if (jigoshop_cart::is_not_compounded_tax($tax_class)) :
                                         ?>
                                         <tr>
-                                            <th class="cart-row-tax-title"><?php echo jigoshop_cart::get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%):'; ?></th>
+                                            <th class="cart-row-tax-title"><?php echo jigoshop_cart::get_tax_for_display($tax_class) ?></th>
                                             <td class="cart-row-tax"><?php echo jigoshop_cart::get_tax_amount($tax_class) ?></td>
                                         </tr>
                                     <?php
@@ -239,9 +239,7 @@ function jigoshop_cart($atts) {
                                             ?>
 
                                             <tr>
-                                                <?php // TODO: should likely add the estimated tags on the tax here still  ?>
-                                        <!--<th class="cart-row-tax-title"><?php // _e('Tax', 'jigoshop'); ?> <?php //if (jigoshop_customer::is_customer_outside_base()) : ?><small><?php //echo sprintf(__('estimated for %s', 'jigoshop'), jigoshop_countries::estimated_for_prefix() . jigoshop_countries::$countries[ jigoshop_countries::get_base_country() ] ); ?></small><?php //endif; ?></th>-->
-                                                <th class="cart-row-tax-title"><?php echo jigoshop_cart::get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%):'; ?></th>
+                                                <th class="cart-row-tax-title"><?php echo jigoshop_cart::get_tax_for_display($tax_class) ?></th>
                                                 <td class="cart-row-tax"><?php echo jigoshop_cart::get_tax_amount($tax_class) ?></td>
                                             </tr>
                                             <?php
@@ -252,7 +250,7 @@ function jigoshop_cart($atts) {
                                         foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
                                             ?>
                                             <tr>
-                                                <th class="cart-row-tax-title"><?php echo jigoshop_cart::get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%):'; ?></th>
+                                                <th class="cart-row-tax-title"><?php echo jigoshop_cart::get_tax_for_display($tax_class) ?></th>
                                                 <td class="cart-row-tax"><?php echo jigoshop_cart::get_tax_amount($tax_class) ?></td>
                                             </tr>    
                                         <?php endforeach;
@@ -272,7 +270,7 @@ function jigoshop_cart($atts) {
 
 			<?php
 			else :
-				echo '<p>'.__('Sorry, it seems that there are no available shipping methods to your location. Please contact us if you require assistance or wish to make alternate arrangements.', 'jigoshop').'</p>';
+				echo '<p>' . __(jigoshop_shipping::get_shipping_error_message(), 'jigoshop') . '</p>';
 			endif;
 		?>
 		</div>

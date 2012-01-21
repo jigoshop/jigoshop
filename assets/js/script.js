@@ -409,7 +409,8 @@ if (params.is_checkout==1) {
 		
 		jQuery('form.login').hide();
 		
-		jQuery('a.showlogin').click(function(){
+		jQuery('a.showlogin').click(function(e){
+			e.preventDefault();
 			jQuery('form.login').slideToggle();
 		});
 		

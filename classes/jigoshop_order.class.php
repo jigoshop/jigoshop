@@ -395,7 +395,7 @@ class jigoshop_order {
 	 */
 	function cancel_order( $note = '' ) {
 		
-		unset($_SESSION['order_awaiting_payment']);
+		unset( jigoshop_session::instance()->order_awaiting_payment );
 		
 		$this->update_status('cancelled', $note);
 		
@@ -410,7 +410,7 @@ class jigoshop_order {
 	 */
 	function payment_complete() {
 		
-		unset($_SESSION['order_awaiting_payment']);
+		unset( jigoshop_session::instance()->order_awaiting_payment );
 		
 		$downloadable_order = false;
 		
