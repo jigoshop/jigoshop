@@ -245,7 +245,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(  
 		'name' => __('Google Analytics ID', 'jigoshop'),
-		'desc' 		=> __('Log into your google analytics account to find your ID. e.g. <code>UA-XXXXX-X</code>', 'jigoshop'),
+		'desc' 		=> __('Log into your google analytics account to find your ID. e.g. <code>UA-XXXXXXX-X</code>', 'jigoshop'),
 		'id' 		=> 'jigoshop_ga_id',
 		'type' 		=> 'text',
         'css' 		=> 'min-width:300px;',
