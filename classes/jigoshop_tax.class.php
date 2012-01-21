@@ -90,17 +90,29 @@ class jigoshop_tax {
      * @return type array of tax information
      */
     public static function get_taxes_as_array($taxes_as_string, $tax_divisor = -1) {
-        if (!$taxes_as_string)
-            return array();
-
-        $taxes = explode('|', $taxes_as_string);
+        
         $tax_classes = array();
-        foreach ($taxes as $tax) :
-            $tax_class = explode(':', $tax);
-            $tax_info = explode(',', $tax_class[1]);
-            $tax_classes[$tax_class[0]] = array('amount' => ( $tax_divisor > 0 ? $tax_info[0] / $tax_divisor : $tax_info[0]), 'rate' => $tax_info[1], 'compound' => ($tax_info[2] ? true : false), 'display' => $tax_info[3]);
-        endforeach;
+        
+        if ($taxes_as_string) :
 
+            $taxes = explode('|', $taxes_as_string);
+
+            foreach ($taxes as $tax) :
+                
+                $tax_class = explode(':', $tax);
+                if (isset($tax_class[1])) :
+                    $tax_info = explode(',', $tax_class[1]);
+                
+                    if (isset($tax_class[0]) && isset($tax_info[0]) && isset($tax_info[1]) && isset($tax_info[2]) && isset($tax_info[3])) :
+                        $tax_classes[$tax_class[0]] = array('amount' => ( $tax_divisor > 0 ? $tax_info[0] / $tax_divisor : $tax_info[0]), 'rate' => $tax_info[1], 'compound' => ($tax_info[2] ? true : false), 'display' => $tax_info[3]);
+                    endif;
+                    
+                endif;
+                
+            endforeach;
+            
+        endif;
+        
         return $tax_classes;
     }
 
@@ -164,11 +176,15 @@ class jigoshop_tax {
         $tax_rates_array = array();
         if ($tax_rates && is_array($tax_rates) && sizeof($tax_rates) > 0)
             foreach ($tax_rates as $rate) :
-                if ($rate['class']) :
-                    $tax_rates_array[$rate['country']][$rate['state']][$rate['class']] = array('rate' => $rate['rate'], 'shipping' => $rate['shipping'], 'compound' => $rate['compound'], 'label' => $rate['label']);
+                if (isset($rate['class'])) : 
+                    if (isset($rate['country']) && isset($rate['state']) && isset($rate['rate']) && isset($rate['shipping']) && isset($rate['compound']) && isset($rate['label'])) :
+                        $tax_rates_array[$rate['country']][$rate['state']][$rate['class']] = array('rate' => $rate['rate'], 'shipping' => $rate['shipping'], 'compound' => $rate['compound'], 'label' => $rate['label']);
+                    endif;
                 else :
                     // Standard Rate
-                    $tax_rates_array[$rate['country']][$rate['state']]['*'] = array('rate' => $rate['rate'], 'shipping' => $rate['shipping'], 'compound' => $rate['compound'], 'label' => $rate['label']);
+                    if (isset($rate['country']) && isset($rate['state']) && isset($rate['rate']) && isset($rate['shipping']) && isset($rate['compound']) && isset($rate['label'])) :
+                        $tax_rates_array[$rate['country']][$rate['state']]['*'] = array('rate' => $rate['rate'], 'shipping' => $rate['shipping'], 'compound' => $rate['compound'], 'label' => $rate['label']);
+                    endif;
                 endif;
             endforeach;
         return $tax_rates_array;

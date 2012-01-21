@@ -179,6 +179,11 @@ function jigoshop_init() {
 	/* start session here after all classes are loaded to eliminate __PHP_Incomplete_Class warnings */
 	if ( !session_id() ) session_start();
 	
+    $array = array(0 => "3.15");
+    
+    foreach ($array as $a) :
+        $an = explode(':', $a);
+    endforeach;
 	jigoshop_post_type();	/* register taxonomies */
 	
 	// add Singletons here so that the taxonomies are loaded before calling them.
