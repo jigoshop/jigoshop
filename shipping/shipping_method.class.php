@@ -30,6 +30,7 @@ class jigoshop_shipping_method {
 	var $shipping_tax 		= 0;
     
     private $tax;
+    private $error_message = null;
 	
     public function is_available() {
     	
@@ -48,12 +49,23 @@ class jigoshop_shipping_method {
 		endif; 
 		
 		if (is_array($ship_to_countries)) :
-			if (!in_array(jigoshop_customer::get_shipping_country(), $ship_to_countries)) return false;
+			if (!in_array(jigoshop_customer::get_shipping_country(), $ship_to_countries)) :
+                $this->set_error_message('Sorry, it seems that there are no available shipping methods to your location. Please contact us if you require assistance or wish to make alternate arrangements.');
+                return false;
+            endif;
 		endif;
 		
 		return true;
 		
     } 
+    
+    public function get_error_message() {
+    	return $this->error_message;
+    }
+    
+    public function set_error_message($error_message = null) {
+    	$this->error_message = $error_message;
+    }
     
     public function get_enabled() {
         return $this->enabled;

@@ -270,7 +270,7 @@ function jigoshop_cart($atts) {
 
 			<?php
 			else :
-				echo '<p>'.__('Sorry, it seems that there are no available shipping methods to your location. Please contact us if you require assistance or wish to make alternate arrangements.', 'jigoshop').'</p>';
+				echo '<p>' . __(jigoshop_shipping::get_shipping_error_message(), 'jigoshop') . '</p>';
 			endif;
 		?>
 		</div>

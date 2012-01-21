@@ -24,6 +24,7 @@ class jigoshop_shipping extends jigoshop_singleton {
     protected static $shipping_tax = 0;
     protected static $shipping_label = null;
     protected static $has_calculable_shipping = false;
+    private static $shipping_error_message = null;
 
     /** Constructor */
     protected function __construct() {
@@ -86,11 +87,22 @@ class jigoshop_shipping extends jigoshop_singleton {
                         self::$has_calculable_shipping = true;
                 endif;
 
+                self::$shipping_error_message = $method->get_error_message();
+                
             endforeach;
+            
 
+        endif;
+        
+        if (count($_available_methods) > 0) : 
+            self::$shipping_error_message = null;
         endif;
 
         return $_available_methods;
+    }
+    
+    public static function get_shipping_error_message() {
+    	return self::$shipping_error_message;
     }
 
     public static function reset_shipping_methods() {
@@ -219,5 +231,6 @@ class jigoshop_shipping extends jigoshop_singleton {
         self::$shipping_tax = 0;
         self::$shipping_label = null;
         self::$has_calculable_shipping = false;
+        self::$shipping_error_message = null;
     }
 }
