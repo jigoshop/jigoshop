@@ -490,7 +490,7 @@ class jigoshop_countries {
     		$state = end(explode(':', $default));
     	else :
     		$country = $default;
-    		$state = '';
+    		$state = '*';
     	endif;
 		
 		return $country;	    	
@@ -504,7 +504,7 @@ class jigoshop_countries {
     		$state = end(explode(':', $default));
     	else :
     		$country = $default;
-    		$state = '';
+    		$state = '*';
     	endif;
 		
 		return $state;	    	

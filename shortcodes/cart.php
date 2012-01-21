@@ -213,7 +213,7 @@ function jigoshop_cart($atts) {
                                     if (jigoshop_cart::is_not_compounded_tax($tax_class)) :
                                         ?>
                                         <tr>
-                                            <th class="cart-row-tax-title"><?php echo jigoshop_cart::get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%):'; ?></th>
+                                            <th class="cart-row-tax-title"><?php echo jigoshop_cart::get_tax_for_display($tax_class) ?></th>
                                             <td class="cart-row-tax"><?php echo jigoshop_cart::get_tax_amount($tax_class) ?></td>
                                         </tr>
                                     <?php
@@ -239,9 +239,7 @@ function jigoshop_cart($atts) {
                                             ?>
 
                                             <tr>
-                                                <?php // TODO: should likely add the estimated tags on the tax here still  ?>
-                                        <!--<th class="cart-row-tax-title"><?php // _e('Tax', 'jigoshop'); ?> <?php //if (jigoshop_customer::is_customer_outside_base()) : ?><small><?php //echo sprintf(__('estimated for %s', 'jigoshop'), jigoshop_countries::estimated_for_prefix() . jigoshop_countries::$countries[ jigoshop_countries::get_base_country() ] ); ?></small><?php //endif; ?></th>-->
-                                                <th class="cart-row-tax-title"><?php echo jigoshop_cart::get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%):'; ?></th>
+                                                <th class="cart-row-tax-title"><?php echo jigoshop_cart::get_tax_for_display($tax_class) ?></th>
                                                 <td class="cart-row-tax"><?php echo jigoshop_cart::get_tax_amount($tax_class) ?></td>
                                             </tr>
                                             <?php
@@ -252,7 +250,7 @@ function jigoshop_cart($atts) {
                                         foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
                                             ?>
                                             <tr>
-                                                <th class="cart-row-tax-title"><?php echo jigoshop_cart::get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%):'; ?></th>
+                                                <th class="cart-row-tax-title"><?php echo jigoshop_cart::get_tax_for_display($tax_class) ?></th>
                                                 <td class="cart-row-tax"><?php echo jigoshop_cart::get_tax_amount($tax_class) ?></td>
                                             </tr>    
                                         <?php endforeach;

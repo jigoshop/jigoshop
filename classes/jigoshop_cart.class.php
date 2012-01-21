@@ -390,7 +390,7 @@ class jigoshop_cart extends jigoshop_singleton {
 
                     if ($_product->is_taxable()) :
                         
-                        if (get_option('jigoshop_prices_include_tax') == 'yes' && jigoshop_customer::is_customer_outside_base() && (get_option('jigoshop_enable_shipping_calc')=='yes' ||  (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT ))) :
+                        if (get_option('jigoshop_prices_include_tax') == 'yes' && jigoshop_customer::is_customer_shipping_outside_base() && (get_option('jigoshop_enable_shipping_calc')=='yes' ||  (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT ))) :
 
                             $total_item_price = $_product->get_price_excluding_tax() * $values['quantity'] * 100;
 
@@ -448,6 +448,9 @@ class jigoshop_cart extends jigoshop_singleton {
         endforeach;
     }
 
+    public static function tax_calculated_from_base() {
+        return self::$tax->is_base_calculation();
+    }
     /** calculate totals for the items in the cart */
     function calculate_totals() {
 
@@ -616,8 +619,19 @@ class jigoshop_cart extends jigoshop_singleton {
         
     }
 
-    public static function get_tax_class_for_display($tax_class) {
-        return self::$tax->get_tax_class_for_display($tax_class);
+    public static function get_tax_for_display($tax_class) {
+
+        $return = '';
+
+        if (jigoshop_cart::get_tax_rate($tax_class) > 0) :
+            $return = self::$tax->get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%):';
+
+            if (jigoshop_cart::tax_calculated_from_base()) :
+                $return .= '<small>' . sprintf(__('estimated for %s', 'jigoshop'), jigoshop_countries::estimated_for_prefix() . jigoshop_countries::$countries[ jigoshop_countries::get_base_country() ] ) . '</small>';
+            endif; 
+        endif;
+        
+        return $return;
     }
 
     // after calculation. Used with admin pages only
