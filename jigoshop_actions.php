@@ -104,11 +104,11 @@ function jigoshop_add_order_item() {
 		<?php do_action('jigoshop_admin_order_item_values', $_product); ?>
 		<td class="quantity"><input type="text" name="item_quantity[]" placeholder="<?php _e('Quantity e.g. 2', 'jigoshop'); ?>" value="1" /></td>
 		<td class="cost"><input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit ex. tax e.g. 2.99', 'jigoshop'); ?>" value="<?php echo $_product->get_price(); ?>" /></td>
-		<td class="tax"><input type="text" name="item_tax_rate[]" placeholder="<?php _e('Tax Rate e.g. 20.0000', 'jigoshop'); ?>" value="<?php echo $_product->get_tax_base_rate(); ?>" /></td>
+        <td class="tax"><input type="text" name="item_tax_rate[]" placeholder="<?php _e('Tax Rate e.g. 20.0000', 'jigoshop'); ?>" value="<?php echo jigoshop_tax::calculate_total_tax_rate($_product->get_tax_base_rate()); ?>" /></td>
 		<td class="center">
 			<input type="hidden" name="item_id[]" value="<?php echo $_product->id; ?>" />
 			<input type="hidden" name="item_name[]" value="<?php echo $_product->get_title(); ?>" />
-            <input type="hidden" name="item_variation_id[]" value="<?php if ($_product->variation_id) echo $_product->variation_id; else echo ''; ?>" />
+            <input type="hidden" name="item_variation_id[]" value="<?php if ($_product instanceof jigoshop_product_variation) echo $_product->variation_id; else echo ''; ?>" />
 			<button type="button" class="remove_row button">&times;</button>
 		</td>
 	</tr>
@@ -322,10 +322,10 @@ function jigoshop_ajax_update_order_review() {
         if (isset($_POST['shipping_method'])) :
             
 		$shipping_method = explode(":", $_POST['shipping_method']);
-	 	$_SESSION['chosen_shipping_method_id'] = $shipping_method[0];
+	 	jigoshop_session::instance()->chosen_shipping_method_id = $shipping_method[0];
                 
                 if (is_numeric($shipping_method[2])) :
-                    $_SESSION['selected_rate_id'] = $shipping_method[2];
+                    jigoshop_session::instance()->selected_rate_id = $shipping_method[2];
                 endif;
                 
 	endif;
@@ -375,15 +375,15 @@ add_action( 'init', 'jigoshop_clear_cart_after_payment' );
 
 function jigoshop_clear_cart_after_payment( $url = false ) {
 
-	if (isset($_SESSION['order_awaiting_payment']) && $_SESSION['order_awaiting_payment'] > 0) :
+	if (isset( jigoshop_session::instance()->order_awaiting_payment ) && jigoshop_session::instance()->order_awaiting_payment > 0) :
 
-		$order = &new jigoshop_order($_SESSION['order_awaiting_payment']);
+		$order = &new jigoshop_order( jigoshop_session::instance()->order_awaiting_payment );
 
 		if ($order->id > 0 && ($order->status=='completed' || $order->status=='processing')) :
 
 			jigoshop_cart::empty_cart();
 
-			unset($_SESSION['order_awaiting_payment']);
+			unset( jigoshop_session::instance()->order_awaiting_payment );
 
 		endif;
 

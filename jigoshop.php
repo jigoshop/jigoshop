@@ -8,21 +8,21 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * Plugin Name:			Jigoshop - WordPress eCommerce
- * Plugin URI:			http://jigoshop.com
- * Description:			An eCommerce plugin for WordPress.
- * Author:				Jigowatt
- * Author URI:			http://jigowatt.co.uk
+ * Plugin Name:        Jigoshop - WordPress eCommerce
+ * Plugin URI:         http://jigoshop.com
+ * Description:        An eCommerce plugin for WordPress.
+ * Author:             Jigowatt
+ * Author URI:         http://jigowatt.co.uk
  *
- * Version:				1.0
- * Requires at least:	3.1
- * Tested up to:		3.3.1
+ * Version:            1.0
+ * Requires at least:  3.1
+ * Tested up to:       3.3.1
  *
- * @package    			Jigoshop
- * @category   			Core
- * @author     			Jigowatt
- * @copyright  			Copyright (c) 2011 Jigowatt Ltd.
- * @license    			http://jigoshop.com/license/commercial-edition
+ * @package            Jigoshop
+ * @category           Core
+ * @author             Jigowatt
+ * @copyright          Copyright (c) 2011 Jigowatt Ltd.
+ * @license            http://jigoshop.com/license/commercial-edition
  */
 
 if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1202010);
@@ -30,23 +30,11 @@ if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
 
-if ( get_site_option('jigoshop_db_version') < JIGOSHOP_VERSION ) {
-	require_once('jigoshop_upgrade.php');
-	jigoshop_upgrade();
-}
-
-/**
- * Installs and upgrades
- **/
-function jigoshop_update_check() {
-    if (get_site_option('jigoshop_db_version') != JIGOSHOP_VERSION) install_jigoshop();
-}
+// Load administration & check if we need to install
 if ( is_admin() ) {
 	include_once( 'admin/jigoshop-admin.php' );
 	register_activation_hook( __FILE__, 'install_jigoshop' );
-	add_action('init', 'jigoshop_update_check', 0);
 }
-
 /**
  * Include core files and classes
  **/
@@ -65,6 +53,7 @@ include_once( 'classes/jigoshop_orders.class.php' );
 include_once( 'classes/jigoshop_tax.class.php' );
 include_once( 'classes/jigoshop_shipping.class.php' );
 include_once( 'classes/jigoshop_coupons.class.php' );
+include_once( 'classes/jigoshop_session.class.php' );
 
 include_once( 'gateways/gateways.class.php' );
 include_once( 'gateways/gateway.class.php' );
@@ -188,9 +177,14 @@ function jigoshop_init() {
 	
 	/* ensure nothing is output to the browser prior to this (other than headers) */
 	ob_start();
-	/* start session here after all classes are loaded to eliminate __PHP_Incomplete_Class warnings */
-	if ( !session_id() ) session_start();
 	
+	jigoshop_session::instance()->test = 'val';
+	
+    $array = array(0 => "3.15");
+    
+    foreach ($array as $a) :
+        $an = explode(':', $a);
+    endforeach;
 	jigoshop_post_type();	/* register taxonomies */
 	
 	// add Singletons here so that the taxonomies are loaded before calling them.
@@ -216,12 +210,7 @@ function jigoshop_init() {
 	$css = file_exists(get_stylesheet_directory() . '/jigoshop/style.css') ? get_stylesheet_directory_uri() . '/jigoshop/style.css' : jigoshop::assets_url() . '/assets/css/frontend.css';
     if (JIGOSHOP_USE_CSS) wp_register_style('jigoshop_frontend_styles', $css );
 
-    if (is_admin()) :
-    	wp_register_style('jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css');
-    	wp_enqueue_style('jigoshop_admin_styles');
-   		wp_register_style('jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css');
-    	wp_enqueue_style('jquery-ui-jigoshop-styles');
-    else :
+    if ( !is_admin()) :
     	wp_register_style( 'jqueryui_styles', jigoshop::assets_url() . '/assets/css/ui.css' );
 
     	wp_enqueue_style('jigoshop_frontend_styles');
@@ -235,6 +224,14 @@ function jigoshop_init() {
     endif;
 }
 add_action('init', 'jigoshop_init', 0);
+
+add_action( 'admin_enqueue_scripts', 'jigoshop_admin_styles' );
+function jigoshop_admin_styles() {
+	wp_register_style('jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css');
+    wp_enqueue_style('jigoshop_admin_styles');
+   	wp_register_style('jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css');
+    wp_enqueue_style('jquery-ui-jigoshop-styles');
+}
 
 function jigoshop_admin_scripts() {
 
@@ -276,10 +273,10 @@ function jigoshop_frontend_scripts() {
 		'load_fancybox'					=> JIGOSHOP_LOAD_FANCYBOX
 	);
 
-	if (isset($_SESSION['min_price'])) :
+	if (isset( jigoshop_session::instance()->min_price )) :
 		$params['min_price'] = $_GET['min_price'];
 	endif;
-	if (isset($_SESSION['max_price'])) :
+	if (isset( jigoshop_session::instance()->max_price )) :
 		$params['max_price'] = $_GET['max_price'];
 	endif;
 
@@ -551,43 +548,51 @@ function get_jigoshop_currency_symbol() {
 function jigoshop_price( $price, $args = array() ) {
 
 	extract(shortcode_atts(array(
-		'ex_tax_label' 	=> '0'
+		'ex_tax_label' 	=> '0',
+        'with_currency' => true
 	), $args));
 
 	$return = '';
-	$currency_pos = get_option('jigoshop_currency_pos');
-	$currency_symbol = get_jigoshop_currency_symbol();
-	$currency_unit = get_option('jigoshop_currency');
 	$price = number_format(
 		(double) $price, 
 		(int) get_option('jigoshop_price_num_decimals'), 
 		get_option('jigoshop_price_decimal_sep'), 
 		get_option('jigoshop_price_thousand_sep')
 	);
+    
+    $return = $price;
+    
+    if ($with_currency) :
+        
+        $currency_pos = get_option('jigoshop_currency_pos');
+        $currency_symbol = get_jigoshop_currency_symbol();
+        $currency_unit = get_option('jigoshop_currency');
 
-	switch ($currency_pos) :
-		case 'left' :
-			$return = $currency_symbol . $price;
-		break;
-		case 'right' :
-			$return = $price . $currency_symbol;
-		break;
-		case 'both' :
-			$return = $currency_symbol . $price . $currency_unit;
-		break;
-		case 'left_space' :
-			$return = $currency_symbol . ' ' . $price;
-		break;
-		case 'right_space' :
-			$return = $price . ' ' . $currency_symbol;
-		break;
-		case 'both_space' :
-			$return = $currency_symbol . ' ' . $price . ' ' . $currency_unit;
-		break;
-	endswitch;
-
-	if ($ex_tax_label && get_option('jigoshop_calc_taxes')=='yes') $return .= __(' <small>(ex. tax)</small>', 'jigoshop');
-
+        switch ($currency_pos) :
+            case 'left' :
+                $return = $currency_symbol . $price;
+            break;
+            case 'right' :
+                $return = $price . $currency_symbol;
+            break;
+            case 'both' :
+                $return = $currency_symbol . $price . $currency_unit;
+            break;
+            case 'left_space' :
+                $return = $currency_symbol . ' ' . $price;
+            break;
+            case 'right_space' :
+                $return = $price . ' ' . $currency_symbol;
+            break;
+            case 'both_space' :
+                $return = $currency_symbol . ' ' . $price . ' ' . $currency_unit;
+            break;
+        endswitch;
+    
+        // only show (ex. tax) if we are going to show the price with currency as well. Otherwise we just want the formatted price
+        if ($ex_tax_label && get_option('jigoshop_calc_taxes')=='yes') $return .= __(' <small>(ex. tax)</small>', 'jigoshop');
+    endif;
+    
 	return $return;
 }
 

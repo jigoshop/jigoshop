@@ -146,9 +146,10 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * added Admin Product List display products by Category
 * added currency symbols for all countries
 * added a couple new currencies
-* added Romanian translations
+* added Romanian and Croatian translations
 * added multi-lingual functionality with the WordPress WPML plugin
 * fixed cyrillic characters & accents in attribute / variation names
+* fixed fancybox overlay
 * fixed users creating a new account now only if WP registration is allowed
 * fixed several 404 Jigoshop links
 * fixed My Account page not showing Address 2

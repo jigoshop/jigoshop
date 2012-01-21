@@ -40,7 +40,7 @@ class jigoshop_product_meta
 		update_post_meta( $post_id, 'tax_status',    $_POST['tax_status']);
 		update_post_meta( $post_id, 'tax_classes',   $_POST['tax_classes']);
 
-		update_post_meta( $post_id, 'visibility',    $_POST['visibility']);
+		update_post_meta( $post_id, 'visibility',    $_POST['product_visibility']);
 		update_post_meta( $post_id, 'featured',      $_POST['featured']);
 
 		// Downloadable Only

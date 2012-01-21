@@ -33,6 +33,55 @@ function jigoshop_get_plugin_data( $key = 'Version' ) {
 	return $data[$key];
 }
 
+
+/**
+ * Redirect to settings after installation
+ */
+function install_jigoshop_redirect() {
+	global $pagenow;
+
+	if ( is_admin() && isset( $_GET['activate'] ) && ($_GET['activate'] == true) && $pagenow == 'plugins.php' && get_option( "jigoshop_db_version" ) ) {
+		
+		// Redirect to settings
+		wp_redirect(admin_url('admin.php?page=settings&installed=true'));
+		exit;
+		
+	}
+}
+add_action('admin_init', 'install_jigoshop_redirect');
+
+add_action('admin_notices', 'jigoshop_update');
+function jigoshop_update() {
+	// Run database upgrade if required
+	if ( is_admin() && get_site_option('jigoshop_db_version') < JIGOSHOP_VERSION ) {
+
+		if ( isset($_GET['jigoshop_update_db']) && (bool) $_GET['jigoshop_update_db'] ) {
+			require_once( jigoshop::plugin_path().'/jigoshop_upgrade.php' );
+			$response = jigoshop_upgrade();
+
+			// If we succesfull inform the user
+			if ( $response ) {
+				echo '
+					<div class="updated">
+						<p>'.__('Your database has been successfully updated. Your shop is now automatically better than the rest, happy days', 'jigoshop').'!</p>
+					</div>
+				';
+			}
+		}
+
+		else {
+			echo '
+				<div class="updated">
+					<p>Uh oh! Looks like your Jigoshop database needs updating, just to be safe <strong>please backup your database</strong> before clicking this button!</p>
+					<p>
+						<a class="button-primary" href="' . add_query_arg('jigoshop_update_db', 'true') . '">Update Database</a>
+					</p>
+				</div>
+			';
+		}
+	}
+}
+
 /**
  * Admin Menus
  * 
@@ -249,8 +298,7 @@ function jigoshop_feature_product () {
 	
 	$product = new jigoshop_product($post->ID);
 
-	if ($product->is_featured()) update_post_meta($post->ID, 'featured', 'no');
-	else update_post_meta($post->ID, 'featured', 'yes');
+	update_post_meta( $post->ID, 'featured', ! $product->is_featured() );
 	
 	$sendback = remove_query_arg( array('trashed', 'untrashed', 'deleted', 'ids'), wp_get_referer() );
 	wp_safe_redirect( $sendback );
@@ -280,20 +328,6 @@ function jigoshop_get_current_post_type() {
     
     return '';
 }
-
-/**
- * Permalink structure needs to be saved twice for structure to take effect
- * Common bug with wordpress 3.1+ as of yet unresolved
- *
- * @returns		notice
- */
-function permalink_save_twice_notice() {
-	if( isset($_POST['_wp_http_referer']) && strpos($_POST['_wp_http_referer'], 'options-permalink.php') ) {
-		print_r('<div id="message" class="updated"><p>'.__('Note: Please make sure you save your permalink settings <strong>twice</strong> in order for them to be applied correctly in Jigoshop', 'jigoshop' ).'</p></div>');
-	}
-}
-// this seems fixed as of WP 3.3, commenting out for now to test -JAP-
-//add_action('admin_notices', 'permalink_save_twice_notice');
 
 /**
  * Categories ordering

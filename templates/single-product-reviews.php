@@ -120,8 +120,8 @@
 		jQuery('#review_form_wrapper').hide();
 		if (params.load_fancybox) {
 			jQuery('a.show_review_form').fancybox({
-				'transitionIn'	:	'elastic',
-				'transitionOut'	:	'elastic',
+				'transitionIn'	:	'fade',
+				'transitionOut'	:	'fade',
 				'speedIn'		:	600, 
 				'speedOut'		:	200, 
 				'overlayShow'	:	true

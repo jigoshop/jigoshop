@@ -347,54 +347,45 @@ function jigoshop_order_actions_meta_box($post) {
  */
 function jigoshop_order_totals_meta_box($post) {
 
-	$data = maybe_unserialize( get_post_meta($post->ID, 'order_data', true) );
+    $_order = new jigoshop_order($post->ID);
 
-	if (!isset($data['shipping_method'])) $data['shipping_method'] = '';
-	if (!isset($data['shipping_service'])) $data['shipping_service'] = '';
-	if (!isset($data['payment_method'])) $data['payment_method'] = '';
-	if (!isset($data['order_subtotal'])) $data['order_subtotal'] = '';
-	if (!isset($data['order_shipping'])) $data['order_shipping'] = '';
-	if (!isset($data['order_discount'])) $data['order_discount'] = '';
-	if (!isset($data['order_tax'])) $data['order_tax'] = '';
-	if (!isset($data['order_total'])) $data['order_total'] = '';
-	if (!isset($data['order_shipping_tax'])) $data['order_shipping_tax'] = '';
-
-	$coupons = array();
-	if( ! empty($data['order_discount_coupons']) ) {
-		foreach ( $data['order_discount_coupons'] as $coupon ) {
+    $coupons = array();
+    $order_discount_coupons = (array)$_order->get_value_from_data('order_discount_coupons');
+	if( ! empty( $order_discount_coupons )) {
+		foreach ( $order_discount_coupons as $coupon ) {
 			$coupons[] = $coupon['code'];
 		}
-	}
+	}   
 	?>
 	<ul class="totals">
 		<li class="left">
 			<label><?php _e('Subtotal:', 'jigoshop'); ?></label>
-			<input type="text" id="order_subtotal" name="order_subtotal" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo $data['order_subtotal']; ?>" class="first" />
+			<input type="text" id="order_subtotal" name="order_subtotal" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo $_order->get_value_from_data('order_subtotal') ?>" class="first" />
 		</li>
 
 		<li class="right">
 			<label><?php _e('Discount: ', 'jigoshop'); ?><span class="applied-coupons-values"><?php echo implode( ',', $coupons ); ?></span></label>
-			<input type="text" id="order_discount" name="order_discount" placeholder="0.00" value="<?php echo $data['order_discount']; ?>" />
+			<input type="text" id="order_discount" name="order_discount" placeholder="0.00" value="<?php echo $_order->get_value_from_data('order_discount'); ?>" />
 		</li>
 
 		<li>
 			<label><?php _e('Shipping:', 'jigoshop'); ?></label>
-			<input type="text" id="order_shipping" name="order_shipping" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo $data['order_shipping']; ?>" class="first" /> <input type="text" name="shipping_method" id="shipping_method" value="<?php echo $data['shipping_method']; ?>" class="last" placeholder="<?php _e('Shipping Method', 'jigoshop'); ?>" />
+            <input type="text" id="order_shipping" name="order_shipping" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo $_order->get_value_from_data('order_shipping'); ?>" class="first" /> <input type="text" name="shipping_method" id="shipping_method" value="<?php echo $_order->get_value_from_data('shipping_method') ?>" class="last" placeholder="<?php _e('Shipping Method', 'jigoshop'); ?>" />
         </li>
 
 		<li class="left">
 			<label><?php _e('Shipping Tax:', 'jigoshop'); ?></label>
-			<input type="text" id="order_shipping_tax" name="order_shipping_tax" placeholder="0.00" value="<?php echo $data['order_shipping_tax']; ?>" class="first" />
+			<input type="text" id="order_shipping_tax" name="order_shipping_tax" placeholder="0.00" value="<?php echo $_order->get_value_from_data('order_shipping_tax'); ?>" class="first" />
 		</li>
 
 		<li class="right">
 			<label><?php _e('Tax:', 'jigoshop'); ?></label>
-			<input type="text" id="order_tax" name="order_tax" placeholder="0.00" value="<?php echo $data['order_tax']; ?>" class="first" />
+			<input type="text" id="order_tax" name="order_tax" placeholder="0.00" value="<?php echo $_order->get_total_tax(); ?>" class="first" />
 		</li>
 
 		<li>
 			<label><?php _e('Total:', 'jigoshop'); ?></label>
-			<input type="text" id="order_total" name="order_total" placeholder="0.00" value="<?php echo $data['order_total']; ?>" class="first" /> <input type="text" name="payment_method" id="payment_method" value="<?php echo $data['payment_method']; ?>" class="last" placeholder="<?php _e('Payment Method', 'jigoshop'); ?>" />
+            <input type="text" id="order_total" name="order_total" placeholder="0.00" value="<?php echo $_order->get_value_from_data('order_total'); ?>" class="first" /> <input type="text" name="payment_method" id="payment_method" value="<?php echo $_order->get_value_from_data('payment_method'); ?>" class="last" placeholder="<?php _e('Payment Method', 'jigoshop'); ?>" />
 		</li>
 
 	</ul>

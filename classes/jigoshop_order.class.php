@@ -88,6 +88,7 @@ class jigoshop_order {
                 
 		$this->order_shipping 		= (string) $this->get_value_from_data('order_shipping');
 		$this->order_discount 		= (string) $this->get_value_from_data('order_discount');
+        $this->order_discount_coupons = $this->get_value_from_data('order_discount_coupons'); //array
 		$this->order_tax 		= $this->get_order_tax_array('order_tax');
 		$this->order_shipping_tax	= (string) $this->get_value_from_data('order_shipping_tax');
 		$this->order_total 			= (string) $this->get_value_from_data('order_total');
@@ -143,22 +144,27 @@ class jigoshop_order {
 	}
 	
 	/** Gets shipping and product tax */
-        //TODO: used on paypal at the moment. Do we need this?
 	function get_total_tax() {
-                $order_tax = 0;
-                foreach ($this->get_tax_classes() as $tax_class) :
-                    $order_tax += $this->order_tax[$tax_class]['amount'];
-                endforeach;
-		//return $order_tax + $this->order_shipping_tax;
-          return $order_tax;
+        $order_tax = 0;
+        
+        if ($this->get_tax_classes() && is_array($this->get_tax_classes())) : 
+            
+            foreach ($this->get_tax_classes() as $tax_class) :
+                $order_tax += $this->order_tax[$tax_class]['amount'];
+            endforeach;
+            
+        endif;
+        
+        return jigoshop_price($order_tax, array('with_currency' => false));
 	}
 	
         public function get_tax_classes() {
-            return array_keys($this->order_tax);
+            
+            return ($this->order_tax && is_array($this->order_tax) ? array_keys($this->order_tax) : array());
         }
         
-        public function tax_class_is_retail($tax_class) {
-            return $this->order_tax[$tax_class]['retail'];
+        public function tax_class_is_not_compound($tax_class) {
+            return !$this->order_tax[$tax_class]['compound'];
         }
         
         public function get_tax_rate($tax_class) {
@@ -166,7 +172,7 @@ class jigoshop_order {
         }
         
         public function get_tax_amount($tax_class) {
-            return jigoshop_price(number_format($this->order_tax[$tax_class]['amount'], 2, '.', ''));
+            return jigoshop_price($this->order_tax[$tax_class]['amount']);
         }
         
         public function get_tax_class_for_display($tax_class) {
@@ -192,13 +198,19 @@ class jigoshop_order {
 		if ($this->order_shipping > 0) :
 
 				$shipping = jigoshop_price($this->order_shipping);
-				if ($this->order_shipping_tax > 0) :
+				if ($this->order_shipping_tax > 0) : //tax applied to shipping
 					if ($this->shipping_service != NULL || $this->shipping_service) :
 						$shipping .= sprintf(__(' <small>(ex. tax) %s via %s</small>', 'jigoshop'), ucwords($this->shipping_service), ucwords($this->shipping_method));
 					else :
 						$shipping .= sprintf(__(' <small>(ex. tax) via %s</small>', 'jigoshop'), ucwords($this->shipping_method));
 					endif;
-				endif;
+				else : // when no tax applied to shipping
+                    if ($this->shipping_service != NULL || $this->shipping_service) :
+                        $shipping .= sprintf(__(' <small>%s via %s</small>', 'jigoshop'), ucwords($this->shipping_service), ucwords($this->shipping_method));
+                    else :
+                        $shipping .= sprintf(__(' <small>via %s</small>', 'jigoshop'), ucwords($this->shipping_method));
+                    endif;
+                endif;
 
 		else :
 			$shipping = __('Free!', 'jigoshop');
@@ -383,7 +395,7 @@ class jigoshop_order {
 	 */
 	function cancel_order( $note = '' ) {
 		
-		unset($_SESSION['order_awaiting_payment']);
+		unset( jigoshop_session::instance()->order_awaiting_payment );
 		
 		$this->update_status('cancelled', $note);
 		
@@ -398,7 +410,7 @@ class jigoshop_order {
 	 */
 	function payment_complete() {
 		
-		unset($_SESSION['order_awaiting_payment']);
+		unset( jigoshop_session::instance()->order_awaiting_payment );
 		
 		$downloadable_order = false;
 		

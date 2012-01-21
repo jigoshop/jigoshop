@@ -241,17 +241,7 @@ if (!function_exists('jigoshop_template_single_meta')) {
 		if ($_product->is_type('simple') && get_option('jigoshop_enable_sku')=='yes') :
 			echo '<div class="sku">SKU: ' . $_product->sku . '</div>';
 		endif;
-		if (get_option('jigoshop_enable_weight')=='yes' && $_product->get_weight() ) :
-			echo '<div class="weight">' . __('Weight: ', 'jigoshop') . $_product->get_weight() . ' ' . get_option('jigoshop_weight_unit') . '</div>';
-		endif;
-		if (get_option('jigoshop_enable_dimensions')=='yes') :
-			if ( $_product->get_length() )
-				echo '<div class="length">' . __('Length: ', 'jigoshop') . $_product->get_length() . ' ' . get_option('jigoshop_dimension_unit') . '</div>';
-			if ( $_product->get_width() )
-				echo '<div class="width">' . __('Width: ', 'jigoshop') . $_product->get_width() . ' ' . get_option('jigoshop_dimension_unit') . '</div>';
-			if ( $_product->get_height() )
-				echo '<div class="height">' . __('Height: ', 'jgioshop') . $_product->get_height() . ' ' . get_option('jigoshop_dimension_unit') . '</div>';
-		endif;
+		
 		echo $_product->get_categories( ', ', ' <div class="posted_in">' . __( 'Posted in ', 'jigoshop' ) . '', '.</div>');
 		echo $_product->get_tags( ', ', ' <div class="tagged_as">' . __( 'Tagged as ', 'jigoshop' ) . '', '.</div>');
 		echo '</div>';
@@ -485,6 +475,9 @@ if (!function_exists('jigoshop_pagination')) {
  **/
 if (!function_exists('jigoshop_product_description_tab')) {
 	function jigoshop_product_description_tab( $current_tab ) {
+		global $post;
+		if( ! $post->post_content )
+			return false;
 		?>
 		<li <?php if ($current_tab=='#tab-description') echo 'class="active"'; ?>><a href="#tab-description"><?php _e('Description', 'jigoshop'); ?></a></li>
 		<?php
@@ -494,8 +487,9 @@ if (!function_exists('jigoshop_product_attributes_tab')) {
 	function jigoshop_product_attributes_tab( $current_tab ) {
 
 		global $_product;
-
-		if ($_product->has_attributes()) : ?><li <?php if ($current_tab=='#tab-attributes') echo 'class="active"'; ?>><a href="#tab-attributes"><?php _e('Additional Information', 'jigoshop'); ?></a></li><?php endif;
+		if( ( $_product->has_attributes() || $_product->has_dimensions() || $_product->has_weight() ) ):
+		?>
+		<li <?php if ($current_tab=='#tab-attributes') echo 'class="active"'; ?>><a href="#tab-attributes"><?php _e('Additional Information', 'jigoshop'); ?></a></li><?php endif;
 
 	}
 }
@@ -522,7 +516,7 @@ if (!function_exists('jigoshop_product_attributes_panel')) {
 	function jigoshop_product_attributes_panel() {
 		global $_product;
 		echo '<div class="panel" id="tab-attributes">';
-		echo '<h2>' . apply_filters('jigoshop_product_description_heading', __('Additional Information', 'jigoshop')) . '</h2>';
+		echo '<h2>' . apply_filters('jigoshop_product_attributes_heading', __('Additional Information', 'jigoshop')) . '</h2>';
 		echo $_product->list_attributes();
 		echo '</div>';
 	}
@@ -631,7 +625,7 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 						$current_r = jigoshop_customer::get_shipping_state();
 						$states = jigoshop_countries::$states;
 
-						if (isset( $states[$current_cc][$current_r] )) :
+						if (jigoshop_countries::country_has_states($current_cc)) :
 							// Dropdown
 							?>
 							<span>

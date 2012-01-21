@@ -22,7 +22,7 @@ class jigoshop_customer extends jigoshop_singleton {
 	/** constructor */
 	protected function __construct() {
 		
-		if ( !isset($_SESSION['customer']) ) :
+		if ( !isset( jigoshop_session::instance()->customer ) ) :
 			
 			$default = get_option('jigoshop_default_country');
         	if (strstr($default, ':')) :
@@ -40,106 +40,124 @@ class jigoshop_customer extends jigoshop_singleton {
 				'shipping_state' => $state,
 				'shipping_postcode' => ''
 			);			
-			$_SESSION['customer'] = $data;
+			jigoshop_session::instance()->customer  = $data;
 			
 		endif;
 		
 	}
 	
-    /** Is customer outside base country? */
-	public static function is_customer_outside_base() {
+    /** 
+     * Is customer shipping outside base, but within the same country? This is
+     * used to determine how to apply taxes. Also, it no country is set, assume
+     * shipping is going to base country.
+     */
+	public static function is_customer_shipping_outside_base() {
 		$outside = false;
-		if ( self::get_country() ) :
-			
-			$shopcountry = jigoshop_countries::get_base_country();
-			$shopstate = jigoshop_countries::get_base_state();
-			
-			if ( $shopcountry !== self::get_country() ) $outside = true;
-			if ( $shopstate !== self::get_state() ) $outside = true;
+        $shipping_country = self::get_shipping_country();
+        
+        // if no shipping country is set, then assume customer will ship to the shop base
+        // country until customer sets the shipping country.
+		if ( $shipping_country ) :
+           
+            // only check if it's a country with states. Otherwise always return false, as
+            // we don't care about calculating taxes for a customer outside of the base 
+            // country.
+           if (jigoshop_countries::country_has_states($shipping_country)) :
+                
+                $shopcountry = jigoshop_countries::get_base_country();
+                $shopstate = jigoshop_countries::get_base_state();
+            
+                // taxes only apply if the customer is shipping in the same country. If the customer is 
+                // shipping outside of the shop country, then taxes do not apply.
+                if ( $shopcountry === self::get_shipping_country() && $shopstate !== self::get_shipping_state() ) :
+                    $outside = true;
+                endif;
+            endif;
 		endif;
 		return $outside;
 	}
 	
 	/** Gets the state from the current session */
 	public static function get_state() {
-		if (isset($_SESSION['customer']['state'])) return $_SESSION['customer']['state'];
+		if (isset(jigoshop_session::instance()->customer['state'])) return jigoshop_session::instance()->customer['state'];
 	}
 	
 	/** Gets the country from the current session */
 	public static function get_country() {
-		if (isset($_SESSION['customer']['country'])) return $_SESSION['customer']['country'];
+		if (isset( jigoshop_session::instance()->customer['country'])) return jigoshop_session::instance()->customer['country'];
 	}
 	
 	/** Gets the postcode from the current session */
 	public static function get_postcode() {
-		if (isset($_SESSION['customer']['postcode'])) return strtolower(str_replace(' ', '', $_SESSION['customer']['postcode']));
+		if (isset( jigoshop_session::instance()->customer['postcode'])) return strtolower(str_replace(' ', '', jigoshop_session::instance()->customer['postcode']));
 	}
 	
 	/** Gets the state from the current session */
 	public static function get_shipping_state() {
-		if (isset($_SESSION['customer']['shipping_state'])) return $_SESSION['customer']['shipping_state'];
+		if (isset(jigoshop_session::instance()->customer['shipping_state'])) return jigoshop_session::instance()->customer['shipping_state'];
 	}
 	
 	/** Gets the country from the current session */
 	public static function get_shipping_country() {
-		if (isset($_SESSION['customer']['shipping_country'])) return $_SESSION['customer']['shipping_country'];
+		if (isset( jigoshop_session::instance()->customer['shipping_country']))
+			return jigoshop_session::instance()->customer['shipping_country'];
 	}
 	
 	/** Gets the postcode from the current session */
 	public static function get_shipping_postcode() {
-		if (isset($_SESSION['customer']['shipping_postcode'])) return strtolower(str_replace(' ', '', $_SESSION['customer']['shipping_postcode']));
+		if (isset(jigoshop_session::instance()->customer['shipping_postcode'])) return strtolower(str_replace(' ', '', jigoshop_session::instance()->customer['shipping_postcode']));
 	}
 	
 	/** Sets session data for the location */
 	public static function set_location( $country, $state, $postcode = '' ) {
-		$data = (array) $_SESSION['customer'];
+		$data = (array) jigoshop_session::instance()->customer;
 		
 		$data['country'] = $country;
 		$data['state'] = $state;
 		$data['postcode'] = $postcode;
 		
-		$_SESSION['customer'] = $data;
+		jigoshop_session::instance()->customer = $data;
 	}
 	
 	/** Sets session data for the country */
 	public static function set_country( $country ) {
-		$_SESSION['customer']['country'] = $country;
+		jigoshop_session::instance()->customer['country'] = $country;
 	}
 	
 	/** Sets session data for the state */
 	public static function set_state( $state ) {
-		$_SESSION['customer']['state'] = $state;
+		jigoshop_session::instance()->customer['state'] = $state;
 	}
 	
 	/** Sets session data for the postcode */
 	public static function set_postcode( $postcode ) {
-		$_SESSION['customer']['postcode'] = $postcode;
+		jigoshop_session::instance()->customer['postcode'] = $postcode;
 	}
 	
 	/** Sets session data for the location */
 	public static function set_shipping_location( $country, $state = '', $postcode = '' ) {
-		$data = (array) $_SESSION['customer'];
+		$data = (array) jigoshop_session::instance()->customer;
 		
 		$data['shipping_country'] = $country;
 		$data['shipping_state'] = $state;
 		$data['shipping_postcode'] = $postcode;
 		
-		$_SESSION['customer'] = $data;
+		jigoshop_session::instance()->customer = $data;
 	}
 	
 	/** Sets session data for the country */
 	public static function set_shipping_country( $country ) {
-		$_SESSION['customer']['shipping_country'] = $country;
+		jigoshop_session::instance()->customer['shipping_country'] = $country;
 	}
 	
 	/** Sets session data for the state */
 	public static function set_shipping_state( $state ) {
-		$_SESSION['customer']['shipping_state'] = $state;
+		jigoshop_session::instance()->customer['shipping_state'] = $state;
 	}
 	
 	/** Sets session data for the postcode */
 	public static function set_shipping_postcode( $postcode ) {
-		$_SESSION['customer']['shipping_postcode'] = $postcode;
+		jigoshop_session::instance()->customer['shipping_postcode'] = $postcode;
 	}
 	
 	/**

@@ -130,7 +130,7 @@ class jigoshop_product {
 			return get_the_post_thumbnail( $this->ID, $size );
 		
 		// Otherwise just return a placeholder
-			return '<img src="'.jigoshop::plugin_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.$image_size[0].'px" height="'.$image_size[1].'px" />';
+			return '<img src="'.jigoshop::assets_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.$image_size[0].'px" height="'.$image_size[1].'px" />';
 	}
 	
 	/**
@@ -517,7 +517,7 @@ class jigoshop_product {
 	public function is_on_sale() {
 
 		// Check child products for items on sale
-		if ( $this->is_type('grouped', 'variable') ) {
+		if ( $this->is_type( array('grouped', 'variable') ) ) {
 
 			foreach( $this->get_children() as $child_ID ) {
 
@@ -561,37 +561,36 @@ class jigoshop_product {
         if (get_option('jigoshop_prices_include_tax') == 'yes') :
             $rates = (array) $this->get_tax_base_rate();
         
-            // rates array sorted so that taxes applied to retail value come first. To reverse taxes
-            // need to reverse this array
-            $new_rates = array_reverse($rates, true);
+            if (count($rates > 0)) :
 
-            $tax_applied_after_retail = 0;
-            $tax_totals = 0;
-            
-            if ($new_rates) :
-                
+                // rates array sorted so that taxes applied to retail value come first. To reverse taxes
+                // need to reverse this array
+                $new_rates = array_reverse($rates, true);
+
+                $tax_applied_after_retail = 0;
+                $tax_totals = 0;
+
                 $_tax = &new jigoshop_tax();
-            
+
                 foreach ( $new_rates as $key=>$value ) :
 
-                    //means that this tax was applied to total including any retail taxes added
-                    if (!$value['is_retail']) :
+                    if ($value['is_not_compound_tax']) :
+                        $tax_totals += $_tax->calc_tax($price - $tax_applied_after_retail, $value['rate'], true);
+                    else :
                         $tax_amount[$key] = $_tax->calc_tax($price, $value['rate'], true);
                         $tax_applied_after_retail += $tax_amount[$key];
                         $tax_totals += $tax_amount[$key];
-                    else :
-                        $tax_totals += $_tax->calc_tax($price - $tax_applied_after_retail, $value['rate'], true);
                     endif;
 
                 endforeach;
-                
+
                 $price = $price - $tax_totals;
             
             endif;
             
         endif;
 
-            return $price;
+        return $price;
             
     }
 
@@ -603,19 +602,18 @@ class jigoshop_product {
 	 */
 	public function get_tax_base_rate() {
 
-		$rate = NULL;
+		$rate = array();
             
         if ($this->is_taxable() && get_option('jigoshop_calc_taxes') == 'yes') :
             $_tax = &new jigoshop_tax();
             
             if ($_tax->get_tax_classes_for_base()) foreach ( $_tax->get_tax_classes_for_base() as $tax_class ) :
                 
-                //TODO: remember standard rate.
-                if ( !in_array($tax_class, $this->data['tax_classes'])) continue;
+                if ( !in_array($tax_class, $this->get_tax_classes())) continue;
                 $my_rate = $_tax->get_shop_base_rate($tax_class);
                 
                 if ($my_rate > 0) :
-                    $rate[$tax_class] = array('rate'=>$my_rate, 'is_retail'=>$_tax->is_applied_to_retail());
+                    $rate[$tax_class] = array('rate'=>$my_rate, 'is_not_compound_tax'=>!$_tax->is_compound_tax());
                 endif;
                 
             endforeach;
@@ -624,6 +622,37 @@ class jigoshop_product {
 
         return $rate;
 	}
+    
+    /**
+     * This function returns the tax rate for a particular tax_class applied to the product
+     * 
+     * @param string tax_class the class of tax to find
+     * @param array product_tax_rates the tax rates applied to the product
+     * @return double the tax rate percentage
+     */
+    public static function get_product_tax_rate($tax_class, $product_tax_rates) {
+        
+        if ($tax_class && $product_tax_rates && is_array($product_tax_rates)) :
+            return $product_tax_rates[$tax_class]['rate'];
+        endif;
+        
+        return (double) 0;
+    }
+    
+    /**
+     * Returns true if the tax is not compounded. 
+     * @param string tax_class the tax class return value on
+     * @param array product_tax_rates the array of tax rates on the product
+     * @return bool true if tax class is not compounded. False otherwise. Default true.
+     */
+    public static function get_non_compounded_tax($tax_class, $product_tax_rates) {
+        
+        if ($tax_class && $product_tax_rates && is_array($product_tax_rates)) :
+            return $product_tax_rates[$tax_class]['is_not_compound_tax'];
+        endif;
+        
+        return true;  // default to true for non compound tax  
+    }
 
 	/**
 	 * Returns the percentage saved on sale products
@@ -678,8 +707,11 @@ class jigoshop_product {
 		// First check if the product is grouped
 		if ( $this->is_type( array('grouped', 'variable') ) ) {
 
+			if ( ! ($children = $this->get_children()) )
+				return __( 'Unavailable', 'jigoshop' );
+
 			$array = array();
-			foreach ( $this->get_children() as $child_ID ) {
+			foreach ( $children as $child_ID ) {
 				$child = $this->get_child($child_ID); 
 				
 				// Only get prices that are in stock
@@ -759,7 +791,14 @@ class jigoshop_product {
 	public function get_height() {
 		return $this->height;
 	}
-
+    
+    /**
+     * Returns the tax classes
+     * @return array the tax classes on the product 
+     */
+    public function get_tax_classes() {
+        return (array) get_post_meta($this->ID, 'tax_classes', true);
+    }
 	/**
 	 * Returns the product categories
 	 *
@@ -776,6 +815,49 @@ class jigoshop_product {
 	 */
 	public function get_tags( $sep = ', ', $before = '', $after = '' ) {
 		return get_the_term_list($this->ID, 'product_tag', $before, $sep, $after);
+	}
+
+	// Returns the product rating in html format
+	// TODO: optimize this code
+	public function get_rating_html( $location = '' ) {
+
+		if( $location ) 
+			$location = '_'.$location;
+		$star_size = apply_filters('jigoshop_star_rating_size'.$location, 16);
+
+		global $wpdb;
+
+		// Do we really need this? -Rob
+		$count = $wpdb->get_var("
+			SELECT COUNT(meta_value) FROM $wpdb->commentmeta 
+			LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
+			WHERE meta_key = 'rating'
+			AND comment_post_ID = $this->id
+			AND comment_approved = '1'
+			AND meta_value > 0
+		");
+
+		$ratings = $wpdb->get_var("
+			SELECT SUM(meta_value) FROM $wpdb->commentmeta 
+			LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
+			WHERE meta_key = 'rating'
+			AND comment_post_ID = $this->id
+			AND comment_approved = '1'
+		");
+
+		// If we don't have any posts
+		if ( ! (bool)$count )
+			return false;
+
+		// Figure out the average rating
+		$average_rating = number_format($ratings / $count, 2);
+
+		// If we don't have an average rating
+		if( ! (bool)$average_rating )
+			return false;
+
+		// If all goes well echo out the html
+		return '<div class="star-rating" title="'.sprintf(__('Rated %s out of 5', 'jigoshop'), $average_rating).'"><span style="width:'.($average_rating*$star_size).'px"><span class="rating">'.$average_rating.'</span> '.__('out of 5', 'jigoshop').'</span></div>';
 	}
 
 	/**
@@ -833,7 +915,7 @@ class jigoshop_product {
 	 * Gets a single product attribute
 	 *
 	 * @return  string|array
-	 **/
+	 */
 	public function get_attribute( $key ) {
 
 		// Get the attribute in question & sanitize just incase
@@ -851,7 +933,7 @@ class jigoshop_product {
 	 * Gets the attached product attributes
 	 *
 	 * @return  array
-	 **/
+	 */
 	public function get_attributes() {
 
 		// Get the attributes
@@ -865,7 +947,7 @@ class jigoshop_product {
 	 * Checks for any visible attributes attached to the product
 	 *
 	 * @return  boolean
-	 **/
+	 */
 	public function has_attributes() {
 		if ( (bool) $this->get_attributes() ) {
 			foreach( $this->get_attributes() as $attribute ) {
@@ -877,6 +959,32 @@ class jigoshop_product {
 	}
 
 	/**
+	 * Checks if the product has dimensions
+	 *
+	 * @return  bool
+	 */
+	public function has_dimensions() {
+
+		if ( get_option('jigoshop_enable_dimensions') != 'yes' )
+			return false;
+
+		return ( $this->get_length() || $this->get_width() || $this->get_height() );
+	}
+
+	/**
+	 * Checks if the product has weight
+	 *
+	 * @return  bool
+	 */
+	public function has_weight() {
+
+		if ( get_option('jigoshop_enable_weight') != 'yes' )
+			return false;
+
+		return (bool) $this->get_weight();
+	}
+
+	/**
 	 * Lists attributes in a html table
 	 *
 	 * @return  html
@@ -884,11 +992,26 @@ class jigoshop_product {
 	public function list_attributes() {
 
 		// Check that we have some attributes that are visible
-		if ( ! $this->has_attributes() )
+		if ( !( $this->has_attributes() || $this->has_dimensions() || $this->has_weight() ) )
 			return false;
 
 		// Start the html output
 		$html = '<table cellspacing="0" class="shop_attributes">';
+
+		// Output weight if we have it
+		if (get_option('jigoshop_enable_weight')=='yes' && $this->get_weight() ) {
+			$html .= '<tr><th>'.__('Weight', 'jigoshop').'</th><td>'. $this->get_weight() . get_option('jigoshop_weight_unit') .'</td></tr>';
+		}
+
+		// Output dimensions if we have it
+		if (get_option('jigoshop_enable_dimensions')=='yes') {
+			if ( $this->get_length() )
+				$html .= '<tr><th>'.__('Length', 'jigoshop').'</th><td>'. $this->get_length() . get_option('jigoshop_dimension_unit') .'</td></tr>';
+			if ( $this->get_width() )
+				$html .= '<tr><th>'.__('Width', 'jigoshop').'</th><td>'. $this->get_width() . get_option('jigoshop_dimension_unit') .'</td></tr>';
+			if ( $this->get_height() )
+				$html .= '<tr><th>'.__('Height', 'jigoshop').'</th><td>'. $this->get_height() . get_option('jigoshop_dimension_unit') .'</td></tr>';
+		}
 
 		foreach( $this->get_attributes() as $attr ) {
 
