@@ -161,7 +161,7 @@ function jigoshop_product_data_box() {
 						'taxable'	=> 'Taxable',
 						'shipping'	=> 'Shipping',
 						'none'		=> 'None'
-					), $data[$field['id']] );
+					) );
 
 	            ?>
 
@@ -227,13 +227,13 @@ function jigoshop_product_data_box() {
 			<fieldset>
 			<?php
 				// Visibility
-				echo jigoshop_form::select( 'visibility', 'Visibility',
+				echo jigoshop_form::select( 'product_visibility', 'Visibility',
 					array(
 						'visible'	=> 'Catalog & Search',
 						'catalog'	=> 'Catalog Only',
 						'search'	=> 'Search Only',
 						'Hidden'	=> 'Hidden'
-					) );
+					), get_post_meta( $post->ID, 'visibility', true ) );
 			?>
 			</fieldset>
 		</div>

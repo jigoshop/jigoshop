@@ -707,8 +707,11 @@ class jigoshop_product {
 		// First check if the product is grouped
 		if ( $this->is_type( array('grouped', 'variable') ) ) {
 
+			if ( ! ($children = $this->get_children()) )
+				return __( 'Unavailable', 'jigoshop' );
+
 			$array = array();
-			foreach ( $this->get_children() as $child_ID ) {
+			foreach ( $children as $child_ID ) {
 				$child = $this->get_child($child_ID); 
 				
 				// Only get prices that are in stock
