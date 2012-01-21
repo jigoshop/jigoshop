@@ -218,8 +218,8 @@ class jigoshop_tax {
 
         // if compound tax has been set to true, don't reset it. 
         // eg. Shipping tax could reset it to false again
-        if (array_key_exists('compound', $rate) && !$this->compound_tax) :
-            $this->compound_tax = ( $rate['compound'] == 'yes' ? true : false );
+        if (!$this->compound_tax) :
+            $this->compound_tax = ( isset($rate['compound']) && $rate['compound'] == 'yes' ? true : false );
         endif;
 
         return $rate;
@@ -233,14 +233,17 @@ class jigoshop_tax {
     public function get_tax_classes_for_customer() {
         $country = jigoshop_customer::get_shipping_country();
         $this->is_base_calculation = false;
-   
+        
+        // just make sure the customer can be charged taxes in the first place
+        if ($country && $country != jigoshop_countries::get_base_country()) return array();
+        
         // get base country as no country exists (possible on shopping cart)
         if (!$country) :
             $this->is_base_calculation = true;
             return $this->get_tax_classes_for_base();
         else :
             $state = (jigoshop_customer::get_shipping_state() && jigoshop_countries::country_has_states($country)? jigoshop_customer::get_shipping_state() : '*');
-            $tax_classes = (isset($this->rates[$country]) ? $this->rates[$country][$state] : false);
+            $tax_classes = (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state] : false);
             return ($tax_classes && is_array($tax_classes) ? array_keys( $tax_classes ) : array());
         endif;
         
@@ -259,7 +262,7 @@ class jigoshop_tax {
             $state = (jigoshop_countries::country_has_states($country) && jigoshop_customer::get_shipping_state() ? jigoshop_customer::get_shipping_state() : '*');
         endif;
 
-        return (isset($this->rates[$country]) ? $this->rates[$country][$state][$class]['label'] : 'Tax');
+        return (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state][$class]['label'] : 'Tax');
     }
 
     /**
@@ -270,7 +273,7 @@ class jigoshop_tax {
         $country = jigoshop_countries::get_base_country();
         $state = jigoshop_countries::get_base_state();
 
-        $tax_classes = (isset($this->rates[$country]) ? $this->rates[$country][$state] : false);
+        $tax_classes = (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state] : false);
 
         return ($tax_classes && is_array($tax_classes) ? array_keys($tax_classes) : array());
     }
@@ -302,7 +305,9 @@ class jigoshop_tax {
     public function get_compound_tax_amount() {
         $tax_amount = 0;
         foreach ($this->get_applied_tax_classes() as $tax_class) :
-            $tax_amount += $this->tax_amounts[$tax_class]['amount'];
+            if (isset($this->tax_amounts[$tax_class]) && isset($this->tax_amounts[$tax_class]['amount'])) :
+                $tax_amount += $this->tax_amounts[$tax_class]['amount'];
+            endif;
         endforeach;
         
         return ($this->tax_divisor > 0 ? number_format(($tax_amount / $this->tax_divisor) - $this->get_non_compounded_tax_amount(), 2, '.', '') : number_format($tax_amount - $this->non_compound_tax_amount, 2, '.', ''));
@@ -400,13 +405,16 @@ class jigoshop_tax {
     public function update_tax_amount_with_shipping_tax($tax_amount) {
         // shipping taxes may not be checked, and if they aren't, there will be no shipping tax class. Don't update
         // as the amount will be 0
-        if ($this->shipping_tax_class) :
+        // if shipping country not set, then estimate taxes, if it's set make sure shipping country is the same as the base country
+        if ($this->shipping_tax_class && (!jigoshop_customer::get_shipping_country() || jigoshop_customer::get_shipping_country() == jigoshop_countries::get_base_country())) :
             $this->update_tax_amount($this->shipping_tax_class, round($tax_amount), false);
         endif;
     }
     
     public function update_tax_amount($tax_class, $amount, $recalculate_tax = true) {
-        if ($tax_class) :
+        
+        // if shipping country not set, then estimate taxes, if it's set make sure shipping country is the same as the base country
+        if ($tax_class && (!jigoshop_customer::get_shipping_country() || jigoshop_customer::get_shipping_country() == jigoshop_countries::get_base_country())) :
             
             if ($recalculate_tax) :
                 $rate = $this->get_rate($tax_class);
@@ -534,6 +542,9 @@ class jigoshop_tax {
         $this->shipping_tax_class = '';
         
         $country = jigoshop_customer::get_shipping_country();
+        
+        // don't calculate if customer is shipping to another country
+        if ($country && $country != jigoshop_countries::get_base_country()) return 0;
         $this->is_base_calculation = false;        
         
         // get base country as no country has been entered by user yet (possibly on shopping cart)
