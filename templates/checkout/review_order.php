@@ -94,13 +94,7 @@
                                 echo '</select>';
 
                             else :
-
-                                if (!jigoshop_customer::get_country()) :
-                                    echo '<p>' . __('Please fill in your details above to see available shipping methods.', 'jigoshop') . '</p>';
-                                else :
-                                    echo '<p>' . __('Sorry, it seems that there are no available shipping methods for your state. Please contact us if you require assistance or wish to make alternate arrangements.', 'jigoshop') . '</p>';
-                                endif;
-
+                                echo '<p>' . __(jigoshop_shipping::get_shipping_error_message(), 'jigoshop') . '</p>';
                             endif;
                             ?></td>
                     </tr>
@@ -180,11 +174,7 @@
 
                             else :
 
-                                if (!jigoshop_customer::get_country()) :
-                                    echo '<p>' . __('Please fill in your details above to see available shipping methods.', 'jigoshop') . '</p>';
-                                else :
-                                    echo '<p>' . __('Sorry, it seems that there are no available shipping methods for your state. Please contact us if you require assistance or wish to make alternate arrangements.', 'jigoshop') . '</p>';
-                                endif;
+                                echo '<p>' . __(jigoshop_shipping::get_shipping_error_message(), 'jigoshop') . '</p>';
 
                             endif;
                             ?></td>
