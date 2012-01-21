@@ -45,8 +45,8 @@ class jigoshop_cart extends jigoshop_singleton {
 
         self::$applied_coupons = array();
 
-        if (isset($_SESSION['coupons']))
-            self::$applied_coupons = $_SESSION['coupons'];
+        if (isset( jigoshop_session::instance()->coupons ))
+            self::$applied_coupons = jigoshop_session::instance()->coupons;
 
         self::$tax = new jigoshop_tax(100); //initialize tax on the cart with divisor of 100
     
@@ -59,8 +59,8 @@ class jigoshop_cart extends jigoshop_singleton {
     /** Gets the cart data from the PHP session */
     function get_cart_from_session() {
 
-        if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) :
-            $cart = $_SESSION['cart'];
+        if (isset( jigoshop_session::instance()->cart ) && is_array( jigoshop_session::instance()->cart )) :
+            $cart = jigoshop_session::instance()->cart;
 
             foreach ($cart as $key => $values) :
 
@@ -90,12 +90,12 @@ class jigoshop_cart extends jigoshop_singleton {
 
         // we get here from cart additions, quantity adjustments, and coupon additions
         // reset any chosen shipping methods as these adjustments can effect shipping (free shipping)
-        unset($_SESSION['chosen_shipping_method_id']);
-        unset($_SESSION['selected_rate_id']); // calculable shipping 
+        unset( jigoshop_session::instance()->chosen_shipping_method_id );
+        unset( jigoshop_session::instance()->selected_rate_id ); // calculable shipping 
 
-        $_SESSION['cart'] = self::$cart_contents;
+        jigoshop_session::instance()->cart = self::$cart_contents;
 
-        $_SESSION['coupons'] = self::$applied_coupons;
+        jigoshop_session::instance()->coupons = self::$applied_coupons;
 
         // This has to be tested. I believe all that needs to be calculated at time of setting session
         // is really the cart total and not shipping. All functions that use set_session are functions
@@ -109,10 +109,10 @@ class jigoshop_cart extends jigoshop_singleton {
         self::$cart_contents = array();
         self::$applied_coupons = array();
         self::reset_totals();
-        unset($_SESSION['cart']);
-        unset($_SESSION['coupons']);
-        unset($_SESSION['chosen_shipping_method_id']);
-        unset($_SESSION['selected_rate_id']);
+        unset(jigoshop_session::instance()->cart);
+        unset(jigoshop_session::instance()->coupons);
+        unset(jigoshop_session::instance()->chosen_shipping_method_id);
+        unset(jigoshop_session::instance()->selected_rate_id);
     }
 
     /**
@@ -390,7 +390,7 @@ class jigoshop_cart extends jigoshop_singleton {
 
                     if ($_product->is_taxable()) :
                         
-                        if (get_option('jigoshop_prices_include_tax') == 'yes' && jigoshop_customer::is_customer_outside_base() && (get_option('jigoshop_enable_shipping_calc')=='yes' ||  (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT ))) :
+                        if (get_option('jigoshop_prices_include_tax') == 'yes' && jigoshop_customer::is_customer_shipping_outside_base() && (get_option('jigoshop_enable_shipping_calc')=='yes' ||  (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT ))) :
 
                             $total_item_price = $_product->get_price_excluding_tax() * $values['quantity'] * 100;
 
@@ -412,11 +412,11 @@ class jigoshop_cart extends jigoshop_singleton {
 
                 $total_item_price = $total_item_price / 100; // Back to pounds
                 
-                if (get_option('jigoshop_calc_taxes') == 'yes' && self::$tax->get_retail_tax_amount()) :
+                if (get_option('jigoshop_calc_taxes') == 'yes' && self::$tax->get_non_compounded_tax_amount()) :
                     if (get_option('jigoshop_prices_include_tax') == 'yes') :
-                        self::$subtotal_inc_tax += $total_item_price - self::$tax->get_non_retail_tax_amount();
+                        self::$subtotal_inc_tax += $total_item_price - self::$tax->get_compound_tax_amount();
                     else :
-                        self::$subtotal_inc_tax += self::$tax->get_retail_tax_amount() + $total_item_price;
+                        self::$subtotal_inc_tax += self::$tax->get_non_compounded_tax_amount() + $total_item_price;
                     endif;
                 endif;
 
@@ -448,6 +448,9 @@ class jigoshop_cart extends jigoshop_singleton {
         endforeach;
     }
 
+    public static function tax_calculated_from_base() {
+        return self::$tax->is_base_calculation();
+    }
     /** calculate totals for the items in the cart */
     function calculate_totals() {
 
@@ -470,7 +473,7 @@ class jigoshop_cart extends jigoshop_singleton {
 
             self::$tax->update_tax_amount_with_shipping_tax(self::$shipping_tax_total * 100);
 
-            if (self::$tax->is_shipping_tax_retail() && get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
+            if (self::$tax->is_shipping_tax_non_compounded() && get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
                 self::$subtotal_inc_tax += self::$shipping_tax_total;
             endif;
         endif;
@@ -497,10 +500,10 @@ class jigoshop_cart extends jigoshop_singleton {
             endforeach;
             
             
-        if (get_option('jigoshop_calc_taxes') == 'yes' && self::get_subtotal_inc_tax()) : // defines if there are mixed tax classes (both retail and non retail)
+        if (get_option('jigoshop_calc_taxes') == 'yes' && self::get_subtotal_inc_tax()) : // defines if there are mixed tax classes (with compounding taxes)
 
             foreach (self::get_applied_tax_classes() as $tax_class) :
-                if (!self::is_tax_retail($tax_class)) : //tax added on retail tax and subtotal
+                if (!self::is_not_compounded_tax($tax_class)) : //tax compounded
                     if (get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
                         self::$tax->update_tax_amount($tax_class, (self::$subtotal_inc_tax + self::$shipping_total) * 100);
                     else :
@@ -509,17 +512,22 @@ class jigoshop_cart extends jigoshop_singleton {
                 endif;
             endforeach;       
         endif;
+        
+        $subtotal = self::get_cart_subtotal(false);
+        $shipping = self::get_cart_shipping_total(false);
+        $non_compound = self::$tax->get_non_compounded_tax_amount();
+        $compound = self::$tax->get_compound_tax_amount();
             
         // Total
         self::$total = self::get_cart_subtotal(false) + self::get_cart_shipping_total(false) - self::$discount_total;
 
         if (get_option('jigoshop_calc_taxes') == 'yes') :
             if (get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
-                self::$total += self::$tax->get_retail_tax_amount() + self::$tax->get_non_retail_tax_amount();
+                self::$total += self::$tax->get_non_compounded_tax_amount() + self::$tax->get_compound_tax_amount();
             else :
 
                 if (self::get_subtotal_inc_tax()) :
-                    self::$total += self::$tax->get_non_retail_tax_amount();
+                    self::$total += self::$tax->get_compound_tax_amount();
                 endif;
 
             endif;
@@ -591,18 +599,18 @@ class jigoshop_cart extends jigoshop_singleton {
     }
 
     /**
-     * gets the cart subtotal including retail taxes (after calculation) if necessary. 
-     * Since the tax rates loop in order of retail tax first followed by non retail tax,
-     * if is_applied_to_retail is false, then we need to return subtotal with tax, otherwise
-     * don't return it. If only non retail tax is applied, this function will always return
+     * gets the cart subtotal including compound taxes (after calculation) if necessary. 
+     * Since the tax rates loop in order of compound tax last
+     * if is_compound_tax is true, then we need to return subtotal with tax, otherwise
+     * don't return it. If only non compounded tax is applied, this function will always return
      * false which is good.
      */
     public static function get_subtotal_inc_tax($use_price = true) {
         
-        if (self::$tax->is_applied_to_retail() || get_option('jigoshop_calc_taxes') == 'no') return false;
+        if (!self::$tax->is_compound_tax() || get_option('jigoshop_calc_taxes') == 'no') return false;
         
         if (get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
-            $return = ($use_price ? jigoshop_price(self::get_cart_subtotal(false) + self::get_cart_shipping_total(false) + self::$tax->get_retail_tax_amount()) : number_format(self::get_cart_subtotal(false) + self::get_cart_shipping_total(false) + self::$tax->get_retail_tax_amount(), 2, '.', ''));
+            $return = ($use_price ? jigoshop_price(self::get_cart_subtotal(false) + self::get_cart_shipping_total(false) + self::$tax->get_non_compounded_tax_amount()) : number_format(self::get_cart_subtotal(false) + self::get_cart_shipping_total(false) + self::$tax->get_non_compounded_tax_amount(), 2, '.', ''));
         else:
             $return = ($use_price ? jigoshop_price(self::get_cart_subtotal(false) + self::get_cart_shipping_total(false)) : number_format(self::get_cart_subtotal(false) + self::get_cart_shipping_total(false), 2, '.', ''));
         endif;
@@ -611,8 +619,19 @@ class jigoshop_cart extends jigoshop_singleton {
         
     }
 
-    public static function get_tax_class_for_display($tax_class) {
-        return self::$tax->get_tax_class_for_display($tax_class);
+    public static function get_tax_for_display($tax_class) {
+
+        $return = '';
+
+        if (jigoshop_cart::get_tax_rate($tax_class) > 0) :
+            $return = self::$tax->get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%):';
+
+            if (jigoshop_cart::tax_calculated_from_base()) :
+                $return .= '<small>' . sprintf(__('estimated for %s', 'jigoshop'), jigoshop_countries::estimated_for_prefix() . jigoshop_countries::$countries[ jigoshop_countries::get_base_country() ] ) . '</small>';
+            endif; 
+        endif;
+        
+        return $return;
     }
 
     // after calculation. Used with admin pages only
@@ -648,8 +667,8 @@ class jigoshop_cart extends jigoshop_singleton {
         return self::$tax->get_tax_divisor();
     }
 
-    public static function is_tax_retail($tax_class) {
-        return self::$tax->is_tax_retail($tax_class);
+    public static function is_not_compounded_tax($tax_class) {
+        return self::$tax->is_tax_non_compounded($tax_class);
     }
 
     /** gets the shipping total (after calculation) */

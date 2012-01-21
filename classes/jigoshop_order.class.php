@@ -155,7 +155,7 @@ class jigoshop_order {
             
         endif;
         
-        return jigoshop_price($order_tax, array(with_currency => false));
+        return jigoshop_price($order_tax, array('with_currency' => false));
 	}
 	
         public function get_tax_classes() {
@@ -163,8 +163,8 @@ class jigoshop_order {
             return ($this->order_tax && is_array($this->order_tax) ? array_keys($this->order_tax) : array());
         }
         
-        public function tax_class_is_retail($tax_class) {
-            return $this->order_tax[$tax_class]['retail'];
+        public function tax_class_is_not_compound($tax_class) {
+            return !$this->order_tax[$tax_class]['compound'];
         }
         
         public function get_tax_rate($tax_class) {
@@ -395,7 +395,7 @@ class jigoshop_order {
 	 */
 	function cancel_order( $note = '' ) {
 		
-		unset($_SESSION['order_awaiting_payment']);
+		unset( jigoshop_session::instance()->order_awaiting_payment );
 		
 		$this->update_status('cancelled', $note);
 		
@@ -410,7 +410,7 @@ class jigoshop_order {
 	 */
 	function payment_complete() {
 		
-		unset($_SESSION['order_awaiting_payment']);
+		unset( jigoshop_session::instance()->order_awaiting_payment );
 		
 		$downloadable_order = false;
 		

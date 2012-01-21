@@ -68,7 +68,7 @@
 		}
 		
 		// Check if session contains recently viewed products
-		if ( empty( $_SESSION['recently_viewed_products'] ) )
+		if ( empty( jigoshop_session::instance()->recently_viewed_products ) )
 			return false;
 
 		// Start buffering the output
@@ -94,7 +94,7 @@
 			'post_type'	=> 'product',
 			'post_status'	=> 'publish',
 			'nopaging'	=> true,
-			'post__in'	=> $_SESSION['recently_viewed_products'],
+			'post__in'	=> jigoshop_session::instance()->recently_viewed_products,
 			'orderby'	=> 'date', // TODO: Not ideal as it doesn't order latest first
 			'meta_query'	=> array(
 				array(
@@ -166,7 +166,7 @@
 		$this->flush_widget_cache();
 
 		// Unset the session array
-		unset( $_SESSION['recently_viewed_products'] );
+		unset( jigoshop_session::instance()->recently_viewed_products );
 
 		// Remove the cache entry from the options array
 		$alloptions = wp_cache_get( 'alloptions', 'options' );
@@ -197,17 +197,17 @@
 			return false; // stop the show!
 
 		// Check if we already have some data
-		if( ! is_array( $_SESSION['recently_viewed_products']) ) {
-			$_SESSION['recently_viewed_products'] = array();
+		if( ! is_array( jigoshop_session::instance()->recently_viewed_products ) ) {
+			jigoshop_session::instance()->recently_viewed_products = array();
 		}
 
 		// If the product isn't in the list, add it
-		if( ! in_array( $post->ID, $_SESSION['recently_viewed_products']) ) {
-			$_SESSION['recently_viewed_products'][] = $post->ID;
+		if( ! in_array( $post->ID, jigoshop_session::instance()->recently_viewed_products) ) {
+			jigoshop_session::instance()->recently_viewed_products[] = $post->ID;
 		}
 
-		if( sizeof( $_SESSION['recently_viewed_products']) > $number ) {
-			array_shift($_SESSION['recently_viewed_products']);
+		if( sizeof( jigoshop_session::instance()->recently_viewed_products) > $number ) {
+			array_shift( jigoshop_session::instance()->recently_viewed_products );
 		}
 	}
 	

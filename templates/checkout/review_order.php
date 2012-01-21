@@ -40,8 +40,8 @@
                 if (jigoshop_cart::needs_shipping()) :
                     ?><tr>
                         <td colspan="2"><?php _e('Shipping', 'jigoshop'); ?></td>
-                        <td>
-                            <?php
+                        <td> 
+                            <?php //TODO: extract this shipping section into a function. It's repeated too often in here --MM
                             $available_methods = jigoshop_shipping::get_available_shipping_methods();
 
 
@@ -54,8 +54,8 @@
                                     if ($method instanceof jigoshop_calculable_shipping) :
                                         if ($method->is_chosen()) :
                                             $selected_service = NULL;
-                                            if (is_numeric($_SESSION['selected_rate_id'])) :
-                                                $selected_service = $method->get_selected_service($_SESSION['selected_rate_id']);
+                                            if (is_numeric(jigoshop_session::instance()->selected_rate_id)) :
+                                                $selected_service = $method->get_selected_service( jigoshop_session::instance()->selected_rate_id);
                                             else :
                                                 $selected_service = $method->get_cheapest_service();
                                             endif;
@@ -94,23 +94,17 @@
                                 echo '</select>';
 
                             else :
-
-                                if (!jigoshop_customer::get_country()) :
-                                    echo '<p>' . __('Please fill in your details above to see available shipping methods.', 'jigoshop') . '</p>';
-                                else :
-                                    echo '<p>' . __('Sorry, it seems that there are no available shipping methods for your state. Please contact us if you require assistance or wish to make alternate arrangements.', 'jigoshop') . '</p>';
-                                endif;
-
+                                echo '<p>' . __(jigoshop_shipping::get_shipping_error_message(), 'jigoshop') . '</p>';
                             endif;
                             ?></td>
                     </tr>
                     <?php
                 endif;
                 foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
-                    if (jigoshop_cart::is_tax_retail($tax_class)) :
+                    if (jigoshop_cart::is_not_compounded_tax($tax_class)) :
                         ?>
                         <tr>
-                            <td colspan="2"><?php echo jigoshop_cart::get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%):'; ?></td>
+                            <td colspan="2"><?php echo jigoshop_cart::get_tax_for_display($tax_class); ?></td>
                             <td><?php echo jigoshop_cart::get_tax_amount($tax_class) ?></td>
                         </tr>
                         <?php
@@ -139,8 +133,8 @@
                                     if ($method instanceof jigoshop_calculable_shipping) :
                                         if ($method->is_chosen()) :
                                             $selected_service = NULL;
-                                            if (is_numeric($_SESSION['selected_rate_id'])) :
-                                                $selected_service = $method->get_selected_service($_SESSION['selected_rate_id']);
+                                            if (is_numeric( jigoshop_session::instance()->selected_rate_id )) :
+                                                $selected_service = $method->get_selected_service( jigoshop_session::instance()->selected_rate_id );
                                             else :
                                                 $selected_service = $method->get_cheapest_service();
                                             endif;
@@ -180,11 +174,7 @@
 
                             else :
 
-                                if (!jigoshop_customer::get_country()) :
-                                    echo '<p>' . __('Please fill in your details above to see available shipping methods.', 'jigoshop') . '</p>';
-                                else :
-                                    echo '<p>' . __('Sorry, it seems that there are no available shipping methods for your state. Please contact us if you require assistance or wish to make alternate arrangements.', 'jigoshop') . '</p>';
-                                endif;
+                                echo '<p>' . __(jigoshop_shipping::get_shipping_error_message(), 'jigoshop') . '</p>';
 
                             endif;
                             ?></td>
@@ -194,11 +184,11 @@
             if (get_option('jigoshop_calc_taxes') == 'yes') :
                 if (jigoshop_cart::get_subtotal_inc_tax()) :
                     foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
-                        if (!jigoshop_cart::is_tax_retail($tax_class)) :
+                        if (!jigoshop_cart::is_not_compounded_tax($tax_class)) :
                                     ?>
 
                             <tr>
-                                <td colspan="2"><?php echo jigoshop_cart::get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%):'; ?></th>
+                                <td colspan="2"><?php echo jigoshop_cart::get_tax_for_display($tax_class); ?></th>
                                 <td><?php echo jigoshop_cart::get_tax_amount($tax_class) ?></td>
                             </tr>
                             <?php
@@ -208,7 +198,7 @@
                     foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
                         ?>
                         <tr>
-                            <td colspan="2"><?php echo jigoshop_cart::get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%):'; ?></td>
+                            <td colspan="2"><?php echo jigoshop_cart::get_tax_for_display($tax_class); ?></td>
                             <td><?php echo jigoshop_cart::get_tax_amount($tax_class) ?></td>
                         </tr>    
                         <?php

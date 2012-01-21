@@ -20,31 +20,31 @@
 
 /**
  * Defines a custom sort for the tax_rates array. The sort that is needed is that the array is sorted
- * by country, followed by state, followed by retail. The difference is that retail must be sorted based
- * on retail = yes before retail = no. Ultimately, the purpose of the sort is to make sure that country, state
- * are all consecutive in the array, and that within those groups, retail = 'no' always appears last. This is
- * so that tax classes that apply taxes after other taxes get applied to the retail value will be executed
+ * by country, followed by state, followed by compound tax. The difference is that compound must be sorted based
+ * on compound = no before compound = yes. Ultimately, the purpose of the sort is to make sure that country, state
+ * are all consecutive in the array, and that within those groups, compound = 'yes' always appears last. This is
+ * so that tax classes that are compounded will be executed last in comparison to those that aren't.
  * last.
  * <br>
  * <pre>
- * eg. country = 'CA', state = 'QC', retail = 'no'<br>
- *     country = 'CA', state = 'QC', retail = 'yes'<br>
+ * eg. country = 'CA', state = 'QC', compound = 'yes'<br>
+ *     country = 'CA', state = 'QC', compound = 'no'<br>
  * 
  * will be sorted to have <br>
- *     country = 'CA', state = 'QC', retail = 'yes'<br>
- *     country = 'CA', state = 'QC', retail = 'no' <br>
+ *     country = 'CA', state = 'QC', compound = 'no'<br>
+ *     country = 'CA', state = 'QC', compound = 'yes' <br>
  * </pre>
  * 
  * @param type $a the first object to compare with (our inner array)
  * @param type $b the second object to compare with (our inner array)
- * @return type int the results of strcmp
+ * @return int the results of strcmp
  */
 function csort_tax_rates($a, $b) {
     $str1 = '';
     $str2 = '';
     
-    $str1 .= $a['country'] . $a['state'] . ($a['retail'] == 'yes' ? 'a' : 'b');
-    $str2 .= $b['country'] . $b['state'] . ($b['retail'] == 'yes' ? 'a' : 'b');
+    $str1 .= $a['country'] . $a['state'] . ($a['compound'] == 'no' ? 'a' : 'b');
+    $str2 .= $b['country'] . $b['state'] . ($b['compound'] == 'no' ? 'a' : 'b');
 
     return strcmp($str1, $str2);
 }
@@ -75,7 +75,7 @@ function jigoshop_update_options() {
                 $tax_label = array();
                 $tax_rates = array();
                 $tax_shipping = array();
-                $tax_retail = array();
+                $tax_compound = array();
 
                 if (isset($_POST['tax_classes'])) :
                     $tax_classes = $_POST['tax_classes'];
@@ -92,8 +92,8 @@ function jigoshop_update_options() {
                 if (isset($_POST['tax_shipping'])) :
                     $tax_shipping = $_POST['tax_shipping'];
                 endif;
-                if (isset($_POST['tax_retail'])) :
-                    $tax_retail = $_POST['tax_retail'];
+                if (isset($_POST['tax_compound'])) :
+                    $tax_compound = $_POST['tax_compound'];
                 endif;
 
                 for ($i = 0; $i < sizeof($tax_classes); $i++) :
@@ -109,9 +109,9 @@ function jigoshop_update_options() {
                         if (isset($tax_shipping[$i]) && $tax_shipping[$i])
                             $shipping = 'yes'; else
                             $shipping = 'no';
-                        if (isset($tax_retail[$i]) && $tax_retail[$i])
-                            $retail = 'yes'; else
-                            $retail = 'no';
+                        if (isset($tax_compound[$i]) && $tax_compound[$i])
+                            $compound = 'yes'; else
+                            $compound = 'no';
 
                         // Get state from country input if defined
                         if (strstr($country, ':')) :
@@ -130,7 +130,7 @@ function jigoshop_update_options() {
                                     'rate' => $rate,
                                     'shipping' => $shipping,
                                     'class' => $class,
-                                    'retail' => $retail,
+                                    'compound' => $compound,
                                     'is_all_states' => true //determines if admin panel should show 'all_states'
                                 );
                             endforeach;
@@ -144,7 +144,7 @@ function jigoshop_update_options() {
                                 'rate' => $rate,
                                 'shipping' => $shipping,
                                 'class' => $class,
-                                'retail' => $retail,
+                                'compound' => $compound,
                                 'is_all_states' => false //determines if admin panel should show 'all_states'
                             );                               
                         endif;
@@ -692,12 +692,12 @@ function jigoshop_admin_fields($options) {
                         if (isset($rate['shipping']) && $rate['shipping'] == 'yes')
                             echo 'checked="checked"';
 
-                        echo ' /> ' . __('Apply to shipping', 'jigoshop') . '</label><label><input type="checkbox" name="tax_retail[' . $i . ']" ';
+                        echo ' /> ' . __('Apply to shipping', 'jigoshop') . '</label><label><input type="checkbox" name="tax_compound[' . $i . ']" ';
 
-                        if (isset($rate['retail']) && $rate['retail'] == 'yes')
+                        if (isset($rate['compound']) && $rate['compound'] == 'yes')
                             echo 'checked="checked"';
 
-                        echo ' /> ' . __('Apply to retail', 'jigoshop') . '</label><a href="#" class="remove button">&times;</a></p>';
+                        echo ' /> ' . __('Compound', 'jigoshop') . '</label><a href="#" class="remove button">&times;</a></p>';
                     endforeach;
                 ?>
                             </div>
@@ -724,7 +724,7 @@ function jigoshop_admin_fields($options) {
                 jigoshop_countries::country_dropdown_options('', '', true);
                 ?></select><input type="text" class="text" name="tax_rate[' + size + ']" title="<?php _e('Rate', 'jigoshop'); ?>" placeholder="<?php _e('Rate', 'jigoshop'); ?>" maxlength="8" />%\
                                         <label><input type="checkbox" name="tax_shipping[' + size + ']" /> <?php _e('Apply to shipping', 'jigoshop'); ?></label>\
-                                        <label><input type="checkbox" name="tax_retail[' + size + ']" checked="checked" /> <?php _e('Apply to retail', 'jigoshop'); ?></label><a href="#" class="remove button">&times;</a>\
+                                        <label><input type="checkbox" name="tax_compound[' + size + ']" /> <?php _e('Compound', 'jigoshop'); ?></label><a href="#" class="remove button">&times;</a>\
                                 </p>').appendTo('#tax_rates div.taxrows');
                                                     return false;
                                                 });

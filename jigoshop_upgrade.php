@@ -140,7 +140,58 @@ function jigoshop_upgrade_100() {
 	global $wpdb;
 
 	// Run upgrade
-
+    
+    // upgrade option jigoshop_tax_rates
+    $jigoshop_tax_rates = get_site_option('jigoshop_tax_rates');
+    $tax_rates = array();
+    
+    if ($jigoshop_tax_rates && is_array($jigoshop_tax_rates)) :
+        
+        foreach($jigoshop_tax_rates as $key) :
+            $country = $key['country'];
+            $state = $key['state'];
+            $rate = $key['rate'];
+            $shipping = $key['shipping'];
+            $class = $key['class'];
+            
+            // convert all-states
+            if (jigoshop_countries::country_has_states($country) && $state == '*') :
+                foreach (array_keys(jigoshop_countries::$states[$country]) as $st) :
+                    $tax_rates[] = array(
+                                    'country' => $country,
+                                    'label' => '', // no label created as of yet
+                                    'state' => $st,
+                                    'rate' => $rate,
+                                    'shipping' => $shipping,
+                                    'class' => $class,
+                                    'compound' => 'no', //no such thing as compound taxes, so value is no
+                                    'is_all_states' => true //determines if admin panel should show 'all_states'
+                                );
+                endforeach;
+                
+            else : // do normal tax_rates array with the additional parameters
+                    $tax_rates[] = array(
+                                    'country' => $country,
+                                    'label' => '', // no label created as of yet
+                                    'state' => $state,
+                                    'rate' => $rate,
+                                    'shipping' => $shipping,
+                                    'class' => $class,
+                                    'compound' => 'no', //no such thing as compound taxes, so value is no
+                                    'is_all_states' => false //determines if admin panel should show 'all_states'
+                                );
+                
+            endif;
+        endforeach;
+        
+        update_option('jigoshop_tax_rates', $tax_rates);
+        
+    endif;
+    
+    
+    
+    // convert products
+    
 	$args = array(
 		'post_type'	  => 'product',
 		'numberposts' => -1,
@@ -168,48 +219,57 @@ function jigoshop_upgrade_100() {
 
 		// Unserialize all product_data keys to individual key => value pairs
 		$product_data = get_post_meta( $post->ID, 'product_data', true );
-		foreach( $product_data as $key => $value ) {
+		if ( is_array($product_data) ) {
+			foreach( $product_data as $key => $value ) {
 
-			// Convert all keys to lowercase
-			// @todo: Needs testing especially with 3rd party plugins using product_data
-			$key = strtolower($key);
+				// Convert all keys to lowercase
+				// @todo: Needs testing especially with 3rd party plugins using product_data
+				$key = strtolower($key);
 
-			// We now call it tax_classes & its an array
-			if ( $key == 'tax_class' ) {
+				// We now call it tax_classes & its an array
+				if ( $key == 'tax_class' ) {
 
-				if ( $value )
-					$value = (array) $value;
-				else
-					$value = array('*');
+					if ( $value )
+						$value = (array) $value;
+					else
+						$value = array('*');
 
-				$key = 'tax_classes';
+					$key = 'tax_classes';
+				}
+
+				// Convert manage stock to true/false
+				if ( $key == 'manage_stock' ) {
+					$value = ( $value == 'yes' ) ? true : false;
+				}
+
+				// Create the meta
+				update_post_meta( $post->ID, $key, $value );	
+
+				// Remove the old meta
+				delete_post_meta( $post->ID, 'product_data' );
 			}
-
-			// Convert manage stock to true/false
-			if ( $key == 'manage_stock' ) {
-				$value = ( $value == 'yes' ) ? true : false;
-			}
-
-			// Create the meta
-			update_post_meta( $post->ID, $key, $value );	
-
-			// Remove the old meta
-			delete_post_meta( $post->ID, 'product_data' );
 		}
 
 		$product_attributes = get_post_meta( $post->ID, 'product_attributes', true );
 
-		foreach( $product_attributes as $key => $attribute ) {
+		if ( is_array($product_attributes) ) {
+			foreach( $product_attributes as $key => $attribute ) {
 
-			// We use true/false for these now
-			$attribute['visible']     = ( $attribute['visible'] == 'yes' ) ? true : false;
-			$attribute['variation']   = ( $attribute['variation'] == 'yes' ) ? true : false;
-			$attribute['is_taxonomy'] = ( $attribute['is_taxonomy'] == 'yes' ) ? true : false;
+				// We use true/false for these now
+				if ( isset( $attribute['visible'] ) )
+					$attribute['visible']     = ( $attribute['visible'] == 'yes' ) ? true : false;
 
-			$product_attributes[$key] = $attribute;
+				if ( isset( $attribute['variation'] ) )
+					$attribute['variation']   = ( $attribute['variation'] == 'yes' ) ? true : false;
+				
+				if ( isset( $attribute['is_taxonomy'] ) )
+					$attribute['is_taxonomy'] = ( $attribute['is_taxonomy'] == 'yes' ) ? true : false;
+
+				$product_attributes[$key] = $attribute;
+			}
+
+			update_post_meta( $post->ID, 'product_attributes', $product_attributes );
 		}
-
-		update_post_meta( $post->ID, 'product_attributes', $product_attributes );
 	}
 
 	// Variations

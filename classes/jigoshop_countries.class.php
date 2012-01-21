@@ -478,7 +478,8 @@ class jigoshop_countries {
 	);
 	
     static function country_has_states($country_code) {
-        return (self::$states[$country_code] && is_array(self::$states[$country_code]));
+        
+        return isset(self::$states[$country_code]);
     }
     
 	/** get base country */
@@ -489,7 +490,7 @@ class jigoshop_countries {
     		$state = end(explode(':', $default));
     	else :
     		$country = $default;
-    		$state = '';
+    		$state = '*';
     	endif;
 		
 		return $country;	    	
@@ -503,7 +504,7 @@ class jigoshop_countries {
     		$state = end(explode(':', $default));
     	else :
     		$country = $default;
-    		$state = '';
+    		$state = '*';
     	endif;
 		
 		return $state;	    	

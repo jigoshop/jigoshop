@@ -50,7 +50,7 @@ function install_jigoshop_redirect() {
 }
 add_action('admin_init', 'install_jigoshop_redirect');
 
-add_action('admin_init', 'jigoshop_update', 0);
+add_action('admin_notices', 'jigoshop_update');
 function jigoshop_update() {
 	// Run database upgrade if required
 	if ( is_admin() && get_site_option('jigoshop_db_version') < JIGOSHOP_VERSION ) {
@@ -63,7 +63,7 @@ function jigoshop_update() {
 			if ( $response ) {
 				echo '
 					<div class="updated">
-						<p>Horray! The database was successfully updated, happy days</p>
+						<p>'.__('Your database has been successfully updated. Your shop is now automatically better than the rest, happy days', 'jigoshop').'!</p>
 					</div>
 				';
 			}
