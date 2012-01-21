@@ -216,25 +216,20 @@ function jigoshop_add_attribute() {
 	    		<div class="col-wrap">
 	    			<div class="form-wrap">
 	    				<h3><?php _e('Add New Attribute','jigoshop') ?></h3>
-	    				<p><?php _e('Attributes let you define extra product data, such as size or colour. You can use these attributes in the shop sidebar using the "layered nav" widgets. Please note: you cannot rename an attribute later on.','jigoshop') ?></p>
 	    				<form action="admin.php?page=attributes" method="post">
-							<div style="width:47%; float:left; margin:0 1% 0 0;">
-								<div class="form-field">
-									<label for="attribute_name"><?php _e('Attribute Name', 'jigoshop'); ?></label>
-									<input name="attribute_name" id="attribute_name" type="text" value="" />
-								</div>
+	    					<div class="form-field form-required">
+								<label for="attribute_name"><?php _e('Attribute Name', 'jigoshop'); ?></label>
+								<input name="attribute_name" id="attribute_name" type="text" value=""/>
+								<p><?php _e('The name is how it appears on your site') ?>.</p>
 							</div>
-							<div style="width:47%; float:left; margin:0 1% 0 0;">
-								<div class="form-field">
-									<label for="attribute_type"><?php _e('Attribute type', 'jigoshop'); ?></label>
-									<select name="attribute_type" id="attribute_type" style="width: 100%;">
-										<option value="select"><?php _e('Select','jigoshop') ?></option>
-										<option value="multiselect"><?php _e('Multiselect','jigoshop') ?></option>
-										<option value="text"><?php _e('Text','jigoshop') ?></option>										
-									</select>
-								</div>
+							<div class="form-field">
+								<label for="attribute_type"><?php _e('Attribute type', 'jigoshop'); ?></label>
+								<select name="attribute_type" id="attribute_type" class="postform">
+									<option value="select"><?php _e('Select','jigoshop') ?></option>
+									<option value="multiselect"><?php _e('Multiselect','jigoshop') ?></option>
+									<option value="text"><?php _e('Text','jigoshop') ?></option>										
+								</select>
 							</div>
-							<div class="clear"></div>
 							
 							<p class="submit"><input type="submit" name="add_new_attribute" id="submit" class="button" value="<?php _e('Add Attribute', 'jigoshop'); ?>"></p>
 	    				</form>
