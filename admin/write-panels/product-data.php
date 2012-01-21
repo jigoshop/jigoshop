@@ -386,8 +386,6 @@ function display_attribute() { ?>
 
 		// This is whats applied to the product
 		$attributes = get_post_meta($post->ID, 'product_attributes', true);
-
-
 	?>
 	<?php if( ! $attributes ): ?>
 		<div class="demo attribute">
@@ -518,8 +516,7 @@ function display_attribute() { ?>
 								</div>
 
 							<?php elseif ($tax->attribute_type=="text") : ?>
-								<textarea name="attribute_values[<?php echo $i; ?>]">
-									<?php 												
+								<textarea name="attribute_values[<?php echo $i; ?>]"><?php
 									if ($allterms) :
 										$prettynames = array();
 										foreach ($allterms as $term) :
@@ -527,8 +524,7 @@ function display_attribute() { ?>
 										endforeach;
 										echo implode(',', $prettynames);
 									endif;
-									?>
-								</textarea>
+								?></textarea>
 							<?php endif; ?>
 					</td>
 				</tr>
