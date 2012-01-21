@@ -161,7 +161,7 @@ function jigoshop_product_data_box() {
 						'taxable'	=> 'Taxable',
 						'shipping'	=> 'Shipping',
 						'none'		=> 'None'
-					), $data[$field['id']] );
+					) );
 
 	            ?>
 
