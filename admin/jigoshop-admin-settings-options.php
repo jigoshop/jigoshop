@@ -245,7 +245,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(  
 		'name' => __('Google Analytics ID', 'jigoshop'),
-		'desc' 		=> __('Log into your google analytics account to find your ID. e.g. <code>UA-XXXXXXX-X</code>', 'jigoshop'),
+		'desc' 		=> __('Log into your Google Analytics account to find your ID. e.g. <code>UA-XXXXXXX-X</code>', 'jigoshop'),
 		'id' 		=> 'jigoshop_ga_id',
 		'type' 		=> 'text',
         'css' 		=> 'min-width:300px;',
@@ -253,7 +253,8 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	
 	array(  
 		'name' => __('Enable eCommerce Tracking', 'jigoshop'),
-		'tip' 		=> __('Add Google Analytics eCommerce tracking code upon succesful orders', 'jigoshop'),
+		'tip' 		=> __('Add Google Analytics eCommerce tracking code upon successful orders', 'jigoshop'),
+		'desc'		=> __('<a href="//support.google.com/analytics/bin/answer.py?hl=en&answer=1009612">Learn how to enable</a> eCommerce tracking for your Google Analytics account.', 'jigoshop'),
 		'id' 		=> 'jigoshop_ga_ecommerce_tracking_enabled',
 		'type' 		=> 'select',
 		'options' => array(
