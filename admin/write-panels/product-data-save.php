@@ -49,6 +49,10 @@ class jigoshop_product_meta
 			update_post_meta( $post_id, 'download_limit', $_POST['download_limit']);
 		}
 
+		if( $_POST['product-type'] == 'external' ) {
+			update_post_meta( $post_id, 'external_url',   $_POST['external_url']);
+		}
+
 		// Process the SKU
 		( $this->is_unique_sku( $post_id, $_POST['sku'] ) )
 			? update_post_meta( $post_id, 'sku', $_POST['sku'])

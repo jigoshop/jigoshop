@@ -194,6 +194,7 @@ function jigoshop_product_data_box() {
 						'grouped'		=> __('Grouped', 'jigoshop'),
 						'virtual'		=> __('Virtual', 'jigoshop'),
 						'variable'		=> __('Variable', 'jigoshop'),
+						'external'		=> __('External', 'jigoshop')
 					)),
 					$product_type
 				);
@@ -237,6 +238,8 @@ function jigoshop_product_data_box() {
 			<?php
 				// Featured
 				echo jigoshop_form::checkbox( 'featured', 'Featured?', false, __('Enable this option to feature this product', 'jigoshop') );
+
+				echo jigoshop_form::input( 'external_url', 'External Url', null, null, null, 'An external URL to the product' );
 			?>
 			</fieldset>
 		</div>
