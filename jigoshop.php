@@ -799,25 +799,23 @@ function jigoshop_comments($comment, $args, $depth) {
 }
 
 //### Exclude order comments from front end #########################################################
+add_filter( 'comments_clauses', 'jigoshop_exclude_order_admin_comments', 10, 1);
+function jigoshop_exclude_order_admin_comments( $clauses ) {
+	global $typenow;
 
-function jigoshop_exclude_order_comments( $clauses ) {
+	// Don't hide when viewing orders in admin
+	if (is_admin() && $typenow == 'shop_order')
+		return $clauses;
 
-	global $wpdb;
+	// Hide all those comments which aren't of type jigoshop
+	$clauses['where'] .= ' AND comment_type != "jigoshop"';	
+	
+	return $clauses;	
+}
 
-	$clauses['join'] = "
-		LEFT JOIN $wpdb->posts ON $wpdb->comments.comment_post_ID = $wpdb->posts.ID
-	";
 
-	if ($clauses['where']) $clauses['where'] .= ' AND ';
-
-	$clauses['where'] .= "
-		$wpdb->posts.post_type NOT IN ('shop_order')
-	";
-
-	return $clauses;
 
 }
-if (!is_admin()) add_filter('comments_clauses', 'jigoshop_exclude_order_comments');
 
 /**
  * Support for Import/Export
