@@ -83,11 +83,11 @@ function jigoshop_custom_product_columns($column) {
 		case "thumb" :
 			if( 'trash' != $post->post_status ) {
 				echo '<a class="row-title" href="'.get_edit_post_link( $post->ID ).'">';
-					echo jigoshop_get_product_thumbnail( 'shop_tiny' );
+					echo jigoshop_get_product_thumbnail( 'admin_product_list' );
 				echo '</a>';
 			}
 			else {
-				echo jigoshop_get_product_thumbnail( 'shop_tiny' );
+				echo jigoshop_get_product_thumbnail( 'admin_product_list' );
 			} 
 
 		break;

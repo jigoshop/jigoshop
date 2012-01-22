@@ -139,6 +139,7 @@ add_filter( 'wp_mail_from', 'jigoshop_mail_from' );
  * @since 0.9.9
  **/
 function jigoshop_set_image_sizes(){
+	add_image_size( 'admin_product_list', 32, 32, 'true' );
 	add_image_size( 'shop_tiny', get_option('jigoshop_shop_tiny_w'), get_option('jigoshop_shop_tiny_h'), 'true' );
 	add_image_size( 'shop_thumbnail', get_option('jigoshop_shop_thumbnail_w'), get_option('jigoshop_shop_thumbnail_h'), 'true' );
 	add_image_size( 'shop_small', get_option('jigoshop_shop_small_w'), get_option('jigoshop_shop_small_h'), 'true' );
@@ -157,6 +158,9 @@ function jigoshop_get_image_size( $size ) {
 		return $size;
 
 	switch ( $size ) :
+		case 'admin_product_list':
+			$image_size = array( 32, 32 );
+			break;
 		case 'shop_tiny':
 			$image_size = array( get_option('jigoshop_shop_tiny_w'), get_option('jigoshop_shop_tiny_h') );
 			break;
