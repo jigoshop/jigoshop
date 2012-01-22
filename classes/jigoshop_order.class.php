@@ -315,28 +315,21 @@ class jigoshop_order {
 	 * @param   int		$private	Currently unused
 	 */
 	function add_order_note( $note, $private = 1 ) {
-		
-		$comment_post_ID = $this->id;
-		$comment_author = 'JigoShop';
-		$comment_author_email = 'jigoshop@' . str_replace('www.', '', str_replace('http://', '', site_url()));
-		$comment_author_url = '';
-		$comment_content = $note;
-		$comment_type = '';
-		$comment_parent = 0;
-		
-		$commentdata = compact('comment_post_ID', 'comment_author', 'comment_author_email', 'comment_author_url', 'comment_content', 'comment_type', 'comment_parent', 'user_ID');
-		
-		$commentdata['comment_author_IP'] = preg_replace( '/[^0-9a-fA-F:., ]/', '',$_SERVER['REMOTE_ADDR'] );
-// HTTP_USER_AGENT is not set and this generates an undefined index error, commenting out.  -JAP-
-//		$commentdata['comment_agent']     = substr($_SERVER['HTTP_USER_AGENT'], 0, 254);
+
+		$comment = array(
+			'comment_post_ID'      => $this->id,
+			'comment_author'       => 'Jigoshop',
+			'comment_author_email' => null,
+			'comment_author_url'   => null,
+			'comment_content'      => $note,
+			'comment_type'         => 'jigoshop',
+			'comment_parent'       => 0,
+			'comment_date'         => current_time('mysql'),
+			'comment_date_gmt'     => current_time('mysql', 1),
+		);
 	
-		$commentdata['comment_date']     = current_time('mysql');
-		$commentdata['comment_date_gmt'] = current_time('mysql', 1);
-	
-		$comment_id = wp_insert_comment( $commentdata );
-		
+		$comment_id = wp_insert_comment( $comment );
 		add_comment_meta($comment_id, 'private', $private);
-		
 	}
 
 	/**
