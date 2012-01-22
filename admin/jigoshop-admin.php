@@ -60,7 +60,7 @@ function jigoshop_update() {
 			require_once( jigoshop::plugin_path().'/jigoshop_upgrade.php' );
 			$response = jigoshop_upgrade();
 
-			// If we succesfull inform the user
+			// If we successfull inform the user
 			if ( $response ) {
 				echo '
 					<div class="updated">
