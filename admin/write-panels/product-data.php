@@ -287,7 +287,7 @@ function jigoshop_product_data_box() {
 			$posts_in = (array) get_objects_in_term( get_term_by( 'slug', 'grouped', 'product_type' )->term_id, 'product_type' );
 			$posts_in = array_unique($posts_in);
 
-			if( ! (bool) $posts_in ) {
+			if( (bool) $posts_in ) {
 
 				$args = array(
 					'post_type'	=> 'product',
