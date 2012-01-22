@@ -141,18 +141,22 @@ function jigoshop_custom_product_columns($column) {
 			endif;
 
 			echo '<abbr title="' . $t_time . '">' . apply_filters( 'post_date_column_time', $h_time, $post ) . '</abbr><br />';
-			
-			if ( 'publish' == $post->post_status ) :
-				_e( 'Published', 'jigoshop' );
-			elseif ( 'future' == $post->post_status ) :
-				if ( $time_diff > 0 ) :
-					echo '<strong class="attention">' . __( 'Missed schedule', 'jigoshop' ) . '</strong>';
-				else :
-					_e( 'Scheduled', 'jigoshop' );
-				endif;
-			else :
-				_e( 'Last Modified', 'jigoshop' );
-			endif;
+
+            if ( 'publish' == $post->post_status ) :
+                _e( 'Published', 'jigoshop' );
+            elseif ( 'future' == $post->post_status ) :
+                if ( $time_diff > 0 ) :
+                    echo '<strong class="attention">' . __( 'Missed schedule', 'jigoshop' ) . '</strong>';
+                else :
+                    _e( 'Scheduled', 'jigoshop' );
+                endif;
+            else :
+                _e( 'Last Modified', 'jigoshop' );
+            endif;
+
+            echo '<br/>';
+            echo ucfirst($product->visibility);
+          
 		break;
 	}
 }
