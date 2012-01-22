@@ -155,7 +155,12 @@ function jigoshop_custom_product_columns($column) {
             endif;
 
             echo '<br/>';
-            echo ucfirst($product->visibility);
+            if( $product->visibility == 'Hidden' ) {
+                echo '<strong class="attention">'.ucfirst($product->visibility).'</strong>';
+            }
+            else {
+                echo ucfirst($product->visibility);
+            }
           
 		break;
 	}
