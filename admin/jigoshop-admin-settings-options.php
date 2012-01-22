@@ -554,22 +554,22 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(
 		'name' 		=> __('Tiny Image Width','jigoshop'),
-		'desc' 		=> __('Default = 32px','jigoshop'),
+		'desc' 		=> __('Default = 36px','jigoshop'),
 		'tip' 		=> __('Set the width of the small image used in the Cart, Checkout, Orders and Widgets.','jigoshop'),
 		'id' 		=> 'jigoshop_shop_tiny_w',
 		'css' 		=> 'min-width:200px;',
 		'type' 		=> 'text',
-		'std' 		=> 32
+		'std' 		=> 36
 	),
 
 	array(
 		'name' 		=> __('Tiny Image Height','jigoshop'),
-		'desc' 		=> __('Default = 32px','jigoshop'),
+		'desc' 		=> __('Default = 36px','jigoshop'),
 		'tip' 		=> __('Set the height of the small image used in the Cart, Checkout, Orders and Widgets.','jigoshop'),
 		'id' 		=> 'jigoshop_shop_tiny_h',
 		'css' 		=> 'min-width:200px;',
 		'type' 		=> 'text',
-		'std' 		=> 32
+		'std' 		=> 36
 	),
 
 	array(
