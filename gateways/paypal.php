@@ -388,7 +388,7 @@ class paypal extends jigoshop_payment_gateway {
 		            case 'failed' :
 		            case 'voided' :
 		                // Hold order
-		                $order->update_status('on-hold', sprintf(__('Payment %s via IPN.', 'jigoshop'), strtolower(sanitize($posted['payment_status'])) ) );
+		                $order->update_status('on-hold', sprintf(__('Payment %s via IPN.', 'jigoshop'), strtolower($posted['payment_status']) ) );
 		            break;
 		            default:
 		            	// No action
