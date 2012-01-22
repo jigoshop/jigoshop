@@ -29,7 +29,7 @@ function jigoshop_product_meta_variable_script( $hook ) {
 	if ( $hook != 'post.php' || $post->post_type != 'product' )
 		return false;
 
-	wp_enqueue_script('jigoshop-variable-js', plugins_url('assets/js/variable.js', dirname(dirname(dirname(__FILE__)))) , array('jquery'),1,true);
+	wp_enqueue_script('jigoshop-variable-js', jigoshop::assets_url() . '/assets/js/variable.js' , array('jquery'),1,true);
 }
 
 class jigoshop_product_meta_variable extends jigoshop_product_meta
