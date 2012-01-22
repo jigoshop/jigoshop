@@ -813,10 +813,6 @@ function jigoshop_exclude_order_admin_comments( $clauses ) {
 	return $clauses;	
 }
 
-
-
-}
-
 /**
  * Support for Import/Export
  *
