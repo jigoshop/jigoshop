@@ -653,6 +653,25 @@ function jigoshop_get_formatted_variation( $variation = '', $flat = false ) {
 	endif;
 }
 
+// Remove pingbacks/trackbacks from Comments Feed
+// betterwp.net/wordpress-tips/remove-pingbackstrackbacks-from-comments-feed/
+add_filter('request', 'jigoshop_filter_request');
+
+function jigoshop_filter_request($qv)
+{
+	if (isset($qv['feed']) && !empty($qv['withcomments']))
+	{
+		add_filter('comment_feed_where', 'jigoshop_comment_feed_where');
+	}
+	return $qv;
+}
+
+function jigoshop_comment_feed_where($cwhere)
+{
+	$cwhere .= " AND comment_type != 'jigoshop' ";
+	return $cwhere;
+}
+
 function jigoshop_let_to_num($v) {
     $l = substr($v, -1);
     $ret = substr($v, 0, -1);
