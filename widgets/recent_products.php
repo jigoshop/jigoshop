@@ -79,16 +79,16 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 
 		// Set up query
     	$query_args = array(
-    		'showposts'		=> $number,
-    		'post_type'		=> 'product',
-    		'post_status'	=> 'publish',
-    		'orderby'		=> 'date',
-    		'order'			=> 'desc',
-    		'meta_query'	=> array(
+    		'posts_per_page' => $number,
+    		'post_type'      => 'product',
+    		'post_status'    => 'publish',
+    		'orderby'        => 'date',
+    		'order'          => 'desc',
+    		'meta_query'     => array(
     			array(
-    				'key'		=> 'visibility',
-    				'value'		=> array('catalog', 'visible'),
-    				'compare'	=> 'IN',
+    				'key'       => 'visibility',
+    				'value'     => array('catalog', 'visible'),
+    				'compare'   => 'IN',
     			),
     		)
     	);
