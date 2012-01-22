@@ -356,7 +356,7 @@ function attributes_display() { ?>
 				$attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();
 				if ( $attribute_taxonomies ) :
 			    	foreach ($attribute_taxonomies as $tax) :
-						echo '<option value="'.str_replace('%','',sanitize_title($tax->attribute_name)).'" data-type="'.$tax->attribute_type.'">'.$tax->attribute_name.'</option>';
+						echo '<option value="'.sanitize_text_field(sanitize_title($tax->attribute_name)).'" data-type="'.$tax->attribute_type.'">'.$tax->attribute_name.'</option>';
 			    	endforeach;
 			    endif;
 			?>
@@ -441,7 +441,7 @@ function display_attribute() { ?>
 		endif;
 	?>
 
-	<div class="postbox attribute <?php if ( $has_terms ) echo 'closed'; ?> <?php echo str_replace('%','',$attribute_taxonomy_name); ?>" data-attribute-name="<?php echo $attribute_taxonomy_name; ?>" rel="<?php echo $position; ?>"  <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
+	<div class="postbox attribute <?php if ( $has_terms ) echo 'closed'; ?> <?php echo sanitize_text_field(sanitize_title($attribute_taxonomy_name)); ?>" data-attribute-name="<?php echo $attribute_taxonomy_name; ?>" rel="<?php echo $position; ?>"  <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
 		<button type="button" class="hide_row button">Remove</button>
 		<div class="handlediv" title="Click to toggle"><br></div>
 		<h3 class="handle"><?php echo $tax->attribute_name; ?></h3>
