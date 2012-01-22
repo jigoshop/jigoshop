@@ -34,23 +34,6 @@ function jigoshop_get_plugin_data( $key = 'Version' ) {
 	return $data[$key];
 }
 
-
-/**
- * Redirect to settings after installation
- */
-function install_jigoshop_redirect() {
-	global $pagenow;
-
-	if ( is_admin() && isset( $_GET['activate'] ) && ($_GET['activate'] == true) && $pagenow == 'plugins.php' && get_option( "jigoshop_db_version" ) ) {
-		
-		// Redirect to settings
-		wp_redirect(admin_url('admin.php?page=settings&installed=true'));
-		exit;
-		
-	}
-}
-add_action('admin_init', 'install_jigoshop_redirect');
-
 add_action('admin_notices', 'jigoshop_update');
 function jigoshop_update() {
 	// Run database upgrade if required
