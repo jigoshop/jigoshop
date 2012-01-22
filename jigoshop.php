@@ -152,6 +152,10 @@ function jigoshop_set_image_sizes(){
  * @since 0.9.9
  **/
 function jigoshop_get_image_size( $size ) {
+
+	if ( is_array( $size ) )
+		return $size;
+
 	switch ( $size ) :
 		case 'shop_tiny':
 			$image_size = array( get_option('jigoshop_shop_tiny_w'), get_option('jigoshop_shop_tiny_h') );
