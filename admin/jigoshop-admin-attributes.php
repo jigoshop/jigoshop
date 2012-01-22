@@ -34,7 +34,7 @@ function jigoshop_attributes() {
 		$attribute_type = (string) $_POST['attribute_type'];
 		if (isset($_POST['show-on-product-page']) && $_POST['show-on-product-page']) $product_page = 1; else $product_page = 0;
 		
-		if ($attribute_name && $attribute_type && !taxonomy_exists('pa_'.strtolower(sanitize_title($attribute_name)))) :
+		if ($attribute_name && $attribute_type && !taxonomy_exists('pa_'.sanitize_title($attribute_name))) :
 		
 			$wpdb->insert( $wpdb->prefix . "jigoshop_attribute_taxonomies", array( 'attribute_name' => $attribute_name, 'attribute_type' => $attribute_type ), array( '%s', '%s' ) );
 			
@@ -72,7 +72,7 @@ function jigoshop_attributes() {
 			
 			if ($att_name && $wpdb->query("DELETE FROM " . $wpdb->prefix . "jigoshop_attribute_taxonomies WHERE attribute_id = '$delete'")) :
 				
-				$taxonomy = 'pa_'.strtolower(sanitize_title($att_name));
+				$taxonomy = 'pa_'.sanitize_title($att_name);
 				
 				// Old taxonomy prefix left in for backwards compatibility
 				if (taxonomy_exists($taxonomy)) :
@@ -181,15 +181,15 @@ function jigoshop_add_attribute() {
 				        			foreach ($attribute_taxonomies as $tax) :
 				        				?><tr>
 
-				        					<td><a href="edit-tags.php?taxonomy=pa_<?php echo rawurlencode(strtolower(sanitize_title($tax->attribute_name))); ?>&amp;post_type=product"><?php echo $tax->attribute_name; ?></a>
+				        					<td><a href="edit-tags.php?taxonomy=pa_<?php echo rawurlencode(sanitize_title($tax->attribute_name)); ?>&amp;post_type=product"><?php echo $tax->attribute_name; ?></a>
 
 				        					<div class="row-actions"><span class="edit"><a href="<?php echo add_query_arg('edit', $tax->attribute_id, 'admin.php?page=attributes') ?>"><?php _e('Edit', 'jigoshop'); ?></a> | </span><span class="delete"><a class="delete" href="<?php echo add_query_arg('delete', $tax->attribute_id, 'admin.php?page=attributes') ?>"><?php _e('Delete', 'jigoshop'); ?></a></span></div>				        					
 				        					</td>
 				        					<td><?php echo ucwords($tax->attribute_type); ?></td>
 				        					<td><?php 
-				        						if (taxonomy_exists('pa_'.strtolower(sanitize_title($tax->attribute_name)))) :
+				        						if (taxonomy_exists('pa_'.sanitize_title($tax->attribute_name))) :
 					        						$terms_array = array();
-					        						$terms = get_terms( 'pa_'.strtolower(sanitize_title($tax->attribute_name)), 'orderby=name&hide_empty=0' );
+					        						$terms = get_terms( 'pa_'.sanitize_title($tax->attribute_name), 'orderby=name&hide_empty=0' );
 					        						if ($terms) :
 						        						foreach ($terms as $term) :
 															$terms_array[] = $term->name;

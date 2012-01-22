@@ -854,7 +854,7 @@ function jigoshop_import_start() {
 							            ),
 							            'show_ui' => false,
 							            'query_var' => true,
-							            'rewrite' => array( 'slug' => strtolower(sanitize_title($nicename)), 'with_front' => false, 'hierarchical' => true ),
+							            'rewrite' => array( 'slug' => sanitize_title($nicename), 'with_front' => false, 'hierarchical' => true ),
 							        )
 							    );
 

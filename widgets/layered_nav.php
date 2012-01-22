@@ -61,7 +61,7 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 		);
 
 		// Check if taxonomy exists
-		$taxonomy = 'pa_'.strtolower(sanitize_title($instance['attribute']));
+		$taxonomy = 'pa_'.sanitize_title($instance['attribute']);
 		if ( ! taxonomy_exists($taxonomy) )
 			return false;
 		
@@ -83,7 +83,7 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 			echo $before_title . $title . $after_title;
 			
 			//Remove param link
-			$remove_link = remove_query_arg('filter_'.strtolower(sanitize_title($instance['attribute'])));
+			$remove_link = remove_query_arg('filter_'.sanitize_title($instance['attribute']));
 			echo "<a class=\"layerd_nav_clear\" href=\"{$remove_link}\">Clear</a>";
 			
 			// Open the list
@@ -121,7 +121,7 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 				// All current filters
 				if ($_chosen_attributes) foreach ($_chosen_attributes as $name => $value) :
 					if ($name!==$taxonomy) :
-						$link = add_query_arg( strtolower(sanitize_title(str_replace('pa_', 'filter_', $name))), implode(',', $value), $link );
+						$link = add_query_arg( sanitize_title(str_replace('pa_', 'filter_', $name)), implode(',', $value), $link );
 					endif;
 				endforeach;
 				
@@ -223,7 +223,7 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 			echo '<select id="' . $this->get_field_id('attribute') . '" name="' . $this->get_field_name('attribute') . '">';
 			foreach($attr_tax as $tax) {
 				
-				if (taxonomy_exists('pa_'.strtolower(sanitize_title($tax->attribute_name)))) {
+				if (taxonomy_exists('pa_'.sanitize_title($tax->attribute_name))) {
 					echo '<option value="' . $tax->attribute_name . '" ' . (isset($instance['attribute']) && $instance['attribute'] == $tax->attribute_name ? 'selected' : null) . '>';
 					echo $tax->attribute_name;
 					echo '</option>';

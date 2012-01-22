@@ -81,7 +81,7 @@ function jigoshop_post_type() {
 	if ( $attribute_taxonomies ) :
 		foreach ($attribute_taxonomies as $tax) :
 	    	
-	    	$name = 'pa_'.strtolower(sanitize_title($tax->attribute_name));
+	    	$name = 'pa_'.sanitize_title($tax->attribute_name);
 	    	$hierarchical = true;
 	    	if ($name) :
 
@@ -104,7 +104,7 @@ function jigoshop_post_type() {
 			            'show_ui' => false,
 			            'query_var' => true,
 			            'show_in_nav_menus' => false,
-			            'rewrite' => array( 'slug' => $category_base . strtolower(sanitize_title($tax->attribute_name)), 'with_front' => false, 'hierarchical' => $hierarchical ),
+			            'rewrite' => array( 'slug' => $category_base . sanitize_title($tax->attribute_name), 'with_front' => false, 'hierarchical' => $hierarchical ),
 			        )
 			    );
 	    		
