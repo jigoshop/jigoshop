@@ -53,8 +53,8 @@ function jigoshop_product_updated_messages( $messages ) {
 	
 	$columns["cb"]    = "<input type=\"checkbox\" />";
 
-	$columns["thumb"] = __("Image", 'jigoshop');
-	$columns["title"] = __("Name", 'jigoshop');
+	$columns["thumb"] = null;
+	$columns["title"] = __("Title", 'jigoshop');
 
 	$columns["featured"] = __("Featured", 'jigoshop');
 	
@@ -62,9 +62,6 @@ function jigoshop_product_updated_messages( $messages ) {
 	if( get_option('jigoshop_enable_sku', true) == 'yes' ) {
 		$columns["product-type"] .= ' &amp; ' . __("SKU", 'jigoshop');
 	}
-
-	//$columns["product-cat"] = __("Category", 'jigoshop');
-	//$columns["product-tags"] = __("Tags", 'jigoshop');
 	
 	if ( get_option('jigoshop_manage_stock')=='yes' ) {
 	 	$columns["stock"] = __("Stock", 'jigoshop');
@@ -84,16 +81,18 @@ function jigoshop_custom_product_columns($column) {
 
 	switch ($column) {
 		case "thumb" :
-			echo jigoshop_get_product_thumbnail( 'shop_tiny' );
+			if( 'trash' != $post->post_status ) {
+				echo '<a class="row-title" href="'.get_edit_post_link( $post->ID ).'">';
+					echo jigoshop_get_product_thumbnail( 'shop_tiny' );
+				echo '</a>';
+			}
+			else {
+				echo jigoshop_get_product_thumbnail( 'shop_tiny' );
+			} 
+
 		break;
 		case "price":
 			echo $product->get_price_html();	
-		break;
-		case "product-cat" :
-			echo get_the_term_list($post->ID, 'product_cat', '', ', ','');
-		break;
-		case "product-tags" :
-			echo get_the_term_list($post->ID, 'product_tag', '', ', ','');
 		break;
 		case "featured" :
 			$url = wp_nonce_url( admin_url('admin-ajax.php?action=jigoshop-feature-product&product_id=' . $post->ID) );
