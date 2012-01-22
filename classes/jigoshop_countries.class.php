@@ -562,6 +562,7 @@ class jigoshop_countries {
 		asort($countries);
 		
 		if ( $countries ) foreach ( $countries as $key=>$value) :
+			$value = htmlspecialchars($value, ENT_QUOTES);
 			if ( $states =  self::get_states($key) ) :
 				echo '<optgroup label="'.$value.'">';
     			echo '<option value="'.$key.'"';
