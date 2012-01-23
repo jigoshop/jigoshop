@@ -227,6 +227,7 @@ function jigoshop_default_taxonomies() {
 	
 	$product_types = array(
 		'simple',
+		'external',
 		'grouped',
 		'configurable',
 		'downloadable',

@@ -100,11 +100,12 @@ function jigoshop_product_data_box() {
 					'product-type', 
 					__('Product Type', 'jigoshop'),
 					apply_filters('jigoshop_product_type_selector', array(
-						'simple'			=> __('Simple', 'jigoshop'),
+						'simple'		=> __('Simple', 'jigoshop'),
 						'downloadable'	=> __('Downloadable', 'jigoshop'),
 						'grouped'		=> __('Grouped', 'jigoshop'),
 						'virtual'		=> __('Virtual', 'jigoshop'),
 						'variable'		=> __('Variable', 'jigoshop'),
+						'external'		=> __('External / Affiliate', 'jigoshop')
 					)),
 					$product_type
 				);
@@ -148,11 +149,13 @@ function jigoshop_product_data_box() {
 			<?php
 				// Featured
 				echo jigoshop_form::checkbox( 'featured', 'Featured?', false, __('Enable this option to feature this product', 'jigoshop') );
+
+				echo jigoshop_form::input( 'external_url', 'Product Url', null, null, null, 'The URL of the external product (eg. http://www.google.com)' );
 			?>
 			</fieldset>
 		</div>
 		<div id="tax" class="panel jigoshop_options_panel">
-			<fieldset>
+			<fieldset id="tax_fieldset">
 			<?php
 
 				// Tax Status
