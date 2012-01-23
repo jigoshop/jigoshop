@@ -359,7 +359,7 @@
 												Display on product page\
 											</label>\
 \
-											<label>\
+											<label class="attribute_is_variable">\
 												<input type="checkbox" checked="checked" name="attribute_variation[' + size + ']" value="1">\
 												Is for variations\
 											</label>\

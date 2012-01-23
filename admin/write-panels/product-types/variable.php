@@ -17,12 +17,27 @@
  * @license    http://jigoshop.com/license/commercial-edition
  */
 
+// Temporary fix for selectbox triggering the click event.
+// For some reason enqueing the script inside a class causes the event unbind()
+// to not work. Would prefer this to be part of the class but perhaps its better to enqueue
+// everything all at once.
+add_action( 'admin_enqueue_scripts', 'jigoshop_product_meta_variable_script');
+function jigoshop_product_meta_variable_script( $hook ) {
+	global $post;
+		
+	// Don't enqueue script if not on product edit screen
+	if ( $hook != 'post.php' || $post->post_type != 'product' )
+		return false;
+
+	wp_enqueue_script('jigoshop-variable-js', jigoshop::assets_url() . '/assets/js/variable.js' , array('jquery'),1,true);
+}
+
 class jigoshop_product_meta_variable extends jigoshop_product_meta
 {
 	public function __construct() {
 		add_action( 'jigoshop_product_write_panel_tabs',       array(&$this, 'register_tab') );
 		add_action( 'jigoshop_process_product_meta_variable',  array(&$this, 'save'), 1 );
-		add_action( 'jigoshop_product_write_panels',	       array(&$this, 'display') );
+		add_action( 'jigoshop_product_write_panels',	           array(&$this, 'display') );
 		add_action( 'admin_enqueue_scripts',                   array(&$this, 'admin_enqueue_scripts') );
 
 		add_action( 'wp_ajax_jigoshop_remove_variation',       array(&$this, 'remove') );
@@ -52,7 +67,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 		if ( $hook != 'post.php' || $post->post_type != 'product' )
 			return false;
 		
-		wp_enqueue_script('jigoshop-variable-js', jigoshop::assets_url() . '/assets/js/variable.js', array('jquery'), true);
+		// wp_enqueue_script('jigoshop-variable-js', jigoshop::assets_url() . '/assets/js/variable.js', array('postbox', 'jquery'), true);
 
 		// Shouldn't we namespace? -Rob
 		wp_localize_script( 'jigoshop-variable-js', 'varmeta', array(

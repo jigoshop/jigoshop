@@ -189,16 +189,6 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name' => __('ShareThis Publisher ID','jigoshop'),
-		'desc' 		=> __("Enter your <a href='http://sharethis.com/account/'>ShareThis publisher ID</a> to show ShareThis on product pages.",'jigoshop'),
-		'tip' 		=> __('ShareThis is a small social sharing widget for posting links on popular sites such as Twitter and Facebook.','jigoshop'),
-		'id' 		=> 'jigoshop_sharethis',
-		'css' 		=> 'width:300px;',
-		'type' 		=> 'text',
-		'std' 		=> ''
-	),
-
-	array(
 		'name' => __('Disable Jigoshop frontend.css','jigoshop'),
 		'desc' 		=> '',
 		'tip' 		=> __('Useful if you want to disable Jigoshop styles and theme it yourself via your theme.','jigoshop'),
@@ -234,6 +224,38 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'id' 		=> 'jigoshop_disable_fancybox',
 		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
+	),
+
+	array( 'name' => __('Integration', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
+
+	array(
+		'name' => __('ShareThis Publisher ID','jigoshop'),
+		'desc' 		=> __("Enter your <a href='http://sharethis.com/account/'>ShareThis publisher ID</a> to show ShareThis on product pages.",'jigoshop'),
+		'tip' 		=> __('ShareThis is a small social sharing widget for posting links on popular sites such as Twitter and Facebook.','jigoshop'),
+		'id' 		=> 'jigoshop_sharethis',
+		'css' 		=> 'width:300px;',
+		'type' 		=> 'text',
+		'std' 		=> ''
+	),
+
+	array(  
+		'name' => __('Google Analytics ID', 'jigoshop'),
+		'desc' 		=> __('Log into your Google Analytics account to find your ID. e.g. <code>UA-XXXXXXX-X</code>', 'jigoshop'),
+		'id' 		=> 'jigoshop_ga_id',
+		'type' 		=> 'text',
+        'css' 		=> 'min-width:300px;',
+	),
+	
+	array(  
+		'name' => __('Enable eCommerce Tracking', 'jigoshop'),
+		'tip' 		=> __('Add Google Analytics eCommerce tracking code upon successful orders', 'jigoshop'),
+		'desc'		=> __('<a href="//support.google.com/analytics/bin/answer.py?hl=en&answer=1009612">Learn how to enable</a> eCommerce tracking for your Google Analytics account.', 'jigoshop'),
+		'id' 		=> 'jigoshop_ga_ecommerce_tracking_enabled',
 		'type' 		=> 'select',
 		'options' => array(
 			'no'  => __('No', 'jigoshop'),

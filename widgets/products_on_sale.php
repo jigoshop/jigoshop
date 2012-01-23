@@ -84,15 +84,15 @@
 
 		// Set up query
 		$query_args = array(
-			'showposts'		=> $number,
-			'post_type'		=> 'product',
-			'post_status'	=> 'publish',
-			'orderby'		=> 'rand',
-			'meta_query'		=> array(
+			'posts_per_page' => $number,
+			'post_type'	     => 'product',
+			'post_status'    => 'publish',
+			'orderby'        => 'rand',
+			'meta_query'     => array(
 				array(
-					'key'		=> 'visibility',
-					'value'		=> array( 'catalog', 'visible' ),
-					'compare'	=> 'IN',
+					'key'       => 'visibility',
+					'value'     => array( 'catalog', 'visible' ),
+					'compare'   => 'IN',
 				),
 			)
 		);

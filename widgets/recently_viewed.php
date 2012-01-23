@@ -90,17 +90,17 @@
 
 		// Set up query
 		$query_args = array(
-			'showposts'	=> $number,
-			'post_type'	=> 'product',
-			'post_status'	=> 'publish',
-			'nopaging'	=> true,
-			'post__in'	=> jigoshop_session::instance()->recently_viewed_products,
-			'orderby'	=> 'date', // TODO: Not ideal as it doesn't order latest first
-			'meta_query'	=> array(
+			'posts_per_page' => $number,
+			'post_type'      => 'product',
+			'post_status'    => 'publish',
+			'nopaging'       => true,
+			'post__in'       => jigoshop_session::instance()->recently_viewed_products,
+			'orderby'        => 'date', // TODO: Not ideal as it doesn't order latest first
+			'meta_query'     => array(
 				array(
-					'key'		=> 'visibility',
-					'value'		=> array('catalog', 'visible'),
-					'compare'	=> 'IN',
+					'key'       => 'visibility',
+					'value'     => array('catalog', 'visible'),
+					'compare'   => 'IN',
 				),
 			)
 		);

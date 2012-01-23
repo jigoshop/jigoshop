@@ -298,4 +298,12 @@ function jigoshop_upgrade_100() {
 
 		update_post_meta( $post->ID, 'variation_data', $variation_data );
 	}
+
+	// Update shop order comments type
+	$wpdb->update( $wpdb->comments, array(
+		'comment_type' => 'jigoshop',
+		'comment_author' => 'Jigoshop',
+		'comment_author_email' => '',
+		'comment_author_IP' => '',
+	), array('user_id' => 0) );
 }

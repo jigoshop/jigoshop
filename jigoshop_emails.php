@@ -352,7 +352,7 @@ function jigoshop_refunded_order_customer_notification($order_id) {
     echo __('ORDER #: ', 'jigoshop') . $order->id . '' . PHP_EOL;
     echo '=====================================================================' . PHP_EOL;
 
-    echo $order->email_order_items_list(false, true); // show download links and SKU
+    echo $order->email_order_items_list(false, true); // don't show download links and show SKU
 
     if ($order->customer_note) :
         echo PHP_EOL . __('Note:', 'jigoshop') . $order->customer_note . PHP_EOL;

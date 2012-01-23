@@ -287,7 +287,7 @@ class skrill extends jigoshop_payment_gateway {
 		            break;
 		            case '0' : // Pending
 		            case '-2' : // Failed
-		                $order->update_status('on-hold', sprintf(__('Skrill payment failed (%s)', 'jigoshop'), strtolower(sanitize($posted['status'])) ) );
+		                $order->update_status('on-hold', sprintf(__('Skrill payment failed (%s)', 'jigoshop'), strtolower($posted['status']) ) );
 		            break;
 		            case '-1' : // Cancelled
 		            	$order->update_status('cancelled', __('Skrill payment cancelled', 'jigoshop'));
