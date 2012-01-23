@@ -177,15 +177,12 @@ class jigoshop_catalog_query extends jigoshop_singleton {
 	 */
 	private function meta_query( $request ) {
 	
-		error_log( 'called' );
 		$in = array( 'visible' );
 		
 		if ( $this->is_search() ) $in[] = 'search';
 		else $in[] = 'catalog';
 		
 		$meta = $this->original_query->get( 'meta_query' );
-
-		error_log( print_r($meta, true) );
 		
 		$meta[] = array(
 			'key' => 'visibility',

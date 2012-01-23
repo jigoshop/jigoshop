@@ -115,7 +115,7 @@ function jigoshop_custom_product_columns($column) {
 		case "product-type" :
 			echo ucwords($product->product_type);
 			echo '<br/>';
-			if ( $sku = get_post_meta( $post->ID, 'sku', true )) {
+			if ( get_option('jigoshop_enable_sku', true) == 'yes' && $sku = get_post_meta( $post->ID, 'sku', true )) {
 				echo $sku;
 			}
 			else {
@@ -163,6 +163,14 @@ function jigoshop_custom_product_columns($column) {
           
 		break;
 	}
+}
+
+// Enable sorting for date
+add_filter("manage_edit-product_sortable_columns", 'jigoshop_custom_product_sort');
+function jigoshop_custom_product_sort( $columns ) {
+    $columns['product-date'] = 'date';
+    
+    return $columns;
 }
 
 /**
