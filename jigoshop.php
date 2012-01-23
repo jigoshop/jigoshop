@@ -803,11 +803,13 @@ function jigoshop_comments($comment, $args, $depth) {
 //### Exclude order comments from front end #########################################################
 add_filter( 'comments_clauses', 'jigoshop_exclude_order_admin_comments', 10, 1);
 function jigoshop_exclude_order_admin_comments( $clauses ) {
-	global $typenow;
 
+	// NOTE: bit of a hack, tests if we're in the admin & its an ajax call
 	// Don't hide when viewing orders in admin
-	if (is_admin() && $typenow == 'shop_order')
+	if (is_admin() && is_ajax()) {
+
 		return $clauses;
+	}
 
 	// Hide all those comments which aren't of type jigoshop
 	$clauses['where'] .= ' AND comment_type != "jigoshop"';	
