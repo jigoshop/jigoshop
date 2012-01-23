@@ -150,7 +150,7 @@ function jigoshop_custom_product_columns($column) {
                     _e( 'Scheduled', 'jigoshop' );
                 endif;
             else :
-                _e( 'Last Modified', 'jigoshop' );
+                _e( 'Draft', 'jigoshop' );
             endif;
 
             if ( $product->visibility ) {
