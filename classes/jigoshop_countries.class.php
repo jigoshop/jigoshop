@@ -490,7 +490,7 @@ class jigoshop_countries {
     		$state = end(explode(':', $default));
     	else :
     		$country = $default;
-    		$state = '';
+    		$state = '*';
     	endif;
 		
 		return $country;	    	
@@ -504,7 +504,7 @@ class jigoshop_countries {
     		$state = end(explode(':', $default));
     	else :
     		$country = $default;
-    		$state = '';
+    		$state = '*';
     	endif;
 		
 		return $state;	    	
@@ -561,7 +561,8 @@ class jigoshop_countries {
 		$countries = self::$countries;
 		asort($countries);
 		
-		if ( $countries ) foreach ( $countries as $key=>$value) :
+		if ( $countries ) foreach ( $countries as $key=>$value ) :
+			$value = esc_js($value);
 			if ( $states =  self::get_states($key) ) :
 				echo '<optgroup label="'.$value.'">';
     			echo '<option value="'.$key.'"';

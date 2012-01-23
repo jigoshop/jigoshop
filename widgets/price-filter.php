@@ -51,7 +51,7 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 		if ( ! is_tax( 'product_cat' ) && ! is_post_type_archive( 'product' ) && ! is_tax( 'product_tag' ) )
 			return false;
 
-		global $_chosen_attributes, $wpdb, $all_post_ids;
+		global $_chosen_attributes, $wpdb, $jigoshop_all_post_ids_in_view;
 
 		// Set the widget title
 		$title = apply_filters(
@@ -85,9 +85,9 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 		FROM $wpdb->posts
 		LEFT JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id
 		WHERE meta_key = 'price' AND (
-			$wpdb->posts.ID IN (".implode(',', $all_post_ids).") 
+			$wpdb->posts.ID IN (".implode( ',', $jigoshop_all_post_ids_in_view ).") 
 			OR (
-				$wpdb->posts.post_parent IN (".implode( ',', $all_post_ids ).")
+				$wpdb->posts.post_parent IN (".implode( ',', $jigoshop_all_post_ids_in_view ).")
 				AND $wpdb->posts.post_parent != 0
 			)
 		)"));
@@ -129,15 +129,15 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 
 	public function jigoshop_price_filter_init() {
 
-		unset($_SESSION['min_price']);
-		unset($_SESSION['max_price']);
+		unset(jigoshop_session::instance()->min_price);
+		unset(jigoshop_session::instance()->max_price);
 
 		if ( isset( $_GET['min_price'] ) ) {	
-			$_SESSION['min_price'] = $_GET['min_price'];
+			jigoshop_session::instance()->min_price = $_GET['min_price'];
 		}
 
 		if ( isset( $_GET['max_price'] ) ) {
-			$_SESSION['max_price'] = $_GET['max_price'];	
+			jigoshop_session::instance()->max_price = $_GET['max_price'];	
 		}
 	} 
 
@@ -161,3 +161,68 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 		</p>";
 	}
 } // class Jigoshop_Widget_Price_Filter
+
+function jigoshop_price_filter( $filtered_posts ) {
+
+	if (isset($_GET['max_price']) && isset($_GET['min_price'])) :
+
+		$matched_products = array( 0 );
+
+		$matched_products_query = get_posts(array(
+			'post_type' => 'product',
+			'post_status' => 'publish',
+			'posts_per_page' => -1,
+			'meta_query' => array(
+				array(
+					'key' => 'price',
+					'value' => array( $_GET['min_price'], $_GET['max_price'] ),
+					'type' => 'NUMERIC',
+					'compare' => 'BETWEEN'
+				)
+			),
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'product_type',
+					'field' => 'slug',
+					'terms' => 'grouped',
+					'operator' => 'NOT IN'
+				)
+			)
+		));
+
+		if ($matched_products_query) :
+
+			foreach ($matched_products_query as $product) :
+				$matched_products[] = $product->ID;
+			endforeach;
+
+		endif;
+
+		// Get grouped product ids
+		$grouped_products = get_objects_in_term( get_term_by('slug', 'grouped', 'product_type')->term_id, 'product_type' );
+
+		if ($grouped_products) foreach ($grouped_products as $grouped_product) :
+
+			$children = get_children( 'post_parent='.$grouped_product.'&post_type=product' );
+
+			if ($children) foreach ($children as $product) :
+				$price = get_post_meta( $product->ID, 'price', true);
+
+				if ($price<=$_GET['max_price'] && $price>=$_GET['min_price']) :
+
+					$matched_products[] = $grouped_product;
+
+					break;
+
+				endif;
+			endforeach;
+
+		endforeach;
+
+		$filtered_posts = array_intersect($matched_products, $filtered_posts);
+
+	endif;
+
+	return $filtered_posts;
+}
+add_filter( 'loop-shop-posts-in', 'jigoshop_price_filter' );

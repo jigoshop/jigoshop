@@ -40,7 +40,7 @@ function jigoshop_change_insert_into_post( $translation, $original ) {
     		return $translation;
     }
 }
- 
+
 /**
  * Product data box
  * 
@@ -161,7 +161,7 @@ function jigoshop_product_data_box() {
 						'taxable'	=> 'Taxable',
 						'shipping'	=> 'Shipping',
 						'none'		=> 'None'
-					), $data[$field['id']] );
+					) );
 
 	            ?>
 
@@ -227,13 +227,13 @@ function jigoshop_product_data_box() {
 			<fieldset>
 			<?php
 				// Visibility
-				echo jigoshop_form::select( 'visibility', 'Visibility',
+				echo jigoshop_form::select( 'product_visibility', 'Visibility',
 					array(
 						'visible'	=> 'Catalog & Search',
 						'catalog'	=> 'Catalog Only',
 						'search'	=> 'Search Only',
 						'Hidden'	=> 'Hidden'
-					) );
+					), get_post_meta( $post->ID, 'visibility', true ) );
 			?>
 			</fieldset>
 		</div>
@@ -287,7 +287,7 @@ function jigoshop_product_data_box() {
 			$posts_in = (array) get_objects_in_term( get_term_by( 'slug', 'grouped', 'product_type' )->term_id, 'product_type' );
 			$posts_in = array_unique($posts_in);
 
-			if( ! (bool) $posts_in ) {
+			if( (bool) $posts_in ) {
 
 				$args = array(
 					'post_type'	=> 'product',
@@ -356,7 +356,7 @@ function attributes_display() { ?>
 				$attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();
 				if ( $attribute_taxonomies ) :
 			    	foreach ($attribute_taxonomies as $tax) :
-						echo '<option value="'.str_replace('%','',sanitize_title($tax->attribute_name)).'" data-type="'.$tax->attribute_type.'">'.$tax->attribute_name.'</option>';
+						echo '<option value="'.sanitize_text_field(sanitize_title($tax->attribute_name)).'" data-type="'.$tax->attribute_type.'">'.$tax->attribute_name.'</option>';
 			    	endforeach;
 			    endif;
 			?>
@@ -386,8 +386,6 @@ function display_attribute() { ?>
 
 		// This is whats applied to the product
 		$attributes = get_post_meta($post->ID, 'product_attributes', true);
-
-
 	?>
 	<?php if( ! $attributes ): ?>
 		<div class="demo attribute">
@@ -443,7 +441,7 @@ function display_attribute() { ?>
 		endif;
 	?>
 
-	<div class="postbox attribute <?php if ( $has_terms ) echo 'closed'; ?> <?php echo str_replace('%','',$attribute_taxonomy_name); ?>" data-attribute-name="<?php echo $attribute_taxonomy_name; ?>" rel="<?php echo $position; ?>"  <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
+	<div class="postbox attribute <?php if ( $has_terms ) echo 'closed'; ?> <?php echo sanitize_text_field(sanitize_title($attribute_taxonomy_name)); ?>" data-attribute-name="<?php echo $attribute_taxonomy_name; ?>" rel="<?php echo $position; ?>"  <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
 		<button type="button" class="hide_row button">Remove</button>
 		<div class="handlediv" title="Click to toggle"><br></div>
 		<h3 class="handle"><?php echo $tax->attribute_name; ?></h3>
@@ -461,7 +459,7 @@ function display_attribute() { ?>
 
 						<div>
 							<label>
-								<input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['visible'] : 0 ), true); ?> name="attribute_visibility[<?php echo $i; ?>]" value="1" /><?php _e('Display on product page', 'jigoshop'); ?>
+								<input type="checkbox" <?php checked(boolval( isset($attribute) ? $attribute['visible'] : 1 ), true); ?> name="attribute_visibility[<?php echo $i; ?>]" value="1" /><?php _e('Display on product page', 'jigoshop'); ?>
 							</label>
 
 							<?php if ($tax->attribute_type!="select") : // always disable variation for select elements ?>
@@ -472,64 +470,62 @@ function display_attribute() { ?>
 						</div>
 					</td>
 					<td class="value">
-							<?php if ($tax->attribute_type=="select") : ?>
-								<select name="attribute_values[<?php echo $i ?>]">
-									<option value=""><?php _e('Choose an option&hellip;', 'jigoshop'); ?></option>
-									<?php
-									if (taxonomy_exists('pa_'.$attribute_taxonomy_name)) :
-		        						$terms = get_terms( 'pa_'.$attribute_taxonomy_name, array( 'orderby' => 'slug', 'hide_empty' => '0' ) );
-		        						if ($terms) :
-											foreach ($terms as $term) :
-												printf('<option value="%s" %s>%s</option>'
-													, $term->name
-													, selected(in_array($term->slug, $term_slugs), true, false)
-													, $term->name);
-											endforeach;
-										endif;
-									endif;
-									?>			
-								</select>
-
-							<?php elseif ($tax->attribute_type=="multiselect") : ?>
-
-								<div class="multiselect">
-									<?php
-									if (taxonomy_exists('pa_'.$attribute_taxonomy_name)) :
-		        						$terms = get_terms( 'pa_'.$attribute_taxonomy_name, array( 'orderby' => 'slug', 'hide_empty' => '0' ) );
-		        						if ($terms) :
-			        						foreach ($terms as $term) :
-												$checked = checked(in_array($term->slug, $term_slugs), true, false);
-												printf('<label %s><input type="checkbox" name="attribute_values[%d][]" value="%s" %s/> %s</label>'
-													, !empty($checked) ? 'class="selected"' : ''
-													, $i
-													, $term->slug
-													, $checked
-													, $term->name);
-											endforeach;
-										endif;
-									endif;
-									?>
-								</div>
-								<div class="multiselect-controls">
-									<a class="check-all" href="#"><?php _e('Check All'); ?></a>&nbsp;|
-									<a class="uncheck-all" href="#"><?php _e('Uncheck All');?></a>&nbsp;|
-									<a class="toggle" href="#"><?php _e('Toggle');?></a>&nbsp;|
-									<a class="show-all" href="#"><?php _e('Show all'); ?></a>
-								</div>
-
-							<?php elseif ($tax->attribute_type=="text") : ?>
-								<textarea name="attribute_values[<?php echo $i; ?>]">
-									<?php 												
-									if ($allterms) :
-										$prettynames = array();
-										foreach ($allterms as $term) :
-											$prettynames[] = $term->name;
+						<?php if ($tax->attribute_type=="select") : ?>
+							<select name="attribute_values[<?php echo $i ?>]">
+								<option value=""><?php _e('Choose an option&hellip;', 'jigoshop'); ?></option>
+								<?php
+								if (taxonomy_exists('pa_'.$attribute_taxonomy_name)) :
+	        						$terms = get_terms( 'pa_'.$attribute_taxonomy_name, array( 'orderby' => 'slug', 'hide_empty' => '0' ) );
+	        						if ($terms) :
+										foreach ($terms as $term) :
+											printf('<option value="%s" %s>%s</option>'
+												, $term->name
+												, selected(in_array($term->slug, $term_slugs), true, false)
+												, $term->name);
 										endforeach;
-										echo implode(',', $prettynames);
 									endif;
-									?>
-								</textarea>
-							<?php endif; ?>
+								endif;
+								?>			
+							</select>
+
+						<?php elseif ($tax->attribute_type=="multiselect") : ?>
+
+							<div class="multiselect">
+								<?php
+								if (taxonomy_exists('pa_'.$attribute_taxonomy_name)) :
+	        						$terms = get_terms( 'pa_'.$attribute_taxonomy_name, array( 'orderby' => 'slug', 'hide_empty' => '0' ) );
+	        						if ($terms) :
+		        						foreach ($terms as $term) :
+											$checked = checked(in_array($term->slug, $term_slugs), true, false);
+											printf('<label %s><input type="checkbox" name="attribute_values[%d][]" value="%s" %s/> %s</label>'
+												, !empty($checked) ? 'class="selected"' : ''
+												, $i
+												, $term->slug
+												, $checked
+												, $term->name);
+										endforeach;
+									endif;
+								endif;
+								?>
+							</div>
+							<div class="multiselect-controls">
+								<a class="check-all" href="#"><?php _e('Check All'); ?></a>&nbsp;|
+								<a class="uncheck-all" href="#"><?php _e('Uncheck All');?></a>&nbsp;|
+								<a class="toggle" href="#"><?php _e('Toggle');?></a>&nbsp;|
+								<a class="show-all" href="#"><?php _e('Show all'); ?></a>
+							</div>
+
+						<?php elseif ($tax->attribute_type=="text") : ?>
+							<textarea name="attribute_values[<?php echo $i; ?>]"><?php
+								if ($allterms) :
+									$prettynames = array();
+									foreach ($allterms as $term) :
+										$prettynames[] = $term->name;
+									endforeach;
+									echo implode(',', $prettynames);
+								endif;
+							?></textarea>
+						<?php endif; ?>
 					</td>
 				</tr>
 			</table>

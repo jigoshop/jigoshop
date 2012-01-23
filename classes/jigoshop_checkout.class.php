@@ -269,11 +269,13 @@ class jigoshop_checkout extends jigoshop_singleton {
 		global $wpdb;
 		
 		if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
+		
+        // always calculate totals when coming to checkout, as we need the total calculated on the cart here
+        // fixes https://github.com/jigoshop/redhillsranch/issues/61
+        jigoshop_cart::calculate_totals(); 
 
 		if (isset($_POST) && $_POST && !isset($_POST['login'])) :
 
-			jigoshop_cart::calculate_totals();
-			
 			jigoshop::verify_nonce('process_checkout');
 			
 			if (sizeof(jigoshop_cart::$cart_contents)==0) :
@@ -656,7 +658,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 					if (jigoshop_cart::needs_payment()) :
 						
 						// Store Order ID in session so it can be re-used after payment failure
-						$_SESSION['order_awaiting_payment'] = $order_id;
+						jigoshop_session::instance()->order_awaiting_payment = $order_id;
 					
 						// Process Payment
 						$result = $available_gateways[$this->posted['payment_method']]->process_payment( $order_id );

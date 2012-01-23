@@ -2,9 +2,12 @@
 	// @todo: varmeta is a temporary name.. this should be a global jigoshop var
 
 	$(function() {
-		
+
 		// This is a unique ID for add_variation
 		var ID = 0;
+
+		// Unbind the standard postbox click event
+		$('.jigoshop_variation.postbox h3').unbind('click.postboxes');
 
 		// Set up the events bound to the root variable product options so events don't bubble to the document
 		$('#variable_product_options')
@@ -18,6 +21,15 @@
 			// TODO: can this be improved anyway?
 			$root.find('.options').hide();
 			$root.find(panel).show();
+		})
+
+		.on('click', '.postbox h3', function(e) {
+
+			//console.log( e.target.tagName.toLowerCase() );
+			if ( e.target.tagName.toLowerCase() === 'select' )
+				return false;
+
+			$(this).parent().toggleClass('closed');
 		})
 
 		// @todo: this should be an ID

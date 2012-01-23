@@ -322,10 +322,10 @@ function jigoshop_ajax_update_order_review() {
         if (isset($_POST['shipping_method'])) :
             
 		$shipping_method = explode(":", $_POST['shipping_method']);
-	 	$_SESSION['chosen_shipping_method_id'] = $shipping_method[0];
+	 	jigoshop_session::instance()->chosen_shipping_method_id = $shipping_method[0];
                 
                 if (is_numeric($shipping_method[2])) :
-                    $_SESSION['selected_rate_id'] = $shipping_method[2];
+                    jigoshop_session::instance()->selected_rate_id = $shipping_method[2];
                 endif;
                 
 	endif;
@@ -375,15 +375,15 @@ add_action( 'init', 'jigoshop_clear_cart_after_payment' );
 
 function jigoshop_clear_cart_after_payment( $url = false ) {
 
-	if (isset($_SESSION['order_awaiting_payment']) && $_SESSION['order_awaiting_payment'] > 0) :
+	if (isset( jigoshop_session::instance()->order_awaiting_payment ) && jigoshop_session::instance()->order_awaiting_payment > 0) :
 
-		$order = &new jigoshop_order($_SESSION['order_awaiting_payment']);
+		$order = &new jigoshop_order( jigoshop_session::instance()->order_awaiting_payment );
 
 		if ($order->id > 0 && ($order->status=='completed' || $order->status=='processing')) :
 
 			jigoshop_cart::empty_cart();
 
-			unset($_SESSION['order_awaiting_payment']);
+			unset( jigoshop_session::instance()->order_awaiting_payment );
 
 		endif;
 
@@ -693,6 +693,129 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 		// endif;
 
 	endforeach;
+}
+
+/**
+ * Displays Google Analytics tracking code in the footer
+ *
+ * @return  void
+ */
+add_action( 'wp_footer', 'jigoshop_ga_tracking' );
+function jigoshop_ga_tracking() {
+	
+	// If admin don't track..shouldn't require this
+	if ( is_admin() )
+		return false;
+
+	// Don't track the shop owners roaming
+	if ( current_user_can('manage_options') )
+		return false;
+	
+	$tracking_id = get_option('jigoshop_ga_id');
+	
+	if ( ! $tracking_id )
+		return false;
+	
+	$loggedin = (is_user_logged_in()) ? 'yes' : 'no';
+
+	if ( is_user_logged_in() ) {
+		$user_id 		= get_current_user_id();
+		$current_user 	= get_user_by('id', $user_id);
+		$username 		= $current_user->user_login;
+	}
+	else {
+		$user_id 		= null;
+		$username 		= __('Guest', 'jigoshop');
+	}
+	?>
+	<script>
+	    var _gaq=[['_setAccount','<?php echo $tracking_id; ?>'],['_setCustomVar',1,'logged-in','<?php echo $loggedin; ?>',1],['_setCustomVar',2,'user-id','<?php echo $user_id; ?>',1],['_setCustomVar',3, 'username','<?php echo $username; ?>',1],['_trackPageview']];
+	    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+	    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+	    s.parentNode.insertBefore(g,s)}(document,'script'));
+  	</script>
+	<?php
+}
+
+/**
+ * Displays Google Analytics eCommerce tracking code on thank you page
+ *
+ * @return  void
+ */
+add_action( 'jigoshop_thankyou', 'jigoshop_ga_ecommerce_tracking' );
+function jigoshop_ga_ecommerce_tracking( $order_id ) {
+	
+	// Skip if disabled
+	if ( get_option('jigoshop_ga_ecommerce_tracking_enabled') != 'yes' )
+		return false;
+
+	// Don't track the shop owners roaming
+	if ( current_user_can('manage_options') )
+		return false;
+	
+	$tracking_id = get_option('jigoshop_ga_id');
+	
+	if ( ! $tracking_id )
+		return false;
+
+	// Unhook standard tracking so we don't count a view twice
+	remove_action('wp_footer', 'jigoshop_ga_tracking');
+
+	// Get the order and output tracking code
+	$order = new jigoshop_order($order_id);
+	
+	$loggedin = (is_user_logged_in()) ? 'yes' : 'no';
+
+	if ( is_user_logged_in() ) {
+		$user_id 		= get_current_user_id();
+		$current_user 	= get_user_by('id', $user_id);
+		$username 		= $current_user->user_login;
+	}
+	else {
+		$user_id 		= '';
+		$username 		= __('Guest', 'jigoshop');
+	}
+
+	?>
+	<script>
+		var _gaq = [
+			['_setAccount', '<?php echo $tracking_id; ?>'],
+			['_setCustomVar', 1, 'logged-in', '<?php echo $loggedin; ?>', 1],
+			['_setCustomVar', 2, 'user-id', '<?php echo $user_id; ?>', 1],
+			['_setCustomVar', 3, 'username', '<?php echo $username; ?>', 1],
+			['_trackPageview'],
+
+			['_addTrans',
+			'<?php echo $order_id; ?>',                // Order ID
+			'<?php bloginfo('name'); ?>',              // Store Title
+			'<?php echo $order->order_total; ?>',      // Order Total Amount
+			'<?php echo $order->get_total_tax(); ?>',  // Order Tax Amount
+			'<?php echo $order->order_shipping; ?>',   // Order Shipping Amount
+			'<?php echo $order->billing_city; ?>',     // Billing City
+			'<?php echo $order->billing_state; ?>',    // Billing State
+			'<?php echo $order->billing_country; ?>'   // Billing Country
+			],
+
+			<?php if ($order->items) foreach($order->items as $item) : $_product = $order->get_product_from_item( $item ); ?>
+				['_addItem',
+				'<?php echo $order_id; ?>',             // Order ID
+				'<?php echo $_product->sku; ?>',        // SKU
+				'<?php echo $item['name']; ?>',         // Product Title
+				'<?php if (isset($_product->variation_data))
+					echo jigoshop_get_formatted_variation( $_product->variation_data, true ); ?>',   // category or variation
+				'<?php echo ($item['cost']/$item['qty']); ?>', // Unit Price
+				'<?php echo $item['qty']; ?>'           // Quantity
+				],
+			<?php endforeach; ?>
+
+			['_trackTrans'] // Submits the transaction to the Analytics servers
+		];
+
+		(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+	    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+	    s.parentNode.insertBefore(g,s)}(document,'script'));
+	</script>
+	<?php
 }
 
 /**

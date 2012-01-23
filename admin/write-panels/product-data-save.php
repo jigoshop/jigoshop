@@ -29,18 +29,18 @@ class jigoshop_product_meta
 
 		// Process general product data
 		// How to sanitize this block?
-		update_post_meta( $post_id, 'regular_price', $_POST['regular_price']);
-		update_post_meta( $post_id, 'sale_price',    $_POST['sale_price']);
+		update_post_meta( $post_id, 'regular_price', (float) $_POST['regular_price']);
+		update_post_meta( $post_id, 'sale_price',    (float) $_POST['sale_price']);
 
-		update_post_meta( $post_id, 'weight',        $_POST['weight']);
-		update_post_meta( $post_id, 'length',        $_POST['length']);
-		update_post_meta( $post_id, 'width',         $_POST['width']);
-		update_post_meta( $post_id, 'height',        $_POST['height']);
+		update_post_meta( $post_id, 'weight',        (float) $_POST['weight']);
+		update_post_meta( $post_id, 'length',        (float) $_POST['length']);
+		update_post_meta( $post_id, 'width',         (float) $_POST['width']);
+		update_post_meta( $post_id, 'height',        (float) $_POST['height']);
 
 		update_post_meta( $post_id, 'tax_status',    $_POST['tax_status']);
 		update_post_meta( $post_id, 'tax_classes',   $_POST['tax_classes']);
 
-		update_post_meta( $post_id, 'visibility',    $_POST['visibility']);
+		update_post_meta( $post_id, 'visibility',    $_POST['product_visibility']);
 		update_post_meta( $post_id, 'featured',      $_POST['featured']);
 
 		// Downloadable Only
@@ -136,7 +136,7 @@ class jigoshop_product_meta
 
 		// Store suitable stock data
 		if( $array['manage_stock'] ) {
-			$array['stock']        = $post['stock'];
+			$array['stock']        = absint( $post['stock'] );
 			$array['backorders']   = $post['backorders']; // should have a space
 			$array['stock_status'] = -1; // Discount if stock is managed
 		} else {

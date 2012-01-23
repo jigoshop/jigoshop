@@ -219,48 +219,57 @@ function jigoshop_upgrade_100() {
 
 		// Unserialize all product_data keys to individual key => value pairs
 		$product_data = get_post_meta( $post->ID, 'product_data', true );
-		foreach( $product_data as $key => $value ) {
+		if ( is_array($product_data) ) {
+			foreach( $product_data as $key => $value ) {
 
-			// Convert all keys to lowercase
-			// @todo: Needs testing especially with 3rd party plugins using product_data
-			$key = strtolower($key);
+				// Convert all keys to lowercase
+				// @todo: Needs testing especially with 3rd party plugins using product_data
+				$key = strtolower($key);
 
-			// We now call it tax_classes & its an array
-			if ( $key == 'tax_class' ) {
+				// We now call it tax_classes & its an array
+				if ( $key == 'tax_class' ) {
 
-				if ( $value )
-					$value = (array) $value;
-				else
-					$value = array('*');
+					if ( $value )
+						$value = (array) $value;
+					else
+						$value = array('*');
 
-				$key = 'tax_classes';
+					$key = 'tax_classes';
+				}
+
+				// Convert manage stock to true/false
+				if ( $key == 'manage_stock' ) {
+					$value = ( $value == 'yes' ) ? true : false;
+				}
+
+				// Create the meta
+				update_post_meta( $post->ID, $key, $value );	
+
+				// Remove the old meta
+				delete_post_meta( $post->ID, 'product_data' );
 			}
-
-			// Convert manage stock to true/false
-			if ( $key == 'manage_stock' ) {
-				$value = ( $value == 'yes' ) ? true : false;
-			}
-
-			// Create the meta
-			update_post_meta( $post->ID, $key, $value );	
-
-			// Remove the old meta
-			delete_post_meta( $post->ID, 'product_data' );
 		}
 
 		$product_attributes = get_post_meta( $post->ID, 'product_attributes', true );
 
-		foreach( $product_attributes as $key => $attribute ) {
+		if ( is_array($product_attributes) ) {
+			foreach( $product_attributes as $key => $attribute ) {
 
-			// We use true/false for these now
-			$attribute['visible']     = ( $attribute['visible'] == 'yes' ) ? true : false;
-			$attribute['variation']   = ( $attribute['variation'] == 'yes' ) ? true : false;
-			$attribute['is_taxonomy'] = ( $attribute['is_taxonomy'] == 'yes' ) ? true : false;
+				// We use true/false for these now
+				if ( isset( $attribute['visible'] ) )
+					$attribute['visible']     = ( $attribute['visible'] == 'yes' ) ? true : false;
 
-			$product_attributes[$key] = $attribute;
+				if ( isset( $attribute['variation'] ) )
+					$attribute['variation']   = ( $attribute['variation'] == 'yes' ) ? true : false;
+				
+				if ( isset( $attribute['is_taxonomy'] ) )
+					$attribute['is_taxonomy'] = ( $attribute['is_taxonomy'] == 'yes' ) ? true : false;
+
+				$product_attributes[$key] = $attribute;
+			}
+
+			update_post_meta( $post->ID, 'product_attributes', $product_attributes );
 		}
-
-		update_post_meta( $post->ID, 'product_attributes', $product_attributes );
 	}
 
 	// Variations
@@ -289,4 +298,12 @@ function jigoshop_upgrade_100() {
 
 		update_post_meta( $post->ID, 'variation_data', $variation_data );
 	}
+
+	// Update shop order comments type
+	$wpdb->update( $wpdb->comments, array(
+		'comment_type' => 'jigoshop',
+		'comment_author' => 'Jigoshop',
+		'comment_author_email' => '',
+		'comment_author_IP' => '',
+	), array('user_id' => 0) );
 }

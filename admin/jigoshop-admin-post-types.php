@@ -18,6 +18,32 @@
  * @license    http://jigoshop.com/license/commercial-edition
  */
 
+// Add filter to ensure the text is context relevant when updated
+// @todo: not sure if this is the best place to put this
+add_filter( 'post_updated_messages', 'jigoshop_product_updated_messages' );
+function jigoshop_product_updated_messages( $messages ) {
+  global $post, $post_ID;
+
+  $messages['product'] = array(
+    0 => '', // Unused. Messages start at index 1.
+    1 => sprintf( __('Product updated. <a href="%s">View Product</a>'), esc_url( get_permalink($post_ID) ) ),
+    2 => __('Custom field updated.'),
+    3 => __('Custom field deleted.'),
+    4 => __('Product updated.'),
+    /* translators: %s: date and time of the revision */
+    5 => isset($_GET['revision']) ? sprintf( __('Product restored to revision from %s'), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+    6 => sprintf( __('Product published. <a href="%s">View Product</a>'), esc_url( get_permalink($post_ID) ) ),
+    7 => __('Product saved.'),
+    8 => sprintf( __('Product submitted. <a target="_blank" href="%s">Preview Product</a>'), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
+    9 => sprintf( __('Product scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview Product</a>'),
+      // translators: Publish box date format, see http://php.net/date
+      date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink($post_ID) ) ),
+    10 => sprintf( __('Product draft updated. <a target="_blank" href="%s">Preview Product</a>'), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
+  );
+
+  return $messages;
+}
+
 /**
  * Custom columns
  **/
@@ -27,8 +53,8 @@
 	
 	$columns["cb"]    = "<input type=\"checkbox\" />";
 
-	$columns["thumb"] = __("Image", 'jigoshop');
-	$columns["title"] = __("Name", 'jigoshop');
+	$columns["thumb"] = null;
+	$columns["title"] = __("Title", 'jigoshop');
 
 	$columns["featured"] = __("Featured", 'jigoshop');
 	
@@ -36,9 +62,6 @@
 	if( get_option('jigoshop_enable_sku', true) == 'yes' ) {
 		$columns["product-type"] .= ' &amp; ' . __("SKU", 'jigoshop');
 	}
-
-	//$columns["product-cat"] = __("Category", 'jigoshop');
-	//$columns["product-tags"] = __("Tags", 'jigoshop');
 	
 	if ( get_option('jigoshop_manage_stock')=='yes' ) {
 	 	$columns["stock"] = __("Stock", 'jigoshop');
@@ -58,16 +81,18 @@ function jigoshop_custom_product_columns($column) {
 
 	switch ($column) {
 		case "thumb" :
-			echo jigoshop_get_product_thumbnail( 'shop_tiny' );
+			if( 'trash' != $post->post_status ) {
+				echo '<a class="row-title" href="'.get_edit_post_link( $post->ID ).'">';
+					echo jigoshop_get_product_thumbnail( 'admin_product_list' );
+				echo '</a>';
+			}
+			else {
+				echo jigoshop_get_product_thumbnail( 'admin_product_list' );
+			} 
+
 		break;
 		case "price":
 			echo $product->get_price_html();	
-		break;
-		case "product-cat" :
-			echo get_the_term_list($post->ID, 'product_cat', '', ', ','');
-		break;
-		case "product-tags" :
-			echo get_the_term_list($post->ID, 'product_tag', '', ', ','');
 		break;
 		case "featured" :
 			$url = wp_nonce_url( admin_url('admin-ajax.php?action=jigoshop-feature-product&product_id=' . $post->ID) );
@@ -85,12 +110,12 @@ function jigoshop_custom_product_columns($column) {
 				}
 			} else {
 				echo '<strong class="attention">' . __('Out of Stock', 'jigoshop') . '</strong>';
-			}	
+			}
 		break;
 		case "product-type" :
 			echo ucwords($product->product_type);
 			echo '<br/>';
-			if ( $sku = get_post_meta( $post->ID, 'SKU', true )) {
+			if ( get_option('jigoshop_enable_sku', true) == 'yes' && $sku = get_post_meta( $post->ID, 'sku', true )) {
 				echo $sku;
 			}
 			else {
@@ -115,20 +140,37 @@ function jigoshop_custom_product_columns($column) {
 			endif;
 
 			echo '<abbr title="' . $t_time . '">' . apply_filters( 'post_date_column_time', $h_time, $post ) . '</abbr><br />';
-			
-			if ( 'publish' == $post->post_status ) :
-				_e( 'Published', 'jigoshop' );
-			elseif ( 'future' == $post->post_status ) :
-				if ( $time_diff > 0 ) :
-					echo '<strong class="attention">' . __( 'Missed schedule', 'jigoshop' ) . '</strong>';
-				else :
-					_e( 'Scheduled', 'jigoshop' );
-				endif;
-			else :
-				_e( 'Last Modified', 'jigoshop' );
-			endif;
+
+            if ( 'publish' == $post->post_status ) :
+                _e( 'Published', 'jigoshop' );
+            elseif ( 'future' == $post->post_status ) :
+                if ( $time_diff > 0 ) :
+                    echo '<strong class="attention">' . __( 'Missed schedule', 'jigoshop' ) . '</strong>';
+                else :
+                    _e( 'Scheduled', 'jigoshop' );
+                endif;
+            else :
+                _e( 'Draft', 'jigoshop' );
+            endif;
+
+            if ( $product->visibility ) {
+                echo ' | ';
+                echo ($product->visibility == 'Hidden')
+                    ? '<strong class="attention">'.ucfirst($product->visibility).'</strong>'
+                    : ucfirst($product->visibility);
+
+            }
+          
 		break;
 	}
+}
+
+// Enable sorting for date
+add_filter("manage_edit-product_sortable_columns", 'jigoshop_custom_product_sort');
+function jigoshop_custom_product_sort( $columns ) {
+    $columns['product-date'] = 'date';
+    
+    return $columns;
 }
 
 /**
@@ -161,7 +203,7 @@ function jigoshop_filter_products_type() {
 	echo "<option value='0'>" . __('Show all types', 'jigoshop') . "</option>";
 
 	foreach($terms as $term) {
-		echo "<option value='{$term->slug}' ".selected($term->slug, $wp_query->query['product_type'], false).">".ucfirst($term->name)."</option>";
+		echo "<option value='{$term->slug}' ".selected($term->slug, $wp_query->query['product_type'], false).">".ucfirst($term->name)." (".$term->count.")</option>";		
 	}
 
 	echo "</select>";

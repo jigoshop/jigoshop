@@ -53,6 +53,7 @@ include_once( 'classes/jigoshop_orders.class.php' );
 include_once( 'classes/jigoshop_tax.class.php' );
 include_once( 'classes/jigoshop_shipping.class.php' );
 include_once( 'classes/jigoshop_coupons.class.php' );
+include_once( 'classes/jigoshop_session.class.php' );
 
 include_once( 'gateways/gateways.class.php' );
 include_once( 'gateways/gateway.class.php' );
@@ -67,6 +68,7 @@ include_once( 'shipping/jigoshop_calculable_shipping.php' );
 include_once( 'shipping/flat_rate.php' );
 include_once( 'shipping/free_shipping.php' );
 
+include_once( 'classes/jigoshop_query.class.php' );
 include_once( 'classes/jigoshop.class.php' );
 include_once( 'classes/jigoshop_cart.class.php' );
 include_once( 'classes/jigoshop_checkout.class.php' );
@@ -77,7 +79,6 @@ include_once( 'jigoshop_shortcodes.php' );
 include_once( 'jigoshop_templates.php' );
 include_once( 'jigoshop_template_actions.php' );
 include_once( 'jigoshop_emails.php' );
-include_once( 'jigoshop_query.php' );
 include_once( 'jigoshop_actions.php' );
 //include_once( 'jigoshop_cron.php' );	/* we may use this at some point, leaving -JAP- */
 
@@ -138,6 +139,7 @@ add_filter( 'wp_mail_from', 'jigoshop_mail_from' );
  * @since 0.9.9
  **/
 function jigoshop_set_image_sizes(){
+	add_image_size( 'admin_product_list', 32, 32, 'true' );
 	add_image_size( 'shop_tiny', get_option('jigoshop_shop_tiny_w'), get_option('jigoshop_shop_tiny_h'), 'true' );
 	add_image_size( 'shop_thumbnail', get_option('jigoshop_shop_thumbnail_w'), get_option('jigoshop_shop_thumbnail_h'), 'true' );
 	add_image_size( 'shop_small', get_option('jigoshop_shop_small_w'), get_option('jigoshop_shop_small_h'), 'true' );
@@ -151,7 +153,14 @@ function jigoshop_set_image_sizes(){
  * @since 0.9.9
  **/
 function jigoshop_get_image_size( $size ) {
+
+	if ( is_array( $size ) )
+		return $size;
+
 	switch ( $size ) :
+		case 'admin_product_list':
+			$image_size = array( 32, 32 );
+			break;
 		case 'shop_tiny':
 			$image_size = array( get_option('jigoshop_shop_tiny_w'), get_option('jigoshop_shop_tiny_h') );
 			break;
@@ -176,9 +185,14 @@ function jigoshop_init() {
 	
 	/* ensure nothing is output to the browser prior to this (other than headers) */
 	ob_start();
-	/* start session here after all classes are loaded to eliminate __PHP_Incomplete_Class warnings */
-	if ( !session_id() ) session_start();
 	
+	jigoshop_session::instance()->test = 'val';
+	
+    $array = array(0 => "3.15");
+    
+    foreach ($array as $a) :
+        $an = explode(':', $a);
+    endforeach;
 	jigoshop_post_type();	/* register taxonomies */
 	
 	// add Singletons here so that the taxonomies are loaded before calling them.
@@ -188,7 +202,9 @@ function jigoshop_init() {
 	$jigoshop_payment_gateways 	= jigoshop_payment_gateways::instance();// Payment gateways class. loads payment methods
 	$jigoshop_cart 				= jigoshop_cart::instance();			// Cart class, stores the cart contents
 
-
+//	if ( ! is_admin() ) $jigoshop_query = &new jigoshop_catalog_query();
+	if ( ! is_admin() ) $jigoshop_query = jigoshop_catalog_query::instance();
+	
 	// Image sizes
 	jigoshop_set_image_sizes();
 
@@ -204,12 +220,7 @@ function jigoshop_init() {
 	$css = file_exists(get_stylesheet_directory() . '/jigoshop/style.css') ? get_stylesheet_directory_uri() . '/jigoshop/style.css' : jigoshop::assets_url() . '/assets/css/frontend.css';
     if (JIGOSHOP_USE_CSS) wp_register_style('jigoshop_frontend_styles', $css );
 
-    if (is_admin()) :
-    	wp_register_style('jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css');
-    	wp_enqueue_style('jigoshop_admin_styles');
-   		wp_register_style('jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css');
-    	wp_enqueue_style('jquery-ui-jigoshop-styles');
-    else :
+    if ( !is_admin()) :
     	wp_register_style( 'jqueryui_styles', jigoshop::assets_url() . '/assets/css/ui.css' );
 
     	wp_enqueue_style('jigoshop_frontend_styles');
@@ -223,6 +234,14 @@ function jigoshop_init() {
     endif;
 }
 add_action('init', 'jigoshop_init', 0);
+
+add_action( 'admin_enqueue_scripts', 'jigoshop_admin_styles' );
+function jigoshop_admin_styles() {
+	wp_register_style('jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css');
+    wp_enqueue_style('jigoshop_admin_styles');
+   	wp_register_style('jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css');
+    wp_enqueue_style('jquery-ui-jigoshop-styles');
+}
 
 function jigoshop_admin_scripts() {
 
@@ -264,10 +283,10 @@ function jigoshop_frontend_scripts() {
 		'load_fancybox'					=> JIGOSHOP_LOAD_FANCYBOX
 	);
 
-	if (isset($_SESSION['min_price'])) :
+	if (isset( jigoshop_session::instance()->min_price )) :
 		$params['min_price'] = $_GET['min_price'];
 	endif;
-	if (isset($_SESSION['max_price'])) :
+	if (isset( jigoshop_session::instance()->max_price )) :
 		$params['max_price'] = $_GET['max_price'];
 	endif;
 
@@ -634,6 +653,25 @@ function jigoshop_get_formatted_variation( $variation = '', $flat = false ) {
 	endif;
 }
 
+// Remove pingbacks/trackbacks from Comments Feed
+// betterwp.net/wordpress-tips/remove-pingbackstrackbacks-from-comments-feed/
+add_filter('request', 'jigoshop_filter_request');
+
+function jigoshop_filter_request($qv)
+{
+	if (isset($qv['feed']) && !empty($qv['withcomments']))
+	{
+		add_filter('comment_feed_where', 'jigoshop_comment_feed_where');
+	}
+	return $qv;
+}
+
+function jigoshop_comment_feed_where($cwhere)
+{
+	$cwhere .= " AND comment_type != 'jigoshop' ";
+	return $cwhere;
+}
+
 function jigoshop_let_to_num($v) {
     $l = substr($v, -1);
     $ret = substr($v, 0, -1);
@@ -742,9 +780,11 @@ function jigoshop_comments($comment, $args, $depth) {
   			<?php echo get_avatar( $comment, $size='60' ); ?>
 
 			<div class="comment-text">
-				<div class="star-rating" title="<?php echo get_comment_meta( $comment->comment_ID, 'rating', true ); ?>">
-					<span style="width:<?php echo get_comment_meta( $comment->comment_ID, 'rating', true )*16; ?>px"><?php echo get_comment_meta( $comment->comment_ID, 'rating', true ); ?> <?php _e('out of 5', 'jigoshop'); ?></span>
+				<?php if ( $rating = get_comment_meta( $comment->comment_ID, 'rating', true ) ): ?>
+				<div class="star-rating" title="<?php echo $rating; ?>">
+					<span style="width:<?php echo $rating*16; ?>px"><?php echo $rating; ?> <?php _e('out of 5', 'jigoshop'); ?></span>
 				</div>
+				<?php endif; ?>
 				<?php if ($comment->comment_approved == '0') : ?>
 					<p class="meta"><em><?php _e('Your comment is awaiting approval','jigoshop'); ?></em></p>
 				<?php else : ?>
@@ -761,25 +801,21 @@ function jigoshop_comments($comment, $args, $depth) {
 }
 
 //### Exclude order comments from front end #########################################################
+add_filter( 'comments_clauses', 'jigoshop_exclude_order_admin_comments', 10, 1);
+function jigoshop_exclude_order_admin_comments( $clauses ) {
 
-function jigoshop_exclude_order_comments( $clauses ) {
+	// NOTE: bit of a hack, tests if we're in the admin & its an ajax call
+	// Don't hide when viewing orders in admin
+	if (is_admin() && is_ajax()) {
 
-	global $wpdb;
+		return $clauses;
+	}
 
-	$clauses['join'] = "
-		LEFT JOIN $wpdb->posts ON $wpdb->comments.comment_post_ID = $wpdb->posts.ID
-	";
-
-	if ($clauses['where']) $clauses['where'] .= ' AND ';
-
-	$clauses['where'] .= "
-		$wpdb->posts.post_type NOT IN ('shop_order')
-	";
-
-	return $clauses;
-
+	// Hide all those comments which aren't of type jigoshop
+	$clauses['where'] .= ' AND comment_type != "jigoshop"';	
+	
+	return $clauses;	
 }
-if (!is_admin()) add_filter('comments_clauses', 'jigoshop_exclude_order_comments');
 
 /**
  * Support for Import/Export
@@ -843,7 +879,7 @@ function jigoshop_import_start() {
 							            ),
 							            'show_ui' => false,
 							            'query_var' => true,
-							            'rewrite' => array( 'slug' => strtolower(sanitize_title($nicename)), 'with_front' => false, 'hierarchical' => true ),
+							            'rewrite' => array( 'slug' => sanitize_title($nicename), 'with_front' => false, 'hierarchical' => true ),
 							        )
 							    );
 
