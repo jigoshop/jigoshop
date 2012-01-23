@@ -305,5 +305,5 @@ function jigoshop_upgrade_100() {
 		'comment_author' => 'Jigoshop',
 		'comment_author_email' => '',
 		'comment_author_IP' => '',
-	), array('user_id' => 0) );
+	), array('user_id' => 0, 'comment_author' => 'JigoShop') );
 }
