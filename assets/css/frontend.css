@@ -832,7 +832,7 @@ td.product-name dl.variation dd {
   margin: 0 12px 0 0;
   padding: 0;
 }
-td.quantity {
+td.quantity, td.product-quantity {
   min-width: 80px;
 }
 .quantity input {
