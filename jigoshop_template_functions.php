@@ -281,20 +281,6 @@ if (!function_exists('jigoshop_simple_add_to_cart')) {
 		<?php
 	}
 }
-if (!function_exists('jigoshop_external_add_to_cart')) {
-	function jigoshop_external_add_to_cart() {
-
-		global $_product; $product_url = get_post_meta( $_product->id, 'product_url', true );
-
-		if (!$product_url) return;
-
-		?>
-
-		<p class="cart"><a href="<?php echo $product_url; ?>" rel="nofollow" class="button alt"><?php _e('Buy product', 'jigoshop'); ?></a></p>
-
-		<?php
-	}
-}
 if (!function_exists('jigoshop_virtual_add_to_cart')) {
 	function jigoshop_virtual_add_to_cart() {
 
@@ -426,6 +412,23 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 			</div>
 			<?php do_action('jigoshop_add_to_cart_form'); ?>
 		</form>
+		<?php
+	}
+}
+
+if (!function_exists('jigoshop_external_add_to_cart')) {
+	function jigoshop_external_add_to_cart() {
+		global $_product;
+		$external_url = get_post_meta( $_product->ID, 'external_url', true );
+
+		if ( ! $external_url )
+			return false;
+		?>
+
+		<p>
+			<a href="<?php echo $external_url; ?>" rel="nofollow" class="button"><?php _e('Buy product', 'jigoshop'); ?></a>
+		</p>
+
 		<?php
 	}
 }
