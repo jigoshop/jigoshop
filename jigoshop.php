@@ -780,9 +780,11 @@ function jigoshop_comments($comment, $args, $depth) {
   			<?php echo get_avatar( $comment, $size='60' ); ?>
 
 			<div class="comment-text">
-				<div class="star-rating" title="<?php echo get_comment_meta( $comment->comment_ID, 'rating', true ); ?>">
-					<span style="width:<?php echo get_comment_meta( $comment->comment_ID, 'rating', true )*16; ?>px"><?php echo get_comment_meta( $comment->comment_ID, 'rating', true ); ?> <?php _e('out of 5', 'jigoshop'); ?></span>
+				<?php if ( $rating = get_comment_meta( $comment->comment_ID, 'rating', true ) ): ?>
+				<div class="star-rating" title="<?php echo $rating; ?>">
+					<span style="width:<?php echo $rating*16; ?>px"><?php echo $rating; ?> <?php _e('out of 5', 'jigoshop'); ?></span>
 				</div>
+				<?php endif; ?>
 				<?php if ($comment->comment_approved == '0') : ?>
 					<p class="meta"><em><?php _e('Your comment is awaiting approval','jigoshop'); ?></em></p>
 				<?php else : ?>
