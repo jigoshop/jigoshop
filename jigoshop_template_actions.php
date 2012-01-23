@@ -43,9 +43,6 @@ add_action( 'jigoshop_after_shop_loop_item', 'jigoshop_template_loop_add_to_cart
 add_action( 'jigoshop_before_shop_loop_item_title', 'jigoshop_template_loop_product_thumbnail', 10, 2);
 add_action( 'jigoshop_after_shop_loop_item_title', 'jigoshop_template_loop_price', 10, 2);
 
-/* Before Single Products */
-add_action( 'jigoshop_before_single_product', 'jigoshop_check_product_visibility', 10, 2);
-
 /* Before Single Products Summary Div */
 add_action( 'jigoshop_before_single_product_summary', 'jigoshop_show_product_images', 20);
 add_action( 'jigoshop_product_thumbnails', 'jigoshop_show_product_thumbnails', 20 );

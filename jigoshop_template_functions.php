@@ -116,16 +116,6 @@ if (!function_exists('jigoshop_template_loop_price')) {
 }
 
 /**
- * Check product visibility in loop
- **/
-if (!function_exists('jigoshop_check_product_visibility')) {
-	function jigoshop_check_product_visibility( $post, $_product ) {
-		if (!$_product->is_visible() && $post->post_parent > 0) : wp_safe_redirect(get_permalink($post->post_parent)); exit; endif;
-		if (!$_product->is_visible()) : wp_safe_redirect(home_url()); exit; endif;
-	}
-}
-
-/**
  * Before Single Products Summary Div
  **/
 if (!function_exists('jigoshop_show_product_images')) {

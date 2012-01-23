@@ -79,16 +79,16 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 
 		// Set up query
     	$query_args = array(
-    		'showposts'		=> $number,
-    		'post_type'		=> 'product',
-    		'post_status'	=> 'publish',
-    		'orderby'		=> 'date',
-    		'order'			=> 'desc',
-    		'meta_query'	=> array(
+    		'posts_per_page' => $number,
+    		'post_type'      => 'product',
+    		'post_status'    => 'publish',
+    		'orderby'        => 'date',
+    		'order'          => 'desc',
+    		'meta_query'     => array(
     			array(
-    				'key'		=> 'visibility',
-    				'value'		=> array('catalog', 'visible'),
-    				'compare'	=> 'IN',
+    				'key'       => 'visibility',
+    				'value'     => array('catalog', 'visible'),
+    				'compare'   => 'IN',
     			),
     		)
     	);
@@ -202,24 +202,24 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 	public function form( $instance ) {
 	
 		// Get instance data
-		$title = isset($instance['title']) ? esc_attr($instance['title']) : null;
-		
-		$number = apply_filters('jigoshop_widget_featured_default_number', 5, $instance, $this->id_base);
-		$number = isset($instance['number']) ? abs($instance['number']) : $number;
+		$title = isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : null;
+		$number = isset( $instance['number'] ) ? absint( $instance['number'] ) : 5;
 		
 		$show_variations = (bool) isset($instance['show_variations']) ? $instance['show_variations'] : false;
-		
+
 		// Widget Title
-		echo '<p>';
-		echo '<label for="' . $this->get_field_id('title') . '">' . _e('Title:', 'jigoshop') . '</label>';
-		echo '<input class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" type="text" value="'. $title .'" />';
-		echo '</p>';
-		
+		echo "
+		<p>
+			<label for='{$this->get_field_id( 'title' )}'>" . __( 'Title:', 'jigoshop' ) . "</label>
+			<input class='widefat' id='{$this->get_field_id( 'title' )}' name='{$this->get_field_name( 'title' )}' type='text' value='{$title}' />
+		</p>";
+
 		// Number of posts to fetch
-		echo '<p>';
-		echo '<label for="' . $this->get_field_id('number') . '">' . _e('Number of products to show:', 'jigoshop') . '</label>';
-		echo '<input id="' . $this->get_field_id('number') . '" name="' . $this->get_field_name('number') . '" type="text" value="' . $number . '" size="3" />';
-		echo '</p>';
+		echo "
+		<p>
+			<label for='{$this->get_field_id( 'number' )}'>" . __( 'Number of products to show:', 'jigoshop' ) . "</label>
+			<input id='{$this->get_field_id( 'number' )}' name='{$this->get_field_name( 'number' )}' type='number' value='{$number}' size='3' />
+		</p>";
 		
 		// Show variations?
 		echo '<p>';

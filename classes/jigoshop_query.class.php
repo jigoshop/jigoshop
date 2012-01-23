@@ -98,7 +98,7 @@ class jigoshop_catalog_query extends jigoshop_singleton {
 	 * The meta-query and tax_query can be filtered using the 'loop_shop_tax_query' and 'loop_shop_tax_meta_query' filters.
 	 * 
 	 * Use the 'loop_shop_per_page' filter for adjusting the # of products to show per page on front end Product lists.
-	 
+	 *
 	 * Use the 'loop-shop-query' filter to adjust sort order and direction or other front end only arguments.
 	 * 
 	 * The whole resulting request can be filtered using the 'jigoshop-request' filter

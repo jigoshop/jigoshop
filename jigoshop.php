@@ -139,6 +139,7 @@ add_filter( 'wp_mail_from', 'jigoshop_mail_from' );
  * @since 0.9.9
  **/
 function jigoshop_set_image_sizes(){
+	add_image_size( 'admin_product_list', 32, 32, 'true' );
 	add_image_size( 'shop_tiny', get_option('jigoshop_shop_tiny_w'), get_option('jigoshop_shop_tiny_h'), 'true' );
 	add_image_size( 'shop_thumbnail', get_option('jigoshop_shop_thumbnail_w'), get_option('jigoshop_shop_thumbnail_h'), 'true' );
 	add_image_size( 'shop_small', get_option('jigoshop_shop_small_w'), get_option('jigoshop_shop_small_h'), 'true' );
@@ -152,7 +153,14 @@ function jigoshop_set_image_sizes(){
  * @since 0.9.9
  **/
 function jigoshop_get_image_size( $size ) {
+
+	if ( is_array( $size ) )
+		return $size;
+
 	switch ( $size ) :
+		case 'admin_product_list':
+			$image_size = array( 32, 32 );
+			break;
 		case 'shop_tiny':
 			$image_size = array( get_option('jigoshop_shop_tiny_w'), get_option('jigoshop_shop_tiny_h') );
 			break;
@@ -645,6 +653,25 @@ function jigoshop_get_formatted_variation( $variation = '', $flat = false ) {
 	endif;
 }
 
+// Remove pingbacks/trackbacks from Comments Feed
+// betterwp.net/wordpress-tips/remove-pingbackstrackbacks-from-comments-feed/
+add_filter('request', 'jigoshop_filter_request');
+
+function jigoshop_filter_request($qv)
+{
+	if (isset($qv['feed']) && !empty($qv['withcomments']))
+	{
+		add_filter('comment_feed_where', 'jigoshop_comment_feed_where');
+	}
+	return $qv;
+}
+
+function jigoshop_comment_feed_where($cwhere)
+{
+	$cwhere .= " AND comment_type != 'jigoshop' ";
+	return $cwhere;
+}
+
 function jigoshop_let_to_num($v) {
     $l = substr($v, -1);
     $ret = substr($v, 0, -1);
@@ -753,9 +780,11 @@ function jigoshop_comments($comment, $args, $depth) {
   			<?php echo get_avatar( $comment, $size='60' ); ?>
 
 			<div class="comment-text">
-				<div class="star-rating" title="<?php echo get_comment_meta( $comment->comment_ID, 'rating', true ); ?>">
-					<span style="width:<?php echo get_comment_meta( $comment->comment_ID, 'rating', true )*16; ?>px"><?php echo get_comment_meta( $comment->comment_ID, 'rating', true ); ?> <?php _e('out of 5', 'jigoshop'); ?></span>
+				<?php if ( $rating = get_comment_meta( $comment->comment_ID, 'rating', true ) ): ?>
+				<div class="star-rating" title="<?php echo $rating; ?>">
+					<span style="width:<?php echo $rating*16; ?>px"><?php echo $rating; ?> <?php _e('out of 5', 'jigoshop'); ?></span>
 				</div>
+				<?php endif; ?>
 				<?php if ($comment->comment_approved == '0') : ?>
 					<p class="meta"><em><?php _e('Your comment is awaiting approval','jigoshop'); ?></em></p>
 				<?php else : ?>
@@ -772,25 +801,21 @@ function jigoshop_comments($comment, $args, $depth) {
 }
 
 //### Exclude order comments from front end #########################################################
+add_filter( 'comments_clauses', 'jigoshop_exclude_order_admin_comments', 10, 1);
+function jigoshop_exclude_order_admin_comments( $clauses ) {
 
-function jigoshop_exclude_order_comments( $clauses ) {
+	// NOTE: bit of a hack, tests if we're in the admin & its an ajax call
+	// Don't hide when viewing orders in admin
+	if (is_admin() && is_ajax()) {
 
-	global $wpdb;
+		return $clauses;
+	}
 
-	$clauses['join'] = "
-		LEFT JOIN $wpdb->posts ON $wpdb->comments.comment_post_ID = $wpdb->posts.ID
-	";
-
-	if ($clauses['where']) $clauses['where'] .= ' AND ';
-
-	$clauses['where'] .= "
-		$wpdb->posts.post_type NOT IN ('shop_order')
-	";
-
-	return $clauses;
-
+	// Hide all those comments which aren't of type jigoshop
+	$clauses['where'] .= ' AND comment_type != "jigoshop"';	
+	
+	return $clauses;	
 }
-if (!is_admin()) add_filter('comments_clauses', 'jigoshop_exclude_order_comments');
 
 /**
  * Support for Import/Export

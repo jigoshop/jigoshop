@@ -53,8 +53,8 @@ function jigoshop_product_updated_messages( $messages ) {
 	
 	$columns["cb"]    = "<input type=\"checkbox\" />";
 
-	$columns["thumb"] = __("Image", 'jigoshop');
-	$columns["title"] = __("Name", 'jigoshop');
+	$columns["thumb"] = null;
+	$columns["title"] = __("Title", 'jigoshop');
 
 	$columns["featured"] = __("Featured", 'jigoshop');
 	
@@ -62,9 +62,6 @@ function jigoshop_product_updated_messages( $messages ) {
 	if( get_option('jigoshop_enable_sku', true) == 'yes' ) {
 		$columns["product-type"] .= ' &amp; ' . __("SKU", 'jigoshop');
 	}
-
-	//$columns["product-cat"] = __("Category", 'jigoshop');
-	//$columns["product-tags"] = __("Tags", 'jigoshop');
 	
 	if ( get_option('jigoshop_manage_stock')=='yes' ) {
 	 	$columns["stock"] = __("Stock", 'jigoshop');
@@ -84,16 +81,18 @@ function jigoshop_custom_product_columns($column) {
 
 	switch ($column) {
 		case "thumb" :
-			echo jigoshop_get_product_thumbnail( 'shop_tiny' );
+			if( 'trash' != $post->post_status ) {
+				echo '<a class="row-title" href="'.get_edit_post_link( $post->ID ).'">';
+					echo jigoshop_get_product_thumbnail( 'admin_product_list' );
+				echo '</a>';
+			}
+			else {
+				echo jigoshop_get_product_thumbnail( 'admin_product_list' );
+			} 
+
 		break;
 		case "price":
 			echo $product->get_price_html();	
-		break;
-		case "product-cat" :
-			echo get_the_term_list($post->ID, 'product_cat', '', ', ','');
-		break;
-		case "product-tags" :
-			echo get_the_term_list($post->ID, 'product_tag', '', ', ','');
 		break;
 		case "featured" :
 			$url = wp_nonce_url( admin_url('admin-ajax.php?action=jigoshop-feature-product&product_id=' . $post->ID) );
@@ -116,7 +115,7 @@ function jigoshop_custom_product_columns($column) {
 		case "product-type" :
 			echo ucwords($product->product_type);
 			echo '<br/>';
-			if ( $sku = get_post_meta( $post->ID, 'sku', true )) {
+			if ( get_option('jigoshop_enable_sku', true) == 'yes' && $sku = get_post_meta( $post->ID, 'sku', true )) {
 				echo $sku;
 			}
 			else {
@@ -151,19 +150,27 @@ function jigoshop_custom_product_columns($column) {
                     _e( 'Scheduled', 'jigoshop' );
                 endif;
             else :
-                _e( 'Last Modified', 'jigoshop' );
+                _e( 'Draft', 'jigoshop' );
             endif;
 
-            echo '<br/>';
-            if( $product->visibility == 'Hidden' ) {
-                echo '<strong class="attention">'.ucfirst($product->visibility).'</strong>';
-            }
-            else {
-                echo ucfirst($product->visibility);
+            if ( $product->visibility ) {
+                echo ' | ';
+                echo ($product->visibility == 'Hidden')
+                    ? '<strong class="attention">'.ucfirst($product->visibility).'</strong>'
+                    : ucfirst($product->visibility);
+
             }
           
 		break;
 	}
+}
+
+// Enable sorting for date
+add_filter("manage_edit-product_sortable_columns", 'jigoshop_custom_product_sort');
+function jigoshop_custom_product_sort( $columns ) {
+    $columns['product-date'] = 'date';
+    
+    return $columns;
 }
 
 /**
