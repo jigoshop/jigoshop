@@ -150,12 +150,12 @@ function jigoshop_product_data_box() {
 				// Featured
 				echo jigoshop_form::checkbox( 'featured', 'Featured?', false, __('Enable this option to feature this product', 'jigoshop') );
 
-				echo jigoshop_form::input( 'external_url', 'External Url', null, null, null, 'An external URL to the product' );
+				echo jigoshop_form::input( 'external_url', 'Product Url', null, null, null, 'The URL of the external product (eg. http://www.google.com)' );
 			?>
 			</fieldset>
 		</div>
 		<div id="tax" class="panel jigoshop_options_panel">
-			<fieldset>
+			<fieldset id="tax_fieldset">
 			<?php
 
 				// Tax Status
