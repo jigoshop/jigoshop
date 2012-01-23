@@ -100,12 +100,12 @@ function jigoshop_product_data_box() {
 					'product-type', 
 					__('Product Type', 'jigoshop'),
 					apply_filters('jigoshop_product_type_selector', array(
-						'simple'			=> __('Simple', 'jigoshop'),
+						'simple'		=> __('Simple', 'jigoshop'),
 						'downloadable'	=> __('Downloadable', 'jigoshop'),
 						'grouped'		=> __('Grouped', 'jigoshop'),
 						'virtual'		=> __('Virtual', 'jigoshop'),
 						'variable'		=> __('Variable', 'jigoshop'),
-						'external'		=> __('External', 'jigoshop')
+						'external'		=> __('External / Affiliate', 'jigoshop')
 					)),
 					$product_type
 				);
