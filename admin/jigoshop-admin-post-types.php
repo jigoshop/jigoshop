@@ -115,7 +115,7 @@ function jigoshop_custom_product_columns($column) {
 		case "product-type" :
 			echo ucwords($product->product_type);
 			echo '<br/>';
-			if ( $sku = get_post_meta( $post->ID, 'sku', true )) {
+			if ( get_option('jigoshop_enable_sku', true) == 'yes' && $sku = get_post_meta( $post->ID, 'sku', true )) {
 				echo $sku;
 			}
 			else {
