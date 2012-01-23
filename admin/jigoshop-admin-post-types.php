@@ -203,7 +203,7 @@ function jigoshop_filter_products_type() {
 	echo "<option value='0'>" . __('Show all types', 'jigoshop') . "</option>";
 
 	foreach($terms as $term) {
-		echo "<option value='{$term->slug}' ".selected($term->slug, $wp_query->query['product_type'], false).">".ucfirst($term->name)." (".$term->count.")</option>";		
+		echo "<option value='{$term->slug}' ".selected($term->slug, isset($wp_query->query['product_type']) ? $wp_query->query['product_type'] : '', false).">".ucfirst($term->name)." (".$term->count.")</option>";		
 	}
 
 	echo "</select>";
