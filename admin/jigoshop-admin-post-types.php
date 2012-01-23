@@ -165,6 +165,14 @@ function jigoshop_custom_product_columns($column) {
 	}
 }
 
+// Enable sorting for date
+add_filter("manage_edit-product_sortable_columns", 'jigoshop_custom_product_sort');
+function jigoshop_custom_product_sort( $columns ) {
+    $columns['product-date'] = 'date';
+    
+    return $columns;
+}
+
 /**
  * Filter products by category, uses slugs for option values.
  * Props to: Andrew Benbow - chromeorange.co.uk
