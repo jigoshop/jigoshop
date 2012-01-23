@@ -90,13 +90,13 @@ if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 	function jigoshop_template_loop_add_to_cart( $post, $_product ) {
 		
 		// do not show "add to cart" button if product's price isn't announced
-		if ( $_product->get_price() === '' AND ! ($_product->is_type('variable') OR $_product->is_type('grouped')) ) return;
+		if ( $_product->get_price() === '' AND ! ($_product->is_type(array('variable', 'grouped', 'external'))) ) return;
 		
-		if ( $_product->is_in_stock() ) :
-			if ( $_product->is_type('variable') OR $_product->is_type('grouped') ) :
+		if ( $_product->is_in_stock() OR $_product->is_type('external') ) :
+			if ( $_product->is_type(array('variable', 'grouped')) ) :
 				$output = '<a href="'.get_permalink($_product->id).'" class="button">'.__('Select', 'jigoshop').'</a>';
 			elseif ( $_product->is_type('external') ) :
-				$output = '<a href="'.get_post_meta( $_product->id, 'product_url', true ).'" class="button">'.__('Buy product', 'jigoshop').'</a>';
+				$output = '<a href="'.get_post_meta( $_product->id, 'external_url', true ).'" class="button">'.__('Buy product', 'jigoshop').'</a>';
 			else :
 				$output = '<a href="'.$_product->add_to_cart_url().'" class="button">'.__('Add to cart', 'jigoshop').'</a>';
 			endif;
