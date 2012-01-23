@@ -95,7 +95,7 @@ div.product {
 	}
 	p.stock {
 		font-size: 0.92em;
-		float: left;
+		//float: left;
 		padding: 2px 0 0 0;
 	}
 	div.images {
@@ -206,7 +206,6 @@ div.product {
 }
 
 .stock {
-	float: left;
 	margin-right:1em;
 }
 .out-of-stock {
@@ -252,6 +251,7 @@ form.cart {
 	}
 	.single_variation{
 		.clearfix();
+		padding-top:1em;
 	}
 	.button {
 		vertical-align: middle;
@@ -261,8 +261,10 @@ form.cart {
 }
 
 span.onsale {
-	background: green;
-	color: @white;
+	background: #FFF9C0;
+	border:solid 1px darken(#FFF9C0, 30);
+	color:@black;
+	font-weight:bold;
 	min-height: 32px;
 	min-width: 32px;
 	padding: 4px;
@@ -274,6 +276,8 @@ span.onsale {
 	right: 320px;
 	margin: -6px 0 0 0;
 	.border-radius(20px);
+	.rotate(27deg);
+	.box-shadow(0 2px 2px rgba(0,0,0,0.2));
 }
 
 .products ul, ul.products {
@@ -378,7 +382,7 @@ a.button, button.button, input.button, #review_form input#submit {
 	color:@textColor;
 	padding: 6px;
 	line-height: 1em !important;
-	margin: 4px 2px 0 0;
+	margin: 0px 2px 0 0;
 	float: left;
 	font-size: 12px !important;
 	width: auto !important;
@@ -412,7 +416,7 @@ a.button-alt, .button-alt, .jigoshop_message a.button {
 	background: @buttonColor;
 	padding: 6px;
 	line-height: 1em !important;
-	margin: 4px 2px 0 0;
+	margin: 0px 2px 0 0;
 	float: left;
 	font-size: 12px !important;
 	width: auto !important;
@@ -466,6 +470,7 @@ a.button-alt, .button-alt, .jigoshop_message a.button {
 			overflow: hidden;
 			zoom: 1;
 			margin: 0 !important;
+			width:auto;
 			li {
 				padding: 00;
 				margin: 0 0 20px;
@@ -501,6 +506,10 @@ a.button-alt, .button-alt, .jigoshop_message a.button {
 					}
 				}
 			}
+
+			& > li.bypostauthor{
+				background:none;
+			}
 		}
 	}
 }
@@ -520,8 +529,10 @@ a.button-alt, .button-alt, .jigoshop_message a.button {
 }
 
 .hreview-aggregate {
+		.clearfix();
+		margin-bottom:10px;
 	.star-rating {
-		margin: 10px 0 0 0;
+		margin: 5px 0 0 0;
 	}
 }
 

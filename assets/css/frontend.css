@@ -120,7 +120,6 @@ div.product p.price del {
 }
 div.product p.stock {
   font-size: 0.92em;
-  float: left;
   padding: 2px 0 0 0;
 }
 div.product div.images {
@@ -247,7 +246,6 @@ div.product #tabs .panel {
   border-radius: 0 0 3px 0;
 }
 .stock {
-  float: left;
   margin-right: 1em;
 }
 .out-of-stock {
@@ -299,6 +297,7 @@ form.cart .variations select {
 }
 form.cart .single_variation {
   zoom: 1;
+  padding-top: 1em;
 }
 form.cart .single_variation:before, form.cart .single_variation:after {
   display: table;
@@ -314,8 +313,10 @@ form.cart .button {
   margin: 2px 0 !important;
 }
 span.onsale {
-  background: green;
-  color: #ffffff;
+  background: #FFF9C0;
+  border: solid 1px #ffea27;
+  color: #000000;
+  font-weight: bold;
   min-height: 32px;
   min-width: 32px;
   padding: 4px;
@@ -329,6 +330,14 @@ span.onsale {
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
   border-radius: 20px;
+  -webkit-transform: rotate(27deg);
+  -moz-transform: rotate(27deg);
+  -ms-transform: rotate(27deg);
+  -o-transform: rotate(27deg);
+  transform: rotate(27deg);
+  -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 }
 .products ul, ul.products {
   margin: 0 0 14px !important;
@@ -433,7 +442,7 @@ input.button,
   color: #333333;
   padding: 6px;
   line-height: 1em !important;
-  margin: 4px 2px 0 0;
+  margin: 0px 2px 0 0;
   float: left;
   font-size: 12px !important;
   width: auto !important;
@@ -470,7 +479,7 @@ a.button-alt, .button-alt, .jigoshop_message a.button {
   background: #008000;
   padding: 6px;
   line-height: 1em !important;
-  margin: 4px 2px 0 0;
+  margin: 0px 2px 0 0;
   float: left;
   font-size: 12px !important;
   width: auto !important;
@@ -526,6 +535,7 @@ a.button-alt:hover, .button-alt:hover, .jigoshop_message a.button:hover {
   overflow: hidden;
   zoom: 1;
   margin: 0 !important;
+  width: auto;
 }
 #reviews #comments ol.commentlist li {
   padding: 00;
@@ -564,6 +574,9 @@ a.button-alt:hover, .button-alt:hover, .jigoshop_message a.button:hover {
 #reviews #comments ol.commentlist li .comment-text p.meta {
   font-size: 0.86em;
 }
+#reviews #comments ol.commentlist  > li.bypostauthor {
+  background: none;
+}
 .star-rating {
   float: right;
   width: 80px;
@@ -577,8 +590,20 @@ a.button-alt:hover, .button-alt:hover, .jigoshop_message a.button:hover {
   overflow: hidden;
   float: left;
 }
+.hreview-aggregate {
+  zoom: 1;
+  margin-bottom: 10px;
+}
+.hreview-aggregate:before, .hreview-aggregate:after {
+  display: table;
+  content: "";
+  zoom: 1;
+}
+.hreview-aggregate:after {
+  clear: both;
+}
 .hreview-aggregate .star-rating {
-  margin: 10px 0 0 0;
+  margin: 5px 0 0 0;
 }
 #review_form #respond {
   zoom: 1;
