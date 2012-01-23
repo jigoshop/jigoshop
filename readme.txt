@@ -2,7 +2,7 @@
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal
 Requires at least: 3.1
 Tested up to: 3.3.1
-Stable tag: 1.0
+Stable tag: 1.0 beta 1
 
 A feature packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customisability.
 
