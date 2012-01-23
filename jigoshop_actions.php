@@ -644,7 +644,7 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 		// if ($item['id']>0) :
 
 			// @todo: Bit of a hack could be improved as id is null/0
-			if ( isset($item['variation_id']) ) {
+			if ( (bool) $item['variation_id'] ) {
 				$_product = &new jigoshop_product_variation( $item['variation_id'] );
 				$product_id = $_product->variation_id;
 			} else {
