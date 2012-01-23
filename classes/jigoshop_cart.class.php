@@ -54,11 +54,6 @@ class jigoshop_cart extends jigoshop_singleton {
         // so that shipping doesn't need to be calculated so many times. Calling the server
         // api's ofter per page request isn't a good idea.
         self::calculate_cart_total();
-
-
-        // Adding this fixes https://github.com/jigoshop/redhillsranch/issues/61
-        // But what implecations does it have? -Rob
-        self::calculate_totals();
     }
 
     /** Gets the cart data from the PHP session */
