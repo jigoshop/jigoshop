@@ -226,7 +226,7 @@ if (!function_exists('jigoshop_template_single_meta')) {
 	function jigoshop_template_single_meta( $post, $_product ) {
 
 		echo '<div class="product_meta">';
-		if ($_product->is_type('simple') && get_option('jigoshop_enable_sku')=='yes') :
+		if (get_option('jigoshop_enable_sku')=='yes' && !empty($_product->sku)) :
 			echo '<div class="sku">SKU: ' . $_product->sku . '</div>';
 		endif;
 		
