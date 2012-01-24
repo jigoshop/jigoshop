@@ -79,10 +79,10 @@ class jigoshop_product {
 		$this->exists = (bool) $meta;
 
 		// Get the product type, from the cache if we can
-		$terms = current( get_the_terms( $this->ID, 'product_type' ) );
+		$terms = current( (array) get_the_terms( $this->ID, 'product_type' ) );
 		
 		// Use slug as it is already santizied.
-		$this->product_type = ( $terms ) ? $terms->slug : 'simple';
+		$this->product_type = ( ! empty( $terms ) ) ? $terms->slug : 'simple';
 
 		// Define data
 		$this->regular_price         = isset($meta['regular_price'][0]) ? $meta['regular_price'][0] : null;
