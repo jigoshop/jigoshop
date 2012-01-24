@@ -344,7 +344,7 @@ class jigoshop_cart extends jigoshop_singleton {
     }
 
     /** reset all Cart totals */
-    function reset_totals() {
+    static function reset_totals() {
         self::$total = 0;
         self::$cart_contents_total = 0;
         self::$cart_contents_total_ex_tax = 0;
