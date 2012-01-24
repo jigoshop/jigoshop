@@ -357,7 +357,7 @@ function jigoshop_admin_fields($options) {
                 ?><tr>
                         <td class="titledesc"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
 
-                        <td class="forminp"><input name="<?php echo $value['id'] ?>" id="<?php echo $value['id'] ?>" type="<?php echo $value['type'] ?>" style="<?php echo $value['css'] ?>"
+                        <td class="forminp"><input name="<?php echo esc_attr( $value['id'] ); ?>" id="<?php echo esc_attr( $value['id'] ); ?>" type="<?php echo $value['type'] ?>" style="<?php echo esc_attr( $value['css'] ); ?>"
                                                    value="<?php if (get_option($value['id']) !== false && get_option($value['id']) !== null)
                     echo get_option($value['id']); else
                     echo $value['std'] ?>" /><br /><small><?php echo $value['desc'] ?></small></td>
@@ -366,11 +366,11 @@ function jigoshop_admin_fields($options) {
             case 'select':
                                 ?><tr>
                         <td class="titledesc"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
-                        <td class="forminp"><select name="<?php echo $value['id'] ?>" id="<?php echo $value['id'] ?>" style="<?php echo $value['css'] ?>">
+                        <td class="forminp"><select name="<?php echo esc_attr( $value['id'] ); ?>" id="<?php echo esc_attr( $value['id'] ); ?>" style="<?php echo esc_attr( $value['css'] ); ?>">
                     <?php
                     foreach ($value['options'] as $key => $val) {
                         ?>
-                                    <option value="<?php echo $key ?>" <?php if (get_option($value['id']) == $key) { ?> selected="selected" <?php } ?>><?php echo ucfirst($val) ?></option>
+                                    <option value="<?php echo esc_attr( $key ); ?>" <?php if (get_option($value['id']) == $key) { ?> selected="selected" <?php } ?>><?php echo ucfirst($val) ?></option>
                         <?php
                     }
                     ?>
@@ -383,7 +383,7 @@ function jigoshop_admin_fields($options) {
                         <td class="titledesc"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
                         <td class="forminp">
                             <textarea <?php if (isset($value['args']))
-                    echo $value['args'] . ' '; ?>name="<?php echo $value['id'] ?>" id="<?php echo $value['id'] ?>" style="<?php echo $value['css'] ?>"><?php if (get_option($value['id']))
+                    echo $value['args'] . ' '; ?>name="<?php echo esc_attr( $value['id'] ); ?>" id="<?php echo esc_attr( $value['id'] ); ?>" style="<?php echo esc_attr( $value['css'] ); ?>"><?php if (get_option($value['id']))
                     echo stripslashes(get_option($value['id'])); else
                     echo $value['std']; ?></textarea>
                             <br /><small><?php echo $value['desc'] ?></small>
@@ -425,7 +425,7 @@ function jigoshop_admin_fields($options) {
                     endif;
                     ?><tr class="multi_select_countries">
                         <td class="titledesc"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
-                        <td class="forminp"><select name="<?php echo $value['id'] ?>" title="Country" style="width: 150px;">
+                        <td class="forminp"><select name="<?php echo esc_attr( $value['id'] ); ?>" title="Country" style="width: 150px;">
                 <?php echo jigoshop_countries::country_dropdown_options($country, $state); ?>
                             </select>
                         </td>

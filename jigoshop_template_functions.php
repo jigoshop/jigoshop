@@ -386,12 +386,12 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 					<?php $sanitized_name = sanitize_title( $aname ); ?>
 					<div>
 						<span class="select_label"><?php echo $aname; ?></span>
-						<select id="<?php echo $sanitized_name; ?>" name="tax_<?php echo $sanitized_name; ?>">
+						<select id="<?php echo esc_attr( $sanitized_name ); ?>" name="tax_<?php echo $sanitized_name; ?>">
 							<option value=""><?php echo __('Choose an option ', 'jigoshop') ?>&hellip;</option>
 							<?php foreach ( $avalues as $value ) : ?>
 								<?php if ( taxonomy_exists( 'pa_'.$sanitized_name )) : ?>
 									<?php $term = get_term_by( 'slug', $value, 'pa_'.$sanitized_name ); ?>
-									<option value="<?php echo $term->slug; ?>"><?php echo $term->name; ?></option>
+									<option value="<?php echo esc_attr( $term->slug ); ?>"><?php echo $term->name; ?></option>
 								<?php else : ?>
 									<?php
 									//	this should be a custom text attribute with values (one,two,three)
@@ -399,7 +399,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 									//	perhaps we need to be creating a taxonomy for these? (currently we don't)
 									//	it will show pretty name if no option selected on variation, 'Choose Any [attr]'
 									?>
-									<option value="<?php echo sanitize_title( $value ); ?>"><?php echo $value; ?></option>
+									<option value="<?php echo esc_attr( sanitize_title( $value ) ); ?>"><?php echo $value; ?></option>
 								<?php endif;?>
 							<?php endforeach; ?>
 						</select>
@@ -636,13 +636,13 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 						else :
 							// Input
 							?>
-							<input type="text" class="input-text" value="<?php echo $current_r; ?>" placeholder="<?php _e('state', 'jigoshop'); ?>" name="calc_shipping_state" id="calc_shipping_state" />
+							<input type="text" class="input-text" value="<?php echo esc_attr( $current_r ); ?>" placeholder="<?php _e('state', 'jigoshop'); ?>" name="calc_shipping_state" id="calc_shipping_state" />
 							<?php
 						endif;
 					?>
 				</p>
 				<p class="form-row col-2">
-					<input type="text" class="input-text" value="<?php echo jigoshop_customer::get_shipping_postcode(); ?>" placeholder="<?php _e('Postcode/Zip', 'jigoshop'); ?>" title="<?php _e('Postcode', 'jigoshop'); ?>" name="calc_shipping_postcode" id="calc_shipping_postcode" />
+					<input type="text" class="input-text" value="<?php echo esc_attr( jigoshop_customer::get_shipping_postcode() ); ?>" placeholder="<?php _e('Postcode/Zip', 'jigoshop'); ?>" title="<?php _e('Postcode', 'jigoshop'); ?>" name="calc_shipping_postcode" id="calc_shipping_postcode" />
 				</p>
 			</div>
 			<p><button type="submit" name="calc_shipping" value="1" class="button"><?php _e('Update Totals', 'jigoshop'); ?></button></p>
@@ -696,7 +696,7 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 				endforeach;
 			endif;
 			?>
-			<input type="hidden" name="cart-url" value="<?php echo jigoshop_cart::get_cart_url() ?>">
+			<input type="hidden" name="cart-url" value="<?php echo esc_attr( jigoshop_cart::get_cart_url() ); ?>">
 			<?php jigoshop::nonce_field('cart') ?>
 			</section>
 		</form>

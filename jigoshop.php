@@ -781,7 +781,7 @@ function jigoshop_comments($comment, $args, $depth) {
 
 			<div class="comment-text">
 				<?php if ( $rating = get_comment_meta( $comment->comment_ID, 'rating', true ) ): ?>
-				<div class="star-rating" title="<?php echo $rating; ?>">
+				<div class="star-rating" title="<?php echo esc_attr( $rating ); ?>">
 					<span style="width:<?php echo $rating*16; ?>px"><?php echo $rating; ?> <?php _e('out of 5', 'jigoshop'); ?></span>
 				</div>
 				<?php endif; ?>

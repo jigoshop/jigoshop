@@ -118,7 +118,7 @@ function jigoshop_cart($atts) {
                             }
                             ?>
                             <tr>
-                                <td class="product-remove"><a href="<?php echo jigoshop_cart::get_remove_url($cart_item_key); ?>" class="remove" title="<?php echo __('Remove this item.', 'jigoshop'); ?>">&times;</a></td>
+                                <td class="product-remove"><a href="<?php echo jigoshop_cart::get_remove_url($cart_item_key); ?>" class="remove" title="<?php echo esc_attr( __('Remove this item.', 'jigoshop') ); ?>">&times;</a></td>
                                 <td class="product-thumbnail"><a href="<?php echo apply_filters('jigoshop_product_url_display_in_cart', get_permalink($values['product_id']), $values['product_id']); ?>">
                                         <?php
                                         if ($values['variation_id'] && has_post_thumbnail($values['variation_id'])) {
@@ -139,7 +139,7 @@ function jigoshop_cart($atts) {
                                 <td class="product-price"><?php echo jigoshop_price($_product->get_price()); ?></td>
                                 <td class="product-quantity">
                                     <?php if ( ! $_product->is_type('downloadable') ): ?>
-                                     <div class="quantity"><input name="cart[<?php echo $cart_item_key ?>][qty]" value="<?php echo $values['quantity']; ?>" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div>
+                                     <div class="quantity"><input name="cart[<?php echo $cart_item_key ?>][qty]" value="<?php echo esc_attr( $values['quantity'] ); ?>" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div>
                                     <?php else: ?>
                                         &ndash;
                                     <?php endif; ?>
