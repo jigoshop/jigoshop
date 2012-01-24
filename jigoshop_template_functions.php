@@ -166,7 +166,7 @@ if (!function_exists('jigoshop_show_product_thumbnails')) {
 
 				$loop++;
 
-				$_post = & get_post( $attachment->ID );
+				$_post =  get_post( $attachment->ID );
 				$url = wp_get_attachment_url($_post->ID);
 				$post_title = esc_attr($_post->post_title);
 				$image = wp_get_attachment_image($attachment->ID, $small_thumbnail_size);

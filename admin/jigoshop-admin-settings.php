@@ -286,7 +286,7 @@ function jigoshop_update_options() {
             $posts = get_posts('post_type=product&post_status=publish&posts_per_page=-1');
 
             foreach ((array) $posts as $post) {
-                $images = & get_children("post_parent={$post->ID}&post_type=attachment&post_mime_type=image");
+                $images =  get_children("post_parent={$post->ID}&post_type=attachment&post_mime_type=image");
 
                 foreach ((array) $images as $image) {
                     $fullsizepath = get_attached_file($image->ID);

@@ -570,7 +570,7 @@ class jigoshop_product {
                 $tax_applied_after_retail = 0;
                 $tax_totals = 0;
 
-                $_tax = &new jigoshop_tax();
+                $_tax = new jigoshop_tax();
 
                 foreach ( $new_rates as $key=>$value ) :
 
@@ -605,7 +605,7 @@ class jigoshop_product {
 		$rate = array();
             
         if ($this->is_taxable() && get_option('jigoshop_calc_taxes') == 'yes') :
-            $_tax = &new jigoshop_tax();
+            $_tax = new jigoshop_tax();
             
             if ($_tax->get_tax_classes_for_base()) foreach ( $_tax->get_tax_classes_for_base() as $tax_class ) :
                 

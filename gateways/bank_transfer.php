@@ -166,7 +166,7 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 	 **/
 	function process_payment( $order_id ) {
 		
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 		$order->update_status('on-hold', __('Awaiting Bank Transfer', 'jigoshop'));
 		jigoshop_cart::empty_cart();
 		$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', get_option( 'jigoshop_thanks_page_id' ) );

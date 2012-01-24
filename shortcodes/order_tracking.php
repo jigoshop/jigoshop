@@ -28,7 +28,7 @@ function jigoshop_order_tracking( $atts ) {
 
 	if ($_POST) :
 
-		$order = &new jigoshop_order();
+		$order = new jigoshop_order();
 
 		if (isset($_POST['orderid']) && $_POST['orderid'] > 0) $order->id = (int) $_POST['orderid']; else $order->id = 0;
 		if (isset($_POST['order_email']) && $_POST['order_email']) $order_email = trim($_POST['order_email']); else $order_email = '';
@@ -132,9 +132,9 @@ function jigoshop_order_tracking( $atts ) {
 						foreach($order->items as $order_item) :
 
 							if (isset($order_item['variation_id']) && $order_item['variation_id'] > 0) :
-								$_product = &new jigoshop_product_variation( $order_item['variation_id'] );
+								$_product = new jigoshop_product_variation( $order_item['variation_id'] );
 							else :
-								$_product = &new jigoshop_product( $order_item['id'] );
+								$_product = new jigoshop_product( $order_item['id'] );
 							endif;
 
 							echo '<tr>';

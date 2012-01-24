@@ -63,7 +63,7 @@ function jigoshop_my_account( $atts ) {
 			</thead>
 
 			<tbody><?php
-				$jigoshop_orders = &new jigoshop_orders();
+				$jigoshop_orders = new jigoshop_orders();
 				$jigoshop_orders->get_customer_orders( get_current_user_id(), $recent_orders );
 				if ($jigoshop_orders->orders) foreach ($jigoshop_orders->orders as $order) :
 					?><tr class="order">
@@ -399,7 +399,7 @@ function jigoshop_view_order() {
             $order_id = (int) $_GET['order']; else
             $order_id = 0;
 
-        $order = &new jigoshop_order($order_id);
+        $order = new jigoshop_order($order_id);
 
         if ($order_id > 0 && $order->user_id == get_current_user_id()) :
 
@@ -503,13 +503,13 @@ function jigoshop_view_order() {
                         foreach ($order->items as $item) :
 
                             if (isset($item['variation_id']) && $item['variation_id'] > 0) :
-                                $_product = &new jigoshop_product_variation($item['variation_id']);
+                                $_product = new jigoshop_product_variation($item['variation_id']);
 
                                 if (is_array($item['variation'])) :
                                     $_product->set_variation_attributes($item['variation']);
                                 endif;
                             else :
-                                $_product = &new jigoshop_product($item['id']);
+                                $_product = new jigoshop_product($item['id']);
                             endif;
 
                             echo '

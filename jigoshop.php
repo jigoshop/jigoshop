@@ -202,7 +202,7 @@ function jigoshop_init() {
 	$jigoshop_payment_gateways 	= jigoshop_payment_gateways::instance();// Payment gateways class. loads payment methods
 	$jigoshop_cart 				= jigoshop_cart::instance();			// Cart class, stores the cart contents
 
-//	if ( ! is_admin() ) $jigoshop_query = &new jigoshop_catalog_query();
+//	if ( ! is_admin() ) $jigoshop_query = new jigoshop_catalog_query();
 	if ( ! is_admin() ) $jigoshop_query = jigoshop_catalog_query::instance();
 	
 	// Image sizes

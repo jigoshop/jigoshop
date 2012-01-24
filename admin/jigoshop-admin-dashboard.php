@@ -78,7 +78,7 @@ function jigoshop_dashboard() {
 								<p class="sub"><?php _e('Orders', 'jigoshop'); ?></p>
 								<table>
 									<tbody>
-										<?php $jigoshop_orders = &new jigoshop_orders(); ?>
+										<?php $jigoshop_orders = new jigoshop_orders(); ?>
 										<tr class="first">
 											<td class="b"><a href="edit.php?post_type=shop_order&shop_order_status=pending"><span class="total-count"><?php echo $jigoshop_orders->pending_count; ?></span></a></td>
 											<td class="last t"><a class="pending" href="edit.php?post_type=shop_order&shop_order_status=pending"><?php _e('Pending', 'jigoshop'); ?></a></td>
@@ -125,7 +125,7 @@ function jigoshop_dashboard() {
 									echo '<ul class="recent-orders">';
 									foreach ($orders as $order) :
 										
-										$this_order = &new jigoshop_order( $order->ID );
+										$this_order = new jigoshop_order( $order->ID );
 										
 										echo '
 										<li>
@@ -164,7 +164,7 @@ function jigoshop_dashboard() {
 							$my_query = new WP_Query($args);
 							if ($my_query->have_posts()) : while ($my_query->have_posts()) : $my_query->the_post(); 
 								
-								$_product = &new jigoshop_product( $my_query->post->ID );
+								$_product = new jigoshop_product( $my_query->post->ID );
 								if (!$_product->managing_stock()) continue;
 
 								$thisitem = '<tr class="first">
@@ -315,7 +315,7 @@ function jigoshop_dashboard() {
 										if ($orders) :
 											foreach ($orders as $order) :
 												
-												$order_data = &new jigoshop_order($order->ID);
+												$order_data = new jigoshop_order($order->ID);
 												
 												if ($order_data->status=='cancelled' || $order_data->status=='refunded') continue;
 												

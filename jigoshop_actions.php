@@ -72,9 +72,9 @@ function jigoshop_add_order_item() {
 	endif;
 
 	if ($post->post_type=="product") :
-		$_product = &new jigoshop_product( $post->ID );
+		$_product = new jigoshop_product( $post->ID );
 	else :
-		$_product = &new jigoshop_product_variation( $post->ID );
+		$_product = new jigoshop_product_variation( $post->ID );
 	endif;
 
 	$loop = 0;
@@ -358,7 +358,7 @@ function jigoshop_clear_cart_on_return() {
 		if (isset($_GET['order'])) $order_id = $_GET['order']; else $order_id = 0;
 		if (isset($_GET['key'])) $order_key = $_GET['key']; else $order_key = '';
 		if ($order_id > 0) :
-			$order = &new jigoshop_order( $order_id );
+			$order = new jigoshop_order( $order_id );
 			if ($order->order_key == $order_key) :
 				jigoshop_cart::empty_cart();
 			endif;
@@ -377,7 +377,7 @@ function jigoshop_clear_cart_after_payment( $url = false ) {
 
 	if (isset( jigoshop_session::instance()->order_awaiting_payment ) && jigoshop_session::instance()->order_awaiting_payment > 0) :
 
-		$order = &new jigoshop_order( jigoshop_session::instance()->order_awaiting_payment );
+		$order = new jigoshop_order( jigoshop_session::instance()->order_awaiting_payment );
 
 		if ($order->id > 0 && ($order->status=='completed' || $order->status=='processing')) :
 
@@ -457,7 +457,7 @@ function jigoshop_cancel_order() {
 		$order_key = urldecode( $_GET['order'] );
 		$order_id = (int) $_GET['order_id'];
 
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 
 		if ($order->id == $order_id && $order->order_key == $order_key && $order->status=='pending' && jigoshop::verify_nonce('cancel_order', '_GET')) :
 
@@ -637,7 +637,7 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 
 	global $wpdb;
 
-	$order = &new jigoshop_order( $order_id );
+	$order = new jigoshop_order( $order_id );
 
 	if (sizeof($order->items)>0) foreach ($order->items as $item) :
 
@@ -645,10 +645,10 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 
 			// @todo: Bit of a hack could be improved as id is null/0
 			if ( (bool) $item['variation_id'] ) {
-				$_product = &new jigoshop_product_variation( $item['variation_id'] );
+				$_product = new jigoshop_product_variation( $item['variation_id'] );
 				$product_id = $_product->variation_id;
 			} else {
-				$_product = &new jigoshop_product( $item['id'] );
+				$_product = new jigoshop_product( $item['id'] );
 				$product_id = $_product->ID;
 			}
 
