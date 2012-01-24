@@ -924,7 +924,7 @@ class jigoshop_product {
 
 		// If its a taxonomy return that
 		if( $attr['is_taxonomy'] )
-			return wp_get_post_terms( $this->ID, 'pa_'.sanitize_title($attr['name']) );
+			return get_the_terms( $this->ID, 'pa_'.sanitize_title($attr['name']) );
 
 		return $attr['value'];
 	}
@@ -1026,9 +1026,9 @@ class jigoshop_product {
 			if ( (bool) $attr['is_taxonomy'] ) {
 
 				// Get the taxonomy terms
-				$product_terms = wp_get_post_terms( $this->ID, 'pa_'.sanitize_title($attr['name']) );
+				$product_terms = get_the_terms( $this->ID, 'pa_'.sanitize_title($attr['name']) );
 
-				// Convert them into a string
+				// Convert them into a array to be imploded
 				$terms = array();
 
 				foreach( $product_terms as $term ) {
@@ -1108,7 +1108,7 @@ class jigoshop_product {
 
 				if ( $attribute['is_taxonomy'] ) {
 					$options = array();
-					$terms = wp_get_post_terms( $this->ID, 'pa_'.sanitize_title($attribute['name']) );
+					$terms = get_the_terms( $this->ID, 'pa_'.sanitize_title($attribute['name']) );
 
 					foreach($terms as $term) {
 						$options[] = $term->slug;

@@ -847,7 +847,7 @@ if (!function_exists('jigoshop_breadcrumb')) {
 	       			//echo $before . '<a href="' . get_post_type_archive_link('product') . '">' . ucwords(get_option('jigoshop_shop_slug')) . '</a>' . $after . $delimiter;
 	       			echo $prepend;
 
-	       			if ($terms = wp_get_object_terms( $post->ID, 'product_cat' )) :
+	       			if ($terms = get_the_terms( $post->ID, 'product_cat' )) :
 						$term = current($terms);
 						$parents = array();
 						$parent = $term->parent;

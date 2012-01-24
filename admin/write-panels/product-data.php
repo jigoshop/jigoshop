@@ -93,7 +93,7 @@ function jigoshop_product_data_box() {
 			<fieldset>
 			<?php	
 				// Product Type
-				$terms = wp_get_object_terms( $thepostid, 'product_type' );
+				$terms = get_the_terms( $thepostid, 'product_type' );
 				$product_type = ($terms) ? current($terms)->slug : 'simple';
 
 				echo jigoshop_form::select(
@@ -433,7 +433,7 @@ function display_attribute() { ?>
 		if (isset($attributes[$attribute_taxonomy_name])) $attribute = $attributes[$attribute_taxonomy_name];
 		$position = (isset($attribute['position'])) ? $attribute['position'] : 0;
 
-		$allterms = wp_get_post_terms( $post->ID, 'pa_'.$attribute_taxonomy_name );
+		$allterms = get_the_terms( $post->ID, 'pa_'.$attribute_taxonomy_name );
 
 		$has_terms = ( is_wp_error( $allterms ) || !$allterms || sizeof( $allterms ) == 0 ) ? 0 : 1;
 		$term_slugs = array();

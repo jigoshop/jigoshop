@@ -35,7 +35,7 @@ function jigoshop_order_data_meta_box($post) {
 	
 	$data['customer_user'] = (int) get_post_meta($post->ID, 'customer_user', true);
 
-	$order_status = wp_get_post_terms($post->ID, 'shop_order_status');
+	$order_status = get_the_terms($post->ID, 'shop_order_status');
 	if ($order_status) :
 		$order_status = current($order_status);
 		$data['order_status'] = $order_status->slug;

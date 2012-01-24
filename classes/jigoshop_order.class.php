@@ -123,7 +123,7 @@ class jigoshop_order {
 		endif;
 		
 		// Taxonomy data 
-		$terms = wp_get_object_terms( $this->id, 'shop_order_status' );
+		$terms = get_the_terms( $this->id, 'shop_order_status' );
 		if (!is_wp_error($terms) && $terms) :
 			$term = current($terms);
 			$this->status = $term->slug; 
