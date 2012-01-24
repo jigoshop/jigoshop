@@ -869,17 +869,17 @@ class Jigoshop_Walker_CategoryDropdown extends Walker {
 	var $tree_type = 'category';
 	var $db_fields = array ('parent' => 'parent', 'id' => 'term_id', 'slug' => 'slug' );
 
-	function start_el(&$output, $category, $depth, $args) {
+	function start_el(&$output, $object, $depth, $args, $current_object_id = 0) {
 		$pad = str_repeat('&nbsp;', $depth * 3);
 
-		$cat_name = apply_filters('list_product_cats', $category->name, $category);
-		$output .= "\t<option class=\"level-$depth\" value=\"".$category->slug."\"";
-		if ( $category->slug == $args['selected'] )
+		$cat_name = apply_filters('list_product_cats', $object->name, $object);
+		$output .= "\t<option class=\"level-$depth\" value=\"".$object->slug."\"";
+		if ( $object->slug == $args['selected'] )
 			$output .= ' selected="selected"';
 		$output .= '>';
 		$output .= $pad.$cat_name;
 		if ( $args['show_count'] )
-			$output .= '&nbsp;('. $category->count .')';
+			$output .= '&nbsp;('. $object->count .')';
 		$output .= "</option>\n";
 	}
 }

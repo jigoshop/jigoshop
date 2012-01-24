@@ -128,7 +128,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	 * @param   int   Product ID
 	 * @return  void
 	 */
-	public function save( $parent_id ) {
+	public function save( $parent_id, $post ) {
 		global $wpdb;
 
 		// Do not run if there are no variations
