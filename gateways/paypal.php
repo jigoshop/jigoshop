@@ -125,7 +125,7 @@ class paypal extends jigoshop_payment_gateway {
 	 **/
     public function generate_paypal_form( $order_id ) {
 		
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 		
 		if ( $this->testmode == 'yes' ):
 			$paypal_adr = $this->testurl . '?test_ipn=1&';		
@@ -208,9 +208,9 @@ class paypal extends jigoshop_payment_gateway {
 		if (sizeof($order->items)>0) : foreach ($order->items as $item) :
             
             if(!empty($item['variation_id'])) {
-                $_product = &new jigoshop_product_variation($item['variation_id']);
+                $_product = new jigoshop_product_variation($item['variation_id']);
             } else {
-                $_product = &new jigoshop_product($item['id']);
+                $_product = new jigoshop_product($item['id']);
             }
             
 			if ($_product->exists() && $item['qty']) :
@@ -284,7 +284,7 @@ class paypal extends jigoshop_payment_gateway {
 	 **/
 	function process_payment( $order_id ) {
 		
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 		
 		return array(
 			'result' 	=> 'success',

@@ -33,7 +33,7 @@ class jigoshop_payment_gateways extends jigoshop_singleton {
 		
 		foreach ($load_gateways as $gateway) :
 		
-			self::$payment_gateways[] = &new $gateway();
+			self::$payment_gateways[] = new $gateway();
 			
 		endforeach;
     	

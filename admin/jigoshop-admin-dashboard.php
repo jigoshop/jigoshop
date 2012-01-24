@@ -78,7 +78,7 @@ function jigoshop_dashboard() {
 								<p class="sub"><?php _e('Orders', 'jigoshop'); ?></p>
 								<table>
 									<tbody>
-										<?php $jigoshop_orders = &new jigoshop_orders(); ?>
+										<?php $jigoshop_orders = new jigoshop_orders(); ?>
 										<tr class="first">
 											<td class="b"><a href="edit.php?post_type=shop_order&shop_order_status=pending"><span class="total-count"><?php echo $jigoshop_orders->pending_count; ?></span></a></td>
 											<td class="last t"><a class="pending" href="edit.php?post_type=shop_order&shop_order_status=pending"><?php _e('Pending', 'jigoshop'); ?></a></td>
@@ -125,7 +125,7 @@ function jigoshop_dashboard() {
 									echo '<ul class="recent-orders">';
 									foreach ($orders as $order) :
 										
-										$this_order = &new jigoshop_order( $order->ID );
+										$this_order = new jigoshop_order( $order->ID );
 										
 										echo '
 										<li>
@@ -164,7 +164,7 @@ function jigoshop_dashboard() {
 							$my_query = new WP_Query($args);
 							if ($my_query->have_posts()) : while ($my_query->have_posts()) : $my_query->the_post(); 
 								
-								$_product = &new jigoshop_product( $my_query->post->ID );
+								$_product = new jigoshop_product( $my_query->post->ID );
 								if (!$_product->managing_stock()) continue;
 
 								$thisitem = '<tr class="first">
@@ -315,7 +315,7 @@ function jigoshop_dashboard() {
 										if ($orders) :
 											foreach ($orders as $order) :
 												
-												$order_data = &new jigoshop_order($order->ID);
+												$order_data = new jigoshop_order($order->ID);
 												
 												if ($order_data->status=='cancelled' || $order_data->status=='refunded') continue;
 												
@@ -551,14 +551,12 @@ function jigoshop_dashboard() {
 				     			<h4><?php _e('Jigoshop Social', 'jigoshop'); ?></h4>
 				     			
 				     			<div id="fb-root"></div><script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:like href="http://jigoshop.com" send="true" layout="button_count" width="250" show_faces="true" action="like" font="arial"></fb:like>
-								
-				     			<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fjigoshop.com&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font=segoe+ui&amp;height=24" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:24px;" allowTransparency="true"></iframe>
 				     			
 				     			<p><a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jigoshop.com/" data-text="Jigoshop: A WordPress eCommerce solution that works" data-count="horizontal" data-via="jigoshop" data-related="Jigowatt:Creators">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script></p>
 				     			
 				     			<p><g:plusone size="medium" href="http://jigoshop.com/"></g:plusone><script type="text/javascript" src="https://apis.google.com/js/plusone.js">{lang: 'en-GB'}</script></p>
 				     			
-				     			<h4><?php _e('Jigoshop is bought to you by&hellip;', 'jigoshop'); ?></h4>
+				     			<h4><?php _e('Jigoshop is brought to you by&hellip;', 'jigoshop'); ?></h4>
 
 				     			<p><a href="http://jigowatt.co.uk/"><img src="<?php echo jigoshop::assets_url(); ?>/assets/images/jigowatt.png" alt="Jigowatt" /></a></p>
 				     			

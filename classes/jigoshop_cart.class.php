@@ -155,9 +155,9 @@ class jigoshop_cart extends jigoshop_singleton {
         $found_cart_item_key = self::find_product_in_cart($product_id, $variation_id, $variation);
 
         if (empty($variation_id)) {
-            $product = &new jigoshop_product($product_id);
+            $product = new jigoshop_product($product_id);
         } else {
-            $product = &new jigoshop_product_variation($variation_id);
+            $product = new jigoshop_product_variation($variation_id);
         }
 
         //product with a given ID doesn't exists
@@ -344,7 +344,7 @@ class jigoshop_cart extends jigoshop_singleton {
     }
 
     /** reset all Cart totals */
-    function reset_totals() {
+    static function reset_totals() {
         self::$total = 0;
         self::$cart_contents_total = 0;
         self::$cart_contents_total_ex_tax = 0;

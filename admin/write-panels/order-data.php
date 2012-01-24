@@ -35,7 +35,7 @@ function jigoshop_order_data_meta_box($post) {
 	
 	$data['customer_user'] = (int) get_post_meta($post->ID, 'customer_user', true);
 
-	$order_status = wp_get_post_terms($post->ID, 'shop_order_status');
+	$order_status = get_the_terms($post->ID, 'shop_order_status');
 	if ($order_status) :
 		$order_status = current($order_status);
 		$data['order_status'] = $order_status->slug;
@@ -200,12 +200,12 @@ function jigoshop_order_items_meta_box($post) {
 				<?php if (sizeof($order_items)>0 && isset($order_items[0]['id'])) foreach ($order_items as $item) : 
 					
 					if (isset($item['variation_id']) && $item['variation_id'] > 0) {
-						$_product = &new jigoshop_product_variation( $item['variation_id'] );
+						$_product = new jigoshop_product_variation( $item['variation_id'] );
                         if(is_array($item['variation'])) {
                             $_product->set_variation_attributes($item['variation']);
                         }
                     } else {
-						$_product = &new jigoshop_product( $item['id'] );
+						$_product = new jigoshop_product( $item['id'] );
                     }
 
 					?>
@@ -281,7 +281,7 @@ function jigoshop_order_items_meta_box($post) {
 						'post_parent'		=> $product->ID
 					);
 
-					if ( $children_products =& get_children( $args_get_children ) ) :
+					if ( $children_products = get_children( $args_get_children ) ) :
 
 						foreach ($children_products as $child) :
 

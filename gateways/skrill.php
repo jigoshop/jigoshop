@@ -103,7 +103,7 @@ class skrill extends jigoshop_payment_gateway {
     
     	$order_id = $_GET['orderId'];
 		
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 		
 		$skrill_adr = 'https://www.moneybookers.com/app/payment.pl';
 		
@@ -158,7 +158,7 @@ class skrill extends jigoshop_payment_gateway {
 		// Cart Contents
 		$item_loop = 0;
 		if (sizeof($order->items)>0) : foreach ($order->items as $item) :
-			$_product = &new jigoshop_product($item['id']);
+			$_product = new jigoshop_product($item['id']);
 			if ($_product->exists() && $item['qty']) :
 				
 				$item_loop++;
@@ -207,7 +207,7 @@ class skrill extends jigoshop_payment_gateway {
 	 **/
 	function process_payment( $order_id ) {
 		
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 		
 		return array(
 			'result' 	=> 'success',

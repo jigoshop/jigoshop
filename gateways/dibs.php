@@ -115,7 +115,7 @@ class dibs extends jigoshop_payment_gateway {
 	**/
 	public function generate_form( $order_id ) {
 		
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 		
 		$action_adr = 'https://payment.architrade.com/paymentweb/start.action';
 		
@@ -215,7 +215,7 @@ class dibs extends jigoshop_payment_gateway {
 	 **/
 	function process_payment( $order_id ) {
 		
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 		
 		return array(
 			'result' => 'success',

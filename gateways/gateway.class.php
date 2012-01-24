@@ -49,7 +49,7 @@ class jigoshop_payment_gateway {
 	
 	function admin_options() {}
 	
-	function process_payment() {}
+	function process_payment( $order_id ) {}
 	
 	function validate_fields() { return true; }
 }

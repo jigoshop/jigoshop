@@ -91,7 +91,7 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 	 **/
 	function process_payment( $order_id ) {
 		
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 		
 		// Mark as on-hold (we're awaiting the cheque)
 		$order->update_status('on-hold', __('Awaiting cheque payment', 'jigoshop'));

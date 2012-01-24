@@ -123,7 +123,7 @@ class jigoshop_order {
 		endif;
 		
 		// Taxonomy data 
-		$terms = wp_get_object_terms( $this->id, 'shop_order_status' );
+		$terms = get_the_terms( $this->id, 'shop_order_status' );
 		if (!is_wp_error($terms) && $terms) :
 			$term = current($terms);
 			$this->status = $term->slug; 
@@ -223,9 +223,9 @@ class jigoshop_order {
 	function get_product_from_item( $item ) {
 		
 		if (isset($item['variation_id']) && $item['variation_id']>0) :
-			$_product = &new jigoshop_product_variation( $item['variation_id'] );
+			$_product = new jigoshop_product_variation( $item['variation_id'] );
 		else :
-			$_product = &new jigoshop_product( $item['id'] );
+			$_product = new jigoshop_product( $item['id'] );
 		endif;
 		
 		return $_product;

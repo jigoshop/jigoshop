@@ -166,7 +166,7 @@ if (!function_exists('jigoshop_show_product_thumbnails')) {
 
 				$loop++;
 
-				$_post = & get_post( $attachment->ID );
+				$_post =  get_post( $attachment->ID );
 				$url = wp_get_attachment_url($_post->ID);
 				$post_title = esc_attr($_post->post_title);
 				$image = wp_get_attachment_image($attachment->ID, $small_thumbnail_size);
@@ -847,7 +847,7 @@ if (!function_exists('jigoshop_breadcrumb')) {
 	       			//echo $before . '<a href="' . get_post_type_archive_link('product') . '">' . ucwords(get_option('jigoshop_shop_slug')) . '</a>' . $after . $delimiter;
 	       			echo $prepend;
 
-	       			if ($terms = wp_get_object_terms( $post->ID, 'product_cat' )) :
+	       			if ($terms = get_the_terms( $post->ID, 'product_cat' )) :
 						$term = current($terms);
 						$parents = array();
 						$parent = $term->parent;

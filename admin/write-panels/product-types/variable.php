@@ -128,7 +128,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	 * @param   int   Product ID
 	 * @return  void
 	 */
-	public function save( $parent_id ) {
+	public function save( $parent_id, $post ) {
 		global $wpdb;
 
 		// Do not run if there are no variations
@@ -384,7 +384,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			// Get terms for attribute taxonomy or value if its a custom attribute
 			if ( $attr['is_taxonomy'] ) {
 
-				$options = wp_get_post_terms( $post->ID, 'pa_'.sanitize_title($attr['name']));
+				$options = get_the_terms( $post->ID, 'pa_'.sanitize_title($attr['name']));
 				foreach( $options as $option ) {
 					$html .= '<option value="'.$option->slug.'" '.selected($selected, $option->slug, false).'>'.$option->name.'</option>';
 				}
@@ -479,7 +479,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 							<td>
 								<?php
-									$terms = wp_get_object_terms( $variation->ID, 'product_type' );
+									$terms = get_the_terms( $variation->ID, 'product_type' );
 									$product_type = ($terms) ? current($terms)->slug : 'simple';
 								?>
 								<label class="clearlabel"><?php _e('Type', 'jigoshop') ?></label>
