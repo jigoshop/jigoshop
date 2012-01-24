@@ -78,11 +78,11 @@ class jigoshop_product {
 		// If not then it might not be a product
 		$this->exists = (bool) $meta;
 
-		// Get the product type
-		// @TODO: for some reason this is invalid on first run?
-		$terms = wp_get_object_terms( $this->ID, 'product_type', array('fields' => 'names') );
+		// Get the product type, from the cache if we can
+		$terms = current( get_the_terms( $this->ID, 'product_type' ) );
 		
-		$this->product_type = (isset($terms[0]) ? sanitize_title($terms[0]) : 'simple');
+		// Use slug as it is already santizied.
+		$this->product_type = ( $terms ) ? $terms->slug : 'simple';
 
 		// Define data
 		$this->regular_price         = isset($meta['regular_price'][0]) ? $meta['regular_price'][0] : null;
