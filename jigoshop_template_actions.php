@@ -30,7 +30,7 @@ add_action( 'jigoshop_before_shop_loop', 'jigoshop::show_messages', 10);
 
 /* Sale flashes */
 add_action( 'jigoshop_before_shop_loop_item_title', 'jigoshop_show_product_sale_flash', 10, 2);
-add_action( 'jigoshop_before_single_product_summary', 'jigoshop_show_product_sale_flash', 10, 2);
+add_action( 'jigoshop_before_single_product_summary_thumbnails', 'jigoshop_show_product_sale_flash', 10, 2);
 
 /* Breadcrumbs */
 add_action( 'jigoshop_before_main_content', 'jigoshop_breadcrumb', 20, 0);

@@ -127,6 +127,8 @@ if (!function_exists('jigoshop_show_product_images')) {
 
 		echo '<div class="images">';
 
+		do_action( 'jigoshop_before_single_product_summary_thumbnails', $post, $_product );
+
 		$thumb_id = 0;
 		if (has_post_thumbnail()) :
 			$thumb_id = get_post_thumbnail_id();
