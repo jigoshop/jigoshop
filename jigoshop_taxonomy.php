@@ -135,7 +135,7 @@ function jigoshop_post_type() {
 			'show_ui' => true,
 			'capability_type' => 'post',
 			'publicly_queryable' => true,
-			'exclude_from_search' => true,
+			'exclude_from_search' => false,
 			'hierarchical' => true,
 			'rewrite' => array( 'slug' => $base_slug, 'with_front' => false ),
 			'query_var' => true,			
