@@ -620,7 +620,7 @@ class jigoshop_cart extends jigoshop_singleton {
 
         $return = '';
 
-        if (jigoshop_cart::get_tax_rate($tax_class) > 0) :
+        if (jigoshop_cart::get_tax_amount($tax_class, false) > 0) :
             $return = self::$tax->get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%):';
 
             // only show estimated tag when customer is on the cart page and no shipping calculator is enabled to be able to change
