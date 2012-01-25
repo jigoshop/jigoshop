@@ -410,7 +410,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 			<div class="variations_button" style="display:none;">
                 <input type="hidden" name="variation_id" value="" />
                 <div class="quantity"><input name="quantity" value="1" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div>
-				<input type="submit" class="button-alt" value="<?php _e('Add to cart', 'jigoshop'); ?>" />
+				<input type="submit" class="button-alt" value="<?php esc_html_e('Add to cart', 'jigoshop'); ?>" />
 			</div>
 			<?php do_action('jigoshop_add_to_cart_form'); ?>
 		</form>
@@ -658,7 +658,7 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 								<p class="form-row col-1">
 									
 									<?php 
-									echo '<input type="radio" name="shipping_rates" value="' . $method->id . ':' . $i . '"' . ' class="shipping_select"';
+									echo '<input type="radio" name="shipping_rates" value="' . esc_attr( $method->id . ':' . $i ) . '"' . ' class="shipping_select"';
 									if ( $method->get_cheapest_service() == $method->get_selected_service($i) && $method->is_chosen() ) echo ' checked>'; else echo '>'; 
 									echo $method->get_selected_service($i) . ' via ' . $method->title;
 									?>
@@ -676,7 +676,7 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 						<p class="form-row col-1">
 							<?php 
 							// value has : as there are no services on non calculable methods, since they are identified only by the id
-							echo '<input type="radio" name="shipping_rates" value="' . $method->id . ':" class="shipping_select"';
+							echo '<input type="radio" name="shipping_rates" value="' . esc_attr( $method->id . ':' ) .'" class="shipping_select"';
 							if ( $method->is_chosen() ) echo 'checked>'; else echo '>'; 
 							echo $method->title;
 
@@ -726,7 +726,7 @@ if (!function_exists('jigoshop_login_form')) {
 
 			<p class="form-row">
 				<?php jigoshop::nonce_field('login', 'login') ?>
-				<input type="submit" class="button" name="login" value="<?php _e('Login', 'jigoshop'); ?>" />
+				<input type="submit" class="button" name="login" value="<?php esc_html_e('Login', 'jigoshop'); ?>" />
 				<a class="lost_password" href="<?php echo esc_url( wp_lostpassword_url( get_permalink() ) ); ?>"><?php _e('Lost Password?', 'jigoshop'); ?></a>
 			</p>
 		</form>

@@ -138,7 +138,7 @@ function jigoshop_edit_attribute() {
 								</select>
 							</div>
 							
-							<p class="submit"><input type="submit" name="save_attribute" id="submit" class="button" value="<?php _e('Save Attribute', 'jigoshop'); ?>"></p>
+							<p class="submit"><input type="submit" name="save_attribute" id="submit" class="button" value="<?php esc_html_e('Save Attribute', 'jigoshop'); ?>"></p>
 	    				</form>
 	    			</div>
 	    		</div>
@@ -231,7 +231,7 @@ function jigoshop_add_attribute() {
 								</select>
 							</div>
 							
-							<p class="submit"><input type="submit" name="add_new_attribute" id="submit" class="button" value="<?php _e('Add Attribute', 'jigoshop'); ?>"></p>
+							<p class="submit"><input type="submit" name="add_new_attribute" id="submit" class="button" value="<?php esc_html_e('Add Attribute', 'jigoshop'); ?>"></p>
 	    				</form>
 	    			</div>
 	    		</div>

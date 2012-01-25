@@ -359,8 +359,8 @@ function jigoshop_admin_fields($options) {
 
                         <td class="forminp"><input name="<?php echo esc_attr( $value['id'] ); ?>" id="<?php echo esc_attr( $value['id'] ); ?>" type="<?php echo $value['type'] ?>" style="<?php echo esc_attr( $value['css'] ); ?>"
                                                    value="<?php if (get_option($value['id']) !== false && get_option($value['id']) !== null)
-                    echo get_option($value['id']); else
-                    echo $value['std'] ?>" /><br /><small><?php echo $value['desc'] ?></small></td>
+                    echo esc_attr( get_option($value['id']) ); else
+                    echo esc_attr( $value['std'] ); ?>" /><br /><small><?php echo $value['desc'] ?></small></td>
                     </tr><?php
                 break;
             case 'select':
@@ -440,7 +440,7 @@ function jigoshop_admin_fields($options) {
                 if ($countries)
                     foreach ($countries as $key => $val) :
 
-                        echo '<li><label><input type="checkbox" name="' . $value['id'] . '[]" value="' . $key . '" ';
+                        echo '<li><label><input type="checkbox" name="' . esc_attr( $value['id'] ) . '[]" value="' . esc_attr( $key ) . '" ';
                         if (in_array($key, $selections))
                             echo 'checked="checked"';
                         echo ' />' . $val . '</label></li>';
@@ -476,7 +476,7 @@ function jigoshop_admin_fields($options) {
                                         foreach ($coupon_codes as $coupon) : $i++;
                                             echo '<tr class="coupon_row">';
                                             echo '<td><a href="#" class="remove button" title="' . __('Delete this Coupon', 'jigoshop') . '">&times;</a></td>';
-                                            echo '<td><input type="text" value="' . $coupon['code'] . '" name="coupon_code[' . $i . ']" title="' . __('Coupon Code', 'jigoshop') . '" placeholder="' . __('Coupon Code', 'jigoshop') . '" class="text" /></td><td><select name="coupon_type[' . $i . ']" title="Coupon Type">';
+                                            echo '<td><input type="text" value="' . esc_attr( $coupon['code'] ) . '" name="coupon_code[' . $i . ']" title="' . __('Coupon Code', 'jigoshop') . '" placeholder="' . __('Coupon Code', 'jigoshop') . '" class="text" /></td><td><select name="coupon_type[' . $i . ']" title="Coupon Type">';
 
                                             $discount_types = array(
                                                 'fixed_cart' => __('Cart Discount', 'jigoshop'),
@@ -487,10 +487,10 @@ function jigoshop_admin_fields($options) {
 
                                             foreach ($discount_types as $type => $label) :
                                                 $selected = ($coupon['type'] == $type) ? 'selected="selected"' : '';
-                                                echo '<option value="' . $type . '" ' . $selected . '>' . $label . '</option>';
+                                                echo '<option value="' . esc_attr( $type ) . '" ' . $selected . '>' . esc_html( $label ) . '</option>';
                                             endforeach;
                                             echo '</select></td>';
-                                            echo '<td><input type="text" value="' . $coupon['amount'] . '" name="coupon_amount[' . $i . ']" title="' . __('Coupon Amount', 'jigoshop') . '" placeholder="' . __('Amount', 'jigoshop') . '" class="text" /></td>
+                                            echo '<td><input type="text" value="' . esc_attr( $coupon['amount'] ) . '" name="coupon_amount[' . $i . ']" title="' . __('Coupon Amount', 'jigoshop') . '" placeholder="' . __('Amount', 'jigoshop') . '" class="text" /></td>
 			                    			<td><input type="text" value="' . implode(', ', $coupon['products']) . '" name="product_ids[' . $i . ']" placeholder="' . __('1, 2, 3,', 'jigoshop') . '" class="text" /></td>';
 
                                             $date_from = $coupon['date_from'];

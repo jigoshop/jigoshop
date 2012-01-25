@@ -108,7 +108,7 @@ function jigoshop_add_order_item() {
 		<td class="center">
 			<input type="hidden" name="item_id[]" value="<?php echo esc_attr( $_product->id ); ?>" />
 			<input type="hidden" name="item_name[]" value="<?php echo esc_attr( $_product->get_title() ); ?>" />
-            <input type="hidden" name="item_variation_id[]" value="<?php if ($_product instanceof jigoshop_product_variation) echo $_product->variation_id; else echo ''; ?>" />
+            <input type="hidden" name="item_variation_id[]" value="<?php if ($_product instanceof jigoshop_product_variation) echo esc_attr( $_product->variation_id ); else echo ''; ?>" />
 			<button type="button" class="remove_row button">&times;</button>
 		</td>
 	</tr>
@@ -840,7 +840,7 @@ function jigoshop_product_dropdown_categories( $show_counts = true, $hierarchal 
 	if (!$terms) return;
 	
 	$output  = "<select name='product_cat' id='dropdown_product_cat'>";
-	$output .= '<option value="">'.__('Select a category', 'jigoshop').'</option>';
+	$output .= '<option value="">'.esc_html__('Select a category', 'jigoshop').'</option>';
 	$output .= jigoshop_walk_category_dropdown_tree( $terms, 0, $r );
 	$output .="</select>";
 	
@@ -873,7 +873,7 @@ class Jigoshop_Walker_CategoryDropdown extends Walker {
 		$pad = str_repeat('&nbsp;', $depth * 3);
 
 		$cat_name = apply_filters('list_product_cats', $object->name, $object);
-		$output .= "\t<option class=\"level-$depth\" value=\"".$object->slug."\"";
+		$output .= "\t<option class=\"level-$depth\" value=\"".esc_attr( $object->slug )."\"";
 		if ( $object->slug == $args['selected'] )
 			$output .= ' selected="selected"';
 		$output .= '>';
