@@ -82,7 +82,6 @@ function jigoshop_product_data( $data ) {
 		switch($product_type) :
 			case "grouped" :
 			case "variable" :
-			case "downloadable" :
 				$data['post_parent'] = 0;
 			break;
 		endswitch;
