@@ -200,7 +200,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 			case "state" :
 				
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
-					<label for="'.$args['name'].'" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>';
+					<label for="' . esc_attr( $args['name'] ) . '" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>';
 					
 				$current_cc = $this->get_value($args['rel']);
 				if (!$current_cc) $current_cc = jigoshop_customer::get_country();
@@ -236,14 +236,14 @@ class jigoshop_checkout extends jigoshop_singleton {
 				endif;
 				
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
-					<label for="'.$args['name'].'" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
+					<label for="' . esc_attr( $args['name'] ) . '" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
 					<input type="'.$args['type'].'" class="input-text" name="'.esc_attr($attr['name']).'" id="'.esc_attr($attr['name']).'" placeholder="'.$args['placeholder'].'" value="'. $current_pc.'" />
 				</p>'.$after;
 			break;
 			case "textarea" :
 				
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
-					<label for="'.$args['name'].'" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
+					<label for="' . esc_attr( $args['name'] ) . '" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
 					<textarea name="'.esc_attr($attr['name']).'" class="input-text'.$input_required.'" id="'.esc_attr($attr['name']).'" placeholder="'.$args['placeholder'].'" cols="5" rows="2">'. esc_textarea( $this->get_value( $args['name'] ) ).'</textarea>
 				</p>'.$after;
 				
@@ -251,7 +251,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 			default :
 			
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
-					<label for="'.$args['name'].'" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
+					<label for="' . esc_attr( $args['name'] ) . '" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
 					<input type="'.$args['type'].'" class="input-text'.$input_required.'" name="'.esc_attr($attr['name']).'" id="'.esc_attr($attr['name']).'" placeholder="'.$args['placeholder'].'" value="'. $this->get_value( $args['name'] ).'" />
 				</p>'.$after;
 				

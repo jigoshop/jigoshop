@@ -133,11 +133,11 @@ function jigoshop_product_data_box() {
 				$sale_price_dates_to = get_post_meta($thepostid, 'sale_price_dates_to', true);
 				
 				echo '	<p class="form-field sale_price_dates_fields">
-							<label for="'.$field['id'].'_from">'.$field['label'].'</label>
-							<input type="text" class="short date-pick" name="'.$field['id'].'_from" id="'.$field['id'].'_from" value="';
+							<label for="' . esc_attr( $field['id'] ) . '_from">'.$field['label'].'</label>
+							<input type="text" class="short date-pick" name="' . esc_attr( $field['id'] ) . '_from" id="' . esc_attr( $field['id'] ) . '_from" value="';
 				if ($sale_price_dates_from) echo date('Y-m-d', $sale_price_dates_from);
 				echo '" placeholder="' . __('From', 'jigoshop') . ' (' . date('Y-m-d'). ')" maxlength="10" />
-							<input type="text" class="short date-pick" name="'.$field['id'].'_to" id="'.$field['id'].'_to" value="';
+							<input type="text" class="short date-pick" name="' . esc_attr( $field['id'] ) . '_to" id="' . esc_attr( $field['id'] ) . '_to" value="';
 				if ($sale_price_dates_to) echo date('Y-m-d', $sale_price_dates_to);
 				echo '" placeholder="' . __('To', 'jigoshop') . ' (' . date('Y-m-d'). ')" maxlength="10" />
 							<a href="#" class="cancel_sale_schedule">Cancel</a>
@@ -329,7 +329,7 @@ function jigoshop_product_data_box() {
 			// TODO: Refactor this into a helper
 			$file_path = get_post_meta($post->ID, 'file_path', true);
 			$field = array( 'id' => 'file_path', 'label' => __('File Path', 'jigoshop') );
-			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].':</label>
+			echo '<p class="form-field"><label for="' . esc_attr( $field['id'] ) . '">'.$field['label'].':</label>
 				<input type="text" class="file_path" name="'.esc_attr($field['id']).'" id="'.esc_attr($field['id']).'" value="'.esc_attr($file_path).'" placeholder="'.site_url().'" />
 				<input type="button"  class="upload_file_button button" data-postid="'.esc_attr($post->ID).'" value="'.__('Upload a file', 'jigoshop').'" />
 			</p>';

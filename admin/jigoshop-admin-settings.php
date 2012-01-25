@@ -670,7 +670,7 @@ function jigoshop_admin_fields($options) {
                                 echo '>' . $class . '</option>';
                             endforeach;
 
-                        echo '</select><input type="text" class="text" value="' . $rate['label'] . '" name="tax_label[' . esc_attr( $i ) . ']" title="' . __('Online Label', 'jigoshop') . '" placeholder="' . __('Online Label', 'jigoshop') . '" maxlength="15" />';
+                        echo '</select><input type="text" class="text" value="' . esc_attr( $rate['label']  ) . '" name="tax_label[' . esc_attr( $i ) . ']" title="' . __('Online Label', 'jigoshop') . '" placeholder="' . __('Online Label', 'jigoshop') . '" maxlength="15" />';
 
                         echo '</select><select name="tax_country[' . esc_attr( $i ) . ']" title="Country">';
                             
@@ -685,7 +685,7 @@ function jigoshop_admin_fields($options) {
                             jigoshop_countries::country_dropdown_options($rate['country'], $rate['state']);
                         endif;
                             
-                        echo '</select><input type="text" class="text" value="' . $rate['rate'] . '" name="tax_rate[' . esc_attr( $i ) . ']" title="' . __('Rate', 'jigoshop') . '" placeholder="' . __('Rate', 'jigoshop') . '" maxlength="8" />% <label><input type="checkbox" name="tax_shipping[' . esc_attr( $i ) . ']" ';
+                        echo '</select><input type="text" class="text" value="' . esc_attr( $rate['rate']  ) . '" name="tax_rate[' . esc_attr( $i ) . ']" title="' . __('Rate', 'jigoshop') . '" placeholder="' . __('Rate', 'jigoshop') . '" maxlength="8" />% <label><input type="checkbox" name="tax_shipping[' . esc_attr( $i ) . ']" ';
 
                         if (isset($rate['shipping']) && $rate['shipping'] == 'yes')
                             echo 'checked="checked"';
