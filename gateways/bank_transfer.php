@@ -100,7 +100,7 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 	    <tr>
 	        <td class="titledesc"><a href="#" tip="<?php _e('Additional information you want to display to your customer.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Additional Info', 'jigoshop') ?>:</td>
 	        <td class="forminp">
-	        	<textarea class="input-text" name="jigoshop_bank_transfer_additional" id="jigoshop_bank_transfer_additional"><?php if ($value = get_option('jigoshop_bank_transfer_additional')) echo $value; ?></textarea>
+	        	<textarea class="input-text" name="jigoshop_bank_transfer_additional" id="jigoshop_bank_transfer_additional"><?php if ($value = get_option('jigoshop_bank_transfer_additional')) echo esc_textarea( $value ); ?></textarea>
 	        </td>
 	    </tr>
     	<?php
