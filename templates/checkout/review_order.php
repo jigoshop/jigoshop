@@ -72,7 +72,7 @@
                                             }
                                         endif;
                                     else :
-                                        echo '<option value="' . $method->id . '::" ';
+                                        echo '<option value="' . esc_attr( $method->id  ) . '::" ';
                                         if ($method->is_chosen())
                                             echo 'selected="selected"';
 
@@ -151,7 +151,7 @@
                                             }
                                         endif;
                                     else :
-                                        echo '<option value="' . $method->id . '::" ';
+                                        echo '<option value="' . esc_attr( $method->id  ) . '::" ';
                                         if ($method->is_chosen())
                                             echo 'selected="selected"';
 
@@ -257,7 +257,7 @@
 						<label for="payment_method_<?php echo $gateway->id; ?>"><?php echo $gateway->title; ?> <?php echo apply_filters('gateway_icon', $gateway->icon(), $gateway->id); ?></label> 
 							<?php
 								if ($gateway->has_fields || $gateway->description) : 
-									echo '<div class="payment_box payment_method_'.$gateway->id.'" style="display:none;">';
+									echo '<div class="payment_box payment_method_' . esc_attr( $gateway->id ) . '" style="display:none;">';
 									$gateway->payment_fields();
 									echo '</div>';
 								endif;
