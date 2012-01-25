@@ -152,7 +152,7 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 				
 				echo '<li '.$class.'>';
 				
-				if ($has_products) echo '<a href="'.$link.'">'; else echo '<span>';
+				if ($has_products) echo '<a href="'.esc_url($link).'">'; else echo '<span>';
 				
 				echo $term->name;
 				

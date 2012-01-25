@@ -252,7 +252,7 @@ function jigoshop_edit_address() {
 					<option value=""><?php _e('Select a country&hellip;', 'jigoshop'); ?></option>
 					<?php
 						foreach(jigoshop_countries::$countries as $key=>$value) :
-							echo '<option value="'.$key.'"';
+							echo '<option value="'.esc_attr($key).'"';
 							if ($address['country']==$key) echo 'selected="selected"';
 							elseif (!$address['country'] && jigoshop_customer::get_country()==$key) echo 'selected="selected"';
 							echo '>'.$value.'</option>';
@@ -276,7 +276,7 @@ function jigoshop_edit_address() {
 						?>
 						<select name="address-state" id="address-state"><option value=""><?php _e('Select a state&hellip;', 'jigoshop'); ?></option><?php
 								foreach($states[$current_cc] as $key=>$value) :
-									echo '<option value="'.$key.'"';
+									echo '<option value="'.esc_attr($key).'"';
 									if ($current_r==$key) echo 'selected="selected"';
 									echo '>'.$value.'</option>';
 								endforeach;

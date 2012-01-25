@@ -179,7 +179,7 @@ class skrill extends jigoshop_payment_gateway {
 		$skrill_args_array = array();
 
 		foreach ($skrill_args as $key => $value) {
-			$skrill_args_array[] = '<input type="hidden" name="'.$key.'" value="'.$value.'" />';
+			$skrill_args_array[] = '<input type="hidden" name="'.esc_attr($key).'" value="'.esc_attr($value).'" />';
 		}
 		
 		// Skirll MD5 concatenation

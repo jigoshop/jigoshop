@@ -98,7 +98,7 @@ if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 			elseif ( $_product->is_type('external') ) :
 				$output = '<a href="'.get_post_meta( $_product->id, 'external_url', true ).'" class="button">'.__('Buy product', 'jigoshop').'</a>';
 			else :
-				$output = '<a href="'.$_product->add_to_cart_url().'" class="button">'.__('Add to cart', 'jigoshop').'</a>';
+				$output = '<a href="'.esc_url($_product->add_to_cart_url()).'" class="button">'.__('Add to cart', 'jigoshop').'</a>';
 			endif;
 		else :
 			$output = '<span class="nostock">'.__('Out of Stock', 'jigoshop').'</span>';
@@ -173,7 +173,7 @@ if (!function_exists('jigoshop_show_product_thumbnails')) {
 				$post_title = esc_attr($_post->post_title);
 				$image = wp_get_attachment_image($attachment->ID, $small_thumbnail_size);
 
-				echo '<a href="'.$url.'" title="'.$post_title.'" rel="thumbnails" class="zoom ';
+				echo '<a href="'.esc_url($url).'" title="'.esc_attr($post_title).'" rel="thumbnails" class="zoom ';
 				if ($loop==1 || ($loop-1)%$columns==0) echo 'first';
 				if ($loop%$columns==0) echo 'last';
 				echo '">'.$image.'</a>';
@@ -605,7 +605,7 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 				<select name="calc_shipping_country" id="calc_shipping_country" class="country_to_state" rel="calc_shipping_state">
 					<?php
 						foreach(jigoshop_countries::get_allowed_countries() as $key=>$value) :
-							echo '<option value="'.$key.'"';
+							echo '<option value="'.esc_attr($key).'"';
 							if (jigoshop_customer::get_shipping_country()==$key) echo 'selected="selected"';
 							echo '>'.$value.'</option>';
 						endforeach;
@@ -625,7 +625,7 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 							<span>
 								<select name="calc_shipping_state" id="calc_shipping_state"><option value=""><?php _e('Select a state&hellip;', 'jigoshop'); ?></option><?php
 									foreach($states[$current_cc] as $key=>$value) :
-										echo '<option value="'.$key.'"';
+										echo '<option value="'.esc_attr($key).'"';
 										if ($current_r==$key) echo 'selected="selected"';
 										echo '>'.$value.'</option>';
 									endforeach;

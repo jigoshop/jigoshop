@@ -96,8 +96,8 @@ function jigoshop_custom_product_columns($column) {
 		break;
 		case "featured" :
 			$url = wp_nonce_url( admin_url('admin-ajax.php?action=jigoshop-feature-product&product_id=' . $post->ID) );
-			echo '<a href="'.$url.'" title="'.__('Change','jigoshop') .'">';
-			if ($product->is_featured()) echo '<a href="'.$url.'"><img src="'.jigoshop::assets_url().'/assets/images/success.gif" alt="yes" />';
+			echo '<a href="'.esc_url($url).'" title="'.__('Change','jigoshop') .'">';
+			if ($product->is_featured()) echo '<a href="'.esc_url($url).'"><img src="'.jigoshop::assets_url().'/assets/images/success.gif" alt="yes" />';
 			else echo '<img src="'.jigoshop::assets_url().'/assets/images/success-off.gif" alt="no" />';
 			echo '</a>';
 		break;

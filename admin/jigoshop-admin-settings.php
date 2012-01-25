@@ -383,9 +383,7 @@ function jigoshop_admin_fields($options) {
                         <td class="titledesc"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
                         <td class="forminp">
                             <textarea <?php if (isset($value['args']))
-                    echo $value['args'] . ' '; ?>name="<?php echo esc_attr( $value['id'] ); ?>" id="<?php echo esc_attr( $value['id'] ); ?>" style="<?php echo esc_attr( $value['css'] ); ?>"><?php if (get_option($value['id']))
-                    echo stripslashes(get_option($value['id'])); else
-                    echo $value['std']; ?></textarea>
+                    echo $value['args'] . ' '; ?>name="<?php echo esc_attr( $value['id'] ); ?>" id="<?php echo esc_attr( $value['id'] ); ?>" style="<?php echo esc_attr( $value['css'] ); ?>"><?php echo esc_textarea( ( get_option($value['id'])) ? stripslashes(get_option($value['id'])) : $value['std'] ); ?></textarea>
                             <br /><small><?php echo $value['desc'] ?></small>
                         </td>
                     </tr><?php

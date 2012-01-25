@@ -178,12 +178,12 @@ class dibs extends jigoshop_payment_gateway {
 		
 		$fields = '';
 		foreach ($args as $key => $value) {
-			$fields .= '<input type="hidden" name="'.$key.'" value="'.$value.'" />';
+			$fields .= '<input type="hidden" name="'.esc_attr($key).'" value="'.esc_attr($value).'" />';
 		}
 		
 		return '<form action="'.$action_adr.'" method="post" id="dibs_payment_form">
 				' . $fields . '
-				<input type="submit" class="button-alt" id="submit_dibs_payment_form" value="'.__('Pay via DIBS', 'jigoshop').'" /> <a class="button cancel" href="'.$order->get_cancel_order_url().'">'.__('Cancel order &amp; restore cart', 'jigoshop').'</a>
+				<input type="submit" class="button-alt" id="submit_dibs_payment_form" value="'.__('Pay via DIBS', 'jigoshop').'" /> <a class="button cancel" href="'.esc_url($order->get_cancel_order_url()).'">'.__('Cancel order &amp; restore cart', 'jigoshop').'</a>
 				<script type="text/javascript">
 					jQuery(function(){
 						jQuery("body").block(

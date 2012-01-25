@@ -458,7 +458,7 @@ function jigoshop_dashboard() {
 										
 										$rating = get_comment_meta( $comment->comment_ID, 'rating', true );
 										
-										echo '<div class="star-rating" title="'.$rating.'">
+										echo '<div class="star-rating" title="'.esc_attr($rating).'">
 											<span style="width:'.($rating*16).'px">'.$rating.' '.__('out of 5', 'jigoshop').'</span></div>';
 											
 										echo '<h4 class="meta"><a href="'.get_permalink($comment->ID).'#comment-'.$comment->comment_ID .'">'.$comment->post_title.'</a> reviewed by ' .strip_tags($comment->comment_author) .'</h4>';
@@ -506,7 +506,7 @@ function jigoshop_dashboard() {
 													$human_date = date(__('F jS Y','jigoshop'), $date);
 												endif;
 							
-												echo '<li><a href="'.$link.'">'.$title.'</a> &ndash; <span class="rss-date">'.$human_date.'</span></li>';
+												echo '<li><a href="'.esc_url($link).'">'.$title.'</a> &ndash; <span class="rss-date">'.$human_date.'</span></li>';
 										
 											endforeach;
 										

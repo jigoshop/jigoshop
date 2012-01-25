@@ -386,7 +386,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 				$options = get_the_terms( $post->ID, 'pa_'.sanitize_title($attr['name']));
 				foreach( $options as $option ) {
-					$html .= '<option value="'.$option->slug.'" '.selected($selected, $option->slug, false).'>'.$option->name.'</option>';
+					$html .= '<option value="'.esc_attr($option->slug).'" '.selected($selected, $option->slug, false).'>'.$option->name.'</option>';
 				}
 
 			}
@@ -395,7 +395,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 				$options = explode(', ', $attr['value']);
 				foreach( $options as $option ) {
 					$option = trim($option);
-					$html .= '<option '.selected($selected, $option, false).' value="'.$option.'">'.$option.'</option>';
+					$html .= '<option '.selected($selected, $option, false).' value="'.esc_attr($option).'">'.$option.'</option>';
 				}
 
 			}

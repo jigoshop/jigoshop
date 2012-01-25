@@ -247,12 +247,12 @@ class paypal extends jigoshop_payment_gateway {
 		$paypal_args_array = array();
 
 		foreach ($paypal_args as $key => $value) {
-			$paypal_args_array[] = '<input type="hidden" name="'.$key.'" value="'.$value.'" />';
+			$paypal_args_array[] = '<input type="hidden" name="'.esc_attr($key).'" value="'.esc_attr($value).'" />';
 		}
 		
 		return '<form action="'.$paypal_adr.'" method="post" id="paypal_payment_form">
 				' . implode('', $paypal_args_array) . '
-				<input type="submit" class="button-alt" id="submit_paypal_payment_form" value="'.__('Pay via PayPal', 'jigoshop').'" /> <a class="button cancel" href="'.$order->get_cancel_order_url().'">'.__('Cancel order &amp; restore cart', 'jigoshop').'</a>
+				<input type="submit" class="button-alt" id="submit_paypal_payment_form" value="'.__('Pay via PayPal', 'jigoshop').'" /> <a class="button cancel" href="'.esc_url($order->get_cancel_order_url()).'">'.__('Cancel order &amp; restore cart', 'jigoshop').'</a>
 				<script type="text/javascript">
 					jQuery(function(){
 						jQuery("body").block(

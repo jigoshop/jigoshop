@@ -565,7 +565,7 @@ class jigoshop_countries {
 			$value = esc_js($value);
 			if ( $states =  self::get_states($key) ) :
 				echo '<optgroup label="'.$value.'">';
-    			echo '<option value="'.$key.'"';
+    			echo '<option value="'.esc_attr($key).'"';
     			if ($selected_country==$key && $selected_state=='*') echo ' selected="selected"';
     			echo '>'.$value.' &mdash; '.__('All states', 'jigoshop').'</option>';
     			foreach ($states as $state_key=>$state_value) :
@@ -579,7 +579,7 @@ class jigoshop_countries {
 			else :
     			echo '<option';
     			if ($selected_country==$key && $selected_state=='*') echo ' selected="selected"';
-    			echo ' value="'.$key.'">'. ($escape ? esc_js( __($value, 'jigoshop') ) : __($value, 'jigoshop') ) .'</option>';
+    			echo ' value="'.esc_attr($key).'">'. ($escape ? esc_js( __($value, 'jigoshop') ) : __($value, 'jigoshop') ) .'</option>';
 			endif;
 		endforeach;
 	}

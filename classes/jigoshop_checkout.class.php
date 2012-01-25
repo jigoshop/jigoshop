@@ -188,7 +188,7 @@ class jigoshop_checkout extends jigoshop_singleton {
                 // There is no need to have it, because was assume when user hasn't selected 
                 // a country that they are from the shop base country.
 				foreach(jigoshop_countries::get_allowed_countries() as $key=>$value) :
-					$field .= '<option value="'.$key.'"';
+					$field .= '<option value="'.esc_attr($key).'"';
 					if ($this->get_value($args['name'])==$key) $field .= 'selected="selected"';
 					elseif (!$this->get_value($args['name']) && jigoshop_customer::get_country()==$key) $field .= 'selected="selected"';
 					$field .= '>'.__($value, 'jigoshop').'</option>';
@@ -212,16 +212,16 @@ class jigoshop_checkout extends jigoshop_singleton {
 					
 				if (isset( $states[$current_cc][$current_r] )) :
 					// Dropdown
-					$field .= '<select name="'.$args['name'].'" id="'.$args['name'].'" class="'.$input_required.'"><option value="">'.__('Select a state&hellip;', 'jigoshop').'</option>';
+					$field .= '<select name="'.esc_attr($attr['name']).'" id="'.esc_attr($attr['name']).'" class="'.esc_attr($input_required).'"><option value="">'.__('Select a state&hellip;', 'jigoshop').'</option>';
 					foreach($states[$current_cc] as $key=>$value) :
-						$field .= '<option value="'.$key.'"';
+						$field .= '<option value="'.esc_attr($key).'"';
 						if ($current_r==$key) $field .= 'selected="selected"';
 						$field .= '>'.__($value, 'jigoshop').'</option>';
 					endforeach;
 					$field .= '</select>';
 				else :
 					// Input
-					$field .= '<input type="text" class="input-text" value="'.$current_r.'" placeholder="'.__('State/County', 'jigoshop').'" name="'.$args['name'].'" id="'.$args['name'].'" />';
+					$field .= '<input type="text" class="input-text" value="'.esc_attr($current_r).'" placeholder="'.__('State/County', 'jigoshop').'" name="'.esc_attr($attr['name']).'" id="'.esc_attr($attr['name']).'" />';
 				endif;
 	
 				$field .= '</p>'.$after;
@@ -237,14 +237,14 @@ class jigoshop_checkout extends jigoshop_singleton {
 				
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="'.$args['name'].'" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
-					<input type="'.$args['type'].'" class="input-text" name="'.$args['name'].'" id="'.$args['name'].'" placeholder="'.$args['placeholder'].'" value="'. $current_pc.'" />
+					<input type="'.$args['type'].'" class="input-text" name="'.esc_attr($attr['name']).'" id="'.esc_attr($attr['name']).'" placeholder="'.$args['placeholder'].'" value="'. $current_pc.'" />
 				</p>'.$after;
 			break;
 			case "textarea" :
 				
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="'.$args['name'].'" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
-					<textarea name="'.$args['name'].'" class="input-text'.$input_required.'" id="'.$args['name'].'" placeholder="'.$args['placeholder'].'" cols="5" rows="2">'. $this->get_value( $args['name'] ).'</textarea>
+					<textarea name="'.esc_attr($attr['name']).'" class="input-text'.$input_required.'" id="'.esc_attr($attr['name']).'" placeholder="'.$args['placeholder'].'" cols="5" rows="2">'. $this->get_value( $args['name'] ).'</textarea>
 				</p>'.$after;
 				
 			break;
@@ -252,7 +252,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 			
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="'.$args['name'].'" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
-					<input type="'.$args['type'].'" class="input-text'.$input_required.'" name="'.$args['name'].'" id="'.$args['name'].'" placeholder="'.$args['placeholder'].'" value="'. $this->get_value( $args['name'] ).'" />
+					<input type="'.$args['type'].'" class="input-text'.$input_required.'" name="'.esc_attr($attr['name']).'" id="'.esc_attr($attr['name']).'" placeholder="'.$args['placeholder'].'" value="'. $this->get_value( $args['name'] ).'" />
 				</p>'.$after;
 				
 			break;

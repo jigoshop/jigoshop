@@ -330,8 +330,8 @@ function jigoshop_product_data_box() {
 			$file_path = get_post_meta($post->ID, 'file_path', true);
 			$field = array( 'id' => 'file_path', 'label' => __('File Path', 'jigoshop') );
 			echo '<p class="form-field"><label for="'.$field['id'].'">'.$field['label'].':</label>
-				<input type="text" class="file_path" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$file_path.'" placeholder="'.site_url().'" />
-				<input type="button"  class="upload_file_button button" data-postid="'.$post->ID.'" value="'.__('Upload a file', 'jigoshop').'" />
+				<input type="text" class="file_path" name="'.esc_attr($field['id']).'" id="'.esc_attr($field['id']).'" value="'.esc_attr($file_path).'" placeholder="'.site_url().'" />
+				<input type="button"  class="upload_file_button button" data-postid="'.esc_attr($post->ID).'" value="'.__('Upload a file', 'jigoshop').'" />
 			</p>';
 
 			// Download Limit
@@ -519,13 +519,13 @@ function display_attribute() { ?>
 							</div>
 
 						<?php elseif ($tax->attribute_type=="text") : ?>
-							<textarea name="attribute_values[<?php echo $i; ?>]"><?php
+							<textarea name="attribute_values[<?php echo esc_attr( $i ); ?>]"><?php
 								if ($allterms) :
 									$prettynames = array();
 									foreach ($allterms as $term) :
 										$prettynames[] = $term->name;
 									endforeach;
-									echo implode(',', $prettynames);
+									echo esc_textarea( implode(',', $prettynames) );
 								endif;
 							?></textarea>
 						<?php endif; ?>
@@ -574,7 +574,7 @@ function display_attribute() { ?>
 					</td>
 
 					<td class="value">
-						<textarea name="attribute_values[<?php echo $i; ?>]" cols="5" rows="2"><?php echo esc_textarea( $attribute['value'] ); ?></textarea>
+						<textarea name="attribute_values[<?php echo esc_attr( $i ); ?>]" cols="5" rows="2"><?php echo esc_textarea( $attribute['value'] ); ?></textarea>
 					</td>
 				</tr>
 			</table>

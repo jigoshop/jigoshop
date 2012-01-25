@@ -74,7 +74,7 @@ function jigoshop_order_data_meta_box($post) {
 				<?php
 					$statuses = (array) get_terms('shop_order_status', array('hide_empty' => 0, 'orderby' => 'id'));
 					foreach ($statuses as $status) :
-						echo '<option value="'.$status->slug.'" ';
+						echo '<option value="'.esc_attr($status->slug).'" ';
 						if ($status->slug==$data['order_status']) echo 'selected="selected"';
 						echo '>'.$status->name.'</option>';
 					endforeach;
@@ -88,13 +88,13 @@ function jigoshop_order_data_meta_box($post) {
 					$users = new WP_User_Query( array( 'orderby' => 'display_name' ) );
 					$users = $users->get_results();
 					if ($users) foreach ( $users as $user ) :
-						echo '<option value="'.$user->ID.'" '; selected($data['customer_user'], $user->ID); echo '>' . $user->display_name . ' ('.$user->user_email.')</option>';
+						echo '<option value="'.esc_attr($user->ID).'" '; selected($data['customer_user'], $user->ID); echo '>' . $user->display_name . ' ('.$user->user_email.')</option>';
 					endforeach;
 				?>
 			</select></p>
 
 			<p class="form-field"><label for="excerpt"><?php _e('Customer Note:', 'jigoshop') ?></label>
-			<textarea rows="1" cols="40" name="excerpt" tabindex="6" id="excerpt" placeholder="<?php _e('Customer\'s notes about the order', 'jigoshop'); ?>"><?php echo $post->post_excerpt; ?></textarea></p>
+				<textarea rows="1" cols="40" name="excerpt" tabindex="6" id="excerpt" placeholder="<?php _e('Customer\'s notes about the order', 'jigoshop'); ?>"><?php echo esc_textarea( $post->post_excerpt ); ?></textarea></p>
 		</div>
 		
 		<div id="order_customer_billing_data" class="panel jigoshop_options_panel">
@@ -124,7 +124,7 @@ function jigoshop_order_data_meta_box($post) {
                     }
                     
                     echo '<p class="form-field"><label for="'.$field_id.'">'.$field_desc.':</label>
-				<input type="text" name="'.$field_id.'" id="'.$field_id.'" value="'.$field_value.'" /></p>';
+				<input type="text" name="'.esc_attr($field_id).'" id="'.esc_attr($field_id).'" value="'.esc_attr($field_value).'" /></p>';
                 }
 				
 			?>
@@ -157,7 +157,7 @@ function jigoshop_order_data_meta_box($post) {
                     }
                     
                     echo '<p class="form-field"><label for="'.$field_id.'">'.$field_desc.':</label>
-				<input type="text" name="'.$field_id.'" id="'.$field_id.'" value="'.$field_value.'" /></p>';
+				<input type="text" name="'.esc_attr($field_id).'" id="'.esc_attr($field_id).'" value="'.esc_attr($field_value).'" /></p>';
                 }
 			?>
 		</div>
@@ -271,7 +271,7 @@ function jigoshop_order_items_meta_box($post) {
 
 					if ($sku) $sku = ' SKU: '.$sku;
 
-					echo '<option value="'.$product->ID.'">'.$product->post_title.$sku.' (#'.$product->ID.''.$sku.')</option>';
+					echo '<option value="'.esc_attr($product->ID).'">'.$product->post_title.$sku.' (#'.$product->ID.''.$sku.')</option>';
 
 					$args_get_children = array(
 						'post_type' => array( 'product_variation', 'product' ),
@@ -285,7 +285,7 @@ function jigoshop_order_items_meta_box($post) {
 
 						foreach ($children_products as $child) :
 
-							echo '<option value="'.$child->ID.'">&nbsp;&nbsp;&mdash;&nbsp;'.$child->post_title.'</option>';
+							echo '<option value="'.esc_attr($child->ID).'">&nbsp;&nbsp;&mdash;&nbsp;'.$child->post_title.'</option>';
 
 						endforeach;
 
