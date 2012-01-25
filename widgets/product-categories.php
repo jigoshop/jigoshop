@@ -50,16 +50,15 @@ class Jigoshop_Widget_Product_Categories extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 	
-		// Get the best selling products from the transient
+		// Get the widget cache from the transient
 		$cache = get_transient( 'jigoshop_widget_cache' );
-
-		// If cached get from the cache
-		if ( isset( $cache[$args['widget_id']] ) ) {
-			echo $cache[$args['widget_id']];
+		// If this category widget instance is cached, get from the cache
+		if ( isset( $cache[$this->id] ) ) {
+			echo $cache[$this->id];
 			return false;
 		}
 
-		// Start buffering
+		// Otherwise Start buffering and output the Widget
 		ob_start();
 		extract( $args );
 
@@ -92,7 +91,7 @@ class Jigoshop_Widget_Product_Categories extends WP_Widget {
 		// Output as dropdown or unordered list
 		if( $is_dropdown ) {
 		
-			// Set up arguements
+			// Set up arguments
 			$args['name'] = 'dropdown_product_cat';
 			
 			// Print dropdown
@@ -127,7 +126,8 @@ class Jigoshop_Widget_Product_Categories extends WP_Widget {
 		echo $after_widget;
 
 		// Flush output buffer and save to transient cache
-		$cache[$args['widget_id']] = ob_get_flush();
+		$result = ob_get_flush();
+		$cache[$this->id] = $result;
 		set_transient( 'jigoshop_widget_cache', $cache, 3600*3 ); // 3 hours ahead
 	}
 
@@ -146,9 +146,9 @@ class Jigoshop_Widget_Product_Categories extends WP_Widget {
 
 		// Save the new values
 		$instance['title']			= strip_tags( $new_instance['title'] );
-		$instance['count']			= (bool) $new_instance['count'];
-		$instance['hierarchical']	= (bool) $new_instance['hierarchical'];
-		$instance['dropdown']		= (bool) $new_instance['dropdown'];
+		$instance['count']			= (bool) isset( $new_instance['count'] ) ? $new_instance['count'] : false;
+		$instance['hierarchical']	= (bool) isset( $new_instance['hierarchical'] ) ? $new_instance['hierarchical'] : false;
+		$instance['dropdown']		= (bool) isset( $new_instance['dropdown'] ) ? $new_instance['dropdown'] : false;
 
 		// Flush the cache
 		$this->flush_widget_cache();
