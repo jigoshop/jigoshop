@@ -61,7 +61,7 @@ class jigoshop_orders {
 
 		if ($results) :
 			foreach ($results as $result) :
-				$order = &new jigoshop_order();
+				$order = new jigoshop_order();
 				$order->populate($result);
 				$this->orders[] = $order;
 			endforeach;

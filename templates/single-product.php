@@ -20,7 +20,7 @@
 	  
 <?php do_action('jigoshop_before_main_content'); // <div id="container"><div id="content" role="main"> ?>
 
-	<?php if ( have_posts() ) while ( have_posts() ) : the_post(); global $_product; $_product = &new jigoshop_product( $post->ID ); ?>
+	<?php if ( have_posts() ) while ( have_posts() ) : the_post(); global $_product; $_product = new jigoshop_product( $post->ID ); ?>
 		
 		<?php do_action('jigoshop_before_single_product', $post, $_product); ?>
 	

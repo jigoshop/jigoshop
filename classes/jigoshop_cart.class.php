@@ -155,9 +155,9 @@ class jigoshop_cart extends jigoshop_singleton {
         $found_cart_item_key = self::find_product_in_cart($product_id, $variation_id, $variation);
 
         if (empty($variation_id)) {
-            $product = &new jigoshop_product($product_id);
+            $product = new jigoshop_product($product_id);
         } else {
-            $product = &new jigoshop_product_variation($variation_id);
+            $product = new jigoshop_product_variation($variation_id);
         }
 
         //product with a given ID doesn't exists
@@ -344,7 +344,7 @@ class jigoshop_cart extends jigoshop_singleton {
     }
 
     /** reset all Cart totals */
-    function reset_totals() {
+    static function reset_totals() {
         self::$total = 0;
         self::$cart_contents_total = 0;
         self::$cart_contents_total_ex_tax = 0;
@@ -735,7 +735,14 @@ class jigoshop_cart extends jigoshop_singleton {
                 return false;
             endif;
 
+            // Check if coupon products are in cart
+            if ( ! jigoshop_cart::has_discounted_products_in_cart( $the_coupon ) ) {
+                jigoshop::add_error(__('No products in your cart match that coupon!', 'jigoshop'));
+                return false;
+            }
+
             // if it's a percentage discount for products, make sure it's for a specific product, not all products
+
             if ($the_coupon['type'] == 'percent_product' && sizeof($the_coupon['products']) == 0) :
                 jigoshop::add_error(__('Invalid coupon!', 'jigoshop'));
                 return false;
@@ -754,6 +761,8 @@ class jigoshop_cart extends jigoshop_singleton {
                 self::$applied_coupons = array();
             endif;
 
+
+
             self::$applied_coupons[] = $coupon_code;
             self::set_session();
             jigoshop::add_message(__('Discount code applied successfully.', 'jigoshop'));
@@ -763,6 +772,21 @@ class jigoshop_cart extends jigoshop_singleton {
             jigoshop::add_error(__('Coupon does not exist or is no longer valid!', 'jigoshop'));
             return false;
         endif;
+        return false;
+    }
+
+    function has_discounted_products_in_cart( $thecoupon ) {
+        // Check if we have products associated
+        foreach( self::$cart_contents as $product ) {
+            
+            $product_id = empty( $product['variation_id'] )
+                ? $product['product_id']
+                : $product['variation_id'];
+
+            if ( in_array( $product_id, $thecoupon['products']) )
+                return true;
+        }
+
         return false;
     }
 

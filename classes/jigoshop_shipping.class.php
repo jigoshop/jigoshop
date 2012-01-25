@@ -45,7 +45,7 @@ class jigoshop_shipping extends jigoshop_singleton {
         $load_methods = apply_filters('jigoshop_shipping_methods', array());
 
         foreach ($load_methods as $method) :
-            self::$shipping_methods[] = &new $method();
+            self::$shipping_methods[] = new $method();
         endforeach;
     }
 

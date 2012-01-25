@@ -90,11 +90,13 @@ if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 	function jigoshop_template_loop_add_to_cart( $post, $_product ) {
 		
 		// do not show "add to cart" button if product's price isn't announced
-		if ( $_product->get_price() === '' AND ! ($_product->is_type('variable') OR $_product->is_type('grouped')) ) return;
+		if ( $_product->get_price() === '' AND ! ($_product->is_type(array('variable', 'grouped', 'external'))) ) return;
 		
-		if ( $_product->is_in_stock() ) :
-			if ( $_product->is_type('variable') OR $_product->is_type('grouped') ) :
+		if ( $_product->is_in_stock() OR $_product->is_type('external') ) :
+			if ( $_product->is_type(array('variable', 'grouped')) ) :
 				$output = '<a href="'.get_permalink($_product->id).'" class="button">'.__('Select', 'jigoshop').'</a>';
+			elseif ( $_product->is_type('external') ) :
+				$output = '<a href="'.get_post_meta( $_product->id, 'external_url', true ).'" class="button">'.__('Buy product', 'jigoshop').'</a>';
 			else :
 				$output = '<a href="'.$_product->add_to_cart_url().'" class="button">'.__('Add to cart', 'jigoshop').'</a>';
 			endif;
@@ -124,6 +126,8 @@ if (!function_exists('jigoshop_show_product_images')) {
 		global $_product, $post;
 
 		echo '<div class="images">';
+
+		do_action( 'jigoshop_before_single_product_summary_thumbnails', $post, $_product );
 
 		$thumb_id = 0;
 		if (has_post_thumbnail()) :
@@ -164,7 +168,7 @@ if (!function_exists('jigoshop_show_product_thumbnails')) {
 
 				$loop++;
 
-				$_post = & get_post( $attachment->ID );
+				$_post =  get_post( $attachment->ID );
 				$url = wp_get_attachment_url($_post->ID);
 				$post_title = esc_attr($_post->post_title);
 				$image = wp_get_attachment_image($attachment->ID, $small_thumbnail_size);
@@ -226,7 +230,7 @@ if (!function_exists('jigoshop_template_single_meta')) {
 	function jigoshop_template_single_meta( $post, $_product ) {
 
 		echo '<div class="product_meta">';
-		if ($_product->is_type('simple') && get_option('jigoshop_enable_sku')=='yes') :
+		if (get_option('jigoshop_enable_sku')=='yes' && !empty($_product->sku)) :
 			echo '<div class="sku">SKU: ' . $_product->sku . '</div>';
 		endif;
 		
@@ -382,12 +386,12 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 					<?php $sanitized_name = sanitize_title( $aname ); ?>
 					<div>
 						<span class="select_label"><?php echo $aname; ?></span>
-						<select id="<?php echo $sanitized_name; ?>" name="tax_<?php echo $sanitized_name; ?>">
+						<select id="<?php echo esc_attr( $sanitized_name ); ?>" name="tax_<?php echo $sanitized_name; ?>">
 							<option value=""><?php echo __('Choose an option ', 'jigoshop') ?>&hellip;</option>
 							<?php foreach ( $avalues as $value ) : ?>
 								<?php if ( taxonomy_exists( 'pa_'.$sanitized_name )) : ?>
 									<?php $term = get_term_by( 'slug', $value, 'pa_'.$sanitized_name ); ?>
-									<option value="<?php echo $term->slug; ?>"><?php echo $term->name; ?></option>
+									<option value="<?php echo esc_attr( $term->slug ); ?>"><?php echo $term->name; ?></option>
 								<?php else : ?>
 									<?php
 									//	this should be a custom text attribute with values (one,two,three)
@@ -395,7 +399,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 									//	perhaps we need to be creating a taxonomy for these? (currently we don't)
 									//	it will show pretty name if no option selected on variation, 'Choose Any [attr]'
 									?>
-									<option value="<?php echo sanitize_title( $value ); ?>"><?php echo $value; ?></option>
+									<option value="<?php echo esc_attr( sanitize_title( $value ) ); ?>"><?php echo $value; ?></option>
 								<?php endif;?>
 							<?php endforeach; ?>
 						</select>
@@ -410,6 +414,23 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 			</div>
 			<?php do_action('jigoshop_add_to_cart_form'); ?>
 		</form>
+		<?php
+	}
+}
+
+if (!function_exists('jigoshop_external_add_to_cart')) {
+	function jigoshop_external_add_to_cart() {
+		global $_product;
+		$external_url = get_post_meta( $_product->ID, 'external_url', true );
+
+		if ( ! $external_url )
+			return false;
+		?>
+
+		<p>
+			<a href="<?php echo $external_url; ?>" rel="nofollow" class="button"><?php _e('Buy product', 'jigoshop'); ?></a>
+		</p>
+
 		<?php
 	}
 }
@@ -614,13 +635,13 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 						else :
 							// Input
 							?>
-							<input type="text" class="input-text" value="<?php echo $current_r; ?>" placeholder="<?php _e('state', 'jigoshop'); ?>" name="calc_shipping_state" id="calc_shipping_state" />
+							<input type="text" class="input-text" value="<?php echo esc_attr( $current_r ); ?>" placeholder="<?php _e('state', 'jigoshop'); ?>" name="calc_shipping_state" id="calc_shipping_state" />
 							<?php
 						endif;
 					?>
 				</p>
 				<p class="form-row col-2">
-					<input type="text" class="input-text" value="<?php echo jigoshop_customer::get_shipping_postcode(); ?>" placeholder="<?php _e('Postcode/Zip', 'jigoshop'); ?>" title="<?php _e('Postcode', 'jigoshop'); ?>" name="calc_shipping_postcode" id="calc_shipping_postcode" />
+					<input type="text" class="input-text" value="<?php echo esc_attr( jigoshop_customer::get_shipping_postcode() ); ?>" placeholder="<?php _e('Postcode/Zip', 'jigoshop'); ?>" title="<?php _e('Postcode', 'jigoshop'); ?>" name="calc_shipping_postcode" id="calc_shipping_postcode" />
 				</p>
 			</div>
 			<p><button type="submit" name="calc_shipping" value="1" class="button"><?php _e('Update Totals', 'jigoshop'); ?></button></p>
@@ -674,7 +695,7 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 				endforeach;
 			endif;
 			?>
-			<input type="hidden" name="cart-url" value="<?php echo jigoshop_cart::get_cart_url() ?>">
+			<input type="hidden" name="cart-url" value="<?php echo esc_attr( jigoshop_cart::get_cart_url() ); ?>">
 			<?php jigoshop::nonce_field('cart') ?>
 			</section>
 		</form>
@@ -827,7 +848,7 @@ if (!function_exists('jigoshop_breadcrumb')) {
 	       			//echo $before . '<a href="' . get_post_type_archive_link('product') . '">' . ucwords(get_option('jigoshop_shop_slug')) . '</a>' . $after . $delimiter;
 	       			echo $prepend;
 
-	       			if ($terms = wp_get_object_terms( $post->ID, 'product_cat' )) :
+	       			if ($terms = get_the_terms( $post->ID, 'product_cat' )) :
 						$term = current($terms);
 						$parents = array();
 						$parent = $term->parent;

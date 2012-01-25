@@ -14,7 +14,7 @@
  * Author:             Jigowatt
  * Author URI:         http://jigowatt.co.uk
  *
- * Version:            1.0
+ * Version:            1.0 beta 1
  * Requires at least:  3.1
  * Tested up to:       3.3.1
  *
@@ -25,7 +25,7 @@
  * @license            http://jigoshop.com/license/commercial-edition
  */
 
-if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1202010);
+if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1201240);
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
@@ -202,7 +202,7 @@ function jigoshop_init() {
 	$jigoshop_payment_gateways 	= jigoshop_payment_gateways::instance();// Payment gateways class. loads payment methods
 	$jigoshop_cart 				= jigoshop_cart::instance();			// Cart class, stores the cart contents
 
-//	if ( ! is_admin() ) $jigoshop_query = &new jigoshop_catalog_query();
+//	if ( ! is_admin() ) $jigoshop_query = new jigoshop_catalog_query();
 	if ( ! is_admin() ) $jigoshop_query = jigoshop_catalog_query::instance();
 	
 	// Image sizes
@@ -781,7 +781,7 @@ function jigoshop_comments($comment, $args, $depth) {
 
 			<div class="comment-text">
 				<?php if ( $rating = get_comment_meta( $comment->comment_ID, 'rating', true ) ): ?>
-				<div class="star-rating" title="<?php echo $rating; ?>">
+				<div class="star-rating" title="<?php echo esc_attr( $rating ); ?>">
 					<span style="width:<?php echo $rating*16; ?>px"><?php echo $rating; ?> <?php _e('out of 5', 'jigoshop'); ?></span>
 				</div>
 				<?php endif; ?>

@@ -29,7 +29,7 @@ function jigoshop_pay() {
 		// Pay for existing order
 		$order_key = urldecode( $_GET['order'] );
 		$order_id = (int) $_GET['order_id'];
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 
 		if ($order->id == $order_id && $order->order_key == $order_key && $order->status=='pending') :
 
@@ -98,7 +98,7 @@ function jigoshop_pay() {
 
 		if ($order_id > 0) :
 
-			$order = &new jigoshop_order( $order_id );
+			$order = new jigoshop_order( $order_id );
 
 			if ($order->order_key == $order_key && $order->status=='pending') :
 

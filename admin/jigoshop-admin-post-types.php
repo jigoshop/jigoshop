@@ -203,7 +203,7 @@ function jigoshop_filter_products_type() {
 	echo "<option value='0'>" . __('Show all types', 'jigoshop') . "</option>";
 
 	foreach($terms as $term) {
-		echo "<option value='{$term->slug}' ".selected($term->slug, $wp_query->query['product_type'], false).">".ucfirst($term->name)." (".$term->count.")</option>";		
+		echo "<option value='{$term->slug}' ".selected($term->slug, isset($wp_query->query['product_type']) ? $wp_query->query['product_type'] : '', false).">".ucfirst($term->name)." (".$term->count.")</option>";		
 	}
 
 	echo "</select>";
@@ -238,7 +238,7 @@ add_action('manage_shop_order_posts_custom_column', 'jigoshop_custom_order_colum
 function jigoshop_custom_order_columns($column) {
 
     global $post;
-    $order = &new jigoshop_order($post->ID);
+    $order = new jigoshop_order($post->ID);
     switch ($column) {
         case "order_status" :
 
@@ -484,7 +484,7 @@ function jigoshop_admin_product_search_label($query) {
  * */
 function jigoshop_custom_order_views($views) {
 
-    $jigoshop_orders = &new jigoshop_orders();
+    $jigoshop_orders = new jigoshop_orders();
 
     $pending = (isset($_GET['shop_order_status']) && $_GET['shop_order_status'] == 'pending') ? 'current' : '';
     $onhold = (isset($_GET['shop_order_status']) && $_GET['shop_order_status'] == 'on-hold') ? 'current' : '';

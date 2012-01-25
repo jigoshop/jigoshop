@@ -93,18 +93,19 @@ function jigoshop_product_data_box() {
 			<fieldset>
 			<?php	
 				// Product Type
-				$terms = wp_get_object_terms( $thepostid, 'product_type' );
+				$terms = get_the_terms( $thepostid, 'product_type' );
 				$product_type = ($terms) ? current($terms)->slug : 'simple';
 
 				echo jigoshop_form::select(
 					'product-type', 
 					__('Product Type', 'jigoshop'),
 					apply_filters('jigoshop_product_type_selector', array(
-						'simple'			=> __('Simple', 'jigoshop'),
+						'simple'		=> __('Simple', 'jigoshop'),
 						'downloadable'	=> __('Downloadable', 'jigoshop'),
 						'grouped'		=> __('Grouped', 'jigoshop'),
 						'virtual'		=> __('Virtual', 'jigoshop'),
 						'variable'		=> __('Variable', 'jigoshop'),
+						'external'		=> __('External / Affiliate', 'jigoshop')
 					)),
 					$product_type
 				);
@@ -148,11 +149,13 @@ function jigoshop_product_data_box() {
 			<?php
 				// Featured
 				echo jigoshop_form::checkbox( 'featured', 'Featured?', false, __('Enable this option to feature this product', 'jigoshop') );
+
+				echo jigoshop_form::input( 'external_url', 'Product Url', null, null, null, 'The URL of the external product (eg. http://www.google.com)' );
 			?>
 			</fieldset>
 		</div>
 		<div id="tax" class="panel jigoshop_options_panel">
-			<fieldset>
+			<fieldset id="tax_fieldset">
 			<?php
 
 				// Tax Status
@@ -430,7 +433,7 @@ function display_attribute() { ?>
 		if (isset($attributes[$attribute_taxonomy_name])) $attribute = $attributes[$attribute_taxonomy_name];
 		$position = (isset($attribute['position'])) ? $attribute['position'] : 0;
 
-		$allterms = wp_get_post_terms( $post->ID, 'pa_'.$attribute_taxonomy_name );
+		$allterms = get_the_terms( $post->ID, 'pa_'.$attribute_taxonomy_name );
 
 		$has_terms = ( is_wp_error( $allterms ) || !$allterms || sizeof( $allterms ) == 0 ) ? 0 : 1;
 		$term_slugs = array();
@@ -441,21 +444,21 @@ function display_attribute() { ?>
 		endif;
 	?>
 
-	<div class="postbox attribute <?php if ( $has_terms ) echo 'closed'; ?> <?php echo sanitize_text_field(sanitize_title($attribute_taxonomy_name)); ?>" data-attribute-name="<?php echo $attribute_taxonomy_name; ?>" rel="<?php echo $position; ?>"  <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
+	<div class="postbox attribute <?php if ( $has_terms ) echo 'closed'; ?> <?php echo sanitize_text_field(sanitize_title($attribute_taxonomy_name)); ?>" data-attribute-name="<?php echo esc_attr( $attribute_taxonomy_name ); ?>" rel="<?php echo $position; ?>"  <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
 		<button type="button" class="hide_row button">Remove</button>
 		<div class="handlediv" title="Click to toggle"><br></div>
 		<h3 class="handle"><?php echo $tax->attribute_name; ?></h3>
 
-		<input type="hidden" name="attribute_names[<?php echo $i; ?>]" value="<?php echo $tax->attribute_name; ?>" />
+		<input type="hidden" name="attribute_names[<?php echo $i; ?>]" value="<?php echo esc_attr( $tax->attribute_name ); ?>" />
 		<input type="hidden" name="attribute_is_taxonomy[<?php echo $i; ?>]" value="1" />
 		<input type="hidden" name="attribute_enabled[<?php echo $i; ?>]" value="1" />
-		<input type="hidden" name="attribute_position[<?php echo $i; ?>]" class="attribute_position" value="<?php echo $position; ?>" />
+		<input type="hidden" name="attribute_position[<?php echo $i; ?>]" class="attribute_position" value="<?php echo esc_attr( $position ); ?>" />
 
 		<div class="inside">
 			<table>
 				<tr>
 					<td class="options">
-						<input type="text" class="attribute-name" name="attribute_names[<?php echo $i; ?>]" value="<?php echo $tax->attribute_name; ?>" disabled="disabled" />
+						<input type="text" class="attribute-name" name="attribute_names[<?php echo $i; ?>]" value="<?php echo esc_attr( $tax->attribute_name ); ?>" disabled="disabled" />
 
 						<div>
 							<label>
@@ -549,7 +552,7 @@ function display_attribute() { ?>
 
 		<input type="hidden" name="attribute_is_taxonomy[<?php echo $i; ?>]" value="0" />
 		<input type="hidden" name="attribute_enabled[<?php echo $i; ?>]" value="1" />
-		<input type="hidden" name="attribute_position[<?php echo $i; ?>]" class="attribute_position" value="<?php echo $position; ?>" />
+		<input type="hidden" name="attribute_position[<?php echo $i; ?>]" class="attribute_position" value="<?php echo esc_attr( $position ); ?>" />
 
 		<div class="inside">
 			<table>

@@ -93,10 +93,12 @@ class Jigoshop_Widget_Tag_Cloud extends WP_Widget {
 		$title = (isset($instance['title'])) ? esc_attr($instance['title']) : null;
 		
 		// Widget title
-		echo '<p>';
-		echo '<label for="' . $this->get_field_id('title') . '">' . __('Title:', 'jigoshop') . '</label>';
-		echo '<input type="text" class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" value="' . $title .'" />';
-		echo '</p>';
+		?>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id('title') ); ?>"><?php _e('Title:', 'jigoshop'); ?></label>
+			<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id('title') ); ?>" name="<?php echo esc_attr( $this->get_field_name('title') ); ?>" value="<?php echo esc_attr( $title ); ?>" />
+		</p>
+		<?php
 	}
 	
 } // class Jigoshop_Widget_Tag_Cloud

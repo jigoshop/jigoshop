@@ -72,9 +72,9 @@ function jigoshop_add_order_item() {
 	endif;
 
 	if ($post->post_type=="product") :
-		$_product = &new jigoshop_product( $post->ID );
+		$_product = new jigoshop_product( $post->ID );
 	else :
-		$_product = &new jigoshop_product_variation( $post->ID );
+		$_product = new jigoshop_product_variation( $post->ID );
 	endif;
 
 	$loop = 0;
@@ -103,11 +103,11 @@ function jigoshop_add_order_item() {
 		</td>-->
 		<?php do_action('jigoshop_admin_order_item_values', $_product); ?>
 		<td class="quantity"><input type="text" name="item_quantity[]" placeholder="<?php _e('Quantity e.g. 2', 'jigoshop'); ?>" value="1" /></td>
-		<td class="cost"><input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit ex. tax e.g. 2.99', 'jigoshop'); ?>" value="<?php echo $_product->get_price(); ?>" /></td>
-        <td class="tax"><input type="text" name="item_tax_rate[]" placeholder="<?php _e('Tax Rate e.g. 20.0000', 'jigoshop'); ?>" value="<?php echo jigoshop_tax::calculate_total_tax_rate($_product->get_tax_base_rate()); ?>" /></td>
+		<td class="cost"><input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit ex. tax e.g. 2.99', 'jigoshop'); ?>" value="<?php echo esc_attr( $_product->get_price() ); ?>" /></td>
+        <td class="tax"><input type="text" name="item_tax_rate[]" placeholder="<?php _e('Tax Rate e.g. 20.0000', 'jigoshop'); ?>" value="<?php echo esc_attr( jigoshop_tax::calculate_total_tax_rate($_product->get_tax_base_rate()) ); ?>" /></td>
 		<td class="center">
-			<input type="hidden" name="item_id[]" value="<?php echo $_product->id; ?>" />
-			<input type="hidden" name="item_name[]" value="<?php echo $_product->get_title(); ?>" />
+			<input type="hidden" name="item_id[]" value="<?php echo esc_attr( $_product->id ); ?>" />
+			<input type="hidden" name="item_name[]" value="<?php echo esc_attr( $_product->get_title() ); ?>" />
             <input type="hidden" name="item_variation_id[]" value="<?php if ($_product instanceof jigoshop_product_variation) echo $_product->variation_id; else echo ''; ?>" />
 			<button type="button" class="remove_row button">&times;</button>
 		</td>
@@ -358,7 +358,7 @@ function jigoshop_clear_cart_on_return() {
 		if (isset($_GET['order'])) $order_id = $_GET['order']; else $order_id = 0;
 		if (isset($_GET['key'])) $order_key = $_GET['key']; else $order_key = '';
 		if ($order_id > 0) :
-			$order = &new jigoshop_order( $order_id );
+			$order = new jigoshop_order( $order_id );
 			if ($order->order_key == $order_key) :
 				jigoshop_cart::empty_cart();
 			endif;
@@ -377,7 +377,7 @@ function jigoshop_clear_cart_after_payment( $url = false ) {
 
 	if (isset( jigoshop_session::instance()->order_awaiting_payment ) && jigoshop_session::instance()->order_awaiting_payment > 0) :
 
-		$order = &new jigoshop_order( jigoshop_session::instance()->order_awaiting_payment );
+		$order = new jigoshop_order( jigoshop_session::instance()->order_awaiting_payment );
 
 		if ($order->id > 0 && ($order->status=='completed' || $order->status=='processing')) :
 
@@ -457,7 +457,7 @@ function jigoshop_cancel_order() {
 		$order_key = urldecode( $_GET['order'] );
 		$order_id = (int) $_GET['order_id'];
 
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 
 		if ($order->id == $order_id && $order->order_key == $order_key && $order->status=='pending' && jigoshop::verify_nonce('cancel_order', '_GET')) :
 
@@ -637,18 +637,18 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 
 	global $wpdb;
 
-	$order = &new jigoshop_order( $order_id );
+	$order = new jigoshop_order( $order_id );
 
 	if (sizeof($order->items)>0) foreach ($order->items as $item) :
 
 		// if ($item['id']>0) :
 
 			// @todo: Bit of a hack could be improved as id is null/0
-			if ( isset($item['variation_id']) ) {
-				$_product = &new jigoshop_product_variation( $item['variation_id'] );
+			if ( (bool) $item['variation_id'] ) {
+				$_product = new jigoshop_product_variation( $item['variation_id'] );
 				$product_id = $_product->variation_id;
 			} else {
-				$_product = &new jigoshop_product( $item['id'] );
+				$_product = new jigoshop_product( $item['id'] );
 				$product_id = $_product->ID;
 			}
 
@@ -869,17 +869,17 @@ class Jigoshop_Walker_CategoryDropdown extends Walker {
 	var $tree_type = 'category';
 	var $db_fields = array ('parent' => 'parent', 'id' => 'term_id', 'slug' => 'slug' );
 
-	function start_el(&$output, $category, $depth, $args) {
+	function start_el(&$output, $object, $depth, $args, $current_object_id = 0) {
 		$pad = str_repeat('&nbsp;', $depth * 3);
 
-		$cat_name = apply_filters('list_product_cats', $category->name, $category);
-		$output .= "\t<option class=\"level-$depth\" value=\"".$category->slug."\"";
-		if ( $category->slug == $args['selected'] )
+		$cat_name = apply_filters('list_product_cats', $object->name, $object);
+		$output .= "\t<option class=\"level-$depth\" value=\"".$object->slug."\"";
+		if ( $object->slug == $args['selected'] )
 			$output .= ' selected="selected"';
 		$output .= '>';
 		$output .= $pad.$cat_name;
 		if ( $args['show_count'] )
-			$output .= '&nbsp;('. $category->count .')';
+			$output .= '&nbsp;('. $object->count .')';
 		$output .= "</option>\n";
 	}
 }

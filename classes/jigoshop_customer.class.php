@@ -173,14 +173,14 @@ class jigoshop_customer extends jigoshop_singleton {
 		
 		if (is_user_logged_in()) :
 		
-			$jigoshop_orders = &new jigoshop_orders();
+			$jigoshop_orders = new jigoshop_orders();
 			$jigoshop_orders->get_customer_orders( get_current_user_id() );
 			if ($jigoshop_orders->orders) foreach ($jigoshop_orders->orders as $order) :
 				if ( $order->status == 'completed' ) {
 					$results = $wpdb->get_results( "SELECT * FROM ".$wpdb->prefix."jigoshop_downloadable_product_permissions WHERE order_key = \"".$order->order_key."\" AND user_id = ".get_current_user_id().";" );
 					$user_info = get_userdata(get_current_user_id());
 					if ($results) foreach ($results as $result) :
-							$_product = &new jigoshop_product( $result->product_id );
+							$_product = new jigoshop_product( $result->product_id );
 							if ($_product->exists) :
 								$download_name = $_product->get_title();
 							else :

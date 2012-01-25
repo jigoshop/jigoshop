@@ -1357,6 +1357,9 @@ div.multi_select_products_wrapper {
 .attribute_is_variable {
 	display: none;
 }
+.external_url_field {
+	display: none;
+}
 
 .simple_product {
 	.file_tab, .variable_tab {
@@ -1384,7 +1387,7 @@ div.multi_select_products_wrapper {
 }
 .variable_product {
 
-	.file_tab {
+	.file_tab, .grouped_tab {
 		display: none;
 	}
 
@@ -1399,6 +1402,20 @@ div.multi_select_products_wrapper {
 		display: block !important;
 	}
 	.attribute_is_variable {
+		display: block;
+	}
+}
+.external_product {
+
+	.file_tab, .inventory_tab, .variable_tab, .grouped_tab {
+		display: none;
+	}
+
+	#tax_fieldset {
+		display: none;
+	}
+
+	.external_url_field {
 		display: block;
 	}
 }

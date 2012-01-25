@@ -16,7 +16,7 @@
  */
 class jigoshop_session extends jigoshop_singleton {
 
-	public function __construct() {
+	protected function __construct() {
 		if ( !session_id() ) session_start();
 	}
 

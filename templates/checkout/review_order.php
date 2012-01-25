@@ -253,7 +253,7 @@
 					foreach ($available_gateways as $gateway ) :
 						?>
 						<li>
-						<input type="radio" id="payment_method_<?php echo $gateway->id; ?>" class="input-radio" name="payment_method" value="<?php echo $gateway->id; ?>" <?php if ($gateway->chosen) echo 'checked="checked"'; ?> />
+						<input type="radio" id="payment_method_<?php echo $gateway->id; ?>" class="input-radio" name="payment_method" value="<?php echo esc_attr( $gateway->id ); ?>" <?php if ($gateway->chosen) echo 'checked="checked"'; ?> />
 						<label for="payment_method_<?php echo $gateway->id; ?>"><?php echo $gateway->title; ?> <?php echo apply_filters('gateway_icon', $gateway->icon(), $gateway->id); ?></label> 
 							<?php
 								if ($gateway->has_fields || $gateway->description) : 
@@ -294,7 +294,7 @@
 			<?php endif; ?>
 			
 			<?php $order_button_text = apply_filters( 'jigoshop_order_button_text', __( 'Place order', 'jigoshop') ); ?>
-			<input type="submit" class="button-alt" name="place_order" id="place_order" value="<?php echo $order_button_text; ?>" />
+			<input type="submit" class="button-alt" name="place_order" id="place_order" value="<?php echo esc_attr( $order_button_text ); ?>" />
 			
 			<?php do_action( 'jigoshop_review_order_after_submit' ); ?>
 			

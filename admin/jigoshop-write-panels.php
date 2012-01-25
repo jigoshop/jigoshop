@@ -19,7 +19,7 @@
 
 include('write-panels/product-data.php');
 include('write-panels/product-data-save.php');
-include('write-panels/product-type.php');
+include('write-panels/product-types/variable.php');
 include('write-panels/order-data.php');
 include('write-panels/order-data-save.php');
 
@@ -34,7 +34,6 @@ add_action( 'add_meta_boxes', 'jigoshop_meta_boxes' );
 
 function jigoshop_meta_boxes() {
 	add_meta_box( 'jigoshop-product-data', __('Product Data', 'jigoshop'), 'jigoshop_product_data_box', 'product', 'normal', 'high' );
-	//add_meta_box( 'jigoshop-product-type-options', __('Product Type Options', 'jigoshop'), 'jigoshop_product_type_options_box', 'product', 'normal', 'high' );
 	
 	add_meta_box( 'jigoshop-order-data', __('Order Data', 'jigoshop'), 'jigoshop_order_data_meta_box', 'shop_order', 'normal', 'high' );
 	add_meta_box( 'jigoshop-order-items', __('Order Items <small>&ndash; Note: if you edit quantities or remove items from the order you will need to manually change the item\'s stock levels.</small>', 'jigoshop'), 'jigoshop_order_items_meta_box', 'shop_order', 'normal', 'high');
@@ -83,7 +82,6 @@ function jigoshop_product_data( $data ) {
 		switch($product_type) :
 			case "grouped" :
 			case "variable" :
-			case "downloadable" :
 				$data['post_parent'] = 0;
 			break;
 		endswitch;

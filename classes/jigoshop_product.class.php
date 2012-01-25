@@ -78,11 +78,11 @@ class jigoshop_product {
 		// If not then it might not be a product
 		$this->exists = (bool) $meta;
 
-		// Get the product type
-		// @TODO: for some reason this is invalid on first run?
-		$terms = wp_get_object_terms( $this->ID, 'product_type', array('fields' => 'names') );
+		// Get the product type, from the cache if we can
+		$terms = current( (array) get_the_terms( $this->ID, 'product_type' ) );
 		
-		$this->product_type = (isset($terms[0]) ? sanitize_title($terms[0]) : 'simple');
+		// Use slug as it is already santizied.
+		$this->product_type = ( ! empty( $terms ) ) ? $terms->slug : 'simple';
 
 		// Define data
 		$this->regular_price         = isset($meta['regular_price'][0]) ? $meta['regular_price'][0] : null;
@@ -570,7 +570,7 @@ class jigoshop_product {
                 $tax_applied_after_retail = 0;
                 $tax_totals = 0;
 
-                $_tax = &new jigoshop_tax();
+                $_tax = new jigoshop_tax();
 
                 foreach ( $new_rates as $key=>$value ) :
 
@@ -605,7 +605,7 @@ class jigoshop_product {
 		$rate = array();
             
         if ($this->is_taxable() && get_option('jigoshop_calc_taxes') == 'yes') :
-            $_tax = &new jigoshop_tax();
+            $_tax = new jigoshop_tax();
             
             if ($_tax->get_tax_classes_for_base()) foreach ( $_tax->get_tax_classes_for_base() as $tax_class ) :
                 
@@ -924,7 +924,7 @@ class jigoshop_product {
 
 		// If its a taxonomy return that
 		if( $attr['is_taxonomy'] )
-			return wp_get_post_terms( $this->ID, 'pa_'.sanitize_title($attr['name']) );
+			return get_the_terms( $this->ID, 'pa_'.sanitize_title($attr['name']) );
 
 		return $attr['value'];
 	}
@@ -1026,9 +1026,9 @@ class jigoshop_product {
 			if ( (bool) $attr['is_taxonomy'] ) {
 
 				// Get the taxonomy terms
-				$product_terms = wp_get_post_terms( $this->ID, 'pa_'.sanitize_title($attr['name']) );
+				$product_terms = get_the_terms( $this->ID, 'pa_'.sanitize_title($attr['name']) );
 
-				// Convert them into a string
+				// Convert them into a array to be imploded
 				$terms = array();
 
 				foreach( $product_terms as $term ) {
@@ -1108,7 +1108,7 @@ class jigoshop_product {
 
 				if ( $attribute['is_taxonomy'] ) {
 					$options = array();
-					$terms = wp_get_post_terms( $this->ID, 'pa_'.sanitize_title($attribute['name']) );
+					$terms = get_the_terms( $this->ID, 'pa_'.sanitize_title($attribute['name']) );
 
 					foreach($terms as $term) {
 						$options[] = $term->slug;

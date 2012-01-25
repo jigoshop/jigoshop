@@ -33,7 +33,7 @@ function jigoshop_thankyou() {
 
 	if ($order_id > 0) :
 
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 
 		if ($order->order_key == $order_key) :
 

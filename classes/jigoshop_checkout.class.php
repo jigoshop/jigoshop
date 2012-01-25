@@ -648,7 +648,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 					update_post_meta( $order_id, 'order_items', $order_items );
 					wp_set_object_terms( $order_id, 'pending', 'shop_order_status' );
 					
-					$order = &new jigoshop_order($order_id);
+					$order = new jigoshop_order($order_id);
 					
 					// Inserted successfully 
 					do_action('jigoshop_new_order', $order_id);

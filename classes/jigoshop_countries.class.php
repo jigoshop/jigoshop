@@ -483,7 +483,7 @@ class jigoshop_countries {
     }
     
 	/** get base country */
-	function get_base_country() {
+	static function get_base_country() {
 		$default = get_option('jigoshop_default_country');
     	if (strstr($default, ':')) :
     		$country = current(explode(':', $default));
@@ -497,7 +497,7 @@ class jigoshop_countries {
 	}
 	
 	/** get base state */
-	function get_base_state() {
+	static function get_base_state() {
 		$default = get_option('jigoshop_default_country');
     	if (strstr($default, ':')) :
     		$country = current(explode(':', $default));

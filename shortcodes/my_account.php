@@ -63,12 +63,12 @@ function jigoshop_my_account( $atts ) {
 			</thead>
 
 			<tbody><?php
-				$jigoshop_orders = &new jigoshop_orders();
+				$jigoshop_orders = new jigoshop_orders();
 				$jigoshop_orders->get_customer_orders( get_current_user_id(), $recent_orders );
 				if ($jigoshop_orders->orders) foreach ($jigoshop_orders->orders as $order) :
 					?><tr class="order">
 						<td><?php echo $order->id; ?></td>
-						<td><time title="<?php echo date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($order->order_date)); ?>"><?php echo date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($order->order_date)); ?></time></td>
+						<td><time title="<?php echo esc_attr( date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($order->order_date)) ); ?>"><?php echo date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($order->order_date)); ?></time></td>
 						<td><address><?php if ($order->formatted_shipping_address) echo $order->formatted_shipping_address; else echo '&ndash;'; ?></address></td>
 						<td><?php echo jigoshop_price($order->order_total); ?></td>
 						<td class="nobr"><?php echo $order->status; ?></td>
@@ -213,36 +213,36 @@ function jigoshop_edit_address() {
 
 			<p class="form-row form-row-first">
 				<label for="address-first_name"><?php _e('First Name', 'jigoshop'); ?> <span class="required">*</span></label>
-				<input type="text" class="input-text" name="address-first_name" id="address-first_name" placeholder="<?php _e('First Name', 'jigoshop'); ?>" value="<?php echo $address['first_name']; ?>" />
+				<input type="text" class="input-text" name="address-first_name" id="address-first_name" placeholder="<?php _e('First Name', 'jigoshop'); ?>" value="<?php echo esc_attr( $address['first_name'] ); ?>" />
 			</p>
 			<p class="form-row form-row-last">
 				<label for="address-last_name"><?php _e('Last Name', 'jigoshop'); ?> <span class="required">*</span></label>
-				<input type="text" class="input-text" name="address-last_name" id="address-last_name" placeholder="<?php _e('Last Name', 'jigoshop'); ?>" value="<?php echo $address['last_name']; ?>" />
+				<input type="text" class="input-text" name="address-last_name" id="address-last_name" placeholder="<?php _e('Last Name', 'jigoshop'); ?>" value="<?php echo esc_attr( $address['last_name'] ); ?>" />
 			</p>
 			<div class="clear"></div>
 
 			<p class="form-row columned">
 				<label for="address-company"><?php _e('Company', 'jigoshop'); ?></label>
-				<input type="text" class="input-text" name="address-company" id="address-company" placeholder="<?php _e('Company', 'jigoshop'); ?>" value="<?php echo $address['company']; ?>" />
+				<input type="text" class="input-text" name="address-company" id="address-company" placeholder="<?php _e('Company', 'jigoshop'); ?>" value="<?php echo esc_attr( $address['company'] ); ?>" />
 			</p>
 
 			<p class="form-row form-row-first">
 				<label for="address-address"><?php _e('Address', 'jigoshop'); ?> <span class="required">*</span></label>
-				<input type="text" class="input-text" name="address-address" id="address-address" placeholder="<?php _e('1 Infinite Loop', 'jigoshop'); ?>" value="<?php echo $address['address']; ?>" />
+				<input type="text" class="input-text" name="address-address" id="address-address" placeholder="<?php _e('Street, Number, P.O. Box', 'jigoshop'); ?>" value="<?php echo esc_attr( $address['address'] ); ?>" />
 			</p>
 			<p class="form-row form-row-last">
 				<label for="address-address2" class="hidden"><?php _e('Address 2', 'jigoshop'); ?></label>
-				<input type="text" class="input-text" name="address-address2" id="address-address2" placeholder="<?php _e('Cupertino', 'jigoshop'); ?>" value="<?php echo $address['address2']; ?>" />
+				<input type="text" class="input-text" name="address-address2" id="address-address2" placeholder="<?php _e('Floor, Department, etc', 'jigoshop'); ?>" value="<?php echo esc_attr( $address['address2'] ); ?>" />
 			</p>
 			<div class="clear"></div>
 
 			<p class="form-row form-row-first">
 				<label for="address-city"><?php _e('City', 'jigoshop'); ?> <span class="required">*</span></label>
-				<input type="text" class="input-text" name="address-city" id="address-city" placeholder="<?php _e('City', 'jigoshop'); ?>" value="<?php echo $address['city']; ?>" />
+				<input type="text" class="input-text" name="address-city" id="address-city" placeholder="<?php _e('City', 'jigoshop'); ?>" value="<?php echo esc_attr( $address['city'] ); ?>" />
 			</p>
 			<p class="form-row form-row-last">
 				<label for="address-postcode"><?php _e('Postcode', 'jigoshop'); ?> <span class="required">*</span></label>
-				<input type="text" class="input-text" name="address-postcode" id="address-postcode" placeholder="123456" value="<?php echo $address['postcode']; ?>" />
+				<input type="text" class="input-text" name="address-postcode" id="address-postcode" placeholder="123456" value="<?php echo esc_attr( $address['postcode'] ); ?>" />
 			</p>
 			<div class="clear"></div>
 
@@ -284,7 +284,7 @@ function jigoshop_edit_address() {
 						<?php
 					else :
 						// Input
-						?><input type="text" class="input-text" value="<?php echo $current_r; ?>" placeholder="<?php _e('state', 'jigoshop'); ?>" name="address-state" id="address-state" /><?php
+						?><input type="text" class="input-text" value="<?php echo esc_attr( $current_r ); ?>" placeholder="<?php _e('state', 'jigoshop'); ?>" name="address-state" id="address-state" /><?php
 					endif;
 				?>
 			</p>
@@ -293,16 +293,16 @@ function jigoshop_edit_address() {
 			<?php if ($load_address=='billing') : ?>
 				<p class="form-row columned">
 					<label for="address-email"><?php _e('Email Address', 'jigoshop'); ?> <span class="required">*</span></label>
-					<input type="text" class="input-text" name="address-email" id="address-email" placeholder="<?php _e('you@yourdomain.com', 'jigoshop'); ?>" value="<?php echo $address['email']; ?>" />
+					<input type="text" class="input-text" name="address-email" id="address-email" placeholder="<?php _e('email@domain.com', 'jigoshop'); ?>" value="<?php echo esc_attr( $address['email'] ); ?>" />
 				</p>
 
 				<p class="form-row form-row-first">
 					<label for="address-phone"><?php _e('Phone', 'jigoshop'); ?> <span class="required">*</span></label>
-					<input type="text" class="input-text" name="address-phone" id="address-phone" placeholder="0123456789" value="<?php echo $address['phone']; ?>" />
+					<input type="text" class="input-text" name="address-phone" id="address-phone" placeholder="0123456789" value="<?php echo esc_attr( $address['phone'] ); ?>" />
 				</p>
 				<p class="form-row form-row-last">
 					<label for="address-fax"><?php _e('Fax', 'jigoshop'); ?></label>
-					<input type="text" class="input-text" name="address-fax" id="address-fax" placeholder="0123456789" value="<?php echo $address['fax']; ?>" />
+					<input type="text" class="input-text" name="address-fax" id="address-fax" placeholder="0123456789" value="<?php echo esc_attr( $address['fax'] ); ?>" />
 				</p>
 				<div class="clear"></div>
 			<?php endif; ?>
@@ -399,7 +399,7 @@ function jigoshop_view_order() {
             $order_id = (int) $_GET['order']; else
             $order_id = 0;
 
-        $order = &new jigoshop_order($order_id);
+        $order = new jigoshop_order($order_id);
 
         if ($order_id > 0 && $order->user_id == get_current_user_id()) :
 
@@ -503,13 +503,13 @@ function jigoshop_view_order() {
                         foreach ($order->items as $item) :
 
                             if (isset($item['variation_id']) && $item['variation_id'] > 0) :
-                                $_product = &new jigoshop_product_variation($item['variation_id']);
+                                $_product = new jigoshop_product_variation($item['variation_id']);
 
                                 if (is_array($item['variation'])) :
                                     $_product->set_variation_attributes($item['variation']);
                                 endif;
                             else :
-                                $_product = &new jigoshop_product($item['id']);
+                                $_product = new jigoshop_product($item['id']);
                             endif;
 
                             echo '

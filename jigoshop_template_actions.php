@@ -30,7 +30,7 @@ add_action( 'jigoshop_before_shop_loop', 'jigoshop::show_messages', 10);
 
 /* Sale flashes */
 add_action( 'jigoshop_before_shop_loop_item_title', 'jigoshop_show_product_sale_flash', 10, 2);
-add_action( 'jigoshop_before_single_product_summary', 'jigoshop_show_product_sale_flash', 10, 2);
+add_action( 'jigoshop_before_single_product_summary_thumbnails', 'jigoshop_show_product_sale_flash', 10, 2);
 
 /* Breadcrumbs */
 add_action( 'jigoshop_before_main_content', 'jigoshop_breadcrumb', 20, 0);
@@ -60,10 +60,12 @@ add_action( 'jigoshop_template_single_summary', 'jigoshop_template_single_sharin
 /* Product Add to cart */
 add_action( 'jigoshop_template_single_summary', 'jigoshop_template_single_add_to_cart', 30, 2 );
 add_action( 'simple_add_to_cart', 'jigoshop_simple_add_to_cart' ); 
+add_action( 'external_add_to_cart', 'jigoshop_external_add_to_cart' ); 
 add_action( 'virtual_add_to_cart', 'jigoshop_simple_add_to_cart' ); 
 add_action( 'downloadable_add_to_cart', 'jigoshop_downloadable_add_to_cart' ); 
 add_action( 'grouped_add_to_cart', 'jigoshop_grouped_add_to_cart' ); 
-add_action( 'variable_add_to_cart', 'jigoshop_variable_add_to_cart' ); 
+add_action( 'variable_add_to_cart', 'jigoshop_variable_add_to_cart' );
+add_action( 'external_add_to_cart', 'jigoshop_external_add_to_cart' );
 
 /* Product Add to Cart forms */
 add_action( 'jigoshop_add_to_cart_form', 'jigoshop_add_to_cart_form_nonce', 10);
