@@ -19,7 +19,7 @@
 
 include('write-panels/product-data.php');
 include('write-panels/product-data-save.php');
-include('write-panels/product-type.php');
+include('write-panels/product-types/variable.php');
 include('write-panels/order-data.php');
 include('write-panels/order-data-save.php');
 
