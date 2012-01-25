@@ -123,7 +123,7 @@ function jigoshop_order_data_meta_box($post) {
                         $field_value = $data[$field_id];
                     }
                     
-                    echo '<p class="form-field"><label for="'.$field_id.'">'.$field_desc.':</label>
+                    echo '<p class="form-field"><label for="' . esc_attr( $field_id ) . '">'.$field_desc.':</label>
 				<input type="text" name="'.esc_attr($field_id).'" id="'.esc_attr($field_id).'" value="'.esc_attr($field_value).'" /></p>';
                 }
 				
@@ -156,7 +156,7 @@ function jigoshop_order_data_meta_box($post) {
                         $field_value = $data[$field_id];
                     }
                     
-                    echo '<p class="form-field"><label for="'.$field_id.'">'.$field_desc.':</label>
+                    echo '<p class="form-field"><label for="' . esc_attr( $field_id ) . '">'.$field_desc.':</label>
 				<input type="text" name="'.esc_attr($field_id).'" id="'.esc_attr($field_id).'" value="'.esc_attr($field_value).'" /></p>';
                 }
 			?>
