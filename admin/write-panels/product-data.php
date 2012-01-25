@@ -444,21 +444,21 @@ function display_attribute() { ?>
 		endif;
 	?>
 
-	<div class="postbox attribute <?php if ( $has_terms ) echo 'closed'; ?> <?php echo sanitize_text_field(sanitize_title($attribute_taxonomy_name)); ?>" data-attribute-name="<?php echo $attribute_taxonomy_name; ?>" rel="<?php echo $position; ?>"  <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
+	<div class="postbox attribute <?php if ( $has_terms ) echo 'closed'; ?> <?php echo sanitize_text_field(sanitize_title($attribute_taxonomy_name)); ?>" data-attribute-name="<?php echo esc_attr( $attribute_taxonomy_name ); ?>" rel="<?php echo $position; ?>"  <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
 		<button type="button" class="hide_row button">Remove</button>
 		<div class="handlediv" title="Click to toggle"><br></div>
 		<h3 class="handle"><?php echo $tax->attribute_name; ?></h3>
 
-		<input type="hidden" name="attribute_names[<?php echo $i; ?>]" value="<?php echo $tax->attribute_name; ?>" />
+		<input type="hidden" name="attribute_names[<?php echo $i; ?>]" value="<?php echo esc_attr( $tax->attribute_name ); ?>" />
 		<input type="hidden" name="attribute_is_taxonomy[<?php echo $i; ?>]" value="1" />
 		<input type="hidden" name="attribute_enabled[<?php echo $i; ?>]" value="1" />
-		<input type="hidden" name="attribute_position[<?php echo $i; ?>]" class="attribute_position" value="<?php echo $position; ?>" />
+		<input type="hidden" name="attribute_position[<?php echo $i; ?>]" class="attribute_position" value="<?php echo esc_attr( $position ); ?>" />
 
 		<div class="inside">
 			<table>
 				<tr>
 					<td class="options">
-						<input type="text" class="attribute-name" name="attribute_names[<?php echo $i; ?>]" value="<?php echo $tax->attribute_name; ?>" disabled="disabled" />
+						<input type="text" class="attribute-name" name="attribute_names[<?php echo $i; ?>]" value="<?php echo esc_attr( $tax->attribute_name ); ?>" disabled="disabled" />
 
 						<div>
 							<label>
@@ -552,7 +552,7 @@ function display_attribute() { ?>
 
 		<input type="hidden" name="attribute_is_taxonomy[<?php echo $i; ?>]" value="0" />
 		<input type="hidden" name="attribute_enabled[<?php echo $i; ?>]" value="1" />
-		<input type="hidden" name="attribute_position[<?php echo $i; ?>]" class="attribute_position" value="<?php echo $position; ?>" />
+		<input type="hidden" name="attribute_position[<?php echo $i; ?>]" class="attribute_position" value="<?php echo esc_attr( $position ); ?>" />
 
 		<div class="inside">
 			<table>

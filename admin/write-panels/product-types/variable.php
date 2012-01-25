@@ -472,7 +472,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 							<td class="upload_image" rowspan="2">
 								<a href="#" class="upload_image_button <?php if ($image_id) echo 'remove'; ?>" rel="<?php echo $variation->ID; ?>">
 									<img src="<?php echo $image ?>" width="93px" />
-									<input type="hidden" name="<?php echo $this->field_name('_thumbnail_id', $variation) ?>" class="upload_image_id" value="<?php echo $image_id; ?>" />
+									<input type="hidden" name="<?php echo esc_attr( $this->field_name('_thumbnail_id', $variation) ); ?>" class="upload_image_id" value="<?php echo esc_attr( $image_id ); ?>" />
 									<!-- TODO: APPEND THIS IN JS <span class="overlay"></span> -->
 								</a>
 							</td>
@@ -483,7 +483,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 									$product_type = ($terms) ? current($terms)->slug : 'simple';
 								?>
 								<label class="clearlabel"><?php _e('Type', 'jigoshop') ?></label>
-								<select class="product_type" name="<?php echo $this->field_name('product-type', $variation) ?>">
+								<select class="product_type" name="<?php echo esc_attr( $this->field_name('product-type', $variation) ); ?>">
 									<option value="simple" <?php selected('simple', $product_type) ?>>Simple</option>
 									<option value="downloadable" <?php selected('downloadable', $product_type) ?>>Downloadable</option>
 									<option value="virtual" <?php selected('virtual', $product_type) ?>>Virtual</option>
@@ -492,45 +492,45 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 							<td>
 								<label><?php _e('SKU', 'jigoshop'); ?>
-									<input type="text" name="<?php echo $this->field_name('sku', $variation) ?>" value="<?php echo isset($meta['sku'][0]) ? $meta['sku'][0] : null; ?>" />
+									<input type="text" name="<?php echo esc_attr( $this->field_name('sku', $variation) ); ?>" value="<?php echo esc_attr( isset($meta['sku'][0]) ? $meta['sku'][0] : null ); ?>" />
 								</label>
 							</td>
 
 							<td>
 								<label><?php _e('Stock Qty', 'jigoshop'); ?>
-									<input type="text" name="<?php echo $this->field_name('stock', $variation) ?>" value="<?php echo isset($meta['stock'][0]) ? $meta['stock'][0] : null; ?>" />
+									<input type="text" name="<?php echo esc_attr( $this->field_name('stock', $variation) ); ?>" value="<?php echo esc_attr( isset($meta['stock'][0]) ? $meta['stock'][0] : null ); ?>" />
 								</label>
 							</td>
 
 							<td>
 								<label><?php _e('Price', 'jigoshop'); ?>
-									<input type="text" name="<?php echo $this->field_name('regular_price', $variation) ?>" value="<?php echo isset($meta['regular_price'][0]) ? $meta['regular_price'][0] : null; ?>" />
+									<input type="text" name="<?php echo esc_attr( $this->field_name('regular_price', $variation) ); ?>" value="<?php echo esc_attr( isset($meta['regular_price'][0]) ? $meta['regular_price'][0] : null ); ?>" />
 								</label>
 							</td>
 
 							<td>
 								<label><?php _e('Sale Price', 'jigoshop'); ?>
-									<input type="text" name="<?php echo $this->field_name('sale_price', $variation) ?>" value="<?php echo isset($meta['sale_price'][0]) ? $meta['sale_price'][0] : null; ?>" />
+									<input type="text" name="<?php echo esc_attr( $this->field_name('sale_price', $variation) ); ?>" value="<?php echo esc_attr( isset($meta['sale_price'][0]) ? $meta['sale_price'][0] : null ); ?>" />
 								</label>
 							</td>
 
 							<td>
 								<label><?php _e('Enabled', 'jigoshop'); ?>
-									<input type="checkbox" class="checkbox" name="<?php echo $this->field_name('enabled', $variation) ?>" <?php checked($variation->post_status, 'publish'); ?> />
+									<input type="checkbox" class="checkbox" name="<?php echo esc_attr( $this->field_name('enabled', $variation) ); ?>" <?php checked($variation->post_status, 'publish'); ?> />
 								</label>
 							</td>
 						</tr>
 						<tr class="simple options" <?php echo ('simple' == $product_type ? 'style="display: table-row;"' : 'style="display: none;"');?>>
 							<td>
 								<label><?php _e('Weight', 'jigoshop') ?>
-									<input type="text" name="<?php echo $this->field_name('weight', $variation) ?>" value="<?php echo isset($meta['weight'][0]) ? $meta['weight'][0] : null; ?>" />
+									<input type="text" name="<?php echo esc_attr( $this->field_name('weight', $variation) ); ?>" value="<?php echo esc_attr( isset($meta['weight'][0]) ? $meta['weight'][0] : null ); ?>" />
 								</label>
 							</td>
 							<td colspan="4" class="dimensions">
 								<label><?php _e('Dimensions', 'jigoshop') ?> <?php echo '('.get_option('jigoshop_dimension_unit'). ')' ?></label>
-								<input type="text" name="<?php echo $this->field_name('length', $variation) ?>" placeholder="Length" value="<?php echo isset($meta['length'][0]) ? $meta['length'][0] : null; ?>" />
-								<input type="text" name="<?php echo $this->field_name('width', $variation) ?>" placeholder="Width" value="<?php echo isset($meta['width'][0]) ? $meta['width'][0] : null; ?>" />
-								<input type="text" name="<?php echo $this->field_name('height', $variation) ?>" placeholder="Height" value="<?php echo isset($meta['height'][0]) ? $meta['height'][0] : null; ?>" />
+								<input type="text" name="<?php echo esc_attr( $this->field_name('length', $variation) ); ?>" placeholder="Length" value="<?php echo esc_attr( isset($meta['length'][0]) ? $meta['length'][0] : null ); ?>" />
+								<input type="text" name="<?php echo esc_attr( $this->field_name('width', $variation) ); ?>" placeholder="Width" value="<?php echo esc_attr( isset($meta['width'][0]) ? $meta['width'][0] : null ); ?>" />
+								<input type="text" name="<?php echo esc_attr( $this->field_name('height', $variation) ); ?>" placeholder="Height" value="<?php echo esc_attr( isset($meta['height'][0]) ? $meta['height'][0] : null ); ?>" />
 								<td colspan="3">
 									&nbsp;
 								</td>
@@ -539,12 +539,12 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 						<tr class="downloadable options" <?php echo ('downloadable' == $product_type) ? 'style="display: table-row;"' : 'style="display: none;"';?>>
 							<td colspan="4" class="download_file">
 								<label class="clearlabel"><?php _e('File Location', 'jigoshop') ?></label>
-								<input type="text" name="<?php echo $this->field_name('file_path', $variation) ?>" value="<?php echo isset($meta['file_path'][0]) ? $meta['file_path'][0] : null; ?>" />
+								<input type="text" name="<?php echo esc_attr( $this->field_name('file_path', $variation) ); ?>" value="<?php echo esc_attr( isset($meta['file_path'][0]) ? $meta['file_path'][0] : null ); ?>" />
 								<input type="submit" class="upload_file_button button-secondary" value="Upload">
 							</td>
 							<td colspan="2">
 								<label><?php _e('Re-downloads Limit', 'jigoshop') ?>
-									<input type="text" name="<?php echo $this->field_name('download_limit', $variation) ?>" value="<?php echo isset($meta['file_path'][0]) ? $meta['download_limit'][0] : null; ?>" />
+									<input type="text" name="<?php echo esc_attr( $this->field_name('download_limit', $variation) ); ?>" value="<?php echo esc_attr( isset($meta['file_path'][0]) ? $meta['download_limit'][0] : null ); ?>" />
 								</label>
 							</td>
 						</tr>

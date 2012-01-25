@@ -48,7 +48,7 @@ function jigoshop_update() {
 			if ( $response ) {
 				echo '
 					<div class="updated">
-						<p>'.__('Your database has been successfully updated. Your shop is now automatically better than the rest, happy days', 'jigoshop').'!</p>
+						<p>'.__('Your database has been successfully updated. Your shop is now automatically better than the rest, oh happy day!', 'jigoshop').'!</p>
 					</div>
 				';
 			}
