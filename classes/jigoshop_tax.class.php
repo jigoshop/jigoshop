@@ -322,7 +322,7 @@ class jigoshop_tax {
                         $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
                         $non_compound_tax_amount += $tax;
                         $total_tax += $tax;
-                        $this->has_tax = true;
+                        
                     endif;
 
                 else :
@@ -336,7 +336,6 @@ class jigoshop_tax {
                         $tax_amount[$tax_class]['compound'] = true;
                         $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
                         $total_tax += $tax;
-                        $this->has_tax = true;
                     endif;
 
                 endif;
@@ -346,6 +345,7 @@ class jigoshop_tax {
             // only update when we haven't calculated taxes yet. Otherwise, if we have
             // taxes already, then the call is made to update tax
             if ( empty($this->tax_amounts) ) :
+                $this->has_tax = true;
                 $this->non_compound_tax_amount = $non_compound_tax_amount;
                 $this->tax_amounts = $tax_amount;
                 $this->imploded_tax_amounts = $this->array_implode($this->tax_amounts);
