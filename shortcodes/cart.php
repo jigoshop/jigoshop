@@ -92,7 +92,7 @@ function jigoshop_cart($atts) {
         return;
     endif;
     ?>
-    <form action="<?php echo jigoshop_cart::get_cart_url(); ?>" method="post">
+    <form action="<?php echo esc_url( jigoshop_cart::get_cart_url() ); ?>" method="post">
         <table class="shop_table cart" cellspacing="0">
             <thead>
                 <tr>
@@ -118,8 +118,8 @@ function jigoshop_cart($atts) {
                             }
                             ?>
                             <tr>
-                                <td class="product-remove"><a href="<?php echo jigoshop_cart::get_remove_url($cart_item_key); ?>" class="remove" title="<?php echo esc_attr( __('Remove this item.', 'jigoshop') ); ?>">&times;</a></td>
-                                <td class="product-thumbnail"><a href="<?php echo apply_filters('jigoshop_product_url_display_in_cart', get_permalink($values['product_id']), $values['product_id']); ?>">
+                                <td class="product-remove"><a href="<?php echo esc_url( jigoshop_cart::get_remove_url($cart_item_key) ); ?>" class="remove" title="<?php echo esc_attr( __('Remove this item.', 'jigoshop') ); ?>">&times;</a></td>
+                                <td class="product-thumbnail"><a href="<?php echo esc_url( apply_filters('jigoshop_product_url_display_in_cart', get_permalink($values['product_id']), $values['product_id']) ); ?>">
                                         <?php
                                         if ($values['variation_id'] && has_post_thumbnail($values['variation_id'])) {
                                             echo get_the_post_thumbnail($values['variation_id'], 'shop_tiny');
@@ -133,7 +133,7 @@ function jigoshop_cart($atts) {
                                     </a></td>
 
                                 <td class="product-name">
-                                    <a href="<?php echo apply_filters('jigoshop_product_url_display_in_cart', get_permalink($values['product_id']), $values['product_id']); ?>"><?php echo apply_filters('jigoshop_cart_product_title', $_product->get_title(), $_product); ?></a>
+                                    <a href="<?php echo esc_url( apply_filters('jigoshop_product_url_display_in_cart', get_permalink($values['product_id']), $values['product_id']) ); ?>"><?php echo apply_filters('jigoshop_cart_product_title', $_product->get_title(), $_product); ?></a>
                                     <?php echo $additional_description; ?>
                                 </td>
                                 <td class="product-price"><?php echo jigoshop_price($_product->get_price()); ?></td>
@@ -162,7 +162,7 @@ function jigoshop_cart($atts) {
                             <input type="submit" class="button" name="apply_coupon" value="<?php _e('Apply Coupon', 'jigoshop'); ?>" />
                         </div>
                         <?php jigoshop::nonce_field('cart') ?>
-                        <input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" /> <a href="<?php echo jigoshop_cart::get_checkout_url(); ?>" class="checkout-button button-alt"><?php _e('Proceed to Checkout &rarr;', 'jigoshop'); ?></a>
+                        <input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" /> <a href="<?php echo esc_url( jigoshop_cart::get_checkout_url() ); ?>" class="checkout-button button-alt"><?php _e('Proceed to Checkout &rarr;', 'jigoshop'); ?></a>
                     </td>
                 </tr>
                 <?php if (count(jigoshop_cart::$applied_coupons)) : ?>

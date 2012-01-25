@@ -213,7 +213,7 @@ function jigoshop_order_items_meta_box($post) {
 						<td class="product-id"><?php echo $item['id']; ?></td>
 						<td class="variation-id"><?php if ( isset($item['variation_id']) ) echo $item['variation_id']; else echo '-'; ?></td>
 						<td class="product-sku"><?php if ($_product->sku) echo $_product->sku; ?></td>
-						<td class="name"><a href="<?php echo admin_url('post.php?post='. $_product->id .'&action=edit'); ?>"><?php echo $item['name']; ?></a></td>
+						<td class="name"><a href="<?php echo esc_url( admin_url('post.php?post='. $_product->id .'&action=edit') ); ?>"><?php echo $item['name']; ?></a></td>
 						<td class="variation"><?php
 							if (isset($_product->variation_data)) :
 								echo jigoshop_get_formatted_variation( $_product->variation_data, true );
@@ -331,7 +331,7 @@ function jigoshop_order_actions_meta_box($post) {
 			else
 				$delete_text = __('Move to Trash');
 			?>
-		<a class="submitdelete deletion" href="<?php echo get_delete_post_link($post->ID); ?>"><?php echo $delete_text; ?></a><?php
+		<a class="submitdelete deletion" href="<?php echo esc_url( get_delete_post_link($post->ID) ); ?>"><?php echo $delete_text; ?></a><?php
 		} ?>
 		</li>
 	</ul>

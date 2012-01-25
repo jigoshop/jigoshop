@@ -83,7 +83,7 @@ function jigoshop_add_order_item() {
 		<td class="product-id">#<?php echo $_product->id; ?></td>
 		<td class="variation-id"><?php if (isset($_product->variation_id)) echo $_product->variation_id; else echo '-'; ?></td>
 		<td class="product-sku"><?php if ($_product->sku) echo $_product->sku; ?></td>
-		<td class="name"><a href="<?php echo admin_url('post.php?post='. $_product->id .'&action=edit'); ?>"><?php echo $_product->get_title(); ?></a></td>
+		<td class="name"><a href="<?php echo esc_url( admin_url('post.php?post='. $_product->id .'&action=edit') ); ?>"><?php echo $_product->get_title(); ?></a></td>
 		<td class="variation"><?php
 			if (isset($_product->variation_data)) :
 				echo jigoshop_get_formatted_variation( $_product->variation_data, true );

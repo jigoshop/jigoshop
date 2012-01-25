@@ -275,7 +275,7 @@ if (!function_exists('jigoshop_simple_add_to_cart')) {
 		if ($availability['availability']) : ?><p class="stock <?php echo $availability['class'] ?>"><?php echo $availability['availability']; ?></p><?php endif;
 
 		?>
-		<form action="<?php echo $_product->add_to_cart_url(); ?>" class="cart" method="post">
+		<form action="<?php echo esc_url( $_product->add_to_cart_url() ); ?>" class="cart" method="post">
 		 	<div class="quantity"><input name="quantity" value="1" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div>
 		 	<button type="submit" class="button-alt"><?php _e('Add to cart', 'jigoshop'); ?></button>
 		 	<?php do_action('jigoshop_add_to_cart_form'); ?>
@@ -301,7 +301,7 @@ if (!function_exists('jigoshop_downloadable_add_to_cart')) {
 		if ($availability['availability']) : ?><p class="stock <?php echo $availability['class'] ?>"><?php echo $availability['availability']; ?></p><?php endif;
 
 		?>
-		<form action="<?php echo $_product->add_to_cart_url(); ?>" class="cart" method="post">
+		<form action="<?php echo esc_url( $_product->add_to_cart_url() ); ?>" class="cart" method="post">
 			<button type="submit" class="button-alt"><?php _e('Add to cart', 'jigoshop'); ?></button>
 			<?php do_action('jigoshop_add_to_cart_form'); ?>
 		</form>
@@ -314,7 +314,7 @@ if (!function_exists('jigoshop_grouped_add_to_cart')) {
 		global $_product;
 
 		?>
-		<form action="<?php echo $_product->add_to_cart_url(); ?>" class="cart" method="post">
+		<form action="<?php echo esc_url( $_product->add_to_cart_url() ); ?>" class="cart" method="post">
 			<table cellspacing="0">
 				<tbody>
 					<?php foreach ($_product->get_children() as $child_ID) : $child = $_product->get_child($child_ID); $cavailability = $child->get_availability(); ?>
@@ -380,7 +380,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
         <script type="text/javascript">
             var product_variations = <?php echo json_encode($variationsAvailable) ?>;
         </script>
-		<form action="<?php echo $_product->add_to_cart_url(); ?>" class="variations_form cart" method="post">
+		<form action="<?php echo esc_url( $_product->add_to_cart_url() ); ?>" class="variations_form cart" method="post">
 			<fieldset class="variations">
 				<?php foreach ( $attributes as $aname => $avalues ): ?>
 					<?php $sanitized_name = sanitize_title( $aname ); ?>
@@ -428,7 +428,7 @@ if (!function_exists('jigoshop_external_add_to_cart')) {
 		?>
 
 		<p>
-			<a href="<?php echo $external_url; ?>" rel="nofollow" class="button"><?php _e('Buy product', 'jigoshop'); ?></a>
+			<a href="<?php echo esc_url( $external_url ); ?>" rel="nofollow" class="button"><?php _e('Buy product', 'jigoshop'); ?></a>
 		</p>
 
 		<?php
@@ -598,7 +598,7 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 	function jigoshop_shipping_calculator() {
 		if (jigoshop_shipping::show_shipping_calculator()) :
 		?>
-		<form class="shipping_calculator" action="<?php echo jigoshop_cart::get_cart_url(); ?>" method="post">
+		<form class="shipping_calculator" action="<?php echo esc_url( jigoshop_cart::get_cart_url() ); ?>" method="post">
 			<h2><a href="#" class="shipping-calculator-button"><?php _e('Calculate Shipping', 'jigoshop'); ?> <span>&darr;</span></a></h2>
 			<section class="shipping-calculator-form">
 			<p class="form-row">
@@ -727,7 +727,7 @@ if (!function_exists('jigoshop_login_form')) {
 			<p class="form-row">
 				<?php jigoshop::nonce_field('login', 'login') ?>
 				<input type="submit" class="button" name="login" value="<?php _e('Login', 'jigoshop'); ?>" />
-				<a class="lost_password" href="<?php echo wp_lostpassword_url( get_permalink() ); ?>"><?php _e('Lost Password?', 'jigoshop'); ?></a>
+				<a class="lost_password" href="<?php echo esc_url( wp_lostpassword_url( get_permalink() ) ); ?>"><?php _e('Lost Password?', 'jigoshop'); ?></a>
 			</p>
 		</form>
 		<?php

@@ -43,7 +43,7 @@ function jigoshop_my_account( $atts ) {
 		<h2><?php _e('Available downloads', 'jigoshop'); ?></h2>
 		<ul class="digital-downloads">
 			<?php foreach ($downloads as $download) : ?>
-				<li><?php if (is_numeric($download['downloads_remaining'])) : ?><span class="count"><?php echo $download['downloads_remaining'] . _n(' download Remaining', ' downloads Remaining', $download['downloads_remaining'], 'jigoshop'); ?></span><?php endif; ?> <a href="<?php echo $download['download_url']; ?>"><?php echo $download['download_name']; ?></a></li>
+				<li><?php if (is_numeric($download['downloads_remaining'])) : ?><span class="count"><?php echo $download['downloads_remaining'] . _n(' download Remaining', ' downloads Remaining', $download['downloads_remaining'], 'jigoshop'); ?></span><?php endif; ?> <a href="<?php echo esc_url( $download['download_url'] ); ?>"><?php echo $download['download_name']; ?></a></li>
 			<?php endforeach; ?>
 		</ul>
 		<?php endif; ?>
@@ -74,10 +74,10 @@ function jigoshop_my_account( $atts ) {
 						<td class="nobr"><?php echo $order->status; ?></td>
 						<td class="nobr alignright">
 							<?php if ($order->status=='pending') : ?>
-								<a href="<?php echo $order->get_checkout_payment_url(); ?>" class="button pay"><?php _e('Pay', 'jigoshop'); ?></a>
-								<a href="<?php echo $order->get_cancel_order_url(); ?>" class="button cancel"><?php _e('Cancel', 'jigoshop'); ?></a>
+								<a href="<?php echo esc_url( $order->get_checkout_payment_url() ); ?>" class="button pay"><?php _e('Pay', 'jigoshop'); ?></a>
+								<a href="<?php echo esc_url( $order->get_cancel_order_url() ); ?>" class="button cancel"><?php _e('Cancel', 'jigoshop'); ?></a>
 							<?php endif; ?>
-							<a href="<?php echo add_query_arg('order', $order->id, apply_filters('jigoshop_get_view_order_page_id', get_permalink(get_option('jigoshop_view_order_page_id')))); ?>" class="button"><?php _e('View', 'jigoshop'); ?></a>
+							<a href="<?php echo esc_url( add_query_arg('order', $order->id, apply_filters('jigoshop_get_view_order_page_id', get_permalink(get_option('jigoshop_view_order_page_id')))) ); ?>" class="button"><?php _e('View', 'jigoshop'); ?></a>
 						</td>
 					</tr><?php
 				endforeach;
@@ -93,7 +93,7 @@ function jigoshop_my_account( $atts ) {
 
 				<header class="title">
 					<h3><?php _e('Billing Address', 'jigoshop'); ?></h3>
-					<a href="<?php echo add_query_arg('address', 'billing', apply_filters('jigoshop_get_edit_address_page_id', get_permalink(get_option('jigoshop_edit_address_page_id')))); ?>" class="edit"><?php _e('Edit', 'jigoshop'); ?></a>
+					<a href="<?php echo esc_url( add_query_arg('address', 'billing', apply_filters('jigoshop_get_edit_address_page_id', get_permalink(get_option('jigoshop_edit_address_page_id')))) ); ?>" class="edit"><?php _e('Edit', 'jigoshop'); ?></a>
 				</header>
 				<address>
 					<?php
@@ -122,7 +122,7 @@ function jigoshop_my_account( $atts ) {
 
 				<header class="title">
 					<h3><?php _e('Shipping Address', 'jigoshop'); ?></h3>
-					<a href="<?php echo add_query_arg('address', 'shipping', apply_filters('jigoshop_get_edit_address_page_id', get_permalink(get_option('jigoshop_edit_address_page_id')))); ?>" class="edit"><?php _e('Edit', 'jigoshop'); ?></a>
+					<a href="<?php echo esc_url( add_query_arg('address', 'shipping', apply_filters('jigoshop_get_edit_address_page_id', get_permalink(get_option('jigoshop_edit_address_page_id')))) ); ?>" class="edit"><?php _e('Edit', 'jigoshop'); ?></a>
 				</header>
 				<address>
 					<?php
@@ -207,7 +207,7 @@ function jigoshop_edit_address() {
 			'country' => get_user_meta( get_current_user_id(), $load_address . '-country', true )
 		);
 		?>
-		<form action="<?php echo add_query_arg('address', $load_address, apply_filters('jigoshop_get_edit_address_page_id', get_permalink(get_option('jigoshop_edit_address_page_id')))); ?>" method="post">
+		<form action="<?php echo esc_url( add_query_arg('address', $load_address, apply_filters('jigoshop_get_edit_address_page_id', get_permalink(get_option('jigoshop_edit_address_page_id')))) ); ?>" method="post">
 
 			<h3><?php if ($load_address=='billing') _e('Billing Address', 'jigoshop'); else _e('Shipping Address', 'jigoshop'); ?></h3>
 
@@ -361,7 +361,7 @@ function jigoshop_change_password() {
         jigoshop::show_messages();
 
 		?>
-		<form action="<?php echo apply_filters('jigoshop_get_change_password_page_id', get_permalink(get_option('jigoshop_change_password_page_id'))); ?>" method="post">
+		<form action="<?php echo esc_url( apply_filters('jigoshop_get_change_password_page_id', get_permalink(get_option('jigoshop_change_password_page_id'))) ); ?>" method="post">
 
 			<p class="form-row form-row-first">
 				<label for="password-1"><?php _e('New password', 'jigoshop'); ?> <span class="required">*</span></label>
