@@ -223,7 +223,7 @@ class jigoshop_cart extends jigoshop_singleton {
                             self::$discount_total = self::$discount_total - ( $coupon['amount'] * $_product['quantity'] );
                             unset(self::$applied_coupons[$key]);
                         } else if ($coupon['type'] == 'percent_product') {
-                            self::$discount_total = self::$discount_total - (( $_product['data']->get_price() / 100 ) * $coupon['amount']);
+                            self::$discount_total = self::$discount_total - (( $_product['data']->get_price() * $_product['quantity'] / 100 ) * $coupon['amount']);
                             unset(self::$applied_coupons[$key]);
                         }
                     endif;
@@ -440,7 +440,7 @@ class jigoshop_cart extends jigoshop_singleton {
                             if ($coupon['type'] == 'fixed_product')
                                 self::$discount_total += ( $coupon['amount'] * $values['quantity'] );
                             else if ($coupon['type'] == 'percent_product')
-                                self::$discount_total += (( $values['data']->get_price() / 100 ) * $coupon['amount']);
+                                self::$discount_total += (( $values['data']->get_price() * $values['quantity'] / 100 ) * $coupon['amount']);
                         }
                     endforeach;
                 endif;
