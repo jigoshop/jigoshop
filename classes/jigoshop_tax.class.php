@@ -399,6 +399,14 @@ class jigoshop_tax {
     public function update_tax_amount($tax_class, $amount, $recalculate_tax = true) {
         
         if ($tax_class) :
+
+            if (empty($this->tax_amounts)) :
+                $this->tax_amounts[$tax_class]['rate'] = $this->get_rate($tax_class);
+                $this->tax_amounts[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
+                $this->tax_amounts[$tax_class]['compound'] = false;
+                $this->has_tax = true;
+                $this->total_tax_rate = $this->tax_amounts[$tax_class]['rate'];
+            endif;
             
             if ($recalculate_tax) :
                 $rate = $this->get_rate($tax_class);
@@ -434,7 +442,7 @@ class jigoshop_tax {
      * @return string which is the unsanitized tax class
      */
     public function get_tax_class_for_display($tax_class) {
-        return (isset($this->tax_amounts[$tax_class]) && isset($this->tax_amounts[$tax_class]['display']) ? $this->tax_amounts[$tax_class]['display'] : 'Tax');
+        return (!empty($this->tax_amounts[$tax_class]['display']) ? $this->tax_amounts[$tax_class]['display'] : 'Tax');
     }
 
     /**
