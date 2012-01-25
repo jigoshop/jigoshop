@@ -287,7 +287,7 @@ function jigoshop_product_add_to_cart( $atts ) {
 
 	ob_start();
 	?>
-	<p class="<?php echo $atts['class']; ?>">
+	<p class="<?php echo esc_attr( $atts['class'] ); ?>">
 	
 		<?php if ($atts['price'] != 'no') echo $_product->get_price_html(); ?>
 
