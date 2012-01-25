@@ -139,7 +139,7 @@ function jigoshop_custom_product_columns($column) {
 					$h_time = mysql2date( __( 'Y/m/d', 'jigoshop' ), $m_time );
 			endif;
 
-			echo '<abbr title="' . $t_time . '">' . apply_filters( 'post_date_column_time', $h_time, $post ) . '</abbr><br />';
+			echo '<abbr title="' . esc_attr( $t_time ) . '">' . apply_filters( 'post_date_column_time', $h_time, $post ) . '</abbr><br />';
 
             if ( 'publish' == $post->post_status ) :
                 _e( 'Published', 'jigoshop' );
@@ -493,12 +493,12 @@ function jigoshop_custom_order_views($views) {
     $cancelled = (isset($_GET['shop_order_status']) && $_GET['shop_order_status'] == 'cancelled') ? 'current' : '';
     $refunded = (isset($_GET['shop_order_status']) && $_GET['shop_order_status'] == 'refunded') ? 'current' : '';
 
-    $views['pending'] = '<a class="' . $pending . '" href="?post_type=shop_order&amp;shop_order_status=pending">' . __('Pending', 'jigoshop') . ' <span class="count">(' . $jigoshop_orders->pending_count . ')</span></a>';
-    $views['onhold'] = '<a class="' . $onhold . '" href="?post_type=shop_order&amp;shop_order_status=on-hold">' . __('On-Hold', 'jigoshop') . ' <span class="count">(' . $jigoshop_orders->on_hold_count . ')</span></a>';
-    $views['processing'] = '<a class="' . $processing . '" href="?post_type=shop_order&amp;shop_order_status=processing">' . __('Processing', 'jigoshop') . ' <span class="count">(' . $jigoshop_orders->processing_count . ')</span></a>';
-    $views['completed'] = '<a class="' . $completed . '" href="?post_type=shop_order&amp;shop_order_status=completed">' . __('Completed', 'jigoshop') . ' <span class="count">(' . $jigoshop_orders->completed_count . ')</span></a>';
-    $views['cancelled'] = '<a class="' . $cancelled . '" href="?post_type=shop_order&amp;shop_order_status=cancelled">' . __('Cancelled', 'jigoshop') . ' <span class="count">(' . $jigoshop_orders->cancelled_count . ')</span></a>';
-    $views['refunded'] = '<a class="' . $refunded . '" href="?post_type=shop_order&amp;shop_order_status=refunded">' . __('Refunded', 'jigoshop') . ' <span class="count">(' . $jigoshop_orders->refunded_count . ')</span></a>';
+    $views['pending'] = '<a class="' . esc_attr( $pending ) . '" href="?post_type=shop_order&amp;shop_order_status=pending">' . __('Pending', 'jigoshop') . ' <span class="count">(' . $jigoshop_orders->pending_count . ')</span></a>';
+    $views['onhold'] = '<a class="' . esc_attr( $onhold ) . '" href="?post_type=shop_order&amp;shop_order_status=on-hold">' . __('On-Hold', 'jigoshop') . ' <span class="count">(' . $jigoshop_orders->on_hold_count . ')</span></a>';
+    $views['processing'] = '<a class="' . esc_attr( $processing ) . '" href="?post_type=shop_order&amp;shop_order_status=processing">' . __('Processing', 'jigoshop') . ' <span class="count">(' . $jigoshop_orders->processing_count . ')</span></a>';
+    $views['completed'] = '<a class="' . esc_attr( $completed ) . '" href="?post_type=shop_order&amp;shop_order_status=completed">' . __('Completed', 'jigoshop') . ' <span class="count">(' . $jigoshop_orders->completed_count . ')</span></a>';
+    $views['cancelled'] = '<a class="' . esc_attr( $cancelled ) . '" href="?post_type=shop_order&amp;shop_order_status=cancelled">' . __('Cancelled', 'jigoshop') . ' <span class="count">(' . $jigoshop_orders->cancelled_count . ')</span></a>';
+    $views['refunded'] = '<a class="' . esc_attr( $refunded ) . '" href="?post_type=shop_order&amp;shop_order_status=refunded">' . __('Refunded', 'jigoshop') . ' <span class="count">(' . $jigoshop_orders->refunded_count . ')</span></a>';
 
     if ($pending || $onhold || $processing || $completed || $cancelled || $refunded) :
 

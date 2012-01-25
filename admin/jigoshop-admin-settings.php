@@ -476,7 +476,7 @@ function jigoshop_admin_fields($options) {
                                         foreach ($coupon_codes as $coupon) : $i++;
                                             echo '<tr class="coupon_row">';
                                             echo '<td><a href="#" class="remove button" title="' . __('Delete this Coupon', 'jigoshop') . '">&times;</a></td>';
-                                            echo '<td><input type="text" value="' . esc_attr( $coupon['code'] ) . '" name="coupon_code[' . $i . ']" title="' . __('Coupon Code', 'jigoshop') . '" placeholder="' . __('Coupon Code', 'jigoshop') . '" class="text" /></td><td><select name="coupon_type[' . $i . ']" title="Coupon Type">';
+                                            echo '<td><input type="text" value="' . esc_attr( $coupon['code'] ) . '" name="coupon_code[' . esc_attr( $i ) . ']" title="' . __('Coupon Code', 'jigoshop') . '" placeholder="' . __('Coupon Code', 'jigoshop') . '" class="text" /></td><td><select name="coupon_type[' . esc_attr( $i ) . ']" title="Coupon Type">';
 
                                             $discount_types = array(
                                                 'fixed_cart' => __('Cart Discount', 'jigoshop'),
@@ -490,22 +490,22 @@ function jigoshop_admin_fields($options) {
                                                 echo '<option value="' . esc_attr( $type ) . '" ' . $selected . '>' . esc_html( $label ) . '</option>';
                                             endforeach;
                                             echo '</select></td>';
-                                            echo '<td><input type="text" value="' . esc_attr( $coupon['amount'] ) . '" name="coupon_amount[' . $i . ']" title="' . __('Coupon Amount', 'jigoshop') . '" placeholder="' . __('Amount', 'jigoshop') . '" class="text" /></td>
-			                    			<td><input type="text" value="' . implode(', ', $coupon['products']) . '" name="product_ids[' . $i . ']" placeholder="' . __('1, 2, 3,', 'jigoshop') . '" class="text" /></td>';
+                                            echo '<td><input type="text" value="' . esc_attr( $coupon['amount'] ) . '" name="coupon_amount[' . esc_attr( $i ) . ']" title="' . __('Coupon Amount', 'jigoshop') . '" placeholder="' . __('Amount', 'jigoshop') . '" class="text" /></td>
+			                    			<td><input type="text" value="' . implode(', ', $coupon['products']) . '" name="product_ids[' . esc_attr( $i ) . ']" placeholder="' . __('1, 2, 3,', 'jigoshop') . '" class="text" /></td>';
 
                                             $date_from = $coupon['date_from'];
-                                            echo '<td><label for="coupon_date_from[' . $i . ']"></label><input type="text" class="text date-pick" name="coupon_date_from[' . $i . ']" id="coupon_date_from[' . $i . ']" value="';
+                                            echo '<td><label for="coupon_date_from[' . esc_attr( $i ) . ']"></label><input type="text" class="text date-pick" name="coupon_date_from[' . esc_attr( $i ) . ']" id="coupon_date_from[' . esc_attr( $i ) . ']" value="';
                                             if ($date_from)
                                                 echo date('Y-m-d', $date_from);
                                             echo '" placeholder="' . __('yyyy-mm-dd', 'jigoshop') . '" /></td>';
 
                                             $date_to = $coupon['date_to'];
-                                            echo '<td><label for="coupon_date_to[' . $i . ']"></label><input type="text" class="text date-pick" name="coupon_date_to[' . $i . ']" id="coupon_date_to[' . $i . ']" value="';
+                                            echo '<td><label for="coupon_date_to[' . esc_attr( $i ) . ']"></label><input type="text" class="text date-pick" name="coupon_date_to[' . esc_attr( $i ) . ']" id="coupon_date_to[' . esc_attr( $i ) . ']" value="';
                                             if ($date_to)
                                                 echo date('Y-m-d', $date_to);
                                             echo '" placeholder="' . __('yyyy-mm-dd', 'jigoshop') . '" /></td>';
 
-                                            echo '<td><input type="checkbox" name="individual[' . $i . ']" ';
+                                            echo '<td><input type="checkbox" name="individual[' . esc_attr( $i ) . ']" ';
                                             if (isset($coupon['individual_use']) && $coupon['individual_use'] == 'yes')
                                                 echo 'checked="checked"';
                                             echo ' /></td>';
@@ -658,7 +658,7 @@ function jigoshop_admin_fields($options) {
                         
                         $i++;// increment counter after check for all states having been applied
                         
-                        echo '<p class="taxrow"><select name="tax_classes[' . $i . ']" title="Tax Classes"><option value="*">' . __('Standard Rate', 'jigoshop') . '</option>';
+                        echo '<p class="taxrow"><select name="tax_classes[' . esc_attr( $i ) . ']" title="Tax Classes"><option value="*">' . __('Standard Rate', 'jigoshop') . '</option>';
 
                         if ($tax_classes)
                             foreach ($tax_classes as $class) :
@@ -670,9 +670,9 @@ function jigoshop_admin_fields($options) {
                                 echo '>' . $class . '</option>';
                             endforeach;
 
-                        echo '</select><input type="text" class="text" value="' . $rate['label'] . '" name="tax_label[' . $i . ']" title="' . __('Online Label', 'jigoshop') . '" placeholder="' . __('Online Label', 'jigoshop') . '" maxlength="15" />';
+                        echo '</select><input type="text" class="text" value="' . $rate['label'] . '" name="tax_label[' . esc_attr( $i ) . ']" title="' . __('Online Label', 'jigoshop') . '" placeholder="' . __('Online Label', 'jigoshop') . '" maxlength="15" />';
 
-                        echo '</select><select name="tax_country[' . $i . ']" title="Country">';
+                        echo '</select><select name="tax_country[' . esc_attr( $i ) . ']" title="Country">';
                             
                         if ($rate['is_all_states']) :
                             if (is_array($applied_all_states) && !in_array($rate['country'], $applied_all_states)) :
@@ -685,12 +685,12 @@ function jigoshop_admin_fields($options) {
                             jigoshop_countries::country_dropdown_options($rate['country'], $rate['state']);
                         endif;
                             
-                        echo '</select><input type="text" class="text" value="' . $rate['rate'] . '" name="tax_rate[' . $i . ']" title="' . __('Rate', 'jigoshop') . '" placeholder="' . __('Rate', 'jigoshop') . '" maxlength="8" />% <label><input type="checkbox" name="tax_shipping[' . $i . ']" ';
+                        echo '</select><input type="text" class="text" value="' . $rate['rate'] . '" name="tax_rate[' . esc_attr( $i ) . ']" title="' . __('Rate', 'jigoshop') . '" placeholder="' . __('Rate', 'jigoshop') . '" maxlength="8" />% <label><input type="checkbox" name="tax_shipping[' . esc_attr( $i ) . ']" ';
 
                         if (isset($rate['shipping']) && $rate['shipping'] == 'yes')
                             echo 'checked="checked"';
 
-                        echo ' /> ' . __('Apply to shipping', 'jigoshop') . '</label><label><input type="checkbox" name="tax_compound[' . $i . ']" ';
+                        echo ' /> ' . __('Apply to shipping', 'jigoshop') . '</label><label><input type="checkbox" name="tax_compound[' . esc_attr( $i ) . ']" ';
 
                         if (isset($rate['compound']) && $rate['compound'] == 'yes')
                             echo 'checked="checked"';

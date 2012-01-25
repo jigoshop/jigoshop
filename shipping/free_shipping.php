@@ -79,7 +79,7 @@ class free_shipping extends jigoshop_shipping_method {
             	<div class="multi_select_countries"><ul><?php
         			if ($countries) foreach ($countries as $key=>$val) :
             			                    			
-        				echo '<li><label><input type="checkbox" name="jigoshop_free_shipping_countries[]" value="'. $key .'" ';
+        				echo '<li><label><input type="checkbox" name="jigoshop_free_shipping_countries[]" value="' . esc_attr( $key ) . '" ';
         				if (in_array($key, $selections)) echo 'checked="checked"';
         				echo ' />'. __($val, 'jigoshop') .'</label></li>';
 

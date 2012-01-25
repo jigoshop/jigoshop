@@ -476,5 +476,5 @@ function jigoshop_dashboard_recent_comments_control() {
 	$number = isset( $widget_options['dashboard_recent_comments']['items'] ) ? (int) $widget_options['dashboard_recent_comments']['items'] : '';
 
 	echo '<p><label for="comments-number">' . __('Number of comments to show:') . '</label>';
-	echo '<input id="comments-number" name="widget-recent-comments[items]" type="text" value="' . $number . '" size="3" /></p>';
+	echo '<input id="comments-number" name="widget-recent-comments[items]" type="text" value="' . esc_attr( $number ) . '" size="3" /></p>';
 }
