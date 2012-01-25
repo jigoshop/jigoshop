@@ -73,6 +73,10 @@ class jigoshop_shipping extends jigoshop_singleton {
         return self::$has_calculable_shipping;
     }
 
+    public static function show_shipping_calculator() {
+        return (self::is_enabled() && get_option('jigoshop_enable_shipping_calc')=='yes' && jigoshop_cart::needs_shipping());
+    }
+    
     public static function get_available_shipping_methods() {
 
         $_available_methods = array();

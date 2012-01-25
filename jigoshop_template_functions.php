@@ -575,14 +575,13 @@ if (!function_exists('jigoshop_related_products')) {
  **/
 if (!function_exists('jigoshop_shipping_calculator')) {
 	function jigoshop_shipping_calculator() {
-		if (jigoshop_shipping::is_enabled() && get_option('jigoshop_enable_shipping_calc')=='yes' && jigoshop_cart::needs_shipping()) :
+		if (jigoshop_shipping::show_shipping_calculator()) :
 		?>
 		<form class="shipping_calculator" action="<?php echo jigoshop_cart::get_cart_url(); ?>" method="post">
 			<h2><a href="#" class="shipping-calculator-button"><?php _e('Calculate Shipping', 'jigoshop'); ?> <span>&darr;</span></a></h2>
 			<section class="shipping-calculator-form">
 			<p class="form-row">
 				<select name="calc_shipping_country" id="calc_shipping_country" class="country_to_state" rel="calc_shipping_state">
-					<option value=""><?php _e('Select a country&hellip;', 'jigoshop'); ?></option>
 					<?php
 						foreach(jigoshop_countries::get_allowed_countries() as $key=>$value) :
 							echo '<option value="'.$key.'"';
