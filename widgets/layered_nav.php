@@ -212,19 +212,19 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 				
 		// Widget title
 		echo '<p>';
-		echo '<label for="' . $this->get_field_id('title') . '"> ' . _e('Title:', 'jigoshop') . '</label>';
-		echo '<input type="text" class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" value="' . esc_attr( $title ) . '" />';
+		echo '<label for="' . esc_attr( $this->get_field_id('title')  ) . '"> ' . _e('Title:', 'jigoshop') . '</label>';
+		echo '<input type="text" class="widefat" id="' . esc_attr( $this->get_field_id('title')  ) . '" name="' . esc_attr( $this->get_field_name('title')  ) . '" value="' . esc_attr( $title ) . '" />';
 		echo '</p>';
 		
 		// Print attribute selector
 		if ( ! empty($attr_tax) ) {
 			echo '<p>';
-			echo '<label for="' . $this->get_field_id('attribute') . '">' . __('Attribute:', 'jigoshop') . '</label> ';
-			echo '<select id="' . $this->get_field_id('attribute') . '" name="' . $this->get_field_name('attribute') . '">';
+			echo '<label for="' . esc_attr( $this->get_field_id('attribute')  ) . '">' . __('Attribute:', 'jigoshop') . '</label> ';
+			echo '<select id="' . esc_attr( $this->get_field_id('attribute')  ) . '" name="' . esc_attr( $this->get_field_name('attribute')  ) . '">';
 			foreach($attr_tax as $tax) {
 				
 				if (taxonomy_exists('pa_'.sanitize_title($tax->attribute_name))) {
-					echo '<option value="' . $tax->attribute_name . '" ' . (isset($instance['attribute']) && $instance['attribute'] == $tax->attribute_name ? 'selected' : null) . '>';
+					echo '<option value="' . esc_attr( $tax->attribute_name  ) . '" ' . (isset($instance['attribute']) && $instance['attribute'] == $tax->attribute_name ? 'selected' : null) . '>';
 					echo $tax->attribute_name;
 					echo '</option>';
 				}
