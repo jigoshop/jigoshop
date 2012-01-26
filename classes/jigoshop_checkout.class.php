@@ -187,6 +187,10 @@ class jigoshop_checkout extends jigoshop_singleton {
                 //Remove 'Select a Country' option from drop-down menu for countries. 
                 // There is no need to have it, because was assume when user hasn't selected 
                 // a country that they are from the shop base country.
+                $field = '<p class="form-row '.implode(' ', $args['class']).'">
+                <label for="'.$args['name'].'" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
+                <select name="'.$args['name'].'" id="'.$args['name'].'" class="country_to_state" rel="'.$args['rel'].'">';
+
 				foreach(jigoshop_countries::get_allowed_countries() as $key=>$value) :
 					$field .= '<option value="'.esc_attr($key).'"';
 					if ($this->get_value($args['name'])==$key) $field .= 'selected="selected"';
