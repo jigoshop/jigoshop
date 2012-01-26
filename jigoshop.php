@@ -399,7 +399,7 @@ function is_product_list() {
  * @since 0.9.9
  */
 function is_jigoshop() {
-	if (is_shop() || is_product_category() || is_product_tag() || is_product()) return true; else return false;
+	return (is_shop() || is_product_category() || is_product_tag() || is_product());
 }
 
 /**
