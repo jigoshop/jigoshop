@@ -176,9 +176,9 @@ class Jigoshop_Widget_Product_Categories extends WP_Widget {
 		
 		// Get values from instance
 		$title			= isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : null;
-		$dropdown		= (bool) $instance['dropdown'];
-		$count			= (bool) $instance['count'];
-		$hierarchical	= (bool) $instance['hierarchical'];
+		$dropdown		= (bool) isset($instance['dropdown']) ? $instance['dropdown'] : false;
+		$count			= (bool) isset($instance['count']) ? $instance['count'] : false;
+		$hierarchical	= (bool) isset($instance['hierarchical']) ? $instance['hierarchical'] : false;
 		
 		
 		// Widget Title
