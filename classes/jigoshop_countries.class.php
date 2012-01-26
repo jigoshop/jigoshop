@@ -268,15 +268,14 @@ class jigoshop_countries {
 
 	public static $states = array(
 		'AU' => array(
-			'BL' => 'Burgenland',
-			'KN' => 'K&#228;rnten',
-			'NO' => 'Nieder&#246;sterreich',
-			'OO' => 'Ober&#246;sterreich',
-			'SB' => 'Salzburg',
-			'ST' => 'Steiermark',
-			'TI' => 'Tirol',
-			'VB' => 'Voralberg',
-			'WI' => 'Wien'
+			'ACT' => 'Australian Capital Territory',
+			'NSW' => 'New South Wales',
+			'NT' => 'Northern Territory',
+			'QLD' => 'Queensland',
+			'SA' => 'South Australia',
+			'TAS' => 'Tasmania',
+			'VIC' => 'Victoria',
+			'WA' => 'Western Australia'
 		),
 		'AT' => array(),
 		'BR' => array(
