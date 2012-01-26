@@ -111,53 +111,61 @@ class jigoshop_customer extends jigoshop_singleton {
 	/** Sets session data for the location */
 	public static function set_location( $country, $state, $postcode = '' ) {
 		$data = (array) jigoshop_session::instance()->customer;
-		
 		$data['country'] = $country;
 		$data['state'] = $state;
 		$data['postcode'] = $postcode;
-		
 		jigoshop_session::instance()->customer = $data;
 	}
 	
 	/** Sets session data for the country */
 	public static function set_country( $country ) {
-		jigoshop_session::instance()->customer['country'] = $country;
+		$data = (array) jigoshop_session::instance()->customer;
+		$data['country'] = $country;
+		jigoshop_session::instance()->customer = $data;
 	}
 	
 	/** Sets session data for the state */
 	public static function set_state( $state ) {
-		jigoshop_session::instance()->customer['state'] = $state;
+		$data = (array) jigoshop_session::instance()->customer;
+		$data['state'] = $state;
+		jigoshop_session::instance()->customer = $data;
 	}
 	
 	/** Sets session data for the postcode */
 	public static function set_postcode( $postcode ) {
-		jigoshop_session::instance()->customer['postcode'] = $postcode;
+		$data = (array) jigoshop_session::instance()->customer;
+		$data['postcode'] = $postcode;
+		jigoshop_session::instance()->customer = $data;
 	}
 	
 	/** Sets session data for the location */
 	public static function set_shipping_location( $country, $state = '', $postcode = '' ) {
 		$data = (array) jigoshop_session::instance()->customer;
-		
 		$data['shipping_country'] = $country;
 		$data['shipping_state'] = $state;
 		$data['shipping_postcode'] = $postcode;
-		
 		jigoshop_session::instance()->customer = $data;
 	}
 	
 	/** Sets session data for the country */
 	public static function set_shipping_country( $country ) {
-		jigoshop_session::instance()->customer['shipping_country'] = $country;
+		$data = (array) jigoshop_session::instance()->customer;
+		$data['shipping_country'] = $country;
+		jigoshop_session::instance()->customer = $data;
 	}
 	
 	/** Sets session data for the state */
 	public static function set_shipping_state( $state ) {
-		jigoshop_session::instance()->customer['shipping_state'] = $state;
+		$data = (array) jigoshop_session::instance()->customer;
+		$data['shipping_state'] = $state;
+		jigoshop_session::instance()->customer = $data;
 	}
 	
 	/** Sets session data for the postcode */
 	public static function set_shipping_postcode( $postcode ) {
-		jigoshop_session::instance()->customer['shipping_postcode'] = $postcode;
+		$data = (array) jigoshop_session::instance()->customer;
+		$data['shipping_postcode'] = $postcode;
+		jigoshop_session::instance()->customer = $data;
 	}
 	
 	/**
