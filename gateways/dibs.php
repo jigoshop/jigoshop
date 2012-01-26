@@ -97,9 +97,9 @@ class dibs extends jigoshop_payment_gateway {
 			<td class="forminp">
 				<select name="jigoshop_dibs_decorator" id="jigoshop_dibs_decorator" style="min-width:100px;">
 					<option value="" <?php if (get_option('jigoshop_dibs_decorator') == '') echo 'selected="selected"'; ?>><?php _e('Custom', 'jigoshop'); ?></option>
-					<option value="default" <?php if (get_option('jigoshop_dibs_decorator') == 'default') echo 'selected="selected"'; ?>><?php _e('Default', 'jigoshop'); ?></option>
-					<option value="basal" <?php if (get_option('jigoshop_dibs_decorator') == 'basal') echo 'selected="selected"'; ?>><?php _e('Basal', 'jigoshop'); ?></option>
-					<option value="rich" <?php if (get_option('jigoshop_dibs_decorator') == 'rich') echo 'selected="selected"'; ?>><?php _e('Rich', 'jigoshop'); ?></option>
+					<option value="default" <?php if (get_option('jigoshop_dibs_decorator') == 'default') echo 'selected="selected"'; ?>><?php echo 'Default'; ?></option>
+					<option value="basal" <?php if (get_option('jigoshop_dibs_decorator') == 'basal') echo 'selected="selected"'; ?>><?php echo 'Basal'; ?></option>
+					<option value="rich" <?php if (get_option('jigoshop_dibs_decorator') == 'rich') echo 'selected="selected"'; ?>><?php echo 'Rich'; ?></option>
 				</select>
 			</td>
 		</tr>
