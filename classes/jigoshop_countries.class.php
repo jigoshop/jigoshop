@@ -1,7 +1,7 @@
 <?php
 /**
  * Internationalization
- * 
+ *
  * The JigoShop countries class stores country/state data.
  *
  * DISCLAIMER
@@ -17,10 +17,10 @@
  * @license    http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_countries {
-	
+
 	public static $countries = array(
 		'AD' => 'Andorra',
-    	'AE' => 'United Arab Emirates',
+		'AE' => 'United Arab Emirates',
 		'AF' => 'Afghanistan',
 		'AG' => 'Antigua and Barbuda',
 		'AI' => 'Anguilla',
@@ -52,7 +52,6 @@ class jigoshop_countries {
 		'BR' => 'Brazil',
 		'BS' => 'Bahamas',
 		'BT' => 'Bhutan',
-		'BV' => 'Bouvet Island',
 		'BW' => 'Botswana',
 		'BY' => 'Belarus',
 		'BZ' => 'Belize',
@@ -107,13 +106,12 @@ class jigoshop_countries {
 		'GP' => 'Guadeloupe',
 		'GQ' => 'Equatorial Guinea',
 		'GR' => 'Greece',
-		'GS' => 'South Georgia and the South Sandwich Islands',
+		'GS' => 'South Georgia/Sandwich Islands',
 		'GT' => 'Guatemala',
 		'GU' => 'Guam',
 		'GW' => 'Guinea-Bissau',
 		'GY' => 'Guyana',
-		'HK' => 'Hong Kong S.A.R., China',
-		'HM' => 'Heard Island and McDonald Islands',
+		'HK' => 'Hong Kong',
 		'HN' => 'Honduras',
 		'HR' => 'Croatia',
 		'HT' => 'Haiti',
@@ -247,8 +245,9 @@ class jigoshop_countries {
 		'TZ' => 'Tanzania',
 		'UA' => 'Ukraine',
 		'UG' => 'Uganda',
-		'UM' => 'United States Minor Outlying Islands',
+		'UM' => 'US Minor Outlying Islands',
 		'US' => 'United States',
+		'USAF' => 'US Armed Forces',
 		'UY' => 'Uruguay',
 		'UZ' => 'Uzbekistan',
 		'VA' => 'Vatican',
@@ -256,7 +255,7 @@ class jigoshop_countries {
 		'VE' => 'Venezuela',
 		'VG' => 'British Virgin Islands',
 		'VI' => 'U.S. Virgin Islands',
-		'VN' => 'Vietnam',
+		'VN' => 'Viet nam',
 		'VU' => 'Vanuatu',
 		'WF' => 'Wallis and Futuna',
 		'WS' => 'Samoa',
@@ -264,224 +263,479 @@ class jigoshop_countries {
 		'YT' => 'Mayotte',
 		'ZA' => 'South Africa',
 		'ZM' => 'Zambia',
-		'ZW' => 'Zimbabwe',
-	  	'USAF' => 'US Armed Forces' , 
-		'VE' => 'Venezuela',
-	);
-	
+		'ZW' => 'Zimbabwe'
+		);
+
 	public static $states = array(
+
+		// Albania: Prefectures ("qarks")
+		'AL' => array(
+			'BER' => 'Berat',
+			'DIB' => 'Dib&euml;r',
+			'DUR' => 'Durr&euml;s',
+			'ELB' => 'Elbasan',
+			'FIE' => 'Fier',
+			'GJI' => 'Gjirokast&euml;r',
+			'KOR' => 'Kor&ccedil;&euml;',
+			'KUK' => 'Kuk&euml;s',
+			'LEZ' => 'Lezh&euml;',
+			'SHK' => 'Shkod&euml;r',
+			'TIR' => 'Tiran&euml;',
+			'VLO' => 'Vlor&euml;'
+		),
 		'AU' => array(
-			'ACT' =>  'Australian Capital Territory' ,
-			'NSW' =>  'New South Wales' ,
-			'NT' =>  'Northern Territory' ,
-			'QLD' =>  'Queensland' ,
-			'SA' =>  'South Australia' ,
-			'TAS' =>  'Tasmania' ,
-			'VIC' =>  'Victoria' ,
-			'WA' =>  'Western Australia' 
+			'ACT' => 'Australian Capital Territory',
+			'NSW' => 'New South Wales',
+			'NT' => 'Northern Territory',
+			'QLD' => 'Queensland',
+			'SA' => 'South Australia',
+			'TAS' => 'Tasmania',
+			'VIC' => 'Victoria',
+			'WA' => 'Western Australia'
+		),
+		'AT' => array(),
+		'BR' => array(
+			'AC' => 'Acre',
+			'AL' => 'Alagoas',
+			'AM' => 'Amazonas',
+			'AP' => 'Amap&aacute;',
+			'BA' => 'Bahia',
+			'CE' => 'Cear&aacute;',
+			'DF' => 'Distrito federal',
+			'ES' => 'Esp&#237;rito santo',
+			'GO' => 'Goi&aacute;s',
+			'MA' => 'Maranh&atilde;o',
+			'MG' => 'Minas gerais',
+			'MS' => 'Mato grosso do sul',
+			'MT' => 'Mato grosso',
+			'PA' => 'Par&aacute;',
+			'PB' => 'Paraiba',
+			'PE' => 'Pernambuco',
+			'PI' => 'Piau&iacute;',
+			'PR' => 'Paran&aacute;',
+			'RJ' => 'Rio de janeiro',
+			'RN' => 'Rio grande do norte',
+			'RO' => 'Rond&ocirc;nia',
+			'RR' => 'Roraima',
+			'RS' => 'Rio grande do sul',
+			'SC' => 'Santa catarina',
+			'SE' => 'Sergipe',
+			'SP' => 'S&atilde;o paulo',
+			'TO' => 'Tocantins'
 		),
 		'CA' => array(
-			'AB' =>  'Alberta' ,
-			'BC' =>  'British Columbia' ,
-			'MB' =>  'Manitoba' ,
-			'NB' =>  'New Brunswick' ,
-			'NF' =>  'Newfoundland' ,
-			'NT' =>  'Northwest Territories' ,
-			'NS' =>  'Nova Scotia' ,
-			'NU' =>  'Nunavut' ,
-			'ON' =>  'Ontario' ,
-			'PE' =>  'Prince Edward Island' ,
-			'PQ' =>  'Quebec' ,
-			'SK' =>  'Saskatchewan' ,
-			'YT' =>  'Yukon Territory' 
+			'AB' => 'Alberta',
+			'BC' => 'British Columbia',
+			'MB' => 'Manitoba',
+			'NB' => 'New Brunswick',
+			'NF' => 'Newfoundland',
+			'NS' => 'Nova Scotia',
+			'NT' => 'Northwest Territories',
+			'NU' => 'Nunavut',
+			'ON' => 'Ontario',
+			'PE' => 'Prince Edward Island',
+			'PQ' => 'Quebec',
+			'SK' => 'Saskatchewan',
+			'YT' => 'Yukon Territory'
 		),
-		/*'GB' => array(
-			'England' => array(
-				'Avon' => 'Avon',
-				'Bedfordshire' => 'Bedfordshire',
-				'Berkshire' => 'Berkshire',
-				'Bristol' => 'Bristol',
-				'Buckinghamshire' => 'Buckinghamshire',
-				'Cambridgeshire' => 'Cambridgeshire',
-				'Cheshire' => 'Cheshire',
-				'Cleveland' => 'Cleveland',
-				'Cornwall' => 'Cornwall',
-				'Cumbria' => 'Cumbria',
-				'Derbyshire' => 'Derbyshire',
-				'Devon' => 'Devon',
-				'Dorset' => 'Dorset',
-				'Durham' => 'Durham',
-				'East Riding of Yorkshire' => 'East Riding of Yorkshire',
-				'East Sussex' => 'East Sussex',
-				'Essex' => 'Essex',
-				'Gloucestershire' => 'Gloucestershire',
-				'Greater Manchester' => 'Greater Manchester',
-				'Hampshire' => 'Hampshire',
-				'Herefordshire' => 'Herefordshire',
-				'Hertfordshire' => 'Hertfordshire',
-				'Humberside' => 'Humberside',
-				'Isle of Wight' => 'Isle of Wight',
-				'Isles of Scilly' => 'Isles of Scilly',
-				'Kent' => 'Kent',
-				'Lancashire' => 'Lancashire',
-				'Leicestershire' => 'Leicestershire',
-				'Lincolnshire' => 'Lincolnshire',
-				'London' => 'London',
-				'Merseyside' => 'Merseyside',
-				'Middlesex' => 'Middlesex',
-				'Norfolk' => 'Norfolk',
-				'North Yorkshire' => 'North Yorkshire',
-				'Northamptonshire' => 'Northamptonshire',
-				'Northumberland' => 'Northumberland',
-				'Nottinghamshire' => 'Nottinghamshire',
-				'Oxfordshire' => 'Oxfordshire',
-				'Rutland' => 'Rutland',
-				'Shropshire' => 'Shropshire',
-				'Somerset' => 'Somerset',
-				'South Yorkshire' => 'South Yorkshire',
-				'Staffordshire' => 'Staffordshire',
-				'Suffolk' => 'Suffolk',
-				'Surrey' => 'Surrey',
-				'Tyne and Wear' => 'Tyne and Wear',
-				'Warwickshire' => 'Warwickshire',
-				'West Midlands' => 'West Midlands',
-				'West Sussex' => 'West Sussex',
-				'West Yorkshire' => 'West Yorkshire',
-				'Wiltshire' => 'Wiltshire',
-				'Worcestershire' => 'Worcestershire'
-			),
-			'Northern Ireland' => array(
-				'Antrim' => 'Antrim',
-				'Armagh' => 'Armagh',
-				'Down' => 'Down',
-				'Fermanagh' => 'Fermanagh',
-				'Londonderry' => 'Londonderry',
-				'Tyrone' => 'Tyrone'
-			),
-			'Scotland' => array(
-				'Aberdeen City' => 'Aberdeen City',
-				'Aberdeenshire' => 'Aberdeenshire',
-				'Angus' => 'Angus',
-				'Argyll and Bute' => 'Argyll and Bute',
-				'Borders' => 'Borders',
-				'Clackmannan' => 'Clackmannan',
-				'Dumfries and Galloway' => 'Dumfries and Galloway',
-				'East Ayrshire' => 'East Ayrshire',
-				'East Dunbartonshire' => 'East Dunbartonshire',
-				'East Lothian' => 'East Lothian',
-				'East Renfrewshire' => 'East Renfrewshire',
-				'Edinburgh City' => 'Edinburgh City',
-				'Falkirk' => 'Falkirk',
-				'Fife' => 'Fife',
-				'Glasgow' => 'Glasgow',
-				'Highland' => 'Highland',
-				'Inverclyde' => 'Inverclyde',
-				'Midlothian' => 'Midlothian',
-				'Moray' => 'Moray',
-				'North Ayrshire' => 'North Ayrshire',
-				'North Lanarkshire' => 'North Lanarkshire',
-				'Orkney' => 'Orkney',
-				'Perthshire and Kinross' => 'Perthshire and Kinross',
-				'Renfrewshire' => 'Renfrewshire',
-				'Roxburghshire' => 'Roxburghshire',
-				'Shetland' => 'Shetland',
-				'South Ayrshire' => 'South Ayrshire',
-				'South Lanarkshire' => 'South Lanarkshire',
-				'Stirling' => 'Stirling',
-				'West Dunbartonshire' => 'West Dunbartonshire',
-				'West Lothian' => 'West Lothian',
-				'Western Isles' => 'Western Isles',
-			),
-			'Wales' => array(
-				'Blaenau Gwent' => 'Blaenau Gwent',
-				'Bridgend' => 'Bridgend',
-				'Caerphilly' => 'Caerphilly',
-				'Cardiff' => 'Cardiff',
-				'Carmarthenshire' => 'Carmarthenshire',
-				'Ceredigion' => 'Ceredigion',
-				'Conwy' => 'Conwy',
-				'Denbighshire' => 'Denbighshire',
-				'Flintshire' => 'Flintshire',
-				'Gwynedd' => 'Gwynedd',
-				'Isle of Anglesey' => 'Isle of Anglesey',
-				'Merthyr Tydfil' => 'Merthyr Tydfil',
-				'Monmouthshire' => 'Monmouthshire',
-				'Neath Port Talbot' => 'Neath Port Talbot',
-				'Newport' => 'Newport',
-				'Pembrokeshire' => 'Pembrokeshire',
-				'Powys' => 'Powys',
-				'Rhondda Cynon Taff' => 'Rhondda Cynon Taff',
-				'Swansea' => 'Swansea',
-				'Torfaen' => 'Torfaen',
-				'The Vale of Glamorgan' => 'The Vale of Glamorgan',
-				'Wrexham' => 'Wrexham'
-			)
-		),*/
+
+		// Switzerland: Cantons
+		'CH' => array(
+			'AG' => 'Aargau',
+			'AI' => 'Appenzell Innerrhoden',
+			'AR' => 'Appenzell Ausserrhoden',
+			'BE' => 'Bern',
+			'BL' => 'Basel-Landschaft',
+			'BS' => 'Basel-Stadt',
+			'FR' => 'Freiburg',
+			'GE' => 'Genf',
+			'GL' => 'Glarus',
+			'JU' => 'Graub&#252;nden',
+			'JU' => 'Jura',
+			'LU' => 'Luzern',
+			'NE' => 'Neuenburg',
+			'NW' => 'Nidwalden',
+			'OW' => 'Obwalden',
+			'SG' => 'St. Gallen',
+			'SH' => 'Schaffhausen',
+			'SO' => 'Solothurn',
+			'SZ' => 'Schwyz',
+			'TG' => 'Thurgau',
+			'TI' => 'Tessin',
+			'UR' => 'Uri',
+			'VD' => 'Waadt',
+			'VS' => 'Wallis',
+			'ZG' => 'Zug',
+			'ZH' => 'Z&#252;rich'
+		),
+
+		// Spain: Regions ("autonomous communities")
+		'ES' => array(
+			'AND' => 'Andaluc&iacute;a [Andalusia]',
+			'ARA' => 'Arag&oacute;n',
+			'AST' => 'Asturias',
+			'CAN' => 'Canarias [Canary Islands]',
+			'CAR' => 'Cantabria',
+			'CLM' => 'Castilla-La Mancha',
+			'CLE' => 'Castilla y Le&oacute;n',
+			'CAT' => 'Catalu&ntilde;a [Catalonia]',
+			'CEU' => 'Ceuta',
+			'VAL' => 'Comunitat Valenciana (Comunidad Valenciana)',
+			'EXT' => 'Extremadura',
+			'GAL' => 'Galicia',
+			'BAL' => 'Illes Balears [Balearic Islands]',
+			'LAR' => 'La Rioja',
+			'MAD' => 'Madrid',
+			'MEL' => 'Melilla',
+			'MUR' => 'Murcia',
+			'NAV' => 'Navarra [Navarre]',
+			'PAI' => 'Pa&iacute;s Vasco (Euskal Herriko) [Basque Country]'
+		),
+
+		// Czech Republic: Regions
+		'CZ' => array(
+			'JC' => 'Jihocesk&yacute; kraj&nbsp;[South Bohemian Region]',
+			'JM' => 'Jihomoravsk&yacute; kraj&nbsp;[South Moravian Region]',
+			'KA' => 'Karlovarsk&yacute; kraj&nbsp;[Karlovy Vary Region]',
+			'KR' => 'Kr&aacute;lov&eacute;hradeck&yacute; kraj&nbsp;[Hradec Kr&aacute;lov&eacute; Region]',
+			'LI' => 'Libereck&yacute; kraj&nbsp;[Liberec Region]',
+			'MO' => 'Moravskoslezsk&yacute; kraj&nbsp;[Moravian-Silesian Region]',
+			'OL' => 'Olomouck&yacute; kraj&nbsp;[Olomouc Region]',
+			'PA' => 'Pardubick&yacute; kraj&nbsp;[Pardubice Region]',
+			'PL' => 'Plzensk&yacute; kraj&nbsp;[Plzen Region]',
+			'PR' => 'Praha&nbsp;(Hlavni mesto Praha) [Prague]',
+			'ST' => 'Stredocesk&yacute; kraj&nbsp;[Central Bohemian Region]',
+			'US' => '&Uacute;steck&yacute; kraj&nbsp;[&Uacute;st&iacute; Region]',
+			'VY' => 'Vysocina',
+			'ZL' => 'Zl&iacute;nsk&yacute; kraj&nbsp;[Zl&iacute;n Region]'
+		),
+
+		// Germany: Federal States
+		'DE' => array(
+			'NDS' => 'Niedersachsen',
+			'BAW' => 'Baden-W&#252;rttemberg',
+			'BAY' => 'Bayern',
+			'BER' => 'Berlin',
+			'BRG' => 'Brandenburg',
+			'BRE' => 'Bremen',
+			'HAM' => 'Hamburg',
+			'HES' => 'Hessen',
+			'MEC' => 'Mecklenburg-Vorpommern',
+			'NRW' => 'Nordrhein-Westfalen',
+			'RHE' => 'Rheinland-Pfalz',
+			'SAR' => 'Saarland',
+			'SAS' => 'Sachsen',
+			'SAC' => 'Sachsen-Anhalt',
+			'SCN' => 'Schleswig-Holstein',
+			'THE' => 'Th&#252;ringen'
+		),
+		'DK' => array(),
+
+		// Finland: Regions
+		'FI' => array(
+			'&Aring;AL' => '&Aring;land',
+			'EKA' => 'Etel&auml;-Karjala [South Karelia]',
+			'EPO' => 'Etel&auml;-Pohjanmaa [South Ostrobothnia]',
+			'ESA' => 'Etel&auml;-Savo',
+			'KAI' => 'Kainuu',
+			'KH&Auml;' => 'Kanta-H&auml;me',
+			'KPO' => 'Keski-Pohjanmaa [Central Ostrobothnia]',
+			'KSO' => 'Keski-Suomi [Central Finland]',
+			'KYM' => 'Kymenlaakso (Kymmenedalen)',
+			'LAP' => 'Lappi [Lapland]',
+			'PH&Auml;' => 'P&auml;ij&auml;t-H&auml;me',
+			'PIR' => 'Pirkanmaa',
+			'POH' => 'Pohjanmaa [Ostrobothnia]',
+			'PKA' => 'Pohjois-Karjala [North Karelia]',
+			'PPO' => 'Pohjois-Pohjanmaa [North Ostrobothnia]',
+			'PSA' => 'Pohjois-Savo',
+			'SAT' => 'Satakunta',
+			'UUS' => 'Uusimaa (Nyland)',
+			'VSS' => 'Varsinais-Suomi (Egentliga Finland)'
+		),
+
+		// France: Regions
+		'FR' => array(
+			'ALS' => 'Alsace',
+			'AQU' => 'Aquitaine',
+			'AUV' => 'Auvergne',
+			'BAS' => 'Basse-Normandie [Lower Normandy]',
+			'BOU' => 'Bourgogne [Burgundy]',
+			'BRE' => 'Bretagne [Brittany]',
+			'CEN' => 'Centre',
+			'CHA' => 'Champagne - Ardenne',
+			'COR' => 'Corse',
+			'FRA' => 'Franche-Comt&eacute;',
+			'HAU' => 'Haute-Normandie [Upper Normandy]',
+			'ILE' => '&Icirc;le-de-France',
+			'LAN' => 'Languedoc - Roussillon',
+			'LIM' => 'Limousin',
+			'LOR' => 'Lorraine',
+			'MID' => 'Midi - Pyr&eacute;n&eacute;es',
+			'NOR' => 'Nord - Pas-de-Calais',
+			'PAY' => 'Pays de la Loire',
+			'PIC' => 'Picardie',
+			'POI' => 'Poitou - Charentes',
+			'PRO' => 'Provence - Alpes - C&ocirc;te d\'Azur',
+			'RHO' => 'Rh&ocirc;ne - Alpes'
+		),
+
+		// Greece: Regions
+		'GR' => array(
+			'AOR' => '&Aacute;gio &Oacute;ros [Mount Athos]',
+			'AMT' => 'Anatolik&iacute; Makedon&iacute;a &amp; Thrak&iacute; [East Macedonia &amp; Thrace]',
+			'ATT' => 'Attik&iacute; [Attica]',
+			'DEL' => 'Dytik&iacute; Ell&aacute;da [Western Greece]',
+			'DMD' => 'Dytik&iacute; Makedon&iacute;a [West Macedonia]',
+			'ION' => 'I&oacute;nia Nisi&aacute; [Ionian Islands]',
+			'IPI' => '&Iacute;piros [Epirus]',
+			'KMD' => 'Kedrik&iacute; Makedon&iacute;a [Central Macedonia]',
+			'KRI' => 'Kr&iacute;ti [Crete]',
+			'NAI' => 'N&oacute;tio Aiga&iacute;o [South Aegean]',
+			'PEL' => 'Pelop&oacute;nnisos [Peloponnese]',
+			'SEL' => 'Stere&aacute; Ell&aacute;da [Central Greece]',
+			'THE' => 'Thessal&iacute;a [Thessaly]',
+			'VAI' => 'V&oacute;rio Aiga&iacute;o [Northern Aegean]'
+		),
+
+		'HK' => array(
+			'HONG KONG' => 'Hong Kong Island',
+			'KOWLOONG' => 'Kowloong',
+			'NEW TERRITORIES' => 'New Territories'
+		),
+
+		// Hungary: Counties
+		'HU' => array(
+			'BAC' => 'B&aacute;cs-Kiskun',
+			'BAR' => 'Baranya',
+			'BEK' => 'B&eacute;k&eacute;s',
+			'BOR' => 'Borsod-Aba&uacute;j-Zempl&eacute;n',
+			'BUD' => 'Budapest',
+			'CSO' => 'Csongr&aacute;d',
+			'FEJ' => 'Fej&eacute;r',
+			'GY&Ouml;' => 'Gyor-Moson-Sopron',
+			'HAJ' => 'Hajd&uacute;-Bihar',
+			'HEV' => 'Heves',
+			'JAS' => 'J&aacute;sz-Nagykun-Szolnok',
+			'KOM' => 'Kom&aacute;rom-Esztergom',
+			'NOG' => 'N&oacute;gr&aacute;d',
+			'PES' => 'Pest',
+			'SOM' => 'Somogy',
+			'SZA' => 'Szabolcs-Szatm&aacute;r-Bereg',
+			'TOL' => 'Tolna',
+			'VAS' => 'Vas',
+			'VES' => 'Veszpr&eacute;m',
+			'ZAL' => 'Zala'
+		),
+		'IS' => array(),
+
+		// Ireland: Counties
+		'IE' => array(
+			'G' => 'Galway (incl. Galway City)',
+			'LM' => 'Leitrim',
+			'MO' => 'Mayo',
+			'RN' => 'Roscommon',
+			'SO' => 'Sligo',
+			'CW' => 'Carlow',
+			'D' => 'Dublin',
+			'DR' => 'D&uacute;n Laoghaire-Rathdown',
+			'FG' => 'Fingal',
+			'KE' => 'Kildare',
+			'KK' => 'Kilkenny',
+			'LS' => 'Laois (Laoighis)',
+			'LD' => 'Longford',
+			'LH' => 'Louth',
+			'MH' => 'Meath',
+			'OY' => 'Offaly',
+			'SD' => 'South Dublin',
+			'WH' => 'Westmeath',
+			'WX' => 'Wexford',
+			'WW' => 'Wicklow',
+			'CE' => 'Clare',
+			'C' => 'Cork (incl. Cork City)',
+			'KY' => 'Kerry',
+			'LK' => 'Limerick (incl. Limerick City)',
+			'NT' => 'North Tipperary',
+			'ST' => 'South Tipperary',
+			'WD' => 'Waterford (incl. Waterford City)',
+			'CN' => 'Cavan',
+			'DL' => 'Donegal',
+			'MIN' => 'Monaghan'
+		),
+		'IL' => array(),
+		'NL' => array(),
+		'NZ' => array(),
+		'NO' => array(),
+		'PL' => array(),
+
+		// Romania: Counties
+		'RO' => array(
+			'ALB' => 'Alba',
+			'ARA' => 'Arad',
+			'ARG' => 'Arges',
+			'BAC' => 'Bacau',
+			'BIH' => 'Bihor',
+			'BIS' => 'Bistrita-Nasaud',
+			'BOT' => 'Botosani',
+			'BRA' => 'Braila',
+			'BRS' => 'Brasov',
+			'BUC' => 'Bucuresti',
+			'BUZ' => 'Buzau',
+			'CAL' => 'Calarasi',
+			'CAR' => 'Caras-Severin',
+			'CLU' => 'Cluj',
+			'CON' => 'Constanta',
+			'COV' => 'Covasna',
+			'DAM' => 'D&acirc;mbovita',
+			'DOL' => 'Dolj',
+			'GAL' => 'Galati',
+			'GIU' => 'Giurgiu',
+			'GOR' => 'Gorj',
+			'HAR' => 'Harghita',
+			'HUN' => 'Hunedoara',
+			'IAL' => 'Ialomita',
+			'IAS' => 'Iasi',
+			'ILF' => 'Ilfov',
+			'MAR' => 'Maramures',
+			'MEH' => 'Mehedinti',
+			'MUR' => 'Mures',
+			'NEA' => 'Neamt',
+			'OLT' => 'Olt',
+			'PRA' => 'Prahova',
+			'SAL' => 'Salaj',
+			'SAT' => 'Satu Mare',
+			'SIB' => 'Sibiu',
+			'SUC' => 'Suceava',
+			'TEL' => 'Teleorman',
+			'TIM' => 'Timis',
+			'TUL' => 'Tulcea',
+			'VAL' => 'V&acirc;lcea',
+			'VAS' => 'Vaslui',
+			'VRA' => 'Vrancea'
+		),
+		'SG' => array(),
+		'SK' => array(),
+		'SI' => array(),
+		'LK' => array(),
+
+		// Serbia: Districts
+		'SR' => array(
+			'BOR' => 'Bor',
+			'BRA' => 'Branicevo',
+			'GBE' => 'Grad Beograd&nbsp;[Belgrade City]',
+			'JAB' => 'Jablanica',
+			'KOL' => 'Kolubara',
+			'MAC' => 'Macva',
+			'MOR' => 'Moravica',
+			'NIS' => 'Ni&scaron;ava',
+			'PCI' => 'Pcinja',
+			'PIR' => 'Pirot',
+			'POD' => 'Podunavlje&nbsp;[Danube]',
+			'POM' => 'Pomoravlje',
+			'RSN' => 'Rasina',
+			'RSK' => 'Ra&scaron;ka',
+			'SUM' => '&Scaron;umadija',
+			'TOP' => 'Toplica',
+			'ZAJ' => 'Zajecar',
+			'ZLA' => 'Zlatibor',
+			'JBK' => 'Ju&#382;na Backa&nbsp;[South Backa]',
+			'JBN' => 'Ju&#382;ni Banat&nbsp;[South Banat]',
+			'SBK' => 'Severna Backa&nbsp;[North Backa]',
+			'SBN' => 'Severni Banat&nbsp;[North Banat]',
+			'SRB' => 'Srednji Banat&nbsp;[Central Banat]',
+			'SRE' => 'Srem',
+			'ZBK' => 'Zapadna Backa&nbsp;[West Backa]'
+		),
+
+		// Sweden: Counties ("l&auml;n")
+		'SE' => array(
+			'BLE' => 'Blekinge l&auml;n',
+			'DAL' => 'Dalarnas l&auml;n',
+			'G&Auml;V' => 'G&auml;vleborgs l&auml;n',
+			'GOT' => 'Gotlands l&auml;n',
+			'HAL' => 'Hallands l&auml;n',
+			'J&Auml;M' => 'J&auml;mtlands l&auml;n',
+			'J&Ouml;N' => 'J&ouml;nk&ouml;pings l&auml;n',
+			'KAL' => 'Kalmar l&auml;n',
+			'KRO' => 'Kronobergs l&auml;n',
+			'NOR' => 'Norrbottens l&auml;n',
+			'&Ouml;RE' => '&Ouml;rebro l&auml;n',
+			'&Ouml;ST' => '&Ouml;sterg&ouml;tlands l&auml;n',
+			'SKA' => 'Sk&aring;ne l&auml;n',
+			'S&Ouml;D' => 'S&ouml;dermanlands l&auml;n',
+			'STO' => 'Stockholms l&auml;n',
+			'UPP' => 'Uppsala l&auml;n',
+			'V&Auml;R' => 'V&auml;rmlands l&auml;n',
+			'V&Auml;S' => 'V&auml;sterbottens l&auml;n',
+			'VNL' => 'V&auml;sternorrlands l&auml;n',
+			'VML' => 'V&auml;stmanlands l&auml;n',
+			'VG&Ouml;' => 'V&auml;stra G&ouml;talands l&auml;n'
+		),
 		'US' => array(
-			'AL' =>  'Alabama' ,
-			'AK' =>  'Alaska ' ,
-			'AZ' =>  'Arizona' ,
-			'AR' =>  'Arkansas' ,
-			'CA' =>  'California' ,
-			'CO' =>  'Colorado' ,
-			'CT' =>  'Connecticut' ,
-			'DE' =>  'Delaware' ,
-			'DC' =>  'District Of Columbia' ,
-			'FL' =>  'Florida' ,
-			'GA' =>  'Georgia' ,
-			'HI' =>  'Hawaii' ,
-			'ID' =>  'Idaho' ,
-			'IL' =>  'Illinois' ,
-			'IN' =>  'Indiana' ,
-			'IA' =>  'Iowa' ,
-			'KS' =>  'Kansas' ,
-			'KY' =>  'Kentucky' ,
-			'LA' =>  'Louisiana' ,
-			'ME' =>  'Maine' ,
-			'MD' =>  'Maryland' ,
-			'MA' =>  'Massachusetts' ,
-			'MI' =>  'Michigan' ,
-			'MN' =>  'Minnesota' ,
-			'MS' =>  'Mississippi' ,
-			'MO' =>  'Missouri' ,
-			'MT' =>  'Montana' ,
-			'NE' =>  'Nebraska' ,
-			'NV' =>  'Nevada' ,
-			'NH' =>  'New Hampshire' ,
-			'NJ' =>  'New Jersey' ,
-			'NM' =>  'New Mexico' ,
-			'NY' =>  'New York' ,
-			'NC' =>  'North Carolina' ,
-			'ND' =>  'North Dakota' ,
-			'OH' =>  'Ohio' ,
-			'OK' =>  'Oklahoma' ,
-			'OR' =>  'Oregon' ,
-			'PA' =>  'Pennsylvania' ,
-			'RI' =>  'Rhode Island' ,
-			'SC' =>  'South Carolina' ,
-			'SD' =>  'South Dakota' ,
-			'TN' =>  'Tennessee' ,
-			'TX' =>  'Texas' ,
-			'UT' =>  'Utah' ,
-			'VT' =>  'Vermont' ,
-			'VA' =>  'Virginia' ,
-			'WA' =>  'Washington' ,
-			'WV' =>  'West Virginia' ,
-			'WI' =>  'Wisconsin' ,
-			'WY' =>  'Wyoming' 
+			'AK' => 'Alaska',
+			'AL' => 'Alabama',
+			'AR' => 'Arkansas',
+			'AZ' => 'Arizona',
+			'CA' => 'California',
+			'CO' => 'Colorado',
+			'CT' => 'Connecticut',
+			'DC' => 'District Of Columbia',
+			'DE' => 'Delaware',
+			'FL' => 'Florida',
+			'GA' => 'Georgia',
+			'HI' => 'Hawaii',
+			'IA' => 'Iowa',
+			'ID' => 'Idaho',
+			'IL' => 'Illinois',
+			'IN' => 'Indiana',
+			'KS' => 'Kansas',
+			'KY' => 'Kentucky',
+			'LA' => 'Louisiana',
+			'MA' => 'Massachusetts',
+			'MD' => 'Maryland',
+			'ME' => 'Maine',
+			'MI' => 'Michigan',
+			'MN' => 'Minnesota',
+			'MO' => 'Missouri',
+			'MS' => 'Mississippi',
+			'MT' => 'Montana',
+			'NC' => 'North Carolina',
+			'ND' => 'North Dakota',
+			'NE' => 'Nebraska',
+			'NH' => 'New Hampshire',
+			'NJ' => 'New Jersey',
+			'NM' => 'New Mexico',
+			'NV' => 'Nevada',
+			'NY' => 'New York',
+			'OH' => 'Ohio',
+			'OK' => 'Oklahoma',
+			'OR' => 'Oregon',
+			'PA' => 'Pennsylvania',
+			'RI' => 'Rhode Island',
+			'SC' => 'South Carolina',
+			'SD' => 'South Dakota',
+			'TN' => 'Tennessee',
+			'TX' => 'Texas',
+			'UT' => 'Utah',
+			'VA' => 'Virginia',
+			'VT' => 'Vermont',
+			'WA' => 'Washington',
+			'WI' => 'Wisconsin',
+			'WV' => 'West Virginia',
+			'WY' => 'Wyoming'
 		),
 		'USAF' => array(
-			'AA' =>  'Americas' ,
-			'AE' =>  'Europe' ,
-			'AP' =>  'Pacific' 
+			'AA' => 'Americas',
+			'AE' => 'Europe',
+			'AP' => 'Pacific'
 		)
 	);
-	
+
     static function country_has_states($country_code) {
-        
+
         return isset(self::$states[$country_code]);
     }
-    
+
 	/** get base country */
 	static function get_base_country() {
 		$default = get_option('jigoshop_default_country');
@@ -492,10 +746,10 @@ class jigoshop_countries {
     		$country = $default;
     		$state = '*';
     	endif;
-		
-		return $country;	    	
+
+		return $country;
 	}
-	
+
 	/** get base state */
 	static function get_base_state() {
 		$default = get_option('jigoshop_default_country');
@@ -506,34 +760,34 @@ class jigoshop_countries {
     		$country = $default;
     		$state = '*';
     	endif;
-		
-		return $state;	    	
+
+		return $state;
 	}
-	
+
 	/** get countries we allow only */
 	function get_allowed_countries() {
-	
+
 		$countries = self::$countries;
-		
+
 		asort($countries);
-		
+
 		if (get_option('jigoshop_allowed_countries')!=='specific') return $countries;
 
 		$allowed_countries = array();
-		
+
 		$allowed_countries_raw = get_option('jigoshop_specific_allowed_countries');
-		
+
 		foreach ($allowed_countries_raw as $country) :
-			
+
 			$allowed_countries[$country] = $countries[$country];
-			
+
 		endforeach;
-		
+
 		asort($allowed_countries);
-		
+
 		return $allowed_countries;
 	}
-	
+
 	/** Gets the correct string for shipping - ether 'to the' or 'to' */
 	function shipping_to_prefix() {
 		$return = '';
@@ -542,37 +796,37 @@ class jigoshop_countries {
 		$return = apply_filters('shipping_to_prefix', $return, jigoshop_customer::get_shipping_country());
 		return $return;
 	}
-	
+
 	function estimated_for_prefix() {
 		$return = '';
 		if (in_array(jigoshop_customer::get_country(), array( 'GB', 'US', 'AE', 'CZ', 'DO', 'NL', 'PH', 'USAF' ))) $return = __('the ', 'jigoshop');
 		$return = apply_filters('estimated_for_prefix', $return, jigoshop_customer::get_shipping_country());
 		return $return;
 	}
-	
+
 	/** get states */
 	function get_states( $cc ) {
 		if (isset( self::$states[$cc] )) return self::$states[$cc];
 	}
-	
+
 	/** Outputs the list of countries and states for use in dropdown boxes */
 	function country_dropdown_options( $selected_country = '', $selected_state = '*', $escape=false ) {
-		
+
 		$countries = self::$countries;
 		asort($countries);
-		
+
 		if ( $countries ) foreach ( $countries as $key=>$value ) :
 			$value = esc_js($value);
 			if ( $states =  self::get_states($key) ) :
 				echo '<optgroup label="'.$value.'">';
     			echo '<option value="'.esc_attr($key).'"';
     			if ($selected_country==$key && $selected_state=='*') echo ' selected="selected"';
-    			echo '>'.$value.' &mdash; '.__('All states', 'jigoshop').'</option>';
+    			echo '>'.__('All of', 'jigoshop').' ' .$value.'</option>';
     			foreach ($states as $state_key=>$state_value) :
     				echo '<option value="'.$key.':'.$state_key.'"';
-    					
+
     				if ($selected_country==$key && $selected_state==$state_key) echo ' selected="selected"';
-    					
+
     				echo '>'.$value.' &mdash; '. ($escape ? esc_js($state_value) : $state_value) .'</option>';
     			endforeach;
     			echo '</optgroup>';
@@ -584,4 +838,3 @@ class jigoshop_countries {
 		endforeach;
 	}
 }
-
