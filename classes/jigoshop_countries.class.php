@@ -807,6 +807,7 @@ class jigoshop_countries {
 	/** get states */
 	function get_states( $cc ) {
 		if (isset( self::$states[$cc] )) return self::$states[$cc];
+		else return array();
 	}
 
 	/** Outputs the list of countries and states for use in dropdown boxes */

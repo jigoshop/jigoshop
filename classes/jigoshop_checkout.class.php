@@ -212,7 +212,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 				$current_r = $this->get_value($args['name']);
 				if (!$current_r) $current_r = jigoshop_customer::get_state();
 				
-				$states = jigoshop_countries::$states;
+				$states = jigoshop_countries::get_states( $current_cc );
 					
 				if (isset( $states[$current_cc][$current_r] )) :
 					// Dropdown
