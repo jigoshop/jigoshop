@@ -110,11 +110,9 @@ class jigoshop_customer extends jigoshop_singleton {
 	/** Sets session data for the location */
 	public static function set_location( $country, $state, $postcode = '' ) {
 		$data = (array) jigoshop_session::instance()->customer;
-		
 		$data['country'] = $country;
 		$data['state'] = $state;
 		$data['postcode'] = $postcode;
-		
 		jigoshop_session::instance()->customer = $data;
 	}
 	
@@ -136,11 +134,9 @@ class jigoshop_customer extends jigoshop_singleton {
 	/** Sets session data for the location */
 	public static function set_shipping_location( $country, $state = '', $postcode = '' ) {
 		$data = (array) jigoshop_session::instance()->customer;
-		
 		$data['shipping_country'] = $country;
 		$data['shipping_state'] = $state;
 		$data['shipping_postcode'] = $postcode;
-		
 		jigoshop_session::instance()->customer = $data;
 	}
 	
