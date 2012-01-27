@@ -410,7 +410,7 @@ class jigoshop_tax {
             
             if ($recalculate_tax) :
                 $rate = $this->get_rate($tax_class);
-                $tax = $this->calc_tax($amount, $rate, $prices_include_tax);
+                $tax = $this->calc_tax($amount, $rate, get_option('jigoshop_prices_include_tax') == 'yes');
                 $this->tax_amounts[$tax_class]['amount'] = $tax;
             else :
                 $this->tax_amounts[$tax_class]['amount'] += $amount;
