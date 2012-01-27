@@ -169,7 +169,7 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 		// Save the new values
 		$instance['title'] = strip_tags($new_instance['title']);
 		$instance['number'] = abs($new_instance['number']);
-		$instance['show_variations'] = (bool) $new_instance['show_variations'];
+		$instance['show_variations'] = (bool) isset($new_instance['show_variations']) ? $new_instance['show_variations'] : false;
 
 		// Flush the cache
 		$this->flush_widget_cache();
