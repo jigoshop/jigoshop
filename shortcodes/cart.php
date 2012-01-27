@@ -60,7 +60,7 @@ function jigoshop_cart($atts) {
             jigoshop::add_message(__('Shipping costs updated.', 'jigoshop'));
 
         endif;
-
+        
     elseif (isset($_POST['shipping_rates'])) :
 
         $rates_params = explode(":", $_POST['shipping_rates']);

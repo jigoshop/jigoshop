@@ -83,38 +83,50 @@ jQuery(function(){
 	});
 	
 	/* states */
-	var states_json = params.countries.replace(/&quot;/g, '"');
-	var states = jQuery.parseJSON( states_json );			
-	
-	jQuery('select.country_to_state').change(function(){
-		
-		var country = jQuery(this).val();
-		var state_box = jQuery('#' + jQuery(this).attr('rel'));
-		
-		var input_name = jQuery(state_box).attr('name');
-		var input_id = jQuery(state_box).attr('id');
+    var states_json = params.countries.replace(/&quot;/g, '"');
+    var states = jQuery.parseJSON( states_json );
 
-		if (states[country]) {
-			var options = '';
-			var state = states[country];
-			for(var index in state) {
-				options = options + '<option value="' + index + '">' + state[index] + '</option>';
-			}
-			if (jQuery(state_box).is('input')) {
-				// Change for select
-				jQuery(state_box).replaceWith('<select name="' + input_name + '" id="' + input_id + '"><option value="">' + params.select_state_text + '</option></select>');
-				state_box = jQuery('#' + jQuery(this).attr('rel'));
-			}
-			jQuery(state_box).html(options);
-		} else {
-			if (jQuery(state_box).is('select')) {
-				jQuery(state_box).replaceWith('<input class="input-text" type="text" placeholder="' + params.state_text + '" name="' + input_name + '" id="' + input_id + '" />');
-				state_box = jQuery('#' + jQuery(this).attr('rel'));
-			}
-		}
-		
-	}).change();
-	
+    jQuery('select.country_to_state').change(function(){
+
+        var country = jQuery(this).val();
+        var state_box = jQuery('#' + jQuery(this).attr('rel'));
+
+        var input_name = jQuery(state_box).attr('name');
+        var input_id = jQuery(state_box).attr('id');
+
+        if (states[country]) {
+            var options = '';
+            var state = states[country];
+            var state_selected = params.billing_state;
+            if (input_name == 'calc_shipping_state') {
+                state_selected = jQuery('#calc_shipping_state').val();
+            }
+            else {
+                state_selected = params.shipping_state;
+            }
+            for(var index in state) {
+
+                if (state_selected == index) {
+                    options = options + '<option value="' + index + '" selected="selected">' + state[index] + '</option>';
+                } else {
+                    options = options + '<option value="' + index + '">' + state[index] + '</option>';
+                }    
+            }
+            if (jQuery(state_box).is('input')) {
+                // Change for select
+                jQuery(state_box).replaceWith('<select name="' + input_name + '" id="' + input_id + '"><option value="">' + params.select_state_text + '</option></select>');
+                state_box = jQuery('#' + jQuery(this).attr('rel'));
+            }
+            jQuery(state_box).html(options);
+        } else {
+            if (jQuery(state_box).is('select')) {
+                jQuery(state_box).replaceWith('<input class="input-text" type="text" placeholder="' + params.state_text + '" name="' + input_name + '" id="' + input_id + '" />');
+                state_box = jQuery('#' + jQuery(this).attr('rel'));
+            }
+        }
+
+    }).change();
+        
 	/* Tabs */
 	jQuery('#tabs .panel:not(#tabs .panel)').hide();
 	jQuery('#tabs li a').click(function(){

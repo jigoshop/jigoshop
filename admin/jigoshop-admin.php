@@ -192,7 +192,7 @@ function jigoshop_system_info() {
 		                    <th scope="col"><?php echo (defined('PHP_OS')) ? (string)(PHP_OS) : 'N/A'; ?></th>
 		                </tr>
 		            </thead>
-		           	<tbody>
+					<tbody>
 		                <tr>
 		                    <td class="titledesc"><?php _e('PHP Version','jigoshop')?></td>
 		                    <td class="forminp"><?php if(function_exists('phpversion')) echo phpversion(); ?></td>
@@ -202,6 +202,38 @@ function jigoshop_system_info() {
 		                    <td class="forminp"><?php echo $_SERVER['SERVER_SOFTWARE']; ?></td>
 		                </tr>
 		        	</tbody>
+		            <thead>
+		                <tr>
+		                    <th scope="col" width="200px"><?php _e('PHP Sessions','jigoshop')?></th>
+		                    <th scope="col">&nbsp;</th>
+		                </tr>
+		            </thead>
+					<tbody>
+		                <tr>
+		                    <td class="titledesc"><?php _e('Session Support','jigoshop')?></td>
+		                    <td class="forminp"><?php $_SESSION['enableSessionsTest'] = "on"; echo $_SESSION['enableSessionsTest'] ? "enabled" : "disabled"; ?></td>
+		                </tr>
+		                <tr>
+		                    <td class="titledesc"><?php _e('Session name','jigoshop')?></td>
+		                    <td class="forminp"><?php echo ini_get('session.name'); ?></td>
+		                </tr>
+		                <tr>
+		                    <td class="titledesc"><?php _e('Cookie path path','jigoshop')?></td>
+		                    <td class="forminp"><?php echo ini_get('session.cookie_path'); ?></td>
+		                </tr>
+		                <tr>
+		                    <td class="titledesc"><?php _e('Save path','jigoshop')?></td>
+		                    <td class="forminp"><?php echo ini_get('session.save_path'); ?></td>
+		                </tr>
+		                <tr>
+		                    <td class="titledesc"><?php _e('Use cookies','jigoshop')?></td>
+		                    <td class="forminp"><?php echo (ini_get('session.use_cookies') ? 'On' : 'Off'); ?></td>
+		                </tr>
+		                <tr>
+		                    <td class="titledesc"><?php _e('Use only cookies','jigoshop')?></td>
+		                    <td class="forminp"><?php echo (ini_get('session.use_only_cookies') ? 'On' : 'Off'); ?></td>
+		                </tr>
+					</tbody>
 		        </table>
 			</div>
 			<div id="debugging" class="panel">

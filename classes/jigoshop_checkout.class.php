@@ -273,7 +273,6 @@ class jigoshop_checkout extends jigoshop_singleton {
 		if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
 		
         // always calculate totals when coming to checkout, as we need the total calculated on the cart here
-        // fixes https://github.com/jigoshop/redhillsranch/issues/61
         jigoshop_cart::calculate_totals(); 
 
 		if (isset($_POST) && $_POST && !isset($_POST['login'])) :
