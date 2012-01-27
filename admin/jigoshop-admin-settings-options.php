@@ -113,7 +113,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'std' 		=> 'no',
 		'type' 		=> 'select',
 		'options' => array(
-			'samge_page'  => __('Stay on the same page', 'jigoshop'),
+			'same_page'  => __('Stay on the same page', 'jigoshop'),
 			'to_checkout' => __('Redirect to Checkout', 'jigoshop'),
 			'to_cart' => __('Redirect to Cart', 'jigoshop'),
 		)
