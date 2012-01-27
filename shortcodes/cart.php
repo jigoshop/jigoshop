@@ -24,6 +24,7 @@ function jigoshop_cart( $atts ) {
 
     $jigoshop_coupons = new jigoshop_coupons();
     $coupons          = $jigoshop_coupons->get_coupons();
+    $has_quantity     = false; // Changes to true if at least one product has a quantity toggle
 
 	// Process Discount Codes
 	if (!empty($coupons) && isset($_POST['apply_coupon']) && $_POST['apply_coupon'] && jigoshop::verify_nonce('cart')) :
@@ -100,6 +101,11 @@ function jigoshop_cart( $atts ) {
 			if (sizeof(jigoshop_cart::$cart_contents)>0) :
 				foreach (jigoshop_cart::$cart_contents as $cart_item_key => $values) :
 					$_product = $values['data'];
+
+                    if (!$has_quantity && ($_product->product_type != 'downloadable' || $_product->download_limit > 0)) {
+                        $has_quantity = true;
+                    }
+
 					if ($_product->exists() && $values['quantity']>0) :
                         
                         $additional_description = '';
@@ -129,7 +135,7 @@ function jigoshop_cart( $atts ) {
 								</td>
 								<td class="product-price"><?php echo jigoshop_price($_product->get_price()); ?></td>
 								<td class="product-quantity">
-                                <?php if ( $_product->download_limit > 0 ) : ?>
+                                <?php if ( $_product->product_type == 'downloadable' && $_product->download_limit > 0 ) : ?>
                                     <div class="quantity"><input name="cart[<?php echo $cart_item_key?>][qty]" value="<?php echo $values['quantity']; ?>" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div>
                                 <?php else : ?>
                                     Unlimited Downloads
@@ -146,28 +152,34 @@ function jigoshop_cart( $atts ) {
 			?>
 		</tbody>
 		<tfoot>
-            <?php if ( !empty( $coupons ) ) : ?>
-                <tr>
-                    <td colspan="6" class="actions">
+            <tr>
+                <td colspan="6" class="actions">
+                    <?php if ( !empty( $coupons ) ) : ?>
                         <div class="coupon">
                             <label for="coupon_code"><?php _e('Coupon', 'jigoshop'); ?>:</label> <input name="coupon_code" class="input-text" id="coupon_code" value="" />
                             <input type="submit" class="button" name="apply_coupon" value="<?php _e('Apply Coupon', 'jigoshop'); ?>" />
                         </div>
-                        <?php jigoshop::nonce_field('cart') ?>
-                        <input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" /> <a href="<?php echo jigoshop_cart::get_checkout_url(); ?>" class="checkout-button button-alt"><?php _e('Proceed to Checkout &rarr;', 'jigoshop'); ?></a>
+                    <?php endif; ?>
+
+                    <?php jigoshop::nonce_field('cart') ?>
+
+                    <?php if ( $has_quantity ) : ?>
+                        <input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" />
+                    <?php endif; ?>
+                    
+                    <a href="<?php echo jigoshop_cart::get_checkout_url(); ?>" class="checkout-button button-alt"><?php _e('Proceed to Checkout &rarr;', 'jigoshop'); ?></a>
+                </td>
+            </tr>
+            <?php if ( count( jigoshop_cart::$applied_coupons ) ) : ?>
+                <tr>
+                    <td colspan="6" class="applied-coupons">
+                        <div>
+                            <span class="applied-coupons-label"><?php _e('Applied Discount Coupons: ','jigoshop'); ?></span>
+                            <span class="applied-coupons-values"><?php echo implode( ',', jigoshop_cart::$applied_coupons ); ?></span>
+                        </div>
                     </td>
                 </tr>
-                <?php if ( count( jigoshop_cart::$applied_coupons ) ) : ?>
-                    <tr>
-                        <td colspan="6" class="applied-coupons">
-                            <div>
-                                <span class="applied-coupons-label"><?php _e('Applied Discount Coupons: ','jigoshop'); ?></span>
-                                <span class="applied-coupons-values"><?php echo implode( ',', jigoshop_cart::$applied_coupons ); ?></span>
-                            </div>
-                        </td>
-                    </tr>
-                <?php 
-                endif;
+            <?php 
             endif;
 		
 			do_action( 'jigoshop_shop_table_cart_foot' ); 
