@@ -232,6 +232,7 @@ function jigoshop_init() {
     	}
     	
     endif;
+
 }
 add_action('init', 'jigoshop_init', 0);
 
@@ -570,26 +571,44 @@ function jigoshop_price( $price, $args = array() ) {
         
         $currency_pos = get_option('jigoshop_currency_pos');
         $currency_symbol = get_jigoshop_currency_symbol();
-        $currency_unit = get_option('jigoshop_currency');
+        $currency_code = get_option('jigoshop_currency');
 
         switch ($currency_pos) :
             case 'left' :
                 $return = $currency_symbol . $price;
             break;
-            case 'right' :
-                $return = $price . $currency_symbol;
-            break;
-            case 'both' :
-                $return = $currency_symbol . $price . $currency_unit;
-            break;
             case 'left_space' :
                 $return = $currency_symbol . ' ' . $price;
+            break;
+            case 'right' :
+                $return = $price . $currency_symbol;
             break;
             case 'right_space' :
                 $return = $price . ' ' . $currency_symbol;
             break;
-            case 'both_space' :
-                $return = $currency_symbol . ' ' . $price . ' ' . $currency_unit;
+            case 'left_code' :
+                $return = $currency_code . $price;
+            break;
+            case 'left_code_space' :
+                $return = $currency_code . ' ' . $price;
+            break;
+            case 'right_code' :
+                $return = $price . $currency_code;
+            break;
+            case 'right_code_space' :
+                $return = $price . ' ' . $currency_code;
+            break;
+            case 'code_symbol' :
+                $return = $currency_code . $price . $currency_symbol;
+            break;
+            case 'code_symbol_space' :
+                $return = $currency_code . ' ' . $price . ' ' . $currency_symbol;
+            break;
+            case 'symbol_code' :
+                $return = $currency_symbol . $price . $currency_code;
+            break;
+            case 'symbol_code_space' :
+                $return = $currency_code . ' ' . $price . ' ' . $currency_code;
             break;
         endswitch;
     
