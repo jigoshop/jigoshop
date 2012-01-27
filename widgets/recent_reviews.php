@@ -195,7 +195,7 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 
 		// Only fetch comments whose products are visible
 		$clauses['where']	.= " AND $wpdb->postmeta.meta_value = 'visible'";
-		$clauses['join']		.= "LEFT JOIN $wpdb->postmeta ON($wpdb->comments.comment_post_ID = $wpdb->postmeta.post_id AND $wpdb->postmeta.meta_key = 'visibility')";;
+		$clauses['join']	.= " LEFT JOIN $wpdb->postmeta ON($wpdb->comments.comment_post_ID = $wpdb->postmeta.post_id AND $wpdb->postmeta.meta_key = 'visibility')";;
 
 		return $clauses;
 	}

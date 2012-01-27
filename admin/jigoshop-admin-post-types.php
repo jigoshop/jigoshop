@@ -108,6 +108,8 @@ function jigoshop_custom_product_columns($column) {
 				} else {
 					echo __('In Stock', 'jigoshop');
 				}
+			} elseif ( $product->is_type( 'grouped' ) ) {
+				echo __('Parent (no stock)', 'jigoshop');
 			} else {
 				echo '<strong class="attention">' . __('Out of Stock', 'jigoshop') . '</strong>';
 			}
