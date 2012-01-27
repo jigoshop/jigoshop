@@ -33,16 +33,6 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	array( 'name' => __('General Options', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
 
 	array(
-		'name' => __('Send Jigoshop emails from','jigoshop'),
-		'desc' 		=> __(''),
-		'tip' 		=> __('The email used to send all Jigoshop related emails, such as order confirmations and notices.','jigoshop'),
-		'id' 		=> 'jigoshop_email',
-		'css' 		=> 'width:250px;',
-		'type' 		=> 'text',
-		'std' 		=> get_option('admin_email')
-	),
-
-	array(
 		'name' => __('Demo store','jigoshop'),
 		'desc' 		=> '',
 		'tip' 		=> __('Enable this option to show a banner at the top of the page stating its a demo store.','jigoshop'),
@@ -57,73 +47,13 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name' => __('Enable SKU field','jigoshop'),
-		'desc' 		=> '',
-		'tip' 		=> __('Turning off the SKU field will give products an SKU of their post id.','jigoshop'),
-		'id' 		=> 'jigoshop_enable_sku',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'no',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
-	),
-
-	array(
-		'name' => __('Enable weight field','jigoshop'),
-		'desc' 		=> '',
-		'tip' 		=> '',
-		'id' 		=> 'jigoshop_enable_weight',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'yes',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
-	),
-
-	array(
-		'name' => __('Weight Unit', 'jigoshop'),
-		'desc' 		=> __("This controls what unit you will define weights in.", 'jigoshop'),
-		'tip' 		=> '',
-		'id' 		=> 'jigoshop_weight_unit',
-		'css' 		=> 'min-width:200px;',
-		'std' 		=> 'kg',
-		'type' 		=> 'select',
-		'options' => array(
-			'kg' => __('kg', 'jigoshop'),
-			'lbs' => __('lbs', 'jigoshop')
-		)
-	),
-
-	array(
-		'name' => __('Enable product dimensions','jigoshop'),
-		'desc' 		=> '',
-		'tip' 		=> '',
-		'id' 		=> 'jigoshop_enable_dimensions',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'yes',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
-	),
-
-	array(
-		'name' => __('Dimensions Unit', 'jigoshop'),
-		'desc' 		=> __("This controls what units you will define dimensions in.", 'jigoshop'),
-		'tip' 		=> '',
-		'id' 		=> 'jigoshop_dimension_unit',
-		'css' 		=> 'min-width:200px;',
-		'std' 		=> 'cm',
-		'type' 		=> 'select',
-		'options' => array(
-			'cm' => __('centimeters', 'jigoshop'),
-			'in' => __('inches', 'jigoshop')
-		)
+		'name' => __('Send Jigoshop emails from','jigoshop'),
+		'desc' 		=> __(''),
+		'tip' 		=> __('The email used to send all Jigoshop related emails, such as order confirmations and notices.','jigoshop'),
+		'id' 		=> 'jigoshop_email',
+		'css' 		=> 'width:250px;',
+		'type' 		=> 'text',
+		'std' 		=> get_option('admin_email')
 	),
 
 	array(
@@ -163,7 +93,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	array(
 		'name' => __('Enable guest checkout?','jigoshop'),
 		'desc' 		=> '',
-		'tip' 		=> __('Without guest checkout, all users will require an account in order to checkout.','jigoshop'),
+		'tip' 		=> __('Setting this to Yes will allow users to checkout without registering or signing up. Otherwise, users must be signed in or must sign up to checkout.','jigoshop'),
 		'id' 		=> 'jigoshop_enable_guest_checkout',
 		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'yes',
@@ -175,9 +105,24 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
+		'name' => __('After adding product to cart','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Define what should happen when a user clicks on &#34;Add to Cart&#34; on any product or page.','jigoshop'),
+		'id' 		=> 'jigoshop_redirect_add_to_cart',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'samge_page'  => __('Stay on the same page', 'jigoshop'),
+			'to_checkout' => __('Redirect to Checkout', 'jigoshop'),
+			'to_cart' => __('Redirect to Cart', 'jigoshop'),
+		)
+	),
+
+	array(
 		'name' => __('Force SSL on checkout?','jigoshop'),
 		'desc' 		=> '',
-		'tip' 		=> __('Forcing SSL is recommended','jigoshop'),
+		'tip' 		=> __('Forcing SSL is recommended. An SSL certificate is <strong>required</strong> if you choose yes. Contact your hosting provider for more information on SSL Certs.','jigoshop'),
 		'id' 		=> 'jigoshop_force_ssl_checkout',
 		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'no',
@@ -203,21 +148,6 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name' => __('Go directly to checkout after add to cart','jigoshop'),
-		'desc' 		=> '',
-		'tip' 		=> __('Useful if most customers only buy one product.','jigoshop'),
-		'id' 		=> 'jigoshop_directly_to_checkout',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'no',
-		'type' 		=> 'select',
-		'options' => array(
-			'no'  => __('No', 'jigoshop'),
-			'yes' => __('Yes', 'jigoshop'),
-      'cart' => __('Redirect to Cart', 'jigoshop'),
-		)
-	),
-	
-	array(
 		'name' => __('Disable bundled Fancybox','jigoshop'),
 		'desc' 		=> '',
 		'tip' 		=> __('Useful if or one of your plugin already loads the Fancybox script and css. But be care, Jigoshop will still try to open products thumbnails using it.','jigoshop'),
@@ -228,6 +158,78 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'options' => array(
 			'no'  => __('No', 'jigoshop'),
 			'yes' => __('Yes', 'jigoshop')
+		)
+	),
+	
+	array( 'name' => __('Products', 'jigoshop'), 'type' => 'title', 'desc' 	=> '' ),
+
+	array(
+		'name' => __('Enable SKU field','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Turning off the SKU field will give products an SKU of their post id.','jigoshop'),
+		'id' 		=> 'jigoshop_enable_sku',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'yes' => __('Yes', 'jigoshop'),
+			'no'  => __('No', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Enable weight field','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_enable_weight',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'yes',
+		'type' 		=> 'select',
+		'options' => array(
+			'yes' => __('Yes', 'jigoshop'),
+			'no'  => __('No', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Weight Unit', 'jigoshop'),
+		'desc' 		=> __("This controls what unit you will define weights in.", 'jigoshop'),
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_weight_unit',
+		'css' 		=> 'min-width:200px;',
+		'std' 		=> 'kg',
+		'type' 		=> 'select',
+		'options' => array(
+			'kg' => __('Kilograms', 'jigoshop'),
+			'lbs' => __('Pounds', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Enable product dimensions','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_enable_dimensions',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'yes',
+		'type' 		=> 'select',
+		'options' => array(
+			'yes' => __('Yes', 'jigoshop'),
+			'no'  => __('No', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Dimensions Unit', 'jigoshop'),
+		'desc' 		=> __("This controls what unit you will define dimensions in.", 'jigoshop'),
+		'tip' 		=> '',
+		'id' 		=> 'jigoshop_dimension_unit',
+		'css' 		=> 'min-width:200px;',
+		'std' 		=> 'cm',
+		'type' 		=> 'select',
+		'options' => array(
+			'cm' => __('centimeters', 'jigoshop'),
+			'in' => __('inches', 'jigoshop')
 		)
 	),
 
@@ -271,7 +273,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(
 		'name' => __('Cart Page','jigoshop'),
-		'desc' 		=> __('Your page should contain [jigoshop_cart]','jigoshop'),
+		'desc' 		=> __('Shortcode to place on page: [jigoshop_cart]','jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_cart_page_id',
 		'css' 		=> 'min-width:50px;',
@@ -281,7 +283,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(
 		'name' => __('Checkout Page','jigoshop'),
-		'desc' 		=> __('Your page should contain [jigoshop_checkout]','jigoshop'),
+		'desc' 		=> __('Shortcode to place on page: [jigoshop_checkout]','jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_checkout_page_id',
 		'css' 		=> 'min-width:50px;',
@@ -291,7 +293,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(
 		'name' => __('Pay Page','jigoshop'),
-		'desc' 		=> __('Your page should contain [jigoshop_pay] and usually have "Checkout" as the parent.','jigoshop'),
+		'desc' 		=> __('Shortcode to place on page: [jigoshop_pay]<br/>Default parent page: Checkout','jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_pay_page_id',
 		'css' 		=> 'min-width:50px;',
@@ -301,7 +303,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(
 		'name' => __('Thanks Page','jigoshop'),
-		'desc' 		=> __('Your page should contain [jigoshop_thankyou] and usually have "Checkout" as the parent.','jigoshop'),
+		'desc' 		=> __('Shortcode to place on page: [jigoshop_thankyou]<br/>Default parent page: Checkout','jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_thanks_page_id',
 		'css' 		=> 'min-width:50px;',
@@ -311,7 +313,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(
 		'name' => __('My Account Page','jigoshop'),
-		'desc' 		=> __('Your page should contain [jigoshop_my_account]','jigoshop'),
+		'desc' 		=> __('Shortcode to place on page: [jigoshop_my_account]','jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_myaccount_page_id',
 		'css' 		=> 'min-width:50px;',
@@ -321,7 +323,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(
 		'name' => __('Edit Address Page','jigoshop'),
-		'desc' 		=> __('Your page should contain [jigoshop_edit_address] and usually have "My Account" as the parent.','jigoshop'),
+		'desc' 		=> __('Shortcode to place on page: [jigoshop_edit_address]<br/>Default parent page: My Account','jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_edit_address_page_id',
 		'css' 		=> 'min-width:50px;',
@@ -331,7 +333,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(
 		'name' => __('View Order Page','jigoshop'),
-		'desc' 		=> __('Your page should contain [jigoshop_view_order] and usually have "My Account" as the parent.','jigoshop'),
+		'desc' 		=> __('Shortcode to place on page:[jigoshop_view_order]<br/>Default parent page: My Account','jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_view_order_page_id',
 		'css' 		=> 'min-width:50px;',
@@ -341,7 +343,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(
 		'name' => __('Change Password Page','jigoshop'),
-		'desc' 		=> __('Your page should contain [jigoshop_change_password] and usually have "My Account" as the parent.','jigoshop'),
+		'desc' 		=> __('Shortcode to place on page: [jigoshop_change_password]<br/>Default parent page: My Account','jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_change_password_page_id',
 		'css' 		=> 'min-width:50px;',
@@ -351,7 +353,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(
 		'name' => __('Track Order Page','jigoshop'),
-		'desc' 		=> __('Your page should contain [jigoshop_order_tracking].','jigoshop'),
+		'desc' 		=> __('Shortcode to place on page: [jigoshop_order_tracking]','jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_track_order_page_id',
 		'css' 		=> 'min-width:50px;',
@@ -361,7 +363,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(
 		'name' => __('Terms Page', 'jigoshop'),
-		'desc' 		=> __('If you define a "Terms" page the customer will be asked if they accept them when checking out.', 'jigoshop'),
+		'desc' 		=> __('If you define a &#34;Terms&#34; page the customer will be asked to accept it before allowing them to place their order.', 'jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_terms_page_id',
 		'css' 		=> 'min-width:50px;',
@@ -670,7 +672,6 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	array(
 		'name' => __('Low stock notification','jigoshop'),
 		'desc' 		=> '',
-		'tip' 		=> __('Set the minimum threshold for this below.', 'jigoshop'),
 		'id' 		=> 'jigoshop_notify_low_stock',
 		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'yes',
@@ -684,7 +685,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	array(
 		'name' => __('Low stock threshold','jigoshop'),
 		'desc' 		=> '',
-		'tip' 		=> '',
+		'tip' 		=> __('You will receive a notification as soon this threshold is hit (if notifications are turned on).', 'jigoshop'),
 		'id' 		=> 'jigoshop_notify_low_stock_amount',
 		'css' 		=> 'min-width:50px;',
 		'type' 		=> 'text',
@@ -694,7 +695,6 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	array(
 		'name' => __('Out of stock notification','jigoshop'),
 		'desc' 		=> '',
-		'tip' 		=> __('Set the minimum threshold for this below.', 'jigoshop'),
 		'id' 		=> 'jigoshop_notify_no_stock',
 		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'yes',
@@ -708,7 +708,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	array(
 		'name' => __('Out of stock threshold','jigoshop'),
 		'desc' 		=> '',
-		'tip' 		=> '',
+		'tip' 		=> __('You will receive a notification as soon this threshold is hit (if notifications are turned on).', 'jigoshop'),
 		'id' 		=> 'jigoshop_notify_no_stock_amount',
 		'css' 		=> 'min-width:50px;',
 		'type' 		=> 'text',
@@ -718,7 +718,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	array(
 		'name' => __('Out of stock hidden','jigoshop'),
 		'desc' 		=> '',
-		'tip' 		=> 'When the Out of Stock Threshold (above) is reached, set the product visibility to hidden so that it will not appear on the Catalog or Shop product lists.',
+		'tip' 		=> 'For Yes: When the Out of Stock Threshold (above) is reached, the product visibility will be set to hidden so that it will not appear on the Catalog or Shop product lists.',
 		'id' 		=> 'jigoshop_hide_no_stock_product',
 		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'no',

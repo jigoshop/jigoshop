@@ -204,6 +204,21 @@ function jigoshop_upgrade_100() {
 		// Convert SKU key to lowercase
 		$wpdb->update( $wpdb->postmeta, array('meta_key' => 'sku'), array('post_id' => $post->ID, 'meta_key' => 'sku') );
 
+		// Change redirect add to cart option name
+		$checkoutValue = get_post_option( 'jigoshop_directly_to_checkout' );
+
+		if ($checkoutValue == "no" )
+			$checkoutValue = "same_page";
+
+		else if ($checkoutValue == "cart")
+			$checkoutValue = "to_cart";
+
+		else if ($checkoutValue == "yes")
+			$checkoutValue = "to_checkout";
+
+		update_option ( 'jigoshop_redirect_add_to_cart' , $checkoutValue );
+		delete_option ( 'jigoshop_directly_to_checkout' );
+
 		// Convert featured to true/false
 		$featured = get_post_meta( $post->ID, 'featured', true);
 
