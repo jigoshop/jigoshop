@@ -711,17 +711,31 @@ class jigoshop_product {
 				return __( 'Unavailable', 'jigoshop' );
 
 			$array = array();
+            $price = null;
 			foreach ( $children as $child_ID ) {
 				$child = $this->get_child($child_ID); 
 				
 				// Only get prices that are in stock
 				if ( $child->is_in_stock() ) {
 					$array[] = $child->get_price();
+                    if ($price == null) :
+                        $price = $child->get_price();
+                    endif;
 				}
 			}
 			sort($array);
 
-			$html = '<span class="from">' . _x('From:', 'jigoshop') . '</span> ';
+            if ($this->is_type('variable')) :
+                
+                // for variable products, only display From if prices differ among them
+                if (count($array) >= 2 && $array[count($array) - 1] != $price) :
+                    $html = '<span class="from">' . _x('From:', 'jigoshop') . '</span> ';
+                endif;
+                
+            else :
+                $html = '<span class="from">' . _x('From:', 'jigoshop') . '</span> ';
+            endif;
+            
 			return $html . jigoshop_price( $array[0] );
 		}
 
