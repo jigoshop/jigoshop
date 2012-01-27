@@ -29,6 +29,7 @@ class jigoshop_product {
 	public $product_type;
 	public $price;
     public $sale_price;
+    public $download_limit;
     
 	/**
 	 * Loads all product data from custom fields
@@ -78,6 +79,11 @@ class jigoshop_product {
         $this->stock = 0;
 		if (isset($product_custom_fields['stock'][0])) {
             $this->stock = $product_custom_fields['stock'][0];
+        }
+
+        $this->download_limit = 0;
+        if (isset($product_custom_fields['download_limit'][0])) {
+            $this->download_limit = $product_custom_fields['download_limit'][0];
         }
 
 		$terms = wp_get_object_terms( $id, 'product_type' );

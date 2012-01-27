@@ -128,7 +128,13 @@ function jigoshop_cart( $atts ) {
 									<?php echo $additional_description; ?>
 								</td>
 								<td class="product-price"><?php echo jigoshop_price($_product->get_price()); ?></td>
-								<td class="product-quantity"><div class="quantity"><input name="cart[<?php echo $cart_item_key?>][qty]" value="<?php echo $values['quantity']; ?>" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div></td>
+								<td class="product-quantity">
+                                <?php if ( $_product->download_limit > 0 ) : ?>
+                                    <div class="quantity"><input name="cart[<?php echo $cart_item_key?>][qty]" value="<?php echo $values['quantity']; ?>" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div>
+                                <?php else : ?>
+                                    Unlimited Downloads
+                                <?php endif; ?>
+                                </td>
 								<td class="product-subtotal"><?php echo jigoshop_price($_product->get_price()*$values['quantity']); ?></td>
 							</tr>
                             <?php
