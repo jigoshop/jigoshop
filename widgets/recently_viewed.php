@@ -193,7 +193,7 @@
 	 **/
 	public function jigoshop_product_view_tracker( $post, $_product ) {
 		$instance = get_option('widget_recently_viewed_products');
-		if( ! $number = $instance[2]['number']) // is this always 2?
+		if( ! $number = isset($instance[2]['number']) ? $instance[2]['number'] : false ) // is this always 2?
 			return false; // stop the show!
 
 		// Check if we already have some data

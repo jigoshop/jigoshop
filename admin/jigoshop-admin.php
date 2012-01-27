@@ -183,7 +183,7 @@ function jigoshop_system_info() {
 		                </tr>
 		                <tr>
 		                    <td class="titledesc"><?php _e('WordPress Version','jigoshop')?></td>
-		                    <td class="forminp"><?php if (is_multisite()) echo 'WPMU'; else echo 'WP'; ?> <?php echo bloginfo('version'); ?></td>
+		                    <td class="forminp"><?php echo is_multisite() ? 'WPMU' : 'WP'; ?> <?php echo bloginfo('version'); ?></td>
 		                </tr>
 		            </tbody>
 		            <thead>
@@ -200,7 +200,7 @@ function jigoshop_system_info() {
 		                <tr>
 		                    <td class="titledesc"><?php _e('Server Software','jigoshop')?></td>
 		                    <td class="forminp"><?php echo $_SERVER['SERVER_SOFTWARE']; ?></td>
-		                </tr>
+		                </tr>					
 		        	</tbody>
 		            <thead>
 		                <tr>
@@ -211,7 +211,7 @@ function jigoshop_system_info() {
 					<tbody>
 		                <tr>
 		                    <td class="titledesc"><?php _e('Session Support','jigoshop')?></td>
-		                    <td class="forminp"><?php $_SESSION['enableSessionsTest'] = "on"; echo $_SESSION['enableSessionsTest'] ? "enabled" : "disabled"; ?></td>
+		                    <td class="forminp"><?php $_SESSION['enableSessionsTest'] = "on"; echo !empty($_SESSION['enableSessionsTest']) ? "enabled" : "disabled"; ?></td>
 		                </tr>
 		                <tr>
 		                    <td class="titledesc"><?php _e('Session name','jigoshop')?></td>
