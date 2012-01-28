@@ -263,17 +263,17 @@ function jigoshop_cart($atts) {
                                     endif;
                                 endif;
                             endif; ?>
-					<?php if (jigoshop_cart::get_total_discount()) : ?><tr class="discount">
-						<th class="cart-row-discount-title"><?php _e('Discount', 'jigoshop'); ?></th>
-						<td class="cart-row-discount">-<?php echo jigoshop_cart::get_total_discount(); ?></td>
-					</tr><?php endif; ?>
-					<tr>
-						<th class="cart-row-total-title"><strong><?php _e('Total', 'jigoshop'); ?></strong></th>
-						<td class="cart-row-total"><strong><?php echo jigoshop_cart::get_total(); ?></strong></td>
-					</tr>
-				</tbody>
-			</table>
-
+							<?php if (jigoshop_cart::get_total_discount()) : ?><tr class="discount">
+								<th class="cart-row-discount-title"><?php _e('Discount', 'jigoshop'); ?></th>
+								<td class="cart-row-discount">-<?php echo jigoshop_cart::get_total_discount(); ?></td>
+							</tr><?php endif; ?>
+							<tr>
+								<th class="cart-row-total-title"><strong><?php _e('Total', 'jigoshop'); ?></strong></th>
+								<td class="cart-row-total"><strong><?php echo jigoshop_cart::get_total(); ?></strong></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			<?php
 			else :
 				echo '<p>' . __(jigoshop_shipping::get_shipping_error_message(), 'jigoshop') . '</p>';
