@@ -721,7 +721,17 @@ class jigoshop_product {
 			}
 			sort($array);
 
-			$html = '<span class="from">' . _x('From:', 'jigoshop') . '</span> ';
+            if ($this->is_type('variable')) :
+                
+                // for variable products, only display From if prices differ among them
+                if (count($array) >= 2 && $array[count($array) - 1] != $array[0]) :
+                    $html = '<span class="from">' . _x('From:', 'jigoshop') . '</span> ';
+                endif;
+                
+            else :
+                $html = '<span class="from">' . _x('From:', 'jigoshop') . '</span> ';
+            endif;
+            
 			return $html . jigoshop_price( $array[0] );
 		}
 
