@@ -21,7 +21,7 @@
 // For some reason enqueing the script inside a class causes the event unbind()
 // to not work. Would prefer this to be part of the class but perhaps its better to enqueue
 // everything all at once.
-add_action( 'admin_enqueue_scripts', 'jigoshop_product_meta_variable_script');
+add_action( 'admin_enqueue_scripts', 'jigoshop_product_meta_variable_script' );
 function jigoshop_product_meta_variable_script( $hook ) {
 	global $post;
 		
@@ -128,7 +128,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	 * @param   int   Product ID
 	 * @return  void
 	 */
-	public function save( $parent_id, $post ) {
+	public function save( $parent_id ) {
 		global $wpdb;
 
 		// Do not run if there are no variations
@@ -470,9 +470,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 					<tbody>
 						<tr>
 							<td class="upload_image" rowspan="2">
-								<a href="#" class="upload_image_button <?php if ($image_id) echo 'remove'; ?>" rel="<?php echo $variation->ID; ?>">
+								<a href="#" class="upload_image_button <?php if (isset($image_id)) echo 'remove'; ?>" rel="<?php echo $variation->ID; ?>">
 									<img src="<?php echo $image ?>" width="93px" />
-									<input type="hidden" name="<?php echo esc_attr( $this->field_name('_thumbnail_id', $variation) ); ?>" class="upload_image_id" value="<?php echo esc_attr( $image_id ); ?>" />
+									<input type="hidden" name="<?php echo esc_attr( $this->field_name('_thumbnail_id', $variation) ); ?>" class="upload_image_id" value="<?php if ( isset($image_id)) echo esc_attr( $image_id ); ?>" />
 									<!-- TODO: APPEND THIS IN JS <span class="overlay"></span> -->
 								</a>
 							</td>
