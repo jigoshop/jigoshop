@@ -403,7 +403,13 @@ function is_product_list() {
  * @since 0.9.9
  */
 function is_jigoshop() {
-	return (is_shop() || is_product_category() || is_product_tag() || is_product());
+	$is_jigo = false;
+	$is_jigo |= is_content_wrapped();
+	$is_jigo |= is_account();
+	$is_jigo |= is_cart();
+	$is_jigo |= is_checkout();
+	$is_jigo |= is_order_tracker();
+	return $is_jigo;
 }
 
 /**
