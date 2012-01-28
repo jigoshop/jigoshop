@@ -711,16 +711,12 @@ class jigoshop_product {
 				return __( 'Unavailable', 'jigoshop' );
 
 			$array = array();
-            $price = null;
 			foreach ( $children as $child_ID ) {
 				$child = $this->get_child($child_ID); 
 				
 				// Only get prices that are in stock
 				if ( $child->is_in_stock() ) {
 					$array[] = $child->get_price();
-                    if ($price == null) :
-                        $price = $child->get_price();
-                    endif;
 				}
 			}
 			sort($array);
@@ -728,7 +724,7 @@ class jigoshop_product {
             if ($this->is_type('variable')) :
                 
                 // for variable products, only display From if prices differ among them
-                if (count($array) >= 2 && $array[count($array) - 1] != $price) :
+                if (count($array) >= 2 && $array[count($array) - 1] != $array[0]) :
                     $html = '<span class="from">' . _x('From:', 'jigoshop') . '</span> ';
                 endif;
                 
