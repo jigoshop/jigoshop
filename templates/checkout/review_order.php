@@ -223,9 +223,13 @@
                 foreach (jigoshop_cart::$cart_contents as $item_id => $values) :
                     $_product = $values['data'];
                     if ($_product->exists() && $values['quantity'] > 0) :
+						$variation = '';
+                        if ($_product instanceof jigoshop_product_variation && is_array($values['variation'])) {
+                            $variation = jigoshop_get_formatted_variation($_product->get_variation_attributes());
+                        }
                         echo '
-							<tr>
-								<td class="product-name">' . $_product->get_title() . jigoshop_get_formatted_variation($values['variation']) . '</td>
+                            <tr>
+                                <td class="product-name">' . $_product->get_title() . $variation . '</td>
 								<td>' . $values['quantity'] . '</td>
 								<td>' . jigoshop_price($_product->get_price_excluding_tax() * $values['quantity'], array('ex_tax_label' => 1)) . '</td>
 							</tr>';
