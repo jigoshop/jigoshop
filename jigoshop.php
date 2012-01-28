@@ -216,7 +216,12 @@ function jigoshop_init() {
    		wp_register_style('jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css');
     	wp_enqueue_style('jquery-ui-jigoshop-styles');
     else :
-    	wp_register_style( 'jqueryui_styles', jigoshop::assets_url() . '/assets/css/ui.css' );
+    	// IE8 has a bug with the filter css command. Commenting it out in ui8.css seems to resolve the issue of IE8 slowing to a crawl. Submitting ui8.css to dev.
+    	if (!preg_match("/MSIE 8.0/i", $_SERVER['HTTP_USER_AGENT'])) {
+    		wp_register_style( 'jqueryui_styles', jigoshop::assets_url() . '/assets/css/ui.css' );
+    	} else {
+    		wp_register_style( 'jqueryui_styles', jigoshop::assets_url() . '/assets/css/ui8.css' );
+    	}
 
     	wp_enqueue_style('jigoshop_frontend_styles');
     	wp_enqueue_style('jqueryui_styles');
