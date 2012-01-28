@@ -392,7 +392,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			}
 			else {
 
-				$options = explode(', ', $attr['value']);
+				$options = explode(',', $attr['value']);
 				foreach( $options as $option ) {
 					$option = trim($option);
 					$html .= '<option '.selected($selected, $option, false).' value="'.esc_attr($option).'">'.$option.'</option>';
@@ -520,7 +520,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 								</label>
 							</td>
 						</tr>
-						<tr class="simple options" <?php echo ('simple' == $product_type ? 'style="display: table-row;"' : 'style="display: none;"');?>>
+						<tr class="simple options">
 							<td>
 								<label><?php _e('Weight', 'jigoshop') ?>
 									<input type="text" name="<?php echo esc_attr( $this->field_name('weight', $variation) ); ?>" value="<?php echo esc_attr( isset($meta['weight'][0]) ? $meta['weight'][0] : null ); ?>" />
