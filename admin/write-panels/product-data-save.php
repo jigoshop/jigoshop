@@ -207,7 +207,13 @@ class jigoshop_product_meta
 			// Skip if no value
 			if ( ! $value )
 				continue;
-
+				
+			if ( !is_array( $value )) {
+			 	$value = explode( ',', $value );
+			 	$value = array_map( 'trim', $value );
+			 	$value = implode( ',', $value );
+			}
+			
 			// If attribute is standard then create the relationship
 			if ( (bool) $attr_is_tax[$key] && taxonomy_exists('pa_'.sanitize_title($attr_names[$key])) ) {
 				// TODO: Adding pa and sanitizing fixes the bug but why not automatic?
