@@ -1125,15 +1125,16 @@ class jigoshop_product {
 					}
 				}
 				else {
-					$options = explode(', ', $attribute['value']);
+					$options = explode(',', $attribute['value']);
 				}
 
 				$options = array_map('trim', $options);
 				$values = array_unique($options);
-			}
-			else {
+				
+			} else {
+				
 				if( ! $attribute['is_taxonomy'] ) {
-					$options = explode(', ', $attribute['value']);
+					$options = explode(',', $attribute['value']);
 					$options = array_map('trim', $options);
 					$values = array_intersect( $options, $values );
 				}
