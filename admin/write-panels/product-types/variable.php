@@ -237,7 +237,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 				</select>
 				<input id="do_actions" type="submit" class="button-secondary" value="Apply">
 
-				<button type='button' class='button button-secondary add_variation'<?php disabled($this->has_variable_attributes($attributes), false) ?>><?php _e('Add Variation', 'jigoshop') ?></button>
+				<?php if($this->has_variable_attributes($attributes)): ?>
+					<button type='button' class='button button-secondary add_variation'><?php _e('Add Variation', 'jigoshop') ?></button>
+				<?php endif; ?>
 			</div>
 			<div class='jigoshop_variations'>
 
@@ -245,7 +247,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 
 				<div class="demo variation ">
-					<a href="http://forum.jigoshop.com/kb/creating-products/variable-products" target="_blank" class="overlay"><span>Click me to learn more about Variations</span></a>
+					<a href="http://forum.jigoshop.com/kb/creating-products/variable-products" target="_blank" class="overlay"><span><?php _e('Learn how to make a Variation', 'jigoshop'); ?></span></a>
 					<div class="inside">			
 						<div class="jigoshop_variation postbox">
 							<button type="button" class="remove_variation button">Remove</button>
