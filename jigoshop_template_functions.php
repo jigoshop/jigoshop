@@ -409,6 +409,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 			<div class="single_variation"></div>
 			<div class="variations_button" style="display:none;">
                 <input type="hidden" name="variation_id" value="" />
+                <input type="hidden" name="product_id" value="<?php echo esc_attr( $post->ID ); ?>" />
                 <div class="quantity"><input name="quantity" value="1" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div>
 				<input type="submit" class="button-alt" value="<?php esc_html_e('Add to cart', 'jigoshop'); ?>" />
 			</div>

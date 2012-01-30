@@ -405,79 +405,119 @@ function jigoshop_custom_order_columns($column) {
 }
 
 /**
- * Search by SKU or ID for products. Adapted from code by BenIrvin (Admin Search by ID)
+ * Search by SKU or ID for products. 
+ * Adapted from code by BenIrvin (Admin Search by ID)
+ * Special Thanks to Esbjörn Eriksson (https://github.com/esbite) for this adaption
  */
-if (is_admin()) :
-	add_action( 'parse_request', 'jigoshop_admin_product_search' );
-	add_filter( 'get_search_query', 'jigoshop_admin_product_search_label' );
-endif;
+add_action( 'parse_request', 'jigoshop_admin_product_search' );
+add_filter( 'get_search_query', 'jigoshop_admin_product_search_label' );
+
 
 function jigoshop_admin_product_search( $wp ) {
-	global $pagenow, $wpdb;
-	
-	if( 'edit.php' != $pagenow )
-		return false;
+    global $pagenow, $wpdb;
+    
+    if( 'edit.php' != $pagenow )
+        return false;
 
-	if( ! isset( $wp->query_vars['s'] ) )
-		return false;
+    if( ! isset( $wp->query_vars['s'] ) )
+        return false;
 
-	if ( $wp->query_vars['post_type'] != 'product' )
-		return false;
+    if ( ($wp->query_vars['post_type'] == 'product' || $wp->query_vars['post_type'] == 'shop_order') ) {
 
-	if( 'ID:' == substr( $wp->query_vars['s'], 0, 3 ) ) {
+        if ( 'ID:' == substr( $wp->query_vars['s'], 0, 3 )) {
 
-		$id = absint( substr( $wp->query_vars['s'], 3 ) );
-			
-		if( ! $id )
-			return false; 
-		
-		unset( $wp->query_vars['s'] );
-		$wp->query_vars['p'] = $id;
-	}	
-	elseif( 'SKU:' == substr( $wp->query_vars['s'], 0, 4 ) ) {
-		
-		$sku = trim( substr( $wp->query_vars['s'], 4 ) );
-			
-		if( ! $sku )
-			return false; 
-		
-		$id = $wpdb->get_var('SELECT post_id FROM '.$wpdb->postmeta.' WHERE meta_key="sku" AND meta_value LIKE "%'.$sku.'%";');
-		
-		if( ! $id )
-			return false; 
+            $id = absint( substr( $wp->query_vars['s'], 3 ) );
+                
+            if( ! $id )
+                return false; 
+            
+            unset( $wp->query_vars['s'] );
+            $wp->query_vars['p'] = $id;
+        }
+        elseif( $wp->query_vars['post_type'] == 'product' && 'SKU:' == substr( $wp->query_vars['s'], 0, 4 ) ) {
+                
+            $sku = trim( substr( $wp->query_vars['s'], 4 ) );
+                
+            if( ! $sku )
+                return false; 
+            
+            $id = $wpdb->get_var('SELECT post_id FROM '.$wpdb->postmeta.' WHERE meta_key="sku" AND meta_value LIKE "%'.$sku.'%";');
+            
+            if( ! $id )
+                return false; 
 
-		unset( $wp->query_vars['s'] );
-		$wp->query_vars['p'] = $id;
-		$wp->query_vars['sku'] = $sku;
-		
-	}
+            unset( $wp->query_vars['s'] );
+            $wp->query_vars['p'] = $id;
+            $wp->query_vars['sku'] = $sku;
+
+        }
+        elseif( $wp->query_vars['post_type'] == 'shop_order' && 'PID:' == substr( $wp->query_vars['s'], 0, 4 ) ) {
+
+            $id = absint( substr( $wp->query_vars['s'], 4 ) );
+
+            $id_length = strlen($id);
+
+            // Get candidate orders
+            $query = "'%s:2:\"id\";s:$id_length:\"$id\"%'";
+
+            $results = $wpdb->get_results(
+                    "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = 'order_items' AND meta_value LIKE $query"
+            );
+
+            // Verify orders contain this product id
+            $ids = array();
+            foreach ( $results as $result ) {
+                $items = unserialize($result->meta_value);
+                foreach ( $items as $item ) {
+                    if ( $item['id'] == $id ) {
+                        $ids[] = $result->post_id;
+                        break;
+                    }
+                }
+            }
+
+            // Set search parameters
+            unset( $wp->query_vars['s'] );
+            $wp->query_vars['post__in'] = $ids;
+            $wp->query_vars['order_product_id'] = $id;
+
+        }
+    }
+
 }
 
 function jigoshop_admin_product_search_label($query) {
-	global $pagenow, $typenow, $wp;
+    global $pagenow, $typenow, $wp;
 
     if ( 'edit.php' != $pagenow ) 
-    	return $query;
-    if ( $typenow != 'product' )
-    	return $query;
-	
-	$s = get_query_var( 's' );
-	if ( $s )
-		return $query;
-	
-	$sku = get_query_var( 'sku' );
-	if($sku) {
-		$post_type = get_post_type_object($wp->query_vars['post_type']);
-		return sprintf(__("[%s with SKU of %s]", 'jigoshop'), $post_type->labels->singular_name, $sku);
-	}
-	
-	$p = get_query_var( 'p' );
-	if ($p) {
-		$post_type = get_post_type_object($wp->query_vars['post_type']);
-		return sprintf(__("[%s with ID of %d]", 'jigoshop'), $post_type->labels->singular_name, $p);
-	}
-	
-	return $query;
+        return $query;
+
+    if ( $typenow == 'product' || $typenow == 'shop_order' ) {
+    
+        $s = get_query_var( 's' );
+        if ( $s )
+            return $query;
+        
+        $sku = get_query_var( 'sku' );
+        if($sku) {
+            $post_type = get_post_type_object($wp->query_vars['post_type']);
+            return sprintf(__("[%s with SKU of %s]", 'jigoshop'), $post_type->labels->singular_name, $sku);
+        }
+        
+        $p = get_query_var( 'p' );
+        if ($p) {
+            $post_type = get_post_type_object($wp->query_vars['post_type']);
+            return sprintf(__("[%s with ID of %d]", 'jigoshop'), $post_type->labels->singular_name, $p);
+        }
+
+        $order_id = get_query_var( 'order_product_id' );
+        if (get_query_var( 'post__in' )) {
+            $post_type = get_post_type_object($wp->query_vars['post_type']);
+            return sprintf(__("[%s with product ID of %d]", 'jigoshop'), $post_type->labels->singular_name, $order_id);
+        }
+    }
+    
+    return $query;
 }
 
 
