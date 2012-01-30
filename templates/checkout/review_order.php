@@ -225,7 +225,7 @@
                     if ($_product->exists() && $values['quantity'] > 0) :
 						$variation = '';
                         if ($_product instanceof jigoshop_product_variation && is_array($values['variation'])) {
-                            $variation = jigoshop_get_formatted_variation($_product->get_variation_attributes());
+                            $variation = jigoshop_get_formatted_variation($values['variation']);
                         }
                         echo '
                             <tr>
