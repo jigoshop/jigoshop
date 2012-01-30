@@ -41,7 +41,7 @@ class jigoshop_product_meta
 		update_post_meta( $post_id, 'tax_classes',   $_POST['tax_classes']);
 
 		update_post_meta( $post_id, 'visibility',    $_POST['product_visibility']);
-		update_post_meta( $post_id, 'featured',      isset($_POST['featured']) ? true : false );
+		update_post_meta( $post_id, 'featured',      isset($_POST['featured']) );
 
 		// Downloadable Only
 		if( $_POST['product-type'] == 'downloadable' ) {
@@ -135,7 +135,7 @@ class jigoshop_product_meta
 
 		// Always return the stock switch
 		$array = array(
-			'manage_stock' 	=> (bool) isset($post['manage_stock']) ? true : false,
+			'manage_stock' 	=> isset($post['manage_stock']),
 		);
 
 		// Store suitable stock data
