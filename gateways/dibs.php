@@ -28,6 +28,7 @@ class dibs extends jigoshop_payment_gateway {
 		$this->key1 = get_option('jigoshop_dibs_key1');
 		$this->key2 = get_option('jigoshop_dibs_key2');
 		$this->decorator = get_option('jigoshop_dibs_decorator');
+		$this->instant = get_option('jigoshop_dibs_instant');
 		
 		add_action('init', array(&$this, 'check_callback') );
 		add_action('valid-dibs-callback', array(&$this, 'successful_request') );
@@ -43,6 +44,7 @@ class dibs extends jigoshop_payment_gateway {
 		add_option('jigoshop_dibs_title', __('DIBS', 'jigoshop') );
 		add_option('jigoshop_dibs_description', __("Pay via DIBS using credit card or bank transfer.", 'jigoshop') );
 		add_option('jigoshop_dibs_testmode', 'no');
+		add_option('jigoshop_dibs_instant', 'no');
 		add_option('jigoshop_dibs_decorator', '');
 	}
 
@@ -104,6 +106,15 @@ class dibs extends jigoshop_payment_gateway {
 			</td>
 		</tr>
 		<tr>
+			<td class="titledesc"><a href="#" tip="<?php _e('Contact DIBS before enabling this feature.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Enable instant capture', 'jigoshop') ?>:</td>
+			<td class="forminp">
+				<select name="jigoshop_dibs_instant" id="jigoshop_dibs_instant" style="min-width:100px;">
+					<option value="yes" <?php if (get_option('jigoshop_dibs_instant') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
+					<option value="no" <?php if (get_option('jigoshop_dibs_instant') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
+				</select>
+			</td>
+		</tr>
+		<tr>
 			<td class="titledesc"><a href="#" tip="<?php _e('When test mode is enabled only DIBS specific test-cards are accepted.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Enable test mode', 'jigoshop') ?>:</td>
 			<td class="forminp">
 				<select name="jigoshop_dibs_testmode" id="jigoshop_dibs_testmode" style="min-width:100px;">
@@ -135,6 +146,7 @@ class dibs extends jigoshop_payment_gateway {
 		if(isset($_POST['jigoshop_dibs_description'])) update_option('jigoshop_dibs_description', jigowatt_clean($_POST['jigoshop_dibs_description'])); else @delete_option('jigoshop_dibs_description');
 		if(isset($_POST['jigoshop_dibs_testmode'])) update_option('jigoshop_dibs_testmode', jigowatt_clean($_POST['jigoshop_dibs_testmode'])); else @delete_option('jigoshop_dibs_testmode');
 		if(isset($_POST['jigoshop_dibs_decorator'])) update_option('jigoshop_dibs_decorator', jigowatt_clean($_POST['jigoshop_dibs_decorator'])); else @delete_option('jigoshop_dibs_decorator');
+		if(isset($_POST['jigoshop_dibs_instant'])) update_option('jigoshop_dibs_instant', jigowatt_clean($_POST['jigoshop_dibs_instant'])); else @delete_option('jigoshop_dibs_instant');
 	}
 
 	/**
@@ -179,9 +191,8 @@ class dibs extends jigoshop_payment_gateway {
 				'orderid' => $order_id,
 				'uniqueoid' => $order->order_key,
 				'currency' => $dibs_currency[get_option('jigoshop_currency')],
-
-				//'ordertext' => 'TEST', // Maybe print som order info here
-				'capturenow' => true, // Do an instant capture, contact Dibs to enable this
+				'capturenow' => $this->instant ? 'true' : 'false',
+				//'ordertext' => 'TEST', // TODO Print som order info here
 				
 				// URLs
 				'callbackurl' => site_url('/jigoshop/dibscallback.php'),
