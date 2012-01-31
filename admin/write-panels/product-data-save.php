@@ -72,13 +72,13 @@ class jigoshop_product_meta
 		}
 
 		// Process upsells
-		( ! empty($_post['upsell_ids']) )
-			? update_post_meta( $post_id, 'upsell_ids', $_post['upsell_ids'] )
+		( ! empty($_POST['upsell_ids']) )
+			? update_post_meta( $post_id, 'upsell_ids', $_POST['upsell_ids'] )
 			: delete_post_meta( $post_id, 'upsell_ids' );
 		
 		// Process crossells
-		( ! empty($_post['crosssell_ids']) )
-			? update_post_meta( $post_id, 'crosssell_ids', $_post['crosssell_ids'] )
+		( ! empty($_POST['crosssell_ids']) )
+			? update_post_meta( $post_id, 'crosssell_ids', $_POST['crosssell_ids'] )
 			: delete_post_meta( $post_id, 'crosssell_ids' );
 
 		// Do action for product type
@@ -195,7 +195,7 @@ class jigoshop_product_meta
 		$attr_names      = $post['attribute_names']; // This data returns all attributes?
 		$attr_values     = $post['attribute_values'];
 		$attr_visibility = $post['attribute_visibility'];
-		$attr_variation  = $post['attribute_variation']; // Null so unsure
+		$attr_variation  = isset($post['attribute_variation']) ? $post['attribute_variation'] : null; // Null so unsure
 		$attr_is_tax     = $post['attribute_is_taxonomy']; // Likewise
 		$attr_position   = $post['attribute_position']; // and this?
 
