@@ -311,7 +311,7 @@ function jigoshop_upgrade_100() {
 		$parent_sale_price = get_post_meta( $parent_id, 'sale_price', true );
 
 		if ( ! get_post_meta( $post->ID, 'regular_price', true) && $parent_reg_price )
-			update_post_meta( $post->ID, 'regular_price', $parent_reg_price )
+			update_post_meta( $post->ID, 'regular_price', $parent_reg_price );
 
 		if( ! get_post_meta( $post->ID, 'sale_price', true) && $parent_sale_price )
 			update_post_meta( $post->ID, 'sale_price', $parent_sale_price );
