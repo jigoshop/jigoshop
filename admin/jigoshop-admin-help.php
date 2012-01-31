@@ -222,7 +222,7 @@ function jigoshop_product_data_help ( $post_type , $post ) {
 		<p>Hi! It looks like you\'re in need of some help, this help section has been categorized by tabs & runs through quickly what each one does. If you need an extra hand please check out the links to the right</p>
 		<p><strong>Product Type</strong> - Products are categorized into types which determine what kind of shopping experience your customers will have. Simple products are the most common type & offer the standard view. For more info on product types please consult the documentation</p>
 		<p><strong>Regular Price</strong> - This is the baseline price for your product & is what Jigoshop will always default to</p>
-		<p><strong>Sale Price</strong> - Entering a price here will place your product on sale unless it is scheduled by clicking the schedule link</p>
+		<p><strong>Sale Price</strong> - Entering a price or percentage here will place your product on sale unless it is scheduled by clicking the schedule link</p>
 		<p><strong>Featured</strong> - Featuring a product enables its display on the featured products shortcode & widget</p>
 	';
 

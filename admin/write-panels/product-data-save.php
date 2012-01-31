@@ -30,7 +30,7 @@ class jigoshop_product_meta
 		// Process general product data
 		// How to sanitize this block?
 		update_post_meta( $post_id, 'regular_price', (float) $_POST['regular_price']);
-		update_post_meta( $post_id, 'sale_price',    (float) $_POST['sale_price']);
+		update_post_meta( $post_id, 'sale_price', 	 $_POST['sale_price']);
 
 		update_post_meta( $post_id, 'weight',        (float) $_POST['weight']);
 		update_post_meta( $post_id, 'length',        (float) $_POST['length']);
