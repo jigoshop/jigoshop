@@ -556,7 +556,9 @@ class jigoshop_product {
 	/** Returns the price (excluding tax) */
 	function get_price_excluding_tax() {
             
-        $price = $this->get_price();
+        // to avoid rounding errors multiply by 100. Since we loop through the cart, rather than provide
+        // a full subtotal, this is necessary.
+        $price = $this->get_price() * 100;
 
         if (get_option('jigoshop_prices_include_tax') == 'yes') :
             $rates = (array) $this->get_tax_base_rate();
@@ -570,7 +572,7 @@ class jigoshop_product {
                 $tax_applied_after_retail = 0;
                 $tax_totals = 0;
 
-                $_tax = new jigoshop_tax();
+                $_tax = new jigoshop_tax(100);
 
                 foreach ( $new_rates as $key=>$value ) :
 
@@ -590,7 +592,7 @@ class jigoshop_product {
             
         endif;
 
-        return $price;
+        return $price / 100;
             
     }
 

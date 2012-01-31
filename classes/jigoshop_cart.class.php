@@ -504,11 +504,6 @@ class jigoshop_cart extends jigoshop_singleton {
             endforeach;       
         endif;
         
-        $subtotal = self::get_cart_subtotal(false);
-        $shipping = self::get_cart_shipping_total(false);
-        $non_compound = self::$tax->get_non_compounded_tax_amount();
-        $compound = self::$tax->get_compound_tax_amount();
-            
         // Total
         self::$total = self::get_cart_subtotal(false) + self::get_cart_shipping_total(false) - self::$discount_total;
 
