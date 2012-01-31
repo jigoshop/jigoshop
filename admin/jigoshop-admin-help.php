@@ -19,6 +19,22 @@ add_action( 'load-product_page_attributes', 'jigoshop_product_attributes_help' )
 function jigoshop_product_attributes_help() {
 	$screen = get_current_screen();
 
+	$types = '
+		<p>Attributes can have many types which affect how they are displayed in both the admin &amp; frontend, these include:</p>
+		<ul>
+			<li><strong>Select</strong> is used for attributes which can only have <strong>one</strong> value. Note: this type can not be used for variations</li>
+			<li><strong>Multiple Select</strong> is used in situations where a product can belong to many but not all possible attributes, for example available colours. This attribute type can be used for variations.</li>
+			<li><strong>Text</strong> is used when you do not know what options there are until it comes to creating a product</li>
+		</ul>
+		<p>In addition to all these types there are also custom attributes which are created in the product creation screen, these attributes are mainly only used for one-off attributes.</p>
+	';
+
+	$adding_options = '
+		<p>Once youve set up your attribute with a name &amp; a type the final task is to create some options</p>
+		<p>To create an option click on the attribute name to the right of the screen, this should take you to a new screen. Once there simply add options the same as you would a category/tag.</p>
+		<p>Thats really all there is to it, enjoy!</p>
+	';
+
 	$sidebar_content = '
         <p><strong>'. __('For more information') . ':</strong></p>
         <p><a href="http://forum.jigoshop.com/kb/" target="_blank">Documentation on<br/>Product Attributes *TODO: ADD RELEVANT ARTICLE*</a></p>
@@ -29,19 +45,19 @@ function jigoshop_product_attributes_help() {
     $screen->add_help_tab( array(
         'id'      => 'jigoshop-product-attribute-help-overview',
         'title'   => __( 'Overview' ),
-        'content' => '<p>'.__('Attributes let you define extra product data, such as size or colour. You can use these attributes in the shop sidebar using the "layered nav" widgets. Please note: you cannot rename an attribute later on.','jigoshop').'.</p>',
+        'content' => '<p>'.__('Attributes let you define extra product data, such as size or colour. You can use these attributes in the shop sidebar using the "layered nav" widgets. Please note: you cannot rename an attribute later on','jigoshop').'.</p>',
     ));
 
     $screen->add_help_tab( array(
         'id'      => 'jigoshop-product-attribute-help-types',
         'title'   => __( 'Attribute Types' ),
-        'content' => '',
+        'content' => $types,
     ));
 
     $screen->add_help_tab( array(
         'id'      => 'jigoshop-product-attribute-help-values',
         'title'   => __( 'Adding Options' ),
-        'content' => '',
+        'content' => $adding_options,
     ));
 }
 
@@ -51,6 +67,23 @@ function jigoshop_product_category_help() {
 
 	if ( $screen->id != 'edit-product_cat' )
         return false;
+
+    $overview = '
+    	<p>You can use categories to define sections of your site and group related products.</p>
+
+		<p>What’s the difference between categories and tags? Normally, tags are ad-hoc keywords that identify important information in your post (names, subjects, etc) that may or may not recur in other products, while categories are pre-determined sections. If you think of your site like a book, the categories are like the Table of Contents and the tags are like the terms in the index.</p>
+    ';
+
+    $product_categories = '
+		<p>When adding a new category on this screen, you’ll fill in the following fields:</p>
+		<ul>
+			<li><strong>Name</strong> - The name is how it appears on your site.</li>
+			<li><strong>Slug</strong> - The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.</li>
+			<li><strong>Parent</strong> - Categories, unlike tags, can have a hierarchy. You might have a Jazz category, and under that have children categories for Bebop and Big Band. Totally optional. To create a subcategory, just choose another category from the Parent dropdown.</li>
+			<li><strong>Description</strong> - The description is not prominent by default; however, some themes may display it.</li>
+		</ul>
+		<p>You can change the display of this screen using the Screen Options tab to set how many items are displayed per screen and to display/hide columns in the table.</p>
+    ';
 
 	$sidebar_content = '
         <p><strong>'. __('For more information') . ':</strong></p>
@@ -62,13 +95,13 @@ function jigoshop_product_category_help() {
     $screen->add_help_tab( array(
         'id'      => 'jigoshop-product-list-help-overview',
         'title'   => __( 'Overview' ),
-        'content' => '<p>This screen provides access to all of your products. You can customize the display of this screen to suit your workflow.</p>',
+        'content' => $overview,
     ));
 
     $screen->add_help_tab( array(
         'id'      => 'jigoshop-product-list-help-categories',
         'title'   => __( 'Adding Product Categories' ),
-        'content' => '',
+        'content' => $product_categories,
     ));
 }
 
@@ -78,6 +111,21 @@ function jigoshop_product_tag_help() {
 
 	if ( $screen->id != 'edit-product_tag' )
         return false;
+
+    $overview = '
+		<p>You can assign keywords to your products using <strong>tags</strong>. Unlike categories, tags have no hierarchy, meaning there’s no relationship from one tag to another.</p>
+		<p>What’s the difference between categories and tags? Normally, tags are ad-hoc keywords that identify important information in your post (names, subjects, etc) that may or may not recur in other products, while categories are pre-determined sections. If you think of your site like a book, the categories are like the Table of Contents and the tags are like the terms in the index.</p>
+    ';
+
+    $tags = '
+		<p>When adding a new tag on this screen, you’ll fill in the following fields:</p>
+		<ul>
+			<li><strong>Name</strong> - The name is how it appears on your site.</li>
+			<li><strong>Slug</strong> - The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.</li>
+			<li><strong>Description</strong> - The description is not prominent by default; however, some themes may display it.</li>
+		</ul>
+		<p>You can change the display of this screen using the Screen Options tab to set how many items are displayed per screen and to display/hide columns in the table.</p>
+    ';
 
 	$sidebar_content = '
         <p><strong>'. __('For more information') . ':</strong></p>
@@ -89,13 +137,13 @@ function jigoshop_product_tag_help() {
     $screen->add_help_tab( array(
         'id'      => 'jigoshop-product-list-help-overview',
         'title'   => __( 'Overview' ),
-        'content' => '<p>This screen provides access to all of your products. You can customize the display of this screen to suit your workflow.</p>',
+        'content' => $overview,
     ));
 
     $screen->add_help_tab( array(
         'id'      => 'jigoshop-product-list-help-tags',
         'title'   => __( 'Adding Product Tags' ),
-        'content' => '',
+        'content' => $tags,
     ));
 }
 
@@ -108,6 +156,29 @@ function jigoshop_product_list_help() {
 
     if ( $screen->id != 'edit-product' )
         return false;
+
+    $screen_content = '
+		<p>'.__('You can customize the display of this screen’s contents in a number of ways','jigoshop').':</p>
+		<ul>
+			<li>'.__('You can hide/display columns based on your needs and decide how many products to list per screen using the Screen Options tab', 'jigoshop').'.</li>
+			<li>'.__('You can filter the list of products by status using the text links in the upper left to show All, Published, Draft, or Trashed products. The default view is to show all products','jigoshop').'.</li>
+			<li>'.__('You can refine the list to show only products in a specific category, from a specific month, or by a specific type by using the dropdown menus above the products list. Click the Filter button after making your selection', 'jigoshop').'.</li>
+		</ul>
+    ';
+
+    $searching = '
+		<p>'.__('You can search for products in a number of ways','jigoshop').':</p>
+		<ul>
+			<li><strong>ID</strong>: You can search for products by ID simply type ID: followed by the ID you want to search by into the search box.</li>
+			<li><strong>SKU</strong>: You can search for products by SKU simply type SKU: followed by the SKU you want to search by into the search box.</li>
+		</ul>
+    ';
+
+    $bulk = '
+    	<p>'.__('You can also edit or move multiple products to the trash at once. Select the products you want to act on using the checkboxes, then select the action you want to take from the Bulk Actions menu and click Apply', 'jigoshop').'.</p>
+
+		<p>'.__('When using Bulk Edit, you can change the metadata (categories, author, etc.) for all selected products at once. To remove a product from the grouping, just click the x next to its name in the Bulk Edit area that appears', 'jigoshop').'.</p>
+    ';
 
     $sidebar_content = '
         <p><strong>'. __('For more information') . ':</strong></p>
@@ -125,19 +196,19 @@ function jigoshop_product_list_help() {
     $screen->add_help_tab( array(
         'id'      => 'jigoshop-product-list-help-content',
         'title'   => __( 'Screen Content' ),
-        'content' => '',
+        'content' => $screen_content,
     ));
 
     $screen->add_help_tab( array(
         'id'      => 'jigoshop-product-list-help-search',
         'title'   => __( 'Searching for Products' ),
-        'content' => '',
+        'content' => $searching,
     ));
 
     $screen->add_help_tab( array(
         'id'      => 'jigoshop-product-list-help-actions',
         'title'   => __( 'Bulk Actions' ),
-        'content' => '',
+        'content' => $bulk,
     ));
 }
 

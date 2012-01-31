@@ -349,7 +349,14 @@ class jigoshop_tax {
                 $this->non_compound_tax_amount = $non_compound_tax_amount;
                 $this->tax_amounts = $tax_amount;
                 $this->imploded_tax_amounts = $this->array_implode($this->tax_amounts);
-                $this->total_tax_rate = ($total_item_price ? round($total_tax / $total_item_price * 100, 4) : 0); 
+                
+                $tax_rate = 0;
+                if ($total_item_price) :
+                    $tax_rate = ($prices_include_tax ? round($total_tax / ($total_item_price - $total_tax) * 100, 2) : round($total_tax / $total_item_price * 100, 2));
+                endif;
+                
+                $this->total_tax_rate = $tax_rate;
+                
             endif;
 
     }

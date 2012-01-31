@@ -252,9 +252,9 @@ class jigoshop_order {
 			$return .= ' - ' . html_entity_decode(strip_tags(jigoshop_price( $item['cost']*$item['qty'], array('ex_tax_label' => 1 ))), ENT_COMPAT, 'UTF-8');
 			
 			if (isset($_product->variation_data)) :
-				$return .= PHP_EOL . jigoshop_get_formatted_variation($_product->get_variation_attributes());
+				$return .= PHP_EOL . jigoshop_get_formatted_variation( $item['variation'] );
 			endif;
-			
+
 			if ($show_download_links) :
 				
 				if ($_product->exists) :
