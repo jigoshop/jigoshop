@@ -150,6 +150,16 @@ function jigoshop_upgrade_100() {
         foreach($jigoshop_tax_rates as $key) :
             $country = $key['country'];
             $state = $key['state'];
+            
+            // Change canadian province NF and PQ to NL and QC respectively
+            if (isset($key['country']) && $key['country'] == 'CA') :
+                if ($key['state'] == 'NF') :
+                    $state = 'NL';
+                elseif ($key['state'] == 'PQ') :
+                    $state = 'QC';
+                endif;
+            endif;
+            
             $rate = $key['rate'];
             $shipping = $key['shipping'];
             $class = $key['class'];
