@@ -41,7 +41,7 @@ class jigoshop_product_meta
 		update_post_meta( $post_id, 'tax_classes',   $_POST['tax_classes']);
 
 		update_post_meta( $post_id, 'visibility',    $_POST['product_visibility']);
-		update_post_meta( $post_id, 'featured',      isset($_POST['featured']) ? true : false );
+		update_post_meta( $post_id, 'featured',      isset($_POST['featured']) );
 
 		// Downloadable Only
 		if( $_POST['product-type'] == 'downloadable' ) {
@@ -72,13 +72,13 @@ class jigoshop_product_meta
 		}
 
 		// Process upsells
-		( ! empty($_post['upsell_ids']) )
-			? update_post_meta( $post_id, 'upsell_ids', $_post['upsell_ids'] )
+		( ! empty($_POST['upsell_ids']) )
+			? update_post_meta( $post_id, 'upsell_ids', $_POST['upsell_ids'] )
 			: delete_post_meta( $post_id, 'upsell_ids' );
 		
 		// Process crossells
-		( ! empty($_post['crosssell_ids']) )
-			? update_post_meta( $post_id, 'crosssell_ids', $_post['crosssell_ids'] )
+		( ! empty($_POST['crosssell_ids']) )
+			? update_post_meta( $post_id, 'crosssell_ids', $_POST['crosssell_ids'] )
 			: delete_post_meta( $post_id, 'crosssell_ids' );
 
 		// Do action for product type
@@ -135,7 +135,7 @@ class jigoshop_product_meta
 
 		// Always return the stock switch
 		$array = array(
-			'manage_stock' 	=> (bool) isset($post['manage_stock']) ? true : false,
+			'manage_stock' 	=> isset($post['manage_stock']),
 		);
 
 		// Store suitable stock data
@@ -195,7 +195,7 @@ class jigoshop_product_meta
 		$attr_names      = $post['attribute_names']; // This data returns all attributes?
 		$attr_values     = $post['attribute_values'];
 		$attr_visibility = $post['attribute_visibility'];
-		$attr_variation  = $post['attribute_variation']; // Null so unsure
+		$attr_variation  = isset($post['attribute_variation']) ? $post['attribute_variation'] : null; // Null so unsure
 		$attr_is_tax     = $post['attribute_is_taxonomy']; // Likewise
 		$attr_position   = $post['attribute_position']; // and this?
 

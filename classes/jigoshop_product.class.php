@@ -39,6 +39,9 @@ class jigoshop_product {
 	private $length;
 	private $width;
 	private $height;
+	
+	private $up_sells;
+	private $cross_sells;
 
 	private $tax_status   = 'taxable';
 	private $tax_class;
@@ -108,6 +111,9 @@ class jigoshop_product {
 		$this->stock                 = isset($meta['stock'][0]) ? $meta['stock'][0] : null;
 		$this->stock_sold            = isset($meta['stock_sold'][0]) ? $meta['stock_sold'][0] : null;
 
+		$this->up_sells	             = isset($meta['up_sells'][0]) ? $meta['up_sells'][0] : null;
+		$this->cross_sells           = isset($meta['cross_sells'][0]) ? $meta['cross_sells'][0] : null;
+		
 		return $this;
 	}
 
