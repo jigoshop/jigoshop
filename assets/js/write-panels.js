@@ -69,7 +69,7 @@
 	function jigoshop_product_type_options() {
 		$('select#product-type').change(function(){
 
-			$('body').removeClass('simple_product downloadable_product grouped_product virtual_product variable_product')
+			$('body').removeClass('simple_product downloadable_product grouped_product virtual_product variable_product external_product')
 				.addClass( $(this).val() + '_product' );
 		}).change();
 	}

@@ -392,7 +392,7 @@ function display_attribute() { ?>
 	?>
 	<?php if( ! $attributes ): ?>
 		<div class="demo attribute">
-			<a href="http://forum.jigoshop.com/kb" target="_blank" class="overlay"><span>Click me to learn more about Attributes</span></a>
+			<a href="http://forum.jigoshop.com/kb" target="_blank" class="overlay"><span><?php _e('Learn how to set up Product Attributes', 'jigoshop'); ?></span></a>
 			<div class="inside">
 				<div class="postbox attribute">
 					<button type="button" class="hide_row button">Remove</button>

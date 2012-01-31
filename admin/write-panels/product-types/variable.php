@@ -21,7 +21,7 @@
 // For some reason enqueing the script inside a class causes the event unbind()
 // to not work. Would prefer this to be part of the class but perhaps its better to enqueue
 // everything all at once.
-add_action( 'admin_enqueue_scripts', 'jigoshop_product_meta_variable_script');
+add_action( 'admin_enqueue_scripts', 'jigoshop_product_meta_variable_script' );
 function jigoshop_product_meta_variable_script( $hook ) {
 	global $post;
 		
@@ -128,7 +128,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	 * @param   int   Product ID
 	 * @return  void
 	 */
-	public function save( $parent_id, $post ) {
+	public function save( $parent_id ) {
 		global $wpdb;
 
 		// Do not run if there are no variations
@@ -237,7 +237,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 				</select>
 				<input id="do_actions" type="submit" class="button-secondary" value="Apply">
 
-				<button type='button' class='button button-secondary add_variation'<?php disabled($this->has_variable_attributes($attributes), false) ?>><?php _e('Add Variation', 'jigoshop') ?></button>
+				<?php if($this->has_variable_attributes($attributes)): ?>
+					<button type='button' class='button button-secondary add_variation'><?php _e('Add Variation', 'jigoshop') ?></button>
+				<?php endif; ?>
 			</div>
 			<div class='jigoshop_variations'>
 
@@ -245,7 +247,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 
 				<div class="demo variation ">
-					<a href="http://forum.jigoshop.com/kb/creating-products/variable-products" target="_blank" class="overlay"><span>Click me to learn more about Variations</span></a>
+					<a href="http://forum.jigoshop.com/kb/creating-products/variable-products" target="_blank" class="overlay"><span><?php _e('Learn how to make a Variation', 'jigoshop'); ?></span></a>
 					<div class="inside">			
 						<div class="jigoshop_variation postbox">
 							<button type="button" class="remove_variation button">Remove</button>
@@ -392,7 +394,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			}
 			else {
 
-				$options = explode(', ', $attr['value']);
+				$options = explode(',', $attr['value']);
 				foreach( $options as $option ) {
 					$option = trim($option);
 					$html .= '<option '.selected($selected, $option, false).' value="'.esc_attr($option).'">'.$option.'</option>';
@@ -470,9 +472,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 					<tbody>
 						<tr>
 							<td class="upload_image" rowspan="2">
-								<a href="#" class="upload_image_button <?php if ($image_id) echo 'remove'; ?>" rel="<?php echo $variation->ID; ?>">
+								<a href="#" class="upload_image_button <?php if (isset($image_id)) echo 'remove'; ?>" rel="<?php echo $variation->ID; ?>">
 									<img src="<?php echo $image ?>" width="93px" />
-									<input type="hidden" name="<?php echo esc_attr( $this->field_name('_thumbnail_id', $variation) ); ?>" class="upload_image_id" value="<?php echo esc_attr( $image_id ); ?>" />
+									<input type="hidden" name="<?php echo esc_attr( $this->field_name('_thumbnail_id', $variation) ); ?>" class="upload_image_id" value="<?php if ( isset($image_id)) echo esc_attr( $image_id ); ?>" />
 									<!-- TODO: APPEND THIS IN JS <span class="overlay"></span> -->
 								</a>
 							</td>
@@ -520,7 +522,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 								</label>
 							</td>
 						</tr>
-						<tr class="simple options" <?php echo ('simple' == $product_type ? 'style="display: table-row;"' : 'style="display: none;"');?>>
+						<tr class="simple options">
 							<td>
 								<label><?php _e('Weight', 'jigoshop') ?>
 									<input type="text" name="<?php echo esc_attr( $this->field_name('weight', $variation) ); ?>" value="<?php echo esc_attr( isset($meta['weight'][0]) ? $meta['weight'][0] : null ); ?>" />
