@@ -83,7 +83,7 @@ function jigoshop_new_order_notification($order_id) {
             endforeach;
         endif;
     endif;
-    echo __('Total:', 'jigoshop') . "\t\t\t\t" . html_entity_decode(jigoshop_price($order->order_total), ENT_COMPAT, 'UTF-8') . ' - via ' . ucwords($order->payment_method) . PHP_EOL . PHP_EOL;
+    echo __('Total:', 'jigoshop') . "\t\t\t\t" . html_entity_decode(jigoshop_price($order->order_total), ENT_COMPAT, 'UTF-8') . ' - ' . __('via', 'jigoshop') . ' ' . ucwords($order->payment_method) . PHP_EOL . PHP_EOL;
 
     do_action('jigoshop_after_email_order_info', $order->id);
 
@@ -186,7 +186,7 @@ function jigoshop_processing_order_customer_notification($order_id) {
             endforeach;
         endif;
     endif;
-    echo __('Total:', 'jigoshop') . "\t\t\t\t" . html_entity_decode(jigoshop_price($order->order_total), ENT_COMPAT, 'UTF-8') . ' - via ' . ucwords($order->payment_method) . PHP_EOL . PHP_EOL;
+    echo __('Total:', 'jigoshop') . "\t\t\t\t" . html_entity_decode(jigoshop_price($order->order_total), ENT_COMPAT, 'UTF-8') . ' - ' . __('via', 'jigoshop') . ' ' . ucwords($order->payment_method) . PHP_EOL . PHP_EOL;
 
     do_action('jigoshop_after_email_order_info', $order->id);
 
@@ -288,7 +288,7 @@ function jigoshop_completed_order_customer_notification($order_id) {
             endforeach;
         endif;
     endif;
-    echo __('Total:', 'jigoshop') . "\t\t\t\t" . html_entity_decode(jigoshop_price($order->order_total), ENT_COMPAT, 'UTF-8') . ' - via ' . ucwords($order->payment_method) . PHP_EOL . PHP_EOL;
+    echo __('Total:', 'jigoshop') . "\t\t\t\t" . html_entity_decode(jigoshop_price($order->order_total), ENT_COMPAT, 'UTF-8') . ' - ' . __('via', 'jigoshop') . ' ' . ucwords($order->payment_method) . PHP_EOL . PHP_EOL;
 
     do_action('jigoshop_after_email_order_info', $order->id);
 
@@ -391,7 +391,7 @@ function jigoshop_refunded_order_customer_notification($order_id) {
             endforeach;
         endif;
     endif;
-    echo __('Total:', 'jigoshop') . "\t\t\t\t" . html_entity_decode(jigoshop_price($order->order_total), ENT_COMPAT, 'UTF-8') . ' - via ' . ucwords($order->payment_method) . PHP_EOL . PHP_EOL;
+    echo __('Total:', 'jigoshop') . "\t\t\t\t" . html_entity_decode(jigoshop_price($order->order_total), ENT_COMPAT, 'UTF-8') . ' - ' . __('via', 'jigoshop') . ' ' . ucwords($order->payment_method) . PHP_EOL . PHP_EOL;
 
     do_action('jigoshop_after_email_order_info', $order->id);
 
@@ -491,7 +491,7 @@ function jigoshop_pay_for_order_customer_notification($order_id) {
             endforeach;
         endif;
     endif;
-    echo __('Total:', 'jigoshop') . "\t\t\t\t" . html_entity_decode(jigoshop_price($order->order_total), ENT_COMPAT, 'UTF-8') . ' - via ' . ucwords($order->payment_method) . PHP_EOL . PHP_EOL;
+    echo __('Total:', 'jigoshop') . "\t\t\t\t" . html_entity_decode(jigoshop_price($order->order_total), ENT_COMPAT, 'UTF-8') . ' - ' . __('via', 'jigoshop') . ' ' . ucwords($order->payment_method) . PHP_EOL . PHP_EOL;
 
     do_action('jigoshop_after_email_order_info', $order->id);
 
