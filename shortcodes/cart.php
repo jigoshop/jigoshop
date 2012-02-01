@@ -88,7 +88,7 @@ function jigoshop_cart($atts) {
 
     if (sizeof(jigoshop_cart::$cart_contents) == 0) :
         echo '<p>' . __('Your cart is empty.', 'jigoshop') . '</p>';
-        echo '<p><a class="button" href="'.apply_filters('jigoshop_get_shop_page_id', get_permalink(get_option('jigoshop_shop_page_id'))) . '">' . __('&larr; Return To Shop', 'jigoshop') . '</a></p>';
+		?><p><a href="<?php echo esc_url( jigoshop_cart::get_shop_url() ); ?>" class="button"><?php _e('&larr; Return to Shop', 'jigoshop'); ?></a></p><?php
         return;
     endif;
     ?>

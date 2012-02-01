@@ -282,6 +282,14 @@ class jigoshop_cart extends jigoshop_singleton {
         endif;
     }
 
+    /** gets the url to the shop page */
+    function get_shop_url() {
+        $shop_page_id = get_option('jigoshop_shop_page_id');
+        if ($shop_page_id) :
+            return apply_filters('jigoshop_get_shop_page_id', get_permalink($shop_page_id));
+        endif;
+    }
+
     /** gets the url to remove an item from the cart */
     function get_remove_url($cart_item_key) {
         $cart_page_id = get_option('jigoshop_cart_page_id');
