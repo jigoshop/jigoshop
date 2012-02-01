@@ -188,13 +188,18 @@ class paypal extends jigoshop_payment_gateway {
 	
 				// Payment Info
 				'invoice' 				=> $order->order_key,
-				'tax'					=> $order->get_total_tax(),
-				'tax_cart'				=> $order->get_total_tax(),
 				'amount' 				=> $order->order_total,
 				'discount_amount_cart' 	=> $order->order_discount
 			), 
 			$phone_args
 		);
+        
+        // only include tax if prices don't include tax
+        if (get_option('jigoshop_prices_include_tax') != 'yes') :
+            $paypal_args['tax']					= $order->get_total_tax();
+            $paypal_args['tax_cart']			= $order->get_total_tax();
+        endif;
+
 		
 		if ($this->send_shipping=='yes') :
 			$paypal_args['no_shipping'] = 0;
@@ -234,7 +239,8 @@ class paypal extends jigoshop_payment_gateway {
 				
 				$paypal_args['item_name_'.$item_loop] = $title;
 				$paypal_args['quantity_'.$item_loop] = $item['qty'];
-				$paypal_args['amount_'.$item_loop] = number_format($_product->get_price_excluding_tax(), 2); //Apparently, Paypal did not like "28.4525" as the amount. Changing that to "28.45" fixed the issue.				
+				//$paypal_args['amount_'.$item_loop] = number_format($_product->get_price_excluding_tax(), 2); //Apparently, Paypal did not like "28.4525" as the amount. Changing that to "28.45" fixed the issue.				
+                $paypal_args['amount_'.$item_loop] = number_format($_product->get_price(), 2); //Apparently, Paypal did not like "28.4525" as the amount. Changing that to "28.45" fixed the issue.				
 			endif;
 		endforeach; endif;
        
@@ -242,7 +248,10 @@ class paypal extends jigoshop_payment_gateway {
 		$item_loop++;
 		$paypal_args['item_name_'.$item_loop] = __('Shipping cost', 'jigoshop');
 		$paypal_args['quantity_'.$item_loop] = '1';
-		$paypal_args['amount_'.$item_loop] = number_format($order->order_shipping, 2);
+        
+        $shipping_tax = ($order->order_shipping_tax ? $order->order_shipping_tax : 0);
+        
+		$paypal_args['amount_'.$item_loop] = (get_option('jigoshop_prices_include_tax') == 'yes' ? number_format($order->order_shipping + $shipping_tax, 2) : number_format($order->order_shipping, 2));
 		
 		$paypal_args_array = array();
 

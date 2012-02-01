@@ -275,13 +275,13 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
      */
     private function get_cheapest_rate() {
 
-        $cheapest_rate;
-        if ($this->rates != NULL) :
-            for ($i = 0; $i < count($this->rates); $i++) {
+        $cheapest_rate = null;
+        if ($this->rates != null) :
+            for ($i = 0; $i < count($this->rates); $i++) :
                 if (!isset($cheapest_rate) || $this->rates[$i]['price'] < $cheapest_rate['price']) :
                     $cheapest_rate = $this->rates[$i];
                 endif;
-            }
+            endfor;
         endif;
 
         return $cheapest_rate;
