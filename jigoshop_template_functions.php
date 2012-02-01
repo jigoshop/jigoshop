@@ -764,7 +764,7 @@ if (!function_exists('jigoshop_breadcrumb')) {
 	 	$prepend = '';
 
 	 	if ( get_option('jigoshop_prepend_shop_page_to_urls')=="yes" && get_option('jigoshop_shop_page_id') && get_option('page_on_front') !== get_option('jigoshop_shop_page_id') )
-	 		$prepend =  $before . '<a href="' . echo esc_url( jigoshop_cart::get_shop_url() . '">' . get_the_title( get_option('jigoshop_shop_page_id') ) . '</a> ' . $after . $delimiter;
+	 		$prepend =  $before . '<a href="' . esc_url( jigoshop_cart::get_shop_url() ). '">' . get_the_title( get_option('jigoshop_shop_page_id') ) . '</a> ' . $after . $delimiter;
 
 
 	 	if ( (!is_home() && !is_front_page() && !(is_post_type_archive() && get_option('page_on_front')==get_option('jigoshop_shop_page_id'))) || is_paged() ) :

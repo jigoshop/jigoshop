@@ -70,6 +70,6 @@ function jigoshop_thankyou() {
 
 	endif;
 	
-	echo '<p><a class="button" href="'.echo esc_url( jigoshop_cart::get_shop_url().'">'.__('&larr; Continue Shopping', 'jigoshop').'</a></p>';
+	echo '<p><a class="button" href="'.esc_url( jigoshop_cart::get_shop_url() ).'">'.__('&larr; Continue Shopping', 'jigoshop').'</a></p>';
 
 }
