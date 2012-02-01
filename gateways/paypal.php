@@ -239,7 +239,7 @@ class paypal extends jigoshop_payment_gateway {
 				
 				$paypal_args['item_name_'.$item_loop] = $title;
 				$paypal_args['quantity_'.$item_loop] = $item['qty'];
-				//$paypal_args['amount_'.$item_loop] = number_format($_product->get_price_excluding_tax(), 2); //Apparently, Paypal did not like "28.4525" as the amount. Changing that to "28.45" fixed the issue.				
+				// use product price since we want the base price if it's including tax or if it's not including tax
                 $paypal_args['amount_'.$item_loop] = number_format($_product->get_price(), 2); //Apparently, Paypal did not like "28.4525" as the amount. Changing that to "28.45" fixed the issue.				
 			endif;
 		endforeach; endif;
