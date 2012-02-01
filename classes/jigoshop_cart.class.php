@@ -254,11 +254,14 @@ class jigoshop_cart extends jigoshop_singleton {
     function get_cross_sells() {
         $cross_sells = array();
         $in_cart = array();
-        if (sizeof(self::$cart_contents) > 0) : foreach (self::$cart_contents as $cart_item_key => $values) :
-                if ($values['quantity'] > 0) :
-                    $cross_sells = array_merge($values['data']->get_cross_sells(), $cross_sells);
-                    $in_cart[] = $values['product_id'];
-                endif;
+        if (sizeof(self::$cart_contents) > 0) :
+        	foreach (self::$cart_contents as $cart_item_key => $values) :
+				if ($values['quantity'] > 0) :
+					$product = new jigoshop_product( $values['product_id'] );
+					$cross_ids = $product->get_cross_sells();
+					$cross_sells = array_merge($cross_ids, $cross_sells);
+					$in_cart[] = $values['product_id'];
+				endif;
             endforeach;
         endif;
         $cross_sells = array_diff($cross_sells, $in_cart);

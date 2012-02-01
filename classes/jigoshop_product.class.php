@@ -788,7 +788,9 @@ class jigoshop_product {
 	 * @return  mixed
 	 */
 	public function get_upsells() {
-		return $this->up_sells;
+		$ids = get_post_meta( $this->id, 'upsell_ids' );
+		if ( ! empty( $ids )) return $ids[0];
+		else return array();
 	}
 
 	/**
@@ -797,7 +799,9 @@ class jigoshop_product {
 	 * @return  mixed
 	 */
 	public function get_cross_sells() {
-		return $this->cross_sells;
+		$ids = get_post_meta( $this->id, 'crosssell_ids' );
+		if ( ! empty( $ids )) return $ids[0];
+		else return array();
 	}
 
 	/**
