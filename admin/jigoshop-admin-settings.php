@@ -355,13 +355,19 @@ function jigoshop_admin_fields($options) {
                 break;
             case 'text':
                 ?><tr>
-                        <td class="titledesc"><?php if (isset($value['tip'])) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
+                    <td class="titledesc"><?php if (isset($value['tip'])) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
 
-                        <td class="forminp"><input name="<?php echo esc_attr( $value['id'] ); ?>" id="<?php echo esc_attr( $value['id'] ); ?>" type="<?php echo $value['type'] ?>" style="<?php if ( isset($value['css'])) echo esc_attr( $value['css'] ); ?>"
-                                                   value="<?php if (get_option($value['id']) !== false && get_option($value['id']) !== null)
-                    echo esc_attr( get_option($value['id']) ); else
-                    echo esc_attr( $value['std'] ); ?>" /><br /><small><?php echo $value['desc'] ?></small></td>
-                    </tr><?php
+                    <td class="forminp">
+                    	<input name="<?php echo esc_attr( $value['id'] ); ?>" 
+                    		id="<?php echo esc_attr( $value['id'] ); ?>" 
+                    		type="<?php echo $value['type'] ?>" 
+                    		style="<?php if ( isset($value['css'])) echo esc_attr( $value['css'] ); ?>" 
+                    		value="<?php if (get_option($value['id']) !== false && get_option($value['id']) !== null) 
+                    			echo esc_attr( get_option($value['id']) ); 
+                    			else if ( isset($value['std'])) echo esc_attr( $value['std'] ); ?>" />
+                    	<br /><small><?php echo $value['desc'] ?></small>
+                    </td>
+                </tr><?php
                 break;
             case 'select':
                                 ?><tr>

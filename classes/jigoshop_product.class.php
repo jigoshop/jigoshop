@@ -530,8 +530,8 @@ class jigoshop_product {
 		$time = current_time('timestamp');
 
 		// Check if the sale is still in range (if we have a range)
-		if ( $this->sale_price_dates_from 	<= $time && 
-			 $this->sale_price_dates_to 		>= $time &&
+		if ( $this->sale_price_dates_from	<= $time && 
+			 $this->sale_price_dates_to		>= $time &&
 			 $this->sale_price)
 			return true;
 
@@ -679,7 +679,35 @@ class jigoshop_product {
 	 * @return  int
 	 */
 	public function get_price() {
-		return ($this->is_on_sale()) ? $this->sale_price : $this->regular_price;
+
+		if ( strstr($this->sale_price,'%') )
+			return $this->regular_price * ( (100 - str_replace('%','',$this->sale_price) ) / 100 );
+
+		else if ( $this->sale_price )
+			 return $this->sale_price;
+
+		else return $this->regular_price;
+
+	}
+
+	/**
+	 * Returns the products sale value, either with or without a percentage
+	 *
+	 * @return html
+	 */
+	public function calculate_sale_price() {
+
+		if ( $this->is_on_sale() ) :
+			if ( strstr($this->sale_price,'%') )
+				return '
+					<del>' . jigoshop_price( $this->regular_price ) . '</del>' . jigoshop_price( $this->get_price() ) . ' 
+					<ins>' . $this->sale_price . ' off!</ins>';
+			else
+				return	'
+						<del>' . jigoshop_price( $this->regular_price ) . '</del>
+						<ins>' . jigoshop_price( $this->sale_price ) . '</ins>';
+
+		endif;
 	}
 
 	/**
@@ -745,9 +773,7 @@ class jigoshop_product {
 			$html = __( 'Free', 'jigoshop' );
 
 		if ( $this->is_on_sale() ) {
-			$html = '
-				<del>' . jigoshop_price( $this->regular_price ) . '</del>
-				<ins>' . jigoshop_price( $this->sale_price ) . '</ins>';
+			$html = $this->calculate_sale_price();
 		}
 		else {
 			$html = jigoshop_price( $this->regular_price );

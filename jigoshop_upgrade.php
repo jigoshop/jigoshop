@@ -315,6 +315,17 @@ function jigoshop_upgrade_100() {
 
 		$taxes = $wpdb->get_results("SELECT * FROM {$wpdb->postmeta} WHERE post_id = {$post->ID} AND meta_key LIKE 'tax_%' ");
 
+		// Update catch all prices
+		$parent_id = $post->post_parent;
+		$parent_reg_price = get_post_meta( $parent_id, 'regular_price', true );
+		$parent_sale_price = get_post_meta( $parent_id, 'sale_price', true );
+
+		if ( ! get_post_meta( $post->ID, 'regular_price', true) && $parent_reg_price )
+			update_post_meta( $post->ID, 'regular_price', $parent_reg_price );
+
+		if( ! get_post_meta( $post->ID, 'sale_price', true) && $parent_sale_price )
+			update_post_meta( $post->ID, 'sale_price', $parent_sale_price );
+
 		$variation_data = array();
 		foreach( $taxes as $tax ) {
 			$variation_data[$tax->meta_key] = $tax->meta_value;

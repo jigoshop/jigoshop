@@ -21,7 +21,7 @@ foreach(glob( dirname(__FILE__)."/shortcodes/*.php" ) as $filename) include_once
 
 function jigoshop_recent_products( $atts ) {
 
-	global $columns, $per_page;
+	global $columns, $per_page, $paged;
 
 	extract( shortcode_atts( array(
 		'per_page' 	=> get_option('jigoshop_catalog_per_page'),
@@ -37,6 +37,7 @@ function jigoshop_recent_products( $atts ) {
 		'posts_per_page' => $per_page,
 		'orderby' => $orderby,
 		'order' => $order,
+		'paged' => $paged,
 		'meta_query' => array(
 			array(
 				'key' => 'visibility',
@@ -49,6 +50,7 @@ function jigoshop_recent_products( $atts ) {
 	query_posts( $args );
 	ob_start();
 	jigoshop_get_template_part( 'loop', 'shop' );
+	do_action('jigoshop_pagination');
 	wp_reset_query();
 
 	return ob_get_clean();
@@ -57,7 +59,7 @@ function jigoshop_recent_products( $atts ) {
 //### Multiple Products #########################################################
 
 function jigoshop_products( $atts ){
-	global $columns;
+	global $columns, $paged;
 
 	if ( empty( $atts )) return;
 
@@ -74,6 +76,7 @@ function jigoshop_products( $atts ){
 		'ignore_sticky_posts' => 1,
 		'orderby' => $orderby,
 		'order' => $order,
+		'paged' => $paged,
 		'meta_query' => array(
 			array(
 				'key' => 'visibility',
@@ -102,6 +105,7 @@ function jigoshop_products( $atts ){
 	query_posts( $args );
 	ob_start();
 	jigoshop_get_template_part( 'loop', 'shop' );
+	do_action('jigoshop_pagination');
 	wp_reset_query();
 
 	return ob_get_clean();
@@ -150,7 +154,7 @@ function jigoshop_product( $atts ){
 
 function jigoshop_featured_products( $atts ) {
 
-	global $columns, $per_page;
+	global $columns, $per_page, $paged;
 
 	extract( shortcode_atts( array(
 		'per_page' 	=> get_option('jigoshop_catalog_per_page'),
@@ -166,6 +170,7 @@ function jigoshop_featured_products( $atts ) {
 		'posts_per_page' => $per_page,
 		'orderby' => $orderby,
 		'order' => $order,
+		'paged' => $paged,
 		'meta_query' => array(
 			array(
 				'key' => 'visibility',
@@ -182,6 +187,7 @@ function jigoshop_featured_products( $atts ) {
 	query_posts( $args );
 	ob_start();
 	jigoshop_get_template_part( 'loop', 'shop' );
+	do_action('jigoshop_pagination');
 	wp_reset_query();
 
 	return ob_get_clean();
@@ -191,7 +197,7 @@ function jigoshop_featured_products( $atts ) {
 
 function jigoshop_product_category( $atts ) {
 
-	global $columns, $per_page;
+	global $columns, $per_page, $paged;
 
 	if ( empty( $atts ) ) return;
 
@@ -212,6 +218,7 @@ function jigoshop_product_category( $atts ) {
 		'posts_per_page' => $per_page,
 		'orderby' => $orderby,
 		'order' => $order,
+		'paged' => $paged,
 		'meta_query' => array(
 			array(
 				'key' => 'visibility',
@@ -232,6 +239,7 @@ function jigoshop_product_category( $atts ) {
 	query_posts( $args );
 	ob_start();
 	jigoshop_get_template_part( 'loop', 'shop' );
+	do_action('jigoshop_pagination');
 	wp_reset_query();
 	return ob_get_clean();
 }
