@@ -681,7 +681,7 @@ class jigoshop_product {
 	public function get_price() {
 
 		if ( strstr($this->sale_price,'%') )
-			return $this->regular_price * ( (100 - str_replace('%','',$this->sale_price) ) / 100 );
+			return round($this->regular_price * ( (100 - str_replace('%','',$this->sale_price) ) / 100 ), 2);
 
 		else if ( $this->sale_price )
 			 return $this->sale_price;
