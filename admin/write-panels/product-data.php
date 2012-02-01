@@ -67,7 +67,7 @@ function jigoshop_product_data_box() {
 				<a href="#tax"><?php _e('Advanced', 'jigoshop') ?></a>
 			</li>
 
-			<?php if (get_option('jigoshop_manage_stock')) : ?>
+			<?php if (get_option('jigoshop_manage_stock') == 'yes') : ?>
 			<li class="inventory_tab">
 				<a href="#inventory"><?php _e('Inventory', 'jigoshop'); ?></a>
 			</li>
