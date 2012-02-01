@@ -179,7 +179,7 @@ function jigoshop_featured_products( $atts ) {
 			),
 			array(
 				'key' => 'featured',
-				'value' => 'yes'
+				'value' => true
 			)
 		)
 	);
