@@ -8,12 +8,12 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Widgets
- * @author     Jigowatt
- * @since	   1.0
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Widgets
+ * @author		Jigowatt
+ * @since		1.0
+ * @copyright	Copyright (c) 2011 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 
 class Jigoshop_Widget_Product_Search extends WP_Widget {
@@ -24,13 +24,13 @@ class Jigoshop_Widget_Product_Search extends WP_Widget {
 	 * Setup the widget with the available options
 	 */
 	public function __construct() {
-	
 		$options = array(
-			'description' => __( "Search box for products only.", 'jigoshop'),
+			'classname'		=> 'jigoshop_product_search',
+			'description'	=> __( 'A search form for your products', 'jigoshop' )
 		);
 		
 		// Create the widget
-		parent::__construct('product_search', __('Jigoshop: Product Search', 'jigoshop'), $options);
+		parent::__construct('jigoshop_product_search', __('Jigoshop: Product Search', 'jigoshop'), $options);
 	}
 
 	/**
@@ -44,11 +44,15 @@ class Jigoshop_Widget_Product_Search extends WP_Widget {
 	public function widget( $args, $instance ) {
 	
 		// Extract the widget arguments
-		extract($args);
+		extract( $args );
 
 		// Set the widget title
-		$title = ( ! empty($instance['title']) ) ? $instance['title'] : __('Product Search', 'jigoshop');
-		$title = apply_filters('widget_title', $title, $instance, $this->id_base);
+		$title = apply_filters(
+			'widget_title', 
+			( $instance['title'] ) ? $instance['title'] : __( 'Product Search', 'jigoshop' ), 
+			$instance,
+			$this->id_base
+		);
 		
 		// Print the widget wrapper & title
 		echo $before_widget;
@@ -57,7 +61,7 @@ class Jigoshop_Widget_Product_Search extends WP_Widget {
 		// Construct the form
 		$form = '<form role="search" method="get" id="searchform" action="' . home_url() . '">';
 		$form .= '<div>';
-			$form .= '<label class="screen-reader-text" for="s">' . __('Search for:', 'jigoshop') . '</label>';
+			$form .= '<label class="assistive-text" for="s">' . __('Search for:', 'jigoshop') . '</label>';
 			$form .= '<input type="text" value="' . get_search_query() . '" name="s" id="s" placeholder="' . __('Search for products', 'jigoshop') . '" />';
 			$form .= '<input type="submit" id="searchsubmit" value="' . __('Search', 'jigoshop') . '" />';
 			$form .= '<input type="hidden" name="post_type" value="product" />';
@@ -82,7 +86,10 @@ class Jigoshop_Widget_Product_Search extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
-		$instance['title'] = strip_tags(stripslashes($new_instance['title']));
+
+		// Save the new values
+		$instance['title'] = strip_tags($new_instance['title']);
+
 		return $instance;
 	}
 
@@ -93,16 +100,16 @@ class Jigoshop_Widget_Product_Search extends WP_Widget {
 	 *
 	 * @param	array	instance
 	 */
-	public function form($instance) {
-		// Get values from instance
-		$title = (isset($instance['title'])) ? esc_attr($instance['title']) : null;
+	public function form( $instance ) {
+		
+		// Get instance data
+		$title = isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : null;
 	
 		// Widget title
-		?>
+		echo "
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id('title') ); ?>"><?php _e('Title:', 'jigoshop'); ?></label>
-			<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id('title') ); ?>" name="<?php echo esc_attr( $this->get_field_name('title') ); ?>" value="<?php echo $title; ?>" />
-	    </p>
-	    <?php
+			<label for='{$this->get_field_id( 'title' )}'>" . __( 'Title:', 'jigoshop' ) . "</label>
+			<input class='widefat' id='{$this->get_field_id( 'title' )}' name='{$this->get_field_name( 'title' )}' type='text' value='{$title}' />
+		</p>";
 	}
 } // Jigoshop_Widget_Product_Search

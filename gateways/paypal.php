@@ -125,7 +125,7 @@ class paypal extends jigoshop_payment_gateway {
 	 **/
     public function generate_paypal_form( $order_id ) {
 		
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 		
 		if ( $this->testmode == 'yes' ):
 			$paypal_adr = $this->testurl . '?test_ipn=1&';		
@@ -188,13 +188,18 @@ class paypal extends jigoshop_payment_gateway {
 	
 				// Payment Info
 				'invoice' 				=> $order->order_key,
-				'tax'					=> $order->get_total_tax(),
-				'tax_cart'				=> $order->get_total_tax(),
 				'amount' 				=> $order->order_total,
 				'discount_amount_cart' 	=> $order->order_discount
 			), 
 			$phone_args
 		);
+        
+        // only include tax if prices don't include tax
+        if (get_option('jigoshop_prices_include_tax') != 'yes') :
+            $paypal_args['tax']					= $order->get_total_tax();
+            $paypal_args['tax_cart']			= $order->get_total_tax();
+        endif;
+
 		
 		if ($this->send_shipping=='yes') :
 			$paypal_args['no_shipping'] = 0;
@@ -208,9 +213,9 @@ class paypal extends jigoshop_payment_gateway {
 		if (sizeof($order->items)>0) : foreach ($order->items as $item) :
             
             if(!empty($item['variation_id'])) {
-                $_product = &new jigoshop_product_variation($item['variation_id']);
+                $_product = new jigoshop_product_variation($item['variation_id']);
             } else {
-                $_product = &new jigoshop_product($item['id']);
+                $_product = new jigoshop_product($item['id']);
             }
             
 			if ($_product->exists() && $item['qty']) :
@@ -234,7 +239,8 @@ class paypal extends jigoshop_payment_gateway {
 				
 				$paypal_args['item_name_'.$item_loop] = $title;
 				$paypal_args['quantity_'.$item_loop] = $item['qty'];
-				$paypal_args['amount_'.$item_loop] = number_format($_product->get_price_excluding_tax(), 2); //Apparently, Paypal did not like "28.4525" as the amount. Changing that to "28.45" fixed the issue.				
+				// use product price since we want the base price if it's including tax or if it's not including tax
+                $paypal_args['amount_'.$item_loop] = number_format($_product->get_price(), 2); //Apparently, Paypal did not like "28.4525" as the amount. Changing that to "28.45" fixed the issue.				
 			endif;
 		endforeach; endif;
        
@@ -242,17 +248,20 @@ class paypal extends jigoshop_payment_gateway {
 		$item_loop++;
 		$paypal_args['item_name_'.$item_loop] = __('Shipping cost', 'jigoshop');
 		$paypal_args['quantity_'.$item_loop] = '1';
-		$paypal_args['amount_'.$item_loop] = number_format($order->order_shipping, 2);
+        
+        $shipping_tax = ($order->order_shipping_tax ? $order->order_shipping_tax : 0);
+        
+		$paypal_args['amount_'.$item_loop] = (get_option('jigoshop_prices_include_tax') == 'yes' ? number_format($order->order_shipping + $shipping_tax, 2) : number_format($order->order_shipping, 2));
 		
 		$paypal_args_array = array();
 
 		foreach ($paypal_args as $key => $value) {
-			$paypal_args_array[] = '<input type="hidden" name="'.$key.'" value="'.$value.'" />';
+			$paypal_args_array[] = '<input type="hidden" name="'.esc_attr($key).'" value="'.esc_attr($value).'" />';
 		}
 		
 		return '<form action="'.$paypal_adr.'" method="post" id="paypal_payment_form">
 				' . implode('', $paypal_args_array) . '
-				<input type="submit" class="button-alt" id="submit_paypal_payment_form" value="'.__('Pay via PayPal', 'jigoshop').'" /> <a class="button cancel" href="'.$order->get_cancel_order_url().'">'.__('Cancel order &amp; restore cart', 'jigoshop').'</a>
+				<input type="submit" class="button-alt" id="submit_paypal_payment_form" value="'.__('Pay via PayPal', 'jigoshop').'" /> <a class="button cancel" href="'.esc_url($order->get_cancel_order_url()).'">'.__('Cancel order &amp; restore cart', 'jigoshop').'</a>
 				<script type="text/javascript">
 					jQuery(function(){
 						jQuery("body").block(
@@ -284,7 +293,7 @@ class paypal extends jigoshop_payment_gateway {
 	 **/
 	function process_payment( $order_id ) {
 		
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 		
 		return array(
 			'result' 	=> 'success',
@@ -388,7 +397,7 @@ class paypal extends jigoshop_payment_gateway {
 		            case 'failed' :
 		            case 'voided' :
 		                // Hold order
-		                $order->update_status('on-hold', sprintf(__('Payment %s via IPN.', 'jigoshop'), strtolower(sanitize($posted['payment_status'])) ) );
+		                $order->update_status('on-hold', sprintf(__('Payment %s via IPN.', 'jigoshop'), strtolower($posted['payment_status']) ) );
 		            break;
 		            default:
 		            	// No action

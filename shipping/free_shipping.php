@@ -23,7 +23,7 @@ class free_shipping extends jigoshop_shipping_method {
 		$this->min_amount 	= get_option('jigoshop_free_shipping_minimum_amount');
 		$this->availability = get_option('jigoshop_free_shipping_availability');
 		$this->countries 	= get_option('jigoshop_free_shipping_countries');
-		if (isset($_SESSION['chosen_shipping_method_id']) && $_SESSION['chosen_shipping_method_id']==$this->id) $this->chosen = true;
+		if (isset( jigoshop_session::instance()->chosen_shipping_method_id ) && jigoshop_session::instance()->chosen_shipping_method_id==$this->id) $this->chosen = true;
 		
 		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
 		
@@ -79,7 +79,7 @@ class free_shipping extends jigoshop_shipping_method {
             	<div class="multi_select_countries"><ul><?php
         			if ($countries) foreach ($countries as $key=>$val) :
             			                    			
-        				echo '<li><label><input type="checkbox" name="jigoshop_free_shipping_countries[]" value="'. $key .'" ';
+        				echo '<li><label><input type="checkbox" name="jigoshop_free_shipping_countries[]" value="' . esc_attr( $key ) . '" ';
         				if (in_array($key, $selections)) echo 'checked="checked"';
         				echo ' />'. __($val, 'jigoshop') .'</label></li>';
 

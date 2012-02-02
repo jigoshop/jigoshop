@@ -72,9 +72,9 @@ function jigoshop_add_order_item() {
 	endif;
 
 	if ($post->post_type=="product") :
-		$_product = &new jigoshop_product( $post->ID );
+		$_product = new jigoshop_product( $post->ID );
 	else :
-		$_product = &new jigoshop_product_variation( $post->ID );
+		$_product = new jigoshop_product_variation( $post->ID );
 	endif;
 
 	$loop = 0;
@@ -83,7 +83,7 @@ function jigoshop_add_order_item() {
 		<td class="product-id">#<?php echo $_product->id; ?></td>
 		<td class="variation-id"><?php if (isset($_product->variation_id)) echo $_product->variation_id; else echo '-'; ?></td>
 		<td class="product-sku"><?php if ($_product->sku) echo $_product->sku; ?></td>
-		<td class="name"><a href="<?php echo admin_url('post.php?post='. $_product->id .'&action=edit'); ?>"><?php echo $_product->get_title(); ?></a></td>
+		<td class="name"><a href="<?php echo esc_url( admin_url('post.php?post='. $_product->id .'&action=edit') ); ?>"><?php echo $_product->get_title(); ?></a></td>
 		<td class="variation"><?php
 			if (isset($_product->variation_data)) :
 				echo jigoshop_get_formatted_variation( $_product->variation_data, true );
@@ -103,12 +103,12 @@ function jigoshop_add_order_item() {
 		</td>-->
 		<?php do_action('jigoshop_admin_order_item_values', $_product); ?>
 		<td class="quantity"><input type="text" name="item_quantity[]" placeholder="<?php _e('Quantity e.g. 2', 'jigoshop'); ?>" value="1" /></td>
-		<td class="cost"><input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit ex. tax e.g. 2.99', 'jigoshop'); ?>" value="<?php echo $_product->get_price(); ?>" /></td>
-		<td class="tax"><input type="text" name="item_tax_rate[]" placeholder="<?php _e('Tax Rate e.g. 20.0000', 'jigoshop'); ?>" value="<?php echo $_product->get_tax_base_rate(); ?>" /></td>
+        <td class="cost"><input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit ex. tax e.g. 2.99', 'jigoshop'); ?>" value="<?php echo esc_attr( get_option('jigoshop_prices_include_tax') == 'yes' ? $_product->get_price_excluding_tax() : $_product->get_price() ); ?>" /></td>
+        <td class="tax"><input type="text" name="item_tax_rate[]" placeholder="<?php _e('Tax Rate e.g. 20.0000', 'jigoshop'); ?>" value="<?php echo esc_attr( jigoshop_tax::calculate_total_tax_rate($_product->get_tax_base_rate()) ); ?>" /></td>
 		<td class="center">
-			<input type="hidden" name="item_id[]" value="<?php echo $_product->id; ?>" />
-			<input type="hidden" name="item_name[]" value="<?php echo $_product->get_title(); ?>" />
-            <input type="hidden" name="item_variation_id[]" value="<?php if ($_product->variation_id) echo $_product->variation_id; else echo ''; ?>" />
+			<input type="hidden" name="item_id[]" value="<?php echo esc_attr( $_product->id ); ?>" />
+			<input type="hidden" name="item_name[]" value="<?php echo esc_attr( $_product->get_title() ); ?>" />
+            <input type="hidden" name="item_variation_id[]" value="<?php if ($_product instanceof jigoshop_product_variation) echo esc_attr( $_product->variation_id ); else echo ''; ?>" />
 			<button type="button" class="remove_row button">&times;</button>
 		</td>
 	</tr>
@@ -116,7 +116,6 @@ function jigoshop_add_order_item() {
 
 	// Quit out
 	die();
-
 }
 
 
@@ -191,7 +190,7 @@ function jigoshop_add_to_cart_action($url = false)
     
     //single product
     if (is_numeric($_GET['add-to-cart'])) {
-        $product_id = (int) $_GET['add-to-cart'];
+        $product_id = apply_filters('jigoshop_product_id_add_to_cart_filter', (int) $_GET['add-to-cart']);
         $quantity = 1;
         if (isset($_POST['quantity'])) {
             $quantity = (int) $_POST['quantity'];
@@ -209,7 +208,7 @@ function jigoshop_add_to_cart_action($url = false)
             wp_redirect(get_permalink($_GET['product']));
             exit;
         } else {
-            $product_id = (int) $_GET['product'];
+            $product_id = apply_filters('jigoshop_product_id_add_to_cart_filter', (int) $_POST['product_id']);
             $variation_id = (int) $_POST['variation_id'];
             $quantity = 1;
             if (isset($_POST['quantity'])) {
@@ -222,7 +221,7 @@ function jigoshop_add_to_cart_action($url = false)
 
             foreach ($attributes as $attribute) {
 
-                if ($attribute['variation'] !== 'yes') {
+                if ( ! $attribute['variation']) {
                     continue;
                 }
 
@@ -241,7 +240,7 @@ function jigoshop_add_to_cart_action($url = false)
             } else {
                 /* Link on product pages */
                 jigoshop::add_error(__('Please choose product options&hellip;', 'jigoshop'));
-                wp_redirect(get_permalink($_GET['product']));
+                wp_redirect(apply_filters('jigoshop_product_id_add_to_cart_filter', get_permalink($_GET['product'])));
                 exit;
             }
         }
@@ -275,7 +274,7 @@ function jigoshop_add_to_cart_action($url = false)
     }
     
     //if product was successfully added to the cart
-    if ($product_added && get_option('jigoshop_directly_to_checkout', 'no') == 'no') {
+    if ($product_added && get_option('jigoshop_redirect_add_to_cart', 'same_page') == 'same_page') {
 		jigoshop::add_message(sprintf(__('<a href="%s" class="button">View Cart &rarr;</a> Product successfully added to your cart.', 'jigoshop'), jigoshop_cart::get_cart_url()));
     }
 
@@ -286,13 +285,11 @@ function jigoshop_add_to_cart_action($url = false)
         wp_safe_redirect($url);
     }
     // Redirect directly to checkout if no error messages
-    else if (get_option('jigoshop_directly_to_checkout', 'no') == 'yes' && jigoshop::error_count() == 0) {
+    else if (get_option('jigoshop_redirect_add_to_cart', 'same_page') == 'to_checkout' && jigoshop::error_count() == 0) {
         wp_safe_redirect(jigoshop_cart::get_checkout_url());
     }
     // Redirect directly to cart if no error messages
-    else if (get_option('jigoshop_directly_to_checkout', 'cart') == 'cart'
-             && jigoshop::error_count() == 0
-    ) {
+    else if (get_option('jigoshop_redirect_add_to_cart', 'to_cart') == 'to_cart' && jigoshop::error_count() == 0) {
         wp_safe_redirect(jigoshop_cart::get_cart_url());
     }
     // Otherwise redirect to where they came
@@ -319,8 +316,18 @@ function jigoshop_ajax_update_order_review() {
 	endif;
 	
 	do_action('jigoshop_checkout_update_order_review', $_POST['post_data']);
+	
+        if (isset($_POST['shipping_method'])) :
+            
+		$shipping_method = explode(":", $_POST['shipping_method']);
+	 	jigoshop_session::instance()->chosen_shipping_method_id = $shipping_method[0];
+                
+                if (is_numeric($shipping_method[2])) :
+                    jigoshop_session::instance()->selected_rate_id = $shipping_method[2];
+                endif;
+                
+	endif;
 
-	if (isset($_POST['shipping_method'])) $_SESSION['chosen_shipping_method_id'] = $_POST['shipping_method'];
 	if (isset($_POST['country'])) jigoshop_customer::set_country( $_POST['country'] );
 	if (isset($_POST['state'])) jigoshop_customer::set_state( $_POST['state'] );
 	if (isset($_POST['postcode'])) jigoshop_customer::set_postcode( $_POST['postcode'] );
@@ -349,7 +356,7 @@ function jigoshop_clear_cart_on_return() {
 		if (isset($_GET['order'])) $order_id = $_GET['order']; else $order_id = 0;
 		if (isset($_GET['key'])) $order_key = $_GET['key']; else $order_key = '';
 		if ($order_id > 0) :
-			$order = &new jigoshop_order( $order_id );
+			$order = new jigoshop_order( $order_id );
 			if ($order->order_key == $order_key) :
 				jigoshop_cart::empty_cart();
 			endif;
@@ -366,15 +373,15 @@ add_action( 'init', 'jigoshop_clear_cart_after_payment' );
 
 function jigoshop_clear_cart_after_payment( $url = false ) {
 
-	if (isset($_SESSION['order_awaiting_payment']) && $_SESSION['order_awaiting_payment'] > 0) :
+	if (isset( jigoshop_session::instance()->order_awaiting_payment ) && jigoshop_session::instance()->order_awaiting_payment > 0) :
 
-		$order = &new jigoshop_order($_SESSION['order_awaiting_payment']);
+		$order = new jigoshop_order( jigoshop_session::instance()->order_awaiting_payment );
 
 		if ($order->id > 0 && ($order->status=='completed' || $order->status=='processing')) :
 
 			jigoshop_cart::empty_cart();
 
-			unset($_SESSION['order_awaiting_payment']);
+			unset( jigoshop_session::instance()->order_awaiting_payment );
 
 		endif;
 
@@ -412,7 +419,7 @@ function jigoshop_process_login() {
 					wp_safe_redirect($_SERVER['HTTP_REFERER']);
 					exit;
 				}
-				wp_redirect(get_permalink(get_option('jigoshop_myaccount_page_id')));
+				wp_redirect(apply_filters('jigoshop_get_myaccount_page_id', get_permalink(get_option('jigoshop_myaccount_page_id'))));
 				exit;
 			endif;
 
@@ -448,7 +455,7 @@ function jigoshop_cancel_order() {
 		$order_key = urldecode( $_GET['order'] );
 		$order_id = (int) $_GET['order_id'];
 
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 
 		if ($order->id == $order_id && $order->order_key == $order_key && $order->status=='pending' && jigoshop::verify_nonce('cancel_order', '_GET')) :
 
@@ -490,15 +497,33 @@ function jigoshop_download_product() {
 		$order = urldecode( $_GET['order'] );
 		$email = urldecode( $_GET['email'] );
 
-		if (!is_email($email)) wp_safe_redirect( home_url() );
+		if (!is_email($email)) :
+			wp_die( __('Invalid email address.', 'jigoshop') . ' <a href="'.home_url().'">' . __('Go to homepage &rarr;', 'jigoshop') . '</a>' );
+		endif;
 
-		$downloads_remaining = $wpdb->get_var( $wpdb->prepare("
-			SELECT downloads_remaining
+		$download_result = $wpdb->get_row( $wpdb->prepare("
+			SELECT downloads_remaining 
 			FROM ".$wpdb->prefix."jigoshop_downloadable_product_permissions
-			WHERE user_email = '$email'
-			AND order_key = '$order'
-			AND product_id = '$download_file'
-		;") );
+			WHERE user_email = %s
+			AND order_key = %s
+			AND product_id = %s
+		;", $email, $order, $download_file ) );
+
+		if (!$download_result) :
+			wp_die( __('Invalid download.', 'jigoshop') . ' <a href="'.home_url().'">' . __('Go to homepage &rarr;', 'jigoshop') . '</a>' );
+			exit;
+		endif;
+		
+		$order_id = $download_result->order_id;
+		$downloads_remaining = $download_result->downloads_remaining;
+		
+		if ($order_id) :
+			$order = new jigoshop_order( $order_id );
+			if ($order->status!='completed' && $order->status!='processing' && $order->status!='publish') :
+				wp_die( __('Invalid order.', 'jigoshop') . ' <a href="'.home_url().'">' . __('Go to homepage &rarr;', 'jigoshop') . '</a>' );
+				exit;
+			endif;
+		endif;
 		
 		if ($downloads_remaining == '0') :
             wp_die( sprintf(__('Sorry, you have reached your download limit for this file. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
@@ -513,79 +538,88 @@ function jigoshop_download_product() {
 				), array( '%d' ), array( '%s', '%s', '%d' ) );
 			endif;
 
+			$file_path = get_post_meta($download_file, 'file_path', true);
+				
+			if (!$file_path) wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
 
-			// Download method
-			$file_method = get_post_meta($download_file, 'file_method', true);
+			// Get URLS with https
+			$site_url = site_url();
+			$network_url = network_admin_url();
+			if (is_ssl()) :
+				$site_url = str_replace('https:', 'http:', $site_url);
+				$network_url = str_replace('https:', 'http:', $network_url);
+			endif;
 
-			if($file_method == 'internal') {
+			if (!is_multisite()) :	
+				$file_path = str_replace(trailingslashit($site_url), ABSPATH, $file_path);
+			else :
+				$upload_dir = wp_upload_dir();
+				
+				// Try to replace network url
+				$file_path = str_replace(trailingslashit($network_url), ABSPATH, $file_path);
+				
+				// Now try to replace upload URL
+				$file_path = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $file_path);
+			endif;
 
-				$file_path = ABSPATH . get_post_meta($download_file, 'file_path', true);
-				if (!$file_path) wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
+			// See if its local or remote
+			if (strstr($file_path, 'http:') || strstr($file_path, 'https:') || strstr($file_path, 'ftp:')) :
+				$remote_file = true;
+			else :
+				$remote_file = false;
 				$file_path = realpath($file_path);
+			endif;
 
-				if (!file_exists($file_path) || is_dir($file_path) || !is_readable($file_path)) {
-					wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
-				}
+			// Download the file
+			$file_extension = strtolower(substr(strrchr($file_path,"."),1));
 
-				$file_extension = strtolower(substr(strrchr($file_path,"."),1));
+			switch ($file_extension) :
+				case "pdf": $ctype="application/pdf"; break;
+				case "exe": $ctype="application/octet-stream"; break;
+				case "zip": $ctype="application/zip"; break;
+				case "doc": $ctype="application/msword"; break;
+				case "xls": $ctype="application/vnd.ms-excel"; break;
+				case "ppt": $ctype="application/vnd.ms-powerpoint"; break;
+				case "gif": $ctype="image/gif"; break;
+				case "png": $ctype="image/png"; break;
+				case "jpe": case "jpeg": case "jpg": $ctype="image/jpg"; break;
+				default: $ctype="application/force-download";
+			endswitch;
 
-				switch ($file_extension) :
-					case "pdf": $ctype="application/pdf"; break;
-					case "exe": $ctype="application/octet-stream"; break;
-					case "zip": $ctype="application/zip"; break;
-					case "doc": $ctype="application/msword"; break;
-					case "xls": $ctype="application/vnd.ms-excel"; break;
-					case "ppt": $ctype="application/vnd.ms-powerpoint"; break;
-					case "gif": $ctype="image/gif"; break;
-					case "png": $ctype="image/png"; break;
-					case "jpe": case "jpeg": case "jpg": $ctype="image/jpg"; break;
-					default: $ctype="application/force-download";
-				endswitch;
+			@ini_set('zlib.output_compression', 'Off');
+			@set_time_limit(0);
+			@session_start();
+			@session_cache_limiter('none');
+			@set_magic_quotes_runtime(0);
+			@ob_end_clean();
+			if (ob_get_level()) @ob_end_clean();
+			@session_write_close();
 
-				@ini_set('zlib.output_compression', 'Off');
-				@set_time_limit(0);
-				@session_start();
-				@session_cache_limiter('none');
-				@set_magic_quotes_runtime(0);
-				@ob_end_clean();
-				if (ob_get_level()) @ob_end_clean();
-				@session_write_close();
+			header("Pragma: no-cache");
+			header("Expires: 0");
+			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+			header("Robots: none");
+			header("Content-Type: ".$ctype."");
+			header("Content-Description: File Transfer");
+			header("Content-Transfer-Encoding: binary");
 
-				header("Pragma: no-cache");
-				header("Expires: 0");
-				header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-				header("Robots: none");
-				header("Content-Type: ".$ctype."");
-				header("Content-Description: File Transfer");
-
-				if (strstr($_SERVER['HTTP_USER_AGENT'], "MSIE")) {
-					// workaround for IE filename bug with multiple periods / multiple dots in filename
-					$iefilename = preg_replace('/\./', '%2e', basename($file_path), substr_count(basename($file_path), '.') - 1);
-					header("Content-Disposition: attachment; filename=\"".$iefilename."\";");
-				} else {
-					header("Content-Disposition: attachment; filename=\"".basename($file_path)."\";");
-				}
-
-				header("Content-Transfer-Encoding: binary");
-
-				header("Content-Length: ".@filesize($file_path));
-				@readfile("$file_path") or wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
-				exit;
+			if (strstr($_SERVER['HTTP_USER_AGENT'], "MSIE")) {
+				// workaround for IE filename bug with multiple periods / multiple dots in filename
+				$iefilename = preg_replace('/\./', '%2e', basename($file_path), substr_count(basename($file_path), '.') - 1);
+				header("Content-Disposition: attachment; filename=\"".$iefilename."\";");
+			} else {
+				header("Content-Disposition: attachment; filename=\"".basename($file_path)."\";");
 			}
 
-			else if($file_method == 'external') {
+			header("Content-Length: ".@filesize($file_path));
 			
-				// Check if it's a valid web address
-				$file_url = esc_url(get_post_meta($download_file, 'file_url', true));
 
-				if($file_url) {
-					header("Location: $file_url");
-					exit();
-				} else {
-					wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
-				}
+			if ( $remote_file ) {
+				 header('Location: '.$file_path);
+			} else {
+				@readfile("$file_path") or wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
 			}
-
+			exit;
 		endif;
 
 	endif;
@@ -601,12 +635,20 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 
 	global $wpdb;
 
-	$order = &new jigoshop_order( $order_id );
+	$order = new jigoshop_order( $order_id );
 
 	if (sizeof($order->items)>0) foreach ($order->items as $item) :
 
-		if ($item['id']>0) :
-			$_product = &new jigoshop_product( $item['id'] );
+		// if ($item['id']>0) :
+
+			// @todo: Bit of a hack could be improved as id is null/0
+			if ( (bool) $item['variation_id'] ) {
+				$_product = new jigoshop_product_variation( $item['variation_id'] );
+				$product_id = $_product->variation_id;
+			} else {
+				$_product = new jigoshop_product( $item['id'] );
+				$product_id = $_product->ID;
+			}
 
 			if ( $_product->exists && $_product->is_type('downloadable') ) :
 
@@ -631,7 +673,7 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 
 				// Downloadable product - give access to the customer
 				$wpdb->insert( $wpdb->prefix . 'jigoshop_downloadable_product_permissions', array(
-					'product_id' => $_product->id,
+					'product_id' => $product_id,
 					'user_id' => $order->user_id,
 					'user_email' => $user_email,
 					'order_key' => $order->order_key,
@@ -646,7 +688,196 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 
 			endif;
 
-		endif;
+		// endif;
 
 	endforeach;
+}
+
+/**
+ * Displays Google Analytics tracking code in the footer
+ *
+ * @return  void
+ */
+add_action( 'wp_footer', 'jigoshop_ga_tracking' );
+function jigoshop_ga_tracking() {
+	
+	// If admin don't track..shouldn't require this
+	if ( is_admin() )
+		return false;
+
+	// Don't track the shop owners roaming
+	if ( current_user_can('manage_options') )
+		return false;
+	
+	$tracking_id = get_option('jigoshop_ga_id');
+	
+	if ( ! $tracking_id )
+		return false;
+	
+	$loggedin = (is_user_logged_in()) ? 'yes' : 'no';
+
+	if ( is_user_logged_in() ) {
+		$user_id 		= get_current_user_id();
+		$current_user 	= get_user_by('id', $user_id);
+		$username 		= $current_user->user_login;
+	}
+	else {
+		$user_id 		= null;
+		$username 		= __('Guest', 'jigoshop');
+	}
+	?>
+	<script>
+	    var _gaq=[['_setAccount','<?php echo $tracking_id; ?>'],['_setCustomVar',1,'logged-in','<?php echo $loggedin; ?>',1],['_setCustomVar',2,'user-id','<?php echo $user_id; ?>',1],['_setCustomVar',3, 'username','<?php echo $username; ?>',1],['_trackPageview']];
+	    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+	    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+	    s.parentNode.insertBefore(g,s)}(document,'script'));
+  	</script>
+	<?php
+}
+
+/**
+ * Displays Google Analytics eCommerce tracking code on thank you page
+ *
+ * @return  void
+ */
+add_action( 'jigoshop_thankyou', 'jigoshop_ga_ecommerce_tracking' );
+function jigoshop_ga_ecommerce_tracking( $order_id ) {
+	
+	// Skip if disabled
+	if ( get_option('jigoshop_ga_ecommerce_tracking_enabled') != 'yes' )
+		return false;
+
+	// Don't track the shop owners roaming
+	if ( current_user_can('manage_options') )
+		return false;
+	
+	$tracking_id = get_option('jigoshop_ga_id');
+	
+	if ( ! $tracking_id )
+		return false;
+
+	// Unhook standard tracking so we don't count a view twice
+	remove_action('wp_footer', 'jigoshop_ga_tracking');
+
+	// Get the order and output tracking code
+	$order = new jigoshop_order($order_id);
+	
+	$loggedin = (is_user_logged_in()) ? 'yes' : 'no';
+
+	if ( is_user_logged_in() ) {
+		$user_id 		= get_current_user_id();
+		$current_user 	= get_user_by('id', $user_id);
+		$username 		= $current_user->user_login;
+	}
+	else {
+		$user_id 		= '';
+		$username 		= __('Guest', 'jigoshop');
+	}
+
+	?>
+	<script>
+		var _gaq = [
+			['_setAccount', '<?php echo $tracking_id; ?>'],
+			['_setCustomVar', 1, 'logged-in', '<?php echo $loggedin; ?>', 1],
+			['_setCustomVar', 2, 'user-id', '<?php echo $user_id; ?>', 1],
+			['_setCustomVar', 3, 'username', '<?php echo $username; ?>', 1],
+			['_trackPageview'],
+
+			['_addTrans',
+			'<?php echo $order_id; ?>',                // Order ID
+			'<?php bloginfo('name'); ?>',              // Store Title
+			'<?php echo $order->order_total; ?>',      // Order Total Amount
+			'<?php echo $order->get_total_tax(); ?>',  // Order Tax Amount
+			'<?php echo $order->order_shipping; ?>',   // Order Shipping Amount
+			'<?php echo $order->billing_city; ?>',     // Billing City
+			'<?php echo $order->billing_state; ?>',    // Billing State
+			'<?php echo $order->billing_country; ?>'   // Billing Country
+			],
+
+			<?php if ($order->items) foreach($order->items as $item) : $_product = $order->get_product_from_item( $item ); ?>
+				['_addItem',
+				'<?php echo $order_id; ?>',             // Order ID
+				'<?php echo $_product->sku; ?>',        // SKU
+				'<?php echo $item['name']; ?>',         // Product Title
+				'<?php if (isset($_product->variation_data))
+					echo jigoshop_get_formatted_variation( $_product->variation_data, true ); ?>',   // category or variation
+				'<?php echo ($item['cost']/$item['qty']); ?>', // Unit Price
+				'<?php echo $item['qty']; ?>'           // Quantity
+				],
+			<?php endforeach; ?>
+
+			['_trackTrans'] // Submits the transaction to the Analytics servers
+		];
+
+		(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+	    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+	    s.parentNode.insertBefore(g,s)}(document,'script'));
+	</script>
+	<?php
+}
+
+/**
+ * Jigoshop Dropdown categories
+ * 
+ * @see     http://core.trac.wordpress.org/ticket/13258
+ * @param   integer   Show Product Count?
+ * @param   integer   Show Hierarchy?
+ * @return  void
+ */
+function jigoshop_product_dropdown_categories( $show_counts = true, $hierarchal = true ) {
+	global $wp_query;
+	
+	$r = array();
+	$r['pad_counts'] = 1;
+	$r['hierarchal'] = $hierarchal;
+	$r['hide_empty'] = 1;
+	$r['show_count'] = 1;
+	$r['selected']   = (isset($wp_query->query['product_cat'])) ? $wp_query->query['product_cat'] : '';
+	
+	$terms = get_terms( 'product_cat', $r );
+	if (!$terms) return;
+	
+	$output  = "<select name='product_cat' id='dropdown_product_cat'>";
+	$output .= '<option value="">'.esc_html__('Select a category', 'jigoshop').'</option>';
+	$output .= jigoshop_walk_category_dropdown_tree( $terms, 0, $r );
+	$output .="</select>";
+	
+	echo $output;
+}
+
+/**
+ * Walk the Product Categories.
+ */
+function jigoshop_walk_category_dropdown_tree() {
+	$args = func_get_args();
+	// the user's options are the third parameter
+	if ( empty($args[2]['walker']) || !is_a($args[2]['walker'], 'Walker') )
+		$walker = new Jigoshop_Walker_CategoryDropdown;
+	else
+		$walker = $args[2]['walker'];
+
+	return call_user_func_array(array( &$walker, 'walk' ), $args );
+}
+
+/**
+ * Create HTML dropdown list of Product Categories.
+ */
+class Jigoshop_Walker_CategoryDropdown extends Walker {
+
+	var $tree_type = 'category';
+	var $db_fields = array ('parent' => 'parent', 'id' => 'term_id', 'slug' => 'slug' );
+
+	function start_el(&$output, $object, $depth, $args, $current_object_id = 0) {
+		$pad = str_repeat('&nbsp;', $depth * 3);
+
+		$cat_name = apply_filters('list_product_cats', $object->name, $object);
+		$output .= "\t<option class=\"level-$depth\" value=\"".esc_attr( $object->slug )."\"";
+		if ( $object->slug == $args['selected'] )
+			$output .= ' selected="selected"';
+		$output .= '>';
+		$output .= $pad.$cat_name;
+		if ( $args['show_count'] )
+			$output .= '&nbsp;('. $object->count .')';
+		$output .= "</option>\n";
+	}
 }

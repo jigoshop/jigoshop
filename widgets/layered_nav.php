@@ -46,17 +46,22 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 		
 		// Extract the widget arguments
 		extract($args);
-		global $_chosen_attributes, $wpdb, $all_post_ids;
+		global $_chosen_attributes, $wpdb, $jigoshop_all_post_ids_in_view;
 		
 		// Hide widget if not product related
 		if ( ! is_product_list() )
 			return false;
 
 		// Set the widget title
-		$title = ($instance['title']) ? $instance['title'] : apply_filters('widget_title', '', $instance, $this->id_base);
-		
+		$title = apply_filters(
+			'widget_title', 
+			( $instance['title'] ) ? $instance['title'] : __( 'Filter by Attributes', 'jigoshop' ), 
+			$instance,
+			$this->id_base
+		);
+
 		// Check if taxonomy exists
-		$taxonomy = 'pa_'.strtolower(sanitize_title($instance['attribute']));
+		$taxonomy = 'pa_'.sanitize_title($instance['attribute']);
 		if ( ! taxonomy_exists($taxonomy) )
 			return false;
 		
@@ -78,29 +83,25 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 			echo $before_title . $title . $after_title;
 			
 			//Remove param link
-			$remove_link = remove_query_arg('filter_'.strtolower(sanitize_title($instance['attribute'])));
+			$remove_link = remove_query_arg('filter_'.sanitize_title($instance['attribute']));
 			echo "<a class=\"layerd_nav_clear\" href=\"{$remove_link}\">Clear</a>";
 			
 			// Open the list
 			echo "<ul>";
-
-			// Reduce count based on chosen attributes
-			$all_post_ids = jigoshop_layered_nav_query( $all_post_ids );
-			$all_post_ids = jigoshop_price_filter( $all_post_ids );
 
 			foreach ($terms as $term) {
 			
 				$_products_in_term = get_objects_in_term( $term->term_id, $taxonomy );
 				
 				// Get product count & set flag
-				$count = sizeof(array_intersect($_products_in_term, $all_post_ids));
+				$count = sizeof(array_intersect($_products_in_term, $jigoshop_all_post_ids_in_view ));
 				$has_products = (bool) $count;
 				
 				if ($has_products) $found = true;
 				
 				$class = '';
 				
-				$arg = 'filter_'.strtolower(sanitize_title($instance['attribute']));
+				$arg = 'filter_'.sanitize_title($instance['attribute']);
 				
 				if (isset($_GET[ $arg ])) $current_filter = explode(',', $_GET[ $arg ]); else $current_filter = array();
 				
@@ -120,7 +121,7 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 				// All current filters
 				if ($_chosen_attributes) foreach ($_chosen_attributes as $name => $value) :
 					if ($name!==$taxonomy) :
-						$link = add_query_arg( strtolower(sanitize_title(str_replace('pa_', 'filter_', $name))), implode(',', $value), $link );
+						$link = add_query_arg( sanitize_title(str_replace('pa_', 'filter_', $name)), implode(',', $value), $link );
 					endif;
 				endforeach;
 				
@@ -151,7 +152,7 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 				
 				echo '<li '.$class.'>';
 				
-				if ($has_products) echo '<a href="'.$link.'">'; else echo '<span>';
+				if ($has_products) echo '<a href="'.esc_url($link).'">'; else echo '<span>';
 				
 				echo $term->name;
 				
@@ -210,30 +211,86 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 		$attr_tax = jigoshop_product::getAttributeTaxonomies();
 				
 		// Widget title
-		?>
-		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id('title') ); ?>"> <?php _e('Title:', 'jigoshop'); ?></label>
-			<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id('title') ); ?>" name="<?php echo esc_attr( $this->get_field_name('title') ); ?>" value="<?php echo $title; ?>" />
-		</p>
-		<?php 
-		// Print attribute selector 
-		if ( ! empty($attr_tax) ) : 
-		?>
-		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id('attribute') ); ?>"><?php _e('Attribute:', 'jigoshop'); ?></label>
-			<select id="<?php echo esc_attr( $this->get_field_id('attribute') ); ?>" name="<?php echo esc_attr( $this->get_field_name('attribute') ); ?>">
-			<?php 
-			foreach($attr_tax as $tax) :
-				if (taxonomy_exists('pa_'.strtolower(sanitize_title($tax->attribute_name)))) :
-				?>
-				<option value="<?php echo esc_attr( $tax->attribute_name ); ?>" <?php if(isset($instance['attribute']) && $instance['attribute'] == $tax->attribute_name) : ?>selected<?php endif; ?>><?php echo $tax->attribute_name; ?></option>
-				<?php
-				endif;
-			endforeach;
-			?>
-			</select>
-		</p>
-		<?php
-		endif;
+		echo '<p>';
+		echo '<label for="' . esc_attr( $this->get_field_id('title')  ) . '"> ' . _e('Title:', 'jigoshop') . '</label>';
+		echo '<input type="text" class="widefat" id="' . esc_attr( $this->get_field_id('title')  ) . '" name="' . esc_attr( $this->get_field_name('title')  ) . '" value="' . esc_attr( $title ) . '" />';
+		echo '</p>';
+		
+		// Print attribute selector
+		if ( ! empty($attr_tax) ) {
+			echo '<p>';
+			echo '<label for="' . esc_attr( $this->get_field_id('attribute')  ) . '">' . __('Attribute:', 'jigoshop') . '</label> ';
+			echo '<select id="' . esc_attr( $this->get_field_id('attribute')  ) . '" name="' . esc_attr( $this->get_field_name('attribute')  ) . '">';
+			foreach($attr_tax as $tax) {
+				
+				if (taxonomy_exists('pa_'.sanitize_title($tax->attribute_name))) {
+					echo '<option value="' . esc_attr( $tax->attribute_name  ) . '" ' . (isset($instance['attribute']) && $instance['attribute'] == $tax->attribute_name ? 'selected' : null) . '>';
+					echo $tax->attribute_name;
+					echo '</option>';
+				}
+			}
+			
+			echo '</select>';
+			echo '</p>';
+		}
 	}
 } // class Jigoshop_Widget_Layered_Nav
+
+function jigoshop_layered_nav_query( $filtered_posts ) {
+
+	global $_chosen_attributes;
+
+	if (sizeof($_chosen_attributes)>0) :
+
+		$matched_products = array();
+		$filtered = false;
+
+		foreach ($_chosen_attributes as $attribute => $values) :
+			if (sizeof($values)>0) :
+				foreach ($values as $value) :
+
+					$posts = get_objects_in_term( $value, $attribute );
+					if (!is_wp_error($posts) && (sizeof($matched_products)>0 || $filtered)) :
+						$matched_products = array_intersect($posts, $matched_products);
+					elseif (!is_wp_error($posts)) :
+						$matched_products = $posts;
+					endif;
+
+					$filtered = true;
+
+				endforeach;
+			endif;
+		endforeach;
+
+		if ($filtered) :
+			$matched_products[] = 0;
+			$filtered_posts = array_intersect($filtered_posts, $matched_products);
+		endif;
+
+	endif;
+
+	return $filtered_posts;
+}
+add_filter( 'loop-shop-posts-in', 'jigoshop_layered_nav_query' );
+
+function jigoshop_layered_nav_init() {
+
+	global $_chosen_attributes;
+	
+	$_chosen_attributes = array();
+	
+	$attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();
+	if ( $attribute_taxonomies ) :
+		foreach ($attribute_taxonomies as $tax) :
+
+	    	$attribute = sanitize_title($tax->attribute_name);
+	    	$taxonomy = 'pa_' . $attribute;
+	    	$name = 'filter_' . $attribute;
+
+	    	if (isset($_GET[$name]) && taxonomy_exists($taxonomy)) $_chosen_attributes[$taxonomy] = explode(',', $_GET[$name] );
+
+	    endforeach;
+    endif;
+
+}
+add_action( 'init', 'jigoshop_layered_nav_init', 1 );

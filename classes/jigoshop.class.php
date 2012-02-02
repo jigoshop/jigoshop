@@ -37,11 +37,11 @@ class jigoshop extends jigoshop_singleton {
 	/** constructor */
 	protected function __construct() {		
 		
-		if (isset($_SESSION['errors'])) self::$errors = $_SESSION['errors'];
-		if (isset($_SESSION['messages'])) self::$messages = $_SESSION['messages'];
+		if (isset(jigoshop_session::instance()->errors)) self::$errors = jigoshop_session::instance()->errors;
+		if (isset(jigoshop_session::instance()->messages)) self::$messages = jigoshop_session::instance()->messages;
 		
-		unset($_SESSION['messages']);
-		unset($_SESSION['errors']);
+		unset( jigoshop_session::instance()->messages );
+		unset( jigoshop_session::instance()->errors );
 		
 		// uses jigoshop_base_class to provide class address for the filter
 		self::add_filter( 'wp_redirect', 'redirect', 1, 2 );
@@ -109,7 +109,6 @@ class jigoshop extends jigoshop_singleton {
 	public static function get_var($var) {
 		$return = '';
 		switch ($var) :
-			case "version" : $return = JIGOSHOP_VERSION; break;
 			case "shop_small_w" : $return = self::SHOP_SMALL_W; break;
 			case "shop_small_h" : $return = self::SHOP_SMALL_H; break;
 			case "shop_tiny_w" : $return = self::SHOP_TINY_W; break;
@@ -139,8 +138,8 @@ class jigoshop extends jigoshop_singleton {
 	/** Clear messages and errors from the session data */
 	public static function clear_messages() {
 		self::$errors = self::$messages = array();
-		unset($_SESSION['messages']);
-		unset($_SESSION['errors']);
+		unset( jigoshop_session::instance()->messages );
+		unset( jigoshop_session::instance()->errors );
 	}
 	
 	/**
@@ -231,9 +230,9 @@ class jigoshop extends jigoshop_singleton {
 	 * @return  location
 	 */
 	public static function redirect( $location, $status = NULL ) {
-		$_SESSION['errors'] = self::$errors;
-		$_SESSION['messages'] = self::$messages;
-		return $location;
+		jigoshop_session::instance()->errors = self::$errors;
+		jigoshop_session::instance()->messages = self::$messages;
+		return apply_filters('jigoshop_session_location_filter', $location);
 	}
 	
 	public static function shortcode_wrapper ($function, $atts=array()) {

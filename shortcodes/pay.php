@@ -29,7 +29,7 @@ function jigoshop_pay() {
 		// Pay for existing order
 		$order_key = urldecode( $_GET['order'] );
 		$order_id = (int) $_GET['order_id'];
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 
 		if ($order->id == $order_id && $order->order_key == $order_key && $order->status=='pending') :
 
@@ -98,7 +98,7 @@ function jigoshop_pay() {
 
 		if ($order_id > 0) :
 
-			$order = &new jigoshop_order( $order_id );
+			$order = new jigoshop_order( $order_id );
 
 			if ($order->order_key == $order_key && $order->status=='pending') :
 
@@ -133,14 +133,14 @@ function jigoshop_pay() {
 
 			else :
 
-				wp_safe_redirect( get_permalink(get_option('jigoshop_myaccount_page_id')) );
+				wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(get_option('jigoshop_myaccount_page_id'))) );
 				exit;
 
 			endif;
 
 		else :
 
-			wp_safe_redirect( get_permalink(get_option('jigoshop_myaccount_page_id')) );
+			wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(get_option('jigoshop_myaccount_page_id'))) );
 			exit;
 
 		endif;

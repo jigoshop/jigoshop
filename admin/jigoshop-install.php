@@ -23,28 +23,31 @@
  * @since 		1.0
  */
 function install_jigoshop() {
-	
-	jigoshop_tables_install();		/* we need tables installed first to eliminate installation errors */
 
-	// Get options
-	require_once ( 'jigoshop-admin-settings-options.php' );	
+	if( ! get_site_option('jigoshop_db_version') )  {
 	
-	// Do install
-	jigoshop_default_options();
-	jigoshop_create_pages();
-	
-	jigoshop_post_type();
-	jigoshop_default_taxonomies();
-	
-	// Clear cron
-	wp_clear_scheduled_hook('jigoshop_update_sale_prices_schedule_check');
-	update_option('jigoshop_update_sale_prices', 'no');
-	
-	// Flush Rules
-	flush_rewrite_rules( false );
-	
-	// Update version
-	update_option( "jigoshop_db_version", JIGOSHOP_VERSION );
+		jigoshop_tables_install();		/* we need tables installed first to eliminate installation errors */
+
+		// Get options
+		require_once ( 'jigoshop-admin-settings-options.php' );	
+		
+		// Do install
+		jigoshop_default_options();
+		jigoshop_create_pages();
+		
+		jigoshop_post_type();
+		jigoshop_default_taxonomies();
+		
+		// Clear cron
+		wp_clear_scheduled_hook('jigoshop_update_sale_prices_schedule_check');
+		update_option('jigoshop_update_sale_prices', 'no');
+		
+		// Flush Rules
+		flush_rewrite_rules( false );
+		
+		// Update version
+		update_option( "jigoshop_db_version", JIGOSHOP_VERSION );
+	}
 }
 
 /**
@@ -224,6 +227,7 @@ function jigoshop_default_taxonomies() {
 	
 	$product_types = array(
 		'simple',
+		'external',
 		'grouped',
 		'configurable',
 		'downloadable',

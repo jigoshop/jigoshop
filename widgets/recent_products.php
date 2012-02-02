@@ -79,16 +79,16 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 
 		// Set up query
     	$query_args = array(
-    		'showposts'		=> $number,
-    		'post_type'		=> 'product',
-    		'post_status'	=> 'publish',
-    		'orderby'		=> 'date',
-    		'order'			=> 'desc',
-    		'meta_query'	=> array(
+    		'posts_per_page' => $number,
+    		'post_type'      => 'product',
+    		'post_status'    => 'publish',
+    		'orderby'        => 'date',
+    		'order'          => 'desc',
+    		'meta_query'     => array(
     			array(
-    				'key'		=> 'visibility',
-    				'value'		=> array('catalog', 'visible'),
-    				'compare'	=> 'IN',
+    				'key'       => 'visibility',
+    				'value'     => array('catalog', 'visible'),
+    				'compare'   => 'IN',
     			),
     		)
     	);
@@ -169,7 +169,7 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 		// Save the new values
 		$instance['title'] = strip_tags($new_instance['title']);
 		$instance['number'] = abs($new_instance['number']);
-		$instance['show_variations'] = (bool) $new_instance['show_variations'];
+		$instance['show_variations'] = (bool) isset($new_instance['show_variations']) ? $new_instance['show_variations'] : false;
 
 		// Flush the cache
 		$this->flush_widget_cache();
@@ -202,30 +202,31 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 	public function form( $instance ) {
 	
 		// Get instance data
-		$title = isset($instance['title']) ? esc_attr($instance['title']) : null;
-		
-		$number = apply_filters('jigoshop_widget_featured_default_number', 5, $instance, $this->id_base);
-		$number = isset($instance['number']) ? abs($instance['number']) : $number;
+		$title = isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : null;
+		$number = isset( $instance['number'] ) ? absint( $instance['number'] ) : 5;
 		
 		$show_variations = (bool) isset($instance['show_variations']) ? $instance['show_variations'] : false;
-		
+
 		// Widget Title
-		?>
+		echo "
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id('title') ); ?>"><?php _e('Title:', 'jigoshop'); ?></label>
-			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id('title') ); ?>" name="<?php echo esc_attr( $this->get_field_name('title') ); ?>" type="text" value="<?php echo $title; ?>" />
-		</p>
-		<?php // Number of posts to fetch ?>
+			<label for='{$this->get_field_id( 'title' )}'>" . __( 'Title:', 'jigoshop' ) . "</label>
+			<input class='widefat' id='{$this->get_field_id( 'title' )}' name='{$this->get_field_name( 'title' )}' type='text' value='{$title}' />
+		</p>";
+
+		// Number of posts to fetch
+		echo "
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id('number') ); ?>"><?php _e('Number of products to show:', 'jigoshop'); ?></label>
-			<input id="<?php echo esc_attr( $this->get_field_id('number') ); ?>" name="<?php echo esc_attr( $this->get_field_name('number') ); ?>" type="text" value="<?php echo $number; ?>" size="3" />
-		</p>
-		<?php // Show variations ?>
-		<p>
-			<input type="checkbox" class="checkbox" id="<?php echo esc_attr( $this->get_field_id('show_variations') ); ?>" name="<?php echo esc_attr( $this->get_field_name('show_variations') ); ?>" <?php checked( $show_variations ); ?> />
-			<label for="<?php echo esc_attr( $this->get_field_id('show_variations') ); ?>"><?php _e( 'Show hidden product variations', 'jigoshop' ); ?></label>
-		</p>
-		<?php
+			<label for='{$this->get_field_id( 'number' )}'>" . __( 'Number of products to show:', 'jigoshop' ) . "</label>
+			<input id='{$this->get_field_id( 'number' )}' name='{$this->get_field_name( 'number' )}' type='number' value='{$number}' size='3' />
+		</p>";
+		
+		// Show variations?
+		echo '<p>';
+		echo '<input type="checkbox" class="checkbox" id="' . esc_attr( $this->get_field_id('show_variations')  ) . '" name="' . esc_attr( $this->get_field_name('show_variations')  ) . '"' . checked( $show_variations ) . '/>';
+		echo '<label for="' . esc_attr( $this->get_field_id('show_variations')  ) . '"> ' . __( 'Show hidden product variations', 'jigoshop' ) . '</label>';
+		echo '</p>';
+
 	}
 	
 } // class Jigoshop_Widget_Recent_Products

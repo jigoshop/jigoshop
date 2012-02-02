@@ -25,7 +25,7 @@ function jigoshop_process_shop_order_meta($post_id, $post)
 
     $jigoshop_errors = array();
 
-    $order = &new jigoshop_order($post_id);
+    $order = new jigoshop_order($post_id);
 
     // Get old data + attributes
     $data = (array) maybe_unserialize(get_post_meta($post_id, 'order_data', true));
@@ -56,10 +56,13 @@ function jigoshop_process_shop_order_meta($post_id, $post)
         'shipping_country',
         'shipping_state',
         'shipping_method',
+        'shipping_service',
         'payment_method',
         'order_subtotal',
+        'order_subtotal_inc_tax',
         'order_shipping',
         'order_discount',
+        'order_discount_coupons',
         'order_tax',
         'order_shipping_tax',
         'order_total'

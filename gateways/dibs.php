@@ -115,7 +115,7 @@ class dibs extends jigoshop_payment_gateway {
 	**/
 	public function generate_form( $order_id ) {
 		
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 		
 		$action_adr = 'https://payment.architrade.com/paymentweb/start.action';
 		
@@ -178,12 +178,12 @@ class dibs extends jigoshop_payment_gateway {
 		
 		$fields = '';
 		foreach ($args as $key => $value) {
-			$fields .= '<input type="hidden" name="'.$key.'" value="'.$value.'" />';
+			$fields .= '<input type="hidden" name="'.esc_attr($key).'" value="'.esc_attr($value).'" />';
 		}
 		
 		return '<form action="'.$action_adr.'" method="post" id="dibs_payment_form">
 				' . $fields . '
-				<input type="submit" class="button-alt" id="submit_dibs_payment_form" value="'.__('Pay via DIBS', 'jigoshop').'" /> <a class="button cancel" href="'.$order->get_cancel_order_url().'">'.__('Cancel order &amp; restore cart', 'jigoshop').'</a>
+				<input type="submit" class="button-alt" id="submit_dibs_payment_form" value="'.__('Pay via DIBS', 'jigoshop').'" /> <a class="button cancel" href="'.esc_url($order->get_cancel_order_url()).'">'.__('Cancel order &amp; restore cart', 'jigoshop').'</a>
 				<script type="text/javascript">
 					jQuery(function(){
 						jQuery("body").block(
@@ -215,11 +215,11 @@ class dibs extends jigoshop_payment_gateway {
 	 **/
 	function process_payment( $order_id ) {
 		
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 		
 		return array(
 			'result' => 'success',
-			'redirect' => add_query_arg('order', $order->id, add_query_arg('key', $order->order_key, get_permalink(get_option('jigoshop_pay_page_id'))))
+			'redirect' => add_query_arg('order', $order->id, add_query_arg('key', $order->order_key, apply_filters('jigoshop_get_return_url', get_permalink(get_option('jigoshop_pay_page_id')))))
 		);
 		
 	}

@@ -30,7 +30,7 @@ if (!isset($columns) || !$columns) $columns = apply_filters('loop_shop_columns',
 
 ob_start();
 
-if (have_posts()) : while (have_posts()) : the_post(); $_product = &new jigoshop_product( $post->ID ); $loop++;
+if (have_posts()) : while (have_posts()) : the_post(); $_product = new jigoshop_product( $post->ID ); $loop++;
 
 	?>
 	<li class="product <?php if ($loop%$columns==0) echo 'last'; if (($loop-1)%$columns==0) echo 'first'; ?>">

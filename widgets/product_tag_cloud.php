@@ -43,6 +43,17 @@ class Jigoshop_Widget_Tag_Cloud extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 	
+		// Get the widget cache from the transient
+		$cache = get_transient( 'jigoshop_widget_cache' );
+		// If this tag cloud widget instance is cached, get from the cache
+		if ( isset( $cache[$this->id] ) ) {
+			echo $cache[$this->id];
+			return false;
+		}
+
+		// Otherwise Start buffering and output the Widget
+		ob_start();
+		
 		// Extract the widget arguments
 		extract($args);
 		
@@ -61,6 +72,11 @@ class Jigoshop_Widget_Tag_Cloud extends WP_Widget {
 		
 		// Print closing widget wrapper
 		echo $after_widget;
+		
+		// Flush output buffer and save to transient cache
+		$result = ob_get_flush();
+		$cache[$this->id] = $result;
+		set_transient( 'jigoshop_widget_cache', $cache, 3600*3 ); // 3 hours ahead
 	}
 	
 	/**
@@ -77,7 +93,7 @@ class Jigoshop_Widget_Tag_Cloud extends WP_Widget {
 		
 		// Save new values
 		$instance['title'] = strip_tags(stripslashes($new_instance['title']));
-		$instance['taxonomy'] = stripslashes($new_instance['taxonomy']);
+		$instance['taxonomy'] = stripslashes(isset($new_instance['taxonomy']) ? $new_instance['taxonomy'] : '');
 		
 		return $instance;
 	}
@@ -96,7 +112,7 @@ class Jigoshop_Widget_Tag_Cloud extends WP_Widget {
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id('title') ); ?>"><?php _e('Title:', 'jigoshop'); ?></label>
-			<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id('title') ); ?>" name="<?php echo esc_attr( $this->get_field_name('title') ); ?>" value="<?php echo $title; ?>" />
+			<input type="text" class="widefat" id="<?php echo esc_attr( $this->get_field_id('title') ); ?>" name="<?php echo esc_attr( $this->get_field_name('title') ); ?>" value="<?php echo esc_attr( $title ); ?>" />
 		</p>
 		<?php
 	}

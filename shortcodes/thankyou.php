@@ -33,7 +33,7 @@ function jigoshop_thankyou() {
 
 	if ($order_id > 0) :
 
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 
 		if ($order->order_key == $order_key) :
 
@@ -64,11 +64,12 @@ function jigoshop_thankyou() {
 			<?php
 
 			do_action( 'thankyou_' . $order->payment_method, $order_id );
+			do_action( 'jigoshop_thankyou', $order->id );
 
 		endif;
 
 	endif;
 	
-	echo '<p><a class="button" href="'.get_permalink(get_option('jigoshop_shop_page_id')).'">'.__('&larr; Continue Shopping', 'jigoshop').'</a></p>';
+	echo '<p><a class="button" href="'.esc_url( jigoshop_cart::get_shop_url() ).'">'.__('&larr; Continue Shopping', 'jigoshop').'</a></p>';
 
 }
