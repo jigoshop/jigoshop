@@ -205,6 +205,7 @@ function jigoshop_upgrade_100() {
 	$args = array(
 		'post_type'	  => 'product',
 		'numberposts' => -1,
+		'post_status' => 'any', // Fixes draft products not being upgraded
 	);
 
 	$posts = get_posts( $args );
@@ -301,6 +302,7 @@ function jigoshop_upgrade_100() {
 	$args = array(
 		'post_type'	  => 'product_variation',
 		'numberposts' => -1,
+		'post_status' => 'any', // Fixes draft products not being upgraded
 	);
 
 	$posts = get_posts( $args );

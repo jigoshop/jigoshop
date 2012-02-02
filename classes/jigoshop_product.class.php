@@ -365,6 +365,10 @@ class jigoshop_product {
 	 */
 	public function is_in_stock() {
 
+		// Always return in stock if product is in stock
+		if (get_option('jigoshop_manage_stock') != 'yes')
+			return true;
+
 		if ( $this->is_type( array('grouped', 'variable') ) ) {
 			foreach( $this->get_children() as $child_ID ) {
 
@@ -444,6 +448,10 @@ class jigoshop_product {
 	 * @return  string
 	 */
 	public function get_availability() {
+
+		// Do not display availability if we aren't managing stock
+		if ( get_option('jigoshop_manage_stock') != 'yes' )
+			return false;
 
 		// Start as in stock
 		$notice = array(

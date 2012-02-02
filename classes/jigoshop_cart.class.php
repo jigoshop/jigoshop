@@ -249,6 +249,8 @@ class jigoshop_cart extends jigoshop_singleton {
     /**
      * Gets cross sells based on the items in the cart
      *
+     * @deprecated - this functionality is within the Cross/Up Sells extension
+     *
      * @return   array	cross_sells	item ids of cross sells
      */
     function get_cross_sells() {

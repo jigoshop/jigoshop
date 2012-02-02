@@ -71,16 +71,6 @@ class jigoshop_product_meta
 			update_post_meta( $post_id, $key, $value );
 		}
 
-		// Process upsells
-		( ! empty($_POST['upsell_ids']) )
-			? update_post_meta( $post_id, 'upsell_ids', $_POST['upsell_ids'] )
-			: delete_post_meta( $post_id, 'upsell_ids' );
-		
-		// Process crossells
-		( ! empty($_POST['crosssell_ids']) )
-			? update_post_meta( $post_id, 'crosssell_ids', $_POST['crosssell_ids'] )
-			: delete_post_meta( $post_id, 'crosssell_ids' );
-
 		// Do action for product type
 		do_action( 'jigoshop_process_product_meta_' . $_POST['product-type'], $post_id );
 	}

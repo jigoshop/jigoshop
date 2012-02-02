@@ -139,8 +139,8 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 			echo $after_widget;
 			
 			// Reset the global $the_post as this query will have stomped on it
-			wp_reset_query();
-			remove_filter( 'posts_clauses', array( &$this, 'order_by_rating_post_clauses' ) );
+			wp_reset_postdata();
+			remove_filter( 'posts_clauses', array( &$this, 'order_by_rating' ) );
 		}
 		
 		// Flush output buffer and save to cache

@@ -83,7 +83,7 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 			'post_type'      => 'product',
 			'post_status'    => 'publish',
 			'meta_key'       => 'featured',
-			'meta_value'	     => 'yes',
+			'meta_value'	     => '1',
 			'meta_query'     => array(
 				array(
 					'key'       => 'visibility',
