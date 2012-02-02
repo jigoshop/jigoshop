@@ -306,6 +306,27 @@ function jigoshop_product_add_to_cart( $atts ) {
 	return ob_get_clean();
 }
 
+//### Cart button + optional price for single product #########################################################
+
+function jigoshop_search_shortcode( $atts ) {
+
+	// Extract the arguments
+	extract( $args );
+
+	// Construct the form
+	$form = '<form role="search" method="get" id="searchform" action="' . home_url() . '">';
+	$form .= '<div>';
+		$form .= '<label class="assistive-text" for="s">' . __('Search for:', 'jigoshop') . '</label>';
+		$form .= '<input type="text" value="' . get_search_query() . '" name="s" id="s" placeholder="' . __('Search for products', 'jigoshop') . '" />';
+		$form .= '<input type="submit" id="searchsubmit" value="' . __('Search', 'jigoshop') . '" />';
+		$form .= '<input type="hidden" name="post_type" value="product" />';
+	$form .= '</div>';
+	$form .= '</form>';
+
+	// Apply a filter to allow for additional fields
+	echo apply_filters('jigoshop_product_search_shortcode', $form, $instance);
+
+}
 
 //### Shortcodes #########################################################
 
@@ -313,6 +334,7 @@ add_shortcode('product', 'jigoshop_product');
 add_shortcode('products', 'jigoshop_products');
 add_shortcode('add_to_cart', 'jigoshop_product_add_to_cart');
 add_shortcode('add_to_cart_url', 'jigoshop_product_add_to_cart_url');
+add_shortcode('product_search', 'jigoshop_search_shortcode');
 
 add_shortcode('recent_products', 'jigoshop_recent_products');
 add_shortcode('featured_products', 'jigoshop_featured_products');
