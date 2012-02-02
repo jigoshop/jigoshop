@@ -293,7 +293,6 @@ class jigoshop_countries {
 			'VIC' => 'Victoria',
 			'WA' => 'Western Australia'
 		),
-		'AT' => array(),
 		'BR' => array(
 			'AC' => 'Acre',
 			'AL' => 'Alagoas',
@@ -429,7 +428,6 @@ class jigoshop_countries {
 			'SCN' => 'Schleswig-Holstein',
 			'THE' => 'Th&#252;ringen'
 		),
-		'DK' => array(),
 
 		// Finland: Regions
 		'FI' => array(
@@ -527,7 +525,6 @@ class jigoshop_countries {
 			'VES' => 'Veszpr&eacute;m',
 			'ZAL' => 'Zala'
 		),
-		'IS' => array(),
 
 		// Ireland: Counties
 		'IE' => array(
@@ -562,11 +559,6 @@ class jigoshop_countries {
 			'DL' => 'Donegal',
 			'MIN' => 'Monaghan'
 		),
-		'IL' => array(),
-		'NL' => array(),
-		'NZ' => array(),
-		'NO' => array(),
-		'PL' => array(),
 
 		// Romania: Counties
 		'RO' => array(
@@ -613,10 +605,6 @@ class jigoshop_countries {
 			'VAS' => 'Vaslui',
 			'VRA' => 'Vrancea'
 		),
-		'SG' => array(),
-		'SK' => array(),
-		'SI' => array(),
-		'LK' => array(),
 
 		// Serbia: Districts
 		'SR' => array(
