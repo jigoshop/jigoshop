@@ -84,7 +84,7 @@
 
 		// Set up query
 		$query_args = array(
-			'posts_per_page' => $number,
+			'posts_per_page' => -1,
 			'post_type'	     => 'product',
 			'post_status'    => 'publish',
 			'orderby'        => 'rand',
@@ -105,20 +105,20 @@
 			// Print the widget wrapper & title
 			echo $before_widget;
 			echo $before_title . $title . $after_title; 
-			
+			$i = 0;
+
 			// Open the list
 			echo '<ul class="product_list_widget">';
 
 			// Print out each product
-			while($q->have_posts()) : $q->the_post();  
+			while($q->have_posts() && $i < $number) : $q->the_post();  
 				
 				// Get new jigoshop_product instance
 				$_product = new jigoshop_product( get_the_ID() );
 
 				// Skip if not on sale
-				if ( ! $_product->is_on_sale() )
-					continue;
-			
+				if( ! $_product->is_on_sale() ) continue; else $i++;
+
 				echo '<li>';
 					// Print the product image & title with a link to the permalink
 					echo '<a href="'.get_permalink().'" title="'.esc_attr( get_the_title() ).'">';
