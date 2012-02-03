@@ -787,6 +787,8 @@ class jigoshop_cart extends jigoshop_singleton {
 
             if ( in_array( $product_id, $thecoupon['products']) )
                 return true;
+			else if ( empty ( $thecoupon['products'] ) )
+				return true;
         }
 
         return false;
