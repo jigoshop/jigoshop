@@ -4687,11 +4687,11 @@ msgstr "Albanie"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:27
 msgid "Armenia"
-msgstr "Arménie"
+msgstr "Arm&eacute;nie"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:28
 msgid "Netherlands Antilles"
-msgstr "Antilles Néerlandaises"
+msgstr "Antilles N&eacute;erlandaises"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:29
 msgid "Angola"
@@ -4707,7 +4707,7 @@ msgstr "Argentine"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:32
 msgid "American Samoa"
-msgstr "les Samoa américaines"
+msgstr "les Samoa am&eacute;ricaines"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:33
 msgid "Austria"
@@ -4727,11 +4727,11 @@ msgstr "Iles Aland"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:37
 msgid "Azerbaijan"
-msgstr "Azerbaïdjan"
+msgstr "Azerba&iuml;djan"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:38
 msgid "Bosnia and Herzegovina"
-msgstr "Bosnie-Herzégovine"
+msgstr "Bosnie-Herz&eacute;govine"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:39
 msgid "Barbados"
@@ -4763,11 +4763,11 @@ msgstr "Burundi"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:46
 msgid "Benin"
-msgstr "Bénin"
+msgstr "B&eacute;nin"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:47
-msgid "Saint Barthélemy"
-msgstr "Saint-Barthélemy"
+msgid "Saint Barth&eacute;lemy"
+msgstr "Saint-Barth&eacute;lemy"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:48
 msgid "Bermuda"
@@ -4783,7 +4783,7 @@ msgstr "Bolivie"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:51
 msgid "Brazil"
-msgstr "Brésil"
+msgstr "Br&eacute;sil"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:52
 msgid "Bahamas"
@@ -4803,7 +4803,7 @@ msgstr "Botswana"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:56
 msgid "Belarus"
-msgstr "Biélorussie"
+msgstr "Bi&eacute;lorussie"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:57
 msgid "Belize"
@@ -4823,7 +4823,7 @@ msgstr "Congo (Kinshasa)"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:61
 msgid "Central African Republic"
-msgstr "République Centrafricaine"
+msgstr "R&eacute;publique Centrafricaine"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:62
 msgid "Congo (Brazzaville)"
@@ -4835,7 +4835,7 @@ msgstr "Suisse"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:64
 msgid "Ivory Coast"
-msgstr "Côte d'Ivoire"
+msgstr "C&ocirc;te d&#39;Ivoire"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:65
 msgid "Cook Islands"
@@ -4879,7 +4879,7 @@ msgstr "Chypre"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:75
 msgid "Czech Republic"
-msgstr "République Tchèque"
+msgstr "R&eacute;publique Tch&egrave;que"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:76
 msgid "Germany"
@@ -4899,11 +4899,11 @@ msgstr "Dominique"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:80
 msgid "Dominican Republic"
-msgstr "République Dominicaine"
+msgstr "R&eacute;publique Dominicaine"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:81
 msgid "Algeria"
-msgstr "Algérie"
+msgstr "Alg&eacute;rie"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:82
 msgid "Ecuador"
@@ -4915,7 +4915,7 @@ msgstr "Estonie"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:84
 msgid "Egypt"
-msgstr "Égypte"
+msgstr "&Eacute;gypte"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:85
 msgid "Western Sahara"
@@ -4923,7 +4923,7 @@ msgstr "Sahara Occidental"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:86
 msgid "Eritrea"
-msgstr "Erythrée"
+msgstr "Erythr&eacute;e"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:87
 msgid "Spain"
@@ -4931,7 +4931,7 @@ msgstr "Espagne"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:88
 msgid "Ethiopia"
-msgstr "Éthiopie"
+msgstr "&Eacute;thiopie"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:89
 msgid "Finland"
@@ -4943,7 +4943,7 @@ msgstr "Fiji"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:91
 msgid "Falkland Islands"
-msgstr "îles Falkland"
+msgstr "&icirc;les Falkland"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:92
 msgid "Micronesia"
@@ -4951,7 +4951,7 @@ msgstr "Micronesie"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:93
 msgid "Faroe Islands"
-msgstr "Iles Féroé"
+msgstr "Iles F&eacute;ro&eacute;"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:94
 msgid "France"
@@ -4971,11 +4971,11 @@ msgstr "Grenade"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:98
 msgid "Georgia"
-msgstr "Géorgie"
+msgstr "G&eacute;orgie"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:99
 msgid "French Guiana"
-msgstr "Guyane française"
+msgstr "Guyane fran&ccedil;aise"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:100
 msgid "Guernsey"
@@ -4999,7 +4999,7 @@ msgstr "Gambie"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:105
 msgid "Guinea"
-msgstr "Guinée"
+msgstr "Guin&eacute;e"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:106
 msgid "Guadeloupe"
@@ -5007,15 +5007,15 @@ msgstr "Guadeloupe"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:107
 msgid "Equatorial Guinea"
-msgstr "Guinée Equatoriale"
+msgstr "Guin&eacute;e Equatoriale"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:108
 msgid "Greece"
-msgstr "Grèce"
+msgstr "Gr&egrave;ce"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:109
 msgid "South Georgia and the South Sandwich Islands"
-msgstr "Géorgie du Sud et les Îles Sandwich du Sud"
+msgstr "G&eacute;orgie du Sud et les &Icirc;les Sandwich du Sud"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:110
 msgid "Guatemala"
@@ -5027,7 +5027,7 @@ msgstr "Guam"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:112
 msgid "Guinea-Bissau"
-msgstr "Guinée-Bissau"
+msgstr "Guin&eacute;e-Bissau"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:113
 msgid "Guyana"
@@ -5039,7 +5039,7 @@ msgstr "Hong Kong S.A.R., en Chine"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:115
 msgid "Heard Island and McDonald Islands"
-msgstr "Îles Heard et McDonald"
+msgstr "&Icirc;les Heard et McDonald"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:116
 msgid "Honduras"
@@ -5051,7 +5051,7 @@ msgstr "Croatie"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:118
 msgid "Haiti"
-msgstr "Haïti"
+msgstr "Ha&iuml;ti"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:119
 msgid "Hungary"
@@ -5067,7 +5067,7 @@ msgstr "Irlande"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:122
 msgid "Israel"
-msgstr "Israël"
+msgstr "Isra&euml;l"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:123
 msgid "Isle of Man"
@@ -5079,7 +5079,7 @@ msgstr "Inde"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:125
 msgid "British Indian Ocean Territory"
-msgstr "Territoire britannique de l'océan Indien"
+msgstr "Territoire britannique de l&#39;oc&eacute;an Indien"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:126
 msgid "Iraq"
@@ -5103,7 +5103,7 @@ msgstr "Jersey"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:131
 msgid "Jamaica"
-msgstr "Jamaïque"
+msgstr "Jama&iuml;que"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:132
 msgid "Jordan"
@@ -5139,19 +5139,19 @@ msgstr "Saint Kitts et Nevis"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:140
 msgid "North Korea"
-msgstr "Corée du Nord"
+msgstr "Cor&eacute;e du Nord"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:141
 msgid "South Korea"
-msgstr "Corée du Sud"
+msgstr "Cor&eacute;e du Sud"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:142
 msgid "Kuwait"
-msgstr "Koweït"
+msgstr "Kowe&iuml;t"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:143
 msgid "Cayman Islands"
-msgstr "Iles Caïmans"
+msgstr "Iles Ca&iuml;mans"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:144
 msgid "Kazakhstan"
@@ -5179,7 +5179,7 @@ msgstr "Sri Lanka"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:150
 msgid "Liberia"
-msgstr "Libéria"
+msgstr "Lib&eacute;ria"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:151
 msgid "Lesotho"
@@ -5215,11 +5215,11 @@ msgstr "Moldavie"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:159
 msgid "Montenegro"
-msgstr "Monténégro"
+msgstr "Mont&eacute;n&eacute;gro"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:160
 msgid "Saint Martin (French part)"
-msgstr "Saint-Martin (partie française)"
+msgstr "Saint-Martin (partie fran&ccedil;aise)"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:161
 msgid "Madagascar"
@@ -5231,7 +5231,7 @@ msgstr "Iles Marshall"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:163
 msgid "Macedonia"
-msgstr "Macédoine"
+msgstr "Mac&eacute;doine"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:164
 msgid "Mali"
@@ -5299,7 +5299,7 @@ msgstr "Namibie"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:180
 msgid "New Caledonia"
-msgstr "Nouvelle-Calédonie"
+msgstr "Nouvelle-Cal&eacute;donie"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:181
 msgid "Niger"
@@ -5307,7 +5307,7 @@ msgstr "Niger"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:182
 msgid "Norfolk Island"
-msgstr "Île de Norfolk"
+msgstr "&Icirc;le de Norfolk"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:183
 msgid "Nigeria"
@@ -5323,11 +5323,11 @@ msgstr "Pays-Bas"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:186
 msgid "Norway"
-msgstr "Norvège"
+msgstr "Norv&egrave;ge"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:187
 msgid "Nepal"
-msgstr "Népal"
+msgstr "N&eacute;pal"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:188
 msgid "Nauru"
@@ -5335,11 +5335,11 @@ msgstr "Nauru"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:189
 msgid "Niue"
-msgstr "Nioué"
+msgstr "Niou&eacute;"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:190
 msgid "New Zealand"
-msgstr "Nouvelle-Zélande"
+msgstr "Nouvelle-Z&eacute;lande"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:191
 msgid "Oman"
@@ -5351,15 +5351,15 @@ msgstr "Panama"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:193
 msgid "Peru"
-msgstr "Pérou"
+msgstr "P&eacute;rou"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:194
 msgid "French Polynesia"
-msgstr "Polynésie française"
+msgstr "Polyn&eacute;sie fran&ccedil;aise"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:195
 msgid "Papua New Guinea"
-msgstr "Papouasie-Nouvelle-Guinée"
+msgstr "Papouasie-Nouvelle-Guin&eacute;e"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:196
 msgid "Philippines"
@@ -5407,7 +5407,7 @@ msgstr "Qatar"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:207
 msgid "Reunion"
-msgstr "Réunion"
+msgstr "R&eacute;union"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:208
 msgid "Romania"
@@ -5443,7 +5443,7 @@ msgstr "Soudan"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:216
 msgid "Sweden"
-msgstr "Suède"
+msgstr "Su&egrave;de"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:217
 msgid "Singapore"
@@ -5451,11 +5451,11 @@ msgstr "Singapour"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:218
 msgid "Saint Helena"
-msgstr "Sainte-Hélène"
+msgstr "Sainte-H&eacute;l&egrave;ne"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:219
 msgid "Slovenia"
-msgstr "Slovénie"
+msgstr "Slov&eacute;nie"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:220
 msgid "Svalbard and Jan Mayen"
@@ -5475,7 +5475,7 @@ msgstr "San Marino"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:224
 msgid "Senegal"
-msgstr "Sénégal"
+msgstr "S&eacute;n&eacute;gal"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:225
 msgid "Somalia"
@@ -5487,7 +5487,7 @@ msgstr "Surinam"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:227
 msgid "Sao Tome and Principe"
-msgstr "Sao Tomé et Principe"
+msgstr "Sao Tom&eacute; et Principe"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:228
 msgid "El Salvador"
@@ -5503,7 +5503,7 @@ msgstr "Swaziland"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:231
 msgid "Turks and Caicos Islands"
-msgstr "Iles Turques et Caïques"
+msgstr "Iles Turques et Ca&iuml;ques"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:232
 msgid "Chad"
@@ -5511,7 +5511,7 @@ msgstr "Tchad"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:233
 msgid "French Southern Territories"
-msgstr "Terres australes françaises"
+msgstr "Terres australes fran&ccedil;aises"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:234
 msgid "Togo"
@@ -5519,7 +5519,7 @@ msgstr "Togo"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:235
 msgid "Thailand"
-msgstr "Thaïlande"
+msgstr "Tha&iuml;lande"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:236
 msgid "Tajikistan"
@@ -5527,7 +5527,7 @@ msgstr "Tajikistan"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:237
 msgid "Tokelau"
-msgstr "Tokélaou"
+msgstr "Tok&eacute;laou"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:238
 msgid "Timor-Leste"
@@ -5535,7 +5535,7 @@ msgstr "Timor-Leste"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:239
 msgid "Turkmenistan"
-msgstr "Turkménistan"
+msgstr "Turkm&eacute;nistan"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:240
 msgid "Tunisia"
@@ -5575,11 +5575,11 @@ msgstr "Ouganda"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:249
 msgid "United States Minor Outlying Islands"
-msgstr "États-Unis Îles mineures éloignées"
+msgstr "&Eacute;tats-Unis &Icirc;les mineures &eacute;loign&eacute;es"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:250
 msgid "United States"
-msgstr "États-Unis"
+msgstr "&Eacute;tats-Unis"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:251
 msgid "Uruguay"
@@ -5587,7 +5587,7 @@ msgstr "Uruguay"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:252
 msgid "Uzbekistan"
-msgstr "Ouzbékistan"
+msgstr "Ouzb&eacute;kistan"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:253
 msgid "Vatican"
@@ -5607,11 +5607,11 @@ msgstr "Iles Vierges Britanniques"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:257
 msgid "U.S. Virgin Islands"
-msgstr "Îles Vierges américaines"
+msgstr "&Icirc;les Vierges am&eacute;ricaines"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:258
 msgid "Vietnam"
-msgstr "Viêt-Nam"
+msgstr "Vi&ecirc;t-Nam"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:259
 msgid "Vanuatu"
@@ -5627,7 +5627,7 @@ msgstr "Samoa"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:262
 msgid "Yemen"
-msgstr "Yémen"
+msgstr "Y&eacute;men"
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:263
 msgid "Mayotte"
