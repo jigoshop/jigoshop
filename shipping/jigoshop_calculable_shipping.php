@@ -37,10 +37,6 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
         return ($this->has_error ? false : $is_available);
     }
     
-    protected function get_ship_to_countries() {
-        return parent::get_ship_to_countries();
-    }
-
     /**
      * template method that determines the algorithm to send data to and from the shipping
      * server. This method should be called from the implementing classes calculate shipping

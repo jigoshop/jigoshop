@@ -38,6 +38,18 @@ class jigoshop_shipping_method {
     	
 		if (isset(jigoshop_cart::$cart_contents_total_ex_dl) && isset($this->min_amount) && $this->min_amount && $this->min_amount > jigoshop_cart::$cart_contents_total_ex_dl) return false;
 		
+		if (is_array($this->get_ship_to_countries())) :
+			if (!in_array(jigoshop_customer::get_shipping_country(), $this->get_ship_to_countries())) :
+                $this->set_error_message('Sorry, it seems that there are no available shipping methods to your location. Please contact us if you require assistance or wish to make alternate arrangements.');
+                return false;
+            endif;
+		endif;
+		
+		return true;
+		
+    }
+    
+    protected function get_ship_to_countries() {
 		$ship_to_countries = '';
 		
 		if ($this->availability == 'specific') :
@@ -46,18 +58,10 @@ class jigoshop_shipping_method {
 			if (get_option('jigoshop_allowed_countries')=='specific') :
 				$ship_to_countries = get_option('jigoshop_specific_allowed_countries');
 			endif;
-		endif; 
-		
-		if (is_array($ship_to_countries)) :
-			if (!in_array(jigoshop_customer::get_shipping_country(), $ship_to_countries)) :
-                $this->set_error_message('Sorry, it seems that there are no available shipping methods to your location. Please contact us if you require assistance or wish to make alternate arrangements.');
-                return false;
-            endif;
 		endif;
-		
-		return true;
-		
-    } 
+        
+        return $ship_to_countries;
+    }
     
     public function get_error_message() {
     	return $this->error_message;
