@@ -192,22 +192,36 @@
 	 * @return void
 	 **/
 	public function jigoshop_product_view_tracker( $post, $_product ) {
+		
 		$instance = get_option('widget_recently_viewed_products');
-		if( ! $number = isset($instance[2]['number']) ? $instance[2]['number'] : false ) // is this always 2?
-			return false; // stop the show!
-
+		$number = 0;
+		foreach ( $instance as $index => $entry ) {
+			if ( is_array( $entry )) foreach ( $entry as $key => $value ) {
+				if ( $key == 'number' ) {
+					$number = $value;
+					break;
+				}
+			}
+		}
+ 		if ( ! $number ) return false; // stop the show!
+		
 		// Check if we already have some data
-		if( ! is_array( jigoshop_session::instance()->recently_viewed_products ) ) {
-			jigoshop_session::instance()->recently_viewed_products = array();
+		if ( ! is_array( jigoshop_session::instance()->recently_viewed_products ) ) {
+			$viewed = array();
+			jigoshop_session::instance()->recently_viewed_products = $viewed;
 		}
-
+		
 		// If the product isn't in the list, add it
-		if( ! in_array( $post->ID, jigoshop_session::instance()->recently_viewed_products) ) {
-			jigoshop_session::instance()->recently_viewed_products[] = $post->ID;
+		if ( ! in_array( $post->ID, jigoshop_session::instance()->recently_viewed_products) ) {
+			$viewed = jigoshop_session::instance()->recently_viewed_products;
+			$viewed[] = $post->ID;
+			jigoshop_session::instance()->recently_viewed_products = $viewed;
 		}
 
-		if( sizeof( jigoshop_session::instance()->recently_viewed_products) > $number ) {
-			array_shift( jigoshop_session::instance()->recently_viewed_products );
+		if ( sizeof( jigoshop_session::instance()->recently_viewed_products) > $number ) {
+			$viewed = jigoshop_session::instance()->recently_viewed_products;
+			array_shift( $viewed );
+			jigoshop_session::instance()->recently_viewed_products = $viewed;
 		}
 	}
 	
