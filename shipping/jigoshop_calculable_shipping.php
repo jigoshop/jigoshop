@@ -55,8 +55,13 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
 
             foreach ($services_to_use as $current_service) :
 
-                // create request input for shipping service
-                $request = $this->create_mail_request($current_service);
+                if (!jigoshop_shipping::show_shipping_calculator() && !( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
+                    $request = '';
+                    $this->set_error_message('Please proceed to checkout to get shipping estimates');
+                else :
+                    // create request input for shipping service
+                    $request = $this->create_mail_request($current_service);
+                endif;
 
                 if ($request) :
 
@@ -84,8 +89,13 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
             endforeach;
 
         else :
-            // create request input for shipping service
-            $request = $this->create_mail_request();
+            if (!jigoshop_shipping::show_shipping_calculator() && !( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
+                $request = '';
+                $this->set_error_message('Please proceed to checkout to get shipping estimates');
+            else :
+                // create request input for shipping service
+                $request = $this->create_mail_request($current_service);
+            endif;
 
             if ($request) :
 

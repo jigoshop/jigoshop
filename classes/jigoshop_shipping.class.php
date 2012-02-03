@@ -86,22 +86,21 @@ class jigoshop_shipping extends jigoshop_singleton {
             foreach (self::get_all_methods() as $method) :
 
                 if ($method->is_available()) :
+                    
                     $_available_methods[$method->id] = $method;
-                    if ($method instanceof jigoshop_calculable_shipping)
+                    
+                    if ($method instanceof jigoshop_calculable_shipping) :
                         self::$has_calculable_shipping = true;
+                    endif;
+                    
                 endif;
 
-                self::$shipping_error_message = $method->get_error_message();
                 
             endforeach;
             
 
         endif;
         
-        if (count($_available_methods) > 0) : 
-            self::$shipping_error_message = null;
-        endif;
-
         return $_available_methods;
     }
     
@@ -138,7 +137,10 @@ class jigoshop_shipping extends jigoshop_singleton {
                         $_cheapest_fee = $fee;
                         $_cheapest_method = $method->id;
                     endif;
+                else :
+                    self::$shipping_error_message = $method->get_error_message();
                 endif;
+                
             else : // handle normal shipping methods
                 $fee = $method->shipping_total;
                 if ($fee >= 0 && $fee < $_cheapest_fee || !is_numeric($_cheapest_fee)) :
