@@ -125,7 +125,7 @@ function jigoshop_new_order_notification($order_id) {
     $message = ob_get_clean();
     $message = html_entity_decode(strip_tags($message));
 
-    wp_mail(get_option('jigoshop_email'), $subject, $message);
+    wp_mail(get_option('jigoshop_email'), $subject, $message, "From: " . get_option('jigoshop_email') . "\r\n");
 }
 
 /**
@@ -242,7 +242,7 @@ function jigoshop_processing_order_customer_notification($order_id) {
     $message = ob_get_clean();
     $message = html_entity_decode(strip_tags($message));
 
-    wp_mail($order->billing_email, $subject, $message);
+    wp_mail($order->billing_email, $subject, $message, "From: " . get_option('jigoshop_email') . "\r\n");
 }
 
 /**
@@ -345,7 +345,7 @@ function jigoshop_completed_order_customer_notification($order_id) {
     $message = html_entity_decode(strip_tags($message));
     $message = apply_filters('jigoshop_completed_order_customer_notification_mail_message', $message);
 
-    wp_mail($order->billing_email, $subject, $message);
+    wp_mail($order->billing_email, $subject, $message, "From: " . get_option('jigoshop_email') . "\r\n");
 }
 
 /**
@@ -448,7 +448,7 @@ function jigoshop_refunded_order_customer_notification($order_id) {
     $message = html_entity_decode(strip_tags($message));
     $message = apply_filters('jigoshop_refunded_order_customer_notification_mail_message', $message);
 
-    wp_mail($order->billing_email, $subject, $message);
+    wp_mail($order->billing_email, $subject, $message, "From: " . get_option('jigoshop_email') . "\r\n");
 }
 
 /**
@@ -512,7 +512,7 @@ function jigoshop_pay_for_order_customer_notification($order_id) {
     $message = ob_get_clean();
     $customer_message = html_entity_decode(strip_tags($customer_message . $message));
 
-    wp_mail($order->billing_email, $subject, $customer_message);
+    wp_mail($order->billing_email, $subject, $customer_message, "From: " . get_option('jigoshop_email') . "\r\n");
 }
 
 /**
@@ -523,7 +523,7 @@ function jigoshop_low_stock_notification($product) {
     $subject = '[' . get_bloginfo('name') . '] ' . __('Product low in stock', 'jigoshop');
     $message = '#' . $_product->id . ' ' . $_product->get_title() . ' (' . $_product->sku . ') ' . __('is low in stock.', 'jigoshop');
     $message = wordwrap(html_entity_decode(strip_tags($message)), 70);
-    wp_mail(get_option('jigoshop_email'), $subject, $message);
+    wp_mail(get_option('jigoshop_email'), $subject, $message, "From: " . get_option('jigoshop_email') . "\r\n");
 }
 
 /**
@@ -534,7 +534,7 @@ function jigoshop_no_stock_notification($product) {
     $subject = '[' . get_bloginfo('name') . '] ' . __('Product out of stock', 'jigoshop');
     $message = '#' . $_product->id . ' ' . $_product->get_title() . ' (' . $_product->sku . ') ' . __('is out of stock.', 'jigoshop');
     $message = wordwrap(html_entity_decode(strip_tags($message)), 70);
-    wp_mail(get_option('jigoshop_email'), $subject, $message);
+    wp_mail(get_option('jigoshop_email'), $subject, $message, "From: " . get_option('jigoshop_email') . "\r\n");
 }
 
 /**
@@ -553,7 +553,7 @@ function jigoshop_product_on_backorder_notification($order_id, $product, $amount
     $subject = '[' . get_bloginfo('name') . '] ' . sprintf(__('Product Backorder on Order #%s', 'jigoshop'), $order_id);
     $message = sprintf(__("%s units of #%s %s (#%s) are needed to fill Order #%s.", 'jigoshop'), abs($amount), $_product->id, $_product->get_title(), $_product->sku, $order_id);
     $message = wordwrap(html_entity_decode(strip_tags($message)), 70);
-    wp_mail(get_option('jigoshop_email'), $subject, $message);
+    wp_mail(get_option('jigoshop_email'), $subject, $message, "From: " . get_option('jigoshop_email') . "\r\n");
 
     // notify the customer if required
     if ($_product->data['backorders'] == 'notify') :
@@ -616,7 +616,7 @@ function jigoshop_product_on_backorder_notification($order_id, $product, $amount
         $message = ob_get_clean();
         $message = html_entity_decode(strip_tags($message));
 
-        wp_mail($order->billing_email, $subject, $message);
+        wp_mail($order->billing_email, $subject, $message, "From: " . get_option('jigoshop_email') . "\r\n");
     endif;
 }
 
