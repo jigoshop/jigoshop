@@ -799,6 +799,9 @@ function jigoshop_admin_fields($options) {
                         jQuery(this).parent().parent().next('tr.multi_select_countries').hide();
                     }
                 }).change();
+				
+				$('.multi_select_countries select').selectToAutocomplete();
+				$("select[title='Country']").selectToAutocomplete();
 
                 // permalink double save hack
                 $.get('<?php echo admin_url('options-permalink.php') ?>');

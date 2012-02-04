@@ -249,6 +249,10 @@ function jigoshop_admin_scripts() {
 
     wp_register_script('jquery-ui-datepicker', jigoshop::assets_url() . '/assets/js/jquery-ui-datepicker-1.8.16.min.js', array( 'jquery' ), '1.8.16', true );
     wp_enqueue_script('jquery-ui-datepicker');
+    wp_register_script('jquery-select-to-autocomplete', jigoshop::assets_url() . '/assets/js/jquery.select-to-autocomplete.js', array( 'jquery' ), '1.8.16', true );
+    wp_enqueue_script('jquery-select-to-autocomplete');
+    wp_register_script('jquery-ui-autocomplete', jigoshop::assets_url() . '/assets/js/jjquery-ui-autocomplete.js', array( 'jquery' ), '1.8.16', true );
+    wp_enqueue_script('jquery-ui-autocomplete');	
 	wp_register_script( 'jigoshop_backend', jigoshop::assets_url() . '/assets/js/jigoshop_backend.js', array('jquery'), '1.0' );
     wp_enqueue_script('jigoshop_backend');
 
