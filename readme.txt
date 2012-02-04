@@ -146,7 +146,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * fix on sale widget not displaying correct amount of products
 * fix session conflicts with other plugins by activating Jigoshop plugin first
 * fix coupons showing 'no products in cart' on valid coupons
-* fix french users not being able to add shipping or tax rates
+* fix some international users not being able to add shipping or tax rates (italian & french)
 
 = 1.0 =
 * added new feature for downloadable products: external URL or internal downloads

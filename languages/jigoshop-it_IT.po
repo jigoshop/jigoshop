@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Jigoshop - WordPress eCommerce Plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-02-02 12:00-0500\n"
-"PO-Revision-Date: 2012-02-02 12:34-0500\n"
+"PO-Revision-Date: 2012-02-03 23:11-0500\n"
 "Last-Translator: Matt\n"
 "Language-Team: PROYD <proydsl@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -4875,7 +4875,7 @@ msgstr "Benin"
 
 # @ jigoshop
 #: \wp-content\plugins\jigoshop\languages\countries.php:47
-msgid "Saint Barthélemy"
+msgid "Saint Barth&eacute;lemy"
 msgstr "San Bartolomeo"
 
 # @ jigoshop
@@ -4961,7 +4961,7 @@ msgstr "Svizzera"
 # @ jigoshop
 #: \wp-content\plugins\jigoshop\languages\countries.php:64
 msgid "Ivory Coast"
-msgstr "Costa d'Avorio"
+msgstr "Costa d&#39;Avorio"
 
 # @ jigoshop
 #: \wp-content\plugins\jigoshop\languages\countries.php:65
@@ -5266,7 +5266,7 @@ msgstr "India"
 # @ jigoshop
 #: \wp-content\plugins\jigoshop\languages\countries.php:125
 msgid "British Indian Ocean Territory"
-msgstr "Territori Inglesi dell'Oceano Indiano"
+msgstr "Territori Inglesi dell&#39;Oceano Indiano"
 
 # @ jigoshop
 #: \wp-content\plugins\jigoshop\languages\countries.php:126
@@ -5731,7 +5731,7 @@ msgstr "Singapore"
 # @ jigoshop
 #: \wp-content\plugins\jigoshop\languages\countries.php:218
 msgid "Saint Helena"
-msgstr "Sant'Elena"
+msgstr "Sant&#39;Elena"
 
 # @ jigoshop
 #: \wp-content\plugins\jigoshop\languages\countries.php:219
@@ -5891,7 +5891,7 @@ msgstr "Stati Uniti Isole Minori"
 # @ jigoshop
 #: \wp-content\plugins\jigoshop\languages\countries.php:250
 msgid "United States"
-msgstr "Stati Uniti d'America"
+msgstr "Stati Uniti d&#39;America"
 
 # @ jigoshop
 #: \wp-content\plugins\jigoshop\languages\countries.php:251
