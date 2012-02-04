@@ -276,6 +276,32 @@ class jigoshop_order {
 		
 	}
 	
+	/** Output bank transfer details for display in emails */
+	function email_bank_details() {
+
+		$title 			= get_option('jigoshop_bank_transfer_title');
+		$description 	= get_option('jigoshop_bank_transfer_description');
+		$bank_name 		= get_option('jigoshop_bank_transfer_bank_name');
+		$acc_number 	= get_option('jigoshop_bank_transfer_acc_number');
+		$sort_code 		= get_option('jigoshop_bank_transfer_sort_code');
+		$iban 			= get_option('jigoshop_bank_transfer_iban');
+		$bic 			= get_option('jigoshop_bank_transfer_bic');
+		$additional 	= get_option('jigoshop_bank_transfer_additional');
+
+		$bank_info = null;
+		if ($description) $bank_info .= wpautop(wptexturize($description)) . PHP_EOL;
+		if ($bank_name) $bank_info .= __('Bank Name', 'jigoshop').": \t" . wptexturize($bank_name) . PHP_EOL;
+		if ($acc_number) $bank_info .= __('Account Number', 'jigoshop').":\t " .wptexturize($acc_number) . PHP_EOL;
+		if ($sort_code) $bank_info .= __('Sort Code', 'jigoshop').":\t" . wptexturize($sort_code) . PHP_EOL;
+		if ($iban) $bank_info .= __('IBAN', 'jigoshop').": \t\t" .wptexturize($iban) . PHP_EOL;
+		if ($bic) $bank_info .= __('BIC', 'jigoshop').": \t\t " .wptexturize($bic) . PHP_EOL;
+		if ($additional) $bank_info .= wpautop(__('Additional Information', 'jigoshop').": " . PHP_EOL . wpautop(wptexturize($additional)));
+
+		if ($bank_info)
+			return wpautop($bank_info);
+
+	}
+
 	/**  Generates a URL so that a customer can checkout/pay for their (unpaid - pending) order via a link */
 	function get_checkout_payment_url() {
 		

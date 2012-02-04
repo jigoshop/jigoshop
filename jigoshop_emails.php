@@ -190,6 +190,20 @@ function jigoshop_processing_order_customer_notification($order_id) {
 
     do_action('jigoshop_after_email_order_info', $order->id);
 
+	if (strtolower($order->payment_method) == "bank_transfer") :
+
+		echo '=====================================================================' . PHP_EOL;
+		echo __('BANK PAYMENT DETAILS', 'jigoshop') . PHP_EOL;
+		echo '=====================================================================' . PHP_EOL;
+
+		echo $order->email_bank_details();
+
+		echo PHP_EOL;
+
+		do_action('jigoshop_after_email_bank_payment_details', $order->id);
+
+	endif;
+
     echo '=====================================================================' . PHP_EOL;
     echo __('CUSTOMER DETAILS', 'jigoshop') . PHP_EOL;
     echo '=====================================================================' . PHP_EOL;
@@ -214,7 +228,7 @@ function jigoshop_processing_order_customer_notification($order_id) {
 
     do_action('jigoshop_after_email_billing_address', $order->id);
 
-    '=====================================================================' . PHP_EOL;
+    echo '=====================================================================' . PHP_EOL;
     echo __('SHIPPING ADDRESS', 'jigoshop') . PHP_EOL;
     echo '=====================================================================' . PHP_EOL;
 

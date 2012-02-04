@@ -138,6 +138,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * update all translation files to include latest strings and remove obsolete strings
 * add Turkish, Italian, Portuguese translations
 * add new shortcode: Products Search
+* add bank information to outgoing order email if payment method is bank transfer
 * fix out of stock products
 * fix empty selectbox on Norway and some other countries for checkout page
 * fix featured product widget
