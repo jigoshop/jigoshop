@@ -399,13 +399,12 @@ class jigoshop_checkout extends jigoshop_singleton {
 			if (!isset($_POST['update_totals']) && empty($this->posted['terms']) && get_option('jigoshop_terms_page_id')>0 ) jigoshop::add_error( __('You must accept our Terms &amp; Conditions.','jigoshop') );
 			
 			if (jigoshop_cart::needs_shipping()) :
-			
+
 				// Shipping Method
 				$available_methods = jigoshop_shipping::get_available_shipping_methods();
-				if (!isset($available_methods[$this->posted['shipping_method']])) :
+				if (!isset($available_methods[$this->posted['shipping_method']]))
 					jigoshop::add_error( __('Invalid shipping method.','jigoshop') );
-				endif;	
-			
+
 			endif;	
 			
 			if (jigoshop_cart::needs_payment()) :
@@ -541,7 +540,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 						'post_excerpt' => $this->posted['order_comments'],
 						'post_author' => 1
 					);
-					
+
 					// Order meta data
 					$data = array();
 					$data['billing_first_name'] 	= $this->posted['billing-first_name'];
@@ -565,8 +564,10 @@ class jigoshop_checkout extends jigoshop_singleton {
 					$data['shipping_country']		= $shipping_country;
 					$data['shipping_state']			= $shipping_state;
 					$data['shipping_method']		= $this->posted['shipping_method'];
+					$data['shipping_method_title']	= $available_methods[$this->posted['shipping_method']]->title;
 					$data['shipping_service']		= $this->posted['shipping_service'];
 					$data['payment_method']			= $this->posted['payment_method'];
+					$data['payment_method_title']	= $available_gateways[$this->posted['payment_method']]->title;
                     $data['order_subtotal']			= jigoshop_cart::get_cart_subtotal(false);
                     $data['order_subtotal_inc_tax'] = jigoshop_cart::get_subtotal_inc_tax(false);
                     $data['order_shipping']			= jigoshop_cart::get_cart_shipping_total(false);
@@ -575,7 +576,7 @@ class jigoshop_checkout extends jigoshop_singleton {
                     $data['order_tax_divisor']      = jigoshop_cart::get_tax_divisor();
 					$data['order_shipping_tax']		= number_format(jigoshop_cart::$shipping_tax_total, 2, '.', '');
 					$data['order_total']			= jigoshop_cart::get_total(false);
-					
+
 					$applied_coupons = array();
 					foreach ( jigoshop_cart::$applied_coupons as $coupon ) :
 						$applied_coupons[] = jigoshop_coupons::get_coupon( $coupon );

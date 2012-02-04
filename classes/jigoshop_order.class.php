@@ -52,6 +52,7 @@ class jigoshop_order {
 		$this->modified_date = $result->post_modified;	
 		$this->customer_note = $result->post_excerpt;
 		
+		
 		// Custom field data
 		$this->order_key			= (string) get_post_meta( $this->id, 'order_key', true );
 		$this->user_id 				= (int) get_post_meta( $this->id, 'customer_user', true );
@@ -80,9 +81,12 @@ class jigoshop_order {
 		$this->shipping_state 		= (string) $this->get_value_from_data('shipping_state');
 
 		$this->shipping_method 		= (string) $this->get_value_from_data('shipping_method');
+		$this->shipping_method_title= (string) $this->get_value_from_data('shipping_method_title');		
 		$this->shipping_service		= (string) $this->get_value_from_data('shipping_service');
+
 		$this->payment_method 		= (string) $this->get_value_from_data('payment_method');
-		
+		$this->payment_method_title = (string) $this->get_value_from_data('payment_method_title');
+
 		$this->order_subtotal 		= (string) $this->get_value_from_data('order_subtotal');
 		$this->order_subtotal_inc_tax   = (string) $this->get_value_from_data('order_subtotal_inc_tax');
                 
@@ -200,15 +204,15 @@ class jigoshop_order {
 				$shipping = jigoshop_price($this->order_shipping);
 				if ($this->order_shipping_tax > 0) : //tax applied to shipping
 					if ($this->shipping_service != NULL || $this->shipping_service) :
-						$shipping .= sprintf(__(' <small>(ex. tax) %s via %s</small>', 'jigoshop'), ucwords($this->shipping_service), ucwords($this->shipping_method));
+						$shipping .= sprintf(__(' <small>(ex. tax) %s via %s</small>', 'jigoshop'), ucwords($this->shipping_service), ucwords($this->shipping_method_title));
 					else :
-						$shipping .= sprintf(__(' <small>(ex. tax) via %s</small>', 'jigoshop'), ucwords($this->shipping_method));
+						$shipping .= sprintf(__(' <small>(ex. tax) via %s</small>', 'jigoshop'), ucwords($this->shipping_method_title));
 					endif;
 				else : // when no tax applied to shipping
                     if ($this->shipping_service != NULL || $this->shipping_service) :
-                        $shipping .= sprintf(__(' <small>%s via %s</small>', 'jigoshop'), ucwords($this->shipping_service), ucwords($this->shipping_method));
+                        $shipping .= sprintf(__(' <small>%s via %s</small>', 'jigoshop'), ucwords($this->shipping_service), ucwords($this->shipping_method_title));
                     else :
-                        $shipping .= sprintf(__(' <small>via %s</small>', 'jigoshop'), ucwords($this->shipping_method));
+                        $shipping .= sprintf(__(' <small>via %s</small>', 'jigoshop'), ucwords($this->shipping_method_title));
                     endif;
                 endif;
 
