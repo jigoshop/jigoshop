@@ -133,6 +133,21 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 9. Checkout
 
 == Changelog ==
+
+= 1.0.1 =
+* update all translation files to include latest strings and remove obsolete strings
+* add Turkish, Italian, Portuguese translations
+* add new shortcode: Products Search
+* fix out of stock products
+* fix empty selectbox on Norway and some other countries for checkout page
+* fix featured product widget
+* fix top rated widget
+* fix recently viewed widget
+* fix on sale widget not displaying correct amount of products
+* fix session conflicts with other plugins by activating Jigoshop plugin first
+* fix coupons showing 'no products in cart' on valid coupons
+* fix french users not being able to add shipping or tax rates
+
 = 1.0 =
 * added new feature for downloadable products: external URL or internal downloads
 * added new widget Jigoshop Login
