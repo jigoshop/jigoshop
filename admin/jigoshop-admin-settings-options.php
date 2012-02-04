@@ -674,6 +674,20 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 			'no'  => __('No', 'jigoshop')
 		)
 	),
+	
+	array(
+		'name' => __('Show stock amounts','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Set to yes to allow customers to view the amount of stock available for a product.', 'jigoshop'),
+		'id' 		=> 'jigoshop_show_stock',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'yes',
+		'type' 		=> 'select',
+		'options' => array(
+			'yes' => __('Yes', 'jigoshop'),
+			'no'  => __('No', 'jigoshop')
+		)
+	),	
 
 	array(
 		'name' => __('Notify on low stock','jigoshop'),

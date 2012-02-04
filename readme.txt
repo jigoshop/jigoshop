@@ -139,6 +139,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * add Turkish, Italian, Portuguese, Norwegian translations
 * add new shortcode: Products Search
 * add bank information to outgoing order email if payment method is bank transfer
+* add new setting: show stock amounts (to show or hide stock left in a product for customers)
 * fix emails not showing pretty titles for payment and shipping methods (ie, won't show "via bank_transfer" or "via flat_rate" anymore)
 * fix out of stock products
 * fix empty selectbox on Norway and some other countries for checkout page

@@ -345,3 +345,15 @@ function jigoshop_upgrade_100() {
 		'comment_author_IP' => '',
 	), array('user_id' => 0, 'comment_author' => 'JigoShop') );
 }
+
+/**
+ * Execute changes made in Jigoshop 1.0
+ *
+ * @since 1.0.1
+ */
+function jigoshop_upgrade_101() {
+
+	// Add setting to show or hide stock
+	update_option( 'jigoshop_show_stock' , 'yes' );
+
+}

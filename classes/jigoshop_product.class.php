@@ -435,10 +435,10 @@ class jigoshop_product {
 	
 	/**
 	 * Returns number of items available for sale.
-	 * TODO:    rename to get_stock()
+	 * 
 	 * @return  int
 	 */
-	public function get_stock_quantity() {
+	public function get_stock() {
 		return (int) $this->stock;
 	}
 	
@@ -461,7 +461,7 @@ class jigoshop_product {
 
 		// If stock is being managed & has stock
 		if ( $this->managing_stock() && $this->stock ) {
-			$notice['availability'] .= " &ndash; {$this->stock} ".__(' available', 'jigoshop' );
+			$notice['availability'] .= (get_option('jigoshop_show_stock') == 'yes') ? " &ndash; {$this->stock} ".__(' available', 'jigoshop' ) : '';
 
 			// If customers require backorder notification
 			if ( $this->backorders_allowed() && $this->backorders_require_notification() ) {
