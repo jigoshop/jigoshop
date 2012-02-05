@@ -352,7 +352,7 @@ function attributes_display() { ?>
 	
 	<div class="toolbar">
 		
-		<button type="button" class="button button-primary add_attribute"><?php _e('Add Attribute', 'jigoshop'); ?></button>
+		<button type="button" class="button button-secondary add_attribute"><?php _e('Add Attribute', 'jigoshop'); ?></button>
 		<select name="attribute_taxonomy" class="attribute_taxonomy">
 			<option value="" data-type="custom"><?php _e('Custom product attribute', 'jigoshop'); ?></option>
 			<?php
