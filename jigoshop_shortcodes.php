@@ -27,7 +27,8 @@ function jigoshop_recent_products( $atts ) {
 		'per_page' 	=> get_option('jigoshop_catalog_per_page'),
 		'columns' 	=> get_option('jigoshop_catalog_columns'),
 		'orderby'	=> 'date',
-		'order'		=> 'desc'
+		'order'		=> 'desc',
+		'pagination'=> false
 	), $atts));
 
 	$args = array(
@@ -50,7 +51,7 @@ function jigoshop_recent_products( $atts ) {
 	query_posts( $args );
 	ob_start();
 	jigoshop_get_template_part( 'loop', 'shop' );
-	do_action('jigoshop_pagination');
+	if($pagination) do_action('jigoshop_pagination');
 	wp_reset_query();
 
 	return ob_get_clean();
@@ -67,7 +68,8 @@ function jigoshop_products( $atts ){
 		'per_page' 	=> get_option('jigoshop_catalog_per_page'),
 		'columns' 	=> get_option('jigoshop_catalog_columns'),
 		'orderby'	=> get_option('jigoshop_catalog_sort_orderby'),
-		'order'		=> get_option('jigoshop_catalog_sort_direction')
+		'order'		=> get_option('jigoshop_catalog_sort_direction'),
+		'pagination'=> false
 	), $atts));
 
 	$args = array(
@@ -105,7 +107,7 @@ function jigoshop_products( $atts ){
 	query_posts( $args );
 	ob_start();
 	jigoshop_get_template_part( 'loop', 'shop' );
-	do_action('jigoshop_pagination');
+	if($pagination) do_action('jigoshop_pagination');
 	wp_reset_query();
 
 	return ob_get_clean();
@@ -160,7 +162,8 @@ function jigoshop_featured_products( $atts ) {
 		'per_page' 	=> get_option('jigoshop_catalog_per_page'),
 		'columns' 	=> get_option('jigoshop_catalog_columns'),
 		'orderby'	=> get_option('jigoshop_catalog_sort_orderby'),
-		'order'		=> get_option('jigoshop_catalog_sort_direction')
+		'order'		=> get_option('jigoshop_catalog_sort_direction'),
+		'pagination'=> false
 	), $atts));
 
 	$args = array(
@@ -187,7 +190,7 @@ function jigoshop_featured_products( $atts ) {
 	query_posts( $args );
 	ob_start();
 	jigoshop_get_template_part( 'loop', 'shop' );
-	do_action('jigoshop_pagination');
+	if($pagination) do_action('jigoshop_pagination');
 	wp_reset_query();
 
 	return ob_get_clean();
@@ -206,7 +209,8 @@ function jigoshop_product_category( $atts ) {
 		'per_page' 	=> get_option('jigoshop_catalog_per_page'),
 		'columns' 	=> get_option('jigoshop_catalog_columns'),
 		'orderby'	=> get_option('jigoshop_catalog_sort_orderby'),
-		'order'		=> get_option('jigoshop_catalog_sort_direction')
+		'order'		=> get_option('jigoshop_catalog_sort_direction'),
+		'pagination'=> false
 	), $atts));
 
 	if ( ! $slug ) return;
@@ -239,7 +243,7 @@ function jigoshop_product_category( $atts ) {
 	query_posts( $args );
 	ob_start();
 	jigoshop_get_template_part( 'loop', 'shop' );
-	do_action('jigoshop_pagination');
+	if($pagination) do_action('jigoshop_pagination');
 	wp_reset_query();
 	return ob_get_clean();
 }

@@ -140,6 +140,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * add new shortcode: Products Search
 * add bank information to outgoing order email if payment method is bank transfer
 * add new setting: show stock amounts (to show or hide stock left in a product for customers)
+* fix pagination on shortcodes, now displays only if you tell it to by adding pagination="yes" to your shortcode(s)
 * fix emails not sending from the address specified for Jigoshop emails
 * fix emails not showing pretty titles for payment and shipping methods (ie, won't show "via bank_transfer" or "via flat_rate" anymore)
 * fix out of stock products
