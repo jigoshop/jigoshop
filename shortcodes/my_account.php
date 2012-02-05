@@ -36,7 +36,7 @@ function jigoshop_my_account( $atts ) {
 	if (is_user_logged_in()) :
 
 		?>
-		<p><?php echo sprintf( __('Hello, <strong>%s</strong>. From your account dashboard you can view your recent orders, manage your shipping and billing addresses and <a href="%s">change your password</a>.', 'jigoshop'), $current_user->display_name, apply_filters('jigoshop_get_change_password_page_id', get_permalink(get_option('jigoshop_change_password_page_id')))); ?></p>
+		<p><?php echo sprintf( __('Hello, <strong>%s</strong>. From your account dashboard you can view your recent orders, manage your shipping and billing addresses and <a href="%s">change your password</a>.', 'jigoshop'), $current_user->display_name, apply_filters('jigoshop_get_change_password_page_id', get_permalink(jigoshop_get_page_id('change_password')))); ?></p>
 
 
 		<?php if ($downloads = jigoshop_customer::get_downloadable_products()) : ?>
@@ -77,7 +77,7 @@ function jigoshop_my_account( $atts ) {
 								<a href="<?php echo esc_url( $order->get_checkout_payment_url() ); ?>" class="button pay"><?php _e('Pay', 'jigoshop'); ?></a>
 								<a href="<?php echo esc_url( $order->get_cancel_order_url() ); ?>" class="button cancel"><?php _e('Cancel', 'jigoshop'); ?></a>
 							<?php endif; ?>
-							<a href="<?php echo esc_url( add_query_arg('order', $order->id, apply_filters('jigoshop_get_view_order_page_id', get_permalink(get_option('jigoshop_view_order_page_id')))) ); ?>" class="button"><?php _e('View', 'jigoshop'); ?></a>
+							<a href="<?php echo esc_url( add_query_arg('order', $order->id, apply_filters('jigoshop_get_view_order_page_id', get_permalink(jigoshop_get_page_id('view_order')))) ); ?>" class="button"><?php _e('View', 'jigoshop'); ?></a>
 						</td>
 					</tr><?php
 				endforeach;
@@ -93,7 +93,7 @@ function jigoshop_my_account( $atts ) {
 
 				<header class="title">
 					<h3><?php _e('Billing Address', 'jigoshop'); ?></h3>
-					<a href="<?php echo esc_url( add_query_arg('address', 'billing', apply_filters('jigoshop_get_edit_address_page_id', get_permalink(get_option('jigoshop_edit_address_page_id')))) ); ?>" class="edit"><?php _e('Edit', 'jigoshop'); ?></a>
+					<a href="<?php echo esc_url( add_query_arg('address', 'billing', apply_filters('jigoshop_get_edit_address_page_id', get_permalink(jigoshop_get_page_id('edit_address')))) ); ?>" class="edit"><?php _e('Edit', 'jigoshop'); ?></a>
 				</header>
 				<address>
 					<?php
@@ -122,7 +122,7 @@ function jigoshop_my_account( $atts ) {
 
 				<header class="title">
 					<h3><?php _e('Shipping Address', 'jigoshop'); ?></h3>
-					<a href="<?php echo esc_url( add_query_arg('address', 'shipping', apply_filters('jigoshop_get_edit_address_page_id', get_permalink(get_option('jigoshop_edit_address_page_id')))) ); ?>" class="edit"><?php _e('Edit', 'jigoshop'); ?></a>
+					<a href="<?php echo esc_url( add_query_arg('address', 'shipping', apply_filters('jigoshop_get_edit_address_page_id', get_permalink(jigoshop_get_page_id('edit_address')))) ); ?>" class="edit"><?php _e('Edit', 'jigoshop'); ?></a>
 				</header>
 				<address>
 					<?php
@@ -187,7 +187,7 @@ function jigoshop_edit_address() {
 				update_user_meta( $user_id, $load_address . '-fax', jigowatt_clean($_POST['address-fax']) );
 			endif;
 
-			wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(get_option('jigoshop_myaccount_page_id'))) );
+			wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount'))) );
 			exit;
 
 		endif;
@@ -207,7 +207,7 @@ function jigoshop_edit_address() {
 			'country' => get_user_meta( get_current_user_id(), $load_address . '-country', true )
 		);
 		?>
-		<form action="<?php echo esc_url( add_query_arg('address', $load_address, apply_filters('jigoshop_get_edit_address_page_id', get_permalink(get_option('jigoshop_edit_address_page_id')))) ); ?>" method="post">
+		<form action="<?php echo esc_url( add_query_arg('address', $load_address, apply_filters('jigoshop_get_edit_address_page_id', get_permalink(jigoshop_get_page_id('edit_address')))) ); ?>" method="post">
 
 			<h3><?php if ($load_address=='billing') _e('Billing Address', 'jigoshop'); else _e('Shipping Address', 'jigoshop'); ?></h3>
 
@@ -314,7 +314,7 @@ function jigoshop_edit_address() {
 
 	else :
 
-		wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(get_option('jigoshop_myaccount_page_id')) ));
+		wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount')) ));
 		exit;
     endif;
 }
@@ -339,7 +339,7 @@ function jigoshop_change_password() {
 
                         wp_update_user(array('ID' => $user_id, 'user_pass' => $_POST['password-1']));
 						
-                        wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(get_option('jigoshop_myaccount_page_id')) ));
+                        wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount')) ));
 
                         exit;
 
@@ -361,7 +361,7 @@ function jigoshop_change_password() {
         jigoshop::show_messages();
 
 		?>
-		<form action="<?php echo esc_url( apply_filters('jigoshop_get_change_password_page_id', get_permalink(get_option('jigoshop_change_password_page_id'))) ); ?>" method="post">
+		<form action="<?php echo esc_url( apply_filters('jigoshop_get_change_password_page_id', get_permalink(jigoshop_get_page_id('change_password'))) ); ?>" method="post">
 
 			<p class="form-row form-row-first">
 				<label for="password-1"><?php _e('New password', 'jigoshop'); ?> <span class="required">*</span></label>
@@ -379,7 +379,7 @@ function jigoshop_change_password() {
         
 		<?php
     else :
-		wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(get_option('jigoshop_myaccount_page_id')) ));
+		wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount')) ));
 		exit;
     
     endif;
@@ -582,14 +582,14 @@ function jigoshop_view_order() {
             <?php
         else :
 
-			wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(get_option('jigoshop_myaccount_page_id')) ));
+			wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount')) ));
 			exit;
 
         endif;
 
     else :
 
-		wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(get_option('jigoshop_myaccount_page_id')) ));
+		wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount')) ));
 		exit;
     endif;
 }

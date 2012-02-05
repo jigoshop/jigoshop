@@ -22,7 +22,7 @@ function jigoshop_post_type() {
 
 	global $wpdb;
 	
-	$shop_page_id = get_option('jigoshop_shop_page_id');
+	$shop_page_id = jigoshop_get_page_id('shop');
 
 	$base_slug = ($shop_page_id && $base_page = get_page( $shop_page_id )) ? get_page_uri( $shop_page_id ) : 'shop';
 	
@@ -433,7 +433,7 @@ function jigoshop_set_category_order ($term_id, $index, $recursive=false) {
  */
 function jigoshop_nav_menu_items_classes ($menu_items, $args) {
 	
-	$shop_page_id = (int) get_option('jigoshop_shop_page_id');
+	$shop_page_id = (int) jigoshop_get_page_id('shop');
 	
 	// only add nav menu classes if the queried object is the Shop page or derivative (Product, Category, Tag)
 	if( empty( $shop_page_id ) || ! is_content_wrapped() ) return $menu_items;

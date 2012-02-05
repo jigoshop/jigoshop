@@ -114,7 +114,7 @@ class skrill extends jigoshop_payment_gateway {
 		if( substr($order_total, -1) == '.' ) $order_total = str_replace('.', '', $order_total);
 		
 		// filter redirect page
-		$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', get_option( 'jigoshop_thanks_page_id' ) );
+		$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', jigoshop_get_page_id('thanks') );
 		
 		$skrill_args = array(
 			'merchant_fields' => 'partner',
@@ -211,7 +211,7 @@ class skrill extends jigoshop_payment_gateway {
 		
 		return array(
 			'result' 	=> 'success',
-			'redirect'	=> add_query_arg('order', $order->id, add_query_arg('key', $order->order_key, get_permalink(get_option('jigoshop_pay_page_id'))))
+			'redirect'	=> add_query_arg('order', $order->id, add_query_arg('key', $order->order_key, get_permalink(jigoshop_get_page_id('pay'))))
 		);
 		
 	}

@@ -60,8 +60,8 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 
 			// Create the default set of links
 			$links = apply_filters( 'jigoshop_widget_logout_user_links' , array(
-				__( 'My Account', 'jigoshop' )		=> get_permalink( get_option( 'jigoshop_myaccount_page_id' ) ),
-				__( 'Change Password', 'jigoshop' )	=> get_permalink( get_option( 'jigoshop_change_password_page_id' ) ),
+				__( 'My Account', 'jigoshop' )		=> get_permalink( jigoshop_get_page_id('myaccount') ),
+				__( 'Change Password', 'jigoshop' )	=> get_permalink( jigoshop_get_page_id('change_password') ),
 				__( 'Logout', 'jigoshop' )		=> wp_logout_url( home_url() ),
 			));
 
@@ -74,7 +74,7 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 			do_action( 'jigoshop_widget_login_before_form' );
 
 			// Get redirect URI
-			$redirect_to = apply_filters( 'jigoshop_widget_login_redirect', get_permalink( get_option( 'jigoshop_myaccount_page_id' ) ) );
+			$redirect_to = apply_filters( 'jigoshop_widget_login_redirect', get_permalink( jigoshop_get_page_id('myaccount') ) );
 			$user_login = isset( $user_login ) ? $user_login : null;
 
 			echo "<form action='".wp_login_url( $redirect_to )."' method='post'>";

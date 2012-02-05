@@ -309,7 +309,7 @@ class jigoshop_order {
 	/**  Generates a URL so that a customer can checkout/pay for their (unpaid - pending) order via a link */
 	function get_checkout_payment_url() {
 		
-		$payment_page = apply_filters('jigoshop_get_checkout_payment_url', get_permalink(get_option('jigoshop_pay_page_id')));
+		$payment_page = apply_filters('jigoshop_get_checkout_payment_url', get_permalink(jigoshop_get_page_id('pay')));
 		
 		if (get_option('jigoshop_force_ssl_checkout')=='yes' || is_ssl()) $payment_page = str_replace('http:', 'https:', $payment_page);
 	

@@ -62,7 +62,7 @@ function jigoshop_pay() {
 					// No payment was required for order
 					$order->payment_complete();
 					// filter redirect page
-					$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', get_option( 'jigoshop_thanks_page_id' ) );
+					$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', jigoshop_get_page_id('thanks') );
 					wp_safe_redirect( get_permalink( $checkout_redirect ) );
 					exit;
 
@@ -133,14 +133,14 @@ function jigoshop_pay() {
 
 			else :
 
-				wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(get_option('jigoshop_myaccount_page_id'))) );
+				wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount'))) );
 				exit;
 
 			endif;
 
 		else :
 
-			wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(get_option('jigoshop_myaccount_page_id'))) );
+			wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount'))) );
 			exit;
 
 		endif;

@@ -27,7 +27,7 @@
 	<?php endif; ?>
 	
 	<?php 
-		$shop_page_id = get_option('jigoshop_shop_page_id');
+		$shop_page_id = jigoshop_get_page_id('shop');
 		$shop_page = get_post($shop_page_id);
 		echo apply_filters('the_content', $shop_page->post_content);
 	?>

@@ -126,7 +126,7 @@ if (get_option( 'permalink_structure' )=="") add_action( 'init', 'jigoshop_shop_
 
 function jigoshop_shop_page_archive_redirect() {
 
-	if ( isset($_GET['page_id']) && $_GET['page_id'] == get_option('jigoshop_shop_page_id') ) :
+	if ( isset($_GET['page_id']) && $_GET['page_id'] == jigoshop_get_page_id('shop') ) :
 		wp_safe_redirect( get_post_type_archive_link('product') );
 		exit;
 	endif;
@@ -351,7 +351,7 @@ add_action( 'wp_header', 'jigoshop_clear_cart_on_return' );
 
 function jigoshop_clear_cart_on_return() {
 
-	if (is_page(get_option('jigoshop_thanks_page_id'))) :
+	if (is_page(jigoshop_get_page_id('thanks'))) :
 
 		if (isset($_GET['order'])) $order_id = $_GET['order']; else $order_id = 0;
 		if (isset($_GET['key'])) $order_key = $_GET['key']; else $order_key = '';
@@ -419,7 +419,7 @@ function jigoshop_process_login() {
 					wp_safe_redirect($_SERVER['HTTP_REFERER']);
 					exit;
 				}
-				wp_redirect(apply_filters('jigoshop_get_myaccount_page_id', get_permalink(get_option('jigoshop_myaccount_page_id'))));
+				wp_redirect(apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount'))));
 				exit;
 			endif;
 

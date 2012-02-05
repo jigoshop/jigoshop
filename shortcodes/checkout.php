@@ -24,7 +24,7 @@ function jigoshop_checkout( $atts ) {
 	if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
 	
 	if (sizeof(jigoshop_cart::$cart_contents)==0) :
-		wp_redirect(get_permalink(get_option('jigoshop_cart_page_id')));
+		wp_redirect(get_permalink(jigoshop_get_page_id('cart')));
 		exit;
 	endif;
 	

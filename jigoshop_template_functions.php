@@ -28,7 +28,7 @@ if (!function_exists('jigoshop_front_page_archive')) {
 		// is_shop() works, but only with a [recent_products] shortcode on the Shop page
 		// however, if shortcode is used when not front page, double product listings appear
 		//
-		if ( is_front_page() && is_page( get_option('jigoshop_shop_page_id') )) :
+		if ( is_front_page() && is_page( jigoshop_get_page_id('shop') )) :
 //		if ( is_front_page() && is_shop() ) :
 
 			if ( get_query_var('paged') ) {
@@ -763,11 +763,11 @@ if (!function_exists('jigoshop_breadcrumb')) {
 
 	 	$prepend = '';
 
-	 	if ( get_option('jigoshop_prepend_shop_page_to_urls')=="yes" && get_option('jigoshop_shop_page_id') && get_option('page_on_front') !== get_option('jigoshop_shop_page_id') )
-	 		$prepend =  $before . '<a href="' . esc_url( jigoshop_cart::get_shop_url() ). '">' . get_the_title( get_option('jigoshop_shop_page_id') ) . '</a> ' . $after . $delimiter;
+	 	if ( get_option('jigoshop_prepend_shop_page_to_urls')=="yes" && jigoshop_get_page_id('shop') && get_option('page_on_front') !== jigoshop_get_page_id('shop') )
+	 		$prepend =  $before . '<a href="' . esc_url( jigoshop_cart::get_shop_url() ). '">' . get_the_title( jigoshop_get_page_id('shop') ) . '</a> ' . $after . $delimiter;
 
 
-	 	if ( (!is_home() && !is_front_page() && !(is_post_type_archive() && get_option('page_on_front')==get_option('jigoshop_shop_page_id'))) || is_paged() ) :
+	 	if ( (!is_home() && !is_front_page() && !(is_post_type_archive() && get_option('page_on_front')==jigoshop_get_page_id('shop'))) || is_paged() ) :
 
 			echo $wrap_before;
 
@@ -828,9 +828,9 @@ if (!function_exists('jigoshop_breadcrumb')) {
 
 				echo $before . get_the_time('Y') . $after;
 
-	 		elseif ( is_post_type_archive('product') && get_option('page_on_front') !== get_option('jigoshop_shop_page_id') ) :
+	 		elseif ( is_post_type_archive('product') && get_option('page_on_front') !== jigoshop_get_page_id('shop') ) :
 
-	 			$_name = get_option('jigoshop_shop_page_id') ? get_the_title( get_option('jigoshop_shop_page_id') ) : ucwords(get_option('jigoshop_shop_slug'));
+	 			$_name = jigoshop_get_page_id('shop') ? get_the_title( jigoshop_get_page_id('shop') ) : ucwords(get_option('jigoshop_shop_slug'));
 
 	 			if (is_search()) :
 

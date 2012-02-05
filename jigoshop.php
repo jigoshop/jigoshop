@@ -298,7 +298,7 @@ function jigoshop_frontend_scripts() {
 		$params['max_price'] = $_GET['max_price'];
 	endif;
 
-	if ( is_page(get_option('jigoshop_checkout_page_id')) || is_page(get_option('jigoshop_pay_page_id')) ) :
+	if ( is_page(jigoshop_get_page_id('checkout')) || is_page(jigoshop_get_page_id('pay')) ) :
 		$params['is_checkout'] = 1;
 	else :
 		$params['is_checkout'] = 0;
@@ -347,13 +347,13 @@ add_action( 'wp_footer', 'jigoshop_sharethis' );
 
 /**
  * Evaluates to true only on the Shop page, not Product categories and tags
- * Note:is used to replace is_page( get_option( 'jigoshop_shop_page_id' ) )
+ * Note:is used to replace is_page( jigoshop_get_page_id( 'shop' ) )
  * 
  * @return bool
  * @since 0.9.9
  */
 function is_shop() {
-	return is_post_type_archive( 'product' ) | is_page( get_option('jigoshop_shop_page_id') );
+	return is_post_type_archive( 'product' ) | is_page( jigoshop_get_page_id('shop') );
 }
 
 /**
@@ -430,13 +430,25 @@ function is_content_wrapped() {
 }
 
 /**
+ * Jigoshop page IDs
+ *
+ * returns -1 if no page is found
+ **/
+if (!function_exists('jigoshop_get_page_id')) {
+	function jigoshop_get_page_id( $page ) {
+		$page = apply_filters('jigoshop_get_' . $page . '_page_id', get_option('jigoshop_' . $page . '_page_id'));
+		return ($page) ? $page : -1;
+	}
+}
+
+/**
  * Evaluates to true only on the Order Tracking page
  * 
  * @return bool
  * @since 0.9.9.1
  */
 function is_order_tracker() {
-	return is_page( get_option( 'jigoshop_track_order_page_id' ));
+	return is_page( jigoshop_get_page_id('track_order'));
 }
 
 /**
@@ -446,7 +458,7 @@ function is_order_tracker() {
  * @since 0.9.8
  */
 function is_cart() {
-	return is_page( get_option( 'jigoshop_cart_page_id' ));
+	return is_page( jigoshop_get_page_id('cart'));
 }
 
 /**
@@ -456,7 +468,7 @@ function is_cart() {
  * @since 0.9.8
  */
 function is_checkout() {
-	return is_page( get_option('jigoshop_checkout_page_id')) | is_page( get_option('jigoshop_pay_page_id'));
+	return is_page( jigoshop_get_page_id('checkout')) | is_page( jigoshop_get_page_id('pay'));
 }
 
 /**
@@ -467,10 +479,10 @@ function is_checkout() {
  */
 function is_account() {
 	$is_account = false;
-	$is_account |= is_page( get_option('jigoshop_myaccount_page_id' ) );
-	$is_account |= is_page( get_option('jigoshop_edit_address_page_id' ) );
-	$is_account |= is_page( get_option('jigoshop_change_password_page_id' ) );
-	$is_account |= is_page( get_option('jigoshop_view_order_page_id' ) );
+	$is_account |= is_page( jigoshop_get_page_id('myaccount') );
+	$is_account |= is_page( jigoshop_get_page_id('edit_address') );
+	$is_account |= is_page( jigoshop_get_page_id('change_password') );
+	$is_account |= is_page( jigoshop_get_page_id('view_order') );
 	return $is_account;
 }
 
@@ -483,7 +495,7 @@ if (!function_exists('is_ajax')) {
 
 function jigoshop_force_ssl() {
 	if (is_checkout() && !is_ssl()) :
-		wp_safe_redirect( str_replace('http:', 'https:', get_permalink(get_option('jigoshop_checkout_page_id'))), 301 );
+		wp_safe_redirect( str_replace('http:', 'https:', get_permalink(jigoshop_get_page_id('checkout'))), 301 );
 		exit;
 	endif;
 }
@@ -735,9 +747,9 @@ function jigoshop_page_body_classes() {
 
 	if ( is_cart() ) jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-cart' ) );
 
-	if ( is_page(get_option('jigoshop_thanks_page_id'))) jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-thanks' ) );
+	if ( is_page(jigoshop_get_page_id('thanks'))) jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-thanks' ) );
 
-	if ( is_page(get_option('jigoshop_pay_page_id'))) jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-pay' ) );
+	if ( is_page(jigoshop_get_page_id('pay'))) jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-pay' ) );
 
 	if ( is_account() ) jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-myaccount' ) );
 

@@ -396,7 +396,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 			endif;
 			
 			// Terms
-			if (!isset($_POST['update_totals']) && empty($this->posted['terms']) && get_option('jigoshop_terms_page_id')>0 ) jigoshop::add_error( __('You must accept our Terms &amp; Conditions.','jigoshop') );
+			if (!isset($_POST['update_totals']) && empty($this->posted['terms']) && jigoshop_get_page_id('terms')>0 ) jigoshop::add_error( __('You must accept our Terms &amp; Conditions.','jigoshop') );
 			
 			if (jigoshop_cart::needs_shipping()) :
 
@@ -692,7 +692,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 						jigoshop_cart::empty_cart();
 						
 						// Redirect to success/confirmation/payment page
-						$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', get_option( 'jigoshop_thanks_page_id' ) );
+						$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', jigoshop_get_page_id('thanks') );
 						if (is_ajax()) : 
 							ob_clean();
 							echo json_encode( array( 'redirect'	=> get_permalink( $checkout_redirect ) ) );
