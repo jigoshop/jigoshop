@@ -136,7 +136,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 
 = 1.0.1 =
 * update all translation files to include latest strings and remove obsolete strings
-* add Turkish, Italian, Portuguese, Norwegian translations
+* add Turkish, Italian, Portuguese, Norwegian, Portuguese Brazilian translations
 * add new shortcode: Products Search
 * add bank information to outgoing order email if payment method is bank transfer
 * add new setting: show stock amounts (to show or hide stock left in a product for customers)
