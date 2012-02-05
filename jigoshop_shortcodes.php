@@ -306,7 +306,7 @@ function jigoshop_product_add_to_cart( $atts ) {
 	return ob_get_clean();
 }
 
-//### Cart button + optional price for single product #########################################################
+//### Search shortcode #########################################################
 
 function jigoshop_search_shortcode( $atts ) {
 
