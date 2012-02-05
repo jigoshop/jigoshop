@@ -14,7 +14,7 @@
  * @package    Jigoshop
  * @category   Admin
  * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
 add_action('jigoshop_process_shop_order_meta', 'jigoshop_process_shop_order_meta', 1, 2);

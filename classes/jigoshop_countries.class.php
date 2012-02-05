@@ -13,7 +13,7 @@
  * @package    Jigoshop
  * @category   Internationalization
  * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_countries {

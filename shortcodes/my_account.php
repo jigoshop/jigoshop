@@ -12,7 +12,7 @@
  * @package    Jigoshop
  * @category   Customer
  * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
+ * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
 function get_jigoshop_my_account($atts) {

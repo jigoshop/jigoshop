@@ -11,7 +11,7 @@
  * @package    Jigoshop
  * @category   Checkout
  * @author     Chris Balchin / Robert Rhoades
- * @copyright  Copyright © 2011 Jigowatt Ltd.
+ * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
 
