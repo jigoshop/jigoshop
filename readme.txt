@@ -104,15 +104,10 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 
 == Screenshots ==
 
-1. Jigoshop Dashboard
-2. Jigoshop Settings
-3. Shipping settings
-4. Products
-5. Product details
-6. Orders
-7. Homepage
-8. Cart
-9. Checkout
+1. Jigoshop admin dashboard
+2. Admin product edit page
+3. Jigoshop homepage on a premium theme
+4. Standard customer checkout screen
 
 == Changelog ==
 
