@@ -154,7 +154,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * fix coupons showing 'no products in cart' on valid coupons
 * fix some international users not being able to add shipping or tax rates (italian & french)
 
-= 1.0 =
+= 1.0 2012-02-01 =
 * added new feature for downloadable products: external URL or internal downloads
 * added new widget Jigoshop Login
 * added new widget Recently Viewed products
@@ -207,10 +207,10 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * a number of other small bug fixes
 * a number of security enhancements
 
-= 0.9.9.3 =
+= 0.9.9.3 - 2011-11-09 =
 * Fixed SVN error
 
-= 0.9.9.2 =
+= 0.9.9.2 - 2011-11-09 =
 * Add new Product Category shortcode
 * Hungarian Translation by Kristóf Gruber
 * Hungarian, Croatian and Indian currencies
@@ -227,7 +227,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * More internationalization for text translations
 * numerous small bug fixes & code improvements
 
-= 0.9.9.1 =
+= 0.9.9.1 - 2011-10-07 =
 * Added date ranges for coupons
 * Display coupons used on the Cart
 * Now saves coupon data in order panel
@@ -240,7 +240,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * Minor GUI Tweaks
 * Other fixes (https://github.com/jigoshop/jigoshop/issues?milestone=7&state=closed)
 
-= 0.9.9 =
+= 0.9.9 - 2011-09-20 =
 * Configurable Products
 * Global image sizes can now be declared from the panel.
 * Rows & Columns can now be set in the admin
@@ -277,7 +277,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * Filters added to email contents
 * Various other minor bug fixes (https://github.com/jigoshop/jigoshop/issues?milestone=6&state=closed)
 
-= 0.9.8 =
+= 0.9.8 - 2011-07-01 =
 
 * Major changes to template code in an attempt to make it more flexible and easier to theme from the plugin
 * Form code changes making things more semantic
@@ -295,12 +295,12 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * Demo store banner added
 * postcode accepts hyphens
 
-= 0.9.7.8 =
+= 0.9.7.8 - 2011-06-22 =
 
 * Download permissions bug with emails
 * Lets you save download limit as blank
 
-= 0.9.7.7 =
+= 0.9.7.7 - 2011-06-22 =
 
 * Fixed discount code logic
 * Changed/improved nonces
@@ -322,7 +322,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * Removed IE6 stuff from fancybox to speed it up
 * Added option to send shipping info to paypal
 
-= 0.9.7.6 =
+= 0.9.7.6 - 2011-06-14 =
 
 * POT file added
 * global option filtering
@@ -337,11 +337,11 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * Better support for plugin folder names
 * Localization of scripts
 
-= 0.9.7.5 =
+= 0.9.7.5 - 2011-06-13 =
 
 * GITHUB setup for Jigoshop Project
 
-= 0.9.7.4 =
+= 0.9.7.4 - 2011-06-13 =
 
 * Default SSL option changed
 * Empty drop-ins folder fix
@@ -350,10 +350,10 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * Fixed category dropdown widget
 * Fallback for HTML5 placeholders
 
-= 0.9.7.3 =
+= 0.9.7.3 - 2011-06-01 =
 
 * Tweaked how files are included to prevent an error
 
-= 0.9.6 =
+= 0.9.6 - 2011-04-10 =
 
 * Public Beta Release
