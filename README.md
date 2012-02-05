@@ -1,12 +1,12 @@
 [Jigoshop - WordPress eCommerce](http://jigoshop.com)
 =================
 
-Jigoshop is a featured packed eCommerce plugin built upon Wordpress core functionality ensuring excellent performance and customisability.
+Jigoshop is a feature-packed eCommerce plugin built upon Wordpress core functionality ensuring excellent performance and customisability.
 
 Quick start
 -----------
 
-To get started, check out [our installation guide](http://forum.jigoshop.com/kb/getting-started/installation)!
+To get started, [check out our installation guide](http://forum.jigoshop.com/kb/getting-started/installation)!
 
 1. You can also clone the git repo:
 
