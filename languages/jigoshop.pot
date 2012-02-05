@@ -18,92 +18,92 @@
 msgid ""
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop.php:277
+#: \wp-content\plugins\jigoshop\jigoshop.php:281
 #: \wp-content\plugins\jigoshop\jigoshop_template_functions.php:627
 #: \wp-content\plugins\jigoshop\classes\jigoshop_checkout.class.php:219
 #: \wp-content\plugins\jigoshop\shortcodes\my_account.php:277
 msgid "Select a state&hellip;"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop.php:278
+#: \wp-content\plugins\jigoshop\jigoshop.php:282
 #: \wp-content\plugins\jigoshop\jigoshop_template_functions.php:639
 #: \wp-content\plugins\jigoshop\shortcodes\my_account.php:264
 #: \wp-content\plugins\jigoshop\shortcodes\my_account.php:287
 msgid "state"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop.php:319
+#: \wp-content\plugins\jigoshop\jigoshop.php:323
 msgid "This is a demo store for testing purposes &mdash; no orders shall be fulfilled."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop.php:625
-#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:572
-#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:685
-#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:189
+#: \wp-content\plugins\jigoshop\jigoshop.php:641
+#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:587
+#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:700
+#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:193
 msgid " <small>(ex. tax)</small>"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop.php:784
+#: \wp-content\plugins\jigoshop\jigoshop.php:800
 msgid "You have taken too long. Please go back and refresh the page."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop.php:787
+#: \wp-content\plugins\jigoshop\jigoshop.php:803
 msgid "Please rate the product."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop.php:807
+#: \wp-content\plugins\jigoshop\jigoshop.php:823
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-dashboard.php:462
-#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:902
+#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:910
 #: \wp-content\plugins\jigoshop\templates\single-product-reviews.php:46
 #: \wp-content\plugins\jigoshop\widgets\recent_reviews.php:135
 msgid "out of 5"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop.php:811
+#: \wp-content\plugins\jigoshop\jigoshop.php:827
 msgid "Your comment is awaiting approval"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop.php:814
+#: \wp-content\plugins\jigoshop\jigoshop.php:830
 msgid "Rating by"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop.php:814
+#: \wp-content\plugins\jigoshop\jigoshop.php:830
 msgid "on"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop.php:893
+#: \wp-content\plugins\jigoshop\jigoshop.php:909
 #: \wp-content\plugins\jigoshop\jigoshop_taxonomy.php:95
 msgid "Search "
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop.php:894
+#: \wp-content\plugins\jigoshop\jigoshop.php:910
 #: \wp-content\plugins\jigoshop\jigoshop_taxonomy.php:96
 msgid "All "
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop.php:895
-#: \wp-content\plugins\jigoshop\jigoshop.php:896
+#: \wp-content\plugins\jigoshop\jigoshop.php:911
+#: \wp-content\plugins\jigoshop\jigoshop.php:912
 #: \wp-content\plugins\jigoshop\jigoshop_taxonomy.php:97
 #: \wp-content\plugins\jigoshop\jigoshop_taxonomy.php:98
 msgid "Parent "
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop.php:897
+#: \wp-content\plugins\jigoshop\jigoshop.php:913
 #: \wp-content\plugins\jigoshop\jigoshop_taxonomy.php:99
 msgid "Edit "
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop.php:898
+#: \wp-content\plugins\jigoshop\jigoshop.php:914
 #: \wp-content\plugins\jigoshop\jigoshop_taxonomy.php:100
 msgid "Update "
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop.php:899
+#: \wp-content\plugins\jigoshop\jigoshop.php:915
 #: \wp-content\plugins\jigoshop\jigoshop_taxonomy.php:101
 msgid "Add New "
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop.php:900
+#: \wp-content\plugins\jigoshop\jigoshop.php:916
 #: \wp-content\plugins\jigoshop\jigoshop_taxonomy.php:102
 msgid "New "
 msgstr ""
@@ -234,28 +234,28 @@ msgstr ""
 
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:44
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:147
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:249
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:352
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:453
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:555
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:263
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:366
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:467
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:569
 msgid "ORDER #: "
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:50
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:153
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:255
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:358
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:459
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:562
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:269
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:372
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:473
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:576
 #: \wp-content\plugins\jigoshop\shortcodes\my_account.php:494
 msgid "Note:"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:54
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:157
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:259
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:362
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:463
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:273
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:376
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:477
 msgid "Retail Price:"
 msgstr ""
 
@@ -263,12 +263,12 @@ msgstr ""
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:65
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:159
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:169
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:261
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:271
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:364
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:374
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:465
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:474
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:275
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:285
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:378
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:388
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:479
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:488
 #: \wp-content\plugins\jigoshop\admin\write-panels\order-data.php:362
 msgid "Subtotal:"
 msgstr ""
@@ -277,12 +277,12 @@ msgstr ""
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:69
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:162
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:172
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:264
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:274
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:367
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:377
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:468
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:477
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:278
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:288
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:381
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:391
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:482
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:491
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-post-types.php:310
 #: \wp-content\plugins\jigoshop\admin\write-panels\order-data.php:372
 msgid "Shipping:"
@@ -290,17 +290,17 @@ msgstr ""
 
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:72
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:175
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:277
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:380
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:480
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:291
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:394
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:494
 msgid "Discount:"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:86
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:189
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:291
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:394
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:494
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:305
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:408
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:508
 #: \wp-content\plugins\jigoshop\admin\write-panels\order-data.php:387
 #: \wp-content\plugins\jigoshop\shortcodes\pay.php:116
 #: \wp-content\plugins\jigoshop\shortcodes\thankyou.php:51
@@ -309,50 +309,50 @@ msgstr ""
 
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:86
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:189
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:291
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:394
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:494
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:305
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:408
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:508
 msgid "via"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:91
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:194
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:296
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:399
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:568
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:208
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:310
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:413
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:582
 msgid "CUSTOMER DETAILS"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:95
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:198
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:300
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:403
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:572
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:212
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:314
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:417
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:586
 #: \wp-content\plugins\jigoshop\shortcodes\my_account.php:540
 msgid "Email:"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:97
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:200
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:302
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:405
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:574
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:214
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:316
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:419
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:588
 msgid "Tel:"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:104
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:207
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:309
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:412
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:581
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:221
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:323
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:426
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:595
 msgid "BILLING ADDRESS"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:115
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:218
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:320
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:423
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:592
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:232
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:334
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:437
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:606
 msgid "SHIPPING ADDRESS"
 msgstr ""
 
@@ -364,70 +364,89 @@ msgstr ""
 msgid "Thank you, we are now processing your order. Your order's details are below:"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:243
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:196
+msgid "BANK PAYMENT DETAILS"
+msgstr ""
+
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:257
 msgid "Order Complete"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:246
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:260
 msgid "Your order is complete. Your order's details are below:"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:346
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:360
 msgid "Order Refunded"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:349
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:363
 msgid "Your order has been refunded. Your order's details are below:"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:447
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:461
 msgid "Pay for Order"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:449
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:463
 #, php-format
 msgid "An order has been created for you on \"%s\". To pay for this order please use the following link: %s"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:509
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:523
 msgid "Product low in stock"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:510
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:524
 msgid "is low in stock."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:520
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:534
 msgid "Product out of stock"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:521
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:535
 msgid "is out of stock."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:539
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:553
 #, php-format
 msgid "Product Backorder on Order #%s"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:540
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:554
 #, php-format
 msgid "%s units of #%s %s (#%s) are needed to fill Order #%s."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:548
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:562
 #, php-format
 msgid "Product Backorder on Order #%d"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:551
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:565
 #, php-format
 msgid "Thank you for your Order #%d. Unfortunately, the following item was found to be on backorder."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\jigoshop_emails.php:558
+#: \wp-content\plugins\jigoshop\jigoshop_emails.php:572
 #, php-format
 msgid "%d units of #%d %s (#%s) have been backordered."
+msgstr ""
+
+#: \wp-content\plugins\jigoshop\jigoshop_shortcodes.php:323
+#: \wp-content\plugins\jigoshop\widgets\product_search.php:64
+msgid "Search for:"
+msgstr ""
+
+#: \wp-content\plugins\jigoshop\jigoshop_shortcodes.php:324
+#: \wp-content\plugins\jigoshop\widgets\product_search.php:65
+msgid "Search for products"
+msgstr ""
+
+#: \wp-content\plugins\jigoshop\jigoshop_shortcodes.php:325
+#: \wp-content\plugins\jigoshop\widgets\product_search.php:66
+msgid "Search"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\jigoshop_taxonomy.php:41
@@ -592,7 +611,7 @@ msgid "Variation"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\jigoshop_taxonomy.php:153
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:241
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:240
 msgid "Add Variation"
 msgstr ""
 
@@ -750,7 +769,7 @@ msgstr ""
 
 #: \wp-content\plugins\jigoshop\jigoshop_template_functions.php:104
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-post-types.php:114
-#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:469
+#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:477
 msgid "Out of Stock"
 msgstr ""
 
@@ -784,6 +803,7 @@ msgstr ""
 
 #: \wp-content\plugins\jigoshop\jigoshop_template_functions.php:488
 #: \wp-content\plugins\jigoshop\jigoshop_template_functions.php:515
+#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:302
 #: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:121
 #: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:135
 msgid "Additional Information"
@@ -803,7 +823,7 @@ msgid "Related Products"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\jigoshop_template_functions.php:603
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:745
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:759
 msgid "Calculate Shipping"
 msgstr ""
 
@@ -834,7 +854,7 @@ msgid " (ex. tax)"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\jigoshop_template_functions.php:690
-#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:773
+#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:781
 #: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:86
 #: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:165
 msgid "Free"
@@ -934,7 +954,7 @@ msgstr ""
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-attributes.php:173
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-post-types.php:61
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings.php:470
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:487
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:486
 #: \wp-content\plugins\jigoshop\shipping\flat_rate.php:104
 msgid "Type"
 msgstr ""
@@ -1240,12 +1260,12 @@ msgid "Searching for Products"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-help.php:210
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:226
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:227
 msgid "Bulk Actions"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-help.php:274
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings.php:826
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings.php:829
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin.php:84
 msgid "General Settings"
 msgstr ""
@@ -1323,17 +1343,17 @@ msgstr ""
 
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-post-types.php:63
 #: \wp-content\plugins\jigoshop\admin\write-panels\order-data.php:187
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:496
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:495
 msgid "SKU"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-post-types.php:67
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:231
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:232
 msgid "Stock"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-post-types.php:70
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:508
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:507
 #: \wp-content\plugins\jigoshop\shortcodes\cart.php:104
 #: \wp-content\plugins\jigoshop\shortcodes\order_tracking.php:57
 msgid "Price"
@@ -1350,7 +1370,7 @@ msgstr ""
 
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-post-types.php:107
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-post-types.php:109
-#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:450
+#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:458
 msgid "In Stock"
 msgstr ""
 
@@ -1477,7 +1497,7 @@ msgstr ""
 
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-post-types.php:340
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-post-types.php:363
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:740
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:754
 #: \wp-content\plugins\jigoshop\shortcodes\cart.php:214
 #: \wp-content\plugins\jigoshop\shortcodes\cart.php:236
 #: \wp-content\plugins\jigoshop\shortcodes\my_account.php:434
@@ -1574,14 +1594,15 @@ msgstr ""
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:615
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:643
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:673
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:686
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:709
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:734
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:753
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:687
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:700
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:723
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:748
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:767
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:781
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:803
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:795
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:817
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:831
 #: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:53
 #: \wp-content\plugins\jigoshop\gateways\cheque.php:47
 #: \wp-content\plugins\jigoshop\gateways\dibs.php:45
@@ -1606,14 +1627,15 @@ msgstr ""
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:616
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:644
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:674
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:687
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:710
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:733
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:754
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:688
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:701
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:724
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:747
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:768
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:782
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:804
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:796
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:818
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:832
 #: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:54
 #: \wp-content\plugins\jigoshop\gateways\cheque.php:48
 #: \wp-content\plugins\jigoshop\gateways\dibs.php:46
@@ -2253,7 +2275,7 @@ msgid "<br /><div>Coupons allow you to give your customers special offers and di
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:579
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:848
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:862
 msgid "All fields are required."
 msgstr ""
 
@@ -2330,115 +2352,123 @@ msgid "You can manage stock on a per-item basis if you leave this option on."
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:679
+msgid "Show stock amounts"
+msgstr ""
+
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:681
+msgid "Set to yes to allow customers to view the amount of stock available for a product."
+msgstr ""
+
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:693
 msgid "Notify on low stock"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:692
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:706
 msgid "Low stock threshold"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:694
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:717
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:708
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:731
 msgid "You will receive a notification as soon this threshold is hit (if notifications are turned on)."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:702
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:716
 msgid "Notify on out of stock"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:715
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:729
 msgid "Out of stock threshold"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:725
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:739
 msgid "Hide out of stock products"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:742
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:756
 msgid "Shipping Options"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:746
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:760
 msgid "Only set this to no if you are not shipping items, or items have shipping costs included."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:747
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:761
 msgid "If you are not calculating shipping then you can ignore all other tax options."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:759
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:773
 msgid "Enable shipping calculator on cart"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:773
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:787
 msgid "Only ship to billing address?"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:790
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:804
 msgid "Tax"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:792
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:806
 msgid "Tax Options"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:795
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:809
 msgid "Calculate Taxes"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:796
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:810
 msgid "Only set this to no if you are exclusively selling non-taxable items."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:797
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:811
 msgid "If you are not calculating taxes then you can ignore all other tax options."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:809
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:823
 msgid "Catalog Prices include tax?"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:811
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:825
 msgid "If prices include tax then tax calculations will work backwards."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:823
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:837
 msgid "Cart totals display..."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:825
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:839
 msgid "Should the subtotal be shown including or excluding tax on the frontend?"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:831
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:845
 msgid "price including tax"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:832
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:846
 msgid "price excluding tax"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:837
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:851
 msgid "Additional Tax classes"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:838
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:852
 msgid "List 1 per line. This is in addition to the default <em>Standard Rate</em>."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:839
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:853
 msgid "List product and shipping tax classes here, e.g. Zero Tax, Reduced Rate."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:847
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:861
 msgid "Tax rates"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:849
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:863
 msgid "To avoid rounding errors, insert tax rates with 4 decimal places."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:858
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:872
 msgid "Payment Gateways"
 msgstr ""
 
@@ -2804,7 +2834,7 @@ msgid "Manually reducing stock."
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\admin\write-panels\order-data-save.php:155
-#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:458
+#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:488
 #, php-format
 msgid "Item #%s stock reduced from %s to %s."
 msgstr ""
@@ -2961,7 +2991,7 @@ msgid "Tax Rate"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\admin\write-panels\order-data.php:195
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:466
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:465
 msgid "Remove"
 msgstr ""
 
@@ -3038,7 +3068,7 @@ msgstr ""
 msgid "Payment Method"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-data-save.php:176
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-data-save.php:166
 msgid "Product SKU must be unique"
 msgstr ""
 
@@ -3122,25 +3152,25 @@ msgid "Uncheck All"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\admin\write-panels\product-data.php:219
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:532
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:531
 msgid "Dimensions"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\admin\write-panels\product-data.php:220
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:234
-#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:1051
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:235
+#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:1059
 msgid "Length"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\admin\write-panels\product-data.php:221
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:233
-#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:1053
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:234
+#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:1061
 msgid "Width"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\admin\write-panels\product-data.php:222
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:235
-#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:1055
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:236
+#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:1063
 msgid "Height"
 msgstr ""
 
@@ -3230,49 +3260,49 @@ msgstr ""
 msgid "Are you sure you want to remove this variation?"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:227
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:228
 msgid "Remove All Variations"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:228
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:229
 msgid "Set All"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:229
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:230
 msgid "Regular Prices"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:230
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:231
 msgid "Sale Prices"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:232
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:527
-#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:1045
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:233
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:526
+#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:1053
 msgid "Weight"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:250
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:249
 msgid "Learn how to make a Variation"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:502
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:501
 msgid "Stock Qty"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:514
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:513
 msgid "Sale Price"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:520
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:519
 msgid "Enabled"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:543
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:542
 msgid "File Location"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:548
+#: \wp-content\plugins\jigoshop\admin\write-panels\product-types\variable.php:547
 msgid "Re-downloads Limit"
 msgstr ""
 
@@ -3284,58 +3314,71 @@ msgstr ""
 msgid "You cannot add this product to your cart because its price is not yet announced"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:178
+#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:179
 #, php-format
 msgid "We are sorry.  We do not have enough \"%s\" to fill your request.  You have %d of them in your Cart and we have %d available at this time."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:180
+#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:181
+#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:187
+#, php-format
+msgid "We are sorry.  We do not have enough \"%s\" to fill your request."
+msgstr ""
+
+#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:185
 #, php-format
 msgid "We are sorry.  We do not have enough \"%s\" to fill your request. There are only %d left in stock."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:343
+#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:355
 #, php-format
 msgid "Sorry, we do not have enough \"%s\" in stock to fulfill your order. We only have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:587
-#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:691
+#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:357
+#: \wp-content\plugins\jigoshop\classes\jigoshop_checkout.class.php:613
+#: \wp-content\plugins\jigoshop\classes\jigoshop_checkout.class.php:623
+#, php-format
+msgid "Sorry, we do not have enough \"%s\" in stock to fulfill your order. Please edit your cart and try again. We apologize for any inconvenience caused."
+msgstr ""
+
+#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:602
+#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:706
 msgid " <small>(inc. tax)</small>"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:629
+#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:644
 #, php-format
 msgid "estimated for %s"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:699
-#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:216
+#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:714
+#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:220
 msgid "Free!"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:710
+#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:725
 msgid "via "
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:727
+#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:742
 msgid "Discount code already applied!"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:734
-#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:747
+#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:749
+#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:762
 msgid "Invalid coupon!"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:740
+#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:755
 msgid "No products in your cart match that coupon!"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:768
+#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:783
 msgid "Discount code applied successfully."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:772
+#: \wp-content\plugins\jigoshop\classes\jigoshop_cart.class.php:787
 msgid "Coupon does not exist or is no longer valid!"
 msgstr ""
 
@@ -3457,91 +3500,125 @@ msgstr ""
 msgid "Invalid shipping method."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_checkout.class.php:415
+#: \wp-content\plugins\jigoshop\classes\jigoshop_checkout.class.php:414
 msgid "Invalid payment method."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_checkout.class.php:444
+#: \wp-content\plugins\jigoshop\classes\jigoshop_checkout.class.php:443
 #, php-format
 msgid "<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the <a href=\"mailto:%s\">webmaster</a> !"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_checkout.class.php:610
+#: \wp-content\plugins\jigoshop\classes\jigoshop_checkout.class.php:611
 #, php-format
-msgid "Sorry, we do not have enough \"%s\" in stock to fulfill your order.  We have %d available at this time. Please edit your cart and try again.We apologize for any inconvenience caused."
+msgid "Sorry, we do not have enough \"%s\" in stock to fulfill your order.  We have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_checkout.class.php:618
+#: \wp-content\plugins\jigoshop\classes\jigoshop_checkout.class.php:621
 #, php-format
 msgid "Sorry, we do not have enough \"%s\" in stock to fulfill your order. We have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_countries.class.php:782
+#: \wp-content\plugins\jigoshop\classes\jigoshop_countries.class.php:815
 msgid "to the"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_countries.class.php:783
+#: \wp-content\plugins\jigoshop\classes\jigoshop_countries.class.php:816
 msgid "to"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_countries.class.php:790
+#: \wp-content\plugins\jigoshop\classes\jigoshop_countries.class.php:823
 msgid "the "
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_countries.class.php:813
+#: \wp-content\plugins\jigoshop\classes\jigoshop_countries.class.php:846
 msgid "All of"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:203
+#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:207
 #, php-format
 msgid " <small>(ex. tax) %s via %s</small>"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:205
+#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:209
 #, php-format
 msgid " <small>(ex. tax) via %s</small>"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:209
+#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:213
 #, php-format
 msgid " <small>%s via %s</small>"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:211
+#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:215
 #, php-format
 msgid " <small>via %s</small>"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:354
+#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:297
+#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:71
+#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:114
+#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:127
+msgid "Bank Name"
+msgstr ""
+
+#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:298
+#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:77
+#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:115
+#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:128
+msgid "Account Number"
+msgstr ""
+
+#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:299
+#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:83
+#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:116
+#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:129
+msgid "Sort Code"
+msgstr ""
+
+#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:300
+#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:89
+#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:117
+#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:130
+msgid "IBAN"
+msgstr ""
+
+#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:301
+#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:118
+#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:131
+msgid "BIC"
+msgstr ""
+
+#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:384
 #, php-format
 msgid "Order status changed from %s to %s."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:477
+#: \wp-content\plugins\jigoshop\classes\jigoshop_order.class.php:507
 msgid "Order item stock reduced successfully."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:456
+#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:464
 msgid " available"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:460
+#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:468
 msgid "backorders allowed"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:464
+#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:472
 msgid "Available on Backorder"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:741
+#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:749
 msgid "Unavailable"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:770
+#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:778
 msgid "Price Not Announced"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:902
+#: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:910
 #: \wp-content\plugins\jigoshop\templates\single-product-reviews.php:46
 #, php-format
 msgid "Rated %s out of 5"
@@ -3597,40 +3674,16 @@ msgstr ""
 msgid "Your bank name for reference. e.g. HSBC"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:71
-#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:114
-#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:127
-msgid "Bank Name"
-msgstr ""
-
 #: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:77
 msgid "Your Bank Account number."
-msgstr ""
-
-#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:77
-#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:115
-#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:128
-msgid "Account Number"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:83
 msgid "Your branch Sort Code."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:83
-#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:116
-#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:129
-msgid "Sort Code"
-msgstr ""
-
 #: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:89
 msgid "Your IBAN number. (for International transfers)"
-msgstr ""
-
-#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:89
-#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:117
-#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:130
-msgid "IBAN"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:95
@@ -3647,11 +3700,6 @@ msgstr ""
 
 #: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:101
 msgid "Additional Info"
-msgstr ""
-
-#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:118
-#: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:131
-msgid "BIC"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\gateways\bank_transfer.php:170
@@ -4017,854 +4065,850 @@ msgid "Bhutan"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\languages\countries.php:54
-msgid "Bouvet Island"
-msgstr ""
-
-#: \wp-content\plugins\jigoshop\languages\countries.php:55
 msgid "Botswana"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:56
+#: \wp-content\plugins\jigoshop\languages\countries.php:55
 msgid "Belarus"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:57
+#: \wp-content\plugins\jigoshop\languages\countries.php:56
 msgid "Belize"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:58
+#: \wp-content\plugins\jigoshop\languages\countries.php:57
 msgid "Canada"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:59
+#: \wp-content\plugins\jigoshop\languages\countries.php:58
 msgid "Cocos (Keeling) Islands"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:60
+#: \wp-content\plugins\jigoshop\languages\countries.php:59
 msgid "Congo (Kinshasa)"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:61
+#: \wp-content\plugins\jigoshop\languages\countries.php:60
 msgid "Central African Republic"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:62
+#: \wp-content\plugins\jigoshop\languages\countries.php:61
 msgid "Congo (Brazzaville)"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:63
+#: \wp-content\plugins\jigoshop\languages\countries.php:62
 msgid "Switzerland"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:64
+#: \wp-content\plugins\jigoshop\languages\countries.php:63
 msgid "Ivory Coast"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:65
+#: \wp-content\plugins\jigoshop\languages\countries.php:64
 msgid "Cook Islands"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:66
+#: \wp-content\plugins\jigoshop\languages\countries.php:65
 msgid "Chile"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:67
+#: \wp-content\plugins\jigoshop\languages\countries.php:66
 msgid "Cameroon"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:68
+#: \wp-content\plugins\jigoshop\languages\countries.php:67
 msgid "China"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:69
+#: \wp-content\plugins\jigoshop\languages\countries.php:68
 msgid "Colombia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:70
+#: \wp-content\plugins\jigoshop\languages\countries.php:69
 msgid "Costa Rica"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:71
+#: \wp-content\plugins\jigoshop\languages\countries.php:70
 msgid "Cuba"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:72
+#: \wp-content\plugins\jigoshop\languages\countries.php:71
 msgid "Cape Verde"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:73
+#: \wp-content\plugins\jigoshop\languages\countries.php:72
 msgid "Christmas Island"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:74
+#: \wp-content\plugins\jigoshop\languages\countries.php:73
 msgid "Cyprus"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:75
+#: \wp-content\plugins\jigoshop\languages\countries.php:74
 msgid "Czech Republic"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:76
+#: \wp-content\plugins\jigoshop\languages\countries.php:75
 msgid "Germany"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:77
+#: \wp-content\plugins\jigoshop\languages\countries.php:76
 msgid "Djibouti"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:78
+#: \wp-content\plugins\jigoshop\languages\countries.php:77
 msgid "Denmark"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:79
+#: \wp-content\plugins\jigoshop\languages\countries.php:78
 msgid "Dominica"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:80
+#: \wp-content\plugins\jigoshop\languages\countries.php:79
 msgid "Dominican Republic"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:81
+#: \wp-content\plugins\jigoshop\languages\countries.php:80
 msgid "Algeria"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:82
+#: \wp-content\plugins\jigoshop\languages\countries.php:81
 msgid "Ecuador"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:83
+#: \wp-content\plugins\jigoshop\languages\countries.php:82
 msgid "Estonia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:84
+#: \wp-content\plugins\jigoshop\languages\countries.php:83
 msgid "Egypt"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:85
+#: \wp-content\plugins\jigoshop\languages\countries.php:84
 msgid "Western Sahara"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:86
+#: \wp-content\plugins\jigoshop\languages\countries.php:85
 msgid "Eritrea"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:87
+#: \wp-content\plugins\jigoshop\languages\countries.php:86
 msgid "Spain"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:88
+#: \wp-content\plugins\jigoshop\languages\countries.php:87
 msgid "Ethiopia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:89
+#: \wp-content\plugins\jigoshop\languages\countries.php:88
 msgid "Finland"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:90
+#: \wp-content\plugins\jigoshop\languages\countries.php:89
 msgid "Fiji"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:91
+#: \wp-content\plugins\jigoshop\languages\countries.php:90
 msgid "Falkland Islands"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:92
+#: \wp-content\plugins\jigoshop\languages\countries.php:91
 msgid "Micronesia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:93
+#: \wp-content\plugins\jigoshop\languages\countries.php:92
 msgid "Faroe Islands"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:94
+#: \wp-content\plugins\jigoshop\languages\countries.php:93
 msgid "France"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:95
+#: \wp-content\plugins\jigoshop\languages\countries.php:94
 msgid "Gabon"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:96
+#: \wp-content\plugins\jigoshop\languages\countries.php:95
 msgid "United Kingdom"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:97
+#: \wp-content\plugins\jigoshop\languages\countries.php:96
 msgid "Grenada"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:98
+#: \wp-content\plugins\jigoshop\languages\countries.php:97
 msgid "Georgia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:99
+#: \wp-content\plugins\jigoshop\languages\countries.php:98
 msgid "French Guiana"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:100
+#: \wp-content\plugins\jigoshop\languages\countries.php:99
 msgid "Guernsey"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:101
+#: \wp-content\plugins\jigoshop\languages\countries.php:100
 msgid "Ghana"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:102
+#: \wp-content\plugins\jigoshop\languages\countries.php:101
 msgid "Gibraltar"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:103
+#: \wp-content\plugins\jigoshop\languages\countries.php:102
 msgid "Greenland"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:104
+#: \wp-content\plugins\jigoshop\languages\countries.php:103
 msgid "Gambia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:105
+#: \wp-content\plugins\jigoshop\languages\countries.php:104
 msgid "Guinea"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:106
+#: \wp-content\plugins\jigoshop\languages\countries.php:105
 msgid "Guadeloupe"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:107
+#: \wp-content\plugins\jigoshop\languages\countries.php:106
 msgid "Equatorial Guinea"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:108
+#: \wp-content\plugins\jigoshop\languages\countries.php:107
 msgid "Greece"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:109
-msgid "South Georgia and the South Sandwich Islands"
+#: \wp-content\plugins\jigoshop\languages\countries.php:108
+msgid "South Georgia/Sandwich Islands"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:110
+#: \wp-content\plugins\jigoshop\languages\countries.php:109
 msgid "Guatemala"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:111
+#: \wp-content\plugins\jigoshop\languages\countries.php:110
 msgid "Guam"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:112
+#: \wp-content\plugins\jigoshop\languages\countries.php:111
 msgid "Guinea-Bissau"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:113
+#: \wp-content\plugins\jigoshop\languages\countries.php:112
 msgid "Guyana"
 msgstr ""
 
+#: \wp-content\plugins\jigoshop\languages\countries.php:113
+msgid "Hong Kong"
+msgstr ""
+
 #: \wp-content\plugins\jigoshop\languages\countries.php:114
-msgid "Hong Kong S.A.R., China"
-msgstr ""
-
-#: \wp-content\plugins\jigoshop\languages\countries.php:115
-msgid "Heard Island and McDonald Islands"
-msgstr ""
-
-#: \wp-content\plugins\jigoshop\languages\countries.php:116
 msgid "Honduras"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:117
+#: \wp-content\plugins\jigoshop\languages\countries.php:115
 msgid "Croatia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:118
+#: \wp-content\plugins\jigoshop\languages\countries.php:116
 msgid "Haiti"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:119
+#: \wp-content\plugins\jigoshop\languages\countries.php:117
 msgid "Hungary"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:120
+#: \wp-content\plugins\jigoshop\languages\countries.php:118
 msgid "Indonesia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:121
+#: \wp-content\plugins\jigoshop\languages\countries.php:119
 msgid "Ireland"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:122
+#: \wp-content\plugins\jigoshop\languages\countries.php:120
 msgid "Israel"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:123
+#: \wp-content\plugins\jigoshop\languages\countries.php:121
 msgid "Isle of Man"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:124
+#: \wp-content\plugins\jigoshop\languages\countries.php:122
 msgid "India"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:125
+#: \wp-content\plugins\jigoshop\languages\countries.php:123
 msgid "British Indian Ocean Territory"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:126
+#: \wp-content\plugins\jigoshop\languages\countries.php:124
 msgid "Iraq"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:127
+#: \wp-content\plugins\jigoshop\languages\countries.php:125
 msgid "Iran"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:128
+#: \wp-content\plugins\jigoshop\languages\countries.php:126
 msgid "Iceland"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:129
+#: \wp-content\plugins\jigoshop\languages\countries.php:127
 msgid "Italy"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:130
+#: \wp-content\plugins\jigoshop\languages\countries.php:128
 msgid "Jersey"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:131
+#: \wp-content\plugins\jigoshop\languages\countries.php:129
 msgid "Jamaica"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:132
+#: \wp-content\plugins\jigoshop\languages\countries.php:130
 msgid "Jordan"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:133
+#: \wp-content\plugins\jigoshop\languages\countries.php:131
 msgid "Japan"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:134
+#: \wp-content\plugins\jigoshop\languages\countries.php:132
 msgid "Kenya"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:135
+#: \wp-content\plugins\jigoshop\languages\countries.php:133
 msgid "Kyrgyzstan"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:136
+#: \wp-content\plugins\jigoshop\languages\countries.php:134
 msgid "Cambodia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:137
+#: \wp-content\plugins\jigoshop\languages\countries.php:135
 msgid "Kiribati"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:138
+#: \wp-content\plugins\jigoshop\languages\countries.php:136
 msgid "Comoros"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:139
+#: \wp-content\plugins\jigoshop\languages\countries.php:137
 msgid "Saint Kitts and Nevis"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:140
+#: \wp-content\plugins\jigoshop\languages\countries.php:138
 msgid "North Korea"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:141
+#: \wp-content\plugins\jigoshop\languages\countries.php:139
 msgid "South Korea"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:142
+#: \wp-content\plugins\jigoshop\languages\countries.php:140
 msgid "Kuwait"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:143
+#: \wp-content\plugins\jigoshop\languages\countries.php:141
 msgid "Cayman Islands"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:144
+#: \wp-content\plugins\jigoshop\languages\countries.php:142
 msgid "Kazakhstan"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:145
+#: \wp-content\plugins\jigoshop\languages\countries.php:143
 msgid "Laos"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:146
+#: \wp-content\plugins\jigoshop\languages\countries.php:144
 msgid "Lebanon"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:147
+#: \wp-content\plugins\jigoshop\languages\countries.php:145
 msgid "Saint Lucia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:148
+#: \wp-content\plugins\jigoshop\languages\countries.php:146
 msgid "Liechtenstein"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:149
+#: \wp-content\plugins\jigoshop\languages\countries.php:147
 msgid "Sri Lanka"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:150
+#: \wp-content\plugins\jigoshop\languages\countries.php:148
 msgid "Liberia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:151
+#: \wp-content\plugins\jigoshop\languages\countries.php:149
 msgid "Lesotho"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:152
+#: \wp-content\plugins\jigoshop\languages\countries.php:150
 msgid "Lithuania"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:153
+#: \wp-content\plugins\jigoshop\languages\countries.php:151
 msgid "Luxembourg"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:154
+#: \wp-content\plugins\jigoshop\languages\countries.php:152
 msgid "Latvia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:155
+#: \wp-content\plugins\jigoshop\languages\countries.php:153
 msgid "Libya"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:156
+#: \wp-content\plugins\jigoshop\languages\countries.php:154
 msgid "Morocco"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:157
+#: \wp-content\plugins\jigoshop\languages\countries.php:155
 msgid "Monaco"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:158
+#: \wp-content\plugins\jigoshop\languages\countries.php:156
 msgid "Moldova"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:159
+#: \wp-content\plugins\jigoshop\languages\countries.php:157
 msgid "Montenegro"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:160
+#: \wp-content\plugins\jigoshop\languages\countries.php:158
 msgid "Saint Martin (French part)"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:161
+#: \wp-content\plugins\jigoshop\languages\countries.php:159
 msgid "Madagascar"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:162
+#: \wp-content\plugins\jigoshop\languages\countries.php:160
 msgid "Marshall Islands"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:163
+#: \wp-content\plugins\jigoshop\languages\countries.php:161
 msgid "Macedonia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:164
+#: \wp-content\plugins\jigoshop\languages\countries.php:162
 msgid "Mali"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:165
+#: \wp-content\plugins\jigoshop\languages\countries.php:163
 msgid "Myanmar"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:166
+#: \wp-content\plugins\jigoshop\languages\countries.php:164
 msgid "Mongolia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:167
+#: \wp-content\plugins\jigoshop\languages\countries.php:165
 msgid "Macao S.A.R., China"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:168
+#: \wp-content\plugins\jigoshop\languages\countries.php:166
 msgid "Northern Mariana Islands"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:169
+#: \wp-content\plugins\jigoshop\languages\countries.php:167
 msgid "Martinique"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:170
+#: \wp-content\plugins\jigoshop\languages\countries.php:168
 msgid "Mauritania"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:171
+#: \wp-content\plugins\jigoshop\languages\countries.php:169
 msgid "Montserrat"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:172
+#: \wp-content\plugins\jigoshop\languages\countries.php:170
 msgid "Malta"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:173
+#: \wp-content\plugins\jigoshop\languages\countries.php:171
 msgid "Mauritius"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:174
+#: \wp-content\plugins\jigoshop\languages\countries.php:172
 msgid "Maldives"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:175
+#: \wp-content\plugins\jigoshop\languages\countries.php:173
 msgid "Malawi"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:176
+#: \wp-content\plugins\jigoshop\languages\countries.php:174
 msgid "Mexico"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:177
+#: \wp-content\plugins\jigoshop\languages\countries.php:175
 msgid "Malaysia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:178
+#: \wp-content\plugins\jigoshop\languages\countries.php:176
 msgid "Mozambique"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:179
+#: \wp-content\plugins\jigoshop\languages\countries.php:177
 msgid "Namibia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:180
+#: \wp-content\plugins\jigoshop\languages\countries.php:178
 msgid "New Caledonia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:181
+#: \wp-content\plugins\jigoshop\languages\countries.php:179
 msgid "Niger"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:182
+#: \wp-content\plugins\jigoshop\languages\countries.php:180
 msgid "Norfolk Island"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:183
+#: \wp-content\plugins\jigoshop\languages\countries.php:181
 msgid "Nigeria"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:184
+#: \wp-content\plugins\jigoshop\languages\countries.php:182
 msgid "Nicaragua"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:185
+#: \wp-content\plugins\jigoshop\languages\countries.php:183
 msgid "Netherlands"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:186
+#: \wp-content\plugins\jigoshop\languages\countries.php:184
 msgid "Norway"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:187
+#: \wp-content\plugins\jigoshop\languages\countries.php:185
 msgid "Nepal"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:188
+#: \wp-content\plugins\jigoshop\languages\countries.php:186
 msgid "Nauru"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:189
+#: \wp-content\plugins\jigoshop\languages\countries.php:187
 msgid "Niue"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:190
+#: \wp-content\plugins\jigoshop\languages\countries.php:188
 msgid "New Zealand"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:191
+#: \wp-content\plugins\jigoshop\languages\countries.php:189
 msgid "Oman"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:192
+#: \wp-content\plugins\jigoshop\languages\countries.php:190
 msgid "Panama"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:193
+#: \wp-content\plugins\jigoshop\languages\countries.php:191
 msgid "Peru"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:194
+#: \wp-content\plugins\jigoshop\languages\countries.php:192
 msgid "French Polynesia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:195
+#: \wp-content\plugins\jigoshop\languages\countries.php:193
 msgid "Papua New Guinea"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:196
+#: \wp-content\plugins\jigoshop\languages\countries.php:194
 msgid "Philippines"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:197
+#: \wp-content\plugins\jigoshop\languages\countries.php:195
 msgid "Pakistan"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:198
+#: \wp-content\plugins\jigoshop\languages\countries.php:196
 msgid "Poland"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:199
+#: \wp-content\plugins\jigoshop\languages\countries.php:197
 msgid "Saint Pierre and Miquelon"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:200
+#: \wp-content\plugins\jigoshop\languages\countries.php:198
 msgid "Pitcairn"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:201
+#: \wp-content\plugins\jigoshop\languages\countries.php:199
 msgid "Puerto Rico"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:202
+#: \wp-content\plugins\jigoshop\languages\countries.php:200
 msgid "Palestinian Territory"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:203
+#: \wp-content\plugins\jigoshop\languages\countries.php:201
 msgid "Portugal"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:204
+#: \wp-content\plugins\jigoshop\languages\countries.php:202
 msgid "Palau"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:205
+#: \wp-content\plugins\jigoshop\languages\countries.php:203
 msgid "Paraguay"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:206
+#: \wp-content\plugins\jigoshop\languages\countries.php:204
 msgid "Qatar"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:207
+#: \wp-content\plugins\jigoshop\languages\countries.php:205
 msgid "Reunion"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:208
+#: \wp-content\plugins\jigoshop\languages\countries.php:206
 msgid "Romania"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:209
+#: \wp-content\plugins\jigoshop\languages\countries.php:207
 msgid "Serbia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:210
+#: \wp-content\plugins\jigoshop\languages\countries.php:208
 msgid "Russia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:211
+#: \wp-content\plugins\jigoshop\languages\countries.php:209
 msgid "Rwanda"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:212
+#: \wp-content\plugins\jigoshop\languages\countries.php:210
 msgid "Saudi Arabia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:213
+#: \wp-content\plugins\jigoshop\languages\countries.php:211
 msgid "Solomon Islands"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:214
+#: \wp-content\plugins\jigoshop\languages\countries.php:212
 msgid "Seychelles"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:215
+#: \wp-content\plugins\jigoshop\languages\countries.php:213
 msgid "Sudan"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:216
+#: \wp-content\plugins\jigoshop\languages\countries.php:214
 msgid "Sweden"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:217
+#: \wp-content\plugins\jigoshop\languages\countries.php:215
 msgid "Singapore"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:218
+#: \wp-content\plugins\jigoshop\languages\countries.php:216
 msgid "Saint Helena"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:219
+#: \wp-content\plugins\jigoshop\languages\countries.php:217
 msgid "Slovenia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:220
+#: \wp-content\plugins\jigoshop\languages\countries.php:218
 msgid "Svalbard and Jan Mayen"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:221
+#: \wp-content\plugins\jigoshop\languages\countries.php:219
 msgid "Slovakia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:222
+#: \wp-content\plugins\jigoshop\languages\countries.php:220
 msgid "Sierra Leone"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:223
+#: \wp-content\plugins\jigoshop\languages\countries.php:221
 msgid "San Marino"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:224
+#: \wp-content\plugins\jigoshop\languages\countries.php:222
 msgid "Senegal"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:225
+#: \wp-content\plugins\jigoshop\languages\countries.php:223
 msgid "Somalia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:226
+#: \wp-content\plugins\jigoshop\languages\countries.php:224
 msgid "Suriname"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:227
+#: \wp-content\plugins\jigoshop\languages\countries.php:225
 msgid "Sao Tome and Principe"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:228
+#: \wp-content\plugins\jigoshop\languages\countries.php:226
 msgid "El Salvador"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:229
+#: \wp-content\plugins\jigoshop\languages\countries.php:227
 msgid "Syria"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:230
+#: \wp-content\plugins\jigoshop\languages\countries.php:228
 msgid "Swaziland"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:231
+#: \wp-content\plugins\jigoshop\languages\countries.php:229
 msgid "Turks and Caicos Islands"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:232
+#: \wp-content\plugins\jigoshop\languages\countries.php:230
 msgid "Chad"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:233
+#: \wp-content\plugins\jigoshop\languages\countries.php:231
 msgid "French Southern Territories"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:234
+#: \wp-content\plugins\jigoshop\languages\countries.php:232
 msgid "Togo"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:235
+#: \wp-content\plugins\jigoshop\languages\countries.php:233
 msgid "Thailand"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:236
+#: \wp-content\plugins\jigoshop\languages\countries.php:234
 msgid "Tajikistan"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:237
+#: \wp-content\plugins\jigoshop\languages\countries.php:235
 msgid "Tokelau"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:238
+#: \wp-content\plugins\jigoshop\languages\countries.php:236
 msgid "Timor-Leste"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:239
+#: \wp-content\plugins\jigoshop\languages\countries.php:237
 msgid "Turkmenistan"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:240
+#: \wp-content\plugins\jigoshop\languages\countries.php:238
 msgid "Tunisia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:241
+#: \wp-content\plugins\jigoshop\languages\countries.php:239
 msgid "Tonga"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:242
+#: \wp-content\plugins\jigoshop\languages\countries.php:240
 msgid "Turkey"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:243
+#: \wp-content\plugins\jigoshop\languages\countries.php:241
 msgid "Trinidad and Tobago"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:244
+#: \wp-content\plugins\jigoshop\languages\countries.php:242
 msgid "Tuvalu"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:245
+#: \wp-content\plugins\jigoshop\languages\countries.php:243
 msgid "Taiwan"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:246
+#: \wp-content\plugins\jigoshop\languages\countries.php:244
 msgid "Tanzania"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:247
+#: \wp-content\plugins\jigoshop\languages\countries.php:245
 msgid "Ukraine"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:248
+#: \wp-content\plugins\jigoshop\languages\countries.php:246
 msgid "Uganda"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:249
-msgid "United States Minor Outlying Islands"
+#: \wp-content\plugins\jigoshop\languages\countries.php:247
+msgid "US Minor Outlying Islands"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:250
+#: \wp-content\plugins\jigoshop\languages\countries.php:248
 msgid "United States"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:251
+#: \wp-content\plugins\jigoshop\languages\countries.php:249
+msgid "US Armed Forces"
+msgstr ""
+
+#: \wp-content\plugins\jigoshop\languages\countries.php:250
 msgid "Uruguay"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:252
+#: \wp-content\plugins\jigoshop\languages\countries.php:251
 msgid "Uzbekistan"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:253
+#: \wp-content\plugins\jigoshop\languages\countries.php:252
 msgid "Vatican"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:254
+#: \wp-content\plugins\jigoshop\languages\countries.php:253
 msgid "Saint Vincent and the Grenadines"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:255
+#: \wp-content\plugins\jigoshop\languages\countries.php:254
 msgid "Venezuela"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:256
+#: \wp-content\plugins\jigoshop\languages\countries.php:255
 msgid "British Virgin Islands"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:257
+#: \wp-content\plugins\jigoshop\languages\countries.php:256
 msgid "U.S. Virgin Islands"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:258
-msgid "Vietnam"
+#: \wp-content\plugins\jigoshop\languages\countries.php:257
+msgid "Viet nam"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:259
+#: \wp-content\plugins\jigoshop\languages\countries.php:258
 msgid "Vanuatu"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:260
+#: \wp-content\plugins\jigoshop\languages\countries.php:259
 msgid "Wallis and Futuna"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:261
+#: \wp-content\plugins\jigoshop\languages\countries.php:260
 msgid "Samoa"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:262
+#: \wp-content\plugins\jigoshop\languages\countries.php:261
 msgid "Yemen"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:263
+#: \wp-content\plugins\jigoshop\languages\countries.php:262
 msgid "Mayotte"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:264
+#: \wp-content\plugins\jigoshop\languages\countries.php:263
 msgid "South Africa"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:265
+#: \wp-content\plugins\jigoshop\languages\countries.php:264
 msgid "Zambia"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\languages\countries.php:266
+#: \wp-content\plugins\jigoshop\languages\countries.php:265
 msgid "Zimbabwe"
 msgstr ""
 
@@ -5325,11 +5369,11 @@ msgstr ""
 #: \wp-content\plugins\jigoshop\widgets\layered_nav.php:215
 #: \wp-content\plugins\jigoshop\widgets\price-filter.php:159
 #: \wp-content\plugins\jigoshop\widgets\product-categories.php:187
-#: \wp-content\plugins\jigoshop\widgets\products_on_sale.php:203
+#: \wp-content\plugins\jigoshop\widgets\products_on_sale.php:202
 #: \wp-content\plugins\jigoshop\widgets\product_search.php:111
 #: \wp-content\plugins\jigoshop\widgets\product_tag_cloud.php:114
 #: \wp-content\plugins\jigoshop\widgets\random-products.php:156
-#: \wp-content\plugins\jigoshop\widgets\recently_viewed.php:229
+#: \wp-content\plugins\jigoshop\widgets\recently_viewed.php:243
 #: \wp-content\plugins\jigoshop\widgets\recent_products.php:213
 #: \wp-content\plugins\jigoshop\widgets\recent_reviews.php:228
 #: \wp-content\plugins\jigoshop\widgets\top-rated.php:224
@@ -5338,9 +5382,9 @@ msgstr ""
 
 #: \wp-content\plugins\jigoshop\widgets\best-sellers.php:200
 #: \wp-content\plugins\jigoshop\widgets\featured-products.php:200
-#: \wp-content\plugins\jigoshop\widgets\products_on_sale.php:210
+#: \wp-content\plugins\jigoshop\widgets\products_on_sale.php:209
 #: \wp-content\plugins\jigoshop\widgets\random-products.php:163
-#: \wp-content\plugins\jigoshop\widgets\recently_viewed.php:236
+#: \wp-content\plugins\jigoshop\widgets\recently_viewed.php:250
 #: \wp-content\plugins\jigoshop\widgets\recent_products.php:220
 #: \wp-content\plugins\jigoshop\widgets\recent_reviews.php:235
 #: \wp-content\plugins\jigoshop\widgets\top-rated.php:231
@@ -5453,18 +5497,6 @@ msgstr ""
 
 #: \wp-content\plugins\jigoshop\widgets\product_search.php:52
 msgid "Product Search"
-msgstr ""
-
-#: \wp-content\plugins\jigoshop\widgets\product_search.php:64
-msgid "Search for:"
-msgstr ""
-
-#: \wp-content\plugins\jigoshop\widgets\product_search.php:65
-msgid "Search for products"
-msgstr ""
-
-#: \wp-content\plugins\jigoshop\widgets\product_search.php:66
-msgid "Search"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\widgets\product_tag_cloud.php:29
