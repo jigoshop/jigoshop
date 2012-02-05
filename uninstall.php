@@ -28,16 +28,16 @@ delete_transient( 'jigoshop_widget_cache' );
 remove_role( 'customer' );
 
 // Pages
-wp_delete_post( jigoshop_get_page_id('shop'), true );
-wp_delete_post( jigoshop_get_page_id('cart'), true );
-wp_delete_post( jigoshop_get_page_id('checkout'), true );
-wp_delete_post( jigoshop_get_page_id('order-tracking'), true );
-wp_delete_post( jigoshop_get_page_id('my-account'), true );
-wp_delete_post( jigoshop_get_page_id('edit-address'), true );
-wp_delete_post( jigoshop_get_page_id('view-order'), true );
-wp_delete_post( jigoshop_get_page_id('change-password'), true );
-wp_delete_post( jigoshop_get_page_id('pay'), true );
-wp_delete_post( jigoshop_get_page_id('thanks'), true );
+wp_delete_post( get_option('jigoshop_cart_page_id'), true );
+wp_delete_post( get_option('jigoshop_change_password_page_id'), true );
+wp_delete_post( get_option('jigoshop_checkout_page_id'), true );
+wp_delete_post( get_option('jigoshop_edit_address_page_id'), true );
+wp_delete_post( get_option('jigoshop_myaccount_page_id'), true );
+wp_delete_post( get_option('jigoshop_pay_page_id'), true );
+wp_delete_post( get_option('jigoshop_shop_page_id'), true );
+wp_delete_post( get_option('jigoshop_thanks_page_id'), true );
+wp_delete_post( get_option('jigoshop_track_order_page_id'), true );
+wp_delete_post( get_option('jigoshop_view_order_page_id'), true );
 
 // Tables
 $wpdb->query("DROP TABLE IF EXISTS ".$wpdb->prefix."jigoshop_attribute_taxonomies");
