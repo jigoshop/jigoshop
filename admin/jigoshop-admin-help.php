@@ -35,9 +35,10 @@ function jigoshop_product_attributes_help() {
 		<p>Thats really all there is to it, enjoy!</p>
 	';
 
+	// TODO: ADD RELEVANT ARTICLE
 	$sidebar_content = '
         <p><strong>'. __('For more information') . ':</strong></p>
-        <p><a href="http://forum.jigoshop.com/kb/" target="_blank">Documentation on<br/>Product Attributes *TODO: ADD RELEVANT ARTICLE*</a></p>
+        <p><a href="http://forum.jigoshop.com/kb/" target="_blank">Documentation on<br/>Product Attributes</a></p>
         <p><a href="http://jigoshop.com/support" target="_blank">Support Forum</a></p>
     ';
     $screen->set_help_sidebar( $sidebar_content );
@@ -84,10 +85,11 @@ function jigoshop_product_category_help() {
 		</ul>
 		<p>You can change the display of this screen using the Screen Options tab to set how many items are displayed per screen and to display/hide columns in the table.</p>
     ';
-
+	
+	// *TODO: ADD RELEVANT ARTICLE*
 	$sidebar_content = '
         <p><strong>'. __('For more information') . ':</strong></p>
-        <p><a href="http://forum.jigoshop.com/kb/" target="_blank">Documentation on<br/>Product Categories *TODO: ADD RELEVANT ARTICLE*</a></p>
+        <p><a href="http://forum.jigoshop.com/kb/" target="_blank">Documentation on<br/>Product Categories</a></p>
         <p><a href="http://jigoshop.com/support" target="_blank">Support Forum</a></p>
     ';
     $screen->set_help_sidebar( $sidebar_content );
@@ -127,9 +129,10 @@ function jigoshop_product_tag_help() {
 		<p>You can change the display of this screen using the Screen Options tab to set how many items are displayed per screen and to display/hide columns in the table.</p>
     ';
 
+	// *TODO: ADD RELEVANT ARTICLE*
 	$sidebar_content = '
         <p><strong>'. __('For more information') . ':</strong></p>
-        <p><a href="http://forum.jigoshop.com/kb/" target="_blank">Documentation on<br/>Product Tags *TODO: ADD RELEVANT ARTICLE*</a></p>
+        <p><a href="http://forum.jigoshop.com/kb/" target="_blank">Documentation on<br/>Product Tags</a></p>
         <p><a href="http://jigoshop.com/support" target="_blank">Support Forum</a></p>
     ';
     $screen->set_help_sidebar( $sidebar_content );
@@ -180,9 +183,10 @@ function jigoshop_product_list_help() {
 		<p>'.__('When using Bulk Edit, you can change the metadata (categories, author, etc.) for all selected products at once. To remove a product from the grouping, just click the x next to its name in the Bulk Edit area that appears', 'jigoshop').'.</p>
     ';
 
+	// *TODO: ADD RELEVANT ARTICLE*
     $sidebar_content = '
         <p><strong>'. __('For more information') . ':</strong></p>
-        <p><a href="http://forum.jigoshop.com/kb/" target="_blank">Documentation on<br/>Managing Products *TODO: ADD RELEVANT ARTICLE*</a></p>
+        <p><a href="http://forum.jigoshop.com/kb/" target="_blank">Documentation on<br/>Managing Products</a></p>
         <p><a href="http://jigoshop.com/support" target="_blank">Support Forum</a></p>
     ';
     $screen->set_help_sidebar( $sidebar_content );
