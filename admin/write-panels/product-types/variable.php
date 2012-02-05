@@ -238,7 +238,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 				<input id="do_actions" type="submit" class="button-secondary" value="Apply">
 
 				<?php if($this->has_variable_attributes($attributes)): ?>
-					<button type='button' class='button button-secondary add_variation'><?php _e('Add Variation', 'jigoshop') ?></button>
+					<button type='button' class='button button-primary add_variation'><?php _e('Add Variation', 'jigoshop') ?></button>
 				<?php endif; ?>
 			</div>
 			<div class='jigoshop_variations'>
