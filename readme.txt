@@ -1,5 +1,7 @@
 === Jigoshop - WordPress eCommerce ===
+Contributors: Jigowatt
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigowatt, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.1
 Tested up to: 3.3.1
 Stable tag: 1.0
@@ -31,15 +33,21 @@ Manage your stock levels and customer orders easily. Jigoshop has been engineere
 
 = EXTEND YOUR SHOP =
 
-<a href="http://jigoshop.com/product-category/extensions/">Extend Jigoshop</a> with Payment Gateways, Shipping Methods, and various other plugins.
+Extend Jigoshop with Payment Gateways, Shipping Methods, and various other plugins:
 
-<a href="http://jigoshop.com/product-category/themes/">Premium themes optimised for Jigoshop</a>
+http://jigoshop.com/product-category/extensions/
+
+Premium themes optimised for Jigoshop:
+
+http://jigoshop.com/product-category/themes
 
 = MORE INFO =
 
 Built upon the WordPress core you get all the benefits of this global leading platform: free, easy to use, secure, highly customisable and with a great support community to hold your hand.
 
-<a href="http://jigoshop.com" title="WordPress eCommerce">Find out more</a> on our official Jigoshop website.
+Find out more on our official Jigoshop website:
+
+http://jigoshop.com
 
 == Installation ==
 
@@ -58,7 +66,7 @@ Built upon the WordPress core you get all the benefits of this global leading pl
 3.  Upload the `/jigoshop/` folder to the `/wp-content/plugins/` folder on your site
 4.  Visit the plugins page in WordPress Admin to activate the Jigoshop plugin
 
-You can also navigate to our <a href="http://forum.jigoshop.com/kb/getting-started/installation">more in-depth installation or upgrade</a> guides.
+You can also navigate to the <a href="http://forum.jigoshop.com/kb/getting-started/installation">more in-depth installation or upgrade</a> guides.
 
 = Setting up Jigoshop =
 
@@ -154,7 +162,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * ability to define tax label for view
 * shows tax percentage in view
 
-= 0.9.9.4 RC2 (not publicly released via WordPress) =
+= 0.9.9.4 RC2 (private release) =
 * added option for out of stock notification that sets products to hidden after Order quantity processing
 * added support for backorders on variations
 * added product dimensions for length, width, and height
@@ -331,3 +339,8 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 = 0.9.6 - 2011-04-10 =
 
 * Public Beta Release
+
+== Upgrade Notice ==
+
+= 1.0.1
+Widgets fixed, new shortcode, uninstaller added, and plenty of other bug fixes!
