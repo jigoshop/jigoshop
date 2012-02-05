@@ -136,6 +136,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 
 = 1.0.1 =
 * update all translation files to include latest strings and remove obsolete strings
+* update uninstall.php to remove jigoshop database entries when deleting the plugin through plugin manager
 * add Turkish, Italian, Portuguese, Norwegian, Portuguese Brazilian translations
 * add new shortcode: Products Search
 * add bank information to outgoing order email if payment method is bank transfer
