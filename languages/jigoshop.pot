@@ -1,6 +1,7 @@
 # Jigoshop translation strings
 # Copyright (C) 2011-2012
 # This file is distributed under the same license as the Jigoshop package.
+# Last Updated: February 06, 2012
 
 "Project-Id-Version: Jigoshop v1.0\n"
 "Report-Msgid-Bugs-To: info@jigoshop.com\n"
@@ -10,12 +11,6 @@
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:51
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings.php:475
-#, fuzzy
-msgid ""
-msgstr ""
 
 #: \wp-content\plugins\jigoshop\jigoshop.php:281
 #: \wp-content\plugins\jigoshop\jigoshop_template_functions.php:627
@@ -5314,10 +5309,10 @@ msgstr ""
 #: \wp-content\plugins\jigoshop\widgets\layered_nav.php:215
 #: \wp-content\plugins\jigoshop\widgets\price-filter.php:159
 #: \wp-content\plugins\jigoshop\widgets\product-categories.php:187
-#: \wp-content\plugins\jigoshop\widgets\products_on_sale.php:202
+#: \wp-content\plugins\jigoshop\widgets\products_on_sale.php:203
 #: \wp-content\plugins\jigoshop\widgets\product_search.php:111
 #: \wp-content\plugins\jigoshop\widgets\product_tag_cloud.php:114
-#: \wp-content\plugins\jigoshop\widgets\random-products.php:156
+#: \wp-content\plugins\jigoshop\widgets\random-products.php:157
 #: \wp-content\plugins\jigoshop\widgets\recently_viewed.php:243
 #: \wp-content\plugins\jigoshop\widgets\recent_products.php:213
 #: \wp-content\plugins\jigoshop\widgets\recent_reviews.php:228
@@ -5327,8 +5322,8 @@ msgstr ""
 
 #: \wp-content\plugins\jigoshop\widgets\best-sellers.php:200
 #: \wp-content\plugins\jigoshop\widgets\featured-products.php:200
-#: \wp-content\plugins\jigoshop\widgets\products_on_sale.php:209
-#: \wp-content\plugins\jigoshop\widgets\random-products.php:163
+#: \wp-content\plugins\jigoshop\widgets\products_on_sale.php:210
+#: \wp-content\plugins\jigoshop\widgets\random-products.php:164
 #: \wp-content\plugins\jigoshop\widgets\recently_viewed.php:250
 #: \wp-content\plugins\jigoshop\widgets\recent_products.php:220
 #: \wp-content\plugins\jigoshop\widgets\recent_reviews.php:235
