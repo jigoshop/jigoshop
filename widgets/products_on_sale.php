@@ -143,6 +143,7 @@
 			// Reset the global $the_post as this query will have stomped on it
 			wp_reset_postdata();
 		}
+		ob_get_flush();
 	}
 
 	/**
