@@ -1,11 +1,15 @@
 # Jigoshop translation strings
 # Copyright (C) 2011-2012
 # This file is distributed under the same license as the Jigoshop package.
-# Last Updated: February 06, 2012
+# Last Updated: February 06, 2012.
 
-"Project-Id-Version: Jigoshop v1.0\n"
-"Report-Msgid-Bugs-To: info@jigoshop.com\n"
-"POT-Creation-Date: 2012-02-06 11:38-0500\n"
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Jigoshop v1.0.1\n"
+"Report-Msgid-Bugs-To: Jigoshop <info@jigoshop.com>\n"
+"POT-Creation-Date: 2012-02-06 14:23-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jigoshop <info@jigoshop.com>\n"
 "Language-Team: Jigoshop <info@jigoshop.com>\n"
 "MIME-Version: 1.0\n"

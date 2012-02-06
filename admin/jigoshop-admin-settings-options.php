@@ -48,7 +48,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(
 		'name' => __('Send Jigoshop emails from','jigoshop'),
-		'desc' 		=> __(''),
+		'desc' 		=> '',
 		'tip' 		=> __('The email used to send all Jigoshop related emails, such as order confirmations and notices.','jigoshop'),
 		'id' 		=> 'jigoshop_email',
 		'css' 		=> 'width:250px;',

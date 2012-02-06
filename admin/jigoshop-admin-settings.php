@@ -472,7 +472,7 @@ function jigoshop_admin_fields($options) {
                             <table class="coupon_rows" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th><?php _e('', 'jigoshop'); ?></th>
+                                        <th></th>
                                         <th><?php _e('Code', 'jigoshop'); ?></th>
                                         <th><?php _e('Type', 'jigoshop'); ?></th>
                                         <th><?php _e('Amount', 'jigoshop'); ?></th>
