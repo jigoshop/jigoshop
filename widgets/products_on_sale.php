@@ -65,8 +65,6 @@
 			return false;
 		}
 
-		// Start buffering
-		ob_start();
 		extract( $args );
 
 		// Set the widget title
