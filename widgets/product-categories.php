@@ -192,19 +192,19 @@ class Jigoshop_Widget_Product_Categories extends WP_Widget {
 		echo "
 		<p>
 			<input type='checkbox' class='checkbox' id='{$this->get_field_id('dropdown')}' name='{$this->get_field_name('dropdown')}'" . ( $dropdown ? 'checked' : null ) . " />
-			<label for='{$this->get_field_id( 'dropdown' )}'>" . __( 'Show as dropdown:', 'jigoshop' ) . "</label>
+			<label for='{$this->get_field_id( 'dropdown' )}'>" . __( 'Show as dropdown', 'jigoshop' ) . "</label>
 			<br/>";
 
 		// Show product count?
 		echo "
 			<input type='checkbox' class='checkbox' id='{$this->get_field_id('count')}' name='{$this->get_field_name('count')}'" . ( $count ? 'checked' : null ) . " />
-			<label for='{$this->get_field_id( 'count' )}'>" . __( 'Show product counts:', 'jigoshop' ) . "</label>
+			<label for='{$this->get_field_id( 'count' )}'>" . __( 'Show product counts', 'jigoshop' ) . "</label>
 			<br/>";
 
 		// Is hierarchical?
 		echo "
 			<input type='checkbox' class='checkbox' id='{$this->get_field_id('hierarchical')}' name='{$this->get_field_name('hierarchical')}'" . ( $hierarchical ? 'checked' : null ) . " />
-			<label for='{$this->get_field_id( 'hierarchical' )}'>" . __( 'Show hierarchy:', 'jigoshop' ) . "</label>
+			<label for='{$this->get_field_id( 'hierarchical' )}'>" . __( 'Show hierarchy', 'jigoshop' ) . "</label>
 		</p>";
 	}
 

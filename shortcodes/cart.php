@@ -211,7 +211,7 @@ function jigoshop_cart($atts) {
                             if (get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::get_subtotal_inc_tax()) :
                                 if (jigoshop_cart::get_cart_shipping_total()) : ?>
                                 <tr>
-                                    <th class="cart-row-shipping-title"><?php _e('Shipping', 'jigoshop'); ?> <small><?php echo jigoshop_countries::shipping_to_prefix() . ' ' . jigoshop_countries::$countries[jigoshop_customer::get_shipping_country()]; ?></small></th>
+                                    <th class="cart-row-shipping-title"><?php _e('Shipping', 'jigoshop'); ?> <small><?php echo jigoshop_countries::shipping_to_prefix() . ' ' . __(jigoshop_countries::$countries[jigoshop_customer::get_shipping_country()], 'jigoshop'); ?></small></th>
                                     <td class="cart-row-shipping"><?php echo jigoshop_cart::get_cart_shipping_total(); ?> <small><?php echo jigoshop_cart::get_cart_shipping_title(); ?></small></td>
                                 </tr>
                                 <?php endif; 
@@ -233,7 +233,7 @@ function jigoshop_cart($atts) {
                             <?php 
                             else :
                                 if (jigoshop_cart::get_cart_shipping_total()) : ?><tr>
-                                    <th class="cart-row-shipping-title"><?php _e('Shipping', 'jigoshop'); ?> <small><?php echo jigoshop_countries::shipping_to_prefix() . ' ' . jigoshop_countries::$countries[jigoshop_customer::get_shipping_country()]; ?></small></th>
+                                    <th class="cart-row-shipping-title"><?php _e('Shipping', 'jigoshop'); ?> <small><?php echo jigoshop_countries::shipping_to_prefix() . ' ' . __(jigoshop_countries::$countries[jigoshop_customer::get_shipping_country()], 'jigoshop'); ?></small></th>
                                     <td class="cart-row-shipping"><?php echo jigoshop_cart::get_cart_shipping_total(); ?> <small><?php echo jigoshop_cart::get_cart_shipping_title(); ?></small></td>
                                 </tr>
                             <?php endif; endif; ?>
