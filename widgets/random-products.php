@@ -47,8 +47,6 @@ class Jigoshop_Widget_Random_Products extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 
-		// Start buffering
-		ob_start();
 		extract($args);
 
 		// Set the widget title
