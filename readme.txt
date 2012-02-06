@@ -16,7 +16,7 @@ Complete your shop in minutes with physical and downloadable products or even se
 
 With the option to create a multitude of product types and apply detailed attributes customers can easily refine your catalog, ensuring they find what they're looking for in just a couple of clicks.
 
-= PRODUCT TYPES = 
+= PRODUCT TYPES =
 
 * Downloadable or Virtual products
 * Variable products (eg, offer `Size: S,M,L` for one product)
@@ -111,15 +111,20 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 
 == Changelog ==
 
-= 1.0.1 =
+= 1.0.1 - 2012-02-06 =
 * update all translation files to include latest strings and remove obsolete strings
 * update uninstall.php to remove jigoshop database entries when deleting the plugin through plugin manager
+* update included screenshots to reduce total file size
+* update Spain provinces (thank @dimitryz)
+* update readme.txt and readme.md files
 * add Turkish, Italian, Portuguese, Norwegian, Portuguese Brazilian translations
 * add new shortcode: Products Search
 * add bank information to outgoing order email if payment method is bank transfer
 * add new setting: show stock amounts (to show or hide stock left in a product for customers)
+* fix bulk actions on variations when no variations are given
 * fix pagination on shortcodes, now displays only if you tell it to by adding pagination="yes" to your shortcode(s)
 * fix emails not sending from the address specified for Jigoshop emails
+* fix variation display in emails
 * fix emails not showing pretty titles for payment and shipping methods (ie, won't show "via bank_transfer" or "via flat_rate" anymore)
 * fix out of stock products
 * fix empty selectbox on Norway and some other countries for checkout page
