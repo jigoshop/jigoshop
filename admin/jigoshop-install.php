@@ -59,9 +59,25 @@ function install_jigoshop() {
  */
 function jigoshop_default_options() {
 	global $options_settings;
-	foreach ($options_settings as $value) {
-        if (isset($value['std'])) add_option($value['id'], $value['std']);
-    }
+
+	foreach ($options_settings as $value) :
+
+        if (isset($value['std'])) :
+
+				if ($value['type']=='image_size') :
+
+					add_option($value['id'].'_w', $value['std']);
+					add_option($value['id'].'_h', $value['std']);
+
+				else :
+
+					add_option($value['id'], $value['std']);
+
+				endif;
+
+		endif;
+
+    endforeach;
     
     add_option('jigoshop_shop_slug', 'shop');
 }

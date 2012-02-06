@@ -250,22 +250,16 @@ function jigoshop_update_options() {
                     @delete_option($value['id']);
                 }
 
-            /* image values can not be empty, if empty fallback to default values */ elseif (isset($value['id']) && preg_match('/^jigoshop_shop_(tiny|thumbnail|small|large)_(h|w)$/', $value['id'])):
+			/* default back to standard image sizes if no value is entered */
+			elseif (isset($value['type']) && $value['type']=='image_size') :
 
-                $old_val = get_option($value['id'], false);
-                $size = intval(jigowatt_clean($_POST[$value['id']]));
-
-                if (!$size && $old_val !== false || $size == $old_val) {
-                    continue;
-                } else if (!$size) {
-                    $var_name = str_replace('jigoshop_', '', $value['id']);
-                    $size = jigoshop::get_var($var_name);
-                    $update_image_meta = true;
-                } else {
-                    $update_image_meta = true;
-                }
-
-                update_option($value['id'], $size);
+				if(isset($value['id']) && isset($_POST[$value['id'].'_w'])) {
+					update_option($value['id'].'_w', jigowatt_clean($_POST[$value['id'].'_w']));
+					update_option($value['id'].'_h', jigowatt_clean($_POST[$value['id'].'_h']));
+				} else {
+					update_option($value['id'].'_w', $value['std']);
+					update_option($value['id'].'_h', $value['std']);
+				}
 
             else:
 
@@ -384,6 +378,19 @@ function jigoshop_admin_fields($options) {
                         </td>
                     </tr><?php
                 break;
+			case 'image_size' :
+				?><tr>
+					<td class="titledesc"><?php echo $value['name'] ?>:</td>
+					<td class="forminp" valign="top" style="line-height:25px;height:25px;">
+
+						<?php _e('Width', 'jigoshop'); ?><input name="<?php echo esc_attr( $value['id'] ); ?>_w" id="<?php echo esc_attr( $value['id'] ); ?>_w" type="text" size="3" value="<?php if ( $size = get_option( $value['id'].'_w') ) echo $size; else echo $value['std']; ?>" />
+
+						<?php _e('Height', 'jigoshop'); ?> <input name="<?php echo esc_attr( $value['id'] ); ?>_h" id="<?php echo esc_attr( $value['id'] ); ?>_h" type="text" size="3" value="<?php if ( $size = get_option( $value['id'].'_h') ) echo $size; else echo $value['std']; ?>" />
+
+						<br /><small><?php echo $value['desc'] ?></small>
+					</td>
+				</tr><?php
+			break;
             case 'textarea':
                 ?><tr>
                         <td class="titledesc"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>

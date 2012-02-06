@@ -489,82 +489,39 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	array( 'name' => __('Image Options', 'jigoshop'), 'type' => 'title','desc' => __('Large variations from the defaults could require CSS modifications in your Theme.','jigoshop'), 'id' => '' ),
 
 	array(
-		'name' 		=> __('Tiny Image Width','jigoshop'),
-		'desc' 		=> __('Default = 36px','jigoshop'),
-		'tip' 		=> __('Set the width of the small image used in the Cart, Checkout, Orders and Widgets.','jigoshop'),
-		'id' 		=> 'jigoshop_shop_tiny_w',
-		'css' 		=> 'min-width:200px;',
-		'type' 		=> 'text',
+		'name' 		=> __('Tiny Images','jigoshop'),
+		'tip'		=> '',
+		'desc' 		=> __('The small image used in the Cart, Checkout, Orders and Widgets','jigoshop'),
+		'id' 		=> 'jigoshop_shop_tiny',
+		'css' 		=> '',
+		'type' 		=> 'image_size',
 		'std' 		=> 36
 	),
 
 	array(
-		'name' 		=> __('Tiny Image Height','jigoshop'),
-		'desc' 		=> __('Default = 36px','jigoshop'),
-		'tip' 		=> __('Set the height of the small image used in the Cart, Checkout, Orders and Widgets.','jigoshop'),
-		'id' 		=> 'jigoshop_shop_tiny_h',
-		'css' 		=> 'min-width:200px;',
-		'type' 		=> 'text',
-		'std' 		=> 36
-	),
-
-	array(
-		'name' 		=> __('Thumbnail Image Width','jigoshop'),
-		'desc' 		=> __('Default = 90px','jigoshop'),
-		'tip' 		=> __('Set the width of the thumbnail image for Single Product page extra images.','jigoshop'),
-		'id' 		=> 'jigoshop_shop_thumbnail_w',
-		'css' 		=> 'min-width:200px;',
-		'type' 		=> 'text',
+		'name' 		=> __('Thumbnail Images','jigoshop'),
+		'desc' 		=> __('The thumbnail image for Single Product page extra images.','jigoshop'),
+		'id' 		=> 'jigoshop_shop_thumbnail',
+		'css' 		=> '',
+		'type' 		=> 'image_size',
 		'std' 		=> 90
 	),
 
 	array(
-		'name' 		=> __('Thumbnail Image Height','jigoshop'),
-		'desc' 		=> __('Default = 90px','jigoshop'),
-		'tip' 		=> __('Set the height of the thumbnail image for Single Product page extra images.','jigoshop'),
-		'id' 		=> 'jigoshop_shop_thumbnail_h',
-		'css' 		=> 'min-width:200px;',
-		'type' 		=> 'text',
-		'std' 		=> 90
-	),
-
-	array(
-		'name' 		=> __('Catalog Image Width','jigoshop'),
-		'desc' 		=> __('Default = 150px','jigoshop'),
-		'tip' 		=> __('Set the width of the catalog image for Shop, Categories, Tags, and Related Products.','jigoshop'),
-		'id' 		=> 'jigoshop_shop_small_w',
-		'css' 		=> 'min-width:200px;',
-		'type' 		=> 'text',
+		'name' => __( 'Catalog Images', 'jigoshop' ),
+		'desc' 		=> __('The catalog image for Shop, Categories, Tags, and Related Products.', 'jigoshop'),
+		'id' 		=> 'jigoshop_shop_small',
+		'css' 		=> '',
+		'type' 		=> 'image_size',
 		'std' 		=> 150
 	),
 
 	array(
-		'name' 		=> __('Catalog Image Height','jigoshop'),
-		'desc' 		=> __('Default = 150px','jigoshop'),
-		'tip' 		=> __('Set the height of the catalog image for Shop, Categories, Tags, and Related Products.','jigoshop'),
-		'id' 		=> 'jigoshop_shop_small_h',
-		'css' 		=> 'min-width:200px;',
-		'type' 		=> 'text',
-		'std' 		=> 150
-	),
-
-	array(
-		'name' 		=> __('Large Image Width','jigoshop'),
-		'desc' 		=> __('Default = 300px','jigoshop'),
-		'tip' 		=> __('Set the width of the Single Product page large or Featured image.','jigoshop'),
-		'id' 		=> 'jigoshop_shop_large_w',
-		'css' 		=> 'min-width:200px;',
-		'type' 		=> 'text',
-		'std' 		=> 300
-	),
-
-	array(
-		'name' 		=> __('Large Image Height','jigoshop'),
-		'desc' 		=> __('Default = 300px','jigoshop'),
-		'tip' 		=> __('Set the height of the Single Product page large or Featured image.','jigoshop'),
-		'id' 		=> 'jigoshop_shop_large_h',
-		'css' 		=> 'min-width:200px;',
-		'type' 		=> 'text',
+		'name' 		=> __('Large Images','jigoshop'),
+		'desc' 		=> __('Single Product page\'s large or Featured image.','jigoshop'),
+		'id' 		=> 'jigoshop_shop_large',
+		'css' 		=> '',
+		'type' 		=> 'image_size',
 		'std' 		=> 300
 	),
 
