@@ -207,7 +207,8 @@ div.product {
 		}
 	}
 	div.summary {
-		float: left;
+		float: right;
+		width: 300px;
 	}
 	div.social {
 		text-align: right;
@@ -278,6 +279,8 @@ p.cart {
 
 form.cart {
 	margin-bottom: 24px;
+	float: right;
+	width: 100%;
 	div.quantity {
 		float: left;
 		margin: 0 4px 0 0;
@@ -1180,4 +1183,13 @@ div.shipping-address {
 
 fieldset.variations {
     border: none;
+}
+
+// 0.9.9.3 Legacy styles
+div.product div.product_meta, div.product div.variations_button {
+	clear: left;
+}
+
+section#primary div.product div.summary {
+	width: 42%;
 }
