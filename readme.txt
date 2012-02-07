@@ -117,10 +117,14 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * update included screenshots to reduce total file size
 * update Spain provinces (thank @dimitryz)
 * update readme.txt and readme.md files
+* update "images" tab on Jigoshop settings to take up less space
 * add Turkish, Italian, Portuguese, Norwegian, Portuguese Brazilian translations
 * add new shortcode: Products Search
 * add bank information to outgoing order email if payment method is bank transfer
 * add new setting: show stock amounts (to show or hide stock left in a product for customers)
+* fix taxes not being calculated correctly if your Base Country/State is set to "All of xxx"
+* fix `price not announced` not being shown
+* fix product edit `sale` and `regular` price fields so they don't allow currency symbols (and non numeric values)
 * fix bulk actions on variations when no variations are given
 * fix pagination on shortcodes, now displays only if you tell it to by adding pagination="yes" to your shortcode(s)
 * fix emails not sending from the address specified for Jigoshop emails
