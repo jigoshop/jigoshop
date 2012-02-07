@@ -729,6 +729,11 @@ function jigowatt_clean( $var ) {
 	return strip_tags(stripslashes(trim($var)));
 }
 
+// Returns a float value
+function jigoshop_sanitize_num( $var ) {
+	return strip_tags(stripslashes(floatval(preg_replace("/^[^0-9\.]/","",$var))));
+}
+
 global $jigoshop_body_classes;
 
 function jigoshop_page_body_classes() {

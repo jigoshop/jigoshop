@@ -774,18 +774,17 @@ class jigoshop_product {
 		}
 
 		// For standard products
-		if ( ! $this->regular_price )
-			$html = __( 'Price Not Announced', 'jigoshop' );
 
-		if ( $this->get_price() == 0 ) 
+		if ( $this->is_on_sale() )
+			$html = $this->calculate_sale_price();
+		else
+			$html = jigoshop_price( $this->regular_price );
+
+		if ( $this->get_price() == 0 )
 			$html = __( 'Free', 'jigoshop' );
 
-		if ( $this->is_on_sale() ) {
-			$html = $this->calculate_sale_price();
-		}
-		else {
-			$html = jigoshop_price( $this->regular_price );
-		}
+		if ( $this->regular_price == '' )
+			$html = __( 'Price Not Announced', 'jigoshop' );
 
 		return $html;
 	}
