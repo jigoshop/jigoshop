@@ -1,18 +1,98 @@
-@import "mixins.less";
-@import "variables.less";
+.clearfix() {
+overflow:hidden;
+zoom:1;
+}
+
+.clear() {
+clear: both;
+} 
+
+.border_radius(@radius:4px) {
+-webkit-border-radius:@radius;
+-moz-border-radius:@radius;
+border-radius:@radius;
+}
+
+.border_radius_right(@radius:4px) {
+-webkit-border-top-right-radius: @radius;
+-webkit-border-bottom-right-radius: @radius;
+-moz-border-radius-topright: @radius;
+-moz-border-radius-bottomright: @radius;
+border-top-right-radius: @radius;
+border-bottom-right-radius: @radius;
+}
+
+.border_radius_left(@radius:4px) { 
+-webkit-border-top-left-radius: @radius;
+-webkit-border-bottom-left-radius: @radius;
+-moz-border-radius-topleft: @radius;
+-moz-border-radius-bottomleft: @radius;
+border-top-left-radius: @radius;
+border-bottom-left-radius: @radius;
+}
+
+.border_radius_bottom(@radius:4px) {
+-webkit-border-bottom-left-radius: @radius;
+-webkit-border-bottom-right-radius: @radius;
+-moz-border-radius-bottomleft: @radius;
+-moz-border-radius-bottomright: @radius;
+border-bottom-left-radius: @radius;
+border-bottom-right-radius: @radius;
+}
+
+.border_radius_top(@radius:4px) {
+-webkit-border-top-left-radius: @radius;
+-webkit-border-top-right-radius: @radius;
+-moz-border-radius-topleft: @radius;
+-moz-border-radius-topright: @radius;
+border-top-left-radius: @radius;
+border-top-right-radius: @radius;
+}
+
+.box_shadow(@shadow_x:3px, @shadow_y:3px, @shadow_rad:3px, @shadow_in:3px, @shadow_color:#888) {
+box-shadow:@shadow_x @shadow_y @shadow_rad @shadow_in @shadow_color;
+-webkit-box-shadow:@shadow_x @shadow_y @shadow_rad @shadow_in @shadow_color;
+-moz-box-shadow:@shadow_x @shadow_y @shadow_rad @shadow_in @shadow_color;
+}
+
+.inset_box_shadow(@shadow_x:3px, @shadow_y:3px, @shadow_rad:3px, @shadow_in:3px, @shadow_color:#888) {
+box-shadow:inset @shadow_x @shadow_y @shadow_rad @shadow_in @shadow_color;
+-webkit-box-shadow:inset @shadow_x @shadow_y @shadow_rad @shadow_in @shadow_color;
+-moz-box-shadow:inset @shadow_x @shadow_y @shadow_rad @shadow_in @shadow_color;
+}
+
+.text_shadow(@shadow_x:3px, @shadow_y:3px, @shadow_rad:3px, @shadow_color:#fff) {
+text-shadow:@shadow_x @shadow_y @shadow_rad @shadow_color;
+}
+
+.vertical_gradient(@from: #000, @to: #FFF) {
+background: @from;
+background: -webkit-gradient(linear, left top, left bottom, from(@from), to(@to));
+background: -webkit-linear-gradient(@from, @to);
+background: -moz-linear-gradient(center top, @from 0%, @to 100%);
+background: -moz-gradient(center top, @from 0%, @to 100%);
+}
+
+.transition(@selector:all, @animation:ease-in-out, @duration:.2s) {
+-webkit-transition:@selector @animation @duration;
+-moz-transition:@selector @animation @duration;
+-o-transition:@selector @animation @duration;
+transition:@selector @animation @duration;
+}
 
 
 /* Global/Helpers/Clears */
-.clear{ .clearfix(); }
+
+.clear { clear: both; }
 .nobr { white-space: nowrap; }
 .info {
-	background: @info;
+	background: #F7F5C6;
 	padding:10px 20px;
-	border:1px solid darken(@info, 50%);
-	color:darken(@info, 70);
-	.box-shadow(inset 0 0 0 1px rgba(255,255,255,0.05));
+	border:1px solid #EEEAC1;
+	color:#747165;
+	.inset_box_shadow(0, 0, 0, 1px, #FFFFCC);
 	a {
-		color:darken(@info, 70%);
+		color:#93864E;
 	}
 }
 div.jigoshop_error, div.jigoshop_message {
@@ -28,19 +108,17 @@ div.jigoshop_error, div.jigoshop_message {
 	}
 }
 div.jigoshop_error {
-	color: darken(@warning, 70%);
-	background-color: @warning;
-	border-color:darken(@warning, 50%);
+	color: #D8000C;
+	background-color: #ffd4d4;
 	background-image: url('../images/error.gif');
 }
 div.jigoshop_message {
-	color: darken(@message, 70%);
-	background-color: @message;
-	border-color:darken(@message, 50%);
+	color: #4F8A10;
+	background-color: #DFF2BF;
 	background-image:url('../images/success.gif');
 }
 p small {
-	color: @gray20;
+	color: #999;
 }
 
 p.demo_store {
@@ -51,39 +129,32 @@ p.demo_store {
 	margin-left: -225px;
 	font-size: 12px;
 	text-align: center;
-	#gradient > .vertical(@warning, darken(@warning, 10%));
+	.vertical_gradient(#F7F5C6, #EEEAC1);
 	padding:8px 0;
-	border:1px solid darken(@warning, 20%);
+	border:1px solid #EEEAC1;
 	color:#747165;
 	z-index: 999999;
-	.box-shadow(0 0 0 3px rgba(255,255,255,0.3));
+	.inset_box_shadow(0, 0, 0, 3px, rgba(255,255,255,0.3));
 }
 
 small.note {
 	display: block;
-	color: @gray20;
+	color: #999;
 	font-size: 11px;
 	line-height: 21px;
 	margin-top: 10px;
 }
 
 #breadcrumb {
-	.clearfix();
+	overflow: hidden;
+	zoom: 1;
 	margin: 0 0 1em !important;
 	padding: 0;
 	font-size: 0.92em;
-	color: @gray20 !important;
+	color: #999 !important;
 	a {
-		color: @gray20 !important;
+		color: #999 !important;
 	}
-}
-
-/* twenty-eleven non content wrapped full width fix (Cart, Checkout, Accounts) */
-.jigoshop .entry-header, .jigoshop .entry-content, .jigoshop .entry-meta {
-	width: 100%;
-}
-.jigoshop .entry-header {
-	float: left;
 }
 
 /* =Product Page
@@ -92,42 +163,33 @@ div.product {
 	position: relative;
 	.product_title {
 		clear: none;
-		font-size: 1.3em;
-		font-weight: bold;
-		color: black;
-		margin-bottom: 0.1em;
-
 	}
 	p.price {
-		color: @textColor;
+		color: green;
 		font-size: 1.3em;
 		del {
 			font-size: 14px;
-			color: @gray20;
+			color: #ccc;
 		}
 	}
 	p.stock {
 		font-size: 0.92em;
-		//float: left;
+		float: left;
 		padding: 2px 0 0 0;
 	}
 	div.images {
 		float: left;
-		width: 250px;
+		width: 314px;
 		margin-bottom: 10px;
-		position: relative;
-
 		img {
-			border: 1px solid @gray15;
+			border: 1px solid #ddd;
 			background: #f5f5f5;
-			padding: 3px;
+			padding: 6px;
 			display: block;
-			max-width:95%;
-			height:auto;
 		}
 		div.thumbnails {
 			padding-top: 10px;
-			.clearfix();
+			.clearfix;
 			a {
 				margin-right: 10px;
 				margin-bottom: 10px;
@@ -146,11 +208,6 @@ div.product {
 	}
 	div.summary {
 		float: left;
-		margin-left: 10px;
-
-		table{
-			width:100%;
-		}
 	}
 	div.social {
 		text-align: right;
@@ -175,9 +232,12 @@ div.product {
 		padding: 1em 0 0 0;
 		margin: 0 0 1em 0;
 		ul.tabs {
-			.border-radius(3px 0 0 0);
-			.clearfix();
+			.border_radius_top(3px);
+			background: #ddd;
+			overflow: hidden;
+			zoom: 1;
 			margin: 0 !important;
+			padding: 4px 4px 0;
 			list-style: none outside !important;
 			li {
 				float: left;
@@ -185,42 +245,29 @@ div.product {
 				font-size: 0.92em;
 			}
 			a {
-				border:1px solid @gray10;
-				display:block;
 				float: left;
 				padding: 6px 12px;
-				background: @gray10;
+				background: #eee;
 				text-decoration: none;
-				.border-radius(2px 0 0 0);
-
-				&:hover{
-					border:1px solid @gray5;
-					background:@gray5;
-				}
+				.border_radius_top(2px);
 			}
 			li.active a {
-				background: @white;
-				color:@textColor;
-				border-bottom:solid 1px @white;
-				position:relative;
-				top:1px;
-
-				&:hover{
-					border:solid 1px @gray10;
-					border-bottom:solid 1px @white;
-				}
+				background: #fff;
+				color: #555;
 			}
 		}
 		.panel {
-			border: 1px solid @gray15;
+			border: 1px solid #ddd;
+			border-top: 0;
 			padding: 15px 15px 0;
-			.border-radius(0 0 3px 0);
+			.border_radius_bottom(3px);
 		}
 	}
 }
 
 .stock {
-	margin-right:1em;
+	color: green;
+	float: left;
 }
 .out-of-stock {
 	color: red;
@@ -231,9 +278,6 @@ p.cart {
 
 form.cart {
 	margin-bottom: 24px;
-	float: right;
-	width:100%;
-	.clearfix();
 	div.quantity {
 		float: left;
 		margin: 0 4px 0 0;
@@ -247,7 +291,7 @@ form.cart {
 		div.quantity {
 			float: none;
 			margin: 0;
-			width: 75px;
+			width: 72px;
 		}
 		small.stock {
 			display: block;
@@ -263,10 +307,6 @@ form.cart {
 			float: left;
 		}
 	}
-	.single_variation{
-		.clearfix();
-		padding-top:1em;
-	}
 	.button {
 		vertical-align: middle;
 		float: left;
@@ -275,10 +315,8 @@ form.cart {
 }
 
 span.onsale {
-	background: #FFF9C0;
-	border:solid 1px darken(#FFF9C0, 30);
-	color:@black;
-	font-weight:bold;
+	background: green;
+	color: #fff;
 	min-height: 32px;
 	min-width: 32px;
 	padding: 4px;
@@ -287,11 +325,9 @@ span.onsale {
 	text-align: center;
 	line-height: 32px;
 	top:0;
-	right: 0;
+	right: 320px;
 	margin: -6px 0 0 0;
-	.border-radius(20px);
-	.rotate(27deg);
-	.box-shadow(0 2px 2px rgba(0,0,0,0.2));
+	.border_radius(20px);
 }
 
 .products ul, ul.products {
@@ -304,13 +340,15 @@ span.onsale {
 	clear: both;
 	li {
 		float: left;
-		margin: 0 50px 30px 0;
+		margin: 0 10px 20px 0;
 		padding: 0 !important;
 		position: relative;
 		width:150px;
 		.onsale {
-			top: -10px;
-			right: -18px;
+			top: 0;
+			right: 0;
+			left: auto;
+			margin: -6px -6px 0 0;	
 		}
 		a {
 			text-decoration: none;
@@ -320,21 +358,17 @@ span.onsale {
 			height: 150px !important;
 			display: block;
 			margin: 0 0 8px !important;
-			border: 1px solid @gray15;
+			border: 1px solid #ddd;
 		}
 		a:hover img {
 			border: 1px solid #bbb;
-			box-shadow: 0px 1px 3px #eee;
 		}
 		strong {
-			color: black;
+			color: #555;
 			display: block;
 		}
-		a:hover strong {
-			color: #1982D1;
-		}
 		.price {
-			color: @textColor;
+			color: green;
 			display: block;
 			font-weight: normal;
 			float: right;
@@ -344,14 +378,14 @@ span.onsale {
 				line-height: 10px;
 				margin: -2px 0 0 0;
 				display: block;
-				color: @gray20;
+				color: #ccc;
 			}
 			.from {
 				font-size: 10px;
 				line-height: 10px;
 				margin: -2px 0 0 0;
 				display: block;
-				color: @gray20;
+				color: #ccc;
 			}
 		}
 	}
@@ -371,14 +405,14 @@ table.shop_attributes {
 		font-weight: bold;
 		padding: 8px;
 		color: black !important;
-		border-bottom: 1px dotted @gray20;
+		border-bottom: 1px dotted #ccc;
 		margin: 0 !important;
 		line-height: 1.5em;
 	}
 	td {
 		font-style: italic;
 		padding: 0 !important;
-		border-bottom: 1px dotted @gray20;
+		border-bottom: 1px dotted #ccc;
 		margin: 0 !important;
 		line-height: 1.5em;
 		p {
@@ -393,12 +427,12 @@ table.shop_attributes {
 
 /* =Buttons
 -------------------------------------------------------------- */
-a.button, button.button, input.button, #review_form input#submit {
-	background: @gray10;
-	color:@textColor;
+a.button, button.button, input.button, #review_form #submit {
+	color: #fff !important;
+	background: #ff9c07;
 	padding: 6px;
 	line-height: 1em !important;
-	margin: 0px 2px 0 0;
+	margin: 4px 2px 0 0;
 	float: left;
 	font-size: 12px !important;
 	width: auto !important;
@@ -408,31 +442,24 @@ a.button, button.button, input.button, #review_form input#submit {
 	border:none;
 	cursor: pointer;
 	font-family: inherit;
-	border:solid 1px @gray15;
-	.border-radius(3px);
-
-	&:hover{
-		background: @gray5;
-		color:@black;
-	}
+	.border_radius(3px);
 }
 
-#respond input#submit{
-	.box-shadow(none);
-	text-shadow:none;
-	left:auto;
+a.button:hover, button.button:hover, input.button:hover, #review_form #submit:hover {
+	background: #ff9933;
+	text-decoration: none;
 }
 
 .cart .button, .cart input.button {
 	float:none;
 }
 
-a.button-alt, .button-alt, .jigoshop_message a.button {
-	color: @white;
-	background: @buttonColor;
+.button-alt {
+	color: #fff !important;
+	background: #069bcd;
 	padding: 6px;
 	line-height: 1em !important;
-	margin: 0px 2px 0 0;
+	margin: 4px 2px 0 0;
 	float: left;
 	font-size: 12px !important;
 	width: auto !important;
@@ -442,25 +469,22 @@ a.button-alt, .button-alt, .jigoshop_message a.button {
 	border:none;
 	cursor: pointer;
 	font-family: inherit;
-	border:solid 1px darken(@buttonColor, 5);
-	.border-radius(3px);
-	.transition(background 0.5s);
-
-	&:hover{
-		background:lighten(@buttonColor, 5%);
-	}
+	.border_radius(3px);
+}
+.button-alt:hover {
+	background:#0588b5;
 }
 
 #reviews {
 	h2 small {
 		float: right;
-		color: @gray20;
+		color: #999;
 		font-size: 15px;
 		line-height: 21px;
 		margin: 10px 0 0 0;
 		a {
 			text-decoration: none;
-			color: @gray20;
+			color: #999;
 		}
 	}
 	h3 {
@@ -486,14 +510,13 @@ a.button-alt, .button-alt, .jigoshop_message a.button {
 			overflow: hidden;
 			zoom: 1;
 			margin: 0 !important;
-			width:auto;
 			li {
 				padding: 00;
 				margin: 0 0 20px;
 				border: 0;
 				position: relative;
 				.meta {
-					color: @gray20;
+					color: #999;
 					font-size: 0.75em;
 				}
 				img {
@@ -504,15 +527,15 @@ a.button-alt, .button-alt, .jigoshop_message a.button {
 					padding: 3px;
 					width:32px;
 					height: auto;
-					border: 1px solid @gray15;
-					background: @white;
+					border: 1px solid #ddd;
+					background: #fff;
 					margin: 0;
 					line-height: 1;
 				}
 				.comment-text {
 					margin: 0 0 0 50px;
-					border: 1px solid @gray15;
-					.border-radius(5px);
+					border: 1px solid #ddd;
+					.border_radius(5px);
 					padding: 11px 11px 0;
 					p {
 						margin: 0 0 11px;
@@ -521,10 +544,6 @@ a.button-alt, .button-alt, .jigoshop_message a.button {
 						font-size: 0.86em;
 					}
 				}
-			}
-
-			& > li.bypostauthor{
-				background:none;
 			}
 		}
 	}
@@ -545,21 +564,17 @@ a.button-alt, .button-alt, .jigoshop_message a.button {
 }
 
 .hreview-aggregate {
-		.clearfix();
-		margin-bottom:10px;
 	.star-rating {
-		margin: 5px 0 0 0;
+		margin: 10px 0 0 0;
 	}
 }
 
 #review_form {
 	#respond {
 		.clearfix();
-		background:none;
-		border:0;
+		border: 1px solid #E7E7E7;
 		margin: 0 !important;
-		padding: 10px;
-		width:auto;
+		padding: 10px 20px 20px;
 		p {
 			margin: 0 0 10px !important;
 		}
@@ -567,7 +582,8 @@ a.button-alt, .button-alt, .jigoshop_message a.button {
 }
 
 p.stars {
-	.clearfix();
+	overflow: hidden;
+	zoom: 1;
 	span {
 		width: 80px;
 		height: 16px;
@@ -601,21 +617,21 @@ p.stars {
 /* =Tables
 -------------------------------------------------------------- */
 table.shop_table {
-	border: 1px solid @gray10;
+	border: 1px solid #E7E7E7;
 	margin: 0px -1px 24px 0px;
 	text-align: left;
 	width: 100%;
 	border-collapse: separate;
-	.border-radius(5px);
+	.border_radius(5px);
 	th {
-		color: @gray40;
+		color: #888;
 		font-size: 12px;
 		font-weight: bold;
 		line-height: 18px;
 		padding: 9px 12px !important;
 	}
 	td {
-		border-top: 1px solid @gray10;
+		border-top: 1px solid #E7E7E7;
 		padding: 6px 12px !important;
 		vertical-align: middle;
 		
@@ -640,10 +656,6 @@ table.my_account_orders {
 	}
 }
 
-table.shop_table{
-	.alignright{float:none;display:block;margin:0;}
-}
-
 /* =Cart Sidebar
 -------------------------------------------------------------- */
 ul.cart_list, ul.product_list_widget {
@@ -653,7 +665,7 @@ ul.cart_list, ul.product_list_widget {
 	li {
 		padding: 4px 0 !important;
 		margin: 0 !important;
-		.clearfix();
+		.clearfix;
 		a {
 			display: block;
 			font-weight: bold;	
@@ -661,14 +673,14 @@ ul.cart_list, ul.product_list_widget {
 		img {
 			float: left;
 			margin-right: 4px;
-			border: 1px solid @gray15;
+			border: 1px solid #ddd;
 		}
 	}
 }
-.jigoshop_cart {
+.widget_shopping_cart {
 	.total {
-		border-top: 3px double @gray15;
-		padding: 4px 0 4px;
+		border-top: 3px double #ddd;
+		padding: 4px 0 0;
 		margin: 0 !important;
 		strong {
 			min-width: 40px;
@@ -676,7 +688,7 @@ ul.cart_list, ul.product_list_widget {
 		}
 	}
 	.buttons {
-		.clearfix();
+		.clearfix;
 	}
 }
 
@@ -688,10 +700,10 @@ a.remove {
 	height:16px;
 	width:16px;
 	text-indent: -9999px;
-	background: url(../images/remove.png) @gray20;
+	background: url(../images/remove.png) #ccc;
 }
 a.remove:hover {
-	background-color: @gray10;
+	background-color: #f93;
 }
 
 .cart th, .cart td {
@@ -699,7 +711,6 @@ a.remove:hover {
 }
 td.actions {
 	text-align: right;
-	.clearfix();
 	.coupon {
 		float:left;
 		label {
@@ -708,7 +719,7 @@ td.actions {
 		.input-text {
 			width:80px !important;
 			float: left;
-			margin: 3px 6px 0 0 !important;
+			margin: 1px 6px 0 0 !important;
 		}
 	}
 	.button-alt {
@@ -732,43 +743,42 @@ td.product-name {
 		}
 	}
 }
-td.quantity, td.product-quantity {
+td.quantity {
 	min-width: 80px;
 }
 .quantity input {
 	margin-left:0; margin-right:0;
 }
 .quantity input.qty {
-	border:1px solid @gray20;
-	border-left:none;
-	border-right:none;
+	border:1px solid #ccc; 
 	width:20px; 
 	display: inline;
-	padding:3px 5px 3px;
+	padding:1px 5px 2px;
 	line-height: 1em !important;
-	vertical-align: top;
+	vertical-align: middle;
 }
 .quantity input.plus, .quantity input.minus {
-	background: @gray20;
-	padding: 4px 5px 7px 5px;
-	vertical-align: top;
+	background: #ccc;
+	padding: 4px;
+	vertical-align: middle;
 	line-height: 1em !important;
-	border:none; width:22px;
+	border:none; width:20px;
+	color:#fff !important;
 	cursor: pointer;
 }
-.quantity input.plus{.border-radius(0 3px 3px 0);}
-.quantity input.minus{.border-radius(3px 0 0 3px);}
-.quantity input.minus:hover, .quantity input.plus:hover { background: @gray10; }
+.quantity input.minus { .border_radius_left(5px); }
+.quantity input.plus { .border_radius_right(5px); }
+.quantity input.minus:hover, .quantity input.plus:hover { background: #f93; }
 
 .cart input {
 	width:100px;
 	margin: 0 !important;
-	vertical-align: top;
+	vertical-align: middle;
 	line-height: 1em !important;
 }
 
 .col2-set {
-	.clearfix();
+	.clearfix;
 	width:100%;
 	.col-1 {
 		float: left;
@@ -781,15 +791,15 @@ td.quantity, td.product-quantity {
 }
 
 .cart-collaterals {
-	.clearfix();
+	.clearfix;
 	width:100%;
-
 	.related {
 		width:310px;
 		float: left;
 	}
 	
 	.cross-sells {
+		width:314px;
 		float: left;
 	}
 	.shipping_calculator {
@@ -797,7 +807,7 @@ td.quantity, td.product-quantity {
 		width:225px;
 		clear: right;
 		text-align: right;
-		.clearfix();
+		.clearfix;
 		margin: 20px 0 0 0;
 		.button {
 			width: 225px !important;
@@ -820,7 +830,7 @@ td.quantity, td.product-quantity {
 		}
 		table {
 			border-collapse: separate;
-			.border-radius(5px);
+			.border_radius(5px);
 			margin:0 0 6px !important;
 			padding: 0;
 			tr:first-child {
@@ -831,19 +841,16 @@ td.quantity, td.product-quantity {
 			td, th {
 				padding: 6px 12px !important;
 			}
-			td{
-				text-align:right;
-			}
 			small {
 				display: block;
-				color: @gray20;
+				color: #999;
 			}
 		}
 		.discount td {
 			color: green;
 		}
 		tr td, tr th {
-			border-top: 1px solid @gray10;
+			border-top: 1px solid #E7E7E7;
 			padding: 6px 24px;
 		}
 		a.button-alt {
@@ -858,7 +865,7 @@ td.quantity, td.product-quantity {
 -------------------------------------------------------------- */
 
 .form-row {
-	.clearfix();
+	.clearfix;
 	padding: 3px;
 	margin: 0 0 6px !important;
 	label {
@@ -889,19 +896,28 @@ td.quantity, td.product-quantity {
 
 form, #content {
 	.form-row {
+		/*display: block;
+		padding: 1px;
+		-webkit-box-sizing:border-box;
+		-moz-box-sizing:border-box;
+		box-sizing:border-box;
+		width: 100%;
+		border: 1px solid #ccc;
+		outline: 3px solid #f5f5f5;
+		background: #fff;*/
 		input.input-text, textarea {
 			-webkit-box-sizing:border-box;
 			-moz-box-sizing:border-box;
 			box-sizing:border-box;
 			
-			.box-shadow(inset 0 1px 4px 0 rgba(0,0,0,0.1));
+			.inset_box_shadow(0, 1px, 4px, 0, rgba(0,0,0,0.1));
 			
-			border: 1px solid @gray20;
+			border: 1px solid #ccc;
 			width: 100%;
 			padding: 6px;
 			margin: 0;
 			outline: 0;
-			background: @white none;
+			background: #fff none;
 			font-size: 14px;
 			line-height: 1em;
 		}
@@ -909,10 +925,12 @@ form, #content {
 			height: 3.5em;
 			line-height: 1.5em;
 			display: block;
-			.box-shadow(none);
+			-moz-box-shadow: none;
+			-webkit-box-shadow: none;
+			box-shadow: none;
 		}
 		input.input-text:focus, textarea:focus {
-			.box-shadow(inset 0 0 0 3px #faf9dc);
+			.inset_box_shadow(0, 0, 0, 3px, #faf9dc);
 		}
 	}
 }
@@ -931,23 +949,23 @@ form, #content {
 
 
 form.login {
-	border: 1px solid @gray20;
+	border: 1px solid #ccc;
 	padding: 20px;
-	border: 1px solid @gray10;
+	border: 1px solid #E7E7E7;
 	margin: 20px 0 20px 0px;
 	text-align: left;
-	.border-radius(5px);
+	.border_radius(5px);
 }
 
 #payment {
 	background: #F9F9F9;
-	.border-radius(5px);
+	.border_radius(5px);
 	
 	ul.payment_methods {
-		.clearfix();
+		.clearfix;
 		text-align: left;
 		padding: 1em;
-		border-bottom: 1px solid @gray5;
+		border-bottom: 1px solid #eee;
 		margin: 0 !important;
 		list-style: none outside;
 		li {
@@ -968,7 +986,7 @@ form.login {
 	
 	div.form-row {
 		padding: 1em;
-		border-top: 1px solid @white
+		border-top: 1px solid #fff;
 	}
 	#place_order {
 		float: right;
@@ -983,8 +1001,8 @@ form.login {
 		position:relative;
 		width: 96%;
 		background: #f5f5f5;
-		border: 1px solid @gray5;
-		.box-shadow(inset 0 1px 1px rgba(255,255,255,0.5));
+		border: 1px solid #eee;
+		.inset_box_shadow(0, 1px, 1px, rgba(255,255,255,0.5));
 		padding: 1em 2% 0;
 		margin: 1em 0 1em 0;
 		font-size: 0.92em;
@@ -997,7 +1015,7 @@ form.login {
 		}
 		span.help {
 			font-size: 11px;
-			color: @gray20;
+			color: #999;
 			line-height: 13px;
 			font-weight: normal;
 		}
@@ -1009,7 +1027,7 @@ form.login {
 	div.payment_box:after {
 		content: "";
 		display: block;
-		border: 8px solid @gray5; /* arrow size / color */
+		border: 8px solid #eee; /* arrow size / color */
 		border-right-color: transparent;
 		border-left-color: transparent;
 		border-top-color: transparent;
@@ -1070,7 +1088,7 @@ div.shipping-address {
 		text-transform: uppercase;
 		font-size:0.715em;
 		line-height: 1em;
-		border-right:1px dashed @gray20;
+		border-right:1px dashed #ccc;
 		padding-right:2em;
 		
 		strong {
@@ -1078,7 +1096,7 @@ div.shipping-address {
 			font-size:1.4em;
 			text-transform: none;
 			line-height: 1.5em;
-			color: @gray80
+			color: #333;
 		}
 	}
 	
@@ -1144,11 +1162,11 @@ div.shipping-address {
 	li.chosen {
 		a {
 			padding: 0 6px 0 18px;
-			border: 1px solid darken(@info, 20);
-			background: @info url(../images/cross_white.png) no-repeat 6px center;
-			.box-shadow(inset 0 1px 1px rgba(255,255,255,0.5));
-			color: @white;
-			.border-radius(3px);
+			border: 1px solid #3399cc;
+			background: #3399cc url(../images/cross_white.png) no-repeat 6px center;
+			.inset_box_shadow(0, 1px, 1px, rgba(255,255,255,0.5));
+			color: #fff;
+			.border_radius(3px);
 		}
 	}
 	small.count {
@@ -1156,7 +1174,7 @@ div.shipping-address {
 		margin-left: 6px;
 		font-size: 1em;
 		padding: 1px 0;
-		color: @gray20;
+		color: #999;
 	}
 }
 
