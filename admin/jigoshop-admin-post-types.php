@@ -47,7 +47,7 @@ function jigoshop_product_updated_messages( $messages ) {
 /**
  * Custom columns
  **/
- function jigoshop_edit_product_columns($columns){
+ function jigoshop_edit_product_columns($columns) {
 	
 	$columns = array();
 	
@@ -69,10 +69,13 @@ function jigoshop_product_updated_messages( $messages ) {
 	
 	$columns["price"] = __("Price", 'jigoshop');
 
+	$columns["product-visibility"] = __("Visibility", 'jigoshop');
+
 	$columns["product-date"] = __("Date", 'jigoshop');
 	
 	return $columns;
 }
+
 add_filter('manage_edit-product_columns', 'jigoshop_edit_product_columns');
 
 function jigoshop_custom_product_columns($column) {
@@ -154,16 +157,16 @@ function jigoshop_custom_product_columns($column) {
             else :
                 _e( 'Draft', 'jigoshop' );
             endif;
-
-            if ( $product->visibility ) {
-                echo ' | ';
-                echo ($product->visibility == 'Hidden')
-                    ? '<strong class="attention">'.ucfirst($product->visibility).'</strong>'
-                    : ucfirst($product->visibility);
-
-            }
-          
 		break;
+
+		case "product-visibility" :
+			if ( $product->visibility ) :
+				echo ($product->visibility == 'Hidden')
+					? '<strong class="attention">'.ucfirst($product->visibility).'</strong>'
+					: ucfirst($product->visibility);
+			endif;
+		break;
+
 	}
 }
 
@@ -172,9 +175,10 @@ function jigoshop_custom_product_columns($column) {
 add_filter("manage_edit-product_sortable_columns", 'jigoshop_custom_product_sort');
 function jigoshop_custom_product_sort( $columns ) {
 	$custom = array(
-		'featured'		=> 'featured',
-		'price'			=> 'price',
-		'product-date'	=> 'date'
+		'featured'				=> 'featured',
+		'price'					=> 'price',
+		'product-visibility'	=> 'visibility',
+		'product-date'			=> 'date'
 	);
 	return wp_parse_args($custom, $columns);
 }
@@ -195,6 +199,12 @@ function jigoshop_custom_product_orderby( $vars ) {
 			$vars = array_merge( $vars, array(
 				'meta_key' 	=> 'regular_price',
 				'orderby' 	=> 'meta_value_num'
+			) );
+		endif;
+		if ( 'visibility' == $vars['orderby'] ) :
+			$vars = array_merge( $vars, array(
+				'meta_key' 	=> 'visibility',
+				'orderby' 	=> 'meta_value'
 			) );
 		endif;
 	endif;

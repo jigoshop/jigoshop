@@ -118,6 +118,8 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * update Spain provinces (thank @dimitryz)
 * update readme.txt and readme.md files
 * update "images" tab on Jigoshop settings to take up less space
+* add "visibility" column to "All Products" screen on admin
+* add sort by featured, price, visibility columns on "All Products" screen on admin
 * add Turkish, Italian, Portuguese, Norwegian, Portuguese Brazilian translations
 * add new shortcode: Products Search
 * add bank information to outgoing order email if payment method is bank transfer
