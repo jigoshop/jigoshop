@@ -430,17 +430,22 @@ function jigoshop_admin_fields($options) {
                     if (strstr($country_setting, ':')) :
                         $country = current(explode(':', $country_setting));
                         $state = end(explode(':', $country_setting));
-                    else :
+					else :
                         $country = $country_setting;
                         $state = '*';
                     endif;
                     ?><tr class="multi_select_countries">
                         <td class="titledesc"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
-                        <td class="forminp"><select name="<?php echo esc_attr( $value['id'] ); ?>" title="Country" style="width: 150px;">
-                <?php echo jigoshop_countries::country_dropdown_options($country, $state); ?>
+                        <td class="forminp">
+							<select name="<?php echo esc_attr( $value['id'] ); ?>" title="Country" style="width: 150px;">
+							<?php
+								$show_all = ($value['id'] == 'jigoshop_default_country') ? false : true;
+								echo jigoshop_countries::country_dropdown_options($country, $state, false, $show_all);
+							?>
                             </select>
                         </td>
                     </tr><?php
+					if (!$show_all && $state == '*') jigoshop_countries::base_country_notice();
                 break;
             case 'multi_select_countries' :
                 $countries = jigoshop_countries::$countries;

@@ -752,21 +752,21 @@ class jigoshop_countries {
 		)
 	);
 
-    static function country_has_states($country_code) {
+	static function country_has_states($country_code) {
 
-        return isset(self::$states[$country_code]);
-    }
+		return isset(self::$states[$country_code]);
+	}
 
 	/** get base country */
 	static function get_base_country() {
 		$default = get_option('jigoshop_default_country');
-    	if (strstr($default, ':')) :
-    		$country = current(explode(':', $default));
-    		$state = end(explode(':', $default));
-    	else :
-    		$country = $default;
-    		$state = '*';
-    	endif;
+		if (strstr($default, ':')) :
+			$country = current(explode(':', $default));
+			$state = end(explode(':', $default));
+		else :
+			$country = $default;
+			$state = '*';
+		endif;
 
 		return $country;
 	}
@@ -774,13 +774,13 @@ class jigoshop_countries {
 	/** get base state */
 	static function get_base_state() {
 		$default = get_option('jigoshop_default_country');
-    	if (strstr($default, ':')) :
-    		$country = current(explode(':', $default));
-    		$state = end(explode(':', $default));
-    	else :
-    		$country = $default;
-    		$state = '*';
-    	endif;
+		if (strstr($default, ':')) :
+			$country = current(explode(':', $default));
+			$state = end(explode(':', $default));
+		else :
+			$country = $default;
+			$state = '*';
+		endif;
 
 		return $state;
 	}
@@ -832,7 +832,7 @@ class jigoshop_countries {
 	}
 
 	/** Outputs the list of countries and states for use in dropdown boxes */
-	function country_dropdown_options( $selected_country = '', $selected_state = '*', $escape = false ) {
+	function country_dropdown_options( $selected_country = '', $selected_state = '*', $escape = false, $show_all = true ) {
 
 		$countries = self::$countries;
 		asort($countries);
@@ -841,22 +841,46 @@ class jigoshop_countries {
 			$value = $escape ? esc_js($value) : $value;
 			if ( $states =  self::get_states($key) ) :
 				echo '<optgroup label="'.$value.'">';
-    			echo '<option value="'.esc_attr($key).'"';
-    			if ($selected_country==$key && $selected_state=='*') echo ' selected="selected"';
-    			echo '>'.__('All of', 'jigoshop').' ' .$value.'</option>';
-    			foreach ($states as $state_key=>$state_value) :
-    				echo '<option value="'.$key.':'.$state_key.'"';
 
-    				if ($selected_country==$key && $selected_state==$state_key) echo ' selected="selected"';
+				if ($show_all) :
+					echo '<option value="'.esc_attr($key).'"';
+					if ($selected_country==$key && $selected_state=='*') echo ' selected="selected"';
+					echo '>'.__('All of', 'jigoshop').' ' .$value.'</option>';
+				endif;
 
-    				echo '>'.$value.' &mdash; '. ($escape ? esc_js($state_value) : $state_value) .'</option>';
-    			endforeach;
-    			echo '</optgroup>';
+				foreach ($states as $state_key=>$state_value) :
+					echo '<option value="'.$key.':'.$state_key.'"';
+					if (($selected_country==$key && $selected_state==$state_key) || (!$show_all && ($selected_state=='*' && $selected_country==$key)))
+						echo ' selected="selected"';
+					echo '>'.$value.' &mdash; '. ($escape ? esc_js($state_value) : $state_value) .'</option>';
+				endforeach;
+
+				echo '</optgroup>';
+
+				// Will only run update_option once
+				// If the state is '*' , update the default country to the last state in the selected country
+				if (!$show_all && ($selected_state == '*' && $selected_country == $key)) :
+					update_option('jigoshop_default_country', $key . ':' . $state_key);
+				endif;
+
 			else :
-    			echo '<option';
-    			if ($selected_country==$key && $selected_state=='*') echo ' selected="selected"';
-    			echo ' value="'.esc_attr($key).'">'. __($value, 'jigoshop') .'</option>';
+				echo '<option';
+				if ($selected_country==$key && $selected_state=='*') echo ' selected="selected"';
+				echo ' value="'.esc_attr($key).'">'. __($value, 'jigoshop') .'</option>';
 			endif;
+
 		endforeach;
+
 	}
+
+	// Called when a base state is set to '*', #545
+	function base_country_notice() {
+		echo '
+			<div class="error">
+				<p>'.__('Your <strong>Base Country / Region</strong> setting has been changed to the last state in the country. Please update accordingly', 'jigoshop').'!</p>
+				<p>' . sprintf(__('<a href="%s">Read</a> why we did this for you.','jigoshop'), "https://github.com/jigoshop/jigoshop/issues/545" ) . '</p>
+			</div>
+		';
+	}
+
 }
