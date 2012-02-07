@@ -541,7 +541,7 @@ function get_jigoshop_currency_symbol() {
 		case 'AUD' : $currency_symbol = '&#36;'; break;
 		case 'BRL' : $currency_symbol = '&#82;&#36;'; break;
 		case 'CAD' : $currency_symbol = '&#36;'; break;
-		case 'CHF' : $currency_symbol = '&#8355;'; break;
+		case 'CHF' : $currency_symbol = 'SFr.'; break;
 		case 'CNY' : $currency_symbol = '&#165;'; break;
 		case 'CZK' : $currency_symbol = '&#75;&#269;'; break;
 		case 'DKK' : $currency_symbol = 'kr'; break;

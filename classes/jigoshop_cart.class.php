@@ -792,6 +792,7 @@ class jigoshop_cart extends jigoshop_singleton {
                 return true;
 			else if ( empty ( $thecoupon['products'] ) )
 				return true;
+
         }
 
         return false;

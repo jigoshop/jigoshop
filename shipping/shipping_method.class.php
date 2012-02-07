@@ -89,6 +89,32 @@ class jigoshop_shipping_method {
         return $this->tax;
     }
     
+    public function get_error_message() {
+    	return $this->error_message;
+    }
+    
+    public function set_error_message($error_message = null) {
+    	$this->error_message = $error_message;
+    }
+    
+    public function get_enabled() {
+        return $this->enabled;
+    }    
+    
+    /**
+     * sets the tax class to shipping_method. Needed to maintain current tax 
+     * state from the shopping cart.
+     * 
+     * @param type $tax jigoshop_tax instance
+     */
+    public function set_tax($tax) {
+        $this->tax = $tax;
+    }
+    
+    protected function get_tax() {
+        return $this->tax;
+    }
+    
     public function get_fee( $fee, $total ) {
 		if (strstr($fee, '%')) :
 			return ($total/100) * str_replace('%', '', $fee);
