@@ -274,8 +274,22 @@ function jigoshop_add_to_cart_action($url = false)
     }
     
     //if product was successfully added to the cart
-    if ($product_added && get_option('jigoshop_redirect_add_to_cart', 'same_page') == 'same_page') {
-		jigoshop::add_message(sprintf(__('<a href="%s" class="button">View Cart &rarr;</a> Product successfully added to your cart.', 'jigoshop'), jigoshop_cart::get_cart_url()));
+    if ($product_added) {
+
+    	switch ( get_option('jigoshop_redirect_add_to_cart', 'same_page') ) {
+    		case 'same_page':
+    			jigoshop::add_message(sprintf(__('<a href="%s" class="button">View Cart &rarr;</a> Product successfully added to your cart.', 'jigoshop'), jigoshop_cart::get_cart_url()));
+    			break;
+
+    		case 'to_checkout':
+    				// Do nothing
+    			break;
+
+    		default:
+    			jigoshop::add_message(__('Product successfully added to your cart.', 'jigoshop'));
+    			break;
+    	}
+		
     }
 
     $url = apply_filters('add_to_cart_redirect', $url);
