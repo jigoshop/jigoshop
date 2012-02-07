@@ -439,7 +439,7 @@ function jigoshop_admin_fields($options) {
                         <td class="forminp">
 							<select name="<?php echo esc_attr( $value['id'] ); ?>" title="Country" style="width: 150px;">
 							<?php
-								$show_all = ($value['id'] == 'jigoshop_default_country') ? false : true;
+								$show_all = ($value['id'] != 'jigoshop_default_country');
 								echo jigoshop_countries::country_dropdown_options($country, $state, false, $show_all);
 							?>
                             </select>
