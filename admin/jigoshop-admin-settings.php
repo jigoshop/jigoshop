@@ -445,6 +445,7 @@ function jigoshop_admin_fields($options) {
                             </select>
                         </td>
                     </tr><?php
+					if (!$show_all && $state == '*') jigoshop_countries::base_country_notice();
                 break;
             case 'multi_select_countries' :
                 $countries = jigoshop_countries::$countries;

@@ -857,6 +857,8 @@ class jigoshop_countries {
 
 				echo '</optgroup>';
 
+				// Will only run update_option once
+				// If the state is '*' , update the default country to the last state in the selected country
 				if (!$show_all && ($selected_state == '*' && $selected_country == $key)) :
 					update_option('jigoshop_default_country', $key . ':' . $state_key);
 				endif;
@@ -868,5 +870,17 @@ class jigoshop_countries {
 			endif;
 
 		endforeach;
+
 	}
+
+	// Called when a base state is set to '*', #545
+	function base_country_notice() {
+		echo '
+			<div class="error">
+				<p>'.__('Your <strong>Base Country / Region</strong> setting has been changed to the last state in the country. Please update accordingly', 'jigoshop').'!</p>
+				<p>' . sprintf(__('<a href="%s">Read</a> why we did this for you.','jigoshop'), "https://github.com/jigoshop/jigoshop/issues/545" ) . '</p>
+			</div>
+		';
+	}
+
 }
