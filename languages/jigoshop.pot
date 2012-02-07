@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Jigoshop v1.0.1\n"
 "Report-Msgid-Bugs-To: Jigoshop <info@jigoshop.com>\n"
-"POT-Creation-Date: 2012-02-06 14:23-0500\n"
+"POT-Creation-Date: 2012-02-06 17:56-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jigoshop <info@jigoshop.com>\n"
 "Language-Team: Jigoshop <info@jigoshop.com>\n"
@@ -5408,15 +5408,15 @@ msgid "Jigoshop: Product Categories"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\widgets\product-categories.php:195
-msgid "Show as dropdown:"
+msgid "Show as dropdown"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\widgets\product-categories.php:201
-msgid "Show product counts:"
+msgid "Show product counts"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\widgets\product-categories.php:207
-msgid "Show hierarchy:"
+msgid "Show hierarchy"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\widgets\products_on_sale.php:31

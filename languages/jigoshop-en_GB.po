@@ -1,3 +1,15 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: Jigoshop <info@jigoshop.com>\n"
+"POT-Creation-Date: 2012-02-06 17:56-0500\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Matt <matt.gates@jigoshop.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
 # @ jigoshop
 #: \wp-content\plugins\jigoshop\jigoshop.php:281
 #: \wp-content\plugins\jigoshop\jigoshop_template_functions.php:627
@@ -5920,15 +5932,15 @@ msgid "Jigoshop: Product Categories"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\widgets\product-categories.php:195
-msgid "Show as dropdown:"
+msgid "Show as dropdown"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\widgets\product-categories.php:201
-msgid "Show product counts:"
+msgid "Show product counts"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\widgets\product-categories.php:207
-msgid "Show hierarchy:"
+msgid "Show hierarchy"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\widgets\products_on_sale.php:31
