@@ -167,12 +167,39 @@ function jigoshop_custom_product_columns($column) {
 	}
 }
 
-// Enable sorting for date
+// Enable sorting for custom columns
+
 add_filter("manage_edit-product_sortable_columns", 'jigoshop_custom_product_sort');
 function jigoshop_custom_product_sort( $columns ) {
-    $columns['product-date'] = 'date';
-    
-    return $columns;
+	$custom = array(
+		'featured'		=> 'featured',
+		'price'			=> 'price',
+		'product-date'	=> 'date'
+	);
+	return wp_parse_args($custom, $columns);
+}
+
+// Product column orderby
+
+add_filter( 'request', 'jigoshop_custom_product_orderby' );
+
+function jigoshop_custom_product_orderby( $vars ) {
+	if (isset( $vars['orderby'] )) :
+		if ( 'featured' == $vars['orderby'] ) :
+			$vars = array_merge( $vars, array(
+				'meta_key' 	=> 'featured',
+				'orderby' 	=> 'meta_value'
+			) );
+		endif;
+		if ( 'price' == $vars['orderby'] ) :
+			$vars = array_merge( $vars, array(
+				'meta_key' 	=> 'regular_price',
+				'orderby' 	=> 'meta_value_num'
+			) );
+		endif;
+	endif;
+
+	return $vars;
 }
 
 /**
