@@ -493,7 +493,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 							<td>
 								<label><?php _e('SKU', 'jigoshop'); ?>
-									<input type="text" name="<?php echo esc_attr( $this->field_name('sku', $variation) ); ?>" value="<?php echo esc_attr( isset($meta['sku'][0]) ? $meta['sku'][0] : null ); ?>" />
+									<input type="text" name="<?php echo esc_attr( $this->field_name('sku', $variation) ); ?>" placeholder="<?php echo esc_attr( $variation->ID ); ?>" value="<?php echo esc_attr( isset($meta['sku'][0]) ? $meta['sku'][0] : null ); ?>" />
 								</label>
 							</td>
 
@@ -532,9 +532,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 								<input type="text" name="<?php echo esc_attr( $this->field_name('length', $variation) ); ?>" placeholder="Length" value="<?php echo esc_attr( isset($meta['length'][0]) ? $meta['length'][0] : null ); ?>" />
 								<input type="text" name="<?php echo esc_attr( $this->field_name('width', $variation) ); ?>" placeholder="Width" value="<?php echo esc_attr( isset($meta['width'][0]) ? $meta['width'][0] : null ); ?>" />
 								<input type="text" name="<?php echo esc_attr( $this->field_name('height', $variation) ); ?>" placeholder="Height" value="<?php echo esc_attr( isset($meta['height'][0]) ? $meta['height'][0] : null ); ?>" />
-								<td colspan="3">
-									<?php echo __('Product ID: ', 'jigoshop') . esc_attr( $variation->ID ); ?>
-								</td>
+								<td colspan="3"></td>
 							</td>
 						</tr>
 						<tr class="downloadable options" <?php echo ('downloadable' == $product_type) ? 'style="display: table-row;"' : 'style="display: none;"';?>>
