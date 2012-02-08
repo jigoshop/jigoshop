@@ -112,37 +112,55 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 == Changelog ==
 
 = 1.0.1 - 2012-02-06 =
-* add new payment gateway: cash on delivery
-* add new shipping gateway: local pickup
-* add "visibility" column to "All Products" screen on admin
-* add sort by featured, price, visibility columns on "All Products" screen on admin
-* add Turkish, Italian, Portuguese, Norwegian, Portuguese Brazilian translations
-* add new shortcode: Products Search
-* add bank information to outgoing order email if payment method is bank transfer
-* add new setting: show stock amounts (to show or hide stock left in a product for customers)
-* update all translation files to include latest strings and remove obsolete strings
-* update uninstall.php to remove jigoshop database entries when deleting the plugin through plugin manager
-* update included screenshots to reduce total file size
+* New gateways:
+	* Cash On Delivery [payment gateway]
+	* Local Pickup [shipping method]
+* New languages:
+	* Turkish
+	* Italian
+	* Portuguese
+	* Norwegian
+	* Portuguese Brazilian
+* New shortcode:
+	* Products Search
+* New settings:
+	* Show stock amounts [to show or hide stock left in a product on front-end]
+	* Allow guest purchases
+	* Show login form
+	* Allow registration
+* Allow products to be sorted in wp-admin All Products page by:
+	* Featured
+	* Price
+	* Visibility [a new column]
+* You can now fully uninstall Jigoshop
+	* Updated uninstall.php to remove all database entries, pages & roles Jigoshop created on install
+* Bank transfer information now included with 'processing order' emails
+* Images tab on settings page now takes up less space
+* Reduced total Jigoshop file size by at least 1mb
+* Jigoshop.pot updated include latest strings and remove obsolete strings
+* Remove `bulk actions` on variable products that didn't have any variations
 * update Spain provinces (thank @dimitryz)
 * update readme.txt and readme.md files
-* update "images" tab on Jigoshop settings to take up less space
-* fix variable products not showing a 'grouped' tab to set a 'sort order'
+* fix widgets:
+	* featured product widget
+	* top rated widget
+	* recently viewed widget not showing products
+	* on sale widget not displaying correct amount of products
+* fix variable products not showing a 'grouped' tab in order to set a 'sort order'
 * fix taxes not being calculated correctly if your Base Country/State is set to "All of xxx"
-* fix `price not announced` not being shown
+* fix `price not announced` not being shown when `price` field is left empty
 * fix product edit `sale` and `regular` price fields so they don't allow currency symbols (and non numeric values)
-* fix bulk actions on variations when no variations are given
-* fix pagination on shortcodes, now displays only if you tell it to by adding pagination="yes" to your shortcode(s)
+* fix pagination on shortcodes, now only displays if you tell it to by adding `pagination="yes"` to your shortcode
 * fix emails not sending from the address specified for Jigoshop emails
-* fix variation display in emails
-* fix emails not showing pretty titles for payment and shipping methods (ie, won't show "via bank_transfer" or "via flat_rate" anymore)
-* fix out of stock products
+* fix showing purchased variations in email
+* fix emails not showing pretty titles for payment and shipping methods
+	* ie, won't show "via bank_transfer" or "via flat_rate" anymore
+	* instead, shows the Method Title you set in your settings page for those methods
+* fix out of stock products appearing randomly on upgrade
 * fix empty selectbox on Norway and some other countries for checkout page
-* fix featured product widget
-* fix top rated widget
-* fix recently viewed widget
-* fix on sale widget not displaying correct amount of products
-* fix session conflicts with other plugins by activating Jigoshop plugin first
-* fix coupons not applying to variations -- visit the variation to use the individual product ID in the coupon
+* fix session conflicts with other plugins by forcing Jigoshop to start sessions first before all other plugins
+* fix coupons not applying to variations
+	* visit the variation to use the individual product ID for the coupon
 * fix coupons showing 'no products in cart' on valid coupons
 * fix some international users not being able to add shipping or tax rates (italian & french)
 
