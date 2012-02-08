@@ -709,7 +709,7 @@ class jigoshop_product {
 			if ( strstr($this->sale_price,'%') )
 				return '
 					<del>' . jigoshop_price( $this->regular_price ) . '</del>' . jigoshop_price( $this->get_price() ) . ' 
-					<ins>' . $this->sale_price . ' off!</ins>';
+					<br><ins>' . $this->sale_price . ' off!</ins>';
 			else
 				return	'
 						<del>' . jigoshop_price( $this->regular_price ) . '</del>
