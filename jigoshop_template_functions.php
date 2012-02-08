@@ -91,7 +91,7 @@ if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 		
 		// do not show "add to cart" button if product's price isn't announced
 		if ( $_product->get_price() === '' AND ! ($_product->is_type(array('variable', 'grouped', 'external'))) ) return;
-		
+
 		if ( $_product->is_in_stock() OR $_product->is_type('external') ) :
 			if ( $_product->is_type(array('variable', 'grouped')) ) :
 				$output = '<a href="'.get_permalink($_product->id).'" class="button">'.__('Select', 'jigoshop').'</a>';
@@ -100,6 +100,8 @@ if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 			else :
 				$output = '<a href="'.esc_url($_product->add_to_cart_url()).'" class="button">'.__('Add to cart', 'jigoshop').'</a>';
 			endif;
+		elseif ( ($_product->is_type(array('grouped')) ) ) :
+			return;
 		else :
 			$output = '<span class="nostock">'.__('Out of Stock', 'jigoshop').'</span>';
 		endif;
@@ -312,7 +314,7 @@ if (!function_exists('jigoshop_grouped_add_to_cart')) {
 	function jigoshop_grouped_add_to_cart() {
 
 		global $_product;
-
+		if($_product->get_children()) :
 		?>
 		<form action="<?php echo esc_url( $_product->add_to_cart_url() ); ?>" class="cart" method="post">
 			<table cellspacing="0">
@@ -334,6 +336,7 @@ if (!function_exists('jigoshop_grouped_add_to_cart')) {
 			<?php do_action('jigoshop_add_to_cart_form'); ?>
 		</form>
 		<?php
+		endif;
 	}
 }
 if (!function_exists('jigoshop_variable_add_to_cart')) {
