@@ -94,7 +94,7 @@ class jigoshop_cod extends jigoshop_payment_gateway {
 		$order = new jigoshop_order( $order_id );
 
 		// Mark as on-hold (we're awaiting the cod)
-		$order->update_status('on-hold', __('Awaiting cod payment', 'jigoshop'));
+		$order->update_status('on-hold', __('Waiting for cash delivery', 'jigoshop'));
 
 		// Remove cart
 		jigoshop_cart::empty_cart();
