@@ -431,7 +431,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 			                    break;
 							}
 		                    // Change role
-		                    wp_update_user( array ('ID' => $user_id, 'role' => 'customer') ) ;
+		                    wp_update_user( array ('ID' => $user_id, 'role' => 'customer', 'first_name' => $this->posted['billing-first_name'], 'last_name' => $this->posted['billing-last_name']) ) ;
 		
 		                    // send the user a confirmation and their login details
 		                    wp_new_user_notification( $user_id, $user_pass );

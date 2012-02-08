@@ -134,6 +134,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 	* Visibility [a new column]
 * You can now fully uninstall Jigoshop
 	* Updated uninstall.php to remove all database entries, pages & roles Jigoshop created on install
+* First & Last name now saved on new account creation during checkout process
 * Bank transfer information now included with 'processing order' emails
 * Images tab on settings page now takes up less space
 * Reduced total Jigoshop file size by at least 1mb
