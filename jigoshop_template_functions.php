@@ -743,7 +743,7 @@ if (!function_exists('jigoshop_login_form')) {
 if (!function_exists('jigoshop_checkout_login_form')) {
 	function jigoshop_checkout_login_form() {
 
-		if (is_user_logged_in()) return;
+		if (is_user_logged_in() || get_option('jigoshop_enable_guest_login') != 'yes') return;
 
 		?><p class="info"><?php _e('Already registered?', 'jigoshop'); ?> <a href="#" class="showlogin"><?php _e('Click here to login', 'jigoshop'); ?></a></p><?php
 

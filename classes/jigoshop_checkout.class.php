@@ -22,19 +22,18 @@ class jigoshop_checkout extends jigoshop_singleton {
 	public $posted;
 	public $billing_fields;
 	public $shipping_fields;
-	public $must_create_account;
-	public $creating_account;
+	private $must_register = true;
+	private $show_signup = false;
 	
 	/** constructor */
 	protected function __construct () {
+
+		$this->must_register = ( get_option('jigoshop_enable_guest_checkout') != 'yes' && !is_user_logged_in() );
+		$this->show_signup = ( get_option('jigoshop_enable_signup_form') == 'yes' && !is_user_logged_in() );
 		
 		add_action('jigoshop_checkout_billing',array(&$this,'checkout_form_billing'));
 		add_action('jigoshop_checkout_shipping',array(&$this,'checkout_form_shipping'));
-		
-		$this->must_create_account = true;
-		
-		if (get_option('jigoshop_enable_guest_checkout')=='yes' || is_user_logged_in()) $this->must_create_account = false;
-	
+
 		$this->billing_fields = array(
 			array( 'name'=>'billing-first_name', 'label' => __('First Name', 'jigoshop'), 'placeholder' => __('First Name', 'jigoshop'), 'required' => true, 'class' => array('form-row-first') ),
 			array( 'name'=>'billing-last_name', 'label' => __('Last Name', 'jigoshop'), 'placeholder' => __('Last Name', 'jigoshop'), 'required' => true, 'class' => array('form-row-last') ),
@@ -48,7 +47,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 			array( 'name'=>'billing-email', 'validate' => 'email', 'label' => __('Email Address', 'jigoshop'), 'placeholder' => __('you@yourdomain.com', 'jigoshop'), 'required' => true, 'class' => array('form-row-first') ),
 			array( 'name'=>'billing-phone', 'validate' => 'phone', 'label' => __('Phone', 'jigoshop'), 'placeholder' => __('Phone number', 'jigoshop'), 'required' => true, 'class' => array('form-row-last') )
 		);
-		
+
 		$this->billing_fields = apply_filters( 'jigoshop_billing_fields', $this->billing_fields );
 		
 		$this->shipping_fields = array(
@@ -86,16 +85,12 @@ class jigoshop_checkout extends jigoshop_singleton {
 		endforeach;
 		
 		// Registration Form
-		if (!is_user_logged_in() && get_option('users_can_register')) :
-		
-			if (get_option('jigoshop_enable_guest_checkout')=='yes') :
-				
-				echo '<p class="form-row"><input class="input-checkbox" id="createaccount" ';
-				if ($this->get_value('createaccount')) echo 'checked="checked" '; 
-				echo 'type="checkbox" name="createaccount" /> <label for="createaccount" class="checkbox">'.__('Create an account?', 'jigoshop').'</label></p>';
-				
-			endif;
-			
+		if ($this->show_signup) :
+
+			echo '<p class="form-row"><input class="input-checkbox" id="createaccount" ';
+			if ($this->get_value('createaccount')) echo 'checked="checked" ';
+			echo 'type="checkbox" name="createaccount" /> <label for="createaccount" class="checkbox">'.__('Create an account?', 'jigoshop').'</label></p>';
+
 			echo '<div class="create-account">';
 			
 			$this->checkout_form_field( array( 'type' => 'text', 'name' => 'account-username', 'label' => __('Account username', 'jigoshop'), 'placeholder' => __('Username', 'jigoshop') ) );
@@ -365,19 +360,11 @@ class jigoshop_checkout extends jigoshop_singleton {
 				endforeach; 
 			
 			endif;
-				
-			if (is_user_logged_in()) :
-				$this->creating_account = false;
-			elseif (isset($this->posted['createaccount']) && $this->posted['createaccount']) :
-				$this->creating_account = true;
-			elseif ($this->must_create_account) :
-				$this->creating_account = true;
-			else :
-				$this->creating_account = false;
-			endif;
-			
-			if ($this->creating_account && !$user_id) :
-			
+
+			if ($this->must_register || ( !$user_id && ($this->posted['createaccount'])) ) :
+
+				if ( !$this->show_signup ) jigoshop::add_error( __('Sorry, the shop owner has disabled guest purchases.','jigoshop') );
+
 				if ( empty($this->posted['account-username']) ) jigoshop::add_error( __('Please enter an account username.','jigoshop') );
 				if ( empty($this->posted['account-password']) ) jigoshop::add_error( __('Please enter an account password.','jigoshop') );
 				if ( $this->posted['account-password-2'] !== $this->posted['account-password'] ) jigoshop::add_error( __('Passwords do not match.','jigoshop') );
@@ -426,14 +413,14 @@ class jigoshop_checkout extends jigoshop_singleton {
 				$user_id = get_current_user_id();
 				
 				while (1) :
-					
+
 					// Create customer account and log them in
-					if ($this->creating_account && !$user_id) :
-				
+					if ($this->show_signup && !$user_id && $this->posted['createaccount']) :
+
 						$reg_errors = new WP_Error();
 						do_action('register_post', $this->posted['billing-email'], $this->posted['billing-email'], $reg_errors);
 						$errors = apply_filters( 'registration_errors', $reg_errors, $this->posted['billing-email'], $this->posted['billing-email'] );
-				
+
 		                // if there are no errors, let's create the user account
 						if ( !$reg_errors->get_error_code() ) :
 		
@@ -442,8 +429,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 			                if ( !$user_id ) {
 			                	jigoshop::add_error( sprintf(__('<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the <a href="mailto:%s">webmaster</a> !', 'jigoshop'), get_option('jigoshop_email')));
 			                    break;
-			                }
-		
+							}
 		                    // Change role
 		                    wp_update_user( array ('ID' => $user_id, 'role' => 'customer') ) ;
 		

@@ -91,20 +91,6 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name' => __('Allow guest purchases','jigoshop'),
-		'desc' 		=> '',
-		'tip' 		=> __('Setting this to Yes will allow users to checkout without registering or signing up. Otherwise, users must be signed in or must sign up to checkout.','jigoshop'),
-		'id' 		=> 'jigoshop_enable_guest_checkout',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'yes',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
-	),
-
-	array(
 		'name' => __('After adding product to cart','jigoshop'),
 		'desc' 		=> '',
 		'tip' 		=> __('Define what should happen when a user clicks on &#34;Add to Cart&#34; on any product or page.','jigoshop'),
@@ -116,20 +102,6 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 			'same_page'  => __('Stay on the same page', 'jigoshop'),
 			'to_checkout' => __('Redirect to Checkout', 'jigoshop'),
 			'to_cart' => __('Redirect to Cart', 'jigoshop'),
-		)
-	),
-
-	array(
-		'name' => __('Force SSL on checkout','jigoshop'),
-		'desc' 		=> '',
-		'tip' 		=> __('Forcing SSL is recommended. This will load your checkout page with https://. An SSL certificate is <strong>required</strong> if you choose yes. Contact your hosting provider for more information on SSL Certs.','jigoshop'),
-		'id' 		=> 'jigoshop_force_ssl_checkout',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'no',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
 		)
 	),
 
@@ -161,6 +133,62 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		)
 	),
 
+	array( 'name' => __('Checkout options', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
+
+	array(
+		'name' => __('Allow guest purchases','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Setting this to Yes will allow users to checkout without registering or signing up. Otherwise, users must be signed in or must sign up to checkout.','jigoshop'),
+		'id' 		=> 'jigoshop_enable_guest_checkout',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'yes',
+		'type' 		=> 'select',
+		'options' => array(
+			'yes' => __('Yes', 'jigoshop'),
+			'no'  => __('No', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Show login form','jigoshop'),
+		'desc' 		=> '',
+		'id' 		=> 'jigoshop_enable_guest_login',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'yes',
+		'type' 		=> 'select',
+		'options' => array(
+			'yes' => __('Yes', 'jigoshop'),
+			'no'  => __('No', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Allow registration','jigoshop'),
+		'desc' 		=> '',
+		'id' 		=> 'jigoshop_enable_signup_form',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'yes',
+		'type' 		=> 'select',
+		'options' => array(
+			'yes' => __('Yes', 'jigoshop'),
+			'no'  => __('No', 'jigoshop')
+		)
+	),
+	
+	array(
+		'name' => __('Force SSL on checkout','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Forcing SSL is recommended. This will load your checkout page with https://. An SSL certificate is <strong>required</strong> if you choose yes. Contact your hosting provider for more information on SSL Certs.','jigoshop'),
+		'id' 		=> 'jigoshop_force_ssl_checkout',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'yes' => __('Yes', 'jigoshop'),
+			'no'  => __('No', 'jigoshop')
+		)
+	),	
+	
 	array( 'name' => __('Integration', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
 
 	array(
