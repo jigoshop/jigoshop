@@ -314,7 +314,7 @@ if (!function_exists('jigoshop_grouped_add_to_cart')) {
 	function jigoshop_grouped_add_to_cart() {
 
 		global $_product;
-		if($_product->get_children()) :
+		if(!$_product->get_children()) return;
 		?>
 		<form action="<?php echo esc_url( $_product->add_to_cart_url() ); ?>" class="cart" method="post">
 			<table cellspacing="0">
@@ -336,7 +336,6 @@ if (!function_exists('jigoshop_grouped_add_to_cart')) {
 			<?php do_action('jigoshop_add_to_cart_form'); ?>
 		</form>
 		<?php
-		endif;
 	}
 }
 if (!function_exists('jigoshop_variable_add_to_cart')) {
