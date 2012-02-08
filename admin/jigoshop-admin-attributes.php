@@ -46,7 +46,7 @@ function jigoshop_attributes() {
 			
 			update_option('jigowatt_update_rewrite_rules', '1');
 			
-			wp_safe_redirect( get_admin_url() . 'admin.php?page=attributes' );
+			wp_safe_redirect( get_admin_url() . 'admin.php?page=jigoshop_attributes' );
 			exit;
 			
 		else :
@@ -66,7 +66,7 @@ function jigoshop_attributes() {
 		
 		endif;
 		
-		wp_safe_redirect( get_admin_url() . 'admin.php?page=attributes' );
+		wp_safe_redirect( get_admin_url() . 'admin.php?page=jigoshop_attributes' );
 		exit;
 			
 	elseif (isset($_GET['delete'])) :
@@ -91,7 +91,7 @@ function jigoshop_attributes() {
 				
 				endif;
 				
-				wp_safe_redirect( get_admin_url() . 'admin.php?page=attributes' );
+				wp_safe_redirect( get_admin_url() . 'admin.php?page=jigoshop_attributes' );
 				exit;
 										
 			endif;
@@ -135,12 +135,12 @@ function jigoshop_edit_attribute() {
 	    			<div class="form-wrap">
 	    				<h3><?php _e('Edit Attribute','jigoshop') ?></h3>
 	    				<p><?php _e('Attribute taxonomy names cannot be changed; you may only change an attributes type.','jigoshop') ?></p>
-	    				<form action="admin.php?page=attributes&amp;edit=<?php echo $edit; ?>" method="post">
+	    				<form action="admin.php?page=jigoshop_attributes&amp;edit=<?php echo $edit; ?>" method="post">
 							<div class="form-field">
 								<label for="attribute_label"><?php _e('Attribute Label', 'jigoshop'); ?></label>
 								<input name="attribute_label" id="attribute_label" type="text" value="<?php echo esc_attr( $att_label ); ?>" />
 								<p class="description"><?php _e('Label for the attribute (shown on the front-end).', 'jigoshop'); ?></p>
-							</div>							
+							</div>
 							<div class="form-field">
 								<label for="attribute_type"><?php _e('Attribute type', 'jigoshop'); ?></label>
 								<select name="attribute_type" id="attribute_type" style="width: 100%;">
@@ -198,7 +198,7 @@ function jigoshop_add_attribute() {
 
 				        					<td><a href="edit-tags.php?taxonomy=pa_<?php echo sanitize_title($tax->attribute_name); ?>&amp;post_type=product"><?php echo $att_title; ?></a>
 
-				        					<div class="row-actions"><span class="edit"><a href="<?php echo esc_url( add_query_arg('edit', $tax->attribute_id, 'admin.php?page=attributes') ); ?>"><?php _e('Edit', 'jigoshop'); ?></a> | </span><span class="delete"><a class="delete" href="<?php echo esc_url( add_query_arg('delete', $tax->attribute_id, 'admin.php?page=attributes') ); ?>"><?php _e('Delete', 'jigoshop'); ?></a></span></div>				        					
+				        					<div class="row-actions"><span class="edit"><a href="<?php echo esc_url( add_query_arg('edit', $tax->attribute_id, 'admin.php?page=jigoshop_attributes') ); ?>"><?php _e('Edit', 'jigoshop'); ?></a> | </span><span class="delete"><a class="delete" href="<?php echo esc_url( add_query_arg('delete', $tax->attribute_id, 'admin.php?page=jigoshop_attributes') ); ?>"><?php _e('Delete', 'jigoshop'); ?></a></span></div>				        					
 				        					</td>
 				        					<td><?php echo esc_html( ucwords( $att_title ) ); ?></td>											
 				        					<td><?php echo esc_html ( ucwords( $tax->attribute_type ) ); ?></td>
@@ -233,7 +233,7 @@ function jigoshop_add_attribute() {
 	    		<div class="col-wrap">
 	    			<div class="form-wrap">
 	    				<h3><?php _e('Add New Attribute','jigoshop') ?></h3>
-	    				<form action="admin.php?page=attributes" method="post">
+	    				<form action="admin.php?page=jigoshop_attributes" method="post">
 	    					<div class="form-field form-required">
 								<label for="attribute_label"><?php _e('Attribute Label', 'jigoshop'); ?></label>
 								<input name="attribute_label" id="attribute_label" type="text" value=""/>

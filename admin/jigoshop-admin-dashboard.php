@@ -66,10 +66,10 @@ function jigoshop_dashboard() {
 											<td class="t"><a href="edit-tags.php?taxonomy=product_tag&post_type=product"><?php _e('Product Tag', 'jigoshop'); ?></a></td>
 										</tr>
 										<tr>
-											<td class="first b"><a href="admin.php?page=attributes"><?php 
+											<td class="first b"><a href="admin.php?page=jigoshop_attributes"><?php 
 												echo count( jigoshop_product::getAttributeTaxonomies());
 											?></a></td>
-											<td class="t"><a href="admin.php?page=attributes"><?php _e('Attribute taxonomies', 'jigoshop'); ?></a></td>
+											<td class="t"><a href="admin.php?page=jigoshop_attributes"><?php _e('Attribute taxonomies', 'jigoshop'); ?></a></td>
 										</tr>
 									</tbody>
 								</table>
