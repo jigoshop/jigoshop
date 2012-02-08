@@ -352,6 +352,7 @@ function jigoshop_upgrade_100() {
  * @since 1.0.1
  */
 function jigoshop_upgrade_101() {
+	global $wpdb;
 
 	// Add setting to show or hide stock
 	update_option( 'jigoshop_show_stock' , 'yes' );
@@ -359,5 +360,8 @@ function jigoshop_upgrade_101() {
 	// New settings for guest control
 	update_option( 'jigoshop_enable_guest_login' , 'yes' );
 	update_option( 'jigoshop_enable_signup_form' , 'yes' );
+	
+//	$sql = 'ALTER TABLE '. $wpdb->prefix . 'jigoshop_attribute_taxonomies' . ' ADD COLUMN attribute_label longtext NULL';
+//	$wpdb->query($sql);
 
 }
