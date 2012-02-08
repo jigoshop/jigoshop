@@ -139,6 +139,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * fix recently viewed widget
 * fix on sale widget not displaying correct amount of products
 * fix session conflicts with other plugins by activating Jigoshop plugin first
+* fix coupons not applying to variations -- visit the variation to use the individual product ID in the coupon
 * fix coupons showing 'no products in cart' on valid coupons
 * fix some international users not being able to add shipping or tax rates (italian & french)
 
