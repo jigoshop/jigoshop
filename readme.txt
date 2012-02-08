@@ -112,18 +112,20 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 == Changelog ==
 
 = 1.0.1 - 2012-02-06 =
-* update all translation files to include latest strings and remove obsolete strings
-* update uninstall.php to remove jigoshop database entries when deleting the plugin through plugin manager
-* update included screenshots to reduce total file size
-* update Spain provinces (thank @dimitryz)
-* update readme.txt and readme.md files
-* update "images" tab on Jigoshop settings to take up less space
+* add new payment gateway: cash on delivery
+* add new shipping gateway: local pickup
 * add "visibility" column to "All Products" screen on admin
 * add sort by featured, price, visibility columns on "All Products" screen on admin
 * add Turkish, Italian, Portuguese, Norwegian, Portuguese Brazilian translations
 * add new shortcode: Products Search
 * add bank information to outgoing order email if payment method is bank transfer
 * add new setting: show stock amounts (to show or hide stock left in a product for customers)
+* update all translation files to include latest strings and remove obsolete strings
+* update uninstall.php to remove jigoshop database entries when deleting the plugin through plugin manager
+* update included screenshots to reduce total file size
+* update Spain provinces (thank @dimitryz)
+* update readme.txt and readme.md files
+* update "images" tab on Jigoshop settings to take up less space
 * fix taxes not being calculated correctly if your Base Country/State is set to "All of xxx"
 * fix `price not announced` not being shown
 * fix product edit `sale` and `regular` price fields so they don't allow currency symbols (and non numeric values)

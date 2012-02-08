@@ -59,6 +59,7 @@ include_once( 'gateways/gateways.class.php' );
 include_once( 'gateways/gateway.class.php' );
 include_once( 'gateways/bank_transfer.php' );
 include_once( 'gateways/cheque.php' );
+include_once( 'gateways/cod.php' );
 include_once( 'gateways/dibs.php' );
 include_once( 'gateways/paypal.php' );
 include_once( 'gateways/skrill.php' );
@@ -67,6 +68,7 @@ include_once( 'shipping/shipping_method.class.php' );
 include_once( 'shipping/jigoshop_calculable_shipping.php' );
 include_once( 'shipping/flat_rate.php' );
 include_once( 'shipping/free_shipping.php' );
+include_once( 'shipping/local_pickup.php' );
 
 include_once( 'classes/jigoshop_query.class.php' );
 include_once( 'classes/jigoshop.class.php' );
