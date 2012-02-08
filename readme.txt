@@ -165,30 +165,41 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * fix some international users not being able to add shipping or tax rates (italian & french)
 
 = 1.0 - 2012-02-01 =
-* added new feature for downloadable products: external URL or internal downloads
-* added new widget Jigoshop Login
-* added new widget Recently Viewed products
-* added new widget Recently Reviewed products
-* added new widget Best Selling products
-* added new widget Top Rated products
-* added new shortcode Add to Cart Button
-* added new shortcode Add to Cart URL
-* added new dimension options to products (Length / Width / Height)
-* added Admin Product List display products by Category
-* added currency symbols for all countries
-* added a couple new currencies
-* added Romanian and Croatian translations
-* added multi-lingual functionality with the WordPress WPML plugin
+* New feature for Downloadable products:
+	* External URL or Internal downloads, can specify http:// paths
+* New widgets:
+	* Jigoshop Login
+	* Recently Viewed products
+	* Recently Reviewed products
+	* Best Selling products
+	* Top Rated products
+* New shortcodes:
+	* Add to Cart Button
+	* Add to Cart URL
+* New tax features:
+	* Multiple tax classes per product (great for Canadians!)
+	* Define the tax label your customers see on checkout
+	* Show tax percentage for customers
+	* Compound taxes option (taxes can stack on each other)
+* New dimension fields to products
+	* Length / Width / Height
+* Rewrote shipping class
+	* Now allows developers to easily create plugins such as FedEx, UPS, USPS, etc.
+* Filter products in wp-admin by:
+	* product-category
+	* produt type
+* Currencies
+	* Updated all symbols
+	* Added a new currencies
+* New languages:
+	* Romanian (thanks Liviu!)
+	* Croatian (thanks Ivica & Nives!)
+* Now multi-lingual capable with the WordPress WPML plugin
 * fixed cyrillic characters & accents in attribute / variation names
 * fixed fancybox overlay
-* fixed users creating a new account now only if WP registration is allowed
-* fixed several 404 Jigoshop links
 * fixed My Account page not showing Address 2
-* added calculable shipping so that services such as FedEx, UPS, etc. can be plugged in
-* added brand new tax features including
-* multi-tax classes can be specified on product (good for Canadian, US tax laws)
-* ability to define tax label for view
-* shows tax percentage in view
+* fixed users creating a new account now only if WP registration is allowed
+* fixed several 404 Jigoshop internal href links
 
 = 0.9.9.4 RC2 (private release) =
 * added option for out of stock notification that sets products to hidden after Order quantity processing
