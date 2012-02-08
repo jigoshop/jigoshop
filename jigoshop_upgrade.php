@@ -356,4 +356,8 @@ function jigoshop_upgrade_101() {
 	// Add setting to show or hide stock
 	update_option( 'jigoshop_show_stock' , 'yes' );
 
+	// New settings for guest control
+	update_option( 'jigoshop_enable_guest_login' , 'yes' );
+	update_option( 'jigoshop_enable_signup_form' , 'yes' );
+
 }
