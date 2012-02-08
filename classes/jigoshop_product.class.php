@@ -1063,7 +1063,7 @@ class jigoshop_product {
 		}
 
 		foreach( $this->get_attributes() as $attr ) {
-
+			
 			// If attribute is invisible skip
 			if ( ! $attr['visible'] )
 				continue;
@@ -1073,10 +1073,10 @@ class jigoshop_product {
 			$value = null;
 
 			if ( (bool) $attr['is_taxonomy'] ) {
-
+				
 				// Get the taxonomy terms
-				$product_terms = get_the_terms( $this->ID, 'pa_'.sanitize_title($attr['name']) );
-
+				$product_terms = wp_get_object_terms( $this->ID, 'pa_'.sanitize_title($attr['name']), array( 'orderby' => 'slug' ) );
+				
 				// Convert them into a array to be imploded
 				$terms = array();
 
@@ -1157,7 +1157,7 @@ class jigoshop_product {
 
 				if ( $attribute['is_taxonomy'] ) {
 					$options = array();
-					$terms = get_the_terms( $this->ID, 'pa_'.sanitize_title($attribute['name']) );
+					$terms = wp_get_object_terms( $this->ID, 'pa_'.sanitize_title($attribute['name']), array( 'orderby' => 'slug' ) );
 
 					foreach($terms as $term) {
 						$options[] = $term->slug;
