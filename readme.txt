@@ -126,6 +126,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * update Spain provinces (thank @dimitryz)
 * update readme.txt and readme.md files
 * update "images" tab on Jigoshop settings to take up less space
+* fix variable products not showing a 'grouped' tab to set a 'sort order'
 * fix taxes not being calculated correctly if your Base Country/State is set to "All of xxx"
 * fix `price not announced` not being shown
 * fix product edit `sale` and `regular` price fields so they don't allow currency symbols (and non numeric values)
