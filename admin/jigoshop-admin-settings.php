@@ -302,7 +302,7 @@ function jigoshop_update_options() {
     }
 }
 
-add_action('load-jigoshop_page_settings', 'jigoshop_update_options');
+add_action('load-jigoshop_page_jigoshop_settings', 'jigoshop_update_options');
 
 /**
  * Admin fields
