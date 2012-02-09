@@ -23,3 +23,7 @@ CV
 .project
 nbproject
 deploy.sh
+
+# Test config files
+phpunit.xml
+tests/bootstrap.php
