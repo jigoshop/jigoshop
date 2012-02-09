@@ -597,7 +597,7 @@ class jigoshop_countries {
 		'NL'	=>	array(
 			'D'		=>	'Drenthe',
 			'Fl'	=>	'Flevoland',
-			'Fr'	=>	'Frysl&acirc;n',
+			'Fr'	=>	'Friesland',
 			'Gld'	=>	'Gelderland',
 			'Gr'	=>	'Groningen',
 			'L'		=>	'Limburg',
