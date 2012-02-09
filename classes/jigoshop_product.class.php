@@ -921,8 +921,8 @@ class jigoshop_product {
 		$tags = wp_get_post_terms($this->ID, 'product_tag', array('fields' => 'ids'));
 		$cats = wp_get_post_terms($this->ID, 'product_cat', array('fields' => 'ids'));
 
-		// No queries if we don't have any tags/categories
-		if( empty( $cats ) || empty( $tags ) )
+		// No queries if we don't have any tags -and- categories (one -or- the other should be queried)
+		if( empty( $cats ) && empty( $tags ) )
 			return array();
 		
 		// Only get related posts that are in stock & visible
