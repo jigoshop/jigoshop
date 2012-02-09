@@ -361,7 +361,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 			
 			endif;
 
-			if ($this->must_register || ( !$user_id && ($this->posted['createaccount'])) ) :
+			if ($this->must_register || ( empty($user_id) && ($this->posted['createaccount'])) ) :
 
 				if ( !$this->show_signup ) jigoshop::add_error( __('Sorry, the shop owner has disabled guest purchases.','jigoshop') );
 
