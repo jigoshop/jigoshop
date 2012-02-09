@@ -352,6 +352,7 @@ function jigoshop_upgrade_100() {
  * @since 1.0.1
  */
 function jigoshop_upgrade_101() {
+
 	global $wpdb;
 
 	// Add setting to show or hide stock
@@ -361,7 +362,8 @@ function jigoshop_upgrade_101() {
 	update_option( 'jigoshop_enable_guest_login' , 'yes' );
 	update_option( 'jigoshop_enable_signup_form' , 'yes' );
 	
-//	$sql = 'ALTER TABLE '. $wpdb->prefix . 'jigoshop_attribute_taxonomies' . ' ADD COLUMN attribute_label longtext NULL';
-//	$wpdb->query($sql);
+	// Add attribute label column to allow non-ascii characters
+	$sql = 'ALTER TABLE '. $wpdb->prefix . 'jigoshop_attribute_taxonomies' . ' ADD COLUMN attribute_label longtext NULL';
+	$wpdb->query($sql);
 
 }
