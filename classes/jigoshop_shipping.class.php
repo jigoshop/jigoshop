@@ -142,6 +142,7 @@ class jigoshop_shipping extends jigoshop_singleton {
                 endif;
                 
             elseif ($method->id != 'local_pickup') : // handle normal shipping methods, except, don't let local_pickup be chosen
+                $fee = $method->shipping_total;
                 if ($fee >= 0 && $fee < $_cheapest_fee || !is_numeric($_cheapest_fee)) :
                     $_cheapest_fee = $fee;
                     $_cheapest_method = $method->id;
