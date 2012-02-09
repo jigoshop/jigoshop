@@ -95,7 +95,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 			
 			$this->checkout_form_field( array( 'type' => 'text', 'name' => 'account-username', 'label' => __('Account username', 'jigoshop'), 'placeholder' => __('Username', 'jigoshop') ) );
 			$this->checkout_form_field( array( 'type' => 'password', 'name' => 'account-password', 'label' => __('Account password', 'jigoshop'), 'placeholder' => __('Password', 'jigoshop'),'class' => array('form-row-first')) );
-			$this->checkout_form_field( array( 'type' => 'password', 'name' => 'account-password-2', 'label' => __('Account password', 'jigoshop'), 'placeholder' => __('Password', 'jigoshop'),'class' => array('form-row-last'), 'label_class' => array('hidden')) );
+			$this->checkout_form_field( array( 'type' => 'password', 'name' => 'account-password-2', 'label' => __('Account password', 'jigoshop'), 'placeholder' => __('Password again', 'jigoshop'),'class' => array('form-row-last'), 'label_class' => array('hidden')) );
 			
 			echo '<p><small>'.__('Save time in the future and check the status of your order by creating an account.', 'jigoshop').'</small></p></div>';
 							
@@ -361,7 +361,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 			
 			endif;
 
-			if ($this->must_register || ( !$user_id && ($this->posted['createaccount'])) ) :
+			if ($this->must_register || ( empty($user_id) && ($this->posted['createaccount'])) ) :
 
 				if ( !$this->show_signup ) jigoshop::add_error( __('Sorry, the shop owner has disabled guest purchases.','jigoshop') );
 
@@ -720,4 +720,73 @@ class jigoshop_checkout extends jigoshop_singleton {
 			endswitch;
 		endif;
 	}
+    
+    static function get_shipping_dropdown() {
+
+        if (jigoshop_cart::needs_shipping()) :
+          ?><tr>
+                <td colspan="2"><?php _e('Shipping', 'jigoshop'); ?></td>
+                <td>
+                    <?php
+                    $available_methods = jigoshop_shipping::get_available_shipping_methods();
+
+                    if (sizeof($available_methods) > 0) :
+
+                        echo '<select name="shipping_method" id="shipping_method">';
+
+                        foreach ($available_methods as $method) :
+
+                            if ($method instanceof jigoshop_calculable_shipping) :
+                                $selected_service = NULL;
+                                if ($method->is_chosen()) :
+                                    
+                                    if (is_numeric( jigoshop_session::instance()->selected_rate_id )) :
+                                        $selected_service = $method->get_selected_service( jigoshop_session::instance()->selected_rate_id );
+                                    else :
+                                        $selected_service = $method->get_cheapest_service();
+                                    endif;
+                                endif;
+                                for ($i = 0; $i < $method->get_rates_amount(); $i++) :
+                                    echo '<option value="' . $method->id . ':' . $method->get_selected_service($i) . ':' . $i . '" ';
+                                    if ($method->get_selected_service($i) == $selected_service) :
+                                        echo 'selected="selected"';
+                                    endif;
+                                    echo '>' . $method->get_selected_service($i) . ' via ' . $method->title . ' &ndash; ';
+                                    echo jigoshop_price($method->get_selected_price($i));
+                                    if ($method->shipping_tax > 0) : echo __(' (ex. tax)', 'jigoshop');
+                                    endif;
+                                    echo '</option>';
+                                endfor;
+                            else :
+                                echo '<option value="' . esc_attr( $method->id  ) . '::" ';
+                                if ($method->is_chosen())
+                                    echo 'selected="selected"';
+
+                                echo '>' . $method->title . ' &ndash; ';
+
+                                if ($method->shipping_total > 0) :
+                                    echo jigoshop_price($method->shipping_total);
+                                    if ($method->shipping_tax > 0) : echo __(' (ex. tax)', 'jigoshop');
+                                    endif;
+                                else :
+                                    echo __('Free', 'jigoshop');
+                                endif;
+
+                                echo '</option>';
+                            endif;
+
+                        endforeach;
+
+                        echo '</select>';
+
+                    else :
+
+                        echo '<p>' . __(jigoshop_shipping::get_shipping_error_message(), 'jigoshop') . '</p>';
+
+                    endif;
+                    ?></td>
+            </tr><?php
+        endif;
+        
+    }
 }

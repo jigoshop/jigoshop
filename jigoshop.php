@@ -552,7 +552,7 @@ function get_jigoshop_currency_symbol() {
 		case 'ILS' : $currency_symbol = '&#8362;'; break;
 		case 'INR' : $currency_symbol = '&#8360;'; break;
 		case 'JPY' : $currency_symbol = '&yen;'; break;
-		case 'MXN' : $currency_symbol = '&#162;'; break;
+		case 'MXN' : $currency_symbol = '&#36;'; break;
 		case 'MYR' : $currency_symbol = 'RM'; break;
 		case 'NGN' : $currency_symbol = '&#8358;'; break;
 		case 'NOK' : $currency_symbol = 'kr'; break;
