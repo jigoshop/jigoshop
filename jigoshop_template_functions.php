@@ -650,7 +650,7 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 			<p><button type="submit" name="calc_shipping" value="1" class="button"><?php _e('Update Totals', 'jigoshop'); ?></button></p>
 			<p>
 			<?php
-			if (jigoshop_shipping::has_calculable_shipping() && jigoshop_shipping::get_total() > 0) :
+			if (jigoshop_shipping::has_calculable_shipping()) :
 				$available_methods = jigoshop_shipping::get_available_shipping_methods();
 				foreach ( $available_methods as $method ) :
 					if ( $method instanceof jigoshop_calculable_shipping ) :

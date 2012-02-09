@@ -141,8 +141,7 @@ class jigoshop_shipping extends jigoshop_singleton {
                     self::$shipping_error_message = $method->get_error_message();
                 endif;
                 
-            else : // handle normal shipping methods
-                $fee = $method->shipping_total;
+            elseif ($method->id != 'local_pickup') : // handle normal shipping methods, except, don't let local_pickup be chosen
                 if ($fee >= 0 && $fee < $_cheapest_fee || !is_numeric($_cheapest_fee)) :
                     $_cheapest_fee = $fee;
                     $_cheapest_method = $method->id;
