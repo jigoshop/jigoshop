@@ -380,7 +380,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 			// Open the select & set a default value
 			$html .= '<select name="' . $this->field_name('tax_' . sanitize_title($attr['name']), $variation) . '" >
-						<option value="">Any ' . sanitize_title($attr['name']) . '</option>';
+						<option value="">'.__('Any', 'jigoshop') . ' ' .jigoshop_product::attribute_label('pa_'.$attr['name']).'&hellip;</option>';
 
 			// Get terms for attribute taxonomy or value if its a custom attribute
 			if ( $attr['is_taxonomy'] ) {

@@ -359,7 +359,8 @@ function attributes_display() { ?>
 				$attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();
 				if ( $attribute_taxonomies ) :
 			    	foreach ($attribute_taxonomies as $tax) :
-						echo '<option value="'.sanitize_text_field(sanitize_title($tax->attribute_name)).'" data-type="'.$tax->attribute_type.'">'.$tax->attribute_name.'</option>';
+					$label = ($tax->attribute_label) ? $tax->attribute_label : $tax->attribute_name;
+						echo '<option value="'.sanitize_text_field(sanitize_title($tax->attribute_name)).'" data-type="'.$tax->attribute_type.'">'.esc_attr( $label ).'</option>';
 			    	endforeach;
 			    endif;
 			?>
@@ -415,7 +416,7 @@ function display_attribute() { ?>
 								</td>
 								<td class="value">
 									<select>
-										<option>Choose an option…</option>			
+										<option>Choose an option&hellip;</option>			
 									</select>
 								</td>
 							</tr>
@@ -447,7 +448,10 @@ function display_attribute() { ?>
 	<div class="postbox attribute <?php if ( $has_terms ) echo 'closed'; ?> <?php echo sanitize_text_field(sanitize_title($attribute_taxonomy_name)); ?>" data-attribute-name="<?php echo esc_attr( $attribute_taxonomy_name ); ?>" rel="<?php echo $position; ?>"  <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
 		<button type="button" class="hide_row button">Remove</button>
 		<div class="handlediv" title="Click to toggle"><br></div>
-		<h3 class="handle"><?php echo $tax->attribute_name; ?></h3>
+		<h3 class="handle">
+		<?php $label = ($tax->attribute_label) ? $tax->attribute_label : $tax->attribute_name;
+		echo esc_attr ( $label ); ?> 
+		</h3>
 
 		<input type="hidden" name="attribute_names[<?php echo $i; ?>]" value="<?php echo esc_attr( $tax->attribute_name ); ?>" />
 		<input type="hidden" name="attribute_is_taxonomy[<?php echo $i; ?>]" value="1" />
@@ -458,7 +462,7 @@ function display_attribute() { ?>
 			<table>
 				<tr>
 					<td class="options">
-						<input type="text" class="attribute-name" name="attribute_names[<?php echo $i; ?>]" value="<?php echo esc_attr( $tax->attribute_name ); ?>" disabled="disabled" />
+						<input type="text" class="attribute-name" name="attribute_names[<?php echo $i; ?>]" value="<?php echo esc_attr( $label ); ?>" disabled="disabled" />
 
 						<div>
 							<label>

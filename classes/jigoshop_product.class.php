@@ -1069,7 +1069,7 @@ class jigoshop_product {
 				continue;
 
 			// Get Title & Value from attribute array
-			$name = wptexturize($attr['name']);
+			$name = jigoshop_product::attribute_label('pa_'.$attr['name']);
 			$value = null;
 
 			if ( (bool) $attr['is_taxonomy'] ) {
@@ -1090,7 +1090,7 @@ class jigoshop_product {
 				$value = wptexturize($attr['value']);
 			}
 
-			// Generat the remaining html
+			// Generate the remaining html
 			$html .= "
 			<tr>
 				<th>$name</th>
@@ -1236,5 +1236,22 @@ class jigoshop_product {
 		
 		return self::$attribute_taxonomies;
 	}
+	
+	/**
+	 * Get a product attributes label
+	 */
+	public function attribute_label( $name ) {
+		global $wpdb;
+		
+		if (strstr( $name, 'pa_' )) :
+			$name = str_replace( 'pa_', '', sanitize_title( $name ) );
+
+			$label = $wpdb->get_var( $wpdb->prepare( "SELECT attribute_label FROM ".$wpdb->prefix."jigoshop_attribute_taxonomies WHERE attribute_name = %s;", $name ) );
+			
+			if ($label) return $label; else return ucfirst($name);
+		else :
+			return $name;
+		endif;
+	}	
 	
 }

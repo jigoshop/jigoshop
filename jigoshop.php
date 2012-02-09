@@ -664,6 +664,7 @@ function jigoshop_get_formatted_variation( $variation = '', $flat = false ) {
 					if ( $term->slug == $value ) $value = $term->name;
 				endforeach;
 				$name = get_taxonomy( 'pa_'.$name )->labels->name;
+				$name = jigoshop_product::attribute_label('pa_'.$name);
 			endif;
 
 			if ($flat) :
@@ -735,6 +736,24 @@ function jigowatt_clean( $var ) {
 function jigoshop_sanitize_num( $var ) {
 	return strip_tags(stripslashes(floatval(preg_replace("/^[^0-9\.]/","",$var))));
 }
+
+//Author: Sergey Biryukov
+// Plugin URI: http://wordpress.org/extend/plugins/allow-cyrillic-usernames/
+function jigoshop_sanitize_user($username, $raw_username, $strict) {
+	$username = wp_strip_all_tags( $raw_username );
+	$username = remove_accents( $username );
+	$username = preg_replace( '|%([a-fA-F0-9][a-fA-F0-9])|', '', $username );
+	$username = preg_replace( '/&.+?;/', '', $username ); // Kill entities
+
+	if ( $strict )
+		$username = preg_replace( '|[^a-z?-?0-9 _.\-@]|iu', '', $username );
+
+	$username = trim( $username );
+	$username = preg_replace( '|\s+|', ' ', $username );
+
+	return $username;
+}
+add_filter('sanitize_user', 'jigoshop_sanitize_user', 10, 3);
 
 global $jigoshop_body_classes;
 

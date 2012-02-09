@@ -384,13 +384,13 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
         </script>
 		<form action="<?php echo esc_url( $_product->add_to_cart_url() ); ?>" class="variations_form cart" method="post">
 			<fieldset class="variations">
-				<?php foreach ( $attributes as $aname => $avalues ): ?>
-					<?php $sanitized_name = sanitize_title( $aname ); ?>
+				<?php foreach ( $attributes as $name => $options ): ?>
+					<?php $sanitized_name = sanitize_title( $name ); ?>
 					<div>
-						<span class="select_label"><?php echo $aname; ?></span>
+						<span class="select_label"><?php echo jigoshop_product::attribute_label('pa_'.$name); ?></span>
 						<select id="<?php echo esc_attr( $sanitized_name ); ?>" name="tax_<?php echo $sanitized_name; ?>">
 							<option value=""><?php echo __('Choose an option ', 'jigoshop') ?>&hellip;</option>
-							<?php foreach ( $avalues as $value ) : ?>
+							<?php foreach ( $options as $value ) : ?>
 								<?php if ( taxonomy_exists( 'pa_'.$sanitized_name )) : ?>
 									<?php $term = get_term_by( 'slug', $value, 'pa_'.$sanitized_name ); ?>
 									<option value="<?php echo esc_attr( $term->slug ); ?>"><?php echo $term->name; ?></option>
