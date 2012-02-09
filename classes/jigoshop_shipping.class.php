@@ -141,7 +141,7 @@ class jigoshop_shipping extends jigoshop_singleton {
                     self::$shipping_error_message = $method->get_error_message();
                 endif;
                 
-            else : // handle normal shipping methods
+            elseif ($method->id != 'local_pickup') : // handle normal shipping methods, except, don't let local_pickup be chosen
                 $fee = $method->shipping_total;
                 if ($fee >= 0 && $fee < $_cheapest_fee || !is_numeric($_cheapest_fee)) :
                     $_cheapest_fee = $fee;
@@ -187,7 +187,9 @@ class jigoshop_shipping extends jigoshop_singleton {
                     endforeach;
 
                     // select chosen method
-                    if ($_available_methods[$chosen_method] && !$_available_methods[$chosen_method]->has_error()) :
+                    if ($_available_methods[$chosen_method] && 
+                            (!($available_methods[$chosen_method] instanceof jigoshop_calculable_shipping) 
+                            || ($_available_methods[$chosen_method] instanceof jigoshop_calculable_shipping && !$_available_methods[$chosen_method]->has_error()))) :
                         $chosen_method = $_available_methods[$chosen_method]->id;
 
                     // error returned from service api. Need to auto calculate cheapest method now
