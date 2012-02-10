@@ -268,6 +268,29 @@ jQuery(function(){
 			jQuery(link).attr('href', o_link);
 		}
 
+		jQuery('.product_meta .sku').remove();
+		jQuery('.product_meta').append(variation.sku);
+
+		jQuery('.shop_attributes').find('.weight').remove();
+		if ( variation.a_weight ) {
+			jQuery('.shop_attributes').append(variation.a_weight);
+		}
+
+		jQuery('.shop_attributes').find('.length').remove();
+		if ( variation.a_length ) {
+			jQuery('.shop_attributes').append(variation.a_length);
+		}
+
+		jQuery('.shop_attributes').find('.width').remove();
+		if ( variation.a_width ) {
+			jQuery('.shop_attributes').append(variation.a_width);
+		}
+
+		jQuery('.shop_attributes').find('.height').remove();
+		if ( variation.a_height ) {
+			jQuery('.shop_attributes').append(variation.a_height);
+		}
+
 		jQuery('.variations_button, .single_variation').slideDown();
 	}
 	
@@ -276,6 +299,12 @@ jQuery(function(){
 		jQuery('form input[name=variation_id]').val('');
 		jQuery('.single_variation').text('');
 		jQuery('.variations_button, .single_variation').slideUp();
+
+		jQuery('.product_meta .sku').remove();
+		jQuery('.shop_attributes').find('.weight').remove();
+		jQuery('.shop_attributes').find('.length').remove();
+		jQuery('.shop_attributes').find('.width').remove();
+		jQuery('.shop_attributes').find('.height').remove();
 		
 		var all_set = true;
 		var current_attributes = {};
