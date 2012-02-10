@@ -191,11 +191,11 @@ class jigoshop_customer extends jigoshop_singleton {
 					$results = $wpdb->get_results( "SELECT * FROM ".$wpdb->prefix."jigoshop_downloadable_product_permissions WHERE order_key = \"".$order->order_key."\" AND user_id = ".get_current_user_id().";" );
 					$user_info = get_userdata(get_current_user_id());
 					if ($results) foreach ($results as $result) :
-							$_product = new jigoshop_product( $result->product_id );
-							if ($_product->exists) :
-								$download_name = $_product->get_title();
-							else :
-								$download_name = '#' . $result->product_id;
+							$_product = new jigoshop_product_variation( $result->product_id );
+
+							$download_name = get_the_title($_product->ID);
+							if (isset($_product->variation_data)) :
+								$download_name = $download_name .' (' . jigoshop_get_formatted_variation( $_product->variation_data, true ).')';
 							endif;
 							$downloads[] = array(
 								'download_url' => add_query_arg('download_file', $result->product_id, add_query_arg('order', $result->order_key, add_query_arg('email', $user_info->user_email, home_url()))),

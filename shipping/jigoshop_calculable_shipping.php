@@ -73,6 +73,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
 
                     // sums up the rates from flattened array, and generates amounts. 
                     $rate = $this->retrieve_rate_from_response($xml_response);
+                    $rate += (empty($this->fee) ? 0 : $this->get_fee($this->fee, jigoshop_cart::$cart_contents_total_ex_dl));
 
                     $tax = 0;
                     if (get_option('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable') :
@@ -110,7 +111,8 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
 
                 foreach ($services as $current_service) :
                     $rate = $this->retrieve_rate_from_response($xml_response, $current_service);
-
+                    $rate += (empty($this->fee) ? 0 : $this->get_fee($this->fee, jigoshop_cart::$cart_contents_total_ex_dl));
+                
                     $tax = 0;
                     if (get_option('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable') :
                         $tax = $this->calculate_shipping_tax($rate);
@@ -293,6 +295,8 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
         return $cheapest_rate;
     }
 
+    // Override this functions if you want to provide your own 
+    // label to the service name displayed
     public function get_cheapest_service() {
         $my_cheapest_rate = $this->get_cheapest_rate();
         return ($my_cheapest_rate == NULL ? NULL : $my_cheapest_rate['service']);
@@ -309,7 +313,8 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
     }
 
     /**
-     * Retrieves the service name from the rate array based on the service selected
+     * Retrieves the service name from the rate array based on the service selected.
+     * Override this method if you wish to provide your own user friendly service name
      * @return - NULL if the rate by index doesn't exist, otherwise the service name associated with the 
      * service_id
      */
