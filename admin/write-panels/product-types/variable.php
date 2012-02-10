@@ -521,7 +521,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 								</label>
 							</td>
 						</tr>
-						<tr class="simple options">
+						<tr class="simple options" <?php echo ( ('simple' == $product_type) || ('variable' == $product_type)) ? 'style="display: table-row;"' : 'style="display: none;"';?>>
 							<td>
 								<label><?php _e('Weight', 'jigoshop') ?>
 									<input type="text" name="<?php echo esc_attr( $this->field_name('weight', $variation) ); ?>" value="<?php echo esc_attr( isset($meta['weight'][0]) ? $meta['weight'][0] : null ); ?>" />
