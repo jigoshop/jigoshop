@@ -28,6 +28,9 @@
 
 		// File Upload
 		jigoshop_file_upload();
+		
+		// Ensure a tax class is set on products
+		jigoshop_default_product_taxclass();
 	});
 
 	function jigoshop_start_tabs() {
@@ -74,6 +77,12 @@
 		}).change();
 	}
 
+	function jigoshop_default_product_taxclass() {
+		var $taxclasses = $('.tax_classes_field input');
+		// the first tax class will always be 'standard', turn it on if no tax class selected
+		if (! $taxclasses.is(':checked')) $taxclasses.eq(0).attr('checked', true);
+	}
+	
 	function jigoshop_sale_picker() {
 		// Sale price schedule
 		var sale_schedule_set = false;

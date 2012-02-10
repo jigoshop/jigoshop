@@ -180,8 +180,8 @@ jQuery(function(){
 	function variations_match(attrs1, attrs2) {
 		var match = true;
 		for(name in attrs1) {
-			var val1 = attrs1[name];
-			var val2 = attrs2[name];
+			var val1 = attrs1[name].toLowerCase();
+			var val2 = attrs2[name].toLowerCase();
 			
 			if(val1.length != 0 && val2.length != 0 && val1 != val2) {
 				match = false;

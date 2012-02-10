@@ -420,7 +420,8 @@ class jigoshop_tax {
                 $tax = $this->calc_tax($amount, $rate, get_option('jigoshop_prices_include_tax') == 'yes');
                 $this->tax_amounts[$tax_class]['amount'] = $tax;
             else :
-                $this->tax_amounts[$tax_class]['amount'] += $amount;
+            	if ( isset($this->tax_amounts[$tax_class]['amount']))
+                	$this->tax_amounts[$tax_class]['amount'] += $amount;
             endif;
 
             $this->imploded_tax_amounts = $this->array_implode($this->tax_amounts);

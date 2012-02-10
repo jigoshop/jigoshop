@@ -1,14 +1,14 @@
 # Jigoshop translation strings
 # Copyright (C) 2011-2012
 # This file is distributed under the same license as the Jigoshop package.
-# Last Updated: February 08, 2012.
+# Last Updated: February 09, 2012.
 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Jigoshop v1.0.1\n"
 "Report-Msgid-Bugs-To: Jigoshop <info@jigoshop.com>\n"
-"POT-Creation-Date: 2012-02-08 16:22-0500\n"
+"POT-Creation-Date: 2012-02-09 16:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jigoshop <info@jigoshop.com>\n"
 "Language-Team: Jigoshop <info@jigoshop.com>\n"
@@ -848,17 +848,14 @@ msgstr ""
 
 #: \wp-content\plugins\jigoshop\jigoshop_template_functions.php:670
 #: \wp-content\plugins\jigoshop\jigoshop_template_functions.php:690
-#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:69
-#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:83
-#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:148
-#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:162
+#: \wp-content\plugins\jigoshop\classes\jigoshop_checkout.class.php:756
+#: \wp-content\plugins\jigoshop\classes\jigoshop_checkout.class.php:769
 msgid " (ex. tax)"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\jigoshop_template_functions.php:692
+#: \wp-content\plugins\jigoshop\classes\jigoshop_checkout.class.php:772
 #: \wp-content\plugins\jigoshop\classes\jigoshop_product.class.php:784
-#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:86
-#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:165
 msgid "Free"
 msgstr ""
 
@@ -870,7 +867,6 @@ msgstr ""
 
 #: \wp-content\plugins\jigoshop\jigoshop_template_functions.php:725
 #: \wp-content\plugins\jigoshop\classes\jigoshop_checkout.class.php:97
-#: \wp-content\plugins\jigoshop\classes\jigoshop_checkout.class.php:98
 #: \wp-content\plugins\jigoshop\widgets\user_login.php:93
 msgid "Password"
 msgstr ""
@@ -1497,13 +1493,14 @@ msgstr ""
 #: \wp-content\plugins\jigoshop\templates\checkout\pay_for_order.php:35
 #: \wp-content\plugins\jigoshop\templates\checkout\pay_for_order.php:58
 #: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:33
-#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:114
+#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:52
 msgid "Subtotal"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-post-types.php:377
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-post-types.php:400
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-settings-options.php:739
+#: \wp-content\plugins\jigoshop\classes\jigoshop_checkout.class.php:728
 #: \wp-content\plugins\jigoshop\shortcodes\cart.php:214
 #: \wp-content\plugins\jigoshop\shortcodes\cart.php:236
 #: \wp-content\plugins\jigoshop\shortcodes\my_account.php:434
@@ -1512,8 +1509,6 @@ msgstr ""
 #: \wp-content\plugins\jigoshop\shortcodes\order_tracking.php:93
 #: \wp-content\plugins\jigoshop\templates\checkout\pay_for_order.php:43
 #: \wp-content\plugins\jigoshop\templates\checkout\pay_for_order.php:65
-#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:42
-#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:121
 msgid "Shipping"
 msgstr ""
 
@@ -1522,7 +1517,7 @@ msgstr ""
 #: \wp-content\plugins\jigoshop\shortcodes\my_account.php:485
 #: \wp-content\plugins\jigoshop\shortcodes\order_tracking.php:122
 #: \wp-content\plugins\jigoshop\templates\checkout\pay_for_order.php:94
-#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:212
+#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:87
 msgid "Discount"
 msgstr ""
 
@@ -3396,6 +3391,10 @@ msgstr ""
 msgid "Account password"
 msgstr ""
 
+#: \wp-content\plugins\jigoshop\classes\jigoshop_checkout.class.php:98
+msgid "Password again"
+msgstr ""
+
 #: \wp-content\plugins\jigoshop\classes\jigoshop_checkout.class.php:100
 msgid "Save time in the future and check the status of your order by creating an account."
 msgstr ""
@@ -3497,27 +3496,27 @@ msgstr ""
 msgid "Sorry, we do not have enough \"%s\" in stock to fulfill your order.  We have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_countries.class.php:815
+#: \wp-content\plugins\jigoshop\classes\jigoshop_countries.class.php:831
 msgid "to the"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_countries.class.php:816
+#: \wp-content\plugins\jigoshop\classes\jigoshop_countries.class.php:832
 msgid "to"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_countries.class.php:823
+#: \wp-content\plugins\jigoshop\classes\jigoshop_countries.class.php:839
 msgid "the "
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_countries.class.php:848
+#: \wp-content\plugins\jigoshop\classes\jigoshop_countries.class.php:864
 msgid "All of"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_countries.class.php:880
+#: \wp-content\plugins\jigoshop\classes\jigoshop_countries.class.php:896
 msgid "Your <strong>Base Country / Region</strong> setting has been changed to the last state in the country. Please update accordingly"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\classes\jigoshop_countries.class.php:881
+#: \wp-content\plugins\jigoshop\classes\jigoshop_countries.class.php:897
 #, php-format
 msgid "<a href=\"%s\">Read why</a> we did this for you."
 msgstr ""
@@ -5084,7 +5083,7 @@ msgid "Pay"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\shortcodes\my_account.php:78
-#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:300
+#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:175
 msgid "Cancel"
 msgstr ""
 
@@ -5178,7 +5177,7 @@ msgstr ""
 #: \wp-content\plugins\jigoshop\shortcodes\my_account.php:489
 #: \wp-content\plugins\jigoshop\shortcodes\order_tracking.php:126
 #: \wp-content\plugins\jigoshop\templates\checkout\pay_for_order.php:98
-#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:216
+#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:91
 msgid "Grand Total"
 msgstr ""
 
@@ -5350,31 +5349,31 @@ msgstr ""
 msgid "Pay for order"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:275
+#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:150
 msgid "Please fill in your details above to see available payment methods."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:277
+#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:152
 msgid "Sorry, it seems that there are no available payment methods for your state. Please contact us if you require assistance or wish to make alternate arrangements."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:287
+#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:162
 msgid "Since your browser does not support JavaScript, or it is disabled, please ensure you click the <em>Update Totals</em> button before placing your order. You may be charged more than the amount stated above if you fail to do so."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:287
+#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:162
 msgid "Update totals"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:295
+#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:170
 msgid "I accept the"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:295
+#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:170
 msgid "terms &amp; conditions"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:302
+#: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:177
 msgid "Place order"
 msgstr ""
 
@@ -5621,13 +5620,17 @@ msgid "Login"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\widgets\user_login.php:101
-msgid "Forgotten?"
+msgid "Forgot it?"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\widgets\user_login.php:167
+#: \wp-content\plugins\jigoshop\widgets\user_login.php:108
+msgid "New user?"
+msgstr ""
+
+#: \wp-content\plugins\jigoshop\widgets\user_login.php:174
 msgid "Title (Logged Out):"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\widgets\user_login.php:175
+#: \wp-content\plugins\jigoshop\widgets\user_login.php:182
 msgid "Title (Logged In):"
 msgstr ""
