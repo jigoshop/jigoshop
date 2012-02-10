@@ -1061,8 +1061,9 @@ class jigoshop_product {
 			if ( $this->get_height() )
 				$html .= '<tr><th>'.__('Height', 'jigoshop').'</th><td>'. $this->get_height() . get_option('jigoshop_dimension_unit') .'</td></tr>';
 		}
-
-		foreach( $this->get_attributes() as $attr ) {
+		
+		$attributes = $this->get_attributes();
+		if ( ! empty( $attributes )) foreach( $attributes as $attr ) {
 			
 			// If attribute is invisible skip
 			if ( ! $attr['visible'] )
