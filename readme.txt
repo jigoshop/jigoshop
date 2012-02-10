@@ -204,6 +204,10 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * fixed My Account page not showing Address 2
 * fixed users creating a new account now only if WP registration is allowed
 * fixed several 404 Jigoshop internal href links
+* fixed default display of variations in admin
+* fixed variation display for downloadable products in 'my account'
+* fixed dimension frontend display for variations
+* fixes sale icon sliding by positioning to the left
 
 = 0.9.9.4 RC2 (private release) =
 * added option for out of stock notification that sets products to hidden after Order quantity processing
