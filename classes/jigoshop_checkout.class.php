@@ -95,7 +95,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 			
 			$this->checkout_form_field( array( 'type' => 'text', 'name' => 'account-username', 'label' => __('Account username', 'jigoshop'), 'placeholder' => __('Username', 'jigoshop') ) );
 			$this->checkout_form_field( array( 'type' => 'password', 'name' => 'account-password', 'label' => __('Account password', 'jigoshop'), 'placeholder' => __('Password', 'jigoshop'),'class' => array('form-row-first')) );
-			$this->checkout_form_field( array( 'type' => 'password', 'name' => 'account-password-2', 'label' => __('Account password', 'jigoshop'), 'placeholder' => __('Password', 'jigoshop'),'class' => array('form-row-last'), 'label_class' => array('hidden')) );
+			$this->checkout_form_field( array( 'type' => 'password', 'name' => 'account-password-2', 'label' => __('Account password', 'jigoshop'), 'placeholder' => __('Password again', 'jigoshop'),'class' => array('form-row-last'), 'label_class' => array('hidden')) );
 			
 			echo '<p><small>'.__('Save time in the future and check the status of your order by creating an account.', 'jigoshop').'</small></p></div>';
 							
