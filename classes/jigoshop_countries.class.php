@@ -894,7 +894,7 @@ class jigoshop_countries {
 		echo '
 			<div class="error">
 				<p>'.__('Your <strong>Base Country / Region</strong> setting has been changed to the last state in the country. Please update accordingly', 'jigoshop').'!</p>
-				<p>' . sprintf(__('<a href="%s">Read why</a> we did this for you.','jigoshop'), "https://github.com/jigoshop/jigoshop/issues/545" ) . '</p>
+				<p>' . sprintf(__('<a href="%s" target="_TOP">Read why</a> we did this for you.','jigoshop'), "https://github.com/jigoshop/jigoshop/issues/545" ) . '</p>
 			</div>
 		';
 	}
