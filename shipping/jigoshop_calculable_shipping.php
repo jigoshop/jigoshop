@@ -1,5 +1,4 @@
 <?php
-
 /**
  * calculable shipping. This class allows the ability to plugin
  * shipping services in order to retrieve shipping information from their servers.
@@ -10,11 +9,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Checkout
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Checkout
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
 

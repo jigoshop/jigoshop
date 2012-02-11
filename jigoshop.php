@@ -8,21 +8,21 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * Plugin Name:        Jigoshop - WordPress eCommerce
- * Plugin URI:         http://jigoshop.com
- * Description:        Jigoshop, a WordPress eCommerce plugin that works.
- * Author:             Jigowatt
- * Author URI:         http://jigowatt.co.uk
+ * Plugin Name:			Jigoshop - WordPress eCommerce
+ * Plugin URI:			http://jigoshop.com
+ * Description:			Jigoshop, a WordPress eCommerce plugin that works.
+ * Author:				Jigowatt
+ * Author URI:			http://jigowatt.co.uk
  *
- * Version:            1.0
- * Requires at least:  3.1
- * Tested up to:       3.3.1
+ * Version:				1.1
+ * Requires at least:	3.1
+ * Tested up to:		3.3.1
  *
- * @package            Jigoshop
- * @category           Core
- * @author             Jigowatt
- * @copyright          Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license            http://jigoshop.com/license/commercial-edition
+ * @package				Jigoshop
+ * @category			Core
+ * @author				Jigowatt
+ * @copyright			Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license				http://jigoshop.com/license/commercial-edition
  */
 
 if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1202130);

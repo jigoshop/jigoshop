@@ -8,12 +8,12 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package	Jigoshop
+ * @package		Jigoshop
  * @category	Widgets
- * @author	Jigowatt
- * @since	1.0
+ * @author		Jigowatt
+ * @since		1.0
  * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license	http://jigoshop.com/license/commercial-edition
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 
  class Jigoshop_Widget_Recently_Viewed_Products extends WP_Widget {

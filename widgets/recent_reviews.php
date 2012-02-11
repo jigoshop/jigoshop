@@ -11,8 +11,8 @@
  * @package 	Jigoshop
  * @category  	Widgets
  * @author    	Jigowatt
- * @since 	1.0
- * @copyright 	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @since		1.0
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
  * @license   	http://jigoshop.com/license/commercial-edition
  */
 

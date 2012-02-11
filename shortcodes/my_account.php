@@ -1,5 +1,4 @@
 <?php
-
 /**
  * My Account shortcode
  *
@@ -9,12 +8,13 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Customer
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Customer
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
+
 function get_jigoshop_my_account($atts) {
     return jigoshop::shortcode_wrapper('jigoshop_my_account', $atts);
 }
