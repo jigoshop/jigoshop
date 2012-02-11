@@ -144,8 +144,10 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * Reduced total Jigoshop file size by at least 1mb
 * Jigoshop.pot updated include latest strings and remove obsolete strings
 * Remove `bulk actions` on variable products that didn't have any variations
+* update admin order page to use pretty titles for payment & shipping
 * update Spain provinces (thank @dimitryz)
 * update readme.txt and readme.md files
+* fix order-status' not being allowed for translation
 * fix widgets:
 	* featured product widget
 	* top rated widget

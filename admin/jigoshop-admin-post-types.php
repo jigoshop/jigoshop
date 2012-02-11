@@ -343,16 +343,16 @@ function jigoshop_custom_order_columns($column) {
             ?>
             <dl>
                 <dt><?php _e('Payment:', 'jigoshop'); ?></dt>
-                <dd><?php echo $order->payment_method; ?></dd>
+                <dd><?php echo $order->payment_method_title; ?></dd>
                 <dt><?php _e('Shipping:', 'jigoshop'); ?></dt>
                 <?php
                 if ($order->shipping_service) :
                     ?>
-                    <dd><?php echo $order->shipping_service . ' via ' . $order->shipping_method; ?></dd>
+                    <dd><?php echo sprintf( __('%s via %s', 'jigoshop'), $order->shipping_service, $order->shipping_method_title); ?></dd>
                     <?php
                 else :
                     ?>
-                    <dd><?php echo $order->shipping_method; ?></dd>
+                    <dd><?php echo $order->shipping_method_title; ?></dd>
                 <?php
                 endif;
                 ?>
