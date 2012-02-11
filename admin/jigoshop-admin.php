@@ -56,10 +56,10 @@ function jigoshop_update() {
 
 		else {
 			echo '
-				<div class="updated">
-					<p>Uh oh! Looks like your Jigoshop database needs updating, just to be safe <strong>please backup your database</strong> before clicking this button!</p>
+				<div class="error">
+					<p>' . __('Uh oh! Looks like your Jigoshop database needs updating, just to be safe <strong>please backup your database</strong> before clicking this button!', 'jigoshop') . '</p>
 					<p>
-						<a class="button-primary" href="' . add_query_arg('jigoshop_update_db', 'true') . '">Update Database</a>
+						<a class="button-secondary" href="' . add_query_arg('jigoshop_update_db', 'true') . '">' . __('I\'ve backed up, now update me!', 'jigoshop') . '</a>
 					</p>
 				</div>
 			';
