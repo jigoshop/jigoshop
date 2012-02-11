@@ -272,7 +272,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
         return $this->has_error;
     }
 
-    private function get_selected_rate($rate_index) {
+    protected function get_selected_rate($rate_index) {
 
         return ($this->rates == NULL ? NULL : $this->rates[$rate_index]);
     }
@@ -281,7 +281,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
      * gets the cheapest rate from the rates returned by shipping service. If an error occurred on 
      * on the shipping service service, NULL will be returned
      */
-    private function get_cheapest_rate() {
+    protected function get_cheapest_rate() {
 
         $cheapest_rate = null;
         if ($this->rates != null) :
