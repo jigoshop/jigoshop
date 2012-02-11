@@ -40,6 +40,10 @@ function jigoshop_upgrade() {
 	if ( $jigoshop_db_version < 1202010 ) {
 		jigoshop_upgrade_100();
 	}
+	
+	if ( $jigoshop_db_version < 1202130 ) {
+		jigoshop_upgrade_110();
+	}	
 
 	// Update the db option
 	update_site_option( 'jigoshop_db_version', JIGOSHOP_VERSION );
@@ -104,6 +108,12 @@ function jigoshop_convert_db_version() {
 		case '0.9.9.3':
 			update_site_option( 'jigoshop_db_version', 1111092 );
 			break;
+		case '1.0':
+			update_site_option( 'jigoshop_db_version', 1202090 );
+			break;
+		case '1.1':
+			update_site_option( 'jigoshop_db_version', 1202130 );
+			break;			
 	}
 }
 
@@ -197,9 +207,7 @@ function jigoshop_upgrade_100() {
         update_option('jigoshop_tax_rates', $tax_rates);
         
     endif;
-    
-    
-    
+
     // convert products
     
 	$args = array(
@@ -349,9 +357,9 @@ function jigoshop_upgrade_100() {
 /**
  * Execute changes made in Jigoshop 1.0
  *
- * @since 1.0.1
+ * @since 1.1
  */
-function jigoshop_upgrade_101() {
+function jigoshop_upgrade_110() {
 
 	global $wpdb;
 

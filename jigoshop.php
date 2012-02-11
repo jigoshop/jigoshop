@@ -25,7 +25,7 @@
  * @license            http://jigoshop.com/license/commercial-edition
  */
 
-if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1202010);
+if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1202130);
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');

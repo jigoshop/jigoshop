@@ -6,7 +6,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Jigoshop v1.0.1\n"
+"Project-Id-Version: Jigoshop v1.1\n"
 "Report-Msgid-Bugs-To: Jigoshop <info@jigoshop.com>\n"
 "POT-Creation-Date: 2012-02-11 08:39-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"

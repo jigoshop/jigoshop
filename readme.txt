@@ -111,7 +111,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 
 == Changelog ==
 
-= 1.0.1 - 2012-02-09 =
+= 1.1 - 2012-02-09 =
 * New gateways:
 	* Cash On Delivery [payment gateway]
 	* Local Pickup [shipping method]
@@ -392,5 +392,5 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 
 == Upgrade Notice ==
 
-= 1.0.1
-Widgets fixed, new shortcode, uninstaller added, and plenty of other bug fixes!
+= 1.1
+New payment and shipping gateways, widgets fixed, new shortcode, uninstaller added, and plenty of other bug fixes!
