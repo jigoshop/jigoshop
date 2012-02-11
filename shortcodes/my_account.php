@@ -71,7 +71,7 @@ function jigoshop_my_account( $atts ) {
 						<td><time title="<?php echo esc_attr( date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($order->order_date)) ); ?>"><?php echo date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($order->order_date)); ?></time></td>
 						<td><address><?php if ($order->formatted_shipping_address) echo $order->formatted_shipping_address; else echo '&ndash;'; ?></address></td>
 						<td><?php echo jigoshop_price($order->order_total); ?></td>
-						<td class="nobr"><?php echo $order->status; ?></td>
+						<td class="nobr"><?php _e($order->status, 'jigoshop'); ?></td>
 						<td class="nobr alignright">
 							<?php if ($order->status=='pending') : ?>
 								<a href="<?php echo esc_url( $order->get_checkout_payment_url() ); ?>" class="button pay"><?php _e('Pay', 'jigoshop'); ?></a>
@@ -403,9 +403,8 @@ function jigoshop_view_order() {
 
         if ($order_id > 0 && $order->user_id == get_current_user_id()) :
 
-            echo '<p>' . sprintf(__('Order <mark>#%s</mark> made on <mark>%s</mark>', 'jigoshop'), $order->id, date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($order->order_date)));
-
-            echo sprintf(__('. Order status: <mark>%s</mark>', 'jigoshop'), $order->status);
+            echo '<p>' . sprintf(__('Order <mark>#%s</mark> made on <mark>%s</mark>.', 'jigoshop'), $order->id, date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($order->order_date))) . ' ';
+            echo sprintf(__('Order status: <mark class="%s">%s</mark>', 'jigoshop'), sanitize_title($order->status), __($order->status, 'jigoshop') );
 
             echo '.</p>';
             ?>

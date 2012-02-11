@@ -281,7 +281,7 @@ function jigoshop_custom_order_columns($column) {
     switch ($column) {
         case "order_status" :
 
-            echo sprintf(__('<mark class="%s">%s</mark>', 'jigoshop'), sanitize_title($order->status), $order->status);
+            echo sprintf( '<mark class="%s">%s</mark>', sanitize_title($order->status), __($order->status, 'jigoshop') );
 
             break;
         case "order_title" :

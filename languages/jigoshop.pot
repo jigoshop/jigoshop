@@ -1,14 +1,14 @@
 # Jigoshop translation strings
 # Copyright (C) 2011-2012
 # This file is distributed under the same license as the Jigoshop package.
-# Last Updated: February 10, 2012.
+# Last Updated: February 11, 2012.
 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Jigoshop v1.0.1\n"
 "Report-Msgid-Bugs-To: Jigoshop <info@jigoshop.com>\n"
-"POT-Creation-Date: 2012-02-10 18:02-0500\n"
+"POT-Creation-Date: 2012-02-11 08:29-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jigoshop <info@jigoshop.com>\n"
 "Language-Team: Jigoshop <info@jigoshop.com>\n"
@@ -249,7 +249,7 @@ msgstr ""
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:372
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:473
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:576
-#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:494
+#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:493
 msgid "Note:"
 msgstr ""
 
@@ -330,7 +330,7 @@ msgstr ""
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:314
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:417
 #: \wp-content\plugins\jigoshop\jigoshop_emails.php:586
-#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:540
+#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:539
 msgid "Email:"
 msgstr ""
 
@@ -541,7 +541,7 @@ msgid "Products"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\jigoshop_taxonomy.php:119
-#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:416
+#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:415
 #: \wp-content\plugins\jigoshop\templates\checkout\pay_for_order.php:25
 #: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:23
 msgid "Product"
@@ -1048,6 +1048,10 @@ msgstr ""
 msgid "Recent Orders"
 msgstr ""
 
+#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-dashboard.php:132
+msgid "l jS \\of F Y h:i:s A"
+msgstr ""
+
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-dashboard.php:133
 msgid "Total: "
 msgstr ""
@@ -1443,7 +1447,7 @@ msgstr ""
 #: \wp-content\plugins\jigoshop\classes\jigoshop_checkout.class.php:77
 #: \wp-content\plugins\jigoshop\shortcodes\my_account.php:95
 #: \wp-content\plugins\jigoshop\shortcodes\my_account.php:212
-#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:566
+#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:565
 #: \wp-content\plugins\jigoshop\shortcodes\order_tracking.php:161
 msgid "Billing Address"
 msgstr ""
@@ -1452,7 +1456,7 @@ msgstr ""
 #: \wp-content\plugins\jigoshop\classes\jigoshop_checkout.class.php:120
 #: \wp-content\plugins\jigoshop\shortcodes\my_account.php:124
 #: \wp-content\plugins\jigoshop\shortcodes\my_account.php:212
-#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:551
+#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:550
 #: \wp-content\plugins\jigoshop\shortcodes\order_tracking.php:170
 msgid "Shipping Address"
 msgstr ""
@@ -1463,11 +1467,6 @@ msgstr ""
 
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-post-types.php:269
 msgid "Order Cost"
-msgstr ""
-
-#: \wp-content\plugins\jigoshop\admin\jigoshop-admin-post-types.php:284
-#, php-format
-msgid "<mark class=\"%s\">%s</mark>"
 msgstr ""
 
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-post-types.php:289
@@ -1493,7 +1492,7 @@ msgstr ""
 
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-post-types.php:367
 #: \wp-content\plugins\jigoshop\shortcodes\cart.php:203
-#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:424
+#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:423
 #: \wp-content\plugins\jigoshop\shortcodes\order_tracking.php:64
 #: \wp-content\plugins\jigoshop\templates\checkout\pay_for_order.php:33
 #: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:31
@@ -1504,8 +1503,8 @@ msgstr ""
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-post-types.php:393
 #: \wp-content\plugins\jigoshop\shortcodes\cart.php:205
 #: \wp-content\plugins\jigoshop\shortcodes\cart.php:229
-#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:426
-#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:449
+#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:425
+#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:448
 #: \wp-content\plugins\jigoshop\shortcodes\order_tracking.php:66
 #: \wp-content\plugins\jigoshop\shortcodes\order_tracking.php:87
 #: \wp-content\plugins\jigoshop\templates\checkout\pay_for_order.php:35
@@ -1521,8 +1520,8 @@ msgstr ""
 #: \wp-content\plugins\jigoshop\classes\jigoshop_checkout.class.php:728
 #: \wp-content\plugins\jigoshop\shortcodes\cart.php:214
 #: \wp-content\plugins\jigoshop\shortcodes\cart.php:236
-#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:434
-#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:456
+#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:433
+#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:455
 #: \wp-content\plugins\jigoshop\shortcodes\order_tracking.php:73
 #: \wp-content\plugins\jigoshop\shortcodes\order_tracking.php:93
 #: \wp-content\plugins\jigoshop\templates\checkout\pay_for_order.php:43
@@ -1532,7 +1531,7 @@ msgstr ""
 
 #: \wp-content\plugins\jigoshop\admin\jigoshop-admin-post-types.php:431
 #: \wp-content\plugins\jigoshop\shortcodes\cart.php:267
-#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:485
+#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:484
 #: \wp-content\plugins\jigoshop\shortcodes\order_tracking.php:122
 #: \wp-content\plugins\jigoshop\templates\checkout\pay_for_order.php:94
 #: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:87
@@ -4950,6 +4949,34 @@ msgstr ""
 msgid "Zimbabwe"
 msgstr ""
 
+#: \wp-content\plugins\jigoshop\languages\strings.php:21
+msgid "pending"
+msgstr ""
+
+#: \wp-content\plugins\jigoshop\languages\strings.php:22
+msgid "failed"
+msgstr ""
+
+#: \wp-content\plugins\jigoshop\languages\strings.php:23
+msgid "on-hold"
+msgstr ""
+
+#: \wp-content\plugins\jigoshop\languages\strings.php:24
+msgid "processing"
+msgstr ""
+
+#: \wp-content\plugins\jigoshop\languages\strings.php:25
+msgid "completed"
+msgstr ""
+
+#: \wp-content\plugins\jigoshop\languages\strings.php:26
+msgid "refunded"
+msgstr ""
+
+#: \wp-content\plugins\jigoshop\languages\strings.php:27
+msgid "cancelled"
+msgstr ""
+
 #: \wp-content\plugins\jigoshop\shipping\flat_rate.php:87
 msgid "Flat Rates"
 msgstr ""
@@ -5171,48 +5198,48 @@ msgstr ""
 
 #: \wp-content\plugins\jigoshop\shortcodes\my_account.php:406
 #, php-format
-msgid "Order <mark>#%s</mark> made on <mark>%s</mark>"
+msgid "Order <mark>#%s</mark> made on <mark>%s</mark>."
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:408
+#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:407
 #, php-format
-msgid ". Order status: <mark>%s</mark>"
+msgid "Order status: <mark class=\"%s\">%s</mark>"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:415
+#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:414
 #: \wp-content\plugins\jigoshop\shortcodes\order_tracking.php:55
 msgid "ID/SKU"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:417
+#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:416
 #: \wp-content\plugins\jigoshop\templates\checkout\pay_for_order.php:26
 #: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:24
 msgid "Qty"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:418
+#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:417
 #: \wp-content\plugins\jigoshop\templates\checkout\pay_for_order.php:27
 #: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:25
 msgid "Totals"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:489
+#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:488
 #: \wp-content\plugins\jigoshop\shortcodes\order_tracking.php:126
 #: \wp-content\plugins\jigoshop\templates\checkout\pay_for_order.php:98
 #: \wp-content\plugins\jigoshop\templates\checkout\review_order.php:91
 msgid "Grand Total"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:535
+#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:534
 msgid "Customer details"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:542
+#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:541
 msgid "Telephone:"
 msgstr ""
 
-#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:556
-#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:571
+#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:555
+#: \wp-content\plugins\jigoshop\shortcodes\my_account.php:570
 msgid "N/A"
 msgstr ""
 
