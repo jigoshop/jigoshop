@@ -31,10 +31,10 @@ function jigoshop_attributes() {
 	if (isset($_POST['add_new_attribute']) && $_POST['add_new_attribute']) :
 
 		$attribute_label = (string) $_POST['attribute_label'];
-		$attribute_name = (string) sanitize_user($_POST['attribute_name'], $strict = true);		
+		$attribute_name = (string) sanitize_title(sanitize_user($_POST['attribute_name'], $strict = true));
 		$attribute_type = (string) $_POST['attribute_type'];
 		
-		if (!$attribute_name) $attribute_name = sanitize_user($attribute_label, $strict = true);
+		if (!$attribute_name) $attribute_name = sanitize_title(sanitize_user($attribute_label, $strict = true));
 
 		if (isset($_POST['show-on-product-page']) && $_POST['show-on-product-page']) $product_page = 1; else $product_page = 0;
 
