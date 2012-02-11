@@ -10,6 +10,8 @@ A feature-packed eCommerce plugin built upon WordPress core functionality ensuri
 
 == Description ==
 
+Jigoshop, a WordPress eCommerce plugin developed by professionals with years of experience delivering online shops for global brands.
+
 = SETUP IN MINUTES =
 
 Complete your shop in minutes with physical and downloadable products or even services. Jigoshop provides you with the features necessary to set up an eCommerce web site lickety-split.
@@ -70,7 +72,7 @@ You can also navigate to the <a href="http://forum.jigoshop.com/kb/getting-start
 
 = Setting up Jigoshop =
 
-Take a look through our <a href="http://forum.jigoshop.com/kb/" title="Jigoshop usage guide">Jigoshop usage guide</a> to help you setup Jigoshop for the first time.
+Take a look through our <a href="http://forum.jigoshop.com/kb/" title="Jigoshop usage guide">Jigoshop usage guides</a> to help you setup Jigoshop for the first time.
 
 == Frequently Asked Questions ==
 
