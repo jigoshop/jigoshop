@@ -20,7 +20,7 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Setup the widget with the available options
 	 * Add actions to clear the cache whenever a post is saved|deleted or a theme is switched
 	 */
@@ -29,13 +29,13 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 			'classname'	=> 'widget_user_login',
 			'description'	=> __( 'Displays a handy login form for users', 'jigoshop' )
 		);
-		
+
 		parent::__construct( 'user-login', __( 'Jigoshop: Login', 'jigoshop' ), $options );
 	}
 
 	/**
 	 * Widget
-	 * 
+	 *
 	 * Display the widget in the sidebar
 	 * Save output to the cache if empty
 	 *
@@ -43,7 +43,7 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 	 * @param	array	instance
 	 */
 	public function widget( $args, $instance ) {
-	
+
 		extract( $args );
 
 		// Print the widget wrapper
@@ -78,7 +78,7 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 			$user_login = isset( $user_login ) ? $user_login : null;
 
 			echo "<form action='".wp_login_url( $redirect_to )."' method='post' class='jigoshop_login_widget'>";
-			
+
 			// Username
 			echo "
 			<p>
@@ -137,7 +137,7 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 
 	/**
 	 * Update
-	 * 
+	 *
 	 * Handles the processing of information entered in the wordpress admin
 	 * Flushes the cache & removes entry from options array
 	 *
@@ -147,7 +147,7 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
-		
+
 		// Save the new values
 		$instance['title_guest']	= strip_tags( $new_instance['title_guest'] );
 		$instance['title_user']	= strip_tags( $new_instance['title_user'] );
@@ -157,17 +157,17 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 
 	/**
 	 * Form
-	 * 
+	 *
 	 * Displays the form for the wordpress admin
 	 *
 	 * @param	array	instance
 	 */
 	public function form( $instance ) {
-	
+
 		// Get instance data
 		$title_guest 	= isset( $instance['title_guest'] ) ? esc_attr( $instance['title_guest'] ) : null;
 		$title_user	= isset( $instance['title_user'] ) ? esc_attr( $instance['title_user'] ) : null;
-		
+
 		// Title for Guests
 		echo "
 		<p>
@@ -184,5 +184,5 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 		</p>
 		";
 	}
-	
+
 } // class Jigoshop_Widget_Recent_Products

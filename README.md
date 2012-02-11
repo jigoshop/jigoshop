@@ -17,7 +17,7 @@ To get started, [check out our installation guide](http://forum.jigoshop.com/kb/
 2. Or download it into your WordPress plugin directory:
 
 	https://github.com/jigoshop/jigoshop/zipball/master
-	
+
 Bug tracker
 -----------
 
@@ -28,7 +28,7 @@ https://github.com/jigoshop/jigoshop/issues
 Contributing
 ------------
 
-Anyone and everyone is welcome to contribute. Jigoshop wouldn't be what it is today without the github community. 
+Anyone and everyone is welcome to contribute. Jigoshop wouldn't be what it is today without the github community.
 
 There are several ways you can help out:
 

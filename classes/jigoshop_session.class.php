@@ -21,7 +21,7 @@ class jigoshop_session extends jigoshop_singleton {
 	}
 
 	public function __get( $key ) {
-		
+
 		if( array_key_exists( $key, $_SESSION['jigoshop'][JIGOSHOP_VERSION]) )
 			return $_SESSION['jigoshop'][JIGOSHOP_VERSION][$key];
 
@@ -29,7 +29,7 @@ class jigoshop_session extends jigoshop_singleton {
 	}
 
 	public function __set( $key, $value ) {
-		
+
 		$_SESSION['jigoshop'][JIGOSHOP_VERSION][$key] = $value;
 		return $value;
 	}

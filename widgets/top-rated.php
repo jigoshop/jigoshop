@@ -20,7 +20,7 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Setup the widget with the available options
 	 * Add actions to clear the cache whenever a post is saved|deleted or a theme is switched
 	 */
@@ -29,7 +29,7 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 			'classname'	=> 'widget_top_rated',
 			'description'	=> __( 'The best of the best on your site', 'jigoshop' )
 		);
-		
+
 		parent::__construct( 'top-rated', __( 'Jigoshop: Top Rated Products', 'jigoshop' ), $options );
 
 		// Flush cache after every save
@@ -40,7 +40,7 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 
 	/**
 	 * Widget
-	 * 
+	 *
 	 * Display the widget in the sidebar
 	 * Save output to the cache if empty
 	 *
@@ -51,7 +51,7 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 
 		// Get the most recent products from the cache
 		$cache = wp_cache_get( 'widget_recent_products', 'widget' );
-		
+
 		// If no entry exists use array
 		if ( ! is_array( $cache ) ) {
 			$cache = array();
@@ -69,8 +69,8 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 
 		// Set the widget title
 		$title = apply_filters(
-			'widget_title', 
-			($instance['title']) ? $instance['title'] : __( 'Top Rated Products', 'jigoshop' ), 
+			'widget_title',
+			($instance['title']) ? $instance['title'] : __( 'Top Rated Products', 'jigoshop' ),
 			$instance,
 			$this->id_base
 		);
@@ -118,13 +118,13 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 				echo '<a href="'.esc_url( get_permalink() ).'" title="'.esc_attr( get_the_title() ).'">';
 
 				// Print the product image
-				echo ( has_post_thumbnail() ) 
+				echo ( has_post_thumbnail() )
 					? the_post_thumbnail( 'shop_tiny' )
 					: jigoshop_get_image_placeholder( 'shop_tiny' );
 
 				echo '<span class="js_widget_product_title">' . get_the_title() . '</span>';
 				echo '</a>';
-				
+
 				// Print the average rating with html wrappers
 				echo $_product->get_rating_html( 'sidebar' );
 
@@ -134,15 +134,15 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 			endwhile;
 
 			echo '</ul>'; // Close the list
-			
+
 			// Print closing widget wrapper
 			echo $after_widget;
-			
+
 			// Reset the global $the_post as this query will have stomped on it
 			wp_reset_postdata();
 			remove_filter( 'posts_clauses', array( &$this, 'order_by_rating' ) );
 		}
-		
+
 		// Flush output buffer and save to cache
 		$cache[$args['widget_id']] = ob_get_flush();
 		wp_cache_set( 'widget_recent_products', $cache, 'widget' );
@@ -154,22 +154,22 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 		global $wpdb;
 
 		$clauses['where'] 	.= " AND $wpdb->commentmeta.meta_key = 'rating' ";
-		
+
 		$clauses['join']		.= "
 			LEFT JOIN $wpdb->comments ON($wpdb->posts.ID = $wpdb->comments.comment_post_ID)
 			LEFT JOIN $wpdb->commentmeta ON($wpdb->comments.comment_ID = $wpdb->commentmeta.comment_id)
 		";
-	
+
 		$clauses['orderby']	= "$wpdb->commentmeta.meta_value DESC";
-		
+
 		$clauses['groupby']	= "$wpdb->posts.ID";
-		
+
 		return $clauses;
 	}
 
 	/**
 	 * Update
-	 * 
+	 *
 	 * Handles the processing of information entered in the wordpress admin
 	 * Flushes the cache & removes entry from options array
 	 *
@@ -179,7 +179,7 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
-		
+
 		// Save the new values
 		$instance['title']	= strip_tags( $new_instance['title'] );
 		$instance['number']	= absint( $new_instance['number'] );
@@ -198,7 +198,7 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 
 	/**
 	 * Flush Widget Cache
-	 * 
+	 *
 	 * Used to flush the cached output
 	 */
 	public function flush_widget_cache() {
@@ -207,17 +207,17 @@ class Jigoshop_Widget_Top_Rated extends WP_Widget {
 
 	/**
 	 * Form
-	 * 
+	 *
 	 * Displays the form for the wordpress admin
 	 *
 	 * @param	array	instance
 	 */
 	public function form( $instance ) {
-	
+
 		// Get instance data
 		$title 		= isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : null;
 		$number 	= isset( $instance['number'] ) ? absint( $instance['number'] ) : 5;
-		
+
 		// Widget Title
 		echo "
 		<p>

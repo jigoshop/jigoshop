@@ -13,36 +13,36 @@
  * @author     Jigowatt
  * @since	   1.0
  * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition 
+ * @license    http://jigoshop.com/license/commercial-edition
  */
- 
+
 class Jigoshop_Widget_Tag_Cloud extends WP_Widget {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Setup the widget with the available options
 	 */
 	public function __construct() {
-	
+
 		$options = array(
 			'description' => __( "Your most used product tags in cloud format", 'jigoshop'),
 		);
-		
+
 		// Create the widget
 		parent::__construct('product_tag_cloud', __('Jigoshop: Product Tag Cloud', 'jigoshop'), $options);
 	}
-	
+
 	/**
 	 * Widget
-	 * 
+	 *
 	 * Display the widget in the sidebar
 	 *
 	 * @param	array	sidebar arguments
 	 * @param	array	instance
 	 */
 	public function widget( $args, $instance ) {
-	
+
 		// Get the widget cache from the transient
 		$cache = get_transient( 'jigoshop_widget_cache' );
 		// If this tag cloud widget instance is cached, get from the cache
@@ -53,10 +53,10 @@ class Jigoshop_Widget_Tag_Cloud extends WP_Widget {
 
 		// Otherwise Start buffering and output the Widget
 		ob_start();
-		
+
 		// Extract the widget arguments
 		extract($args);
-		
+
 		// Set the widget title
 		$title = ( ! empty($instance['title']) ) ? $instance['title'] : __('Product Tags', 'jigoshop');
 		$title = apply_filters('widget_title', $title, $instance, $this->id_base);
@@ -65,23 +65,23 @@ class Jigoshop_Widget_Tag_Cloud extends WP_Widget {
 		echo $before_widget;
 		echo $before_title . $title . $after_title;
 
-		// Print tag cloud with wrapper		
+		// Print tag cloud with wrapper
 		echo '<div class="tagcloud">';
 		wp_tag_cloud( apply_filters('widget_tag_cloud_args', array('taxonomy' => 'product_tag') ) );
 		echo "</div>\n";
-		
+
 		// Print closing widget wrapper
 		echo $after_widget;
-		
+
 		// Flush output buffer and save to transient cache
 		$result = ob_get_flush();
 		$cache[$this->id] = $result;
 		set_transient( 'jigoshop_widget_cache', $cache, 3600*3 ); // 3 hours ahead
 	}
-	
+
 	/**
 	 * Update
-	 * 
+	 *
 	 * Handles the processing of information entered in the wordpress admin
 	 *
 	 * @param	array	new instance
@@ -90,24 +90,24 @@ class Jigoshop_Widget_Tag_Cloud extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
-		
+
 		// Save new values
 		$instance['title'] = strip_tags(stripslashes($new_instance['title']));
 		$instance['taxonomy'] = stripslashes(isset($new_instance['taxonomy']) ? $new_instance['taxonomy'] : '');
-		
+
 		return $instance;
 	}
 
 	/**
 	 * Form
-	 * 
+	 *
 	 * Displays the form for the wordpress admin
 	 *
 	 * @param	array	instance
 	 */
 	public function form( $instance ) {
 		$title = (isset($instance['title'])) ? esc_attr($instance['title']) : null;
-		
+
 		// Widget title
 		?>
 		<p>
@@ -116,5 +116,5 @@ class Jigoshop_Widget_Tag_Cloud extends WP_Widget {
 		</p>
 		<?php
 	}
-	
+
 } // class Jigoshop_Widget_Tag_Cloud

@@ -1,5 +1,5 @@
 (function($) {
-	
+
 	// On document Load
 	$(function() {
 
@@ -28,7 +28,7 @@
 
 		// File Upload
 		jigoshop_file_upload();
-		
+
 		// Ensure a tax class is set on products
 		jigoshop_default_product_taxclass();
 	});
@@ -82,7 +82,7 @@
 		// the first tax class will always be 'standard', turn it on if no tax class selected
 		if (! $taxclasses.is(':checked')) $taxclasses.eq(0).attr('checked', true);
 	}
-	
+
 	function jigoshop_sale_picker() {
 		// Sale price schedule
 		var sale_schedule_set = false;
@@ -98,7 +98,7 @@
 			$('.sale_schedule').show();
 			$('.sale_price_dates_fields').hide();
 		}
-		
+
 		$('.sale_schedule').click(function(e){
 			e.preventDefault();
 			$(this).hide();
@@ -106,7 +106,7 @@
 				$('#sale_price_dates_from').focus();
 			});
 		});
-		
+
 		$('.cancel_sale_schedule').click(function(e){
 			e.preventDefault();
 			$('.sale_schedule').show();
@@ -154,9 +154,9 @@
 	 */
 	function row_indexes() {
 		$('.jigoshop_attributes_wrapper .attribute').each(function(index, el) {
-				$('.attribute_position', el).val( 
-					parseInt( $(el).index('.jigoshop_attributes_wrapper .attribute') ) 
-				); 
+				$('.attribute_position', el).val(
+					parseInt( $(el).index('.jigoshop_attributes_wrapper .attribute') )
+				);
 		});
 	}
 
@@ -239,7 +239,7 @@
 				$('input#order_total').val( total.toFixed(2) );
 
 			}
-			
+
 		});
 
 
@@ -321,7 +321,7 @@
 				$parent.fadeOut('slow', function() {
 					$parent.find('select, input[type=text], input[type=checkbox], textarea').not('.attribute-name').val(null);
 				});
-				
+
 
 				// Re-enable the option
 				$("select.attribute_taxonomy option[value='"+$(this).parent().data('attribute-name')+"']").attr('disabled', false);
@@ -451,13 +451,13 @@
 
 			window.send_to_editor = function(html) {
 
-				// Attach the file URI to the relevant 
+				// Attach the file URI to the relevant
 				$file.val( $(html).attr('href') );
 
 				// Hide thickbox
 				tb_remove();
 			}
-			
+
 			// Show thickbox
 			tb_show('', 'media-upload.php?post_id=' + post_id + '&type=downloadable_product&from=jigoshop_product&TB_iframe=true');
 		});

@@ -338,7 +338,7 @@ function jigoshop_change_password() {
                     if ($_POST['password-1'] == $_POST['password-2']) :
 
                         wp_update_user(array('ID' => $user_id, 'user_pass' => $_POST['password-1']));
-						
+
                         wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount')) ));
 
                         exit;
@@ -357,7 +357,7 @@ function jigoshop_change_password() {
 
             endif;
         endif;
-        
+
         jigoshop::show_messages();
 
 		?>
@@ -376,12 +376,12 @@ function jigoshop_change_password() {
 			<p><input type="submit" class="button" name="save_password" value="<?php _e('Save', 'jigoshop'); ?>" /></p>
 
 		</form>
-        
+
 		<?php
     else :
 		wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount')) ));
 		exit;
-    
+
     endif;
 }
 
@@ -425,7 +425,7 @@ function jigoshop_view_order() {
                             <td colspan="3"><strong><?php _e('Subtotal', 'jigoshop'); ?></strong></td>
                     <?php endif; ?>
                         <td><strong><?php echo $order->get_subtotal_to_display(); ?></strong></td>
-                    </tr>                                    
+                    </tr>
             <?php
             if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) :
                 if ($order->order_shipping > 0) :
@@ -476,7 +476,7 @@ function jigoshop_view_order() {
                                 <tr>
                                     <td colspan="3"><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></td>
                                     <td><?php echo $order->get_tax_amount($tax_class) ?></td>
-                                </tr>    
+                                </tr>
                     <?php endforeach;
                 endif;
             endif;

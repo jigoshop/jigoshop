@@ -29,7 +29,7 @@ function jigoshop_process_shop_order_meta($post_id, $post)
 
     // Get old data + attributes
     $data = (array) maybe_unserialize(get_post_meta($post_id, 'order_data', true));
-    
+
     //Get old order items
     $old_order_items = (array) maybe_unserialize(get_post_meta($post_id, 'order_items', true));
 
@@ -74,7 +74,7 @@ function jigoshop_process_shop_order_meta($post_id, $post)
         if(isset($_POST[$field_name])) {
             $field_value = $_POST[$field_name];
         }
-        
+
         $data[$field_name] = stripslashes($_POST[$field_name]);
     }
 
@@ -86,7 +86,7 @@ function jigoshop_process_shop_order_meta($post_id, $post)
 
     // Order items
     $order_items = array();
-    
+
     if (isset($_POST['item_id'])) {
         $item_id = $_POST['item_id'];
         $item_variation = $_POST['item_variation_id'];
@@ -100,18 +100,18 @@ function jigoshop_process_shop_order_meta($post_id, $post)
             if (!isset($item_id[$i]) || !isset($item_name[$i]) || !isset($item_quantity[$i]) || !isset($item_cost[$i]) || !isset($item_tax_rate[$i])) {
                 continue;
             }
-            
+
             $variation_id = '';
             $variation = '';
             if(!empty($item_variation[$i])) {
                 $variation_id = (int)$item_variation[$i];
-                
+
                 //if this is a variation, we should check if it is an old one
                 //and copy the 'variation' field describing details of variation
                 foreach($old_order_items as $old_item_index => $old_item) {
                     if($old_item['variation_id'] == $variation_id) {
                         $variation = $old_item['variation'];
-                        
+
                         unset($old_order_items[$old_item_index]);
                         break;
                     }

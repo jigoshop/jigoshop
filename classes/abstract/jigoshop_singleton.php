@@ -19,35 +19,35 @@
 abstract class jigoshop_singleton extends jigoshop_base_class {
 
     private static $instance = array();
-    
-    
+
+
     protected function __construct() { }
-	
-	
+
+
     public static function instance() {
-		
+
     	$class = get_called_class();
-		
+
     	if ( isset( self::$instance[$class] ) ) return self::$instance[$class];
-    	
+
     	$args = func_get_args();
-    	
+
     	self::$instance[$class] = new $class( $args );
-    	
+
     	return self::$instance[$class];
-    
+
     }
-    
-    
+
+
 	public function __clone() {
         trigger_error( "Cloning Singleton's is not allowed.", E_USER_ERROR );
     }
-	
-	
+
+
     public function __wakeup() {
         trigger_error( "Unserializing Singleton's is not allowed.", E_USER_ERROR );
     }
-    
+
 }
 
 
@@ -94,7 +94,7 @@ if ( ! function_exists( 'get_called_class' )) {
 							return get_class( $bt[$l]['object'] );
 						default: return $bt[$l]['class'];
 					}
-	
+
 				default: throw new Exception ( "Could not find called class -> unknown backtrace method type" );
 			}
 		}

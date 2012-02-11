@@ -60,7 +60,7 @@ function jigoshop_cart($atts) {
             jigoshop::add_message(__('Shipping costs updated.', 'jigoshop'));
 
         endif;
-        
+
     elseif (isset($_POST['shipping_rates'])) :
 
         $rates_params = explode(":", $_POST['shipping_rates']);
@@ -76,7 +76,7 @@ function jigoshop_cart($atts) {
 
     endif;
 
-    // Re-Calc prices. This needs to happen every time the cart page is loaded and after checking post results. It will happen twice for coupon. 
+    // Re-Calc prices. This needs to happen every time the cart page is loaded and after checking post results. It will happen twice for coupon.
     jigoshop_cart::calculate_totals();
 
     $result = jigoshop_cart::check_cart_item_stock();
@@ -214,7 +214,7 @@ function jigoshop_cart($atts) {
                                     <th class="cart-row-shipping-title"><?php _e('Shipping', 'jigoshop'); ?> <small><?php echo jigoshop_countries::shipping_to_prefix() . ' ' . __(jigoshop_countries::$countries[jigoshop_customer::get_shipping_country()], 'jigoshop'); ?></small></th>
                                     <td class="cart-row-shipping"><?php echo jigoshop_cart::get_cart_shipping_total(); ?> <small><?php echo jigoshop_cart::get_cart_shipping_title(); ?></small></td>
                                 </tr>
-                                <?php endif; 
+                                <?php endif;
                                 foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
                                     if (jigoshop_cart::is_not_compounded_tax($tax_class)) :
                                         ?>
@@ -230,7 +230,7 @@ function jigoshop_cart($atts) {
                                     <td class="cart-row-subtotal"><?php echo jigoshop_cart::get_subtotal_inc_tax(); ?></td>
                                 </tr>
 
-                            <?php 
+                            <?php
                             else :
                                 if (jigoshop_cart::get_cart_shipping_total()) : ?><tr>
                                     <th class="cart-row-shipping-title"><?php _e('Shipping', 'jigoshop'); ?> <small><?php echo jigoshop_countries::shipping_to_prefix() . ' ' . __(jigoshop_countries::$countries[jigoshop_customer::get_shipping_country()], 'jigoshop'); ?></small></th>
@@ -258,7 +258,7 @@ function jigoshop_cart($atts) {
                                             <tr>
                                                 <th class="cart-row-tax-title"><?php echo jigoshop_cart::get_tax_for_display($tax_class) ?></th>
                                                 <td class="cart-row-tax"><?php echo jigoshop_cart::get_tax_amount($tax_class) ?></td>
-                                            </tr>    
+                                            </tr>
                                         <?php endforeach;
                                     endif;
                                 endif;

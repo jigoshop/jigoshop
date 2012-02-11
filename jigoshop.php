@@ -185,19 +185,19 @@ function jigoshop_get_image_size( $size ) {
 }
 
 function jigoshop_init() {
-	
+
 	/* ensure nothing is output to the browser prior to this (other than headers) */
 	ob_start();
-	
+
 	jigoshop_session::instance()->test = 'val';
-	
+
     $array = array(0 => "3.15");
-    
+
     foreach ($array as $a) :
         $an = explode(':', $a);
     endforeach;
 	jigoshop_post_type();	/* register taxonomies */
-	
+
 	// add Singletons here so that the taxonomies are loaded before calling them.
 	$jigoshop 					= jigoshop::instance();
 	$jigoshop_customer 			= jigoshop_customer::instance();		// Customer class, sorts session data such as location
@@ -207,7 +207,7 @@ function jigoshop_init() {
 
 //	if ( ! is_admin() ) $jigoshop_query = new jigoshop_catalog_query();
 	if ( ! is_admin() ) $jigoshop_query = jigoshop_catalog_query::instance();
-	
+
 	// Image sizes
 	jigoshop_set_image_sizes();
 
@@ -228,12 +228,12 @@ function jigoshop_init() {
 
     	wp_enqueue_style('jigoshop_frontend_styles');
     	wp_enqueue_style('jqueryui_styles');
-    
+
     	if( JIGOSHOP_LOAD_FANCYBOX ) {
    			wp_register_style( 'jigoshop_fancybox_styles', jigoshop::assets_url() . '/assets/css/fancybox.css' );
     		wp_enqueue_style('jigoshop_fancybox_styles');
     	}
-    	
+
     endif;
 
 }
@@ -263,7 +263,7 @@ function jigoshop_frontend_scripts() {
    		wp_register_script( 'fancybox', jigoshop::assets_url() . '/assets/js/jquery.fancybox-1.3.4.pack.js', array('jquery'), '1.0' );
 		wp_enqueue_script('fancybox');
 	}
-	
+
 	wp_register_script( 'jigoshop_frontend', jigoshop::assets_url() . '/assets/js/jigoshop_frontend.js', array('jquery'), '1.0' );
 	wp_register_script( 'jigoshop_script', jigoshop::assets_url() . '/assets/js/script.js', array('jquery'), '1.0' );
 	wp_register_script( 'jqueryui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js', array('jquery'), '1.0' );
@@ -301,7 +301,7 @@ function jigoshop_frontend_scripts() {
 	else :
 		$params['is_checkout'] = 0;
 	endif;
-	
+
 	$params = apply_filters('jigoshop_params', $params);
 
 	wp_localize_script( 'jigoshop_script', 'params', $params );
@@ -346,7 +346,7 @@ add_action( 'wp_footer', 'jigoshop_sharethis' );
 /**
  * Evaluates to true only on the Shop page, not Product categories and tags
  * Note:is used to replace is_page( jigoshop_get_page_id( 'shop' ) )
- * 
+ *
  * @return bool
  * @since 0.9.9
  */
@@ -356,7 +356,7 @@ function is_shop() {
 
 /**
  * Evaluates to true only on the Category Pages
- * 
+ *
  * @return bool
  * @since 0.9.9
  */
@@ -366,7 +366,7 @@ function is_product_category() {
 
 /**
  * Evaluates to true only on the Tag Pages
- * 
+ *
  * @return bool
  * @since 0.9.9
  */
@@ -376,7 +376,7 @@ function is_product_tag() {
 
 /**
  * Evaluates to true only on the Single Product Page
- * 
+ *
  * @return bool
  * @since 0.9.9
  */
@@ -386,7 +386,7 @@ function is_product() {
 
 /**
  * Evaluates to true only on Shop, Product Category, and Product Tag pages
- * 
+ *
  * @return bool
  * @since 0.9.9
  */
@@ -400,7 +400,7 @@ function is_product_list() {
 
 /**
  * Evaluates to true for all Jigoshop pages
- * 
+ *
  * @return bool
  * @since 0.9.9
  */
@@ -416,7 +416,7 @@ function is_jigoshop() {
 
 /**
  * Evaluates to true only on the Shop, Category, Tag and Single Product Pages
- * 
+ *
  * @return bool
  * @since 0.9.9.1
  */
@@ -441,7 +441,7 @@ if (!function_exists('jigoshop_get_page_id')) {
 
 /**
  * Evaluates to true only on the Order Tracking page
- * 
+ *
  * @return bool
  * @since 0.9.9.1
  */
@@ -451,7 +451,7 @@ function is_order_tracker() {
 
 /**
  * Evaluates to true only on the Cart page
- * 
+ *
  * @return bool
  * @since 0.9.8
  */
@@ -461,7 +461,7 @@ function is_cart() {
 
 /**
  * Evaluates to true only on the Checkout or Pay pages
- * 
+ *
  * @return bool
  * @since 0.9.8
  */
@@ -471,7 +471,7 @@ function is_checkout() {
 
 /**
  * Evaluates to true only on the main Account or any sub-account pages
- * 
+ *
  * @return bool
  * @since 0.9.9.1
  */
@@ -582,16 +582,16 @@ function jigoshop_price( $price, $args = array() ) {
 
 	$return = '';
 	$price = number_format(
-		(double) $price, 
-		(int) get_option('jigoshop_price_num_decimals'), 
-		get_option('jigoshop_price_decimal_sep'), 
+		(double) $price,
+		(int) get_option('jigoshop_price_num_decimals'),
+		get_option('jigoshop_price_decimal_sep'),
 		get_option('jigoshop_price_thousand_sep')
 	);
-    
+
     $return = $price;
-    
+
     if ($with_currency) :
-        
+
         $currency_pos = get_option('jigoshop_currency_pos');
         $currency_symbol = get_jigoshop_currency_symbol();
         $currency_code = get_option('jigoshop_currency');
@@ -634,11 +634,11 @@ function jigoshop_price( $price, $args = array() ) {
                 $return = $currency_code . ' ' . $price . ' ' . $currency_code;
             break;
         endswitch;
-    
+
         // only show (ex. tax) if we are going to show the price with currency as well. Otherwise we just want the formatted price
         if ($ex_tax_label && get_option('jigoshop_calc_taxes')=='yes') $return .= __(' <small>(ex. tax)</small>', 'jigoshop');
     endif;
-    
+
 	return $return;
 }
 
@@ -657,7 +657,7 @@ function jigoshop_get_formatted_variation( $variation = '', $flat = false ) {
 		foreach ($variation as $name => $value) :
 
 			$name = str_replace('tax_', '', $name);
-			
+
 			if ( taxonomy_exists( 'pa_'.$name )) :
 				$terms = get_terms( 'pa_'.$name, array( 'orderby' => 'slug', 'hide_empty' => '0' ) );
 				foreach ( $terms as $term ) :
@@ -872,9 +872,9 @@ function jigoshop_exclude_order_admin_comments( $clauses ) {
 	}
 
 	// Hide all those comments which aren't of type jigoshop
-	$clauses['where'] .= ' AND comment_type != "jigoshop"';	
-	
-	return $clauses;	
+	$clauses['where'] .= ' AND comment_type != "jigoshop"';
+
+	return $clauses;
 }
 
 /**

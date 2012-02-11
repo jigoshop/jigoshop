@@ -279,7 +279,7 @@ function jigoshop_product_add_to_cart( $atts ) {
 	if (empty($atts)) return;
 
 	global $wpdb;
-	
+
 	if (!$atts['class']) $atts['class'] = 'product';
 
 	if ($atts['id']) :
@@ -300,7 +300,7 @@ function jigoshop_product_add_to_cart( $atts ) {
 	ob_start();
 	?>
 	<p class="<?php echo esc_attr( $atts['class'] ); ?>">
-	
+
 		<?php if ($atts['price'] != 'no') echo $_product->get_price_html(); ?>
 
 		<?php jigoshop_template_loop_add_to_cart( $product_meta, $_product ); ?>

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Functions used for custom post types in admin 
+ * Functions used for custom post types in admin
  *
- * These functions control columns in admin, and other admin interface bits 
+ * These functions control columns in admin, and other admin interface bits
  *
  * DISCLAIMER
  *
@@ -48,31 +48,31 @@ function jigoshop_product_updated_messages( $messages ) {
  * Custom columns
  **/
  function jigoshop_edit_product_columns($columns) {
-	
+
 	$columns = array();
-	
+
 	$columns["cb"]    = "<input type=\"checkbox\" />";
 
 	$columns["thumb"] = null;
 	$columns["title"] = __("Title", 'jigoshop');
 
 	$columns["featured"] = __("Featured", 'jigoshop');
-	
+
 	$columns["product-type"] = __("Type", 'jigoshop');
 	if( get_option('jigoshop_enable_sku', true) == 'yes' ) {
 		$columns["product-type"] .= ' &amp; ' . __("SKU", 'jigoshop');
 	}
-	
+
 	if ( get_option('jigoshop_manage_stock')=='yes' ) {
 	 	$columns["stock"] = __("Stock", 'jigoshop');
 	}
-	
+
 	$columns["price"] = __("Price", 'jigoshop');
 
 	$columns["product-visibility"] = __("Visibility", 'jigoshop');
 
 	$columns["product-date"] = __("Date", 'jigoshop');
-	
+
 	return $columns;
 }
 
@@ -91,11 +91,11 @@ function jigoshop_custom_product_columns($column) {
 			}
 			else {
 				echo jigoshop_get_product_thumbnail( 'admin_product_list' );
-			} 
+			}
 
 		break;
 		case "price":
-			echo $product->get_price_html();	
+			echo $product->get_price_html();
 		break;
 		case "featured" :
 			$url = wp_nonce_url( admin_url('admin-ajax.php?action=jigoshop-feature-product&product_id=' . $post->ID) );
@@ -107,7 +107,7 @@ function jigoshop_custom_product_columns($column) {
 		case "stock" :
 			if ( ! $product->is_type( 'grouped' ) && $product->is_in_stock() ) {
 				if ( $product->managing_stock() ) {
-					echo $product->stock.' '.__('In Stock', 'jigoshop');	
+					echo $product->stock.' '.__('In Stock', 'jigoshop');
 				} else {
 					echo __('In Stock', 'jigoshop');
 				}
@@ -234,7 +234,7 @@ function jigoshop_filter_products_type() {
 
     if ( $typenow != 'product' )
     	return false;
-    	
+
 	// Get all active terms
 	$terms = get_terms('product_type');
 
@@ -242,7 +242,7 @@ function jigoshop_filter_products_type() {
 	echo "<option value='0'>" . __('Show all types', 'jigoshop') . "</option>";
 
 	foreach($terms as $term) {
-		echo "<option value='" . esc_attr( $term->slug ) . "' ".selected($term->slug, isset($wp_query->query['product_type']) ? $wp_query->query['product_type'] : '', false).">".esc_html( ucfirst($term->name) )." (".absint( $term->count ).")</option>";		
+		echo "<option value='" . esc_attr( $term->slug ) . "' ".selected($term->slug, isset($wp_query->query['product_type']) ? $wp_query->query['product_type'] : '', false).">".esc_html( ucfirst($term->name) )." (".absint( $term->count ).")</option>";
 	}
 
 	echo "</select>";
@@ -422,16 +422,16 @@ function jigoshop_custom_order_columns($column) {
                             <tr>
                                 <th><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></th>
                                 <td><?php echo $order->get_tax_amount($tax_class) ?></td>
-                            </tr>    
+                            </tr>
                         <?php endforeach;
-                    endif; 
+                    endif;
                 endif;
 
                 if ($order->order_discount > 0) : ?><tr>
                         <th><?php _e('Discount', 'jigoshop'); ?></th>
                         <td><?php echo jigoshop_price($order->order_discount); ?></td>
                     </tr><?php endif; ?>
-                <tr>	
+                <tr>
                     <th><?php _e('Total', 'jigoshop'); ?></th>
                     <td><?php echo jigoshop_price($order->order_total); ?></td>
                 </tr>
@@ -442,7 +442,7 @@ function jigoshop_custom_order_columns($column) {
 }
 
 /**
- * Search by SKU or ID for products. 
+ * Search by SKU or ID for products.
  * Adapted from code by BenIrvin (Admin Search by ID)
  * Special Thanks to Esbjörn Eriksson (https://github.com/esbite) for this adaption
  */
@@ -452,7 +452,7 @@ add_filter( 'get_search_query', 'jigoshop_admin_product_search_label' );
 
 function jigoshop_admin_product_search( $wp ) {
     global $pagenow, $wpdb;
-    
+
     if( 'edit.php' != $pagenow )
         return false;
 
@@ -464,24 +464,24 @@ function jigoshop_admin_product_search( $wp ) {
         if ( 'ID:' == substr( $wp->query_vars['s'], 0, 3 )) {
 
             $id = absint( substr( $wp->query_vars['s'], 3 ) );
-                
+
             if( ! $id )
-                return false; 
-            
+                return false;
+
             unset( $wp->query_vars['s'] );
             $wp->query_vars['p'] = $id;
         }
         elseif( $wp->query_vars['post_type'] == 'product' && 'SKU:' == substr( $wp->query_vars['s'], 0, 4 ) ) {
-                
+
             $sku = trim( substr( $wp->query_vars['s'], 4 ) );
-                
+
             if( ! $sku )
-                return false; 
-            
+                return false;
+
             $id = $wpdb->get_var('SELECT post_id FROM '.$wpdb->postmeta.' WHERE meta_key="sku" AND meta_value LIKE "%'.$sku.'%";');
-            
+
             if( ! $id )
-                return false; 
+                return false;
 
             unset( $wp->query_vars['s'] );
             $wp->query_vars['p'] = $id;
@@ -526,21 +526,21 @@ function jigoshop_admin_product_search( $wp ) {
 function jigoshop_admin_product_search_label($query) {
     global $pagenow, $typenow, $wp;
 
-    if ( 'edit.php' != $pagenow ) 
+    if ( 'edit.php' != $pagenow )
         return $query;
 
     if ( $typenow == 'product' || $typenow == 'shop_order' ) {
-    
+
         $s = get_query_var( 's' );
         if ( $s )
             return $query;
-        
+
         $sku = get_query_var( 'sku' );
         if($sku) {
             $post_type = get_post_type_object($wp->query_vars['post_type']);
             return sprintf(__("[%s with SKU of %s]", 'jigoshop'), $post_type->labels->singular_name, $sku);
         }
-        
+
         $p = get_query_var( 'p' );
         if ($p) {
             $post_type = get_post_type_object($wp->query_vars['post_type']);
@@ -553,7 +553,7 @@ function jigoshop_admin_product_search_label($query) {
             return sprintf(__("[%s with product ID of %d]", 'jigoshop'), $post_type->labels->singular_name, $order_id);
         }
     }
-    
+
     return $query;
 }
 

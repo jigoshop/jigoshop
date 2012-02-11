@@ -15,7 +15,7 @@
  * @license    http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_payment_gateway {
-	
+
 	var $id;
 	var $title;
 	var $chosen;
@@ -25,31 +25,31 @@ class jigoshop_payment_gateway {
 	var $enabled;
 	var $icon;
 	var $description;
-	
+
 	function is_available() {
-		
+
 		if ($this->enabled=="yes") :
-			
+
 			return true;
-			
-		endif;	
-		
+
+		endif;
+
 		return false;
 	}
-	
+
 	function set_current() {
 		$this->chosen = true;
 	}
-	
+
 	function icon() {
 		if ($this->icon) :
 			return '<img src="'. jigoshop::force_ssl($this->icon).'" alt="'.$this->title.'" />';
 		endif;
 	}
-	
+
 	function admin_options() {}
-	
+
 	function process_payment( $order_id ) {}
-	
+
 	function validate_fields() { return true; }
 }

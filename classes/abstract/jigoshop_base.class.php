@@ -17,7 +17,7 @@
  */
 
 abstract class jigoshop_base_class {
-	
+
 	/**
 	 * Wrapper to WordPress add_action() function
 	 * adds the necessary class address on the function passed for WordPress to use
@@ -32,8 +32,8 @@ abstract class jigoshop_base_class {
 	protected function add_action( $tag, $function_to_add, $priority = 10, $accepted_args = 1 ) {
 		return add_action( $tag, array( $this, $function_to_add ), $priority, $accepted_args );
 	}
-	
-	
+
+
 	/**
 	 * Wrapper to WordPress add_filter() function
 	 * adds the necessary class address on the function passed for WordPress to use
@@ -48,5 +48,5 @@ abstract class jigoshop_base_class {
 	protected function add_filter( $tag, $function_to_add, $priority = 10, $accepted_args = 1 ) {
 		return add_filter( $tag, array( $this, $function_to_add ), $priority, $accepted_args );
 	}
-	
+
 }

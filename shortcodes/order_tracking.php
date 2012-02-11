@@ -66,7 +66,7 @@ function jigoshop_order_tracking( $atts ) {
                                                     <td colspan="3"><?php _e('Subtotal', 'jigoshop'); ?></td>
                                                 <?php endif; ?>
                                                     <td><?php echo $order->get_subtotal_to_display(); ?></td>
-                                            </tr>                                    
+                                            </tr>
                                         <?php
                                             if ( get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax ) :
                                                 if ($order->order_shipping>0) : ?><tr>
@@ -87,14 +87,14 @@ function jigoshop_order_tracking( $atts ) {
                                                     <td colspan="3"><?php _e('Subtotal', 'jigoshop'); ?></td>
                                                     <td><?php echo jigoshop_price($order->order_subtotal_inc_tax); ?></td>
                                                 </tr>
-                                      <?php 
+                                      <?php
                                       else :
                                             if ($order->order_shipping>0) : ?><tr>
                                                     <td colspan="3"><?php _e('Shipping', 'jigoshop'); ?></td>
                                                     <td><?php echo $order->get_shipping_to_display(); ?></td>
                                             </tr>
                                       <?php endif;
-                                      endif; 
+                                      endif;
                                       if (get_option('jigoshop_calc_taxes') == 'yes') :
                                             if ( $order->order_subtotal_inc_tax ) :
                                                 foreach ( $order->get_tax_classes() as $tax_class ) :
@@ -114,9 +114,9 @@ function jigoshop_order_tracking( $atts ) {
                                                     <tr>
                                                         <td colspan="3"><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></td>
                                                         <td><?php echo $order->get_tax_amount($tax_class) ?></td>
-                                                    </tr>    
+                                                    </tr>
                                           <?php endforeach;
-                                            endif; 
+                                            endif;
                                         endif; ?>
 						<?php if ($order->order_discount>0) : ?><tr class="discount">
 							<td colspan="3"><?php _e('Discount', 'jigoshop'); ?></td>
