@@ -116,11 +116,12 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 	* Cash On Delivery [payment gateway]
 	* Local Pickup [shipping method]
 * New languages:
-	* Turkish
 	* Italian
-	* Portuguese
 	* Norwegian
+	* Polish
+	* Portuguese
 	* Portuguese Brazilian
+	* Turkish
 * New shortcode:
 	* Products Search
 * New settings:
