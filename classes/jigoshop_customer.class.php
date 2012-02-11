@@ -192,8 +192,8 @@ class jigoshop_customer extends jigoshop_singleton {
 					$user_info = get_userdata(get_current_user_id());
 					if ($results) foreach ($results as $result) :
 							$_product = new jigoshop_product_variation( $result->product_id );
+							$download_name = $_product->ID ? get_the_title($_product->ID) : get_the_title($result->product_id);
 
-							$download_name = get_the_title($_product->ID);
 							if (isset($_product->variation_data)) :
 								$download_name = $download_name .' (' . jigoshop_get_formatted_variation( $_product->variation_data, true ).')';
 							endif;

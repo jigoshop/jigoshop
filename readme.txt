@@ -20,7 +20,7 @@ With the option to create a multitude of product types and apply detailed attrib
 
 * Downloadable or Virtual products
 * Variable products (eg, offer `Size: S,M,L` for one product)
-* Affiliate (External) products
+* Affiliate (External) products (ie, link your `Add to cart` button off-site)
 * Grouped products
 
 = DETAILED REPORTS =
@@ -111,7 +111,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 
 == Changelog ==
 
-= 1.1 - 2012-02-09 =
+= 1.1 - 2012-02-13 =
 * New gateways:
 	* Cash On Delivery [payment gateway]
 	* Local Pickup [shipping method]

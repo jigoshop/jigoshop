@@ -8,8 +8,8 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package 	Jigoshop
- * @category  	Widgets
+ * @package		Jigoshop
+ * @category	Widgets
  * @author		Jigowatt
  * @since		1.0
  * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
