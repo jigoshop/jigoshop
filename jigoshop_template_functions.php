@@ -366,7 +366,9 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
                     $image = '';
                     $image_link = '';
                 }
-
+				
+				$a_weight = $a_length = $a_width = $a_height = '';
+				
                 if ( $variation->get_weight() ) {
                 	$a_weight = '
                     	<tr class="weight">
@@ -433,12 +435,6 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 									<?php $term = get_term_by( 'slug', $value, 'pa_'.$sanitized_name ); ?>
 									<option value="<?php echo esc_attr( $term->slug ); ?>"><?php echo $term->name; ?></option>
 								<?php else : ?>
-									<?php
-									//	this should be a custom text attribute with values (one,two,three)
-									//	we have no way to get the pretty name instead of the slug?  -JAP-
-									//	perhaps we need to be creating a taxonomy for these? (currently we don't)
-									//	it will show pretty name if no option selected on variation, 'Choose Any [attr]'
-									?>
 									<option value="<?php echo esc_attr( sanitize_title( $value ) ); ?>"><?php echo $value; ?></option>
 								<?php endif;?>
 							<?php endforeach; ?>
