@@ -195,7 +195,7 @@
 
 		$instance = get_option('widget_recently_viewed_products');
 		$number = 0;
-		foreach ( $instance as $index => $entry ) {
+		if ( ! empty( $instance )) foreach ( $instance as $index => $entry ) {
 			if ( is_array( $entry )) foreach ( $entry as $key => $value ) {
 				if ( $key == 'number' ) {
 					$number = $value;
