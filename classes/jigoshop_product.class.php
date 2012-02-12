@@ -920,7 +920,7 @@ class jigoshop_product {
 		// Get the tags & categories
 		$tags = wp_get_post_terms($this->ID, 'product_tag', array('fields' => 'ids'));
 		$cats = wp_get_post_terms($this->ID, 'product_cat', array('fields' => 'ids'));
-
+		
 		// No queries if we don't have any tags -and- categories (one -or- the other should be queried)
 		if( empty( $cats ) && empty( $tags ) )
 			return array();
@@ -928,6 +928,7 @@ class jigoshop_product {
 		// Only get related posts that are in stock & visible
 		$query = array(
 			'posts_per_page' => $limit,
+			'post__not_in'   => array( $this->ID ),
 			'post_type'      => 'product',
 			'fields'         => 'ids',
 			'orderby'        => 'rand',
