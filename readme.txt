@@ -6,7 +6,7 @@ Requires at least: 3.1
 Tested up to: 3.3.1
 Stable tag: 1.1
 
-A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customisability.
+A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
 == Description ==
 
