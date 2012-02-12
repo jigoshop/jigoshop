@@ -353,7 +353,7 @@ function jigoshop_order_totals_meta_box($post) {
     $order_discount_coupons = (array)$_order->get_value_from_data('order_discount_coupons');
 	if( ! empty( $order_discount_coupons )) {
 		foreach ( $order_discount_coupons as $coupon ) {
-			$coupons[] = $coupon['code'];
+			$coupons[] = isset( $coupon['code'] ) ? $coupon['code'] : '';
 		}
 	}
 	?>
