@@ -69,12 +69,7 @@ function jigoshop_process_shop_order_meta($post_id, $post)
 
     //run stripslashes on all valid fields
     foreach ($order_fields as $field_name) {
-        $field_value = '';
-        if(isset($_POST[$field_name])) {
-            $field_value = $_POST[$field_name];
-        }
-
-        $data[$field_name] = stripslashes($_POST[$field_name]);
+        if ( isset( $_POST[$field_name] )) $data[$field_name] = stripslashes( $_POST[$field_name] );
     }
 
     // Customer
