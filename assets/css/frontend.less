@@ -157,6 +157,14 @@ small.note {
 	}
 }
 
+/* twenty-eleven non content wrapped full width fix (Cart, Checkout, Accounts) */
+.jigoshop #primary .entry-header, .jigoshop #primary .entry-content, .jigoshop #primary .entry-meta {
+	width: 95%;
+}
+.jigoshop #primary .entry-header {
+	float: left;
+}
+
 /* =Product Page
 -------------------------------------------------------------- */
 div.product {
@@ -828,8 +836,11 @@ td.quantity {
 	.cart_totals {
 		float: right;
 
-		width:225px;
+		width: 225px;
 		text-align: right;
+		h2 {
+			float: left;
+		}
 		p {
 			margin: 0 !important;
 		}
