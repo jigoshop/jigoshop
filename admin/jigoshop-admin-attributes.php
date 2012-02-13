@@ -30,6 +30,8 @@ function jigoshop_attributes() {
 
 	if (isset($_POST['add_new_attribute']) && $_POST['add_new_attribute']) :
 
+		
+
 		$attribute_label = (string) $_POST['attribute_label'];
 		$attribute_name = !$_POST['attribute_name']
 							? sanitize_title(sanitize_user($attribute_label, $strict = true))
@@ -38,7 +40,7 @@ function jigoshop_attributes() {
 
 		if (isset($_POST['show-on-product-page']) && $_POST['show-on-product-page']) $product_page = 1; else $product_page = 0;
 
-		if ($attribute_name && strlen($attribute_name)<30 && $attribute_type && !taxonomy_exists('pa_'.sanitize_title($attribute_name))) :
+		if ($attribute_label && $attribute_name && strlen($attribute_name)<30 && $attribute_type && !taxonomy_exists('pa_'.sanitize_title($attribute_name))) :
 
 			$wpdb->insert( $wpdb->prefix . "jigoshop_attribute_taxonomies", array( 'attribute_name' => $attribute_name, 'attribute_label' => $attribute_label, 'attribute_type' => $attribute_type ), array( '%s', '%s' ) );
 
@@ -46,9 +48,12 @@ function jigoshop_attributes() {
 
 			wp_safe_redirect( get_admin_url() . 'edit.php?post_type=product&page=jigoshop_attributes' );
 			exit;
-
 		else :
-			print_r('<div id="message" class="error"><p>'.__('That attribute already exists, no additions were made.', 'jigoshop' ).'</p></div>');
+			if(empty($attribute_label)) :
+				print_r('<div id="message" class="error"><p>'.__('Enter an attribute name.', 'jigoshop' ).'</p></div>');
+			else : 
+				print_r('<div id="message" class="error"><p>'.__('That attribute already exists, no additions were made.', 'jigoshop' ).'</p></div>');
+			endif;
 		endif;
 
 	elseif (isset($_POST['save_attribute']) && $_POST['save_attribute'] && isset($_GET['edit'])) :
