@@ -8,7 +8,7 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * Plugin Name:			Jigoshop - WordPress eCommerce
+ * Plugin Name:			Jigoshop
  * Plugin URI:			http://jigoshop.com
  * Description:			Jigoshop, a WordPress eCommerce plugin that works.
  * Author:				Jigowatt
