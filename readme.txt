@@ -2,8 +2,8 @@
 Contributors: Jigowatt
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigowatt, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
-Requires at least: 3.1
-Tested up to: 3.3.1
+Requires at least: 3.2.1
+Tested up to: 3.4-alpha-19904
 Stable tag: 1.1
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
@@ -174,6 +174,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * fix some international users not being able to add shipping or tax rates (italian & french)
 * removed dash from cart on downloadables until a more solid solution can be found
 * fix attributes slug when editing attribute names
+* fix for using the newer screen API on older WordPress'
 
 = 1.0 - 2012-02-01 =
 * New feature for Downloadable products:
