@@ -133,7 +133,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		)
 	),
 
-	array( 'name' => __('Checkout options', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
+	array( 'name' => __('Checkout page', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
 
 	array(
 		'name' => __('Allow guest purchases','jigoshop'),
@@ -188,7 +188,6 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 			'no'  => __('No', 'jigoshop')
 		)
 	),
-
 	array( 'name' => __('Integration', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
 
 	array(
@@ -641,6 +640,20 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'options' => array(
 			'cm' => __('centimeters', 'jigoshop'),
 			'in' => __('inches', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Show related products','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('To show or hide the related products section on a single product page.','jigoshop'),
+		'id' 		=> 'jigoshop_enable_related_products',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'yes',
+		'type' 		=> 'select',
+		'options' => array(
+			'yes' => __('Yes', 'jigoshop'),
+			'no'  => __('No', 'jigoshop')
 		)
 	),
 

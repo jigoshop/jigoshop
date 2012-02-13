@@ -366,9 +366,9 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
                     $image = '';
                     $image_link = '';
                 }
-				
+
 				$a_weight = $a_length = $a_width = $a_height = '';
-				
+
                 if ( $variation->get_weight() ) {
                 	$a_weight = '
                     	<tr class="weight">
@@ -594,7 +594,8 @@ if (!function_exists('jigoshop_get_image_placeholder')) {
  **/
 if (!function_exists('jigoshop_output_related_products')) {
 	function jigoshop_output_related_products() {
-		// 4 Related Products in 4 columns
+		if (get_option ('jigoshop_enable_related_products') != 'no')
+		// 2 Related Products in 2 columns
 		jigoshop_related_products( 2, 2 );
 	}
 }
