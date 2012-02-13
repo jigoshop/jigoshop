@@ -85,7 +85,7 @@ If you need a theme built, or have a theme that needs styling, <a href="http://j
 = Can I have Jigoshop in my language =
 
 Jigoshop comes with a .po file and is localisation ready in over 10 languages.
-You can also <a href="http://forum.jigoshop.com/kb/shortcodes/languages">create your own translations</a> for Jigoshop.
+You can also <a href="http://forum.jigoshop.com/kb/customize-jigoshop/languages">create your own translations</a> for Jigoshop.
 
 = Which payment gateways do you have? =
 
