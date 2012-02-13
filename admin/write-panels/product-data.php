@@ -120,7 +120,7 @@ function jigoshop_product_data_box() {
 			<fieldset id="price_fieldset">
 			<?php
 				// Regular Price
-				echo jigoshop_form::input( 'regular_price', 'Regular Price', null, null, 'short', 'Price Not Announced', array('after_label' => ' ('.get_jigoshop_currency_symbol().')') );
+				echo jigoshop_form::input( 'regular_price', 'Regular Price', null, null, 'short', __('Price Not Announced','jigoshop'), array('after_label' => ' ('.get_jigoshop_currency_symbol().')') );
 
 				// Sale Price
 				echo jigoshop_form::input( 'sale_price', 'Sale Price', '<a href="#" class="sale_schedule">Schedule</a>', null, 'short', '15% or 19.99', array('after_label' => ' ('.get_jigoshop_currency_symbol().' or %)' ));
