@@ -173,6 +173,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * fix coupons showing 'no products in cart' on valid coupons
 * fix some international users not being able to add shipping or tax rates (italian & french)
 * removed dash from cart on downloadables until a more solid solution can be found
+* fix attributes slug when editing attribute names
 
 = 1.0 - 2012-02-01 =
 * New feature for Downloadable products:
