@@ -36,8 +36,6 @@ function jigoshop_attributes() {
 							: sanitize_title(sanitize_user($_POST['attribute_name'], $strict = true));
 		$attribute_type = (string) $_POST['attribute_type'];
 
-		$product_page = isset($_POST['show-on-product-page']) && $_POST['show-on-product-page'] ? 1 : 0;
-
 		if ( (empty($attribute_name) && empty($attribute_label)) || empty($attribute_label) ):
 			print_r('<div id="message" class="error"><p>'.__('Please enter an attribute label.', 'jigoshop' ).'</p></div>');
 		elseif ($attribute_name && strlen($attribute_name)<30 && $attribute_type && !taxonomy_exists('pa_'.sanitize_title($attribute_name))) :
