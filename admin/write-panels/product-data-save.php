@@ -1,7 +1,7 @@
 <?php
 /**
  * Product Data Save
- * 
+ *
  * Function for processing and storing all product data.
  *
  * DISCLAIMER
@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Admin
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Admin
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_product_meta
 {
@@ -29,8 +29,8 @@ class jigoshop_product_meta
 
 		// Process general product data
 		// How to sanitize this block?
-		update_post_meta( $post_id, 'regular_price', (float) $_POST['regular_price']);
-		update_post_meta( $post_id, 'sale_price', 	 $_POST['sale_price']);
+		update_post_meta( $post_id, 'regular_price', !empty($_POST['regular_price']) ? jigoshop_sanitize_num($_POST['regular_price']) : '');
+		update_post_meta( $post_id, 'sale_price', 	 !strstr($_POST['sale_price'],'%') ? jigoshop_sanitize_num($_POST['sale_price']) : $_POST['sale_price']);
 
 		update_post_meta( $post_id, 'weight',        (float) $_POST['weight']);
 		update_post_meta( $post_id, 'length',        (float) $_POST['length']);
@@ -38,7 +38,7 @@ class jigoshop_product_meta
 		update_post_meta( $post_id, 'height',        (float) $_POST['height']);
 
 		update_post_meta( $post_id, 'tax_status',    $_POST['tax_status']);
-		update_post_meta( $post_id, 'tax_classes',   $_POST['tax_classes']);
+		update_post_meta( $post_id, 'tax_classes',   isset($_POST['tax_classes']) ? $_POST['tax_classes'] : array() );
 
 		update_post_meta( $post_id, 'visibility',    $_POST['product_visibility']);
 		update_post_meta( $post_id, 'featured',      isset($_POST['featured']) );
@@ -65,26 +65,16 @@ class jigoshop_product_meta
 		foreach( $this->process_stock( $_POST ) as $key => $value ) {
 			update_post_meta( $post_id, $key, $value );
 		}
-		
+
 		// Process the sale dates
 		foreach( $this->process_sale_dates( $_POST ) as $key => $value ) {
 			update_post_meta( $post_id, $key, $value );
 		}
 
-		// Process upsells
-		( ! empty($_POST['upsell_ids']) )
-			? update_post_meta( $post_id, 'upsell_ids', $_POST['upsell_ids'] )
-			: delete_post_meta( $post_id, 'upsell_ids' );
-		
-		// Process crossells
-		( ! empty($_POST['crosssell_ids']) )
-			? update_post_meta( $post_id, 'crosssell_ids', $_POST['crosssell_ids'] )
-			: delete_post_meta( $post_id, 'crosssell_ids' );
-
 		// Do action for product type
 		do_action( 'jigoshop_process_product_meta_' . $_POST['product-type'], $post_id );
 	}
-	
+
 	/**
 	 * Processes the sale dates
 	 *
@@ -105,7 +95,7 @@ class jigoshop_product_meta
 			// Only set sale dates if we have an end
 			// Set start as current time if null
 			if( $sale_end = strtotime($post['sale_price_dates_to']) ) {
-				$sale_start	= ($post['sale_price_dates_from']) 
+				$sale_start	= ($post['sale_price_dates_from'])
 					? strtotime($post['sale_price_dates_from'])
 					: current_time('timestamp');
 
@@ -164,7 +154,7 @@ class jigoshop_product_meta
 		if ( ! $new_sku )
 			return false;
 
-		// Skip check if sku is the same 
+		// Skip check if sku is the same
 		if( $new_sku === get_post_meta( $post_id, 'sku', true ) )
 			return true;
 
@@ -190,8 +180,8 @@ class jigoshop_product_meta
 	private function process_attributes( array $post, $post_id ) {
 
 		if ( ! isset($_POST['attribute_values']) )
-			return false; 
-		
+			return false;
+
 		$attr_names      = $post['attribute_names']; // This data returns all attributes?
 		$attr_values     = $post['attribute_values'];
 		$attr_visibility = $post['attribute_visibility'];
@@ -207,13 +197,13 @@ class jigoshop_product_meta
 			// Skip if no value
 			if ( ! $value )
 				continue;
-				
+
 			if ( !is_array( $value )) {
 			 	$value = explode( ',', $value );
 			 	$value = array_map( 'trim', $value );
 			 	$value = implode( ',', $value );
 			}
-			
+
 			// If attribute is standard then create the relationship
 			if ( (bool) $attr_is_tax[$key] && taxonomy_exists('pa_'.sanitize_title($attr_names[$key])) ) {
 				// TODO: Adding pa and sanitizing fixes the bug but why not automatic?

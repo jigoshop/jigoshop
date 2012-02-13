@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Checkout
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Checkout
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 ?>
 
@@ -86,10 +86,10 @@
                         <tr>
                             <td colspan="2"><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></td>
                             <td><?php echo $order->get_tax_amount($tax_class) ?></td>
-                        </tr>    
+                        </tr>
                     <?php endforeach;
-                endif; 
-            endif; 
+                endif;
+            endif;
             if ($order->order_discount > 0) : ?><tr class="discount">
                     <td colspan="2"><?php _e('Discount', 'jigoshop'); ?></td>
                     <td>-<?php echo jigoshop_price($order->order_discount); ?></td>
@@ -129,7 +129,7 @@
                         <li>
                             <input type="radio" id="payment_method_<?php echo $gateway->id; ?>" class="input-radio" name="payment_method" value="<?php echo esc_attr( $gateway->id ); ?>" <?php if ($gateway->chosen)
                 echo 'checked="checked"'; ?> />
-                            <label for="payment_method_<?php echo $gateway->id; ?>"><?php echo $gateway->title; ?> <?php echo $gateway->icon(); ?></label> 
+                            <label for="payment_method_<?php echo $gateway->id; ?>"><?php echo $gateway->title; ?> <?php echo $gateway->icon(); ?></label>
                             <?php
                             if ($gateway->has_fields || $gateway->description) :
                                 echo '<div class="payment_box payment_method_' . esc_attr( $gateway->id  ) . '" style="display:none;">';

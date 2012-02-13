@@ -1,7 +1,7 @@
 <?php
 /**
  * Coupons Class
- * 
+ *
  * The JigoShop coupons class gets coupon data from storage
  *
  * DISCLAIMER
@@ -10,14 +10,14 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Orders
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Orders
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_coupons {
-	
+
 	/**
 	 * get coupons from the options database
 	 *
@@ -27,7 +27,7 @@ class jigoshop_coupons {
 	function get_coupons() {
 		return get_option('jigoshop_coupons') ? $coupons = (array) get_option('jigoshop_coupons') : $coupons = array();
 	}
-	
+
 	/**
 	 * get a coupon containing a specific code
 	 * also used to determine if a valid coupon code as false is returned if not
@@ -42,10 +42,10 @@ class jigoshop_coupons {
 		if ( isset( $coupons[$code] )) :
 			if ( self::in_date_range( $coupons[$code] ) ) return $coupons[$code];
 		endif;
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * get a coupon containing a specific code and verify the product applies to this coupon
 	 * this will usually be called for Coupon type = 'Product Discount' to match the product ID
@@ -89,5 +89,5 @@ class jigoshop_coupons {
 		endif;
 		return $in_range;
 	}
-	
+
 }

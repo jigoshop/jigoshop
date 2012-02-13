@@ -5,7 +5,7 @@ zoom:1;
 
 .clear() {
 clear: both;
-} 
+}
 
 .border_radius(@radius:4px) {
 -webkit-border-radius:@radius;
@@ -22,7 +22,7 @@ border-top-right-radius: @radius;
 border-bottom-right-radius: @radius;
 }
 
-.border_radius_left(@radius:4px) { 
+.border_radius_left(@radius:4px) {
 -webkit-border-top-left-radius: @radius;
 -webkit-border-bottom-left-radius: @radius;
 -moz-border-radius-topleft: @radius;
@@ -101,10 +101,10 @@ div.jigoshop_error, div.jigoshop_message {
 	padding:10px 10px 10px 32px;
 	background-repeat: no-repeat;
 	background-position: 10px center;
-	
+
 	a.button {
 		margin-top:0;
-		float: right; 
+		float: right;
 	}
 }
 div.jigoshop_error {
@@ -157,6 +157,14 @@ small.note {
 	}
 }
 
+/* twenty-eleven non content wrapped full width fix (Cart, Checkout, Accounts) */
+.jigoshop #primary .entry-header, .jigoshop #primary .entry-content, .jigoshop #primary .entry-meta {
+	width: 95%;
+}
+.jigoshop #primary .entry-header {
+	float: left;
+}
+
 /* =Product Page
 -------------------------------------------------------------- */
 div.product {
@@ -181,6 +189,7 @@ div.product {
 		float: left;
 		width: 314px;
 		margin-bottom: 10px;
+		position: relative;
 		img {
 			border: 1px solid #ddd;
 			background: #f5f5f5;
@@ -207,7 +216,8 @@ div.product {
 		}
 	}
 	div.summary {
-		float: left;
+		float: right;
+		width: 300px;
 	}
 	div.social {
 		text-align: right;
@@ -278,6 +288,9 @@ p.cart {
 
 form.cart {
 	margin-bottom: 24px;
+	float: right;
+	width: 100%;
+	clear: both;
 	div.quantity {
 		float: left;
 		margin: 0 4px 0 0;
@@ -325,7 +338,7 @@ span.onsale {
 	text-align: center;
 	line-height: 32px;
 	top:0;
-	right: 320px;
+	left: -15px;
 	margin: -6px 0 0 0;
 	.border_radius(20px);
 }
@@ -348,7 +361,7 @@ span.onsale {
 			top: 0;
 			right: 0;
 			left: auto;
-			margin: -6px -6px 0 0;	
+			margin: -6px -6px 0 0;
 		}
 		a {
 			text-decoration: none;
@@ -575,6 +588,7 @@ a.button:hover, button.button:hover, input.button:hover, #review_form #submit:ho
 		border: 1px solid #E7E7E7;
 		margin: 0 !important;
 		padding: 10px 20px 20px;
+		width: auto;
 		p {
 			margin: 0 0 10px !important;
 		}
@@ -634,7 +648,7 @@ table.shop_table {
 		border-top: 1px solid #E7E7E7;
 		padding: 6px 12px !important;
 		vertical-align: middle;
-		
+
 		a.button {
 			margin:0 3px;
 		}
@@ -668,7 +682,7 @@ ul.cart_list, ul.product_list_widget {
 		.clearfix;
 		a {
 			display: block;
-			font-weight: bold;	
+			font-weight: bold;
 		}
 		img {
 			float: left;
@@ -677,10 +691,10 @@ ul.cart_list, ul.product_list_widget {
 		}
 	}
 }
-.widget_shopping_cart {
+.jigoshop_cart {
 	.total {
 		border-top: 3px double #ddd;
-		padding: 4px 0 0;
+		padding: 4px 0 4px;
 		margin: 0 !important;
 		strong {
 			min-width: 40px;
@@ -732,7 +746,7 @@ td.product-name {
 		margin: 0;
 		dt {
 			font-weight: bold;
-			display: inline;
+			display: inline-block;
 			margin: 0 4px 0 0;
 			padding: 0;
 		}
@@ -743,15 +757,15 @@ td.product-name {
 		}
 	}
 }
-td.quantity {
+td.quantity, .jigoshop #content div.quantity {
 	min-width: 80px;
 }
 .quantity input {
 	margin-left:0; margin-right:0;
 }
 .quantity input.qty {
-	border:1px solid #ccc; 
-	width:20px; 
+	border:1px solid #ccc;
+	width:20px;
 	display: inline;
 	padding:1px 5px 2px;
 	line-height: 1em !important;
@@ -797,7 +811,7 @@ td.quantity {
 		width:310px;
 		float: left;
 	}
-	
+
 	.cross-sells {
 		width:314px;
 		float: left;
@@ -822,9 +836,12 @@ td.quantity {
 	}
 	.cart_totals {
 		float: right;
-		
-		width:225px;
+
+		width: 225px;
 		text-align: right;
+		h2 {
+			float: left;
+		}
 		p {
 			margin: 0 !important;
 		}
@@ -909,9 +926,9 @@ form, #content {
 			-webkit-box-sizing:border-box;
 			-moz-box-sizing:border-box;
 			box-sizing:border-box;
-			
+
 			.inset_box_shadow(0, 1px, 4px, 0, rgba(0,0,0,0.1));
-			
+
 			border: 1px solid #ccc;
 			width: 100%;
 			padding: 6px;
@@ -960,7 +977,7 @@ form.login {
 #payment {
 	background: #F9F9F9;
 	.border_radius(5px);
-	
+
 	ul.payment_methods {
 		.clearfix;
 		text-align: left;
@@ -983,7 +1000,7 @@ form.login {
 			}
 		}
 	}
-	
+
 	div.form-row {
 		padding: 1em;
 		border-top: 1px solid #fff;
@@ -1023,7 +1040,7 @@ form.login {
 			margin: 0 0 1em;
 		}
 	}
-	
+
 	div.payment_box:after {
 		content: "";
 		display: block;
@@ -1036,12 +1053,12 @@ form.login {
 		left: 0;
 		margin: -1em 0 0 2em;
 	}
-	
+
 }
 
 div.shipping-address {
 	padding: 0;
-	clear: left; 
+	clear: left;
 }
 
 #shiptobilling {
@@ -1049,7 +1066,7 @@ div.shipping-address {
 	line-height: 1.62em !important;
 	margin: 0 0 0 0 !important;
 	padding:0;
-	
+
 	label {
 		font-size:0.6875em;
 	}
@@ -1061,11 +1078,11 @@ div.shipping-address {
 			float: left;
 			clear: none;
 		}
-		
+
 		.notes {
 			clear:left;
 		}
-		
+
 		.form-row-first {
 			clear: left;
 		}
@@ -1081,7 +1098,7 @@ div.shipping-address {
 	zoom:1;
 	margin:0 0 1.5em;
 	list-style: none;
-	
+
 	li {
 		float: left;
 		margin-right:2em;
@@ -1090,7 +1107,7 @@ div.shipping-address {
 		line-height: 1em;
 		border-right:1px dashed #ccc;
 		padding-right:2em;
-		
+
 		strong {
 			display: block;
 			font-size:1.4em;
@@ -1099,7 +1116,7 @@ div.shipping-address {
 			color: #333;
 		}
 	}
-	
+
 	li.method {
 		border:none;
 	}
@@ -1112,11 +1129,11 @@ div.shipping-address {
 	.title {
 		overflow: hidden;
 		zoom:1;
-		
+
 		h3 {
 			float: left;
 		}
-		
+
 		.edit {
 			float: right;
 		}
@@ -1126,7 +1143,7 @@ div.shipping-address {
 /* =Layered Nav Widgets
 -------------------------------------------------------------- */
 
-.widget_price_filter { 
+.widget_price_filter {
 	.price_slider_wrapper {
 		.button {
 			float: right;
@@ -1176,4 +1193,24 @@ div.shipping-address {
 		padding: 1px 0;
 		color: #999;
 	}
+}
+
+fieldset.variations {
+    border: none;
+}
+
+// 0.9.9.3 Legacy styles
+div.product div.product_meta, div.product div.variations_button {
+	clear: left;
+}
+
+section#primary div.product div.summary {
+	width: 42%;
+}
+
+.single_variation .price {
+	float: left;
+}
+.single_variation, .stock {
+	clear: left;
 }

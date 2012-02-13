@@ -11,7 +11,7 @@
  * @package		Jigoshop
  * @category	Core
  * @author		Jigowatt
- * @copyright	Copyright (c) 2011 Jigowatt Ltd.
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
  * @license		http://jigoshop.com/license/commercial-edition
  */
 
@@ -27,7 +27,8 @@ function jigoshop_recent_products( $atts ) {
 		'per_page' 	=> get_option('jigoshop_catalog_per_page'),
 		'columns' 	=> get_option('jigoshop_catalog_columns'),
 		'orderby'	=> 'date',
-		'order'		=> 'desc'
+		'order'		=> 'desc',
+		'pagination'=> false
 	), $atts));
 
 	$args = array(
@@ -50,7 +51,7 @@ function jigoshop_recent_products( $atts ) {
 	query_posts( $args );
 	ob_start();
 	jigoshop_get_template_part( 'loop', 'shop' );
-	do_action('jigoshop_pagination');
+	if($pagination) do_action('jigoshop_pagination');
 	wp_reset_query();
 
 	return ob_get_clean();
@@ -67,7 +68,8 @@ function jigoshop_products( $atts ){
 		'per_page' 	=> get_option('jigoshop_catalog_per_page'),
 		'columns' 	=> get_option('jigoshop_catalog_columns'),
 		'orderby'	=> get_option('jigoshop_catalog_sort_orderby'),
-		'order'		=> get_option('jigoshop_catalog_sort_direction')
+		'order'		=> get_option('jigoshop_catalog_sort_direction'),
+		'pagination'=> false
 	), $atts));
 
 	$args = array(
@@ -105,7 +107,7 @@ function jigoshop_products( $atts ){
 	query_posts( $args );
 	ob_start();
 	jigoshop_get_template_part( 'loop', 'shop' );
-	do_action('jigoshop_pagination');
+	if($pagination) do_action('jigoshop_pagination');
 	wp_reset_query();
 
 	return ob_get_clean();
@@ -160,7 +162,8 @@ function jigoshop_featured_products( $atts ) {
 		'per_page' 	=> get_option('jigoshop_catalog_per_page'),
 		'columns' 	=> get_option('jigoshop_catalog_columns'),
 		'orderby'	=> get_option('jigoshop_catalog_sort_orderby'),
-		'order'		=> get_option('jigoshop_catalog_sort_direction')
+		'order'		=> get_option('jigoshop_catalog_sort_direction'),
+		'pagination'=> false
 	), $atts));
 
 	$args = array(
@@ -179,7 +182,7 @@ function jigoshop_featured_products( $atts ) {
 			),
 			array(
 				'key' => 'featured',
-				'value' => 'yes'
+				'value' => true
 			)
 		)
 	);
@@ -187,7 +190,7 @@ function jigoshop_featured_products( $atts ) {
 	query_posts( $args );
 	ob_start();
 	jigoshop_get_template_part( 'loop', 'shop' );
-	do_action('jigoshop_pagination');
+	if($pagination) do_action('jigoshop_pagination');
 	wp_reset_query();
 
 	return ob_get_clean();
@@ -206,7 +209,8 @@ function jigoshop_product_category( $atts ) {
 		'per_page' 	=> get_option('jigoshop_catalog_per_page'),
 		'columns' 	=> get_option('jigoshop_catalog_columns'),
 		'orderby'	=> get_option('jigoshop_catalog_sort_orderby'),
-		'order'		=> get_option('jigoshop_catalog_sort_direction')
+		'order'		=> get_option('jigoshop_catalog_sort_direction'),
+		'pagination'=> false
 	), $atts));
 
 	if ( ! $slug ) return;
@@ -239,7 +243,7 @@ function jigoshop_product_category( $atts ) {
 	query_posts( $args );
 	ob_start();
 	jigoshop_get_template_part( 'loop', 'shop' );
-	do_action('jigoshop_pagination');
+	if($pagination) do_action('jigoshop_pagination');
 	wp_reset_query();
 	return ob_get_clean();
 }
@@ -275,7 +279,7 @@ function jigoshop_product_add_to_cart( $atts ) {
 	if (empty($atts)) return;
 
 	global $wpdb;
-	
+
 	if (!$atts['class']) $atts['class'] = 'product';
 
 	if ($atts['id']) :
@@ -296,7 +300,7 @@ function jigoshop_product_add_to_cart( $atts ) {
 	ob_start();
 	?>
 	<p class="<?php echo esc_attr( $atts['class'] ); ?>">
-	
+
 		<?php if ($atts['price'] != 'no') echo $_product->get_price_html(); ?>
 
 		<?php jigoshop_template_loop_add_to_cart( $product_meta, $_product ); ?>
@@ -306,6 +310,27 @@ function jigoshop_product_add_to_cart( $atts ) {
 	return ob_get_clean();
 }
 
+//### Search shortcode #########################################################
+
+function jigoshop_search_shortcode( $atts ) {
+
+	// Extract the arguments
+	extract( $args );
+
+	// Construct the form
+	$form = '<form role="search" method="get" id="searchform" action="' . home_url() . '">';
+	$form .= '<div>';
+		$form .= '<label class="assistive-text" for="s">' . __('Search for:', 'jigoshop') . '</label>';
+		$form .= '<input type="text" value="' . get_search_query() . '" name="s" id="s" placeholder="' . __('Search for products', 'jigoshop') . '" />';
+		$form .= '<input type="submit" id="searchsubmit" value="' . __('Search', 'jigoshop') . '" />';
+		$form .= '<input type="hidden" name="post_type" value="product" />';
+	$form .= '</div>';
+	$form .= '</form>';
+
+	// Apply a filter to allow for additional fields
+	echo apply_filters('jigoshop_product_search_shortcode', $form, $instance);
+
+}
 
 //### Shortcodes #########################################################
 
@@ -313,6 +338,7 @@ add_shortcode('product', 'jigoshop_product');
 add_shortcode('products', 'jigoshop_products');
 add_shortcode('add_to_cart', 'jigoshop_product_add_to_cart');
 add_shortcode('add_to_cart_url', 'jigoshop_product_add_to_cart_url');
+add_shortcode('product_search', 'jigoshop_search_shortcode');
 
 add_shortcode('recent_products', 'jigoshop_recent_products');
 add_shortcode('featured_products', 'jigoshop_featured_products');

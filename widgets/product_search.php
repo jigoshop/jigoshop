@@ -12,7 +12,7 @@
  * @category	Widgets
  * @author		Jigowatt
  * @since		1.0
- * @copyright	Copyright (c) 2011 Jigowatt Ltd.
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
  * @license		http://jigoshop.com/license/commercial-edition
  */
 
@@ -20,7 +20,7 @@ class Jigoshop_Widget_Product_Search extends WP_Widget {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Setup the widget with the available options
 	 */
 	public function __construct() {
@@ -28,36 +28,36 @@ class Jigoshop_Widget_Product_Search extends WP_Widget {
 			'classname'		=> 'jigoshop_product_search',
 			'description'	=> __( 'A search form for your products', 'jigoshop' )
 		);
-		
+
 		// Create the widget
 		parent::__construct('jigoshop_product_search', __('Jigoshop: Product Search', 'jigoshop'), $options);
 	}
 
 	/**
 	 * Widget
-	 * 
+	 *
 	 * Display the widget in the sidebar
 	 *
 	 * @param	array	sidebar arguments
 	 * @param	array	instance
 	 */
 	public function widget( $args, $instance ) {
-	
+
 		// Extract the widget arguments
 		extract( $args );
 
 		// Set the widget title
 		$title = apply_filters(
-			'widget_title', 
-			( $instance['title'] ) ? $instance['title'] : __( 'Product Search', 'jigoshop' ), 
+			'widget_title',
+			( $instance['title'] ) ? $instance['title'] : __( 'Product Search', 'jigoshop' ),
 			$instance,
 			$this->id_base
 		);
-		
+
 		// Print the widget wrapper & title
 		echo $before_widget;
 		echo $before_title . $title . $after_title;
-		
+
 		// Construct the form
 		$form = '<form role="search" method="get" id="searchform" action="' . home_url() . '">';
 		$form .= '<div>';
@@ -67,17 +67,17 @@ class Jigoshop_Widget_Product_Search extends WP_Widget {
 			$form .= '<input type="hidden" name="post_type" value="product" />';
 		$form .= '</div>';
 		$form .= '</form>';
-		
+
 		// Apply a filter to allow for additional fields
 		echo apply_filters('jigoshop_product_search_form', $form, $instance, $this->id_base);
-		
+
 		// Print closing widget wrapper
 		echo $after_widget;
 	}
 
 	/**
 	 * Update
-	 * 
+	 *
 	 * Handles the processing of information entered in the wordpress admin
 	 *
 	 * @param	array	new instance
@@ -95,16 +95,16 @@ class Jigoshop_Widget_Product_Search extends WP_Widget {
 
 	/**
 	 * Form
-	 * 
+	 *
 	 * Displays the form for the wordpress admin
 	 *
 	 * @param	array	instance
 	 */
 	public function form( $instance ) {
-		
+
 		// Get instance data
 		$title = isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : null;
-	
+
 		// Widget title
 		echo "
 		<p>

@@ -1,6 +1,6 @@
 This program incorporates work covered by the following copyright and
 permission notices:
-  
+
 fancyBox
 ========
 

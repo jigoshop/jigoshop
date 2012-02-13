@@ -1,4 +1,4 @@
-<?php defined( 'WP_UNINSTALL_PLUGIN' ) or die('No direct script access');
+<?php
 /**
  * Uninstall Script
  *
@@ -10,12 +10,39 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Core
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Core
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
+
+if( !defined('WP_UNINSTALL_PLUGIN') ) exit();
+
+global $wpdb, $wp_roles;
 
 // Remove the widget cache entry
 delete_transient( 'jigoshop_widget_cache' );
+
+// Roles
+remove_role( 'customer' );
+
+// Pages
+wp_delete_post( get_option('jigoshop_cart_page_id'), true );
+wp_delete_post( get_option('jigoshop_change_password_page_id'), true );
+wp_delete_post( get_option('jigoshop_checkout_page_id'), true );
+wp_delete_post( get_option('jigoshop_edit_address_page_id'), true );
+wp_delete_post( get_option('jigoshop_myaccount_page_id'), true );
+wp_delete_post( get_option('jigoshop_pay_page_id'), true );
+wp_delete_post( get_option('jigoshop_shop_page_id'), true );
+wp_delete_post( get_option('jigoshop_thanks_page_id'), true );
+wp_delete_post( get_option('jigoshop_track_order_page_id'), true );
+wp_delete_post( get_option('jigoshop_view_order_page_id'), true );
+
+// Tables
+$wpdb->query("DROP TABLE IF EXISTS ".$wpdb->prefix."jigoshop_attribute_taxonomies");
+$wpdb->query("DROP TABLE IF EXISTS ".$wpdb->prefix."jigoshop_downloadable_product_permissions");
+$wpdb->query("DROP TABLE IF EXISTS ".$wpdb->prefix."jigoshop_termmeta");
+
+// Delete options
+$wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE 'jigoshop_%';");

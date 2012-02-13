@@ -2,13 +2,13 @@
   jQuery blockUI plugin
   Version 2.37 (29-JAN-2011)
   @requires jQuery v1.2.3 or later
- 
+
   Examples at: http://malsup.com/jquery/block/
   Copyright (c) 2007-2010 M. Alsup
   Dual licensed under the MIT and GPL licenses:
   http://www.opensource.org/licenses/mit-license.php
   http://www.gnu.org/licenses/gpl.html
- 
+
   Thanks to Amir-Hossein Sobhi for some excellent contributions!
  */
 ;(function($){if(/1\.(0|1|2)\.(0|1|2)/.test($.fn.jquery)||/^1.1/.test($.fn.jquery)){alert('blockUI requires jQuery v1.2.3 or later!  You are using v'+$.fn.jquery);return;}
@@ -82,7 +82,7 @@ options=value||{};var result,decode=options.raw?function(s){return s;}:decodeURI
 
 /*
  * 	Easy Tooltip 1.0 - jQuery plugin
- *	written by Alen Grakalic	
+ *	written by Alen Grakalic
  *	http://cssglobe.com/post/4380/easy-tooltip--jquery-plugin
  *
  *	Copyright (c) 2009 Alen Grakalic (http://cssglobe.com)
@@ -98,7 +98,7 @@ jQuery(function(){
 
 /**
  * Spoofs placeholders in browsers that don't support them (eg Firefox 3)
- * 
+ *
  * Copyright 2011 Dan Bentley
  * Licensed under the Apache License 2.0
  *

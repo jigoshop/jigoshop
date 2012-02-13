@@ -1,10 +1,21 @@
 <?php
-
 /**
  * DIBS FlexWin Gateway
- **/
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
+ * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package		Jigoshop
+ * @category	Checkout
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
+ */
 class dibs extends jigoshop_payment_gateway {
-		
+
 	public function __construct() {
 		$this->id = 'dibs';
 		$this->icon = '';
@@ -16,12 +27,12 @@ class dibs extends jigoshop_payment_gateway {
 		$this->testmode = get_option('jigoshop_dibs_testmode');
 		$this->key1 = get_option('jigoshop_dibs_key1');
 		$this->key2 = get_option('jigoshop_dibs_key2');
-		
+
 		add_action('init', array(&$this, 'check_callback') );
 		add_action('valid-dibs-callback', array(&$this, 'successful_request') );
 		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
 		add_action('receipt_dibs', array(&$this, 'receipt_page'));
-		
+
 		add_option('jigoshop_dibs_enabled', 'yes');
 		add_option('jigoshop_dibs_merchant', '');
 		add_option('jigoshop_dibs_key1', '');
@@ -30,9 +41,9 @@ class dibs extends jigoshop_payment_gateway {
 		add_option('jigoshop_dibs_description', __("Pay via DIBS using credit card or bank transfer.", 'jigoshop') );
 		add_option('jigoshop_dibs_testmode', 'no');
 	}
-    
+
 	/**
-	* Admin Panel Options 
+	* Admin Panel Options
 	* - Options for bits like 'title' and availability on a country-by-country basis
 	**/
 	public function admin_options() {
@@ -114,11 +125,11 @@ class dibs extends jigoshop_payment_gateway {
 	* Generate the dibs button link
 	**/
 	public function generate_form( $order_id ) {
-		
+
 		$order = new jigoshop_order( $order_id );
-		
+
 		$action_adr = 'https://payment.architrade.com/paymentweb/start.action';
-		
+
 		// Dibs currency codes http://tech.dibs.dk/toolbox/currency_codes/
 		$dibs_currency = array(
 			'DKK' => '208', // Danish Kroner
@@ -136,115 +147,115 @@ class dibs extends jigoshop_payment_gateway {
 			'TRY' => '949', // Turkish Lire
 		);
 		// filter redirect page
-		$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', get_option( 'jigoshop_thanks_page_id' ) );
-		
+		$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', jigoshop_get_page_id('thanks') );
+
 		$args =
 			array(
 				// Merchant
 				'merchant' => $this->merchant,
 				'decorator' => 'default',
-				
+
 				// Session
 				'lang' => 'sv',
-				
+
 				// Order
 				'amount' => $order->order_total * 100,
 				'orderid' => $order_id,
 				'uniqueoid' => $order->order_key,
 				'currency' => $dibs_currency[get_option('jigoshop_currency')],
 				'ordertext' => 'TEST',
-				
+
 				// URLs
 				'callbackurl' => site_url('/jigoshop/dibscallback.php'),
-				
+
 				// TODO these urls will not work correctly since DIBS ignores the querystring
 				'accepturl' => add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink($checkout_redirect))),
 				'cancelurl' => $order->get_cancel_order_url(),
-				
+
 		);
-		
-		
+
+
 		// Calculate key
 		// http://tech.dibs.dk/dibs_api/other_features/md5-key_control/
 		$args['md5key'] = MD5(get_option('jigoshop_dibs_key2') . MD5(get_option('jigoshop_dibs_key1') . 'merchant=' . $args['merchant'] . '&orderid=' . $args['orderid'] . '&currency=' . $args['currency'] . '&amount=' . $args['amount']));
-		
+
 		if( !empty($_SERVER['HTTP_CLIENT_IP']) ) {
 			$args['ip'] = $_SERVER['HTTP_CLIENT_IP'];
 		}
-		
+
 		if ( $this->testmode == 'yes' ) {
 			$args['test'] = 'yes';
 		}
-		
+
 		$fields = '';
 		foreach ($args as $key => $value) {
 			$fields .= '<input type="hidden" name="'.esc_attr($key).'" value="'.esc_attr($value).'" />';
 		}
-		
+
 		return '<form action="'.$action_adr.'" method="post" id="dibs_payment_form">
 				' . $fields . '
 				<input type="submit" class="button-alt" id="submit_dibs_payment_form" value="'.__('Pay via DIBS', 'jigoshop').'" /> <a class="button cancel" href="'.esc_url($order->get_cancel_order_url()).'">'.__('Cancel order &amp; restore cart', 'jigoshop').'</a>
 				<script type="text/javascript">
 					jQuery(function(){
 						jQuery("body").block(
-							{ 
-								message: "<img src=\"'.jigoshop::assets_url().'/assets/images/ajax-loader.gif\" alt=\"Redirecting...\" />'.__('Thank you for your order. We are now redirecting you to DIBS to make payment.', 'jigoshop').'", 
-								overlayCSS: 
-								{ 
-									background: "#fff", 
-									opacity: 0.6 
+							{
+								message: "<img src=\"'.jigoshop::assets_url().'/assets/images/ajax-loader.gif\" alt=\"Redirecting...\" />'.__('Thank you for your order. We are now redirecting you to DIBS to make payment.', 'jigoshop').'",
+								overlayCSS:
+								{
+									background: "#fff",
+									opacity: 0.6
 								},
-								css: { 
-							        padding:        20, 
-							        textAlign:      "center", 
-							        color:          "#555", 
-							        border:         "3px solid #aaa", 
-							        backgroundColor:"#fff", 
-							        cursor:         "wait" 
-							    } 
+								css: {
+							        padding:        20,
+							        textAlign:      "center",
+							        color:          "#555",
+							        border:         "3px solid #aaa",
+							        backgroundColor:"#fff",
+							        cursor:         "wait"
+							    }
 							});
 						jQuery("#submit_dibs_payment_form").click();
 					});
 				</script>
 			</form>';
-		
+
 	}
-	
+
 	/**
 	 * Process the payment and return the result
 	 **/
 	function process_payment( $order_id ) {
-		
+
 		$order = new jigoshop_order( $order_id );
-		
+
 		return array(
 			'result' => 'success',
-			'redirect' => add_query_arg('order', $order->id, add_query_arg('key', $order->order_key, apply_filters('jigoshop_get_return_url', get_permalink(get_option('jigoshop_pay_page_id')))))
+			'redirect' => add_query_arg('order', $order->id, add_query_arg('key', $order->order_key, apply_filters('jigoshop_get_return_url', get_permalink(jigoshop_get_page_id('pay')))))
 		);
-		
+
 	}
-	
+
 	/**
 	* receipt_page
 	**/
 	function receipt_page( $order ) {
-		
+
 		echo '<p>'.__('Thank you for your order, please click the button below to pay with DIBS.', 'jigoshop').'</p>';
-		
+
 		echo $this->generate_form( $order );
-		
+
 	}
-	
+
 	/**
 	* Check for DIBS Response
 	**/
 	function check_callback() {
 		if ( strpos($_SERVER["REQUEST_URI"], '/jigoshop/dibscallback.php') ) {
-			
+
 			error_log('Dibs callback!');
-			
+
 			$_POST = stripslashes_deep($_POST);
-			
+
 			do_action("valid-dibs-callback", $_POST);
 		}
 	}
@@ -253,40 +264,40 @@ class dibs extends jigoshop_payment_gateway {
 	* Successful Payment!
 	**/
 	function successful_request( $posted ) {
-		
+
 		// Custom holds post ID
 		if ( !empty($posted['transact']) && !empty($posted['orderid']) && is_numeric($posted['orderid']) ) {
-			
+
 			// Verify MD5 checksum
 			// http://tech.dibs.dk/dibs_api/other_features/md5-key_control/
 			$key1 = get_option('jigoshop_dibs_key1');
 			$key2 = get_option('jigoshop_dibs_key2');
 			$vars = 'transact='. $posted['transact'] . '&amount=' . $posted['amount'] . '&currency=' . $posted['currency'];
 			$md5 = MD5($key2 . MD5($key1 . $vars));
-			
+
 			if($posted['authkey'] != $md5) {
 				error_log('MD5 check failed for Dibs callback with order_id:'.$posted['orderid']);
 				exit();
 			}
-			
+
 			$order = new jigoshop_order( (int) $posted['orderid'] );
-		
+
 			if ($order->order_key !== $posted['uniqueoid']) {
 				error_log('Unique ID check failed for Dibs callback with order_id:'.$posted['orderid']);
 				exit;
 			}
-		
+
 			if ($order->status !== 'completed') {
-			
+
 				$order->add_order_note( __('Callback payment completed', 'jigoshop') );
 				$order->payment_complete();
-			
+
 			}
-			
+
 			exit;
-			
+
 		}
-		
+
 	}
 
 }

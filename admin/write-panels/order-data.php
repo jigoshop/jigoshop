@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Admin
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Admin
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -28,11 +28,11 @@ function jigoshop_order_data_meta_box($post) {
 
 	global $post, $wpdb, $thepostid;
 	add_action('admin_footer', 'jigoshop_meta_scripts');
-	
+
 	wp_nonce_field('jigoshop_save_data', 'jigoshop_meta_nonce');
 
     $data = (array) maybe_unserialize( get_post_meta($post->ID, 'order_data', true) );
-	
+
 	$data['customer_user'] = (int) get_post_meta($post->ID, 'customer_user', true);
 
 	$order_status = get_the_terms($post->ID, 'shop_order_status');
@@ -76,7 +76,7 @@ function jigoshop_order_data_meta_box($post) {
 					foreach ($statuses as $status) :
 						echo '<option value="'.esc_attr($status->slug).'" ';
 						if ($status->slug==$data['order_status']) echo 'selected="selected"';
-						echo '>'.$status->name.'</option>';
+						echo '>'. __($status->name,'jigoshop').'</option>';
 					endforeach;
 				?>
 			</select></p>
@@ -96,11 +96,11 @@ function jigoshop_order_data_meta_box($post) {
 			<p class="form-field"><label for="excerpt"><?php _e('Customer Note:', 'jigoshop') ?></label>
 				<textarea rows="1" cols="40" name="excerpt" tabindex="6" id="excerpt" placeholder="<?php _e('Customer\'s notes about the order', 'jigoshop'); ?>"><?php echo esc_textarea( $post->post_excerpt ); ?></textarea></p>
 		</div>
-		
+
 		<div id="order_customer_billing_data" class="panel jigoshop_options_panel">
             <?php
             //display billing fieds and values
-            
+
                 $billing_fields = array(
                     'first_name' => __('First Name', 'jigoshop'),
                     'last_name' => __('Last Name', 'jigoshop'),
@@ -114,19 +114,19 @@ function jigoshop_order_data_meta_box($post) {
                     'email' => __('Email Address', 'jigoshop'),
                     'phone' => __('Tel', 'jigoshop'),
                 );
-    
+
                 foreach($billing_fields as $field_id => $field_desc) {
                     $field_id = 'billing_' . $field_id;
                     $field_value = '';
-                    
+
                     if(isset($data[$field_id])) {
                         $field_value = $data[$field_id];
                     }
-                    
+
                     echo '<p class="form-field"><label for="' . esc_attr( $field_id ) . '">'.$field_desc.':</label>
 				<input type="text" name="'.esc_attr($field_id).'" id="'.esc_attr($field_id).'" value="'.esc_attr($field_value).'" /></p>';
                 }
-				
+
 			?>
 		</div>
 
@@ -135,7 +135,7 @@ function jigoshop_order_data_meta_box($post) {
 			<p class="form-field"><button class="button billing-same-as-shipping"><?php _e('Copy billing address to shipping address', 'jigoshop'); ?></button></p>
 			<?php
             //display shipping fieds and values
-            
+
                 $shipping_fields = array(
                     'first_name' => __('First Name', 'jigoshop'),
                     'last_name' => __('Last Name', 'jigoshop'),
@@ -147,15 +147,15 @@ function jigoshop_order_data_meta_box($post) {
                     'country' => __('Country', 'jigoshop'),
                     'state' => __('State/County', 'jigoshop')
                 );
-    
+
                 foreach($shipping_fields as $field_id => $field_desc) {
                     $field_id = 'shipping_' . $field_id;
                     $field_value = '';
-                    
+
                     if(isset($data[$field_id])) {
                         $field_value = $data[$field_id];
                     }
-                    
+
                     echo '<p class="form-field"><label for="' . esc_attr( $field_id ) . '">'.$field_desc.':</label>
 				<input type="text" name="'.esc_attr($field_id).'" id="'.esc_attr($field_id).'" value="'.esc_attr($field_value).'" /></p>';
                 }
@@ -195,10 +195,10 @@ function jigoshop_order_items_meta_box($post) {
 					<th class="center" width="1%"><?php _e('Remove', 'jigoshop'); ?></th>
 				</tr>
 			</thead>
-			<tbody id="order_items_list">	
-				
-				<?php if (sizeof($order_items)>0 && isset($order_items[0]['id'])) foreach ($order_items as $item) : 
-					
+			<tbody id="order_items_list">
+
+				<?php if (sizeof($order_items)>0 && isset($order_items[0]['id'])) foreach ($order_items as $item) :
+
 					if (isset($item['variation_id']) && $item['variation_id'] > 0) {
 						$_product = new jigoshop_product_variation( $item['variation_id'] );
                         if(is_array($item['variation'])) {
@@ -353,9 +353,9 @@ function jigoshop_order_totals_meta_box($post) {
     $order_discount_coupons = (array)$_order->get_value_from_data('order_discount_coupons');
 	if( ! empty( $order_discount_coupons )) {
 		foreach ( $order_discount_coupons as $coupon ) {
-			$coupons[] = $coupon['code'];
+			$coupons[] = isset( $coupon['code'] ) ? $coupon['code'] : '';
 		}
-	}   
+	}
 	?>
 	<ul class="totals">
 		<li class="left">

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Templates are in the 'templates' folder. jigoshop looks for theme
  *
@@ -11,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Core
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Core
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 
 function jigoshop_template_loader( $template ) {
@@ -67,7 +66,7 @@ function jigoshop_template_loader( $template ) {
 
 		if ( ! $template ) $template = jigoshop::plugin_path() . '/templates/taxonomy-product_tag.php';
 	}
-	elseif ( is_post_type_archive('product') ||  is_page( get_option('jigoshop_shop_page_id') )) {
+	elseif ( is_post_type_archive('product') ||  is_page( jigoshop_get_page_id('shop') )) {
 
 		jigoshop_add_body_class( array( 'jigoshop', 'jigoshop-shop', 'jigoshop-products' ) );
 

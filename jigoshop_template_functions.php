@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Core
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Core
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -22,13 +22,13 @@ if (!function_exists('jigoshop_front_page_archive')) {
 	function jigoshop_front_page_archive() {
 
 		global $paged;
-		
+
 		// TODO: broken
 		// is_page() fails for this - still testing -JAP-
 		// is_shop() works, but only with a [recent_products] shortcode on the Shop page
 		// however, if shortcode is used when not front page, double product listings appear
 		//
-		if ( is_front_page() && is_page( get_option('jigoshop_shop_page_id') )) :
+		if ( is_front_page() && is_page( jigoshop_get_page_id('shop') )) :
 //		if ( is_front_page() && is_shop() ) :
 
 			if ( get_query_var('paged') ) {
@@ -88,10 +88,10 @@ if (!function_exists('jigoshop_get_sidebar')) {
  **/
 if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 	function jigoshop_template_loop_add_to_cart( $post, $_product ) {
-		
+
 		// do not show "add to cart" button if product's price isn't announced
 		if ( $_product->get_price() === '' AND ! ($_product->is_type(array('variable', 'grouped', 'external'))) ) return;
-		
+
 		if ( $_product->is_in_stock() OR $_product->is_type('external') ) :
 			if ( $_product->is_type(array('variable', 'grouped')) ) :
 				$output = '<a href="'.get_permalink($_product->id).'" class="button">'.__('Select', 'jigoshop').'</a>';
@@ -100,6 +100,8 @@ if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 			else :
 				$output = '<a href="'.esc_url($_product->add_to_cart_url()).'" class="button">'.__('Add to cart', 'jigoshop').'</a>';
 			endif;
+		elseif ( ($_product->is_type(array('grouped')) ) ) :
+			return;
 		else :
 			$output = '<span class="nostock">'.__('Out of Stock', 'jigoshop').'</span>';
 		endif;
@@ -233,7 +235,7 @@ if (!function_exists('jigoshop_template_single_meta')) {
 		if (get_option('jigoshop_enable_sku')=='yes' && !empty($_product->sku)) :
 			echo '<div class="sku">SKU: ' . $_product->sku . '</div>';
 		endif;
-		
+
 		echo $_product->get_categories( ', ', ' <div class="posted_in">' . __( 'Posted in ', 'jigoshop' ) . '', '.</div>');
 		echo $_product->get_tags( ', ', ' <div class="tagged_as">' . __( 'Tagged as ', 'jigoshop' ) . '', '.</div>');
 		echo '</div>';
@@ -259,19 +261,19 @@ if (!function_exists('jigoshop_template_single_sharing')) {
  **/
 if (!function_exists('jigoshop_template_single_add_to_cart')) {
 	function jigoshop_template_single_add_to_cart( $post, $_product ) {
-		
+
 		do_action( $_product->product_type . '_add_to_cart' );
-		
+
 	}
 }
 if (!function_exists('jigoshop_simple_add_to_cart')) {
 	function jigoshop_simple_add_to_cart() {
 
 		global $_product; $availability = $_product->get_availability();
-		
+
 		// do not show "add to cart" button if product's price isn't announced
 		if( $_product->get_price() === '') return;
-		
+
 		if ($availability['availability']) : ?><p class="stock <?php echo $availability['class'] ?>"><?php echo $availability['availability']; ?></p><?php endif;
 
 		?>
@@ -294,10 +296,10 @@ if (!function_exists('jigoshop_downloadable_add_to_cart')) {
 	function jigoshop_downloadable_add_to_cart() {
 
 		global $_product; $availability = $_product->get_availability();
-		
+
 		// do not show "add to cart" button if product's price isn't announced
 		if( $_product->get_price() === '') return;
-		
+
 		if ($availability['availability']) : ?><p class="stock <?php echo $availability['class'] ?>"><?php echo $availability['availability']; ?></p><?php endif;
 
 		?>
@@ -312,7 +314,7 @@ if (!function_exists('jigoshop_grouped_add_to_cart')) {
 	function jigoshop_grouped_add_to_cart() {
 
 		global $_product;
-
+		if(!$_product->get_children()) return;
 		?>
 		<form action="<?php echo esc_url( $_product->add_to_cart_url() ); ?>" class="cart" method="post">
 			<table cellspacing="0">
@@ -340,20 +342,20 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 	function jigoshop_variable_add_to_cart() {
 
 		global $post, $_product;
-		
+
 		$attributes = $_product->get_available_attributes_variations();
-        
+
         //get all variations available as an array for easy usage by javascript
         $variationsAvailable = array();
         $children = $_product->get_children();
-        
+
         foreach($children as $child) {
             /* @var $variation jigoshop_product_variation */
             $variation = $_product->get_child( $child );
             if($variation instanceof jigoshop_product_variation && $variation->is_visible()) {
                 $vattrs = $variation->get_variation_attributes();
                 $availability = $variation->get_availability();
-                
+
                 //@todo needs to be moved to jigoshop_product_variation class
                 if (has_post_thumbnail($variation->get_variation_id())) {
                     $attachment_id = get_post_thumbnail_id( $variation->get_variation_id() );
@@ -364,14 +366,54 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
                     $image = '';
                     $image_link = '';
                 }
+				
+				$a_weight = $a_length = $a_width = $a_height = '';
+				
+                if ( $variation->get_weight() ) {
+                	$a_weight = '
+                    	<tr class="weight">
+                    		<th>Weight</th>
+                    		<td>'.$variation->get_weight().get_option('jigoshop_weight_unit').'</td>
+                    	</tr>';
+            	}
+
+            	if ( $variation->get_length() ) {
+	            	$a_length = '
+	                	<tr class="length">
+	                		<th>Length</th>
+	                		<td>'.$variation->get_length().get_option('jigoshop_dimension_unit').'</td>
+	                	</tr>';
+                }
+
+                if ( $variation->get_width() ) {
+	                $a_width = '
+	                	<tr class="width">
+	                		<th>Width</th>
+	                		<td>'.$variation->get_width().get_option('jigoshop_dimension_unit').'</td>
+	                	</tr>';
+                }
+
+                if ( $variation->get_height() ) {
+	                $a_height = '
+	                	<tr class="height">
+	                		<th>Height</th>
+	                		<td>'.$variation->get_height().get_option('jigoshop_dimension_unit').'</td>
+	                	</tr>
+	                ';
+            	}
 
                 $variationsAvailable[] = array(
                     'variation_id' => $variation->get_variation_id(),
+                    'sku'		=> '<div class="sku">SKU: ' . $variation->get_sku() . '</div>',
                     'attributes' => $vattrs,
                     'image_src' => $image,
                     'image_link' => $image_link,
                     'price_html' => '<span class="price">'.$variation->get_price_html().'</span>',
                     'availability_html' => '<p class="stock ' . esc_attr( $availability['class'] ) . '">'. $availability['availability'].'</p>',
+                    'a_weight' => $a_weight,
+                    'a_length' => $a_length,
+                    'a_width' => $a_width,
+                    'a_height' => $a_height,
                 );
             }
         }
@@ -382,23 +424,17 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
         </script>
 		<form action="<?php echo esc_url( $_product->add_to_cart_url() ); ?>" class="variations_form cart" method="post">
 			<fieldset class="variations">
-				<?php foreach ( $attributes as $aname => $avalues ): ?>
-					<?php $sanitized_name = sanitize_title( $aname ); ?>
+				<?php foreach ( $attributes as $name => $options ): ?>
+					<?php $sanitized_name = sanitize_title( $name ); ?>
 					<div>
-						<span class="select_label"><?php echo $aname; ?></span>
+						<span class="select_label"><?php echo jigoshop_product::attribute_label('pa_'.$name); ?></span>
 						<select id="<?php echo esc_attr( $sanitized_name ); ?>" name="tax_<?php echo $sanitized_name; ?>">
 							<option value=""><?php echo __('Choose an option ', 'jigoshop') ?>&hellip;</option>
-							<?php foreach ( $avalues as $value ) : ?>
+							<?php foreach ( $options as $value ) : ?>
 								<?php if ( taxonomy_exists( 'pa_'.$sanitized_name )) : ?>
 									<?php $term = get_term_by( 'slug', $value, 'pa_'.$sanitized_name ); ?>
 									<option value="<?php echo esc_attr( $term->slug ); ?>"><?php echo $term->name; ?></option>
 								<?php else : ?>
-									<?php
-									//	this should be a custom text attribute with values (one,two,three)
-									//	we have no way to get the pretty name instead of the slug?  -JAP-
-									//	perhaps we need to be creating a taxonomy for these? (currently we don't)
-									//	it will show pretty name if no option selected on variation, 'Choose Any [attr]'
-									?>
 									<option value="<?php echo esc_attr( sanitize_title( $value ) ); ?>"><?php echo $value; ?></option>
 								<?php endif;?>
 							<?php endforeach; ?>
@@ -648,7 +684,7 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 			<p><button type="submit" name="calc_shipping" value="1" class="button"><?php _e('Update Totals', 'jigoshop'); ?></button></p>
 			<p>
 			<?php
-			if (jigoshop_shipping::has_calculable_shipping() && jigoshop_shipping::get_total() > 0) :
+			if (jigoshop_shipping::has_calculable_shipping()) :
 				$available_methods = jigoshop_shipping::get_available_shipping_methods();
 				foreach ( $available_methods as $method ) :
 					if ( $method instanceof jigoshop_calculable_shipping ) :
@@ -657,38 +693,38 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 						?>
 							<div class="col2-set">
 								<p class="form-row col-1">
-									
-									<?php 
+
+									<?php
 									echo '<input type="radio" name="shipping_rates" value="' . esc_attr( $method->id . ':' . $i ) . '"' . ' class="shipping_select"';
-									if ( $method->get_cheapest_service() == $method->get_selected_service($i) && $method->is_chosen() ) echo ' checked>'; else echo '>'; 
+									if ( $method->get_cheapest_service() == $method->get_selected_service($i) && $method->is_chosen() ) echo ' checked>'; else echo '>';
 									echo $method->get_selected_service($i) . ' via ' . $method->title;
 									?>
-								<p class="form-row col-2"><?php  
-									echo jigoshop_price($method->get_selected_price($i)); 
+								<p class="form-row col-2"><?php
+									echo jigoshop_price($method->get_selected_price($i));
 									if ($method->shipping_tax>0) : __(' (ex. tax)', 'jigoshop'); endif;
 									?>
-							</div> 
+							</div>
 						<?php
 						}
-						
+
 					else :
 					?>
 					<div class="col2-set">
 						<p class="form-row col-1">
-							<?php 
+							<?php
 							// value has : as there are no services on non calculable methods, since they are identified only by the id
 							echo '<input type="radio" name="shipping_rates" value="' . esc_attr( $method->id . ':' ) .'" class="shipping_select"';
-							if ( $method->is_chosen() ) echo 'checked>'; else echo '>'; 
+							if ( $method->is_chosen() ) echo 'checked>'; else echo '>';
 							echo $method->title;
 
 							?>
-						<p class="form-row col-2"><?php 
+						<p class="form-row col-2"><?php
 							if ($method->shipping_total>0) :
 								echo jigoshop_price($method->shipping_total);
 								if ($method->shipping_tax>0) : __(' (ex. tax)', 'jigoshop'); endif;
 							else :
 								echo __('Free', 'jigoshop');
-							endif;						
+							endif;
 						?>
 					</div>
 					<?php
@@ -741,7 +777,7 @@ if (!function_exists('jigoshop_login_form')) {
 if (!function_exists('jigoshop_checkout_login_form')) {
 	function jigoshop_checkout_login_form() {
 
-		if (is_user_logged_in()) return;
+		if (is_user_logged_in() || get_option('jigoshop_enable_guest_login') != 'yes') return;
 
 		?><p class="info"><?php _e('Already registered?', 'jigoshop'); ?> <a href="#" class="showlogin"><?php _e('Click here to login', 'jigoshop'); ?></a></p><?php
 
@@ -763,11 +799,11 @@ if (!function_exists('jigoshop_breadcrumb')) {
 
 	 	$prepend = '';
 
-	 	if ( get_option('jigoshop_prepend_shop_page_to_urls')=="yes" && get_option('jigoshop_shop_page_id') && get_option('page_on_front') !== get_option('jigoshop_shop_page_id') )
-	 		$prepend =  $before . '<a href="' . esc_url( jigoshop_cart::get_shop_url() ). '">' . get_the_title( get_option('jigoshop_shop_page_id') ) . '</a> ' . $after . $delimiter;
+	 	if ( get_option('jigoshop_prepend_shop_page_to_urls')=="yes" && jigoshop_get_page_id('shop') && get_option('page_on_front') !== jigoshop_get_page_id('shop') )
+	 		$prepend =  $before . '<a href="' . esc_url( jigoshop_cart::get_shop_url() ). '">' . get_the_title( jigoshop_get_page_id('shop') ) . '</a> ' . $after . $delimiter;
 
 
-	 	if ( (!is_home() && !is_front_page() && !(is_post_type_archive() && get_option('page_on_front')==get_option('jigoshop_shop_page_id'))) || is_paged() ) :
+	 	if ( (!is_home() && !is_front_page() && !(is_post_type_archive() && get_option('page_on_front')==jigoshop_get_page_id('shop'))) || is_paged() ) :
 
 			echo $wrap_before;
 
@@ -828,9 +864,9 @@ if (!function_exists('jigoshop_breadcrumb')) {
 
 				echo $before . get_the_time('Y') . $after;
 
-	 		elseif ( is_post_type_archive('product') && get_option('page_on_front') !== get_option('jigoshop_shop_page_id') ) :
+	 		elseif ( is_post_type_archive('product') && get_option('page_on_front') !== jigoshop_get_page_id('shop') ) :
 
-	 			$_name = get_option('jigoshop_shop_page_id') ? get_the_title( get_option('jigoshop_shop_page_id') ) : ucwords(get_option('jigoshop_shop_slug'));
+	 			$_name = jigoshop_get_page_id('shop') ? get_the_title( jigoshop_get_page_id('shop') ) : ucwords(get_option('jigoshop_shop_slug'));
 
 	 			if (is_search()) :
 
@@ -947,7 +983,7 @@ if (!function_exists('jigoshop_breadcrumb')) {
 
 /**
  * Hook to remove the 'singular' class, for the twenty eleven theme, to properly display the sidebar
- * 
+ *
  * @param array $classes
  */
 function jigoshop_body_classes ($classes) {

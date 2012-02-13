@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Cron Task
  *
@@ -9,21 +8,21 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Core
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Core
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
- 
+
 /**
  *	Update price if on sale
  */
 
 function jigoshop_update_sale_prices() {
-	
+
 	global $wpdb;
-	
+
 	// On Sale Products
 	$on_sale = $wpdb->get_results("
 		SELECT post_id FROM $wpdb->postmeta
@@ -31,14 +30,14 @@ function jigoshop_update_sale_prices() {
 		AND meta_value < ".strtotime('NOW')."
 	");
 	if ($on_sale) foreach ($on_sale as $product) :
-		
+
 		$data = unserialize( get_post_meta($product, 'product_data', true) );
-		$price = get_post_meta($product, 'price', true); 
-	
+		$price = get_post_meta($product, 'price', true);
+
 		if ($data['sale_price'] && $price!==$data['sale_price']) update_post_meta($product, 'price', $data['sale_price']);
-		
+
 	endforeach;
-	
+
 	// Expired Sales
 	$sale_expired = $wpdb->get_results("
 		SELECT post_id FROM $wpdb->postmeta
@@ -46,18 +45,18 @@ function jigoshop_update_sale_prices() {
 		AND meta_value < ".strtotime('NOW')."
 	");
 	if ($sale_expired) foreach ($sale_expired as $product) :
-	
+
 		$data = unserialize( get_post_meta($product, 'product_data', true) );
-		$price = get_post_meta($product, 'price', true); 
-	
+		$price = get_post_meta($product, 'price', true);
+
 		if ($data['regular_price'] && $price!==$data['regular_price']) update_post_meta($product, 'price', $data['regular_price']);
-		
+
 		// Sale has expired - clear the schedule boxes
 		update_post_meta($product, 'sale_price_dates_from', '');
 		update_post_meta($product, 'sale_price_dates_to', '');
-		
+
 	endforeach;
-	
+
 }
 
 function jigoshop_update_sale_prices_schedule_check(){

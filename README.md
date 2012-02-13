@@ -1,52 +1,45 @@
-# [Jigoshop - WordPress eCommerce](http://jigoshop.com)
+[Jigoshop](http://jigoshop.com)
+=================
 
-Jigoshop is a featured packed eCommerce plugin built upon Wordpress core functionality ensuring excellent performance and customisability. Set up a shop in minutes with physical & downloadable products or even services.
+Jigoshop is a feature-packed eCommerce plugin built upon Wordpress core functionality ensuring excellent performance and customizability.
 
-There are integrated worldwide payment and shipping options to cater for a global audience.
+Quick start
+-----------
 
-Inside the custom dashboard you get sortable sales graphs, incoming order / review notifications as well as stats on your stores performance.
+To get started, [check out our installation guide](http://forum.jigoshop.com/kb/getting-started/installation)!
 
-Manage your stock levels and customer orders easily. Jigoshop has been engineered to make the boring parts of eCommerce, well, less boring!
+1. You can also clone the git repo:
 
-Styled to work with Twenty Ten, setting up a clean stylish store is easy.
+	```
+	git clone git://github.com/jigoshop/jigoshop.git
+	```
 
-Find out more on the official [Jigoshop web site](http://jigoshop.com).
+2. Or download it into your WordPress plugin directory:
 
-## Quick Start
+	https://github.com/jigoshop/jigoshop/zipball/master
 
-Clone the git repo - `git clone git://github.com/jigoshop/jigoshop.git` - or [download it](https://github.com/jigoshop/jigoshop/zipball/master) into your WordPress plugins directory
+Bug tracker
+-----------
 
-Activate the plugin & enjoy!
+Have a bug? Please create an issue here on GitHub!
 
-## Contributing
-Anyone and everyone is welcome to contribute. Jigoshop wouldn't be what it is today without the github community. There are several ways you can help out:
+https://github.com/jigoshop/jigoshop/issues
 
-1. Raising [issues](https://github.com/jigoshop/jigoshop/issues) on GitHub.
-2. Sending pull requests for bug fixes or new features and improvements.
+Contributing
+------------
 
-### Project information
+Anyone and everyone is welcome to contribute. Jigoshop wouldn't be what it is today without the github community.
 
-* Source: http://github.com/jigoshop/jigoshop
+There are several ways you can help out:
+
+* Raising [issues](https://github.com/jigoshop/jigoshop/issues) on GitHub.
+* Submit bug fixes or offer new features / improvements by sending [pull requests](http://help.github.com/send-pull-requests/).
+* Offering [your own translations](http://forum.jigoshop.com/kb/shortcodes/languages).
+
+Project information
+-------------------
+
 * Web: http://jigoshop.com
 * Docs: http://forum.jigoshop.com/kb
 * Twitter: http://twitter.com/jigoshop
-
-### Features
-
-* Sell physical, digital and virtual products
-* Simple, grouped and configurable products
-* Discount coupon management
-* Automatic related products
-* Product reviews / hreviews
-* Tax by location
-* Currency options
-* Multiple shipping options
-* Layered product navigation
-* Customer account area
-* Inventory tracking
-* Detailed order management
-* Product import / export
-* Custom widgets - recent / featured products, shopping cart, product search
-* PayPal standard
-* Moneybookers / Skrill
-* Cheque payments
+* Source: http://github.com/jigoshop/jigoshop

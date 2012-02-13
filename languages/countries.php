@@ -2,7 +2,7 @@
 /**
  * Countries translations.
  * This file is not included anywhere. It exists solely for use by xgettext.
- * 
+ *
  * Don't translate this file, all those strings are to be translated in the .po files
  *
  * DISCLAIMER
@@ -11,11 +11,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Core
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Core
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 
 __('Andorra', 'jigoshop');
@@ -51,7 +51,6 @@ __('Bolivia', 'jigoshop');
 __('Brazil', 'jigoshop');
 __('Bahamas', 'jigoshop');
 __('Bhutan', 'jigoshop');
-__('Bouvet Island', 'jigoshop');
 __('Botswana', 'jigoshop');
 __('Belarus', 'jigoshop');
 __('Belize', 'jigoshop');
@@ -106,13 +105,12 @@ __('Guinea', 'jigoshop');
 __('Guadeloupe', 'jigoshop');
 __('Equatorial Guinea', 'jigoshop');
 __('Greece', 'jigoshop');
-__('South Georgia and the South Sandwich Islands', 'jigoshop');
+__('South Georgia/Sandwich Islands', 'jigoshop');
 __('Guatemala', 'jigoshop');
 __('Guam', 'jigoshop');
 __('Guinea-Bissau', 'jigoshop');
 __('Guyana', 'jigoshop');
-__('Hong Kong S.A.R., China', 'jigoshop');
-__('Heard Island and McDonald Islands', 'jigoshop');
+__('Hong Kong', 'jigoshop');
 __('Honduras', 'jigoshop');
 __('Croatia', 'jigoshop');
 __('Haiti', 'jigoshop');
@@ -246,8 +244,9 @@ __('Taiwan', 'jigoshop');
 __('Tanzania', 'jigoshop');
 __('Ukraine', 'jigoshop');
 __('Uganda', 'jigoshop');
-__('United States Minor Outlying Islands', 'jigoshop');
+__('US Minor Outlying Islands', 'jigoshop');
 __('United States', 'jigoshop');
+__('US Armed Forces', 'jigoshop');
 __('Uruguay', 'jigoshop');
 __('Uzbekistan', 'jigoshop');
 __('Vatican', 'jigoshop');
@@ -255,7 +254,7 @@ __('Saint Vincent and the Grenadines', 'jigoshop');
 __('Venezuela', 'jigoshop');
 __('British Virgin Islands', 'jigoshop');
 __('U.S. Virgin Islands', 'jigoshop');
-__('Vietnam', 'jigoshop');
+__('Viet nam', 'jigoshop');
 __('Vanuatu', 'jigoshop');
 __('Wallis and Futuna', 'jigoshop');
 __('Samoa', 'jigoshop');

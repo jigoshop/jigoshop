@@ -10,7 +10,11 @@ msgstr ""
 "Project-Id-Version: Jigoshop - WordPress eCommerce Plugin (SIE-Version)\n"
 "Report-Msgid-Bugs-To: http://forum.jigoshop.com\n"
 "POT-Creation-Date: 2011-06-13 01:20+1100\n"
+<<<<<<< HEAD
 "PO-Revision-Date: 2012-02-13 10:59+0100\n"
+=======
+"PO-Revision-Date: 2012-02-13 07:16-0500\n"
+>>>>>>> dev
 "Last-Translator: David Decker <deckerweb.mobil@googlemail.com>\n"
 "Language-Team: DECKERWEB <deckerweb.mobil@googlemail.com>\n"
 "MIME-Version: 1.0\n"

@@ -12,14 +12,14 @@
  * @category	Widgets
  * @author		Jigowatt
  * @since		1.0
- * @copyright	Copyright (c) 2011 Jigowatt Ltd.
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
  * @license		http://jigoshop.com/license/commercial-edition
  */
 class Jigoshop_Widget_Price_Filter extends WP_Widget {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Setup the widget with the available options
 	 * Add actions to clear the cache whenever a post is saved|deleted or a theme is switched
 	 */
@@ -38,7 +38,7 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 
 	/**
 	 * Widget
-	 * 
+	 *
 	 * Display the widget in the sidebar
 	 * Save output to the cache if empty
 	 *
@@ -55,8 +55,8 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 
 		// Set the widget title
 		$title = apply_filters(
-			'widget_title', 
-			( $instance['title'] ) ? $instance['title'] : __( 'Filter by Price', 'jigoshop' ), 
+			'widget_title',
+			( $instance['title'] ) ? $instance['title'] : __( 'Filter by Price', 'jigoshop' ),
 			$instance,
 			$this->id_base
 		);
@@ -81,11 +81,11 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 		}
 
 		// Get maximum price
-		$max = ceil($wpdb->get_var("SELECT max(meta_value + 0) 
+		$max = ceil($wpdb->get_var("SELECT max(meta_value + 0)
 		FROM $wpdb->posts
 		LEFT JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id
 		WHERE meta_key = 'price' AND (
-			$wpdb->posts.ID IN (".implode( ',', $jigoshop_all_post_ids_in_view ).") 
+			$wpdb->posts.ID IN (".implode( ',', $jigoshop_all_post_ids_in_view ).")
 			OR (
 				$wpdb->posts.post_parent IN (".implode( ',', $jigoshop_all_post_ids_in_view ).")
 				AND $wpdb->posts.post_parent != 0
@@ -110,7 +110,7 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 
 	/**
 	 * Update
-	 * 
+	 *
 	 * Handles the processing of information entered in the wordpress admin
 	 * Flushes the cache & removes entry from options array
 	 *
@@ -132,18 +132,18 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 		unset(jigoshop_session::instance()->min_price);
 		unset(jigoshop_session::instance()->max_price);
 
-		if ( isset( $_GET['min_price'] ) ) {	
+		if ( isset( $_GET['min_price'] ) ) {
 			jigoshop_session::instance()->min_price = $_GET['min_price'];
 		}
 
 		if ( isset( $_GET['max_price'] ) ) {
-			jigoshop_session::instance()->max_price = $_GET['max_price'];	
+			jigoshop_session::instance()->max_price = $_GET['max_price'];
 		}
-	} 
+	}
 
 	/**
 	 * Form
-	 * 
+	 *
 	 * Displays the form for the wordpress admin
 	 *
 	 * @param	array	instance

@@ -1,7 +1,7 @@
 <?php
 /**
  * Jigoshop Write Panels
- * 
+ *
  * Sets up the write panels used by products and orders (custom post types)
  *
  * DISCLAIMER
@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Admin
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Admin
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 
 include('write-panels/product-data.php');
@@ -25,7 +25,7 @@ include('write-panels/order-data-save.php');
 
 /**
  * Init the meta boxes
- * 
+ *
  * Inits the write panels for both products and orders. Also removes unused default write panels.
  *
  * @since 		1.0
@@ -34,20 +34,20 @@ add_action( 'add_meta_boxes', 'jigoshop_meta_boxes' );
 
 function jigoshop_meta_boxes() {
 	add_meta_box( 'jigoshop-product-data', __('Product Data', 'jigoshop'), 'jigoshop_product_data_box', 'product', 'normal', 'high' );
-	
+
 	add_meta_box( 'jigoshop-order-data', __('Order Data', 'jigoshop'), 'jigoshop_order_data_meta_box', 'shop_order', 'normal', 'high' );
 	add_meta_box( 'jigoshop-order-items', __('Order Items <small>&ndash; Note: if you edit quantities or remove items from the order you will need to manually change the item\'s stock levels.</small>', 'jigoshop'), 'jigoshop_order_items_meta_box', 'shop_order', 'normal', 'high');
 	add_meta_box( 'jigoshop-order-totals', __('Order Totals', 'jigoshop'), 'jigoshop_order_totals_meta_box', 'shop_order', 'side', 'default');
-	
+
 	add_meta_box( 'jigoshop-order-actions', __('Order Actions', 'jigoshop'), 'jigoshop_order_actions_meta_box', 'shop_order', 'side', 'default');
-	
+
 	remove_meta_box( 'commentstatusdiv', 'shop_order' , 'normal' );
 	remove_meta_box( 'slugdiv', 'shop_order' , 'normal' );
 }
 
 /**
  * Save meta boxes
- * 
+ *
  * Runs when a post is saved and does an action which the write panel save scripts can hook into.
  *
  * @since 		1.0
@@ -56,19 +56,19 @@ add_action( 'save_post', 'jigoshop_meta_boxes_save', 1, 2 );
 
 function jigoshop_meta_boxes_save( $post_id, $post ) {
 	global $wpdb;
-	
+
 	if ( !$_POST ) return $post_id;
 	if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) return $post_id;
 	if ( !isset($_POST['jigoshop_meta_nonce']) || (isset($_POST['jigoshop_meta_nonce']) && !wp_verify_nonce( $_POST['jigoshop_meta_nonce'], 'jigoshop_save_data' ))) return $post_id;
 	if ( !current_user_can( 'edit_post', $post_id )) return $post_id;
 	if ( $post->post_type != 'product' && $post->post_type != 'shop_order' ) return $post_id;
-	
+
 	do_action( 'jigoshop_process_'.$post->post_type.'_meta', $post_id, $post );
 }
 
 /**
  * Product data
- * 
+ *
  * Forces certain product data based on the product's type, e.g. grouped products cannot have a parent.
  *
  * @since 		1.0
@@ -91,7 +91,7 @@ function jigoshop_product_data( $data ) {
 
 /**
  * Order data
- * 
+ *
  * Forces the order posts to have a title in a certain format (containing the date)
  *
  * @since 		1.0
@@ -101,10 +101,10 @@ add_filter('wp_insert_post_data', 'jigoshop_order_data');
 function jigoshop_order_data( $data ) {
 	global $post;
 	if ($data['post_type']=='shop_order' && isset($data['post_date'])) {
-		
+
 		$order_title = 'Order';
 		if ($data['post_date']) $order_title.= ' &ndash; '.date('F j, Y @ h:i A', strtotime($data['post_date']));
-		
+
 		$data['post_title'] = $order_title;
 	}
 	return $data;
@@ -113,7 +113,7 @@ function jigoshop_order_data( $data ) {
 
 /**
  * Save errors
- * 
+ *
  * Stores error messages in a variable so they can be displayed on the edit post screen after saving.
  *
  * @since 		1.0
@@ -129,30 +129,30 @@ function jigoshop_meta_boxes_save_errors() {
     	endforeach;
     	echo '</div>';
     	update_option('jigoshop_errors', '');
-    endif; 
+    endif;
 }
 
 /**
  * Enqueue scripts
- * 
+ *
  * Enqueue JavaScript used by the meta panels.
  *
  * @since 		1.0
  */
 function jigoshop_write_panel_scripts() {
-	
+
 	$post_type = jigoshop_get_current_post_type();
-	
+
 	if( $post_type !== 'product' && $post_type !== 'shop_order' ) return;
-	
+
 	wp_register_script('jigoshop-writepanel', jigoshop::assets_url() . '/assets/js/write-panels.js', array('jquery'));
 	wp_enqueue_script('jigoshop-writepanel');
-	
+
 	wp_enqueue_script('media-upload');
 	wp_enqueue_script('thickbox');
 	wp_enqueue_style('thickbox');
-	
-	$params = array( 
+
+	$params = array(
 		'remove_item_notice' 			=>  __("Remove this item? If you have previously reduced this item's stock, or this order was submitted by a customer, will need to manually restore the item's stock.", 'jigoshop'),
 		'cart_total' 					=> __("Calc totals based on order items, discount amount, and shipping?", 'jigoshop'),
 		'copy_billing' 					=> __("Copy billing information to shipping information? This will remove any currently entered shipping information.", 'jigoshop'),
@@ -168,17 +168,17 @@ function jigoshop_write_panel_scripts() {
 		'ajax_url' 						=> admin_url('admin-ajax.php'),
 		'add_order_item_nonce' 			=> wp_create_nonce("add-order-item")
 	 );
-				 
+
 	wp_localize_script( 'jigoshop-writepanel', 'params', $params );
-	
-	
+
+
 }
 add_action('admin_print_scripts-post.php', 'jigoshop_write_panel_scripts');
 add_action('admin_print_scripts-post-new.php', 'jigoshop_write_panel_scripts');
 
 /**
  * Meta scripts
- * 
+ *
  * Outputs JavaScript used by the meta panels.
  *
  * @since 		1.0

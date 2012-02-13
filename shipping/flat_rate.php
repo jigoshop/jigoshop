@@ -8,15 +8,15 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Checkout
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Checkout
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 class flat_rate extends jigoshop_shipping_method {
-	
-	public function __construct() { 
+
+	public function __construct() {
         $this->id 			= 'flat_rate';
         $this->enabled		= get_option('jigoshop_flat_rate_enabled');
 		$this->title 		= get_option('jigoshop_flat_rate_title');
@@ -25,27 +25,27 @@ class flat_rate extends jigoshop_shipping_method {
 		$this->type 		= get_option('jigoshop_flat_rate_type');
 		$this->tax_status	= get_option('jigoshop_flat_rate_tax_status');
 		$this->cost 		= get_option('jigoshop_flat_rate_cost');
-		$this->fee 			= get_option('jigoshop_flat_rate_handling_fee'); 
-		
+		$this->fee 			= get_option('jigoshop_flat_rate_handling_fee');
+
 		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
 		add_option('jigoshop_flat_rate_availability', 'all');
 		add_option('jigoshop_flat_rate_title', 'Flat Rate');
 		add_option('jigoshop_flat_rate_tax_status', 'taxable');
-    } 
-    
+    }
+
     public function calculate_shipping() {
-    	
+
     	$_tax = $this->get_tax();
-    	
+
     	$this->shipping_total 	= 0;
 		$this->shipping_tax 	= 0;
-    	
+
     	if ($this->type=='order') :
 			// Shipping for whole order
 			$this->shipping_total = $this->cost + $this->get_fee( $this->fee, jigoshop_cart::$cart_contents_total );
-			
+
 			if ( get_option('jigoshop_calc_taxes')=='yes' && $this->tax_status=='taxable' ) :
-				
+
 				$rate = $_tax->get_shipping_tax_rate();
 				if ($rate>0) :
 					$tax_amount = $_tax->calc_shipping_tax( $this->shipping_total, $rate );
@@ -58,30 +58,30 @@ class flat_rate extends jigoshop_shipping_method {
 			if (sizeof(jigoshop_cart::$cart_contents)>0) : foreach (jigoshop_cart::$cart_contents as $item_id => $values) :
 				$_product = $values['data'];
 				if ($_product->exists() && $values['quantity']>0 && $_product->product_type <> 'downloadable') :
-					
+
 					$item_shipping_price = ($this->cost + $this->get_fee( $this->fee, $_product->get_price() )) * $values['quantity'];
-					
+
 					$this->shipping_total = $this->shipping_total + $item_shipping_price;
 
 					if ( $_product->is_shipping_taxable() && $this->tax_status=='taxable' ) :
-					
+
 						$rate = $_tax->get_shipping_tax_rate( $_product->data['tax_class'] );
-						
+
 						if ($rate>0) :
-						
+
 							$tax_amount = $_tax->calc_shipping_tax( $item_shipping_price, $rate );
-						
+
 							$this->shipping_tax = $this->shipping_tax + $tax_amount;
-						
+
 						endif;
-					
+
 					endif;
-					
+
 				endif;
 			endforeach; endif;
-		endif;			
-    } 
-    
+		endif;
+    }
+
     public function admin_options() {
     	?>
     	<thead><tr><th scope="col" width="200px"><?php _e('Flat Rates', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('Flat rates let you define a standard rate per item, or per order.', 'jigoshop'); ?>&nbsp;</th></tr></thead>
@@ -149,7 +149,7 @@ class flat_rate extends jigoshop_shipping_method {
             <td class="forminp">
             	<div class="multi_select_countries"><ul><?php
         			if ($countries) foreach ($countries as $key=>$val) :
-            			                    			
+
         				echo '<li><label><input type="checkbox" name="jigoshop_flat_rate_countries[]" value="' . esc_attr( $key ) . '" ';
         				if (in_array($key, $selections)) echo 'checked="checked"';
         				echo ' />'. __($val, 'jigoshop') .'</label></li>';
@@ -171,23 +171,23 @@ class flat_rate extends jigoshop_shipping_method {
 		</script>
     	<?php
     }
-    
+
     public function process_admin_options() {
 
    		if(isset($_POST['jigoshop_flat_rate_tax_status'])) update_option('jigoshop_flat_rate_tax_status', jigowatt_clean($_POST['jigoshop_flat_rate_tax_status'])); else @delete_option('jigoshop_flat_rate_tax_status');
-   		
+
    		if(isset($_POST['jigoshop_flat_rate_enabled'])) update_option('jigoshop_flat_rate_enabled', jigowatt_clean($_POST['jigoshop_flat_rate_enabled'])); else @delete_option('jigoshop_flat_rate_enabled');
    		if(isset($_POST['jigoshop_flat_rate_title'])) update_option('jigoshop_flat_rate_title', jigowatt_clean($_POST['jigoshop_flat_rate_title'])); else @delete_option('jigoshop_flat_rate_title');
    		if(isset($_POST['jigoshop_flat_rate_type'])) update_option('jigoshop_flat_rate_type', jigowatt_clean($_POST['jigoshop_flat_rate_type'])); else @delete_option('jigoshop_flat_rate_type');
    		if(isset($_POST['jigoshop_flat_rate_cost'])) update_option('jigoshop_flat_rate_cost', jigowatt_clean($_POST['jigoshop_flat_rate_cost'])); else @delete_option('jigoshop_flat_rate_cost');
    		if(isset($_POST['jigoshop_flat_rate_handling_fee'])) update_option('jigoshop_flat_rate_handling_fee', jigowatt_clean($_POST['jigoshop_flat_rate_handling_fee'])); else @delete_option('jigoshop_flat_rate_handling_fee');
-   		
-   		if(isset($_POST['jigoshop_flat_rate_availability'])) update_option('jigoshop_flat_rate_availability', jigowatt_clean($_POST['jigoshop_flat_rate_availability'])); else @delete_option('jigoshop_flat_rate_availability');	    
+
+   		if(isset($_POST['jigoshop_flat_rate_availability'])) update_option('jigoshop_flat_rate_availability', jigowatt_clean($_POST['jigoshop_flat_rate_availability'])); else @delete_option('jigoshop_flat_rate_availability');
 	    if (isset($_POST['jigoshop_flat_rate_countries'])) $selected_countries = $_POST['jigoshop_flat_rate_countries']; else $selected_countries = array();
 	    update_option('jigoshop_flat_rate_countries', $selected_countries);
-   		
+
     }
-	
+
 }
 
 function add_flat_rate_method( $methods ) {
