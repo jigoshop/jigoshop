@@ -343,6 +343,15 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'type' 		=> 'single_select_page',
 		'std' 		=> ''
 	),
+	array(
+		'name' => __('Shop redirection page','jigoshop'),
+		'desc'		=> '',
+		'tip' 		=> __('This will point users to the page you set for buttons like `Return to shop` or `Continue Shopping`.','jigoshop'),
+		'id' 		=> 'jigoshop_shop_redirect_page_id',
+		'css' 		=> 'min-width:50px;',
+		'type' 		=> 'single_select_page',
+		'std' 		=> ''
+	),
 
 	array(
 		'name' => __('Prepend links with base page','jigoshop'),

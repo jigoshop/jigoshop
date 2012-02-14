@@ -355,7 +355,7 @@ function jigoshop_upgrade_100() {
 }
 
 /**
- * Execute changes made in Jigoshop 1.0
+ * Execute changes made in Jigoshop 1.1
  *
  * @since 1.1
  */
@@ -373,5 +373,18 @@ function jigoshop_upgrade_110() {
 	// Add attribute label column to allow non-ascii characters
 	$sql = 'ALTER TABLE '. $wpdb->prefix . 'jigoshop_attribute_taxonomies' . ' ADD COLUMN attribute_label longtext NULL';
 	$wpdb->query($sql);
+
+}
+
+/**
+ * Execute changes made in Jigoshop 1.2
+ *
+ * @since 1.2
+ */
+function jigoshop_upgrade_120() {
+
+	// Add default setting for shop redirection page
+	$shop_page = get_option('jigoshop_shop_page_id');
+	update_option( 'jigoshop_shop_redirect_page_id' , $shop_page );
 
 }
