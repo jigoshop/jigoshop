@@ -290,6 +290,7 @@ form.cart {
 	margin-bottom: 24px;
 	float: right;
 	width: 100%;
+	clear: both;
 	div.quantity {
 		float: left;
 		margin: 0 4px 0 0;
@@ -745,7 +746,7 @@ td.product-name {
 		margin: 0;
 		dt {
 			font-weight: bold;
-			display: inline;
+			display: inline-block;
 			margin: 0 4px 0 0;
 			padding: 0;
 		}
@@ -756,7 +757,7 @@ td.product-name {
 		}
 	}
 }
-td.quantity {
+td.quantity, .jigoshop #content div.quantity {
 	min-width: 80px;
 }
 .quantity input {

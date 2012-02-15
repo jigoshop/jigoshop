@@ -86,7 +86,7 @@ class jigoshop_product_variation extends jigoshop_product {
 
 		// +- = minus
 		$this->stock = $this->stock + $by;
-		$amount_sold = $this->stock_sold + $by;
+		$amount_sold = ( ! empty( $this->stock_sold ) ? $this->stock_sold : 0 ) + $by;
 
 		// Update & return the new value
 		update_post_meta( $this->variation_id, 'stock', $this->stock );

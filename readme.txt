@@ -1,12 +1,12 @@
-=== Jigoshop - WordPress eCommerce ===
+=== Jigoshop ===
 Contributors: Jigowatt
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigowatt, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
-Requires at least: 3.1
-Tested up to: 3.3.1
+Requires at least: 3.2.1
+Tested up to: 3.4-alpha-19904
 Stable tag: 1.1
 
-A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customisability.
+A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
 == Description ==
 
@@ -85,7 +85,7 @@ If you need a theme built, or have a theme that needs styling, <a href="http://j
 = Can I have Jigoshop in my language =
 
 Jigoshop comes with a .po file and is localisation ready in over 10 languages.
-You can also <a href="http://forum.jigoshop.com/kb/shortcodes/languages">create your own translations</a> for Jigoshop.
+You can also <a href="http://forum.jigoshop.com/kb/customize-jigoshop/languages">create your own translations</a> for Jigoshop.
 
 = Which payment gateways do you have? =
 
@@ -172,6 +172,9 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 	* visit the variation to use the individual product ID for the coupon
 * fix coupons showing 'no products in cart' on valid coupons
 * fix some international users not being able to add shipping or tax rates (italian & french)
+* removed dash from cart on downloadables until a more solid solution can be found
+* fix attributes slug when editing attribute names
+* fix for using the newer screen API on older WordPress'
 
 = 1.0 - 2012-02-01 =
 * New feature for Downloadable products:

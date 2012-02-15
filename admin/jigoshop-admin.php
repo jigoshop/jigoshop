@@ -16,11 +16,16 @@
  */
 
 require_once ( 'jigoshop-install.php' );
-require_once ( 'jigoshop-admin-help.php' );
+require_once ( 'jigoshop-admin-dashboard.php' );
 require_once ( 'jigoshop-write-panels.php' );
 require_once ( 'jigoshop-admin-settings.php' );
 require_once ( 'jigoshop-admin-attributes.php' );
 require_once ( 'jigoshop-admin-post-types.php' );
+
+// Contextual help only works for 3.3 due to updated API
+if ( get_bloginfo('version') >= '3.3' ) {
+	require_once ( 'jigoshop-admin-help.php' );
+}
 
 function jigoshop_admin_init () {
 	require_once ( 'jigoshop-admin-settings-options.php' );
