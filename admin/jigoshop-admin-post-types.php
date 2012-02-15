@@ -379,6 +379,11 @@ function jigoshop_custom_order_columns($column) {
                         </tr>
                         <?php
                     endif;
+                    ?><tr>
+                        <th><?php _e('Subtotal', 'jigoshop'); ?></th>
+                        <td><?php echo jigoshop_price($order->order_subtotal_inc_tax); ?></td>
+                    </tr>
+                    <?php
                     foreach ($order->get_tax_classes() as $tax_class) :
                         if ($order->tax_class_is_not_compound($tax_class)) :
                             ?>
@@ -389,11 +394,6 @@ function jigoshop_custom_order_columns($column) {
                             <?php
                         endif;
                     endforeach;
-                    ?><tr>
-                        <th><?php _e('Subtotal', 'jigoshop'); ?></th>
-                        <td><?php echo jigoshop_price($order->order_subtotal_inc_tax); ?></td>
-                    </tr>
-                    <?php
                 else :
                     if ($order->order_shipping > 0) :
                         ?><tr>
@@ -404,27 +404,15 @@ function jigoshop_custom_order_columns($column) {
                     endif;
                 endif;
                 if (get_option('jigoshop_calc_taxes') == 'yes') :
-                    if ($order->order_subtotal_inc_tax) :
-                        foreach ($order->get_tax_classes() as $tax_class) :
-                            if (!$order->tax_class_is_not_compound($tax_class)) :
-                                ?>
-
-                                <tr>
-                                    <th><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></th>
-                                    <td><?php echo $order->get_tax_amount($tax_class) ?></td>
-                                </tr>
-                                <?php
-                            endif;
-                        endforeach;
-                    else :
-                        foreach ($order->get_tax_classes() as $tax_class) :
-                            ?>
+                    foreach ($order->get_tax_classes() as $tax_class) :
+                        if (!$order->tax_class_is_not_compound($tax_class)) :?>
                             <tr>
                                 <th><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></th>
                                 <td><?php echo $order->get_tax_amount($tax_class) ?></td>
-                            </tr>    
-                        <?php endforeach;
-                    endif; 
+                            </tr>
+                            <?php
+                        endif;
+                    endforeach;
                 endif;
 
                 if ($order->order_discount > 0) : ?><tr>
