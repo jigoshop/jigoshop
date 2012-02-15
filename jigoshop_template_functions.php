@@ -609,7 +609,7 @@ if (!function_exists('jigoshop_related_products')) {
 		$per_page = $posts_per_page;
 		$columns = $post_columns;
 
-		$related = $_product->get_related();
+		$related = $_product->get_related( $posts_per_page );
 		if (sizeof($related)>0) :
 			echo '<div class="related products"><h2>'.__('Related Products', 'jigoshop').'</h2>';
 			$args = array(
