@@ -190,7 +190,7 @@ function jigoshop_price_filter( $filtered_posts ) {
 			)
 		));
 
-		if ($matched_products_query) :
+		if ( ! empty( $matched_products_query )) :
 
 			foreach ($matched_products_query as $product) :
 				$matched_products[] = $product->ID;
@@ -199,13 +199,13 @@ function jigoshop_price_filter( $filtered_posts ) {
 		endif;
 
 		// Get grouped product ids
-		$grouped_products = get_objects_in_term( get_term_by('slug', 'grouped', 'product_type')->term_id, 'product_type' );
+		$grouped_products = (array) get_objects_in_term( get_term_by('slug', 'grouped', 'product_type')->term_id, 'product_type' );
 
-		if ($grouped_products) foreach ($grouped_products as $grouped_product) :
+		if ( ! empty( $grouped_products )) foreach ($grouped_products as $grouped_product) :
 
 			$children = get_children( 'post_parent='.$grouped_product.'&post_type=product' );
 
-			if ($children) foreach ($children as $product) :
+			if ( ! empty( $children )) foreach ($children as $product) :
 				$price = get_post_meta( $product->ID, 'price', true);
 
 				if ($price<=$_GET['max_price'] && $price>=$_GET['min_price']) :
