@@ -76,7 +76,7 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 			$fields .= '<input type="hidden" name="post_type" value="' . esc_attr( $_GET['post_type'] ) . '" />';
 		}
 
-		if ( $_chosen_attributes ) foreach ( $_chosen_atributes as $attr => $val ) {
+		if ( ! empty( $_chosen_attributes )) foreach ( $_chosen_atributes as $attr => $val ) {
 			$fields .= '<input type="hidden" name="'.str_replace('pa_', 'filter_', $attribute).'" value="'.implode(',', $value).'" />';
 		}
 
