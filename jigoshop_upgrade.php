@@ -330,7 +330,7 @@ function jigoshop_upgrade_100() {
 		// Convert 'price' key to regular_price
 		$wpdb->update( $wpdb->postmeta, array('meta_key' => 'regular_price'), array('post_id' => $post->ID, 'meta_key' => 'price') );
 
-		$taxes = $wpdb->get_results("SELECT * FROM {$wpdb->postmeta} WHERE post_id = {$post->ID} AND meta_key LIKE 'tax_%' ");
+		$taxes = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key LIKE %s", $post->ID, 'tax_%' ) );
 
 		// Update catch all prices
 		$parent_id = $post->post_parent;
