@@ -16,7 +16,7 @@
  */
 
 
-class jigoshop_catalog_query extends jigoshop_singleton {
+class jigoshop_catalog_query extends Jigoshop_Singleton {
 
 	private $original_query;
 	private $all_posts_in_view;

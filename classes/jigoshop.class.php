@@ -15,7 +15,7 @@
  * @license		http://jigoshop.com/license/commercial-edition
  */
 
-class jigoshop extends jigoshop_singleton {
+class jigoshop extends Jigoshop_Singleton {
 
 	private static $_cache;
 

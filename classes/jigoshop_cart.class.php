@@ -17,7 +17,7 @@
  * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
  * @license		http://jigoshop.com/license/commercial-edition
  */
-class jigoshop_cart extends jigoshop_singleton {
+class jigoshop_cart extends Jigoshop_Singleton {
 
     public static $cart_contents_total;
     public static $cart_contents_total_ex_tax;

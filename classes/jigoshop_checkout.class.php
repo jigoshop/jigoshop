@@ -17,7 +17,7 @@
  * @license		http://jigoshop.com/license/commercial-edition
  */
 
-class jigoshop_checkout extends jigoshop_singleton {
+class jigoshop_checkout extends Jigoshop_Singleton {
 
 	public $posted;
 	public $billing_fields;

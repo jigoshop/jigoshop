@@ -15,7 +15,7 @@
  * @license		http://jigoshop.com/license/commercial-edition
  */
 
-class jigoshop_payment_gateways extends jigoshop_singleton {
+class jigoshop_payment_gateways extends Jigoshop_Singleton {
 
 	protected static $payment_gateways;
 

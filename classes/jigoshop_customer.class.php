@@ -17,7 +17,7 @@
  * @license		http://jigoshop.com/license/commercial-edition
  */
 
-class jigoshop_customer extends jigoshop_singleton {
+class jigoshop_customer extends Jigoshop_Singleton {
 
 	/** constructor */
 	protected function __construct() {
