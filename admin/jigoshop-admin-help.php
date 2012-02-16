@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Admin
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Admin
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 
 add_action( 'load-product_page_attributes', 'jigoshop_product_attributes_help' );
@@ -85,7 +85,7 @@ function jigoshop_product_category_help() {
 		</ul>
 		<p>You can change the display of this screen using the Screen Options tab to set how many items are displayed per screen and to display/hide columns in the table.</p>
     ';
-	
+
 	// *TODO: ADD RELEVANT ARTICLE*
 	$sidebar_content = '
         <p><strong>'. __('For more information') . ':</strong></p>
@@ -221,7 +221,7 @@ add_action( 'add_meta_boxes' , 'jigoshop_product_data_help' , 10 , 2 );
 function jigoshop_product_data_help ( $post_type , $post ) {
 	if ( 'product' != $post_type )
 		return false;
-	
+
 	$general = '
 		<p>Hi! It looks like you\'re in need of some help, this help section has been categorized by tabs & runs through quickly what each one does. If you need an extra hand please check out the links to the right</p>
 		<p><strong>Product Type</strong> - Products are categorized into types which determine what kind of shopping experience your customers will have. Simple products are the most common type & offer the standard view. For more info on product types please consult the documentation</p>

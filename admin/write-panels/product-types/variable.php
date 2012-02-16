@@ -1,7 +1,7 @@
 <?php
 /**
  * Variable Product Type
- * 
+ *
  * Functions specific to variable products (for the write panels)
  *
  * DISCLAIMER
@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Admin
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Admin
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 
 // Temporary fix for selectbox triggering the click event.
@@ -24,7 +24,7 @@
 add_action( 'admin_enqueue_scripts', 'jigoshop_product_meta_variable_script' );
 function jigoshop_product_meta_variable_script( $hook ) {
 	global $post;
-		
+
 	// Don't enqueue script if not on product edit screen
 	if ( $hook != 'post.php' || $post->post_type != 'product' )
 		return false;
@@ -62,11 +62,11 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	 */
 	public function admin_enqueue_scripts( $hook ) {
 		global $post;
-		
+
 		// Don't enqueue script if not on product edit screen
 		if ( $hook != 'post.php' || $post->post_type != 'product' )
 			return false;
-		
+
 		// wp_enqueue_script('jigoshop-variable-js', jigoshop::assets_url() . '/assets/js/variable.js', array('postbox', 'jquery'), true);
 
 		// Shouldn't we namespace? -Rob
@@ -184,7 +184,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 			// Remove the current data
 			delete_post_meta( $ID, 'variation_data' );
-			
+
 			// Update taxonomies
 			$variation_data = array();
 			foreach ( $attributes as $attribute ) {
@@ -247,7 +247,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 				<div class="demo variation ">
 					<a href="http://forum.jigoshop.com/kb/creating-products/variable-products" target="_blank" class="overlay"><span><?php _e('Learn how to make a Variation', 'jigoshop'); ?></span></a>
-					<div class="inside">			
+					<div class="inside">
 						<div class="jigoshop_variation postbox">
 							<button type="button" class="remove_variation button">Remove</button>
 							<div class="handlediv" title="Click to toggle"><br></div>
@@ -282,13 +282,13 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 										</td>
 
 										<td>
-											<label>Stock Qty	
+											<label>Stock Qty
 												<input type="text" value="12">
 											</label>
 										</td>
 
 										<td>
-											<label>Price	
+											<label>Price
 												<input type="text" value="19.99">
 											</label>
 										</td>

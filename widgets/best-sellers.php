@@ -19,7 +19,7 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Setup the widget with the available options
 	 * Add actions to clear the cache whenever a post is saved|deleted or a theme is switched
 	 */
@@ -40,7 +40,7 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 
 	/**
 	 * Widget
-	 * 
+	 *
 	 * Display the widget in the sidebar
 	 * Save output to the cache if empty
 	 *
@@ -64,12 +64,12 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 
 		// Set the widget title
 		$title = apply_filters(
-			'widget_title', 
-			( $instance['title'] ) ? $instance['title'] : __( 'Best Sellers', 'jigoshop' ), 
+			'widget_title',
+			( $instance['title'] ) ? $instance['title'] : __( 'Best Sellers', 'jigoshop' ),
 			$instance,
 			$this->id_base
 		);
-		
+
 		// Set number of products to fetch
 		if ( ! $number = absint( $instance['number'] ) ) {
 			$number = 5;
@@ -106,7 +106,7 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 			echo '<ul class="product_list_widget">';
 
 			// Print out each product
-			while( $q->have_posts() ) : $q->the_post();  
+			while( $q->have_posts() ) : $q->the_post();
 
 				// Get a new jigoshop_product instance
 				$_product = new jigoshop_product( get_the_ID() );
@@ -116,7 +116,7 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 					echo '<a href="' . esc_attr( get_permalink() ) . '" title="' . esc_attr( get_the_title() ) . '">';
 
 					// Print the product image
-					echo ( has_post_thumbnail() ) 
+					echo ( has_post_thumbnail() )
 						? the_post_thumbnail( 'shop_tiny' )
 						: jigoshop_get_image_placeholder( 'shop_tiny' );
 
@@ -144,7 +144,7 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 
 	/**
 	 * Update
-	 * 
+	 *
 	 * Handles the processing of information entered in the wordpress admin
 	 * Flushes the cache & removes entry from options array
 	 *
@@ -167,7 +167,7 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 
 	/**
 	 * Flush Widget Cache
-	 * 
+	 *
 	 * Flushes the cached output
 	 */
 	public function flush_widget_cache() {
@@ -176,7 +176,7 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 
 	/**
 	 * Form
-	 * 
+	 *
 	 * Displays the form for the wordpress admin
 	 *
 	 * @param	array	instance
@@ -201,5 +201,5 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 			<input id='{$this->get_field_id( 'number' )}' name='{$this->get_field_name( 'number' )}' type='number' min='1' value='{$number}' />
 		</p>";
 	}
-	
+
 } // class Jigoshop_Widget_Best_Sellers

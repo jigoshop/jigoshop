@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Admin
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Admin
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -31,10 +31,10 @@ function jigoshop_attributes() {
 	if (isset($_POST['add_new_attribute']) && $_POST['add_new_attribute']) :
 
 		$attribute_label = (string) $_POST['attribute_label'];
-		$attribute_name = (string) sanitize_user($_POST['attribute_name'], $strict = true);		
+		$attribute_name = !$_POST['attribute_name']
+							? sanitize_title(sanitize_user($attribute_label, $strict = true))
+							: sanitize_title(sanitize_user($_POST['attribute_name'], $strict = true));
 		$attribute_type = (string) $_POST['attribute_type'];
-		
-		if (!$attribute_name) $attribute_name = sanitize_user($attribute_label, $strict = true);
 
 		if (isset($_POST['show-on-product-page']) && $_POST['show-on-product-page']) $product_page = 1; else $product_page = 0;
 
@@ -44,7 +44,7 @@ function jigoshop_attributes() {
 
 			update_option('jigowatt_update_rewrite_rules', '1');
 
-			wp_safe_redirect( get_admin_url() . 'admin.php?page=jigoshop_attributes' );
+			wp_safe_redirect( get_admin_url() . 'edit.php?post_type=product&page=jigoshop_attributes' );
 			exit;
 
 		else :
@@ -64,7 +64,7 @@ function jigoshop_attributes() {
 
 		endif;
 
-		wp_safe_redirect( get_admin_url() . 'admin.php?page=jigoshop_attributes' );
+		wp_safe_redirect( get_admin_url() . 'edit.php?post_type=product&page=jigoshop_attributes' );
 		exit;
 
 	elseif (isset($_GET['delete'])) :
@@ -89,7 +89,7 @@ function jigoshop_attributes() {
 
 				endif;
 
-				wp_safe_redirect( get_admin_url() . 'admin.php?page=jigoshop_attributes' );
+				wp_safe_redirect( get_admin_url() . 'edit.php?post_type=product&page=jigoshop_attributes' );
 				exit;
 
 			endif;
@@ -231,7 +231,7 @@ function jigoshop_add_attribute() {
 	    		<div class="col-wrap">
 	    			<div class="form-wrap">
 	    				<h3><?php _e('Add New Attribute','jigoshop') ?></h3>
-	    				<form action="admin.php?page=jigoshop_attributes" method="post">
+	    				<form action="edit.php?post_type=product&page=jigoshop_attributes" method="post">
 							<div class="form-field">
 								<label for="attribute_label"><?php _e('Attribute Label', 'jigoshop'); ?></label>
 								<input name="attribute_label" id="attribute_label" type="text" value="" />
@@ -241,7 +241,7 @@ function jigoshop_add_attribute() {
 								<label for="attribute_name"><?php _e('Attribute Slug', 'jigoshop'); ?></label>
 								<input name="attribute_name" id="attribute_name" type="text" value="" />
 								<p class="description"><?php _e('Slug for your attribute (optional).', 'jigoshop'); ?></p>
-							</div>							
+							</div>
 							<div class="form-field">
 								<label for="attribute_type"><?php _e('Attribute type', 'jigoshop'); ?></label>
 								<select name="attribute_type" id="attribute_type" class="postform">

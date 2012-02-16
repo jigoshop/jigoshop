@@ -1,7 +1,7 @@
 <?php
 /**
  * Product Variation Class
- * 
+ *
  * The JigoShop product variation class handles product variation data.
  *
  * DISCLAIMER
@@ -10,14 +10,14 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Catalog
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Catalog
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_product_variation extends jigoshop_product {
-	
+
 	public $variation_id;
 	public $variation_data; // For formatting of variations
 
@@ -55,7 +55,7 @@ class jigoshop_product_variation extends jigoshop_product {
 
 	/**
 	 * Get variation ID
-	 * 
+	 *
 	 * @return  int
 	 */
 	public function get_variation_id() {
@@ -63,7 +63,7 @@ class jigoshop_product_variation extends jigoshop_product {
 	}
 
 	/**
-	 * Get variation attribute values 
+	 * Get variation attribute values
 	 * @uses    for get_available_attributes_variations()
 	 *
 	 * @return  two dimensional array array of attributes and their values for this variation
@@ -86,7 +86,7 @@ class jigoshop_product_variation extends jigoshop_product {
 
 		// +- = minus
 		$this->stock = $this->stock + $by;
-		$amount_sold = $this->stock_sold + $by;
+		$amount_sold = ( ! empty( $this->stock_sold ) ? $this->stock_sold : 0 ) + $by;
 
 		// Update & return the new value
 		update_post_meta( $this->variation_id, 'stock', $this->stock );

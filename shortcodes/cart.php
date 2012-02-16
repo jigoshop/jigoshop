@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Checkout
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Checkout
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 function get_jigoshop_cart($atts) {
     return jigoshop::shortcode_wrapper('jigoshop_cart', $atts);
@@ -60,7 +60,7 @@ function jigoshop_cart($atts) {
             jigoshop::add_message(__('Shipping costs updated.', 'jigoshop'));
 
         endif;
-        
+
     elseif (isset($_POST['shipping_rates'])) :
 
         $rates_params = explode(":", $_POST['shipping_rates']);
@@ -76,7 +76,7 @@ function jigoshop_cart($atts) {
 
     endif;
 
-    // Re-Calc prices. This needs to happen every time the cart page is loaded and after checking post results. It will happen twice for coupon. 
+    // Re-Calc prices. This needs to happen every time the cart page is loaded and after checking post results. It will happen twice for coupon.
     jigoshop_cart::calculate_totals();
 
     $result = jigoshop_cart::check_cart_item_stock();
@@ -138,11 +138,7 @@ function jigoshop_cart($atts) {
                                 </td>
                                 <td class="product-price"><?php echo jigoshop_price($_product->get_price()); ?></td>
                                 <td class="product-quantity">
-                                    <?php if ( ! $_product->is_type('downloadable') ): ?>
                                      <div class="quantity"><input name="cart[<?php echo $cart_item_key ?>][qty]" value="<?php echo esc_attr( $values['quantity'] ); ?>" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div>
-                                    <?php else: ?>
-                                        &ndash;
-                                    <?php endif; ?>
                                 </td>
                                 <td class="product-subtotal"><?php echo jigoshop_price($_product->get_price() * $values['quantity']); ?></td>
                             </tr>
@@ -244,7 +240,6 @@ function jigoshop_cart($atts) {
                                 foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
                                     if (!jigoshop_cart::is_not_compounded_tax($tax_class)) :
                                         ?>
-
                                         <tr>
                                             <th class="cart-row-tax-title"><?php echo jigoshop_cart::get_tax_for_display($tax_class) ?></th>
                                             <td class="cart-row-tax"><?php echo jigoshop_cart::get_tax_amount($tax_class) ?></td>

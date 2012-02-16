@@ -1,7 +1,7 @@
 <?php
 /**
  * Orders Class
- * 
+ *
  * The JigoShop orders class loads orders and calculates counts
  *
  * DISCLAIMER
@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Customer
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Customer
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_orders {
 
@@ -26,11 +26,11 @@ class jigoshop_orders {
 	public $on_hold_count;
 	public $processing_count;
 	public $refunded_count;
-	
+
 	/** Loads orders and counts them */
 	function jigoshop_orders() {
 		$this->orders = array();
-		
+
 		// Get Counts
 		$this->pending_count 	= get_term_by( 'slug', 'pending', 'shop_order_status' )->count;
 		$this->completed_count  = get_term_by( 'slug', 'completed', 'shop_order_status' )->count;
@@ -40,7 +40,7 @@ class jigoshop_orders {
 		$this->processing_count = get_term_by( 'slug', 'processing', 'shop_order_status' )->count;
 		$this->count			= wp_count_posts( 'shop_order' )->publish;
 	}
-	
+
 	/**
 	 * Loads a customers orders
 	 *
@@ -48,15 +48,15 @@ class jigoshop_orders {
 	 * @param   int		$limit		How many orders to load
 	 */
 	function get_customer_orders( $user_id, $limit = 5 ) {
-		
+
 		$args = array(
 		    'numberposts'     => $limit,
 		    'meta_key'        => 'customer_user',
 		    'meta_value'	  => $user_id,
 		    'post_type'       => 'shop_order',
-		    'post_status'     => 'publish' 
+		    'post_status'     => 'publish'
 		);
-		
+
 		$results = get_posts($args);
 
 		if ($results) :
@@ -67,4 +67,4 @@ class jigoshop_orders {
 			endforeach;
 		endif;
 	}
-}	
+}

@@ -1,6 +1,6 @@
 /*
  * 	Easy Tooltip 1.0 - jQuery plugin
- *	written by Alen Grakalic	
+ *	written by Alen Grakalic
  *	http://cssglobe.com/post/4380/easy-tooltip--jquery-plugin
  *
  *	Copyright (c) 2009 Alen Grakalic (http://cssglobe.com)

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * My Account shortcode
  *
@@ -9,12 +8,13 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Customer
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Customer
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
+
 function get_jigoshop_my_account($atts) {
     return jigoshop::shortcode_wrapper('jigoshop_my_account', $atts);
 }
@@ -71,7 +71,7 @@ function jigoshop_my_account( $atts ) {
 						<td><time title="<?php echo esc_attr( date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($order->order_date)) ); ?>"><?php echo date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($order->order_date)); ?></time></td>
 						<td><address><?php if ($order->formatted_shipping_address) echo $order->formatted_shipping_address; else echo '&ndash;'; ?></address></td>
 						<td><?php echo jigoshop_price($order->order_total); ?></td>
-						<td class="nobr"><?php echo $order->status; ?></td>
+						<td class="nobr"><?php _e($order->status, 'jigoshop'); ?></td>
 						<td class="nobr alignright">
 							<?php if ($order->status=='pending') : ?>
 								<a href="<?php echo esc_url( $order->get_checkout_payment_url() ); ?>" class="button pay"><?php _e('Pay', 'jigoshop'); ?></a>
@@ -338,7 +338,7 @@ function jigoshop_change_password() {
                     if ($_POST['password-1'] == $_POST['password-2']) :
 
                         wp_update_user(array('ID' => $user_id, 'user_pass' => $_POST['password-1']));
-						
+
                         wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount')) ));
 
                         exit;
@@ -357,7 +357,7 @@ function jigoshop_change_password() {
 
             endif;
         endif;
-        
+
         jigoshop::show_messages();
 
 		?>
@@ -376,12 +376,12 @@ function jigoshop_change_password() {
 			<p><input type="submit" class="button" name="save_password" value="<?php _e('Save', 'jigoshop'); ?>" /></p>
 
 		</form>
-        
+
 		<?php
     else :
 		wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount')) ));
 		exit;
-    
+
     endif;
 }
 
@@ -403,9 +403,8 @@ function jigoshop_view_order() {
 
         if ($order_id > 0 && $order->user_id == get_current_user_id()) :
 
-            echo '<p>' . sprintf(__('Order <mark>#%s</mark> made on <mark>%s</mark>', 'jigoshop'), $order->id, date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($order->order_date)));
-
-            echo sprintf(__('. Order status: <mark>%s</mark>', 'jigoshop'), $order->status);
+            echo '<p>' . sprintf(__('Order <mark>#%s</mark> made on <mark>%s</mark>.', 'jigoshop'), $order->id, date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($order->order_date))) . ' ';
+            echo sprintf(__('Order status: <mark class="%s">%s</mark>', 'jigoshop'), sanitize_title($order->status), __($order->status, 'jigoshop') );
 
             echo '.</p>';
             ?>
@@ -426,7 +425,7 @@ function jigoshop_view_order() {
                             <td colspan="3"><strong><?php _e('Subtotal', 'jigoshop'); ?></strong></td>
                     <?php endif; ?>
                         <td><strong><?php echo $order->get_subtotal_to_display(); ?></strong></td>
-                    </tr>                                    
+                    </tr>
             <?php
             if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) :
                 if ($order->order_shipping > 0) :

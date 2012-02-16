@@ -16,7 +16,7 @@
 			var $this	= $(this);
 		 	      panel	= '.'+$this.val();
 		 	      $root	= $this.parent().parent().parent()
-			
+
 			// Hide all the panels first then show the relevant one
 			// TODO: can this be improved anyway?
 			$root.find('.options').hide();
@@ -34,7 +34,7 @@
 
 		// @todo: this should be an ID
 		.on('click', '.add_variation', function(e) {
-			
+
 			// Disable default action
 			e.preventDefault();
 
@@ -58,14 +58,14 @@
 			if ( ! confirm(varmeta.actions.remove.confirm) )
 				return false;
 
-			remove_variation($(this).parent());			
+			remove_variation($(this).parent());
 		})
 
 		.on('click', '.upload_image_button', function(e) {
 
 			// Disable default action
 			e.preventDefault();
-			
+
 			// Set up variables
 			var $this		= $(this);
 				$img		= $this.find('img');
@@ -125,7 +125,7 @@
 
 			window.send_to_editor = function(html) {
 
-				// Attach the file URI to the relevant 
+				// Attach the file URI to the relevant
 				$file.val( $(html).attr('href') );
 
 				// Hide thickbox
@@ -134,7 +134,7 @@
 
 			// @todo: Why do we need this? -Rob
 			// formfield = $(parent).attr('name');
-			
+
 			// Show thickbox
 			tb_show('', 'media-upload.php?post_id=' + post_id + '&type=downloadable_product&from=jigoshop_variation&TB_iframe=true');
 		})
@@ -146,7 +146,7 @@
 
 			if ( ! $('.jigoshop_variation').size() )
 				return alert( varmeta.i18n.variations_required );
-			
+
 			// Cache variables
 			var $this = $(this);
 			$this.trigger( $this.prev().val() );
@@ -195,7 +195,7 @@
 	});
 
 	function remove_variation( $panel ) {
-		
+
 		// Set up the variables
 		var variation	= $panel.attr('rel');
 			data 		= {
@@ -203,7 +203,7 @@
 				variation_id: variation,
 				security: varmeta.actions.remove.nonce,
 			};
-		
+
 		// If the variation already exists
 		if ( variation.indexOf('_new') < 0 ) {
 
@@ -217,7 +217,7 @@
 				});
 			});
 
-		} 
+		}
 		else {
 
 			// Variation hasn't been saved so just remove the panel

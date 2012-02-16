@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Internationalization
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Internationalization
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_countries {
 
@@ -894,7 +894,7 @@ class jigoshop_countries {
 		echo '
 			<div class="error">
 				<p>'.__('Your <strong>Base Country / Region</strong> setting has been changed to the last state in the country. Please update accordingly', 'jigoshop').'!</p>
-				<p>' . sprintf(__('<a href="%s">Read why</a> we did this for you.','jigoshop'), "https://github.com/jigoshop/jigoshop/issues/545" ) . '</p>
+				<p>' . sprintf(__('<a href="%s" target="_TOP">Read why</a> we did this for you.','jigoshop'), "https://github.com/jigoshop/jigoshop/issues/545" ) . '</p>
 			</div>
 		';
 	}
