@@ -477,11 +477,7 @@ class jigoshop_cart extends jigoshop_singleton {
         if (get_option('jigoshop_calc_taxes') == 'yes') :
             self::$shipping_tax_total = jigoshop_shipping::get_tax();
 
-            self::$tax->update_tax_amount_with_shipping_tax(self::$shipping_tax_total * 100);
-
-            if (self::$tax->is_shipping_tax_non_compounded() && get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
-                self::$subtotal_inc_tax += self::$shipping_tax_total;
-            endif;
+        //TODO: probably move this down into the total section because of coupon code change
         endif;
 
         // Subtotal
@@ -496,7 +492,7 @@ class jigoshop_cart extends jigoshop_singleton {
                     if ($coupon['type'] == 'fixed_cart') :
                         self::$discount_total = self::$discount_total + $coupon['amount'];
                     elseif ($coupon['type'] == 'percent') :
-                        self::$discount_total = self::$discount_total + ( self::$subtotal / 100 ) * $coupon['amount'];
+                        self::$discount_total = self::$discount_total + ( (get_option('jigoshop_tax_after_coupon') == 'yes' ? self::$subtotal_ex_tax : self::$subtotal) / 100 ) * $coupon['amount'];
                     elseif ($coupon['type'] == 'fixed_product' && sizeof($coupon['products']) == 0) :
                         // allow coupons for all products without specific product ID's entered
                         self::$discount_total = self::$discount_total + ($coupon['amount'] * self::$cart_contents_count);
@@ -506,8 +502,27 @@ class jigoshop_cart extends jigoshop_singleton {
             endforeach;
 
 
-        if (get_option('jigoshop_calc_taxes') == 'yes' && self::get_subtotal_inc_tax()) : // defines if there are mixed tax classes (with compounding taxes)
+        if (get_option('jigoshop_calc_taxes') == 'yes') :
+            
+            
+            if (get_option('jigoshop_tax_after_coupon') == 'yes') :
+                $total_non_compound_tax = 0;
+            
+                foreach (self::get_applied_tax_classes() as $tax_class) : // not compounded tax
+                    self::$tax->update_tax_amount($tax_class, (self::$subtotal_ex_tax - self::$discount_total) * 100);
+                    $total_non_compound_tax += self::get_tax_amount($tax_class, false);
+                endforeach;
+                
+                self::$subtotal_inc_tax = self::$subtotal_ex_tax + $total_non_compound_tax;
+            endif;
 
+            // calculate shipping taxes now to add to sub_total_inc_tax amount
+            self::$tax->update_tax_amount_with_shipping_tax(self::$shipping_tax_total * 100);
+
+            if (self::$tax->is_shipping_tax_non_compounded() && get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
+                self::$subtotal_inc_tax += self::$shipping_tax_total;
+            endif;
+            
             foreach (self::get_applied_tax_classes() as $tax_class) :
                 if (!self::is_not_compounded_tax($tax_class)) : //tax compounded
                     if (get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
@@ -659,11 +674,7 @@ class jigoshop_cart extends jigoshop_singleton {
     }
 
     public static function get_tax_amount($tax_class, $with_price = true) {
-        if (self::$shipping_tax_total) :
-            return ($with_price ? jigoshop_price(self::$tax->get_tax_amount($tax_class)) : number_format(self::$tax->get_tax_amount($tax_class), 2, '.', ''));
-        else :
-            return ($with_price ? jigoshop_price(self::$tax->get_tax_amount($tax_class, false)) : number_format(self::$tax->get_tax_amount($tax_class, false), 2, '.', ''));
-        endif;
+        return ($with_price ? jigoshop_price(self::$tax->get_tax_amount($tax_class)) : number_format(self::$tax->get_tax_amount($tax_class), 2, '.', ''));
     }
 
     public static function get_tax_divisor() {

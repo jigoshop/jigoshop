@@ -455,10 +455,9 @@ class jigoshop_tax {
     /**
      * Gets the amount of tax for the particular tax class
      * @param string tax_class the tax class to retrieve the tax amount for
-     * @param bool has_shipping_tax true if shipping is taxed, false otherwise. Default true
      * @return type returns the tax amount with 2 decimal places
      */
-    function get_tax_amount($tax_class, $has_shipping_tax = true) {
+    function get_tax_amount($tax_class) {
         return ($this->tax_divisor > 0 ? (isset($this->tax_amounts[$tax_class]) && isset($this->tax_amounts[$tax_class]['amount']) ? $this->tax_amounts[$tax_class]['amount'] : 0) / $this->tax_divisor : (isset($this->tax_amounts[$tax_class]) && isset($this->tax_amounts[$tax_class]['amount']) ? $this->tax_amounts[$tax_class]['amount'] : 0));
     }
 
