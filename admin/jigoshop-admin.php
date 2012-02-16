@@ -203,7 +203,7 @@ function jigoshop_system_info() {
 		                </tr>
 		                <tr>
 		                    <td class="titledesc"><?php _e('Server Software','jigoshop')?></td>
-		                    <td class="forminp"><?php echo $_SERVER['SERVER_SOFTWARE']; ?></td>
+		                    <td class="forminp"><?php echo esc_html( $_SERVER['SERVER_SOFTWARE'] ); ?></td>
 		                </tr>
 		        	</tbody>
 		            <thead>
@@ -219,15 +219,15 @@ function jigoshop_system_info() {
 		                </tr>
 		                <tr>
 		                    <td class="titledesc"><?php _e('Session name','jigoshop')?></td>
-		                    <td class="forminp"><?php echo ini_get('session.name'); ?></td>
+		                    <td class="forminp"><?php echo esc_html( ini_get( 'session.name' ) ); ?></td>
 		                </tr>
 		                <tr>
 		                    <td class="titledesc"><?php _e('Cookie path path','jigoshop')?></td>
-		                    <td class="forminp"><?php echo ini_get('session.cookie_path'); ?></td>
+		                    <td class="forminp"><?php echo esc_html( ini_get( 'session.cookie_path' ) ); ?></td>
 		                </tr>
 		                <tr>
 		                    <td class="titledesc"><?php _e('Save path','jigoshop')?></td>
-		                    <td class="forminp"><?php echo ini_get('session.save_path'); ?></td>
+		                    <td class="forminp"><?php echo esc_html( ini_get( 'session.save_path' ) ); ?></td>
 		                </tr>
 		                <tr>
 		                    <td class="titledesc"><?php _e('Use cookies','jigoshop')?></td>
