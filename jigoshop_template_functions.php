@@ -150,7 +150,7 @@ if (!function_exists('jigoshop_show_product_thumbnails')) {
 		// since there are now user settings for sizes, shouldn't need filters -JAP-
 		//$small_thumbnail_size = apply_filters('single_product_small_thumbnail_size', 'shop_thumbnail');
 		$small_thumbnail_size = jigoshop_get_image_size( 'shop_thumbnail' );
-		$args = array( 'post_type' => 'attachment', 'numberposts' => -1, 'post_status' => null, 'post_parent' => $post->ID, 'orderby' => 'id', 'order' => 'asc' );
+		$args = array( 'post_type' => 'attachment', 'post_mime_type' => 'image', 'numberposts' => -1, 'post_status' => null, 'post_parent' => $post->ID, 'orderby' => 'id', 'order' => 'asc' );
 		$attachments = get_posts($args);
 		if ($attachments) :
 			$loop = 0;
