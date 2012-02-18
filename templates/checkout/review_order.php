@@ -38,6 +38,12 @@
             <?php
             if (get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::get_subtotal_inc_tax()) :
                 jigoshop_checkout::get_shipping_dropdown();
+                if (get_option('jigoshop_tax_after_coupon') == 'yes' && jigoshop_cart::get_total_discount()) : ?><tr class="discount">
+                    <th class="cart-row-discount-title"><?php _e('Discount', 'jigoshop'); ?></th>
+                    <td class="cart-row-discount">-<?php echo jigoshop_cart::get_total_discount(); ?></td>
+                </tr>
+                <?php 
+                endif; 
                 foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
                     if (jigoshop_cart::is_not_compounded_tax($tax_class)) :
                         ?>
@@ -55,6 +61,12 @@
                 <?php
             else :
                 jigoshop_checkout::get_shipping_dropdown();
+                if (get_option('jigoshop_tax_after_coupon') == 'yes' && jigoshop_cart::get_total_discount()) : ?><tr class="discount">
+                    <th class="cart-row-discount-title"><?php _e('Discount', 'jigoshop'); ?></th>
+                    <td class="cart-row-discount">-<?php echo jigoshop_cart::get_total_discount(); ?></td>
+                </tr>
+                <?php 
+                endif; 
             endif;
             if (get_option('jigoshop_calc_taxes') == 'yes') :
                 if (jigoshop_cart::get_subtotal_inc_tax()) :
@@ -81,9 +93,8 @@
                 endif;
             endif;
             ?>
-
             <?php do_action('jigoshop_after_review_order_items'); ?>
-            <?php if (jigoshop_cart::get_total_discount()) : ?><tr class="discount">
+            <?php if (get_option('jigoshop_tax_after_coupon') == 'no' && jigoshop_cart::get_total_discount()) : ?><tr class="discount">
                     <td colspan="2"><?php _e('Discount', 'jigoshop'); ?></td>
                     <td>-<?php echo jigoshop_cart::get_total_discount(); ?></td>
                 </tr><?php endif; ?>

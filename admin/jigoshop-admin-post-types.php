@@ -378,6 +378,12 @@ function jigoshop_custom_order_columns($column) {
                         </tr>
                         <?php
                     endif;
+                    if (get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0) : ?><tr>
+                        <th><?php _e('Discount', 'jigoshop'); ?></th>
+                        <td><?php echo jigoshop_price($order->order_discount); ?></td>
+                    </tr>
+                    <?php 
+                    endif; 
                     foreach ($order->get_tax_classes() as $tax_class) :
                         if ($order->tax_class_is_not_compound($tax_class)) :
                             ?>
@@ -401,6 +407,12 @@ function jigoshop_custom_order_columns($column) {
                         </tr>
                         <?php
                     endif;
+                    if (get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0) : ?><tr>
+                        <th><?php _e('Discount', 'jigoshop'); ?></th>
+                        <td><?php echo jigoshop_price($order->order_discount); ?></td>
+                    </tr>
+                    <?php 
+                    endif; 
                 endif;
                 if (get_option('jigoshop_calc_taxes') == 'yes') :
                     if ($order->order_subtotal_inc_tax) :
@@ -426,7 +438,7 @@ function jigoshop_custom_order_columns($column) {
                     endif;
                 endif;
 
-                if ($order->order_discount > 0) : ?><tr>
+                if (get_option('jigoshop_tax_after_coupon') == 'no' && $order->order_discount > 0) : ?><tr>
                         <th><?php _e('Discount', 'jigoshop'); ?></th>
                         <td><?php echo jigoshop_price($order->order_discount); ?></td>
                     </tr><?php endif; ?>
