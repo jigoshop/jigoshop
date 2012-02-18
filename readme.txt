@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@j
 Requires at least: 3.2.1
 Tested up to: 3.4-alpha-19904
 Stable tag: 1.1
-
+Lalala
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
 == Description ==
