@@ -137,6 +137,10 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 */	
 	protected function set_default_options() {
 		
+		$cSymbol = get_jigoshop_currency_symbol();
+		$cCode = $this->get_option( 'jigoshop_currency' ) ? $this->get_option( 'jigoshop_currency' ) : 'GBP';
+		$cSep = $this->get_option( 'jigoshop_price_decimal_sep' ) ? $this->get_option( 'jigoshop_price_decimal_sep' ) : '.';
+
 		self::$default_options = array(
 		
 			array( 'type' => 'heading', 'name' => __('General', 'jigoshop') ),
@@ -585,18 +589,18 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 				'std' 		=> 'left',
 				'type' 		=> 'select',
 				'choices' => array(
-					'left' => __(get_jigoshop_currency_symbol() . '0' . get_option('jigoshop_price_decimal_sep') . '00', 'jigoshop'),
-					'left_space' => __(get_jigoshop_currency_symbol() . ' 0' . get_option('jigoshop_price_decimal_sep') . '00', 'jigoshop'),
-					'right' => __('0' . get_option('jigoshop_price_decimal_sep') . '00' . get_jigoshop_currency_symbol(), 'jigoshop'),
-					'right_space' => __('0' . get_option('jigoshop_price_decimal_sep') . '00 ' . get_jigoshop_currency_symbol(), 'jigoshop'),
-					'left_code' => __(get_option('jigoshop_currency') . '0' . get_option('jigoshop_price_decimal_sep') . '00', 'jigoshop'),
-					'left_code_space' => __(get_option('jigoshop_currency') . ' 0' . get_option('jigoshop_price_decimal_sep') . '00', 'jigoshop'),
-					'right_code' => __('0' . get_option('jigoshop_price_decimal_sep') . '00' . get_option('jigoshop_currency'), 'jigoshop'),
-					'right_code_space' => __('0' . get_option('jigoshop_price_decimal_sep') . '00 ' . get_option('jigoshop_currency'), 'jigoshop'),
-					'symbol_code' => __(get_jigoshop_currency_symbol() . '0' . get_option('jigoshop_price_decimal_sep') . '00' . get_option('jigoshop_currency'), 'jigoshop'),
-					'symbol_code_space' => __(get_jigoshop_currency_symbol() . ' 0' . get_option('jigoshop_price_decimal_sep') . '00 ' . get_option('jigoshop_currency'), 'jigoshop'),
-					'code_symbol' => __(get_option('jigoshop_currency') . '0' . get_option('jigoshop_price_decimal_sep') . '00' . get_jigoshop_currency_symbol(), 'jigoshop'),
-					'code_symbol_space' => __(get_option('jigoshop_currency') . ' 0' . get_option('jigoshop_price_decimal_sep') . '00 ' . get_jigoshop_currency_symbol(), 'jigoshop'),
+					'left' => __($cSymbol . '0' . $cSep . '00', 'jigoshop'),
+					'left_space' => __($cSymbol . ' 0' . $cSep . '00', 'jigoshop'),
+					'right' => __('0' . $cSep . '00' . $cSymbol, 'jigoshop'),
+					'right_space' => __('0' . $cSep . '00 ' . $cSymbol, 'jigoshop'),
+					'left_code' => __($cCode . '0' . $cSep . '00', 'jigoshop'),
+					'left_code_space' => __($cCode . ' 0' . $cSep . '00', 'jigoshop'),
+					'right_code' => __('0' . $cSep . '00' . $cCode, 'jigoshop'),
+					'right_code_space' => __('0' . $cSep . '00 ' . $cCode, 'jigoshop'),
+					'symbol_code' => __($cSymbol . '0' . $cSep . '00' . $cCode, 'jigoshop'),
+					'symbol_code_space' => __($cSymbol . ' 0' . $cSep . '00 ' . $cCode, 'jigoshop'),
+					'code_symbol' => __($cCode . '0' . $cSep . '00' . $cSymbol, 'jigoshop'),
+					'code_symbol_space' => __($cCode . ' 0' . $cSep . '00 ' . $cSymbol, 'jigoshop'),
 				)
 			),
 		
