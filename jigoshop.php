@@ -30,16 +30,19 @@ if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
 
+include_once( 'classes/abstract/jigoshop_base.class.php' );
+include_once( 'classes/abstract/jigoshop_singleton.php' );
+include_once( 'classes/jigoshop_options.class.php' );			// instantiates an instance for immediate use
+
 // Load administration & check if we need to install
 if ( is_admin() ) {
 	include_once( 'admin/jigoshop-admin.php' );
 	register_activation_hook( __FILE__, 'install_jigoshop' );
 }
+
 /**
  * Include core files and classes
  **/
-include_once( 'classes/abstract/jigoshop_base.class.php' );
-include_once( 'classes/abstract/jigoshop_singleton.php' );
 include_once( 'classes/jigoshop_sanitize.class.php' );
 include_once( 'classes/jigoshop_validation.class.php' );
 include_once( 'jigoshop_taxonomy.php' );
@@ -189,49 +192,52 @@ function jigoshop_init() {
 	/* ensure nothing is output to the browser prior to this (other than headers) */
 	ob_start();
 
-	jigoshop_session::instance()->test = 'val';
-
+	jigoshop_session::instance()->test = 'val'; // why are we doing this?	
+	
+	// TODO:  what is this?  seems added since 1.0.  Seriously?  (-JAP-)
     $array = array(0 => "3.15");
-
     foreach ($array as $a) :
         $an = explode(':', $a);
     endforeach;
-	jigoshop_post_type();	/* register taxonomies */
+    
+    
+	jigoshop_post_type();						// register taxonomies
+	jigoshop_set_image_sizes();					// called after our Options are loaded
 
 	// add Singletons here so that the taxonomies are loaded before calling them.
-	$jigoshop 					= jigoshop::instance();
-	$jigoshop_customer 			= jigoshop_customer::instance();		// Customer class, sorts session data such as location
-	$jigoshop_shipping 			= jigoshop_shipping::instance();		// Shipping class. loads shipping methods
-	$jigoshop_payment_gateways 	= jigoshop_payment_gateways::instance();// Payment gateways class. loads payment methods
-	$jigoshop_cart 				= jigoshop_cart::instance();			// Cart class, stores the cart contents
+	jigoshop::instance();
+	jigoshop_customer::instance();				// Customer class, sorts session data such as location
+	jigoshop_shipping::instance();				// Shipping class. loads shipping methods
+	jigoshop_payment_gateways::instance();		// Payment gateways class. loads payment methods
 
-//	if ( ! is_admin() ) $jigoshop_query = new jigoshop_catalog_query();
-	if ( ! is_admin() ) $jigoshop_query = jigoshop_catalog_query::instance();
-
-	// Image sizes
-	jigoshop_set_image_sizes();
-
+	if ( is_admin()) {
+		Jigoshop_Admin_Settings::instance();	// the WP Settings API manager
+	} else {
+		jigoshop_cart::instance();				// Cart class
+		jigoshop_catalog_query::instance();		// front end queries class
+	}
+	
 	// Include template functions here so they are pluggable by themes
 	include_once( 'jigoshop_template_functions.php' );
 
-	add_role('customer', 'Customer', array(
+	add_role( 'customer', 'Customer', array(
 	    'read' => true,
 	    'edit_posts' => false,
 	    'delete_posts' => false
 	));
 
-	$css = file_exists(get_stylesheet_directory() . '/jigoshop/style.css') ? get_stylesheet_directory_uri() . '/jigoshop/style.css' : jigoshop::assets_url() . '/assets/css/frontend.css';
-    if (JIGOSHOP_USE_CSS) wp_register_style('jigoshop_frontend_styles', $css );
+	$css = file_exists( get_stylesheet_directory() . '/jigoshop/style.css' ) ? get_stylesheet_directory_uri() . '/jigoshop/style.css' : jigoshop::assets_url() . '/assets/css/frontend.css';
+    if (JIGOSHOP_USE_CSS) wp_register_style( 'jigoshop_frontend_styles', $css );
 
     if ( !is_admin()) :
     	wp_register_style( 'jqueryui_styles', jigoshop::assets_url() . '/assets/css/ui.css' );
 
-    	wp_enqueue_style('jigoshop_frontend_styles');
-    	wp_enqueue_style('jqueryui_styles');
+    	wp_enqueue_style( 'jigoshop_frontend_styles' );
+    	wp_enqueue_style( 'jqueryui_styles' );
 
-    	if( JIGOSHOP_LOAD_FANCYBOX ) {
+    	if ( JIGOSHOP_LOAD_FANCYBOX ) {
    			wp_register_style( 'jigoshop_fancybox_styles', jigoshop::assets_url() . '/assets/css/fancybox.css' );
-    		wp_enqueue_style('jigoshop_fancybox_styles');
+    		wp_enqueue_style( 'jigoshop_fancybox_styles' );
     	}
 
     endif;

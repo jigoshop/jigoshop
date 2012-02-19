@@ -28,7 +28,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 */
 	protected function __construct() {
 		
-		self::$page_name = 'jigoshop-options';	// should match our WordPress Options table entry name
+		self::$page_name = 'jigoshop_options';	// should match our WordPress Options table entry name
 		
 		$this->our_parser = new Jigoshop_Options_Parser( 
 			Jigoshop_Options::instance()->get_default_options(), 
@@ -300,26 +300,16 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	* @since 1.2
 	*/
 	public function validate_settings( $input ) {
-//logme( "VALIDATING SETTINGS" );	//check me
-//logme( $input );
 		$current_options = Jigoshop_options::get_current_options();
-		$current_options['validation-error'] = true; // if no errors in validation, we will reset this to false
-		$current_options['message'] = "There was an error validating the data. No update occured!";
+//		$current_options['validation-error'] = true; // if no errors in validation, we will reset this to false
+//		$current_options['message'] = "There was an error validating the data. No update occured!";
 		$valid_input = $current_options;	// we start with the current options, plus the error flag and message
 		$operation = "";
-	
-		// Determine which form action was submitted
-		// When WP calls this function, $_GET is not set to access the Tab name so ...
-		// We only get here from a 'submit-' or a 'reset-' with the tab slug added on
-		// The last element in the $input array is the operation submission
-		end( $input );
-		$operation = key( $input );
-		list( $request, $tab ) = explode( "-", $operation );
-		$tab = str_replace( "-", " ", ucwords( $tab ) );
-//logme( "Validation Operation" );
-//logme( $operation );
-//logme( $input );
-		return $input;
+		
+		if ( ! empty( $input )) foreach ( $input as $id => $value ) {
+			$valid_input[$id] = $value;	// obviously we aren't validating very much yet (JAP)
+		}
+		return $valid_input;
 	}
 	
 }
@@ -540,11 +530,11 @@ class Jigoshop_Options_Parser {
 			case 'select':
 				$display .= '<select
 					id="'.$item['id'].'"
-					class="jigoshop-input"
+					class="jigoshop-select"
 					name="'.Jigoshop_Admin_Settings::get_options_name().'['.$item['id'].']" >'."\n";
-				foreach ( $item['choices'] as $option ) {
+				foreach ( $item['choices'] as $value => $label ) {
 					$display .= '<option
-						value="'.$option.'" '.selected( $data[$item['id']], $option, '0' ).' />'.$option.'
+						value="'.$value.'" '.selected( $data[$item['id']], $value, false ).' />'.$label.'
 						</option>';
 				}
 				$display .= '</select>'."\n";

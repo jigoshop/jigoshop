@@ -19,6 +19,7 @@ require_once ( 'jigoshop-install.php' );
 require_once ( 'jigoshop-admin-dashboard.php' );
 require_once ( 'jigoshop-write-panels.php' );
 require_once ( 'jigoshop-admin-settings.php' );
+require_once ( 'jigoshop-admin-settings-api.php' );
 require_once ( 'jigoshop-admin-attributes.php' );
 require_once ( 'jigoshop-admin-post-types.php' );
 
