@@ -402,7 +402,7 @@ class Jigoshop_Options_Parser {
 				$page_setting = (int) $item['id'];
 
 				$args = array(
-					'name' => 'jigoshop_options[' . $item['id'] . ']',
+					'name' => Jigoshop_Admin_Settings::get_options_name() . '[' . $item['id'] . ']',
 					'id' => $item['id'],
 					'sort_order' => 'ASC',
 					'selected' => $page_setting
@@ -411,9 +411,6 @@ class Jigoshop_Options_Parser {
 				if (isset($args_input)) $args = wp_parse_args($args_input, $args);
 
 				wp_dropdown_pages($args);
-
-				if ( !empty( $desc ) )
-					echo '<span class="description">' . $desc . '</span>';
 
 				break;
 
@@ -427,7 +424,7 @@ class Jigoshop_Options_Parser {
 					$country = $country_setting;
 					$state = '*';
 				endif;
-				echo '<select class="select' . $class . '" name="jigoshop_options[' . $item['id'] . ']">';
+				echo '<select class="select' . $class . '" name="' . Jigoshop_Admin_Settings::get_options_name() . '[' . $item['id'] . ']">';
 				echo jigoshop_countries::country_dropdown_options($country, $state);
 				echo '</select>';
 
@@ -440,7 +437,7 @@ class Jigoshop_Options_Parser {
 				echo '<div class="multi_select_countries"><ul>';
 				if ($countries)
 					foreach ($countries as $key => $val) :
-						echo '<li><label><input type="checkbox" name="jigoshop_options[' . $item['id'] . '][] value="' . esc_attr( $key ) . '" ';
+						echo '<li><label><input type="checkbox" name="' . Jigoshop_Admin_Settings::get_options_name() . '[' . $item['id'] . '][] value="' . esc_attr( $key ) . '" ';
 						echo in_array($key, $selections) ? 'checked="checked" />' : ' />';
 						echo $val . '</label></li>';
 					endforeach;
