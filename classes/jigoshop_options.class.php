@@ -141,7 +141,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 		$cCode = $this->get_option( 'jigoshop_currency' ) ? $this->get_option( 'jigoshop_currency' ) : 'GBP';
 		$cSep = $this->get_option( 'jigoshop_price_decimal_sep' ) ? $this->get_option( 'jigoshop_price_decimal_sep' ) : '.';
 
-		self::$default_options = array(
+		self::$default_options = apply_filters( 'jigoshop_options_settings', array(
 		
 			array( 'type' => 'heading', 'name' => __('General', 'jigoshop') ),
 		
@@ -991,7 +991,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			array( 'type' => 'gateway_options'),
 		
 		
-		);
+		));
 	}
 	
 } Jigoshop_Options::instance();				// get our options loaded first thing
