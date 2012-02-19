@@ -399,7 +399,7 @@ class Jigoshop_Options_Parser {
 				break;
 				
 			case 'single_select_page' :
-				$page_setting = (int) $item['id'];
+				$page_setting = (int) $data[$item['id']];
 
 				$args = array(
 					'name' => Jigoshop_Admin_Settings::get_options_name() . '[' . $item['id'] . ']',
