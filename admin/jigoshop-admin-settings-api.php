@@ -317,8 +317,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 
 class Jigoshop_Options_Parser {
 
-	var $these_items;		// The array of default options items to parse
-	var $defaults;
+	var $these_options;		// The array of default options items to parse
 	var $tab_headers;
 	var $sections;
 
@@ -328,22 +327,29 @@ class Jigoshop_Options_Parser {
 		$this->topf_parser();
 	}
 
-	/*----------------------------------------------------------------------------------------------------------------*/
-	//	Generates the Options within the Theme Options Panel Framework
-	//	Cycles through each item and provides final html markup for each option item,
-	//	as well as default values for each item and Section Menus for each group of items
-	/*----------------------------------------------------------------------------------------------------------------*/
+
 	private function topf_parser() {
-		$this->defaults = array();
-		$this->tab_headers = array();
-		$this->sections = array();
-		$section_name = 0;
-		$defaults = array();
+		
 		$tab_headers = array();
 		$sections = array();
 		
-//		logme( "PARSING OPTIONS  --  Jigoshop_Options_Parser" );
 		foreach ( $this->these_options as $item ) {
+			
+			$defaults = array(
+				'section'		=> '',
+				'id'			=> null,
+				'type'			=> '',
+				'name'			=> __( '' ),
+				'desc'			=> __( '' ),
+				'tip'			=> '',
+				'std'			=> '',
+				'choices'		=> array(),
+				'class'			=> '',
+				'css'			=> '',
+				'args_input'	=> ''
+			);
+	
+			$item = wp_parse_args( $item, $defaults );
 			
 			if ( isset( $item['id'] ) ) $item['id'] = sanitize_title( $item['id']);
 			
@@ -351,48 +357,17 @@ class Jigoshop_Options_Parser {
 				$tab_headers[] = $item['name'];
 				$section_name = sanitize_title( $item['name'] );
 			}
-
-			if ( $item['type'] == 'multicheck' ) {
-				if ( is_array( $item['std'] ) ) {
-					foreach ( $item['std'] as $i => $key ) {
-						$defaults[$item['id']][$i] = true;
-					}
-				} else {
-					$defaults[$item['id']][$item['std']] = true;
-				}
-			} else if ( isset( $item['id'] ) ) {
-				if ( isset( $item['std'] )) $defaults[$item['id']] = $item['std'];
-//				else logme( $item['name'] . ' of TYPE ' . $item['name'] . ' -_- has no standard setting' );
-			}
-//			else logme( $item );
-			
+						
 			$item['section'] = $section_name;
 			$sections[$section_name][] = $item; // store each option item in it's section heading
 			
 		}
 
-		// all option items are parsed, record the findings for exterior public access
-		$this->defaults = $defaults;
 		$this->tab_headers = $tab_headers;
 		$this->sections = $sections;
-//		logme( 'TAB HEADERS' );
-//		logme( $tab_headers );
-//		logme( 'DEFAULTS' );
-//		logme( $defaults );
-// 		logme( 'SECTIONS' );
-// 		foreach ( $sections as $name => $values ) {
-// 			logme( $name );
-// 			foreach( $values as $value ) {
-// 				if ( isset( $value['id'] )) logme( "\t" . $value['id'] );
-// 				else if ( isset( $value['title'] )) logme( $value['title'] );
-// 			}
-// 		}
 	}
 	
 	
-	/*----------------------------------------------------------------------------------------------------------------*/
-	//	Format html markup for screen display on an individual Option Item
-	/*----------------------------------------------------------------------------------------------------------------*/
 	public function format_item_for_display( $item ) {
 	
 		$data = Jigoshop_Options::get_current_options();
@@ -407,6 +382,22 @@ class Jigoshop_Options_Parser {
 		$display .= '<div class="jigoshop-controls '.$class.'">'."\n";
 
 		switch ( $item['type'] ) {
+			case 'tax_rates' :
+				
+				break;
+				
+			case 'coupons' :
+				
+				break;
+				
+			case 'gateway_options' :
+				
+				break;
+				
+			case 'shipping_options' :
+				
+				break;
+				
 			case 'single_select_page' :
 				$page_setting = (int) $item['id'];
 
