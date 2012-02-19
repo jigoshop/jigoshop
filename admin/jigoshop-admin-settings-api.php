@@ -398,6 +398,16 @@ class Jigoshop_Options_Parser {
 				
 				break;
 				
+			case 'image_size' :
+				$width = $data[$item['id']];
+				$display .= '<input
+					name="'.Jigoshop_Admin_Settings::get_options_name().'['.$item['id'].']"
+					id="'.Jigoshop_Admin_Settings::get_options_name().'['.$item['id'].']"
+					class="jigoshop-input"
+					type="text"
+					value="'.$data[$item['id']].'" />';
+				break;
+				
 			case 'single_select_page' :
 				$page_setting = (int) $data[$item['id']];
 
@@ -405,12 +415,13 @@ class Jigoshop_Options_Parser {
 					'name' => Jigoshop_Admin_Settings::get_options_name() . '[' . $item['id'] . ']',
 					'id' => $item['id'],
 					'sort_order' => 'ASC',
+					'echo' => 0,
 					'selected' => $page_setting
 				);
 
-				if (isset($args_input)) $args = wp_parse_args($args_input, $args);
+				if ( isset( $args_input )) $args = wp_parse_args( $args_input, $args );
 
-				wp_dropdown_pages($args);
+				$display .= wp_dropdown_pages( $args );
 
 				break;
 
