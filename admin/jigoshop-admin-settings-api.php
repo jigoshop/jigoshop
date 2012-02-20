@@ -416,7 +416,7 @@ class Jigoshop_Options_Parser {
 				$display .= wp_dropdown_pages( $args );
 				break;
 
-			case 'single_select_country' :
+			case 'single_select_country' :	// must fix jigoshop_countries::country_dropdown_options(), echo's output (-JAP-)
 				$countries = jigoshop_countries::$countries;
 				$country_setting = (string) $data[$item['id']];
 				if (strstr($country_setting, ':')) :
@@ -426,8 +426,8 @@ class Jigoshop_Options_Parser {
 					$country = $country_setting;
 					$state = '*';
 				endif;
-				$display .= '<select class="select' . $class . '" name="' . Jigoshop_Admin_Settings::get_options_name() . '[' . $item['id'] . ']">';
-				$display .= jigoshop_countries::country_dropdown_options($country, $state);
+				echo '<select class="select' . $class . '" name="' . Jigoshop_Admin_Settings::get_options_name() . '[' . $item['id'] . ']">';
+				echo jigoshop_countries::country_dropdown_options($country, $state);
 				echo '</select>';
 				break;
 				
