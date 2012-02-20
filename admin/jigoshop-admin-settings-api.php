@@ -60,8 +60,8 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 
 		$admin_page = add_submenu_page( 'jigoshop', __( 'Jigoshop Settings' ), __( 'Jigoshop Settings' ), 'manage_options', $this->get_options_name(), array( &$this, 'output_markup' ) );
 
-		add_action( 'admin_print_scripts-' . $admin_page, array( &$this, 'scripts' ) );
-		add_action( 'admin_print_styles-' . $admin_page, array( &$this, 'styles' ) );
+		add_action( 'admin_print_scripts-' . $admin_page, array( &$this, 'settings_scripts' ) );
+		add_action( 'admin_print_styles-' . $admin_page, array( &$this, 'settings_styles' ) );
 
 	}
 	
@@ -142,9 +142,11 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	*
 	* @since 1.2
 	*/
-	public function scripts() {
-
-		wp_print_scripts( 'jquery-ui-tabs' );
+	public function settings_scripts() {
+		
+    	wp_register_script( 'jigoshop-easytooltip', jigoshop::assets_url() . '/assets/js/easyTooltip.js', '' );
+    	wp_enqueue_script( 'jigoshop-easytooltip' );
+		wp_enqueue_script( 'jquery-ui-tabs' );
 
 	}
 	
@@ -154,7 +156,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	*
 	* @since 1.2
 	*/
-	public function styles() {
+	public function settings_styles() {
 
 		wp_register_style('jigoshop_settings_api_styles', jigoshop::assets_url() . '/assets/css/settings.css');
 		wp_enqueue_style( 'jigoshop_settings_api_styles' );
@@ -362,9 +364,14 @@ class Jigoshop_Options_Parser {
 			$class = $item['class'];
 		}
 		
+        if ( ! empty( $item['tip'] )) {
+			$display .= '<div class="titledesc">';
+			$display .= '<a href="#" tip="'.$item['tip'].'" class="tips" tabindex="99"></a>';
+			$display .= '</div>';
+        }
 		$display .= '<div class="jigoshop-option jigoshop-option-'.$item['type'].'">'."\n";
 		$display .= '<div class="jigoshop-controls '.$class.'">'."\n";
-
+		
 		switch ( $item['type'] ) {
 			case 'gateway_options' :
                 foreach (jigoshop_payment_gateways::payment_gateways() as $gateway) :
@@ -528,7 +535,7 @@ class Jigoshop_Options_Parser {
 		}
 
 		if ( $item['type'] != 'heading' ) {
-			if ( !isset( $item['desc'] ) ) {
+			if ( empty( $item['desc'] ) ) {
 				$explain_value = '';
 			} else {
 				$explain_value = $item['desc'];
