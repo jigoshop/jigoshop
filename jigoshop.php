@@ -35,6 +35,18 @@ if ( is_admin() ) {
 	include_once( 'admin/jigoshop-admin.php' );
 	register_activation_hook( __FILE__, 'install_jigoshop' );
 }
+
+// Add a "Settings" link to the plugins.php page for Jigoshop
+function jigoshop_add_settings_link( $links, $file ) {
+	$this_plugin = plugin_basename( __FILE__ );
+	if( $file == $this_plugin ) {
+		$settings_link = '<a href="admin.php?page=jigoshop_settings">' . __( 'Settings', 'jigoshop' ) . '</a>';
+		array_unshift($links, $settings_link);
+	}
+	return $links;
+}
+add_filter( 'plugin_action_links', 'jigoshop_add_settings_link', 10, 2 );
+
 /**
  * Include core files and classes
  **/
