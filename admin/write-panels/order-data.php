@@ -100,33 +100,23 @@ function jigoshop_order_data_meta_box($post) {
 		<div id="order_customer_billing_data" class="panel jigoshop_options_panel">
             <?php
             //display billing fieds and values
-
-                $billing_fields = array(
-                    'first_name' => __('First Name', 'jigoshop'),
-                    'last_name' => __('Last Name', 'jigoshop'),
-                    'company' => __('Company', 'jigoshop'),
-                    'address_1' => __('Address 1', 'jigoshop'),
-                    'address_2' => __('Address 2', 'jigoshop'),
-                    'city' => __('City', 'jigoshop'),
-                    'postcode' => __('Postcode', 'jigoshop'),
-                    'country' => __('Country', 'jigoshop'),
-                    'state' => __('State/County', 'jigoshop'),
-                    'email' => __('Email Address', 'jigoshop'),
-                    'phone' => __('Tel', 'jigoshop'),
-                );
-
-                foreach($billing_fields as $field_id => $field_desc) {
-                    $field_id = 'billing_' . $field_id;
-                    $field_value = '';
-
-                    if(isset($data[$field_id])) {
-                        $field_value = $data[$field_id];
-                    }
-
-                    echo '<p class="form-field"><label for="' . esc_attr( $field_id ) . '">'.$field_desc.':</label>
-				<input type="text" name="'.esc_attr($field_id).'" id="'.esc_attr($field_id).'" value="'.esc_attr($field_value).'" /></p>';
-                }
-
+            
+            	// get all fields (including custom ones)
+            	// this is expensive!!!
+            	$billing_fields = jigoshop_checkout::instance()->billing_fields;
+            	
+            	// parse fields
+            	foreach ($billing_fields as $field) :
+            		$field_id = str_replace('-', '_', $field['name']);
+            		
+            		if(isset($data[$field_id])) :
+            		    $field_value = $data[$field_id];
+            		endif;
+            		
+            		echo '<p class="form-field"><label for="' . esc_attr( $field_id ) . '">'.$field['label'].':</label>
+            		<input type="text" name="'.esc_attr($field_id).'" id="'.esc_attr($field_id).'" value="'.esc_attr($field_value).'" /></p>';
+            		
+            	endforeach;
 			?>
 		</div>
 

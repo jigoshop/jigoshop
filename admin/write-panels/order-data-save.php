@@ -34,17 +34,6 @@ function jigoshop_process_shop_order_meta($post_id, $post)
 
     // Add/Replace data to array
     $order_fields = array(
-        'billing_first_name',
-        'billing_last_name',
-        'billing_company',
-        'billing_address_1',
-        'billing_address_2',
-        'billing_city',
-        'billing_postcode',
-        'billing_country',
-        'billing_state',
-        'billing_email',
-        'billing_phone',
         'shipping_first_name',
         'shipping_last_name',
         'shipping_company',
@@ -66,6 +55,34 @@ function jigoshop_process_shop_order_meta($post_id, $post)
         'order_shipping_tax',
         'order_total'
     );
+    
+    // get billing fields (and check for custom fields)
+    if ( has_filter('jigoshop_billing_fields') ) :
+    	// get all billing fields
+    	$billing_fields = jigoshop_checkout::instance()->billing_fields;
+    	
+    	// append to $order_fields
+    	foreach ($billing_fields as $field) :
+    		$order_fields[] = str_replace('-', '_', $field['name']);		
+    	endforeach;
+    else :
+    	// use defaults
+    	$billing_fields = array(
+    		'billing_first_name',
+    		'billing_last_name',
+    		'billing_company',
+    		'billing_address_1',
+    		'billing_address_2',
+    		'billing_city',
+    		'billing_postcode',
+    		'billing_country',
+    		'billing_state',
+    		'billing_email',
+    		'billing_phone'
+    	);
+    	
+    	$order_fields = array_merge($billing_fields, $order_fields);
+    endif;
 
     //run stripslashes on all valid fields
     foreach ($order_fields as $field_name) {
