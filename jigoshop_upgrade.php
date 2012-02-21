@@ -403,19 +403,19 @@ function jigoshop_upgrade_120() {
 				$current = get_option( $setting['id'].'_w' );
 				if ( ! (false === $current) ) {
 					Jigoshop_Options::instance()->set_option( $setting['id'].'_w', $current );
-					delete_option( $setting['id'].'_w' );
+//					delete_option( $setting['id'].'_w' );
 				}
 				$current = get_option( $setting['id'].'_h' );
 				if ( ! (false === $current) ) {
 					Jigoshop_Options::instance()->set_option( $setting['id'].'_h', $current );
-					delete_option( $setting['id'].'_h' );
+//					delete_option( $setting['id'].'_h' );
 				}
 				break;
 			default:
 				$current = get_option( $setting['id'] );
 				if ( ! (false === $current) ) {
 					Jigoshop_Options::instance()->set_option( $setting['id'], $current );
-					delete_option( $setting['id'] );
+//					delete_option( $setting['id'] );
 				}
 				break;
 			}
