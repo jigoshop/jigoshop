@@ -45,8 +45,12 @@ function jigoshop_upgrade() {
 		jigoshop_upgrade_110();
 	}
 
+	if ( $jigoshop_db_version < 1202210 ) {
+//		jigoshop_upgrade_120();
+	}
+
 	// Update the db option
-	update_site_option( 'jigoshop_db_version', JIGOSHOP_VERSION );
+//	update_site_option( 'jigoshop_db_version', JIGOSHOP_VERSION );
 
 	return true;
 }
@@ -113,6 +117,9 @@ function jigoshop_convert_db_version() {
 			break;
 		case '1.1':
 			update_site_option( 'jigoshop_db_version', 1202130 );
+			break;
+		case '1.2':
+//			update_site_option( 'jigoshop_db_version', 1202210 );
 			break;
 	}
 }
@@ -382,9 +389,40 @@ function jigoshop_upgrade_110() {
  * @since 1.2
  */
 function jigoshop_upgrade_120() {
-
+	
+	// convert all options to new Jigoshop_Options class
+	require_once ( 'admin/jigoshop-admin-settings-options.php' );
+	global $options_settings;
+	foreach ( $options_settings as $setting ) {
+		if ( isset( $setting['id'] )) {
+			switch ( $setting['id'] ) {
+			case 'jigoshop_shop_tiny':
+			case 'jigoshop_shop_thumbnail':
+			case 'jigoshop_shop_small':
+			case 'jigoshop_shop_large':
+				$current = get_option( $setting['id'].'_w' );
+				if ( ! (false === $current) ) {
+					Jigoshop_Options::instance()->set_option( $setting['id'].'_w', $current );
+					delete_option( $setting['id'].'_w' );
+				}
+				$current = get_option( $setting['id'].'_h' );
+				if ( ! (false === $current) ) {
+					Jigoshop_Options::instance()->set_option( $setting['id'].'_h', $current );
+					delete_option( $setting['id'].'_h' );
+				}
+				break;
+			default:
+				$current = get_option( $setting['id'] );
+				if ( ! (false === $current) ) {
+					Jigoshop_Options::instance()->set_option( $setting['id'], $current );
+					delete_option( $setting['id'] );
+				}
+				break;
+			}
+		}
+	}	
 	// Add default setting for shop redirection page
-	$shop_page = get_option('jigoshop_shop_page_id');
-	update_option( 'jigoshop_shop_redirect_page_id' , $shop_page );
+	$shop_page = Jigoshop_Options::instance()->get_option( 'jigoshop_shop_page_id' );
+	Jigoshop_Options::instance()->set_option( 'jigoshop_shop_redirect_page_id' , $shop_page );
 
 }
