@@ -47,11 +47,24 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 				endif;
 			endforeach;
 	
-			update_option( 'jigoshop_options', $current_options );
+			add_action( 'shutdown', array( &$this, 'update_options' ));
 		}
 		
 		self::set_current_options( $current_options );
 
+	}
+	
+	
+	/**
+	 * Updates the database with the current options
+	 *
+	 * At various times during a page load, options can be set.
+	 * We will flush them all out on the 'shutdown' action hook.
+	 *
+	 * @since	1.2
+	 */	
+	public function update_options() {
+		update_option( 'jigoshop_options', self::$current_options );
 	}
 	
 	
@@ -73,13 +86,16 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 * Sets a named Jigoshop option
 	 *
 	 * @param   string	the name of the option to set
-	 * @param	
-	 * @return  mixed	the value of the option
+	 * @param	mixed	the value to set
 	 *
 	 * @since	1.2
 	 */	
 	public function set_option( $name, $value ) {
-		logme( "ATTEMPT TO SET OPTION ** DOESN'T EXIST YET" );
+		$this->get_current_options();
+		if ( isset( $name )) {
+			self::$current_options[$name] = $value;
+			add_action( 'shutdown', array( &$this, 'update_options' ));
+		}
 	}
 	
 	
