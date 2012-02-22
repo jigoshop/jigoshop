@@ -29,10 +29,10 @@ function install_jigoshop() {
 		jigoshop_tables_install();		/* we need tables installed first to eliminate installation errors */
 
 		// Get options
-		require_once ( 'jigoshop-admin-settings-options.php' );
+//		require_once ( 'jigoshop-admin-settings-options.php' );  /* no longer required for Jigoshop 1.2 (-JAP-) */
 
 		// Do install
-		jigoshop_default_options();
+//		jigoshop_default_options();  /* no longer required for Jigoshop 1.2 (-JAP-) */
 		jigoshop_create_pages();
 
 		jigoshop_post_type();
@@ -55,6 +55,8 @@ function install_jigoshop() {
  *
  * Sets up the default options used on the settings page
  *
+ * @deprecated -- no longer required for Jigoshop 1.2 (-JAP-)
+ *
  * @since 		1.0
  */
 function jigoshop_default_options() {
@@ -66,12 +68,12 @@ function jigoshop_default_options() {
 
 				if ($value['type']=='image_size') :
 
-					add_option($value['id'].'_w', $value['std']);
-					add_option($value['id'].'_h', $value['std']);
+					Jigoshop_Options::set_option( $value['id'].'_w', $value['std'] );
+					Jigoshop_Options::set_option( $value['id'].'_h', $value['std'] );
 
 				else :
 
-					add_option($value['id'], $value['std']);
+					Jigoshop_Options::set_option( $value['id'], $value['std'] );
 
 				endif;
 
@@ -79,7 +81,7 @@ function jigoshop_default_options() {
 
     endforeach;
 
-    add_option('jigoshop_shop_slug', 'shop');
+    Jigoshop_Options::set_option( 'jigoshop_shop_slug', 'shop' );
 }
 
 /**
