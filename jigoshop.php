@@ -643,7 +643,7 @@ function jigoshop_price( $price, $args = array() ) {
                 $return = $currency_symbol . $price . $currency_code;
             break;
             case 'symbol_code_space' :
-                $return = $currency_code . ' ' . $price . ' ' . $currency_code;
+                $return = $currency_symbol . ' ' . $price . ' ' . $currency_code;
             break;
         endswitch;
 
