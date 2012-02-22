@@ -61,6 +61,8 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 * At various times during a page load, options can be set.
 	 * We will flush them all out on the 'shutdown' action hook.
 	 *
+	 * If options don't exist (fresh install), they are created with default 'true' for WP autoload
+	 *
 	 * @since	1.2
 	 */	
 	public function update_options() {
@@ -100,6 +102,25 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	
 	
 	/**
+	 * Deletes a named Jigoshop option
+	 *
+	 * @param   string	the name of the option to delete
+	 * @return	bool	true for successful completion if option found, false otherwise
+	 *
+	 * @since	1.2
+	 */	
+	public function delete_option( $name ) {
+		$this->get_current_options();
+		if ( isset( $name )) {
+			unset( self::$current_options[$name] );
+			add_action( 'shutdown', array( &$this, 'update_options' ));
+			return true;
+		}
+		return false;
+	}
+	
+	
+	/**
 	 * Return the Jigoshop current options
 	 *
 	 * @param   none
@@ -119,7 +140,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	/**
 	 * Sets the Jigoshop current options
 	 *
-	 * @param   array	an array containing all the Jigoshop options
+	 * @param   array	an array containing all the current Jigoshop option => value pairs to use
 	 * @return  Void
 	 *
 	 * @since	1.2
@@ -145,6 +166,8 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	
 	/**
 	 * Sets the Jigoshop default options
+	 *
+	 * This will create the default options array
 	 *
 	 * @param   none
 	 * @return  Void
@@ -1053,6 +1076,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 		));
 	}
 	
-} Jigoshop_Options::instance();				// get our options loaded first thing
+} Jigoshop_Options::instance();				// get our options loaded first thing. this file should be loaded very early.
 
 ?>
