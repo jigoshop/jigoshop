@@ -258,8 +258,8 @@ class jigoshop_tax {
      *
      * @return type boolean true if compound tax, otherwise false
      */
-    public function is_compound_tax() {
-        return $this->compound_tax;
+    public function is_compound_tax($rate = array()) {
+        return (empty($rate) ? $this->compound_tax : (isset($rate['compound']) && $rate['compound'] == 'yes' ? true : false ));
     }
 
     /**
@@ -297,45 +297,52 @@ class jigoshop_tax {
     public function calculate_tax_amounts($total_item_price, $tax_classes, $prices_include_tax = true) {
         $tax_amount = array();
         $non_compound_tax_amount = 0;
+        $compounded_tax_amount = 0;
         $total_tax = 0;
 
         // using order of tax classes for customer since order is important
-        if ($this->get_tax_classes_for_customer())
-            foreach ($this->get_tax_classes_for_customer() as $tax_class) :
+        if ($this->get_tax_classes_for_customer()) :
+            $customer_tax_classes = ($prices_include_tax ? array_reverse($this->get_tax_classes_for_customer()) : $this->get_tax_classes_for_customer());
+            foreach ($customer_tax_classes as $tax_class) :
 
                 // make sure that the product is charging this particular tax_class.
                 if (!in_array($tax_class, $tax_classes))
                     continue;
 
-                $rate = $this->get_rate($tax_class);
-
-                if (!$this->is_compound_tax()) :
-                    $tax = $this->calc_tax($total_item_price, $rate, $prices_include_tax);
+                $rate = $this->get_rate($tax_class, false);
+                $tax_rate = $rate['rate'];
+                
+                if (!$this->is_compound_tax($rate)) :
+                    $tax = $this->calc_tax($total_item_price - $compounded_tax_amount, $tax_rate, $prices_include_tax);
 
                     if ($this->has_tax && $tax > 0) :
                         $this->update_tax_amount($tax_class, $tax, false);
                     elseif ($tax > 0) :
                         $tax_amount[$tax_class]['amount'] = $tax;
-                        $tax_amount[$tax_class]['rate'] = $rate;
+                        $tax_amount[$tax_class]['rate'] = $tax_rate;
                         $tax_amount[$tax_class]['compound'] = false;
                         $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
-                        $non_compound_tax_amount += $tax;
-                        $total_tax += $tax;
 
                     endif;
 
+                    $non_compound_tax_amount += $tax;
+                    $total_tax += $tax;
+
                 else :
-                    $tax = $this->calc_tax($total_item_price + $non_compound_tax_amount, $rate, $prices_include_tax);
+                    
+                    $tax = $this->calc_tax($total_item_price + $non_compound_tax_amount, $tax_rate, $prices_include_tax);
 
                     if ($this->has_tax && $tax > 0) :
                         $this->update_tax_amount($tax_class, $tax, false);
                     elseif ($tax > 0) :
                         $tax_amount[$tax_class]['amount'] = $tax;
-                        $tax_amount[$tax_class]['rate'] = $rate;
+                        $tax_amount[$tax_class]['rate'] = $tax_rate;
                         $tax_amount[$tax_class]['compound'] = true;
                         $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
-                        $total_tax += $tax;
                     endif;
+                    
+                    $compounded_tax_amount += $tax;
+                    $total_tax += $tax;
 
                 endif;
 
@@ -349,14 +356,16 @@ class jigoshop_tax {
                 $this->tax_amounts = $tax_amount;
                 $this->imploded_tax_amounts = $this->array_implode($this->tax_amounts);
 
-                $tax_rate = 0;
+                $tot_tax_rate = 0;
                 if ($total_item_price) :
-                    $tax_rate = ($prices_include_tax ? round($total_tax / ($total_item_price - $total_tax) * 100, 2) : round($total_tax / $total_item_price * 100, 2));
+                    $tot_tax_rate = ($prices_include_tax ? round($total_tax / ($total_item_price - $total_tax) * 100, 2) : round($total_tax / $total_item_price * 100, 2));
                 endif;
 
-                $this->total_tax_rate = $tax_rate;
+                $this->total_tax_rate = $tot_tax_rate;
 
             endif;
+            
+        endif;
 
     }
 
@@ -416,7 +425,7 @@ class jigoshop_tax {
 
             if ($recalculate_tax) :
                 $rate = $this->get_rate($tax_class);
-                $tax = $this->calc_tax($amount, $rate, get_option('jigoshop_prices_include_tax') == 'yes');
+                $tax = $this->calc_tax($amount, $rate, ($this->is_compound_tax() ? false : get_option('jigoshop_prices_include_tax') == 'yes'));
                 $this->tax_amounts[$tax_class]['amount'] = $tax;
             else :
             	if ( isset($this->tax_amounts[$tax_class]['amount']))
@@ -490,17 +499,20 @@ class jigoshop_tax {
      * Get the current taxation rate using find_rate()
      *
      * @param   string	tax_class the tax class to find rate on
-     * @return  int
+     * @param   boolean rate_only if true, returns the tax rate, otherwise return the full rate array
+     * @return  mixed return current rate array if rate_only is false, otherwise
+     * return the double value of the rate
      */
-    function get_rate($tax_class = '*') {
+    function get_rate($tax_class = '*', $rate_only = true) {
 
         $country = jigoshop_customer::get_shipping_country();
 
         $state = (jigoshop_countries::country_has_states($country) && jigoshop_customer::get_shipping_state() ? jigoshop_customer::get_shipping_state() : '*');
         $rate = $this->find_rate($country, $state, $tax_class);
-        return $rate['rate'];
+        return ($rate_only ? $rate['rate'] : $rate);
 
     }
+
 
     /**
      * Get the shop's taxation rate using find_rate()
