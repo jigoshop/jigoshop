@@ -247,7 +247,7 @@ function jigoshop_post_type() {
     	// Re-generate rewrite rules
     	global $wp_rewrite;
     	$wp_rewrite->flush_rules();
-    	update_option('jigowatt_update_rewrite_rules', '0');
+    	Jigoshop_Options::set_option('jigowatt_update_rewrite_rules', '0');
     endif;
 
 }

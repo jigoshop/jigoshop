@@ -40,13 +40,13 @@ function install_jigoshop() {
 
 		// Clear cron
 		wp_clear_scheduled_hook('jigoshop_update_sale_prices_schedule_check');
-		update_option('jigoshop_update_sale_prices', 'no');
+		Jigoshop_Options::set_option('jigoshop_update_sale_prices', 'no');
 
 		// Flush Rules
 		flush_rewrite_rules( false );
 
 		// Update version
-		update_option( "jigoshop_db_version", JIGOSHOP_VERSION );
+		update_site_option( "jigoshop_db_version", JIGOSHOP_VERSION );
 	}
 }
 
@@ -174,13 +174,13 @@ function jigoshop_create_single_page( $page_slug, $page_option, $page_data ) {
 		if ( $create_page ) :
 			$page_data['post_name'] = $slug;
 			$page_options_id = wp_insert_post( $page_data );
-			update_option( $page_option, $page_options_id );
+			Jigoshop_Options::set_option( $page_option, $page_options_id );
 		endif;
     }
     else
     {
     	if ( $page_options_id == "" ) :
-    		update_option( $page_option, $page_found );
+    		Jigoshop_Options::set_option( $page_option, $page_found );
     	else :
     		// we have the slug page, another page may be actual page in options (eg: 'shop|store|etc').
     		// Do we need to check for that page.

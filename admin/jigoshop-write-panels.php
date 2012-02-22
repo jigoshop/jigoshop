@@ -128,7 +128,7 @@ function jigoshop_meta_boxes_save_errors() {
     		echo '<p>'.$error.'</p>';
     	endforeach;
     	echo '</div>';
-    	update_option('jigoshop_errors', '');
+    	Jigoshop_Options::set_option('jigoshop_errors', '');
     endif;
 }
 

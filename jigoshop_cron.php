@@ -61,7 +61,7 @@ function jigoshop_update_sale_prices() {
 
 function jigoshop_update_sale_prices_schedule_check(){
 	wp_schedule_event(time(), 'daily', 'jigoshop_update_sale_prices_schedule_check');
-	update_option('jigoshop_update_sale_prices', 'yes');
+	Jigoshop_Options::set_option('jigoshop_update_sale_prices', 'yes');
 }
 
 if (get_option('jigoshop_update_sale_prices')!='yes') jigoshop_update_sale_prices_schedule_check();

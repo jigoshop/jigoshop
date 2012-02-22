@@ -949,7 +949,7 @@ function jigoshop_import_start() {
 							        )
 							    );
 
-								update_option('jigowatt_update_rewrite_rules', '1');
+								Jigoshop_Options::set_option('jigowatt_update_rewrite_rules', '1');
 
 							endif;
 

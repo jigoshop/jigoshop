@@ -876,7 +876,7 @@ class jigoshop_countries {
 				// Will only run update_option once
 				// If the state is '*' , update the default country to the last state in the selected country
 				if (!$show_all && ($selected_state == '*' && $selected_country == $key)) :
-					update_option('jigoshop_default_country', $key . ':' . $state_key);
+					Jigoshop_Options::set_option('jigoshop_default_country', $key . ':' . $state_key);
 				endif;
 
 			else :

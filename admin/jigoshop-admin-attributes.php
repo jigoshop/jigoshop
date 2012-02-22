@@ -42,7 +42,7 @@ function jigoshop_attributes() {
 
 			$wpdb->insert( $wpdb->prefix . "jigoshop_attribute_taxonomies", array( 'attribute_name' => $attribute_name, 'attribute_label' => $attribute_label, 'attribute_type' => $attribute_type ), array( '%s', '%s' ) );
 
-			update_option('jigowatt_update_rewrite_rules', '1');
+			Jigoshop_Options::set_option('jigowatt_update_rewrite_rules', '1');
 
 			wp_safe_redirect( get_admin_url() . 'edit.php?post_type=product&page=jigoshop_attributes' );
 			exit;

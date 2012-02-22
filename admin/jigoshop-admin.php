@@ -507,7 +507,7 @@ function jigoshop_dashboard_recent_comments_control() {
 	if ( 'POST' == $_SERVER['REQUEST_METHOD'] && isset($_POST['widget-recent-comments']) ) {
 		$number = absint( $_POST['widget-recent-comments']['items'] );
 		$widget_options['dashboard_recent_comments']['items'] = $number;
-		update_option( 'dashboard_widget_options', $widget_options );
+		Jigoshop_Options::set_option( 'dashboard_widget_options', $widget_options );
 	}
 
 	$number = isset( $widget_options['dashboard_recent_comments']['items'] ) ? (int) $widget_options['dashboard_recent_comments']['items'] : '';

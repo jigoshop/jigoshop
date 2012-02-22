@@ -201,6 +201,6 @@ function jigoshop_process_shop_order_meta($post_id, $post)
 
     // Error Handling
     if (count($jigoshop_errors) > 0) {
-        update_option('jigoshop_errors', $jigoshop_errors);
+        Jigoshop_Options::set_option('jigoshop_errors', $jigoshop_errors);
     }
 }
