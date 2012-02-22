@@ -53,28 +53,18 @@ function jigoshop_new_order_notification($order_id) {
         echo PHP_EOL . __('Retail Price:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_subtotal_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
     else
         echo PHP_EOL . __('Subtotal:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_subtotal_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
+    if ($order->order_shipping > 0)
+        echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
     if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) :
-        if ($order->order_shipping > 0)
-            echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
         echo __('Subtotal:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_subtotal_inc_tax), ENT_COMPAT, 'UTF-8') . PHP_EOL;
+    endif;
+    if (get_option('jigoshop_calc_taxes') == 'yes') :
         foreach ($order->get_tax_classes() as $tax_class) :
-            if ($order->tax_class_is_not_compound($tax_class)) :
-                echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-            endif;
+            echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
         endforeach;
-    else :
-        if ($order->order_shipping > 0)
-            echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
     endif;
     if ($order->order_discount > 0)
         echo __('Discount:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_discount), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    if (get_option('jigoshop_calc_taxes') == 'yes') :
-        foreach ($order->get_tax_classes() as $tax_class) :
-            if (!$order->tax_class_is_not_compound($tax_class)) :
-                echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-            endif;
-        endforeach;
-    endif;
     echo __('Total:', 'jigoshop') . "\t\t\t\t" . html_entity_decode(jigoshop_price($order->order_total), ENT_COMPAT, 'UTF-8') . ' - ' . __('via', 'jigoshop') . ' ' . ucwords($order->payment_method_title) . PHP_EOL . PHP_EOL;
 
     do_action('jigoshop_after_email_order_info', $order->id);
@@ -149,29 +139,18 @@ function jigoshop_processing_order_customer_notification($order_id) {
         echo PHP_EOL . __('Retail Price:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_subtotal_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
     else
         echo PHP_EOL . __('Subtotal:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_subtotal_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
+    if ($order->order_shipping > 0)
+        echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
     if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) :
-        if ($order->order_shipping > 0)
-            echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-
         echo __('Subtotal:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_subtotal_inc_tax), ENT_COMPAT, 'UTF-8') . PHP_EOL;
+    endif;
+    if (get_option('jigoshop_calc_taxes') == 'yes') :
         foreach ($order->get_tax_classes() as $tax_class) :
-            if ($order->tax_class_is_not_compound($tax_class)) :
-                echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-            endif;
+            echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
         endforeach;
-    else :
-        if ($order->order_shipping > 0)
-            echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
     endif;
     if ($order->order_discount > 0)
         echo __('Discount:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_discount), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    if (get_option('jigoshop_calc_taxes') == 'yes') :
-        foreach ($order->get_tax_classes() as $tax_class) :
-            if (!$order->tax_class_is_not_compound($tax_class)) :
-                echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-            endif;
-        endforeach;
-    endif;
     echo __('Total:', 'jigoshop') . "\t\t\t\t" . html_entity_decode(jigoshop_price($order->order_total), ENT_COMPAT, 'UTF-8') . ' - ' . __('via', 'jigoshop') . ' ' . ucwords($order->payment_method_title) . PHP_EOL . PHP_EOL;
 
     do_action('jigoshop_after_email_order_info', $order->id);
@@ -259,29 +238,18 @@ function jigoshop_completed_order_customer_notification($order_id) {
         echo PHP_EOL . __('Retail Price:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_subtotal_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
     else
         echo PHP_EOL . __('Subtotal:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_subtotal_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
+    if ($order->order_shipping > 0)
+        echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
     if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) :
-        if ($order->order_shipping > 0)
-            echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-
         echo __('Subtotal:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_subtotal_inc_tax), ENT_COMPAT, 'UTF-8') . PHP_EOL;
+    endif;
+    if (get_option('jigoshop_calc_taxes') == 'yes') :
         foreach ($order->get_tax_classes() as $tax_class) :
-            if ($order->tax_class_is_not_compound($tax_class)) :
-                echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-            endif;
+            echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
         endforeach;
-    else :
-        if ($order->order_shipping > 0)
-            echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
     endif;
     if ($order->order_discount > 0)
         echo __('Discount:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_discount), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    if (get_option('jigoshop_calc_taxes') == 'yes') :
-        foreach ($order->get_tax_classes() as $tax_class) :
-            if (!$order->tax_class_is_not_compound($tax_class)) :
-                echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-            endif;
-        endforeach;
-    endif;
     echo __('Total:', 'jigoshop') . "\t\t\t\t" . html_entity_decode(jigoshop_price($order->order_total), ENT_COMPAT, 'UTF-8') . ' - ' . __('via', 'jigoshop') . ' ' . ucwords($order->payment_method_title) . PHP_EOL . PHP_EOL;
 
     do_action('jigoshop_after_email_order_info', $order->id);
@@ -356,29 +324,18 @@ function jigoshop_refunded_order_customer_notification($order_id) {
         echo PHP_EOL . __('Retail Price:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_subtotal_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
     else
         echo PHP_EOL . __('Subtotal:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_subtotal_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
+    if ($order->order_shipping > 0)
+        echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
     if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) :
-        if ($order->order_shipping > 0)
-            echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-
         echo __('Subtotal:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_subtotal_inc_tax), ENT_COMPAT, 'UTF-8') . PHP_EOL;
+    endif;
+    if (get_option('jigoshop_calc_taxes') == 'yes') :
         foreach ($order->get_tax_classes() as $tax_class) :
-            if ($order->tax_class_is_not_compound($tax_class)) :
-                echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-            endif;
+            echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
         endforeach;
-    else :
-        if ($order->order_shipping > 0)
-            echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
     endif;
     if ($order->order_discount > 0)
         echo __('Discount:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_discount), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    if (get_option('jigoshop_calc_taxes') == 'yes') :
-        foreach ($order->get_tax_classes() as $tax_class) :
-            if (!$order->tax_class_is_not_compound($tax_class)) :
-                echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-            endif;
-        endforeach;
-    endif;
     echo __('Total:', 'jigoshop') . "\t\t\t\t" . html_entity_decode(jigoshop_price($order->order_total), ENT_COMPAT, 'UTF-8') . ' - ' . __('via', 'jigoshop') . ' ' . ucwords($order->payment_method_title) . PHP_EOL . PHP_EOL;
 
     do_action('jigoshop_after_email_order_info', $order->id);
@@ -451,28 +408,18 @@ function jigoshop_pay_for_order_customer_notification($order_id) {
         echo PHP_EOL . __('Retail Price:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_subtotal_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
     else
         echo PHP_EOL . __('Subtotal:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_subtotal_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
+    if ($order->order_shipping > 0)
+        echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
     if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) :
-        if ($order->order_shipping > 0)
-            echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
         echo __('Subtotal:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_subtotal_inc_tax), ENT_COMPAT, 'UTF-8') . PHP_EOL;
+    endif;
+    if (get_option('jigoshop_calc_taxes') == 'yes') :
         foreach ($order->get_tax_classes() as $tax_class) :
-            if ($order->tax_class_is_not_compound($tax_class)) :
-                echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-            endif;
+            echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
         endforeach;
-    else :
-        if ($order->order_shipping > 0)
-            echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
     endif;
     if ($order->order_discount > 0)
         echo __('Discount:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_discount), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    if (get_option('jigoshop_calc_taxes') == 'yes') :
-        foreach ($order->get_tax_classes() as $tax_class) :
-            if (!$order->tax_class_is_not_compound($tax_class)) :
-                echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-            endif;
-        endforeach;
-    endif;
     echo __('Total:', 'jigoshop') . "\t\t\t\t" . html_entity_decode(jigoshop_price($order->order_total), ENT_COMPAT, 'UTF-8') . ' - ' . __('via', 'jigoshop') . ' ' . ucwords($order->payment_method_title) . PHP_EOL . PHP_EOL;
 
     do_action('jigoshop_after_email_order_info', $order->id);
