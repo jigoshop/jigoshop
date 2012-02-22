@@ -74,12 +74,14 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 * Returns a named Jigoshop option
 	 *
 	 * @param   string	the name of the option to retrieve
-	 * @return  mixed	the value of the option
+	 * @param   mixed	the value to return if the option doesn't exist
+	 * @return  mixed	the value of the option, null if no default and doesn't exist
 	 *
 	 * @since	1.2
 	 */	
-	public function get_option( $name ) {
+	public function get_option( $name, $default = null ) {
 		if ( isset( self::$current_options[$name] )) return self::$current_options[$name];
+		else if ( isset( $default )) return $default;
 		else return null;
 	}
 	
