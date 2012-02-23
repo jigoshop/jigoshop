@@ -17,17 +17,21 @@
 class local_pickup extends jigoshop_shipping_method {
 
 	public function __construct() {
+		
+		$js_options = Jigoshop_Options::instance();
+		
+		add_option('jigoshop_local_pickup_availability', 'all');
+		add_option('jigoshop_local_pickup_title', 'Local Pickup');
+		
         $this->id 			= 'local_pickup';
-        $this->enabled		= Jigoshop_Options::get_option('jigoshop_local_pickup_enabled');
-		$this->title 		= Jigoshop_Options::get_option('jigoshop_local_pickup_title');
-		$this->availability = Jigoshop_Options::get_option('jigoshop_local_pickup_availability');
-		$this->countries 	= Jigoshop_Options::get_option('jigoshop_local_pickup_countries');
+        $this->enabled		= $js_options->get_option('jigoshop_local_pickup_enabled');
+		$this->title 		= $js_options->get_option('jigoshop_local_pickup_title');
+		$this->availability = $js_options->get_option('jigoshop_local_pickup_availability');
+		$this->countries 	= $js_options->get_option('jigoshop_local_pickup_countries');
 		if (isset( jigoshop_session::instance()->chosen_shipping_method_id ) && jigoshop_session::instance()->chosen_shipping_method_id==$this->id) $this->chosen = true;
 
 		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
 
-		add_option('jigoshop_local_pickup_availability', 'all');
-		add_option('jigoshop_local_pickup_title', 'Local Pickup');
     }
 
     public function calculate_shipping() {
@@ -43,29 +47,29 @@ class local_pickup extends jigoshop_shipping_method {
 	        <td class="titledesc"><?php _e('Enable local pickup', 'jigoshop') ?>:</td>
 	        <td class="forminp">
 		        <select name="jigoshop_local_pickup_enabled" id="jigoshop_local_pickup_enabled" style="min-width:100px;">
-		            <option value="yes" <?php if (Jigoshop_Options::get_option('jigoshop_local_pickup_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if (Jigoshop_Options::get_option('jigoshop_local_pickup_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
+		            <option value="yes" <?php if ($js_options->get_option('jigoshop_local_pickup_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
+		            <option value="no" <?php if ($js_options->get_option('jigoshop_local_pickup_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
 		        </select>
 	        </td>
 	    </tr>
 	    <tr>
 	        <td class="titledesc"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?>:</td>
 	        <td class="forminp">
-		        <input type="text" name="jigoshop_local_pickup_title" id="jigoshop_local_pickup_title" style="min-width:50px;" value="<?php if ($value = Jigoshop_Options::get_option('jigoshop_local_pickup_title')) echo $value; else echo 'Local Pickup'; ?>" />
+		        <input type="text" name="jigoshop_local_pickup_title" id="jigoshop_local_pickup_title" style="min-width:50px;" value="<?php if ($value = $js_options->get_option('jigoshop_local_pickup_title')) echo $value; else echo 'Local Pickup'; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
 	        <td class="titledesc"><?php _e('Method available for', 'jigoshop') ?>:</td>
 	        <td class="forminp">
 		        <select name="jigoshop_local_pickup_availability" id="jigoshop_local_pickup_availability" style="min-width:100px;">
-		            <option value="all" <?php if (Jigoshop_Options::get_option('jigoshop_local_pickup_availability') == 'all') echo 'selected="selected"'; ?>><?php _e('All allowed countries', 'jigoshop'); ?></option>
-		            <option value="specific" <?php if (Jigoshop_Options::get_option('jigoshop_local_pickup_availability') == 'specific') echo 'selected="selected"'; ?>><?php _e('Specific Countries', 'jigoshop'); ?></option>
+		            <option value="all" <?php if ($js_options->get_option('jigoshop_local_pickup_availability') == 'all') echo 'selected="selected"'; ?>><?php _e('All allowed countries', 'jigoshop'); ?></option>
+		            <option value="specific" <?php if ($js_options->get_option('jigoshop_local_pickup_availability') == 'specific') echo 'selected="selected"'; ?>><?php _e('Specific Countries', 'jigoshop'); ?></option>
 		        </select>
 	        </td>
 	    </tr>
 	    <?php
     	$countries = jigoshop_countries::$countries;
-    	$selections = Jigoshop_Options::get_option('jigoshop_local_pickup_countries', array());
+    	$selections = $js_options->get_option('jigoshop_local_pickup_countries', array());
     	?><tr class="multi_select_countries">
             <td class="titledesc"><?php _e('Specific Countries', 'jigoshop'); ?>:</td>
             <td class="forminp">
@@ -95,13 +99,18 @@ class local_pickup extends jigoshop_shipping_method {
     }
 
     public function process_admin_options() {
+		
+		$js_options = Jigoshop_Options::instance();
+   		if(isset($_POST['jigoshop_local_pickup_enabled'])) $js_options->set_option('jigoshop_local_pickup_enabled', jigowatt_clean($_POST['jigoshop_local_pickup_enabled']));
+   		else $js_options->delete_option('jigoshop_local_pickup_enabled');
+   		if(isset($_POST['jigoshop_local_pickup_title'])) $js_options->set_option('jigoshop_local_pickup_title', jigowatt_clean($_POST['jigoshop_local_pickup_title']));
+   		else $js_options->delete_option('jigoshop_local_pickup_title');
+   		if(isset($_POST['jigoshop_local_pickup_availability'])) $js_options->set_option('jigoshop_local_pickup_availability', jigowatt_clean($_POST['jigoshop_local_pickup_availability']));
+   		else $js_options->delete_option('jigoshop_local_pickup_availability');
 
-   		if(isset($_POST['jigoshop_local_pickup_enabled'])) update_option('jigoshop_local_pickup_enabled', jigowatt_clean($_POST['jigoshop_local_pickup_enabled'])); else @delete_option('jigoshop_local_pickup_enabled');
-   		if(isset($_POST['jigoshop_local_pickup_title'])) update_option('jigoshop_local_pickup_title', jigowatt_clean($_POST['jigoshop_local_pickup_title'])); else @delete_option('jigoshop_local_pickup_title');
-   		if(isset($_POST['jigoshop_local_pickup_availability'])) update_option('jigoshop_local_pickup_availability', jigowatt_clean($_POST['jigoshop_local_pickup_availability'])); else @delete_option('jigoshop_local_pickup_availability');
-
-	    if (isset($_POST['jigoshop_local_pickup_countries'])) $selected_countries = $_POST['jigoshop_local_pickup_countries']; else $selected_countries = array();
-	    update_option('jigoshop_local_pickup_countries', $selected_countries);
+	    if (isset($_POST['jigoshop_local_pickup_countries'])) $selected_countries = $_POST['jigoshop_local_pickup_countries'];
+	    else $selected_countries = array();
+	    $js_options->set_option('jigoshop_local_pickup_countries', $selected_countries);
 
     }
 
