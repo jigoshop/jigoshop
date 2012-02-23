@@ -65,7 +65,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 *
 	 * @since	1.2
 	 */	
-	public function update_options() {
+	protected function update_options() {
 		update_option( 'jigoshop_options', self::$current_options );
 	}
 	
