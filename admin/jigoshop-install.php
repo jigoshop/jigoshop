@@ -33,6 +33,8 @@ function install_jigoshop() {
 
 		// Do install
 //		jigoshop_default_options();  /* no longer required for Jigoshop 1.2 (-JAP-) */
+		Jigoshop_Options::instance();
+		
 		jigoshop_create_pages();
 
 		jigoshop_post_type();
