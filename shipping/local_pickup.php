@@ -20,8 +20,8 @@ class local_pickup extends jigoshop_shipping_method {
 		
 		$js_options = Jigoshop_Options::instance();
 		
-		add_option('jigoshop_local_pickup_availability', 'all');
-		add_option('jigoshop_local_pickup_title', 'Local Pickup');
+		$js_options->add_option('jigoshop_local_pickup_availability', 'all');
+		$js_options->add_option('jigoshop_local_pickup_title', 'Local Pickup');
 		
         $this->id 			= 'local_pickup';
         $this->enabled		= $js_options->get_option('jigoshop_local_pickup_enabled');
