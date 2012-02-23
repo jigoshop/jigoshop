@@ -21,6 +21,10 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 	
 		$js_options = Jigoshop_Options::instance();
 		
+		$js_options->add_option('jigoshop_bank_transfer_enabled', 'yes');
+		$js_options->add_option('jigoshop_bank_transfer_title', __('Bank Transfer', 'jigoshop') );
+		$js_options->add_option('jigoshop_bank_transfer_description', __('Please use the details below to transfer the payment for your order, once payment is received your order will be processed.', 'jigoshop'));
+		
         $this->id				= 'bank_transfer';
         $this->icon 			= '';
         $this->has_fields 		= false;
@@ -37,10 +41,6 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 
 		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
 		
-		$js_options->add_option('jigoshop_bank_transfer_enabled', 'yes');
-		$js_options->add_option('jigoshop_bank_transfer_title', __('Bank Transfer', 'jigoshop') );
-		$js_options->add_option('jigoshop_bank_transfer_description', __('Please use the details below to transfer the payment for your order, once payment is received your order will be processed.', 'jigoshop'));
-
     	add_action('thankyou_bank_transfer', array(&$this, 'thankyou_page'));
     }
 

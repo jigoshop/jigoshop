@@ -20,6 +20,10 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 	
 		$js_options = Jigoshop_Options::instance();
 		
+		$js_options->add_option('jigoshop_cheque_enabled', 'yes');
+		$js_options->add_option('jigoshop_cheque_title', __('Cheque Payment', 'jigoshop') );
+		$js_options->add_option('jigoshop_cheque_description', __('Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'jigoshop'));
+		
         $this->id				= 'cheque';
         $this->icon 			= '';
         $this->has_fields 		= false;
@@ -27,10 +31,6 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 		$this->enabled			= $js_options->get_option('jigoshop_cheque_enabled');
 		$this->title 			= $js_options->get_option('jigoshop_cheque_title');
 		$this->description 		= $js_options->get_option('jigoshop_cheque_description');
-
-		$js_options->add_option('jigoshop_cheque_enabled', 'yes');
-		$js_options->add_option('jigoshop_cheque_title', __('Cheque Payment', 'jigoshop') );
-		$js_options->add_option('jigoshop_cheque_description', __('Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'jigoshop'));
 
 		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
     	add_action('thankyou_cheque', array(&$this, 'thankyou_page'));

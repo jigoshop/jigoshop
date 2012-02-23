@@ -20,6 +20,10 @@ class jigoshop_cod extends jigoshop_payment_gateway {
 		
 		$js_options = Jigoshop_Options::instance();
 		
+		$js_options->add_option('jigoshop_cod_enabled', 'yes');
+		$js_options->add_option('jigoshop_cod_title', __('Cash on Delivery', 'jigoshop') );
+		$js_options->add_option('jigoshop_cod_description', __('Please pay to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'jigoshop'));
+		
         $this->id				= 'cod';
         $this->icon 			= '';
         $this->has_fields 		= false;
@@ -27,10 +31,6 @@ class jigoshop_cod extends jigoshop_payment_gateway {
 		$this->enabled			= $js_options->get_option('jigoshop_cod_enabled');
 		$this->title 			= $js_options->get_option('jigoshop_cod_title');
 		$this->description 		= $js_options->get_option('jigoshop_cod_description');
-
-		$js_options->add_option('jigoshop_cod_enabled', 'yes');
-		$js_options->add_option('jigoshop_cod_title', __('Cash on Delivery', 'jigoshop') );
-		$js_options->add_option('jigoshop_cod_description', __('Please pay to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'jigoshop'));
 
 		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
     	add_action('thankyou_cod', array(&$this, 'thankyou_page'));

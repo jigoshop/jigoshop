@@ -20,6 +20,14 @@ class dibs extends jigoshop_payment_gateway {
 		
 		$js_options = Jigoshop_Options::instance();
 		
+		$js_options->add_option('jigoshop_dibs_enabled', 'yes');
+		$js_options->add_option('jigoshop_dibs_merchant', '');
+		$js_options->add_option('jigoshop_dibs_key1', '');
+		$js_options->add_option('jigoshop_dibs_key2', '');
+		$js_options->add_option('jigoshop_dibs_title', __('DIBS', 'jigoshop') );
+		$js_options->add_option('jigoshop_dibs_description', __("Pay via DIBS using credit card or bank transfer.", 'jigoshop') );
+		$js_options->add_option('jigoshop_dibs_testmode', 'no');
+
 		$this->id = 'dibs';
 		$this->icon = '';
 		$this->has_fields = false;
@@ -36,13 +44,6 @@ class dibs extends jigoshop_payment_gateway {
 		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
 		add_action('receipt_dibs', array(&$this, 'receipt_page'));
 
-		$js_options->add_option('jigoshop_dibs_enabled', 'yes');
-		$js_options->add_option('jigoshop_dibs_merchant', '');
-		$js_options->add_option('jigoshop_dibs_key1', '');
-		$js_options->add_option('jigoshop_dibs_key2', '');
-		$js_options->add_option('jigoshop_dibs_title', __('DIBS', 'jigoshop') );
-		$js_options->add_option('jigoshop_dibs_description', __("Pay via DIBS using credit card or bank transfer.", 'jigoshop') );
-		$js_options->add_option('jigoshop_dibs_testmode', 'no');
 	}
 
 	/**
