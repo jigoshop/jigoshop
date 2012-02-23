@@ -21,9 +21,9 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
         $this->icon 			= '';
         $this->has_fields 		= false;
 
-		$this->enabled			= get_option('jigoshop_cheque_enabled');
-		$this->title 			= get_option('jigoshop_cheque_title');
-		$this->description 		= get_option('jigoshop_cheque_description');
+		$this->enabled			= Jigoshop_Options::get_option('jigoshop_cheque_enabled');
+		$this->title 			= Jigoshop_Options::get_option('jigoshop_cheque_title');
+		$this->description 		= Jigoshop_Options::get_option('jigoshop_cheque_description');
 
 		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
 		add_option('jigoshop_cheque_enabled', 'yes');
@@ -44,21 +44,21 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 	        <td class="titledesc"><?php _e('Enable Cheque Payment', 'jigoshop') ?>:</td>
 	        <td class="forminp">
 		        <select name="jigoshop_cheque_enabled" id="jigoshop_cheque_enabled" style="min-width:100px;">
-		            <option value="yes" <?php if (get_option('jigoshop_cheque_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if (get_option('jigoshop_cheque_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
+		            <option value="yes" <?php if (Jigoshop_Options::get_option('jigoshop_cheque_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
+		            <option value="no" <?php if (Jigoshop_Options::get_option('jigoshop_cheque_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
 		        </select>
 	        </td>
 	    </tr>
 	    <tr>
 	        <td class="titledesc"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?>:</td>
 	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_cheque_title" id="jigoshop_cheque_title" value="<?php if ($value = get_option('jigoshop_cheque_title')) echo $value; else echo 'Cheque Payment'; ?>" />
+		        <input class="input-text" type="text" name="jigoshop_cheque_title" id="jigoshop_cheque_title" value="<?php if ($value = Jigoshop_Options::get_option('jigoshop_cheque_title')) echo $value; else echo 'Cheque Payment'; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
 	        <td class="titledesc"><a href="#" tip="<?php _e('Let the customer know the payee and where they should be sending the cheque too and that their order won\'t be shipping until you receive it.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Customer Message', 'jigoshop') ?>:</td>
 	        <td class="forminp">
-		        <input class="input-text wide-input" type="text" name="jigoshop_cheque_description" id="jigoshop_cheque_description" value="<?php if ($value = get_option('jigoshop_cheque_description')) echo $value; ?>" />
+		        <input class="input-text wide-input" type="text" name="jigoshop_cheque_description" id="jigoshop_cheque_description" value="<?php if ($value = Jigoshop_Options::get_option('jigoshop_cheque_description')) echo $value; ?>" />
 	        </td>
 	    </tr>
 

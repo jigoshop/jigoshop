@@ -82,7 +82,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 * @since	1.2
 	 */	
 	public function add_option( $name, $value ) {
-		$this->get_current_options();
+		self::instance()->get_current_options();
 		if ( ! isset( $name )) {
 			self::$current_options[$name] = $value;
 			add_action( 'shutdown', array( &$this, 'update_options' ));
@@ -115,7 +115,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 * @since	1.2
 	 */	
 	public function set_option( $name, $value ) {
-		$this->get_current_options();
+		self::instance()->get_current_options();
 		if ( isset( $name )) {
 			self::$current_options[$name] = $value;
 			add_action( 'shutdown', array( &$this, 'update_options' ));
@@ -132,7 +132,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 * @since	1.2
 	 */	
 	public function delete_option( $name ) {
-		$this->get_current_options();
+		self::instance()->get_current_options();
 		if ( isset( $name )) {
 			unset( self::$current_options[$name] );
 			add_action( 'shutdown', array( &$this, 'update_options' ));
@@ -153,7 +153,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	public function get_current_options() {
 		if ( empty( self::$current_options )) {
 			if ( empty( self::$default_options )) self::set_default_options();
-			else $this->set_current_options( self::$default_options );;
+			else self::instance()->set_current_options( self::$default_options );;
 		}
 		return self::$current_options;
 	}

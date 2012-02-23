@@ -20,16 +20,16 @@ class paypal extends jigoshop_payment_gateway {
         $this->id			= 'paypal';
         $this->icon 		= jigoshop::assets_url() . '/assets/images/icons/paypal.png';
         $this->has_fields 	= false;
-      	$this->enabled		= get_option('jigoshop_paypal_enabled');
-		$this->title 		= get_option('jigoshop_paypal_title');
-		$this->email 		= get_option('jigoshop_paypal_email');
-		$this->description  = get_option('jigoshop_paypal_description');
+      	$this->enabled		= Jigoshop_Options::get_option('jigoshop_paypal_enabled');
+		$this->title 		= Jigoshop_Options::get_option('jigoshop_paypal_title');
+		$this->email 		= Jigoshop_Options::get_option('jigoshop_paypal_email');
+		$this->description  = Jigoshop_Options::get_option('jigoshop_paypal_description');
 
 		$this->liveurl 		= 'https://www.paypal.com/webscr';
 		$this->testurl 		= 'https://www.sandbox.paypal.com/webscr';
-		$this->testmode		= get_option('jigoshop_paypal_testmode');
+		$this->testmode		= Jigoshop_Options::get_option('jigoshop_paypal_testmode');
 
-		$this->send_shipping = get_option('jigoshop_paypal_send_shipping');
+		$this->send_shipping = Jigoshop_Options::get_option('jigoshop_paypal_send_shipping');
 
 		add_action( 'init', array(&$this, 'check_ipn_response') );
 		add_action('valid-paypal-standard-ipn-request', array(&$this, 'successful_request') );
@@ -56,35 +56,35 @@ class paypal extends jigoshop_payment_gateway {
 	        <td class="titledesc"><?php _e('Enable PayPal Standard', 'jigoshop') ?>:</td>
 	        <td class="forminp">
 		        <select name="jigoshop_paypal_enabled" id="jigoshop_paypal_enabled" style="min-width:100px;">
-		            <option value="yes" <?php if (get_option('jigoshop_paypal_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if (get_option('jigoshop_paypal_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
+		            <option value="yes" <?php if (Jigoshop_Options::get_option('jigoshop_paypal_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
+		            <option value="no" <?php if (Jigoshop_Options::get_option('jigoshop_paypal_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
 		        </select>
 	        </td>
 	    </tr>
 	    <tr>
 	        <td class="titledesc"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?>:</td>
 	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_paypal_title" id="jigoshop_paypal_title" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_paypal_title')) echo $value; else echo 'PayPal'; ?>" />
+		        <input class="input-text" type="text" name="jigoshop_paypal_title" id="jigoshop_paypal_title" style="min-width:50px;" value="<?php if ($value = Jigoshop_Options::get_option('jigoshop_paypal_title')) echo $value; else echo 'PayPal'; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
 	        <td class="titledesc"><a href="#" tip="<?php _e('This controls the description which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Description', 'jigoshop') ?>:</td>
 	        <td class="forminp">
-		        <input class="input-text wide-input" type="text" name="jigoshop_paypal_description" id="jigoshop_paypal_description" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_paypal_description')) echo $value; ?>" />
+		        <input class="input-text wide-input" type="text" name="jigoshop_paypal_description" id="jigoshop_paypal_description" style="min-width:50px;" value="<?php if ($value = Jigoshop_Options::get_option('jigoshop_paypal_description')) echo $value; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
 	        <td class="titledesc"><a href="#" tip="<?php _e('Please enter your PayPal email address; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('PayPal email address', 'jigoshop') ?>:</td>
 	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_paypal_email" id="jigoshop_paypal_email" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_paypal_email')) echo $value; ?>" />
+		        <input class="input-text" type="text" name="jigoshop_paypal_email" id="jigoshop_paypal_email" style="min-width:50px;" value="<?php if ($value = Jigoshop_Options::get_option('jigoshop_paypal_email')) echo $value; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
 	        <td class="titledesc"><a href="#" tip="<?php _e('If your checkout page does not ask for shipping details, or if you do not want to send shipping information to PayPal, set this option to no. If you enable this option PayPal may restrict where things can be sent, and will prevent some orders going through for your protection.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Send shipping details to PayPal', 'jigoshop') ?>:</td>
 	        <td class="forminp">
 		        <select name="jigoshop_paypal_send_shipping" id="jigoshop_paypal_send_shipping" style="min-width:100px;">
-		            <option value="yes" <?php if (get_option('jigoshop_paypal_send_shipping') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if (get_option('jigoshop_paypal_send_shipping') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
+		            <option value="yes" <?php if (Jigoshop_Options::get_option('jigoshop_paypal_send_shipping') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
+		            <option value="no" <?php if (Jigoshop_Options::get_option('jigoshop_paypal_send_shipping') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
 		        </select>
 	        </td>
 	    </tr>
@@ -92,8 +92,8 @@ class paypal extends jigoshop_payment_gateway {
 	        <td class="titledesc"><?php _e('Enable PayPal sandbox', 'jigoshop') ?>:</td>
 	        <td class="forminp">
 		        <select name="jigoshop_paypal_testmode" id="jigoshop_paypal_testmode" style="min-width:100px;">
-		            <option value="yes" <?php if (get_option('jigoshop_paypal_testmode') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if (get_option('jigoshop_paypal_testmode') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
+		            <option value="yes" <?php if (Jigoshop_Options::get_option('jigoshop_paypal_testmode') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
+		            <option value="no" <?php if (Jigoshop_Options::get_option('jigoshop_paypal_testmode') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
 		        </select>
 	        </td>
 	    </tr>
@@ -104,7 +104,7 @@ class paypal extends jigoshop_payment_gateway {
 	 * There are no payment fields for paypal, but we want to show the description if set.
 	 **/
     function payment_fields() {
-    	if ($jigoshop_paypal_description = get_option('jigoshop_paypal_description')) echo wpautop(wptexturize($jigoshop_paypal_description));
+    	if ($jigoshop_paypal_description = Jigoshop_Options::get_option('jigoshop_paypal_description')) echo wpautop(wptexturize($jigoshop_paypal_description));
     }
 
 	/**
@@ -160,7 +160,7 @@ class paypal extends jigoshop_payment_gateway {
 				'cmd' 					=> '_cart',
 				'business' 				=> $this->email,
 				'no_note' 				=> 1,
-				'currency_code' 		=> get_option('jigoshop_currency'),
+				'currency_code' 		=> Jigoshop_Options::get_option('jigoshop_currency'),
 				'charset' 				=> 'UTF-8',
 				'rm' 					=> 2,
 				'upload' 				=> 1,
@@ -195,7 +195,7 @@ class paypal extends jigoshop_payment_gateway {
 		);
 
         // only include tax if prices don't include tax
-        if (get_option('jigoshop_prices_include_tax') != 'yes') :
+        if (Jigoshop_Options::get_option('jigoshop_prices_include_tax') != 'yes') :
             $paypal_args['tax']					= $order->get_total_tax();
             $paypal_args['tax_cart']			= $order->get_total_tax();
         endif;
@@ -251,7 +251,7 @@ class paypal extends jigoshop_payment_gateway {
 
         $shipping_tax = ($order->order_shipping_tax ? $order->order_shipping_tax : 0);
 
-		$paypal_args['amount_'.$item_loop] = (get_option('jigoshop_prices_include_tax') == 'yes' ? number_format($order->order_shipping + $shipping_tax, 2) : number_format($order->order_shipping, 2));
+		$paypal_args['amount_'.$item_loop] = (Jigoshop_Options::get_option('jigoshop_prices_include_tax') == 'yes' ? number_format($order->order_shipping + $shipping_tax, 2) : number_format($order->order_shipping, 2));
 
 		$paypal_args_array = array();
 

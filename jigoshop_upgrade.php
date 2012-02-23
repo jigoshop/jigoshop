@@ -45,12 +45,12 @@ function jigoshop_upgrade() {
 		jigoshop_upgrade_110();
 	}
 
-	if ( $jigoshop_db_version < 1202210 ) {
-//		jigoshop_upgrade_120();
+	if ( $jigoshop_db_version < 1202230 ) {
+		jigoshop_upgrade_120();
 	}
 
 	// Update the db option
-//	update_site_option( 'jigoshop_db_version', JIGOSHOP_VERSION );
+	update_site_option( 'jigoshop_db_version', JIGOSHOP_VERSION );
 
 	return true;
 }
@@ -119,7 +119,7 @@ function jigoshop_convert_db_version() {
 			update_site_option( 'jigoshop_db_version', 1202130 );
 			break;
 		case '1.2':
-//			update_site_option( 'jigoshop_db_version', 1202210 );
+			update_site_option( 'jigoshop_db_version', 1202230 );
 			break;
 	}
 }
@@ -390,6 +390,8 @@ function jigoshop_upgrade_110() {
  */
 function jigoshop_upgrade_120() {
 	
+	global $wpdb;
+	
 	// convert all options to new Jigoshop_Options class
 	require_once ( 'admin/jigoshop-admin-settings-options.php' );
 	global $options_settings;
@@ -402,27 +404,41 @@ function jigoshop_upgrade_120() {
 			case 'jigoshop_shop_large':
 				$current = get_option( $setting['id'].'_w' );
 				if ( ! (false === $current) ) {
-					Jigoshop_Options::set_option( $setting['id'].'_w', $current );
-//					delete_option( $setting['id'].'_w' );
+					Jigoshop_Options::instance()->set_option( $setting['id'].'_w', $current );
+					delete_option( $setting['id'].'_w' );
 				}
 				$current = get_option( $setting['id'].'_h' );
 				if ( ! (false === $current) ) {
-					Jigoshop_Options::set_option( $setting['id'].'_h', $current );
-//					delete_option( $setting['id'].'_h' );
+					Jigoshop_Options::instance()->set_option( $setting['id'].'_h', $current );
+					delete_option( $setting['id'].'_h' );
 				}
 				break;
 			default:
 				$current = get_option( $setting['id'] );
 				if ( ! (false === $current) ) {
-					Jigoshop_Options::set_option( $setting['id'], $current );
-//					delete_option( $setting['id'] );
+					Jigoshop_Options::instance()->set_option( $setting['id'], $current );
+					delete_option( $setting['id'] );
 				}
 				break;
 			}
 		}
-	}	
+	}
+	
+	// get all other current 'jigoshop_' namespace options from the 'options' table
+	$options_in_use = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->options} WHERE option_name LIKE 'jigoshop_%%';" ));
+	
+	foreach ( $options_in_use as $index => $setting ) {
+		if ( $setting->option_name == 'jigoshop_options' ) continue;
+		if ( ! Jigoshop_Options::instance()->get_option( $setting->option_name ) ) {
+			Jigoshop_Options::instance()->set_option( $setting->option_name, maybe_unserialize( $setting->option_value ));
+			delete_option( $setting->option_name );
+		}
+	}
+
 	// Add default setting for shop redirection page
-	$shop_page = Jigoshop_Options::get_option( 'jigoshop_shop_page_id' );
-	Jigoshop_Options::set_option( 'jigoshop_shop_redirect_page_id' , $shop_page );
+	$shop_page = Jigoshop_Options::instance()->get_option( 'jigoshop_shop_page_id' );
+	Jigoshop_Options::instance()->set_option( 'jigoshop_shop_redirect_page_id' , $shop_page );
+
+	flush_rewrite_rules( true );
 
 }

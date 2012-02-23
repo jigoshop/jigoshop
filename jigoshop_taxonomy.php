@@ -26,7 +26,7 @@ function jigoshop_post_type() {
 
 	$base_slug = ($shop_page_id && $base_page = get_page( $shop_page_id )) ? get_page_uri( $shop_page_id ) : 'shop';
 
-	if (get_option('jigoshop_prepend_shop_page_to_urls')=="yes") :
+	if (Jigoshop_Options::get_option('jigoshop_prepend_shop_page_to_urls')=="yes") :
 		$category_base = trailingslashit($base_slug);
 	else :
 		$category_base = '';
@@ -243,7 +243,7 @@ function jigoshop_post_type() {
         )
     );
 
-    if (get_option('jigowatt_update_rewrite_rules')=='1') :
+    if (Jigoshop_Options::get_option('jigowatt_update_rewrite_rules')=='1') :
     	// Re-generate rewrite rules
     	global $wp_rewrite;
     	$wp_rewrite->flush_rules();
@@ -438,7 +438,7 @@ function jigoshop_nav_menu_items_classes ($menu_items, $args) {
 	// only add nav menu classes if the queried object is the Shop page or derivative (Product, Category, Tag)
 	if( empty( $shop_page_id ) || ! is_content_wrapped() ) return $menu_items;
 
-	$home_page_id = (int) get_option( 'page_for_posts' );
+	$home_page_id = (int) Jigoshop_Options::get_option( 'page_for_posts' );
 
 	foreach ( (array) $menu_items as $key => $menu_item ) {
 

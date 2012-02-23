@@ -100,7 +100,7 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 
 			// Print the cart total
 			echo '<p class="total"><strong>';
-			echo __( ( ( get_option( 'jigoshop_prices_include_tax') == 'yes' ) ? 'Total' : 'Subtotal' ), 'jigoshop' );
+			echo __( ( ( Jigoshop_Options::get_option( 'jigoshop_prices_include_tax') == 'yes' ) ? 'Total' : 'Subtotal' ), 'jigoshop' );
 			echo ':</strong> ' . jigoshop_cart::get_cart_total();
 			echo '</p>';
 

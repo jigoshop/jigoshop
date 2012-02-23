@@ -174,9 +174,9 @@ class jigoshop_cart extends Jigoshop_Singleton {
         $in_cart_qty = is_numeric($found_cart_item_key) ? self::$cart_contents[$found_cart_item_key]['quantity'] : 0;
         if ($product->managing_stock() && !$product->has_enough_stock($quantity + $in_cart_qty)) :
             if ($in_cart_qty > 0) :
-				$error = (get_option('jigoshop_show_stock') == 'yes') ? sprintf(__('We are sorry.  We do not have enough "%s" to fill your request.  You have %d of them in your Cart and we have %d available at this time.', 'jigoshop'), $product->get_title(), $in_cart_qty, $product->get_stock()) : sprintf(__('We are sorry.  We do not have enough "%s" to fill your request.', 'jigoshop'), $product->get_title());
+				$error = (Jigoshop_Options::get_option('jigoshop_show_stock') == 'yes') ? sprintf(__('We are sorry.  We do not have enough "%s" to fill your request.  You have %d of them in your Cart and we have %d available at this time.', 'jigoshop'), $product->get_title(), $in_cart_qty, $product->get_stock()) : sprintf(__('We are sorry.  We do not have enough "%s" to fill your request.', 'jigoshop'), $product->get_title());
             else :
-				$error = (get_option('jigoshop_show_stock') == 'yes') ? sprintf(__('We are sorry.  We do not have enough "%s" to fill your request. There are only %d left in stock.', 'jigoshop'), $product->get_title(), $product->get_stock()) : sprintf(__('We are sorry.  We do not have enough "%s" to fill your request.', 'jigoshop'), $product->get_title());
+				$error = (Jigoshop_Options::get_option('jigoshop_show_stock') == 'yes') ? sprintf(__('We are sorry.  We do not have enough "%s" to fill your request. There are only %d left in stock.', 'jigoshop'), $product->get_title(), $product->get_stock()) : sprintf(__('We are sorry.  We do not have enough "%s" to fill your request.', 'jigoshop'), $product->get_title());
 			endif;
 			jigoshop::add_error($error);
             return false;
@@ -325,7 +325,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
     /** Sees if we need a shipping address */
     function ship_to_billing_address_only() {
-        return (get_option('jigoshop_ship_to_billing_address_only') == 'yes');
+        return (Jigoshop_Options::get_option('jigoshop_ship_to_billing_address_only') == 'yes');
     }
 
     /** looks at the totals to see if payment is actually required */
@@ -343,7 +343,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
             if (!$_product->is_in_stock() || ($_product->managing_stock() && !$_product->has_enough_stock($values['quantity']))) {
                 $error = new WP_Error();
-				$errormsg = (get_option('jigoshop_show_stock') == 'yes') ? sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. We only have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title(), $_product->get_stock()) : sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title());
+				$errormsg = (Jigoshop_Options::get_option('jigoshop_show_stock') == 'yes') ? sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. We only have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title(), $_product->get_stock()) : sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title());
 				$error->add('out-of-stock',$errormsg);
                 return $error;
             }
@@ -395,11 +395,11 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
                 $total_item_price = $_product->get_price() * $values['quantity'] * 100; // Into pounds
 
-                if (get_option('jigoshop_calc_taxes') == 'yes') :
+                if (Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes') :
 
                     if ($_product->is_taxable()) :
 
-                        if (get_option('jigoshop_prices_include_tax') == 'yes' && jigoshop_customer::is_customer_shipping_outside_base() && (get_option('jigoshop_enable_shipping_calc')=='yes' ||  (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT ))) :
+                        if (Jigoshop_Options::get_option('jigoshop_prices_include_tax') == 'yes' && jigoshop_customer::is_customer_shipping_outside_base() && (Jigoshop_Options::get_option('jigoshop_enable_shipping_calc')=='yes' ||  (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT ))) :
 
                             $total_item_price = $_product->get_price_excluding_tax() * $values['quantity'] * 100;
 
@@ -412,7 +412,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
                             endforeach;
 
                         else :
-                            self::$tax->calculate_tax_amounts($total_item_price, $_product->get_tax_classes(), get_option('jigoshop_prices_include_tax') == 'yes');
+                            self::$tax->calculate_tax_amounts($total_item_price, $_product->get_tax_classes(), Jigoshop_Options::get_option('jigoshop_prices_include_tax') == 'yes');
                         endif;
 
                     endif;
@@ -421,8 +421,8 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
                 $total_item_price = $total_item_price / 100; // Back to pounds
 
-                if (get_option('jigoshop_calc_taxes') == 'yes' && self::$tax->get_non_compounded_tax_amount()) :
-                    if (get_option('jigoshop_prices_include_tax') == 'yes') :
+                if (Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes' && self::$tax->get_non_compounded_tax_amount()) :
+                    if (Jigoshop_Options::get_option('jigoshop_prices_include_tax') == 'yes') :
                         self::$subtotal_inc_tax += $total_item_price - self::$tax->get_compound_tax_amount();
                     else :
                         self::$subtotal_inc_tax += self::$tax->get_non_compounded_tax_amount() + $total_item_price;
@@ -431,7 +431,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
                 self::$cart_contents_total += $total_item_price;
 
-                if (get_option('jigoshop_calc_taxes') == 'yes' && get_option('jigoshop_prices_include_tax') == 'yes' && !(get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT ))) :
+                if (Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes' && Jigoshop_Options::get_option('jigoshop_prices_include_tax') == 'yes' && !(Jigoshop_Options::get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT ))) :
                     self::$cart_contents_total = self::$subtotal_inc_tax;
                 endif;
 
@@ -474,12 +474,12 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
         self::$shipping_total = jigoshop_shipping::get_total();
 
-        if (get_option('jigoshop_calc_taxes') == 'yes') :
+        if (Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes') :
             self::$shipping_tax_total = jigoshop_shipping::get_tax();
 
             self::$tax->update_tax_amount_with_shipping_tax(self::$shipping_tax_total * 100);
 
-            if (self::$tax->is_shipping_tax_non_compounded() && get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
+            if (self::$tax->is_shipping_tax_non_compounded() && Jigoshop_Options::get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
                 self::$subtotal_inc_tax += self::$shipping_tax_total;
             endif;
         endif;
@@ -506,11 +506,11 @@ class jigoshop_cart extends Jigoshop_Singleton {
             endforeach;
 
 
-        if (get_option('jigoshop_calc_taxes') == 'yes' && self::get_subtotal_inc_tax()) : // defines if there are mixed tax classes (with compounding taxes)
+        if (Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes' && self::get_subtotal_inc_tax()) : // defines if there are mixed tax classes (with compounding taxes)
 
             foreach (self::get_applied_tax_classes() as $tax_class) :
                 if (!self::is_not_compounded_tax($tax_class)) : //tax compounded
-                    if (get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
+                    if (Jigoshop_Options::get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
                         self::$tax->update_tax_amount($tax_class, (self::$subtotal_inc_tax + self::$shipping_total) * 100);
                     else :
                         self::$tax->update_tax_amount($tax_class, (self::get_cart_subtotal(false) + self::get_cart_shipping_total(false)) * 100);
@@ -522,8 +522,8 @@ class jigoshop_cart extends Jigoshop_Singleton {
         // Total
         self::$total = self::get_cart_subtotal(false) + self::get_cart_shipping_total(false) - self::$discount_total;
 
-        if (get_option('jigoshop_calc_taxes') == 'yes') :
-            if (get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
+        if (Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes') :
+            if (Jigoshop_Options::get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
                 self::$total += self::$tax->get_non_compounded_tax_amount() + self::$tax->get_compound_tax_amount();
             else :
 
@@ -560,13 +560,13 @@ class jigoshop_cart extends Jigoshop_Singleton {
     public static function get_cart_subtotal($for_display = true) {
 
         // if shop isn't calculating taxes, return subtotal
-        if (get_option('jigoshop_calc_taxes') == 'no') :
+        if (Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'no') :
             $return = ($for_display ? jigoshop_price(self::$subtotal) : number_format(self::$subtotal, 2, '.', ''));
         else:
             // calculate taxes with subtotal
-            if (get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
+            if (Jigoshop_Options::get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
 
-                if (get_option('jigoshop_prices_include_tax') == 'yes') :
+                if (Jigoshop_Options::get_option('jigoshop_prices_include_tax') == 'yes') :
                     $return = ($for_display ? jigoshop_price(self::$subtotal_ex_tax) : number_format(self::$subtotal_ex_tax, 2, '.', ''));
                 else :
                     $return = ($for_display ? jigoshop_price(self::$subtotal) : number_format(self::$subtotal, 2, '.', ''));
@@ -578,7 +578,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
             else :
 
-                if (get_option('jigoshop_prices_include_tax') == 'yes') :
+                if (Jigoshop_Options::get_option('jigoshop_prices_include_tax') == 'yes') :
                     $return = ($for_display ? jigoshop_price(self::$subtotal) : number_format(self::$subtotal, 2, '.', ''));
                 else :
                     //don't use accessor function here, as it may not be right
@@ -608,9 +608,9 @@ class jigoshop_cart extends Jigoshop_Singleton {
      */
     public static function get_subtotal_inc_tax($use_price = true) {
 
-        if (!self::$tax->is_compound_tax() || get_option('jigoshop_calc_taxes') == 'no') return false;
+        if (!self::$tax->is_compound_tax() || Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'no') return false;
 
-        if (get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
+        if (Jigoshop_Options::get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
             $return = ($use_price ? jigoshop_price(self::get_cart_subtotal(false) + self::get_cart_shipping_total(false) + self::$tax->get_non_compounded_tax_amount()) : number_format(self::get_cart_subtotal(false) + self::get_cart_shipping_total(false) + self::$tax->get_non_compounded_tax_amount(), 2, '.', ''));
         else:
             $return = ($use_price ? jigoshop_price(self::get_cart_subtotal(false) + self::get_cart_shipping_total(false)) : number_format(self::get_cart_subtotal(false) + self::get_cart_shipping_total(false), 2, '.', ''));
@@ -679,10 +679,10 @@ class jigoshop_cart extends Jigoshop_Singleton {
         if (jigoshop_shipping::get_label()) :
             if (jigoshop_shipping::get_total() > 0) :
 
-                if (get_option('jigoshop_calc_taxes') == 'no') :
+                if (Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'no') :
                     $return = ($for_display ? jigoshop_price(self::$shipping_total) : number_format(self::$shipping_total, 2, '.', ''));
                 else :
-                    if (get_option('jigoshop_display_totals_tax') == 'excluding'  || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
+                    if (Jigoshop_Options::get_option('jigoshop_display_totals_tax') == 'excluding'  || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
 
                         $return = ($for_display ? jigoshop_price(self::$shipping_total) : number_format(self::$shipping_total, 2, '.', ''));
                         if (self::$shipping_tax_total > 0 && $for_display) :

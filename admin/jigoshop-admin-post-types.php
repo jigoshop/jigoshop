@@ -58,11 +58,11 @@ function jigoshop_product_updated_messages( $messages ) {
 	$columns["featured"] = __("Featured", 'jigoshop');
 
 	$columns["product-type"] = __("Type", 'jigoshop');
-	if( get_option('jigoshop_enable_sku', true) == 'yes' ) {
+	if( Jigoshop_Options::get_option('jigoshop_enable_sku', true) == 'yes' ) {
 		$columns["product-type"] .= ' &amp; ' . __("SKU", 'jigoshop');
 	}
 
-	if ( get_option('jigoshop_manage_stock')=='yes' ) {
+	if ( Jigoshop_Options::get_option('jigoshop_manage_stock')=='yes' ) {
 	 	$columns["stock"] = __("Stock", 'jigoshop');
 	}
 
@@ -119,7 +119,7 @@ function jigoshop_custom_product_columns($column) {
 		case "product-type" :
 			echo ucwords($product->product_type);
 			echo '<br/>';
-			if ( get_option('jigoshop_enable_sku', true) == 'yes' && $sku = get_post_meta( $post->ID, 'sku', true )) {
+			if ( Jigoshop_Options::get_option('jigoshop_enable_sku', true) == 'yes' && $sku = get_post_meta( $post->ID, 'sku', true )) {
 				echo $sku;
 			}
 			else {
@@ -362,7 +362,7 @@ function jigoshop_custom_order_columns($column) {
             ?>
             <table cellpadding="0" cellspacing="0" class="cost">
                 <tr>
-                    <?php if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) : ?>
+                    <?php if (Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) : ?>
                         <th><?php _e('Retail Price', 'jigoshop'); ?></th>
                     <?php else : ?>
                         <th><?php _e('Subtotal', 'jigoshop'); ?></th>
@@ -370,7 +370,7 @@ function jigoshop_custom_order_columns($column) {
                     <td><?php echo jigoshop_price($order->order_subtotal); ?></td>
                 </tr>
                 <?php
-                if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) :
+                if (Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) :
                     if ($order->order_shipping > 0) :
                         ?><tr>
                             <th><?php _e('Shipping', 'jigoshop'); ?></th>
@@ -402,7 +402,7 @@ function jigoshop_custom_order_columns($column) {
                         <?php
                     endif;
                 endif;
-                if (get_option('jigoshop_calc_taxes') == 'yes') :
+                if (Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes') :
                     if ($order->order_subtotal_inc_tax) :
                         foreach ($order->get_tax_classes() as $tax_class) :
                             if (!$order->tax_class_is_not_compound($tax_class)) :

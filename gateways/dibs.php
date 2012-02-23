@@ -20,13 +20,13 @@ class dibs extends jigoshop_payment_gateway {
 		$this->id = 'dibs';
 		$this->icon = '';
 		$this->has_fields = false;
-		$this->enabled = get_option('jigoshop_dibs_enabled');
-		$this->title = get_option('jigoshop_dibs_title');
-		$this->merchant = get_option('jigoshop_dibs_merchant');
-		$this->description  = get_option('jigoshop_dibs_description');
-		$this->testmode = get_option('jigoshop_dibs_testmode');
-		$this->key1 = get_option('jigoshop_dibs_key1');
-		$this->key2 = get_option('jigoshop_dibs_key2');
+		$this->enabled = Jigoshop_Options::get_option('jigoshop_dibs_enabled');
+		$this->title = Jigoshop_Options::get_option('jigoshop_dibs_title');
+		$this->merchant = Jigoshop_Options::get_option('jigoshop_dibs_merchant');
+		$this->description  = Jigoshop_Options::get_option('jigoshop_dibs_description');
+		$this->testmode = Jigoshop_Options::get_option('jigoshop_dibs_testmode');
+		$this->key1 = Jigoshop_Options::get_option('jigoshop_dibs_key1');
+		$this->key2 = Jigoshop_Options::get_option('jigoshop_dibs_key2');
 
 		add_action('init', array(&$this, 'check_callback') );
 		add_action('valid-dibs-callback', array(&$this, 'successful_request') );
@@ -53,47 +53,47 @@ class dibs extends jigoshop_payment_gateway {
 			<td class="titledesc"><?php _e('Enable DIBS FlexWin', 'jigoshop') ?>:</td>
 			<td class="forminp">
 				<select name="jigoshop_dibs_enabled" id="jigoshop_dibs_enabled" style="min-width:100px;">
-					<option value="yes" <?php if (get_option('jigoshop_dibs_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-					<option value="no" <?php if (get_option('jigoshop_dibs_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
+					<option value="yes" <?php if (Jigoshop_Options::get_option('jigoshop_dibs_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
+					<option value="no" <?php if (Jigoshop_Options::get_option('jigoshop_dibs_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
 				</select>
 			</td>
 		</tr>
 		<tr>
 			<td class="titledesc"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?>:</td>
 			<td class="forminp">
-				<input class="input-text" type="text" name="jigoshop_dibs_title" id="jigoshop_dibs_title" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_dibs_title')) echo $value; else echo 'DIBS'; ?>" />
+				<input class="input-text" type="text" name="jigoshop_dibs_title" id="jigoshop_dibs_title" style="min-width:50px;" value="<?php if ($value = Jigoshop_Options::get_option('jigoshop_dibs_title')) echo $value; else echo 'DIBS'; ?>" />
 			</td>
 		</tr>
 		<tr>
 			<td class="titledesc"><a href="#" tip="<?php _e('This controls the description which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Description', 'jigoshop') ?>:</td>
 			<td class="forminp">
-				<input class="input-text wide-input" type="text" name="jigoshop_dibs_description" id="jigoshop_dibs_description" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_dibs_description')) echo $value; ?>" />
+				<input class="input-text wide-input" type="text" name="jigoshop_dibs_description" id="jigoshop_dibs_description" style="min-width:50px;" value="<?php if ($value = Jigoshop_Options::get_option('jigoshop_dibs_description')) echo $value; ?>" />
 			</td>
 		</tr>
 		<tr>
 			<td class="titledesc"><a href="#" tip="<?php _e('Please enter your DIBS merchant id; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('DIBS Merchant id', 'jigoshop') ?>:</td>
 			<td class="forminp">
-				<input class="input-text" type="text" name="jigoshop_dibs_merchant" id="jigoshop_dibs_merchant" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_dibs_merchant')) echo $value; ?>" />
+				<input class="input-text" type="text" name="jigoshop_dibs_merchant" id="jigoshop_dibs_merchant" style="min-width:50px;" value="<?php if ($value = Jigoshop_Options::get_option('jigoshop_dibs_merchant')) echo $value; ?>" />
 			</td>
 		</tr>
 		<tr>
 			<td class="titledesc"><a href="#" tip="<?php _e('Please enter your DIBS MD5 key #1; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('DIBS MD5 Key 1', 'jigoshop') ?>:</td>
 			<td class="forminp">
-				<input class="input-text" type="text" name="jigoshop_dibs_key1" id="jigoshop_dibs_key1" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_dibs_key1')) echo $value; ?>" />
+				<input class="input-text" type="text" name="jigoshop_dibs_key1" id="jigoshop_dibs_key1" style="min-width:50px;" value="<?php if ($value = Jigoshop_Options::get_option('jigoshop_dibs_key1')) echo $value; ?>" />
 			</td>
 		</tr>
 		<tr>
 			<td class="titledesc"><a href="#" tip="<?php _e('Please enter your DIBS MD5 key #2; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('DIBS MD5 Key 2', 'jigoshop') ?>:</td>
 			<td class="forminp">
-				<input class="input-text" type="text" name="jigoshop_dibs_key2" id="jigoshop_dibs_key2" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_dibs_key2')) echo $value; ?>" />
+				<input class="input-text" type="text" name="jigoshop_dibs_key2" id="jigoshop_dibs_key2" style="min-width:50px;" value="<?php if ($value = Jigoshop_Options::get_option('jigoshop_dibs_key2')) echo $value; ?>" />
 			</td>
 		</tr>
 		<tr>
 			<td class="titledesc"><a href="#" tip="<?php _e('When test mode is enabled only DIBS specific test-cards are accepted.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Enable test mode', 'jigoshop') ?>:</td>
 			<td class="forminp">
 				<select name="jigoshop_dibs_testmode" id="jigoshop_dibs_testmode" style="min-width:100px;">
-					<option value="yes" <?php if (get_option('jigoshop_dibs_testmode') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-					<option value="no" <?php if (get_option('jigoshop_dibs_testmode') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
+					<option value="yes" <?php if (Jigoshop_Options::get_option('jigoshop_dibs_testmode') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
+					<option value="no" <?php if (Jigoshop_Options::get_option('jigoshop_dibs_testmode') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
 				</select>
 			</td>
 		</tr>
@@ -104,7 +104,7 @@ class dibs extends jigoshop_payment_gateway {
 	* There are no payment fields for dibs, but we want to show the description if set.
 	**/
 	function payment_fields() {
-		if ($jigoshop_dibs_description = get_option('jigoshop_dibs_description')) echo wpautop(wptexturize($jigoshop_dibs_description));
+		if ($jigoshop_dibs_description = Jigoshop_Options::get_option('jigoshop_dibs_description')) echo wpautop(wptexturize($jigoshop_dibs_description));
 	}
 
 	/**
@@ -162,7 +162,7 @@ class dibs extends jigoshop_payment_gateway {
 				'amount' => $order->order_total * 100,
 				'orderid' => $order_id,
 				'uniqueoid' => $order->order_key,
-				'currency' => $dibs_currency[get_option('jigoshop_currency')],
+				'currency' => $dibs_currency[Jigoshop_Options::get_option('jigoshop_currency')],
 				'ordertext' => 'TEST',
 
 				// URLs
@@ -177,7 +177,7 @@ class dibs extends jigoshop_payment_gateway {
 
 		// Calculate key
 		// http://tech.dibs.dk/dibs_api/other_features/md5-key_control/
-		$args['md5key'] = MD5(get_option('jigoshop_dibs_key2') . MD5(get_option('jigoshop_dibs_key1') . 'merchant=' . $args['merchant'] . '&orderid=' . $args['orderid'] . '&currency=' . $args['currency'] . '&amount=' . $args['amount']));
+		$args['md5key'] = MD5(Jigoshop_Options::get_option('jigoshop_dibs_key2') . MD5(Jigoshop_Options::get_option('jigoshop_dibs_key1') . 'merchant=' . $args['merchant'] . '&orderid=' . $args['orderid'] . '&currency=' . $args['currency'] . '&amount=' . $args['amount']));
 
 		if( !empty($_SERVER['HTTP_CLIENT_IP']) ) {
 			$args['ip'] = $_SERVER['HTTP_CLIENT_IP'];
@@ -270,8 +270,8 @@ class dibs extends jigoshop_payment_gateway {
 
 			// Verify MD5 checksum
 			// http://tech.dibs.dk/dibs_api/other_features/md5-key_control/
-			$key1 = get_option('jigoshop_dibs_key1');
-			$key2 = get_option('jigoshop_dibs_key2');
+			$key1 = Jigoshop_Options::get_option('jigoshop_dibs_key1');
+			$key2 = Jigoshop_Options::get_option('jigoshop_dibs_key2');
 			$vars = 'transact='. $posted['transact'] . '&amount=' . $posted['amount'] . '&currency=' . $posted['currency'];
 			$md5 = MD5($key2 . MD5($key1 . $vars));
 
