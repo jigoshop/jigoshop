@@ -50,7 +50,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			add_action( 'shutdown', array( &$this, 'update_options' ));
 		}
 		
-		self::set_current_options( $current_options );
+		$this->set_current_options( $current_options );
 
 	}
 	
@@ -58,8 +58,8 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	/**
 	 * Updates the database with the current options
 	 *
-	 * At various times during a page load, options can be set.
-	 * We will flush them all out on the 'shutdown' action hook.
+	 * At various times during a page load, options can be set, or added.
+	 * We will flush them all out on the WordPress 'shutdown' action hook.
 	 *
 	 * If options don't exist (fresh install), they are created with default 'true' for WP autoload
 	 *
@@ -71,11 +71,31 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	
 	
 	/**
+	 * Adds a named option to our collection
+	 *
+	 * Will do nothing if option already exists to match WordPress behaviour
+	 * Use 'set_option' to actually set an existing option
+	 *
+	 * @param   string	the name of the option to add
+	 * @param   mixed	the value to set if the option doesn't exist
+	 *
+	 * @since	1.2
+	 */	
+	public function add_option( $name, $value ) {
+		$this->get_current_options();
+		if ( ! isset( $name )) {
+			self::$current_options[$name] = $value;
+			add_action( 'shutdown', array( &$this, 'update_options' ));
+		}
+	}
+	
+	
+	/**
 	 * Returns a named Jigoshop option
 	 *
 	 * @param   string	the name of the option to retrieve
 	 * @param   mixed	the value to return if the option doesn't exist
-	 * @return  mixed	the value of the option, null if no default and doesn't exist
+	 * @return  mixed	the value of the option, null if no $default and doesn't exist
 	 *
 	 * @since	1.2
 	 */	
