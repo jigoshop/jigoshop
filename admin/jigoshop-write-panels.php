@@ -121,14 +121,14 @@ function jigoshop_order_data( $data ) {
 add_action( 'admin_notices', 'jigoshop_meta_boxes_save_errors' );
 
 function jigoshop_meta_boxes_save_errors() {
-	$jigoshop_errors = Jigoshop_Options::instance()->get_option('jigoshop_errors');
+	$jigoshop_errors = Jigoshop_Options::get_option('jigoshop_errors');
     if (is_array($jigoshop_errors) && count($jigoshop_errors)) :
     	echo '<div id="jigoshop_errors" class="error fade">';
     	foreach ($jigoshop_errors as $error) :
     		echo '<p>'.$error.'</p>';
     	endforeach;
     	echo '</div>';
-    	Jigoshop_Options::instance()->set_option('jigoshop_errors', '');
+    	Jigoshop_Options::set_option('jigoshop_errors', '');
     endif;
 }
 

@@ -342,7 +342,8 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 	function jigoshop_variable_add_to_cart() {
 
 		global $post, $_product;
-
+		$jsOptions = Jigoshop_Options::instance();
+		
 		$attributes = $_product->get_available_attributes_variations();
 
         //get all variations available as an array for easy usage by javascript
@@ -373,7 +374,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
                 	$a_weight = '
                     	<tr class="weight">
                     		<th>Weight</th>
-                    		<td>'.$variation->get_weight().Jigoshop_Options::get_option('jigoshop_weight_unit').'</td>
+                    		<td>'.$variation->get_weight().$jsOptions->get_option('jigoshop_weight_unit').'</td>
                     	</tr>';
             	}
 
@@ -381,7 +382,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 	            	$a_length = '
 	                	<tr class="length">
 	                		<th>Length</th>
-	                		<td>'.$variation->get_length().Jigoshop_Options::get_option('jigoshop_dimension_unit').'</td>
+	                		<td>'.$variation->get_length().$jsOptions->get_option('jigoshop_dimension_unit').'</td>
 	                	</tr>';
                 }
 
@@ -389,7 +390,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 	                $a_width = '
 	                	<tr class="width">
 	                		<th>Width</th>
-	                		<td>'.$variation->get_width().Jigoshop_Options::get_option('jigoshop_dimension_unit').'</td>
+	                		<td>'.$variation->get_width().$jsOptions->get_option('jigoshop_dimension_unit').'</td>
 	                	</tr>';
                 }
 
@@ -397,7 +398,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 	                $a_height = '
 	                	<tr class="height">
 	                		<th>Height</th>
-	                		<td>'.$variation->get_height().Jigoshop_Options::get_option('jigoshop_dimension_unit').'</td>
+	                		<td>'.$variation->get_height().$jsOptions->get_option('jigoshop_dimension_unit').'</td>
 	                	</tr>
 	                ';
             	}

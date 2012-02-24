@@ -21,7 +21,7 @@ add_action('jigoshop_process_shop_order_meta', 'jigoshop_process_shop_order_meta
 function jigoshop_process_shop_order_meta($post_id, $post)
 {
     global $wpdb;
-
+	$jsOptions = Jigoshop_Options::instance();
     $jigoshop_errors = array();
 
     $order = new jigoshop_order($post_id);
@@ -155,9 +155,9 @@ function jigoshop_process_shop_order_meta($post_id, $post)
                    }
 
                     // stock status notifications
-                    if (Jigoshop_Options::get_option('jigoshop_notify_no_stock_amount') >= 0 && Jigoshop_Options::get_option('jigoshop_notify_no_stock_amount') >= $new_quantity) {
+                    if ($jsOptions->get_option('jigoshop_notify_no_stock_amount') >= 0 && $jsOptions->get_option('jigoshop_notify_no_stock_amount') >= $new_quantity) {
                         do_action('jigoshop_no_stock_notification', $order_item['id']);
-                    } else if (Jigoshop_Options::get_option('jigoshop_notify_low_stock_amount') && Jigoshop_Options::get_option('jigoshop_notify_low_stock_amount') >= $new_quantity) {
+                    } else if ($jsOptions->get_option('jigoshop_notify_low_stock_amount') && $jsOptions->get_option('jigoshop_notify_low_stock_amount') >= $new_quantity) {
                         do_action('jigoshop_low_stock_notification', $order_item['id']);
                     }
                 }
@@ -201,6 +201,6 @@ function jigoshop_process_shop_order_meta($post_id, $post)
 
     // Error Handling
     if (count($jigoshop_errors) > 0) {
-        Jigoshop_Options::set_option('jigoshop_errors', $jigoshop_errors);
+        $jsOptions->set_option('jigoshop_errors', $jigoshop_errors);
     }
 }

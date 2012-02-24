@@ -18,19 +18,19 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 
 	public function __construct() {
 	
-		$js_options = Jigoshop_Options::instance();
+		$jsOptions = Jigoshop_Options::instance();
 		
-		$js_options->add_option('jigoshop_cheque_enabled', 'yes');
-		$js_options->add_option('jigoshop_cheque_title', __('Cheque Payment', 'jigoshop') );
-		$js_options->add_option('jigoshop_cheque_description', __('Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'jigoshop'));
+		$jsOptions->add_option('jigoshop_cheque_enabled', 'yes');
+		$jsOptions->add_option('jigoshop_cheque_title', __('Cheque Payment', 'jigoshop') );
+		$jsOptions->add_option('jigoshop_cheque_description', __('Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'jigoshop'));
 		
         $this->id				= 'cheque';
         $this->icon 			= '';
         $this->has_fields 		= false;
 
-		$this->enabled			= $js_options->get_option('jigoshop_cheque_enabled');
-		$this->title 			= $js_options->get_option('jigoshop_cheque_title');
-		$this->description 		= $js_options->get_option('jigoshop_cheque_description');
+		$this->enabled			= $jsOptions->get_option('jigoshop_cheque_enabled');
+		$this->title 			= $jsOptions->get_option('jigoshop_cheque_title');
+		$this->description 		= $jsOptions->get_option('jigoshop_cheque_description');
 
 		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
     	add_action('thankyou_cheque', array(&$this, 'thankyou_page'));
@@ -41,28 +41,28 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 	 * - Options for bits like 'title' and availability on a country-by-country basis
 	 **/
 	public function admin_options() {
-		$js_options = Jigoshop_Options::instance();
+		$jsOptions = Jigoshop_Options::instance();
     	?>
     	<thead><tr><th scope="col" width="200px"><?php _e('Cheque Payment', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('Allows cheque payments. Allows you to make test purchases without having to use the sandbox area of a payment gateway. Quite useful for demonstrating to clients and for testing order emails and the \'success\' pages etc.', 'jigoshop'); ?></th></tr></thead>
     	<tr>
 	        <td class="titledesc"><?php _e('Enable Cheque Payment', 'jigoshop') ?>:</td>
 	        <td class="forminp">
 		        <select name="jigoshop_cheque_enabled" id="jigoshop_cheque_enabled" style="min-width:100px;">
-		            <option value="yes" <?php if ($js_options->get_option('jigoshop_cheque_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if ($js_options->get_option('jigoshop_cheque_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
+		            <option value="yes" <?php if ($jsOptions->get_option('jigoshop_cheque_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
+		            <option value="no" <?php if ($jsOptions->get_option('jigoshop_cheque_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
 		        </select>
 	        </td>
 	    </tr>
 	    <tr>
 	        <td class="titledesc"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?>:</td>
 	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_cheque_title" id="jigoshop_cheque_title" value="<?php if ($value = $js_options->get_option('jigoshop_cheque_title')) echo $value; else echo 'Cheque Payment'; ?>" />
+		        <input class="input-text" type="text" name="jigoshop_cheque_title" id="jigoshop_cheque_title" value="<?php if ($value = $jsOptions->get_option('jigoshop_cheque_title')) echo $value; else echo 'Cheque Payment'; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
 	        <td class="titledesc"><a href="#" tip="<?php _e('Let the customer know the payee and where they should be sending the cheque too and that their order won\'t be shipping until you receive it.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Customer Message', 'jigoshop') ?>:</td>
 	        <td class="forminp">
-		        <input class="input-text wide-input" type="text" name="jigoshop_cheque_description" id="jigoshop_cheque_description" value="<?php if ($value = $js_options->get_option('jigoshop_cheque_description')) echo $value; ?>" />
+		        <input class="input-text wide-input" type="text" name="jigoshop_cheque_description" id="jigoshop_cheque_description" value="<?php if ($value = $jsOptions->get_option('jigoshop_cheque_description')) echo $value; ?>" />
 	        </td>
 	    </tr>
 

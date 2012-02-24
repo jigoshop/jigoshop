@@ -282,15 +282,17 @@ class jigoshop_order {
 
 	/** Output bank transfer details for display in emails */
 	function email_bank_details() {
-
-		$title 			= Jigoshop_Options::get_option('jigoshop_bank_transfer_title');
-		$description 	= Jigoshop_Options::get_option('jigoshop_bank_transfer_description');
-		$bank_name 		= Jigoshop_Options::get_option('jigoshop_bank_transfer_bank_name');
-		$acc_number 	= Jigoshop_Options::get_option('jigoshop_bank_transfer_acc_number');
-		$sort_code 		= Jigoshop_Options::get_option('jigoshop_bank_transfer_sort_code');
-		$iban 			= Jigoshop_Options::get_option('jigoshop_bank_transfer_iban');
-		$bic 			= Jigoshop_Options::get_option('jigoshop_bank_transfer_bic');
-		$additional 	= Jigoshop_Options::get_option('jigoshop_bank_transfer_additional');
+		
+		$jsOptons = Jigoshop_Options::instance();
+		
+		$title 			= $jsOptions->get_option('jigoshop_bank_transfer_title');
+		$description 	= $jsOptions->get_option('jigoshop_bank_transfer_description');
+		$bank_name 		= $jsOptions->get_option('jigoshop_bank_transfer_bank_name');
+		$acc_number 	= $jsOptions->get_option('jigoshop_bank_transfer_acc_number');
+		$sort_code 		= $jsOptions->get_option('jigoshop_bank_transfer_sort_code');
+		$iban 			= $jsOptions->get_option('jigoshop_bank_transfer_iban');
+		$bic 			= $jsOptions->get_option('jigoshop_bank_transfer_bic');
+		$additional 	= $jsOptions->get_option('jigoshop_bank_transfer_additional');
 
 		$bank_info = null;
 		if ($description) $bank_info .= wpautop(wptexturize($description)) . PHP_EOL;
@@ -472,7 +474,9 @@ class jigoshop_order {
 	 * Reduce stock levels
 	 */
 	function reduce_order_stock() {
-
+		
+		$jsOptions = Jigoshop_Options::instance();
+		
 		// Reduce stock levels and do any other actions with products in the cart
 		if (sizeof($this->items)>0) foreach ($this->items as $item) :
 
@@ -492,9 +496,9 @@ class jigoshop_order {
 					endif;
 
 					// stock status notifications
-                    if (Jigoshop_Options::get_option('jigoshop_notify_no_stock_amount') >= 0 && Jigoshop_Options::get_option('jigoshop_notify_no_stock_amount') >= $new_quantity) :
+                    if ($jsOptions->get_option('jigoshop_notify_no_stock_amount') >= 0 && $jsOptions->get_option('jigoshop_notify_no_stock_amount') >= $new_quantity) :
 						do_action('jigoshop_no_stock_notification', $item['id']);
-					elseif (Jigoshop_Options::get_option('jigoshop_notify_low_stock_amount') && Jigoshop_Options::get_option('jigoshop_notify_low_stock_amount')>=$new_quantity) :
+					elseif ($jsOptions->get_option('jigoshop_notify_low_stock_amount') && $jsOptions->get_option('jigoshop_notify_low_stock_amount')>=$new_quantity) :
 						do_action('jigoshop_low_stock_notification', $item['id']);
 					endif;
 

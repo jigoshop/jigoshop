@@ -25,14 +25,14 @@
  * @license				http://jigoshop.com/license/commercial-edition
  */
 
-if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1202230);
+if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1202130);
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
 
 include_once( 'classes/abstract/jigoshop_base.class.php' );
 include_once( 'classes/abstract/jigoshop_singleton.php' );
-include_once( 'classes/jigoshop_options.class.php' );			// instantiates an instance for immediate use
+include_once( 'classes/jigoshop_options.class.php' );
 
 // Load administration & check if we need to install
 if ( is_admin() ) {
@@ -145,11 +145,12 @@ add_filter( 'wp_mail_from', 'jigoshop_mail_from' );
  * @since 0.9.9
  **/
 function jigoshop_set_image_sizes(){
+	$jsOptions = Jigoshop_Options::instance();
 	add_image_size( 'admin_product_list', 32, 32, 'true' );
-	add_image_size( 'shop_tiny', Jigoshop_Options::get_option('jigoshop_shop_tiny_w'), Jigoshop_Options::get_option('jigoshop_shop_tiny_h'), 'true' );
-	add_image_size( 'shop_thumbnail', Jigoshop_Options::get_option('jigoshop_shop_thumbnail_w'), Jigoshop_Options::get_option('jigoshop_shop_thumbnail_h'), 'true' );
-	add_image_size( 'shop_small', Jigoshop_Options::get_option('jigoshop_shop_small_w'), Jigoshop_Options::get_option('jigoshop_shop_small_h'), 'true' );
-	add_image_size( 'shop_large', Jigoshop_Options::get_option('jigoshop_shop_large_w'), Jigoshop_Options::get_option('jigoshop_shop_large_h'), 'true' );
+	add_image_size( 'shop_tiny', $jsOptions->get_option('jigoshop_shop_tiny_w'), $jsOptions->get_option('jigoshop_shop_tiny_h'), 'true' );
+	add_image_size( 'shop_thumbnail', $jsOptions->get_option('jigoshop_shop_thumbnail_w'), $jsOptions->get_option('jigoshop_shop_thumbnail_h'), 'true' );
+	add_image_size( 'shop_small', $jsOptions->get_option('jigoshop_shop_small_w'), $jsOptions->get_option('jigoshop_shop_small_h'), 'true' );
+	add_image_size( 'shop_large', $jsOptions->get_option('jigoshop_shop_large_w'), $jsOptions->get_option('jigoshop_shop_large_h'), 'true' );
 }
 
 /**
@@ -159,7 +160,9 @@ function jigoshop_set_image_sizes(){
  * @since 0.9.9
  **/
 function jigoshop_get_image_size( $size ) {
-
+	
+	$jsOptions = Jigoshop_Options::instance();
+	
 	if ( is_array( $size ) )
 		return $size;
 
@@ -168,19 +171,19 @@ function jigoshop_get_image_size( $size ) {
 			$image_size = array( 32, 32 );
 			break;
 		case 'shop_tiny':
-			$image_size = array( Jigoshop_Options::get_option('jigoshop_shop_tiny_w'), Jigoshop_Options::get_option('jigoshop_shop_tiny_h') );
+			$image_size = array( $jsOptions->get_option('jigoshop_shop_tiny_w'), $jsOptions->get_option('jigoshop_shop_tiny_h') );
 			break;
 		case 'shop_thumbnail':
-			$image_size = array( Jigoshop_Options::get_option('jigoshop_shop_thumbnail_w'), Jigoshop_Options::get_option('jigoshop_shop_thumbnail_h') );
+			$image_size = array( $jsOptions->get_option('jigoshop_shop_thumbnail_w'), $jsOptions->get_option('jigoshop_shop_thumbnail_h') );
 			break;
 		case 'shop_small':
-			$image_size = array( Jigoshop_Options::get_option('jigoshop_shop_small_w'), Jigoshop_Options::get_option('jigoshop_shop_small_h') );
+			$image_size = array( $jsOptions->get_option('jigoshop_shop_small_w'), $jsOptions->get_option('jigoshop_shop_small_h') );
 			break;
 		case 'shop_large':
-			$image_size = array( Jigoshop_Options::get_option('jigoshop_shop_large_w'), Jigoshop_Options::get_option('jigoshop_shop_large_h') );
+			$image_size = array( $jsOptions->get_option('jigoshop_shop_large_w'), $jsOptions->get_option('jigoshop_shop_large_h') );
 			break;
 		default:
-			$image_size = array( Jigoshop_Options::get_option('jigoshop_shop_small_w'), Jigoshop_Options::get_option('jigoshop_shop_small_h') );
+			$image_size = array( $jsOptions->get_option('jigoshop_shop_small_w'), $jsOptions->get_option('jigoshop_shop_small_h') );
 			break;
 	endswitch;
 
@@ -580,7 +583,9 @@ function get_jigoshop_currency_symbol() {
 }
 
 function jigoshop_price( $price, $args = array() ) {
-
+	
+	$jsOptions = Jigoshop_Options::instance();
+	
 	extract(shortcode_atts(array(
 		'ex_tax_label' 	=> '0',
         'with_currency' => true
@@ -589,18 +594,18 @@ function jigoshop_price( $price, $args = array() ) {
 	$return = '';
 	$price = number_format(
 		(double) $price,
-		(int) Jigoshop_Options::get_option('jigoshop_price_num_decimals'),
-		Jigoshop_Options::get_option('jigoshop_price_decimal_sep'),
-		Jigoshop_Options::get_option('jigoshop_price_thousand_sep')
+		(int) $jsOptions->get_option('jigoshop_price_num_decimals'),
+		$jsOptions->get_option('jigoshop_price_decimal_sep'),
+		$jsOptions->get_option('jigoshop_price_thousand_sep')
 	);
 
     $return = $price;
 
     if ($with_currency) :
 
-        $currency_pos = Jigoshop_Options::get_option('jigoshop_currency_pos');
+        $currency_pos = $jsOptions->get_option('jigoshop_currency_pos');
         $currency_symbol = get_jigoshop_currency_symbol();
-        $currency_code = Jigoshop_Options::get_option('jigoshop_currency');
+        $currency_code = $jsOptions->get_option('jigoshop_currency');
 
         switch ($currency_pos) :
             case 'left' :
@@ -642,7 +647,7 @@ function jigoshop_price( $price, $args = array() ) {
         endswitch;
 
         // only show (ex. tax) if we are going to show the price with currency as well. Otherwise we just want the formatted price
-        if ($ex_tax_label && Jigoshop_Options::get_option('jigoshop_calc_taxes')=='yes') $return .= __(' <small>(ex. tax)</small>', 'jigoshop');
+        if ($ex_tax_label && $jsOptions->get_option('jigoshop_calc_taxes')=='yes') $return .= __(' <small>(ex. tax)</small>', 'jigoshop');
     endif;
 
 	return $return;

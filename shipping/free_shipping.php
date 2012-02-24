@@ -18,17 +18,17 @@ class free_shipping extends jigoshop_shipping_method {
 
 	public function __construct() {
 		
-		$js_options = Jigoshop_Options::instance();
+		$jsOptions = Jigoshop_Options::instance();
 		
-		$js_options->add_option('jigoshop_free_shipping_availability', 'all');
-		$js_options->add_option('jigoshop_free_shipping_title', 'Free Shipping');
+		$jsOptions->add_option('jigoshop_free_shipping_availability', 'all');
+		$jsOptions->add_option('jigoshop_free_shipping_title', 'Free Shipping');
 		
         $this->id 			= 'free_shipping';
-        $this->enabled		= $js_options->get_option('jigoshop_free_shipping_enabled');
-		$this->title 		= $js_options->get_option('jigoshop_free_shipping_title');
-		$this->min_amount 	= $js_options->get_option('jigoshop_free_shipping_minimum_amount');
-		$this->availability = $js_options->get_option('jigoshop_free_shipping_availability');
-		$this->countries 	= $js_options->get_option('jigoshop_free_shipping_countries');
+        $this->enabled		= $jsOptions->get_option('jigoshop_free_shipping_enabled');
+		$this->title 		= $jsOptions->get_option('jigoshop_free_shipping_title');
+		$this->min_amount 	= $jsOptions->get_option('jigoshop_free_shipping_minimum_amount');
+		$this->availability = $jsOptions->get_option('jigoshop_free_shipping_availability');
+		$this->countries 	= $jsOptions->get_option('jigoshop_free_shipping_countries');
 		if (isset( jigoshop_session::instance()->chosen_shipping_method_id ) && jigoshop_session::instance()->chosen_shipping_method_id==$this->id) $this->chosen = true;
 
 		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
@@ -42,42 +42,42 @@ class free_shipping extends jigoshop_shipping_method {
     }
 
     public function admin_options() {
-		$js_options = Jigoshop_Options::instance();
+		$jsOptions = Jigoshop_Options::instance();
     	?>
     	<thead><tr><th scope="col" width="200px"><?php _e('Free Shipping', 'jigoshop'); ?></th><th scope="col" class="desc">&nbsp;</th></tr></thead>
     	<tr>
 	        <td class="titledesc"><?php _e('Enable Free Shipping', 'jigoshop') ?>:</td>
 	        <td class="forminp">
 		        <select name="jigoshop_free_shipping_enabled" id="jigoshop_free_shipping_enabled" style="min-width:100px;">
-		            <option value="yes" <?php if ($js_options->get_option('jigoshop_free_shipping_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if ($js_options->get_option('jigoshop_free_shipping_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
+		            <option value="yes" <?php if ($jsOptions->get_option('jigoshop_free_shipping_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
+		            <option value="no" <?php if ($jsOptions->get_option('jigoshop_free_shipping_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
 		        </select>
 	        </td>
 	    </tr>
 	    <tr>
 	        <td class="titledesc"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?>:</td>
 	        <td class="forminp">
-		        <input type="text" name="jigoshop_free_shipping_title" id="jigoshop_free_shipping_title" style="min-width:50px;" value="<?php if ($value = $js_options->get_option('jigoshop_free_shipping_title')) echo $value; else echo 'Free Shipping'; ?>" />
+		        <input type="text" name="jigoshop_free_shipping_title" id="jigoshop_free_shipping_title" style="min-width:50px;" value="<?php if ($value = $jsOptions->get_option('jigoshop_free_shipping_title')) echo $value; else echo 'Free Shipping'; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
 	        <td class="titledesc"><a href="#" tip="<?php _e('Users will need to spend this amount to get free shipping. Leave blank to disable.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Minimum Order Amount', 'jigoshop') ?>:</td>
 	        <td class="forminp">
-		        <input type="text" name="jigoshop_free_shipping_minimum_amount" id="jigoshop_free_shipping_minimum_amount" style="min-width:50px;" value="<?php if ($value = $js_options->get_option('jigoshop_free_shipping_minimum_amount')) echo $value; else echo 'Free Shipping'; ?>" />
+		        <input type="text" name="jigoshop_free_shipping_minimum_amount" id="jigoshop_free_shipping_minimum_amount" style="min-width:50px;" value="<?php if ($value = $jsOptions->get_option('jigoshop_free_shipping_minimum_amount')) echo $value; else echo 'Free Shipping'; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
 	        <td class="titledesc"><?php _e('Method available for', 'jigoshop') ?>:</td>
 	        <td class="forminp">
 		        <select name="jigoshop_free_shipping_availability" id="jigoshop_free_shipping_availability" style="min-width:100px;">
-		            <option value="all" <?php if ($js_options->get_option('jigoshop_free_shipping_availability') == 'all') echo 'selected="selected"'; ?>><?php _e('All allowed countries', 'jigoshop'); ?></option>
-		            <option value="specific" <?php if ($js_options->get_option('jigoshop_free_shipping_availability') == 'specific') echo 'selected="selected"'; ?>><?php _e('Specific Countries', 'jigoshop'); ?></option>
+		            <option value="all" <?php if ($jsOptions->get_option('jigoshop_free_shipping_availability') == 'all') echo 'selected="selected"'; ?>><?php _e('All allowed countries', 'jigoshop'); ?></option>
+		            <option value="specific" <?php if ($jsOptions->get_option('jigoshop_free_shipping_availability') == 'specific') echo 'selected="selected"'; ?>><?php _e('Specific Countries', 'jigoshop'); ?></option>
 		        </select>
 	        </td>
 	    </tr>
 	    <?php
     	$countries = jigoshop_countries::$countries;
-    	$selections = (array) $js_options->get_option('jigoshop_free_shipping_countries');
+    	$selections = (array) $jsOptions->get_option('jigoshop_free_shipping_countries');
     	?><tr class="multi_select_countries">
             <td class="titledesc"><?php _e('Specific Countries', 'jigoshop'); ?>:</td>
             <td class="forminp">
@@ -108,19 +108,19 @@ class free_shipping extends jigoshop_shipping_method {
 
     public function process_admin_options() {
 
- 		$js_options = Jigoshop_Options::instance();
-  		if(isset($_POST['jigoshop_free_shipping_enabled'])) $js_options->set_option('jigoshop_free_shipping_enabled', jigowatt_clean($_POST['jigoshop_free_shipping_enabled']));
-  		else $js_options->delete_option('jigoshop_free_shipping_enabled');
-   		if(isset($_POST['jigoshop_free_shipping_title'])) $js_options->set_option('jigoshop_free_shipping_title', jigowatt_clean($_POST['jigoshop_free_shipping_title']));
-   		else $js_options->delete_option('jigoshop_free_shipping_title');
-   		if(isset($_POST['jigoshop_free_shipping_minimum_amount'])) $js_options->set_option('jigoshop_free_shipping_minimum_amount', jigowatt_clean($_POST['jigoshop_free_shipping_minimum_amount']));
-   		else $js_options->delete_option('jigoshop_free_shipping_minimum_amount');
-   		if(isset($_POST['jigoshop_free_shipping_availability'])) $js_options->set_option('jigoshop_free_shipping_availability', jigowatt_clean($_POST['jigoshop_free_shipping_availability']));
-   		else $js_options->delete_option('jigoshop_free_shipping_availability');
+ 		$jsOptions = Jigoshop_Options::instance();
+  		if(isset($_POST['jigoshop_free_shipping_enabled'])) $jsOptions->set_option('jigoshop_free_shipping_enabled', jigowatt_clean($_POST['jigoshop_free_shipping_enabled']));
+  		else $jsOptions->delete_option('jigoshop_free_shipping_enabled');
+   		if(isset($_POST['jigoshop_free_shipping_title'])) $jsOptions->set_option('jigoshop_free_shipping_title', jigowatt_clean($_POST['jigoshop_free_shipping_title']));
+   		else $jsOptions->delete_option('jigoshop_free_shipping_title');
+   		if(isset($_POST['jigoshop_free_shipping_minimum_amount'])) $jsOptions->set_option('jigoshop_free_shipping_minimum_amount', jigowatt_clean($_POST['jigoshop_free_shipping_minimum_amount']));
+   		else $jsOptions->delete_option('jigoshop_free_shipping_minimum_amount');
+   		if(isset($_POST['jigoshop_free_shipping_availability'])) $jsOptions->set_option('jigoshop_free_shipping_availability', jigowatt_clean($_POST['jigoshop_free_shipping_availability']));
+   		else $jsOptions->delete_option('jigoshop_free_shipping_availability');
 
 	    if (isset($_POST['jigoshop_free_shipping_countries'])) $selected_countries = $_POST['jigoshop_free_shipping_countries'];
 	    else $selected_countries = array();
-	    $js_options->set_option('jigoshop_free_shipping_countries', $selected_countries);
+	    $jsOptions->set_option('jigoshop_free_shipping_countries', $selected_countries);
 
     }
 

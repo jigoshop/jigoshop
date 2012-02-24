@@ -18,19 +18,19 @@ class jigoshop_cod extends jigoshop_payment_gateway {
 
 	public function __construct() {
 		
-		$js_options = Jigoshop_Options::instance();
+		$jsOptions = Jigoshop_Options::instance();
 		
-		$js_options->add_option('jigoshop_cod_enabled', 'yes');
-		$js_options->add_option('jigoshop_cod_title', __('Cash on Delivery', 'jigoshop') );
-		$js_options->add_option('jigoshop_cod_description', __('Please pay to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'jigoshop'));
+		$jsOptions->add_option('jigoshop_cod_enabled', 'yes');
+		$jsOptions->add_option('jigoshop_cod_title', __('Cash on Delivery', 'jigoshop') );
+		$jsOptions->add_option('jigoshop_cod_description', __('Please pay to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'jigoshop'));
 		
         $this->id				= 'cod';
         $this->icon 			= '';
         $this->has_fields 		= false;
 
-		$this->enabled			= $js_options->get_option('jigoshop_cod_enabled');
-		$this->title 			= $js_options->get_option('jigoshop_cod_title');
-		$this->description 		= $js_options->get_option('jigoshop_cod_description');
+		$this->enabled			= $jsOptions->get_option('jigoshop_cod_enabled');
+		$this->title 			= $jsOptions->get_option('jigoshop_cod_title');
+		$this->description 		= $jsOptions->get_option('jigoshop_cod_description');
 
 		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
     	add_action('thankyou_cod', array(&$this, 'thankyou_page'));
@@ -41,28 +41,28 @@ class jigoshop_cod extends jigoshop_payment_gateway {
 	 * - Options for bits like 'title' and availability on a country-by-country basis
 	 **/
 	public function admin_options() {
-		$js_options = Jigoshop_Options::instance();
+		$jsOptions = Jigoshop_Options::instance();
     	?>
     	<thead><tr><th scope="col" width="200px"><?php _e('Cash on Delivery', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('Allows cash payments. Good for offline stores or having customers pay at the time of receiving the product.', 'jigoshop'); ?></th></tr></thead>
     	<tr>
 	        <td class="titledesc"><?php _e('Enable Cash on Delivery', 'jigoshop') ?>:</td>
 	        <td class="forminp">
 		        <select name="jigoshop_cod_enabled" id="jigoshop_cod_enabled" style="min-width:100px;">
-		            <option value="yes" <?php if ($js_options->get_option('jigoshop_cod_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if ($js_options->get_option('jigoshop_cod_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
+		            <option value="yes" <?php if ($jsOptions->get_option('jigoshop_cod_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
+		            <option value="no" <?php if ($jsOptions->get_option('jigoshop_cod_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
 		        </select>
 	        </td>
 	    </tr>
 	    <tr>
 	        <td class="titledesc"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?>:</td>
 	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_cod_title" id="jigoshop_cod_title" value="<?php if ($value = $js_options->get_option('jigoshop_cod_title')) echo $value; else echo 'Cash on Delivery'; ?>" />
+		        <input class="input-text" type="text" name="jigoshop_cod_title" id="jigoshop_cod_title" value="<?php if ($value = $jsOptions->get_option('jigoshop_cod_title')) echo $value; else echo 'Cash on Delivery'; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
 	        <td class="titledesc"><a href="#" tip="<?php _e('Let the customer know the payee and where they should be sending the cod too and that their order won\'t be shipping until you receive it.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Customer Message', 'jigoshop') ?>:</td>
 	        <td class="forminp">
-		        <input class="input-text wide-input" type="text" name="jigoshop_cod_description" id="jigoshop_cod_description" value="<?php if ($value = $js_options->get_option('jigoshop_cod_description')) echo $value; ?>" />
+		        <input class="input-text wide-input" type="text" name="jigoshop_cod_description" id="jigoshop_cod_description" value="<?php if ($value = $jsOptions->get_option('jigoshop_cod_description')) echo $value; ?>" />
 	        </td>
 	    </tr>
 

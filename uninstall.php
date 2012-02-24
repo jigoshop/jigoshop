@@ -20,6 +20,7 @@
 if( !defined('WP_UNINSTALL_PLUGIN') ) exit();
 
 global $wpdb, $wp_roles;
+$jsOptions = Jigoshop_Options::instance();
 
 // Remove the widget cache entry
 delete_transient( 'jigoshop_widget_cache' );
@@ -28,16 +29,16 @@ delete_transient( 'jigoshop_widget_cache' );
 remove_role( 'customer' );
 
 // Pages
-wp_delete_post( Jigoshop_Options::get_option('jigoshop_cart_page_id'), true );
-wp_delete_post( Jigoshop_Options::get_option('jigoshop_change_password_page_id'), true );
-wp_delete_post( Jigoshop_Options::get_option('jigoshop_checkout_page_id'), true );
-wp_delete_post( Jigoshop_Options::get_option('jigoshop_edit_address_page_id'), true );
-wp_delete_post( Jigoshop_Options::get_option('jigoshop_myaccount_page_id'), true );
-wp_delete_post( Jigoshop_Options::get_option('jigoshop_pay_page_id'), true );
-wp_delete_post( Jigoshop_Options::get_option('jigoshop_shop_page_id'), true );
-wp_delete_post( Jigoshop_Options::get_option('jigoshop_thanks_page_id'), true );
-wp_delete_post( Jigoshop_Options::get_option('jigoshop_track_order_page_id'), true );
-wp_delete_post( Jigoshop_Options::get_option('jigoshop_view_order_page_id'), true );
+wp_delete_post( $jsOptions->get_option('jigoshop_cart_page_id'), true );
+wp_delete_post( $jsOptions->get_option('jigoshop_change_password_page_id'), true );
+wp_delete_post( $jsOptions->get_option('jigoshop_checkout_page_id'), true );
+wp_delete_post( $jsOptions->get_option('jigoshop_edit_address_page_id'), true );
+wp_delete_post( $jsOptions->get_option('jigoshop_myaccount_page_id'), true );
+wp_delete_post( $jsOptions->get_option('jigoshop_pay_page_id'), true );
+wp_delete_post( $jsOptions->get_option('jigoshop_shop_page_id'), true );
+wp_delete_post( $jsOptions->get_option('jigoshop_thanks_page_id'), true );
+wp_delete_post( $jsOptions->get_option('jigoshop_track_order_page_id'), true );
+wp_delete_post( $jsOptions->get_option('jigoshop_view_order_page_id'), true );
 
 // Tables
 $wpdb->query("DROP TABLE IF EXISTS ".$wpdb->prefix."jigoshop_attribute_taxonomies");

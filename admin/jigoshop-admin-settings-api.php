@@ -31,7 +31,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		self::$page_name = 'jigoshop_options';	// should match our WordPress Jigoshop_Options table entry name
 		
 		$this->our_parser = new Jigoshop_Options_Parser( 
-			Jigoshop_Options::instance()->get_default_options(), 
+			Jigoshop_Options::get_default_options(), 
 			$this->get_options_name()
 		);
 
@@ -337,7 +337,7 @@ class Jigoshop_Options_Parser {
 	
 			$item = wp_parse_args( $item, $defaults );
 			
-			if ( isset( $item['id'] ) ) $item['id'] = sanitize_title( $item['id']);
+			if ( isset( $item['id'] ) ) $item['id'] = sanitize_title( $item['id'] );
 			
 			if ( $item['type'] == "heading" ) {
 				$tab_headers[] = $item['name'];
@@ -531,7 +531,7 @@ class Jigoshop_Options_Parser {
 			
 			default:
 //				logme( "UNKOWN _type_ in parsing" );
-				logme( $item );
+//				logme( $item );
 		}
 
 		if ( $item['type'] != 'heading' ) {

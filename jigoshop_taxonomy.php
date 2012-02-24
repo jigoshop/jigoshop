@@ -21,12 +21,13 @@
 function jigoshop_post_type() {
 
 	global $wpdb;
-
+	$jsOptions = Jigoshop_Options::instance();
+	
 	$shop_page_id = jigoshop_get_page_id('shop');
 
 	$base_slug = ($shop_page_id && $base_page = get_page( $shop_page_id )) ? get_page_uri( $shop_page_id ) : 'shop';
 
-	if (Jigoshop_Options::get_option('jigoshop_prepend_shop_page_to_urls')=="yes") :
+	if ($jsOptions->get_option('jigoshop_prepend_shop_page_to_urls')=="yes") :
 		$category_base = trailingslashit($base_slug);
 	else :
 		$category_base = '';
@@ -243,11 +244,11 @@ function jigoshop_post_type() {
         )
     );
 
-    if (Jigoshop_Options::get_option('jigowatt_update_rewrite_rules')=='1') :
+    if ($jsOptions->get_option('jigowatt_update_rewrite_rules')=='1') :
     	// Re-generate rewrite rules
     	global $wp_rewrite;
     	$wp_rewrite->flush_rules();
-    	Jigoshop_Options::set_option('jigowatt_update_rewrite_rules', '0');
+    	$jsOptions->set_option('jigowatt_update_rewrite_rules', '0');
     endif;
 
 }
