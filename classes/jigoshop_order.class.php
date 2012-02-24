@@ -136,12 +136,30 @@ class jigoshop_order {
 
 	}
 
-        private function get_order_tax_array( $key ) {
-            $array_string = $this->get_value_from_data($key);
-            $divisor = $this->get_value_from_data('order_tax_divisor');
-            return jigoshop_tax::get_taxes_as_array($array_string, $divisor);
-        }
+    private function get_order_tax_array( $key ) {
+        $array_string = $this->get_value_from_data($key);
+        $divisor = $this->get_value_from_data('order_tax_divisor');
+        return jigoshop_tax::get_taxes_as_array($array_string, $divisor);
+    }
 
+    function has_compound_tax() {
+        $ret = false;
+        
+        if ($this->get_tax_classes() && is_array($this->get_tax_classes())) :
+
+            foreach ($this->get_tax_classes() as $tax_class) :
+                if ($this->order_tax[$tax_class]['compound']) :
+                    $ret = true;
+                    break;
+                endif;
+            endforeach;
+
+        endif;
+        
+        return $ret;
+       
+    }
+    
 	function get_value_from_data( $key ) {
 		if (isset($this->order_data[$key])) return $this->order_data[$key]; else return '';
 	}
