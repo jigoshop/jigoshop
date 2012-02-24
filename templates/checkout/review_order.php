@@ -48,7 +48,7 @@
                        || (get_option('jigoshop_tax_after_coupon') == 'yes' && jigoshop_cart::get_total_discount())) : ?>
                 <tr>
                     <td colspan="2"><?php _e('Subtotal', 'jigoshop'); ?></td>
-                    <td><?php echo jigoshop_cart::get_subtotal_inc_tax(); ?></td>
+                    <td><?php echo jigoshop_cart::get_cart_subtotal(true, true); ?></td>
                 </tr>
                 <?php
             endif;
