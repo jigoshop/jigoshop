@@ -405,19 +405,19 @@ function jigoshop_upgrade_120() {
 				$current = get_option( $setting['id'].'_w' );
 				if ( ! (false === $current) ) {
 					Jigoshop_Options::set_option( $setting['id'].'_w', $current );
-					delete_option( $setting['id'].'_w' );
+//					delete_option( $setting['id'].'_w' );
 				}
 				$current = get_option( $setting['id'].'_h' );
 				if ( ! (false === $current) ) {
 					Jigoshop_Options::set_option( $setting['id'].'_h', $current );
-					delete_option( $setting['id'].'_h' );
+//					delete_option( $setting['id'].'_h' );
 				}
 				break;
 			default:
 				$current = get_option( $setting['id'] );
 				if ( ! (false === $current) ) {
 					Jigoshop_Options::set_option( $setting['id'], $current );
-					delete_option( $setting['id'] );
+//					delete_option( $setting['id'] );
 				}
 				break;
 			}
@@ -431,7 +431,7 @@ function jigoshop_upgrade_120() {
 		if ( $setting->option_name == 'jigoshop_options' ) continue;
 		if ( ! Jigoshop_Options::get_option( $setting->option_name ) ) {
 			Jigoshop_Options::set_option( $setting->option_name, maybe_unserialize( $setting->option_value ));
-			delete_option( $setting->option_name );
+//			delete_option( $setting->option_name );
 		}
 	}
 

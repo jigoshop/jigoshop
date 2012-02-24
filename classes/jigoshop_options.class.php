@@ -1123,7 +1123,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 				
 	}
 	
-}
+} Jigoshop_Options::instance();
 
 
 ?>
