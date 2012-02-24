@@ -362,7 +362,8 @@ function jigoshop_custom_order_columns($column) {
             ?>
             <table cellpadding="0" cellspacing="0" class="cost">
                 <tr>
-                    <?php if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) : ?>
+                    <?php if ((get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
+                            || (get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) : ?>
                         <th><?php _e('Retail Price', 'jigoshop'); ?></th>
                     <?php else : ?>
                         <th><?php _e('Subtotal', 'jigoshop'); ?></th>
@@ -377,20 +378,30 @@ function jigoshop_custom_order_columns($column) {
                     </tr>
                     <?php
                 endif;
-                if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) :
+                if (get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0) : ?>
+                    <tr>
+                        <th><?php _e('Discount', 'jigoshop'); ?></th>
+                        <td><?php echo jigoshop_price($order->order_discount); ?></td>
+                    </tr>
+                    <?php 
+                endif; 
+                if ((get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
+                    || (get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) :
                     ?><tr>
                         <th><?php _e('Subtotal', 'jigoshop'); ?></th>
-                        <td><?php echo jigoshop_price($order->order_subtotal_inc_tax); ?></td>
+                        <td><?php echo jigoshop_price($order->order_discount_subtotal); ?></td>
                     </tr>
                     <?php
                 endif;
                 if (get_option('jigoshop_calc_taxes') == 'yes') :
-                    foreach ($order->get_tax_classes() as $tax_class) : ?>
-                        <tr>
-                            <th><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></th>
-                            <td><?php echo $order->get_tax_amount($tax_class) ?></td>
-                        </tr>
-                        <?php
+                    foreach ($order->get_tax_classes() as $tax_class) : 
+                        if ($order->show_tax_entry($tax_class)) : ?>
+                            <tr>
+                                <th><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></th>
+                                <td><?php echo $order->get_tax_amount($tax_class) ?></td>
+                            </tr>
+                            <?php
+                        endif;
                     endforeach;
                 endif;
 

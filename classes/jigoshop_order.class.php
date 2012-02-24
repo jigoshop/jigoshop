@@ -88,7 +88,7 @@ class jigoshop_order {
 		$this->payment_method_title = (string) $this->get_value_from_data('payment_method_title');
 
 		$this->order_subtotal 		= (string) $this->get_value_from_data('order_subtotal');
-
+        $this->order_discount_subtotal = (string) $this->get_value_from_data('order_discount_subtotal');
 		$this->order_shipping 		= (string) $this->get_value_from_data('order_shipping');
 		$this->order_discount 		= (string) $this->get_value_from_data('order_discount');
         $this->order_discount_coupons = $this->get_value_from_data('order_discount_coupons'); //array
@@ -198,6 +198,10 @@ class jigoshop_order {
 
         public function get_tax_class_for_display($tax_class) {
             return $this->order_tax[$tax_class]['display'];
+        }
+        
+        public function show_tax_entry($tax_class) {
+            return (($this->get_tax_amount($tax_class) > 0 && $this->get_tax_rate($tax_class) > 0) || $this->get_tax_rate($tax_class) == 0);
         }
 
         /** Gets subtotal */

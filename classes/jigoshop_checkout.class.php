@@ -555,6 +555,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 					$data['payment_method']			= $this->posted['payment_method'];
 					$data['payment_method_title']	= $available_gateways[$this->posted['payment_method']]->title;
                     $data['order_subtotal']			= jigoshop_cart::get_cart_subtotal(false);
+                    $data['order_discount_subtotal']= jigoshop_cart::get_cart_subtotal(false, true);
                     $data['order_shipping']			= jigoshop_cart::get_cart_shipping_total(false);
 					$data['order_discount']			= number_format(jigoshop_cart::$discount_total, 2, '.', '');
 					$data['order_tax']              = jigoshop_cart::get_taxes_as_string();
