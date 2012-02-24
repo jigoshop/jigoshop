@@ -34,7 +34,6 @@ class jigoshop_cart extends jigoshop_singleton {
     public static $applied_coupons;
     public static $cart_contents;
 
-    private static $subtotal_inc_tax;
     private static $tax;
 
     /** constructor */
@@ -371,7 +370,6 @@ class jigoshop_cart extends jigoshop_singleton {
         self::$shipping_total = 0;
         self::$cart_dl_count = 0;
         self::$cart_contents_total_ex_dl = 0; /* for table rate shipping */
-        self::$subtotal_inc_tax = 0;
         self::$tax = new jigoshop_tax(100);
         jigoshop_shipping::reset_shipping();
     }
@@ -656,8 +654,6 @@ class jigoshop_cart extends jigoshop_singleton {
                     $return = ($for_display ? jigoshop_price(self::$subtotal + self::get_total_cart_tax_without_shipping_tax() + ($apply_discount_and_shipping && get_option('jigoshop_tax_after_coupon') == 'yes' ? $discount + self::$shipping_total : 0)) : number_format(self::$subtotal + self::get_total_cart_tax_without_shipping_tax() + ($apply_discount_and_shipping && get_option('jigoshop_tax_after_coupon') == 'yes' ? $discount + self::$shipping_total : 0), 2, '.', ''));
                 endif;
 
-                // previous calc of subtotal_inc_tax - subtotal doesn't work for home base when user has tax included in totals
-                // and show including. Therefore find out if there is tax on the product.
                 if (self::get_total_cart_tax_without_shipping_tax() > 0 && $for_display) :
                     $return .= __(' <small>(inc. tax)</small>', 'jigoshop');
                 endif;
