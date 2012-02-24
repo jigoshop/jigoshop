@@ -88,7 +88,6 @@ class jigoshop_order {
 		$this->payment_method_title = (string) $this->get_value_from_data('payment_method_title');
 
 		$this->order_subtotal 		= (string) $this->get_value_from_data('order_subtotal');
-		$this->order_subtotal_inc_tax   = (string) $this->get_value_from_data('order_subtotal_inc_tax');
 
 		$this->order_shipping 		= (string) $this->get_value_from_data('order_shipping');
 		$this->order_discount 		= (string) $this->get_value_from_data('order_discount');
