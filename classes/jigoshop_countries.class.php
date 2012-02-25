@@ -775,7 +775,7 @@ class jigoshop_countries {
 
 	/** get base country */
 	static function get_base_country() {
-		$default = Jigoshop_Options::get_option('jigoshop_default_country');
+		$default = Jigoshop_Options::instance()->get_option('jigoshop_default_country');
 		if (strstr($default, ':')) :
 			$country = current(explode(':', $default));
 			$state = end(explode(':', $default));
@@ -789,7 +789,7 @@ class jigoshop_countries {
 
 	/** get base state */
 	static function get_base_state() {
-		$default = Jigoshop_Options::get_option('jigoshop_default_country');
+		$default = Jigoshop_Options::instance()->get_option('jigoshop_default_country');
 		if (strstr($default, ':')) :
 			$country = current(explode(':', $default));
 			$state = end(explode(':', $default));
@@ -808,11 +808,11 @@ class jigoshop_countries {
 
 		asort($countries);
 
-		if (Jigoshop_Options::get_option('jigoshop_allowed_countries')!=='specific') return $countries;
+		if (Jigoshop_Options::instance()->get_option('jigoshop_allowed_countries')!=='specific') return $countries;
 
 		$allowed_countries = array();
 
-		$allowed_countries_raw = Jigoshop_Options::get_option('jigoshop_specific_allowed_countries');
+		$allowed_countries_raw = Jigoshop_Options::instance()->get_option('jigoshop_specific_allowed_countries');
 
 		foreach ($allowed_countries_raw as $country) :
 

@@ -75,7 +75,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
                     $rate += (empty($this->fee) ? 0 : $this->get_fee($this->fee, jigoshop_cart::$cart_contents_total_ex_dl));
 
                     $tax = 0;
-                    if (Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable') :
+                    if (Jigoshop_Options::instance()->get_option('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable') :
                         $tax = $this->calculate_shipping_tax($rate);
                     endif;
 
@@ -113,7 +113,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
                     $rate += (empty($this->fee) ? 0 : $this->get_fee($this->fee, jigoshop_cart::$cart_contents_total_ex_dl));
 
                     $tax = 0;
-                    if (Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable') :
+                    if (Jigoshop_Options::instance()->get_option('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable') :
                         $tax = $this->calculate_shipping_tax($rate);
                     endif;
 

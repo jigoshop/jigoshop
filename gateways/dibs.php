@@ -109,7 +109,7 @@ class dibs extends jigoshop_payment_gateway {
 	* There are no payment fields for dibs, but we want to show the description if set.
 	**/
 	function payment_fields() {
-		if ($jigoshop_dibs_description = Jigoshop_Options::get_option('jigoshop_dibs_description')) echo wpautop(wptexturize($jigoshop_dibs_description));
+		if ($jigoshop_dibs_description = Jigoshop_Options::instance()->get_option('jigoshop_dibs_description')) echo wpautop(wptexturize($jigoshop_dibs_description));
 	}
 
 	/**

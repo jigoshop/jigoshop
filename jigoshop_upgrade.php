@@ -429,14 +429,14 @@ function jigoshop_upgrade_120() {
 	
 	foreach ( $options_in_use as $index => $setting ) {
 		if ( $setting->option_name == 'jigoshop_options' ) continue;
-		if ( ! Jigoshop_Options::get_option( $setting->option_name ) ) {
+		if ( ! Jigoshop_Options::instance()->get_option( $setting->option_name ) ) {
 			Jigoshop_Options::set_option( $setting->option_name, maybe_unserialize( $setting->option_value ));
 //			delete_option( $setting->option_name );
 		}
 	}
 
 	// Add default setting for shop redirection page
-	$shop_page = Jigoshop_Options::get_option( 'jigoshop_shop_page_id' );
+	$shop_page = Jigoshop_Options::instance()->get_option( 'jigoshop_shop_page_id' );
 	Jigoshop_Options::set_option( 'jigoshop_shop_redirect_page_id' , $shop_page );
 
 	flush_rewrite_rules( true ); // this needs work, permalinks need re-saving (-JAP-)

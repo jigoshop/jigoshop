@@ -24,8 +24,8 @@ function jigoshop_recent_products( $atts ) {
 	global $columns, $per_page, $paged;
 
 	extract( shortcode_atts( array(
-		'per_page' 	=> Jigoshop_Options::get_option('jigoshop_catalog_per_page'),
-		'columns' 	=> Jigoshop_Options::get_option('jigoshop_catalog_columns'),
+		'per_page' 	=> Jigoshop_Options::instance()->get_option('jigoshop_catalog_per_page'),
+		'columns' 	=> Jigoshop_Options::instance()->get_option('jigoshop_catalog_columns'),
 		'orderby'	=> 'date',
 		'order'		=> 'desc',
 		'pagination'=> false

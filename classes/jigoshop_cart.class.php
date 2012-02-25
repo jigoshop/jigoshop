@@ -327,7 +327,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
     /** Sees if we need a shipping address */
     function ship_to_billing_address_only() {
-        return (Jigoshop_Options::get_option('jigoshop_ship_to_billing_address_only') == 'yes');
+        return (Jigoshop_Options::instance()->get_option('jigoshop_ship_to_billing_address_only') == 'yes');
     }
 
     /** looks at the totals to see if payment is actually required */
@@ -345,7 +345,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
             if (!$_product->is_in_stock() || ($_product->managing_stock() && !$_product->has_enough_stock($values['quantity']))) {
                 $error = new WP_Error();
-				$errormsg = (Jigoshop_Options::get_option('jigoshop_show_stock') == 'yes') ? sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. We only have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title(), $_product->get_stock()) : sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title());
+				$errormsg = (Jigoshop_Options::instance()->get_option('jigoshop_show_stock') == 'yes') ? sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. We only have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title(), $_product->get_stock()) : sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title());
 				$error->add('out-of-stock',$errormsg);
                 return $error;
             }

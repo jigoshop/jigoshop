@@ -532,7 +532,7 @@ function jigoshop_low_stock_notification($product) {
     $subject = '[' . get_bloginfo('name') . '] ' . __('Product low in stock', 'jigoshop');
     $message = '#' . $_product->id . ' ' . $_product->get_title() . ' (' . $_product->sku . ') ' . __('is low in stock.', 'jigoshop');
     $message = wordwrap(html_entity_decode(strip_tags($message)), 70);
-    wp_mail(Jigoshop_Options::get_option('jigoshop_email'), $subject, $message, "From: " . Jigoshop_Options::get_option('jigoshop_email') . "\r\n");
+    wp_mail(Jigoshop_Options::instance()->get_option('jigoshop_email'), $subject, $message, "From: " . Jigoshop_Options::instance()->get_option('jigoshop_email') . "\r\n");
 }
 
 /**
@@ -543,7 +543,7 @@ function jigoshop_no_stock_notification($product) {
     $subject = '[' . get_bloginfo('name') . '] ' . __('Product out of stock', 'jigoshop');
     $message = '#' . $_product->id . ' ' . $_product->get_title() . ' (' . $_product->sku . ') ' . __('is out of stock.', 'jigoshop');
     $message = wordwrap(html_entity_decode(strip_tags($message)), 70);
-    wp_mail(Jigoshop_Options::get_option('jigoshop_email'), $subject, $message, "From: " . Jigoshop_Options::get_option('jigoshop_email') . "\r\n");
+    wp_mail(Jigoshop_Options::instance()->get_option('jigoshop_email'), $subject, $message, "From: " . Jigoshop_Options::instance()->get_option('jigoshop_email') . "\r\n");
 }
 
 /**

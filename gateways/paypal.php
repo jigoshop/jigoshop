@@ -108,7 +108,7 @@ class paypal extends jigoshop_payment_gateway {
 	 * There are no payment fields for paypal, but we want to show the description if set.
 	 **/
     function payment_fields() {
-    	if ($jigoshop_paypal_description = Jigoshop_Options::get_option('jigoshop_paypal_description')) echo wpautop(wptexturize($jigoshop_paypal_description));
+    	if ($jigoshop_paypal_description = Jigoshop_Options::instance()->get_option('jigoshop_paypal_description')) echo wpautop(wptexturize($jigoshop_paypal_description));
     }
 
 	/**

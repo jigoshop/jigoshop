@@ -195,7 +195,7 @@ function jigoshop_cart($atts) {
                     <table cellspacing="0" cellpadding="0">
                         <tbody>
                             <tr>
-                                <?php if (Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::get_subtotal_inc_tax()) : ?>
+                                <?php if (Jigoshop_Options::instance()->get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::get_subtotal_inc_tax()) : ?>
                                     <th class="cart-row-subtotal-title"><?php _e('Retail Price', 'jigoshop'); ?></th>
                                 <?php else : ?>
                                     <th class="cart-row-subtotal-title"><?php _e('Subtotal', 'jigoshop'); ?></th>
@@ -204,7 +204,7 @@ function jigoshop_cart($atts) {
                             </tr>
 
                             <?php
-                            if (Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::get_subtotal_inc_tax()) :
+                            if (Jigoshop_Options::instance()->get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::get_subtotal_inc_tax()) :
                                 if (jigoshop_cart::get_cart_shipping_total()) : ?>
                                 <tr>
                                     <th class="cart-row-shipping-title"><?php _e('Shipping', 'jigoshop'); ?> <small><?php echo jigoshop_countries::shipping_to_prefix() . ' ' . __(jigoshop_countries::$countries[jigoshop_customer::get_shipping_country()], 'jigoshop'); ?></small></th>
@@ -234,7 +234,7 @@ function jigoshop_cart($atts) {
                                 </tr>
                             <?php endif; endif; ?>
                             <?php
-                            if (Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes') :
+                            if (Jigoshop_Options::instance()->get_option('jigoshop_calc_taxes') == 'yes') :
                                 if (jigoshop_cart::get_subtotal_inc_tax()) :
                                     foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
                                         if (!jigoshop_cart::is_not_compounded_tax($tax_class)) :

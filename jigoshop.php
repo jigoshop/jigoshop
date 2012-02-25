@@ -89,11 +89,11 @@ include_once( 'jigoshop_actions.php' );
 
 // Constants
 if (!defined('JIGOSHOP_USE_CSS')) :
-	if (Jigoshop_Options::get_option('jigoshop_disable_css')=='yes') define('JIGOSHOP_USE_CSS', false);
+	if (Jigoshop_Options::instance()->get_option('jigoshop_disable_css')=='yes') define('JIGOSHOP_USE_CSS', false);
 	else define('JIGOSHOP_USE_CSS', true);
 endif;
 if (!defined('JIGOSHOP_LOAD_FANCYBOX')) :
-	if (Jigoshop_Options::get_option('jigoshop_disable_fancybox')=='yes') define('JIGOSHOP_LOAD_FANCYBOX', false);
+	if (Jigoshop_Options::instance()->get_option('jigoshop_disable_fancybox')=='yes') define('JIGOSHOP_LOAD_FANCYBOX', false);
 	else define('JIGOSHOP_LOAD_FANCYBOX', true);
 endif;
 if ( !defined('JIGOSHOP_TEMPLATE_URL') ) define('JIGOSHOP_TEMPLATE_URL', 'jigoshop/');
@@ -132,7 +132,7 @@ add_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name' );
 
 /*
 function jigoshop_mail_from( $email ) {
-	$email = Jigoshop_Options::get_option('jigoshop_email');
+	$email = Jigoshop_Options::instance()->get_option('jigoshop_email');
 	return $email;
 }
 add_filter( 'wp_mail_from', 'jigoshop_mail_from' );
@@ -293,7 +293,7 @@ function jigoshop_frontend_scripts() {
 		'update_order_review_nonce' 	=> wp_create_nonce("update-order-review"),
         'billing_state'                 => jigoshop_customer::get_state(),
         'shipping_state'                => jigoshop_customer::get_shipping_state(),
-		'option_guest_checkout'			=> Jigoshop_Options::get_option('jigoshop_enable_guest_checkout'),
+		'option_guest_checkout'			=> Jigoshop_Options::instance()->get_option('jigoshop_enable_guest_checkout'),
 		'checkout_url'					=> admin_url('admin-ajax.php?action=jigoshop-checkout'),
 		'load_fancybox'					=> JIGOSHOP_LOAD_FANCYBOX
 	);
@@ -325,7 +325,7 @@ add_action('template_redirect', 'jigoshop_frontend_scripts');
 */
 function jigoshop_demo_store() {
 
-	if (Jigoshop_Options::get_option('jigoshop_demo_store')=='yes') :
+	if (Jigoshop_Options::instance()->get_option('jigoshop_demo_store')=='yes') :
 
 		echo '<p class="demo_store">'.__('This is a demo store for testing purposes &mdash; no orders shall be fulfilled.', 'jigoshop').'</p>';
 
@@ -338,7 +338,7 @@ add_action( 'wp_footer', 'jigoshop_demo_store' );
 	Adds social sharing code to footer
 */
 function jigoshop_sharethis() {
-	if (is_single() && Jigoshop_Options::get_option('jigoshop_sharethis')) :
+	if (is_single() && Jigoshop_Options::instance()->get_option('jigoshop_sharethis')) :
 
 		if (is_ssl()) :
 			$sharethis = 'https://ws.sharethis.com/button/buttons.js';
@@ -346,7 +346,7 @@ function jigoshop_sharethis() {
 			$sharethis = 'http://w.sharethis.com/button/buttons.js';
 		endif;
 
-		echo '<script type="text/javascript">var switchTo5x=true;</script><script type="text/javascript" src="'.$sharethis.'"></script><script type="text/javascript">stLight.options({publisher:"'.Jigoshop_Options::get_option('jigoshop_sharethis').'"});</script>';
+		echo '<script type="text/javascript">var switchTo5x=true;</script><script type="text/javascript" src="'.$sharethis.'"></script><script type="text/javascript">stLight.options({publisher:"'.Jigoshop_Options::instance()->get_option('jigoshop_sharethis').'"});</script>';
 
 	endif;
 }
@@ -443,7 +443,7 @@ function is_content_wrapped() {
  **/
 if (!function_exists('jigoshop_get_page_id')) {
 	function jigoshop_get_page_id( $page ) {
-		$page = apply_filters('jigoshop_get_' . $page . '_page_id', Jigoshop_Options::get_option('jigoshop_' . $page . '_page_id'));
+		$page = apply_filters('jigoshop_get_' . $page . '_page_id', Jigoshop_Options::instance()->get_option('jigoshop_' . $page . '_page_id'));
 		return ($page) ? $page : -1;
 	}
 }
@@ -506,7 +506,7 @@ function jigoshop_force_ssl() {
 		exit;
 	endif;
 }
-if (!is_admin() && Jigoshop_Options::get_option('jigoshop_force_ssl_checkout')=='yes') add_action( 'wp', 'jigoshop_force_ssl');
+if (!is_admin() && Jigoshop_Options::instance()->get_option('jigoshop_force_ssl_checkout')=='yes') add_action( 'wp', 'jigoshop_force_ssl');
 
 function jigoshop_force_ssl_images( $content ) {
 	if (is_ssl()) :
@@ -541,7 +541,7 @@ add_filter('style_loader_src', 'jigoshop_force_ssl_urls');
 
 // http://www.xe.com/symbols.php
 function get_jigoshop_currency_symbol() {
-	$currency = Jigoshop_Options::get_option('jigoshop_currency');
+	$currency = Jigoshop_Options::instance()->get_option('jigoshop_currency');
 	$currency_symbol = '';
 	switch ($currency) :
 		case 'AED' : $currency_symbol = '&#1583;&#46;&#1573;'; break;
@@ -813,7 +813,7 @@ add_filter('body_class','jigoshop_body_class');
 function jigoshop_hide_out_of_stock_product( $item_id ) {
 	update_post_meta( $item_id, 'visibility', 'hidden' );
 }
-if ( Jigoshop_Options::get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) :
+if ( Jigoshop_Options::instance()->get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) :
 	add_action( 'jigoshop_no_stock_notification', 'jigoshop_hide_out_of_stock_product' );
 endif;
 

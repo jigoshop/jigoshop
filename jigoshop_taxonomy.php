@@ -439,7 +439,7 @@ function jigoshop_nav_menu_items_classes ($menu_items, $args) {
 	// only add nav menu classes if the queried object is the Shop page or derivative (Product, Category, Tag)
 	if( empty( $shop_page_id ) || ! is_content_wrapped() ) return $menu_items;
 
-	$home_page_id = (int) Jigoshop_Options::get_option( 'page_for_posts' );
+	$home_page_id = (int) Jigoshop_Options::instance()->get_option( 'page_for_posts' );
 
 	foreach ( (array) $menu_items as $key => $menu_item ) {
 

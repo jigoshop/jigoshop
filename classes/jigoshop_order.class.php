@@ -313,7 +313,7 @@ class jigoshop_order {
 
 		$payment_page = apply_filters('jigoshop_get_checkout_payment_url', get_permalink(jigoshop_get_page_id('pay')));
 
-		if (Jigoshop_Options::get_option('jigoshop_force_ssl_checkout')=='yes' || is_ssl()) $payment_page = str_replace('http:', 'https:', $payment_page);
+		if (Jigoshop_Options::instance()->get_option('jigoshop_force_ssl_checkout')=='yes' || is_ssl()) $payment_page = str_replace('http:', 'https:', $payment_page);
 
 		return add_query_arg('pay_for_order', 'true', add_query_arg('order', $this->order_key, add_query_arg('order_id', $this->id, $payment_page)));
 	}

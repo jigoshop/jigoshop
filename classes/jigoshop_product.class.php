@@ -352,7 +352,7 @@ class jigoshop_product {
 	public function managing_stock() {
 
 		// If we're not managing stock at all
-		if (Jigoshop_Options::get_option('jigoshop_manage_stock') != 'yes')
+		if (Jigoshop_Options::instance()->get_option('jigoshop_manage_stock') != 'yes')
 			return false;
 
 		return (bool) $this->manage_stock;
@@ -366,7 +366,7 @@ class jigoshop_product {
 	public function is_in_stock() {
 
 		// Always return in stock if product is in stock
-		if (Jigoshop_Options::get_option('jigoshop_manage_stock') != 'yes')
+		if (Jigoshop_Options::instance()->get_option('jigoshop_manage_stock') != 'yes')
 			return true;
 
 		if ( $this->is_type( array('grouped', 'variable') ) ) {
@@ -570,7 +570,7 @@ class jigoshop_product {
         // a full subtotal, this is necessary.
         $price = $this->get_price() * 100;
 
-        if (Jigoshop_Options::get_option('jigoshop_prices_include_tax') == 'yes') :
+        if (Jigoshop_Options::instance()->get_option('jigoshop_prices_include_tax') == 'yes') :
             $rates = (array) $this->get_tax_base_rate();
 
             if (count($rates > 0)) :
@@ -616,7 +616,7 @@ class jigoshop_product {
 
 		$rate = array();
 
-        if ($this->is_taxable() && Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes') :
+        if ($this->is_taxable() && Jigoshop_Options::instance()->get_option('jigoshop_calc_taxes') == 'yes') :
             $_tax = new jigoshop_tax();
 
             if ($_tax->get_tax_classes_for_base()) foreach ( $_tax->get_tax_classes_for_base() as $tax_class ) :
@@ -1017,7 +1017,7 @@ class jigoshop_product {
 	 */
 	public function has_dimensions() {
 
-		if ( Jigoshop_Options::get_option('jigoshop_enable_dimensions') != 'yes' )
+		if ( Jigoshop_Options::instance()->get_option('jigoshop_enable_dimensions') != 'yes' )
 			return false;
 
 		return ( $this->get_length() || $this->get_width() || $this->get_height() );
@@ -1030,7 +1030,7 @@ class jigoshop_product {
 	 */
 	public function has_weight() {
 
-		if ( Jigoshop_Options::get_option('jigoshop_enable_weight') != 'yes' )
+		if ( Jigoshop_Options::instance()->get_option('jigoshop_enable_weight') != 'yes' )
 			return false;
 
 		return (bool) $this->get_weight();

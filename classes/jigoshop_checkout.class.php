@@ -111,7 +111,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 		// Shipping Details
 //		if (jigoshop_cart::needs_shipping() && !jigoshop_cart::ship_to_billing_address_only()) :
 		// even if not calculating shipping, we still need to display second shipping address for free shipping
-		if (!jigoshop_cart::ship_to_billing_address_only() && Jigoshop_Options::get_option('jigoshop_calc_shipping') == 'yes') :
+		if (!jigoshop_cart::ship_to_billing_address_only() && Jigoshop_Options::instance()->get_option('jigoshop_calc_shipping') == 'yes') :
 
 			echo '<p class="form-row" id="shiptobilling"><input class="input-checkbox" ';
 

@@ -64,6 +64,6 @@ function jigoshop_update_sale_prices_schedule_check(){
 	Jigoshop_Options::set_option('jigoshop_update_sale_prices', 'yes');
 }
 
-if (Jigoshop_Options::get_option('jigoshop_update_sale_prices')!='yes') jigoshop_update_sale_prices_schedule_check();
+if (Jigoshop_Options::instance()->get_option('jigoshop_update_sale_prices')!='yes') jigoshop_update_sale_prices_schedule_check();
 
 add_action('jigoshop_update_sale_prices_schedule_check', 'jigoshop_update_sale_prices');
