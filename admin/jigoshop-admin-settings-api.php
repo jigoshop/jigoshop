@@ -158,8 +158,8 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	*/
 	public function settings_styles() {
 
-		wp_register_style('jigoshop_settings_api_styles', jigoshop::assets_url() . '/assets/css/settings.css');
-		wp_enqueue_style( 'jigoshop_settings_api_styles' );
+//		wp_register_style('jigoshop_settings_api_styles', jigoshop::assets_url() . '/assets/css/settings.css');
+//		wp_enqueue_style( 'jigoshop_settings_api_styles' );
 
 	}
 	
@@ -364,13 +364,13 @@ class Jigoshop_Options_Parser {
 			$class = $item['class'];
 		}
 		
+        $display .= '<td class="titledesc">';
         if ( ! empty( $item['tip'] )) {
-			$display .= '<div class="titledesc">';
 			$display .= '<a href="#" tip="'.$item['tip'].'" class="tips" tabindex="99"></a>';
-			$display .= '</div>';
         }
-		$display .= '<div class="jigoshop-option jigoshop-option-'.$item['type'].'">'."\n";
-		$display .= '<div class="jigoshop-controls '.$class.'">'."\n";
+		$display .= '</td>';
+		
+		$display .= '<td class="forminp "'.$class.'>';
 		
 		switch ( $item['type'] ) {
 			case 'gateway_options' :
@@ -426,9 +426,9 @@ class Jigoshop_Options_Parser {
 					$country = $country_setting;
 					$state = '*';
 				endif;
-				echo '<select class="select' . $class . '" name="' . Jigoshop_Admin_Settings::get_options_name() . '[' . $item['id'] . ']">';
-				echo jigoshop_countries::country_dropdown_options($country, $state);
-				echo '</select>';
+				$display .= '<select class="select' . $class . '" name="' . Jigoshop_Admin_Settings::get_options_name() . '[' . $item['id'] . ']">';
+				$display .= jigoshop_countries::country_dropdown_options($country, $state, false, true, false);
+				$display .= '</select>';
 				break;
 				
 			case 'multi_select_countries' :
@@ -451,7 +451,7 @@ class Jigoshop_Options_Parser {
 					class="jigoshop-input"
 					name="'.Jigoshop_Admin_Settings::get_options_name().'['.$item['id'].']"
 					type="'.$item['type'].'"
-					value="'.$data[$item['id']].'" />'."\n";
+					value="'.$data[$item['id']].'" />';
 				break;
 
 			case 'textarea':
@@ -513,20 +513,20 @@ class Jigoshop_Options_Parser {
 					min="'.$item['choices']['min'].'"
 					max="'.$item['choices']['max'].'"
 					step="'.$item['choices']['step'].'"
-					value="'.$data[$item['id']].'" />'."\n";
+					value="'.$data[$item['id']].'" />';
 				break;
 
 			case 'select':
 				$display .= '<select
 					id="'.$item['id'].'"
 					class="jigoshop-select"
-					name="'.Jigoshop_Admin_Settings::get_options_name().'['.$item['id'].']" >'."\n";
+					name="'.Jigoshop_Admin_Settings::get_options_name().'['.$item['id'].']" >';
 				foreach ( $item['choices'] as $value => $label ) {
 					$display .= '<option
 						value="'.$value.'" '.selected( $data[$item['id']], $value, false ).' />'.$label.'
 						</option>';
 				}
-				$display .= '</select>'."\n";
+				$display .= '</select>';
 				break;
 			
 			default:
@@ -540,8 +540,8 @@ class Jigoshop_Options_Parser {
 			} else {
 				$explain_value = $item['desc'];
 			}
-			$display .= '</div><div class="jigoshop-explain">' . $explain_value . '</div>' . "\n";
-			$display .= '<div class="clear"> </div></div>' . "\n";
+			$display .= '<div class="jigoshop-explain">' . $explain_value . '</div>';
+			$display .= '</td>';
 		}
 
 		return $display;
