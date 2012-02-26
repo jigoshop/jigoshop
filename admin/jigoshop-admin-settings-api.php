@@ -1,6 +1,6 @@
 <?php
 /**
- * Jigoshop_Admin_Settings class for management and display all Jigoshop option settings
+ * Jigoshop_Admin_Settings class for management and display of all Jigoshop option settings
  *
  * DISCLAIMER
  *
@@ -138,7 +138,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	
 	
 	/**
-	* jQuery Tabs
+	* Scripts for the Options page
 	*
 	* @since 1.2
 	*/
@@ -157,10 +157,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	* @since 1.2
 	*/
 	public function settings_styles() {
-
-//		wp_register_style('jigoshop_settings_api_styles', jigoshop::assets_url() . '/assets/css/settings.css');
-//		wp_enqueue_style( 'jigoshop_settings_api_styles' );
-
+		
 	}
 	
 	
@@ -286,21 +283,273 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	* @since 1.2
 	*/
 	public function validate_settings( $input ) {
+		
 		$current_options = Jigoshop_options::get_current_options();
-//		$current_options['validation-error'] = true; // if no errors in validation, we will reset this to false
-//		$current_options['message'] = "There was an error validating the data. No update occured!";
+		
+		$current_options['validation-error'] = true; // if no errors in validation, we will reset this to false
+		$current_options['message'] = "There was an error validating the data. No update occured!";
+		
 		$valid_input = $current_options;	// we start with the current options, plus the error flag and message
-		$operation = "";
 		
 		if ( ! empty( $input )) foreach ( $input as $id => $value ) {
-			$valid_input[$id] = $value;	// obviously we aren't validating very much yet (JAP)
+			$valid_input[$id] = $value;	// obviously we aren't validating very much yet (-JAP-)
 		}
-		return $valid_input;
+		
+		if ( $result = $this->get_updated_coupons() ) $valid_input['jigoshop_coupons'] = $result;
+		if ( $result = $this->get_updated_tax_classes() ) $valid_input['jigoshop_tax_rates'] = $result;
+		
+		return $valid_input;	// send it back to WordPress for saving
+		
 	}
 	
+
+	/**
+	 * When Options are saved, return the 'jigoshop_coupons' option values
+	 *
+	 * @return	mixed	false if not coupons, array of coupons otherwise
+	 *
+	 * @since 		1.2
+	 */
+	function get_updated_coupons() {
+		
+		// make sure we are on the Coupons Tab
+		if ( ! isset( $_POST['coupon_code'] )) return false;
+		
+		$coupon_code = array();
+		$coupon_type = array();
+		$coupon_amount = array();
+		$product_ids = array();
+		$date_from = array();
+		$date_to = array();
+		$coupons = array();
+		$individual = array();
+
+		if ( isset( $_POST['coupon_code'] ))
+			$coupon_code = $_POST['coupon_code'];
+		if ( isset( $_POST['coupon_type'] ))
+			$coupon_type = $_POST['coupon_type'];
+		if ( isset( $_POST['coupon_amount'] ))
+			$coupon_amount = $_POST['coupon_amount'];
+		if ( isset( $_POST['product_ids'] ))
+			$product_ids = $_POST['product_ids'];
+		if ( isset( $_POST['coupon_date_from'] ))
+			$date_from = $_POST['coupon_date_from'];
+		if ( isset( $_POST['coupon_date_to'] ))
+			$date_to = $_POST['coupon_date_to'];
+		if ( isset( $_POST['individual'] ))
+			$individual = $_POST['individual'];
+
+		for ( $i = 0; $i < sizeof( $coupon_code ); $i++ ) :
+
+			if ( isset( $coupon_code[$i] )
+				&& isset( $coupon_type[$i] )
+				&& isset( $coupon_amount[$i] )) :
+
+				$code = jigowatt_clean( $coupon_code[$i] );
+				$type = jigowatt_clean( $coupon_type[$i] );
+				$amount = jigowatt_clean( $coupon_amount[$i] );
+
+				if ( isset( $product_ids[$i] ) && $product_ids[$i] ) :
+					$products = array_map( 'trim', explode( ',', $product_ids[$i] ));
+				else :
+					$products = array();
+				endif;
+				
+				if ( isset( $date_from[$i] ) && $date_from[$i] ) :
+					$from_date = strtotime( $date_from[$i] );
+				else :
+					$from_date = 0;
+				endif;
+				
+				if ( isset( $date_to[$i] ) && $date_to[$i] ) :
+					$to_date = strtotime( $date_to[$i] ) + (60 * 60 * 24 - 1);
+				else :
+					$to_date = 0;
+				endif;
+
+				if ( isset( $individual[$i] ) && $individual[$i] ) :
+					$individual_use = 'yes';
+				else :
+					$individual_use = 'no';
+				endif;
+
+				if ( $code && $type && $amount ) :
+					$coupons[$code] = array(
+						'code' => $code,
+						'amount' => $amount,
+						'type' => $type,
+						'products' => $products,
+						'date_from' => $from_date,
+						'date_to' => $to_date,
+						'individual_use' => $individual_use
+					);
+				endif;
+
+			endif;
+
+		endfor;
+		
+		return $coupons;
+		
+	}
+	
+	
+	/**
+	 * Defines a custom sort for the tax_rates array. The sort that is needed is that the array is sorted
+	 * by country, followed by state, followed by compound tax. The difference is that compound must be sorted based
+	 * on compound = no before compound = yes. Ultimately, the purpose of the sort is to make sure that country, state
+	 * are all consecutive in the array, and that within those groups, compound = 'yes' always appears last. This is
+	 * so that tax classes that are compounded will be executed last in comparison to those that aren't.
+	 * last.
+	 * <br>
+	 * <pre>
+	 * eg. country = 'CA', state = 'QC', compound = 'yes'<br>
+	 *     country = 'CA', state = 'QC', compound = 'no'<br>
+	 *
+	 * will be sorted to have <br>
+	 *     country = 'CA', state = 'QC', compound = 'no'<br>
+	 *     country = 'CA', state = 'QC', compound = 'yes' <br>
+	 * </pre>
+	 *
+	 * @param type $a the first object to compare with (our inner array)
+	 * @param type $b the second object to compare with (our inner array)
+	 * @return int the results of strcmp
+	 */
+	function csort_tax_rates($a, $b) {
+		$str1 = '';
+		$str2 = '';
+	
+		$str1 .= $a['country'] . $a['state'] . ($a['compound'] == 'no' ? 'a' : 'b');
+		$str2 .= $b['country'] . $b['state'] . ($b['compound'] == 'no' ? 'a' : 'b');
+	
+		return strcmp($str1, $str2);
+	}
+	
+	
+	/**
+	 * When Options are saved, return the 'jigoshop_tax_rates' option values
+	 *
+	 * @return	mixed	false if not rax rates, array of tax rates otherwise
+	 *
+	 * @since 		1.2
+	 */
+	function get_updated_tax_classes() {
+		
+		// make sure we are on the Tax Tab
+		if ( ! isset( $_POST['tax_classes'] )) return false;
+		
+		$tax_classes = array();
+		$tax_countries = array();
+		$tax_rate = array();
+		$tax_label = array();
+		$tax_rates = array();
+		$tax_shipping = array();
+		$tax_compound = array();
+
+		if ( isset( $_POST['tax_classes'] )) :
+			$tax_classes = $_POST['tax_classes'];
+		endif;
+		if ( isset( $_POST['tax_country'] )) :
+			$tax_countries = $_POST['tax_country'];
+		endif;
+		if ( isset( $_POST['tax_rate'] )) :
+			$tax_rate = $_POST['tax_rate'];
+		endif;
+		if ( isset( $_POST['tax_label'] )) :
+			$tax_label = $_POST['tax_label'];
+		endif;
+		if ( isset( $_POST['tax_shipping'] )) :
+			$tax_shipping = $_POST['tax_shipping'];
+		endif;
+		if ( isset( $_POST['tax_compound'] )) :
+			$tax_compound = $_POST['tax_compound'];
+		endif;
+
+		for ( $i = 0; $i < sizeof( $tax_classes ); $i++ ) :
+
+			if ( isset( $tax_classes[$i] ) 
+				&& isset( $tax_countries[$i] )
+				&& isset( $tax_rate[$i] )
+				&& $tax_rate[$i]
+				&& is_numeric( $tax_rate[$i] )) :
+
+				$country = jigowatt_clean( $tax_countries[$i] );
+				$label = trim( $tax_label[$i] );
+				$state = '*'; // countries with no states have to have a character for products. Therefore use *
+				$rate = number_format( jigowatt_clean( $tax_rate[$i] ), 4 );
+				$class = jigowatt_clean( $tax_classes[$i] );
+
+				if ( isset( $tax_shipping[$i] ) && $tax_shipping[$i] ) :
+					$shipping = 'yes';
+				else :
+					$shipping = 'no';
+				endif;
+				
+				if ( isset( $tax_compound[$i]) && $tax_compound[$i] ) :
+					$compound = 'yes';
+				else :
+					$compound = 'no';
+				endif;
+				
+				// Get state from country input if defined
+				if ( strstr( $country, ':' )) :
+					$cr = explode( ':', $country );
+					$country = current( $cr );
+					$state = end( $cr );
+				endif;
+
+				if ( $state == '*' && jigoshop_countries::country_has_states( $country )) : // handle all-states
+
+					foreach ( array_keys( jigoshop_countries::$states[$country] ) as $st ) :
+						$tax_rates[] = array(
+							'country' => $country,
+							'label' => $label,
+							'state' => $st,
+							'rate' => $rate,
+							'shipping' => $shipping,
+							'class' => $class,
+							'compound' => $compound,
+							'is_all_states' => true //determines if admin panel should show 'all_states'
+						);
+					endforeach;
+
+				else :
+
+					 $tax_rates[] = array(
+						'country' => $country,
+						'label' => $label,
+						'state' => $state,
+						'rate' => $rate,
+						'shipping' => $shipping,
+						'class' => $class,
+						'compound' => $compound,
+						'is_all_states' => false //determines if admin panel should show 'all_states'
+					);
+					
+				endif;
+
+			endif;
+
+		endfor;
+
+		// apply a custom sort to the tax_rates array.
+		usort( $tax_rates, array( &$this, 'csort_tax_rates' ));
+		
+		return $tax_rates;
+		
+	}
+		
 }
 
 
+/**
+ * Options Parser Class
+ *
+ * Used by the Jigoshop_Admin_Settings class to parse the Jigoshop_Options into sections
+ * Provides formatted output for display of all Option types
+ *
+ * @since 		1.2
+ */
 class Jigoshop_Options_Parser {
 
 	var $these_options;		// The array of default options items to parse

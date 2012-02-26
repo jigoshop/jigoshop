@@ -168,6 +168,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 */	
 	protected function set_current_options( $options ) {
 		self::$current_options = $options;
+		add_action( 'shutdown', array( self::instance(), 'update_options' ));
 	}
 	
 	
