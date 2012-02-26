@@ -168,25 +168,66 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 */
 	public function output_markup() {
 		?>
-			<div class="wrap">
-				<div class="icon32" id="icon-options-general"></div>
+			<div class="wrap jigoshop">
+			
+				<div class="icon32 icon32-jigoshop-settings" id="icon-jigoshop"></div>
 				<h2><?php _e( 'Jigoshop Settings' ) ?></h2>
 				
 				<?php
 					if ( isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] == true )
 						echo '<div class="updated fade"><p>' . __( 'Jigoshop settings updated.' ) . '</p></div>';
 				?>
-				<div class="ui-tabs">
-					<ul class="ui-tabs-nav">
-						<?php echo $this->build_tab_menu_items(); ?>
-					</ul>
-					<form action="options.php" method="post" style="clear:both;">
+				
+				<form action="options.php" method="post" id="mainform">
+
+					<div class="tabs-wrap">
+					
+						<ul class="tabs">
+							<?php echo $this->build_tab_menu_items(); ?>
+						</ul>
+						
 						<?php settings_fields( $this->get_options_name() ); ?>
 						<?php do_settings_sections( $this->get_options_name() ); ?>
+						
 						<p class="submit"><input name="Submit" type="submit" class="button-primary" value="<?php _e( 'Save Changes' ); ?>" /></p>
-					</form>
-				</div>
+						
+					</div>
+
+				</form>
+
 			</div>
+
+			<script type="text/javascript">
+				jQuery(function($) {
+					// this needs reworking (-JAP-)
+					jQuery('ul.tabs').show();
+					jQuery('ul.tabs li:first').addClass('active');
+					jQuery('div.panel:not(div.panel:first)').hide();
+					jQuery('ul.tabs a').click(function(){
+						jQuery('ul.tabs li').removeClass('active');
+						jQuery(this).parent().addClass('active');
+						jQuery('div.panel').hide();
+						jQuery( jQuery(this).attr('href') ).show();
+		
+						return false;
+					});
+		
+					// Countries
+					jQuery('select#jigoshop_allowed_countries').change(function(){
+						// hide-show multi_select_countries
+						if (jQuery(this).val()=="specific") {
+							jQuery(this).parent().parent().next('tr').show();
+						} else {
+							jQuery(this).parent().parent().next('tr').hide();
+						}
+					}).change();
+	
+					// permalink double save hack (do we need this anymore -JAP-)
+					jQuery.get('<?php echo admin_url('options-permalink.php') ?>');
+		
+				});
+			</script>
+
 		<?php
 	}
 	
@@ -680,7 +721,7 @@ class Jigoshop_Options_Parser {
 			$display .= wp_dropdown_pages( $args );
 			break;
 
-		case 'single_select_country' :	// must fix jigoshop_countries::country_dropdown_options(), echo's output (-JAP-)
+		case 'single_select_country' :
 			$countries = jigoshop_countries::$countries;
 			$country_setting = (string) $data[$item['id']];
 			if (strstr($country_setting, ':')) :
@@ -690,7 +731,7 @@ class Jigoshop_Options_Parser {
 				$country = $country_setting;
 				$state = '*';
 			endif;
-			$display .= '<select class="select' . $class . '" name="' . Jigoshop_Admin_Settings::get_options_name() . '[' . $item['id'] . ']">';
+			$display .= '<select class="select" name="' . Jigoshop_Admin_Settings::get_options_name() . '[' . $item['id'] . ']">';
 			$display .= jigoshop_countries::country_dropdown_options($country, $state, false, true, false);
 			$display .= '</select>';
 			break;
