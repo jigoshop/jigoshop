@@ -37,18 +37,16 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 		
 		if ( false === self::$current_options ) {
 			
-			self::set_default_options();
-			
 			$current_options = array();
 	
-			foreach ( self::$default_options as $setting ) :
+			foreach ( self::get_default_options() as $setting ) :
 				if ( isset( $setting['id'] )) :
 					$current_options[$setting['id']] = $setting['std'];
 				endif;
 			endforeach;
 			
-			self::set_current_options( $current_options );
-			add_action( 'shutdown', array( &$this, 'update_options' ));
+			self::$current_options = $current_options;
+			update_option( 'jigoshop_options', $current_options );
 		}
 		
 	}
@@ -1124,7 +1122,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 				
 	}
 	
-} Jigoshop_Options::instance();
+}
 
 
 ?>
