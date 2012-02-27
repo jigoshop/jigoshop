@@ -283,7 +283,7 @@ class jigoshop_order {
 	/** Output bank transfer details for display in emails */
 	function email_bank_details() {
 		
-		$jsOptons = Jigoshop_Options::instance();
+		$jsOptions = Jigoshop_Options::instance();
 		
 		$title 			= $jsOptions->get_option('jigoshop_bank_transfer_title');
 		$description 	= $jsOptions->get_option('jigoshop_bank_transfer_description');
