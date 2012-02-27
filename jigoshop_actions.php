@@ -321,7 +321,7 @@ function jigoshop_add_to_cart_action($url = false)
 function jigoshop_ajax_update_order_review() {
 
 	check_ajax_referer( 'update-order-review', 'security' );
-
+	
 	if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
 
 	if (sizeof(jigoshop_cart::$cart_contents)==0) :
@@ -331,14 +331,14 @@ function jigoshop_ajax_update_order_review() {
 
 	do_action('jigoshop_checkout_update_order_review', $_POST['post_data']);
 
-        if (isset($_POST['shipping_method'])) :
+    if (isset($_POST['shipping_method'])) :
 
 		$shipping_method = explode(":", $_POST['shipping_method']);
 	 	jigoshop_session::instance()->chosen_shipping_method_id = $shipping_method[0];
 
-                if (is_numeric($shipping_method[2])) :
-                    jigoshop_session::instance()->selected_rate_id = $shipping_method[2];
-                endif;
+		if (is_numeric($shipping_method[2])) :
+			jigoshop_session::instance()->selected_rate_id = $shipping_method[2];
+		endif;
 
 	endif;
 
