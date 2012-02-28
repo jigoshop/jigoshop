@@ -207,18 +207,6 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			<script type="text/javascript">
 				/*<![CDATA[*/
 				jQuery(function($) {
-					// this needs reworking (-JAP-)
-					jQuery('ul.tabs').show();
-					jQuery('ul.tabs li:first').addClass('active');
-					jQuery('div.panel:not(div.panel:first)').hide();
-					jQuery('ul.tabs a').click(function(){
-						jQuery('ul.tabs li').removeClass('active');
-						jQuery(this).parent().addClass('active');
-						jQuery('div.panel').hide();
-						jQuery( jQuery(this).attr('href') ).show();
-		
-						return false;
-					});
 		
 					// Countries
 					jQuery('select#jigoshop_allowed_countries').change(function(){
@@ -252,8 +240,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		foreach ( $this->our_parser->tab_headers as $section ) {
 			$this_slug = sanitize_title( $section );
 			if ( $slug == $this_slug ) {
-				$menus_li .= '<li><a
-					class="active"
+				$menus_li .= '<li class="active"><a
 					title="'.$section.'"
 					href="?page='.Jigoshop_Admin_Settings::get_options_name().'&tab='.$this_slug.'">' . $section . '</a></li>';
 			} else {
