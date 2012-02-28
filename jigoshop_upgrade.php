@@ -50,7 +50,7 @@ function jigoshop_upgrade() {
 	}
 
 	if ( $jigoshop_db_version < 1202290 ) {
-		jigoshop_upgrade_111();
+		jigoshop_upgrade_120();
 	}
 
 	// Update the db option
