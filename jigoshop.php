@@ -25,7 +25,7 @@
  * @license				http://jigoshop.com/license/commercial-edition
  */
 
-if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1202240);
+if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1202290);
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
@@ -39,6 +39,17 @@ if ( is_admin() ) {
 	include_once( 'admin/jigoshop-admin.php' );
 	register_activation_hook( __FILE__, 'install_jigoshop' );
 }
+
+// Add a "Settings" link to the plugins.php page for Jigoshop
+function jigoshop_add_settings_link( $links, $file ) {
+	$this_plugin = plugin_basename( __FILE__ );
+	if( $file == $this_plugin ) {
+		$settings_link = '<a href="admin.php?page=jigoshop_settings">' . __( 'Settings', 'jigoshop' ) . '</a>';
+		array_unshift($links, $settings_link);
+	}
+	return $links;
+}
+add_filter( 'plugin_action_links', 'jigoshop_add_settings_link', 10, 2 );
 
 /**
  * Include core files and classes
@@ -642,7 +653,7 @@ function jigoshop_price( $price, $args = array() ) {
                 $return = $currency_symbol . $price . $currency_code;
             break;
             case 'symbol_code_space' :
-                $return = $currency_code . ' ' . $price . ' ' . $currency_code;
+                $return = $currency_symbol . ' ' . $price . ' ' . $currency_code;
             break;
         endswitch;
 

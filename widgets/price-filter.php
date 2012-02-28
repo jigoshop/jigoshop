@@ -81,10 +81,11 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 		}
 
 		// Get maximum price
+		// @todo: Currently we can only handle regular price, looks like we may need to implement the price meta field after all :(
 		$max = ceil($wpdb->get_var("SELECT max(meta_value + 0)
 		FROM $wpdb->posts
 		LEFT JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id
-		WHERE meta_key = 'price' AND (
+		WHERE meta_key = 'regular_price' AND (
 			$wpdb->posts.ID IN (".implode( ',', $jigoshop_all_post_ids_in_view ).")
 			OR (
 				$wpdb->posts.post_parent IN (".implode( ',', $jigoshop_all_post_ids_in_view ).")
@@ -174,7 +175,7 @@ function jigoshop_price_filter( $filtered_posts ) {
 			'posts_per_page' => -1,
 			'meta_query' => array(
 				array(
-					'key' => 'price',
+					'key' => 'regular_price',
 					'value' => array( $_GET['min_price'], $_GET['max_price'] ),
 					'type' => 'NUMERIC',
 					'compare' => 'BETWEEN'

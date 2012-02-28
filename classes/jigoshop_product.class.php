@@ -1001,13 +1001,14 @@ class jigoshop_product {
 	 * @return  boolean
 	 */
 	public function has_attributes() {
+		$result = false;
 		if ( (bool) $this->get_attributes() ) {
 			foreach( $this->get_attributes() as $attribute ) {
-				return (bool) $attribute['visible'];
+				$result |= (bool) $attribute['visible'];
 			}
 		}
 
-		return false;
+		return $result;
 	}
 
 	/**

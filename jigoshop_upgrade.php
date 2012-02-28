@@ -45,8 +45,12 @@ function jigoshop_upgrade() {
 		jigoshop_upgrade_110();
 	}
 
-	if ( $jigoshop_db_version < 1202240 ) {
-		jigoshop_upgrade_120();
+	if ( $jigoshop_db_version < 1202280 ) {
+		jigoshop_upgrade_111();
+	}
+
+	if ( $jigoshop_db_version < 1202290 ) {
+		jigoshop_upgrade_111();
 	}
 
 	// Update the db option
@@ -118,8 +122,11 @@ function jigoshop_convert_db_version() {
 		case '1.1':
 			update_site_option( 'jigoshop_db_version', 1202130 );
 			break;
+		case '1.1.1':
+			update_site_option( 'jigoshop_db_version', 1202280 );
+			break;
 		case '1.2':
-			update_site_option( 'jigoshop_db_version', 1202240 );
+			update_site_option( 'jigoshop_db_version', 1202290 );
 			break;
 	}
 }
@@ -384,6 +391,20 @@ function jigoshop_upgrade_110() {
 }
 
 /**
+ * Execute changes made in Jigoshop 1.1.1
+ *
+ * @since 1.1.1
+ */
+function jigoshop_upgrade_111() {
+
+	// Add default setting for shop redirection page
+	$shop_page = get_option('jigoshop_shop_page_id');
+	update_option( 'jigoshop_shop_redirect_page_id' , $shop_page );
+	update_option( 'jigoshop_enable_related_products' , 'yes' );
+
+}
+
+/**
  * Execute changes made in Jigoshop 1.2
  *
  * @since 1.2
@@ -434,10 +455,6 @@ function jigoshop_upgrade_120() {
 //			delete_option( $setting->option_name );
 		}
 	}
-
-	// Add default setting for shop redirection page
-	$shop_page = Jigoshop_Options::instance()->get_option( 'jigoshop_shop_page_id' );
-	Jigoshop_Options::set_option( 'jigoshop_shop_redirect_page_id' , $shop_page );
 
 	flush_rewrite_rules( true ); // this needs work, permalinks need re-saving (-JAP-)
 

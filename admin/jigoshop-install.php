@@ -22,7 +22,30 @@
  *
  * @since 		1.0
  */
+
 function install_jigoshop() {
+
+	global $wpdb;
+
+	if (function_exists('is_multisite') && is_multisite()) {
+
+		if (isset($_GET['networkwide']) && ($_GET['networkwide'] == 1)) {
+			$old_blog = $wpdb->blogid;
+			$blogids = $wpdb->get_col($wpdb->prepare("SELECT blog_id FROM $wpdb->blogs"));
+			foreach ($blogids as $blog_id) {
+				switch_to_blog($blog_id);
+				_install_jigoshop();
+			}
+			switch_to_blog($old_blog);
+			return;
+		}
+	}
+
+	_install_jigoshop();
+
+}
+
+function _install_jigoshop() {
 
 	if( ! get_site_option('jigoshop_db_version') )  {
 

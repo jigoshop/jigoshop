@@ -436,7 +436,7 @@ function display_attribute() { ?>
 		if (isset($attributes[$attribute_taxonomy_name])) $attribute = $attributes[$attribute_taxonomy_name];
 		$position = (isset($attribute['position'])) ? $attribute['position'] : 0;
 
-		$allterms = get_the_terms( $post->ID, 'pa_'.$attribute_taxonomy_name );
+		$allterms = wp_get_object_terms( $post->ID, 'pa_'.$attribute_taxonomy_name, array( 'orderby' => 'slug' ) );
 
 		$has_terms = ( is_wp_error( $allterms ) || !$allterms || sizeof( $allterms ) == 0 ) ? 0 : 1;
 		$term_slugs = array();
