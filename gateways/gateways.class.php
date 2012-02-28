@@ -14,31 +14,31 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
-class jigoshop_payment_gateways {
+ 
+class jigoshop_payment_gateways extends jigoshop_singleton {
 	
-	private static $instance;
-	static $payment_gateways;
-   
-   public static function init() {
+	protected static $payment_gateways;
+	
+	
+	/** Constructor */
+    protected function __construct() {
+    
+		self::gateway_inits();
+	
+	}
+	
+	private static function gateway_inits() {
     	
     	$load_gateways = apply_filters('jigoshop_payment_gateways', array());
 		
 		foreach ($load_gateways as $gateway) :
 		
-			self::$payment_gateways[] = &new $gateway();
+			self::$payment_gateways[] = new $gateway();
 			
 		endforeach;
     	
     }
-    
-    public static function get() {
-        if (!isset(self::$instance)) {
-            $c = __CLASS__;
-            self::$instance = new $c;
-        }
-        return self::$instance;
-    }
-    
+        
     function payment_gateways() {
 		
 		$_available_gateways = array();

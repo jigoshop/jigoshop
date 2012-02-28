@@ -14,14 +14,13 @@
  * @copyright  Copyright (c) 2011 Jigowatt Ltd.
  * @license    http://jigoshop.com/license/commercial-edition
  */
-class jigoshop {
+
+class jigoshop extends jigoshop_singleton {
 	
-	private static $_instance;
 	private static $_cache;
 	
 	public static $errors = array();
 	public static $messages = array();
-	private static $attribute_taxonomies = NULL;
 	
 	public static $plugin_url;
 	public static $plugin_path;
@@ -36,58 +35,47 @@ class jigoshop {
 	const SHOP_LARGE_H = '300';
 
 	/** constructor */
-	private function __construct () {		
-		// Vars
-		if (isset($_SESSION['errors'])) self::$errors = $_SESSION['errors'];
-		if (isset($_SESSION['messages'])) self::$messages = $_SESSION['messages'];
+	protected function __construct() {		
 		
-		unset($_SESSION['messages']);
-		unset($_SESSION['errors']);
+		if (isset(jigoshop_session::instance()->errors)) self::$errors = jigoshop_session::instance()->errors;
+		if (isset(jigoshop_session::instance()->messages)) self::$messages = jigoshop_session::instance()->messages;
 		
-		// Hooks
-		add_filter('wp_redirect', array(&$this, 'redirect'), 1, 2);
+		unset( jigoshop_session::instance()->messages );
+		unset( jigoshop_session::instance()->errors );
+		
+		// uses jigoshop_base_class to provide class address for the filter
+		self::add_filter( 'wp_redirect', 'redirect', 1, 2 );
 	}
     
-    private function __clone(){}
-	
-	/** get */
-	public static function get() {
-        if (!isset(self::$_instance)) {
-            $c = __CLASS__;
-            self::$_instance = new $c;
-        }
-        return self::$_instance;
-    }
-    
-    /**
-     * Get attribute taxonomies. Taxonomies are lazy loaded.
-     * 
-     * @return array of stdClass objects representing attributes
-     */
+	/**
+	 * This is deprecated as of ver 0.9.9.2 - use jigoshop_product.class version.
+	 *
+	 * @deprecated
+	 */
     public static function getAttributeTaxonomies() {
-        global $wpdb;
-                
-        if(self::$attribute_taxonomies === NULL) {
-            self::$attribute_taxonomies = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."jigoshop_attribute_taxonomies;"); 
-        }
-        
-        return self::$attribute_taxonomies;
+        return jigoshop_product::getAttributeTaxonomies();
     }
-	
+
+	/**
+	 * Get the assets url
+	 * Provide a filter to allow asset location elsewhere such as on a CDN
+	 *
+	 * @return  string	url
+	 */
+	public static function assets_url() { 
+		return apply_filters( 'jigoshop_assets_url', self::plugin_url() );
+	}
+
 	/**
 	 * Get the plugin url
 	 *
 	 * @return  string	url
 	 */
 	public static function plugin_url() { 
-		if(self::$plugin_url) return self::$plugin_url;
-		
-		if (is_ssl()) :
-			return self::$plugin_url = str_replace('http://', 'https://', WP_PLUGIN_URL) . "/" . plugin_basename( dirname(dirname(__FILE__))); 
-		else :
-			return self::$plugin_url = WP_PLUGIN_URL . "/" . plugin_basename( dirname(dirname(__FILE__))); 
+		if ( empty( self::$plugin_url )) :
+			self::$plugin_url = self::force_ssl( plugins_url( null, dirname(__FILE__)));
 		endif;
-		
+		return self::$plugin_url;
 	}
 	
 	/**
@@ -121,7 +109,6 @@ class jigoshop {
 	public static function get_var($var) {
 		$return = '';
 		switch ($var) :
-			case "version" : $return = JIGOSHOP_VERSION; break;
 			case "shop_small_w" : $return = self::SHOP_SMALL_W; break;
 			case "shop_small_h" : $return = self::SHOP_SMALL_H; break;
 			case "shop_tiny_w" : $return = self::SHOP_TINY_W; break;
@@ -139,20 +126,20 @@ class jigoshop {
 	 *
 	 * @param   string	error
 	 */
-	function add_error( $error ) { self::$errors[] = $error; }
+	public static function add_error( $error ) { self::$errors[] = $error; }
 	
 	/**
 	 * Add a message
 	 *
 	 * @param   string	message
 	 */
-	function add_message( $message ) { self::$messages[] = $message; }
+	public static function add_message( $message ) { self::$messages[] = $message; }
 	
 	/** Clear messages and errors from the session data */
-	function clear_messages() {
+	public static function clear_messages() {
 		self::$errors = self::$messages = array();
-		unset($_SESSION['messages']);
-		unset($_SESSION['errors']);
+		unset( jigoshop_session::instance()->messages );
+		unset( jigoshop_session::instance()->errors );
 	}
 	
 	/**
@@ -160,14 +147,14 @@ class jigoshop {
 	 *
 	 * @return   int
 	 */
-	function error_count() { return sizeof(self::$errors); }
+	public static function error_count() { return sizeof(self::$errors); }
 	
 	/**
 	 * Get message count
 	 *
 	 * @return   int
 	 */
-	function message_count() { return sizeof(self::$messages); }
+	public static function message_count() { return sizeof(self::$messages); }
 	
 	/**
 	 * Output the errors and messages
@@ -189,7 +176,7 @@ class jigoshop {
 		endif;
 	}
 	
-	public static function nonce_field ($action, $referer = true , $echo = true) {
+	public static function nonce_field($action, $referer = true , $echo = true) {
 		
 		$name = '_n';
 		$action = 'jigoshop-' . $action;
@@ -198,7 +185,7 @@ class jigoshop {
 		
 	}
 	
-	public static function nonce_url ($action, $url = '') {
+	public static function nonce_url($action, $url = '') {
 		
 		$name = '_n';
 		$action = 'jigoshop-' . $action;
@@ -227,12 +214,6 @@ class jigoshop {
 		
 		if(!in_array($method, array('_GET', '_POST', '_REQUEST'))) $method = '_POST';
 		
-		/*
-		$request = $GLOBALS[$method];
-		
-		if ( isset($request[$name]) && wp_verify_nonce($request[$name], $action) ) return true;
-		*/
-		
 		if ( isset($_REQUEST[$name]) && wp_verify_nonce($_REQUEST[$name], $action) ) return true;
 		
 		if( $error_message ) jigoshop::add_error( $error_message );
@@ -248,13 +229,13 @@ class jigoshop {
 	 * @param   status
 	 * @return  location
 	 */
-	function redirect( $location, $status ) {
-		$_SESSION['errors'] = self::$errors;
-		$_SESSION['messages'] = self::$messages;
-		return $location;
+	public static function redirect( $location, $status = NULL ) {
+		jigoshop_session::instance()->errors = self::$errors;
+		jigoshop_session::instance()->messages = self::$messages;
+		return apply_filters('jigoshop_session_location_filter', $location);
 	}
 	
-	static public function shortcode_wrapper ($function, $atts=array()) {
+	public static function shortcode_wrapper ($function, $atts=array()) {
 		if( $content = jigoshop::cache_get( $function . '-shortcode', $atts ) ) return $content;
 		
 		ob_start();
@@ -266,7 +247,7 @@ class jigoshop {
 	 * Cache API
 	 */
 	
-	public static function cache ( $id, $data, $args=array() ) {
+	public static function cache( $id, $data, $args=array() ) {
 
 		if( ! isset(self::$_cache[ $id ]) ) self::$_cache[ $id ] = array();
 		
@@ -276,7 +257,7 @@ class jigoshop {
 		return $data;
 		
 	}
-	public static function cache_get ( $id, $args=array() ) {
+	public static function cache_get( $id, $args=array() ) {
 
 		if( ! isset(self::$_cache[ $id ]) ) return null;
 		

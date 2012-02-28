@@ -19,7 +19,7 @@ class skrill extends jigoshop_payment_gateway {
 	public function __construct() { 
         $this->id			= 'skrill';
         $this->title 		= 'Skrill';
-        $this->icon 		= jigoshop::plugin_url() . '/assets/images/icons/skrill.png';
+        $this->icon 		= jigoshop::assets_url() . '/assets/images/icons/skrill.png';
         $this->has_fields 	= false;
       	$this->enabled		= get_option('jigoshop_skrill_enabled');
 		$this->title 		= get_option('jigoshop_skrill_title');
@@ -103,7 +103,7 @@ class skrill extends jigoshop_payment_gateway {
     
     	$order_id = $_GET['orderId'];
 		
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 		
 		$skrill_adr = 'https://www.moneybookers.com/app/payment.pl';
 		
@@ -112,14 +112,17 @@ class skrill extends jigoshop_payment_gateway {
 		$order_total = trim($order->order_total, 0);
 
 		if( substr($order_total, -1) == '.' ) $order_total = str_replace('.', '', $order_total);
-					
+		
+		// filter redirect page
+		$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', get_option( 'jigoshop_thanks_page_id' ) );
+		
 		$skrill_args = array(
 			'merchant_fields' => 'partner',
 			'partner' => '21890813',
 			'pay_to_email' => $this->email,
 			'recipient_description' => get_bloginfo('name'),
 			'transaction_id' => $order_id,
-			'return_url' => get_permalink(get_option('jigoshop_thanks_page_id')),
+			'return_url' => get_permalink( $checkout_redirect ),
 			'return_url_text' => 'Return to Merchant',
 			'new_window_redirect' => 0,
 			'rid' => 20521479,
@@ -155,7 +158,7 @@ class skrill extends jigoshop_payment_gateway {
 		// Cart Contents
 		$item_loop = 0;
 		if (sizeof($order->items)>0) : foreach ($order->items as $item) :
-			$_product = &new jigoshop_product($item['id']);
+			$_product = new jigoshop_product($item['id']);
 			if ($_product->exists() && $item['qty']) :
 				
 				$item_loop++;
@@ -176,7 +179,7 @@ class skrill extends jigoshop_payment_gateway {
 		$skrill_args_array = array();
 
 		foreach ($skrill_args as $key => $value) {
-			$skrill_args_array[] = '<input type="hidden" name="'.$key.'" value="'.$value.'" />';
+			$skrill_args_array[] = '<input type="hidden" name="'.esc_attr($key).'" value="'.esc_attr($value).'" />';
 		}
 		
 		// Skirll MD5 concatenation
@@ -204,7 +207,7 @@ class skrill extends jigoshop_payment_gateway {
 	 **/
 	function process_payment( $order_id ) {
 		
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 		
 		return array(
 			'result' 	=> 'success',
@@ -284,7 +287,7 @@ class skrill extends jigoshop_payment_gateway {
 		            break;
 		            case '0' : // Pending
 		            case '-2' : // Failed
-		                $order->update_status('on-hold', sprintf(__('Skrill payment failed (%s)', 'jigoshop'), strtolower(sanitize($posted['status'])) ) );
+		                $order->update_status('on-hold', sprintf(__('Skrill payment failed (%s)', 'jigoshop'), strtolower($posted['status']) ) );
 		            break;
 		            case '-1' : // Cancelled
 		            	$order->update_status('cancelled', __('Skrill payment cancelled', 'jigoshop'));

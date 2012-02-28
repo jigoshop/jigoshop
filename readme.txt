@@ -1,8 +1,8 @@
 === Jigoshop - WordPress eCommerce ===
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal
 Requires at least: 3.1
-Tested up to: 3.2.1
-Stable tag: 1.0-Kaboom1 (RC1)
+Tested up to: 3.3.1
+Stable tag: 1.0
 
 A feature packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customisability.
 
@@ -29,7 +29,7 @@ Find out more on the official <a href="http://jigoshop.com" title="WordPress eCo
 = Jigoshop core features: =
 
 * Sell physical, digital and virtual products
-* Simple, grouped and configurable&dagger; products
+* Simple, grouped and configurable products
 * Discount coupon management
 * Automatic related products
 * Product reviews / hreviews
@@ -46,8 +46,6 @@ Find out more on the official <a href="http://jigoshop.com" title="WordPress eCo
 * Moneybookers / Skrill
 * Cheque payments
 
-(&dagger;) Coming soon
-
 = Official Jigoshop themes =
 
 * <a href="http://jigoshop.com/themes/jigotheme/" title="Premium WordPress eComemrce theme for Jigoshop">Jigotheme</a> - Our flagship premium theme complete with mobile optimisation.
@@ -58,7 +56,7 @@ Find out more on the official <a href="http://jigoshop.com" title="WordPress eCo
 * <a href="http://jigoshop.com/extensions/sagepay-form/" title="SagePay Form payment gateway extension of Jigoshop">SagePay Form</a> - SagePay Form payment gateway.
 * <a href="http://jigoshop.com/extensions/jigoshop-html-email/" title="Jigoshop HTML Emails">Jigoshop HTML Emails</a> - Give your Jigoshop emails a makeover
 * <a href="http://jigoshop.com/extensions/jigoshop-meta-tags/" title="Simple SEO Meta Tags">Simple SEO Meta Tags</a> - Add meta data to your individual product pages
-* <a href="http://jigoshop.com/extensions/table-rate-shipping/" title="Table Rate Shippin">Table Rate Shipping</a> - Define separate shipping rates for regions based on either price, weight or the number of items in a cart
+* <a href="http://jigoshop.com/extensions/table-rate-shipping/" title="Table Rate Shipping">Table Rate Shipping</a> - Define separate shipping rates for regions based on either price, weight or the number of items in a cart
 * <a href="http://jigoshop.com/extensions/jigoshop-up-sell-cross-sell/" title="Up-sell and Cross-sells">Up-sells &amp; Cross-sells</a> - Maximise your stores potential and increase average shopping cart totals by up-selling and cross-selling your products
 
 
@@ -119,7 +117,8 @@ We offer optimised hosting packages starting from 10 GBP per month at http://jig
 
 = I need support! =
 
-We have a <a href="http://jigoshop.com/forums" title="Jigoshop support forum">community forum</a> for getting help from other users, however, if you want priority, dedicated support from us we offer support packages - see our website for details.
+We have a <a href="http://forum.jigoshop.com" title="Jigoshop support forum">community forum</a> for getting help from other users.
+However, if you want priority, dedicated support from Jigoshop staff, we do offer <a href="http://jigoshop.com/support/" title="Jigoshop Premium Support">support packages</a>.
 
 == Screenshots ==
 
@@ -134,21 +133,117 @@ We have a <a href="http://jigoshop.com/forums" title="Jigoshop support forum">co
 9. Checkout
 
 == Changelog ==
-= 1.0 Kaboom 1 =
+= 1.0 =
+* added new feature for downloadable products: external URL or internal downloads
+* added new widget Jigoshop Login
+* added new widget Recently Viewed products
+* added new widget Recently Reviewed products
+* added new widget Best Selling products
+* added new widget Top Rated products
+* added new shortcode Add to Cart Button
+* added new shortcode Add to Cart URL
+* added new dimension options to products (Length / Width / Height)
+* added Admin Product List display products by Category
+* added currency symbols for all countries
+* added a couple new currencies
+* added Romanian and Croatian translations
+* added multi-lingual functionality with the WordPress WPML plugin
+* fixed cyrillic characters & accents in attribute / variation names
+* fixed fancybox overlay
+* fixed users creating a new account now only if WP registration is allowed
+* fixed several 404 Jigoshop links
+* fixed My Account page not showing Address 2
+* added calculable shipping so that services such as FedEx, UPS, etc. can be plugged in
+* added brand new tax features including
+* multi-tax classes can be specified on product (good for Canadian, US tax laws)
+* ability to define tax label for view
+* shows tax percentage in view
+
+= 0.9.9.4 RC2 (not publicly released via WordPress) =
+* added option for out of stock notification that sets products to hidden after Order quantity processing
+* added support for backorders on variations
+* added product dimensions for length, width, and height
+* product thumbnails will now order themselves based on WordPress Gallery Order
+* products can now display a percentage saved for products on sale
+* changed datepicker to work with WordPress 3.3
+* shipping is no longer always forced to the cheapest method
+* fix downloadable products, no longer charged shipping either singly or in a mixed cart
+* internal restructuring and code cleanup for shipping
+* fixed several javascript errors preventing variations from working
+* fixed 404 errors on checkout review order
+* fixed successful paypal orders still marked as pending instead of processing
+* fixed order complete Emails
+* fixed add to cart and Select buttons on Shop page with incorrect URL's
+* fixed tax calculations for taxable and non taxable products (minor tax no longer applied to non taxable)
+* fixed coupon display in the Admin settings
+* fixed coupon errors if no coupons in the Admin
+* fix recent products shortcode
+* fix certain browser attribute display problems on single product pages
+* fix Grouped products not showing prices on Shop page
+* cart now always shows correct totals without having to click update totals button
+* enhancements to internal page determination functions for theme developers
+* updated German translations
+* a number of other small bug fixes
+* a number of security enhancements
+
+= 0.9.9.3 =
+* Fixed SVN error
+
+= 0.9.9.2 =
+* Add new Product Category shortcode
+* Hungarian Translation by Kristóf Gruber
+* Hungarian, Croatian and Indian currencies
+* Variations only show 'From' if prices actually vary
+* Display applied coupons on Admin orders
+* Improve installation and page creation, ignore trashed pages
+* Repair Admin product list pagination
+* Add program hooks to emails to allow output customisation
+* Fixes for attributes and variations
+* updated Spanish translations
+* Added css classes to widget titles, prices for easier styling
+* Repair and allow category and tag templates in themes
+* Begin Tax rework, allow out of state tax and tax based on shipping address
+* More internationalization for text translations
+* numerous small bug fixes & code improvements
+
+= 0.9.9.1 =
+* Added date ranges for coupons
+* Display coupons used on the Cart
+* Now saves coupon data in order panel
+* Added body classes to track order page
+* Added Russian Translation
+* Fixed downloadable files not found
+* Fixed install duplicates
+* Added labels to bank transfer gateway
+* Attributes are no longer using the slug
+* Minor GUI Tweaks
+* Other fixes (https://github.com/jigoshop/jigoshop/issues?milestone=7&state=closed)
+
+= 0.9.9 =
+* Configurable Products
+* Global image sizes can now be declared from the panel.
+* Rows & Columns can now be set in the admin
+* Added Bank transfers gateway
 * Added Dutch translation
-* Product Variations
+* Added Swedish translation
+* Added German translation by deckerweb
 * Revamped order items panel
+* Settings strip slashes
+* Improved French translations
+* Added SSL auto detection for assets
+* New DIBS gateway for nordic countries
+* Support for direct checkout
+* Fixes twenty/10/11 support
+* Fixed permalink double save when changing the base page
+* Moved update/remove from cart code so totals are updated and shipping is updated
+* Fixed 'needs shipping' for downloadable products
 * Grouped products can contain downloadable, simple, or virtual products
 * Changed mail from/to for store
 * Download limiter fix
-* Settings strip slashes
-* Moved update/remove from cart code so totals are updated and shipping is updated
-* Fixed 'needs shipping' for downloadable products
 * Made my account downloads respect order status
 * Filter for ship to billing defaults
-* Optimised scripts.js (no longer a php file)
-
-= 0.9.8.1 =
+* Improvements to shipping class for table rate shipping
+* Optimized scripts.js (no longer a php file)
 * Changes to allow new product types to be added by plugins
 * Twenty Eleven fixes
 * Front page shop support
@@ -159,6 +254,7 @@ We have a <a href="http://jigoshop.com/forums" title="Jigoshop support forum">co
 * Better ajax handling
 * Better shortcode handling with cache
 * Filters added to email contents
+* Various other minor bug fixes (https://github.com/jigoshop/jigoshop/issues?milestone=6&state=closed)
 
 = 0.9.8 =
 

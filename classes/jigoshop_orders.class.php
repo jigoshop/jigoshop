@@ -18,14 +18,14 @@
  */
 class jigoshop_orders {
 
-	var $orders;
-	var $count;
-	var $completed_count;
-	var $pending_count;
-	var $cancelled_count;
-	var $on_hold_count;
-	var $processing_count;
-	var $refunded_count;
+	public $orders;
+	public $count;
+	public $completed_count;
+	public $pending_count;
+	public $cancelled_count;
+	public $on_hold_count;
+	public $processing_count;
+	public $refunded_count;
 	
 	/** Loads orders and counts them */
 	function jigoshop_orders() {
@@ -61,7 +61,7 @@ class jigoshop_orders {
 
 		if ($results) :
 			foreach ($results as $result) :
-				$order = &new jigoshop_order();
+				$order = new jigoshop_order();
 				$order->populate($result);
 				$this->orders[] = $order;
 			endforeach;

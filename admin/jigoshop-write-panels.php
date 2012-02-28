@@ -19,7 +19,7 @@
 
 include('write-panels/product-data.php');
 include('write-panels/product-data-save.php');
-include('write-panels/product-type.php');
+include('write-panels/product-types/variable.php');
 include('write-panels/order-data.php');
 include('write-panels/order-data-save.php');
 
@@ -34,7 +34,6 @@ add_action( 'add_meta_boxes', 'jigoshop_meta_boxes' );
 
 function jigoshop_meta_boxes() {
 	add_meta_box( 'jigoshop-product-data', __('Product Data', 'jigoshop'), 'jigoshop_product_data_box', 'product', 'normal', 'high' );
-	add_meta_box( 'jigoshop-product-type-options', __('Product Type Options', 'jigoshop'), 'jigoshop_product_type_options_box', 'product', 'normal', 'high' );
 	
 	add_meta_box( 'jigoshop-order-data', __('Order Data', 'jigoshop'), 'jigoshop_order_data_meta_box', 'shop_order', 'normal', 'high' );
 	add_meta_box( 'jigoshop-order-items', __('Order Items <small>&ndash; Note: if you edit quantities or remove items from the order you will need to manually change the item\'s stock levels.</small>', 'jigoshop'), 'jigoshop_order_items_meta_box', 'shop_order', 'normal', 'high');
@@ -83,7 +82,6 @@ function jigoshop_product_data( $data ) {
 		switch($product_type) :
 			case "grouped" :
 			case "variable" :
-			case "downloadable" :
 				$data['post_parent'] = 0;
 			break;
 		endswitch;
@@ -147,12 +145,7 @@ function jigoshop_write_panel_scripts() {
 	
 	if( $post_type !== 'product' && $post_type !== 'shop_order' ) return;
 	
-	wp_register_script('jigoshop-date', jigoshop::plugin_url() . '/assets/js/date.js');
-	wp_register_script('jigoshop-datepicker', jigoshop::plugin_url() . '/assets/js/datepicker.js', array('jquery', 'jigoshop-date'));
-	
-	wp_enqueue_script('jigoshop-datepicker');
-	
-	wp_register_script('jigoshop-writepanel', jigoshop::plugin_url() . '/assets/js/write-panels.js', array('jquery'));
+	wp_register_script('jigoshop-writepanel', jigoshop::assets_url() . '/assets/js/write-panels.js', array('jquery'));
 	wp_enqueue_script('jigoshop-writepanel');
 	
 	wp_enqueue_script('media-upload');
@@ -171,7 +164,7 @@ function jigoshop_write_panel_scripts() {
 		'tax_rate' 						=> __('Tax Rate e.g. 20.0000', 'jigoshop'),
 		'meta_name'						=> __('Meta Name', 'jigoshop'),
 		'meta_value'					=> __('Meta Value', 'jigoshop'),
-		'plugin_url' 					=> jigoshop::plugin_url(),
+		'assets_url' 					=> jigoshop::assets_url(),
 		'ajax_url' 						=> admin_url('admin-ajax.php'),
 		'add_order_item_nonce' 			=> wp_create_nonce("add-order-item")
 	 );
@@ -198,4 +191,89 @@ function jigoshop_meta_scripts() {
 		});
 	</script>
 	<?php
+}
+
+// TODO: Refactor Me
+class jigoshop_form {
+
+	public static function input( $ID, $label, $desc = FALSE, $value = NULL, $class = 'short', $placeholder = null, array $extras = array() ) {
+		global $post;
+
+		$value = ($value) ? esc_attr($value) : get_post_meta($post->ID, $ID, true);
+		$desc  = ($desc)  ? $desc : false;
+		$label = __($label, 'jigoshop');
+
+		$after_label = isset($extras['after_label']) ? $extras['after_label'] : null;
+
+		$html  = '';
+
+		$html .= "<p class='form-field {$ID}_field'>";
+		$html .= "<label for='{$ID}'>$label{$after_label}</label>";
+		$html .= "<input type='text' class='{$class}' name='{$ID}' id='{$ID}' value='{$value}' placeholder='{$placeholder}' />";
+
+		if ( $desc ) {
+			$html .= "$desc";
+		}
+
+		$html .= "</p>";
+		return $html;
+	}
+
+	public static function select( $ID, $label, $options, $selected = false,  $desc = FALSE, $class = 'select short' ) {
+		global $post;
+
+		$selected = ($selected) ? $selected : get_post_meta($post->ID, $ID, true);
+		$desc  = ($desc)  ? esc_html($desc) : false;
+		$label = __($label, 'jigoshop');
+		$html = '';
+
+		$html .= "<p class='form-field {$ID}_field'>";
+		$html .= "<label for='{$ID}'>$label</label>";
+		$html .= "<select id='{$ID}' name='{$ID}' class='{$class}'>";
+
+		foreach( $options as $value => $label ) {
+			$mark = '';
+
+			// Not the best way but has to be done because selected() echos
+			if( $selected == $value ) {
+				$mark = 'selected="selected"';
+			}
+
+			$html .= "<option value='{$value}' {$mark}>{$label}</option>";
+		}
+
+		$html .= "</select>";
+
+		if ( $desc ) {
+			$html .= "<span class='description'>$desc</span>";
+		}
+
+		$html .= "</p>";
+		return $html;
+	}
+
+	public static function checkbox( $ID, $label, $value = FALSE, $desc = FALSE, $class = 'checkbox' ) {
+		global $post;
+
+		$value = ($value) ? $value : get_post_meta($post->ID, $ID, true);
+		$desc  = ($desc)  ? esc_html($desc) : false;
+		$label = __($label, 'jigoshop');
+		$html = '';
+
+		$mark = '';
+		if( $value ) {
+			$mark = 'checked="checked"';
+		}
+
+		$html .= "<p class='form-field {$ID}_field'>";
+		$html .= "<label for='{$ID}'>$label</label>";
+		$html .= "<input type='checkbox' name='{$ID}' value='1' class='{$class}' id='{$ID}' {$mark} />";
+
+		if ( $desc ) {
+			$html .= "<label for='{$ID}' class='description'>$desc</label>";
+		}
+
+		$html .= "</p>";
+		return $html;
+	}
 }

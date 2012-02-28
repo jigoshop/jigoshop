@@ -1,20 +1,22 @@
 jQuery.fn.animateHighlight = function(highlightColor, duration) {
-    var highlightBg = highlightColor || "#FFFF9C";
-    var animateMs = duration || 1500;
-    var originalBg = this.css("backgroundColor");
-    this.stop().css("background-color", highlightBg).animate({backgroundColor: originalBg}, animateMs);
+	var highlightBg = highlightColor || "#FFFF9C";
+	var animateMs = duration || 1500;
+	var originalBg = this.css("backgroundColor");
+	this.stop().css("background-color", highlightBg).animate({backgroundColor: originalBg}, animateMs);
 };
 
 jQuery(function(){
 	
 	// Lightbox
-	jQuery('a.zoom').fancybox({
-		'transitionIn'	:	'elastic',
-		'transitionOut'	:	'elastic',
-		'speedIn'		:	600, 
-		'speedOut'		:	200, 
-		'overlayShow'	:	true
-	});
+	if (params.load_fancybox) {
+		jQuery('a.zoom').fancybox({
+			'transitionIn'	:	'elastic',
+			'transitionOut'	:	'elastic',
+			'speedIn'		:	600, 
+			'speedOut'		:	200, 
+			'overlayShow'	:	true
+		});
+	}
 	
 	// Star ratings
 	jQuery('#rating').hide().before('<p class="stars"><span><a class="star-1" href="#">1</a><a class="star-2" href="#">2</a><a class="star-3" href="#">3</a><a class="star-4" href="#">4</a><a class="star-5" href="#">5</a></span></p>');
@@ -27,8 +29,8 @@ jQuery(function(){
 	});
 
 	// Price slider
-	var min_price = jQuery('.price_slider_amount #min_price').val();
-	var max_price = jQuery('.price_slider_amount #max_price').val();
+	var min_price = parseInt(jQuery('.price_slider_amount #min_price').val());
+	var max_price = parseInt(jQuery('.price_slider_amount #max_price').val());
 	
 	if (params.min_price) {
 		current_min_price = params.min_price;
@@ -63,56 +65,68 @@ jQuery(function(){
 	jQuery("div.quantity, td.quantity").append('<input type="button" value="+" id="add1" class="plus" />').prepend('<input type="button" value="-" id="minus1" class="minus" />');
 	jQuery(".plus").click(function()
 	{
-	    var currentVal = parseInt(jQuery(this).prev(".qty").val());
+		var currentVal = parseInt(jQuery(this).prev(".qty").val());
 	   
-	    if (!currentVal || currentVal=="" || currentVal == "NaN") currentVal = 0;
-	    
-	    jQuery(this).prev(".qty").val(currentVal + 1); 
+		if (!currentVal || currentVal=="" || currentVal == "NaN") currentVal = 0;
+		
+		jQuery(this).prev(".qty").val(currentVal + 1); 
 	});
 	
 	jQuery(".minus").click(function()
 	{
-	    var currentVal = parseInt(jQuery(this).next(".qty").val());
-	    if (currentVal == "NaN") currentVal = 0;
-	    if (currentVal > 0)
-	    {
-	        jQuery(this).next(".qty").val(currentVal - 1);
-	    }
+		var currentVal = parseInt(jQuery(this).next(".qty").val());
+		if (currentVal == "NaN") currentVal = 0;
+		if (currentVal > 0)
+		{
+			jQuery(this).next(".qty").val(currentVal - 1);
+		}
 	});
 	
 	/* states */
-	var states_json = params.countries.replace(/&quot;/g, '"');
-	var states = jQuery.parseJSON( states_json );			
-	
-	jQuery('select.country_to_state').change(function(){
-		
-		var country = jQuery(this).val();
-		var state_box = jQuery('#' + jQuery(this).attr('rel'));
-		
-		var input_name = jQuery(state_box).attr('name');
-		var input_id = jQuery(state_box).attr('id');
+    var states_json = params.countries.replace(/&quot;/g, '"');
+    var states = jQuery.parseJSON( states_json );
 
-		if (states[country]) {
-			var options = '';
-			var state = states[country];
-			for(var index in state) {
-				options = options + '<option value="' + index + '">' + state[index] + '</option>';
-			}
-			if (jQuery(state_box).is('input')) {
-				// Change for select
-				jQuery(state_box).replaceWith('<select name="' + input_name + '" id="' + input_id + '"><option value="">' + params.select_state_text + '</option></select>');
-				state_box = jQuery('#' + jQuery(this).attr('rel'));
-			}
-			jQuery(state_box).append(options);
-		} else {
-			if (jQuery(state_box).is('select')) {
-				jQuery(state_box).replaceWith('<input type="text" placeholder="' + params.state_text + '" name="' + input_name + '" id="' + input_id + '" />');
-				state_box = jQuery('#' + jQuery(this).attr('rel'));
-			}
-		}
-		
-	}).change();
-	
+    jQuery('select.country_to_state').change(function(){
+
+        var country = jQuery(this).val();
+        var state_box = jQuery('#' + jQuery(this).attr('rel'));
+
+        var input_name = jQuery(state_box).attr('name');
+        var input_id = jQuery(state_box).attr('id');
+
+        if (states[country]) {
+            var options = '';
+            var state = states[country];
+            var state_selected = params.billing_state;
+            if (input_name == 'calc_shipping_state') {
+                state_selected = jQuery('#calc_shipping_state').val();
+            }
+            else {
+                state_selected = params.shipping_state;
+            }
+            for(var index in state) {
+
+                if (state_selected == index) {
+                    options = options + '<option value="' + index + '" selected="selected">' + state[index] + '</option>';
+                } else {
+                    options = options + '<option value="' + index + '">' + state[index] + '</option>';
+                }    
+            }
+            if (jQuery(state_box).is('input')) {
+                // Change for select
+                jQuery(state_box).replaceWith('<select name="' + input_name + '" id="' + input_id + '"><option value="">' + params.select_state_text + '</option></select>');
+                state_box = jQuery('#' + jQuery(this).attr('rel'));
+            }
+            jQuery(state_box).html(options);
+        } else {
+            if (jQuery(state_box).is('select')) {
+                jQuery(state_box).replaceWith('<input class="input-text" type="text" placeholder="' + params.state_text + '" name="' + input_name + '" id="' + input_id + '" />');
+                state_box = jQuery('#' + jQuery(this).attr('rel'));
+            }
+        }
+
+    }).change();
+        
 	/* Tabs */
 	jQuery('#tabs .panel:not(#tabs .panel)').hide();
 	jQuery('#tabs li a').click(function(){
@@ -136,7 +150,7 @@ jQuery(function(){
 	
 	jQuery('.shipping-calculator-button').click(function() {
 	  jQuery('.shipping-calculator-form').slideToggle('slow', function() {
-	    // Animation complete.
+		// Animation complete.
 	  });
 	}); 
 	
@@ -144,157 +158,187 @@ jQuery(function(){
 
 	jQuery(".shipping-calculator-button").click(function() {return false;});
 	
-    /*################# VARIATIONS ###################*/
-    
-    //check if two arrays of attributes match
-    function variations_match(attrs1, attrs2) {        
-        var match = true;
-        for(name in attrs1) {
-            var val1 = attrs1[name];
-            var val2 = attrs2[name];
-            
-            if(val1.length != 0 && val2.length != 0 && val1 != val2) {
-                match = false;
-            }
-        }
-        
-        return match;
-    }
-    
-    //search for matching variations for given set of attributes
-    function find_matching_variations(settings) {
-        var matching = [];
-        
-        for(variation_sku in product_variations) {
-            var variation = product_variations[variation_sku];
-            
-            if(variations_match(variation.attributes, settings)) {
-                matching.push(variation);
-            }
-        }
-        
-        return matching;
-    }
-    
-    //disable option fields that are unavaiable for current set of attributes
-    function update_variation_values(variations) {
-        
-        var current_attr_select = jQuery('.variations select').not('[disabled]').last();
-        current_attr_select.find('option:gt(0)').attr('disabled', 'disabled');
-        
-        var current_attr_name = current_attr_select.attr('name');
-        
-        for(num in variations) {
-            var attributes = variations[num].attributes;
-            
-            for(attr_name in attributes) {
-                var attr_val = attributes[attr_name];
-                
-                if(attr_name == current_attr_name) {
-                    current_attr_select.find('option:contains("'+attr_val+'")').removeAttr('disabled');
-                }
-            }
-        }
-        
-    }
-    
-    //show single variation details (price, stock, image)
-    function show_variation(variation) {
-        var img = jQuery('div.images img:eq(0)');
-        var link = jQuery('div.images a.zoom:eq(0)');
-        var o_src = jQuery(img).attr('original-src');
-        var o_link = jQuery(link).attr('original-href');
-					
-        var variation_image = variation.image_src;
-        var variation_link = variation.image_link;
+	jQuery("input[name=shipping_rates]").click(function(){
+		var dataString = 'shipping_rates=' + jQuery(this).val();
+		var cart_url = jQuery("input[name=cart-url]").val();
+		jQuery('.cart_totals_table').block({message: null, overlayCSS: {background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
+		jQuery.ajax({  
+			type: "POST",  
+			url: cart_url,  
+			data: dataString,  
+			success: function(ret) {
+				var jqObj = jQuery(ret);
+				jQuery('.cart_totals_table').replaceWith(jqObj.find('.cart_totals_table'));
+				jQuery('.cart_totals_table').unblock();
+			}  
+		});
+	});
+	
+	/*################# VARIATIONS ###################*/
+	
+	//check if two arrays of attributes match
+	function variations_match(attrs1, attrs2) {
+		var match = true;
+		for(name in attrs1) {
+			var val1 = attrs1[name];
+			var val2 = attrs2[name];
+			
+			if(val1.length != 0 && val2.length != 0 && val1 != val2) {
+				match = false;
+			}
+		}
+		
+		return match;
+	}
+	
+	//search for matching variations for given set of attributes
+	function find_matching_variations(attributes) {
+		var matching = [];
+		
+		for(i = 0; i < product_variations.length; i++) {			
+			var variation = product_variations[i];
+			if(variations_match(variation.attributes, attributes)) {
+				matching.push(variation);
+			}
+		}
+		
+		return matching;
+	}
+	
+	//disable option fields that are unavaiable for current set of attributes
+	function update_variation_values(variations) {
 
-        jQuery('.single_variation').html( variation.price_html + variation.availability_html );
-					
-        if (!o_src) {
-            jQuery(img).attr('original-src', jQuery(img).attr('src'));
-        }
-					
-        if (!o_link) {
-            jQuery(link).attr('original-href', jQuery(link).attr('href'));
-        }
-					
-        if (variation_image.length > 1) {	
-            jQuery(img).attr('src', variation_image);
-            jQuery(link).attr('href', variation_link);
-        } else {
-            jQuery(img).attr('src', o_src);
-            jQuery(link).attr('href', o_link);
-        }
+        // Loop through selects and disable/enable options based on selections
+        jQuery('.variations select').each(function( index, el ){
+        	
+        	current_attr_select = jQuery(el);
+        	
+        	// Disable all
+        	current_attr_select.find('option:gt(0)').attr('disabled', 'disabled');
+        	
+        	// Get name
+	        var current_attr_name 	= current_attr_select.attr('name');
+	        
+	        // Loop through variations
+	        for(num in variations) {
+	            var attributes = variations[num].attributes;
+	            
+	            for(attr_name in attributes) {
+	                var attr_val = attributes[attr_name];
+	                
+	                if(attr_name == current_attr_name) {
+	                    if (attr_val) {
+	                    	current_attr_select.find('option[value="'+attr_val+'"]').removeAttr('disabled');
+	                    } else {
+	                    	current_attr_select.find('option').removeAttr('disabled');
+	                    }
+	                }
+	            }
+	        }
+        	
+        });
 
-        jQuery('.variations_button, .single_variation').slideDown();
-    }
-    
-    //when one of attributes is changed - check everything to show only valid options
-    function check_variations() {
-        jQuery('form input[name=variation_id]').val('');
-        jQuery('.single_variation').text('');
-        jQuery('.variations_button, .single_variation').slideUp();
-        
+	}
+	
+	//show single variation details (price, stock, image)
+	function show_variation(variation) {
+		var img = jQuery('div.images img:eq(0)');
+		var link = jQuery('div.images a.zoom:eq(0)');
+		var o_src = jQuery(img).attr('original-src');
+		var o_link = jQuery(link).attr('original-href');
+					
+		var variation_image = variation.image_src;
+		var variation_link = variation.image_link;
+
+		jQuery('.single_variation').html( variation.price_html + variation.availability_html );
+					
+		if (!o_src) {
+			jQuery(img).attr('original-src', jQuery(img).attr('src'));
+		}
+					
+		if (!o_link) {
+			jQuery(link).attr('original-href', jQuery(link).attr('href'));
+		}
+					
+		if (variation_image && variation_image.length > 1) {	
+			jQuery(img).attr('src', variation_image);
+			jQuery(link).attr('href', variation_link);
+		} else {
+			jQuery(img).attr('src', o_src);
+			jQuery(link).attr('href', o_link);
+		}
+
+		jQuery('.variations_button, .single_variation').slideDown();
+	}
+	
+	//when one of attributes is changed - check everything to show only valid options
+	function check_variations() {
+		jQuery('form input[name=variation_id]').val('');
+		jQuery('.single_variation').text('');
+		jQuery('.variations_button, .single_variation').slideUp();
+		
 		var all_set = true;
-		var current_settings = {};
-        
+		var current_attributes = {};
+		
 		jQuery('.variations select').each(function(){
 			if (jQuery(this).val().length == 0) {
-                all_set = false;
-            }
-            
-            current_settings[jQuery(this).attr('name')] = jQuery(this).val();
+				all_set = false;
+			}
+			
+			current_attributes[jQuery(this).attr('name')] = jQuery(this).val();
 		});
-        
-        var matching_variations = find_matching_variations(current_settings);
-        
-        if(all_set) {
-            var variation = matching_variations.pop();
-            
-            jQuery('form input[name=variation_id]').val(variation.variation_id);
-            show_variation(variation);
-        } else {
-            update_variation_values(matching_variations);
-        }
-    }
+		var matching_variations = find_matching_variations(current_attributes);
+		
+		if(all_set) {
+			var variation = matching_variations.pop();
+			
+			jQuery('form input[name=variation_id]').val(variation.variation_id);
+			show_variation(variation);
+		} else {
+			update_variation_values(matching_variations);
+		}
+	}
 	
 	jQuery('.variations select').change(function(){
-        //make sure that only selects before this one, and one after this are enabled
-        var num = jQuery(this).data('num');
-        
-        if(jQuery(this).val().length > 0) {
-            num += 1;
-        }
-        
-        var selects = jQuery('.variations select');
-        selects.filter(':lt('+num+')').removeAttr('disabled');
-        selects.filter(':eq('+num+')').removeAttr('disabled').val('');
-        selects.filter(':gt('+num+')').attr('disabled', 'disabled').val('');
-        
+		//make sure that only selects before this one, and one after this are enabled
+		var num = jQuery(this).data('num');
+		
+		if(jQuery(this).val().length > 0) {
+			num += 1;
+		}
+		
+		var selects = jQuery('.variations select');
+		selects.filter(':lt('+num+')').removeAttr('disabled');
+		selects.filter(':eq('+num+')').removeAttr('disabled').val('');
+		selects.filter(':gt('+num+')').attr('disabled', 'disabled').val('');
+		
 		check_variations(jQuery(this));
 	});
-    
-    //disable all but first select field
-    jQuery('.variations select:gt(0)').attr('disabled', 'disabled');
-    
-    //numerate all selects
-    jQuery.each(jQuery('.variations select'), function(i, item){
-        jQuery(item).data('num', i);
-    });
+	
+	//disable all but first select field
+	jQuery('.variations select:gt(0)').attr('disabled', 'disabled');
+	
+	//numerate all selects
+	jQuery.each(jQuery('.variations select'), function(i, item){
+		jQuery(item).data('num', i);
+	});
 	
 });
 
 if (params.is_checkout==1) {
 
 	var updateTimer;
-	
+	var jqxhr;
+
 	function update_checkout() {
 	
-		var method = jQuery('#shipping_method').val();
+		if (jqxhr) jqxhr.abort();
 		
-		var country 	= jQuery('#billing-country').val();
-		var state 		= jQuery('#billing-state').val();
-		var postcode 	= jQuery('input#billing-postcode').val();
+		var method		   = jQuery('#shipping_method').val();
+		var payment_method = jQuery('input[name=payment_method]:checked').val();
+		var country 	   = jQuery('#billing-country').val();
+		var state 		   = jQuery('#billing-state').val();
+		var postcode 	   = jQuery('input#billing-postcode').val();
 			
 		if (jQuery('#shiptobilling input').is(':checked') || jQuery('#shiptobilling input').size()==0) {
 			var s_country 	= jQuery('#billing-country').val();
@@ -307,19 +351,33 @@ if (params.is_checkout==1) {
 			var s_postcode 	= jQuery('input#shipping-postcode').val();
 		}
 		
-		jQuery('#order_methods, #order_review').block({message: null, overlayCSS: {background: '#fff url(' + params.plugin_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
-		jQuery.ajax({
+		jQuery('#order_methods, #order_review').block({message: null, overlayCSS: {background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
+
+		var data = {
+			action: 			'jigoshop_update_order_review',
+			security: 			params.update_order_review_nonce,
+			shipping_method: 	method, 
+			country: 			country, 
+			state: 				state, 
+			postcode: 			postcode, 
+			s_country: 			s_country, 
+			s_state: 			s_state, 
+			s_postcode: 		s_postcode,
+			payment_method:     payment_method,
+			post_data:			jQuery('form.checkout').serialize()
+		};
+		
+		jqxhr = jQuery.ajax({
 			type: 		'POST',
-			url: 		params.review_order_url,
-			data: 		{shipping_method: method, country: country, state: state, postcode: postcode, s_country: s_country, s_state: s_state, s_postcode: s_postcode},
-			success: 	function( code ) {
-							jQuery('#order_methods, #order_review').remove();
-							jQuery('#order_review_heading').after(code);
-							jQuery('#order_review input[name=payment_method]:checked').click();
-						},
-			dataType: 	"html"
+			url: 		params.ajax_url,
+			data: 		data,
+			success: 	function( response ) {
+				jQuery('#order_methods, #order_review').remove();
+				jQuery('#order_review_heading').after(response);
+				jQuery('#order_review input[name=payment_method]:checked').click();
+			}
 		});
-	
+
 	}
 		
 	jQuery(function(){
@@ -363,7 +421,8 @@ if (params.is_checkout==1) {
 		
 		jQuery('form.login').hide();
 		
-		jQuery('a.showlogin').click(function(){
+		jQuery('a.showlogin').click(function(e){
+			e.preventDefault();
 			jQuery('form.login').slideToggle();
 		});
 		
@@ -374,7 +433,7 @@ if (params.is_checkout==1) {
 		}).change();
 		jQuery('input#billing-country, input#billing-state, #billing-postcode, input#shipping-country, input#shipping-state, #shipping-postcode').live('keydown', function(){
 			clearTimeout(updateTimer);
-			updateTimer = setTimeout("update_checkout()", '1000');
+			updateTimer = setTimeout("update_checkout()", '5000');
 		});
 		jQuery('select#billing-country, select#billing-state, select#shipping-country, select#shipping-state, #shiptobilling input').live('change', function(){
 			clearTimeout(updateTimer);
@@ -384,7 +443,7 @@ if (params.is_checkout==1) {
 		/* AJAX Form Submission */
 		jQuery('form.checkout').submit(function(){
 			var form = this;
-			jQuery(form).block({message: null, overlayCSS: {background: '#fff url(' + params.plugin_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
+			jQuery(form).block({message: null, overlayCSS: {background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
 			jQuery.ajax({
 				type: 		'POST',
 				url: 		params.checkout_url,
@@ -407,5 +466,10 @@ if (params.is_checkout==1) {
 		});
 	
 	});
-	
 }
+
+//message fade in
+jQuery(document).ready(function(){
+	jQuery('.jigoshop_error, .jigoshop_message').css('opacity', 0);
+	setTimeout(function(){jQuery('.jigoshop_error, .jigoshop_message').animate({opacity:1}, 1500);},100);
+});

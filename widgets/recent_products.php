@@ -30,7 +30,7 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 			'description'	=> __( "The most recent products on your site", 'jigoshop')
 		);
 		
-		parent::__construct('recent-products', __('New Products', 'jigoshop'), $options);
+		parent::__construct('recent-products', __('Jigoshop: New Products', 'jigoshop'), $options);
 
 		// Flush cache after every save
 		add_action( 'save_post', array(&$this, 'flush_widget_cache') );
@@ -78,14 +78,25 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 		$number = apply_filters('jigoshop_widget_recent_default_number', $number, $instance, $this->id_base);
 
 		// Set up query
-    	$args = array(
-    		'showposts'		=> $number,
-    		'post_type'		=> 'product',
+    	$query_args = array(
+    		'posts_per_page' => $number,
+    		'post_type'      => 'product',
+    		'post_status'    => 'publish',
+    		'orderby'        => 'date',
+    		'order'          => 'desc',
+    		'meta_query'     => array(
+    			array(
+    				'key'       => 'visibility',
+    				'value'     => array('catalog', 'visible'),
+    				'compare'   => 'IN',
+    			),
+    		)
     	);
     	
-    	// Show variations of products?
+    	// Show variations of products?  TODO: fix this -JAP-
+/*
     	if( ! $instance['show_variations']) {
-    		$args['meta_query'] = array(
+    		$query_args['meta_query'] = array(
     			array(
     				'key'		=> 'visibility',
     				'value'		=> array('catalog', 'visible'),
@@ -93,11 +104,12 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
     			),
     		);
     		
-    		$args['parent'] = false;
+    		$query_args['parent'] = false;
     	}
+*/
 
 		// Run the query
-		$q = new WP_Query($args);
+		$q = new WP_Query($query_args);
 		
 		// If there are products
 		if($q->have_posts()) {
@@ -119,11 +131,11 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 					// Print the product image & title with a link to the permalink
 					echo '<a href="'.get_permalink().'" title="'.esc_attr(get_the_title()).'">';
 					echo (has_post_thumbnail()) ? the_post_thumbnail('shop_tiny') : jigoshop_get_image_placeholder('shop_tiny');
-					echo the_title();
+					echo '<span class="js_widget_product_title">' . get_the_title() . '</span>';
 					echo '</a>';
 					
 					// Print the price with html wrappers
-					echo $_product->get_price_html();
+					echo '<span class="js_widget_product_price">' . $_product->get_price_html() . '</span>';
 				echo '</li>';
 			endwhile;
 			
@@ -157,7 +169,7 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 		// Save the new values
 		$instance['title'] = strip_tags($new_instance['title']);
 		$instance['number'] = abs($new_instance['number']);
-		$instance['show_variations'] = (bool) $new_instance['show_variations'];
+		$instance['show_variations'] = (bool) isset($new_instance['show_variations']) ? $new_instance['show_variations'] : false;
 
 		// Flush the cache
 		$this->flush_widget_cache();
@@ -190,29 +202,29 @@ class Jigoshop_Widget_Recent_Products extends WP_Widget {
 	public function form( $instance ) {
 	
 		// Get instance data
-		$title = isset($instance['title']) ? esc_attr($instance['title']) : null;
+		$title = isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : null;
+		$number = isset( $instance['number'] ) ? absint( $instance['number'] ) : 5;
 		
-		$number = apply_filters('jigoshop_widget_featured_default_number', 5, $instance, $this->id_base);
-		$number = isset($instance['number']) ? abs($instance['number']) : $number;
-		
-		$show_variations = (bool) $instance['show_variations'];
-		
+		$show_variations = (bool) isset($instance['show_variations']) ? $instance['show_variations'] : false;
+
 		// Widget Title
-		echo '<p>';
-		echo '<label for="' . $this->get_field_id('title') . '">' . _e('Title:', 'jigoshop') . '</label>';
-		echo '<input class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" type="text" value="'. $title .'" />';
-		echo '</p>';
-		
+		echo "
+		<p>
+			<label for='{$this->get_field_id( 'title' )}'>" . __( 'Title:', 'jigoshop' ) . "</label>
+			<input class='widefat' id='{$this->get_field_id( 'title' )}' name='{$this->get_field_name( 'title' )}' type='text' value='{$title}' />
+		</p>";
+
 		// Number of posts to fetch
-		echo '<p>';
-		echo '<label for="' . $this->get_field_id('number') . '">' . _e('Number of products to show:', 'jigoshop') . '</label>';
-		echo '<input id="' . $this->get_field_id('number') . '" name="' . $this->get_field_name('number') . '" type="text" value="' . $number . '" size="3" />';
-		echo '</p>';
+		echo "
+		<p>
+			<label for='{$this->get_field_id( 'number' )}'>" . __( 'Number of products to show:', 'jigoshop' ) . "</label>
+			<input id='{$this->get_field_id( 'number' )}' name='{$this->get_field_name( 'number' )}' type='number' value='{$number}' size='3' />
+		</p>";
 		
 		// Show variations?
 		echo '<p>';
-		echo '<input type="checkbox" class="checkbox" id="' . $this->get_field_id('show_variations') . '" name="' . $this->get_field_name('show_variations') . '"' . checked( $show_variations ) . '/>';
-		echo '<label for="' . $this->get_field_id('show_variations') . '"> ' . __( 'Show hidden product variations', 'jigoshop' ) . '</label>';
+		echo '<input type="checkbox" class="checkbox" id="' . esc_attr( $this->get_field_id('show_variations')  ) . '" name="' . esc_attr( $this->get_field_name('show_variations')  ) . '"' . checked( $show_variations ) . '/>';
+		echo '<label for="' . esc_attr( $this->get_field_id('show_variations')  ) . '"> ' . __( 'Show hidden product variations', 'jigoshop' ) . '</label>';
 		echo '</p>';
 
 	}

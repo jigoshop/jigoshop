@@ -18,7 +18,7 @@
  */
 class jigoshop_order {
 	
-	private $_data = array();
+	public $_data = array();
 	
 	public function __get($variable) {
 		return isset($this->_data[$variable]) ? $this->_data[$variable] : null;
@@ -30,7 +30,7 @@ class jigoshop_order {
 	
 	/** Get the order if ID is passed, otherwise the order is new and empty */
 	function jigoshop_order( $id='' ) {
-		if ($id>0) $this->get_order( $id );
+		if ($id>0) apply_filters('jigoshop_get_order', $this->get_order( $id ), $id);
 	}
 	
 	/** Gets an order from the database */
@@ -80,13 +80,16 @@ class jigoshop_order {
 		$this->shipping_state 		= (string) $this->get_value_from_data('shipping_state');
 
 		$this->shipping_method 		= (string) $this->get_value_from_data('shipping_method');
+		$this->shipping_service		= (string) $this->get_value_from_data('shipping_service');
 		$this->payment_method 		= (string) $this->get_value_from_data('payment_method');
 		
 		$this->order_subtotal 		= (string) $this->get_value_from_data('order_subtotal');
-		
+		$this->order_subtotal_inc_tax   = (string) $this->get_value_from_data('order_subtotal_inc_tax');
+                
 		$this->order_shipping 		= (string) $this->get_value_from_data('order_shipping');
 		$this->order_discount 		= (string) $this->get_value_from_data('order_discount');
-		$this->order_tax 			= (string) $this->get_value_from_data('order_tax');
+        $this->order_discount_coupons = $this->get_value_from_data('order_discount_coupons'); //array
+		$this->order_tax 		= $this->get_order_tax_array('order_tax');
 		$this->order_shipping_tax	= (string) $this->get_value_from_data('order_shipping_tax');
 		$this->order_total 			= (string) $this->get_value_from_data('order_total');
 	
@@ -120,7 +123,7 @@ class jigoshop_order {
 		endif;
 		
 		// Taxonomy data 
-		$terms = wp_get_object_terms( $this->id, 'shop_order_status' );
+		$terms = get_the_terms( $this->id, 'shop_order_status' );
 		if (!is_wp_error($terms) && $terms) :
 			$term = current($terms);
 			$this->status = $term->slug; 
@@ -129,6 +132,12 @@ class jigoshop_order {
 		endif;
 			
 	}
+        
+        private function get_order_tax_array( $key ) {
+            $array_string = $this->get_value_from_data($key);
+            $divisor = $this->get_value_from_data('order_tax_divisor');
+            return jigoshop_tax::get_taxes_as_array($array_string, $divisor);
+        }
 	
 	function get_value_from_data( $key ) {
 		if (isset($this->order_data[$key])) return $this->order_data[$key]; else return '';
@@ -136,10 +145,41 @@ class jigoshop_order {
 	
 	/** Gets shipping and product tax */
 	function get_total_tax() {
-		return $this->order_tax + $this->order_shipping_tax;
+        $order_tax = 0;
+        
+        if ($this->get_tax_classes() && is_array($this->get_tax_classes())) : 
+            
+            foreach ($this->get_tax_classes() as $tax_class) :
+                $order_tax += $this->order_tax[$tax_class]['amount'];
+            endforeach;
+            
+        endif;
+        
+        return jigoshop_price($order_tax, array('with_currency' => false));
 	}
 	
-	/** Gets subtotal */
+        public function get_tax_classes() {
+            
+            return ($this->order_tax && is_array($this->order_tax) ? array_keys($this->order_tax) : array());
+        }
+        
+        public function tax_class_is_not_compound($tax_class) {
+            return !$this->order_tax[$tax_class]['compound'];
+        }
+        
+        public function get_tax_rate($tax_class) {
+            return $this->order_tax[$tax_class]['rate'];
+        }
+        
+        public function get_tax_amount($tax_class) {
+            return jigoshop_price($this->order_tax[$tax_class]['amount']);
+        }
+        
+        public function get_tax_class_for_display($tax_class) {
+            return $this->order_tax[$tax_class]['display'];
+        }
+        
+        /** Gets subtotal */
 	function get_subtotal_to_display() {
 		
 			
@@ -158,9 +198,19 @@ class jigoshop_order {
 		if ($this->order_shipping > 0) :
 
 				$shipping = jigoshop_price($this->order_shipping);
-				if ($this->order_shipping_tax > 0) :
-					$shipping .= sprintf(__(' <small>(ex. tax) via %s</small>', 'jigoshop'), ucwords($this->shipping_method));
-				endif;
+				if ($this->order_shipping_tax > 0) : //tax applied to shipping
+					if ($this->shipping_service != NULL || $this->shipping_service) :
+						$shipping .= sprintf(__(' <small>(ex. tax) %s via %s</small>', 'jigoshop'), ucwords($this->shipping_service), ucwords($this->shipping_method));
+					else :
+						$shipping .= sprintf(__(' <small>(ex. tax) via %s</small>', 'jigoshop'), ucwords($this->shipping_method));
+					endif;
+				else : // when no tax applied to shipping
+                    if ($this->shipping_service != NULL || $this->shipping_service) :
+                        $shipping .= sprintf(__(' <small>%s via %s</small>', 'jigoshop'), ucwords($this->shipping_service), ucwords($this->shipping_method));
+                    else :
+                        $shipping .= sprintf(__(' <small>via %s</small>', 'jigoshop'), ucwords($this->shipping_method));
+                    endif;
+                endif;
 
 		else :
 			$shipping = __('Free!', 'jigoshop');
@@ -173,9 +223,9 @@ class jigoshop_order {
 	function get_product_from_item( $item ) {
 		
 		if (isset($item['variation_id']) && $item['variation_id']>0) :
-			$_product = &new jigoshop_product_variation( $item['variation_id'] );
+			$_product = new jigoshop_product_variation( $item['variation_id'] );
 		else :
-			$_product = &new jigoshop_product( $item['id'] );
+			$_product = new jigoshop_product( $item['id'] );
 		endif;
 		
 		return $_product;
@@ -191,7 +241,7 @@ class jigoshop_order {
 			
 			$_product = $this->get_product_from_item( $item );
 
-			$return .= $item['qty'] . ' x ' . apply_filters('jigoshop_order_product_title', $item['name'], $_product);
+			$return .= $item['qty'] . ' x ' . html_entity_decode(apply_filters('jigoshop_order_product_title', $item['name'], $_product), ENT_QUOTES, 'UTF-8');
 			
 			if ($show_sku) :
 				
@@ -199,17 +249,18 @@ class jigoshop_order {
 				
 			endif;
 			
-			$return .= ' - ' . strip_tags(jigoshop_price( $item['cost']*$item['qty'], array('ex_tax_label' => 1 )));
+			$return .= ' - ' . html_entity_decode(strip_tags(jigoshop_price( $item['cost']*$item['qty'], array('ex_tax_label' => 1 ))), ENT_COMPAT, 'UTF-8');
 			
 			if (isset($_product->variation_data)) :
-				$return .= PHP_EOL . jigoshop_get_formatted_variation( $_product->variation_data, true );
+				$return .= PHP_EOL . jigoshop_get_formatted_variation( $item['variation'] );
 			endif;
-			
+
 			if ($show_download_links) :
 				
 				if ($_product->exists) :
 			
 					if ($_product->is_type('downloadable')) :
+						$return .= PHP_EOL . 'Your download link for this file is:';
 						$return .= PHP_EOL . ' - ' . $this->get_downloadable_file_url( $item['id'] ) . '';
 					endif;
 		
@@ -228,7 +279,7 @@ class jigoshop_order {
 	/**  Generates a URL so that a customer can checkout/pay for their (unpaid - pending) order via a link */
 	function get_checkout_payment_url() {
 		
-		$payment_page = get_permalink(get_option('jigoshop_pay_page_id'));
+		$payment_page = apply_filters('jigoshop_get_checkout_payment_url', get_permalink(get_option('jigoshop_pay_page_id')));
 		
 		if (get_option('jigoshop_force_ssl_checkout')=='yes' || is_ssl()) $payment_page = str_replace('http:', 'https:', $payment_page);
 	
@@ -238,7 +289,7 @@ class jigoshop_order {
 	
 	/** Generates a URL so that a customer can cancel their (unpaid - pending) order */
 	function get_cancel_order_url() {
-		return jigoshop::nonce_url( 'cancel_order', add_query_arg('cancel_order', 'true', add_query_arg('order', $this->order_key, add_query_arg('order_id', $this->id, home_url()))));
+		return apply_filters('jigoshop_get_cancel_order', jigoshop::nonce_url( 'cancel_order', add_query_arg('cancel_order', 'true', add_query_arg('order', $this->order_key, add_query_arg('order_id', $this->id, home_url())))));
 	}
 	
 	
@@ -264,27 +315,21 @@ class jigoshop_order {
 	 * @param   int		$private	Currently unused
 	 */
 	function add_order_note( $note, $private = 1 ) {
-		
-		$comment_post_ID = $this->id;
-		$comment_author = 'JigoShop';
-		$comment_author_email = 'jigoshop@' . str_replace('www.', '', str_replace('http://', '', site_url()));
-		$comment_author_url = '';
-		$comment_content = $note;
-		$comment_type = '';
-		$comment_parent = 0;
-		
-		$commentdata = compact('comment_post_ID', 'comment_author', 'comment_author_email', 'comment_author_url', 'comment_content', 'comment_type', 'comment_parent', 'user_ID');
-		
-		$commentdata['comment_author_IP'] = preg_replace( '/[^0-9a-fA-F:., ]/', '',$_SERVER['REMOTE_ADDR'] );
-		$commentdata['comment_agent']     = substr($_SERVER['HTTP_USER_AGENT'], 0, 254);
+
+		$comment = array(
+			'comment_post_ID'      => $this->id,
+			'comment_author'       => 'Jigoshop',
+			'comment_author_email' => null,
+			'comment_author_url'   => null,
+			'comment_content'      => $note,
+			'comment_type'         => 'jigoshop',
+			'comment_parent'       => 0,
+			'comment_date'         => current_time('mysql'),
+			'comment_date_gmt'     => current_time('mysql', 1),
+		);
 	
-		$commentdata['comment_date']     = current_time('mysql');
-		$commentdata['comment_date_gmt'] = current_time('mysql', 1);
-	
-		$comment_id = wp_insert_comment( $commentdata );
-		
+		$comment_id = wp_insert_comment( $comment );
 		add_comment_meta($comment_id, 'private', $private);
-		
 	}
 
 	/**
@@ -308,10 +353,32 @@ class jigoshop_order {
 				do_action( 'order_status_'.$this->status.'_to_'.$new_status->slug, $this->id );
 				$this->add_order_note( $note . sprintf( __('Order status changed from %s to %s.', 'jigoshop'), $this->status, $new_status->slug ) );
 				clean_term_cache( '', 'shop_order_status' );
+
+				// If completed add completion date to order
+				if( $new_status->slug === 'completed' ) {
+					update_post_meta( $this->id, '_js_completed_date', current_time('timestamp'));
+					$this->add_sale(); // Add the sale to the records
+				}
 			endif;
 		
 		endif;
 		
+	}
+
+	/**
+	 * Adds a sale to the record
+	 *
+	 * @return void
+	 **/
+	function add_sale() {
+
+		if( $this->items ) {
+			foreach($this->items as $item) {
+				$sales =	absint(get_post_meta($item['id'], 'total_sales', true));
+				$sales +=	absint($item['qty']);
+				update_post_meta($item['id'], '_js_total_sales', $sales);
+			}
+		}
 	}
 	
 	/**
@@ -321,7 +388,7 @@ class jigoshop_order {
 	 */
 	function cancel_order( $note = '' ) {
 		
-		unset($_SESSION['order_awaiting_payment']);
+		unset( jigoshop_session::instance()->order_awaiting_payment );
 		
 		$this->update_status('cancelled', $note);
 		
@@ -336,7 +403,7 @@ class jigoshop_order {
 	 */
 	function payment_complete() {
 		
-		unset($_SESSION['order_awaiting_payment']);
+		unset( jigoshop_session::instance()->order_awaiting_payment );
 		
 		$downloadable_order = false;
 		
@@ -365,6 +432,9 @@ class jigoshop_order {
 		
 		// Payment is complete so reduce stock levels
 		$this->reduce_order_stock();
+
+		// Add the sale
+		$this->add_sale();
 		
 	}
 	
@@ -388,11 +458,11 @@ class jigoshop_order {
 					$this->add_order_note( sprintf( __('Item #%s stock reduced from %s to %s.', 'jigoshop'), $item['id'], $old_stock, $new_quantity) );
 						
 					if ($new_quantity<0) :
-						do_action('jigoshop_product_on_backorder_notification', $item['id'], $item['qty']);
+						do_action('jigoshop_product_on_backorder_notification', $this->id, $item['id'], $item['qty']);
 					endif;
 					
 					// stock status notifications
-					if (get_option('jigoshop_notify_no_stock_amount') && get_option('jigoshop_notify_no_stock_amount')>=$new_quantity) :
+                    if (get_option('jigoshop_notify_no_stock_amount') >= 0 && get_option('jigoshop_notify_no_stock_amount') >= $new_quantity) :
 						do_action('jigoshop_no_stock_notification', $item['id']);
 					elseif (get_option('jigoshop_notify_low_stock_amount') && get_option('jigoshop_notify_low_stock_amount')>=$new_quantity) :
 						do_action('jigoshop_low_stock_notification', $item['id']);

@@ -1,0 +1,3729 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-Language: \n"
+"X-Poedit-Country: \n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: \n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes"
+
+#: admin/jigoshop-admin-attributes.php:113
+#: admin/jigoshop-admin-attributes.php:155
+#: admin/jigoshop-admin.php:36
+#: admin/write-panels/product-data.php:42
+#@ jigoshop
+msgid "Attributes"
+msgstr "Tulajdonságok"
+
+#: admin/jigoshop-admin-attributes.php:119
+#@ jigoshop
+msgid "Edit Attribute"
+msgstr "Tulajdonság szerkesztése"
+
+#: admin/jigoshop-admin-attributes.php:120
+#@ jigoshop
+msgid "Attribute taxonomy names cannot be changed; you may only change an attributes type."
+msgstr "A tulajdonságok nevei nem változtathatóak meg, csak a típusukat változtathatod meg."
+
+#: admin/jigoshop-admin-attributes.php:124
+#: admin/jigoshop-admin-attributes.php:220
+#@ jigoshop
+msgid "Attribute type"
+msgstr "Tulajdonság típus"
+
+#: admin/jigoshop-admin-attributes.php:126
+#: admin/jigoshop-admin-attributes.php:222
+#@ jigoshop
+msgid "Select"
+msgstr "Kiválasztás"
+
+#: admin/jigoshop-admin-attributes.php:127
+#: admin/jigoshop-admin-attributes.php:223
+#@ jigoshop
+msgid "Multiselect"
+msgstr "Többes kiválasztás"
+
+#: admin/jigoshop-admin-attributes.php:128
+#: admin/jigoshop-admin-attributes.php:224
+#@ jigoshop
+msgid "Text"
+msgstr "Szöveg"
+
+#: admin/jigoshop-admin-attributes.php:132
+#@ jigoshop
+msgid "Save Attribute"
+msgstr "Tulajdonság mentése"
+
+#: admin/jigoshop-admin-attributes.php:163
+#: admin/jigoshop-admin-post-types.php:21
+#: admin/write-panels/order-data.php:261
+#: admin/write-panels/product-data.php:199
+#: templates/product/reviews.php:76
+#@ jigoshop
+#@ default
+msgid "Name"
+msgstr "Név"
+
+#: admin/jigoshop-admin-attributes.php:164
+#: admin/jigoshop-admin-post-types.php:22
+#: shipping/flat_rate.php:89
+#@ jigoshop
+msgid "Type"
+msgstr "Típus"
+
+#: admin/jigoshop-admin-attributes.php:165
+#@ jigoshop
+msgid "Terms"
+msgstr "Kifejezések"
+
+#: admin/jigoshop-admin-attributes.php:177
+#: jigoshop_taxonomy.php:16
+#: jigoshop_taxonomy.php:141
+#: shortcodes/my_account.php:75
+#: shortcodes/my_account.php:104
+#@ jigoshop
+msgid "Edit"
+msgstr "Szerkesztés"
+
+#: admin/jigoshop-admin-attributes.php:177
+#: admin/jigoshop-admin-settings.php:253
+#@ jigoshop
+msgid "Delete"
+msgstr "Törlés"
+
+#: admin/jigoshop-admin-attributes.php:199
+#@ jigoshop
+msgid "No attributes currently exist."
+msgstr "Jelenleg nincs egy tulajdonság sem."
+
+#: admin/jigoshop-admin-attributes.php:209
+#@ jigoshop
+msgid "Add New Attribute"
+msgstr "Új tulajdonság létrehozása"
+
+#: admin/jigoshop-admin-attributes.php:210
+#@ jigoshop
+msgid "Attributes let you define extra product data, such as size or colour. You can use these attributes in the shop sidebar using the \"layered nav\" widgets. Please note: you cannot rename an attribute later on."
+msgstr "A tulajdonságok segítségével a termékeid valamely extra tulajdonságát adhatod meg, például a színüket. Ezeket a tulajdonságokat a boltod oldalsávjában találod a \"rétegzett navigáció\" widgetei közt. Megj.: a tulajdonságok nevei nem változtathatóak meg."
+
+#: admin/jigoshop-admin-attributes.php:214
+#@ jigoshop
+msgid "Attribute Name"
+msgstr "Tulajdonság neve"
+
+#: admin/jigoshop-admin-attributes.php:230
+#@ jigoshop
+msgid "Add Attribute"
+msgstr "Tulajdonság hozzáadása"
+
+#: admin/jigoshop-admin-attributes.php:240
+#@ jigoshop
+msgid "Are you sure you want to delete this?"
+msgstr "Biztosan törölni akarod ezt?"
+
+#: admin/jigoshop-admin-dashboard.php:25
+#@ jigoshop
+msgid "Jigoshop Dashboard"
+msgstr "Jigoshop vezérlőpult"
+
+#: admin/jigoshop-admin-dashboard.php:33
+#@ jigoshop
+msgid "Right Now"
+msgstr "Most"
+
+#: admin/jigoshop-admin-dashboard.php:37
+#@ jigoshop
+msgid "Shop Content"
+msgstr "Bolt tartalma"
+
+#: admin/jigoshop-admin-dashboard.php:46
+#: drop-ins/cross-sells.php:101
+#: drop-ins/cross-sells.php:186
+#: jigoshop_taxonomy.php:12
+#@ jigoshop
+msgid "Products"
+msgstr "Termékek"
+
+#: admin/jigoshop-admin-dashboard.php:52
+#: jigoshop_taxonomy.php:50
+#: widgets/product_categories.php:17
+#: widgets/product_categories.php:24
+#@ jigoshop
+msgid "Product Categories"
+msgstr "Termék kategóriák"
+
+#: admin/jigoshop-admin-dashboard.php:58
+#: jigoshop_taxonomy.php:73
+#@ jigoshop
+msgid "Product Tag"
+msgstr "Termék címe"
+
+#: admin/jigoshop-admin-dashboard.php:64
+#@ jigoshop
+msgid "Attribute taxonomies"
+msgstr "Tulajdonság osztályozás"
+
+#: admin/jigoshop-admin-dashboard.php:70
+#: jigoshop_taxonomy.php:137
+#@ jigoshop
+msgid "Orders"
+msgstr "Rendelések"
+
+#: admin/jigoshop-admin-dashboard.php:76
+#@ jigoshop
+msgid "Pending"
+msgstr "Függőben"
+
+#: admin/jigoshop-admin-dashboard.php:80
+#@ jigoshop
+msgid "On-Hold"
+msgstr "Várakozik"
+
+#: admin/jigoshop-admin-dashboard.php:84
+#@ jigoshop
+msgid "Processing"
+msgstr "Feldolgozás alatt"
+
+#: admin/jigoshop-admin-dashboard.php:88
+#@ jigoshop
+msgid "Completed"
+msgstr "Teljesítve"
+
+#: admin/jigoshop-admin-dashboard.php:94
+#@ jigoshop
+msgid "You are using"
+msgstr "Az általad használt verzió: "
+
+#: admin/jigoshop-admin-dashboard.php:102
+#: shortcodes/my_account.php:31
+#@ jigoshop
+msgid "Recent Orders"
+msgstr "Rendelések mostanában"
+
+#: admin/jigoshop-admin-dashboard.php:122
+#@ jigoshop
+msgid "item"
+msgid_plural "items"
+msgstr[0] "tétel"
+msgstr[1] "tételek"
+
+#: admin/jigoshop-admin-dashboard.php:122
+#@ jigoshop
+msgid "Total: "
+msgstr "Összesen: "
+
+#: admin/jigoshop-admin-dashboard.php:134
+#@ jigoshop
+msgid "Stock Report"
+msgstr "Készlet jelentés"
+
+#: admin/jigoshop-admin-dashboard.php:175
+#@ jigoshop
+msgid "No products are low in stock."
+msgstr "Egy termékből sincs fogytán a raktárkészlet."
+
+#: admin/jigoshop-admin-dashboard.php:178
+#@ jigoshop
+msgid "No products are out of stock."
+msgstr "Egy termékből sem fogyott ki a raktárkészlet."
+
+#: admin/jigoshop-admin-dashboard.php:183
+#@ jigoshop
+msgid "Low Stock"
+msgstr "Fogytán a raktárkészlet"
+
+#: admin/jigoshop-admin-dashboard.php:191
+#@ jigoshop
+msgid "Out of Stock/Backorders"
+msgstr "Kifogyott a raktárkészlet/utánrendelések"
+
+#: admin/jigoshop-admin-dashboard.php:219
+#@ jigoshop
+msgid "Monthly Sales"
+msgstr "Havi eladások"
+
+#: admin/jigoshop-admin-dashboard.php:426
+#@ jigoshop
+msgid "Recent Product Reviews"
+msgstr "Termék értékelések mostanában"
+
+#: admin/jigoshop-admin-dashboard.php:451
+#: jigoshop.php:421
+#: templates/product/reviews.php:28
+#@ jigoshop
+msgid "out of 5"
+msgstr "5-ből"
+
+#: admin/jigoshop-admin-dashboard.php:459
+#@ jigoshop
+msgid "There are no product reviews yet."
+msgstr "Nincs jelenleg termék értékelés."
+
+#: admin/jigoshop-admin-dashboard.php:466
+#@ jigoshop
+msgid "Latest News"
+msgstr "Legfrissebb hírek"
+
+#: admin/jigoshop-admin-dashboard.php:493
+#, php-format
+#@ jigoshop
+msgid "%s ago"
+msgstr "%s-vel ezelőtt"
+
+#: admin/jigoshop-admin-dashboard.php:495
+#@ jigoshop
+msgid "F jS Y"
+msgstr "Y. m. d."
+
+#: admin/jigoshop-admin-dashboard.php:505
+#: admin/jigoshop-admin-dashboard.php:509
+#@ jigoshop
+msgid "No items found."
+msgstr "Nincsenek tételek."
+
+#: admin/jigoshop-admin-dashboard.php:518
+#@ jigoshop
+msgid "Useful Links"
+msgstr "Hasznos linkek"
+
+#: admin/jigoshop-admin-dashboard.php:521
+#: admin/jigoshop-admin.php:32
+#@ jigoshop
+#@ default
+msgid "Jigoshop"
+msgstr "Jigoshop"
+
+#: admin/jigoshop-admin-dashboard.php:521
+#@ default
+msgid "Learn more about the Jigoshop plugin"
+msgstr "Tudj meg többet a Jigoshop bővítményről"
+
+#: admin/jigoshop-admin-dashboard.php:522
+#@ jigoshop
+msgid "Tour"
+msgstr "Bemutató"
+
+#: admin/jigoshop-admin-dashboard.php:522
+#@ default
+msgid "Take a tour of the plugin"
+msgstr "A bővítmény bemutatása"
+
+#: admin/jigoshop-admin-dashboard.php:523
+#@ jigoshop
+msgid "Documentation"
+msgstr "Dokumentáció"
+
+#: admin/jigoshop-admin-dashboard.php:523
+#@ default
+msgid "Stuck? Read the plugin's documentation."
+msgstr "Elakadtál? Olvasd el a bővítmény dokumentációját!"
+
+#: admin/jigoshop-admin-dashboard.php:524
+#@ jigoshop
+msgid "Forums"
+msgstr "Fórumok"
+
+#: admin/jigoshop-admin-dashboard.php:524
+#@ default
+msgid "Help from the community or our dedicated support team."
+msgstr "Kérj segítséget a közösségtől vagy a dedikált support csapatunktól!"
+
+#: admin/jigoshop-admin-dashboard.php:525
+#@ jigoshop
+msgid "Themes &amp; Extensions"
+msgstr "Témák és Kiegészítők"
+
+#: admin/jigoshop-admin-dashboard.php:525
+#@ default
+msgid "Extend Jigoshop with plugins and themes."
+msgstr "Turbózd fel a Jigoshopot kiegészítőkkel és témákkal!"
+
+#: admin/jigoshop-admin-dashboard.php:526
+#@ jigoshop
+msgid "Upgrade"
+msgstr "Frissítés"
+
+#: admin/jigoshop-admin-dashboard.php:526
+#@ default
+msgid "Purchase support and plugin upgrades or join our club."
+msgstr "Vásárolj supportot és frissítéseket a kiegészítőkhöz, vagy csatlakozz a klubbhoz!"
+
+#: admin/jigoshop-admin-dashboard.php:527
+#@ jigoshop
+msgid "@Jigoshop"
+msgstr "@Jigoshop"
+
+#: admin/jigoshop-admin-dashboard.php:527
+#@ default
+msgid "Follow us on Twitter."
+msgstr "Követt minket Twitteren!"
+
+#: admin/jigoshop-admin-dashboard.php:531
+#@ jigoshop
+msgid "Help promote Jigoshop!"
+msgstr "Segíts a Jigoshop megismertetésében!"
+
+#: admin/jigoshop-admin-dashboard.php:537
+#@ jigoshop
+msgid "Jigoshop is bought to you by&hellip;"
+msgstr "A Jigoshopot készítették&hellip;"
+
+#: admin/jigoshop-admin-post-types.php:20
+#@ jigoshop
+msgid "Thumb"
+msgstr "Kép"
+
+#: admin/jigoshop-admin-post-types.php:23
+#@ jigoshop
+msgid "ID/SKU"
+msgstr "ID/Raktárszám"
+
+#: admin/jigoshop-admin-post-types.php:24
+#@ jigoshop
+msgid "Category"
+msgstr "Kategória"
+
+#: admin/jigoshop-admin-post-types.php:25
+#@ jigoshop
+msgid "Tags"
+msgstr "Címkék"
+
+#: admin/jigoshop-admin-post-types.php:26
+#@ jigoshop
+msgid "Visibility"
+msgstr "Láthatóság"
+
+#: admin/jigoshop-admin-post-types.php:27
+#@ jigoshop
+msgid "Featured"
+msgstr "Kiemelt"
+
+#: admin/jigoshop-admin-post-types.php:30
+#@ jigoshop
+msgid "In Stock?"
+msgstr "Raktáron?"
+
+#: admin/jigoshop-admin-post-types.php:31
+#: admin/jigoshop-admin-settings-options.php:231
+#: admin/write-panels/product-data.php:41
+#@ jigoshop
+msgid "Inventory"
+msgstr "Leltár"
+
+#: admin/jigoshop-admin-post-types.php:34
+#: shortcodes/order_tracking.php:35
+#@ jigoshop
+msgid "Price"
+msgstr "Ár"
+
+#: admin/jigoshop-admin-post-types.php:107
+#: shortcodes/my_account.php:40
+#@ jigoshop
+msgid "Status"
+msgstr "Állapot"
+
+#: admin/jigoshop-admin-post-types.php:109
+#: admin/write-panels/order-data.php:75
+#: admin/write-panels/product-data.php:198
+#: jigoshop_taxonomy.php:138
+#@ jigoshop
+msgid "Order"
+msgstr "Rendelés"
+
+#: admin/jigoshop-admin-post-types.php:111
+#@ jigoshop
+msgid "Customer"
+msgstr "Vásárló"
+
+#: admin/jigoshop-admin-post-types.php:112
+#: shortcodes/my_account.php:74
+#: shortcodes/my_account.php:190
+#: shortcodes/my_account.php:472
+#: shortcodes/order_tracking.php:80
+#: templates/checkout/form.php:7
+#@ jigoshop
+msgid "Billing Address"
+msgstr "Számlázási cím"
+
+#: admin/jigoshop-admin-post-types.php:113
+#: classes/jigoshop_checkout.class.php:98
+#: shortcodes/my_account.php:103
+#: shortcodes/my_account.php:190
+#: shortcodes/my_account.php:459
+#: shortcodes/order_tracking.php:89
+#@ jigoshop
+msgid "Shipping Address"
+msgstr "Szállítási cím"
+
+#: admin/jigoshop-admin-post-types.php:115
+#@ jigoshop
+msgid "Billing & Shipping"
+msgstr "Számlázás és szállítás"
+
+#: admin/jigoshop-admin-post-types.php:117
+#@ jigoshop
+msgid "Order Cost"
+msgstr "Rendelés költsége"
+
+#: admin/jigoshop-admin-post-types.php:130
+#, php-format
+#@ jigoshop
+msgid "<mark class=\"%s\">%s</mark>"
+msgstr "<mark class=\"%s\">%s</mark>"
+
+#: admin/jigoshop-admin-post-types.php:135
+#, php-format
+#@ jigoshop
+msgid "Order #%s"
+msgstr "Rendelés #%s"
+
+#: admin/jigoshop-admin-post-types.php:146
+#@ jigoshop
+msgid "User:"
+msgstr "Felhasználó:"
+
+#: admin/jigoshop-admin-post-types.php:158
+#: admin/write-panels/order-data.php:99
+#@ jigoshop
+msgid "Guest"
+msgstr "Vendég"
+
+#: admin/jigoshop-admin-post-types.php:161
+#@ jigoshop
+msgid "Billing Email:"
+msgstr "Számlázási email:"
+
+#: admin/jigoshop-admin-post-types.php:163
+#@ jigoshop
+msgid "Billing Tel:"
+msgstr "Számlázási tel.:"
+
+#: admin/jigoshop-admin-post-types.php:187
+#@ jigoshop
+msgid "Payment:"
+msgstr "Fizetés:"
+
+#: admin/jigoshop-admin-post-types.php:189
+#: jigoshop_emails.php:45
+#: jigoshop_emails.php:113
+#: jigoshop_emails.php:188
+#: jigoshop_emails.php:253
+#@ jigoshop
+msgid "Shipping:"
+msgstr "Szállítás:"
+
+#: admin/jigoshop-admin-post-types.php:198
+#: shortcodes/cart.php:92
+#: shortcodes/cart.php:143
+#: shortcodes/my_account.php:402
+#: shortcodes/order_tracking.php:41
+#: templates/checkout/pay_for_order.php:14
+#: templates/checkout/review_order.php:37
+#: widgets/cart.php:55
+#@ jigoshop
+msgid "Subtotal"
+msgstr "Részösszeg"
+
+#: admin/jigoshop-admin-post-types.php:202
+#: admin/jigoshop-admin-settings-options.php:299
+#: shortcodes/cart.php:147
+#: shortcodes/my_account.php:406
+#: shortcodes/order_tracking.php:45
+#: templates/checkout/pay_for_order.php:18
+#: templates/checkout/review_order.php:42
+#@ jigoshop
+msgid "Shipping"
+msgstr "Szállítás"
+
+#: admin/jigoshop-admin-post-types.php:206
+#: admin/jigoshop-admin-settings-options.php:335
+#: shortcodes/cart.php:151
+#: shortcodes/my_account.php:410
+#: shortcodes/order_tracking.php:49
+#: templates/checkout/pay_for_order.php:22
+#: templates/checkout/review_order.php:91
+#@ jigoshop
+msgid "Tax"
+msgstr "Adó"
+
+#: admin/jigoshop-admin-post-types.php:210
+#: shortcodes/cart.php:155
+#: shortcodes/my_account.php:414
+#: shortcodes/order_tracking.php:53
+#: templates/checkout/pay_for_order.php:26
+#: templates/checkout/review_order.php:96
+#@ jigoshop
+msgid "Discount"
+msgstr "Kedvezmény"
+
+#: admin/jigoshop-admin-post-types.php:214
+#: shortcodes/cart.php:159
+#: shortcodes/my_account.php:39
+#: widgets/cart.php:53
+#@ jigoshop
+msgid "Total"
+msgstr "Összesen"
+
+#: admin/jigoshop-admin-post-types.php:292
+#: admin/jigoshop-admin-post-types.php:293
+#@ jigoshop
+msgid "Order updated."
+msgstr "Rendelés frissítve."
+
+#: admin/jigoshop-admin-post-types.php:294
+#@ jigoshop
+msgid "Order published."
+msgstr "Rendelés élesítve."
+
+#: admin/jigoshop-admin-post-types.php:296
+#@ jigoshop
+msgid "Order submitted."
+msgstr "Rendelés elküldve."
+
+#: admin/jigoshop-admin-post-types.php:297
+#@ jigoshop
+msgid "Order draft updated."
+msgstr "Rendelés "
+
+#: admin/jigoshop-admin-settings-options.php:15
+#: admin/write-panels/product-data.php:39
+#@ jigoshop
+msgid "General"
+msgstr "Általános"
+
+#: admin/jigoshop-admin-settings-options.php:17
+#@ jigoshop
+msgid "General Options"
+msgstr "Általános beállítások"
+
+#: admin/jigoshop-admin-settings-options.php:20
+#@ jigoshop
+msgid "Enable SKU field"
+msgstr "Raktárszám mező bekapcsolása"
+
+#: admin/jigoshop-admin-settings-options.php:22
+#@ jigoshop
+msgid "Turning off the SKU field will give products an SKU of their post id."
+msgstr "A raktárszám mező kikapcsolásakor a termékek raktárszáma azok bejegyzés azonosítója lesz."
+
+#: admin/jigoshop-admin-settings-options.php:28
+#: admin/jigoshop-admin-settings-options.php:42
+#: admin/jigoshop-admin-settings-options.php:104
+#: admin/jigoshop-admin-settings-options.php:118
+#: admin/jigoshop-admin-settings-options.php:244
+#: admin/jigoshop-admin-settings-options.php:258
+#: admin/jigoshop-admin-settings-options.php:282
+#: admin/jigoshop-admin-settings-options.php:312
+#: admin/jigoshop-admin-settings-options.php:326
+#: admin/jigoshop-admin-settings-options.php:348
+#: admin/jigoshop-admin-settings-options.php:362
+#: gateways/cheque.php:39
+#: gateways/paypal.php:45
+#: gateways/paypal.php:72
+#: gateways/sagepay.php:193
+#: gateways/skrill.php:43
+#: shipping/flat_rate.php:77
+#: shipping/free_shipping.php:32
+#@ jigoshop
+msgid "Yes"
+msgstr "Igen"
+
+#: admin/jigoshop-admin-settings-options.php:29
+#: admin/jigoshop-admin-settings-options.php:43
+#: admin/jigoshop-admin-settings-options.php:105
+#: admin/jigoshop-admin-settings-options.php:119
+#: admin/jigoshop-admin-settings-options.php:245
+#: admin/jigoshop-admin-settings-options.php:259
+#: admin/jigoshop-admin-settings-options.php:283
+#: admin/jigoshop-admin-settings-options.php:313
+#: admin/jigoshop-admin-settings-options.php:327
+#: admin/jigoshop-admin-settings-options.php:349
+#: admin/jigoshop-admin-settings-options.php:363
+#: gateways/cheque.php:40
+#: gateways/paypal.php:46
+#: gateways/paypal.php:73
+#: gateways/sagepay.php:194
+#: gateways/skrill.php:44
+#: shipping/flat_rate.php:78
+#: shipping/free_shipping.php:33
+#@ jigoshop
+msgid "No"
+msgstr "Nem"
+
+#: admin/jigoshop-admin-settings-options.php:34
+#@ jigoshop
+msgid "Enable weight field"
+msgstr "Súly mező bekapcsolása"
+
+#: admin/jigoshop-admin-settings-options.php:48
+#@ jigoshop
+msgid "Weight Unit"
+msgstr "Súly mértékegysége"
+
+#: admin/jigoshop-admin-settings-options.php:49
+#@ jigoshop
+msgid "This controls what unit you will define weights in."
+msgstr "Itt adható meg, hogy milyen mértékegységben számolod a súlyokat."
+
+#: admin/jigoshop-admin-settings-options.php:56
+#@ jigoshop
+msgid "kg"
+msgstr "kg"
+
+#: admin/jigoshop-admin-settings-options.php:57
+#@ jigoshop
+msgid "lbs"
+msgstr "font"
+
+#: admin/jigoshop-admin-settings-options.php:62
+#@ jigoshop
+msgid "Base Country/Region"
+msgstr "Telephely országa"
+
+#: admin/jigoshop-admin-settings-options.php:72
+#@ jigoshop
+msgid "Allowed Countries"
+msgstr "Engedélyezett országok"
+
+#: admin/jigoshop-admin-settings-options.php:80
+#@ jigoshop
+msgid "All Countries"
+msgstr "Minden ország"
+
+#: admin/jigoshop-admin-settings-options.php:81
+#: admin/jigoshop-admin-settings-options.php:86
+#: gateways/sagepay.php:209
+#: gateways/sagepay.php:218
+#: shipping/flat_rate.php:124
+#: shipping/flat_rate.php:132
+#: shipping/free_shipping.php:54
+#: shipping/free_shipping.php:62
+#@ jigoshop
+msgid "Specific Countries"
+msgstr "Csak bizonyos országok"
+
+#: admin/jigoshop-admin-settings-options.php:96
+#@ jigoshop
+msgid "Enable guest checkout?"
+msgstr "Vendég felhasználók fizethetnek?"
+
+#: admin/jigoshop-admin-settings-options.php:98
+#@ jigoshop
+msgid "Without guest checkout, all users will require an account in order to checkout."
+msgstr "Ha ezt nem engedélyezed, akkor minden felhasználónak vásárlás előtt először regisztrálnia kell."
+
+#: admin/jigoshop-admin-settings-options.php:110
+#@ jigoshop
+msgid "Force SSL on checkout?"
+msgstr "Fizetés mindenképpen SSL titkosítással?"
+
+#: admin/jigoshop-admin-settings-options.php:112
+#@ jigoshop
+msgid "Forcing SSL is recommended"
+msgstr "Az SSL titkosítás használata ajánlott."
+
+#: admin/jigoshop-admin-settings-options.php:124
+#@ jigoshop
+msgid "ShareThis Publisher ID"
+msgstr "ShareThis Publisher ID"
+
+#: admin/jigoshop-admin-settings-options.php:125
+#@ jigoshop
+msgid "Enter your <a href='http://sharethis.com/account/'>ShareThis publisher ID</a> to show ShareThis on product pages."
+msgstr "Itt megadhatod a <a href='http://sharethis.com/account/'>ShareThis publisher ID</a>-det, ami segítségével a ShareThis megjelenik a termékoldalaidon."
+
+#: admin/jigoshop-admin-settings-options.php:126
+#@ jigoshop
+msgid "ShareThis is a small social sharing widget for posting links on popular sites such as Twitter and Facebook."
+msgstr "A ShareThis egy kis szociális megosztó widget, amivel népszerű oldalakra oszthatod meg a linket, pl. Twitterre és Facebookra."
+
+#: admin/jigoshop-admin-settings-options.php:135
+#@ jigoshop
+msgid "Catalog"
+msgstr "Katalógus"
+
+#: admin/jigoshop-admin-settings-options.php:137
+#@ jigoshop
+msgid "Catalog Options"
+msgstr "Katalógus beállítások"
+
+#: admin/jigoshop-admin-settings-options.php:140
+#@ jigoshop
+msgid "Products Base URL"
+msgstr "A termékek alap URL-je"
+
+#: admin/jigoshop-admin-settings-options.php:141
+#, php-format
+#@ jigoshop
+msgid "IMPORTANT: You must <a target='_blank' href='%s'>re-save your permalinks</a> for this change to take effect."
+msgstr "FONTOS: Mindenképpen <a target='_blank' href='%s'>újra el kell mentened</a> a permalinkjeidet, hogy a változás érvényesüljön!"
+
+#: admin/jigoshop-admin-settings-options.php:142
+#@ jigoshop
+msgid "This controls the base name of your product urls. The default is shop and will look like this: http://www.yoursite.com/shop/product-name-here/. Do not include any slashes. This should only be alpha or numeric values. You should not change this value once you have launched your site otherwise you risk breaking urls of other sites pointing to yours, etc."
+msgstr "Ez határozza meg a termék oldalaid URL-jének alapját. Az alapbeállítás szerint ezek így néznek ki: http://www.teoldalad.hu/shop/termék-neve/. A megadásnál ne írj be per jeleket! Csak alfanumerikus karaktereket használhatsz. Miután elindítottad az oldaladat, nem érdemes ezt a beállítást megváltoztatnod, mert a rád linkelő oldalak linkjei így elromlanak."
+
+#: admin/jigoshop-admin-settings-options.php:151
+#@ jigoshop
+msgid "Terms page ID"
+msgstr "Vásárlási feltételek oldal azonosítója"
+
+#: admin/jigoshop-admin-settings-options.php:152
+#@ jigoshop
+msgid "If you define a \"Terms\" page the customer will be asked if they accept them when checking out."
+msgstr "Ha beállítasz vásárlási feltételek oldalt, akkor a vásárlóidnak el kell fogadniuk azt fizetés előtt."
+
+#: admin/jigoshop-admin-settings-options.php:160
+#@ jigoshop
+msgid "Pricing Options"
+msgstr "Árazási beállítások"
+
+#: admin/jigoshop-admin-settings-options.php:163
+#@ jigoshop
+msgid "Currency"
+msgstr "Pénznem"
+
+#: admin/jigoshop-admin-settings-options.php:164
+#, php-format
+#@ jigoshop
+msgid "This controls what currency prices are listed at in the catalog, and which currency PayPal, and other gateways, will take payments in. See the list of supported <a target='_new' href='%s'>PayPal currencies</a>."
+msgstr "Itt határozhatod meg, hogy milyen pénznemben jelenjenek meg a katalógusodban az árak, valamint hogy milyen pénznemben történjenek a PayPal és az egyéb fizetési szolgáltatókon keresztüli fizetések. A támogatott pénznemeket a <a target='_new' href='%s'>PayPal oldalán</a> találod."
+
+#: admin/jigoshop-admin-settings-options.php:171
+#@ jigoshop
+msgid "US Dollars (&#36;)"
+msgstr "USA dollár (&#36;)"
+
+#: admin/jigoshop-admin-settings-options.php:172
+#@ jigoshop
+msgid "Euros (&euro;)"
+msgstr "Euro (&euro;)"
+
+#: admin/jigoshop-admin-settings-options.php:173
+#@ jigoshop
+msgid "Pounds Sterling (&pound;)"
+msgstr "Font sterling (&pound;)"
+
+#: admin/jigoshop-admin-settings-options.php:174
+#@ jigoshop
+msgid "Australian Dollars (&#36;)"
+msgstr "Ausztrál dollár (&#36;)"
+
+#: admin/jigoshop-admin-settings-options.php:175
+#@ jigoshop
+msgid "Brazilian Real (&#36;)"
+msgstr "Brazil real (&#36;)"
+
+#: admin/jigoshop-admin-settings-options.php:176
+#@ jigoshop
+msgid "Canadian Dollars (&#36;)"
+msgstr "Kanadai dollár (&#36;)"
+
+#: admin/jigoshop-admin-settings-options.php:177
+#@ jigoshop
+msgid "Czech Koruna"
+msgstr "Cseh korona"
+
+#: admin/jigoshop-admin-settings-options.php:178
+#@ jigoshop
+msgid "Danish Krone"
+msgstr "Dán korona"
+
+#: admin/jigoshop-admin-settings-options.php:179
+#@ jigoshop
+msgid "Hong Kong Dollar (&#36;)"
+msgstr "Hong Kong-i dollár (&#36;)"
+
+#: admin/jigoshop-admin-settings-options.php:180
+#@ jigoshop
+msgid "Hungarian Forint"
+msgstr "Magyar Forint"
+
+#: admin/jigoshop-admin-settings-options.php:181
+#@ jigoshop
+msgid "Israeli Shekel"
+msgstr "Izraeli shekel"
+
+#: admin/jigoshop-admin-settings-options.php:182
+#@ jigoshop
+msgid "Japanese Yen (&yen;)"
+msgstr "Japán Jen (&yen;)"
+
+#: admin/jigoshop-admin-settings-options.php:183
+#@ jigoshop
+msgid "Malaysian Ringgits"
+msgstr "Malajziai ringgit"
+
+#: admin/jigoshop-admin-settings-options.php:184
+#@ jigoshop
+msgid "Mexican Peso (&#36;)"
+msgstr "Mexikói peso (&#36;)"
+
+#: admin/jigoshop-admin-settings-options.php:185
+#@ jigoshop
+msgid "New Zealand Dollar (&#36;)"
+msgstr "Új-Zélandi dollár (&#36;)"
+
+#: admin/jigoshop-admin-settings-options.php:186
+#@ jigoshop
+msgid "Norwegian Krone"
+msgstr "Norvég korona"
+
+#: admin/jigoshop-admin-settings-options.php:187
+#@ jigoshop
+msgid "Philippine Pesos"
+msgstr "Fülöp-szigeteki peso"
+
+#: admin/jigoshop-admin-settings-options.php:188
+#@ jigoshop
+msgid "Polish Zloty"
+msgstr "Lengyel zloty"
+
+#: admin/jigoshop-admin-settings-options.php:189
+#@ jigoshop
+msgid "Singapore Dollar (&#36;)"
+msgstr "Szingapúri dollár (&#36;)"
+
+#: admin/jigoshop-admin-settings-options.php:190
+#@ jigoshop
+msgid "Swedish Krona"
+msgstr "Svéd korona"
+
+#: admin/jigoshop-admin-settings-options.php:191
+#@ jigoshop
+msgid "Swiss Franc"
+msgstr "Svájci frank"
+
+#: admin/jigoshop-admin-settings-options.php:192
+#@ jigoshop
+msgid "Taiwan New Dollars"
+msgstr "Tajvani új dollár"
+
+#: admin/jigoshop-admin-settings-options.php:193
+#@ jigoshop
+msgid "Thai Baht"
+msgstr "Thai bát"
+
+#: admin/jigoshop-admin-settings-options.php:198
+#@ jigoshop
+msgid "Currency Position"
+msgstr "Pénznem jelének helye"
+
+#: admin/jigoshop-admin-settings-options.php:199
+#@ jigoshop
+msgid "This controls the position of the currency symbol."
+msgstr "Ez állítja be, hogy a szám előtt vagy után jelenjen meg a pénznem jele"
+
+#: admin/jigoshop-admin-settings-options.php:206
+#@ jigoshop
+msgid "Left"
+msgstr "Előtte"
+
+#: admin/jigoshop-admin-settings-options.php:207
+#@ jigoshop
+msgid "Right"
+msgstr "Utána"
+
+#: admin/jigoshop-admin-settings-options.php:208
+#@ jigoshop
+msgid "Left (with space)"
+msgstr "Előtte (szóközzel)"
+
+#: admin/jigoshop-admin-settings-options.php:209
+#@ jigoshop
+msgid "Right (with space)"
+msgstr "Utána (szóközzel)"
+
+#: admin/jigoshop-admin-settings-options.php:215
+#: admin/jigoshop-admin-settings-options.php:220
+#@ jigoshop
+msgid "Coupons"
+msgstr "Kuponok"
+
+#: admin/jigoshop-admin-settings-options.php:217
+#@ jigoshop
+msgid "Coupon Codes"
+msgstr "Kupon kódok"
+
+#: admin/jigoshop-admin-settings-options.php:233
+#@ jigoshop
+msgid "Inventory Options"
+msgstr "Raktárkészlet beállítások"
+
+#: admin/jigoshop-admin-settings-options.php:236
+#@ jigoshop
+msgid "Manage stock?"
+msgstr "Árukészlet nyilvántartása?"
+
+#: admin/jigoshop-admin-settings-options.php:237
+#@ jigoshop
+msgid "If you are not managing stock, turn it off here to disable it in admin and on the front-end."
+msgstr "Ha nem tartasz nyilván árukészletet, akkor itt kikapcsolhatod, hogy ne jelenjen meg se az adminon se a felhasználói oldalon."
+
+#: admin/jigoshop-admin-settings-options.php:238
+#@ jigoshop
+msgid "You can manage stock on a per-item basis if you leave this option on."
+msgstr "Ha itt bekapcsolod, akkor ez az opció minden termékre vonatkozni fog, egyes termékekre nem kikapcsolható."
+
+#: admin/jigoshop-admin-settings-options.php:250
+#@ jigoshop
+msgid "Low stock notification"
+msgstr "Értesítés alacsony árukészlet esetén"
+
+#: admin/jigoshop-admin-settings-options.php:252
+#: admin/jigoshop-admin-settings-options.php:276
+#@ jigoshop
+msgid "Set the minimum threshold for this below."
+msgstr "Add meg a riasztási határértéket, ami alatt szólnia kell a rendszernek"
+
+#: admin/jigoshop-admin-settings-options.php:264
+#@ jigoshop
+msgid "Low stock threshold"
+msgstr "Alacsony árukészlet határértéke"
+
+#: admin/jigoshop-admin-settings-options.php:274
+#@ jigoshop
+msgid "Out-of-stock notification"
+msgstr "Értesítés raktárkészlet kifogyása esetén"
+
+#: admin/jigoshop-admin-settings-options.php:288
+#@ jigoshop
+msgid "Out of stock threshold"
+msgstr "Raktárkészlet kifogyásának határértéke"
+
+#: admin/jigoshop-admin-settings-options.php:301
+#@ jigoshop
+msgid "Shipping Options"
+msgstr "Szállítási opciók"
+
+#: admin/jigoshop-admin-settings-options.php:304
+#: templates/cart/shipping_calculator.php:4
+#@ jigoshop
+msgid "Calculate Shipping"
+msgstr "Szállítás költségének kiszámolása"
+
+#: admin/jigoshop-admin-settings-options.php:305
+#@ jigoshop
+msgid "Only set this to no if you are not shipping items, or items have shipping costs included."
+msgstr "Ezt az opciót csak akkor kapcsold ki, ha nem szállítasz, vagy az áraid tartalmazzák a szállítási költséget"
+
+#: admin/jigoshop-admin-settings-options.php:306
+#@ jigoshop
+msgid "If you are not calculating shipping then you can ignore all other tax options."
+msgstr "Ha nem számoltatsz szállítási költséget, akkor nem kell figyelembe venned az erre vonatkozó adózási opciókat"
+
+#: admin/jigoshop-admin-settings-options.php:318
+#@ jigoshop
+msgid "Enable shipping calculator on cart"
+msgstr "Szállítási költség számító engedélyezése a korsárban"
+
+#: admin/jigoshop-admin-settings-options.php:337
+#@ jigoshop
+msgid "Tax Options"
+msgstr "Adózási opciók"
+
+#: admin/jigoshop-admin-settings-options.php:340
+#@ jigoshop
+msgid "Calculate Taxes"
+msgstr "Adók számítása"
+
+#: admin/jigoshop-admin-settings-options.php:341
+#@ jigoshop
+msgid "Only set this to no if you are exclusively selling non-taxable items."
+msgstr "Csak akkor kapcsold ki ezt az opciót, ha kizárólagosan nem adóköteles árukat árulsz!"
+
+#: admin/jigoshop-admin-settings-options.php:342
+#@ jigoshop
+msgid "If you are not calculating taxes then you can ignore all other tax options."
+msgstr "Ha nem számolsz adókkal, akkor az összes többi adózásra vonatkozó opciót figyelmen kívül hagyhatod."
+
+#: admin/jigoshop-admin-settings-options.php:354
+#@ jigoshop
+msgid "Catalog Prices include tax?"
+msgstr "A katalógus árak tartalmazzák az adót?"
+
+#: admin/jigoshop-admin-settings-options.php:356
+#@ jigoshop
+msgid "If prices include tax then tax calculations will work backwards."
+msgstr "Ha az árak tartalmazzák az adót, akkor a számítások visszafelé fognak működni."
+
+#: admin/jigoshop-admin-settings-options.php:368
+#@ jigoshop
+msgid "Cart totals display..."
+msgstr "A kosár teljes összege..."
+
+#: admin/jigoshop-admin-settings-options.php:370
+#@ jigoshop
+msgid "Should the subtotal be shown including or excluding tax on the frontend?"
+msgstr "A megjelenített részösszeg tartalmazni fogja az adókat vagy nem?"
+
+#: admin/jigoshop-admin-settings-options.php:376
+#@ jigoshop
+msgid "price including tax"
+msgstr "tartalmazni fogja az adót"
+
+#: admin/jigoshop-admin-settings-options.php:377
+#@ jigoshop
+msgid "price excluding tax"
+msgstr "nem fogja tartalmazni az adót"
+
+#: admin/jigoshop-admin-settings-options.php:382
+#@ jigoshop
+msgid "Additional Tax classes"
+msgstr "További adó osztályok"
+
+#: admin/jigoshop-admin-settings-options.php:383
+#@ jigoshop
+msgid "List 1 per line. This is in addition to the default <em>Standard Rate</em>."
+msgstr "Soronként egyet adhatsz meg. Ezek az <em>alap adón</em> felül értendőek."
+
+#: admin/jigoshop-admin-settings-options.php:384
+#@ jigoshop
+msgid "List product and shipping tax classes here, e.g. Zero Tax, Reduced Rate."
+msgstr "Itt adhatod meg a szállítási adó osztályokat, pl. adómentes, adókedvezményes, stb."
+
+#: admin/jigoshop-admin-settings-options.php:392
+#@ jigoshop
+msgid "Tax rates"
+msgstr "Adók"
+
+#: admin/jigoshop-admin-settings-options.php:403
+#@ jigoshop
+msgid "Payment Gateways"
+msgstr "Fizetési módok"
+
+#: admin/jigoshop-admin-settings.php:131
+#@ jigoshop
+msgid "Your settings have been saved."
+msgstr "Beállításaidat elmentettük."
+
+#: admin/jigoshop-admin-settings.php:148
+#: admin/jigoshop-admin-settings.php:417
+#@ jigoshop
+msgid "Save changes"
+msgstr "Beállítások mentése"
+
+#: admin/jigoshop-admin-settings.php:248
+#: admin/jigoshop-admin-settings.php:260
+#: admin/jigoshop-admin-settings.php:300
+#@ jigoshop
+msgid "Coupon Code"
+msgstr "Kupon kód"
+
+#: admin/jigoshop-admin-settings.php:249
+#@ jigoshop
+msgid "Coupon Type"
+msgstr "Kupon típus"
+
+#: admin/jigoshop-admin-settings.php:250
+#: admin/jigoshop-admin-settings.php:276
+#: admin/jigoshop-admin-settings.php:306
+#@ jigoshop
+msgid "Coupon Amount"
+msgstr "Kupon összege"
+
+#: admin/jigoshop-admin-settings.php:251
+#@ jigoshop
+msgid "Product ids"
+msgstr "Termék azonosítók"
+
+#: admin/jigoshop-admin-settings.php:252
+#@ jigoshop
+msgid "Individual use"
+msgstr "Egyéni felhasználás"
+
+#: admin/jigoshop-admin-settings.php:265
+#: admin/jigoshop-admin-settings.php:302
+#@ jigoshop
+msgid "% Discount"
+msgstr "% kedvezmény"
+
+#: admin/jigoshop-admin-settings.php:270
+#: admin/jigoshop-admin-settings.php:303
+#@ jigoshop
+msgid "Product Discount"
+msgstr "Kedvezmény termékre"
+
+#: admin/jigoshop-admin-settings.php:275
+#: admin/jigoshop-admin-settings.php:304
+#@ jigoshop
+msgid "Cart Discount"
+msgstr "Kedvezmény a kosár tartalmára"
+
+#: admin/jigoshop-admin-settings.php:276
+#: admin/jigoshop-admin-settings.php:307
+#@ jigoshop
+msgid "1, 2, 3"
+msgstr "1, 2, 3"
+
+#: admin/jigoshop-admin-settings.php:280
+#: admin/jigoshop-admin-settings.php:308
+#@ jigoshop
+msgid "Individual use only"
+msgstr "Csak egyéni felhasználás"
+
+#: admin/jigoshop-admin-settings.php:285
+#@ jigoshop
+msgid "+ Add Coupon"
+msgstr "+ Kupon létrehozása"
+
+#: admin/jigoshop-admin-settings.php:313
+#@ jigoshop
+msgid "Delete this coupon?"
+msgstr "Kupon törlése?"
+
+#: admin/jigoshop-admin-settings.php:336
+#: admin/jigoshop-admin-settings.php:370
+#@ jigoshop
+msgid "Standard Rate"
+msgstr "Alap adó"
+
+#: admin/jigoshop-admin-settings.php:350
+#: admin/jigoshop-admin-settings.php:377
+#@ jigoshop
+msgid "Rate"
+msgstr "Mérték"
+
+#: admin/jigoshop-admin-settings.php:354
+#: admin/jigoshop-admin-settings.php:378
+#@ jigoshop
+msgid "Apply to shipping"
+msgstr "Alkalmazd a szállításra"
+
+#: admin/jigoshop-admin-settings.php:358
+#@ jigoshop
+msgid "+ Add Tax Rule"
+msgstr "+ Adó szabály létrehozása"
+
+#: admin/jigoshop-admin-settings.php:384
+#@ jigoshop
+msgid "Delete this rule?"
+msgstr "Szabály törlése?"
+
+#: admin/jigoshop-admin-settings.php:472
+#: admin/jigoshop-admin.php:34
+#@ jigoshop
+msgid "General Settings"
+msgstr "Átalános beállítások"
+
+#: admin/jigoshop-admin.php:34
+#@ jigoshop
+msgid "Settings"
+msgstr "Beállítások"
+
+#: admin/jigoshop-admin.php:35
+#@ jigoshop
+msgid "System Info"
+msgstr "Rendszer info"
+
+#: admin/jigoshop-admin.php:106
+#@ jigoshop
+msgid "System Information"
+msgstr "Rendszer információ"
+
+#: admin/jigoshop-admin.php:109
+#@ jigoshop
+msgid "Environment"
+msgstr "Környezet"
+
+#: admin/jigoshop-admin.php:110
+#@ jigoshop
+msgid "Debugging"
+msgstr "Hibakeresés"
+
+#: admin/jigoshop-admin.php:116
+#@ jigoshop
+msgid "Versions"
+msgstr "Verziók"
+
+#: admin/jigoshop-admin.php:122
+#@ jigoshop
+msgid "Jigoshop Version"
+msgstr "Jigoshop verzió"
+
+#: admin/jigoshop-admin.php:126
+#@ jigoshop
+msgid "WordPress Version"
+msgstr "WordPress verzió"
+
+#: admin/jigoshop-admin.php:132
+#@ jigoshop
+msgid "Server"
+msgstr "Szerver"
+
+#: admin/jigoshop-admin.php:138
+#@ jigoshop
+msgid "PHP Version"
+msgstr "PHP verzió"
+
+#: admin/jigoshop-admin.php:142
+#@ jigoshop
+msgid "Server Software"
+msgstr "Szerver szoftver"
+
+#: admin/jigoshop-admin.php:152
+#@ jigoshop
+msgid "Debug Information"
+msgstr "Debug információ"
+
+#: admin/jigoshop-admin.php:156
+#@ jigoshop
+msgid "UPLOAD_MAX_FILESIZE"
+msgstr "UPLOAD_MAX_FILESIZE"
+
+#: admin/jigoshop-admin.php:162
+#@ jigoshop
+msgid "POST_MAX_SIZE"
+msgstr "POST_MAX_SIZE"
+
+#: admin/jigoshop-admin.php:168
+#@ jigoshop
+msgid "WordPress Memory Limit"
+msgstr "WordPress memória limit"
+
+#: admin/jigoshop-admin.php:174
+#@ jigoshop
+msgid "WP_DEBUG"
+msgstr "WP_DEBUG"
+
+#: admin/jigoshop-admin.php:175
+#@ jigoshop
+msgid "On"
+msgstr "Be"
+
+#: admin/jigoshop-admin.php:175
+#@ jigoshop
+msgid "Off"
+msgstr "Ki"
+
+#: admin/jigoshop-admin.php:178
+#@ jigoshop
+msgid "DISPLAY_ERRORS"
+msgstr "DISPLAY_ERRORS"
+
+#: admin/jigoshop-admin.php:182
+#@ jigoshop
+msgid "FSOCKOPEN"
+msgstr "FSOCKOPEN"
+
+#: admin/jigoshop-admin.php:183
+#@ jigoshop
+msgid "Your server supports fsockopen."
+msgstr "A szervered támogatja az fsockopen-t."
+
+#: admin/jigoshop-admin.php:183
+#@ jigoshop
+msgid "Your server does not support fsockopen."
+msgstr "A szervered nem támogatja az fsockopen-t."
+
+#: admin/jigoshop-write-panels.php:28
+#@ jigoshop
+msgid "Product Data"
+msgstr "Termék adatok"
+
+#: admin/jigoshop-write-panels.php:29
+#@ jigoshop
+msgid "Product Type Options"
+msgstr "Termék típus opciók"
+
+#: admin/jigoshop-write-panels.php:31
+#@ jigoshop
+msgid "Order Data"
+msgstr "Rendelési adatok"
+
+#: admin/jigoshop-write-panels.php:32
+#@ jigoshop
+msgid "Order Items <small>&ndash; Note: if you edit quantities or remove items from the order you will need to manually change the item's stock levels.</small>"
+msgstr "Tételek rendelése <small>&ndash; Megjegyzés: ha a mennyiségeket módosítod vagy kézzel eltávolítasz a rendelésből tételeket, akkor a raktárkészleteket magadnak kell megfelelően módosítanod.</small>"
+
+#: admin/jigoshop-write-panels.php:34
+#@ jigoshop
+msgid "Order Actions"
+msgstr "Rendelés műveletek"
+
+#: admin/write-panels/order-data-save.php:99
+#@ jigoshop
+msgid "Manually reducing stock."
+msgstr "Készlet csökkentése kézzel."
+
+#: admin/write-panels/order-data-save.php:113
+#: classes/jigoshop_order.class.php:376
+#, php-format
+#@ jigoshop
+msgid "Item #%s stock reduced from %s to %s."
+msgstr "#%s tétel készlete csökkentve %s-ről %s-re."
+
+#: admin/write-panels/order-data-save.php:130
+#: admin/write-panels/order-data-save.php:160
+#, php-format
+#@ jigoshop
+msgid "Item %s %s not found, skipping."
+msgstr "%s %s tétel nem található, átugortuk."
+
+#: admin/write-panels/order-data-save.php:136
+#@ jigoshop
+msgid "Manual stock reduction complete."
+msgstr "Kézi készlet csökkentés kész."
+
+#: admin/write-panels/order-data-save.php:140
+#@ jigoshop
+msgid "Manually restoring stock."
+msgstr "Készlet visszaállítasa kézzel."
+
+#: admin/write-panels/order-data-save.php:154
+#, php-format
+#@ jigoshop
+msgid "Item #%s stock increased from %s to %s."
+msgstr "%s tétel készlete megnövelve %s-ről %s-re."
+
+#: admin/write-panels/order-data-save.php:166
+#@ jigoshop
+msgid "Manual stock restore complete."
+msgstr "Kézi készlet növelés végrehajtva."
+
+#: admin/write-panels/order-data.php:77
+#@ jigoshop
+msgid "Customer Billing Address"
+msgstr "Vásárló számlázási címe"
+
+#: admin/write-panels/order-data.php:79
+#@ jigoshop
+msgid "Customer Shipping Address"
+msgstr "Vásárló szállítási címe"
+
+#: admin/write-panels/order-data.php:85
+#@ jigoshop
+msgid "Order status:"
+msgstr "A rendelés állapota:"
+
+#: admin/write-panels/order-data.php:97
+#@ jigoshop
+msgid "Customer:"
+msgstr "Vásárló:"
+
+#: admin/write-panels/order-data.php:114
+#@ jigoshop
+msgid "Customer Note:"
+msgstr "Vásárló megjegyzése:"
+
+#: admin/write-panels/order-data.php:115
+#@ jigoshop
+msgid "Customer's notes about the order"
+msgstr "A vásárló megjegyzései a rendelésről"
+
+#: admin/write-panels/order-data.php:180
+#@ jigoshop
+msgid "Copy billing address to shipping address"
+msgstr "A számlázási cím másolása a szállítási címhez is"
+
+#: admin/write-panels/order-data.php:260
+#@ jigoshop
+msgid "Product ID"
+msgstr "Termék azonosító"
+
+#: admin/write-panels/order-data.php:262
+#: shortcodes/cart.php:91
+#: shortcodes/order_tracking.php:36
+#@ jigoshop
+msgid "Quantity"
+msgstr "Mennyiség"
+
+#: admin/write-panels/order-data.php:263
+#: shipping/flat_rate.php:108
+#@ jigoshop
+msgid "Cost"
+msgstr "Költség"
+
+#: admin/write-panels/order-data.php:264
+#@ jigoshop
+msgid "Tax Rate"
+msgstr "Adó mértéke"
+
+#: admin/write-panels/order-data.php:265
+#: admin/write-panels/product-data.php:202
+#@ jigoshop
+msgid "Remove"
+msgstr "Eltávolítás"
+
+#: admin/write-panels/order-data.php:272
+#: admin/write-panels/write-panels.js.php:111
+#@ jigoshop
+msgid "ID"
+msgstr "Azonosító"
+
+#: admin/write-panels/order-data.php:273
+#: admin/write-panels/write-panels.js.php:111
+#@ jigoshop
+msgid "Item Name"
+msgstr "Tétel neve"
+
+#: admin/write-panels/order-data.php:274
+#: admin/write-panels/write-panels.js.php:111
+#@ jigoshop
+msgid "Quantity e.g. 2"
+msgstr "Mennyiség pl. 2"
+
+#: admin/write-panels/order-data.php:275
+#: admin/write-panels/write-panels.js.php:111
+#@ jigoshop
+msgid "Cost per unit e.g. 2.99"
+msgstr "Egy termék ára, pl. 200"
+
+#: admin/write-panels/order-data.php:276
+#: admin/write-panels/write-panels.js.php:111
+#@ jigoshop
+msgid "Tax Rate e.g. 20.0000"
+msgstr "Adó mértéke pl. 25.000"
+
+#: admin/write-panels/order-data.php:285
+#@ jigoshop
+msgid "Add item"
+msgstr "Tétel létrehozása"
+
+#: admin/write-panels/order-data.php:286
+#@ jigoshop
+msgid "Calculate totals"
+msgstr "Összegzés kiszámolása"
+
+#: admin/write-panels/order-data.php:289
+#: jigoshop_emails.php:44
+#: jigoshop_emails.php:112
+#: jigoshop_emails.php:187
+#: jigoshop_emails.php:252
+#@ jigoshop
+msgid "Subtotal:"
+msgstr "Részösszeg:"
+
+#: admin/write-panels/order-data.php:290
+#@ jigoshop
+msgid "(inc. tax)"
+msgstr "(bruttó)"
+
+#: admin/write-panels/order-data.php:290
+#: admin/write-panels/order-data.php:293
+#@ jigoshop
+msgid "(ex. tax)"
+msgstr "(nettó)"
+
+#: admin/write-panels/order-data.php:292
+#@ jigoshop
+msgid "Shipping &amp; Handling:"
+msgstr "Szállítás és kezelés:"
+
+#: admin/write-panels/order-data.php:293
+#@ jigoshop
+msgid "Shipping method..."
+msgstr "Szállítás módja..."
+
+#: admin/write-panels/order-data.php:295
+#@ jigoshop
+msgid "Order shipping tax:"
+msgstr "Rendelés szállítási adója:"
+
+#: admin/write-panels/order-data.php:298
+#: jigoshop_emails.php:47
+#: jigoshop_emails.php:115
+#: jigoshop_emails.php:190
+#: jigoshop_emails.php:255
+#@ jigoshop
+msgid "Tax:"
+msgstr "Adó:"
+
+#: admin/write-panels/order-data.php:301
+#: jigoshop_emails.php:46
+#: jigoshop_emails.php:114
+#: jigoshop_emails.php:189
+#: jigoshop_emails.php:254
+#@ jigoshop
+msgid "Discount:"
+msgstr "Kedvezmény:"
+
+#: admin/write-panels/order-data.php:304
+#: jigoshop_emails.php:48
+#: jigoshop_emails.php:116
+#: jigoshop_emails.php:191
+#: jigoshop_emails.php:256
+#: shortcodes/pay.php:95
+#: shortcodes/thankyou.php:34
+#@ jigoshop
+msgid "Total:"
+msgstr "Összesen:"
+
+#: admin/write-panels/order-data.php:305
+#@ jigoshop
+msgid "Payment method..."
+msgstr "Fizetési mód..."
+
+#: admin/write-panels/order-data.php:324
+#@ jigoshop
+msgid "Save Order"
+msgstr "Megrendelés mentése"
+
+#: admin/write-panels/order-data.php:324
+#@ jigoshop
+msgid "- Save/update the order."
+msgstr "- A megrendelés mentése/frissítése."
+
+#: admin/write-panels/order-data.php:326
+#@ jigoshop
+msgid "Reduce stock"
+msgstr "Készlet csökkentése"
+
+#: admin/write-panels/order-data.php:326
+#@ jigoshop
+msgid "- Reduces stock for each item in the order; useful after manually creating an order or manually marking an order as complete/processing after payment."
+msgstr "- Csökkenti a rendelés minden tételének készletét; akkor hasznos, ha kézzel hozol létre egy rendelést vagy kézzel állítod be egy rendelés elkészült állapotát."
+
+#: admin/write-panels/order-data.php:327
+#@ jigoshop
+msgid "Restore stock"
+msgstr "Raktárkészlet visszaállítása"
+
+#: admin/write-panels/order-data.php:327
+#@ jigoshop
+msgid "- Restores stock for each item in the order; useful after refunding or canceling the entire order."
+msgstr "- Visszaállítja a rendelés minden tételének készletét; akkor hasznos, ha visszaküldték a terméket vagy meghiúsult a vásárlás."
+
+#: admin/write-panels/order-data.php:329
+#@ jigoshop
+msgid "Email invoice"
+msgstr "Számla küldése email-ben"
+
+#: admin/write-panels/order-data.php:329
+#@ jigoshop
+msgid "- Emails the customer order details and a payment link."
+msgstr "- Elküldi a vásárlónak a rendelés összesítőt és a fizetési linket."
+
+#: admin/write-panels/order-data.php:335
+#@ default
+msgid "Delete Permanently"
+msgstr "Végleges törlés"
+
+#: admin/write-panels/order-data.php:337
+#@ default
+msgid "Move to Trash"
+msgstr "Mozgatás a kukába"
+
+#: admin/write-panels/product-data-save.php:124
+#@ jigoshop
+msgid "Product SKU must be unique."
+msgstr "A termék raktárazonosítójának egyedinek kell lennie"
+
+#: admin/write-panels/product-data.php:40
+#@ jigoshop
+msgid "Pricing"
+msgstr "Árazás"
+
+#: admin/write-panels/product-data.php:54
+#@ jigoshop
+msgid "Simple"
+msgstr "Egyszerű"
+
+#: admin/write-panels/product-data.php:138
+#@ jigoshop
+msgid "Standard"
+msgstr "Alap"
+
+#: admin/write-panels/product-data.php:200
+#@ jigoshop
+msgid "Value"
+msgstr "Érték"
+
+#: admin/write-panels/product-data.php:201
+#@ jigoshop
+msgid "Visible?"
+msgstr "Látható?"
+
+#: admin/write-panels/product-data.php:241
+#@ jigoshop
+msgid "Choose an option&hellip;"
+msgstr "Válassz egy opciót&hellip;"
+
+#: admin/write-panels/product-data.php:256
+#@ jigoshop
+msgid "Comma separate terms"
+msgstr "Vesszővel elválasztott kifejezések"
+
+#: admin/write-panels/product-data.php:290
+#: drop-ins/cross-sells.php:25
+#@ jigoshop
+msgid "Add"
+msgstr "Hoddáadás"
+
+#: admin/write-panels/product-data.php:292
+#@ jigoshop
+msgid "Custom product attribute"
+msgstr "Egyéni termék tulajdonság"
+
+#: admin/write-panels/product-type.php:32
+#@ jigoshop
+msgid "Choose a grouped product&hellip;"
+msgstr "Válassz csoportos terméket&hellip;"
+
+#: admin/write-panels/product-types/downloadable.php:30
+#@ jigoshop
+msgid "path to file on your server"
+msgstr "a szervereden lévő fájl elérési útvonala"
+
+#: admin/write-panels/product-types/downloadable.php:56
+#@ jigoshop
+msgid "Downloadable"
+msgstr "Letölthető"
+
+#: admin/write-panels/product-types/grouped.php:23
+#@ default
+msgid "Grouped products have no specific options &mdash; you can add simple products to this grouped product by editing them and setting their <code>parent product</code> option."
+msgstr "A csoportos termékeknek nincsenek speciális opciói &mdash; ehhez a csoportos termékhez egyszerű termékeket adhatsz úgy, hogy beállítod a <code>szülő termék</code> opciójukat."
+
+#: admin/write-panels/product-types/grouped.php:41
+#@ jigoshop
+msgid "Grouped"
+msgstr "Csoportos"
+
+#: admin/write-panels/product-types/virtual.php:23
+#@ default
+msgid "Virtual products have no specific options."
+msgstr "A virtuális termékeknek nincsenek speciális opciói"
+
+#: admin/write-panels/product-types/virtual.php:41
+#@ jigoshop
+msgid "Virtual"
+msgstr "Virtuális"
+
+#: admin/write-panels/write-panels.js.php:32
+#@ jigoshop
+msgid "Remove this item? If you have previously reduced this item's stock, or this order was submitted by a customer, will need to manually restore the item's stock."
+msgstr "Törlöd ezt a tételt? Ha már korábban csökkentetted ennek a tételnek a készletét, vagy ezt a rendelést egy vásárlód küldte, akkor kézzel kell visszaállítanod a készletet."
+
+#: admin/write-panels/write-panels.js.php:40
+#@ jigoshop
+msgid "Calc totals based on order items, discount amount, and shipping?"
+msgstr "Kiszámítod a végösszegeket a rendelés tételei, kedvezménye és szállítási költségei alapján?"
+
+#: admin/write-panels/write-panels.js.php:115
+#@ jigoshop
+msgid "Copy billing information to shipping information? This will remove any currently entered shipping information."
+msgstr "Átmásolod a számlázási adatokat a szállításhoz? Ez a jelenleg beírt adatokat törölni fogja."
+
+#: assets/js/script.js.php:109
+#: classes/jigoshop_checkout.class.php:173
+#: shortcodes/my_account.php:256
+#: templates/cart/shipping_calculator.php:29
+#@ jigoshop
+msgid "Select a state&hellip;"
+msgstr "Válassz államot&hellip;"
+
+#: assets/js/script.js.php:116
+#: shortcodes/my_account.php:242
+#: shortcodes/my_account.php:269
+#: templates/cart/shipping_calculator.php:42
+#@ jigoshop
+msgid "state"
+msgstr "állam"
+
+#: classes/jigoshop_cart.class.php:200
+#: classes/jigoshop_cart.class.php:205
+#: classes/jigoshop_checkout.class.php:521
+#: classes/jigoshop_checkout.class.php:529
+#, php-format
+#@ jigoshop
+msgid "Sorry, we do not have enough \"%s\" in stock to fulfill your order. Please edit your cart and try again. We apologise for any inconvenience caused."
+msgstr "Sajnáljuk, de jelenleg nincs elég \"%s\" raktáron a rendelésed teljesítéséhez. Kérünk módosítsd a rendelésed és próbáld meg újra! Elnézést kérünk az okozott kellemetlenségért!"
+
+#: classes/jigoshop_cart.class.php:325
+#: classes/jigoshop_cart.class.php:357
+#: classes/jigoshop_order.class.php:151
+#@ jigoshop
+msgid " <small>(ex. tax)</small>"
+msgstr " <small>(nettó)</small>"
+
+#: classes/jigoshop_cart.class.php:333
+#: classes/jigoshop_cart.class.php:365
+#: classes/jigoshop_order.class.php:158
+#@ jigoshop
+msgid " <small>(inc. tax)</small>"
+msgstr " <small>(bruttó)</small>"
+
+#: classes/jigoshop_cart.class.php:372
+#: classes/jigoshop_order.class.php:188
+#@ jigoshop
+msgid "Free!"
+msgstr "Ingyenes!"
+
+#: classes/jigoshop_cart.class.php:380
+#@ jigoshop
+msgid "via "
+msgstr " "
+
+#: classes/jigoshop_cart.class.php:396
+#@ jigoshop
+msgid "Discount code already applied!"
+msgstr "A kedvezmény már fel lett használva!"
+
+#: classes/jigoshop_cart.class.php:413
+#@ jigoshop
+msgid "Discount code applied successfully."
+msgstr "A kedvezményes kód sikeresen felhasználva."
+
+#: classes/jigoshop_cart.class.php:417
+#@ jigoshop
+msgid "Coupon does not exist!"
+msgstr "Nem létező kupon!"
+
+#: classes/jigoshop_checkout.class.php:31
+#: classes/jigoshop_checkout.class.php:45
+#: shortcodes/my_account.php:193
+#: shortcodes/my_account.php:194
+#@ jigoshop
+msgid "First Name"
+msgstr "Vezetéknév"
+
+#: classes/jigoshop_checkout.class.php:32
+#: classes/jigoshop_checkout.class.php:46
+#: shortcodes/my_account.php:197
+#: shortcodes/my_account.php:198
+#@ jigoshop
+msgid "Last Name"
+msgstr "Keresztnév"
+
+#: classes/jigoshop_checkout.class.php:33
+#: classes/jigoshop_checkout.class.php:47
+#: shortcodes/my_account.php:203
+#: shortcodes/my_account.php:204
+#@ jigoshop
+msgid "Company"
+msgstr "Cég"
+
+#: classes/jigoshop_checkout.class.php:34
+#: classes/jigoshop_checkout.class.php:48
+#: shortcodes/my_account.php:208
+#@ jigoshop
+msgid "Address"
+msgstr "Cím"
+
+#: classes/jigoshop_checkout.class.php:34
+#: classes/jigoshop_checkout.class.php:48
+#@ jigoshop
+msgid "Address 1"
+msgstr "Cím 1"
+
+#: classes/jigoshop_checkout.class.php:35
+#: classes/jigoshop_checkout.class.php:49
+#: shortcodes/my_account.php:212
+#@ jigoshop
+msgid "Address 2"
+msgstr "Cím 2"
+
+#: classes/jigoshop_checkout.class.php:36
+#: classes/jigoshop_checkout.class.php:50
+#: shortcodes/my_account.php:218
+#: shortcodes/my_account.php:219
+#@ jigoshop
+msgid "City"
+msgstr "Település"
+
+#: classes/jigoshop_checkout.class.php:37
+#: classes/jigoshop_checkout.class.php:51
+#: shortcodes/my_account.php:222
+#: templates/cart/shipping_calculator.php:49
+#@ jigoshop
+msgid "Postcode"
+msgstr "Irányító szám"
+
+#: classes/jigoshop_checkout.class.php:38
+#: classes/jigoshop_checkout.class.php:52
+#: shortcodes/my_account.php:228
+#@ jigoshop
+msgid "Country"
+msgstr "Ország"
+
+#: classes/jigoshop_checkout.class.php:39
+#: classes/jigoshop_checkout.class.php:53
+#: classes/jigoshop_checkout.class.php:183
+#@ jigoshop
+msgid "State/County"
+msgstr "Állam/Megye"
+
+#: classes/jigoshop_checkout.class.php:40
+#: shortcodes/my_account.php:279
+#@ jigoshop
+msgid "Email Address"
+msgstr "Email cím"
+
+#: classes/jigoshop_checkout.class.php:40
+#: shortcodes/my_account.php:280
+#@ jigoshop
+msgid "you@yourdomain.com"
+msgstr "teszt@elek.hu"
+
+#: classes/jigoshop_checkout.class.php:41
+#: shortcodes/my_account.php:284
+#@ jigoshop
+msgid "Phone"
+msgstr "Telefon"
+
+#: classes/jigoshop_checkout.class.php:41
+#@ jigoshop
+msgid "Phone number"
+msgstr "Telefonszám"
+
+#: classes/jigoshop_checkout.class.php:72
+#@ jigoshop
+msgid "Create an account?"
+msgstr "Regisztáció?"
+
+#: classes/jigoshop_checkout.class.php:78
+#@ jigoshop
+msgid "Account username"
+msgstr "Felhasználói név"
+
+#: classes/jigoshop_checkout.class.php:78
+#: templates/checkout/login.php:4
+#: templates/login.php:3
+#@ jigoshop
+msgid "Username"
+msgstr "Felhasználói név"
+
+#: classes/jigoshop_checkout.class.php:79
+#: classes/jigoshop_checkout.class.php:80
+#@ jigoshop
+msgid "Account password"
+msgstr "Jelszó"
+
+#: classes/jigoshop_checkout.class.php:79
+#: classes/jigoshop_checkout.class.php:80
+#: templates/checkout/login.php:8
+#: templates/login.php:7
+#@ jigoshop
+msgid "Password"
+msgstr "Jelsző"
+
+#: classes/jigoshop_checkout.class.php:82
+#@ jigoshop
+msgid "Save time in the future and check the status of your order by creating an account."
+msgstr "Regisztrálj be, hogy a jövőben gyorsabban tudd rendeléseid állapotát nyomon követni!"
+
+#: classes/jigoshop_checkout.class.php:96
+#@ jigoshop
+msgid "Ship to same address?"
+msgstr "Szállítás ugyanarra a címre?"
+
+#: classes/jigoshop_checkout.class.php:109
+#@ jigoshop
+msgid "Order Notes"
+msgstr "Megjegyzések"
+
+#: classes/jigoshop_checkout.class.php:109
+#@ jigoshop
+msgid "Notes about your order, e.g. special notes for delivery."
+msgstr "Megjegyzések a rendeléssel kapcsolatban, pl. speciális szállítási igények jelzése"
+
+#: classes/jigoshop_checkout.class.php:146
+#: shortcodes/my_account.php:230
+#: templates/cart/shipping_calculator.php:8
+#@ jigoshop
+msgid "Select a country&hellip;"
+msgstr "Válassz országot&hellip;"
+
+#: classes/jigoshop_checkout.class.php:221
+#, php-format
+#@ jigoshop
+msgid "Sorry, your session has expired. <a href=\"%s\">Return to homepage &rarr;</a>"
+msgstr "Elnézést, de az session időlimitje lejárt. <a href=\"%s\">Vissza a honlapra &rarr;</a>"
+
+#: classes/jigoshop_checkout.class.php:247
+#@ jigoshop
+msgid " (billing) is a required field."
+msgstr " (számlázás) mező kitöltése kötelező"
+
+#: classes/jigoshop_checkout.class.php:252
+#@ jigoshop
+msgid " (billing) is not a valid number."
+msgstr " (számlázás) nem érvényes szám"
+
+#: classes/jigoshop_checkout.class.php:255
+#@ jigoshop
+msgid " (billing) is not a valid email address."
+msgstr " (számlázás) nem érvényes email cím"
+
+#: classes/jigoshop_checkout.class.php:258
+#@ jigoshop
+msgid " (billing) is not a valid postcode/ZIP."
+msgstr " (számlázás) nem érvényes irányítószám"
+
+#: classes/jigoshop_checkout.class.php:279
+#@ jigoshop
+msgid " (shipping) is a required field."
+msgstr " (szállítás) mező kitöltése kötelező"
+
+#: classes/jigoshop_checkout.class.php:284
+#@ jigoshop
+msgid " (shipping) is not a valid postcode/ZIP."
+msgstr " (szállítás) nem érvényes irányítószám"
+
+#: classes/jigoshop_checkout.class.php:307
+#@ jigoshop
+msgid "Please enter an account username."
+msgstr "Kérlek addj meg egy felhasználói nevet!"
+
+#: classes/jigoshop_checkout.class.php:308
+#@ jigoshop
+msgid "Please enter an account password."
+msgstr "Kérlek adj meg egy jelszót!"
+
+#: classes/jigoshop_checkout.class.php:309
+#: shortcodes/my_account.php:329
+#@ jigoshop
+msgid "Passwords do not match."
+msgstr "A jelszavak nem egyeznek meg!"
+
+#: classes/jigoshop_checkout.class.php:313
+#@ jigoshop
+msgid "Invalid email/username."
+msgstr "Hibás email/felhasználói név!"
+
+#: classes/jigoshop_checkout.class.php:315
+#@ jigoshop
+msgid "An account is already registered with that username. Please choose another."
+msgstr "Ezzel a felhasználói névvel már regisztrált valaki. Kérlek válassz másikat!"
+
+#: classes/jigoshop_checkout.class.php:320
+#@ jigoshop
+msgid "An account is already registered with your email address. Please login."
+msgstr "Ezzel az email címmel már regisztráltál. Kérlek jelentkezz be!"
+
+#: classes/jigoshop_checkout.class.php:325
+#@ jigoshop
+msgid "You must accept our Terms &amp; Conditions."
+msgstr "El kell fogadnod a vásárlási feltételeket."
+
+#: classes/jigoshop_checkout.class.php:332
+#@ jigoshop
+msgid "Invalid shipping method."
+msgstr "Érvénytelen szállítási mód!"
+
+#: classes/jigoshop_checkout.class.php:341
+#@ jigoshop
+msgid "Invalid payment method."
+msgstr "Érvénytelen fizetési mód!"
+
+#: classes/jigoshop_checkout.class.php:367
+#, php-format
+#@ jigoshop
+msgid "<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the <a href=\"mailto:%s\">webmaster</a> !"
+msgstr "<strong>HIBA</strong>: Sikertelen regisztráció! Kérlek vedd fel a kapcsolatot a <a href=\"mailto:%s\">webmaster</a>-rel!"
+
+#: classes/jigoshop_countries.class.php:184
+#@ jigoshop
+msgid "to the"
+msgstr " "
+
+#: classes/jigoshop_countries.class.php:185
+#@ jigoshop
+msgid "to"
+msgstr " "
+
+#: classes/jigoshop_countries.class.php:202
+#@ jigoshop
+msgid "All states"
+msgstr "Minden állam"
+
+#: classes/jigoshop_order.class.php:175
+#, php-format
+#@ jigoshop
+msgid " <small>(ex. tax) via %s</small>"
+msgstr " <small>(nettó) %s-el</small>"
+
+#: classes/jigoshop_order.class.php:182
+#, php-format
+#@ jigoshop
+msgid " <small>(inc. tax) via %s</small>"
+msgstr " <small>(bruttó) %s-el</small>"
+
+#: classes/jigoshop_order.class.php:276
+#, php-format
+#@ jigoshop
+msgid "Order status changed from %s to %s."
+msgstr "A rendelés állapota %s-ről %s-re változott."
+
+#: classes/jigoshop_order.class.php:395
+#@ jigoshop
+msgid "Order item stock reduced successfully."
+msgstr "A rendelés tételeinek raktárkészlete sikeresen csökkentve."
+
+#: classes/jigoshop_product.class.php:217
+#: classes/jigoshop_product.class.php:245
+#: classes/jigoshop_product.class.php:254
+#@ jigoshop
+msgid "Out of stock"
+msgstr "Kifogyott"
+
+#: classes/jigoshop_product.class.php:223
+#: classes/jigoshop_product.class.php:242
+#@ jigoshop
+msgid "In stock"
+msgstr "Raktáron"
+
+#: classes/jigoshop_product.class.php:228
+#: classes/jigoshop_product.class.php:233
+#@ jigoshop
+msgid "available"
+msgstr "elérhető"
+
+#: classes/jigoshop_product.class.php:229
+#@ jigoshop
+msgid " (backorders allowed)"
+msgstr " (utánrendelés engedélyezve)"
+
+#: classes/jigoshop_product.class.php:240
+#: classes/jigoshop_product.class.php:252
+#@ jigoshop
+msgid "Available on backorder"
+msgstr "Utánrendeléssel rendelhető"
+
+#: classes/jigoshop_product.class.php:357
+#@ jigoshop
+msgid "From: "
+msgstr "Feladó: "
+
+#: drop-ins/cross-sells.php:27
+#@ jigoshop
+msgid "No products found"
+msgstr "Termékek nem találhatóak"
+
+#: drop-ins/cross-sells.php:88
+#@ jigoshop
+msgid "Cross-sells are products which you promote in the cart, based on the current product."
+msgstr "Az további ajánlatok olyan termékek, amiket a vevő kosarába ajánlasz az aktuális termék alapján"
+
+#: drop-ins/cross-sells.php:88
+#@ jigoshop
+msgid "Cross-sells"
+msgstr "További ajánlatok"
+
+#: drop-ins/cross-sells.php:113
+#@ jigoshop
+msgid "Cross-Sells"
+msgstr "További ajánlatok"
+
+#: drop-ins/cross-sells.php:148
+#@ jigoshop
+msgid "You may be interested in&hellip;"
+msgstr "A következők is érdekesek lehetnek számodra:"
+
+#: drop-ins/cross-sells.php:173
+#@ jigoshop
+msgid "Up-sells are products which you recommend instead of the currently viewed product, for example, products that are more profitable or better quality."
+msgstr "A jobb ajánlatok olyan termékek, amiket a vásárló kosarába ajánlasz az aktuáls termék helyett, pl. mert jobb minőségűek vagy jobban megérik"
+
+#: drop-ins/cross-sells.php:173
+#@ jigoshop
+msgid "Up-sells"
+msgstr "Jobb ajánlatok"
+
+#: drop-ins/cross-sells.php:198
+#@ jigoshop
+msgid "Up-Sells"
+msgstr "Jobb ajánlatok"
+
+#: drop-ins/cross-sells.php:233
+#: templates/product/upsells.php:14
+#@ jigoshop
+msgid "You may also like&hellip;"
+msgstr "Érdekelhet még:"
+
+#: drop-ins/seo.php:10
+#@ jigoshop
+msgid "Meta"
+msgstr "Meta"
+
+#: gateways/cheque.php:34
+#@ jigoshop
+msgid "Cheque Payment"
+msgstr "Csekkes fizetés"
+
+#: gateways/cheque.php:34
+#@ jigoshop
+msgid "Allows cheque payments. Why would you take cheques in this day and age? Well you probably wouldn't but it does allow you to make test purchases without having to use the sandbox area of a payment gateway which is useful for demonstrating to clients and for testing order emails and the 'success' pages etc."
+msgstr "Engedélyezi a csekkes fizetést. Miért is használnál készpénzes fizetést manapság? Valószínűleg nem tennéd, de hasznos lehet teszt vásárlások létrehozásához, mert így sandbox hozzáférések nélkül tudsz tesztelni, például a klienseknek megmutatni a sikeres vásárlás oldalad."
+
+#: gateways/cheque.php:36
+#@ jigoshop
+msgid "Enable Cheque Payment"
+msgstr "Csekkes fizetés engedélyezése"
+
+#: gateways/cheque.php:45
+#: gateways/paypal.php:51
+#: gateways/sagepay.php:199
+#: gateways/skrill.php:49
+#: shipping/flat_rate.php:83
+#: shipping/free_shipping.php:38
+#@ jigoshop
+msgid "This controls the title which the user sees during checkout."
+msgstr "Itt állítható a cím, amit a felhasználó a fizetés során lát."
+
+#: gateways/cheque.php:45
+#: gateways/paypal.php:51
+#: gateways/sagepay.php:199
+#: gateways/skrill.php:49
+#: shipping/flat_rate.php:83
+#: shipping/free_shipping.php:38
+#@ jigoshop
+msgid "Method Title"
+msgstr "Megnevezés"
+
+#: gateways/cheque.php:51
+#@ jigoshop
+msgid "Let the customer know the payee and where they should be sending the cheque too and that their order won't be shipping until you receive it."
+msgstr "Tudasd egyértelműen a vásárlókkal, hogy hová kell címezniük a csekket és hogy nem fogod postázni az árukat amíg a pénz meg nem érkezik."
+
+#: gateways/cheque.php:51
+#@ jigoshop
+msgid "Customer Message"
+msgstr "Vásárló üzenete"
+
+#: gateways/cheque.php:89
+#@ jigoshop
+msgid "Awaiting cheque payment"
+msgstr "Csekkes fizetés folyamatban"
+
+#: gateways/paypal.php:40
+#@ jigoshop
+msgid "PayPal standard"
+msgstr "PayPal standard"
+
+#: gateways/paypal.php:40
+#@ jigoshop
+msgid "PayPal standard works by sending the user to <a href=\"https://www.paypal.com/uk/mrb/pal=JFC9L8JJUZZK2\">PayPal</a> to enter their payment information."
+msgstr "A PayPal standard fizetési mód esetén a felhasználót a <a href=\"https://www.paypal.com/uk/mrb/pal=JFC9L8JJUZZK2\">PayPal</a> oldalra irányítjuk, ahol beléphet adataival."
+
+#: gateways/paypal.php:42
+#@ jigoshop
+msgid "Enable PayPal standard"
+msgstr "PayPal standard engedélyezése"
+
+#: gateways/paypal.php:57
+#@ jigoshop
+msgid "This controls the description which the user sees during checkout."
+msgstr "Itt állítható be a leírás, amit a felhasználó a fizetés során lát."
+
+#: gateways/paypal.php:57
+#: templates/single-product.php:61
+#@ jigoshop
+msgid "Description"
+msgstr "Leírás"
+
+#: gateways/paypal.php:63
+#@ jigoshop
+msgid "Please enter your PayPal email address; this is needed in order to take payment!"
+msgstr "Kérlek írd be a PayPal email címedet, ami a fizetéshez szükséges!"
+
+#: gateways/paypal.php:63
+#@ jigoshop
+msgid "PayPal email address"
+msgstr "PayPal email cím"
+
+#: gateways/paypal.php:69
+#@ jigoshop
+msgid "Enable PayPal sandbox"
+msgstr "PayPal sandbox (tesztkörnyezet) engedélyezése"
+
+#: gateways/paypal.php:189
+#: gateways/skrill.php:160
+#@ jigoshop
+msgid "Shipping cost"
+msgstr "Szállítási költség"
+
+#: gateways/paypal.php:201
+#@ jigoshop
+msgid "Pay via PayPal"
+msgstr "Fizess PayPal-lel"
+
+#: gateways/paypal.php:201
+#@ jigoshop
+msgid "Cancel order &amp; restore cart"
+msgstr "Rendelés visszamondása és kosár visszaállítása"
+
+#: gateways/paypal.php:206
+#@ jigoshop
+msgid "Thank you for your order. We are now redirecting you to PayPal to make payment."
+msgstr "Köszönjük rendelésedet! Most át fogunk irányítani a PayPal oldalára, ahol fizethetsz."
+
+#: gateways/paypal.php:247
+#@ jigoshop
+msgid "Thank you for your order, please click the button below to pay with PayPal."
+msgstr "Köszönjük rendelésedet! Kérünk kattints a lent található gombra a PayPal-lel való fizetéshez!"
+
+#: gateways/paypal.php:329
+#@ jigoshop
+msgid "IPN payment completed"
+msgstr "IPN fizetés teljesítve"
+
+#: gateways/paypal.php:337
+#, php-format
+#@ jigoshop
+msgid "Payment %s via IPN."
+msgstr "%s fizetés IPN-en"
+
+#: gateways/sagepay.php:58
+#@ jigoshop
+msgid "Name on Card"
+msgstr "Kártyán szereplő név"
+
+#: gateways/sagepay.php:62
+#@ jigoshop
+msgid "Credit Card Type"
+msgstr "Bankkártya típusa"
+
+#: gateways/sagepay.php:70
+#@ jigoshop
+msgid "Credit Card Number"
+msgstr "Bankkártya száma"
+
+#: gateways/sagepay.php:74
+#@ jigoshop
+msgid "Expiration Date"
+msgstr "Lejárati dátum"
+
+#: gateways/sagepay.php:83
+#@ jigoshop
+msgid "Verification Number"
+msgstr "Ellenőrző szám (CVC2)"
+
+#: gateways/sagepay.php:85
+#@ jigoshop
+msgid "This is usually the last 3 digits found on your card's signature strip."
+msgstr "Ez általában az aláírási csíjon található szám utolsó 3 számjegye."
+
+#: gateways/sagepay.php:128
+#@ Shopp
+msgid "Connecting to your bank for card authorization..."
+msgstr "Kapcsolódás a bankodhoz a hitelesítés miatt...."
+
+#: gateways/sagepay.php:188
+#@ jigoshop
+msgid "SagePay"
+msgstr "SagePay"
+
+#: gateways/sagepay.php:190
+#@ jigoshop
+msgid "Enable SagePay"
+msgstr "SagePay engedélyezése"
+
+#: gateways/sagepay.php:205
+#: shipping/flat_rate.php:120
+#: shipping/free_shipping.php:50
+#@ jigoshop
+msgid "Method available for"
+msgstr "Engedélyezve "
+
+#: gateways/sagepay.php:208
+#: shipping/flat_rate.php:123
+#: shipping/free_shipping.php:53
+#@ jigoshop
+msgid "All allowed countries"
+msgstr "Minden engedélyezett ország"
+
+#: gateways/skrill.php:38
+#@ jigoshop
+msgid "Skrill (Moneybookers)"
+msgstr "Skrill (Moneybookers)"
+
+#: gateways/skrill.php:38
+#@ jigoshop
+msgid "Skrill works by using an iFrame to submit payment information securely to Moneybookers."
+msgstr "A Skirll iFrame-en kersztül küldi el a fizetési információkat (titkosítva) a Moneybookers-hez."
+
+#: gateways/skrill.php:40
+#@ jigoshop
+msgid "Enable Skrill"
+msgstr "Skrill engedélyezése"
+
+#: gateways/skrill.php:55
+#@ jigoshop
+msgid "Please enter your skrill email address; this is needed in order to take payment!"
+msgstr "Kérjük add meg a skrill email címedet, ami szükséges a fizetéshez!"
+
+#: gateways/skrill.php:55
+#@ jigoshop
+msgid "Skrill merchant e-mail"
+msgstr "Skrill kereskedői email cím"
+
+#: gateways/skrill.php:61
+#@ jigoshop
+msgid "Please enter your skrill secretword; this is needed in order to take payment!"
+msgstr "Kérjük add meg a skrill titkos szavadat, ami szükséges a fizetéshez!"
+
+#: gateways/skrill.php:61
+#@ jigoshop
+msgid "Skrill Secret Word"
+msgstr "Skrill titkos szó"
+
+#: gateways/skrill.php:67
+#@ jigoshop
+msgid "Please enter your skrill Customer ID; this is needed in order to take payment!"
+msgstr "Kérjük add meg a skrill vásárló azonosítód, ami szükséges a fizetéshez!"
+
+#: gateways/skrill.php:67
+#@ jigoshop
+msgid "Skrill Customer ID"
+msgstr "Skrill vásárló azonosító"
+
+#: gateways/skrill.php:209
+#@ jigoshop
+msgid "Thank you for your order, please complete the secure (SSL) form below to pay with Skrill."
+msgstr "Köszönjük a rendelésed, kérjük töltsd ki az alábbi titkosíott (SSL) űrlapot a Skrill-en kersztül történő fizetéshez!"
+
+#: gateways/skrill.php:270
+#@ jigoshop
+msgid "Skrill payment completed"
+msgstr "Skrill fizetés teljesítve"
+
+#: gateways/skrill.php:275
+#, php-format
+#@ jigoshop
+msgid "Skrill payment failed (%s)"
+msgstr "Skrill fizetési hiba (%s)"
+
+#: gateways/skrill.php:278
+#@ jigoshop
+msgid "Skrill payment cancelled"
+msgstr "Skrill fizetési visszavonva"
+
+#: gateways/skrill.php:281
+#@ jigoshop
+msgid "Skrill exception"
+msgstr "Skrill kivétel"
+
+#: jigoshop.php:153
+#: jigoshop_taxonomy.php:114
+#@ jigoshop
+msgid "Search "
+msgstr "Keresés "
+
+#: jigoshop.php:154
+#: jigoshop_taxonomy.php:115
+#@ jigoshop
+msgid "All "
+msgstr "Minden "
+
+#: jigoshop.php:155
+#: jigoshop.php:156
+#: jigoshop_taxonomy.php:116
+#: jigoshop_taxonomy.php:117
+#@ jigoshop
+msgid "Parent "
+msgstr "Szülő "
+
+#: jigoshop.php:157
+#: jigoshop_taxonomy.php:118
+#@ jigoshop
+msgid "Edit "
+msgstr "Szerkesztés "
+
+#: jigoshop.php:158
+#: jigoshop_taxonomy.php:119
+#@ jigoshop
+msgid "Update "
+msgstr "Frissítés "
+
+#: jigoshop.php:159
+#: jigoshop_taxonomy.php:120
+#@ jigoshop
+msgid "Add New "
+msgstr "Új létrehozása "
+
+#: jigoshop.php:160
+#: jigoshop_taxonomy.php:121
+#@ jigoshop
+msgid "New "
+msgstr "Új "
+
+#: jigoshop.php:402
+#@ jigowatt
+msgid "Please rate the product."
+msgstr "Kérjük értékeld a terméket!"
+
+#: jigoshop.php:424
+#@ jigoshop
+msgid "Your comment is awaiting approval"
+msgstr "A megjegyzésed moderálásra vár."
+
+#: jigoshop.php:427
+#@ jigoshop
+msgid "Rating by"
+msgstr "Írta:"
+
+#: jigoshop.php:427
+#@ jigoshop
+msgid "on"
+msgstr "ekkor:"
+
+#: jigoshop_actions.php:30
+#: jigoshop_actions.php:40
+#, php-format
+#@ jigoshop
+msgid "<a href=\"%s\" class=\"button\">View Cart &rarr;</a> Product successfully added to your cart."
+msgstr "<a href=\"%s\" class=\"button\">Kosár megtekintése &rarr;</a> A terméket sikeresen beraktad a kosaradba."
+
+#: jigoshop_actions.php:47
+#@ jigoshop
+msgid "Please choose a product&hellip;"
+msgstr "Válassz terméket&hellip;"
+
+#: jigoshop_actions.php:110
+#@ jigoshop
+msgid "Username is required."
+msgstr "A felhasználói név megadása kötelező!"
+
+#: jigoshop_actions.php:111
+#@ jigoshop
+msgid "Password is required."
+msgstr "A jelszó megadása kötelező"
+
+#: jigoshop_actions.php:155
+#@ jigoshop
+msgid "Order cancelled by customer."
+msgstr "A rendelést visszamondta a felhasználó."
+
+#: jigoshop_actions.php:158
+#@ jigoshop
+msgid "Your order was cancelled."
+msgstr "A rendelésed visszamondva."
+
+#: jigoshop_actions.php:162
+#@ jigoshop
+msgid "Your order is no longer pending and could not be cancelled. Please contact us if you need assistance."
+msgstr "A rendelésed már nincs függőben és nem lett visszamondva. Kérlek vedd fel a kapcsolatot az ügyfélszolgálattal, ha szükséged van rá!"
+
+#: jigoshop_actions.php:166
+#: shortcodes/pay.php:66
+#@ jigoshop
+msgid "Invalid order."
+msgstr "Hibás rendelés!"
+
+#: jigoshop_actions.php:203
+#, php-format
+#@ jigoshop
+msgid "You do not have permission to download this file. <a href=\"%s\">Go to homepage &rarr;</a>"
+msgstr "Nincs jogosultságod a fájl letöltéséhez. <a href=\"%s\">Vissza a főoldalra &rarr;</a>"
+
+#: jigoshop_actions.php:205
+#, php-format
+#@ jigoshop
+msgid "Sorry, you have reached your download limit for this file. <a href=\"%s\">Go to homepage &rarr;</a>"
+msgstr "Elnézést, de elérted a letöltési limited erre a fáljra. <a href=\"%s\">Vissza a főoldalra &rarr;</a>"
+
+#: jigoshop_actions.php:238
+#: jigoshop_actions.php:249
+#, php-format
+#@ jigoshop
+msgid "File not found. <a href=\"%s\">Go to homepage &rarr;</a>"
+msgstr "Fájl nem található. <a href=\"%s\">Vissza a főoldalra &rarr;</a>"
+
+#: jigoshop_breadcrumbs.php:52
+#@ jigoshop
+msgid "Products tagged &ldquo;"
+msgstr "Felcímkézett termékek &ldquo;"
+
+#: jigoshop_breadcrumbs.php:73
+#: jigoshop_breadcrumbs.php:157
+#@ jigoshop
+msgid "Search results for &ldquo;"
+msgstr "Találatok &ldquo;"
+
+#: jigoshop_breadcrumbs.php:121
+#@ jigoshop
+msgid "Error 404"
+msgstr "Hiba 404"
+
+#: jigoshop_breadcrumbs.php:161
+#@ jigoshop
+msgid "Posts tagged &ldquo;"
+msgstr "Bejegyzések felcímkézve &ldquo;"
+
+#: jigoshop_breadcrumbs.php:166
+#@ jigoshop
+msgid "Author: "
+msgstr "Szerző: "
+
+#: jigoshop_breadcrumbs.php:172
+#@ jigoshop
+msgid "Page"
+msgstr "Oldal"
+
+#: jigoshop_emails.php:22
+#, php-format
+#@ jigoshop
+msgid "[%s] New Customer Order (# %s)"
+msgstr "[%s] Új vásárlói rendelés (# %s)"
+
+#: jigoshop_emails.php:24
+#@ jigoshop
+msgid "You have received an order from "
+msgstr "Kaptál egy megrendelést a következőtől: "
+
+#: jigoshop_emails.php:24
+#@ jigoshop
+msgid ". Their order is as follows:"
+msgstr ". A rendelés tartalma a következő:"
+
+#: jigoshop_emails.php:27
+#: jigoshop_emails.php:96
+#: jigoshop_emails.php:163
+#: jigoshop_emails.php:236
+#@ jigoshop
+msgid "ORDER #: "
+msgstr "RENDELÉS #: "
+
+#: jigoshop_emails.php:41
+#: jigoshop_emails.php:109
+#: jigoshop_emails.php:184
+#: jigoshop_emails.php:249
+#: shortcodes/my_account.php:423
+#@ jigoshop
+msgid "Note:"
+msgstr "Megjegyzés:"
+
+#: jigoshop_emails.php:51
+#: jigoshop_emails.php:119
+#: jigoshop_emails.php:194
+#@ jigoshop
+msgid "CUSTOMER DETAILS"
+msgstr "VÁSÁRLÓ ADATAI"
+
+#: jigoshop_emails.php:54
+#: jigoshop_emails.php:122
+#: jigoshop_emails.php:197
+#@ jigoshop
+msgid "Email:"
+msgstr "Email:"
+
+#: jigoshop_emails.php:55
+#: jigoshop_emails.php:123
+#: jigoshop_emails.php:198
+#@ jigoshop
+msgid "Tel:"
+msgstr "Tel:"
+
+#: jigoshop_emails.php:60
+#: jigoshop_emails.php:128
+#: jigoshop_emails.php:203
+#@ jigoshop
+msgid "BILLING ADDRESS"
+msgstr "SZÁMLÁZÁSI CÍM"
+
+#: jigoshop_emails.php:68
+#: jigoshop_emails.php:136
+#: jigoshop_emails.php:211
+#@ jigoshop
+msgid "SHIPPING ADDRESS"
+msgstr "SZÁLLÍTÁSI CÍM"
+
+#: jigoshop_emails.php:91
+#@ jigoshop
+msgid "Order Received"
+msgstr "Megrendelés fogadva"
+
+#: jigoshop_emails.php:93
+#@ jigoshop
+msgid "Thank you, we are now processing your order. Your order's details are below:"
+msgstr "Köszönjük, megrendelésed feldolgozzuk. A megrendelésed tartalma a következő volt:"
+
+#: jigoshop_emails.php:158
+#@ jigoshop
+msgid "Order Complete"
+msgstr "Megrendelés teljesítve"
+
+#: jigoshop_emails.php:160
+#@ jigoshop
+msgid "Your order is complete. Your order's details are below:"
+msgstr "A megrendelésed teljesítve lett. A megrendelés tartalma a következő volt:"
+
+#: jigoshop_emails.php:231
+#@ jigoshop
+msgid "Pay for Order"
+msgstr "Fizetés megrendeléshez"
+
+#: jigoshop_emails.php:233
+#, php-format
+#@ jigoshop
+msgid "An order has been created for you on &ldquo;%s&rdquo;. To pay for this order please use the following link: %s"
+msgstr "Egy megrendelést hoztak létre a nevedre ekkor: &ldquo;%s&rdquo;. A számla kifizetéséhez kattints a következő linkre: %s"
+
+#: jigoshop_emails.php:269
+#@ jigoshop
+msgid "Product low in stock"
+msgstr "A termék raktárkészlete kifogyóban"
+
+#: jigoshop_emails.php:270
+#@ jigoshop
+msgid "is low in stock."
+msgstr "kifogyóban"
+
+#: jigoshop_emails.php:281
+#@ jigoshop
+msgid "Product out of stock"
+msgstr "A termék raktárkészlete kifogyott"
+
+#: jigoshop_emails.php:282
+#@ jigoshop
+msgid "is out of stock."
+msgstr "kifogyott"
+
+#: jigoshop_emails.php:293
+#@ jigoshop
+msgid "Product Backorder"
+msgstr "Termék utánrendelés"
+
+#: jigoshop_emails.php:294
+#@ jigoshop
+msgid " units of #"
+msgstr " db #"
+
+#: jigoshop_emails.php:294
+#@ jigoshop
+msgid "have been backordered."
+msgstr "utánrendelve"
+
+#: jigoshop_taxonomy.php:13
+#: shortcodes/my_account.php:395
+#: templates/checkout/pay_for_order.php:7
+#: templates/checkout/review_order.php:30
+#@ jigoshop
+msgid "Product"
+msgstr "Termék"
+
+#: jigoshop_taxonomy.php:14
+#@ jigoshop
+msgid "Add Product"
+msgstr "Termék létrehozása"
+
+#: jigoshop_taxonomy.php:15
+#@ jigoshop
+msgid "Add New Product"
+msgstr "Új termék létrehozása"
+
+#: jigoshop_taxonomy.php:17
+#@ jigoshop
+msgid "Edit Product"
+msgstr "Termék szerkesztése"
+
+#: jigoshop_taxonomy.php:18
+#@ jigoshop
+msgid "New Product"
+msgstr "Új termék"
+
+#: jigoshop_taxonomy.php:19
+#: jigoshop_taxonomy.php:20
+#@ jigoshop
+msgid "View Product"
+msgstr "Termék megtekintése"
+
+#: jigoshop_taxonomy.php:21
+#@ jigoshop
+msgid "Search Products"
+msgstr "Termékek keresése"
+
+#: jigoshop_taxonomy.php:22
+#@ jigoshop
+msgid "No Products found"
+msgstr "Nem található termék"
+
+#: jigoshop_taxonomy.php:23
+#@ jigoshop
+msgid "No Products found in trash"
+msgstr "A kukában nincs termék"
+
+#: jigoshop_taxonomy.php:24
+#@ jigoshop
+msgid "Parent Product"
+msgstr "Szülő termék"
+
+#: jigoshop_taxonomy.php:26
+#@ jigoshop
+msgid "This is where you can add new products to your store."
+msgstr "Itt vihetsz fel új termékeket a boltodba."
+
+#: jigoshop_taxonomy.php:51
+#@ jigoshop
+msgid "Product Category"
+msgstr "Termék kategória"
+
+#: jigoshop_taxonomy.php:52
+#@ jigoshop
+msgid "Search Product Categories"
+msgstr "Termék kategória keresése"
+
+#: jigoshop_taxonomy.php:53
+#@ jigoshop
+msgid "All Product Categories"
+msgstr "Minden termék kategória"
+
+#: jigoshop_taxonomy.php:54
+#@ jigoshop
+msgid "Parent Product Category"
+msgstr "Szülő termék kategória"
+
+#: jigoshop_taxonomy.php:55
+#@ jigoshop
+msgid "Parent Product Category:"
+msgstr "Szülő termék kategória:"
+
+#: jigoshop_taxonomy.php:56
+#@ jigoshop
+msgid "Edit Product Category"
+msgstr "Termék kategória szerkesztése"
+
+#: jigoshop_taxonomy.php:57
+#@ jigoshop
+msgid "Update Product Category"
+msgstr "Termék kategória frissítése"
+
+#: jigoshop_taxonomy.php:58
+#@ jigoshop
+msgid "Add New Product Category"
+msgstr "Új termék kategória létrehozása"
+
+#: jigoshop_taxonomy.php:59
+#@ jigoshop
+msgid "New Product Category Name"
+msgstr "Új termék kategória neve"
+
+#: jigoshop_taxonomy.php:72
+#: widgets/product_tag_cloud.php:28
+#@ jigoshop
+#@ default
+msgid "Product Tags"
+msgstr "Termék címkék"
+
+#: jigoshop_taxonomy.php:74
+#@ jigoshop
+msgid "Search Product Tags"
+msgstr "Termék címkék keresése"
+
+#: jigoshop_taxonomy.php:75
+#@ jigoshop
+msgid "All Product Tags"
+msgstr "Minden termék címke"
+
+#: jigoshop_taxonomy.php:76
+#@ jigoshop
+msgid "Parent Product Tag"
+msgstr "Szülő termék címke"
+
+#: jigoshop_taxonomy.php:77
+#@ jigoshop
+msgid "Parent Product Tag:"
+msgstr "Szülő termék címke:"
+
+#: jigoshop_taxonomy.php:78
+#@ jigoshop
+msgid "Edit Product Tag"
+msgstr "Termék címke szerkesztése"
+
+#: jigoshop_taxonomy.php:79
+#@ jigoshop
+msgid "Update Product Tag"
+msgstr "Termék címke frissítése"
+
+#: jigoshop_taxonomy.php:80
+#@ jigoshop
+msgid "Add New Product Tag"
+msgstr "Új termék címke létrehozása"
+
+#: jigoshop_taxonomy.php:81
+#@ jigoshop
+msgid "New Product Tag Name"
+msgstr "Új termék címke neve"
+
+#: jigoshop_taxonomy.php:139
+#@ jigoshop
+msgid "Add Order"
+msgstr "Megrendelés létrehozása"
+
+#: jigoshop_taxonomy.php:140
+#@ jigoshop
+msgid "Add New Order"
+msgstr "Új megtekintése létrehozása"
+
+#: jigoshop_taxonomy.php:142
+#@ jigoshop
+msgid "Edit Order"
+msgstr "Megrendelés szerkesztése"
+
+#: jigoshop_taxonomy.php:143
+#@ jigoshop
+msgid "New Order"
+msgstr "Új megrendelés"
+
+#: jigoshop_taxonomy.php:144
+#: jigoshop_taxonomy.php:145
+#@ jigoshop
+msgid "View Order"
+msgstr "Megrendelés megtekintése"
+
+#: jigoshop_taxonomy.php:146
+#@ jigoshop
+msgid "Search Orders"
+msgstr "Megrendelések keresése"
+
+#: jigoshop_taxonomy.php:147
+#@ jigoshop
+msgid "No Orders found"
+msgstr "Nem található megrendelés"
+
+#: jigoshop_taxonomy.php:148
+#@ jigoshop
+msgid "No Orders found in trash"
+msgstr "Nincs megrendelés a kukában"
+
+#: jigoshop_taxonomy.php:149
+#@ jigoshop
+msgid "Parent Orders"
+msgstr "Szülő megrendelések"
+
+#: jigoshop_taxonomy.php:151
+#@ jigoshop
+msgid "This is where store orders are stored."
+msgstr "Itt tárolódnk a bolt megrendelései."
+
+#: jigoshop_taxonomy.php:173
+#@ jigoshop
+msgid "Order statuses"
+msgstr "Megrendelések állapota"
+
+#: jigoshop_taxonomy.php:174
+#@ jigoshop
+msgid "Order status"
+msgstr "Megrendelés állapota"
+
+#: jigoshop_taxonomy.php:175
+#@ jigoshop
+msgid "Search Order statuses"
+msgstr "Megrendelések állapotának keresése"
+
+#: jigoshop_taxonomy.php:176
+#@ jigoshop
+msgid "All  Order statuses"
+msgstr "Minden állapot"
+
+#: jigoshop_taxonomy.php:177
+#@ jigoshop
+msgid "Parent Order status"
+msgstr "Szülő megrendelés állapota"
+
+#: jigoshop_taxonomy.php:178
+#@ jigoshop
+msgid "Parent Order status:"
+msgstr "Szülő megrendelés állapota:"
+
+#: jigoshop_taxonomy.php:179
+#@ jigoshop
+msgid "Edit Order status"
+msgstr "Megrendelések állapotának szerkesztése"
+
+#: jigoshop_taxonomy.php:180
+#@ jigoshop
+msgid "Update Order status"
+msgstr "Megrendelés állapotának frissítése"
+
+#: jigoshop_taxonomy.php:181
+#@ jigoshop
+msgid "Add New Order status"
+msgstr "Új megrendelés állapot létrehozása"
+
+#: jigoshop_taxonomy.php:182
+#@ jigoshop
+msgid "New Order status Name"
+msgstr "Új megrendelés állapotának neve"
+
+#: shipping/flat_rate.php:72
+#@ jigoshop
+msgid "Flat Rates"
+msgstr "Általánydíj"
+
+#: shipping/flat_rate.php:72
+#@ jigoshop
+msgid "Flat rates let you define a standard rate per item, or per order."
+msgstr "Az általánydíj segítségével egy általános szorzót adhatsz meg tételenként vagy rendelésenként."
+
+#: shipping/flat_rate.php:74
+#@ jigoshop
+msgid "Enable Flat Rate"
+msgstr "Általánydíj engedélyezése"
+
+#: shipping/flat_rate.php:92
+#@ jigoshop
+msgid "Per Order"
+msgstr "Rendelésenként"
+
+#: shipping/flat_rate.php:93
+#@ jigoshop
+msgid "Per Item"
+msgstr "Tételenként"
+
+#: shipping/flat_rate.php:99
+#@ jigoshop
+msgid "Tax Status"
+msgstr "Adó állapot"
+
+#: shipping/flat_rate.php:108
+#@ jigoshop
+msgid "Cost excluding tax. Enter an amount, e.g. 2.50."
+msgstr "Nettó költség. Add meg az összeget, pl: 300."
+
+#: shipping/flat_rate.php:114
+#@ jigoshop
+msgid "Fee excluding tax. Enter an amount, e.g. 2.50, or a percentage, e.g. 5%. Leave blank to disable."
+msgstr "A díj nem tartalmaz adót. Írd be az összeget, pl. 300-at vagy egy százalékot, pl. 5%. Hagyd üresen ha ki akarod kapcsolni!"
+
+#: shipping/flat_rate.php:114
+#@ jigoshop
+msgid "Handling Fee"
+msgstr "Kezelési költség"
+
+#: shipping/free_shipping.php:27
+#@ jigoshop
+msgid "Free Shipping"
+msgstr "Ingyenes szállítás"
+
+#: shipping/free_shipping.php:29
+#@ jigoshop
+msgid "Enable Free Shipping"
+msgstr "Ingyenes szállítás engedélyezése"
+
+#: shipping/free_shipping.php:44
+#@ jigoshop
+msgid "Users will need to spend this amount to get free shipping. Leave blank to disable."
+msgstr "A felhasználóknak ennyit el kell költeniük az ingyenes szállítás igénybe vételéhez. Hagyd üresen ha nem akarod használni!"
+
+#: shipping/free_shipping.php:44
+#@ jigoshop
+msgid "Minimum Order Amount"
+msgstr "Minimum rendelési összeg"
+
+#: shortcodes/cart.php:17
+#: shortcodes/cart.php:32
+#@ jigoshop
+msgid "Cart updated."
+msgstr "A kosár frissítve."
+
+#: shortcodes/cart.php:44
+#@ jigoshop
+msgid "Please enter a valid postcode/ZIP."
+msgstr "Kérlek adj meg érvényes irányítószámot!"
+
+#: shortcodes/cart.php:58
+#: shortcodes/cart.php:64
+#@ jigoshop
+msgid "Shipping costs updated."
+msgstr "Szállítási költség frissítve."
+
+#: shortcodes/cart.php:89
+#@ jigoshop
+msgid "Product Name"
+msgstr "Termék neve"
+
+#: shortcodes/cart.php:90
+#@ jigoshop
+msgid "Unit Price"
+msgstr "Egységár"
+
+#: shortcodes/cart.php:122
+#@ jigoshop
+msgid "Coupon"
+msgstr "Kupon"
+
+#: shortcodes/cart.php:122
+#@ jigoshop
+msgid "Apply Coupon"
+msgstr "Kupon beváltása"
+
+#: shortcodes/cart.php:124
+#@ jigoshop
+msgid "Update Shopping Cart"
+msgstr "Bevásárló kosár frissítése"
+
+#: shortcodes/cart.php:124
+#@ jigoshop
+msgid "Proceed to Checkout &rarr;"
+msgstr "Tovább a fizetéshez &rarr;"
+
+#: shortcodes/cart.php:140
+#@ jigoshop
+msgid "Cart Totals"
+msgstr "Kosár végösszege"
+
+#: shortcodes/cart.php:166
+#@ jigoshop
+msgid "Sorry, it seems that there are no available shipping methods to your location. Please contact us if you require assistance or wish to make alternate arrangements."
+msgstr "Sajnáljuk, de jelenleg egyik szállítási módunk sem elérhető a te címeden. Kérjük keresd meg közvetlenül az ügyfélszolgálatunkat, hogy alternatív megoldást találhassunk!"
+
+#: shortcodes/checkout.php:19
+#@ jigoshop
+msgid "The order totals have been updated. Please confirm your order by pressing the Place Order button at the bottom of the page."
+msgstr "A rendelési összegek frissítve. Kérjük nyomd meg a lap alján található Megrendelés gombot a megrendeléshez!"
+
+#: shortcodes/my_account.php:18
+#, php-format
+#@ jigoshop
+msgid "Hello, <strong>%s</strong>. From your account dashboard you can view your recent orders, manage your shipping and billing addresses and <a href=\"%s\">change your password</a>."
+msgstr "Hello <strong>%s</strong>! A hozzáférésed vezérlőpultjáról követheted a rendeléseid állapotát, módosíthatod a számlázási és szállítási címedet és <a href=\"%s\">megváltoztathatod a jelszavad</a>."
+
+#: shortcodes/my_account.php:22
+#@ jigoshop
+msgid "Available downloads"
+msgstr "Elérhető letöltések"
+
+#: shortcodes/my_account.php:25
+#@ jigoshop
+msgid " download Remaining"
+msgid_plural " downloads Remaining"
+msgstr[0] " hátralévő letöltés"
+msgstr[1] " hátralévő letöltés"
+
+#: shortcodes/my_account.php:36
+#@ jigoshop
+msgid "#"
+msgstr "#"
+
+#: shortcodes/my_account.php:37
+#@ jigoshop
+msgid "Date"
+msgstr "Dátum"
+
+#: shortcodes/my_account.php:38
+#@ jigoshop
+msgid "Ship to"
+msgstr "Szállítás"
+
+#: shortcodes/my_account.php:56
+#@ jigoshop
+msgid "Pay"
+msgstr "Fizetés"
+
+#: shortcodes/my_account.php:57
+#@ jigoshop
+msgid "Cancel"
+msgstr "Mégsem"
+
+#: shortcodes/my_account.php:59
+#@ jigoshop
+msgid "View"
+msgstr "Megtekintés"
+
+#: shortcodes/my_account.php:67
+#@ jigoshop
+msgid "My Addresses"
+msgstr "Címeim"
+
+#: shortcodes/my_account.php:68
+#@ jigoshop
+msgid "The following addresses will be used on the checkout page by default."
+msgstr "A következő címeket használjuk fizetésnél alapértelmezésként."
+
+#: shortcodes/my_account.php:94
+#@ jigoshop
+msgid "You have not set up a billing address yet."
+msgstr "Még nem állítottál be számlázási címet."
+
+#: shortcodes/my_account.php:123
+#@ jigoshop
+msgid "You have not set up a shipping address yet."
+msgstr "Még nem állítottál be szállítási címet."
+
+#: shortcodes/my_account.php:209
+#@ jigoshop
+msgid "1 Infinite Loop"
+msgstr "Kossuth tér 1."
+
+#: shortcodes/my_account.php:213
+#@ jigoshop
+msgid "Cupertino"
+msgstr "Budapest"
+
+#: shortcodes/my_account.php:288
+#@ jigoshop
+msgid "Fax"
+msgstr "Fax"
+
+#: shortcodes/my_account.php:294
+#@ jigoshop
+msgid "Save Address"
+msgstr "Cím mentése"
+
+#: shortcodes/my_account.php:335
+#@ jigoshop
+msgid "Please enter your password."
+msgstr "Kéjük add meg a jelszavad!"
+
+#: shortcodes/my_account.php:349
+#@ jigoshop
+msgid "New password"
+msgstr "Új jelszó"
+
+#: shortcodes/my_account.php:353
+#@ jigoshop
+msgid "Re-enter new password"
+msgstr "Új jelszó mégegszer"
+
+#: shortcodes/my_account.php:358
+#@ jigoshop
+msgid "Save"
+msgstr "Mentés"
+
+#: shortcodes/my_account.php:385
+#, php-format
+#@ jigoshop
+msgid "Order <mark>#%s</mark> made on <mark>%s</mark>"
+msgstr "<mark>#%s</mark> számú megrendelés (<mark>%s</mark>)"
+
+#: shortcodes/my_account.php:387
+#, php-format
+#@ jigoshop
+msgid ". Order status: <mark>%s</mark>"
+msgstr ". Megrendelés állapota: <mark>%s</mark>"
+
+#: shortcodes/my_account.php:396
+#: templates/checkout/pay_for_order.php:8
+#: templates/checkout/review_order.php:31
+#@ jigoshop
+msgid "Qty"
+msgstr "db"
+
+#: shortcodes/my_account.php:397
+#: templates/checkout/pay_for_order.php:9
+#: templates/checkout/review_order.php:32
+#@ jigoshop
+msgid "Totals"
+msgstr "Összesen"
+
+#: shortcodes/my_account.php:418
+#: shortcodes/order_tracking.php:57
+#: templates/checkout/pay_for_order.php:30
+#: templates/checkout/review_order.php:100
+#@ jigoshop
+msgid "Grand Total"
+msgstr "Végösszeg"
+
+#: shortcodes/my_account.php:445
+#@ jigoshop
+msgid "Customer details"
+msgstr "Vevő adatai"
+
+#: shortcodes/my_account.php:463
+#: shortcodes/my_account.php:476
+#@ jigoshop
+msgid "N/A"
+msgstr "-"
+
+#: shortcodes/order_tracking.php:22
+#, php-format
+#@ jigoshop
+msgid "Order #%s which was made %s has the status &ldquo;%s&rdquo;"
+msgstr "#%s megrendelés (%s) állapota: &ldquo;%s&rdquo;"
+
+#: shortcodes/order_tracking.php:22
+#: shortcodes/order_tracking.php:24
+#@ jigoshop
+msgid " ago"
+msgstr " "
+
+#: shortcodes/order_tracking.php:24
+#@ jigoshop
+msgid " and was completed "
+msgstr " teljesítve "
+
+#: shortcodes/order_tracking.php:29
+#@ jigoshop
+msgid "Order Details"
+msgstr "Rendelés részeletei"
+
+#: shortcodes/order_tracking.php:33
+#@ jigoshop
+msgid "Title"
+msgstr "Cím"
+
+#: shortcodes/order_tracking.php:34
+#@ jigoshop
+msgid "SKU"
+msgstr "Raktárazonosító"
+
+#: shortcodes/order_tracking.php:112
+#@ jigoshop
+msgid "To track your order please enter your Order ID in the box below and press return. This was given to you on your receipt and in the confirmation email you should have received."
+msgstr "Rendelésed nyomon követéséhez kérjük add meg a rendelés azonosítódat a lenti szövegdobozba és üss entert! Ezt a nyugtán találhatod meg valamint a rendelést visszaigazoló emailben."
+
+#: shortcodes/order_tracking.php:114
+#@ jigoshop
+msgid "Order ID"
+msgstr "Rendelés azonosító"
+
+#: shortcodes/order_tracking.php:114
+#@ jigoshop
+msgid "Found in your order confirmation email."
+msgstr "A rendelést visszaigazoló emailben található."
+
+#: shortcodes/order_tracking.php:115
+#@ jigoshop
+msgid "Billing Email"
+msgstr "Számlázási email"
+
+#: shortcodes/order_tracking.php:115
+#@ jigoshop
+msgid "Email you used during checkout."
+msgstr "Az az email cím, amit a fizetéskor használsz."
+
+#: shortcodes/order_tracking.php:117
+#@ jigoshop
+msgid "Track\""
+msgstr "Nyomon követés\""
+
+#: shortcodes/pay.php:60
+#@ jigoshop
+msgid "Your order has already been paid for. Please contact us if you need assistance."
+msgstr "A rendelésed már ki lett fizetve. Lépj velünk kapcsolatba, ha további segítségre van szükséged!"
+
+#: shortcodes/pay.php:87
+#: shortcodes/thankyou.php:26
+#@ jigoshop
+msgid "Order:"
+msgstr "Rendelés:"
+
+#: shortcodes/pay.php:91
+#: shortcodes/thankyou.php:30
+#@ jigoshop
+msgid "Date:"
+msgstr "Dátum:"
+
+#: shortcodes/pay.php:99
+#: shortcodes/thankyou.php:38
+#@ jigoshop
+msgid "Payment method:"
+msgstr "Fizetési mód:"
+
+#: shortcodes/thankyou.php:8
+#@ jigoshop
+msgid "<p>Thank you. Your order has been processed successfully.</p>"
+msgstr "<p>Köszönjük. Rendelésed sikeresen feldolgozva.</p>"
+
+#: templates/archive-product.php:14
+#@ jigoshop
+msgid "Search Results:"
+msgstr "Találatok:"
+
+#: templates/archive-product.php:16
+#@ jigoshop
+msgid "All Products"
+msgstr "Minden termék"
+
+#: templates/archive-product.php:23
+#: templates/product/reviews.php:51
+#: templates/product_taxonomy.php:22
+#@ jigoshop
+msgid "Next <span class=\"meta-nav\">&rarr;</span>"
+msgstr "Következő <span class=\"meta-nav\">&rarr;</span>"
+
+#: templates/archive-product.php:24
+#: templates/product/reviews.php:50
+#: templates/product_taxonomy.php:23
+#@ jigoshop
+msgid "<span class=\"meta-nav\">&larr;</span> Previous"
+msgstr "<span class=\"meta-nav\">&larr;</span> Előző"
+
+#: templates/cart/shipping_calculator.php:49
+#@ jigoshop
+msgid "Postcode/Zip"
+msgstr "Irányítószám"
+
+#: templates/cart/shipping_calculator.php:52
+#@ jigoshop
+msgid "Update Totals"
+msgstr "Összegek frissítése"
+
+#: templates/checkout/form.php:19
+#@ jigoshop
+msgid "Your order"
+msgstr "Rendelésed"
+
+#: templates/checkout/login.php:1
+#@ jigoshop
+msgid "Already registered?"
+msgstr "Már regisztráltál?"
+
+#: templates/checkout/login.php:1
+#@ jigoshop
+msgid "Click here to login"
+msgstr "Kattints ide a bejelentkezéshez"
+
+#: templates/checkout/login.php:14
+#: templates/login.php:13
+#@ jigoshop
+msgid "Login"
+msgstr "Bejelentkezés"
+
+#: templates/checkout/pay_for_order.php:75
+#: templates/checkout/review_order.php:151
+#@ jigoshop
+msgid "Sorry, it seems that there are no available payment methods for your state. Please contact us if you require assistance or wish to make alternate arrangements."
+msgstr "Elnézést, de úgy tűnik nincs rendelkezésre álló fizetési mód a te államodban. Kérjük lépj velünk kapcsolatba, ha alternatív megoldások is értekelnek."
+
+#: templates/checkout/pay_for_order.php:84
+#@ jigoshop
+msgid "Pay for order"
+msgstr "Fizetés a megrendeléshez"
+
+#: templates/checkout/review_order.php:13
+#@ jigoshop
+msgid "Sorry, your session has expired."
+msgstr "Elnézést, de a session-öd ideje lejárt."
+
+#: templates/checkout/review_order.php:13
+#@ jigoshop
+msgid "Return to homepage &rarr;"
+msgstr "Vissza a főoldalra &rarr;"
+
+#: templates/checkout/review_order.php:67
+#@ jigoshop
+msgid "Free"
+msgstr "Ingyenes"
+
+#: templates/checkout/review_order.php:79
+#@ jigoshop
+msgid "Please fill in your details above to see available shipping methods."
+msgstr "Kérjük töltsd ki az adataidat fent, hogy láthasd a rendelkezésre álló szállítási módokat!"
+
+#: templates/checkout/review_order.php:81
+#@ jigoshop
+msgid "Sorry, it seems that there are no available shipping methods for your state. Please contact us if you require assistance or wish to make alternate arrangements."
+msgstr "Elnézést, de úgy tűnik nincs rendelkezésre álló szállítási mód a te államodban. Kérjük lépj velünk kapcsolatba, ha alternatív megoldások is értekelnek."
+
+#: templates/checkout/review_order.php:149
+#@ jigoshop
+msgid "Please fill in your details above to see available payment methods."
+msgstr "Kérjük töltsd ki az adataidat fent, hogy láthasd a rendelkezésre álló fizetési módokat!"
+
+#: templates/checkout/review_order.php:161
+#@ jigoshop
+msgid "Since your browser does not support JavaScript, or it is disabled, please ensure you click the <em>Update Totals</em> button before placing your order. You may be charged more than the amount stated above if you fail to do so."
+msgstr "Mivel a böngésződ nem támogatja a JavaScript-et, vagy az ki van kapcsolva, kérjük győződj meg róla, hogy megnyomtad az <em>Összegek frissítése</em> gombot, mielőtt elküldted a rendelésed, különben előfordulhat, hogy az itt szereplő összegektől különböző mennyiségű pénz vonunk le tőled!"
+
+#: templates/checkout/review_order.php:161
+#@ jigoshop
+msgid "Update totals"
+msgstr "Összegek frissítése"
+
+#: templates/checkout/review_order.php:163
+#@ jigoshop
+msgid "Place order"
+msgstr "Megrendelés"
+
+#: templates/checkout/review_order.php:167
+#@ jigoshop
+msgid "I accept the"
+msgstr "Elfogadom a"
+
+#: templates/checkout/review_order.php:167
+#@ jigoshop
+msgid "terms &amp; conditions"
+msgstr "vásárlási feltételeket"
+
+#: templates/loop-shop.php:28
+#: templates/product/downloadable/add-to-cart.php:5
+#: templates/product/grouped/add-to-cart.php:19
+#: templates/product/simple/add-to-cart.php:5
+#: templates/product/virtual/add-to-cart.php:5
+#@ jigoshop
+msgid "Add to cart"
+msgstr "Kosárba"
+
+#: templates/loop-shop.php:40
+#@ jigoshop
+msgid "No products found which match your selection."
+msgstr "Nincs a kiválasztásodnak megfelelő termék."
+
+#: templates/product/attributes.php:4
+#: templates/single-product.php:62
+#@ jigoshop
+msgid "Additional Information"
+msgstr "További információ"
+
+#: templates/product/description.php:1
+#@ jigoshop
+msgid "Product Description"
+msgstr "Termék leírása"
+
+#: templates/product/related.php:6
+#@ jigoshop
+msgid "Related Products"
+msgstr "Kapcsolódó termékek"
+
+#: templates/product/reviews.php:28
+#, php-format
+#@ jigoshop
+msgid "Rated %s out of 5"
+msgstr "5-ből %s-re értékelték"
+
+#: templates/product/reviews.php:30
+#, php-format
+#@ jigoshop
+msgid "%s review for %s"
+msgid_plural "%s reviews for %s"
+msgstr[0] "%s értékelés %s-re"
+msgstr[1] "%s értékelés %s-re"
+
+#: templates/product/reviews.php:35
+#: templates/single-product.php:63
+#@ jigoshop
+msgid "Reviews"
+msgstr "Értékelések"
+
+#: templates/product/reviews.php:55
+#@ jigoshop
+msgid "Add Review"
+msgstr "Értékelés írása"
+
+#: templates/product/reviews.php:57
+#@ jigoshop
+msgid "Add a review"
+msgstr "Írj egy értékelést"
+
+#: templates/product/reviews.php:61
+#@ jigoshop
+msgid "Be the first to review "
+msgstr "Legyél te az első, aki értékelést ír erről a termékről!"
+
+#: templates/product/reviews.php:63
+#@ jigoshop
+msgid "There are no reviews yet, would you like to <a href=\"#review_form\" class=\"inline show_review_form\">submit yours</a>?"
+msgstr "Még nincs egy értékelés sem, nem szeretnél te <a href=\"#review_form\" class=\"inline show_review_form\">írni egyet</a>?"
+
+#: templates/product/reviews.php:78
+#@ default
+msgid "Email"
+msgstr "Email"
+
+#: templates/product/reviews.php:81
+#@ jigoshop
+msgid "Submit Review"
+msgstr "Értékelés elküldése"
+
+#: templates/product/reviews.php:84
+#@ jigoshop
+msgid "Rating"
+msgstr "Értékelés"
+
+#: templates/product/reviews.php:85
+#@ jigoshop
+msgid "Rate..."
+msgstr "Értékeld..."
+
+#: templates/product/reviews.php:86
+#@ jigoshop
+msgid "Perfect"
+msgstr "Tökéletes"
+
+#: templates/product/reviews.php:87
+#@ jigoshop
+msgid "Good"
+msgstr "Jó"
+
+#: templates/product/reviews.php:88
+#@ jigoshop
+msgid "Average"
+msgstr "Átlagos"
+
+#: templates/product/reviews.php:89
+#@ jigoshop
+msgid "Not that bad"
+msgstr "Nem rossz"
+
+#: templates/product/reviews.php:90
+#@ jigoshop
+msgid "Very Poor"
+msgstr "Elég rossz"
+
+#: templates/product/reviews.php:92
+#@ default
+msgctxt "noun"
+msgid "Your Review"
+msgstr "A te értéklésed"
+
+#: widgets/cart.php:18
+#@ default
+msgid "Shopping Cart for the sidebar."
+msgstr "Bevásárló kosár az oldalsávba."
+
+#: widgets/cart.php:19
+#@ default
+msgid "Shopping Cart"
+msgstr "Bevásárló kosár"
+
+#: widgets/cart.php:28
+#@ default
+msgid "Cart"
+msgstr "Kosár"
+
+#: widgets/cart.php:46
+#@ jigoshop
+msgid "No products in the cart."
+msgstr "Nincs termék a kosárban."
+
+#: widgets/cart.php:60
+#@ jigoshop
+msgid "View Cart &rarr;"
+msgstr "Kosár megtekintése &rarr;"
+
+#: widgets/cart.php:60
+#@ jigoshop
+msgid "Checkout &rarr;"
+msgstr "Fizetés &rarr;"
+
+#: widgets/cart.php:74
+#: widgets/featured_products.php:96
+#: widgets/layered_nav.php:149
+#: widgets/price_filter.php:105
+#: widgets/product_categories.php:87
+#: widgets/product_search.php:55
+#: widgets/product_tag_cloud.php:56
+#: widgets/recent_products.php:94
+#@ default
+msgid "Title:"
+msgstr "Cím:"
+
+#: widgets/featured_products.php:18
+#@ jigoshop
+msgid "Featured products on your site"
+msgstr "Kiemelt termékek az oldaladon"
+
+#: widgets/featured_products.php:19
+#: widgets/featured_products.php:41
+#@ jigoshop
+msgid "Featured Products"
+msgstr "Kiemelt termékek"
+
+#: widgets/featured_products.php:99
+#: widgets/recent_products.php:97
+#@ default
+msgid "Number of products to show:"
+msgstr "Termékek száma:"
+
+#: widgets/layered_nav.php:16
+#@ default
+msgid "Shows a custom attribute in a widget which lets you narrow down the list of shown products in categories."
+msgstr "Megjelenít a widgetben egy egyéni tulajdonságot, ami alapján le lehet szűkíteni a megjelenített termékek listáját."
+
+#: widgets/layered_nav.php:17
+#@ default
+msgid "Layered Nav"
+msgstr "Layered Nav"
+
+#: widgets/layered_nav.php:152
+#@ default
+msgid "Attribute:"
+msgstr "Tulajdonság:"
+
+#: widgets/price_filter.php:37
+#@ default
+msgid "Shows a price filter slider in a widget which lets you narrow down the list of shown products in categories."
+msgstr "Megjelenít a widgetben csúszkát, amivel le lehet szűkíteni a megjelenített termékek listáját ár alapján."
+
+#: widgets/price_filter.php:38
+#@ default
+msgid "Price Filter"
+msgstr "Ár szűrő"
+
+#: widgets/price_filter.php:83
+#@ jigoshop
+msgid "Price: "
+msgstr "Ár: "
+
+#: widgets/price_filter.php:96
+#@ jigoshop
+msgid "Filter by price"
+msgstr "Szűrés ár szerint"
+
+#: widgets/product_categories.php:16
+#@ jigoshop
+msgid "A list or dropdown of product categories"
+msgstr "Legördülő menü a termék kategóriákból"
+
+#: widgets/product_categories.php:36
+#@ jigoshop
+msgid "Select Category"
+msgstr "Válassz kategóriát"
+
+#: widgets/product_categories.php:91
+#@ default
+msgid "Show as dropdown"
+msgstr "Megjelenítés legördülőként"
+
+#: widgets/product_categories.php:94
+#@ default
+msgid "Show post counts"
+msgstr "Bejegyzések számának megjelenítése"
+
+#: widgets/product_categories.php:97
+#@ default
+msgid "Show hierarchy"
+msgstr "Hierarchia megjelenítése"
+
+#: widgets/product_search.php:16
+#@ default
+msgid "Search box for products only."
+msgstr "Kereső doboz csak a termékek számára."
+
+#: widgets/product_search.php:17
+#@ default
+msgid "Product Search"
+msgstr "Termék keresése"
+
+#: widgets/product_search.php:34
+#@ jigoshop
+msgid "Search for:"
+msgstr "Keresés:"
+
+#: widgets/product_search.php:35
+#@ jigoshop
+msgid "Search for products"
+msgstr "Termékek keresése"
+
+#: widgets/product_search.php:36
+#@ jigoshop
+msgid "Search"
+msgstr "Keresés"
+
+#: widgets/product_tag_cloud.php:16
+#@ default
+msgid "Your most used product tags in cloud format"
+msgstr "A legtöbbet használt címkéid felhő formában"
+
+#: widgets/product_tag_cloud.php:17
+#@ default
+msgid "Product Tag Cloud"
+msgstr "Termék címke felhő"
+
+#: widgets/recent_products.php:16
+#@ jigoshop
+msgid "The most recent products on your site"
+msgstr "A legújabb termékek az oldaladon"
+
+#: widgets/recent_products.php:17
+#: widgets/recent_products.php:39
+#@ jigoshop
+msgid "New Products"
+msgstr "Új termékek"
+

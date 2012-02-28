@@ -1,6 +1,6 @@
 <?php
 /**
- * Achive template
+ * Archive template
  *
  * DISCLAIMER
  *

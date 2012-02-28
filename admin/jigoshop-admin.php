@@ -17,6 +17,7 @@
 
 require_once ( 'jigoshop-install.php' );
 require_once ( 'jigoshop-admin-dashboard.php' );
+require_once ( 'jigoshop-admin-help.php' );
 require_once ( 'jigoshop-write-panels.php' );
 require_once ( 'jigoshop-admin-settings.php' );
 require_once ( 'jigoshop-admin-attributes.php' );
@@ -24,9 +25,47 @@ require_once ( 'jigoshop-admin-post-types.php' );
 
 function jigoshop_admin_init () {
 	require_once ( 'jigoshop-admin-settings-options.php' );
+	add_action('wp_dashboard_setup', 'jigoshop_setup_dashboard_widgets' );
+}
+add_action('admin_init', 'jigoshop_admin_init');
+
+function jigoshop_get_plugin_data( $key = 'Version' ) {
+	$data = get_plugin_data( jigoshop::plugin_path().'/jigoshop.php' );
+
+	return $data[$key];
 }
 
-add_action('admin_init', 'jigoshop_admin_init');
+add_action('admin_notices', 'jigoshop_update');
+function jigoshop_update() {
+	// Run database upgrade if required
+	if ( is_admin() && get_site_option('jigoshop_db_version') < JIGOSHOP_VERSION ) {
+
+		if ( isset($_GET['jigoshop_update_db']) && (bool) $_GET['jigoshop_update_db'] ) {
+			require_once( jigoshop::plugin_path().'/jigoshop_upgrade.php' );
+			$response = jigoshop_upgrade();
+
+			// If we successfull inform the user
+			if ( $response ) {
+				echo '
+					<div class="updated">
+						<p>'.__('Your database has been successfully updated. Your shop is now automatically better than the rest, oh happy day!', 'jigoshop').'!</p>
+					</div>
+				';
+			}
+		}
+
+		else {
+			echo '
+				<div class="updated">
+					<p>Uh oh! Looks like your Jigoshop database needs updating, just to be safe <strong>please backup your database</strong> before clicking this button!</p>
+					<p>
+						<a class="button-primary" href="' . add_query_arg('jigoshop_update_db', 'true') . '">Update Database</a>
+					</p>
+				</div>
+			';
+		}
+	}
+}
 
 /**
  * Admin Menus
@@ -38,32 +77,39 @@ add_action('admin_init', 'jigoshop_admin_init');
 function jigoshop_admin_menu() {
 	global $menu;
 	
-	$menu[] = array( '', 'read', 'separator-jigoshop', '', 'wp-menu-separator' );
+	$menu[] = array( '', 'read', 'separator-jigoshop', '', 'wp-menu-separator jigoshop' );
 	
-    add_menu_page(__('Jigoshop'), __('Jigoshop'), 'manage_options', 'jigoshop' , 'jigoshop_dashboard', jigoshop::plugin_url() . '/assets/images/icons/menu_icons.png', 56);
+    add_menu_page(__('Jigoshop'), __('Jigoshop'), 'manage_options', 'jigoshop' , 'jigoshop_dashboard', jigoshop::assets_url() . '/assets/images/icons/menu_icons.png', 55);
     add_submenu_page('jigoshop', __('Dashboard', 'jigoshop'), __('Dashboard', 'jigoshop'), 'manage_options', 'jigoshop', 'jigoshop_dashboard'); 
     add_submenu_page('jigoshop', __('General Settings', 'jigoshop'),  __('Settings', 'jigoshop') , 'manage_options', 'settings', 'jigoshop_settings');
     add_submenu_page('jigoshop', __('System Info','jigoshop'), __('System Info','jigoshop'), 'manage_options', 'sysinfo', 'jigoshop_system_info');
-    add_submenu_page('edit.php?post_type=product', __('Attributes','jigoshop'), __('Attributes','jigoshop'), 'manage_options', 'attributes', 'jigoshop_attributes');
+    $id = add_submenu_page('edit.php?post_type=product', __('Attributes','jigoshop'), __('Attributes','jigoshop'), 'manage_options', 'attributes', 'jigoshop_attributes');
 }
 
 function jigoshop_admin_menu_order( $menu_order ) {
 
 	// Initialize our custom order array
 	$jigoshop_menu_order = array();
-
+	
 	// Get the index of our custom separator
 	$jigoshop_separator = array_search( 'separator-jigoshop', $menu_order );
-
+	$jigoshop_product = array_search( 'edit.php?post_type=product', $menu_order );
+	$jigoshop_order = array_search( 'edit.php?post_type=shop_order', $menu_order );
+	
 	// Loop through menu order and do some rearranging
 	foreach ( $menu_order as $index => $item ) :
 
 		if ( 'jigoshop' == $item ) :
 			$jigoshop_menu_order[] = 'separator-jigoshop';
+			$jigoshop_menu_order[] = $item;
+			$jigoshop_menu_order[] = 'edit.php?post_type=product';
+			$jigoshop_menu_order[] = 'edit.php?post_type=shop_order';
+			
 			unset( $menu_order[$jigoshop_separator] );
-		endif;
-
-		if ( !in_array( $item, array( 'separator-jigoshop' ) ) ) :
+			unset( $menu_order[$jigoshop_product] );
+			unset( $menu_order[$jigoshop_order] );
+			
+		elseif ( !in_array( $item, array( 'separator-jigoshop' ) ) ) :
 			$jigoshop_menu_order[] = $item;
 		endif;
 
@@ -116,14 +162,14 @@ function jigoshop_system_info() {
 	<div class="wrap jigoshop">
 		<div class="icon32 icon32-jigoshop-debug" id="icon-jigoshop"><br/></div>
 	    <h2><?php _e('System Information','jigoshop') ?></h2>
-	    <p>Use the information below when submitting technical support requests via the Jigoshop community / premium <a href="http://jigoshop.com/forums/" title="Jigoshop Support Forums" target="_blank">support forums</a>.</p>
+	    <p>Use the information below when submitting technical support requests via <a href="http://jigoshop.com/support/" title="Jigoshop Support" target="_blank">Jigoshop Support</a>.</p>
 		<div id="tabs-wrap">
 			<ul class="tabs">
 				<li><a href="#versions"><?php _e('Environment', 'jigoshop'); ?></a></li>
 				<li><a href="#debugging"><?php _e('Debugging', 'jigoshop'); ?></a></li>
 			</ul>
 			<div id="versions" class="panel">
-				<table class="widefat fixed" style="width:850px;">
+				<table class="widefat fixed">
 		            <thead>		            
 		            	<tr>
 		                    <th scope="col" width="200px"><?php _e('Software Versions','jigoshop')?></th>
@@ -133,11 +179,11 @@ function jigoshop_system_info() {
 		           	<tbody>
 		                <tr>
 		                    <td class="titledesc"><?php _e('Jigoshop Version','jigoshop')?></td>
-		                    <td class="forminp"><?php echo jigoshop::get_var('version'); ?></td>
+		                    <td class="forminp"><?php echo jigoshop_get_plugin_data(); ?></td>
 		                </tr>
 		                <tr>
 		                    <td class="titledesc"><?php _e('WordPress Version','jigoshop')?></td>
-		                    <td class="forminp"><?php if (is_multisite()) echo 'WPMU'; else echo 'WP'; ?> <?php echo bloginfo('version'); ?></td>
+		                    <td class="forminp"><?php echo is_multisite() ? 'WPMU' : 'WP'; ?> <?php echo bloginfo('version'); ?></td>
 		                </tr>
 		            </tbody>
 		            <thead>
@@ -146,7 +192,7 @@ function jigoshop_system_info() {
 		                    <th scope="col"><?php echo (defined('PHP_OS')) ? (string)(PHP_OS) : 'N/A'; ?></th>
 		                </tr>
 		            </thead>
-		           	<tbody>
+					<tbody>
 		                <tr>
 		                    <td class="titledesc"><?php _e('PHP Version','jigoshop')?></td>
 		                    <td class="forminp"><?php if(function_exists('phpversion')) echo phpversion(); ?></td>
@@ -154,12 +200,44 @@ function jigoshop_system_info() {
 		                <tr>
 		                    <td class="titledesc"><?php _e('Server Software','jigoshop')?></td>
 		                    <td class="forminp"><?php echo $_SERVER['SERVER_SOFTWARE']; ?></td>
-		                </tr>
+		                </tr>					
 		        	</tbody>
+		            <thead>
+		                <tr>
+		                    <th scope="col" width="200px"><?php _e('PHP Sessions','jigoshop')?></th>
+		                    <th scope="col">&nbsp;</th>
+		                </tr>
+		            </thead>
+					<tbody>
+		                <tr>
+		                    <td class="titledesc"><?php _e('Session Support','jigoshop')?></td>
+		                    <td class="forminp"><?php $_SESSION['enableSessionsTest'] = "on"; echo !empty($_SESSION['enableSessionsTest']) ? "enabled" : "disabled"; ?></td>
+		                </tr>
+		                <tr>
+		                    <td class="titledesc"><?php _e('Session name','jigoshop')?></td>
+		                    <td class="forminp"><?php echo ini_get('session.name'); ?></td>
+		                </tr>
+		                <tr>
+		                    <td class="titledesc"><?php _e('Cookie path path','jigoshop')?></td>
+		                    <td class="forminp"><?php echo ini_get('session.cookie_path'); ?></td>
+		                </tr>
+		                <tr>
+		                    <td class="titledesc"><?php _e('Save path','jigoshop')?></td>
+		                    <td class="forminp"><?php echo ini_get('session.save_path'); ?></td>
+		                </tr>
+		                <tr>
+		                    <td class="titledesc"><?php _e('Use cookies','jigoshop')?></td>
+		                    <td class="forminp"><?php echo (ini_get('session.use_cookies') ? 'On' : 'Off'); ?></td>
+		                </tr>
+		                <tr>
+		                    <td class="titledesc"><?php _e('Use only cookies','jigoshop')?></td>
+		                    <td class="forminp"><?php echo (ini_get('session.use_only_cookies') ? 'On' : 'Off'); ?></td>
+		                </tr>
+					</tbody>
 		        </table>
 			</div>
 			<div id="debugging" class="panel">
-				<table class="widefat fixed" style="width:850px;">
+				<table class="widefat fixed">
 		            <tbody>
 		            	<tr>
 		                    <th scope="col" width="200px"><?php _e('Debug Information','jigoshop')?></th>
@@ -237,8 +315,7 @@ function jigoshop_feature_product () {
 	
 	$product = new jigoshop_product($post->ID);
 
-	if ($product->is_featured()) update_post_meta($post->ID, 'featured', 'no');
-	else update_post_meta($post->ID, 'featured', 'yes');
+	update_post_meta( $post->ID, 'featured', ! $product->is_featured() );
 	
 	$sendback = remove_query_arg( array('trashed', 'untrashed', 'deleted', 'ids'), wp_get_referer() );
 	wp_safe_redirect( $sendback );
@@ -270,20 +347,6 @@ function jigoshop_get_current_post_type() {
 }
 
 /**
- * Permalink structure needs to be saved twice for structure to take effect
- * Common bug with wordpress 3.1+ as of yet unresolved
- *
- * @returns		notice
- */
-function permalink_save_twice_notice() {
-	if( strpos($_POST['_wp_http_referer'], 'options-permalink.php') ) {
-		print_r('<div id="message" class="updated"><p>Note: Please make sure you save your permalink settings <strong>twice</strong> in order for them to be applied correctly in Jigoshop</p></div>');
-	}
-}
-
-add_action('admin_notices', 'permalink_save_twice_notice');
-
-/**
  * Categories ordering
  */
 
@@ -294,7 +357,7 @@ function jigoshop_categories_scripts () {
 	
 	if( !isset($_GET['taxonomy']) || $_GET['taxonomy'] !== 'product_cat') return;
 	
-	wp_register_script('jigoshop-categories-ordering', jigoshop::plugin_url() . '/assets/js/categories-ordering.js', array('jquery-ui-sortable'));
+	wp_register_script('jigoshop-categories-ordering', jigoshop::assets_url() . '/assets/js/categories-ordering.js', array('jquery-ui-sortable'));
 	wp_print_scripts('jigoshop-categories-ordering');
 	
 }
@@ -351,4 +414,99 @@ if (!function_exists('boolval')) {
 		}
 		return $out;
 	}
+}
+
+/**
+ * Replaces Recent Comments Dashboard widget with shop message filtered ver
+ *
+ * The only difference between the two is the query now takes into account
+ * shop order messages. Unfortunately WordPress hasn't made this very easy
+ * to achieve due to the query being hard coded so a complete 
+ * replacement was necessary :(
+ *
+ * Sourced from dashboard.php 
+ */
+function jigoshop_setup_dashboard_widgets() {
+	remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'normal' );
+	wp_add_dashboard_widget('jigoshop_recent_comments', 'Recent Comments', 'jigoshop_dashboard_recent_comments', 'jigoshop_dashboard_recent_comments_control');
+}
+
+function jigoshop_dashboard_recent_comments() {
+	global $wpdb;
+
+	if ( current_user_can('edit_posts') )
+		$allowed_states = array('0', '1');
+	else
+		$allowed_states = array('1');
+
+	// Select all comment types and filter out spam later for better query performance.
+	$comments = array();
+	$start = 0;
+
+	$widgets = get_option( 'dashboard_widget_options' );
+	$total_items = isset( $widgets['dashboard_recent_comments'] ) && isset( $widgets['dashboard_recent_comments']['items'] )
+		? absint( $widgets['dashboard_recent_comments']['items'] ) : 5;
+
+	while ( count( $comments ) < $total_items && $possible = $wpdb->get_results( "SELECT * FROM $wpdb->comments c LEFT JOIN $wpdb->posts p ON c.comment_post_ID = p.ID WHERE p.post_status != 'trash' AND c.comment_type != 'jigoshop' ORDER BY c.comment_date_gmt DESC LIMIT $start, 50" ) ) {
+
+		foreach ( $possible as $comment ) {
+			if ( count( $comments ) >= $total_items )
+				break;
+			if ( in_array( $comment->comment_approved, $allowed_states ) && current_user_can( 'read_post', $comment->comment_post_ID ) )
+				$comments[] = $comment;
+		}
+
+		$start = $start + 50;
+	}
+
+	if ( $comments ) :
+?>
+
+		<div id="the-comment-list" class="list:comment">
+<?php
+		foreach ( $comments as $comment )
+			_wp_dashboard_recent_comments_row( $comment );
+?>
+
+		</div>
+
+<?php
+		if ( current_user_can('edit_posts') ) { ?>
+			<?php _get_list_table('WP_Comments_List_Table')->views(); ?>
+<?php	}
+
+		wp_comment_reply( -1, false, 'dashboard', false );
+		wp_comment_trashnotice();
+
+	else :
+?>
+
+	<p><?php _e( 'No comments yet.' ); ?></p>
+
+<?php
+	endif; // $comments;
+}
+
+/**
+ * The recent comments dashboard widget control.
+ *
+ * @since 3.0.0
+ */
+function jigoshop_dashboard_recent_comments_control() {
+	if ( !$widget_options = get_option( 'dashboard_widget_options' ) )
+		$widget_options = array();
+
+	if ( !isset($widget_options['dashboard_recent_comments']) )
+		$widget_options['dashboard_recent_comments'] = array();
+
+	if ( 'POST' == $_SERVER['REQUEST_METHOD'] && isset($_POST['widget-recent-comments']) ) {
+		$number = absint( $_POST['widget-recent-comments']['items'] );
+		$widget_options['dashboard_recent_comments']['items'] = $number;
+		update_option( 'dashboard_widget_options', $widget_options );
+	}
+
+	$number = isset( $widget_options['dashboard_recent_comments']['items'] ) ? (int) $widget_options['dashboard_recent_comments']['items'] : '';
+
+	echo '<p><label for="comments-number">' . __('Number of comments to show:') . '</label>';
+	echo '<input id="comments-number" name="widget-recent-comments[items]" type="text" value="' . esc_attr( $number ) . '" size="3" /></p>';
 }

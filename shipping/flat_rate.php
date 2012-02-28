@@ -35,7 +35,7 @@ class flat_rate extends jigoshop_shipping_method {
     
     public function calculate_shipping() {
     	
-    	$_tax = &new jigoshop_tax();
+    	$_tax = $this->get_tax();
     	
     	$this->shipping_total 	= 0;
 		$this->shipping_tax 	= 0;
@@ -57,7 +57,7 @@ class flat_rate extends jigoshop_shipping_method {
 			// Shipping per item
 			if (sizeof(jigoshop_cart::$cart_contents)>0) : foreach (jigoshop_cart::$cart_contents as $item_id => $values) :
 				$_product = $values['data'];
-				if ($_product->exists() && $values['quantity']>0) :
+				if ($_product->exists() && $values['quantity']>0 && $_product->product_type <> 'downloadable') :
 					
 					$item_shipping_price = ($this->cost + $this->get_fee( $this->fee, $_product->get_price() )) * $values['quantity'];
 					
@@ -150,7 +150,7 @@ class flat_rate extends jigoshop_shipping_method {
             	<div class="multi_select_countries"><ul><?php
         			if ($countries) foreach ($countries as $key=>$val) :
             			                    			
-        				echo '<li><label><input type="checkbox" name="jigoshop_flat_rate_countries[]" value="'. $key .'" ';
+        				echo '<li><label><input type="checkbox" name="jigoshop_flat_rate_countries[]" value="' . esc_attr( $key ) . '" ';
         				if (in_array($key, $selections)) echo 'checked="checked"';
         				echo ' />'. __($val, 'jigoshop') .'</label></li>';
 

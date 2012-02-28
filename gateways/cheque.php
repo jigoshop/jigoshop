@@ -39,7 +39,7 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 	 **/
 	public function admin_options() {
     	?>
-    	<thead><tr><th scope="col" width="200px"><?php _e('Cheque Payment', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('Allows cheque payments. Why would you take cheques in this day and age? Well you probably wouldn\'t but it does allow you to make test purchases without having to use the sandbox area of a payment gateway which is useful for demonstrating to clients and for testing order emails and the \'success\' pages etc.', 'jigoshop'); ?></th></tr></thead>
+    	<thead><tr><th scope="col" width="200px"><?php _e('Cheque Payment', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('Allows cheque payments. Allows you to make test purchases without having to use the sandbox area of a payment gateway. Quite useful for demonstrating to clients and for testing order emails and the \'success\' pages etc.', 'jigoshop'); ?></th></tr></thead>
     	<tr>
 	        <td class="titledesc"><?php _e('Enable Cheque Payment', 'jigoshop') ?>:</td>
 	        <td class="forminp">
@@ -91,7 +91,7 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 	 **/
 	function process_payment( $order_id ) {
 		
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 		
 		// Mark as on-hold (we're awaiting the cheque)
 		$order->update_status('on-hold', __('Awaiting cheque payment', 'jigoshop'));
@@ -100,9 +100,10 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 		jigoshop_cart::empty_cart();
 			
 		// Return thankyou redirect
+		$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', get_option( 'jigoshop_thanks_page_id' ) );
 		return array(
 			'result' 	=> 'success',
-			'redirect'	=> add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink(get_option('jigoshop_thanks_page_id'))))
+			'redirect'	=> add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink( $checkout_redirect )))
 		);
 		
 	}

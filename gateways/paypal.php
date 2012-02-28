@@ -18,7 +18,7 @@ class paypal extends jigoshop_payment_gateway {
 		
 	public function __construct() { 
         $this->id			= 'paypal';
-        $this->icon 		= jigoshop::plugin_url() . '/assets/images/icons/paypal.png';
+        $this->icon 		= jigoshop::assets_url() . '/assets/images/icons/paypal.png';
         $this->has_fields 	= false;
       	$this->enabled		= get_option('jigoshop_paypal_enabled');
 		$this->title 		= get_option('jigoshop_paypal_title');
@@ -51,9 +51,9 @@ class paypal extends jigoshop_payment_gateway {
 	 **/
 	public function admin_options() {
     	?>
-    	<thead><tr><th scope="col" width="200px"><?php _e('PayPal standard', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('PayPal standard works by sending the user to <a href="https://www.paypal.com/uk/mrb/pal=JFC9L8JJUZZK2">PayPal</a> to enter their payment information.', 'jigoshop'); ?></th></tr></thead>
+    	<thead><tr><th scope="col" width="200px"><?php _e('PayPal Standard', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('PayPal Standard works by sending the user to <a href="https://www.paypal.com/uk/mrb/pal=JFC9L8JJUZZK2">PayPal</a> to enter their payment information.', 'jigoshop'); ?></th></tr></thead>
     	<tr>
-	        <td class="titledesc"><?php _e('Enable PayPal standard', 'jigoshop') ?>:</td>
+	        <td class="titledesc"><?php _e('Enable PayPal Standard', 'jigoshop') ?>:</td>
 	        <td class="forminp">
 		        <select name="jigoshop_paypal_enabled" id="jigoshop_paypal_enabled" style="min-width:100px;">
 		            <option value="yes" <?php if (get_option('jigoshop_paypal_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
@@ -125,7 +125,7 @@ class paypal extends jigoshop_payment_gateway {
 	 **/
     public function generate_paypal_form( $order_id ) {
 		
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 		
 		if ( $this->testmode == 'yes' ):
 			$paypal_adr = $this->testurl . '?test_ipn=1&';		
@@ -136,13 +136,14 @@ class paypal extends jigoshop_payment_gateway {
 		$shipping_name = explode(' ', $order->shipping_method);
 		
 		if (in_array($order->billing_country, array('US','CA'))) :
+			$order->billing_phone = str_replace(array('(', '-', ' ', ')'), '', $order->billing_phone);
 			$phone_args = array(
 				'night_phone_a' => substr($order->billing_phone,0,3),
-				'night_phone_b' => substr($order->billing_phone,0,3),
-				'night_phone_c' => substr($order->billing_phone,0,3),
+				'night_phone_b' => substr($order->billing_phone,3,3),
+				'night_phone_c' => substr($order->billing_phone,6,4),
 				'day_phone_a' 	=> substr($order->billing_phone,0,3),
-				'day_phone_b' 	=> substr($order->billing_phone,0,3),
-				'day_phone_c' 	=> substr($order->billing_phone,0,3)
+				'day_phone_b' 	=> substr($order->billing_phone,3,3),
+				'day_phone_c' 	=> substr($order->billing_phone,6,4)
 			);
 		else :
 			$phone_args = array(
@@ -150,6 +151,9 @@ class paypal extends jigoshop_payment_gateway {
 				'day_phone_b' 	=> $order->billing_phone
 			);
 		endif;		
+		
+		// filter redirect page
+		$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', get_option( 'jigoshop_thanks_page_id' ) );
 		
 		$paypal_args = array_merge(
 			array(
@@ -160,7 +164,7 @@ class paypal extends jigoshop_payment_gateway {
 				'charset' 				=> 'UTF-8',
 				'rm' 					=> 2,
 				'upload' 				=> 1,
-				'return' 				=> add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink(get_option('jigoshop_thanks_page_id')))),
+				'return' 				=> add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink( $checkout_redirect ))),
 				'cancel_return'			=> $order->get_cancel_order_url(),
 				//'cancel_return'			=> home_url(),
 				
@@ -184,13 +188,18 @@ class paypal extends jigoshop_payment_gateway {
 	
 				// Payment Info
 				'invoice' 				=> $order->order_key,
-				'tax'					=> $order->get_total_tax(),
-				'tax_cart'				=> $order->get_total_tax(),
 				'amount' 				=> $order->order_total,
 				'discount_amount_cart' 	=> $order->order_discount
 			), 
 			$phone_args
 		);
+        
+        // only include tax if prices don't include tax
+        if (get_option('jigoshop_prices_include_tax') != 'yes') :
+            $paypal_args['tax']					= $order->get_total_tax();
+            $paypal_args['tax_cart']			= $order->get_total_tax();
+        endif;
+
 		
 		if ($this->send_shipping=='yes') :
 			$paypal_args['no_shipping'] = 0;
@@ -202,38 +211,62 @@ class paypal extends jigoshop_payment_gateway {
 		// Cart Contents
 		$item_loop = 0;
 		if (sizeof($order->items)>0) : foreach ($order->items as $item) :
-			$_product = &new jigoshop_product($item['id']);
+            
+            if(!empty($item['variation_id'])) {
+                $_product = new jigoshop_product_variation($item['variation_id']);
+            } else {
+                $_product = new jigoshop_product($item['id']);
+            }
+            
 			if ($_product->exists() && $item['qty']) :
 				
 				$item_loop++;
+            
+                $title = $_product->get_title();
+                
+                //if variation, insert variation details into product title
+                if ($_product instanceof jigoshop_product_variation) {
+                    $variation_details = array();
+                    
+                    foreach ($_product->get_variation_attributes() as $name => $value) {
+                        $variation_details[] = ucfirst(str_replace('tax_', '', $name)) . ': ' . ucfirst($value);
+                    }
+
+                    if (count($variation_details) > 0) {
+                        $title .= ' (' . implode(', ', $variation_details) . ')';
+                    }
+                }
 				
-				$paypal_args['item_name_'.$item_loop] = $_product->get_title();
+				$paypal_args['item_name_'.$item_loop] = $title;
 				$paypal_args['quantity_'.$item_loop] = $item['qty'];
-				$paypal_args['amount_'.$item_loop] = $_product->get_price_excluding_tax();
-				
+				// use product price since we want the base price if it's including tax or if it's not including tax
+                $paypal_args['amount_'.$item_loop] = number_format($_product->get_price(), 2); //Apparently, Paypal did not like "28.4525" as the amount. Changing that to "28.45" fixed the issue.				
 			endif;
 		endforeach; endif;
-		
+       
 		// Shipping Cost
 		$item_loop++;
 		$paypal_args['item_name_'.$item_loop] = __('Shipping cost', 'jigoshop');
 		$paypal_args['quantity_'.$item_loop] = '1';
-		$paypal_args['amount_'.$item_loop] = number_format($order->order_shipping, 2);
+        
+        $shipping_tax = ($order->order_shipping_tax ? $order->order_shipping_tax : 0);
+        
+		$paypal_args['amount_'.$item_loop] = (get_option('jigoshop_prices_include_tax') == 'yes' ? number_format($order->order_shipping + $shipping_tax, 2) : number_format($order->order_shipping, 2));
 		
 		$paypal_args_array = array();
 
 		foreach ($paypal_args as $key => $value) {
-			$paypal_args_array[] = '<input type="hidden" name="'.$key.'" value="'.$value.'" />';
+			$paypal_args_array[] = '<input type="hidden" name="'.esc_attr($key).'" value="'.esc_attr($value).'" />';
 		}
 		
 		return '<form action="'.$paypal_adr.'" method="post" id="paypal_payment_form">
 				' . implode('', $paypal_args_array) . '
-				<input type="submit" class="button-alt" id="submit_paypal_payment_form" value="'.__('Pay via PayPal', 'jigoshop').'" /> <a class="button cancel" href="'.$order->get_cancel_order_url().'">'.__('Cancel order &amp; restore cart', 'jigoshop').'</a>
+				<input type="submit" class="button-alt" id="submit_paypal_payment_form" value="'.__('Pay via PayPal', 'jigoshop').'" /> <a class="button cancel" href="'.esc_url($order->get_cancel_order_url()).'">'.__('Cancel order &amp; restore cart', 'jigoshop').'</a>
 				<script type="text/javascript">
 					jQuery(function(){
 						jQuery("body").block(
 							{ 
-								message: "<img src=\"'.jigoshop::plugin_url().'/assets/images/ajax-loader.gif\" alt=\"Redirecting...\" />'.__('Thank you for your order. We are now redirecting you to PayPal to make payment.', 'jigoshop').'", 
+								message: "<img src=\"'.jigoshop::assets_url().'/assets/images/ajax-loader.gif\" alt=\"Redirecting...\" />'.__('Thank you for your order. We are now redirecting you to PayPal to make payment.', 'jigoshop').'", 
 								overlayCSS: 
 								{ 
 									background: "#fff", 
@@ -260,7 +293,7 @@ class paypal extends jigoshop_payment_gateway {
 	 **/
 	function process_payment( $order_id ) {
 		
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 		
 		return array(
 			'result' 	=> 'success',
@@ -289,7 +322,7 @@ class paypal extends jigoshop_payment_gateway {
         $_POST['cmd'] = '_notify-validate';
 
         // Send back post vars to paypal
-        $params = array( 'body' => $_POST );
+        $params = array( 'body' => $_POST, 'sslverify' => apply_filters('https_local_ssl_verify', false));
 
         // Get url
        	if ( $this->testmode == 'yes' ):
@@ -364,7 +397,7 @@ class paypal extends jigoshop_payment_gateway {
 		            case 'failed' :
 		            case 'voided' :
 		                // Hold order
-		                $order->update_status('on-hold', sprintf(__('Payment %s via IPN.', 'jigoshop'), strtolower(sanitize($posted['payment_status'])) ) );
+		                $order->update_status('on-hold', sprintf(__('Payment %s via IPN.', 'jigoshop'), strtolower($posted['payment_status']) ) );
 		            break;
 		            default:
 		            	// No action

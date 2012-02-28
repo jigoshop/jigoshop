@@ -37,7 +37,7 @@ class dibs extends jigoshop_payment_gateway {
 	**/
 	public function admin_options() {
 		?>
-		<thead><tr><th scope="col" width="200px"><?php _e('DIBS FlexWin', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('', 'jigoshop'); ?></th></tr></thead>
+		<thead><tr><th scope="col" width="200px"><?php _e('DIBS FlexWin', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('DIBS FlexWin works by sending the user to <a href="http://www.dibspayment.com/">DIBS</a> to enter their payment information.', 'jigoshop'); ?></th></tr></thead>
 		<tr>
 			<td class="titledesc"><?php _e('Enable DIBS FlexWin', 'jigoshop') ?>:</td>
 			<td class="forminp">
@@ -115,7 +115,7 @@ class dibs extends jigoshop_payment_gateway {
 	**/
 	public function generate_form( $order_id ) {
 		
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 		
 		$action_adr = 'https://payment.architrade.com/paymentweb/start.action';
 		
@@ -135,6 +135,8 @@ class dibs extends jigoshop_payment_gateway {
 			'CHF' => '756', // Swiss Franc
 			'TRY' => '949', // Turkish Lire
 		);
+		// filter redirect page
+		$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', get_option( 'jigoshop_thanks_page_id' ) );
 		
 		$args =
 			array(
@@ -156,7 +158,7 @@ class dibs extends jigoshop_payment_gateway {
 				'callbackurl' => site_url('/jigoshop/dibscallback.php'),
 				
 				// TODO these urls will not work correctly since DIBS ignores the querystring
-				'accepturl' => add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink(get_option('jigoshop_thanks_page_id')))),
+				'accepturl' => add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink($checkout_redirect))),
 				'cancelurl' => $order->get_cancel_order_url(),
 				
 		);
@@ -176,17 +178,17 @@ class dibs extends jigoshop_payment_gateway {
 		
 		$fields = '';
 		foreach ($args as $key => $value) {
-			$fields .= '<input type="hidden" name="'.$key.'" value="'.$value.'" />';
+			$fields .= '<input type="hidden" name="'.esc_attr($key).'" value="'.esc_attr($value).'" />';
 		}
 		
 		return '<form action="'.$action_adr.'" method="post" id="dibs_payment_form">
 				' . $fields . '
-				<input type="submit" class="button-alt" id="submit_dibs_payment_form" value="'.__('Pay via DIBS', 'jigoshop').'" /> <a class="button cancel" href="'.$order->get_cancel_order_url().'">'.__('Cancel order &amp; restore cart', 'jigoshop').'</a>
+				<input type="submit" class="button-alt" id="submit_dibs_payment_form" value="'.__('Pay via DIBS', 'jigoshop').'" /> <a class="button cancel" href="'.esc_url($order->get_cancel_order_url()).'">'.__('Cancel order &amp; restore cart', 'jigoshop').'</a>
 				<script type="text/javascript">
 					jQuery(function(){
 						jQuery("body").block(
 							{ 
-								message: "<img src=\"'.jigoshop::plugin_url().'/assets/images/ajax-loader.gif\" alt=\"Redirecting...\" />'.__('Thank you for your order. We are now redirecting you to DIBS to make payment.', 'jigoshop').'", 
+								message: "<img src=\"'.jigoshop::assets_url().'/assets/images/ajax-loader.gif\" alt=\"Redirecting...\" />'.__('Thank you for your order. We are now redirecting you to DIBS to make payment.', 'jigoshop').'", 
 								overlayCSS: 
 								{ 
 									background: "#fff", 
@@ -213,11 +215,11 @@ class dibs extends jigoshop_payment_gateway {
 	 **/
 	function process_payment( $order_id ) {
 		
-		$order = &new jigoshop_order( $order_id );
+		$order = new jigoshop_order( $order_id );
 		
 		return array(
 			'result' => 'success',
-			'redirect' => add_query_arg('order', $order->id, add_query_arg('key', $order->order_key, get_permalink(get_option('jigoshop_pay_page_id'))))
+			'redirect' => add_query_arg('order', $order->id, add_query_arg('key', $order->order_key, apply_filters('jigoshop_get_return_url', get_permalink(get_option('jigoshop_pay_page_id')))))
 		);
 		
 	}
@@ -237,7 +239,7 @@ class dibs extends jigoshop_payment_gateway {
 	* Check for DIBS Response
 	**/
 	function check_callback() {
-		if ( mb_strpos($_SERVER["REQUEST_URI"], '/jigoshop/dibscallback.php') ) {
+		if ( strpos($_SERVER["REQUEST_URI"], '/jigoshop/dibscallback.php') ) {
 			
 			error_log('Dibs callback!');
 			

@@ -28,12 +28,15 @@ class jigoshop_shipping_method {
 	var $chosen				= false;
 	var $shipping_total 	= 0;
 	var $shipping_tax 		= 0;
+    
+    private $tax;
+    private $error_message = null;
 	
     public function is_available() {
     	
-    	if ($this->enabled=="no") return false;
+    	if ($this->get_enabled()=="no") return false;
     	
-		if (isset(jigoshop_cart::$cart_contents_total) && isset($this->min_amount) && $this->min_amount && $this->min_amount > jigoshop_cart::$cart_contents_total) return false;
+		if (isset(jigoshop_cart::$cart_contents_total_ex_dl) && isset($this->min_amount) && $this->min_amount && $this->min_amount > jigoshop_cart::$cart_contents_total_ex_dl) return false;
 		
 		$ship_to_countries = '';
 		
@@ -46,12 +49,41 @@ class jigoshop_shipping_method {
 		endif; 
 		
 		if (is_array($ship_to_countries)) :
-			if (!in_array(jigoshop_customer::get_shipping_country(), $ship_to_countries)) return false;
+			if (!in_array(jigoshop_customer::get_shipping_country(), $ship_to_countries)) :
+                $this->set_error_message('Sorry, it seems that there are no available shipping methods to your location. Please contact us if you require assistance or wish to make alternate arrangements.');
+                return false;
+            endif;
 		endif;
 		
 		return true;
 		
     } 
+    
+    public function get_error_message() {
+    	return $this->error_message;
+    }
+    
+    public function set_error_message($error_message = null) {
+    	$this->error_message = $error_message;
+    }
+    
+    public function get_enabled() {
+        return $this->enabled;
+    }    
+    
+    /**
+     * sets the tax class to shipping_method. Needed to maintain current tax 
+     * state from the shopping cart.
+     * 
+     * @param type $tax jigoshop_tax instance
+     */
+    public function set_tax($tax) {
+        $this->tax = $tax;
+    }
+    
+    protected function get_tax() {
+        return $this->tax;
+    }
     
     public function get_fee( $fee, $total ) {
 		if (strstr($fee, '%')) :
@@ -68,7 +100,14 @@ class jigoshop_shipping_method {
     
     public function choose() {
     	$this->chosen = true;
-    	$_SESSION['_chosen_method_id'] = $this->id;
+    	jigoshop_session::instance()->chosen_shipping_method_id = $this->id;
+    }
+    
+    public function reset_method() {
+    	$this->chosen = false;
+    	$this->shipping_total = 0;
+    	$this->shipping_tax = 0;
+        $this->tax = null;
     }
     
     public function admin_options() {}

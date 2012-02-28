@@ -1,305 +1,401 @@
-jQuery( function($){
+(function($) {
+	
+	// On document Load
+	$(function() {
 
-	// TABS
-	jQuery('ul.tabs').show();
-	jQuery('div.panel-wrap').each(function(){
-		jQuery('div.panel:not(div.panel:first)', this).hide();
+		$('.backorders_field').hide();
+
+		// Set up tabs
+		jigoshop_start_tabs();
+
+		// Setup options
+		jigoshop_product_type_options();
+
+		// Set up jigoshop sale datepicker
+		jigoshop_sale_picker();
+
+		// Jigoshop stock options
+		jigoshop_stock_options();
+
+		// Sortables
+		jigoshop_sortables();
+
+		// Orders
+		jigoshop_orders();
+
+		// Attributes
+		jigoshop_attributes();
+
+		// File Upload
+		jigoshop_file_upload();
 	});
-	jQuery('ul.tabs a').click(function(){
-		var panel_wrap =  jQuery(this).closest('div.panel-wrap');
-		jQuery('ul.tabs li', panel_wrap).removeClass('active');
-		jQuery(this).parent().addClass('active');
-		jQuery('div.panel', panel_wrap).hide();
-		jQuery( jQuery(this).attr('href') ).show();
-		return false;
-	});
 
-	// ORDERS
+	function jigoshop_start_tabs() {
+		var $tabs = $('.tabs');
 
-	jQuery('#order_items_list button.remove_row').live('click', function(){
-		var answer = confirm(params.remove_item_notice);
-		if (answer){
-			jQuery(this).parent().parent().remove();
-		}
-		return false;
-	});
+		// First show tabs & hide each panel
+		$tabs.show();
+		$('div.panels').each(function(){
+			$('div.panel:not(div.panel:first)', this).hide();
+		});
 
-	jQuery('button.calc_totals').live('click', function(){
-		var answer = confirm(params.cart_total);
-		if (answer){
+		$tabs.find('a').on('click', function(e){
+			e.preventDefault();
 
-			var item_count = jQuery('#order_items_list tr.item').size();
-			var subtotal = 0;
-			var discount = jQuery('input#order_discount').val();
-			var shipping = jQuery('input#order_shipping').val();
-			var shipping_tax = parseFloat(jQuery('input#order_shipping_tax').val());
-			var tax = 0;
-			var itemTotal = 0;
-			var total = 0;
+			var $panels = $(this).closest('.panels');
+			$('.tabs li', $panels).removeClass('active');
+			$(this).parent().addClass('active');
+			$('div.panel', $panels).hide();
+			$( $(this).attr('href') ).show();
+		});
+	}
 
-			if (!discount) discount = 0;
-			if (!shipping) shipping = 0;
-			if (!shipping_tax) shipping_tax = 0;
-
-			// Items
-			if (item_count>0) {
-				for (i=0; i<item_count; i++) {
-
-					itemCost 	= jQuery('input[name^=item_cost]:eq(' + i + ')').val();
-					itemQty 	= parseInt(jQuery('input[name^=item_quantity]:eq(' + i + ')').val());
-					itemTax		= jQuery('input[name^=item_tax_rate]:eq(' + i + ')').val();
-
-					if (!itemCost) itemCost = 0;
-					if (!itemTax) itemTax = 0;
-
-					totalItemTax = 0;
-
-					totalItemCost = itemCost * itemQty;
-
-					if (itemTax && itemTax>0) {
-
-						//taxRate = Math.round( ((itemTax / 100) + 1) * 100)/100; // tax rate to 2 decimal places
-
-						taxRate = itemTax/100;
-
-						//totalItemTax = itemCost * taxRate;
-
-						itemCost = (itemCost * taxRate);
-
-						totalItemTax = Math.round(itemCost*Math.pow(10,2))/Math.pow(10,2);
-
-						alert(totalItemTax);
-
-						totalItemTax = totalItemTax * itemQty;
-
-					}
-
-					itemTotal = itemTotal + totalItemCost;
-
-					tax = tax + totalItemTax;
-				}
+	function jigoshop_stock_options() {
+		$('#manage_stock').on('change',function() {
+			if ($(this).is(':checked')) {
+				$('.stock_status_field').hide();
+				$('.stock_field').show();
+				$('.backorders_field').slideDown(100);
+				$('#stock').focus();
 			}
+			else {
+				$('.backorders_field').slideUp(100);
+				$('.stock_field').hide();
+				$('.stock_status_field').show();
+			}
+		}).change();
+	}
 
-			subtotal = itemTotal;
+	function jigoshop_product_type_options() {
+		$('select#product-type').change(function(){
 
-			total = parseFloat(subtotal) + parseFloat(tax) - parseFloat(discount) + parseFloat(shipping) + parseFloat(shipping_tax);
+			$('body').removeClass('simple_product downloadable_product grouped_product virtual_product variable_product external_product')
+				.addClass( $(this).val() + '_product' );
+		}).change();
+	}
 
-			if (total < 0 ) total = 0;
-
-			jQuery('input#order_subtotal').val( subtotal.toFixed(2) );
-			jQuery('input#order_tax').val( tax.toFixed(2) );
-			jQuery('input#order_shipping_tax').val( shipping_tax.toFixed(2) );
-			jQuery('input#order_total').val( total.toFixed(2) );
-
-		}
-		return false;
-	});
-
-	jQuery('button.add_shop_order_item').click(function(){
-
-		var item_id = jQuery('select.item_id').val();
-
-		if (item_id) {
-
-			jQuery('table.jigoshop_order_items').block({ message: null, overlayCSS: { background: '#fff url(' + params.plugin_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
-
-			var data = {
-				action: 		'jigoshop_add_order_item',
-				item_to_add: 	jQuery('select.item_id').val(),
-				security: 		params.add_order_item_nonce
-			};
-
-			jQuery.post( params.ajax_url, data, function(response) {
-
-				jQuery('table.jigoshop_order_items tbody#order_items_list').append( response );
-				jQuery('table.jigoshop_order_items').unblock();
-				jQuery('select.item_id').css('border-color', '').val('');
-
-			});
-
+	function jigoshop_sale_picker() {
+		// Sale price schedule
+		var sale_schedule_set = false;
+		$('.sale_price_dates_fields input').each(function(){
+			if ( $(this).val() ) {
+				sale_schedule_set = true;
+			}
+		});
+		if (sale_schedule_set) {
+			$('.sale_schedule').hide();
+			$('.sale_price_dates_fields').show();
 		} else {
-			jQuery('select.item_id').css('border-color', 'red');
+			$('.sale_schedule').show();
+			$('.sale_price_dates_fields').hide();
 		}
-
-	});
-
-	jQuery('button.add_meta').live('click', function(){
-
-		jQuery(this).parent().parent().parent().parent().append('<tr><td><input type="text" name="meta_name[][]" placeholder="' + params.meta_name + '" /></td><td><input type="text" name="meta_value[][]" placeholder="' + params.meta_value + '" /></td></tr>');
-
-	});
-
-	jQuery('button.billing-same-as-shipping').live('click', function(){
-		var answer = confirm(params.copy_billing);
-		if (answer){
-			jQuery('input#shipping_first_name').val( jQuery('input#billing_first_name').val() );
-			jQuery('input#shipping_last_name').val( jQuery('input#billing_last_name').val() );
-			jQuery('input#shipping_company').val( jQuery('input#billing_company').val() );
-			jQuery('input#shipping_address_1').val( jQuery('input#billing_address_1').val() );
-			jQuery('input#shipping_address_2').val( jQuery('input#billing_address_2').val() );
-			jQuery('input#shipping_city').val( jQuery('input#billing_city').val() );
-			jQuery('input#shipping_postcode').val( jQuery('input#billing_postcode').val() );
-			jQuery('input#shipping_country').val( jQuery('input#billing_country').val() );
-			jQuery('input#shipping_state').val( jQuery('input#billing_state').val() );
-		}
-		return false;
-	});
-
-	// PRODUCT TYPE SPECIFIC OPTIONS
-	$('select#product-type').change(function(){
-
-		// Get value
-		var select_val = jQuery(this).val();
-
-		// Hide options
-		$('#jigoshop-product-type-options .inside > div').hide();
-		$('#'+select_val+'_product_options').show();
 		
-		// Show option
-		if (select_val=='variable') {
-			jQuery('.inventory_tab, .pricing_tab').show();
-			jQuery('.menu_order_field, .parent_id_field').val('').hide();
-		} else if (select_val=='simple') {
-			jQuery('.inventory_tab, .pricing_tab').show();
-			jQuery('.menu_order_field, .parent_id_field').show();
-		} else if (select_val=='grouped') {
-			jQuery('.inventory_tab, .pricing_tab').hide();
-			jQuery('.menu_order_field, .parent_id_field').val('').hide();
-		} else if (select_val=='downloadable') {
-			jQuery('.inventory_tab, .pricing_tab').show();
-			jQuery('.menu_order_field, .parent_id_field').show();
-		} else if (select_val=='virtual') {
-			jQuery('.inventory_tab, .pricing_tab').show();
-			jQuery('.menu_order_field, .parent_id_field').show();
-		}
+		$('.sale_schedule').click(function(e){
+			e.preventDefault();
+			$(this).hide();
+			$('.sale_price_dates_fields').slideDown(100, function(){
+				$('#sale_price_dates_from').focus();
+			});
+		});
+		
+		$('.cancel_sale_schedule').click(function(e){
+			e.preventDefault();
+			$('.sale_schedule').show();
+			$('.sale_price_dates_fields').slideUp(100, function() {
+				var option = this.id == "sale_price_dates_from" ? "minDate" : "maxDate";
+				$(this).closest('p').find('input').datepicker( "option", option, null ).val(null);
+			});
+		});
 
-		$('body').trigger('jigoshop-product-type-change', select_val, $(this) );
-
-	}).change();
-
-	// STOCK OPTIONS
-	jQuery('input#manage_stock').change(function(){
-		if (jQuery(this).is(':checked')) jQuery('div.stock_fields').show();
-		else jQuery('div.stock_fields').hide();
-	}).change();
-
-
-	// DATE PICKER FIELDS
-	Date.firstDayOfWeek = 1;
-	Date.format = 'yyyy-mm-dd';
-	jQuery('.date-pick').datePicker();
-	jQuery('#sale_price_dates_from').bind(
-		'dpClosed',
-		function(e, selectedDates)
-		{
-			var d = selectedDates[0];
-			if (d) {
-				d = new Date(d);
-				jQuery('#sale_price_dates_to').dpSetStartDate(d.addDays(1).asString());
+		var dates = $( "#sale_price_dates_from, #sale_price_dates_to" ).datepicker({
+			dateFormat: 'yy-mm-dd',
+			gotoCurrent: true,
+			hideIfNoPrevNext: true,
+			numberOfMonths: 1,
+			minDate: 'today',
+			onSelect: function( selectedDate ) {
+				var option = this.id == "sale_price_dates_from" ? "minDate" : "maxDate",
+					instance = $( this ).data( "datepicker" ),
+					date = $.datepicker.parseDate(
+						instance.settings.dateFormat ||
+						$.datepicker._defaults.dateFormat,
+						selectedDate, instance.settings );
+				dates.not( this ).datepicker( "option", option, date );
 			}
-		}
-	);
-	jQuery('#sale_price_dates_to').bind(
-		'dpClosed',
-		function(e, selectedDates)
-		{
-			var d = selectedDates[0];
-			if (d) {
-				d = new Date(d);
-				jQuery('#sale_price_dates_from').dpSetEndDate(d.addDays(-1).asString());
+		});
+	}
+
+	function jigoshop_sortables() {
+		$('.jigoshop_attributes_wrapper').sortable({
+			items:'.attribute',
+			// containment: 'parent', // Applies strict containment meaning only vertical movement is capable
+			handle: '.handle',
+			distance: 15,
+			placeholder: "ui-state-highlight",
+			forcePlaceholderSize: true,
+			stop:function(event,ui){
+				ui.item.removeAttr('style');
+				row_indexes();
 			}
-		}
-	);
+		});
+	}
+
+	/**
+	 * Parses attribute positions & applies to hidden fields
+	 */
+	function row_indexes() {
+		$('.jigoshop_attributes_wrapper .attribute').each(function(index, el) {
+				$('.attribute_position', el).val( 
+					parseInt( $(el).index('.jigoshop_attributes_wrapper .attribute') ) 
+				); 
+		});
+	}
+
+	function jigoshop_orders() {
+
+		$('#order_items_list button.remove_row').live('click', function(e) {
+			e.preventDefault();
+			var answer = confirm(params.remove_item_notice);
+			if (answer){
+				$(this).parent().parent().remove();
+			}
+		});
+
+		$('button.calc_totals').live('click', function(e) {
+			e.preventDefault();
+			var answer = confirm(params.cart_total);
+			if (answer){
+
+				var item_count = $('#order_items_list tr.item').size();
+				var subtotal = 0;
+				var discount = $('input#order_discount').val();
+				var shipping = $('input#order_shipping').val();
+				var shipping_tax = parseFloat($('input#order_shipping_tax').val());
+				var tax = 0;
+				var itemTotal = 0;
+				var total = 0;
+
+				if (!discount) discount = 0;
+				if (!shipping) shipping = 0;
+				if (!shipping_tax) shipping_tax = 0;
+
+				// Items
+				if (item_count>0) {
+					for (i=0; i<item_count; i++) {
+
+						itemCost 	= $('input[name^=item_cost]:eq(' + i + ')').val();
+						itemQty 	= parseInt($('input[name^=item_quantity]:eq(' + i + ')').val());
+						itemTax		= $('input[name^=item_tax_rate]:eq(' + i + ')').val();
+
+						if (!itemCost) itemCost = 0;
+						if (!itemTax) itemTax = 0;
+
+						totalItemTax = 0;
+
+						totalItemCost = itemCost * itemQty;
+
+						if (itemTax && itemTax>0) {
+
+							//taxRate = Math.round( ((itemTax / 100) + 1) * 100)/100; // tax rate to 2 decimal places
+
+							taxRate = itemTax/100;
+
+							//totalItemTax = itemCost * taxRate;
+
+							itemCost = (itemCost * taxRate);
+
+							totalItemTax = Math.round(itemCost*Math.pow(10,2))/Math.pow(10,2);
+
+							alert(totalItemTax);
+
+							totalItemTax = totalItemTax * itemQty;
+
+						}
+
+						itemTotal = itemTotal + totalItemCost;
+
+						tax = tax + totalItemTax;
+					}
+				}
+
+				subtotal = itemTotal;
+
+				total = parseFloat(subtotal) + parseFloat(tax) - parseFloat(discount) + parseFloat(shipping) + parseFloat(shipping_tax);
+
+				if (total < 0 ) total = 0;
+
+				$('input#order_subtotal').val( subtotal.toFixed(2) );
+				$('input#order_tax').val( tax.toFixed(2) );
+				$('input#order_shipping_tax').val( shipping_tax.toFixed(2) );
+				$('input#order_total').val( total.toFixed(2) );
+
+			}
+			
+		});
 
 
-	// ATTRIBUTE TABLES
+		$('button.billing-same-as-shipping').live('click', function(e){
+			e.preventDefault();
+			var answer = confirm(params.copy_billing);
+			if (answer){
+				$('input#shipping_first_name').val( $('input#billing_first_name').val() );
+				$('input#shipping_last_name').val( $('input#billing_last_name').val() );
+				$('input#shipping_company').val( $('input#billing_company').val() );
+				$('input#shipping_address_1').val( $('input#billing_address_1').val() );
+				$('input#shipping_address_2').val( $('input#billing_address_2').val() );
+				$('input#shipping_city').val( $('input#billing_city').val() );
+				$('input#shipping_postcode').val( $('input#billing_postcode').val() );
+				$('input#shipping_country').val( $('input#billing_country').val() );
+				$('input#shipping_state').val( $('input#billing_state').val() );
+			}
+		});
 
-		// Initial order
-		var jigoshop_attributes_table_items = jQuery('#attributes_list').children('tr').get();
+		$('button.add_shop_order_item').click(function(e) {
+			e.preventDefault();
+			var item_id = $('select.item_id').val();
+			if (item_id) {
+				$('table.jigoshop_order_items').block({ message: null, overlayCSS: { background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
+
+				var data = {
+					action: 		'jigoshop_add_order_item',
+					item_to_add: 	$('select.item_id').val(),
+					security: 		params.add_order_item_nonce
+				};
+
+				$.post( params.ajax_url, data, function(response) {
+
+					$('table.jigoshop_order_items tbody#order_items_list').append( response );
+					$('table.jigoshop_order_items').unblock();
+					$('select.item_id').css('border-color', '').val('');
+
+				});
+
+			} else {
+				$('select.item_id').css('border-color', 'red');
+			}
+		});
+
+	}
+
+	function jigoshop_attributes() {
+		// Initial Ordering
+		var jigoshop_attributes_table_items = $('.jigoshop_attributes_wrapper').children('.attribute').get();
 		jigoshop_attributes_table_items.sort(function(a, b) {
-		   var compA = jQuery(a).attr('rel');
-		   var compB = jQuery(b).attr('rel');
+		   var compA = Number($(a).attr('rel'));
+		   var compB = Number($(b).attr('rel'));
 		   return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
 		})
-		jQuery(jigoshop_attributes_table_items).each( function(idx, itm) { jQuery('#attributes_list').append(itm); } );
+		$(jigoshop_attributes_table_items).each( function(idx, itm) { $('.jigoshop_attributes_wrapper').append(itm); } );
 
-		// Show
-		function show_attribute_table() {
-			jQuery('table.jigoshop_attributes, table.jigoshop_variable_attributes').each(function(){
-				if (jQuery('tbody tr', this).size()==0)
-					jQuery(this).parent().hide();
-				else
-					jQuery(this).parent().show();
-			});
-		}
-		show_attribute_table();
+		// Polyfill for custom attributes not closing
+		$('.custom .handle, .custom .handlediv').live('click', function(){
+			$(this).parent().toggleClass('closed');
+		});
 
-		function row_indexes() {
-			jQuery('#attributes_list tr').each(function(index, el){ jQuery('.attribute_position', el).val( parseInt( jQuery(el).index('#attributes_list tr') ) ); });
-		};
+		// Custom attributes autogenerate name
+		$('.attribute-name').live('keyup', function(e) {
+
+			if( ! $(this).val() )
+				val = 'Custom Attribute';
+			else
+				val = $(this).val();
+
+			$(this).parents('.attribute').find('.handle').text(val);
+		});
+
+		// Remove attribute
+		$('button.hide_row').live('click', function(e) {
+			e.preventDefault();
+			var answer = confirm("Remove this attribute?")
+			if (answer){
+				$parent = $(this).parent();
+				$parent.fadeOut('slow', function() {
+					$parent.find('select, input[type=text], input[type=checkbox], textarea').not('.attribute-name').val(null);
+				});
+				
+
+				// Re-enable the option
+				$("select.attribute_taxonomy option[value='"+$(this).parent().data('attribute-name')+"']").attr('disabled', false);
+			}
+		});
 
 		// Add rows
-		jQuery('button.add_attribute').click(function(){
+		$('button.add_attribute').click(function(){
 
 			var attribute = $('select.attribute_taxonomy').val();
 			var type = $('select.attribute_taxonomy').find(':selected').data('type');
 
+			// Remove the demo if it exists
+			$('.demo.attribute').remove();
+
+			// Disable select option
+			if( $('select.attribute_taxonomy option:selected').val() ) {
+				$('select.attribute_taxonomy')
+					.find('option:selected').attr('disabled', true)
+					.parent().val(null);
+			}
+
 			if (!attribute) {
-				var size = jQuery('table.jigoshop_attributes tbody tr').size();
+				var size = $('.attribute').size();
 				// Add custom attribute row
-				$('#attributes_list').append('<tr><td class="center"><button type="button" class="button move_up">&uarr;</button><button type="button" class="move_down button">&darr;</button><input type="hidden" name="attribute_position[' + size + ']" class="attribute_position" value="' + size + '" /></td><td><input type="text" name="attribute_names[' + size + ']" /><input type="hidden" name="attribute_is_taxonomy[' + size + ']" value="0" /></td><td><input type="text" name="attribute_values[' + size + ']" /></td><td class="center"><input type="checkbox" checked="checked" name="attribute_visibility[' + size + ']" value="1" /></td><td class="center"><input type="checkbox" name="attribute_variation[' + size + ']" value="1" /></td><td class="center"><button type="button" class="remove_row button">&times;</button></td></tr>');
+				var $custom_panel = $('\
+					<div class="postbox attribute custom">\
+						<button type="button" class="hide_row button">Remove</button>\
+						<div class="handlediv" title="Click to toggle"><br></div>\
+						<h3 class="handle">Custom Attribute</h3>\
+\
+						<input type="hidden" name="attribute_is_taxonomy[' + size + ']" value="0">\
+						<input type="hidden" name="attribute_enabled[' + size + ']" value="1">\
+						<input type="hidden" name="attribute_position[' + size + ']" class="attribute_position" value="[' + size + ']">\
+\
+						<div class="inside">\
+							<table>\
+								<tr>\
+									<td class="options">\
+										<input class="attribute-name" type="text" name="attribute_names[' + size + ']" autofocus="autofocus" tabindex="'+size+'" />\
+										<div>\
+											<label>\
+												<input type="checkbox" checked="checked" name="attribute_visibility[' + size + ']" value="1">\
+												Display on product page\
+											</label>\
+\
+											<label class="attribute_is_variable">\
+												<input type="checkbox" checked="checked" name="attribute_variation[' + size + ']" value="1">\
+												Is for variations\
+											</label>\
+										</div>\
+									</td>\
+									<td class="value">\
+											\
+										<textarea name="attribute_values[' + size + ']" tabindex="'+size+'"></textarea>\
+										\
+									</td>\
+								</tr>\
+							</table>\
+						</div>\
+					</div>\
+				');
+
+				$custom_panel.hide().prependTo('.jigoshop_attributes_wrapper').slideDown( 150, function() {
+					$(this).find('.attribute-name').focus()
+				});
 
 			} else {
 
+				// var size = $('table.jigoshop_attributes tbody tr').size();
 				// Reveal taxonomy row
-				var thisrow = jQuery('#attributes_list tr.' + attribute);
+				var thisrow = $('.attribute.' + attribute);
 
 				// Enable all mutiselect items by default
 				if (type == 'multiselect'){
-					thisrow.find('td.control .multiselect-controls a.check-all').click();
+					thisrow.find('td.value .multiselect-controls a.check-all').click();
 				}
 
-				$('table.jigoshop_attributes tbody').append( thisrow );
-				$(thisrow).show();
+				$('.jigoshop_attributes_wrapper').prepend( thisrow );
+				$(thisrow).slideDown('fast');
 				row_indexes();
 
 			}
-
-			show_attribute_table();
-		});
-
-		jQuery('button.hide_row').live('click', function(){
-			var answer = confirm("Remove this attribute?")
-			if (answer){
-				jQuery(this).parent().parent().find('select, input[type=text], input[type=checkbox]').val('');
-				jQuery(this).parent().parent().hide();
-				show_attribute_table();
-			}
-			return false;
-		});
-
-		jQuery('#attributes_list button.remove_row').live('click', function(){
-			var answer = confirm("Remove this attribute?")
-			if (answer){
-				jQuery(this).parent().parent().remove();
-				show_attribute_table();
-				row_indexes();
-			}
-			return false;
-		});
-
-		jQuery('button.move_up').live('click', function(){
-			var row = jQuery(this).parent().parent();
-			var prev_row = jQuery(row).prev('tr');
-			jQuery(row).after(prev_row);
-			row_indexes();
-		});
-
-		jQuery('button.move_down').live('click', function(){
-			var row = jQuery(this).parent().parent();
-			var next_row = jQuery(row).next('tr');
-			jQuery(row).before(next_row);
-			row_indexes();
 		});
 
 		var multiselectClicked = function(){
@@ -310,9 +406,10 @@ jQuery( function($){
 			}
 		};
 
-		jQuery('div.multiselect input').click(multiselectClicked);
+		$('.multiselect input').click(multiselectClicked);
 
-		jQuery('div.multiselect-controls a').click(function(){
+		$('.multiselect-controls a').click(function(e) {
+			e.preventDefault();
 			var items = $(this).parent().prev().find('input[type=checkbox]');
 			if ($(this).hasClass('toggle')){
 				items.each(function(){
@@ -325,9 +422,36 @@ jQuery( function($){
 			} else if ($(this).hasClass('uncheck-all')){
 				items.attr('checked', false);
 				items.parent().removeClass('selected');
+			} else if ($(this).hasClass('show-all')) {
+				$(this).parent().prev().addClass('show_all_enabled');
+				$(this).remove();
 			}
-			return false;
 		});
+	}
 
+	function jigoshop_file_upload() {
+		$('.upload_file_button').click( function(e) {
 
-});
+			// Disable default action
+			e.preventDefault();
+
+			// Set up variables
+			var $this   = $(this);
+			    $file   = $this.prev();
+			    post_id = $this.data('postid');
+
+			window.send_to_editor = function(html) {
+
+				// Attach the file URI to the relevant 
+				$file.val( $(html).attr('href') );
+
+				// Hide thickbox
+				tb_remove();
+			}
+			
+			// Show thickbox
+			tb_show('', 'media-upload.php?post_id=' + post_id + '&type=downloadable_product&from=jigoshop_product&TB_iframe=true');
+		});
+	}
+
+})(window.jQuery);
