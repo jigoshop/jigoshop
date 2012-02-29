@@ -27,7 +27,7 @@ class jigoshop_tax {
     private $total_tax_rate;
     private $shipping_tax_class;
     private $has_tax;
-
+    
     /**
      * sets up current tax class without a divisor. May or may not have
      * args.
@@ -296,11 +296,12 @@ class jigoshop_tax {
      */
     public function calculate_tax_amounts($total_item_price, $tax_classes, $prices_include_tax = true) {
         $tax_amount = array();
+        $tax_classes_applied = array();
         $non_compound_tax_amount = 0;
         $total_tax = 0;
 
         // using order of tax classes for customer since order is important
-        if ($this->get_tax_classes_for_customer())
+        if ($this->get_tax_classes_for_customer()) :
             foreach ($this->get_tax_classes_for_customer() as $tax_class) :
 
                 // make sure that the product is charging this particular tax_class.
@@ -314,6 +315,7 @@ class jigoshop_tax {
 
                     if ($this->has_tax && $tax > 0) :
                         $this->update_tax_amount($tax_class, $tax, false);
+                        $tax_classes_applied[] = $tax_class;
                     elseif ($tax > 0) :
                         $tax_amount[$tax_class]['amount'] = $tax;
                         $tax_amount[$tax_class]['rate'] = $rate;
@@ -321,7 +323,7 @@ class jigoshop_tax {
                         $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
                         $non_compound_tax_amount += $tax;
                         $total_tax += $tax;
-
+                        $tax_classes_applied[] = $tax_class;
                     endif;
 
                 else :
@@ -329,35 +331,40 @@ class jigoshop_tax {
 
                     if ($this->has_tax && $tax > 0) :
                         $this->update_tax_amount($tax_class, $tax, false);
+                        $tax_classes_applied[] = $tax_class;
                     elseif ($tax > 0) :
                         $tax_amount[$tax_class]['amount'] = $tax;
                         $tax_amount[$tax_class]['rate'] = $rate;
                         $tax_amount[$tax_class]['compound'] = true;
                         $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
                         $total_tax += $tax;
+                        $tax_classes_applied[] = $tax_class;
                     endif;
 
                 endif;
 
             endforeach;
+        endif;
+        
+        // only update when we haven't calculated taxes yet. Otherwise, if we have
+        // taxes already, then the call is made to update tax
+        if ( empty($this->tax_amounts) ) :
+            $this->has_tax = true;
+            $this->non_compound_tax_amount = $non_compound_tax_amount;
+            $this->tax_amounts = $tax_amount;
+            $this->imploded_tax_amounts = $this->array_implode($this->tax_amounts);
 
-            // only update when we haven't calculated taxes yet. Otherwise, if we have
-            // taxes already, then the call is made to update tax
-            if ( empty($this->tax_amounts) ) :
-                $this->has_tax = true;
-                $this->non_compound_tax_amount = $non_compound_tax_amount;
-                $this->tax_amounts = $tax_amount;
-                $this->imploded_tax_amounts = $this->array_implode($this->tax_amounts);
-
-                $tax_rate = 0;
-                if ($total_item_price) :
-                    $tax_rate = ($prices_include_tax ? round($total_tax / ($total_item_price - $total_tax) * 100, 2) : round($total_tax / $total_item_price * 100, 2));
-                endif;
-
-                $this->total_tax_rate = $tax_rate;
-
+            $tax_rate = 0;
+            if ($total_item_price) :
+                $tax_rate = ($prices_include_tax ? round($total_tax / ($total_item_price - $total_tax) * 100, 2) : round($total_tax / $total_item_price * 100, 2));
             endif;
 
+            $this->total_tax_rate = $tax_rate;
+
+        endif;
+            
+        return $tax_classes_applied;
+        
     }
 
     /**
@@ -400,6 +407,8 @@ class jigoshop_tax {
         if ($this->shipping_tax_class) :
             $this->update_tax_amount($this->shipping_tax_class, round($tax_amount), false);
         endif;
+        
+        return $this->shipping_tax_class;
     }
 
     public function update_tax_amount($tax_class, $amount, $recalculate_tax = true) {

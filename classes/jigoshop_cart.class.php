@@ -35,6 +35,7 @@ class jigoshop_cart extends jigoshop_singleton {
     public static $cart_contents;
 
     private static $subtotal_inc_tax;
+    private static $price_per_tax_class_ex_tax;
     private static $tax;
 
     /** constructor */
@@ -368,6 +369,7 @@ class jigoshop_cart extends jigoshop_singleton {
         self::$cart_contents_total_ex_dl = 0; /* for table rate shipping */
         self::$subtotal_inc_tax = 0;
         self::$tax = new jigoshop_tax(100);
+        self::$price_per_tax_class_ex_tax = array(); /* currently used with norway */
         jigoshop_shipping::reset_shipping();
     }
 
@@ -396,15 +398,16 @@ class jigoshop_cart extends jigoshop_singleton {
                 $total_item_price = $_product->get_price() * $values['quantity'] * 100; // Into pounds
 
                 if (get_option('jigoshop_calc_taxes') == 'yes') :
-
+                    
+                    $tax_classes_applied = array();
                     if ($_product->is_taxable()) :
 
                         if (get_option('jigoshop_prices_include_tax') == 'yes' && jigoshop_customer::is_customer_shipping_outside_base() && (get_option('jigoshop_enable_shipping_calc')=='yes' ||  (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT ))) :
 
                             $total_item_price = $_product->get_price_excluding_tax() * $values['quantity'] * 100;
 
-                            self::$tax->calculate_tax_amounts($total_item_price, $_product->get_tax_classes(), false);
-
+                            $tax_classes_applied = self::$tax->calculate_tax_amounts($total_item_price, $_product->get_tax_classes(), false);
+                            
                             // now add customer taxes back into the total item price because customer is outside base
                             // and we asked to have prices include taxes
                             foreach (self::get_applied_tax_classes() as $tax_class) :
@@ -412,8 +415,15 @@ class jigoshop_cart extends jigoshop_singleton {
                             endforeach;
 
                         else :
-                            self::$tax->calculate_tax_amounts($total_item_price, $_product->get_tax_classes(), get_option('jigoshop_prices_include_tax') == 'yes');
+                            $tax_classes_applied = self::$tax->calculate_tax_amounts($total_item_price, $_product->get_tax_classes(), get_option('jigoshop_prices_include_tax') == 'yes');
                         endif;
+
+                        // reason we cannot use get_applied_tax_classes is because we may not have applied
+                        // all tax classes for this product. get_applied_tax_classes will return all of the tax
+                        // classes that have been applied on all products
+                        foreach ($tax_classes_applied as $tax_class) :
+                            self::$price_per_tax_class_ex_tax[$tax_class] += ($_product->get_price_excluding_tax() * $values['quantity']);
+                        endforeach;
 
                     endif;
 
@@ -477,8 +487,12 @@ class jigoshop_cart extends jigoshop_singleton {
         if (get_option('jigoshop_calc_taxes') == 'yes') :
             self::$shipping_tax_total = jigoshop_shipping::get_tax();
 
-            self::$tax->update_tax_amount_with_shipping_tax(self::$shipping_tax_total * 100);
+            $shipping_tax_class = self::$tax->update_tax_amount_with_shipping_tax(self::$shipping_tax_total * 100);
 
+            if ($shipping_tax_class) :
+                self::$price_per_tax_class_ex_tax[$shipping_tax_class] += self::$shipping_total;
+            endif;
+            
             if (self::$tax->is_shipping_tax_non_compounded() && get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
                 self::$subtotal_inc_tax += self::$shipping_tax_total;
             endif;
@@ -538,6 +552,11 @@ class jigoshop_cart extends jigoshop_singleton {
             self::$total = 0;
     }
 
+    // will return an empty array if taxes are not calculated
+    public static function get_price_per_tax_class_ex_tax() {
+        return self::$price_per_tax_class_ex_tax;
+    }
+    
     /** gets cart contents total excluding tax. Shipping methods use this, and the contents total are calculated ahead of shipping */
     public static function get_cart_contents_total_excluding_tax() {
         return self::$cart_contents_total_ex_tax;

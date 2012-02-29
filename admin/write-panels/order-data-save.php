@@ -64,7 +64,8 @@ function jigoshop_process_shop_order_meta($post_id, $post)
         'order_discount_coupons',
         'order_tax',
         'order_shipping_tax',
-        'order_total'
+        'order_total',
+        'order_total_prices_per_tax_class_ex_tax'
     );
 
     //run stripslashes on all valid fields
@@ -119,6 +120,7 @@ function jigoshop_process_shop_order_meta($post_id, $post)
                 'name' => htmlspecialchars(stripslashes($item_name[$i])),
                 'qty' => (int) $item_quantity[$i],
                 'cost' => number_format((float)jigowatt_clean($item_cost[$i]), 2),
+                'cost_inc_tax' => -1, //TODO: need to look at this action when manually adding order
                 'taxrate' => number_format((float)jigowatt_clean($item_tax_rate[$i]), 4)
                 ));
         }
