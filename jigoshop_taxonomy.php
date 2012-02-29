@@ -343,7 +343,7 @@ function jigoshop_delete_product_cat($term_id) {
 	if(!$term_id) return;
 
 	global $wpdb;
-	$wpdb->query("DELETE FROM {$wpdb->jigoshop_termmeta} WHERE `jigoshop_term_id` = " . $term_id);
+	$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->jigoshop_termmeta} WHERE `jigoshop_term_id` = %d", $term_id ) );
 
 }
 add_action("delete_product_cat", 'jigoshop_delete_product_cat');

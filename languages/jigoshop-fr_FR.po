@@ -4,12 +4,12 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-07-01 12:21+1100\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Laurent Dinclaux <lox@knc.nc>\n"
+"Last-Translator: Franck Lemarié <flemarie@aprogia.com>\n"
 "Language-Team: Gecka Apps <contact@gecka-apps.com>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-Country: FRENCH\n"
@@ -35,37 +35,37 @@ msgstr "Chercher une categorie de produits"
 # @ jigoshop
 #: jigoshop_taxonomy.php:28
 msgid "All Product Categories"
-msgstr "Toutes les catégories"
+msgstr "Toutes les cat&eacute;gories"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:29
 msgid "Parent Product Category"
-msgstr "Catégorie de produits parente"
+msgstr "Cat&eacute;gorie de produits parente"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:30
 msgid "Parent Product Category:"
-msgstr "Catégorie de produits parente:"
+msgstr "Cat&eacute;gorie de produits parente :"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:31
 msgid "Edit Product Category"
-msgstr "Modifier la catégorie de produits"
+msgstr "Modifier la cat&eacute;gorie de produits"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:32
 msgid "Update Product Category"
-msgstr "Mettre à jour la catégorie de produits"
+msgstr "Mettre &agrave; jour la cat&eacute;gorie de produits"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:33
 msgid "Add New Product Category"
-msgstr "Ajouter une nouvelle catégorie de produits"
+msgstr "Ajouter une nouvelle cat&eacute;gorie de produits"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:34
 msgid "New Product Category Name"
-msgstr "Nom de la nouvelle catégorie de produits"
+msgstr "Nom de la nouvelle cat&eacute;gorie de produits"
 
 #: jigoshop_taxonomy.php:38
 msgctxt "slug"
@@ -111,7 +111,7 @@ msgstr "Modifier le mot-clef de produit"
 # @ jigoshop
 #: jigoshop_taxonomy.php:54
 msgid "Update Product Tag"
-msgstr "Mettre à jour le mot-clef de produits"
+msgstr "Mettre &agrave; jour le mot-clef de produits"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:55
@@ -158,7 +158,7 @@ msgstr "Modifier"
 #: jigoshop_taxonomy.php:84
 #: jigoshop.php:178
 msgid "Update "
-msgstr "Mettre à jour"
+msgstr "Mettre &agrave; jour"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:85
@@ -222,12 +222,12 @@ msgstr "Checher dans les produits"
 # @ jigoshop
 #: jigoshop_taxonomy.php:112
 msgid "No Products found"
-msgstr "Aucun produit trouvé"
+msgstr "Aucun produit trouv&eacute;"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:113
 msgid "No Products found in trash"
-msgstr "Aucun produit trouvé dans la corbeille"
+msgstr "Aucun produit trouv&eacute; dans la corbeille"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:114
@@ -237,7 +237,7 @@ msgstr "Produit parent"
 # @ jigoshop
 #: jigoshop_taxonomy.php:116
 msgid "This is where you can add new products to your store."
-msgstr "D'ici vous pouvez ajouter de nouveaux produits à votre boutique."
+msgstr "D'ici vous pouvez ajouter de nouveaux produits &agrave; votre boutique."
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:145
@@ -283,12 +283,12 @@ msgstr "Chercher dans les comandes"
 # @ jigoshop
 #: jigoshop_taxonomy.php:155
 msgid "No Orders found"
-msgstr "Aucune commande trouvée."
+msgstr "Aucune commande trouv&eacute;e."
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:156
 msgid "No Orders found in trash"
-msgstr "Aucune commande trouvée dans la corbeille."
+msgstr "Aucune commande trouv&eacute;e dans la corbeille."
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:157
@@ -298,12 +298,12 @@ msgstr "Commandes parentes"
 # @ jigoshop
 #: jigoshop_taxonomy.php:159
 msgid "This is where store orders are stored."
-msgstr "C'est ici que sont enregistrées les commandes de votre boutique."
+msgstr "C'est ici que sont enregistr&eacute;es les commandes de votre boutique."
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:181
 msgid "Order statuses"
-msgstr "État des commandes"
+msgstr "&Eacute;tat des commandes"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:182
@@ -313,42 +313,42 @@ msgstr "Etat de la commande"
 # @ jigoshop
 #: jigoshop_taxonomy.php:183
 msgid "Search Order statuses"
-msgstr "Rechercher dans les états de commandes"
+msgstr "Rechercher dans les &eacute;tats de commandes"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:184
 msgid "All  Order statuses"
-msgstr "Tous les états de commandes"
+msgstr "Tous les &eacute;tats de commandes"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:185
 msgid "Parent Order status"
-msgstr "État de la commande parente"
+msgstr "&Eacute;tat de la commande parente"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:186
 msgid "Parent Order status:"
-msgstr "État de la commande parente:"
+msgstr "&Eacute;tat de la commande parente:"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:187
 msgid "Edit Order status"
-msgstr "Modifier l'état de commandes"
+msgstr "Modifier l'&eacute;tat de commandes"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:188
 msgid "Update Order status"
-msgstr "Mettre à jour l'état de commandes"
+msgstr "Mettre &agrave; jour l'&eacute;tat de commandes"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:189
 msgid "Add New Order status"
-msgstr "Ajouter un nouvel état de commande"
+msgstr "Ajouter un nouvel &eacute;tat de commande"
 
 # @ jigoshop
 #: jigoshop_taxonomy.php:190
 msgid "New Order status Name"
-msgstr "Nom du nouvel état de commandes"
+msgstr "Nom du nouvel &eacute;tat de commandes"
 
 #: jigoshop_template_functions.php:25
 msgid "Sale!"
@@ -370,7 +370,7 @@ msgstr "Suivant <span class=\"meta-nav\">&rarr;</span>"
 # @ jigoshop
 #: jigoshop_template_functions.php:285
 msgid "<span class=\"meta-nav\">&larr;</span> Previous"
-msgstr "<span class=\"meta-nav\">&larr;</span> Précédent"
+msgstr "<span class=\"meta-nav\">&larr;</span> Pr&eacute;c&eacute;dent"
 
 # @ jigoshop
 #: jigoshop_template_functions.php:299
@@ -406,19 +406,19 @@ msgstr "Calculer les frais de port"
 # @ jigoshop
 #: jigoshop_template_functions.php:417
 msgid "Select a country&hellip;"
-msgstr "Sélectionnez un pays&hellip;"
+msgstr "S&eacute;lectionnez un pays&hellip;"
 
 # @ jigoshop
 #: jigoshop_template_functions.php:438
 #: assets/js/script.js.php:108
 msgid "Select a state&hellip;"
-msgstr "Sélectionner un état&hellip;"
+msgstr "S&eacute;lectionner un &eacute;tat&hellip;"
 
 # @ jigoshop
 #: jigoshop_template_functions.php:450
 #: assets/js/script.js.php:114
 msgid "state"
-msgstr "état"
+msgstr "&eacute;tat"
 
 # @ jigoshop
 #: jigoshop_template_functions.php:456
@@ -433,7 +433,7 @@ msgstr "Code postal"
 # @ jigoshop
 #: jigoshop_template_functions.php:459
 msgid "Update Totals"
-msgstr "Mettre à jour les totaux"
+msgstr "Mettre &agrave; jour les totaux"
 
 # @ jigoshop
 #: jigoshop_template_functions.php:479
@@ -452,12 +452,12 @@ msgstr "Connectez-vous"
 
 #: jigoshop_template_functions.php:491
 msgid "Lost Password?"
-msgstr "Mot de passe oublié?"
+msgstr "Mot de passe oubli&eacute;?"
 
 # @ jigoshop
 #: jigoshop_template_functions.php:506
 msgid "Already registered?"
-msgstr "Déjà enregistré?"
+msgstr "D&eacute;j&agrave; enregistr&eacute;?"
 
 # @ jigoshop
 #: jigoshop_template_functions.php:506
@@ -472,13 +472,13 @@ msgstr "Accueil"
 # @ jigoshop
 #: jigoshop_template_functions.php:573
 msgid "Products tagged &ldquo;"
-msgstr "Produits marqués &ldquo;"
+msgstr "Produits marqu&eacute;s &ldquo;"
 
 # @ jigoshop
 #: jigoshop_template_functions.php:596
 #: jigoshop_template_functions.php:681
 msgid "Search results for &ldquo;"
-msgstr "Résultat de recherche pour &ldquo;"
+msgstr "R&eacute;sultat de recherche pour &ldquo;"
 
 # @ jigoshop
 #: jigoshop_template_functions.php:645
@@ -488,7 +488,7 @@ msgstr "Erreur 404"
 # @ jigoshop
 #: jigoshop_template_functions.php:685
 msgid "Posts tagged &ldquo;"
-msgstr "Articles marqués  &ldquo;"
+msgstr "Articles marqu&eacute;s  &ldquo;"
 
 # @ jigoshop
 #: jigoshop_template_functions.php:690
@@ -503,14 +503,14 @@ msgstr "Page"
 # @ jigoshop
 #: jigoshop_actions.php:33
 #: jigoshop_actions.php:45
-#, php-format
-msgid "<a href=\"%s\" class=\"button\">View Cart &rarr;</a> Product successfully added to your cart."
-msgstr "<a href=\"%s\" class=\"button\">Voir le panier &rarr;</a> L'article a correctement été ajouté à votre panier."
+#, fuzzy, php-format
+msgid "<a href=\"%s\" class=\"button\">View Cart &rarr;</a> Product successfully added to your basket."
+msgstr "<a href=\"%s\" class=\"button\">Voir le panier &rarr;</a> L'article a correctement &eacute;t&eacute; ajout&eacute; &agrave; votre panier."
 
 # @ jigoshop
 #: jigoshop_actions.php:51
 msgid "Please choose a quantity&hellip;"
-msgstr "Merci de choisir une quantité&hellip;"
+msgstr "Merci de choisir une quantit&eacute;&hellip;"
 
 # @ jigoshop
 #: jigoshop_actions.php:57
@@ -530,17 +530,17 @@ msgstr "Le mot de passe  est obligatoire."
 # @ jigoshop
 #: jigoshop_actions.php:190
 msgid "Order cancelled by customer."
-msgstr "Commande annulée par le client."
+msgstr "Commande annul&eacute;e par le client."
 
 # @ jigoshop
 #: jigoshop_actions.php:193
 msgid "Your order was cancelled."
-msgstr "Votre commande a été annulée."
+msgstr "Votre commande a &eacute;t&eacute; annul&eacute;e."
 
 # @ jigoshop
 #: jigoshop_actions.php:197
 msgid "Your order is no longer pending and could not be cancelled. Please contact us if you need assistance."
-msgstr "Votre commande n'est plus en attente et n'a donc pas pu être annulée. Merci de nous contacter si vous avez besoin d'aide."
+msgstr "Votre commande n'est plus en attente et n'a donc pas pu &ecirc;tre annul&eacute;e. Merci de nous contacter si vous avez besoin d'aide."
 
 # @ jigoshop
 #: jigoshop_actions.php:201
@@ -551,14 +551,14 @@ msgstr "Commande invalide."
 #: jigoshop_actions.php:238
 #, php-format
 msgid "Sorry, you have reached your download limit for this file. <a href=\"%s\">Go to homepage &rarr;</a>"
-msgstr "Désolé, vous avez atteint votre limite de téléchargement pour ce fichier. <a href=\"%s\">Retour à l'accueil &rarr;</a>"
+msgstr "D&eacute;sol&eacute;, vous avez atteint votre limite de t&eacute;l&eacute;chargement pour ce fichier. <a href=\"%s\">Retour &agrave; l'accueil &rarr;</a>"
 
 # @ jigoshop
 #: jigoshop_actions.php:271
 #: jigoshop_actions.php:299
 #, php-format
 msgid "File not found. <a href=\"%s\">Go to homepage &rarr;</a>"
-msgstr "Fichier introuvable. <a href=\"%s\">Retour à l'accueil &rarr;</a>"
+msgstr "Fichier introuvable. <a href=\"%s\">Retour &agrave; l'accueil &rarr;</a>"
 
 # @ jigoshop
 #: jigoshop_emails.php:22
@@ -569,7 +569,7 @@ msgstr "[%s] Nouvelle commande client (# %s)"
 # @ jigoshop
 #: jigoshop_emails.php:24
 msgid "You have received an order from "
-msgstr "Vous avez reçu une commande de"
+msgstr "Vous avez re&ccedil;u une commande de"
 
 # @ jigoshop
 #: jigoshop_emails.php:24
@@ -651,7 +651,7 @@ msgstr "E-mail:"
 #: jigoshop_emails.php:108
 #: jigoshop_emails.php:168
 msgid "Tel:"
-msgstr "Tèl:"
+msgstr "T&egrave;l:"
 
 # @ jigoshop
 #: jigoshop_emails.php:52
@@ -670,22 +670,22 @@ msgstr "ADRESSE DE LIVRAISON"
 # @ jigoshop
 #: jigoshop_emails.php:83
 msgid "Order Received"
-msgstr "Commande reçue"
+msgstr "Commande re&ccedil;ue"
 
 # @ jigoshop
 #: jigoshop_emails.php:85
 msgid "Thank you, we are now processing your order. Your order's details are below:"
-msgstr "Merci, nous allons traiter votre commande. Le détail de votre commande est le suivant:"
+msgstr "Merci, nous allons traiter votre commande. Le d&eacute;tail de votre commande est le suivant:"
 
 # @ jigoshop
 #: jigoshop_emails.php:143
 msgid "Order Complete"
-msgstr "Commande terminée"
+msgstr "Commande termin&eacute;e"
 
 # @ jigoshop
 #: jigoshop_emails.php:145
 msgid "Your order is complete. Your order's details are below:"
-msgstr "Votre commande est terminée. Le détail de votre commande est le suivant:"
+msgstr "Votre commande est termin&eacute;e. Le d&eacute;tail de votre commande est le suivant:"
 
 # @ jigoshop
 #: jigoshop_emails.php:201
@@ -696,7 +696,7 @@ msgstr "Payer la commande"
 #: jigoshop_emails.php:203
 #, php-format
 msgid "An order has been created for you on &ldquo;%s&rdquo;. To pay for this order please use the following link: %s"
-msgstr "Une commande vous a été crée sur &ldquo;%s&rdquo;. Pour effectuer votre paiment merci d'utiliser ce lien: %s"
+msgstr "Une commande vous a &eacute;t&eacute; cr&eacute;e sur &ldquo;%s&rdquo;. Pour effectuer votre paiment merci d'utiliser ce lien: %s"
 
 # @ jigoshop
 #: jigoshop_emails.php:232
@@ -721,21 +721,21 @@ msgstr "est en rupture de stock."
 # @ jigoshop
 #: jigoshop_emails.php:256
 msgid "Product Backorder"
-msgstr "Produit en pré-commande"
+msgstr "Produit en pr&eacute;-commande"
 
 # @ jigoshop
 #: jigoshop_emails.php:257
 msgid " units of #"
-msgstr "unités de #"
+msgstr "unit&eacute;s de #"
 
 # @ jigoshop
 #: jigoshop_emails.php:257
 msgid "have been backordered."
-msgstr "a été pré-commandé."
+msgstr "a &eacute;t&eacute; pr&eacute;-command&eacute;."
 
 #: jigoshop.php:293
 msgid "This is a demo store for testing purposes &mdash; no orders shall be fulfilled."
-msgstr "C'est une boutique de démonstration à des fins de tests &mdash; aucune commande ne doit être effectuée."
+msgstr "C'est une boutique de d&eacute;monstration &agrave; des fins de tests &mdash; aucune commande ne doit &ecirc;tre effectu&eacute;e."
 
 # @ jigoshop
 #: jigoshop.php:413
@@ -744,7 +744,7 @@ msgstr " <small>(HT)</small>"
 
 #: jigoshop.php:497
 msgid "You have taken too long. Please go back and refresh the page."
-msgstr "Vous avez mis trop de temps. Merci de revenir en arière et de rafraichir la page."
+msgstr "Vous avez mis trop de temps. Merci de revenir en ari&egrave;re et de rafraichir la page."
 
 # @ jigowatt
 #: jigoshop.php:500
@@ -759,7 +759,7 @@ msgstr "sur 5"
 # @ jigoshop
 #: jigoshop.php:522
 msgid "Your comment is awaiting approval"
-msgstr "Votre commentaire est en attente de modération"
+msgstr "Votre commentaire est en attente de mod&eacute;ration"
 
 # @ jigoshop
 #: jigoshop.php:525
@@ -808,7 +808,7 @@ msgstr "Nom du mode"
 # @ jigoshop
 #: shipping/free_shipping.php:44
 msgid "Users will need to spend this amount to get free shipping. Leave blank to disable."
-msgstr "Les utilisateurs devront commander pour ce montant minimum pour bénéficier de la livraison gratuite. Laisser vide pour désactiver cette fonctionnalité."
+msgstr "Les utilisateurs devront commander pour ce montant minimum pour b&eacute;n&eacute;ficier de la livraison gratuite. Laisser vide pour d&eacute;sactiver cette fonctionnalit&eacute;."
 
 # @ jigoshop
 #: shipping/free_shipping.php:44
@@ -825,7 +825,7 @@ msgstr "Mode disponible pour"
 #: shipping/free_shipping.php:53
 #: shipping/flat_rate.php:123
 msgid "All allowed countries"
-msgstr "Tous les pays autorisés"
+msgstr "Tous les pays autoris&eacute;s"
 
 # @ jigoshop
 #: shipping/free_shipping.php:54
@@ -833,7 +833,7 @@ msgstr "Tous les pays autorisés"
 #: shipping/flat_rate.php:124
 #: shipping/flat_rate.php:133
 msgid "Specific Countries"
-msgstr "Pays spécifiques"
+msgstr "Pays sp&eacute;cifiques"
 
 # @ jigoshop
 #: shipping/flat_rate.php:72
@@ -843,7 +843,7 @@ msgstr "Tarifs forfaitaires"
 # @ jigoshop
 #: shipping/flat_rate.php:72
 msgid "Flat rates let you define a standard rate per item, or per order."
-msgstr "Les taux forfaitaires vous permettent de définir un taux fixe par article, ou par commande."
+msgstr "Les taux forfaitaires vous permettent de d&eacute;finir un taux fixe par article, ou par commande."
 
 # @ jigoshop
 #: shipping/flat_rate.php:74
@@ -882,17 +882,17 @@ msgstr "Aucune"
 # @ jigoshop
 #: shipping/flat_rate.php:108
 msgid "Cost excluding tax. Enter an amount, e.g. 2.50."
-msgstr "Coût hors taxe. Saisir un montant, par exemple 2,50."
+msgstr "Co&ucirc;t hors taxe. Saisir un montant, par exemple 2,50."
 
 # @ jigoshop
 #: shipping/flat_rate.php:108
 msgid "Cost"
-msgstr "Coût"
+msgstr "Co&ucirc;t"
 
 # @ jigoshop
 #: shipping/flat_rate.php:114
 msgid "Fee excluding tax. Enter an amount, e.g. 2.50, or a percentage, e.g. 5%. Leave blank to disable."
-msgstr "Frais hors taxe. Entrez soit un montant, par exemple 2,50, soit un pourcentage, par exemple 5%. Laissez vide pour désactiver."
+msgstr "Frais hors taxe. Entrez soit un montant, par exemple 2,50, soit un pourcentage, par exemple 5%. Laissez vide pour d&eacute;sactiver."
 
 # @ jigoshop
 #: shipping/flat_rate.php:114
@@ -937,7 +937,7 @@ msgstr "En cours de traitement"
 # @ jigoshop
 #: admin/jigoshop-admin-dashboard.php:88
 msgid "Completed"
-msgstr "Terminées"
+msgstr "Termin&eacute;es"
 
 # @ jigoshop
 #: admin/jigoshop-admin-dashboard.php:94
@@ -947,7 +947,7 @@ msgstr "Vous utilisez"
 # @ jigoshop
 #: admin/jigoshop-admin-dashboard.php:102
 msgid "Recent Orders"
-msgstr "Commandes récentes"
+msgstr "Commandes r&eacute;centes"
 
 # @ jigoshop
 #: admin/jigoshop-admin-dashboard.php:122
@@ -984,7 +984,7 @@ msgstr "Stock faible"
 # @ jigoshop
 #: admin/jigoshop-admin-dashboard.php:191
 msgid "Out of Stock/Backorders"
-msgstr "En rupture/pré-commande"
+msgstr "En rupture/pr&eacute;-commande"
 
 # @ jigoshop
 #: admin/jigoshop-admin-dashboard.php:219
@@ -994,7 +994,7 @@ msgstr "Ventes mensuelles"
 # @ jigoshop
 #: admin/jigoshop-admin-dashboard.php:426
 msgid "Recent Product Reviews"
-msgstr "Commentaires produits récents"
+msgstr "Commentaires produits r&eacute;cents"
 
 # @ jigoshop
 #: admin/jigoshop-admin-dashboard.php:459
@@ -1004,7 +1004,7 @@ msgstr "Il n'y a pas encore de commentaire."
 # @ jigoshop
 #: admin/jigoshop-admin-dashboard.php:466
 msgid "Latest News"
-msgstr "Dernières nouvelles"
+msgstr "Derni&egrave;res nouvelles"
 
 # @ jigoshop
 #: admin/jigoshop-admin-dashboard.php:493
@@ -1021,7 +1021,7 @@ msgstr "F jS Y"
 #: admin/jigoshop-admin-dashboard.php:505
 #: admin/jigoshop-admin-dashboard.php:509
 msgid "No items found."
-msgstr "Aucun article trouvé."
+msgstr "Aucun article trouv&eacute;."
 
 # @ jigoshop
 #: admin/jigoshop-admin-dashboard.php:518
@@ -1046,7 +1046,7 @@ msgstr "Visite"
 
 #: admin/jigoshop-admin-dashboard.php:522
 msgid "Take a tour of the plugin"
-msgstr "Visite guidée de l'extension"
+msgstr "Visite guid&eacute;e de l'extension"
 
 #: admin/jigoshop-admin-dashboard.php:523
 msgid "Documentation"
@@ -1054,7 +1054,7 @@ msgstr "Documentation"
 
 #: admin/jigoshop-admin-dashboard.php:523
 msgid "Stuck? Read the plugin's documentation."
-msgstr "Coincé? Lisez la documentation du plugin."
+msgstr "Coinc&eacute;? Lisez la documentation du plugin."
 
 #: admin/jigoshop-admin-dashboard.php:524
 msgid "Forums"
@@ -1062,7 +1062,7 @@ msgstr "Forums"
 
 #: admin/jigoshop-admin-dashboard.php:524
 msgid "Help from the community or our dedicated support team."
-msgstr "Aide de la communauté ou notre équipe de support dédiée."
+msgstr "Aide de la communaut&eacute; ou notre &eacute;quipe de support d&eacute;di&eacute;e."
 
 #: admin/jigoshop-admin-dashboard.php:525
 msgid "Jigoshop Extensions"
@@ -1070,7 +1070,7 @@ msgstr "Extensions Jigoshop"
 
 #: admin/jigoshop-admin-dashboard.php:525
 msgid "Extend Jigoshop with extra plugins and modules."
-msgstr "Étendre Jigoshop avec des extensions et modules supplémentaires."
+msgstr "&Eacute;tendre Jigoshop avec des extensions et modules suppl&eacute;mentaires."
 
 #: admin/jigoshop-admin-dashboard.php:526
 msgid "Jigoshop Themes"
@@ -1078,7 +1078,7 @@ msgstr "Themes Jigoshop"
 
 #: admin/jigoshop-admin-dashboard.php:526
 msgid "Extend Jigoshop with themes."
-msgstr "Étendre Jigoshop avec des thèmes."
+msgstr "&Eacute;tendre Jigoshop avec des th&egrave;mes."
 
 # @ jigoshop
 #: admin/jigoshop-admin-dashboard.php:527
@@ -1096,7 +1096,7 @@ msgstr "Jigoshop sur Github"
 
 #: admin/jigoshop-admin-dashboard.php:528
 msgid "Help extend Jigoshop."
-msgstr "Aidez nous à améliorer Jigoshop."
+msgstr "Aidez nous &agrave; am&eacute;liorer Jigoshop."
 
 #: admin/jigoshop-admin-dashboard.php:529
 msgid "Jigoshop on WordPress.org"
@@ -1108,7 +1108,7 @@ msgstr "Notez nous!"
 
 #: admin/jigoshop-admin-dashboard.php:533
 msgid "Show your support &amp; Help promote Jigoshop!"
-msgstr "Montrez votre soutien &amp; aidez à promouvoir Jigoshop!"
+msgstr "Montrez votre soutien &amp; aidez &agrave; promouvoir Jigoshop!"
 
 # @ jigoshop
 #: admin/jigoshop-admin-dashboard.php:548
@@ -1205,7 +1205,7 @@ msgstr "Merci pour votre commande"
 # @ jigoshop
 #: admin/jigoshop-admin-settings.php:143
 msgid "Your settings have been saved."
-msgstr "Vos informations ont été enregistrées."
+msgstr "Vos informations ont &eacute;t&eacute; enregistr&eacute;es."
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings.php:160
@@ -1312,18 +1312,18 @@ msgstr "Appliquer aux frais de port"
 # @ jigoshop
 #: admin/jigoshop-admin-settings.php:395
 msgid "+ Add Tax Rule"
-msgstr "+ Ajouter une règle de taxe"
+msgstr "+ Ajouter une r&egrave;gle de taxe"
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings.php:421
 msgid "Delete this rule?"
-msgstr "Supprimer cette règle?"
+msgstr "Supprimer cette r&egrave;gle?"
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings.php:509
 #: admin/jigoshop-admin.php:42
 msgid "General Settings"
-msgstr "Réglages globaux"
+msgstr "R&eacute;glages globaux"
 
 # @ jigoshop
 #: admin/jigoshop-admin-attributes.php:113
@@ -1341,7 +1341,7 @@ msgstr "Modifier l'attribut"
 # @ jigoshop
 #: admin/jigoshop-admin-attributes.php:120
 msgid "Attribute taxonomy names cannot be changed; you may only change an attributes type."
-msgstr "Les noms des taxonomies ds attributs ne peuvent pas être changés; vous ne pouvez modifier que le type d'attributs."
+msgstr "Les noms des taxonomies ds attributs ne peuvent pas &ecirc;tre chang&eacute;s; vous ne pouvez modifier que le type d'attributs."
 
 # @ jigoshop
 #: admin/jigoshop-admin-attributes.php:124
@@ -1353,13 +1353,13 @@ msgstr "Type d'attribut"
 #: admin/jigoshop-admin-attributes.php:126
 #: admin/jigoshop-admin-attributes.php:222
 msgid "Select"
-msgstr "Sélection"
+msgstr "S&eacute;lection"
 
 # @ jigoshop
 #: admin/jigoshop-admin-attributes.php:127
 #: admin/jigoshop-admin-attributes.php:223
 msgid "Multiselect"
-msgstr "Sélection multiple"
+msgstr "S&eacute;lection multiple"
 
 # @ jigoshop
 #: admin/jigoshop-admin-attributes.php:128
@@ -1399,7 +1399,7 @@ msgstr "Ajouter un nouvel attribut"
 # @ jigoshop
 #: admin/jigoshop-admin-attributes.php:210
 msgid "Attributes let you define extra product data, such as size or colour. You can use these attributes in the shop sidebar using the \"layered nav\" widgets. Please note: you cannot rename an attribute later on."
-msgstr "Les attributs vous permettent de définir des données de produit supplémentaire, comme la taille ou la couleur. Vous pouvez utiliser ces attributs dans la barre latérale boutique en utilisant le widget \"layered nav\". Attention: vous ne pouvez pas renommer un attribut plus tard."
+msgstr "Les attributs vous permettent de d&eacute;finir des donn&eacute;es de produit suppl&eacute;mentaire, comme la taille ou la couleur. Vous pouvez utiliser ces attributs dans la barre lat&eacute;rale boutique en utilisant le widget \"layered nav\". Attention: vous ne pouvez pas renommer un attribut plus tard."
 
 # @ jigoshop
 #: admin/jigoshop-admin-attributes.php:214
@@ -1414,7 +1414,7 @@ msgstr "Ajouter un attribut"
 # @ jigoshop
 #: admin/jigoshop-admin-attributes.php:240
 msgid "Are you sure you want to delete this?"
-msgstr "Etes-vous sûr de vouloir supprimer cet élément?"
+msgstr "Etes-vous s&ucirc;r de vouloir supprimer cet &eacute;l&eacute;ment?"
 
 # @ jigoshop
 #: admin/jigoshop-admin-post-types.php:20
@@ -1429,7 +1429,7 @@ msgstr "ID/SKU"
 # @ jigoshop
 #: admin/jigoshop-admin-post-types.php:24
 msgid "Category"
-msgstr "Catégorie"
+msgstr "Cat&eacute;gorie"
 
 # @ jigoshop
 #: admin/jigoshop-admin-post-types.php:25
@@ -1440,7 +1440,7 @@ msgstr "Mots-clefs"
 #: admin/jigoshop-admin-post-types.php:26
 #: admin/write-panels/product-data.php:85
 msgid "Visibility"
-msgstr "Visibilité"
+msgstr "Visibilit&eacute;"
 
 # @ jigoshop
 #: admin/jigoshop-admin-post-types.php:27
@@ -1471,7 +1471,7 @@ msgstr "Changer"
 # @ jigoshop
 #: admin/jigoshop-admin-post-types.php:110
 msgid "Status"
-msgstr "État"
+msgstr "&Eacute;tat"
 
 # @ jigoshop
 #: admin/jigoshop-admin-post-types.php:114
@@ -1496,7 +1496,7 @@ msgstr "Facturation & livraison"
 # @ jigoshop
 #: admin/jigoshop-admin-post-types.php:120
 msgid "Order Cost"
-msgstr "Coût de la commande"
+msgstr "Co&ucirc;t de la commande"
 
 # @ jigoshop
 #: admin/jigoshop-admin-post-types.php:133
@@ -1529,7 +1529,7 @@ msgstr "E-mail de faturation:"
 # @ jigoshop
 #: admin/jigoshop-admin-post-types.php:166
 msgid "Billing Tel:"
-msgstr "Tèl. de faturation:"
+msgstr "T&egrave;l. de faturation:"
 
 # @ jigoshop
 #: admin/jigoshop-admin-post-types.php:190
@@ -1567,12 +1567,12 @@ msgstr "Total"
 #: admin/jigoshop-admin-post-types.php:295
 #: admin/jigoshop-admin-post-types.php:296
 msgid "Order updated."
-msgstr "Commande mise à jour."
+msgstr "Commande mise &agrave; jour."
 
 # @ jigoshop
 #: admin/jigoshop-admin-post-types.php:297
 msgid "Order published."
-msgstr "Commande publiée."
+msgstr "Commande publi&eacute;e."
 
 # @ jigoshop
 #: admin/jigoshop-admin-post-types.php:299
@@ -1582,7 +1582,7 @@ msgstr "Commande soumise."
 # @ jigoshop
 #: admin/jigoshop-admin-post-types.php:300
 msgid "Order draft updated."
-msgstr "Brouillon de la commande mis à jour."
+msgstr "Brouillon de la commande mis &agrave; jour."
 
 #: admin/jigoshop-admin.php:41
 msgid "Dashboard"
@@ -1591,17 +1591,17 @@ msgstr "Tableau de bord"
 # @ jigoshop
 #: admin/jigoshop-admin.php:42
 msgid "Settings"
-msgstr "Réglages"
+msgstr "R&eacute;glages"
 
 # @ jigoshop
 #: admin/jigoshop-admin.php:43
 msgid "System Info"
-msgstr "Infos Système"
+msgstr "Infos Syst&egrave;me"
 
 # @ jigoshop
 #: admin/jigoshop-admin.php:116
 msgid "System Information"
-msgstr "Informations Systèmes"
+msgstr "Informations Syst&egrave;mes"
 
 # @ jigoshop
 #: admin/jigoshop-admin.php:119
@@ -1611,7 +1611,7 @@ msgstr "Environnement"
 # @ jigoshop
 #: admin/jigoshop-admin.php:120
 msgid "Debugging"
-msgstr "Déboggage"
+msgstr "D&eacute;boggage"
 
 # @ jigoshop
 #: admin/jigoshop-admin.php:126
@@ -1646,7 +1646,7 @@ msgstr "Logiciel du serveur"
 # @ jigoshop
 #: admin/jigoshop-admin.php:162
 msgid "Debug Information"
-msgstr "Information de déboggage"
+msgstr "Information de d&eacute;boggage"
 
 # @ jigoshop
 #: admin/jigoshop-admin.php:166
@@ -1661,7 +1661,7 @@ msgstr "POST_MAX_SIZE"
 # @ jigoshop
 #: admin/jigoshop-admin.php:178
 msgid "WordPress Memory Limit"
-msgstr "Limite de mémoire de Wordpress"
+msgstr "Limite de m&eacute;moire de Wordpress"
 
 # @ jigoshop
 #: admin/jigoshop-admin.php:184
@@ -1700,16 +1700,16 @@ msgstr "Votre serveur ne supporte pas fsockopen."
 
 #: admin/jigoshop-admin.php:222
 msgid "You do not have sufficient permissions to access this page."
-msgstr "Vous n'avez pas les autorisations nécessaires pour accéder à cette page."
+msgstr "Vous n'avez pas les autorisations n&eacute;cessaires pour acc&eacute;der &agrave; cette page."
 
 #: admin/jigoshop-admin.php:224
 msgid "You have taken too long. Please go back and retry."
-msgstr "Vous avez mis trop de temps. Merci de revenir en arrière et de réessayer."
+msgstr "Vous avez mis trop de temps. Merci de revenir en arri&egrave;re et de r&eacute;essayer."
 
 # @ jigoshop
 #: admin/jigoshop-write-panels.php:29
 msgid "Product Data"
-msgstr "Données produit"
+msgstr "Donn&eacute;es produit"
 
 # @ jigoshop
 #: admin/jigoshop-write-panels.php:30
@@ -1719,12 +1719,12 @@ msgstr "Optons du type de produit"
 # @ jigoshop
 #: admin/jigoshop-write-panels.php:32
 msgid "Order Data"
-msgstr "Données de la commande"
+msgstr "Donn&eacute;es de la commande"
 
 # @ jigoshop
 #: admin/jigoshop-write-panels.php:33
 msgid "Order Items <small>&ndash; Note: if you edit quantities or remove items from the order you will need to manually change the item's stock levels.</small>"
-msgstr "Articles commandés <small>&ndash; Remarque: si vous modifiez les quantités ou supprimer des articles de la commande, vous devrez modifier manuellement la quantité en stock des articles concernés.</small>"
+msgstr "Articles command&eacute;s <small>&ndash; Remarque: si vous modifiez les quantit&eacute;s ou supprimer des articles de la commande, vous devrez modifier manuellement la quantit&eacute; en stock des articles concern&eacute;s.</small>"
 
 # @ jigoshop
 #: admin/jigoshop-write-panels.php:35
@@ -1734,12 +1734,12 @@ msgstr "Actions de commande"
 # @ jigoshop
 #: admin/jigoshop-write-panels.php:154
 msgid "Remove this item? If you have previously reduced this item's stock, or this order was submitted by a customer, will need to manually restore the item's stock."
-msgstr "Supprimer cet article? Si vous avez déjà réduit le stock de cet article ou bien que cette commande a été soumise par un client, aura besoin de restaurer manuellement le stock de l'article."
+msgstr "Supprimer cet article? Si vous avez d&eacute;j&agrave; r&eacute;duit le stock de cet article ou bien que cette commande a &eacute;t&eacute; soumise par un client, aura besoin de restaurer manuellement le stock de l'article."
 
 # @ jigoshop
 #: admin/jigoshop-write-panels.php:155
 msgid "Calc totals based on order items, discount amount, and shipping?"
-msgstr "Calculer les totaux basés sur les articles commandés, le montant de la remise, et les frais de port?"
+msgstr "Calculer les totaux bas&eacute;s sur les articles command&eacute;s, le montant de la remise, et les frais de port?"
 
 # @ jigoshop
 #: admin/jigoshop-write-panels.php:156
@@ -1762,12 +1762,12 @@ msgstr "Nom de l'article"
 #: admin/jigoshop-write-panels.php:160
 #: admin/write-panels/order-data.php:274
 msgid "Quantity e.g. 2"
-msgstr "Quantité ex 2"
+msgstr "Quantit&eacute; ex 2"
 
 # @ jigoshop
 #: admin/jigoshop-write-panels.php:161
 msgid "Cost per unit e.g. 2.99"
-msgstr "Coût unitaire ex 2.99"
+msgstr "Co&ucirc;t unitaire ex 2.99"
 
 # @ jigoshop
 #: admin/jigoshop-write-panels.php:162
@@ -1779,7 +1779,7 @@ msgstr "Taux de la taxe ex: 20.0000"
 #: admin/jigoshop-admin-settings-options.php:15
 #: admin/write-panels/product-data.php:39
 msgid "General"
-msgstr "Général"
+msgstr "G&eacute;n&eacute;ral"
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:17
@@ -1788,11 +1788,11 @@ msgstr "Options globales"
 
 #: admin/jigoshop-admin-settings-options.php:20
 msgid "Demo store"
-msgstr "Boutique de démonstration"
+msgstr "Boutique de d&eacute;monstration"
 
 #: admin/jigoshop-admin-settings-options.php:22
 msgid "Enable this option to show a banner at the top of the page stating its a demo store."
-msgstr "Activez cette option pour afficher un bandeau en haut de vos pages indiquant que c'est une boutique de démo."
+msgstr "Activez cette option pour afficher un bandeau en haut de vos pages indiquant que c'est une boutique de d&eacute;mo."
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:34
@@ -1802,7 +1802,7 @@ msgstr "Activer le champs SKU"
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:36
 msgid "Turning off the SKU field will give products an SKU of their post id."
-msgstr "Si vous désactiver le champs SKU, l'ID des produits sera utilisé comme valeur du champs SKU. "
+msgstr "Si vous d&eacute;sactiver le champs SKU, l'ID des produits sera utilis&eacute; comme valeur du champs SKU. "
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:48
@@ -1812,12 +1812,12 @@ msgstr "Activer le champs poids"
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:62
 msgid "Weight Unit"
-msgstr "Unité de poids"
+msgstr "Unit&eacute; de poids"
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:63
 msgid "This controls what unit you will define weights in."
-msgstr "Ce réglage contôle l'unité de poids de vos produits."
+msgstr "Ce r&eacute;glage cont&ocirc;le l'unit&eacute; de poids de vos produits."
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:70
@@ -1832,20 +1832,20 @@ msgstr "livre"
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:76
 msgid "Base Country/Region"
-msgstr "Pays/Région de base"
+msgstr "Pays/R&eacute;gion de base"
 
 #: admin/jigoshop-admin-settings-options.php:78
 msgid "This is the base country for your business. Tax rates will be based on this country."
-msgstr "C'est le pays de base de votre business. Les taux d'imposition seront basés sur ce pays."
+msgstr "C'est le pays de base de votre business. Les taux d'imposition seront bas&eacute;s sur ce pays."
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:86
 msgid "Allowed Countries"
-msgstr "Pays autorisés"
+msgstr "Pays autoris&eacute;s"
 
 #: admin/jigoshop-admin-settings-options.php:88
 msgid "These are countries that you are willing to ship to."
-msgstr "Ce sont les pays auquels vous souhaitez expédier vos produits."
+msgstr "Ce sont les pays auquels vous souhaitez exp&eacute;dier vos produits."
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:94
@@ -1860,7 +1860,7 @@ msgstr "Autoriser les commandes visiteurs?"
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:112
 msgid "Without guest checkout, all users will require an account in order to checkout."
-msgstr "Si vous désactivez les commandes visiteurs, ces derniers devront avoir un compte pour commander."
+msgstr "Si vous d&eacute;sactivez les commandes visiteurs, ces derniers devront avoir un compte pour commander."
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:124
@@ -1889,11 +1889,11 @@ msgstr "ShareThis est un petit widget social qui permet aux visiteurs de partage
 
 #: admin/jigoshop-admin-settings-options.php:148
 msgid "Disable Jigoshop frontend.css"
-msgstr "Désactiver la feuille de style frontend.css de Jigoshop"
+msgstr "D&eacute;sactiver la feuille de style frontend.css de Jigoshop"
 
 #: admin/jigoshop-admin-settings-options.php:150
 msgid "Useful if you want to disable Jigoshop styles and theme it yourself via your theme."
-msgstr "Utile si vous souhaitez désactiver les styles css de Jigoshop et souhaitez les définir vous même dans votre thème."
+msgstr "Utile si vous souhaitez d&eacute;sactiver les styles css de Jigoshop et souhaitez les d&eacute;finir vous m&ecirc;me dans votre th&egrave;me."
 
 #: admin/jigoshop-admin-settings-options.php:163
 msgid "Pages"
@@ -1925,7 +1925,7 @@ msgstr "Page payer"
 
 #: admin/jigoshop-admin-settings-options.php:189
 msgid "Your page should contain [jigoshop_pay] and usually have \"Checkout\" as the parent."
-msgstr "Votre page doit contenir [jigoshop_pay] et en général avoir \"Commander\" comme page parente."
+msgstr "Votre page doit contenir [jigoshop_pay] et en g&eacute;n&eacute;ral avoir \"Commander\" comme page parente."
 
 #: admin/jigoshop-admin-settings-options.php:198
 msgid "Thanks Page"
@@ -1933,7 +1933,7 @@ msgstr "Page de remerciement"
 
 #: admin/jigoshop-admin-settings-options.php:199
 msgid "Your page should contain [jigoshop_thankyou] and usually have \"Checkout\" as the parent."
-msgstr "Votre page doit contenir [jigoshop_thankyou] et en général avoir \"Commander\" comme page parente."
+msgstr "Votre page doit contenir [jigoshop_thankyou] et en g&eacute;n&eacute;ral avoir \"Commander\" comme page parente."
 
 #: admin/jigoshop-admin-settings-options.php:208
 msgid "My Account Page"
@@ -1949,7 +1949,7 @@ msgstr "Page de modification d'adresses"
 
 #: admin/jigoshop-admin-settings-options.php:219
 msgid "Your page should contain [jigoshop_edit_address] and usually have \"My Account\" as the parent."
-msgstr "Votre page doit contenir [jigoshop_edit_address] et en général avoir \"Mon compte\" comme page parente."
+msgstr "Votre page doit contenir [jigoshop_edit_address] et en g&eacute;n&eacute;ral avoir \"Mon compte\" comme page parente."
 
 #: admin/jigoshop-admin-settings-options.php:228
 msgid "View Order Page"
@@ -1957,7 +1957,7 @@ msgstr "Page des commandes"
 
 #: admin/jigoshop-admin-settings-options.php:229
 msgid "Your page should contain [jigoshop_view_order] and usually have \"My Account\" as the parent."
-msgstr "Votre page doit contenir [jigoshop_view_order] et en général avoir \"Mon compte\" comme page parente."
+msgstr "Votre page doit contenir [jigoshop_view_order] et en g&eacute;n&eacute;ral avoir \"Mon compte\" comme page parente."
 
 #: admin/jigoshop-admin-settings-options.php:238
 msgid "Change Password Page"
@@ -1965,7 +1965,7 @@ msgstr "Page de modification de mot de passe"
 
 #: admin/jigoshop-admin-settings-options.php:239
 msgid "Your page should contain [jigoshop_change_password] and usually have \"My Account\" as the parent."
-msgstr "Votre page doit contenir [jigoshop_change_password] et en général avoir \"Mon compte\" comme page parente."
+msgstr "Votre page doit contenir [jigoshop_change_password] et en g&eacute;n&eacute;ral avoir \"Mon compte\" comme page parente."
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:249
@@ -1991,15 +1991,15 @@ msgstr "IMPORTANT: Vous devez <a target='_blank' href='%s'>re-enregistrer vos pe
 
 #: admin/jigoshop-admin-settings-options.php:257
 msgid "This sets the base page of your shop. You should not change this value once you have launched your site otherwise you risk breaking urls of other sites pointing to yours, etc."
-msgstr "Ceci définit la page de base de votre boutique. Vous ne devrez pas changer ce réglage une fois que vous aurez lancé votre site, cela casserait les liens que les autres sites pourraient avoir vers le votre."
+msgstr "Ceci d&eacute;finit la page de base de votre boutique. Vous ne devrez pas changer ce r&eacute;glage une fois que vous aurez lanc&eacute; votre site, cela casserait les liens que les autres sites pourraient avoir vers le votre."
 
 #: admin/jigoshop-admin-settings-options.php:265
 msgid "Prepend shop categories/tags with base page?"
-msgstr "Préfixer les categories/mot-clefs avec la page de base?"
+msgstr "Pr&eacute;fixer les categories/mot-clefs avec la page de base?"
 
 #: admin/jigoshop-admin-settings-options.php:267
 msgid "If set to yes, categories will show up as your_base_page/shop_category instead of just shop_category."
-msgstr "Si définit à Oui, les permaliens des catégories seront de type page_de_base/categorie au lieu de seulement shop_category."
+msgstr "Si d&eacute;finit &agrave; Oui, les permaliens des cat&eacute;gories seront de type page_de_base/categorie au lieu de seulement shop_category."
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:279
@@ -2009,7 +2009,7 @@ msgstr "Page des conditions de vente"
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:280
 msgid "If you define a \"Terms\" page the customer will be asked if they accept them when checking out."
-msgstr "Si vous choisissez une page pour les conditions de vente, ils sera demandé aux clients des les accepter avant de commander."
+msgstr "Si vous choisissez une page pour les conditions de vente, ils sera demand&eacute; aux clients des les accepter avant de commander."
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:289
@@ -2023,9 +2023,8 @@ msgstr "Devise"
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:293
-#, php-format
 msgid "This controls what currency prices are listed at in the catalog, and which currency PayPal, and other gateways, will take payments in. See the list of supported <a target='_new' href='%s'>PayPal currencies</a>."
-msgstr "Ceci définit dans quelle devise les prix seront affichés dans la boutique, et dans quelle devise Paypal, et les autres passerelles, prendront les paiements."
+msgstr "Ceci d&eacute;finit la devise des prix affich&eacute;s dans la boutique, et quelle devise Paypal et les autres passerelles utiliseront pour les paiements."
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:300
@@ -2050,7 +2049,7 @@ msgstr "Dollars Australien (&#36;)"
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:304
 msgid "Brazilian Real (&#36;)"
-msgstr "Real brésilien (&#36;)"
+msgstr "Real br&eacute;silien (&#36;)"
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:305
@@ -2060,7 +2059,7 @@ msgstr "Dollars Canadien (&#36;)"
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:306
 msgid "Czech Koruna"
-msgstr "Couronne tchèque"
+msgstr "Couronne tch&egrave;que"
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:307
@@ -2080,7 +2079,7 @@ msgstr "Forint hongrois"
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:310
 msgid "Israeli Shekel"
-msgstr "Shekel israélien"
+msgstr "Shekel isra&eacute;lien"
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:311
@@ -2100,12 +2099,12 @@ msgstr "Peso mexicain (&#36;)"
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:314
 msgid "New Zealand Dollar (&#36;)"
-msgstr "Dollar néo-zélandais"
+msgstr "Dollar n&eacute;o-z&eacute;landais"
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:315
 msgid "Norwegian Krone"
-msgstr "Couronne norvégienne"
+msgstr "Couronne norv&eacute;gienne"
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:316
@@ -2125,7 +2124,7 @@ msgstr "Dollar de Singapour (&#36;)"
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:319
 msgid "Swedish Krona"
-msgstr "Couronne suédoise"
+msgstr "Couronne su&eacute;doise"
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:320
@@ -2140,7 +2139,7 @@ msgstr "Dollars Nouveaux de Taiwan "
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:322
 msgid "Thai Baht"
-msgstr "Baht thaïlandais"
+msgstr "Baht tha&iuml;landais"
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:328
@@ -2150,7 +2149,7 @@ msgstr "Position de la devise"
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:329
 msgid "This controls the position of the currency symbol."
-msgstr "Ceci définit la position du symbole de devise."
+msgstr "Ceci d&eacute;finit la position du symbole de devise."
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:336
@@ -2174,27 +2173,27 @@ msgstr "A droite (avec un espace)"
 
 #: admin/jigoshop-admin-settings-options.php:344
 msgid "Thousand separator"
-msgstr "Séparareur des milliers"
+msgstr "S&eacute;parareur des milliers"
 
 #: admin/jigoshop-admin-settings-options.php:345
 msgid "This sets the thousand separator of displayed prices."
-msgstr "Ceci définit le séparateur des milliers des prix affichés."
+msgstr "Ceci d&eacute;finit le s&eacute;parateur des milliers des prix affich&eacute;s."
 
 #: admin/jigoshop-admin-settings-options.php:354
 msgid "Decimal separator"
-msgstr "Séparateur des décimales"
+msgstr "S&eacute;parateur des d&eacute;cimales"
 
 #: admin/jigoshop-admin-settings-options.php:355
 msgid "This sets the decimal separator of displayed prices."
-msgstr "Ceci définit le séparateur des décimales des prix affichés."
+msgstr "Ceci d&eacute;finit le s&eacute;parateur des d&eacute;cimales des prix affich&eacute;s."
 
 #: admin/jigoshop-admin-settings-options.php:364
 msgid "Number of decimals"
-msgstr "Nombre de décimales"
+msgstr "Nombre de d&eacute;cimales"
 
 #: admin/jigoshop-admin-settings-options.php:365
 msgid "This sets the number of decimal points shown in displayed prices."
-msgstr "Ceci définit le nombre de décimales des prix affichés."
+msgstr "Ceci d&eacute;finit le nombre de d&eacute;cimales des prix affich&eacute;s."
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:375
@@ -2216,17 +2215,17 @@ msgstr "Options d'inventaire"
 #: admin/jigoshop-admin-settings-options.php:396
 #: admin/write-panels/product-data.php:152
 msgid "Manage stock?"
-msgstr "Gérer les stocks?"
+msgstr "G&eacute;rer les stocks?"
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:397
 msgid "If you are not managing stock, turn it off here to disable it in admin and on the front-end."
-msgstr "Si vous ne souhaitez pas gérer les stocks, désactivez cette option pour le désactiver dans l'admin et la boutique"
+msgstr "Si vous ne souhaitez pas g&eacute;rer les stocks, d&eacute;sactivez cette option pour le d&eacute;sactiver dans l'admin et la boutique"
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:398
 msgid "You can manage stock on a per-item basis if you leave this option on."
-msgstr "Vous pouvez gérer les stocks par produit si vous gardez cette option activée."
+msgstr "Vous pouvez g&eacute;rer les stocks par produit si vous gardez cette option activ&eacute;e."
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:410
@@ -2237,7 +2236,7 @@ msgstr "Notification de stock faible"
 #: admin/jigoshop-admin-settings-options.php:412
 #: admin/jigoshop-admin-settings-options.php:436
 msgid "Set the minimum threshold for this below."
-msgstr "Définissez le seuil minimum ci-dessous."
+msgstr "D&eacute;finissez le seuil minimum ci-dessous."
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:424
@@ -2262,7 +2261,7 @@ msgstr "Options de livraison"
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:465
 msgid "Only set this to no if you are not shipping items, or items have shipping costs included."
-msgstr "A ne désactiver uniquement si vous n'expédiez aucun article, ou que le prix de vos articles inclut les frais de port. "
+msgstr "A ne d&eacute;sactiver uniquement si vous n'exp&eacute;diez aucun article, ou que le prix de vos articles inclut les frais de port. "
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:466
@@ -2276,7 +2275,7 @@ msgstr "Activer le calcul des frais de port dans le panier"
 
 #: admin/jigoshop-admin-settings-options.php:492
 msgid "Only ship to billing address?"
-msgstr "Livrer uniquement à l'adresse de facturaton?"
+msgstr "Livrer uniquement &agrave; l'adresse de facturaton?"
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:511
@@ -2291,7 +2290,7 @@ msgstr "Cacluler les taxes"
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:515
 msgid "Only set this to no if you are exclusively selling non-taxable items."
-msgstr "A ne désactiver uniquement si vous vendez des produits non taxable."
+msgstr "A ne d&eacute;sactiver uniquement si vous vendez des produits non taxable."
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:516
@@ -2316,7 +2315,7 @@ msgstr "Affichage des totaux du panier..."
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:544
 msgid "Should the subtotal be shown including or excluding tax on the frontend?"
-msgstr "Le sous total sera montré HT ou TTC ?"
+msgstr "Le sous total sera montr&eacute; HT ou TTC ?"
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:550
@@ -2336,12 +2335,12 @@ msgstr "Classes additionnelles de taxes "
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:557
 msgid "List 1 per line. This is in addition to the default <em>Standard Rate</em>."
-msgstr "Lister 1 par ligne. Ceci est en plus du taux par défaut <em>Taux standard</em>."
+msgstr "Lister 1 par ligne. Ceci est en plus du taux par d&eacute;faut <em>Taux standard</em>."
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:558
 msgid "List product and shipping tax classes here, e.g. Zero Tax, Reduced Rate."
-msgstr "Listez les taxes sur produits et livraison ici, par exemple: Aucune taxe, Taxe réduite."
+msgstr "Listez les taxes sur produits et livraison ici, par exemple: Aucune taxe, Taxe r&eacute;duite."
 
 # @ jigoshop
 #: admin/jigoshop-admin-settings-options.php:566
@@ -2362,19 +2361,19 @@ msgstr "Reduite manuellement le stock."
 #: admin/write-panels/order-data-save.php:113
 #, php-format
 msgid "Item #%s stock reduced from %s to %s."
-msgstr "Le stock de l'article n°%s a été réduit de %s à %s"
+msgstr "Le stock de l'article n°%s a &eacute;t&eacute; r&eacute;duit de %s &agrave; %s"
 
 # @ jigoshop
 #: admin/write-panels/order-data-save.php:130
 #: admin/write-panels/order-data-save.php:160
 #, php-format
 msgid "Item %s %s not found, skipping."
-msgstr "Article %s %s non trouvé, suivant."
+msgstr "Article %s %s non trouv&eacute;, suivant."
 
 # @ jigoshop
 #: admin/write-panels/order-data-save.php:136
 msgid "Manual stock reduction complete."
-msgstr "Réduction manuelle du stock effectuée."
+msgstr "R&eacute;duction manuelle du stock effectu&eacute;e."
 
 # @ jigoshop
 #: admin/write-panels/order-data-save.php:140
@@ -2385,12 +2384,12 @@ msgstr "Restauration manuelle du stock"
 #: admin/write-panels/order-data-save.php:154
 #, php-format
 msgid "Item #%s stock increased from %s to %s."
-msgstr "Le stock de l'article n°%s à été augmenté de %s à %s"
+msgstr "Le stock de l'article n°%s &agrave; &eacute;t&eacute; augment&eacute; de %s &agrave; %s"
 
 # @ jigoshop
 #: admin/write-panels/order-data-save.php:166
 msgid "Manual stock restore complete."
-msgstr "Restauration manuelle du stock effectuée."
+msgstr "Restauration manuelle du stock effectu&eacute;e."
 
 # @ jigoshop
 #: admin/write-panels/product-data.php:40
@@ -2417,11 +2416,11 @@ msgstr "Simple"
 
 #: admin/write-panels/product-data.php:61
 msgid "Summary"
-msgstr "Résumé"
+msgstr "R&eacute;sum&eacute;"
 
 #: admin/write-panels/product-data.php:62
 msgid "Add a summary for your product &ndash; this is a quick description to encourage users to view the product."
-msgstr "Ajoutez un résumé de votre produit &ndash; c'est une description rapide afin d'encourager les visiteurs à consulter le produit."
+msgstr "Ajoutez un r&eacute;sum&eacute; de votre produit &ndash; c'est une description rapide afin d'encourager les visiteurs &agrave; consulter le produit."
 
 # @ jigoshop
 #: admin/write-panels/product-data.php:65
@@ -2455,7 +2454,7 @@ msgstr "Rechercher"
 
 #: admin/write-panels/product-data.php:90
 msgid "Hidden"
-msgstr "Caché"
+msgstr "Cach&eacute;"
 
 #: admin/write-panels/product-data.php:98
 msgid "Regular Price"
@@ -2501,12 +2500,12 @@ msgstr "Standard"
 # @ jigoshop
 #: admin/write-panels/product-data.php:167
 msgid "Stock Qty"
-msgstr "Quantité en stock"
+msgstr "Quantit&eacute; en stock"
 
 # @ jigoshop
 #: admin/write-panels/product-data.php:180
 msgid "Allow Backorders?"
-msgstr "Autoriser les pré-commandes?"
+msgstr "Autoriser les pr&eacute;-commandes?"
 
 #: admin/write-panels/product-data.php:182
 msgid "Do not allow"
@@ -2550,7 +2549,7 @@ msgstr "Choisir une option&hellip;"
 # @ jigoshop
 #: admin/write-panels/product-data.php:258
 msgid "Comma separate terms"
-msgstr "Éléments séparés par une virgule"
+msgstr "&Eacute;l&eacute;ments s&eacute;par&eacute;s par une virgule"
 
 # @ jigoshop
 #: admin/write-panels/product-data.php:296
@@ -2560,7 +2559,7 @@ msgstr "Ajouter"
 # @ jigoshop
 #: admin/write-panels/product-data.php:298
 msgid "Custom product attribute"
-msgstr "Attribut de produit personnalisé"
+msgstr "Attribut de produit personnalis&eacute;"
 
 #: admin/write-panels/medialibrary-uploader.php:19
 msgid "Options Framework Internal Container"
@@ -2581,7 +2580,7 @@ msgstr "Gallerie"
 
 #: admin/write-panels/medialibrary-uploader.php:265
 msgid "Previously Uploaded"
-msgstr "Précédemment Uploadé"
+msgstr "Pr&eacute;c&eacute;demment Upload&eacute;"
 
 # @ jigoshop
 #: admin/write-panels/order-data.php:77
@@ -2596,7 +2595,7 @@ msgstr "Adresse de livraison du client"
 # @ jigoshop
 #: admin/write-panels/order-data.php:85
 msgid "Order status:"
-msgstr "État de commande:"
+msgstr "&Eacute;tat de commande:"
 
 # @ jigoshop
 #: admin/write-panels/order-data.php:97
@@ -2611,7 +2610,7 @@ msgstr "Remarques du client:"
 # @ jigoshop
 #: admin/write-panels/order-data.php:115
 msgid "Customer's notes about the order"
-msgstr "Note du client à propos de la commande"
+msgstr "Note du client &agrave; propos de la commande"
 
 # @ jigoshop
 #: admin/write-panels/order-data.php:180
@@ -2626,7 +2625,7 @@ msgstr "ID Produit"
 # @ jigoshop
 #: admin/write-panels/order-data.php:262
 msgid "Quantity"
-msgstr "Quantité"
+msgstr "Quantit&eacute;"
 
 # @ jigoshop
 #: admin/write-panels/order-data.php:264
@@ -2635,7 +2634,7 @@ msgstr "Taux de la taxe"
 
 #: admin/write-panels/order-data.php:275
 msgid "Cost per unit ex. tax e.g. 2.99"
-msgstr "Coût unitaire hors-taxe, par exemple 2.99"
+msgstr "Co&ucirc;t unitaire hors-taxe, par exemple 2.99"
 
 # @ jigoshop
 #: admin/write-panels/order-data.php:285
@@ -2661,7 +2660,7 @@ msgstr "Livraison et manutention:"
 # @ jigoshop
 #: admin/write-panels/order-data.php:293
 msgid "Shipping method..."
-msgstr "Méthode de livraison..."
+msgstr "M&eacute;thode de livraison..."
 
 # @ jigoshop
 #: admin/write-panels/order-data.php:295
@@ -2681,7 +2680,7 @@ msgstr "Enregistrer la commande"
 # @ jigoshop
 #: admin/write-panels/order-data.php:324
 msgid "- Save/update the order."
-msgstr "- Sauver/mettre à jour la commande."
+msgstr "- Sauver/mettre &agrave; jour la commande."
 
 # @ jigoshop
 #: admin/write-panels/order-data.php:326
@@ -2691,7 +2690,7 @@ msgstr "Reduire le stock"
 # @ jigoshop
 #: admin/write-panels/order-data.php:326
 msgid "- Reduces stock for each item in the order; useful after manually creating an order or manually marking an order as complete/processing after payment."
-msgstr "- Réduit le stock pour chaque article de la commande; utile suite à la création manuelle d'une commande, ou lors du passage manuel d'une commande en terminée/en cours de traitement, suite à un paiement."
+msgstr "- R&eacute;duit le stock pour chaque article de la commande; utile suite &agrave; la cr&eacute;ation manuelle d'une commande, ou lors du passage manuel d'une commande en termin&eacute;e/en cours de traitement, suite &agrave; un paiement."
 
 # @ jigoshop
 #: admin/write-panels/order-data.php:327
@@ -2701,7 +2700,7 @@ msgstr "Retablir le stock"
 # @ jigoshop
 #: admin/write-panels/order-data.php:327
 msgid "- Restores stock for each item in the order; useful after refunding or canceling the entire order."
-msgstr "- Rétablit le stock pour chaque article de la commande; utile suite à un rembourssement ou une annulation d'une commande."
+msgstr "- R&eacute;tablit le stock pour chaque article de la commande; utile suite &agrave; un rembourssement ou une annulation d'une commande."
 
 # @ jigoshop
 #: admin/write-panels/order-data.php:329
@@ -2716,12 +2715,12 @@ msgstr "- envoie la commande au client par E-mail avec un lien pour effectuer le
 # @ default
 #: admin/write-panels/order-data.php:335
 msgid "Delete Permanently"
-msgstr "Supprimer définitivement"
+msgstr "Supprimer d&eacute;finitivement"
 
 # @ default
 #: admin/write-panels/order-data.php:337
 msgid "Move to Trash"
-msgstr "Déplacer dans la corbeille"
+msgstr "D&eacute;placer dans la corbeille"
 
 # @ jigoshop
 #: admin/write-panels/product-type.php:31
@@ -2742,7 +2741,7 @@ msgstr "Ordre"
 # @ jigoshop
 #: admin/write-panels/product-data-save.php:129
 msgid "Product SKU must be unique."
-msgstr "Le SKU doit être unique."
+msgstr "Le SKU doit &ecirc;tre unique."
 
 #: admin/write-panels/product-types/downloadable.php:27
 msgid "File path"
@@ -2756,20 +2755,20 @@ msgstr "chemin serveur vers le fichier"
 # @ jigoshop
 #: admin/write-panels/product-types/downloadable.php:34
 msgid "Download Limit"
-msgstr "Limite de téléchargement"
+msgstr "Limite de t&eacute;l&eacute;chargement"
 
 #: admin/write-panels/product-types/downloadable.php:37
 msgid "Leave blank for unlimited re-downloads."
-msgstr "Laisser vide pour un nombre de téléchargement illimité."
+msgstr "Laisser vide pour un nombre de t&eacute;l&eacute;chargement illimit&eacute;."
 
 # @ jigoshop
 #: admin/write-panels/product-types/downloadable.php:56
 msgid "Downloadable"
-msgstr "Téléchargeable"
+msgstr "T&eacute;l&eacute;chargeable"
 
 #: admin/write-panels/product-types/configurable.php:13
 msgid "Add pricing/inventory for product variations. All fields are optional; leave blank to use attributes from the main product data. <strong>Note:</strong> Please save your product attributes in the \"Product Data\" panel first."
-msgstr "Ajoute des variations de prix et de stocks pour le produit. Tous les champs sont optionnels; laisser vide pour utiliser les attributs du produit principal. <strong>Remarque:</strong> Merci d'enregistrer les attributs de produit dans le panneau \"Données produit\" au préalable."
+msgstr "Ajoute des variations de prix et de stocks pour le produit. Tous les champs sont optionnels; laisser vide pour utiliser les attributs du produit principal. <strong>Remarque:</strong> Merci d'enregistrer les attributs de produit dans le panneau \"Donn&eacute;es produit\" au pr&eacute;alable."
 
 #: admin/write-panels/product-types/configurable.php:19
 #: admin/write-panels/product-types/configurable.php:86
@@ -2802,7 +2801,7 @@ msgstr "Prix (ex: 5.99, -2.99)"
 #: admin/write-panels/product-types/configurable.php:41
 #: admin/write-panels/product-types/configurable.php:107
 msgid "Stock Qty:"
-msgstr "Quantité en stock:"
+msgstr "Quantit&eacute; en stock:"
 
 #: admin/write-panels/product-types/configurable.php:42
 msgid "Image:"
@@ -2829,12 +2828,12 @@ msgstr "Prix Promo:"
 # @ jigoshop
 #: admin/write-panels/product-types/configurable.php:118
 msgid "Are you sure you want to remove this configuration?"
-msgstr "Êtes-vous sûr de vouloir supprimer cette configuration?"
+msgstr "&Ecirc;tes-vous s&ucirc;r de vouloir supprimer cette configuration?"
 
 # @ default
 #: admin/write-panels/product-types/virtual.php:23
 msgid "Virtual products have no specific options."
-msgstr "Les produits virtuels n'ont pas d'options spécifiques."
+msgstr "Les produits virtuels n'ont pas d'options sp&eacute;cifiques."
 
 # @ jigoshop
 #: admin/write-panels/product-types/virtual.php:41
@@ -2844,7 +2843,7 @@ msgstr "Virtuel"
 # @ default
 #: admin/write-panels/product-types/grouped.php:23
 msgid "Grouped products have no specific options &mdash; you can add simple products to this grouped product by editing them and setting their <code>parent product</code> option."
-msgstr "Les regroupements de produits  n'ont pas d'options spécifiques &mdash; Vous pouver ajouter de simple produits à ce regroupement en les éditant et en definissant leur <code>produit parent</code>"
+msgstr "Les regroupements de produits  n'ont pas d'options sp&eacute;cifiques &mdash; Vous pouver ajouter de simple produits &agrave; ce regroupement en les &eacute;ditant et en definissant leur <code>produit parent</code>"
 
 # @ jigoshop
 #: admin/write-panels/product-types/grouped.php:41
@@ -2853,13 +2852,13 @@ msgstr "Regroupement"
 
 #: classes/jigoshop.class.php:189
 msgid "Action failed. Please refresh the page and retry."
-msgstr "L'action a echoué. Merci d'actualiser la page et de réessayer."
+msgstr "L'action a echou&eacute;. Merci d'actualiser la page et de r&eacute;essayer."
 
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:31
 #: classes/jigoshop_checkout.class.php:45
 msgid "First Name"
-msgstr "Prénom"
+msgstr "Pr&eacute;nom"
 
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:32
@@ -2871,7 +2870,7 @@ msgstr "Nom"
 #: classes/jigoshop_checkout.class.php:33
 #: classes/jigoshop_checkout.class.php:47
 msgid "Company"
-msgstr "Société"
+msgstr "Soci&eacute;t&eacute;"
 
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:34
@@ -2908,7 +2907,7 @@ msgstr "Pays"
 #: classes/jigoshop_checkout.class.php:53
 #: classes/jigoshop_checkout.class.php:197
 msgid "State/County"
-msgstr "Etat / Comté"
+msgstr "Etat / Comt&eacute;"
 
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:40
@@ -2923,12 +2922,12 @@ msgstr "vous@votredomaine.com"
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:41
 msgid "Phone"
-msgstr "Téléphone"
+msgstr "T&eacute;l&eacute;phone"
 
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:41
 msgid "Phone number"
-msgstr "Numéro de téléphone"
+msgstr "Num&eacute;ro de t&eacute;l&eacute;phone"
 
 #: classes/jigoshop_checkout.class.php:62
 msgid "Billing &amp; Shipping"
@@ -2937,7 +2936,7 @@ msgstr "Facturation &amp; Livraison"
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:82
 msgid "Create an account?"
-msgstr "Créer un compte?"
+msgstr "Cr&eacute;er un compte?"
 
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:88
@@ -2953,12 +2952,12 @@ msgstr "Mot de passe du compte"
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:92
 msgid "Save time in the future and check the status of your order by creating an account."
-msgstr "Gagnez du temps dans le futur et vérifier l'état de vos commande en créant un compte."
+msgstr "Gagnez du temps dans le futur et v&eacute;rifier l'&eacute;tat de vos commande en cr&eacute;ant un compte."
 
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:106
 msgid "Ship to same address?"
-msgstr "Livrer à la même adresse?"
+msgstr "Livrer &agrave; la m&ecirc;me adresse?"
 
 #: classes/jigoshop_checkout.class.php:120
 msgid "Notes/Comments"
@@ -2972,13 +2971,13 @@ msgstr "Notes sur la commande"
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:124
 msgid "Notes about your order, e.g. special notes for delivery."
-msgstr "Notes concernant votre commande, par exemple une note spéciale pour la livraison."
+msgstr "Notes concernant votre commande, par exemple une note sp&eacute;ciale pour la livraison."
 
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:236
 #, php-format
 msgid "Sorry, your session has expired. <a href=\"%s\">Return to homepage &rarr;</a>"
-msgstr "Désolé, votre session à expiré. <a href=\"%s\">Retour à la page d'accueil &rarr;</a>"
+msgstr "D&eacute;sol&eacute;, votre session &agrave; expir&eacute;. <a href=\"%s\">Retour &agrave; la page d'accueil &rarr;</a>"
 
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:263
@@ -3033,12 +3032,12 @@ msgstr "E-mail/identifiant invalide."
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:331
 msgid "An account is already registered with that username. Please choose another."
-msgstr "Un compte existe déjà pour cet identifiant. Merci d'en choisir un autre"
+msgstr "Un compte existe d&eacute;j&agrave; pour cet identifiant. Merci d'en choisir un autre"
 
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:336
 msgid "An account is already registered with your email address. Please login."
-msgstr "Un compte existe déjà pour cette adresse E-mail. Merci de vous connecter."
+msgstr "Un compte existe d&eacute;j&agrave; pour cette adresse E-mail. Merci de vous connecter."
 
 # @ jigoshop
 #: classes/jigoshop_checkout.class.php:341
@@ -3068,7 +3067,7 @@ msgstr "<strong>ERREUR</strong>: impossible de vous enregistrer... merci de cont
 #: classes/jigoshop_cart.class.php:214
 #, php-format
 msgid "Sorry, we do not have enough \"%s\" in stock to fulfill your order. Please edit your cart and try again. We apologise for any inconvenience caused."
-msgstr "Désolé, nous n'avons pas assez de \"%s\" en stock pour remplir votre commande. "
+msgstr "D&eacute;sol&eacute;, nous n'avons pas assez de \"%s\" en stock pour remplir votre commande. "
 
 # @ jigoshop
 #: classes/jigoshop_countries.class.php:528
@@ -3078,7 +3077,7 @@ msgstr "vers le"
 # @ jigoshop
 #: classes/jigoshop_countries.class.php:529
 msgid "to"
-msgstr "à"
+msgstr "&agrave;"
 
 #: classes/jigoshop_countries.class.php:536
 msgid "the "
@@ -3087,7 +3086,7 @@ msgstr "le"
 # @ jigoshop
 #: classes/jigoshop_countries.class.php:557
 msgid "All states"
-msgstr "Tous les états"
+msgstr "Tous les &eacute;tats"
 
 # @ jigoshop
 #: classes/jigoshop_cart.class.php:389
@@ -3109,7 +3108,7 @@ msgstr "via"
 # @ jigoshop
 #: classes/jigoshop_cart.class.php:453
 msgid "Discount code already applied!"
-msgstr "Code promo déjà utilisé!"
+msgstr "Code promo d&eacute;j&agrave; utilis&eacute;!"
 
 #: classes/jigoshop_cart.class.php:459
 msgid "Invalid coupon."
@@ -3118,7 +3117,7 @@ msgstr "Code promo invalide."
 # @ jigoshop
 #: classes/jigoshop_cart.class.php:477
 msgid "Discount code applied successfully."
-msgstr "Code promo appliqué avec succès."
+msgstr "Code promo appliqu&eacute; avec succ&egrave;s."
 
 # @ jigoshop
 #: classes/jigoshop_cart.class.php:481
@@ -3135,12 +3134,12 @@ msgstr " <small>(hors-tax) par %s</small>"
 #: classes/jigoshop_order.class.php:324
 #, php-format
 msgid "Order status changed from %s to %s."
-msgstr "État de la comande passé de %s à %s"
+msgstr "&Eacute;tat de la comande pass&eacute; de %s &agrave; %s"
 
 # @ jigoshop
 #: classes/jigoshop_order.class.php:418
 msgid "Order item stock reduced successfully."
-msgstr "Le stock de l'artcle commandé a été réduit avec succès."
+msgstr "Le stock de l'artcle command&eacute; a &eacute;t&eacute; r&eacute;duit avec succ&egrave;s."
 
 # @ jigoshop
 #: classes/jigoshop_product.class.php:223
@@ -3164,13 +3163,13 @@ msgstr "disponible"
 # @ jigoshop
 #: classes/jigoshop_product.class.php:235
 msgid " (backorders allowed)"
-msgstr "(pré-commande possible)"
+msgstr "(pr&eacute;-commande possible)"
 
 # @ jigoshop
 #: classes/jigoshop_product.class.php:246
 #: classes/jigoshop_product.class.php:258
 msgid "Available on backorder"
-msgstr "Disponible en pré-commande"
+msgstr "Disponible en pr&eacute;-commande"
 
 # @ jigoshop
 #: classes/jigoshop_product.class.php:373
@@ -3185,7 +3184,7 @@ msgstr "Skrill (Moneybookers)"
 # @ jigoshop
 #: gateways/skrill.php:38
 msgid "Skrill works by using an iFrame to submit payment information securely to Moneybookers."
-msgstr "Skrill fonctionne en utilisant une iFrame pour soumettre les informations de paiement de manière sécurisée à Moneybookers."
+msgstr "Skrill fonctionne en utilisant une iFrame pour soumettre les informations de paiement de mani&egrave;re s&eacute;curis&eacute;e &agrave; Moneybookers."
 
 # @ jigoshop
 #: gateways/skrill.php:40
@@ -3195,7 +3194,7 @@ msgstr "Activer Skrill"
 # @ jigoshop
 #: gateways/skrill.php:55
 msgid "Please enter your skrill email address; this is needed in order to take payment!"
-msgstr "Merci de saisir votre adresse E-mail skrill; ceci est nécessaire à l'acceptation des paiements!"
+msgstr "Merci de saisir votre adresse E-mail skrill; ceci est n&eacute;cessaire &agrave; l'acceptation des paiements!"
 
 # @ jigoshop
 #: gateways/skrill.php:55
@@ -3205,7 +3204,7 @@ msgstr "E-mail marchant Skrill"
 # @ jigoshop
 #: gateways/skrill.php:61
 msgid "Please enter your skrill secretword; this is needed in order to take payment!"
-msgstr "Merci de saisir votre mot secret Skrill; ceci est nécessaire à l'acceptation des paiements!"
+msgstr "Merci de saisir votre mot secret Skrill; ceci est n&eacute;cessaire &agrave; l'acceptation des paiements!"
 
 # @ jigoshop
 #: gateways/skrill.php:61
@@ -3215,7 +3214,7 @@ msgstr "Mot secret Skrill"
 # @ jigoshop
 #: gateways/skrill.php:67
 msgid "Please enter your skrill Customer ID; this is needed in order to take payment!"
-msgstr "Merci de saisir votre ID client Skrill; ceci est nécessaire à l'acceptation des paiements!"
+msgstr "Merci de saisir votre ID client Skrill; ceci est n&eacute;cessaire &agrave; l'acceptation des paiements!"
 
 # @ jigoshop
 #: gateways/skrill.php:67
@@ -3230,23 +3229,23 @@ msgstr "Frais de port"
 # @ jigoshop
 #: gateways/skrill.php:209
 msgid "Thank you for your order, please complete the secure (SSL) form below to pay with Skrill."
-msgstr "Merci d'avoir commandé, veuillez compléter le formulaire sécurisé (SSL) ci dessous pour payer par Skrill."
+msgstr "Merci d'avoir command&eacute;, veuillez compl&eacute;ter le formulaire s&eacute;curis&eacute; (SSL) ci dessous pour payer par Skrill."
 
 # @ jigoshop
 #: gateways/skrill.php:270
 msgid "Skrill payment completed"
-msgstr "Paiement Skrill effectué."
+msgstr "Paiement Skrill effectu&eacute;."
 
 # @ jigoshop
 #: gateways/skrill.php:275
 #, php-format
 msgid "Skrill payment failed (%s)"
-msgstr "Le paiment Skrill a échoué (%s)"
+msgstr "Le paiment Skrill a &eacute;chou&eacute; (%s)"
 
 # @ jigoshop
 #: gateways/skrill.php:278
 msgid "Skrill payment cancelled"
-msgstr "Paiment Skrill annulé"
+msgstr "Paiment Skrill annul&eacute;"
 
 # @ jigoshop
 #: gateways/skrill.php:281
@@ -3257,26 +3256,26 @@ msgstr "Exception Skrill"
 #: gateways/cheque.php:19
 #: gateways/cheque.php:31
 msgid "Cheque Payment"
-msgstr "Paiement par chèque"
+msgstr "Paiement par ch&egrave;que"
 
 #: gateways/cheque.php:20
 msgid "Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode."
-msgstr "Merci d'envoyer votre chèque à Nom de la boutique, Rue, Ville, Etat, Code postal"
+msgstr "Merci d'envoyer votre ch&egrave;que &agrave; Nom de la boutique, Rue, Ville, Etat, Code postal"
 
 # @ jigoshop
 #: gateways/cheque.php:31
 msgid "Allows cheque payments. Why would you take cheques in this day and age? Well you probably wouldn't but it does allow you to make test purchases without having to use the sandbox area of a payment gateway which is useful for demonstrating to clients and for testing order emails and the 'success' pages etc."
-msgstr "Autorise le paiement par chèque. Mais pourquoi prendre les chèques de nos jours? Bien que vous ne devriez probablement pas, cela vous permet des faire des achats de test sans avoir à utiliser le mode bac à sable d'une passerelle de paiement, ce qui est utile pour faire une démonstration du processus de commande, des mail de retour etc."
+msgstr "Autorise le paiement par ch&egrave;que. Mais pourquoi prendre les ch&egrave;ques de nos jours? Bien que vous ne devriez probablement pas, cela vous permet des faire des achats de test sans avoir &agrave; utiliser le mode bac &agrave; sable d'une passerelle de paiement, ce qui est utile pour faire une d&eacute;monstration du processus de commande, des mail de retour etc."
 
 # @ jigoshop
 #: gateways/cheque.php:33
 msgid "Enable Cheque Payment"
-msgstr "Activer le paiement par chèque"
+msgstr "Activer le paiement par ch&egrave;que"
 
 # @ jigoshop
 #: gateways/cheque.php:48
 msgid "Let the customer know the payee and where they should be sending the cheque too and that their order won't be shipping until you receive it."
-msgstr "Informe le client du bénéficiaire et de l'adresse d'expédition du chèque et que sa commande ne lui sera pas expédiée jusqu'à ce que vous le receviez."
+msgstr "Informe le client du b&eacute;n&eacute;ficiaire et de l'adresse d'exp&eacute;dition du ch&egrave;que et que sa commande ne lui sera pas exp&eacute;di&eacute;e jusqu'&agrave; ce que vous le receviez."
 
 # @ jigoshop
 #: gateways/cheque.php:48
@@ -3286,7 +3285,7 @@ msgstr "Message Client"
 # @ jigoshop
 #: gateways/cheque.php:86
 msgid "Awaiting cheque payment"
-msgstr "En attente du paiment par chèque"
+msgstr "En attente du paiment par ch&egrave;que"
 
 # @ jigoshop
 #: gateways/paypal.php:29
@@ -3295,7 +3294,7 @@ msgstr "PayPal"
 
 #: gateways/paypal.php:30
 msgid "Pay via PayPal; you can pay with your credit card if you don't have a PayPal account"
-msgstr "Payer par Paypal; vous pouvez même payer par carte de crédit si vous n'avez pas de compte PayPal."
+msgstr "Payer par Paypal; vous pouvez m&ecirc;me payer par carte de cr&eacute;dit si vous n'avez pas de compte PayPal."
 
 # @ jigoshop
 #: gateways/paypal.php:43
@@ -3315,12 +3314,12 @@ msgstr "Activer PayPal standard"
 # @ jigoshop
 #: gateways/paypal.php:60
 msgid "This controls the description which the user sees during checkout."
-msgstr "Ceci définit la descritpion que l'utilisateur verra lors de la commande."
+msgstr "Ceci d&eacute;finit la descritpion que l'utilisateur verra lors de la commande."
 
 # @ jigoshop
 #: gateways/paypal.php:66
 msgid "Please enter your PayPal email address; this is needed in order to take payment!"
-msgstr "Merci de saisir votre adresse e-mail PayPal, ; ceci est nécessaire à l'acceptation des paiements!"
+msgstr "Merci de saisir votre adresse e-mail PayPal, ; ceci est n&eacute;cessaire &agrave; l'acceptation des paiements!"
 
 # @ jigoshop
 #: gateways/paypal.php:66
@@ -3329,16 +3328,16 @@ msgstr "Adresse E-mail Paypal"
 
 #: gateways/paypal.php:72
 msgid "If your checkout page does not ask for shipping details, or if you do not want to send shipping information to PayPal, set this option to no. If you enable this option PayPal may restrict where things can be sent, and will prevent some orders going through for your protection."
-msgstr "Si votre page de commande ne demande pas d'informations de livraison, ou si vous ne voulez pas envoyer les informations de livraison à PayPal, définissez cette option à Non. Si vous activez cette option, PayPal peut restreindre où les commandes peuvent être envoyés, et évitera, pour votre protection,  que certaines commandes ne passent."
+msgstr "Si votre page de commande ne demande pas d'informations de livraison, ou si vous ne voulez pas envoyer les informations de livraison &agrave; PayPal, d&eacute;finissez cette option &agrave; Non. Si vous activez cette option, PayPal peut restreindre o&ugrave; les commandes peuvent &ecirc;tre envoy&eacute;s, et &eacute;vitera, pour votre protection,  que certaines commandes ne passent."
 
 #: gateways/paypal.php:72
 msgid "Send shipping details to PayPal"
-msgstr "Envoyer les informations de livraison à PayPal"
+msgstr "Envoyer les informations de livraison &agrave; PayPal"
 
 # @ jigoshop
 #: gateways/paypal.php:81
 msgid "Enable PayPal sandbox"
-msgstr "Activer le mode bac à sable de Paypal"
+msgstr "Activer le mode bac &agrave; sable de Paypal"
 
 # @ jigoshop
 #: gateways/paypal.php:220
@@ -3353,17 +3352,17 @@ msgstr "Annuler la commander &amp; retablir le panier"
 # @ jigoshop
 #: gateways/paypal.php:225
 msgid "Thank you for your order. We are now redirecting you to PayPal to make payment."
-msgstr "Merci d'avoir commandé. Nous vous redirigeons maintenant vers PayPal pour effectuer votre paiement."
+msgstr "Merci d'avoir command&eacute;. Nous vous redirigeons maintenant vers PayPal pour effectuer votre paiement."
 
 # @ jigoshop
 #: gateways/paypal.php:266
 msgid "Thank you for your order, please click the button below to pay with PayPal."
-msgstr "Merci d'avoir commandé, cliquez le bouton ci-dessous pour payer par PayPal."
+msgstr "Merci d'avoir command&eacute;, cliquez le bouton ci-dessous pour payer par PayPal."
 
 # @ jigoshop
 #: gateways/paypal.php:348
 msgid "IPN payment completed"
-msgstr "Paiment IPN effectué"
+msgstr "Paiment IPN effectu&eacute;"
 
 # @ jigoshop
 #: gateways/paypal.php:356
@@ -3374,25 +3373,25 @@ msgstr "Paiement %s via IPN"
 # @ jigoshop
 #: shortcodes/checkout.php:21
 msgid "The order totals have been updated. Please confirm your order by pressing the Place Order button at the bottom of the page."
-msgstr "Les totaux ont été mis à jour. Merci de confirmer votre commande en appuyant sur le bouton \"Passer la commande\" au bas de la page."
+msgstr "Les totaux ont &eacute;t&eacute; mis &agrave; jour. Merci de confirmer votre commande en appuyant sur le bouton \"Passer la commande\" au bas de la page."
 
 # @ jigoshop
 #: shortcodes/my_account.php:21
 #, php-format
 msgid "Hello, <strong>%s</strong>. From your account dashboard you can view your recent orders, manage your shipping and billing addresses and <a href=\"%s\">change your password</a>."
-msgstr "Bonjour, <strong>%s</strong>. Apartir de votre tableau de bord vous pouvez voir vos dernières commandes, gérer vos adresses de facturation et de livraison et <a href=\"%s\">modifier votre mot de passe</a>."
+msgstr "Bonjour, <strong>%s</strong>. Apartir de votre tableau de bord vous pouvez voir vos derni&egrave;res commandes, g&eacute;rer vos adresses de facturation et de livraison et <a href=\"%s\">modifier votre mot de passe</a>."
 
 # @ jigoshop
 #: shortcodes/my_account.php:25
 msgid "Available downloads"
-msgstr "Téléchargements disponibles"
+msgstr "T&eacute;l&eacute;chargements disponibles"
 
 # @ jigoshop
 #: shortcodes/my_account.php:28
 msgid " download Remaining"
 msgid_plural " downloads Remaining"
-msgstr[0] "téléchargement restant"
-msgstr[1] "téléchargements restant"
+msgstr[0] "t&eacute;l&eacute;chargement restant"
+msgstr[1] "t&eacute;l&eacute;chargements restant"
 
 # @ jigoshop
 #: shortcodes/my_account.php:39
@@ -3407,7 +3406,7 @@ msgstr "Date"
 # @ jigoshop
 #: shortcodes/my_account.php:41
 msgid "Ship to"
-msgstr "Livraison à"
+msgstr "Livraison &agrave;"
 
 # @ jigoshop
 #: shortcodes/my_account.php:59
@@ -3432,17 +3431,17 @@ msgstr "Mes adresses"
 # @ jigoshop
 #: shortcodes/my_account.php:71
 msgid "The following addresses will be used on the checkout page by default."
-msgstr "Les adresses suivantes seront utilisées comme adresses par défaut lors de vos commandes."
+msgstr "Les adresses suivantes seront utilis&eacute;es comme adresses par d&eacute;faut lors de vos commandes."
 
 # @ jigoshop
 #: shortcodes/my_account.php:97
 msgid "You have not set up a billing address yet."
-msgstr "Vous n'avez encore définit d'adresse de facturation."
+msgstr "Vous n'avez encore d&eacute;finit d'adresse de facturation."
 
 # @ jigoshop
 #: shortcodes/my_account.php:126
 msgid "You have not set up a shipping address yet."
-msgstr "Vous n'avez encore définit d'adresse de livraison."
+msgstr "Vous n'avez encore d&eacute;finit d'adresse de livraison."
 
 # @ jigoshop
 #: shortcodes/my_account.php:212
@@ -3488,13 +3487,13 @@ msgstr "Enregistrer"
 #: shortcodes/my_account.php:382
 #, php-format
 msgid "Order <mark>#%s</mark> made on <mark>%s</mark>"
-msgstr "Comande <mark>n°%s</mark> effectuée le <mark>%s</mark>"
+msgstr "Comande <mark>n°%s</mark> effectu&eacute;e le <mark>%s</mark>"
 
 # @ jigoshop
 #: shortcodes/my_account.php:384
 #, php-format
 msgid ". Order status: <mark>%s</mark>"
-msgstr ". État de la commande: <mark>%s</mark>"
+msgstr ". &Eacute;tat de la commande: <mark>%s</mark>"
 
 # @ jigoshop
 #: shortcodes/my_account.php:393
@@ -3515,11 +3514,11 @@ msgstr "Grand Total"
 # @ jigoshop
 #: shortcodes/my_account.php:442
 msgid "Customer details"
-msgstr "Détails du client"
+msgstr "D&eacute;tails du client"
 
 #: shortcodes/my_account.php:447
 msgid "Telephone:"
-msgstr "Téléphone:"
+msgstr "T&eacute;l&eacute;phone:"
 
 # @ jigoshop
 #: shortcodes/my_account.php:460
@@ -3531,7 +3530,7 @@ msgstr "N/A"
 #: shortcodes/cart.php:17
 #: shortcodes/cart.php:32
 msgid "Cart updated."
-msgstr "Panier mis à jour."
+msgstr "Panier mis &agrave; jour."
 
 # @ jigoshop
 #: shortcodes/cart.php:44
@@ -3542,7 +3541,7 @@ msgstr "Merci de saisir un code postal correct."
 #: shortcodes/cart.php:59
 #: shortcodes/cart.php:65
 msgid "Shipping costs updated."
-msgstr "Les frais de port ont été mis à jour."
+msgstr "Les frais de port ont &eacute;t&eacute; mis &agrave; jour."
 
 #: shortcodes/cart.php:79
 msgid "Your cart is empty."
@@ -3571,7 +3570,7 @@ msgstr "Appliquer le code promo"
 # @ jigoshop
 #: shortcodes/cart.php:128
 msgid "Update Shopping Cart"
-msgstr "Mettre à jour le panier"
+msgstr "Mettre &agrave; jour le panier"
 
 # @ jigoshop
 #: shortcodes/cart.php:128
@@ -3586,22 +3585,22 @@ msgstr "Totaux du panier"
 #: shortcodes/cart.php:157
 #, php-format
 msgid "estimated for %s"
-msgstr "estimé à %s"
+msgstr "estim&eacute; &agrave; %s"
 
 # @ jigoshop
 #: shortcodes/cart.php:176
 msgid "Sorry, it seems that there are no available shipping methods to your location. Please contact us if you require assistance or wish to make alternate arrangements."
-msgstr "Désolé, il semble que'il n'y a pas de mode de livraison disponible pour votre emplacement. Merci de nous contacter si vous souhaitez de l'aide ou si vous souhaiter prendre d'autres arrangements."
+msgstr "D&eacute;sol&eacute;, il semble que'il n'y a pas de mode de livraison disponible pour votre emplacement. Merci de nous contacter si vous souhaitez de l'aide ou si vous souhaiter prendre d'autres arrangements."
 
 #: shortcodes/order_tracking.php:20
 msgid "You have taken too long. Please refresh the page and retry."
-msgstr "Vous avez mis trop de temps. Merci d'actualiser la page et de réessayer."
+msgstr "Vous avez mis trop de temps. Merci d'actualiser la page et de r&eacute;essayer."
 
 # @ jigoshop
 #: shortcodes/order_tracking.php:26
 #, php-format
 msgid "Order #%s which was made %s has the status &ldquo;%s&rdquo;"
-msgstr "La commande n°%s crée le %s est &ldquo;%s&rdquo;"
+msgstr "La commande n°%s cr&eacute;e le %s est &ldquo;%s&rdquo;"
 
 # @ jigoshop
 #: shortcodes/order_tracking.php:26
@@ -3612,12 +3611,12 @@ msgstr "il y a"
 # @ jigoshop
 #: shortcodes/order_tracking.php:28
 msgid " and was completed "
-msgstr " et a été achevé"
+msgstr " et a &eacute;t&eacute; achev&eacute;"
 
 # @ jigoshop
 #: shortcodes/order_tracking.php:33
 msgid "Order Details"
-msgstr "Détails de la commande"
+msgstr "D&eacute;tails de la commande"
 
 # @ jigoshop
 #: shortcodes/order_tracking.php:37
@@ -3627,12 +3626,12 @@ msgstr "Titre"
 #: shortcodes/order_tracking.php:105
 #: shortcodes/order_tracking.php:108
 msgid "Sorry, we could not find that order id in our database. <a href=\""
-msgstr "Désolé, nous n'avons pas trouvé ce numéro de commande dans notre base. <a href=\""
+msgstr "D&eacute;sol&eacute;, nous n'avons pas trouv&eacute; ce num&eacute;ro de commande dans notre base. <a href=\""
 
 # @ jigoshop
 #: shortcodes/order_tracking.php:116
 msgid "To track your order please enter your Order ID in the box below and press return. This was given to you on your receipt and in the confirmation email you should have received."
-msgstr "Pour suivre votre commande merci de saisir votre numéro de commande dans la boîte ci-dessous et pressez entrée. Ce numéro doit apparaitre sur votre reçu et dans le mais de confirmation de commande que vous avez du recevoir."
+msgstr "Pour suivre votre commande merci de saisir votre num&eacute;ro de commande dans la bo&icirc;te ci-dessous et pressez entr&eacute;e. Ce num&eacute;ro doit apparaitre sur votre re&ccedil;u et dans le mais de confirmation de commande que vous avez du recevoir."
 
 # @ jigoshop
 #: shortcodes/order_tracking.php:118
@@ -3642,7 +3641,7 @@ msgstr "ID Commande"
 # @ jigoshop
 #: shortcodes/order_tracking.php:118
 msgid "Found in your order confirmation email."
-msgstr "Présent dans l'E-mail de confirmation."
+msgstr "Pr&eacute;sent dans l'E-mail de confirmation."
 
 # @ jigoshop
 #: shortcodes/order_tracking.php:119
@@ -3652,7 +3651,7 @@ msgstr "E-mail de facturation"
 # @ jigoshop
 #: shortcodes/order_tracking.php:119
 msgid "Email you used during checkout."
-msgstr "E-mail utilisé lors de la commande."
+msgstr "E-mail utilis&eacute; lors de la commande."
 
 # @ jigoshop
 #: shortcodes/order_tracking.php:121
@@ -3662,7 +3661,7 @@ msgstr "Suivre\""
 # @ jigoshop
 #: shortcodes/pay.php:60
 msgid "Your order has already been paid for. Please contact us if you need assistance."
-msgstr "Votre commande a déjà été réglée. Merce de nous contacter si vous avez besoin d'aide."
+msgstr "Votre commande a d&eacute;j&agrave; &eacute;t&eacute; r&eacute;gl&eacute;e. Merce de nous contacter si vous avez besoin d'aide."
 
 # @ jigoshop
 #: shortcodes/pay.php:87
@@ -3685,17 +3684,17 @@ msgstr "Mode de paiement:"
 # @ jigoshop
 #: shortcodes/thankyou.php:8
 msgid "<p>Thank you. Your order has been processed successfully.</p>"
-msgstr "<p>Merci. Votre commande a correctement été traitée.</p>"
+msgstr "<p>Merci. Votre commande a correctement &eacute;t&eacute; trait&eacute;e.</p>"
 
 # @ jigoshop
 #: widgets/product_categories.php:16
 msgid "A list or dropdown of product categories"
-msgstr "Une list ou une liste déroulante de vos catégories de prtoduits"
+msgstr "Une list ou une liste d&eacute;roulante de vos cat&eacute;gories de prtoduits"
 
 # @ jigoshop
 #: widgets/product_categories.php:39
 msgid "Select Category"
-msgstr "Sélectionner une catégorie"
+msgstr "S&eacute;lectionner une cat&eacute;gorie"
 
 # @ default
 #: widgets/product_categories.php:99
@@ -3712,7 +3711,7 @@ msgstr "Titre:"
 # @ default
 #: widgets/product_categories.php:103
 msgid "Show as dropdown"
-msgstr "Afficher comme liste déroulante"
+msgstr "Afficher comme liste d&eacute;roulante"
 
 # @ default
 #: widgets/product_categories.php:106
@@ -3727,7 +3726,7 @@ msgstr "Afficher la hierachie"
 # @ default
 #: widgets/product_tag_cloud.php:16
 msgid "Your most used product tags in cloud format"
-msgstr "Vos mots-clefs produits les plus utiisés sous forme d'un nuage."
+msgstr "Vos mots-clefs produits les plus utiis&eacute;s sous forme d'un nuage."
 
 # @ default
 #: widgets/product_tag_cloud.php:17
@@ -3757,7 +3756,7 @@ msgstr "Rechercher des produits"
 # @ default
 #: widgets/price_filter.php:37
 msgid "Shows a price filter slider in a widget which lets you narrow down the list of shown products in categories."
-msgstr "Affiche un curseur de filtrage des prix dans un widget qui permet d'affiner la liste des produits présentés dans les catégories."
+msgstr "Affiche un curseur de filtrage des prix dans un widget qui permet d'affiner la liste des produits pr&eacute;sent&eacute;s dans les cat&eacute;gories."
 
 # @ default
 #: widgets/price_filter.php:38
@@ -3777,7 +3776,7 @@ msgstr "Filtrer par prix"
 # @ jigoshop
 #: widgets/recent_products.php:16
 msgid "The most recent products on your site"
-msgstr "Les produits les plus récents sur votre site"
+msgstr "Les produits les plus r&eacute;cents sur votre site"
 
 # @ jigoshop
 #: widgets/recent_products.php:17
@@ -3789,27 +3788,27 @@ msgstr "Nouveaux produits"
 #: widgets/recent_products.php:117
 #: widgets/featured_products.php:99
 msgid "Number of products to show:"
-msgstr "Nombre de produits à afficher:"
+msgstr "Nombre de produits &agrave; afficher:"
 
 #: widgets/recent_products.php:121
 msgid "Show hidden product variations"
-msgstr "Montrer les variations de produit cachées"
+msgstr "Montrer les variations de produit cach&eacute;es"
 
 # @ jigoshop
 #: widgets/featured_products.php:18
 msgid "Featured products on your site"
-msgstr "Produits à la une sur votre site"
+msgstr "Produits &agrave; la une sur votre site"
 
 # @ jigoshop
 #: widgets/featured_products.php:19
 #: widgets/featured_products.php:41
 msgid "Featured Products"
-msgstr "Produits à la une"
+msgstr "Produits &agrave; la une"
 
 # @ default
 #: widgets/layered_nav.php:16
 msgid "Shows a custom attribute in a widget which lets you narrow down the list of shown products in categories."
-msgstr "Affiche un attribut personnalisé dans un widget qui vous d'affiner la liste des produits présentés dans les catégories."
+msgstr "Affiche un attribut personnalis&eacute; dans un widget qui vous d'affiner la liste des produits pr&eacute;sent&eacute;s dans les cat&eacute;gories."
 
 # @ default
 #: widgets/layered_nav.php:17
@@ -3824,7 +3823,7 @@ msgstr "Attribut:"
 # @ default
 #: widgets/cart.php:18
 msgid "Shopping Cart for the sidebar."
-msgstr "Panier pour la barre latérale."
+msgstr "Panier pour la barre lat&eacute;rale."
 
 # @ default
 #: widgets/cart.php:19
@@ -3849,12 +3848,12 @@ msgstr "Commander &rarr;"
 # @ jigoshop
 #: templates/loop-shop.php:43
 msgid "No products found which match your selection."
-msgstr "Il n'y a pas de produit correspondant à votre sélection."
+msgstr "Il n'y a pas de produit correspondant &agrave; votre s&eacute;lection."
 
 # @ jigoshop
 #: templates/archive-product.php:6
 msgid "Search Results:"
-msgstr "Résultats de recherche:"
+msgstr "R&eacute;sultats de recherche:"
 
 # @ jigoshop
 #: templates/archive-product.php:8
@@ -3865,7 +3864,7 @@ msgstr "Tous les produits"
 #: templates/single-product-reviews.php:28
 #, php-format
 msgid "Rated %s out of 5"
-msgstr "Noté %s sur 5"
+msgstr "Not&eacute; %s sur 5"
 
 # @ jigoshop
 #: templates/single-product-reviews.php:30
@@ -3888,7 +3887,7 @@ msgstr "Donner votre avis"
 # @ jigoshop
 #: templates/single-product-reviews.php:61
 msgid "Be the first to review "
-msgstr "Soyez le premier à donner votre avis"
+msgstr "Soyez le premier &agrave; donner votre avis"
 
 # @ jigoshop
 #: templates/single-product-reviews.php:63
@@ -3938,7 +3937,7 @@ msgstr "Pas mal"
 # @ jigoshop
 #: templates/single-product-reviews.php:90
 msgid "Very Poor"
-msgstr "Très mauvais"
+msgstr "Tr&egrave;s mauvais"
 
 # @ default
 #: templates/single-product-reviews.php:92
@@ -3949,7 +3948,7 @@ msgstr "Votre avis"
 # @ jigoshop
 #: templates/checkout/pay_for_order.php:75
 msgid "Sorry, it seems that there are no available payment methods for your location. Please contact us if you require assistance or wish to make alternate arrangements."
-msgstr "Désolé, il semble qu'il n'y ait pas de mode de paiement disponible pour votre emplacement. Merci de nous contacter si vous avez besoin d'aide ou souhaitez prendre d'autres arrangements."
+msgstr "D&eacute;sol&eacute;, il semble qu'il n'y ait pas de mode de paiement disponible pour votre emplacement. Merci de nous contacter si vous avez besoin d'aide ou souhaitez prendre d'autres arrangements."
 
 # @ jigoshop
 #: templates/checkout/pay_for_order.php:84
@@ -3959,12 +3958,12 @@ msgstr "Payer la commande"
 # @ jigoshop
 #: templates/checkout/review_order.php:11
 msgid "Sorry, your session has expired."
-msgstr "Désolé, votre session a expiré."
+msgstr "D&eacute;sol&eacute;, votre session a expir&eacute;."
 
 # @ jigoshop
 #: templates/checkout/review_order.php:11
 msgid "Return to homepage &rarr;"
-msgstr "Retour à la page d'accueil &rarr;"
+msgstr "Retour &agrave; la page d'accueil &rarr;"
 
 #: templates/checkout/review_order.php:64
 msgid " (ex. tax)"
@@ -3978,32 +3977,32 @@ msgstr "Gratuit"
 # @ jigoshop
 #: templates/checkout/review_order.php:78
 msgid "Please fill in your details above to see available shipping methods."
-msgstr "Merci de remplir vos coordonnées ci-dessus pour voir les modes de livraison disponibles."
+msgstr "Merci de remplir vos coordonn&eacute;es ci-dessus pour voir les modes de livraison disponibles."
 
 # @ jigoshop
 #: templates/checkout/review_order.php:80
 msgid "Sorry, it seems that there are no available shipping methods for your state. Please contact us if you require assistance or wish to make alternate arrangements."
-msgstr "Désolé, il semble qu'il n'y ait pas de mode d'expédition disponibles pour votre état. Merci de nous contacter si vous avez besoin d'aide ou souhaitez prendre d'autres arrangements."
+msgstr "D&eacute;sol&eacute;, il semble qu'il n'y ait pas de mode d'exp&eacute;dition disponibles pour votre &eacute;tat. Merci de nous contacter si vous avez besoin d'aide ou souhaitez prendre d'autres arrangements."
 
 # @ jigoshop
 #: templates/checkout/review_order.php:148
 msgid "Please fill in your details above to see available payment methods."
-msgstr "Merci de remplir vos coordonnées ci-dessus pour voir les modes de paiement disponibles."
+msgstr "Merci de remplir vos coordonn&eacute;es ci-dessus pour voir les modes de paiement disponibles."
 
 # @ jigoshop
 #: templates/checkout/review_order.php:150
 msgid "Sorry, it seems that there are no available payment methods for your state. Please contact us if you require assistance or wish to make alternate arrangements."
-msgstr "Désolé, il semble qu'il n'y ait pas de mode de paiement disponible pour votre état. Merci de nous contacter si vous avez besoin d'aide ou souhaitez prendre d'autres arrangements."
+msgstr "D&eacute;sol&eacute;, il semble qu'il n'y ait pas de mode de paiement disponible pour votre &eacute;tat. Merci de nous contacter si vous avez besoin d'aide ou souhaitez prendre d'autres arrangements."
 
 # @ jigoshop
 #: templates/checkout/review_order.php:160
 msgid "Since your browser does not support JavaScript, or it is disabled, please ensure you click the <em>Update Totals</em> button before placing your order. You may be charged more than the amount stated above if you fail to do so."
-msgstr "Étant donné que votre navigateur ne supporte pas le Javascript ou qu'il est désactivé, merci de prendre soin à cliquer que le bouton <em>Mettre à jour les totaux</em> avant de passer commande. Vous pouvez être facturé plus que le montant indiqué ci-dessus si vous omettez de le faire."
+msgstr "&Eacute;tant donn&eacute; que votre navigateur ne supporte pas le Javascript ou qu'il est d&eacute;sactiv&eacute;, merci de prendre soin &agrave; cliquer que le bouton <em>Mettre &agrave; jour les totaux</em> avant de passer commande. Vous pouvez &ecirc;tre factur&eacute; plus que le montant indiqu&eacute; ci-dessus si vous omettez de le faire."
 
 # @ jigoshop
 #: templates/checkout/review_order.php:160
 msgid "Update totals"
-msgstr "Mettre à jour les totaux"
+msgstr "Mettre &agrave; jour les totaux"
 
 # @ jigoshop
 #: templates/checkout/review_order.php:163
@@ -4051,11 +4050,11 @@ msgstr "Albanie"
 
 #: languages/countries.php:16
 msgid "Armenia"
-msgstr "Arménie"
+msgstr "Arm&eacute;nie"
 
 #: languages/countries.php:17
 msgid "Netherlands Antilles"
-msgstr "Antilles Néerlandaises"
+msgstr "Antilles N&eacute;erlandaises"
 
 #: languages/countries.php:18
 msgid "Angola"
@@ -4071,7 +4070,7 @@ msgstr "Argentine"
 
 #: languages/countries.php:21
 msgid "American Samoa"
-msgstr "les Samoa américaines"
+msgstr "les Samoa am&eacute;ricaines"
 
 #: languages/countries.php:22
 msgid "Austria"
@@ -4091,11 +4090,11 @@ msgstr "Iles Aland"
 
 #: languages/countries.php:26
 msgid "Azerbaijan"
-msgstr "Azerbaïdjan"
+msgstr "Azerba&iuml;djan"
 
 #: languages/countries.php:27
 msgid "Bosnia and Herzegovina"
-msgstr "Bosnie-Herzégovine"
+msgstr "Bosnie-Herz&eacute;govine"
 
 #: languages/countries.php:28
 msgid "Barbados"
@@ -4127,11 +4126,11 @@ msgstr "Burundi"
 
 #: languages/countries.php:35
 msgid "Benin"
-msgstr "Bénin"
+msgstr "B&eacute;nin"
 
 #: languages/countries.php:36
-msgid "Saint Barthélemy"
-msgstr "Saint-Barthélemy"
+msgid "Saint Barth&eacute;lemy"
+msgstr "Saint-Barth&eacute;lemy"
 
 #: languages/countries.php:37
 msgid "Bermuda"
@@ -4147,7 +4146,7 @@ msgstr "Bolivie"
 
 #: languages/countries.php:40
 msgid "Brazil"
-msgstr "Brésil"
+msgstr "Br&eacute;sil"
 
 #: languages/countries.php:41
 msgid "Bahamas"
@@ -4167,7 +4166,7 @@ msgstr "Botswana"
 
 #: languages/countries.php:45
 msgid "Belarus"
-msgstr "Biélorussie"
+msgstr "Bi&eacute;lorussie"
 
 #: languages/countries.php:46
 msgid "Belize"
@@ -4187,7 +4186,7 @@ msgstr "Congo (Kinshasa)"
 
 #: languages/countries.php:50
 msgid "Central African Republic"
-msgstr "République Centrafricaine"
+msgstr "R&eacute;publique Centrafricaine"
 
 #: languages/countries.php:51
 msgid "Congo (Brazzaville)"
@@ -4199,7 +4198,7 @@ msgstr "Suisse"
 
 #: languages/countries.php:53
 msgid "Ivory Coast"
-msgstr "Côte d'Ivoire"
+msgstr "C&ocirc;te d&apos;Ivoire"
 
 #: languages/countries.php:54
 msgid "Cook Islands"
@@ -4243,7 +4242,7 @@ msgstr "Chypre"
 
 #: languages/countries.php:64
 msgid "Czech Republic"
-msgstr "République Tchèque"
+msgstr "R&eacute;publique Tch&egrave;que"
 
 #: languages/countries.php:65
 msgid "Germany"
@@ -4263,11 +4262,11 @@ msgstr "Dominique"
 
 #: languages/countries.php:69
 msgid "Dominican Republic"
-msgstr "République Dominicaine"
+msgstr "R&eacute;publique Dominicaine"
 
 #: languages/countries.php:70
 msgid "Algeria"
-msgstr "Algérie"
+msgstr "Alg&eacute;rie"
 
 #: languages/countries.php:71
 msgid "Ecuador"
@@ -4279,7 +4278,7 @@ msgstr "Estonie"
 
 #: languages/countries.php:73
 msgid "Egypt"
-msgstr "Égypte"
+msgstr "&Eacute;gypte"
 
 #: languages/countries.php:74
 msgid "Western Sahara"
@@ -4287,7 +4286,7 @@ msgstr "Sahara Occidental"
 
 #: languages/countries.php:75
 msgid "Eritrea"
-msgstr "Erythrée"
+msgstr "Erythr&eacute;e"
 
 #: languages/countries.php:76
 msgid "Spain"
@@ -4295,7 +4294,7 @@ msgstr "Espagne"
 
 #: languages/countries.php:77
 msgid "Ethiopia"
-msgstr "Éthiopie"
+msgstr "&Eacute;thiopie"
 
 #: languages/countries.php:78
 msgid "Finland"
@@ -4307,7 +4306,7 @@ msgstr "Fiji"
 
 #: languages/countries.php:80
 msgid "Falkland Islands"
-msgstr "îles Falkland"
+msgstr "&icirc;les Falkland"
 
 #: languages/countries.php:81
 msgid "Micronesia"
@@ -4315,7 +4314,7 @@ msgstr "Micronesie"
 
 #: languages/countries.php:82
 msgid "Faroe Islands"
-msgstr "Iles Féroé"
+msgstr "Iles F&eacute;ro&eacute;"
 
 #: languages/countries.php:83
 msgid "France"
@@ -4335,11 +4334,11 @@ msgstr "Grenade"
 
 #: languages/countries.php:87
 msgid "Georgia"
-msgstr "Géorgie"
+msgstr "G&eacute;orgie"
 
 #: languages/countries.php:88
 msgid "French Guiana"
-msgstr "Guyane française"
+msgstr "Guyane fran&ccedil;aise"
 
 #: languages/countries.php:89
 msgid "Guernsey"
@@ -4363,7 +4362,7 @@ msgstr "Gambie"
 
 #: languages/countries.php:94
 msgid "Guinea"
-msgstr "Guinée"
+msgstr "Guin&eacute;e"
 
 #: languages/countries.php:95
 msgid "Guadeloupe"
@@ -4371,15 +4370,15 @@ msgstr "Guadeloupe"
 
 #: languages/countries.php:96
 msgid "Equatorial Guinea"
-msgstr "Guinée Equatoriale"
+msgstr "Guin&eacute;e Equatoriale"
 
 #: languages/countries.php:97
 msgid "Greece"
-msgstr "Grèce"
+msgstr "Gr&egrave;ce"
 
 #: languages/countries.php:98
 msgid "South Georgia and the South Sandwich Islands"
-msgstr "Géorgie du Sud et les Îles Sandwich du Sud"
+msgstr "G&eacute;orgie du Sud et les &Icirc;les Sandwich du Sud"
 
 #: languages/countries.php:99
 msgid "Guatemala"
@@ -4391,7 +4390,7 @@ msgstr "Guam"
 
 #: languages/countries.php:101
 msgid "Guinea-Bissau"
-msgstr "Guinée-Bissau"
+msgstr "Guin&eacute;e-Bissau"
 
 #: languages/countries.php:102
 msgid "Guyana"
@@ -4403,7 +4402,7 @@ msgstr "Hong Kong S.A.R., en Chine"
 
 #: languages/countries.php:104
 msgid "Heard Island and McDonald Islands"
-msgstr "Îles Heard et McDonald"
+msgstr "&Icirc;les Heard et McDonald"
 
 #: languages/countries.php:105
 msgid "Honduras"
@@ -4415,7 +4414,7 @@ msgstr "Croatie"
 
 #: languages/countries.php:107
 msgid "Haiti"
-msgstr "Haïti"
+msgstr "Ha&iuml;ti"
 
 #: languages/countries.php:108
 msgid "Hungary"
@@ -4431,7 +4430,7 @@ msgstr "Irlande"
 
 #: languages/countries.php:111
 msgid "Israel"
-msgstr "Israël"
+msgstr "Isra&euml;l"
 
 #: languages/countries.php:112
 msgid "Isle of Man"
@@ -4443,7 +4442,7 @@ msgstr "Inde"
 
 #: languages/countries.php:114
 msgid "British Indian Ocean Territory"
-msgstr "Territoire britannique de l'océan Indien"
+msgstr "Territoire britannique de l&apos;oc&eacute;an Indien"
 
 #: languages/countries.php:115
 msgid "Iraq"
@@ -4467,7 +4466,7 @@ msgstr "Jersey"
 
 #: languages/countries.php:120
 msgid "Jamaica"
-msgstr "Jamaïque"
+msgstr "Jama&iuml;que"
 
 #: languages/countries.php:121
 msgid "Jordan"
@@ -4503,19 +4502,19 @@ msgstr "Saint Kitts et Nevis"
 
 #: languages/countries.php:129
 msgid "North Korea"
-msgstr "Corée du Nord"
+msgstr "Cor&eacute;e du Nord"
 
 #: languages/countries.php:130
 msgid "South Korea"
-msgstr "Corée du Sud"
+msgstr "Cor&eacute;e du Sud"
 
 #: languages/countries.php:131
 msgid "Kuwait"
-msgstr "Koweït"
+msgstr "Kowe&iuml;t"
 
 #: languages/countries.php:132
 msgid "Cayman Islands"
-msgstr "Iles Caïmans"
+msgstr "Iles Ca&iuml;mans"
 
 #: languages/countries.php:133
 msgid "Kazakhstan"
@@ -4543,7 +4542,7 @@ msgstr "Sri Lanka"
 
 #: languages/countries.php:139
 msgid "Liberia"
-msgstr "Libéria"
+msgstr "Lib&eacute;ria"
 
 #: languages/countries.php:140
 msgid "Lesotho"
@@ -4579,11 +4578,11 @@ msgstr "Moldavie"
 
 #: languages/countries.php:148
 msgid "Montenegro"
-msgstr "Monténégro"
+msgstr "Mont&eacute;n&eacute;gro"
 
 #: languages/countries.php:149
 msgid "Saint Martin (French part)"
-msgstr "Saint-Martin (partie française)"
+msgstr "Saint-Martin (partie fran&ccedil;aise)"
 
 #: languages/countries.php:150
 msgid "Madagascar"
@@ -4595,7 +4594,7 @@ msgstr "Iles Marshall"
 
 #: languages/countries.php:152
 msgid "Macedonia"
-msgstr "Macédoine"
+msgstr "Mac&eacute;doine"
 
 #: languages/countries.php:153
 msgid "Mali"
@@ -4663,7 +4662,7 @@ msgstr "Namibie"
 
 #: languages/countries.php:169
 msgid "New Caledonia"
-msgstr "Nouvelle-Calédonie"
+msgstr "Nouvelle-Cal&eacute;donie"
 
 #: languages/countries.php:170
 msgid "Niger"
@@ -4671,7 +4670,7 @@ msgstr "Niger"
 
 #: languages/countries.php:171
 msgid "Norfolk Island"
-msgstr "Île de Norfolk"
+msgstr "&Icirc;le de Norfolk"
 
 #: languages/countries.php:172
 msgid "Nigeria"
@@ -4687,11 +4686,11 @@ msgstr "Pays-Bas"
 
 #: languages/countries.php:175
 msgid "Norway"
-msgstr "Norvège"
+msgstr "Norv&egrave;ge"
 
 #: languages/countries.php:176
 msgid "Nepal"
-msgstr "Népal"
+msgstr "N&eacute;pal"
 
 #: languages/countries.php:177
 msgid "Nauru"
@@ -4699,11 +4698,11 @@ msgstr "Nauru"
 
 #: languages/countries.php:178
 msgid "Niue"
-msgstr "Nioué"
+msgstr "Niou&eacute;"
 
 #: languages/countries.php:179
 msgid "New Zealand"
-msgstr "Nouvelle-Zélande"
+msgstr "Nouvelle-Z&eacute;lande"
 
 #: languages/countries.php:180
 msgid "Oman"
@@ -4715,15 +4714,15 @@ msgstr "Panama"
 
 #: languages/countries.php:182
 msgid "Peru"
-msgstr "Pérou"
+msgstr "P&eacute;rou"
 
 #: languages/countries.php:183
 msgid "French Polynesia"
-msgstr "Polynésie française"
+msgstr "Polyn&eacute;sie fran&ccedil;aise"
 
 #: languages/countries.php:184
 msgid "Papua New Guinea"
-msgstr "Papouasie-Nouvelle-Guinée"
+msgstr "Papouasie-Nouvelle-Guin&eacute;e"
 
 #: languages/countries.php:185
 msgid "Philippines"
@@ -4771,7 +4770,7 @@ msgstr "Qatar"
 
 #: languages/countries.php:196
 msgid "Reunion"
-msgstr "Réunion"
+msgstr "R&eacute;union"
 
 #: languages/countries.php:197
 msgid "Romania"
@@ -4807,7 +4806,7 @@ msgstr "Soudan"
 
 #: languages/countries.php:205
 msgid "Sweden"
-msgstr "Suède"
+msgstr "Su&egrave;de"
 
 #: languages/countries.php:206
 msgid "Singapore"
@@ -4815,11 +4814,11 @@ msgstr "Singapour"
 
 #: languages/countries.php:207
 msgid "Saint Helena"
-msgstr "Sainte-Hélène"
+msgstr "Sainte-H&eacute;l&egrave;ne"
 
 #: languages/countries.php:208
 msgid "Slovenia"
-msgstr "Slovénie"
+msgstr "Slov&eacute;nie"
 
 #: languages/countries.php:209
 msgid "Svalbard and Jan Mayen"
@@ -4839,7 +4838,7 @@ msgstr "San Marino"
 
 #: languages/countries.php:213
 msgid "Senegal"
-msgstr "Sénégal"
+msgstr "S&eacute;n&eacute;gal"
 
 #: languages/countries.php:214
 msgid "Somalia"
@@ -4851,7 +4850,7 @@ msgstr "Surinam"
 
 #: languages/countries.php:216
 msgid "Sao Tome and Principe"
-msgstr "Sao Tomé et Principe"
+msgstr "Sao Tom&eacute; et Principe"
 
 #: languages/countries.php:217
 msgid "El Salvador"
@@ -4867,7 +4866,7 @@ msgstr "Swaziland"
 
 #: languages/countries.php:220
 msgid "Turks and Caicos Islands"
-msgstr "Iles Turques et Caïques"
+msgstr "Iles Turques et Ca&iuml;ques"
 
 #: languages/countries.php:221
 msgid "Chad"
@@ -4875,7 +4874,7 @@ msgstr "Tchad"
 
 #: languages/countries.php:222
 msgid "French Southern Territories"
-msgstr "Terres australes françaises"
+msgstr "Terres australes fran&ccedil;aises"
 
 #: languages/countries.php:223
 msgid "Togo"
@@ -4883,7 +4882,7 @@ msgstr "Togo"
 
 #: languages/countries.php:224
 msgid "Thailand"
-msgstr "Thaïlande"
+msgstr "Tha&iuml;lande"
 
 #: languages/countries.php:225
 msgid "Tajikistan"
@@ -4891,7 +4890,7 @@ msgstr "Tajikistan"
 
 #: languages/countries.php:226
 msgid "Tokelau"
-msgstr "Tokélaou"
+msgstr "Tok&eacute;laou"
 
 #: languages/countries.php:227
 msgid "Timor-Leste"
@@ -4899,7 +4898,7 @@ msgstr "Timor-Leste"
 
 #: languages/countries.php:228
 msgid "Turkmenistan"
-msgstr "Turkménistan"
+msgstr "Turkm&eacute;nistan"
 
 #: languages/countries.php:229
 msgid "Tunisia"
@@ -4939,11 +4938,11 @@ msgstr "Ouganda"
 
 #: languages/countries.php:238
 msgid "United States Minor Outlying Islands"
-msgstr "États-Unis Îles mineures éloignées"
+msgstr "&Eacute;tats-Unis &Icirc;les mineures &eacute;loign&eacute;es"
 
 #: languages/countries.php:239
 msgid "United States"
-msgstr "États-Unis"
+msgstr "&Eacute;tats-Unis"
 
 #: languages/countries.php:240
 msgid "Uruguay"
@@ -4951,7 +4950,7 @@ msgstr "Uruguay"
 
 #: languages/countries.php:241
 msgid "Uzbekistan"
-msgstr "Ouzbékistan"
+msgstr "Ouzb&eacute;kistan"
 
 #: languages/countries.php:242
 msgid "Vatican"
@@ -4971,11 +4970,11 @@ msgstr "Iles Vierges Britanniques"
 
 #: languages/countries.php:246
 msgid "U.S. Virgin Islands"
-msgstr "Îles Vierges américaines"
+msgstr "&Icirc;les Vierges am&eacute;ricaines"
 
 #: languages/countries.php:247
 msgid "Vietnam"
-msgstr "Viêt-Nam"
+msgstr "Vi&ecirc;t-Nam"
 
 #: languages/countries.php:248
 msgid "Vanuatu"
@@ -4991,7 +4990,7 @@ msgstr "Samoa"
 
 #: languages/countries.php:251
 msgid "Yemen"
-msgstr "Yémen"
+msgstr "Y&eacute;men"
 
 #: languages/countries.php:252
 msgid "Mayotte"

@@ -477,7 +477,7 @@ function jigoshop_admin_product_search( $wp ) {
             if( ! $sku )
                 return false;
 
-            $id = $wpdb->get_var('SELECT post_id FROM '.$wpdb->postmeta.' WHERE meta_key="sku" AND meta_value LIKE "%'.$sku.'%";');
+            $id = $wpdb->get_var( $wpdb->prepare( 'SELECT post_id FROM '.$wpdb->postmeta.' WHERE meta_key="sku" AND meta_value LIKE %s', '%'.$sku.'%' ) );
 
             if( ! $id )
                 return false;
@@ -494,10 +494,10 @@ function jigoshop_admin_product_search( $wp ) {
             $id_length = strlen($id);
 
             // Get candidate orders
-            $query = "'%s:2:\"id\";s:$id_length:\"$id\"%'";
+            $query = "%s:2:\"id\";s:$id_length:\"$id\"%";
 
             $results = $wpdb->get_results(
-                    "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = 'order_items' AND meta_value LIKE $query"
+										$wpdb->prepare( "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = 'order_items' AND meta_value LIKE %s", $query )
             );
 
             // Verify orders contain this product id
