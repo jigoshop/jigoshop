@@ -14,9 +14,9 @@
  * Author:				Jigowatt
  * Author URI:			http://jigowatt.co.uk
  *
- * Version:				1.1
- * Requires at least:	3.1
- * Tested up to:		3.3.1
+ * Version:				1.1.1
+ * Requires at least:	3.2.1
+ * Tested up to:		3.4-alpha-19978
  *
  * @package				Jigoshop
  * @category			Core

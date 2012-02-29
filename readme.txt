@@ -3,8 +3,8 @@ Contributors: Jigowatt
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigowatt, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.2.1
-Tested up to: 3.4-alpha-19904
-Stable tag: 1.1
+Tested up to: 3.4-alpha-19978
+Stable tag: 1.1.1
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,27 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+
+= 1.1.1 - 2012-02-29 =
+* Adds new admin setting for different redirection options after adding to the cart
+* Adds support for more than 5 related products
+* Adds settings link to plugins admin page
+* Updates Norwegian translations
+* Updates Hungarian translations
+* Fixes install & upgrade support for multisite shops
+* Fixes price filter widget
+* Fixes symbol_code_space formatting in jigoshop_price - thanks @leewillis77
+* Fixes twenty eleven for firefox users
+* Fixes single product attributes in firefox & internet explorer
+* Fixes variation attribute sort by slug
+* Fixes display of products below the stock threshhold
+* Fixes small bug with product has_attribute method
+* Fixes incorrect number formatting in PayPal
+* Fixes instance when adding an attribute without name & slug causes "Attribute already exists" error
+* Fixes incorrect title for attribute name
+* Fixes attribute column order
+* Fixes instance when adding a title-less attribute would fill in the slug
+* Removes unused variables from admin screen
 
 = 1.1 - 2012-02-13 =
 * New gateways:
