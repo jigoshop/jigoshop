@@ -120,7 +120,7 @@ function jigoshop_product_data_box() {
 			<fieldset id="price_fieldset">
 			<?php
 				// Regular Price
-				echo jigoshop_form::input( 'regular_price', 'Regular Price', null, null, 'short', 'Price Not Announced', array('after_label' => ' ('.get_jigoshop_currency_symbol().')') );
+				echo jigoshop_form::input( 'regular_price', 'Regular Price', null, null, 'short', __('Price Not Announced','jigoshop'), array('after_label' => ' ('.get_jigoshop_currency_symbol().')') );
 
 				// Sale Price
 				echo jigoshop_form::input( 'sale_price', 'Sale Price', '<a href="#" class="sale_schedule">Schedule</a>', null, 'short', '15% or 19.99', array('after_label' => ' ('.get_jigoshop_currency_symbol().' or %)' ));
@@ -434,7 +434,7 @@ function display_attribute() { ?>
 		if (isset($attributes[$attribute_taxonomy_name])) $attribute = $attributes[$attribute_taxonomy_name];
 		$position = (isset($attribute['position'])) ? $attribute['position'] : 0;
 
-		$allterms = get_the_terms( $post->ID, 'pa_'.$attribute_taxonomy_name );
+		$allterms = wp_get_object_terms( $post->ID, 'pa_'.$attribute_taxonomy_name, array( 'orderby' => 'slug' ) );
 
 		$has_terms = ( is_wp_error( $allterms ) || !$allterms || sizeof( $allterms ) == 0 ) ? 0 : 1;
 		$term_slugs = array();

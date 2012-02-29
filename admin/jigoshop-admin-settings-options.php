@@ -108,20 +108,6 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	array(
 		'name' => __('Disable Jigoshop frontend.css','jigoshop'),
 		'desc' 		=> '',
-		'tip' 		=> __('Useful if you want to disable Jigoshop styles and theme it yourself via your theme.','jigoshop'),
-		'id' 		=> 'jigoshop_disable_css',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'no',
-		'type' 		=> 'select',
-		'options' => array(
-			'no'  => __('No', 'jigoshop'),
-			'yes' => __('Yes', 'jigoshop')
-		)
-	),
-
-	array(
-		'name' => __('Disable bundled Fancybox','jigoshop'),
-		'desc' 		=> '',
 		'tip' 		=> __('Useful if or one of your plugin already loads the Fancybox script and css. But be careful, Jigoshop will still try to open product images using Fancybox.','jigoshop'),
 		'id' 		=> 'jigoshop_disable_fancybox',
 		'css' 		=> 'min-width:100px;',
@@ -189,6 +175,61 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		)
 	),
 
+	array( 'name' => __('Checkout page', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
+
+	array(
+		'name' => __('Allow guest purchases','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Setting this to Yes will allow users to checkout without registering or signing up. Otherwise, users must be signed in or must sign up to checkout.','jigoshop'),
+		'id' 		=> 'jigoshop_enable_guest_checkout',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'yes',
+		'type' 		=> 'select',
+		'options' => array(
+			'yes' => __('Yes', 'jigoshop'),
+			'no'  => __('No', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Show login form','jigoshop'),
+		'desc' 		=> '',
+		'id' 		=> 'jigoshop_enable_guest_login',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'yes',
+		'type' 		=> 'select',
+		'options' => array(
+			'yes' => __('Yes', 'jigoshop'),
+			'no'  => __('No', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Allow registration','jigoshop'),
+		'desc' 		=> '',
+		'id' 		=> 'jigoshop_enable_signup_form',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'yes',
+		'type' 		=> 'select',
+		'options' => array(
+			'yes' => __('Yes', 'jigoshop'),
+			'no'  => __('No', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Force SSL on checkout','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Forcing SSL is recommended. This will load your checkout page with https://. An SSL certificate is <strong>required</strong> if you choose yes. Contact your hosting provider for more information on SSL Certs.','jigoshop'),
+		'id' 		=> 'jigoshop_force_ssl_checkout',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'yes' => __('Yes', 'jigoshop'),
+			'no'  => __('No', 'jigoshop')
+		)
+	),
 	array( 'name' => __('Integration', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
 
 	array(
@@ -340,6 +381,15 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'desc'		=> '',
 		'tip' 		=> __('This sets the base page of your shop. You should not change this value once you have launched your site otherwise you risk breaking urls of other sites pointing to yours, etc.','jigoshop'),
 		'id' 		=> 'jigoshop_shop_page_id',
+		'css' 		=> 'min-width:50px;',
+		'type' 		=> 'single_select_page',
+		'std' 		=> ''
+	),
+	array(
+		'name' => __('Shop redirection page','jigoshop'),
+		'desc'		=> '',
+		'tip' 		=> __('This will point users to the page you set for buttons like `Return to shop` or `Continue Shopping`.','jigoshop'),
+		'id' 		=> 'jigoshop_shop_redirect_page_id',
 		'css' 		=> 'min-width:50px;',
 		'type' 		=> 'single_select_page',
 		'std' 		=> ''
@@ -641,6 +691,20 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'options' => array(
 			'cm' => __('centimeters', 'jigoshop'),
 			'in' => __('inches', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Show related products','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('To show or hide the related products section on a single product page.','jigoshop'),
+		'id' 		=> 'jigoshop_enable_related_products',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'yes',
+		'type' 		=> 'select',
+		'options' => array(
+			'yes' => __('Yes', 'jigoshop'),
+			'no'  => __('No', 'jigoshop')
 		)
 	),
 

@@ -290,7 +290,7 @@ class jigoshop_cart extends jigoshop_singleton {
 
     /** gets the url to the shop page */
     function get_shop_url() {
-        $shop_page_id = jigoshop_get_page_id('shop');
+        $shop_page_id = jigoshop_get_page_id('shop_redirect');
         if ($shop_page_id) :
             return apply_filters('jigoshop_get_shop_page_id', get_permalink($shop_page_id));
         endif;

@@ -402,6 +402,41 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 	                ';
             	}
 
+				$a_weight = $a_length = $a_width = $a_height = '';
+
+                if ( $variation->get_weight() ) {
+                	$a_weight = '
+                    	<tr class="weight">
+                    		<th>Weight</th>
+                    		<td>'.$variation->get_weight().get_option('jigoshop_weight_unit').'</td>
+                    	</tr>';
+            	}
+
+            	if ( $variation->get_length() ) {
+	            	$a_length = '
+	                	<tr class="length">
+	                		<th>Length</th>
+	                		<td>'.$variation->get_length().get_option('jigoshop_dimension_unit').'</td>
+	                	</tr>';
+                }
+
+                if ( $variation->get_width() ) {
+	                $a_width = '
+	                	<tr class="width">
+	                		<th>Width</th>
+	                		<td>'.$variation->get_width().get_option('jigoshop_dimension_unit').'</td>
+	                	</tr>';
+                }
+
+                if ( $variation->get_height() ) {
+	                $a_height = '
+	                	<tr class="height">
+	                		<th>Height</th>
+	                		<td>'.$variation->get_height().get_option('jigoshop_dimension_unit').'</td>
+	                	</tr>
+	                ';
+            	}
+
                 $variationsAvailable[] = array(
                     'variation_id' => $variation->get_variation_id(),
                     'sku'		=> '<div class="sku">SKU: ' . $variation->get_sku() . '</div>',
@@ -594,7 +629,8 @@ if (!function_exists('jigoshop_get_image_placeholder')) {
  **/
 if (!function_exists('jigoshop_output_related_products')) {
 	function jigoshop_output_related_products() {
-		// 4 Related Products in 4 columns
+		if (get_option ('jigoshop_enable_related_products') != 'no')
+		// 2 Related Products in 2 columns
 		jigoshop_related_products( 2, 2 );
 	}
 }
@@ -608,7 +644,7 @@ if (!function_exists('jigoshop_related_products')) {
 		$per_page = $posts_per_page;
 		$columns = $post_columns;
 
-		$related = $_product->get_related();
+		$related = $_product->get_related( $posts_per_page );
 		if (sizeof($related)>0) :
 			echo '<div class="related products"><h2>'.__('Related Products', 'jigoshop').'</h2>';
 			$args = array(
