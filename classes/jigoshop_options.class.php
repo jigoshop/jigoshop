@@ -213,10 +213,10 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'id' 		=> 'jigoshop_demo_store',
 			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'no',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
-				'yes'			=> __('Yes', 'jigoshop'),
-				'no'			=> __('No', 'jigoshop')
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
 		
@@ -286,7 +286,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'id' 		=> 'jigoshop_disable_css',
 			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'no',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -300,7 +300,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'id' 		=> 'jigoshop_disable_fancybox',
 			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'no',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -316,10 +316,10 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'id' 		=> 'jigoshop_enable_guest_checkout',
 			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
-				'yes'			=> __('Yes', 'jigoshop'),
-				'no'			=> __('No', 'jigoshop')
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
 		
@@ -329,10 +329,10 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'id' 		=> 'jigoshop_enable_guest_login',
 			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
-				'yes'			=> __('Yes', 'jigoshop'),
-				'no'			=> __('No', 'jigoshop')
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
 		
@@ -342,10 +342,10 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'id' 		=> 'jigoshop_enable_signup_form',
 			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
-				'yes'			=> __('Yes', 'jigoshop'),
-				'no'			=> __('No', 'jigoshop')
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
 		
@@ -356,10 +356,10 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'id' 		=> 'jigoshop_force_ssl_checkout',
 			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'no',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
-				'yes'			=> __('Yes', 'jigoshop'),
-				'no'			=> __('No', 'jigoshop')
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
 			
@@ -389,7 +389,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'tip' 		=> __('Add Google Analytics eCommerce tracking code upon successful orders', 'jigoshop'),
 			'desc'		=> __('<a href="//support.google.com/analytics/bin/answer.py?hl=en&answer=1009612">Learn how to enable</a> eCommerce tracking for your Google Analytics account.', 'jigoshop'),
 			'id' 		=> 'jigoshop_ga_ecommerce_tracking_enabled',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'std' 		=> 'no',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
@@ -541,7 +541,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'id' 		=> 'jigoshop_prepend_shop_page_to_urls',
 			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'no',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -823,10 +823,10 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'id' 		=> 'jigoshop_enable_sku',
 			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'no',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
-				'yes'			=> __('Yes', 'jigoshop'),
-				'no'			=> __('No', 'jigoshop')
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
 		
@@ -837,10 +837,10 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'id' 		=> 'jigoshop_enable_weight',
 			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
-				'yes'			=> __('Yes', 'jigoshop'),
-				'no'			=> __('No', 'jigoshop')
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
 		
@@ -865,10 +865,10 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'id' 		=> 'jigoshop_enable_dimensions',
 			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
-				'yes'			=> __('Yes', 'jigoshop'),
-				'no'			=> __('No', 'jigoshop')
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
 		
@@ -893,10 +893,10 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'id' 		=> 'jigoshop_enable_related_products',
 			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
-				'yes'			=> __('Yes', 'jigoshop'),
-				'no'			=> __('No', 'jigoshop')
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
 		
@@ -909,10 +909,10 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'id' 		=> 'jigoshop_manage_stock',
 			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
-				'yes'			=> __('Yes', 'jigoshop'),
-				'no'			=> __('No', 'jigoshop')
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
 		
@@ -923,10 +923,10 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'id' 		=> 'jigoshop_show_stock',
 			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
-				'yes'			=> __('Yes', 'jigoshop'),
-				'no'			=> __('No', 'jigoshop')
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
 		
@@ -936,10 +936,10 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'id' 		=> 'jigoshop_notify_low_stock',
 			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
-				'yes'			=> __('Yes', 'jigoshop'),
-				'no'			=> __('No', 'jigoshop')
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
 		
@@ -959,10 +959,10 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'id' 		=> 'jigoshop_notify_no_stock',
 			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
-				'yes'			=> __('Yes', 'jigoshop'),
-				'no'			=> __('No', 'jigoshop')
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
 		
@@ -983,7 +983,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'id' 		=> 'jigoshop_hide_no_stock_product',
 			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'no',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -1005,10 +1005,10 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'id' 		=> 'jigoshop_calc_taxes',
 			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
-				'yes'			=> __('Yes', 'jigoshop'),
-				'no'			=> __('No', 'jigoshop')
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
 		
@@ -1019,10 +1019,10 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'id' 		=> 'jigoshop_prices_include_tax',
 			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
-				'yes'			=> __('Yes', 'jigoshop'),
-				'no'			=> __('No', 'jigoshop')
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
 		
@@ -1075,10 +1075,10 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'id' 		=> 'jigoshop_calc_shipping',
 			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
-				'yes'			=> __('Yes', 'jigoshop'),
-				'no'			=> __('No', 'jigoshop')
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
 		
@@ -1089,10 +1089,10 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'id' 		=> 'jigoshop_enable_shipping_calc',
 			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
-				'yes'			=> __('Yes', 'jigoshop'),
-				'no'			=> __('No', 'jigoshop')
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
 		
@@ -1103,10 +1103,10 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'id' 		=> 'jigoshop_ship_to_billing_address_only',
 			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'no',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
-				'yes'			=> __('Yes', 'jigoshop'),
-				'no'			=> __('No', 'jigoshop')
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
 		
