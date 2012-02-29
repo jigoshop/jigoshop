@@ -80,8 +80,8 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		
 		add_settings_section( $slug, '', array( &$this, 'display_section' ), $this->get_options_name() );
 			
-		foreach ( $options as $option ) {
-			$this->create_setting( $option );
+		foreach ( $options as $index => $option ) {
+			$this->create_setting( $index, $option );
 		}
 
 	}
@@ -92,7 +92,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 *
 	 * @since 1.2
 	 */
-	public function create_setting( $args = array() ) {
+	public function create_setting( $index, $option = array() ) {
 	
 		$defaults = array(
 			'section'		=> '',
@@ -105,11 +105,12 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			'choices'		=> array(),
 			'class'			=> '',
 			'css'			=> '',
-			'args_input'	=> ''
+			'args'			=> ''
 		);
 
-		extract( wp_parse_args( $args, $defaults ) );
-
+		extract( wp_parse_args( $option, $defaults ) );
+		$id = ! empty( $id ) ? $id : $section.$index;
+		
 		$field_args = array(
 			'type'			=> $type,
 			'id'			=> $id,
@@ -121,10 +122,10 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			'label_for'		=> $id,
 			'class'			=> $class,
 			'css'			=> $css,
-			'args_input'	=> $args_input
+			'args'			=> $args
 		);
 		
-		if ( $type <> 'heading' && $type <> 'title' ) {
+		if ( $type <> 'heading' ) {
 			add_settings_field( 
 				$id, 
 				esc_attr( $name ), 
@@ -134,6 +135,26 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 				$field_args
 			);
 		}
+	}
+	
+	
+	/**
+	 * Format markup for an option and output it
+	 *
+	 * @since 1.2
+	 */
+	public function display_option( $option ) {
+		echo $this->our_parser->format_option_for_display( $option );
+	}
+	
+	
+	/**
+	 * Description for section
+	 *
+	 * @since 1.2
+	 */
+	public function display_section() {
+		// code
 	}
 	
 	
@@ -173,6 +194,10 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 				<div class="icon32 icon32-jigoshop-settings" id="icon-jigoshop"></div>
 				<h2><?php _e( 'Jigoshop Settings' ) ?></h2>
 				
+				<noscript>
+					<div id="jigoshop-js-warning" class="error"><?php _e( 'Warning- This options panel may not work properly without javascript!', 'jigoshop' ); ?></div>
+				</noscript>
+				
 				<?php
 					if ( isset( $_GET['settings-updated'] ) ) {
 						if ( Jigoshop_Options::instance()->get_option( 'validation-error' ) ) {
@@ -185,16 +210,20 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					}
 				?>
 				
-				<form action="options.php" method="post" id="mainform">
+				<form action="options.php" method="post">
 
-					<div class="tabs-wrap">
+					<div id="tabs-wrap">
 					
 						<ul class="tabs">
 							<?php echo $this->build_tab_menu_items(); ?>
 						</ul>
 						
-						<?php settings_fields( $this->get_options_name() ); ?>
-						<?php do_settings_sections( $this->get_options_name() ); ?>
+						<!--table class="widefat"-->
+
+							<?php settings_fields( $this->get_options_name() ); ?>
+							<?php do_settings_sections( $this->get_options_name() ); ?>
+							
+						<!--/table-->
 						
 						<p class="submit"><input name="Submit" type="submit" class="button-primary" value="<?php _e( 'Save Changes' ); ?>" /></p>
 						
@@ -250,26 +279,6 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			}
 		}
 		return $menus_li;
-	}
-	
-	
-	/**
-	 * Format markup for an option and output it
-	 *
-	 * @since 1.2
-	 */
-	public function display_option( $option ) {
-		echo $this->our_parser->format_option_for_display( $option );
-	}
-	
-	
-	/**
-	 * Description for section
-	 *
-	 * @since 1.2
-	 */
-	public function display_section() {
-		// code
 	}
 	
 	
@@ -675,9 +684,11 @@ class Jigoshop_Options_Parser {
 		$form_id_str = $form_id ? ' id="'.$form_id.'"' : '';
 		$display .= '<td class="forminp"'.$form_id_str.'">';
 		
-		
-		// work of the option type and format output for display for each type
+		// work off the option type and format output for display for each type
 		switch ( $item['type'] ) {
+		case 'title' :
+            break;
+			
 		case 'gateway_options' :
 			foreach (jigoshop_payment_gateways::payment_gateways() as $gateway) :
 				$gateway->admin_options();
@@ -717,7 +728,7 @@ class Jigoshop_Options_Parser {
 				'echo' => 0,
 				'selected' => $page_setting
 			);
-			if ( isset( $args_input )) $args = wp_parse_args( $args_input, $args );
+			if ( isset( $item['args'] )) $args = wp_parse_args( $item['args'], $args );
 			$display .= wp_dropdown_pages( $args );
 			break;
 
@@ -783,7 +794,7 @@ class Jigoshop_Options_Parser {
 					class="jigoshop-input jigoshop-radio"
 					name="'.Jigoshop_Admin_Settings::get_options_name().'['.$item['id'].']"
 					type="radio"
-					value="'.$option.'" '.checked( $data[$item['id']], $option, '0' ).' /><label>'.$name.'</label><div style="clear:right;">  </div>';
+					value="'.$option.'" '.checked( $data[$item['id']], $option, '0' ).' /><label>'.$name.'</label>';
 			}
 			break;
 
@@ -858,6 +869,7 @@ class Jigoshop_Options_Parser {
 	
 		$coupons = new jigoshop_coupons();
 		$coupon_codes = $coupons->get_coupons();
+		
 		ob_start();
 		?>
 		<table class="coupon_rows" cellspacing="0">
@@ -930,7 +942,9 @@ class Jigoshop_Options_Parser {
 			</tbody>
 		</table>
 		<p><a href="#" class="add button"><?php _e('+ Add Coupon', 'jigoshop'); ?></a></p>
+		
 		<?php $output = ob_get_contents(); ob_end_clean(); ?>
+		
 		<script type="text/javascript">
 			/* <![CDATA[ */
 			jQuery(function() {
@@ -982,6 +996,7 @@ class Jigoshop_Options_Parser {
 			/* ]]> */
 		</script>
 		<?php
+		
 		return $output;
 	}
 	
@@ -993,6 +1008,7 @@ class Jigoshop_Options_Parser {
 		$tax_classes = $_tax->get_tax_classes();
 		$tax_rates = Jigoshop_Options::instance()->get_option( 'jigoshop_tax_rates' );
 		$applied_all_states = array();
+		
 		ob_start();
 		?>
 		<div class="taxrows">
@@ -1051,7 +1067,9 @@ class Jigoshop_Options_Parser {
 			?>
 		</div>
 		<p><a href="#" class="add button"><?php _e('+ Add Tax Rule', 'jigoshop'); ?></a></p>
+		
 		<?php $output = ob_get_contents(); ob_end_clean(); ?>
+		
 		<script type="text/javascript">
 			/* <![CDATA[ */
 			jQuery(function() {
@@ -1088,6 +1106,7 @@ class Jigoshop_Options_Parser {
 			/* ]]> */
 		</script>
 	<?php
+	
 	return $output;
 	}
 	

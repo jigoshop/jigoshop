@@ -801,7 +801,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 		
 		self::$default_options[] = array(
 			'name'		=> __('Coupons','jigoshop'),
-			'desc' 		=> __('All fields are required.','jigoshop'),
+			'desc' 		=> '',
 			'id' 		=> 'jigoshop_coupons',
 			'css' 		=> 'min-width:50px;',
 			'type' 		=> 'coupons',
@@ -991,58 +991,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 		);
 		
 		/**
-		 * Shipping Tab
-		 *------------------------------------------------------------------------------------------
-		*/
-		self::$default_options[] = array( 'type' => 'heading', 'name' => __('Shipping', 'jigoshop') );
-		
-		self::$default_options[] = array(	'name' => __('Shipping Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
-		
-		self::$default_options[] = array(
-			'name'		=> __('Calculate Shipping','jigoshop'),
-			'desc' 		=> __('Only set this to no if you are not shipping items, or items have shipping costs included.','jigoshop'),
-			'tip' 		=> __('If you are not calculating shipping then you can ignore all other tax options.', 'jigoshop'),
-			'id' 		=> 'jigoshop_calc_shipping',
-			'css' 		=> 'min-width:100px;',
-			'std' 		=> 'yes',
-			'type' 		=> 'select',
-			'choices'	=> array(
-				'yes'			=> __('Yes', 'jigoshop'),
-				'no'			=> __('No', 'jigoshop')
-			)
-		);
-		
-		self::$default_options[] = array(
-			'name'		=> __('Enable shipping calculator on cart','jigoshop'),
-			'desc' 		=> '',
-			'tip' 		=> '',
-			'id' 		=> 'jigoshop_enable_shipping_calc',
-			'css' 		=> 'min-width:100px;',
-			'std' 		=> 'yes',
-			'type' 		=> 'select',
-			'choices'	=> array(
-				'yes'			=> __('Yes', 'jigoshop'),
-				'no'			=> __('No', 'jigoshop')
-			)
-		);
-		
-		self::$default_options[] = array(
-			'name'		=> __('Only ship to billing address?','jigoshop'),
-			'desc' 		=> '',
-			'tip' 		=> '',
-			'id' 		=> 'jigoshop_ship_to_billing_address_only',
-			'css' 		=> 'min-width:100px;',
-			'std' 		=> 'no',
-			'type' 		=> 'select',
-			'choices'	=> array(
-				'yes'			=> __('Yes', 'jigoshop'),
-				'no'			=> __('No', 'jigoshop')
-			)
-		);
-		
-		self::$default_options[] = array( 'type' => 'shipping_options');
-		
-		/**
 		 * Tax Tab
 		 *------------------------------------------------------------------------------------------
 		*/
@@ -1104,13 +1052,65 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 		
 		self::$default_options[] = array(
 			'name'		=> __('Tax rates','jigoshop'),
-			'desc' 		=> __('All fields are required.','jigoshop'),
+			'desc' 		=> '',
 			'tip' 		=> __('To avoid rounding errors, insert tax rates with 4 decimal places.','jigoshop'),
 			'id' 		=> 'jigoshop_tax_rates',
 			'css' 		=> 'min-width:50px;',
 			'type' 		=> 'tax_rates',
 			'std' 		=> ''
 		);
+		
+		/**
+		 * Shipping Tab
+		 *------------------------------------------------------------------------------------------
+		*/
+		self::$default_options[] = array( 'type' => 'heading', 'name' => __('Shipping', 'jigoshop') );
+		
+		self::$default_options[] = array(	'name' => __('Shipping Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
+		
+		self::$default_options[] = array(
+			'name'		=> __('Calculate Shipping','jigoshop'),
+			'desc' 		=> __('Only set this to no if you are not shipping items, or items have shipping costs included.','jigoshop'),
+			'tip' 		=> __('If you are not calculating shipping then you can ignore all other tax options.', 'jigoshop'),
+			'id' 		=> 'jigoshop_calc_shipping',
+			'css' 		=> 'min-width:100px;',
+			'std' 		=> 'yes',
+			'type' 		=> 'select',
+			'choices'	=> array(
+				'yes'			=> __('Yes', 'jigoshop'),
+				'no'			=> __('No', 'jigoshop')
+			)
+		);
+		
+		self::$default_options[] = array(
+			'name'		=> __('Enable shipping calculator on cart','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_enable_shipping_calc',
+			'css' 		=> 'min-width:100px;',
+			'std' 		=> 'yes',
+			'type' 		=> 'select',
+			'choices'	=> array(
+				'yes'			=> __('Yes', 'jigoshop'),
+				'no'			=> __('No', 'jigoshop')
+			)
+		);
+		
+		self::$default_options[] = array(
+			'name'		=> __('Only ship to billing address?','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_ship_to_billing_address_only',
+			'css' 		=> 'min-width:100px;',
+			'std' 		=> 'no',
+			'type' 		=> 'select',
+			'choices'	=> array(
+				'yes'			=> __('Yes', 'jigoshop'),
+				'no'			=> __('No', 'jigoshop')
+			)
+		);
+		
+		self::$default_options[] = array( 'type' => 'shipping_options');
 		
 		/**
 		 * Payment Gateways Tab
