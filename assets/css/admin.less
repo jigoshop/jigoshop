@@ -630,7 +630,7 @@ ul.recent-orders {
 	color: #999;
 }
 .jigoshop #tabs-wrap {
-	background: #ececec;
+	width: 950px;
 	padding: 7px 9px;
 	overflow: hidden;
 	margin-top: 0.5em !important;
@@ -643,17 +643,6 @@ ul.recent-orders {
 }
 .jigoshop #tabs-wrap table {
 	margin: 0 0 5px !important;
-	border: 1px solid #e1e1e1;
-	border-top: 0;
-}
-.jigoshop #tabs-wrap table thead tr th {
-	border-top: 4px solid #e1e1e1;
-}
-.jigoshop #tabs-wrap table thead:first-child tr th {
-	border-top: 0;
-}
-.jigoshop #tabs-wrap table thead th {
-	background: #fff;
 }
 .jigoshop #tabs-wrap table select {
 	white-space: nowrap;
@@ -1407,8 +1396,14 @@ div.multi_select_countries.shipping_services {
 }
 
 /* Settings */
-.jigoshop-settings table.form-table {
 
+.jigoshop-settings h3 {
+	font-size: 13px;
+	padding-top: 1.2em;
+}
+
+.jigoshop-settings table.form-table, .jigoshop-settings table.widefat {
+	
 	margin-top: 0.5em;
 	
 	.button {
@@ -1423,7 +1418,12 @@ div.multi_select_countries.shipping_services {
 		color: #777;
 	}
 	
+	th {
+		width: 20%;
+	}
+	
 	.forminp {
+		width: 75%;
 		.input-text, .select {
 			width: 45%;
 		}
@@ -1506,3 +1506,35 @@ div.multi_select_countries.shipping_services {
 	border-radius:8px;
 }
 
+.jigoshop ul.wp-submenu {
+	margin: 0;
+	overflow: hidden;
+	zoom: 1;
+	line-height: 1;
+}
+
+.jigoshop ul.wp-submenu li {
+	padding: 0;
+	margin: 0 5px 0 0;
+}
+
+.jigoshop ul.wp-submenu li a {
+	border: 1px solid 0;
+	border-bottom: 0;
+	float: left;
+	padding: 5px 10px;
+	text-decoration: none;
+	font-size: 14px;
+
+	-moz-border-radius-topleft: 3px;
+	-moz-border-radius-topright: 3px;
+	-webkit-border-top-left-radius: 3px;
+	-webkit-border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+
+}
+
+.jigoshop ul.wp-submenu li.active a {
+	color: #333;
+}

@@ -90,7 +90,13 @@ class flat_rate extends jigoshop_shipping_method {
 
     public function admin_options() {
 		$jsOptions = Jigoshop_Options::instance();
+return;
+		ob_start();
     	?>
+    	<tr valign="top">
+    		<th scope="row"><?php _e('Flat Rates', 'jigoshop'); ?></th><td>&nbsp;</td>
+    		<td class="forminp">
+    			<table>
     	<!--thead><tr><th scope="col" width="200px"><?php _e('Flat Rates', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('Flat rates let you define a standard rate per item, or per order.', 'jigoshop'); ?>&nbsp;</th></tr></thead-->
     	<tr>
 	        <td class="titledesc"><?php _e('Enable Flat Rate', 'jigoshop') ?>:</td>
@@ -176,6 +182,10 @@ class flat_rate extends jigoshop_shipping_method {
 			}).change();
 		});
 		</script>
+				
+				</table>
+			</td>
+		</tr>
     	<?php
     }
 

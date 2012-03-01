@@ -221,23 +221,21 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 				
 				<form action="options.php" method="post">
 
-					<div id="tabs-wrap">
-					
-						<ul class="tabs">
-							<?php echo $this->build_tab_menu_items(); ?>
-						</ul>
-						
-						<div class="jigoshop-settings">
-
+					<div class="jigoshop-settings">
+						<div id="tabs-wrap">
+							
+							<ul class="wp-submenu">
+								<?php echo $this->build_tab_menu_items(); ?>
+							</ul>
+							
 							<?php settings_fields( $this->get_options_name() ); ?>
 							<?php do_settings_sections( $this->get_options_name() ); ?>
 							
+							<p class="submit"><input name="Submit" type="submit" class="button-primary" value="<?php _e( 'Save Changes' ); ?>" /></p>
+						
 						</div>
-						
-						<p class="submit"><input name="Submit" type="submit" class="button-primary" value="<?php _e( 'Save Changes' ); ?>" /></p>
-						
 					</div>
-
+					
 				</form>
 
 			</div>
@@ -280,7 +278,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		foreach ( $this->our_parser->tab_headers as $tab ) {
 			$this_slug = sanitize_title( $tab );
 			if ( $slug == $this_slug ) {
-				$menus_li .= '<li class="active"><a
+				$menus_li .= '<li class="current active"><a
 					title="'.$tab.'"
 					href="?page='.Jigoshop_Admin_Settings::get_options_name().'&tab='.$this_slug.'">' . $tab . '</a></li>';
 			} else {
@@ -713,7 +711,7 @@ class Jigoshop_Options_Parser {
 			
 		case 'shipping_options' :
 			foreach (jigoshop_shipping::get_all_methods() as $method) :
-				$method->admin_options();
+//				$method->admin_options();
 			endforeach;
 			break;
 			

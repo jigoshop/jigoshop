@@ -43,6 +43,7 @@ class free_shipping extends jigoshop_shipping_method {
 
     public function admin_options() {
 		$jsOptions = Jigoshop_Options::instance();
+		return;
     	?>
     	<!--thead><tr><th scope="col" width="200px"><?php _e('Free Shipping', 'jigoshop'); ?></th><th scope="col" class="desc">&nbsp;</th></tr></thead-->
     	<tr>
