@@ -1,8 +1,8 @@
 <?php
 /**
- * CoreTest Tests
+ * jigoshopTest Tests
  */
-class CoreTest extends WP_UnitTestCase {
+class jigoshopTest extends WP_UnitTestCase {
 
     var $plugin_slug = 'jigoshop';
 
@@ -15,7 +15,7 @@ class CoreTest extends WP_UnitTestCase {
     }
 
     public function testPlugin_path() {
-        $plugin_root = dirname(dirname(__FILE__));
+        $plugin_root = dirname(dirname(dirname(__FILE__)));
         $this->assertEquals( $plugin_root, jigoshop::plugin_path() );
     }
 
