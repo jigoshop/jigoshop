@@ -43,7 +43,7 @@ class local_pickup extends jigoshop_shipping_method {
     public function admin_options() {
 		$jsOptions = Jigoshop_Options::instance();
     	?>
-    	<thead><tr><th scope="col" width="200px"><?php _e('Local pickup', 'jigoshop'); ?></th><th scope="col" class="desc">&nbsp;</th></tr></thead>
+    	<!--thead><tr><th scope="col" width="200px"><?php _e('Local pickup', 'jigoshop'); ?></th><th scope="col" class="desc">&nbsp;</th></tr></thead-->
     	<tr>
 	        <td class="titledesc"><?php _e('Enable local pickup', 'jigoshop') ?>:</td>
 	        <td class="forminp">
