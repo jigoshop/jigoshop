@@ -14,9 +14,9 @@
  * Author:				Jigowatt
  * Author URI:			http://jigowatt.co.uk
  *
- * Version:				1.1
- * Requires at least:	3.1
- * Tested up to:		3.3.1
+ * Version:				1.1.1
+ * Requires at least:	3.2.1
+ * Tested up to:		3.4-alpha-19978
  *
  * @package				Jigoshop
  * @category			Core
@@ -328,7 +328,7 @@ add_action('template_redirect', 'jigoshop_frontend_scripts');
 */
 function jigoshop_demo_store() {
 
-	if (get_option('jigoshop_demo_store')=='yes') :
+	if ( get_option('jigoshop_demo_store')=='yes' && is_jigoshop() ) :
 
 		echo '<p class="demo_store">'.__('This is a demo store for testing purposes &mdash; no orders shall be fulfilled.', 'jigoshop').'</p>';
 

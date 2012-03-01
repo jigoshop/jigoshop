@@ -61,9 +61,9 @@ function jigoshop_add_order_item() {
 			WHERE $wpdb->postmeta.meta_key = 'SKU'
 			AND $wpdb->posts.post_status = 'publish'
 			AND $wpdb->posts.post_type = 'shop_product'
-			AND $wpdb->postmeta.meta_value = '".$item_to_add."'
+			AND $wpdb->postmeta.meta_value = %s
 			LIMIT 1
-		"));
+		", $item_to_add ));
 		$post = get_post( $post_id );
 	endif;
 

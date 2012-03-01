@@ -1184,7 +1184,9 @@ class jigoshop_product {
 				$values = array_unique($values);
 			}
 
-			$available_attributes[$attribute['name']] = array_unique($values);
+			$values = array_unique($values);
+			asort( $values );
+			$available_attributes[$attribute['name']] = $values;
 		}
 
 		return $available_attributes;
