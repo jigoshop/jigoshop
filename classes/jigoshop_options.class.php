@@ -164,7 +164,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			}
 		}
 		/*** get the start of the array ***/
-		 $start = array_slice( $our_options, 0, $second_index-1 ); 
+		 $start = array_slice( $our_options, 0, $second_index ); 
 		 /*** get the end of the array ***/
 		 $end = array_slice( $our_options, $second_index );
 		 /*** add the new elements to the array ***/
@@ -1146,8 +1146,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
-		
-		self::$default_options[] = array( 'type' => 'shipping_options');
 		
 		/**
 		 * Payment Gateways Tab

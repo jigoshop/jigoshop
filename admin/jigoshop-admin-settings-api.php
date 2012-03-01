@@ -727,12 +727,6 @@ class Jigoshop_Options_Parser {
 			endforeach;
 			break;
 			
-		case 'shipping_options' :
-			foreach (jigoshop_shipping::get_all_methods() as $method) :
-//				$method->admin_options();
-			endforeach;
-			break;
-			
 		case 'tax_rates' :
 			$display .= $this->format_tax_classes_for_display( $item );
 			break;
