@@ -67,6 +67,30 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	
 	
 	/**
+	* Scripts for the Options page
+	*
+	* @since 1.2
+	*/
+	public function settings_scripts() {
+		
+    	wp_register_script( 'jigoshop-easytooltip', jigoshop::assets_url() . '/assets/js/easyTooltip.js', '' );
+    	wp_enqueue_script( 'jigoshop-easytooltip' );
+		wp_enqueue_script( 'jquery-ui-tabs' );
+
+	}
+	
+	
+	/**
+	* Styling for the options page
+	*
+	* @since 1.2
+	*/
+	public function settings_styles() {
+		
+	}
+	
+	
+	/**
 	* Register settings
 	*
 	* @since 1.2
@@ -76,25 +100,32 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		register_setting( $this->get_options_name(), $this->get_options_name(), array ( &$this, 'validate_settings' ) );
 		
 		$slug = $this->get_current_tab_slug();
-		$options = $this->our_parser->sections[$slug];
+		$options = $this->our_parser->tabs[$slug];
 		
-		add_settings_section( $slug, '', array( &$this, 'display_section' ), $this->get_options_name() );
-			
 		foreach ( $options as $index => $option ) {
-			$this->create_setting( $index, $option );
+			switch ( $option['type'] ) {
+			case 'title':
+				add_settings_section( $option['section'], $option['name'], array( &$this, 'display_section' ), $this->get_options_name() );
+				break;
+				
+			default:
+				$this->create_setting( $index, $option );
+				break;
+			}
 		}
-
+		
 	}
 	
 	
 	/**
-	 * Create settings field
+	 * Create a settings field
 	 *
 	 * @since 1.2
 	 */
 	public function create_setting( $index, $option = array() ) {
 	
 		$defaults = array(
+			'tab'			=> '',
 			'section'		=> '',
 			'id'			=> null,
 			'type'			=> '',
@@ -112,8 +143,10 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		$id = ! empty( $id ) ? $id : $section.$index;
 		
 		$field_args = array(
-			'type'			=> $type,
+			'tab'			=> $tab,
+			'section'		=> $section,
 			'id'			=> $id,
+			'type'			=> $type,
 			'name'			=> $name,
 			'desc'			=> $desc,
 			'tip'			=> $tip,
@@ -153,32 +186,8 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 *
 	 * @since 1.2
 	 */
-	public function display_section() {
-		// code
-	}
-	
-	
-	/**
-	* Scripts for the Options page
-	*
-	* @since 1.2
-	*/
-	public function settings_scripts() {
-		
-    	wp_register_script( 'jigoshop-easytooltip', jigoshop::assets_url() . '/assets/js/easyTooltip.js', '' );
-    	wp_enqueue_script( 'jigoshop-easytooltip' );
-		wp_enqueue_script( 'jquery-ui-tabs' );
-
-	}
-	
-	
-	/**
-	* Styling for the options page
-	*
-	* @since 1.2
-	*/
-	public function settings_styles() {
-		
+	public function display_section( $section ) {
+		// no code required here
 	}
 	
 	
@@ -218,12 +227,12 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 							<?php echo $this->build_tab_menu_items(); ?>
 						</ul>
 						
-						<!--table class="widefat"-->
+						<div class="jigoshop-settings">
 
 							<?php settings_fields( $this->get_options_name() ); ?>
 							<?php do_settings_sections( $this->get_options_name() ); ?>
 							
-						<!--/table-->
+						</div>
 						
 						<p class="submit"><input name="Submit" type="submit" class="button-primary" value="<?php _e( 'Save Changes' ); ?>" /></p>
 						
@@ -236,7 +245,9 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			<script type="text/javascript">
 				/*<![CDATA[*/
 				jQuery(function($) {
-		
+					
+					jQuery('table.form-table').addClass('widefat');
+					
 					// Countries
 					jQuery('select#jigoshop_allowed_countries').change(function(){
 						// hide-show multi_select_countries
@@ -266,16 +277,16 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	function build_tab_menu_items() {
 		$menus_li = '';
 		$slug = $this->get_current_tab_slug();
-		foreach ( $this->our_parser->tab_headers as $section ) {
-			$this_slug = sanitize_title( $section );
+		foreach ( $this->our_parser->tab_headers as $tab ) {
+			$this_slug = sanitize_title( $tab );
 			if ( $slug == $this_slug ) {
 				$menus_li .= '<li class="active"><a
-					title="'.$section.'"
-					href="?page='.Jigoshop_Admin_Settings::get_options_name().'&tab='.$this_slug.'">' . $section . '</a></li>';
+					title="'.$tab.'"
+					href="?page='.Jigoshop_Admin_Settings::get_options_name().'&tab='.$this_slug.'">' . $tab . '</a></li>';
 			} else {
 				$menus_li .= '<li><a
-					title="'.$section.'"
-					href="?page='.Jigoshop_Admin_Settings::get_options_name().'&tab='.$this_slug.'">' . $section . '</a></li>';
+					title="'.$tab.'"
+					href="?page='.Jigoshop_Admin_Settings::get_options_name().'&tab='.$this_slug.'">' . $tab . '</a></li>';
 			}
 		}
 		return $menus_li;
@@ -604,6 +615,7 @@ class Jigoshop_Options_Parser {
 
 	var $these_options;		// The array of default options items to parse
 	var $tab_headers;
+	var $tabs;
 	var $sections;
 
 
@@ -616,11 +628,13 @@ class Jigoshop_Options_Parser {
 	private function parse_options() {
 		
 		$tab_headers = array();
+		$tabs = array();
 		$sections = array();
 		
 		foreach ( $this->these_options as $item ) {
 			
 			$defaults = array(
+				'tab'			=> '',
 				'section'		=> '',
 				'id'			=> null,
 				'type'			=> '',
@@ -640,15 +654,23 @@ class Jigoshop_Options_Parser {
 			
 			if ( $item['type'] == "heading" ) {
 				$tab_headers[] = $item['name'];
-				$section_name = sanitize_title( $item['name'] );
+				$tab_name = sanitize_title( $item['name'] );
+				continue;
 			}
 						
-			$item['section'] = $section_name;
-			$sections[$section_name][] = $item; // store each option item in it's section heading
+			if ( $item['type'] == "title" ) {
+				$section_name = sanitize_title( $item['name'] );
+			}
+			
+			$item['tab'] = $tab_name;
+			$item['section'] = isset( $section_name ) ? $section_name : $tab_name;
+			$tabs[$tab_name][] = $item;
+			$sections[$item['section']][] = $item;
 			
 		}
 
 		$this->tab_headers = $tab_headers;
+		$this->tabs = $tabs;
 		$this->sections = $sections;
 	}
 	
@@ -662,12 +684,6 @@ class Jigoshop_Options_Parser {
 		if ( isset( $item['class'] ) ) {
 			$class = $item['class'];
 		}
-		
-        $display .= '<td class="titledesc">';
-        if ( ! empty( $item['tip'] )) {
-			$display .= '<a href="#" tip="'.$item['tip'].'" class="tips" tabindex="99"></a>';
-        }
-		$display .= '</td>';
 		
 		// determine special case option ID's for jQuery selectors
 		switch ( $item['type'] ) {
@@ -850,13 +866,19 @@ class Jigoshop_Options_Parser {
 //			logme( $item );
 		}
 
+		$display .= '<span class="jigoshop-tooltips">';
+        if ( ! empty( $item['tip'] )) {
+			$display .= '<a href="#" tip="'.$item['tip'].'" class="tips" tabindex="99"></a>';
+		}
+		$display .= '</span>';
+		
 		if ( $item['type'] != 'heading' ) {
 			if ( empty( $item['desc'] ) ) {
 				$explain_value = '';
 			} else {
 				$explain_value = $item['desc'];
 			}
-			$display .= '<div class="jigoshop-explain">' . $explain_value . '</div>';
+			$display .= '<div class="jigoshop-explain"><small>' . $explain_value . '</small></div>';
 			$display .= '</td>';
 		}
 

@@ -593,8 +593,8 @@ ul.recent-orders {
 	}
 }
 
-/* Settings */
-.jigoshop table.widefat, .jigoshop table.form-table {
+/* old settings */
+.jigoshop table.widefat {
 	width: 950px;
 	margin-top: 0.5em !important;
 	.button {
@@ -618,13 +618,6 @@ ul.recent-orders {
 	}
 }
 
-input.jigoshop-radio {
-	margin-right: 5px;
-}
-.forminp label {
-	margin-right: 10px;
-}
-
 .error a.button-secondary {
 	text-decoration: none;
 }
@@ -638,7 +631,6 @@ input.jigoshop-radio {
 }
 .jigoshop #tabs-wrap {
 	background: #ececec;
-	width: 950px;
 	padding: 7px 9px;
 	overflow: hidden;
 	margin-top: 0.5em !important;
@@ -699,7 +691,7 @@ p.taxrow label {
 	}
 }
 
-.jigoshop table.widefat, .jigoshop table.form-table {
+.jigoshop table.widefat {
 	table.coupon_rows {
 		border: 0 !important;
 		width: 100%;
@@ -745,26 +737,6 @@ p.taxrow label {
 	}
 }
 
-
-a.tips {
-	height: 16px;
-	width: 16px;
-	margin: 4px 5px 0 0;
-	float: left;
-	background: url(../images/tip.png) no-repeat top left;
-}
-#easyTooltip {
-	padding:8px;
-	border:3px solid #b9e3f0;
-	background:#E3F4F9;
-	font-size: 12px;
-	width:400px;
-	-moz-border-radius:8px;
-	-webkit-border-radius:8px;
-	-o-border-radius:8px;
-	-khtml-border-radius:8px;
-	border-radius:8px;
-}
 .jigoshop #tabs-wrap table a.remove {
 	margin-left: 4px;
 }
@@ -1433,3 +1405,104 @@ div.multi_select_countries.shipping_services {
 		display: block;
 	}
 }
+
+/* Settings */
+.jigoshop-settings table.form-table {
+
+	margin-top: 0.5em;
+	
+	.button {
+		float: left;
+		margin: 0 3px 3px 0;
+	}
+	.button-right {
+		float: right;
+		margin: 0 0 3px 3px;
+	}
+	td small {
+		color: #777;
+	}
+	
+	.forminp {
+		.input-text, .select {
+			width: 45%;
+		}
+		.wide-input {
+			width: 99%;
+		}
+		input.jigoshop-radio {
+			margin: 7px 5px 0;
+		}
+		label {
+			margin-right: 10px;
+		}
+		span.jigoshop-tooltips {
+			
+		}
+		a.tips {
+			height: 16px;
+			width: 16px;
+			margin: 5px 5px 0 0;
+			float: left;
+			background: url(../images/tip.png) no-repeat top left;
+		}
+	}
+	
+	table.coupon_rows {
+		border: 0 !important;
+		width: 95%;
+		a.dp-choose-date {
+			float: left;
+			width: 16px;
+			height: 16px;
+			padding: 0;
+			margin: 4px 9px 0 3px;
+			display: block;
+			text-indent: -2000px;
+			overflow: hidden;
+			background: url(../images/calendar.png) no-repeat;
+
+			&.disabled {
+				background-position: 0 -20px;
+				cursor: default;
+			}
+		}
+		input.dp-applied {
+			width: 140px;
+			float: left;
+		}
+		thead {
+			th {
+				padding: 1px;
+				border: 0;
+				font-weight: normal;
+				font-size: 11px;
+				color: #999;
+			}
+		}
+		tbody {
+			td {
+				padding: 3px 3px 0 0;
+				border: 0;
+				vertical-align: middle;
+				input.text {
+					width: 85px;
+				}
+			}
+		}
+	}
+}
+
+#easyTooltip {
+	padding:8px;
+	border:3px solid #b9e3f0;
+	background:#E3F4F9;
+	font-size: 12px;
+	width:400px;
+	-moz-border-radius:8px;
+	-webkit-border-radius:8px;
+	-o-border-radius:8px;
+	-khtml-border-radius:8px;
+	border-radius:8px;
+}
+

@@ -403,7 +403,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 		*/
 		self::$default_options[] = array( 'type' => 'heading', 'name' => __('Pages', 'jigoshop') );
 		
-		self::$default_options[] = array( 'name' => __('Shop page configuration', 'jigoshop'), 'type' => 'title', 'desc' => '' );
+		self::$default_options[] = array( 'name' => __('Page configurations', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
 		self::$default_options[] = array(
 			'name'		=> __('Cart Page','jigoshop'),
