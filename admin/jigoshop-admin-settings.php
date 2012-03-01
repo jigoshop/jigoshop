@@ -103,7 +103,7 @@ function jigoshop_update_options() {
                         $country = jigowatt_clean($tax_countries[$i]);
                         $label = trim($tax_label[$i]);
                         $state = '*'; // countries with no states have to have a character for products. Therefore use *
-                        $rate = number_format(jigowatt_clean($tax_rate[$i]), 4);
+                        $rate = number_format((float)jigowatt_clean($tax_rate[$i]), 4);
                         $class = jigowatt_clean($tax_classes[$i]);
 
                         if (isset($tax_shipping[$i]) && $tax_shipping[$i])
@@ -669,7 +669,7 @@ function jigoshop_admin_fields($options) {
                 if ($tax_rates && is_array($tax_rates) && sizeof($tax_rates) > 0)
                     foreach ($tax_rates as $rate) :
                         if ($rate['is_all_states']) :
-                            if (in_array($rate['country'], $applied_all_states)) :
+                            if (in_array(get_all_states_key($rate), $applied_all_states)) :
                                 continue;
                             endif;
                         endif;
@@ -693,8 +693,8 @@ function jigoshop_admin_fields($options) {
                         echo '</select><select name="tax_country[' . esc_attr( $i ) . ']" title="Country">';
 
                         if ($rate['is_all_states']) :
-                            if (is_array($applied_all_states) && !in_array($rate['country'], $applied_all_states)) :
-                                $applied_all_states[] = $rate['country'];
+                            if (is_array($applied_all_states) && !in_array(get_all_states_key($rate), $applied_all_states)) :
+                                $applied_all_states[] = get_all_states_key($rate);
                                 jigoshop_countries::country_dropdown_options($rate['country'], '*'); //all-states
                             else :
                                 continue;
@@ -821,6 +821,16 @@ function jigoshop_admin_fields($options) {
     flush_rewrite_rules();
 }
 
+/**
+ * When all states are selected, filter based on country and tax class. This method
+ * creates the array key for such a filter.
+ * 
+ * @param array $tax_rate the tax rates array
+ * @return string country code and tax class concatenated 
+ */
+function get_all_states_key($tax_rate) {
+    return $tax_rate['country'] . $tax_rate['class'];
+}
 /**
  * Settings page
  *
