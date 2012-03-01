@@ -140,6 +140,43 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	
 	
 	/**
+	 * Install additional default options for parsing
+	 * Shipping methods and Payment gateways would use this
+	 *
+	 * @param	string	The name of the Tab ('heading') to install onto
+	 * @param	array	The array of options to install
+	 *
+	 * @since	1.2
+	 */	
+	public function install_new_options( $tab, $options ) {
+		$our_options = self::instance()->get_default_options();
+		$first_index = -1;
+		$second_index = -1;
+		foreach ( $our_options as $index => $option ) {
+			if ( $option['type'] <> 'heading' ) continue;
+			if ( $option['name'] == $tab ) {
+				$first_index = $index;
+				continue;
+			}
+			if ( $first_index >= 0 ) {
+				$second_index = $index;
+				break;
+			}
+		}
+		/*** get the start of the array ***/
+		 $start = array_slice( $our_options, 0, $second_index-1 ); 
+		 /*** get the end of the array ***/
+		 $end = array_slice( $our_options, $second_index );
+		 /*** add the new elements to the array ***/
+		 foreach ( $options as $option ) {
+		 	$start[] = $option;
+		 }
+		 /*** glue them back together ***/
+		 self::$default_options = array_merge( $start, $end );
+ 	}
+	
+	
+	/**
 	 * Return the Jigoshop current options
 	 *
 	 * @param   none
