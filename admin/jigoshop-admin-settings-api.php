@@ -247,7 +247,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					// Fade out the status message
 					jQuery('.updated').delay(2500).fadeOut(1500);
 
-//					jQuery('table.form-table').addClass('widefat');
+					jQuery('table.form-table').addClass('widefat');
 					
 					// Countries
 					jQuery('select#jigoshop_allowed_countries').change(function(){
@@ -265,7 +265,9 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 				});
 				/*]]>*/
 			</script>
-
+			
+			<?php do_action( 'jigoshop_settings_scripts' ); ?>
+			
 		<?php
 	}
 	
@@ -765,14 +767,14 @@ class Jigoshop_Options_Parser {
 		case 'single_select_country' :
 			$countries = jigoshop_countries::$countries;
 			$country_setting = (string) $data[$item['id']];
-			if (strstr($country_setting, ':')) :
-				$country = current(explode(':', $country_setting));
-				$state = end(explode(':', $country_setting));
+			if ( strstr( $country_setting, ':' )) :
+				$country = current( explode( ':', $country_setting) );
+				$state = end( explode( ':', $country_setting) );
 			else :
 				$country = $country_setting;
 				$state = '*';
 			endif;
-			$display .= '<select class="select" name="' . Jigoshop_Admin_Settings::get_options_name() . '[' . $item['id'] . ']">';
+			$display .= '<select class="single_select_country" name="' . Jigoshop_Admin_Settings::get_options_name() . '[' . $item['id'] . ']">';
 			$display .= jigoshop_countries::country_dropdown_options($country, $state, false, true, false);
 			$display .= '</select>';
 			break;

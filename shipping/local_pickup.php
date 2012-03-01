@@ -30,8 +30,8 @@ class local_pickup extends jigoshop_shipping_method {
 		
 		$jsOptions->install_new_options( 'Shipping', $this->get_default_options() );
 		
-		$jsOptions->add_option('jigoshop_local_pickup_availability', 'all');
-		$jsOptions->add_option('jigoshop_local_pickup_title', 'Local Pickup');
+		$jsOptions->add_option( 'jigoshop_local_pickup_availability', 'all' );
+		$jsOptions->add_option( 'jigoshop_local_pickup_title', 'Local Pickup' );
 		
         $this->id 			= 'local_pickup';
         $this->enabled		= $jsOptions->get_option('jigoshop_local_pickup_enabled');
@@ -47,7 +47,7 @@ class local_pickup extends jigoshop_shipping_method {
 		}
 		
 		add_action( 'jigoshop_update_options', array( &$this, 'process_admin_options' ) );
-		add_action( 'admin_print_scripts', array( &$this, 'admin_scripts' ) );
+		add_action( 'jigoshop_settings_scripts', array( &$this, 'admin_scripts' ) );
 
     }
 
@@ -118,13 +118,11 @@ class local_pickup extends jigoshop_shipping_method {
 		$this->shipping_label 	= $this->title;
     }
 	
-	// TODO: this needs work, broken (-JAP-)
     public function admin_scripts() {
-
     	?>
 <script type="text/javascript">
 	/*<![CDATA[*/
-		jQuery(document).ready( function($)
+		jQuery(function($) {
 			jQuery('select#jigoshop_local_pickup_availability').change(function() {
 				if (jQuery(this).val()=="specific") {
 					jQuery(this).parent().parent().next('tr').show();
@@ -136,7 +134,6 @@ class local_pickup extends jigoshop_shipping_method {
 	/*]]>*/
 </script>
     	<?php
-		
     }
 
     public function process_admin_options() {
