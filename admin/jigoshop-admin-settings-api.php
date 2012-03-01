@@ -214,7 +214,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 							Jigoshop_Options::instance()->set_option( 'validation-error', false );
 							Jigoshop_Options::instance()->set_option( 'validation-message', '' );
 						} else {
-							echo "<div class='updated fade'><p>".Jigoshop_Options::instance()->get_option( 'validation-message' )."</p></div>";
+							echo "<div class='updated'><p>".Jigoshop_Options::instance()->get_option( 'validation-message' )."</p></div>";
 						}
 					}
 				?>
@@ -244,7 +244,10 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 				/*<![CDATA[*/
 				jQuery(function($) {
 					
-					jQuery('table.form-table').addClass('widefat');
+					// Fade out the status message
+					jQuery('.updated').delay(2500).fadeOut(1500);
+
+//					jQuery('table.form-table').addClass('widefat');
 					
 					// Countries
 					jQuery('select#jigoshop_allowed_countries').change(function(){
@@ -339,6 +342,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	*/
 	public function validate_settings( $input ) {
 		
+		$defaults = $this->our_parser->these_options;
 		$current_options = Jigoshop_Options::get_current_options();
 		
 		$current_options['validation-error'] = true; // if no errors in validation, we will reset this to false
@@ -347,15 +351,27 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		$valid_input = $current_options;	// we start with the current options, plus the error flag and message
 		
 		if ( ! empty( $input )) foreach ( $input as $id => $value ) {
-			$valid_input[$id] = $value;	// obviously we aren't validating very much yet (-JAP-)
+			foreach ( $defaults as $index => $option ) {
+				if ( isset( $option['id'] ) && $option['id'] == $id ) {
+					switch ( $option['type'] ) {
+					case 'multi_select_countries' :
+//						logme( $value );
+						break;
+						
+					default :
+						$valid_input[$id] = $value;
+						break;
+					}
+				}
+			}
 		}
-		
-		// clear the error flag and set successful message
-		$valid_input['validation-error'] = false;
-		$valid_input['validation-message'] = sprintf( __( "'%s' settings were updated successfully.", 'jigoshop' ), $this->get_current_tab_name() );
 		
 		if ( $result = $this->get_updated_coupons() ) $valid_input['jigoshop_coupons'] = $result;
 		if ( $result = $this->get_updated_tax_classes() ) $valid_input['jigoshop_tax_rates'] = $result;
+		
+		// clear the error flag and set successful message
+		$valid_input['validation-error'] = false;
+		$valid_input['validation-message'] = sprintf( __( "'<strong>%s</strong>' settings were updated successfully.", 'jigoshop' ), $this->get_current_tab_name() );
 		
 		return $valid_input;	// send it back to WordPress for saving
 		
