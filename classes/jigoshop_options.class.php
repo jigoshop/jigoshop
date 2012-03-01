@@ -900,7 +900,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			)
 		);
 		
-		self::$default_options[] = array(	'name' => __('Inventory Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
+		self::$default_options[] = array( 'name' => __('Inventory Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
 		self::$default_options[] = array(
 			'name'		=> __('Manage stock','jigoshop'),
@@ -996,7 +996,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 		*/
 		self::$default_options[] = array( 'type' => 'heading', 'name' => __('Tax', 'jigoshop') );
 		
-		self::$default_options[] = array(	'name' => __('Tax Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
+		self::$default_options[] = array( 'name' => __('Tax Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
 		self::$default_options[] = array(
 			'name'		=> __('Calculate Taxes','jigoshop'),
@@ -1066,7 +1066,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 		*/
 		self::$default_options[] = array( 'type' => 'heading', 'name' => __('Shipping', 'jigoshop') );
 		
-		self::$default_options[] = array(	'name' => __('Shipping Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
+		self::$default_options[] = array( 'name' => __('Shipping Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
 		self::$default_options[] = array(
 			'name'		=> __('Calculate Shipping','jigoshop'),
@@ -1117,6 +1117,8 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 		 *------------------------------------------------------------------------------------------
 		*/
 		self::$default_options[] = array( 'type' => 'heading', 'name' => __('Payment Gateways', 'jigoshop') );
+		
+		self::$default_options[] = array( 'name' => __('Available gateways', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
 		self::$default_options[] = array( 'type' => 'gateway_options');
 				
