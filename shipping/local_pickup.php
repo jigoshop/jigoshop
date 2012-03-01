@@ -19,7 +19,7 @@ function add_local_pickup_method( $methods ) {
 	$methods[] = 'local_pickup';
 	return $methods;
 }
-add_filter( 'jigoshop_shipping_methods', 'add_local_pickup_method' );
+add_filter( 'jigoshop_shipping_methods', 'add_local_pickup_method', 30 );
 
 
 class local_pickup extends jigoshop_shipping_method {

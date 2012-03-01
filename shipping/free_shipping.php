@@ -19,7 +19,7 @@ function add_free_shipping_method( $methods ) {
 	$methods[] = 'free_shipping';
 	return $methods;
 }
-add_filter( 'jigoshop_shipping_methods', 'add_free_shipping_method' );
+add_filter( 'jigoshop_shipping_methods', 'add_free_shipping_method', 20 );
 
 
 class free_shipping extends jigoshop_shipping_method {
