@@ -142,12 +142,12 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'id' 		=> 'jigoshop_company_name',
 		'css' 		=> 'width:300px;',
 		'type' 		=> 'text',
-		'std' 		=> get_option('blogname')
+		'std' 		=> ''
 	),
 
     array(
 		'name' => __('Tax Registration Number','jigoshop'),
-		'desc' 		=> 'add your label before the tax registration number and it will be printed as well. eg. VAT Number: 88888888',
+		'desc' 		=> 'Add your tax registration label before the registration number and it will be printed as well. eg. <code>VAT Number: 88888888</code>',
 		'tip' 		=> __('Setting your tax number will enable us to print it out on your invoice emails. Leave blank to disable.','jigoshop'),
 		'id' 		=> 'jigoshop_tax_number',
 		'css' 		=> 'width:300px;',
