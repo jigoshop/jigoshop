@@ -83,7 +83,7 @@ class local_pickup extends jigoshop_shipping_method {
 			'desc' 		=> '',
 			'tip' 		=> __('This controls the title which the user sees during checkout.','jigoshop'),
 			'id' 		=> 'jigoshop_local_pickup_title',
-			'std' 		=> 'Local pickup',
+			'std' 		=> __('Local pickup','jigoshop'),
 			'type' 		=> 'text'
 		);
 		
@@ -92,7 +92,7 @@ class local_pickup extends jigoshop_shipping_method {
 			'desc' 		=> '',
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_local_pickup_availability',
-			'std' 		=> 'no',
+			'std' 		=> 'all',
 			'type' 		=> 'select',
 			'choices'	=> array(
 				'all'			=> __('All allowed countries', 'jigoshop'),
@@ -105,7 +105,7 @@ class local_pickup extends jigoshop_shipping_method {
 			'desc' 		=> '',
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_local_pickup_countries',
-			'std' 		=> 'no',
+			'std' 		=> '',
 			'type' 		=> 'multi_select_countries'
 		);
 
@@ -120,19 +120,19 @@ class local_pickup extends jigoshop_shipping_method {
 	
     public function admin_scripts() {
     	?>
-<script type="text/javascript">
-	/*<![CDATA[*/
-		jQuery(function($) {
-			jQuery('select#jigoshop_local_pickup_availability').change(function() {
-				if (jQuery(this).val()=="specific") {
-					jQuery(this).parent().parent().next('tr').show();
-				} else {
-					jQuery(this).parent().parent().next('tr').hide();
-				}
-			}).change();
-		});
-	/*]]>*/
-</script>
+		<script type="text/javascript">
+			/*<![CDATA[*/
+				jQuery(function($) {
+					jQuery('select#jigoshop_local_pickup_availability').change(function() {
+						if (jQuery(this).val()=="specific") {
+							jQuery(this).parent().parent().next('tr').show();
+						} else {
+							jQuery(this).parent().parent().next('tr').hide();
+						}
+					}).change();
+				});
+			/*]]>*/
+		</script>
     	<?php
     }
 
