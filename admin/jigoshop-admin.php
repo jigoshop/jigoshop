@@ -18,7 +18,7 @@
 require_once ( 'jigoshop-install.php' );
 require_once ( 'jigoshop-admin-dashboard.php' );
 require_once ( 'jigoshop-write-panels.php' );
-require_once ( 'jigoshop-admin-settings.php' );
+//require_once ( 'jigoshop-admin-settings.php' );
 require_once ( 'jigoshop-admin-settings-api.php' );
 require_once ( 'jigoshop-admin-attributes.php' );
 require_once ( 'jigoshop-admin-post-types.php' );
@@ -29,8 +29,8 @@ if ( get_bloginfo('version') >= '3.3' ) {
 }
 
 function jigoshop_admin_init () {
-	require_once ( 'jigoshop-admin-settings-options.php' );
-	add_action('wp_dashboard_setup', 'jigoshop_setup_dashboard_widgets' );
+//	require_once ( 'jigoshop-admin-settings-options.php' );
+//	add_action('wp_dashboard_setup', 'jigoshop_setup_dashboard_widgets' );
 }
 add_action('admin_init', 'jigoshop_admin_init');
 
@@ -86,7 +86,7 @@ function jigoshop_admin_menu() {
 
     add_menu_page(__('Jigoshop'), __('Jigoshop'), 'manage_options', 'jigoshop' , 'jigoshop_dashboard', jigoshop::assets_url() . '/assets/images/icons/menu_icons.png', 55);
     add_submenu_page('jigoshop', __('Dashboard', 'jigoshop'), __('Dashboard', 'jigoshop'), 'manage_options', 'jigoshop', 'jigoshop_dashboard');
-    add_submenu_page('jigoshop', __('General Settings', 'jigoshop'),  __('Settings', 'jigoshop') , 'manage_options', 'jigoshop_settings', 'jigoshop_settings');
+//    add_submenu_page('jigoshop', __('General Settings', 'jigoshop'),  __('Settings', 'jigoshop') , 'manage_options', 'jigoshop_settings', 'jigoshop_settings');
     add_submenu_page('jigoshop', __('System Info','jigoshop'), __('System Info','jigoshop'), 'manage_options', 'jigoshop_sysinfo', 'jigoshop_system_info');
     $id = add_submenu_page('edit.php?post_type=product', __('Attributes','jigoshop'), __('Attributes','jigoshop'), 'manage_options', 'jigoshop_attributes', 'jigoshop_attributes');
 }
