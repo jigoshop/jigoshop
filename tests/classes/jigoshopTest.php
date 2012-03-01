@@ -41,7 +41,7 @@ class jigoshopTest extends WP_UnitTestCase {
      *
      * @return void
      */
-    public function testForce_ssl_on()
+    public function testForce_ssl()
     {
         // Set up the test
         $unsecure_url = 'http://google.com';
@@ -52,17 +52,7 @@ class jigoshopTest extends WP_UnitTestCase {
 
         // test the results
         $this->assertEquals( 'https://google.com', $url );
-    }
 
-    /**
-     * Ssl off
-     *
-     * @return void
-     */
-    public function testForce_ssl_off()
-    {
-        // Set up the test
-        $unsecure_url = 'http://google.com';
         $_SERVER['HTTPS'] = FALSE;
 
         // perform the change
@@ -79,5 +69,16 @@ class jigoshopTest extends WP_UnitTestCase {
 
         $this->assertEquals( TRUE, in_array('Hello World', jigoshop::$errors));
 
+    }
+
+    public function testClear_messages() {
+        jigoshop::add_error('Hello World');
+
+        // then clear it
+        jigoshop::clear_messages();
+
+        // did it work?
+        $this->assertEmpty(jigoshop::$errors, 'jigoshop::$errors still has something in it');
+        $this->assertEmpty(jigoshop::$messages, 'jigoshop::$messages still has something in it');
     }
 }
