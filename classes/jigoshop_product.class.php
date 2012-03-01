@@ -709,7 +709,7 @@ class jigoshop_product {
 			if ( strstr($this->sale_price,'%') )
 				return '
 					<del>' . jigoshop_price( $this->regular_price ) . '</del>' . jigoshop_price( $this->get_price() ) . '
-					<br><ins>' . $this->sale_price . ' off!</ins>';
+					<br><ins>' . sprintf(__('%s off!', 'jigoshop'), $this->sale_price) . '</ins>';
 			else
 				return	'
 						<del>' . jigoshop_price( $this->regular_price ) . '</del>
@@ -920,7 +920,7 @@ class jigoshop_product {
 		// Get the tags & categories
 		$tags = wp_get_post_terms($this->ID, 'product_tag', array('fields' => 'ids'));
 		$cats = wp_get_post_terms($this->ID, 'product_cat', array('fields' => 'ids'));
-		
+
 		// No queries if we don't have any tags -and- categories (one -or- the other should be queried)
 		if( empty( $cats ) && empty( $tags ) )
 			return array();
