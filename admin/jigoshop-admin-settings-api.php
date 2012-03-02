@@ -58,7 +58,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 */
 	public function add_settings_page() {
 
-		$admin_page = add_submenu_page( 'jigoshop', __( 'Jigoshop Settings' ), __( 'Jigoshop Settings' ), 'manage_options', $this->get_options_name(), array( &$this, 'output_markup' ) );
+		$admin_page = add_submenu_page( 'jigoshop', __( 'Settings' ), __( 'Settings' ), 'manage_options', $this->get_options_name(), array( &$this, 'output_markup' ) );
 
 		add_action( 'admin_print_scripts-' . $admin_page, array( &$this, 'settings_scripts' ) );
 		add_action( 'admin_print_styles-' . $admin_page, array( &$this, 'settings_styles' ) );
@@ -351,7 +351,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	* @since 1.2
 	*/
 	public function validate_settings( $input ) {
-		
+
 		$defaults = $this->our_parser->these_options;
 		$current_options = Jigoshop_Options::get_current_options();
 		
@@ -363,9 +363,19 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		if ( ! empty( $input )) foreach ( $input as $id => $value ) {
 			foreach ( $defaults as $index => $option ) {
 				if ( isset( $option['id'] ) && $option['id'] == $id ) {
+				
 					switch ( $option['type'] ) {
+					
 					case 'multi_select_countries' :
-//						logme( $value );
+						$countries = jigoshop_countries::$countries;
+						asort( $countries );
+						$selected = array();
+						foreach ( $countries as $key => $val ) {
+							if ( array_key_exists( $key, $value ) ) {
+								$selected[] = $key;
+							}
+						}
+						$valid_input[$id] = $selected;
 						break;
 						
 					default :
@@ -731,6 +741,7 @@ class Jigoshop_Options_Parser {
 		$form_id_str = $form_id ? ' id="'.$form_id.'"' : '';
 		$display .= '<td class="forminp"'.$form_id_str.'">';
 		
+		
 		// work off the option type and format output for display for each type
 		switch ( $item['type'] ) {
 		case 'gateway_options' :
@@ -787,16 +798,16 @@ class Jigoshop_Options_Parser {
 			
 		case 'multi_select_countries' :
 			$countries = jigoshop_countries::$countries;
-			asort($countries);
+			asort( $countries );
 			$selections = (array) $data[$item['id']];
 			$display .= '<div class="multi_select_countries"><ul>';
-			if ($countries)
-				foreach ($countries as $key => $val) :
-					$display .= '<li><label><input type="checkbox" name="' . Jigoshop_Admin_Settings::get_options_name() . '[' . $item['id'] . '][] value="' . esc_attr( $key ) . '" ';
-					$display .= in_array($key, $selections) ? 'checked="checked" />' : ' />';
-					$display .=  $val . '</label></li>';
-				endforeach;
-				$display .= '</ul></div>';
+			$index = 0;
+			foreach ( $countries as $key => $val ) {
+				$display .= '<li><label><input type="checkbox" name="' . Jigoshop_Admin_Settings::get_options_name() . '[' . $item['id'] . ']['.$key.'] value="' . esc_attr( $key ) . '" ';
+				$display .= in_array( $key, $selections ) ? 'checked="checked" />' : ' />';
+				$display .=  $val . '</label></li>';
+			}
+			$display .= '</ul></div>';
 			break;
 			
 		case 'text':
@@ -861,7 +872,7 @@ class Jigoshop_Options_Parser {
 		case 'range':
 			$display .= '<input
 				id="'.$item['id'].'"
-				class="jigoshop-input"
+				class="jigoshop-input jigoshop-range"
 				name="'.Jigoshop_Admin_Settings::get_options_name().'['.$item['id'].']"
 				type="'.$item['type'].'"
 				min="'.$item['choices']['min'].'"
@@ -873,7 +884,7 @@ class Jigoshop_Options_Parser {
 		case 'select':
 			$display .= '<select
 				id="'.$item['id'].'"
-				class="jigoshop-select"
+				class="jigoshop-input jigoshop-select"
 				name="'.Jigoshop_Admin_Settings::get_options_name().'['.$item['id'].']" >';
 			foreach ( $item['choices'] as $value => $label ) {
 				$display .= '<option
