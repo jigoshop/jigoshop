@@ -93,11 +93,11 @@ class skrill extends jigoshop_payment_gateway {
 	 **/
     public function process_admin_options() {
     	$jsOptions = Jigoshop_Options::instance();
-   		if(isset($_POST['jigoshop_skrill_enabled'])) $jsOptions->set_option('jigoshop_skrill_enabled', jigowatt_clean($_POST['jigoshop_skrill_enabled'])); else $jsOptions->delete_option('jigoshop_skrill_enabled');
-   		if(isset($_POST['jigoshop_skrill_title'])) $jsOptions->set_option('jigoshop_skrill_title', jigowatt_clean($_POST['jigoshop_skrill_title'])); else $jsOptions->delete_option('jigoshop_skrill_title');
-   		if(isset($_POST['jigoshop_skrill_email'])) $jsOptions->set_option('jigoshop_skrill_email', jigowatt_clean($_POST['jigoshop_skrill_email'])); else $jsOptions->delete_option('jigoshop_skrill_email');
-   		if(isset($_POST['jigoshop_skrill_secret_word'])) $jsOptions->set_option('jigoshop_skrill_secret_word', jigowatt_clean($_POST['jigoshop_skrill_secret_word'])); else $jsOptions->delete_option('jigoshop_skrill_secret_word');
-   		if(isset($_POST['jigoshop_skrill_customer_id'])) $jsOptions->set_option('jigoshop_skrill_customer_id', jigowatt_clean($_POST['jigoshop_skrill_customer_id'])); else $jsOptions->delete_option('jigoshop_skrill_customer_id');
+   		if(isset($_POST['jigoshop_skrill_enabled'])) $jsOptions->set_option('jigoshop_skrill_enabled', jigowatt_clean($_POST['jigoshop_skrill_enabled']));
+   		if(isset($_POST['jigoshop_skrill_title'])) $jsOptions->set_option('jigoshop_skrill_title', jigowatt_clean($_POST['jigoshop_skrill_title']));
+   		if(isset($_POST['jigoshop_skrill_email'])) $jsOptions->set_option('jigoshop_skrill_email', jigowatt_clean($_POST['jigoshop_skrill_email']));
+   		if(isset($_POST['jigoshop_skrill_secret_word'])) $jsOptions->set_option('jigoshop_skrill_secret_word', jigowatt_clean($_POST['jigoshop_skrill_secret_word']));
+   		if(isset($_POST['jigoshop_skrill_customer_id'])) $jsOptions->set_option('jigoshop_skrill_customer_id', jigowatt_clean($_POST['jigoshop_skrill_customer_id']));
     }
 
 	/**

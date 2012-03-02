@@ -117,13 +117,13 @@ class dibs extends jigoshop_payment_gateway {
 	* - Saves the options to the DB
 	**/
 	public function process_admin_options() {
-		if(isset($_POST['jigoshop_dibs_enabled'])) update_option('jigoshop_dibs_enabled', jigowatt_clean($_POST['jigoshop_dibs_enabled'])); else @delete_option('jigoshop_dibs_enabled');
-		if(isset($_POST['jigoshop_dibs_title'])) update_option('jigoshop_dibs_title', jigowatt_clean($_POST['jigoshop_dibs_title'])); else @delete_option('jigoshop_dibs_title');
-		if(isset($_POST['jigoshop_dibs_merchant'])) update_option('jigoshop_dibs_merchant', jigowatt_clean($_POST['jigoshop_dibs_merchant'])); else @delete_option('jigoshop_dibs_merchant');
-		if(isset($_POST['jigoshop_dibs_key1'])) update_option('jigoshop_dibs_key1', jigowatt_clean($_POST['jigoshop_dibs_key1'])); else @delete_option('jigoshop_dibs_key1');
-		if(isset($_POST['jigoshop_dibs_key2'])) update_option('jigoshop_dibs_key2', jigowatt_clean($_POST['jigoshop_dibs_key2'])); else @delete_option('jigoshop_dibs_key2');
-		if(isset($_POST['jigoshop_dibs_description'])) update_option('jigoshop_dibs_description', jigowatt_clean($_POST['jigoshop_dibs_description'])); else @delete_option('jigoshop_dibs_description');
-		if(isset($_POST['jigoshop_dibs_testmode'])) update_option('jigoshop_dibs_testmode', jigowatt_clean($_POST['jigoshop_dibs_testmode'])); else @delete_option('jigoshop_dibs_testmode');
+		if(isset($_POST['jigoshop_dibs_enabled'])) Jigoshop_Options::instance()->set_option('jigoshop_dibs_enabled', jigowatt_clean($_POST['jigoshop_dibs_enabled']));
+		if(isset($_POST['jigoshop_dibs_title'])) Jigoshop_Options::instance()->set_option('jigoshop_dibs_title', jigowatt_clean($_POST['jigoshop_dibs_title']));
+		if(isset($_POST['jigoshop_dibs_merchant'])) Jigoshop_Options::instance()->set_option('jigoshop_dibs_merchant', jigowatt_clean($_POST['jigoshop_dibs_merchant']));
+		if(isset($_POST['jigoshop_dibs_key1'])) Jigoshop_Options::instance()->set_option('jigoshop_dibs_key1', jigowatt_clean($_POST['jigoshop_dibs_key1']));
+		if(isset($_POST['jigoshop_dibs_key2'])) Jigoshop_Options::instance()->set_option('jigoshop_dibs_key2', jigowatt_clean($_POST['jigoshop_dibs_key2']));
+		if(isset($_POST['jigoshop_dibs_description'])) Jigoshop_Options::instance()->set_option('jigoshop_dibs_description', jigowatt_clean($_POST['jigoshop_dibs_description']));
+		if(isset($_POST['jigoshop_dibs_testmode'])) Jigoshop_Options::instance()->set_option('jigoshop_dibs_testmode', jigowatt_clean($_POST['jigoshop_dibs_testmode']));
 	}
 
 	/**

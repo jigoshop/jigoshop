@@ -21,10 +21,6 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 	
 		$jsOptions = Jigoshop_Options::instance();
 		
-		$jsOptions->add_option('jigoshop_bank_transfer_enabled', 'yes');
-		$jsOptions->add_option('jigoshop_bank_transfer_title', __('Bank Transfer', 'jigoshop') );
-		$jsOptions->add_option('jigoshop_bank_transfer_description', __('Please use the details below to transfer the payment for your order, once payment is received your order will be processed.', 'jigoshop'));
-		
         $this->id				= 'bank_transfer';
         $this->icon 			= '';
         $this->has_fields 		= false;
@@ -146,23 +142,23 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 	 **/
     public function process_admin_options() {
 
-    	(isset($_POST['jigoshop_bank_transfer_enabled'])) ? update_option('jigoshop_bank_transfer_enabled', jigowatt_clean($_POST['jigoshop_bank_transfer_enabled'])) : @delete_option('jigoshop_bank_transfer_enabled');
+    	if (isset($_POST['jigoshop_bank_transfer_enabled'])) Jigoshop_Options::instance()->set_option('jigoshop_bank_transfer_enabled', jigowatt_clean($_POST['jigoshop_bank_transfer_enabled']));
 
-    	(isset($_POST['jigoshop_bank_transfer_title'])) ? update_option('jigoshop_bank_transfer_title', jigowatt_clean($_POST['jigoshop_bank_transfer_title'])) : @delete_option('jigoshop_bank_transfer_title');
+    	if (isset($_POST['jigoshop_bank_transfer_title'])) Jigoshop_Options::instance()->set_option('jigoshop_bank_transfer_title', jigowatt_clean($_POST['jigoshop_bank_transfer_title']));
 
-    	(isset($_POST['jigoshop_bank_transfer_description'])) ? update_option('jigoshop_bank_transfer_description', jigowatt_clean($_POST['jigoshop_bank_transfer_description'])) : @delete_option('jigoshop_bank_transfer_description');
+    	if (isset($_POST['jigoshop_bank_transfer_description'])) Jigoshop_Options::instance()->set_option('jigoshop_bank_transfer_description', jigowatt_clean($_POST['jigoshop_bank_transfer_description']));
 
-    	(isset($_POST['jigoshop_bank_transfer_bank_name'])) ? update_option('jigoshop_bank_transfer_bank_name', jigowatt_clean($_POST['jigoshop_bank_transfer_bank_name'])) : @delete_option('jigoshop_bank_transfer_bank_name');
+    	if (isset($_POST['jigoshop_bank_transfer_bank_name'])) Jigoshop_Options::instance()->set_option('jigoshop_bank_transfer_bank_name', jigowatt_clean($_POST['jigoshop_bank_transfer_bank_name']));
 
-    	(isset($_POST['jigoshop_bank_transfer_acc_number'])) ? update_option('jigoshop_bank_transfer_acc_number', jigowatt_clean($_POST['jigoshop_bank_transfer_acc_number'])) : @delete_option('jigoshop_bank_transfer_acc_number');
+    	if (isset($_POST['jigoshop_bank_transfer_acc_number'])) Jigoshop_Options::instance()->set_option('jigoshop_bank_transfer_acc_number', jigowatt_clean($_POST['jigoshop_bank_transfer_acc_number']));
 
-    	(isset($_POST['jigoshop_bank_transfer_sort_code'])) ? update_option('jigoshop_bank_transfer_sort_code', jigowatt_clean($_POST['jigoshop_bank_transfer_sort_code'])) : @delete_option('jigoshop_bank_transfer_sort_code');
+    	if (isset($_POST['jigoshop_bank_transfer_sort_code'])) Jigoshop_Options::instance()->set_option('jigoshop_bank_transfer_sort_code', jigowatt_clean($_POST['jigoshop_bank_transfer_sort_code']));
 
-    	(isset($_POST['jigoshop_bank_transfer_iban'])) ? update_option('jigoshop_bank_transfer_iban', jigowatt_clean($_POST['jigoshop_bank_transfer_iban'])) : @delete_option('jigoshop_bank_transfer_iban');
+    	if (isset($_POST['jigoshop_bank_transfer_iban'])) Jigoshop_Options::instance()->set_option('jigoshop_bank_transfer_iban', jigowatt_clean($_POST['jigoshop_bank_transfer_iban']));
 
-    	(isset($_POST['jigoshop_bank_transfer_bic'])) ? update_option('jigoshop_bank_transfer_bic', jigowatt_clean($_POST['jigoshop_bank_transfer_bic'])) : @delete_option('jigoshop_bank_transfer_bic');
+    	if (isset($_POST['jigoshop_bank_transfer_bic'])) Jigoshop_Options::instance()->set_option('jigoshop_bank_transfer_bic', jigowatt_clean($_POST['jigoshop_bank_transfer_bic']));
 
-    	(isset($_POST['jigoshop_bank_transfer_additional'])) ? update_option('jigoshop_bank_transfer_additional', jigowatt_clean($_POST['jigoshop_bank_transfer_additional'])) : @delete_option('jigoshop_bank_transfer_additional');
+    	if (isset($_POST['jigoshop_bank_transfer_additional'])) Jigoshop_Options::instance()->set_option('jigoshop_bank_transfer_additional', jigowatt_clean($_POST['jigoshop_bank_transfer_additional']));
 
     }
 

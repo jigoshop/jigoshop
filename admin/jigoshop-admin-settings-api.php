@@ -378,6 +378,8 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 						$valid_input[$id] = $selected;
 						break;
 						
+					case 'text' :		/* this needs validating */
+					case 'textarea' :	/* this needs validating */
 					default :
 						$valid_input[$id] = $value;
 						break;
@@ -388,6 +390,8 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		
 		if ( $result = $this->get_updated_coupons() ) $valid_input['jigoshop_coupons'] = $result;
 		if ( $result = $this->get_updated_tax_classes() ) $valid_input['jigoshop_tax_rates'] = $result;
+		
+		do_action( 'jigoshop_update_options' );  /* might need this for gateways */
 		
 		// clear the error flag and set successful message
 		$valid_input['validation-error'] = false;

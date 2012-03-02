@@ -117,12 +117,12 @@ class paypal extends jigoshop_payment_gateway {
 	 **/
     public function process_admin_options() {
     	$jsOptions = Jigoshop_Options::instance();
-   		if(isset($_POST['jigoshop_paypal_enabled'])) $jsOptions->set_option('jigoshop_paypal_enabled', jigowatt_clean($_POST['jigoshop_paypal_enabled'])); else $jsOptions->delete_option('jigoshop_paypal_enabled');
-   		if(isset($_POST['jigoshop_paypal_title'])) $jsOptions->set_option('jigoshop_paypal_title', jigowatt_clean($_POST['jigoshop_paypal_title'])); else $jsOptions->delete_option('jigoshop_paypal_title');
-   		if(isset($_POST['jigoshop_paypal_email'])) $jsOptions->set_option('jigoshop_paypal_email', jigowatt_clean($_POST['jigoshop_paypal_email'])); else $jsOptions->delete_option('jigoshop_paypal_email');
-   		if(isset($_POST['jigoshop_paypal_description'])) $jsOptions->set_option('jigoshop_paypal_description', jigowatt_clean($_POST['jigoshop_paypal_description'])); else $jsOptions->delete_option('jigoshop_paypal_description');
-   		if(isset($_POST['jigoshop_paypal_testmode'])) $jsOptions->set_option('jigoshop_paypal_testmode', jigowatt_clean($_POST['jigoshop_paypal_testmode'])); else $jsOptions->delete_option('jigoshop_paypal_testmode');
-   		if(isset($_POST['jigoshop_paypal_send_shipping'])) $jsOptions->set_option('jigoshop_paypal_send_shipping', jigowatt_clean($_POST['jigoshop_paypal_send_shipping'])); else $jsOptions->delete_option('jigoshop_paypal_send_shipping');
+   		if(isset($_POST['jigoshop_paypal_enabled'])) $jsOptions->set_option('jigoshop_paypal_enabled', jigowatt_clean($_POST['jigoshop_paypal_enabled']));
+   		if(isset($_POST['jigoshop_paypal_title'])) $jsOptions->set_option('jigoshop_paypal_title', jigowatt_clean($_POST['jigoshop_paypal_title']));
+   		if(isset($_POST['jigoshop_paypal_email'])) $jsOptions->set_option('jigoshop_paypal_email', jigowatt_clean($_POST['jigoshop_paypal_email']));
+   		if(isset($_POST['jigoshop_paypal_description'])) $jsOptions->set_option('jigoshop_paypal_description', jigowatt_clean($_POST['jigoshop_paypal_description']));
+   		if(isset($_POST['jigoshop_paypal_testmode'])) $jsOptions->set_option('jigoshop_paypal_testmode', jigowatt_clean($_POST['jigoshop_paypal_testmode']));
+   		if(isset($_POST['jigoshop_paypal_send_shipping'])) $jsOptions->set_option('jigoshop_paypal_send_shipping', jigowatt_clean($_POST['jigoshop_paypal_send_shipping']));
     }
 
 	/**
