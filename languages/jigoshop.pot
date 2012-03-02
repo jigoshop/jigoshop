@@ -2,20 +2,15 @@
 # Copyright (C) 2011-2012
 # This file is distributed under the same license as the Jigoshop package.
 # Last Updated: March 02, 2012.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-02 12:41-0500\n"
+"Project-Id-Version: Jigoshop v1.0.1\n"
+"Report-Msgid-Bugs-To: Jigoshop <info@jigoshop.com>\n"
+"POT-Creation-Date: 2012-03-02 13:11-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Last-Translator: Jigoshop <info@jigoshop.com>\n"
+"Language-Team: Jigoshop <info@jigoshop.com>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
