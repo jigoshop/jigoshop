@@ -169,6 +169,9 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 		 $end = array_slice( $our_options, $second_index );
 		 /*** add the new elements to the array ***/
 		 foreach ( $options as $option ) {
+		 	if ( isset( $option['id'] ) )
+		 		if ( false === $this->get_option( $option['id'] ) )
+		 			$this->add_option( $option['id'], $option['std'] );
 		 	$start[] = $option;
 		 }
 		 /*** glue them back together ***/
