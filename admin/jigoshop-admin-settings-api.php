@@ -187,7 +187,16 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 * @since 1.2
 	 */
 	public function display_section( $section ) {
-		// no code required here
+	
+		$options = $this->our_parser->these_options;
+		foreach ( $options as $index => $option ) {
+			if ( isset( $option['name'] ) && $section['title'] == $option['name'] ) {
+				if ( isset( $option['desc'] )) {
+					echo '<div class="section_description">' . $option['desc'] . '</div>';
+				}
+			}
+		}
+		
 	}
 	
 	
@@ -725,9 +734,6 @@ class Jigoshop_Options_Parser {
 		
 		// work off the option type and format output for display for each type
 		switch ( $item['type'] ) {
-		case 'title' :
-            break;
-			
 		case 'gateway_options' :
 			foreach (jigoshop_payment_gateways::payment_gateways() as $gateway) :
 				$gateway->admin_options();
