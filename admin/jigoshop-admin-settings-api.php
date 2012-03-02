@@ -240,7 +240,9 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 							<?php settings_fields( $this->get_options_name() ); ?>
 							<?php do_settings_sections( $this->get_options_name() ); ?>
 							
-							<p class="submit"><input name="Submit" type="submit" class="button-primary" value="<?php _e( 'Save Changes' ); ?>" /></p>
+							<?php $tabname = $this->get_current_tab_name(); ?>
+							
+							<p class="submit"><input name="Submit" type="submit" class="button-primary" value="<?php echo sprintf( __( "Save %s Changes", 'jigoshop' ), $tabname ); ?>" /></p>
 						
 						</div>
 					</div>
@@ -332,11 +334,8 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 
 		if ( isset( $_GET['tab'] ) ) {
 			foreach ( $this->our_parser->these_options as $option ) {
-				if ( $option['type'] == 'heading' ) {
-					if ( $option['section'] == $_GET['tab'] ) {
-						$current = $option['name'];
-						break;
-					}
+				if ( $option['type'] == 'heading' && sanitize_title( $option['name'] ) == $_GET['tab'] ) {
+					$current = $option['name'];
 				}
 			}
 		} else {
