@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Admin
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Admin
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -133,7 +133,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		)
 	),
 
-	array( 'name' => __('Checkout options', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
+	array( 'name' => __('Checkout page', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
 
 	array(
 		'name' => __('Allow guest purchases','jigoshop'),
@@ -174,7 +174,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 			'no'  => __('No', 'jigoshop')
 		)
 	),
-	
+
 	array(
 		'name' => __('Force SSL on checkout','jigoshop'),
 		'desc' 		=> '',
@@ -187,8 +187,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 			'yes' => __('Yes', 'jigoshop'),
 			'no'  => __('No', 'jigoshop')
 		)
-	),	
-	
+	),
 	array( 'name' => __('Integration', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
 
 	array(
@@ -201,15 +200,15 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'std' 		=> ''
 	),
 
-	array(  
+	array(
 		'name' => __('Google Analytics ID', 'jigoshop'),
 		'desc' 		=> __('Log into your Google Analytics account to find your ID. e.g. <code>UA-XXXXXXX-X</code>', 'jigoshop'),
 		'id' 		=> 'jigoshop_ga_id',
 		'type' 		=> 'text',
         'css' 		=> 'min-width:300px;',
 	),
-	
-	array(  
+
+	array(
 		'name' => __('Enable eCommerce Tracking', 'jigoshop'),
 		'tip' 		=> __('Add Google Analytics eCommerce tracking code upon successful orders', 'jigoshop'),
 		'desc'		=> __('<a href="//support.google.com/analytics/bin/answer.py?hl=en&answer=1009612">Learn how to enable</a> eCommerce tracking for your Google Analytics account.', 'jigoshop'),
@@ -344,6 +343,15 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'type' 		=> 'single_select_page',
 		'std' 		=> ''
 	),
+	array(
+		'name' => __('Shop redirection page','jigoshop'),
+		'desc'		=> '',
+		'tip' 		=> __('This will point users to the page you set for buttons like `Return to shop` or `Continue Shopping`.','jigoshop'),
+		'id' 		=> 'jigoshop_shop_redirect_page_id',
+		'css' 		=> 'min-width:50px;',
+		'type' 		=> 'single_select_page',
+		'std' 		=> ''
+	),
 
 	array(
 		'name' => __('Prepend links with base page','jigoshop'),
@@ -472,9 +480,9 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 			'left_code' => __(get_option('jigoshop_currency') . '0' . get_option('jigoshop_price_decimal_sep') . '00', 'jigoshop'),
 			'left_code_space' => __(get_option('jigoshop_currency') . ' 0' . get_option('jigoshop_price_decimal_sep') . '00', 'jigoshop'),
 			'right_code' => __('0' . get_option('jigoshop_price_decimal_sep') . '00' . get_option('jigoshop_currency'), 'jigoshop'),
-			'right_code_space' => __('0' . get_option('jigoshop_price_decimal_sep') . '00 ' . get_option('jigoshop_currency'), 'jigoshop'),	
+			'right_code_space' => __('0' . get_option('jigoshop_price_decimal_sep') . '00 ' . get_option('jigoshop_currency'), 'jigoshop'),
 			'symbol_code' => __(get_jigoshop_currency_symbol() . '0' . get_option('jigoshop_price_decimal_sep') . '00' . get_option('jigoshop_currency'), 'jigoshop'),
-			'symbol_code_space' => __(get_jigoshop_currency_symbol() . ' 0' . get_option('jigoshop_price_decimal_sep') . '00 ' . get_option('jigoshop_currency'), 'jigoshop'),			
+			'symbol_code_space' => __(get_jigoshop_currency_symbol() . ' 0' . get_option('jigoshop_price_decimal_sep') . '00 ' . get_option('jigoshop_currency'), 'jigoshop'),
 			'code_symbol' => __(get_option('jigoshop_currency') . '0' . get_option('jigoshop_price_decimal_sep') . '00' . get_jigoshop_currency_symbol(), 'jigoshop'),
 			'code_symbol_space' => __(get_option('jigoshop_currency') . ' 0' . get_option('jigoshop_price_decimal_sep') . '00 ' . get_jigoshop_currency_symbol(), 'jigoshop'),
 		)
@@ -644,6 +652,20 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		)
 	),
 
+	array(
+		'name' => __('Show related products','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('To show or hide the related products section on a single product page.','jigoshop'),
+		'id' 		=> 'jigoshop_enable_related_products',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'yes',
+		'type' 		=> 'select',
+		'options' => array(
+			'yes' => __('Yes', 'jigoshop'),
+			'no'  => __('No', 'jigoshop')
+		)
+	),
+
 	array(	'name' => __('Inventory Options', 'jigoshop'), 'type' 		=> 'title','desc' 		=> '', 'id' 		=> '' ),
 
 	array(
@@ -659,7 +681,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 			'no'  => __('No', 'jigoshop')
 		)
 	),
-	
+
 	array(
 		'name' => __('Show stock amounts','jigoshop'),
 		'desc' 		=> '',
@@ -672,7 +694,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 			'yes' => __('Yes', 'jigoshop'),
 			'no'  => __('No', 'jigoshop')
 		)
-	),	
+	),
 
 	array(
 		'name' => __('Notify on low stock','jigoshop'),

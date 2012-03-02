@@ -2,7 +2,7 @@
 
 	/**
 	 * Spoofs placeholders in browsers that don't support them (eg Firefox 3)
-	 * 
+	 *
 	 * Copyright 2011 Dan Bentley
 	 * Licensed under the Apache License 2.0
 	 *
@@ -16,7 +16,7 @@
 		$(':input[placeholder]').each(function() {
 			setupPlaceholder($(this));
 		});
-	   
+
 		$('form').submit(function(e) {
 			clearPlaceholdersBeforeSubmit($(this));
 		});
@@ -32,7 +32,7 @@
 				if (input.val() === placeholderText) input.val('');
 			},
 			blur: function(e) {
-				if (input.val() === '') input.val(placeholderText); 
+				if (input.val() === '') input.val(placeholderText);
 			}
 		});
 	}

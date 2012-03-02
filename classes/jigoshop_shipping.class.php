@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Shipping class
  *
@@ -9,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Checkout
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Checkout
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_shipping extends jigoshop_singleton {
 
@@ -76,7 +75,7 @@ class jigoshop_shipping extends jigoshop_singleton {
     public static function show_shipping_calculator() {
         return (self::is_enabled() && get_option('jigoshop_enable_shipping_calc')=='yes' && jigoshop_cart::needs_shipping());
     }
-    
+
     public static function get_available_shipping_methods() {
 
         $_available_methods = array();
@@ -86,24 +85,24 @@ class jigoshop_shipping extends jigoshop_singleton {
             foreach (self::get_all_methods() as $method) :
 
                 if ($method->is_available()) :
-                    
+
                     $_available_methods[$method->id] = $method;
-                    
+
                     if ($method instanceof jigoshop_calculable_shipping) :
                         self::$has_calculable_shipping = true;
                     endif;
-                    
+
                 endif;
 
-                
+
             endforeach;
-            
+
 
         endif;
-        
+
         return $_available_methods;
     }
-    
+
     public static function get_shipping_error_message() {
     	return self::$shipping_error_message;
     }
@@ -140,7 +139,7 @@ class jigoshop_shipping extends jigoshop_singleton {
                 else :
                     self::$shipping_error_message = $method->get_error_message();
                 endif;
-                
+
             elseif ($method->id != 'local_pickup') : // handle normal shipping methods, except, don't let local_pickup be chosen
                 $fee = $method->shipping_total;
                 if ($fee >= 0 && $fee < $_cheapest_fee || !is_numeric($_cheapest_fee)) :
@@ -153,9 +152,9 @@ class jigoshop_shipping extends jigoshop_singleton {
         return $_cheapest_method;
     }
 
-    /** 
+    /**
      * Calculate the shipping price
-     * 
+     *
      * @param type $tax jigoshop_tax class instance
      */
     public static function calculate_shipping($tax) {
@@ -187,8 +186,8 @@ class jigoshop_shipping extends jigoshop_singleton {
                     endforeach;
 
                     // select chosen method
-                    if ($_available_methods[$chosen_method] && 
-                            (!($available_methods[$chosen_method] instanceof jigoshop_calculable_shipping) 
+                    if ($_available_methods[$chosen_method] &&
+                            (!($available_methods[$chosen_method] instanceof jigoshop_calculable_shipping)
                             || ($_available_methods[$chosen_method] instanceof jigoshop_calculable_shipping && !$_available_methods[$chosen_method]->has_error()))) :
                         $chosen_method = $_available_methods[$chosen_method]->id;
 

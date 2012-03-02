@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Checkout
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Checkout
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 
 function get_jigoshop_thankyou( $atts ) {
@@ -23,7 +23,7 @@ function get_jigoshop_thankyou( $atts ) {
  * Outputs the thankyou page
  **/
 function jigoshop_thankyou() {
-	
+
 	$thankyou_message = __('<p>Thank you. Your order has been processed successfully.</p>', 'jigoshop');
 	echo apply_filters( 'jigoshop_thankyou_message', $thankyou_message );
 
@@ -69,7 +69,7 @@ function jigoshop_thankyou() {
 		endif;
 
 	endif;
-	
+
 	echo '<p><a class="button" href="'.esc_url( jigoshop_cart::get_shop_url() ).'">'.__('&larr; Continue Shopping', 'jigoshop').'</a></p>';
 
 }

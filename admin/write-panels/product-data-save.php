@@ -1,7 +1,7 @@
 <?php
 /**
  * Product Data Save
- * 
+ *
  * Function for processing and storing all product data.
  *
  * DISCLAIMER
@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Admin
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Admin
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_product_meta
 {
@@ -65,7 +65,7 @@ class jigoshop_product_meta
 		foreach( $this->process_stock( $_POST ) as $key => $value ) {
 			update_post_meta( $post_id, $key, $value );
 		}
-		
+
 		// Process the sale dates
 		foreach( $this->process_sale_dates( $_POST ) as $key => $value ) {
 			update_post_meta( $post_id, $key, $value );
@@ -74,7 +74,7 @@ class jigoshop_product_meta
 		// Do action for product type
 		do_action( 'jigoshop_process_product_meta_' . $_POST['product-type'], $post_id );
 	}
-	
+
 	/**
 	 * Processes the sale dates
 	 *
@@ -95,7 +95,7 @@ class jigoshop_product_meta
 			// Only set sale dates if we have an end
 			// Set start as current time if null
 			if( $sale_end = strtotime($post['sale_price_dates_to']) ) {
-				$sale_start	= ($post['sale_price_dates_from']) 
+				$sale_start	= ($post['sale_price_dates_from'])
 					? strtotime($post['sale_price_dates_from'])
 					: current_time('timestamp');
 
@@ -133,10 +133,15 @@ class jigoshop_product_meta
 			$array['stock']        = absint( $post['stock'] );
 			$array['backorders']   = $post['backorders']; // should have a space
 			$array['stock_status'] = -1; // Discount if stock is managed
+			if ( get_option( 'jigoshop_hide_no_stock_product' ) == 'yes' ) {
+				if ( $array['stock'] <= get_option( 'jigoshop_notify_no_stock_amount' ) ) {
+					update_post_meta( $post['ID'], 'visibility', 'hidden' );
+				}
+			}
 		} else {
 			$array['stock_status'] = $post['stock_status'];
 		}
-
+		
 		return $array;
 	}
 
@@ -154,7 +159,7 @@ class jigoshop_product_meta
 		if ( ! $new_sku )
 			return false;
 
-		// Skip check if sku is the same 
+		// Skip check if sku is the same
 		if( $new_sku === get_post_meta( $post_id, 'sku', true ) )
 			return true;
 
@@ -180,8 +185,8 @@ class jigoshop_product_meta
 	private function process_attributes( array $post, $post_id ) {
 
 		if ( ! isset($_POST['attribute_values']) )
-			return false; 
-		
+			return false;
+
 		$attr_names      = $post['attribute_names']; // This data returns all attributes?
 		$attr_values     = $post['attribute_values'];
 		$attr_visibility = $post['attribute_visibility'];
@@ -197,13 +202,13 @@ class jigoshop_product_meta
 			// Skip if no value
 			if ( ! $value )
 				continue;
-				
+
 			if ( !is_array( $value )) {
 			 	$value = explode( ',', $value );
 			 	$value = array_map( 'trim', $value );
 			 	$value = implode( ',', $value );
 			}
-			
+
 			// If attribute is standard then create the relationship
 			if ( (bool) $attr_is_tax[$key] && taxonomy_exists('pa_'.sanitize_title($attr_names[$key])) ) {
 				// TODO: Adding pa and sanitizing fixes the bug but why not automatic?

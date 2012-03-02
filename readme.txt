@@ -1,14 +1,16 @@
-=== Jigoshop - WordPress eCommerce ===
+=== Jigoshop ===
 Contributors: Jigowatt
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigowatt, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
-Requires at least: 3.1
-Tested up to: 3.3.1
-Stable tag: 1.0
+Requires at least: 3.2.1
+Tested up to: 3.4-alpha-19978
+Stable tag: 1.1.1
 
-A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customisability.
+A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
 == Description ==
+
+Jigoshop, a WordPress eCommerce plugin developed by professionals with years of experience delivering online shops for global brands.
 
 = SETUP IN MINUTES =
 
@@ -20,7 +22,7 @@ With the option to create a multitude of product types and apply detailed attrib
 
 * Downloadable or Virtual products
 * Variable products (eg, offer `Size: S,M,L` for one product)
-* Affiliate (External) products
+* Affiliate (External) products (ie, link your `Add to cart` button off-site)
 * Grouped products
 
 = DETAILED REPORTS =
@@ -70,7 +72,7 @@ You can also navigate to the <a href="http://forum.jigoshop.com/kb/getting-start
 
 = Setting up Jigoshop =
 
-Take a look through our <a href="http://forum.jigoshop.com/kb/" title="Jigoshop usage guide">Jigoshop usage guide</a> to help you setup Jigoshop for the first time.
+Take a look through our <a href="http://forum.jigoshop.com/kb/" title="Jigoshop usage guide">Jigoshop usage guides</a> to help you setup Jigoshop for the first time.
 
 == Frequently Asked Questions ==
 
@@ -83,7 +85,7 @@ If you need a theme built, or have a theme that needs styling, <a href="http://j
 = Can I have Jigoshop in my language =
 
 Jigoshop comes with a .po file and is localisation ready in over 10 languages.
-You can also <a href="http://forum.jigoshop.com/kb/shortcodes/languages">create your own translations</a> for Jigoshop.
+You can also <a href="http://forum.jigoshop.com/kb/customize-jigoshop/languages">create your own translations</a> for Jigoshop.
 
 = Which payment gateways do you have? =
 
@@ -111,16 +113,38 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 
 == Changelog ==
 
-= 1.0.1 - 2012-02-09 =
+= 1.1.1 - 2012-02-29 =
+* Adds new admin setting for different redirection options after adding to the cart
+* Adds support for more than 5 related products
+* Adds settings link to plugins admin page
+* Updates Norwegian translations
+* Updates Hungarian translations
+* Fixes install & upgrade support for multisite shops
+* Fixes price filter widget
+* Fixes symbol_code_space formatting in jigoshop_price - thanks @leewillis77
+* Fixes twenty eleven for firefox users
+* Fixes single product attributes in firefox & internet explorer
+* Fixes variation attribute sort by slug
+* Fixes display of products below the stock threshhold
+* Fixes small bug with product has_attribute method
+* Fixes incorrect number formatting in PayPal
+* Fixes instance when adding an attribute without name & slug causes "Attribute already exists" error
+* Fixes incorrect title for attribute name
+* Fixes attribute column order
+* Fixes instance when adding a title-less attribute would fill in the slug
+* Removes unused variables from admin screen
+
+= 1.1 - 2012-02-13 =
 * New gateways:
 	* Cash On Delivery [payment gateway]
 	* Local Pickup [shipping method]
 * New languages:
-	* Turkish
 	* Italian
-	* Portuguese
 	* Norwegian
+	* Polish
+	* Portuguese
 	* Portuguese Brazilian
+	* Turkish
 * New shortcode:
 	* Products Search
 * New settings:
@@ -143,8 +167,10 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * Reduced total Jigoshop file size by at least 1mb
 * Jigoshop.pot updated include latest strings and remove obsolete strings
 * Remove `bulk actions` on variable products that didn't have any variations
+* update admin order page to use pretty titles for payment & shipping
 * update Spain provinces (thank @dimitryz)
 * update readme.txt and readme.md files
+* fix order-status' not being allowed for translation
 * fix widgets:
 	* featured product widget
 	* top rated widget
@@ -167,6 +193,9 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 	* visit the variation to use the individual product ID for the coupon
 * fix coupons showing 'no products in cart' on valid coupons
 * fix some international users not being able to add shipping or tax rates (italian & french)
+* removed dash from cart on downloadables until a more solid solution can be found
+* fix attributes slug when editing attribute names
+* fix for using the newer screen API on older WordPress'
 
 = 1.0 - 2012-02-01 =
 * New feature for Downloadable products:
@@ -204,6 +233,10 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * fixed My Account page not showing Address 2
 * fixed users creating a new account now only if WP registration is allowed
 * fixed several 404 Jigoshop internal href links
+* fixed default display of variations in admin
+* fixed variation display for downloadable products in 'my account'
+* fixed dimension frontend display for variations
+* fixes sale icon sliding by positioning to the left
 
 = 0.9.9.4 RC2 (private release) =
 * added option for out of stock notification that sets products to hidden after Order quantity processing
@@ -385,5 +418,5 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 
 == Upgrade Notice ==
 
-= 1.0.1
-Widgets fixed, new shortcode, uninstaller added, and plenty of other bug fixes!
+= 1.1
+New payment and shipping gateways, widgets fixed, new shortcode, uninstaller added, and plenty of other bug fixes!

@@ -19,7 +19,7 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Setup the widget with the available options
 	 * Add actions to clear the cache whenever a post is saved|deleted or a theme is switched
 	 */
@@ -38,7 +38,7 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 
 	/**
 	 * Widget
-	 * 
+	 *
 	 * Display the widget in the sidebar
 	 * Save output to the cache if empty
 	 *
@@ -55,8 +55,8 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 
 		// Set the widget title
 		$title = apply_filters(
-			'widget_title', 
-			( $instance['title'] ) ? $instance['title'] : __( 'Filter by Price', 'jigoshop' ), 
+			'widget_title',
+			( $instance['title'] ) ? $instance['title'] : __( 'Filter by Price', 'jigoshop' ),
 			$instance,
 			$this->id_base
 		);
@@ -76,16 +76,17 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 			$fields .= '<input type="hidden" name="post_type" value="' . esc_attr( $_GET['post_type'] ) . '" />';
 		}
 
-		if ( $_chosen_attributes ) foreach ( $_chosen_atributes as $attr => $val ) {
+		if ( ! empty( $_chosen_attributes )) foreach ( $_chosen_atributes as $attr => $val ) {
 			$fields .= '<input type="hidden" name="'.str_replace('pa_', 'filter_', $attribute).'" value="'.implode(',', $value).'" />';
 		}
 
 		// Get maximum price
-		$max = ceil($wpdb->get_var("SELECT max(meta_value + 0) 
+		// @todo: Currently we can only handle regular price, looks like we may need to implement the price meta field after all :(
+		$max = ceil($wpdb->get_var("SELECT max(meta_value + 0)
 		FROM $wpdb->posts
 		LEFT JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id
-		WHERE meta_key = 'price' AND (
-			$wpdb->posts.ID IN (".implode( ',', $jigoshop_all_post_ids_in_view ).") 
+		WHERE meta_key = 'regular_price' AND (
+			$wpdb->posts.ID IN (".implode( ',', $jigoshop_all_post_ids_in_view ).")
 			OR (
 				$wpdb->posts.post_parent IN (".implode( ',', $jigoshop_all_post_ids_in_view ).")
 				AND $wpdb->posts.post_parent != 0
@@ -110,7 +111,7 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 
 	/**
 	 * Update
-	 * 
+	 *
 	 * Handles the processing of information entered in the wordpress admin
 	 * Flushes the cache & removes entry from options array
 	 *
@@ -132,18 +133,18 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 		unset(jigoshop_session::instance()->min_price);
 		unset(jigoshop_session::instance()->max_price);
 
-		if ( isset( $_GET['min_price'] ) ) {	
+		if ( isset( $_GET['min_price'] ) ) {
 			jigoshop_session::instance()->min_price = $_GET['min_price'];
 		}
 
 		if ( isset( $_GET['max_price'] ) ) {
-			jigoshop_session::instance()->max_price = $_GET['max_price'];	
+			jigoshop_session::instance()->max_price = $_GET['max_price'];
 		}
-	} 
+	}
 
 	/**
 	 * Form
-	 * 
+	 *
 	 * Displays the form for the wordpress admin
 	 *
 	 * @param	array	instance
@@ -174,7 +175,7 @@ function jigoshop_price_filter( $filtered_posts ) {
 			'posts_per_page' => -1,
 			'meta_query' => array(
 				array(
-					'key' => 'price',
+					'key' => 'regular_price',
 					'value' => array( $_GET['min_price'], $_GET['max_price'] ),
 					'type' => 'NUMERIC',
 					'compare' => 'BETWEEN'
@@ -190,7 +191,7 @@ function jigoshop_price_filter( $filtered_posts ) {
 			)
 		));
 
-		if ($matched_products_query) :
+		if ( ! empty( $matched_products_query )) :
 
 			foreach ($matched_products_query as $product) :
 				$matched_products[] = $product->ID;
@@ -199,13 +200,13 @@ function jigoshop_price_filter( $filtered_posts ) {
 		endif;
 
 		// Get grouped product ids
-		$grouped_products = get_objects_in_term( get_term_by('slug', 'grouped', 'product_type')->term_id, 'product_type' );
+		$grouped_products = (array) get_objects_in_term( get_term_by('slug', 'grouped', 'product_type')->term_id, 'product_type' );
 
-		if ($grouped_products) foreach ($grouped_products as $grouped_product) :
+		if ( ! empty( $grouped_products )) foreach ($grouped_products as $grouped_product) :
 
 			$children = get_children( 'post_parent='.$grouped_product.'&post_type=product' );
 
-			if ($children) foreach ($children as $product) :
+			if ( ! empty( $children )) foreach ($children as $product) :
 				$price = get_post_meta( $product->ID, 'price', true);
 
 				if ($price<=$_GET['max_price'] && $price>=$_GET['min_price']) :

@@ -1,7 +1,7 @@
 <?php
 /**
  * Product Data
- * 
+ *
  * Function for displaying the product data meta boxes
  *
  * DISCLAIMER
@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Admin
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Admin
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -25,7 +25,7 @@ add_filter( 'gettext', 'jigoshop_change_insert_into_post', null, 2 );
 function jigoshop_change_insert_into_post( $translation, $original ) {
 
 	// Check if the translation is correct
-    if( ! isset( $_REQUEST['from'] ) || $original != 'Insert into Post' ) 
+    if( ! isset( $_REQUEST['from'] ) || $original != 'Insert into Post' )
     	return $translation;
 
     // Modify text based on context
@@ -43,7 +43,7 @@ function jigoshop_change_insert_into_post( $translation, $original ) {
 
 /**
  * Product data box
- * 
+ *
  * Displays the product data box, tabbed, with several panels covering price, stock etc
  *
  * @since 		1.0
@@ -54,7 +54,7 @@ function jigoshop_product_data_box() {
 	add_action('admin_footer', 'jigoshop_meta_scripts');
 	wp_nonce_field( 'jigoshop_save_data', 'jigoshop_meta_nonce' );
 
-	$thepostid = $post->ID;	
+	$thepostid = $post->ID;
 	?>
 
 	<div class="panels">
@@ -77,27 +77,27 @@ function jigoshop_product_data_box() {
 				<a href="#attributes"><?php _e('Attributes', 'jigoshop'); ?></a>
 			</li>
 
-			<li class="grouped_tab">	
+			<li class="grouped_tab">
 				<a href="#grouped"><?php _e('Grouping', 'jigoshop') ?></a>
 			</li>
 
-			<li class="file_tab">	
+			<li class="file_tab">
 				<a href="#files"><?php _e('File', 'jigoshop') ?></a>
 			</li>
-			
+
 			<?php do_action('jigoshop_product_write_panel_tabs'); ?>
 			<?php do_action('product_write_panel_tabs'); // Legacy ?>
 		</ul>
-		
+
 		<div id="general" class="panel jigoshop_options_panel">
 			<fieldset>
-			<?php	
+			<?php
 				// Product Type
 				$terms = get_the_terms( $thepostid, 'product_type' );
 				$product_type = ($terms) ? current($terms)->slug : 'simple';
 
 				echo jigoshop_form::select(
-					'product-type', 
+					'product-type',
 					__('Product Type', 'jigoshop'),
 					apply_filters('jigoshop_product_type_selector', array(
 						'simple'		=> __('Simple', 'jigoshop'),
@@ -120,7 +120,7 @@ function jigoshop_product_data_box() {
 			<fieldset id="price_fieldset">
 			<?php
 				// Regular Price
-				echo jigoshop_form::input( 'regular_price', 'Regular Price', null, null, 'short', 'Price Not Announced', array('after_label' => ' ('.get_jigoshop_currency_symbol().')') );
+				echo jigoshop_form::input( 'regular_price', 'Regular Price', null, null, 'short', __('Price Not Announced','jigoshop'), array('after_label' => ' ('.get_jigoshop_currency_symbol().')') );
 
 				// Sale Price
 				echo jigoshop_form::input( 'sale_price', 'Sale Price', '<a href="#" class="sale_schedule">Schedule</a>', null, 'short', '15% or 19.99', array('after_label' => ' ('.get_jigoshop_currency_symbol().' or %)' ));
@@ -128,10 +128,10 @@ function jigoshop_product_data_box() {
 				// Sale Price date range
 				// TODO: Convert this to a helper somehow?
 				$field = array( 'id' => 'sale_price_dates', 'label' => __('On Sale Between', 'jigoshop') );
-				
+
 				$sale_price_dates_from = get_post_meta($thepostid, 'sale_price_dates_from', true);
 				$sale_price_dates_to = get_post_meta($thepostid, 'sale_price_dates_to', true);
-				
+
 				echo '	<p class="form-field sale_price_dates_fields">
 							<label for="' . esc_attr( $field['id'] ) . '_from">'.$field['label'].'</label>
 							<input type="text" class="short date-pick" name="' . esc_attr( $field['id'] ) . '_from" id="' . esc_attr( $field['id'] ) . '_from" value="';
@@ -175,7 +175,7 @@ function jigoshop_product_data_box() {
 	            	$_tax = new jigoshop_tax();
 	            	$tax_classes = $_tax->get_tax_classes();
 	            	$selections = (array) get_post_meta($post->ID, 'tax_classes', true);
-	            	
+
 	            	$checked = checked(in_array('*', $selections), true, false);
 
 	            	printf('<label %s><input type="checkbox" name="tax_classes[]" value="%s" %s/> %s</label>'
@@ -253,7 +253,7 @@ function jigoshop_product_data_box() {
 			<?php
 			// Stock Status
 			// TODO: These values should be true/false
-			echo jigoshop_form::select( 'stock_status', 'Stock Status', 
+			echo jigoshop_form::select( 'stock_status', 'Stock Status',
 				array(
 					'instock'		=> 'In Stock',
 					'outofstock'	=> 'Out of Stock'
@@ -314,7 +314,7 @@ function jigoshop_product_data_box() {
 				// Only echo the form if we have grouped products
 				echo jigoshop_form::select( 'parent_id', 'Product Group', $options, $post->post_parent, false, 'select' );
 			}
-			
+
 			// Ordering
 			echo jigoshop_form::input( 'menu_order', 'Sort Order', false, $post->menu_order );
 			?>
@@ -322,7 +322,7 @@ function jigoshop_product_data_box() {
 
 		<div id="files" class="panel jigoshop_options_panel">
 			<fieldset>
-			<?php 
+			<?php
 
 			// DOWNLOADABLE OPTIONS
 			// File URL
@@ -340,7 +340,7 @@ function jigoshop_product_data_box() {
 			?>
 			</fieldset>
 		</div>
-		
+
 		<?php do_action('jigoshop_product_write_panels'); ?>
 		<?php do_action('product_write_panels'); ?>
 	</div>
@@ -349,9 +349,9 @@ function jigoshop_product_data_box() {
 
 add_action('jigoshop_attributes_display', 'attributes_display');
 function attributes_display() { ?>
-	
+
 	<div class="toolbar">
-		
+
 		<button type="button" class="button button-secondary add_attribute"><?php _e('Add Attribute', 'jigoshop'); ?></button>
 		<select name="attribute_taxonomy" class="attribute_taxonomy">
 			<option value="" data-type="custom"><?php _e('Custom product attribute', 'jigoshop'); ?></option>
@@ -359,20 +359,21 @@ function attributes_display() { ?>
 				$attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();
 				if ( $attribute_taxonomies ) :
 			    	foreach ($attribute_taxonomies as $tax) :
-						echo '<option value="'.sanitize_text_field(sanitize_title($tax->attribute_name)).'" data-type="'.$tax->attribute_type.'">'.$tax->attribute_name.'</option>';
+					$label = ($tax->attribute_label) ? $tax->attribute_label : $tax->attribute_name;
+						echo '<option value="'.esc_attr( sanitize_title($tax->attribute_name) ).'" data-type="'.esc_attr( $tax->attribute_type ).'">'.esc_attr( $label ).'</option>';
 			    	endforeach;
 			    endif;
 			?>
 		</select>
-		
+
 	</div>
 	<div class="jigoshop_attributes_wrapper">
-		
+
 		<?php do_action('jigoshop_display_attribute'); ?>
 
 	</div>
 	<div class="clear"></div>
-<?php 
+<?php
 }
 
 add_action('jigoshop_display_attribute', 'display_attribute');
@@ -415,7 +416,7 @@ function display_attribute() { ?>
 								</td>
 								<td class="value">
 									<select>
-										<option>Choose an option…</option>			
+										<option>Choose an option&hellip;</option>
 									</select>
 								</td>
 							</tr>
@@ -433,7 +434,7 @@ function display_attribute() { ?>
 		if (isset($attributes[$attribute_taxonomy_name])) $attribute = $attributes[$attribute_taxonomy_name];
 		$position = (isset($attribute['position'])) ? $attribute['position'] : 0;
 
-		$allterms = get_the_terms( $post->ID, 'pa_'.$attribute_taxonomy_name );
+		$allterms = wp_get_object_terms( $post->ID, 'pa_'.$attribute_taxonomy_name, array( 'orderby' => 'slug' ) );
 
 		$has_terms = ( is_wp_error( $allterms ) || !$allterms || sizeof( $allterms ) == 0 ) ? 0 : 1;
 		$term_slugs = array();
@@ -444,12 +445,15 @@ function display_attribute() { ?>
 		endif;
 	?>
 
-	<div class="postbox attribute <?php if ( $has_terms ) echo 'closed'; ?> <?php echo sanitize_text_field(sanitize_title($attribute_taxonomy_name)); ?>" data-attribute-name="<?php echo esc_attr( $attribute_taxonomy_name ); ?>" rel="<?php echo $position; ?>"  <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
+	<div class="postbox attribute <?php if ( $has_terms ) echo 'closed'; ?> <?php echo esc_attr( $attribute_taxonomy_name ); ?>" data-attribute-name="<?php echo esc_attr( $attribute_taxonomy_name ); ?>" rel="<?php echo $position; ?>"  <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
 		<button type="button" class="hide_row button">Remove</button>
 		<div class="handlediv" title="Click to toggle"><br></div>
-		<h3 class="handle"><?php echo $tax->attribute_name; ?></h3>
+		<h3 class="handle">
+		<?php $label = ($tax->attribute_label) ? $tax->attribute_label : $tax->attribute_name;
+		echo esc_attr ( $label ); ?>
+		</h3>
 
-		<input type="hidden" name="attribute_names[<?php echo $i; ?>]" value="<?php echo esc_attr( $tax->attribute_name ); ?>" />
+		<input type="hidden" name="attribute_names[<?php echo $i; ?>]" value="<?php echo esc_attr( sanitize_title ( $tax->attribute_name ) ); ?>" />
 		<input type="hidden" name="attribute_is_taxonomy[<?php echo $i; ?>]" value="1" />
 		<input type="hidden" name="attribute_enabled[<?php echo $i; ?>]" value="1" />
 		<input type="hidden" name="attribute_position[<?php echo $i; ?>]" class="attribute_position" value="<?php echo esc_attr( $position ); ?>" />
@@ -458,7 +462,7 @@ function display_attribute() { ?>
 			<table>
 				<tr>
 					<td class="options">
-						<input type="text" class="attribute-name" name="attribute_names[<?php echo $i; ?>]" value="<?php echo esc_attr( $tax->attribute_name ); ?>" disabled="disabled" />
+						<input type="text" class="attribute-name" name="attribute_names[<?php echo $i; ?>]" value="<?php echo esc_attr( $label ); ?>" disabled="disabled" />
 
 						<div>
 							<label>
@@ -488,7 +492,7 @@ function display_attribute() { ?>
 										endforeach;
 									endif;
 								endif;
-								?>			
+								?>
 							</select>
 
 						<?php elseif ($tax->attribute_type=="multiselect") : ?>
@@ -537,7 +541,7 @@ function display_attribute() { ?>
 	<?php endforeach; ?>
 	<?php
 	// Custom Attributes
-	if ( $attributes ) foreach ($attributes as $attribute) : 
+	if ( $attributes ) foreach ($attributes as $attribute) :
 		if ($attribute['is_taxonomy']) continue;
 
 		$i++;

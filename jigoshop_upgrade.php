@@ -1,18 +1,18 @@
 <?php
 /**
  * Jigoshop Upgrade API
- * 
+ *
  * DISCLAIMER
  *
  * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Core
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Core
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -39,6 +39,14 @@ function jigoshop_upgrade() {
 
 	if ( $jigoshop_db_version < 1202010 ) {
 		jigoshop_upgrade_100();
+	}
+
+	if ( $jigoshop_db_version < 1202130 ) {
+		jigoshop_upgrade_110();
+	}
+
+	if ( $jigoshop_db_version < 1202280 ) {
+		jigoshop_upgrade_111();
 	}
 
 	// Update the db option
@@ -104,6 +112,15 @@ function jigoshop_convert_db_version() {
 		case '0.9.9.3':
 			update_site_option( 'jigoshop_db_version', 1111092 );
 			break;
+		case '1.0':
+			update_site_option( 'jigoshop_db_version', 1202090 );
+			break;
+		case '1.1':
+			update_site_option( 'jigoshop_db_version', 1202130 );
+			break;
+		case '1.1.1':
+			update_site_option( 'jigoshop_db_version', 1202280 );
+			break;
 	}
 }
 
@@ -115,14 +132,14 @@ function jigoshop_convert_db_version() {
 function jigoshop_upgrade_99() {
 	global $wpdb;
 
-	$q = $wpdb->get_results("SELECT * 
+	$q = $wpdb->get_results("SELECT *
 		FROM $wpdb->term_taxonomy
 		WHERE taxonomy LIKE 'product_attribute_%'
 	");
 
 	foreach($q as $item) {
 		$taxonomy = str_replace('product_attribute_', 'pa_', $item->taxonomy);
-		
+
 		$wpdb->update(
 			$wpdb->term_taxonomy,
 			array('taxonomy' => $taxonomy),
@@ -140,17 +157,17 @@ function jigoshop_upgrade_100() {
 	global $wpdb;
 
 	// Run upgrade
-    
+
     // upgrade option jigoshop_tax_rates
     $jigoshop_tax_rates = get_site_option('jigoshop_tax_rates');
     $tax_rates = array();
-    
+
     if ($jigoshop_tax_rates && is_array($jigoshop_tax_rates)) :
-        
+
         foreach($jigoshop_tax_rates as $key) :
             $country = $key['country'];
             $state = $key['state'];
-            
+
             // Change canadian province NF and PQ to NL and QC respectively
             if (isset($key['country']) && $key['country'] == 'CA') :
                 if ($key['state'] == 'NF') :
@@ -159,11 +176,11 @@ function jigoshop_upgrade_100() {
                     $state = 'QC';
                 endif;
             endif;
-            
+
             $rate = $key['rate'];
             $shipping = $key['shipping'];
             $class = $key['class'];
-            
+
             // convert all-states
             if (jigoshop_countries::country_has_states($country) && $state == '*') :
                 foreach (array_keys(jigoshop_countries::$states[$country]) as $st) :
@@ -178,7 +195,7 @@ function jigoshop_upgrade_100() {
                                     'is_all_states' => true //determines if admin panel should show 'all_states'
                                 );
                 endforeach;
-                
+
             else : // do normal tax_rates array with the additional parameters
                     $tax_rates[] = array(
                                     'country' => $country,
@@ -190,18 +207,16 @@ function jigoshop_upgrade_100() {
                                     'compound' => 'no', //no such thing as compound taxes, so value is no
                                     'is_all_states' => false //determines if admin panel should show 'all_states'
                                 );
-                
+
             endif;
         endforeach;
-        
+
         update_option('jigoshop_tax_rates', $tax_rates);
-        
+
     endif;
-    
-    
-    
+
     // convert products
-    
+
 	$args = array(
 		'post_type'	  => 'product',
 		'numberposts' => -1,
@@ -269,7 +284,7 @@ function jigoshop_upgrade_100() {
 				}
 
 				// Create the meta
-				update_post_meta( $post->ID, $key, $value );	
+				update_post_meta( $post->ID, $key, $value );
 
 				// Remove the old meta
 				delete_post_meta( $post->ID, 'product_data' );
@@ -287,7 +302,7 @@ function jigoshop_upgrade_100() {
 
 				if ( isset( $attribute['variation'] ) )
 					$attribute['variation']   = ( $attribute['variation'] == 'yes' ) ? true : false;
-				
+
 				if ( isset( $attribute['is_taxonomy'] ) )
 					$attribute['is_taxonomy'] = ( $attribute['is_taxonomy'] == 'yes' ) ? true : false;
 
@@ -315,18 +330,37 @@ function jigoshop_upgrade_100() {
 		// Convert 'price' key to regular_price
 		$wpdb->update( $wpdb->postmeta, array('meta_key' => 'regular_price'), array('post_id' => $post->ID, 'meta_key' => 'price') );
 
-		$taxes = $wpdb->get_results("SELECT * FROM {$wpdb->postmeta} WHERE post_id = {$post->ID} AND meta_key LIKE 'tax_%' ");
+		$taxes = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key LIKE %s", $post->ID, 'tax_%' ) );
 
-		// Update catch all prices
+		// Update catch all prices, weights, and dimensions
 		$parent_id = $post->post_parent;
 		$parent_reg_price = get_post_meta( $parent_id, 'regular_price', true );
 		$parent_sale_price = get_post_meta( $parent_id, 'sale_price', true );
+		
+        // weight and dimensions were in pre 1.0. Therefore, make sure all of this
+        // data gets converted as well
+		$parent_weight = get_post_meta( $parent_id, 'weight', true );
+		$parent_length = get_post_meta( $parent_id, 'length', true );
+		$parent_height = get_post_meta( $parent_id, 'height', true );
+		$parent_width = get_post_meta( $parent_id, 'width', true );
 
 		if ( ! get_post_meta( $post->ID, 'regular_price', true) && $parent_reg_price )
 			update_post_meta( $post->ID, 'regular_price', $parent_reg_price );
 
 		if( ! get_post_meta( $post->ID, 'sale_price', true) && $parent_sale_price )
 			update_post_meta( $post->ID, 'sale_price', $parent_sale_price );
+			
+		if( ! get_post_meta( $post->ID, 'weight', true) && $parent_weight )
+			update_post_meta( $post->ID, 'weight', $parent_weight );
+			
+		if( ! get_post_meta( $post->ID, 'length', true) && $parent_length )
+			update_post_meta( $post->ID, 'length', $parent_length );
+		
+		if( ! get_post_meta( $post->ID, 'height', true) && $parent_height )
+			update_post_meta( $post->ID, 'height', $parent_height );
+			
+		if( ! get_post_meta( $post->ID, 'width', true) && $parent_width )
+			update_post_meta( $post->ID, 'width', $parent_width );
 
 		$variation_data = array();
 		foreach( $taxes as $tax ) {
@@ -347,11 +381,13 @@ function jigoshop_upgrade_100() {
 }
 
 /**
- * Execute changes made in Jigoshop 1.0
+ * Execute changes made in Jigoshop 1.1
  *
- * @since 1.0.1
+ * @since 1.1
  */
-function jigoshop_upgrade_101() {
+function jigoshop_upgrade_110() {
+
+	global $wpdb;
 
 	// Add setting to show or hide stock
 	update_option( 'jigoshop_show_stock' , 'yes' );
@@ -359,5 +395,23 @@ function jigoshop_upgrade_101() {
 	// New settings for guest control
 	update_option( 'jigoshop_enable_guest_login' , 'yes' );
 	update_option( 'jigoshop_enable_signup_form' , 'yes' );
+
+	// Add attribute label column to allow non-ascii characters
+	$sql = 'ALTER TABLE '. $wpdb->prefix . 'jigoshop_attribute_taxonomies' . ' ADD COLUMN attribute_label longtext NULL';
+	$wpdb->query($sql);
+
+}
+
+/**
+ * Execute changes made in Jigoshop 1.1.1
+ *
+ * @since 1.1.1
+ */
+function jigoshop_upgrade_111() {
+
+	// Add default setting for shop redirection page
+	$shop_page = get_option('jigoshop_shop_page_id');
+	update_option( 'jigoshop_shop_redirect_page_id' , $shop_page );
+	update_option( 'jigoshop_enable_related_products' , 'yes' );
 
 }

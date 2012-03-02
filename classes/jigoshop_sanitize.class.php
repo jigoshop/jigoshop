@@ -8,40 +8,40 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Core
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Core
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
- 
+
 class jigoshop_sanitize {
 
 	private $_fields = array();
-	
-	
+
+
 	public function __construct( $uncleanArray )
 	{
 		foreach ( $uncleanArray as $key => $value ) {
 			$this->_fields[$this->_sanitize( $key )] = $this->_sanitize( $value );
 		}
 	}
-	
-	
+
+
 	/**
 	 * Sanitize or clean an input field.
 	 * Removes leading and trailing white space, all html and php tags, encodes any html entities
-	 *     using the default (ENT_COMPAT | ENT_HTML401), and unquotes any quoted strings. 
+	 *     using the default (ENT_COMPAT | ENT_HTML401), and unquotes any quoted strings.
 	 *
 	 * @param object $input - The object to sanitize.
 	 * @return object - The sanitized object.
-	 * 
+	 *
 	 * @since 0.9.9.2
 	 */
 	private function _sanitize( $input )
 	{
 		$input = $this->_fixIncompleteObject( $input );
-		
+
 		if ( is_array( $input ) || is_object($input) ) {
 			$output = array();
 			foreach ( $input as $key => $value ) {
@@ -52,8 +52,8 @@ class jigoshop_sanitize {
 //		return stripslashes( trim( $input ));
 		return stripslashes( strip_tags( trim( $input )));
 	}
-	
-	
+
+
 	/**
 	 * _fixIncompleteObject repairs an object if it is incomplete.
 	 *
@@ -70,22 +70,22 @@ class jigoshop_sanitize {
 		}
 		return $input;
 	}
-	
-	
+
+
 	public function __isset( $key )
 	{
 		return isset( $this->_fields[$key] );
 	}
-	
-	
+
+
 	public function __unset( $key )
 	{
 		if ( array_key_exists( $key, $this->_fields )) {
 			unset( $this->_fields[$key] );
 		}
 	}
-	
-	
+
+
 	public function __get( $key )
 	{
 		if ( array_key_exists( $key, $this->_fields ) && ! empty( $this->_fields[$key] )) {
@@ -94,13 +94,13 @@ class jigoshop_sanitize {
 			return null;
 		}
 	}
-	
-	
+
+
 	public function __set( $key, $value )
 	{
 		$this->_fields[$this->_sanitize( $key )] = $this->_sanitize( $value );
 	}
-	
+
 }
 
 ?>

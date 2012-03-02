@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Core
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Core
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -22,7 +22,7 @@ if (!function_exists('jigoshop_front_page_archive')) {
 	function jigoshop_front_page_archive() {
 
 		global $paged;
-		
+
 		// TODO: broken
 		// is_page() fails for this - still testing -JAP-
 		// is_shop() works, but only with a [recent_products] shortcode on the Shop page
@@ -88,7 +88,7 @@ if (!function_exists('jigoshop_get_sidebar')) {
  **/
 if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 	function jigoshop_template_loop_add_to_cart( $post, $_product ) {
-		
+
 		// do not show "add to cart" button if product's price isn't announced
 		if ( $_product->get_price() === '' AND ! ($_product->is_type(array('variable', 'grouped', 'external'))) ) return;
 
@@ -159,7 +159,9 @@ if (!function_exists('jigoshop_show_product_thumbnails')) {
 
 		$thumb_id = get_post_thumbnail_id();
 		$small_thumbnail_size = jigoshop_get_image_size( 'shop_thumbnail' );
-		$args = array( 'post_type' => 'attachment', 'numberposts' => -1, 'post_status' => null, 'post_parent' => $post->ID, 'orderby' => 'menu_order', 'order' => 'asc' );
+
+		$args = array( 'post_type' => 'attachment', 'post_mime_type' => 'image', 'numberposts' => -1, 'post_status' => null, 'post_parent' => $post->ID, 'orderby' => 'id', 'order' => 'asc' );
+		
 		$attachments = get_posts($args);
 		if ($attachments) :
 			$loop = 0;
@@ -235,7 +237,7 @@ if (!function_exists('jigoshop_template_single_meta')) {
 		if (get_option('jigoshop_enable_sku')=='yes' && !empty($_product->sku)) :
 			echo '<div class="sku">SKU: ' . $_product->sku . '</div>';
 		endif;
-		
+
 		echo $_product->get_categories( ', ', ' <div class="posted_in">' . __( 'Posted in ', 'jigoshop' ) . '', '.</div>');
 		echo $_product->get_tags( ', ', ' <div class="tagged_as">' . __( 'Tagged as ', 'jigoshop' ) . '', '.</div>');
 		echo '</div>';
@@ -261,19 +263,19 @@ if (!function_exists('jigoshop_template_single_sharing')) {
  **/
 if (!function_exists('jigoshop_template_single_add_to_cart')) {
 	function jigoshop_template_single_add_to_cart( $post, $_product ) {
-		
+
 		do_action( $_product->product_type . '_add_to_cart' );
-		
+
 	}
 }
 if (!function_exists('jigoshop_simple_add_to_cart')) {
 	function jigoshop_simple_add_to_cart() {
 
 		global $_product; $availability = $_product->get_availability();
-		
+
 		// do not show "add to cart" button if product's price isn't announced
 		if( $_product->get_price() === '') return;
-		
+
 		if ($availability['availability']) : ?><p class="stock <?php echo $availability['class'] ?>"><?php echo $availability['availability']; ?></p><?php endif;
 
 		?>
@@ -296,10 +298,10 @@ if (!function_exists('jigoshop_downloadable_add_to_cart')) {
 	function jigoshop_downloadable_add_to_cart() {
 
 		global $_product; $availability = $_product->get_availability();
-		
+
 		// do not show "add to cart" button if product's price isn't announced
 		if( $_product->get_price() === '') return;
-		
+
 		if ($availability['availability']) : ?><p class="stock <?php echo $availability['class'] ?>"><?php echo $availability['availability']; ?></p><?php endif;
 
 		?>
@@ -342,20 +344,20 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 	function jigoshop_variable_add_to_cart() {
 
 		global $post, $_product;
-		
+
 		$attributes = $_product->get_available_attributes_variations();
-        
+
         //get all variations available as an array for easy usage by javascript
         $variationsAvailable = array();
         $children = $_product->get_children();
-        
+
         foreach($children as $child) {
             /* @var $variation jigoshop_product_variation */
             $variation = $_product->get_child( $child );
             if($variation instanceof jigoshop_product_variation && $variation->is_visible()) {
                 $vattrs = $variation->get_variation_attributes();
                 $availability = $variation->get_availability();
-                
+
                 //@todo needs to be moved to jigoshop_product_variation class
                 if (has_post_thumbnail($variation->get_variation_id())) {
                     $attachment_id = get_post_thumbnail_id( $variation->get_variation_id() );
@@ -367,13 +369,53 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
                     $image_link = '';
                 }
 
+				$a_weight = $a_length = $a_width = $a_height = '';
+
+                if ( $variation->get_weight() ) {
+                	$a_weight = '
+                    	<tr class="weight">
+                    		<th>Weight</th>
+                    		<td>'.$variation->get_weight().get_option('jigoshop_weight_unit').'</td>
+                    	</tr>';
+            	}
+
+            	if ( $variation->get_length() ) {
+	            	$a_length = '
+	                	<tr class="length">
+	                		<th>Length</th>
+	                		<td>'.$variation->get_length().get_option('jigoshop_dimension_unit').'</td>
+	                	</tr>';
+                }
+
+                if ( $variation->get_width() ) {
+	                $a_width = '
+	                	<tr class="width">
+	                		<th>Width</th>
+	                		<td>'.$variation->get_width().get_option('jigoshop_dimension_unit').'</td>
+	                	</tr>';
+                }
+
+                if ( $variation->get_height() ) {
+	                $a_height = '
+	                	<tr class="height">
+	                		<th>Height</th>
+	                		<td>'.$variation->get_height().get_option('jigoshop_dimension_unit').'</td>
+	                	</tr>
+	                ';
+            	}
+
                 $variationsAvailable[] = array(
                     'variation_id' => $variation->get_variation_id(),
+                    'sku'		=> '<div class="sku">SKU: ' . $variation->get_sku() . '</div>',
                     'attributes' => $vattrs,
                     'image_src' => $image,
                     'image_link' => $image_link,
                     'price_html' => '<span class="price">'.$variation->get_price_html().'</span>',
                     'availability_html' => '<p class="stock ' . esc_attr( $availability['class'] ) . '">'. $availability['availability'].'</p>',
+                    'a_weight' => $a_weight,
+                    'a_length' => $a_length,
+                    'a_width' => $a_width,
+                    'a_height' => $a_height,
                 );
             }
         }
@@ -384,23 +426,17 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
         </script>
 		<form action="<?php echo esc_url( $_product->add_to_cart_url() ); ?>" class="variations_form cart" method="post">
 			<fieldset class="variations">
-				<?php foreach ( $attributes as $aname => $avalues ): ?>
-					<?php $sanitized_name = sanitize_title( $aname ); ?>
+				<?php foreach ( $attributes as $name => $options ): ?>
+					<?php $sanitized_name = sanitize_title( $name ); ?>
 					<div>
-						<span class="select_label"><?php echo $aname; ?></span>
+						<span class="select_label"><?php echo jigoshop_product::attribute_label('pa_'.$name); ?></span>
 						<select id="<?php echo esc_attr( $sanitized_name ); ?>" name="tax_<?php echo $sanitized_name; ?>">
 							<option value=""><?php echo __('Choose an option ', 'jigoshop') ?>&hellip;</option>
-							<?php foreach ( $avalues as $value ) : ?>
+							<?php foreach ( $options as $value ) : ?>
 								<?php if ( taxonomy_exists( 'pa_'.$sanitized_name )) : ?>
 									<?php $term = get_term_by( 'slug', $value, 'pa_'.$sanitized_name ); ?>
 									<option value="<?php echo esc_attr( $term->slug ); ?>"><?php echo $term->name; ?></option>
 								<?php else : ?>
-									<?php
-									//	this should be a custom text attribute with values (one,two,three)
-									//	we have no way to get the pretty name instead of the slug?  -JAP-
-									//	perhaps we need to be creating a taxonomy for these? (currently we don't)
-									//	it will show pretty name if no option selected on variation, 'Choose Any [attr]'
-									?>
 									<option value="<?php echo esc_attr( sanitize_title( $value ) ); ?>"><?php echo $value; ?></option>
 								<?php endif;?>
 							<?php endforeach; ?>
@@ -560,7 +596,8 @@ if (!function_exists('jigoshop_get_image_placeholder')) {
  **/
 if (!function_exists('jigoshop_output_related_products')) {
 	function jigoshop_output_related_products() {
-		// 4 Related Products in 4 columns
+		if (get_option ('jigoshop_enable_related_products') != 'no')
+		// 2 Related Products in 2 columns
 		jigoshop_related_products( 2, 2 );
 	}
 }
@@ -574,7 +611,7 @@ if (!function_exists('jigoshop_related_products')) {
 		$per_page = $posts_per_page;
 		$columns = $post_columns;
 
-		$related = $_product->get_related();
+		$related = $_product->get_related( $posts_per_page );
 		if (sizeof($related)>0) :
 			echo '<div class="related products"><h2>'.__('Related Products', 'jigoshop').'</h2>';
 			$args = array(
@@ -659,38 +696,38 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 						?>
 							<div class="col2-set">
 								<p class="form-row col-1">
-									
-									<?php 
+
+									<?php
 									echo '<input type="radio" name="shipping_rates" value="' . esc_attr( $method->id . ':' . $i ) . '"' . ' class="shipping_select"';
-									if ( $method->get_cheapest_service() == $method->get_selected_service($i) && $method->is_chosen() ) echo ' checked>'; else echo '>'; 
+									if ( $method->get_cheapest_service() == $method->get_selected_service($i) && $method->is_chosen() ) echo ' checked>'; else echo '>';
 									echo $method->get_selected_service($i) . ' via ' . $method->title;
 									?>
-								<p class="form-row col-2"><?php  
-									echo jigoshop_price($method->get_selected_price($i)); 
+								<p class="form-row col-2"><?php
+									echo jigoshop_price($method->get_selected_price($i));
 									if ($method->shipping_tax>0) : __(' (ex. tax)', 'jigoshop'); endif;
 									?>
-							</div> 
+							</div>
 						<?php
 						}
-						
+
 					else :
 					?>
 					<div class="col2-set">
 						<p class="form-row col-1">
-							<?php 
+							<?php
 							// value has : as there are no services on non calculable methods, since they are identified only by the id
 							echo '<input type="radio" name="shipping_rates" value="' . esc_attr( $method->id . ':' ) .'" class="shipping_select"';
-							if ( $method->is_chosen() ) echo 'checked>'; else echo '>'; 
+							if ( $method->is_chosen() ) echo 'checked>'; else echo '>';
 							echo $method->title;
 
 							?>
-						<p class="form-row col-2"><?php 
+						<p class="form-row col-2"><?php
 							if ($method->shipping_total>0) :
 								echo jigoshop_price($method->shipping_total);
 								if ($method->shipping_tax>0) : __(' (ex. tax)', 'jigoshop'); endif;
 							else :
 								echo __('Free', 'jigoshop');
-							endif;						
+							endif;
 						?>
 					</div>
 					<?php
@@ -949,7 +986,7 @@ if (!function_exists('jigoshop_breadcrumb')) {
 
 /**
  * Hook to remove the 'singular' class, for the twenty eleven theme, to properly display the sidebar
- * 
+ *
  * @param array $classes
  */
 function jigoshop_body_classes ($classes) {

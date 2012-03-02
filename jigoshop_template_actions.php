@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Core
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Core
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 
 /* Catalog Filters */
@@ -59,11 +59,11 @@ add_action( 'jigoshop_template_single_summary', 'jigoshop_template_single_sharin
 
 /* Product Add to cart */
 add_action( 'jigoshop_template_single_summary', 'jigoshop_template_single_add_to_cart', 30, 2 );
-add_action( 'simple_add_to_cart', 'jigoshop_simple_add_to_cart' ); 
-add_action( 'external_add_to_cart', 'jigoshop_external_add_to_cart' ); 
-add_action( 'virtual_add_to_cart', 'jigoshop_simple_add_to_cart' ); 
-add_action( 'downloadable_add_to_cart', 'jigoshop_downloadable_add_to_cart' ); 
-add_action( 'grouped_add_to_cart', 'jigoshop_grouped_add_to_cart' ); 
+add_action( 'simple_add_to_cart', 'jigoshop_simple_add_to_cart' );
+add_action( 'external_add_to_cart', 'jigoshop_external_add_to_cart' );
+add_action( 'virtual_add_to_cart', 'jigoshop_simple_add_to_cart' );
+add_action( 'downloadable_add_to_cart', 'jigoshop_downloadable_add_to_cart' );
+add_action( 'grouped_add_to_cart', 'jigoshop_grouped_add_to_cart' );
 add_action( 'variable_add_to_cart', 'jigoshop_variable_add_to_cart' );
 add_action( 'external_add_to_cart', 'jigoshop_external_add_to_cart' );
 
@@ -90,6 +90,6 @@ add_action( 'jigoshop_checkout_order_review', 'jigoshop_order_review', 10 );
 add_action( 'after_setup_theme', 'jigoshop_body_classes_check' );
 
 function jigoshop_body_classes_check () {
-	if( has_filter( 'body_class', 'twentyeleven_body_classes' ) ) 
+	if( has_filter( 'body_class', 'twentyeleven_body_classes' ) )
 		add_filter( 'body_class', 'jigoshop_body_classes' );
 }

@@ -1,8 +1,7 @@
 <?php
-
 /**
- * calculable shipping. This class allows the ability to plugin 
- * shipping services in order to retrieve shipping information from their servers. 
+ * calculable shipping. This class allows the ability to plugin
+ * shipping services in order to retrieve shipping information from their servers.
  *
  * DISCLAIMER
  *
@@ -10,19 +9,19 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Checkout
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package		Jigoshop
+ * @category	Checkout
+ * @author		Jigowatt
+ * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license		http://jigoshop.com/license/commercial-edition
  */
 abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
 
     protected $from_zip_or_pac; // the zip or postalcode from the shipper
-    protected $url; // url to connect to the shipping calculator server 
+    protected $url; // url to connect to the shipping calculator server
     protected $user_id; // the user id to connect to the shipping servers
     protected $services; // services that have been selected to be used by wp-admin
-    protected $rates; // the rates in array format 
+    protected $rates; // the rates in array format
     protected $has_error; // determines if an error was returned from shipping APIs
     protected $tax_status; // determines if tax should be calculated
 
@@ -36,7 +35,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
         $is_available = parent::is_available();
         return ($this->has_error ? false : $is_available);
     }
-    
+
     /**
      * template method that determines the algorithm to send data to and from the shipping
      * server. This method should be called from the implementing classes calculate shipping
@@ -68,11 +67,12 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
                     // send to shipping server and get xml back
                     $post_response = $this->send_to_shipping_server($request);
 
-                    // convert xml into an array 
+                    // convert xml into an array
                     $xml_response = $this->convert_xml_to_array($post_response);
 
-                    // sums up the rates from flattened array, and generates amounts. 
+                    // sums up the rates from flattened array, and generates amounts.
                     $rate = $this->retrieve_rate_from_response($xml_response);
+                    $rate += (empty($this->fee) ? 0 : $this->get_fee($this->fee, jigoshop_cart::$cart_contents_total_ex_dl));
 
                     $tax = 0;
                     if (get_option('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable') :
@@ -102,7 +102,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
                 // send to shipping server and get xml back
                 $post_response = $this->send_to_shipping_server($request);
 
-                // convert xml into an array 
+                // convert xml into an array
                 $xml_response = $this->convert_xml_to_array($post_response);
 
                 // services are obtained from response
@@ -110,6 +110,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
 
                 foreach ($services as $current_service) :
                     $rate = $this->retrieve_rate_from_response($xml_response, $current_service);
+                    $rate += (empty($this->fee) ? 0 : $this->get_fee($this->fee, jigoshop_cart::$cart_contents_total_ex_dl));
 
                     $tax = 0;
                     if (get_option('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable') :
@@ -151,7 +152,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
      * services return all of their services in one reponse xml file, then use this
      * method to handle that task by retrieving the services and returning them in
      * an array.
-     * 
+     *
      * @param array array_response the response from the shipping api's converted
      * to array format
      */
@@ -231,7 +232,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
 
     /**
      * add up the rate returned from the shipping server and return it
-     * 
+     *
      * @return the rate from the response
      */
     abstract protected function retrieve_rate_from_response($array_response, $service = '');
@@ -276,7 +277,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
     }
 
     /**
-     * gets the cheapest rate from the rates returned by shipping service. If an error occurred on 
+     * gets the cheapest rate from the rates returned by shipping service. If an error occurred on
      * on the shipping service service, NULL will be returned
      */
     private function get_cheapest_rate() {
@@ -293,6 +294,8 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
         return $cheapest_rate;
     }
 
+    // Override this functions if you want to provide your own
+    // label to the service name displayed
     public function get_cheapest_service() {
         $my_cheapest_rate = $this->get_cheapest_rate();
         return ($my_cheapest_rate == NULL ? NULL : $my_cheapest_rate['service']);
@@ -309,8 +312,9 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
     }
 
     /**
-     * Retrieves the service name from the rate array based on the service selected
-     * @return - NULL if the rate by index doesn't exist, otherwise the service name associated with the 
+     * Retrieves the service name from the rate array based on the service selected.
+     * Override this method if you wish to provide your own user friendly service name
+     * @return - NULL if the rate by index doesn't exist, otherwise the service name associated with the
      * service_id
      */
     public function get_selected_service($rate_index) {

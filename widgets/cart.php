@@ -19,7 +19,7 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Setup the widget with the available options
 	 * Add actions to clear the cache whenever a post is saved|deleted or a theme is switched
 	 */
@@ -35,7 +35,7 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 
 	/**
 	 * Widget
-	 * 
+	 *
 	 * Display the widget in the sidebar
 	 * Save output to the cache if empty
 	 *
@@ -52,8 +52,8 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 
 		// Set the widget title
 		$title = apply_filters(
-			'widget_title', 
-			( $instance['title'] ) ? $instance['title'] : __( 'Cart', 'jigoshop' ), 
+			'widget_title',
+			( $instance['title'] ) ? $instance['title'] : __( 'Cart', 'jigoshop' ),
 			$instance,
 			$this->id_base
 		);
@@ -69,8 +69,8 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 		if ( ! empty( $cart_contents ) ) {
 
 			// Open the list
-			echo '<ul class="cart_list">'; 
-		
+			echo '<ul class="cart_list">';
+
 			foreach ( $cart_contents as $key => $value ) {
 
 				// Get product instance
@@ -80,16 +80,16 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 				echo '<li>';
 					// Print the product image & title with a link to the permalink
 					echo '<a href="' . esc_attr( get_permalink( $_product->id ) ) . '" title="' . esc_attr( $_product->get_title() ) . '">';
-					
+
 					// Print the product thumbnail image if exists else display placeholder
 					echo (has_post_thumbnail( $_product->id ) )
-							? get_the_post_thumbnail( $_product->id, 'shop_tiny' ) 
+							? get_the_post_thumbnail( $_product->id, 'shop_tiny' )
 							: jigoshop_get_image_placeholder( 'shop_tiny' );
 
 					// Print the product title
 					echo '<span class="js_widget_product_title">' . $_product->get_title() . '</span>';
 					echo '</a>';
-					
+
 					// Print the quantity & price per product
 					echo '<span class="js_widget_product_price">' . $value['quantity'].' &times; '. $_product->get_price_html() . '</span>';
 				echo '</li>';
@@ -122,7 +122,7 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 
 	/**
 	 * Update
-	 * 
+	 *
 	 * Handles the processing of information entered in the wordpress admin
 	 * Flushes the cache & removes entry from options array
 	 *
@@ -141,7 +141,7 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 
 	/**
 	 * Form
-	 * 
+	 *
 	 * Displays the form for the wordpress admin
 	 *
 	 * @param	array	instance
