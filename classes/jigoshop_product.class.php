@@ -763,11 +763,11 @@ class jigoshop_product {
 
                 // for variable products, only display From if prices differ among them
                 if (count($array) >= 2 && $array[count($array) - 1] != $array[0]) :
-                    $html = '<span class="from">' . _x('From:', 'jigoshop') . '</span> ';
+                    $html = '<span class="from">' . _x('From:', 'price', 'jigoshop') . '</span> ';
                 endif;
 
             else :
-                $html = '<span class="from">' . _x('From:', 'jigoshop') . '</span> ';
+                $html = '<span class="from">' . _x('From:', 'price', 'jigoshop') . '</span> ';
             endif;
 
 			return $html . jigoshop_price( $array[0] );
