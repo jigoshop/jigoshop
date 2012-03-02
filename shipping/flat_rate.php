@@ -30,10 +30,6 @@ class flat_rate extends jigoshop_shipping_method {
 		
 		$jsOptions->install_new_options( 'Shipping', $this->get_default_options() );
 		
-		$jsOptions->add_option( 'jigoshop_flat_rate_availability', 'all' );
-		$jsOptions->add_option( 'jigoshop_flat_rate_title', 'Flat Rate' );
-		$jsOptions->add_option( 'jigoshop_flat_rate_tax_status', 'taxable' );
-		
         $this->id 			= 'flat_rate';
         $this->enabled		= $jsOptions->get_option('jigoshop_flat_rate_enabled');
 		$this->title 		= $jsOptions->get_option('jigoshop_flat_rate_title');
@@ -44,7 +40,6 @@ class flat_rate extends jigoshop_shipping_method {
 		$this->cost 		= $jsOptions->get_option('jigoshop_flat_rate_cost');
 		$this->fee 			= $jsOptions->get_option('jigoshop_flat_rate_handling_fee');
 
-		add_action( 'jigoshop_update_options', array( &$this, 'process_admin_options' ) );
 		add_action( 'jigoshop_settings_scripts', array( &$this, 'admin_scripts' ) );
 		
     }
@@ -221,30 +216,6 @@ class flat_rate extends jigoshop_shipping_method {
 			/*]]>*/
 		</script>
     	<?php
-    }
-
-    public function process_admin_options() {
-		$jsOptions = Jigoshop_Options::instance();
-   		if(isset($_POST['jigoshop_flat_rate_tax_status'])) $jsOptions->set_option('jigoshop_flat_rate_tax_status', jigowatt_clean($_POST['jigoshop_flat_rate_tax_status']));
-   		else $jsOptions->delete_option('jigoshop_flat_rate_tax_status');
-
-   		if(isset($_POST['jigoshop_flat_rate_enabled'])) $jsOptions->set_option('jigoshop_flat_rate_enabled', jigowatt_clean($_POST['jigoshop_flat_rate_enabled']));
-   		else $jsOptions->delete_option('jigoshop_flat_rate_enabled');
-   		if(isset($_POST['jigoshop_flat_rate_title'])) $jsOptions->set_option('jigoshop_flat_rate_title', jigowatt_clean($_POST['jigoshop_flat_rate_title']));
-   		else $jsOptions->delete_option('jigoshop_flat_rate_title');
-   		if(isset($_POST['jigoshop_flat_rate_type'])) $jsOptions->set_option('jigoshop_flat_rate_type', jigowatt_clean($_POST['jigoshop_flat_rate_type']));
-   		else $jsOptions->delete_option('jigoshop_flat_rate_type');
-   		if(isset($_POST['jigoshop_flat_rate_cost'])) $jsOptions->set_option('jigoshop_flat_rate_cost', jigowatt_clean($_POST['jigoshop_flat_rate_cost']));
-   		else $jsOptions->delete_option('jigoshop_flat_rate_cost');
-   		if(isset($_POST['jigoshop_flat_rate_handling_fee'])) $jsOptions->set_option('jigoshop_flat_rate_handling_fee', jigowatt_clean($_POST['jigoshop_flat_rate_handling_fee']));
-   		else $jsOptions->delete_option('jigoshop_flat_rate_handling_fee');
-
-   		if(isset($_POST['jigoshop_flat_rate_availability'])) $jsOptions->set_option('jigoshop_flat_rate_availability', jigowatt_clean($_POST['jigoshop_flat_rate_availability']));
-   		else $jsOptions->delete_option('jigoshop_flat_rate_availability');
-	    if (isset($_POST['jigoshop_flat_rate_countries'])) $selected_countries = $_POST['jigoshop_flat_rate_countries'];
-	    else $selected_countries = array();
-	    $jsOptions->set_option('jigoshop_flat_rate_countries', $selected_countries);
-
     }
 
 }

@@ -30,9 +30,6 @@ class local_pickup extends jigoshop_shipping_method {
 		
 		$jsOptions->install_new_options( 'Shipping', $this->get_default_options() );
 		
-		$jsOptions->add_option( 'jigoshop_local_pickup_availability', 'all' );
-		$jsOptions->add_option( 'jigoshop_local_pickup_title', 'Local Pickup' );
-		
         $this->id 			= 'local_pickup';
         $this->enabled		= $jsOptions->get_option('jigoshop_local_pickup_enabled');
 		$this->title 		= $jsOptions->get_option('jigoshop_local_pickup_title');
@@ -46,7 +43,6 @@ class local_pickup extends jigoshop_shipping_method {
 		
 		}
 		
-		add_action( 'jigoshop_update_options', array( &$this, 'process_admin_options' ) );
 		add_action( 'jigoshop_settings_scripts', array( &$this, 'admin_scripts' ) );
 
     }
@@ -134,30 +130,6 @@ class local_pickup extends jigoshop_shipping_method {
 			/*]]>*/
 		</script>
     	<?php
-    }
-
-    public function process_admin_options() {
-		
-		$jsOptions = Jigoshop_Options::instance();
-		
-   		if ( isset($_POST['jigoshop_local_pickup_enabled']))
-   			$jsOptions->set_option('jigoshop_local_pickup_enabled', jigowatt_clean($_POST['jigoshop_local_pickup_enabled']));
-   		else $jsOptions->delete_option('jigoshop_local_pickup_enabled');
-   		
-   		if ( isset($_POST['jigoshop_local_pickup_title']))
-   			$jsOptions->set_option('jigoshop_local_pickup_title', jigowatt_clean($_POST['jigoshop_local_pickup_title']));
-   		else $jsOptions->delete_option('jigoshop_local_pickup_title');
-   		
-   		if ( isset($_POST['jigoshop_local_pickup_availability']))
-   			$jsOptions->set_option('jigoshop_local_pickup_availability', jigowatt_clean($_POST['jigoshop_local_pickup_availability']));
-   		else $jsOptions->delete_option('jigoshop_local_pickup_availability');
-
-	    if ( isset($_POST['jigoshop_local_pickup_countries']))
-	    	$selected_countries = $_POST['jigoshop_local_pickup_countries'];
-	    else $selected_countries = array();
-	    
-	    $jsOptions->set_option( 'jigoshop_local_pickup_countries', $selected_countries );
-
     }
 
 }
