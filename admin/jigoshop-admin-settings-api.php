@@ -713,6 +713,13 @@ class Jigoshop_Options_Parser {
 			$form_id = false;
 			break;
 		}
+
+		$display .= '<td class="jigoshop-tooltips">';
+        if ( ! empty( $item['tip'] )) {
+			$display .= '<a href="#" tip="'.$item['tip'].'" class="tips" tabindex="99"></a>';
+		}
+		$display .= '</td>';
+		
 		$form_id_str = $form_id ? ' id="'.$form_id.'"' : '';
 		$display .= '<td class="forminp"'.$form_id_str.'">';
 		
@@ -876,12 +883,6 @@ class Jigoshop_Options_Parser {
 //			logme( $item );
 		}
 
-		$display .= '<span class="jigoshop-tooltips">';
-        if ( ! empty( $item['tip'] )) {
-			$display .= '<a href="#" tip="'.$item['tip'].'" class="tips" tabindex="99"></a>';
-		}
-		$display .= '</span>';
-		
 		if ( $item['type'] != 'heading' ) {
 			if ( empty( $item['desc'] ) ) {
 				$explain_value = '';

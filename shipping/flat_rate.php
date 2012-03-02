@@ -52,7 +52,7 @@ class flat_rate extends jigoshop_shipping_method {
 	/**
 	 * Default Option settings for WordPress Settings API using the Jigoshop_Options class
 	 *
-	 * These should be installed on the Jigoshop_Optons 'Shipping' tab
+	 * These should be installed on the Jigoshop_Options 'Shipping' tab
 	 *
 	 */	
 	public function get_default_options() {
