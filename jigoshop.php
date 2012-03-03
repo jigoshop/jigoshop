@@ -52,6 +52,7 @@ add_filter( 'plugin_action_links', 'jigoshop_add_settings_link', 10, 2 );
  **/
 include_once( 'classes/abstract/jigoshop_base.class.php' );
 include_once( 'classes/abstract/jigoshop_singleton.php' );
+include_once( 'classes/jigoshop_session.class.php' );
 include_once( 'classes/jigoshop_sanitize.class.php' );
 include_once( 'classes/jigoshop_validation.class.php' );
 include_once( 'jigoshop_taxonomy.php' );
@@ -65,7 +66,6 @@ include_once( 'classes/jigoshop_orders.class.php' );
 include_once( 'classes/jigoshop_tax.class.php' );
 include_once( 'classes/jigoshop_shipping.class.php' );
 include_once( 'classes/jigoshop_coupons.class.php' );
-include_once( 'classes/jigoshop_session.class.php' );
 
 include_once( 'gateways/gateways.class.php' );
 include_once( 'gateways/gateway.class.php' );
@@ -201,13 +201,6 @@ function jigoshop_init() {
 	/* ensure nothing is output to the browser prior to this (other than headers) */
 	ob_start();
 
-	jigoshop_session::instance()->test = 'val';
-
-    $array = array(0 => "3.15");
-
-    foreach ($array as $a) :
-        $an = explode(':', $a);
-    endforeach;
 	jigoshop_post_type();	/* register taxonomies */
 
 	// add Singletons here so that the taxonomies are loaded before calling them.
