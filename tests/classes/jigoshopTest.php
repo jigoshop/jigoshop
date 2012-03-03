@@ -1,7 +1,4 @@
 <?php
-/**
- * jigoshopTest Tests
- */
 class jigoshopTest extends WP_UnitTestCase {
 
     var $plugin_slug = 'jigoshop';
@@ -81,6 +78,7 @@ class jigoshopTest extends WP_UnitTestCase {
 
     public function test_clear_messages() {
         jigoshop::add_error('Hello World');
+        jigoshop::add_message('Foo Bar');
 
         // then clear it
         jigoshop::clear_messages();
@@ -90,16 +88,29 @@ class jigoshopTest extends WP_UnitTestCase {
         $this->assertEmpty(jigoshop::$messages, 'jigoshop::$messages still has something in it');
     }
 
+    /**
+     * Test Show Messages
+     *
+     * Pre-conditions:
+     * Case A: Set error 'Hello World' and ensure it is output
+     * Case B: Set message 'Foo Bar' and ensure it is output
+     *
+     * Post-conditions:
+     * Case A: Ouput contains div with class of jigoshop_error
+     * Case B: Ouput contains div with class of jigoshop_message
+     */
     public function test_show_messages() {
         // set up
         jigoshop::add_error( 'Hello World' );
 
-        $this->expectOutputString('<div class="jigoshop_error">Hello World</div>');
+        ob_start();
         jigoshop::show_messages();
+        $this->assertEquals('<div class="jigoshop_error">Hello World</div>', ob_get_clean());
 
         jigoshop::add_message( 'Foo Bar' );
 
-        $this->expectOutputString('<div class="jigoshop_error">Foo Bar</div>');
+        ob_start();
         jigoshop::show_messages();
+        $this->assertEquals('<div class="jigoshop_message">Foo Bar</div>', ob_get_clean());
     }
 }
