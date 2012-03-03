@@ -62,30 +62,36 @@ class jigoshop extends jigoshop_singleton {
 	 *
 	 * @return  string	url
 	 */
-	public static function assets_url() {
-		return apply_filters( 'jigoshop_assets_url', self::plugin_url() );
+	public static function assets_url( $file = NULL ) {
+		return apply_filters( 'jigoshop_assets_url', self::plugin_url( $file ) );
 	}
 
 	/**
 	 * Get the plugin url
+	 * @todo perhaps we should add a trailing slash? -1 Character then!
+	 * @note plugin_dir_url() does this
 	 *
 	 * @return  string	url
 	 */
-	public static function plugin_url() {
-		if ( empty( self::$plugin_url )) :
-			self::$plugin_url = self::force_ssl( plugins_url( null, dirname(__FILE__)));
-		endif;
-		return self::$plugin_url;
+	public static function plugin_url( $file = NULL ) {
+		if ( ! empty( self::$plugin_url) )
+			return self::$plugin_url;
+
+		return self::$plugin_url = plugins_url( $file, dirname(__FILE__));
 	}
 
 	/**
 	 * Get the plugin path
+	 * @todo perhaps we should add a trailing slash? -1 Character then!
+	 * @note plugin_dir_path() does this
 	 *
 	 * @return  string	url
 	 */
 	public static function plugin_path() {
-		if(self::$plugin_path) return self::$plugin_path;
-		return self::$plugin_path = WP_PLUGIN_DIR . "/" . plugin_basename( dirname(dirname(__FILE__)));
+		if( ! empty(self::$plugin_path) )
+			return self::$plugin_path;
+
+		return self::$plugin_path = dirname(dirname(__FILE__));
 	 }
 
 	/**
