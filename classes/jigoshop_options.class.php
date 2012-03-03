@@ -33,7 +33,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 */	
 	protected function __construct() {
 		
-		self::$current_options = get_option( 'jigoshop_options' );	// load existing from database, false if none
+		self::$current_options = get_option( JIGOSHOP_OPTIONS );	// load existing from database, false if none
 		
 		if ( false === self::$current_options ) {
 			
@@ -46,7 +46,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			endforeach;
 			
 			self::$current_options = $current_options;
-			update_option( 'jigoshop_options', $current_options );
+			update_option( JIGOSHOP_OPTIONS, $current_options );
 		}
 		
 	}
@@ -63,7 +63,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 * @since	1.2
 	 */	
 	public function update_options() {
-		update_option( 'jigoshop_options', self::$current_options );
+		update_option( JIGOSHOP_OPTIONS, self::$current_options );
 	}
 	
 	

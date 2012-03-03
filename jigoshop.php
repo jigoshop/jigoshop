@@ -26,6 +26,7 @@
  */
 
 if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1202290);
+if (!defined("JIGOSHOP_OPTIONS")) define("JIGOSHOP_OPTIONS", 'jigoshop_options');
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');

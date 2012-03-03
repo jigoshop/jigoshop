@@ -18,7 +18,6 @@
 class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 
 	private $our_parser;
-	private static $page_name;
 	
 	
 	/**
@@ -28,26 +27,14 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 */
 	protected function __construct() {
 		
-		self::$page_name = 'jigoshop_options';	// should match our WordPress Jigoshop_Options table entry name
-		
 		$this->our_parser = new Jigoshop_Options_Parser( 
 			Jigoshop_Options::get_default_options(), 
-			$this->get_options_name()
+			JIGOSHOP_OPTIONS
 		);
 
 		add_action( 'admin_menu', array( &$this, 'add_settings_page' ) );
 		add_action( 'admin_init', array( &$this, 'register_settings' ) );
 
-	}
-	
-	
-	/**
-	 * Get the name of our Settings page and WordPress options table entry
-	 *
-	 * @since 1.2
-	 */
-	public function get_options_name() {
-		return self::$page_name;
 	}
 	
 	
@@ -58,7 +45,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 */
 	public function add_settings_page() {
 
-		$admin_page = add_submenu_page( 'jigoshop', __( 'Settings' ), __( 'Settings' ), 'manage_options', $this->get_options_name(), array( &$this, 'output_markup' ) );
+		$admin_page = add_submenu_page( 'jigoshop', __( 'Settings' ), __( 'Settings' ), 'manage_options', JIGOSHOP_OPTIONS, array( &$this, 'output_markup' ) );
 
 		add_action( 'admin_print_scripts-' . $admin_page, array( &$this, 'settings_scripts' ) );
 		add_action( 'admin_print_styles-' . $admin_page, array( &$this, 'settings_styles' ) );
@@ -97,7 +84,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	*/
 	public function register_settings() {
 
-		register_setting( $this->get_options_name(), $this->get_options_name(), array ( &$this, 'validate_settings' ) );
+		register_setting( JIGOSHOP_OPTIONS, JIGOSHOP_OPTIONS, array ( &$this, 'validate_settings' ) );
 		
 		$slug = $this->get_current_tab_slug();
 		$options = $this->our_parser->tabs[$slug];
@@ -105,7 +92,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		foreach ( $options as $index => $option ) {
 			switch ( $option['type'] ) {
 			case 'title':
-				add_settings_section( $option['section'], $option['name'], array( &$this, 'display_section' ), $this->get_options_name() );
+				add_settings_section( $option['section'], $option['name'], array( &$this, 'display_section' ), JIGOSHOP_OPTIONS );
 				break;
 				
 			default:
@@ -161,7 +148,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 				$id, 
 				esc_attr( $name ), 
 				array( &$this, 'display_option' ), 
-				$this->get_options_name(), 
+				JIGOSHOP_OPTIONS, 
 				$section, 
 				$field_args
 			);
@@ -235,8 +222,8 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 								<?php echo $this->build_tab_menu_items(); ?>
 							</ul>
 							
-							<?php settings_fields( $this->get_options_name() ); ?>
-							<?php do_settings_sections( $this->get_options_name() ); ?>
+							<?php settings_fields( JIGOSHOP_OPTIONS ); ?>
+							<?php do_settings_sections( JIGOSHOP_OPTIONS ); ?>
 							
 							<?php $tabname = $this->get_current_tab_name(); ?>
 							
@@ -294,11 +281,11 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			if ( $slug == $this_slug ) {
 				$menus_li .= '<li class="current active"><a
 					title="'.$tab.'"
-					href="?page='.Jigoshop_Admin_Settings::get_options_name().'&tab='.$this_slug.'">' . $tab . '</a></li>';
+					href="?page='.JIGOSHOP_OPTIONS.'&tab='.$this_slug.'">' . $tab . '</a></li>';
 			} else {
 				$menus_li .= '<li><a
 					title="'.$tab.'"
-					href="?page='.Jigoshop_Admin_Settings::get_options_name().'&tab='.$this_slug.'">' . $tab . '</a></li>';
+					href="?page='.JIGOSHOP_OPTIONS.'&tab='.$this_slug.'">' . $tab . '</a></li>';
 			}
 		}
 		return $menus_li;
@@ -766,8 +753,8 @@ class Jigoshop_Options_Parser {
 		case 'image_size' :
 			$width = $data[$item['id']];
 			$display .= '<input
-				name="'.Jigoshop_Admin_Settings::get_options_name().'['.$item['id'].']"
-				id="'.Jigoshop_Admin_Settings::get_options_name().'['.$item['id'].']"
+				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
+				id="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 				class="jigoshop-input"
 				type="text"
 				value="'.$data[$item['id']].'" />';
@@ -776,7 +763,7 @@ class Jigoshop_Options_Parser {
 		case 'single_select_page' :
 			$page_setting = (int) $data[$item['id']];
 			$args = array(
-				'name' => Jigoshop_Admin_Settings::get_options_name() . '[' . $item['id'] . ']',
+				'name' => JIGOSHOP_OPTIONS . '[' . $item['id'] . ']',
 				'id' => $item['id'],
 				'sort_order' => 'ASC',
 				'echo' => 0,
@@ -796,7 +783,7 @@ class Jigoshop_Options_Parser {
 				$country = $country_setting;
 				$state = '*';
 			endif;
-			$display .= '<select class="single_select_country" name="' . Jigoshop_Admin_Settings::get_options_name() . '[' . $item['id'] . ']">';
+			$display .= '<select class="single_select_country" name="' . JIGOSHOP_OPTIONS . '[' . $item['id'] . ']">';
 			$display .= jigoshop_countries::country_dropdown_options($country, $state, false, true, false);
 			$display .= '</select>';
 			break;
@@ -808,7 +795,7 @@ class Jigoshop_Options_Parser {
 			$display .= '<div class="multi_select_countries"><ul>';
 			$index = 0;
 			foreach ( $countries as $key => $val ) {
-				$display .= '<li><label><input type="checkbox" name="' . Jigoshop_Admin_Settings::get_options_name() . '[' . $item['id'] . ']['.$key.'] value="' . esc_attr( $key ) . '" ';
+				$display .= '<li><label><input type="checkbox" name="' . JIGOSHOP_OPTIONS . '[' . $item['id'] . ']['.$key.'] value="' . esc_attr( $key ) . '" ';
 				$display .= in_array( $key, $selections ) ? 'checked="checked" />' : ' />';
 				$display .=  $val . '</label></li>';
 			}
@@ -819,7 +806,7 @@ class Jigoshop_Options_Parser {
 			$display .= '<input
 				id="'.$item['id'].'"
 				class="jigoshop-input"
-				name="'.Jigoshop_Admin_Settings::get_options_name().'['.$item['id'].']"
+				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 				type="'.$item['type'].'"
 				value="'.$data[$item['id']].'" />';
 			break;
@@ -837,7 +824,7 @@ class Jigoshop_Options_Parser {
 			$display .= '<textarea
 				id="'.$item['id'].'"
 				class="jigoshop-input"
-				name="'.Jigoshop_Admin_Settings::get_options_name().'['.$item['id'].']"
+				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 				cols="'.$cols.'"
 				rows="8">'.$ta_value.'</textarea>';
 			break;
@@ -846,7 +833,7 @@ class Jigoshop_Options_Parser {
 			foreach ( $item['choices'] as $option => $name ) {
 				$display .= '<input
 					class="jigoshop-input jigoshop-radio"
-					name="'.Jigoshop_Admin_Settings::get_options_name().'['.$item['id'].']"
+					name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 					type="radio"
 					value="'.$option.'" '.checked( $data[$item['id']], $option, '0' ).' /><label>'.$name.'</label>';
 			}
@@ -857,7 +844,7 @@ class Jigoshop_Options_Parser {
 				id="'.$item['id'].'"
 				type="checkbox"
 				class="jigoshop-input jigoshop-checkbox"
-				name="'.Jigoshop_Admin_Settings::get_options_name().'['.$item['id'].']"'
+				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"'
 				.checked($data[$item['id']], 'yes', false).' />';
 			break;
 
@@ -867,7 +854,7 @@ class Jigoshop_Options_Parser {
 				$display .= '<input
 					id="'.$item['id'].'_'.$key.'"
 					class="jigoshop-input jigoshop-multi-checkbox"
-					name="'.Jigoshop_Admin_Settings::get_options_name().'['.$item['id'].']['.$key.']"
+					name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']['.$key.']"
 					type="checkbox"
 					'.checked( $multi_stored[$key], "1", "0" ).' />
 					<label for="'.$item['id'].'_'.$key.'">'.$option.'</label>';
@@ -878,7 +865,7 @@ class Jigoshop_Options_Parser {
 			$display .= '<input
 				id="'.$item['id'].'"
 				class="jigoshop-input jigoshop-range"
-				name="'.Jigoshop_Admin_Settings::get_options_name().'['.$item['id'].']"
+				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 				type="'.$item['type'].'"
 				min="'.$item['choices']['min'].'"
 				max="'.$item['choices']['max'].'"
@@ -890,7 +877,7 @@ class Jigoshop_Options_Parser {
 			$display .= '<select
 				id="'.$item['id'].'"
 				class="jigoshop-input jigoshop-select"
-				name="'.Jigoshop_Admin_Settings::get_options_name().'['.$item['id'].']" >';
+				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']" >';
 			foreach ( $item['choices'] as $value => $label ) {
 				$display .= '<option
 					value="'.$value.'" '.selected( $data[$item['id']], $value, false ).' />'.$label.'
