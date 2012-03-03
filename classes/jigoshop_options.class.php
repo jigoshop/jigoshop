@@ -251,7 +251,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> __('Enable this option to show a banner at the top of every page stating this shop is currently in testing mode.','jigoshop'),
 			'id' 		=> 'jigoshop_demo_store',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'no',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -265,7 +264,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> __('The email used to send all Jigoshop related emails, such as order confirmations and notices.','jigoshop'),
 			'id' 		=> 'jigoshop_email',
-			'css' 		=> 'width:250px;',
 			'type' 		=> 'text',
 			'std' 		=> get_option('admin_email')
 		);
@@ -275,7 +273,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> __('This is the base country for your business. Tax rates will be based on this country.','jigoshop'),
 			'id' 		=> 'jigoshop_default_country',
-			'css' 		=> '',
 			'std' 		=> 'GB',
 			'type' 		=> 'single_select_country'
 		);
@@ -285,7 +282,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> __('These are countries that you are willing to ship to.','jigoshop'),
 			'id' 		=> 'jigoshop_allowed_countries',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'all',
 			'type' 		=> 'select',
 			'choices'	=> array(
@@ -299,7 +295,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_specific_allowed_countries',
-			'css' 		=> '',
 			'std' 		=> '',
 			'type' 		=> 'multi_select_countries'
 		);
@@ -309,7 +304,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> __('Define what should happen when a user clicks on &#34;Add to Cart&#34; on any product or page.','jigoshop'),
 			'id' 		=> 'jigoshop_redirect_add_to_cart',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'same_page',
 			'type' 		=> 'select',
 			'choices'	=> array(
@@ -324,7 +318,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> __('Useful if you want to disable Jigoshop styles and theme it yourself via your theme.','jigoshop'),
 			'id' 		=> 'jigoshop_disable_css',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'no',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -338,7 +331,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> __('Useful if or one of your plugin already loads the Fancybox script and css. But be careful, Jigoshop will still try to open product images using Fancybox.','jigoshop'),
 			'id' 		=> 'jigoshop_disable_fancybox',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'no',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -354,7 +346,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> __('Setting this to Yes will allow users to checkout without registering or signing up. Otherwise, users must be signed in or must sign up to checkout.','jigoshop'),
 			'id' 		=> 'jigoshop_enable_guest_checkout',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -367,7 +358,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'name'		=> __('Show login form','jigoshop'),
 			'desc' 		=> '',
 			'id' 		=> 'jigoshop_enable_guest_login',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -380,7 +370,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'name'		=> __('Allow registration','jigoshop'),
 			'desc' 		=> '',
 			'id' 		=> 'jigoshop_enable_signup_form',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -394,7 +383,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> __('Forcing SSL is recommended. This will load your checkout page with https://. An SSL certificate is <strong>required</strong> if you choose yes. Contact your hosting provider for more information on SSL Certs.','jigoshop'),
 			'id' 		=> 'jigoshop_force_ssl_checkout',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'no',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -410,7 +398,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __("Enter your <a href='http://sharethis.com/account/'>ShareThis publisher ID</a> to show ShareThis on product pages.",'jigoshop'),
 			'tip' 		=> __('ShareThis is a small social sharing widget for posting links on popular sites such as Twitter and Facebook.','jigoshop'),
 			'id' 		=> 'jigoshop_sharethis',
-			'css' 		=> 'width:300px;',
 			'type' 		=> 'text',
 			'std' 		=> ''
 		);
@@ -420,7 +407,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('Log into your Google Analytics account to find your ID. e.g. <code>UA-XXXXXXX-X</code>', 'jigoshop'),
 			'id' 		=> 'jigoshop_ga_id',
 			'type' 		=> 'text',
-			'css' 		=> 'min-width:300px;',
 			'std' 		=> '',
 		);
 		
@@ -450,7 +436,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('Shortcode to place on page: <code>[jigoshop_cart]</code>','jigoshop'),
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_cart_page_id',
-			'css' 		=> 'min-width:50px;',
 			'type' 		=> 'single_select_page',
 			'std' 		=> ''
 		);
@@ -460,7 +445,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('Shortcode to place on page: <code>[jigoshop_checkout]</code>','jigoshop'),
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_checkout_page_id',
-			'css' 		=> 'min-width:50px;',
 			'type' 		=> 'single_select_page',
 			'std' 		=> ''
 		);
@@ -470,7 +454,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('Shortcode to place on page: <code>[jigoshop_pay]</code><br/>Default parent page: Checkout','jigoshop'),
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_pay_page_id',
-			'css' 		=> 'min-width:50px;',
 			'type' 		=> 'single_select_page',
 			'std' 		=> ''
 		);
@@ -480,7 +463,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('Shortcode to place on page: <code>[jigoshop_thankyou]</code><br/>Default parent page: Checkout','jigoshop'),
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_thanks_page_id',
-			'css' 		=> 'min-width:50px;',
 			'type' 		=> 'single_select_page',
 			'std' 		=> ''
 		);
@@ -490,7 +472,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('Shortcode to place on page: <code>[jigoshop_my_account]</code>','jigoshop'),
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_myaccount_page_id',
-			'css' 		=> 'min-width:50px;',
 			'type' 		=> 'single_select_page',
 			'std' 		=> ''
 		);
@@ -500,7 +481,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('Shortcode to place on page: <code>[jigoshop_edit_address]</code><br/>Default parent page: My Account','jigoshop'),
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_edit_address_page_id',
-			'css' 		=> 'min-width:50px;',
 			'type' 		=> 'single_select_page',
 			'std' 		=> ''
 		);
@@ -510,7 +490,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('Shortcode to place on page:<code>[jigoshop_view_order]</code><br/>Default parent page: My Account','jigoshop'),
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_view_order_page_id',
-			'css' 		=> 'min-width:50px;',
 			'type' 		=> 'single_select_page',
 			'std' 		=> ''
 		);
@@ -520,7 +499,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('Shortcode to place on page: <code>[jigoshop_change_password]</code><br/>Default parent page: My Account','jigoshop'),
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_change_password_page_id',
-			'css' 		=> 'min-width:50px;',
 			'type' 		=> 'single_select_page',
 			'std' 		=> ''
 		);
@@ -530,7 +508,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('Shortcode to place on page: <code>[jigoshop_order_tracking]</code>','jigoshop'),
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_track_order_page_id',
-			'css' 		=> 'min-width:50px;',
 			'type' 		=> 'single_select_page',
 			'std' 		=> ''
 		);
@@ -540,7 +517,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('If you define a &#34;Terms&#34; page the customer will be asked to accept it before allowing them to place their order.', 'jigoshop'),
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_terms_page_id',
-			'css' 		=> 'min-width:50px;',
 			'std' 		=> '',
 			'type' 		=> 'single_select_page',
 			'args'		=> 'show_option_none=' . __('None', 'jigoshop'),
@@ -559,7 +535,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc'		=> '',
 			'tip' 		=> __('This sets the base page of your shop. You should not change this value once you have launched your site otherwise you risk breaking urls of other sites pointing to yours, etc.','jigoshop'),
 			'id' 		=> 'jigoshop_shop_page_id',
-			'css' 		=> 'min-width:50px;',
 			'type' 		=> 'single_select_page',
 			'std' 		=> ''
 		);
@@ -569,7 +544,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc'		=> '',
 			'tip' 		=> __('This will point users to the page you set for buttons like `Return to shop` or `Continue Shopping`.','jigoshop'),
 			'id' 		=> 'jigoshop_shop_redirect_page_id',
-			'css' 		=> 'min-width:50px;',
 			'type' 		=> 'single_select_page',
 			'std' 		=> ''
 		);
@@ -579,7 +553,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc'		=> '',
 			'tip' 		=> __('This will only apply to tags &amp; categories.<br/>Yes: http://yoursite.com / product_category / YourCategory<br/>No: http://yoursite.com / base_page / product_category / YourCategory', 'jigoshop'),
 			'id' 		=> 'jigoshop_prepend_shop_page_to_urls',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'no',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -593,7 +566,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> __('Determines the display sort order of products for the Shop, Categories, and Tag pages.','jigoshop'),
 			'id' 		=> 'jigoshop_catalog_sort_orderby',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'post_date',
 			'type' 		=> 'select',
 			'choices'	=> array(
@@ -608,7 +580,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> __('Determines whether the catalog sort orderby is ascending or descending.','jigoshop'),
 			'id' 		=> 'jigoshop_catalog_sort_direction',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'asc',
 			'type' 		=> 'select',
 			'choices'	=> array(
@@ -622,7 +593,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('Default = 3','jigoshop'),
 			'tip' 		=> __('Determines how many products to show on one display row for Shop, Category and Tag pages.','jigoshop'),
 			'id' 		=> 'jigoshop_catalog_columns',
-			'css' 		=> 'width:30px;',
 			'std' 		=> '3',
 			'type' 		=> 'text',
 		);
@@ -632,7 +602,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('Default = 12','jigoshop'),
 			'tip' 		=> __('Determines how many products to display on Shop, Category and Tag pages before needing next and previous page navigation.','jigoshop'),
 			'id' 		=> 'jigoshop_catalog_per_page',
-			'css' 		=> 'width:30px;',
 			'std' 		=> '12',
 			'type' 		=> 'text',
 		);
@@ -644,7 +613,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> sprintf( __("This controls what currency prices are listed at in the catalog, and which currency PayPal, and other gateways, will take payments in. See the list of supported <a target='_new' href='%s'>PayPal currencies</a>.", 'jigoshop'), 'https://www.paypal.com/cgi-bin/webscr?cmd=p/sell/mc/mc_intro-outside' ),
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_currency',
-			'css' 		=> 'min-width:200px;',
 			'std' 		=> 'GBP',
 			'type' 		=> 'select',
 			'choices'	=> apply_filters('jigoshop_currencies', array(
@@ -694,7 +662,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __("This controls the display of the currency symbol and currency code.", 'jigoshop'),
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_currency_pos',
-			'css' 		=> 'min-width:200px;',
 			'std' 		=> 'left',
 			'type' 		=> 'select',
 			'choices'	=> array(
@@ -718,7 +685,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('This sets the thousand separator of displayed prices.', 'jigoshop'),
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_price_thousand_sep',
-			'css' 		=> 'width:30px;',
 			'std' 		=> ',',
 			'type' 		=> 'text',
 		);
@@ -728,7 +694,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('This sets the decimal separator of displayed prices.', 'jigoshop'),
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_price_decimal_sep',
-			'css' 		=> 'width:30px;',
 			'std' 		=> '.',
 			'type' 		=> 'text',
 		);
@@ -738,7 +703,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('This sets the number of decimal points shown in displayed prices.', 'jigoshop'),
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_price_num_decimals',
-			'css' 		=> 'width:30px;',
 			'std' 		=> '2',
 			'type' 		=> 'text',
 		);
@@ -756,7 +720,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('Default = 36px','jigoshop'),
 			'tip' 		=> __('Set the width of the small image used in the Cart, Checkout, Orders and Widgets.','jigoshop'),
 			'id' 		=> 'jigoshop_shop_tiny_w',
-			'css' 		=> 'min-width:200px;',
 			'type' 		=> 'text',
 			'std' 		=> 36
 		);
@@ -766,7 +729,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('Default = 36px','jigoshop'),
 			'tip' 		=> __('Set the height of the small image used in the Cart, Checkout, Orders and Widgets.','jigoshop'),
 			'id' 		=> 'jigoshop_shop_tiny_h',
-			'css' 		=> 'min-width:200px;',
 			'type' 		=> 'text',
 			'std' 		=> 36
 		);
@@ -776,7 +738,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('Default = 90px','jigoshop'),
 			'tip' 		=> __('Set the width of the thumbnail image for Single Product page extra images.','jigoshop'),
 			'id' 		=> 'jigoshop_shop_thumbnail_w',
-			'css' 		=> 'min-width:200px;',
 			'type' 		=> 'text',
 			'std' 		=> 90
 		);
@@ -786,7 +747,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('Default = 90px','jigoshop'),
 			'tip' 		=> __('Set the height of the thumbnail image for Single Product page extra images.','jigoshop'),
 			'id' 		=> 'jigoshop_shop_thumbnail_h',
-			'css' 		=> 'min-width:200px;',
 			'type' 		=> 'text',
 			'std' 		=> 90
 		);
@@ -796,7 +756,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('Default = 150px','jigoshop'),
 			'tip' 		=> __('Set the width of the catalog image for Shop, Categories, Tags, and Related Products.','jigoshop'),
 			'id' 		=> 'jigoshop_shop_small_w',
-			'css' 		=> 'min-width:200px;',
 			'type' 		=> 'text',
 			'std' 		=> 150
 		);
@@ -806,7 +765,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('Default = 150px','jigoshop'),
 			'tip' 		=> __('Set the height of the catalog image for Shop, Categories, Tags, and Related Products.','jigoshop'),
 			'id' 		=> 'jigoshop_shop_small_h',
-			'css' 		=> 'min-width:200px;',
 			'type' 		=> 'text',
 			'std' 		=> 150
 		);
@@ -816,7 +774,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('Default = 300px','jigoshop'),
 			'tip' 		=> __('Set the width of the Single Product page large or Featured image.','jigoshop'),
 			'id' 		=> 'jigoshop_shop_large_w',
-			'css' 		=> 'min-width:200px;',
 			'type' 		=> 'text',
 			'std' 		=> 300
 		);
@@ -826,7 +783,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('Default = 300px','jigoshop'),
 			'tip' 		=> __('Set the height of the Single Product page large or Featured image.','jigoshop'),
 			'id' 		=> 'jigoshop_shop_large_h',
-			'css' 		=> 'min-width:200px;',
 			'type' 		=> 'text',
 			'std' 		=> 300
 		);
@@ -843,7 +799,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'name'		=> __('Coupons','jigoshop'),
 			'desc' 		=> '',
 			'id' 		=> 'jigoshop_coupons',
-			'css' 		=> 'min-width:50px;',
 			'type' 		=> 'coupons',
 			'std' 		=> ''
 		);
@@ -861,7 +816,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> __('Turning off the SKU field will give products an SKU of their post id.','jigoshop'),
 			'id' 		=> 'jigoshop_enable_sku',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'no',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -875,7 +829,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_enable_weight',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -889,7 +842,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __("This controls what unit you will define weights in.", 'jigoshop'),
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_weight_unit',
-			'css' 		=> 'min-width:200px;',
 			'std' 		=> 'kg',
 			'type' 		=> 'select',
 			'choices'	=> array(
@@ -903,7 +855,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_enable_dimensions',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -917,7 +868,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __("This controls what unit you will define dimensions in.", 'jigoshop'),
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_dimension_unit',
-			'css' 		=> 'min-width:200px;',
 			'std' 		=> 'cm',
 			'type' 		=> 'select',
 			'choices'	=> array(
@@ -931,7 +881,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> __('To show or hide the related products section on a single product page.','jigoshop'),
 			'id' 		=> 'jigoshop_enable_related_products',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -947,7 +896,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('If you are not managing stock, turn it off here to disable it in admin and on the front-end.','jigoshop'),
 			'tip' 		=> __('You can manage stock on a per-item basis if you leave this option on.', 'jigoshop'),
 			'id' 		=> 'jigoshop_manage_stock',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -961,7 +909,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> __('Set to yes to allow customers to view the amount of stock available for a product.', 'jigoshop'),
 			'id' 		=> 'jigoshop_show_stock',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -974,7 +921,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'name'		=> __('Notify on low stock','jigoshop'),
 			'desc' 		=> '',
 			'id' 		=> 'jigoshop_notify_low_stock',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -988,7 +934,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> __('You will receive a notification as soon this threshold is hit (if notifications are turned on).', 'jigoshop'),
 			'id' 		=> 'jigoshop_notify_low_stock_amount',
-			'css' 		=> 'min-width:50px;',
 			'type' 		=> 'text',
 			'std' 		=> '2'
 		);
@@ -997,7 +942,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'name'		=> __('Notify on out of stock','jigoshop'),
 			'desc' 		=> '',
 			'id' 		=> 'jigoshop_notify_no_stock',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -1011,7 +955,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> __('You will receive a notification as soon this threshold is hit (if notifications are turned on).', 'jigoshop'),
 			'id' 		=> 'jigoshop_notify_no_stock_amount',
-			'css' 		=> 'min-width:50px;',
 			'type' 		=> 'text',
 			'std' 		=> '0'
 		);
@@ -1021,7 +964,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> 'For Yes: When the Out of Stock Threshold (above) is reached, the product visibility will be set to hidden so that it will not appear on the Catalog or Shop product lists.',
 			'id' 		=> 'jigoshop_hide_no_stock_product',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'no',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -1043,7 +985,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('Only set this to no if you are exclusively selling non-taxable items.','jigoshop'),
 			'tip' 		=> __('If you are not calculating taxes then you can ignore all other tax options.', 'jigoshop'),
 			'id' 		=> 'jigoshop_calc_taxes',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -1057,7 +998,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> __('If prices include tax then tax calculations will work backwards.','jigoshop'),
 			'id' 		=> 'jigoshop_prices_include_tax',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -1071,7 +1011,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> __('Should the subtotal be shown including or excluding tax on the frontend?','jigoshop'),
 			'id' 		=> 'jigoshop_display_totals_tax',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'excluding',
 			'type' 		=> 'select',
 			'choices'	=> array(
@@ -1085,7 +1024,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('List 1 per line. This is in addition to the default <em>Standard Rate</em>.','jigoshop'),
 			'tip' 		=> __('List product and shipping tax classes here, e.g. Zero Tax, Reduced Rate.','jigoshop'),
 			'id' 		=> 'jigoshop_tax_classes',
-			'css' 		=> 'width:100%; height: 75px;',
 			'type' 		=> 'textarea',
 			'std' 		=> "Reduced Rate\nZero Rate"
 		);
@@ -1095,7 +1033,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> __('To avoid rounding errors, insert tax rates with 4 decimal places.','jigoshop'),
 			'id' 		=> 'jigoshop_tax_rates',
-			'css' 		=> 'min-width:50px;',
 			'type' 		=> 'tax_rates',
 			'std' 		=> ''
 		);
@@ -1113,7 +1050,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> __('Only set this to no if you are not shipping items, or items have shipping costs included.','jigoshop'),
 			'tip' 		=> __('If you are not calculating shipping then you can ignore all other tax options.', 'jigoshop'),
 			'id' 		=> 'jigoshop_calc_shipping',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -1127,7 +1063,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_enable_shipping_calc',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'yes',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -1141,7 +1076,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			'desc' 		=> '',
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_ship_to_billing_address_only',
-			'css' 		=> 'min-width:100px;',
 			'std' 		=> 'no',
 			'type' 		=> 'radio',
 			'choices'	=> array(

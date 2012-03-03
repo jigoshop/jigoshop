@@ -135,7 +135,6 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			'std'			=> '',
 			'choices'		=> array(),
 			'class'			=> '',
-			'css'			=> '',
 			'args'			=> ''
 		);
 
@@ -154,7 +153,6 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			'choices'		=> $choices,
 			'label_for'		=> $id,
 			'class'			=> $class,
-			'css'			=> $css,
 			'args'			=> $args
 		);
 		
@@ -377,6 +375,10 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 						}
 						$valid_input[$id] = $selected;
 						break;
+						
+//  					case 'checkbox' :
+//  						$valid_input[$id] = (!empty($value) ? 'yes' : 'no');
+//  						break;
 						
 					case 'text' :		/* this needs validating */
 					case 'textarea' :	/* this needs validating */
@@ -682,7 +684,6 @@ class Jigoshop_Options_Parser {
 				'std'			=> '',
 				'choices'		=> array(),
 				'class'			=> '',
-				'css'			=> '',
 				'args_input'	=> ''
 			);
 	
@@ -856,8 +857,8 @@ class Jigoshop_Options_Parser {
 				id="'.$item['id'].'"
 				type="checkbox"
 				class="jigoshop-input jigoshop-checkbox"
-				name="'.Jigoshop_Admin_Settings::get_options_name().'['.$item['id'].']"
-				'.checked( $data[$item['id']], true, false ).' />';
+				name="'.Jigoshop_Admin_Settings::get_options_name().'['.$item['id'].']"'
+				.checked($data[$item['id']], 'yes', false).' />';
 			break;
 
 		case 'multicheck':
@@ -865,10 +866,10 @@ class Jigoshop_Options_Parser {
 			foreach ( $item['choices'] as $key => $option ) {
 				$display .= '<input
 					id="'.$item['id'].'_'.$key.'"
-					class="jigoshop-input jigoshop-checkbox"
+					class="jigoshop-input jigoshop-multi-checkbox"
 					name="'.Jigoshop_Admin_Settings::get_options_name().'['.$item['id'].']['.$key.']"
 					type="checkbox"
-					'.checked( $multi_stored[$key], true, false ).' />
+					'.checked( $multi_stored[$key], "1", "0" ).' />
 					<label for="'.$item['id'].'_'.$key.'">'.$option.'</label>';
 			}
 			break;
