@@ -93,12 +93,12 @@ function jigoshop_default_options() {
 
 				if ($value['type']=='image_size') :
 
-					Jigoshop_Options::set_option( $value['id'].'_w', $value['std'] );
-					Jigoshop_Options::set_option( $value['id'].'_h', $value['std'] );
+					update_option( $value['id'].'_w', $value['std'] );
+					update_option( $value['id'].'_h', $value['std'] );
 
 				else :
 
-					Jigoshop_Options::set_option( $value['id'], $value['std'] );
+					update_option( $value['id'], $value['std'] );
 
 				endif;
 
@@ -106,7 +106,7 @@ function jigoshop_default_options() {
 
     endforeach;
 
-    Jigoshop_Options::set_option( 'jigoshop_shop_slug', 'shop' );
+    update_option( 'jigoshop_shop_slug', 'shop' );
 }
 
 /**
