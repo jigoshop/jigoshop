@@ -12,6 +12,10 @@ class jigoshopTest extends WP_UnitTestCase {
 
     public function test_plugin_url() {
         $this->assertEquals('http://example.org/wp-content/plugins/jigoshop', jigoshop::plugin_url());
+
+        jigoshop::$plugin_url = NULL;
+        $_SERVER['HTTPS'] = TRUE;
+        $this->assertEquals('https://example.org/wp-content/plugins/jigoshop', jigoshop::plugin_url());
     }
 
     public function test_plugin_path() {
