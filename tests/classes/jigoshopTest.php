@@ -93,9 +93,6 @@ class jigoshopTest extends WP_UnitTestCase {
         $this->expectOutputString('<div class="jigoshop_error">Hello World</div>');
         jigoshop::show_messages();
 
-        error_log( print_r(jigoshop::show_messages(), true) );
-        exit;
-
         jigoshop::add_message( 'Foo Bar' );
 
         $this->expectOutputString('<div class="jigoshop_error">Foo Bar</div>');
