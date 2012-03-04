@@ -272,9 +272,8 @@ class paypal extends jigoshop_payment_gateway {
             $sum = 0;
             for ($i = 0; $i < $item_loop; $i++) :
                 $sum += $paypal_args['amount_'.$i];
-                if ($sum > 0) break;
             endfor;
-            if ($sum == 0) :
+            if ($sum == 0 || (isset($order->order_discount) && $sum - $order->order_discount == 0)) :
                 $paypal_args['amount_'.$item_loop] = 0.01; // force payment on shipping as we know quantity is for sure 1
             endif;
         endif;
