@@ -115,17 +115,23 @@ class jigoshop extends jigoshop_singleton {
 
 	/**
 	 * Add an error
+	 * @todo should be set_error
 	 *
 	 * @param   string	error
 	 */
-	public static function add_error( $error ) { self::$errors[] = $error; }
+	public static function add_error( $error ) {
+		self::$errors[] = $error;
+	}
 
 	/**
 	 * Add a message
+	 * @todo should be set_message
 	 *
 	 * @param   string	message
 	 */
-	public static function add_message( $message ) { self::$messages[] = $message; }
+	public static function add_message( $message ) {
+		self::$messages[] = $message;
+	}
 
 	/** Clear messages and errors from the session data */
 	public static function clear_messages() {
@@ -144,22 +150,17 @@ class jigoshop extends jigoshop_singleton {
 
 	/**
 	 * Output the errors and messages
-	 *
-	 * @return   bool
 	 */
 	public static function show_messages() {
-
-		if (isset(self::$errors) && sizeof(self::$errors)>0) :
+		if ( self::has_errors() ) {
 			echo '<div class="jigoshop_error">'.self::$errors[0].'</div>';
-			self::clear_messages();
-			return true;
-		elseif (isset(self::$messages) && sizeof(self::$messages)>0) :
+		}
+
+		if ( self::has_messages() ) {
 			echo '<div class="jigoshop_message">'.self::$messages[0].'</div>';
-			self::clear_messages();
-			return true;
-		else :
-			return false;
-		endif;
+		}
+
+		self::clear_messages();
 	}
 
 	public static function nonce_field($action, $referer = true , $echo = true) {
@@ -201,6 +202,7 @@ class jigoshop extends jigoshop_singleton {
 
 	/**
 	 * Redirection hook which stores messages into session data
+	 * @deprecated do we actually use this anywhere?
 	 *
 	 * @param   location
 	 * @param   status
