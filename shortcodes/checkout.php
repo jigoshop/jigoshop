@@ -38,7 +38,7 @@ function jigoshop_checkout( $atts ) {
 
 	if (is_wp_error($result)) jigoshop::add_error( $result->get_error_message() );
 
-	if ( jigoshop::error_count()==0 && $non_js_checkout) jigoshop::add_message( __('The order totals have been updated. Please confirm your order by pressing the Place Order button at the bottom of the page.', 'jigoshop') );
+	if ( ! jigoshop::has_errors() && $non_js_checkout) jigoshop::add_message( __('The order totals have been updated. Please confirm your order by pressing the Place Order button at the bottom of the page.', 'jigoshop') );
 
 	jigoshop::show_messages();
 

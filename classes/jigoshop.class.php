@@ -17,29 +17,26 @@
 
 class jigoshop extends jigoshop_singleton {
 
-	public static $errors = array();
+	public static $errors   = array();
 	public static $messages = array();
 
 	public static $plugin_url;
 	public static $plugin_path;
 
-	const SHOP_SMALL_W = '150';
-	const SHOP_SMALL_H = '150';
-	const SHOP_TINY_W = '36';
-	const SHOP_TINY_H = '36';
+	const SHOP_LARGE_W     = '300';
+	const SHOP_LARGE_H     = '300';
+	const SHOP_SMALL_W     = '150';
+	const SHOP_SMALL_H     = '150';
+	const SHOP_TINY_W      = '36';
+	const SHOP_TINY_H      = '36';
 	const SHOP_THUMBNAIL_W = '90';
 	const SHOP_THUMBNAIL_H = '90';
-	const SHOP_LARGE_W = '300';
-	const SHOP_LARGE_H = '300';
 
 	/** constructor */
 	protected function __construct() {
 
-		if (isset(jigoshop_session::instance()->errors)) self::$errors = jigoshop_session::instance()->errors;
-		if (isset(jigoshop_session::instance()->messages)) self::$messages = jigoshop_session::instance()->messages;
-
-		unset( jigoshop_session::instance()->messages );
-		unset( jigoshop_session::instance()->errors );
+		self::$errors   = (array) jigoshop_session::instance()->errors;
+		self::$messages = (array) jigoshop_session::instance()->messages;
 
 		// uses jigoshop_base_class to provide class address for the filter
 		self::add_filter( 'wp_redirect', 'redirect', 1, 2 );
@@ -102,17 +99,17 @@ class jigoshop extends jigoshop_singleton {
 	 * @return  string	variable
 	 */
 	public static function get_var($var) {
-		$return = '';
-		switch ($var) :
-			case "shop_small_w" : $return = self::SHOP_SMALL_W; break;
-			case "shop_small_h" : $return = self::SHOP_SMALL_H; break;
-			case "shop_tiny_w" : $return = self::SHOP_TINY_W; break;
-			case "shop_tiny_h" : $return = self::SHOP_TINY_H; break;
+		switch ( $var ) {
+			case "shop_large_w" :     $return = self::SHOP_LARGE_W; break;
+			case "shop_large_h" :     $return = self::SHOP_LARGE_H; break;
+			case "shop_small_w" :     $return = self::SHOP_SMALL_W; break;
+			case "shop_small_h" :     $return = self::SHOP_SMALL_H; break;
+			case "shop_tiny_w" :      $return = self::SHOP_TINY_W; break;
+			case "shop_tiny_h" :      $return = self::SHOP_TINY_H; break;
 			case "shop_thumbnail_w" : $return = self::SHOP_THUMBNAIL_W; break;
 			case "shop_thumbnail_h" : $return = self::SHOP_THUMBNAIL_H; break;
-			case "shop_large_w" : $return = self::SHOP_LARGE_W; break;
-			case "shop_large_h" : $return = self::SHOP_LARGE_H; break;
-		endswitch;
+		}
+
 		return apply_filters( 'jigoshop_get_var_'.$var, $return );
 	}
 
@@ -137,19 +134,13 @@ class jigoshop extends jigoshop_singleton {
 		unset( jigoshop_session::instance()->errors );
 	}
 
-	/**
-	 * Get error count
-	 *
-	 * @return   int
-	 */
-	public static function error_count() { return sizeof(self::$errors); }
+	public static function has_errors() {
+		return !empty(self::$errors);
+	}
 
-	/**
-	 * Get message count
-	 *
-	 * @return   int
-	 */
-	public static function message_count() { return sizeof(self::$messages); }
+	public static function has_messages() { 
+		return !empty(self::$messages);
+	}
 
 	/**
 	 * Output the errors and messages

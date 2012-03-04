@@ -104,12 +104,13 @@ class jigoshopTest extends WP_UnitTestCase
 	 */
 	public function test_add_error() 
 	{
+		$this->assertFalse(jigoshop::has_errors());
 
 		// perform the change
 		jigoshop::add_error('Hello World');
 
 		$this->assertContains('Hello World', jigoshop::$errors);
-		$this->assertEquals(1, jigoshop::error_count());
+		$this->assertTrue(jigoshop::has_errors());
 
 	}
 
@@ -124,10 +125,12 @@ class jigoshopTest extends WP_UnitTestCase
 	 */
 	public function test_add_message() 
 	{
+		$this->assertFalse(jigoshop::has_messages());
+
 		jigoshop::add_message('Hello World');
 
 		$this->assertContains('Hello World', jigoshop::$messages);
-		$this->assertEquals(1, jigoshop::message_count());
+		$this->assertTrue(jigoshop::has_messages());
 
 	}
 

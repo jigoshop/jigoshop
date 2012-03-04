@@ -406,9 +406,9 @@ class jigoshop_checkout extends jigoshop_singleton {
 			endif;
 
 			// hook, to be able to use the validation, but to be able to do something different afterwards
-			do_action( 'jigoshop_after_checkout_validation', $this->posted, $_POST, jigoshop::error_count() );
+			do_action( 'jigoshop_after_checkout_validation', $this->posted, $_POST, sizeof(jigoshop::$errors) );
 
-			if (!isset($_POST['update_totals']) && jigoshop::error_count()==0) :
+			if (!isset($_POST['update_totals']) && !jigoshop::has_errors()) :
 
 				$user_id = get_current_user_id();
 
@@ -608,7 +608,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 
 					endforeach;
 
-					if (jigoshop::error_count()>0) break;
+					if ( jigoshop::has_errors() ) break;
 
 					// Insert or update the post data
 					// @TODO: This first bit over-writes an existing uncompleted order.  Do we want this?  -JAP-

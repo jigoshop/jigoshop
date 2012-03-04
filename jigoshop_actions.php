@@ -299,11 +299,11 @@ function jigoshop_add_to_cart_action($url = false)
         wp_safe_redirect($url);
     }
     // Redirect directly to checkout if no error messages
-    else if (get_option('jigoshop_redirect_add_to_cart', 'same_page') == 'to_checkout' && jigoshop::error_count() == 0) {
+    else if (get_option('jigoshop_redirect_add_to_cart', 'same_page') == 'to_checkout' && !jigoshop::has_errors()) {
         wp_safe_redirect(jigoshop_cart::get_checkout_url());
     }
     // Redirect directly to cart if no error messages
-    else if (get_option('jigoshop_redirect_add_to_cart', 'to_cart') == 'to_cart' && jigoshop::error_count() == 0) {
+    else if (get_option('jigoshop_redirect_add_to_cart', 'to_cart') == 'to_cart' && !jigoshop::has_errors()) {
         wp_safe_redirect(jigoshop_cart::get_cart_url());
     }
     // Otherwise redirect to where they came
@@ -418,7 +418,7 @@ function jigoshop_process_login() {
 		if ( !isset($_POST['username']) || empty($_POST['username']) ) jigoshop::add_error( __('Username is required.', 'jigoshop') );
 		if ( !isset($_POST['password']) || empty($_POST['password']) ) jigoshop::add_error( __('Password is required.', 'jigoshop') );
 
-		if (jigoshop::error_count()==0) :
+		if ( ! jigoshop::has_errors()) :
 
 			$creds = array();
 			$creds['user_login'] = $_POST['username'];
