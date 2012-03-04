@@ -20,8 +20,6 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	private static $default_options;
 	private static $current_options;
 	
-//	global $options_settings; // TODO: replace this throughout
-	
 	
 	/**
 	 * Instantiates a new Options object

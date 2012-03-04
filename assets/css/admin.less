@@ -1529,13 +1529,21 @@ div.multi_select_countries.shipping_services {
 }
 
 .jigoshop ul.wp-submenu li a {
+
 	border: 1px solid 0;
-	border-bottom: 0;
 	float: left;
 	padding: 5px 15px;
 	text-decoration: none;
 	font-size: 14px;
-	background: #eee;
+
+	background: #fff; /* fallback */
+	background-image: -ms-linear-gradient(bottom, #e5f0f8, #fff); /* IE10 */
+	background-image: -moz-linear-gradient(bottom, #e5f0f8, #fff); /* Firefox */
+	background-image: -o-linear-gradient(bottom, #e5f0f8, #fff); /* Opera */
+	background-image: -webkit-gradient(linear, left bottom, left top, from(#e5f0f8), to(#fff)); /* old Webkit	 */
+	background-image: -webkit-linear-gradient(bottom, #e5f0f8, #fff) !important; /* new Webkit */
+	background-image: linear-gradient(bottom, #e5f0f8, #fff); /* proposed W3C Markup */
+
 	-moz-border-radius-topleft: 5px;
 	-moz-border-radius-topright: 5px;
 	-webkit-border-top-left-radius: 5px;

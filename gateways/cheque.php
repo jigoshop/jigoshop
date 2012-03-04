@@ -14,15 +14,24 @@
  * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
  * @license		http://jigoshop.com/license/commercial-edition
  */
+
+/**
+ * Add the gateway to JigoShop
+ **/
+function add_cheque_gateway( $methods ) {
+	$methods[] = 'jigoshop_cheque';
+	return $methods;
+}
+add_filter( 'jigoshop_payment_gateways', 'add_cheque_gateway' );
+
+
 class jigoshop_cheque extends jigoshop_payment_gateway {
 
 	public function __construct() {
 	
 		$jsOptions = Jigoshop_Options::instance();
 		
-		$jsOptions->add_option('jigoshop_cheque_enabled', 'yes');
-		$jsOptions->add_option('jigoshop_cheque_title', __('Cheque Payment', 'jigoshop') );
-		$jsOptions->add_option('jigoshop_cheque_description', __('Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'jigoshop'));
+//		$jsOptions->install_new_options( 'Payment Gateways', $this->get_default_options() );
 		
         $this->id				= 'cheque';
         $this->icon 			= '';
@@ -33,9 +42,58 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 		$this->description 		= $jsOptions->get_option('jigoshop_cheque_description');
 
 		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
-    	add_action('thankyou_cheque', array(&$this, 'thankyou_page'));
+    	add_action( 'thankyou_cheque', array( &$this, 'thankyou_page' ) );
+    	
     }
 
+	/**
+	 * Default Option settings for WordPress Settings API using the Jigoshop_Options class
+	 *
+	 * These should be installed on the Jigoshop_Options 'Shipping' tab
+	 *
+	 */	
+	public function get_default_options() {
+	
+		$defaults = array();
+		
+		// Define the Section name for the Jigoshop_Options
+		$defaults[] = array( 'name' => __('Cheque Payment', 'jigoshop'), 'type' => 'title', 'desc' => '' );
+		
+		// List each option in order of appearance with details
+		$defaults[] = array(
+			'name'		=> __('Enable Cheque Payment','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_cheque_enabled',
+			'std' 		=> 'no',
+			'type' 		=> 'radio',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+		
+		$defaults[] = array(
+			'name'		=> __('Method Title','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('This controls the title which the user sees during checkout.','jigoshop'),
+			'id' 		=> 'jigoshop_cheque_title',
+			'std' 		=> __('Cheque Payment','jigoshop'),
+			'type' 		=> 'text'
+		);
+		
+		$defaults[] = array(
+			'name'		=> __('Customer Message','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Let the customer know the payee and where they should be sending the cheque too and that their order won\'t be shipping until you receive it.','jigoshop'),
+			'id' 		=> 'jigoshop_cheque_description',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+
+		return $defaults;
+	}
+	
 	/**
 	 * Admin Panel Options
 	 * - Options for bits like 'title' and availability on a country-by-country basis
@@ -113,12 +171,3 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 	}
 
 }
-
-/**
- * Add the gateway to JigoShop
- **/
-function add_cheque_gateway( $methods ) {
-	$methods[] = 'jigoshop_cheque'; return $methods;
-}
-
-add_filter('jigoshop_payment_gateways', 'add_cheque_gateway' );
