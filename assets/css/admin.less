@@ -637,9 +637,6 @@ ul.recent-orders {
 	margin-bottom: 2em !important;
 	zoom: 1;
 }
-.jigoshop #tabs-wrap h3 {
-	text-decoration: underline;
-}
 .jigoshop #tabs-wrap ul.tabs {
 	padding: 0;
 	margin: 0;
@@ -1529,28 +1526,17 @@ div.multi_select_countries.shipping_services {
 }
 
 .jigoshop ul.wp-submenu li a {
-
 	border: 1px solid 0;
 	float: left;
 	padding: 5px 15px;
 	text-decoration: none;
 	font-size: 14px;
-
-	background: #fff; /* fallback */
-	background-image: -ms-linear-gradient(bottom, #e5f0f8, #fff); /* IE10 */
-	background-image: -moz-linear-gradient(bottom, #e5f0f8, #fff); /* Firefox */
-	background-image: -o-linear-gradient(bottom, #e5f0f8, #fff); /* Opera */
-	background-image: -webkit-gradient(linear, left bottom, left top, from(#e5f0f8), to(#fff)); /* old Webkit	 */
-	background-image: -webkit-linear-gradient(bottom, #e5f0f8, #fff) !important; /* new Webkit */
-	background-image: linear-gradient(bottom, #e5f0f8, #fff); /* proposed W3C Markup */
-
 	-moz-border-radius-topleft: 5px;
 	-moz-border-radius-topright: 5px;
 	-webkit-border-top-left-radius: 5px;
 	-webkit-border-top-right-radius: 5px;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
-
 }
 
 .jigoshop ul.wp-submenu li.active a {
@@ -1562,3 +1548,16 @@ div.multi_select_countries.shipping_services {
 	margin-bottom: 1em;
 }
 	
+.jigoshop ul.wp-submenu, #tabs-wrap h3 {
+	background: #fff; /* fallback */
+	background-image: -ms-linear-gradient(bottom, #dbdbdb, #fff); /* IE10 */
+	background-image: -moz-linear-gradient(bottom, #dbdbdb, #fff); /* Firefox */
+	background-image: -o-linear-gradient(bottom, #dbdbdb, #fff); /* Opera */
+	background-image: -webkit-gradient(linear, left bottom, left top, from(#dbdbdb), to(#fff)); /* old Webkit	 */
+	background-image: -webkit-linear-gradient(bottom, #dbdbdb, #fff) !important; /* new Webkit */
+	background-image: linear-gradient(bottom, #dbdbdb, #fff); /* proposed W3C Markup */
+}
+
+.jigoshop #tabs-wrap h3 {
+	padding: 4px 5px
+}
