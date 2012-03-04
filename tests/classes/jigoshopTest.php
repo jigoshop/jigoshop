@@ -1,116 +1,181 @@
 <?php
-class jigoshopTest extends WP_UnitTestCase {
+class jigoshopTest extends WP_UnitTestCase 
+{
+	var $plugin_slug = 'jigoshop';
 
-    var $plugin_slug = 'jigoshop';
+	/**
+	 * Test returns the correct plugin Url
+	 *
+	 * Pre-conditions:
+	 * Case A: Get the Plugin Url for a HTTP connection
+	 * Case A: Get the Plugin Url for a HTTPS connection
+	 *
+	 * Post-conditions:
+	 * Case A: Returned url should be unchanged and contain jigoshop root folder
+	 * Case B: Returned url should be rewritten with https:// and contain jigoshop root folder
+	 */
+	public function test_plugin_url() 
+	{
+		// Case A:
+		$this->assertEquals('http://example.org/wp-content/plugins/jigoshop', jigoshop::plugin_url());
 
-    public function setUp() {
-        parent::setUp();
-    }
+		// Case B:
+		$_SERVER['HTTPS'] = TRUE;
+		jigoshop::$plugin_url = NULL;
+		$this->assertEquals('https://example.org/wp-content/plugins/jigoshop', jigoshop::plugin_url());
+	}
 
-    public function test_plugin_url() {
-        $this->assertEquals('http://example.org/wp-content/plugins/jigoshop', jigoshop::plugin_url());
+	/**
+	 * Test Plugin Path
+	 *
+	 * Pre-conditions:
+	 * Plugin root defined to plugin root 
+	 *
+	 * Post-conditions:
+	 * Ensure plugin_path() matches $plugin_root
+	 */
+	public function test_plugin_path() 
+	{
+		$plugin_root = dirname(dirname(dirname(__FILE__)));
+		$this->assertEquals( $plugin_root, jigoshop::plugin_path() );
+	}
 
-        jigoshop::$plugin_url = NULL;
-        $_SERVER['HTTPS'] = TRUE;
-        $this->assertEquals('https://example.org/wp-content/plugins/jigoshop', jigoshop::plugin_url());
-    }
+	/**
+	 * Test Get Var
+	 *
+	 * Pre-conditions:
+	 * Send all available vars to get_var()
+	 *
+	 * Post-conditions:
+	 * All vars should return a value
+	 */
+	public function test_get_var() 
+	{
+		$vars = array(
+			'shop_small_w'     => '150',
+			'shop_small_h'     => '150', 
+			'shop_tiny_w'      => '36',
+			'shop_tiny_h'      => '36',
+			'shop_thumbnail_w' => '90',
+			'shop_thumbnail_h' => '90',
+			'shop_large_w'     => '300',
+			'shop_large_h'     => '300',
+		);
 
-    public function test_plugin_path() {
-        $plugin_root = dirname(dirname(dirname(__FILE__)));
-        $this->assertEquals( $plugin_root, jigoshop::plugin_path() );
-    }
+		foreach ( $vars as $key => $value ) {
+			$this->assertEquals( $value, jigoshop::get_var( $key ) );
+		}
+	}
 
-    public function test_get_var() {
-        $vars = array(
-            'shop_small_w'     => '150',
-            'shop_small_h'     => '150', 
-            'shop_tiny_w'      => '36',
-            'shop_tiny_h'      => '36',
-            'shop_thumbnail_w' => '90',
-            'shop_thumbnail_h' => '90',
-            'shop_large_w'     => '300',
-            'shop_large_h'     => '300',
-        );
+	/**
+	 * Test Forcing SSL on assets
+	 *
+	 * Pre-conditions:
+	 * Case A: Page delivered through HTTPS connection
+	 * Case B: Page delivered through HTTP connection
+	 *
+	 * Post-conditions:
+	 * Case A: Returned url should be rewritten with https://...
+	 * Case B: Returned url should be unchanged
+	 */
+	public function test_force_ssl()
+	{
+		$unsecure_url = 'http://google.com';
 
-        foreach ( $vars as $key => $value ) {
-            $this->assertEquals( $value, jigoshop::get_var( $key ) );
-        }
-    }
+		// Case A:
+		$_SERVER['HTTPS'] = TRUE;
+		$this->assertEquals( 'https://google.com', jigoshop::force_ssl($unsecure_url) );
 
-    public function test_force_ssl()
-    {
-        // Set up the test
-        $unsecure_url = 'http://google.com';
-        $_SERVER['HTTPS'] = TRUE;
+		// Case B:
+		$_SERVER['HTTPS'] = FALSE;
+		$this->assertEquals( 'http://google.com', jigoshop::force_ssl($unsecure_url) );
+	}
 
-        // perform the change
-        $url = jigoshop::force_ssl($unsecure_url);
 
-        // test the results
-        $this->assertEquals( 'https://google.com', $url );
 
-        $_SERVER['HTTPS'] = FALSE;
+	/**
+	 * Test add error
+	 *
+	 * Pre-conditions:
+	 * Add an error to the $errors array
+	 *
+	 * Post-conditions:
+	 * Error should be contained in the array & count should be 1
+	 */
+	public function test_add_error() 
+	{
 
-        // perform the change
-        $url = jigoshop::force_ssl($unsecure_url);
+		// perform the change
+		jigoshop::add_error('Hello World');
 
-        // test the results
-        $this->assertEquals( 'http://google.com', $url );
-    }
+		$this->assertTrue(in_array('Hello World', jigoshop::$errors));
+		$this->assertEquals(1, jigoshop::error_count());
 
-    public function test_add_error() {
+	}
 
-        // perform the change
-        jigoshop::add_error('Hello World');
+	/**
+	 * Test add message
+	 *
+	 * Pre-conditions:
+	 * Add an message to the $messages array
+	 *
+	 * Post-conditions:
+	 * Message should be contained in the array & count should be 1
+	 */
+	public function test_add_message() 
+	{
+		jigoshop::add_message('Hello World');
 
-        $this->assertEquals( TRUE, in_array('Hello World', jigoshop::$errors));
+		$this->assertTrue(in_array('Hello World', jigoshop::$messages));
+		$this->assertEquals(1, jigoshop::message_count());
 
-    }
+	}
 
-    public function test_add_message() {
+	/**
+	 * Test Message & Error Clearing
+	 *
+	 * Pre-conditions:
+	 * Set an error & message to populate the class
+	 *
+	 * Post-conditions:
+	 * Both $errors & $messages should return empty
+	 */
+	public function test_clear_messages() 
+	{
+		jigoshop::add_error('Hello World');
+		jigoshop::add_message('Foo Bar');
 
-        // perform the change
-        jigoshop::add_message('Hello World');
+		jigoshop::clear_messages();
 
-        $this->assertEquals( TRUE, in_array('Hello World', jigoshop::$messages));
+		$this->assertEmpty(jigoshop::$errors, '$errors is not empty');
+		$this->assertEmpty(jigoshop::$messages, '$messages is not empty');
+	}
 
-    }
+	/**
+	 * Test Show Messages
+	 *
+	 * Pre-conditions:
+	 * Case A: Set error 'Hello World' and ensure it is output
+	 * Case B: Set message 'Foo Bar' and ensure it is output
+	 *
+	 * Post-conditions:
+	 * Case A: Ouput contains div with class of jigoshop_error
+	 * Case B: Ouput contains div with class of jigoshop_message
+	 */
+	public function test_show_messages()
+	{
+		// Case A:
+		jigoshop::add_error( 'Hello World' );
 
-    public function test_clear_messages() {
-        jigoshop::add_error('Hello World');
-        jigoshop::add_message('Foo Bar');
+		ob_start();
+		jigoshop::show_messages();
+		$this->assertEquals('<div class="jigoshop_error">Hello World</div>', ob_get_clean());
 
-        // then clear it
-        jigoshop::clear_messages();
+		// Case B:
+		jigoshop::add_message( 'Foo Bar' );
 
-        // did it work?
-        $this->assertEmpty(jigoshop::$errors, 'jigoshop::$errors still has something in it');
-        $this->assertEmpty(jigoshop::$messages, 'jigoshop::$messages still has something in it');
-    }
-
-    /**
-     * Test Show Messages
-     *
-     * Pre-conditions:
-     * Case A: Set error 'Hello World' and ensure it is output
-     * Case B: Set message 'Foo Bar' and ensure it is output
-     *
-     * Post-conditions:
-     * Case A: Ouput contains div with class of jigoshop_error
-     * Case B: Ouput contains div with class of jigoshop_message
-     */
-    public function test_show_messages() {
-        // set up
-        jigoshop::add_error( 'Hello World' );
-
-        ob_start();
-        jigoshop::show_messages();
-        $this->assertEquals('<div class="jigoshop_error">Hello World</div>', ob_get_clean());
-
-        jigoshop::add_message( 'Foo Bar' );
-
-        ob_start();
-        jigoshop::show_messages();
-        $this->assertEquals('<div class="jigoshop_message">Foo Bar</div>', ob_get_clean());
-    }
+		ob_start();
+		jigoshop::show_messages();
+		$this->assertEquals('<div class="jigoshop_message">Foo Bar</div>', ob_get_clean());
+	}
 }
