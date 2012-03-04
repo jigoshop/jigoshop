@@ -16,7 +16,7 @@
  */
 
 function get_jigoshop_order_tracking ($atts) {
-	return jigoshop::shortcode_wrapper('jigoshop_order_tracking', $atts);
+	return jigoshop_shortcode_wrapper('jigoshop_order_tracking', $atts);
 }
 
 function jigoshop_order_tracking( $atts ) {

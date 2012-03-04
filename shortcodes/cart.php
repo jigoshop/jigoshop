@@ -15,7 +15,7 @@
  * @license		http://jigoshop.com/license/commercial-edition
  */
 function get_jigoshop_cart($atts) {
-    return jigoshop::shortcode_wrapper('jigoshop_cart', $atts);
+    return jigoshop_shortcode_wrapper('jigoshop_cart', $atts);
 }
 
 function jigoshop_cart($atts) {

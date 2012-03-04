@@ -21,6 +21,20 @@ include_once('order_tracking.php');
 include_once('pay.php');
 include_once('thankyou.php');
 
+function jigoshop_shortcode_wrapper( $function, $atts = array() ) {
+	$key = $function.'-shortcode-'.serialize($atts);
+	if ( $shortcode = wp_cache_get($key, 'jigoshop') )
+		return $shortcode;
+
+	// Get the shortcode & save in object cache
+	ob_start();
+	call_user_func($function, $atts);
+	$shortcode = ob_get_clean();
+	wp_cache_replace($key, $shortcode, 'jigoshop');
+
+	return $shortcode;
+}
+
 //### Recent Products #########################################################
 
 function jigoshop_recent_products( $atts ) {

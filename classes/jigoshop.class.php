@@ -211,18 +211,4 @@ class jigoshop extends jigoshop_singleton {
 		jigoshop_session::instance()->messages = self::$messages;
 		return apply_filters('jigoshop_session_location_filter', $location);
 	}
-
-	public static function shortcode_wrapper( $function, $atts = array() ) {
-		$key = $function.'-shortcode-'.serialize($atts);
-		if ( $shortcode = wp_cache_get($key, 'jigoshop') )
-			return $shortcode;
-
-		// Get the shortcode & save in object cache
-		ob_start();
-		call_user_func($function, $atts);
-		$shortcode = ob_get_clean();
-		wp_cache_replace($key, $shortcode, 'jigoshop');
-
-		return $shortcode;
-	}
 }

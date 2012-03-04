@@ -16,7 +16,7 @@
  */
 
 function get_jigoshop_checkout( $atts ) {
-	return jigoshop::shortcode_wrapper('jigoshop_checkout', $atts);
+	return jigoshop_shortcode_wrapper('jigoshop_checkout', $atts);
 }
 
 function jigoshop_checkout( $atts ) {
