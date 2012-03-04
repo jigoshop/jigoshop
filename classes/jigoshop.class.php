@@ -196,9 +196,7 @@ class jigoshop extends jigoshop_singleton {
 		$name = '_n';
 		$action = 'jigoshop-' . $action;
 
-		$url = add_query_arg( $name, wp_create_nonce( $action ), $url);
-
-		return $url;
+		return add_query_arg( $name, wp_create_nonce( $action ), $url);
 	}
 	/**
 	 * Check a nonce and sets jigoshop error in case it is invalid

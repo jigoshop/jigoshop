@@ -108,7 +108,7 @@ class jigoshopTest extends WP_UnitTestCase
 		// perform the change
 		jigoshop::add_error('Hello World');
 
-		$this->assertTrue(in_array('Hello World', jigoshop::$errors));
+		$this->assertContains('Hello World', jigoshop::$errors);
 		$this->assertEquals(1, jigoshop::error_count());
 
 	}
@@ -126,7 +126,7 @@ class jigoshopTest extends WP_UnitTestCase
 	{
 		jigoshop::add_message('Hello World');
 
-		$this->assertTrue(in_array('Hello World', jigoshop::$messages));
+		$this->assertContains('Hello World', jigoshop::$messages);
 		$this->assertEquals(1, jigoshop::message_count());
 
 	}
@@ -177,5 +177,35 @@ class jigoshopTest extends WP_UnitTestCase
 		ob_start();
 		jigoshop::show_messages();
 		$this->assertEquals('<div class="jigoshop_message">Foo Bar</div>', ob_get_clean());
+	}
+
+	/**
+	 * Test Nonce field creation
+	 *
+	 * Pre-conditions:
+	 * Sets up a nonce field
+	 *
+	 * Post-conditions:
+	 * Returns a hidden input element with nonce hash for a value
+	 */
+	public function test_nonce_field() 
+	{
+		ob_start();
+		jigoshop::nonce_field('nonce_me');
+		$this->assertContains('input', ob_get_clean());
+	}
+
+	/**
+	 * Test Nonce Url
+	 *
+	 * Pre-conditions:
+	 * Adds a nonce query arguement to a url
+	 *
+	 * Post-conditions:
+	 * Returns query argument with nonce hash
+	 */
+	public function test_nonce_url()
+	{
+		$this->assertContains('?_n=', jigoshop::nonce_url('nonce_me'));
 	}
 }
