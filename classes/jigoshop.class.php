@@ -17,8 +17,6 @@
 
 class jigoshop extends jigoshop_singleton {
 
-	private static $_cache;
-
 	public static $errors = array();
 	public static $messages = array();
 
@@ -46,15 +44,6 @@ class jigoshop extends jigoshop_singleton {
 		// uses jigoshop_base_class to provide class address for the filter
 		self::add_filter( 'wp_redirect', 'redirect', 1, 2 );
 	}
-
-	/**
-	 * This is deprecated as of ver 0.9.9.2 - use jigoshop_product.class version.
-	 *
-	 * @deprecated
-	 */
-    public static function getAttributeTaxonomies() {
-        return jigoshop_product::getAttributeTaxonomies();
-    }
 
 	/**
 	 * Get the assets url
@@ -183,16 +172,13 @@ class jigoshop extends jigoshop_singleton {
 	}
 
 	public static function nonce_field($action, $referer = true , $echo = true) {
-
 		$name = '_n';
 		$action = 'jigoshop-' . $action;
 
 		return wp_nonce_field($action, $name, $referer, $echo);
-
 	}
 
 	public static function nonce_url($action, $url = '') {
-
 		$name = '_n';
 		$action = 'jigoshop-' . $action;
 
@@ -210,7 +196,6 @@ class jigoshop extends jigoshop_singleton {
 	 * @return   bool
 	 */
 	public static function verify_nonce( $action ) {
-
 		$name    = '_n';
 		$action  = 'jigoshop-' . $action;
 		$request = array_merge($_GET, $_POST);
@@ -236,34 +221,17 @@ class jigoshop extends jigoshop_singleton {
 		return apply_filters('jigoshop_session_location_filter', $location);
 	}
 
-	public static function shortcode_wrapper ($function, $atts=array()) {
-		if( $content = jigoshop::cache_get( $function . '-shortcode', $atts ) ) return $content;
+	public static function shortcode_wrapper( $function, $atts = array() ) {
+		$key = $function.'-shortcode-'.serialize($atts);
+		if ( $shortcode = wp_cache_get($key, 'jigoshop') )
+			return $shortcode;
 
+		// Get the shortcode & save in object cache
 		ob_start();
 		call_user_func($function, $atts);
-		return jigoshop::cache( $function . '-shortcode', ob_get_clean(), $atts);
-	}
+		$shortcode = ob_get_clean();
+		wp_cache_replace($key, $shortcode, 'jigoshop');
 
-	/**
-	 * Cache API
-	 */
-
-	public static function cache( $id, $data, $args=array() ) {
-
-		if( ! isset(self::$_cache[ $id ]) ) self::$_cache[ $id ] = array();
-
-		if( empty($args) ) self::$_cache[ $id ][0] = $data;
-		else self::$_cache[ $id ][ serialize($args) ] = $data;
-
-		return $data;
-
-	}
-	public static function cache_get( $id, $args=array() ) {
-
-		if( ! isset(self::$_cache[ $id ]) ) return null;
-
-		if( empty($args) && isset(self::$_cache[ $id ][0]) ) return self::$_cache[ $id ][0];
-		elseif ( isset(self::$_cache[ $id ][ serialize($args) ] ) ) return self::$_cache[ $id ][ serialize($args) ];
-
+		return $shortcode;
 	}
 }
