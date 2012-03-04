@@ -14,8 +14,12 @@
  * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
  * @license		http://jigoshop.com/license/commercial-edition
  */
-
-foreach(glob( dirname(__FILE__)."/shortcodes/*.php" ) as $filename) include_once($filename);
+include_once('cart.php');
+include_once('checkout.php');
+include_once('my_account.php');
+include_once('order_tracking.php');
+include_once('pay.php');
+include_once('thankyou.php');
 
 //### Recent Products #########################################################
 
