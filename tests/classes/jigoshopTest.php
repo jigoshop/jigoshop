@@ -208,4 +208,31 @@ class jigoshopTest extends WP_UnitTestCase
 	{
 		$this->assertContains('?_n=', jigoshop::nonce_url('nonce_me'));
 	}
+
+	/**
+	 * Test Verification of nonces
+	 *
+	 * Pre-conditions:
+	 * Case A: Send nonce ticket via GET
+	 * Case B: Send nonce ticket via POST
+	 *
+	 * Post-conditions:
+	 * Verification should return true in both instances
+	 */
+	public function test_verify_nonce()
+	{
+		// Case A:
+		$action = 'nonce_get';
+		$nonce_hash = wp_create_nonce( 'jigoshop-'.$action );
+		$_GET['_n'] = $nonce_hash;
+
+		$this->assertTrue(jigoshop::verify_nonce($action));
+
+		// Case B:
+		$action = 'nonce_post';
+		$nonce_hash = wp_create_nonce( 'jigoshop-'.$action );
+		$_POST['_n'] = $nonce_hash;
+
+		$this->assertTrue(jigoshop::verify_nonce($action));
+	}
 }

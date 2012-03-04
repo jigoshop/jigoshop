@@ -141,7 +141,7 @@ add_action( 'init', 'jigoshop_update_cart_action' );
 function jigoshop_update_cart_action() {
 
 	// Remove from cart
-	if ( isset($_GET['remove_item']) && is_numeric($_GET['remove_item'])  && jigoshop::verify_nonce('cart', '_GET')) :
+	if ( isset($_GET['remove_item']) && is_numeric($_GET['remove_item'])  && jigoshop::verify_nonce('cart')) :
 
 		jigoshop_cart::set_quantity( $_GET['remove_item'], 0 );
 
@@ -182,7 +182,7 @@ add_action( 'init', 'jigoshop_add_to_cart_action' );
 function jigoshop_add_to_cart_action($url = false)
 {
     //if required param is not set or nonce is invalid then just ignore whole function
-    if (empty($_GET['add-to-cart']) || !jigoshop::verify_nonce('add_to_cart', '_GET')) {
+    if (empty($_GET['add-to-cart']) || !jigoshop::verify_nonce('add_to_cart')) {
         return;
     }
 
@@ -471,7 +471,7 @@ function jigoshop_cancel_order() {
 
 		$order = new jigoshop_order( $order_id );
 
-		if ($order->id == $order_id && $order->order_key == $order_key && $order->status=='pending' && jigoshop::verify_nonce('cancel_order', '_GET')) :
+		if ($order->id == $order_id && $order->order_key == $order_key && $order->status=='pending' && jigoshop::verify_nonce('cancel_order')) :
 
 			// Cancel the order + restore stock
 			$order->cancel_order( __('Order cancelled by customer.', 'jigoshop') );
