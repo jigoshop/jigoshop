@@ -1,6 +1,33 @@
 <?php
 /**
- * Jigoshop
+ *   ./////////////////////////////.
+ *  //////////////////////////////////
+ *  //////////     ///////////////////
+ *  ////////     /////////////////////
+ *  /////     ////////////////////////
+ *  /////    /////////    ////////////
+ *  //////     /////////     /////////
+ *  /////////     /////////    ///////
+ *  ///////////    //////////    /////
+ *  ////////////////////////    //////
+ *  /////////////////////    /////////
+ *  ///////////////////    ///////////
+ *  //////////////////////////////////
+ *   `//////////////////////////////`
+ *
+ *
+ * Plugin Name:         Jigoshop
+ * Plugin URI:          http://jigoshop.com/
+ * Description:         Jigoshop, a WordPress eCommerce plugin that works.
+ * Author:              Jigowatt
+ * Author URI:          http://jigowatt.co.uk
+ *
+ * Version:             1.2
+ * Requires at least:   3.2.1
+ * Tested up to:        3.4-alpha-19978
+ *
+ * Text Domain:         jigoshop
+ * Domain Path:         /languages/
  *
  * DISCLAIMER
  *
@@ -8,21 +35,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * Plugin Name:			Jigoshop
- * Plugin URI:			http://jigoshop.com
- * Description:			Jigoshop, a WordPress eCommerce plugin that works.
- * Author:				Jigowatt
- * Author URI:			http://jigowatt.co.uk
- *
- * Version:				1.1.1
- * Requires at least:	3.2.1
- * Tested up to:		3.4-alpha-19978
- *
- * @package				Jigoshop
- * @category			Core
- * @author				Jigowatt
- * @copyright			Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license				http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Core
+ * @author              Jigowatt
+ * @copyright           Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1202280);
