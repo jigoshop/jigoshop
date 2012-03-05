@@ -271,12 +271,13 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 		if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
 
         // always calculate totals when coming to checkout, as we need the total calculated on the cart here
+		jigoshop_cart::get_cart();
         jigoshop_cart::calculate_totals();
 
 		if (isset($_POST) && $_POST && !isset($_POST['login'])) :
 
 			jigoshop::verify_nonce('process_checkout');
-
+			
 			if (sizeof(jigoshop_cart::$cart_contents)==0) :
 				jigoshop::add_error( sprintf(__('Sorry, your session has expired. <a href="%s">Return to homepage &rarr;</a>','jigoshop'), home_url()) );
 			endif;
