@@ -60,7 +60,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 *
 	 * @since	1.2
 	 */	
-	public function update_options() {
+	public static function update_options() {
 		update_option( JIGOSHOP_OPTIONS, self::$current_options );
 	}
 	
@@ -76,8 +76,8 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 *
 	 * @since	1.2
 	 */	
-	public function add_option( $name, $value ) {
-		self::instance()->get_current_options();
+	public static function add_option( $name, $value ) {
+		self::get_current_options();
 		if ( ! isset( self::$current_options[$name] )) {
 			self::$current_options[$name] = $value;
 			add_action( 'shutdown', array( self::instance(), 'update_options' ));
@@ -94,7 +94,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 *
 	 * @since	1.2
 	 */	
-	public function get_option( $name, $default = null ) {
+	public static function get_option( $name, $default = null ) {
 		if ( isset( self::$current_options[$name] )) return self::$current_options[$name];
 		else if ( isset( $default )) return $default;
 		else return null;
@@ -109,8 +109,8 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 *
 	 * @since	1.2
 	 */	
-	public function set_option( $name, $value ) {
-		self::instance()->get_current_options();
+	public static function set_option( $name, $value ) {
+		self::get_current_options();
 		if ( isset( $name )) {
 			self::$current_options[$name] = $value;
 			add_action( 'shutdown', array( self::instance(), 'update_options' ));
@@ -126,8 +126,8 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 *
 	 * @since	1.2
 	 */	
-	public function delete_option( $name ) {
-		self::instance()->get_current_options();
+	public static function delete_option( $name ) {
+		self::get_current_options();
 		if ( isset( $name )) {
 			unset( self::$current_options[$name] );
 			add_action( 'shutdown', array( self::instance(), 'update_options' ));
@@ -146,8 +146,8 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 *
 	 * @since	1.2
 	 */	
-	public function install_new_options( $tab, $options ) {
-		$our_options = self::instance()->get_default_options();
+	public static function install_new_options( $tab, $options ) {
+		$our_options = self::get_default_options();
 		$first_index = -1;
 		$second_index = -1;
 		foreach ( $our_options as $index => $option ) {
@@ -168,8 +168,8 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 		 /*** add the new elements to the array ***/
 		 foreach ( $options as $option ) {
 		 	if ( isset( $option['id'] ) )
-		 		if ( false === $this->get_option( $option['id'] ) )
-		 			$this->add_option( $option['id'], $option['std'] );
+		 		if ( false === self::get_option( $option['id'] ) )
+		 			self::add_option( $option['id'], $option['std'] );
 		 	$start[] = $option;
 		 }
 		 /*** glue them back together ***/
@@ -185,7 +185,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 *
 	 * @since	1.2
 	 */	
-	public function get_current_options() {
+	public static function get_current_options() {
 		if ( empty( self::$current_options )) {
 			if ( empty( self::$default_options )) self::set_default_options();
 			else self::set_current_options( self::$default_options );;
@@ -202,7 +202,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 *
 	 * @since	1.2
 	 */	
-	protected function set_current_options( $options ) {
+	protected static function set_current_options( $options ) {
 		self::$current_options = $options;
 		add_action( 'shutdown', array( self::instance(), 'update_options' ));
 	}
@@ -216,7 +216,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 *
 	 * @since	1.2
 	 */	
-	public function get_default_options() {
+	public static function get_default_options() {
 		if ( empty( self::$default_options )) self::set_default_options();
 		return self::$default_options;
 	}
@@ -232,7 +232,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 *
 	 * @since	1.2
 	 */	
-	protected function set_default_options() {
+	protected static function set_default_options() {
 		
 		self::$default_options = array();
 		
