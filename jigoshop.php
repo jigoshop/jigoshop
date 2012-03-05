@@ -1005,4 +1005,5 @@ function jigoshop_plugin_loads_first() {
 		update_option( 'active_plugins', $active_plugins );
 	}
 }
-add_action( 'activated_plugin', 'jigoshop_plugin_loads_first', 999 );
+// disconnecting for further testing, breaks 'lazy loader plugins' (-JAP-)
+//add_action( 'activated_plugin', 'jigoshop_plugin_loads_first', 999 );
