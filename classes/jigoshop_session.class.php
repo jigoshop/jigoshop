@@ -21,15 +21,13 @@ class jigoshop_session extends Jigoshop_Singleton {
 	}
 
 	public function __get( $key ) {
-
-		if( array_key_exists( $key, $_SESSION['jigoshop'][JIGOSHOP_VERSION]) )
+		if( isset($_SESSION['jigoshop'][JIGOSHOP_VERSION][$key]) )
 			return $_SESSION['jigoshop'][JIGOSHOP_VERSION][$key];
 
 		return null;
 	}
 
 	public function __set( $key, $value ) {
-
 		$_SESSION['jigoshop'][JIGOSHOP_VERSION][$key] = $value;
 		return $value;
 	}

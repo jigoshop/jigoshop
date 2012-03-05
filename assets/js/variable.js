@@ -154,7 +154,6 @@
 
 		.on({
 			remove_all: function(e) {
-				console.log(varmeta);
 				if( ! confirm( varmeta.i18n.remove_all ) )
 					return false;
 

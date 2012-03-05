@@ -16,7 +16,7 @@
  */
 
 function get_jigoshop_my_account($atts) {
-    return jigoshop::shortcode_wrapper('jigoshop_my_account', $atts);
+    return jigoshop_shortcode_wrapper('jigoshop_my_account', $atts);
 }
 
 function jigoshop_my_account( $atts ) {
@@ -158,7 +158,7 @@ function jigoshop_my_account( $atts ) {
 }
 
 function get_jigoshop_edit_address() {
-    return jigoshop::shortcode_wrapper('jigoshop_edit_address');
+    return jigoshop_shortcode_wrapper('jigoshop_edit_address');
 }
 
 function jigoshop_edit_address() {
@@ -320,7 +320,7 @@ function jigoshop_edit_address() {
 }
 
 function get_jigoshop_change_password() {
-    return jigoshop::shortcode_wrapper('jigoshop_change_password');
+    return jigoshop_shortcode_wrapper('jigoshop_change_password');
 }
 
 function jigoshop_change_password() {
@@ -386,7 +386,7 @@ function jigoshop_change_password() {
 }
 
 function get_jigoshop_view_order() {
-    return jigoshop::shortcode_wrapper('jigoshop_view_order');
+    return jigoshop_shortcode_wrapper('jigoshop_view_order');
 }
 
 function jigoshop_view_order() {

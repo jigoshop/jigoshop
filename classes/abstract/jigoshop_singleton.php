@@ -81,7 +81,7 @@ if ( ! function_exists( 'get_called_class' )) {
 					switch ( $matches[1] ) {
 						case 'self':
 						case 'parent':
-							return jigoshop_called_class( $bt, $l+1 );
+							return self::get_called_class( $bt, $l+1 );
 						default:
 							return $matches[1];
 					}

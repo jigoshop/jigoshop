@@ -16,7 +16,7 @@
  */
 
 function get_jigoshop_order_tracking ($atts) {
-	return jigoshop::shortcode_wrapper('jigoshop_order_tracking', $atts);
+	return jigoshop_shortcode_wrapper('jigoshop_order_tracking', $atts);
 }
 
 function jigoshop_order_tracking( $atts ) {
@@ -184,7 +184,7 @@ function jigoshop_order_tracking( $atts ) {
 				echo '<p>'.__('Sorry, we could not find that order id in our database. <a href="'.get_permalink($post->ID).'">Want to retry?</a>', 'jigoshop').'</p>';
 			endif;
 		else :
-			echo '<p>'.__('Sorry, we could not find that order id in our database. <a href="'.get_permalink($post->ID).'">Want to retry?</a>', 'jigoshop').'</p>';
+			echo '<p>'.sprintf(__('Sorry, we could not find that order id in our database. <a href="%s">Want to retry?</a></p>', 'jigoshop'), get_permalink($post->ID));
 		endif;
 
 	else :

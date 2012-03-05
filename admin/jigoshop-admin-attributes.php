@@ -72,9 +72,9 @@ function jigoshop_attributes() {
 
 		if ($delete>0) :
 
-			$att_name = $wpdb->get_var("SELECT attribute_name FROM " . $wpdb->prefix . "jigoshop_attribute_taxonomies WHERE attribute_id = '$delete'");
+			$att_name = $wpdb->get_var( $wpdb->prepare( "SELECT attribute_name FROM " . $wpdb->prefix . "jigoshop_attribute_taxonomies WHERE attribute_id = %d", $delete ) );
 
-			if ($att_name && $wpdb->query("DELETE FROM " . $wpdb->prefix . "jigoshop_attribute_taxonomies WHERE attribute_id = '$delete'")) :
+			if ($att_name && $wpdb->query( $wpdb->prepare( "DELETE FROM " . $wpdb->prefix . "jigoshop_attribute_taxonomies WHERE attribute_id = %d", $delete ) ) ) :
 
 				$taxonomy = 'pa_'.sanitize_title($att_name);
 
@@ -119,8 +119,8 @@ function jigoshop_edit_attribute() {
 
 	$edit = absint($_GET['edit']);
 
-	$att_type = $wpdb->get_var("SELECT attribute_type FROM " . $wpdb->prefix . "jigoshop_attribute_taxonomies WHERE attribute_id = '$edit'");
-	$att_label = $wpdb->get_var("SELECT attribute_label FROM " . $wpdb->prefix . "jigoshop_attribute_taxonomies WHERE attribute_id = '$edit'");
+	$att_type = $wpdb->get_var( $wpdb->prepare( "SELECT attribute_type FROM " . $wpdb->prefix . "jigoshop_attribute_taxonomies WHERE attribute_id = %d", $edit ) );
+	$att_label = $wpdb->get_var( $wpdb->prepare( "SELECT attribute_label FROM " . $wpdb->prefix . "jigoshop_attribute_taxonomies WHERE attribute_id = %d", $edit ) );
 	?>
 	<div class="wrap jigoshop">
 		<div class="icon32 icon32-attributes" id="icon-jigoshop"><br/></div>
@@ -132,7 +132,7 @@ function jigoshop_edit_attribute() {
 	    			<div class="form-wrap">
 	    				<h3><?php _e('Edit Attribute','jigoshop') ?></h3>
 	    				<p><?php _e('Attribute taxonomy names cannot be changed; you may only change an attributes type.','jigoshop') ?></p>
-	    				<form action="admin.php?page=jigoshop_attributes&amp;edit=<?php echo $edit; ?>" method="post">
+	    				<form action="admin.php?page=jigoshop_attributes&amp;edit=<?php echo esc_attr( $edit ); ?>" method="post">
 							<div class="form-field">
 								<label for="attribute_label"><?php _e('Attribute Label', 'jigoshop'); ?></label>
 								<input name="attribute_label" id="attribute_label" type="text" value="<?php echo esc_attr( $att_label ); ?>" />

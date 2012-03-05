@@ -1,6 +1,33 @@
 <?php
 /**
- * Jigoshop
+ *   ./////////////////////////////.
+ *  //////////////////////////////////
+ *  ///////////    ///////////////////
+ *  ////////     /////////////////////
+ *  //////    ////////////////////////
+ *  /////    /////////    ////////////
+ *  //////     /////////     /////////
+ *  /////////     /////////    ///////
+ *  ///////////    //////////    /////
+ *  ////////////////////////    //////
+ *  /////////////////////    /////////
+ *  ///////////////////    ///////////
+ *  //////////////////////////////////
+ *   `//////////////////////////////`
+ *
+ *
+ * Plugin Name:         Jigoshop
+ * Plugin URI:          http://jigoshop.com/
+ * Description:         Jigoshop, a WordPress eCommerce plugin that works.
+ * Author:              Jigowatt
+ * Author URI:          http://jigowatt.co.uk
+ *
+ * Version:             1.2
+ * Requires at least:   3.2.1
+ * Tested up to:        3.4-alpha-19978
+ *
+ * Text Domain:         jigoshop
+ * Domain Path:         /languages/
  *
  * DISCLAIMER
  *
@@ -8,21 +35,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * Plugin Name:			Jigoshop
- * Plugin URI:			http://jigoshop.com
- * Description:			Jigoshop, a WordPress eCommerce plugin that works.
- * Author:				Jigowatt
- * Author URI:			http://jigowatt.co.uk
- *
- * Version:				1.1.1
- * Requires at least:	3.2.1
- * Tested up to:		3.4-alpha-19978
- *
- * @package				Jigoshop
- * @category			Core
- * @author				Jigowatt
- * @copyright			Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license				http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Core
+ * @author              Jigowatt
+ * @copyright           Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1202290);
@@ -33,6 +50,7 @@ load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) )
 
 include_once( 'classes/abstract/jigoshop_base.class.php' );
 include_once( 'classes/abstract/jigoshop_singleton.php' );
+include_once( 'classes/jigoshop_session.class.php' );
 include_once( 'classes/jigoshop_options.class.php' );
 
 // Load administration & check if we need to install
@@ -68,7 +86,6 @@ include_once( 'classes/jigoshop_orders.class.php' );
 include_once( 'classes/jigoshop_tax.class.php' );
 include_once( 'classes/jigoshop_shipping.class.php' );
 include_once( 'classes/jigoshop_coupons.class.php' );
-include_once( 'classes/jigoshop_session.class.php' );
 
 include_once( 'gateways/gateways.class.php' );
 include_once( 'gateways/gateway.class.php' );
@@ -90,9 +107,9 @@ include_once( 'classes/jigoshop.class.php' );
 include_once( 'classes/jigoshop_cart.class.php' );
 include_once( 'classes/jigoshop_checkout.class.php' );
 
+include_once( 'shortcodes/init.php' );
 include_once( 'widgets/init.php' );
 
-include_once( 'jigoshop_shortcodes.php' );
 include_once( 'jigoshop_templates.php' );
 include_once( 'jigoshop_template_actions.php' );
 include_once( 'jigoshop_emails.php' );
@@ -205,16 +222,7 @@ function jigoshop_get_image_size( $size ) {
 function jigoshop_init() {
 
 	/* ensure nothing is output to the browser prior to this (other than headers) */
-	ob_start();
-
-	jigoshop_session::instance()->test = 'val'; // why are we doing this?	
-	
-	// TODO:  what is this?  seems added since 1.0.  Seriously?  (-JAP-)
-    $array = array(0 => "3.15");
-    foreach ($array as $a) :
-        $an = explode(':', $a);
-    endforeach;
-    
+	ob_start();    
     
 	jigoshop_post_type();						// register taxonomies
 	jigoshop_set_image_sizes();					// called after our Options are loaded
@@ -1006,4 +1014,5 @@ function jigoshop_plugin_loads_first() {
 		update_option( 'active_plugins', $active_plugins );
 	}
 }
-add_action( 'activated_plugin', 'jigoshop_plugin_loads_first', 999 );
+// disconnecting for further testing, breaks 'lazy loader plugins' (-JAP-)
+//add_action( 'activated_plugin', 'jigoshop_plugin_loads_first', 999 );
