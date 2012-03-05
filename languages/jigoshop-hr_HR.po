@@ -1288,7 +1288,7 @@ msgstr "Pratite vašu narudžbu"
 #: widgets/user_login.php:63
 #@ jigoshop
 msgid "My Account"
-msgstr "Moj Račun"
+msgstr "Moj Korisnički Račun"
 
 #: admin/jigoshop-install.php:141
 #@ jigoshop
@@ -1980,7 +1980,7 @@ msgstr "Stranica Zahvale"
 #: admin/jigoshop-admin-settings-options.php:270
 #@ jigoshop
 msgid "My Account Page"
-msgstr "Stranica Računa"
+msgstr "Stranica Korisničkog Računa"
 
 #: admin/jigoshop-admin-settings-options.php:280
 #@ jigoshop
@@ -2562,7 +2562,7 @@ msgstr "Telefonski broj"
 #: classes/jigoshop_checkout.class.php:92
 #@ jigoshop
 msgid "Create an account?"
-msgstr "Kreiraj račun?"
+msgstr "Kreiraj korisnički račun?"
 
 #: classes/jigoshop_checkout.class.php:96
 #@ jigoshop
@@ -2573,12 +2573,12 @@ msgstr "Korisničko ime računa"
 #: classes/jigoshop_checkout.class.php:98
 #@ jigoshop
 msgid "Account password"
-msgstr "Lozinka računa"
+msgstr "Lozinka korisničkog računa"
 
 #: classes/jigoshop_checkout.class.php:100
 #@ jigoshop
 msgid "Save time in the future and check the status of your order by creating an account."
-msgstr "Uštedite vrijeme u budućnosti i provjerite status Vaše narudžbe kreiranjem računa."
+msgstr "Uštedite vrijeme u budućnosti i provjerite status Vaše narudžbe kreiranjem korisničkog računa."
 
 #: classes/jigoshop_checkout.class.php:118
 #@ jigoshop
@@ -2655,12 +2655,12 @@ msgstr "Neispravan e-mail/korisničko ime."
 #: classes/jigoshop_checkout.class.php:376
 #@ jigoshop
 msgid "An account is already registered with that username. Please choose another."
-msgstr "Račun je već kreiran s tim korisničkim imenom. Molim vas odaberite drugo."
+msgstr "Korisnički račun je već kreiran s tim korisničkim imenom. Molim vas odaberite drugo."
 
 #: classes/jigoshop_checkout.class.php:381
 #@ jigoshop
 msgid "An account is already registered with your email address. Please login."
-msgstr "Račun je već kreiran za ovu e-mail adresu. Molim vas prijavite se."
+msgstr "Korisnički račun je već kreiran za ovu e-mail adresu. Molim vas prijavite se."
 
 #: classes/jigoshop_checkout.class.php:386
 #@ jigoshop
