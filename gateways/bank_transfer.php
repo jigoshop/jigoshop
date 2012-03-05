@@ -25,15 +25,15 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
         $this->icon 			= '';
         $this->has_fields 		= false;
 
-		$this->enabled			= $jsOptions::get_option('jigoshop_bank_transfer_enabled');
-		$this->title 			= $jsOptions::get_option('jigoshop_bank_transfer_title');
-		$this->description 		= $jsOptions::get_option('jigoshop_bank_transfer_description');
-		$this->bank_name 		= $jsOptions::get_option('jigoshop_bank_transfer_bank_name');
-		$this->acc_number 		= $jsOptions::get_option('jigoshop_bank_transfer_acc_number');
-		$this->sort_code 		= $jsOptions::get_option('jigoshop_bank_transfer_sort_code');
-		$this->iban 			= $jsOptions::get_option('jigoshop_bank_transfer_iban');
-		$this->bic 				= $jsOptions::get_option('jigoshop_bank_transfer_bic');
-		$this->additional 		= $jsOptions::get_option('jigoshop_bank_transfer_additional');
+		$this->enabled			= $jsOptions->get_option('jigoshop_bank_transfer_enabled');
+		$this->title 			= $jsOptions->get_option('jigoshop_bank_transfer_title');
+		$this->description 		= $jsOptions->get_option('jigoshop_bank_transfer_description');
+		$this->bank_name 		= $jsOptions->get_option('jigoshop_bank_transfer_bank_name');
+		$this->acc_number 		= $jsOptions->get_option('jigoshop_bank_transfer_acc_number');
+		$this->sort_code 		= $jsOptions->get_option('jigoshop_bank_transfer_sort_code');
+		$this->iban 			= $jsOptions->get_option('jigoshop_bank_transfer_iban');
+		$this->bic 				= $jsOptions->get_option('jigoshop_bank_transfer_bic');
+		$this->additional 		= $jsOptions->get_option('jigoshop_bank_transfer_additional');
 
 		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
 		
