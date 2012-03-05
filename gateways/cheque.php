@@ -1,6 +1,6 @@
 <?php
 /**
- * Cheque Payment Gateway (BETA)
+ * Cheque Payment Gateway
  *
  * DISCLAIMER
  *
@@ -22,7 +22,7 @@ function add_cheque_gateway( $methods ) {
 	$methods[] = 'jigoshop_cheque';
 	return $methods;
 }
-add_filter( 'jigoshop_payment_gateways', 'add_cheque_gateway' );
+add_filter( 'jigoshop_payment_gateways', 'add_cheque_gateway', 5 );
 
 
 class jigoshop_cheque extends jigoshop_payment_gateway {
@@ -31,7 +31,15 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 	
 		$jsOptions = Jigoshop_Options::instance();
 		
-//		$jsOptions->install_new_options( 'Payment Gateways', $this->get_default_options() );
+		$jsOptions->add_option('jigoshop_cheque_enabled', 'yes');
+		$jsOptions->add_option('jigoshop_cheque_title', __('Cheque Payment', 'jigoshop') );
+		$jsOptions->add_option('jigoshop_cheque_description', __('Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'jigoshop'));
+		
+		// NOTE: The above add_options are used for now.  When the gateway is converted to using Jigoshop_Options class
+		// sometime post Jigoshop 1.2, they won't be needed and only the following commented out line will be used
+		
+//		$jsOptions->install_new_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
+		
 		
         $this->id				= 'cheque';
         $this->icon 			= '';
@@ -42,14 +50,17 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 		$this->description 		= $jsOptions->get_option('jigoshop_cheque_description');
 
 		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
-    	add_action( 'thankyou_cheque', array( &$this, 'thankyou_page' ) );
-    	
+    	add_action('thankyou_cheque', array(&$this, 'thankyou_page'));
     }
+
 
 	/**
 	 * Default Option settings for WordPress Settings API using the Jigoshop_Options class
 	 *
-	 * These should be installed on the Jigoshop_Options 'Shipping' tab
+	 * These should be installed on the Jigoshop_Options 'Payment Gateways' tab
+	 *
+	 * NOTE: these are currently not used in Jigoshop 1.2 or less.  They will be implemented when all Gateways are
+	 * converted for full Jigoshop_Options use post Jigoshop 1.2.
 	 *
 	 */	
 	public function get_default_options() {
@@ -93,10 +104,14 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 
 		return $defaults;
 	}
-	
+
+
 	/**
 	 * Admin Panel Options
 	 * - Options for bits like 'title' and availability on a country-by-country basis
+	 *
+	 * NOTE: this will be deprecated post Jigoshop 1.2 and no longer required for Admin options display
+	 *
 	 **/
 	public function admin_options() {
 		$jsOptions = Jigoshop_Options::instance();
@@ -127,6 +142,7 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
     	<?php
     }
 
+
 	/**
 	* There are no payment fields for cheques, but we want to show the description if set.
 	**/
@@ -134,19 +150,25 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 		if ($this->description) echo wpautop(wptexturize($this->description));
 	}
 
+
 	function thankyou_page() {
 		if ($this->description) echo wpautop(wptexturize($this->description));
 	}
 
+
 	/**
 	 * Admin Panel Options Processing
 	 * - Saves the options to the DB
+	 *
+	 * NOTE: this will be deprecated post Jigoshop 1.2 and no longer required for Admin options saving
+	 *
 	 **/
     public function process_admin_options() {
    		if(isset($_POST['jigoshop_cheque_enabled'])) Jigoshop_Options::instance()->set_option('jigoshop_cheque_enabled', 	jigowatt_clean($_POST['jigoshop_cheque_enabled']));
    		if(isset($_POST['jigoshop_cheque_title'])) Jigoshop_Options::instance()->set_option('jigoshop_cheque_title', 	jigowatt_clean($_POST['jigoshop_cheque_title']));
    		if(isset($_POST['jigoshop_cheque_description'])) Jigoshop_Options::instance()->set_option('jigoshop_cheque_description', 	jigowatt_clean($_POST['jigoshop_cheque_description']));
     }
+
 
 	/**
 	 * Process the payment and return the result
