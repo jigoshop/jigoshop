@@ -711,7 +711,7 @@ class Jigoshop_Options {
 		*/
 		self::$default_options[] = array( 'type' => 'heading', 'name' => __('Images', 'jigoshop') );
 		
-		self::$default_options[] = array( 'name' => __('Image Options', 'jigoshop'), 'type' => 'title','desc' => __('Large variations from the defaults could require CSS modifications in your Theme.','jigoshop') );
+		self::$default_options[] = array( 'name' => __('Image Options', 'jigoshop'), 'type' => 'title', 'desc' => __('<p>Large variations from the defaults could require CSS modifications in your Theme.</p>','jigoshop') );
 		
 		self::$default_options[] = array(
 			'name' 		=> __('Tiny Image Width','jigoshop'),
@@ -1080,6 +1080,51 @@ class Jigoshop_Options {
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
 			)
+		);
+		
+		self::$default_options[] = array(
+			'name'		=> __('Jigoshop Checkbox Testing','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_checkbox_test',
+			'std' 		=> false,
+			'type' 		=> 'checkbox'
+		);
+		
+		self::$default_options[] = array(
+			'name'		=> __('Display Sidebar on these pages:','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_multicheck_test',
+			'type' 		=> 'multicheck',
+			"std"		=> array('shop' => true,'category' => false,'single' => true,'cart' => false,'checkout' => true,'account' => true),
+			"choices"	=> array(
+				"shop"			=> "Shop",
+				"category"		=> "Product Categories",
+				"single"		=> "Single Products",
+				"cart"			=> "Cart",
+				"checkout"		=> "Checkout",
+				"account"		=> "Account Pages",
+			),
+			'args'		=> array( 'horizontal' )
+		);
+		
+		self::$default_options[] = array(
+			'name'		=> __('We could also display a multicheck this way:','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_multicheck_test_vert',
+			'type' 		=> 'multicheck',
+			"std"		=> array('shop' => false,'category' => true,'single' => false,'cart' => true,'checkout' => false,'account' => true),
+			"choices"	=> array(
+				"shop"			=> "Shop",
+				"category"		=> "Product Categories",
+				"single"		=> "Single Products",
+				"cart"			=> "Cart",
+				"checkout"		=> "Checkout",
+				"account"		=> "Account Pages",
+			),
+			'args'		=> array( 'vertical' )
 		);
 		
 		/**

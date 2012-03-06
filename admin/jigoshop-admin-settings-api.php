@@ -226,6 +226,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 							<?php do_settings_sections( JIGOSHOP_OPTIONS ); ?>
 							
 							<?php $tabname = $this->get_current_tab_name(); ?>
+							<?php Jigoshop_Options::set_option( 'jigoshop_settings_current_tabname', $tabname ); ?>
 							
 							<p class="submit"><input name="Submit" type="submit" class="button-primary" value="<?php echo sprintf( __( "Save %s Changes", 'jigoshop' ), $tabname ); ?>" /></p>
 						
@@ -336,55 +337,88 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	* @since 1.2
 	*/
 	public function validate_settings( $input ) {
-
+		
 		$defaults = $this->our_parser->these_options;
 		$current_options = Jigoshop_Options::get_current_options();
-		
 		$current_options['validation-error'] = true; // if no errors in validation, we will reset this to false
-		$current_options['validation-message'] = __( "There was an error validating the data. No update occured!", 'jigoshop' );
-		
+		$current_options['validation-message'] = 
+			__( "There was an error validating the data. No update occured!", 'jigoshop' );
 		$valid_input = $current_options;	// we start with the current options, plus the error flag and message
 		
-		if ( ! empty( $input )) foreach ( $input as $id => $value ) {
-			foreach ( $defaults as $index => $option ) {
-				if ( isset( $option['id'] ) && $option['id'] == $id ) {
+		
+		// Find the current TAB we are working with and use it's options
+		$this_section = sanitize_title( Jigoshop_Options::get_option( 'jigoshop_settings_current_tabname' ) );
+		$tab = $this->our_parser->tabs[$this_section];	// get all the options on this TAB
+		
+		
+		// with each option, get it's type and validate it
+		foreach ( $tab as $index => $setting ) {
+			if ( isset( $setting['id'] ) ) {
+				foreach ( $defaults as $default_index => $option ) {
+					if ( in_array( $setting['id'], $option ) ) {
+						break;
+					}
+				}
+				$value = isset( $input[$setting['id']] ) ? $input[$setting['id']] : null ;
 				
-					switch ( $option['type'] ) {
-					
-					case 'multi_select_countries' :
+				// we have a $setting
+				// $value has the WordPress user submitted value for this $setting
+				// $option has this $setting parameters
+				// validate for $option 'type' checking for a submitted $value
+				switch ( $option['type'] ) {
+				case 'multi_select_countries' :
+					if ( isset( $value ) ) {
 						$countries = jigoshop_countries::$countries;
 						asort( $countries );
 						$selected = array();
 						foreach ( $countries as $key => $val ) {
-							if ( array_key_exists( $key, $value ) ) {
+							if ( array_key_exists( $key, (array)$value ) ) {
 								$selected[] = $key;
 							}
 						}
-						$valid_input[$id] = $selected;
-						break;
-						
-//  					case 'checkbox' :
-//  						$valid_input[$id] = (!empty($value) ? 'yes' : 'no');
-//  						break;
-						
-					case 'text' :		/* this needs validating */
-					case 'textarea' :	/* this needs validating */
-					default :
-						$valid_input[$id] = $value;
-						break;
+						$valid_input[$setting['id']] = $selected;
 					}
+					break;
+					
+				case 'checkbox' :
+					// there will be no $value for a false checkbox, set it now
+					$valid_input[$setting['id']] = isset( $value ) ? true : false;
+					break;
+					
+				case 'multicheck' :
+					$selected = array();
+					foreach ( $option['choices'] as $key => $val ) {
+						if ( isset( $value[$key] ) ) {
+							$selected[$key] = true;
+						} else {
+							$selected[$key] = false;
+						}
+					}
+					$valid_input[$setting['id']] = $selected;
+					break;
+					
+				case 'text' :		/* this needs validating */
+				case 'textarea' :	/* this needs validating */
+				default :
+					if ( isset( $value ) ) {
+						$valid_input[$setting['id']] = $value;
+					}
+					break;
 				}
 			}
 		}
 		
+		// both coupons and tax classes should be updated
+		// they will do nothing if this is not the right TAB
 		if ( $result = $this->get_updated_coupons() ) $valid_input['jigoshop_coupons'] = $result;
 		if ( $result = $this->get_updated_tax_classes() ) $valid_input['jigoshop_tax_rates'] = $result;
 		
-		do_action( 'jigoshop_update_options' );  /* might need this for gateways */
+		// Allow any hooked in option updating, currently gateways
+		do_action( 'jigoshop_update_options' );
 		
 		// clear the error flag and set successful message
 		$valid_input['validation-error'] = false;
-		$valid_input['validation-message'] = sprintf( __( "'<strong>%s</strong>' settings were updated successfully.", 'jigoshop' ), $this->get_current_tab_name() );
+		$valid_input['validation-message'] = sprintf( __( "'<strong>%s</strong>' settings were updated successfully.", 'jigoshop' ), Jigoshop_Options::get_option( 'jigoshop_settings_current_tabname' ) );
 		
 		return $valid_input;	// send it back to WordPress for saving
 		
@@ -679,8 +713,8 @@ class Jigoshop_Options_Parser {
 			if ( isset( $item['id'] ) ) $item['id'] = sanitize_title( $item['id'] );
 			
 			if ( $item['type'] == "heading" ) {
-				$tab_headers[] = $item['name'];
 				$tab_name = sanitize_title( $item['name'] );
+				$tab_headers[$tab_name] = $item['name'];
 				continue;
 			}
 						
@@ -755,7 +789,7 @@ class Jigoshop_Options_Parser {
 			$display .= '<input
 				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 				id="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
-				class="jigoshop-input"
+				class="jigoshop-input jigoshop-text"
 				type="text"
 				value="'.$data[$item['id']].'" />';
 			break;
@@ -805,14 +839,14 @@ class Jigoshop_Options_Parser {
 		case 'text':
 			$display .= '<input
 				id="'.$item['id'].'"
-				class="jigoshop-input"
+				class="jigoshop-input jigoshop-text"
 				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 				type="'.$item['type'].'"
 				value="'.$data[$item['id']].'" />';
 			break;
 
 		case 'textarea':
-			$cols = '15';
+			$cols = '50';
 			$ta_value = '';
 			if ( isset( $item['choices'] ) ) {
 				$ta_options = $item['choices'];
@@ -823,10 +857,10 @@ class Jigoshop_Options_Parser {
 			$ta_value = stripslashes( $data[$item['id']] );
 			$display .= '<textarea
 				id="'.$item['id'].'"
-				class="jigoshop-input"
+				class="jigoshop-input jigoshop-textarea"
 				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 				cols="'.$cols.'"
-				rows="8">'.$ta_value.'</textarea>';
+				rows="4">'.$ta_value.'</textarea>';
 			break;
 
 		case "radio":
@@ -835,7 +869,7 @@ class Jigoshop_Options_Parser {
 					class="jigoshop-input jigoshop-radio"
 					name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 					type="radio"
-					value="'.$option.'" '.checked( $data[$item['id']], $option, '0' ).' /><label>'.$name.'</label>';
+					value="'.$option.'" '.checked( $data[$item['id']], $option, false ).' /><label>'.$name.'</label>';
 			}
 			break;
 
@@ -844,20 +878,40 @@ class Jigoshop_Options_Parser {
 				id="'.$item['id'].'"
 				type="checkbox"
 				class="jigoshop-input jigoshop-checkbox"
-				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"'
-				.checked($data[$item['id']], 'yes', false).' />';
+				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
+				'.checked($data[$item['id']], true, false).' />';
 			break;
 
 		case 'multicheck':
 			$multi_stored = $data[$item['id']];
-			foreach ( $item['choices'] as $key => $option ) {
-				$display .= '<input
-					id="'.$item['id'].'_'.$key.'"
-					class="jigoshop-input jigoshop-multi-checkbox"
-					name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']['.$key.']"
-					type="checkbox"
-					'.checked( $multi_stored[$key], "1", "0" ).' />
-					<label for="'.$item['id'].'_'.$key.'">'.$option.'</label>';
+			
+			if ( isset( $item['args'] ) && in_array( 'horizontal', $item['args'] ) ) {
+			
+				$display .= '<div class="jigoshop-multi-checkbox-horz">';
+				foreach ( $item['choices'] as $key => $option ) {
+					$display .= '<input
+						id="'.$item['id'].'_'.$key.'"
+						class="jigoshop-input"
+						name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']['.$key.']"
+						type="checkbox"
+						'.checked( $multi_stored[$key], true, false ).' />
+						<label for="'.$item['id'].'_'.$key.'">'.$option.'</label>';
+				}
+				$display .= '</div>';
+				
+			} else if ( isset( $item['args'] ) && in_array( 'vertical', $item['args'] ) ) {
+			
+				$display .= '<ul class="jigoshop-multi-checkbox-vert">';
+				foreach ( $item['choices'] as $key => $option ) {
+					$display .= '<li><input
+						id="'.$item['id'].'_'.$key.'"
+						class="jigoshop-input"
+						name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']['.$key.']"
+						type="checkbox"
+						'.checked( $multi_stored[$key], true, false ).' />
+						<label for="'.$item['id'].'_'.$key.'">'.$option.'</label></li>';
+				}
+				$display .= '</ul>';
 			}
 			break;
 
