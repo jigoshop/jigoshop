@@ -159,7 +159,9 @@ if (!function_exists('jigoshop_show_product_thumbnails')) {
 
 		$thumb_id = get_post_thumbnail_id();
 		$small_thumbnail_size = jigoshop_get_image_size( 'shop_thumbnail' );
-		$args = array( 'post_type' => 'attachment', 'numberposts' => -1, 'post_status' => null, 'post_parent' => $post->ID, 'orderby' => 'menu_order', 'order' => 'asc' );
+
+		$args = array( 'post_type' => 'attachment', 'post_mime_type' => 'image', 'numberposts' => -1, 'post_status' => null, 'post_parent' => $post->ID, 'orderby' => 'id', 'order' => 'asc' );
+		
 		$attachments = get_posts($args);
 		if ($attachments) :
 			$loop = 0;
@@ -609,7 +611,7 @@ if (!function_exists('jigoshop_related_products')) {
 		$per_page = $posts_per_page;
 		$columns = $post_columns;
 
-		$related = $_product->get_related();
+		$related = $_product->get_related( $posts_per_page );
 		if (sizeof($related)>0) :
 			echo '<div class="related products"><h2>'.__('Related Products', 'jigoshop').'</h2>';
 			$args = array(

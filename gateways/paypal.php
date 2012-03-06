@@ -249,9 +249,9 @@ class paypal extends jigoshop_payment_gateway {
 		$paypal_args['item_name_'.$item_loop] = __('Shipping cost', 'jigoshop');
 		$paypal_args['quantity_'.$item_loop] = '1';
 
-        $shipping_tax = ($order->order_shipping_tax ? $order->order_shipping_tax : 0);
+        $shipping_tax = (float)($order->order_shipping_tax ? $order->order_shipping_tax : 0);
 
-		$paypal_args['amount_'.$item_loop] = (get_option('jigoshop_prices_include_tax') == 'yes' ? number_format($order->order_shipping + $shipping_tax, 2) : number_format($order->order_shipping, 2));
+		$paypal_args['amount_'.$item_loop] = (get_option('jigoshop_prices_include_tax') == 'yes' ? number_format((float)$order->order_shipping + $shipping_tax, 2) : number_format((float)$order->order_shipping, 2));
 
 		$paypal_args_array = array();
 

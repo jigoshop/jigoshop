@@ -22,7 +22,30 @@
  *
  * @since 		1.0
  */
+
 function install_jigoshop() {
+
+	global $wpdb;
+
+	if (function_exists('is_multisite') && is_multisite()) {
+
+		if (isset($_GET['networkwide']) && ($_GET['networkwide'] == 1)) {
+			$old_blog = $wpdb->blogid;
+			$blogids = $wpdb->get_col($wpdb->prepare("SELECT blog_id FROM $wpdb->blogs"));
+			foreach ($blogids as $blog_id) {
+				switch_to_blog($blog_id);
+				_install_jigoshop();
+			}
+			switch_to_blog($old_blog);
+			return;
+		}
+	}
+
+	_install_jigoshop();
+
+}
+
+function _install_jigoshop() {
 
 	if( ! get_site_option('jigoshop_db_version') )  {
 
@@ -161,14 +184,14 @@ function jigoshop_create_single_page( $page_slug, $page_option, $page_data ) {
     global $wpdb;
 
     $slug = esc_sql( _x( $page_slug, 'page_slug', 'jigoshop' ) );
-	$page_found = $wpdb->get_var("SELECT ID FROM " . $wpdb->posts . " WHERE post_name = '$slug' AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1");
+		$page_found = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1", $slug ) );
 	$page_options_id = get_option( $page_option );
 
     if ( ! $page_found )
     {
 		$create_page = true;
 		if ( $page_options_id <> '' ) :
-			$page_found = $wpdb->get_var( "SELECT ID FROM " . $wpdb->posts . " WHERE ID = '$page_options_id' AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1" );
+			$page_found = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE ID = %d AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1", $page_options_id ) );
 			if ( $page_found ) $create_page = false;
 		endif;
 		if ( $create_page ) :

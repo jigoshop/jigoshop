@@ -1,6 +1,33 @@
 <?php
 /**
- * Jigoshop
+ *   ./////////////////////////////.
+ *  //////////////////////////////////
+ *  ///////////    ///////////////////
+ *  ////////     /////////////////////
+ *  //////    ////////////////////////
+ *  /////    /////////    ////////////
+ *  //////     /////////     /////////
+ *  /////////     /////////    ///////
+ *  ///////////    //////////    /////
+ *  ////////////////////////    //////
+ *  /////////////////////    /////////
+ *  ///////////////////    ///////////
+ *  //////////////////////////////////
+ *   `//////////////////////////////`
+ *
+ *
+ * Plugin Name:         Jigoshop
+ * Plugin URI:          http://jigoshop.com/
+ * Description:         Jigoshop, a WordPress eCommerce plugin that works.
+ * Author:              Jigowatt
+ * Author URI:          http://jigowatt.co.uk
+ *
+ * Version:             1.2
+ * Requires at least:   3.2.1
+ * Tested up to:        3.4-alpha-19978
+ *
+ * Text Domain:         jigoshop
+ * Domain Path:         /languages/
  *
  * DISCLAIMER
  *
@@ -8,24 +35,14 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * Plugin Name:			Jigoshop
- * Plugin URI:			http://jigoshop.com
- * Description:			Jigoshop, a WordPress eCommerce plugin that works.
- * Author:				Jigowatt
- * Author URI:			http://jigowatt.co.uk
- *
- * Version:				1.1
- * Requires at least:	3.1
- * Tested up to:		3.3.1
- *
- * @package				Jigoshop
- * @category			Core
- * @author				Jigowatt
- * @copyright			Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license				http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Core
+ * @author              Jigowatt
+ * @copyright           Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
-if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1202130);
+if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1202280);
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
@@ -35,11 +52,24 @@ if ( is_admin() ) {
 	include_once( 'admin/jigoshop-admin.php' );
 	register_activation_hook( __FILE__, 'install_jigoshop' );
 }
+
+// Add a "Settings" link to the plugins.php page for Jigoshop
+function jigoshop_add_settings_link( $links, $file ) {
+	$this_plugin = plugin_basename( __FILE__ );
+	if( $file == $this_plugin ) {
+		$settings_link = '<a href="admin.php?page=jigoshop_settings">' . __( 'Settings', 'jigoshop' ) . '</a>';
+		array_unshift($links, $settings_link);
+	}
+	return $links;
+}
+add_filter( 'plugin_action_links', 'jigoshop_add_settings_link', 10, 2 );
+
 /**
  * Include core files and classes
  **/
 include_once( 'classes/abstract/jigoshop_base.class.php' );
 include_once( 'classes/abstract/jigoshop_singleton.php' );
+include_once( 'classes/jigoshop_session.class.php' );
 include_once( 'classes/jigoshop_sanitize.class.php' );
 include_once( 'classes/jigoshop_validation.class.php' );
 include_once( 'jigoshop_taxonomy.php' );
@@ -53,7 +83,6 @@ include_once( 'classes/jigoshop_orders.class.php' );
 include_once( 'classes/jigoshop_tax.class.php' );
 include_once( 'classes/jigoshop_shipping.class.php' );
 include_once( 'classes/jigoshop_coupons.class.php' );
-include_once( 'classes/jigoshop_session.class.php' );
 
 include_once( 'gateways/gateways.class.php' );
 include_once( 'gateways/gateway.class.php' );
@@ -75,9 +104,9 @@ include_once( 'classes/jigoshop.class.php' );
 include_once( 'classes/jigoshop_cart.class.php' );
 include_once( 'classes/jigoshop_checkout.class.php' );
 
+include_once( 'shortcodes/init.php' );
 include_once( 'widgets/init.php' );
 
-include_once( 'jigoshop_shortcodes.php' );
 include_once( 'jigoshop_templates.php' );
 include_once( 'jigoshop_template_actions.php' );
 include_once( 'jigoshop_emails.php' );
@@ -189,13 +218,6 @@ function jigoshop_init() {
 	/* ensure nothing is output to the browser prior to this (other than headers) */
 	ob_start();
 
-	jigoshop_session::instance()->test = 'val';
-
-    $array = array(0 => "3.15");
-
-    foreach ($array as $a) :
-        $an = explode(':', $a);
-    endforeach;
 	jigoshop_post_type();	/* register taxonomies */
 
 	// add Singletons here so that the taxonomies are loaded before calling them.
@@ -316,7 +338,7 @@ add_action('template_redirect', 'jigoshop_frontend_scripts');
 */
 function jigoshop_demo_store() {
 
-	if (get_option('jigoshop_demo_store')=='yes') :
+	if ( get_option('jigoshop_demo_store')=='yes' && is_jigoshop() ) :
 
 		echo '<p class="demo_store">'.__('This is a demo store for testing purposes &mdash; no orders shall be fulfilled.', 'jigoshop').'</p>';
 
@@ -631,7 +653,7 @@ function jigoshop_price( $price, $args = array() ) {
                 $return = $currency_symbol . $price . $currency_code;
             break;
             case 'symbol_code_space' :
-                $return = $currency_code . ' ' . $price . ' ' . $currency_code;
+                $return = $currency_symbol . ' ' . $price . ' ' . $currency_code;
             break;
         endswitch;
 
@@ -983,4 +1005,5 @@ function jigoshop_plugin_loads_first() {
 		update_option( 'active_plugins', $active_plugins );
 	}
 }
-add_action( 'activated_plugin', 'jigoshop_plugin_loads_first', 999 );
+// disconnecting for further testing, breaks 'lazy loader plugins' (-JAP-)
+//add_action( 'activated_plugin', 'jigoshop_plugin_loads_first', 999 );
