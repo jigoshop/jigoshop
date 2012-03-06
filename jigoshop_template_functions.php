@@ -232,7 +232,7 @@ if (!function_exists('jigoshop_template_single_meta')) {
 	function jigoshop_template_single_meta( $post, $_product ) {
 
 		echo '<div class="product_meta">';
-		if (Jigoshop_Options::instance()->get_option('jigoshop_enable_sku')=='yes' && !empty($_product->sku)) :
+		if (Jigoshop_Options::get_option('jigoshop_enable_sku')=='yes' && !empty($_product->sku)) :
 			echo '<div class="sku">SKU: ' . $_product->sku . '</div>';
 		endif;
 
@@ -246,7 +246,7 @@ if (!function_exists('jigoshop_template_single_meta')) {
 if (!function_exists('jigoshop_template_single_sharing')) {
 	function jigoshop_template_single_sharing( $post, $_product ) {
 
-		if (Jigoshop_Options::instance()->get_option('jigoshop_sharethis')) :
+		if (Jigoshop_Options::get_option('jigoshop_sharethis')) :
 			echo '<div class="social">
 				<iframe src="https://www.facebook.com/plugins/like.php?href='.urlencode(get_permalink($post->ID)).'&amp;layout=button_count&amp;show_faces=false&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
 				<span class="st_twitter"></span><span class="st_email"></span><span class="st_sharethis"></span><span class="st_plusone_button"></span>
@@ -342,7 +342,6 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 	function jigoshop_variable_add_to_cart() {
 
 		global $post, $_product;
-		$jsOptions = Jigoshop_Options::instance();
 		
 		$attributes = $_product->get_available_attributes_variations();
 
@@ -374,7 +373,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
                 	$a_weight = '
                     	<tr class="weight">
                     		<th>Weight</th>
-                    		<td>'.$variation->get_weight().$jsOptions->get_option('jigoshop_weight_unit').'</td>
+                    		<td>'.$variation->get_weight().Jigoshop_Options::get_option('jigoshop_weight_unit').'</td>
                     	</tr>';
             	}
 
@@ -382,7 +381,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 	            	$a_length = '
 	                	<tr class="length">
 	                		<th>Length</th>
-	                		<td>'.$variation->get_length().$jsOptions->get_option('jigoshop_dimension_unit').'</td>
+	                		<td>'.$variation->get_length().Jigoshop_Options::get_option('jigoshop_dimension_unit').'</td>
 	                	</tr>';
                 }
 
@@ -390,7 +389,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 	                $a_width = '
 	                	<tr class="width">
 	                		<th>Width</th>
-	                		<td>'.$variation->get_width().$jsOptions->get_option('jigoshop_dimension_unit').'</td>
+	                		<td>'.$variation->get_width().Jigoshop_Options::get_option('jigoshop_dimension_unit').'</td>
 	                	</tr>';
                 }
 
@@ -398,7 +397,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 	                $a_height = '
 	                	<tr class="height">
 	                		<th>Height</th>
-	                		<td>'.$variation->get_height().$jsOptions->get_option('jigoshop_dimension_unit').'</td>
+	                		<td>'.$variation->get_height().Jigoshop_Options::get_option('jigoshop_dimension_unit').'</td>
 	                	</tr>
 	                ';
             	}
@@ -595,7 +594,7 @@ if (!function_exists('jigoshop_get_image_placeholder')) {
  **/
 if (!function_exists('jigoshop_output_related_products')) {
 	function jigoshop_output_related_products() {
-		if (Jigoshop_Options::instance()->get_option ('jigoshop_enable_related_products') != 'no')
+		if (Jigoshop_Options::get_option ('jigoshop_enable_related_products') != 'no')
 		// 2 Related Products in 2 columns
 		jigoshop_related_products( 2, 2 );
 	}
@@ -779,7 +778,7 @@ if (!function_exists('jigoshop_login_form')) {
 if (!function_exists('jigoshop_checkout_login_form')) {
 	function jigoshop_checkout_login_form() {
 
-		if (is_user_logged_in() || Jigoshop_Options::instance()->get_option('jigoshop_enable_guest_login') != 'yes') return;
+		if (is_user_logged_in() || Jigoshop_Options::get_option('jigoshop_enable_guest_login') != 'yes') return;
 
 		?><p class="info"><?php _e('Already registered?', 'jigoshop'); ?> <a href="#" class="showlogin"><?php _e('Click here to login', 'jigoshop'); ?></a></p><?php
 
@@ -801,7 +800,7 @@ if (!function_exists('jigoshop_breadcrumb')) {
 
 	 	$prepend = '';
 
-	 	if ( Jigoshop_Options::instance()->get_option('jigoshop_prepend_shop_page_to_urls')=="yes" && jigoshop_get_page_id('shop') && get_option('page_on_front') !== jigoshop_get_page_id('shop') )
+	 	if ( Jigoshop_Options::get_option('jigoshop_prepend_shop_page_to_urls')=="yes" && jigoshop_get_page_id('shop') && get_option('page_on_front') !== jigoshop_get_page_id('shop') )
 	 		$prepend =  $before . '<a href="' . esc_url( jigoshop_cart::get_shop_url() ). '">' . get_the_title( jigoshop_get_page_id('shop') ) . '</a> ' . $after . $delimiter;
 
 
@@ -824,7 +823,7 @@ if (!function_exists('jigoshop_breadcrumb')) {
 
 	 		elseif ( is_tax('product_cat') ) :
 
-	 			//echo $before . '<a href="' . get_post_type_archive_link('product') . '">' . ucwords(Jigoshop_Options::instance()->get_option('jigoshop_shop_slug')) . '</a>' . $after . $delimiter;
+	 			//echo $before . '<a href="' . get_post_type_archive_link('product') . '">' . ucwords(Jigoshop_Options::get_option('jigoshop_shop_slug')) . '</a>' . $after . $delimiter;
 
 	 			$term = get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) );
 
@@ -868,7 +867,7 @@ if (!function_exists('jigoshop_breadcrumb')) {
 
 	 		elseif ( is_post_type_archive('product') && get_option('page_on_front') !== jigoshop_get_page_id('shop') ) :
 
-	 			$_name = jigoshop_get_page_id('shop') ? get_the_title( jigoshop_get_page_id('shop') ) : ucwords(Jigoshop_Options::instance()->get_option('jigoshop_shop_slug'));
+	 			$_name = jigoshop_get_page_id('shop') ? get_the_title( jigoshop_get_page_id('shop') ) : ucwords(Jigoshop_Options::get_option('jigoshop_shop_slug'));
 
 	 			if (is_search()) :
 
@@ -884,7 +883,7 @@ if (!function_exists('jigoshop_breadcrumb')) {
 
 				if ( get_post_type() == 'product' ) :
 
-	       			//echo $before . '<a href="' . get_post_type_archive_link('product') . '">' . ucwords(Jigoshop_Options::instance()->get_option('jigoshop_shop_slug')) . '</a>' . $after . $delimiter;
+	       			//echo $before . '<a href="' . get_post_type_archive_link('product') . '">' . ucwords(Jigoshop_Options::get_option('jigoshop_shop_slug')) . '</a>' . $after . $delimiter;
 	       			echo $prepend;
 
 	       			if ($terms = get_the_terms( $post->ID, 'product_cat' )) :

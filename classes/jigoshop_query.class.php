@@ -115,7 +115,7 @@ class jigoshop_catalog_query extends Jigoshop_Singleton {
 		if ( ! $this->is_product_list() ) return $request;
 
 		$request['post_status'] = 'publish';
-		$request['posts_per_page'] = apply_filters( 'loop_shop_per_page', Jigoshop_Options::instance()->get_option( 'jigoshop_catalog_per_page' ));
+		$request['posts_per_page'] = apply_filters( 'loop_shop_per_page', Jigoshop_Options::get_option( 'jigoshop_catalog_per_page' ));
 
 		// establish any filters for orderby, order and anything else added to the filter
 		$filters = array();

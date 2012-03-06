@@ -203,12 +203,12 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 				
 				<?php
 					if ( isset( $_GET['settings-updated'] ) ) {
-						if ( Jigoshop_Options::instance()->get_option( 'validation-error' ) ) {
-							echo '<div class="error"><p>'.Jigoshop_Options::instance()->get_option( 'validation-message' ).'</p></div>';
-							Jigoshop_Options::instance()->set_option( 'validation-error', false );
-							Jigoshop_Options::instance()->set_option( 'validation-message', '' );
+						if ( Jigoshop_Options::get_option( 'validation-error' ) ) {
+							echo '<div class="error"><p>'.Jigoshop_Options::get_option( 'validation-message' ).'</p></div>';
+							Jigoshop_Options::set_option( 'validation-error', false );
+							Jigoshop_Options::set_option( 'validation-message', '' );
 						} else {
-							echo "<div class='updated'><p>".Jigoshop_Options::instance()->get_option( 'validation-message' )."</p></div>";
+							echo "<div class='updated'><p>".Jigoshop_Options::get_option( 'validation-message' )."</p></div>";
 						}
 					}
 				?>
@@ -1047,7 +1047,7 @@ class Jigoshop_Options_Parser {
 	
 		$_tax = new jigoshop_tax();
 		$tax_classes = $_tax->get_tax_classes();
-		$tax_rates = Jigoshop_Options::instance()->get_option( 'jigoshop_tax_rates' );
+		$tax_rates = Jigoshop_Options::get_option( 'jigoshop_tax_rates' );
 		$applied_all_states = array();
 		
 		ob_start();

@@ -29,25 +29,24 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 
 	public function __construct() {
 	
-		$jsOptions = Jigoshop_Options::instance();
 		
-		$jsOptions->add_option('jigoshop_cheque_enabled', 'yes');
-		$jsOptions->add_option('jigoshop_cheque_title', __('Cheque Payment', 'jigoshop') );
-		$jsOptions->add_option('jigoshop_cheque_description', __('Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'jigoshop'));
+		Jigoshop_Options::add_option('jigoshop_cheque_enabled', 'yes');
+		Jigoshop_Options::add_option('jigoshop_cheque_title', __('Cheque Payment', 'jigoshop') );
+		Jigoshop_Options::add_option('jigoshop_cheque_description', __('Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'jigoshop'));
 		
 		// NOTE: The above add_options are used for now.  When the gateway is converted to using Jigoshop_Options class
 		// sometime post Jigoshop 1.2, they won't be needed and only the following commented out line will be used
 		
-//		$jsOptions->install_new_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
+//		Jigoshop_Options::install_new_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
 		
 		
         $this->id				= 'cheque';
         $this->icon 			= '';
         $this->has_fields 		= false;
 
-		$this->enabled			= $jsOptions->get_option('jigoshop_cheque_enabled');
-		$this->title 			= $jsOptions->get_option('jigoshop_cheque_title');
-		$this->description 		= $jsOptions->get_option('jigoshop_cheque_description');
+		$this->enabled			= Jigoshop_Options::get_option('jigoshop_cheque_enabled');
+		$this->title 			= Jigoshop_Options::get_option('jigoshop_cheque_title');
+		$this->description 		= Jigoshop_Options::get_option('jigoshop_cheque_description');
 
 		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
     	add_action('thankyou_cheque', array(&$this, 'thankyou_page'));
@@ -114,28 +113,27 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 	 *
 	 **/
 	public function admin_options() {
-		$jsOptions = Jigoshop_Options::instance();
     	?>
     	<thead><tr><th scope="col" width="200px"><?php _e('Cheque Payment', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('Allows cheque payments. Allows you to make test purchases without having to use the sandbox area of a payment gateway. Quite useful for demonstrating to clients and for testing order emails and the \'success\' pages etc.', 'jigoshop'); ?></th></tr></thead>
     	<tr>
 	        <td class="titledesc"><?php _e('Enable Cheque Payment', 'jigoshop') ?>:</td>
 	        <td class="forminp">
 		        <select name="jigoshop_cheque_enabled" id="jigoshop_cheque_enabled" style="min-width:100px;">
-		            <option value="yes" <?php if ($jsOptions->get_option('jigoshop_cheque_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if ($jsOptions->get_option('jigoshop_cheque_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
+		            <option value="yes" <?php if (Jigoshop_Options::get_option('jigoshop_cheque_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
+		            <option value="no" <?php if (Jigoshop_Options::get_option('jigoshop_cheque_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
 		        </select>
 	        </td>
 	    </tr>
 	    <tr>
 	        <td class="titledesc"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?>:</td>
 	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_cheque_title" id="jigoshop_cheque_title" value="<?php if ($value = $jsOptions->get_option('jigoshop_cheque_title')) echo $value; else echo 'Cheque Payment'; ?>" />
+		        <input class="input-text" type="text" name="jigoshop_cheque_title" id="jigoshop_cheque_title" value="<?php if ($value = Jigoshop_Options::get_option('jigoshop_cheque_title')) echo $value; else echo 'Cheque Payment'; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
 	        <td class="titledesc"><a href="#" tip="<?php _e('Let the customer know the payee and where they should be sending the cheque too and that their order won\'t be shipping until you receive it.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Customer Message', 'jigoshop') ?>:</td>
 	        <td class="forminp">
-		        <input class="input-text wide-input" type="text" name="jigoshop_cheque_description" id="jigoshop_cheque_description" value="<?php if ($value = $jsOptions->get_option('jigoshop_cheque_description')) echo $value; ?>" />
+		        <input class="input-text wide-input" type="text" name="jigoshop_cheque_description" id="jigoshop_cheque_description" value="<?php if ($value = Jigoshop_Options::get_option('jigoshop_cheque_description')) echo $value; ?>" />
 	        </td>
 	    </tr>
 
@@ -164,9 +162,9 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 	 *
 	 **/
     public function process_admin_options() {
-   		if(isset($_POST['jigoshop_cheque_enabled'])) Jigoshop_Options::instance()->set_option('jigoshop_cheque_enabled', 	jigowatt_clean($_POST['jigoshop_cheque_enabled']));
-   		if(isset($_POST['jigoshop_cheque_title'])) Jigoshop_Options::instance()->set_option('jigoshop_cheque_title', 	jigowatt_clean($_POST['jigoshop_cheque_title']));
-   		if(isset($_POST['jigoshop_cheque_description'])) Jigoshop_Options::instance()->set_option('jigoshop_cheque_description', 	jigowatt_clean($_POST['jigoshop_cheque_description']));
+   		if(isset($_POST['jigoshop_cheque_enabled'])) Jigoshop_Options::set_option('jigoshop_cheque_enabled', 	jigowatt_clean($_POST['jigoshop_cheque_enabled']));
+   		if(isset($_POST['jigoshop_cheque_title'])) Jigoshop_Options::set_option('jigoshop_cheque_title', 	jigowatt_clean($_POST['jigoshop_cheque_title']));
+   		if(isset($_POST['jigoshop_cheque_description'])) Jigoshop_Options::set_option('jigoshop_cheque_description', 	jigowatt_clean($_POST['jigoshop_cheque_description']));
     }
 
 

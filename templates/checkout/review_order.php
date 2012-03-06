@@ -27,7 +27,7 @@
         </thead>
         <tfoot>
             <tr>
-                <?php if (Jigoshop_Options::instance()->get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::get_subtotal_inc_tax()) : ?>
+                <?php if (Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::get_subtotal_inc_tax()) : ?>
                     <td colspan="2"><?php _e('Retail Price', 'jigoshop'); ?></td>
                 <?php else : ?>
                     <td colspan="2"><?php _e('Subtotal', 'jigoshop'); ?></td>
@@ -36,7 +36,7 @@
             </tr>
 
             <?php
-            if (Jigoshop_Options::instance()->get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::get_subtotal_inc_tax()) :
+            if (Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::get_subtotal_inc_tax()) :
                 jigoshop_checkout::get_shipping_dropdown();
                 foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
                     if (jigoshop_cart::is_not_compounded_tax($tax_class)) :
@@ -56,7 +56,7 @@
             else :
                 jigoshop_checkout::get_shipping_dropdown();
             endif;
-            if (Jigoshop_Options::instance()->get_option('jigoshop_calc_taxes') == 'yes') :
+            if (Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes') :
                 if (jigoshop_cart::get_subtotal_inc_tax()) :
                     foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
                         if (!jigoshop_cart::is_not_compounded_tax($tax_class)) :

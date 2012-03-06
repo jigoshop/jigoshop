@@ -27,11 +27,9 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
 	/** constructor */
 	protected function __construct () {
-		
-		$jsOptions = Jigoshop_Options::instance();
-		
-		$this->must_register = ( $jsOptions->get_option('jigoshop_enable_guest_checkout') != 'yes' && !is_user_logged_in() );
-		$this->show_signup = ( $jsOptions->get_option('jigoshop_enable_signup_form') == 'yes' && !is_user_logged_in() );
+				
+		$this->must_register = ( Jigoshop_Options::get_option('jigoshop_enable_guest_checkout') != 'yes' && !is_user_logged_in() );
+		$this->show_signup = ( Jigoshop_Options::get_option('jigoshop_enable_signup_form') == 'yes' && !is_user_logged_in() );
 
 		add_action('jigoshop_checkout_billing',array(&$this,'checkout_form_billing'));
 		add_action('jigoshop_checkout_shipping',array(&$this,'checkout_form_shipping'));
@@ -111,7 +109,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 		// Shipping Details
 //		if (jigoshop_cart::needs_shipping() && !jigoshop_cart::ship_to_billing_address_only()) :
 		// even if not calculating shipping, we still need to display second shipping address for free shipping
-		if (!jigoshop_cart::ship_to_billing_address_only() && Jigoshop_Options::instance()->get_option('jigoshop_calc_shipping') == 'yes') :
+		if (!jigoshop_cart::ship_to_billing_address_only() && Jigoshop_Options::get_option('jigoshop_calc_shipping') == 'yes') :
 
 			echo '<p class="form-row" id="shiptobilling"><input class="input-checkbox" ';
 
@@ -266,8 +264,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 	function process_checkout() {
 
 		global $wpdb;
-		$jsOptions = Jigoshop_Options::instance();
-		
+				
 		if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
 
         // always calculate totals when coming to checkout, as we need the total calculated on the cart here
@@ -431,7 +428,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 			                $user_pass = $this->posted['account-password'];
 			                $user_id = wp_create_user( $this->posted['account-username'], $user_pass, $this->posted['billing-email'] );
 			                if ( !$user_id ) {
-			                	jigoshop::add_error( sprintf(__('<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the <a href="mailto:%s">webmaster</a> !', 'jigoshop'), $jsOptions->get_option('jigoshop_email')));
+			                	jigoshop::add_error( sprintf(__('<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the <a href="mailto:%s">webmaster</a> !', 'jigoshop'), Jigoshop_Options::get_option('jigoshop_email')));
 			                    break;
 							}
 		                    // Change role
@@ -597,13 +594,13 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					 	// Check stock levels
 					 	if ($_product->managing_stock()) :
 							if (!$_product->is_in_stock() || !$_product->has_enough_stock( $values['quantity'] )) :
-								$errormsg = ($jsOptions->get_option('jigoshop_show_stock') == 'yes') ? (sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order.  We have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title(), $_product->get_stock() )) : (sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title() ));
+								$errormsg = (Jigoshop_Options::get_option('jigoshop_show_stock') == 'yes') ? (sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order.  We have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title(), $_product->get_stock() )) : (sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title() ));
 								jigoshop::add_error($errormsg);
 		                		break;
 							endif;
 						else :
 							if (!$_product->is_in_stock()) :
-								$errormsg = ($jsOptions->get_option('jigoshop_show_stock') == 'yes') ? (sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order.  We have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title(), $_product->get_stock() )) : (sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title() ));
+								$errormsg = (Jigoshop_Options::get_option('jigoshop_show_stock') == 'yes') ? (sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order.  We have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title(), $_product->get_stock() )) : (sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title() ));
 								jigoshop::add_error($errormsg);
 		                		break;
 							endif;

@@ -101,11 +101,11 @@ include_once( 'jigoshop_actions.php' );
 
 // Constants
 if (!defined('JIGOSHOP_USE_CSS')) :
-	if (Jigoshop_Options::instance()->get_option('jigoshop_disable_css')=='yes') define('JIGOSHOP_USE_CSS', false);
+	if (Jigoshop_Options::get_option('jigoshop_disable_css')=='yes') define('JIGOSHOP_USE_CSS', false);
 	else define('JIGOSHOP_USE_CSS', true);
 endif;
 if (!defined('JIGOSHOP_LOAD_FANCYBOX')) :
-	if (Jigoshop_Options::instance()->get_option('jigoshop_disable_fancybox')=='yes') define('JIGOSHOP_LOAD_FANCYBOX', false);
+	if (Jigoshop_Options::get_option('jigoshop_disable_fancybox')=='yes') define('JIGOSHOP_LOAD_FANCYBOX', false);
 	else define('JIGOSHOP_LOAD_FANCYBOX', true);
 endif;
 if ( !defined('JIGOSHOP_TEMPLATE_URL') ) define('JIGOSHOP_TEMPLATE_URL', 'jigoshop/');
@@ -144,7 +144,7 @@ add_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name' );
 
 /*
 function jigoshop_mail_from( $email ) {
-	$email = Jigoshop_Options::instance()->get_option('jigoshop_email');
+	$email = Jigoshop_Options::get_option('jigoshop_email');
 	return $email;
 }
 add_filter( 'wp_mail_from', 'jigoshop_mail_from' );
@@ -157,12 +157,11 @@ add_filter( 'wp_mail_from', 'jigoshop_mail_from' );
  * @since 0.9.9
  **/
 function jigoshop_set_image_sizes(){
-	$jsOptions = Jigoshop_Options::instance();
 	add_image_size( 'admin_product_list', 32, 32, 'true' );
-	add_image_size( 'shop_tiny', $jsOptions->get_option('jigoshop_shop_tiny_w'), $jsOptions->get_option('jigoshop_shop_tiny_h'), 'true' );
-	add_image_size( 'shop_thumbnail', $jsOptions->get_option('jigoshop_shop_thumbnail_w'), $jsOptions->get_option('jigoshop_shop_thumbnail_h'), 'true' );
-	add_image_size( 'shop_small', $jsOptions->get_option('jigoshop_shop_small_w'), $jsOptions->get_option('jigoshop_shop_small_h'), 'true' );
-	add_image_size( 'shop_large', $jsOptions->get_option('jigoshop_shop_large_w'), $jsOptions->get_option('jigoshop_shop_large_h'), 'true' );
+	add_image_size( 'shop_tiny', Jigoshop_Options::get_option('jigoshop_shop_tiny_w'), Jigoshop_Options::get_option('jigoshop_shop_tiny_h'), 'true' );
+	add_image_size( 'shop_thumbnail', Jigoshop_Options::get_option('jigoshop_shop_thumbnail_w'), Jigoshop_Options::get_option('jigoshop_shop_thumbnail_h'), 'true' );
+	add_image_size( 'shop_small', Jigoshop_Options::get_option('jigoshop_shop_small_w'), Jigoshop_Options::get_option('jigoshop_shop_small_h'), 'true' );
+	add_image_size( 'shop_large', Jigoshop_Options::get_option('jigoshop_shop_large_w'), Jigoshop_Options::get_option('jigoshop_shop_large_h'), 'true' );
 }
 
 /**
@@ -173,8 +172,6 @@ function jigoshop_set_image_sizes(){
  **/
 function jigoshop_get_image_size( $size ) {
 	
-	$jsOptions = Jigoshop_Options::instance();
-	
 	if ( is_array( $size ) )
 		return $size;
 
@@ -183,19 +180,19 @@ function jigoshop_get_image_size( $size ) {
 			$image_size = array( 32, 32 );
 			break;
 		case 'shop_tiny':
-			$image_size = array( $jsOptions->get_option('jigoshop_shop_tiny_w'), $jsOptions->get_option('jigoshop_shop_tiny_h') );
+			$image_size = array( Jigoshop_Options::get_option('jigoshop_shop_tiny_w'), Jigoshop_Options::get_option('jigoshop_shop_tiny_h') );
 			break;
 		case 'shop_thumbnail':
-			$image_size = array( $jsOptions->get_option('jigoshop_shop_thumbnail_w'), $jsOptions->get_option('jigoshop_shop_thumbnail_h') );
+			$image_size = array( Jigoshop_Options::get_option('jigoshop_shop_thumbnail_w'), Jigoshop_Options::get_option('jigoshop_shop_thumbnail_h') );
 			break;
 		case 'shop_small':
-			$image_size = array( $jsOptions->get_option('jigoshop_shop_small_w'), $jsOptions->get_option('jigoshop_shop_small_h') );
+			$image_size = array( Jigoshop_Options::get_option('jigoshop_shop_small_w'), Jigoshop_Options::get_option('jigoshop_shop_small_h') );
 			break;
 		case 'shop_large':
-			$image_size = array( $jsOptions->get_option('jigoshop_shop_large_w'), $jsOptions->get_option('jigoshop_shop_large_h') );
+			$image_size = array( Jigoshop_Options::get_option('jigoshop_shop_large_w'), Jigoshop_Options::get_option('jigoshop_shop_large_h') );
 			break;
 		default:
-			$image_size = array( $jsOptions->get_option('jigoshop_shop_small_w'), $jsOptions->get_option('jigoshop_shop_small_h') );
+			$image_size = array( Jigoshop_Options::get_option('jigoshop_shop_small_w'), Jigoshop_Options::get_option('jigoshop_shop_small_h') );
 			break;
 	endswitch;
 
@@ -207,15 +204,8 @@ function jigoshop_init() {
 	/* ensure nothing is output to the browser prior to this (other than headers) */
 	ob_start();
 
-	jigoshop_session::instance()->test = 'val'; // why are we doing this?	
+	new Jigoshop_Options();						// instantiate our Options right away
 	
-	// TODO:  what is this?  seems added since 1.0.  Seriously?  (-JAP-)
-    $array = array(0 => "3.15");
-    foreach ($array as $a) :
-        $an = explode(':', $a);
-    endforeach;
-    
-    
 	jigoshop_post_type();						// register taxonomies
 	jigoshop_set_image_sizes();					// called after our Options are loaded
 
@@ -224,12 +214,23 @@ function jigoshop_init() {
 	jigoshop_customer::instance();				// Customer class, sorts session data such as location
 	jigoshop_shipping::instance();				// Shipping class. loads shipping methods
 	jigoshop_payment_gateways::instance();		// Payment gateways class. loads payment methods
+	jigoshop_cart::instance();					// Cart class
 
 	if ( is_admin()) {
+	
 		Jigoshop_Admin_Settings::instance();	// the WP Settings API manager
+		
 	} else {
-		jigoshop_cart::instance();				// Cart class
+	
+		add_filter( 'loop-shop-query', 
+			create_function( '', 'return array( "orderby" => "'. Jigoshop_Options::get_option('jigoshop_catalog_sort_orderby') .'","order" => "'. Jigoshop_Options::get_option('jigoshop_catalog_sort_direction') .'");' ) );
+		add_filter( 'loop_shop_columns',
+			create_function( '', 'return '.Jigoshop_Options::get_option('jigoshop_catalog_columns').';' ) );
+		add_filter( 'loop_shop_per_page',
+			create_function( '', 'return '.Jigoshop_Options::get_option('jigoshop_catalog_per_page').';' ) );
+    
 		jigoshop_catalog_query::instance();		// front end queries class
+		
 	}
 	
 	// Include template functions here so they are pluggable by themes
@@ -305,7 +306,7 @@ function jigoshop_frontend_scripts() {
 		'update_order_review_nonce' 	=> wp_create_nonce("update-order-review"),
         'billing_state'                 => jigoshop_customer::get_state(),
         'shipping_state'                => jigoshop_customer::get_shipping_state(),
-		'option_guest_checkout'			=> Jigoshop_Options::instance()->get_option('jigoshop_enable_guest_checkout'),
+		'option_guest_checkout'			=> Jigoshop_Options::get_option('jigoshop_enable_guest_checkout'),
 		'checkout_url'					=> admin_url('admin-ajax.php?action=jigoshop-checkout'),
 		'load_fancybox'					=> JIGOSHOP_LOAD_FANCYBOX
 	);
@@ -337,7 +338,7 @@ add_action('template_redirect', 'jigoshop_frontend_scripts');
 */
 function jigoshop_demo_store() {
 
-	if (Jigoshop_Options::instance()->get_option('jigoshop_demo_store')=='yes') :
+	if (Jigoshop_Options::get_option('jigoshop_demo_store')=='yes') :
 
 		echo '<p class="demo_store">'.__('This is a demo store for testing purposes &mdash; no orders shall be fulfilled.', 'jigoshop').'</p>';
 
@@ -350,7 +351,7 @@ add_action( 'wp_footer', 'jigoshop_demo_store' );
 	Adds social sharing code to footer
 */
 function jigoshop_sharethis() {
-	if (is_single() && Jigoshop_Options::instance()->get_option('jigoshop_sharethis')) :
+	if (is_single() && Jigoshop_Options::get_option('jigoshop_sharethis')) :
 
 		if (is_ssl()) :
 			$sharethis = 'https://ws.sharethis.com/button/buttons.js';
@@ -358,7 +359,7 @@ function jigoshop_sharethis() {
 			$sharethis = 'http://w.sharethis.com/button/buttons.js';
 		endif;
 
-		echo '<script type="text/javascript">var switchTo5x=true;</script><script type="text/javascript" src="'.$sharethis.'"></script><script type="text/javascript">stLight.options({publisher:"'.Jigoshop_Options::instance()->get_option('jigoshop_sharethis').'"});</script>';
+		echo '<script type="text/javascript">var switchTo5x=true;</script><script type="text/javascript" src="'.$sharethis.'"></script><script type="text/javascript">stLight.options({publisher:"'.Jigoshop_Options::get_option('jigoshop_sharethis').'"});</script>';
 
 	endif;
 }
@@ -455,7 +456,7 @@ function is_content_wrapped() {
  **/
 if (!function_exists('jigoshop_get_page_id')) {
 	function jigoshop_get_page_id( $page ) {
-		$page = apply_filters('jigoshop_get_' . $page . '_page_id', Jigoshop_Options::instance()->get_option('jigoshop_' . $page . '_page_id'));
+		$page = apply_filters('jigoshop_get_' . $page . '_page_id', Jigoshop_Options::get_option('jigoshop_' . $page . '_page_id'));
 		return ($page) ? $page : -1;
 	}
 }
@@ -518,7 +519,7 @@ function jigoshop_force_ssl() {
 		exit;
 	endif;
 }
-if (!is_admin() && Jigoshop_Options::instance()->get_option('jigoshop_force_ssl_checkout')=='yes') add_action( 'wp', 'jigoshop_force_ssl');
+if (!is_admin() && Jigoshop_Options::get_option('jigoshop_force_ssl_checkout')=='yes') add_action( 'wp', 'jigoshop_force_ssl');
 
 function jigoshop_force_ssl_images( $content ) {
 	if (is_ssl()) :
@@ -553,7 +554,7 @@ add_filter('style_loader_src', 'jigoshop_force_ssl_urls');
 
 // http://www.xe.com/symbols.php
 function get_jigoshop_currency_symbol() {
-	$currency = Jigoshop_Options::instance()->get_option('jigoshop_currency');
+	$currency = Jigoshop_Options::get_option('jigoshop_currency');
 	$currency_symbol = '';
 	switch ($currency) :
 		case 'AED' : $currency_symbol = '&#1583;&#46;&#1573;'; break;
@@ -596,8 +597,6 @@ function get_jigoshop_currency_symbol() {
 
 function jigoshop_price( $price, $args = array() ) {
 	
-	$jsOptions = Jigoshop_Options::instance();
-	
 	extract(shortcode_atts(array(
 		'ex_tax_label' 	=> '0',
         'with_currency' => true
@@ -606,18 +605,18 @@ function jigoshop_price( $price, $args = array() ) {
 	$return = '';
 	$price = number_format(
 		(double) $price,
-		(int) $jsOptions->get_option('jigoshop_price_num_decimals'),
-		$jsOptions->get_option('jigoshop_price_decimal_sep'),
-		$jsOptions->get_option('jigoshop_price_thousand_sep')
+		(int) Jigoshop_Options::get_option('jigoshop_price_num_decimals'),
+		Jigoshop_Options::get_option('jigoshop_price_decimal_sep'),
+		Jigoshop_Options::get_option('jigoshop_price_thousand_sep')
 	);
 
     $return = $price;
 
     if ($with_currency) :
 
-        $currency_pos = $jsOptions->get_option('jigoshop_currency_pos');
+        $currency_pos = Jigoshop_Options::get_option('jigoshop_currency_pos');
         $currency_symbol = get_jigoshop_currency_symbol();
-        $currency_code = $jsOptions->get_option('jigoshop_currency');
+        $currency_code = Jigoshop_Options::get_option('jigoshop_currency');
 
         switch ($currency_pos) :
             case 'left' :
@@ -659,7 +658,7 @@ function jigoshop_price( $price, $args = array() ) {
         endswitch;
 
         // only show (ex. tax) if we are going to show the price with currency as well. Otherwise we just want the formatted price
-        if ($ex_tax_label && $jsOptions->get_option('jigoshop_calc_taxes')=='yes') $return .= __(' <small>(ex. tax)</small>', 'jigoshop');
+        if ($ex_tax_label && Jigoshop_Options::get_option('jigoshop_calc_taxes')=='yes') $return .= __(' <small>(ex. tax)</small>', 'jigoshop');
     endif;
 
 	return $return;
@@ -825,7 +824,7 @@ add_filter('body_class','jigoshop_body_class');
 function jigoshop_hide_out_of_stock_product( $item_id ) {
 	update_post_meta( $item_id, 'visibility', 'hidden' );
 }
-if ( Jigoshop_Options::instance()->get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) :
+if ( Jigoshop_Options::get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) :
 	add_action( 'jigoshop_no_stock_notification', 'jigoshop_hide_out_of_stock_product' );
 endif;
 

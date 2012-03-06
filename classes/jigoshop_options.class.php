@@ -15,7 +15,7 @@
  * @license		http://jigoshop.com/license/commercial-edition
  */
 
-class Jigoshop_Options extends Jigoshop_Singleton {
+class Jigoshop_Options {
 	
 	private static $default_options;
 	private static $current_options;
@@ -29,7 +29,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 *
 	 * @since	1.2
 	 */	
-	protected function __construct() {
+	public function __construct() {
 		
 		self::$current_options = get_option( JIGOSHOP_OPTIONS );	// load existing from database, false if none
 		
@@ -80,7 +80,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 		self::get_current_options();
 		if ( ! isset( self::$current_options[$name] )) {
 			self::$current_options[$name] = $value;
-			add_action( 'shutdown', array( self::instance(), 'update_options' ));
+			add_action( 'shutdown', array( __CLASS__, 'update_options' ));
 		}
 	}
 	
@@ -113,7 +113,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 		self::get_current_options();
 		if ( isset( $name )) {
 			self::$current_options[$name] = $value;
-			add_action( 'shutdown', array( self::instance(), 'update_options' ));
+			add_action( 'shutdown', array( __CLASS__, 'update_options' ));
 		}
 	}
 	
@@ -130,7 +130,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 		self::get_current_options();
 		if ( isset( $name )) {
 			unset( self::$current_options[$name] );
-			add_action( 'shutdown', array( self::instance(), 'update_options' ));
+			add_action( 'shutdown', array( __CLASS__, 'update_options' ));
 			return true;
 		}
 		return false;
@@ -162,18 +162,18 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 			}
 		}
 		/*** get the start of the array ***/
-		 $start = array_slice( $our_options, 0, $second_index ); 
-		 /*** get the end of the array ***/
-		 $end = array_slice( $our_options, $second_index );
-		 /*** add the new elements to the array ***/
-		 foreach ( $options as $option ) {
-		 	if ( isset( $option['id'] ) )
-		 		if ( false === self::get_option( $option['id'] ) )
-		 			self::add_option( $option['id'], $option['std'] );
+		$start = array_slice( $our_options, 0, $second_index ); 
+		/*** get the end of the array ***/
+		$end = array_slice( $our_options, $second_index );
+		/*** add the new elements to the array ***/
+		foreach ( $options as $option ) {
+		 	if ( isset( $option['id'] ) ) {
+		 		self::add_option( $option['id'], $option['std'] );
+		 	}
 		 	$start[] = $option;
-		 }
-		 /*** glue them back together ***/
-		 self::$default_options = array_merge( $start, $end );
+		}
+		/*** glue them back together ***/
+		self::$default_options = array_merge( $start, $end );
  	}
 	
 	
@@ -202,9 +202,9 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 *
 	 * @since	1.2
 	 */	
-	protected static function set_current_options( $options ) {
+	public static function set_current_options( $options ) {
 		self::$current_options = $options;
-		add_action( 'shutdown', array( self::instance(), 'update_options' ));
+		add_action( 'shutdown', array( __CLASS__, 'update_options' ));
 	}
 	
 	
@@ -232,7 +232,7 @@ class Jigoshop_Options extends Jigoshop_Singleton {
 	 *
 	 * @since	1.2
 	 */	
-	protected static function set_default_options() {
+	public static function set_default_options() {
 		
 		self::$default_options = array();
 		

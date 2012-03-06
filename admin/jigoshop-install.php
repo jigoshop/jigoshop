@@ -56,7 +56,6 @@ function _install_jigoshop() {
 
 		// Do install
 //		jigoshop_default_options();  /* no longer required for Jigoshop 1.2 (-JAP-) */
-		Jigoshop_Options::instance();
 		
 		jigoshop_create_pages();
 
@@ -186,16 +185,15 @@ function jigoshop_create_pages() {
 function jigoshop_create_single_page( $page_slug, $page_option, $page_data ) {
 
     global $wpdb;
-	$jsOptions = Jigoshop_Options::instance();
     $slug = esc_sql( _x( $page_slug, 'page_slug', 'jigoshop' ) );
 	$page_found = $wpdb->get_var("SELECT ID FROM " . $wpdb->posts . " WHERE post_name = '$slug' AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1");
 
     if ( ! $page_found ) {
 		$page_data['post_name'] = $slug;
 		$page_options_id = wp_insert_post( $page_data );
-		$jsOptions->set_option( $page_option, $page_options_id );
+		Jigoshop_Options::set_option( $page_option, $page_options_id );
     } else {
-    	$jsOptions->set_option( $page_option, $page_found );
+    	Jigoshop_Options::set_option( $page_option, $page_found );
     }
 }
 
