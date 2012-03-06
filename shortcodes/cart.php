@@ -15,7 +15,7 @@
  * @license		http://jigoshop.com/license/commercial-edition
  */
 function get_jigoshop_cart($atts) {
-    return jigoshop::shortcode_wrapper('jigoshop_cart', $atts);
+    return jigoshop_shortcode_wrapper('jigoshop_cart', $atts);
 }
 
 function jigoshop_cart($atts) {
@@ -153,10 +153,14 @@ function jigoshop_cart($atts) {
             <tfoot>
                 <tr>
                     <td colspan="6" class="actions">
-                        <div class="coupon">
-                            <label for="coupon_code"><?php _e('Coupon', 'jigoshop'); ?>:</label> <input name="coupon_code" class="input-text" id="coupon_code" value="" />
-                            <input type="submit" class="button" name="apply_coupon" value="<?php _e('Apply Coupon', 'jigoshop'); ?>" />
-                        </div>
+                        
+                        <?php $coupons = jigoshop_coupons::get_coupons(); if(!empty($coupons)): ?>
+                            <div class="coupon">
+                                <label for="coupon_code"><?php _e('Coupon', 'jigoshop'); ?>:</label> <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" />
+                                <input type="submit" class="button" name="apply_coupon" value="<?php _e('Apply Coupon', 'jigoshop'); ?>" />
+                            </div>
+                        <?php endif; ?>
+
                         <?php jigoshop::nonce_field('cart') ?>
                         <input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" /> <a href="<?php echo esc_url( jigoshop_cart::get_checkout_url() ); ?>" class="checkout-button button-alt"><?php _e('Proceed to Checkout &rarr;', 'jigoshop'); ?></a>
                     </td>

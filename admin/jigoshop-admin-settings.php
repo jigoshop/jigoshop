@@ -829,9 +829,8 @@ function jigoshop_admin_fields($options) {
  * @return string country code and tax class concatenated 
  */
 function get_all_states_key($tax_rate) {
-	return $tax_rate['country'] . $tax_rate['class'];
+    return $tax_rate['country'] . $tax_rate['class'];
 }
-
 /**
  * Settings page
  *

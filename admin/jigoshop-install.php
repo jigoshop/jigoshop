@@ -186,7 +186,7 @@ function jigoshop_create_single_page( $page_slug, $page_option, $page_data ) {
 
     global $wpdb;
     $slug = esc_sql( _x( $page_slug, 'page_slug', 'jigoshop' ) );
-	$page_found = $wpdb->get_var("SELECT ID FROM " . $wpdb->posts . " WHERE post_name = '$slug' AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1");
+	$page_found = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1", $slug ) );
 
     if ( ! $page_found ) {
 		$page_data['post_name'] = $slug;

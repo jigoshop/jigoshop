@@ -17,44 +17,30 @@
 
 class jigoshop extends Jigoshop_Singleton {
 
-	private static $_cache;
-
-	public static $errors = array();
+	public static $errors   = array();
 	public static $messages = array();
 
 	public static $plugin_url;
 	public static $plugin_path;
 
-	const SHOP_SMALL_W = '150';
-	const SHOP_SMALL_H = '150';
-	const SHOP_TINY_W = '36';
-	const SHOP_TINY_H = '36';
+	const SHOP_LARGE_W     = '300';
+	const SHOP_LARGE_H     = '300';
+	const SHOP_SMALL_W     = '150';
+	const SHOP_SMALL_H     = '150';
+	const SHOP_TINY_W      = '36';
+	const SHOP_TINY_H      = '36';
 	const SHOP_THUMBNAIL_W = '90';
 	const SHOP_THUMBNAIL_H = '90';
-	const SHOP_LARGE_W = '300';
-	const SHOP_LARGE_H = '300';
 
 	/** constructor */
 	protected function __construct() {
 
-		if (isset(jigoshop_session::instance()->errors)) self::$errors = jigoshop_session::instance()->errors;
-		if (isset(jigoshop_session::instance()->messages)) self::$messages = jigoshop_session::instance()->messages;
-
-		unset( jigoshop_session::instance()->messages );
-		unset( jigoshop_session::instance()->errors );
+		self::$errors   = (array) jigoshop_session::instance()->errors;
+		self::$messages = (array) jigoshop_session::instance()->messages;
 
 		// uses jigoshop_base_class to provide class address for the filter
 		self::add_filter( 'wp_redirect', 'redirect', 1, 2 );
 	}
-
-	/**
-	 * This is deprecated as of ver 0.9.9.2 - use jigoshop_product.class version.
-	 *
-	 * @deprecated
-	 */
-    public static function getAttributeTaxonomies() {
-        return jigoshop_product::getAttributeTaxonomies();
-    }
 
 	/**
 	 * Get the assets url
@@ -62,30 +48,36 @@ class jigoshop extends Jigoshop_Singleton {
 	 *
 	 * @return  string	url
 	 */
-	public static function assets_url() {
-		return apply_filters( 'jigoshop_assets_url', self::plugin_url() );
+	public static function assets_url( $file = NULL ) {
+		return apply_filters( 'jigoshop_assets_url', self::plugin_url( $file ) );
 	}
 
 	/**
 	 * Get the plugin url
+	 * @todo perhaps we should add a trailing slash? -1 Character then!
+	 * @note plugin_dir_url() does this
 	 *
 	 * @return  string	url
 	 */
-	public static function plugin_url() {
-		if ( empty( self::$plugin_url )) :
-			self::$plugin_url = self::force_ssl( plugins_url( null, dirname(__FILE__)));
-		endif;
-		return self::$plugin_url;
+	public static function plugin_url( $file = NULL ) {
+		if ( ! empty( self::$plugin_url) )
+			return self::$plugin_url;
+
+		return self::$plugin_url = plugins_url( $file, dirname(__FILE__));
 	}
 
 	/**
 	 * Get the plugin path
+	 * @todo perhaps we should add a trailing slash? -1 Character then!
+	 * @note plugin_dir_path() does this
 	 *
 	 * @return  string	url
 	 */
 	public static function plugin_path() {
-		if(self::$plugin_path) return self::$plugin_path;
-		return self::$plugin_path = WP_PLUGIN_DIR . "/" . plugin_basename( dirname(dirname(__FILE__)));
+		if( ! empty(self::$plugin_path) )
+			return self::$plugin_path;
+
+		return self::$plugin_path = dirname(dirname(__FILE__));
 	 }
 
 	/**
@@ -107,33 +99,39 @@ class jigoshop extends Jigoshop_Singleton {
 	 * @return  string	variable
 	 */
 	public static function get_var($var) {
-		$return = '';
-		switch ($var) :
-			case "shop_small_w" : $return = self::SHOP_SMALL_W; break;
-			case "shop_small_h" : $return = self::SHOP_SMALL_H; break;
-			case "shop_tiny_w" : $return = self::SHOP_TINY_W; break;
-			case "shop_tiny_h" : $return = self::SHOP_TINY_H; break;
+		switch ( $var ) {
+			case "shop_large_w" :     $return = self::SHOP_LARGE_W; break;
+			case "shop_large_h" :     $return = self::SHOP_LARGE_H; break;
+			case "shop_small_w" :     $return = self::SHOP_SMALL_W; break;
+			case "shop_small_h" :     $return = self::SHOP_SMALL_H; break;
+			case "shop_tiny_w" :      $return = self::SHOP_TINY_W; break;
+			case "shop_tiny_h" :      $return = self::SHOP_TINY_H; break;
 			case "shop_thumbnail_w" : $return = self::SHOP_THUMBNAIL_W; break;
 			case "shop_thumbnail_h" : $return = self::SHOP_THUMBNAIL_H; break;
-			case "shop_large_w" : $return = self::SHOP_LARGE_W; break;
-			case "shop_large_h" : $return = self::SHOP_LARGE_H; break;
-		endswitch;
+		}
+
 		return apply_filters( 'jigoshop_get_var_'.$var, $return );
 	}
 
 	/**
 	 * Add an error
+	 * @todo should be set_error
 	 *
 	 * @param   string	error
 	 */
-	public static function add_error( $error ) { self::$errors[] = $error; }
+	public static function add_error( $error ) {
+		self::$errors[] = $error;
+	}
 
 	/**
 	 * Add a message
+	 * @todo should be set_message
 	 *
 	 * @param   string	message
 	 */
-	public static function add_message( $message ) { self::$messages[] = $message; }
+	public static function add_message( $message ) {
+		self::$messages[] = $message;
+	}
 
 	/** Clear messages and errors from the session data */
 	public static function clear_messages() {
@@ -142,57 +140,41 @@ class jigoshop extends Jigoshop_Singleton {
 		unset( jigoshop_session::instance()->errors );
 	}
 
-	/**
-	 * Get error count
-	 *
-	 * @return   int
-	 */
-	public static function error_count() { return sizeof(self::$errors); }
+	public static function has_errors() {
+		return !empty(self::$errors);
+	}
 
-	/**
-	 * Get message count
-	 *
-	 * @return   int
-	 */
-	public static function message_count() { return sizeof(self::$messages); }
+	public static function has_messages() { 
+		return !empty(self::$messages);
+	}
 
 	/**
 	 * Output the errors and messages
-	 *
-	 * @return   bool
 	 */
 	public static function show_messages() {
-
-		if (isset(self::$errors) && sizeof(self::$errors)>0) :
+		if ( self::has_errors() ) {
 			echo '<div class="jigoshop_error">'.self::$errors[0].'</div>';
-			self::clear_messages();
-			return true;
-		elseif (isset(self::$messages) && sizeof(self::$messages)>0) :
+		}
+
+		if ( self::has_messages() ) {
 			echo '<div class="jigoshop_message">'.self::$messages[0].'</div>';
-			self::clear_messages();
-			return true;
-		else :
-			return false;
-		endif;
+		}
+
+		self::clear_messages();
 	}
 
 	public static function nonce_field($action, $referer = true , $echo = true) {
-
 		$name = '_n';
 		$action = 'jigoshop-' . $action;
 
 		return wp_nonce_field($action, $name, $referer, $echo);
-
 	}
 
 	public static function nonce_url($action, $url = '') {
-
 		$name = '_n';
 		$action = 'jigoshop-' . $action;
 
-		$url = add_query_arg( $name, wp_create_nonce( $action ), $url);
-
-		return $url;
+		return add_query_arg( $name, wp_create_nonce( $action ), $url);
 	}
 	/**
 	 * Check a nonce and sets jigoshop error in case it is invalid
@@ -205,25 +187,22 @@ class jigoshop extends Jigoshop_Singleton {
 	 *
 	 * @return   bool
 	 */
-	public static function verify_nonce($action, $method='_POST', $error_message = false) {
+	public static function verify_nonce( $action ) {
+		$name    = '_n';
+		$action  = 'jigoshop-' . $action;
+		$request = array_merge($_GET, $_POST);
 
-		$name = '_n';
-		$action = 'jigoshop-' . $action;
+		if ( ! wp_verify_nonce($request[$name], $action) ) {
+			jigoshop::add_error( __('Action failed. Please refresh the page and retry.', 'jigoshop') );
+			return false;
+		}
 
-		if( $error_message === false ) $error_message = __('Action failed. Please refresh the page and retry.', 'jigoshop');
-
-		if(!in_array($method, array('_GET', '_POST', '_REQUEST'))) $method = '_POST';
-
-		if ( isset($_REQUEST[$name]) && wp_verify_nonce($_REQUEST[$name], $action) ) return true;
-
-		if( $error_message ) jigoshop::add_error( $error_message );
-
-		return false;
-
+		return true;
 	}
 
 	/**
 	 * Redirection hook which stores messages into session data
+	 * @deprecated do we actually use this anywhere?
 	 *
 	 * @param   location
 	 * @param   status
@@ -233,36 +212,5 @@ class jigoshop extends Jigoshop_Singleton {
 		jigoshop_session::instance()->errors = self::$errors;
 		jigoshop_session::instance()->messages = self::$messages;
 		return apply_filters('jigoshop_session_location_filter', $location);
-	}
-
-	public static function shortcode_wrapper ($function, $atts=array()) {
-		if( $content = jigoshop::cache_get( $function . '-shortcode', $atts ) ) return $content;
-
-		ob_start();
-		call_user_func($function, $atts);
-		return jigoshop::cache( $function . '-shortcode', ob_get_clean(), $atts);
-	}
-
-	/**
-	 * Cache API
-	 */
-
-	public static function cache( $id, $data, $args=array() ) {
-
-		if( ! isset(self::$_cache[ $id ]) ) self::$_cache[ $id ] = array();
-
-		if( empty($args) ) self::$_cache[ $id ][0] = $data;
-		else self::$_cache[ $id ][ serialize($args) ] = $data;
-
-		return $data;
-
-	}
-	public static function cache_get( $id, $args=array() ) {
-
-		if( ! isset(self::$_cache[ $id ]) ) return null;
-
-		if( empty($args) && isset(self::$_cache[ $id ][0]) ) return self::$_cache[ $id ][0];
-		elseif ( isset(self::$_cache[ $id ][ serialize($args) ] ) ) return self::$_cache[ $id ][ serialize($args) ];
-
 	}
 }

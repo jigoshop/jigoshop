@@ -337,18 +337,37 @@ function jigoshop_upgrade_100() {
 		// Convert 'price' key to regular_price
 		$wpdb->update( $wpdb->postmeta, array('meta_key' => 'regular_price'), array('post_id' => $post->ID, 'meta_key' => 'price') );
 
-		$taxes = $wpdb->get_results("SELECT * FROM {$wpdb->postmeta} WHERE post_id = {$post->ID} AND meta_key LIKE 'tax_%' ");
+		$taxes = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key LIKE %s", $post->ID, 'tax_%' ) );
 
-		// Update catch all prices
+		// Update catch all prices, weights, and dimensions
 		$parent_id = $post->post_parent;
 		$parent_reg_price = get_post_meta( $parent_id, 'regular_price', true );
 		$parent_sale_price = get_post_meta( $parent_id, 'sale_price', true );
+		
+        // weight and dimensions were in pre 1.0. Therefore, make sure all of this
+        // data gets converted as well
+		$parent_weight = get_post_meta( $parent_id, 'weight', true );
+		$parent_length = get_post_meta( $parent_id, 'length', true );
+		$parent_height = get_post_meta( $parent_id, 'height', true );
+		$parent_width = get_post_meta( $parent_id, 'width', true );
 
 		if ( ! get_post_meta( $post->ID, 'regular_price', true) && $parent_reg_price )
 			update_post_meta( $post->ID, 'regular_price', $parent_reg_price );
 
 		if( ! get_post_meta( $post->ID, 'sale_price', true) && $parent_sale_price )
 			update_post_meta( $post->ID, 'sale_price', $parent_sale_price );
+			
+		if( ! get_post_meta( $post->ID, 'weight', true) && $parent_weight )
+			update_post_meta( $post->ID, 'weight', $parent_weight );
+			
+		if( ! get_post_meta( $post->ID, 'length', true) && $parent_length )
+			update_post_meta( $post->ID, 'length', $parent_length );
+		
+		if( ! get_post_meta( $post->ID, 'height', true) && $parent_height )
+			update_post_meta( $post->ID, 'height', $parent_height );
+			
+		if( ! get_post_meta( $post->ID, 'width', true) && $parent_width )
+			update_post_meta( $post->ID, 'width', $parent_width );
 
 		$variation_data = array();
 		foreach( $taxes as $tax ) {

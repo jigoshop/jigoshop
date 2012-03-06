@@ -14,8 +14,26 @@
  * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
  * @license		http://jigoshop.com/license/commercial-edition
  */
+include_once('cart.php');
+include_once('checkout.php');
+include_once('my_account.php');
+include_once('order_tracking.php');
+include_once('pay.php');
+include_once('thankyou.php');
 
-foreach(glob( dirname(__FILE__)."/shortcodes/*.php" ) as $filename) include_once($filename);
+function jigoshop_shortcode_wrapper( $function, $atts = array() ) {
+	$key = $function.'-shortcode-'.serialize($atts);
+	if ( $shortcode = wp_cache_get($key, 'jigoshop') )
+		return $shortcode;
+
+	// Get the shortcode & save in object cache
+	ob_start();
+	call_user_func($function, $atts);
+	$shortcode = ob_get_clean();
+	wp_cache_replace($key, $shortcode, 'jigoshop');
+
+	return $shortcode;
+}
 
 //### Recent Products #########################################################
 
