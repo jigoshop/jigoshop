@@ -15,15 +15,25 @@
  * @license		http://jigoshop.com/license/commercial-edition
  */
 
+/**
+ * Add the gateway to Jigoshop
+ **/
+function add_bank_transfer_gateway( $methods ) {
+	$methods[] = 'jigoshop_bank_transfer';
+	return $methods;
+}
+add_filter( 'jigoshop_payment_gateways', 'add_bank_transfer_gateway', 20 );
+
+
 class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 
 	public function __construct() {
 	
+		Jigoshop_Options::install_new_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
 		
         $this->id				= 'bank_transfer';
         $this->icon 			= '';
         $this->has_fields 		= false;
-
 		$this->enabled			= Jigoshop_Options::get_option('jigoshop_bank_transfer_enabled');
 		$this->title 			= Jigoshop_Options::get_option('jigoshop_bank_transfer_title');
 		$this->description 		= Jigoshop_Options::get_option('jigoshop_bank_transfer_description');
@@ -34,13 +44,123 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 		$this->bic 				= Jigoshop_Options::get_option('jigoshop_bank_transfer_bic');
 		$this->additional 		= Jigoshop_Options::get_option('jigoshop_bank_transfer_additional');
 
-		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
-		
-    	add_action('thankyou_bank_transfer', array(&$this, 'thankyou_page'));
+		// remove this hook 'jigoshop_update_options' for post Jigoshop 1.2 use
+//		add_action( 'jigoshop_update_options', array(&$this, 'process_admin_options') );
+    	add_action( 'thankyou_bank_transfer', array(&$this, 'thankyou_page') );
     }
+
+
+	/**
+	 * Default Option settings for WordPress Settings API using the Jigoshop_Options class
+	 *
+	 * These should be installed on the Jigoshop_Options 'Payment Gateways' tab
+	 *
+	 * NOTE: these are currently not used in Jigoshop 1.2 or less.  They will be implemented when all Gateways are
+	 * converted for full Jigoshop_Options use post Jigoshop 1.2.
+	 *
+	 */	
+	public function get_default_options() {
+	
+		$defaults = array();
+		
+		// Define the Section name for the Jigoshop_Options
+		$defaults[] = array( 'name' => __('Bank Transfer', 'jigoshop'), 'type' => 'title', 'desc' => __('<p>Accept Bank Transfers as a method of payment. There is no automated process associated with this, you must manually process an order when you receive payment.</p>', 'jigoshop') );
+		
+		// List each option in order of appearance with details
+		$defaults[] = array(
+			'name'		=> __('Enable Bank Transfer','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_bank_transfer_enabled',
+			'std' 		=> 'no',
+			'type' 		=> 'radio',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+		
+		$defaults[] = array(
+			'name'		=> __('Method Title','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('This controls the title which the user sees during checkout.','jigoshop'),
+			'id' 		=> 'jigoshop_bank_transfer_title',
+			'std' 		=> __('Bank Transfer Payment','jigoshop'),
+			'type' 		=> 'text'
+		);
+		
+		$defaults[] = array(
+			'name'		=> __('Customer Message','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Let the customer know that their order won\'t be shipping until you receive payment.','jigoshop'),
+			'id' 		=> 'jigoshop_bank_transfer_description',
+			'std' 		=> __('Please use the details below to transfer the payment for your order, once payment is received your order will be processed.','jigoshop'),
+			'type' 		=> 'text'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('Bank Name','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Your bank name for reference. e.g. HSBC','jigoshop'),
+			'id' 		=> 'jigoshop_bank_transfer_bank_name',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('Account Number','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Your Bank Account number.','jigoshop'),
+			'id' 		=> 'jigoshop_bank_transfer_acc_number',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('Sort Code','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Your branch Sort Code.','jigoshop'),
+			'id' 		=> 'jigoshop_bank_transfer_sort_code',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('IBAN','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Your IBAN number. (for International transfers)','jigoshop'),
+			'id' 		=> 'jigoshop_bank_transfer_iban',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('BIC Code','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Your Branch Identification Code. (BIC Number)','jigoshop'),
+			'id' 		=> 'jigoshop_bank_transfer_bic',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('Additional Info','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Additional information you want to display to your customer.','jigoshop'),
+			'id' 		=> 'jigoshop_bank_transfer_additional',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+
+		return $defaults;
+	}
+
 
 	/**
 	 * Admin Panel Options - Area to set your bank account details and additional information if necessary.
+	 *
+	 * NOTE: this will be deprecated post Jigoshop 1.2 and no longer required for Admin options display
+	 *
 	 **/
 	public function admin_options() {
     	?>
@@ -137,6 +257,9 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 
 	/**
 	 * Admin Panel Options Processing - save options to the database.
+	 *
+	 * NOTE: this will be deprecated post Jigoshop 1.2 and no longer required for Admin options saving
+	 *
 	 **/
     public function process_admin_options() {
 
@@ -177,12 +300,3 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 	}
 
 }
-
-/**
- * Add the gateway to Jigoshop
- **/
-function add_bank_transfer_gateway( $methods ) {
-	$methods[] = 'jigoshop_bank_transfer'; return $methods;
-}
-
-add_filter('jigoshop_payment_gateways', 'add_bank_transfer_gateway' );

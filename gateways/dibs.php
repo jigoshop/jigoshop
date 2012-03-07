@@ -14,19 +14,35 @@
  * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
  * @license		http://jigoshop.com/license/commercial-edition
  */
+
+/**
+ * Add the gateway to JigoShop
+ **/
+function add_dibs_gateway( $methods ) {
+	$methods[] = 'dibs';
+	return $methods;
+}
+add_filter( 'jigoshop_payment_gateways', 'add_dibs_gateway', 50 );
+
+
 class dibs extends jigoshop_payment_gateway {
 
 	public function __construct() {
 		
 		
-		Jigoshop_Options::add_option('jigoshop_dibs_enabled', 'yes');
-		Jigoshop_Options::add_option('jigoshop_dibs_merchant', '');
-		Jigoshop_Options::add_option('jigoshop_dibs_key1', '');
-		Jigoshop_Options::add_option('jigoshop_dibs_key2', '');
-		Jigoshop_Options::add_option('jigoshop_dibs_title', __('DIBS', 'jigoshop') );
-		Jigoshop_Options::add_option('jigoshop_dibs_description', __("Pay via DIBS using credit card or bank transfer.", 'jigoshop') );
-		Jigoshop_Options::add_option('jigoshop_dibs_testmode', 'no');
+// 		Jigoshop_Options::add_option('jigoshop_dibs_enabled', 'yes');
+// 		Jigoshop_Options::add_option('jigoshop_dibs_merchant', '');
+// 		Jigoshop_Options::add_option('jigoshop_dibs_key1', '');
+// 		Jigoshop_Options::add_option('jigoshop_dibs_key2', '');
+// 		Jigoshop_Options::add_option('jigoshop_dibs_title', __('DIBS', 'jigoshop') );
+// 		Jigoshop_Options::add_option('jigoshop_dibs_description', __("Pay via DIBS using credit card or bank transfer.", 'jigoshop') );
+// 		Jigoshop_Options::add_option('jigoshop_dibs_testmode', 'no');
 
+		// NOTE: The above add_options are used for now.  When the gateway is converted to using Jigoshop_Options class
+		// sometime post Jigoshop 1.2, they won't be needed and only the following commented out line will be used
+		
+		Jigoshop_Options::install_new_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
+		
 		$this->id = 'dibs';
 		$this->icon = '';
 		$this->has_fields = false;
@@ -40,14 +56,112 @@ class dibs extends jigoshop_payment_gateway {
 
 		add_action('init', array(&$this, 'check_callback') );
 		add_action('valid-dibs-callback', array(&$this, 'successful_request') );
-		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
 		add_action('receipt_dibs', array(&$this, 'receipt_page'));
 
+		// remove this hook 'jigoshop_update_options' for post Jigoshop 1.2 use
+//		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
+
 	}
+
+
+	/**
+	 * Default Option settings for WordPress Settings API using the Jigoshop_Options class
+	 *
+	 * These should be installed on the Jigoshop_Options 'Payment Gateways' tab
+	 *
+	 * NOTE: these are currently not used in Jigoshop 1.2 or less.  They will be implemented when all Gateways are
+	 * converted for full Jigoshop_Options use post Jigoshop 1.2.
+	 *
+	 */	
+	public function get_default_options() {
+	
+		$defaults = array();
+		
+		// Define the Section name for the Jigoshop_Options
+		$defaults[] = array( 'name' => __('DIBS FlexWin', 'jigoshop'), 'type' => 'title', 'desc' => __('<p>DIBS FlexWin works by sending the user to <a href="http://www.dibspayment.com/">DIBS</a> to enter their payment information.</p>', 'jigoshop') );
+		
+		// List each option in order of appearance with details
+		$defaults[] = array(
+			'name'		=> __('Enable DIBS FlexWin','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_dibs_enabled',
+			'std' 		=> 'no',
+			'type' 		=> 'radio',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+		
+		$defaults[] = array(
+			'name'		=> __('Method Title','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('This controls the title which the user sees during checkout.','jigoshop'),
+			'id' 		=> 'jigoshop_dibs_title',
+			'std' 		=> __('DIBS','jigoshop'),
+			'type' 		=> 'text'
+		);
+		
+		$defaults[] = array(
+			'name'		=> __('Description','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('This controls the description which the user sees during checkout.','jigoshop'),
+			'id' 		=> 'jigoshop_dibs_description',
+			'std' 		=> __("Pay via DIBS using credit card or bank transfer.", 'jigoshop'),
+			'type' 		=> 'text'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('DIBS Merchant id','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Please enter your DIBS merchant id; this is needed in order to take payment!','jigoshop'),
+			'id' 		=> 'jigoshop_dibs_merchant',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('DIBS MD5 Key 1','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Please enter your DIBS MD5 key #1; this is needed in order to take payment!','jigoshop'),
+			'id' 		=> 'jigoshop_dibs_key1',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('DIBS MD5 Key 2','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Please enter your DIBS MD5 key #2; this is needed in order to take payment!','jigoshop'),
+			'id' 		=> 'jigoshop_dibs_key2',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('Enable test mode','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('When test mode is enabled only DIBS specific test-cards are accepted.','jigoshop'),
+			'id' 		=> 'jigoshop_dibs_testmode',
+			'std' 		=> 'no',
+			'type' 		=> 'radio',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+
+		return $defaults;
+	}
+
 
 	/**
 	* Admin Panel Options
 	* - Options for bits like 'title' and availability on a country-by-country basis
+	 *
+	 * NOTE: this will be deprecated post Jigoshop 1.2 and no longer required for Admin options display
+	 *
 	**/
 	public function admin_options() {
 		?>
@@ -113,6 +227,9 @@ class dibs extends jigoshop_payment_gateway {
 	/**
 	* Admin Panel Options Processing
 	* - Saves the options to the DB
+	 *
+	 * NOTE: this will be deprecated post Jigoshop 1.2 and no longer required for Admin options saving
+	 *
 	**/
 	public function process_admin_options() {
 		if(isset($_POST['jigoshop_dibs_enabled'])) Jigoshop_Options::set_option('jigoshop_dibs_enabled', jigowatt_clean($_POST['jigoshop_dibs_enabled']));
@@ -305,12 +422,3 @@ class dibs extends jigoshop_payment_gateway {
 	}
 
 }
-
-/**
- * Add the gateway to JigoShop
- **/
-function add_dibs_gateway( $methods ) {
-	$methods[] = 'dibs'; return $methods;
-}
-
-add_filter('jigoshop_payment_gateways', 'add_dibs_gateway' );

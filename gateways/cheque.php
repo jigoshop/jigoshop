@@ -30,14 +30,14 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 	public function __construct() {
 	
 		
-		Jigoshop_Options::add_option('jigoshop_cheque_enabled', 'yes');
-		Jigoshop_Options::add_option('jigoshop_cheque_title', __('Cheque Payment', 'jigoshop') );
-		Jigoshop_Options::add_option('jigoshop_cheque_description', __('Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'jigoshop'));
+// 		Jigoshop_Options::add_option('jigoshop_cheque_enabled', 'yes');
+// 		Jigoshop_Options::add_option('jigoshop_cheque_title', __('Cheque Payment', 'jigoshop') );
+// 		Jigoshop_Options::add_option('jigoshop_cheque_description', __('Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'jigoshop'));
 		
 		// NOTE: The above add_options are used for now.  When the gateway is converted to using Jigoshop_Options class
 		// sometime post Jigoshop 1.2, they won't be needed and only the following commented out line will be used
 		
-//		Jigoshop_Options::install_new_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
+		Jigoshop_Options::install_new_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
 		
 		
         $this->id				= 'cheque';
@@ -48,7 +48,8 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 		$this->title 			= Jigoshop_Options::get_option('jigoshop_cheque_title');
 		$this->description 		= Jigoshop_Options::get_option('jigoshop_cheque_description');
 
-		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
+		// remove this hook 'jigoshop_update_options' for post Jigoshop 1.2 use
+//		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
     	add_action('thankyou_cheque', array(&$this, 'thankyou_page'));
     }
 
@@ -97,7 +98,7 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 			'desc' 		=> '',
 			'tip' 		=> __('Let the customer know the payee and where they should be sending the cheque too and that their order won\'t be shipping until you receive it.','jigoshop'),
 			'id' 		=> 'jigoshop_cheque_description',
-			'std' 		=> '',
+			'std' 		=> __('Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'jigoshop'),
 			'type' 		=> 'text'
 		);
 

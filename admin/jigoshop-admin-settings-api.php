@@ -786,9 +786,9 @@ class Jigoshop_Options_Parser {
 		// work off the option type and format output for display for each type
 		switch ( $item['type'] ) {
 		case 'gateway_options' :
-			foreach (jigoshop_payment_gateways::payment_gateways() as $gateway) :
-				$gateway->admin_options();
-			endforeach;
+// 			foreach (jigoshop_payment_gateways::payment_gateways() as $gateway) :
+// 				$gateway->admin_options();
+// 			endforeach;
 			break;
 			
 		case 'tax_rates' :

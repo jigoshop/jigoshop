@@ -14,18 +14,34 @@
  * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
  * @license		http://jigoshop.com/license/commercial-edition
  */
+
+/**
+ * Add the gateway to JigoShop
+ **/
+function add_paypal_gateway( $methods ) {
+	$methods[] = 'paypal';
+	return $methods;
+}
+add_filter( 'jigoshop_payment_gateways', 'add_paypal_gateway', 10 );
+
+
 class paypal extends jigoshop_payment_gateway {
 
 	public function __construct() {
 		
 		
-		Jigoshop_Options::add_option('jigoshop_paypal_enabled', 'yes');
-		Jigoshop_Options::add_option('jigoshop_paypal_email', '');
-		Jigoshop_Options::add_option('jigoshop_paypal_title', __('PayPal', 'jigoshop') );
-		Jigoshop_Options::add_option('jigoshop_paypal_description', __("Pay via PayPal; you can pay with your credit card if you don't have a PayPal account", 'jigoshop') );
-		Jigoshop_Options::add_option('jigoshop_paypal_testmode', 'no');
-		Jigoshop_Options::add_option('jigoshop_paypal_send_shipping', 'no');
+// 		Jigoshop_Options::add_option('jigoshop_paypal_enabled', 'yes');
+// 		Jigoshop_Options::add_option('jigoshop_paypal_email', '');
+// 		Jigoshop_Options::add_option('jigoshop_paypal_title', __('PayPal', 'jigoshop') );
+// 		Jigoshop_Options::add_option('jigoshop_paypal_description', __("Pay via PayPal; you can pay with your credit card if you don't have a PayPal account", 'jigoshop') );
+// 		Jigoshop_Options::add_option('jigoshop_paypal_testmode', 'no');
+// 		Jigoshop_Options::add_option('jigoshop_paypal_send_shipping', 'no');
 
+		// NOTE: The above add_options are used for now.  When the gateway is converted to using Jigoshop_Options class
+		// sometime post Jigoshop 1.2, they won't be needed and only the following commented out line will be used
+		
+		Jigoshop_Options::install_new_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
+		
         $this->id			= 'paypal';
         $this->icon 		= jigoshop::assets_url() . '/assets/images/icons/paypal.png';
         $this->has_fields 	= false;
@@ -42,14 +58,107 @@ class paypal extends jigoshop_payment_gateway {
 
 		add_action( 'init', array(&$this, 'check_ipn_response') );
 		add_action('valid-paypal-standard-ipn-request', array(&$this, 'successful_request') );
-		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
 		add_action('receipt_paypal', array(&$this, 'receipt_page'));
 		
+		// remove this hook 'jigoshop_update_options' for post Jigoshop 1.2 use
+//		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
+
     }
+
+
+	/**
+	 * Default Option settings for WordPress Settings API using the Jigoshop_Options class
+	 *
+	 * These should be installed on the Jigoshop_Options 'Payment Gateways' tab
+	 *
+	 * NOTE: these are currently not used in Jigoshop 1.2 or less.  They will be implemented when all Gateways are
+	 * converted for full Jigoshop_Options use post Jigoshop 1.2.
+	 *
+	 */	
+	public function get_default_options() {
+	
+		$defaults = array();
+		
+		// Define the Section name for the Jigoshop_Options
+		$defaults[] = array( 'name' => __('PayPal Standard', 'jigoshop'), 'type' => 'title', 'desc' => __('<p>PayPal Standard works by sending the user to <a href="https://www.paypal.com/uk/mrb/pal=JFC9L8JJUZZK2">PayPal</a> to enter their payment information.</p>', 'jigoshop') );
+		
+		// List each option in order of appearance with details
+		$defaults[] = array(
+			'name'		=> __('Enable PayPal Standard','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_paypal_enabled',
+			'std' 		=> 'yes',
+			'type' 		=> 'radio',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+		
+		$defaults[] = array(
+			'name'		=> __('Method Title','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('This controls the title which the user sees during checkout.','jigoshop'),
+			'id' 		=> 'jigoshop_paypal_title',
+			'std' 		=> __('PayPal','jigoshop'),
+			'type' 		=> 'text'
+		);
+		
+		$defaults[] = array(
+			'name'		=> __('Description','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('This controls the description which the user sees during checkout.','jigoshop'),
+			'id' 		=> 'jigoshop_paypal_description',
+			'std' 		=> __("Pay via PayPal; you can pay with your credit card if you don't have a PayPal account", 'jigoshop'),
+			'type' 		=> 'text'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('PayPal email address','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Please enter your PayPal email address; this is needed in order to take payment!','jigoshop'),
+			'id' 		=> 'jigoshop_paypal_email',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('Send shipping details to PayPal','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('If your checkout page does not ask for shipping details, or if you do not want to send shipping information to PayPal, set this option to no. If you enable this option PayPal may restrict where things can be sent, and will prevent some orders going through for your protection.','jigoshop'),
+			'id' 		=> 'jigoshop_paypal_send_shipping',
+			'std' 		=> 'no',
+			'type' 		=> 'radio',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+
+		$defaults[] = array(
+			'name'		=> __('Enable PayPal sandbox','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_paypal_testmode',
+			'std' 		=> 'no',
+			'type' 		=> 'radio',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+
+		return $defaults;
+	}
+
 
 	/**
 	 * Admin Panel Options
 	 * - Options for bits like 'title' and availability on a country-by-country basis
+	 *
+	 * NOTE: this will be deprecated post Jigoshop 1.2 and no longer required for Admin options display
+	 *
 	 **/
 	public function admin_options() {
     	?>
@@ -112,6 +221,9 @@ class paypal extends jigoshop_payment_gateway {
 	/**
 	 * Admin Panel Options Processing
 	 * - Saves the options to the DB
+	 *
+	 * NOTE: this will be deprecated post Jigoshop 1.2 and no longer required for Admin options saving
+	 *
 	 **/
     public function process_admin_options() {
    		if(isset($_POST['jigoshop_paypal_enabled'])) Jigoshop_Options::set_option('jigoshop_paypal_enabled', jigowatt_clean($_POST['jigoshop_paypal_enabled']));
@@ -414,12 +526,3 @@ class paypal extends jigoshop_payment_gateway {
 	}
 
 }
-
-/**
- * Add the gateway to JigoShop
- **/
-function add_paypal_gateway( $methods ) {
-	$methods[] = 'paypal'; return $methods;
-}
-
-add_filter('jigoshop_payment_gateways', 'add_paypal_gateway' );
