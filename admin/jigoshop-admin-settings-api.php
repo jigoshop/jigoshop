@@ -337,18 +337,28 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	* @since 1.2
 	*/
 	public function validate_settings( $input ) {
+
+		if ( empty( $_POST ) ) {
+//			logme( "NO POST is SET in validate" );  // need to check into this
+			return $input;
+		}
+		
 		
 		$defaults = $this->our_parser->these_options;
 		$current_options = Jigoshop_Options::get_current_options();
+		
+		// TODO: these will be replaced with WordPress 'add_settings_error' calls where needed (-JAP-)
 		$current_options['validation-error'] = true; // if no errors in validation, we will reset this to false
 		$current_options['validation-message'] = 
 			__( "There was an error validating the data. No update occured!", 'jigoshop' );
-		$valid_input = $current_options;	// we start with the current options, plus the error flag and message
+			
+			
+		$valid_input = $current_options;			// we start with the current options
 		
 		
-		// Find the current TAB we are working with and use it's options
+		// Find the current TAB we are working with and use it's option settings
 		$this_section = sanitize_title( Jigoshop_Options::get_option( 'jigoshop_settings_current_tabname' ) );
-		$tab = $this->our_parser->tabs[$this_section];	// get all the options on this TAB
+		$tab = $this->our_parser->tabs[$this_section];
 		
 		
 		// with each option, get it's type and validate it
@@ -408,15 +418,18 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			}
 		}
 		
+		
 		// both coupons and tax classes should be updated
 		// they will do nothing if this is not the right TAB
 		if ( $result = $this->get_updated_coupons() ) $valid_input['jigoshop_coupons'] = $result;
 		if ( $result = $this->get_updated_tax_classes() ) $valid_input['jigoshop_tax_rates'] = $result;
 		
+		
 		// Allow any hooked in option updating, currently gateways
 		do_action( 'jigoshop_update_options' );
 		
-		// clear the error flag and set successful message
+		
+		// TODO: clear the error flag and set successful message (replace this -JAP-)
 		$valid_input['validation-error'] = false;
 		$valid_input['validation-message'] = sprintf( __( "'<strong>%s</strong>' settings were updated successfully.", 'jigoshop' ), Jigoshop_Options::get_option( 'jigoshop_settings_current_tabname' ) );
 		
@@ -424,7 +437,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		
 	}
 	
-
+	
 	/**
 	 * When Options are saved, return the 'jigoshop_coupons' option values
 	 *
@@ -745,6 +758,13 @@ class Jigoshop_Options_Parser {
 			$class = $item['class'];
 		}
 		
+		// display a tooltip if there is one in it's own table data element before the item to display
+		$display .= '<td class="jigoshop-tooltips">';
+        if ( ! empty( $item['tip'] )) {
+			$display .= '<a href="#" tip="'.$item['tip'].'" class="tips" tabindex="99"></a>';
+		}
+		$display .= '</td>';
+		
 		// determine special case option ID's for jQuery selectors
 		switch ( $item['type'] ) {
 		case 'tax_rates' :
@@ -757,13 +777,8 @@ class Jigoshop_Options_Parser {
 			$form_id = false;
 			break;
 		}
-
-		$display .= '<td class="jigoshop-tooltips">';
-        if ( ! empty( $item['tip'] )) {
-			$display .= '<a href="#" tip="'.$item['tip'].'" class="tips" tabindex="99"></a>';
-		}
-		$display .= '</td>';
 		
+		// wrap this item to display in an ID'd table data element 
 		$form_id_str = $form_id ? ' id="'.$form_id.'"' : '';
 		$display .= '<td class="forminp"'.$form_id_str.'">';
 		
@@ -791,7 +806,7 @@ class Jigoshop_Options_Parser {
 				id="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 				class="jigoshop-input jigoshop-text"
 				type="text"
-				value="'.$data[$item['id']].'" />';
+				value="'.esc_attr( $data[$item['id']] ).'" />';
 			break;
 			
 		case 'single_select_page' :
@@ -831,7 +846,7 @@ class Jigoshop_Options_Parser {
 			foreach ( $countries as $key => $val ) {
 				$display .= '<li><label><input type="checkbox" name="' . JIGOSHOP_OPTIONS . '[' . $item['id'] . ']['.$key.'] value="' . esc_attr( $key ) . '" ';
 				$display .= in_array( $key, $selections ) ? 'checked="checked" />' : ' />';
-				$display .=  $val . '</label></li>';
+				$display .=  esc_attr( $val ) . '</label></li>';
 			}
 			$display .= '</ul></div>';
 			break;
@@ -842,7 +857,7 @@ class Jigoshop_Options_Parser {
 				class="jigoshop-input jigoshop-text"
 				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 				type="'.$item['type'].'"
-				value="'.$data[$item['id']].'" />';
+				value="'. esc_attr( $data[$item['id']] ).'" />';
 			break;
 
 		case 'textarea':
@@ -860,7 +875,7 @@ class Jigoshop_Options_Parser {
 				class="jigoshop-input jigoshop-textarea"
 				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 				cols="'.$cols.'"
-				rows="4">'.$ta_value.'</textarea>';
+				rows="4">'.esc_attr( $ta_value ).'</textarea>';
 			break;
 
 		case "radio":
@@ -915,7 +930,7 @@ class Jigoshop_Options_Parser {
 			}
 			break;
 
-		case 'range':
+/*		case 'range':			// may not use this, needs work, unhooking (-JAP-)
 			$display .= '<input
 				id="'.$item['id'].'"
 				class="jigoshop-input jigoshop-range"
@@ -925,8 +940,9 @@ class Jigoshop_Options_Parser {
 				max="'.$item['choices']['max'].'"
 				step="'.$item['choices']['step'].'"
 				value="'.$data[$item['id']].'" />';
-			break;
 
+			break;
+*/
 		case 'select':
 			$display .= '<select
 				id="'.$item['id'].'"
@@ -934,7 +950,7 @@ class Jigoshop_Options_Parser {
 				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']" >';
 			foreach ( $item['choices'] as $value => $label ) {
 				$display .= '<option
-					value="'.$value.'" '.selected( $data[$item['id']], $value, false ).' />'.$label.'
+					value="'.esc_attr( $value ).'" '.selected( $data[$item['id']], $value, false ).' />'.$label.'
 					</option>';
 			}
 			$display .= '</select>';
