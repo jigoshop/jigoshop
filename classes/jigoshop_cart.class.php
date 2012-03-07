@@ -476,6 +476,7 @@ class jigoshop_cart extends jigoshop_singleton {
                 
                 // time to calculate discounts into a discounted item price if applying before tax
                 $discounted_item_price = -1;
+                $cart_discount_amount = 0;
                 if (get_option('jigoshop_tax_after_coupon') == 'yes') :
                     $discounted_item_price = round($_product->get_price_excluding_tax() * $values['quantity'] - $current_product_discount, 2);
                     if ($discounted_item_price > 0 && $cart_discount > 0) :
