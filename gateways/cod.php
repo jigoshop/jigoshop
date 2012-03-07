@@ -83,9 +83,12 @@ class jigoshop_cod extends jigoshop_payment_gateway {
 	 * - Saves the options to the DB
 	 **/
     public function process_admin_options() {
-   		if(isset($_POST['jigoshop_cod_enabled'])) 	update_option('jigoshop_cod_enabled', 	jigowatt_clean($_POST['jigoshop_cod_enabled'])); else @delete_option('jigoshop_cod_enabled');
-   		if(isset($_POST['jigoshop_cod_title'])) 	update_option('jigoshop_cod_title', 	jigowatt_clean($_POST['jigoshop_cod_title'])); else @delete_option('jigoshop_cod_title');
-   		if(isset($_POST['jigoshop_cod_description'])) 	update_option('jigoshop_cod_description', 	jigowatt_clean($_POST['jigoshop_cod_description'])); else @delete_option('jigoshop_cod_description');
+   		if(isset($_POST['jigoshop_cod_enabled']))
+   			Jigoshop_Options::set_option('jigoshop_cod_enabled', jigowatt_clean($_POST['jigoshop_cod_enabled']));
+   		if(isset($_POST['jigoshop_cod_title']))
+   			Jigoshop_Options::set_option('jigoshop_cod_title', jigowatt_clean($_POST['jigoshop_cod_title']));
+   		if(isset($_POST['jigoshop_cod_description']))
+   			Jigoshop_Options::set_option('jigoshop_cod_description', jigowatt_clean($_POST['jigoshop_cod_description']));
     }
 
 	/**
