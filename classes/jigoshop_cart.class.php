@@ -505,8 +505,8 @@ class jigoshop_cart extends jigoshop_singleton {
 
                         else :
                             // always use false for price includes tax when calculating tax after coupon = yes, as the price is excluding tax
-                            $price_includes_tax = (get_option('jigoshop_tax_after_coupon') == 'yes' && ($cart_discount > 0 || $current_product_discount > 0)? false : get_option('jigoshop_prices_include_tax') == 'yes');
-                            self::$tax->calculate_tax_amounts((get_option('jigoshop_tax_after_coupon') == 'yes'  && ($cart_discount > 0 || $current_product_discount > 0) ? $discounted_item_price * 100 : $total_item_price), $_product->get_tax_classes(), $price_includes_tax);
+                            $price_includes_tax = (get_option('jigoshop_tax_after_coupon') == 'yes' && ($cart_discount_amount > 0 || $current_product_discount > 0)? false : get_option('jigoshop_prices_include_tax') == 'yes');
+                            self::$tax->calculate_tax_amounts((get_option('jigoshop_tax_after_coupon') == 'yes'  && ($cart_discount_amount > 0 || $current_product_discount > 0) ? $discounted_item_price * 100 : $total_item_price), $_product->get_tax_classes(), $price_includes_tax);
 
                             // if coupons are applied and also applied before taxes but prices include tax, we need to re-adjust total
                             // item price according to new tax rate.
