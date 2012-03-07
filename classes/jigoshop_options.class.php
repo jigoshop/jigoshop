@@ -262,7 +262,7 @@ class Jigoshop_Options {
 			'desc' 		=> '',
 			'tip' 		=> __('The email used to send all Jigoshop related emails, such as order confirmations and notices.','jigoshop'),
 			'id' 		=> 'jigoshop_email',
-			'type' 		=> 'text',
+			'type' 		=> 'email',
 			'std' 		=> get_option('admin_email')
 		);
 		

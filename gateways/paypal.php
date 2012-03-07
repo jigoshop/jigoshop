@@ -111,7 +111,7 @@ class paypal extends jigoshop_payment_gateway {
 			'tip' 		=> __('This controls the description which the user sees during checkout.','jigoshop'),
 			'id' 		=> 'jigoshop_paypal_description',
 			'std' 		=> __("Pay via PayPal; you can pay with your credit card if you don't have a PayPal account", 'jigoshop'),
-			'type' 		=> 'text'
+			'type' 		=> 'longtext'
 		);
 
 		$defaults[] = array(
@@ -120,7 +120,7 @@ class paypal extends jigoshop_payment_gateway {
 			'tip' 		=> __('Please enter your PayPal email address; this is needed in order to take payment!','jigoshop'),
 			'id' 		=> 'jigoshop_paypal_email',
 			'std' 		=> '',
-			'type' 		=> 'text'
+			'type' 		=> 'email'
 		);
 
 		$defaults[] = array(

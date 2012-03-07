@@ -109,7 +109,7 @@ class dibs extends jigoshop_payment_gateway {
 			'tip' 		=> __('This controls the description which the user sees during checkout.','jigoshop'),
 			'id' 		=> 'jigoshop_dibs_description',
 			'std' 		=> __("Pay via DIBS using credit card or bank transfer.", 'jigoshop'),
-			'type' 		=> 'text'
+			'type' 		=> 'longtext'
 		);
 
 		$defaults[] = array(

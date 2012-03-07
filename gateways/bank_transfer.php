@@ -95,7 +95,7 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 			'tip' 		=> __('Let the customer know that their order won\'t be shipping until you receive payment.','jigoshop'),
 			'id' 		=> 'jigoshop_bank_transfer_description',
 			'std' 		=> __('Please use the details below to transfer the payment for your order, once payment is received your order will be processed.','jigoshop'),
-			'type' 		=> 'text'
+			'type' 		=> 'longtext'
 		);
 
 		$defaults[] = array(
@@ -149,7 +149,7 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 			'tip' 		=> __('Additional information you want to display to your customer.','jigoshop'),
 			'id' 		=> 'jigoshop_bank_transfer_additional',
 			'std' 		=> '',
-			'type' 		=> 'text'
+			'type' 		=> 'longtext'
 		);
 
 		return $defaults;

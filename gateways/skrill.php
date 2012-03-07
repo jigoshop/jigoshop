@@ -105,7 +105,7 @@ class skrill extends jigoshop_payment_gateway {
 			'tip' 		=> __('Please enter your skrill email address; this is needed in order to take payment!','jigoshop'),
 			'id' 		=> 'jigoshop_skrill_email',
 			'std' 		=> '',
-			'type' 		=> 'text'
+			'type' 		=> 'email'
 		);
 
 		$defaults[] = array(

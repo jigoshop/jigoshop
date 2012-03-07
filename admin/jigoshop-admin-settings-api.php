@@ -408,6 +408,8 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					break;
 					
 				case 'text' :		/* this needs validating */
+				case 'longtext' :	/* this needs validating */
+				case 'email' :		/* this needs validating */
 				case 'textarea' :	/* this needs validating */
 				default :
 					if ( isset( $value ) ) {
@@ -856,7 +858,28 @@ class Jigoshop_Options_Parser {
 				id="'.$item['id'].'"
 				class="jigoshop-input jigoshop-text"
 				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
-				type="'.$item['type'].'"
+				type="text"
+				size="20"
+				value="'. esc_attr( $data[$item['id']] ).'" />';
+			break;
+
+		case 'longtext':
+			$display .= '<input
+				id="'.$item['id'].'"
+				class="jigoshop-input jigoshop-text"
+				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
+				type="text"
+				size="80"
+				value="'. esc_attr( $data[$item['id']] ).'" />';
+			break;
+
+		case 'email':
+			$display .= '<input
+				id="'.$item['id'].'"
+				class="jigoshop-input jigoshop-text jigoshop-email"
+				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
+				type="text"
+				size="40"
 				value="'. esc_attr( $data[$item['id']] ).'" />';
 			break;
 
@@ -875,7 +898,7 @@ class Jigoshop_Options_Parser {
 				class="jigoshop-input jigoshop-textarea"
 				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 				cols="'.$cols.'"
-				rows="4">'.esc_attr( $ta_value ).'</textarea>';
+				rows="4">'.esc_textarea( $ta_value ).'</textarea>';
 			break;
 
 		case "radio":
