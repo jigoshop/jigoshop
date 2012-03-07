@@ -45,6 +45,8 @@
 if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1202280);
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
+// Override default translations with custom .mo's found in wp-content/languages/jigoshop
+load_textdomain( 'jigoshop', WP_LANG_DIR.'/jigoshop/jigoshop-'.get_locale().'.mo' );
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
 
 // Load administration & check if we need to install

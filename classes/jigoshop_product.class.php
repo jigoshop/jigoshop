@@ -600,7 +600,9 @@ class jigoshop_product {
 
         endif;
 
-        return $price / 100;
+        // product prices are always 2 decimal digits. Will get rounding errors on backwards tax calcs if 
+        // we don't round
+        return round($price / 100, 2); 
 
     }
 
