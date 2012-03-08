@@ -139,7 +139,12 @@ class jigoshop_product_meta
 			$array['stock_status'] = -1; // Discount if stock is managed
 			if ( get_option( 'jigoshop_hide_no_stock_product' ) == 'yes' ) {
 				if ( $array['stock'] <= get_option( 'jigoshop_notify_no_stock_amount' ) ) {
-					update_post_meta( $post['ID'], 'visibility', 'hidden' );
+					if ( $post['product-type'] <> 'grouped' && $post['product-type'] <> 'variable' ) {
+						update_post_meta( $post['ID'], 'visibility', 'hidden' );
+					} else {
+						// how to handle grouped and variable?  for now, ensure they are visible
+						update_post_meta( $post['ID'], 'visibility', $_POST['product_visibility'] );
+					}
 				}
 			}
 		} else {
