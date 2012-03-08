@@ -589,7 +589,8 @@ class jigoshop_cart extends jigoshop_singleton {
             foreach (self::get_applied_tax_classes() as $tax_class) :
                 if (!self::is_not_compounded_tax($tax_class)) : //tax compounded
                     $discount = (get_option('jigoshop_tax_after_coupon') == 'yes' ? self::$discount_total : 0);
-                    self::$tax->update_tax_amount($tax_class, (self::get_cart_subtotal(false) - $discount + self::$tax->get_non_compounded_tax_amount() + self::get_cart_shipping_total(false)) * 100);
+                    // always want prices excluding taxes when updating the tax here, so therefore use the static instance variables rather than the helper methods
+                    self::$tax->update_tax_amount($tax_class, (self::$subtotal_ex_tax - $discount + self::$tax->get_non_compounded_tax_amount() + self::$shipping_total) * 100);
                 endif;
             endforeach;
         endif;
