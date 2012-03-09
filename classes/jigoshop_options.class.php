@@ -242,7 +242,7 @@ class Jigoshop_Options {
 	 *      email                   - same as text (display size 40 chars)
 	 *      textarea                - same as text (display size 4 rows, 60 cols)
 	 *      checkbox                - true or false option type
-	 *      multicheck              - multiple checkboxes (horizontal or vertical display)
+	 *      multicheck              - option grouping allows multiple options for selection (horizontal or vertical display)
 	 *      select                  - standard select option with pre-defined choices
 	 *      radio                   - option grouping allowing one option for selection (horizontal or vertical display)
 	 *      single_select_page      - select that lists all available WordPress pages with a 'None' choice as well
