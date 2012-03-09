@@ -380,9 +380,9 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 				// validate for $option 'type' checking for a submitted $value
 				switch ( $option['type'] ) {
 				case 'user_defined' :
-					if ( ! empty( $item['update'] ) ) {
-						if ( is_callable( $item['update'], true ) ) {
-							$valid_input[$setting['id']] = call_user_func( $item['update'] );
+					if ( isset( $option['update'] ) ) {
+						if ( is_callable( $option['update'], true ) ) {
+							$valid_input[$setting['id']] = call_user_func( $option['update'] );
 						}
 					}
 					break;
@@ -803,7 +803,7 @@ class Jigoshop_Options_Parser {
 		// work off the option type and format output for display for each type
 		switch ( $item['type'] ) {
 		case 'user_defined' :
-			if ( ! empty( $item['display'] ) ) {
+			if ( isset( $item['display'] ) ) {
 				if ( is_callable( $item['display'], true ) ) {
 					$display .= call_user_func( $item['display'] );
 				}
