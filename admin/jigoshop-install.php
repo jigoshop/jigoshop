@@ -140,17 +140,17 @@ function jigoshop_create_pages() {
 
 	$page_data['post_title'] = __('Edit My Address', 'jigoshop');
 	$page_data['post_content'] = '[jigoshop_edit_address]';
-	$page_data['post_parent'] = get_option('jigoshop_myaccount_page_id');
+	$page_data['post_parent'] = jigoshop_get_page_id('myaccount');
 	jigoshop_create_single_page( 'edit-address', 'jigoshop_edit_address_page_id', $page_data );
 
 	$page_data['post_title'] = __('Change Password', 'jigoshop');
 	$page_data['post_content'] = '[jigoshop_change_password]';
-	$page_data['post_parent'] = get_option('jigoshop_myaccount_page_id');
+	$page_data['post_parent'] = jigoshop_get_page_id('myaccount');
 	jigoshop_create_single_page( 'change-password', 'jigoshop_change_password_page_id', $page_data );
 
 	$page_data['post_title'] = __('View Order', 'jigoshop');
 	$page_data['post_content'] = '[jigoshop_view_order]';
-	$page_data['post_parent'] = get_option('jigoshop_myaccount_page_id');
+	$page_data['post_parent'] = jigoshop_get_page_id('myaccount');
 	jigoshop_create_single_page( 'view-order', 'jigoshop_view_order_page_id', $page_data );
 
 	$page_data['post_title'] = __('Checkout', 'jigoshop');
@@ -160,12 +160,12 @@ function jigoshop_create_pages() {
 
 	$page_data['post_title'] = __('Checkout &rarr; Pay', 'jigoshop');
 	$page_data['post_content'] = '[jigoshop_pay]';
-	$page_data['post_parent'] = get_option('jigoshop_checkout_page_id');
+	$page_data['post_parent'] = jigoshop_get_page_id('checkout');
 	jigoshop_create_single_page( 'pay', 'jigoshop_pay_page_id', $page_data );
 
 	$page_data['post_title'] = __('Thank you', 'jigoshop');
 	$page_data['post_content'] = '[jigoshop_thankyou]';
-	$page_data['post_parent'] = get_option('jigoshop_checkout_page_id');
+	$page_data['post_parent'] = jigoshop_get_page_id('checkout');
 	jigoshop_create_single_page( 'thanks', 'jigoshop_thanks_page_id', $page_data );
 
 }
