@@ -161,6 +161,8 @@ class Jigoshop_Options {
 				break;
 			}
 		}
+		if ( $second_index < 0 ) $second_index = count( $our_options );
+		
 		/*** get the start of the array ***/
 		$start = array_slice( $our_options, 0, $second_index ); 
 		/*** get the end of the array ***/
@@ -225,12 +227,51 @@ class Jigoshop_Options {
 	/**
 	 * Sets the Jigoshop default options
 	 *
-	 * This will create the default options array
+	 * This will create the default options array. Extensions may install options of the same format into this.
 	 *
 	 * @param   none
 	 * @return  Void
 	 *
 	 * @since	1.2
+	 *
+	 *  ====================
+	 *
+	 * Supported Option Types:
+	 *      text                    - standard text input (display size 20 chars)
+	 *      longtext                - same as text (display size 80 chars)
+	 *      email                   - same as text (display size 40 chars)
+	 *      textarea                - same as text (display size 4 rows, 60 cols)
+	 *      checkbox                - true or false option type
+	 *      multicheck              - multiple checkboxes (horizontal or vertical display)
+	 *      select                  - standard select option with pre-defined choices
+	 *      radio                   - option grouping allowing one option for selection (horizontal or vertical display)
+	 *      single_select_page      - select that lists all available WordPress pages with a 'None' choice as well
+	 *      single_select_country   - select allowing a single choice of all Jigoshop defined countries
+	 *      multi_select_countries  - multicheck allowing multiple choices of all Jigoshop defined countries
+	 *      user_defined            - a user installed option type, must provide display and option update callbacks
+	 *
+	 *  ====================
+	 *
+	 *  The Options array uses Tabs for display and each tab begins with a 'heading' option type
+	 *  Each Tab Heading may be optionally divided into sections defined by a 'title' option type
+	 *  A Payment Gateway for example, would install itself into a 'heading' and provide a section 'title' with options
+	 *  List each option sequentially for display under each 'title' or 'heading' option type
+	 *
+	 *  Each Option may have any or all of the following items: (for an option, 'id' is MANDATORY and should be unique)
+			'tab'           => '',                      - calculated based on position in array
+			'section'       => '',                      - calculated based on position in array
+			'id'            => null,                    - required
+			'type'          => '',                      - required
+			'name'          => __( '', 'jigoshop' ),    - used for Option title in Admin display
+			'desc'          => __( '', 'jigoshop' ),    - option descriptive information (wrap in <p> tags)
+			'tip'           => __( '', 'jigoshop' ),    - a pop-up tool tip providing help information
+			'std'           => '',                      - default value for the option
+			'choices'       => array(),                 - for selects, radios, etc.
+			'class'         => '',                      - any special CSS classes to assign to the options display
+			'display'       => null,        - call back function for 'user_defined' - array( $this, 'function_name' )
+			'update'        => null,        - call back function for 'user_defined' - array( $this, 'function_name' )
+			'extra'         => null,                    - for display and verification - array( 'horizontal' )
+	 *
 	 */	
 	public static function set_default_options() {
 		
@@ -430,6 +471,51 @@ class Jigoshop_Options {
 		self::$default_options[] = array( 'name' => __('Page configurations', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
 		self::$default_options[] = array(
+			'name'		=> __('Jigoshop Checkbox Testing','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_checkbox_test',
+			'std' 		=> false,
+			'type' 		=> 'checkbox'
+		);
+		
+		self::$default_options[] = array(
+			'name'		=> __('Display Sidebar on these pages:','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_multicheck_test',
+			'type' 		=> 'multicheck',
+			"std"		=> array('shop' => true,'category' => false,'single' => true,'cart' => false,'checkout' => true,'account' => true),
+			"choices"	=> array(
+				"shop"			=> "Shop",
+				"category"		=> "Product Categories",
+				"single"		=> "Single Products",
+				"cart"			=> "Cart",
+				"checkout"		=> "Checkout",
+				"account"		=> "Account Pages",
+			),
+			'extra'		=> array( 'horizontal' )
+		);
+		
+		self::$default_options[] = array(
+			'name'		=> __('We could also display a multicheck this way:','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_multicheck_test_vert',
+			'type' 		=> 'multicheck',
+			"std"		=> array('shop' => false,'category' => true,'single' => false,'cart' => true,'checkout' => false,'account' => true),
+			"choices"	=> array(
+				"shop"			=> "Shop",
+				"category"		=> "Product Categories",
+				"single"		=> "Single Products",
+				"cart"			=> "Cart",
+				"checkout"		=> "Checkout",
+				"account"		=> "Account Pages",
+			),
+			'extra'		=> array( 'vertical' )
+		);
+		
+		self::$default_options[] = array(
 			'name'		=> __('Cart Page','jigoshop'),
 			'desc' 		=> __('Shortcode to place on page: <code>[jigoshop_cart]</code>','jigoshop'),
 			'tip' 		=> '',
@@ -517,7 +603,7 @@ class Jigoshop_Options {
 			'id' 		=> 'jigoshop_terms_page_id',
 			'std' 		=> '',
 			'type' 		=> 'single_select_page',
-			'args'		=> 'show_option_none=' . __('None', 'jigoshop'),
+			'extra'		=> 'show_option_none=' . __('None', 'jigoshop'),
 		);
 		
 		/**
@@ -1082,50 +1168,7 @@ class Jigoshop_Options {
 			)
 		);
 		
-		self::$default_options[] = array(
-			'name'		=> __('Jigoshop Checkbox Testing','jigoshop'),
-			'desc' 		=> '',
-			'tip' 		=> '',
-			'id' 		=> 'jigoshop_checkbox_test',
-			'std' 		=> false,
-			'type' 		=> 'checkbox'
-		);
-		
-		self::$default_options[] = array(
-			'name'		=> __('Display Sidebar on these pages:','jigoshop'),
-			'desc' 		=> '',
-			'tip' 		=> '',
-			'id' 		=> 'jigoshop_multicheck_test',
-			'type' 		=> 'multicheck',
-			"std"		=> array('shop' => true,'category' => false,'single' => true,'cart' => false,'checkout' => true,'account' => true),
-			"choices"	=> array(
-				"shop"			=> "Shop",
-				"category"		=> "Product Categories",
-				"single"		=> "Single Products",
-				"cart"			=> "Cart",
-				"checkout"		=> "Checkout",
-				"account"		=> "Account Pages",
-			),
-			'args'		=> array( 'horizontal' )
-		);
-		
-		self::$default_options[] = array(
-			'name'		=> __('We could also display a multicheck this way:','jigoshop'),
-			'desc' 		=> '',
-			'tip' 		=> '',
-			'id' 		=> 'jigoshop_multicheck_test_vert',
-			'type' 		=> 'multicheck',
-			"std"		=> array('shop' => false,'category' => true,'single' => false,'cart' => true,'checkout' => false,'account' => true),
-			"choices"	=> array(
-				"shop"			=> "Shop",
-				"category"		=> "Product Categories",
-				"single"		=> "Single Products",
-				"cart"			=> "Cart",
-				"checkout"		=> "Checkout",
-				"account"		=> "Account Pages",
-			),
-			'args'		=> array( 'vertical' )
-		);
+//		self::$default_options[] = array( 'type' => 'shipping_options');  // (-JAP-) should not longer be required
 		
 		/**
 		 * Payment Gateways Tab
@@ -1135,7 +1178,7 @@ class Jigoshop_Options {
 		
 		self::$default_options[] = array( 'name' => __('Available gateways', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
-		self::$default_options[] = array( 'type' => 'gateway_options');
+//		self::$default_options[] = array( 'type' => 'gateway_options');  // (-JAP-) should not longer be required
 				
 	}
 	
