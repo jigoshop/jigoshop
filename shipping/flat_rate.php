@@ -27,7 +27,7 @@ class flat_rate extends jigoshop_shipping_method {
 	public function __construct() {
 		
 		
-		Jigoshop_Options::install_new_options( 'Shipping', $this->get_default_options() );
+		Jigoshop_Options::install_external_options( 'Shipping', $this->get_default_options() );
 		
         $this->id 			= 'flat_rate';
         $this->enabled		= Jigoshop_Options::get_option('jigoshop_flat_rate_enabled');

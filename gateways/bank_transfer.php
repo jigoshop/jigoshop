@@ -29,7 +29,7 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 
 	public function __construct() {
 	
-		Jigoshop_Options::install_new_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
+		Jigoshop_Options::install_external_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
 		
         $this->id				= 'bank_transfer';
         $this->icon 			= '';

@@ -41,7 +41,7 @@ class dibs extends jigoshop_payment_gateway {
 		// NOTE: The above add_options are used for now.  When the gateway is converted to using Jigoshop_Options class
 		// sometime post Jigoshop 1.2, they won't be needed and only the following commented out line will be used
 		
-		Jigoshop_Options::install_new_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
+		Jigoshop_Options::install_external_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
 		
 		$this->id = 'dibs';
 		$this->icon = '';

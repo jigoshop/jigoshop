@@ -146,7 +146,7 @@ class Jigoshop_Options {
 	 *
 	 * @since	1.2
 	 */	
-	public static function install_new_options( $tab, $options ) {
+	public static function install_external_options( $tab, $options ) {
 		$our_options = self::get_default_options();
 		$first_index = -1;
 		$second_index = -1;
