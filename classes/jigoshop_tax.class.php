@@ -21,12 +21,9 @@ class jigoshop_tax {
     public $rates;
     private $compound_tax;
     private $tax_amounts;
-    private $non_compound_tax_amount;
     private $imploded_tax_amounts;
     private $tax_divisor;
-    private $total_tax_rate;
     private $shipping_tax_class;
-    private $has_tax;
 
     /**
      * sets up current tax class without a divisor. May or may not have
@@ -38,11 +35,8 @@ class jigoshop_tax {
         $this->rates = $this->get_tax_rates();
         $this->compound_tax = false;
         $this->tax_amounts = array();
-        $this->non_compound_tax_amount = 0;
         $this->imploded_tax_amounts = '';
-        $this->total_tax_rate = 0;
         $this->shipping_tax_class = '';
-        $this->has_tax = false;
     }
 
     /**
@@ -66,8 +60,17 @@ class jigoshop_tax {
         return implode('|', $array_string);
     }
 
-    public function has_tax() {
-        return $this->has_tax;
+    /**
+     * This function checks the tax_amounts array for the tax class passed in.
+     * If set, then tax has already been calculated for the tax class before and
+     * return true, otherwise return false.
+     * @param string $tax_class
+     * @return boolean true if the tax_amounts array has the tax class already
+     * defined, otherwise false
+     * @since 1.2
+     */
+    public function has_tax($tax_class) {
+        return (isset($this->tax_amounts[$tax_class]));
     }
 
     /**
@@ -119,15 +122,21 @@ class jigoshop_tax {
     public function get_tax_divisor() {
         return $this->tax_divisor;
     }
-
+    
     // TODO: currently used for admin pages. This should change in the future and the proper data displayed on the admin pages
     // this doesn't work correctly as shipping is applied to grand total, and also, discounts etc. Therefore, this calculation is only right if
     // the grandtotal was the total of the cart without the rest. Still this is not a good way of figuring out the tax rate.
     // Ultimately, fixing the admin panel to show all tax classes applied will be the best way.
-    public function get_total_tax_rate() {
-        return $this->total_tax_rate;
-    }
+    public function get_total_tax_rate($total_item_price = 0) {
+        $tot_tax_rate = 0;
+        $total_tax = $this->get_total_tax_amount(true) + $this->get_total_tax_amount(false);
+        if ($total_item_price > 0) :
+            $tot_tax_rate = (get_option('jigoshop_prices_include_tax') == 'yes' ? round($total_tax / ($total_item_price - $total_tax) * 100, 2) : round($total_tax / $total_item_price * 100, 2));
+        endif;
 
+        return $tot_tax_rate;
+    }
+    
     /**
      * Get an array of tax classes
      *
@@ -263,27 +272,48 @@ class jigoshop_tax {
     }
 
     /**
+     * returns the total tax amount for all classes based on compounded or not compounded
+     * @param boolean $compounded 
+     * @return double the total tax amount of all classes on $compounded value. If $compounded is true, then 
+     * the total amount of compounded tax amounts will be returned. Otherwise the total amount of regular
+     * tax will be returned
+     * @since 1.2 
+     */
+    private function get_total_tax_amount($compounded) {
+        $tax_amount = 0;
+        
+        if (!empty($this->tax_amounts)) :
+            foreach ($this->get_applied_tax_classes() as $tax_class) :
+                if (isset($this->tax_amounts[$tax_class]['amount']) && isset($this->tax_amounts[$tax_class]['compound']) && $this->tax_amounts[$tax_class]['compound'] == $compounded) :
+                    $tax_amount += round($this->tax_amounts[$tax_class]['amount']);
+                endif;
+            endforeach;
+        endif;
+        
+        return $tax_amount;
+        
+    }
+
+    /**
      * gets the amount of tax that has not been compounded
      * @return double value of non compound tax tax
      */
     public function get_non_compounded_tax_amount() {
+        
+        $tax_amount = $this->get_total_tax_amount(false);
         //TODO: number_format... might need to change this because of jigoshop options available for formatting numbers on cart
-        return ($this->tax_divisor > 0 ? number_format(round($this->non_compound_tax_amount) / $this->tax_divisor, 2, '.', '') : number_format(round($this->non_compound_tax_amount), 2, '.', ''));
-    }
+        return ($this->tax_divisor > 0 ? number_format($tax_amount / $this->tax_divisor, 2, '.', '') : number_format($tax_amount, 2, '.', ''));
 
+    }
+    
     /**
      * gets the amount of tax that has been compounded
      * @return type float value of compound tax
      */
     public function get_compound_tax_amount() {
-        $tax_amount = 0;
-        foreach ($this->get_applied_tax_classes() as $tax_class) :
-            if (isset($this->tax_amounts[$tax_class]) && isset($this->tax_amounts[$tax_class]['amount'])) :
-                $tax_amount += round($this->tax_amounts[$tax_class]['amount']);
-            endif;
-        endforeach;
+        $tax_amount = $this->get_total_tax_amount(true);
 
-        return ($this->tax_divisor > 0 ? number_format(($tax_amount / $this->tax_divisor) - $this->get_non_compounded_tax_amount(), 2, '.', '') : number_format($tax_amount - $this->non_compound_tax_amount, 2, '.', ''));
+        return ($this->tax_divisor > 0 ? number_format(($tax_amount / $this->tax_divisor), 2, '.', '') : number_format($tax_amount, 2, '.', ''));
     }
 
     /**
@@ -315,7 +345,7 @@ class jigoshop_tax {
                 if (!$this->is_compound_tax($rate)) :
                     $tax = $this->calc_tax($total_item_price - $compounded_tax_amount, $tax_rate, $prices_include_tax);
 
-                    if ($this->has_tax && $tax > 0) :
+                    if ($this->has_tax($tax_class) && $tax > 0) :
                         $this->update_tax_amount($tax_class, $tax, false);
                     elseif ($tax > 0) :
                         $tax_amount[$tax_class]['amount'] = $tax;
@@ -332,7 +362,7 @@ class jigoshop_tax {
                     
                     $tax = $this->calc_tax($total_item_price + $non_compound_tax_amount, $tax_rate, $prices_include_tax);
 
-                    if ($this->has_tax && $tax > 0) :
+                    if ($this->has_tax($tax_class) && $tax > 0) :
                         $this->update_tax_amount($tax_class, $tax, false);
                     elseif ($tax > 0) :
                         $tax_amount[$tax_class]['amount'] = $tax;
@@ -348,23 +378,8 @@ class jigoshop_tax {
 
             endforeach;
 
-            // only update when we haven't calculated taxes yet. Otherwise, if we have
-            // taxes already, then the call is made to update tax
-            if ( empty($this->tax_amounts) ) :
-                $this->has_tax = true;
-                $this->non_compound_tax_amount = $non_compound_tax_amount;
-                $this->tax_amounts = $tax_amount;
-                $this->imploded_tax_amounts = $this->array_implode($this->tax_amounts);
-
-                $tot_tax_rate = 0;
-                if ($total_item_price) :
-                    $tot_tax_rate = ($prices_include_tax ? round($total_tax / ($total_item_price - $total_tax) * 100, 2) : round($total_tax / $total_item_price * 100, 2));
-                endif;
-
-                $this->total_tax_rate = $tot_tax_rate;
-
-            endif;
-            
+            $this->tax_amounts = (empty($this->tax_amounts) ? $tax_amount : array_merge($this->tax_amounts, $tax_amount));
+            $this->imploded_tax_amounts = $this->array_implode($this->tax_amounts);
         endif;
 
     }
@@ -419,8 +434,6 @@ class jigoshop_tax {
                 $this->tax_amounts[$tax_class]['rate'] = $this->get_rate($tax_class);
                 $this->tax_amounts[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
                 $this->tax_amounts[$tax_class]['compound'] = false;
-                $this->has_tax = true;
-                $this->total_tax_rate = $this->tax_amounts[$tax_class]['rate'];
             endif;
 
             if ($recalculate_tax) :
@@ -437,15 +450,6 @@ class jigoshop_tax {
             endif;
 
             $this->imploded_tax_amounts = $this->array_implode($this->tax_amounts);
-
-            $non_compound_tax = 0;
-            foreach($this->get_applied_tax_classes() as $tax_class) :
-                if (!$this->tax_amounts[$tax_class]['compound']) :
-                    $non_compound_tax += $this->tax_amounts[$tax_class]['amount'];
-                endif;
-            endforeach;
-
-            $this->non_compound_tax_amount = $non_compound_tax;
         endif;
     }
     /**
