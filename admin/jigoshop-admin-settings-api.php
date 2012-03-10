@@ -954,7 +954,7 @@ class Jigoshop_Options_Parser {
 				$display .= '<ul class="jigoshop-radio-vert">';
 				foreach ( $item['choices'] as $option => $name ) {
 					$display .= '<li><input
-						class="jigoshop-input"
+						class="jigoshop-input jigoshop-radio"
 						name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 						type="radio"
 						value="'.$option.'" '.checked( $data[$item['id']], $option, false ).' /><label>'.$name.'</label></li>';
