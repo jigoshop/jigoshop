@@ -64,7 +64,7 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 		$defaults = array();
 		
 		// Define the Section name for the Jigoshop_Options
-		$defaults[] = array( 'name' => __('Bank Transfer', 'jigoshop'), 'type' => 'title', 'desc' => __('<p>Accept Bank Transfers as a method of payment. There is no automated process associated with this, you must manually process an order when you receive payment.</p>', 'jigoshop') );
+		$defaults[] = array( 'name' => __('Bank Transfer', 'jigoshop'), 'type' => 'title', 'desc' => __('Accept Bank Transfers as a method of payment. There is no automated process associated with this, you must manually process an order when you receive payment.', 'jigoshop') );
 		
 		// List each option in order of appearance with details
 		$defaults[] = array(

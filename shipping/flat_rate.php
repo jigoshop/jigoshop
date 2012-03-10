@@ -54,7 +54,7 @@ class flat_rate extends jigoshop_shipping_method {
 		$defaults = array();
 		
 		// Define the Section name for the Jigoshop_Options
-		$defaults[] = array( 'name' => __('Flat Rates', 'jigoshop'), 'type' => 'title', 'desc' => '' );
+		$defaults[] = array( 'name' => __('Flat Rates', 'jigoshop'), 'type' => 'title', 'desc' => __('Flat rates let you define a standard rate per item, or per order.', 'jigoshop') );
 		
 		// List each option in order of appearance with details
 		$defaults[] = array(

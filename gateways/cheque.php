@@ -68,7 +68,7 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 		$defaults = array();
 		
 		// Define the Section name for the Jigoshop_Options
-		$defaults[] = array( 'name' => __('Cheque Payment', 'jigoshop'), 'type' => 'title', 'desc' => '' );
+		$defaults[] = array( 'name' => __('Cheque Payment', 'jigoshop'), 'type' => 'title', 'desc' => __('Allows cheque payments. Allows you to make test purchases without having to use the sandbox area of a payment gateway. Quite useful for demonstrating to clients and for testing order emails and the \'success\' pages etc.', 'jigoshop') );
 		
 		// List each option in order of appearance with details
 		$defaults[] = array(

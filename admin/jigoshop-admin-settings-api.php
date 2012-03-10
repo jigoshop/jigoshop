@@ -183,7 +183,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		foreach ( $options as $index => $option ) {
 			if ( isset( $option['name'] ) && $section['title'] == $option['name'] ) {
 				if ( ! empty( $option['desc'] )) {
-					echo '<div class="section_description">' . $option['desc'] . '</div>';
+					echo '<p class="section_description">' . $option['desc'] . '</p>';
 				}
 			}
 		}

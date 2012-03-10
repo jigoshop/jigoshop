@@ -80,7 +80,7 @@ class paypal extends jigoshop_payment_gateway {
 		$defaults = array();
 		
 		// Define the Section name for the Jigoshop_Options
-		$defaults[] = array( 'name' => __('PayPal Standard', 'jigoshop'), 'type' => 'title', 'desc' => __('<p>PayPal Standard works by sending the user to <a href="https://www.paypal.com/uk/mrb/pal=JFC9L8JJUZZK2">PayPal</a> to enter their payment information.</p>', 'jigoshop') );
+		$defaults[] = array( 'name' => __('PayPal Standard', 'jigoshop'), 'type' => 'title', 'desc' => __('PayPal Standard works by sending the user to <a href="https://www.paypal.com/uk/mrb/pal=JFC9L8JJUZZK2">PayPal</a> to enter their payment information.', 'jigoshop') );
 		
 		// List each option in order of appearance with details
 		$defaults[] = array(

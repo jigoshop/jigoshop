@@ -78,7 +78,7 @@ class dibs extends jigoshop_payment_gateway {
 		$defaults = array();
 		
 		// Define the Section name for the Jigoshop_Options
-		$defaults[] = array( 'name' => __('DIBS FlexWin', 'jigoshop'), 'type' => 'title', 'desc' => __('<p>DIBS FlexWin works by sending the user to <a href="http://www.dibspayment.com/">DIBS</a> to enter their payment information.</p>', 'jigoshop') );
+		$defaults[] = array( 'name' => __('DIBS FlexWin', 'jigoshop'), 'type' => 'title', 'desc' => __('DIBS FlexWin works by sending the user to <a href="http://www.dibspayment.com/">DIBS</a> to enter their payment information.', 'jigoshop') );
 		
 		// List each option in order of appearance with details
 		$defaults[] = array(

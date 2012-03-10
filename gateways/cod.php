@@ -67,7 +67,7 @@ class jigoshop_cod extends jigoshop_payment_gateway {
 		$defaults = array();
 		
 		// Define the Section name for the Jigoshop_Options
-		$defaults[] = array( 'name' => __('Cash on Delivery', 'jigoshop'), 'type' => 'title', 'desc' => __('<p>Allows cash payments. Good for offline stores or having customers pay at the time of receiving the product.</p>', 'jigoshop') );
+		$defaults[] = array( 'name' => __('Cash on Delivery', 'jigoshop'), 'type' => 'title', 'desc' => __('Allows cash payments. Good for offline stores or having customers pay at the time of receiving the product.', 'jigoshop') );
 		
 		// List each option in order of appearance with details
 		$defaults[] = array(

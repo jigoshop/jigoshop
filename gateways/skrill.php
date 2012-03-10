@@ -74,7 +74,7 @@ class skrill extends jigoshop_payment_gateway {
 		$defaults = array();
 		
 		// Define the Section name for the Jigoshop_Options
-		$defaults[] = array( 'name' => __('Skrill (Moneybookers)', 'jigoshop'), 'type' => 'title', 'desc' => __('<p>Skrill works by using an iFrame to submit payment information securely to Moneybookers.</p>', 'jigoshop') );
+		$defaults[] = array( 'name' => __('Skrill (Moneybookers)', 'jigoshop'), 'type' => 'title', 'desc' => __('Skrill works by using an iFrame to submit payment information securely to Moneybookers.', 'jigoshop') );
 		
 		// List each option in order of appearance with details
 		$defaults[] = array(

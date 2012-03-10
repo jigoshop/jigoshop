@@ -383,7 +383,8 @@ class Jigoshop_Options {
 			'tip' 		=> __('Define what should happen when a user clicks on &#34;Add to Cart&#34; on any product or page.','jigoshop'),
 			'id' 		=> 'jigoshop_redirect_add_to_cart',
 			'std' 		=> 'same_page',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
+			'extra' 	=> array( 'vertical' ),
 			'choices'	=> array(
 				'same_page'		=> __('Stay on the same page', 'jigoshop'),
 				'to_checkout'	=> __('Redirect to Checkout', 'jigoshop'),
@@ -850,7 +851,7 @@ class Jigoshop_Options {
 		*/
 		self::$default_options[] = array( 'type' => 'heading', 'name' => __('Images', 'jigoshop') );
 		
-		self::$default_options[] = array( 'name' => __('Image Options', 'jigoshop'), 'type' => 'title', 'desc' => __('<p>Large variations from the defaults could require CSS modifications in your Theme.</p>','jigoshop') );
+		self::$default_options[] = array( 'name' => __('Image Options', 'jigoshop'), 'type' => 'title', 'desc' => __('Large variations from the defaults could require CSS modifications in your Theme.','jigoshop') );
 		
 		self::$default_options[] = array(
 			'name' 		=> __('Tiny Image Width','jigoshop'),
