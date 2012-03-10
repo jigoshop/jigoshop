@@ -725,7 +725,7 @@ class Jigoshop_Options {
 			'tip' 		=> __('Determines the display sort order of products for the Shop, Categories, and Tag pages.','jigoshop'),
 			'id' 		=> 'jigoshop_catalog_sort_orderby',
 			'std' 		=> 'post_date',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
 				'post_date'		=> __('Creation Date', 'jigoshop'),
 				'title'			=> __('Product Title', 'jigoshop'),
@@ -739,7 +739,7 @@ class Jigoshop_Options {
 			'tip' 		=> __('Determines whether the catalog sort orderby is ascending or descending.','jigoshop'),
 			'id' 		=> 'jigoshop_catalog_sort_direction',
 			'std' 		=> 'asc',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
 				'asc'			=> __('Ascending', 'jigoshop'),
 				'desc'			=> __('Descending', 'jigoshop')
@@ -1001,7 +1001,7 @@ class Jigoshop_Options {
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_weight_unit',
 			'std' 		=> 'kg',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
 				'kg'			=> __('Kilograms', 'jigoshop'),
 				'lbs'			=> __('Pounds', 'jigoshop')
@@ -1027,7 +1027,7 @@ class Jigoshop_Options {
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_dimension_unit',
 			'std' 		=> 'cm',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
 				'cm'			=> __('centimeters', 'jigoshop'),
 				'in'			=> __('inches', 'jigoshop')
@@ -1170,7 +1170,7 @@ class Jigoshop_Options {
 			'tip' 		=> __('Should the subtotal be shown including or excluding tax on the frontend?','jigoshop'),
 			'id' 		=> 'jigoshop_display_totals_tax',
 			'std' 		=> 'excluding',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
 				'including'		=> __('price including tax', 'jigoshop'),
 				'excluding'		=> __('price excluding tax', 'jigoshop')
