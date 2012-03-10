@@ -245,6 +245,7 @@ class Jigoshop_Options {
 	 *      multicheck              - option grouping allows multiple options for selection (horizontal or vertical display)
 	 *      select                  - standard select option with pre-defined choices
 	 *      radio                   - option grouping allowing one option for selection (horizontal or vertical display)
+	 *      range                   - range slider with min, max, and step values
 	 *      single_select_page      - select that lists all available WordPress pages with a 'None' choice as well
 	 *      single_select_country   - select allowing a single choice of all Jigoshop defined countries
 	 *      multi_select_countries  - multicheck allowing multiple choices of all Jigoshop defined countries
@@ -271,6 +272,44 @@ class Jigoshop_Options {
 			'display'       => null,        - call back function for 'user_defined' - array( $this, 'function_name' )
 			'update'        => null,        - call back function for 'user_defined' - array( $this, 'function_name' )
 			'extra'         => null,                    - for display and verification - array( 'horizontal' )
+	 *
+	 *  ====================
+	 *
+	 * Example range option definition:
+			self::$default_options[] = array(
+				'name'		=> __('Jigoshop Range Testing','jigoshop'),
+				'desc' 		=> '',
+				'tip' 		=> '',
+				'id' 		=> 'jigoshop_range_test',
+				'type' 		=> 'range',
+				'std' 		=> 100,
+				'extra'		=> array(
+					'min'			=> 50,
+					'max'			=> 300,
+					'step'			=> 5
+				)
+			);
+	 *
+	 *  ====================
+	 *
+	 * Example vertical multicheck option definition:
+			self::$default_options[] = array(
+				'name'		=> __('Display Sidebar on these pages:','jigoshop'),
+				'desc' 		=> '',
+				'tip' 		=> '',
+				'id' 		=> 'jigoshop_multicheck_test',
+				'type' 		=> 'multicheck',
+				"std"		=> array('shop' => true,'category' => false,'single' => true,'cart' => false,'checkout' => true,'account' => true),
+				"choices"	=> array(
+					"shop"			=> "Shop",
+					"category"		=> "Product Categories",
+					"single"		=> "Single Products",
+					"cart"			=> "Cart",
+					"checkout"		=> "Checkout",
+					"account"		=> "Account Pages",
+				),
+				'extra'		=> array( 'vertical' )
+			);
 	 *
 	 */	
 	public static function set_default_options() {
@@ -469,6 +508,20 @@ class Jigoshop_Options {
 		self::$default_options[] = array( 'type' => 'heading', 'name' => __('Pages', 'jigoshop') );
 		
 		self::$default_options[] = array( 'name' => __('Page configurations', 'jigoshop'), 'type' => 'title', 'desc' => '' );
+		
+		self::$default_options[] = array(
+			'name'		=> __('Jigoshop Range Testing','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_range_test',
+			'type' 		=> 'range',
+			'std' 		=> 100,
+			'extra'		=> array(
+				'min'			=> 50,
+				'max'			=> 300,
+				'step'			=> 5
+			)
+		);
 		
 		self::$default_options[] = array(
 			'name'		=> __('Jigoshop Checkbox Testing','jigoshop'),

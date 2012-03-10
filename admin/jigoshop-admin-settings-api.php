@@ -62,7 +62,9 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		
     	wp_register_script( 'jigoshop-easytooltip', jigoshop::assets_url() . '/assets/js/easyTooltip.js', '' );
     	wp_enqueue_script( 'jigoshop-easytooltip' );
-		wp_enqueue_script( 'jquery-ui-tabs' );
+    	// http://jquerytools.org/documentation/rangeinput/index.html
+    	wp_register_script( 'jquery-tools-slider', 'http://cdn.jquerytools.org/1.2.6/form/jquery.tools.min.js', array( 'jquery' ), '1.2.6' );
+    	wp_enqueue_script( 'jquery-tools-slider' );
 
 	}
 	
@@ -250,6 +252,9 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 
 					jQuery('table.form-table').addClass('widefat');
 					
+					// jQuery Tools range tool
+					jQuery(":range").rangeinput();
+			
 					// Countries
 					jQuery('select#jigoshop_allowed_countries').change(function(){
 						// hide-show multi_select_countries
@@ -1002,19 +1007,18 @@ class Jigoshop_Options_Parser {
 			}
 			break;
 
-/*		case 'range':			// may not use this, needs work, unhooking (-JAP-)
+		case 'range':
 			$display .= '<input
 				id="'.$item['id'].'"
 				class="jigoshop-input jigoshop-range"
 				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
-				type="'.$item['type'].'"
-				min="'.$item['choices']['min'].'"
-				max="'.$item['choices']['max'].'"
-				step="'.$item['choices']['step'].'"
+				type="range"
+				min="'.$item['extra']['min'].'"
+				max="'.$item['extra']['max'].'"
+				step="'.$item['extra']['step'].'"
 				value="'.$data[$item['id']].'" />';
-
 			break;
-*/
+
 		case 'select':
 			$display .= '<select
 				id="'.$item['id'].'"
@@ -1276,7 +1280,7 @@ class Jigoshop_Options_Parser {
 							<label><input type="checkbox" name="tax_compound[' + size + ']" /> <?php _e('Compound', 'jigoshop'); ?></label><a href="#" class="remove button">&times;</a>\
 											</p>').appendTo('#tax_rates div.taxrows');
 								return false;
-					});
+				});
 				jQuery('#tax_rates a.remove').live('click', function(){
 					var answer = confirm("<?php _e('Delete this rule?', 'jigoshop'); ?>");
 					if (answer) {
