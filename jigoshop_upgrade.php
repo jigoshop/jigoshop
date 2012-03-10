@@ -453,6 +453,16 @@ function jigoshop_upgrade_120() {
 //					delete_option( $setting['id'].'_h' );
 				}
 				break;
+			case 'jigoshop_display_totals_tax':
+				$current = get_option( $setting['id'] );
+				if ( ! (false === $current) ) {
+					if ( $current == 'including' )
+						Jigoshop_Options::set_option( $setting['id'], 'yes' );
+					else
+						Jigoshop_Options::set_option( $setting['id'], 'no' );
+//					delete_option( $setting['id'] );
+				}
+				break;
 			default:
 				$current = get_option( $setting['id'] );
 				if ( ! (false === $current) ) {

@@ -1165,15 +1165,15 @@ class Jigoshop_Options {
 		);
 		
 		self::$default_options[] = array(
-			'name'		=> __('Cart totals display...','jigoshop'),
+			'name'		=> __('Cart Subtotals include tax?','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('Should the subtotal be shown including or excluding tax on the frontend?','jigoshop'),
 			'id' 		=> 'jigoshop_display_totals_tax',
-			'std' 		=> 'excluding',
-			'type' 		=> 'radio',
+			'std' 		=> 'no',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
-				'including'		=> __('price including tax', 'jigoshop'),
-				'excluding'		=> __('price excluding tax', 'jigoshop')
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
 		
