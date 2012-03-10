@@ -752,7 +752,12 @@ class Jigoshop_Options {
 			'tip' 		=> __('Determines how many products to show on one display row for Shop, Category and Tag pages.','jigoshop'),
 			'id' 		=> 'jigoshop_catalog_columns',
 			'std' 		=> '3',
-			'type' 		=> 'text',
+			'type' 		=> 'range',
+			'extra'		=> array(
+				'min'			=> 1,
+				'max'			=> 10,
+				'step'			=> 1
+			)
 		);
 		
 		self::$default_options[] = array(
@@ -761,7 +766,12 @@ class Jigoshop_Options {
 			'tip' 		=> __('Determines how many products to display on Shop, Category and Tag pages before needing next and previous page navigation.','jigoshop'),
 			'id' 		=> 'jigoshop_catalog_per_page',
 			'std' 		=> '12',
-			'type' 		=> 'text',
+			'type' 		=> 'range',
+			'extra'		=> array(
+				'min'			=> 1,
+				'max'			=> 100,
+				'step'			=> 1
+			)
 		);
 		
 		self::$default_options[] = array( 'name' => __('Pricing Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
