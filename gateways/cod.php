@@ -76,7 +76,7 @@ class jigoshop_cod extends jigoshop_payment_gateway {
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_cod_enabled',
 			'std' 		=> 'no',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')

@@ -87,7 +87,7 @@ class dibs extends jigoshop_payment_gateway {
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_dibs_enabled',
 			'std' 		=> 'no',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -145,7 +145,7 @@ class dibs extends jigoshop_payment_gateway {
 			'tip' 		=> __('When test mode is enabled only DIBS specific test-cards are accepted.','jigoshop'),
 			'id' 		=> 'jigoshop_dibs_testmode',
 			'std' 		=> 'no',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')

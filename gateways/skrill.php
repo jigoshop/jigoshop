@@ -83,7 +83,7 @@ class skrill extends jigoshop_payment_gateway {
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_skrill_enabled',
 			'std' 		=> 'no',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')

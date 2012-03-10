@@ -408,7 +408,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					
 				case 'checkbox' :
 					// there will be no $value for a false checkbox, set it now
-					$valid_input[$setting['id']] = isset( $value ) ? true : false;
+					$valid_input[$setting['id']] = isset( $value ) ? 'yes' : 'no';
 					break;
 					
 				case 'multicheck' :
@@ -970,7 +970,7 @@ class Jigoshop_Options_Parser {
 				type="checkbox"
 				class="jigoshop-input jigoshop-checkbox"
 				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
-				'.checked($data[$item['id']], true, false).' />';
+				'.checked($data[$item['id']], 'yes', false).' />';
 			break;
 
 		case 'multicheck':

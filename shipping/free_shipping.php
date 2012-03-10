@@ -67,7 +67,7 @@ class free_shipping extends jigoshop_shipping_method {
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_free_shipping_enabled',
 			'std' 		=> 'no',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')

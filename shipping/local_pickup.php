@@ -66,7 +66,7 @@ class local_pickup extends jigoshop_shipping_method {
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_local_pickup_enabled',
 			'std' 		=> 'no',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')

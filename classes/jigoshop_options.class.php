@@ -275,6 +275,22 @@ class Jigoshop_Options {
 	 *
 	 *  ====================
 	 *
+	 * Example checkbox option definition:              // Choices should be defined with 'yes' and 'no'
+			self::$default_options[] = array(
+				'name'		=> __('Jigoshop Checkbox Testing','jigoshop'),
+				'desc' 		=> '',
+				'tip' 		=> '',
+				'id' 		=> 'jigoshop_checkbox_test',
+				'type' 		=> 'checkbox',
+				'std' 		=> 'yes',
+				'choices'	=> array(
+					'no'			=> __('No', 'jigoshop'),
+					'yes'			=> __('Yes', 'jigoshop')
+				)
+			);
+	 *
+	 *  ====================
+	 *
 	 * Example range option definition:
 			self::$default_options[] = array(
 				'name'		=> __('Jigoshop Range Testing','jigoshop'),
@@ -330,7 +346,7 @@ class Jigoshop_Options {
 			'tip' 		=> __('Enable this option to show a banner at the top of every page stating this shop is currently in testing mode.','jigoshop'),
 			'id' 		=> 'jigoshop_demo_store',
 			'std' 		=> 'no',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -398,7 +414,7 @@ class Jigoshop_Options {
 			'tip' 		=> __('Useful if you want to disable Jigoshop styles and theme it yourself via your theme.','jigoshop'),
 			'id' 		=> 'jigoshop_disable_css',
 			'std' 		=> 'no',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -411,7 +427,7 @@ class Jigoshop_Options {
 			'tip' 		=> __('Useful if or one of your plugin already loads the Fancybox script and css. But be careful, Jigoshop will still try to open product images using Fancybox.','jigoshop'),
 			'id' 		=> 'jigoshop_disable_fancybox',
 			'std' 		=> 'no',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -426,7 +442,7 @@ class Jigoshop_Options {
 			'tip' 		=> __('Setting this to Yes will allow users to checkout without registering or signing up. Otherwise, users must be signed in or must sign up to checkout.','jigoshop'),
 			'id' 		=> 'jigoshop_enable_guest_checkout',
 			'std' 		=> 'yes',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -438,7 +454,7 @@ class Jigoshop_Options {
 			'desc' 		=> '',
 			'id' 		=> 'jigoshop_enable_guest_login',
 			'std' 		=> 'yes',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -450,7 +466,7 @@ class Jigoshop_Options {
 			'desc' 		=> '',
 			'id' 		=> 'jigoshop_enable_signup_form',
 			'std' 		=> 'yes',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -463,7 +479,7 @@ class Jigoshop_Options {
 			'tip' 		=> __('Forcing SSL is recommended. This will load your checkout page with https://. An SSL certificate is <strong>required</strong> if you choose yes. Contact your hosting provider for more information on SSL Certs.','jigoshop'),
 			'id' 		=> 'jigoshop_force_ssl_checkout',
 			'std' 		=> 'no',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -494,7 +510,7 @@ class Jigoshop_Options {
 			'tip' 		=> __('Add Google Analytics eCommerce tracking code upon successful orders', 'jigoshop'),
 			'desc'		=> __('<a href="//support.google.com/analytics/bin/answer.py?hl=en&answer=1009612">Learn how to enable</a> eCommerce tracking for your Google Analytics account.', 'jigoshop'),
 			'id' 		=> 'jigoshop_ga_ecommerce_tracking_enabled',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'std' 		=> 'no',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
@@ -529,8 +545,12 @@ class Jigoshop_Options {
 			'desc' 		=> '',
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_checkbox_test',
-			'std' 		=> false,
-			'type' 		=> 'checkbox'
+			'std' 		=> 'yes',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
 		);
 		
 		self::$default_options[] = array(
@@ -692,7 +712,7 @@ class Jigoshop_Options {
 			'tip' 		=> __('This will only apply to tags &amp; categories.<br/>Yes: http://yoursite.com / product_category / YourCategory<br/>No: http://yoursite.com / base_page / product_category / YourCategory', 'jigoshop'),
 			'id' 		=> 'jigoshop_prepend_shop_page_to_urls',
 			'std' 		=> 'no',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -955,7 +975,7 @@ class Jigoshop_Options {
 			'tip' 		=> __('Turning off the SKU field will give products an SKU of their post id.','jigoshop'),
 			'id' 		=> 'jigoshop_enable_sku',
 			'std' 		=> 'no',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -968,7 +988,7 @@ class Jigoshop_Options {
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_enable_weight',
 			'std' 		=> 'yes',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -994,7 +1014,7 @@ class Jigoshop_Options {
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_enable_dimensions',
 			'std' 		=> 'yes',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -1020,7 +1040,7 @@ class Jigoshop_Options {
 			'tip' 		=> __('To show or hide the related products section on a single product page.','jigoshop'),
 			'id' 		=> 'jigoshop_enable_related_products',
 			'std' 		=> 'yes',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -1035,7 +1055,7 @@ class Jigoshop_Options {
 			'tip' 		=> __('You can manage stock on a per-item basis if you leave this option on.', 'jigoshop'),
 			'id' 		=> 'jigoshop_manage_stock',
 			'std' 		=> 'yes',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -1048,7 +1068,7 @@ class Jigoshop_Options {
 			'tip' 		=> __('Set to yes to allow customers to view the amount of stock available for a product.', 'jigoshop'),
 			'id' 		=> 'jigoshop_show_stock',
 			'std' 		=> 'yes',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -1060,7 +1080,7 @@ class Jigoshop_Options {
 			'desc' 		=> '',
 			'id' 		=> 'jigoshop_notify_low_stock',
 			'std' 		=> 'yes',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -1081,7 +1101,7 @@ class Jigoshop_Options {
 			'desc' 		=> '',
 			'id' 		=> 'jigoshop_notify_no_stock',
 			'std' 		=> 'yes',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -1103,7 +1123,7 @@ class Jigoshop_Options {
 			'tip' 		=> 'For Yes: When the Out of Stock Threshold (above) is reached, the product visibility will be set to hidden so that it will not appear on the Catalog or Shop product lists.',
 			'id' 		=> 'jigoshop_hide_no_stock_product',
 			'std' 		=> 'no',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -1120,11 +1140,11 @@ class Jigoshop_Options {
 		
 		self::$default_options[] = array(
 			'name'		=> __('Calculate Taxes','jigoshop'),
-			'desc' 		=> __('Only set this to no if you are exclusively selling non-taxable items.','jigoshop'),
+			'desc' 		=> __('Only turn this off if you are exclusively selling non-taxable items.','jigoshop'),
 			'tip' 		=> __('If you are not calculating taxes then you can ignore all other tax options.', 'jigoshop'),
 			'id' 		=> 'jigoshop_calc_taxes',
 			'std' 		=> 'yes',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -1137,7 +1157,7 @@ class Jigoshop_Options {
 			'tip' 		=> __('If prices include tax then tax calculations will work backwards.','jigoshop'),
 			'id' 		=> 'jigoshop_prices_include_tax',
 			'std' 		=> 'yes',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -1185,11 +1205,11 @@ class Jigoshop_Options {
 		
 		self::$default_options[] = array(
 			'name'		=> __('Calculate Shipping','jigoshop'),
-			'desc' 		=> __('Only set this to no if you are not shipping items, or items have shipping costs included.','jigoshop'),
+			'desc' 		=> __('Only turn this off if you are not shipping items, or items have shipping costs included.','jigoshop'),
 			'tip' 		=> __('If you are not calculating shipping then you can ignore all other tax options.', 'jigoshop'),
 			'id' 		=> 'jigoshop_calc_shipping',
 			'std' 		=> 'yes',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -1202,7 +1222,7 @@ class Jigoshop_Options {
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_enable_shipping_calc',
 			'std' 		=> 'yes',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -1215,7 +1235,7 @@ class Jigoshop_Options {
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_ship_to_billing_address_only',
 			'std' 		=> 'no',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')

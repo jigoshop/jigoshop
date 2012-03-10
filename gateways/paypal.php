@@ -89,7 +89,7 @@ class paypal extends jigoshop_payment_gateway {
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_paypal_enabled',
 			'std' 		=> 'yes',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -129,7 +129,7 @@ class paypal extends jigoshop_payment_gateway {
 			'tip' 		=> __('If your checkout page does not ask for shipping details, or if you do not want to send shipping information to PayPal, set this option to no. If you enable this option PayPal may restrict where things can be sent, and will prevent some orders going through for your protection.','jigoshop'),
 			'id' 		=> 'jigoshop_paypal_send_shipping',
 			'std' 		=> 'no',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
@@ -142,7 +142,7 @@ class paypal extends jigoshop_payment_gateway {
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_paypal_testmode',
 			'std' 		=> 'no',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')

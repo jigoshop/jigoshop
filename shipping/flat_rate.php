@@ -63,7 +63,7 @@ class flat_rate extends jigoshop_shipping_method {
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_flat_rate_enabled',
 			'std' 		=> 'yes',
-			'type' 		=> 'radio',
+			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
