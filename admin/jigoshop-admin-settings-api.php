@@ -224,7 +224,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					<div class="jigoshop-settings">
 						<div id="tabs-wrap">
 							
-							<ul class="wp-submenu">
+							<ul class="tabs">
 								<?php echo $this->build_tab_menu_items(); ?>
 							</ul>
 							
@@ -250,7 +250,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					// Fade out the status message
 					jQuery('.updated').delay(2500).fadeOut(1500);
 
-					jQuery('table.form-table').addClass('widefat');
+//					jQuery('table.form-table').addClass('widefat');
 					
 					// jQuery Tools range tool
 					jQuery(":range").rangeinput();

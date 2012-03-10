@@ -666,20 +666,6 @@ ul.recent-orders {
 	margin: 0 !important;
 }
 
-p.taxrow select {
-	width: 100px;
-}
-p.taxrow input.text {
-	width: 80px;
-}
-p.taxrow label {
-	line-height: 1.5em;
-	margin: 0 8px;
-	input {
-		margin: 0 4px 0 0;
-	}
-}
-
 .jigoshop table.widefat {
 	table.coupon_rows {
 		border: 0 !important;
@@ -1415,6 +1401,11 @@ div.multi_select_countries.shipping_services {
 		width: 17%;
 	}
 	
+	td {
+		margin-bottom: 3px;
+		line-height: 12px;
+	}
+	
 	.jigoshop-tooltips {
 		width: 3%;
 		a.tips {
@@ -1501,6 +1492,21 @@ div.multi_select_countries.shipping_services {
 		}
 	}
 	
+	/* tax display needs markup refactoring -- this is old selectors */
+	p.taxrow select {
+		width: 100px;
+	}
+	p.taxrow input.text {
+		width: 60px;
+	}
+	p.taxrow label {
+		line-height: 1.5em;
+		margin: 0 8px;
+		input {
+			margin: 0 4px 0 0;
+		}
+	}
+	
 	table.coupon_rows {
 		border: 0 !important;
 		width: 90%;
@@ -1530,7 +1536,7 @@ div.multi_select_countries.shipping_services {
 				border: 0;
 				font-weight: normal;
 				font-size: 11px;
-				color: #999;
+				color: #777;
 			}
 		}
 		tbody {
@@ -1559,53 +1565,19 @@ div.multi_select_countries.shipping_services {
 	border-radius:8px;
 }
 
-.jigoshop ul.wp-submenu {
-	margin: 0 0 1em;
-	overflow: hidden;
-	zoom: 1;
-	line-height: 1;
-}
-
-.jigoshop ul.wp-submenu li {
-	padding: 0;
-	margin: 0 5px 0 5px;
-}
-
-.jigoshop ul.wp-submenu li a {
-	border: 1px solid 0;
-	float: left;
-	padding: 5px 15px;
-	text-decoration: none;
-	font-size: 14px;
-	-moz-border-radius-topleft: 5px;
-	-moz-border-radius-topright: 5px;
-	-webkit-border-top-left-radius: 5px;
-	-webkit-border-top-right-radius: 5px;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-}
-
-.jigoshop ul.wp-submenu li.active a {
-	color: #333;
-}
-
 .section_description {
 	color: #555;
 	margin-bottom: 1em;
 }
 	
-.jigoshop ul.wp-submenu, #tabs-wrap h3 {
-	background: #fff; /* fallback */
-	background-image: -ms-linear-gradient(bottom, #dbdbdb, #fff); /* IE10 */
-	background-image: -moz-linear-gradient(bottom, #dbdbdb, #fff); /* Firefox */
-	background-image: -o-linear-gradient(bottom, #dbdbdb, #fff); /* Opera */
-	background-image: -webkit-gradient(linear, left bottom, left top, from(#dbdbdb), to(#fff)); /* old Webkit	 */
-	background-image: -webkit-linear-gradient(bottom, #dbdbdb, #fff) !important; /* new Webkit */
-	background-image: linear-gradient(bottom, #dbdbdb, #fff); /* proposed W3C Markup */
+.jigoshop-settings #tabs-wrap h3 {
+	font-size: 13px;
+	padding: 1.5em 10px 3px 10px;
+	margin: 1em 0;
+	border-top: #ccc double 3px;
 }
 
-.jigoshop #tabs-wrap h3 {
-	font-size: 14px;
-	padding: 1em 10px 3px 10px;
-	margin: 0;
+.jigoshop-settings #tabs-wrap p {
+	color: #666;
+	padding: 0 50px;
 }
