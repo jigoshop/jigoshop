@@ -85,7 +85,7 @@ class flat_rate extends jigoshop_shipping_method {
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_flat_rate_type',
 			'std' 		=> 'order',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
 				'order'			=> __('Per Order', 'jigoshop'),
 				'item'			=> __('Per Item', 'jigoshop')
@@ -98,7 +98,7 @@ class flat_rate extends jigoshop_shipping_method {
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_flat_rate_tax_status',
 			'std' 		=> 'taxable',
-			'type' 		=> 'select',
+			'type' 		=> 'radio',
 			'choices'	=> array(
 				'taxable'		=> __('Taxable', 'jigoshop'),
 				'none'			=> __('None', 'jigoshop')

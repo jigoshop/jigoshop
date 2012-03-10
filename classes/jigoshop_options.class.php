@@ -527,69 +527,6 @@ class Jigoshop_Options {
 		self::$default_options[] = array( 'name' => __('Page configurations', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
 		self::$default_options[] = array(
-			'name'		=> __('Jigoshop Range Testing','jigoshop'),
-			'desc' 		=> '',
-			'tip' 		=> '',
-			'id' 		=> 'jigoshop_range_test',
-			'type' 		=> 'range',
-			'std' 		=> 100,
-			'extra'		=> array(
-				'min'			=> 50,
-				'max'			=> 300,
-				'step'			=> 5
-			)
-		);
-		
-		self::$default_options[] = array(
-			'name'		=> __('Jigoshop Checkbox Testing','jigoshop'),
-			'desc' 		=> '',
-			'tip' 		=> '',
-			'id' 		=> 'jigoshop_checkbox_test',
-			'std' 		=> 'yes',
-			'type' 		=> 'checkbox',
-			'choices'	=> array(
-				'no'			=> __('No', 'jigoshop'),
-				'yes'			=> __('Yes', 'jigoshop')
-			)
-		);
-		
-		self::$default_options[] = array(
-			'name'		=> __('Display Sidebar on these pages:','jigoshop'),
-			'desc' 		=> '',
-			'tip' 		=> '',
-			'id' 		=> 'jigoshop_multicheck_test',
-			'type' 		=> 'multicheck',
-			"std"		=> array('shop' => true,'category' => false,'single' => true,'cart' => false,'checkout' => true,'account' => true),
-			"choices"	=> array(
-				"shop"			=> "Shop",
-				"category"		=> "Product Categories",
-				"single"		=> "Single Products",
-				"cart"			=> "Cart",
-				"checkout"		=> "Checkout",
-				"account"		=> "Account Pages",
-			),
-			'extra'		=> array( 'horizontal' )
-		);
-		
-		self::$default_options[] = array(
-			'name'		=> __('We could also display a multicheck this way:','jigoshop'),
-			'desc' 		=> '',
-			'tip' 		=> '',
-			'id' 		=> 'jigoshop_multicheck_test_vert',
-			'type' 		=> 'multicheck',
-			"std"		=> array('shop' => false,'category' => true,'single' => false,'cart' => true,'checkout' => false,'account' => true),
-			"choices"	=> array(
-				"shop"			=> "Shop",
-				"category"		=> "Product Categories",
-				"single"		=> "Single Products",
-				"cart"			=> "Cart",
-				"checkout"		=> "Checkout",
-				"account"		=> "Account Pages",
-			),
-			'extra'		=> array( 'vertical' )
-		);
-		
-		self::$default_options[] = array(
 			'name'		=> __('Cart Page','jigoshop'),
 			'desc' 		=> __('Shortcode to place on page: <code>[jigoshop_cart]</code>','jigoshop'),
 			'tip' 		=> '',
@@ -1007,8 +944,8 @@ class Jigoshop_Options {
 		
 		self::$default_options[] = array(
 			'name'		=> __('Weight Unit', 'jigoshop'),
-			'desc' 		=> __("This controls what unit you will define weights in.", 'jigoshop'),
-			'tip' 		=> '',
+			'desc' 		=> '',
+			'tip' 		=> __("This controls what unit you will define weights in.", 'jigoshop'),
 			'id' 		=> 'jigoshop_weight_unit',
 			'std' 		=> 'kg',
 			'type' 		=> 'radio',
@@ -1033,8 +970,8 @@ class Jigoshop_Options {
 		
 		self::$default_options[] = array(
 			'name'		=> __('Dimensions Unit', 'jigoshop'),
-			'desc' 		=> __("This controls what unit you will define dimensions in.", 'jigoshop'),
-			'tip' 		=> '',
+			'desc' 		=> '',
+			'tip' 		=> __("This controls what unit you will define dimensions in.", 'jigoshop'),
 			'id' 		=> 'jigoshop_dimension_unit',
 			'std' 		=> 'cm',
 			'type' 		=> 'radio',
