@@ -32,7 +32,6 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			JIGOSHOP_OPTIONS
 		);
 
-		add_action( 'admin_menu', array( &$this, 'add_settings_page' ) );
 		add_action( 'admin_init', array( &$this, 'register_settings' ) );
 
 	}
@@ -41,7 +40,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	/**
 	 * Add options page
 	 *
-	 * @since 1.2
+	 * @deprecated -- no longer used; is set up in 'jigoshop-admin.php' function 'jigoshop_admin_menu'.
 	 */
 	public function add_settings_page() {
 
