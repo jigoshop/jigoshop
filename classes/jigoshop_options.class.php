@@ -138,6 +138,20 @@ class Jigoshop_Options {
 	
 	
 	/**
+	 * Determines whether an Option exists
+	 *
+	 * @return	bool	true for successful completion if option found, false otherwise
+	 *
+	 * @since	1.2
+	 */	
+	public static function exists_option( $name ) {
+		self::get_current_options();
+		if ( isset( self::$current_options[$name] )) return true;
+		else return false;
+	}
+	
+	
+	/**
 	 * Install additional default options for parsing
 	 * Shipping methods and Payment gateways would use this
 	 *
@@ -385,12 +399,12 @@ class Jigoshop_Options {
 			'type' 		=> 'email'
 		);
 		
-		self::$default_options[] = array( 'name' => __('Shop Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
+		self::$default_options[] = array( 'name' => __( 'Shop Options', 'jigoshop' ), 'type' => 'title', 'desc' => '' );
 		
 		self::$default_options[] = array(
-			'name'		=> __('Demo store','jigoshop'),
+			'name'		=> __( 'Demo store', 'jigoshop' ),
 			'desc' 		=> '',
-			'tip' 		=> __('Enable this option to show a banner at the top of every page stating this shop is currently in testing mode.','jigoshop'),
+			'tip' 		=> __( 'Enable this option to show a banner at the top of every page stating this shop is currently in testing mode.', 'jigoshop' ),
 			'id' 		=> 'jigoshop_demo_store',
 			'std' 		=> 'no',
 			'type' 		=> 'checkbox',
@@ -401,29 +415,29 @@ class Jigoshop_Options {
 		);
 		
 		self::$default_options[] = array(
-			'name'		=> __('Base Country/Region','jigoshop'),
+			'name'		=> __( 'Base Country/Region', 'jigoshop' ),
 			'desc' 		=> '',
-			'tip' 		=> __('This is the base country for your business. Tax rates will be based on this country.','jigoshop'),
+			'tip' 		=> __( 'This is the base country for your business. Tax rates will be based on this country.', 'jigoshop' ),
 			'id' 		=> 'jigoshop_default_country',
 			'std' 		=> 'GB',
 			'type' 		=> 'single_select_country'
 		);
 		
 		self::$default_options[] = array(
-			'name'		=> __('Allowed Countries','jigoshop'),
+			'name'		=> __( 'Allowed Countries', 'jigoshop' ),
 			'desc' 		=> '',
-			'tip' 		=> __('These are countries that you are willing to ship to.','jigoshop'),
+			'tip' 		=> __( 'These are countries that you are willing to ship to.', 'jigoshop' ),
 			'id' 		=> 'jigoshop_allowed_countries',
 			'std' 		=> 'all',
 			'type' 		=> 'select',
 			'choices'	=> array(
-				'all'			=> __('All Countries', 'jigoshop'),
-				'specific'		=> __('Specific Countries', 'jigoshop')
+				'all'			=> __( 'All Countries', 'jigoshop' ),
+				'specific'		=> __( 'Specific Countries', 'jigoshop' )
 			)
 		);
 		
 		self::$default_options[] = array(
-			'name'		=> __('Specific Countries','jigoshop'),
+			'name'		=> __( 'Specific Countries', 'jigoshop' ),
 			'desc' 		=> '',
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_specific_allowed_countries',
