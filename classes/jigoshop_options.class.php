@@ -278,7 +278,7 @@ class Jigoshop_Options {
 			'id'            => null,                    - required
 			'type'          => '',                      - required
 			'name'          => __( '', 'jigoshop' ),    - used for Option title in Admin display
-			'desc'          => __( '', 'jigoshop' ),    - option descriptive information (wrap in <p> tags)
+			'desc'          => __( '', 'jigoshop' ),    - option descriptive information appears under the option in Admin
 			'tip'           => __( '', 'jigoshop' ),    - a pop-up tool tip providing help information
 			'std'           => '',                      - default value for the option
 			'choices'       => array(),                 - for selects, radios, etc.

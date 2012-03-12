@@ -75,7 +75,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	* @since 1.2
 	*/
 	public function settings_styles() {
-		
+		do_action( 'jigoshop_settings_styles' );	// user defined stylesheets should be registered and queued
 	}
 	
 	
@@ -766,7 +766,7 @@ class Jigoshop_Options_Parser {
 		$data = Jigoshop_Options::get_current_options();
 		
 		$display = "";					// each item builds it's output into this and it's returned for echoing
-		$class = "";					// TODO: not sure we need this, not used currently (-JAP-)
+		$class = "";
 		
 		if ( isset( $item['class'] ) ) {
 			$class = $item['class'];
@@ -832,6 +832,8 @@ class Jigoshop_Options_Parser {
 			);
 			if ( isset( $item['extra'] )) $args = wp_parse_args( $item['extra'], $args );
 			$display .= wp_dropdown_pages( $args );
+			$parts = explode( '<select', $display );
+			$display = $parts[0] . '<select class="'.$class.'"' . $parts[1];
 			break;
 
 		case 'single_select_country' :
@@ -844,7 +846,7 @@ class Jigoshop_Options_Parser {
 				$country = $country_setting;
 				$state = '*';
 			endif;
-			$display .= '<select class="single_select_country" name="' . JIGOSHOP_OPTIONS . '[' . $item['id'] . ']">';
+			$display .= '<select class="single_select_country '.$class.'" name="' . JIGOSHOP_OPTIONS . '[' . $item['id'] . ']">';
 			$display .= jigoshop_countries::country_dropdown_options($country, $state, false, true, false);
 			$display .= '</select>';
 			break;
@@ -853,7 +855,7 @@ class Jigoshop_Options_Parser {
 			$countries = jigoshop_countries::$countries;
 			asort( $countries );
 			$selections = (array) $data[$item['id']];
-			$display .= '<div class="multi_select_countries"><ul>';
+			$display .= '<div class="multi_select_countries '.$class.'"><ul>';
 			$index = 0;
 			foreach ( $countries as $key => $val ) {
 				$display .= '<li><label><input type="checkbox" name="' . JIGOSHOP_OPTIONS . '[' . $item['id'] . ']['.$key.'] value="' . esc_attr( $key ) . '" ';
@@ -866,7 +868,7 @@ class Jigoshop_Options_Parser {
 		case 'text':
 			$display .= '<input
 				id="'.$item['id'].'"
-				class="jigoshop-input jigoshop-text"
+				class="jigoshop-input jigoshop-text '.$class.'"
 				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 				type="text"
 				size="20"
@@ -876,7 +878,7 @@ class Jigoshop_Options_Parser {
 		case 'longtext':
 			$display .= '<input
 				id="'.$item['id'].'"
-				class="jigoshop-input jigoshop-text"
+				class="jigoshop-input jigoshop-text '.$class.'"
 				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 				type="text"
 				size="80"
@@ -886,7 +888,7 @@ class Jigoshop_Options_Parser {
 		case 'email':
 			$display .= '<input
 				id="'.$item['id'].'"
-				class="jigoshop-input jigoshop-text jigoshop-email"
+				class="jigoshop-input jigoshop-text jigoshop-email '.$class.'"
 				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 				type="text"
 				size="40"
@@ -905,7 +907,7 @@ class Jigoshop_Options_Parser {
 			$ta_value = stripslashes( $data[$item['id']] );
 			$display .= '<textarea
 				id="'.$item['id'].'"
-				class="jigoshop-input jigoshop-textarea"
+				class="jigoshop-input jigoshop-textarea '.$class.'"
 				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 				cols="'.$cols.'"
 				rows="4">'.esc_textarea( $ta_value ).'</textarea>';
@@ -918,7 +920,7 @@ class Jigoshop_Options_Parser {
 				$display .= '<div class="jigoshop-radio-horz">';
 				foreach ( $item['choices'] as $option => $name ) {
 					$display .= '<input
-						class="jigoshop-input jigoshop-radio"
+						class="jigoshop-input jigoshop-radio '.$class.'"
 						name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 						type="radio"
 						value="'.$option.'" '.checked( $data[$item['id']], $option, false ).' /><label>'.$name.'</label>';
@@ -930,7 +932,7 @@ class Jigoshop_Options_Parser {
 				$display .= '<ul class="jigoshop-radio-vert">';
 				foreach ( $item['choices'] as $option => $name ) {
 					$display .= '<li><input
-						class="jigoshop-input jigoshop-radio"
+						class="jigoshop-input jigoshop-radio '.$class.'"
 						name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 						type="radio"
 						value="'.$option.'" '.checked( $data[$item['id']], $option, false ).' /><label>'.$name.'</label></li>';
@@ -944,7 +946,7 @@ class Jigoshop_Options_Parser {
 			$display .= '<input
 				id="'.$item['id'].'"
 				type="checkbox"
-				class="jigoshop-input jigoshop-checkbox"
+				class="jigoshop-input jigoshop-checkbox '.$class.'"
 				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 				'.checked($data[$item['id']], 'yes', false).' />';
 			break;
@@ -955,7 +957,7 @@ class Jigoshop_Options_Parser {
 			// default to horizontal display of choices ( 'horizontal' may or may not be defined )
 			if ( ! isset( $item['extra'] ) || ! in_array( 'vertical', $item['extra'] ) ) {
 			
-				$display .= '<div class="jigoshop-multi-checkbox-horz">';
+				$display .= '<div class="jigoshop-multi-checkbox-horz '.$class.'">';
 				foreach ( $item['choices'] as $key => $option ) {
 					$display .= '<input
 						id="'.$item['id'].'_'.$key.'"
@@ -969,7 +971,7 @@ class Jigoshop_Options_Parser {
 				
 			} else if ( isset( $item['extra'] ) && in_array( 'vertical', $item['extra'] ) ) {
 			
-				$display .= '<ul class="jigoshop-multi-checkbox-vert">';
+				$display .= '<ul class="jigoshop-multi-checkbox-vert '.$class.'">';
 				foreach ( $item['choices'] as $key => $option ) {
 					$display .= '<li><input
 						id="'.$item['id'].'_'.$key.'"
@@ -986,7 +988,7 @@ class Jigoshop_Options_Parser {
 		case 'range':
 			$display .= '<input
 				id="'.$item['id'].'"
-				class="jigoshop-input jigoshop-range"
+				class="jigoshop-input jigoshop-range '.$class.'"
 				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 				type="range"
 				min="'.$item['extra']['min'].'"
@@ -998,7 +1000,7 @@ class Jigoshop_Options_Parser {
 		case 'select':
 			$display .= '<select
 				id="'.$item['id'].'"
-				class="jigoshop-input jigoshop-select"
+				class="jigoshop-input jigoshop-select '.$class.'"
 				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']" >';
 			foreach ( $item['choices'] as $value => $label ) {
 				$display .= '<option
