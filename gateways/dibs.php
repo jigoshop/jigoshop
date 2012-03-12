@@ -27,11 +27,15 @@ class dibs extends jigoshop_payment_gateway {
 		$this->testmode = get_option('jigoshop_dibs_testmode');
 		$this->key1 = get_option('jigoshop_dibs_key1');
 		$this->key2 = get_option('jigoshop_dibs_key2');
-
+		$this->decorator = get_option('jigoshop_dibs_decorator');
+		$this->instant = get_option('jigoshop_dibs_instant');
+		
 		add_action('init', array(&$this, 'check_callback') );
 		add_action('valid-dibs-callback', array(&$this, 'successful_request') );
 		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
 		add_action('receipt_dibs', array(&$this, 'receipt_page'));
+		add_action('gateway_parse_thankyou', array(&$this, 'parse_thankyou'));
+		add_action('gateway_parse_cancelorder', array(&$this, 'parse_cancelorder'));
 
 		add_option('jigoshop_dibs_enabled', 'yes');
 		add_option('jigoshop_dibs_merchant', '');
@@ -40,6 +44,8 @@ class dibs extends jigoshop_payment_gateway {
 		add_option('jigoshop_dibs_title', __('DIBS', 'jigoshop') );
 		add_option('jigoshop_dibs_description', __("Pay via DIBS using credit card or bank transfer.", 'jigoshop') );
 		add_option('jigoshop_dibs_testmode', 'no');
+		add_option('jigoshop_dibs_instant', 'no');
+		add_option('jigoshop_dibs_decorator', '');
 	}
 
 	/**
@@ -48,7 +54,7 @@ class dibs extends jigoshop_payment_gateway {
 	**/
 	public function admin_options() {
 		?>
-		<thead><tr><th scope="col" width="200px"><?php _e('DIBS FlexWin', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('DIBS FlexWin works by sending the user to <a href="http://www.dibspayment.com/">DIBS</a> to enter their payment information.', 'jigoshop'); ?></th></tr></thead>
+		<thead><tr><th scope="col" width="200px"><?php _e('DIBS FlexWin', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('DIBS FlexWin works by sending the user to Dibs to enter their payment information. FlexWin can be themed by adding decorators in your Dibs admin interface.', 'jigoshop'); ?></th></tr></thead>
 		<tr>
 			<td class="titledesc"><?php _e('Enable DIBS FlexWin', 'jigoshop') ?>:</td>
 			<td class="forminp">
@@ -89,6 +95,26 @@ class dibs extends jigoshop_payment_gateway {
 			</td>
 		</tr>
 		<tr>
+			<td class="titledesc"><a href="#" tip="<?php _e('The theme for Dibs FlexWin to use.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Decorator', 'jigoshop') ?>:</td>
+			<td class="forminp">
+				<select name="jigoshop_dibs_decorator" id="jigoshop_dibs_decorator" style="min-width:100px;">
+					<option value="" <?php if (get_option('jigoshop_dibs_decorator') == '') echo 'selected="selected"'; ?>><?php _e('Custom', 'jigoshop'); ?></option>
+					<option value="default" <?php if (get_option('jigoshop_dibs_decorator') == 'default') echo 'selected="selected"'; ?>><?php echo 'Default'; ?></option>
+					<option value="basal" <?php if (get_option('jigoshop_dibs_decorator') == 'basal') echo 'selected="selected"'; ?>><?php echo 'Basal'; ?></option>
+					<option value="rich" <?php if (get_option('jigoshop_dibs_decorator') == 'rich') echo 'selected="selected"'; ?>><?php echo 'Rich'; ?></option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="titledesc"><a href="#" tip="<?php _e('Contact DIBS before enabling this feature.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Enable instant capture', 'jigoshop') ?>:</td>
+			<td class="forminp">
+				<select name="jigoshop_dibs_instant" id="jigoshop_dibs_instant" style="min-width:100px;">
+					<option value="yes" <?php if (get_option('jigoshop_dibs_instant') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
+					<option value="no" <?php if (get_option('jigoshop_dibs_instant') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
+				</select>
+			</td>
+		</tr>
+		<tr>
 			<td class="titledesc"><a href="#" tip="<?php _e('When test mode is enabled only DIBS specific test-cards are accepted.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Enable test mode', 'jigoshop') ?>:</td>
 			<td class="forminp">
 				<select name="jigoshop_dibs_testmode" id="jigoshop_dibs_testmode" style="min-width:100px;">
@@ -119,6 +145,8 @@ class dibs extends jigoshop_payment_gateway {
 		if(isset($_POST['jigoshop_dibs_key2'])) update_option('jigoshop_dibs_key2', jigowatt_clean($_POST['jigoshop_dibs_key2'])); else @delete_option('jigoshop_dibs_key2');
 		if(isset($_POST['jigoshop_dibs_description'])) update_option('jigoshop_dibs_description', jigowatt_clean($_POST['jigoshop_dibs_description'])); else @delete_option('jigoshop_dibs_description');
 		if(isset($_POST['jigoshop_dibs_testmode'])) update_option('jigoshop_dibs_testmode', jigowatt_clean($_POST['jigoshop_dibs_testmode'])); else @delete_option('jigoshop_dibs_testmode');
+		if(isset($_POST['jigoshop_dibs_decorator'])) update_option('jigoshop_dibs_decorator', jigowatt_clean($_POST['jigoshop_dibs_decorator'])); else @delete_option('jigoshop_dibs_decorator');
+		if(isset($_POST['jigoshop_dibs_instant'])) update_option('jigoshop_dibs_instant', jigowatt_clean($_POST['jigoshop_dibs_instant'])); else @delete_option('jigoshop_dibs_instant');
 	}
 
 	/**
@@ -153,32 +181,30 @@ class dibs extends jigoshop_payment_gateway {
 			array(
 				// Merchant
 				'merchant' => $this->merchant,
-				'decorator' => 'default',
-
+				'decorator' => $this->decorator,
+				
 				// Session
-				'lang' => 'sv',
-
+				'lang' => 'sv', //TODO Language should probably not be hardcoded here
+				
 				// Order
 				'amount' => $order->order_total * 100,
 				'orderid' => $order_id,
 				'uniqueoid' => $order->order_key,
 				'currency' => $dibs_currency[get_option('jigoshop_currency')],
-				'ordertext' => 'TEST',
-
+				'capturenow' => $this->instant ? 'true' : 'false',
+				//'ordertext' => 'TEST', // TODO Print som order info here
+				
 				// URLs
 				'callbackurl' => site_url('/jigoshop/dibscallback.php'),
-
-				// TODO these urls will not work correctly since DIBS ignores the querystring
-				'accepturl' => add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink($checkout_redirect))),
-				'cancelurl' => $order->get_cancel_order_url(),
-
+				'accepturl' =>  get_permalink($checkout_redirect),
+				'cancelurl' => $order->get_cancel_order_post_url(),
 		);
 
 
 		// Calculate key
 		// http://tech.dibs.dk/dibs_api/other_features/md5-key_control/
-		$args['md5key'] = MD5(get_option('jigoshop_dibs_key2') . MD5(get_option('jigoshop_dibs_key1') . 'merchant=' . $args['merchant'] . '&orderid=' . $args['orderid'] . '&currency=' . $args['currency'] . '&amount=' . $args['amount']));
-
+		$args['md5key'] = MD5($this->key2 . MD5($this->key1 . 'merchant=' . $args['merchant'] . '&orderid=' . $args['orderid'] . '&currency=' . $args['currency'] . '&amount=' . $args['amount']));
+		
 		if( !empty($_SERVER['HTTP_CLIENT_IP']) ) {
 			$args['ip'] = $_SERVER['HTTP_CLIENT_IP'];
 		}
@@ -194,7 +220,7 @@ class dibs extends jigoshop_payment_gateway {
 
 		return '<form action="'.$action_adr.'" method="post" id="dibs_payment_form">
 				' . $fields . '
-				<input type="submit" class="button-alt" id="submit_dibs_payment_form" value="'.__('Pay via DIBS', 'jigoshop').'" /> <a class="button cancel" href="'.esc_url($order->get_cancel_order_url()).'">'.__('Cancel order &amp; restore cart', 'jigoshop').'</a>
+				<input type="submit" class="button-alt" id="submit_dibs_payment_form" value="'.__('Pay via DIBS', 'jigoshop').'" /> <a class="button cancel" href="'.esc_url($order->get_cancel_order_post_url()).'">'.__('Cancel order &amp; restore cart', 'jigoshop').'</a>
 				<script type="text/javascript">
 					jQuery(function(){
 						jQuery("body").block(
@@ -250,13 +276,10 @@ class dibs extends jigoshop_payment_gateway {
 	* Check for DIBS Response
 	**/
 	function check_callback() {
-		if ( strpos($_SERVER["REQUEST_URI"], '/jigoshop/dibscallback.php') ) {
-
-			error_log('Dibs callback!');
-
-			$_POST = stripslashes_deep($_POST);
-
-			do_action("valid-dibs-callback", $_POST);
+		if ( strpos($_SERVER["REQUEST_URI"], '/jigoshop/dibscallback.php') !== false ) {
+			
+			do_action("valid-dibs-callback", stripslashes_deep($_POST));
+			
 		}
 	}
 
@@ -270,11 +293,9 @@ class dibs extends jigoshop_payment_gateway {
 
 			// Verify MD5 checksum
 			// http://tech.dibs.dk/dibs_api/other_features/md5-key_control/
-			$key1 = get_option('jigoshop_dibs_key1');
-			$key2 = get_option('jigoshop_dibs_key2');
 			$vars = 'transact='. $posted['transact'] . '&amount=' . $posted['amount'] . '&currency=' . $posted['currency'];
-			$md5 = MD5($key2 . MD5($key1 . $vars));
-
+			$md5 = MD5($this->key2 . MD5($this->key1 . $vars));
+			
 			if($posted['authkey'] != $md5) {
 				error_log('MD5 check failed for Dibs callback with order_id:'.$posted['orderid']);
 				exit();
@@ -283,13 +304,15 @@ class dibs extends jigoshop_payment_gateway {
 			$order = new jigoshop_order( (int) $posted['orderid'] );
 
 			if ($order->order_key !== $posted['uniqueoid']) {
-				error_log('Unique ID check failed for Dibs callback with order_id:'.$posted['orderid']);
+				$log = sprintf( __('DIBS transaction %s failed security check. Key from dibs was %s and stored key was %s.', 'jigoshop'), $posted['transact'], $posted['uniqueoid'], $order->order_key ) ;
+				error_log($log);
+				$order->add_order_note( $log );
 				exit;
 			}
 
 			if ($order->status !== 'completed') {
-
-				$order->add_order_note( __('Callback payment completed', 'jigoshop') );
+				
+				$order->add_order_note( sprintf( __('DIBS payment completed with transaction id %s.', 'jigoshop'), $posted['transact'] ) );
 				$order->payment_complete();
 
 			}
@@ -299,6 +322,36 @@ class dibs extends jigoshop_payment_gateway {
 		}
 
 	}
+	
+	function parse_thankyou( $not_used ) {
+		
+		// For some dubious reason success url uses GET and cancel uses POST
+		if(isset($_GET['orderid']) && is_numeric($_GET['orderid']) && isset($_GET['uniqueoid']) ) {
+			$data = array();
+			$data['order_id'] = $_GET['orderid'];
+			$data['order_key'] = $_GET['uniqueoid'];
+			return $data;
+		}else{
+			return false;
+		}
+		
+	}
+	
+	function parse_cancelorder( $not_used ) {
+		
+		// For some dubious reason success url uses GET and cancel uses POST
+		if( isset($_POST['orderid']) && is_numeric($_POST['orderid']) && isset($_POST['uniqueoid']) ) {
+			$data = array();
+			$data['order_id'] = $_POST['orderid'];
+			$data['order_key'] = $_POST['uniqueoid'];
+			return $data;
+		}else{
+			return false;
+		}
+		
+	}
+	
+	
 
 }
 

@@ -59,6 +59,12 @@ class jigoshop_order {
 		$this->items 				= (array) get_post_meta( $this->id, 'order_items', true );
 		$this->order_data			= (array) maybe_unserialize( get_post_meta( $this->id, 'order_data', true ) );
 
+		// Check that the order_key has been properly set
+		if($this->order_key == '') {
+			$this->order_key = uniqid('order_');
+			update_post_meta( $this->id, 'order_key', $this->order_key );
+		}
+
 		$this->billing_first_name 	= (string) $this->get_value_from_data('billing_first_name');
 		$this->billing_last_name 	= (string) $this->get_value_from_data('billing_last_name');
 		$this->billing_company	 	= (string) $this->get_value_from_data('billing_company');
@@ -321,8 +327,12 @@ class jigoshop_order {
 	function get_cancel_order_url() {
 		return apply_filters('jigoshop_get_cancel_order', jigoshop::nonce_url( 'cancel_order', add_query_arg('cancel_order', 'true', add_query_arg('order', $this->order_key, add_query_arg('order_id', $this->id, home_url())))));
 	}
-
-
+	
+	/** URL for cancelling an order using POST */
+	function get_cancel_order_post_url() {
+		return site_url('/jigoshop/cancel_order.php');
+	}
+	
 	/** Gets a downloadable products file url */
 	function get_downloadable_file_url( $item_id ) {
 

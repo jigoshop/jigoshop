@@ -464,14 +464,26 @@ add_action('init', 'jigoshop_cancel_order');
 
 function jigoshop_cancel_order() {
 
-	if ( isset($_GET['cancel_order']) && isset($_GET['order']) && isset($_GET['order_id']) ) :
-
+	// Parse POST request
+	if ( strpos($_SERVER["REQUEST_URI"], 'jigoshop/cancel_order.php') ) {
+		$info = apply_filters("gateway_parse_cancelorder", 0);
+		if (is_array($info) && isset($info['order_key']) && isset($info['order_id']) ) {
+			$order_key = $info['order_key'];
+			$order_id = $info['order_id'];
+		}
+	}
+		
+	// Parse regular GET request
+	if ( isset($_GET['cancel_order']) && isset($_GET['order']) && isset($_GET['order_id']) && jigoshop::verify_nonce('cancel_order', '_GET') ) {
 		$order_key = urldecode( $_GET['order'] );
 		$order_id = (int) $_GET['order_id'];
+	}
+	
+	if( isset($order_key) && isset($order_id) ) {
 
 		$order = new jigoshop_order( $order_id );
 
-		if ($order->id == $order_id && $order->order_key == $order_key && $order->status=='pending' && jigoshop::verify_nonce('cancel_order', '_GET')) :
+		if ($order->id == $order_id && $order->order_key == $order_key && $order->status=='pending') :
 
 			// Cancel the order + restore stock
 			$order->cancel_order( __('Order cancelled by customer.', 'jigoshop') );
@@ -489,10 +501,14 @@ function jigoshop_cancel_order() {
 
 		endif;
 
-		wp_safe_redirect(jigoshop_cart::get_cart_url());
+		if ( get_option('jigoshop_directly_to_checkout') == 'no' ) {
+			wp_safe_redirect(jigoshop_cart::get_cart_url());
+		} else {
+			wp_safe_redirect(home_url());
+		}
 		exit;
 
-	endif;
+	}
 }
 
 

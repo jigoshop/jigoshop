@@ -27,9 +27,15 @@ function jigoshop_thankyou() {
 	$thankyou_message = __('<p>Thank you. Your order has been processed successfully.</p>', 'jigoshop');
 	echo apply_filters( 'jigoshop_thankyou_message', $thankyou_message );
 
-	// Pay for order after checkout step
-	if (isset($_GET['order'])) $order_id = $_GET['order']; else $order_id = 0;
-	if (isset($_GET['key'])) $order_key = $_GET['key']; else $order_key = '';
+	// Ask gateways to parse incoming data
+	$info = apply_filters( 'gateway_parse_thankyou', 0 );
+	if( is_array($info) && isset($info['order_id']) && isset($info['order_key']) ) {
+		$order_id = $info['order_id'];
+		$order_key = $info['order_key'];
+	}else{
+		if (isset($_GET['order'])) $order_id = $_GET['order']; else $order_id = 0;
+		if (isset($_GET['key'])) $order_key = $_GET['key']; else $order_key = '';
+	}
 
 	if ($order_id > 0) :
 
