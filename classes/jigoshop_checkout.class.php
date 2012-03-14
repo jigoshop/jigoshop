@@ -147,7 +147,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 	function checkout_form_field( $args ) {
 
 		$defaults = array(
-			'type' => 'input',
+			'type' => 'text',
 			'name' => '',
 			'label' => '',
 			'placeholder' => '',
