@@ -236,7 +236,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="' . esc_attr( $args['name'] ) . '" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
-					<input type="'.$args['type'].'" class="input-text" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" placeholder="'.$args['placeholder'].'" value="' . esc_attr( $current_pc ) . '" />
+					<input type="text" class="input-text" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" placeholder="'.$args['placeholder'].'" value="' . esc_attr( $current_pc ) . '" />
 				</p>'.$after;
 			break;
 			case "textarea" :
