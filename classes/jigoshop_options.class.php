@@ -1194,6 +1194,19 @@ class Jigoshop_Options {
 		);
 		
 		self::$default_options[] = array(
+			'name'		=> __('Apply Taxes After Coupon','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('If yes, taxes get applied after coupons. When no, taxes get applied before coupons.','jigoshop'),
+			'id' 		=> 'jigoshop_tax_after_coupon',
+			'std' 		=> 'yes',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+		
+		self::$default_options[] = array(
 			'name'		=> __('Additional Tax classes','jigoshop'),
 			'desc' 		=> __('List 1 per line. This is in addition to the default <em>Standard Rate</em>.','jigoshop'),
 			'tip' 		=> __('List product and shipping tax classes here, e.g. Zero Tax, Reduced Rate.','jigoshop'),
