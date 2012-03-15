@@ -333,12 +333,59 @@ class Jigoshop_Options {
 		self::$default_options = array();
 		
 		/**
-		 * General Tab
+		 * Shop Tab
 		 *------------------------------------------------------------------------------------------
 		*/
-		self::$default_options[] = array( 'type' => 'heading', 'name' => __('General', 'jigoshop') );
+		self::$default_options[] = array( 'type' => 'heading', 'name' => __('Shop', 'jigoshop') );
 		
-		self::$default_options[] = array( 'name' => __('General Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
+		self::$default_options[] = array( 'name' => __( 'Invoicing', 'jigoshop' ), 'type' => 'title', 'desc' => '' );
+		
+		self::$default_options[] = array(
+			'name'		=> __( 'Company Name', 'jigoshop' ),
+			'desc' 		=> '',
+			'tip' 		=> __( 'Setting your company name will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
+			'id' 		=> 'jigoshop_company_name',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+	
+		self::$default_options[] = array(
+			'name'		=> __( 'Tax Registration Number', 'jigoshop' ),
+			'desc' 		=> __( 'Add your tax registration label before the registration number and it will be printed as well. eg. <code>VAT Number: 88888888</code>', 'jigoshop' ),
+			'tip' 		=> __( 'Setting your tax number will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
+			'id' 		=> 'jigoshop_tax_number',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+	
+		self::$default_options[] = array(
+			'name'		=> __( 'Address Line1', 'jigoshop' ),
+			'desc' 		=> '',
+			'tip' 		=> __( 'Setting your address will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
+			'id' 		=> 'jigoshop_address_line1',
+			'std' 		=> '',
+			'type' 		=> 'longtext'
+		);
+	
+		self::$default_options[] = array(
+			'name' =>	__( 'Address Line2', 'jigoshop' ),
+			'desc' 		=> '',
+			'tip' 		=> __( 'Setting your address will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
+			'id' 		=> 'jigoshop_address_line2',
+			'std' 		=> '',
+			'type' 		=> 'longtext'
+		);
+	
+		self::$default_options[] = array(
+			'name'		=> __( 'Company Email', 'jigoshop' ),
+			'desc' 		=> '',
+			'tip' 		=> __( 'Setting your company email will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
+			'id' 		=> 'jigoshop_company_email',
+			'std' 		=> '',
+			'type' 		=> 'email'
+		);
+		
+		self::$default_options[] = array( 'name' => __('Shop Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
 		self::$default_options[] = array(
 			'name'		=> __('Demo store','jigoshop'),
@@ -351,15 +398,6 @@ class Jigoshop_Options {
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
 			)
-		);
-		
-		self::$default_options[] = array(
-			'name'		=> __('Send Jigoshop emails from','jigoshop'),
-			'desc' 		=> '',
-			'tip' 		=> __('The email used to send all Jigoshop related emails, such as order confirmations and notices.','jigoshop'),
-			'id' 		=> 'jigoshop_email',
-			'type' 		=> 'email',
-			'std' 		=> get_option('admin_email')
 		);
 		
 		self::$default_options[] = array(
@@ -391,6 +429,23 @@ class Jigoshop_Options {
 			'id' 		=> 'jigoshop_specific_allowed_countries',
 			'std' 		=> '',
 			'type' 		=> 'multi_select_countries'
+		);
+		
+		/**
+		 * General Tab
+		 *------------------------------------------------------------------------------------------
+		*/
+		self::$default_options[] = array( 'type' => 'heading', 'name' => __('General', 'jigoshop') );
+		
+		self::$default_options[] = array( 'name' => __('General Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
+		
+		self::$default_options[] = array(
+			'name'		=> __('Send Jigoshop emails from','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('The email used to send all Jigoshop related emails, such as order confirmations and notices.','jigoshop'),
+			'id' 		=> 'jigoshop_email',
+			'type' 		=> 'email',
+			'std' 		=> get_option('admin_email')
 		);
 		
 		self::$default_options[] = array(
