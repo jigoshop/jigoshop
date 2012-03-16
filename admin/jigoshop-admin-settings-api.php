@@ -200,8 +200,10 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		?>
 			<div class="wrap jigoshop">
 			
-				<div class="icon32 icon32-jigoshop-settings" id="icon-jigoshop"></div>
-				<h2><?php _e( 'Jigoshop Settings' ) ?></h2>
+				<div class="icon32 icon32-jigoshop-settings" id="icon-jigoshop"><br></div>
+				<h2 class="nav-tab-wrapper jigoshop-nav-tab-wrapper">
+					<?php echo $this->build_tab_menu_items(); ?>
+				</h2>
 				
 				<noscript>
 					<div id="jigoshop-js-warning" class="error"><?php _e( 'Warning- This options panel may not work properly without javascript!', 'jigoshop' ); ?></div>
@@ -223,10 +225,6 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 
 					<div class="jigoshop-settings">
 						<div id="tabs-wrap">
-							
-							<ul class="tabs">
-								<?php echo $this->build_tab_menu_items(); ?>
-							</ul>
 							
 							<?php settings_fields( JIGOSHOP_OPTIONS ); ?>
 							<?php do_settings_sections( JIGOSHOP_OPTIONS ); ?>
@@ -289,13 +287,13 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		foreach ( $this->our_parser->tab_headers as $tab ) {
 			$this_slug = sanitize_title( $tab );
 			if ( $slug == $this_slug ) {
-				$menus_li .= '<li class="current active"><a
+				$menus_li .= '<a class="nav-tab nav-tab-active" 
 					title="'.$tab.'"
-					href="?page='.JIGOSHOP_OPTIONS.'&tab='.$this_slug.'">' . $tab . '</a></li>';
+					href="?page='.JIGOSHOP_OPTIONS.'&tab='.$this_slug.'">' . $tab . '</a>';
 			} else {
-				$menus_li .= '<li><a
+				$menus_li .= '<a class="nav-tab"
 					title="'.$tab.'"
-					href="?page='.JIGOSHOP_OPTIONS.'&tab='.$this_slug.'">' . $tab . '</a></li>';
+					href="?page='.JIGOSHOP_OPTIONS.'&tab='.$this_slug.'">' . $tab . '</a>';
 			}
 		}
 		return $menus_li;
