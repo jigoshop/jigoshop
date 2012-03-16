@@ -647,7 +647,7 @@ ul.recent-orders {
 	margin: 0;
 }
 .jigoshop #tabs-wrap table {
-	margin: 0 0 5px !important;
+	margin: 0 0 5px;
 }
 .jigoshop #tabs-wrap table select {
 	white-space: nowrap;
@@ -656,65 +656,6 @@ ul.recent-orders {
 	float: right;
 	margin: 0 !important;
 	padding: 0 !important;
-}
-
-.jigoshop #tabs-wrap table.shippingrows {
-	border: 0;
-	width: 100%;
-}
-.jigoshop #tabs-wrap table.shippingrows td,.jigoshop #tabs-wrap table.shippingrows th {
-	padding: 4px 4px 4px 0 !important;
-	border: 0 !important;
-	vertical-align: middle;
-}
-.jigoshop #tabs-wrap table.shippingrows td a.remove {
-	margin: 0 !important;
-}
-
-.jigoshop table.widefat {
-	table.coupon_rows {
-		border: 0 !important;
-		width: 100%;
-		a.dp-choose-date {
-			float: left;
-			width: 16px;
-			height: 16px;
-			padding: 0;
-			margin: 4px 9px 0 3px;
-			display: block;
-			text-indent: -2000px;
-			overflow: hidden;
-			background: url(../images/calendar.png) no-repeat;
-
-			&.disabled {
-				background-position: 0 -20px;
-				cursor: default;
-			}
-		}
-		input.dp-applied {
-			width: 140px;
-			float: left;
-		}
-		thead {
-			th {
-				padding: 1px;
-				border: 0;
-				font-weight: normal;
-				font-size: 11px;
-				color: #999;
-			}
-		}
-		tbody {
-			td {
-				padding: 3px 3px 0 0;
-				border: 0;
-				vertical-align: middle;
-				input.text {
-					width: 85px;
-				}
-			}
-		}
-	}
 }
 
 .jigoshop #tabs-wrap table a.remove {
@@ -1388,7 +1329,7 @@ div.multi_select_countries.shipping_services {
 
 /* Settings */
 
-.jigoshop-settings table.form-table, .jigoshop-settings table.widefat {
+.jigoshop-settings table.form-table {
 	
 	.button {
 		float: left;
@@ -1422,6 +1363,7 @@ div.multi_select_countries.shipping_services {
 		}
 	}
 	
+	/* this holds all the setting controls */
 	.forminp {
 		width: 80%;
 		.jigoshop-explain {
@@ -1501,61 +1443,52 @@ div.multi_select_countries.shipping_services {
 			-moz-border-radius:5px;
 			-webkit-border-radius:5px;
 		}
-	}
+		
+		thead, tfoot {
+			background: #eaeaea;
+		}
+		
+		/* internal array tables, coupons, taxes, table rates */
+		table {
+			border: 0;
+			a.dp-choose-date {
+				float: left;
+				width: 16px;
+				height: 16px;
+				padding: 0;
+				margin: 4px 9px 0 3px;
+				display: block;
+				text-indent: -2000px;
+				overflow: hidden;
+				background: url(../images/calendar.png) no-repeat;
 	
-	/* tax display needs markup refactoring -- this is old selectors */
-	p.taxrow select {
-		width: 100px;
-	}
-	p.taxrow input.text {
-		width: 60px;
-	}
-	p.taxrow label {
-		line-height: 1.5em;
-		margin: 0 8px;
-		input {
-			margin: 0 4px 0 0;
-		}
-	}
-	
-	table.coupon_rows {
-		border: 0 !important;
-		a.dp-choose-date {
-			float: left;
-			width: 16px;
-			height: 16px;
-			padding: 0;
-			margin: 4px 9px 0 3px;
-			display: block;
-			text-indent: -2000px;
-			overflow: hidden;
-			background: url(../images/calendar.png) no-repeat;
-
-			&.disabled {
-				background-position: 0 -20px;
-				cursor: default;
+				&.disabled {
+					background-position: 0 -20px;
+					cursor: default;
+				}
 			}
-		}
-		input.dp-applied {
-			width: 140px;
-			float: left;
-		}
-		thead {
-			th {
-				padding: 1px;
-				border: 0;
-				font-weight: normal;
-				font-size: 11px;
-				color: #777;
+			input.dp-applied {
+				width: 140px;
+				float: left;
 			}
-		}
-		tbody {
-			td {
-				padding: 3px 3px 0 0;
-				border: 0;
-				vertical-align: bottom;
-				input.text {
-					width: 85px;
+			thead, tfoot {
+				th {
+					padding: 3px 0 3px 5px;
+					border: 0;
+				}
+			}
+			tbody {
+				td {
+					padding: 3px 0 3px 5px;
+					border: 0;
+					vertical-align: bottom;
+					/* NOTE: not working with Chrome, check others */
+					input[type="checkbox"] {
+						vertical-align: middle;
+					}
+					select {
+						width: 130px;
+					}
 				}
 			}
 		}

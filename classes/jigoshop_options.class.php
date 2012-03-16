@@ -138,6 +138,20 @@ class Jigoshop_Options {
 	
 	
 	/**
+	 * Determines whether an Option exists
+	 *
+	 * @return	bool	true for successful completion if option found, false otherwise
+	 *
+	 * @since	1.2
+	 */	
+	public static function exists_option( $name ) {
+		self::get_current_options();
+		if ( isset( self::$current_options[$name] )) return true;
+		else return false;
+	}
+	
+	
+	/**
 	 * Install additional default options for parsing
 	 * Shipping methods and Payment gateways would use this
 	 *
@@ -264,7 +278,7 @@ class Jigoshop_Options {
 			'id'            => null,                    - required
 			'type'          => '',                      - required
 			'name'          => __( '', 'jigoshop' ),    - used for Option title in Admin display
-			'desc'          => __( '', 'jigoshop' ),    - option descriptive information (wrap in <p> tags)
+			'desc'          => __( '', 'jigoshop' ),    - option descriptive information appears under the option in Admin
 			'tip'           => __( '', 'jigoshop' ),    - a pop-up tool tip providing help information
 			'std'           => '',                      - default value for the option
 			'choices'       => array(),                 - for selects, radios, etc.
@@ -333,17 +347,64 @@ class Jigoshop_Options {
 		self::$default_options = array();
 		
 		/**
-		 * General Tab
+		 * Shop Tab
 		 *------------------------------------------------------------------------------------------
 		*/
-		self::$default_options[] = array( 'type' => 'heading', 'name' => __('General', 'jigoshop') );
+		self::$default_options[] = array( 'type' => 'heading', 'name' => __('Shop', 'jigoshop') );
 		
-		self::$default_options[] = array( 'name' => __('General Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
+		self::$default_options[] = array( 'name' => __( 'Invoicing', 'jigoshop' ), 'type' => 'title', 'desc' => '' );
 		
 		self::$default_options[] = array(
-			'name'		=> __('Demo store','jigoshop'),
+			'name'		=> __( 'Company Name', 'jigoshop' ),
 			'desc' 		=> '',
-			'tip' 		=> __('Enable this option to show a banner at the top of every page stating this shop is currently in testing mode.','jigoshop'),
+			'tip' 		=> __( 'Setting your company name will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
+			'id' 		=> 'jigoshop_company_name',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+	
+		self::$default_options[] = array(
+			'name'		=> __( 'Tax Registration Number', 'jigoshop' ),
+			'desc' 		=> __( 'Add your tax registration label before the registration number and it will be printed as well. eg. <code>VAT Number: 88888888</code>', 'jigoshop' ),
+			'tip' 		=> __( 'Setting your tax number will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
+			'id' 		=> 'jigoshop_tax_number',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+	
+		self::$default_options[] = array(
+			'name'		=> __( 'Address Line1', 'jigoshop' ),
+			'desc' 		=> '',
+			'tip' 		=> __( 'Setting your address will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
+			'id' 		=> 'jigoshop_address_line1',
+			'std' 		=> '',
+			'type' 		=> 'longtext'
+		);
+	
+		self::$default_options[] = array(
+			'name' =>	__( 'Address Line2', 'jigoshop' ),
+			'desc' 		=> '',
+			'tip' 		=> __( 'Setting your address will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
+			'id' 		=> 'jigoshop_address_line2',
+			'std' 		=> '',
+			'type' 		=> 'longtext'
+		);
+	
+		self::$default_options[] = array(
+			'name'		=> __( 'Company Email', 'jigoshop' ),
+			'desc' 		=> '',
+			'tip' 		=> __( 'Setting your company email will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
+			'id' 		=> 'jigoshop_company_email',
+			'std' 		=> '',
+			'type' 		=> 'email'
+		);
+		
+		self::$default_options[] = array( 'name' => __( 'Shop Options', 'jigoshop' ), 'type' => 'title', 'desc' => '' );
+		
+		self::$default_options[] = array(
+			'name'		=> __( 'Demo store', 'jigoshop' ),
+			'desc' 		=> '',
+			'tip' 		=> __( 'Enable this option to show a banner at the top of every page stating this shop is currently in testing mode.', 'jigoshop' ),
 			'id' 		=> 'jigoshop_demo_store',
 			'std' 		=> 'no',
 			'type' 		=> 'checkbox',
@@ -354,43 +415,51 @@ class Jigoshop_Options {
 		);
 		
 		self::$default_options[] = array(
-			'name'		=> __('Send Jigoshop emails from','jigoshop'),
+			'name'		=> __( 'Base Country/Region', 'jigoshop' ),
 			'desc' 		=> '',
-			'tip' 		=> __('The email used to send all Jigoshop related emails, such as order confirmations and notices.','jigoshop'),
-			'id' 		=> 'jigoshop_email',
-			'type' 		=> 'email',
-			'std' 		=> get_option('admin_email')
-		);
-		
-		self::$default_options[] = array(
-			'name'		=> __('Base Country/Region','jigoshop'),
-			'desc' 		=> '',
-			'tip' 		=> __('This is the base country for your business. Tax rates will be based on this country.','jigoshop'),
+			'tip' 		=> __( 'This is the base country for your business. Tax rates will be based on this country.', 'jigoshop' ),
 			'id' 		=> 'jigoshop_default_country',
 			'std' 		=> 'GB',
 			'type' 		=> 'single_select_country'
 		);
 		
 		self::$default_options[] = array(
-			'name'		=> __('Allowed Countries','jigoshop'),
+			'name'		=> __( 'Allowed Countries', 'jigoshop' ),
 			'desc' 		=> '',
-			'tip' 		=> __('These are countries that you are willing to ship to.','jigoshop'),
+			'tip' 		=> __( 'These are countries that you are willing to ship to.', 'jigoshop' ),
 			'id' 		=> 'jigoshop_allowed_countries',
 			'std' 		=> 'all',
 			'type' 		=> 'select',
 			'choices'	=> array(
-				'all'			=> __('All Countries', 'jigoshop'),
-				'specific'		=> __('Specific Countries', 'jigoshop')
+				'all'			=> __( 'All Countries', 'jigoshop' ),
+				'specific'		=> __( 'Specific Countries', 'jigoshop' )
 			)
 		);
 		
 		self::$default_options[] = array(
-			'name'		=> __('Specific Countries','jigoshop'),
+			'name'		=> __( 'Specific Countries', 'jigoshop' ),
 			'desc' 		=> '',
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_specific_allowed_countries',
 			'std' 		=> '',
 			'type' 		=> 'multi_select_countries'
+		);
+		
+		/**
+		 * General Tab
+		 *------------------------------------------------------------------------------------------
+		*/
+		self::$default_options[] = array( 'type' => 'heading', 'name' => __('General', 'jigoshop') );
+		
+		self::$default_options[] = array( 'name' => __('General Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
+		
+		self::$default_options[] = array(
+			'name'		=> __('Send Jigoshop emails from','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('The email used to send all Jigoshop related emails, such as order confirmations and notices.','jigoshop'),
+			'id' 		=> 'jigoshop_email',
+			'type' 		=> 'email',
+			'std' 		=> get_option('admin_email')
 		);
 		
 		self::$default_options[] = array(
@@ -1117,6 +1186,19 @@ class Jigoshop_Options {
 			'tip' 		=> __('Should the subtotal be shown including or excluding tax on the frontend?','jigoshop'),
 			'id' 		=> 'jigoshop_display_totals_tax',
 			'std' 		=> 'no',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+		
+		self::$default_options[] = array(
+			'name'		=> __('Apply Taxes After Coupon','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('If yes, taxes get applied after coupons. When no, taxes get applied before coupons.','jigoshop'),
+			'id' 		=> 'jigoshop_tax_after_coupon',
+			'std' 		=> 'yes',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
