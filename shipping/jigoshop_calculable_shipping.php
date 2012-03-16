@@ -206,7 +206,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
         foreach ($vals as $xml_elem) {
             if ($xml_elem['type'] == 'open') {
                 if (array_key_exists('attributes', $xml_elem)) {
-                    list($level[$xml_elem['level']], $extra) = array_values($xml_elem['attributes']);
+                    list($level[$xml_elem['level']]) = array_values($xml_elem['attributes']);
                 } else {
                     $level[$xml_elem['level']] = $xml_elem['tag'];
                 }
@@ -223,7 +223,9 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
 
                 $php_stmt .= '[$xml_elem[\'tag\']] = $xml_elem[\'value\'];';
 
-                eval($php_stmt);
+                if (isset($xml_elem['tag']) && isset($xml_elem['value'])) :
+                    eval($php_stmt);
+                endif;
             }
         }
 

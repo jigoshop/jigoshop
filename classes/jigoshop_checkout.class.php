@@ -147,7 +147,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 	function checkout_form_field( $args ) {
 
 		$defaults = array(
-			'type' => 'input',
+			'type' => 'text',
 			'name' => '',
 			'label' => '',
 			'placeholder' => '',
@@ -236,7 +236,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="' . esc_attr( $args['name'] ) . '" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
-					<input type="'.$args['type'].'" class="input-text" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" placeholder="'.$args['placeholder'].'" value="' . esc_attr( $current_pc ) . '" />
+					<input type="text" class="input-text" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" placeholder="'.$args['placeholder'].'" value="' . esc_attr( $current_pc ) . '" />
 				</p>'.$after;
 			break;
 			case "textarea" :
@@ -406,9 +406,9 @@ class jigoshop_checkout extends jigoshop_singleton {
 			endif;
 
 			// hook, to be able to use the validation, but to be able to do something different afterwards
-			do_action( 'jigoshop_after_checkout_validation', $this->posted, $_POST, jigoshop::error_count() );
+			do_action( 'jigoshop_after_checkout_validation', $this->posted, $_POST, sizeof(jigoshop::$errors) );
 
-			if (!isset($_POST['update_totals']) && jigoshop::error_count()==0) :
+			if (!isset($_POST['update_totals']) && !jigoshop::has_errors()) :
 
 				$user_id = get_current_user_id();
 
@@ -555,7 +555,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 					$data['payment_method']			= $this->posted['payment_method'];
 					$data['payment_method_title']	= $available_gateways[$this->posted['payment_method']]->title;
                     $data['order_subtotal']			= jigoshop_cart::get_cart_subtotal(false);
-                    $data['order_subtotal_inc_tax'] = jigoshop_cart::get_subtotal_inc_tax(false);
+                    $data['order_discount_subtotal']= jigoshop_cart::get_cart_subtotal(false, true);
                     $data['order_shipping']			= jigoshop_cart::get_cart_shipping_total(false);
 					$data['order_discount']			= number_format(jigoshop_cart::$discount_total, 2, '.', '');
 					$data['order_tax']              = jigoshop_cart::get_taxes_as_string();
@@ -608,7 +608,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 
 					endforeach;
 
-					if (jigoshop::error_count()>0) break;
+					if ( jigoshop::has_errors() ) break;
 
 					// Insert or update the post data
 					// @TODO: This first bit over-writes an existing uncompleted order.  Do we want this?  -JAP-

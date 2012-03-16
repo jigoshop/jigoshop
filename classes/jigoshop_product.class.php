@@ -600,7 +600,9 @@ class jigoshop_product {
 
         endif;
 
-        return $price / 100;
+        // product prices are always 2 decimal digits. Will get rounding errors on backwards tax calcs if 
+        // we don't round
+        return round($price / 100, 2); 
 
     }
 
@@ -709,7 +711,7 @@ class jigoshop_product {
 			if ( strstr($this->sale_price,'%') )
 				return '
 					<del>' . jigoshop_price( $this->regular_price ) . '</del>' . jigoshop_price( $this->get_price() ) . '
-					<br><ins>' . $this->sale_price . ' off!</ins>';
+					<br><ins>' . sprintf(__('%s off!', 'jigoshop'), $this->sale_price) . '</ins>';
 			else
 				return	'
 						<del>' . jigoshop_price( $this->regular_price ) . '</del>
@@ -763,11 +765,11 @@ class jigoshop_product {
 
                 // for variable products, only display From if prices differ among them
                 if (count($array) >= 2 && $array[count($array) - 1] != $array[0]) :
-                    $html = '<span class="from">' . _x('From:', 'jigoshop') . '</span> ';
+                    $html = '<span class="from">' . _x('From:', 'price', 'jigoshop') . '</span> ';
                 endif;
 
             else :
-                $html = '<span class="from">' . _x('From:', 'jigoshop') . '</span> ';
+                $html = '<span class="from">' . _x('From:', 'price', 'jigoshop') . '</span> ';
             endif;
 
 			return $html . jigoshop_price( $array[0] );
@@ -920,7 +922,7 @@ class jigoshop_product {
 		// Get the tags & categories
 		$tags = wp_get_post_terms($this->ID, 'product_tag', array('fields' => 'ids'));
 		$cats = wp_get_post_terms($this->ID, 'product_cat', array('fields' => 'ids'));
-		
+
 		// No queries if we don't have any tags -and- categories (one -or- the other should be queried)
 		if( empty( $cats ) && empty( $tags ) )
 			return array();

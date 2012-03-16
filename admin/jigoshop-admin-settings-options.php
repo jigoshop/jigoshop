@@ -877,6 +877,20 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 			'no'  => __('No', 'jigoshop')
 		)
 	),
+    
+    array(
+        'name' => __('Apply Taxes After Coupon','jigoshop'),
+        'desc' => '',
+        'tip' => __('If yes, taxes get applied after coupons. When no, taxes get applied before coupons.','jigoshop'),
+        'id' => 'jigoshop_tax_after_coupon',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'yes',
+		'type' 		=> 'select',
+		'options' => array(
+			'yes' => __('Yes', 'jigoshop'),
+			'no'  => __('No', 'jigoshop')
+		)
+    ),
 
 	array(
 		'name' => __('Catalog Prices include tax?','jigoshop'),

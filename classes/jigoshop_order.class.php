@@ -88,8 +88,7 @@ class jigoshop_order {
 		$this->payment_method_title = (string) $this->get_value_from_data('payment_method_title');
 
 		$this->order_subtotal 		= (string) $this->get_value_from_data('order_subtotal');
-		$this->order_subtotal_inc_tax   = (string) $this->get_value_from_data('order_subtotal_inc_tax');
-
+        $this->order_discount_subtotal = (string) $this->get_value_from_data('order_discount_subtotal');
 		$this->order_shipping 		= (string) $this->get_value_from_data('order_shipping');
 		$this->order_discount 		= (string) $this->get_value_from_data('order_discount');
         $this->order_discount_coupons = $this->get_value_from_data('order_discount_coupons'); //array
@@ -137,12 +136,30 @@ class jigoshop_order {
 
 	}
 
-        private function get_order_tax_array( $key ) {
-            $array_string = $this->get_value_from_data($key);
-            $divisor = $this->get_value_from_data('order_tax_divisor');
-            return jigoshop_tax::get_taxes_as_array($array_string, $divisor);
-        }
+    private function get_order_tax_array( $key ) {
+        $array_string = $this->get_value_from_data($key);
+        $divisor = $this->get_value_from_data('order_tax_divisor');
+        return jigoshop_tax::get_taxes_as_array($array_string, $divisor);
+    }
 
+    function has_compound_tax() {
+        $ret = false;
+        
+        if ($this->get_tax_classes() && is_array($this->get_tax_classes())) :
+
+            foreach ($this->get_tax_classes() as $tax_class) :
+                if ($this->order_tax[$tax_class]['compound']) :
+                    $ret = true;
+                    break;
+                endif;
+            endforeach;
+
+        endif;
+        
+        return $ret;
+       
+    }
+    
 	function get_value_from_data( $key ) {
 		if (isset($this->order_data[$key])) return $this->order_data[$key]; else return '';
 	}
@@ -181,6 +198,10 @@ class jigoshop_order {
 
         public function get_tax_class_for_display($tax_class) {
             return $this->order_tax[$tax_class]['display'];
+        }
+        
+        public function show_tax_entry($tax_class) {
+            return (($this->get_tax_amount($tax_class) > 0 && $this->get_tax_rate($tax_class) > 0) || $this->get_tax_rate($tax_class) == 0);
         }
 
         /** Gets subtotal */

@@ -16,7 +16,7 @@
  */
 
 function get_jigoshop_thankyou( $atts ) {
-	return jigoshop::shortcode_wrapper('jigoshop_thankyou', $atts);
+	return jigoshop_shortcode_wrapper('jigoshop_thankyou', $atts);
 }
 
 /**
