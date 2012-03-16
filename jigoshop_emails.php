@@ -39,15 +39,15 @@ function jigoshop_new_order_notification($order_id) {
 
     echo __("You have received an order from ", 'jigoshop') . $order->billing_first_name . ' ' . $order->billing_last_name . __(". Their order is as follows:", 'jigoshop') . PHP_EOL . PHP_EOL;
     
-    add_header_info();
+    add_header_info($order);
     
-    add_order_totals(false, true);
+    add_order_totals($order, false, true);
 
-    add_customer_details();
+    add_customer_details($order);
     
-    add_billing_address_details();
+    add_billing_address_details($order);
 
-    add_shipping_address_details();
+    add_shipping_address_details($order);
 
     $message = ob_get_clean();
     $message = html_entity_decode(strip_tags($message));
@@ -70,9 +70,9 @@ function jigoshop_processing_order_customer_notification($order_id) {
     ob_start();
     echo __("Thank you, we are now processing your order. Your order's details are below:", 'jigoshop') . PHP_EOL . PHP_EOL;
 
-    add_header_info();
+    add_header_info($order);
     
-    add_order_totals(false, true);
+    add_order_totals($order, false, true);
 
     if (strtolower($order->payment_method) == "bank_transfer") :
 
@@ -88,11 +88,11 @@ function jigoshop_processing_order_customer_notification($order_id) {
 
 	endif;
 
-    add_customer_details();
+    add_customer_details($order);
     
-    add_billing_address_details();
+    add_billing_address_details($order);
 
-    add_shipping_address_details();
+    add_shipping_address_details($order);
 
     $message = ob_get_clean();
     $message = html_entity_decode(strip_tags($message));
@@ -114,15 +114,15 @@ function jigoshop_completed_order_customer_notification($order_id) {
     ob_start();
     echo __("Your order is complete. Your order's details are below:", 'jigoshop') . PHP_EOL . PHP_EOL;
 
-    add_header_info();
+    add_header_info($order);
     
-    add_order_totals(true, true);
+    add_order_totals($order, true, true);
 
-    add_customer_details();
+    add_customer_details($order);
     
-    add_billing_address_details();
+    add_billing_address_details($order);
 
-    add_shipping_address_details();
+    add_shipping_address_details($order);
 
     $message = ob_get_clean();
     $message = html_entity_decode(strip_tags($message));
@@ -145,15 +145,15 @@ function jigoshop_refunded_order_customer_notification($order_id) {
     ob_start();
     echo __("Your order has been refunded. Your order's details are below:", 'jigoshop') . PHP_EOL . PHP_EOL;
 
-    add_header_info();
+    add_header_info($order);
     
-    add_order_totals(false, true);
+    add_order_totals($order, false, true);
 
-    add_customer_details();
+    add_customer_details($order);
     
-    add_billing_address_details();
+    add_billing_address_details($order);
 
-    add_shipping_address_details();
+    add_shipping_address_details($order);
 
     $message = ob_get_clean();
     $message = html_entity_decode(strip_tags($message));
@@ -174,9 +174,9 @@ function jigoshop_pay_for_order_customer_notification($order_id) {
     $customer_message = sprintf(__("An order has been created for you on \"%s\". To pay for this order please use the following link: %s", 'jigoshop') . PHP_EOL . PHP_EOL, get_bloginfo('name'), $order->get_checkout_payment_url());
 
     ob_start();
-    add_header_info();
+    add_header_info($order);
     
-    add_order_totals(false, true);
+    add_order_totals($order, false, true);
 
     $message = ob_get_clean();
     $customer_message = html_entity_decode(strip_tags($customer_message . $message));
@@ -184,7 +184,7 @@ function jigoshop_pay_for_order_customer_notification($order_id) {
     wp_mail($order->billing_email, $subject, $customer_message, "From: " . get_option('jigoshop_email') . "\r\n");
 }
 
-function add_header_info() {
+function add_header_info($order) {
     
     add_company_information();
     
@@ -196,20 +196,24 @@ function add_header_info() {
 
 function add_company_information() {
     
-    if (isset(get_option('jigoshop_company_name')) && isset(get_option('jigoshop_address_line1'))) :
+    // TODO: need to modify how this works. isset doesn't work here either
+    
+    if (get_option('jigoshop_company_name')) :
         echo get_option('jigoshop_company_name') . PHP_EOL;
+    endif;
+    if (get_option('jigoshop_address_line1')) :
         echo get_option('jigoshop_address_line1') . PHP_EOL;
-        if (isset(get_option('jigoshop_address_line2'))) :
+        if (get_option('jigoshop_address_line2')) :
             echo get_option('jigoshop_address_line2') . PHP_EOL;
         endif;
-        if (isset(get_option('jigoshop_company_email'))) :
-            echo '<a href="mailto:' . get_option('jigoshop_company_email') . '">' . get_option('jigoshop_company_email') . '</a>' . PHP_EOL . PHP_EOL;
-        endif;
+    endif;
+    if (get_option('jigoshop_company_email')) :
+        echo '<a href="mailto:' . get_option('jigoshop_company_email') . '">' . get_option('jigoshop_company_email') . '</a>' . PHP_EOL . PHP_EOL;
     endif;
     
 }
 
-function add_order_totals($show_download_links, $show_sku) {
+function add_order_totals($order, $show_download_links, $show_sku) {
     
     echo $order->email_order_items_list($show_download_links, $show_sku);  // no download links, show SKU
 
@@ -252,7 +256,7 @@ function add_order_totals($show_download_links, $show_sku) {
     endif;
     echo __('Total:', 'jigoshop') . "\t\t\t\t" . html_entity_decode(jigoshop_price($order->order_total), ENT_COMPAT, 'UTF-8') . ' - ' . __('via', 'jigoshop') . ' ' . ucwords($order->payment_method_title) . PHP_EOL . PHP_EOL;
 
-    if (get_option('jigoshop_calc_taxes') && isset(get_option('jigoshop_tax_number'))) :
+    if (get_option('jigoshop_calc_taxes') && get_option('jigoshop_tax_number')) :
         echo get_option('jigoshop_tax_number') . PHP_EOL . PHP_EOL;
     endif;
     
@@ -260,7 +264,7 @@ function add_order_totals($show_download_links, $show_sku) {
     
 }
 
-function add_customer_details() {
+function add_customer_details($order) {
     
     echo '=====================================================================' . PHP_EOL;
     echo __('CUSTOMER DETAILS', 'jigoshop') . PHP_EOL;
@@ -277,7 +281,7 @@ function add_customer_details() {
     
 }
 
-function add_billing_address_details() {
+function add_billing_address_details($order) {
     
     echo '=====================================================================' . PHP_EOL;
     echo __('BILLING ADDRESS', 'jigoshop') . PHP_EOL;
@@ -292,7 +296,7 @@ function add_billing_address_details() {
     
 }
 
-function add_shipping_address_details() {
+function add_shipping_address_details($order) {
 
     echo '=====================================================================' . PHP_EOL;
     echo __('SHIPPING ADDRESS', 'jigoshop') . PHP_EOL;
