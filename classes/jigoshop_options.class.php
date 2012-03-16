@@ -190,7 +190,7 @@ class Jigoshop_Options {
 	public static function get_current_options() {
 		if ( empty( self::$current_options )) {
 			if ( empty( self::$default_options )) self::set_default_options();
-			else self::set_current_options( self::$default_options );;
+			else self::set_current_options( self::$default_options );
 		}
 		return self::$current_options;
 	}
