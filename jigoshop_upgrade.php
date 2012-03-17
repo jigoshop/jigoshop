@@ -479,12 +479,12 @@ function jigoshop_upgrade_120() {
 	
 	foreach ( $options_in_use as $index => $setting ) {
 		if ( $setting->option_name == 'jigoshop_options' ) continue;
-		if ( ! Jigoshop_Options::get_option( $setting->option_name ) ) {
+		if ( ! Jigoshop_Options::exists_option( $setting->option_name ) ) {
 			Jigoshop_Options::set_option( $setting->option_name, maybe_unserialize( $setting->option_value ));
 //			delete_option( $setting->option_name );
 		}
 	}
 
-	flush_rewrite_rules( true ); // this needs work, permalinks need re-saving (-JAP-)
+	flush_rewrite_rules( true );
 
 }
