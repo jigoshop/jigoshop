@@ -256,6 +256,9 @@ class Jigoshop_Options {
 	 *      longtext                - same as text (display size 80 chars)
 	 *      email                   - same as text (display size 40 chars)
 	 *      textarea                - same as text (display size 4 rows, 60 cols)
+	 *      natural                 - positive number only, leading 0 allowed (display size 20 chars)
+	 *      integer                 - integer, positive or negative, no decimals (display size 20 chars)
+	 *      decimal                 - positive or negative number, may contain decimal point (display size 20 chars)
 	 *      checkbox                - true or false option type
 	 *      multicheck              - option grouping allows multiple options for selection (horizontal or vertical display)
 	 *      select                  - standard select option with pre-defined choices
@@ -879,7 +882,7 @@ class Jigoshop_Options {
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_price_num_decimals',
 			'std' 		=> '2',
-			'type' 		=> 'text',
+			'type' 		=> 'natural',
 		);
 		
 		/**
@@ -895,7 +898,7 @@ class Jigoshop_Options {
 			'desc' 		=> __('Default = 36px','jigoshop'),
 			'tip' 		=> __('Set the width of the small image used in the Cart, Checkout, Orders and Widgets.','jigoshop'),
 			'id' 		=> 'jigoshop_shop_tiny_w',
-			'type' 		=> 'text',
+			'type' 		=> 'natural',
 			'std' 		=> 36
 		);
 		
@@ -904,7 +907,7 @@ class Jigoshop_Options {
 			'desc' 		=> __('Default = 36px','jigoshop'),
 			'tip' 		=> __('Set the height of the small image used in the Cart, Checkout, Orders and Widgets.','jigoshop'),
 			'id' 		=> 'jigoshop_shop_tiny_h',
-			'type' 		=> 'text',
+			'type' 		=> 'natural',
 			'std' 		=> 36
 		);
 		
@@ -913,7 +916,7 @@ class Jigoshop_Options {
 			'desc' 		=> __('Default = 90px','jigoshop'),
 			'tip' 		=> __('Set the width of the thumbnail image for Single Product page extra images.','jigoshop'),
 			'id' 		=> 'jigoshop_shop_thumbnail_w',
-			'type' 		=> 'text',
+			'type' 		=> 'natural',
 			'std' 		=> 90
 		);
 		
@@ -922,7 +925,7 @@ class Jigoshop_Options {
 			'desc' 		=> __('Default = 90px','jigoshop'),
 			'tip' 		=> __('Set the height of the thumbnail image for Single Product page extra images.','jigoshop'),
 			'id' 		=> 'jigoshop_shop_thumbnail_h',
-			'type' 		=> 'text',
+			'type' 		=> 'natural',
 			'std' 		=> 90
 		);
 		
@@ -931,7 +934,7 @@ class Jigoshop_Options {
 			'desc' 		=> __('Default = 150px','jigoshop'),
 			'tip' 		=> __('Set the width of the catalog image for Shop, Categories, Tags, and Related Products.','jigoshop'),
 			'id' 		=> 'jigoshop_shop_small_w',
-			'type' 		=> 'text',
+			'type' 		=> 'natural',
 			'std' 		=> 150
 		);
 		
@@ -940,7 +943,7 @@ class Jigoshop_Options {
 			'desc' 		=> __('Default = 150px','jigoshop'),
 			'tip' 		=> __('Set the height of the catalog image for Shop, Categories, Tags, and Related Products.','jigoshop'),
 			'id' 		=> 'jigoshop_shop_small_h',
-			'type' 		=> 'text',
+			'type' 		=> 'natural',
 			'std' 		=> 150
 		);
 		
@@ -949,7 +952,7 @@ class Jigoshop_Options {
 			'desc' 		=> __('Default = 300px','jigoshop'),
 			'tip' 		=> __('Set the width of the Single Product page large or Featured image.','jigoshop'),
 			'id' 		=> 'jigoshop_shop_large_w',
-			'type' 		=> 'text',
+			'type' 		=> 'natural',
 			'std' 		=> 300
 		);
 		
@@ -958,7 +961,7 @@ class Jigoshop_Options {
 			'desc' 		=> __('Default = 300px','jigoshop'),
 			'tip' 		=> __('Set the height of the Single Product page large or Featured image.','jigoshop'),
 			'id' 		=> 'jigoshop_shop_large_h',
-			'type' 		=> 'text',
+			'type' 		=> 'natural',
 			'std' 		=> 300
 		);
 		
@@ -1109,7 +1112,7 @@ class Jigoshop_Options {
 			'desc' 		=> '',
 			'tip' 		=> __('You will receive a notification as soon this threshold is hit (if notifications are turned on).', 'jigoshop'),
 			'id' 		=> 'jigoshop_notify_low_stock_amount',
-			'type' 		=> 'text',
+			'type' 		=> 'natural',
 			'std' 		=> '2'
 		);
 		
@@ -1130,7 +1133,7 @@ class Jigoshop_Options {
 			'desc' 		=> '',
 			'tip' 		=> __('You will receive a notification as soon this threshold is hit (if notifications are turned on).', 'jigoshop'),
 			'id' 		=> 'jigoshop_notify_no_stock_amount',
-			'type' 		=> 'text',
+			'type' 		=> 'natural',
 			'std' 		=> '0'
 		);
 		

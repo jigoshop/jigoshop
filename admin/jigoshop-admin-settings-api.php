@@ -422,6 +422,48 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 						$valid_input[$setting['id']] = esc_attr( jigowatt_clean( $email ) );
 					break;
 					
+				case 'decimal' :
+					$cleaned = jigowatt_clean( $value );
+					if ( ! jigoshop_validation::is_decimal( $cleaned ) ) {
+						add_settings_error( 
+							$setting['id'],
+							'jigoshop_decimal_error',
+							sprintf(__('You entered "%s" as the value for "%s" and it was not a valid decimal number (may have leading negative sign, with optional decimal point, numbers 0-9).  It was not saved and the original is still in use.','jigoshop'), $value, $setting['name']),
+							'error'
+						);
+						$valid_input[$setting['id']] = $current_options[$setting['id']];
+					} else
+						$valid_input[$setting['id']] = $cleaned;
+					break;
+					
+				case 'integer' :
+					$cleaned = jigowatt_clean( $value );
+					if ( ! jigoshop_validation::is_integer( $cleaned ) ) {
+						add_settings_error( 
+							$setting['id'],
+							'jigoshop_integer_error',
+							sprintf(__('You entered "%s" as the value for "%s" and it was not a valid integer number (may have leading negative sign, numbers 0-9).  It was not saved and the original is still in use.','jigoshop'), $value, $setting['name']),
+							'error'
+						);
+						$valid_input[$setting['id']] = $current_options[$setting['id']];
+					} else
+						$valid_input[$setting['id']] = $cleaned;
+					break;
+					
+				case 'natural' :
+					$cleaned = jigowatt_clean( $value );
+					if ( ! jigoshop_validation::is_natural( $cleaned ) ) {
+						add_settings_error( 
+							$setting['id'],
+							'jigoshop_natural_error',
+							sprintf(__('You entered "%s" as the value for "%s" and it was not a valid natural number (numbers 0-9).  It was not saved and the original is still in use.','jigoshop'), $value, $setting['name']),
+							'error'
+						);
+						$valid_input[$setting['id']] = $current_options[$setting['id']];
+					} else
+						$valid_input[$setting['id']] = $cleaned;
+					break;
+					
 				default :
 					if ( isset( $value ) ) {
 						$valid_input[$setting['id']] = $value;
@@ -865,7 +907,10 @@ class Jigoshop_Options_Parser {
 			$display .= '</ul></div>';
 			break;
 			
-		case 'text':
+		case 'decimal':				// decimal numbers are positive or negative 0-9 inclusive, may include decimal
+		case 'integer':				// integer numbers are positive or negative 0-9 inclusive
+		case 'natural':				// natural numbers are positive 0-9 inclusive
+		case 'text':				// any character sequence
 			$display .= '<input
 				id="'.$item['id'].'"
 				class="jigoshop-input jigoshop-text '.$class.'"
