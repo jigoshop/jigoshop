@@ -875,6 +875,16 @@ class Jigoshop_Options_Parser {
 				value="'. esc_attr( $data[$item['id']] ).'" />';
 			break;
 
+		case 'midtext':
+			$display .= '<input
+				id="'.$item['id'].'"
+				class="jigoshop-input jigoshop-text '.$class.'"
+				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
+				type="text"
+				size="40"
+				value="'. esc_attr( $data[$item['id']] ).'" />';
+			break;
+
 		case 'longtext':
 			$display .= '<input
 				id="'.$item['id'].'"

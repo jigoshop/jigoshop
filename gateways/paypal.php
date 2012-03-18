@@ -43,12 +43,14 @@ class paypal extends jigoshop_payment_gateway {
 		$this->liveurl 		= 'https://www.paypal.com/webscr';
 		$this->testurl 		= 'https://www.sandbox.paypal.com/webscr';
 		$this->testmode		= Jigoshop_Options::get_option('jigoshop_paypal_testmode');
+		$this->testmail 	= Jigoshop_Options::get_option('jigoshop_sandbox_email');
 
 		$this->send_shipping = Jigoshop_Options::get_option('jigoshop_paypal_send_shipping');
 
 		add_action( 'init', array(&$this, 'check_ipn_response') );
 		add_action('valid-paypal-standard-ipn-request', array(&$this, 'successful_request') );
 		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
+		add_action( 'jigoshop_settings_scripts', array( &$this, 'admin_scripts' ) );
 		add_action('receipt_paypal', array(&$this, 'receipt_page'));
 		
 		// remove this hook 'jigoshop_update_options' for post Jigoshop 1.2 use
@@ -142,7 +144,7 @@ class paypal extends jigoshop_payment_gateway {
 
 		$defaults[] = array(
 			'name'		=> __('Enable PayPal sandbox','jigoshop'),
-			'desc' 		=> '',
+			'desc' 		=> __('Turn on to enable the PalPal sandbox for testing.  Visit <a href="http://developer.paypal.com/">http://developer.paypal.com/</a> for more information and to register a merchant and customer testing account.','jigoshop'),
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_paypal_testmode',
 			'std' 		=> 'no',
@@ -153,10 +155,38 @@ class paypal extends jigoshop_payment_gateway {
 			)
 		);
 
+		$defaults[] = array(
+			'name'		=> __('Sandbox email address','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Please enter your Sandbox Merchant email address for use as your sandbox storefront if you have enabled the PayPal sandbox.','jigoshop'),
+			'id' 		=> 'jigoshop_sandbox_email',
+			'std' 		=> '',
+			'type' 		=> 'midtext'
+		);
+
 		return $defaults;
 	}
 
 
+    public function admin_scripts() {
+    	?>
+		<script type="text/javascript">
+			/*<![CDATA[*/
+				jQuery(function($) {
+					jQuery('input#jigoshop_paypal_testmode').click( function() {;
+						if (jQuery(this).is(':checked')) {
+							jQuery(this).parent().parent().next('tr').show();
+						} else {
+							jQuery(this).parent().parent().next('tr').hide();
+						}
+					});
+				});
+			/*]]>*/
+		</script>
+    	<?php
+    }
+	
+	
 	/**
 	 * Admin Panel Options
 	 * - Options for bits like 'title' and availability on a country-by-country basis
@@ -289,7 +319,7 @@ class paypal extends jigoshop_payment_gateway {
 		$paypal_args = array_merge(
 			array(
 				'cmd' 					=> '_cart',
-				'business' 				=> $this->email,
+				'business' 				=> $this->testmode ? $this->testmail : $this->email,
 				'no_note' 				=> 1,
 				'currency_code' 		=> Jigoshop_Options::get_option('jigoshop_currency'),
 				'charset' 				=> 'UTF-8',

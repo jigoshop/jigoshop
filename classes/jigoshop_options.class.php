@@ -252,6 +252,7 @@ class Jigoshop_Options {
 	 *
 	 * Supported Option Types:
 	 *      text                    - standard text input (display size 20 chars)
+	 *      midtext                 - same as text (display size 40 chars)
 	 *      longtext                - same as text (display size 80 chars)
 	 *      email                   - same as text (display size 40 chars)
 	 *      textarea                - same as text (display size 4 rows, 60 cols)
