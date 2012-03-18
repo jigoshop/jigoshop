@@ -53,10 +53,10 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	
 	
 	/**
-	* Scripts for the Options page
-	*
-	* @since 1.2
-	*/
+	 * Scripts for the Options page
+	 *
+	 * @since 1.2
+	 */
 	public function settings_scripts() {
 		
     	wp_register_script( 'jigoshop-easytooltip', jigoshop::assets_url() . '/assets/js/easyTooltip.js', '' );
@@ -69,20 +69,20 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	
 	
 	/**
-	* Styling for the options page
-	*
-	* @since 1.2
-	*/
+	 * Styling for the options page
+	 *
+	 * @since 1.2
+	 */
 	public function settings_styles() {
 		do_action( 'jigoshop_settings_styles' );	// user defined stylesheets should be registered and queued
 	}
 	
 	
 	/**
-	* Register settings
-	*
-	* @since 1.2
-	*/
+	 * Register settings
+	 *
+	 * @since 1.2
+	 */
 	public function register_settings() {
 
 		register_setting( JIGOSHOP_OPTIONS, JIGOSHOP_OPTIONS, array ( &$this, 'validate_settings' ) );
@@ -208,17 +208,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					<div id="jigoshop-js-warning" class="error"><?php _e( 'Warning- This options panel may not work properly without javascript!', 'jigoshop' ); ?></div>
 				</noscript>
 				
-				<?php
-					if ( isset( $_GET['settings-updated'] ) ) {
-						if ( Jigoshop_Options::get_option( 'validation-error' ) ) {
-							echo '<div class="error"><p>'.Jigoshop_Options::get_option( 'validation-message' ).'</p></div>';
-							Jigoshop_Options::set_option( 'validation-error', false );
-							Jigoshop_Options::set_option( 'validation-message', '' );
-						} else {
-							echo "<div class='updated'><p>".Jigoshop_Options::get_option( 'validation-message' )."</p></div>";
-						}
-					}
-				?>
+				<?php settings_errors(); ?>
 				
 				<form action="options.php" method="post">
 
@@ -247,8 +237,6 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					// Fade out the status message
 					jQuery('.updated').delay(2500).fadeOut(1500);
 
-//					jQuery('table.form-table').addClass('widefat');
-					
 					// jQuery Tools range tool
 					jQuery(":range").rangeinput();
 			
@@ -338,10 +326,10 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	
 	
 	/**
-	* Validate settings
-	*
-	* @since 1.2
-	*/
+	 * Validate settings
+	 *
+	 * @since 1.2
+	 */
 	public function validate_settings( $input ) {
 
 		if ( empty( $_POST ) ) {
@@ -352,15 +340,9 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		$defaults = $this->our_parser->these_options;
 		$current_options = Jigoshop_Options::get_current_options();
 		
-		// TODO: these will be replaced with WordPress 'add_settings_error' calls where needed (-JAP-)
-		$current_options['validation-error'] = true; // if no errors in validation, we will reset this to false
-		$current_options['validation-message'] = 
-			__( "There was an error validating the data. No update occured!", 'jigoshop' );
-			
-			
 		$valid_input = $current_options;			// we start with the current options
-		
-		
+
+			
 		// Find the current TAB we are working with and use it's option settings
 		$this_section = sanitize_title( Jigoshop_Options::get_option( 'jigoshop_settings_current_tabname' ) );
 		$tab = $this->our_parser->tabs[$this_section];
@@ -420,10 +402,26 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					$valid_input[$setting['id']] = $selected;
 					break;
 					
-				case 'text' :		/* this needs validating */
-				case 'longtext' :	/* this needs validating */
-				case 'email' :		/* this needs validating */
-				case 'textarea' :	/* this needs validating */
+				case 'text' :
+				case 'longtext' :
+				case 'textarea' :
+					$valid_input[$setting['id']] = esc_attr( jigowatt_clean( $value ) );
+					break;
+					
+				case 'email' :
+					$email = sanitize_email( $value );	// TODO: this now breaks paypal sandbox email addy
+					if ( $email <> $value ) {
+						add_settings_error( 
+							$setting['id'],
+							'jigoshop_email_error',
+							sprintf(__('You entered "%s" as the value for "%s" and it was not a valid email address.  It was not saved and the original is still in use.','jigoshop'), $value, $setting['name']),
+							'error'
+						);
+						$valid_input[$setting['id']] = $current_options[$setting['id']];
+					} else
+						$valid_input[$setting['id']] = esc_attr( jigowatt_clean( $email ) );
+					break;
+					
 				default :
 					if ( isset( $value ) ) {
 						$valid_input[$setting['id']] = $value;
@@ -444,10 +442,15 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		// TODO: not sure we really need this anymore (-JAP-)
 		do_action( 'jigoshop_update_options' );
 		
-		
-		// TODO: clear the error flag and set successful message (replace this -JAP-)
-		$valid_input['validation-error'] = false;
-		$valid_input['validation-message'] = sprintf( __( "'<strong>%s</strong>' settings were updated successfully.", 'jigoshop' ), Jigoshop_Options::get_option( 'jigoshop_settings_current_tabname' ) );
+		$errors = get_settings_errors();
+		if ( empty( $errors ) ) {
+			add_settings_error(
+				'',
+				'settings_updated',
+				sprintf(__('"%s" settings were updated successfully.','jigoshop'), Jigoshop_Options::get_option( 'jigoshop_settings_current_tabname' )),
+				'updated'
+			);
+		}
 		
 		return $valid_input;	// send it back to WordPress for saving
 		
@@ -1021,7 +1024,7 @@ class Jigoshop_Options_Parser {
 			$display .= '<div class="jigoshop-explain"><small>' . $explain_value . '</small></div>';
 			$display .= '</td>';
 		}
-
+		
 		return $display;
 	}
 	
