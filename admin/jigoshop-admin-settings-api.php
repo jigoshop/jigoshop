@@ -409,7 +409,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					break;
 					
 				case 'email' :
-					$email = sanitize_email( $value );	// TODO: this now breaks paypal sandbox email addy
+					$email = sanitize_email( $value );
 					if ( $email <> $value ) {
 						add_settings_error( 
 							$setting['id'],
