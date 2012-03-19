@@ -51,11 +51,7 @@ function _install_jigoshop() {
 
 		jigoshop_tables_install();		/* we need tables installed first to eliminate installation errors */
 
-		// Get options
-//		require_once ( 'jigoshop-admin-settings-options.php' );  /* no longer required for Jigoshop 1.2 (-JAP-) */
-
-		// Do install
-//		jigoshop_default_options();  /* no longer required for Jigoshop 1.2 (-JAP-) */
+		new Jigoshop_Options();
 		
 		jigoshop_create_pages();
 
@@ -128,7 +124,8 @@ function jigoshop_create_pages() {
 		'comment_status' => 'closed'
 	);
 	jigoshop_create_single_page( 'shop', 'jigoshop_shop_page_id', $page_data );
-
+	Jigoshop_Options::set_option( 'jigoshop_shop_redirect_page_id', Jigoshop_Options::get_option( 'jigoshop_shop_page_id' ) );
+	
 	$page_data['post_title'] = __('Cart', 'jigoshop');
 	$page_data['post_content'] = '[jigoshop_cart]';
 	jigoshop_create_single_page( 'cart', 'jigoshop_cart_page_id', $page_data );

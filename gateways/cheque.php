@@ -76,7 +76,7 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 			'desc' 		=> '',
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_cheque_enabled',
-			'std' 		=> 'no',
+			'std' 		=> 'yes',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),

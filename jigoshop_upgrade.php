@@ -436,7 +436,7 @@ function jigoshop_upgrade_120() {
 	require_once ( 'admin/jigoshop-admin-settings-options.php' );
 	global $options_settings;
 	foreach ( $options_settings as $setting ) {
-		if ( isset( $setting['id'] )) {
+		if ( ! empty( $setting['id'] )) {
 			switch ( $setting['id'] ) {
 			case 'jigoshop_shop_tiny':
 			case 'jigoshop_shop_thumbnail':
@@ -479,20 +479,22 @@ function jigoshop_upgrade_120() {
 		$wpdb->prepare( "SELECT * FROM {$wpdb->options} WHERE option_name LIKE 'jigoshop_%%';" ));
 	foreach ( $options_in_use as $index => $setting ) {
 		if ( $setting->option_name == 'jigoshop_options' ) continue;
-		if ( ! Jigoshop_Options::exists_option( $setting->option_name ) )
-			Jigoshop_Options::set_option( $setting->option_name, $setting->option_value );
+		if ( $setting->option_name == 'jigoshop_db_version' ) continue;
+		Jigoshop_Options::set_option( $setting->option_name, $setting->option_value );
 	}
 	
 	// convert paypal email address to test mode email if enabled
 	$jigoshop_paypal_email = get_option( 'jigoshop_paypal_email' );
 	$jigoshop_paypal_testmode = get_option( 'jigoshop_paypal_testmode' );
 	if ( $jigoshop_paypal_testmode == 'yes' ) {
+		Jigoshop_Options::set_option( 'jigoshop_paypal_testmode', 'yes' );
 		Jigoshop_Options::set_option( 'jigoshop_sandbox_email', $jigoshop_paypal_email );
 		Jigoshop_Options::set_option( 'jigoshop_paypal_email', '' );
 	}
 	
 	// remove all jigoshop namespace options from 'options' table
-//	$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->options WHERE option_name LIKE 'jigoshop_%%'" ));
+//	$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->options WHERE option_name LIKE 'jigoshop_%%' AND option_name <> 'jigoshop_options' AND option_name <> 'jigoshop_db_version'" ));
+	
 	Jigoshop_Options::update_options();
 	
 	flush_rewrite_rules( true );

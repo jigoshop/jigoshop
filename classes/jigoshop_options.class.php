@@ -976,9 +976,10 @@ class Jigoshop_Options {
 		self::$default_options[] = array(
 			'name'		=> __('Coupons','jigoshop'),
 			'desc' 		=> '',
+			'tip' 		=> '',
 			'id' 		=> 'jigoshop_coupons',
 			'type' 		=> 'coupons',
-			'std' 		=> ''
+			'std' 		=> array()
 		);
 		
 		/**
@@ -1225,7 +1226,7 @@ class Jigoshop_Options {
 			'tip' 		=> __('To avoid rounding errors, insert tax rates with 4 decimal places.','jigoshop'),
 			'id' 		=> 'jigoshop_tax_rates',
 			'type' 		=> 'tax_rates',
-			'std' 		=> ''
+			'std' 		=> array()
 		);
 		
 		/**
