@@ -44,6 +44,112 @@ function jigoshop_product_updated_messages( $messages ) {
 }
 
 /**
+ *	Product Bulk and Quick Edit for Stock Management scripts
+ */
+add_action( 'admin_print_scripts-edit.php', 'jigoshop_enqueue_product_quick_scripts' );
+
+function jigoshop_enqueue_product_quick_scripts() {
+
+	wp_enqueue_script( 'jigoshop-admin-quickedit', jigoshop::assets_url().'/assets/js/product_quick_edit.js', array( 'jquery', 'inline-edit-post' ), '', true );
+
+	$jigoshop_quick_edit_params = array(
+		'assets_url' 			=> jigoshop::assets_url(),
+		'ajax_url' 				=> ( ! is_ssl() ) ? str_replace( 'https', 'http', admin_url( 'admin-ajax.php' ) ) : admin_url( 'admin-ajax.php' ),
+		'get_stock_nonce'	 	=> wp_create_nonce( "get-product-stock" ),
+		'update_stock_nonce'	=> wp_create_nonce( "update-product-stock" ),
+	);
+
+	wp_localize_script( 'jigoshop-admin-quickedit', 'jigoshop_quick_edit_params', $jigoshop_quick_edit_params );
+}
+
+/**
+ *	AJAX callback to get current stock for a Product for Quick Edit
+ */
+add_action( 'wp_ajax_jigoshop_get_product_stock', 'jigoshop_ajax_get_product_stock' );
+add_action( 'wp_ajax_nopriv_jigoshop_get_product_stock', 'jigoshop_ajax_get_product_stock' );
+
+function jigoshop_ajax_get_product_stock() {
+
+	check_ajax_referer( 'get-product-stock', 'security' );
+	
+	echo get_post_meta( $_POST['post_id'], 'stock', true );
+	
+	die();
+}
+
+/**
+ *	Output a Stock input display field for Bulk and Quick edit on the Product List
+ */
+add_action( 'bulk_edit_custom_box', 'jigoshop_add_to_bulk_quick_edit_custom_box', 10, 2 );
+add_action( 'quick_edit_custom_box', 'jigoshop_add_to_bulk_quick_edit_custom_box', 10, 2 );
+
+function jigoshop_add_to_bulk_quick_edit_custom_box( $column_name, $post_type ) {
+
+	switch ( $post_type ) {
+	case 'product':
+		switch ( $column_name ) {
+		case 'stock':
+			?>
+			<fieldset class="inline-edit-col-right">
+				<div class="inline-edit-col">
+					<label><span class="title"><?php _e( 'Stock', 'jigoshop' ); ?></span>
+					<input type="text" name="stock" value="" />
+					</label>
+				</div>
+			</fieldset>
+			<?php
+			break;
+		}
+		break;
+	}
+}
+
+/**
+ *	Quick Edit save routine
+ */
+add_action( 'save_post','jigoshop_save_quick_edit', 10, 2 );
+
+function jigoshop_save_quick_edit( $post_id, $post ) {
+
+	// don't save for autosave
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return $post_id;
+
+	// don't save for revisions
+	if ( isset( $post->post_type ) && $post->post_type == 'revision' ) return $post_id;
+
+	switch ( $post->post_type ) {
+	case 'product':
+		// TODO: need some data validation (-JAP-)
+		if ( array_key_exists( 'stock', $_POST ) ) update_post_meta( $post_id, 'stock', jigowatt_clean( $_POST[ 'stock' ] ) );
+		break;
+   }
+
+}
+
+/**
+ *	AJAX callback for Bulk Edit save routine
+ */
+add_action( 'wp_ajax_jigoshop_save_bulk_edit', 'jigoshop_save_bulk_edit' );
+add_action( 'wp_ajax_nopriv_jigoshop_save_bulk_edit', 'jigoshop_save_bulk_edit' );
+
+function jigoshop_save_bulk_edit() {
+
+	check_ajax_referer( 'update-product-stock', 'security' );
+	
+	$post_ids = ( isset( $_POST[ 'post_ids' ] ) && !empty( $_POST[ 'post_ids' ] ) ) ? $_POST[ 'post_ids' ] : array();
+	$stock = ( isset( $_POST[ 'stock' ] ) && !empty( $_POST[ 'stock' ] ) ) ? $_POST[ 'stock' ] : NULL;
+	if ( ! empty( $post_ids ) && is_array( $post_ids ) && ! empty( $stock ) ) {
+		foreach ( $post_ids as $post_id ) {
+			// TODO: need some data validation (-JAP-)
+			update_post_meta( $post_id, 'stock', jigowatt_clean( $stock ) );
+		}
+	}
+	
+	die();
+}
+
+
+/**
  * Custom columns
  **/
  function jigoshop_edit_product_columns($columns) {
