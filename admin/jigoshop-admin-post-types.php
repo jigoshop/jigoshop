@@ -49,17 +49,25 @@ function jigoshop_product_updated_messages( $messages ) {
 add_action( 'admin_print_scripts-edit.php', 'jigoshop_enqueue_product_quick_scripts' );
 
 function jigoshop_enqueue_product_quick_scripts() {
-
-	wp_enqueue_script( 'jigoshop-admin-quickedit', jigoshop::assets_url().'/assets/js/product_quick_edit.js', array( 'jquery', 'inline-edit-post' ), '', true );
-
-	$jigoshop_quick_edit_params = array(
-		'assets_url' 				=> jigoshop::assets_url(),
-		'ajax_url' 					=> ( ! is_ssl() ) ? str_replace( 'https', 'http', admin_url( 'admin-ajax.php' ) ) : admin_url( 'admin-ajax.php' ),
-		'get_stock_price_nonce'		=> wp_create_nonce( "get-product-stock-price" ),
-		'update_stock_price_nonce'	=> wp_create_nonce( "update-product-stock-price" ),
-	);
-
-	wp_localize_script( 'jigoshop-admin-quickedit', 'jigoshop_quick_edit_params', $jigoshop_quick_edit_params );
+	
+	global $pagenow, $typenow;
+	
+	if ( empty( $typenow ) && ! empty( $_GET['post'] ) ) {
+		$post = get_post( $_GET['post'] );
+		$typenow = $post->post_type;
+	}
+	if ( $typenow == 'product' ) {
+		wp_enqueue_script( 'jigoshop-admin-quickedit', jigoshop::assets_url().'/assets/js/product_quick_edit.js', array( 'jquery', 'inline-edit-post' ), '', true );
+	
+		$jigoshop_quick_edit_params = array(
+			'assets_url' 				=> jigoshop::assets_url(),
+			'ajax_url' 					=> ( ! is_ssl() ) ? str_replace( 'https', 'http', admin_url( 'admin-ajax.php' ) ) : admin_url( 'admin-ajax.php' ),
+			'get_stock_price_nonce'		=> wp_create_nonce( "get-product-stock-price" ),
+			'update_stock_price_nonce'	=> wp_create_nonce( "update-product-stock-price" ),
+		);
+	
+		wp_localize_script( 'jigoshop-admin-quickedit', 'jigoshop_quick_edit_params', $jigoshop_quick_edit_params );
+	}
 }
 
 /**
@@ -73,8 +81,16 @@ function jigoshop_ajax_get_product_stock_price() {
 	check_ajax_referer( 'get-product-stock-price', 'security' );
 	
 	$values = array();
-	$values['stock'] = get_post_meta( $_GET['post_id'], 'stock', true );
-	$values['price'] = get_post_meta( $_GET['post_id'], 'regular_price', true );
+	
+	$_product = new jigoshop_product( $_GET['post_id'] );
+	
+	if ( $_product->managing_stock() ) {
+		$values['stock'] = get_post_meta( $_GET['post_id'], 'stock', true );
+	} else {
+		$values['stock'] = __('Not managed','jigoshop');
+	}
+	$values['price'] = sprintf( "%.2F", get_post_meta( $_GET['post_id'], 'regular_price', true ) );
+	
 	echo json_encode( $values );
 	
 	die();
@@ -133,9 +149,15 @@ function jigoshop_save_quick_edit( $post_id, $post ) {
 
 	switch ( $post->post_type ) {
 	case 'product':
-		// TODO: need some data validation (-JAP-)
-		if ( array_key_exists( 'stock', $_POST ) && ! empty( $_POST['stock'] ) ) update_post_meta( $post_id, 'stock', jigowatt_clean( $_POST[ 'stock' ] ) );
-		if ( array_key_exists( 'price', $_POST ) && ! empty( $_POST['price'] ) ) update_post_meta( $post_id, 'regular_price', jigowatt_clean( $_POST[ 'price' ] ) );
+		$_product = new jigoshop_product( $post_id );
+		if ( array_key_exists( 'stock', $_POST ) && $_product->managing_stock() ) {
+			$stock = empty( $_POST['stock'] ) ? 0 : jigoshop_sanitize_num( $_POST[ 'stock' ] );
+			// TODO: do we need to check to hide products at low stock threshold? (-JAP-)
+			update_post_meta( $post_id, 'stock', $stock );
+		}
+		if ( array_key_exists( 'price', $_POST ) && ! empty( $_POST['price'] ) ) {
+			update_post_meta( $post_id, 'regular_price', jigoshop_sanitize_num( $_POST[ 'price' ] ) );
+		}
 		break;
    }
 
@@ -151,14 +173,19 @@ function jigoshop_save_bulk_edit() {
 
 	check_ajax_referer( 'update-product-stock-price', 'security' );
 	
-	$post_ids = ( isset( $_POST[ 'post_ids' ] ) && !empty( $_POST[ 'post_ids' ] ) ) ? $_POST[ 'post_ids' ] : array();
-	$stock = ( isset( $_POST[ 'stock' ] ) && !empty( $_POST[ 'stock' ] ) ) ? $_POST[ 'stock' ] : NULL;
-	$price = ( isset( $_POST[ 'price' ] ) && !empty( $_POST[ 'price' ] ) ) ? $_POST[ 'price' ] : NULL;
+	$post_ids = ( isset( $_POST[ 'post_ids' ] ) && ! empty( $_POST[ 'post_ids' ] ) ) ? $_POST[ 'post_ids' ] : array();
+	$stock = ( isset( $_POST[ 'stock' ] ) && ! empty( $_POST[ 'stock' ] ) ) ? $_POST[ 'stock' ] : NULL;
+	$price = ( isset( $_POST[ 'price' ] ) && ! empty( $_POST[ 'price' ] ) ) ? $_POST[ 'price' ] : NULL;
+	
 	if ( ! empty( $post_ids ) && is_array( $post_ids ) ) {
 		foreach ( $post_ids as $post_id ) {
-			// TODO: need some data validation (-JAP-)
-			if ( ! empty( $stock ) ) update_post_meta( $post_id, 'stock', jigowatt_clean( $stock ) );
-			if ( ! empty( $price ) ) update_post_meta( $post_id, 'regular_price', jigowatt_clean( $price ) );
+			$_product = new jigoshop_product( $post_id );
+			if ( $_product->managing_stock() ) {
+				$stock = empty( $stock ) ? 0 : jigoshop_sanitize_num( $stock );
+				// TODO: do we need to check to hide products at low stock threshold? (-JAP-)
+				update_post_meta( $post_id, 'stock', $stock );
+			}
+			if ( ! empty( $price ) ) update_post_meta( $post_id, 'regular_price', jigoshop_sanitize_num( $price ) );
 		}
 	}
 	
