@@ -89,7 +89,11 @@ function jigoshop_ajax_get_product_stock_price() {
 	} else {
 		$values['stock'] = __('Not managed','jigoshop');
 	}
-	$values['price'] = sprintf( "%.2F", get_post_meta( $_GET['post_id'], 'regular_price', true ) );
+	if ( $_product->is_type( array( 'grouped' ) ) ) {
+		$values['price'] = __('Grouped parent has no price','jigoshop');
+	} else {
+		$values['price'] = sprintf( "%.2F", get_post_meta( $_GET['post_id'], 'regular_price', true ) );
+	}
 	
 	echo json_encode( $values );
 	
@@ -156,7 +160,9 @@ function jigoshop_save_quick_edit( $post_id, $post ) {
 			update_post_meta( $post_id, 'stock', $stock );
 		}
 		if ( array_key_exists( 'price', $_POST ) && ! empty( $_POST['price'] ) ) {
-			update_post_meta( $post_id, 'regular_price', jigoshop_sanitize_num( $_POST[ 'price' ] ) );
+			if ( ! $_product->is_type( array( 'grouped' ) ) ) {
+				update_post_meta( $post_id, 'regular_price', jigoshop_sanitize_num( $_POST[ 'price' ] ) );
+			}
 		}
 		break;
    }
@@ -185,7 +191,9 @@ function jigoshop_save_bulk_edit() {
 				// TODO: do we need to check to hide products at low stock threshold? (-JAP-)
 				update_post_meta( $post_id, 'stock', $stock );
 			}
-			if ( ! empty( $price ) ) update_post_meta( $post_id, 'regular_price', jigoshop_sanitize_num( $price ) );
+			if ( ! empty( $price ) && ! $_product->is_type( array( 'grouped' ) ) ) {
+				update_post_meta( $post_id, 'regular_price', jigoshop_sanitize_num( $price ) );
+			}
 		}
 	}
 	
