@@ -195,7 +195,7 @@ class jigoshop_order {
             return $this->order_tax[$tax_class]['rate'];
         }
 
-        public function get_tax_amount($tax_class) {
+        public function get_tax_amount($tax_class, $has_price = true) {
             $tax_amount = $this->order_tax[$tax_class]['amount'];
             if (isset($this->order[$tax_class]['shipping'])) :
                 $tax_amount += $this->order[$tax_class]['shipping'];
@@ -208,7 +208,7 @@ class jigoshop_order {
         }
         
         public function show_tax_entry($tax_class) {
-            return (($this->get_tax_amount($tax_class) > 0 && $this->get_tax_rate($tax_class) > 0) || $this->get_tax_rate($tax_class) == 0);
+            return (($this->get_tax_amount($tax_class, false) > 0 && $this->get_tax_rate($tax_class) > 0) || $this->get_tax_rate($tax_class) == 0);
         }
 
         /** Gets subtotal */
