@@ -500,9 +500,7 @@ class jigoshop_cart extends jigoshop_singleton {
                             
                             // now add customer taxes back into the total item price because customer is outside base
                             // and we asked to have prices include taxes
-                            foreach (self::get_applied_tax_classes() as $tax_class) :
-                                $total_item_price += self::get_tax_amount($tax_class, false) * 100; // keep tax with multiplier too
-                            endforeach;
+                            $total_item_price += ((self::$tax->get_non_compounded_tax_amount() + self::$tax->get_compound_tax_amount()) * 100); // keep tax with multiplier
 
                         else :
                             // always use false for price includes tax when calculating tax after coupon = yes, as the price is excluding tax
@@ -584,7 +582,8 @@ class jigoshop_cart extends jigoshop_singleton {
             endforeach;
         endif;
 
-        if (get_option('jigoshop_calc_taxes') == 'yes') : 
+        // This can go once all shipping methods use the new tax structure
+        if (get_option('jigoshop_calc_taxes') == 'yes' && !self::$tax->get_total_shipping_tax_amount()) : 
 
             foreach (self::get_applied_tax_classes() as $tax_class) :
                 if (!self::is_not_compounded_tax($tax_class)) : //tax compounded
