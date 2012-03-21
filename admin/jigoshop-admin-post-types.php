@@ -20,6 +20,7 @@
 // Add filter to ensure the text is context relevant when updated
 // @todo: not sure if this is the best place to put this
 add_filter( 'post_updated_messages', 'jigoshop_product_updated_messages' );
+
 function jigoshop_product_updated_messages( $messages ) {
   global $post, $post_ID;
 
@@ -204,7 +205,9 @@ function jigoshop_save_bulk_edit() {
 /**
  * Custom columns
  **/
- function jigoshop_edit_product_columns($columns) {
+add_filter('manage_edit-product_columns', 'jigoshop_edit_product_columns');
+
+function jigoshop_edit_product_columns($columns) {
 
 	$columns = array();
 
@@ -233,7 +236,8 @@ function jigoshop_save_bulk_edit() {
 	return $columns;
 }
 
-add_filter('manage_edit-product_columns', 'jigoshop_edit_product_columns');
+// NOTE: This causes a large spike in queries, however they are cached so the performance hit is minimal ~20ms -Rob
+add_action('manage_product_posts_custom_column', 'jigoshop_custom_product_columns', 2);
 
 function jigoshop_custom_product_columns($column) {
 	global $post;
@@ -328,8 +332,8 @@ function jigoshop_custom_product_columns($column) {
 }
 
 // Enable sorting for custom columns
-
 add_filter("manage_edit-product_sortable_columns", 'jigoshop_custom_product_sort');
+
 function jigoshop_custom_product_sort( $columns ) {
 	$custom = array(
 		'featured'				=> 'featured',
@@ -341,7 +345,6 @@ function jigoshop_custom_product_sort( $columns ) {
 }
 
 // Product column orderby
-
 add_filter( 'request', 'jigoshop_custom_product_orderby' );
 
 function jigoshop_custom_product_orderby( $vars ) {
@@ -374,6 +377,7 @@ function jigoshop_custom_product_orderby( $vars ) {
  * Props to: Andrew Benbow - chromeorange.co.uk
  **/
 add_action('restrict_manage_posts','jigoshop_products_by_category');
+
 function jigoshop_products_by_category() {
 	global $typenow, $wp_query;
 
@@ -404,8 +408,8 @@ function jigoshop_filter_products_type() {
 
 	echo "</select>";
 }
-// NOTE: This causes a large spike in queries, however they are cached so the performance hit is minimal ~20ms -Rob
-add_action('manage_product_posts_custom_column', 'jigoshop_custom_product_columns', 2);
+
+add_filter('manage_edit-shop_order_columns', 'jigoshop_edit_order_columns');
 
 function jigoshop_edit_order_columns($columns) {
 
@@ -428,9 +432,8 @@ function jigoshop_edit_order_columns($columns) {
     return $columns;
 }
 
-add_filter('manage_edit-shop_order_columns', 'jigoshop_edit_order_columns');
-
 add_action('manage_shop_order_posts_custom_column', 'jigoshop_custom_order_columns', 2);
+
 function jigoshop_custom_order_columns($column) {
 
     global $post;
@@ -583,8 +586,6 @@ function jigoshop_custom_order_columns($column) {
  * Special Thanks to Esbjörn Eriksson (https://github.com/esbite) for this adaption
  */
 add_action( 'parse_request', 'jigoshop_admin_product_search' );
-add_filter( 'get_search_query', 'jigoshop_admin_product_search_label' );
-
 
 function jigoshop_admin_product_search( $wp ) {
     global $pagenow, $wpdb;
@@ -659,6 +660,8 @@ function jigoshop_admin_product_search( $wp ) {
 
 }
 
+add_filter( 'get_search_query', 'jigoshop_admin_product_search_label' );
+
 function jigoshop_admin_product_search_label($query) {
     global $pagenow, $typenow, $wp;
 
@@ -697,6 +700,8 @@ function jigoshop_admin_product_search_label($query) {
 /**
  * Order page filters
  * */
+add_filter('views_edit-shop_order', 'jigoshop_custom_order_views');
+
 function jigoshop_custom_order_views($views) {
 
     $jigoshop_orders = new jigoshop_orders();
@@ -733,11 +738,11 @@ function jigoshop_custom_order_views($views) {
     return $views;
 }
 
-add_filter('views_edit-shop_order', 'jigoshop_custom_order_views');
-
 /**
  * Order page actions
  * */
+add_filter('post_row_actions', 'jigoshop_remove_row_actions', 10, 1);
+
 function jigoshop_remove_row_actions($actions) {
     if (get_post_type() === 'shop_order') :
         unset($actions['view']);
@@ -746,30 +751,31 @@ function jigoshop_remove_row_actions($actions) {
     return $actions;
 }
 
-add_filter('post_row_actions', 'jigoshop_remove_row_actions', 10, 1);
 
 /**
  * Order page views
  * */
+add_filter('bulk_actions-edit-shop_order', 'jigoshop_bulk_actions');
+
 function jigoshop_bulk_actions($actions) {
     return array();
 }
-
-add_filter('bulk_actions-edit-shop_order', 'jigoshop_bulk_actions');
 
 /**
  * Adds downloadable product support for thickbox
  * @todo: not sure if this is the best place for this?
  */
+add_action('media_upload_downloadable_product', 'jigoshop_media_upload_downloadable_product');
+
 function jigoshop_media_upload_downloadable_product() {
 	do_action('media_upload_file');
 }
 
-add_action('media_upload_downloadable_product', 'jigoshop_media_upload_downloadable_product');
-
 /**
  * Order messages
  * */
+add_filter( 'post_updated_messages', 'jigoshop_post_updated_messages' );
+
 function jigoshop_post_updated_messages($messages) {
     if (get_post_type() === 'shop_order') :
 
@@ -783,4 +789,3 @@ function jigoshop_post_updated_messages($messages) {
     endif;
     return $messages;
 }
-add_filter( 'post_updated_messages', 'jigoshop_post_updated_messages' );
