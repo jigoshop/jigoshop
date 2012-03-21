@@ -833,6 +833,12 @@ class jigoshop_tax {
         $tax_amount = 0;
         
         foreach ($rates as $tax_class => $rate) :
+
+            // initialize shipping if not already initialized
+            if (!isset($this->tax_amounts[$tax_class]['shipping'])) :
+                $this->tax_amounts[$tax_class]['shipping'] = 0;
+            endif;
+            
             $tax_rate = round($rate['rate'], 4);
 
             if ($rate['compound'] == 'yes') :
