@@ -394,16 +394,12 @@ class jigoshop_checkout extends jigoshop_singleton {
 
 			endif;
 
-			if (jigoshop_cart::needs_payment()) :
-				// Payment Method
-				$available_gateways = jigoshop_payment_gateways::get_available_payment_gateways();
-				if (!isset($available_gateways[$this->posted['payment_method']])) :
-					jigoshop::add_error( __('Invalid payment method.','jigoshop') );
-				else :
-					// Payment Method Field Validation
-					$available_gateways[$this->posted['payment_method']]->validate_fields();
-				endif;
-			endif;
+            // Payment method
+            $available_gateways = jigoshop_payment_gateways::get_available_payment_gateways();
+            if ($this->process_gateway($available_gateways[$this->posted['payment_method']])) :
+                // Payment Method Field Validation
+                $available_gateways[$this->posted['payment_method']]->validate_fields();
+            endif;
 
 			// hook, to be able to use the validation, but to be able to do something different afterwards
 			do_action( 'jigoshop_after_checkout_validation', $this->posted, $_POST, sizeof(jigoshop::$errors) );
@@ -640,7 +636,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 					// Inserted successfully
 					do_action('jigoshop_new_order', $order_id);
 
-					if (jigoshop_cart::needs_payment()) :
+					if ($this->process_gateway($available_gateways[$this->posted['payment_method']])) :
 
 						// Store Order ID in session so it can be re-used after payment failure
 						jigoshop_session::instance()->order_awaiting_payment = $order_id;
@@ -788,5 +784,22 @@ class jigoshop_checkout extends jigoshop_singleton {
             </tr><?php
         endif;
 
+    }
+    
+    /**
+     * This method makes sure we require payment for the particular gateway being used. 
+     * @param jigoshop_payment_gateway $payment_gateway the payment gateway 
+     * that is being used during checkout
+     * @return boolean true when the gateway should be processed, otherwise false
+     * @since 1.2
+     */
+    private function process_gateway($payment_gateway) {
+        if (!isset($payment_gateway)) :
+            jigoshop::add_error( __('Invalid payment method.','jigoshop') );
+            return false;
+        else :
+            $shipping_total = (get_option('jigoshop_prices_include_tax') == 'yes' ? jigoshop_cart::$shipping_tax_total + jigoshop_cart::$shipping_total : jigoshop_cart::$shipping_total);
+            return $payment_gateway->process_gateway(number_format(jigoshop_cart::$subtotal, 2, '.', ''), number_format($shipping_total, 2, '.', ''), number_format(jigoshop_cart::$discount_total, 2, '.', ''));
+        endif;
     }
 }
