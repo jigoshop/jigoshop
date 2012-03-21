@@ -1,6 +1,6 @@
 (function($) {
 
-	// we create a copy of the WP inline edit post function
+	// we create a copy of the WP inline edit post function for Quick Edit
 	var $wp_inline_edit = inlineEditPost.edit;
 	
 	// and then we overwrite the function with our own code
@@ -11,27 +11,29 @@
 
 		// now we take care of our business
 
-		// get the post ID
+		// get the post ID for this Quick Edit Product
 		var $post_id = 0;
 		if ( typeof( id ) == 'object' ) $post_id = parseInt( this.getId( id ) );
 		
 		if ( $post_id > 0 ) {
 
-			// define the current edit row
+			// determine the current edit row
 			var $edit_row = $( '#edit-' + $post_id );
 			
 			var data = {
-				action: 	'jigoshop_get_product_stock',
-				security: 	jigoshop_quick_edit_params.get_stock_nonce,
+				action: 	'jigoshop_get_product_stock_price',
+				security: 	jigoshop_quick_edit_params.get_stock_price_nonce,
 				post_id:	$post_id
 			};
 	
 			$.ajax( {
-				type: 		'POST',
+				type: 		'GET',
 				url: 		jigoshop_quick_edit_params.ajax_url,
 				data: 		data,
+				dataType:	'json',
 				success: 	function( response ) {
-					$edit_row.find( 'input[name="stock"]' ).val( response );
+					$edit_row.find( 'input[name="stock"]' ).val( response.stock );
+					$edit_row.find( 'input[name="price"]' ).val( response.price );
 				}
 			});
 	
@@ -50,14 +52,16 @@
 			$post_ids.push( $( this ).attr( 'id' ).replace( /^(ttle)/i, '' ) );
 		});
 	
-		// get the stock value
+		// get the stock and price values to save for all the product ID's
 		var $stock = $bulk_row.find( 'input[name="stock"]' ).val();
+		var $price = $bulk_row.find( 'input[name="price"]' ).val();
 	
 		var data = {
 			action: 		'jigoshop_save_bulk_edit',
-			security: 		jigoshop_quick_edit_params.update_stock_nonce,
+			security: 		jigoshop_quick_edit_params.update_stock_price_nonce,
 			post_ids:		$post_ids,
-			stock:			$stock
+			stock:			$stock,
+			price:			$price,
 		};
 
 		// save the data
