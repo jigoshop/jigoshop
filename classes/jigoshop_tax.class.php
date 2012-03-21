@@ -131,7 +131,8 @@ class jigoshop_tax {
     // Ultimately, fixing the admin panel to show all tax classes applied will be the best way.
     public function get_total_tax_rate($total_item_price = 0) {
         $tot_tax_rate = 0;
-        $total_tax = $this->get_total_tax_amount(true) + $this->get_total_tax_amount(false);
+        //don't include shipping in the call, as the total item price doesn't include shipping
+        $total_tax = $this->get_compound_tax_amount(false) + $this->get_non_compounded_tax_amount(false);
         if ($total_item_price > 0) :
             $tot_tax_rate = (get_option('jigoshop_prices_include_tax') == 'yes' ? round($total_tax / ($total_item_price - $total_tax) * 100, 2) : round($total_tax / $total_item_price * 100, 2));
         endif;
@@ -281,7 +282,7 @@ class jigoshop_tax {
      * tax will be returned
      * @since 1.2 
      */
-    private function get_total_tax_amount($compounded) {
+    private function get_total_tax_amount($compounded, $inc_shipping = true) {
         $tax_amount = 0;
         
         if (!empty($this->tax_amounts)) :
@@ -289,12 +290,12 @@ class jigoshop_tax {
                 if (isset($this->tax_amounts[$tax_class]['amount']) && isset($this->tax_amounts[$tax_class]['compound'])) :
                     if ($compounded && $this->tax_amounts[$tax_class]['compound'] == 'yes') :
                         $tax_amount += round($this->tax_amounts[$tax_class]['amount']);
-                        if (isset($this->tax_amounts[$tax_class]['shipping'])) :
+                        if ($inc_shipping && isset($this->tax_amounts[$tax_class]['shipping'])) :
                             $tax_amount += round($this->tax_amounts[$tax_class]['shipping'], 2);
                         endif;
                     elseif (!$compounded && $this->tax_amounts[$tax_class]['compound'] != 'yes') :
                         $tax_amount += round($this->tax_amounts[$tax_class]['amount']);
-                        if (isset($this->tax_amounts[$tax_class]['shipping'])) :
+                        if ($inc_shipping && isset($this->tax_amounts[$tax_class]['shipping'])) :
                             $tax_amount += round($this->tax_amounts[$tax_class]['shipping'], 2);
                         endif;
                     endif;
@@ -324,9 +325,9 @@ class jigoshop_tax {
      * gets the amount of tax that has not been compounded
      * @return double value of non compound tax tax
      */
-    public function get_non_compounded_tax_amount() {
+    public function get_non_compounded_tax_amount($inc_shipping = true) {
         
-        $tax_amount = $this->get_total_tax_amount(false);
+        $tax_amount = $this->get_total_tax_amount(false, $inc_shipping);
         //TODO: number_format... might need to change this because of jigoshop options available for formatting numbers on cart
         return ($this->tax_divisor > 0 ? number_format($tax_amount / $this->tax_divisor, 2, '.', '') : number_format($tax_amount, 2, '.', ''));
 
@@ -336,8 +337,8 @@ class jigoshop_tax {
      * gets the amount of tax that has been compounded
      * @return type float value of compound tax
      */
-    public function get_compound_tax_amount() {
-        $tax_amount = $this->get_total_tax_amount(true);
+    public function get_compound_tax_amount($inc_shipping = true) {
+        $tax_amount = $this->get_total_tax_amount(true, $inc_shipping);
 
         return ($this->tax_divisor > 0 ? number_format(($tax_amount / $this->tax_divisor), 2, '.', '') : number_format($tax_amount, 2, '.', ''));
     }
