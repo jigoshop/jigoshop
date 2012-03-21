@@ -129,7 +129,7 @@ class paypal extends jigoshop_payment_gateway {
    		if(isset($_POST['jigoshop_paypal_description'])) update_option('jigoshop_paypal_description', jigowatt_clean($_POST['jigoshop_paypal_description'])); else @delete_option('jigoshop_paypal_description');
    		if(isset($_POST['jigoshop_paypal_testmode'])) update_option('jigoshop_paypal_testmode', jigowatt_clean($_POST['jigoshop_paypal_testmode'])); else @delete_option('jigoshop_paypal_testmode');
    		if(isset($_POST['jigoshop_paypal_send_shipping'])) update_option('jigoshop_paypal_send_shipping', jigowatt_clean($_POST['jigoshop_paypal_send_shipping'])); else @delete_option('jigoshop_paypal_send_shipping');
-        if(isset($_POST['jigoshop_paypal_force_payment'])) update_optoin('jigoshop_paypal_force_payment', jigowatt_clean($_POST['jigoshop_paypal_force_payment'])); else @delete_option('jigoshop_paypal_force_payment');
+        if(isset($_POST['jigoshop_paypal_force_payment'])) update_option('jigoshop_paypal_force_payment', jigowatt_clean($_POST['jigoshop_paypal_force_payment'])); else @delete_option('jigoshop_paypal_force_payment');
     }
 
 	/**
