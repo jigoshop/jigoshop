@@ -94,7 +94,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
                 $this->set_error_message('Please proceed to checkout to get shipping estimates');
             else :
                 // create request input for shipping service
-                $request = $this->create_mail_request($current_service);
+                $request = $this->create_mail_request();
             endif;
 
             if ($request) :
