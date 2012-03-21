@@ -61,7 +61,7 @@ class jigoshop_payment_gateway {
      * details as to when it should or shouldn't be processed.
      * @since 1.2
      */
-    protected function process_gateway($subtotal, $shipping_total, $discount = 0) { 
+    public function process_gateway($subtotal, $shipping_total, $discount = 0) { 
         // default to cart needs_payment() to keep the same functionality that jigoshop offers today
         // if overridden, the gateway will provide the details when to skip or not
         return jigoshop_cart::needs_payment();

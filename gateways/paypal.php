@@ -436,7 +436,7 @@ class paypal extends jigoshop_payment_gateway {
 
 	}
     
-    protected function process_gateway($subtotal, $shipping_total, $discount = 0) {
+    public function process_gateway($subtotal, $shipping_total, $discount = 0) {
         
         $ret_val = false;
         if (!(isset($subtotal) && isset($shipping_total))) return $ret_val;
