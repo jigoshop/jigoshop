@@ -172,6 +172,9 @@ class jigoshop_order {
 
             foreach ($this->get_tax_classes() as $tax_class) :
                 $order_tax += $this->order_tax[$tax_class]['amount'];
+                if (isset($this->order_tax[$tax_class]['shipping'])) :
+                    $order_tax += $this->order_tax[$tax_class]['shipping'];
+                endif;
             endforeach;
 
         endif;
