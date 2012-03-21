@@ -168,7 +168,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
     array(
 		'name' => __('Address Line2','jigoshop'),
 		'desc' 		=> '',
-		'tip' 		=> __('Setting your address will enable us to print it out on your invoice emails. Leave blank to disable.','jigoshop'),
+        'tip'       => __('If address line1 is not set, address line2 will not display even if you put a value in it. Setting your address will enable us to print it out on your invoice emails. Leave blank to disable.','jigoshop'),
 		'id' 		=> 'jigoshop_address_line2',
 		'css' 		=> 'width:300px;',
 		'type' 		=> 'text',
