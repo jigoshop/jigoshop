@@ -510,10 +510,7 @@ class jigoshop_cart extends jigoshop_singleton {
                             // if coupons are applied and also applied before taxes but prices include tax, we need to re-adjust total
                             // item price according to new tax rate.
                             if (get_option('jigoshop_prices_include_tax') == 'yes' && get_option('jigoshop_tax_after_coupon') == 'yes' && $discounted_item_price >= 0) :
-                                $total_item_price = $_product->get_price_excluding_tax() * $values['quantity'] * 100;
-                                foreach (self::get_applied_tax_classes() as $tax_class) :
-                                    $total_item_price += self::get_tax_amount($tax_class, false) * 100; // keep tax with multiplier too
-                                endforeach;
+                                $total_item_price = ($_product->get_price_excluding_tax() * $values['quantity'] + self::$tax->get_non_compounded_tax_amount() + self::$tax->get_compound_tax_amount()) * 100;
                             endif;
                         endif;
 
