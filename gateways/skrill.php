@@ -28,14 +28,6 @@ class skrill extends jigoshop_payment_gateway {
 
 	public function __construct() {
 		
-		
-// 		Jigoshop_Options::add_option('jigoshop_skrill_enabled', 'yes');
-// 		Jigoshop_Options::add_option('jigoshop_skrill_email', '');
-// 		Jigoshop_Options::add_option('jigoshop_skrill_title', 'skrill');
-		
-		// NOTE: The above add_options are used for now.  When the gateway is converted to using Jigoshop_Options class
-		// sometime post Jigoshop 1.2, they won't be needed and only the following commented out line will be used
-		
 		Jigoshop_Options::install_external_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
 
         $this->id			= 'skrill';
@@ -55,8 +47,6 @@ class skrill extends jigoshop_payment_gateway {
 		add_action('valid-skrill-status-report', array(&$this, 'successful_request') );
 		add_action('receipt_skrill', array(&$this, 'receipt_skrill'));
 
-		// remove this hook 'jigoshop_update_options' for post Jigoshop 1.2 use
-//		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
     }
 
 
@@ -64,9 +54,6 @@ class skrill extends jigoshop_payment_gateway {
 	 * Default Option settings for WordPress Settings API using the Jigoshop_Options class
 	 *
 	 * These should be installed on the Jigoshop_Options 'Payment Gateways' tab
-	 *
-	 * NOTE: these are currently not used in Jigoshop 1.2 or less.  They will be implemented when all Gateways are
-	 * converted for full Jigoshop_Options use post Jigoshop 1.2.
 	 *
 	 */	
 	public function get_default_options() {
@@ -129,67 +116,6 @@ class skrill extends jigoshop_payment_gateway {
 		return $defaults;
 	}
 
-
-	/**
-	 * Admin Panel Options
-	 * - Options for bits like 'title' and availability on a country-by-country basis
-	 *
-	 * NOTE: this will be deprecated post Jigoshop 1.2 and no longer required for Admin options display
-	 *
-	 **/
-	public function admin_options() {
-    	?>
-    	<thead><tr><th scope="col" width="200px"><?php _e('Skrill (Moneybookers)', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('Skrill works by using an iFrame to submit payment information securely to Moneybookers.', 'jigoshop'); ?></th></tr></thead>
-    	<tr>
-	        <td class="titledesc"><?php _e('Enable Skrill', 'jigoshop') ?>:</td>
-	        <td class="forminp">
-		        <select name="jigoshop_skrill_enabled" id="jigoshop_skrill_enabled" style="min-width:100px;">
-		            <option value="yes" <?php if (Jigoshop_Options::get_option('jigoshop_skrill_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if (Jigoshop_Options::get_option('jigoshop_skrill_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
-		        </select>
-	        </td>
-	    </tr>
-	    <tr>
-	        <td class="titledesc"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?>:</td>
-	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_skrill_title" id="jigoshop_skrill_title" style="min-width:50px;" value="<?php if ($value = Jigoshop_Options::get_option('jigoshop_skrill_title')) echo $value; else echo 'skrill'; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	        <td class="titledesc"><a href="#" tip="<?php _e('Please enter your skrill email address; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Skrill merchant e-mail', 'jigoshop') ?>:</td>
-	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_skrill_email" id="jigoshop_skrill_email" style="min-width:50px;" value="<?php if ($value = Jigoshop_Options::get_option('jigoshop_skrill_email')) echo $value; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	    	<td class="titledesc"><a href="#" tip="<?php _e('Please enter your skrill secretword; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Skrill Secret Word', 'jigoshop') ?>:</td>
-	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_skrill_secret_word" id="jigoshop_skrill_secret_word" style="min-width:50px;" value="<?php if ($value = Jigoshop_Options::get_option('jigoshop_skrill_secret_word')) echo $value; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	    	<td class="titledesc"><a href="#" tip="<?php _e('Please enter your skrill Customer ID; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Skrill Customer ID', 'jigoshop') ?>:</td>
-	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_skrill_customer_id" id="jigoshop_skrill_customer_id" style="min-width:50px;" value="<?php if ($value = Jigoshop_Options::get_option('jigoshop_skrill_customer_id')) echo $value; ?>" />
-	        </td>
-	    </tr>
-    	<?php
-    }
-
-	/**
-	 * Admin Panel Options Processing
-	 * - Saves the options to the DB
-	 *
-	 * NOTE: this will be deprecated post Jigoshop 1.2 and no longer required for Admin options saving
-	 *
-	 **/
-    public function process_admin_options() {
-   		if(isset($_POST['jigoshop_skrill_enabled'])) Jigoshop_Options::set_option('jigoshop_skrill_enabled', jigowatt_clean($_POST['jigoshop_skrill_enabled']));
-   		if(isset($_POST['jigoshop_skrill_title'])) Jigoshop_Options::set_option('jigoshop_skrill_title', jigowatt_clean($_POST['jigoshop_skrill_title']));
-   		if(isset($_POST['jigoshop_skrill_email'])) Jigoshop_Options::set_option('jigoshop_skrill_email', jigowatt_clean($_POST['jigoshop_skrill_email']));
-   		if(isset($_POST['jigoshop_skrill_secret_word'])) Jigoshop_Options::set_option('jigoshop_skrill_secret_word', jigowatt_clean($_POST['jigoshop_skrill_secret_word']));
-   		if(isset($_POST['jigoshop_skrill_customer_id'])) Jigoshop_Options::set_option('jigoshop_skrill_customer_id', jigowatt_clean($_POST['jigoshop_skrill_customer_id']));
-    }
 
 	/**
 	 * Generate the skrill button link

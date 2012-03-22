@@ -29,18 +29,6 @@ class dibs extends jigoshop_payment_gateway {
 
 	public function __construct() {
 		
-		
-// 		Jigoshop_Options::add_option('jigoshop_dibs_enabled', 'yes');
-// 		Jigoshop_Options::add_option('jigoshop_dibs_merchant', '');
-// 		Jigoshop_Options::add_option('jigoshop_dibs_key1', '');
-// 		Jigoshop_Options::add_option('jigoshop_dibs_key2', '');
-// 		Jigoshop_Options::add_option('jigoshop_dibs_title', __('DIBS', 'jigoshop') );
-// 		Jigoshop_Options::add_option('jigoshop_dibs_description', __("Pay via DIBS using credit card or bank transfer.", 'jigoshop') );
-// 		Jigoshop_Options::add_option('jigoshop_dibs_testmode', 'no');
-
-		// NOTE: The above add_options are used for now.  When the gateway is converted to using Jigoshop_Options class
-		// sometime post Jigoshop 1.2, they won't be needed and only the following commented out line will be used
-		
 		Jigoshop_Options::install_external_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
 		
 		$this->id = 'dibs';
@@ -58,9 +46,6 @@ class dibs extends jigoshop_payment_gateway {
 		add_action('valid-dibs-callback', array(&$this, 'successful_request') );
 		add_action('receipt_dibs', array(&$this, 'receipt_page'));
 
-		// remove this hook 'jigoshop_update_options' for post Jigoshop 1.2 use
-//		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
-
 	}
 
 
@@ -68,9 +53,6 @@ class dibs extends jigoshop_payment_gateway {
 	 * Default Option settings for WordPress Settings API using the Jigoshop_Options class
 	 *
 	 * These should be installed on the Jigoshop_Options 'Payment Gateways' tab
-	 *
-	 * NOTE: these are currently not used in Jigoshop 1.2 or less.  They will be implemented when all Gateways are
-	 * converted for full Jigoshop_Options use post Jigoshop 1.2.
 	 *
 	 */	
 	public function get_default_options() {
@@ -157,88 +139,10 @@ class dibs extends jigoshop_payment_gateway {
 
 
 	/**
-	* Admin Panel Options
-	* - Options for bits like 'title' and availability on a country-by-country basis
-	 *
-	 * NOTE: this will be deprecated post Jigoshop 1.2 and no longer required for Admin options display
-	 *
-	**/
-	public function admin_options() {
-		?>
-		<thead><tr><th scope="col" width="200px"><?php _e('DIBS FlexWin', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('DIBS FlexWin works by sending the user to <a href="http://www.dibspayment.com/">DIBS</a> to enter their payment information.', 'jigoshop'); ?></th></tr></thead>
-		<tr>
-			<td class="titledesc"><?php _e('Enable DIBS FlexWin', 'jigoshop') ?>:</td>
-			<td class="forminp">
-				<select name="jigoshop_dibs_enabled" id="jigoshop_dibs_enabled" style="min-width:100px;">
-					<option value="yes" <?php if (Jigoshop_Options::get_option('jigoshop_dibs_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-					<option value="no" <?php if (Jigoshop_Options::get_option('jigoshop_dibs_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td class="titledesc"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?>:</td>
-			<td class="forminp">
-				<input class="input-text" type="text" name="jigoshop_dibs_title" id="jigoshop_dibs_title" style="min-width:50px;" value="<?php if ($value = Jigoshop_Options::get_option('jigoshop_dibs_title')) echo $value; else echo 'DIBS'; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td class="titledesc"><a href="#" tip="<?php _e('This controls the description which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Description', 'jigoshop') ?>:</td>
-			<td class="forminp">
-				<input class="input-text wide-input" type="text" name="jigoshop_dibs_description" id="jigoshop_dibs_description" style="min-width:50px;" value="<?php if ($value = Jigoshop_Options::get_option('jigoshop_dibs_description')) echo $value; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td class="titledesc"><a href="#" tip="<?php _e('Please enter your DIBS merchant id; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('DIBS Merchant id', 'jigoshop') ?>:</td>
-			<td class="forminp">
-				<input class="input-text" type="text" name="jigoshop_dibs_merchant" id="jigoshop_dibs_merchant" style="min-width:50px;" value="<?php if ($value = Jigoshop_Options::get_option('jigoshop_dibs_merchant')) echo $value; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td class="titledesc"><a href="#" tip="<?php _e('Please enter your DIBS MD5 key #1; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('DIBS MD5 Key 1', 'jigoshop') ?>:</td>
-			<td class="forminp">
-				<input class="input-text" type="text" name="jigoshop_dibs_key1" id="jigoshop_dibs_key1" style="min-width:50px;" value="<?php if ($value = Jigoshop_Options::get_option('jigoshop_dibs_key1')) echo $value; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td class="titledesc"><a href="#" tip="<?php _e('Please enter your DIBS MD5 key #2; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('DIBS MD5 Key 2', 'jigoshop') ?>:</td>
-			<td class="forminp">
-				<input class="input-text" type="text" name="jigoshop_dibs_key2" id="jigoshop_dibs_key2" style="min-width:50px;" value="<?php if ($value = Jigoshop_Options::get_option('jigoshop_dibs_key2')) echo $value; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td class="titledesc"><a href="#" tip="<?php _e('When test mode is enabled only DIBS specific test-cards are accepted.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Enable test mode', 'jigoshop') ?>:</td>
-			<td class="forminp">
-				<select name="jigoshop_dibs_testmode" id="jigoshop_dibs_testmode" style="min-width:100px;">
-					<option value="yes" <?php if (Jigoshop_Options::get_option('jigoshop_dibs_testmode') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-					<option value="no" <?php if (Jigoshop_Options::get_option('jigoshop_dibs_testmode') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
-				</select>
-			</td>
-		</tr>
-		<?php
-	}
-
-	/**
 	* There are no payment fields for dibs, but we want to show the description if set.
 	**/
 	function payment_fields() {
 		if ($jigoshop_dibs_description = Jigoshop_Options::get_option('jigoshop_dibs_description')) echo wpautop(wptexturize($jigoshop_dibs_description));
-	}
-
-	/**
-	* Admin Panel Options Processing
-	* - Saves the options to the DB
-	 *
-	 * NOTE: this will be deprecated post Jigoshop 1.2 and no longer required for Admin options saving
-	 *
-	**/
-	public function process_admin_options() {
-		if(isset($_POST['jigoshop_dibs_enabled'])) Jigoshop_Options::set_option('jigoshop_dibs_enabled', jigowatt_clean($_POST['jigoshop_dibs_enabled']));
-		if(isset($_POST['jigoshop_dibs_title'])) Jigoshop_Options::set_option('jigoshop_dibs_title', jigowatt_clean($_POST['jigoshop_dibs_title']));
-		if(isset($_POST['jigoshop_dibs_merchant'])) Jigoshop_Options::set_option('jigoshop_dibs_merchant', jigowatt_clean($_POST['jigoshop_dibs_merchant']));
-		if(isset($_POST['jigoshop_dibs_key1'])) Jigoshop_Options::set_option('jigoshop_dibs_key1', jigowatt_clean($_POST['jigoshop_dibs_key1']));
-		if(isset($_POST['jigoshop_dibs_key2'])) Jigoshop_Options::set_option('jigoshop_dibs_key2', jigowatt_clean($_POST['jigoshop_dibs_key2']));
-		if(isset($_POST['jigoshop_dibs_description'])) Jigoshop_Options::set_option('jigoshop_dibs_description', jigowatt_clean($_POST['jigoshop_dibs_description']));
-		if(isset($_POST['jigoshop_dibs_testmode'])) Jigoshop_Options::set_option('jigoshop_dibs_testmode', jigowatt_clean($_POST['jigoshop_dibs_testmode']));
 	}
 
 	/**
