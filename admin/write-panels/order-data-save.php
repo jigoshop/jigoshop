@@ -62,7 +62,7 @@ function jigoshop_process_shop_order_meta($post_id, $post)
         'order_shipping',
         'order_discount',
         'order_discount_coupons',
-        'order_tax',
+        'order_tax_total', // value from order totals for tax
         'order_shipping_tax',
         'order_total'
     );
@@ -71,6 +71,16 @@ function jigoshop_process_shop_order_meta($post_id, $post)
     foreach ($order_fields as $field_name) {
         if ( isset( $_POST[$field_name] )) $data[$field_name] = stripslashes( $_POST[$field_name] );
     }
+    
+    // if total tax has been modified from order tax, then create a customized tax array 
+    // just for the order. At this point, we no longer know about multiple tax classes.
+    // Even if we used the old tax array data, we still don't know how to break down
+    // the amounts since they're customized. 
+    if ($order->get_total_tax() != $data['order_tax_total']) :
+        // need to create new tax array string
+        $new_tax = $data['order_tax_total'];
+        $data['order_tax'] = jigoshop_tax::create_custom_tax($data['order_total'] - $data['order_tax_total'], $data['order_tax_total'], $data['order_shipping_tax'], $data['order_tax_divisor']);
+    endif;
 
     // Customer
     update_post_meta($post_id, 'customer_user', (int) $_POST['customer_user']);

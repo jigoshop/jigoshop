@@ -45,7 +45,7 @@ class jigoshop_tax {
      * @param array array the tax array to convert
      * @return string the array as string
      */
-    private function array_implode($array) {
+    private static function array_implode($array) {
         $glue = ':';
         if (!is_array($array))
             return $array;
@@ -73,6 +73,39 @@ class jigoshop_tax {
         return (isset($this->tax_amounts[$tax_class]));
     }
 
+    /**
+     * creates a customized tax string to include
+     * @param type $price_ex_tax includes shipping price if shipping is available
+     * @param type $total_tax full tax amount
+     * @param type $shipping_tax shipping tax if available
+     * @return string the tax array as a string
+     */
+    public static function create_custom_tax($price_ex_tax, $total_tax, $shipping_tax = 0, $divisor = -1) {
+        if (!empty($total_tax)) :
+
+            if (empty($shipping_tax)) :
+                $shipping_tax = 0;
+            endif;
+            
+            if (empty($divisor)) :
+                $divisor = -1;
+            endif;
+            
+            //absolute order must be amount, rate, compound, display, shipping. This is how the original tax
+            // array is created, and order matters when calling array_implode as reversing
+            // the string back into the array depends on the order
+            $tax_amount['jigoshop_custom_rate']['amount'] = ($divisor > 0 ? ($total_tax - $shipping_tax) * $divisor : $total_tax - $shipping_tax);
+            $tax_rate = (empty($price_ex_tax) ? 0 : $total_tax / $price_ex_tax) * 100;
+            $tax_amount['jigoshop_custom_rate']['rate'] = number_format($tax_rate, 4, '.', '');
+            $tax_amount['jigoshop_custom_rate']['compound'] = false;
+            $tax_amount['jigoshop_custom_rate']['display'] = 'Tax';
+            $tax_amount['jigoshop_custom_rate']['shipping'] = ($divisor > 0 ? $shipping_tax * divisor : $shipping_tax);
+            
+            return self::array_implode($tax_amount);
+        endif;
+        
+        return '';
+    }
     /**
      * Converts the string back into the array. To be used with the order class
      *
@@ -405,7 +438,7 @@ class jigoshop_tax {
             endforeach;
 
             $this->tax_amounts = (empty($this->tax_amounts) ? $tax_amount : array_merge($this->tax_amounts, $tax_amount));
-            $this->imploded_tax_amounts = $this->array_implode($this->tax_amounts);
+            $this->imploded_tax_amounts = self::array_implode($this->tax_amounts);
         endif;
 
     }
@@ -493,7 +526,7 @@ class jigoshop_tax {
                     
             endif;
 
-            $this->imploded_tax_amounts = $this->array_implode($this->tax_amounts);
+            $this->imploded_tax_amounts = self::array_implode($this->tax_amounts);
         endif;
     }
     /**
@@ -855,7 +888,7 @@ class jigoshop_tax {
             
         endforeach;
         
-        $this->imploded_tax_amounts = $this->array_implode($this->tax_amounts);
+        $this->imploded_tax_amounts = self::array_implode($this->tax_amounts);
         
     }
 
