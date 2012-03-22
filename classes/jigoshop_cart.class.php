@@ -236,6 +236,7 @@ class jigoshop_cart extends jigoshop_singleton {
                 endforeach;
             endif;
             unset(self::$cart_contents[$cart_item]);
+            self::$cart_contents = array_values( self::$cart_contents );
         else :
             self::$cart_contents[$cart_item]['quantity'] = $quantity;
         endif;
@@ -305,8 +306,9 @@ class jigoshop_cart extends jigoshop_singleton {
     /** gets the url to remove an item from the cart */
     function get_remove_url($cart_item_key) {
         $cart_page_id = jigoshop_get_page_id('cart');
-        if ($cart_page_id)
+        if ($cart_page_id) {
             return apply_filters('jigoshop_get_remove_url', jigoshop::nonce_url( 'cart', add_query_arg('remove_item', $cart_item_key, get_permalink($cart_page_id))));
+        }
     }
 
     /** looks through the cart to see if shipping is actually required */
