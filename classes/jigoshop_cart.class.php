@@ -80,8 +80,9 @@ class jigoshop_cart extends jigoshop_singleton {
             self::$cart_contents = array();
         endif;
 
-        if (!is_array(self::$cart_contents))
+        if (!is_array(self::$cart_contents)) :
             self::$cart_contents = array();
+        endif;
     }
 
     /** sets the php session data for the cart and coupon */
@@ -248,6 +249,7 @@ class jigoshop_cart extends jigoshop_singleton {
      * @return   array	cart_contents
      */
     static function get_cart() {
+    	if ( empty( self::$cart_contents ) ) self::get_cart_from_session();
         return self::$cart_contents;
     }
 
