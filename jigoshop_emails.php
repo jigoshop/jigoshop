@@ -186,21 +186,24 @@ function jigoshop_pay_for_order_customer_notification($order_id) {
 
 function add_header_info($order) {
     
-    add_company_information();
-    
     echo '=====================================================================' . PHP_EOL;
-    echo __('ORDER #: ', 'jigoshop') . $order->id . ' Date: ' . date_i18n(get_option('date_format'), $order->order_date) . PHP_EOL;
+    add_company_information();
+    echo __('ORDER #: ', 'jigoshop') . $order->id . "\t\t" . ' Date: ' . date_i18n(get_option('date_format'), strtotime($order->order_date)) . PHP_EOL;
     echo '=====================================================================' . PHP_EOL;
     
 }
 
 function add_company_information() {
     
+    $add_eol = false;
+    
     if (get_option('jigoshop_company_name')) :
         echo get_option('jigoshop_company_name') . PHP_EOL;
+        $add_eol = true;
     endif;
     
     if (get_option('jigoshop_address_line1')) :
+        $add_eol = true;
         echo get_option('jigoshop_address_line1') . PHP_EOL;
         if (get_option('jigoshop_address_line2')) :
             echo get_option('jigoshop_address_line2') . PHP_EOL;
@@ -208,8 +211,11 @@ function add_company_information() {
     endif;
     
     if (get_option('jigoshop_company_email')) :
-        echo '<a href="mailto:' . get_option('jigoshop_company_email') . '">' . get_option('jigoshop_company_email') . '</a>' . PHP_EOL . PHP_EOL;
+        $add_eol = true;
+        echo '<a href="mailto:' . get_option('jigoshop_company_email') . '">' . get_option('jigoshop_company_email') . '</a>' . PHP_EOL;
     endif;
+    
+    if ($add_eol) echo PHP_EOL;
     
 }
 
