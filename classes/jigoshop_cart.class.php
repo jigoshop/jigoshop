@@ -525,7 +525,12 @@ class jigoshop_cart extends jigoshop_singleton {
                         // all tax classes for this product. get_applied_tax_classes will return all of the tax
                         // classes that have been applied on all products
                         foreach ($tax_classes_applied as $tax_class) :
-                            self::$price_per_tax_class_ex_tax[$tax_class] += ($_product->get_price_excluding_tax() * $values['quantity']);
+                            $price_ex_tax = $_product->get_price_excluding_tax() * $values['quantity'];
+                            if (isset(self::$price_per_tax_class_ex_tax[$tax_class])) :
+                                self::$price_per_tax_class_ex_tax[$tax_class] += $price_ex_tax;
+                            else :
+                                self::$price_per_tax_class_ex_tax[$tax_class] = $price_ex_tax;
+                            endif;
                         endforeach;
 
                     endif;
