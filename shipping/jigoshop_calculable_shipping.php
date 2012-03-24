@@ -74,7 +74,6 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
                     $rate = $this->retrieve_rate_from_response($xml_response);
                     
                     if ($this->has_error) :
-                        jigoshop_log('response from service: ', 'jigoshop_calculable_shipping');
                         jigoshop_log($xml_response, 'jigoshop_calculable_shipping');
                     endif;
 
@@ -115,7 +114,6 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
                 $services = $this->get_services_from_response($xml_response);
                 
                 if (empty($services)) :
-                    jigoshop_log('response from service: ', 'jigoshop_calculable_shipping');
                     jigoshop_log($xml_response, 'jigoshop_calculable_shipping');
                 endif;
 
