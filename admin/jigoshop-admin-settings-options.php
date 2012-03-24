@@ -176,6 +176,16 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
     array(
+		'name' => __('Company Phone','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Setting your company phone number will enable us to print it out on your invoice emails. Leave blank to disable.','jigoshop'),
+		'id' 		=> 'jigoshop_company_phone',
+		'css' 		=> 'width:300px;',
+		'type' 		=> 'text',
+		'std' 		=> ''
+	),
+
+    array(
 		'name' => __('Company Email','jigoshop'),
 		'desc' 		=> '',
 		'tip' 		=> __('Setting your company email will enable us to print it out on your invoice emails. Leave blank to disable.','jigoshop'),

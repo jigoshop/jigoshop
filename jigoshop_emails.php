@@ -220,6 +220,11 @@ function add_company_information() {
         endif;
     endif;
     
+    if (get_option('jigoshop_company_phone')) :
+        $add_eol = true;
+        echo get_option('jigoshop_company_phone') . PHP_EOL;
+    endif;
+    
     if (get_option('jigoshop_company_email')) :
         $add_eol = true;
         echo '<a href="mailto:' . get_option('jigoshop_company_email') . '">' . get_option('jigoshop_company_email') . '</a>' . PHP_EOL;
