@@ -176,8 +176,8 @@ class jigoshop_order {
 
             foreach ($this->get_tax_classes() as $tax_class) :
                 $order_tax += $this->order_tax[$tax_class]['amount'];
-                if (isset($this->order_tax[$tax_class]['shipping'])) :
-                    $order_tax += $this->order_tax[$tax_class]['shipping'];
+                if (isset($this->order_tax[$tax_class][$this->shipping_method])) :
+                    $order_tax += $this->order_tax[$tax_class][$this->shipping_method];
                 endif;
             endforeach;
 
@@ -201,8 +201,8 @@ class jigoshop_order {
 
     public function get_tax_amount($tax_class, $has_price = true) {
         $tax_amount = $this->order_tax[$tax_class]['amount'];
-        if (isset($this->order_tax[$tax_class]['shipping'])) :
-            $tax_amount += $this->order_tax[$tax_class]['shipping'];
+        if (isset($this->order_tax[$tax_class][$this->shipping_method])) :
+            $tax_amount += $this->order_tax[$tax_class][$this->shipping_method];
         endif;
         return ($has_price ? jigoshop_price($tax_amount) : $tax_amount);
     }
