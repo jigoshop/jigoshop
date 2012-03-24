@@ -31,6 +31,7 @@ class jigoshop_order {
 	/** Get the order if ID is passed, otherwise the order is new and empty */
 	function jigoshop_order( $id='' ) {
 		if ($id>0) apply_filters('jigoshop_get_order', $this->get_order( $id ), $id);
+        do_action('customized_emails_init'); /* load plugins for customized emails */
 	}
 
 	/** Gets an order from the database */
@@ -95,6 +96,9 @@ class jigoshop_order {
 		$this->order_tax 		= $this->get_order_tax_array('order_tax');
 		$this->order_shipping_tax	= (string) $this->get_value_from_data('order_shipping_tax');
 		$this->order_total 			= (string) $this->get_value_from_data('order_total');
+        
+        // array
+        $this->order_total_prices_per_tax_class_ex_tax = $this->get_value_from_data('order_total_prices_per_tax_class_ex_tax');
 
 		// Formatted Addresses
 		$formatted_address = array();
@@ -165,7 +169,7 @@ class jigoshop_order {
 	}
 
 	/** Gets shipping and product tax */
-	function get_total_tax() {
+	function get_total_tax($with_currency = false) {
         $order_tax = 0;
 
         if ($this->get_tax_classes() && is_array($this->get_tax_classes())) :
@@ -179,62 +183,71 @@ class jigoshop_order {
 
         endif;
 
-        return jigoshop_price($order_tax, array('with_currency' => false));
+        return jigoshop_price($order_tax, array('with_currency' => $with_currency));
 	}
 
-        public function get_tax_classes() {
+    public function get_tax_classes() {
 
-            return ($this->order_tax && is_array($this->order_tax) ? array_keys($this->order_tax) : array());
-        }
+        return ($this->order_tax && is_array($this->order_tax) ? array_keys($this->order_tax) : array());
+    }
 
-        public function tax_class_is_not_compound($tax_class) {
-            return !$this->order_tax[$tax_class]['compound'];
-        }
+    public function tax_class_is_not_compound($tax_class) {
+        return !$this->order_tax[$tax_class]['compound'];
+    }
 
-        public function get_tax_rate($tax_class) {
-            return $this->order_tax[$tax_class]['rate'];
-        }
+    public function get_tax_rate($tax_class) {
+        return $this->order_tax[$tax_class]['rate'];
+    }
 
-        public function get_tax_amount($tax_class, $has_price = true) {
-            $tax_amount = $this->order_tax[$tax_class]['amount'];
-            if (isset($this->order_tax[$tax_class]['shipping'])) :
-                $tax_amount += $this->order_tax[$tax_class]['shipping'];
-            endif;
-            return ($has_price ? jigoshop_price($tax_amount) : $tax_amount);
-        }
+    public function get_tax_amount($tax_class, $has_price = true) {
+        $tax_amount = $this->order_tax[$tax_class]['amount'];
+        if (isset($this->order_tax[$tax_class]['shipping'])) :
+            $tax_amount += $this->order_tax[$tax_class]['shipping'];
+        endif;
+        return ($has_price ? jigoshop_price($tax_amount) : $tax_amount);
+    }
 
-        public function get_tax_class_for_display($tax_class) {
-            return $this->order_tax[$tax_class]['display'];
-        }
-        
-        public function show_tax_entry($tax_class) {
-            return (($this->get_tax_amount($tax_class, false) > 0 && $this->get_tax_rate($tax_class) > 0) || $this->get_tax_rate($tax_class) == 0);
-        }
+    public function get_tax_class_for_display($tax_class) {
+        return $this->order_tax[$tax_class]['display'];
+    }
 
-        /** Gets subtotal */
+    public function show_tax_entry($tax_class) {
+        return (($this->get_tax_amount($tax_class, false) > 0 && $this->get_tax_rate($tax_class) > 0) || $this->get_tax_rate($tax_class) == 0);
+    }
+
+    public function get_price_ex_tax_for_tax_class($tax_class) {
+        return (isset($this->order_total_prices_per_tax_class_ex_tax[$tax_class]) ? jigoshop_price($this->order_total_prices_per_tax_class_ex_tax[$tax_class]) : jigoshop_price(0));
+    }
+    
+    /** Gets subtotal */
 	function get_subtotal_to_display() {
 
-
-			$subtotal = jigoshop_price($this->order_subtotal);
-
-			if ($this->order_tax>0) :
-				$subtotal .= __(' <small>(ex. tax)</small>', 'jigoshop');
-			endif;
+			
+        $subtotal = jigoshop_price($this->order_subtotal);
+            
+        if ($this->order_tax>0) :
+            $subtotal .= __(' <small>(ex. tax)</small>', 'jigoshop');
+        endif;
 
 		return $subtotal;
 	}
 
 	/** Gets shipping */
-	function get_shipping_to_display() {
+	function get_shipping_to_display($inc_tax = false) {
 
 		if ($this->order_shipping > 0) :
 
 				$shipping = jigoshop_price($this->order_shipping);
 				if ($this->order_shipping_tax > 0) : //tax applied to shipping
-					if ($this->shipping_service != NULL || $this->shipping_service) :
-						$shipping .= sprintf(__(' <small>(ex. tax) %s via %s</small>', 'jigoshop'), ucwords($this->shipping_service), ucwords($this->shipping_method_title));
+                    
+                    // inc tax used with norway emails
+                    $shipping = ($inc_tax ? jigoshop_price($this->order_shipping + $this->order_shipping_tax) : $shipping);
+                    $tax_tag = ($inc_tax ? '(inc. tax)' : '(ex. tax)');
+					
+                    if ($this->shipping_service != NULL || $this->shipping_service) :
+						$shipping .= sprintf(__(' <small>%s %s via %s</small>', 'jigoshop'), $tax_tag, ucwords($this->shipping_service), ucwords($this->shipping_method_title));
 					else :
-						$shipping .= sprintf(__(' <small>(ex. tax) via %s</small>', 'jigoshop'), ucwords($this->shipping_method_title));
+						$shipping .= sprintf(__(' <small>%s via %s</small>', 'jigoshop'), $tax_tag, ucwords($this->shipping_method_title));
 					endif;
 				else : // when no tax applied to shipping
                     if ($this->shipping_service != NULL || $this->shipping_service) :
@@ -265,9 +278,19 @@ class jigoshop_order {
 	}
 
 	/** Output items for display in emails */
-	function email_order_items_list( $show_download_links = false, $show_sku = false ) {
+	function email_order_items_list( $show_download_links = false, $show_sku = false, $price_inc_tax = false) {
 
 		$return = '';
+        
+        // validate if any item has cost less than 0. If that's the case, we can't use price including tax
+        $use_inc_tax = $price_inc_tax;
+        if ($price_inc_tax) :
+            
+            foreach ($this->items as $item) :
+                $use_inc_tax = ($item['cost_inc_tax'] >= 0);
+                if (!$use_inc_tax) break;
+            endforeach;
+        endif;
 
 		foreach($this->items as $item) :
 
@@ -281,7 +304,11 @@ class jigoshop_order {
 
 			endif;
 
-			$return .= ' - ' . html_entity_decode(strip_tags(jigoshop_price( $item['cost']*$item['qty'], array('ex_tax_label' => 1 ))), ENT_COMPAT, 'UTF-8');
+            if ($use_inc_tax && $item['cost_inc_tax'] >= 0) :
+                $return .= ' - ' . html_entity_decode(strip_tags(jigoshop_price( $item['cost_inc_tax']*$item['qty'], array('ex_tax_label' => 0 ))), ENT_COMPAT, 'UTF-8');
+            else :
+                $return .= ' - ' . html_entity_decode(strip_tags(jigoshop_price( $item['cost']*$item['qty'], array('ex_tax_label' => 1 ))), ENT_COMPAT, 'UTF-8');
+            endif;
 
 			if (isset($_product->variation_data)) :
 				$return .= PHP_EOL . jigoshop_get_formatted_variation( $item['variation'], true);

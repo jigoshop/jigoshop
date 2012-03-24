@@ -559,6 +559,7 @@ class jigoshop_checkout extends jigoshop_singleton {
                     $data['order_tax_divisor']      = jigoshop_cart::get_tax_divisor();
 					$data['order_shipping_tax']		= number_format(jigoshop_cart::$shipping_tax_total, 2, '.', '');
 					$data['order_total']			= jigoshop_cart::get_total(false);
+                    $data['order_total_prices_per_tax_class_ex_tax'] = jigoshop_cart::get_price_per_tax_class_ex_tax();
 
 					$applied_coupons = array();
 					foreach ( jigoshop_cart::$applied_coupons as $coupon ) :
@@ -576,6 +577,8 @@ class jigoshop_checkout extends jigoshop_singleton {
 						// Calc item tax to store
                                                 //TODO: need to change this so that the admin pages can use all tax data on the page
 						$rate = jigoshop_cart::get_total_tax_rate();
+                        
+                        $price_inc_tax = (get_option('jigoshop_calc_taxes') == 'yes' && get_option('jigoshop_prices_include_tax') == 'yes' ? $_product->get_price() : -1);
 
 						$order_items[] = apply_filters('new_order_item', array(
 					 		'id' 			=> $values['product_id'],
@@ -584,6 +587,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 					 		'name' 			=> $_product->get_title(),
 					 		'qty' 			=> (int) $values['quantity'],
 					 		'cost' 			=> $_product->get_price_excluding_tax(),
+                            'cost_inc_tax'  => $price_inc_tax, // if less than 0 don't use this
 					 		'taxrate' 		=> $rate
 					 	));
 
