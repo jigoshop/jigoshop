@@ -196,7 +196,7 @@ class jigoshop_order {
     }
 
     public function get_tax_rate($tax_class) {
-        return $this->order_tax[$tax_class]['rate'];
+        return (float)$this->order_tax[$tax_class]['rate'];
     }
 
     public function get_tax_amount($tax_class, $has_price = true) {
