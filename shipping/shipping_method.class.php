@@ -112,7 +112,6 @@ class jigoshop_shipping_method {
     	$this->shipping_total = 0;
     	$this->shipping_tax = 0;
         $this->tax = null;
-        jigoshop_session::instance()->chosen_shipping_method_id = '';
     }
 
     public function admin_options() {}

@@ -165,7 +165,7 @@ class jigoshop_shipping extends jigoshop_singleton {
             self::reset_shipping(); // do not reset session (chosen_shipping_method_id)
             $calc_cheapest = false;
 
-            if (isset( jigoshop_session::instance()->chosen_shipping_method_id)) :
+            if (!empty( jigoshop_session::instance()->chosen_shipping_method_id)) :
                 $chosen_method = jigoshop_session::instance()->chosen_shipping_method_id;
             else :
                 $chosen_method = '';
@@ -176,7 +176,7 @@ class jigoshop_shipping extends jigoshop_singleton {
 
             if (sizeof($_available_methods) > 0) :
 
-                if (isset( jigoshop_session::instance()->selected_rate_id )) :
+                if (!empty( jigoshop_session::instance()->selected_rate_id )) :
 
                     //make sure all methods are re-calculated since prices have been reset. Otherwise the other shipping
                     //method prices will show free
