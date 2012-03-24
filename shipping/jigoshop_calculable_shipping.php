@@ -72,6 +72,12 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
 
                     // sums up the rates from flattened array, and generates amounts.
                     $rate = $this->retrieve_rate_from_response($xml_response);
+                    
+                    if ($this->has_error) :
+                        jigoshop_log('response from service: ', 'jigoshop_calculable_shipping');
+                        jigoshop_log($xml_response, 'jigoshop_calculable_shipping');
+                    endif;
+
                     $rate += (empty($this->fee) ? 0 : $this->get_fee($this->fee, jigoshop_cart::$cart_contents_total_ex_dl));
 
                     $tax = 0;
@@ -107,6 +113,11 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
 
                 // services are obtained from response
                 $services = $this->get_services_from_response($xml_response);
+                
+                if (empty($services)) :
+                    jigoshop_log('response from service: ', 'jigoshop_calculable_shipping');
+                    jigoshop_log($xml_response, 'jigoshop_calculable_shipping');
+                endif;
 
                 foreach ($services as $current_service) :
                     $rate = $this->retrieve_rate_from_response($xml_response, $current_service);
