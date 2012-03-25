@@ -45,7 +45,7 @@ class jigoshop_tax {
      * @param array array the tax array to convert
      * @return string the array as string
      */
-    private static function array_implode($array) {
+    public static function array_implode($array) {
         $glue = ':';
         $internal_glue = '^';
         if (!is_array($array))
@@ -105,13 +105,14 @@ class jigoshop_tax {
             $tax_amount['jigoshop_custom_rate']['rate'] = number_format($tax_rate, 4, '.', '');
             $tax_amount['jigoshop_custom_rate']['compound'] = false;
             $tax_amount['jigoshop_custom_rate']['display'] = 'Tax';
-            $tax_amount['jigoshop_custom_rate']['shipping'] = ($divisor > 0 ? $shipping_tax * divisor : $shipping_tax);
+            $tax_amount['jigoshop_custom_rate']['shipping'] = ($divisor > 0 ? $shipping_tax * $divisor : $shipping_tax);
             
             return self::array_implode($tax_amount);
         endif;
         
         return '';
     }
+    
     /**
      * Converts the string back into the array. To be used with the order class
      *
@@ -137,7 +138,7 @@ class jigoshop_tax {
                             if (isset($info)) :
                                 $key_value = explode('^', $info);
                                 if ($key_value[0] == 'rate' || $key_value[0] == 'display' || $key_value[0] == 'compound') :
-                                    $tax_classes[$tax_class[0]][$key_value[0]] = (sizeof($key_value) > 1 ? $key_value[1] : '');
+                                    $tax_classes[$tax_class[0]][$key_value[0]] = (sizeof($key_value) > 1 ? ($key_value[0] == 'compound' && $key_value[1] == null ? false : $key_value[1]) : ($key_value[0] == 'compound' ? false : ''));
                                 else :
                                     $tax_classes[$tax_class[0]][$key_value[0]] = (sizeof($key_value) > 1 ? ($tax_divisor > 0 ? $key_value[1] / $tax_divisor : $key_value[1]) : '');
                                 endif;

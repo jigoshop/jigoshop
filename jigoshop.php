@@ -42,7 +42,7 @@
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
-if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1202280);
+if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1203310);
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 // Override default translations with custom .mo's found in wp-content/languages/jigoshop
