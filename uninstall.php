@@ -44,5 +44,9 @@ $wpdb->query("DROP TABLE IF EXISTS ".$wpdb->prefix."jigoshop_attribute_taxonomie
 $wpdb->query("DROP TABLE IF EXISTS ".$wpdb->prefix."jigoshop_downloadable_product_permissions");
 $wpdb->query("DROP TABLE IF EXISTS ".$wpdb->prefix."jigoshop_termmeta");
 
+// Order Status
+$wpdb->query("DELETE FROM $wpdb->terms WHERE term_id IN (select term_id FROM $wpdb->term_taxonomy WHERE taxonomy IN ('product_type', 'shop_order_status'))");
+$wpdb->query("DELETE FROM $wpdb->term_taxonomy WHERE taxonomy = 'shop_order_status'");
+
 // Delete options
-$wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE 'jigoshop_%';");
+$wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE 'jigoshop_%'");
