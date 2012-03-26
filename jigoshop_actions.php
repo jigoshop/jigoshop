@@ -141,7 +141,7 @@ add_action( 'init', 'jigoshop_update_cart_action' );
 function jigoshop_update_cart_action() {
 
 	// Remove from cart
-	if ( isset($_GET['remove_item']) && is_numeric($_GET['remove_item'])  && jigoshop::verify_nonce('cart')) :
+	if ( isset($_GET['remove_item']) && $_GET['remove_item']  && jigoshop::verify_nonce('cart')) :
 
 		jigoshop_cart::set_quantity( $_GET['remove_item'], 0 );
 
