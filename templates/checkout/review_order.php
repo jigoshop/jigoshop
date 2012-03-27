@@ -84,9 +84,23 @@
                         if ($_product instanceof jigoshop_product_variation && is_array($values['variation'])) {
                             $variation = jigoshop_get_formatted_variation($values['variation']);
                         }
+						
+						$customization = '';
+						$custom_products = (array) jigoshop_session::instance()->customized_products;
+						
+						if ( isset( $custom_products[$_product->ID] ) ) :
+							$custom = $custom_products[$_product->ID];
+							$label = apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') );
+							$customization = '<dl class="customization">';
+							$customization = '<dt class="customized_product_label">';
+							$customization .= $label . '</dt>';
+							$customization .= '<dd class="customized_product">';
+							$customization .= $custom . '</dd></dl>';
+						endif;
+
                         echo '
                             <tr>
-                                <td class="product-name">' . $_product->get_title() . $variation . '</td>
+                                <td class="product-name">' . $_product->get_title() . $variation . $customization . '</td>
 								<td>' . $values['quantity'] . '</td>
 								<td>' . jigoshop_price($_product->get_price_excluding_tax() * $values['quantity'], array('ex_tax_label' => 1)) . '</td>
 							</tr>';

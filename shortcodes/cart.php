@@ -139,7 +139,10 @@ function jigoshop_cart($atts) {
 										$custom = isset( $custom_products[$_product->ID] ) ? $custom_products[$_product->ID] : '';
 										if ( isset( $custom_products[$_product->ID] ) ) :
 											?>
-											<span class="jigoshop_product_customization_label"><strong><?php echo apply_filters('customized_product_label', __('Personal: ','jigoshop') ); ?></strong></span><span class="customized_product"><?php echo esc_textarea( $custom ); ?></span>
+											<dl class="customization">
+												<dt class="customized_product_label"><?php echo apply_filters('jigoshop_customized_product_label', __('Personal: ','jigoshop') ); ?></dt>
+												<dd class="customized_product"><?php echo esc_textarea( $custom ); ?></dd>
+											</dl>
 											<?php
 										endif;
                                     ?>
