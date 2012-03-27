@@ -578,13 +578,20 @@ class jigoshop_checkout extends jigoshop_singleton {
 						$_product = $values['data'];
 
 						// Calc item tax to store
-                                                //TODO: need to change this so that the admin pages can use all tax data on the page
+                        //TODO: need to change this so that the admin pages can use all tax data on the page
 						$rate = jigoshop_cart::get_total_tax_rate();
-
+						
+						$custom_products = (array) jigoshop_session::instance()->customized_products;
+						$custom = '';
+						if ( isset( $custom_products[$values['product_id'] ) ) :
+							$custom = $custom_products[$values['product_id']];
+						endif;
+						
 						$order_items[] = apply_filters('new_order_item', array(
 					 		'id' 			=> $values['product_id'],
 					 		'variation_id' 	=> $values['variation_id'],
                             'variation'     => $values['variation'],
+                            'customization' => $custom,
 					 		'name' 			=> $_product->get_title(),
 					 		'qty' 			=> (int) $values['quantity'],
 					 		'cost' 			=> $_product->get_price_excluding_tax(),
