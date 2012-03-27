@@ -534,6 +534,20 @@ if (!function_exists('jigoshop_product_reviews_tab')) {
 
 	}
 }
+if (!function_exists('jigoshop_product_customize_tab')) {
+	function jigoshop_product_customize_tab( $current_tab ) {
+
+		global $_product;
+		
+		if ( get_post_meta( $_product->ID , 'customizable', true ) == 'yes' ) {
+			?>
+			<li <?php if ($current_tab=='#tab-customize') echo 'class="active"'; ?>><a href="#tab-customize"><?php _e('Customize Product', 'jigoshop'); ?></a></li>
+			<?php
+			
+		}
+
+	}
+}
 
 /**
  * Product page tab panels
@@ -562,7 +576,47 @@ if (!function_exists('jigoshop_product_reviews_panel')) {
 		echo '</div>';
 	}
 }
+if (!function_exists('jigoshop_product_customize_panel')) {
+	function jigoshop_product_customize_panel() {
+		global $_product;
 
+		if ( get_post_meta( $_product->ID , 'customizable', true ) == 'yes' ) :
+			echo '<div class="panel" id="tab-customize">';
+			echo '<h2>' . apply_filters('jigoshop_product_customize_heading', __('Enter your personal information as you want it to appear on the product', 'jigoshop')) . '</h2>';
+
+			if ( isset( $_POST['Submit'] ) && $_POST['Submit'] == 'Add Personalization' ) {
+				$custom_products = (array) jigoshop_session::instance()->customized_products;
+				$custom_products[$_POST['customized_id']] = jigowatt_clean( $_POST['jigoshop_customized_product'] );
+				jigoshop_session::instance()->customized_products = $custom_products;
+			}
+			?>
+
+				<form action="" method="post">
+					
+					<input type="hidden" name="customized_id" value="<?php echo $_product->ID; ?>" />
+					
+					<?php
+						$custom_products = (array) jigoshop_session::instance()->customized_products;
+						$custom = isset( $custom_products[$_product->ID] ) ? $custom_products[$_product->ID] : '';
+					?>
+					
+					<textarea
+						id="jigoshop_customized_product"
+						name="jigoshop_customized_product"
+						cols="60"
+						rows="4"><?php echo esc_textarea( $custom ); ?></textarea>
+							
+					<p class="submit"><input name="Submit" type="submit" class="button-primary add_personalization" value="<?php _e( "Add Personalization", 'jigoshop' ); ?>" /></p>
+						
+					<!--p class="submit"><a href="#customize_form" class="inline show_customize_form button"><?php _e( "Add Personalization", 'jigoshop' ); ?></a></p-->
+				
+				</form>
+				
+			<?php
+			echo '</div>';
+		endif;
+	}
+}
 
 
 /**
