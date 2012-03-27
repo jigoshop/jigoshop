@@ -120,7 +120,7 @@ function jigoshop_cart($atts) {
                             <tr>
                                 <td class="product-remove"><a href="<?php echo esc_url( jigoshop_cart::get_remove_url($cart_item_key) ); ?>" class="remove" title="<?php echo esc_attr( __('Remove this item.', 'jigoshop') ); ?>">&times;</a></td>
                                 <td class="product-thumbnail"><a href="<?php echo esc_url( apply_filters('jigoshop_product_url_display_in_cart', get_permalink($values['product_id']), $values['product_id']) ); ?>">
-                                        <?php
+                                    <?php
                                         if ($values['variation_id'] && has_post_thumbnail($values['variation_id'])) {
                                             echo get_the_post_thumbnail($values['variation_id'], 'shop_tiny');
                                         } else if (has_post_thumbnail($values['product_id'])) {
@@ -128,13 +128,21 @@ function jigoshop_cart($atts) {
                                         } else {
                                             echo '<img src="' . jigoshop::assets_url() . '/assets/images/placeholder.png" alt="Placeholder" width="' . jigoshop::get_var('shop_tiny_w') . '" height="' . jigoshop::get_var('shop_tiny_h') . '" />';
                                         }
-                                        ?>
-
-                                    </a></td>
+                                    ?></a>
+                                </td>
 
                                 <td class="product-name">
                                     <a href="<?php echo esc_url( apply_filters('jigoshop_product_url_display_in_cart', get_permalink($values['product_id']), $values['product_id']) ); ?>"><?php echo apply_filters('jigoshop_cart_product_title', $_product->get_title(), $_product); ?></a>
                                     <?php echo $additional_description; ?>
+                                    <?php
+										$custom_products = (array) jigoshop_session::instance()->customized_products;
+										$custom = isset( $custom_products[$_product->ID] ) ? $custom_products[$_product->ID] : '';
+										if ( isset( $custom_products[$_product->ID] ) ) :
+											?>
+											<span class="jigoshop_product_customization_label"><strong><?php echo apply_filters('customized_product_label', __('Personal: ','jigoshop') ); ?></strong></span><span class="customized_product"><?php echo esc_textarea( $custom ); ?></span>
+											<?php
+										endif;
+                                    ?>
                                 </td>
                                 <td class="product-price"><?php echo jigoshop_price($_product->get_price()); ?></td>
                                 <td class="product-quantity">

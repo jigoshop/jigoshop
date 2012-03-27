@@ -541,7 +541,7 @@ if (!function_exists('jigoshop_product_customize_tab')) {
 		
 		if ( get_post_meta( $_product->ID , 'customizable', true ) == 'yes' ) {
 			?>
-			<li <?php if ($current_tab=='#tab-customize') echo 'class="active"'; ?>><a href="#tab-customize"><?php _e('Customize Product', 'jigoshop'); ?></a></li>
+			<li <?php if ($current_tab=='#tab-customize') echo 'class="active"'; ?>><a href="#tab-customize"><?php _e('Personalize', 'jigoshop'); ?></a></li>
 			<?php
 			
 		}
@@ -584,7 +584,7 @@ if (!function_exists('jigoshop_product_customize_panel')) {
 			echo '<div class="panel" id="tab-customize">';
 			echo '<h2>' . apply_filters('jigoshop_product_customize_heading', __('Enter your personal information as you want it to appear on the product', 'jigoshop')) . '</h2>';
 
-			if ( isset( $_POST['Submit'] ) && $_POST['Submit'] == 'Add Personalization' ) {
+			if ( isset( $_POST['Submit'] ) && $_POST['Submit'] == 'Save Personalization' ) {
 				$custom_products = (array) jigoshop_session::instance()->customized_products;
 				$custom_products[$_POST['customized_id']] = jigowatt_clean( $_POST['jigoshop_customized_product'] );
 				jigoshop_session::instance()->customized_products = $custom_products;
@@ -606,7 +606,7 @@ if (!function_exists('jigoshop_product_customize_panel')) {
 						cols="60"
 						rows="4"><?php echo esc_textarea( $custom ); ?></textarea>
 							
-					<p class="submit"><input name="Submit" type="submit" class="button-primary add_personalization" value="<?php _e( "Add Personalization", 'jigoshop' ); ?>" /></p>
+					<p class="submit"><input name="Submit" type="submit" class="button-primary add_personalization" value="<?php _e( "Save Personalization", 'jigoshop' ); ?>" /></p>
 						
 					<!--p class="submit"><a href="#customize_form" class="inline show_customize_form button"><?php _e( "Add Personalization", 'jigoshop' ); ?></a></p-->
 				
