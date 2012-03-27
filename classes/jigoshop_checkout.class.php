@@ -585,6 +585,8 @@ class jigoshop_checkout extends jigoshop_singleton {
 						$custom = '';
 						if ( isset( $custom_products[$values['product_id']] ) ) :
 							$custom = $custom_products[$values['product_id']];
+							unset( $custom_products[$values['product_id']] );
+							jigoshop_session::instance()->customized_products = $custom_products;
 						endif;
 						
 						$order_items[] = apply_filters('new_order_item', array(
