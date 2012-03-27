@@ -967,10 +967,11 @@ class jigoshop_cart extends jigoshop_singleton {
                     $name = jigoshop_product::attribute_label('pa_'.$name);
                 endif;
 
+
                 if ($flat) :
-                    $varation_list[] = $name.': '.$value;
+                    $variation_list[] = $name.': '.$value;
                 else :
-                    $varation_list[] = '<dt>'.$name.':</dt><dd>'.$value.'</dd>';
+                    $variation_list[] = '<dt>'.$name.':</dt><dd>'.$value.'</dd>';
                 endif;
                 
             endforeach;
