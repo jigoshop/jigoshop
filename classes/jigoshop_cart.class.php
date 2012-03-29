@@ -70,7 +70,6 @@ class jigoshop_cart extends jigoshop_singleton {
                         'variation_id'  => $values['variation_id'],
                         'variation'     => $values['variation'],
                         'quantity'      => $values['quantity'],
-                        'price_ex_tax'  => $values['price_ex_tax'],
                         'data'          => $values['data']
                     );
 
@@ -193,16 +192,11 @@ class jigoshop_cart extends jigoshop_singleton {
         } else {//othervise add new product to the cart
             $cart_item_key = sizeof(self::$cart_contents);
             
-            // used to order cart products when applying coupon to whole cart
-            // and option set to apply coupon before tax
-            $product_price_before_tax = $product->get_price_excluding_tax();
-
             self::$cart_contents[$cart_item_key] = array(
             'product_id' => $product_id,
             'variation_id' => $variation_id,
             'variation' => $variation,
             'quantity' => (int) $quantity,
-            'price_ex_tax' => $product_price_before_tax, //TODO: do we really need this?
             'data' => $product);
         }
 
@@ -409,7 +403,7 @@ class jigoshop_cart extends jigoshop_singleton {
                 $_product = $values['data'];
                 if ($_product->exists()) :
                     $items_in_cart += $values['quantity'];
-                    $total_cart_price_ex_tax += $values['price_ex_tax'] * $values['quantity'];
+                    $total_cart_price_ex_tax += $_product->get_price_excluding_tax($values['quantity']);
                 endif;
             endforeach;
 
