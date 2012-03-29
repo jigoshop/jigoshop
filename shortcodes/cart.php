@@ -137,7 +137,7 @@ function jigoshop_cart($atts) {
                                     <?php
 										$custom_products = (array) jigoshop_session::instance()->customized_products;
 										$custom = isset( $custom_products[$_product->ID] ) ? $custom_products[$_product->ID] : '';
-										if ( isset( $custom_products[$_product->ID] ) ) :
+										if ( ! empty( $custom_products[$_product->ID] ) ) :
 											?>
 											<dl class="customization">
 												<dt class="customized_product_label"><?php echo apply_filters('jigoshop_customized_product_label', __('Personal: ','jigoshop') ); ?></dt>

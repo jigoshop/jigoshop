@@ -583,7 +583,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 						
 						$custom_products = (array) jigoshop_session::instance()->customized_products;
 						$custom = '';
-						if ( isset( $custom_products[$values['product_id']] ) ) :
+						if ( ! empty( $custom_products[$values['product_id']] ) ) :
 							$custom = $custom_products[$values['product_id']];
 							unset( $custom_products[$values['product_id']] );
 							jigoshop_session::instance()->customized_products = $custom_products;

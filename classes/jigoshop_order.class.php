@@ -280,7 +280,7 @@ class jigoshop_order {
 				$return .= PHP_EOL . jigoshop_get_formatted_variation( $item['variation'], true);
 			endif;
 			
-			if ( isset( $item['customization'] ) ) :
+			if ( ! empty( $item['customization'] ) ) :
 				$return .= PHP_EOL . apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') ) . $item['customization'];
 			endif;
 			

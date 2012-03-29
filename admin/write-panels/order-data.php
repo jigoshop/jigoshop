@@ -215,7 +215,7 @@ function jigoshop_order_items_meta_box($post) {
 						<td class="product-sku"><?php if ($_product->sku) echo $_product->sku; ?></td>
 						<td class="name"><a href="<?php echo esc_url( admin_url('post.php?post='. $_product->id .'&action=edit') ); ?>"><?php echo $item['name']; ?></a>
 							<?php
-								if ( isset( $item['customization'] ) ) :
+								if ( ! empty( $item['customization'] ) ) :
 									
 									$custom = $item['customization'];
 									$label = apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') );

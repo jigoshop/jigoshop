@@ -88,7 +88,7 @@
 						$customization = '';
 						$custom_products = (array) jigoshop_session::instance()->customized_products;
 						
-						if ( isset( $custom_products[$_product->ID] ) ) :
+						if ( ! empty( $custom_products[$_product->ID] ) ) :
 							$custom = $custom_products[$_product->ID];
 							$label = apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') );
 							$customization = '<dl class="customization">';
