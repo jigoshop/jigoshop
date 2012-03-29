@@ -215,7 +215,6 @@ class paypal extends jigoshop_payment_gateway {
             $paypal_args['tax_cart']			= $order->get_total_tax();
         endif;
 
-
 		if ($this->send_shipping=='yes') :
 			$paypal_args['no_shipping'] = 0;
 			$paypal_args['address_override'] = 1;

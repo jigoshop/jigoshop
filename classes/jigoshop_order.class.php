@@ -307,7 +307,7 @@ class jigoshop_order {
             if ($use_inc_tax && $item['cost_inc_tax'] >= 0) :
                 $return .= ' - ' . html_entity_decode(strip_tags(jigoshop_price( $item['cost_inc_tax']*$item['qty'], array('ex_tax_label' => 0 ))), ENT_COMPAT, 'UTF-8');
             else :
-                $return .= ' - ' . html_entity_decode(strip_tags(jigoshop_price( $item['cost']*$item['qty'], array('ex_tax_label' => 1 ))), ENT_COMPAT, 'UTF-8');
+                $return .= ' - ' . html_entity_decode(strip_tags(jigoshop_price( $item['cost'], array('ex_tax_label' => 1 ))), ENT_COMPAT, 'UTF-8');
             endif;
 
 			if (isset($_product->variation_data)) :
