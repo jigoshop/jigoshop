@@ -283,9 +283,10 @@ class jigoshop_tax {
      */
     public function get_tax_classes_for_customer() {
         $country = jigoshop_customer::get_shipping_country();
+        $base_country = jigoshop_countries::get_base_country();
 
         // just make sure the customer can be charged taxes in the first place
-        if ($country != jigoshop_countries::get_base_country()) return array();
+        if ((jigoshop_countries::is_eu_country($base_country) && !jigoshop_countries::is_eu_country($country)) || $country != $base_country) return array();
 
         $state = (jigoshop_customer::get_shipping_state() && jigoshop_countries::country_has_states($country)? jigoshop_customer::get_shipping_state() : '*');
         $tax_classes = (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state] : false);

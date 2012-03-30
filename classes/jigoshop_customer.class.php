@@ -72,6 +72,8 @@ class jigoshop_customer extends jigoshop_singleton {
                 if ( $shopcountry === self::get_shipping_country() && $shopstate !== self::get_shipping_state() ) :
                     $outside = true;
                 endif;
+            elseif (jigoshop_countries::is_eu_country(jigoshop_countries::get_base_country())) :
+                $outside = !jigoshop_countries::is_eu_country(self::get_shipping_country());
             endif;
 		endif;
 		return $outside;
