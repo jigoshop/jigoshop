@@ -313,7 +313,11 @@ class jigoshop_order {
 			if (isset($_product->variation_data)) :
 				$return .= PHP_EOL . jigoshop_get_formatted_variation( $item['variation'], true);
 			endif;
-
+			
+			if ( ! empty( $item['customization'] ) ) :
+				$return .= PHP_EOL . apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') ) . $item['customization'];
+			endif;
+			
 			if ($show_download_links) :
 
 				if ($_product->exists) :
