@@ -98,7 +98,6 @@ class flat_rate extends jigoshop_shipping_method {
 		        </select>
 	        </td>
 	    </tr>
-	    <?php $_tax = new jigoshop_tax(); ?>
 	    <tr>
 	        <td class="titledesc"><?php _e('Tax Status', 'jigoshop') ?>:</td>
 	        <td class="forminp">

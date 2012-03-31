@@ -24,6 +24,7 @@ class jigoshop_tax {
     private $imploded_tax_amounts;
     private $tax_divisor;
     private $shipping_tax_class;
+    private $shipable;
 
     /**
      * sets up current tax class without a divisor. May or may not have
@@ -37,6 +38,7 @@ class jigoshop_tax {
         $this->tax_amounts = array();
         $this->imploded_tax_amounts = '';
         $this->shipping_tax_class = '';
+        $this->shipable = true; // default to true, as most shops will use shipping
     }
 
     /**
@@ -277,7 +279,7 @@ class jigoshop_tax {
      */
     private function charge_taxes_to_customer() {
 
-        $country = jigoshop_customer::get_shipping_country();
+        $country = ($this->shipable ? jigoshop_customer::get_shipping_country() : jigoshop_customer::get_country());
         $base_country = jigoshop_countries::get_base_country();
         
         if (jigoshop_countries::is_eu_country($base_country)) :
@@ -295,22 +297,23 @@ class jigoshop_tax {
      * country and state.
      * @return type array of tax classes
      */
-    public function get_tax_classes_for_customer() {
-        $country = jigoshop_customer::get_shipping_country();
-        $base_country = jigoshop_countries::get_base_country();
-
+    private function get_tax_classes_for_customer() {
+        $country = ($this->shipable ? jigoshop_customer::get_shipping_country : jigoshop_customer::get_country());
+        $state = ($this->shipable ? jigoshop_customer::get_shipping_state() : jigoshop_customer::get_state());
+        
         if (!$this->charge_taxes_to_customer()) return array();
         
-        $state = (jigoshop_customer::get_shipping_state() && jigoshop_countries::country_has_states($country)? jigoshop_customer::get_shipping_state() : '*');
+        $state = ($state && jigoshop_countries::country_has_states($country)? $state : '*');
         $tax_classes = (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state] : false);
         return ($tax_classes && is_array($tax_classes) ? array_keys( $tax_classes ) : array());
 
     }
 
     private function get_online_label_for_customer($class = '*') {
-        $country = jigoshop_customer::get_shipping_country();
+        $country = ($this->shipable ? jigoshop_customer::get_shipping_country() : jigoshop_customer::get_country());
+        $state = ($this->shipable ? jigoshop_customer::get_shipping_state() : jigoshop_customer::get_state());
 
-        $state = (jigoshop_countries::country_has_states($country) && jigoshop_customer::get_shipping_state() ? jigoshop_customer::get_shipping_state() : '*');
+        $state = (jigoshop_countries::country_has_states($country) && $state ? $state : '*');
 
         return (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state][$class]['label'] : 'Tax');
     }
@@ -370,6 +373,16 @@ class jigoshop_tax {
         
         return $tax_amount;
         
+    }
+    
+    /**
+     * sets whether the product being taxed is shipable or not
+     * @param boolean $is_shipable 
+     * @since 1.2
+     */
+    public function set_is_shipable($is_shipable = true) {
+    
+        $this->shipable = $is_shipable;
     }
 
     public function get_total_shipping_tax_amount() {
@@ -668,11 +681,12 @@ class jigoshop_tax {
      * @return  mixed return current rate array if rate_only is false, otherwise
      * return the double value of the rate
      */
-    function get_rate($tax_class = '*', $rate_only = true) {
+    private function get_rate($tax_class = '*', $rate_only = true) {
 
-        $country = jigoshop_customer::get_shipping_country();
+        $country = ($this->shipable ? jigoshop_customer::get_shipping_country() : jigoshop_customer::get_country());
+        $state = ($this->shipable ? jigoshop_customer::get_shipping_state() : jigoshop_customer::get_state());
 
-        $state = (jigoshop_countries::country_has_states($country) && jigoshop_customer::get_shipping_state() ? jigoshop_customer::get_shipping_state() : '*');
+        $state = (jigoshop_countries::country_has_states($country) && $state ? $state : '*');
         $rate = $this->find_rate($country, $state, $tax_class);
         return ($rate_only ? $rate['rate'] : $rate);
 

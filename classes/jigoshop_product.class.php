@@ -236,10 +236,7 @@ class jigoshop_product {
 	 */
 	public function requires_shipping() {
 		// If it's virtual or downloadable dont require shipping
-		if ( $this->is_type( array('downloadable', 'virtual') ) )
-			return false;
-
-		return true;
+		return (!($this->is_type( array('downloadable', 'virtual'))));
 	}
 	/**
 	 * Checks the product type
@@ -284,7 +281,7 @@ class jigoshop_product {
 	public function is_taxable() {
 		return ( $this->tax_status == 'taxable' );
 	}
-
+    
 	/**
 	 * Returns whether or not the product shipping is taxable
 	 *

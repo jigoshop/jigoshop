@@ -318,8 +318,9 @@ class jigoshop_cart extends jigoshop_singleton {
 
         foreach (self::$cart_contents as $cart_item_key => $values) :
             $_product = $values['data'];
-            if ($_product->is_type('simple') || $_product->is_type('variable')) :
+            if ($_product->requires_shipping()) :
                 $needs_shipping = true;
+                break; // once we know it's required, stop looping. We could have a mixture of non-shipping and shipping items
             endif;
         endforeach;
 
@@ -492,7 +493,9 @@ class jigoshop_cart extends jigoshop_singleton {
                     
                     $tax_classes_applied = array();
                     if ($_product->is_taxable()) :
-
+                        
+                        self::$tax->set_is_shipable(jigoshop_shipping::is_enabled() && $_product->requires_shipping());
+                        
                         if (get_option('jigoshop_prices_include_tax') == 'yes' && jigoshop_customer::is_customer_shipping_outside_base() && (get_option('jigoshop_enable_shipping_calc')=='yes' ||  (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT ))) :
 
                             $total_item_price = $_product->get_price_excluding_tax($values['quantity']) * 100;

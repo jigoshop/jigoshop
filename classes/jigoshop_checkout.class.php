@@ -513,9 +513,6 @@ class jigoshop_checkout extends jigoshop_singleton {
 					endif;
 
 					// Create Order (send cart variable so we can record items and reduce inventory). Only create if this is a new order, not if the payment was rejected last time.
-
-					$_tax = new jigoshop_tax();
-
 					$order_data = array(
 						'post_type' => 'shop_order',
 						'post_title' => 'Order &ndash; '.date('F j, Y @ h:i A'),
