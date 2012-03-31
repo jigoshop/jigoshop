@@ -132,7 +132,69 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 			'yes' => __('Yes', 'jigoshop')
 		)
 	),
+    
+    array( 'name' => __('Invoicing', 'jigoshop'), 'type' => 'title', 'desc'             => '' ),
+    
+    array(
+		'name' => __('Company Name','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Setting your company name will enable us to print it out on your invoice emails. Leave blank to disable.','jigoshop'),
+		'id' 		=> 'jigoshop_company_name',
+		'css' 		=> 'width:300px;',
+		'type' 		=> 'text',
+		'std' 		=> ''
+	),
 
+    array(
+		'name' => __('Tax Registration Number','jigoshop'),
+		'desc' 		=> 'Add your tax registration label before the registration number and it will be printed as well. eg. <code>VAT Number: 88888888</code>',
+		'tip' 		=> __('Setting your tax number will enable us to print it out on your invoice emails. Leave blank to disable.','jigoshop'),
+		'id' 		=> 'jigoshop_tax_number',
+		'css' 		=> 'width:300px;',
+		'type' 		=> 'text',
+		'std' 		=> ''
+	),
+
+    array(
+		'name' => __('Address Line1','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Setting your address will enable us to print it out on your invoice emails. Leave blank to disable.','jigoshop'),
+		'id' 		=> 'jigoshop_address_line1',
+		'css' 		=> 'width:300px;',
+		'type' 		=> 'text',
+		'std' 		=> ''
+	),
+
+    array(
+		'name' => __('Address Line2','jigoshop'),
+		'desc' 		=> '',
+        'tip'       => __('If address line1 is not set, address line2 will not display even if you put a value in it. Setting your address will enable us to print it out on your invoice emails. Leave blank to disable.','jigoshop'),
+		'id' 		=> 'jigoshop_address_line2',
+		'css' 		=> 'width:300px;',
+		'type' 		=> 'text',
+		'std' 		=> ''
+	),
+
+    array(
+		'name' => __('Company Phone','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Setting your company phone number will enable us to print it out on your invoice emails. Leave blank to disable.','jigoshop'),
+		'id' 		=> 'jigoshop_company_phone',
+		'css' 		=> 'width:300px;',
+		'type' 		=> 'text',
+		'std' 		=> ''
+	),
+
+    array(
+		'name' => __('Company Email','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Setting your company email will enable us to print it out on your invoice emails. Leave blank to disable.','jigoshop'),
+		'id' 		=> 'jigoshop_company_email',
+		'css' 		=> 'width:300px;',
+		'type' 		=> 'text',
+		'std' 		=> ''
+	),
+    
 	array( 'name' => __('Checkout page', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
 
 	array(

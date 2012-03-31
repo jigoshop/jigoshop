@@ -46,39 +46,28 @@ class flat_rate extends jigoshop_shipping_method {
 
 			if ( get_option('jigoshop_calc_taxes')=='yes' && $this->tax_status=='taxable' ) :
 
-				$rate = $_tax->get_shipping_tax_rate();
-				if ($rate>0) :
-					$tax_amount = $_tax->calc_shipping_tax( $this->shipping_total, $rate );
-
-					$this->shipping_tax = $this->shipping_tax + $tax_amount;
-				endif;
+                $_tax->calculate_shipping_tax( $this->shipping_total, $this->id );
+                $this->shipping_tax = $_tax->get_total_shipping_tax_amount();
+				
 			endif;
 		else :
 			// Shipping per item
-			if (sizeof(jigoshop_cart::$cart_contents)>0) : foreach (jigoshop_cart::$cart_contents as $item_id => $values) :
-				$_product = $values['data'];
-				if ($_product->exists() && $values['quantity']>0 && $_product->product_type <> 'downloadable') :
+            if (sizeof(jigoshop_cart::$cart_contents)>0) : 
+                foreach (jigoshop_cart::$cart_contents as $item_id => $values) :
+                    $_product = $values['data'];
+                    if ($_product->exists() && $values['quantity']>0 && $_product->product_type <> 'downloadable') :
 
-					$item_shipping_price = ($this->cost + $this->get_fee( $this->fee, $_product->get_price() )) * $values['quantity'];
+                        $item_shipping_price = ($this->cost + $this->get_fee( $this->fee, $_product->get_price() )) * $values['quantity'];
+                        $this->shipping_total = $this->shipping_total + $item_shipping_price;
 
-					$this->shipping_total = $this->shipping_total + $item_shipping_price;
+                        if ( $_product->is_shipping_taxable() && $this->tax_status=='taxable' ) :
+                            $_tax->calculate_shipping_tax( $item_shipping_price, $this->id, $_product->get_tax_classes() );
+                        endif;
 
-					if ( $_product->is_shipping_taxable() && $this->tax_status=='taxable' ) :
-
-						$rate = $_tax->get_shipping_tax_rate( $_product->data['tax_class'] );
-
-						if ($rate>0) :
-
-							$tax_amount = $_tax->calc_shipping_tax( $item_shipping_price, $rate );
-
-							$this->shipping_tax = $this->shipping_tax + $tax_amount;
-
-						endif;
-
-					endif;
-
-				endif;
-			endforeach; endif;
+                    endif;
+                endforeach;
+                $this->shipping_tax = $_tax->get_total_shipping_tax_amount();
+            endif;
 		endif;
     }
 

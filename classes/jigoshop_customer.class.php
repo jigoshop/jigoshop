@@ -59,12 +59,13 @@ class jigoshop_customer extends jigoshop_singleton {
         // country until customer sets the shipping country.
 		if ( $shipping_country ) :
 
+            $shopcountry = jigoshop_countries::get_base_country();
             // only check if it's a country with states. Otherwise always return false, as
             // we don't care about calculating taxes for a customer outside of the base
             // country.
            if (jigoshop_countries::country_has_states($shipping_country)) :
 
-                $shopcountry = jigoshop_countries::get_base_country();
+                
                 $shopstate = jigoshop_countries::get_base_state();
 
                 // taxes only apply if the customer is shipping in the same country. If the customer is
@@ -72,6 +73,10 @@ class jigoshop_customer extends jigoshop_singleton {
                 if ( $shopcountry === self::get_shipping_country() && $shopstate !== self::get_shipping_state() ) :
                     $outside = true;
                 endif;
+            elseif (jigoshop_countries::is_eu_country($shopcountry) && $shopcountry != self::get_shipping_country()) :
+                
+                // if both base country and shipping country are in the EU, then outside shipping base is true
+                $outside = jigoshop_countries::is_eu_country(self::get_shipping_country());
             endif;
 		endif;
 		return $outside;

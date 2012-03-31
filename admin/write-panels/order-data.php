@@ -380,7 +380,7 @@ function jigoshop_order_totals_meta_box($post) {
 
 		<li class="right">
 			<label><?php _e('Tax:', 'jigoshop'); ?></label>
-			<input type="text" id="order_tax" name="order_tax" placeholder="0.00" value="<?php echo esc_attr( $_order->get_total_tax() ); ?>" class="first" />
+			<input type="text" id="order_tax" name="order_tax_total" placeholder="0.00" value="<?php echo esc_attr( $_order->get_total_tax() ); ?>" class="first" />
 		</li>
 
 		<li>

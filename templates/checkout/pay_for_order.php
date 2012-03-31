@@ -87,7 +87,7 @@
 						<tr>
 							<td>' . $item['name'] . '</td>
 							<td>' . $item['qty'] . '</td>
-							<td>' . jigoshop_price($item['cost'] * $item['qty']) . '</td>
+							<td>' . jigoshop_price($item['cost']) . '</td>
 						</tr>';
                 endforeach;
             endif;

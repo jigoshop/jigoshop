@@ -15,7 +15,7 @@
  * @license		http://jigoshop.com/license/commercial-edition
  */
 class paypal extends jigoshop_payment_gateway {
-
+    
 	public function __construct() {
         $this->id			= 'paypal';
         $this->icon 		= jigoshop::assets_url() . '/assets/images/icons/paypal.png';
@@ -24,6 +24,7 @@ class paypal extends jigoshop_payment_gateway {
 		$this->title 		= get_option('jigoshop_paypal_title');
 		$this->email 		= get_option('jigoshop_paypal_email');
 		$this->description  = get_option('jigoshop_paypal_description');
+        $this->force_payment= get_option('jigoshop_paypal_force_payment');
 
 		$this->liveurl 		= 'https://www.paypal.com/webscr';
 		$this->testurl 		= 'https://www.sandbox.paypal.com/webscr';
@@ -41,6 +42,7 @@ class paypal extends jigoshop_payment_gateway {
 		add_option('jigoshop_paypal_description', __("Pay via PayPal; you can pay with your credit card if you don't have a PayPal account", 'jigoshop') );
 		add_option('jigoshop_paypal_testmode', 'no');
 		add_option('jigoshop_paypal_send_shipping', 'no');
+        add_option('jigoshop_paypal_force_payment', 'no');
 
 		add_action('receipt_paypal', array(&$this, 'receipt_page'));
     }
@@ -58,6 +60,15 @@ class paypal extends jigoshop_payment_gateway {
 		        <select name="jigoshop_paypal_enabled" id="jigoshop_paypal_enabled" style="min-width:100px;">
 		            <option value="yes" <?php if (get_option('jigoshop_paypal_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
 		            <option value="no" <?php if (get_option('jigoshop_paypal_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
+		        </select>
+	        </td>
+	    </tr>
+    	<tr>
+	        <td class="titledesc"><a href="#" tip="<?php _e('If product totals are free and shipping is also free (excluding taxes), this will force 0.01 to allow paypal to process payment. Shop owner is responsible for refunding customer.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Force payment when free', 'jigoshop') ?>:</td>
+	        <td class="forminp">
+		        <select name="jigoshop_paypal_force_payment" id="jigoshop_paypal_force_payment" style="min-width:100px;">
+		            <option value="yes" <?php if (get_option('jigoshop_paypal_force_payment') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
+		            <option value="no" <?php if (get_option('jigoshop_paypal_force_payment') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
 		        </select>
 	        </td>
 	    </tr>
@@ -118,6 +129,7 @@ class paypal extends jigoshop_payment_gateway {
    		if(isset($_POST['jigoshop_paypal_description'])) update_option('jigoshop_paypal_description', jigowatt_clean($_POST['jigoshop_paypal_description'])); else @delete_option('jigoshop_paypal_description');
    		if(isset($_POST['jigoshop_paypal_testmode'])) update_option('jigoshop_paypal_testmode', jigowatt_clean($_POST['jigoshop_paypal_testmode'])); else @delete_option('jigoshop_paypal_testmode');
    		if(isset($_POST['jigoshop_paypal_send_shipping'])) update_option('jigoshop_paypal_send_shipping', jigowatt_clean($_POST['jigoshop_paypal_send_shipping'])); else @delete_option('jigoshop_paypal_send_shipping');
+        if(isset($_POST['jigoshop_paypal_force_payment'])) update_option('jigoshop_paypal_force_payment', jigowatt_clean($_POST['jigoshop_paypal_force_payment'])); else @delete_option('jigoshop_paypal_force_payment');
     }
 
 	/**
@@ -126,6 +138,9 @@ class paypal extends jigoshop_payment_gateway {
     public function generate_paypal_form( $order_id ) {
 
 		$order = new jigoshop_order( $order_id );
+        
+        $subtotal = (float)(get_option('jigoshop_prices_include_tax') == 'yes' ? (float)$order->order_subtotal + (float)$order->order_tax : $order->order_subtotal);
+        $shipping_total = (float)(get_option('jigoshop_prices_include_tax') == 'yes' ? (float)$order->order_shipping + (float)$order->order_shipping_tax : $order->order_shipping);
 
 		if ( $this->testmode == 'yes' ):
 			$paypal_adr = $this->testurl . '?test_ipn=1&';
@@ -189,7 +204,7 @@ class paypal extends jigoshop_payment_gateway {
 				// Payment Info
 				'invoice' 				=> $order->order_key,
 				'amount' 				=> $order->order_total,
-				'discount_amount_cart' 	=> $order->order_discount
+				'discount_amount_cart'  => $order->order_discount
 			),
 			$phone_args
 		);
@@ -199,7 +214,6 @@ class paypal extends jigoshop_payment_gateway {
             $paypal_args['tax']					= $order->get_total_tax();
             $paypal_args['tax_cart']			= $order->get_total_tax();
         endif;
-
 
 		if ($this->send_shipping=='yes') :
 			$paypal_args['no_shipping'] = 0;
@@ -253,6 +267,16 @@ class paypal extends jigoshop_payment_gateway {
 
 		$paypal_args['amount_'.$item_loop] = (get_option('jigoshop_prices_include_tax') == 'yes' ? number_format((float)$order->order_shipping + $shipping_tax, 2) : number_format((float)$order->order_shipping, 2));
 
+        if (get_option('jigoshop_paypal_force_payment') == 'yes') :
+            $sum = 0;
+            for ($i = 0; $i < $item_loop; $i++) :
+                $sum += $paypal_args['amount_'.$i];
+            endfor;
+            if ($sum == 0 || (isset($order->order_discount) && $sum - $order->order_discount == 0)) :
+                $paypal_args['amount_'.$item_loop] = 0.01; // force payment on shipping as we know quantity is for sure 1
+            endif;
+        endif;
+        
 		$paypal_args_array = array();
 
 		foreach ($paypal_args as $key => $value) {
@@ -410,6 +434,28 @@ class paypal extends jigoshop_payment_gateway {
 	    }
 
 	}
+    
+    public function process_gateway($subtotal, $shipping_total, $discount = 0) {
+        
+        $ret_val = false;
+        if (!(isset($subtotal) && isset($shipping_total))) return $ret_val;
+        
+        // check for free (which is the sum of all products and shipping = 0) Tax doesn't count unless prices
+        // include tax
+        if (($subtotal <= 0 && $shipping_total <= 0) || (($subtotal + $shipping_total) - $discount) == 0) :
+            // true when force payment = 'yes'
+            $ret_val = (get_option('jigoshop_paypal_force_payment') == 'yes');
+        elseif(($subtotal + $shipping_total) - $discount < 0) :
+            // don't process paypal if the sum of the product prices and shipping total is less than the discount
+            // as it cannot handle this scenario
+            $ret_val = false;
+        else :
+            $ret_val = true;
+        endif;
+        
+        return $ret_val;
+        
+    }
 
 }
 

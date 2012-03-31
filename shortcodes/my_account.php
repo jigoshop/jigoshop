@@ -499,7 +499,7 @@ function jigoshop_view_order() {
 
                             echo '	</td>
 									<td>' . $item['qty'] . '</td>
-									<td>' . jigoshop_price($item['cost'] * $item['qty'], array('ex_tax_label' => 1)) . '</td>
+									<td>' . jigoshop_price($item['cost'], array('ex_tax_label' => 1)) . '</td>
 								</tr>';
                         endforeach;
                     endif;

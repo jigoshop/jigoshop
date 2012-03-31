@@ -88,7 +88,7 @@
                             <tr>
                                 <td class="product-name">' . $_product->get_title() . $variation . '</td>
 								<td>' . $values['quantity'] . '</td>
-								<td>' . jigoshop_price($_product->get_price_excluding_tax() * $values['quantity'], array('ex_tax_label' => 1)) . '</td>
+								<td>' . jigoshop_price($_product->get_price_excluding_tax($values['quantity']), array('ex_tax_label' => 1)) . '</td>
 							</tr>';
 					endif;
 				endforeach;

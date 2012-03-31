@@ -395,16 +395,12 @@ class jigoshop_checkout extends jigoshop_singleton {
 
 			endif;
 
-			if (jigoshop_cart::needs_payment()) :
-				// Payment Method
-				$available_gateways = jigoshop_payment_gateways::get_available_payment_gateways();
-				if (!isset($available_gateways[$this->posted['payment_method']])) :
-					jigoshop::add_error( __('Invalid payment method.','jigoshop') );
-				else :
-					// Payment Method Field Validation
-					$available_gateways[$this->posted['payment_method']]->validate_fields();
-				endif;
-			endif;
+            // Payment method
+            $available_gateways = jigoshop_payment_gateways::get_available_payment_gateways();
+            if ($this->process_gateway($available_gateways[$this->posted['payment_method']])) :
+                // Payment Method Field Validation
+                $available_gateways[$this->posted['payment_method']]->validate_fields();
+            endif;
 
 			// hook, to be able to use the validation, but to be able to do something different afterwards
 			do_action( 'jigoshop_after_checkout_validation', $this->posted, $_POST, sizeof(jigoshop::$errors) );
@@ -563,6 +559,7 @@ class jigoshop_checkout extends jigoshop_singleton {
                     $data['order_tax_divisor']      = jigoshop_cart::get_tax_divisor();
 					$data['order_shipping_tax']		= number_format(jigoshop_cart::$shipping_tax_total, 2, '.', '');
 					$data['order_total']			= jigoshop_cart::get_total(false);
+                    $data['order_total_prices_per_tax_class_ex_tax'] = jigoshop_cart::get_price_per_tax_class_ex_tax();
 
 					$applied_coupons = array();
 					foreach ( jigoshop_cart::$applied_coupons as $coupon ) :
@@ -580,6 +577,8 @@ class jigoshop_checkout extends jigoshop_singleton {
 						// Calc item tax to store
                                                 //TODO: need to change this so that the admin pages can use all tax data on the page
 						$rate = jigoshop_cart::get_total_tax_rate();
+                        
+                        $price_inc_tax = (get_option('jigoshop_calc_taxes') == 'yes' && get_option('jigoshop_prices_include_tax') == 'yes' ? $_product->get_price() : -1);
 
 						$order_items[] = apply_filters('new_order_item', array(
 					 		'id' 			=> $values['product_id'],
@@ -587,7 +586,8 @@ class jigoshop_checkout extends jigoshop_singleton {
                             'variation'     => $values['variation'],
 					 		'name' 			=> $_product->get_title(),
 					 		'qty' 			=> (int) $values['quantity'],
-					 		'cost' 			=> $_product->get_price_excluding_tax(),
+					 		'cost' 			=> $_product->get_price_excluding_tax((int) $values['quantity']),
+                            'cost_inc_tax'  => $price_inc_tax, // if less than 0 don't use this
 					 		'taxrate' 		=> $rate
 					 	));
 
@@ -641,7 +641,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 					// Inserted successfully
 					do_action('jigoshop_new_order', $order_id);
 
-					if (jigoshop_cart::needs_payment()) :
+					if ($this->process_gateway($available_gateways[$this->posted['payment_method']])) :
 
 						// Store Order ID in session so it can be re-used after payment failure
 						jigoshop_session::instance()->order_awaiting_payment = $order_id;
@@ -789,5 +789,22 @@ class jigoshop_checkout extends jigoshop_singleton {
             </tr><?php
         endif;
 
+    }
+    
+    /**
+     * This method makes sure we require payment for the particular gateway being used. 
+     * @param jigoshop_payment_gateway $payment_gateway the payment gateway 
+     * that is being used during checkout
+     * @return boolean true when the gateway should be processed, otherwise false
+     * @since 1.2
+     */
+    private function process_gateway($payment_gateway) {
+        if (!isset($payment_gateway)) :
+            jigoshop::add_error( __('Invalid payment method.','jigoshop') );
+            return false;
+        else :
+            $shipping_total = (get_option('jigoshop_prices_include_tax') == 'yes' ? jigoshop_cart::$shipping_tax_total + jigoshop_cart::$shipping_total : jigoshop_cart::$shipping_total);
+            return $payment_gateway->process_gateway(number_format(jigoshop_cart::$subtotal, 2, '.', ''), number_format($shipping_total, 2, '.', ''), number_format(jigoshop_cart::$discount_total, 2, '.', ''));
+        endif;
     }
 }

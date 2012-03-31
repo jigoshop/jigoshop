@@ -48,6 +48,10 @@ function jigoshop_upgrade() {
 	if ( $jigoshop_db_version < 1202280 ) {
 		jigoshop_upgrade_111();
 	}
+    
+    if ( $jigoshop_db_version < 1203310 ) {
+        jigoshop_upgrade_120();
+    }
 
 	// Update the db option
 	update_site_option( 'jigoshop_db_version', JIGOSHOP_VERSION );
@@ -112,6 +116,10 @@ function jigoshop_convert_db_version() {
 		case '0.9.9.3':
 			update_site_option( 'jigoshop_db_version', 1111092 );
 			break;
+        //TODO: I'm not sure why cases 1.0 -> are here... the verion of db was
+        // updated since 1.0 to the new standard. No point on continuing to 
+        // add entries here, since anyone that has post 1.0 will also have the
+        // new db versions. Anyone before, will get converted from this function.
 		case '1.0':
 			update_site_option( 'jigoshop_db_version', 1202090 );
 			break;
@@ -413,5 +421,72 @@ function jigoshop_upgrade_111() {
 	$shop_page = get_option('jigoshop_shop_page_id');
 	update_option( 'jigoshop_shop_redirect_page_id' , $shop_page );
 	update_option( 'jigoshop_enable_related_products' , 'yes' );
+
+}
+
+
+function get_old_taxes_as_array($taxes_as_string) {
+
+    $tax_classes = array();
+
+    if ($taxes_as_string) :
+
+        $taxes = explode('|', $taxes_as_string);
+
+        foreach ($taxes as $tax) :
+
+            $tax_class = explode(':', $tax);
+            if (isset($tax_class[1])) :
+                $tax_info = explode(',', $tax_class[1]);
+
+                if (isset($tax_class[0]) && isset($tax_info[0]) && isset($tax_info[1]) && isset($tax_info[2]) && isset($tax_info[3])) :
+                    $tax_classes[$tax_class[0]] = array('amount' => $tax_info[0], 'rate' => $tax_info[1], 'compound' => ($tax_info[2] ? true : false), 'display' => $tax_info[3]);
+                endif;
+
+            endif;
+
+        endforeach;
+
+    endif;
+
+    return $tax_classes;
+}
+
+/**
+ * Execute changes made in Jigoshop 1.2.0
+ * 
+ * @since 1.2
+ */
+function jigoshop_upgrade_120() {
+    
+    // update orders 
+	$args = array(
+		'post_type'	  => 'shop_order',
+		'numberposts' => -1,
+		'post_status' => 'publish'
+	);
+
+	$posts = get_posts( $args );
+
+	foreach( $posts as $post ) :
+        $order_data = get_post_meta($post->ID, 'order_data', true);
+    
+        if (!empty($order_data['order_tax'])) :
+
+            // means someone has posted a manual order. Need to update to new tax string
+            if (strpos($order_data['order_tax'], ':') === false) :
+                $order_data['order_tax_total'] = $order_data['order_tax'];
+                $order_data['order_tax'] = jigoshop_tax::create_custom_tax($order_data['order_total'] - $order_data['order_tax_total'], $order_data['order_tax_total'], $order_data['order_shipping_tax'], $order_data['order_tax_divisor']);                
+            else :
+                $tax_array = get_old_taxes_as_array($order_data['order_tax']);
+                $order_data['order_tax'] = jigoshop_tax::array_implode($tax_array);
+            endif;
+            
+            update_post_meta($post->ID, 'order_data', $order_data);
+            
+        endif;
+            
+    endforeach;
+    
 
 }

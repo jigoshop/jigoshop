@@ -158,7 +158,13 @@ class skrill extends jigoshop_payment_gateway {
 		// Cart Contents
 		$item_loop = 0;
 		if (sizeof($order->items)>0) : foreach ($order->items as $item) :
-			$_product = new jigoshop_product($item['id']);
+            
+            if(!empty($item['variation_id'])) {
+                $_product = new jigoshop_product_variation($item['variation_id']);
+            } else {
+                $_product = new jigoshop_product($item['id']);
+            }
+            
 			if ($_product->exists() && $item['qty']) :
 
 				$item_loop++;

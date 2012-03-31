@@ -42,7 +42,7 @@
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
-if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1202280);
+if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1203310);
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
 // Override default translations with custom .mo's found in wp-content/languages/jigoshop
@@ -1009,3 +1009,26 @@ function jigoshop_plugin_loads_first() {
 }
 // disconnecting for further testing, breaks 'lazy loader plugins' (-JAP-)
 //add_action( 'activated_plugin', 'jigoshop_plugin_loads_first', 999 );
+
+
+if(!function_exists('jigoshop_log')){
+
+    /**
+     * Logs to the debug log when you enable wordpress debug mode.
+     * 
+     * @param string $from_class is the name of the php file that you are logging from.
+     * defaults to jigoshop if non is supplied.
+     * @param mixed $message this can be a regular string, array or object
+     */
+    function jigoshop_log( $message, $from_class = 'jigoshop' ) {
+        
+        if( WP_DEBUG === true ) :
+            if( is_array( $message ) || is_object( $message ) ) :
+                error_log( $from_class . ': ' . print_r( $message, true ) );
+            else :
+                error_log( $from_class . ': ' . $message );
+            endif;
+        endif;
+        
+    }
+}
