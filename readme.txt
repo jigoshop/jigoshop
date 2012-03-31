@@ -114,9 +114,31 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 == Changelog ==
 
 = 1.2 - TBA =
-*
-*
-*
+* Fixes compound tax display. Tax displays after subtotal all of the time
+* Allow discounts to be applied before or after taxes
+* Emails for orders can now be completely customized
+* Email customizations can be made through a plugin
+* Fix for multiple tax classes applied to all-of selections on countries
+* Adds the ability to show tax # and business address information on order emails
+* Allow $0.01 charge on paypal if configured and total is free
+* Cleaned up some minor code issues
+* Fixes multiple tax classes bug (tax class 1 applied to product 1, and
+  tax class 2 applied to product 2)
+     * if both products were added to the cart, only 1 tax class was applied
+       and the other wasn't
+* Allow shipping to be taxed on compounding tax classes (all around
+  shipping tax enhancements)
+* Fix for the tax amounts disappearing on orders when changing the
+  status of the order
+* Fix rounding error on taxes with price includes tax option
+* Fix Skrill gateway to allow variable products
+* Allow EU shop to tax other EU countries
+* Allow debugging to be turned on for calculable shipping services
+  through wordpress debug
+* Automatically include 0% tax rate for customers outside of tax base
+* Calculate tax based on billing address when item is not shipable or
+  shipping is disabled
+
 
 = 1.1.1 - 2012-02-29 =
 * Adds new admin setting for different redirection options after adding to the cart
