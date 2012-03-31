@@ -474,9 +474,18 @@ class jigoshop_tax {
 
             endforeach;
 
-            $this->tax_amounts = (empty($this->tax_amounts) ? $tax_amount : array_merge($this->tax_amounts, $tax_amount));
-            $this->imploded_tax_amounts = self::array_implode($this->tax_amounts);
+        else :
+            
+            // auto calculate zero rate for all other countries outside of tax base
+            $tax_amount['jigoshop_zero_rate']['amount'] = 0;
+            $tax_amount['jigoshop_zero_rate']['rate'] = 0;
+            $tax_amount['jigoshop_zero_rate']['compound'] = false;
+            $tax_amount['jigoshop_zero_rate']['display'] = 'Tax';
+            $tax_classes_applied[] = 'jigoshop_zero_rate';
         endif;
+
+        $this->tax_amounts = (empty($this->tax_amounts) ? $tax_amount : array_merge($this->tax_amounts, $tax_amount));
+        $this->imploded_tax_amounts = self::array_implode($this->tax_amounts);
 
         return $tax_classes_applied;
         
@@ -933,25 +942,31 @@ class jigoshop_tax {
         $non_compound_amount = 0;
         $tax_amount = 0;
         
-        foreach ($rates as $tax_class => $rate) :
+        if (!empty($rates)) :
+            foreach ($rates as $tax_class => $rate) :
 
-            // initialize shipping if not already initialized
-            if (!isset($this->tax_amounts[$tax_class][$shipping_method_id])) :
-                $this->tax_amounts[$tax_class][$shipping_method_id] = 0;
-            endif;
-            
-            $tax_rate = round($rate['rate'], 4);
+                // initialize shipping if not already initialized
+                if (!isset($this->tax_amounts[$tax_class][$shipping_method_id])) :
+                    $this->tax_amounts[$tax_class][$shipping_method_id] = 0;
+                endif;
 
-            if ($rate['compound'] == 'yes') :
-                // calculate compounded taxes. Increment value because of per-item shipping
-                $this->tax_amounts[$tax_class][$shipping_method_id] += ($this->tax_divisor > 0 ? (($price + $non_compound_amount) * ($tax_rate / 100) * $this->tax_divisor) : ($price + $non_compound_amount) * ($tax_rate / 100));
-            else :
-                // calculate regular taxes. Increment value because of per-item shipping
-                $non_compound_amount += ($price * ($tax_rate / 100)); // don't use divisor here, as it will be used with compound tax above
-                $this->tax_amounts[$tax_class][$shipping_method_id] += ($this->tax_divisor > 0 ? ($price * ($tax_rate / 100)) * $this->tax_divisor : $price * ($tax_rate / 100));
-            endif;
+                $tax_rate = round($rate['rate'], 4);
+
+                if ($rate['compound'] == 'yes') :
+                    // calculate compounded taxes. Increment value because of per-item shipping
+                    $this->tax_amounts[$tax_class][$shipping_method_id] += ($this->tax_divisor > 0 ? (($price + $non_compound_amount) * ($tax_rate / 100) * $this->tax_divisor) : ($price + $non_compound_amount) * ($tax_rate / 100));
+                else :
+                    // calculate regular taxes. Increment value because of per-item shipping
+                    $non_compound_amount += ($price * ($tax_rate / 100)); // don't use divisor here, as it will be used with compound tax above
+                    $this->tax_amounts[$tax_class][$shipping_method_id] += ($this->tax_divisor > 0 ? ($price * ($tax_rate / 100)) * $this->tax_divisor : $price * ($tax_rate / 100));
+                endif;
+
+            endforeach;
+        else :
             
-        endforeach;
+            // auto calculate zero rate for all customers outside of tax base
+            $this->tax_amounts['jigoshop_zero_rate'][$shipping_method_id] = 0;
+        endif;
         
         $this->imploded_tax_amounts = self::array_implode($this->tax_amounts);
         
