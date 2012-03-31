@@ -307,7 +307,7 @@ class jigoshop_cart extends jigoshop_singleton {
     }
 
     /** looks through the cart to see if shipping is actually required */
-    function needs_shipping() {
+    public static function needs_shipping() {
 
         if (!jigoshop_shipping::is_enabled())
             return false;
@@ -496,7 +496,7 @@ class jigoshop_cart extends jigoshop_singleton {
                         
                         self::$tax->set_is_shipable(jigoshop_shipping::is_enabled() && $_product->requires_shipping());
                         
-                        if (get_option('jigoshop_prices_include_tax') == 'yes' && jigoshop_customer::is_customer_shipping_outside_base() && (get_option('jigoshop_enable_shipping_calc')=='yes' ||  (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT ))) :
+                        if (get_option('jigoshop_prices_include_tax') == 'yes' && jigoshop_customer::is_customer_outside_base(jigoshop_shipping::is_enabled() && $_product->requires_shipping()) && (get_option('jigoshop_enable_shipping_calc')=='yes' ||  (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT ))) :
 
                             $total_item_price = $_product->get_price_excluding_tax($values['quantity']) * 100;
 
@@ -704,7 +704,12 @@ class jigoshop_cart extends jigoshop_singleton {
             // only show estimated tag when customer is on the cart page and no shipping calculator is enabled to be able to change
             // country
             if (!jigoshop_shipping::show_shipping_calculator() && !( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
-                $return .= '<small>' . sprintf(__('estimated for %s', 'jigoshop'), jigoshop_countries::estimated_for_prefix() . __(jigoshop_countries::$countries[jigoshop_countries::get_base_country()], 'jigoshop')) . '</small>';
+                
+                if (self::needs_shipping() && jigoshop_shipping::is_enabled()) :
+                    $return .= '<small>' . sprintf(__('estimated for %s', 'jigoshop'), jigoshop_countries::estimated_for_prefix() . __(jigoshop_countries::$countries[jigoshop_countries::get_base_country()], 'jigoshop')) . '</small>';
+                else :
+                    $return .= '<small>' . sprintf(__('estimated for %s', 'jigoshop'), jigoshop_countries::estimated_for_prefix() . __(jigoshop_countries::$countries[jigoshop_customer::get_country()], 'jigoshop')) . '</small>';
+                endif;
             endif;
         endif;
 

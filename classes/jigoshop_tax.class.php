@@ -298,7 +298,7 @@ class jigoshop_tax {
      * @return type array of tax classes
      */
     private function get_tax_classes_for_customer() {
-        $country = ($this->shipable ? jigoshop_customer::get_shipping_country : jigoshop_customer::get_country());
+        $country = ($this->shipable ? jigoshop_customer::get_shipping_country() : jigoshop_customer::get_country());
         $state = ($this->shipable ? jigoshop_customer::get_shipping_state() : jigoshop_customer::get_state());
         
         if (!$this->charge_taxes_to_customer()) return array();
