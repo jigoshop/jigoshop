@@ -114,6 +114,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 == Changelog ==
 
 = 1.2 - TBA =
+* Provide options to disable or enable WordPress image cropping on Shop images
 * Fixes compound tax display. Tax displays after subtotal all of the time
 * Allow discounts to be applied before or after taxes
 * Emails for orders can now be completely customized

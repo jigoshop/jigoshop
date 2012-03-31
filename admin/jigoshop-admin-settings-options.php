@@ -584,7 +584,21 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array( 'type' => 'tab', 'tabname' => __('Images', 'jigoshop') ),
 
-	array( 'name' => __('Image Options', 'jigoshop'), 'type' => 'title','desc' => __('Large variations from the defaults could require CSS modifications in your Theme.','jigoshop'), 'id' => '' ),
+	array( 'name' => __('Image Options', 'jigoshop'), 'type' => 'title', 'desc' => sprintf(__('Changing any of these settings will affect the dimensions of images used in your Shop. The display on the front-end will <strong>still</strong> be affected by CSS styles. After changing these settings you may need to <a href="%s">regenerate your thumbnails</a>.', 'jigoshop'), 'http://wordpress.org/extend/plugins/regenerate-thumbnails/'), 'id' => '' ),
+
+	array(
+		'name' => __('Crop Tiny images','jigoshop'),
+		'desc'		=> '',
+		'tip' 		=> __('Use No to set the image size by resizing the image proportionally (that is, without distorting it).<br />Use Yes to set the image size by hard cropping the image (either from the sides, or from the top and bottom).', 'jigoshop'),
+		'id' 		=> 'jigoshop_use_wordpress_tiny_crop',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
+	),
 
 	array(
 		'name' 		=> __('Tiny Images','jigoshop'),
@@ -597,6 +611,20 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
+		'name' => __('Crop Thumbnail images','jigoshop'),
+		'desc'		=> '',
+		'tip' 		=> __('Use No to set the image size by resizing the image proportionally (that is, without distorting it).<br />Use Yes to set the image size by hard cropping the image (either from the sides, or from the top and bottom).', 'jigoshop'),
+		'id' 		=> 'jigoshop_use_wordpress_thumbnail_crop',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
+	),
+
+	array(
 		'name' 		=> __('Thumbnail Images','jigoshop'),
 		'desc' 		=> __('The thumbnail image for Single Product page extra images.','jigoshop'),
 		'id' 		=> 'jigoshop_shop_thumbnail',
@@ -606,12 +634,40 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
+		'name' => __('Crop Catalog images','jigoshop'),
+		'desc'		=> '',
+		'tip' 		=> __('Use No to set the image size by resizing the image proportionally (that is, without distorting it).<br />Use Yes to set the image size by hard cropping the image (either from the sides, or from the top and bottom).', 'jigoshop'),
+		'id' 		=> 'jigoshop_use_wordpress_catalog_crop',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
+	),
+
+	array(
 		'name' => __( 'Catalog Images', 'jigoshop' ),
 		'desc' 		=> __('The catalog image for Shop, Categories, Tags, and Related Products.', 'jigoshop'),
 		'id' 		=> 'jigoshop_shop_small',
 		'css' 		=> '',
 		'type' 		=> 'image_size',
 		'std' 		=> 150
+	),
+
+	array(
+		'name' => __('Crop Large images','jigoshop'),
+		'desc'		=> '',
+		'tip' 		=> __('Use No to set the image size by resizing the image proportionally (that is, without distorting it).<br />Use Yes to set the image size by hard cropping the image (either from the sides, or from the top and bottom).', 'jigoshop'),
+		'id' 		=> 'jigoshop_use_wordpress_featured_crop',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
 	),
 
 	array(

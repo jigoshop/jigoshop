@@ -172,12 +172,17 @@ add_filter( 'wp_mail_from', 'jigoshop_mail_from' );
  * Set Jigoshop Product Image Sizes for WordPress based on Admin->Jigoshop->Settings->Images
  * @since 0.9.9
  **/
-function jigoshop_set_image_sizes(){
-	add_image_size( 'admin_product_list', 32, 32, 'true' );
-	add_image_size( 'shop_tiny', get_option('jigoshop_shop_tiny_w'), get_option('jigoshop_shop_tiny_h'), 'true' );
-	add_image_size( 'shop_thumbnail', get_option('jigoshop_shop_thumbnail_w'), get_option('jigoshop_shop_thumbnail_h'), 'true' );
-	add_image_size( 'shop_small', get_option('jigoshop_shop_small_w'), get_option('jigoshop_shop_small_h'), 'true' );
-	add_image_size( 'shop_large', get_option('jigoshop_shop_large_w'), get_option('jigoshop_shop_large_h'), 'true' );
+function jigoshop_set_image_sizes() {
+	$tinycrop = get_option( 'jigoshop_use_wordpress_tiny_crop', 'no' ) == 'yes' ? true : false;
+	$thumbcrop = get_option( 'jigoshop_use_wordpress_thumbnail_crop', 'no' ) == 'yes' ? true : false;
+	$catalogcrop = get_option( 'jigoshop_use_wordpress_catalog_crop', 'no' ) == 'yes' ? true : false;
+	$featuredcrop = get_option( 'jigoshop_use_wordpress_featured_crop', 'no' ) == 'yes' ? true : false;
+	
+	add_image_size( 'admin_product_list', 32, 32, $tinycrop );
+	add_image_size( 'shop_tiny', get_option('jigoshop_shop_tiny_w'), get_option('jigoshop_shop_tiny_h'), $tinycrop );
+	add_image_size( 'shop_thumbnail', get_option('jigoshop_shop_thumbnail_w'), get_option('jigoshop_shop_thumbnail_h'), $thumbcrop );
+	add_image_size( 'shop_small', get_option('jigoshop_shop_small_w'), get_option('jigoshop_shop_small_h'), $catalogcrop );
+	add_image_size( 'shop_large', get_option('jigoshop_shop_large_w'), get_option('jigoshop_shop_large_h'), $featuredcrop );
 }
 
 /**
