@@ -114,6 +114,8 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 == Changelog ==
 
 = 1.2 - TBA =
+* Provide personalized products - customers may add their own information to appear on purchased products
+* Provide WordPress Bulk and Quick editing of both stock levels and prices on the Admin Product List
 * Provide options to disable or enable WordPress image cropping on Shop images
 * Fixes compound tax display. Tax displays after subtotal all of the time
 * Allow discounts to be applied before or after taxes
