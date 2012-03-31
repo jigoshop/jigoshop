@@ -309,6 +309,20 @@ class jigoshop_tax {
 
     }
 
+    /**
+     * return the label for display for base country, if one is set. Otherwise Tax will be returned
+     * @param string $class the tax class to lookup
+     * @return string label for online display 
+     * @since 1.2
+     */
+    private function get_online_label_for_base($class = '*') {
+        $country = jigoshop_countries::get_base_country();
+        $state = jigoshop_countries::get_base_state();
+        $state = (jigoshop_countries::country_has_states($country) && $state ? $state : '*');
+
+        return (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state][$class]['label'] : 'Tax');
+    }
+
     private function get_online_label_for_customer($class = '*') {
         $country = ($this->shipable ? jigoshop_customer::get_shipping_country() : jigoshop_customer::get_country());
         $state = ($this->shipable ? jigoshop_customer::get_shipping_state() : jigoshop_customer::get_state());
@@ -488,13 +502,25 @@ class jigoshop_tax {
             endforeach;
 
         else :
-            
-            // auto calculate zero rate for all other countries outside of tax base
-            $tax_amount['jigoshop_zero_rate']['amount'] = 0;
-            $tax_amount['jigoshop_zero_rate']['rate'] = 0;
-            $tax_amount['jigoshop_zero_rate']['compound'] = false;
-            $tax_amount['jigoshop_zero_rate']['display'] = 'Tax';
-            $tax_classes_applied[] = 'jigoshop_zero_rate';
+            $tax_classes = $this->get_tax_classes_for_base();
+        
+            if (!empty($tax_classes)) :
+                foreach ($tax_classes as $tax_class) :
+                    // auto calculate zero rate for all other countries outside of tax base
+                    $tax_amount[$tax_class]['amount'] = 0;
+                    $tax_amount[$tax_class]['rate'] = 0;
+                    $tax_amount[$tax_class]['compound'] = false;
+                    $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_base($tax_class) ? $this->get_online_label_for_base($tax_class) : 'Tax');
+                    $tax_classes_applied[] = $tax_class;
+                endforeach;
+            else :
+                // auto calculate zero rate for all other countries outside of tax base
+                $tax_amount['jigoshop_zero_rate']['amount'] = 0;
+                $tax_amount['jigoshop_zero_rate']['rate'] = 0;
+                $tax_amount['jigoshop_zero_rate']['compound'] = false;
+                $tax_amount['jigoshop_zero_rate']['display'] = 'Tax';
+                $tax_classes_applied[] = 'jigoshop_zero_rate';
+            endif;
         endif;
 
         $this->tax_amounts = (empty($this->tax_amounts) ? $tax_amount : array_merge($this->tax_amounts, $tax_amount));
@@ -977,9 +1003,16 @@ class jigoshop_tax {
 
             endforeach;
         else :
-            
-            // auto calculate zero rate for all customers outside of tax base
-            $this->tax_amounts['jigoshop_zero_rate'][$shipping_method_id] = 0;
+            $tax_classes = $this->get_tax_classes_for_base();
+        
+            if (!empty($tax_classes)) :
+                foreach ($tax_classes as $tax_class) :
+                    $this->tax_amounts[$tax_class][$shipping_method_id] = 0;
+                endforeach;
+            else :
+                // auto calculate zero rate for all customers outside of tax base
+                $this->tax_amounts['jigoshop_zero_rate'][$shipping_method_id] = 0;
+            endif;
         endif;
         
         $this->imploded_tax_amounts = self::array_implode($this->tax_amounts);
