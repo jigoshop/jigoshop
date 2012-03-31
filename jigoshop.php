@@ -763,6 +763,9 @@ function jigowatt_clean( $var ) {
 
 // Returns a float value
 function jigoshop_sanitize_num( $var ) {
+	// TODO: as it stands, it doesn't allow negative values (-JAP-)
+	// should be - preg_replace("/^[^[\-\+]0-9\.]/","",$var)
+	// currently only used for prices in product-data-save.php
 	return strip_tags(stripslashes(floatval(preg_replace("/^[^0-9\.]/","",$var))));
 }
 
