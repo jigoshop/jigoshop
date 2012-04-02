@@ -58,36 +58,37 @@ class jigoshop_cart extends jigoshop_singleton {
     /** Gets the cart data from the PHP session */
     function get_cart_from_session() {
 
-        if (isset( jigoshop_session::instance()->cart ) && is_array( jigoshop_session::instance()->cart )) :
-            $cart = jigoshop_session::instance()->cart;
+        self::$cart_contents = (array) jigoshop_session::instance()->cart;
+        // NB: Why are we filtering this data out?
+        // return true;
 
-            foreach ($cart as $key => $values) :
+        // if (isset( jigoshop_session::instance()->cart ) && is_array( jigoshop_session::instance()->cart )) :
+        //     $cart = jigoshop_session::instance()->cart;
 
-                if ($values['data']->exists() && $values['quantity'] > 0) :
+        //     foreach ($cart as $key => $values) :
+        //         if ($values['data']->exists() && $values['quantity'] > 0) :
 
-                    self::$cart_contents[$key] = array(
-                        'product_id'    => $values['product_id'],
-                        'variation_id'  => $values['variation_id'],
-                        'variation'     => $values['variation'],
-                        'quantity'      => $values['quantity'],
-                        'data'          => $values['data']
-                    );
+        //             self::$cart_contents[$key] = array(
+        //                 'product_id'    => $values['product_id'],
+        //                 'variation_id'  => $values['variation_id'],
+        //                 'variation'     => $values['variation'],
+        //                 'quantity'      => $values['quantity'],
+        //                 'data'          => $values['data']
+        //             );
 
-                endif;
-            endforeach;
+        //         endif;
+        //     endforeach;
 
-        else :
-            self::$cart_contents = array();
-        endif;
+        // else :
+        //     self::$cart_contents = array();
+        // endif;
 
-        if (!is_array(self::$cart_contents)) :
-            self::$cart_contents = array();
-        endif;
+        // if (!is_array(self::$cart_contents))
+        //     self::$cart_contents = array();
     }
 
     /** sets the php session data for the cart and coupon */
     function set_session() {
-
         // we get here from cart additions, quantity adjustments, and coupon additions
         // reset any chosen shipping methods as these adjustments can effect shipping (free shipping)
         unset( jigoshop_session::instance()->chosen_shipping_method_id );
@@ -116,27 +117,97 @@ class jigoshop_cart extends jigoshop_singleton {
     }
 
     /**
-     * Check if product is in the cart and return cart item key
+     * Generate a unique ID for the cart item being added
      *
-     * @param int $product_id
-     * @param int $variation_id optional variation id
-     * @param array $variation array of attributre values
-     * @return int|null
+     * @param int $product_id - id of the product the key is being generated for
+     * @param int $variation_id of the product the key is being generated for
+     * @param array $variation data for the cart item
+     * @param array $cart_item_data other cart item data passed which affects this items uniqueness in the cart
+     * @return string cart item key
      */
-    function find_product_in_cart($product_id, $variation_id, $variation = array()) {
-
-        foreach (self::$cart_contents as $cart_item_key => $cart_item) {
-            if (empty($variation_id) && $cart_item['product_id'] == $product_id) {
-                return $cart_item_key;
-            } else if ($cart_item['product_id'] == $product_id && $cart_item['variation_id'] == $variation_id) {
-                if ($variation == $cart_item['variation']) {
-                    return $cart_item_key;
-                }
+    function generate_cart_id( $product_id, $variation_id = '', $variation = '', $cart_item_data = '' ) {
+        
+        $id_parts = array( $product_id );
+        
+        if ( $variation_id ) $id_parts[] = $variation_id;
+ 
+        if ( is_array( $variation ) ) {
+            $variation_key = '';
+            foreach ( $variation as $key => $value ) {
+                $variation_key .= trim( $key ) . trim( $value );
             }
+            $id_parts[] = $variation_key;
         }
 
-        return NULL;
+        if ( is_array( $cart_item_data ) ) {
+            $cart_item_data_key = '';
+            foreach ( $cart_item_data as $key => $value ) {
+
+                error_log('ABC: ' . print_r($value, true));
+                foreach( $value as $key => $val ) {
+                    $value[$key] = trim($val);
+                }
+                if ( is_array( $value ) ) $value = http_build_query( $value );
+                $cart_item_data_key .= trim($key) . trim($value);
+            }
+            $id_parts[] = $cart_item_data_key;
+        }
+
+        error_log( 'SEND: ' .print_r($id_parts,true) );
+
+        return md5( implode( '_', $id_parts ) );
     }
+
+    /**
+     * Check if product is in the cart and return cart item key
+     * 
+     * Cart item key will be unique based on the item and its properties, such as variations
+     *
+     * @param mixed id of product to find in the cart
+     * @return string cart item key
+     */
+    function find_product_in_cart( $cart_id = false ) {
+        if ( $cart_id !== false ) 
+            foreach ( self::$cart_contents as $cart_item_key => $cart_item ) 
+                if ( $cart_item_key == $cart_id ) 
+                    return $cart_item_key;
+    }
+
+    // /**
+    //  * Check if product is in the cart and return cart item key
+    //  *
+    //  * @param int $product_id
+    //  * @param int $variation_id optional variation id
+    //  * @param array $variation array of attributre values
+    //  * @return int|null
+    //  */
+    // function find_product_in_cart($product_id, $variation_id, $variation = array(), $cart_item_data = NULL) {
+
+    //     if ( is_array( $cart_item_data ) ) {
+    //         foreach ( $cart_item_data as $key => $value ) {
+
+    //             if ( is_array( $value ) )
+    //                 $value = http_build_query( $value );
+
+    //             $cart_item_data_key .= trim($key) . trim($value);
+    //         }
+
+    //         $id_parts[] = $cart_item_data_key;
+
+    //         return sha1( implode( '_', $id_parts ) );
+    //     }
+
+    //     foreach (self::$cart_contents as $cart_item_key => $cart_item) {
+    //         if (empty($variation_id) && $cart_item['product_id'] == $product_id) {
+    //             return $cart_item_key;
+    //         } else if ($cart_item['product_id'] == $product_id && $cart_item['variation_id'] == $variation_id) {
+    //             if ($variation == $cart_item['variation']) {
+    //                 return $cart_item_key;
+    //             }
+    //         }
+    //     }
+    //     return NULL;
+    // }
 
     /**
      * Add a product to the cart
@@ -152,7 +223,11 @@ class jigoshop_cart extends jigoshop_singleton {
             $quantity = 0;
         }
 
-        $found_cart_item_key = self::find_product_in_cart($product_id, $variation_id, $variation);
+        // Load cart item data - may be added by other plugins
+        $cart_item_data = (array) apply_filters('jigoshop_add_cart_item_data', $cart_item_data, $product_id);
+
+        $cart_id = self::generate_cart_id($product_id, $variation_id, $variation, $cart_item_data);
+        $found_cart_item_key = self::find_product_in_cart( $cart_id );
 
         if (empty($variation_id)) {
             $product = new jigoshop_product($product_id);
@@ -184,13 +259,13 @@ class jigoshop_cart extends jigoshop_singleton {
         endif;
 
         //if product is already in the cart change its quantity
-        if (is_numeric($found_cart_item_key)) {
+        if (($found_cart_item_key)) {
 
             $quantity = (int) $quantity + self::$cart_contents[$found_cart_item_key]['quantity'];
 
             self::set_quantity($found_cart_item_key, $quantity);
         } else {//othervise add new product to the cart
-            $cart_item_key = sizeof(self::$cart_contents);
+            // $cart_item_key = sizeof(self::$cart_contents);
             
             self::$cart_contents[$cart_item_key] = array(
             'product_id' => $product_id,
@@ -890,4 +965,84 @@ class jigoshop_cart extends jigoshop_singleton {
             return false;
     }
 
+    /**
+     * Gets and formats a list of cart item data + variations for display on the frontend
+     */
+    static function get_item_data( $cart_item, $flat = FALSE ) {
+        
+        $has_data = false;
+        
+        if (!$flat) $return = '<dl class="variation">';
+        
+        // Variation data
+        if($cart_item['data'] instanceof jigoshop_product_variation && is_array($cart_item['variation'])) :
+        
+            $variation_list = array();
+            
+            foreach ( $cart_item['variation'] as $name => $value ) :
+                
+                $name = str_replace('tax_', '', $name);
+
+                if ( taxonomy_exists( 'pa_'.$name )) :
+                    $terms = get_terms( 'pa_'.$name, array( 'orderby' => 'slug', 'hide_empty' => '0' ) );
+                    foreach ( $terms as $term ) :
+                        if ( $term->slug == $value ) $value = $term->name;
+                    endforeach;
+                    $name = get_taxonomy( 'pa_'.$name )->labels->name;
+                    $name = jigoshop_product::attribute_label('pa_'.$name);
+                endif;
+
+
+                if ($flat) :
+                    $variation_list[] = $name.': '.$value;
+                else :
+                    $variation_list[] = '<dt>'.$name.':</dt><dd>'.$value.'</dd>';
+                endif;
+                
+            endforeach;
+            
+            if ($flat) :
+                $return .= implode(', ', $variation_list);
+            else :
+                $return .= implode('', $variation_list);
+            endif;
+            
+            $has_data = true;
+        
+        endif;
+        
+        // Other data - returned as array with name/value values
+        $other_data = apply_filters('jigoshop_get_item_data', array(), $cart_item);
+        
+        if ($other_data && is_array($other_data) && sizeof($other_data)>0) :
+            
+            $data_list = array();
+            
+            foreach ($other_data as $data) :
+                
+                $display_value = (isset($data['display']) && $data['display']) ? $data['display'] : $data['value'];
+                
+                if ($flat) :
+                    $data_list[] = $data['name'].': '.$display_value;
+                else :
+                    $data_list[] = '<dt>'.$data['name'].':</dt><dd>'.$display_value.'</dd>';
+                endif;
+                
+            endforeach;
+            
+            if ($flat) :
+                $return .= implode(', ', $data_list);
+            else :
+                $return .= implode('', $data_list);
+            endif;
+            
+            $has_data = true;
+            
+        endif;
+        
+        if (!$flat) $return .= '</dl>';
+        
+        if ($has_data) return $return;
+                
+    }
 }

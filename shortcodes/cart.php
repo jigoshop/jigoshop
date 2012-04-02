@@ -112,10 +112,7 @@ function jigoshop_cart($atts) {
                         $_product = $values['data'];
                         if ($_product->exists() && $values['quantity'] > 0) :
 
-                            $additional_description = '';
-                            if ($_product instanceof jigoshop_product_variation && is_array($values['variation'])) {
-                                $additional_description = jigoshop_get_formatted_variation($values['variation']);
-                            }
+                            $additional_description = jigoshop_cart::get_item_data($values);
                             ?>
                             <tr>
                                 <td class="product-remove"><a href="<?php echo esc_url( jigoshop_cart::get_remove_url($cart_item_key) ); ?>" class="remove" title="<?php echo esc_attr( __('Remove this item.', 'jigoshop') ); ?>">&times;</a></td>

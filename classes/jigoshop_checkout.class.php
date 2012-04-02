@@ -595,7 +595,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 					 		'cost' 			=> $_product->get_price_excluding_tax((int) $values['quantity']),
                             'cost_inc_tax'  => $price_inc_tax, // if less than 0 don't use this
 					 		'taxrate' 		=> $rate
-					 	));
+					 	), $values);
 
 					 	// Check stock levels
 					 	if ($_product->managing_stock()) :
