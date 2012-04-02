@@ -162,16 +162,18 @@ function jigoshop_post_type() {
 				'not_found_in_trash' => __( 'No Variations found in trash', 'jigoshop' ),
 				'parent' => __( 'Parent Variation', 'jigoshop' )
 			),
-			'public' => true,
+
+			'public' => false,
 			'show_ui' => false,
-			'capability_type' => 'post',
 			'publicly_queryable' => true,
 			'exclude_from_search' => true,
+			'show_in_nav_menus' => false,
+
+			'capability_type' => 'post',
 			'hierarchical' => false,
 			'rewrite' => false,
 			'query_var' => true,
 			'supports' => array( 'title', 'editor', 'custom-fields' ),
-			'show_in_nav_menus' => false,
 			'show_in_menu' => 'edit.php?post_type=product'
 		)
 	);
@@ -205,13 +207,16 @@ function jigoshop_post_type() {
 				'parent' => __( 'Parent Orders', 'jigoshop' )
 			),
 			'description' => __( 'This is where store orders are stored.', 'jigoshop' ),
-			'public' => true,
+
+			'public' => false,
 			'show_ui' => true,
-			'capability_type' => 'post',
+			'show_in_nav_menus' => false,
 			'publicly_queryable' => false,
 			'exclude_from_search' => true,
+
+			'capability_type' => 'post',
 			'hierarchical' => false,
-			'show_in_nav_menus' => false,
+			
 			'rewrite' => false,
 			'query_var' => true,
 			'supports' => array( 'title', 'comments' ),
@@ -236,6 +241,7 @@ function jigoshop_post_type() {
                     'add_new_item' => __( 'Add New Order status', 'jigoshop'),
                     'new_item_name' => __( 'New Order status Name', 'jigoshop')
             ),
+            'public' => false,
             'show_ui' => false,
             'show_in_nav_menus' => false,
             'query_var' => true,
