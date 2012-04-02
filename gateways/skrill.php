@@ -47,9 +47,11 @@ class skrill extends jigoshop_payment_gateway {
 	 **/
 	public function admin_options() {
     	?>
-    	<thead><tr><th scope="col" width="200px"><?php _e('Skrill (Moneybookers)', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('Skrill works by using an iFrame to submit payment information securely to Moneybookers.', 'jigoshop'); ?></th></tr></thead>
+    	<thead><tr><th scope="col" colspan="2">
+    		<h3 class="title"><?php _e('Skrill (Moneybookers)', 'jigoshop'); ?></h3>
+    		<p><?php _e('Skrill works by using an iFrame to submit payment information securely to Moneybookers.', 'jigoshop'); ?></p></th></tr></thead>
     	<tr>
-	        <td class="titledesc"><?php _e('Enable Skrill', 'jigoshop') ?>:</td>
+	        <th scope="row"><?php _e('Enable Skrill', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <select name="jigoshop_skrill_enabled" id="jigoshop_skrill_enabled" style="min-width:100px;">
 		            <option value="yes" <?php if (get_option('jigoshop_skrill_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
@@ -58,25 +60,25 @@ class skrill extends jigoshop_payment_gateway {
 	        </td>
 	    </tr>
 	    <tr>
-	        <td class="titledesc"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?>:</td>
+	        <th scope="row"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input class="input-text" type="text" name="jigoshop_skrill_title" id="jigoshop_skrill_title" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_skrill_title')) echo $value; else echo 'skrill'; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
-	        <td class="titledesc"><a href="#" tip="<?php _e('Please enter your skrill email address; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Skrill merchant e-mail', 'jigoshop') ?>:</td>
+	        <th scope="row"><a href="#" tip="<?php _e('Please enter your skrill email address; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Skrill merchant e-mail', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input class="input-text" type="text" name="jigoshop_skrill_email" id="jigoshop_skrill_email" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_skrill_email')) echo $value; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
-	    	<td class="titledesc"><a href="#" tip="<?php _e('Please enter your skrill secretword; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Skrill Secret Word', 'jigoshop') ?>:</td>
+	    	<th scope="row"><a href="#" tip="<?php _e('Please enter your skrill secretword; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Skrill Secret Word', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input class="input-text" type="text" name="jigoshop_skrill_secret_word" id="jigoshop_skrill_secret_word" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_skrill_secret_word')) echo $value; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
-	    	<td class="titledesc"><a href="#" tip="<?php _e('Please enter your skrill Customer ID; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Skrill Customer ID', 'jigoshop') ?>:</td>
+	    	<th scope="row"><a href="#" tip="<?php _e('Please enter your skrill Customer ID; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Skrill Customer ID', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input class="input-text" type="text" name="jigoshop_skrill_customer_id" id="jigoshop_skrill_customer_id" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_skrill_customer_id')) echo $value; ?>" />
 	        </td>
