@@ -775,7 +775,7 @@ class jigoshop_product {
                 $html = '<span class="from">' . _x('From:', 'price', 'jigoshop') . '</span> ';
             endif;
 
-			return $html . jigoshop_price( $array[0] );
+			return empty( $array ) ? __( 'Price Not Announced', 'jigoshop' ) : $html . jigoshop_price( $array[0] );
 		}
 
 		// For standard products
