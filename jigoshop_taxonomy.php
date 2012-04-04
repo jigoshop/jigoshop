@@ -136,7 +136,7 @@ function jigoshop_post_type() {
 			'capability_type' => 'post',
 			'publicly_queryable' => true,
 			'exclude_from_search' => false,
-			'hierarchical' => true,
+			'hierarchical' => false, // Hierarchial causes a memory leak http://core.trac.wordpress.org/ticket/15459
 			'rewrite' => array( 'slug' => $base_slug, 'with_front' => false ),
 			'query_var' => true,
 			'supports' => array( 'title', 'editor', 'thumbnail', 'comments', 'excerpt',/*, 'page-attributes'*/ ),
