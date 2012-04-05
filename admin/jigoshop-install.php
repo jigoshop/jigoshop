@@ -81,9 +81,9 @@ function _install_jigoshop() {
  * @since 		1.0
  */
 function jigoshop_default_options() {
-	global $options_settings;
+	global $jigoshop_options_settings;
 
-	foreach ($options_settings as $value) :
+	foreach ($jigoshop_options_settings as $value) :
 
         if (isset($value['std'])) :
 

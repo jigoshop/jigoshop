@@ -60,13 +60,13 @@ function csort_tax_rates($a, $b) {
  * @param 		array $options List of options to go through and save
  */
 function jigoshop_update_options() {
-    global $options_settings;
+    global $jigoshop_options_settings;
 
     if (isset($_POST['submitted']) && $_POST['submitted'] == 'yes') {
 
         $update_image_meta = false;
 
-        foreach ($options_settings as $value) {
+        foreach ($jigoshop_options_settings as $value) {
             if (isset($value['id']) && $value['id'] == 'jigoshop_tax_rates') :
 
                 $tax_classes = array();
@@ -849,14 +849,14 @@ function get_all_states_key($tax_rate) {
  * @usedby 		jigoshop_admin_menu2()
  */
 function jigoshop_settings() {
-    global $options_settings;
+    global $jigoshop_options_settings;
     ?>
     <script type="text/javascript" src="<?php echo jigoshop::assets_url(); ?>/assets/js/easyTooltip.js"></script>
     <div class="wrap jigoshop">
         <div class="icon32 icon32-jigoshop-settings" id="icon-jigoshop"><br/></div>
         <h2><?php _e('General Settings', 'jigoshop'); ?></h2>
         <form method="post" id="mainform" action="">
-    <?php jigoshop_admin_fields($options_settings); ?>
+    <?php jigoshop_admin_fields($jigoshop_options_settings); ?>
             <input name="submitted" type="hidden" value="yes" />
         </form>
     </div>

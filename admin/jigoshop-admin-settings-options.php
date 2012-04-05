@@ -1,6 +1,6 @@
 <?php
 /**
- * $options_settings variable contains all the options used on the Jigoshop settings page
+ * $jigoshop_options_settings variable contains all the options used on the Jigoshop settings page
  *
  * DISCLAIMER
  *
@@ -24,9 +24,9 @@
  * @category 	Admin
  * @usedby 		jigoshop_settings(), jigoshop_default_options()
  */
-global $options_settings;
+global $jigoshop_options_settings;
 
-$options_settings = apply_filters('jigoshop_options_settings', array(
+$jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array( 'type' => 'tab', 'tabname' => __('General', 'jigoshop') ),
 
