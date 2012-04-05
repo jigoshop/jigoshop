@@ -183,8 +183,8 @@ class jigoshop_checkout extends jigoshop_singleton {
                 // There is no need to have it, because was assume when user hasn't selected
                 // a country that they are from the shop base country.
                 $field = '<p class="form-row '.implode(' ', $args['class']).'">
-                <label for="'.$args['name'].'" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
-                <select name="'.$args['name'].'" id="'.$args['name'].'" class="country_to_state" rel="'.$args['rel'].'">';
+                <label for="'.esc_attr($args['name']).'" class="'.esc_attr(implode(' ', $args['label_class'])).'">'.$args['label'].$required.'</label>
+                <select name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" class="country_to_state" rel="'.esc_attr($args['rel']).'">';
 
 				foreach(jigoshop_countries::get_allowed_countries() as $key=>$value) :
 					$field .= '<option value="'.esc_attr($key).'"';
