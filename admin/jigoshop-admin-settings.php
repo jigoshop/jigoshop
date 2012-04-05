@@ -295,10 +295,8 @@ function jigoshop_update_options() {
                 }
             }
         }
-
+        add_action( 'jigoshop_admin_settings_notices', 'jigoshop_settings_updated_notice' );
         do_action('jigoshop_update_options');
-
-        echo '<div id="message" class="updated fade"><p><strong>' . __('Your settings have been saved.', 'jigoshop') . '</strong></p></div>';
     }
 }
 
@@ -840,6 +838,14 @@ function jigoshop_admin_fields($options) {
 function get_all_states_key($tax_rate) {
     return $tax_rate['country'] . $tax_rate['class'];
 }
+
+/**
+ * Prints an updated notice
+ */
+function jigoshop_settings_updated_notice() {
+    echo '<div id="message" class="updated fade"><p><strong>' . __('Your settings have been saved.', 'jigoshop') . '</strong></p></div>';
+}
+
 /**
  * Settings page
  *
@@ -855,6 +861,7 @@ function jigoshop_settings() {
     <div class="wrap jigoshop">
         <div class="icon32 icon32-jigoshop-settings" id="icon-jigoshop"><br/></div>
         <h2><?php _e('General Settings', 'jigoshop'); ?></h2>
+        <?php do_action( 'jigoshop_admin_settings_notices' ); ?>
         <form method="post" id="mainform" action="">
         <?php wp_nonce_field( 'jigoshop-update-settings', '_jigoshop_csrf' ); ?>
     <?php jigoshop_admin_fields($jigoshop_options_settings); ?>
