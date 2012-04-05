@@ -20,22 +20,22 @@
 
 	echo '<div id="comments">';
 
-	$count = $wpdb->get_var("
+	$count = $wpdb->get_var( $wpdb->prepare("
 		SELECT COUNT(meta_value) FROM $wpdb->commentmeta
 		LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
 		WHERE meta_key = 'rating'
-		AND comment_post_ID = $post->ID
+		AND comment_post_ID = %d
 		AND comment_approved = '1'
 		AND meta_value > 0
-	");
+	", $post->ID ) );
 
-	$rating = $wpdb->get_var("
+	$rating = $wpdb->get_var( $wpdb->prepare("
 		SELECT SUM(meta_value) FROM $wpdb->commentmeta
 		LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
 		WHERE meta_key = 'rating'
-		AND comment_post_ID = $post->ID
+		AND comment_post_ID = %d
 		AND comment_approved = '1'
-	");
+	", $post->ID ) );
 
 	if ( $count>0 ) :
 
