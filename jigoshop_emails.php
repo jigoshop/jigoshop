@@ -51,7 +51,7 @@ function jigoshop_new_order_notification($order_id) {
 
     $message = ob_get_clean();
     
-    $message = apply_filters('jigoshop_change_new_order_email_contents', $order, $message);
+    $message = apply_filters('jigoshop_change_new_order_email_contents', $message, $order);
     $message = html_entity_decode(strip_tags($message));
 
     wp_mail(get_option('jigoshop_email'), $subject, $message, "From: " . get_option('jigoshop_email') . "\r\n");
@@ -98,7 +98,7 @@ function jigoshop_processing_order_customer_notification($order_id) {
 
     $message = ob_get_clean();
     
-    $message = apply_filters('jigoshop_change_processing_order_email_contents', $order, $message);
+    $message = apply_filters('jigoshop_change_processing_order_email_contents', $message, $order);
     $message = html_entity_decode(strip_tags($message));
 
     wp_mail($order->billing_email, $subject, $message, "From: " . get_option('jigoshop_email') . "\r\n");
@@ -129,8 +129,9 @@ function jigoshop_completed_order_customer_notification($order_id) {
     add_shipping_address_details($order);
 
     $message = ob_get_clean();
+
     
-    $message = apply_filters('jigoshop_change_completed_order_email_contents', $order, $message);
+    $message = apply_filters('jigoshop_change_completed_order_email_contents', $message, $order);
     $message = html_entity_decode(strip_tags($message));
     $message = apply_filters('jigoshop_completed_order_customer_notification_mail_message', $message);
     
@@ -163,7 +164,7 @@ function jigoshop_refunded_order_customer_notification($order_id) {
 
     $message = ob_get_clean();
     
-    $message = apply_filters('jigoshop_change_refunded_email_message', $order, $message);
+    $message = apply_filters('jigoshop_change_refunded_email_message', $message, $order);
     $message = html_entity_decode(strip_tags($message));
     $message = apply_filters('jigoshop_refunded_order_customer_notification_mail_message', $message);
 
@@ -188,7 +189,7 @@ function jigoshop_pay_for_order_customer_notification($order_id) {
 
     $message = ob_get_clean();
     
-    $message = apply_filters('jigoshop_change_pay_order_email_contents', $order, $message);
+    $message = apply_filters('jigoshop_change_pay_order_email_contents', $message, $order);
     $customer_message = html_entity_decode(strip_tags($customer_message . $message));
 
     wp_mail($order->billing_email, $subject, $customer_message, "From: " . get_option('jigoshop_email') . "\r\n");

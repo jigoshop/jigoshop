@@ -775,7 +775,7 @@ class jigoshop_product {
                 $html = '<span class="from">' . _x('From:', 'price', 'jigoshop') . '</span> ';
             endif;
 
-			return $html . jigoshop_price( $array[0] );
+			return empty( $array ) ? __( 'Price Not Announced', 'jigoshop' ) : $html . jigoshop_price( $array[0] );
 		}
 
 		// For standard products
@@ -882,22 +882,22 @@ class jigoshop_product {
 		global $wpdb;
 
 		// Do we really need this? -Rob
-		$count = $wpdb->get_var("
+		$count = $wpdb->get_var( $wpdb->prepare("
 			SELECT COUNT(meta_value) FROM $wpdb->commentmeta
 			LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
 			WHERE meta_key = 'rating'
-			AND comment_post_ID = $this->id
+			AND comment_post_ID = %d
 			AND comment_approved = '1'
 			AND meta_value > 0
-		");
+		", $this->id ) );
 
-		$ratings = $wpdb->get_var("
+		$ratings = $wpdb->get_var( $wpdb->prepare("
 			SELECT SUM(meta_value) FROM $wpdb->commentmeta
 			LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
 			WHERE meta_key = 'rating'
-			AND comment_post_ID = $this->id
+			AND comment_post_ID = %d
 			AND comment_approved = '1'
-		");
+		", $this->id ) );
 
 		// If we don't have any posts
 		if ( ! (bool)$count )

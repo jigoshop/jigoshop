@@ -593,7 +593,7 @@ if (!function_exists('jigoshop_product_customize_panel')) {
 
 				<form action="" method="post">
 					
-					<input type="hidden" name="customized_id" value="<?php echo $_product->ID; ?>" />
+					<input type="hidden" name="customized_id" value="<?php echo esc_attr( $_product->ID ); ?>" />
 					
 					<?php
 						$custom_products = (array) jigoshop_session::instance()->customized_products;
