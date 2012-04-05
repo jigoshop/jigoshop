@@ -63,7 +63,7 @@ function jigoshop_update_options() {
     global $jigoshop_options_settings;
 
     if (isset($_POST['submitted']) && $_POST['submitted'] == 'yes') {
-
+        check_admin_referer( 'jigoshop-update-settings', '_jigoshop_csrf' );
         $update_image_meta = false;
 
         foreach ($jigoshop_options_settings as $value) {
@@ -856,6 +856,7 @@ function jigoshop_settings() {
         <div class="icon32 icon32-jigoshop-settings" id="icon-jigoshop"><br/></div>
         <h2><?php _e('General Settings', 'jigoshop'); ?></h2>
         <form method="post" id="mainform" action="">
+        <?php wp_nonce_field( 'jigoshop-update-settings', '_jigoshop_csrf' ); ?>
     <?php jigoshop_admin_fields($jigoshop_options_settings); ?>
             <input name="submitted" type="hidden" value="yes" />
         </form>
