@@ -142,8 +142,6 @@ class jigoshop_cart extends jigoshop_singleton {
         if ( is_array( $cart_item_data ) ) {
             $cart_item_data_key = '';
             foreach ( $cart_item_data as $key => $value ) {
-
-                error_log('ABC: ' . print_r($value, true));
                 foreach( $value as $key => $val ) {
                     $value[$key] = trim($val);
                 }
@@ -152,8 +150,6 @@ class jigoshop_cart extends jigoshop_singleton {
             }
             $id_parts[] = $cart_item_data_key;
         }
-
-        error_log( 'SEND: ' .print_r($id_parts,true) );
 
         return md5( implode( '_', $id_parts ) );
     }
@@ -172,42 +168,6 @@ class jigoshop_cart extends jigoshop_singleton {
                 if ( $cart_item_key == $cart_id ) 
                     return $cart_item_key;
     }
-
-    // /**
-    //  * Check if product is in the cart and return cart item key
-    //  *
-    //  * @param int $product_id
-    //  * @param int $variation_id optional variation id
-    //  * @param array $variation array of attributre values
-    //  * @return int|null
-    //  */
-    // function find_product_in_cart($product_id, $variation_id, $variation = array(), $cart_item_data = NULL) {
-
-    //     if ( is_array( $cart_item_data ) ) {
-    //         foreach ( $cart_item_data as $key => $value ) {
-
-    //             if ( is_array( $value ) )
-    //                 $value = http_build_query( $value );
-
-    //             $cart_item_data_key .= trim($key) . trim($value);
-    //         }
-
-    //         $id_parts[] = $cart_item_data_key;
-
-    //         return sha1( implode( '_', $id_parts ) );
-    //     }
-
-    //     foreach (self::$cart_contents as $cart_item_key => $cart_item) {
-    //         if (empty($variation_id) && $cart_item['product_id'] == $product_id) {
-    //             return $cart_item_key;
-    //         } else if ($cart_item['product_id'] == $product_id && $cart_item['variation_id'] == $variation_id) {
-    //             if ($variation == $cart_item['variation']) {
-    //                 return $cart_item_key;
-    //             }
-    //         }
-    //     }
-    //     return NULL;
-    // }
 
     /**
      * Add a product to the cart
@@ -306,7 +266,6 @@ class jigoshop_cart extends jigoshop_singleton {
                 endforeach;
             endif;
             unset(self::$cart_contents[$cart_item]);
-            self::$cart_contents = array_values( self::$cart_contents );
         else :
             self::$cart_contents[$cart_item]['quantity'] = $quantity;
         endif;
