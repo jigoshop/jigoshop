@@ -56,7 +56,9 @@ function jigoshop_my_account( $atts ) {
 				<tr>
 					<th><span class="nobr"><?php _e('#', 'jigoshop'); ?></span></th>
 					<th><span class="nobr"><?php _e('Date', 'jigoshop'); ?></span></th>
-					<th><span class="nobr"><?php _e('Ship to', 'jigoshop'); ?></span></th>
+					<?php if ( get_option( 'jigoshop_calc_shipping' ) == 'yes' ) : ?>
+						<th><span class="nobr"><?php _e('Ship to', 'jigoshop'); ?></span></th>
+					<?php endif; ?>
 					<th><span class="nobr"><?php _e('Total', 'jigoshop'); ?></span></th>
 					<th colspan="2"><span class="nobr"><?php _e('Status', 'jigoshop'); ?></span></th>
 				</tr>
@@ -69,7 +71,11 @@ function jigoshop_my_account( $atts ) {
 					?><tr class="order">
 						<td><?php echo $order->id; ?></td>
 						<td><time title="<?php echo esc_attr( date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($order->order_date)) ); ?>"><?php echo date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($order->order_date)); ?></time></td>
-						<td><address><?php if ($order->formatted_shipping_address) echo $order->formatted_shipping_address; else echo '&ndash;'; ?></address></td>
+						<?php if ( get_option( 'jigoshop_calc_shipping' ) == 'yes' ) : ?>
+							<td><address>
+							<?php if ($order->formatted_shipping_address) echo $order->formatted_shipping_address; else echo '&ndash;'; ?>
+							</address></td>
+						<?php endif; ?>
 						<td><?php echo jigoshop_price($order->order_total); ?></td>
 						<td class="nobr"><?php _e($order->status, 'jigoshop'); ?></td>
 						<td class="nobr alignright">
