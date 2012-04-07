@@ -208,7 +208,7 @@ function jigoshop_process_shop_order_meta($post_id, $post)
     } else if (isset($_POST['invoice']) && $_POST['invoice']) {
 
         // Mail link to customer
-        jigoshop_pay_for_order_customer_notification($order->id);
+        jigoshop_send_customer_invoice($order->id);
     }
 
     // Error Handling

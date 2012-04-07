@@ -172,20 +172,29 @@ function jigoshop_refunded_order_customer_notification($order_id) {
 }
 
 /**
- * Pay for order notification email template - this one includes a payment link
+ * Customer invoice for an order. 
+ * 
+ * Displays link for payment if the order is marked pending.
+ * Includes download link if order is completed.
  * */
-function jigoshop_pay_for_order_customer_notification($order_id) {
+function jigoshop_send_customer_invoice($order_id) {
 
     $order = new jigoshop_order($order_id);
 
-    $subject = '[' . get_bloginfo('name') . '] ' . __('Pay for Order', 'jigoshop');
-
-    $customer_message = sprintf(__("An order has been created for you on \"%s\". To pay for this order please use the following link: %s", 'jigoshop') . PHP_EOL . PHP_EOL, get_bloginfo('name'), $order->get_checkout_payment_url());
-
+    $subject =  $subject = '[' . get_bloginfo('name') . '] ' . sprintf(__('Invoice for Order #%s', 'jigoshop'), $order->id);
+	
+	if ($order->status == 'pending') : 
+		$customer_message = sprintf(__("An order has been created for you on &quot;%s&quot;. To pay for this order please use the following link: %s", 'jigoshop') . PHP_EOL . PHP_EOL, get_bloginfo('name'), $order->get_checkout_payment_url());
+	endif;
+	
     ob_start();
     add_header_info($order);
     
-    add_order_totals($order, false, true);
+	if ($order->status == 'completed') : 
+		add_order_totals($order, true, true);
+	else :
+		add_order_totals($order, false, true);
+	endif;
 
     $message = ob_get_clean();
     
