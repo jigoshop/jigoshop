@@ -264,10 +264,10 @@ class jigoshop_cart extends jigoshop_singleton {
             $quantity = (int) $quantity + self::$cart_contents[$found_cart_item_key]['quantity'];
 
             self::set_quantity($found_cart_item_key, $quantity);
-        } else {//othervise add new product to the cart
-            // $cart_item_key = sizeof(self::$cart_contents);
             
-            self::$cart_contents[$cart_item_key] = array(
+        } else {
+        	// otherwise add new item to the cart
+            self::$cart_contents[$cart_id] = array(
             'product_id' => $product_id,
             'variation_id' => $variation_id,
             'variation' => $variation,
