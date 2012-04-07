@@ -224,7 +224,7 @@ class jigoshop_cart extends jigoshop_singleton {
         }
 
         // Load cart item data - may be added by other plugins
-        $cart_item_data = (array) apply_filters('jigoshop_add_cart_item_data', $cart_item_data, $product_id);
+        $cart_item_data = (array) apply_filters('jigoshop_add_cart_item_data', array(), $product_id);
 
         $cart_id = self::generate_cart_id($product_id, $variation_id, $variation, $cart_item_data);
         $found_cart_item_key = self::find_product_in_cart( $cart_id );
