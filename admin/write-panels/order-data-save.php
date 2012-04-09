@@ -32,6 +32,9 @@ function jigoshop_process_shop_order_meta($post_id, $post)
     //Get old order items
     $old_order_items = (array) maybe_unserialize(get_post_meta($post_id, 'order_items', true));
 
+    // Order status
+    if ( $order->update_status($_POST['order_status'] )) return;	// there were errors with status changes, don't continue
+
     // Add/Replace data to array
     $order_fields = array(
         'billing_first_name',
@@ -85,9 +88,6 @@ function jigoshop_process_shop_order_meta($post_id, $post)
 
     // Customer
     update_post_meta($post_id, 'customer_user', (int) $_POST['customer_user']);
-
-    // Order status
-    $order->update_status($_POST['order_status']);
 
     // Order items
     $order_items = array();

@@ -429,6 +429,20 @@ class jigoshop_order {
 	 */
 	function update_status( $new_status, $note = '' ) {
 
+		if ( $this->status == 'completed' && $new_status != 'refunded' ) {
+			$jigoshop_errors = (array) maybe_unserialize(get_option('jigoshop_errors'));
+			$jigoshop_errors[] = __('Completed Orders may not be changed. You may only issue a Refund.','jigoshop');
+			update_option('jigoshop_errors', $jigoshop_errors );
+			return true;
+		}
+		
+		if ( $this->status == 'refunded' ) {
+			$jigoshop_errors = (array) maybe_unserialize(get_option('jigoshop_errors'));
+			$jigoshop_errors[] = __('Refunded Orders may not be changed.','jigoshop');
+			update_option('jigoshop_errors', $jigoshop_errors );
+			return true;
+		}
+		
 		if ($note) $note .= ' ';
 
 		$new_status = get_term_by( 'slug', sanitize_title( $new_status ), 'shop_order_status');
@@ -451,7 +465,8 @@ class jigoshop_order {
 			endif;
 
 		endif;
-
+		
+		return false;		// signal no errors
 	}
 
 	/**
