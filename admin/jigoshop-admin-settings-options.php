@@ -286,6 +286,68 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array( 'type' => 'tab', 'tabname' => __('Pages', 'jigoshop') ),
 
+	array(	'name' => __('Permalinks',      'jigoshop'), 'type'         => 'title','desc' 		=> '', 'id' 		=> '' ),
+
+	array(
+		'name' => __('Prepend shop categories / tags with base page','jigoshop'),
+		'desc'		=> '',
+		'tip' 		=> __('This will only apply to tags &amp; categories.<br/>Yes: http://yoursite.com / product_category / YourCategory<br/>No: http://yoursite.com / base_page / product_category / YourCategory', 'jigoshop'),
+		'id' 		=> 'jigoshop_prepend_shop_page_to_urls',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Prepend product permalinks with shop base page','jigoshop'),
+		'desc'		=> '',
+		'id' 		=> 'jigoshop_prepend_shop_page_to_product',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Prepend product permalinks with product category','jigoshop'),
+		'desc'		=> '',
+		'id' 		=> 'jigoshop_prepend_category_to_product',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Product Category Slug','jigoshop'),
+		'desc'		=> '',
+		'tip' 		=> __('Slug displayed in product category URLs. Leave blank to use default "product-category"', 'jigoshop'),
+		'id' 		=> 'jigoshop_product_category_slug',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'product-category',
+		'type' 		=> 'text'
+	),
+
+	array(
+		'name' => __('Product Tag Slug','jigoshop'),
+		'desc'		=> '',
+		'tip' 		=> __('Slug displayed in product tag URLs. Leave blank to use default "product-tag"', 'jigoshop'),
+		'id' 		=> 'jigoshop_product_tag_slug',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'product-tag',
+		'type' 		=> 'text'
+	),
+
 	array( 'name' => __('Shop page configuration', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
 
 	array(
@@ -416,20 +478,6 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name' => __('Prepend links with base page','jigoshop'),
-		'desc'		=> '',
-		'tip' 		=> __('This will only apply to tags &amp; categories.<br/>Yes: http://yoursite.com / product_category / YourCategory<br/>No: http://yoursite.com / base_page / product_category / YourCategory', 'jigoshop'),
-		'id' 		=> 'jigoshop_prepend_shop_page_to_urls',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'no',
-		'type' 		=> 'select',
-		'options' => array(
-			'no'  => __('No', 'jigoshop'),
-			'yes' => __('Yes', 'jigoshop')
-		)
-	),
-
-	array(
 		'name' => __('Sort products in catalog by','jigoshop'),
 		'desc' 		=> '',
 		'tip' 		=> __('Determines the display sort order of products for the Shop, Categories, and Tag pages.','jigoshop'),
@@ -478,7 +526,7 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'type' 		=> 'text',
 	),
 
-	array(	'name' => __('Pricing Options', 'jigoshop'), 'type' 		=> 'title','desc' 		=> '', 'id' 		=> '' ),
+	array(	'name' => __('Pricing Options', 'jigoshop'), 'type'         => 'title','desc' 		=> '', 'id' 		=> '' ),
 
 	array(
 		'name' => __('Currency', 'jigoshop'),

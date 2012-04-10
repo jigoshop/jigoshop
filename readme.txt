@@ -114,6 +114,11 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 == Changelog ==
 
 = 1.2 - TBA =
+* New permalink options:
+	* Allow `%product_cat%` for permalinks
+	* Prepend product urls with category
+	* Prepend product urls with shop base page
+	* Set your own product category / tag slugs
 * Resend download links by clicking "Email Invoice" on an order
 * Provide personalized products - customers may add their own information to appear on purchased products
 * Provide WordPress Bulk and Quick editing of both stock levels and prices on the Admin Product List
