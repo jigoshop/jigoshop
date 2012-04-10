@@ -769,7 +769,8 @@ class jigoshop_product {
 			$sameprice = true;
 			$firstprice = reset( $array );
 			for ( $i = 0 ; $i < count( $array ) ; $i++ ) {
-				if ( each( $array ) != $firstprice ) {
+				$thisprice = each( $array );
+				if ( $thisprice['value'] != $firstprice ) {
 					$sameprice = false;
 				}
 			}
