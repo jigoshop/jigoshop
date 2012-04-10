@@ -747,7 +747,7 @@ class jigoshop_product {
 
 		$html = null;
 
-		// First check if the product is grouped
+		// First check if the product has child products
 		if ( $this->is_type( array('grouped', 'variable') ) ) {
 
 			if ( ! ($children = $this->get_children()) )
@@ -759,23 +759,27 @@ class jigoshop_product {
 
 				// Only get prices that are in stock
 				if ( $child->is_in_stock() ) {
-					$array[] = $child->get_price();
+					// store product id for later, get regular or sale price if available
+					$array[$child_ID] = $child->get_price();
 				}
 			}
-			sort($array);
+			asort( $array );	// cheapest price first
 
-            if ($this->is_type('variable')) :
-
-                // for variable products, only display From if prices differ among them
-                if (count($array) >= 2 && $array[count($array) - 1] != $array[0]) :
-                    $html = '<span class="from">' . _x('From:', 'price', 'jigoshop') . '</span> ';
-                endif;
-
-            else :
-                $html = '<span class="from">' . _x('From:', 'price', 'jigoshop') . '</span> ';
-            endif;
-
-			return empty( $array ) ? __( 'Price Not Announced', 'jigoshop' ) : $html . jigoshop_price( $array[0] );
+			// only display 'From' if prices differ among them
+			if ( count( $array ) >= 2 && reset( $array ) != end( $array ) ) :
+				$html = '<span class="from">' . _x('From:', 'price', 'jigoshop') . '</span> ';
+				reset( $array );
+				$id = key( $array );
+				$child = $this->get_child( $id );
+				if ( $child->is_on_sale() )
+					$html .= $child->calculate_sale_price();
+				else
+					$html .= jigoshop_price( $child->regular_price );
+			else :	// prices are the same
+            	$html = jigoshop_price( reset( $array ) );
+			endif;
+				
+			return empty( $array ) ? __( 'Price Not Announced', 'jigoshop' ) : $html;
 		}
 
 		// For standard products

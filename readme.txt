@@ -142,7 +142,8 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * Automatically include 0% tax rate for customers outside of tax base
 * Calculate tax based on billing address when item is not shipable or
   shipping is disabled
-
+* variable and grouped products now show both regular and sale price on the Shop
+* completed orders are now final, only refunds can be issued
 
 = 1.1.1 - 2012-02-29 =
 * Adds new admin setting for different redirection options after adding to the cart
