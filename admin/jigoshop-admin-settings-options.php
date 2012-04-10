@@ -132,9 +132,9 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 			'yes' => __('Yes', 'jigoshop')
 		)
 	),
-    
+
     array( 'name' => __('Invoicing', 'jigoshop'), 'type' => 'title', 'desc'             => '' ),
-    
+
     array(
 		'name' => __('Company Name','jigoshop'),
 		'desc' 		=> '',
@@ -194,7 +194,7 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'type' 		=> 'text',
 		'std' 		=> ''
 	),
-    
+
 	array( 'name' => __('Checkout page', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
 
 	array(
@@ -943,7 +943,7 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 			'no'  => __('No', 'jigoshop')
 		)
 	),
-    
+
     array(
         'name' => __('Apply Taxes After Coupon','jigoshop'),
         'desc' => '',
