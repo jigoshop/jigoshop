@@ -1,3 +1,23 @@
+.tooltip{position:absolute;z-index:1020;display:block;visibility:visible;padding:5px;font-size:11px;opacity:0;filter:alpha(opacity=0);}
+.tooltip.in{opacity:0.8;filter:alpha(opacity=80);}
+.tooltip.top{margin-top:-2px;}
+.tooltip.right{margin-left:2px;}
+.tooltip.bottom{margin-top:2px;}
+.tooltip.left{margin-left:-2px;}
+.tooltip.top .tooltip-arrow{bottom:0;left:50%;margin-left:-5px;border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid #000000;}
+.tooltip.left .tooltip-arrow{top:50%;right:0;margin-top:-5px;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:5px solid #000000;}
+.tooltip.bottom .tooltip-arrow{top:0;left:50%;margin-left:-5px;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:5px solid #000000;}
+.tooltip.right .tooltip-arrow{top:50%;left:0;margin-top:-5px;border-top:5px solid transparent;border-bottom:5px solid transparent;border-right:5px solid #000000;}
+.tooltip-inner{max-width:200px;padding:3px 8px;color:#ffffff;font-weight:normal;text-align:center;text-decoration:none;background-color:#000000;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}
+.tooltip-arrow{position:absolute;width:0;height:0;}
+.hide{display:none;}
+.show{display:block;}
+.invisible{visibility:hidden;}
+.fade{-webkit-transition:opacity 0.15s linear;-moz-transition:opacity 0.15s linear;-ms-transition:opacity 0.15s linear;-o-transition:opacity 0.15s linear;transition:opacity 0.15s linear;opacity:0;}
+.fade.in{opacity:1;}
+.collapse{-webkit-transition:height 0.35s ease;-moz-transition:height 0.35s ease;-ms-transition:height 0.35s ease;-o-transition:height 0.35s ease;transition:height 0.35s ease;position:relative;overflow:hidden;height:0;}
+.collapse.in{height:auto;}
+.hidden{display:none;visibility:hidden;}
 #toplevel_page_jigoshop .wp-menu-image{background:url(../images/icons/menu_icons.png) no-repeat 0px -32px !important;}
 #toplevel_page_jigoshop:hover .wp-menu-image,#toplevel_page_jigoshop.wp-has-current-submenu .wp-menu-image{background:url(../images/icons/menu_icons.png) no-repeat 0px 0px !important;}
 #toplevel_page_jigoshop .wp-menu-image img{display:none;}
@@ -61,8 +81,12 @@ ul.subsubsub li.completed a{color:green;}
 ul.subsubsub li.onhold a{color:red;}
 ul.subsubsub li.cancelled a{color:#dfdfdf;}
 ul.subsubsub li.refunded a{color:#ccc;}
-.fixed .column-sku,.fixed .column-product-type,.fixed .column-price,.fixed .column-stock,.fixed .column-product-date,.fixed .column-product-cat,.fixed .column-product-tags{width:15%;}
-.fixed .column-featured{width:75px;}
+.fixed .column-sku,.fixed .column-product-type,.fixed .column-price,.fixed .column-stock,.fixed .column-product-date,.fixed .column-product-cat,.fixed .column-product-tags{width:12%;}
+.fixed th.column-featured a,.fixed th.column-featured.desc a:hover{background:url('../images/head_featured.gif') center no-repeat;}
+.fixed th.column-featured a:hover,.fixed th.column-featured.desc a{background:url('../images/head_featured_desc.gif') center no-repeat;}
+.fixed .column-featured{width:60px;}.fixed .column-featured div{text-indent:100%;white-space:nowrap;overflow:hidden;}
+.fixed .column-featured.sortable a span,.fixed .column-featured.sorted a span{float:none;}
+.fixed .column-featured:hover span.sorting-indicator,.fixed .column-featured span.sorting-indicator{display:none;}
 .tablenav #dropdown_product_cat{width:170px;}
 .tablenav #dropdown_product_type{width:130px;}
 table.wp-list-table .column-thumb{width:50px;text-align:center;white-space:nowrap;}table.wp-list-table .column-thumb a:hover img{border-color:#D54E21;}

@@ -58,9 +58,9 @@ function jigoshop_edit_product_columns($columns) {
 	$columns["thumb"] = null;
 	$columns["title"] = __("Title", 'jigoshop');
 
-	$columns["featured"] = __("Featured", 'jigoshop');
+	$columns["featured"] = '<div data-original-title="Featured">'. __('Featured', 'Jigoshop') .'</div>';
 
-	$columns["product-type"] = __("Type", 'jigoshop');
+	$columns["product-type"] = __('Type', 'jigoshop');
 	if( get_option('jigoshop_enable_sku', true) == 'yes' ) {
 		$columns["product-type"] .= ' &amp; ' . __("SKU", 'jigoshop');
 	}
@@ -71,7 +71,7 @@ function jigoshop_edit_product_columns($columns) {
 
 	$columns["price"] = __("Price", 'jigoshop');
 
-	$columns["product-visibility"] = __("Visibility", 'jigoshop');
+	// $columns["product-visibility"] = __("Visibility", 'jigoshop'); // moving this elsewhere -rob
 
 	$columns["product-date"] = __("Date", 'jigoshop');
 
@@ -103,8 +103,8 @@ function jigoshop_custom_product_columns($column) {
 		case "featured" :
 			$url = wp_nonce_url( admin_url('admin-ajax.php?action=jigoshop-feature-product&product_id=' . $post->ID) );
 			echo '<a href="'.esc_url($url).'" title="'.__('Change','jigoshop') .'">';
-			if ($product->is_featured()) echo '<a href="'.esc_url($url).'"><img src="'.jigoshop::assets_url().'/assets/images/success.gif" alt="yes" />';
-			else echo '<img src="'.jigoshop::assets_url().'/assets/images/success-off.gif" alt="no" />';
+			if ($product->is_featured()) echo '<a href="'.esc_url($url).'"><img src="'.jigoshop::assets_url().'/assets/images/head_featured_desc.gif" alt="yes" />';
+			else echo '<img src="'.jigoshop::assets_url().'/assets/images/head_featured.gif" alt="no" />';
 			echo '</a>';
 		break;
 		case "stock" :
