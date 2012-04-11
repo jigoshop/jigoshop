@@ -20,22 +20,22 @@
 
 	echo '<div id="comments">';
 
-	$count = $wpdb->get_var("
+	$count = $wpdb->get_var( $wpdb->prepare("
 		SELECT COUNT(meta_value) FROM $wpdb->commentmeta
 		LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
 		WHERE meta_key = 'rating'
-		AND comment_post_ID = $post->ID
+		AND comment_post_ID = %d
 		AND comment_approved = '1'
 		AND meta_value > 0
-	");
+	", $post->ID ) );
 
-	$rating = $wpdb->get_var("
+	$rating = $wpdb->get_var( $wpdb->prepare("
 		SELECT SUM(meta_value) FROM $wpdb->commentmeta
 		LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
 		WHERE meta_key = 'rating'
-		AND comment_post_ID = $post->ID
+		AND comment_post_ID = %d
 		AND comment_approved = '1'
-	");
+	", $post->ID ) );
 
 	if ( $count>0 ) :
 
@@ -107,7 +107,7 @@
 				<option value="2">'.__('Not that bad','jigoshop').'</option>
 				<option value="1">'.__('Very Poor','jigoshop').'</option>
 			</select></p>
-			<p class="comment-form-comment"><label for="comment">' . _x( 'Your Review', 'noun' ) . '</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>'
+			<p class="comment-form-comment"><label for="comment">' . _x( 'Your Review', 'noun', 'jigoshop' ) . '</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>'
 			. jigoshop::nonce_field('comment_rating', true, false)
 	));
 

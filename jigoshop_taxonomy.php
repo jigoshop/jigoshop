@@ -26,11 +26,16 @@ function jigoshop_post_type() {
 
 	$base_slug = ($shop_page_id && $base_page = get_page( $shop_page_id )) ? get_page_uri( $shop_page_id ) : 'shop';
 
-	if (get_option('jigoshop_prepend_shop_page_to_urls')=="yes") :
-		$category_base = trailingslashit($base_slug);
-	else :
-		$category_base = '';
-	endif;
+	$category_base = ( get_option('jigoshop_prepend_shop_page_to_urls') == 'yes' ) ? trailingslashit($base_slug) : '';
+
+	$category_slug = ( get_option('jigoshop_product_category_slug') ) ? get_option('jigoshop_product_category_slug') : _x('product-category', 'slug', 'jigoshop');
+
+	$tag_slug = ( get_option('jigoshop_product_tag_slug') ) ? get_option('jigoshop_product_tag_slug') : _x('product-tag', 'slug', 'jigoshop');
+
+	$product_base = ( get_option('jigoshop_prepend_shop_page_to_product') == 'yes' ) ? trailingslashit($base_slug) : trailingslashit(_x('product', 'slug', 'jigoshop'));
+
+	if ( get_option('jigoshop_prepend_category_to_product') == 'yes' ) $product_base .= trailingslashit('%product_cat%');
+	$product_base = untrailingslashit($product_base);
 
 	register_taxonomy( 'product_cat',
         array('product'),
@@ -51,7 +56,7 @@ function jigoshop_post_type() {
             ),
             'show_ui' => true,
             'query_var' => true,
-            'rewrite' => array( 'slug' => $category_base . _x('product-category', 'slug', 'jigoshop'), 'with_front' => false ),
+            'rewrite' => array( 'slug' => $category_base . $category_slug, 'with_front' => false, 'hierarchical' => true ),
         )
     );
 
@@ -73,7 +78,7 @@ function jigoshop_post_type() {
             ),
             'show_ui' => true,
             'query_var' => true,
-            'rewrite' => array( 'slug' => $category_base . _x('product-tag', 'slug', 'jigoshop'), 'with_front' => false ),
+            'rewrite' => array( 'slug' => $category_base . $tag_slug, 'with_front' => false ),
         )
     );
 
@@ -136,8 +141,8 @@ function jigoshop_post_type() {
 			'capability_type' => 'post',
 			'publicly_queryable' => true,
 			'exclude_from_search' => false,
-			'hierarchical' => true,
-			'rewrite' => array( 'slug' => $base_slug, 'with_front' => false ),
+			'hierarchical' => false, // Hierarchial causes a memory leak http://core.trac.wordpress.org/ticket/15459
+			'rewrite' => array( 'slug' => $product_base, 'with_front' => false, 'feeds' => $base_slug ),
 			'query_var' => true,
 			'supports' => array( 'title', 'editor', 'thumbnail', 'comments', 'excerpt',/*, 'page-attributes'*/ ),
 			'has_archive' => $base_slug,
@@ -162,16 +167,18 @@ function jigoshop_post_type() {
 				'not_found_in_trash' => __( 'No Variations found in trash', 'jigoshop' ),
 				'parent' => __( 'Parent Variation', 'jigoshop' )
 			),
-			'public' => true,
+
+			'public' => false,
 			'show_ui' => false,
-			'capability_type' => 'post',
 			'publicly_queryable' => true,
 			'exclude_from_search' => true,
+			'show_in_nav_menus' => false,
+
+			'capability_type' => 'post',
 			'hierarchical' => false,
 			'rewrite' => false,
 			'query_var' => true,
 			'supports' => array( 'title', 'editor', 'custom-fields' ),
-			'show_in_nav_menus' => false,
 			'show_in_menu' => 'edit.php?post_type=product'
 		)
 	);
@@ -205,13 +212,16 @@ function jigoshop_post_type() {
 				'parent' => __( 'Parent Orders', 'jigoshop' )
 			),
 			'description' => __( 'This is where store orders are stored.', 'jigoshop' ),
-			'public' => true,
+
+			'public' => false,
 			'show_ui' => true,
-			'capability_type' => 'post',
+			'show_in_nav_menus' => false,
 			'publicly_queryable' => false,
 			'exclude_from_search' => true,
+
+			'capability_type' => 'post',
 			'hierarchical' => false,
-			'show_in_nav_menus' => false,
+
 			'rewrite' => false,
 			'query_var' => true,
 			'supports' => array( 'title', 'comments' ),
@@ -236,6 +246,7 @@ function jigoshop_post_type() {
                     'add_new_item' => __( 'Add New Order status', 'jigoshop'),
                     'new_item_name' => __( 'New Order status Name', 'jigoshop')
             ),
+            'public' => false,
             'show_ui' => false,
             'show_in_nav_menus' => false,
             'query_var' => true,
@@ -343,7 +354,7 @@ function jigoshop_delete_product_cat($term_id) {
 	if(!$term_id) return;
 
 	global $wpdb;
-	$wpdb->query("DELETE FROM {$wpdb->jigoshop_termmeta} WHERE `jigoshop_term_id` = " . $term_id);
+	$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->jigoshop_termmeta} WHERE `jigoshop_term_id` = %d", $term_id ) );
 
 }
 add_action("delete_product_cat", 'jigoshop_delete_product_cat');

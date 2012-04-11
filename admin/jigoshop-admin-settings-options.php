@@ -1,6 +1,6 @@
 <?php
 /**
- * $options_settings variable contains all the options used on the Jigoshop settings page
+ * $jigoshop_options_settings variable contains all the options used on the Jigoshop settings page
  *
  * DISCLAIMER
  *
@@ -24,9 +24,9 @@
  * @category 	Admin
  * @usedby 		jigoshop_settings(), jigoshop_default_options()
  */
-global $options_settings;
+global $jigoshop_options_settings;
 
-$options_settings = apply_filters('jigoshop_options_settings', array(
+$jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array( 'type' => 'tab', 'tabname' => __('General', 'jigoshop') ),
 
@@ -108,6 +108,20 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	array(
 		'name' => __('Disable Jigoshop frontend.css','jigoshop'),
 		'desc' 		=> '',
+		'tip' 		=> __('Useful if you want to disable Jigoshop styles and theme it yourself via your theme.','jigoshop'),
+		'id' 		=> 'jigoshop_disable_css',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Disable bundled Fancybox','jigoshop'),
+		'desc' 		=> '',
 		'tip' 		=> __('Useful if or one of your plugin already loads the Fancybox script and css. But be careful, Jigoshop will still try to open product images using Fancybox.','jigoshop'),
 		'id' 		=> 'jigoshop_disable_fancybox',
 		'css' 		=> 'min-width:100px;',
@@ -119,60 +133,66 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		)
 	),
 
-	array( 'name' => __('Checkout options', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
+    array( 'name' => __('Invoicing', 'jigoshop'), 'type' => 'title', 'desc'             => '' ),
 
-	array(
-		'name' => __('Allow guest purchases','jigoshop'),
+    array(
+		'name' => __('Company Name','jigoshop'),
 		'desc' 		=> '',
-		'tip' 		=> __('Setting this to Yes will allow users to checkout without registering or signing up. Otherwise, users must be signed in or must sign up to checkout.','jigoshop'),
-		'id' 		=> 'jigoshop_enable_guest_checkout',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'yes',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
+		'tip' 		=> __('Setting your company name will enable us to print it out on your invoice emails. Leave blank to disable.','jigoshop'),
+		'id' 		=> 'jigoshop_company_name',
+		'css' 		=> 'width:300px;',
+		'type' 		=> 'text',
+		'std' 		=> ''
 	),
 
-	array(
-		'name' => __('Show login form','jigoshop'),
-		'desc' 		=> '',
-		'id' 		=> 'jigoshop_enable_guest_login',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'yes',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
+    array(
+		'name' => __('Tax Registration Number','jigoshop'),
+		'desc' 		=> 'Add your tax registration label before the registration number and it will be printed as well. eg. <code>VAT Number: 88888888</code>',
+		'tip' 		=> __('Setting your tax number will enable us to print it out on your invoice emails. Leave blank to disable.','jigoshop'),
+		'id' 		=> 'jigoshop_tax_number',
+		'css' 		=> 'width:300px;',
+		'type' 		=> 'text',
+		'std' 		=> ''
 	),
 
-	array(
-		'name' => __('Allow registration','jigoshop'),
+    array(
+		'name' => __('Address Line1','jigoshop'),
 		'desc' 		=> '',
-		'id' 		=> 'jigoshop_enable_signup_form',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'yes',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
+		'tip' 		=> __('Setting your address will enable us to print it out on your invoice emails. Leave blank to disable.','jigoshop'),
+		'id' 		=> 'jigoshop_address_line1',
+		'css' 		=> 'width:300px;',
+		'type' 		=> 'text',
+		'std' 		=> ''
 	),
 
-	array(
-		'name' => __('Force SSL on checkout','jigoshop'),
+    array(
+		'name' => __('Address Line2','jigoshop'),
 		'desc' 		=> '',
-		'tip' 		=> __('Forcing SSL is recommended. This will load your checkout page with https://. An SSL certificate is <strong>required</strong> if you choose yes. Contact your hosting provider for more information on SSL Certs.','jigoshop'),
-		'id' 		=> 'jigoshop_force_ssl_checkout',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'no',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
+        'tip'       => __('If address line1 is not set, address line2 will not display even if you put a value in it. Setting your address will enable us to print it out on your invoice emails. Leave blank to disable.','jigoshop'),
+		'id' 		=> 'jigoshop_address_line2',
+		'css' 		=> 'width:300px;',
+		'type' 		=> 'text',
+		'std' 		=> ''
+	),
+
+    array(
+		'name' => __('Company Phone','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Setting your company phone number will enable us to print it out on your invoice emails. Leave blank to disable.','jigoshop'),
+		'id' 		=> 'jigoshop_company_phone',
+		'css' 		=> 'width:300px;',
+		'type' 		=> 'text',
+		'std' 		=> ''
+	),
+
+    array(
+		'name' => __('Company Email','jigoshop'),
+		'desc' 		=> '',
+		'tip' 		=> __('Setting your company email will enable us to print it out on your invoice emails. Leave blank to disable.','jigoshop'),
+		'id' 		=> 'jigoshop_company_email',
+		'css' 		=> 'width:300px;',
+		'type' 		=> 'text',
+		'std' 		=> ''
 	),
 
 	array( 'name' => __('Checkout page', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
@@ -265,6 +285,68 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	array( 'type' => 'tabend'),
 
 	array( 'type' => 'tab', 'tabname' => __('Pages', 'jigoshop') ),
+
+	array(	'name' => __('Permalinks',      'jigoshop'), 'type'         => 'title','desc' 		=> '', 'id' 		=> '' ),
+
+	array(
+		'name' => __('Prepend shop categories / tags with base page','jigoshop'),
+		'desc'		=> '',
+		'tip' 		=> __('This will only apply to tags &amp; categories.<br/>Yes: http://yoursite.com / product_category / YourCategory<br/>No: http://yoursite.com / base_page / product_category / YourCategory', 'jigoshop'),
+		'id' 		=> 'jigoshop_prepend_shop_page_to_urls',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Prepend product permalinks with shop base page','jigoshop'),
+		'desc'		=> '',
+		'id' 		=> 'jigoshop_prepend_shop_page_to_product',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Prepend product permalinks with product category','jigoshop'),
+		'desc'		=> '',
+		'id' 		=> 'jigoshop_prepend_category_to_product',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
+	),
+
+	array(
+		'name' => __('Product Category Slug','jigoshop'),
+		'desc'		=> '',
+		'tip' 		=> __('Slug displayed in product category URLs. Leave blank to use default "product-category"', 'jigoshop'),
+		'id' 		=> 'jigoshop_product_category_slug',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'product-category',
+		'type' 		=> 'text'
+	),
+
+	array(
+		'name' => __('Product Tag Slug','jigoshop'),
+		'desc'		=> '',
+		'tip' 		=> __('Slug displayed in product tag URLs. Leave blank to use default "product-tag"', 'jigoshop'),
+		'id' 		=> 'jigoshop_product_tag_slug',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'product-tag',
+		'type' 		=> 'text'
+	),
 
 	array( 'name' => __('Shop page configuration', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
 
@@ -396,20 +478,6 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name' => __('Prepend links with base page','jigoshop'),
-		'desc'		=> '',
-		'tip' 		=> __('This will only apply to tags &amp; categories.<br/>Yes: http://yoursite.com / product_category / YourCategory<br/>No: http://yoursite.com / base_page / product_category / YourCategory', 'jigoshop'),
-		'id' 		=> 'jigoshop_prepend_shop_page_to_urls',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'no',
-		'type' 		=> 'select',
-		'options' => array(
-			'no'  => __('No', 'jigoshop'),
-			'yes' => __('Yes', 'jigoshop')
-		)
-	),
-
-	array(
 		'name' => __('Sort products in catalog by','jigoshop'),
 		'desc' 		=> '',
 		'tip' 		=> __('Determines the display sort order of products for the Shop, Categories, and Tag pages.','jigoshop'),
@@ -458,7 +526,7 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 		'type' 		=> 'text',
 	),
 
-	array(	'name' => __('Pricing Options', 'jigoshop'), 'type' 		=> 'title','desc' 		=> '', 'id' 		=> '' ),
+	array(	'name' => __('Pricing Options', 'jigoshop'), 'type'         => 'title','desc' 		=> '', 'id' 		=> '' ),
 
 	array(
 		'name' => __('Currency', 'jigoshop'),
@@ -564,7 +632,21 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array( 'type' => 'tab', 'tabname' => __('Images', 'jigoshop') ),
 
-	array( 'name' => __('Image Options', 'jigoshop'), 'type' => 'title','desc' => __('Large variations from the defaults could require CSS modifications in your Theme.','jigoshop'), 'id' => '' ),
+	array( 'name' => __('Image Options', 'jigoshop'), 'type' => 'title', 'desc' => sprintf(__('Changing any of these settings will affect the dimensions of images used in your Shop. The display on the front-end will <strong>still</strong> be affected by CSS styles. After changing these settings you may need to <a href="%s">regenerate your thumbnails</a>.', 'jigoshop'), 'http://wordpress.org/extend/plugins/regenerate-thumbnails/'), 'id' => '' ),
+
+	array(
+		'name' => __('Crop Tiny images','jigoshop'),
+		'desc'		=> '',
+		'tip' 		=> __('Use No to set the image size by resizing the image proportionally (that is, without distorting it).<br />Use Yes to set the image size by hard cropping the image (either from the sides, or from the top and bottom).', 'jigoshop'),
+		'id' 		=> 'jigoshop_use_wordpress_tiny_crop',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
+	),
 
 	array(
 		'name' 		=> __('Tiny Images','jigoshop'),
@@ -577,6 +659,20 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
+		'name' => __('Crop Thumbnail images','jigoshop'),
+		'desc'		=> '',
+		'tip' 		=> __('Use No to set the image size by resizing the image proportionally (that is, without distorting it).<br />Use Yes to set the image size by hard cropping the image (either from the sides, or from the top and bottom).', 'jigoshop'),
+		'id' 		=> 'jigoshop_use_wordpress_thumbnail_crop',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
+	),
+
+	array(
 		'name' 		=> __('Thumbnail Images','jigoshop'),
 		'desc' 		=> __('The thumbnail image for Single Product page extra images.','jigoshop'),
 		'id' 		=> 'jigoshop_shop_thumbnail',
@@ -586,12 +682,40 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
+		'name' => __('Crop Catalog images','jigoshop'),
+		'desc'		=> '',
+		'tip' 		=> __('Use No to set the image size by resizing the image proportionally (that is, without distorting it).<br />Use Yes to set the image size by hard cropping the image (either from the sides, or from the top and bottom).', 'jigoshop'),
+		'id' 		=> 'jigoshop_use_wordpress_catalog_crop',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
+	),
+
+	array(
 		'name' => __( 'Catalog Images', 'jigoshop' ),
 		'desc' 		=> __('The catalog image for Shop, Categories, Tags, and Related Products.', 'jigoshop'),
 		'id' 		=> 'jigoshop_shop_small',
 		'css' 		=> '',
 		'type' 		=> 'image_size',
 		'std' 		=> 150
+	),
+
+	array(
+		'name' => __('Crop Large images','jigoshop'),
+		'desc'		=> '',
+		'tip' 		=> __('Use No to set the image size by resizing the image proportionally (that is, without distorting it).<br />Use Yes to set the image size by hard cropping the image (either from the sides, or from the top and bottom).', 'jigoshop'),
+		'id' 		=> 'jigoshop_use_wordpress_featured_crop',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'no',
+		'type' 		=> 'select',
+		'options' => array(
+			'no'  => __('No', 'jigoshop'),
+			'yes' => __('Yes', 'jigoshop')
+		)
 	),
 
 	array(
@@ -867,6 +991,20 @@ $options_settings = apply_filters('jigoshop_options_settings', array(
 			'no'  => __('No', 'jigoshop')
 		)
 	),
+
+    array(
+        'name' => __('Apply Taxes After Coupon','jigoshop'),
+        'desc' => '',
+        'tip' => __('If yes, taxes get applied after coupons. When no, taxes get applied before coupons.','jigoshop'),
+        'id' => 'jigoshop_tax_after_coupon',
+		'css' 		=> 'min-width:100px;',
+		'std' 		=> 'yes',
+		'type' 		=> 'select',
+		'options' => array(
+			'yes' => __('Yes', 'jigoshop'),
+			'no'  => __('No', 'jigoshop')
+		)
+    ),
 
 	array(
 		'name' => __('Catalog Prices include tax?','jigoshop'),

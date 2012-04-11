@@ -159,7 +159,9 @@ if (!function_exists('jigoshop_show_product_thumbnails')) {
 
 		$thumb_id = get_post_thumbnail_id();
 		$small_thumbnail_size = jigoshop_get_image_size( 'shop_thumbnail' );
-		$args = array( 'post_type' => 'attachment', 'numberposts' => -1, 'post_status' => null, 'post_parent' => $post->ID, 'orderby' => 'menu_order', 'order' => 'asc' );
+
+		$args = array( 'post_type' => 'attachment', 'post_mime_type' => 'image', 'numberposts' => -1, 'post_status' => null, 'post_parent' => $post->ID, 'orderby' => 'id', 'order' => 'asc' );
+		
 		$attachments = get_posts($args);
 		if ($attachments) :
 			$loop = 0;
@@ -366,41 +368,6 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
                     $image = '';
                     $image_link = '';
                 }
-				
-				$a_weight = $a_length = $a_width = $a_height = '';
-				
-                if ( $variation->get_weight() ) {
-                	$a_weight = '
-                    	<tr class="weight">
-                    		<th>Weight</th>
-                    		<td>'.$variation->get_weight().get_option('jigoshop_weight_unit').'</td>
-                    	</tr>';
-            	}
-
-            	if ( $variation->get_length() ) {
-	            	$a_length = '
-	                	<tr class="length">
-	                		<th>Length</th>
-	                		<td>'.$variation->get_length().get_option('jigoshop_dimension_unit').'</td>
-	                	</tr>';
-                }
-
-                if ( $variation->get_width() ) {
-	                $a_width = '
-	                	<tr class="width">
-	                		<th>Width</th>
-	                		<td>'.$variation->get_width().get_option('jigoshop_dimension_unit').'</td>
-	                	</tr>';
-                }
-
-                if ( $variation->get_height() ) {
-	                $a_height = '
-	                	<tr class="height">
-	                		<th>Height</th>
-	                		<td>'.$variation->get_height().get_option('jigoshop_dimension_unit').'</td>
-	                	</tr>
-	                ';
-            	}
 
 				$a_weight = $a_length = $a_width = $a_height = '';
 
@@ -567,6 +534,20 @@ if (!function_exists('jigoshop_product_reviews_tab')) {
 
 	}
 }
+if (!function_exists('jigoshop_product_customize_tab')) {
+	function jigoshop_product_customize_tab( $current_tab ) {
+
+		global $_product;
+		
+		if ( get_post_meta( $_product->ID , 'customizable', true ) == 'yes' ) {
+			?>
+			<li <?php if ($current_tab=='#tab-customize') echo 'class="active"'; ?>><a href="#tab-customize"><?php _e('Personalize', 'jigoshop'); ?></a></li>
+			<?php
+			
+		}
+
+	}
+}
 
 /**
  * Product page tab panels
@@ -595,7 +576,47 @@ if (!function_exists('jigoshop_product_reviews_panel')) {
 		echo '</div>';
 	}
 }
+if (!function_exists('jigoshop_product_customize_panel')) {
+	function jigoshop_product_customize_panel() {
+		global $_product;
 
+		if ( get_post_meta( $_product->ID , 'customizable', true ) == 'yes' ) :
+			echo '<div class="panel" id="tab-customize">';
+			echo '<h2>' . apply_filters('jigoshop_product_customize_heading', __('Enter your personal information as you want it to appear on the product', 'jigoshop')) . '</h2>';
+
+			if ( isset( $_POST['Submit'] ) && $_POST['Submit'] == 'Save Personalization' ) {
+				$custom_products = (array) jigoshop_session::instance()->customized_products;
+				$custom_products[$_POST['customized_id']] = jigowatt_clean( $_POST['jigoshop_customized_product'] );
+				jigoshop_session::instance()->customized_products = $custom_products;
+			}
+			?>
+
+				<form action="" method="post">
+					
+					<input type="hidden" name="customized_id" value="<?php echo esc_attr( $_product->ID ); ?>" />
+					
+					<?php
+						$custom_products = (array) jigoshop_session::instance()->customized_products;
+						$custom = isset( $custom_products[$_product->ID] ) ? $custom_products[$_product->ID] : '';
+					?>
+					
+					<textarea
+						id="jigoshop_customized_product"
+						name="jigoshop_customized_product"
+						cols="60"
+						rows="4"><?php echo esc_textarea( $custom ); ?></textarea>
+							
+					<p class="submit"><input name="Submit" type="submit" class="button-primary add_personalization" value="<?php _e( "Save Personalization", 'jigoshop' ); ?>" /></p>
+						
+					<!--p class="submit"><a href="#customize_form" class="inline show_customize_form button"><?php _e( "Add Personalization", 'jigoshop' ); ?></a></p-->
+				
+				</form>
+				
+			<?php
+			echo '</div>';
+		endif;
+	}
+}
 
 
 /**

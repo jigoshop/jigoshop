@@ -6950,3 +6950,4 @@ msgstr "Tittel (Logget ut):"
 #: \wp-content\plugins\jigoshop\widgets\user_login.php:182
 msgid "Title (Logged In):"
 msgstr "Tittel (Logget inn):"
+

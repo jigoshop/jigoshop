@@ -77,10 +77,12 @@ add_action( 'jigoshop_pagination', 'jigoshop_pagination', 10 );
 add_action( 'jigoshop_product_tabs', 'jigoshop_product_description_tab', 10 );
 add_action( 'jigoshop_product_tabs', 'jigoshop_product_attributes_tab', 20 );
 add_action( 'jigoshop_product_tabs', 'jigoshop_product_reviews_tab', 30 );
+add_action( 'jigoshop_product_tabs', 'jigoshop_product_customize_tab', 40 );
 
 add_action( 'jigoshop_product_tab_panels', 'jigoshop_product_description_panel', 10 );
 add_action( 'jigoshop_product_tab_panels', 'jigoshop_product_attributes_panel', 20 );
 add_action( 'jigoshop_product_tab_panels', 'jigoshop_product_reviews_panel', 30 );
+add_action( 'jigoshop_product_tab_panels', 'jigoshop_product_customize_panel', 40 );
 
 /* Checkout */
 add_action( 'before_checkout_form', 'jigoshop_checkout_login_form', 10 );

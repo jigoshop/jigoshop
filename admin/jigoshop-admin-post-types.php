@@ -20,6 +20,7 @@
 // Add filter to ensure the text is context relevant when updated
 // @todo: not sure if this is the best place to put this
 add_filter( 'post_updated_messages', 'jigoshop_product_updated_messages' );
+
 function jigoshop_product_updated_messages( $messages ) {
   global $post, $post_ID;
 
@@ -46,7 +47,9 @@ function jigoshop_product_updated_messages( $messages ) {
 /**
  * Custom columns
  **/
- function jigoshop_edit_product_columns($columns) {
+add_filter('manage_edit-product_columns', 'jigoshop_edit_product_columns');
+
+function jigoshop_edit_product_columns($columns) {
 
 	$columns = array();
 
@@ -55,9 +58,9 @@ function jigoshop_product_updated_messages( $messages ) {
 	$columns["thumb"] = null;
 	$columns["title"] = __("Title", 'jigoshop');
 
-	$columns["featured"] = __("Featured", 'jigoshop');
+	$columns["featured"] = '<div data-original-title="Featured">'. __('Featured', 'Jigoshop') .'</div>';
 
-	$columns["product-type"] = __("Type", 'jigoshop');
+	$columns["product-type"] = __('Type', 'jigoshop');
 	if( get_option('jigoshop_enable_sku', true) == 'yes' ) {
 		$columns["product-type"] .= ' &amp; ' . __("SKU", 'jigoshop');
 	}
@@ -68,14 +71,15 @@ function jigoshop_product_updated_messages( $messages ) {
 
 	$columns["price"] = __("Price", 'jigoshop');
 
-	$columns["product-visibility"] = __("Visibility", 'jigoshop');
+	// $columns["product-visibility"] = __("Visibility", 'jigoshop'); // moving this elsewhere -rob
 
 	$columns["product-date"] = __("Date", 'jigoshop');
 
 	return $columns;
 }
 
-add_filter('manage_edit-product_columns', 'jigoshop_edit_product_columns');
+// NOTE: This causes a large spike in queries, however they are cached so the performance hit is minimal ~20ms -Rob
+add_action('manage_product_posts_custom_column', 'jigoshop_custom_product_columns', 2);
 
 function jigoshop_custom_product_columns($column) {
 	global $post;
@@ -99,8 +103,8 @@ function jigoshop_custom_product_columns($column) {
 		case "featured" :
 			$url = wp_nonce_url( admin_url('admin-ajax.php?action=jigoshop-feature-product&product_id=' . $post->ID) );
 			echo '<a href="'.esc_url($url).'" title="'.__('Change','jigoshop') .'">';
-			if ($product->is_featured()) echo '<a href="'.esc_url($url).'"><img src="'.jigoshop::assets_url().'/assets/images/success.gif" alt="yes" />';
-			else echo '<img src="'.jigoshop::assets_url().'/assets/images/success-off.gif" alt="no" />';
+			if ($product->is_featured()) echo '<a href="'.esc_url($url).'"><img src="'.jigoshop::assets_url().'/assets/images/head_featured_desc.gif" alt="yes" />';
+			else echo '<img src="'.jigoshop::assets_url().'/assets/images/head_featured.gif" alt="no" />';
 			echo '</a>';
 		break;
 		case "stock" :
@@ -170,8 +174,8 @@ function jigoshop_custom_product_columns($column) {
 }
 
 // Enable sorting for custom columns
-
 add_filter("manage_edit-product_sortable_columns", 'jigoshop_custom_product_sort');
+
 function jigoshop_custom_product_sort( $columns ) {
 	$custom = array(
 		'featured'				=> 'featured',
@@ -183,7 +187,6 @@ function jigoshop_custom_product_sort( $columns ) {
 }
 
 // Product column orderby
-
 add_filter( 'request', 'jigoshop_custom_product_orderby' );
 
 function jigoshop_custom_product_orderby( $vars ) {
@@ -216,6 +219,7 @@ function jigoshop_custom_product_orderby( $vars ) {
  * Props to: Andrew Benbow - chromeorange.co.uk
  **/
 add_action('restrict_manage_posts','jigoshop_products_by_category');
+
 function jigoshop_products_by_category() {
 	global $typenow, $wp_query;
 
@@ -246,8 +250,8 @@ function jigoshop_filter_products_type() {
 
 	echo "</select>";
 }
-// NOTE: This causes a large spike in queries, however they are cached so the performance hit is minimal ~20ms -Rob
-add_action('manage_product_posts_custom_column', 'jigoshop_custom_product_columns', 2);
+
+add_filter('manage_edit-shop_order_columns', 'jigoshop_edit_order_columns');
 
 function jigoshop_edit_order_columns($columns) {
 
@@ -270,9 +274,8 @@ function jigoshop_edit_order_columns($columns) {
     return $columns;
 }
 
-add_filter('manage_edit-shop_order_columns', 'jigoshop_edit_order_columns');
-
 add_action('manage_shop_order_posts_custom_column', 'jigoshop_custom_order_columns', 2);
+
 function jigoshop_custom_order_columns($column) {
 
     global $post;
@@ -362,7 +365,8 @@ function jigoshop_custom_order_columns($column) {
             ?>
             <table cellpadding="0" cellspacing="0" class="cost">
                 <tr>
-                    <?php if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) : ?>
+                    <?php if ((get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
+                            || (get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) : ?>
                         <th><?php _e('Retail Price', 'jigoshop'); ?></th>
                     <?php else : ?>
                         <th><?php _e('Subtotal', 'jigoshop'); ?></th>
@@ -370,17 +374,31 @@ function jigoshop_custom_order_columns($column) {
                     <td><?php echo jigoshop_price($order->order_subtotal); ?></td>
                 </tr>
                 <?php
-                if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) :
-                    if ($order->order_shipping > 0) :
-                        ?><tr>
-                            <th><?php _e('Shipping', 'jigoshop'); ?></th>
-                            <td><?php echo jigoshop_price($order->order_shipping); ?></td>
-                        </tr>
-                        <?php
-                    endif;
-                    foreach ($order->get_tax_classes() as $tax_class) :
-                        if ($order->tax_class_is_not_compound($tax_class)) :
-                            ?>
+                if ($order->order_shipping > 0) :
+                    ?><tr>
+                        <th><?php _e('Shipping', 'jigoshop'); ?></th>
+                        <td><?php echo jigoshop_price($order->order_shipping); ?></td>
+                    </tr>
+                    <?php
+                endif;
+                if (get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0) : ?>
+                    <tr>
+                        <th><?php _e('Discount', 'jigoshop'); ?></th>
+                        <td><?php echo jigoshop_price($order->order_discount); ?></td>
+                    </tr>
+                    <?php 
+                endif; 
+                if ((get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
+                    || (get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) :
+                    ?><tr>
+                        <th><?php _e('Subtotal', 'jigoshop'); ?></th>
+                        <td><?php echo jigoshop_price($order->order_discount_subtotal); ?></td>
+                    </tr>
+                    <?php
+                endif;
+                if (get_option('jigoshop_calc_taxes') == 'yes') :
+                    foreach ($order->get_tax_classes() as $tax_class) : 
+                        if ($order->show_tax_entry($tax_class)) : ?>
                             <tr>
                                 <th><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></th>
                                 <td><?php echo $order->get_tax_amount($tax_class) ?></td>
@@ -388,45 +406,9 @@ function jigoshop_custom_order_columns($column) {
                             <?php
                         endif;
                     endforeach;
-                    ?><tr>
-                        <th><?php _e('Subtotal', 'jigoshop'); ?></th>
-                        <td><?php echo jigoshop_price($order->order_subtotal_inc_tax); ?></td>
-                    </tr>
-                    <?php
-                else :
-                    if ($order->order_shipping > 0) :
-                        ?><tr>
-                            <th><?php _e('Shipping', 'jigoshop'); ?></th>
-                            <td><?php echo jigoshop_price($order->order_shipping); ?></td>
-                        </tr>
-                        <?php
-                    endif;
-                endif;
-                if (get_option('jigoshop_calc_taxes') == 'yes') :
-                    if ($order->order_subtotal_inc_tax) :
-                        foreach ($order->get_tax_classes() as $tax_class) :
-                            if (!$order->tax_class_is_not_compound($tax_class)) :
-                                ?>
-
-                                <tr>
-                                    <th><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></th>
-                                    <td><?php echo $order->get_tax_amount($tax_class) ?></td>
-                                </tr>
-                                <?php
-                            endif;
-                        endforeach;
-                    else :
-                        foreach ($order->get_tax_classes() as $tax_class) :
-                            ?>
-                            <tr>
-                                <th><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></th>
-                                <td><?php echo $order->get_tax_amount($tax_class) ?></td>
-                            </tr>
-                        <?php endforeach;
-                    endif;
                 endif;
 
-                if ($order->order_discount > 0) : ?><tr>
+                if (get_option('jigoshop_tax_after_coupon') == 'no' && $order->order_discount > 0) : ?><tr>
                         <th><?php _e('Discount', 'jigoshop'); ?></th>
                         <td><?php echo jigoshop_price($order->order_discount); ?></td>
                     </tr><?php endif; ?>
@@ -446,8 +428,6 @@ function jigoshop_custom_order_columns($column) {
  * Special Thanks to Esbjörn Eriksson (https://github.com/esbite) for this adaption
  */
 add_action( 'parse_request', 'jigoshop_admin_product_search' );
-add_filter( 'get_search_query', 'jigoshop_admin_product_search_label' );
-
 
 function jigoshop_admin_product_search( $wp ) {
     global $pagenow, $wpdb;
@@ -477,7 +457,7 @@ function jigoshop_admin_product_search( $wp ) {
             if( ! $sku )
                 return false;
 
-            $id = $wpdb->get_var('SELECT post_id FROM '.$wpdb->postmeta.' WHERE meta_key="sku" AND meta_value LIKE "%'.$sku.'%";');
+            $id = $wpdb->get_var( $wpdb->prepare( 'SELECT post_id FROM '.$wpdb->postmeta.' WHERE meta_key="sku" AND meta_value LIKE %s', '%' . like_escape( $sku ) . '%' ) );
 
             if( ! $id )
                 return false;
@@ -494,10 +474,10 @@ function jigoshop_admin_product_search( $wp ) {
             $id_length = strlen($id);
 
             // Get candidate orders
-            $query = "'%s:2:\"id\";s:$id_length:\"$id\"%'";
+            $query = "%" . like_escape( "s:2:\"id\";s:$id_length:\"$id\"" ) . "%";
 
             $results = $wpdb->get_results(
-                    "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = 'order_items' AND meta_value LIKE $query"
+										$wpdb->prepare( "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = 'order_items' AND meta_value LIKE %s", $query )
             );
 
             // Verify orders contain this product id
@@ -521,6 +501,8 @@ function jigoshop_admin_product_search( $wp ) {
     }
 
 }
+
+add_filter( 'get_search_query', 'jigoshop_admin_product_search_label' );
 
 function jigoshop_admin_product_search_label($query) {
     global $pagenow, $typenow, $wp;
@@ -560,6 +542,8 @@ function jigoshop_admin_product_search_label($query) {
 /**
  * Order page filters
  * */
+add_filter('views_edit-shop_order', 'jigoshop_custom_order_views');
+
 function jigoshop_custom_order_views($views) {
 
     $jigoshop_orders = new jigoshop_orders();
@@ -596,11 +580,11 @@ function jigoshop_custom_order_views($views) {
     return $views;
 }
 
-add_filter('views_edit-shop_order', 'jigoshop_custom_order_views');
-
 /**
  * Order page actions
  * */
+add_filter('post_row_actions', 'jigoshop_remove_row_actions', 10, 1);
+
 function jigoshop_remove_row_actions($actions) {
     if (get_post_type() === 'shop_order') :
         unset($actions['view']);
@@ -609,30 +593,31 @@ function jigoshop_remove_row_actions($actions) {
     return $actions;
 }
 
-add_filter('post_row_actions', 'jigoshop_remove_row_actions', 10, 1);
 
 /**
  * Order page views
  * */
+add_filter('bulk_actions-edit-shop_order', 'jigoshop_bulk_actions');
+
 function jigoshop_bulk_actions($actions) {
     return array();
 }
-
-add_filter('bulk_actions-edit-shop_order', 'jigoshop_bulk_actions');
 
 /**
  * Adds downloadable product support for thickbox
  * @todo: not sure if this is the best place for this?
  */
+add_action('media_upload_downloadable_product', 'jigoshop_media_upload_downloadable_product');
+
 function jigoshop_media_upload_downloadable_product() {
 	do_action('media_upload_file');
 }
 
-add_action('media_upload_downloadable_product', 'jigoshop_media_upload_downloadable_product');
-
 /**
  * Order messages
  * */
+add_filter( 'post_updated_messages', 'jigoshop_post_updated_messages' );
+
 function jigoshop_post_updated_messages($messages) {
     if (get_post_type() === 'shop_order') :
 
@@ -646,4 +631,3 @@ function jigoshop_post_updated_messages($messages) {
     endif;
     return $messages;
 }
-add_filter( 'post_updated_messages', 'jigoshop_post_updated_messages' );

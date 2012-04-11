@@ -39,9 +39,9 @@ class free_shipping extends jigoshop_shipping_method {
 
     public function admin_options() {
     	?>
-    	<thead><tr><th scope="col" width="200px"><?php _e('Free Shipping', 'jigoshop'); ?></th><th scope="col" class="desc">&nbsp;</th></tr></thead>
+    	<thead><tr><th scope="col" colspan="2"><h3 class="title"><?php _e('Free Shipping', 'jigoshop'); ?></h3></th></tr></thead>
     	<tr>
-	        <td class="titledesc"><?php _e('Enable Free Shipping', 'jigoshop') ?>:</td>
+	        <th scope="row"><?php _e('Enable Free Shipping', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <select name="jigoshop_free_shipping_enabled" id="jigoshop_free_shipping_enabled" style="min-width:100px;">
 		            <option value="yes" <?php if (get_option('jigoshop_free_shipping_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
@@ -50,19 +50,19 @@ class free_shipping extends jigoshop_shipping_method {
 	        </td>
 	    </tr>
 	    <tr>
-	        <td class="titledesc"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?>:</td>
+	        <th scope="row"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input type="text" name="jigoshop_free_shipping_title" id="jigoshop_free_shipping_title" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_free_shipping_title')) echo $value; else echo 'Free Shipping'; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
-	        <td class="titledesc"><a href="#" tip="<?php _e('Users will need to spend this amount to get free shipping. Leave blank to disable.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Minimum Order Amount', 'jigoshop') ?>:</td>
+	        <th scope="row"><a href="#" tip="<?php _e('Users will need to spend this amount to get free shipping. Leave blank to disable.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Minimum Order Amount', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input type="text" name="jigoshop_free_shipping_minimum_amount" id="jigoshop_free_shipping_minimum_amount" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_free_shipping_minimum_amount')) echo $value; else echo 'Free Shipping'; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
-	        <td class="titledesc"><?php _e('Method available for', 'jigoshop') ?>:</td>
+	        <th scope="row"><?php _e('Method available for', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <select name="jigoshop_free_shipping_availability" id="jigoshop_free_shipping_availability" style="min-width:100px;">
 		            <option value="all" <?php if (get_option('jigoshop_free_shipping_availability') == 'all') echo 'selected="selected"'; ?>><?php _e('All allowed countries', 'jigoshop'); ?></option>
@@ -74,7 +74,7 @@ class free_shipping extends jigoshop_shipping_method {
     	$countries = jigoshop_countries::$countries;
     	$selections = get_option('jigoshop_free_shipping_countries', array());
     	?><tr class="multi_select_countries">
-            <td class="titledesc"><?php _e('Specific Countries', 'jigoshop'); ?>:</td>
+            <th scope="row"><?php _e('Specific Countries', 'jigoshop'); ?></th>
             <td class="forminp">
             	<div class="multi_select_countries"><ul><?php
         			if ($countries) foreach ($countries as $key=>$val) :

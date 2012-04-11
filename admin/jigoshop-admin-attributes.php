@@ -30,7 +30,9 @@ function jigoshop_attributes() {
 
 	if (isset($_POST['add_new_attribute']) && $_POST['add_new_attribute']) :
 
-		$attribute_label = (string) $_POST['attribute_label'];
+		check_admin_referer( 'jigoshop-add-attribute', '_jigoshop_csrf' );
+
+		$attribute_label = (string) strip_tags( stripslashes( $_POST['attribute_label'] ) );
 		$attribute_name = !$_POST['attribute_name']
 							? sanitize_title(sanitize_user($attribute_label, $strict = true))
 							: sanitize_title(sanitize_user($_POST['attribute_name'], $strict = true));
@@ -54,10 +56,12 @@ function jigoshop_attributes() {
 
 		$edit = absint($_GET['edit']);
 
+		check_admin_referer( 'jigoshop-edit-attribute_' . $edit, '_jigoshop_csrf' );
+
 		if ($edit>0) :
 
 			$attribute_type = $_POST['attribute_type'];
-			$attribute_label = (string) $_POST['attribute_label'];
+			$attribute_label = (string) strip_tags( stripslashes( $_POST['attribute_label'] ) );
 
 			$wpdb->update( $wpdb->prefix . "jigoshop_attribute_taxonomies", array( 'attribute_type' => $attribute_type, 'attribute_label' => $attribute_label ), array( 'attribute_id' => $_GET['edit'] ), array( '%s', '%s') );
 
@@ -70,11 +74,13 @@ function jigoshop_attributes() {
 
 		$delete = absint($_GET['delete']);
 
+		check_admin_referer( 'jigoshop-delete-attribute_' . $delete );
+
 		if ($delete>0) :
 
-			$att_name = $wpdb->get_var("SELECT attribute_name FROM " . $wpdb->prefix . "jigoshop_attribute_taxonomies WHERE attribute_id = '$delete'");
+			$att_name = $wpdb->get_var( $wpdb->prepare( "SELECT attribute_name FROM " . $wpdb->prefix . "jigoshop_attribute_taxonomies WHERE attribute_id = %d", $delete ) );
 
-			if ($att_name && $wpdb->query("DELETE FROM " . $wpdb->prefix . "jigoshop_attribute_taxonomies WHERE attribute_id = '$delete'")) :
+			if ($att_name && $wpdb->query( $wpdb->prepare( "DELETE FROM " . $wpdb->prefix . "jigoshop_attribute_taxonomies WHERE attribute_id = %d", $delete ) ) ) :
 
 				$taxonomy = 'pa_'.sanitize_title($att_name);
 
@@ -119,8 +125,8 @@ function jigoshop_edit_attribute() {
 
 	$edit = absint($_GET['edit']);
 
-	$att_type = $wpdb->get_var("SELECT attribute_type FROM " . $wpdb->prefix . "jigoshop_attribute_taxonomies WHERE attribute_id = '$edit'");
-	$att_label = $wpdb->get_var("SELECT attribute_label FROM " . $wpdb->prefix . "jigoshop_attribute_taxonomies WHERE attribute_id = '$edit'");
+	$att_type = $wpdb->get_var( $wpdb->prepare( "SELECT attribute_type FROM " . $wpdb->prefix . "jigoshop_attribute_taxonomies WHERE attribute_id = %d", $edit ) );
+	$att_label = $wpdb->get_var( $wpdb->prepare( "SELECT attribute_label FROM " . $wpdb->prefix . "jigoshop_attribute_taxonomies WHERE attribute_id = %d", $edit ) );
 	?>
 	<div class="wrap jigoshop">
 		<div class="icon32 icon32-attributes" id="icon-jigoshop"><br/></div>
@@ -132,7 +138,8 @@ function jigoshop_edit_attribute() {
 	    			<div class="form-wrap">
 	    				<h3><?php _e('Edit Attribute','jigoshop') ?></h3>
 	    				<p><?php _e('Attribute taxonomy names cannot be changed; you may only change an attributes type.','jigoshop') ?></p>
-	    				<form action="admin.php?page=jigoshop_attributes&amp;edit=<?php echo $edit; ?>" method="post">
+	    				<form action="admin.php?page=jigoshop_attributes&amp;edit=<?php echo esc_attr( $edit ); ?>" method="post">
+								<?php wp_nonce_field( 'jigoshop-edit-attribute_' . absint( $edit ), '_jigoshop_csrf' ); ?>
 							<div class="form-field">
 								<label for="attribute_label"><?php _e('Attribute Label', 'jigoshop'); ?></label>
 								<input name="attribute_label" id="attribute_label" type="text" value="<?php echo esc_attr( $att_label ); ?>" />
@@ -192,9 +199,10 @@ function jigoshop_add_attribute() {
 				        				$att_title = $tax->attribute_name;
 				        				if ( isset( $tax->attribute_label ) ) { $att_title = $tax->attribute_label; }
 				        				?><tr>
+
 				        					<td><a href="edit-tags.php?taxonomy=pa_<?php echo sanitize_title($tax->attribute_name); ?>&amp;post_type=product"><?php echo esc_html( ucwords( $att_title ) ); ?></a>
 
-				        					<div class="row-actions"><span class="edit"><a href="<?php echo esc_url( add_query_arg('edit', $tax->attribute_id, 'admin.php?page=jigoshop_attributes') ); ?>"><?php _e('Edit', 'jigoshop'); ?></a> | </span><span class="delete"><a class="delete" href="<?php echo esc_url( add_query_arg('delete', $tax->attribute_id, 'admin.php?page=jigoshop_attributes') ); ?>"><?php _e('Delete', 'jigoshop'); ?></a></span></div>
+														<div class="row-actions"><span class="edit"><a href="<?php echo esc_url( add_query_arg('edit', $tax->attribute_id, 'admin.php?page=jigoshop_attributes') ); ?>"><?php _e('Edit', 'jigoshop'); ?></a> | </span><span class="delete"><a class="delete" href="<?php echo esc_url( wp_nonce_url( add_query_arg('delete', $tax->attribute_id, 'admin.php?page=jigoshop_attributes'), 'jigoshop-delete-attribute_' . $tax->attribute_id ) ); ?>"><?php _e('Delete', 'jigoshop'); ?></a></span></div>
 				        					</td>
 				        					<td><?php echo $tax->attribute_name; ?></td>
 				        					<td><?php echo esc_html ( ucwords( $tax->attribute_type ) ); ?></td>
@@ -230,6 +238,7 @@ function jigoshop_add_attribute() {
 	    			<div class="form-wrap">
 	    				<h3><?php _e('Add New Attribute','jigoshop') ?></h3>
 	    				<form action="edit.php?post_type=product&page=jigoshop_attributes" method="post">
+								<?php wp_nonce_field( 'jigoshop-add-attribute', '_jigoshop_csrf' ); ?>
 							<div class="form-field">
 								<label for="attribute_label"><?php _e('Attribute Label', 'jigoshop'); ?></label>
 								<input name="attribute_label" id="attribute_label" type="text" value="" />

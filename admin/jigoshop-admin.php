@@ -21,6 +21,7 @@ require_once ( 'jigoshop-write-panels.php' );
 require_once ( 'jigoshop-admin-settings.php' );
 require_once ( 'jigoshop-admin-attributes.php' );
 require_once ( 'jigoshop-admin-post-types.php' );
+require_once ( 'jigoshop-admin-product-quick-bulk-edit.php' );
 
 // Contextual help only works for 3.3 due to updated API
 if ( get_bloginfo('version') >= '3.3' ) {
@@ -83,11 +84,11 @@ function jigoshop_admin_menu() {
 
 	$menu[] = array( '', 'read', 'separator-jigoshop', '', 'wp-menu-separator jigoshop' );
 
-    add_menu_page(__('Jigoshop'), __('Jigoshop'), 'manage_options', 'jigoshop' , 'jigoshop_dashboard', jigoshop::assets_url() . '/assets/images/icons/menu_icons.png', 55);
-    add_submenu_page('jigoshop', __('Dashboard', 'jigoshop'), __('Dashboard', 'jigoshop'), 'manage_options', 'jigoshop', 'jigoshop_dashboard');
-    add_submenu_page('jigoshop', __('General Settings', 'jigoshop'),  __('Settings', 'jigoshop') , 'manage_options', 'jigoshop_settings', 'jigoshop_settings');
-    add_submenu_page('jigoshop', __('System Info','jigoshop'), __('System Info','jigoshop'), 'manage_options', 'jigoshop_sysinfo', 'jigoshop_system_info');
-    $id = add_submenu_page('edit.php?post_type=product', __('Attributes','jigoshop'), __('Attributes','jigoshop'), 'manage_options', 'jigoshop_attributes', 'jigoshop_attributes');
+	add_menu_page(__('Jigoshop'), __('Jigoshop'), 'manage_options', 'jigoshop' , 'jigoshop_dashboard', jigoshop::assets_url() . '/assets/images/icons/menu_icons.png', 55);
+	add_submenu_page('jigoshop', __('Dashboard', 'jigoshop'), __('Dashboard', 'jigoshop'), 'manage_options', 'jigoshop', 'jigoshop_dashboard');
+	add_submenu_page('jigoshop', __('General Settings', 'jigoshop'),  __('Settings', 'jigoshop') , 'manage_options', 'jigoshop_settings', 'jigoshop_settings');
+	add_submenu_page('jigoshop', __('System Info','jigoshop'), __('System Info','jigoshop'), 'manage_options', 'jigoshop_sysinfo', 'jigoshop_system_info');
+	$id = add_submenu_page('edit.php?post_type=product', __('Attributes','jigoshop'), __('Attributes','jigoshop'), 'manage_options', 'jigoshop_attributes', 'jigoshop_attributes');
 }
 
 function jigoshop_admin_menu_order( $menu_order ) {
@@ -163,141 +164,74 @@ add_action('admin_head', 'jigoshop_admin_head');
  */
 function jigoshop_system_info() {
 	?>
-	<div class="wrap jigoshop">
+<div class="wrap jigoshop">
 		<div class="icon32 icon32-jigoshop-debug" id="icon-jigoshop"><br/></div>
-	    <h2><?php _e('System Information','jigoshop') ?></h2>
-	    <p>Use the information below when submitting technical support requests via <a href="http://jigoshop.com/support/" title="Jigoshop Support" target="_blank">Jigoshop Support</a>.</p>
-		<div id="tabs-wrap">
-			<ul class="tabs">
-				<li><a href="#versions"><?php _e('Environment', 'jigoshop'); ?></a></li>
-				<li><a href="#debugging"><?php _e('Debugging', 'jigoshop'); ?></a></li>
-			</ul>
-			<div id="versions" class="panel">
-				<table class="widefat fixed">
-		            <thead>
-		            	<tr>
-		                    <th scope="col" width="200px"><?php _e('Software Versions','jigoshop')?></th>
-		                    <th scope="col">&nbsp;</th>
-		                </tr>
-		           	</thead>
-		           	<tbody>
-		                <tr>
-		                    <td class="titledesc"><?php _e('Jigoshop Version','jigoshop')?></td>
-		                    <td class="forminp"><?php echo jigoshop_get_plugin_data(); ?></td>
-		                </tr>
-		                <tr>
-		                    <td class="titledesc"><?php _e('WordPress Version','jigoshop')?></td>
-		                    <td class="forminp"><?php echo is_multisite() ? 'WPMU' : 'WP'; ?> <?php echo bloginfo('version'); ?></td>
-		                </tr>
-		            </tbody>
-		            <thead>
-		                <tr>
-		                    <th scope="col" width="200px"><?php _e('Server','jigoshop')?></th>
-		                    <th scope="col"><?php echo (defined('PHP_OS')) ? (string)(PHP_OS) : 'N/A'; ?></th>
-		                </tr>
-		            </thead>
-					<tbody>
-		                <tr>
-		                    <td class="titledesc"><?php _e('PHP Version','jigoshop')?></td>
-		                    <td class="forminp"><?php if(function_exists('phpversion')) echo phpversion(); ?></td>
-		                </tr>
-		                <tr>
-		                    <td class="titledesc"><?php _e('Server Software','jigoshop')?></td>
-		                    <td class="forminp"><?php echo $_SERVER['SERVER_SOFTWARE']; ?></td>
-		                </tr>
-		        	</tbody>
-		            <thead>
-		                <tr>
-		                    <th scope="col" width="200px"><?php _e('PHP Sessions','jigoshop')?></th>
-		                    <th scope="col">&nbsp;</th>
-		                </tr>
-		            </thead>
-					<tbody>
-		                <tr>
-		                    <td class="titledesc"><?php _e('Session Support','jigoshop')?></td>
-		                    <td class="forminp"><?php $_SESSION['enableSessionsTest'] = "on"; echo !empty($_SESSION['enableSessionsTest']) ? "enabled" : "disabled"; ?></td>
-		                </tr>
-		                <tr>
-		                    <td class="titledesc"><?php _e('Session name','jigoshop')?></td>
-		                    <td class="forminp"><?php echo ini_get('session.name'); ?></td>
-		                </tr>
-		                <tr>
-		                    <td class="titledesc"><?php _e('Cookie path path','jigoshop')?></td>
-		                    <td class="forminp"><?php echo ini_get('session.cookie_path'); ?></td>
-		                </tr>
-		                <tr>
-		                    <td class="titledesc"><?php _e('Save path','jigoshop')?></td>
-		                    <td class="forminp"><?php echo ini_get('session.save_path'); ?></td>
-		                </tr>
-		                <tr>
-		                    <td class="titledesc"><?php _e('Use cookies','jigoshop')?></td>
-		                    <td class="forminp"><?php echo (ini_get('session.use_cookies') ? 'On' : 'Off'); ?></td>
-		                </tr>
-		                <tr>
-		                    <td class="titledesc"><?php _e('Use only cookies','jigoshop')?></td>
-		                    <td class="forminp"><?php echo (ini_get('session.use_only_cookies') ? 'On' : 'Off'); ?></td>
-		                </tr>
-					</tbody>
-		        </table>
-			</div>
-			<div id="debugging" class="panel">
-				<table class="widefat fixed">
-		            <tbody>
-		            	<tr>
-		                    <th scope="col" width="200px"><?php _e('Debug Information','jigoshop')?></th>
-		                    <th scope="col">&nbsp;</th>
-		                </tr>
-		                <tr>
-		                    <td class="titledesc"><?php _e('UPLOAD_MAX_FILESIZE','jigoshop')?></td>
-		                    <td class="forminp"><?php
-		                    	if(function_exists('phpversion')) echo (jigoshop_let_to_num(ini_get('upload_max_filesize'))/(1024*1024))."MB";
-		                    ?></td>
-		                </tr>
-		                <tr>
-		                    <td class="titledesc"><?php _e('POST_MAX_SIZE','jigoshop')?></td>
-		                    <td class="forminp"><?php
-		                    	if(function_exists('phpversion')) echo (jigoshop_let_to_num(ini_get('post_max_size'))/(1024*1024))."MB";
-		                    ?></td>
-		                </tr>
-		                <tr>
-		                    <td class="titledesc"><?php _e('WordPress Memory Limit','jigoshop')?></td>
-		                    <td class="forminp"><?php
-		                    	echo (jigoshop_let_to_num(WP_MEMORY_LIMIT)/(1024*1024))."MB";
-		                    ?></td>
-		                </tr>
-		                 <tr>
-		                    <td class="titledesc"><?php _e('WP_DEBUG','jigoshop')?></td>
-		                    <td class="forminp"><?php echo (WP_DEBUG) ? __('On', 'jigoshop') : __('Off', 'jigoshop'); ?></td>
-		                </tr>
-		                <tr>
-		                    <td class="titledesc"><?php _e('DISPLAY_ERRORS','jigoshop')?></td>
-		                    <td class="forminp"><?php echo (ini_get('display_errors')) ? 'On (' . ini_get('display_errors') . ')' : 'N/A'; ?></td>
-		                </tr>
-		                <tr>
-		                    <td class="titledesc"><?php _e('FSOCKOPEN','jigoshop')?></td>
-		                    <td class="forminp"><?php if(function_exists('fsockopen')) echo '<span style="color:green">' . __('Your server supports fsockopen.', 'jigoshop'). '</span>'; else echo '<span style="color:red">' . __('Your server does not support fsockopen.', 'jigoshop'). '</span>'; ?></td>
-		                </tr>
-		        	</tbody>
-		        </table>
-			</div>
-		</div>
-    </div>
-    <script type="text/javascript">
-	jQuery(function() {
-	    // Tabs
-		jQuery('ul.tabs').show();
-		jQuery('ul.tabs li:first').addClass('active');
-		jQuery('div.panel:not(div.panel:first)').hide();
-		jQuery('ul.tabs a').click(function(){
-			jQuery('ul.tabs li').removeClass('active');
-			jQuery(this).parent().addClass('active');
-			jQuery('div.panel').hide();
-			jQuery( jQuery(this).attr('href') ).show();
-			return false;
-		});
-	});
-	</script>
-	<?php
+		<h2><?php _e('System Information','jigoshop') ?></h2>
+		<p>Use the information below when submitting technical support requests via <a href="http://jigoshop.com/support/" title="Jigoshop Support" target="_blank">Jigoshop Support</a>.</p>
+
+<textarea readonly="readonly" id="system-info-textarea" title="To copy the system info, click below then press Ctrl + C (PC) or Cmd + C (Mac).">
+
+	### Begin System Info ###
+
+	Theme:                    <?php echo get_current_theme() . "\n" ?>
+
+	Multi-site:               <?php echo is_multisite() ? 'Yes' . "\n" : 'No' . "\n" ?>
+	
+	SITE_URL:                 <?php echo site_url() . "\n"; ?>
+	HOME_URL:                 <?php echo home_url() . "\n"; ?>
+		
+	Jigoshop Version:         <?php echo jigoshop_get_plugin_data() . "\n"; ?>
+	WordPress Version:        <?php echo get_bloginfo('version') . "\n"; ?>
+	
+	PHP Version:              <?php echo PHP_VERSION . "\n"; ?>
+	MySQL Version:            <?php echo mysql_get_server_info() . "\n"; ?>
+	Web Server Info:          <?php echo $_SERVER['SERVER_SOFTWARE'] . "\n"; ?>
+	
+	PHP Memory Limit:         <?php echo ini_get('memory_limit') . "\n"; ?>
+	PHP Post Max Size:        <?php echo ini_get('post_max_size') . "\n"; ?>
+	
+	WP_DEBUG:                 <?php echo defined('WP_DEBUG') ? WP_DEBUG ? 'Enabled' . "\n" : 'Disabled' . "\n" : 'Not set' . "\n" ?>
+	
+	Show On Front:            <?php echo get_option('show_on_front') . "\n" ?>
+	Page On Front:            <?php echo get_option('page_on_front') . "\n" ?>
+	Page For Posts:           <?php echo get_option('page_for_posts') . "\n" ?>
+
+	Session:                  <?php echo !empty($_SESSION['enableSessionsTest']) ? 'Enabled' : 'Disabled'; ?><?php echo "\n"; ?>
+	Session Name:             <?php echo esc_html( ini_get( 'session.name' ) ); ?><?php echo "\n"; ?>
+	Cookie Path:              <?php echo esc_html( ini_get( 'session.cookie_path' ) ); ?><?php echo "\n"; ?>
+	Save Path:                <?php echo esc_html( ini_get( 'session.save_path' ) ); ?><?php echo "\n"; ?>
+	Use Cookies:              <?php echo (ini_get('session.use_cookies') ? 'On' : 'Off'); ?><?php echo "\n"; ?>
+	Use Only Cookies:         <?php echo (ini_get('session.use_only_cookies') ? 'On' : 'Off'); ?><?php echo "\n"; ?>
+
+	UPLOAD_MAX_FILESIZE:      <?php if(function_exists('phpversion')) echo (jigoshop_let_to_num(ini_get('upload_max_filesize'))/(1024*1024))."MB"; ?><?php echo "\n"; ?>
+	POST_MAX_SIZE:            <?php if(function_exists('phpversion')) echo (jigoshop_let_to_num(ini_get('post_max_size'))/(1024*1024))."MB"; ?><?php echo "\n"; ?>
+	WordPress Memory Limit:   <?php echo (jigoshop_let_to_num(WP_MEMORY_LIMIT)/(1024*1024))."MB"; ?><?php echo "\n"; ?>
+	WP_DEBUG:                 <?php echo (WP_DEBUG) ? __('On', 'jigoshop') : __('Off', 'jigoshop'); ?><?php echo "\n"; ?>
+	DISPLAY ERRORS:           <?php echo (ini_get('display_errors')) ? 'On (' . ini_get('display_errors') . ')' : 'N/A'; ?><?php echo "\n"; ?>
+	FSOCKOPEN:                <?php echo (function_exists('fsockopen')) ? __('Your server supports fsockopen.', 'jigoshop') : __('Your server does not support fsockopen.', 'jigoshop'); ?><?php echo "\n"; ?>
+
+	ACTIVE PLUGINS:
+	
+<?php
+$plugins = get_plugins();
+$active_plugins = get_option('active_plugins', array());
+
+foreach ( $plugins as $plugin_path => $plugin ):
+	
+	//If the plugin isn't active, don't show it.
+	if ( !in_array($plugin_path, $active_plugins) )
+		continue;
+?>
+	<?php echo $plugin['Name']; ?>: <?php echo $plugin['Version']; ?>
+
+<?php endforeach; ?>
+
+	### End System Info ###
+</textarea>
+
+	</div>
+</div>
+<?php
 }
 
 function jigoshop_feature_product () {
@@ -334,20 +268,20 @@ function jigoshop_get_current_post_type() {
 
 	global $post, $typenow, $current_screen;
 
-    if( $current_screen && @$current_screen->post_type ) return $current_screen->post_type;
+	if( $current_screen && @$current_screen->post_type ) return $current_screen->post_type;
 
-    if( $typenow ) return $typenow;
+	if( $typenow ) return $typenow;
 
-    if( !empty($_REQUEST['post_type']) ) return sanitize_key( $_REQUEST['post_type'] );
+	if( !empty($_REQUEST['post_type']) ) return sanitize_key( $_REQUEST['post_type'] );
 
-    if ( !empty($post) && !empty($post->post_type) ) return $post->post_type;
+	if ( !empty($post) && !empty($post->post_type) ) return $post->post_type;
 
-    if( ! empty($_REQUEST['post']) && (int)$_REQUEST['post'] ) {
-    	$p = get_post( $_REQUEST['post'] );
-    	return $p ? $p->post_type : '';
-    }
+	if( ! empty($_REQUEST['post']) && (int)$_REQUEST['post'] ) {
+		$p = get_post( $_REQUEST['post'] );
+		return $p ? $p->post_type : '';
+	}
 
-    return '';
+	return '';
 }
 
 /**

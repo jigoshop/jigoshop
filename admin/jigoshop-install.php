@@ -81,9 +81,9 @@ function _install_jigoshop() {
  * @since 		1.0
  */
 function jigoshop_default_options() {
-	global $options_settings;
+	global $jigoshop_options_settings;
 
-	foreach ($options_settings as $value) :
+	foreach ($jigoshop_options_settings as $value) :
 
         if (isset($value['std'])) :
 
@@ -171,7 +171,7 @@ function jigoshop_create_pages() {
 }
 
 /**
- * Install a single Jigoshop Page if required
+ * Install a single Jigoshop Page
  *
  * @param string $page_slug - is the slug for the page to create (shop|cart|thank-you|etc)
  * @param string $page_option - the database options entry for page ID storage
@@ -184,31 +184,16 @@ function jigoshop_create_single_page( $page_slug, $page_option, $page_data ) {
     global $wpdb;
 
     $slug = esc_sql( _x( $page_slug, 'page_slug', 'jigoshop' ) );
-	$page_found = $wpdb->get_var("SELECT ID FROM " . $wpdb->posts . " WHERE post_name = '$slug' AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1");
-	$page_options_id = get_option( $page_option );
+	$page_found = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1", $slug ) );
 
-    if ( ! $page_found )
-    {
-		$create_page = true;
-		if ( $page_options_id <> '' ) :
-			$page_found = $wpdb->get_var( "SELECT ID FROM " . $wpdb->posts . " WHERE ID = '$page_options_id' AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1" );
-			if ( $page_found ) $create_page = false;
-		endif;
-		if ( $create_page ) :
-			$page_data['post_name'] = $slug;
-			$page_options_id = wp_insert_post( $page_data );
-			update_option( $page_option, $page_options_id );
-		endif;
+    if ( ! $page_found ) {
+		$page_data['post_name'] = $slug;
+		$page_options_id = wp_insert_post( $page_data );
+		update_option( $page_option, $page_options_id );
+    } else {
+    	update_option( $page_option, $page_found );
     }
-    else
-    {
-    	if ( $page_options_id == "" ) :
-    		update_option( $page_option, $page_found );
-    	else :
-    		// we have the slug page, another page may be actual page in options (eg: 'shop|store|etc').
-    		// Do we need to check for that page.
-    	endif;
-    }
+    
 }
 
 /**

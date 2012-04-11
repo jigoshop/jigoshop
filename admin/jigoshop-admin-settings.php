@@ -60,13 +60,13 @@ function csort_tax_rates($a, $b) {
  * @param 		array $options List of options to go through and save
  */
 function jigoshop_update_options() {
-    global $options_settings;
+    global $jigoshop_options_settings;
 
     if (isset($_POST['submitted']) && $_POST['submitted'] == 'yes') {
-
+        check_admin_referer( 'jigoshop-update-settings', '_jigoshop_csrf' );
         $update_image_meta = false;
 
-        foreach ($options_settings as $value) {
+        foreach ($jigoshop_options_settings as $value) {
             if (isset($value['id']) && $value['id'] == 'jigoshop_tax_rates') :
 
                 $tax_classes = array();
@@ -103,7 +103,7 @@ function jigoshop_update_options() {
                         $country = jigowatt_clean($tax_countries[$i]);
                         $label = trim($tax_label[$i]);
                         $state = '*'; // countries with no states have to have a character for products. Therefore use *
-                        $rate = number_format(jigowatt_clean($tax_rate[$i]), 4);
+                        $rate = number_format((float)jigowatt_clean($tax_rate[$i]), 4);
                         $class = jigowatt_clean($tax_classes[$i]);
 
                         if (isset($tax_shipping[$i]) && $tax_shipping[$i])
@@ -295,10 +295,8 @@ function jigoshop_update_options() {
                 }
             }
         }
-
+        add_action( 'jigoshop_admin_settings_notices', 'jigoshop_settings_updated_notice' );
         do_action('jigoshop_update_options');
-
-        echo '<div id="message" class="updated fade"><p><strong>' . __('Your settings have been saved.', 'jigoshop') . '</strong></p></div>';
     }
 }
 
@@ -316,45 +314,49 @@ add_action('load-jigoshop_page_jigoshop_settings', 'jigoshop_update_options');
  */
 function jigoshop_admin_fields($options) {
     ?>
-    <div id="tabs-wrap">
-        <p class="submit"><input name="save" type="submit" value="<?php _e('Save changes', 'jigoshop') ?>" /></p>
+    <h2 class="nav-tab-wrapper" id="jigoshop-nav-tab-wrapper">
         <?php
         $counter = 1;
-        echo '<ul class="tabs">';
         foreach ($options as $value) {
             if ('tab' == $value['type']) :
-                echo '<li><a href="#' . $value['type'] . $counter . '">' . $value['tabname'] . '</a></li>' . "\n";
-                $counter = $counter + 1;
+                echo '<a href="#' . $value['type'] . $counter . '" class="nav-tab" style="font-size:14px; margin-right:0px">' . $value['tabname'] . '</a>' . "\n";
+                $counter++;
             endif;
         }
-        echo '</ul>';
+        ?>
+    </h2>
+    <div >
+        <!-- <p class="submit"><input name="save" type="submit" value="<?php _e('Save changes', 'jigoshop') ?>" /></p> -->
+        <?php
         $counter = 1;
         foreach ($options as $value) :
             switch ($value['type']) :
                 case 'string':
                     ?>
                     <tr>
-                        <td class="titledesc"><?php echo $value['name']; ?></td>
-                        <td class="forminp"><?php echo $value['desc']; ?></td>
+                        <th scope="row"><?php echo $value['name']; ?></td>
+                        <td><?php echo $value['desc']; ?></td>
                     </tr>
                                 <?php
                                 break;
                             case 'tab':
                                 echo '<div id="' . $value['type'] . $counter . '" class="panel">';
-                                echo '<table class="widefat fixed">' . "\n\n";
+                                echo '<table class="form-table">' . "\n";
                                 break;
                             case 'title':
-                                ?><thead><tr><th scope="col" width="200px"><?php echo $value['name'] ?></th><th scope="col" class="desc"><?php if (isset($value['desc']))
-                    echo $value['desc'] ?>&nbsp;</th></tr></thead><?php
+                                ?><thead><tr>
+                                <th scope="col" colspan="2"><h3 class="title"><?php echo $value['name'] ?></h3><?php if (isset($value['desc']) && !empty($value['desc']))
+                    echo '<p>' . $value['desc'] . '</p>' ?></th></tr></thead><?php
                 break;
             case 'text':
                 ?><tr>
-                    <td class="titledesc"><?php if (isset($value['tip'])) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
+                    <th scope="row"><?php if (isset($value['tip'])) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label></th>
 
-                    <td class="forminp">
+                    <td>
                     	<input name="<?php echo esc_attr( $value['id'] ); ?>"
                     		id="<?php echo esc_attr( $value['id'] ); ?>"
                     		type="<?php echo $value['type'] ?>"
+                            class="regular-text"
                     		style="<?php if ( isset($value['css'])) echo esc_attr( $value['css'] ); ?>"
                     		value="<?php if (get_option($value['id']) !== false && get_option($value['id']) !== null)
                     			echo esc_attr( get_option($value['id']) );
@@ -365,8 +367,8 @@ function jigoshop_admin_fields($options) {
                 break;
             case 'select':
                                 ?><tr>
-                        <td class="titledesc"><?php if (isset($value['tip'])) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
-                        <td class="forminp"><select name="<?php echo esc_attr( $value['id'] ); ?>" id="<?php echo esc_attr( $value['id'] ); ?>" style="<?php if ( isset($value['css'])) echo esc_attr( $value['css'] ); ?>">
+                        <th scope="row"><?php if (isset($value['tip'])) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label></th>
+                        <td><select name="<?php echo esc_attr( $value['id'] ); ?>" id="<?php echo esc_attr( $value['id'] ); ?>" style="<?php if ( isset($value['css'])) echo esc_attr( $value['css'] ); ?>">
                     <?php
                     foreach ($value['options'] as $key => $val) {
                         ?>
@@ -380,12 +382,14 @@ function jigoshop_admin_fields($options) {
                 break;
 			case 'image_size' :
 				?><tr>
-					<td class="titledesc"><?php echo $value['name'] ?>:</td>
-					<td class="forminp" valign="top" style="line-height:25px;height:25px;">
+					<th scope="row"><?php echo $value['name'] ?></label></th>
+					<td valign="top" style="line-height:25px;height:25px;">
 
-						<?php _e('Width', 'jigoshop'); ?><input name="<?php echo esc_attr( $value['id'] ); ?>_w" id="<?php echo esc_attr( $value['id'] ); ?>_w" type="text" size="3" value="<?php if ( $size = get_option( $value['id'].'_w') ) echo $size; else echo $value['std']; ?>" />
+						<label for="<?php echo esc_attr( $value['id'] ); ?>_w"><?php _e('Width', 'jigoshop'); ?></label>
+                        <input name="<?php echo esc_attr( $value['id'] ); ?>_w" id="<?php echo esc_attr( $value['id'] ); ?>_w" type="text" size="3" value="<?php if ( $size = get_option( $value['id'].'_w') ) echo $size; else echo $value['std']; ?>" />
 
-						<?php _e('Height', 'jigoshop'); ?> <input name="<?php echo esc_attr( $value['id'] ); ?>_h" id="<?php echo esc_attr( $value['id'] ); ?>_h" type="text" size="3" value="<?php if ( $size = get_option( $value['id'].'_h') ) echo $size; else echo $value['std']; ?>" />
+						<label for="<?php echo esc_attr( $value['id'] ); ?>_h"><?php _e('Height', 'jigoshop'); ?></label>
+                        <input name="<?php echo esc_attr( $value['id'] ); ?>_h" id="<?php echo esc_attr( $value['id'] ); ?>_h" type="text" size="3" value="<?php if ( $size = get_option( $value['id'].'_h') ) echo $size; else echo $value['std']; ?>" />
 
 						<br /><small><?php echo $value['desc'] ?></small>
 					</td>
@@ -393,10 +397,13 @@ function jigoshop_admin_fields($options) {
 			break;
             case 'textarea':
                 ?><tr>
-                        <td class="titledesc"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
-                        <td class="forminp">
+                        <th scope="row"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label></th>
+                        <td>
                             <textarea <?php if (isset($value['args']))
-                    echo $value['args'] . ' '; ?>name="<?php echo esc_attr( $value['id'] ); ?>" id="<?php echo esc_attr( $value['id'] ); ?>" style="<?php echo esc_attr( $value['css'] ); ?>"><?php echo esc_textarea( ( get_option($value['id'])) ? stripslashes(get_option($value['id'])) : $value['std'] ); ?></textarea>
+                    echo $value['args'] . ' '; ?>
+                    name="<?php echo esc_attr( $value['id'] ); ?>" 
+                    id="<?php echo esc_attr( $value['id'] ); ?>" 
+                    class="large-text" style="<?php echo esc_attr( $value['css'] ); ?>"><?php echo esc_textarea( ( get_option($value['id'])) ? stripslashes(get_option($value['id'])) : $value['std'] ); ?></textarea>
                             <br /><small><?php echo $value['desc'] ?></small>
                         </td>
                     </tr><?php
@@ -417,8 +424,8 @@ function jigoshop_admin_fields($options) {
                 if (isset($value['args']))
                     $args = wp_parse_args($value['args'], $args);
                 ?><tr class="single_select_page">
-                        <td class="titledesc"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
-                        <td class="forminp">
+                        <th scope="row"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label></th>
+                        <td>
                                     <?php wp_dropdown_pages($args); ?>
                             <br /><small><?php echo $value['desc'] ?></small>
                         </td>
@@ -435,9 +442,9 @@ function jigoshop_admin_fields($options) {
                         $state = '*';
                     endif;
                     ?><tr class="multi_select_countries">
-                        <td class="titledesc"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
-                        <td class="forminp">
-							<select name="<?php echo esc_attr( $value['id'] ); ?>" title="Country" style="width: 150px;">
+                        <th scope="row"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label></th>
+                        <td>
+							<select id="<?php echo esc_attr( $value['id'] ); ?>" name="<?php echo esc_attr( $value['id'] ); ?>" title="Country" style="width: 150px;">
 							<?php
 								$show_all = ($value['id'] != 'jigoshop_default_country');
 								echo jigoshop_countries::country_dropdown_options($country, $state, false, $show_all);
@@ -452,8 +459,8 @@ function jigoshop_admin_fields($options) {
                 asort($countries);
                 $selections = (array) get_option($value['id']);
                 ?><tr class="multi_select_countries">
-                        <td class="titledesc"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
-                        <td class="forminp">
+                        <th scope="row"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label><?php echo $value['name'] ?></label></th>
+                        <td>
                             <div class="multi_select_countries"><ul><?php
                 if ($countries)
                     foreach ($countries as $key => $val) :
@@ -472,8 +479,8 @@ function jigoshop_admin_fields($options) {
                     $coupons = new jigoshop_coupons();
                     $coupon_codes = $coupons->get_coupons();
                 ?><tr>
-                        <td class="titledesc"><?php echo $value['name'] ?>:</td>
-                        <td class="forminp" id="coupon_codes">
+                        <th scope="row"><label><?php echo $value['name'] ?></label></th>
+                        <td id="coupon_codes">
                             <table class="coupon_rows" cellspacing="0">
                                 <thead>
                                     <tr>
@@ -509,7 +516,7 @@ function jigoshop_admin_fields($options) {
                                             endforeach;
                                             echo '</select></td>';
                                             echo '<td><input type="text" value="' . esc_attr( $coupon['amount'] ) . '" name="coupon_amount[' . esc_attr( $i ) . ']" title="' . __('Coupon Amount', 'jigoshop') . '" placeholder="' . __('Amount', 'jigoshop') . '" class="text" /></td>
-			                    			<td><input type="text" value="' . implode(', ', $coupon['products']) . '" name="product_ids[' . esc_attr( $i ) . ']" placeholder="' . __('1, 2, 3,', 'jigoshop') . '" class="text" /></td>';
+			                    			<td><input type="text" value="' . ( ( is_array( $coupon['products'] ) ) ? implode( ', ', $coupon['products'] ) : '' ) . '" name="product_ids[' . esc_attr( $i ) . ']" placeholder="' . __('1, 2, 3,', 'jigoshop') . '" class="text" /></td>';
 
                                             $date_from = $coupon['date_from'];
                                             echo '<td><label for="coupon_date_from[' . esc_attr( $i ) . ']"></label><input type="text" class="text date-pick" name="coupon_date_from[' . esc_attr( $i ) . ']" id="coupon_date_from[' . esc_attr( $i ) . ']" value="';
@@ -661,15 +668,15 @@ function jigoshop_admin_fields($options) {
                                 $tax_rates = get_option('jigoshop_tax_rates');
                                 $applied_all_states = array();
                                 ?><tr>
-                        <td class="titledesc"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><?php echo $value['name'] ?>:</td>
-                        <td class="forminp" id="tax_rates">
+                        <th><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label><?php echo $value['name'] ?></label></th>
+                        <td id="tax_rates">
                             <div class="taxrows">
                 <?php
                 $i = -1;
                 if ($tax_rates && is_array($tax_rates) && sizeof($tax_rates) > 0)
                     foreach ($tax_rates as $rate) :
                         if ($rate['is_all_states']) :
-                            if (in_array($rate['country'], $applied_all_states)) :
+                            if (in_array(get_all_states_key($rate), $applied_all_states)) :
                                 continue;
                             endif;
                         endif;
@@ -693,8 +700,8 @@ function jigoshop_admin_fields($options) {
                         echo '</select><select name="tax_country[' . esc_attr( $i ) . ']" title="Country">';
 
                         if ($rate['is_all_states']) :
-                            if (is_array($applied_all_states) && !in_array($rate['country'], $applied_all_states)) :
-                                $applied_all_states[] = $rate['country'];
+                            if (is_array($applied_all_states) && !in_array(get_all_states_key($rate), $applied_all_states)) :
+                                $applied_all_states[] = get_all_states_key($rate);
                                 jigoshop_countries::country_dropdown_options($rate['country'], '*'); //all-states
                             else :
                                 continue;
@@ -778,21 +785,21 @@ function jigoshop_admin_fields($options) {
         endswitch;
     endforeach;
     ?>
-        <p class="submit"><input name="save" type="submit" value="<?php _e('Save changes', 'jigoshop') ?>" /></p>
+        <p class="submit"><input name="save" class="button-primary" type="submit" value="<?php _e('Save changes', 'jigoshop') ?>" /></p>
     </div>
     <script type="text/javascript">
         jQuery(function($) {
             // Tabs
-            jQuery('ul.tabs').show();
-            jQuery('ul.tabs li:first').addClass('active');
+            jQuery('#jigoshop-nav-tab-wrapper').show();
+            jQuery('#jigoshop-nav-tab-wrapper a:first').addClass('nav-tab-active');
             jQuery('div.panel:not(div.panel:first)').hide();
-            jQuery('ul.tabs a').click(function(){
-                jQuery('ul.tabs li').removeClass('active');
-                jQuery(this).parent().addClass('active');
+            jQuery('#jigoshop-nav-tab-wrapper a').click(function(){
+                jQuery('#jigoshop-nav-tab-wrapper a').removeClass('nav-tab-active');
+                jQuery(this).addClass('nav-tab-active');
                 jQuery('div.panel').hide();
                 jQuery( jQuery(this).attr('href') ).show();
 
-                jQuery.cookie('jigoshop_settings_tab_index', jQuery(this).parent().index('ul.tabs li'))
+                jQuery.cookie('jigoshop_settings_tab_index', jQuery(this).index('#jigoshop-nav-tab-wrapper a'))
 
                 return false;
             });
@@ -822,6 +829,24 @@ function jigoshop_admin_fields($options) {
 }
 
 /**
+ * When all states are selected, filter based on country and tax class. This method
+ * creates the array key for such a filter.
+ * 
+ * @param array $tax_rate the tax rates array
+ * @return string country code and tax class concatenated 
+ */
+function get_all_states_key($tax_rate) {
+    return $tax_rate['country'] . $tax_rate['class'];
+}
+
+/**
+ * Prints an updated notice
+ */
+function jigoshop_settings_updated_notice() {
+    echo '<div id="message" class="updated fade"><p><strong>' . __('Your settings have been saved.', 'jigoshop') . '</strong></p></div>';
+}
+
+/**
  * Settings page
  *
  * Handles the display of the settings page in admin.
@@ -830,14 +855,16 @@ function jigoshop_admin_fields($options) {
  * @usedby 		jigoshop_admin_menu2()
  */
 function jigoshop_settings() {
-    global $options_settings;
+    global $jigoshop_options_settings;
     ?>
     <script type="text/javascript" src="<?php echo jigoshop::assets_url(); ?>/assets/js/easyTooltip.js"></script>
     <div class="wrap jigoshop">
         <div class="icon32 icon32-jigoshop-settings" id="icon-jigoshop"><br/></div>
         <h2><?php _e('General Settings', 'jigoshop'); ?></h2>
+        <?php do_action( 'jigoshop_admin_settings_notices' ); ?>
         <form method="post" id="mainform" action="">
-    <?php jigoshop_admin_fields($options_settings); ?>
+        <?php wp_nonce_field( 'jigoshop-update-settings', '_jigoshop_csrf' ); ?>
+    <?php jigoshop_admin_fields($jigoshop_options_settings); ?>
             <input name="submitted" type="hidden" value="yes" />
         </form>
     </div>

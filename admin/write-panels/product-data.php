@@ -239,6 +239,17 @@ function jigoshop_product_data_box() {
 					), get_post_meta( $post->ID, 'visibility', true ) );
 			?>
 			</fieldset>
+			
+			<fieldset>
+			<?php
+				// Customizable
+				echo jigoshop_form::select( 'product_customize', 'Customizable',
+					array(
+						'no'	=> 'No',
+						'yes'	=> 'Yes',
+					), get_post_meta( $post->ID, 'customizable', true ) );
+			?>
+			</fieldset>
 		</div>
 		<?php if (get_option('jigoshop_manage_stock')=='yes') : ?>
 		<div id="inventory" class="panel jigoshop_options_panel">

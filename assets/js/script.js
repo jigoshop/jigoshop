@@ -129,7 +129,7 @@ jQuery(function(){
 
 	/* Tabs */
 	jQuery('#tabs .panel:not(#tabs .panel)').hide();
-	jQuery('#tabs li a').click(function(){
+	jQuery('div#tabs ul.tabs li > a').click(function(){
 		var href = jQuery(this).attr('href');
 		jQuery('#tabs li').removeClass('active');
 		jQuery('div.panel').hide();

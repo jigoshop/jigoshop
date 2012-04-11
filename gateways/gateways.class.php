@@ -66,5 +66,5 @@ class jigoshop_payment_gateways extends jigoshop_singleton {
 
 		return $_available_gateways;
 	}
-
+    
 }

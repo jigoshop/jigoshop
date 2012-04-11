@@ -61,9 +61,9 @@ function jigoshop_add_order_item() {
 			WHERE $wpdb->postmeta.meta_key = 'SKU'
 			AND $wpdb->posts.post_status = 'publish'
 			AND $wpdb->posts.post_type = 'shop_product'
-			AND $wpdb->postmeta.meta_value = '".$item_to_add."'
+			AND $wpdb->postmeta.meta_value = %s
 			LIMIT 1
-		"));
+		", $item_to_add ));
 		$post = get_post( $post_id );
 	endif;
 
@@ -141,7 +141,7 @@ add_action( 'init', 'jigoshop_update_cart_action' );
 function jigoshop_update_cart_action() {
 
 	// Remove from cart
-	if ( isset($_GET['remove_item']) && is_numeric($_GET['remove_item'])  && jigoshop::verify_nonce('cart', '_GET')) :
+	if ( isset($_GET['remove_item']) && $_GET['remove_item']  && jigoshop::verify_nonce('cart')) :
 
 		jigoshop_cart::set_quantity( $_GET['remove_item'], 0 );
 
@@ -182,7 +182,7 @@ add_action( 'init', 'jigoshop_add_to_cart_action' );
 function jigoshop_add_to_cart_action($url = false)
 {
     //if required param is not set or nonce is invalid then just ignore whole function
-    if (empty($_GET['add-to-cart']) || !jigoshop::verify_nonce('add_to_cart', '_GET')) {
+    if (empty($_GET['add-to-cart']) || !jigoshop::verify_nonce('add_to_cart')) {
         return;
     }
 
@@ -299,11 +299,11 @@ function jigoshop_add_to_cart_action($url = false)
         wp_safe_redirect($url);
     }
     // Redirect directly to checkout if no error messages
-    else if (get_option('jigoshop_redirect_add_to_cart', 'same_page') == 'to_checkout' && jigoshop::error_count() == 0) {
+    else if (get_option('jigoshop_redirect_add_to_cart', 'same_page') == 'to_checkout' && !jigoshop::has_errors()) {
         wp_safe_redirect(jigoshop_cart::get_checkout_url());
     }
     // Redirect directly to cart if no error messages
-    else if (get_option('jigoshop_redirect_add_to_cart', 'to_cart') == 'to_cart' && jigoshop::error_count() == 0) {
+    else if (get_option('jigoshop_redirect_add_to_cart', 'to_cart') == 'to_cart' && !jigoshop::has_errors()) {
         wp_safe_redirect(jigoshop_cart::get_cart_url());
     }
     // Otherwise redirect to where they came
@@ -323,7 +323,8 @@ function jigoshop_ajax_update_order_review() {
 	check_ajax_referer( 'update-order-review', 'security' );
 
 	if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
-
+	
+	jigoshop_cart::get_cart();
 	if (sizeof(jigoshop_cart::$cart_contents)==0) :
 		echo '<p class="error">'.__('Sorry, your session has expired.', 'jigoshop').' <a href="'.home_url().'">'.__('Return to homepage &rarr;', 'jigoshop').'</a></p>';
 		exit;
@@ -418,7 +419,7 @@ function jigoshop_process_login() {
 		if ( !isset($_POST['username']) || empty($_POST['username']) ) jigoshop::add_error( __('Username is required.', 'jigoshop') );
 		if ( !isset($_POST['password']) || empty($_POST['password']) ) jigoshop::add_error( __('Password is required.', 'jigoshop') );
 
-		if (jigoshop::error_count()==0) :
+		if ( ! jigoshop::has_errors()) :
 
 			$creds = array();
 			$creds['user_login'] = $_POST['username'];
@@ -471,7 +472,7 @@ function jigoshop_cancel_order() {
 
 		$order = new jigoshop_order( $order_id );
 
-		if ($order->id == $order_id && $order->order_key == $order_key && $order->status=='pending' && jigoshop::verify_nonce('cancel_order', '_GET')) :
+		if ($order->id == $order_id && $order->order_key == $order_key && $order->status=='pending' && jigoshop::verify_nonce('cancel_order')) :
 
 			// Cancel the order + restore stock
 			$order->cancel_order( __('Order cancelled by customer.', 'jigoshop') );

@@ -213,10 +213,28 @@ function jigoshop_order_items_meta_box($post) {
 						<td class="product-id"><?php echo $item['id']; ?></td>
 						<td class="variation-id"><?php if ( isset($item['variation_id']) ) echo $item['variation_id']; else echo '-'; ?></td>
 						<td class="product-sku"><?php if ($_product->sku) echo $_product->sku; ?></td>
-						<td class="name"><a href="<?php echo esc_url( admin_url('post.php?post='. $_product->id .'&action=edit') ); ?>"><?php echo $item['name']; ?></a></td>
+						<td class="name"><a href="<?php echo esc_url( admin_url('post.php?post='. $_product->id .'&action=edit') ); ?>"><?php echo $item['name']; ?></a>
+							<?php
+								if ( ! empty( $item['customization'] ) ) :
+									
+									$custom = $item['customization'];
+									$label = apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') );
+									?>
+										<div class="customization">
+											<span class="customized_product_label"><?php echo $label; ?></span>
+											<span class="customized_product"><?php echo $custom; ?></span>
+										</div>
+									<?php
+								endif;
+							?>
+							</td>
 						<td class="variation"><?php
 							if (isset($_product->variation_data)) :
 								echo jigoshop_get_formatted_variation( $_product->variation_data, true );
+							elseif ( isset($item['variation']) ) :
+								foreach( $item['variation'] as $var ) {
+									echo "{$var['name']} : {$var['value']}";
+								}
 							else :
 								echo '-';
 							endif;
@@ -380,7 +398,7 @@ function jigoshop_order_totals_meta_box($post) {
 
 		<li class="right">
 			<label><?php _e('Tax:', 'jigoshop'); ?></label>
-			<input type="text" id="order_tax" name="order_tax" placeholder="0.00" value="<?php echo esc_attr( $_order->get_total_tax() ); ?>" class="first" />
+			<input type="text" id="order_tax" name="order_tax_total" placeholder="0.00" value="<?php echo esc_attr( $_order->get_total_tax() ); ?>" class="first" />
 		</li>
 
 		<li>
