@@ -19,7 +19,7 @@ class jigoshop_taxTest extends PHPUnit_Framework_TestCase {
      * This method is called before a test is executed.
      */
     protected function setUp() {
-        $this->object = new jigoshop_tax();
+        $this->object_no_divisor = new jigoshop_tax();
         $this->object_with_divisor = new jigoshop_tax(100);
     }
 
@@ -31,11 +31,11 @@ class jigoshop_taxTest extends PHPUnit_Framework_TestCase {
         
     }
 
-    /**
-     * @covers jigoshop_tax::array_implode
-     * @todo Implement testArray_implode().
-     */
-   /* public function testArray_implode_one_tax_class() {
+	/**
+	 * Test returns a tax array as a string using 1 tax class in the array
+	 *
+	 */
+    public function testArray_implode_one_tax_class() {
         
         $expected = 'tax_class:amount^100,rate^5.0000,compound^,display^Tax,shipping^20';
         $array['tax_class']['amount'] = '100';
@@ -46,12 +46,12 @@ class jigoshop_taxTest extends PHPUnit_Framework_TestCase {
         $result = jigoshop_tax::array_implode($array);
         
         $this->assertEquals($expected, $result);
-    }*/
+    }
 
-    /**
-     * @covers jigoshop_tax::array_implode
-     * @todo Implement testArray_implode().
-     */
+	/**
+	 * Test returns a tax array as a string using multiple tax classes in the array
+	 *
+	 */
     public function testArray_implode_more_than_one_tax_class() {
         
         $expected = 'tax_class:amount^100,rate^5.0000,compound^,display^Tax,shipping^20|tax_class2:amount^110,rate^5.5000,compound^1,display^Tax,shipping^10';
@@ -70,28 +70,46 @@ class jigoshop_taxTest extends PHPUnit_Framework_TestCase {
         
         $this->assertEquals($expected, $result);
     }
-
-    /**
-     * @covers jigoshop_tax::has_tax
-     * @todo Implement testHas_tax().
-     */
-    public function testHas_tax() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+    
+	/**
+	 * Test to verify that when a non-array is passed in as a parameter, the same value
+     * that is passed into the function is returned.
+	 *
+	 */
+    public function testArray_implode_non_array_parameter() {
+        $expected = 'noarray';
+        
+        $this->assertEquals($expected, jigoshop_tax::array_implode('noarray'));
     }
-
-    /**
-     * @covers jigoshop_tax::create_custom_tax
-     * @todo Implement testCreate_custom_tax().
-     */
-    public function testCreate_custom_tax() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+    
+	/**
+	 * Test to see that an empty array passed in returns empty string
+	 *
+	 */
+    public function testArray_implode_empty_array() {
+        $expected = '';
+        
+        $this->assertEquals($expected, jigoshop_tax::array_implode(array()));
     }
+    
+    /**
+     * tests the custom tax string including divisor
+     */
+    public function testCreate_custom_tax_with_divisor() {
+        
+        $expected = 'jigoshop_custom_rate:amount^9000,rate^10.0000,compound^,display^Tax,shipping^1000';
+        $this->assertEquals($expected, jigoshop_tax::create_custom_tax(1000, 100, 10, 100));
+    }
+    
+    /**
+     * tests the custom tax string including divisor and not excluding tax
+     */
+    public function testCreate_custom_tax_without_divisor() {
+        
+        $expected = 'jigoshop_custom_rate:amount^90,rate^10.0000,compound^,display^Tax,shipping^10';
+        $this->assertEquals($expected, jigoshop_tax::create_custom_tax(1000, 100, 10));
+    }
+    
 
     /**
      * @covers jigoshop_tax::get_taxes_as_array
