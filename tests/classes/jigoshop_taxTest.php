@@ -102,7 +102,7 @@ class jigoshop_taxTest extends PHPUnit_Framework_TestCase {
     }
     
     /**
-     * tests the custom tax string including divisor and not excluding tax
+     * tests the custom tax string excluding the divisor
      */
     public function testCreate_custom_tax_without_divisor() {
         
@@ -112,16 +112,53 @@ class jigoshop_taxTest extends PHPUnit_Framework_TestCase {
     
 
     /**
-     * @covers jigoshop_tax::get_taxes_as_array
-     * @todo Implement testGet_taxes_as_array().
      */
-    public function testGet_taxes_as_array() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+    public function testGet_taxes_as_array_one_tax_class() {
+        
+        $expected['tax_class']['amount'] = '100';
+        $expected['tax_class']['rate'] = '5.0000';
+        $expected['tax_class']['compound'] = false;
+        $expected['tax_class']['display'] = 'Tax';
+        $expected['tax_class']['shipping'] = '20';
+        
+        $this->assertEquals($expected, jigoshop_tax::get_taxes_as_array('tax_class:amount^100,rate^5.0000,compound^,display^Tax,shipping^20'));
     }
 
+    /**
+     */
+    public function testGet_taxes_as_array_multiple_tax_classes() {
+        
+        $expected['tax_class']['amount'] = '100';
+        $expected['tax_class']['rate'] = '5.0000';
+        $expected['tax_class']['compound'] = false;
+        $expected['tax_class']['display'] = 'Tax';
+        $expected['tax_class']['shipping'] = '20';
+        $expected['tax_class2']['amount'] = '110';
+        $expected['tax_class2']['rate'] = '5.5000';
+        $expected['tax_class2']['compound'] = true;
+        $expected['tax_class2']['display'] = 'Tax';
+        $expected['tax_class2']['shipping'] = '10';
+        
+        $this->assertEquals($expected, jigoshop_tax::get_taxes_as_array('tax_class:amount^100,rate^5.0000,compound^,display^Tax,shipping^20|tax_class2:amount^110,rate^5.5000,compound^1,display^Tax,shipping^10'));
+    }
+    
+    public function testGet_taxes_as_array_with_divisor() {
+        
+        $expected['tax_class']['amount'] = '1';
+        $expected['tax_class']['rate'] = '5.0000';
+        $expected['tax_class']['compound'] = false;
+        $expected['tax_class']['display'] = 'Tax';
+        $expected['tax_class']['shipping'] = '0.2';
+        
+        $this->assertEquals($expected, jigoshop_tax::get_taxes_as_array('tax_class:amount^100,rate^5.0000,compound^,display^Tax,shipping^20', 100));
+    }
+    
+    public function testGet_taxes_as_array_empty_string() {
+        
+        $expected = array();
+        $this->assertEquals($expected, jigoshop_tax::get_taxes_as_array(''));
+    }
+    
     /**
      * @covers jigoshop_tax::get_taxes_as_string
      * @todo Implement testGet_taxes_as_string().
