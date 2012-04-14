@@ -56,11 +56,16 @@ class jigoshop_tax {
             return '';
         $array_string = array();
         foreach ($array as $key => $val) {
+            
             if (is_array($val)) :
+                
+                // -- reset internal_array
+                $internal_array = array();
                 foreach ($val as $index => $value) :
                     $internal_array[] = "{$index}{$internal_glue}{$value}";
                 endforeach;
                 $val = implode(',', $internal_array);
+            
             endif;
                 
             $array_string[] = "{$key}{$glue}{$val}";
