@@ -160,28 +160,6 @@ class jigoshop_taxTest extends PHPUnit_Framework_TestCase {
     }
     
     /**
-     * @covers jigoshop_tax::get_taxes_as_string
-     * @todo Implement testGet_taxes_as_string().
-     */
-    public function testGet_taxes_as_string() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers jigoshop_tax::get_tax_divisor
-     * @todo Implement testGet_tax_divisor().
-     */
-    public function testGet_tax_divisor() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
-    /**
      * @covers jigoshop_tax::get_total_tax_rate
      * @todo Implement testGet_total_tax_rate().
      */
@@ -194,18 +172,18 @@ class jigoshop_taxTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @covers jigoshop_tax::get_tax_classes
-     * @todo Implement testGet_tax_classes().
+     * @todo actually implement this when we utilize the new settings api.
      */
     public function testGet_tax_classes() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        
+        $result = $this->object_no_divisor->get_tax_classes();
+        
+        $this->assertEquals(array(), $result);
     }
 
     /**
      * @covers jigoshop_tax::get_tax_rates
-     * @todo Implement testGet_tax_rates().
+     * @todo Implement testGet_tax_rates() when we utilize the new settings api
      */
     public function testGet_tax_rates() {
         // Remove the following lines when you implement this test.
@@ -216,7 +194,7 @@ class jigoshop_taxTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @covers jigoshop_tax::get_tax_classes_for_base
-     * @todo Implement testGet_tax_classes_for_base().
+     * @todo Implement testGet_tax_classes_for_base() when new settings api is implemented. Then we can inject a mock object
      */
     public function testGet_tax_classes_for_base() {
         // Remove the following lines when you implement this test.
@@ -230,17 +208,6 @@ class jigoshop_taxTest extends PHPUnit_Framework_TestCase {
      * @todo Implement testIs_compound_tax().
      */
     public function testIs_compound_tax() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers jigoshop_tax::set_is_shipable
-     * @todo Implement testSet_is_shipable().
-     */
-    public function testSet_is_shipable() {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
                 'This test has not been implemented yet.'
@@ -414,24 +381,24 @@ class jigoshop_taxTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @covers jigoshop_tax::calc_tax
-     * @todo Implement testCalc_tax().
      */
-    public function testCalc_tax() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+    public function testCalc_tax_including_tax() {
+        
+        $expected = '1.82';
+        
+        $this->assertEquals($expected, $this->object_no_divisor->calc_tax(20, 10));
+        
     }
 
     /**
-     * @covers jigoshop_tax::calc_shipping_tax
-     * @todo Implement testCalc_shipping_tax().
+     * @covers jigoshop_tax::calc_tax
      */
-    public function testCalc_shipping_tax() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+    public function testCalc_tax_excluding_tax() {
+        
+        $expected = '2.00';
+        
+        $this->assertEquals($expected, $this->object_no_divisor->calc_tax(20, 10, false));
+        
     }
 
     /**
