@@ -1029,14 +1029,17 @@ class jigoshop_product {
 	/**
 	 * Checks if the product has dimensions
 	 *
+     * @param boolean all_dimensions if true, then all dimensions have to be set
+     * in order for has_dimensions to return true, otherwise if false, then just 1 
+     * of the dimensions has to be set for the function to return true.
 	 * @return  bool
 	 */
-	public function has_dimensions() {
+	public function has_dimensions($all_dimensions = false) {
 
 		if ( get_option('jigoshop_enable_dimensions') != 'yes' )
 			return false;
 
-		return ( $this->get_length() || $this->get_width() || $this->get_height() );
+		return ( $all_dimensions ? ($this->get_length() && $this->get_width() && $this->get_height()) :($this->get_length() || $this->get_width() || $this->get_height()));
 	}
 
 	/**

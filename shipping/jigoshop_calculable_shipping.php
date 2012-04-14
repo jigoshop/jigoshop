@@ -346,6 +346,16 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
         $my_rate = $this->get_selected_rate($rate_index);
         return ($my_rate == NULL ? NULL : $my_rate['tax']);
     }
+    
+    /**
+     * If a shop sells mixed products and non-shippable products are all added to 
+     * the cart, then the calculable service can call this method in that scenario
+     * and it will create a free shipping charge.
+     * @since 1.2
+     */
+    protected function create_no_shipping_rate() {
+        $this->rates[] = array('service' => 'non-shippable', 'price' => 0, 'tax' => 0);
+    }    
 
 }
 
