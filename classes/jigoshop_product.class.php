@@ -767,13 +767,7 @@ class jigoshop_product {
 
 			// only display 'From' if prices differ among them
 			$sameprice = true;
-			$firstprice = reset( $array );
-			for ( $i = 0 ; $i < count( $array ) ; $i++ ) {
-				$thisprice = each( $array );
-				if ( $thisprice['value'] != $firstprice ) {
-					$sameprice = false;
-				}
-			}
+			if ( count( $array ) >= 2 && reset( $array ) != end( $array ) ) $sameprice = false;
 			if ( ! $sameprice ) :
 				$html = '<span class="from">' . _x('From:', 'price', 'jigoshop') . '</span> ';
 				reset( $array );
