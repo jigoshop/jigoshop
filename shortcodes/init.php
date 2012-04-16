@@ -223,37 +223,48 @@ function jigoshop_product_category( $atts ) {
 	if ( empty( $atts ) ) return;
 
 	extract( shortcode_atts( array(
-		'slug'		=> '',
-		'per_page' 	=> get_option('jigoshop_catalog_per_page'),
-		'columns' 	=> get_option('jigoshop_catalog_columns'),
-		'orderby'	=> get_option('jigoshop_catalog_sort_orderby'),
-		'order'		=> get_option('jigoshop_catalog_sort_direction'),
-		'pagination'=> false
+		'slug'            => '',
+		'per_page'        => get_option('jigoshop_catalog_per_page'),
+		'columns' 	      => get_option('jigoshop_catalog_columns'),
+		'orderby'	      => get_option('jigoshop_catalog_sort_orderby'),
+		'order'		      => get_option('jigoshop_catalog_sort_direction'),
+		'pagination'      => false,
+		'tax_operator'    => 'IN'
 	), $atts));
 
 	if ( ! $slug ) return;
 
+	/** Operator validation. */
+	if( !in_array( $tax_operator, array( 'IN', 'NOT IN', 'AND' ) ) )
+		$tax_operator = 'IN';
+
+	/** Multiple category values. */
+	if ( !empty($slug) ) {
+		$slug = explode( ',', esc_attr( $slug ) );
+		$slug = array_map('trim', $slug);
+	}
+
 	$args = array(
-		'post_type'	=> 'product',
-		'post_status' => 'publish',
-		'ignore_sticky_posts' => 1,
-		'posts_per_page' => $per_page,
-		'orderby' => $orderby,
-		'order' => $order,
-		'paged' => $paged,
-		'meta_query' => array(
+		'post_type'              => 'product',
+		'post_status'            => 'publish',
+		'ignore_sticky_posts'    => 1,
+		'posts_per_page'         => $per_page,
+		'orderby'                => $orderby,
+		'order'                  => $order,
+		'paged'                  => $paged,
+		'meta_query'             => array(
 			array(
-				'key' => 'visibility',
-				'value' => array( 'catalog', 'visible' ),
-				'compare' => 'IN'
+				'key'       => 'visibility',
+				'value'     => array( 'catalog', 'visible' ),
+				'compare'   => 'IN'
 			)
 		),
 		'tax_query' => array(
 			array(
-				'taxonomy'	=> 'product_cat',
-				'field'		=> 'slug',
-				'terms'		=> esc_attr( $slug ),
-				'operator'	=> 'IN'
+				'taxonomy'    => 'product_cat',
+				'field'       => 'slug',
+				'terms'       => $slug,
+				'operator'    => $tax_operator
 			)
 		)
 	);
