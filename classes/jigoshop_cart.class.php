@@ -404,7 +404,7 @@ class jigoshop_cart extends jigoshop_singleton {
         self::$shipping_total = 0;
         self::$cart_dl_count = 0;
         self::$cart_contents_total_ex_dl = 0; /* for table rate shipping */
-        self::$tax = new jigoshop_tax(100);
+        self::$tax->init_tax();
         self::$price_per_tax_class_ex_tax = array(); /* currently used with norway */
         jigoshop_shipping::reset_shipping();
     }
