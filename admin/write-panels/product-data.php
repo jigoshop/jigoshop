@@ -235,7 +235,7 @@ function jigoshop_product_data_box() {
 						'visible'	=> 'Catalog & Search',
 						'catalog'	=> 'Catalog Only',
 						'search'	=> 'Search Only',
-						'Hidden'	=> 'Hidden'
+						'hidden'	=> 'Hidden'
 					), get_post_meta( $post->ID, 'visibility', true ) );
 			?>
 			</fieldset>
