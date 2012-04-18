@@ -160,6 +160,11 @@ function jigoshop_custom_product_columns($column) {
             else :
                 _e( 'Draft', 'jigoshop' );
             endif;
+			if ( $product->visibility ) :
+				echo ($product->visibility != 'visible')
+					? '<br /><strong class="attention">'.ucfirst($product->visibility).'</strong>'
+					: '';
+			endif;
 		break;
 
 		case "product-visibility" :
