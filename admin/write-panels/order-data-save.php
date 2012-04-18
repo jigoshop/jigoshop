@@ -18,8 +18,8 @@
  */
 add_action('jigoshop_process_shop_order_meta', 'jigoshop_process_shop_order_meta', 1, 2);
 
-function jigoshop_process_shop_order_meta($post_id, $post)
-{
+function jigoshop_process_shop_order_meta($post_id, $post) {
+
     global $wpdb;
 
     $jigoshop_errors = array();
@@ -33,7 +33,7 @@ function jigoshop_process_shop_order_meta($post_id, $post)
     $old_order_items = (array) maybe_unserialize(get_post_meta($post_id, 'order_items', true));
 
     // Order status
-    if ( $order->update_status($_POST['order_status'] )) return;	// there were errors with status changes, don't continue
+    if ( $order->update_status($_POST['order_status'] ) && empty($_POST['invoice']) ) return; // there were errors with status changes, don't continue
 
     // Add/Replace data to array
     $order_fields = array(
