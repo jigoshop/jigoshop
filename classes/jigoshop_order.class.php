@@ -325,10 +325,8 @@ class jigoshop_order {
 					if ( ($_product->is_type('downloadable') || $_product->is_type('virtual')) ) :
 
 					if ( (bool) $item['variation_id'] ) {
-						$_product = new jigoshop_product_variation( $item['variation_id'] );
 						$product_id = $_product->variation_id;
 					} else {
-						$_product = new jigoshop_product( $item['id'] );
 						$product_id = $_product->ID;
 					}
 
