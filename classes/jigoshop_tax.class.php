@@ -32,7 +32,15 @@ class jigoshop_tax {
      */
     function __construct() {
         $this->tax_divisor = (func_num_args() == 1 ? func_get_arg(0) : -1);
+        $this->init_tax();
+    }
 
+    /**
+     * provide a way to initialize the data on the class so we don't need to create a
+     * new object when we want to reset everything.
+     * @since 1.2
+     */
+    public function init_tax() {
         $this->rates = $this->get_tax_rates();
         $this->compound_tax = false;
         $this->tax_amounts = array();
@@ -40,7 +48,7 @@ class jigoshop_tax {
         $this->shipping_tax_class = '';
         $this->shipable = true; // default to true, as most shops will use shipping
     }
-
+    
     /**
      * create a defined string out of the array to be saved during checkout
      *
@@ -56,11 +64,16 @@ class jigoshop_tax {
             return '';
         $array_string = array();
         foreach ($array as $key => $val) {
+            
             if (is_array($val)) :
+                
+                // -- reset internal_array
+                $internal_array = array();
                 foreach ($val as $index => $value) :
                     $internal_array[] = "{$index}{$internal_glue}{$value}";
                 endforeach;
                 $val = implode(',', $internal_array);
+            
             endif;
                 
             $array_string[] = "{$key}{$glue}{$val}";
