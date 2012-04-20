@@ -76,8 +76,9 @@ ul.subsubsub li.onhold a{color:red;}
 ul.subsubsub li.cancelled a{color:#dfdfdf;}
 ul.subsubsub li.refunded a{color:#ccc;}
 .fixed .column-sku,.fixed .column-product-type,.fixed .column-price,.fixed .column-stock,.fixed .column-product-date,.fixed .column-product-cat,.fixed .column-product-tags{width:12%;}
-.fixed th.column-featured a,.fixed th.column-featured.desc a:hover{background:url('../images/head_featured.gif') center no-repeat;}
-.fixed th.column-featured a:hover,.fixed th.column-featured.desc a{background:url('../images/head_featured_desc.gif') center no-repeat;}
+.fixed th.column-featured img{display:none;}
+.fixed th.column-featured a,.fixed th.column-featured.desc a:hover{background:url('../images/head_featured.gif') top center no-repeat;}
+.fixed th.column-featured a:hover,.fixed th.column-featured.desc a{background:url('../images/head_featured_desc.gif') top center no-repeat;}
 .fixed .column-featured{width:60px;}.fixed .column-featured div{text-indent:100%;white-space:nowrap;overflow:hidden;}
 .fixed .column-featured.sortable a span,.fixed .column-featured.sorted a span{float:none;}
 .fixed .column-featured:hover span.sorting-indicator,.fixed .column-featured span.sorting-indicator{display:none;}

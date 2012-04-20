@@ -58,7 +58,7 @@ function jigoshop_edit_product_columns($columns) {
 	$columns["thumb"] = null;
 	$columns["title"] = __("Title", 'jigoshop');
 
-	$columns["featured"] = '<div data-original-title="Featured">'. __('Featured', 'Jigoshop') .'</div>';
+    $columns["featured"] = '<img src="' . jigoshop::plugin_url() . '/assets/images/head_featured.gif" alt="' . __('Featured', 'jigoshop') . '" />';
 
 	$columns["product-type"] = __('Type', 'jigoshop');
 	if( get_option('jigoshop_enable_sku', true) == 'yes' ) {

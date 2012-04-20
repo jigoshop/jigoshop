@@ -368,13 +368,15 @@ ul.subsubsub {
 }
 
 /* Product list */
+
 .fixed {
 	.column-sku, .column-product-type, .column-price, .column-stock, .column-product-date, .column-product-cat, .column-product-tags {
 		width: 12%;
 	}
 
-	th.column-featured a, th.column-featured.desc a:hover { background: url('../images/head_featured.gif') center no-repeat; }
-	th.column-featured a:hover, th.column-featured.desc a { background: url('../images/head_featured_desc.gif') center no-repeat; }
+	th.column-featured img { display: none; }
+	th.column-featured a, th.column-featured.desc a:hover { background: url('../images/head_featured.gif') top center no-repeat; }
+	th.column-featured a:hover, th.column-featured.desc a { background: url('../images/head_featured_desc.gif') top center no-repeat; }
 	.column-featured {
 		width: 60px;
 
