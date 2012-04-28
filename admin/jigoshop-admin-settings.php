@@ -124,28 +124,28 @@ function jigoshop_update_options() {
 
                             foreach (array_keys(jigoshop_countries::$states[$country]) as $st) :
                                 $tax_rates[] = array(
-                                    'country' => $country,
-                                    'label' => $label,
-                                    'state' => $st,
-                                    'rate' => $rate,
-                                    'shipping' => $shipping,
-                                    'class' => $class,
-                                    'compound' => $compound,
-                                    'is_all_states' => true //determines if admin panel should show 'all_states'
+									'country'      => $country,
+									'label'        => $label,
+									'state'        => $st,
+									'rate'         => $rate,
+									'shipping'     => $shipping,
+									'class'        => $class,
+									'compound'     => $compound,
+									'is_all_states'=> true //determines if admin panel should show 'all_states'
                                 );
                             endforeach;
 
                         else :
 
                              $tax_rates[] = array(
-                                'country' => $country,
-                                'label' => $label,
-                                'state' => $state,
-                                'rate' => $rate,
-                                'shipping' => $shipping,
-                                'class' => $class,
-                                'compound' => $compound,
-                                'is_all_states' => false //determines if admin panel should show 'all_states'
+								'country'      => $country,
+								'label'        => $label,
+								'state'        => $state,
+								'rate'         => $rate,
+								'shipping'     => $shipping,
+								'class'        => $class,
+								'compound'     => $compound,
+								'is_all_states'=> false //determines if admin panel should show 'all_states'
                             );
                         endif;
 
@@ -161,14 +161,14 @@ function jigoshop_update_options() {
 
             elseif (isset($value['id']) && $value['id'] == 'jigoshop_coupons') :
 
-                $coupon_code = array();
-                $coupon_type = array();
-                $coupon_amount = array();
-                $product_ids = array();
-                $date_from = array();
-                $date_to = array();
-                $coupons = array();
-                $individual = array();
+				$coupon_code  = array();
+				$coupon_type  = array();
+				$coupon_amount= array();
+				$product_ids  = array();
+				$date_from    = array();
+				$date_to      = array();
+				$coupons      = array();
+				$individual   = array();
 
                 if (isset($_POST['coupon_code']))
                     $coupon_code = $_POST['coupon_code'];

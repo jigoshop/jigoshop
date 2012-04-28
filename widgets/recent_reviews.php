@@ -85,10 +85,10 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 
 		// Get the latest reviews
 		$comments = get_comments(array(
-			'number'	=> $number,
-			'status'		=> 'approve',
-			'post_status'	=> 'publish',
-			'post_type'	=> 'product',
+			'number'     => $number,
+			'status'     => 'approve',
+			'post_status'=> 'publish',
+			'post_type'  => 'product',
 		));
 
 		// If there are products

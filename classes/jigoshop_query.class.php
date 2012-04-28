@@ -218,11 +218,11 @@ class jigoshop_catalog_query extends jigoshop_singleton {
 			$args = array_merge(
 				$this_query->query,
 				array(
-					'page_id' => '',
-					'posts_per_page' => -1,
-					'post_type' => 'product',
-					'post_status' => 'publish',
-					'meta_query' => self::meta_query( $this_query )
+					'page_id'       => '',
+					'posts_per_page'=> -1,
+					'post_type'     => 'product',
+					'post_status'   => 'publish',
+					'meta_query'    => self::meta_query( $this_query )
 				)
 			);
 			$custom_query  = new WP_Query( $args );

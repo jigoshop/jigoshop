@@ -126,11 +126,11 @@ class jigoshop_cart extends jigoshop_singleton {
      * @return string cart item key
      */
     function generate_cart_id( $product_id, $variation_id = '', $variation = '', $cart_item_data = '' ) {
-        
+
         $id_parts = array( $product_id );
-        
+
         if ( $variation_id ) $id_parts[] = $variation_id;
- 
+
         if ( is_array( $variation ) ) {
             $variation_key = '';
             foreach ( $variation as $key => $value ) {
@@ -156,16 +156,16 @@ class jigoshop_cart extends jigoshop_singleton {
 
     /**
      * Check if product is in the cart and return cart item key
-     * 
+     *
      * Cart item key will be unique based on the item and its properties, such as variations
      *
      * @param mixed id of product to find in the cart
      * @return string cart item key
      */
     function find_product_in_cart( $cart_id = false ) {
-        if ( $cart_id !== false ) 
-            foreach ( self::$cart_contents as $cart_item_key => $cart_item ) 
-                if ( $cart_item_key == $cart_id ) 
+        if ( $cart_id !== false )
+            foreach ( self::$cart_contents as $cart_item_key => $cart_item )
+                if ( $cart_item_key == $cart_id )
                     return $cart_item_key;
     }
 
@@ -224,22 +224,23 @@ class jigoshop_cart extends jigoshop_singleton {
             $quantity = (int) $quantity + self::$cart_contents[$found_cart_item_key]['quantity'];
 
             self::set_quantity($found_cart_item_key, $quantity);
-            
+
         } else {
         	// otherwise add new item to the cart
             self::$cart_contents[$cart_id] = array(
-            'product_id' => $product_id,
-            'variation_id' => $variation_id,
-            'variation' => $variation,
-            'quantity' => (int) $quantity,
-            'data' => $product);
-        }
+				'data'        => $product,
+				'product_id'  => $product_id,
+				'quantity'    => (int) $quantity,
+				'variation'   => $variation,
+				'variation_id'=> $variation_id
+			);
+		}
 
         self::set_session();
 
         return true;
     }
-    
+
     /**
      * Set the quantity for an item in the cart
      * Remove the item from the cart if no quantity
@@ -427,13 +428,13 @@ class jigoshop_cart extends jigoshop_singleton {
          */
         $percentage_discount = 1;
         $cart_discount = 0; // determines how much cart discount is left over
-        $total_cart_price_ex_tax = 0; 
-        // for cart discount, we need to apply the discount on all items evenly. Find out 
+        $total_cart_price_ex_tax = 0;
+        // for cart discount, we need to apply the discount on all items evenly. Find out
         // how many items are in the cart, and then find out if there is a discount on the cart
         if (get_option('jigoshop_tax_after_coupon') == 'yes') :
 
             $items_in_cart = 0;
-     
+
             foreach (self::$cart_contents as $cart_item_key => $values) :
                 $_product = $values['data'];
                 if ($_product->exists()) :
@@ -458,11 +459,11 @@ class jigoshop_cart extends jigoshop_singleton {
                     endif;
                 endforeach;
             endif;
-            
+
             $cart_discount = self::$discount_total;
-            
+
             // use multiplication for percentage discount on item price. Therefore we want the inverse of the real
-            // percentage applied. eg. 100% applied disount = 0 percentage_discount 
+            // percentage applied. eg. 100% applied disount = 0 percentage_discount
             // total_item_price * 0 = 0 (or 100% off)
             if ($total_cart_price_ex_tax > 0) :
                 $percentage_discount = $percentage_discount - (self::$discount_total / $total_cart_price_ex_tax);
@@ -470,12 +471,12 @@ class jigoshop_cart extends jigoshop_singleton {
                     $percentage_discount = 0;
                 endif;
             endif;
-            
+
         endif;
         /* ===== end of calculations for cart discounts =====*/
-        
+
         // used to determine how many iterations are left on the cart_contents. Applied with cart coupons
-        $cart_contents_loop_count = count(self::$cart_contents); 
+        $cart_contents_loop_count = count(self::$cart_contents);
         foreach (self::$cart_contents as $cart_item_key => $values) :
             $_product = $values['data'];
             if ($_product->exists() && $values['quantity'] > 0) :
@@ -504,11 +505,11 @@ class jigoshop_cart extends jigoshop_singleton {
                             elseif ($coupon['type'] == 'percent_product') :
                                 $current_product_discount = (( (get_option('jigoshop_tax_after_coupon') == 'yes' ? $values['data']->get_price_excluding_tax($values['quantity']) : $values['data']->get_price() * $values['quantity']) / 100 ) * $coupon['amount']);
                                 self::$discount_total += $current_product_discount;
-                            endif;    
+                            endif;
                         endif;
                     endforeach;
                 endif;
-                
+
                 // time to calculate discounts into a discounted item price if applying before tax
                 $discounted_item_price = -1;
                 $cart_discount_amount = 0;
@@ -522,20 +523,20 @@ class jigoshop_cart extends jigoshop_singleton {
                     $cart_contents_loop_count--;
                 endif;
                 $total_item_price = $_product->get_price() * $values['quantity'] * 100; // Into pounds
-                
+
                 if (get_option('jigoshop_calc_taxes') == 'yes') :
-                    
+
                     $tax_classes_applied = array();
                     if ($_product->is_taxable()) :
-                        
+
                         self::$tax->set_is_shipable(jigoshop_shipping::is_enabled() && $_product->requires_shipping());
-                        
+
                         if (get_option('jigoshop_prices_include_tax') == 'yes' && jigoshop_customer::is_customer_outside_base(jigoshop_shipping::is_enabled() && $_product->requires_shipping()) && (get_option('jigoshop_enable_shipping_calc')=='yes' ||  (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT ))) :
 
                             $total_item_price = $_product->get_price_excluding_tax($values['quantity']) * 100;
 
                             $tax_classes_applied = self::$tax->calculate_tax_amounts((get_option('jigoshop_tax_after_coupon') == 'yes' && $discounted_item_price > 0 ? $discounted_item_price * 100 : $total_item_price), $_product->get_tax_classes(), false);
-                            
+
                             // now add customer taxes back into the total item price because customer is outside base
                             // and we asked to have prices include taxes
                             $total_item_price += ((self::$tax->get_non_compounded_tax_amount() + self::$tax->get_compound_tax_amount()) * 100); // keep tax with multiplier
@@ -579,7 +580,7 @@ class jigoshop_cart extends jigoshop_singleton {
                 self::$cart_contents_total_ex_tax = self::$cart_contents_total_ex_tax + ($_product->get_price_excluding_tax($values['quantity']));
 
             endif;
-            
+
         endforeach;
     }
 
@@ -605,9 +606,9 @@ class jigoshop_cart extends jigoshop_singleton {
 
             //TODO: figure this out with new shipping taxes
             self::$tax->update_tax_amount_with_shipping_tax(self::$shipping_tax_total * 100);
-            
+
             $shipping_tax_classes = self::$tax->get_shipping_tax_classes();
-            
+
             foreach ($shipping_tax_classes as $tax_class) :
                 self::$price_per_tax_class_ex_tax[$tax_class] += self::$shipping_total;
             endforeach;
@@ -638,7 +639,7 @@ class jigoshop_cart extends jigoshop_singleton {
         endif;
 
         // This can go once all shipping methods use the new tax structure
-        if (get_option('jigoshop_calc_taxes') == 'yes' && !self::$tax->get_total_shipping_tax_amount()) : 
+        if (get_option('jigoshop_calc_taxes') == 'yes' && !self::$tax->get_total_shipping_tax_amount()) :
 
             foreach (self::get_applied_tax_classes() as $tax_class) :
                 if (!self::is_not_compounded_tax($tax_class)) : //tax compounded
@@ -656,14 +657,14 @@ class jigoshop_cart extends jigoshop_singleton {
         endif;
 
         if (self::$total < 0)
-            self::$total = 0;    
+            self::$total = 0;
     }
 
     // will return an empty array if taxes are not calculated
     public static function get_price_per_tax_class_ex_tax() {
         return self::$price_per_tax_class_ex_tax;
     }
-    
+
     /** gets cart contents total excluding tax. Shipping methods use this, and the contents total are calculated ahead of shipping */
     public static function get_cart_contents_total_excluding_tax() {
         return self::$cart_contents_total_ex_tax;
@@ -738,7 +739,7 @@ class jigoshop_cart extends jigoshop_singleton {
             // only show estimated tag when customer is on the cart page and no shipping calculator is enabled to be able to change
             // country
             if (!jigoshop_shipping::show_shipping_calculator() && !( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
-                
+
                 if (self::needs_shipping() && jigoshop_shipping::is_enabled()) :
                     $return .= '<small>' . sprintf(__('estimated for %s', 'jigoshop'), jigoshop_countries::estimated_for_prefix() . __(jigoshop_countries::$countries[jigoshop_countries::get_base_country()], 'jigoshop')) . '</small>';
                 else :
@@ -762,7 +763,7 @@ class jigoshop_cart extends jigoshop_singleton {
     public static function has_compound_tax() {
         return self::$tax->is_compound_tax();
     }
-    
+
     public static function get_taxes_as_string() {
         return self::$tax->get_taxes_as_string();
     }
@@ -928,18 +929,18 @@ class jigoshop_cart extends jigoshop_singleton {
      * Gets and formats a list of cart item data + variations for display on the frontend
      */
     static function get_item_data( $cart_item, $flat = FALSE ) {
-        
+
         $has_data = false;
-        
+
         if (!$flat) $return = '<dl class="variation">';
-        
+
         // Variation data
         if($cart_item['data'] instanceof jigoshop_product_variation && is_array($cart_item['variation'])) :
-        
+
             $variation_list = array();
-            
+
             foreach ( $cart_item['variation'] as $name => $value ) :
-                
+
                 $name = str_replace('tax_', '', $name);
 
                 if ( taxonomy_exists( 'pa_'.$name )) :
@@ -957,51 +958,51 @@ class jigoshop_cart extends jigoshop_singleton {
                 else :
                     $variation_list[] = '<dt>'.$name.':</dt><dd>'.$value.'</dd>';
                 endif;
-                
+
             endforeach;
-            
+
             if ($flat) :
                 $return .= implode(', ', $variation_list);
             else :
                 $return .= implode('', $variation_list);
             endif;
-            
+
             $has_data = true;
-        
+
         endif;
-        
+
         // Other data - returned as array with name/value values
         $other_data = apply_filters('jigoshop_get_item_data', array(), $cart_item);
-        
+
         if ($other_data && is_array($other_data) && sizeof($other_data)>0) :
-            
+
             $data_list = array();
-            
+
             foreach ($other_data as $data) :
-                
+
                 $display_value = (isset($data['display']) && $data['display']) ? $data['display'] : $data['value'];
-                
+
                 if ($flat) :
                     $data_list[] = $data['name'].': '.$display_value;
                 else :
                     $data_list[] = '<dt>'.$data['name'].':</dt><dd>'.$display_value.'</dd>';
                 endif;
-                
+
             endforeach;
-            
+
             if ($flat) :
                 $return .= implode(', ', $data_list);
             else :
                 $return .= implode('', $data_list);
             endif;
-            
+
             $has_data = true;
-            
+
         endif;
-        
+
         if (!$flat) $return .= '</dl>';
-        
+
         if ($has_data) return $return;
-                
+
     }
 }

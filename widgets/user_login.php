@@ -60,9 +60,9 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 
 			// Create the default set of links
 			$links = apply_filters( 'jigoshop_widget_logout_user_links' , array(
-				__( 'My Account', 'jigoshop' )		=> get_permalink( jigoshop_get_page_id('myaccount') ),
-				__( 'Change Password', 'jigoshop' )	=> get_permalink( jigoshop_get_page_id('change_password') ),
-				__( 'Logout', 'jigoshop' )		=> wp_logout_url( home_url() ),
+				__( 'My Account', 'jigoshop' )     => get_permalink( jigoshop_get_page_id('myaccount') ),
+				__( 'Change Password', 'jigoshop' )=> get_permalink( jigoshop_get_page_id('change_password') ),
+				__( 'Logout', 'jigoshop' )         => wp_logout_url( home_url() ),
 			));
 
 		} else {

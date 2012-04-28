@@ -156,10 +156,10 @@ function jigoshop_dashboard() {
 							$outofstock = array();
 							$lowinstock = array();
 							$args = array(
-								'post_type'	=> 'product',
-								'post_status' => 'publish',
-								'ignore_sticky_posts'	=> 1,
-								'posts_per_page' => -1
+								'post_type'           => 'product',
+								'post_status'         => 'publish',
+								'ignore_sticky_posts' => 1,
+								'posts_per_page'      => -1
 							);
 							$my_query = new WP_Query($args);
 							if ($my_query->have_posts()) : while ($my_query->have_posts()) : $my_query->the_post();
@@ -276,11 +276,11 @@ function jigoshop_dashboard() {
 										add_filter( 'posts_where', 'orders_this_month' );
 
 										$args = array(
-										    'numberposts'     => -1,
-										    'orderby'         => 'post_date',
-										    'order'           => 'DESC',
-										    'post_type'       => 'shop_order',
-										    'post_status'     => 'publish' ,
+										    'numberposts'      => -1,
+										    'orderby'          => 'post_date',
+										    'order'            => 'DESC',
+										    'post_type'        => 'shop_order',
+										    'post_status'      => 'publish' ,
 										    'suppress_filters' => false
 										);
 										$orders = get_posts( $args );

@@ -33,12 +33,12 @@ class jigoshop_customer extends jigoshop_singleton {
         		$state = '';
         	endif;
 			$data = array(
-				'country' => $country,
-				'state' => $state,
-				'postcode' => '',
+				'country'          => $country,
+				'state'            => $state,
+				'postcode'         => '',
 				'shipping_country' => $country,
-				'shipping_state' => $state,
-				'shipping_postcode' => ''
+				'shipping_state'   => $state,
+				'shipping_postcode'=> ''
 			);
 			jigoshop_session::instance()->customer  = $data;
 
@@ -199,11 +199,11 @@ class jigoshop_customer extends jigoshop_singleton {
 								$download_name = $download_name .' (' . jigoshop_get_formatted_variation( $_product->variation_data, true ).')';
 							endif;
 							$downloads[] = array(
-								'download_url' => add_query_arg('download_file', $result->product_id, add_query_arg('order', $result->order_key, add_query_arg('email', $user_info->user_email, home_url()))),
-								'product_id' => $result->product_id,
-								'download_name' => $download_name,
-								'order_key' => $result->order_key,
-								'downloads_remaining' => $result->downloads_remaining
+								'download_url'       => add_query_arg('download_file', $result->product_id, add_query_arg('order', $result->order_key, add_query_arg('email', $user_info->user_email, home_url()))),
+								'product_id'         => $result->product_id,
+								'download_name'      => $download_name,
+								'order_key'          => $result->order_key,
+								'downloads_remaining'=> $result->downloads_remaining
 							);
 					endforeach;
 				}

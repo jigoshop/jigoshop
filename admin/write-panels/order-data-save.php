@@ -124,14 +124,14 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
             }
 
             $order_items[] = apply_filters('update_order_item', array(
-                'id' => htmlspecialchars(stripslashes($item_id[$i])),
-                'variation_id' => $variation_id,
-                'variation' => $variation,
-                'name' => htmlspecialchars(stripslashes($item_name[$i])),
-                'qty' => (int) $item_quantity[$i],
-                'cost' => number_format((float)jigowatt_clean($item_cost[$i]) * (int) $item_quantity[$i], 2),
-                'cost_inc_tax' => -1, //TODO: need to look at this action when manually adding order
-                'taxrate' => number_format((float)jigowatt_clean($item_tax_rate[$i]), 4)
+				'id'          => htmlspecialchars(stripslashes($item_id[$i])),
+				'variation_id'=> $variation_id,
+				'variation'   => $variation,
+				'name'        => htmlspecialchars(stripslashes($item_name[$i])),
+				'qty'         => (int) $item_quantity[$i],
+				'cost'        => number_format((float)jigowatt_clean($item_cost[$i]) * (int) $item_quantity[$i], 2),
+				'cost_inc_tax'=> -1, //TODO: need to look at this action when manually adding order
+				'taxrate'     => number_format((float)jigowatt_clean($item_tax_rate[$i]), 4)
                 ));
         }
     }

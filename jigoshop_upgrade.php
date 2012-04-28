@@ -193,27 +193,27 @@ function jigoshop_upgrade_100() {
             if (jigoshop_countries::country_has_states($country) && $state == '*') :
                 foreach (array_keys(jigoshop_countries::$states[$country]) as $st) :
                     $tax_rates[] = array(
-                                    'country' => $country,
-                                    'label' => '', // no label created as of yet
-                                    'state' => $st,
-                                    'rate' => $rate,
-                                    'shipping' => $shipping,
-                                    'class' => $class,
-                                    'compound' => 'no', //no such thing as compound taxes, so value is no
-                                    'is_all_states' => true //determines if admin panel should show 'all_states'
+									'country'      => $country,
+									'label'        => '', // no label created as of yet
+									'state'        => $st,
+									'rate'         => $rate,
+									'shipping'     => $shipping,
+									'class'        => $class,
+									'compound'     => 'no', //no such thing as compound taxes, so value is no
+									'is_all_states'=> true //determines if admin panel should show 'all_states'
                                 );
                 endforeach;
 
             else : // do normal tax_rates array with the additional parameters
                     $tax_rates[] = array(
-                                    'country' => $country,
-                                    'label' => '', // no label created as of yet
-                                    'state' => $state,
-                                    'rate' => $rate,
-                                    'shipping' => $shipping,
-                                    'class' => $class,
-                                    'compound' => 'no', //no such thing as compound taxes, so value is no
-                                    'is_all_states' => false //determines if admin panel should show 'all_states'
+									'country'      => $country,
+									'label'        => '', // no label created as of yet
+									'state'        => $state,
+									'rate'         => $rate,
+									'shipping'     => $shipping,
+									'class'        => $class,
+									'compound'     => 'no', //no such thing as compound taxes, so value is no
+									'is_all_states'=> false //determines if admin panel should show 'all_states'
                                 );
 
             endif;
@@ -350,7 +350,7 @@ function jigoshop_upgrade_100() {
 		$parent_weight = get_post_meta( $parent_id, 'weight', true );
 		$parent_length = get_post_meta( $parent_id, 'length', true );
 		$parent_height = get_post_meta( $parent_id, 'height', true );
-		$parent_width = get_post_meta( $parent_id, 'width', true );
+		$parent_width  = get_post_meta( $parent_id, 'width',  true );
 
 		if ( ! get_post_meta( $post->ID, 'regular_price', true) && $parent_reg_price )
 			update_post_meta( $post->ID, 'regular_price', $parent_reg_price );

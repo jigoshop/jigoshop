@@ -102,18 +102,18 @@ function jigoshop_order_data_meta_box($post) {
             //display billing fieds and values
 
                 $billing_fields = array(
-                    'first_name' => __('First Name', 'jigoshop'),
-                    'last_name' => __('Last Name', 'jigoshop'),
-                    'company' => __('Company', 'jigoshop'),
-                    'address_1' => __('Address 1', 'jigoshop'),
-                    'address_2' => __('Address 2', 'jigoshop'),
-                    'city' => __('City', 'jigoshop'),
-                    'postcode' => __('Postcode', 'jigoshop'),
-                    'country' => __('Country', 'jigoshop'),
-                    'state' => __('State/County', 'jigoshop'),
-                    'email' => __('Email Address', 'jigoshop'),
-                    'phone' => __('Tel', 'jigoshop'),
-                );
+					'address_1' => __('Address 1', 'jigoshop'),
+					'address_2' => __('Address 2', 'jigoshop'),
+					'city'      => __('City', 'jigoshop'),
+					'company'   => __('Company', 'jigoshop'),
+					'country'   => __('Country', 'jigoshop'),
+					'email'     => __('Email Address', 'jigoshop'),
+					'first_name'=> __('First Name', 'jigoshop'),
+					'last_name' => __('Last Name', 'jigoshop'),
+					'phone'     => __('Tel', 'jigoshop'),
+					'postcode'  => __('Postcode', 'jigoshop'),
+					'state'     => __('State/County', 'jigoshop'),
+				);
 
                 foreach($billing_fields as $field_id => $field_desc) {
                     $field_id = 'billing_' . $field_id;
@@ -137,16 +137,16 @@ function jigoshop_order_data_meta_box($post) {
             //display shipping fieds and values
 
                 $shipping_fields = array(
-                    'first_name' => __('First Name', 'jigoshop'),
-                    'last_name' => __('Last Name', 'jigoshop'),
-                    'company' => __('Company', 'jigoshop'),
-                    'address_1' => __('Address 1', 'jigoshop'),
-                    'address_2' => __('Address 2', 'jigoshop'),
-                    'city' => __('City', 'jigoshop'),
-                    'postcode' => __('Postcode', 'jigoshop'),
-                    'country' => __('Country', 'jigoshop'),
-                    'state' => __('State/County', 'jigoshop')
-                );
+					'address_1' => __('Address 1', 'jigoshop'),
+					'address_2' => __('Address 2', 'jigoshop'),
+					'city'      => __('City', 'jigoshop'),
+					'company'   => __('Company', 'jigoshop'),
+					'country'   => __('Country', 'jigoshop'),
+					'first_name'=> __('First Name', 'jigoshop'),
+					'last_name' => __('Last Name', 'jigoshop'),
+					'postcode'  => __('Postcode', 'jigoshop'),
+					'state'     => __('State/County', 'jigoshop')
+				);
 
                 foreach($shipping_fields as $field_id => $field_desc) {
                     $field_id = 'shipping_' . $field_id;
@@ -216,7 +216,7 @@ function jigoshop_order_items_meta_box($post) {
 						<td class="name"><a href="<?php echo esc_url( admin_url('post.php?post='. $_product->id .'&action=edit') ); ?>"><?php echo $item['name']; ?></a>
 							<?php
 								if ( ! empty( $item['customization'] ) ) :
-									
+
 									$custom = $item['customization'];
 									$label = apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') );
 									?>

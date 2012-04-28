@@ -154,25 +154,25 @@ class dibs extends jigoshop_payment_gateway {
 		$args =
 			array(
 				// Merchant
-				'merchant' => $this->merchant,
-				'decorator' => 'default',
+				'merchant'   => $this->merchant,
+				'decorator'  => 'default',
 
 				// Session
-				'lang' => 'sv',
+				'lang'       => 'sv',
 
 				// Order
-				'amount' => $order->order_total * 100,
-				'orderid' => $order_id,
-				'uniqueoid' => $order->order_key,
-				'currency' => $dibs_currency[get_option('jigoshop_currency')],
-				'ordertext' => 'TEST',
+				'amount'     => $order->order_total * 100,
+				'orderid'    => $order_id,
+				'uniqueoid'  => $order->order_key,
+				'currency'   => $dibs_currency[get_option('jigoshop_currency')],
+				'ordertext'  => 'TEST',
 
 				// URLs
-				'callbackurl' => site_url('/jigoshop/dibscallback.php'),
+				'callbackurl'=> site_url('/jigoshop/dibscallback.php'),
 
 				// TODO these urls will not work correctly since DIBS ignores the querystring
-				'accepturl' => add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink($checkout_redirect))),
-				'cancelurl' => $order->get_cancel_order_url(),
+				'accepturl'  => add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink($checkout_redirect))),
+				'cancelurl'  => $order->get_cancel_order_url(),
 
 		);
 
