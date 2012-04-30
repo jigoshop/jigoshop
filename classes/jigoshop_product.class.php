@@ -107,7 +107,10 @@ class jigoshop_product {
 		$this->backorders            = isset($meta['backorders'][0]) ? $meta['backorders'][0] : null;
 		$this->stock                 = isset($meta['stock'][0]) ? $meta['stock'][0] : null;
 		$this->stock_sold            = isset($meta['stock_sold'][0]) ? $meta['stock_sold'][0] : null;
-
+		
+		// filter for Paid Memberships Pro plugin courtesy @strangerstudios
+		$this->sale_price = apply_filters( 'jigoshop_sale_price' , $this->sale_price, $this );
+		
 		return $this;
 	}
 
