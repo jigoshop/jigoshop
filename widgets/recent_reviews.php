@@ -8,12 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Widgets
- * @author		Jigowatt
- * @since		1.0
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Widgets
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
@@ -85,10 +84,10 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 
 		// Get the latest reviews
 		$comments = get_comments(array(
-			'number'	=> $number,
-			'status'		=> 'approve',
-			'post_status'	=> 'publish',
-			'post_type'	=> 'product',
+			'number'     => $number,
+			'status'     => 'approve',
+			'post_status'=> 'publish',
+			'post_type'  => 'product',
 		));
 
 		// If there are products

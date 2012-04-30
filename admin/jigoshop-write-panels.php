@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Admin
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Admin
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 include('write-panels/product-data.php');
@@ -153,20 +153,20 @@ function jigoshop_write_panel_scripts() {
 	wp_enqueue_style('thickbox');
 
 	$params = array(
-		'remove_item_notice' 			=>  __("Remove this item? If you have previously reduced this item's stock, or this order was submitted by a customer, will need to manually restore the item's stock.", 'jigoshop'),
-		'cart_total' 					=> __("Calc totals based on order items, discount amount, and shipping?", 'jigoshop'),
-		'copy_billing' 					=> __("Copy billing information to shipping information? This will remove any currently entered shipping information.", 'jigoshop'),
-		'prices_include_tax' 			=> get_option('jigoshop_prices_include_tax'),
-		'ID' 							=>  __('ID', 'jigoshop'),
-		'item_name' 					=> __('Item Name', 'jigoshop'),
-		'quantity' 						=> __('Quantity e.g. 2', 'jigoshop'),
-		'cost_unit' 					=> __('Cost per unit e.g. 2.99', 'jigoshop'),
-		'tax_rate' 						=> __('Tax Rate e.g. 20.0000', 'jigoshop'),
-		'meta_name'						=> __('Meta Name', 'jigoshop'),
-		'meta_value'					=> __('Meta Value', 'jigoshop'),
-		'assets_url' 					=> jigoshop::assets_url(),
-		'ajax_url' 						=> admin_url('admin-ajax.php'),
-		'add_order_item_nonce' 			=> wp_create_nonce("add-order-item")
+		'remove_item_notice'  =>  __("Remove this item? If you have previously reduced this item's stock, or this order was submitted by a customer, will need to manually restore the item's stock.", 'jigoshop'),
+		'cart_total'          => __("Calc totals based on order items, discount amount, and shipping?", 'jigoshop'),
+		'copy_billing'        => __("Copy billing information to shipping information? This will remove any currently entered shipping information.", 'jigoshop'),
+		'prices_include_tax'  => get_option('jigoshop_prices_include_tax'),
+		'ID'                  =>  __('ID', 'jigoshop'),
+		'item_name'           => __('Item Name', 'jigoshop'),
+		'quantity'            => __('Quantity e.g. 2', 'jigoshop'),
+		'cost_unit'           => __('Cost per unit e.g. 2.99', 'jigoshop'),
+		'tax_rate'            => __('Tax Rate e.g. 20.0000', 'jigoshop'),
+		'meta_name'           => __('Meta Name', 'jigoshop'),
+		'meta_value'          => __('Meta Value', 'jigoshop'),
+		'assets_url'          => jigoshop::assets_url(),
+		'ajax_url'            => admin_url('admin-ajax.php'),
+		'add_order_item_nonce'=> wp_create_nonce("add-order-item")
 	 );
 
 	wp_localize_script( 'jigoshop-writepanel', 'params', $params );

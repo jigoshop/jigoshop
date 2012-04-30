@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Customer
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Customer
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 function get_jigoshop_my_account($atts) {
@@ -178,19 +178,19 @@ function jigoshop_edit_address() {
 
 		if ($_POST) :
 
-			if ($user_id>0 && jigoshop::verify_nonce('edit_address') ) :
+			if ($user_id > 0 && jigoshop::verify_nonce('edit_address') ) :
 				update_user_meta( $user_id, $load_address . '-first_name', jigowatt_clean($_POST['address-first_name']) );
-				update_user_meta( $user_id, $load_address . '-last_name', jigowatt_clean($_POST['address-last_name']) );
-				update_user_meta( $user_id, $load_address . '-company', jigowatt_clean($_POST['address-company']) );
-				update_user_meta( $user_id, $load_address . '-email', jigowatt_clean($_POST['address-email']) );
-				update_user_meta( $user_id, $load_address . '-address', jigowatt_clean($_POST['address-address']) );
-				update_user_meta( $user_id, $load_address . '-address2', jigowatt_clean($_POST['address-address2']) );
-				update_user_meta( $user_id, $load_address . '-city', jigowatt_clean($_POST['address-city']) );
-				update_user_meta( $user_id, $load_address . '-postcode', jigowatt_clean($_POST['address-postcode']) );
-				update_user_meta( $user_id, $load_address . '-country', jigowatt_clean($_POST['address-country']) );
-				update_user_meta( $user_id, $load_address . '-state', jigowatt_clean($_POST['address-state']) );
-				update_user_meta( $user_id, $load_address . '-phone', jigowatt_clean($_POST['address-phone']) );
-				update_user_meta( $user_id, $load_address . '-fax', jigowatt_clean($_POST['address-fax']) );
+				update_user_meta( $user_id, $load_address . '-last_name' , jigowatt_clean($_POST['address-last_name']) );
+				update_user_meta( $user_id, $load_address . '-company'   , jigowatt_clean($_POST['address-company']) );
+				update_user_meta( $user_id, $load_address . '-email'     , jigowatt_clean($_POST['address-email']) );
+				update_user_meta( $user_id, $load_address . '-address'   , jigowatt_clean($_POST['address-address']) );
+				update_user_meta( $user_id, $load_address . '-address2'  , jigowatt_clean($_POST['address-address2']) );
+				update_user_meta( $user_id, $load_address . '-city'      , jigowatt_clean($_POST['address-city']) );
+				update_user_meta( $user_id, $load_address . '-postcode'  , jigowatt_clean($_POST['address-postcode']) );
+				update_user_meta( $user_id, $load_address . '-country'   , jigowatt_clean($_POST['address-country']) );
+				update_user_meta( $user_id, $load_address . '-state'     , jigowatt_clean($_POST['address-state']) );
+				update_user_meta( $user_id, $load_address . '-phone'     , jigowatt_clean($_POST['address-phone']) );
+				update_user_meta( $user_id, $load_address . '-fax'       , jigowatt_clean($_POST['address-fax']) );
 			endif;
 
 			wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount'))) );
@@ -199,18 +199,18 @@ function jigoshop_edit_address() {
 		endif;
 
 		$address = array(
-			'first_name' => get_user_meta( get_current_user_id(), $load_address . '-first_name', true ),
+			'first_name'=> get_user_meta( get_current_user_id(), $load_address . '-first_name', true ),
 			'last_name' => get_user_meta( get_current_user_id(), $load_address . '-last_name', true ),
-			'company' => get_user_meta( get_current_user_id(), $load_address . '-company', true ),
-			'email' => get_user_meta( get_current_user_id(), $load_address . '-email', true ),
-			'phone' => get_user_meta( get_current_user_id(), $load_address . '-phone', true ),
-			'fax' => get_user_meta( get_current_user_id(), $load_address . '-fax', true ),
-			'address' => get_user_meta( get_current_user_id(), $load_address . '-address', true ),
-			'address2' => get_user_meta( get_current_user_id(), $load_address . '-address2', true ),
-			'city' => get_user_meta( get_current_user_id(), $load_address . '-city', true ),
-			'state' => get_user_meta( get_current_user_id(), $load_address . '-state', true ),
-			'postcode' => get_user_meta( get_current_user_id(), $load_address . '-postcode', true ),
-			'country' => get_user_meta( get_current_user_id(), $load_address . '-country', true )
+			'company'   => get_user_meta( get_current_user_id(), $load_address . '-company', true ),
+			'email'     => get_user_meta( get_current_user_id(), $load_address . '-email', true ),
+			'phone'     => get_user_meta( get_current_user_id(), $load_address . '-phone', true ),
+			'fax'       => get_user_meta( get_current_user_id(), $load_address . '-fax', true ),
+			'address'   => get_user_meta( get_current_user_id(), $load_address . '-address', true ),
+			'address2'  => get_user_meta( get_current_user_id(), $load_address . '-address2', true ),
+			'city'      => get_user_meta( get_current_user_id(), $load_address . '-city', true ),
+			'state'     => get_user_meta( get_current_user_id(), $load_address . '-state', true ),
+			'postcode'  => get_user_meta( get_current_user_id(), $load_address . '-postcode', true ),
+			'country'   => get_user_meta( get_current_user_id(), $load_address . '-country', true )
 		);
 		?>
 		<form action="<?php echo esc_url( add_query_arg('address', $load_address, apply_filters('jigoshop_get_edit_address_page_id', get_permalink(jigoshop_get_page_id('edit_address')))) ); ?>" method="post">

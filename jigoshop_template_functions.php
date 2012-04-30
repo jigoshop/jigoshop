@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Core
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Core
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -408,17 +408,17 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
             	}
 
                 $variationsAvailable[] = array(
-                    'variation_id' => $variation->get_variation_id(),
-                    'sku'		=> '<div class="sku">SKU: ' . $variation->get_sku() . '</div>',
-                    'attributes' => $vattrs,
-                    'image_src' => $image,
-                    'image_link' => $image_link,
-                    'price_html' => '<span class="price">'.$variation->get_price_html().'</span>',
-                    'availability_html' => '<p class="stock ' . esc_attr( $availability['class'] ) . '">'. $availability['availability'].'</p>',
-                    'a_weight' => $a_weight,
-                    'a_length' => $a_length,
-                    'a_width' => $a_width,
-                    'a_height' => $a_height,
+					'variation_id'     => $variation->get_variation_id(),
+					'sku'              => '<div class="sku">SKU: ' . $variation->get_sku() . '</div>',
+					'attributes'       => $vattrs,
+					'image_src'        => $image,
+					'image_link'       => $image_link,
+					'price_html'       => '<span class="price">'.$variation->get_price_html().'</span>',
+					'availability_html'=> '<p class="stock ' . esc_attr( $availability['class'] ) . '">'. $availability['availability'].'</p>',
+					'a_weight'         => $a_weight,
+					'a_length'         => $a_length,
+					'a_width'          => $a_width,
+					'a_height'         => $a_height,
                 );
             }
         }

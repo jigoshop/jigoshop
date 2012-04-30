@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Core
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Core
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 include_once('cart.php');
 include_once('checkout.php');
@@ -50,18 +50,18 @@ function jigoshop_recent_products( $atts ) {
 	), $atts));
 
 	$args = array(
-		'post_type'	=> 'product',
-		'post_status' => 'publish',
-		'ignore_sticky_posts' => 1,
-		'posts_per_page' => $per_page,
-		'orderby' => $orderby,
-		'order' => $order,
-		'paged' => $paged,
-		'meta_query' => array(
+		'post_type'          => 'product',
+		'post_status'        => 'publish',
+		'ignore_sticky_posts'=> 1,
+		'posts_per_page'     => $per_page,
+		'orderby'            => $orderby,
+		'order'              => $order,
+		'paged'              => $paged,
+		'meta_query'         => array(
 			array(
-				'key' => 'visibility',
-				'value' => array( 'catalog', 'visible' ),
-				'compare' => 'IN'
+				'key'    => 'visibility',
+				'value'  => array( 'catalog', 'visible' ),
+				'compare'=> 'IN'
 			)
 		)
 	);
@@ -91,17 +91,17 @@ function jigoshop_products( $atts ){
 	), $atts));
 
 	$args = array(
-		'post_type'	=> 'product',
-		'post_status' => 'publish',
-		'ignore_sticky_posts' => 1,
-		'orderby' => $orderby,
-		'order' => $order,
-		'paged' => $paged,
-		'meta_query' => array(
+		'post_type'          => 'product',
+		'post_status'        => 'publish',
+		'ignore_sticky_posts'=> 1,
+		'orderby'            => $orderby,
+		'order'              => $order,
+		'paged'              => $paged,
+		'meta_query'         => array(
 			array(
-				'key' => 'visibility',
-				'value' => array( 'catalog', 'visible' ),
-				'compare' => 'IN'
+				'key'    => 'visibility',
+				'value'  => array( 'catalog', 'visible' ),
+				'compare'=> 'IN'
 			)
 		)
 	);
@@ -138,23 +138,23 @@ function jigoshop_product( $atts ){
 	if ( empty( $atts )) return;
 
 	$args = array(
-		'post_type' => 'product',
-		'posts_per_page' => 1,
-		'post_status' => 'publish',
-		'meta_query' => array(
+		'post_type'     => 'product',
+		'posts_per_page'=> 1,
+		'post_status'   => 'publish',
+		'meta_query'    => array(
 			array(
-				'key' => 'visibility',
-				'value' => array( 'catalog', 'visible' ),
-				'compare' => 'IN'
+				'key'    => 'visibility',
+				'value'  => array( 'catalog', 'visible' ),
+				'compare'=> 'IN'
 			)
 		)
 	);
 
 	if ( isset( $atts['sku'] )){
 		$args['meta_query'][] = array(
-			'key' => 'sku',
-			'value' => $atts['sku'],
-			'compare' => '='
+			'key'    => 'sku',
+			'value'  => $atts['sku'],
+			'compare'=> '='
 		);
 	}
 
@@ -185,21 +185,21 @@ function jigoshop_featured_products( $atts ) {
 	), $atts));
 
 	$args = array(
-		'post_type'	=> 'product',
-		'post_status' => 'publish',
-		'ignore_sticky_posts' => 1,
-		'posts_per_page' => $per_page,
-		'orderby' => $orderby,
-		'order' => $order,
-		'paged' => $paged,
-		'meta_query' => array(
+		'post_type'          => 'product',
+		'post_status'        => 'publish',
+		'ignore_sticky_posts'=> 1,
+		'posts_per_page'     => $per_page,
+		'orderby'            => $orderby,
+		'order'              => $order,
+		'paged'              => $paged,
+		'meta_query'         => array(
 			array(
-				'key' => 'visibility',
-				'value' => array( 'catalog', 'visible' ),
-				'compare' => 'IN'
+				'key'    => 'visibility',
+				'value'  => array( 'catalog', 'visible' ),
+				'compare'=> 'IN'
 			),
 			array(
-				'key' => 'featured',
+				'key'   => 'featured',
 				'value' => true
 			)
 		)
@@ -363,22 +363,22 @@ function jigoshop_search_shortcode( $atts ) {
 
 //### Shortcodes #########################################################
 
-add_shortcode('product', 'jigoshop_product');
-add_shortcode('products', 'jigoshop_products');
-add_shortcode('add_to_cart', 'jigoshop_product_add_to_cart');
-add_shortcode('add_to_cart_url', 'jigoshop_product_add_to_cart_url');
-add_shortcode('product_search', 'jigoshop_search_shortcode');
+add_shortcode('product'                 , 'jigoshop_product');
+add_shortcode('products'                , 'jigoshop_products');
+add_shortcode('add_to_cart'             , 'jigoshop_product_add_to_cart');
+add_shortcode('add_to_cart_url'         , 'jigoshop_product_add_to_cart_url');
+add_shortcode('product_search'          , 'jigoshop_search_shortcode');
 
-add_shortcode('recent_products', 'jigoshop_recent_products');
-add_shortcode('featured_products', 'jigoshop_featured_products');
-add_shortcode('jigoshop_category', 'jigoshop_product_category');
+add_shortcode('recent_products'         , 'jigoshop_recent_products');
+add_shortcode('featured_products'       , 'jigoshop_featured_products');
+add_shortcode('jigoshop_category'       , 'jigoshop_product_category');
 
-add_shortcode('jigoshop_cart', 'get_jigoshop_cart');
-add_shortcode('jigoshop_checkout', 'get_jigoshop_checkout');
-add_shortcode('jigoshop_order_tracking', 'get_jigoshop_order_tracking');
-add_shortcode('jigoshop_my_account', 'get_jigoshop_my_account');
-add_shortcode('jigoshop_edit_address', 'get_jigoshop_edit_address');
+add_shortcode('jigoshop_cart'           , 'get_jigoshop_cart');
+add_shortcode('jigoshop_checkout'       , 'get_jigoshop_checkout');
+add_shortcode('jigoshop_order_tracking' , 'get_jigoshop_order_tracking');
+add_shortcode('jigoshop_my_account'     , 'get_jigoshop_my_account');
+add_shortcode('jigoshop_edit_address'   , 'get_jigoshop_edit_address');
 add_shortcode('jigoshop_change_password', 'get_jigoshop_change_password');
-add_shortcode('jigoshop_view_order', 'get_jigoshop_view_order');
-add_shortcode('jigoshop_pay', 'get_jigoshop_pay');
-add_shortcode('jigoshop_thankyou', 'get_jigoshop_thankyou');
+add_shortcode('jigoshop_view_order'     , 'get_jigoshop_view_order');
+add_shortcode('jigoshop_pay'            , 'get_jigoshop_pay');
+add_shortcode('jigoshop_thankyou'       , 'get_jigoshop_thankyou');

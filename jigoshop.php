@@ -38,7 +38,7 @@
  * @package             Jigoshop
  * @category            Core
  * @author              Jigowatt
- * @copyright           Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -240,9 +240,9 @@ function jigoshop_init() {
 	include_once( 'jigoshop_template_functions.php' );
 
 	add_role('customer', 'Customer', array(
-	    'read' => true,
-	    'edit_posts' => false,
-	    'delete_posts' => false
+		'read'        => true,
+		'edit_posts'  => false,
+		'delete_posts'=> false
 	));
 
 	$css = file_exists(get_stylesheet_directory() . '/jigoshop/style.css') ? get_stylesheet_directory_uri() . '/jigoshop/style.css' : jigoshop::assets_url() . '/assets/css/frontend.css';
@@ -987,20 +987,20 @@ function jigoshop_import_start() {
 							        array(
 							            'hierarchical' => true,
 							            'labels' => array(
-							                    'name' => $nicename,
-							                    'singular_name' => $nicename,
-							                    'search_items' =>  __( 'Search ', 'jigoshop') . $nicename,
-							                    'all_items' => __( 'All ', 'jigoshop') . $nicename,
-							                    'parent_item' => __( 'Parent ', 'jigoshop') . $nicename,
-							                    'parent_item_colon' => __( 'Parent ', 'jigoshop') . $nicename . ':',
-							                    'edit_item' => __( 'Edit ', 'jigoshop') . $nicename,
-							                    'update_item' => __( 'Update ', 'jigoshop') . $nicename,
-							                    'add_new_item' => __( 'Add New ', 'jigoshop') . $nicename,
-							                    'new_item_name' => __( 'New ', 'jigoshop') . $nicename
+												'name'             => $nicename,
+												'singular_name'    => $nicename,
+												'search_items'     =>  __( 'Search ', 'jigoshop') . $nicename,
+												'all_items'        => __( 'All ', 'jigoshop') . $nicename,
+												'parent_item'      => __( 'Parent ', 'jigoshop') . $nicename,
+												'parent_item_colon'=> __( 'Parent ', 'jigoshop') . $nicename . ':',
+												'edit_item'        => __( 'Edit ', 'jigoshop') . $nicename,
+												'update_item'      => __( 'Update ', 'jigoshop') . $nicename,
+												'add_new_item'     => __( 'Add New ', 'jigoshop') . $nicename,
+												'new_item_name'    => __( 'New ', 'jigoshop') . $nicename
 							            ),
-							            'show_ui' => false,
-							            'query_var' => true,
-							            'rewrite' => array( 'slug' => sanitize_title($nicename), 'with_front' => false, 'hierarchical' => true ),
+										'show_ui'  => false,
+										'query_var'=> true,
+										'rewrite'  => array( 'slug'=> sanitize_title($nicename), 'with_front'=> false, 'hierarchical'=> true ),
 							        )
 							    );
 
