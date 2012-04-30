@@ -87,7 +87,7 @@ msgstr "Etiquetas"
 #: jigoshop_taxonomy.php:64
 #@ jigoshop
 msgid "Product Tag"
-msgstr "Tag de Produtos"
+msgstr "Etiquetas"
 
 #: jigoshop_taxonomy.php:65
 #@ jigoshop
@@ -102,78 +102,78 @@ msgstr "Todas as Etiquetas"
 #: jigoshop_taxonomy.php:67
 #@ jigoshop
 msgid "Parent Product Tag"
-msgstr "Principal Tag de Produtos"
+msgstr "Etiqueta Principal"
 
 #: jigoshop_taxonomy.php:68
 #@ jigoshop
 msgid "Parent Product Tag:"
-msgstr "Principal Tag de Produtos:"
+msgstr "Etiqueta Principal:"
 
 #: jigoshop_taxonomy.php:69
 #@ jigoshop
 msgid "Edit Product Tag"
-msgstr "Editar Tag de Produtos"
+msgstr "Editar Tag"
 
 #: jigoshop_taxonomy.php:70
 #@ jigoshop
 msgid "Update Product Tag"
-msgstr "Atualizar Tag de Produtos"
+msgstr "Atualizar Tag"
 
 #: jigoshop_taxonomy.php:71
 #@ jigoshop
 msgid "Add New Product Tag"
-msgstr "Adicionar Nova Tag de Produto"
+msgstr "Adicionar Nova Etiqueta"
 
 #: jigoshop_taxonomy.php:72
 #@ jigoshop
 msgid "New Product Tag Name"
-msgstr "Nome da Nova Tag de Produto"
+msgstr "Nome da Nova Etiqueta"
 
 #: jigoshop_taxonomy.php:76
 #@ jigoshop
 msgctxt "slug"
 msgid "product-tag"
-msgstr "tag-de-produto"
+msgstr "etiqueta-de-produto"
 
-#: jigoshop.php:931
+#: jigoshop.php:943
 #: jigoshop_taxonomy.php:95
 #@ jigoshop
 msgid "Search "
 msgstr "Pesquisar "
 
-#: jigoshop.php:932
+#: jigoshop.php:944
 #: jigoshop_taxonomy.php:96
 #@ jigoshop
 msgid "All "
 msgstr "Todos "
 
-#: jigoshop.php:933
-#: jigoshop.php:934
+#: jigoshop.php:945
+#: jigoshop.php:946
 #: jigoshop_taxonomy.php:97
 #: jigoshop_taxonomy.php:98
 #@ jigoshop
 msgid "Parent "
 msgstr "Principal "
 
-#: jigoshop.php:935
+#: jigoshop.php:947
 #: jigoshop_taxonomy.php:99
 #@ jigoshop
 msgid "Edit "
 msgstr "Editar "
 
-#: jigoshop.php:936
+#: jigoshop.php:948
 #: jigoshop_taxonomy.php:100
 #@ jigoshop
 msgid "Update "
 msgstr "Atualizar "
 
-#: jigoshop.php:937
+#: jigoshop.php:949
 #: jigoshop_taxonomy.php:101
 #@ jigoshop
 msgid "Add New "
 msgstr "Adicionar Novo "
 
-#: jigoshop.php:938
+#: jigoshop.php:950
 #: jigoshop_taxonomy.php:102
 #@ jigoshop
 msgid "New "
@@ -203,7 +203,7 @@ msgstr "Adicionar Produto"
 msgid "Add New Product"
 msgstr "Adicionar Novo Produto"
 
-#: admin/jigoshop-admin-attributes.php:199
+#: admin/jigoshop-admin-attributes.php:198
 #: jigoshop_taxonomy.php:123
 #: jigoshop_taxonomy.php:155
 #: jigoshop_taxonomy.php:197
@@ -287,7 +287,7 @@ msgstr "Editar Pedido"
 msgid "New Order"
 msgstr "Novo Pedido"
 
-#: admin/jigoshop-install.php:128
+#: admin/jigoshop-install.php:151
 #: jigoshop_taxonomy.php:200
 #: jigoshop_taxonomy.php:201
 #@ jigoshop
@@ -423,13 +423,13 @@ msgstr "Avaliações"
 msgid "Product Description"
 msgstr "Descrição do Produto"
 
-#: jigoshop_template_functions.php:613
+#: jigoshop_template_functions.php:614
 #@ jigoshop
 msgid "Related Products"
 msgstr "Produtos Relacionados"
 
-#: admin/jigoshop-admin-settings-options.php:744
-#: jigoshop_template_functions.php:639
+#: admin/jigoshop-admin-settings-options.php:766
+#: jigoshop_template_functions.php:640
 #@ jigoshop
 msgid "Calculate Shipping"
 msgstr "Calcular Entrega"
@@ -440,22 +440,22 @@ msgid "Select a country&hellip;"
 msgstr "Selecione um país&hellip;"
 
 #: classes/jigoshop_checkout.class.php:214
-#: jigoshop.php:279
-#: jigoshop_template_functions.php:663
+#: jigoshop.php:291
+#: jigoshop_template_functions.php:664
 #: shortcodes/my_account.php:277
 #@ jigoshop
 msgid "Select a state&hellip;"
 msgstr "Selecione um estado&hellip;"
 
-#: jigoshop.php:280
-#: jigoshop_template_functions.php:675
+#: jigoshop.php:292
+#: jigoshop_template_functions.php:676
 #: shortcodes/my_account.php:264
 #: shortcodes/my_account.php:287
 #@ jigoshop
 msgid "state"
 msgstr "estado"
 
-#: jigoshop_template_functions.php:681
+#: jigoshop_template_functions.php:682
 #@ jigoshop
 msgid "Postcode/Zip"
 msgstr "CEP"
@@ -464,86 +464,86 @@ msgstr "CEP"
 #: admin/write-panels/order-data.php:146
 #: classes/jigoshop_checkout.class.php:44
 #: classes/jigoshop_checkout.class.php:60
-#: jigoshop_template_functions.php:681
+#: jigoshop_template_functions.php:682
 #: shortcodes/my_account.php:244
 #@ jigoshop
 msgid "Postcode"
 msgstr "CEP"
 
-#: jigoshop_template_functions.php:684
+#: jigoshop_template_functions.php:685
 #@ jigoshop
 msgid "Update Totals"
-msgstr "Atualizar Totais"
+msgstr "Atualizar Total"
 
 #: classes/jigoshop_checkout.class.php:96
-#: jigoshop_template_functions.php:755
+#: jigoshop_template_functions.php:756
 #: widgets/user_login.php:85
 #@ jigoshop
 msgid "Username"
-msgstr "Nome de Usuário"
+msgstr "Nome de cliente"
 
 #: classes/jigoshop_checkout.class.php:97
-#: jigoshop_template_functions.php:759
+#: jigoshop_template_functions.php:760
 #: widgets/user_login.php:93
 #@ jigoshop
 msgid "Password"
 msgstr "Senha"
 
-#: jigoshop_template_functions.php:766
+#: jigoshop_template_functions.php:767
 #: widgets/user_login.php:71
 #: widgets/user_login.php:100
 #@ jigoshop
 msgid "Login"
 msgstr "Login"
 
-#: jigoshop_template_functions.php:767
+#: jigoshop_template_functions.php:768
 #@ jigoshop
 msgid "Lost Password?"
 msgstr "Perdeu sua senha?"
 
-#: jigoshop_template_functions.php:782
+#: jigoshop_template_functions.php:783
 #@ jigoshop
 msgid "Already registered?"
 msgstr "Já é registrado?"
 
-#: jigoshop_template_functions.php:782
+#: jigoshop_template_functions.php:783
 #@ jigoshop
 msgid "Click here to login"
 msgstr "Clique para fazer login"
 
-#: jigoshop_template_functions.php:796
+#: jigoshop_template_functions.php:797
 #@ jigoshop
 msgctxt "breadcrumb"
 msgid "Home"
-msgstr "Home"
+msgstr "Vitrine"
 
-#: jigoshop_template_functions.php:850
+#: jigoshop_template_functions.php:851
 #@ jigoshop
 msgid "Products tagged &ldquo;"
 msgstr "Produtos marcados como &ldquo;"
 
-#: jigoshop_template_functions.php:873
-#: jigoshop_template_functions.php:958
+#: jigoshop_template_functions.php:874
+#: jigoshop_template_functions.php:959
 #@ jigoshop
 msgid "Search results for &ldquo;"
 msgstr "Resultados da pesquisa por &ldquo;"
 
-#: jigoshop_template_functions.php:922
+#: jigoshop_template_functions.php:923
 #@ jigoshop
 msgid "Error 404"
 msgstr "Erro 404"
 
-#: jigoshop_template_functions.php:962
+#: jigoshop_template_functions.php:963
 #@ jigoshop
 msgid "Posts tagged &ldquo;"
 msgstr "Posts marcados como &ldquo;"
 
-#: jigoshop_template_functions.php:967
+#: jigoshop_template_functions.php:968
 #@ jigoshop
 msgid "Author: "
 msgstr "Autor: "
 
-#: jigoshop_template_functions.php:973
+#: jigoshop_template_functions.php:974
 #@ jigoshop
 msgid "Page"
 msgstr "Página"
@@ -561,7 +561,7 @@ msgstr "Por favor, escolha um produto&hellip;"
 #: jigoshop_actions.php:418
 #@ jigoshop
 msgid "Username is required."
-msgstr "Nome de usuário é requerido."
+msgstr "Nome de cliente é requerido."
 
 #: jigoshop_actions.php:419
 #@ jigoshop
@@ -788,7 +788,7 @@ msgstr "Produto fora de estoque"
 msgid "is out of stock."
 msgstr "está fora de estoque."
 
-#: jigoshop.php:321
+#: jigoshop.php:333
 #@ jigoshop
 msgid "This is a demo store for testing purposes &mdash; no orders shall be fulfilled."
 msgstr "Esta loja é somente para demonstração &mdash; pedidos não devem ser concretizados."
@@ -796,41 +796,41 @@ msgstr "Esta loja é somente para demonstração &mdash; pedidos não devem ser 
 #: classes/jigoshop_cart.class.php:576
 #: classes/jigoshop_cart.class.php:689
 #: classes/jigoshop_order.class.php:193
-#: jigoshop.php:639
+#: jigoshop.php:651
 #@ jigoshop
 msgid " <small>(ex. tax)</small>"
 msgstr " <small>(ex. taxa)</small>"
 
-#: jigoshop.php:822
+#: jigoshop.php:834
 #@ jigoshop
 msgid "You have taken too long. Please go back and refresh the page."
 msgstr "Você demorou muito. Por favor, volte e atualize a página."
 
-#: jigoshop.php:825
+#: jigoshop.php:837
 #@ jigowatt
 msgid "Please rate the product."
 msgstr "Por favor, avalie este produto."
 
 #: admin/jigoshop-admin-dashboard.php:462
 #: classes/jigoshop_product.class.php:909
-#: jigoshop.php:845
+#: jigoshop.php:857
 #: templates/single-product-reviews.php:46
 #: widgets/recent_reviews.php:135
 #@ jigoshop
 msgid "out of 5"
 msgstr "de 5"
 
-#: jigoshop.php:849
+#: jigoshop.php:861
 #@ jigoshop
 msgid "Your comment is awaiting approval"
 msgstr "Seu comentário está aguardando aprovação."
 
-#: jigoshop.php:852
+#: jigoshop.php:864
 #@ jigoshop
 msgid "Rating by"
 msgstr "Avaliação por"
 
-#: jigoshop.php:852
+#: jigoshop.php:864
 #@ jigoshop
 msgid "on"
 msgstr "em"
@@ -852,21 +852,22 @@ msgstr "Habilitar Entrega Gratuita"
 #: admin/jigoshop-admin-settings-options.php:160
 #: admin/jigoshop-admin-settings-options.php:173
 #: admin/jigoshop-admin-settings-options.php:187
-#: admin/jigoshop-admin-settings-options.php:220
-#: admin/jigoshop-admin-settings-options.php:358
-#: admin/jigoshop-admin-settings-options.php:586
-#: admin/jigoshop-admin-settings-options.php:600
-#: admin/jigoshop-admin-settings-options.php:628
-#: admin/jigoshop-admin-settings-options.php:658
-#: admin/jigoshop-admin-settings-options.php:672
-#: admin/jigoshop-admin-settings-options.php:685
-#: admin/jigoshop-admin-settings-options.php:708
-#: admin/jigoshop-admin-settings-options.php:733
-#: admin/jigoshop-admin-settings-options.php:752
-#: admin/jigoshop-admin-settings-options.php:766
-#: admin/jigoshop-admin-settings-options.php:780
+#: admin/jigoshop-admin-settings-options.php:219
+#: admin/jigoshop-admin-settings-options.php:366
+#: admin/jigoshop-admin-settings-options.php:594
+#: admin/jigoshop-admin-settings-options.php:608
+#: admin/jigoshop-admin-settings-options.php:636
+#: admin/jigoshop-admin-settings-options.php:664
+#: admin/jigoshop-admin-settings-options.php:680
+#: admin/jigoshop-admin-settings-options.php:694
+#: admin/jigoshop-admin-settings-options.php:707
+#: admin/jigoshop-admin-settings-options.php:730
+#: admin/jigoshop-admin-settings-options.php:755
+#: admin/jigoshop-admin-settings-options.php:774
+#: admin/jigoshop-admin-settings-options.php:788
 #: admin/jigoshop-admin-settings-options.php:802
-#: admin/jigoshop-admin-settings-options.php:816
+#: admin/jigoshop-admin-settings-options.php:824
+#: admin/jigoshop-admin-settings-options.php:838
 #: gateways/bank_transfer.php:53
 #: gateways/cheque.php:47
 #: gateways/cod.php:47
@@ -890,21 +891,22 @@ msgstr "Sim"
 #: admin/jigoshop-admin-settings-options.php:161
 #: admin/jigoshop-admin-settings-options.php:174
 #: admin/jigoshop-admin-settings-options.php:188
-#: admin/jigoshop-admin-settings-options.php:219
-#: admin/jigoshop-admin-settings-options.php:357
-#: admin/jigoshop-admin-settings-options.php:587
-#: admin/jigoshop-admin-settings-options.php:601
-#: admin/jigoshop-admin-settings-options.php:629
-#: admin/jigoshop-admin-settings-options.php:659
-#: admin/jigoshop-admin-settings-options.php:673
-#: admin/jigoshop-admin-settings-options.php:686
-#: admin/jigoshop-admin-settings-options.php:709
-#: admin/jigoshop-admin-settings-options.php:732
-#: admin/jigoshop-admin-settings-options.php:753
-#: admin/jigoshop-admin-settings-options.php:767
-#: admin/jigoshop-admin-settings-options.php:781
+#: admin/jigoshop-admin-settings-options.php:218
+#: admin/jigoshop-admin-settings-options.php:365
+#: admin/jigoshop-admin-settings-options.php:595
+#: admin/jigoshop-admin-settings-options.php:609
+#: admin/jigoshop-admin-settings-options.php:637
+#: admin/jigoshop-admin-settings-options.php:665
+#: admin/jigoshop-admin-settings-options.php:681
+#: admin/jigoshop-admin-settings-options.php:695
+#: admin/jigoshop-admin-settings-options.php:708
+#: admin/jigoshop-admin-settings-options.php:731
+#: admin/jigoshop-admin-settings-options.php:754
+#: admin/jigoshop-admin-settings-options.php:775
+#: admin/jigoshop-admin-settings-options.php:789
 #: admin/jigoshop-admin-settings-options.php:803
-#: admin/jigoshop-admin-settings-options.php:817
+#: admin/jigoshop-admin-settings-options.php:825
+#: admin/jigoshop-admin-settings-options.php:839
 #: gateways/bank_transfer.php:54
 #: gateways/cheque.php:48
 #: gateways/cod.php:48
@@ -932,7 +934,7 @@ msgstr "Não"
 #: shipping/local_pickup.php:52
 #@ jigoshop
 msgid "This controls the title which the user sees during checkout."
-msgstr "Isto controla o título que o usuário verá na finalização."
+msgstr "Isto controla o título que o cliente verá na finalização."
 
 #: gateways/bank_transfer.php:59
 #: gateways/cheque.php:53
@@ -950,7 +952,7 @@ msgstr "Título do método"
 #: shipping/free_shipping.php:59
 #@ jigoshop
 msgid "Users will need to spend this amount to get free shipping. Leave blank to disable."
-msgstr "Usuários precisarão gastar esta quantia para receberem frete grátis. Deixe em branco para desabilitar."
+msgstr "Clientes precisarão gastar esta quantia para receberem frete grátis. Deixe em branco para desabilitar."
 
 #: shipping/free_shipping.php:59
 #@ jigoshop
@@ -998,7 +1000,7 @@ msgstr "Taxas fixas permitem você a definir taxas padrões para ítens ou pedid
 msgid "Enable Flat Rate"
 msgstr "Habilitar Taxas Fixas"
 
-#: admin/jigoshop-admin-attributes.php:184
+#: admin/jigoshop-admin-attributes.php:183
 #: admin/jigoshop-admin-post-types.php:60
 #: admin/jigoshop-admin-settings.php:482
 #: admin/write-panels/product-types/variable.php:486
@@ -1015,7 +1017,7 @@ msgstr "Por Pedido"
 #: shipping/flat_rate.php:108
 #@ jigoshop
 msgid "Per Item"
-msgstr "Por Ítem"
+msgstr "Por Produto"
 
 #: shipping/flat_rate.php:114
 #@ jigoshop
@@ -1027,7 +1029,7 @@ msgstr "Situação das Taxas"
 msgid "Taxable"
 msgstr "Taxável"
 
-#: admin/jigoshop-admin-settings-options.php:328
+#: admin/jigoshop-admin-settings-options.php:327
 #: shipping/flat_rate.php:118
 #@ jigoshop
 msgid "None"
@@ -1113,8 +1115,8 @@ msgstr "Pedidos Recentes"
 #@ jigoshop
 msgid "item"
 msgid_plural "items"
-msgstr[0] "ítem"
-msgstr[1] "ítens"
+msgstr[0] "produto"
+msgstr[1] "produtos"
 
 #: admin/jigoshop-admin-dashboard.php:133
 #@ jigoshop
@@ -1261,50 +1263,50 @@ msgstr "Jigoshop no WordPress.org"
 msgid "Leave us a rating!"
 msgstr "Faça uma avaliação nossa!"
 
-#: admin/jigoshop-install.php:100
+#: admin/jigoshop-install.php:123
 #@ jigoshop
 msgid "Shop"
 msgstr "Loja"
 
-#: admin/jigoshop-install.php:106
+#: admin/jigoshop-install.php:129
 #: widgets/cart.php:56
 #@ jigoshop
 msgid "Cart"
 msgstr "Carrinho"
 
-#: admin/jigoshop-install.php:133
+#: admin/jigoshop-install.php:156
 #@ jigoshop
 msgid "Checkout"
 msgstr "Caixa"
 
-#: admin/jigoshop-install.php:110
+#: admin/jigoshop-install.php:133
 #@ jigoshop
 msgid "Track your order"
 msgstr "Acompanhe seu pedido"
 
-#: admin/jigoshop-install.php:114
+#: admin/jigoshop-install.php:137
 #: widgets/user_login.php:63
 #@ jigoshop
 msgid "My Account"
 msgstr "Minha Conta"
 
-#: admin/jigoshop-install.php:118
+#: admin/jigoshop-install.php:141
 #@ jigoshop
 msgid "Edit My Address"
 msgstr "Editar Meu Endereço"
 
-#: admin/jigoshop-install.php:123
+#: admin/jigoshop-install.php:146
 #: widgets/user_login.php:64
 #@ jigoshop
 msgid "Change Password"
 msgstr "Alterar Senha"
 
-#: admin/jigoshop-install.php:138
+#: admin/jigoshop-install.php:161
 #@ jigoshop
 msgid "Checkout &rarr; Pay"
 msgstr "Caixa &rarr; Pagamento"
 
-#: admin/jigoshop-install.php:143
+#: admin/jigoshop-install.php:166
 #@ jigoshop
 msgid "Thank you"
 msgstr "Obrigado"
@@ -1332,7 +1334,7 @@ msgstr "Código do Cupom"
 msgid "Coupon Amount"
 msgstr "Quanto do Cupom"
 
-#: admin/jigoshop-admin-attributes.php:199
+#: admin/jigoshop-admin-attributes.php:198
 #@ jigoshop
 msgid "Delete"
 msgstr "Deletar"
@@ -1401,8 +1403,8 @@ msgstr "Deletar esta regra?"
 msgid "General Settings"
 msgstr "Configurações Gerais"
 
-#: admin/jigoshop-admin-attributes.php:128
-#: admin/jigoshop-admin-attributes.php:174
+#: admin/jigoshop-admin-attributes.php:127
+#: admin/jigoshop-admin-attributes.php:173
 #: admin/jigoshop-admin-help.php:293
 #: admin/jigoshop-admin.php:90
 #: admin/write-panels/product-data.php:77
@@ -1411,47 +1413,46 @@ msgstr "Configurações Gerais"
 msgid "Attributes"
 msgstr "Atributos"
 
-#: admin/jigoshop-admin-attributes.php:134
+#: admin/jigoshop-admin-attributes.php:133
 #@ jigoshop
 msgid "Edit Attribute"
 msgstr "Editar Atributos"
 
-#: admin/jigoshop-admin-attributes.php:135
+#: admin/jigoshop-admin-attributes.php:134
 #@ jigoshop
 msgid "Attribute taxonomy names cannot be changed; you may only change an attributes type."
 msgstr "Nomes da taxonomia de atributos não podem ser alterados; você pode somente alterar o tipo de atributo."
 
-#: admin/jigoshop-admin-attributes.php:143
-#: admin/jigoshop-admin-attributes.php:246
+#: admin/jigoshop-admin-attributes.php:142
+#: admin/jigoshop-admin-attributes.php:245
 #@ jigoshop
 msgid "Attribute type"
 msgstr "Tipo de Atributo"
 
-#: admin/jigoshop-admin-attributes.php:145
-#: admin/jigoshop-admin-attributes.php:248
+#: admin/jigoshop-admin-attributes.php:144
+#: admin/jigoshop-admin-attributes.php:247
 #: jigoshop_template_functions.php:97
 #@ jigoshop
 msgid "Select"
 msgstr "Selecionar"
 
-#: admin/jigoshop-admin-attributes.php:146
-#: admin/jigoshop-admin-attributes.php:249
+#: admin/jigoshop-admin-attributes.php:145
+#: admin/jigoshop-admin-attributes.php:248
 #@ jigoshop
 msgid "Multiselect"
 msgstr "Multiseleção"
 
-#: admin/jigoshop-admin-attributes.php:147
-#: admin/jigoshop-admin-attributes.php:250
+#: admin/jigoshop-admin-attributes.php:146
+#: admin/jigoshop-admin-attributes.php:249
 #@ jigoshop
 msgid "Text"
 msgstr "Texto"
 
-#: admin/jigoshop-admin-attributes.php:151
+#: admin/jigoshop-admin-attributes.php:150
 #@ jigoshop
 msgid "Save Attribute"
 msgstr "Salvar Atributos"
 
-#: admin/jigoshop-admin-attributes.php:182
 #: admin/write-panels/order-data.php:188
 #: templates/single-product-reviews.php:94
 #@ jigoshop
@@ -1459,28 +1460,28 @@ msgstr "Salvar Atributos"
 msgid "Name"
 msgstr "Nome"
 
-#: admin/jigoshop-admin-attributes.php:185
+#: admin/jigoshop-admin-attributes.php:184
 #@ jigoshop
 msgid "Terms"
 msgstr "Termos"
 
-#: admin/jigoshop-admin-attributes.php:223
+#: admin/jigoshop-admin-attributes.php:222
 #@ jigoshop
 msgid "No attributes currently exist."
 msgstr "Não existem atributos no momento."
 
-#: admin/jigoshop-admin-attributes.php:233
+#: admin/jigoshop-admin-attributes.php:232
 #@ jigoshop
 msgid "Add New Attribute"
 msgstr "Adicionar Novo Atributo"
 
-#: admin/jigoshop-admin-attributes.php:254
+#: admin/jigoshop-admin-attributes.php:253
 #: admin/write-panels/product-data.php:355
 #@ jigoshop
 msgid "Add Attribute"
 msgstr "Adicionar Atributo"
 
-#: admin/jigoshop-admin-attributes.php:264
+#: admin/jigoshop-admin-attributes.php:263
 #@ jigoshop
 msgid "Are you sure you want to delete this?"
 msgstr "Tem certeza de que deseja deletar isto?"
@@ -1564,7 +1565,7 @@ msgstr "Pedido #%s"
 #: admin/jigoshop-admin-post-types.php:299
 #@ jigoshop
 msgid "User:"
-msgstr "Usuário:"
+msgstr "Cliente:"
 
 #: admin/jigoshop-admin-post-types.php:313
 #: admin/write-panels/order-data.php:86
@@ -1607,7 +1608,7 @@ msgstr "Sub-total"
 
 #: admin/jigoshop-admin-post-types.php:376
 #: admin/jigoshop-admin-post-types.php:399
-#: admin/jigoshop-admin-settings-options.php:739
+#: admin/jigoshop-admin-settings-options.php:761
 #: classes/jigoshop_checkout.class.php:728
 #: shortcodes/cart.php:210
 #: shortcodes/cart.php:232
@@ -1621,10 +1622,10 @@ msgstr "Sub-total"
 msgid "Shipping"
 msgstr "Entrega"
 
-#: admin/jigoshop-admin-settings-options.php:789
+#: admin/jigoshop-admin-settings-options.php:811
 #@ jigoshop
 msgid "Tax"
-msgstr "Taxa"
+msgstr "Taxas"
 
 #: admin/jigoshop-admin-post-types.php:430
 #: shortcodes/cart.php:263
@@ -1670,6 +1671,7 @@ msgid "Dashboard"
 msgstr "Painel"
 
 #: admin/jigoshop-admin.php:88
+#: jigoshop.php:43
 #@ jigoshop
 msgid "Settings"
 msgstr "Configurações"
@@ -1828,7 +1830,7 @@ msgstr "ID"
 #: admin/jigoshop-write-panels.php:161
 #@ jigoshop
 msgid "Item Name"
-msgstr "Nome do Ítem"
+msgstr "Nome do Produto"
 
 #: admin/jigoshop-write-panels.php:162
 #: admin/write-panels/order-data.php:236
@@ -1865,27 +1867,27 @@ msgstr "Opções Gerais"
 msgid "Demo store"
 msgstr "Loja de Demonstração"
 
-#: admin/jigoshop-admin-settings-options.php:578
+#: admin/jigoshop-admin-settings-options.php:586
 #@ jigoshop
 msgid "Enable SKU field"
 msgstr "Habilitar campo de Código"
 
-#: admin/jigoshop-admin-settings-options.php:580
+#: admin/jigoshop-admin-settings-options.php:588
 #@ jigoshop
 msgid "Turning off the SKU field will give products an SKU of their post id."
 msgstr "Desabilitando o Código, o Códigos dos produtos será igual ao ID do post."
 
-#: admin/jigoshop-admin-settings-options.php:592
+#: admin/jigoshop-admin-settings-options.php:600
 #@ jigoshop
 msgid "Enable weight field"
 msgstr "Habilitar campo de peso"
 
-#: admin/jigoshop-admin-settings-options.php:606
+#: admin/jigoshop-admin-settings-options.php:614
 #@ jigoshop
 msgid "Weight Unit"
 msgstr "Unidade de Peso"
 
-#: admin/jigoshop-admin-settings-options.php:607
+#: admin/jigoshop-admin-settings-options.php:615
 #@ jigoshop
 msgid "This controls what unit you will define weights in."
 msgstr "Isto controla qual unidade você definirá para peso."
@@ -1915,17 +1917,17 @@ msgstr "Este são os países em que você deseja vender."
 msgid "All Countries"
 msgstr "Todos os Países"
 
-#: admin/jigoshop-admin-settings-options.php:195
+#: admin/jigoshop-admin-settings-options.php:194
 #@ jigoshop
 msgid "ShareThis Publisher ID"
 msgstr "ID de Publicação do ShareThis"
 
-#: admin/jigoshop-admin-settings-options.php:196
+#: admin/jigoshop-admin-settings-options.php:195
 #@ jigoshop
 msgid "Enter your <a href='http://sharethis.com/account/'>ShareThis publisher ID</a> to show ShareThis on product pages."
 msgstr "Digite o seu <a href='http://sharethis.com/account/'>ID de publicador do ShareThis</a> para exibir o ShareThis em páginas de produtos."
 
-#: admin/jigoshop-admin-settings-options.php:197
+#: admin/jigoshop-admin-settings-options.php:196
 #@ jigoshop
 msgid "ShareThis is a small social sharing widget for posting links on popular sites such as Twitter and Facebook."
 msgstr "ShareThis é um pequeno widget social para postar links em sites populares como Twitter e Facebook."
@@ -1940,269 +1942,269 @@ msgstr "Desabilitar Jigoshop frontend.css"
 msgid "Useful if you want to disable Jigoshop styles and theme it yourself via your theme."
 msgstr "Útil caso você deseje desabilitar a estilização do Jigoshop e estilizar o seu tema."
 
-#: admin/jigoshop-admin-settings-options.php:226
+#: admin/jigoshop-admin-settings-options.php:225
 #@ jigoshop
 msgid "Pages"
 msgstr "Páginas"
 
-#: admin/jigoshop-admin-settings-options.php:228
+#: admin/jigoshop-admin-settings-options.php:227
 #@ jigoshop
 msgid "Shop page configuration"
 msgstr "Página de configuração da Loja"
 
-#: admin/jigoshop-admin-settings-options.php:231
+#: admin/jigoshop-admin-settings-options.php:230
 #@ jigoshop
 msgid "Cart Page"
 msgstr "Seu Carrinho"
 
-#: admin/jigoshop-admin-settings-options.php:241
+#: admin/jigoshop-admin-settings-options.php:240
 #@ jigoshop
 msgid "Checkout Page"
 msgstr "Página do Caixa"
 
-#: admin/jigoshop-admin-settings-options.php:251
+#: admin/jigoshop-admin-settings-options.php:250
 #@ jigoshop
 msgid "Pay Page"
 msgstr "Página de Pagamento"
 
-#: admin/jigoshop-admin-settings-options.php:261
+#: admin/jigoshop-admin-settings-options.php:260
 #@ jigoshop
 msgid "Thanks Page"
 msgstr "Página de Agradecimento"
 
-#: admin/jigoshop-admin-settings-options.php:271
+#: admin/jigoshop-admin-settings-options.php:270
 #@ jigoshop
 msgid "My Account Page"
 msgstr "Página de Conta"
 
-#: admin/jigoshop-admin-settings-options.php:281
+#: admin/jigoshop-admin-settings-options.php:280
 #@ jigoshop
 msgid "Edit Address Page"
 msgstr "Página de Edição de Endereço"
 
-#: admin/jigoshop-admin-settings-options.php:291
+#: admin/jigoshop-admin-settings-options.php:290
 #@ jigoshop
 msgid "View Order Page"
 msgstr "Página de Pedido"
 
-#: admin/jigoshop-admin-settings-options.php:301
+#: admin/jigoshop-admin-settings-options.php:300
 #@ jigoshop
 msgid "Change Password Page"
 msgstr "Página de Alteração de Senha"
 
-#: admin/jigoshop-admin-settings-options.php:335
+#: admin/jigoshop-admin-settings-options.php:334
 #@ jigoshop
 msgid "Catalog Options"
 msgstr "Opções de Catálogo"
 
-#: admin/jigoshop-admin-settings-options.php:341
+#: admin/jigoshop-admin-settings-options.php:340
 #@ jigoshop
 msgid "This sets the base page of your shop. You should not change this value once you have launched your site otherwise you risk breaking urls of other sites pointing to yours, etc."
 msgstr "Isto define a página base de sua loja. Você não deve alterar este valor uma vez que a loja já está publicado, pois poderá quebrar links de páginas que apontam para o seu site, etc."
 
-#: admin/jigoshop-admin-settings-options.php:411
+#: admin/jigoshop-admin-settings-options.php:419
 #@ jigoshop
 msgid "Pricing Options"
 msgstr "Opções de Preço"
 
-#: admin/jigoshop-admin-settings-options.php:414
+#: admin/jigoshop-admin-settings-options.php:422
 #@ jigoshop
 msgid "Currency"
 msgstr "Moeda"
 
-#: admin/jigoshop-admin-settings-options.php:415
+#: admin/jigoshop-admin-settings-options.php:423
 #, php-format
 #@ jigoshop
 msgid "This controls what currency prices are listed at in the catalog, and which currency PayPal, and other gateways, will take payments in. See the list of supported <a target='_new' href='%s'>PayPal currencies</a>."
 msgstr "Isto controla quais moedas de preço são exibidas em seu catálogo, e qual moeda o PayPal e outros gateways receberão pagamento. Veja a lista de <a target='_new' href='%s'>moedas aceitas pelo PayPal</a>."
 
-#: admin/jigoshop-admin-settings-options.php:431
+#: admin/jigoshop-admin-settings-options.php:439
 #@ jigoshop
 msgid "Pounds Sterling (&pound;)"
 msgstr "Libra esterlina"
 
-#: admin/jigoshop-admin-settings-options.php:432
+#: admin/jigoshop-admin-settings-options.php:440
 #@ jigoshop
 msgid "Hong Kong Dollar (&#36;)"
 msgstr "Dólar de Hong Kong (&#36;)"
 
-#: admin/jigoshop-admin-settings-options.php:438
+#: admin/jigoshop-admin-settings-options.php:446
 #@ jigoshop
 msgid "Japanese Yen (&yen;)"
 msgstr "Iene Japonês (&yen;)"
 
-#: admin/jigoshop-admin-settings-options.php:439
+#: admin/jigoshop-admin-settings-options.php:447
 #@ jigoshop
 msgid "Mexican Peso (&#36;)"
 msgstr "Peso Mexicano (&#36;)"
 
-#: admin/jigoshop-admin-settings-options.php:443
+#: admin/jigoshop-admin-settings-options.php:451
 #@ jigoshop
 msgid "New Zealand Dollar (&#36;)"
 msgstr "Dólar da Nova Zelândia (&#36;)"
 
-#: admin/jigoshop-admin-settings-options.php:449
+#: admin/jigoshop-admin-settings-options.php:457
 #@ jigoshop
 msgid "Singapore Dollar (&#36;)"
 msgstr "Dólar de Cingapura (&#36;)"
 
-#: admin/jigoshop-admin-settings-options.php:484
+#: admin/jigoshop-admin-settings-options.php:492
 #@ jigoshop
 msgid "Thousand separator"
 msgstr "Separador de Milhar"
 
-#: admin/jigoshop-admin-settings-options.php:485
+#: admin/jigoshop-admin-settings-options.php:493
 #@ jigoshop
 msgid "This sets the thousand separator of displayed prices."
 msgstr "Isto define o separador de milhar dos preços exibidos."
 
-#: admin/jigoshop-admin-settings-options.php:494
+#: admin/jigoshop-admin-settings-options.php:502
 #@ jigoshop
 msgid "Decimal separator"
 msgstr "Separador de Decimal"
 
-#: admin/jigoshop-admin-settings-options.php:495
+#: admin/jigoshop-admin-settings-options.php:503
 #@ jigoshop
 msgid "This sets the decimal separator of displayed prices."
 msgstr "Isto define o separador de decimal dos preços exibidos."
 
-#: admin/jigoshop-admin-settings-options.php:504
+#: admin/jigoshop-admin-settings-options.php:512
 #@ jigoshop
 msgid "Number of decimals"
 msgstr "Separador de Números"
 
-#: admin/jigoshop-admin-settings-options.php:505
+#: admin/jigoshop-admin-settings-options.php:513
 #@ jigoshop
 msgid "This sets the number of decimal points shown in displayed prices."
 msgstr "Isto controla o número de separadores decimais exibidos nos preços."
 
-#: admin/jigoshop-admin-settings-options.php:558
-#: admin/jigoshop-admin-settings-options.php:563
+#: admin/jigoshop-admin-settings-options.php:566
+#: admin/jigoshop-admin-settings-options.php:571
 #@ jigoshop
 msgid "Coupons"
 msgstr "Cupons"
 
-#: admin/jigoshop-admin-settings-options.php:647
+#: admin/jigoshop-admin-settings-options.php:669
 #@ jigoshop
 msgid "Inventory Options"
 msgstr "Opções de Inventário"
 
-#: admin/jigoshop-admin-settings-options.php:651
+#: admin/jigoshop-admin-settings-options.php:673
 #@ jigoshop
 msgid "If you are not managing stock, turn it off here to disable it in admin and on the front-end."
 msgstr "Se você não estiver gerenciando estoque, defina para não para desabilitar isto no painel de administração e no site."
 
-#: admin/jigoshop-admin-settings-options.php:652
+#: admin/jigoshop-admin-settings-options.php:674
 #@ jigoshop
 msgid "You can manage stock on a per-item basis if you leave this option on."
 msgstr "Você pode gerenciar estoque item-por-item se você deixar esta opção como 'sim'."
 
-#: admin/jigoshop-admin-settings-options.php:691
+#: admin/jigoshop-admin-settings-options.php:713
 #@ jigoshop
 msgid "Low stock threshold"
 msgstr "Princípio de estoque baixo"
 
-#: admin/jigoshop-admin-settings-options.php:714
+#: admin/jigoshop-admin-settings-options.php:736
 #@ jigoshop
 msgid "Out of stock threshold"
 msgstr "Princípio de falta de estoque"
 
-#: admin/jigoshop-admin-settings-options.php:741
+#: admin/jigoshop-admin-settings-options.php:763
 #@ jigoshop
 msgid "Shipping Options"
 msgstr "Opções de Entrega"
 
-#: admin/jigoshop-admin-settings-options.php:745
+#: admin/jigoshop-admin-settings-options.php:767
 #@ jigoshop
 msgid "Only set this to no if you are not shipping items, or items have shipping costs included."
 msgstr "Somente defina isto como 'não' caso você não esteja enviando itens, ou os itens que você envie já possuem os custos inclusos."
 
-#: admin/jigoshop-admin-settings-options.php:746
+#: admin/jigoshop-admin-settings-options.php:768
 #@ jigoshop
 msgid "If you are not calculating shipping then you can ignore all other tax options."
 msgstr "Se você não estiver calculando taxa de entrega, então poderá ignorar todas as outras opções de taxas."
 
-#: admin/jigoshop-admin-settings-options.php:758
+#: admin/jigoshop-admin-settings-options.php:780
 #@ jigoshop
 msgid "Enable shipping calculator on cart"
 msgstr "Habilitar calculadora de entrega no carrinho"
 
-#: admin/jigoshop-admin-settings-options.php:772
+#: admin/jigoshop-admin-settings-options.php:794
 #@ jigoshop
 msgid "Only ship to billing address?"
 msgstr "Somente enviar para endereço de cobrança?"
 
-#: admin/jigoshop-admin-settings-options.php:791
+#: admin/jigoshop-admin-settings-options.php:813
 #@ jigoshop
 msgid "Tax Options"
 msgstr "Opções de Taxas"
 
-#: admin/jigoshop-admin-settings-options.php:794
+#: admin/jigoshop-admin-settings-options.php:816
 #@ jigoshop
 msgid "Calculate Taxes"
 msgstr "Calcular Taxas"
 
-#: admin/jigoshop-admin-settings-options.php:795
+#: admin/jigoshop-admin-settings-options.php:817
 #@ jigoshop
 msgid "Only set this to no if you are exclusively selling non-taxable items."
 msgstr "Somente defina isso como \\\"não\\\" se você estiver vendendo exclusivamente itens isentos de impostos."
 
-#: admin/jigoshop-admin-settings-options.php:796
+#: admin/jigoshop-admin-settings-options.php:818
 #@ jigoshop
 msgid "If you are not calculating taxes then you can ignore all other tax options."
 msgstr "Caso você não esteja calculando taxas, então você pode ignorar todas as outras opções de taxas."
 
-#: admin/jigoshop-admin-settings-options.php:808
+#: admin/jigoshop-admin-settings-options.php:830
 #@ jigoshop
 msgid "Catalog Prices include tax?"
 msgstr "Preços de Catálogo incluem taxas?"
 
-#: admin/jigoshop-admin-settings-options.php:810
+#: admin/jigoshop-admin-settings-options.php:832
 #@ jigoshop
 msgid "If prices include tax then tax calculations will work backwards."
 msgstr "Caso preços incluam taxas, então o cálculo de taxas funcionará recursivamente."
 
-#: admin/jigoshop-admin-settings-options.php:822
+#: admin/jigoshop-admin-settings-options.php:844
 #@ jigoshop
 msgid "Cart totals display..."
 msgstr "O total do carrinho exibe..."
 
-#: admin/jigoshop-admin-settings-options.php:824
+#: admin/jigoshop-admin-settings-options.php:846
 #@ jigoshop
 msgid "Should the subtotal be shown including or excluding tax on the frontend?"
 msgstr "O subtotal deverá ser exibido no site incluindo ou excluindo taxa?"
 
-#: admin/jigoshop-admin-settings-options.php:830
+#: admin/jigoshop-admin-settings-options.php:852
 #@ jigoshop
 msgid "price including tax"
 msgstr "preço incluindo taxa"
 
-#: admin/jigoshop-admin-settings-options.php:831
+#: admin/jigoshop-admin-settings-options.php:853
 #@ jigoshop
 msgid "price excluding tax"
 msgstr "preço excluindo taxa"
 
-#: admin/jigoshop-admin-settings-options.php:836
+#: admin/jigoshop-admin-settings-options.php:858
 #@ jigoshop
 msgid "Additional Tax classes"
 msgstr "Classes adicionais de taxonomia"
 
-#: admin/jigoshop-admin-settings-options.php:837
+#: admin/jigoshop-admin-settings-options.php:859
 #@ jigoshop
 msgid "List 1 per line. This is in addition to the default <em>Standard Rate</em>."
 msgstr "Liste 1 por linha. Isto é uma adição à <em>Taxa Padrão</em>."
 
-#: admin/jigoshop-admin-settings-options.php:838
+#: admin/jigoshop-admin-settings-options.php:860
 #@ jigoshop
 msgid "List product and shipping tax classes here, e.g. Zero Tax, Reduced Rate."
 msgstr "Liste produtos e classes de taxas de entrega aqui (ex. Taxa Zero, Taxa Reduzida)."
 
-#: admin/jigoshop-admin-settings-options.php:846
+#: admin/jigoshop-admin-settings-options.php:868
 #@ jigoshop
 msgid "Tax rates"
 msgstr "Taxas de impostos"
 
-#: admin/jigoshop-admin-settings-options.php:857
+#: admin/jigoshop-admin-settings-options.php:879
 #@ jigoshop
 msgid "Payment Gateways"
 msgstr "Pagamento"
@@ -2266,7 +2268,7 @@ msgstr "Código"
 
 #: admin/write-panels/product-types/variable.php:233
 #: admin/write-panels/product-types/variable.php:526
-#: classes/jigoshop_product.class.php:1053
+#: classes/jigoshop_product.class.php:1054
 #@ jigoshop
 msgid "Weight"
 msgstr "Peso"
@@ -2364,12 +2366,12 @@ msgstr "Custo por unidade (ex. taxa 2,99)"
 #: admin/write-panels/order-data.php:298
 #@ jigoshop
 msgid "Add item"
-msgstr "Adicionar ítem"
+msgstr "Adicionar produto"
 
 #: admin/write-panels/order-data.php:301
 #@ jigoshop
 msgid "Calculate totals"
-msgstr "Calcular totais"
+msgstr "Calcular total"
 
 #: admin/write-panels/order-data.php:363
 #: admin/write-panels/order-data.php:373
@@ -2565,7 +2567,7 @@ msgstr "Criar uma conta?"
 #: classes/jigoshop_checkout.class.php:96
 #@ jigoshop
 msgid "Account username"
-msgstr "Nome de usuário"
+msgstr "Nome do cliente"
 
 #: classes/jigoshop_checkout.class.php:97
 #: classes/jigoshop_checkout.class.php:98
@@ -2632,7 +2634,7 @@ msgstr " (entrega) não é um CEP válido."
 #: classes/jigoshop_checkout.class.php:368
 #@ jigoshop
 msgid "Please enter an account username."
-msgstr "Por favor, digite um nome de usuário para sua conta."
+msgstr "Por favor, digite um nome de cliente para sua conta."
 
 #: classes/jigoshop_checkout.class.php:369
 #@ jigoshop
@@ -2648,12 +2650,12 @@ msgstr "Senhas não batem"
 #: classes/jigoshop_checkout.class.php:374
 #@ jigoshop
 msgid "Invalid email/username."
-msgstr "Email/nome de usuário inválido."
+msgstr "Email/nome de cliente inválido."
 
 #: classes/jigoshop_checkout.class.php:376
 #@ jigoshop
 msgid "An account is already registered with that username. Please choose another."
-msgstr "Uma conta já está registrada com este nome de usuário. Por favor, escolha outro."
+msgstr "Uma conta já está registrada com este nome de cliente. Por favor, escolha outro."
 
 #: classes/jigoshop_checkout.class.php:381
 #@ jigoshop
@@ -3040,7 +3042,7 @@ msgstr "Qtd"
 #: templates/checkout/review_order.php:25
 #@ jigoshop
 msgid "Totals"
-msgstr "Totais"
+msgstr "Total"
 
 #: shortcodes/my_account.php:488
 #: shortcodes/order_tracking.php:126
@@ -3121,7 +3123,7 @@ msgstr "Pagamento &rarr;"
 #: shortcodes/cart.php:192
 #@ jigoshop
 msgid "Cart Totals"
-msgstr "Totais do Carrinho"
+msgstr "Total do Carrinho"
 
 #: classes/jigoshop_cart.class.php:633
 #, php-format
@@ -3229,7 +3231,7 @@ msgstr "Uma lista ou uma lista suspensa com categorias de produtos"
 #: widgets/cart.php:157
 #: widgets/featured-products.php:193
 #: widgets/layered_nav.php:215
-#: widgets/price-filter.php:159
+#: widgets/price-filter.php:160
 #: widgets/product-categories.php:187
 #: widgets/product_search.php:111
 #: widgets/product_tag_cloud.php:114
@@ -3265,7 +3267,7 @@ msgstr "Pesquisar por:"
 msgid "Search for products"
 msgstr "O que deseja encontrar?"
 
-#: widgets/price-filter.php:99
+#: widgets/price-filter.php:100
 #@ jigoshop
 msgid "Price: "
 msgstr "Preço: "
@@ -3452,19 +3454,19 @@ msgstr "Desculpe, sua sessão expirou."
 #: jigoshop_actions.php:328
 #@ jigoshop
 msgid "Return to homepage &rarr;"
-msgstr "Retornar à página principal &rarr;"
+msgstr "Retornar à vitrine &rarr;"
 
 #: classes/jigoshop_checkout.class.php:756
 #: classes/jigoshop_checkout.class.php:769
-#: jigoshop_template_functions.php:704
-#: jigoshop_template_functions.php:724
+#: jigoshop_template_functions.php:705
+#: jigoshop_template_functions.php:725
 #@ jigoshop
 msgid " (ex. tax)"
 msgstr "(ex. taxa)"
 
 #: classes/jigoshop_checkout.class.php:772
 #: classes/jigoshop_product.class.php:784
-#: jigoshop_template_functions.php:726
+#: jigoshop_template_functions.php:727
 #@ jigoshop
 msgid "Free"
 msgstr "Grátis"
@@ -3487,7 +3489,7 @@ msgstr "Seu navegador não suporta JavaScript, ou o suporte está desabilitado, 
 #: templates/checkout/review_order.php:162
 #@ jigoshop
 msgid "Update totals"
-msgstr "Atualizar totais"
+msgstr "Atualizar total"
 
 #: templates/checkout/review_order.php:177
 #@ jigoshop
@@ -4709,7 +4711,7 @@ msgstr "Zâmbia"
 msgid "Zimbabwe"
 msgstr "Zimbabwe"
 
-#: admin/jigoshop-admin-attributes.php:51
+#: admin/jigoshop-admin-attributes.php:50
 #@ jigoshop
 msgid "That attribute already exists, no additions were made."
 msgstr "Este atributo já existe, não foram feitas adições."
@@ -5078,7 +5080,7 @@ msgstr "Após adicionar ao carrinho"
 #: admin/jigoshop-admin-settings-options.php:96
 #@ jigoshop
 msgid "Define what should happen when a user clicks on &#34;Add to Cart&#34; on any product or page."
-msgstr "Definir qual o procedimento tomar quando um usuário clica em &#34;Adicionar ao carrinho&#34; em qualquer produto ou página."
+msgstr "Definir qual o procedimento tomar quando um cliente clica em &#34;Adicionar ao carrinho&#34; em qualquer produto ou página."
 
 #: admin/jigoshop-admin-settings-options.php:102
 #@ jigoshop
@@ -5115,434 +5117,434 @@ msgstr "Desabilitar o FancyBox embutido"
 msgid "Useful if or one of your plugin already loads the Fancybox script and css. But be careful, Jigoshop will still try to open product images using Fancybox."
 msgstr "Útil se algum plugin que você utiliza já carrega o script e arquivo CSS do Fancybox. Mas tenha calma, o Jigoshop ainda tentará abrir imagens utilizando o Fancybox."
 
-#: admin/jigoshop-admin-settings-options.php:192
+#: admin/jigoshop-admin-settings-options.php:191
 #@ jigoshop
 msgid "Integration"
 msgstr "Integração"
 
-#: admin/jigoshop-admin-settings-options.php:205
+#: admin/jigoshop-admin-settings-options.php:204
 #@ jigoshop
 msgid "Google Analytics ID"
 msgstr "ID do Google Analytics"
 
-#: admin/jigoshop-admin-settings-options.php:206
+#: admin/jigoshop-admin-settings-options.php:205
 #@ jigoshop
 msgid "Log into your Google Analytics account to find your ID. e.g. <code>UA-XXXXXXX-X</code>"
 msgstr "Entre em sua conta do Google Analytics para encontrar seu ID.  (ex. <code>UA-XXXXXXX-X</code>)"
 
-#: admin/jigoshop-admin-settings-options.php:213
+#: admin/jigoshop-admin-settings-options.php:212
 #@ jigoshop
 msgid "Enable eCommerce Tracking"
 msgstr "Habilitar o rastreamento de eCommerce"
 
-#: admin/jigoshop-admin-settings-options.php:214
+#: admin/jigoshop-admin-settings-options.php:213
 #@ jigoshop
 msgid "Add Google Analytics eCommerce tracking code upon successful orders"
 msgstr "Adicionar o código de rastreamento do Google Analytics eCommerce em pedidos realizados com sucesso"
 
-#: admin/jigoshop-admin-settings-options.php:215
+#: admin/jigoshop-admin-settings-options.php:214
 #@ jigoshop
 msgid "<a href=\"//support.google.com/analytics/bin/answer.py?hl=en&answer=1009612\">Learn how to enable</a> eCommerce tracking for your Google Analytics account."
 msgstr "<a href=\"//support.google.com/analytics/bin/answer.py?hl=en&answer=1009612\">Aprenda como habilitar</a> o rastreamento de eCommerce de sua conta do Google Analytics."
 
-#: admin/jigoshop-admin-settings-options.php:232
+#: admin/jigoshop-admin-settings-options.php:231
 #@ jigoshop
 msgid "Shortcode to place on page: <code>[jigoshop_cart]</code>"
 msgstr "Shortcode para se colocar na página: <code>[jigoshop_cart]</code>"
 
-#: admin/jigoshop-admin-settings-options.php:242
+#: admin/jigoshop-admin-settings-options.php:241
 #@ jigoshop
 msgid "Shortcode to place on page: <code>[jigoshop_checkout]</code>"
 msgstr "Shortcode para se colocar na página: <code>[jigoshop_checkout]</code>"
 
-#: admin/jigoshop-admin-settings-options.php:252
+#: admin/jigoshop-admin-settings-options.php:251
 #@ jigoshop
 msgid "Shortcode to place on page: <code>[jigoshop_pay]</code><br/>Default parent page: Checkout"
 msgstr "Shortcode para se colocar na página: <code>[jigoshop_pay]</code><br/>Página primária padrão: Finalização"
 
-#: admin/jigoshop-admin-settings-options.php:262
+#: admin/jigoshop-admin-settings-options.php:261
 #@ jigoshop
 msgid "Shortcode to place on page: <code>[jigoshop_thankyou]</code><br/>Default parent page: Checkout"
 msgstr "Shortcode para se colocar na página: <code>[jigoshop_thankyou]</code><br/>Página primária padrão: Finalização"
 
-#: admin/jigoshop-admin-settings-options.php:272
+#: admin/jigoshop-admin-settings-options.php:271
 #@ jigoshop
 msgid "Shortcode to place on page: <code>[jigoshop_my_account]</code>"
 msgstr "Shortcode para se colocar na página: <code>[jigoshop_my_account]</code>"
 
-#: admin/jigoshop-admin-settings-options.php:282
+#: admin/jigoshop-admin-settings-options.php:281
 #@ jigoshop
 msgid "Shortcode to place on page: <code>[jigoshop_edit_address]</code><br/>Default parent page: My Account"
 msgstr "Shortcode para se colocar na página: <code>[jigoshop_edit_address]</code><br/>Página primária padrão: Minha Conta"
 
-#: admin/jigoshop-admin-settings-options.php:292
+#: admin/jigoshop-admin-settings-options.php:291
 #@ jigoshop
 msgid "Shortcode to place on page:<code>[jigoshop_view_order]</code><br/>Default parent page: My Account"
 msgstr "Shortcode para se colocar na página: <code>[jigoshop_view_order]</code><br/>Página primária padrão: Minha Conta"
 
-#: admin/jigoshop-admin-settings-options.php:302
+#: admin/jigoshop-admin-settings-options.php:301
 #@ jigoshop
 msgid "Shortcode to place on page: <code>[jigoshop_change_password]</code><br/>Default parent page: My Account"
 msgstr "Shortcode para se colocar na página: <code>[jigoshop_change_password]</code><br/>Página primária padrão: Minha Conta"
 
-#: admin/jigoshop-admin-settings-options.php:311
+#: admin/jigoshop-admin-settings-options.php:310
 #@ jigoshop
 msgid "Track Order Page"
 msgstr "Página de Rastreamento de Pedidos"
 
-#: admin/jigoshop-admin-settings-options.php:312
+#: admin/jigoshop-admin-settings-options.php:311
 #@ jigoshop
 msgid "Shortcode to place on page: <code>[jigoshop_order_tracking]</code>"
 msgstr "Shortcode para se colocar na página: <code>[jigoshop_order_tracking]</code>"
 
-#: admin/jigoshop-admin-settings-options.php:321
+#: admin/jigoshop-admin-settings-options.php:320
 #@ jigoshop
 msgid "Terms Page"
 msgstr "Página de Termos"
 
-#: admin/jigoshop-admin-settings-options.php:322
+#: admin/jigoshop-admin-settings-options.php:321
 #@ jigoshop
 msgid "If you define a &#34;Terms&#34; page the customer will be asked to accept it before allowing them to place their order."
 msgstr "Se você definir uma página de &#34;Termos&#34;, os clientes serão perguntados se aceitam-na antes de prosseguir com a finalização."
 
-#: admin/jigoshop-admin-settings-options.php:333
+#: admin/jigoshop-admin-settings-options.php:332
 #@ jigoshop
 msgid "Catalog &amp; Pricing"
 msgstr "Catálogo & Preço"
 
-#: admin/jigoshop-admin-settings-options.php:339
+#: admin/jigoshop-admin-settings-options.php:338
 #@ jigoshop
 msgid "Catalog base page"
 msgstr "Página base do catálogo"
 
-#: admin/jigoshop-admin-settings-options.php:349
+#: admin/jigoshop-admin-settings-options.php:357
 #@ jigoshop
 msgid "Prepend links with base page"
 msgstr "Prefixar links com a página base"
 
-#: admin/jigoshop-admin-settings-options.php:351
+#: admin/jigoshop-admin-settings-options.php:359
 #@ jigoshop
 msgid "This will only apply to tags &amp; categories.<br/>Yes: http://yoursite.com / product_category / YourCategory<br/>No: http://yoursite.com / base_page / product_category / YourCategory"
 msgstr "Isto somente será aplicado para etiquetas &amp; categorias.<br/>Sim: http://seusite.com.br / categoria_de_produto / SuaCategoria<br/>Não: http://seusite.com.br / pagina_base / categoria_de_produto / SuaCategoria"
 
-#: admin/jigoshop-admin-settings-options.php:363
+#: admin/jigoshop-admin-settings-options.php:371
 #@ jigoshop
 msgid "Sort products in catalog by"
 msgstr "Organizar os produtos do catálogo por"
 
-#: admin/jigoshop-admin-settings-options.php:365
+#: admin/jigoshop-admin-settings-options.php:373
 #@ jigoshop
 msgid "Determines the display sort order of products for the Shop, Categories, and Tag pages."
 msgstr "Determina a ordem de exibição de seus produtos para as páginas de Loja, Categorias, e Etiquetas."
 
-#: admin/jigoshop-admin-settings-options.php:371
+#: admin/jigoshop-admin-settings-options.php:379
 #@ jigoshop
 msgid "Creation Date"
 msgstr "Data de criação"
 
-#: admin/jigoshop-admin-settings-options.php:372
+#: admin/jigoshop-admin-settings-options.php:380
 #@ jigoshop
 msgid "Product Title"
 msgstr "Título do Produto"
 
-#: admin/jigoshop-admin-settings-options.php:373
+#: admin/jigoshop-admin-settings-options.php:381
 #@ jigoshop
 msgid "Product Post Order"
 msgstr "Ordem do Produto"
 
-#: admin/jigoshop-admin-settings-options.php:378
+#: admin/jigoshop-admin-settings-options.php:386
 #@ jigoshop
 msgid "Catalog sort direction"
 msgstr "Direção da organização do catálogo"
 
-#: admin/jigoshop-admin-settings-options.php:380
+#: admin/jigoshop-admin-settings-options.php:388
 #@ jigoshop
 msgid "Determines whether the catalog sort orderby is ascending or descending."
 msgstr "Determina se o catálogo será organizado de forma ascendente ou descendente."
 
-#: admin/jigoshop-admin-settings-options.php:386
+#: admin/jigoshop-admin-settings-options.php:394
 #@ jigoshop
 msgid "Ascending"
 msgstr "Ascendente"
 
-#: admin/jigoshop-admin-settings-options.php:387
+#: admin/jigoshop-admin-settings-options.php:395
 #@ jigoshop
 msgid "Descending"
 msgstr "Descendente"
 
-#: admin/jigoshop-admin-settings-options.php:392
+#: admin/jigoshop-admin-settings-options.php:400
 #@ jigoshop
 msgid "Catalog products per row"
 msgstr "Produtos do catálogo por linha"
 
-#: admin/jigoshop-admin-settings-options.php:393
+#: admin/jigoshop-admin-settings-options.php:401
 #@ jigoshop
 msgid "Default = 3"
 msgstr "Padrão = 3"
 
-#: admin/jigoshop-admin-settings-options.php:394
+#: admin/jigoshop-admin-settings-options.php:402
 #@ jigoshop
 msgid "Determines how many products to show on one display row for Shop, Category and Tag pages."
 msgstr "Determina quantos produtos serão exibidos em uma linha para as páginas de Loja, Categorias, e Etiquetas."
 
-#: admin/jigoshop-admin-settings-options.php:402
+#: admin/jigoshop-admin-settings-options.php:410
 #@ jigoshop
 msgid "Catalog products per page"
 msgstr "Produtos do catálogo por página"
 
-#: admin/jigoshop-admin-settings-options.php:403
+#: admin/jigoshop-admin-settings-options.php:411
 #@ jigoshop
 msgid "Default = 12"
 msgstr "Padrão = 12"
 
-#: admin/jigoshop-admin-settings-options.php:404
+#: admin/jigoshop-admin-settings-options.php:412
 #@ jigoshop
 msgid "Determines how many products to display on Shop, Category and Tag pages before needing next and previous page navigation."
 msgstr "Determina quantos produtos serão exibidos para as páginas de Loja, Categorias, e Etiquetas, antes de se fazer necessário a navegação."
 
-#: admin/jigoshop-admin-settings-options.php:422
+#: admin/jigoshop-admin-settings-options.php:430
 #@ jigoshop
 msgid "United Arab Emirates dirham (&#1583;&#46;&#1573;)"
 msgstr "Dirham dos Emirados Árabes Unidos (&#1583;&#46;&#1573;)"
 
-#: admin/jigoshop-admin-settings-options.php:423
+#: admin/jigoshop-admin-settings-options.php:431
 #@ jigoshop
 msgid "Australian Dollar (&#36;)"
 msgstr "Dólar Australiano (&#36;)"
 
-#: admin/jigoshop-admin-settings-options.php:424
+#: admin/jigoshop-admin-settings-options.php:432
 #@ jigoshop
 msgid "Brazilian Real (&#82;&#36;)"
 msgstr "Real Brasileiro (&#82;&#36;)"
 
-#: admin/jigoshop-admin-settings-options.php:425
+#: admin/jigoshop-admin-settings-options.php:433
 #@ jigoshop
 msgid "Canadian Dollar (&#36;)"
 msgstr "Dólar Canadense (&#36;)"
 
-#: admin/jigoshop-admin-settings-options.php:427
+#: admin/jigoshop-admin-settings-options.php:435
 #@ jigoshop
 msgid "Chinese yuan (&#165;)"
 msgstr "Yuan Chinês (&#165;)"
 
-#: admin/jigoshop-admin-settings-options.php:428
+#: admin/jigoshop-admin-settings-options.php:436
 #@ jigoshop
 msgid "Czech Koruna (&#75;&#269;)"
 msgstr "Koruna Tcheco (&#75;&#269;)"
 
-#: admin/jigoshop-admin-settings-options.php:429
+#: admin/jigoshop-admin-settings-options.php:437
 #@ jigoshop
 msgid "Danish Krone (kr)"
 msgstr "Krone Dinamarquês (kr)"
 
-#: admin/jigoshop-admin-settings-options.php:430
+#: admin/jigoshop-admin-settings-options.php:438
 #@ jigoshop
 msgid "Euro (&euro;)"
 msgstr "Euro (&euro;)"
 
-#: admin/jigoshop-admin-settings-options.php:433
+#: admin/jigoshop-admin-settings-options.php:441
 #@ jigoshop
 msgid "Croatian Kuna (&#107;&#110;)"
 msgstr "Kuna Croata (&#107;&#110;)"
 
-#: admin/jigoshop-admin-settings-options.php:434
+#: admin/jigoshop-admin-settings-options.php:442
 #@ jigoshop
 msgid "Hungarian Forint (&#70;&#116;)"
 msgstr "Forint Húngaro (&#70;&#116;)"
 
-#: admin/jigoshop-admin-settings-options.php:435
+#: admin/jigoshop-admin-settings-options.php:443
 #@ jigoshop
 msgid "Indonesia Rupiah (&#82;&#112;)"
 msgstr "Rupiah Indonesiano (&#82;&#112;)"
 
-#: admin/jigoshop-admin-settings-options.php:436
+#: admin/jigoshop-admin-settings-options.php:444
 #@ jigoshop
 msgid "Israeli Shekel (&#8362;)"
 msgstr "Shekel Israelense (&#8362;)"
 
-#: admin/jigoshop-admin-settings-options.php:437
+#: admin/jigoshop-admin-settings-options.php:445
 #@ jigoshop
 msgid "Indian Rupee (&#8360;)"
 msgstr "Rupee Indiano (&#8360;)"
 
-#: admin/jigoshop-admin-settings-options.php:440
+#: admin/jigoshop-admin-settings-options.php:448
 #@ jigoshop
 msgid "Malaysian Ringgits (RM)"
 msgstr "Ringgits Malasianos (RM)"
 
-#: admin/jigoshop-admin-settings-options.php:441
+#: admin/jigoshop-admin-settings-options.php:449
 #@ jigoshop
 msgid "Nigerian Naira (&#8358;)"
 msgstr "Naira Nigerianos (&#8358;)"
 
-#: admin/jigoshop-admin-settings-options.php:442
+#: admin/jigoshop-admin-settings-options.php:450
 #@ jigoshop
 msgid "Norwegian Krone (kr)"
 msgstr "Krone Norueguês (kr)"
 
-#: admin/jigoshop-admin-settings-options.php:444
+#: admin/jigoshop-admin-settings-options.php:452
 #@ jigoshop
 msgid "Philippine Pesos (&#8369;)"
 msgstr "Pesos Filipinos (&#8369;)"
 
-#: admin/jigoshop-admin-settings-options.php:445
+#: admin/jigoshop-admin-settings-options.php:453
 #@ jigoshop
 msgid "Polish Zloty (&#122;&#322;)"
 msgstr "Zloty Polonês (&#122;&#322;)"
 
-#: admin/jigoshop-admin-settings-options.php:446
+#: admin/jigoshop-admin-settings-options.php:454
 #@ jigoshop
 msgid "Romanian New Leu (&#108;&#101;&#105;)"
 msgstr "New Leu Romeno (&#108;&#101;&#105;)"
 
-#: admin/jigoshop-admin-settings-options.php:447
+#: admin/jigoshop-admin-settings-options.php:455
 #@ jigoshop
 msgid "Russian Ruble (&#1088;&#1091;&#1073;)"
 msgstr "Ruble Russo (&#1088;&#1091;&#1073;)"
 
-#: admin/jigoshop-admin-settings-options.php:448
+#: admin/jigoshop-admin-settings-options.php:456
 #@ jigoshop
 msgid "Swedish Krona (kr)"
 msgstr "Krona Suéco (kr)"
 
-#: admin/jigoshop-admin-settings-options.php:450
+#: admin/jigoshop-admin-settings-options.php:458
 #@ jigoshop
 msgid "Thai Baht (&#3647;)"
 msgstr "Baht Tailandês (&#3647;)"
 
-#: admin/jigoshop-admin-settings-options.php:451
+#: admin/jigoshop-admin-settings-options.php:459
 #@ jigoshop
 msgid "Turkish Lira (&#8356;)"
 msgstr "Lira Turco (&#8356;)"
 
-#: admin/jigoshop-admin-settings-options.php:452
+#: admin/jigoshop-admin-settings-options.php:460
 #@ jigoshop
 msgid "Taiwan New Dollar (&#36;)"
 msgstr "New Dollar Taiwanês (&#36;)"
 
-#: admin/jigoshop-admin-settings-options.php:453
+#: admin/jigoshop-admin-settings-options.php:461
 #@ jigoshop
 msgid "US Dollar (&#36;)"
 msgstr "Dólar Americano (&#36;)"
 
-#: admin/jigoshop-admin-settings-options.php:454
+#: admin/jigoshop-admin-settings-options.php:462
 #@ jigoshop
 msgid "South African rand (R)"
 msgstr "Rand Sul Africano (R)"
 
-#: admin/jigoshop-admin-settings-options.php:460
+#: admin/jigoshop-admin-settings-options.php:468
 #@ jigoshop
 msgid "Currency display"
 msgstr "Exibição da moeda"
 
-#: admin/jigoshop-admin-settings-options.php:461
+#: admin/jigoshop-admin-settings-options.php:469
 #@ jigoshop
 msgid "This controls the display of the currency symbol and currency code."
 msgstr "Isto controla a exibição do símbolo da moeda e do código de moeda."
 
-#: admin/jigoshop-admin-settings-options.php:515
+#: admin/jigoshop-admin-settings-options.php:523
 #@ jigoshop
 msgid "Images"
 msgstr "Imagens"
 
-#: admin/jigoshop-admin-settings-options.php:517
+#: admin/jigoshop-admin-settings-options.php:525
 #@ jigoshop
 msgid "Image Options"
 msgstr "Opções de Imagem"
 
-#: admin/jigoshop-admin-settings-options.php:517
+#: admin/jigoshop-admin-settings-options.php:525
 #@ jigoshop
 msgid "Large variations from the defaults could require CSS modifications in your Theme."
 msgstr "Variações maiores do que o padrão provavelmente irão requerer alterações no arquivo CSS de seu tema."
 
-#: admin/jigoshop-admin-settings-options.php:560
+#: admin/jigoshop-admin-settings-options.php:568
 #@ jigoshop
 msgid "Coupon Information"
 msgstr "Informações de Cupom"
 
-#: admin/jigoshop-admin-settings-options.php:560
+#: admin/jigoshop-admin-settings-options.php:568
 #@ jigoshop
 msgid "<br /><div>Coupons allow you to give your customers special offers and discounts. Leave product ID&#39;s blank to apply to all products in the cart. Separate each product ID with a comma.</div><br /><div>Use either flat rates or percentage discounts for both cart totals and individual products. (do not enter a % sign, just a number). Product percentage discounts <strong>must</strong> have a product ID to be applied, otherwise use Cart Percentage Discount for all products.</div><br /><div>\"<em>Alone</em>\" means <strong>only</strong> that coupon will be allowed for the whole cart.  If you have several of these, the last one entered by the customer will be used.</div>"
 msgstr "<br /><div>Cupons permitem a você oferecer a seus clientes promoções especiais e descontos. Deixe o ID&#39;s do produto em branco para aplicar a todos os produtos no carrinho. Separe todos os IDs de produtos com vírgulas.</div><br /><div>Você pode usar valores definidos ou descontos por porcentagem tanto para o total das compras como para produtos individuais. (não digite um sinal %, somente o número). Descontos percentuais de produtos <strong>precisam</strong> ter um ID para serem aplicados, caso contrário, o desconto percentual do carrinho será aplicado a todos os produtos.</div><br /><div>\"<em>Sozinho</em>\" significa que cupons serão aplicados para todo o carrinho <strong>somente</strong>. Se você possui vários, o último digitado pelo cliente será utilizado.</div>"
 
-#: admin/jigoshop-admin-settings-options.php:564
-#: admin/jigoshop-admin-settings-options.php:847
+#: admin/jigoshop-admin-settings-options.php:572
+#: admin/jigoshop-admin-settings-options.php:869
 #@ jigoshop
 msgid "All fields are required."
 msgstr "Todos os campos são necessários."
 
-#: admin/jigoshop-admin-settings-options.php:573
+#: admin/jigoshop-admin-settings-options.php:581
 #@ jigoshop
 msgid "Products &amp; Inventory"
 msgstr "Produtos & Inventário"
 
-#: admin/jigoshop-admin-settings-options.php:575
+#: admin/jigoshop-admin-settings-options.php:583
 #@ jigoshop
 msgid "Product Options"
 msgstr "Opções de Produtos"
 
-#: admin/jigoshop-admin-settings-options.php:614
+#: admin/jigoshop-admin-settings-options.php:622
 #@ jigoshop
 msgid "Kilograms"
 msgstr "Quilograms"
 
-#: admin/jigoshop-admin-settings-options.php:615
+#: admin/jigoshop-admin-settings-options.php:623
 #@ jigoshop
 msgid "Pounds"
 msgstr "Libra"
 
-#: admin/jigoshop-admin-settings-options.php:620
+#: admin/jigoshop-admin-settings-options.php:628
 #@ jigoshop
 msgid "Enable product dimensions"
 msgstr "Habilitar medidas de produtos"
 
-#: admin/jigoshop-admin-settings-options.php:634
+#: admin/jigoshop-admin-settings-options.php:642
 #@ jigoshop
 msgid "Dimensions Unit"
 msgstr "Unidades de medidas"
 
-#: admin/jigoshop-admin-settings-options.php:635
+#: admin/jigoshop-admin-settings-options.php:643
 #@ jigoshop
 msgid "This controls what unit you will define dimensions in."
 msgstr "Isto controla em qual unidade você definirá medidas."
 
-#: admin/jigoshop-admin-settings-options.php:642
+#: admin/jigoshop-admin-settings-options.php:650
 #@ jigoshop
 msgid "centimeters"
 msgstr "centímetros"
 
-#: admin/jigoshop-admin-settings-options.php:643
+#: admin/jigoshop-admin-settings-options.php:651
 #@ jigoshop
 msgid "inches"
 msgstr "polegadas"
 
-#: admin/jigoshop-admin-settings-options.php:650
+#: admin/jigoshop-admin-settings-options.php:672
 #@ jigoshop
 msgid "Manage stock"
 msgstr "Gerenciar estoque"
 
-#: admin/jigoshop-admin-settings-options.php:678
+#: admin/jigoshop-admin-settings-options.php:700
 #@ jigoshop
 msgid "Notify on low stock"
 msgstr "Notificar em caso de estoque baixo"
 
-#: admin/jigoshop-admin-settings-options.php:693
-#: admin/jigoshop-admin-settings-options.php:716
+#: admin/jigoshop-admin-settings-options.php:715
+#: admin/jigoshop-admin-settings-options.php:738
 #@ jigoshop
 msgid "You will receive a notification as soon this threshold is hit (if notifications are turned on)."
 msgstr "Você receberá uma notificação assim que este limite for atingido (caso notificações estejam habilitadas)."
 
-#: admin/jigoshop-admin-settings-options.php:701
+#: admin/jigoshop-admin-settings-options.php:723
 #@ jigoshop
 msgid "Notify on out of stock"
 msgstr "Notificar em caso de falta de estoque"
 
-#: admin/jigoshop-admin-settings-options.php:724
+#: admin/jigoshop-admin-settings-options.php:746
 #@ jigoshop
 msgid "Hide out of stock products"
 msgstr "Esconder produtos fora de estoque"
 
-#: admin/jigoshop-admin-settings-options.php:848
+#: admin/jigoshop-admin-settings-options.php:870
 #@ jigoshop
 msgid "To avoid rounding errors, insert tax rates with 4 decimal places."
 msgstr "Para evitar erros, insira taxas com 4 casas decimais."
@@ -5708,7 +5710,7 @@ msgstr "Variação"
 #: admin/write-panels/order-data.php:190
 #@ jigoshop
 msgid "Order Item Meta"
-msgstr "Informação do Ítem do Pedido"
+msgstr "Informação do Produto do Pedido"
 
 #: admin/write-panels/order-data.php:228
 #: jigoshop_actions.php:98
@@ -5736,7 +5738,7 @@ msgstr "Taxa de Entrega:"
 msgid "Payment Method"
 msgstr "Forma de Pagamento"
 
-#: admin/write-panels/product-data-save.php:166
+#: admin/write-panels/product-data-save.php:171
 #@ jigoshop
 msgid "Product SKU must be unique"
 msgstr "O Código de um produto precisa ser único"
@@ -5812,7 +5814,7 @@ msgstr "Medidas"
 
 #: admin/write-panels/product-data.php:220
 #: admin/write-panels/product-types/variable.php:235
-#: classes/jigoshop_product.class.php:1059
+#: classes/jigoshop_product.class.php:1060
 #@ jigoshop
 msgid "Length"
 msgstr "Comprimento"
@@ -5820,7 +5822,7 @@ msgstr "Comprimento"
 #: admin/jigoshop-admin-settings.php:386
 #: admin/write-panels/product-data.php:221
 #: admin/write-panels/product-types/variable.php:234
-#: classes/jigoshop_product.class.php:1061
+#: classes/jigoshop_product.class.php:1062
 #@ jigoshop
 msgid "Width"
 msgstr "Largura"
@@ -5828,7 +5830,7 @@ msgstr "Largura"
 #: admin/jigoshop-admin-settings.php:388
 #: admin/write-panels/product-data.php:222
 #: admin/write-panels/product-types/variable.php:236
-#: classes/jigoshop_product.class.php:1063
+#: classes/jigoshop_product.class.php:1064
 #@ jigoshop
 msgid "Height"
 msgstr "Altura"
@@ -6065,6 +6067,7 @@ msgctxt "jigoshop"
 msgid "From:"
 msgstr "De:"
 
+#: admin/write-panels/product-data.php:123
 #: classes/jigoshop_product.class.php:787
 #@ jigoshop
 msgid "Price Not Announced"
@@ -6203,7 +6206,7 @@ msgstr "DIBS FlexWin"
 #: gateways/dibs.php:51
 #@ jigoshop
 msgid "DIBS FlexWin works by sending the user to <a href=\"http://www.dibspayment.com/\">DIBS</a> to enter their payment information."
-msgstr "DIBS FlexWin funciona eviando o usuário para <a href=\"http://www.dibspayment.com/\">DIBS</a> para que seja realiazdo o pagamento."
+msgstr "DIBS FlexWin funciona enviando o cliente ao <a href=\"http://www.dibspayment.com/\">DIBS</a> para que seja realizado o pagamento."
 
 #: gateways/dibs.php:53
 #@ jigoshop
@@ -6278,7 +6281,7 @@ msgstr "PayPal  Padrão"
 #: gateways/paypal.php:54
 #@ jigoshop
 msgid "PayPal Standard works by sending the user to <a href=\"https://www.paypal.com/uk/mrb/pal=JFC9L8JJUZZK2\">PayPal</a> to enter their payment information."
-msgstr "O PayPal Padrão funciona enviando o usuário para o site do <a href=\"https://www.paypal.com/uk/mrb/pal=JFC9L8JJUZZK2\">PayPal</a> para que ele efetue o pagamento."
+msgstr "O PayPal Padrão funciona enviando o cliente para o site do <a href=\"https://www.paypal.com/uk/mrb/pal=JFC9L8JJUZZK2\">PayPal</a> para que ele efetue o pagamento."
 
 #: gateways/paypal.php:56
 #@ jigoshop
@@ -6458,7 +6461,7 @@ msgstr "&larr; Retornar à Vitrine"
 #: shortcodes/cart.php:121
 #@ jigoshop
 msgid "Remove this item."
-msgstr "Remover este ítem."
+msgstr "Retirar este produto."
 
 #: shortcodes/cart.php:168
 #@ jigoshop
@@ -6678,34 +6681,34 @@ msgstr "Título (quando não estiver logado):"
 msgid "Title (Logged In):"
 msgstr "Título (quando estiver logado):"
 
-#: admin/jigoshop-admin-attributes.php:138
-#: admin/jigoshop-admin-attributes.php:236
+#: admin/jigoshop-admin-attributes.php:137
+#: admin/jigoshop-admin-attributes.php:235
 #@ jigoshop
 msgid "Attribute Label"
 msgstr "Rótulo de Atributo"
 
-#: admin/jigoshop-admin-attributes.php:140
-#: admin/jigoshop-admin-attributes.php:238
+#: admin/jigoshop-admin-attributes.php:139
+#: admin/jigoshop-admin-attributes.php:237
 #@ jigoshop
 msgid "The label is how it appears on your site."
 msgstr "O Rótulo é como isto aparecerá em seu site."
 
-#: admin/jigoshop-admin-attributes.php:183
+#: admin/jigoshop-admin-attributes.php:181
 #@ jigoshop
 msgid "Label"
 msgstr "Rótulo"
 
-#: admin/jigoshop-admin-attributes.php:219
+#: admin/jigoshop-admin-attributes.php:218
 #@ jigoshop
 msgid "Configure&nbsp;terms"
 msgstr "Configure&nbsp;os termos"
 
-#: admin/jigoshop-admin-attributes.php:241
+#: admin/jigoshop-admin-attributes.php:240
 #@ jigoshop
 msgid "Attribute Slug"
 msgstr "Slug de atributo"
 
-#: admin/jigoshop-admin-attributes.php:243
+#: admin/jigoshop-admin-attributes.php:242
 #@ jigoshop
 msgid "Slug for your attribute (optional)."
 msgstr "Slug para o seu atributo (opcional)."
@@ -6726,11 +6729,6 @@ msgstr "Visibilidade"
 msgid "%s via %s"
 msgstr "%s via %s"
 
-#: admin/jigoshop-admin-settings-options.php:136
-#@ jigoshop
-msgid "Checkout options"
-msgstr "Opções de Finalização"
-
 #: admin/jigoshop-admin-settings-options.php:153
 #@ jigoshop
 msgid "Show login form"
@@ -6741,57 +6739,57 @@ msgstr "Exibir formulário de login"
 msgid "Allow registration"
 msgstr "Habilitar registro"
 
-#: admin/jigoshop-admin-settings-options.php:426
+#: admin/jigoshop-admin-settings-options.php:434
 #@ jigoshop
 msgid "Swiss Franc (SFr.)"
 msgstr "Franco Suíço (SFr.)"
 
-#: admin/jigoshop-admin-settings-options.php:520
+#: admin/jigoshop-admin-settings-options.php:528
 #@ jigoshop
 msgid "Tiny Images"
 msgstr "Imagens pequenas"
 
-#: admin/jigoshop-admin-settings-options.php:522
+#: admin/jigoshop-admin-settings-options.php:530
 #@ jigoshop
 msgid "The small image used in the Cart, Checkout, Orders and Widgets"
 msgstr "A imagem pequena usado no Carrinho, na Finalização, nos Pedidos e nos Widgets"
 
-#: admin/jigoshop-admin-settings-options.php:530
+#: admin/jigoshop-admin-settings-options.php:538
 #@ jigoshop
 msgid "Thumbnail Images"
 msgstr "Imagens em miniatura"
 
-#: admin/jigoshop-admin-settings-options.php:531
+#: admin/jigoshop-admin-settings-options.php:539
 #@ jigoshop
 msgid "The thumbnail image for Single Product page extra images."
 msgstr "A imagem em miniatura para imagens extra de páginas Produtos."
 
-#: admin/jigoshop-admin-settings-options.php:539
+#: admin/jigoshop-admin-settings-options.php:547
 #@ jigoshop
 msgid "Catalog Images"
 msgstr "Imagens do catálogo"
 
-#: admin/jigoshop-admin-settings-options.php:540
+#: admin/jigoshop-admin-settings-options.php:548
 #@ jigoshop
 msgid "The catalog image for Shop, Categories, Tags, and Related Products."
 msgstr "A imagem do catálogo para a Loja, as Categorias, as Etiquetas, e Produtos Relacionados."
 
-#: admin/jigoshop-admin-settings-options.php:548
+#: admin/jigoshop-admin-settings-options.php:556
 #@ jigoshop
 msgid "Large Images"
 msgstr "Imagens Grandes"
 
-#: admin/jigoshop-admin-settings-options.php:549
+#: admin/jigoshop-admin-settings-options.php:557
 #@ jigoshop
 msgid "Single Product page's large or Featured image."
 msgstr "Imagem grande ou destacada das páginas de Produto."
 
-#: admin/jigoshop-admin-settings-options.php:664
+#: admin/jigoshop-admin-settings-options.php:686
 #@ jigoshop
 msgid "Show stock amounts"
 msgstr "Exibir quantidade do estoque"
 
-#: admin/jigoshop-admin-settings-options.php:666
+#: admin/jigoshop-admin-settings-options.php:688
 #@ jigoshop
 msgid "Set to yes to allow customers to view the amount of stock available for a product."
 msgstr "Defina como 'sim' para exibir aos seus clientes a quantidade de um produto disponível em estoque."
@@ -7000,5 +6998,40 @@ msgstr "Esqueceu?"
 #: widgets/user_login.php:108
 #@ jigoshop
 msgid "New user?"
-msgstr "Novo usuário?"
+msgstr "Novo cliente?"
+
+#: admin/jigoshop-admin-attributes.php:40
+#@ jigoshop
+msgid "Please enter an attribute label."
+msgstr "Por favor, digite um rótulo para o atributo."
+
+#: admin/jigoshop-admin-attributes.php:182
+#@ jigoshop
+msgid "Slug"
+msgstr "Slug"
+
+#: admin/jigoshop-admin-settings-options.php:136
+#@ jigoshop
+msgid "Checkout page"
+msgstr "Página de finalização"
+
+#: admin/jigoshop-admin-settings-options.php:347
+#@ jigoshop
+msgid "Shop redirection page"
+msgstr "Página de redirecionamento da loja"
+
+#: admin/jigoshop-admin-settings-options.php:349
+#@ jigoshop
+msgid "This will point users to the page you set for buttons like `Return to shop` or `Continue Shopping`."
+msgstr "Isto enviará clientes para a página que você definiu em 'Retornar à vitrine' ou 'Continuar comprando'."
+
+#: admin/jigoshop-admin-settings-options.php:656
+#@ jigoshop
+msgid "Show related products"
+msgstr "Exibir produtos relacionados"
+
+#: admin/jigoshop-admin-settings-options.php:658
+#@ jigoshop
+msgid "To show or hide the related products section on a single product page."
+msgstr "Exibir ou esconder produtos relacionados nas páginas individuas de produtos."
 
