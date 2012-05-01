@@ -333,6 +333,12 @@ function jigoshop_admin_fields($options) {
 				  </thead><?php
 				break;
 
+			case 'multicheck':
+
+
+
+				break;
+
 			case 'checkbox':
 				?><tr>
                     <th scope="row">
@@ -346,9 +352,11 @@ function jigoshop_admin_fields($options) {
 						id="<?php echo esc_attr( $value['id'] ); ?>"
 						type="checkbox"
 						class="jigoshop-input jigoshop-checkbox"
-						style="<?php echo esc_attr( $value['css'] ); ?>"
+						style="<?php if ( !empty($value['css']) ) echo esc_attr( $value['css'] ); ?>"
 						name="<?php echo esc_attr( $value['id'] ); ?>"
-						<?php echo checked($data[$value['id']], 'yes', false); ?>/>
+						<?php if (get_option($value['id']) !== false && get_option($value['id']) !== null)
+						echo checked(get_option($value['id']), 'yes', false);
+						else if ( isset($value['std'])) echo checked( $value['std'], 'yes', false ); ?> />
 						<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php if (!empty($value['desc'])) echo $value['desc']; ?></label>
 					</td>
 				  </tr><?php
@@ -368,7 +376,7 @@ function jigoshop_admin_fields($options) {
                     		id="<?php echo esc_attr( $value['id'] ); ?>"
                     		type="<?php echo $value['type'] ?>"
                             class="regular-text"
-                    		style="<?php echo esc_attr( $value['css'] ); ?>"
+                    		style="<?php if ( !empty($value['css']) ) echo esc_attr( $value['css'] ); ?>"
                     		value="<?php if (get_option($value['id']) !== false && get_option($value['id']) !== null)
                     			echo esc_attr( get_option($value['id']) );
                     			else if ( isset($value['std'])) echo esc_attr( $value['std'] ); ?>" />
