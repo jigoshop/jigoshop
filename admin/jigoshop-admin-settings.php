@@ -70,47 +70,53 @@ function jigoshop_update_options() {
 
 	foreach ($jigoshop_options_settings as $value) :
 
-		if ( !empty($value['id']) ) {
+		$valueID = !empty($value['id']) ? $value['id'] : '';
+		$valueType = !empty($value['type']) ? $value['type'] : '';
 
-			if ( $value['id'] == 'jigoshop_tax_rates' ) jigoshop_update_taxes();
-			if ( $value['id'] == 'jigoshop_coupons' )   jigoshop_update_coupons();
+		if ( $valueID == 'jigoshop_tax_rates' ) {
+			jigoshop_update_taxes();
+			continue;
+		}
 
-			/* Price separators get a special treatment as they should allow a spaces (don't trim) */
-			if ( $value['id'] == 'jigoshop_price_thousand_sep' || $value['id'] == 'jigoshop_price_decimal_sep' )
-				isset($_POST[$value['id']]) ? update_option($value['id'], $_POST[$value['id']]) : @delete_option($value['id']);
+		if ( $valueID == 'jigoshop_coupons' ) {
+			jigoshop_update_coupons();
+			continue;
+		}
+
+		/* Price separators get a special treatment as they should allow a spaces (don't trim) */
+		if ( $valueID == 'jigoshop_price_thousand_sep' || $valueID == 'jigoshop_price_decimal_sep' ) {
+			isset($_POST[$valueID]) ? update_option($valueID, $_POST[$valueID]) : @delete_option($valueID);
+			continue;
+		}
+
+		if ( $valueType == 'multi_select_countries' ) {
+
+			// Get countries array
+			$selected_countries = isset($_POST[$valueID]) ? $_POST[$valueID] : array();
+			update_option($valueID, $selected_countries);
+
+			continue;
 
 		}
 
-		if ( !empty($value['type']) ) {
+		/* default back to standard image sizes if no value is entered */
+		if ( $valueType == 'image_size' ) {
 
-			if ( $value['type'] == 'multi_select_countries' ) {
+			if( !empty($_POST[$valueID.'_w']) ) :
+				update_option($valueID.'_w', jigowatt_clean($_POST[$valueID.'_w']));
+				update_option($valueID.'_h', jigowatt_clean($_POST[$valueID.'_h']));
+			else :
+				update_option($valueID.'_w', $value['std']);
+				update_option($valueID.'_h', $value['std']);
+			endif;
 
-				// Get countries array
-				$selected_countries = isset($_POST[$value['id']]) ? $_POST[$value['id']] : array();
-				update_option($value['id'], $selected_countries);
-
-			}
-
-			/* default back to standard image sizes if no value is entered */
-			if ( $value['type'] == 'image_size' ) {
-
-				if( !empty($_POST[$value['id'].'_w']) ) :
-					update_option($value['id'].'_w', jigowatt_clean($_POST[$value['id'].'_w']));
-					update_option($value['id'].'_h', jigowatt_clean($_POST[$value['id'].'_h']));
-				else :
-					update_option($value['id'].'_w', $value['std']);
-					update_option($value['id'].'_h', $value['std']);
-				endif;
-
-			}
-
-		} else {
-
-			isset($value['id']) && isset($_POST[$value['id']])
-				? update_option($value['id'], jigowatt_clean($_POST[$value['id']]))
-				: @delete_option($value['id']);
+			continue;
 
 		}
+
+		isset($valueID) && isset($_POST[$valueID])
+			? update_option($valueID, jigowatt_clean($_POST[$valueID]))
+			: @delete_option($valueID);
 
 	endforeach;
 
