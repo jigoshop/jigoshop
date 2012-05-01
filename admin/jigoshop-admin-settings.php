@@ -62,237 +62,216 @@ function csort_tax_rates($a, $b) {
 function jigoshop_update_options() {
     global $jigoshop_options_settings;
 
-    if (isset($_POST['submitted']) && $_POST['submitted'] == 'yes') {
-        check_admin_referer( 'jigoshop-update-settings', '_jigoshop_csrf' );
-        $update_image_meta = false;
+	/* If the settings haven't been saved, don't continue at all ! */
+    if ( empty($_POST['submitted']) ) return false;
 
-        foreach ($jigoshop_options_settings as $value) {
-            if (isset($value['id']) && $value['id'] == 'jigoshop_tax_rates') :
+	check_admin_referer( 'jigoshop-update-settings', '_jigoshop_csrf' );
+	$update_image_meta = false;
 
-				$taxFields = array(
-					'tax_classes' => '',
-					'tax_country' => '',
-					'tax_rate'    => '',
-					'tax_label'   => '',
-					'tax_rates'   => '',
-					'tax_shipping'=> '',
-					'tax_compound'=> ''
-				);
+	foreach ($jigoshop_options_settings as $value) :
 
-				/* Save each array key to a variable */
-				foreach ($taxFields as $name => $val)
-					if (isset($_POST[$name])) $taxFields[$name] = $_POST[$name];
+		if ( !empty($value['id']) ) {
 
-				extract($taxFields);
+			if ( $value['id'] == 'jigoshop_tax_rates' ) jigoshop_update_taxes();
+			if ( $value['id'] == 'jigoshop_coupons' )   jigoshop_update_coupons();
 
-				/* If a tax rate is set */
-				if ( !empty($tax_rates) ) :
+			/* Price separators get a special treatment as they should allow a spaces (don't trim) */
+			if ( $value['id'] == 'jigoshop_price_thousand_sep' || $value['id'] == 'jigoshop_price_decimal_sep' )
+				isset($_POST[$value['id']]) ? update_option($value['id'], $_POST[$value['id']]) : @delete_option($value['id']);
 
-					for ($i = 0; $i < sizeof($tax_classes); $i++) :
+		}
 
-						if (isset($tax_classes[$i]) && isset($tax_country[$i]) && isset($tax_rate[$i]) && $tax_rate[$i] && is_numeric($tax_rate[$i])) :
+		if ( !empty($value['type']) ) {
 
-							$country = jigowatt_clean($tax_country[$i]);
-							$label = trim($tax_label[$i]);
-							$state = '*'; // countries with no states have to have a character for products. Therefore use *
-							$rate = number_format((float)jigowatt_clean($tax_rate[$i]), 4);
-							$class = jigowatt_clean($tax_classes[$i]);
+			if ( $value['type'] == 'multi_select_countries' ) {
 
-							if (isset($tax_shipping[$i]) && $tax_shipping[$i])
-								$shipping = 'yes'; else
-								$shipping = 'no';
-							if (isset($tax_compound[$i]) && $tax_compound[$i])
-								$compound = 'yes'; else
-								$compound = 'no';
+				// Get countries array
+				$selected_countries = isset($_POST[$value['id']]) ? $_POST[$value['id']] : array();
+				update_option($value['id'], $selected_countries);
 
-							// Get state from country input if defined
-							if (strstr($country, ':')) :
-								$cr = explode(':', $country);
-								$country = current($cr);
-								$state = end($cr);
-							endif;
-
-							if ($state == '*' && jigoshop_countries::country_has_states($country)) : // handle all-states
-
-								foreach (array_keys(jigoshop_countries::$states[$country]) as $st) :
-									$tax_rates[] = array(
-										'country'      => $country,
-										'label'        => $label,
-										'state'        => $st,
-										'rate'         => $rate,
-										'shipping'     => $shipping,
-										'class'        => $class,
-										'compound'     => $compound,
-										'is_all_states'=> true //determines if admin panel should show 'all_states'
-									);
-								endforeach;
-
-							else :
-
-								 $tax_rates[] = array(
-									'country'      => $country,
-									'label'        => $label,
-									'state'        => $state,
-									'rate'         => $rate,
-									'shipping'     => $shipping,
-									'class'        => $class,
-									'compound'     => $compound,
-									'is_all_states'=> false //determines if admin panel should show 'all_states'
-								);
-
-							endif;
-
-
-						endif;
-
-					endfor;
-
-					// apply a custom sort to the tax_rates array.
-					usort($tax_rates, "csort_tax_rates");
-					update_option($value['id'], $tax_rates);
-				endif;
-
-            elseif (isset($value['id']) && $value['id'] == 'jigoshop_coupons') :
-
-				$couponFields = array(
-					'coupon_code'     => '',
-					'coupon_type'     => '',
-					'coupon_amount'   => '',
-					'product_ids'     => '',
-					'coupon_date_from'=> '',
-					'coupon_date_to'  => '',
-					'individual'      => ''
-				);
-
-				$coupons = array();
-
-				/* Save each array key to a variable */
-				foreach ($couponFields as $name => $val)
-					if (isset($_POST[$name])) $couponFields[$name] = $_POST[$name];
-
-				extract($couponFields);
-
-				if ( !empty($coupon_code) ) :
-
-					for ($i = 0; $i < sizeof($coupon_code); $i++) :
-
-						if (isset($coupon_code[$i]) && isset($coupon_type[$i]) && isset($coupon_amount[$i])) :
-
-							$code = jigowatt_clean($coupon_code[$i]);
-							$type = jigowatt_clean($coupon_type[$i]);
-							$amount = jigowatt_clean($coupon_amount[$i]);
-
-							if (isset($product_ids[$i]) && $product_ids[$i])
-								$products = array_map('trim', explode(',', $product_ids[$i]));
-							else
-								$products = array();
-
-							if (isset($coupon_date_from[$i]) && $coupon_date_from[$i]) :
-								$from_date = strtotime($coupon_date_from[$i]);
-							else :
-								$from_date = 0;
-							endif;
-
-							if (isset($coupon_date_to[$i]) && $coupon_date_to[$i]) :
-								$to_date = strtotime($coupon_date_to[$i]) + (60 * 60 * 24 - 1);
-							else :
-								$to_date = 0;
-							endif;
-
-							if (isset($individual[$i]) && $individual[$i]) :
-								$individual_use = 'yes';
-							else :
-								$individual_use = 'no';
-							endif;
-
-							if ($code && $type && $amount) :
-								$coupons[$code] = array(
-									'code'          => $code,
-									'amount'        => $amount,
-									'type'          => $type,
-									'products'      => $products,
-									'date_from'     => $from_date,
-									'date_to'       => $to_date,
-									'individual_use'=> $individual_use
-								);
-							endif;
-
-						endif;
-
-					endfor;
-
-					update_option($value['id'], $coupons);
-
-				endif;
-
-            elseif (isset($value['type']) && $value['type'] == 'multi_select_countries') :
-
-                // Get countries array
-                if (isset($_POST[$value['id']]))
-                    $selected_countries = $_POST[$value['id']]; else
-                    $selected_countries = array();
-                update_option($value['id'], $selected_countries);
-
-            /* price separators get a special treatment as they should allow a spaces (don't trim) */
-            elseif (isset($value['id']) && ( $value['id'] == 'jigoshop_price_thousand_sep' || $value['id'] == 'jigoshop_price_decimal_sep' )):
-
-                if (isset($_POST[$value['id']])) {
-                    update_option($value['id'], $_POST[$value['id']]);
-                } else {
-                    @delete_option($value['id']);
-                }
+			}
 
 			/* default back to standard image sizes if no value is entered */
-			elseif (isset($value['type']) && $value['type']=='image_size') :
+			if ( $value['type'] == 'image_size' ) {
 
-				if(isset($value['id']) && isset($_POST[$value['id'].'_w'])) {
+				if( !empty($_POST[$value['id'].'_w']) ) :
 					update_option($value['id'].'_w', jigowatt_clean($_POST[$value['id'].'_w']));
 					update_option($value['id'].'_h', jigowatt_clean($_POST[$value['id'].'_h']));
-				} else {
+				else :
 					update_option($value['id'].'_w', $value['std']);
 					update_option($value['id'].'_h', $value['std']);
+				endif;
+
+			}
+
+		} else {
+
+			isset($value['id']) && isset($_POST[$value['id']])
+				? update_option($value['id'], jigowatt_clean($_POST[$value['id']]))
+				: @delete_option($value['id']);
+
+		}
+
+	endforeach;
+
+/* Um, why is this always false? Commented out for now.  */
+/* 	if ($update_image_meta) {
+
+		// reset the image sizes to generate the new metadata
+		jigoshop_set_image_sizes();
+
+		$posts = get_posts('post_type=product&post_status=publish&posts_per_page=-1');
+
+		foreach ((array) $posts as $post) {
+			$images =  get_children("post_parent={$post->ID}&post_type=attachment&post_mime_type=image");
+
+			foreach ((array) $images as $image) {
+				$fullsizepath = get_attached_file($image->ID);
+
+				if (false !== $fullsizepath || file_exists($fullsizepath)) {
+					$metadata = wp_generate_attachment_metadata($image->ID, $fullsizepath);
+
+					if (!is_wp_error($metadata) && !empty($metadata)) {
+						wp_update_attachment_metadata($image->ID, $metadata);
+					}
 				}
+			}
+		}
+	}
+*/
 
-            else:
+	add_action( 'jigoshop_admin_settings_notices', 'jigoshop_settings_updated_notice' );
+	do_action ( 'jigoshop_update_options' );
 
-                if (isset($value['id']) && isset($_POST[$value['id']])) {
-                    update_option($value['id'], jigowatt_clean($_POST[$value['id']]));
-                } else {
-                    @delete_option($value['id']);
-                }
-
-            endif;
-        }
-
-        if ($update_image_meta) {
-
-            // reset the image sizes to generate the new metadata
-            jigoshop_set_image_sizes();
-
-            $posts = get_posts('post_type=product&post_status=publish&posts_per_page=-1');
-
-            foreach ((array) $posts as $post) {
-                $images =  get_children("post_parent={$post->ID}&post_type=attachment&post_mime_type=image");
-
-                foreach ((array) $images as $image) {
-                    $fullsizepath = get_attached_file($image->ID);
-
-                    if (false !== $fullsizepath || file_exists($fullsizepath)) {
-                        $metadata = wp_generate_attachment_metadata($image->ID, $fullsizepath);
-
-                        if (!is_wp_error($metadata) && !empty($metadata)) {
-                            wp_update_attachment_metadata($image->ID, $metadata);
-                        }
-                    }
-                }
-            }
-        }
-        add_action( 'jigoshop_admin_settings_notices', 'jigoshop_settings_updated_notice' );
-        do_action('jigoshop_update_options');
-    }
 }
 
 add_action('load-jigoshop_page_jigoshop_settings', 'jigoshop_update_options');
+
+function jigoshop_update_taxes() {
+
+	$taxFields = array(
+		'tax_classes' => '',
+		'tax_country' => '',
+		'tax_rate'    => '',
+		'tax_label'   => '',
+		'tax_shipping'=> '',
+		'tax_compound'=> ''
+	);
+
+	$tax_rates = array();
+
+	/* Save each array key to a variable */
+	foreach ($taxFields as $name => $val)
+		if (isset($_POST[$name])) $taxFields[$name] = $_POST[$name];
+
+	extract($taxFields);
+
+	for ($i = 0; $i < sizeof($tax_classes); $i++) :
+
+		if ( empty($tax_rate[$i]) ) continue;
+
+		$country = jigowatt_clean($tax_country[$i]);
+		$label = trim($tax_label[$i]);
+		$state = '*'; // countries with no states have to have a character for products. Therefore use *
+		$rate = number_format((float)jigowatt_clean($tax_rate[$i]), 4);
+		$class = jigowatt_clean($tax_classes[$i]);
+
+		$shipping = !empty($tax_shipping[$i]) ? 'yes' : 'no';
+		$compound = !empty($tax_compound[$i]) ? 'yes' : 'no';
+
+		// Get state from country input if defined
+		if (strstr($country, ':')) :
+			$cr = explode(':', $country);
+			$country = current($cr);
+			$state = end($cr);
+		endif;
+
+		if ($state == '*' && jigoshop_countries::country_has_states($country)) : // handle all-states
+
+			foreach (array_keys(jigoshop_countries::$states[$country]) as $st) :
+				$tax_rates[] = array(
+					'country'      => $country,
+					'label'        => $label,
+					'state'        => $st,
+					'rate'         => $rate,
+					'shipping'     => $shipping,
+					'class'        => $class,
+					'compound'     => $compound,
+					'is_all_states'=> true //determines if admin panel should show 'all_states'
+				);
+			endforeach;
+
+		else :
+
+			 $tax_rates[] = array(
+				'country'      => $country,
+				'label'        => $label,
+				'state'        => $state,
+				'rate'         => $rate,
+				'shipping'     => $shipping,
+				'class'        => $class,
+				'compound'     => $compound,
+				'is_all_states'=> false //determines if admin panel should show 'all_states'
+			);
+
+		endif;
+
+	endfor;
+
+	// apply a custom sort to the tax_rates array.
+	usort($tax_rates, "csort_tax_rates");
+	update_option('jigoshop_tax_rates', $tax_rates);
+
+}
+
+function jigoshop_update_coupons() {
+
+	$couponFields = array(
+		'coupon_code'     => '',
+		'coupon_type'     => '',
+		'coupon_amount'   => '',
+		'product_ids'     => '',
+		'coupon_date_from'=> '',
+		'coupon_date_to'  => '',
+		'individual'      => ''
+	);
+
+	$coupons = array();
+
+	/* Save each array key to a variable */
+	foreach ($couponFields as $name => $val)
+		if (isset($_POST[$name])) $couponFields[$name] = $_POST[$name];
+
+	extract($couponFields);
+
+	for ($i = 0; $i < sizeof($coupon_code); $i++) :
+
+		if ( empty($coupon_code[$i]) || !is_numeric($coupon_amount[$i]) ) continue;
+
+		$amount        = jigowatt_clean($coupon_amount[$i]);
+		$code          = jigowatt_clean($coupon_code[$i]);
+		$from_date     = !empty($coupon_date_from[$i])? strtotime($coupon_date_from[$i])                    : 0;
+		$individual_use= !empty($individual[$i])      ? 'yes'                                               : 'no';
+		$products      = !empty($product_ids[$i])     ? array_map('trim', explode(',', $product_ids[$i]))   : array();
+		$to_date       = !empty($coupon_date_to[$i])  ? strtotime($coupon_date_to[$i]) + (60 * 60 * 24 - 1) : 0;
+		$type          = jigowatt_clean($coupon_type[$i]);
+
+		if ($code && $type && $amount)
+			$coupons[$code] = array(
+				'code'          => $code,
+				'amount'        => $amount,
+				'type'          => $type,
+				'products'      => $products,
+				'date_from'     => $from_date,
+				'date_to'       => $to_date,
+				'individual_use'=> $individual_use
+			);
+
+	endfor;
+
+	update_option('jigoshop_coupons', $coupons);
+
+}
 
 /**
  * Admin fields
