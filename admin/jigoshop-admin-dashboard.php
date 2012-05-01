@@ -33,15 +33,6 @@ if (!function_exists ('add_action')) {
 		exit();
 }
 
-/**
-*
-*	class jigoshop_dashboard
-*
-*	@author Jigowatt
-*	@since 1.0
-*
-*/
-
 class jigoshop_dashboard {
 
 	function __construct() {
@@ -54,17 +45,18 @@ class jigoshop_dashboard {
 	}
 
 	function on_load_page() {
+
 		wp_enqueue_script('common');
 		wp_enqueue_script('wp-lists');
 		wp_enqueue_script('postbox');
 
-		add_meta_box('jigoshop_dash_right_now',		'Right Now',		array(&$this, 'jigoshop_dash_right_now'),		$this->pagehook, 'side', 'core');
-		add_meta_box('jigoshop_dash_stock_report',	'Stock Report',		array(&$this, 'jigoshop_dash_stock_report'),	$this->pagehook, 'side', 'core');
-		add_meta_box('jigoshop_dash_recent_reviews','Recent Reviews',	array(&$this, 'jigoshop_dash_recent_reviews'),	$this->pagehook, 'side', 'core');
-		add_meta_box('jigoshop_dash_latest_news',	'Latest News',		array(&$this, 'jigoshop_dash_latest_news'),		$this->pagehook, 'side', 'core');
-		add_meta_box('jigoshop_dash_recent_orders',	'Recent Orders',	array(&$this, 'jigoshop_dash_recent_orders'),	$this->pagehook, 'normal', 'core');
-		add_meta_box('jigoshop_dash_useful_links',	'Useful Links',		array(&$this, 'jigoshop_dash_useful_links'),	$this->pagehook, 'normal', 'core');
-		add_meta_box('jigoshop_dash_monthly_report','Monthly Report',	array(&$this, 'jigoshop_dash_monthly_report'),	$this->pagehook, 'normal', 'core');
+		add_meta_box('jigoshop_dash_right_now',     'Right Now',     array(&$this, 'jigoshop_dash_right_now'),     $this->pagehook, 'side',  'core');
+		add_meta_box('jigoshop_dash_recent_orders', 'Recent Orders', array(&$this, 'jigoshop_dash_recent_orders'), $this->pagehook, 'side', 'core');
+		add_meta_box('jigoshop_dash_stock_report',  'Stock Report',  array(&$this, 'jigoshop_dash_stock_report'),  $this->pagehook, 'side',  'core');
+		add_meta_box('jigoshop_dash_monthly_report','Monthly Report',array(&$this, 'jigoshop_dash_monthly_report'),$this->pagehook, 'normal', 'core');
+		add_meta_box('jigoshop_dash_recent_reviews','Recent Reviews',array(&$this, 'jigoshop_dash_recent_reviews'),$this->pagehook, 'normal',  'core');
+		add_meta_box('jigoshop_dash_latest_news',   'Latest News',   array(&$this, 'jigoshop_dash_latest_news'),   $this->pagehook, 'normal',  'core');
+		add_meta_box('jigoshop_dash_useful_links',  'Useful Links',  array(&$this, 'jigoshop_dash_useful_links'),  $this->pagehook, 'normal', 'core');
 	}
 
 	function on_show_page() {
@@ -78,12 +70,12 @@ class jigoshop_dashboard {
 				<?php wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false ); ?>
 				<?php wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false ); ?>
 
-				<div id="poststuff" class="metabox-holder has-right-sidebar">
-				<div id="side-info-column" class="inner-sidebar">
+			<div id="dashboard-widgets" class="metabox-holder">
+				<div id='postbox-container-1' class='postbox-container' style='width:50%;'>
 					<?php do_meta_boxes($this->pagehook, 'side'); ?>
 				</div>
 				<div id="post-body" class="has-sidebar">
-					<div id="post-body-content" class="has-sidebar-content">
+					<div id='postbox-container-2' class='postbox-container' style='width:50%;'>
 						<?php do_meta_boxes($this->pagehook, 'normal'); ?>
 					</div>
 				</div>
@@ -111,6 +103,8 @@ class jigoshop_dashboard {
 	*/
 
 	function jigoshop_dash_right_now() { ?>
+
+	<div id="jigoshop_right_now" class="jigoshop_right_now">
 		<div class="table table_content">
 			<p class="sub"><?php _e('Shop Content', 'jigoshop'); ?></p>
 			<table>
@@ -168,11 +162,13 @@ class jigoshop_dashboard {
 				</tbody>
 			</table>
 		</div>
+		<br class="clear"/>
 		<div class="versions">
 			<p id="wp-version-message"><?php _e('You are using', 'jigoshop'); ?>
 				<strong>JigoShop <?php echo jigoshop_get_plugin_data(); ?></strong>
 			</p>
 		</div>
+	</div>
 		<?php
 	}
 
@@ -259,22 +255,24 @@ class jigoshop_dashboard {
 				$outofstock[] = '<tr><td colspan="2">'.__('No products are out of stock.', 'jigoshop').'</td></tr>';
 			endif;
 			?>
-
-			<div class="table table_content">
-				<p class="sub"><?php _e('Low Stock', 'jigoshop'); ?></p>
-				<table>
-					<tbody>
-						<?php echo implode('', $lowinstock); ?>
-					</tbody>
-				</table>
-			</div>
-			<div class="table table_discussion">
-				<p class="sub"><?php _e('Out of Stock/Backorders', 'jigoshop'); ?></p>
-				<table>
-					<tbody>
-						<?php echo implode('', $outofstock); ?>
-					</tbody>
-				</table>
+			<div id="jigoshop_right_now" class="jigoshop_right_now">
+				<div class="table table_content">
+					<p class="sub"><?php _e('Low Stock', 'jigoshop'); ?></p>
+					<table>
+						<tbody>
+							<?php echo implode('', $lowinstock); ?>
+						</tbody>
+					</table>
+				</div>
+				<div class="table table_discussion">
+					<p class="sub"><?php _e('Out of Stock/Backorders', 'jigoshop'); ?></p>
+					<table>
+						<tbody>
+							<?php echo implode('', $outofstock); ?>
+						</tbody>
+					</table>
+				</div>
+				<br class="clear"/>
 			</div>
 	<?php endif;
 	}
@@ -296,7 +294,7 @@ class jigoshop_dashboard {
 		AND post_type = 'product'
 		ORDER BY comment_date_gmt DESC
 		LIMIT 5" );
-
+		?><div class="inside jigoshop-reviews-widget"><?php
 		if ($comments) :
 			echo '<ul>';
 			foreach ($comments as $comment) :
@@ -318,6 +316,7 @@ class jigoshop_dashboard {
 		else :
 			echo '<p>'.__('There are no product reviews yet.', 'jigoshop').'</p>';
 		endif;
+		?></div><?php
 	}
 
 	/**
@@ -381,40 +380,45 @@ class jigoshop_dashboard {
 
 	function jigoshop_dash_useful_links() {
 		?>
-		<ul class="links">
-			<li><a href="http://jigoshop.com/"><?php _e('Jigoshop', 'jigoshop'); ?></a> &ndash; <?php _e('Learn more about the Jigoshop plugin', 'jigoshop'); ?></li>
-			<li><a href="http://jigoshop.com/tour/"><?php _e('Tour', 'jigoshop'); ?></a> &ndash; <?php _e('Take a tour of the plugin', 'jigoshop'); ?></li>
-			<li><a href="http://forum.jigoshop.com/kb"><?php _e('Documentation', 'jigoshop'); ?></a> &ndash; <?php _e('Stuck? Read the plugin\'s documentation.', 'jigoshop'); ?></li>
-			<li><a href="http://forum.jigoshop.com/"><?php _e('Forum', 'jigoshop'); ?></a> &ndash; <?php _e('Get help from the community.', 'jigoshop'); ?></li>
-			<li><a href="http://jigoshop.com/support"><?php _e('Support', 'jigoshop'); ?></a> &ndash; <?php _e('Receive priority, technical help from our dedicated support team.', 'jigoshop'); ?></li>
-			<li><a href="http://jigoshop.com/extend/extensions/"><?php _e('Extensions', 'jigoshop'); ?></a> &ndash; <?php _e('Extend Jigoshop with extra plugins and modules.', 'jigoshop'); ?></li>
-			<li><a href="http://jigoshop.com/extend/themes/"><?php _e('Themes', 'jigoshop'); ?></a> &ndash; <?php _e('Extend Jigoshop with themes.', 'jigoshop'); ?></li>
-			<li><a href="http://twitter.com/#!/jigoshop"><?php _e('@Jigoshop', 'jigoshop'); ?></a> &ndash; <?php _e('Follow us on Twitter.', 'jigoshop'); ?></li>
-			<li><a href="https://github.com/jigoshop/Jigoshop"><?php _e('Jigoshop on Github', 'jigoshop'); ?></a> &ndash; <?php _e('Help extend Jigoshop.', 'jigoshop'); ?></li>
-			<li><a href="http://wordpress.org/extend/plugins/jigoshop/"><?php _e('Jigoshop on WordPress.org', 'jigoshop'); ?></a> &ndash; <?php _e('Leave us a rating!', 'jigoshop'); ?></li>
-		</ul>
-		<div class="social">
+		<div class="jigoshop-links-widget">
+			<div class="links">
+				<ul>
+					<li><a href="http://jigoshop.com/"><?php _e('Jigoshop', 'jigoshop'); ?></a> &ndash; <?php _e('Learn more about the Jigoshop plugin', 'jigoshop'); ?></li>
+					<li><a href="http://jigoshop.com/tour/"><?php _e('Tour', 'jigoshop'); ?></a> &ndash; <?php _e('Take a tour of the plugin', 'jigoshop'); ?></li>
+					<li><a href="http://forum.jigoshop.com/kb"><?php _e('Documentation', 'jigoshop'); ?></a> &ndash; <?php _e('Stuck? Read the plugin\'s documentation.', 'jigoshop'); ?></li>
+					<li><a href="http://forum.jigoshop.com/"><?php _e('Forum', 'jigoshop'); ?></a> &ndash; <?php _e('Get help from the community.', 'jigoshop'); ?></li>
+					<li><a href="http://jigoshop.com/support"><?php _e('Support', 'jigoshop'); ?></a> &ndash; <?php _e('Receive priority, technical help from our dedicated support team.', 'jigoshop'); ?></li>
+					<li><a href="http://jigoshop.com/extend/extensions/"><?php _e('Extensions', 'jigoshop'); ?></a> &ndash; <?php _e('Extend Jigoshop with extra plugins and modules.', 'jigoshop'); ?></li>
+					<li><a href="http://jigoshop.com/extend/themes/"><?php _e('Themes', 'jigoshop'); ?></a> &ndash; <?php _e('Extend Jigoshop with themes.', 'jigoshop'); ?></li>
+					<li><a href="http://twitter.com/#!/jigoshop"><?php _e('@Jigoshop', 'jigoshop'); ?></a> &ndash; <?php _e('Follow us on Twitter.', 'jigoshop'); ?></li>
+					<li><a href="https://github.com/jigoshop/Jigoshop"><?php _e('Jigoshop on Github', 'jigoshop'); ?></a> &ndash; <?php _e('Help extend Jigoshop.', 'jigoshop'); ?></li>
+					<li><a href="http://wordpress.org/extend/plugins/jigoshop/"><?php _e('Jigoshop on WordPress.org', 'jigoshop'); ?></a> &ndash; <?php _e('Leave us a rating!', 'jigoshop'); ?></li>
+				</ul>
+			</div>
+			<div class="social">
 
-			<h4 class="first"><?php _e('Jigoshop Project', 'jigoshop') ?></h4>
-			<p><?php _e('Join our growing developer community today, contribute to the jigoshop project via GitHub.') ?></p>
+				<h4 class="first"><?php _e('Jigoshop Project', 'jigoshop') ?></h4>
+				<p><?php _e('Join our growing developer community today, contribute to the jigoshop project via GitHub.') ?></p>
 
-			<p><a href="https://github.com/jigoshop/Jigoshop" class="gitforked-button gitforked-forks gitforked-watchers">Fork</a></p>
-			<script src="http://gitforked.com/api/1.1/button.js" type="text/javascript"></script>
+				<p><a href="https://github.com/jigoshop/Jigoshop" class="gitforked-button gitforked-forks gitforked-watchers">Fork</a></p>
+				<script src="http://gitforked.com/api/1.1/button.js" type="text/javascript"></script>
 
-			<h4><?php _e('Jigoshop Social', 'jigoshop'); ?></h4>
+				<h4><?php _e('Jigoshop Social', 'jigoshop'); ?></h4>
 
-			<div id="fb-root"></div><script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:like href="http://jigoshop.com" send="true" layout="button_count" width="250" show_faces="true" action="like" font="arial"></fb:like>
+				<div id="fb-root"></div><script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:like href="http://jigoshop.com" send="true" layout="button_count" width="250" show_faces="true" action="like" font="arial"></fb:like>
 
-			<p><a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jigoshop.com/" data-text="Jigoshop: A WordPress eCommerce solution that works" data-count="horizontal" data-via="jigoshop" data-related="Jigowatt:Creators">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script></p>
+				<p><a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jigoshop.com/" data-text="Jigoshop: A WordPress eCommerce solution that works" data-count="horizontal" data-via="jigoshop" data-related="Jigowatt:Creators">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script></p>
 
-			<p><g:plusone size="medium" href="http://jigoshop.com/"></g:plusone><script type="text/javascript" src="https://apis.google.com/js/plusone.js">{lang: 'en-GB'}</script></p>
+				<p><g:plusone size="medium" href="http://jigoshop.com/"></g:plusone><script type="text/javascript" src="https://apis.google.com/js/plusone.js">{lang: 'en-GB'}</script></p>
 
-			<h4><?php _e('Jigoshop is brought to you by&hellip;', 'jigoshop'); ?></h4>
+				<h4><?php _e('Jigoshop is brought to you by&hellip;', 'jigoshop'); ?></h4>
 
-			<p><a href="http://jigowatt.co.uk/"><img src="<?php echo jigoshop::assets_url(); ?>/assets/images/jigowatt.png" alt="Jigowatt" /></a></p>
+				<p><a href="http://jigowatt.co.uk/"><img src="<?php echo jigoshop::assets_url(); ?>/assets/images/jigowatt.png" alt="Jigowatt" /></a></p>
 
-			<p>From design to deployment Jigowatt delivers expert solutions to enterprise customers using Magento & WordPress open source platforms.</p>
+				<p>From design to deployment Jigowatt delivers expert solutions to enterprise customers using Magento & WordPress open source platforms.</p>
 
+			</div>
+			<br class="clear"/>
 		</div>
 		<?php
 	}
@@ -431,13 +435,13 @@ class jigoshop_dashboard {
 		$current_month_offset = (int) date('m');
 
 		if (isset($_GET['month'])) $current_month_offset = (int) $_GET['month']; ?>
-			<h3 class="hndle" id="poststuff">
+		<div class="stats" id="jigoshop-stats">
+			<p>
 				<?php if ($current_month_offset!=date('m')) : ?>
 					<a href="admin.php?page=jigoshop&amp;month=<?php echo $current_month_offset+1; ?>" class="next">Next Month &rarr;</a>
 				<?php endif; ?>
 				<a href="admin.php?page=jigoshop&amp;month=<?php echo $current_month_offset-1; ?>" class="previous">&larr; Previous Month</a>
-				<span><?php _e('Monthly Sales', 'jigoshop') ?></span>
-			</h3>
+			</p>
 	<div class="inside">
 		<div id="placeholder" style="width:100%; height:300px; position:relative;"></div>
 		<script type="text/javascript">
@@ -486,12 +490,12 @@ class jigoshop_dashboard {
 					add_filter( 'posts_where', 'orders_this_month' );
 
 					$args = array(
-						'numberposts'		=> -1,
-						'orderby'			=> 'post_date',
-						'order'				=> 'DESC',
-						'post_type'			=> 'shop_order',
-						'post_status'		=> 'publish' ,
-						'suppress_filters'	=> false
+						'numberposts'     => -1,
+						'orderby'         => 'post_date',
+						'order'           => 'DESC',
+						'post_type'       => 'shop_order',
+						'post_status'     => 'publish' ,
+						'suppress_filters'=> false
 					);
 					$orders = get_posts( $args );
 
@@ -640,6 +644,7 @@ class jigoshop_dashboard {
 
 			/* ]]> */
 		</script>
+	</div>
 	</div>
 <?php
 	}
