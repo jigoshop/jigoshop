@@ -333,21 +333,17 @@ function jigoshop_admin_fields($options) {
 				  </thead><?php
 				break;
 
-			case 'multicheck':
-
-
-
-				break;
-
 			case 'checkbox':
 				?><tr>
                     <th scope="row">
 						<?php if (isset($value['tip'])) : ?>
-						<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a>
+						<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99" style="margin: -2px -8px 3px 0;"></a>
 						<?php endif; ?>
+						<?php if ( !empty( $value['name'] ) ) : ?>						
 						<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
+						<?php endif; ?>
 					</th>
-					<td>
+					<td<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
 						<input
 						id="<?php echo esc_attr( $value['id'] ); ?>"
 						type="checkbox"

@@ -35,7 +35,7 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	array(
 		'name' => __('Demo store','jigoshop'),
 		'desc' 		=> 'Include a banner at the top of your pages explaining this site is not live.',
-		//'tip' 		=> __('Enable this option to show a banner at the top of every page stating this shop is currently in testing mode.','jigoshop'),
+		'tip' 		=> __('Enable this option to show a banner at the top of every page stating this shop is currently in testing mode.','jigoshop'),
 		'id' 		=> 'jigoshop_demo_store',
 		'std' 		=> 'no',
 		'type' 		=> 'checkbox',
