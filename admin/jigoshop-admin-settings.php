@@ -335,9 +335,9 @@ function jigoshop_admin_fields($options) {
 
 			case 'checkbox':
 				?><tr>
-                    <th scope="row">
+                    <th scope="row"<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
 						<?php if (isset($value['tip'])) : ?>
-						<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99" style="margin: -2px -8px 3px 0;"></a>
+						<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99" ></a>
 						<?php endif; ?>
 						<?php if ( !empty( $value['name'] ) ) : ?>						
 						<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
