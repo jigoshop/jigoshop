@@ -69,169 +69,161 @@ function jigoshop_update_options() {
         foreach ($jigoshop_options_settings as $value) {
             if (isset($value['id']) && $value['id'] == 'jigoshop_tax_rates') :
 
-                $tax_classes = array();
-                $tax_countries = array();
-                $tax_rate = array();
-                $tax_label = array();
-                $tax_rates = array();
-                $tax_shipping = array();
-                $tax_compound = array();
+				$taxFields = array(
+					'tax_classes' => '',
+					'tax_country' => '',
+					'tax_rate'    => '',
+					'tax_label'   => '',
+					'tax_rates'   => '',
+					'tax_shipping'=> '',
+					'tax_compound'=> ''
+				);
 
-                if (isset($_POST['tax_classes'])) :
-                    $tax_classes = $_POST['tax_classes'];
-                endif;
-                if (isset($_POST['tax_country'])) :
-                    $tax_countries = $_POST['tax_country'];
-                endif;
-                if (isset($_POST['tax_rate'])) :
-                    $tax_rate = $_POST['tax_rate'];
-                endif;
-                if (isset($_POST['tax_label'])) :
-                    $tax_label = $_POST['tax_label'];
-                endif;
-                if (isset($_POST['tax_shipping'])) :
-                    $tax_shipping = $_POST['tax_shipping'];
-                endif;
-                if (isset($_POST['tax_compound'])) :
-                    $tax_compound = $_POST['tax_compound'];
-                endif;
+				/* Save each array key to a variable */
+				foreach ($taxFields as $name => $val)
+					if (isset($_POST[$name])) $taxFields[$name] = $_POST[$name];
 
-                for ($i = 0; $i < sizeof($tax_classes); $i++) :
+				extract($taxFields);
 
-                    if (isset($tax_classes[$i]) && isset($tax_countries[$i]) && isset($tax_rate[$i]) && $tax_rate[$i] && is_numeric($tax_rate[$i])) :
+				/* If a tax rate is set */
+				if ( !empty($tax_rates) ) :
 
-                        $country = jigowatt_clean($tax_countries[$i]);
-                        $label = trim($tax_label[$i]);
-                        $state = '*'; // countries with no states have to have a character for products. Therefore use *
-                        $rate = number_format((float)jigowatt_clean($tax_rate[$i]), 4);
-                        $class = jigowatt_clean($tax_classes[$i]);
+					for ($i = 0; $i < sizeof($tax_classes); $i++) :
 
-                        if (isset($tax_shipping[$i]) && $tax_shipping[$i])
-                            $shipping = 'yes'; else
-                            $shipping = 'no';
-                        if (isset($tax_compound[$i]) && $tax_compound[$i])
-                            $compound = 'yes'; else
-                            $compound = 'no';
+						if (isset($tax_classes[$i]) && isset($tax_country[$i]) && isset($tax_rate[$i]) && $tax_rate[$i] && is_numeric($tax_rate[$i])) :
 
-                        // Get state from country input if defined
-                        if (strstr($country, ':')) :
-                            $cr = explode(':', $country);
-                            $country = current($cr);
-                            $state = end($cr);
-                        endif;
+							$country = jigowatt_clean($tax_country[$i]);
+							$label = trim($tax_label[$i]);
+							$state = '*'; // countries with no states have to have a character for products. Therefore use *
+							$rate = number_format((float)jigowatt_clean($tax_rate[$i]), 4);
+							$class = jigowatt_clean($tax_classes[$i]);
 
-                        if ($state == '*' && jigoshop_countries::country_has_states($country)) : // handle all-states
+							if (isset($tax_shipping[$i]) && $tax_shipping[$i])
+								$shipping = 'yes'; else
+								$shipping = 'no';
+							if (isset($tax_compound[$i]) && $tax_compound[$i])
+								$compound = 'yes'; else
+								$compound = 'no';
 
-                            foreach (array_keys(jigoshop_countries::$states[$country]) as $st) :
-                                $tax_rates[] = array(
+							// Get state from country input if defined
+							if (strstr($country, ':')) :
+								$cr = explode(':', $country);
+								$country = current($cr);
+								$state = end($cr);
+							endif;
+
+							if ($state == '*' && jigoshop_countries::country_has_states($country)) : // handle all-states
+
+								foreach (array_keys(jigoshop_countries::$states[$country]) as $st) :
+									$tax_rates[] = array(
+										'country'      => $country,
+										'label'        => $label,
+										'state'        => $st,
+										'rate'         => $rate,
+										'shipping'     => $shipping,
+										'class'        => $class,
+										'compound'     => $compound,
+										'is_all_states'=> true //determines if admin panel should show 'all_states'
+									);
+								endforeach;
+
+							else :
+
+								 $tax_rates[] = array(
 									'country'      => $country,
 									'label'        => $label,
-									'state'        => $st,
+									'state'        => $state,
 									'rate'         => $rate,
 									'shipping'     => $shipping,
 									'class'        => $class,
 									'compound'     => $compound,
-									'is_all_states'=> true //determines if admin panel should show 'all_states'
-                                );
-                            endforeach;
+									'is_all_states'=> false //determines if admin panel should show 'all_states'
+								);
 
-                        else :
-
-                             $tax_rates[] = array(
-								'country'      => $country,
-								'label'        => $label,
-								'state'        => $state,
-								'rate'         => $rate,
-								'shipping'     => $shipping,
-								'class'        => $class,
-								'compound'     => $compound,
-								'is_all_states'=> false //determines if admin panel should show 'all_states'
-                            );
-                        endif;
+							endif;
 
 
-                    endif;
+						endif;
 
-                endfor;
+					endfor;
 
-                // apply a custom sort to the tax_rates array.
-                usort($tax_rates, "csort_tax_rates");
-
-                update_option($value['id'], $tax_rates);
+					// apply a custom sort to the tax_rates array.
+					usort($tax_rates, "csort_tax_rates");
+					update_option($value['id'], $tax_rates);
+				endif;
 
             elseif (isset($value['id']) && $value['id'] == 'jigoshop_coupons') :
 
-				$coupon_code  = array();
-				$coupon_type  = array();
-				$coupon_amount= array();
-				$product_ids  = array();
-				$date_from    = array();
-				$date_to      = array();
-				$coupons      = array();
-				$individual   = array();
+				$couponFields = array(
+					'coupon_code'     => '',
+					'coupon_type'     => '',
+					'coupon_amount'   => '',
+					'product_ids'     => '',
+					'coupon_date_from'=> '',
+					'coupon_date_to'  => '',
+					'individual'      => ''
+				);
 
-                if (isset($_POST['coupon_code']))
-                    $coupon_code = $_POST['coupon_code'];
-                if (isset($_POST['coupon_type']))
-                    $coupon_type = $_POST['coupon_type'];
-                if (isset($_POST['coupon_amount']))
-                    $coupon_amount = $_POST['coupon_amount'];
-                if (isset($_POST['product_ids']))
-                    $product_ids = $_POST['product_ids'];
-                if (isset($_POST['coupon_date_from']))
-                    $date_from = $_POST['coupon_date_from'];
-                if (isset($_POST['coupon_date_to']))
-                    $date_to = $_POST['coupon_date_to'];
-                if (isset($_POST['individual']))
-                    $individual = $_POST['individual'];
+				$coupons = array();
 
-                for ($i = 0; $i < sizeof($coupon_code); $i++) :
+				/* Save each array key to a variable */
+				foreach ($couponFields as $name => $val)
+					if (isset($_POST[$name])) $couponFields[$name] = $_POST[$name];
 
-                    if (isset($coupon_code[$i]) && isset($coupon_type[$i]) && isset($coupon_amount[$i])) :
+				extract($couponFields);
 
-                        $code = jigowatt_clean($coupon_code[$i]);
-                        $type = jigowatt_clean($coupon_type[$i]);
-                        $amount = jigowatt_clean($coupon_amount[$i]);
+				if ( !empty($coupon_code) ) :
 
-                        if (isset($product_ids[$i]) && $product_ids[$i])
-                            $products = array_map('trim', explode(',', $product_ids[$i]));
-                        else
-                            $products = array();
+					for ($i = 0; $i < sizeof($coupon_code); $i++) :
 
-                        if (isset($date_from[$i]) && $date_from[$i]) :
-                            $from_date = strtotime($date_from[$i]);
-                        else :
-                            $from_date = 0;
-                        endif;
-                        if (isset($date_to[$i]) && $date_to[$i]) :
-                            $to_date = strtotime($date_to[$i]) + (60 * 60 * 24 - 1);
-                        else :
-                            $to_date = 0;
-                        endif;
+						if (isset($coupon_code[$i]) && isset($coupon_type[$i]) && isset($coupon_amount[$i])) :
 
-                        if (isset($individual[$i]) && $individual[$i]) :
-                            $individual_use = 'yes';
-                        else :
-                            $individual_use = 'no';
-                        endif;
+							$code = jigowatt_clean($coupon_code[$i]);
+							$type = jigowatt_clean($coupon_type[$i]);
+							$amount = jigowatt_clean($coupon_amount[$i]);
 
-                        if ($code && $type && $amount) :
-                            $coupons[$code] = array(
-                                'code' => $code,
-                                'amount' => $amount,
-                                'type' => $type,
-                                'products' => $products,
-                                'date_from' => $from_date,
-                                'date_to' => $to_date,
-                                'individual_use' => $individual_use
-                            );
-                        endif;
+							if (isset($product_ids[$i]) && $product_ids[$i])
+								$products = array_map('trim', explode(',', $product_ids[$i]));
+							else
+								$products = array();
 
-                    endif;
+							if (isset($coupon_date_from[$i]) && $coupon_date_from[$i]) :
+								$from_date = strtotime($coupon_date_from[$i]);
+							else :
+								$from_date = 0;
+							endif;
 
-                endfor;
+							if (isset($coupon_date_to[$i]) && $coupon_date_to[$i]) :
+								$to_date = strtotime($coupon_date_to[$i]) + (60 * 60 * 24 - 1);
+							else :
+								$to_date = 0;
+							endif;
 
-                update_option($value['id'], $coupons);
+							if (isset($individual[$i]) && $individual[$i]) :
+								$individual_use = 'yes';
+							else :
+								$individual_use = 'no';
+							endif;
+
+							if ($code && $type && $amount) :
+								$coupons[$code] = array(
+									'code'          => $code,
+									'amount'        => $amount,
+									'type'          => $type,
+									'products'      => $products,
+									'date_from'     => $from_date,
+									'date_to'       => $to_date,
+									'individual_use'=> $individual_use
+								);
+							endif;
+
+						endif;
+
+					endfor;
+
+					update_option($value['id'], $coupons);
+
+				endif;
 
             elseif (isset($value['type']) && $value['type'] == 'multi_select_countries') :
 
@@ -401,8 +393,8 @@ function jigoshop_admin_fields($options) {
                         <td>
                             <textarea <?php if (isset($value['args']))
                     echo $value['args'] . ' '; ?>
-                    name="<?php echo esc_attr( $value['id'] ); ?>" 
-                    id="<?php echo esc_attr( $value['id'] ); ?>" 
+                    name="<?php echo esc_attr( $value['id'] ); ?>"
+                    id="<?php echo esc_attr( $value['id'] ); ?>"
                     class="large-text" style="<?php echo esc_attr( $value['css'] ); ?>"><?php echo esc_textarea( ( get_option($value['id'])) ? stripslashes(get_option($value['id'])) : $value['std'] ); ?></textarea>
                             <br /><small><?php echo $value['desc'] ?></small>
                         </td>
@@ -519,16 +511,16 @@ function jigoshop_admin_fields($options) {
                                             echo '<td><input type="text" value="' . esc_attr( $coupon['amount'] ) . '" name="coupon_amount[' . esc_attr( $i ) . ']" title="' . __('Coupon Amount', 'jigoshop') . '" placeholder="' . __('Amount', 'jigoshop') . '" class="text" /></td>
 			                    			<td><input type="text" value="' . ( ( is_array( $coupon['products'] ) ) ? implode( ', ', $coupon['products'] ) : '' ) . '" name="product_ids[' . esc_attr( $i ) . ']" placeholder="' . __('1, 2, 3,', 'jigoshop') . '" class="text" /></td>';
 
-                                            $date_from = $coupon['date_from'];
+                                            $coupon_date_from = $coupon['date_from'];
                                             echo '<td><label for="coupon_date_from[' . esc_attr( $i ) . ']"></label><input type="text" class="text date-pick" name="coupon_date_from[' . esc_attr( $i ) . ']" id="coupon_date_from[' . esc_attr( $i ) . ']" value="';
-                                            if ($date_from)
-                                                echo date('Y-m-d', $date_from);
+                                            if ($coupon_date_from)
+                                                echo date('Y-m-d', $coupon_date_from);
                                             echo '" placeholder="' . __('yyyy-mm-dd', 'jigoshop') . '" /></td>';
 
-                                            $date_to = $coupon['date_to'];
+                                            $coupon_date_to = $coupon['date_to'];
                                             echo '<td><label for="coupon_date_to[' . esc_attr( $i ) . ']"></label><input type="text" class="text date-pick" name="coupon_date_to[' . esc_attr( $i ) . ']" id="coupon_date_to[' . esc_attr( $i ) . ']" value="';
-                                            if ($date_to)
-                                                echo date('Y-m-d', $date_to);
+                                            if ($coupon_date_to)
+                                                echo date('Y-m-d', $coupon_date_to);
                                             echo '" placeholder="' . __('yyyy-mm-dd', 'jigoshop') . '" /></td>';
 
                                             echo '<td><input type="checkbox" name="individual[' . esc_attr( $i ) . ']" ';
@@ -832,9 +824,9 @@ function jigoshop_admin_fields($options) {
 /**
  * When all states are selected, filter based on country and tax class. This method
  * creates the array key for such a filter.
- * 
+ *
  * @param array $tax_rate the tax rates array
- * @return string country code and tax class concatenated 
+ * @return string country code and tax class concatenated
  */
 function get_all_states_key($tax_rate) {
     return $tax_rate['country'] . $tax_rate['class'];
