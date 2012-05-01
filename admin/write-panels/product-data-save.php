@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Admin
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Admin
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_product_meta
 {
@@ -30,7 +30,11 @@ class jigoshop_product_meta
 		// Process general product data
 		// How to sanitize this block?
 		update_post_meta( $post_id, 'regular_price', !empty($_POST['regular_price']) ? jigoshop_sanitize_num($_POST['regular_price']) : '');
-		update_post_meta( $post_id, 'sale_price', 	 !strstr($_POST['sale_price'],'%') ? jigoshop_sanitize_num($_POST['sale_price']) : $_POST['sale_price']);
+
+		$sale_price = ! empty( $_POST['sale_price'] )
+			? ( ! strstr( $_POST['sale_price'], '%' ) ? jigoshop_sanitize_num( $_POST['sale_price'] ) : $_POST['sale_price'] )
+			: '';
+		update_post_meta( $post_id, 'sale_price', $sale_price );
 
 		update_post_meta( $post_id, 'weight',        (float) $_POST['weight']);
 		update_post_meta( $post_id, 'length',        (float) $_POST['length']);
@@ -42,6 +46,7 @@ class jigoshop_product_meta
 
 		update_post_meta( $post_id, 'visibility',    $_POST['product_visibility']);
 		update_post_meta( $post_id, 'featured',      isset($_POST['featured']) );
+		update_post_meta( $post_id, 'customizable',  $_POST['product_customize'] );
 
 		// Downloadable Only
 		if( $_POST['product-type'] == 'downloadable' ) {
@@ -133,10 +138,20 @@ class jigoshop_product_meta
 			$array['stock']        = absint( $post['stock'] );
 			$array['backorders']   = $post['backorders']; // should have a space
 			$array['stock_status'] = -1; // Discount if stock is managed
+			if ( get_option( 'jigoshop_hide_no_stock_product' ) == 'yes' ) {
+				if ( $array['stock'] <= get_option( 'jigoshop_notify_no_stock_amount' ) ) {
+					if ( $post['product-type'] <> 'grouped' && $post['product-type'] <> 'variable' ) {
+						update_post_meta( $post['ID'], 'visibility', 'hidden' );
+					} else {
+						// how to handle grouped and variable?  for now, ensure they are visible
+						update_post_meta( $post['ID'], 'visibility', $_POST['product_visibility'] );
+					}
+				}
+			}
 		} else {
 			$array['stock_status'] = $post['stock_status'];
 		}
-
+		
 		return $array;
 	}
 
@@ -198,10 +213,12 @@ class jigoshop_product_meta
 			if ( ! $value )
 				continue;
 
-			if ( !is_array( $value )) {
+			if ( ! is_array( $value ) && $attr_variation[$key] ) {
 			 	$value = explode( ',', $value );
 			 	$value = array_map( 'trim', $value );
 			 	$value = implode( ',', $value );
+			} else if ( ! is_array( $value ) ) {
+				$value = trim( $value );
 			}
 
 			// If attribute is standard then create the relationship

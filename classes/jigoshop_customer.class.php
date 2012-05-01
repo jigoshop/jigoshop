@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Customer
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Customer
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 class jigoshop_customer extends jigoshop_singleton {
@@ -33,12 +33,12 @@ class jigoshop_customer extends jigoshop_singleton {
         		$state = '';
         	endif;
 			$data = array(
-				'country' => $country,
-				'state' => $state,
-				'postcode' => '',
+				'country'          => $country,
+				'state'            => $state,
+				'postcode'         => '',
 				'shipping_country' => $country,
-				'shipping_state' => $state,
-				'shipping_postcode' => ''
+				'shipping_state'   => $state,
+				'shipping_postcode'=> ''
 			);
 			jigoshop_session::instance()->customer  = $data;
 
@@ -51,27 +51,28 @@ class jigoshop_customer extends jigoshop_singleton {
      * used to determine how to apply taxes. Also, it no country is set, assume
      * shipping is going to base country.
      */
-	public static function is_customer_shipping_outside_base() {
-		$outside = false;
-        $shipping_country = self::get_shipping_country();
+	public static function is_customer_outside_base($shipable) {
+        $outside = false;
+        $country = ($shipable ? self::get_shipping_country() : self::get_country());
 
-        // if no shipping country is set, then assume customer will ship to the shop base
-        // country until customer sets the shipping country.
-		if ( $shipping_country ) :
+        // if no country is set, then assume customer is from the shop base
+		if ( $country ) :
 
-            // only check if it's a country with states. Otherwise always return false, as
-            // we don't care about calculating taxes for a customer outside of the base
-            // country.
-           if (jigoshop_countries::country_has_states($shipping_country)) :
+            $shopcountry = jigoshop_countries::get_base_country();
+            // check if it's a country with states. 
+            if (jigoshop_countries::country_has_states($country)) :
 
-                $shopcountry = jigoshop_countries::get_base_country();
                 $shopstate = jigoshop_countries::get_base_state();
 
                 // taxes only apply if the customer is shipping in the same country. If the customer is
                 // shipping outside of the shop country, then taxes do not apply.
-                if ( $shopcountry === self::get_shipping_country() && $shopstate !== self::get_shipping_state() ) :
+                if ( $shopcountry === $country && $shopstate !== ($shipable ? self::get_shipping_state() : self::get_state())) :
                     $outside = true;
                 endif;
+            elseif (jigoshop_countries::is_eu_country($shopcountry) && $shopcountry != $country) :
+                
+                // if both base country and shipping country are in the EU, then outside country base is true
+                $outside = jigoshop_countries::is_eu_country($country);
             endif;
 		endif;
 		return $outside;
@@ -188,7 +189,7 @@ class jigoshop_customer extends jigoshop_singleton {
 			$jigoshop_orders->get_customer_orders( get_current_user_id() );
 			if ($jigoshop_orders->orders) foreach ($jigoshop_orders->orders as $order) :
 				if ( $order->status == 'completed' ) {
-					$results = $wpdb->get_results( "SELECT * FROM ".$wpdb->prefix."jigoshop_downloadable_product_permissions WHERE order_key = \"".$order->order_key."\" AND user_id = ".get_current_user_id().";" );
+					$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM ".$wpdb->prefix."jigoshop_downloadable_product_permissions WHERE order_key = %s AND user_id = %d;", $order->order_key, get_current_user_id() ) );
 					$user_info = get_userdata(get_current_user_id());
 					if ($results) foreach ($results as $result) :
 							$_product = new jigoshop_product_variation( $result->product_id );
@@ -198,11 +199,11 @@ class jigoshop_customer extends jigoshop_singleton {
 								$download_name = $download_name .' (' . jigoshop_get_formatted_variation( $_product->variation_data, true ).')';
 							endif;
 							$downloads[] = array(
-								'download_url' => add_query_arg('download_file', $result->product_id, add_query_arg('order', $result->order_key, add_query_arg('email', $user_info->user_email, home_url()))),
-								'product_id' => $result->product_id,
-								'download_name' => $download_name,
-								'order_key' => $result->order_key,
-								'downloads_remaining' => $result->downloads_remaining
+								'download_url'       => add_query_arg('download_file', $result->product_id, add_query_arg('order', $result->order_key, add_query_arg('email', $user_info->user_email, home_url()))),
+								'product_id'         => $result->product_id,
+								'download_name'      => $download_name,
+								'order_key'          => $result->order_key,
+								'downloads_remaining'=> $result->downloads_remaining
 							);
 					endforeach;
 				}

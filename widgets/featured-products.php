@@ -8,12 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Widgets
- * @author		Jigowatt
- * @since		1.0
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Widgets
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 class Jigoshop_Widget_Featured_Products extends WP_Widget {
@@ -79,16 +78,16 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 
 		// Set up query
 		$query_args = array(
-			'posts_per_page' => $number,
-			'post_type'      => 'product',
-			'post_status'    => 'publish',
-			'meta_key'       => 'featured',
-			'meta_value'	     => '1',
-			'meta_query'     => array(
+			'posts_per_page'=> $number,
+			'post_type'     => 'product',
+			'post_status'   => 'publish',
+			'meta_key'      => 'featured',
+			'meta_value'    => '1',
+			'meta_query'    => array(
 				array(
-					'key'       => 'visibility',
-					'value'     => array('catalog', 'visible'),
-					'compare'   => 'IN',
+					'key'    => 'visibility',
+					'value'  => array('catalog', 'visible'),
+					'compare'=> 'IN',
 				),
 			)
 		);

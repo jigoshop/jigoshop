@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Checkout
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Checkout
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_payment_gateway {
 
@@ -52,4 +52,18 @@ class jigoshop_payment_gateway {
 	function process_payment( $order_id ) {}
 
 	function validate_fields() { return true; }
+    
+    /**
+     * provides functionality to tell checkout if 
+     * the gateway should be processed or not. If false, the gateway will not be 
+     * processed, otherwise the gateway will be processed.
+     * @return boolean defaults to needs_payment from cart class. If overridden, the gateway will provide
+     * details as to when it should or shouldn't be processed.
+     * @since 1.2
+     */
+    public function process_gateway($subtotal, $shipping_total, $discount = 0) { 
+        // default to cart needs_payment() to keep the same functionality that jigoshop offers today
+        // if overridden, the gateway will provide the details when to skip or not
+        return jigoshop_cart::needs_payment();
+    }
 }

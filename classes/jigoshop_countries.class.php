@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Internationalization
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Internationalization
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_countries {
 
@@ -767,11 +767,45 @@ class jigoshop_countries {
 			'AP'	=>	'Pacific'
 		)
 	);
+    
+    public static $european_union_countries = array (
+        'AT'	=>	'Austria',
+        'BE'	=>	'Belgium',
+        'BG'	=>	'Bulgaria',
+        'CY'	=>	'Cyprus',
+        'CZ'	=>	'Czech Republic',
+        'DK'	=>	'Denmark',
+        'EE'	=>	'Estonia',
+        'FI'	=>	'Finland',
+        'FR'	=>	'France',
+        'DE'	=>	'Germany',
+        'GR'	=>	'Greece',
+        'HU'	=>	'Hungary',
+        'IE'	=>	'Ireland',
+        'IT'	=>	'Italy',
+        'LV'	=>	'Latvia',
+        'LT'	=>	'Lithuania',
+        'LU'	=>	'Luxembourg',
+        'MT'	=>	'Malta',
+        'NL'	=>	'Netherlands',
+        'PL'	=>	'Poland',
+        'PT'	=>	'Portugal',
+        'RO'	=>	'Romania',
+        'SK'	=>	'Slovakia',
+        'SI'	=>	'Slovenia',
+        'ES'	=>	'Spain',
+        'SE'	=>	'Sweden',
+        'GB'	=>	'United Kingdom'
+    );
 
 	static function country_has_states($country_code) {
 
 		return isset(self::$states[$country_code]);
 	}
+    
+    public static function is_eu_country($country_code) {
+        return array_key_exists($country_code, self::$european_union_countries);
+    }
 
 	/** get base country */
 	static function get_base_country() {

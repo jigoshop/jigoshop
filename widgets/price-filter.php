@@ -8,12 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Widgets
- * @author		Jigowatt
- * @since		1.0
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Widgets
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 class Jigoshop_Widget_Price_Filter extends WP_Widget {
 
@@ -76,15 +75,16 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 			$fields .= '<input type="hidden" name="post_type" value="' . esc_attr( $_GET['post_type'] ) . '" />';
 		}
 
-		if ( $_chosen_attributes ) foreach ( $_chosen_atributes as $attr => $val ) {
+		if ( ! empty( $_chosen_attributes )) foreach ( $_chosen_attributes as $attribute => $value ) {
 			$fields .= '<input type="hidden" name="'.str_replace('pa_', 'filter_', $attribute).'" value="'.implode(',', $value).'" />';
 		}
 
 		// Get maximum price
+		// @todo: Currently we can only handle regular price, looks like we may need to implement the price meta field after all :(
 		$max = ceil($wpdb->get_var("SELECT max(meta_value + 0)
 		FROM $wpdb->posts
 		LEFT JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id
-		WHERE meta_key = 'price' AND (
+		WHERE meta_key = 'regular_price' AND (
 			$wpdb->posts.ID IN (".implode( ',', $jigoshop_all_post_ids_in_view ).")
 			OR (
 				$wpdb->posts.post_parent IN (".implode( ',', $jigoshop_all_post_ids_in_view ).")
@@ -169,28 +169,28 @@ function jigoshop_price_filter( $filtered_posts ) {
 		$matched_products = array( 0 );
 
 		$matched_products_query = get_posts(array(
-			'post_type' => 'product',
-			'post_status' => 'publish',
-			'posts_per_page' => -1,
-			'meta_query' => array(
+			'post_type'     => 'product',
+			'post_status'   => 'publish',
+			'posts_per_page'=> -1,
+			'meta_query'    => array(
 				array(
-					'key' => 'price',
-					'value' => array( $_GET['min_price'], $_GET['max_price'] ),
-					'type' => 'NUMERIC',
-					'compare' => 'BETWEEN'
+					'key'    => 'regular_price',
+					'value'  => array( $_GET['min_price'], $_GET['max_price'] ),
+					'type'   => 'NUMERIC',
+					'compare'=> 'BETWEEN'
 				)
 			),
 			'tax_query' => array(
 				array(
-					'taxonomy' => 'product_type',
-					'field' => 'slug',
-					'terms' => 'grouped',
-					'operator' => 'NOT IN'
+					'taxonomy'=> 'product_type',
+					'field'   => 'slug',
+					'terms'   => 'grouped',
+					'operator'=> 'NOT IN'
 				)
 			)
 		));
 
-		if ($matched_products_query) :
+		if ( ! empty( $matched_products_query )) :
 
 			foreach ($matched_products_query as $product) :
 				$matched_products[] = $product->ID;
@@ -199,13 +199,13 @@ function jigoshop_price_filter( $filtered_posts ) {
 		endif;
 
 		// Get grouped product ids
-		$grouped_products = get_objects_in_term( get_term_by('slug', 'grouped', 'product_type')->term_id, 'product_type' );
+		$grouped_products = (array) get_objects_in_term( get_term_by('slug', 'grouped', 'product_type')->term_id, 'product_type' );
 
-		if ($grouped_products) foreach ($grouped_products as $grouped_product) :
+		if ( ! empty( $grouped_products )) foreach ($grouped_products as $grouped_product) :
 
 			$children = get_children( 'post_parent='.$grouped_product.'&post_type=product' );
 
-			if ($children) foreach ($children as $product) :
+			if ( ! empty( $children )) foreach ($children as $product) :
 				$price = get_post_meta( $product->ID, 'price', true);
 
 				if ($price<=$_GET['max_price'] && $price>=$_GET['min_price']) :

@@ -129,7 +129,7 @@ jQuery(function(){
 
 	/* Tabs */
 	jQuery('#tabs .panel:not(#tabs .panel)').hide();
-	jQuery('#tabs li a').click(function(){
+	jQuery('div#tabs ul.tabs li > a').click(function(){
 		var href = jQuery(this).attr('href');
 		jQuery('#tabs li').removeClass('active');
 		jQuery('div.panel').hide();
@@ -180,8 +180,12 @@ jQuery(function(){
 	function variations_match(attrs1, attrs2) {
 		var match = true;
 		for(name in attrs1) {
-			var val1 = attrs1[name].toLowerCase();
-			var val2 = attrs2[name].toLowerCase();
+            var val1 = attrs1[name].toLowerCase();
+			if ( typeof( attrs2[name] ) == 'undefined' ) {
+				var val2 = 'undefined';
+			} else {
+				var val2 = attrs2[name].toLowerCase();
+			}
 
 			if(val1.length != 0 && val2.length != 0 && val1 != val2) {
 				match = false;

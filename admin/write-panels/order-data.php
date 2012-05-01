@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Admin
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Admin
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -102,18 +102,18 @@ function jigoshop_order_data_meta_box($post) {
             //display billing fieds and values
 
                 $billing_fields = array(
-                    'first_name' => __('First Name', 'jigoshop'),
-                    'last_name' => __('Last Name', 'jigoshop'),
-                    'company' => __('Company', 'jigoshop'),
-                    'address_1' => __('Address 1', 'jigoshop'),
-                    'address_2' => __('Address 2', 'jigoshop'),
-                    'city' => __('City', 'jigoshop'),
-                    'postcode' => __('Postcode', 'jigoshop'),
-                    'country' => __('Country', 'jigoshop'),
-                    'state' => __('State/County', 'jigoshop'),
-                    'email' => __('Email Address', 'jigoshop'),
-                    'phone' => __('Tel', 'jigoshop'),
-                );
+					'address_1' => __('Address 1', 'jigoshop'),
+					'address_2' => __('Address 2', 'jigoshop'),
+					'city'      => __('City', 'jigoshop'),
+					'company'   => __('Company', 'jigoshop'),
+					'country'   => __('Country', 'jigoshop'),
+					'email'     => __('Email Address', 'jigoshop'),
+					'first_name'=> __('First Name', 'jigoshop'),
+					'last_name' => __('Last Name', 'jigoshop'),
+					'phone'     => __('Tel', 'jigoshop'),
+					'postcode'  => __('Postcode', 'jigoshop'),
+					'state'     => __('State/County', 'jigoshop'),
+				);
 
                 foreach($billing_fields as $field_id => $field_desc) {
                     $field_id = 'billing_' . $field_id;
@@ -137,16 +137,16 @@ function jigoshop_order_data_meta_box($post) {
             //display shipping fieds and values
 
                 $shipping_fields = array(
-                    'first_name' => __('First Name', 'jigoshop'),
-                    'last_name' => __('Last Name', 'jigoshop'),
-                    'company' => __('Company', 'jigoshop'),
-                    'address_1' => __('Address 1', 'jigoshop'),
-                    'address_2' => __('Address 2', 'jigoshop'),
-                    'city' => __('City', 'jigoshop'),
-                    'postcode' => __('Postcode', 'jigoshop'),
-                    'country' => __('Country', 'jigoshop'),
-                    'state' => __('State/County', 'jigoshop')
-                );
+					'address_1' => __('Address 1', 'jigoshop'),
+					'address_2' => __('Address 2', 'jigoshop'),
+					'city'      => __('City', 'jigoshop'),
+					'company'   => __('Company', 'jigoshop'),
+					'country'   => __('Country', 'jigoshop'),
+					'first_name'=> __('First Name', 'jigoshop'),
+					'last_name' => __('Last Name', 'jigoshop'),
+					'postcode'  => __('Postcode', 'jigoshop'),
+					'state'     => __('State/County', 'jigoshop')
+				);
 
                 foreach($shipping_fields as $field_id => $field_desc) {
                     $field_id = 'shipping_' . $field_id;
@@ -213,10 +213,28 @@ function jigoshop_order_items_meta_box($post) {
 						<td class="product-id"><?php echo $item['id']; ?></td>
 						<td class="variation-id"><?php if ( isset($item['variation_id']) ) echo $item['variation_id']; else echo '-'; ?></td>
 						<td class="product-sku"><?php if ($_product->sku) echo $_product->sku; ?></td>
-						<td class="name"><a href="<?php echo esc_url( admin_url('post.php?post='. $_product->id .'&action=edit') ); ?>"><?php echo $item['name']; ?></a></td>
+						<td class="name"><a href="<?php echo esc_url( admin_url('post.php?post='. $_product->id .'&action=edit') ); ?>"><?php echo $item['name']; ?></a>
+							<?php
+								if ( ! empty( $item['customization'] ) ) :
+
+									$custom = $item['customization'];
+									$label = apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') );
+									?>
+										<div class="customization">
+											<span class="customized_product_label"><?php echo $label; ?></span>
+											<span class="customized_product"><?php echo $custom; ?></span>
+										</div>
+									<?php
+								endif;
+							?>
+							</td>
 						<td class="variation"><?php
 							if (isset($_product->variation_data)) :
 								echo jigoshop_get_formatted_variation( $_product->variation_data, true );
+							elseif ( isset($item['variation']) && is_array($item['variation']) ) :
+								foreach( $item['variation'] as $var ) {
+									echo "{$var['name']} : {$var['value']}";
+								}
 							else :
 								echo '-';
 							endif;
@@ -380,7 +398,7 @@ function jigoshop_order_totals_meta_box($post) {
 
 		<li class="right">
 			<label><?php _e('Tax:', 'jigoshop'); ?></label>
-			<input type="text" id="order_tax" name="order_tax" placeholder="0.00" value="<?php echo esc_attr( $_order->get_total_tax() ); ?>" class="first" />
+			<input type="text" id="order_tax" name="order_tax_total" placeholder="0.00" value="<?php echo esc_attr( $_order->get_total_tax() ); ?>" class="first" />
 		</li>
 
 		<li>

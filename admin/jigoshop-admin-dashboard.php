@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Admin
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Admin
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -33,14 +33,14 @@ if (!function_exists ('add_action')) {
 		exit();
 }
 
-/*--------------------------------------------------------------------------
+/**
 *
 *	class jigoshop_dashboard
 *
 *	@author Jigowatt
 *	@since 1.0
 *
-*-------------------------------------------------------------------------*/
+*/
 
 class jigoshop_dashboard {
 
@@ -104,14 +104,11 @@ class jigoshop_dashboard {
 
 <?php }
 
-	/*--------------------------------------------------------------------------
+	/**
 	*
 	*	Right Now
 	*
-	*	@author Jigowatt
-	*	@since 1.0
-	*
-	*-------------------------------------------------------------------------*/
+	*/
 
 	function jigoshop_dash_right_now() { ?>
 		<div class="table table_content">
@@ -179,14 +176,11 @@ class jigoshop_dashboard {
 		<?php
 	}
 
-	/*--------------------------------------------------------------------------
+	/**
 	*
 	*	Recent Orders
 	*
-	*	@author Jigowatt
-	*	@since 1.0
-	*
-	*-------------------------------------------------------------------------*/
+	*/
 
 	function jigoshop_dash_recent_orders() {
 		$args = array(
@@ -214,14 +208,11 @@ class jigoshop_dashboard {
 		endif;
 	}
 
-	/*--------------------------------------------------------------------------
+	/**
 	*
 	*	Stock Reports
 	*
-	*	@author Jigowatt
-	*	@since 1.0
-	*
-	*-------------------------------------------------------------------------*/
+	*/
 
 	function jigoshop_dash_stock_report() {
 		if (get_option('jigoshop_manage_stock')=='yes') :
@@ -288,14 +279,11 @@ class jigoshop_dashboard {
 	<?php endif;
 	}
 
-	/*--------------------------------------------------------------------------
+	/**
 	*
 	*	Recent Reviews
 	*
-	*	@author Jigowatt
-	*	@since 1.0
-	*
-	*-------------------------------------------------------------------------*/
+	*/
 
 	function jigoshop_dash_recent_reviews() {
 		global $wpdb;
@@ -332,14 +320,11 @@ class jigoshop_dashboard {
 		endif;
 	}
 
-	/*--------------------------------------------------------------------------
+	/**
 	*
 	*	Latest News
 	*
-	*	@author Jigowatt
-	*	@since 1.0
-	*
-	*-------------------------------------------------------------------------*/
+	*/
 
 	function jigoshop_dash_latest_news() {
 		if (file_exists(ABSPATH.WPINC.'/class-simplepie.php')) {
@@ -388,14 +373,11 @@ class jigoshop_dashboard {
 		}
 	}
 
-	/*--------------------------------------------------------------------------
+	/**
 	*
 	*	Useful Links
 	*
-	*	@author Jigowatt
-	*	@since 1.0
-	*
-	*-------------------------------------------------------------------------*/
+	*/
 
 	function jigoshop_dash_useful_links() {
 		?>
@@ -437,14 +419,11 @@ class jigoshop_dashboard {
 		<?php
 	}
 
-	/*--------------------------------------------------------------------------
+	/**
 	*
 	*	Monthly Report
 	*
-	*	@author Jigowatt
-	*	@since 1.0
-	*
-	*-------------------------------------------------------------------------*/
+	*/
 
 	function jigoshop_dash_monthly_report() {
 		global $current_month_offset;

@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Admin
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Admin
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -22,7 +22,30 @@
  *
  * @since 		1.0
  */
+
 function install_jigoshop() {
+
+	global $wpdb;
+
+	if (function_exists('is_multisite') && is_multisite()) {
+
+		if (isset($_GET['networkwide']) && ($_GET['networkwide'] == 1)) {
+			$old_blog = $wpdb->blogid;
+			$blogids = $wpdb->get_col($wpdb->prepare("SELECT blog_id FROM $wpdb->blogs"));
+			foreach ($blogids as $blog_id) {
+				switch_to_blog($blog_id);
+				_install_jigoshop();
+			}
+			switch_to_blog($old_blog);
+			return;
+		}
+	}
+
+	_install_jigoshop();
+
+}
+
+function _install_jigoshop() {
 
 	if( ! get_site_option('jigoshop_db_version') )  {
 
@@ -58,9 +81,9 @@ function install_jigoshop() {
  * @since 		1.0
  */
 function jigoshop_default_options() {
-	global $options_settings;
+	global $jigoshop_options_settings;
 
-	foreach ($options_settings as $value) :
+	foreach ($jigoshop_options_settings as $value) :
 
         if (isset($value['std'])) :
 
@@ -93,62 +116,62 @@ function jigoshop_create_pages() {
 
 	// start out with basic page parameters, modify as we go
 	$page_data = array(
-		'post_status' => 'publish',
-		'post_type' => 'page',
-		'post_author' => 1,
-		'post_name' => '',
-		'post_title' => __('Shop', 'jigoshop'),
-		'post_content' => '',
+		'post_status'    => 'publish',
+		'post_type'      => 'page',
+		'post_author'    => 1,
+		'post_name'      => '',
+		'post_title'     => __('Shop', 'jigoshop'),
+		'post_content'   => '',
 		'comment_status' => 'closed'
 	);
 	jigoshop_create_single_page( 'shop', 'jigoshop_shop_page_id', $page_data );
 
-	$page_data['post_title'] = __('Cart', 'jigoshop');
+	$page_data['post_title']   = __('Cart', 'jigoshop');
 	$page_data['post_content'] = '[jigoshop_cart]';
 	jigoshop_create_single_page( 'cart', 'jigoshop_cart_page_id', $page_data );
 
-	$page_data['post_title'] = __('Track your order', 'jigoshop');
+	$page_data['post_title']   = __('Track your order', 'jigoshop');
 	$page_data['post_content'] = '[jigoshop_order_tracking]';
 	jigoshop_create_single_page( 'order-tracking', 'jigoshop_track_order_page_id', $page_data );
 
-	$page_data['post_title'] = __('My Account', 'jigoshop');
+	$page_data['post_title']   = __('My Account', 'jigoshop');
 	$page_data['post_content'] = '[jigoshop_my_account]';
 	jigoshop_create_single_page( 'my-account', 'jigoshop_myaccount_page_id', $page_data );
 
-	$page_data['post_title'] = __('Edit My Address', 'jigoshop');
+	$page_data['post_title']   = __('Edit My Address', 'jigoshop');
 	$page_data['post_content'] = '[jigoshop_edit_address]';
-	$page_data['post_parent'] = jigoshop_get_page_id('myaccount');
+	$page_data['post_parent']  = jigoshop_get_page_id('myaccount');
 	jigoshop_create_single_page( 'edit-address', 'jigoshop_edit_address_page_id', $page_data );
 
-	$page_data['post_title'] = __('Change Password', 'jigoshop');
+	$page_data['post_title']   = __('Change Password', 'jigoshop');
 	$page_data['post_content'] = '[jigoshop_change_password]';
-	$page_data['post_parent'] = jigoshop_get_page_id('myaccount');
+	$page_data['post_parent']  = jigoshop_get_page_id('myaccount');
 	jigoshop_create_single_page( 'change-password', 'jigoshop_change_password_page_id', $page_data );
 
-	$page_data['post_title'] = __('View Order', 'jigoshop');
+	$page_data['post_title']   = __('View Order', 'jigoshop');
 	$page_data['post_content'] = '[jigoshop_view_order]';
-	$page_data['post_parent'] = jigoshop_get_page_id('myaccount');
+	$page_data['post_parent']  = jigoshop_get_page_id('myaccount');
 	jigoshop_create_single_page( 'view-order', 'jigoshop_view_order_page_id', $page_data );
 
-	$page_data['post_title'] = __('Checkout', 'jigoshop');
+	$page_data['post_title']   = __('Checkout', 'jigoshop');
 	$page_data['post_content'] = '[jigoshop_checkout]';
 	unset( $page_data['post_parent'] );
 	jigoshop_create_single_page( 'checkout', 'jigoshop_checkout_page_id', $page_data );
 
-	$page_data['post_title'] = __('Checkout &rarr; Pay', 'jigoshop');
+	$page_data['post_title']   = __('Checkout &rarr; Pay', 'jigoshop');
 	$page_data['post_content'] = '[jigoshop_pay]';
-	$page_data['post_parent'] = jigoshop_get_page_id('checkout');
+	$page_data['post_parent']  = jigoshop_get_page_id('checkout');
 	jigoshop_create_single_page( 'pay', 'jigoshop_pay_page_id', $page_data );
 
-	$page_data['post_title'] = __('Thank you', 'jigoshop');
+	$page_data['post_title']   = __('Thank you', 'jigoshop');
 	$page_data['post_content'] = '[jigoshop_thankyou]';
-	$page_data['post_parent'] = jigoshop_get_page_id('checkout');
+	$page_data['post_parent']  = jigoshop_get_page_id('checkout');
 	jigoshop_create_single_page( 'thanks', 'jigoshop_thanks_page_id', $page_data );
 
 }
 
 /**
- * Install a single Jigoshop Page if required
+ * Install a single Jigoshop Page
  *
  * @param string $page_slug - is the slug for the page to create (shop|cart|thank-you|etc)
  * @param string $page_option - the database options entry for page ID storage
@@ -161,31 +184,16 @@ function jigoshop_create_single_page( $page_slug, $page_option, $page_data ) {
     global $wpdb;
 
     $slug = esc_sql( _x( $page_slug, 'page_slug', 'jigoshop' ) );
-	$page_found = $wpdb->get_var("SELECT ID FROM " . $wpdb->posts . " WHERE post_name = '$slug' AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1");
-	$page_options_id = get_option( $page_option );
+	$page_found = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1", $slug ) );
 
-    if ( ! $page_found )
-    {
-		$create_page = true;
-		if ( $page_options_id <> '' ) :
-			$page_found = $wpdb->get_var( "SELECT ID FROM " . $wpdb->posts . " WHERE ID = '$page_options_id' AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1" );
-			if ( $page_found ) $create_page = false;
-		endif;
-		if ( $create_page ) :
-			$page_data['post_name'] = $slug;
-			$page_options_id = wp_insert_post( $page_data );
-			update_option( $page_option, $page_options_id );
-		endif;
+    if ( ! $page_found ) {
+		$page_data['post_name'] = $slug;
+		$page_options_id = wp_insert_post( $page_data );
+		update_option( $page_option, $page_options_id );
+    } else {
+    	update_option( $page_option, $page_found );
     }
-    else
-    {
-    	if ( $page_options_id == "" ) :
-    		update_option( $page_option, $page_found );
-    	else :
-    		// we have the slug page, another page may be actual page in options (eg: 'shop|store|etc').
-    		// Do we need to check for that page.
-    	endif;
-    }
+
 }
 
 /**

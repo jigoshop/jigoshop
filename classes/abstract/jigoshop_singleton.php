@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Core
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Core
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 abstract class jigoshop_singleton extends jigoshop_base_class {
@@ -81,7 +81,7 @@ if ( ! function_exists( 'get_called_class' )) {
 					switch ( $matches[1] ) {
 						case 'self':
 						case 'parent':
-							return jigoshop_called_class( $bt, $l+1 );
+							return self::get_called_class( $bt, $l+1 );
 						default:
 							return $matches[1];
 					}

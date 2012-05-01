@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Catalog
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Catalog
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
  ?>
 
@@ -20,22 +20,22 @@
 
 	echo '<div id="comments">';
 
-	$count = $wpdb->get_var("
+	$count = $wpdb->get_var( $wpdb->prepare("
 		SELECT COUNT(meta_value) FROM $wpdb->commentmeta
 		LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
 		WHERE meta_key = 'rating'
-		AND comment_post_ID = $post->ID
+		AND comment_post_ID = %d
 		AND comment_approved = '1'
 		AND meta_value > 0
-	");
+	", $post->ID ) );
 
-	$rating = $wpdb->get_var("
+	$rating = $wpdb->get_var( $wpdb->prepare("
 		SELECT SUM(meta_value) FROM $wpdb->commentmeta
 		LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
 		WHERE meta_key = 'rating'
-		AND comment_post_ID = $post->ID
+		AND comment_post_ID = %d
 		AND comment_approved = '1'
-	");
+	", $post->ID ) );
 
 	if ( $count>0 ) :
 
@@ -87,10 +87,10 @@
 	echo '</div><div id="review_form_wrapper"><div id="review_form">';
 
 	comment_form(array(
-		'title_reply' => $title_reply,
-		'comment_notes_before' => '',
+		'title_reply'         => $title_reply,
+		'comment_notes_before'=> '',
 		'comment_notes_after' => '',
-		'fields' => array(
+		'fields'              => array(
 			'author' => '<p class="comment-form-author">' . '<label for="author">' . __( 'Name' ) . '</label> ' . '<span class="required">*</span>' .
 			            '<input id="author" name="author" type="text" value="' . esc_attr( $commenter['comment_author'] ) . '" size="30" aria-required="true" /></p>',
 			'email'  => '<p class="comment-form-email"><label for="email">' . __( 'Email' ) . '</label> ' . '<span class="required">*</span>' .
@@ -107,7 +107,7 @@
 				<option value="2">'.__('Not that bad','jigoshop').'</option>
 				<option value="1">'.__('Very Poor','jigoshop').'</option>
 			</select></p>
-			<p class="comment-form-comment"><label for="comment">' . _x( 'Your Review', 'noun' ) . '</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>'
+			<p class="comment-form-comment"><label for="comment">' . _x( 'Your Review', 'noun', 'jigoshop' ) . '</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>'
 			. jigoshop::nonce_field('comment_rating', true, false)
 	));
 

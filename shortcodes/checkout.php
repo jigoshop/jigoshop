@@ -8,21 +8,22 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Checkout
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Checkout
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 function get_jigoshop_checkout( $atts ) {
-	return jigoshop::shortcode_wrapper('jigoshop_checkout', $atts);
+	return jigoshop_shortcode_wrapper('jigoshop_checkout', $atts);
 }
 
 function jigoshop_checkout( $atts ) {
 
 	if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
-
+	
+	jigoshop_cart::get_cart();
 	if (sizeof(jigoshop_cart::$cart_contents)==0) :
 		wp_redirect(get_permalink(jigoshop_get_page_id('cart')));
 		exit;
@@ -38,7 +39,7 @@ function jigoshop_checkout( $atts ) {
 
 	if (is_wp_error($result)) jigoshop::add_error( $result->get_error_message() );
 
-	if ( jigoshop::error_count()==0 && $non_js_checkout) jigoshop::add_message( __('The order totals have been updated. Please confirm your order by pressing the Place Order button at the bottom of the page.', 'jigoshop') );
+	if ( ! jigoshop::has_errors() && $non_js_checkout) jigoshop::add_message( __('The order totals have been updated. Please confirm your order by pressing the Place Order button at the bottom of the page.', 'jigoshop') );
 
 	jigoshop::show_messages();
 

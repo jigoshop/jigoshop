@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Admin
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Admin
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 // Temporary fix for selectbox triggering the click event.
@@ -385,7 +385,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			// Get terms for attribute taxonomy or value if its a custom attribute
 			if ( $attr['is_taxonomy'] ) {
 
-				$options = get_the_terms( $post->ID, 'pa_'.sanitize_title($attr['name']));
+				$options = wp_get_object_terms( $post->ID, 'pa_'.sanitize_title($attr['name']), array( 'orderby' => 'slug' ) );
 				foreach( $options as $option ) {
 					$html .= '<option value="'.esc_attr($option->slug).'" '.selected($selected, $option->slug, false).'>'.$option->name.'</option>';
 				}

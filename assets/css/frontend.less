@@ -157,14 +157,6 @@ small.note {
 	}
 }
 
-/* twenty-eleven non content wrapped full width fix (Cart, Checkout, Accounts) */
-.jigoshop #primary .entry-header, .jigoshop #primary .entry-content, .jigoshop #primary .entry-meta {
-	width: 95%;
-}
-.jigoshop #primary .entry-header {
-	float: left;
-}
-
 /* =Product Page
 -------------------------------------------------------------- */
 div.product {
@@ -840,7 +832,7 @@ td.quantity, .jigoshop #content div.quantity {
 		width: 225px;
 		text-align: right;
 		h2 {
-			float: left;
+			float: none;
 		}
 		p {
 			margin: 0 !important;
@@ -1213,4 +1205,24 @@ section#primary div.product div.summary {
 }
 .single_variation, .stock {
 	clear: left;
+}
+
+.customized_product_label {
+	font-weight: bold;
+}
+.customized_product {
+}
+dl.customization {
+	margin: 0;
+	dt {
+		font-weight: bold;
+		display: inline-block;
+		margin: 0 4px 0 0;
+		padding: 0;
+	}
+	dd {
+		display: inline;
+		margin: 0 12px 0 0;
+		padding: 0;
+	}
 }

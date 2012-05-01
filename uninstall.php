@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Core
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Core
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 if( !defined('WP_UNINSTALL_PLUGIN') ) exit();
@@ -44,5 +44,9 @@ $wpdb->query("DROP TABLE IF EXISTS ".$wpdb->prefix."jigoshop_attribute_taxonomie
 $wpdb->query("DROP TABLE IF EXISTS ".$wpdb->prefix."jigoshop_downloadable_product_permissions");
 $wpdb->query("DROP TABLE IF EXISTS ".$wpdb->prefix."jigoshop_termmeta");
 
+// Order Status
+$wpdb->query("DELETE FROM $wpdb->terms WHERE term_id IN (select term_id FROM $wpdb->term_taxonomy WHERE taxonomy IN ('product_type', 'shop_order_status'))");
+$wpdb->query("DELETE FROM $wpdb->term_taxonomy WHERE taxonomy = 'shop_order_status'");
+
 // Delete options
-$wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE 'jigoshop_%';");
+$wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE 'jigoshop_%'");

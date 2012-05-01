@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Admin
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Admin
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -235,8 +235,19 @@ function jigoshop_product_data_box() {
 						'visible'	=> 'Catalog & Search',
 						'catalog'	=> 'Catalog Only',
 						'search'	=> 'Search Only',
-						'Hidden'	=> 'Hidden'
+						'hidden'	=> 'Hidden'
 					), get_post_meta( $post->ID, 'visibility', true ) );
+			?>
+			</fieldset>
+			
+			<fieldset>
+			<?php
+				// Customizable
+				echo jigoshop_form::select( 'product_customize', 'Customizable',
+					array(
+						'no'	=> 'No',
+						'yes'	=> 'Yes',
+					), get_post_meta( $post->ID, 'customizable', true ) );
 			?>
 			</fieldset>
 		</div>
@@ -434,7 +445,7 @@ function display_attribute() { ?>
 		if (isset($attributes[$attribute_taxonomy_name])) $attribute = $attributes[$attribute_taxonomy_name];
 		$position = (isset($attribute['position'])) ? $attribute['position'] : 0;
 
-		$allterms = get_the_terms( $post->ID, 'pa_'.$attribute_taxonomy_name );
+		$allterms = wp_get_object_terms( $post->ID, 'pa_'.$attribute_taxonomy_name, array( 'orderby' => 'slug' ) );
 
 		$has_terms = ( is_wp_error( $allterms ) || !$allterms || sizeof( $allterms ) == 0 ) ? 0 : 1;
 		$term_slugs = array();

@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Checkout
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Checkout
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 class local_pickup extends jigoshop_shipping_method {
 
@@ -38,9 +38,9 @@ class local_pickup extends jigoshop_shipping_method {
 
     public function admin_options() {
     	?>
-    	<thead><tr><th scope="col" width="200px"><?php _e('Local pickup', 'jigoshop'); ?></th><th scope="col" class="desc">&nbsp;</th></tr></thead>
+    	<thead><tr><th scope="col" colspan="2"><h3 class="title"><?php _e('Local pickup', 'jigoshop'); ?></h3></th></tr></thead>
     	<tr>
-	        <td class="titledesc"><?php _e('Enable local pickup', 'jigoshop') ?>:</td>
+	        <th scope="row"><?php _e('Enable local pickup', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <select name="jigoshop_local_pickup_enabled" id="jigoshop_local_pickup_enabled" style="min-width:100px;">
 		            <option value="yes" <?php if (get_option('jigoshop_local_pickup_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
@@ -49,13 +49,13 @@ class local_pickup extends jigoshop_shipping_method {
 	        </td>
 	    </tr>
 	    <tr>
-	        <td class="titledesc"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?>:</td>
+	        <th scope="row"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input type="text" name="jigoshop_local_pickup_title" id="jigoshop_local_pickup_title" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_local_pickup_title')) echo $value; else echo 'Local Pickup'; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
-	        <td class="titledesc"><?php _e('Method available for', 'jigoshop') ?>:</td>
+	        <th scope="row"><?php _e('Method available for', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <select name="jigoshop_local_pickup_availability" id="jigoshop_local_pickup_availability" style="min-width:100px;">
 		            <option value="all" <?php if (get_option('jigoshop_local_pickup_availability') == 'all') echo 'selected="selected"'; ?>><?php _e('All allowed countries', 'jigoshop'); ?></option>
@@ -67,7 +67,7 @@ class local_pickup extends jigoshop_shipping_method {
     	$countries = jigoshop_countries::$countries;
     	$selections = get_option('jigoshop_local_pickup_countries', array());
     	?><tr class="multi_select_countries">
-            <td class="titledesc"><?php _e('Specific Countries', 'jigoshop'); ?>:</td>
+            <th scope="row"><?php _e('Specific Countries', 'jigoshop'); ?></th>
             <td class="forminp">
             	<div class="multi_select_countries"><ul><?php
         			if ($countries) foreach ($countries as $key=>$val) :

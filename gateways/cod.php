@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Checkout
- * @author		Andrew Benbow
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Checkout
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_cod extends jigoshop_payment_gateway {
 
@@ -39,9 +39,10 @@ class jigoshop_cod extends jigoshop_payment_gateway {
 	 **/
 	public function admin_options() {
     	?>
-    	<thead><tr><th scope="col" width="200px"><?php _e('Cash on Delivery', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('Allows cash payments. Good for offline stores or having customers pay at the time of receiving the product.', 'jigoshop'); ?></th></tr></thead>
+    	<thead><tr><th scope="col" colspan="2"><h3 class="title"><?php _e('Cash on Delivery', 'jigoshop'); ?></h3>
+    		<p><?php _e('Allows cash payments. Good for offline stores or having customers pay at the time of receiving the product.', 'jigoshop'); ?></p></th></tr></thead>
     	<tr>
-	        <td class="titledesc"><?php _e('Enable Cash on Delivery', 'jigoshop') ?>:</td>
+	        <th scope="row"><?php _e('Enable Cash on Delivery', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <select name="jigoshop_cod_enabled" id="jigoshop_cod_enabled" style="min-width:100px;">
 		            <option value="yes" <?php if (get_option('jigoshop_cod_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
@@ -50,13 +51,13 @@ class jigoshop_cod extends jigoshop_payment_gateway {
 	        </td>
 	    </tr>
 	    <tr>
-	        <td class="titledesc"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?>:</td>
+	        <th scope="row"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input class="input-text" type="text" name="jigoshop_cod_title" id="jigoshop_cod_title" value="<?php if ($value = get_option('jigoshop_cod_title')) echo $value; else echo 'Cash on Delivery'; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
-	        <td class="titledesc"><a href="#" tip="<?php _e('Let the customer know the payee and where they should be sending the cod too and that their order won\'t be shipping until you receive it.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Customer Message', 'jigoshop') ?>:</td>
+	        <th scope="row"><a href="#" tip="<?php _e('Let the customer know the payee and where they should be sending the cod too and that their order won\'t be shipping until you receive it.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Customer Message', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input class="input-text wide-input" type="text" name="jigoshop_cod_description" id="jigoshop_cod_description" value="<?php if ($value = get_option('jigoshop_cod_description')) echo $value; ?>" />
 	        </td>
