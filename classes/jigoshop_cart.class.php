@@ -610,7 +610,11 @@ class jigoshop_cart extends jigoshop_singleton {
             $shipping_tax_classes = self::$tax->get_shipping_tax_classes();
 
             foreach ($shipping_tax_classes as $tax_class) :
-                self::$price_per_tax_class_ex_tax[$tax_class] += self::$shipping_total;
+                if (empty(self::$price_per_tax_class_ex_tax[$tax_class])) :
+                    self::$price_per_tax_class_ex_tax[$tax_class] = self::$shipping_total;
+                else :
+                    self::$price_per_tax_class_ex_tax[$tax_class] += self::$shipping_total;
+                endif;
             endforeach;
 
         endif;
