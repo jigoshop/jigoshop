@@ -34,16 +34,11 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(
 		'name' => __('Demo store','jigoshop'),
-		'desc' 		=> '',
-		'tip' 		=> __('Enable this option to show a banner at the top of every page stating this shop is currently in testing mode.','jigoshop'),
+		'desc' 		=> 'Include a banner at the top of your pages explaining this site is not live.',
+		//'tip' 		=> __('Enable this option to show a banner at the top of every page stating this shop is currently in testing mode.','jigoshop'),
 		'id' 		=> 'jigoshop_demo_store',
-		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'no',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
+		'type' 		=> 'checkbox',
 	),
 
 	array(

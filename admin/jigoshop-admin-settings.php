@@ -89,14 +89,14 @@ function jigoshop_update_options() {
 			continue;
 		}
 
-		if ( $valueType == 'multi_select_countries' ) {
-
-			// Get countries array
-			$selected_countries = isset($_POST[$valueID]) ? $_POST[$valueID] : array();
-			update_option($valueID, $selected_countries);
-
+		if ( $valueType == 'checkbox' ) {
+			update_option($valueID, isset ( $_POST[$valueID] ) ? 'yes' : 'no');
 			continue;
+		}
 
+		if ( $valueType == 'multi_select_countries' ) {
+			update_option($valueID, isset($_POST[$valueID]) ? $_POST[$valueID] : array());
+			continue;
 		}
 
 		/* default back to standard image sizes if no value is entered */
@@ -333,8 +333,25 @@ function jigoshop_admin_fields($options) {
 				  </thead><?php
 				break;
 
-			case 'checkbox' :
-
+			case 'checkbox':
+				?><tr>
+                    <th scope="row">
+						<?php if (isset($value['tip'])) : ?>
+						<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a>
+						<?php endif; ?>
+						<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
+					</th>
+					<td>
+						<input
+						id="<?php echo esc_attr( $value['id'] ); ?>"
+						type="checkbox"
+						class="jigoshop-input jigoshop-checkbox"
+						style="<?php echo esc_attr( $value['css'] ); ?>"
+						name="<?php echo esc_attr( $value['id'] ); ?>"
+						<?php echo checked($data[$value['id']], 'yes', false); ?>/>
+						<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php if (!empty($value['desc'])) echo $value['desc']; ?></label>
+					</td>
+				  </tr><?php
 				break;
 
             case 'text':
@@ -361,19 +378,22 @@ function jigoshop_admin_fields($options) {
                 break;
 
             case 'select':
-                                ?><tr>
-                        <th scope="row"><?php if (isset($value['tip'])) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label></th>
-                        <td><select name="<?php echo esc_attr( $value['id'] ); ?>" id="<?php echo esc_attr( $value['id'] ); ?>" style="<?php if ( isset($value['css'])) echo esc_attr( $value['css'] ); ?>">
-                    <?php
-                    foreach ($value['options'] as $key => $val) {
-                        ?>
-                                    <option value="<?php echo esc_attr( $key ); ?>" <?php if (get_option($value['id']) == $key) { ?> selected="selected" <?php } ?>><?php echo ucfirst($val) ?></option>
-                        <?php
-                    }
-                    ?>
-                            </select><br /><small><?php echo $value['desc'] ?></small>
-                        </td>
-                    </tr><?php
+				?><tr>
+                    <th scope="row">
+						<?php if (isset($value['tip'])) : ?>
+						<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a>
+						<?php endif; ?>
+						<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
+					</th>
+					<td>
+						<select name="<?php echo esc_attr( $value['id'] ); ?>" id="<?php echo esc_attr( $value['id'] ); ?>" style="<?php if ( isset($value['css'])) echo esc_attr( $value['css'] ); ?>">
+
+						<?php foreach ($value['options'] as $key => $val) : ?>
+						<option value="<?php echo esc_attr( $key ); ?>" <?php if (get_option($value['id']) == $key) { ?> selected="selected" <?php } ?>><?php echo ucfirst($val) ?></option>
+						<?php endforeach; ?>
+						</select><br /><small><?php echo $value['desc'] ?></small>
+					</td>
+				  </tr><?php
                 break;
 
 			case 'image_size' :
