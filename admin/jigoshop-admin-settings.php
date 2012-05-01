@@ -70,22 +70,16 @@ function jigoshop_update_options() {
 
 	foreach ($jigoshop_options_settings as $value) :
 
-		$valueID = !empty($value['id']) ? $value['id'] : '';
+		$valueID   = !empty($value['id'])   ? $value['id']   : '';
 		$valueType = !empty($value['type']) ? $value['type'] : '';
 
-		if ( $valueID == 'jigoshop_tax_rates' ) {
+		if ( $valueType == 'tax_rates' ) {
 			jigoshop_update_taxes();
 			continue;
 		}
 
-		if ( $valueID == 'jigoshop_coupons' ) {
+		if ( $valueType == 'coupons' ) {
 			jigoshop_update_coupons();
-			continue;
-		}
-
-		/* Price separators get a special treatment as they should allow a spaces (don't trim) */
-		if ( $valueID == 'jigoshop_price_thousand_sep' || $valueID == 'jigoshop_price_decimal_sep' ) {
-			isset($_POST[$valueID]) ? update_option($valueID, $_POST[$valueID]) : @delete_option($valueID);
 			continue;
 		}
 
@@ -110,6 +104,12 @@ function jigoshop_update_options() {
 
 			continue;
 
+		}
+
+		/* Price separators get a special treatment as they should allow a spaces (don't trim) */
+		if ( $valueID == 'jigoshop_price_thousand_sep' || $valueID == 'jigoshop_price_decimal_sep' ) {
+			isset($_POST[$valueID]) ? update_option($valueID, $_POST[$valueID]) : @delete_option($valueID);
+			continue;
 		}
 
 		isset($valueID) && isset($_POST[$valueID])
