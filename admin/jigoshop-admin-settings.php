@@ -102,13 +102,11 @@ function jigoshop_update_options() {
 		/* default back to standard image sizes if no value is entered */
 		if ( $valueType == 'image_size' ) {
 
-			if( !empty($_POST[$valueID.'_w']) ) :
-				update_option($valueID.'_w', jigowatt_clean($_POST[$valueID.'_w']));
-				update_option($valueID.'_h', jigowatt_clean($_POST[$valueID.'_h']));
-			else :
-				update_option($valueID.'_w', $value['std']);
-				update_option($valueID.'_h', $value['std']);
-			endif;
+			$sizes = array( '_w', '_h' );
+			foreach ( $sizes as $v )
+				!empty( $_POST[$valueID.$v] )
+				? update_option( $valueID.$v, jigowatt_clean($_POST[$valueID.$v]) )
+				: update_option( $valueID.$v, $value['std'] );
 
 			continue;
 
