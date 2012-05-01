@@ -131,6 +131,8 @@ function jigoshop_admin_custom_menu_order() {
 add_action('admin_menu', 'jigoshop_admin_menu');
 add_action('menu_order', 'jigoshop_admin_menu_order');
 add_action('custom_menu_order', 'jigoshop_admin_custom_menu_order');
+require_once ( 'jigoshop-admin-dashboard.php' );
+$jigoshop_dashboard = new jigoshop_dashboard();
 
 /**
  * Admin Head
