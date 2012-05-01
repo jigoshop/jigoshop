@@ -478,8 +478,9 @@ function jigoshop_admin_fields($options) {
                 case 'coupons' :
                     $coupons = new jigoshop_coupons();
                     $coupon_codes = $coupons->get_coupons();
-                ?><tr>
-                        <th scope="row"><label><?php echo $value['name'] ?></label></th>
+                ?>
+					<thead><tr><th scope="col" colspan="2"><h3 class="title"><?php _e('Coupon Settings', 'jigoshop'); ?></h3></th></tr></thead>
+					<tr>
                         <td id="coupon_codes">
                             <table class="coupon_rows" cellspacing="0">
                                 <thead>
