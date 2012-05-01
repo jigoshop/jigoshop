@@ -303,19 +303,19 @@ function jigoshop_frontend_scripts() {
 
 	/* Script.js variables */
 	$params = array(
-		'currency_symbol' 				=> get_jigoshop_currency_symbol(),
+		'ajax_url' 						=> (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'),
+		'assets_url' 					=> jigoshop::assets_url(),
+		'checkout_url'					=> admin_url('admin-ajax.php?action=jigoshop-checkout'),
 		'countries' 					=> json_encode(jigoshop_countries::$states),
+		'currency_symbol' 				=> get_jigoshop_currency_symbol(),
+		'get_variation_nonce' 			=> wp_create_nonce("get-variation"),
+		'load_fancybox'					=> JIGOSHOP_LOAD_FANCYBOX,
+		'option_guest_checkout'			=> get_option('jigoshop_enable_guest_checkout'),
 		'select_state_text' 			=> __('Select a state&hellip;', 'jigoshop'),
 		'state_text' 					=> __('state', 'jigoshop'),
-		'assets_url' 					=> jigoshop::assets_url(),
-		'ajax_url' 						=> (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'),
-		'get_variation_nonce' 			=> wp_create_nonce("get-variation"),
 		'update_order_review_nonce' 	=> wp_create_nonce("update-order-review"),
         'billing_state'                 => jigoshop_customer::get_state(),
-        'shipping_state'                => jigoshop_customer::get_shipping_state(),
-		'option_guest_checkout'			=> get_option('jigoshop_enable_guest_checkout'),
-		'checkout_url'					=> admin_url('admin-ajax.php?action=jigoshop-checkout'),
-		'load_fancybox'					=> JIGOSHOP_LOAD_FANCYBOX
+        'shipping_state'                => jigoshop_customer::get_shipping_state()
 	);
 
 	if (isset( jigoshop_session::instance()->min_price )) :
