@@ -438,7 +438,8 @@ function jigoshop_admin_fields($options) {
 						name="<?php echo esc_attr( $altSize ); ?>"
 						<?php if (get_option($altSize) !== false && get_option($altSize) !== null)
 						echo checked(get_option($altSize), 'yes', false); ?> />
-						<label for="<?php echo esc_attr( $altSize ); ?>"><?php echo __('Crop?', 'jigoshop'); ?></label>
+						<label for="<?php echo esc_attr( $altSize ); ?>"></label>
+						<?php echo __('Crop?', 'jigoshop'); ?><a href="#" tip="<?php echo __('Leave unchecked to set the image size by resizing the image proportionally (that is, without distorting it).<br />Leave checked to set the image size by hard cropping the image (either from the sides, or from the top and bottom).', 'jigoshop'); ?>" class="tips" style="float:none;display:inline-block;margin: 4px -8px 0 10px;" tabindex="99"></a>
 						<br /><small><?php echo $value['desc'] ?></small>
 					</td>
 				</tr><?php
