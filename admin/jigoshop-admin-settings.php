@@ -66,7 +66,6 @@ function jigoshop_update_options() {
     if ( empty($_POST['submitted']) ) return false;
 
 	check_admin_referer( 'jigoshop-update-settings', '_jigoshop_csrf' );
-	$update_image_meta = false;
 
 	foreach ($jigoshop_options_settings as $value) :
 
@@ -128,32 +127,6 @@ function jigoshop_update_options() {
 			: @delete_option($valueID);
 
 	endforeach;
-
-/* Um, why is this always false? Commented out for now.  */
-/* 	if ($update_image_meta) {
-
-		// reset the image sizes to generate the new metadata
-		jigoshop_set_image_sizes();
-
-		$posts = get_posts('post_type=product&post_status=publish&posts_per_page=-1');
-
-		foreach ((array) $posts as $post) {
-			$images =  get_children("post_parent={$post->ID}&post_type=attachment&post_mime_type=image");
-
-			foreach ((array) $images as $image) {
-				$fullsizepath = get_attached_file($image->ID);
-
-				if (false !== $fullsizepath || file_exists($fullsizepath)) {
-					$metadata = wp_generate_attachment_metadata($image->ID, $fullsizepath);
-
-					if (!is_wp_error($metadata) && !empty($metadata)) {
-						wp_update_attachment_metadata($image->ID, $metadata);
-					}
-				}
-			}
-		}
-	}
-*/
 
 	add_action( 'jigoshop_admin_settings_notices', 'jigoshop_settings_updated_notice' );
 	do_action ( 'jigoshop_update_options' );
