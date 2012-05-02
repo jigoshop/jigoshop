@@ -33,15 +33,6 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	array( 'name' => __('General Options', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
 
 	array(
-		'name' => __('Demo store','jigoshop'),
-		'desc' 		=> 'Include a banner at the top of your pages explaining this site is not live.',
-		'tip' 		=> __('Enable this option to show a banner at the top of every page stating this shop is currently in testing mode.','jigoshop'),
-		'id' 		=> 'jigoshop_demo_store',
-		'std' 		=> 'no',
-		'type' 		=> 'checkbox',
-	),
-
-	array(
 		'name' => __('Send Jigoshop emails from','jigoshop'),
 		'desc' 		=> '',
 		'tip' 		=> __('The email used to send all Jigoshop related emails, such as order confirmations and notices.','jigoshop'),
@@ -100,32 +91,64 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		)
 	),
 
+	/* Styles and scripts */
+
 	array(
-		'name' => __('Disable Jigoshop frontend.css','jigoshop'),
-		'desc' 		=> '',
-		'tip' 		=> __('Useful if you want to disable Jigoshop styles and theme it yourself via your theme.','jigoshop'),
-		'id' 		=> 'jigoshop_disable_css',
-		'css' 		=> 'min-width:100px;',
+		'name' => __('Styles and scripts','jigoshop'),
+		'desc' 		=> __('Demo store banner','jigoshop'),
+		'tip' 		=> __('Enable this option to show a banner at the top of every page stating this shop is currently in testing mode.','jigoshop'),
+		'id' 		=> 'jigoshop_demo_store',
 		'std' 		=> 'no',
-		'type' 		=> 'select',
-		'options' => array(
-			'no'  => __('No', 'jigoshop'),
-			'yes' => __('Yes', 'jigoshop')
-		)
+		'type' 		=> 'checkbox',
 	),
 
 	array(
-		'name' => __('Disable bundled Fancybox','jigoshop'),
-		'desc' 		=> '',
+		'desc' 		=> __('Disable Jigoshop frontend.css','jigoshop'),
+		'tip' 		=> __('Useful if you want to disable Jigoshop styles and theme it yourself via your theme.','jigoshop'),
+		'id' 		=> 'jigoshop_disable_css',
+		'std' 		=> 'no',
+		'type' 		=> 'checkbox'
+	),
+
+	array(
+		'desc' 		=> __('Disable bundled Fancybox','jigoshop'),
 		'tip' 		=> __('Useful if or one of your plugin already loads the Fancybox script and css. But be careful, Jigoshop will still try to open product images using Fancybox.','jigoshop'),
 		'id' 		=> 'jigoshop_disable_fancybox',
-		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'no',
-		'type' 		=> 'select',
-		'options' => array(
-			'no'  => __('No', 'jigoshop'),
-			'yes' => __('Yes', 'jigoshop')
-		)
+		'type' 		=> 'checkbox'
+	),
+
+	/* Checkout page */
+
+	array(
+		'name' => __('Checkout page','jigoshop'),
+		'desc' 		=> __('Allow guest purchases','jigoshop'),
+		'tip' 		=> __('Setting this to Yes will allow users to checkout without registering or signing up. Otherwise, users must be signed in or must sign up to checkout.','jigoshop'),
+		'id' 		=> 'jigoshop_enable_guest_checkout',
+		'std' 		=> 'yes',
+		'type' 		=> 'checkbox',
+	),
+
+	array(
+		'desc' 		=> __('Show login form','jigoshop'),
+		'id' 		=> 'jigoshop_enable_guest_login',
+		'std' 		=> 'yes',
+		'type' 		=> 'checkbox',
+	),
+
+	array(
+		'desc' 		=> __('Allow registration','jigoshop'),
+		'id' 		=> 'jigoshop_enable_signup_form',
+		'std' 		=> 'yes',
+		'type' 		=> 'checkbox',
+	),
+
+	array(
+		'desc' 		=> __('Force SSL on checkout','jigoshop'),
+		'tip' 		=> __('Forcing SSL is recommended. This will load your checkout page with https://. An SSL certificate is <strong>required</strong> if you choose yes. Contact your hosting provider for more information on SSL Certs.','jigoshop'),
+		'id' 		=> 'jigoshop_force_ssl_checkout',
+		'std' 		=> 'no',
+		'type' 		=> 'checkbox',
 	),
 
     array( 'name' => __('Invoicing', 'jigoshop'), 'type' => 'title', 'desc'             => '' ),
@@ -190,61 +213,6 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'std' 		=> ''
 	),
 
-	array( 'name' => __('Checkout page', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
-
-	array(
-		'name' => __('Allow guest purchases','jigoshop'),
-		'desc' 		=> '',
-		'tip' 		=> __('Setting this to Yes will allow users to checkout without registering or signing up. Otherwise, users must be signed in or must sign up to checkout.','jigoshop'),
-		'id' 		=> 'jigoshop_enable_guest_checkout',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'yes',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
-	),
-
-	array(
-		'name' => __('Show login form','jigoshop'),
-		'desc' 		=> '',
-		'id' 		=> 'jigoshop_enable_guest_login',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'yes',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
-	),
-
-	array(
-		'name' => __('Allow registration','jigoshop'),
-		'desc' 		=> '',
-		'id' 		=> 'jigoshop_enable_signup_form',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'yes',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
-	),
-
-	array(
-		'name' => __('Force SSL on checkout','jigoshop'),
-		'desc' 		=> '',
-		'tip' 		=> __('Forcing SSL is recommended. This will load your checkout page with https://. An SSL certificate is <strong>required</strong> if you choose yes. Contact your hosting provider for more information on SSL Certs.','jigoshop'),
-		'id' 		=> 'jigoshop_force_ssl_checkout',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'no',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
-	),
 	array( 'name' => __('Integration', 'jigoshop'), 'type' => 'title', 'desc' 		=> '' ),
 
 	array(
@@ -266,15 +234,11 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name' => __('Enable eCommerce Tracking', 'jigoshop'),
+		'name' => __('Enable Google eCommerce', 'jigoshop'),
 		'tip' 		=> __('Add Google Analytics eCommerce tracking code upon successful orders', 'jigoshop'),
-		'desc'		=> __('<a href="//support.google.com/analytics/bin/answer.py?hl=en&answer=1009612">Learn how to enable</a> eCommerce tracking for your Google Analytics account.', 'jigoshop'),
+		'desc'		=> __('<a href="//support.google.com/analytics/bin/answer.py?hl=en&answer=1009612" target="_TOP">Learn how to enable</a> eCommerce tracking for your Google Analytics account.', 'jigoshop'),
 		'id' 		=> 'jigoshop_ga_ecommerce_tracking_enabled',
-		'type' 		=> 'select',
-		'options' => array(
-			'no'  => __('No', 'jigoshop'),
-			'yes' => __('Yes', 'jigoshop')
-		)
+		'type' 		=> 'checkbox',
 	),
 
 	array( 'type' => 'tabend'),
@@ -284,43 +248,26 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	array(	'name' => __('Permalinks',      'jigoshop'), 'type'         => 'title','desc' 		=> '', 'id' 		=> '' ),
 
 	array(
-		'name' => __('Prepend shop categories / tags with base page','jigoshop'),
-		'desc'		=> '',
-		'tip' 		=> __('This will only apply to tags &amp; categories.<br/>Yes: http://yoursite.com / product_category / YourCategory<br/>No: http://yoursite.com / base_page / product_category / YourCategory', 'jigoshop'),
+		'name' => __('Prepend options','jigoshop'),
+		'desc'		=> __('Prepend shop categories / tags with base page','jigoshop'),
+		'tip' 		=> __('This will only apply to tags &amp; categories.<br/>Enabled: http://yoursite.com / product_category / YourCategory<br/>Disabled: http://yoursite.com / base_page / product_category / YourCategory', 'jigoshop'),
 		'id' 		=> 'jigoshop_prepend_shop_page_to_urls',
-		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'no',
-		'type' 		=> 'select',
-		'options' => array(
-			'no'  => __('No', 'jigoshop'),
-			'yes' => __('Yes', 'jigoshop')
-		)
+		'type' 		=> 'checkbox',
 	),
 
 	array(
-		'name' => __('Prepend product permalinks with shop base page','jigoshop'),
-		'desc'		=> '',
+		'desc'		=> __('Prepend product permalinks with shop base page','jigoshop'),
 		'id' 		=> 'jigoshop_prepend_shop_page_to_product',
-		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'no',
-		'type' 		=> 'select',
-		'options' => array(
-			'no'  => __('No', 'jigoshop'),
-			'yes' => __('Yes', 'jigoshop')
-		)
+		'type' 		=> 'checkbox',
 	),
 
 	array(
-		'name' => __('Prepend product permalinks with product category','jigoshop'),
-		'desc'		=> '',
+		'desc'		=> __('Prepend product permalinks with product category','jigoshop'),
 		'id' 		=> 'jigoshop_prepend_category_to_product',
-		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'no',
-		'type' 		=> 'select',
-		'options' => array(
-			'no'  => __('No', 'jigoshop'),
-			'yes' => __('Yes', 'jigoshop')
-		)
+		'type' 		=> 'checkbox',
 	),
 
 	array(
@@ -630,20 +577,6 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	array( 'name' => __('Image Options', 'jigoshop'), 'type' => 'title', 'desc' => sprintf(__('Changing any of these settings will affect the dimensions of images used in your Shop. The display on the front-end will <strong>still</strong> be affected by CSS styles. After changing these settings you may need to <a href="%s">regenerate your thumbnails</a>.', 'jigoshop'), 'http://wordpress.org/extend/plugins/regenerate-thumbnails/'), 'id' => '' ),
 
 	array(
-		'name' => __('Crop Tiny images','jigoshop'),
-		'desc'		=> '',
-		'tip' 		=> __('Use No to set the image size by resizing the image proportionally (that is, without distorting it).<br />Use Yes to set the image size by hard cropping the image (either from the sides, or from the top and bottom).', 'jigoshop'),
-		'id' 		=> 'jigoshop_use_wordpress_tiny_crop',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'no',
-		'type' 		=> 'select',
-		'options' => array(
-			'no'  => __('No', 'jigoshop'),
-			'yes' => __('Yes', 'jigoshop')
-		)
-	),
-
-	array(
 		'name' 		=> __('Tiny Images','jigoshop'),
 		'tip'		=> '',
 		'desc' 		=> __('The small image used in the Cart, Checkout, Orders and Widgets','jigoshop'),
@@ -651,20 +584,6 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'css' 		=> '',
 		'type' 		=> 'image_size',
 		'std' 		=> 36
-	),
-
-	array(
-		'name' => __('Crop Thumbnail images','jigoshop'),
-		'desc'		=> '',
-		'tip' 		=> __('Use No to set the image size by resizing the image proportionally (that is, without distorting it).<br />Use Yes to set the image size by hard cropping the image (either from the sides, or from the top and bottom).', 'jigoshop'),
-		'id' 		=> 'jigoshop_use_wordpress_thumbnail_crop',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'no',
-		'type' 		=> 'select',
-		'options' => array(
-			'no'  => __('No', 'jigoshop'),
-			'yes' => __('Yes', 'jigoshop')
-		)
 	),
 
 	array(
@@ -677,40 +596,12 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name' => __('Crop Catalog images','jigoshop'),
-		'desc'		=> '',
-		'tip' 		=> __('Use No to set the image size by resizing the image proportionally (that is, without distorting it).<br />Use Yes to set the image size by hard cropping the image (either from the sides, or from the top and bottom).', 'jigoshop'),
-		'id' 		=> 'jigoshop_use_wordpress_catalog_crop',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'no',
-		'type' 		=> 'select',
-		'options' => array(
-			'no'  => __('No', 'jigoshop'),
-			'yes' => __('Yes', 'jigoshop')
-		)
-	),
-
-	array(
 		'name' => __( 'Catalog Images', 'jigoshop' ),
 		'desc' 		=> __('The catalog image for Shop, Categories, Tags, and Related Products.', 'jigoshop'),
 		'id' 		=> 'jigoshop_shop_small',
 		'css' 		=> '',
 		'type' 		=> 'image_size',
 		'std' 		=> 150
-	),
-
-	array(
-		'name' => __('Crop Large images','jigoshop'),
-		'desc'		=> '',
-		'tip' 		=> __('Use No to set the image size by resizing the image proportionally (that is, without distorting it).<br />Use Yes to set the image size by hard cropping the image (either from the sides, or from the top and bottom).', 'jigoshop'),
-		'id' 		=> 'jigoshop_use_wordpress_featured_crop',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'no',
-		'type' 		=> 'select',
-		'options' => array(
-			'no'  => __('No', 'jigoshop'),
-			'yes' => __('Yes', 'jigoshop')
-		)
 	),
 
 	array(
@@ -744,31 +635,20 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	array( 'name' => __('Product Options', 'jigoshop'), 'type' => 'title', 'desc' 	=> '' ),
 
 	array(
-		'name' => __('Enable SKU field','jigoshop'),
-		'desc' 		=> '',
+		'name' => __('Product fields','jigoshop'),
+		'desc' 		=> __('Enable SKU','jigoshop'),
 		'tip' 		=> __('Turning off the SKU field will give products an SKU of their post id.','jigoshop'),
 		'id' 		=> 'jigoshop_enable_sku',
-		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'no',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
+		'type' 		=> 'checkbox',
 	),
 
 	array(
-		'name' => __('Enable weight field','jigoshop'),
-		'desc' 		=> '',
+		'desc' 		=> __('Enable weight','jigoshop'),
 		'tip' 		=> '',
 		'id' 		=> 'jigoshop_enable_weight',
-		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'yes',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
+		'type' 		=> 'checkbox',
 	),
 
 	array(
@@ -818,13 +698,8 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'desc' 		=> '',
 		'tip' 		=> __('To show or hide the related products section on a single product page.','jigoshop'),
 		'id' 		=> 'jigoshop_enable_related_products',
-		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'yes',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
+		'type' 		=> 'checkbox',
 	),
 
 	array(	'name' => __('Inventory Options', 'jigoshop'), 'type' 		=> 'title','desc' 		=> '', 'id' 		=> '' ),
@@ -834,13 +709,8 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'desc' 		=> __('If you are not managing stock, turn it off here to disable it in admin and on the front-end.','jigoshop'),
 		'tip' 		=> __('You can manage stock on a per-item basis if you leave this option on.', 'jigoshop'),
 		'id' 		=> 'jigoshop_manage_stock',
-		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'yes',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
+		'type' 		=> 'checkbox',
 	),
 
 	array(
@@ -848,59 +718,8 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'desc' 		=> '',
 		'tip' 		=> __('Set to yes to allow customers to view the amount of stock available for a product.', 'jigoshop'),
 		'id' 		=> 'jigoshop_show_stock',
-		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'yes',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
-	),
-
-	array(
-		'name' => __('Notify on low stock','jigoshop'),
-		'desc' 		=> '',
-		'id' 		=> 'jigoshop_notify_low_stock',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'yes',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
-	),
-
-	array(
-		'name' => __('Low stock threshold','jigoshop'),
-		'desc' 		=> '',
-		'tip' 		=> __('You will receive a notification as soon this threshold is hit (if notifications are turned on).', 'jigoshop'),
-		'id' 		=> 'jigoshop_notify_low_stock_amount',
-		'css' 		=> 'min-width:50px;',
-		'type' 		=> 'text',
-		'std' 		=> '2'
-	),
-
-	array(
-		'name' => __('Notify on out of stock','jigoshop'),
-		'desc' 		=> '',
-		'id' 		=> 'jigoshop_notify_no_stock',
-		'css' 		=> 'min-width:100px;',
-		'std' 		=> 'yes',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
-	),
-
-	array(
-		'name' => __('Out of stock threshold','jigoshop'),
-		'desc' 		=> '',
-		'tip' 		=> __('You will receive a notification as soon this threshold is hit (if notifications are turned on).', 'jigoshop'),
-		'id' 		=> 'jigoshop_notify_no_stock_amount',
-		'css' 		=> 'min-width:50px;',
-		'type' 		=> 'text',
-		'std' 		=> '0'
+		'type' 		=> 'checkbox',
 	),
 
 	array(
@@ -908,14 +727,44 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'desc' 		=> '',
 		'tip' 		=> 'For Yes: When the Out of Stock Threshold (above) is reached, the product visibility will be set to hidden so that it will not appear on the Catalog or Shop product lists.',
 		'id' 		=> 'jigoshop_hide_no_stock_product',
-		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'no',
-		'type' 		=> 'select',
-		'options' => array(
-			'no'  => __('No', 'jigoshop'),
-			'yes' => __('Yes', 'jigoshop')
-		)
+		'type' 		=> 'checkbox'
 	),
+
+	array(
+		'name' => __('Notifications','jigoshop'),
+		'desc' 		=> __('Notify on low stock','jigoshop'),
+		'id' 		=> 'jigoshop_notify_low_stock',
+		'std' 		=> 'yes',
+		'type' 		=> 'checkbox',
+	),
+
+	array(
+		'desc' 		=> __('Low stock threshold','jigoshop'),
+		'tip' 		=> __('You will receive a notification as soon this threshold is hit (if notifications are turned on).', 'jigoshop'),
+		'id' 		=> 'jigoshop_notify_low_stock_amount',
+		'css' 		=> 'width:50px;',
+		'type' 		=> 'text',
+		'std' 		=> '2'
+	),
+
+	array(
+		'desc' 		=> __('Notify on out of stock','jigoshop'),
+		'id' 		=> 'jigoshop_notify_no_stock',
+		'std' 		=> 'yes',
+		'type' 		=> 'checkbox'
+	),
+
+	array(
+		'desc' 		=> __('Out of stock threshold','jigoshop'),
+		'tip' 		=> __('You will receive a notification as soon this threshold is hit (if notifications are turned on).', 'jigoshop'),
+		'id' 		=> 'jigoshop_notify_no_stock_amount',
+		'css' 		=> 'width:50px;',
+		'type' 		=> 'text',
+		'std' 		=> '0'
+	),
+
+
 
 	array( 'type' => 'tabend'),
 
@@ -975,16 +824,11 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(
 		'name' => __('Calculate Taxes','jigoshop'),
-		'desc' 		=> __('Only set this to no if you are exclusively selling non-taxable items.','jigoshop'),
+		'desc' 		=> __('Only disable this if you are exclusively selling non-taxable items.','jigoshop'),
 		'tip' 		=> __('If you are not calculating taxes then you can ignore all other tax options.', 'jigoshop'),
 		'id' 		=> 'jigoshop_calc_taxes',
-		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'yes',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
+		'type' 		=> 'checkbox',
 	),
 
     array(
@@ -992,13 +836,8 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
         'desc' => '',
         'tip' => __('If yes, taxes get applied after coupons. When no, taxes get applied before coupons.','jigoshop'),
         'id' => 'jigoshop_tax_after_coupon',
-		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'yes',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
+		'type' 		=> 'checkbox',
     ),
 
 	array(
@@ -1006,13 +845,8 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'desc' 		=> '',
 		'tip' 		=> __('If prices include tax then tax calculations will work backwards.','jigoshop'),
 		'id' 		=> 'jigoshop_prices_include_tax',
-		'css' 		=> 'min-width:100px;',
 		'std' 		=> 'yes',
-		'type' 		=> 'select',
-		'options' => array(
-			'yes' => __('Yes', 'jigoshop'),
-			'no'  => __('No', 'jigoshop')
-		)
+		'type' 		=> 'checkbox',
 	),
 
 	array(
