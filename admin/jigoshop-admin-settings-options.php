@@ -86,7 +86,7 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'type'           => 'select',
 		'options'        => array(
 			'same_page'  => __('Stay on the same page', 'jigoshop'),
-			'to_checkout' => __('Redirect to Checkout', 'jigoshop'),
+			'to_checkout'=> __('Redirect to Checkout', 'jigoshop'),
 			'to_cart'    => __('Redirect to Cart', 'jigoshop'),
 		)
 	),
@@ -430,7 +430,7 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'options'       => array(
 			'post_date' => __('Creation Date', 'jigoshop'),
 			'title'     => __('Product Title', 'jigoshop'),
-			'menu_order' => __('Product Post Order', 'jigoshop')
+			'menu_order'=> __('Product Post Order', 'jigoshop')
 		)
 	),
 
@@ -534,9 +534,9 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 			'right_code'       => __('0'                            . get_option('jigoshop_price_decimal_sep'). '00'                                    . get_option('jigoshop_currency')       , 'jigoshop'),
 			'right_code_space' => __('0'                            . get_option('jigoshop_price_decimal_sep'). '00 '                                   . get_option('jigoshop_currency')       , 'jigoshop'),
 			'symbol_code'      => __(get_jigoshop_currency_symbol() . '0'                                     . get_option('jigoshop_price_decimal_sep'). '00' . get_option('jigoshop_currency'), 'jigoshop'),
-			'symbol_code_space' => __(get_jigoshop_currency_symbol() . ' 0'                                    . get_option('jigoshop_price_decimal_sep'). '00 '. get_option('jigoshop_currency'), 'jigoshop'),
+			'symbol_code_space'=> __(get_jigoshop_currency_symbol() . ' 0'                                    . get_option('jigoshop_price_decimal_sep'). '00 '. get_option('jigoshop_currency'), 'jigoshop'),
 			'code_symbol'      => __(get_option('jigoshop_currency'). '0'                                     . get_option('jigoshop_price_decimal_sep'). '00' . get_jigoshop_currency_symbol() , 'jigoshop'),
-			'code_symbol_space' => __(get_option('jigoshop_currency'). ' 0'                                    . get_option('jigoshop_price_decimal_sep'). '00 '. get_jigoshop_currency_symbol() , 'jigoshop'),
+			'code_symbol_space'=> __(get_option('jigoshop_currency'). ' 0'                                    . get_option('jigoshop_price_decimal_sep'). '00 '. get_jigoshop_currency_symbol() , 'jigoshop'),
 		)
 	),
 
