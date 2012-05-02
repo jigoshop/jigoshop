@@ -238,11 +238,11 @@ function jigoshop_update_coupons() {
 
 		$amount        = jigowatt_clean($coupon_amount[$i]);
 		$code          = jigowatt_clean($coupon_code[$i]);
+		$type          = jigowatt_clean($coupon_type[$i]);
 		$from_date     = !empty($coupon_date_from[$i])? strtotime($coupon_date_from[$i])                    : 0;
 		$individual_use= !empty($individual[$i])      ? 'yes'                                               : 'no';
 		$products      = !empty($product_ids[$i])     ? array_map('trim', explode(',', $product_ids[$i]))   : array();
 		$to_date       = !empty($coupon_date_to[$i])  ? strtotime($coupon_date_to[$i]) + (60 * 60 * 24 - 1) : 0;
-		$type          = jigowatt_clean($coupon_type[$i]);
 
 		if ($code && $type && $amount)
 			$coupons[$code] = array(
