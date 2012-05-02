@@ -652,6 +652,14 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
+		'desc'         => __('Enable product dimensions','jigoshop'),
+		'tip'          => '',
+		'id'           => 'jigoshop_enable_dimensions',
+		'std'          => 'yes',
+		'type'         => 'checkbox',
+	),
+
+	array(
 		'name'         => __('Weight Unit', 'jigoshop'),
 		'desc'         => __("This controls what unit you will define weights in.", 'jigoshop'),
 		'tip'          => '',
@@ -662,20 +670,6 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'options'      => array(
 			'kg'       => __('Kilograms', 'jigoshop'),
 			'lbs'      => __('Pounds', 'jigoshop')
-		)
-	),
-
-	array(
-		'name'         => __('Enable product dimensions','jigoshop'),
-		'desc'         => '',
-		'tip'          => '',
-		'id'           => 'jigoshop_enable_dimensions',
-		'css'          => 'min-width:100px;',
-		'std'          => 'yes',
-		'type'         => 'select',
-		'options'      => array(
-			'yes'      => __('Yes', 'jigoshop'),
-			'no'       => __('No', 'jigoshop')
 		)
 	),
 
