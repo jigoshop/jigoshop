@@ -605,19 +605,12 @@ class jigoshop_checkout extends jigoshop_singleton {
 					 	), $values);
 
 					 	// Check stock levels
-					 	if ($_product->managing_stock()) :
-							if (!$_product->is_in_stock() || !$_product->has_enough_stock( $values['quantity'] )) :
-								$errormsg = (get_option('jigoshop_show_stock') == 'yes') ? (sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order.  We have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title(), $_product->get_stock() )) : (sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title() ));
-								jigoshop::add_error($errormsg);
-		                		break;
-							endif;
-						else :
-							if (!$_product->is_in_stock()) :
-								$errormsg = (get_option('jigoshop_show_stock') == 'yes') ? (sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order.  We have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title(), $_product->get_stock() )) : (sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title() ));
-								jigoshop::add_error($errormsg);
-		                		break;
-							endif;
-
+					 	if ( $_product->managing_stock() && (!$_product->is_in_stock() || !$_product->has_enough_stock($values['quantity']) ) ) :
+							$errormsg = (get_option('jigoshop_show_stock') == 'yes')
+							? (sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order.  We have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title(), $_product->get_stock() ))
+							: (sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title() ));
+							jigoshop::add_error($errormsg);
+							break;
 						endif;
 
 					endforeach;
