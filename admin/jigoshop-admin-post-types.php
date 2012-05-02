@@ -391,8 +391,8 @@ function jigoshop_custom_order_columns($column) {
                         <th><?php _e('Discount', 'jigoshop'); ?></th>
                         <td><?php echo jigoshop_price($order->order_discount); ?></td>
                     </tr>
-                    <?php 
-                endif; 
+                    <?php
+                endif;
                 if ((get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
                     || (get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) :
                     ?><tr>
@@ -402,7 +402,7 @@ function jigoshop_custom_order_columns($column) {
                     <?php
                 endif;
                 if (get_option('jigoshop_calc_taxes') == 'yes') :
-                    foreach ($order->get_tax_classes() as $tax_class) : 
+                    foreach ($order->get_tax_classes() as $tax_class) :
                         if ($order->show_tax_entry($tax_class)) : ?>
                             <tr>
                                 <th><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></th>
@@ -443,66 +443,67 @@ function jigoshop_admin_product_search( $wp ) {
     if( ! isset( $wp->query_vars['s'] ) )
         return false;
 
-    if ( ($wp->query_vars['post_type'] == 'product' || $wp->query_vars['post_type'] == 'shop_order') ) {
+    if ( ! ($wp->query_vars['post_type'] == 'product' || $wp->query_vars['post_type'] == 'shop_order') )
+		return false;
 
-        if ( 'ID:' == substr( $wp->query_vars['s'], 0, 3 )) {
+	/* ID of an Order or a Product */
+	if ( 'ID:' == substr( $wp->query_vars['s'], 0, 3 )) {
 
-            $id = absint( substr( $wp->query_vars['s'], 3 ) );
+		$id = absint( substr( $wp->query_vars['s'], 3 ) );
+		if( ! $id ) return false;
 
-            if( ! $id )
-                return false;
+		unset( $wp->query_vars['s'] );
+		$wp->query_vars['p'] = $id;
 
-            unset( $wp->query_vars['s'] );
-            $wp->query_vars['p'] = $id;
-        }
-        elseif( $wp->query_vars['post_type'] == 'product' && 'SKU:' == substr( $wp->query_vars['s'], 0, 4 ) ) {
+		return false;
+	}
 
-            $sku = trim( substr( $wp->query_vars['s'], 4 ) );
+	/* Products */
+	if ( $wp->query_vars['post_type'] == 'product' && 'SKU:' == substr( $wp->query_vars['s'], 0, 4 ) ) {
 
-            if( ! $sku )
-                return false;
+		$sku = trim( substr( $wp->query_vars['s'], 4 ) );
 
-            $id = $wpdb->get_var( $wpdb->prepare( 'SELECT post_id FROM '.$wpdb->postmeta.' WHERE meta_key="sku" AND meta_value LIKE %s', '%' . like_escape( $sku ) . '%' ) );
+		if( ! $sku ) return false;
+		$id = $wpdb->get_var( $wpdb->prepare( 'SELECT post_id FROM '.$wpdb->postmeta.' WHERE meta_key="sku" AND meta_value LIKE %s', '%' . like_escape( $sku ) . '%' ) );
+		if( ! $id )  return false;
 
-            if( ! $id )
-                return false;
+		unset( $wp->query_vars['s'] );
+		$wp->query_vars['p'] = $id;
+		$wp->query_vars['sku'] = $sku;
 
-            unset( $wp->query_vars['s'] );
-            $wp->query_vars['p'] = $id;
-            $wp->query_vars['sku'] = $sku;
+		return false;
+	}
 
-        }
-        elseif( $wp->query_vars['post_type'] == 'shop_order' && 'PID:' == substr( $wp->query_vars['s'], 0, 4 ) ) {
+	/* Orders */
+	if ( $wp->query_vars['post_type'] == 'shop_order' && 'PID:' == substr( $wp->query_vars['s'], 0, 4 ) ) {
 
-            $id = absint( substr( $wp->query_vars['s'], 4 ) );
+		$id = absint( substr( $wp->query_vars['s'], 4 ) );
+		$id_length = strlen($id);
+		// Get candidate orders
+		$query = "%" . like_escape( "s:2:\"id\";s:$id_length:\"$id\"" ) . "%";
 
-            $id_length = strlen($id);
+		$results = $wpdb->get_results(
+			$wpdb->prepare( "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = 'order_items' AND meta_value LIKE %s", $query )
+		);
 
-            // Get candidate orders
-            $query = "%" . like_escape( "s:2:\"id\";s:$id_length:\"$id\"" ) . "%";
+		// Verify orders contain this product id
+		$ids = array();
+		foreach ( $results as $result ) {
+			$items = unserialize($result->meta_value);
+			foreach ( $items as $item ) {
+				if ( $item['id'] == $id ) {
+					$ids[] = $result->post_id;
+					break;
+				}
+			}
+		}
 
-            $results = $wpdb->get_results(
-										$wpdb->prepare( "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = 'order_items' AND meta_value LIKE %s", $query )
-            );
+		// Set search parameters
+		unset( $wp->query_vars['s'] );
+		$wp->query_vars['post__in'] = $ids;
+		$wp->query_vars['order_product_id'] = $id;
 
-            // Verify orders contain this product id
-            $ids = array();
-            foreach ( $results as $result ) {
-                $items = unserialize($result->meta_value);
-                foreach ( $items as $item ) {
-                    if ( $item['id'] == $id ) {
-                        $ids[] = $result->post_id;
-                        break;
-                    }
-                }
-            }
-
-            // Set search parameters
-            unset( $wp->query_vars['s'] );
-            $wp->query_vars['post__in'] = $ids;
-            $wp->query_vars['order_product_id'] = $id;
-
-        }
+		return false;
     }
 
 }
