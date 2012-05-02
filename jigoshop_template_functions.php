@@ -88,10 +88,10 @@ if (!function_exists('jigoshop_get_sidebar')) {
  **/
 if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 	function jigoshop_template_loop_add_to_cart( $post, $_product ) {
-
+		do_action('jigoshop_before_add_to_cart_button');
 		// do not show "add to cart" button if product's price isn't announced
 		if ( $_product->get_price() === '' AND ! ($_product->is_type(array('variable', 'grouped', 'external'))) ) return;
-
+		
 		if ( $_product->is_in_stock() OR $_product->is_type('external') ) :
 			if ( $_product->is_type(array('variable', 'grouped')) ) :
 				$output = '<a href="'.get_permalink($_product->id).'" class="button">'.__('Select', 'jigoshop').'</a>';
@@ -106,6 +106,7 @@ if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 			$output = '<span class="nostock">'.__('Out of Stock', 'jigoshop').'</span>';
 		endif;
 		echo $output;
+		do_action('jigoshop_after_add_to_cart_button');
 	}
 }
 if (!function_exists('jigoshop_template_loop_product_thumbnail')) {
@@ -737,6 +738,7 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 				<p class="form-row col-2">
 					<input type="text" class="input-text" value="<?php echo esc_attr( jigoshop_customer::get_shipping_postcode() ); ?>" placeholder="<?php _e('Postcode/Zip', 'jigoshop'); ?>" title="<?php _e('Postcode', 'jigoshop'); ?>" name="calc_shipping_postcode" id="calc_shipping_postcode" />
 				</p>
+				<?php do_action('jigoshop_after_shipping_calculator_fields');?>
 			</div>
 			<p><button type="submit" name="calc_shipping" value="1" class="button"><?php _e('Update Totals', 'jigoshop'); ?></button></p>
 			<p>
