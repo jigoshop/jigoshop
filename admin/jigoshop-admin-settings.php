@@ -375,7 +375,9 @@ function jigoshop_admin_fields($options) {
 						<?php if (!empty($value['tip'])) : ?>
 						<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a>
 						<?php endif; ?>
+						<?php if ( !empty( $value['name'] ) ) : ?>
 						<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
+						<?php endif; ?>
 					</th>
 
                     <td<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
@@ -443,7 +445,8 @@ function jigoshop_admin_fields($options) {
 						<br /><small><?php echo $value['desc'] ?></small>
 					</td>
 				</tr><?php
-			break;
+				break;
+
             case 'textarea':
                 ?><tr>
                         <th scope="row"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label></th>
@@ -457,29 +460,31 @@ function jigoshop_admin_fields($options) {
                         </td>
                     </tr><?php
                 break;
+
             case 'tabend':
-                echo '</table></div>';
+                ?></table></div><?php
                 $counter = $counter + 1;
                 break;
+
             case 'single_select_page' :
-                $page_setting = (int) get_option($value['id']);
 
-                $args = array('name' => $value['id'],
-                    'id' => $value['id'] . '" style="width: 200px;',
-                    'sort_column' => 'menu_order',
-                    'sort_order' => 'ASC',
-                    'selected' => $page_setting);
+                $args = array(
+					'name'        => $value['id'],
+					'id'          => $value['id'] . '" style="width: 200px;',
+					'sort_column' => 'menu_order',
+					'sort_order'  => 'ASC',
+					'selected'    => (int) get_option($value['id'])
+				);
 
-                if (isset($value['args']))
-                    $args = wp_parse_args($value['args'], $args);
-                ?><tr class="single_select_page">
-                        <th scope="row"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label></th>
-                        <td>
-                                    <?php wp_dropdown_pages($args); ?>
-                            <br /><small><?php echo $value['desc'] ?></small>
-                        </td>
-                    </tr><?php
-                    break;
+                if ( !empty($value['args']) ) $args = wp_parse_args($value['args'], $args);
+				?><tr class="single_select_page">
+					<th scope="row"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label></th>
+					<td>
+						<?php wp_dropdown_pages($args); ?>
+						<br /><small><?php echo $value['desc'] ?></small>
+					</td>
+				</tr><?php
+				break;
                 case 'single_select_country' :
                     $countries = jigoshop_countries::$countries;
                     $country_setting = (string) get_option($value['id']);
@@ -510,17 +515,23 @@ function jigoshop_admin_fields($options) {
                 ?><tr class="multi_select_countries">
                         <th scope="row"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label><?php echo $value['name'] ?></label></th>
                         <td>
-                            <div class="multi_select_countries"><ul><?php
-                if ($countries)
-                    foreach ($countries as $key => $val) :
-
-                        echo '<li><label><input type="checkbox" name="' . esc_attr( $value['id'] ) . '[]" value="' . esc_attr( $key ) . '" ';
-                        if (in_array($key, $selections))
-                            echo 'checked="checked"';
-                        echo ' />' . $val . '</label></li>';
-
-                    endforeach;
-                ?></ul></div>
+                            <div class="multi_select_countries">
+								<ul><?php
+							if ($countries)
+								foreach ($countries as $key => $val) :
+								?><li><label>
+									<input type="checkbox"
+										   name="<?php echo esc_attr( $value['id'] ) . '[]'; ?>"
+										   value="<?php echo esc_attr( $key ); ?>"
+										   <?php if (in_array($key, $selections)) : ?>
+										   checked="checked"
+										   <?php endif; ?>
+									/>
+									<?php echo $val; ?>
+									</label></li><?php
+								endforeach;
+							  ?></ul>
+							</div>
                         </td>
                     </tr><?php
                     break;
@@ -535,13 +546,13 @@ function jigoshop_admin_fields($options) {
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th><?php _e('Code', 'jigoshop'); ?></th>
-                                        <th><?php _e('Type', 'jigoshop'); ?></th>
-                                        <th><?php _e('Amount', 'jigoshop'); ?></th>
-                                        <th><?php _e("ID's", 'jigoshop'); ?></th>
-                                        <th><?php _e('From', 'jigoshop'); ?></th>
-                                        <th><?php _e('To', 'jigoshop'); ?></th>
-                                        <th><?php _e('Alone', 'jigoshop'); ?></th>
+										<th><?php _e('Code'  , 'jigoshop'); ?></th>
+										<th><?php _e('Type'  , 'jigoshop'); ?></th>
+										<th><?php _e('Amount', 'jigoshop'); ?></th>
+										<th><?php _e("ID's"  , 'jigoshop'); ?></th>
+										<th><?php _e('From'  , 'jigoshop'); ?></th>
+										<th><?php _e('To'    , 'jigoshop'); ?></th>
+										<th><?php _e('Alone' , 'jigoshop'); ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -549,43 +560,55 @@ function jigoshop_admin_fields($options) {
                                     $i = -1;
                                     if ($coupon_codes && is_array($coupon_codes) && sizeof($coupon_codes) > 0)
                                         foreach ($coupon_codes as $coupon) : $i++;
-                                            echo '<tr class="coupon_row">';
-                                            echo '<td><a href="#" class="remove button" title="' . __('Delete this Coupon', 'jigoshop') . '">&times;</a></td>';
-                                            echo '<td><input type="text" value="' . esc_attr( $coupon['code'] ) . '" name="coupon_code[' . esc_attr( $i ) . ']" title="' . __('Coupon Code', 'jigoshop') . '" placeholder="' . __('Coupon Code', 'jigoshop') . '" class="text" /></td><td><select name="coupon_type[' . esc_attr( $i ) . ']" title="Coupon Type">';
+										?><tr class="coupon_row">
+                                              <td><a href="#" class="remove button" title="' . __('Delete this Coupon', 'jigoshop') . '">&times;</a></td>';
+                                              <td><input type="text" value="<?php echo esc_attr( $coupon['code'] ); ?>" name="coupon_code[<?php echo esc_attr( $i ); ?>]" title="<?php _e('Coupon Code', 'jigoshop'); ?>" placeholder="<?php _e('Coupon Code', 'jigoshop'); ?>" class="text" /></td>
+											  <td>
+												<select name="coupon_type[<?php echo esc_attr( $i ); ?>]" title="Coupon Type"><?php
 
                                             $discount_types = array(
-                                                'fixed_cart' => __('Cart Discount', 'jigoshop'),
-                                                'percent' => __('Cart % Discount', 'jigoshop'),
-                                                'fixed_product' => __('Product Discount', 'jigoshop'),
-                                                'percent_product' => __('Product % Discount', 'jigoshop')
+												'fixed_cart'     => __('Cart Discount'     , 'jigoshop'),
+												'percent'        => __('Cart % Discount'   , 'jigoshop'),
+												'fixed_product'  => __('Product Discount'  , 'jigoshop'),
+												'percent_product'=> __('Product % Discount', 'jigoshop')
                                             );
 
                                             foreach ($discount_types as $type => $label) :
-                                                $selected = ($coupon['type'] == $type) ? 'selected="selected"' : '';
-                                                echo '<option value="' . esc_attr( $type ) . '" ' . $selected . '>' . esc_html( $label ) . '</option>';
+                                                ?><option value="<?php echo esc_attr( $type ); ?>" <?php echo ($coupon['type'] == $type) ? 'selected="selected"' : ''; ?>><?php echo esc_html( $label ); ?></option><?php
                                             endforeach;
-                                            echo '</select></td>';
-                                            echo '<td><input type="text" value="' . esc_attr( $coupon['amount'] ) . '" name="coupon_amount[' . esc_attr( $i ) . ']" title="' . __('Coupon Amount', 'jigoshop') . '" placeholder="' . __('Amount', 'jigoshop') . '" class="text" /></td>
-			                    			<td><input type="text" value="' . ( ( is_array( $coupon['products'] ) ) ? implode( ', ', $coupon['products'] ) : '' ) . '" name="product_ids[' . esc_attr( $i ) . ']" placeholder="' . __('1, 2, 3,', 'jigoshop') . '" class="text" /></td>';
+											  ?></select>
+											  </td>
+                                            <td><input type="text" value="<?php echo esc_attr( $coupon['amount'] ); ?>" name="coupon_amount[<?php echo esc_attr( $i ); ?>]" title="<?php _e('Coupon Amount', 'jigoshop'); ?>" placeholder="<?php _e('Amount', 'jigoshop'); ?>" class="text" /></td>
+			                    			<td><input type="text" value="<?php echo ( ( is_array( $coupon['products'] ) ) ? implode( ', ', $coupon['products'] ) : '' ); ?>" name="product_ids[<?php echo esc_attr( $i ); ?>]" placeholder="<?php _e('1, 2, 3,', 'jigoshop'); ?>" class="text" /></td>
 
-                                            $coupon_date_from = $coupon['date_from'];
-                                            echo '<td><label for="coupon_date_from[' . esc_attr( $i ) . ']"></label><input type="text" class="text date-pick" name="coupon_date_from[' . esc_attr( $i ) . ']" id="coupon_date_from[' . esc_attr( $i ) . ']" value="';
-                                            if ($coupon_date_from)
-                                                echo date('Y-m-d', $coupon_date_from);
-                                            echo '" placeholder="' . __('yyyy-mm-dd', 'jigoshop') . '" /></td>';
+                                            <?php $coupon_date_from = $coupon['date_from']; ?>
+                                            <td><label for="coupon_date_from[<?php echo esc_attr( $i ); ?>]"></label>
+												<input type="text"
+													   class="text date-pick"
+													   name="coupon_date_from[<?php echo esc_attr( $i ); ?>]"
+													   id="coupon_date_from[<?php echo esc_attr( $i ); ?>]"
+													   value="<?php if ($coupon_date_from) echo date('Y-m-d', $coupon_date_from); ?>"
+													   placeholder="<?php _e('yyyy-mm-dd', 'jigoshop'); ?>"
+												/>
+											</td>
 
-                                            $coupon_date_to = $coupon['date_to'];
-                                            echo '<td><label for="coupon_date_to[' . esc_attr( $i ) . ']"></label><input type="text" class="text date-pick" name="coupon_date_to[' . esc_attr( $i ) . ']" id="coupon_date_to[' . esc_attr( $i ) . ']" value="';
-                                            if ($coupon_date_to)
-                                                echo date('Y-m-d', $coupon_date_to);
-                                            echo '" placeholder="' . __('yyyy-mm-dd', 'jigoshop') . '" /></td>';
+                                            <?php $coupon_date_to = $coupon['date_to']; ?>
+                                            <td><label for="coupon_date_to[<?php echo esc_attr( $i ); ?>]"></label>
+												<input type="text"
+													   class="text date-pick"
+													   name="coupon_date_to[<?php echo esc_attr( $i ); ?>]"
+													   id="coupon_date_to[<?php echo esc_attr( $i ); ?>]"
+													   value="<?php if ($coupon_date_to) echo date('Y-m-d', $coupon_date_to); ?>"
+													   placeholder="<?php _e('yyyy-mm-dd', 'jigoshop'); ?>"
+												/>
+											</td>
 
-                                            echo '<td><input type="checkbox" name="individual[' . esc_attr( $i ) . ']" ';
-                                            if (isset($coupon['individual_use']) && $coupon['individual_use'] == 'yes')
-                                                echo 'checked="checked"';
-                                            echo ' /></td>';
-                                            echo '</tr>';
-                                            ?>
+                                            <td><input type="checkbox" name="individual[<?php echo esc_attr( $i ); ?>]"
+                                            <?php if (isset($coupon['individual_use']) && $coupon['individual_use'] == 'yes') : ?>
+                                                checked="checked"
+											<?php endif; ?> />
+											</td>
+										</tr>
                                         <script type="text/javascript">
                                             /* <![CDATA[ */
                                             jQuery(function() {
@@ -623,9 +646,7 @@ function jigoshop_admin_fields($options) {
                                             });
                                             /* ]]> */
                                         </script>
-                        <?php
-                    endforeach;
-                ?>
+									<?php endforeach; ?>
                                 </tbody>
                             </table>
                             <p><a href="#" class="add button"><?php _e('+ Add Coupon', 'jigoshop'); ?></a></p>
