@@ -38,7 +38,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 			array( 'name'=>'billing-first_name', 'label' => __('First Name', 'jigoshop'), 'placeholder' => __('First Name', 'jigoshop'), 'required' => true, 'class' => array('form-row-first') ),
 			array( 'name'=>'billing-last_name', 'label' => __('Last Name', 'jigoshop'), 'placeholder' => __('Last Name', 'jigoshop'), 'required' => true, 'class' => array('form-row-last') ),
 			array( 'name'=>'billing-company', 'label' => __('Company', 'jigoshop'), 'placeholder' => __('Company', 'jigoshop') ),
-			array( 'name'=>'billing-address', 'label' => __('Address', 'jigoshop'), 'placeholder' => __('Address 1', 'jigoshop'), 'required' => true, 'class' => array('form-row-first') ),
+			array( 'name'=>'billing-address-1', 'label' => __('Address', 'jigoshop'), 'placeholder' => __('Address 1', 'jigoshop'), 'required' => true, 'class' => array('form-row-first') ),
 			array( 'name'=>'billing-address-2', 'label' => __('Address 2', 'jigoshop'), 'placeholder' => __('Address 2', 'jigoshop'), 'class' => array('form-row-last'), 'label_class' => array('hidden') ),
 			array( 'name'=>'billing-city', 'label' => __('City', 'jigoshop'), 'placeholder' => __('City', 'jigoshop'), 'required' => true, 'class' => array('form-row-first') ),
 			array( 'type'=>'postcode', 'validate' => 'postcode', 'format' => 'postcode', 'name'=>'billing-postcode', 'label' => __('Postcode', 'jigoshop'), 'placeholder' => __('Postcode', 'jigoshop'), 'required' => true, 'class' => array('form-row-last') ),
@@ -237,6 +237,12 @@ class jigoshop_checkout extends jigoshop_singleton {
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="' . esc_attr( $args['name'] ) . '" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
 					<input type="text" class="input-text" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" placeholder="'.$args['placeholder'].'" value="' . esc_attr( $current_pc ) . '" />
+				</p>'.$after;
+			break;
+			case "checkbox" :
+				$field = '<p class="form-row '.implode(' ', $args['class']).'">
+					<label for="' . esc_attr( $args['name'] ) . '" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
+					<input type="checkbox" class="input-text' . esc_attr( $input_required ) . '" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" '.($args['checked'] ? ' checked="checked"' : '' ).' />
 				</p>'.$after;
 			break;
 			case "textarea" :
@@ -453,7 +459,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 						$shipping_first_name = $this->posted['billing-first_name'];
 						$shipping_last_name = $this->posted['billing-last_name'];
 						$shipping_company = $this->posted['billing-company'];
-						$shipping_address_1 = $this->posted['billing-address'];
+						$shipping_address_1 = $this->posted['billing-address-1'];
 						$shipping_address_2 = $this->posted['billing-address-2'];
 						$shipping_city = $this->posted['billing-city'];
 						$shipping_state = $this->posted['billing-state'];
@@ -480,7 +486,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 						update_user_meta( $user_id, 'billing-last_name', $this->posted['billing-last_name'] );
 						update_user_meta( $user_id, 'billing-company', $this->posted['billing-company'] );
 						update_user_meta( $user_id, 'billing-email', $this->posted['billing-email'] );
-						update_user_meta( $user_id, 'billing-address', $this->posted['billing-address'] );
+						update_user_meta( $user_id, 'billing-address-1', $this->posted['billing-address-1'] );
 						update_user_meta( $user_id, 'billing-address-2', $this->posted['billing-address-2'] );
 						update_user_meta( $user_id, 'billing-city', $this->posted['billing-city'] );
 						update_user_meta( $user_id, 'billing-postcode', $this->posted['billing-postcode'] );
@@ -502,7 +508,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 							update_user_meta( $user_id, 'shipping-first_name', $this->posted['billing-first_name'] );
 							update_user_meta( $user_id, 'shipping-last_name', $this->posted['billing-last_name'] );
 							update_user_meta( $user_id, 'shipping-company', $this->posted['billing-company'] );
-							update_user_meta( $user_id, 'shipping-address', $this->posted['billing-address'] );
+							update_user_meta( $user_id, 'shipping-address', $this->posted['billing-address-1'] );
 							update_user_meta( $user_id, 'shipping-address-2', $this->posted['billing-address-2'] );
 							update_user_meta( $user_id, 'shipping-city', $this->posted['billing-city'] );
 							update_user_meta( $user_id, 'shipping-postcode', $this->posted['billing-postcode'] );
@@ -523,17 +529,16 @@ class jigoshop_checkout extends jigoshop_singleton {
 
 					// Order meta data
 					$data = array();
-					$data['billing_first_name'] 	= $this->posted['billing-first_name'];
-					$data['billing_last_name'] 		= $this->posted['billing-last_name'];
-					$data['billing_company'] 		= $this->posted['billing-company'];
-					$data['billing_address_1'] 		= $this->posted['billing-address'];
-					$data['billing_address_2'] 		= $this->posted['billing-address-2'];
-					$data['billing_city'] 			= $this->posted['billing-city'];
-					$data['billing_postcode'] 		= $this->posted['billing-postcode'];
-					$data['billing_country'] 		= $this->posted['billing-country'];
-					$data['billing_state'] 			= $this->posted['billing-state'];
-					$data['billing_email']			= $this->posted['billing-email'];
-					$data['billing_phone']			= $this->posted['billing-phone'];
+					
+					// add billig fields
+					// looping through $billing_fields so that custom fields will be saved too
+					foreach ($this->billing_fields as $field) :
+						// make name nice
+						$data_name = str_replace('-', '_', $field['name']);
+						
+						$data[$data_name] = $this->posted[$field['name']];
+					endforeach;
+				
 					$data['shipping_first_name'] 	= $shipping_first_name;
 					$data['shipping_last_name'] 	= $shipping_last_name;
 					$data['shipping_company']	 	= $shipping_company;
