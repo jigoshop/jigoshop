@@ -161,18 +161,15 @@ function jigoshop_update_options() {
 
             elseif (isset($value['id']) && $value['id'] == 'jigoshop_coupons') :
 
-                $coupon_code 	= array();
-                $coupon_type 	= array();
-                $coupon_amount 	= array();
-                $product_ids 	= array();
-                $date_from 		= array();
-                $date_to 		= array();
-                $coupons 		= array();
-				$individual 	= array();
-				$coupon_limit	= array(); // This is the number of times the coupon can be used
-				$usage_count	= array(); // This is the number of times it has been used
-				$free_shipping  = array(); // triggers free shipping
-				
+                $coupon_code = array();
+                $coupon_type = array();
+                $coupon_amount = array();
+                $product_ids = array();
+                $date_from = array();
+                $date_to = array();
+                $coupons = array();
+                $individual = array();
+
                 if (isset($_POST['coupon_code']))
                     $coupon_code = $_POST['coupon_code'];
                 if (isset($_POST['coupon_type']))
@@ -187,27 +184,20 @@ function jigoshop_update_options() {
                     $date_to = $_POST['coupon_date_to'];
                 if (isset($_POST['individual']))
                     $individual = $_POST['individual'];
-                //Added
-                if (isset($_POST['coupon_limit']))
-                    $coupon_limit = $_POST['coupon_limit'];
-                if (isset($_POST['coupon_usage_count']))
-                    $usage_count = $_POST['coupon_usage_count'];
-                if (isset($_POST['coupon_free_shipping']))
-                    $free_shipping = $_POST['coupon_free_shipping'];	
-                
+
                 for ($i = 0; $i < sizeof($coupon_code); $i++) :
+
                     if (isset($coupon_code[$i]) && isset($coupon_type[$i]) && isset($coupon_amount[$i])) :
 
-                        $code 	= jigowatt_clean($coupon_code[$i]);
-                        $type 	= jigowatt_clean($coupon_type[$i]);
+                        $code = jigowatt_clean($coupon_code[$i]);
+                        $type = jigowatt_clean($coupon_type[$i]);
                         $amount = jigowatt_clean($coupon_amount[$i]);
-						$limit  = jigowatt_clean($coupon_limit[$i]);
-                        if (isset($product_ids[$i]) && $product_ids[$i]):
+
+                        if (isset($product_ids[$i]) && $product_ids[$i])
                             $products = array_map('trim', explode(',', $product_ids[$i]));
-                        else:
+                        else
                             $products = array();
-						endif;
-						
+
                         if (isset($date_from[$i]) && $date_from[$i]) :
                             $from_date = strtotime($date_from[$i]);
                         else :
@@ -224,27 +214,16 @@ function jigoshop_update_options() {
                         else :
                             $individual_use = 'no';
                         endif;
-						
-						//Free Shipping Trigger
- 						if (isset($free_shipping[$i]) && $free_shipping[$i]) :
-                            $free_shipping = 'yes';
-                        else :
-                            $free_shipping = 'no';
-                        endif;
-						
+
                         if ($code && $type && $amount) :
                             $coupons[$code] = array(
-                                'code' 				=> $code,
-                                'amount' 			=> $amount,
-                                'type' 				=> $type,
-                                'products' 			=> $products,
-                                'date_from' 		=> $from_date,
-                                'date_to' 			=> $to_date,
-                                'individual_use' 	=> $individual_use,
-                                'limit'				=> $coupon_limit,
-                                'usage_count'		=> $usage_count,
-                                'free_shipping'		=> $free_shipping
-                                
+                                'code' => $code,
+                                'amount' => $amount,
+                                'type' => $type,
+                                'products' => $products,
+                                'date_from' => $from_date,
+                                'date_to' => $to_date,
+                                'individual_use' => $individual_use
                             );
                         endif;
 
@@ -509,12 +488,10 @@ function jigoshop_admin_fields($options) {
                                         <th><?php _e('Code', 'jigoshop'); ?></th>
                                         <th><?php _e('Type', 'jigoshop'); ?></th>
                                         <th><?php _e('Amount', 'jigoshop'); ?></th>
-                                        <th><?php _e('Usage Limit', 'jigoshop'); ?></th>
                                         <th><?php _e("ID's", 'jigoshop'); ?></th>
                                         <th><?php _e('From', 'jigoshop'); ?></th>
                                         <th><?php _e('To', 'jigoshop'); ?></th>
                                         <th><?php _e('Alone', 'jigoshop'); ?></th>
-                                        <th><?php _e('Free Shipping', 'jigoshop'); ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -538,9 +515,7 @@ function jigoshop_admin_fields($options) {
                                                 echo '<option value="' . esc_attr( $type ) . '" ' . $selected . '>' . esc_html( $label ) . '</option>';
                                             endforeach;
                                             echo '</select></td>';
-											var_dump($coupon['amount']);
                                             echo '<td><input type="text" value="' . esc_attr( $coupon['amount'] ) . '" name="coupon_amount[' . esc_attr( $i ) . ']" title="' . __('Coupon Amount', 'jigoshop') . '" placeholder="' . __('Amount', 'jigoshop') . '" class="text" /></td>
-                                            <td><input type="text" value="' . esc_attr( $coupon['limit'] ) . '" name="coupon_limit[' . esc_attr( $i ) . ']" title="' . __('Coupon Usage Limit', 'jigoshop') . '" placeholder="' . __('Coupon Usage Limit', 'jigoshop') . '" class="text" /></td>
 			                    			<td><input type="text" value="' . ( ( is_array( $coupon['products'] ) ) ? implode( ', ', $coupon['products'] ) : '' ) . '" name="product_ids[' . esc_attr( $i ) . ']" placeholder="' . __('1, 2, 3,', 'jigoshop') . '" class="text" /></td>';
 
                                             $date_from = $coupon['date_from'];
@@ -559,19 +534,43 @@ function jigoshop_admin_fields($options) {
                                             if (isset($coupon['individual_use']) && $coupon['individual_use'] == 'yes')
                                                 echo 'checked="checked"';
                                             echo ' /></td>';
-											 echo '<td><input type="checkbox" name="coupon_free_shipping[' . esc_attr( $i ) . ']" ';
-                                            if (isset($coupon['free_shipping']) && $coupon['free_shipping'] == 'yes')
-                                                echo 'checked="checked"';
-                                            echo ' /></td>';
                                             echo '</tr>';
                                             ?>
                                         <script type="text/javascript">
                                             /* <![CDATA[ */
                                             jQuery(function() {
-                                                jQuery('.date-pick').each(function(){
-                                                	jQuery(this).datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
-                                                })
-                                             });
+                                                // DATE PICKER FIELDS
+                                                //												Date.firstDayOfWeek = 1;
+                                                //												Date.format = 'yyyy-mm-dd';
+                                                //												jQuery('.date-pick').datePicker();
+                                                jQuery('.date-pick').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
+
+                                                /*
+                                                jQuery('#coupon_date_from[<?php echo $i; ?>]').bind(
+                                                    'dpClosed',
+                                                    function(e, selectedDates)
+                                                    {
+                                                        var d = selectedDates[0];
+                                                        if (d) {
+                                                            d = new Date(d);
+                                                            jQuery('#coupon_date_to[<?php echo $i; ?>]').dpSetStartDate(d.addDays(1).asString());
+                                                        }
+                                                    }
+                                                );
+                                                jQuery('#coupon_date_to[<?php echo $i; ?>]').bind(
+                                                    'dpClosed',
+                                                    function(e, selectedDates)
+                                                    {
+                                                        var d = selectedDates[0];
+                                                        if (d) {
+                                                            d = new Date(d);
+                                                            jQuery('#coupon_date_from[<?php echo $i; ?>]').dpSetEndDate(d.addDays(-1).asString());
+                                                        }
+                                                    }
+                                                );
+
+                                                 */
+                                            });
                                             /* ]]> */
                                         </script>
                         <?php
@@ -602,7 +601,6 @@ function jigoshop_admin_fields($options) {
                                         <option value="percent_product"><?php _e('Product % Discount', 'jigoshop'); ?></option>\
                                     </select></td>\
                                     <td><input type="text" value="" name="coupon_amount[' + size + ']" title="<?php _e('Coupon Amount', 'jigoshop'); ?>" placeholder="<?php _e('Amount', 'jigoshop'); ?>" class="text" /></td>\
-                                    <td><input type="text" value="" name="coupon_limit[' + size + ']" title="<?php _e('Coupon Usage Limit', 'jigoshop'); ?>" placeholder="<?php _e('# times it can be used', 'jigoshop'); ?>" class="text" /></td>\
                                     <td><input type="text" value="" name="product_ids[' + size + ']" \
                                         placeholder="<?php _e('1, 2, 3,', 'jigoshop'); ?>" class="text" /></td>\
                                     <td><label for="coupon_date_from[' + size + ']"></label>\
@@ -613,13 +611,41 @@ function jigoshop_admin_fields($options) {
                                         <input type="text" class="text date-pick" name="coupon_date_to[' + size + ']" \
                                         id="coupon_date_to[' + size + ']" value="" \
                                         placeholder="<?php _e('yyyy-mm-dd', 'jigoshop'); ?>" /></td>\
-                                    <td><input type="checkbox" name="individual[' + size + ']" /></td><td><input type="checkbox" name="coupon_free_shipping[' + size + ']" /></td>').appendTo('#coupon_codes table.coupon_rows tbody');
+                                    <td><input type="checkbox" name="individual[' + size + ']" /></td>').appendTo('#coupon_codes table.coupon_rows tbody');
 
-                                            jQuery(function() {
-                                                jQuery('.date-pick').each(function(){
-                                                	jQuery(this).datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
-                                                })
-                                             });
+                                                jQuery(function() {
+                                                    // DATE PICKER FIELDS
+                                                    //										Date.firstDayOfWeek = 1;
+                                                    //										Date.format = 'yyyy-mm-dd';
+                                                    //										jQuery('.date-pick').datePicker();
+                                                    jQuery('.date-pick').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
+
+                                                    /*
+                                    jQuery('#coupon_date_from[' + size + ']').bind(
+                                        'dpClosed',
+                                        function(e, selectedDates)
+                                        {
+                                            var d = selectedDates[0];
+                                            if (d) {
+                                                d = new Date(d);
+                                                jQuery('#coupon_date_to[' + size + ']').dpSetStartDate(d.addDays(1).asString());
+                                            }
+                                        }
+                                    );
+                                    jQuery('#coupon_date_to[' + size + ']').bind(
+                                        'dpClosed',
+                                        function(e, selectedDates)
+                                        {
+                                            var d = selectedDates[0];
+                                            if (d) {
+                                                d = new Date(d);
+                                                jQuery('#coupon_date_from[' + size + ']').dpSetEndDate(d.addDays(-1).asString());
+                                            }
+                                        }
+                                    );
+
+                                                     */
+                                                });
 
                                                 return false;
                                             });
