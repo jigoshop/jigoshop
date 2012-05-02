@@ -175,25 +175,23 @@ function jigoshop_system_info() {
 
 	### Begin System Info ###
 
-	Theme:                    <?php echo get_current_theme() . "\n" ?>
-
 	Multi-site:               <?php echo is_multisite() ? 'Yes' . "\n" : 'No' . "\n" ?>
-	
+
 	SITE_URL:                 <?php echo site_url() . "\n"; ?>
 	HOME_URL:                 <?php echo home_url() . "\n"; ?>
-		
+
 	Jigoshop Version:         <?php echo jigoshop_get_plugin_data() . "\n"; ?>
 	WordPress Version:        <?php echo get_bloginfo('version') . "\n"; ?>
-	
+
 	PHP Version:              <?php echo PHP_VERSION . "\n"; ?>
 	MySQL Version:            <?php echo mysql_get_server_info() . "\n"; ?>
 	Web Server Info:          <?php echo $_SERVER['SERVER_SOFTWARE'] . "\n"; ?>
-	
+
 	PHP Memory Limit:         <?php echo ini_get('memory_limit') . "\n"; ?>
 	PHP Post Max Size:        <?php echo ini_get('post_max_size') . "\n"; ?>
-	
+
 	WP_DEBUG:                 <?php echo defined('WP_DEBUG') ? WP_DEBUG ? 'Enabled' . "\n" : 'Disabled' . "\n" : 'Not set' . "\n" ?>
-	
+
 	Show On Front:            <?php echo get_option('show_on_front') . "\n" ?>
 	Page On Front:            <?php echo get_option('page_on_front') . "\n" ?>
 	Page For Posts:           <?php echo get_option('page_for_posts') . "\n" ?>
@@ -213,13 +211,13 @@ function jigoshop_system_info() {
 	FSOCKOPEN:                <?php echo (function_exists('fsockopen')) ? __('Your server supports fsockopen.', 'jigoshop') : __('Your server does not support fsockopen.', 'jigoshop'); ?><?php echo "\n"; ?>
 
 	ACTIVE PLUGINS:
-	
+
 <?php
 $plugins = get_plugins();
 $active_plugins = get_option('active_plugins', array());
 
 foreach ( $plugins as $plugin_path => $plugin ):
-	
+
 	//If the plugin isn't active, don't show it.
 	if ( !in_array($plugin_path, $active_plugins) )
 		continue;
@@ -227,6 +225,12 @@ foreach ( $plugins as $plugin_path => $plugin ):
 	<?php echo $plugin['Name']; ?>: <?php echo $plugin['Version']; ?>
 
 <?php endforeach; ?>
+
+	CURRENT THEME:
+
+<?php $theme_data = get_theme_data(get_stylesheet_directory() . '/style.css'); ?>
+	<?php echo $theme_data['Name']; ?>: <?php echo $theme_data['Version']; ?>
+
 
 	### End System Info ###
 </textarea>
