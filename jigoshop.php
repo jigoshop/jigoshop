@@ -166,19 +166,22 @@ add_filter( 'wp_mail_from', 'jigoshop_mail_from' );
 
 /**
  * Set Jigoshop Product Image Sizes for WordPress based on Admin->Jigoshop->Settings->Images
- * @since 0.9.9
  **/
 function jigoshop_set_image_sizes() {
-	$tinycrop = get_option( 'jigoshop_use_wordpress_tiny_crop', 'no' ) == 'yes' ? true : false;
-	$thumbcrop = get_option( 'jigoshop_use_wordpress_thumbnail_crop', 'no' ) == 'yes' ? true : false;
-	$catalogcrop = get_option( 'jigoshop_use_wordpress_catalog_crop', 'no' ) == 'yes' ? true : false;
-	$featuredcrop = get_option( 'jigoshop_use_wordpress_featured_crop', 'no' ) == 'yes' ? true : false;
-	
-	add_image_size( 'admin_product_list', 32, 32, $tinycrop );
-	add_image_size( 'shop_tiny', get_option('jigoshop_shop_tiny_w'), get_option('jigoshop_shop_tiny_h'), $tinycrop );
-	add_image_size( 'shop_thumbnail', get_option('jigoshop_shop_thumbnail_w'), get_option('jigoshop_shop_thumbnail_h'), $thumbcrop );
-	add_image_size( 'shop_small', get_option('jigoshop_shop_small_w'), get_option('jigoshop_shop_small_h'), $catalogcrop );
-	add_image_size( 'shop_large', get_option('jigoshop_shop_large_w'), get_option('jigoshop_shop_large_h'), $featuredcrop );
+
+	$sizes = array(
+		'shop_tiny'      => 'tiny',
+		'shop_thumbnail' => 'thumbnail',
+		'shop_small'     => 'catalog',
+		'shop_large'     => 'featured'
+	);
+
+	foreach ( $sizes as $size => $altSize )
+		add_image_size( $size, get_option('jigoshop_' . $size . '_w'), get_option('jigoshop_' . $size . '_h'), ( get_option( 'jigoshop_use_wordpress_' . $altSize . '_crop', 'no' ) == 'yes' ) );
+
+	/* The elephant in the room (._. ) */
+	add_image_size( 'admin_product_list', 32, 32, get_option( 'jigoshop_use_wordpress_tiny_crop', 'no' ) == 'yes' ? true : false );
+
 }
 
 /**
@@ -260,10 +263,10 @@ function jigoshop_init() {
     	}
 
     endif;
-	
+
 	// Override default translations with custom .mo's found in wp-content/languages/jigoshop
 	load_textdomain( 'jigoshop', WP_LANG_DIR.'/jigoshop/jigoshop-'.get_locale().'.mo' );
-	load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');	
+	load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
 
 }
 add_action('init', 'jigoshop_init', 0);
@@ -363,7 +366,7 @@ add_filter( 'post_type_link', 'jigoshop_product_cat_filter_post_link', 10, 4 );
 function jigoshop_product_cat_filter_post_link( $permalink, $post, $leavename, $sample ) {
 
     if ($post->post_type!=='product') return $permalink;
-    
+
     // Abort early if the placeholder rewrite tag isn't in the generated URL
     if ( false === strpos( $permalink, '%product_cat%' ) ) return $permalink;
 
@@ -1052,13 +1055,13 @@ if(!function_exists('jigoshop_log')){
 
     /**
      * Logs to the debug log when you enable wordpress debug mode.
-     * 
+     *
      * @param string $from_class is the name of the php file that you are logging from.
      * defaults to jigoshop if non is supplied.
      * @param mixed $message this can be a regular string, array or object
      */
     function jigoshop_log( $message, $from_class = 'jigoshop' ) {
-        
+
         if( WP_DEBUG === true ) :
             if( is_array( $message ) || is_object( $message ) ) :
                 error_log( $from_class . ': ' . print_r( $message, true ) );
@@ -1066,6 +1069,6 @@ if(!function_exists('jigoshop_log')){
                 error_log( $from_class . ': ' . $message );
             endif;
         endif;
-        
+
     }
 }
