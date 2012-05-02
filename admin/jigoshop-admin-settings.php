@@ -336,10 +336,10 @@ function jigoshop_admin_fields($options) {
 			case 'checkbox':
 				?><tr>
                     <th scope="row"<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
-						<?php if (isset($value['tip'])) : ?>
+						<?php if (!empty($value['tip'])) : ?>
 						<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99" ></a>
 						<?php endif; ?>
-						<?php if ( !empty( $value['name'] ) ) : ?>						
+						<?php if ( !empty( $value['name'] ) ) : ?>
 						<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
 						<?php endif; ?>
 					</th>
@@ -360,14 +360,14 @@ function jigoshop_admin_fields($options) {
 
             case 'text':
                 ?><tr>
-                    <th scope="row">
-						<?php if (isset($value['tip'])) : ?>
+                    <th scope="row"<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
+						<?php if (!empty($value['tip'])) : ?>
 						<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a>
 						<?php endif; ?>
 						<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
 					</th>
 
-                    <td>
+                    <td<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
                     	<input name="<?php echo esc_attr( $value['id'] ); ?>"
                     		id="<?php echo esc_attr( $value['id'] ); ?>"
                     		type="<?php echo $value['type'] ?>"
@@ -376,7 +376,7 @@ function jigoshop_admin_fields($options) {
                     		value="<?php if (get_option($value['id']) !== false && get_option($value['id']) !== null)
                     			echo esc_attr( get_option($value['id']) );
                     			else if ( isset($value['std'])) echo esc_attr( $value['std'] ); ?>" />
-                    	<br /><small><?php echo $value['desc'] ?></small>
+                    	<?php if ( !empty( $value['name'] ) ) : ?><br /><?php endif; ?><small><?php echo $value['desc'] ?></small>
                     </td>
                   </tr><?php
                 break;
@@ -384,7 +384,7 @@ function jigoshop_admin_fields($options) {
             case 'select':
 				?><tr>
                     <th scope="row">
-						<?php if (isset($value['tip'])) : ?>
+						<?php if (!empty($value['tip'])) : ?>
 						<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a>
 						<?php endif; ?>
 						<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
