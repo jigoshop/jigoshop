@@ -96,11 +96,22 @@ function jigoshop_update_options() {
 		/* default back to standard image sizes if no value is entered */
 		if ( $valueType == 'image_size' ) {
 
-			$sizes = array( '_w', '_h' );
-			foreach ( $sizes as $v )
+			$sizes = array(
+				'jigoshop_shop_tiny'      => 'jigoshop_use_wordpress_tiny_crop',
+				'jigoshop_shop_thumbnail' => 'jigoshop_use_wordpress_thumbnail_crop',
+				'jigoshop_shop_small'     => 'jigoshop_use_wordpress_catalog_crop',
+				'jigoshop_shop_large'     => 'jigoshop_use_wordpress_featured_crop'
+			);
+
+			$altSize = $sizes[$valueID];
+
+			$dimensions = array( '_w', '_h' );
+			foreach ( $dimensions as $v )
 				!empty( $_POST[$valueID.$v] )
 				? update_option( $valueID.$v, jigowatt_clean($_POST[$valueID.$v]) )
 				: update_option( $valueID.$v, $value['std'] );
+
+			update_option($altSize, isset ( $_POST[$altSize] ) ? 'yes' : 'no');
 
 			continue;
 
@@ -401,6 +412,16 @@ function jigoshop_admin_fields($options) {
                 break;
 
 			case 'image_size' :
+
+				$sizes = array(
+					'jigoshop_shop_tiny'      => 'jigoshop_use_wordpress_tiny_crop',
+					'jigoshop_shop_thumbnail' => 'jigoshop_use_wordpress_thumbnail_crop',
+					'jigoshop_shop_small'     => 'jigoshop_use_wordpress_catalog_crop',
+					'jigoshop_shop_large'     => 'jigoshop_use_wordpress_featured_crop'
+				);
+
+				$altSize = $sizes[$value['id']];
+
 				?><tr>
 					<th scope="row"><?php echo $value['name'] ?></label></th>
 					<td valign="top" style="line-height:25px;height:25px;">
@@ -410,7 +431,14 @@ function jigoshop_admin_fields($options) {
 
 						<label for="<?php echo esc_attr( $value['id'] ); ?>_h"><?php _e('Height', 'jigoshop'); ?></label>
                         <input name="<?php echo esc_attr( $value['id'] ); ?>_h" id="<?php echo esc_attr( $value['id'] ); ?>_h" type="text" size="3" value="<?php if ( $size = get_option( $value['id'].'_h') ) echo $size; else echo $value['std']; ?>" />
-
+						<input
+						id="<?php echo esc_attr( $altSize ); ?>"
+						type="checkbox"
+						class="jigoshop-input jigoshop-checkbox"
+						name="<?php echo esc_attr( $altSize ); ?>"
+						<?php if (get_option($altSize) !== false && get_option($altSize) !== null)
+						echo checked(get_option($altSize), 'yes', false); ?> />
+						<label for="<?php echo esc_attr( $altSize ); ?>"><?php echo __('Crop?', 'jigoshop'); ?></label>
 						<br /><small><?php echo $value['desc'] ?></small>
 					</td>
 				</tr><?php
