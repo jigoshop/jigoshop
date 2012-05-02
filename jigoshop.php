@@ -271,20 +271,44 @@ function jigoshop_init() {
 }
 add_action('init', 'jigoshop_init', 0);
 
+function jigoshop_is_admin_page() {
+
+	if ( !empty($_GET['post_type']) && ( $_GET['post_type'] == 'product' || $_GET['post_type'] == 'shop_order' ) )
+		return true;
+
+	if ( !empty($_GET['page']) && strstr( $_GET['page'], 'jigoshop' ) )
+		return true;
+
+	if ( !empty($_GET['post']) ) :
+		$currentType = get_post($_GET['post']);
+		$currentType = $currentType->post_type;
+
+		if ( in_array($currentType, array('product', 'shop_order')) )
+			return true;
+	endif;
+
+	if ( empty($bool) )
+		return false;
+
+}
+
 add_action( 'admin_enqueue_scripts', 'jigoshop_admin_styles' );
 function jigoshop_admin_styles() {
-	wp_register_style('jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css');
-    wp_enqueue_style('jigoshop_admin_styles');
-   	wp_register_style('jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css');
-    wp_enqueue_style('jquery-ui-jigoshop-styles');
+
+	/* admin.css places our setting icons, so must be loaded on all admin pages */
+	wp_enqueue_style( 'jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css' );
+
+	if (jigoshop_is_admin_page())
+		wp_enqueue_style( 'jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css' );
+
 }
 
 function jigoshop_admin_scripts() {
 
-    wp_register_script('jquery-ui-datepicker', jigoshop::assets_url() . '/assets/js/jquery-ui-datepicker-1.8.16.min.js', array( 'jquery' ), '1.8.16', true );
-    wp_enqueue_script('jquery-ui-datepicker');
-	wp_register_script( 'jigoshop_backend', jigoshop::assets_url() . '/assets/js/jigoshop_backend.js', array('jquery'), '1.0' );
-    wp_enqueue_script('jigoshop_backend');
+	if (!jigoshop_is_admin_page()) return false;
+
+	wp_enqueue_script('jigoshop_backend'    , jigoshop::assets_url() . '/assets/js/jigoshop_backend.js'               , array('jquery')  , '1.0' );
+	wp_enqueue_script('jquery-ui-datepicker', jigoshop::assets_url() . '/assets/js/jquery-ui-datepicker-1.8.16.min.js', array( 'jquery' ), '1.8.16', true );
 
 }
 add_action('admin_print_scripts', 'jigoshop_admin_scripts');
