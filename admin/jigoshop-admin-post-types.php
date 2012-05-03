@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Functions used for custom post types in admin
  *
@@ -285,8 +285,19 @@ function jigoshop_edit_order_columns($columns) {
     return $columns;
 }
 
-add_action('manage_shop_order_posts_custom_column', 'jigoshop_custom_order_columns', 2);
+add_filter('post_row_actions','my_action_row');
+function my_action_row($actions){
 
+	global $post;
+
+	if ($post->post_type =="shop_order" && $post->post_status == 'trash')
+		echo sprintf(__('Order #%s'), $post->ID);
+
+	return $actions;
+
+}
+
+add_action('manage_shop_order_posts_custom_column', 'jigoshop_custom_order_columns', 2);
 function jigoshop_custom_order_columns($column) {
 
     global $post;
