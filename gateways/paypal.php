@@ -274,7 +274,7 @@ class paypal extends jigoshop_payment_gateway {
         if (get_option('jigoshop_paypal_force_payment') == 'yes') :
 
             $sum = 0;
-            for ($i = 0; $i < $item_loop; $i++) :
+            for ($i = 1; $i < $item_loop; $i++) :
                 $sum += $paypal_args['amount_'.$i];
             endfor;
             

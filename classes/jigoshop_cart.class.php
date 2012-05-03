@@ -14,7 +14,7 @@
  * @package             Jigoshop
  * @category            Checkout
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright ï¿½ 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_cart extends jigoshop_singleton {
@@ -33,7 +33,8 @@ class jigoshop_cart extends jigoshop_singleton {
     public static $shipping_tax_total;
     public static $applied_coupons;
     public static $cart_contents;
-
+    
+    private static $cart_discount_leftover;
     private static $price_per_tax_class_ex_tax;
     private static $tax;
 
@@ -404,6 +405,7 @@ class jigoshop_cart extends jigoshop_singleton {
         self::$discount_total = 0;
         self::$shipping_total = 0;
         self::$cart_dl_count = 0;
+        self::$cart_discount_leftover = 0; /* cart discounts greater than total product price */
         self::$cart_contents_total_ex_dl = 0; /* for table rate shipping */
         self::$tax->init_tax();
         self::$price_per_tax_class_ex_tax = array(); /* currently used with norway */
@@ -518,7 +520,10 @@ class jigoshop_cart extends jigoshop_singleton {
                     if ($discounted_item_price > 0 && $cart_discount > 0) :
                         $cart_discount_amount = ($cart_contents_loop_count == 1 ? $cart_discount : $discounted_item_price - round($discounted_item_price * $percentage_discount, 2));
                         $cart_discount -= $cart_discount_amount;
-                        $discounted_item_price -= $cart_discount_amount;
+                        if ($cart_contents_loop_count == 1 && $cart_discount_amount > $discounted_item_price) :
+                            self::$cart_discount_leftover = $cart_discount_amount - $discounted_item_price; // to use with shipping cost
+                        endif;
+                        $discounted_item_price = ($cart_discount_amount > $discounted_item_price ? 0 : $discounted_item_price - $cart_discount_amount);
                     endif;
                     $cart_contents_loop_count--;
                 endif;
@@ -753,6 +758,10 @@ class jigoshop_cart extends jigoshop_singleton {
         endif;
 
         return $return;
+    }
+    
+    public static function get_cart_discount_leftover() {
+        return self::$cart_discount_leftover;
     }
 
     // after calculation. Used with admin pages only
