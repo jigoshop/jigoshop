@@ -13,34 +13,6 @@
 .fade{-webkit-transition:opacity 0.15s linear;-moz-transition:opacity 0.15s linear;-ms-transition:opacity 0.15s linear;-o-transition:opacity 0.15s linear;transition:opacity 0.15s linear;opacity:0;}.fade.in{opacity:1;}
 
 
-#toplevel_page_jigoshop .wp-menu-image {
-    background: url(../images/icons/menu_icons.png) no-repeat 0px -32px !important;
-}
-#toplevel_page_jigoshop:hover .wp-menu-image,
-#toplevel_page_jigoshop.wp-has-current-submenu .wp-menu-image {
-    background: url(../images/icons/menu_icons.png) no-repeat 0px 0px !important;
-}
-#toplevel_page_jigoshop .wp-menu-image img {
-	display: none;
-}
-
-#menu-posts-product .wp-menu-image {
-    background: url(../images/icons/menu_icons.png) no-repeat -35px -32px !important;
-}
-#menu-posts-product:hover .wp-menu-image,
-#menu-posts-product.wp-has-current-submenu .wp-menu-image {
-    background: url(../images/icons/menu_icons.png) no-repeat -35px 0px !important;
-}
-
-#menu-posts-shop_order .wp-menu-image {
-    background: url(../images/icons/menu_icons.png) no-repeat -70px -32px !important;
-}
-#menu-posts-shop_order:hover .wp-menu-image,
-#menu-posts-shop_order.wp-has-current-submenu .wp-menu-image {
-    background: url(../images/icons/menu_icons.png) no-repeat -70px 0px !important;
-}
-
-
 #icon-jigoshop, .jigoshop_icon, .icon32-posts-product, .icon32-posts-shop_order {
 	background-image: url(../images/icons/jigoshop-icons.png) !important;
 	background-position: -11px -5px;
@@ -439,9 +411,12 @@ div.star img { margin:0;}
 }
 
 .stats {
-	h3 a {
-		float: right;
-		margin-left: 8px;
+	p {
+		padding-bottom:15px;
+		a {
+			float:right;
+			margin-left: 8px;
+		}
 	}
 }
 
@@ -493,9 +468,6 @@ ul.recent-orders {
 	padding: 5px 10px 15px;
 	color: #777;
 	font-size: 13px;
-	position: absolute;
-	top: -17px;
-	left: 15px;
 }
 .jigoshop_right_now .table {
 	margin: 0 -9px;
@@ -504,12 +476,10 @@ ul.recent-orders {
 }
 .jigoshop_right_now .table_content {
 	float: left;
-	border-top: #ececec 1px solid;
 	width: 45%;
 }
 .jigoshop_right_now .table_discussion {
 	float: right;
-	border-top: #ececec 1px solid;
 	width: 45%;
 }
 .jigoshop_right_now table td {
@@ -561,7 +531,9 @@ ul.recent-orders {
 }
 
 .jigoshop-links-widget {
-	ul.links {
+	width:100%;
+	height:100%;
+	div.links {
 		float: left;
 		width: 49%;
 	}

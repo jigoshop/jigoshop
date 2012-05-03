@@ -260,21 +260,27 @@ add_filter('manage_edit-shop_order_columns', 'jigoshop_edit_order_columns');
 
 function jigoshop_edit_order_columns($columns) {
 
+	global $post;
+
     $columns = array();
 
     //$columns["cb"] = "<input type=\"checkbox\" />";
 
-    $columns["order_status"] = __("Status", 'jigoshop');
+	$columns["order_status"]        = __("Status", 'jigoshop');
 
-    $columns["order_title"] = __("Order", 'jigoshop');
+	/**
+	 * Have to add the 'title' column in order to show the row hover actions (restore, delete permanently).
+	 * Will only show the 'title' column on the Trash status page.
+	 * Unfortunately, we can't override the 'title' column with jigoshop_custom_order_columns(), otherwise this would be a lot simpler!
+	 */
+	if ($post->post_status == 'trash') $columns["title"] = __("Order", 'jigoshop');
+	else $columns["order_title"]    = __("Order", 'jigoshop');
 
-    $columns["customer"] = __("Customer", 'jigoshop');
-    $columns["billing_address"] = __("Billing Address", 'jigoshop');
-    $columns["shipping_address"] = __("Shipping Address", 'jigoshop');
-
-    $columns["billing_and_shipping"] = __("Billing & Shipping", 'jigoshop');
-
-    $columns["total_cost"] = __("Order Cost", 'jigoshop');
+	$columns["customer"]            = __("Customer", 'jigoshop');
+	$columns["billing_address"]     = __("Billing Address", 'jigoshop');
+	$columns["shipping_address"]    = __("Shipping Address", 'jigoshop');
+	$columns["billing_and_shipping"]= __("Billing & Shipping", 'jigoshop');
+	$columns["total_cost"]          = __("Order Cost", 'jigoshop');
 
     return $columns;
 }
@@ -391,8 +397,8 @@ function jigoshop_custom_order_columns($column) {
                         <th><?php _e('Discount', 'jigoshop'); ?></th>
                         <td><?php echo jigoshop_price($order->order_discount); ?></td>
                     </tr>
-                    <?php 
-                endif; 
+                    <?php
+                endif;
                 if ((get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
                     || (get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) :
                     ?><tr>
@@ -402,7 +408,7 @@ function jigoshop_custom_order_columns($column) {
                     <?php
                 endif;
                 if (get_option('jigoshop_calc_taxes') == 'yes') :
-                    foreach ($order->get_tax_classes() as $tax_class) : 
+                    foreach ($order->get_tax_classes() as $tax_class) :
                         if ($order->show_tax_entry($tax_class)) : ?>
                             <tr>
                                 <th><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></th>
