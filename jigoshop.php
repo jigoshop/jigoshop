@@ -869,13 +869,6 @@ function jigoshop_body_class($classes) {
 }
 add_filter('body_class','jigoshop_body_class');
 
-function jigoshop_hide_out_of_stock_product( $item_id ) {
-	update_post_meta( $item_id, 'visibility', 'hidden' );
-}
-if ( get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) :
-	add_action( 'jigoshop_no_stock_notification', 'jigoshop_hide_out_of_stock_product' );
-endif;
-
 //### Extra Review Field in comments #########################################################
 
 function jigoshop_add_comment_rating($comment_id) {

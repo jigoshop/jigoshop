@@ -80,7 +80,8 @@ class jigoshop_product_variation extends jigoshop_product {
 	 * @return  int
 	 */
 	public function modify_stock( $by ) {
-
+		global $wpdb;
+		
 		// Only do this if we're updating
 		if ( ! $this->managing_stock() )
 			return false;
@@ -92,6 +93,20 @@ class jigoshop_product_variation extends jigoshop_product {
 		// Update & return the new value
 		update_post_meta( $this->variation_id, 'stock', $this->stock );
 		update_post_meta( $this->variation_id, 'stock_sold', $amount_sold );
+		
+		if ( get_option('jigoshop_notify_no_stock_amount') >= 0
+			&& get_option('jigoshop_notify_no_stock_amount') >= $this->stock
+			&& get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) {
+			
+			$wpdb->update( $wpdb->posts, array( 'post_status' => 'draft' ), array( 'ID' => $this->variation_id ) );
+			
+		} else if ( $this->stock > get_option('jigoshop_notify_no_stock_amount')
+			&& get_post_status( $this->variation_id ) == 'draft'
+			&& get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) {
+			
+			$wpdb->update( $wpdb->posts, array( 'post_status' => 'publish' ), array( 'ID' => $this->variation_id ) );
+		}
+		
 		return $this->stock;
 	}
 
