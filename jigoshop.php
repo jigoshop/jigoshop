@@ -275,11 +275,12 @@ function jigoshop_is_admin_page() {
 add_action( 'admin_enqueue_scripts', 'jigoshop_admin_styles' );
 function jigoshop_admin_styles() {
 
-	/* admin.css places our setting icons, so must be loaded on all admin pages */
-	wp_enqueue_style( 'jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css' );
+	/* Our setting icons */
+	wp_enqueue_style( 'jigoshop_admin_icons_style', jigoshop::assets_url() . '/assets/css/admin-icons.css' );
 
-	if (jigoshop_is_admin_page())
-		wp_enqueue_style( 'jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css' );
+	if ( ! jigoshop_is_admin_page() ) return false;
+	wp_enqueue_style( 'jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css' );
+	wp_enqueue_style( 'jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css' );
 
 }
 
