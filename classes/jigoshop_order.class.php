@@ -524,7 +524,7 @@ class jigoshop_order {
 			if ($item['id']>0) :
 				$_product = $this->get_product_from_item( $item );
 
-				if ( $_product->exists && $_product->is_type('downloadable') ) :
+				if ( $_product->is_type('downloadable') || $_product->is_type('virtual') ) :
 					$downloadable_order = true;
 					continue;
 				endif;
