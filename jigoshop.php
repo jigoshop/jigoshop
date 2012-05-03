@@ -173,7 +173,7 @@ function jigoshop_set_image_sizes() {
 	$thumbcrop = get_option( 'jigoshop_use_wordpress_thumbnail_crop', 'no' ) == 'yes' ? true : false;
 	$catalogcrop = get_option( 'jigoshop_use_wordpress_catalog_crop', 'no' ) == 'yes' ? true : false;
 	$featuredcrop = get_option( 'jigoshop_use_wordpress_featured_crop', 'no' ) == 'yes' ? true : false;
-	
+
 	add_image_size( 'admin_product_list', 32, 32, $tinycrop );
 	add_image_size( 'shop_tiny', get_option('jigoshop_shop_tiny_w'), get_option('jigoshop_shop_tiny_h'), $tinycrop );
 	add_image_size( 'shop_thumbnail', get_option('jigoshop_shop_thumbnail_w'), get_option('jigoshop_shop_thumbnail_h'), $thumbcrop );
@@ -260,28 +260,52 @@ function jigoshop_init() {
     	}
 
     endif;
-	
+
 	// Override default translations with custom .mo's found in wp-content/languages/jigoshop
 	load_textdomain( 'jigoshop', WP_LANG_DIR.'/jigoshop/jigoshop-'.get_locale().'.mo' );
-	load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');	
+	load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
 
 }
 add_action('init', 'jigoshop_init', 0);
 
+function jigoshop_is_admin_page() {
+
+	if ( !empty($_GET['post_type']) && ( $_GET['post_type'] == 'product' || $_GET['post_type'] == 'shop_order' ) )
+		return true;
+
+	if ( !empty($_GET['page']) && strstr( $_GET['page'], 'jigoshop' ) )
+		return true;
+
+	if ( !empty($_GET['post']) ) :
+		$currentType = get_post($_GET['post']);
+		$currentType = $currentType->post_type;
+
+		if ( in_array($currentType, array('product', 'shop_order')) )
+			return true;
+	endif;
+
+	if ( empty($bool) )
+		return false;
+
+}
+
 add_action( 'admin_enqueue_scripts', 'jigoshop_admin_styles' );
 function jigoshop_admin_styles() {
-	wp_register_style('jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css');
-    wp_enqueue_style('jigoshop_admin_styles');
-   	wp_register_style('jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css');
-    wp_enqueue_style('jquery-ui-jigoshop-styles');
+
+	/* admin.css places our setting icons, so must be loaded on all admin pages */
+	wp_enqueue_style( 'jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css' );
+
+	if (jigoshop_is_admin_page())
+		wp_enqueue_style( 'jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css' );
+
 }
 
 function jigoshop_admin_scripts() {
 
-    wp_register_script('jquery-ui-datepicker', jigoshop::assets_url() . '/assets/js/jquery-ui-datepicker-1.8.16.min.js', array( 'jquery' ), '1.8.16', true );
-    wp_enqueue_script('jquery-ui-datepicker');
-	wp_register_script( 'jigoshop_backend', jigoshop::assets_url() . '/assets/js/jigoshop_backend.js', array('jquery'), '1.0' );
-    wp_enqueue_script('jigoshop_backend');
+	if (!jigoshop_is_admin_page()) return false;
+
+	wp_enqueue_script('jigoshop_backend'    , jigoshop::assets_url() . '/assets/js/jigoshop_backend.js'               , array('jquery')  , '1.0' );
+	wp_enqueue_script('jquery-ui-datepicker', jigoshop::assets_url() . '/assets/js/jquery-ui-datepicker-1.8.16.min.js', array( 'jquery' ), '1.8.16', true );
 
 }
 add_action('admin_print_scripts', 'jigoshop_admin_scripts');
@@ -363,7 +387,7 @@ add_filter( 'post_type_link', 'jigoshop_product_cat_filter_post_link', 10, 4 );
 function jigoshop_product_cat_filter_post_link( $permalink, $post, $leavename, $sample ) {
 
     if ($post->post_type!=='product') return $permalink;
-    
+
     // Abort early if the placeholder rewrite tag isn't in the generated URL
     if ( false === strpos( $permalink, '%product_cat%' ) ) return $permalink;
 
@@ -1052,13 +1076,13 @@ if(!function_exists('jigoshop_log')){
 
     /**
      * Logs to the debug log when you enable wordpress debug mode.
-     * 
+     *
      * @param string $from_class is the name of the php file that you are logging from.
      * defaults to jigoshop if non is supplied.
      * @param mixed $message this can be a regular string, array or object
      */
     function jigoshop_log( $message, $from_class = 'jigoshop' ) {
-        
+
         if( WP_DEBUG === true ) :
             if( is_array( $message ) || is_object( $message ) ) :
                 error_log( $from_class . ': ' . print_r( $message, true ) );
@@ -1066,6 +1090,6 @@ if(!function_exists('jigoshop_log')){
                 error_log( $from_class . ': ' . $message );
             endif;
         endif;
-        
+
     }
 }
