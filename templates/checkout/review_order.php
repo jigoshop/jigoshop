@@ -11,7 +11,7 @@
  * @package             Jigoshop
  * @category            Checkout
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright ï¿½ 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 ?>
@@ -112,33 +112,42 @@
 	</table>
 
 	<div id="payment">
-		<?php if (jigoshop_cart::needs_payment()) : ?>
+		
 		<ul class="payment_methods methods">
 			<?php
 				$available_gateways = jigoshop_payment_gateways::get_available_payment_gateways();
 				if ($available_gateways) :
-					// Chosen Method
-					if (sizeof($available_gateways)) {
-						if( isset( $_POST[ 'payment_method' ] ) && isset( $available_gateways[ $_POST['payment_method'] ] ) ) {
-							$available_gateways[ $_POST[ 'payment_method' ] ]->set_current();
-						} else {
-							current($available_gateways)->set_current();
-						}
-					}
+                    
+                    $gateway_set = false;
 					foreach ($available_gateways as $gateway ) :
-						?>
-						<li>
-						<input type="radio" id="payment_method_<?php echo $gateway->id; ?>" class="input-radio" name="payment_method" value="<?php echo esc_attr( $gateway->id ); ?>" <?php if ($gateway->chosen) echo 'checked="checked"'; ?> />
-						<label for="payment_method_<?php echo $gateway->id; ?>"><?php echo $gateway->title; ?> <?php echo apply_filters('gateway_icon', $gateway->icon(), $gateway->id); ?></label>
-							<?php
-								if ($gateway->has_fields || $gateway->description) :
-									echo '<div class="payment_box payment_method_' . esc_attr( $gateway->id ) . '" style="display:none;">';
-									$gateway->payment_fields();
-									echo '</div>';
-								endif;
-							?>
-						</li>
-						<?php
+                        if (jigoshop_checkout::process_gateway($gateway)) :
+                            if (!$gateway_set) :
+                                
+                                // Chosen Method
+                                if (sizeof($available_gateways)) :
+                                    if( isset( $_POST[ 'payment_method' ] ) && isset( $available_gateways[ $_POST['payment_method'] ] ) ) :
+                                        $available_gateways[ $_POST[ 'payment_method' ] ]->set_current();
+                                    else :
+                                        current($available_gateways)->set_current();
+                                    endif;
+                                endif;
+                                $gateway_set = true;
+                                    
+                            endif;
+    						?>
+                            <li>
+                            <input type="radio" id="payment_method_<?php echo $gateway->id; ?>" class="input-radio" name="payment_method" value="<?php echo esc_attr( $gateway->id ); ?>" <?php if ($gateway->chosen) echo 'checked="checked"'; ?> />
+                            <label for="payment_method_<?php echo $gateway->id; ?>"><?php echo $gateway->title; ?> <?php echo apply_filters('gateway_icon', $gateway->icon(), $gateway->id); ?></label>
+                                <?php
+                                    if ($gateway->has_fields || $gateway->description) :
+                                        echo '<div class="payment_box payment_method_' . esc_attr( $gateway->id ) . '" style="display:none;">';
+                                        $gateway->payment_fields();
+                                        echo '</div>';
+                                    endif;
+                                ?>
+                            </li>
+                            <?php
+                        endif;
 					endforeach;
 				else :
 
@@ -151,7 +160,7 @@
 				endif;
 			?>
 		</ul>
-		<?php endif; ?>
+		
 
 		<div class="form-row">
 
