@@ -36,7 +36,7 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
     if ( $order->update_status($_POST['order_status'] ) && empty($_POST['invoice']) ) return; // there were errors with status changes, don't continue
 
     // Add/Replace data to array
-    $order_fields = array(
+	$customerDetails = array(
         'billing_first_name',
         'billing_last_name',
         'billing_company',
@@ -56,7 +56,10 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
         'shipping_city',
         'shipping_postcode',
         'shipping_country',
-        'shipping_state',
+        'shipping_state'
+	);
+
+    $order_fields = array(
         'shipping_method',
         'shipping_service',
         'payment_method',
@@ -71,15 +74,37 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
         'order_total_prices_per_tax_class_ex_tax'
     );
 
+	/* Pre-fill the customer addresses */
+	foreach($customerDetails as $key) :
+		$order_fields[] = $key;
+
+		/* Checks if this is a new order from "Add Order" button */
+		if ( !empty($_POST['auto_draft']) && !empty($_POST['customer_user']) && empty($_POST[$key]) ) :
+
+			/**
+			 * Some nasty but necessary checks for finding the meta data. It's either this or a whole
+			 * new list of arrays just for this checking bit.
+			 */
+			if      (strstr($key, 'billing_'))  $adr = str_replace('billing_' , 'billing-' , $key);
+			else if (strstr($key, 'shipping_')) $adr = str_replace('shipping_', 'shipping-', $key);
+			if      (strstr($adr, 'address_1')) $adr = str_replace('address_1', 'address'  , $adr);
+			else if (strstr($adr, 'address_2')) $adr = str_replace('address_1', 'address2' , $adr);
+
+			$data[$key] = get_user_meta( $_POST['customer_user'], $adr, true );
+		endif;
+
+	endforeach;
+
     //run stripslashes on all valid fields
     foreach ($order_fields as $field_name) {
-        if ( isset( $_POST[$field_name] )) $data[$field_name] = stripslashes( $_POST[$field_name] );
+        if ( isset( $_POST[$field_name] ) && empty( $data[$field_name] ) )
+			$data[$field_name] = stripslashes( $_POST[$field_name] );
     }
-    
-    // if total tax has been modified from order tax, then create a customized tax array 
+
+    // if total tax has been modified from order tax, then create a customized tax array
     // just for the order. At this point, we no longer know about multiple tax classes.
     // Even if we used the old tax array data, we still don't know how to break down
-    // the amounts since they're customized. 
+    // the amounts since they're customized.
     if ($order->get_total_tax() != $data['order_tax_total']) :
         // need to create new tax array string
         $new_tax = $data['order_tax_total'];

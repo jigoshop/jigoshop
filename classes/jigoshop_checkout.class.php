@@ -405,7 +405,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 
             // Payment method
             $available_gateways = jigoshop_payment_gateways::get_available_payment_gateways();
-            
+
             // can't just simply check needs_payment() here, as paypal may have force payment set to true
             if (!empty($this->posted['payment_method']) && self::process_gateway($available_gateways[$this->posted['payment_method']])) :
                 // Payment Method Field Validation
@@ -534,6 +534,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 					// Order meta data
 					$data = array();
 					$applied_coupons = array();
+
 					foreach ( jigoshop_cart::$applied_coupons as $coupon )
 						$applied_coupons[] = jigoshop_coupons::get_coupon( $coupon );
 
@@ -559,7 +560,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 					$data['shipping_country']       = $shipping_country;
 					$data['shipping_state']         = $shipping_state;
 					$data['shipping_method']        = $this->posted['shipping_method'];
-					$data['shipping_method_title']  = $available_methods[$this->posted['shipping_method']]->title;
+					$data['shipping_method_title']  = !empty($available_methods) ? $available_methods[$this->posted['shipping_method']]->title : $this->posted['shipping_method_title'];
 					$data['shipping_service']       = $this->posted['shipping_service'];
 					$data['payment_method']         = $this->posted['payment_method'];
 					$data['payment_method_title']   = $available_gateways[$this->posted['payment_method']]->title;
@@ -809,8 +810,8 @@ class jigoshop_checkout extends jigoshop_singleton {
      */
     public static function process_gateway($payment_gateway) {
         if (!isset($payment_gateway)) :
-            
-            
+
+
             jigoshop::add_error( __('Invalid payment method.','jigoshop') );
             return false;
         else :
