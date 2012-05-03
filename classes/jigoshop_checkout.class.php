@@ -13,7 +13,7 @@
  * @package             Jigoshop
  * @category            Checkout
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright ï¿½ 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -397,7 +397,9 @@ class jigoshop_checkout extends jigoshop_singleton {
 
             // Payment method
             $available_gateways = jigoshop_payment_gateways::get_available_payment_gateways();
-            if ($this->process_gateway($available_gateways[$this->posted['payment_method']])) :
+            
+            // can't just simply check needs_payment() here, as paypal may have force payment set to true
+            if (!empty($this->posted['payment_method']) && self::process_gateway($available_gateways[$this->posted['payment_method']])) :
                 // Payment Method Field Validation
                 $available_gateways[$this->posted['payment_method']]->validate_fields();
             endif;
@@ -544,7 +546,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 					$data['shipping_country']		= $shipping_country;
 					$data['shipping_state']			= $shipping_state;
 					$data['shipping_method']		= $this->posted['shipping_method'];
-					$data['shipping_method_title']	= $available_methods[$this->posted['shipping_method']]->title;
+					$data['shipping_method_title']  = !empty($available_methods) ? $available_methods[$this->posted['shipping_method']]->title : $this->posted['shipping_method_title'];
 					$data['shipping_service']		= $this->posted['shipping_service'];
 					$data['payment_method']			= $this->posted['payment_method'];
 					$data['payment_method_title']	= $available_gateways[$this->posted['payment_method']]->title;
@@ -647,7 +649,8 @@ class jigoshop_checkout extends jigoshop_singleton {
 					// Inserted successfully
 					do_action('jigoshop_new_order', $order_id);
 
-					if ($this->process_gateway($available_gateways[$this->posted['payment_method']])) :
+                    // can't just simply check needs_payment() here, as paypal may have force payment set to true
+					if (!empty($this->posted['payment_method']) && self::process_gateway($available_gateways[$this->posted['payment_method']])) :
 
 						// Store Order ID in session so it can be re-used after payment failure
 						jigoshop_session::instance()->order_awaiting_payment = $order_id;
@@ -804,8 +807,10 @@ class jigoshop_checkout extends jigoshop_singleton {
      * @return boolean true when the gateway should be processed, otherwise false
      * @since 1.2
      */
-    private function process_gateway($payment_gateway) {
+    public static function process_gateway($payment_gateway) {
         if (!isset($payment_gateway)) :
+            
+            
             jigoshop::add_error( __('Invalid payment method.','jigoshop') );
             return false;
         else :

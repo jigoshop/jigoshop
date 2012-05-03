@@ -13,7 +13,7 @@
  * @package             Jigoshop
  * @category            Checkout
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright ï¿½ 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_tax {
@@ -478,17 +478,17 @@ class jigoshop_tax {
                 if (!$this->is_compound_tax($rate)) :
                     $tax = $this->calc_tax($total_item_price - $compounded_tax_amount, $tax_rate, $prices_include_tax);
 
-                    if ($this->has_tax($tax_class) && $tax > 0) :
+                    if ($this->has_tax($tax_class)) :
                         $this->update_tax_amount($tax_class, $tax, false);
                         $tax_classes_applied[] = $tax_class;
-                    elseif ($tax > 0) :
-                        $tax_amount[$tax_class]['amount'] = $tax;
-                        $tax_amount[$tax_class]['rate'] = $tax_rate;
-                        $tax_amount[$tax_class]['compound'] = false;
-                        $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
-                        $tax_classes_applied[] = $tax_class;
                     endif;
-
+                    
+                    $tax_amount[$tax_class]['amount'] = $tax;
+                    $tax_amount[$tax_class]['rate'] = $tax_rate;
+                    $tax_amount[$tax_class]['compound'] = false;
+                    $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
+                    $tax_classes_applied[] = $tax_class;
+                    
                     $non_compound_tax_amount += $tax;
                     $total_tax += $tax;
 
@@ -496,16 +496,16 @@ class jigoshop_tax {
                     
                     $tax = $this->calc_tax($total_item_price + $non_compound_tax_amount, $tax_rate, $prices_include_tax);
 
-                    if ($this->has_tax($tax_class) && $tax > 0) :
+                    if ($this->has_tax($tax_class)) :
                         $this->update_tax_amount($tax_class, $tax, false);
                         $tax_classes_applied[] = $tax_class;
-                    elseif ($tax > 0) :
-                        $tax_amount[$tax_class]['amount'] = $tax;
-                        $tax_amount[$tax_class]['rate'] = $tax_rate;
-                        $tax_amount[$tax_class]['compound'] = true;
-                        $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
-                        $tax_classes_applied[] = $tax_class;
                     endif;
+
+                    $tax_amount[$tax_class]['amount'] = $tax;
+                    $tax_amount[$tax_class]['rate'] = $tax_rate;
+                    $tax_amount[$tax_class]['compound'] = true;
+                    $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
+                    $tax_classes_applied[] = $tax_class;
                     
                     $compounded_tax_amount += $tax;
                     $total_tax += $tax;

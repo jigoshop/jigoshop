@@ -11,7 +11,7 @@
  * @package             Jigoshop
  * @category            Checkout
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright ï¿½ 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class paypal extends jigoshop_payment_gateway {
@@ -261,22 +261,30 @@ class paypal extends jigoshop_payment_gateway {
 		endforeach; endif;
 
 		// Shipping Cost
-		$item_loop++;
-		$paypal_args['item_name_'.$item_loop] = __('Shipping cost', 'jigoshop');
-		$paypal_args['quantity_'.$item_loop] = '1';
+        if (jigoshop_shipping::is_enabled()) :
+            $item_loop++;
+            $paypal_args['item_name_'.$item_loop] = __('Shipping cost', 'jigoshop');
+            $paypal_args['quantity_'.$item_loop] = '1';
 
-        $shipping_tax = (float)($order->order_shipping_tax ? $order->order_shipping_tax : 0);
+            $shipping_tax = (float)($order->order_shipping_tax ? $order->order_shipping_tax : 0);
 
-		$paypal_args['amount_'.$item_loop] = (get_option('jigoshop_prices_include_tax') == 'yes' ? number_format((float)$order->order_shipping + $shipping_tax, 2) : number_format((float)$order->order_shipping, 2));
-
+            $paypal_args['amount_'.$item_loop] = (get_option('jigoshop_prices_include_tax') == 'yes' ? number_format((float)$order->order_shipping + $shipping_tax, 2) : number_format((float)$order->order_shipping, 2));
+        endif; 
+        
         if (get_option('jigoshop_paypal_force_payment') == 'yes') :
+
             $sum = 0;
-            for ($i = 0; $i < $item_loop; $i++) :
+            for ($i = 1; $i < $item_loop; $i++) :
                 $sum += $paypal_args['amount_'.$i];
             endfor;
+            
+            $item_loop++;
             if ($sum == 0 || (isset($order->order_discount) && $sum - $order->order_discount == 0)) :
-                $paypal_args['amount_'.$item_loop] = 0.01; // force payment on shipping as we know quantity is for sure 1
+                $paypal_args['item_name_'.$item_loop] = __('Force payment on free', 'jigoshop');
+                $paypal_args['quantity_'.$item_loop] = '1';
+                $paypal_args['amount_'.$item_loop] = 0.01; // force payment
             endif;
+            
         endif;
         
 		$paypal_args_array = array();
