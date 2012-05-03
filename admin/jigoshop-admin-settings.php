@@ -253,7 +253,7 @@ function jigoshop_update_options() {
 			/* default back to standard image sizes if no value is entered */
 			elseif (isset($value['type']) && $value['type']=='image_size') :
 
-				if(isset($value['id']) && isset($_POST[$value['id'].'_w'])) {
+				if(!empty($value['id']) && (!empty($_POST[$value['id'].'_w']) && !empty($_POST[$value['id'].'_h'])) ) {
 					update_option($value['id'].'_w', jigowatt_clean($_POST[$value['id'].'_w']));
 					update_option($value['id'].'_h', jigowatt_clean($_POST[$value['id'].'_h']));
 				} else {
