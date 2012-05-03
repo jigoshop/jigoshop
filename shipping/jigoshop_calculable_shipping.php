@@ -12,7 +12,7 @@
  * @package             Jigoshop
  * @category            Checkout
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright ï¿½ 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
@@ -81,7 +81,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
 
                     $tax = 0;
                     if (get_option('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable') :
-                        $tax = $this->calculate_shipping_tax($rate);
+                        $tax = $this->calculate_shipping_tax($rate - jigoshop_cart::get_cart_discount_leftover());
                     endif;
 
                     // rate should never be 0 or less from shipping API's
