@@ -43,7 +43,8 @@ class jigoshop_product_variation extends jigoshop_product {
 
 		// Merge with the variation data
 		$this->variation_id = $ID;
-		$this->variation_data = maybe_unserialize( $this->meta['variation_data'][0] );
+		if ( isset( $this->meta['variation_data'][0] ))
+			$this->variation_data = maybe_unserialize( $this->meta['variation_data'][0] );
 		parent::__construct( $ID );
 
 		// Restore the parent ID
