@@ -844,7 +844,7 @@ function get_all_states_key($tax_rate) {
  * Prints an updated notice
  */
 function jigoshop_settings_updated_notice() {
-    echo '<div id="message" class="updated fade"><p><strong>' . __('Your settings have been saved.', 'jigoshop') . '</strong></p></div>';
+    echo '<div id="message" class="updated"><p><strong>' . __('Your settings have been saved.', 'jigoshop') . '</strong></p></div>';
 }
 
 /**
