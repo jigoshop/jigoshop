@@ -1004,7 +1004,7 @@ class jigoshop_product {
 		if ( ! $this->attributes )
 			$this->attributes = maybe_unserialize( $this->meta['product_attributes'][0] );
 
-		return $this->attributes;
+		return (array) $this->attributes;
 	}
 
 	/**
@@ -1014,12 +1014,11 @@ class jigoshop_product {
 	 */
 	public function has_attributes() {
 		$result = false;
-		if ( (bool) $this->get_attributes() ) {
-			foreach( $this->get_attributes() as $attribute ) {
-				$result |= (bool) $attribute['visible'];
-			}
+		$attributes = $this->get_attributes();
+		if ( ! empty( $attributes )) foreach ( $attributes as $attribute ) {
+			$result |= (bool) $attribute['visible'];
 		}
-
+		
 		return $result;
 	}
 
