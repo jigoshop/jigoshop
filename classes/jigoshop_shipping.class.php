@@ -11,7 +11,7 @@
  * @package             Jigoshop
  * @category            Checkout
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright ï¿½ 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_shipping extends jigoshop_singleton {
@@ -140,7 +140,7 @@ class jigoshop_shipping extends jigoshop_singleton {
                     self::$shipping_error_message = $method->get_error_message();
                 endif;
 
-            elseif ($method->id != 'local_pickup') : // handle normal shipping methods, except, don't let local_pickup be chosen
+            elseif ($method->id != 'local_pickup') : // handle normal shipping methods, except, don't let local_pickup be chosen automatically
                 $fee = $method->shipping_total;
                 if ($fee >= 0 && $fee < $_cheapest_fee || !is_numeric($_cheapest_fee)) :
                     $_cheapest_fee = $fee;

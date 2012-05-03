@@ -294,7 +294,6 @@ function my_action_row($actions){
 		echo sprintf(__('Order #%s'), $post->ID);
 
 	return $actions;
-
 }
 
 add_action('manage_shop_order_posts_custom_column', 'jigoshop_custom_order_columns', 2);

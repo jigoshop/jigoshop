@@ -123,7 +123,7 @@ add_action( 'admin_notices', 'jigoshop_meta_boxes_save_errors' );
 function jigoshop_meta_boxes_save_errors() {
 	$jigoshop_errors = maybe_unserialize(get_option('jigoshop_errors'));
     if ($jigoshop_errors && sizeof($jigoshop_errors)>0) :
-		echo '<div id="jigoshop_errors" class="error">';
+    	echo '<div id="jigoshop_errors" class="error">';
     	foreach ($jigoshop_errors as $error) :
     		echo '<p>'.$error.'</p>';
     	endforeach;
