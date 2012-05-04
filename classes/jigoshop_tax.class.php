@@ -792,7 +792,7 @@ class jigoshop_tax {
             $found_shipping_rates = array();
 
             // Loop cart and find the highest tax band
-            if (sizeof(jigoshop_cart::$cart_contents) > 0) :
+            /*if (sizeof(jigoshop_cart::$cart_contents) > 0) :
 
                 foreach (jigoshop_cart::$cart_contents as $item) :
 
@@ -815,7 +815,11 @@ class jigoshop_tax {
                 endforeach;
 
             endif;
-
+*/
+            foreach ($customer_tax_classes as $tax_class) :
+                $found_rate = $this->find_rate($country, $state, $tax_class);
+            endforeach;
+            
             if (sizeof($rates) > 0) :
                 
                 // sort reverse by keys. Largest key wins
@@ -997,6 +1001,16 @@ class jigoshop_tax {
         
         if (!empty($rates)) :
             foreach ($rates as $tax_class => $rate) :
+                
+                // no tax on products, but shipping tax should be applied
+                if (!isset($this->tax_amounts[$tax_class])) :
+                    
+                    $this->tax_amounts[$tax_class]['amount'] = 0;
+                    $this->tax_amounts[$tax_class]['rate'] = $rate['rate'];
+                    $this->tax_amounts[$tax_class]['compound'] = $rate['compound'];
+                    $this->tax_amounts[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
+                    $this->tax_amounts[$tax_class][$shipping_method_id] = 0;
+                endif;
 
                 // initialize shipping if not already initialized
                 if (!isset($this->tax_amounts[$tax_class][$shipping_method_id])) :
