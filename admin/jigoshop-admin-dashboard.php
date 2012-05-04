@@ -36,12 +36,12 @@ if (!function_exists ('add_action')) {
 class jigoshop_dashboard {
 
 	function __construct() {
-		add_action('admin_menu', array(&$this, 'on_admin_menu'));
-	}
 
-	function on_admin_menu() {
-		$this->pagehook = add_options_page('Jigoshop Dashboard', "Jigoshop Dashboard", 'manage_options', 'jigoshop', array(&$this, 'on_show_page'));
-		add_action('load-'.$this->pagehook, array(&$this, 'on_load_page'));
+		$this->page = 'toplevel_page_jigoshop';
+
+		$this->on_load_page();
+		$this->on_show_page();
+
 	}
 
 	function on_load_page() {
@@ -50,13 +50,13 @@ class jigoshop_dashboard {
 		wp_enqueue_script('wp-lists');
 		wp_enqueue_script('postbox');
 
-		add_meta_box('jigoshop_dash_right_now',     'Right Now',     array(&$this, 'jigoshop_dash_right_now'),     $this->pagehook, 'side',  'core');
-		add_meta_box('jigoshop_dash_recent_orders', 'Recent Orders', array(&$this, 'jigoshop_dash_recent_orders'), $this->pagehook, 'side', 'core');
-		add_meta_box('jigoshop_dash_stock_report',  'Stock Report',  array(&$this, 'jigoshop_dash_stock_report'),  $this->pagehook, 'side',  'core');
-		add_meta_box('jigoshop_dash_monthly_report','Monthly Report',array(&$this, 'jigoshop_dash_monthly_report'),$this->pagehook, 'normal', 'core');
-		add_meta_box('jigoshop_dash_recent_reviews','Recent Reviews',array(&$this, 'jigoshop_dash_recent_reviews'),$this->pagehook, 'normal',  'core');
-		add_meta_box('jigoshop_dash_latest_news',   'Latest News',   array(&$this, 'jigoshop_dash_latest_news'),   $this->pagehook, 'normal',  'core');
-		add_meta_box('jigoshop_dash_useful_links',  'Useful Links',  array(&$this, 'jigoshop_dash_useful_links'),  $this->pagehook, 'normal', 'core');
+		add_meta_box('jigoshop_dash_right_now',     'Right Now',     array(&$this, 'jigoshop_dash_right_now'),     $this->page, 'side',   'core');
+		add_meta_box('jigoshop_dash_recent_orders', 'Recent Orders', array(&$this, 'jigoshop_dash_recent_orders'), $this->page, 'side',   'core');
+		add_meta_box('jigoshop_dash_stock_report',  'Stock Report',  array(&$this, 'jigoshop_dash_stock_report'),  $this->page, 'side',   'core');
+		add_meta_box('jigoshop_dash_monthly_report','Monthly Report',array(&$this, 'jigoshop_dash_monthly_report'),$this->page, 'normal', 'core');
+		add_meta_box('jigoshop_dash_recent_reviews','Recent Reviews',array(&$this, 'jigoshop_dash_recent_reviews'),$this->page, 'normal', 'core');
+		add_meta_box('jigoshop_dash_latest_news',   'Latest News',   array(&$this, 'jigoshop_dash_latest_news'),   $this->page, 'normal', 'core');
+		add_meta_box('jigoshop_dash_useful_links',  'Useful Links',  array(&$this, 'jigoshop_dash_useful_links'),  $this->page, 'normal', 'core');
 	}
 
 	function on_show_page() {
@@ -72,11 +72,11 @@ class jigoshop_dashboard {
 
 			<div id="dashboard-widgets" class="metabox-holder">
 				<div id='postbox-container-1' class='postbox-container' style='width:50%;'>
-					<?php do_meta_boxes($this->pagehook, 'side'); ?>
+					<?php do_meta_boxes($this->page, 'side', null); ?>
 				</div>
 				<div id="post-body" class="has-sidebar">
 					<div id='postbox-container-2' class='postbox-container' style='width:50%;'>
-						<?php do_meta_boxes($this->pagehook, 'normal'); ?>
+						<?php do_meta_boxes($this->page, 'normal', null); ?>
 					</div>
 				</div>
 				<br class="clear"/>
@@ -89,7 +89,7 @@ class jigoshop_dashboard {
 				// close postboxes that should be closed
 				$('.if-js-closed').removeClass('if-js-closed').addClass('closed');
 				// postboxes setup
-				postboxes.add_postbox_toggles('<?php echo $this->pagehook; ?>');
+				postboxes.add_postbox_toggles('<?php echo $this->page; ?>');
 			});
 			//]]>
 		</script>
