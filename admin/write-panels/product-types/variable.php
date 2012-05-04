@@ -138,7 +138,25 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 		// Get the attributes to be used later
 		$attributes = (array) maybe_unserialize( get_post_meta($parent_id, 'product_attributes', true) );
 
+		$sizes = array();
+
+		/**
+		 * Reverse sort to list 0_new arrays at the bottom, so that they're deleted first in case it's a duplicate.
+		 * This way, we won't delete the existing variation, but rather the newly created dupe.
+		 */
+		rsort($_POST['variations']);
+
 		foreach( $_POST['variations'] as $ID => $meta ) {
+
+			/* Prevent duplicate variations */
+			if( $sizes[$meta['tax_size']] == 1) {
+				wp_set_object_terms( $ID, null, 'product_type');
+				wp_delete_post( $ID );
+				unset($_POST['variations'][$ID]);
+				continue;
+			}
+
+			$sizes[$meta['tax_size']]++;
 
 			// Update post data or Add post if new
 			if ( strpos($ID, '_new') ) {
@@ -163,7 +181,18 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			// Set variation meta data
 			update_post_meta( $ID, 'sku',           $meta['sku'] );
 			update_post_meta( $ID, 'regular_price', $meta['regular_price'] );
-			update_post_meta( $ID, 'sale_price',    $meta['sale_price'] );
+
+			$sale_price = ! empty( $meta['sale_price'] )
+				? ( !strstr( $meta['sale_price'], '%' ) ? jigoshop_sanitize_num( $meta['sale_price'] ) : $meta['sale_price'] )
+				: '';
+			if ( strstr( $meta['sale_price'], '%' ) ) {
+				update_post_meta( $ID, 'sale_price', $sale_price );
+			} else if ( ! empty( $sale_price ) && $sale_price < jigoshop_sanitize_num( $meta['regular_price'] ) ) {
+				update_post_meta( $ID, 'sale_price', $sale_price );
+			} else {
+				// silently fail if entered sale price > regular price (or nothing entered)
+				update_post_meta( $ID, 'sale_price', '' );
+			}
 
 			update_post_meta( $ID, 'weight',        $meta['weight'] );
 			update_post_meta( $ID, 'length',        $meta['length'] );

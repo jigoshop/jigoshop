@@ -257,19 +257,16 @@ add_action('init', 'jigoshop_init', 0);
 
 function jigoshop_is_admin_page() {
 
+	global $typenow;
+
 	if ( !empty($_GET['post_type']) && ( $_GET['post_type'] == 'product' || $_GET['post_type'] == 'shop_order' ) )
 		return true;
 
 	if ( !empty($_GET['page']) && strstr( $_GET['page'], 'jigoshop' ) )
 		return true;
 
-	if ( !empty($_GET['post']) ) :
-		$currentType = get_post($_GET['post']);
-		$currentType = $currentType->post_type;
-
-		if ( in_array($currentType, array('product', 'shop_order')) )
-			return true;
-	endif;
+	if ( !empty($typenow) && ( $typenow == 'product' || $typenow == 'shop_order' ) )
+		return true;
 
 	return false;
 
@@ -287,12 +284,26 @@ function jigoshop_admin_styles() {
 
 }
 
+function jigoshop_disable_autosave( $src, $handle ) {
+    if( 'autosave' != $handle ) return $src;
+    return '';
+}
+
 function jigoshop_admin_scripts() {
+
+	global $typenow;
 
 	if (!jigoshop_is_admin_page()) return false;
 
 	wp_enqueue_script('jigoshop_backend'    , jigoshop::assets_url() . '/assets/js/jigoshop_backend.js'               , array( 'jquery' ), '1.0' );
 	wp_enqueue_script('jquery-ui-datepicker', jigoshop::assets_url() . '/assets/js/jquery-ui-datepicker-1.8.16.min.js', array( 'jquery' ), '1.8.16', true );
+
+	/**
+	 * Disable autosaves on the order pages. Prevents the javascript alert when modifying an order.
+	 * `wp_deregister_script( 'autosave' )` would produce errors, so we use a filter instead.
+	 */
+	if ( $typenow == ('shop_order') )
+		add_filter( 'script_loader_src', 'jigoshop_disable_autosave', 10, 2 );
 
 }
 add_action('admin_print_scripts', 'jigoshop_admin_scripts');
@@ -871,13 +882,6 @@ function jigoshop_body_class($classes) {
 	return $classes;
 }
 add_filter('body_class','jigoshop_body_class');
-
-function jigoshop_hide_out_of_stock_product( $item_id ) {
-	update_post_meta( $item_id, 'visibility', 'hidden' );
-}
-if ( get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) :
-	add_action( 'jigoshop_no_stock_notification', 'jigoshop_hide_out_of_stock_product' );
-endif;
 
 //### Extra Review Field in comments #########################################################
 

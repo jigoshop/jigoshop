@@ -229,6 +229,20 @@ class jigoshop_product {
 		// Update & return the new value
 		update_post_meta( $this->ID, 'stock', $this->stock );
 		update_post_meta( $this->ID, 'stock_sold', $amount_sold );
+
+		if ( get_option('jigoshop_notify_no_stock_amount') >= 0
+			&& get_option('jigoshop_notify_no_stock_amount') >= $this->stock
+			&& get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) {
+			
+			update_post_meta( $this->ID, 'visibility', 'hidden' );
+			
+		} else if ( $this->stock > get_option('jigoshop_notify_no_stock_amount')
+			&& $this->visibility == 'hidden'
+			&& get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) {
+			
+			update_post_meta( $this->ID, 'visibility', 'visible' );
+		}
+		
 		return $this->stock;
 	}
 
@@ -1004,7 +1018,7 @@ class jigoshop_product {
 		if ( ! $this->attributes )
 			$this->attributes = maybe_unserialize( $this->meta['product_attributes'][0] );
 
-		return $this->attributes;
+		return (array) $this->attributes;
 	}
 
 	/**
@@ -1014,12 +1028,11 @@ class jigoshop_product {
 	 */
 	public function has_attributes() {
 		$result = false;
-		if ( (bool) $this->get_attributes() ) {
-			foreach( $this->get_attributes() as $attribute ) {
-				$result |= (bool) $attribute['visible'];
-			}
+		$attributes = $this->get_attributes();
+		if ( ! empty( $attributes )) foreach ( $attributes as $attribute ) {
+			$result |= (bool) $attribute['visible'];
 		}
-
+		
 		return $result;
 	}
 

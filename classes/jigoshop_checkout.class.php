@@ -341,7 +341,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 			endforeach;
 
 			// Shipping Information
-			if (jigoshop_cart::needs_shipping() && !jigoshop_cart::ship_to_billing_address_only() && empty($this->posted['shiptobilling'])) :
+			if (jigoshop_shipping::is_enabled() && !jigoshop_cart::ship_to_billing_address_only() && empty($this->posted['shiptobilling'])) :
 
 				foreach ($this->shipping_fields as $field) :
 					$field = apply_filters( 'jigoshop_shipping_field', $field );
@@ -470,7 +470,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 						$shipping_postcode  = $this->posted['billing-postcode'];
 						$shipping_country   = $this->posted['billing-country'];
 
-					elseif ( jigoshop_cart::needs_shipping() ) :
+					elseif ( jigoshop_shipping::is_enabled() ) :
 
 						$shipping_first_name= $this->posted['shipping-first_name'];
 						$shipping_last_name = $this->posted['shipping-last_name'];
@@ -498,17 +498,17 @@ class jigoshop_checkout extends jigoshop_singleton {
 						update_user_meta( $user_id, 'billing-state'     , $this->posted['billing-state'] );
 						update_user_meta( $user_id, 'billing-phone'     , $this->posted['billing-phone'] );
 
-						if ( empty($this->posted['shiptobilling']) && jigoshop_cart::needs_shipping() ) :
+						if ( empty($this->posted['shiptobilling']) && jigoshop_shipping::is_enabled() ) :
 							update_user_meta( $user_id, 'shipping-first_name', $this->posted['shipping-first_name'] );
-							update_user_meta( $user_id, 'shipping-last_name' , $this->posted['shipping-last_name'] );
-							update_user_meta( $user_id, 'shipping-company'   , $this->posted['shipping-company'] );
-							update_user_meta( $user_id, 'shipping-address'   , $this->posted['shipping-address'] );
-							update_user_meta( $user_id, 'shipping-address-2' , $this->posted['shipping-address-2'] );
-							update_user_meta( $user_id, 'shipping-city'      , $this->posted['shipping-city'] );
-							update_user_meta( $user_id, 'shipping-postcode'  , $this->posted['shipping-postcode'] );
-							update_user_meta( $user_id, 'shipping-country'   , $this->posted['shipping-country'] );
-							update_user_meta( $user_id, 'shipping-state'     , $this->posted['shipping-state'] );
-						elseif ( $this->posted['shiptobilling'] && jigoshop_cart::needs_shipping() ) :
+							update_user_meta( $user_id, 'shipping-last_name', $this->posted['shipping-last_name'] );
+							update_user_meta( $user_id, 'shipping-company', $this->posted['shipping-company'] );
+							update_user_meta( $user_id, 'shipping-address', $this->posted['shipping-address'] );
+							update_user_meta( $user_id, 'shipping-address-2', $this->posted['shipping-address-2'] );
+							update_user_meta( $user_id, 'shipping-city', $this->posted['shipping-city'] );
+							update_user_meta( $user_id, 'shipping-postcode', $this->posted['shipping-postcode'] );
+							update_user_meta( $user_id, 'shipping-country', $this->posted['shipping-country'] );
+							update_user_meta( $user_id, 'shipping-state', $this->posted['shipping-state'] );
+						elseif ( $this->posted['shiptobilling'] && jigoshop_shipping::is_enabled() ) :
 							update_user_meta( $user_id, 'shipping-first_name', $this->posted['billing-first_name'] );
 							update_user_meta( $user_id, 'shipping-last_name' , $this->posted['billing-last_name'] );
 							update_user_meta( $user_id, 'shipping-company'   , $this->posted['billing-company'] );
@@ -560,7 +560,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 					$data['shipping_country']       = $shipping_country;
 					$data['shipping_state']         = $shipping_state;
 					$data['shipping_method']        = $this->posted['shipping_method'];
-					$data['shipping_method_title']  = !empty($available_methods) ? $available_methods[$this->posted['shipping_method']]->title : $this->posted['shipping_method_title'];
+					$data['shipping_method_title']  = !empty($available_methods) ? $available_methods[$this->posted['shipping_method']]->title : '';
 					$data['shipping_service']       = $this->posted['shipping_service'];
 					$data['payment_method']         = $this->posted['payment_method'];
 					$data['payment_method_title']   = $available_gateways[$this->posted['payment_method']]->title;

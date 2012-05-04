@@ -243,7 +243,7 @@ function jigoshop_product_data_box() {
 			<fieldset>
 			<?php
 				// Customizable
-				echo jigoshop_form::select( 'product_customize', 'Customizable',
+				echo jigoshop_form::select( 'product_customize', 'Can be personalized',
 					array(
 						'no'	=> 'No',
 						'yes'	=> 'Yes',
