@@ -99,11 +99,7 @@ class Jigoshop_reports {
 		?>
 		<div id="jigoshop-metaboxes-main" class="wrap">
 			<div class="icon32 jigoshop_icon"><br/></div>
-			<h2><?php _e('Jigoshop Dashboard','jigoshop'); ?></h2>
-
-				<?php wp_nonce_field('jigoshop-metaboxes-main'); ?>
-				<?php wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false ); ?>
-				<?php wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false ); ?>
+			<h2><?php _e('Jigoshop Reports','jigoshop'); ?></h2>
 
 			<form method="post" action="admin.php?page=jigoshop_reports">
 				<p><label for="from"><?php _e('From:', 'jigoshop'); ?></label> <input class="date-pick" type="date" name="start_date" id="from" readonly="readonly" value="<?php echo esc_attr( date('Y-m-d', $start_date) ); ?>" /> <label for="to"><?php _e('To:', 'jigoshop'); ?></label> <input type="date" class="date-pick" name="end_date" id="to" readonly="readonly" value="<?php echo esc_attr( date('Y-m-d', $end_date) ); ?>" /> <input type="submit" class="button" value="<?php _e('Show', 'jigoshop'); ?>" /></p>
@@ -134,7 +130,7 @@ h6{font-size:11px;color:#999999;text-transform:uppercase;}
 .thumbnail{display: block;padding: 4px;line-height: 1;border: 1px solid #DDD;-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;-webkit-box-shadow: 0 1px 1px  rgba(0, 0, 0, 0.075);-moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);box-shadow: 0 1px 1px  rgba(0, 0, 0, 0.075);}
 			</style>
 
-			<div id="dashboard-widgets" class="metabox-holder">
+			<div id="report-widgets" class="metabox-holder">
 
 				<div class='thumbnail mainGraph' style=''>
 					<h1>Sales</h1>
@@ -294,31 +290,10 @@ h6{font-size:11px;color:#999999;text-transform:uppercase;}
 
 		global $start_date, $end_date;
 
-		// Get orders to display in widget
-		add_filter( 'posts_where', array(&$this, 'orders_within_range') );
-
-		$args = array(
-			'numberposts'     => -1,
-			'orderby'         => 'post_date',
-			'order'           => 'ASC',
-			'post_type'       => 'shop_order',
-			'post_status'     => 'publish' ,
-			'suppress_filters'=> 0,
-			'tax_query' => array(
-				array(
-					'taxonomy'=> 'shop_order_status',
-					'terms'   => array('completed', 'processing', 'on-hold'),
-					'field'   => 'slug',
-					'operator'=> 'IN'
-				)
-			)
-		);
-		$orders = get_posts( $args );
-
 		$found_products = array();
 
-		if ($orders) :
-			foreach ($orders as $order) :
+		if ($this->orders) :
+			foreach ($this->orders as $order) :
 				$order_items = (array) get_post_meta( $order->ID, 'order_items', true );
 				foreach ($order_items as $item) :
 					$row_cost = $item['cost'] * $item['qty'];
@@ -332,7 +307,6 @@ h6{font-size:11px;color:#999999;text-transform:uppercase;}
 		$found_products = array_slice($found_products, 0, 25, true);
 		reset($found_products);
 
-		remove_filter( 'posts_where', array(&$this, 'orders_within_range') );
 		?>
 
 		<table class="table table-condensed">

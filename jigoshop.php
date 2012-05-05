@@ -260,13 +260,13 @@ function jigoshop_is_admin_page() {
 	global $typenow;
 
 	if ( !empty($_GET['post_type']) && ( $_GET['post_type'] == 'product' || $_GET['post_type'] == 'shop_order' ) )
-		return true;
+		return $_GET['post_type'];
 
 	if ( !empty($_GET['page']) && strstr( $_GET['page'], 'jigoshop' ) )
-		return true;
+		return $_GET['page'];
 
 	if ( !empty($typenow) && ( $typenow == 'product' || $typenow == 'shop_order' ) )
-		return true;
+		return $typenow;
 
 	return false;
 
@@ -291,18 +291,24 @@ function jigoshop_disable_autosave( $src, $handle ) {
 
 function jigoshop_admin_scripts() {
 
-	global $typenow;
-
 	if (!jigoshop_is_admin_page()) return false;
+
+	$pagenow = jigoshop_is_admin_page();
 
 	wp_enqueue_script('jigoshop_backend'    , jigoshop::assets_url() . '/assets/js/jigoshop_backend.js'               , array( 'jquery' ), '1.0' );
 	wp_enqueue_script('jquery-ui-datepicker', jigoshop::assets_url() . '/assets/js/jquery-ui-datepicker-1.8.16.min.js', array( 'jquery' ), '1.8.16', true );
+
+	if ( $pagenow == 'jigoshop_reports' || 'jigoshop' ) :
+		wp_enqueue_script('jquery_flot'    , jigoshop::assets_url() . '/assets/js/jquery.flot.min.js', array( 'jquery' ), '1.0' );
+		wp_enqueue_script('jquery_flot_pie', jigoshop::assets_url() . '/assets/js/jquery.flot.min.js', array( 'jquery' ), '1.0' );
+	endif;
 
 	/**
 	 * Disable autosaves on the order pages. Prevents the javascript alert when modifying an order.
 	 * `wp_deregister_script( 'autosave' )` would produce errors, so we use a filter instead.
 	 */
-	if ( $typenow == ('shop_order') )
+
+	if ( $pagenow == 'shop_order' )
 		add_filter( 'script_loader_src', 'jigoshop_disable_autosave', 10, 2 );
 
 }
