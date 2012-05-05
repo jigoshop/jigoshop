@@ -141,12 +141,17 @@ h6{font-size:11px;color:#999999;text-transform:uppercase;}
 
 				<div class="span3 thumbnail">
 					<h2>Top Earners</h2>
+					<div id="top_earners_pie" style="height:300px"></div>
 					<?php $this->jigoshop_top_earners(); ?>
+					<?php echo $this->jigoshop_pie_charts('top_earners_pie'); ?>
+					<div id="plothover"></div>
 				</div>
 
 				<div class="span3 thumbnail">
 					<h2>Most Sold</h2>
+					<div id="most_sold_pie" style="height:300px"></div>
 					<?php $this->jigoshop_most_sold(); ?>
+					<?php echo $this->jigoshop_pie_charts('most_sold_pie'); ?>
 				</div>
 
 				<div class="span3 thumbnail">
@@ -164,12 +169,68 @@ h6{font-size:11px;color:#999999;text-transform:uppercase;}
 					<h3>Total Sales</h3>
 				</div>
 
-				<br class="clear"/>
-
 			</div>
 		</div>
 
 <?php }
+
+function jigoshop_pie_charts($id = '') {
+
+	if (empty($id)) return false;
+
+//	$count = count($this->pie_products);
+	$total = array_sum($this->pie_products);
+
+	$values = array();
+	foreach ($this->pie_products as $name => $sales) $values[] = '{ label: "'.$name.'", data: '. (round($sales/$total, 3)*100).'}';
+
+?>
+<script type="text/javascript">
+/* <![CDATA[ */
+jQuery(function(){
+
+	function pieHover(event, pos, obj) {
+
+		if (!obj) return;
+		percent = parseFloat(obj.series.percent).toFixed(2);
+		jQuery("#plothover").html('<span style="font-weight: bold; color: '+obj.series.color+'">'+obj.series.label+' ('+percent+'%)</span>');
+	}
+
+	var data = [
+
+		<?php echo implode(',', $values); ?>
+
+	];
+	jQuery.plot(jQuery("#<?php echo $id; ?>"), data, {
+		series: {
+			pie: {
+				show: true,
+				combine: {
+					color: '#999',
+					threshold: 0.08
+				},
+				radius: 1,
+				label: {
+					show: true,
+					radius: 2/3,
+					formatter: function(label, series){
+						return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+					},
+				}
+			}
+		},
+		legend: {
+		show: false
+		}
+	});
+	//jQuery("#top_earners_pie").bind("plothover", pieHover);
+	//jQuery("#top_earners_pie").bind("plotclick", pieClick);
+});
+/* ]]> */
+</script>
+<?php
+
+}
 
 	function jigoshop_total_orders() {
 		global $wpdb, $start_date, $end_date;
@@ -226,17 +287,10 @@ h6{font-size:11px;color:#999999;text-transform:uppercase;}
 			</thead>
 			<tbody>
 				<?php
-					$max_sales = current($found_products);
 					foreach ($found_products as $product_id => $qty) :
-
 						$product = get_post($product_id);
-						if ($product) :
-							$product_name = '<a href="'.get_permalink($product->ID).'">'.$product->post_title.'</a>';
-							$orders_link = admin_url('edit.php?s&post_status=all&post_type=shop_order&action=-1&s=' . urlencode($product->post_title) . '&shop_order_status=completed,processing,on-hold');
-						else :
-							$product_name = __('Product no longer exists', 'jigoshop');
-							$orders_link = admin_url('edit.php?s&post_status=all&post_type=shop_order&action=-1&s=&shop_order_status=completed,processing,on-hold');
-						endif; ?>
+						$this->pie_products[$product->post_title] = $qty;
+						$product_name = !empty($product) ? '<a href="'.get_permalink($product->ID).'">'.$product->post_title.'</a>' : __('Product no longer exists', 'jigoshop'); ?>
 						<tr>
 							<td><?php echo $product_name; ?></td>
 							<td><?php echo $qty; ?></td>
@@ -307,6 +361,8 @@ h6{font-size:11px;color:#999999;text-transform:uppercase;}
 		$found_products = array_slice($found_products, 0, 25, true);
 		reset($found_products);
 
+		$this->pie_products = array();
+
 		?>
 
 		<table class="table table-condensed">
@@ -317,18 +373,11 @@ h6{font-size:11px;color:#999999;text-transform:uppercase;}
 				</tr>
 			</thead>
 			<tbody>
-				<?php
-					$max_sales = current($found_products);
-					foreach ($found_products as $product_id => $sales) :
-
+				<?php foreach ($found_products as $product_id => $sales) :
 						$product = get_post($product_id);
-						if ($product) :
-							$product_name = '<a href="'.get_permalink($product->ID).'">'.$product->post_title.'</a>';
-							$orders_link = admin_url('edit.php?s&post_status=all&post_type=shop_order&action=-1&s=' . urlencode($product->post_title) . '&shop_order_status=completed,processing,on-hold');
-						else :
-							$product_name = __('Product no longer exists', 'jigoshop');
-							$orders_link = admin_url('edit.php?s&post_status=all&post_type=shop_order&action=-1&s=&shop_order_status=completed,processing,on-hold');
-						endif; ?>
+						$this->pie_products[$product->post_title] = $sales;
+						$product_name = !empty($product) ? '<a href="'.get_permalink($product->ID).'">'.$product->post_title.'</a>' : __('Product no longer exists', 'jigoshop');
+				?>
 						<tr>
 							<td><?php echo $product_name; ?></td>
 							<td><?php echo jigoshop_price($sales); ?></td>
@@ -631,30 +680,6 @@ h6{font-size:11px;color:#999999;text-transform:uppercase;}
 
 					$order_counts = array();
 					$order_amounts = array();
-
-					// Blank date ranges to begin
-					$month = $current_month_offset;
-					$year = (int) date('Y');
-
-					$first_day = strtotime("{$year}-{$month}-01");
-					$last_day = strtotime('-1 second', strtotime('+1 month', $first_day));
-
-					if ((date('m') - $current_month_offset)==0) :
-						$up_to = date('d', strtotime('NOW'));
-					else :
-						$up_to = date('d', $last_day);
-					endif;
-					$count = 0;
-
-					while ($count < $up_to) :
-
-						$time = strtotime(date('Ymd', strtotime('+ '.$count.' DAY', $first_day))).'000';
-
-						$order_counts[$time] = 0;
-						$order_amounts[$time] = 0;
-
-						$count++;
-					endwhile;
 
 					if ($orders) :
 						foreach ($orders as $order) :
