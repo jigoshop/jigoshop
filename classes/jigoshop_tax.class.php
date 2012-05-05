@@ -773,13 +773,6 @@ class jigoshop_tax {
                     $rate = $this->find_rate($country, $state, $tax_class);
                     if (isset($rate['shipping']) && $rate['shipping'] == 'yes') :
                         $rates[$tax_class] = $rate;
-                    else :
-                        // Get standard rate
-                        $rate = $this->find_rate($country, $state);
-                        if (isset($rate['shipping']) && $rate['shipping'] == 'yes') :
-                            $rates['*'] = $rate;
-                        endif;
-
                     endif;
                 endforeach;
             
@@ -791,50 +784,26 @@ class jigoshop_tax {
             $found_rates = array();
             $found_shipping_rates = array();
 
-            // Loop cart and find the highest tax band
-            /*if (sizeof(jigoshop_cart::$cart_contents) > 0) :
-
-                foreach (jigoshop_cart::$cart_contents as $item) :
-
-                    if ($item['data']->get_tax_classes()) :
-
-                        $total_tax_rate = 0;
-                        foreach($item['data']->get_tax_classes() as $key=>$tax_class) :
-                            $found_rate = $this->find_rate($country, $state, $tax_class);
-
-                            if (isset($found_rate['shipping']) && $found_rate['shipping'] == 'yes') :
-                                $total_tax_rate += $found_rate['rate'];
-                                $found_shipping_rates[$tax_class] = $found_rate;
-                            endif;
-
-                        endforeach;
-                        $rates[$total_tax_rate] = $found_shipping_rates;
-
-                    endif;
-
-                endforeach;
-
-            endif;
-*/
+            $total_tax_rate = 0;
             foreach ($customer_tax_classes as $tax_class) :
                 $found_rate = $this->find_rate($country, $state, $tax_class);
+
+                if (isset($found_rate['shipping']) && $found_rate['shipping'] == 'yes') :
+                    $total_tax_rate += $found_rate['rate'];
+                    $found_shipping_rates[$tax_class] = $found_rate;
+                endif;
             endforeach;
             
+            if ($total_tax_rate) :
+                $rates[$total_tax_rate] = $found_shipping_rates;
+            endif;
+            
             if (sizeof($rates) > 0) :
-                
                 // sort reverse by keys. Largest key wins
                 krsort($rates);
                 // make sure pointer at first element in array
                 reset($rates);
                 return $rates[key($rates)];
-
-            else :
-                // check for standard rate
-                $rate = $this->find_rate($country, $state);
-                if (isset($rate['shipping']) && $rate['shipping'] == 'yes') :
-                    $rates['*'] = $rate;
-                    return $rates;
-                endif;
             endif;
             
         endif;
@@ -885,54 +854,20 @@ class jigoshop_tax {
 
             $found_rates = array();
             $found_shipping_rates = array();
+            $customer_tax_classes = $this->get_tax_classes_for_customer();
 
-            // Loop cart and find the highest tax band
-            if (sizeof(jigoshop_cart::$cart_contents) > 0) :
+            foreach ($customer_tax_classes as $tax_class) :
+                $found_rate = $this->find_rate($country, $state, $tax_class);
 
-                foreach (jigoshop_cart::$cart_contents as $item) :
-
-                    if ($item['data']->get_tax_classes()) :
-
-                        foreach($item['data']->get_tax_classes() as $key=>$tax_class) :
-                            $found_rate = $this->find_rate($country, $state, $tax_class);
-
-                            if (isset($found_rate['shipping']) && $found_rate['shipping'] == 'yes') :
-                                $this->shipping_tax_class = $tax_class;
-                                $found_shipping_rates[] = $found_rate['rate'];
-                            endif;
-
-                        endforeach;
-
-                    endif;
-
-                endforeach;
-
-            endif;
-
-           // if (sizeof($found_rates) > 0 && sizeof($found_shipping_rates) > 0) :
+                if (isset($found_rate['shipping']) && $found_rate['shipping'] == 'yes') :
+                    $this->shipping_tax_class = $tax_class;
+                    $found_shipping_rates[] = $found_rate['rate'];
+                endif;
+            endforeach;
+            
             if (sizeof($found_shipping_rates) > 0) :
-                //TODO: I don't think we really need to do a standard rate here.
-                // rsort($found_rates);
                 rsort($found_shipping_rates);
                 return $found_shipping_rates[0];
-               // if ($found_rates[0] == $found_shipping_rates[0]) :
-               //     return $found_shipping_rates[0];
-               // else :
-                    // Use standard rate
-                //    $rate = $this->find_rate($country, $state);
-               //     if (isset($rate['shipping']) && $rate['shipping'] == 'yes') :
-               //         $this->shipping_tax_class = 'standard';
-               //         return $rate['rate'];
-               //     endif;
-               // endif;
-
-            else :
-                // Use standard rate
-                $rate = $this->find_rate($country, $state);
-                if (isset($rate['shipping']) && $rate['shipping'] == 'yes') :
-                    $this->shipping_tax_class = '*'; //standard rate
-                    return $rate['rate'];
-                endif;
             endif;
 
         endif;
@@ -992,6 +927,7 @@ class jigoshop_tax {
      *
      * @param   int		price - Shipping cost (always excluding tax)
      * @param	array	tax_classes - the tax_classes from the product if per-item
+     * @since   1.2
      */
      public function calculate_shipping_tax($price, $shipping_method_id, $tax_classes = array()) {
         
