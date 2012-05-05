@@ -257,16 +257,13 @@ add_action('init', 'jigoshop_init', 0);
 
 function jigoshop_is_admin_page() {
 
-	global $typenow;
+	global $current_screen;
 
-	if ( !empty($_GET['post_type']) && ( $_GET['post_type'] == 'product' || $_GET['post_type'] == 'shop_order' ) )
-		return $_GET['post_type'];
+	if ( $current_screen->post_type == 'product' || $current_screen->post_type == 'shop_order' )
+		return $current_screen->post_type;
 
-	if ( !empty($_GET['page']) && strstr( $_GET['page'], 'jigoshop' ) )
-		return $_GET['page'];
-
-	if ( !empty($typenow) && ( $typenow == 'product' || $typenow == 'shop_order' ) )
-		return $typenow;
+	if ( strstr( $current_screen->id, 'jigoshop' ) )
+		return $current_screen->id;
 
 	return false;
 
@@ -298,7 +295,7 @@ function jigoshop_admin_scripts() {
 	wp_enqueue_script('jigoshop_backend'    , jigoshop::assets_url() . '/assets/js/jigoshop_backend.js'               , array( 'jquery' ), '1.0' );
 	wp_enqueue_script('jquery-ui-datepicker', jigoshop::assets_url() . '/assets/js/jquery-ui-datepicker-1.8.16.min.js', array( 'jquery' ), '1.8.16', true );
 
-	if ( $pagenow == 'jigoshop_reports' || 'jigoshop' ) :
+	if ( $pagenow == 'jigoshop_page_jigoshop_reports' ) :
 		wp_enqueue_script('jquery_flot'    , jigoshop::assets_url() . '/assets/js/jquery.flot.min.js'    , array( 'jquery' ), '1.0' );
 		wp_enqueue_script('jquery_flot_pie', jigoshop::assets_url() . '/assets/js/jquery.flot.pie.min.js', array( 'jquery' ), '1.0' );
 	endif;
