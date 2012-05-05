@@ -37,30 +37,67 @@ class Jigoshop_reports {
 
 	function __construct() {
 
-		$this->page = 'toplevel_page_jigoshop';
+		add_filter( 'posts_where', array(&$this, 'orders_within_range') );
+		$this->orders = $this->jigoshop_get_orders();
+		remove_filter( 'posts_where', array(&$this, 'orders_within_range') );
 
-		$this->on_load_page();
 		$this->on_show_page();
 
 	}
 
-	function on_load_page() {
+	/**
+	 * Orders for range filter function
+	 */
+	function orders_within_range( $where = '' ) {
+		global $start_date, $end_date;
 
-		wp_enqueue_script('common');
-		wp_enqueue_script('wp-lists');
-		wp_enqueue_script('postbox');
+		$after  = date('Y-m-d', $start_date);
+		$before = date('Y-m-d', strtotime('+1 day', $end_date));
 
-		add_meta_box('jigoshop_top_products',       'Top products',  array(&$this, 'jigoshop_top_products'),       $this->page, 'normal', 'core');
-		add_meta_box('jigoshop_dash_right_now',     'Right Now',     array(&$this, 'jigoshop_dash_right_now'),     $this->page, 'side',   'core');
-		add_meta_box('jigoshop_dash_recent_orders', 'Recent Orders', array(&$this, 'jigoshop_dash_recent_orders'), $this->page, 'side',   'core');
-		add_meta_box('jigoshop_dash_stock_report',  'Stock Report',  array(&$this, 'jigoshop_dash_stock_report'),  $this->page, 'side',   'core');
-		add_meta_box('jigoshop_dash_monthly_report','Monthly Report',array(&$this, 'jigoshop_dash_monthly_report'),$this->page, 'normal', 'core');
+		$where .= " AND post_date > '$after'";
+		$where .= " AND post_date < '$before'";
+
+		return $where;
+	}
+
+	function jigoshop_get_orders() {
+		global $start_date, $end_date;
+
+		$start_date = !empty($_POST['start_date'])
+					  ? strtotime($_POST['start_date'])
+					  : strtotime(date('Ymd', strtotime( date('Ym', current_time('timestamp')).'01' )));
+
+		$end_date	= !empty($_POST['end_date'])
+					  ? strtotime($_POST['end_date'])
+					  : strtotime(date('Ymd', current_time('timestamp')));
+
+		$args = array(
+			'numberposts'     => -1,
+			'orderby'         => 'post_date',
+			'order'           => 'ASC',
+			'post_type'       => 'shop_order',
+			'post_status'     => 'publish' ,
+			'suppress_filters'=> 0,
+			'tax_query' => array(
+				array(
+					'taxonomy'=> 'shop_order_status',
+					'terms'   => array('completed', 'processing', 'on-hold'),
+					'field'   => 'slug',
+					'operator'=> 'IN'
+				)
+			)
+		);
+
+		return get_posts( $args );
+
 	}
 
 	function on_show_page() {
-		global $screen_layout_columns; ?>
+
+		global $start_date, $end_date;
+
+		?>
 		<div id="jigoshop-metaboxes-main" class="wrap">
-		<form action="admin-post.php" method="post">
 			<div class="icon32 jigoshop_icon"><br/></div>
 			<h2><?php _e('Jigoshop Dashboard','jigoshop'); ?></h2>
 
@@ -68,120 +105,269 @@ class Jigoshop_reports {
 				<?php wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false ); ?>
 				<?php wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false ); ?>
 
+			<form method="post" action="admin.php?page=jigoshop_reports">
+				<p><label for="from"><?php _e('From:', 'jigoshop'); ?></label> <input class="date-pick" type="date" name="start_date" id="from" readonly="readonly" value="<?php echo esc_attr( date('Y-m-d', $start_date) ); ?>" /> <label for="to"><?php _e('To:', 'jigoshop'); ?></label> <input type="date" class="date-pick" name="end_date" id="to" readonly="readonly" value="<?php echo esc_attr( date('Y-m-d', $end_date) ); ?>" /> <input type="submit" class="button" value="<?php _e('Show', 'jigoshop'); ?>" /></p>
+			</form>
+
+			<style>
+[class*="span"]{float:left;margin-left:20px;}
+.span3{width:220px;}
+.span2{width:140px;}
+.span1{width:60px;}
+table{max-width:100%;background-color:transparent;border-collapse:collapse;border-spacing:0;}
+.table{width:100%;margin-bottom:18px;}.table th,.table td{padding:8px;line-height:18px;text-align:left;vertical-align:top;border-top:1px solid #dddddd;}
+.table th{font-weight:bold;}
+.table thead th{vertical-align:bottom;}
+.table caption+thead tr:first-child th,.table caption+thead tr:first-child td,.table colgroup+thead tr:first-child th,.table colgroup+thead tr:first-child td,.table thead:first-child tr:first-child th,.table thead:first-child tr:first-child td{border-top:0;}
+.table tbody+tbody{border-top:2px solid #dddddd;}
+.table-condensed th,.table-condensed td{padding:4px 5px;}
+.table tbody tr:hover td,.table tbody tr:hover th{background-color:#f5f5f5;}
+h1,h2,h3,h4,h5,h6{margin:0;font-family:inherit;font-weight:bold;color:inherit;text-rendering:optimizelegibility;}h1 small,h2 small,h3 small,h4 small,h5 small,h6 small{font-weight:normal;color:#999999;}
+h1{font-size:30px;line-height:36px;}h1 small{font-size:18px;}
+h2{font-size:24px;line-height:36px;}h2 small{font-size:18px;}
+h3{font-size:18px;line-height:27px;}h3 small{font-size:14px;}
+h4,h5,h6{line-height:18px;}
+h4{font-size:14px;}h4 small{font-size:12px;}
+h5{font-size:12px;}
+h6{font-size:11px;color:#999999;text-transform:uppercase;}
+.thumbnail h4, .thumbnail h3, .thumbnail h2, .thumbnail h1 {text-align:center;}
+.thumbnail{display: block;padding: 4px;line-height: 1;border: 1px solid #DDD;-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;-webkit-box-shadow: 0 1px 1px  rgba(0, 0, 0, 0.075);-moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);box-shadow: 0 1px 1px  rgba(0, 0, 0, 0.075);}
+			</style>
+
 			<div id="dashboard-widgets" class="metabox-holder">
-				<div id='postbox-container-1' class='postbox-container' style='width:50%;'>
-					<?php do_meta_boxes($this->page, 'side', null); ?>
+
+				<div class='thumbnail mainGraph' style=''>
+					<h1>Sales</h1>
+					<?php $this->jigoshop_dash_monthly_report(); ?>
 				</div>
-				<div id="post-body" class="has-sidebar">
-					<div id='postbox-container-2' class='postbox-container' style='width:50%;'>
-						<?php do_meta_boxes($this->page, 'normal', null); ?>
-					</div>
-				</div>
+
 				<br class="clear"/>
+
+				<div class="span3 thumbnail">
+					<h2>Top Earners</h2>
+					<?php $this->jigoshop_top_earners(); ?>
+				</div>
+
+				<div class="span3 thumbnail">
+					<h2>Most Sold</h2>
+					<?php $this->jigoshop_most_sold(); ?>
+				</div>
+
+				<div class="span3 thumbnail">
+					<h1><?php echo $this->jigoshop_total_customers(); ?></h1>
+					<h3>Total Customers</h3>
+				</div>
+
+				<div class="span3 thumbnail">
+					<h1><?php echo $this->jigoshop_total_orders(); ?></h1>
+					<h3>Total Orders</h3>
+				</div>
+
+				<div class="span3 thumbnail">
+					<h1><?php echo $this->jigoshop_total_sales(); ?></h1>
+					<h3>Total Sales</h3>
+				</div>
+
+				<br class="clear"/>
+
 			</div>
-		</form>
 		</div>
-		<script type="text/javascript">
-			//<![CDATA[
-			jQuery(document).ready( function($) {
-				// close postboxes that should be closed
-				$('.if-js-closed').removeClass('if-js-closed').addClass('closed');
-				// postboxes setup
-				postboxes.add_postbox_toggles('<?php echo $this->page; ?>');
-			});
-			//]]>
-		</script>
 
 <?php }
 
-	function jigoshop_top_products() {
+	function jigoshop_total_orders() {
+		global $wpdb, $start_date, $end_date;
 
-	global $start_date, $end_date, $jigoshop;
+		$total_orders = $wpdb->get_row("
+			SELECT COUNT(posts.ID) AS total_orders FROM {$wpdb->posts} AS posts
 
-	$start_date = (isset($_POST['start_date'])) ? $_POST['start_date'] : '';
-	$end_date	= (isset($_POST['end_date'])) ? $_POST['end_date'] : '';
+			LEFT JOIN {$wpdb->postmeta} AS meta ON posts.ID = meta.post_id
+			LEFT JOIN {$wpdb->term_relationships} AS rel ON posts.ID=rel.object_ID
+			LEFT JOIN {$wpdb->term_taxonomy} AS tax USING( term_taxonomy_id )
+			LEFT JOIN {$wpdb->terms} AS term USING( term_id )
 
-	if (!$start_date) $start_date = date('Ymd', strtotime( date('Ym', current_time('timestamp')).'01' ));
-	if (!$end_date) $end_date = date('Ymd', current_time('timestamp'));
+			WHERE 	meta.meta_key 		= 'order_data'
+			{$this->orders_within_range()}
+			AND 	posts.post_type 	= 'shop_order'
+			AND 	posts.post_status 	= 'publish'
+			AND 	tax.taxonomy		= 'shop_order_status'
+			AND		term.slug			IN ('completed', 'processing', 'on-hold')
+		");
 
-	$start_date = strtotime($start_date);
-	$end_date = strtotime($end_date);
+		return $total_orders->total_orders;
 
-	// Get orders to display in widget
-	// add_filter( 'posts_where', 'orders_within_range' );
+	}
 
-	$args = array(
-	    'numberposts'     => -1,
-	    'orderby'         => 'post_date',
-	    'order'           => 'ASC',
-	    'post_type'       => 'shop_order',
-	    'post_status'     => 'publish' ,
-	    'suppress_filters'=> 0,
-	    'tax_query' => array(
-	    	array(
-				'taxonomy'=> 'shop_order_status',
-				'terms'   => array('completed', 'processing', 'on-hold'),
-				'field'   => 'slug',
-				'operator'=> 'IN'
-			)
-	    )
-	);
-	$orders = get_posts( $args );
+	function jigoshop_most_sold() {
 
-	$found_products = array();
+		global $start_date, $end_date;
 
-	if ($orders) :
-		foreach ($orders as $order) :
-			$order_items = (array) get_post_meta( $order->ID, 'order_items', true );
-			foreach ($order_items as $item) :
-				$row_cost = $item['cost'] * $item['qty'];
-				$found_products[$item['id']] = isset($found_products[$item['id']]) ? $found_products[$item['id']] + $row_cost : $row_cost;
-			endforeach;
-		endforeach;
-	endif;
+		$found_products = array();
 
-	asort($found_products);
-	$found_products = array_reverse($found_products, true);
-	$found_products = array_slice($found_products, 0, 25, true);
-	reset($found_products);
-
-	//remove_filter( 'posts_where', 'orders_within_range' );
-	?>
-	<form method="post" action="admin.php?page=jigoshop_reports">
-		<p><label for="from"><?php _e('From:', 'jigoshop'); ?></label> <input class="date-pick" type="date" name="start_date" id="from" readonly="readonly" value="<?php echo esc_attr( date('Y-m-d', $start_date) ); ?>" /> <label for="to"><?php _e('To:', 'jigoshop'); ?></label> <input type="date" class="date-pick" name="end_date" id="to" readonly="readonly" value="<?php echo esc_attr( date('Y-m-d', $end_date) ); ?>" /> <input type="submit" class="button" value="<?php _e('Show', 'jigoshop'); ?>" /></p>
-	</form>
-	<table class="bar_chart">
-		<thead>
-			<tr>
-				<th><?php _e('Product', 'jigoshop'); ?></th>
-				<th colspan="2"><?php _e('Sales', 'jigoshop'); ?></th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php
-				$max_sales = current($found_products);
-				foreach ($found_products as $product_id => $sales) :
-					$width = ($sales>0) ? (round($sales) / round($max_sales)) * 100 : 0;
-
-					$product = get_post($product_id);
-					if ($product) :
-						$product_name = '<a href="'.get_permalink($product->ID).'">'.$product->post_title.'</a>';
-						$orders_link = admin_url('edit.php?s&post_status=all&post_type=shop_order&action=-1&s=' . urlencode($product->post_title) . '&shop_order_status=completed,processing,on-hold');
-					else :
-						$product_name = __('Product no longer exists', 'jigoshop');
-						$orders_link = admin_url('edit.php?s&post_status=all&post_type=shop_order&action=-1&s=&shop_order_status=completed,processing,on-hold');
-					endif;
-
-					echo '<tr><th>'.$product_name.'</th><td width="1%"><span>'.jigoshop_price($sales).'</span></td><td class="bars"><a href="'.$orders_link.'" style="width:'.$width.'%">&nbsp;</a></td></tr>';
+		if ($this->orders) :
+			foreach ($this->orders as $order) :
+				$order_items = (array) get_post_meta( $order->ID, 'order_items', true );
+				foreach ($order_items as $item) :
+					$row_cost = $item['qty'];
+					$found_products[$item['id']] = isset($found_products[$item['id']]) ? $found_products[$item['id']] + $row_cost : $row_cost;
 				endforeach;
-			?>
-		</tbody>
-	</table>
-	<script type="text/javascript">
-		jQuery(function(){
-			jQuery('.date-pick').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
-		});
-	</script>
+			endforeach;
+		endif;
+
+		asort($found_products);
+		$found_products = array_reverse($found_products, true);
+		$found_products = array_slice($found_products, 0, 25, true);
+		reset($found_products);
+
+		?>
+
+		<table class="table table-condensed">
+			<thead>
+				<tr>
+					<th><?php _e('Product', 'jigoshop'); ?></th>
+					<th><?php _e('Quantity', 'jigoshop'); ?></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+					$max_sales = current($found_products);
+					foreach ($found_products as $product_id => $qty) :
+
+						$product = get_post($product_id);
+						if ($product) :
+							$product_name = '<a href="'.get_permalink($product->ID).'">'.$product->post_title.'</a>';
+							$orders_link = admin_url('edit.php?s&post_status=all&post_type=shop_order&action=-1&s=' . urlencode($product->post_title) . '&shop_order_status=completed,processing,on-hold');
+						else :
+							$product_name = __('Product no longer exists', 'jigoshop');
+							$orders_link = admin_url('edit.php?s&post_status=all&post_type=shop_order&action=-1&s=&shop_order_status=completed,processing,on-hold');
+						endif; ?>
+						<tr>
+							<td><?php echo $product_name; ?></td>
+							<td><?php echo $qty; ?></td>
+						</tr>
+					<?php endforeach; ?>
+
+			</tbody>
+		</table>
+		<script type="text/javascript">
+			jQuery(function(){
+				jQuery('.date-pick').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
+			});
+		</script>
+	<?php
+
+	}
+
+	function jigoshop_total_sales() {
+		global $wpdb;
+
+		$row_cost = array();
+
+		if ($this->orders) :
+			foreach ($this->orders as $order) :
+				$order_items = (array) get_post_meta( $order->ID, 'order_items', true );
+				foreach ($order_items as $item) :
+					$row_cost[] = $item['cost'] * $item['qty'];
+				endforeach;
+			endforeach;
+		endif;
+
+		return jigoshop_price(array_sum($row_cost));
+
+	}
+
+	function jigoshop_total_customers() {
+		global $wpdb;
+
+		$users_query = new WP_User_Query( array(
+			'fields' => array('user_registered'),
+			'role'   => 'customer',
+		) );
+
+		$customers = $users_query->get_results();
+		return (int) sizeof($customers);
+
+	}
+
+
+	function jigoshop_top_earners() {
+
+		global $start_date, $end_date;
+
+		// Get orders to display in widget
+		add_filter( 'posts_where', array(&$this, 'orders_within_range') );
+
+		$args = array(
+			'numberposts'     => -1,
+			'orderby'         => 'post_date',
+			'order'           => 'ASC',
+			'post_type'       => 'shop_order',
+			'post_status'     => 'publish' ,
+			'suppress_filters'=> 0,
+			'tax_query' => array(
+				array(
+					'taxonomy'=> 'shop_order_status',
+					'terms'   => array('completed', 'processing', 'on-hold'),
+					'field'   => 'slug',
+					'operator'=> 'IN'
+				)
+			)
+		);
+		$orders = get_posts( $args );
+
+		$found_products = array();
+
+		if ($orders) :
+			foreach ($orders as $order) :
+				$order_items = (array) get_post_meta( $order->ID, 'order_items', true );
+				foreach ($order_items as $item) :
+					$row_cost = $item['cost'] * $item['qty'];
+					$found_products[$item['id']] = isset($found_products[$item['id']]) ? $found_products[$item['id']] + $row_cost : $row_cost;
+				endforeach;
+			endforeach;
+		endif;
+
+		asort($found_products);
+		$found_products = array_reverse($found_products, true);
+		$found_products = array_slice($found_products, 0, 25, true);
+		reset($found_products);
+
+		remove_filter( 'posts_where', array(&$this, 'orders_within_range') );
+		?>
+
+		<table class="table table-condensed">
+			<thead>
+				<tr>
+					<th><?php _e('Product', 'jigoshop'); ?></th>
+					<th><?php _e('Sales', 'jigoshop'); ?></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+					$max_sales = current($found_products);
+					foreach ($found_products as $product_id => $sales) :
+
+						$product = get_post($product_id);
+						if ($product) :
+							$product_name = '<a href="'.get_permalink($product->ID).'">'.$product->post_title.'</a>';
+							$orders_link = admin_url('edit.php?s&post_status=all&post_type=shop_order&action=-1&s=' . urlencode($product->post_title) . '&shop_order_status=completed,processing,on-hold');
+						else :
+							$product_name = __('Product no longer exists', 'jigoshop');
+							$orders_link = admin_url('edit.php?s&post_status=all&post_type=shop_order&action=-1&s=&shop_order_status=completed,processing,on-hold');
+						endif; ?>
+						<tr>
+							<td><?php echo $product_name; ?></td>
+							<td><?php echo jigoshop_price($sales); ?></td>
+						</tr>
+					<?php endforeach; ?>
+
+			</tbody>
+		</table>
+		<script type="text/javascript">
+			jQuery(function(){
+				jQuery('.date-pick').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
+			});
+		</script>
 	<?php
 	}
 
@@ -417,18 +603,10 @@ class Jigoshop_reports {
 	*/
 
 	function jigoshop_dash_monthly_report() {
-		global $current_month_offset;
 
-		$current_month_offset = (int) date('m');
-
-		if (isset($_GET['month'])) $current_month_offset = (int) $_GET['month']; ?>
+		$current_month_offset = (int) date('m'); ?>
 		<div class="stats" id="jigoshop-stats">
-			<p>
-				<?php if ($current_month_offset!=date('m')) : ?>
-					<a href="admin.php?page=jigoshop&amp;month=<?php echo $current_month_offset+1; ?>" class="next">Next Month &rarr;</a>
-				<?php endif; ?>
-				<a href="admin.php?page=jigoshop&amp;month=<?php echo $current_month_offset-1; ?>" class="previous">&larr; Previous Month</a>
-			</p>
+
 	<div class="inside">
 		<div id="placeholder" style="width:100%; height:300px; position:relative;"></div>
 		<script type="text/javascript">
@@ -457,24 +635,7 @@ class Jigoshop_reports {
 
 				<?php
 
-					function orders_this_month( $where = '' ) {
-						global $current_month_offset;
-
-						$month = $current_month_offset;
-						$year = (int) date('Y');
-
-						$first_day = strtotime("{$year}-{$month}-01");
-						$last_day = strtotime('-1 second', strtotime('+1 month', $first_day));
-
-						$after = date('Y-m-d', $first_day);
-						$before = date('Y-m-d', $last_day);
-
-						$where .= " AND post_date > '$after'";
-						$where .= " AND post_date < '$before'";
-
-						return $where;
-					}
-					add_filter( 'posts_where', 'orders_this_month' );
+					add_filter( 'posts_where', array(&$this, 'orders_within_range') );
 
 					$args = array(
 						'numberposts'     => -1,
@@ -542,7 +703,7 @@ class Jigoshop_reports {
 						endforeach;
 					endif;
 
-					remove_filter( 'posts_where', 'orders_this_month' );
+					remove_filter( 'posts_where', array(&$this, 'orders_within_range') );
 				?>
 
 				var d = [
