@@ -126,6 +126,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * New: $0.01 charge on Paypal if configured and total is free
 * New: Allow shipping to be taxed on compounding tax classes (all around shipping tax enhancements)
 * New: Resend download links by clicking "Email Invoice" on an order
+* New: Shipping tax can be applied (if taxable) without applying taxes to products
 * Tweak: Load css & js only when absolutely necessary, for both admin & frontend
 * Tweak: Emails for orders can now be completely customized
 	* Email customizations can be made through a plugin
