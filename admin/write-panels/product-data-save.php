@@ -34,8 +34,15 @@ class jigoshop_product_meta
 		$sale_price = ! empty( $_POST['sale_price'] )
 			? ( ! strstr( $_POST['sale_price'], '%' ) ? jigoshop_sanitize_num( $_POST['sale_price'] ) : $_POST['sale_price'] )
 			: '';
-		update_post_meta( $post_id, 'sale_price', $sale_price );
-
+		if ( strstr( $_POST['sale_price'], '%' ) ) {
+			update_post_meta( $post_id, 'sale_price', $sale_price );
+		} else if ( ! empty( $sale_price ) && $sale_price < jigoshop_sanitize_num( $_POST['regular_price'] ) ) {
+			update_post_meta( $post_id, 'sale_price', $sale_price );
+		} else {
+			// silently fail if entered sale price > regular price (or nothing entered)
+			update_post_meta( $post_id, 'sale_price', '' );
+		}
+		
 		update_post_meta( $post_id, 'weight',        (float) $_POST['weight']);
 		update_post_meta( $post_id, 'length',        (float) $_POST['length']);
 		update_post_meta( $post_id, 'width',         (float) $_POST['width']);
