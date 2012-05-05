@@ -627,6 +627,8 @@ jQuery(function(){
 
 	function jigoshop_dash_monthly_report() {
 
+		global $start_date, $end_date;
+
 		$current_month_offset = (int) date('m'); ?>
 		<div class="stats" id="jigoshop-stats">
 
@@ -680,6 +682,20 @@ jQuery(function(){
 
 					$order_counts = array();
 					$order_amounts = array();
+
+					$count = 0;
+					$days = ($end_date - $start_date) / (60 * 60 * 24);
+
+					if ($days==0) $days = 1;
+
+					while ($count < $days) :
+
+						$time = strtotime(date('Ymd', strtotime('+ '.$count.' DAY', $start_date))).'000';
+						$order_counts[$time] = 0;
+						$order_amounts[$time] = 0;
+						$count++;
+
+					endwhile;
 
 					if ($orders) :
 						foreach ($orders as $order) :
