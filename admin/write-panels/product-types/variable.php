@@ -149,7 +149,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 		foreach( $_POST['variations'] as $ID => $meta ) {
 
 			/* Prevent duplicate variations */
-			$sizes[$meta['tax_size']] = +1;
+			$sizes[$meta['tax_size']] = empty($sizes[$meta['tax_size']]) ? 0 : $sizes[$meta['tax_size']]++;
 			if( $sizes[$meta['tax_size']] > 1) {
 				wp_set_object_terms( $ID, null, 'product_type');
 				wp_delete_post( $ID );
