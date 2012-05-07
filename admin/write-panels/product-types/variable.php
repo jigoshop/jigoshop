@@ -138,24 +138,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 		// Get the attributes to be used later
 		$attributes = (array) maybe_unserialize( get_post_meta($parent_id, 'product_attributes', true) );
 
-		$sizes = array();
-
-		/**
-		 * Reverse sort to list 0_new arrays at the bottom, so that they're deleted first in case it's a duplicate.
-		 * This way, we won't delete the existing variation, but rather the newly created dupe.
-		 */
-		rsort($_POST['variations']);
-
 		foreach( $_POST['variations'] as $ID => $meta ) {
-
-			/* Prevent duplicate variations */
-			$sizes[$meta['tax_size']] = empty($sizes[$meta['tax_size']]) ? 0 : $sizes[$meta['tax_size']]++;
-			if( $sizes[$meta['tax_size']] > 1) {
-				wp_set_object_terms( $ID, null, 'product_type');
-				wp_delete_post( $ID );
-				unset($_POST['variations'][$ID]);
-				continue;
-			}
 
 			// Update post data or Add post if new
 			if ( strpos($ID, '_new') ) {
