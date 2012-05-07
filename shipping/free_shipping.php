@@ -50,13 +50,13 @@ class free_shipping extends jigoshop_shipping_method {
 	        </td>
 	    </tr>
 	    <tr>
-	        <th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
+	        <th scope="row"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input type="text" name="jigoshop_free_shipping_title" id="jigoshop_free_shipping_title" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_free_shipping_title')) echo $value; else echo 'Free Shipping'; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
-	        <th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('Users will need to spend this amount to get free shipping. Leave blank to disable.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Minimum Order Amount', 'jigoshop') ?></th>
+	        <th scope="row"><a href="#" tip="<?php _e('Users will need to spend this amount to get free shipping. Leave blank to disable.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Minimum Order Amount', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input type="text" name="jigoshop_free_shipping_minimum_amount" id="jigoshop_free_shipping_minimum_amount" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_free_shipping_minimum_amount')) echo $value; else echo 'Free Shipping'; ?>" />
 	        </td>

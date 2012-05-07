@@ -321,7 +321,7 @@ function jigoshop_admin_fields($options) {
 				?><tr>
                     <th scope="row"<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
 						<?php if (!empty($value['tip'])) : ?>
-						<a href="#" data-rel="tooltip" title="<?php echo $value['tip'] ?>" class="tips" tabindex="99" ></a>
+						<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99" ></a>
 						<?php endif; ?>
 						<?php if ( !empty( $value['name'] ) ) : ?>
 						<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
@@ -346,7 +346,7 @@ function jigoshop_admin_fields($options) {
                 ?><tr>
                     <th scope="row"<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
 						<?php if (!empty($value['tip'])) : ?>
-						<a href="#" data-rel="tooltip" title="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a>
+						<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a>
 						<?php endif; ?>
 						<?php if ( !empty( $value['name'] ) ) : ?>
 						<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
@@ -371,7 +371,7 @@ function jigoshop_admin_fields($options) {
 				?><tr>
                     <th scope="row">
 						<?php if (!empty($value['tip'])) : ?>
-						<a href="#" data-rel="tooltip" title="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a>
+						<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a>
 						<?php endif; ?>
 						<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
 					</th>
@@ -414,7 +414,7 @@ function jigoshop_admin_fields($options) {
 						<?php if (get_option($altSize) !== false && get_option($altSize) !== null)
 						echo checked(get_option($altSize), 'yes', false); ?> />
 						<label for="<?php echo esc_attr( $altSize ); ?>"> <?php echo __('Crop?', 'jigoshop'); ?></label>
-						<a href="#" data-rel="tooltip" title="<?php echo __('Leave unchecked to set the image size by resizing the image proportionally (that is, without distorting it).<br />Leave checked to set the image size by hard cropping the image (either from the sides, or from the top and bottom).', 'jigoshop'); ?>" class="tips" style="float:none;display:inline-block;margin: 4px -8px 0 10px;" tabindex="99"></a>
+						<a href="#" tip="<?php echo __('Leave unchecked to set the image size by resizing the image proportionally (that is, without distorting it).<br />Leave checked to set the image size by hard cropping the image (either from the sides, or from the top and bottom).', 'jigoshop'); ?>" class="tips" style="float:none;display:inline-block;margin: 4px -8px 0 10px;" tabindex="99"></a>
 						<br /><small><?php echo $value['desc'] ?></small>
 					</td>
 				</tr><?php
@@ -422,7 +422,7 @@ function jigoshop_admin_fields($options) {
 
             case 'textarea':
                 ?><tr>
-                        <th scope="row"><?php if ($value['tip']) { ?><a href="#" data-rel="tooltip" title="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label></th>
+                        <th scope="row"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label></th>
                         <td>
                             <textarea <?php if (isset($value['args']))
                     echo $value['args'] . ' '; ?>
@@ -451,7 +451,7 @@ function jigoshop_admin_fields($options) {
 
                 if ( !empty($value['args']) ) $args = wp_parse_args($value['args'], $args);
 				?><tr class="single_select_page">
-					<th scope="row"><?php if ($value['tip']) { ?><a href="#" data-rel="tooltip" title="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label></th>
+					<th scope="row"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label></th>
 					<td>
 						<?php wp_dropdown_pages($args); ?>
 						<br /><small><?php echo $value['desc'] ?></small>
@@ -469,7 +469,7 @@ function jigoshop_admin_fields($options) {
                         $state = '*';
                     endif;
                     ?><tr class="multi_select_countries">
-                        <th scope="row"><?php if ($value['tip']) { ?><a href="#" data-rel="tooltip" title="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label></th>
+                        <th scope="row"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label></th>
                         <td>
 							<select id="<?php echo esc_attr( $value['id'] ); ?>" name="<?php echo esc_attr( $value['id'] ); ?>" title="Country" style="width: 150px;">
 							<?php
@@ -486,7 +486,7 @@ function jigoshop_admin_fields($options) {
                 asort($countries);
                 $selections = (array) get_option($value['id']);
                 ?><tr class="multi_select_countries">
-                        <th scope="row"><?php if ($value['tip']) { ?><a href="#" data-rel="tooltip" title="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label><?php echo $value['name'] ?></label></th>
+                        <th scope="row"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label><?php echo $value['name'] ?></label></th>
                         <td>
                             <div class="multi_select_countries">
 								<ul><?php
@@ -712,7 +712,7 @@ function jigoshop_admin_fields($options) {
                                 $tax_rates = get_option('jigoshop_tax_rates');
                                 $applied_all_states = array();
                                 ?><tr>
-                        <th><?php if ($value['tip']) { ?><a href="#" data-rel="tooltip" title="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label><?php echo $value['name'] ?></label></th>
+                        <th><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label><?php echo $value['name'] ?></label></th>
                         <td id="tax_rates">
                             <div class="taxrows">
                 <?php

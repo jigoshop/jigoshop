@@ -49,7 +49,7 @@ class local_pickup extends jigoshop_shipping_method {
 	        </td>
 	    </tr>
 	    <tr>
-	        <th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
+	        <th scope="row"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input type="text" name="jigoshop_local_pickup_title" id="jigoshop_local_pickup_title" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_local_pickup_title')) echo $value; else echo 'Local Pickup'; ?>" />
 	        </td>

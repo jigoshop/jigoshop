@@ -61,37 +61,37 @@ class dibs extends jigoshop_payment_gateway {
 			</td>
 		</tr>
 		<tr>
-			<th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
+			<th scope="row"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
 			<td class="forminp">
 				<input class="input-text" type="text" name="jigoshop_dibs_title" id="jigoshop_dibs_title" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_dibs_title')) echo $value; else echo 'DIBS'; ?>" />
 			</td>
 		</tr>
 		<tr>
-			<th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('This controls the description which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Description', 'jigoshop') ?></th>
+			<th scope="row"><a href="#" tip="<?php _e('This controls the description which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Description', 'jigoshop') ?></th>
 			<td class="forminp">
 				<input class="input-text wide-input" type="text" name="jigoshop_dibs_description" id="jigoshop_dibs_description" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_dibs_description')) echo $value; ?>" />
 			</td>
 		</tr>
 		<tr>
-			<th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('Please enter your DIBS merchant id; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('DIBS Merchant id', 'jigoshop') ?></th>
+			<th scope="row"><a href="#" tip="<?php _e('Please enter your DIBS merchant id; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('DIBS Merchant id', 'jigoshop') ?></th>
 			<td class="forminp">
 				<input class="input-text" type="text" name="jigoshop_dibs_merchant" id="jigoshop_dibs_merchant" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_dibs_merchant')) echo $value; ?>" />
 			</td>
 		</tr>
 		<tr>
-			<th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('Please enter your DIBS MD5 key #1; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('DIBS MD5 Key 1', 'jigoshop') ?></th>
+			<th scope="row"><a href="#" tip="<?php _e('Please enter your DIBS MD5 key #1; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('DIBS MD5 Key 1', 'jigoshop') ?></th>
 			<td class="forminp">
 				<input class="input-text" type="text" name="jigoshop_dibs_key1" id="jigoshop_dibs_key1" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_dibs_key1')) echo $value; ?>" />
 			</td>
 		</tr>
 		<tr>
-			<th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('Please enter your DIBS MD5 key #2; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('DIBS MD5 Key 2', 'jigoshop') ?></th>
+			<th scope="row"><a href="#" tip="<?php _e('Please enter your DIBS MD5 key #2; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('DIBS MD5 Key 2', 'jigoshop') ?></th>
 			<td class="forminp">
 				<input class="input-text" type="text" name="jigoshop_dibs_key2" id="jigoshop_dibs_key2" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_dibs_key2')) echo $value; ?>" />
 			</td>
 		</tr>
 		<tr>
-			<th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('When test mode is enabled only DIBS specific test-cards are accepted.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Enable test mode', 'jigoshop') ?></th>
+			<th scope="row"><a href="#" tip="<?php _e('When test mode is enabled only DIBS specific test-cards are accepted.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Enable test mode', 'jigoshop') ?></th>
 			<td class="forminp">
 				<select name="jigoshop_dibs_testmode" id="jigoshop_dibs_testmode" style="min-width:100px;">
 					<option value="yes" <?php if (get_option('jigoshop_dibs_testmode') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>

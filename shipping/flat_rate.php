@@ -88,7 +88,7 @@ class flat_rate extends jigoshop_shipping_method {
 	        </td>
 	    </tr>
 	    <tr>
-	        <th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
+	        <th scope="row"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input type="text" name="jigoshop_flat_rate_title" id="jigoshop_flat_rate_title" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_flat_rate_title')) echo $value; else echo 'Flat Rate'; ?>" />
 	        </td>
@@ -112,13 +112,13 @@ class flat_rate extends jigoshop_shipping_method {
 	        </td>
 	    </tr>
 	    <tr>
-	        <th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('Cost excluding tax. Enter an amount, e.g. 2.50.', 'jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Cost', 'jigoshop') ?></th>
+	        <th scope="row"><a href="#" tip="<?php _e('Cost excluding tax. Enter an amount, e.g. 2.50.', 'jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Cost', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input type="text" name="jigoshop_flat_rate_cost" id="jigoshop_flat_rate_cost" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_flat_rate_cost')) echo $value; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
-	        <th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('Fee excluding tax. Enter an amount, e.g. 2.50, or a percentage, e.g. 5%. Leave blank to disable.', 'jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Handling Fee', 'jigoshop') ?></th>
+	        <th scope="row"><a href="#" tip="<?php _e('Fee excluding tax. Enter an amount, e.g. 2.50, or a percentage, e.g. 5%. Leave blank to disable.', 'jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Handling Fee', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input type="text" name="jigoshop_flat_rate_handling_fee" id="jigoshop_flat_rate_handling_fee" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_flat_rate_handling_fee')) echo $value; ?>" />
 	        </td>

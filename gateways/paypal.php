@@ -66,7 +66,7 @@ class paypal extends jigoshop_payment_gateway {
 	        </td>
 	    </tr>
     	<tr>
-	        <td class="titledesc"><a href="#" data-rel="tooltip" title="<?php _e('If product totals are free and shipping is also free (excluding taxes), this will force 0.01 to allow paypal to process payment. Shop owner is responsible for refunding customer.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Force payment when free', 'jigoshop') ?>:</td>
+	        <td class="titledesc"><a href="#" tip="<?php _e('If product totals are free and shipping is also free (excluding taxes), this will force 0.01 to allow paypal to process payment. Shop owner is responsible for refunding customer.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Force payment when free', 'jigoshop') ?>:</td>
 	        <td class="forminp">
 		        <select name="jigoshop_paypal_force_payment" id="jigoshop_paypal_force_payment" style="min-width:100px;">
 		            <option value="yes" <?php if (get_option('jigoshop_paypal_force_payment') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
@@ -75,25 +75,25 @@ class paypal extends jigoshop_payment_gateway {
 	        </td>
 	    </tr>
 	    <tr>
-	        <th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
+	        <th scope="row"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input class="input-text" type="text" name="jigoshop_paypal_title" id="jigoshop_paypal_title" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_paypal_title')) echo $value; else echo 'PayPal'; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
-	        <th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('This controls the description which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Description', 'jigoshop') ?></th>
+	        <th scope="row"><a href="#" tip="<?php _e('This controls the description which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Description', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input class="input-text wide-input" type="text" name="jigoshop_paypal_description" id="jigoshop_paypal_description" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_paypal_description')) echo $value; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
-	        <th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('Please enter your PayPal email address; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('PayPal email address', 'jigoshop') ?></th>
+	        <th scope="row"><a href="#" tip="<?php _e('Please enter your PayPal email address; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('PayPal email address', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input class="input-text" type="text" name="jigoshop_paypal_email" id="jigoshop_paypal_email" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_paypal_email')) echo $value; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
-	        <th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('If your checkout page does not ask for shipping details, or if you do not want to send shipping information to PayPal, set this option to no. If you enable this option PayPal may restrict where things can be sent, and will prevent some orders going through for your protection.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Send shipping details to PayPal', 'jigoshop') ?></th>
+	        <th scope="row"><a href="#" tip="<?php _e('If your checkout page does not ask for shipping details, or if you do not want to send shipping information to PayPal, set this option to no. If you enable this option PayPal may restrict where things can be sent, and will prevent some orders going through for your protection.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Send shipping details to PayPal', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <select name="jigoshop_paypal_send_shipping" id="jigoshop_paypal_send_shipping" style="min-width:100px;">
 		            <option value="yes" <?php if (get_option('jigoshop_paypal_send_shipping') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
