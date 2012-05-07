@@ -1030,7 +1030,7 @@ class jigoshop_product {
 		$result = false;
 		$attributes = $this->get_attributes();
 		if ( ! empty( $attributes )) foreach ( $attributes as $attribute ) {
-			$result |= (bool) $attribute['visible'];
+			$result |= isset( $attribute['visible'] );
 		}
 		
 		return $result;
