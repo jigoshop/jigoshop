@@ -46,6 +46,7 @@ class dibs extends jigoshop_payment_gateway {
 		add_option('jigoshop_dibs_testmode', 'no');
 		add_option('jigoshop_dibs_instant', 'no');
 		add_option('jigoshop_dibs_decorator', '');
+		add_option('jigoshop_dibs_language', 'en');
 	}
 
 	/**
@@ -106,6 +107,27 @@ class dibs extends jigoshop_payment_gateway {
 			</td>
 		</tr>
 		<tr>
+			<td class="titledesc"><a href="#" tip="<?php _e('Show Dibs FlexWin in this language. If set to WPML detect, it switches between the languages listed here, but if not found defaults to English.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Language', 'jigoshop') ?>:</td>
+			<td class="forminp">
+				<select name="jigoshop_dibs_language" id="jigoshop_dibs_language" style="min-width:100px;">
+					<option value="detect_wpml" <?php if (get_option('jigoshop_dibs_language') == 'detect_wpml') echo 'selected="selected"'; ?>><?php _e('Detect using WPML', 'jigoshop'); ?></option>
+					<option value="da" <?php if (get_option('jigoshop_dibs_language') == 'da') echo 'selected="selected"'; ?>><?php echo 'Danish'; ?></option>
+					<option value="en" <?php if (get_option('jigoshop_dibs_language') == 'en') echo 'selected="selected"'; ?>><?php echo 'English'; ?></option>
+					<option value="de" <?php if (get_option('jigoshop_dibs_language') == 'de') echo 'selected="selected"'; ?>><?php echo 'German'; ?></option>
+					<option value="es" <?php if (get_option('jigoshop_dibs_language') == 'es') echo 'selected="selected"'; ?>><?php echo 'Spanish'; ?></option>
+					<option value="fi" <?php if (get_option('jigoshop_dibs_language') == 'fi') echo 'selected="selected"'; ?>><?php echo 'Finnish'; ?></option>
+					<option value="fo" <?php if (get_option('jigoshop_dibs_language') == 'fo') echo 'selected="selected"'; ?>><?php echo 'Faroese'; ?></option>
+					<option value="fr" <?php if (get_option('jigoshop_dibs_language') == 'fr') echo 'selected="selected"'; ?>><?php echo 'French'; ?></option>
+					<option value="it" <?php if (get_option('jigoshop_dibs_language') == 'it') echo 'selected="selected"'; ?>><?php echo 'Italian'; ?></option>
+					<option value="nl" <?php if (get_option('jigoshop_dibs_language') == 'nl') echo 'selected="selected"'; ?>><?php echo 'Dutch'; ?></option>
+					<option value="no" <?php if (get_option('jigoshop_dibs_language') == 'no') echo 'selected="selected"'; ?>><?php echo 'Norwegian'; ?></option>
+					<option value="pl" <?php if (get_option('jigoshop_dibs_language') == 'pl') echo 'selected="selected"'; ?>><?php echo 'Polish (simplified)'; ?></option>
+					<option value="sv" <?php if (get_option('jigoshop_dibs_language') == 'sv') echo 'selected="selected"'; ?>><?php echo 'Swedish'; ?></option>
+					<option value="kl" <?php if (get_option('jigoshop_dibs_language') == 'kl') echo 'selected="selected"'; ?>><?php echo 'Greenlandic'; ?></option>
+				</select>
+			</td>
+		</tr>
+		<tr>
 			<td class="titledesc"><a href="#" tip="<?php _e('Contact DIBS before enabling this feature.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Enable instant capture', 'jigoshop') ?>:</td>
 			<td class="forminp">
 				<select name="jigoshop_dibs_instant" id="jigoshop_dibs_instant" style="min-width:100px;">
@@ -147,6 +169,7 @@ class dibs extends jigoshop_payment_gateway {
 		if(isset($_POST['jigoshop_dibs_testmode'])) update_option('jigoshop_dibs_testmode', jigowatt_clean($_POST['jigoshop_dibs_testmode'])); else @delete_option('jigoshop_dibs_testmode');
 		if(isset($_POST['jigoshop_dibs_decorator'])) update_option('jigoshop_dibs_decorator', jigowatt_clean($_POST['jigoshop_dibs_decorator'])); else @delete_option('jigoshop_dibs_decorator');
 		if(isset($_POST['jigoshop_dibs_instant'])) update_option('jigoshop_dibs_instant', jigowatt_clean($_POST['jigoshop_dibs_instant'])); else @delete_option('jigoshop_dibs_instant');
+		if(isset($_POST['jigoshop_dibs_language'])) update_option('jigoshop_dibs_language', jigowatt_clean($_POST['jigoshop_dibs_language'])); else @delete_option('jigoshop_dibs_language');
 	}
 
 	/**
@@ -177,6 +200,17 @@ class dibs extends jigoshop_payment_gateway {
 		// filter redirect page
 		$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', jigoshop_get_page_id('thanks') );
 
+		// Define language
+		$valid_languages = array('da','en','de','es','fi','fo','fr','it','nl','no','pl','sv','kl');
+		$lang = get_option('jigoshop_dibs_language');
+		if ( $lang == 'detect_wpml' ) {
+			if ( defined(ICL_LANGUAGE_CODE) && in_array(ICL_LANGUAGE_CODE, $valid_languages) ) {
+				$lang = ICL_LANGUAGE_CODE;
+			} else {
+				$lang = 'en';
+			}
+		}
+
 		$args =
 			array(
 				// Merchant
@@ -184,7 +218,7 @@ class dibs extends jigoshop_payment_gateway {
 				'decorator' => $this->decorator,
 				
 				// Session
-				'lang' => 'sv', //TODO Language should probably not be hardcoded here
+				'lang' => $lang,
 				
 				// Order
 				'amount' => $order->order_total * 100,
