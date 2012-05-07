@@ -367,11 +367,14 @@ function attributes_display() { ?>
 		<select name="attribute_taxonomy" class="attribute_taxonomy">
 			<option value="" data-type="custom"><?php _e('Custom product attribute', 'jigoshop'); ?></option>
 			<?php
+				global $post;
 				$attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();
 				if ( $attribute_taxonomies ) :
 			    	foreach ($attribute_taxonomies as $tax) :
-					$label = ($tax->attribute_label) ? $tax->attribute_label : $tax->attribute_name;
-						echo '<option value="'.esc_attr( sanitize_title($tax->attribute_name) ).'" data-type="'.esc_attr( $tax->attribute_type ).'">'.esc_attr( $label ).'</option>';
+						$label = ($tax->attribute_label) ? $tax->attribute_label : $tax->attribute_name;
+						$attributes = (array) get_post_meta($post->ID, 'product_attributes', true);
+						$disabled = disabled( array_key_exists( sanitize_title( $label ), $attributes ), true, false );
+						echo '<option value="'.esc_attr( sanitize_title($tax->attribute_name) ).'"'.$disabled.' data-type="'.esc_attr( $tax->attribute_type ).'">'.esc_attr( $label ).'</option>';
 			    	endforeach;
 			    endif;
 			?>
