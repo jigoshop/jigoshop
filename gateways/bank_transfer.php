@@ -57,49 +57,49 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 	        </td>
 	    </tr>
 	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
+	        <th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input class="input-text" type="text" name="jigoshop_bank_transfer_title" id="jigoshop_bank_transfer_title" value="<?php if ($value = get_option('jigoshop_bank_transfer_title')) echo $value; else echo 'Bank Transfer Payment'; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('Let the customer know that their order won\'t be shipping until you receive payment.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Customer Message', 'jigoshop') ?></th>
+	        <th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('Let the customer know that their order won\'t be shipping until you receive payment.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Customer Message', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input class="input-text wide-input" type="text" name="jigoshop_bank_transfer_description" id="jigoshop_bank_transfer_description" value="<?php if ($value = get_option('jigoshop_bank_transfer_description')) echo $value; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('Your bank name for reference. e.g. HSBC','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Bank Name', 'jigoshop') ?></th>
+	        <th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('Your bank name for reference. e.g. HSBC','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Bank Name', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input class="input-text" type="text" name="jigoshop_bank_transfer_bank_name" id="jigoshop_bank_transfer_bank_name" value="<?php if ($value = get_option('jigoshop_bank_transfer_bank_name')) echo $value; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('Your Bank Account number.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Account Number', 'jigoshop') ?></th>
+	        <th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('Your Bank Account number.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Account Number', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input class="input-text" type="text" name="jigoshop_bank_transfer_acc_number" id="jigoshop_bank_transfer_acc_number" value="<?php if ($value = get_option('jigoshop_bank_transfer_acc_number')) echo $value; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('Your branch Sort Code.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Sort Code', 'jigoshop') ?></th>
+	        <th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('Your branch Sort Code.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Sort Code', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input class="input-text" type="text" name="jigoshop_bank_transfer_sort_code" id="jigoshop_bank_transfer_sort_code" value="<?php if ($value = get_option('jigoshop_bank_transfer_sort_code')) echo $value; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('Your IBAN number. (for International transfers)','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('IBAN', 'jigoshop') ?></th>
+	        <th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('Your IBAN number. (for International transfers)','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('IBAN', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input class="input-text" type="text" name="jigoshop_bank_transfer_iban" id="jigoshop_bank_transfer_iban" value="<?php if ($value = get_option('jigoshop_bank_transfer_iban')) echo $value; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('Your Branch Identification Code. (BIC Number)','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('BIC Code', 'jigoshop') ?></th>
+	        <th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('Your Branch Identification Code. (BIC Number)','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('BIC Code', 'jigoshop') ?></th>
 	        <td class="forminp">
 		        <input class="input-text" type="text" name="jigoshop_bank_transfer_bic" id="jigoshop_bank_transfer_bic" value="<?php if ($value = get_option('jigoshop_bank_transfer_bic')) echo $value; ?>" />
 	        </td>
 	    </tr>
 	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('Additional information you want to display to your customer.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Additional Info', 'jigoshop') ?></th>
+	        <th scope="row"><a href="#" data-rel="tooltip" title="<?php _e('Additional information you want to display to your customer.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Additional Info', 'jigoshop') ?></th>
 	        <td class="forminp">
 	        	<textarea class="input-text" name="jigoshop_bank_transfer_additional" id="jigoshop_bank_transfer_additional"><?php if ($value = get_option('jigoshop_bank_transfer_additional')) echo esc_textarea( $value ); ?></textarea>
 	        </td>
