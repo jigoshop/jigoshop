@@ -144,7 +144,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 		 * Reverse sort to list 0_new arrays at the bottom, so that they're deleted first in case it's a duplicate.
 		 * This way, we won't delete the existing variation, but rather the newly created dupe.
 		 */
-		//rsort($_POST['variations']);
+		rsort($_POST['variations']);
 
 		foreach( $_POST['variations'] as $ID => $meta ) {
 

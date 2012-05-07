@@ -42,7 +42,7 @@ class jigoshop_product_meta
 			// silently fail if entered sale price > regular price (or nothing entered)
 			update_post_meta( $post_id, 'sale_price', '' );
 		}
-
+		
 		update_post_meta( $post_id, 'weight',        (float) $_POST['weight']);
 		update_post_meta( $post_id, 'length',        (float) $_POST['length']);
 		update_post_meta( $post_id, 'width',         (float) $_POST['width']);
@@ -158,7 +158,7 @@ class jigoshop_product_meta
 		} else {
 			$array['stock_status'] = $post['stock_status'];
 		}
-
+		
 		return $array;
 	}
 
@@ -206,11 +206,10 @@ class jigoshop_product_meta
 
 		$attr_names      = $post['attribute_names']; // This data returns all attributes?
 		$attr_values     = $post['attribute_values'];
-		$attr_visibility = empty($post['attribute_visibility']) ? 0 : $post['attribute_visibility'];
-		$attr_variation  = empty($post['attribute_variation'])  ? 0 : $post['attribute_variation'];
+		$attr_visibility = $post['attribute_visibility'];
+		$attr_variation  = isset($post['attribute_variation']) ? $post['attribute_variation'] : null; // Null so unsure
 		$attr_is_tax     = $post['attribute_is_taxonomy']; // Likewise
 		$attr_position   = $post['attribute_position']; // and this?
-
 
 		// Create empty attributes array
 		$attributes = array();
@@ -221,7 +220,7 @@ class jigoshop_product_meta
 			if ( ! $value )
 				continue;
 
-			if ( ! is_array( $value ) && !empty($attr_variation[$key]) ) {
+			if ( ! is_array( $value ) && $attr_variation[$key] ) {
 			 	$value = explode( ',', $value );
 			 	$value = array_map( 'trim', $value );
 			 	$value = implode( ',', $value );
@@ -240,9 +239,9 @@ class jigoshop_product_meta
 				'name'        => $attr_names[$key],
 				'value'       => $value,
 				'position'    => (int)  $attr_position[$key],
-				'visible'     => !empty($attr_visibility[$key]) ? true : false,
-				'variation'   => !empty($attr_variation[$key])  ? true : false,
-				'is_taxonomy' => !empty($attr_is_tax[$key])     ? true : false
+				'visible'     => (bool) $attr_visibility[$key],
+				'variation'   => (bool) $attr_variation[$key],
+				'is_taxonomy' => (bool) $attr_is_tax[$key]
 			);
 		}
 
