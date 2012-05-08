@@ -80,8 +80,8 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
                     $rate += (empty($this->fee) ? 0 : $this->get_fee($this->fee, jigoshop_cart::$cart_contents_total_ex_dl));
 
                     $tax = 0;
-                    if (get_option('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable') :
-                        $tax = $this->calculate_shipping_tax($rate - jigoshop_cart::get_cart_discount_leftover());
+                    if (get_option('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable' && $rate > 0) :
+                        $tax = $this->calculate_shipping_tax($rate - jigoshop_cart::get_cart_discount_leftover(), $this->id . (empty($this->rates) ? 0 : count($this->rates)));
                     endif;
 
                     // rate should never be 0 or less from shipping API's
@@ -122,8 +122,8 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
                     $rate += (empty($this->fee) ? 0 : $this->get_fee($this->fee, jigoshop_cart::$cart_contents_total_ex_dl));
 
                     $tax = 0;
-                    if (get_option('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable') :
-                        $tax = $this->calculate_shipping_tax($rate - jigoshop_cart::get_cart_discount_leftover());
+                    if (get_option('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable' && $rate > 0) :
+                        $tax = $this->calculate_shipping_tax($rate - jigoshop_cart::get_cart_discount_leftover(), $this->id . (empty($this->rates) ? 0 : count($this->rates)));
                     endif;
 
                     // rate should never be 0 or less from shipping API's
@@ -305,6 +305,24 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
         return $cheapest_rate;
     }
 
+    /**
+     * Set the index to the selected service on the session (selected_rate_id)
+     * 
+     * @param string $selected_service 
+     * @since 1.2
+     */
+    public function set_selected_service_index($selected_service = '') {
+        
+        if (!empty($selected_service)) :
+            for ($i = 0; $i < $this->get_rates_amount(); $i++) :
+                if ($this->get_selected_service($i) == $selected_service) :
+                    jigoshop_session::instance()->selected_rate_id = $i;
+                    break;
+                endif;
+            endfor;
+        endif;
+        
+    }
     // Override this functions if you want to provide your own
     // label to the service name displayed
     public function get_cheapest_service() {
