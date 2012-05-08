@@ -273,8 +273,10 @@ function jigoshop_edit_order_columns($columns) {
 	 * Will only show the 'title' column on the Trash status page.
 	 * Unfortunately, we can't override the 'title' column with jigoshop_custom_order_columns(), otherwise this would be a lot simpler!
 	 */
-	if ($post->post_status == 'trash') $columns["title"] = __("Order", 'jigoshop');
-	else $columns["order_title"]    = __("Order", 'jigoshop');
+	if ( !empty($post) && $post->post_status == 'trash')
+		$columns["title"]           = __("Order", 'jigoshop');
+	else
+		$columns["order_title"]     = __("Order", 'jigoshop');
 
 	$columns["customer"]            = __("Customer", 'jigoshop');
 	$columns["billing_address"]     = __("Billing Address", 'jigoshop');
