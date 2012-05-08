@@ -11,7 +11,7 @@
  * @package             Jigoshop
  * @category            Catalog
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright Â© 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_product {
@@ -1098,7 +1098,7 @@ class jigoshop_product {
 		if ( ! empty( $attributes )) foreach( $attributes as $attr ) {
 
 			// If attribute is invisible skip
-			if ( ! $attr['visible'] )
+			if ( ! isset( $attribute['visible'] ) )
 				continue;
 
 			// Get Title & Value from attribute array
