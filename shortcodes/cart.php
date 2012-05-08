@@ -64,15 +64,14 @@ function jigoshop_cart($atts) {
     elseif (isset($_POST['shipping_rates'])) :
 
         $rates_params = explode(":", $_POST['shipping_rates']);
-
+        $available_methods = jigoshop_shipping::get_available_shipping_methods();
+        $shipping_method = $available_methods[$rates_params[0]];
+        
         if ($rates_params[1] != NULL) :
             jigoshop_session::instance()->selected_rate_id = $rates_params[1];
-        else :
-            jigoshop_session::instance()->selected_rate_id = 'no_rate_id';
         endif;
 
-        $available_methods = jigoshop_shipping::get_available_shipping_methods();
-        $available_methods[$rates_params[0]]->choose(); // choses the method selected by user.
+        $shipping_method->choose(); // choses the method selected by user.
 
     endif;
 

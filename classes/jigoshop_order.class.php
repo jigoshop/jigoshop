@@ -152,7 +152,7 @@ class jigoshop_order {
         if ($this->get_tax_classes() && is_array($this->get_tax_classes())) :
 
             foreach ($this->get_tax_classes() as $tax_class) :
-                if ($this->order_tax[$tax_class]['compound']) :
+                if ($this->order_tax[$tax_class]['compound'] == 'yes') :
                     $ret = true;
                     break;
                 endif;
