@@ -13,7 +13,7 @@
  * @package             Jigoshop
  * @category            Admin
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright Â© 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -137,36 +137,49 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 		// Get the attributes to be used later
 		$attributes = (array) maybe_unserialize( get_post_meta($parent_id, 'product_attributes', true) );
-
-		$sizes = array();
-
-		/**
-		 * Reverse sort to list 0_new arrays at the bottom, so that they're deleted first in case it's a duplicate.
-		 * This way, we won't delete the existing variation, but rather the newly created dupe.
-		 */
-		//rsort($_POST['variations']);
-
-		foreach( $_POST['variations'] as $ID => $meta ) {
-
-			/* Prevent duplicate variations */
-			$sizes[$meta['tax_size']] = empty($sizes[$meta['tax_size']]) ? 0 : $sizes[$meta['tax_size']]++;
-			if( $sizes[$meta['tax_size']] > 1) {
-				wp_set_object_terms( $ID, null, 'product_type');
-				wp_delete_post( $ID );
-				unset($_POST['variations'][$ID]);
-				continue;
-			}
+		
+		foreach ( $_POST['variations'] as $ID => $meta ) {
 
 			// Update post data or Add post if new
-			if ( strpos($ID, '_new') ) {
-				$ID = wp_insert_post( array(
-					'post_title'  => "#{$parent_id}: Child Variation",
-					'post_status' => isset($meta['enabled']) ? 'publish' : 'draft',
-					'post_parent' => $parent_id,
-					'post_type'   => 'product_variation'
-				));
-			}
-			else {
+			if ( strpos( $ID, '_new' ) ) {
+			
+				// check for an existing variation with matching attributes to prevent duplication
+				$current_meta = $meta;
+				foreach ( $current_meta as $current_id => $current_value ) {
+					// discard everything but the taxonomies
+					if ( strpos( $current_id, 'tax_' ) !== 0 ) {
+						unset( $current_meta[$current_id] );
+					}
+				}
+				// we now have just the taxonomies in use for this new variation in $current_meta, match them up to others
+				$all_variations = $_POST['variations'];
+				unset( $all_variations[$ID] );		// we don't need the current new variation
+				$duplicate = false;
+				foreach ( $all_variations as $this_id => $this_meta ) {
+					$haystack_meta = $this_meta;
+					foreach ( $haystack_meta as $haystack_id => $haystack_value ) {
+						// discard everything but the taxonomies
+						if ( strpos( $haystack_id, 'tax_' ) !== 0 ) {
+							unset( $haystack_meta[$haystack_id] );
+						}
+					}
+					// we now have the taxonomies only for this haystack variation
+					$result = array_diff( $haystack_meta, $current_meta );
+					if ( empty( $result ) ) $duplicate = true;
+				}
+				
+				if ( ! $duplicate ) {
+					$ID = wp_insert_post( array(
+						'post_title'  => "#{$parent_id}: Child Variation",
+						'post_status' => isset($meta['enabled']) ? 'publish' : 'draft',
+						'post_parent' => $parent_id,
+						'post_type'   => 'product_variation'
+					));
+				} else {
+					// silent fail, should put up a message?
+				}
+				
+			} else {
 				$wpdb->update( $wpdb->posts, array(
 					'post_title'  => "#{$parent_id}: Child Variation",
 					'post_status' => isset($meta['enabled']) ? 'publish' : 'draft'

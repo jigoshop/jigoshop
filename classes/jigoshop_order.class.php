@@ -13,7 +13,7 @@
  * @package             Jigoshop
  * @category            Customer
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright Â© 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_order {
@@ -152,7 +152,7 @@ class jigoshop_order {
         if ($this->get_tax_classes() && is_array($this->get_tax_classes())) :
 
             foreach ($this->get_tax_classes() as $tax_class) :
-                if ($this->order_tax[$tax_class]['compound']) :
+                if ($this->order_tax[$tax_class]['compound'] == 'yes') :
                     $ret = true;
                     break;
                 endif;

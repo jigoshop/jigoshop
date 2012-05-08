@@ -13,7 +13,7 @@
  * @package             Jigoshop
  * @category            Checkout
  * @author              Jigowatt
- * @copyright           Copyright � 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_tax {
@@ -385,13 +385,13 @@ class jigoshop_tax {
                 if (isset($this->tax_amounts[$tax_class]['amount']) && isset($this->tax_amounts[$tax_class]['compound'])) :
                     if ($compounded && $this->tax_amounts[$tax_class]['compound'] == 'yes') :
                         $tax_amount += round($this->tax_amounts[$tax_class]['amount']);
-                        if ($inc_shipping && isset($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id])) :
-                            $tax_amount += round($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id], 2);
+                        if ($inc_shipping && isset($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id . jigoshop_session::instance()->selected_rate_id])) :
+                            $tax_amount += round($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id . jigoshop_session::instance()->selected_rate_id], 2);
                         endif;
                     elseif (!$compounded && $this->tax_amounts[$tax_class]['compound'] != 'yes') :
                         $tax_amount += round($this->tax_amounts[$tax_class]['amount']);
-                        if ($inc_shipping && isset($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id])) :
-                            $tax_amount += round($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id], 2);
+                        if ($inc_shipping && isset($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id . jigoshop_session::instance()->selected_rate_id])) :
+                            $tax_amount += round($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id . jigoshop_session::instance()->selected_rate_id], 2);
                         endif;
                     endif;
                 endif;
@@ -417,8 +417,8 @@ class jigoshop_tax {
         
         if (!empty($this->tax_amounts)) :
             foreach($this->get_applied_tax_classes() as $tax_class) :
-                if (isset($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id])) :
-                    $tax_amount += round($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id], 2);
+                if (isset($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id . jigoshop_session::instance()->selected_rate_id])) :
+                    $tax_amount += round($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id . jigoshop_session::instance()->selected_rate_id], 2);
                 endif;
             endforeach;
         endif;
@@ -590,7 +590,7 @@ class jigoshop_tax {
         $new_shipping_tax = false;
         
         foreach($this->tax_amounts as $tax_class => $value) :
-            if (isset($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id])) :
+            if (isset($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id . jigoshop_session::instance()->selected_rate_id])) :
                 $tax_classes[] = $tax_class;
                 $new_shipping_tax = true;
             endif;
@@ -613,7 +613,7 @@ class jigoshop_tax {
         // as the amount will be 0
         $new_shipping_tax = false;
         foreach($this->tax_amounts as $tax_class => $value) :
-            if (isset($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id])) :
+            if (isset($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id . jigoshop_session::instance()->selected_rate_id])) :
                 $new_shipping_tax = true;
                 break;
             endif;
@@ -680,8 +680,8 @@ class jigoshop_tax {
     function get_tax_amount($tax_class) {
         $tax_amount = 0;
         
-        if (isset($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id])) :
-            $tax_amount += round($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id], 2);
+        if (isset($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id . jigoshop_session::instance()->selected_rate_id])) :
+            $tax_amount += round($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id . jigoshop_session::instance()->selected_rate_id], 2);
         endif;
         
         if (isset($this->tax_amounts[$tax_class]['amount'])) :

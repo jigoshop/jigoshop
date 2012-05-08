@@ -11,7 +11,7 @@
  * @package             Jigoshop
  * @category            Core
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright Â© 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -614,9 +614,7 @@ if (!function_exists('jigoshop_product_customize_panel')) {
 						cols="60"
 						rows="4"><?php echo esc_textarea( $custom ); ?></textarea>
 
-					<p class="submit"><input name="Submit" type="submit" class="button-primary add_personalization" value="<?php _e( "Save Personalization", 'jigoshop' ); ?>" /></p>
-
-					<!--p class="submit"><a href="#customize_form" class="inline show_customize_form button"><?php _e( "Add Personalization", 'jigoshop' ); ?></a></p-->
+					<p class="submit"><input name="Submit" type="submit" class="button-alt add_personalization" value="<?php _e( "Save Personalization", 'jigoshop' ); ?>" /></p>
 
 				</form>
 

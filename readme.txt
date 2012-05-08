@@ -145,6 +145,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 	* If both products were added to the cart, only 1 tax class was applied and the other wasn't
 * Fix: Tax amounts disappearing on orders when changing the status of the order
 * Fix: Hiding and showing products on Shop upon stock reduction/increase with 'hide out of stock products' setting
+	* product variations are enabled or disabled when stock threshold is hit upon reduction/increase
 * Fix: Multiple tax classes applied to all-of selections on countries
 * Fix: Rounding error on taxes with price includes tax option
 * Fix: Sale prices on products will no longer be higher than regular price
