@@ -1041,7 +1041,7 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'id' 		=> 'jigoshop_tax_classes',
 		'css' 		=> 'width:100%; height: 75px;',
 		'type' 		=> 'textarea',
-		'std' 		=> "Reduced Rate\nZero Rate"
+		'std' 		=> sprintf( __( 'Reduced Rate%sZero Rate', 'jigoshop' ), PHP_EOL ),
 	),
 
 	array(
