@@ -8,12 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Widgets
- * @author		Jigowatt
- * @since		1.0
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Widgets
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 class Jigoshop_Widget_Price_Filter extends WP_Widget {
 
@@ -170,23 +169,23 @@ function jigoshop_price_filter( $filtered_posts ) {
 		$matched_products = array( 0 );
 
 		$matched_products_query = get_posts(array(
-			'post_type' => 'product',
-			'post_status' => 'publish',
-			'posts_per_page' => -1,
-			'meta_query' => array(
+			'post_type'     => 'product',
+			'post_status'   => 'publish',
+			'posts_per_page'=> -1,
+			'meta_query'    => array(
 				array(
-					'key' => 'regular_price',
-					'value' => array( $_GET['min_price'], $_GET['max_price'] ),
-					'type' => 'NUMERIC',
-					'compare' => 'BETWEEN'
+					'key'    => 'regular_price',
+					'value'  => array( $_GET['min_price'], $_GET['max_price'] ),
+					'type'   => 'NUMERIC',
+					'compare'=> 'BETWEEN'
 				)
 			),
 			'tax_query' => array(
 				array(
-					'taxonomy' => 'product_type',
-					'field' => 'slug',
-					'terms' => 'grouped',
-					'operator' => 'NOT IN'
+					'taxonomy'=> 'product_type',
+					'field'   => 'slug',
+					'terms'   => 'grouped',
+					'operator'=> 'NOT IN'
 				)
 			)
 		));

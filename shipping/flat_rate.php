@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Checkout
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Checkout
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 class flat_rate extends jigoshop_shipping_method {
 
@@ -43,14 +43,16 @@ class flat_rate extends jigoshop_shipping_method {
     	if ($this->type=='order') :
 			// Shipping for whole order
 			$this->shipping_total = $this->cost + $this->get_fee( $this->fee, jigoshop_cart::$cart_contents_total );
-
+            $this->shipping_total = ($this->shipping_total < 0 ? 0 : $this->shipping_total);
+        
 			if ( get_option('jigoshop_calc_taxes')=='yes' && $this->tax_status=='taxable' ) :
 
-                $_tax->calculate_shipping_tax( $this->shipping_total, $this->id );
+                $_tax->calculate_shipping_tax( $this->shipping_total - jigoshop_cart::get_cart_discount_leftover(), $this->id );
                 $this->shipping_tax = $_tax->get_total_shipping_tax_amount();
 				
 			endif;
 		else :
+            
 			// Shipping per item
             if (sizeof(jigoshop_cart::$cart_contents)>0) : 
                 foreach (jigoshop_cart::$cart_contents as $item_id => $values) :
@@ -60,6 +62,7 @@ class flat_rate extends jigoshop_shipping_method {
                         $item_shipping_price = ($this->cost + $this->get_fee( $this->fee, $_product->get_price() )) * $values['quantity'];
                         $this->shipping_total = $this->shipping_total + $item_shipping_price;
 
+                        //TODO: need to figure out how to handle per item shipping with discounts that apply to shipping as well
                         if ( $_product->is_shipping_taxable() && $this->tax_status=='taxable' ) :
                             $_tax->calculate_shipping_tax( $item_shipping_price, $this->id, $_product->get_tax_classes() );
                         endif;

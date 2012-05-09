@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Admin
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Admin
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 require_once ( 'jigoshop-install.php' );
@@ -240,7 +240,7 @@ function jigoshop_feature_product () {
 
 	if( !current_user_can('edit_posts') ) wp_die( __('You do not have sufficient permissions to access this page.') );
 
-	if( !check_admin_referer()) wp_die( __('You have taken too long. Please go back and retry.', 'jigoshop') );
+	// if( !check_admin_referer()) wp_die( __('You have taken too long. Please go back and retry.', 'jigoshop') );
 
 	$post_id = isset($_GET['product_id']) && (int)$_GET['product_id'] ? (int)$_GET['product_id'] : '';
 
@@ -256,7 +256,8 @@ function jigoshop_feature_product () {
 	update_post_meta( $post->ID, 'featured', ! $product->is_featured() );
 
 	$sendback = remove_query_arg( array('trashed', 'untrashed', 'deleted', 'ids'), wp_get_referer() );
-	wp_safe_redirect( $sendback );
+	wp_redirect( $sendback );
+	exit;
 
 }
 add_action('wp_ajax_jigoshop-feature-product', 'jigoshop_feature_product');

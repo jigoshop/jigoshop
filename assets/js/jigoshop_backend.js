@@ -380,7 +380,8 @@ ui.item.find('.check-column input').hide().after('<img alt="processing" src="ima
 }( window.jQuery );
 
 jQuery(document).ready(function(){
-	jQuery('[data-original-title]').tooltip({
-		placement: 'left',
+	jQuery('th.column-featured, label[for="featured-hide"]').tooltip({
+		title: 'Featured',
+		placement: 'bottom'
 	});
 });

@@ -11,11 +11,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Admin
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Admin
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -124,28 +124,28 @@ function jigoshop_update_options() {
 
                             foreach (array_keys(jigoshop_countries::$states[$country]) as $st) :
                                 $tax_rates[] = array(
-                                    'country' => $country,
-                                    'label' => $label,
-                                    'state' => $st,
-                                    'rate' => $rate,
-                                    'shipping' => $shipping,
-                                    'class' => $class,
-                                    'compound' => $compound,
-                                    'is_all_states' => true //determines if admin panel should show 'all_states'
+									'country'      => $country,
+									'label'        => $label,
+									'state'        => $st,
+									'rate'         => $rate,
+									'shipping'     => $shipping,
+									'class'        => $class,
+									'compound'     => $compound,
+									'is_all_states'=> true //determines if admin panel should show 'all_states'
                                 );
                             endforeach;
 
                         else :
 
                              $tax_rates[] = array(
-                                'country' => $country,
-                                'label' => $label,
-                                'state' => $state,
-                                'rate' => $rate,
-                                'shipping' => $shipping,
-                                'class' => $class,
-                                'compound' => $compound,
-                                'is_all_states' => false //determines if admin panel should show 'all_states'
+								'country'      => $country,
+								'label'        => $label,
+								'state'        => $state,
+								'rate'         => $rate,
+								'shipping'     => $shipping,
+								'class'        => $class,
+								'compound'     => $compound,
+								'is_all_states'=> false //determines if admin panel should show 'all_states'
                             );
                         endif;
 
@@ -161,14 +161,14 @@ function jigoshop_update_options() {
 
             elseif (isset($value['id']) && $value['id'] == 'jigoshop_coupons') :
 
-                $coupon_code = array();
-                $coupon_type = array();
-                $coupon_amount = array();
-                $product_ids = array();
-                $date_from = array();
-                $date_to = array();
-                $coupons = array();
-                $individual = array();
+				$coupon_code  = array();
+				$coupon_type  = array();
+				$coupon_amount= array();
+				$product_ids  = array();
+				$date_from    = array();
+				$date_to      = array();
+				$coupons      = array();
+				$individual   = array();
 
                 if (isset($_POST['coupon_code']))
                     $coupon_code = $_POST['coupon_code'];
@@ -253,7 +253,7 @@ function jigoshop_update_options() {
 			/* default back to standard image sizes if no value is entered */
 			elseif (isset($value['type']) && $value['type']=='image_size') :
 
-				if(isset($value['id']) && isset($_POST[$value['id'].'_w'])) {
+				if(!empty($value['id']) && (!empty($_POST[$value['id'].'_w']) && !empty($_POST[$value['id'].'_h'])) ) {
 					update_option($value['id'].'_w', jigowatt_clean($_POST[$value['id'].'_w']));
 					update_option($value['id'].'_h', jigowatt_clean($_POST[$value['id'].'_h']));
 				} else {
@@ -478,8 +478,9 @@ function jigoshop_admin_fields($options) {
                 case 'coupons' :
                     $coupons = new jigoshop_coupons();
                     $coupon_codes = $coupons->get_coupons();
-                ?><tr>
-                        <th scope="row"><label><?php echo $value['name'] ?></label></th>
+                ?>
+					<thead><tr><th scope="col" colspan="2"><h3 class="title"><?php _e('Coupon Settings', 'jigoshop'); ?></h3></th></tr></thead>
+					<tr>
                         <td id="coupon_codes">
                             <table class="coupon_rows" cellspacing="0">
                                 <thead>
@@ -843,7 +844,7 @@ function get_all_states_key($tax_rate) {
  * Prints an updated notice
  */
 function jigoshop_settings_updated_notice() {
-    echo '<div id="message" class="updated fade"><p><strong>' . __('Your settings have been saved.', 'jigoshop') . '</strong></p></div>';
+    echo '<div id="message" class="updated"><p><strong>' . __('Your settings have been saved.', 'jigoshop') . '</strong></p></div>';
 }
 
 /**

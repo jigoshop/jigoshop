@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Admin
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Admin
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 // Add filter to ensure the text is context relevant when updated
@@ -58,7 +58,7 @@ function jigoshop_edit_product_columns($columns) {
 	$columns["thumb"] = null;
 	$columns["title"] = __("Title", 'jigoshop');
 
-	$columns["featured"] = '<div data-original-title="Featured">'. __('Featured', 'Jigoshop') .'</div>';
+    $columns["featured"] = '<img src="' . jigoshop::plugin_url() . '/assets/images/head_featured.png" alt="' . __('Featured', 'jigoshop') . '" />';
 
 	$columns["product-type"] = __('Type', 'jigoshop');
 	if( get_option('jigoshop_enable_sku', true) == 'yes' ) {
@@ -103,8 +103,8 @@ function jigoshop_custom_product_columns($column) {
 		case "featured" :
 			$url = wp_nonce_url( admin_url('admin-ajax.php?action=jigoshop-feature-product&product_id=' . $post->ID) );
 			echo '<a href="'.esc_url($url).'" title="'.__('Change','jigoshop') .'">';
-			if ($product->is_featured()) echo '<a href="'.esc_url($url).'"><img src="'.jigoshop::assets_url().'/assets/images/head_featured_desc.gif" alt="yes" />';
-			else echo '<img src="'.jigoshop::assets_url().'/assets/images/head_featured.gif" alt="no" />';
+			if ($product->is_featured()) echo '<a href="'.esc_url($url).'"><img src="'.jigoshop::assets_url().'/assets/images/head_featured_desc.png" alt="yes" />';
+			else echo '<img src="'.jigoshop::assets_url().'/assets/images/head_featured.png" alt="no" />';
 			echo '</a>';
 		break;
 		case "stock" :
@@ -160,6 +160,11 @@ function jigoshop_custom_product_columns($column) {
             else :
                 _e( 'Draft', 'jigoshop' );
             endif;
+			if ( $product->visibility ) :
+				echo ($product->visibility != 'visible')
+					? '<br /><strong class="attention">'.ucfirst($product->visibility).'</strong>'
+					: '';
+			endif;
 		break;
 
 		case "product-visibility" :
@@ -255,23 +260,41 @@ add_filter('manage_edit-shop_order_columns', 'jigoshop_edit_order_columns');
 
 function jigoshop_edit_order_columns($columns) {
 
+	global $post;
+
     $columns = array();
 
     //$columns["cb"] = "<input type=\"checkbox\" />";
 
-    $columns["order_status"] = __("Status", 'jigoshop');
+	$columns["order_status"]        = __("Status", 'jigoshop');
 
-    $columns["order_title"] = __("Order", 'jigoshop');
+	/**
+	 * Have to add the 'title' column in order to show the row hover actions (restore, delete permanently).
+	 * Will only show the 'title' column on the Trash status page.
+	 * Unfortunately, we can't override the 'title' column with jigoshop_custom_order_columns(), otherwise this would be a lot simpler!
+	 */
+	if ($post->post_status == 'trash') $columns["title"] = __("Order", 'jigoshop');
+	else $columns["order_title"]    = __("Order", 'jigoshop');
 
-    $columns["customer"] = __("Customer", 'jigoshop');
-    $columns["billing_address"] = __("Billing Address", 'jigoshop');
-    $columns["shipping_address"] = __("Shipping Address", 'jigoshop');
-
-    $columns["billing_and_shipping"] = __("Billing & Shipping", 'jigoshop');
-
-    $columns["total_cost"] = __("Order Cost", 'jigoshop');
+	$columns["customer"]            = __("Customer", 'jigoshop');
+	$columns["billing_address"]     = __("Billing Address", 'jigoshop');
+	$columns["shipping_address"]    = __("Shipping Address", 'jigoshop');
+	$columns["billing_and_shipping"]= __("Billing & Shipping", 'jigoshop');
+	$columns["total_cost"]          = __("Order Cost", 'jigoshop');
 
     return $columns;
+}
+
+add_filter('post_row_actions','my_action_row');
+function my_action_row($actions){
+
+	global $post;
+
+	if ($post->post_type =="shop_order" && $post->post_status == 'trash')
+		echo sprintf(__('Order #%s'), $post->ID);
+
+	return $actions;
+
 }
 
 add_action('manage_shop_order_posts_custom_column', 'jigoshop_custom_order_columns', 2);
@@ -386,8 +409,8 @@ function jigoshop_custom_order_columns($column) {
                         <th><?php _e('Discount', 'jigoshop'); ?></th>
                         <td><?php echo jigoshop_price($order->order_discount); ?></td>
                     </tr>
-                    <?php 
-                endif; 
+                    <?php
+                endif;
                 if ((get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
                     || (get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) :
                     ?><tr>
@@ -397,7 +420,7 @@ function jigoshop_custom_order_columns($column) {
                     <?php
                 endif;
                 if (get_option('jigoshop_calc_taxes') == 'yes') :
-                    foreach ($order->get_tax_classes() as $tax_class) : 
+                    foreach ($order->get_tax_classes() as $tax_class) :
                         if ($order->show_tax_entry($tax_class)) : ?>
                             <tr>
                                 <th><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></th>

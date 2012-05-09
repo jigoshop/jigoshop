@@ -8,12 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Widgets
- * @author		Jigowatt
- * @since		1.0
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Widgets
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 
@@ -82,7 +81,7 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 			'post_status'    => 'publish',
 			'meta_key'       => '_js_total_sales',
 			'orderby'        => 'meta_value_num',
-			'nopaging'       => true,
+			'nopaging'       => false,
 			'meta_query'     => array(
 				array(
 					'key'       => 'visibility',

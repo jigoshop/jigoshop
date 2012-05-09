@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Admin
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Admin
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -156,10 +156,10 @@ function jigoshop_dashboard() {
 							$outofstock = array();
 							$lowinstock = array();
 							$args = array(
-								'post_type'	=> 'product',
-								'post_status' => 'publish',
-								'ignore_sticky_posts'	=> 1,
-								'posts_per_page' => -1
+								'post_type'           => 'product',
+								'post_status'         => 'publish',
+								'ignore_sticky_posts' => 1,
+								'posts_per_page'      => -1
 							);
 							$my_query = new WP_Query($args);
 							if ($my_query->have_posts()) : while ($my_query->have_posts()) : $my_query->the_post();
@@ -276,11 +276,11 @@ function jigoshop_dashboard() {
 										add_filter( 'posts_where', 'orders_this_month' );
 
 										$args = array(
-										    'numberposts'     => -1,
-										    'orderby'         => 'post_date',
-										    'order'           => 'DESC',
-										    'post_type'       => 'shop_order',
-										    'post_status'     => 'publish' ,
+										    'numberposts'      => -1,
+										    'orderby'          => 'post_date',
+										    'order'            => 'DESC',
+										    'post_type'        => 'shop_order',
+										    'post_status'      => 'publish' ,
 										    'suppress_filters' => false
 										);
 										$orders = get_posts( $args );

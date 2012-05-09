@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Checkout
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Checkout
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 function get_jigoshop_cart($atts) {
     return jigoshop_shortcode_wrapper('jigoshop_cart', $atts);
@@ -64,15 +64,14 @@ function jigoshop_cart($atts) {
     elseif (isset($_POST['shipping_rates'])) :
 
         $rates_params = explode(":", $_POST['shipping_rates']);
-
+        $available_methods = jigoshop_shipping::get_available_shipping_methods();
+        $shipping_method = $available_methods[$rates_params[0]];
+        
         if ($rates_params[1] != NULL) :
             jigoshop_session::instance()->selected_rate_id = $rates_params[1];
-        else :
-            jigoshop_session::instance()->selected_rate_id = 'no_rate_id';
         endif;
 
-        $available_methods = jigoshop_shipping::get_available_shipping_methods();
-        $available_methods[$rates_params[0]]->choose(); // choses the method selected by user.
+        $shipping_method->choose(); // choses the method selected by user.
 
     endif;
 

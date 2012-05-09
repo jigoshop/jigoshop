@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Catalog
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Catalog
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_product {
 
@@ -107,7 +107,10 @@ class jigoshop_product {
 		$this->backorders            = isset($meta['backorders'][0]) ? $meta['backorders'][0] : null;
 		$this->stock                 = isset($meta['stock'][0]) ? $meta['stock'][0] : null;
 		$this->stock_sold            = isset($meta['stock_sold'][0]) ? $meta['stock_sold'][0] : null;
-
+		
+		// filter for Paid Memberships Pro plugin courtesy @strangerstudios
+		$this->sale_price = apply_filters( 'jigoshop_sale_price' , $this->sale_price, $this );
+		
 		return $this;
 	}
 
@@ -226,6 +229,20 @@ class jigoshop_product {
 		// Update & return the new value
 		update_post_meta( $this->ID, 'stock', $this->stock );
 		update_post_meta( $this->ID, 'stock_sold', $amount_sold );
+
+		if ( get_option('jigoshop_notify_no_stock_amount') >= 0
+			&& get_option('jigoshop_notify_no_stock_amount') >= $this->stock
+			&& get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) {
+			
+			update_post_meta( $this->ID, 'visibility', 'hidden' );
+			
+		} else if ( $this->stock > get_option('jigoshop_notify_no_stock_amount')
+			&& $this->visibility == 'hidden'
+			&& get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) {
+			
+			update_post_meta( $this->ID, 'visibility', 'visible' );
+		}
+		
 		return $this->stock;
 	}
 
@@ -767,13 +784,7 @@ class jigoshop_product {
 
 			// only display 'From' if prices differ among them
 			$sameprice = true;
-			$firstprice = reset( $array );
-			for ( $i = 0 ; $i < count( $array ) ; $i++ ) {
-				$thisprice = each( $array );
-				if ( $thisprice['value'] != $firstprice ) {
-					$sameprice = false;
-				}
-			}
+			if ( count( $array ) >= 2 && reset( $array ) != end( $array ) ) $sameprice = false;
 			if ( ! $sameprice ) :
 				$html = '<span class="from">' . _x('From:', 'price', 'jigoshop') . '</span> ';
 				reset( $array );
@@ -1007,7 +1018,7 @@ class jigoshop_product {
 		if ( ! $this->attributes )
 			$this->attributes = maybe_unserialize( $this->meta['product_attributes'][0] );
 
-		return $this->attributes;
+		return (array) $this->attributes;
 	}
 
 	/**
@@ -1017,26 +1028,28 @@ class jigoshop_product {
 	 */
 	public function has_attributes() {
 		$result = false;
-		if ( (bool) $this->get_attributes() ) {
-			foreach( $this->get_attributes() as $attribute ) {
-				$result |= (bool) $attribute['visible'];
-			}
+		$attributes = $this->get_attributes();
+		if ( ! empty( $attributes )) foreach ( $attributes as $attribute ) {
+			$result |= isset( $attribute['visible'] );
 		}
-
+		
 		return $result;
 	}
 
 	/**
 	 * Checks if the product has dimensions
 	 *
+     * @param boolean all_dimensions if true, then all dimensions have to be set
+     * in order for has_dimensions to return true, otherwise if false, then just 1 
+     * of the dimensions has to be set for the function to return true.
 	 * @return  bool
 	 */
-	public function has_dimensions() {
+	public function has_dimensions($all_dimensions = false) {
 
 		if ( get_option('jigoshop_enable_dimensions') != 'yes' )
 			return false;
 
-		return ( $this->get_length() || $this->get_width() || $this->get_height() );
+		return ( $all_dimensions ? ($this->get_length() && $this->get_width() && $this->get_height()) :($this->get_length() || $this->get_width() || $this->get_height()));
 	}
 
 	/**
@@ -1085,7 +1098,7 @@ class jigoshop_product {
 		if ( ! empty( $attributes )) foreach( $attributes as $attr ) {
 
 			// If attribute is invisible skip
-			if ( ! $attr['visible'] )
+			if ( ! isset( $attribute['visible'] ) )
 				continue;
 
 			// Get Title & Value from attribute array

@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Customer
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Customer
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 class jigoshop_customer extends jigoshop_singleton {
@@ -33,12 +33,12 @@ class jigoshop_customer extends jigoshop_singleton {
         		$state = '';
         	endif;
 			$data = array(
-				'country' => $country,
-				'state' => $state,
-				'postcode' => '',
+				'country'          => $country,
+				'state'            => $state,
+				'postcode'         => '',
 				'shipping_country' => $country,
-				'shipping_state' => $state,
-				'shipping_postcode' => ''
+				'shipping_state'   => $state,
+				'shipping_postcode'=> ''
 			);
 			jigoshop_session::instance()->customer  = $data;
 
@@ -59,7 +59,7 @@ class jigoshop_customer extends jigoshop_singleton {
 		if ( $country ) :
 
             $shopcountry = jigoshop_countries::get_base_country();
-            // check if it's a country with states. 
+            // check if it's a country with states.
             if (jigoshop_countries::country_has_states($country)) :
 
                 $shopstate = jigoshop_countries::get_base_state();
@@ -70,7 +70,7 @@ class jigoshop_customer extends jigoshop_singleton {
                     $outside = true;
                 endif;
             elseif (jigoshop_countries::is_eu_country($shopcountry) && $shopcountry != $country) :
-                
+
                 // if both base country and shipping country are in the EU, then outside country base is true
                 $outside = jigoshop_countries::is_eu_country($country);
             endif;
@@ -199,11 +199,11 @@ class jigoshop_customer extends jigoshop_singleton {
 								$download_name = $download_name .' (' . jigoshop_get_formatted_variation( $_product->variation_data, true ).')';
 							endif;
 							$downloads[] = array(
-								'download_url' => add_query_arg('download_file', $result->product_id, add_query_arg('order', $result->order_key, add_query_arg('email', $user_info->user_email, home_url()))),
-								'product_id' => $result->product_id,
-								'download_name' => $download_name,
-								'order_key' => $result->order_key,
-								'downloads_remaining' => $result->downloads_remaining
+								'download_url'       => add_query_arg('download_file', $result->product_id, add_query_arg('order', $result->order_key, add_query_arg('email', $user_info->user_email, home_url()))),
+								'product_id'         => $result->product_id,
+								'download_name'      => $download_name,
+								'order_key'          => $result->order_key,
+								'downloads_remaining'=> $result->downloads_remaining
 							);
 					endforeach;
 				}
@@ -214,8 +214,9 @@ class jigoshop_customer extends jigoshop_singleton {
 		return $downloads;
 
 	}
+
 	public function address_form($load_address, $fields) {
-		
+
 		$title = '<h3>';
 		if($load_address=='billing'):
 			$title .=_e('Billing Address', 'jigoshop');
@@ -228,7 +229,7 @@ class jigoshop_customer extends jigoshop_singleton {
 		foreach ($fields as $field) :
 			self::address_form_field( $field );
 		endforeach;
-		
+
 	}
 
 	/**
@@ -362,10 +363,10 @@ class jigoshop_customer extends jigoshop_singleton {
 
 			break;
 		endswitch;
-		
+
 		apply_filters('jigoshop_address_field_types', $field, $args);
-		
-		
+
+
 		if ($args['return']) return $field; else echo $field;
 	}
 	/** Gets the value either from the posted data, or from the users meta data */
@@ -386,4 +387,5 @@ class jigoshop_customer extends jigoshop_singleton {
 			endswitch;
 		endif;
 	}
+
 }
