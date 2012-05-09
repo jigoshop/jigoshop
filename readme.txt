@@ -113,7 +113,10 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 
 == Changelog ==
 
-= 1.2 - TBA =
+= 1.2.1 - 1012-04-09 =
+* Fix: Repairs tax applied to only one item on the Cart.
+
+= 1.2 - 1012-04-08 =
 * New: Permalink options:
 	* Allow `%product_cat%` for permalinks
 	* Prepend product urls with category

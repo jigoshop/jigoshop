@@ -481,13 +481,13 @@ class jigoshop_tax {
                     if ($this->has_tax($tax_class)) :
                         $this->update_tax_amount($tax_class, $tax, false);
                         $tax_classes_applied[] = $tax_class;
+                    else :
+                        $tax_amount[$tax_class]['amount'] = $tax;
+                        $tax_amount[$tax_class]['rate'] = $tax_rate;
+                        $tax_amount[$tax_class]['compound'] = false;
+                        $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
+                        $tax_classes_applied[] = $tax_class;
                     endif;
-                    
-                    $tax_amount[$tax_class]['amount'] = $tax;
-                    $tax_amount[$tax_class]['rate'] = $tax_rate;
-                    $tax_amount[$tax_class]['compound'] = false;
-                    $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
-                    $tax_classes_applied[] = $tax_class;
                     
                     $non_compound_tax_amount += $tax;
                     $total_tax += $tax;
@@ -499,13 +499,13 @@ class jigoshop_tax {
                     if ($this->has_tax($tax_class)) :
                         $this->update_tax_amount($tax_class, $tax, false);
                         $tax_classes_applied[] = $tax_class;
+                    else :
+                        $tax_amount[$tax_class]['amount'] = $tax;
+                        $tax_amount[$tax_class]['rate'] = $tax_rate;
+                        $tax_amount[$tax_class]['compound'] = true;
+                        $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
+                        $tax_classes_applied[] = $tax_class;
                     endif;
-
-                    $tax_amount[$tax_class]['amount'] = $tax;
-                    $tax_amount[$tax_class]['rate'] = $tax_rate;
-                    $tax_amount[$tax_class]['compound'] = true;
-                    $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
-                    $tax_classes_applied[] = $tax_class;
                     
                     $compounded_tax_amount += $tax;
                     $total_tax += $tax;
