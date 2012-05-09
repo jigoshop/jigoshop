@@ -182,6 +182,9 @@ if (!function_exists('jigoshop_show_product_thumbnails')) {
 				$post_title = esc_attr($_post->post_title);
 				$image = wp_get_attachment_image($attachment->ID, $small_thumbnail_size);
 
+				if ( ! $image || $url == get_post_meta($post->ID, 'file_path', true) )
+					continue;
+
 				echo '<a href="'.esc_url($url).'" title="'.esc_attr($post_title).'" rel="thumbnails" class="zoom ';
 				if ($loop==1 || ($loop-1)%$columns==0) echo 'first';
 				if ($loop%$columns==0) echo 'last';

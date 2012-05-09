@@ -3,8 +3,8 @@ Contributors: Jigowatt
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigowatt, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.2.1
-Tested up to: 3.4-alpha-19978
-Stable tag: 1.2
+Tested up to: 3.4-beta3
+Stable tag: 1.2.1
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -113,7 +113,10 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 
 == Changelog ==
 
-= 1.2 - TBA =
+= 1.2.1 - 2012-04-09 =
+* Fix: Repairs tax applied to only one item on the Cart.
+
+= 1.2 - 2012-04-08 =
 * New: Permalink options:
 	* Allow `%product_cat%` for permalinks
 	* Prepend product urls with category
