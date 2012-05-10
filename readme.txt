@@ -4,7 +4,7 @@ Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, wid
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.2.1
 Tested up to: 3.4-beta3
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,10 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.2.2 - 2012-04-10 = 
+* Fix: When tax was included in catalogue price and the quantity of the product increased, the product price only reflected 
+  one of the items rather than the quantity selected.
+* Fix: Calculable shipping which caused errors on plugins such as UPS, etc.
 
 = 1.2.1 - 2012-04-09 =
 * Fix: Repairs tax applied to only one item on the Cart.
