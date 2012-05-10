@@ -271,23 +271,24 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name'           => __('Product Category Slug','jigoshop'),
-		'desc'           => '',
+		'name'           => __('Slug variables','jigoshop'),
+		'desc'           => 'Product category slug',
 		'tip'            => __('Slug displayed in product category URLs. Leave blank to use default "product-category"', 'jigoshop'),
 		'id'             => 'jigoshop_product_category_slug',
-		'css'            => 'min-width:100px;',
 		'std'            => 'product-category',
-		'type'           => 'text'
+		'css'            => 'width:130px;',
+		'type'           => 'text',
+		'atr'            => 'group'
 	),
 
 	array(
-		'name'           => __('Product Tag Slug','jigoshop'),
-		'desc'           => '',
+		'desc'           => __('Product tag slug','jigoshop'),
 		'tip'            => __('Slug displayed in product tag URLs. Leave blank to use default "product-tag"', 'jigoshop'),
 		'id'             => 'jigoshop_product_tag_slug',
-		'css'            => 'min-width:100px;',
 		'std'            => 'product-tag',
-		'type'           => 'text'
+		'css'            => 'width:130px;',
+		'type'           => 'text',
+		'atr'            => 'group'
 	),
 
 	array( 'name'        => __('Shop page configuration', 'jigoshop'), 'type' => 'title', 'desc' => '' ),

@@ -362,7 +362,11 @@ function jigoshop_admin_fields($options) {
                     		value="<?php if (get_option($value['id']) !== false && get_option($value['id']) !== null)
                     			echo esc_attr( get_option($value['id']) );
                     			else if ( isset($value['std'])) echo esc_attr( $value['std'] ); ?>" />
-                    	<?php if ( !empty( $value['name'] ) && $value['atr']  != 'group' ) : ?><br /><?php endif; ?><small><?php echo $value['desc'] ?></small>
+                    	<?php if ( !empty( $value['name'] ) && $value['atr']  != 'group' ) : ?>
+							<br /><small><?php echo $value['desc'] ?></small>
+						<?php else: ?>
+							<?php echo $value['desc'] ?>
+						<?php endif; ?>
                     </td>
                   </tr><?php
                 break;
