@@ -3286,6 +3286,11 @@ msgid "List product and shipping tax classes here, e.g. Zero Tax, Reduced Rate."
 msgstr "Produkt- und Versand-Mehrwertsteuerklassen hier auflisten, z.B. Keine MwSt., ermäßigter Satz, usw."
 
 #@ jigoshop
+#: admin/jigoshop-admin-settings-options.php:1044
+msgid "Reduced Rate%sZero Rate"
+msgstr "Ermäßigter Satz%sKeine MwSt."
+
+#@ jigoshop
 #: admin/jigoshop-admin-settings-options.php:847
 msgid "Tax rates"
 msgstr "Mehrwertsteuersätze"
