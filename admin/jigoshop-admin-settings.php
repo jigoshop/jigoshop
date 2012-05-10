@@ -534,7 +534,7 @@ function jigoshop_admin_fields($options) {
                                     if ($coupon_codes && is_array($coupon_codes) && sizeof($coupon_codes) > 0)
                                         foreach ($coupon_codes as $coupon) : $i++;
 										?><tr class="coupon_row">
-                                              <td><a href="#" class="remove button" title="' . __('Delete this Coupon', 'jigoshop') . '">&times;</a></td>';
+                                              <td><a href="#" class="remove button" title="' . __('Delete this Coupon', 'jigoshop') . '">&times;</a></td>
                                               <td><input type="text" value="<?php echo esc_attr( $coupon['code'] ); ?>" name="coupon_code[<?php echo esc_attr( $i ); ?>]" title="<?php _e('Coupon Code', 'jigoshop'); ?>" placeholder="<?php _e('Coupon Code', 'jigoshop'); ?>" class="text" /></td>
 											  <td>
 												<select name="coupon_type[<?php echo esc_attr( $i ); ?>]" title="Coupon Type"><?php
