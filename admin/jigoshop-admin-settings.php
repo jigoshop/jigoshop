@@ -57,7 +57,7 @@ function csort_tax_rates($a, $b) {
  * @since 		1.0
  * @usedby 		jigoshop_settings()
  *
- * @param 		array $options List of options to go through and save
+ * @param 		array $jigoshop_options_settings List of options to go through and save
  */
 function jigoshop_update_options() {
     global $jigoshop_options_settings;
@@ -88,7 +88,7 @@ function jigoshop_update_options() {
 		}
 
 		if ( $valueType == 'multi_select_countries' ) {
-			update_option($valueID, isset($_POST[$valueID]) ? $_POST[$valueID] : array());
+			update_option($valueID, isset( $_POST[$valueID] ) ? $_POST[$valueID] : array());
 			continue;
 		}
 
@@ -362,7 +362,7 @@ function jigoshop_admin_fields($options) {
                     		value="<?php if (get_option($value['id']) !== false && get_option($value['id']) !== null)
                     			echo esc_attr( get_option($value['id']) );
                     			else if ( isset($value['std'])) echo esc_attr( $value['std'] ); ?>" />
-                    	<?php if ( !empty( $value['name'] ) ) : ?><br /><?php endif; ?><small><?php echo $value['desc'] ?></small>
+                    	<?php if ( !empty( $value['name'] ) && $value['atr']  != 'group' ) : ?><br /><?php endif; ?><small><?php echo $value['desc'] ?></small>
                     </td>
                   </tr><?php
                 break;
@@ -382,6 +382,29 @@ function jigoshop_admin_fields($options) {
 						<option value="<?php echo esc_attr( $key ); ?>" <?php if (get_option($value['id']) == $key) { ?> selected="selected" <?php } ?>><?php echo ucfirst($val) ?></option>
 						<?php endforeach; ?>
 						</select><br /><small><?php echo $value['desc'] ?></small>
+					</td>
+				  </tr><?php
+                break;
+
+            case 'radio':
+				?><tr>
+                    <th scope="row">
+						<?php if (!empty($value['tip'])) : ?>
+						<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a>
+						<?php endif; ?>
+						<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
+					</th>
+					<td>
+						<?php foreach ($value['options'] as $key => $val) : ?>
+						<label class="radio">
+						<input type="radio"
+							   name="<?php echo esc_attr( $value['id'] ); ?>"
+							   id="<?php echo esc_attr( $key ); ?>"
+							   value="<?php echo esc_attr( $key ); ?>"
+							   <?php if (get_option($value['id']) == $key) { ?> checked="checked" <?php } ?>>
+						<?php echo esc_attr( ucfirst( $val ) ); ?>
+						</label><br />
+						<?php endforeach; ?>
 					</td>
 				  </tr><?php
                 break;
