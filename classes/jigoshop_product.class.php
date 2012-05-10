@@ -614,7 +614,7 @@ class jigoshop_product {
 
                 endforeach;
 
-                $price = $price - $tax_totals;
+                $price = $price * $quantity - $tax_totals;
 
             endif;
 
