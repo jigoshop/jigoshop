@@ -89,6 +89,9 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 					echo '<span class="js_widget_product_title">' . $_product->get_title() . '</span>';
 					echo '</a>';
 
+					// Displays variations and cart item meta
+					echo jigoshop_cart::get_item_data($value);
+					
 					// Print the quantity & price per product
 					echo '<span class="js_widget_product_price">' . $value['quantity'].' &times; '. $_product->get_price_html() . '</span>';
 				echo '</li>';
