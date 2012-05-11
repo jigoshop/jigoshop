@@ -1114,7 +1114,7 @@ class jigoshop_product {
 				$terms = array();
 
 				foreach( $product_terms as $term ) {
-					$terms[] = $term->name;
+					$terms[] = '<span class="val_'.$term->slug.'">'.$term->name.'</span>';
 				}
 
 				$value = implode(', ', $terms);
@@ -1125,7 +1125,7 @@ class jigoshop_product {
 
 			// Generate the remaining html
 			$html .= "
-			<tr>
+			<tr class=\"attr_".$attr['name']."\">
 				<th>$name</th>
 				<td>$value</td>
 			</tr>";
