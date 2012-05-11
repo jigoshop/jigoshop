@@ -80,10 +80,8 @@
                 foreach (jigoshop_cart::$cart_contents as $item_id => $values) :
                     $_product = $values['data'];
                     if ($_product->exists() && $values['quantity'] > 0) :
-						$variation = '';
-                        if ($_product instanceof jigoshop_product_variation && is_array($values['variation'])) {
-                            $variation = jigoshop_get_formatted_variation($values['variation']);
-                        }
+                    
+                        $variation = jigoshop_cart::get_item_data($values);
 						
 						$customization = '';
 						$custom_products = (array) jigoshop_session::instance()->customized_products;
