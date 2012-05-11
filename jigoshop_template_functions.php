@@ -293,6 +293,7 @@ if (!function_exists('jigoshop_simple_add_to_cart')) {
 
 		?>
 		<form action="<?php echo esc_url( $_product->add_to_cart_url() ); ?>" class="cart" method="post">
+			<?php do_action('jigoshop_before_add_to_cart_form_button'); ?>
 		 	<div class="quantity"><input name="quantity" value="1" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div>
 		 	<button type="submit" class="button-alt"><?php _e('Add to cart', 'jigoshop'); ?></button>
 		 	<?php do_action('jigoshop_add_to_cart_form'); ?>
@@ -317,6 +318,7 @@ if (!function_exists('jigoshop_downloadable_add_to_cart')) {
 
 		?>
 		<form action="<?php echo esc_url( $_product->add_to_cart_url() ); ?>" class="cart" method="post">
+			<?php do_action('jigoshop_before_add_to_cart_form_button'); ?>
 			<button type="submit" class="button-alt"><?php _e('Add to cart', 'jigoshop'); ?></button>
 			<?php do_action('jigoshop_add_to_cart_form'); ?>
 		</form>
@@ -345,6 +347,7 @@ if (!function_exists('jigoshop_grouped_add_to_cart')) {
 					<?php endforeach; ?>
 				</tbody>
 			</table>
+      <?php do_action('jigoshop_before_add_to_cart_form_button'); ?>			
 			<button type="submit" class="button-alt"><?php _e('Add to cart', 'jigoshop'); ?></button>
 			<?php do_action('jigoshop_add_to_cart_form'); ?>
 		</form>
@@ -456,6 +459,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
                 <?php endforeach;?>
 			</fieldset>
 			<div class="single_variation"></div>
+			<?php do_action('jigoshop_before_add_to_cart_form_button'); ?>
 			<div class="variations_button" style="display:none;">
                 <input type="hidden" name="variation_id" value="" />
                 <input type="hidden" name="product_id" value="<?php echo esc_attr( $post->ID ); ?>" />
