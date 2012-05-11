@@ -130,8 +130,10 @@ function jigoshop_order_tracking( $atts ) {
 								echo jigoshop_get_formatted_variation( $_product->variation_data );
 							endif;
 
+							do_action( 'jigoshop_display_item_meta_data', $order_item );
+							
 							echo '</td>';
-							echo '<td>'.jigoshop_price($_product->get_price()).'</td>';
+							echo '<td>'.jigoshop_price($order_item['cost']).'</td>';
 							echo '<td>'.$order_item['qty'].'</td>';
 
 							echo '</tr>';
