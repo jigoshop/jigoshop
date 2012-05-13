@@ -798,7 +798,7 @@ msgstr "Ovo je demo webshop za  testiranje &mdash; Vaše narudžbe neće biti ob
 #: jigoshop.php:651
 #@ jigoshop
 msgid " <small>(ex. tax)</small>"
-msgstr "<small> (npr. PDV)</small>"
+msgstr "<small> (PDV uključen)</small>"
 
 #: jigoshop.php:834
 #@ jigoshop
@@ -1097,7 +1097,7 @@ msgstr "U obradi"
 #: admin/jigoshop-admin-post-types.php:577
 #@ jigoshop
 msgid "Completed"
-msgstr "Završeno"
+msgstr "Poslano"
 
 #: admin/jigoshop-admin-dashboard.php:102
 #@ jigoshop
@@ -1513,7 +1513,7 @@ msgstr "Zaliha"
 #: shortcodes/order_tracking.php:57
 #@ jigoshop
 msgid "Price"
-msgstr "Cijena"
+msgstr "Uk. cijena"
 
 #: admin/jigoshop-admin-post-types.php:101
 #@ jigoshop
@@ -3094,12 +3094,12 @@ msgstr "Vaša košarica je prazna."
 #: shortcodes/cart.php:101
 #@ jigoshop
 msgid "Product Name"
-msgstr "Naziv Proizvoda"
+msgstr "Proizvod"
 
 #: shortcodes/cart.php:102
 #@ jigoshop
 msgid "Unit Price"
-msgstr "Jedinična Cijena"
+msgstr "Jed. cijena"
 
 #: shortcodes/cart.php:157
 #@ jigoshop
@@ -5043,7 +5043,7 @@ msgstr "Bankovni Prijenos"
 #: gateways/bank_transfer.php:38
 #@ jigoshop
 msgid "Please use the details below to transfer the payment for your order, once payment is received your order will be processed."
-msgstr "Molimo koristite niže navedene detalje za izvršenje plaćanja za Vašu narudžbu, kada uplata bude izvršena obraditi ćemo Vašu narudžbu."
+msgstr "Molimo koristite dane detalje za izvršenje plaćanja za Vašu narudžbu, kada uplata bude primljena Vaša narudžba će biti obrađena."
 
 #: gateways/bank_transfer.php:50
 #@ jigoshop
@@ -6730,7 +6730,7 @@ msgstr "Tagirano kao "
 #: jigoshop_template_functions.php:432
 #@ jigoshop
 msgid "Choose an option "
-msgstr "Izaberite postavku "
+msgstr "Izaberite količinu "
 
 #: languages/countries.php:108
 #@ jigoshop
@@ -6780,7 +6780,7 @@ msgstr "u obradi"
 #: languages/strings.php:25
 #@ jigoshop
 msgid "completed"
-msgstr "završeno"
+msgstr "poslano"
 
 #: languages/strings.php:26
 #@ jigoshop
@@ -6842,12 +6842,12 @@ msgstr "Prikaži najprodavanije proizvode"
 #: widgets/best-sellers.php:33
 #@ jigoshop
 msgid "Jigoshop: Best Sellers"
-msgstr "Jigoshop: Najprodavaniji"
+msgstr "Jigoshop: Najprodavaniji proizvodi"
 
 #: widgets/best-sellers.php:68
 #@ jigoshop
 msgid "Best Sellers"
-msgstr "Najprodavaniji"
+msgstr "Najprodavaniji proizvodi"
 
 #: widgets/cart.php:29
 #@ jigoshop

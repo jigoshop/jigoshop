@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Core
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Core
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -141,7 +141,7 @@ add_action( 'init', 'jigoshop_update_cart_action' );
 function jigoshop_update_cart_action() {
 
 	// Remove from cart
-	if ( isset($_GET['remove_item']) && is_numeric($_GET['remove_item'])  && jigoshop::verify_nonce('cart')) :
+	if ( isset($_GET['remove_item']) && $_GET['remove_item']  && jigoshop::verify_nonce('cart')) :
 
 		jigoshop_cart::set_quantity( $_GET['remove_item'], 0 );
 
@@ -343,12 +343,12 @@ function jigoshop_ajax_update_order_review() {
 
 	endif;
 
-	if (isset($_POST['country'])) jigoshop_customer::set_country( $_POST['country'] );
-	if (isset($_POST['state'])) jigoshop_customer::set_state( $_POST['state'] );
-	if (isset($_POST['postcode'])) jigoshop_customer::set_postcode( $_POST['postcode'] );
+	if (isset($_POST['country']))   jigoshop_customer::set_country( $_POST['country'] );
+	if (isset($_POST['state']))     jigoshop_customer::set_state( $_POST['state'] );
+	if (isset($_POST['postcode']))  jigoshop_customer::set_postcode( $_POST['postcode'] );
 	if (isset($_POST['s_country'])) jigoshop_customer::set_shipping_country( $_POST['s_country'] );
-	if (isset($_POST['s_state'])) jigoshop_customer::set_shipping_state( $_POST['s_state'] );
-	if (isset($_POST['s_postcode'])) jigoshop_customer::set_shipping_postcode( $_POST['s_postcode'] );
+	if (isset($_POST['s_state']))   jigoshop_customer::set_shipping_state( $_POST['s_state'] );
+	if (isset($_POST['s_postcode']))jigoshop_customer::set_shipping_postcode( $_POST['s_postcode'] );
 
 	jigoshop_cart::calculate_totals();
 
@@ -547,9 +547,9 @@ function jigoshop_download_product() {
 				$wpdb->update( $wpdb->prefix . "jigoshop_downloadable_product_permissions", array(
 					'downloads_remaining' => $downloads_remaining - 1,
 				), array(
-					'user_email' => $email,
+					'user_email'=> $email,
 					'order_key' => $order,
-					'product_id' => $download_file
+					'product_id'=> $download_file
 				), array( '%d' ), array( '%s', '%s', '%d' ) );
 			endif;
 
@@ -688,11 +688,11 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 
 				// Downloadable product - give access to the customer
 				$wpdb->insert( $wpdb->prefix . 'jigoshop_downloadable_product_permissions', array(
-					'product_id' => $product_id,
-					'user_id' => $order->user_id,
-					'user_email' => $user_email,
-					'order_key' => $order->order_key,
-					'downloads_remaining' => $limit
+					'product_id'         => $product_id,
+					'user_id'            => $order->user_id,
+					'user_email'         => $user_email,
+					'order_key'          => $order->order_key,
+					'downloads_remaining'=> $limit
 				), array(
 					'%s',
 					'%s',

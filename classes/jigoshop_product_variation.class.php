@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Catalog
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Catalog
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_product_variation extends jigoshop_product {
 
@@ -43,7 +43,8 @@ class jigoshop_product_variation extends jigoshop_product {
 
 		// Merge with the variation data
 		$this->variation_id = $ID;
-		$this->variation_data = maybe_unserialize( $this->meta['variation_data'][0] );
+		if ( isset( $this->meta['variation_data'][0] ))
+			$this->variation_data = maybe_unserialize( $this->meta['variation_data'][0] );
 		parent::__construct( $ID );
 
 		// Restore the parent ID
@@ -79,7 +80,8 @@ class jigoshop_product_variation extends jigoshop_product {
 	 * @return  int
 	 */
 	public function modify_stock( $by ) {
-
+		global $wpdb;
+		
 		// Only do this if we're updating
 		if ( ! $this->managing_stock() )
 			return false;
@@ -91,6 +93,20 @@ class jigoshop_product_variation extends jigoshop_product {
 		// Update & return the new value
 		update_post_meta( $this->variation_id, 'stock', $this->stock );
 		update_post_meta( $this->variation_id, 'stock_sold', $amount_sold );
+		
+		if ( get_option('jigoshop_notify_no_stock_amount') >= 0
+			&& get_option('jigoshop_notify_no_stock_amount') >= $this->stock
+			&& get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) {
+			
+			$wpdb->update( $wpdb->posts, array( 'post_status' => 'draft' ), array( 'ID' => $this->variation_id ) );
+			
+		} else if ( $this->stock > get_option('jigoshop_notify_no_stock_amount')
+			&& get_post_status( $this->variation_id ) == 'draft'
+			&& get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) {
+			
+			$wpdb->update( $wpdb->posts, array( 'post_status' => 'publish' ), array( 'ID' => $this->variation_id ) );
+		}
+		
 		return $this->stock;
 	}
 

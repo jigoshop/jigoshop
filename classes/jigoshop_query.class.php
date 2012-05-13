@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Core
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Core
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 
@@ -218,11 +218,11 @@ class jigoshop_catalog_query extends Jigoshop_Singleton {
 			$args = array_merge(
 				$this_query->query,
 				array(
-					'page_id' => '',
-					'posts_per_page' => -1,
-					'post_type' => 'product',
-					'post_status' => 'publish',
-					'meta_query' => self::meta_query( $this_query )
+					'page_id'       => '',
+					'posts_per_page'=> -1,
+					'post_type'     => 'product',
+					'post_status'   => 'publish',
+					'meta_query'    => self::meta_query( $this_query )
 				)
 			);
 			$custom_query  = new WP_Query( $args );

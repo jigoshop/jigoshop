@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Admin
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Admin
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -236,8 +236,19 @@ function jigoshop_product_data_box() {
 						'visible'	=> 'Catalog & Search',
 						'catalog'	=> 'Catalog Only',
 						'search'	=> 'Search Only',
-						'Hidden'	=> 'Hidden'
+						'hidden'	=> 'Hidden'
 					), get_post_meta( $post->ID, 'visibility', true ) );
+			?>
+			</fieldset>
+			
+			<fieldset>
+			<?php
+				// Customizable
+				echo jigoshop_form::select( 'product_customize', 'Can be personalized',
+					array(
+						'no'	=> 'No',
+						'yes'	=> 'Yes',
+					), get_post_meta( $post->ID, 'customizable', true ) );
 			?>
 			</fieldset>
 		</div>
@@ -357,11 +368,14 @@ function attributes_display() { ?>
 		<select name="attribute_taxonomy" class="attribute_taxonomy">
 			<option value="" data-type="custom"><?php _e('Custom product attribute', 'jigoshop'); ?></option>
 			<?php
+				global $post;
 				$attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();
 				if ( $attribute_taxonomies ) :
 			    	foreach ($attribute_taxonomies as $tax) :
-					$label = ($tax->attribute_label) ? $tax->attribute_label : $tax->attribute_name;
-						echo '<option value="'.esc_attr( sanitize_title($tax->attribute_name) ).'" data-type="'.esc_attr( $tax->attribute_type ).'">'.esc_attr( $label ).'</option>';
+						$label = ($tax->attribute_label) ? $tax->attribute_label : $tax->attribute_name;
+						$attributes = (array) get_post_meta($post->ID, 'product_attributes', true);
+						$disabled = disabled( array_key_exists( sanitize_title( $label ), $attributes ), true, false );
+						echo '<option value="'.esc_attr( sanitize_title($tax->attribute_name) ).'"'.$disabled.' data-type="'.esc_attr( $tax->attribute_type ).'">'.esc_attr( $label ).'</option>';
 			    	endforeach;
 			    endif;
 			?>

@@ -8,12 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Widgets
- * @author		Jigowatt
- * @since		1.0
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license 	http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Widgets
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 class Jigoshop_Widget_User_Login extends WP_Widget {
@@ -60,9 +59,9 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 
 			// Create the default set of links
 			$links = apply_filters( 'jigoshop_widget_logout_user_links' , array(
-				__( 'My Account', 'jigoshop' )		=> get_permalink( jigoshop_get_page_id('myaccount') ),
-				__( 'Change Password', 'jigoshop' )	=> get_permalink( jigoshop_get_page_id('change_password') ),
-				__( 'Logout', 'jigoshop' )		=> wp_logout_url( home_url() ),
+				__( 'My Account', 'jigoshop' )     => get_permalink( jigoshop_get_page_id('myaccount') ),
+				__( 'Change Password', 'jigoshop' )=> get_permalink( jigoshop_get_page_id('change_password') ),
+				__( 'Logout', 'jigoshop' )         => wp_logout_url( home_url() ),
 			));
 
 		} else {

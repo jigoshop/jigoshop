@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Checkout
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Checkout
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 /** Add the gateway to JigoShop **/
@@ -139,64 +139,70 @@ class skrill extends jigoshop_payment_gateway {
 		$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', jigoshop_get_page_id('thanks') );
 
 		$skrill_args = array(
-			'merchant_fields' => 'partner',
-			'partner' => '21890813',
-			'pay_to_email' => $this->email,
-			'recipient_description' => get_bloginfo('name'),
-			'transaction_id' => $order_id,
-			'return_url' => get_permalink( $checkout_redirect ),
-			'return_url_text' => 'Return to Merchant',
-			'new_window_redirect' => 0,
-			'rid' => 20521479,
-			'prepare_only' => 0,
-			'return_url_target' => 1,
-			'cancel_url' => trailingslashit(get_bloginfo('wpurl')).'?skrillListener=skrill_cancel',
-			'cancel_url_target' => 1,
-			'status_url' => trailingslashit(get_bloginfo('wpurl')).'?skrillListener=skrill_status',
-			'dynamic_descriptor' => 'Description',
-			'language' => 'EN',
-			'hide_login' => 1,
-			'confirmation_note' => 'Thank you for your custom',
-			'pay_from_email' => $order->billing_email,
+			'merchant_fields'      => 'partner',
+			'partner'              => '21890813',
+			'pay_to_email'         => $this->email,
+			'recipient_description'=> get_bloginfo('name'),
+			'transaction_id'       => $order_id,
+			'return_url'           => get_permalink( $checkout_redirect ),
+			'return_url_text'      => 'Return to Merchant',
+			'new_window_redirect'  => 0,
+			'rid'                  => 20521479,
+			'prepare_only'         => 0,
+			'return_url_target'    => 1,
+			'cancel_url'           => trailingslashit(get_bloginfo('wpurl')).'?skrillListener=skrill_cancel',
+			'cancel_url_target'    => 1,
+			'status_url'           => trailingslashit(get_bloginfo('wpurl')).'?skrillListener=skrill_status',
+			'dynamic_descriptor'   => 'Description',
+			'language'             => 'EN',
+			'hide_login'           => 1,
+			'confirmation_note'    => 'Thank you for your custom',
+			'pay_from_email'       => $order->billing_email,
 
-			//'title' => 'Mr',
-			'firstname' => $order->billing_first_name,
-			'lastname' => $order->billing_last_name,
-			'address' => $order->billing_address_1,
-			'address2' => $order->billing_address_2,
-			'phone_number' => $order->billing_phone,
-			'postal_code' => $order->billing_postcode,
-			'city' => $order->billing_city,
-			'state' => $order->billing_state,
-			'country' => 'GBR',
+			//'title'              => 'Mr',
+			'firstname'            => $order->billing_first_name,
+			'lastname'             => $order->billing_last_name,
+			'address'              => $order->billing_address_1,
+			'address2'             => $order->billing_address_2,
+			'phone_number'         => $order->billing_phone,
+			'postal_code'          => $order->billing_postcode,
+			'city'                 => $order->billing_city,
+			'state'                => $order->billing_state,
+			'country'              => 'GBR',
 
-			'amount' => $order_total,
-			'currency' => Jigoshop_Options::get_option('jigoshop_currency'),
-			'detail1_description' => 'Order ID',
-			'detail1_text'=> $order_id
+			'amount'               => $order_total,
+			'currency'             => get_option('jigoshop_currency'),
+			'detail1_description'  => 'Order ID',
+			'detail1_text'         => $order_id
 
 		);
 
 		// Cart Contents
 		$item_loop = 0;
 		if (sizeof($order->items)>0) : foreach ($order->items as $item) :
-			$_product = new jigoshop_product($item['id']);
+
+            if(!empty($item['variation_id'])) {
+                $_product = new jigoshop_product_variation($item['variation_id']);
+            } else {
+                $_product = new jigoshop_product($item['id']);
+            }
+
 			if ($_product->exists() && $item['qty']) :
 
 				$item_loop++;
 
-				$skrill_args['item_name_'.$item_loop] = $_product->get_title();
+				$skrill_args['item_name_'.$item_loop]= $_product->get_title();
 				$skrill_args['quantity_'.$item_loop] = $item['qty'];
-				$skrill_args['amount_'.$item_loop] = $_product->get_price_excluding_tax();
+				$skrill_args['amount_'.$item_loop]   = $_product->get_price_excluding_tax();
 
 			endif;
 		endforeach; endif;
 
 		// Shipping Cost
 		$item_loop++;
-		$skrill_args['item_name_'.$item_loop] = __('Shipping cost', 'jigoshop');
+		$skrill_args['item_name_'.$item_loop]= __('Shipping cost', 'jigoshop');
 		$skrill_args['quantity_'.$item_loop] = '1';
-		$skrill_args['amount_'.$item_loop] = number_format($order->order_shipping, 2);
+		$skrill_args['amount_'.$item_loop]   = number_format($order->order_shipping, 2);
 
 		$skrill_args_array = array();
 

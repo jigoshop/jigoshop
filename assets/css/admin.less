@@ -1,29 +1,16 @@
-#toplevel_page_jigoshop .wp-menu-image {
-    background: url(../images/icons/menu_icons.png) no-repeat 0px -32px !important;
-}
-#toplevel_page_jigoshop:hover .wp-menu-image,
-#toplevel_page_jigoshop.wp-has-current-submenu .wp-menu-image {
-    background: url(../images/icons/menu_icons.png) no-repeat 0px 0px !important;
-}
-#toplevel_page_jigoshop .wp-menu-image img {
-	display: none;
-}
-
-#menu-posts-product .wp-menu-image {
-    background: url(../images/icons/menu_icons.png) no-repeat -35px -32px !important;
-}
-#menu-posts-product:hover .wp-menu-image,
-#menu-posts-product.wp-has-current-submenu .wp-menu-image {
-    background: url(../images/icons/menu_icons.png) no-repeat -35px 0px !important;
-}
-
-#menu-posts-shop_order .wp-menu-image {
-    background: url(../images/icons/menu_icons.png) no-repeat -70px -32px !important;
-}
-#menu-posts-shop_order:hover .wp-menu-image,
-#menu-posts-shop_order.wp-has-current-submenu .wp-menu-image {
-    background: url(../images/icons/menu_icons.png) no-repeat -70px 0px !important;
-}
+// FROM BOOTSTRAP
+.tooltip{position:absolute;z-index:1020;display:block;visibility:visible;padding:5px;font-size:11px;opacity:0;filter:alpha(opacity=0);}.tooltip.in{opacity:0.8;filter:alpha(opacity=80);}
+.tooltip.top{margin-top:-2px;}
+.tooltip.right{margin-left:2px;}
+.tooltip.bottom{margin-top:2px;}
+.tooltip.left{margin-left:-2px;}
+.tooltip.top .tooltip-arrow{bottom:0;left:50%;margin-left:-5px;border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid #000000;}
+.tooltip.left .tooltip-arrow{top:50%;right:0;margin-top:-5px;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:5px solid #000000;}
+.tooltip.bottom .tooltip-arrow{top:0;left:50%;margin-left:-5px;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:5px solid #000000;}
+.tooltip.right .tooltip-arrow{top:50%;left:0;margin-top:-5px;border-top:5px solid transparent;border-bottom:5px solid transparent;border-right:5px solid #000000;}
+.tooltip-inner{max-width:200px;padding:3px 8px;color:#ffffff;font-weight: normal;text-align:center;text-decoration:none;background-color:#000000;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}
+.tooltip-arrow{position:absolute;width:0;height:0;}
+.fade{-webkit-transition:opacity 0.15s linear;-moz-transition:opacity 0.15s linear;-ms-transition:opacity 0.15s linear;-o-transition:opacity 0.15s linear;transition:opacity 0.15s linear;opacity:0;}.fade.in{opacity:1;}
 
 
 #icon-jigoshop, .jigoshop_icon, .icon32-posts-product, .icon32-posts-shop_order {
@@ -353,13 +340,24 @@ ul.subsubsub {
 }
 
 /* Product list */
+
 .fixed {
 	.column-sku, .column-product-type, .column-price, .column-stock, .column-product-date, .column-product-cat, .column-product-tags {
-		width: 15%;
+		width: 12%;
 	}
 
+	th.column-featured img { display: none; }
+	th.column-featured a, th.column-featured.desc a:hover { background: url('../images/head_featured.png') top center no-repeat; }
+	th.column-featured a:hover, th.column-featured.desc a { background: url('../images/head_featured_desc.png') top center no-repeat; }
 	.column-featured {
-		width: 75px;
+		width: 60px;
+
+		div { text-indent: 100%; white-space: nowrap; overflow: hidden; }
+
+		&.sortable a span, &.sorted a span { float: none; }
+
+
+		&:hover span.sorting-indicator, span.sorting-indicator { display: none; }
 	}
 }
 
@@ -413,9 +411,12 @@ div.star img { margin:0;}
 }
 
 .stats {
-	h3 a {
-		float: right;
-		margin-left: 8px;
+	p {
+		padding-bottom:15px;
+		a {
+			float:right;
+			margin-left: 8px;
+		}
 	}
 }
 
@@ -467,9 +468,6 @@ ul.recent-orders {
 	padding: 5px 10px 15px;
 	color: #777;
 	font-size: 13px;
-	position: absolute;
-	top: -17px;
-	left: 15px;
 }
 .jigoshop_right_now .table {
 	margin: 0 -9px;
@@ -478,12 +476,10 @@ ul.recent-orders {
 }
 .jigoshop_right_now .table_content {
 	float: left;
-	border-top: #ececec 1px solid;
 	width: 45%;
 }
 .jigoshop_right_now .table_discussion {
 	float: right;
-	border-top: #ececec 1px solid;
 	width: 45%;
 }
 .jigoshop_right_now table td {
@@ -535,7 +531,9 @@ ul.recent-orders {
 }
 
 .jigoshop-links-widget {
-	ul.links {
+	width:100%;
+	height:100%;
+	div.links {
 		float: left;
 		width: 49%;
 	}
@@ -1522,4 +1520,11 @@ div.multi_select_countries.shipping_services {
 .jigoshop-settings #tabs-wrap p {
 	color: #666;
 	padding: 0 50px;
+}
+
+textarea#system-info-textarea {
+	font-family: 'courier new', monospace;
+	margin: 10px 0 0 0;
+	width: 900px;
+	height: 400px;
 }

@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Core
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Core
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -48,9 +48,17 @@ function jigoshop_upgrade() {
 	if ( $jigoshop_db_version < 1202280 ) {
 		jigoshop_upgrade_111();
 	}
+    
+    if ( $jigoshop_db_version < 1203310 ) {
+        jigoshop_upgrade_120();
+    }
 
 	if ( $jigoshop_db_version < 1202290 ) {
 		jigoshop_upgrade_120();
+	}
+
+	if ( $jigoshop_db_version < 1300000 ) {
+		jigoshop_upgrade_200();
 	}
 
 	// Update the db option
@@ -116,6 +124,10 @@ function jigoshop_convert_db_version() {
 		case '0.9.9.3':
 			update_site_option( 'jigoshop_db_version', 1111092 );
 			break;
+        //TODO: I'm not sure why cases 1.0 -> are here... the verion of db was
+        // updated since 1.0 to the new standard. No point on continuing to 
+        // add entries here, since anyone that has post 1.0 will also have the
+        // new db versions. Anyone before, will get converted from this function.
 		case '1.0':
 			update_site_option( 'jigoshop_db_version', 1202090 );
 			break;
@@ -192,27 +204,27 @@ function jigoshop_upgrade_100() {
             if (jigoshop_countries::country_has_states($country) && $state == '*') :
                 foreach (array_keys(jigoshop_countries::$states[$country]) as $st) :
                     $tax_rates[] = array(
-                                    'country' => $country,
-                                    'label' => '', // no label created as of yet
-                                    'state' => $st,
-                                    'rate' => $rate,
-                                    'shipping' => $shipping,
-                                    'class' => $class,
-                                    'compound' => 'no', //no such thing as compound taxes, so value is no
-                                    'is_all_states' => true //determines if admin panel should show 'all_states'
+									'country'      => $country,
+									'label'        => '', // no label created as of yet
+									'state'        => $st,
+									'rate'         => $rate,
+									'shipping'     => $shipping,
+									'class'        => $class,
+									'compound'     => 'no', //no such thing as compound taxes, so value is no
+									'is_all_states'=> true //determines if admin panel should show 'all_states'
                                 );
                 endforeach;
 
             else : // do normal tax_rates array with the additional parameters
                     $tax_rates[] = array(
-                                    'country' => $country,
-                                    'label' => '', // no label created as of yet
-                                    'state' => $state,
-                                    'rate' => $rate,
-                                    'shipping' => $shipping,
-                                    'class' => $class,
-                                    'compound' => 'no', //no such thing as compound taxes, so value is no
-                                    'is_all_states' => false //determines if admin panel should show 'all_states'
+									'country'      => $country,
+									'label'        => '', // no label created as of yet
+									'state'        => $state,
+									'rate'         => $rate,
+									'shipping'     => $shipping,
+									'class'        => $class,
+									'compound'     => 'no', //no such thing as compound taxes, so value is no
+									'is_all_states'=> false //determines if admin panel should show 'all_states'
                                 );
 
             endif;
@@ -349,7 +361,7 @@ function jigoshop_upgrade_100() {
 		$parent_weight = get_post_meta( $parent_id, 'weight', true );
 		$parent_length = get_post_meta( $parent_id, 'length', true );
 		$parent_height = get_post_meta( $parent_id, 'height', true );
-		$parent_width = get_post_meta( $parent_id, 'width', true );
+		$parent_width  = get_post_meta( $parent_id, 'width',  true );
 
 		if ( ! get_post_meta( $post->ID, 'regular_price', true) && $parent_reg_price )
 			update_post_meta( $post->ID, 'regular_price', $parent_reg_price );
@@ -423,16 +435,90 @@ function jigoshop_upgrade_111() {
 
 }
 
+function get_old_taxes_as_array($taxes_as_string) {
+
+    $tax_classes = array();
+
+    if ($taxes_as_string) :
+
+        $taxes = explode('|', $taxes_as_string);
+
+        foreach ($taxes as $tax) :
+
+            $tax_class = explode(':', $tax);
+            if (isset($tax_class[1])) :
+                $tax_info = explode(',', $tax_class[1]);
+
+                if (isset($tax_class[0]) && isset($tax_info[0]) && isset($tax_info[1]) && isset($tax_info[2]) && isset($tax_info[3])) :
+                    $tax_classes[$tax_class[0]] = array('amount' => $tax_info[0], 'rate' => $tax_info[1], 'compound' => ($tax_info[2] ? true : false), 'display' => $tax_info[3]);
+                endif;
+
+            endif;
+
+        endforeach;
+
+    endif;
+
+    return $tax_classes;
+}
+
 /**
- * Execute changes made in Jigoshop 1.2
- *
+ * Execute changes made in Jigoshop 1.2.0
+ * 
  * @since 1.2
  */
 function jigoshop_upgrade_120() {
+    
+    // update orders 
+	$args = array(
+		'post_type'	  => 'shop_order',
+		'numberposts' => -1,
+		'post_status' => 'publish'
+	);
+
+	$posts = get_posts( $args );
+
+	foreach( $posts as $post ) :
+        $order_data = get_post_meta($post->ID, 'order_data', true);
+    
+        if (!empty($order_data['order_tax'])) :
+
+            // means someone has posted a manual order. Need to update to new tax string
+            if (strpos($order_data['order_tax'], ':') === false) :
+                $order_data['order_tax_total'] = $order_data['order_tax'];
+                $order_data['order_tax'] = jigoshop_tax::create_custom_tax($order_data['order_total'] - $order_data['order_tax_total'], $order_data['order_tax_total'], $order_data['order_shipping_tax'], $order_data['order_tax_divisor']);                
+            else :
+                $tax_array = get_old_taxes_as_array($order_data['order_tax']);
+                $order_data['order_tax'] = jigoshop_tax::array_implode($tax_array);
+            endif;
+            
+            update_post_meta($post->ID, 'order_data', $order_data);
+            
+        endif;
+            
+    endforeach;
+    
+}
+
+/**
+ * Execute changes made in Jigoshop 2.0
+ *
+ * @since 1.2
+ */
+function jigoshop_upgrade_200() {
 	
 	global $wpdb;
 	
-	// convert all options to new Jigoshop_Options class
+	// get all current 'jigoshop_' namespace options from the 'options' table and include them
+	$options_in_use = $wpdb->get_results( 
+		$wpdb->prepare( "SELECT * FROM {$wpdb->options} WHERE option_name LIKE 'jigoshop_%%';" ));
+	foreach ( $options_in_use as $index => $setting ) {
+		if ( $setting->option_name == 'jigoshop_options' ) continue;
+		if ( $setting->option_name == 'jigoshop_db_version' ) continue;
+		Jigoshop_Options::set_option( $setting->option_name, $setting->option_value );
+	}
+	
+	// now do it again, adjusting specific ones based on old settings for the new Jigoshop_Options class
 	require_once ( 'admin/jigoshop-admin-settings-options.php' );
 	global $options_settings;
 	foreach ( $options_settings as $setting ) {
@@ -472,15 +558,6 @@ function jigoshop_upgrade_120() {
 				break;
 			}
 		}
-	}
-	
-	// get all other current 'jigoshop_' namespace options from the 'options' table and include them
-	$options_in_use = $wpdb->get_results( 
-		$wpdb->prepare( "SELECT * FROM {$wpdb->options} WHERE option_name LIKE 'jigoshop_%%';" ));
-	foreach ( $options_in_use as $index => $setting ) {
-		if ( $setting->option_name == 'jigoshop_options' ) continue;
-		if ( $setting->option_name == 'jigoshop_db_version' ) continue;
-		Jigoshop_Options::set_option( $setting->option_name, $setting->option_value );
 	}
 	
 	// convert paypal email address to test mode email if enabled

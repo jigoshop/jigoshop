@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Checkout
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Checkout
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -176,25 +176,25 @@ class dibs extends jigoshop_payment_gateway {
 		$args =
 			array(
 				// Merchant
-				'merchant' => $this->merchant,
-				'decorator' => 'default',
+				'merchant'   => $this->merchant,
+				'decorator'  => 'default',
 
 				// Session
-				'lang' => 'sv',
+				'lang'       => 'sv',
 
 				// Order
-				'amount' => $order->order_total * 100,
-				'orderid' => $order_id,
-				'uniqueoid' => $order->order_key,
-				'currency' => $dibs_currency[Jigoshop_Options::get_option('jigoshop_currency')],
-				'ordertext' => 'TEST',
+				'amount'     => $order->order_total * 100,
+				'orderid'    => $order_id,
+				'uniqueoid'  => $order->order_key,
+				'currency'   => $dibs_currency[Jigoshop_Options::get_option('jigoshop_currency')],
+				'ordertext'  => 'TEST',
 
 				// URLs
-				'callbackurl' => site_url('/jigoshop/dibscallback.php'),
+				'callbackurl'=> site_url('/jigoshop/dibscallback.php'),
 
 				// TODO these urls will not work correctly since DIBS ignores the querystring
-				'accepturl' => add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink($checkout_redirect))),
-				'cancelurl' => $order->get_cancel_order_url(),
+				'accepturl'  => add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink($checkout_redirect))),
+				'cancelurl'  => $order->get_cancel_order_url(),
 
 		);
 
