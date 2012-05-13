@@ -520,8 +520,8 @@ function jigoshop_upgrade_200() {
 	
 	// now do it again, adjusting specific ones based on old settings for the new Jigoshop_Options class
 	require_once ( 'admin/jigoshop-admin-settings-options.php' );
-	global $options_settings;
-	foreach ( $options_settings as $setting ) {
+	global $jigoshop_options_settings;
+	foreach ( $jigoshop_options_settings as $setting ) {
 		if ( ! empty( $setting['id'] )) {
 			switch ( $setting['id'] ) {
 			case 'jigoshop_shop_tiny':

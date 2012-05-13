@@ -138,6 +138,11 @@ function jigoshop_init() {
 		
 	} else {
 	
+		/* Catalog Filters */
+		add_filter( 'loop-shop-query'   , create_function( '', 'return array("orderby" => "'.get_option('jigoshop_catalog_sort_orderby').'","order" => "'.Jigoshop_Options::get_option('jigoshop_catalog_sort_direction').'");' ) );
+		add_filter( 'loop_shop_columns' , create_function( '', 'return '.Jigoshop_Options::get_option('jigoshop_catalog_columns').';' ) );
+		add_filter( 'loop_shop_per_page', create_function( '', 'return '.Jigoshop_Options::get_option('jigoshop_catalog_per_page').';' ) );
+
 		jigoshop_catalog_query::instance();		// front end queries class
 		
 	}
