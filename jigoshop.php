@@ -22,7 +22,7 @@
  * Author:              Jigowatt
  * Author URI:          http://jigowatt.co.uk
  *
- * Version:             1.2.1
+ * Version:             2.0
  * Requires at least:   3.2.1
  * Tested up to:        3.4-beta3
  *
@@ -46,33 +46,18 @@ if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1300000);
 if (!defined("JIGOSHOP_OPTIONS")) define("JIGOSHOP_OPTIONS", 'jigoshop_options');
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
+// Override default translations with custom .mo's found in wp-content/languages/jigoshop
+load_textdomain( 'jigoshop', WP_LANG_DIR.'/jigoshop/jigoshop-'.get_locale().'.mo' );
 load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
-
-include_once( 'classes/abstract/jigoshop_base.class.php' );
-include_once( 'classes/abstract/jigoshop_singleton.php' );
-include_once( 'classes/jigoshop_session.class.php' );
-include_once( 'classes/jigoshop_options.class.php' );
-
-// Load administration & check if we need to install
-if ( is_admin() ) {
-	include_once( 'admin/jigoshop-admin.php' );
-	register_activation_hook( __FILE__, 'install_jigoshop' );
-}
-
-// Add a "Settings" link to the plugins.php page for Jigoshop
-function jigoshop_add_settings_link( $links, $file ) {
-	$this_plugin = plugin_basename( __FILE__ );
-	if( $file == $this_plugin ) {
-		$settings_link = '<a href="admin.php?page=jigoshop_settings">' . __( 'Settings', 'jigoshop' ) . '</a>';
-		array_unshift($links, $settings_link);
-	}
-	return $links;
-}
-add_filter( 'plugin_action_links', 'jigoshop_add_settings_link', 10, 2 );
 
 /**
  * Include core files and classes
  **/
+include_once( 'classes/abstract/jigoshop_base.class.php' );
+include_once( 'classes/abstract/jigoshop_singleton.php' );
+include_once( 'classes/jigoshop_options.class.php' );
+include_once( 'classes/jigoshop_session.class.php' );
+
 include_once( 'classes/jigoshop_sanitize.class.php' );
 include_once( 'classes/jigoshop_validation.class.php' );
 include_once( 'jigoshop_taxonomy.php' );
@@ -116,17 +101,6 @@ include_once( 'jigoshop_emails.php' );
 include_once( 'jigoshop_actions.php' );
 //include_once( 'jigoshop_cron.php' );	/* we may use this at some point, leaving -JAP- */
 
-// Constants
-if (!defined('JIGOSHOP_USE_CSS')) :
-	if (Jigoshop_Options::get_option('jigoshop_disable_css')=='yes') define('JIGOSHOP_USE_CSS', false);
-	else define('JIGOSHOP_USE_CSS', true);
-endif;
-if (!defined('JIGOSHOP_LOAD_FANCYBOX')) :
-	if (Jigoshop_Options::get_option('jigoshop_disable_fancybox')=='yes') define('JIGOSHOP_LOAD_FANCYBOX', false);
-	else define('JIGOSHOP_LOAD_FANCYBOX', true);
-endif;
-if ( !defined('JIGOSHOP_TEMPLATE_URL') ) define('JIGOSHOP_TEMPLATE_URL', 'jigoshop/');
-
 /**
  * IIS compat fix/fallback
  **/
@@ -134,6 +108,78 @@ if (!isset($_SERVER['REQUEST_URI'])) {
 	$_SERVER['REQUEST_URI'] = substr($_SERVER['PHP_SELF'],1 );
 	if (isset($_SERVER['QUERY_STRING'])) { $_SERVER['REQUEST_URI'].='?'.$_SERVER['QUERY_STRING']; }
 }
+
+// Load administration & check if we need to install
+if ( is_admin() ) {
+	include_once( 'admin/jigoshop-admin.php' );
+	register_activation_hook( __FILE__, 'install_jigoshop' );
+}
+
+function jigoshop_init() {
+
+	/* ensure nothing is output to the browser prior to this (other than headers) */
+	ob_start();
+
+	new Jigoshop_Options();						// instantiate our Options right away
+	
+	jigoshop_post_type();						// register taxonomies
+	jigoshop_set_image_sizes();					// called after our Options are loaded
+
+	// add Singletons here so that the taxonomies are loaded before calling them.
+	jigoshop::instance();						// Utility functions, starts sessions
+	jigoshop_customer::instance();				// Customer class, sorts session data such as location
+	jigoshop_shipping::instance();				// Shipping class. loads shipping methods
+	jigoshop_payment_gateways::instance();		// Payment gateways class. loads payment methods
+	jigoshop_cart::instance();					// Cart class
+
+	if ( is_admin()) {
+	
+		Jigoshop_Admin_Settings::instance();	// the WP Settings API manager
+		
+	} else {
+	
+		jigoshop_catalog_query::instance();		// front end queries class
+		
+	}
+	
+	add_role('customer', 'Customer', array(
+		'read'        => true,
+		'edit_posts'  => false,
+		'delete_posts'=> false
+	));
+
+	// Constants
+	if (!defined('JIGOSHOP_USE_CSS')) :
+		if (Jigoshop_Options::get_option('jigoshop_disable_css')=='yes') define('JIGOSHOP_USE_CSS', false);
+		else define('JIGOSHOP_USE_CSS', true);
+	endif;
+	if (!defined('JIGOSHOP_LOAD_FANCYBOX')) :
+		if (Jigoshop_Options::get_option('jigoshop_disable_fancybox')=='yes') define('JIGOSHOP_LOAD_FANCYBOX', false);
+		else define('JIGOSHOP_LOAD_FANCYBOX', true);
+	endif;
+	if ( !defined('JIGOSHOP_TEMPLATE_URL') ) define('JIGOSHOP_TEMPLATE_URL', 'jigoshop/');
+	
+}
+add_action('init', 'jigoshop_init', 0);
+
+/**
+ * Include template functions here with a low priority so they are pluggable by themes
+ **/
+function jigoshop_load_template_functions() {
+	include_once( 'jigoshop_template_functions.php' );
+}
+add_action('init', 'jigoshop_load_template_functions', 999);
+
+// Add a "Settings" link to the plugins.php page for Jigoshop
+function jigoshop_add_settings_link( $links, $file ) {
+	$this_plugin = plugin_basename( __FILE__ );
+	if( $file == $this_plugin ) {
+		$settings_link = '<a href="admin.php?page=jigoshop_settings">' . __( 'Settings', 'jigoshop' ) . '</a>';
+		array_unshift($links, $settings_link);
+	}
+	return $links;
+}
+add_filter( 'plugin_action_links', 'jigoshop_add_settings_link', 10, 2 );
 
 /**
  * Add post thumbnail support to WordPress if needed
@@ -220,49 +266,6 @@ function jigoshop_get_image_size( $size ) {
 
 	return $image_size;
 }
-
-function jigoshop_init() {
-
-	/* ensure nothing is output to the browser prior to this (other than headers) */
-	ob_start();
-
-	new Jigoshop_Options();						// instantiate our Options right away
-	
-	jigoshop_post_type();						// register taxonomies
-	jigoshop_set_image_sizes();					// called after our Options are loaded
-
-	// add Singletons here so that the taxonomies are loaded before calling them.
-	jigoshop::instance();
-	jigoshop_customer::instance();				// Customer class, sorts session data such as location
-	jigoshop_shipping::instance();				// Shipping class. loads shipping methods
-	jigoshop_payment_gateways::instance();		// Payment gateways class. loads payment methods
-	jigoshop_cart::instance();					// Cart class
-
-	if ( is_admin()) {
-	
-		Jigoshop_Admin_Settings::instance();	// the WP Settings API manager
-		
-	} else {
-	
-		jigoshop_catalog_query::instance();		// front end queries class
-		
-	}
-	
-	// Include template functions here so they are pluggable by themes
-	include_once( 'jigoshop_template_functions.php' );
-
-	add_role('customer', 'Customer', array(
-		'read'        => true,
-		'edit_posts'  => false,
-		'delete_posts'=> false
-	));
-
-	// Override default translations with custom .mo's found in wp-content/languages/jigoshop
-	load_textdomain( 'jigoshop', WP_LANG_DIR.'/jigoshop/jigoshop-'.get_locale().'.mo' );
-	load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
-
-}
-add_action('init', 'jigoshop_init', 0);
 
 function jigoshop_is_admin_page() {
 
