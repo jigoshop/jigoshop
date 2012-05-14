@@ -11,7 +11,7 @@
  * @package             Jigoshop
  * @category            Admin
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright Â© 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -271,23 +271,24 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name'           => __('Product Category Slug','jigoshop'),
-		'desc'           => '',
+		'name'           => __('Slug variables','jigoshop'),
+		'desc'           => 'Product category slug',
 		'tip'            => __('Slug displayed in product category URLs. Leave blank to use default "product-category"', 'jigoshop'),
 		'id'             => 'jigoshop_product_category_slug',
-		'css'            => 'min-width:100px;',
 		'std'            => 'product-category',
-		'type'           => 'text'
+		'css'            => 'width:130px;',
+		'type'           => 'text',
+		'atr'            => 'group'
 	),
 
 	array(
-		'name'           => __('Product Tag Slug','jigoshop'),
-		'desc'           => '',
+		'desc'           => __('Product tag slug','jigoshop'),
 		'tip'            => __('Slug displayed in product tag URLs. Leave blank to use default "product-tag"', 'jigoshop'),
 		'id'             => 'jigoshop_product_tag_slug',
-		'css'            => 'min-width:100px;',
 		'std'            => 'product-tag',
-		'type'           => 'text'
+		'css'            => 'width:130px;',
+		'type'           => 'text',
+		'atr'            => 'group'
 	),
 
 	array( 'name'        => __('Shop page configuration', 'jigoshop'), 'type' => 'title', 'desc' => '' ),
@@ -424,9 +425,8 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'desc'          => '',
 		'tip'           => __('Determines the display sort order of products for the Shop, Categories, and Tag pages.','jigoshop'),
 		'id'            => 'jigoshop_catalog_sort_orderby',
-		'css'           => 'min-width:100px;',
 		'std'           => 'post_date',
-		'type'          => 'select',
+		'type'          => 'radio',
 		'options'       => array(
 			'post_date' => __('Creation Date', 'jigoshop'),
 			'title'     => __('Product Title', 'jigoshop'),
@@ -439,9 +439,8 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'desc'          => '',
 		'tip'           => __('Determines whether the catalog sort orderby is ascending or descending.','jigoshop'),
 		'id'            => 'jigoshop_catalog_sort_direction',
-		'css'           => 'min-width:100px;',
 		'std'           => 'asc',
-		'type'          => 'select',
+		'type'          => 'radio',
 		'options'       => array(
 			'asc'       => __('Ascending', 'jigoshop'),
 			'desc'      => __('Descending', 'jigoshop')
@@ -449,23 +448,24 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name'          => __('Catalog products per row','jigoshop'),
-		'desc'          => __('Default = 3','jigoshop'),
-		'tip'           => __('Determines how many products to show on one display row for Shop, Category and Tag pages.','jigoshop'),
+		'name'          => __('Catalog products display','jigoshop'),
+		'desc'          => __('Per row','jigoshop'),
+		'tip'           => __('Determines how many products to show on one display row for Shop, Category and Tag pages. Default = 3.','jigoshop'),
 		'id'            => 'jigoshop_catalog_columns',
 		'css'           => 'width:30px;',
 		'std'           => '3',
 		'type'          => 'text',
+		'atr'           => 'group',
 	),
 
 	array(
-		'name'          => __('Catalog products per page','jigoshop'),
-		'desc'          => __('Default = 12','jigoshop'),
-		'tip'           => __('Determines how many products to display on Shop, Category and Tag pages before needing next and previous page navigation.','jigoshop'),
+		'desc'          => __('Per page','jigoshop'),
+		'tip'           => __('Determines how many products to display on Shop, Category and Tag pages before needing next and previous page navigation. Default = 12.','jigoshop'),
 		'id'            => 'jigoshop_catalog_per_page',
 		'css'           => 'width:30px;',
 		'std'           => '12',
 		'type'          => 'text',
+		'atr'           => 'group',
 	),
 
 	array( 'name'       => __('Pricing Options', 'jigoshop'), 'type' => 'title','desc' => '', 'id' => '' ),
@@ -541,33 +541,34 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name'         => __('Thousand separator', 'jigoshop'),
-		'desc'         => __('This sets the thousand separator of displayed prices.', 'jigoshop'),
+		'name'         => __('Price Separators', 'jigoshop'),
+		'desc'         => __('Thousand separator', 'jigoshop'),
 		'tip'          => '',
 		'id'           => 'jigoshop_price_thousand_sep',
 		'css'          => 'width:30px;',
 		'std'          => ',',
 		'type'         => 'text',
+		'atr'          => 'group',
 	),
 
 	array(
-		'name'         => __('Decimal separator', 'jigoshop'),
-		'desc'         => __('This sets the decimal separator of displayed prices.', 'jigoshop'),
+		'desc'         => __('Decimal separator.', 'jigoshop'),
 		'tip'          => '',
 		'id'           => 'jigoshop_price_decimal_sep',
 		'css'          => 'width:30px;',
 		'std'          => '.',
 		'type'         => 'text',
+		'atr'          => 'group',
 	),
 
 	array(
-		'name'         => __('Number of decimals', 'jigoshop'),
-		'desc'         => __('This sets the number of decimal points shown in displayed prices.', 'jigoshop'),
+		'desc'         => __('Number of decimals', 'jigoshop'),
 		'tip'          => '',
 		'id'           => 'jigoshop_price_num_decimals',
 		'css'          => 'width:30px;',
 		'std'          => '2',
 		'type'         => 'text',
+		'atr'          => 'group',
 	),
 
 	array( 'type'      => 'tabend'),
@@ -664,9 +665,8 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'desc'         => __("This controls what unit you will define weights in.", 'jigoshop'),
 		'tip'          => '',
 		'id'           => 'jigoshop_weight_unit',
-		'css'          => 'min-width:200px;',
 		'std'          => 'kg',
-		'type'         => 'select',
+		'type'         => 'radio',
 		'options'      => array(
 			'kg'       => __('Kilograms', 'jigoshop'),
 			'lbs'      => __('Pounds', 'jigoshop')
@@ -678,9 +678,8 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'desc'         => __("This controls what unit you will define dimensions in.", 'jigoshop'),
 		'tip'          => '',
 		'id'           => 'jigoshop_dimension_unit',
-		'css'          => 'min-width:200px;',
 		'std'          => 'cm',
-		'type'         => 'select',
+		'type'         => 'radio',
 		'options'      => array(
 			'cm'       => __('centimeters', 'jigoshop'),
 			'in'       => __('inches', 'jigoshop')
@@ -699,17 +698,16 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	array( 'name'      => __('Inventory Options', 'jigoshop'), 'type' => 'title','desc' => '', 'id'                                                                                                                                                                                                                                                                                                                                                            => '' ),
 
 	array(
-		'name'         => __('Manage stock','jigoshop'),
-		'desc'         => __('If you are not managing stock, turn it off here to disable it in admin and on the front-end.','jigoshop'),
-		'tip'          => __('You can manage stock on a per-item basis if you leave this option on.', 'jigoshop'),
+		'name'         => __('General inventory options','jigoshop'),
+		'desc'         => __('Enable product stock','jigoshop'),
+		'tip'          => __('If you are not managing stock, turn it off here to disable it in admin and on the front-end. You can manage stock on a per-item basis if you leave this option on.', 'jigoshop'),
 		'id'           => 'jigoshop_manage_stock',
 		'std'          => 'yes',
 		'type'         => 'checkbox',
 	),
 
 	array(
-		'name'         => __('Show stock amounts','jigoshop'),
-		'desc'         => '',
+		'desc'         => __('Show stock amounts','jigoshop'),
 		'tip'          => __('Set to yes to allow customers to view the amount of stock available for a product.', 'jigoshop'),
 		'id'           => 'jigoshop_show_stock',
 		'std'          => 'yes',
@@ -717,9 +715,8 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name'         => __('Hide out of stock products','jigoshop'),
-		'desc'         => '',
-		'tip'          => 'For Yes: When the Out of Stock Threshold (above) is reached, the product visibility will be set to hidden so that it will not appear on the Catalog or Shop product lists.',
+		'desc'         => __('Hide out of stock products','jigoshop'),
+		'tip'          => 'When enabled: When the Out of Stock Threshold (above) is reached, the product visibility will be set to hidden so that it will not appear on the Catalog or Shop product lists.',
 		'id'           => 'jigoshop_hide_no_stock_product',
 		'std'          => 'no',
 		'type'         => 'checkbox'
@@ -767,45 +764,28 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	array( 'name'      => __('Shipping Options', 'jigoshop'), 'type'  => 'title','desc' => '', 'id'                                                                                                                                                                                                                                                                                                                                                            => '' ),
 
 	array(
-		'name'         => __('Calculate Shipping','jigoshop'),
-		'desc'         => __('Only set this to no if you are not shipping items, or items have shipping costs included.','jigoshop'),
-		'tip'          => __('If you are not calculating shipping then you can ignore all other tax options.', 'jigoshop'),
+		'name'         => __('General shipping settings','jigoshop'),
+		'desc'         => __('Calculate shipping','jigoshop'),
+		'tip'          => __('Only set this to no if you are not shipping items, or items have shipping costs included. If you are not calculating shipping then you can ignore all other tax options.', 'jigoshop'),
 		'id'           => 'jigoshop_calc_shipping',
-		'css'          => 'min-width:100px;',
 		'std'          => 'yes',
-		'type'         => 'select',
-		'options'      => array(
-			'yes'      => __('Yes', 'jigoshop'),
-			'no'       => __('No', 'jigoshop')
-		)
+		'type'         => 'checkbox'
 	),
 
 	array(
-		'name'         => __('Enable shipping calculator on cart','jigoshop'),
-		'desc'         => '',
+		'desc'         => __('Enable shipping calculator on cart','jigoshop'),
 		'tip'          => '',
 		'id'           => 'jigoshop_enable_shipping_calc',
-		'css'          => 'min-width:100px;',
 		'std'          => 'yes',
-		'type'         => 'select',
-		'options'      => array(
-			'yes'      => __('Yes', 'jigoshop'),
-			'no'       => __('No', 'jigoshop')
-		)
+		'type'         => 'checkbox',
 	),
 
 	array(
-		'name'         => __('Only ship to billing address?','jigoshop'),
-		'desc'         => '',
+		'desc'         => __('Only ship to billing address?','jigoshop'),
 		'tip'          => '',
 		'id'           => 'jigoshop_ship_to_billing_address_only',
-		'css'          => 'min-width:100px;',
 		'std'          => 'no',
-		'type'         => 'select',
-		'options'      => array(
-			'yes'      => __('Yes', 'jigoshop'),
-			'no'       => __('No', 'jigoshop')
-		)
+		'type'         => 'checkbox',
 	),
 
 	array( 'type'      => 'shipping_options'),
@@ -817,17 +797,16 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	array( 'name'      => __('Tax Options', 'jigoshop'), 'type'       => 'title','desc' => '', 'id'                                                                                                                                                                                                                                                                                                                                                            => '' ),
 
 	array(
-		'name'         => __('Calculate Taxes','jigoshop'),
-		'desc'         => __('Only disable this if you are exclusively selling non-taxable items.','jigoshop'),
-		'tip'          => __('If you are not calculating taxes then you can ignore all other tax options.', 'jigoshop'),
+		'name'         => __('General tax options','jigoshop'),
+		'desc'         => __('Enable tax calculation','jigoshop'),
+		'tip'          => __('Only disable this if you are exclusively selling non-taxable items. If you are not calculating taxes then you can ignore all other tax options.', 'jigoshop'),
 		'id'           => 'jigoshop_calc_taxes',
 		'std'          => 'yes',
 		'type'         => 'checkbox',
 	),
 
 	array(
-		'name'         => __('Apply Taxes After Coupon','jigoshop'),
-		'desc'         => '',
+		'desc'         => __('Apply Taxes After Coupon','jigoshop'),
 		'tip'          => __('If yes, taxes get applied after coupons. When no, taxes get applied before coupons.','jigoshop'),
 		'id'           => 'jigoshop_tax_after_coupon',
 		'std'          => 'yes',
@@ -835,8 +814,7 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name'         => __('Catalog Prices include tax?','jigoshop'),
-		'desc'         => '',
+		'desc'         => __('Catalog Prices include tax?','jigoshop'),
 		'tip'          => __('If prices include tax then tax calculations will work backwards.','jigoshop'),
 		'id'           => 'jigoshop_prices_include_tax',
 		'std'          => 'yes',
@@ -844,13 +822,12 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'name'         => __('Cart totals display...','jigoshop'),
+		'name'         => __('Cart total displays','jigoshop'),
 		'desc'         => '',
 		'tip'          => __('Should the subtotal be shown including or excluding tax on the frontend?','jigoshop'),
 		'id'           => 'jigoshop_display_totals_tax',
-		'css'          => 'min-width:100px;',
 		'std'          => 'excluding',
-		'type'         => 'select',
+		'type'         => 'radio',
 		'options'      => array(
 			'including' => __('price including tax', 'jigoshop'),
 			'excluding' => __('price excluding tax', 'jigoshop')

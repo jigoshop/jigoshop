@@ -14,7 +14,7 @@
  * @package             Jigoshop
  * @category            Admin
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright Â© 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -57,7 +57,7 @@ function csort_tax_rates($a, $b) {
  * @since 		1.0
  * @usedby 		jigoshop_settings()
  *
- * @param 		array $options List of options to go through and save
+ * @param 		array $jigoshop_options_settings List of options to go through and save
  */
 function jigoshop_update_options() {
     global $jigoshop_options_settings;
@@ -88,7 +88,7 @@ function jigoshop_update_options() {
 		}
 
 		if ( $valueType == 'multi_select_countries' ) {
-			update_option($valueID, isset($_POST[$valueID]) ? $_POST[$valueID] : array());
+			update_option($valueID, isset( $_POST[$valueID] ) ? $_POST[$valueID] : array());
 			continue;
 		}
 
@@ -362,7 +362,11 @@ function jigoshop_admin_fields($options) {
                     		value="<?php if (get_option($value['id']) !== false && get_option($value['id']) !== null)
                     			echo esc_attr( get_option($value['id']) );
                     			else if ( isset($value['std'])) echo esc_attr( $value['std'] ); ?>" />
-                    	<?php if ( !empty( $value['name'] ) ) : ?><br /><?php endif; ?><small><?php echo $value['desc'] ?></small>
+                    	<?php if ( !empty( $value['name'] ) && !empty( $value['atr'] ) && $value['atr'] != 'group' ) : ?>
+							<br /><small><?php echo $value['desc'] ?></small>
+						<?php else: ?>
+							<?php echo $value['desc'] ?>
+						<?php endif; ?>
                     </td>
                   </tr><?php
                 break;
@@ -382,6 +386,29 @@ function jigoshop_admin_fields($options) {
 						<option value="<?php echo esc_attr( $key ); ?>" <?php if (get_option($value['id']) == $key) { ?> selected="selected" <?php } ?>><?php echo ucfirst($val) ?></option>
 						<?php endforeach; ?>
 						</select><br /><small><?php echo $value['desc'] ?></small>
+					</td>
+				  </tr><?php
+                break;
+
+            case 'radio':
+				?><tr>
+                    <th scope="row">
+						<?php if (!empty($value['tip'])) : ?>
+						<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a>
+						<?php endif; ?>
+						<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
+					</th>
+					<td>
+						<?php foreach ($value['options'] as $key => $val) : ?>
+						<label class="radio">
+						<input type="radio"
+							   name="<?php echo esc_attr( $value['id'] ); ?>"
+							   id="<?php echo esc_attr( $key ); ?>"
+							   value="<?php echo esc_attr( $key ); ?>"
+							   <?php if (get_option($value['id']) == $key) { ?> checked="checked" <?php } ?>>
+						<?php echo esc_attr( ucfirst( $val ) ); ?>
+						</label><br />
+						<?php endforeach; ?>
 					</td>
 				  </tr><?php
                 break;
@@ -534,7 +561,7 @@ function jigoshop_admin_fields($options) {
                                     if ($coupon_codes && is_array($coupon_codes) && sizeof($coupon_codes) > 0)
                                         foreach ($coupon_codes as $coupon) : $i++;
 										?><tr class="coupon_row">
-                                              <td><a href="#" class="remove button" title="' . __('Delete this Coupon', 'jigoshop') . '">&times;</a></td>';
+                                              <td><a href="#" class="remove button" title="' . __('Delete this Coupon', 'jigoshop') . '">&times;</a></td>
                                               <td><input type="text" value="<?php echo esc_attr( $coupon['code'] ); ?>" name="coupon_code[<?php echo esc_attr( $i ); ?>]" title="<?php _e('Coupon Code', 'jigoshop'); ?>" placeholder="<?php _e('Coupon Code', 'jigoshop'); ?>" class="text" /></td>
 											  <td>
 												<select name="coupon_type[<?php echo esc_attr( $i ); ?>]" title="Coupon Type"><?php
@@ -901,7 +928,7 @@ function jigoshop_settings_updated_notice() {
 function jigoshop_settings() {
     global $jigoshop_options_settings;
     ?>
-    <script type="text/javascript" src="<?php echo jigoshop::assets_url(); ?>/assets/js/easyTooltip.js"></script>
+    <script type="text/javascript" src="<?php echo jigoshop::assets_url(); ?>/assets/js/bootstrap-tooltip.min.js"></script>
     <div class="wrap jigoshop">
         <div class="icon32 icon32-jigoshop-settings" id="icon-jigoshop"><br/></div>
         <h2><?php _e('General Settings', 'jigoshop'); ?></h2>

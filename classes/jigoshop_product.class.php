@@ -11,7 +11,7 @@
  * @package             Jigoshop
  * @category            Catalog
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright Â© 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_product {
@@ -1030,7 +1030,7 @@ class jigoshop_product {
 		$result = false;
 		$attributes = $this->get_attributes();
 		if ( ! empty( $attributes )) foreach ( $attributes as $attribute ) {
-			$result |= (bool) $attribute['visible'];
+			$result |= isset( $attribute['visible'] );
 		}
 		
 		return $result;
@@ -1098,7 +1098,7 @@ class jigoshop_product {
 		if ( ! empty( $attributes )) foreach( $attributes as $attr ) {
 
 			// If attribute is invisible skip
-			if ( ! $attr['visible'] )
+			if ( ! isset( $attribute['visible'] ) )
 				continue;
 
 			// Get Title & Value from attribute array
@@ -1114,7 +1114,7 @@ class jigoshop_product {
 				$terms = array();
 
 				foreach( $product_terms as $term ) {
-					$terms[] = $term->name;
+					$terms[] = '<span class="val_'.$term->slug.'">'.$term->name.'</span>';
 				}
 
 				$value = implode(', ', $terms);
@@ -1125,7 +1125,7 @@ class jigoshop_product {
 
 			// Generate the remaining html
 			$html .= "
-			<tr>
+			<tr class=\"attr_".$attr['name']."\">
 				<th>$name</th>
 				<td>$value</td>
 			</tr>";

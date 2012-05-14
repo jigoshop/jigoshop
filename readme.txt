@@ -3,8 +3,8 @@ Contributors: Jigowatt
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigowatt, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.2.1
-Tested up to: 3.4-alpha-19978
-Stable tag: 1.2
+Tested up to: 3.4-beta3
+Stable tag: 1.2.1
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -113,42 +113,47 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 
 == Changelog ==
 
-= 1.2 - TBA =
-* New permalink options:
+= 1.2.1 - 2012-04-09 =
+* Fix: Repairs tax applied to only one item on the Cart.
+
+= 1.2 - 2012-04-08 =
+* New: Permalink options:
 	* Allow `%product_cat%` for permalinks
 	* Prepend product urls with category
 	* Prepend product urls with shop base page
 	* Set your own product category / tag slugs
-* Resend download links by clicking "Email Invoice" on an order
-* Provide personalized products - customers may add their own information to appear on purchased products
-* Provide WordPress Bulk and Quick editing of both stock levels and prices on the Admin Product List
-* Provide options to disable or enable WordPress image cropping on Shop images
-* Fixes compound tax display. Tax displays after subtotal all of the time
-* Allow discounts to be applied before or after taxes
-* Emails for orders can now be completely customized
-* Email customizations can be made through a plugin
-* Fix for multiple tax classes applied to all-of selections on countries
-* Adds the ability to show tax # and business address information on order emails
-* Allow $0.01 charge on paypal if configured and total is free
-* Cleaned up some minor code issues
-* Fixes multiple tax classes bug (tax class 1 applied to product 1, and
-  tax class 2 applied to product 2)
-     * if both products were added to the cart, only 1 tax class was applied
-       and the other wasn't
-* Allow shipping to be taxed on compounding tax classes (all around
-  shipping tax enhancements)
-* Fix for the tax amounts disappearing on orders when changing the
-  status of the order
-* Fix rounding error on taxes with price includes tax option
-* Fix Skrill gateway to allow variable products
-* Allow EU shop to tax other EU countries
-* Allow debugging to be turned on for calculable shipping services
-  through wordpress debug
-* Automatically include 0% tax rate for customers outside of tax base
-* Calculate tax based on billing address when item is not shipable or
-  shipping is disabled
-* variable and grouped products now show both regular and sale price on the Shop
-* completed orders are now final, only refunds can be issued
+* New: Personalized products - customers may add their own information to appear on purchased products
+* New: WordPress Bulk and Quick editing of both stock levels and prices on the Admin Product List
+* New: Options to disable or enable WordPress image cropping on Shop images
+* New: Ability to show tax # and business address information on order emails
+* New: $0.01 charge on Paypal if configured and total is free
+* New: Allow shipping to be taxed on compounding tax classes (all around shipping tax enhancements)
+* New: Resend download links by clicking "Email Invoice" on an order
+* New: Shipping tax can be applied (if taxable) without applying taxes to products
+* Tweak: Load css & js only when absolutely necessary, for both admin & frontend
+* Tweak: Emails for orders can now be completely customized
+	* Email customizations can be made through a plugin
+* Tweak: Allow debugging to be turned on for calculable shipping services through wordpress debug
+* Tweak: Allow EU shop to tax other EU countries
+* Tweak: Automatically include 0% tax rate for customers outside of tax base
+* Tweak: Calculate tax based on billing address when item is not shippable or shipping is disabled
+* Tweak: Reduce total image assets size by 28kb
+* Fix: Prevent duplicate variations on one product
+* Fix: Disables this message when editing orders: "Are you sure you want to leave this page?"
+* Fix: Creating new orders will automatically fill in the customer billing & shipping details (on save)
+* Fix: Ability to restore orders which are trashed
+* Fix: Compound tax display. Tax displays after subtotal all of the time
+* Fix: Allow discounts to be applied before or after taxes
+* Fix: Multiple tax classes bug (tax class 1 applied to product 1, and tax class 2 applied to product 2)
+	* If both products were added to the cart, only 1 tax class was applied and the other wasn't
+* Fix: Tax amounts disappearing on orders when changing the status of the order
+* Fix: Hiding and showing products on Shop upon stock reduction/increase with 'hide out of stock products' setting
+	* product variations are enabled or disabled when stock threshold is hit upon reduction/increase
+* Fix: Multiple tax classes applied to all-of selections on countries
+* Fix: Rounding error on taxes with price includes tax option
+* Fix: Sale prices on products will no longer be higher than regular price
+* Fix: Skrill gateway to allow variable products
+* Fix: Variable and grouped products now show both regular and sale price on the Shop
 
 = 1.1.1 - 2012-02-29 =
 * Adds new admin setting for different redirection options after adding to the cart

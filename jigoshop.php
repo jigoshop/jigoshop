@@ -22,9 +22,9 @@
  * Author:              Jigowatt
  * Author URI:          http://jigowatt.co.uk
  *
- * Version:             1.2
+ * Version:             1.2.1
  * Requires at least:   3.2.1
- * Tested up to:        3.4-alpha-19978
+ * Tested up to:        3.4-beta3
  *
  * Text Domain:         jigoshop
  * Domain Path:         /languages/
@@ -38,7 +38,7 @@
  * @package             Jigoshop
  * @category            Core
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright Â© 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
