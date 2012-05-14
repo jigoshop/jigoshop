@@ -153,7 +153,7 @@ class jigoshop_shipping extends jigoshop_singleton {
         endforeach;
         
         if (!empty($_selected_service)) :
-            $_cheapest_method->set_selected_service_index($_selected_service);
+            $available_methods[$_cheapest_method]->set_selected_service_index($_selected_service);
         endif;
 
         return $_cheapest_method;
