@@ -1098,7 +1098,7 @@ class jigoshop_product {
 		if ( ! empty( $attributes )) foreach( $attributes as $attr ) {
 
 			// If attribute is invisible skip
-			if ( ! isset( $attribute['visible'] ) )
+			if ( ! isset( $attr['visible'] ) )
 				continue;
 
 			// Get Title & Value from attribute array
