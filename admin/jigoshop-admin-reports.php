@@ -175,7 +175,7 @@ function jigoshop_pie_charts($id = '') {
 	$total = array_sum($this->pie_products);
 
 	$values = array();
-	foreach ($this->pie_products as $name => $sales) $values[] = '{ label: "'.$name.'", data: '. (round($sales/$total, 3)*100).'}';
+	foreach ($this->pie_products as $name => $sales) $values[] = '{ label: "'.esc_attr(mb_substr($name, 0, 20)).'", data: '. (round($sales/$total, 3)*100).'}';
 
 ?>
 <script type="text/javascript">
@@ -213,7 +213,7 @@ jQuery(function(){
 			}
 		},
 		legend: {
-		show: false
+		show: true
 		}
 	});
 	//jQuery("#top_earners_pie").bind("plothover", pieHover);
@@ -382,38 +382,6 @@ jQuery(function(){
 			</tbody>
 		</table>
 	<?php
-	}
-
-	/**
-	*
-	*	Recent Orders
-	*
-	*/
-
-	function jigoshop_dash_recent_orders() {
-		$args = array(
-			'numberposts'	=> 10,
-			'orderby'		=> 'post_date',
-			'order'			=> 'DESC',
-			'post_type'		=> 'shop_order',
-			'post_status'	=> 'publish'
-		);
-		$orders = get_posts( $args );
-		if ($orders) :
-			echo '<ul class="recent-orders">';
-			foreach ($orders as $order) :
-
-				$this_order = new jigoshop_order( $order->ID );
-
-				echo '
-				<li>
-					<span class="order-status '.sanitize_title($this_order->status).'">'.ucwords(__($this_order->status, 'jigoshop')).'</span> <a href="'.admin_url('post.php?post='.$order->ID).'&action=edit">'.get_the_time(__('l jS \of F Y h:i:s A', 'jigoshop'), $order->ID).'</a><br />
-					<small>'.sizeof($this_order->items).' '._n('item', 'items', sizeof($this_order->items), 'jigoshop').' <span class="order-cost">'.__('Total: ', 'jigoshop').jigoshop_price($this_order->order_total).'</span></small>
-				</li>';
-
-			endforeach;
-			echo '</ul>';
-		endif;
 	}
 
 	/**
