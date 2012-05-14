@@ -1,6 +1,6 @@
 <?php
 /**
- * Functions used for displaying the jigoshop dashboard
+ * Functions used for displaying the jigoshop reports
  *
  * DISCLAIMER
  *
@@ -13,18 +13,6 @@
  * @author              Jigowatt
  * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
- */
-
-/**
- * Function for showing the dashboard
- *
- * The dashboard shows widget for things such as:
- *		- Products
- *		- Sales
- *		- Recent reviews
- *
- * @since 		1.0
- * @usedby 		jigoshop_admin_menu()
  */
 
 if (!function_exists ('add_action')) {
@@ -172,13 +160,18 @@ h6{font-size:11px;color:#999999;text-transform:uppercase;}
 			</div>
 		</div>
 
+		<script type="text/javascript">
+			jQuery(function(){
+				jQuery('.date-pick').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
+			});
+		</script>
+
 <?php }
 
 function jigoshop_pie_charts($id = '') {
 
 	if (empty($id)) return false;
 
-//	$count = count($this->pie_products);
 	$total = array_sum($this->pie_products);
 
 	$values = array();
@@ -282,7 +275,7 @@ jQuery(function(){
 			<thead>
 				<tr>
 					<th><?php _e('Product', 'jigoshop'); ?></th>
-					<th><?php _e('Quantity', 'jigoshop'); ?></th>
+					<th><?php _e('Quantity Sold', 'jigoshop'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -299,11 +292,6 @@ jQuery(function(){
 
 			</tbody>
 		</table>
-		<script type="text/javascript">
-			jQuery(function(){
-				jQuery('.date-pick').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
-			});
-		</script>
 	<?php
 
 	}
@@ -327,15 +315,22 @@ jQuery(function(){
 	}
 
 	function jigoshop_total_customers() {
-		global $wpdb;
+		global $wpdb, $start_date, $end_date;
+
+		$after  = date('Y-m-d', $start_date);
+		$before = date('Y-m-d', strtotime('+1 day', $end_date));
 
 		$users_query = new WP_User_Query( array(
 			'fields' => array('user_registered'),
 			'role'   => 'customer',
 		) );
 
+		$i=0;
 		$customers = $users_query->get_results();
-		return (int) sizeof($customers);
+		foreach($customers as $k => $v)
+			if ( $v->user_registered > $after && $v->user_registered < $before ) $i++;
+
+		return $i;
 
 	}
 
@@ -386,90 +381,7 @@ jQuery(function(){
 
 			</tbody>
 		</table>
-		<script type="text/javascript">
-			jQuery(function(){
-				jQuery('.date-pick').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
-			});
-		</script>
 	<?php
-	}
-
-
-
-	/**
-	*
-	*	Right Now
-	*
-	*/
-
-	function jigoshop_dash_right_now() { ?>
-
-	<div id="jigoshop_right_now" class="jigoshop_right_now">
-		<div class="table table_content">
-			<p class="sub"><?php _e('Shop Content', 'jigoshop'); ?></p>
-			<table>
-				<tbody>
-					<tr class="first">
-						<td class="first b"><a href="edit.php?post_type=product"><?php
-							$num_posts = wp_count_posts( 'product' );
-							$num = number_format_i18n( $num_posts->publish );
-							echo $num;
-						?></a></td>
-						<td class="t"><a href="edit.php?post_type=product"><?php _e('Products', 'jigoshop'); ?></a></td>
-					</tr>
-					<tr>
-						<td class="first b"><a href="edit-tags.php?taxonomy=product_cat&post_type=product"><?php
-							echo wp_count_terms('product_cat');
-						?></a></td>
-						<td class="t"><a href="edit-tags.php?taxonomy=product_cat&post_type=product"><?php _e('Product Categories', 'jigoshop'); ?></a></td>
-					</tr>
-					<tr>
-						<td class="first b"><a href="edit-tags.php?taxonomy=product_tag&post_type=product"><?php
-							echo wp_count_terms('product_tag');
-						?></a></td>
-						<td class="t"><a href="edit-tags.php?taxonomy=product_tag&post_type=product"><?php _e('Product Tag', 'jigoshop'); ?></a></td>
-					</tr>
-					<tr>
-						<td class="first b"><a href="admin.php?page=jigoshop_attributes"><?php
-							echo count( jigoshop_product::getAttributeTaxonomies());
-						?></a></td>
-						<td class="t"><a href="admin.php?page=jigoshop_attributes"><?php _e('Attribute taxonomies', 'jigoshop'); ?></a></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="table table_discussion">
-			<p class="sub"><?php _e('Orders', 'jigoshop'); ?></p>
-			<table>
-				<tbody>
-					<?php $jigoshop_orders = new jigoshop_orders(); ?>
-					<tr class="first">
-						<td class="b"><a href="edit.php?post_type=shop_order&shop_order_status=pending"><span class="total-count"><?php echo $jigoshop_orders->pending_count; ?></span></a></td>
-						<td class="last t"><a class="pending" href="edit.php?post_type=shop_order&shop_order_status=pending"><?php _e('Pending', 'jigoshop'); ?></a></td>
-					</tr>
-					<tr>
-						<td class="b"><a href="edit.php?post_type=shop_order&shop_order_status=on-hold"><span class="total-count"><?php echo $jigoshop_orders->on_hold_count; ?></span></a></td>
-						<td class="last t"><a class="onhold" href="edit.php?post_type=shop_order&shop_order_status=on-hold"><?php _e('On-Hold', 'jigoshop'); ?></a></td>
-					</tr>
-					<tr>
-						<td class="b"><a href="edit.php?post_type=shop_order&shop_order_status=processing"><span class="total-count"><?php echo $jigoshop_orders->processing_count; ?></span></a></td>
-						<td class="last t"><a class="processing" href="edit.php?post_type=shop_order&shop_order_status=processing"><?php _e('Processing', 'jigoshop'); ?></a></td>
-					</tr>
-					<tr>
-						<td class="b"><a href="edit.php?post_type=shop_order&shop_order_status=completed"><span class="total-count"><?php echo $jigoshop_orders->completed_count; ?></span></a></td>
-						<td class="last t"><a class="complete" href="edit.php?post_type=shop_order&shop_order_status=completed"><?php _e('Completed', 'jigoshop'); ?></a></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<br class="clear"/>
-		<div class="versions">
-			<p id="wp-version-message"><?php _e('You are using', 'jigoshop'); ?>
-				<strong>JigoShop <?php echo jigoshop_get_plugin_data(); ?></strong>
-			</p>
-		</div>
-	</div>
-		<?php
 	}
 
 	/**
@@ -575,48 +487,6 @@ jQuery(function(){
 				<br class="clear"/>
 			</div>
 	<?php endif;
-	}
-
-	/**
-	*
-	*	Recent Reviews
-	*
-	*/
-
-	function jigoshop_dash_recent_reviews() {
-		global $wpdb;
-		$comments = $wpdb->get_results("SELECT *, SUBSTRING(comment_content,1,100) AS comment_excerpt
-		FROM $wpdb->comments
-		LEFT JOIN $wpdb->posts ON ($wpdb->comments.comment_post_ID = $wpdb->posts.ID)
-		WHERE comment_approved = '1'
-		AND comment_type = ''
-		AND post_password = ''
-		AND post_type = 'product'
-		ORDER BY comment_date_gmt DESC
-		LIMIT 5" );
-		?><div class="inside jigoshop-reviews-widget"><?php
-		if ($comments) :
-			echo '<ul>';
-			foreach ($comments as $comment) :
-
-				echo '<li>';
-
-				echo get_avatar($comment->comment_author, '32');
-
-				$rating = get_comment_meta( $comment->comment_ID, 'rating', true );
-
-				echo '<div class="star-rating" title="'.esc_attr($rating).'">
-					<span style="width:'.($rating*16).'px">'.$rating.' '.__('out of 5', 'jigoshop').'</span></div>';
-
-				echo '<h4 class="meta"><a href="'.get_permalink($comment->ID).'#comment-'.$comment->comment_ID .'">'.$comment->post_title.'</a> reviewed by ' .strip_tags($comment->comment_author) .'</h4>';
-				echo '<blockquote>'.strip_tags($comment->comment_excerpt).' [...]</blockquote></li>';
-
-			endforeach;
-			echo '</ul>';
-		else :
-			echo '<p>'.__('There are no product reviews yet.', 'jigoshop').'</p>';
-		endif;
-		?></div><?php
 	}
 
 	/**
