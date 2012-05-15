@@ -362,6 +362,8 @@ class jigoshop_checkout extends jigoshop_singleton {
 
 			endif;
 
+			if ( $this->must_register && empty($this->posted['createaccount']) ) jigoshop::add_error( __('Sorry, you must agree to creating an account', 'jigoshop') );
+
 			if ($this->must_register || ( empty($user_id) && ($this->posted['createaccount'])) ) :
 
 				if ( !$this->show_signup ) jigoshop::add_error( __('Sorry, the shop owner has disabled guest purchases.','jigoshop') );
