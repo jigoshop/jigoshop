@@ -33,7 +33,7 @@ class jigoshop_cart extends jigoshop_singleton {
     public static $shipping_tax_total;
     public static $applied_coupons;
     public static $cart_contents;
-    
+
     private static $cart_discount_leftover;
     private static $price_per_tax_class_ex_tax;
     private static $tax;
@@ -706,7 +706,7 @@ class jigoshop_cart extends jigoshop_singleton {
             $subtotal = '';
             // calculate taxes with subtotal
             if (get_option('jigoshop_display_totals_tax') == 'excluding' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
-                
+
                 // only apply discount to subtotal when prices exclude taxes
                 if (get_option('jigoshop_prices_include_tax') == 'yes') :
                     $subtotal = ($apply_discount_and_shipping && get_option('jigoshop_tax_after_coupon') == 'yes' ? self::$subtotal_ex_tax + $discount + self::$shipping_total : self::$subtotal_ex_tax);
@@ -732,7 +732,7 @@ class jigoshop_cart extends jigoshop_singleton {
                     //don't use accessor function here, as it may not be right
                     $subtotal = ($apply_discount_and_shipping && get_option('jigoshop_tax_after_coupon') == 'yes' ? self::$subtotal + self::get_total_cart_tax_without_shipping_tax() + $discount + self::$shipping_total : self::$subtotal + self::get_total_cart_tax_without_shipping_tax());
                 endif;
-                
+
                 if ($for_display) :
                     $return = jigoshop_price($subtotal);
                 else :
@@ -772,7 +772,7 @@ class jigoshop_cart extends jigoshop_singleton {
 
         return $return;
     }
-    
+
     public static function get_cart_discount_leftover() {
         return self::$cart_discount_leftover;
     }
@@ -920,34 +920,25 @@ class jigoshop_cart extends jigoshop_singleton {
     }
 
     function has_discounted_products_in_cart( $thecoupon ) {
+
         // Check if we have products associated
-        foreach( self::$cart_contents as $product ) {
+        foreach( self::$cart_contents as $product )
+			return jigoshop_coupons::is_valid_product($thecoupon['code'], $product);
 
-            $product_id = empty( $product['variation_id'] )
-                ? $product['product_id']
-                : $product['variation_id'];
-
-            if ( in_array( $product_id, $thecoupon['products']) )
-                return true;
-			else if ( empty ( $thecoupon['products'] ) )
-				return true;
-
-        }
-
-        return false;
     }
 
     /** returns whether or not a discount has been applied */
     function has_discount($code) {
-        if (in_array($code, self::$applied_coupons))
-            return true;
-        return false;
+
+        return (in_array($code, self::$applied_coupons));
+
     }
 
     /** gets the total discount amount */
     function get_total_discount() {
         if (self::$discount_total)
-            return jigoshop_price(self::$discount_total); else
+            return jigoshop_price(self::$discount_total);
+		else
             return false;
     }
 
