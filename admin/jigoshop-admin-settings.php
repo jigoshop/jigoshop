@@ -247,7 +247,7 @@ function jigoshop_update_coupons() {
 		$from_date           = !empty($coupon_date_from[$i])           ? strtotime($coupon_date_from[$i])                    : 0;
 		$free_ship           = !empty($coupon_free_shipping[$i])       ? 'yes'                                               : 'no';
 		$individual_use      = !empty($individual[$i])                 ? 'yes'                                               : 'no';
-		$products            = !empty($product_ids[$i])                ? implode(',', $product_ids[$i])                      : array();
+		$products            = !empty($product_ids[$i])                ? $product_ids[$i]                                    : array();
 		$to_date             = !empty($coupon_date_to[$i])             ? strtotime($coupon_date_to[$i]) + (60 * 60 * 24 - 1) : 0;
 
 		if ($code && $type && $amount)
@@ -615,7 +615,6 @@ function jigoshop_admin_fields($options) {
 												<?php
 													$product_ids = $coupon['products'];
 													if ($product_ids) {
-														$product_ids = explode(',', $product_ids);
 														foreach ($product_ids as $product_id) {
 															$title = get_the_title($product_id);
 															$sku   = get_post_meta($product_id, '_sku', true);
@@ -677,6 +676,25 @@ function jigoshop_admin_fields($options) {
 									<script type="text/javascript">
 										/* <![CDATA[ */
 										jQuery(function() {
+											jQuery("select#product_ids_<?php echo esc_attr( $i ); ?>").ajaxChosen({
+												method: 	'GET',
+												url: 		'<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>',
+												dataType: 	'json',
+												afterTypeDelay: 100,
+												data:		{
+													action: 		'jigoshop_json_search_products_and_variations',
+													security: 		'<?php echo wp_create_nonce("search-products"); ?>'
+												}
+											}, function (data) {
+
+												var terms = {};
+
+												jQuery.each(data, function (i, val) {
+													terms[i] = val;
+												});
+
+												return terms;
+											});
 											jQuery('.date-pick').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
 										});
 										/* ]]> */
