@@ -18,7 +18,7 @@
 /**
  * Category thumbnails
  */
-add_action('product_cat_add_form_fields', 'jigoshop_add_category_thumbnail_field');
+add_action('product_cat_add_form_fields' , 'jigoshop_add_category_thumbnail_field');
 add_action('product_cat_edit_form_fields', 'jigoshop_edit_category_thumbnail_field', 10,2);
 
 function jigoshop_add_category_thumbnail_field() {
@@ -73,18 +73,11 @@ function jigoshop_add_category_thumbnail_field() {
 }
 
 function jigoshop_edit_category_thumbnail_field( $term, $taxonomy ) {
-	$image 			= '';
-	$thumbnail_id 	= get_metadata('jigoshop_term', $term->term_id, 'thumbnail_id', true);
-	if ($thumbnail_id) :
-		$image = wp_get_attachment_url( $thumbnail_id );
-	else :
-		$image = jigoshop::assets_url().'/assets/images/placeholder.png';
-	endif;
 	?>
 	<tr class="form-field">
 		<th scope="row" valign="top"><label><?php _e('Thumbnail', 'jigoshop'); ?></label></th>
 		<td>
-			<div id="product_cat_thumbnail" style="float:left;margin-right:10px;"><img src="<?php echo $image; ?>" width="60px" height="60px" /></div>
+			<div id="product_cat_thumbnail" style="float:left;margin-right:10px;"><img src="<?php echo jigoshop_product_cat_image($term->term_id) ?>" width="60px" height="60px" /></div>
 			<div style="line-height:60px;">
 				<input type="hidden" id="product_cat_thumbnail_id" name="product_cat_thumbnail_id" value="<?php echo $thumbnail_id; ?>" />
 				<button type="submit" class="upload_image_button button"><?php _e('Upload/Add image', 'jigoshop'); ?></button>
@@ -132,44 +125,44 @@ function jigoshop_edit_category_thumbnail_field( $term, $taxonomy ) {
 }
 
 add_action('created_term', 'jigoshop_category_thumbnail_field_save', 10,3);
-add_action('edit_term', 'jigoshop_category_thumbnail_field_save', 10,3);
+add_action('edit_term'   , 'jigoshop_category_thumbnail_field_save', 10,3);
 
 function jigoshop_category_thumbnail_field_save( $term_id, $tt_id, $taxonomy ) {
-	if (isset($_POST['product_cat_thumbnail_id'])) {
-		update_metadata('jigoshop_term', $term_id, 'thumbnail_id', $_POST['product_cat_thumbnail_id'], '');
-    }
+
+	if (!isset($_POST['product_cat_thumbnail_id']))
+		return false;
+
+	update_metadata( 'jigoshop_term', $term_id, 'thumbnail_id', $_POST['product_cat_thumbnail_id'] );
+
 }
 
 /**
- * Thumbnail column for categories
- */
- add_filter("manage_edit-product_cat_columns", 'jigoshop_product_cat_columns');
- add_filter("manage_product_cat_custom_column", 'jigoshop_product_cat_column', 10, 3);
+* Thumbnail column for categories
+*/
+add_filter("manage_edit-product_cat_columns", 'jigoshop_product_cat_columns');
+add_filter("manage_product_cat_custom_column", 'jigoshop_product_cat_column', 10, 3);
 
- function jigoshop_product_cat_columns( $columns ) {
- 	$new_columns = array();
- 	$new_columns['cb'] = $columns['cb'];
- 	$new_columns['thumb'] = __('Image', 'jigoshop');
- 	unset($columns['cb']);
- 	$columns = array_merge( $new_columns, $columns );
- 	return $columns;
- }
+function jigoshop_product_cat_columns( $columns ) {
 
- function jigoshop_product_cat_column( $columns, $column, $id ) {
- 	if ($column=='thumb') :
- 		global $jigoshop;
+	$new_columns = array(
+		'cb'    => $columns['cb'],
+		'thumb' => __('Image', 'jigoshop')
+	);
 
- 		$image 			= '';
- 		$thumbnail_id 	= get_metadata('jigoshop_term', $id, 'thumbnail_id', true);
- 		if ($thumbnail_id) :
- 			$image = wp_get_attachment_url( $thumbnail_id );
- 		else :
- 			$image = jigoshop::assets_url().'/assets/images/placeholder.png';
- 		endif;
+	unset($columns['cb']);
+	$columns = array_merge( $new_columns, $columns );
 
- 		$columns .= '<img src="'.$image.'" alt="Thumbnail" class="wp-post-image" height="48" width="48" />';
+	return $columns;
 
- 	endif;
+}
 
- 	return $columns;
- }
+function jigoshop_product_cat_column( $columns, $column, $id ) {
+
+	if ($column != 'thumb')
+		return false;
+
+	$columns .= '<img src="'.jigoshop_product_cat_image($id).'" alt="Thumbnail" class="wp-post-image" height="48" width="48" />';
+
+	return $columns;
+
+}
