@@ -56,7 +56,7 @@
                 foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) : 
                     if (jigoshop_cart::get_tax_for_display($tax_class)) : ?>                    
                         <tr>
-                            <td colspan="2"><?php echo jigoshop_cart::get_tax_for_display($tax_class); ?></th>
+                            <td colspan="2"><?php echo jigoshop_cart::get_tax_for_display($tax_class); ?></td>
                             <td><?php echo jigoshop_cart::get_tax_amount($tax_class) ?></td>
                         </tr>
                         <?php
