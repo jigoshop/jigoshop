@@ -16,54 +16,106 @@
  */
 
 /**
- *	Update price if on sale
+ * Jigoshop cron tasks.
+ *
+ * 1. Update product sale prices.
+ * 2. Archive 'pending' orders by setting their status to 'on-hold'.
  */
 
-function jigoshop_update_sale_prices() {
+class jigoshop_cron {
 
-	global $wpdb;
+	function __construct () {
 
-	// On Sale Products
-	$on_sale = $wpdb->get_results("
-		SELECT post_id FROM $wpdb->postmeta
-		WHERE meta_key = 'sale_price_dates_from'
-		AND meta_value < ".strtotime('NOW')."
-	");
-	if ($on_sale) foreach ($on_sale as $product) :
+		global $wpdb;
+		$this->wpdb = &$wpdb;
 
-		$data = unserialize( get_post_meta($product, 'product_data', true) );
-		$price = get_post_meta($product, 'price', true);
+		$this->jigoshop_schedule_events();
 
-		if ($data['sale_price'] && $price!==$data['sale_price']) update_post_meta($product, 'price', $data['sale_price']);
+		add_action( 'jigoshop_cron_sale_products' , array( $this, 'jigoshop_update_sale_prices'    ) );
+		add_action( 'jigoshop_cron_pending_orders', array( $this, 'jigoshop_update_pending_orders' ) );
 
-	endforeach;
+	}
 
-	// Expired Sales
-	$sale_expired = $wpdb->get_results("
-		SELECT post_id FROM $wpdb->postmeta
-		WHERE meta_key = 'sale_price_dates_to'
-		AND meta_value < ".strtotime('NOW')."
-	");
-	if ($sale_expired) foreach ($sale_expired as $product) :
+	private function jigoshop_schedule_events() {
 
-		$data = unserialize( get_post_meta($product, 'product_data', true) );
-		$price = get_post_meta($product, 'price', true);
+		/* Update product price if on sale */
+		if ( !wp_next_scheduled( 'jigoshop_cron_sale_products' ) )
+			wp_schedule_event(time(), 'daily', 'jigoshop_cron_sale_products' );
 
-		if ($data['regular_price'] && $price!==$data['regular_price']) update_post_meta($product, 'price', $data['regular_price']);
+		/* Mark old 'pending' orders to 'on-hold' */
+		if ( !wp_next_scheduled( 'jigoshop_cron_pending_orders' ) )
+			wp_schedule_event(time(), 'daily', 'jigoshop_cron_pending_orders' );
 
-		// Sale has expired - clear the schedule boxes
-		update_post_meta($product, 'sale_price_dates_from', '');
-		update_post_meta($product, 'sale_price_dates_to', '');
+	}
 
-	endforeach;
+	private function jigoshop_update_sale_prices() {
+
+		$this->jigoshop_on_sale_products();
+		$this->jigoshop_expired_products();
+
+	}
+
+	/* Products still on sale */
+	private function jigoshop_on_sale_products() {
+
+		$on_sale = $this->wpdb->get_results("
+			SELECT post_id FROM {$this->wpdb->postmeta}
+			WHERE meta_key = 'sale_price_dates_from'
+			AND meta_value < ".strtotime('NOW')."
+		");
+
+		if ( !$on_sale )
+			return false;
+
+		foreach ($on_sale as $product) :
+
+			$data = unserialize( get_post_meta($product, 'product_data', true) );
+			$price = get_post_meta( $product, 'price', true );
+
+			/* Swap the product's price to the sale price */
+			if ( $data['sale_price'] && $price !== $data['sale_price'] )
+				update_post_meta( $product, 'price', $data['sale_price'] );
+
+		endforeach;
+
+	}
+
+	/* Expired sale products */
+	private function jigoshop_expired_products() {
+
+		$sale_expired = $this->wpdb->get_results("
+			SELECT post_id FROM {$this->wpdb->postmeta}
+			WHERE meta_key = 'sale_price_dates_to'
+			AND meta_value < ".strtotime('NOW')."
+		");
+
+		if ( !$sale_expired )
+			return false;
+
+		foreach ( $sale_expired as $product ) :
+
+			$data = unserialize( get_post_meta($product, 'product_data', true) );
+			$price = get_post_meta( $product, 'price', true );
+
+			/* Reset the product price */
+			if ( $data['regular_price'] && $price !== $data['regular_price'] )
+				update_post_meta( $product, 'price', $data['regular_price'] );
+
+			/* Sale has expired - clear the schedule boxes */
+			update_post_meta( $product, 'sale_price_dates_from', '' );
+			update_post_meta( $product, 'sale_price_dates_to'  , '' );
+
+		endforeach;
+
+	}
+
+	private function jigoshop_update_pending_orders() {
+
+
+
+
+	}
 
 }
 
-function jigoshop_update_sale_prices_schedule_check(){
-	wp_schedule_event(time(), 'daily', 'jigoshop_update_sale_prices_schedule_check');
-	update_option('jigoshop_update_sale_prices', 'yes');
-}
-
-if (get_option('jigoshop_update_sale_prices')!='yes') jigoshop_update_sale_prices_schedule_check();
-
-add_action('jigoshop_update_sale_prices_schedule_check', 'jigoshop_update_sale_prices');
+$jigoshop_cron = new jigoshop_cron();

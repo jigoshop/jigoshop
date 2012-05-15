@@ -109,7 +109,7 @@ include_once( 'jigoshop_templates.php' );
 include_once( 'jigoshop_template_actions.php' );
 include_once( 'jigoshop_emails.php' );
 include_once( 'jigoshop_actions.php' );
-//include_once( 'jigoshop_cron.php' );	/* we may use this at some point, leaving -JAP- */
+include_once( 'jigoshop_cron.php' );
 
 // Constants
 if (!defined('JIGOSHOP_USE_CSS')) :
