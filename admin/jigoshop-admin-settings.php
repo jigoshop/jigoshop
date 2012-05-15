@@ -247,7 +247,7 @@ function jigoshop_update_coupons() {
 		$from_date           = !empty($coupon_date_from[$i])           ? strtotime($coupon_date_from[$i])                    : 0;
 		$free_ship           = !empty($coupon_free_shipping[$i])       ? 'yes'                                               : 'no';
 		$individual_use      = !empty($individual[$i])                 ? 'yes'                                               : 'no';
-		$products            = !empty($product_ids[$i])                ? array_map('trim', explode(',', $product_ids[$i]))   : array();
+		$products            = !empty($product_ids[$i])                ? implode(',', $product_ids[$i])                      : array();
 		$to_date             = !empty($coupon_date_to[$i])             ? strtotime($coupon_date_to[$i]) + (60 * 60 * 24 - 1) : 0;
 
 		if ($code && $type && $amount)
@@ -607,19 +607,18 @@ function jigoshop_admin_fields($options) {
 												   title="<?php _e('Usage Limit', 'jigoshop'); ?>"
 												   placeholder="<?php _e('No Limit', 'jigoshop'); ?>"
 												   class="text" />
+											Times used: <?php echo !empty($coupon['usage']) ? $coupon['usage'] : '0'; ?>
 										</td>
 
 										<td>
-											<select id="product_ids" name="product_ids[]" class="ajax_chosen_select_products_and_variations" multiple="multiple" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>">
+											<select id="product_ids_<?php echo esc_attr( $i ); ?>" name="product_ids[<?php echo esc_attr( $i ); ?>][]" style="width:100px" class="ajax_chosen_select_products_and_variations" multiple="multiple" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>">
 												<?php
 													$product_ids = $coupon['products'];
 													if ($product_ids) {
-
+														$product_ids = explode(',', $product_ids);
 														foreach ($product_ids as $product_id) {
 															$title = get_the_title($product_id);
 															$sku   = get_post_meta($product_id, '_sku', true);
-															var_dump($title);
-
 															if (!$title) continue;
 
 															if (isset($sku) && $sku) $sku = ' (SKU: ' . $sku . ')';
