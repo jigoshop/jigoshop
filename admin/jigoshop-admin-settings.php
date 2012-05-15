@@ -223,6 +223,7 @@ function jigoshop_update_coupons() {
 		'coupon_amount'       => '',
 		'usage_limit'         => '',
 		'product_ids'         => '',
+		'exclude_product_ids' => '',
 		'coupon_category'     => '',
 		'coupon_date_from'    => '',
 		'coupon_date_to'      => '',
@@ -245,12 +246,13 @@ function jigoshop_update_coupons() {
 		$amount              = jigowatt_clean($coupon_amount[$i]);
 		$code                = jigowatt_clean($coupon_code[$i]);
 		$type                = jigowatt_clean($coupon_type[$i]);
-		$category            = $coupon_category[$i];
 		$usage_limit         = jigowatt_clean($usage_limit[$i]);
 		$from_date           = !empty($coupon_date_from[$i])           ? strtotime($coupon_date_from[$i])                    : 0;
 		$free_ship           = !empty($coupon_free_shipping[$i])       ? 'yes'                                               : 'no';
 		$individual_use      = !empty($individual[$i])                 ? 'yes'                                               : 'no';
+		$category            = !empty($coupon_category[$i])            ? $coupon_category[$i]                                : array();
 		$products            = !empty($product_ids[$i])                ? $product_ids[$i]                                    : array();
+		$exclude_products    = !empty($exclude_product_ids[$i])        ? $exclude_product_ids[$i]                            : array();
 		$to_date             = !empty($coupon_date_to[$i])             ? strtotime($coupon_date_to[$i]) + (60 * 60 * 24 - 1) : 0;
 
 		if ($code && $type && $amount)
@@ -259,6 +261,7 @@ function jigoshop_update_coupons() {
 				'amount'              => $amount,
 				'type'                => $type,
 				'products'            => $products,
+				'exclude_products'    => $exclude_products,
 				'coupon_category'     => $category,
 				'date_from'           => $from_date,
 				'date_to'             => $to_date,
@@ -559,16 +562,17 @@ function jigoshop_admin_fields($options) {
 							<thead>
 								<tr>
 									<th></th>
-									<th><?php _e('Code'         , 'jigoshop'); ?></th>
-									<th><?php _e('Type'         , 'jigoshop'); ?></th>
-									<th><?php _e('Amount'       , 'jigoshop'); ?></th>
-									<th><?php _e('Usage Limit'  , 'jigoshop'); ?></th>
-									<th><?php _e("Products"     , 'jigoshop'); ?></th>
-									<th><?php _e('Categories'   , 'jigoshop'); ?></th>
-									<th><?php _e('From'         , 'jigoshop'); ?></th>
-									<th><?php _e('To'           , 'jigoshop'); ?></th>
-									<th><?php _e('Alone'        , 'jigoshop'); ?></th>
-									<th><?php _e('Free Shipping', 'jigoshop'); ?></th>
+									<th><?php _e('Code'            , 'jigoshop'); ?></th>
+									<th><?php _e('Type'            , 'jigoshop'); ?></th>
+									<th><?php _e('Amount'          , 'jigoshop'); ?></th>
+									<th><?php _e('Usage Limit'     , 'jigoshop'); ?></th>
+									<th><?php _e('Products'        , 'jigoshop'); ?></th>
+									<th><?php _e('Exclude Products', 'jigoshop'); ?></th>
+									<th><?php _e('Categories'      , 'jigoshop'); ?></th>
+									<th><?php _e('From'            , 'jigoshop'); ?></th>
+									<th><?php _e('To'              , 'jigoshop'); ?></th>
+									<th><?php _e('Alone'           , 'jigoshop'); ?></th>
+									<th><?php _e('Free Shipping'   , 'jigoshop'); ?></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -633,12 +637,30 @@ function jigoshop_admin_fields($options) {
 											</select>
 										</td>
 
+										<td>
+											<select id="exclude_product_ids_<?php echo esc_attr( $i ); ?>" name="exclude_product_ids[<?php echo esc_attr( $i ); ?>][]" style="width:100px" class="ajax_chosen_select_products_and_variations" multiple="multiple" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>">
+												<?php
+													$exclude_product_ids = $coupon['exclude_products'];
+													if ($exclude_product_ids) {
+														foreach ($exclude_product_ids as $product_id) {
+															$title = get_the_title($product_id);
+															$sku   = get_post_meta($product_id, '_sku', true);
+															if (!$title) continue;
+
+															if (isset($sku) && $sku) $sku = ' (SKU: ' . $sku . ')';
+
+															echo '<option value="'.$product_id.'" selected="selected">'. $title . $sku .'</option>';
+														}
+													}
+												?>
+											</select>
+										</td>
+
 										<?php $categories = get_terms('product_cat', array('hide_empty' => false)); ?>
 										<td>
-											<select name="coupon_category[<?php echo $i; ?>]" class="chzn-select" data-placeholder="Categories to apply" multiple="multiple">
-												<option value="0">All</option>
+											<select name="coupon_category[<?php echo $i; ?>][]" class="chzn-select" data-placeholder="Categories to apply" multiple="multiple">
 											<?php foreach($categories as $category) : ?>
-												<?php $select_cat = !empty( $coupon['coupon_category'] ) && $category->term_id == $coupon['coupon_category'] ? 'selected' : ''; ?>
+												<?php $select_cat = !empty( $coupon['coupon_category'] ) && in_array( $category->term_id, $coupon['coupon_category'] ) ? 'selected' : ''; ?>
 												<option value="<?php echo $category->term_id; ?>" <?php echo $select_cat; ?> ><?php echo $category->name; ?></option>
 											<?php endforeach; ?>
 											</select>
@@ -681,6 +703,25 @@ function jigoshop_admin_fields($options) {
 										/* <![CDATA[ */
 										jQuery(function() {
 											jQuery("select#product_ids_<?php echo esc_attr( $i ); ?>").ajaxChosen({
+												method: 	'GET',
+												url: 		'<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>',
+												dataType: 	'json',
+												afterTypeDelay: 100,
+												data:		{
+													action: 		'jigoshop_json_search_products_and_variations',
+													security: 		'<?php echo wp_create_nonce("search-products"); ?>'
+												}
+											}, function (data) {
+
+												var terms = {};
+
+												jQuery.each(data, function (i, val) {
+													terms[i] = val;
+												});
+
+												return terms;
+											});
+											jQuery("select#exclude_product_ids_<?php echo esc_attr( $i ); ?>").ajaxChosen({
 												method: 	'GET',
 												url: 		'<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>',
 												dataType: 	'json',
