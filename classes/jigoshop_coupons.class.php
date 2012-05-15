@@ -40,7 +40,7 @@ class jigoshop_coupons {
 	function get_coupon( $code ) {
 		$coupons = self::get_coupons();
 		if ( isset( $coupons[$code] )) :
-			if ( self::in_date_range( $coupons[$code] ) ) return $coupons[$code];
+			if ( self::in_date_range( $coupons[$code] ) && self::under_usage_limit( $coupons[$code] ) ) return $coupons[$code];
 		endif;
 
 		return false;
@@ -88,6 +88,19 @@ class jigoshop_coupons {
 				return true;
 
 		return false;
+	}
+
+	/**
+	 * determines whether a coupon code is valid by checking if it has a usage limit, and if that limit has been passed
+	 *
+	 * @param array $coupon - the coupon record to check limit for
+	 * @return boolean - whether coupon is valid based on usage limit
+	 * @since 1.0
+	 */
+	function under_usage_limit( $coupon ) {
+
+		return (empty($coupon['usage_limit']) || (int) $coupon['usage'] < (int) $coupon['usage_limit']) ? true : false;
+
 	}
 
 }

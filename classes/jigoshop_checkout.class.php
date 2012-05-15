@@ -647,6 +647,15 @@ class jigoshop_checkout extends jigoshop_singleton {
 
 					$order = new jigoshop_order($order_id);
 
+					/* Coupon usage limit */
+					$coupons = get_option('jigoshop_coupons');
+					var_dump($coupons);
+
+					foreach ($data['order_discount_coupons'] as $coupon) :
+						$coupons[$coupon['code']]['usage'] = empty($coupons[$coupon['code']]['usage']) ? 1 : $coupons[$coupon['code']]['usage'] + 1;
+					endforeach;
+					update_option('jigoshop_coupons', $coupons);
+
 					// Inserted successfully
 					do_action('jigoshop_new_order', $order_id);
 
