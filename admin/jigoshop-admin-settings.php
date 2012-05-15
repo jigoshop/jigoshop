@@ -214,6 +214,9 @@ function jigoshop_update_taxes() {
 
 function jigoshop_update_coupons() {
 
+	/* Only grabbing this so as not to override the 'usage' field for a coupon when saving settings */
+	$original_coupons = get_option('jigoshop_coupons');
+
 	$couponFields = array(
 		'coupon_code'         => '',
 		'coupon_type'         => '',
@@ -224,7 +227,7 @@ function jigoshop_update_coupons() {
 		'coupon_date_from'    => '',
 		'coupon_date_to'      => '',
 		'individual'          => '',
-		'coupon_free_shipping'=> ''
+		'coupon_free_shipping'=> '',
 	);
 
 	$coupons = array();
@@ -261,7 +264,8 @@ function jigoshop_update_coupons() {
 				'date_to'             => $to_date,
 				'individual_use'      => $individual_use,
 				'coupon_free_shipping'=> $free_ship,
-				'usage_limit'         => $usage_limit
+				'usage_limit'         => $usage_limit,
+				'usage'               => !empty($original_coupons[$code]['usage']) ? $original_coupons[$code]['usage'] : 0
 			);
 
 	endfor;
