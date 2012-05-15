@@ -56,19 +56,15 @@ class jigoshop_coupons {
 	 * @since 0.9.9.1
 	 */
 	function is_valid_product( $code, $product ) {
-		$valid = false;
-		$coupon = self::get_coupon($code);
-		if ( $coupon && sizeof($coupon['products'])>0) :
-			if ( in_array( $product['product_id'], $coupon['products'] )) :
-				$valid = true;
-			endif;
-			if ( $product['variation_id'] <> '' ) :
-				if ( in_array( $product['variation_id'], $coupon['products'] )) :
-					$valid = true;
-				endif;
-			endif;
-		endif;
-		return $valid;
+
+		$product_id = !empty($product['variation_id']) ? 'variation_id' : 'product_id';
+		$category   = reset(wp_get_post_terms($product['product_id'], 'product_cat'));
+		$coupon     = self::get_coupon($code);
+
+		if ( $coupon && sizeof($coupon['products']) > 0 || !empty($coupon['category']) )
+			return ( in_array( $product[$product_id], $coupon['products'] ) || $coupon['category'] == $category->term_id );
+
+		return false;
 	}
 
 	/**
@@ -79,15 +75,19 @@ class jigoshop_coupons {
 	 * @since 0.9.9.1
 	 */
 	function in_date_range( $coupon ) {
-		$in_range = false;
-		$date_from = (int)$coupon['date_from'];
-		$date_to = (int)$coupon['date_to'];
+
+		$date_from    = (int)$coupon['date_from'];
+		$date_to      = (int)$coupon['date_to'];
 		$current_time = strtotime( 'NOW' );
-		if ( $date_to == 0 && $date_from == 0 ) $in_range = true;
-		else if ( $date_from == 0 || ( $date_from > 0 && $date_from < $current_time )) :
-			if ( $date_to == 0 || $date_to > $current_time ) $in_range = true;
-		endif;
-		return $in_range;
+
+		if ( $date_to == 0 && $date_from == 0 )
+			return true;
+
+		if ( $date_from == 0 || ( $date_from > 0 && $date_from < $current_time ) )
+			if ( $date_to == 0 || $date_to > $current_time )
+				return true;
+
+		return false;
 	}
 
 }
