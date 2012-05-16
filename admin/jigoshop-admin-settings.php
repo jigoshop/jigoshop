@@ -781,11 +781,8 @@ function jigoshop_admin_fields($options) {
                 $i = -1;
                 if ($tax_rates && is_array($tax_rates) && sizeof($tax_rates) > 0)
                     foreach ($tax_rates as $rate) :
-                        if ($rate['is_all_states']) :
-                            if (in_array(get_all_states_key($rate), $applied_all_states)) :
-                                continue;
-                            endif;
-                        endif;
+						if ( $rate['is_all_states'] && in_array(get_all_states_key($rate), $applied_all_states) )
+							continue;
 
                         $i++;// increment counter after check for all states having been applied
 
