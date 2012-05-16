@@ -27,7 +27,7 @@
         </thead>
         <tfoot>
             <tr>
-                <?php if ((get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::has_compound_tax()) 
+                <?php if ((get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::has_compound_tax())
                        || (get_option('jigoshop_tax_after_coupon') == 'yes' && jigoshop_cart::get_total_discount())) : ?>
                     <td colspan="2"><?php _e('Retail Price', 'jigoshop'); ?></td>
                 <?php else : ?>
@@ -42,9 +42,9 @@
                     <td colspan="2"><?php _e('Discount', 'jigoshop'); ?></td>
                     <td>-<?php echo jigoshop_cart::get_total_discount(); ?></td>
                 </tr>
-                <?php 
+                <?php
             endif;
-            if ((get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::has_compound_tax()) 
+            if ((get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::has_compound_tax())
                        || (get_option('jigoshop_tax_after_coupon') == 'yes' && jigoshop_cart::get_total_discount())) : ?>
                 <tr>
                     <td colspan="2"><?php _e('Subtotal', 'jigoshop'); ?></td>
@@ -53,8 +53,8 @@
                 <?php
             endif;
             if (get_option('jigoshop_calc_taxes') == 'yes') :
-                foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) : 
-                    if (jigoshop_cart::get_tax_for_display($tax_class)) : ?>                    
+                foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
+                    if (jigoshop_cart::get_tax_for_display($tax_class)) : ?>
                         <tr>
                             <td colspan="2"><?php echo jigoshop_cart::get_tax_for_display($tax_class); ?></td>
                             <td><?php echo jigoshop_cart::get_tax_amount($tax_class) ?></td>
@@ -73,6 +73,12 @@
                 <td colspan="2"><strong><?php _e('Grand Total', 'jigoshop'); ?></strong></td>
                 <td><strong><?php echo jigoshop_cart::get_total(); ?></strong></td>
             </tr>
+			<?php $coupons = jigoshop_coupons::get_coupons(); if(!empty($coupons)): ?>
+				<div class="coupon">
+					<label for="coupon_code"><?php _e('Coupon', 'jigoshop'); ?>:</label> <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" />
+					<input type="hidden" class="button" name="apply_coupon" value="<?php _e('Apply Coupon', 'jigoshop'); ?>" />
+				</div>
+			<?php endif; ?>
         </tfoot>
         <tbody>
             <?php
@@ -84,10 +90,10 @@
                         if ($_product instanceof jigoshop_product_variation && is_array($values['variation'])) {
                             $variation = jigoshop_get_formatted_variation($values['variation']);
                         }
-						
+
 						$customization = '';
 						$custom_products = (array) jigoshop_session::instance()->customized_products;
-						
+
 						if ( ! empty( $custom_products[$_product->ID] ) ) :
 							$custom = $custom_products[$_product->ID];
 							$label = apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') );
@@ -112,17 +118,17 @@
 	</table>
 
 	<div id="payment">
-		
+
 		<ul class="payment_methods methods">
 			<?php
 				$available_gateways = jigoshop_payment_gateways::get_available_payment_gateways();
 				if ($available_gateways) :
-                    
+
                     $gateway_set = false;
 					foreach ($available_gateways as $gateway ) :
                         if (jigoshop_checkout::process_gateway($gateway)) :
                             if (!$gateway_set) :
-                                
+
                                 // Chosen Method
                                 if (sizeof($available_gateways)) :
                                     if( isset( $_POST[ 'payment_method' ] ) && isset( $available_gateways[ $_POST['payment_method'] ] ) ) :
@@ -132,7 +138,7 @@
                                     endif;
                                 endif;
                                 $gateway_set = true;
-                                    
+
                             endif;
     						?>
                             <li>
@@ -160,7 +166,7 @@
 				endif;
 			?>
 		</ul>
-		
+
 
 		<div class="form-row">
 

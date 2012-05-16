@@ -464,6 +464,11 @@ if (params.is_checkout==1) {
 			clearTimeout(updateTimer);
 			update_checkout();
 		}).change();
+		jQuery('#coupon_code').live('change', function(){
+			jQuery('input[name=apply_coupon]').submit();
+			clearTimeout(updateTimer);
+			update_checkout();
+		}).change();
 		jQuery('input#billing-country, input#billing-state, #billing-postcode, input#shipping-country, input#shipping-state, #shipping-postcode').live('keydown', function(){
 			clearTimeout(updateTimer);
 			updateTimer = setTimeout("update_checkout()", '5000');

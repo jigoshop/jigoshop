@@ -268,8 +268,16 @@ class jigoshop_checkout extends jigoshop_singleton {
 		if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
 
         // always calculate totals when coming to checkout, as we need the total calculated on the cart here
-        jigoshop_cart::get_cart();		// calls get_cart_from_session() if required
+        jigoshop_cart::get_cart(); // calls get_cart_from_session() if required
         jigoshop_cart::calculate_totals();
+
+		// Process Discount Codes
+		if ( !empty( $_POST['coupon_code'] ) && jigoshop::verify_nonce('process_checkout') ) :
+
+			$coupon_code = stripslashes(trim($_POST['coupon_code']));
+			jigoshop_cart::add_discount($coupon_code);
+
+		endif;
 
 		if (isset($_POST) && $_POST && !isset($_POST['login'])) :
 
