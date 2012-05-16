@@ -74,6 +74,16 @@ class jigoshop_coupons {
 
 		endif;
 
+		/* Exclude specific categories next. */
+		if ( !empty( $coupon['exclude_categories'] ) ) :
+
+			$category  = reset(wp_get_post_terms($product['product_id'], 'product_cat'));
+
+			if ( in_array( $category->term_id, $coupon['exclude_categories'] ) )
+				return true;
+
+		endif;
+
 		/* Allow specific products only. */
 		if ( !empty( $coupon['products'] ) ) :
 

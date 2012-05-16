@@ -224,6 +224,7 @@ function jigoshop_update_coupons() {
 		'usage_limit'         => '',
 		'product_ids'         => '',
 		'exclude_product_ids' => '',
+		'exclude_categories' => '',
 		'coupon_category'     => '',
 		'coupon_date_from'    => '',
 		'coupon_date_to'      => '',
@@ -253,6 +254,7 @@ function jigoshop_update_coupons() {
 		$category            = !empty($coupon_category[$i])            ? $coupon_category[$i]                                : array();
 		$products            = !empty($product_ids[$i])                ? $product_ids[$i]                                    : array();
 		$exclude_products    = !empty($exclude_product_ids[$i])        ? $exclude_product_ids[$i]                            : array();
+		$exclude_categories  = !empty($exclude_categories[$i])         ? $exclude_categories[$i]                             : array();
 		$to_date             = !empty($coupon_date_to[$i])             ? strtotime($coupon_date_to[$i]) + (60 * 60 * 24 - 1) : 0;
 
 		if ($code && $type && $amount)
@@ -262,6 +264,7 @@ function jigoshop_update_coupons() {
 				'type'                => $type,
 				'products'            => $products,
 				'exclude_products'    => $exclude_products,
+				'exclude_categories'  => $exclude_categories,
 				'coupon_category'     => $category,
 				'date_from'           => $from_date,
 				'date_to'             => $to_date,
@@ -562,17 +565,18 @@ function jigoshop_admin_fields($options) {
 							<thead>
 								<tr>
 									<th></th>
-									<th><?php _e('Code'            , 'jigoshop'); ?></th>
-									<th><?php _e('Type'            , 'jigoshop'); ?></th>
-									<th><?php _e('Amount'          , 'jigoshop'); ?></th>
-									<th><?php _e('Usage Limit'     , 'jigoshop'); ?></th>
-									<th><?php _e('Products'        , 'jigoshop'); ?></th>
-									<th><?php _e('Exclude Products', 'jigoshop'); ?></th>
-									<th><?php _e('Categories'      , 'jigoshop'); ?></th>
-									<th><?php _e('From'            , 'jigoshop'); ?></th>
-									<th><?php _e('To'              , 'jigoshop'); ?></th>
-									<th><?php _e('Alone'           , 'jigoshop'); ?></th>
-									<th><?php _e('Free Shipping'   , 'jigoshop'); ?></th>
+									<th><?php _e('Code'              , 'jigoshop'); ?></th>
+									<th><?php _e('Type'              , 'jigoshop'); ?></th>
+									<th><?php _e('Amount'            , 'jigoshop'); ?></th>
+									<th><?php _e('Usage Limit'       , 'jigoshop'); ?></th>
+									<th><?php _e('Products'          , 'jigoshop'); ?></th>
+									<th><?php _e('Exclude Products'  , 'jigoshop'); ?></th>
+									<th><?php _e('Categories'        , 'jigoshop'); ?></th>
+									<th><?php _e('Exclude Categories', 'jigoshop'); ?></th>
+									<th><?php _e('From'              , 'jigoshop'); ?></th>
+									<th><?php _e('To'                , 'jigoshop'); ?></th>
+									<th><?php _e('Alone'             , 'jigoshop'); ?></th>
+									<th><?php _e('Free Shipping'     , 'jigoshop'); ?></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -661,6 +665,15 @@ function jigoshop_admin_fields($options) {
 											<select name="coupon_category[<?php echo $i; ?>][]" class="chzn-select" data-placeholder="Categories to apply" multiple="multiple">
 											<?php foreach($categories as $category) : ?>
 												<?php $select_cat = !empty( $coupon['coupon_category'] ) && in_array( $category->term_id, $coupon['coupon_category'] ) ? 'selected' : ''; ?>
+												<option value="<?php echo $category->term_id; ?>" <?php echo $select_cat; ?> ><?php echo $category->name; ?></option>
+											<?php endforeach; ?>
+											</select>
+										</td>
+
+										<td>
+											<select name="exclude_categories[<?php echo $i; ?>][]" class="chzn-select" data-placeholder="Categories to apply" multiple="multiple">
+											<?php foreach($categories as $category) : ?>
+												<?php $select_cat = !empty( $coupon['exclude_categories'] ) && in_array( $category->term_id, $coupon['exclude_categories'] ) ? 'selected' : ''; ?>
 												<option value="<?php echo $category->term_id; ?>" <?php echo $select_cat; ?> ><?php echo $category->name; ?></option>
 											<?php endforeach; ?>
 											</select>
