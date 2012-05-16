@@ -105,6 +105,10 @@ class jigoshop_coupons {
 
 		endif;
 
+		/* If no limits are set on the coupon, allow it to be used. */
+		if ( empty( $coupon['products'] ) && empty( $coupon['exclude_products'] ) && empty( $coupon['exclude_categories'] ) && empty( $coupon['coupon_category'] ) )
+			return true;
+
 		return false;
 	}
 
