@@ -217,7 +217,7 @@ function jigoshop_update_taxes() {
 						'shipping'     => $shipping,
 						'class'        => $class,
 						'compound'     => $compound,
-						'is_all_states'=> false //determines if admin panel should show 'all_states'
+						'is_all_states'=> true
 					);
 				endforeach;
 
@@ -232,7 +232,7 @@ function jigoshop_update_taxes() {
 					'shipping'     => $shipping,
 					'class'        => $class,
 					'compound'     => $compound,
-					'is_all_states'=> true //determines if admin panel should show 'all_states'
+					'is_all_states'=> false
 				);
 
 			}
