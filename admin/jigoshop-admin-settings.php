@@ -789,7 +789,9 @@ function jigoshop_admin_fields($options) {
 
                         $i++;// increment counter after check for all states having been applied
 
-                        echo '<p class="taxrow"><select name="tax_classes[' . esc_attr( $i ) . ']" title="Tax Classes"><option value="*">' . __('Standard Rate', 'jigoshop') . '</option>';
+						echo '<p class="taxrow">
+						<select name="tax_classes[' . esc_attr( $i ) . ']" title="Tax Classes">
+							<option value="*">' . __('Standard Rate', 'jigoshop') . '</option>';
 
                         if ($tax_classes)
                             foreach ($tax_classes as $class) :
@@ -801,9 +803,16 @@ function jigoshop_admin_fields($options) {
                                 echo '>' . $class . '</option>';
                             endforeach;
 
-                        echo '</select><input type="text" class="text" value="' . esc_attr( $rate['label']  ) . '" name="tax_label[' . esc_attr( $i ) . ']" title="' . __('Online Label', 'jigoshop') . '" placeholder="' . __('Online Label', 'jigoshop') . '" maxlength="15" />';
+                        echo '</select>
 
-                        echo '</select><select name="tax_country[' . esc_attr( $i ) . '][]" title="Country" multiple="multiple">';
+						<input type="text"
+							   class="text" value="' . esc_attr( $rate['label']  ) . '"
+							   name="tax_label[' . esc_attr( $i ) . ']"
+							   title="' . __('Online Label', 'jigoshop') . '"
+							   placeholder="' . __('Online Label', 'jigoshop') . '"
+							   maxlength="15" />';
+
+                        echo '<select name="tax_country[' . esc_attr( $i ) . '][]" title="Country" multiple="multiple">';
 
                         if ($rate['is_all_states']) :
                             if (is_array($applied_all_states) && !in_array(get_all_states_key($rate), $applied_all_states)) :
@@ -816,17 +825,31 @@ function jigoshop_admin_fields($options) {
                             jigoshop_countries::country_dropdown_options($rate['country'], $rate['state']);
                         endif;
 
-                        echo '</select><input type="text" class="text" value="' . esc_attr( $rate['rate']  ) . '" name="tax_rate[' . esc_attr( $i ) . ']" title="' . __('Rate', 'jigoshop') . '" placeholder="' . __('Rate', 'jigoshop') . '" maxlength="8" />% <label><input type="checkbox" name="tax_shipping[' . esc_attr( $i ) . ']" ';
+                        echo '</select>
+
+						<input type="text"
+							   class="text"
+							   value="' . esc_attr( $rate['rate']  ) . '"
+							   name="tax_rate[' . esc_attr( $i ) . ']"
+							   title="' . __('Rate', 'jigoshop') . '"
+							   placeholder="' . __('Rate', 'jigoshop') . '"
+							   maxlength="8" />%
+
+						<label><input type="checkbox" name="tax_shipping[' . esc_attr( $i ) . ']" ';
 
                         if (isset($rate['shipping']) && $rate['shipping'] == 'yes')
                             echo 'checked="checked"';
 
-                        echo ' /> ' . __('Apply to shipping', 'jigoshop') . '</label><label><input type="checkbox" name="tax_compound[' . esc_attr( $i ) . ']" ';
+                        echo ' /> ' . __('Apply to shipping', 'jigoshop') . '</label>
+
+						<label><input type="checkbox" name="tax_compound[' . esc_attr( $i ) . ']" ';
 
                         if (isset($rate['compound']) && $rate['compound'] == 'yes')
                             echo 'checked="checked"';
 
-                        echo ' /> ' . __('Compound', 'jigoshop') . '</label><a href="#" class="remove button">&times;</a></p>';
+                        echo ' /> ' . __('Compound', 'jigoshop') . '</label>
+
+						<a href="#" class="remove button">&times;</a></p>';
                     endforeach;
                 ?>
                             </div>
