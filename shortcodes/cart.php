@@ -178,7 +178,7 @@ function jigoshop_cart($atts) {
                             <div>
                                 <span class="applied-coupons-label"><?php _e('Applied Coupons: ', 'jigoshop'); ?></span>
 								<?php foreach ( jigoshop_cart::$applied_coupons as $code ) : ?>
-                                <a href="#" class="applied-coupons-values coup"><?php echo $code; ?>
+                                <a href="?unset_coupon=<?php echo $code; ?>" id="<?php echo $code; ?>" class="applied-coupons-values coup"><?php echo $code; ?>
 									<span class="close">&times;</span>
 								</a>
 								<?php endforeach; ?>

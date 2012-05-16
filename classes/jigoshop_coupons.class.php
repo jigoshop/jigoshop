@@ -16,7 +16,15 @@
  * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
+
 class jigoshop_coupons {
+
+	function __construct() {
+
+		if(!empty($_GET['unset_coupon']))
+			$this->remove_coupon($_GET['unset_coupon']);
+
+	}
 
 	/**
 	 * get coupons from the options database
@@ -44,6 +52,26 @@ class jigoshop_coupons {
 		endif;
 
 		return false;
+	}
+
+	/* Remove an applied coupon. */
+	function remove_coupon( $code ) {
+
+		if ( !is_array( jigoshop_session::instance()->coupons ) )
+			return false;
+
+		/* Loop to find the key of this coupon */
+		foreach ( jigoshop_session::instance()->coupons as $key => $coupon ) :
+
+			if ( $code == $coupon ) {
+			//	unset(jigoshop_cart::$applied_coupons[$key]);
+			//	unset(jigoshop_session::instance()->coupons[$key]);
+				unset($_SESSION['jigoshop'][JIGOSHOP_VERSION]['coupons'][$key]);
+				return true;
+			}
+
+		endforeach;
+
 	}
 
 	/**
@@ -149,3 +177,6 @@ class jigoshop_coupons {
 	}
 
 }
+
+if ( !empty($_GET['unset_coupon']) )
+	$coupons = new jigoshop_coupons();
