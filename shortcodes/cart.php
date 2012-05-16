@@ -66,7 +66,7 @@ function jigoshop_cart($atts) {
         $rates_params = explode(":", $_POST['shipping_rates']);
         $available_methods = jigoshop_shipping::get_available_shipping_methods();
         $shipping_method = $available_methods[$rates_params[0]];
-        
+
         if ($rates_params[1] != NULL) :
             jigoshop_session::instance()->selected_rate_id = $rates_params[1];
         endif;
@@ -160,7 +160,7 @@ function jigoshop_cart($atts) {
             <tfoot>
                 <tr>
                     <td colspan="6" class="actions">
-                        
+
                         <?php $coupons = jigoshop_coupons::get_coupons(); if(!empty($coupons)): ?>
                             <div class="coupon">
                                 <label for="coupon_code"><?php _e('Coupon', 'jigoshop'); ?>:</label> <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" />
@@ -176,8 +176,12 @@ function jigoshop_cart($atts) {
                     <tr>
                         <td colspan="6" class="applied-coupons">
                             <div>
-                                <span class="applied-coupons-label"><?php _e('Applied Discount Coupons: ', 'jigoshop'); ?></span>
-                                <span class="applied-coupons-values"><?php echo implode(',', jigoshop_cart::$applied_coupons); ?></span>
+                                <span class="applied-coupons-label"><?php _e('Applied Coupons: ', 'jigoshop'); ?></span>
+								<?php foreach ( jigoshop_cart::$applied_coupons as $code ) : ?>
+                                <a href="#" class="applied-coupons-values coup"><?php echo $code; ?>
+									<span class="close">&times;</span>
+								</a>
+								<?php endforeach; ?>
                             </div>
                         </td>
                     </tr>
@@ -206,15 +210,15 @@ function jigoshop_cart($atts) {
                     <table cellspacing="0" cellpadding="0">
                         <tbody>
                             <tr>
-                                <?php 
-                                if (get_option('jigoshop_display_totals_tax') == 'excluding' 
-                                        && ((get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::has_compound_tax()) 
+                                <?php
+                                if (get_option('jigoshop_display_totals_tax') == 'excluding'
+                                        && ((get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::has_compound_tax())
                                         || (get_option('jigoshop_tax_after_coupon') == 'yes' && jigoshop_cart::get_total_discount()))) : ?>
                                     <th class="cart-row-subtotal-title"><?php _e('Retail Price', 'jigoshop'); ?></th>
-                                <?php 
+                                <?php
                                 else : ?>
                                     <th class="cart-row-subtotal-title"><?php _e('Subtotal', 'jigoshop'); ?></th>
-                                <?php 
+                                <?php
                                 endif; ?>
                                 <td class="cart-row-subtotal"><?php echo jigoshop_cart::get_cart_subtotal(); ?></td>
                             </tr>
@@ -223,17 +227,68 @@ function jigoshop_cart($atts) {
                                 <th class="cart-row-shipping-title"><?php _e('Shipping', 'jigoshop'); ?> <small><?php echo jigoshop_countries::shipping_to_prefix() . ' ' . __(jigoshop_countries::$countries[jigoshop_customer::get_shipping_country()], 'jigoshop'); ?></small></th>
                                 <td class="cart-row-shipping"><?php echo jigoshop_cart::get_cart_shipping_total(); ?> <small><?php echo jigoshop_cart::get_cart_shipping_title(); ?></small></td>
                             </tr>
-                            <?php 
-                            endif; 
+                            <?php
+                            endif;
                             if (get_option('jigoshop_tax_after_coupon') == 'yes' && jigoshop_cart::get_total_discount()) : ?>
                                 <tr class="discount">
                                     <th class="cart-row-discount-title"><?php _e('Discount', 'jigoshop'); ?></th>
-                                    <td class="cart-row-discount">-<?php echo jigoshop_cart::get_total_discount(); ?></td>
+									<td class="cart-row-discount">-<?php echo jigoshop_cart::get_total_discount(); ?></td>
                                 </tr>
+<style>
+.applied-coupons-values {
+	text-decoration:none !important;
+	font-size:13px;
+	font-weight:normal;
+}
+.coup {
+  -webkit-border-radius: 3px;
+  -moz-border-radius   : 3px;
+  border-radius        : 3px;
+  -moz-background-clip   : padding;
+  -webkit-background-clip: padding-box;
+  background-clip        : padding-box;
+  background-color: #e4e4e4;
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f4f4f4', endColorstr='#eeeeee', GradientType=0 );
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(20%, #f4f4f4), color-stop(50%, #f0f0f0), color-stop(52%, #e8e8e8), color-stop(100%, #eeeeee));
+  background-image: -webkit-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+  background-image: -moz-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+  background-image: -o-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+  background-image: -ms-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+  background-image: linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+  -webkit-box-shadow: 0 0 2px #ffffff inset, 0 1px 0 rgba(0,0,0,0.05);
+  -moz-box-shadow   : 0 0 2px #ffffff inset, 0 1px 0 rgba(0,0,0,0.05);
+  box-shadow        : 0 0 2px #ffffff inset, 0 1px 0 rgba(0,0,0,0.05);
+  color: #333;
+  border: 1px solid #aaaaaa;
+  line-height: 13px;
+  padding: 3px 20px 3px 5px;
+  margin: 3px 0 3px 5px;
+  position: relative;
+}
+.cart-discount-code {
+	font-size: 12px;
+	padding-right:5px;
+	color: #888;
+	float:right;
+}
+.close {
+	display: block;
+	position: absolute;
+	right: 3px;
+	top: 2px;
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 18px;
+	color: black;
+	text-shadow: 0 1px 0 white;
+	opacity: 0.2;
+	filter: alpha(opacity=20);
+}
+</style>
                             <?php
-                            endif; 
-                            if (get_option('jigoshop_display_totals_tax') == 'excluding' 
-                                    && ((get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::has_compound_tax()) 
+                            endif;
+                            if (get_option('jigoshop_display_totals_tax') == 'excluding'
+                                    && ((get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::has_compound_tax())
                                     || (get_option('jigoshop_tax_after_coupon') == 'yes' && jigoshop_cart::get_total_discount()))) : ?>
                                 <tr>
                                     <th class="cart-row-subtotal-title"><?php _e('Subtotal', 'jigoshop'); ?></th>
@@ -251,7 +306,7 @@ function jigoshop_cart($atts) {
                                     <?php
                                     endif;
                                 endforeach;
-                            endif; 
+                            endif;
 							if (jigoshop_cart::get_total_discount() && get_option('jigoshop_tax_after_coupon') == 'no') : ?><tr class="discount">
 								<th class="cart-row-discount-title"><?php _e('Discount', 'jigoshop'); ?></th>
 								<td class="cart-row-discount">-<?php echo jigoshop_cart::get_total_discount(); ?></td>
