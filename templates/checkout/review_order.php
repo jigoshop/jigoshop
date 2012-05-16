@@ -73,12 +73,6 @@
                 <td colspan="2"><strong><?php _e('Grand Total', 'jigoshop'); ?></strong></td>
                 <td><strong><?php echo jigoshop_cart::get_total(); ?></strong></td>
             </tr>
-			<?php $coupons = jigoshop_coupons::get_coupons(); if(!empty($coupons)): ?>
-				<div class="coupon">
-					<label for="coupon_code"><?php _e('Coupon', 'jigoshop'); ?>:</label> <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" />
-					<input type="hidden" class="button" name="apply_coupon" value="<?php _e('Apply Coupon', 'jigoshop'); ?>" />
-				</div>
-			<?php endif; ?>
         </tfoot>
         <tbody>
             <?php
@@ -116,6 +110,13 @@
 			?>
 		</tbody>
 	</table>
+
+	<?php $coupons = jigoshop_coupons::get_coupons(); if(!empty($coupons)): ?>
+		<div class="coupon">
+			<label for="coupon_code"><?php _e('Coupon', 'jigoshop'); ?>:</label> <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" />
+			<input type="hidden" class="button" name="apply_coupon" value="<?php _e('Apply Coupon', 'jigoshop'); ?>" />
+		</div><br/>
+	<?php endif; ?>
 
 	<div id="payment">
 
@@ -166,7 +167,6 @@
 				endif;
 			?>
 		</ul>
-
 
 		<div class="form-row">
 
