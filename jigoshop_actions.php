@@ -323,7 +323,7 @@ function jigoshop_ajax_update_order_review() {
 	check_ajax_referer( 'update-order-review', 'security' );
 
 	if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
-	
+
 	jigoshop_cart::get_cart();
 	if (sizeof(jigoshop_cart::$cart_contents)==0) :
 		echo '<p class="error">'.__('Sorry, your session has expired.', 'jigoshop').' <a href="'.home_url().'">'.__('Return to homepage &rarr;', 'jigoshop').'</a></p>';
@@ -343,6 +343,10 @@ function jigoshop_ajax_update_order_review() {
 
 	endif;
 
+	if (!empty($_POST['coupon'])) {
+		jigoshop_cart::add_discount( $_POST['coupon'] );
+		echo jigoshop::show_messages();
+	}
 	if (isset($_POST['country']))   jigoshop_customer::set_country( $_POST['country'] );
 	if (isset($_POST['state']))     jigoshop_customer::set_state( $_POST['state'] );
 	if (isset($_POST['postcode']))  jigoshop_customer::set_postcode( $_POST['postcode'] );

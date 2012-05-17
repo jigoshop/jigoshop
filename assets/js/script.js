@@ -367,21 +367,22 @@ if (params.is_checkout==1) {
 
 		if (jqxhr) jqxhr.abort();
 
-		var method		   = jQuery('#shipping_method').val();
-		var payment_method = jQuery('input[name=payment_method]:checked').val();
-		var country 	   = jQuery('#billing-country').val();
-		var state 		   = jQuery('#billing-state').val();
-		var postcode 	   = jQuery('input#billing-postcode').val();
+		var method        = jQuery('#shipping_method').val();
+		var coupon        = jQuery('#coupon_code').val();
+		var payment_method= jQuery('input[name=payment_method]:checked').val();
+		var country       = jQuery('#billing-country').val();
+		var state         = jQuery('#billing-state').val();
+		var postcode      = jQuery('input#billing-postcode').val();
 
 		if (jQuery('#shiptobilling input').is(':checked') || jQuery('#shiptobilling input').size()==0) {
-			var s_country 	= jQuery('#billing-country').val();
-			var s_state 	= jQuery('#billing-state').val();
-			var s_postcode 	= jQuery('input#billing-postcode').val();
+			var s_country = jQuery('#billing-country').val();
+			var s_state   = jQuery('#billing-state').val();
+			var s_postcode= jQuery('input#billing-postcode').val();
 
 		} else {
-			var s_country 	= jQuery('#shipping-country').val();
-			var s_state 	= jQuery('#shipping-state').val();
-			var s_postcode 	= jQuery('input#shipping-postcode').val();
+			var s_country = jQuery('#shipping-country').val();
+			var s_state   = jQuery('#shipping-state').val();
+			var s_postcode= jQuery('input#shipping-postcode').val();
 		}
 
 		jQuery('#order_methods, #order_review').block({message: null, overlayCSS: {background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
@@ -397,6 +398,7 @@ if (params.is_checkout==1) {
 			s_state: 			s_state,
 			s_postcode: 		s_postcode,
 			payment_method:     payment_method,
+			coupon:             coupon,
 			post_data:			jQuery('form.checkout').serialize()
 		};
 
@@ -464,8 +466,7 @@ if (params.is_checkout==1) {
 			clearTimeout(updateTimer);
 			update_checkout();
 		}).change();
-		jQuery('#coupon_code').live('change', function(){
-			jQuery('input[name=apply_coupon]').submit();
+		jQuery('#coupon_code').live('change', function(e){
 			clearTimeout(updateTimer);
 			update_checkout();
 		}).change();
