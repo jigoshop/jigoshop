@@ -138,8 +138,9 @@ add_action('load-jigoshop_page_jigoshop_settings', 'jigoshop_update_options');
 /* Remove duplicates from multi dimensional arrays */
 function super_unique($array) {
 	$result = array_map("unserialize", array_unique(array_map("serialize", $array)));
-	foreach ($result as $key => $value)
+	foreach ($result as $key => $value) {
 		if ( is_array($value) ) $result[$key] = super_unique($value);
+	}
 
 	return $result;
 }
@@ -241,7 +242,7 @@ function jigoshop_update_taxes() {
 
 	endfor;
 
-	$tax_rates = super_unique($tax_rates);
+	//$tax_rates = super_unique($tax_rates);
 	//usort($tax_rates, "csort_tax_rates");
 	update_option('jigoshop_tax_rates', $tax_rates);
 
@@ -783,7 +784,7 @@ function jigoshop_admin_fields($options) {
 
 					function array_find($needle,$haystack){
 						foreach($haystack as $key => $val):
-							if( $needle == array( "label" => $val['label'], 'rate' => $val['rate'], 'shipping' => $val['shipping'] ) ):
+							if( $needle == array( "label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'] ) ):
 								return $key;
 							endif;
 						endforeach;
@@ -793,7 +794,7 @@ function jigoshop_admin_fields($options) {
 					function array_compare($tax_rates) {
 						$after = array();
 						foreach($tax_rates as $key => $val):
-							$first_two = array("label" => $val['label'], 'rate' => $val['rate'], 'shipping' => $val['shipping'] );
+							$first_two = array("label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'] );
 							$found = array_find($first_two,$after);
 							if($found!==false):
 								$combined  = $after[$found]["state"];
