@@ -899,8 +899,8 @@ class jigoshop_countries {
 				echo '<optgroup label="'.$value.'">';
 
 				if ($show_all) :
-					echo '<option value="'.esc_attr($key).'"';
 					if ( !is_array( $selected_country ) ) {
+						echo '<option value="'.esc_attr($key).'"';
 						if ($selected_country == $key && $selected_state == '*') echo ' selected="selected"';
 						echo '>'.__('All of', 'jigoshop').' ' .$value.'</option>';
 					}
