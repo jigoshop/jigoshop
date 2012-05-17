@@ -40,13 +40,13 @@
  * @return int the results of strcmp
  */
 function csort_tax_rates($a, $b) {
-    $str1 = '';
-    $str2 = '';
+	$str1 = '';
+	$str2 = '';
 
-    $str1 .= $a['country'] . $a['state'] . ($a['compound'] == 'no' ? 'a' : 'b');
-    $str2 .= $b['country'] . $b['state'] . ($b['compound'] == 'no' ? 'a' : 'b');
+	$str1 .= $a['country'] . $a['state'] . ($a['compound'] == 'no' ? 'a' : 'b');
+	$str2 .= $b['country'] . $b['state'] . ($b['compound'] == 'no' ? 'a' : 'b');
 
-    return strcmp($str1, $str2);
+	return strcmp($str1, $str2);
 }
 
 /**
@@ -242,7 +242,7 @@ function jigoshop_update_taxes() {
 	endfor;
 
 	$tax_rates = super_unique($tax_rates);
-	usort($tax_rates, "csort_tax_rates");
+	//usort($tax_rates, "csort_tax_rates");
 	update_option('jigoshop_tax_rates', $tax_rates);
 
 }
