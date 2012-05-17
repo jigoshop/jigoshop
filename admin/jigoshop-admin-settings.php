@@ -779,7 +779,37 @@ function jigoshop_admin_fields($options) {
                             <div class="taxrows">
                 <?php
                 $i = -1;
-                if ($tax_rates && is_array($tax_rates) && sizeof($tax_rates) > 0)
+                if ($tax_rates && is_array($tax_rates) && sizeof($tax_rates) > 0) :
+
+					function array_find($needle,$haystack){
+						foreach($haystack as $key => $val):
+							if( $needle == array( "label" => $val['label'], 'rate' => $val['rate'], 'shipping' => $val['shipping'] ) ):
+								return $key;
+							endif;
+						endforeach;
+						return false;
+					}
+
+					function array_compare($tax_rates) {
+						$after = array();
+						foreach($tax_rates as $key => $val):
+							$first_two = array("label" => $val['label'], 'rate' => $val['rate'], 'shipping' => $val['shipping'] );
+							$found = array_find($first_two,$after);
+							if($found!==false):
+								$combined  = $after[$found]["state"];
+								$combined2 = $after[$found]["country"];
+								$combined = !is_array($combined) ? array($combined) : $combined;
+								$combined2 = !is_array($combined2) ? array($combined2) : $combined2;
+								$after[$found] = array_merge($first_two,array( "state" => array_merge($combined,array($val['state'])), "country" => array_merge($combined2,array($val['country'])) ));
+							else:
+								$after = array_merge($after,array(array_merge($first_two,array("state" => $val['state'], "country" => $val['country']))));
+							endif;
+						endforeach;
+						return $after;
+					}
+
+					$tax_rates = array_compare($tax_rates);
+
                     foreach ($tax_rates as $rate) :
 						if ( $rate['is_all_states'] && in_array(get_all_states_key($rate), $applied_all_states) )
 							continue;
@@ -848,6 +878,7 @@ function jigoshop_admin_fields($options) {
 
 						<a href="#" class="remove button">&times;</a></p>';
                     endforeach;
+				endif;
                 ?>
                             </div>
                             <p><a href="#" class="add button"><?php _e('+ Add Tax Rule', 'jigoshop'); ?></a></p>

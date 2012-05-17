@@ -767,7 +767,7 @@ class jigoshop_countries {
 			'AP'	=>	'Pacific'
 		)
 	);
-    
+
     public static $european_union_countries = array (
         'AT'	=>	'Austria',
         'BE'	=>	'Belgium',
@@ -802,7 +802,7 @@ class jigoshop_countries {
 
 		return isset(self::$states[$country_code]);
 	}
-    
+
     public static function is_eu_country($country_code) {
         return array_key_exists($country_code, self::$european_union_countries);
     }
@@ -884,6 +884,12 @@ class jigoshop_countries {
 	/** Outputs the list of countries and states for use in dropdown boxes */
 	function country_dropdown_options( $selected_country = '', $selected_state = '*', $escape = false, $show_all = true ) {
 
+	if ( is_array($selected_country ) )
+		$selected_country = array_unique($selected_country);
+
+	if ( is_array($selected_state ) )
+		$selected_state = array_unique($selected_state);
+
 		$countries = self::$countries;
 		asort($countries);
 
@@ -894,14 +900,27 @@ class jigoshop_countries {
 
 				if ($show_all) :
 					echo '<option value="'.esc_attr($key).'"';
-					if ($selected_country==$key && $selected_state=='*') echo ' selected="selected"';
-					echo '>'.__('All of', 'jigoshop').' ' .$value.'</option>';
+					if ( !is_array( $selected_country ) ) {
+						if ($selected_country == $key && $selected_state == '*') echo ' selected="selected"';
+						echo '>'.__('All of', 'jigoshop').' ' .$value.'</option>';
+					}
 				endif;
 
 				foreach ($states as $state_key=>$state_value) :
 					echo '<option value="'.$key.':'.$state_key.'"';
+
+					if ( is_array( $selected_state ) ) {
+
+						if ( in_array ( $state_key, $selected_state ) )
+							echo ' selected="selected"';
+
+
+					} else {
+
 					if (($selected_country==$key && $selected_state==$state_key) || (!$show_all && ($selected_state=='*' && $selected_country==$key)))
 						echo ' selected="selected"';
+
+					}
 					echo '>'.$value.' &mdash; '. ($escape ? esc_js($state_value) : $state_value) .'</option>';
 				endforeach;
 
@@ -915,7 +934,15 @@ class jigoshop_countries {
 
 			else :
 				echo '<option';
-				if ($selected_country==$key && $selected_state=='*') echo ' selected="selected"';
+
+				if ( is_array( $selected_country ) ) {
+					if ( in_array ( $key, $selected_country ) )
+						echo ' selected="selected"';
+				} else {
+					if ($selected_country==$key && $selected_state=='*')
+						echo ' selected="selected"';
+				}
+
 				echo ' value="'.esc_attr($key).'">'. __($value, 'jigoshop') .'</option>';
 			endif;
 
