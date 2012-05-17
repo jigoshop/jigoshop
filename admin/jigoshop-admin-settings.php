@@ -330,689 +330,9 @@ function jigoshop_admin_fields($options) {
         }
         ?>
     </h2>
-    <div >
+    <div>
         <!-- <p class="submit"><input name="save" type="submit" value="<?php _e('Save changes', 'jigoshop') ?>" /></p> -->
-        <?php
-        $counter = 1;
-        foreach ($options as $value) :
-
-			switch ($value['type']) :
-
-			case 'string':
-				?><tr>
-					<th scope="row"><?php echo $value['name']; ?></td>
-					<td><?php echo $value['desc']; ?></td>
-				  </tr><?php
-				break;
-
-			case 'tab':
-				?><div id="<?php echo $value['type'] . $counter; ?>" class="panel">
-				  <table class="form-table"><?php
-				break;
-
-			case 'title':
-				?><thead>
-					<tr>
-						<th scope="col" colspan="2">
-							<h3 class="title"><?php echo $value['name'] ?></h3>
-							<?php if ( !empty($value['desc']) ) : ?>
-							<p><?php echo $value['desc']; ?></p>
-							<?php endif; ?>
-						</th>
-					</tr>
-				  </thead><?php
-				break;
-
-			case 'checkbox':
-				?><tr>
-                    <th scope="row"<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
-						<?php if (!empty($value['tip'])) : ?>
-						<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99" ></a>
-						<?php endif; ?>
-						<?php if ( !empty( $value['name'] ) ) : ?>
-						<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
-						<?php endif; ?>
-					</th>
-					<td<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
-						<input
-						id="<?php echo esc_attr( $value['id'] ); ?>"
-						type="checkbox"
-						class="jigoshop-input jigoshop-checkbox"
-						style="<?php if ( !empty($value['css']) ) echo esc_attr( $value['css'] ); ?>"
-						name="<?php echo esc_attr( $value['id'] ); ?>"
-						<?php if (get_option($value['id']) !== false && get_option($value['id']) !== null)
-						echo checked(get_option($value['id']), 'yes', false);
-						else if ( isset($value['std'])) echo checked( $value['std'], 'yes', false ); ?> />
-						<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php if (!empty($value['desc'])) echo $value['desc']; ?></label>
-					</td>
-				  </tr><?php
-				break;
-
-            case 'text':
-                ?><tr>
-                    <th scope="row"<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
-						<?php if (!empty($value['tip'])) : ?>
-						<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a>
-						<?php endif; ?>
-						<?php if ( !empty( $value['name'] ) ) : ?>
-						<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
-						<?php endif; ?>
-					</th>
-
-                    <td<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
-                    	<input name="<?php echo esc_attr( $value['id'] ); ?>"
-                    		id="<?php echo esc_attr( $value['id'] ); ?>"
-                    		type="<?php echo $value['type'] ?>"
-                            class="regular-text"
-                    		style="<?php if ( !empty($value['css']) ) echo esc_attr( $value['css'] ); ?>"
-                    		value="<?php if (get_option($value['id']) !== false && get_option($value['id']) !== null)
-                    			echo esc_attr( get_option($value['id']) );
-                    			else if ( isset($value['std'])) echo esc_attr( $value['std'] ); ?>" />
-                    	<?php if ( !empty( $value['name'] ) && !empty( $value['atr'] ) && $value['atr'] != 'group' ) : ?>
-							<br /><small><?php echo $value['desc'] ?></small>
-						<?php else: ?>
-							<?php echo $value['desc'] ?>
-						<?php endif; ?>
-                    </td>
-                  </tr><?php
-                break;
-
-            case 'select':
-				?><tr>
-                    <th scope="row">
-						<?php if (!empty($value['tip'])) : ?>
-						<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a>
-						<?php endif; ?>
-						<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
-					</th>
-					<td>
-						<select name="<?php echo esc_attr( $value['id'] ); ?>" id="<?php echo esc_attr( $value['id'] ); ?>" style="<?php if ( isset($value['css'])) echo esc_attr( $value['css'] ); ?>">
-
-						<?php foreach ($value['options'] as $key => $val) : ?>
-						<option value="<?php echo esc_attr( $key ); ?>" <?php if (get_option($value['id']) == $key) { ?> selected="selected" <?php } ?>><?php echo ucfirst($val) ?></option>
-						<?php endforeach; ?>
-						</select><br /><small><?php echo $value['desc'] ?></small>
-					</td>
-				  </tr><?php
-                break;
-
-            case 'radio':
-				?><tr>
-                    <th scope="row">
-						<?php if (!empty($value['tip'])) : ?>
-						<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a>
-						<?php endif; ?>
-						<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
-					</th>
-					<td>
-						<?php foreach ($value['options'] as $key => $val) : ?>
-						<label class="radio">
-						<input type="radio"
-							   name="<?php echo esc_attr( $value['id'] ); ?>"
-							   id="<?php echo esc_attr( $key ); ?>"
-							   value="<?php echo esc_attr( $key ); ?>"
-							   <?php if (get_option($value['id']) == $key) { ?> checked="checked" <?php } ?>>
-						<?php echo esc_attr( ucfirst( $val ) ); ?>
-						</label><br />
-						<?php endforeach; ?>
-					</td>
-				  </tr><?php
-                break;
-
-			case 'image_size' :
-
-				$sizes = array(
-					'jigoshop_shop_tiny'      => 'jigoshop_use_wordpress_tiny_crop',
-					'jigoshop_shop_thumbnail' => 'jigoshop_use_wordpress_thumbnail_crop',
-					'jigoshop_shop_small'     => 'jigoshop_use_wordpress_catalog_crop',
-					'jigoshop_shop_large'     => 'jigoshop_use_wordpress_featured_crop'
-				);
-
-				$altSize = $sizes[$value['id']];
-
-				?><tr>
-					<th scope="row"><?php echo $value['name'] ?></label></th>
-					<td valign="top" style="line-height:25px;height:25px;">
-
-						<label for="<?php echo esc_attr( $value['id'] ); ?>_w"><?php _e('Width', 'jigoshop'); ?></label>
-                        <input name="<?php echo esc_attr( $value['id'] ); ?>_w" id="<?php echo esc_attr( $value['id'] ); ?>_w" type="text" size="3" value="<?php if ( $size = get_option( $value['id'].'_w') ) echo $size; else echo $value['std']; ?>" />
-
-						<label for="<?php echo esc_attr( $value['id'] ); ?>_h"><?php _e('Height', 'jigoshop'); ?></label>
-                        <input name="<?php echo esc_attr( $value['id'] ); ?>_h" id="<?php echo esc_attr( $value['id'] ); ?>_h" type="text" size="3" value="<?php if ( $size = get_option( $value['id'].'_h') ) echo $size; else echo $value['std']; ?>" />
-						<input
-						id="<?php echo esc_attr( $altSize ); ?>"
-						type="checkbox"
-						class="jigoshop-input jigoshop-checkbox"
-						name="<?php echo esc_attr( $altSize ); ?>"
-						<?php if (get_option($altSize) !== false && get_option($altSize) !== null)
-						echo checked(get_option($altSize), 'yes', false); ?> />
-						<label for="<?php echo esc_attr( $altSize ); ?>"> <?php echo __('Crop?', 'jigoshop'); ?></label>
-						<a href="#" tip="<?php echo __('Leave unchecked to set the image size by resizing the image proportionally (that is, without distorting it).<br />Leave checked to set the image size by hard cropping the image (either from the sides, or from the top and bottom).', 'jigoshop'); ?>" class="tips" style="float:none;display:inline-block;margin: 4px -8px 0 10px;" tabindex="99"></a>
-						<br /><small><?php echo $value['desc'] ?></small>
-					</td>
-				</tr><?php
-				break;
-
-            case 'textarea':
-                ?><tr>
-                        <th scope="row"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label></th>
-                        <td>
-                            <textarea <?php if (isset($value['args']))
-                    echo $value['args'] . ' '; ?>
-                    name="<?php echo esc_attr( $value['id'] ); ?>"
-                    id="<?php echo esc_attr( $value['id'] ); ?>"
-                    class="large-text" style="<?php echo esc_attr( $value['css'] ); ?>"><?php echo esc_textarea( ( get_option($value['id'])) ? stripslashes(get_option($value['id'])) : $value['std'] ); ?></textarea>
-                            <br /><small><?php echo $value['desc'] ?></small>
-                        </td>
-                    </tr><?php
-                break;
-
-            case 'tabend':
-                ?></table></div><?php
-                $counter = $counter + 1;
-                break;
-
-            case 'single_select_page' :
-
-                $args = array(
-					'name'        => $value['id'],
-					'id'          => $value['id'] . '" style="width: 200px;',
-					'sort_column' => 'menu_order',
-					'sort_order'  => 'ASC',
-					'selected'    => (int) get_option($value['id'])
-				);
-
-                if ( !empty($value['args']) ) $args = wp_parse_args($value['args'], $args);
-				?><tr class="single_select_page">
-					<th scope="row"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label></th>
-					<td>
-						<?php wp_dropdown_pages($args); ?>
-						<br /><small><?php echo $value['desc'] ?></small>
-					</td>
-				</tr><?php
-				break;
-                case 'single_select_country' :
-                    $countries = jigoshop_countries::$countries;
-                    $country_setting = (string) get_option($value['id']);
-                    if (strstr($country_setting, ':')) :
-                        $country = current(explode(':', $country_setting));
-                        $state = end(explode(':', $country_setting));
-					else :
-                        $country = $country_setting;
-                        $state = '*';
-                    endif;
-                    ?><tr class="multi_select_countries">
-                        <th scope="row"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label></th>
-                        <td>
-							<select id="<?php echo esc_attr( $value['id'] ); ?>" name="<?php echo esc_attr( $value['id'] ); ?>" title="Country" style="width: 150px;">
-							<?php
-								$show_all = ($value['id'] != 'jigoshop_default_country');
-								echo jigoshop_countries::country_dropdown_options($country, $state, false, $show_all);
-							?>
-                            </select>
-                        </td>
-                    </tr><?php
-					if (!$show_all && jigoshop_countries::country_has_states($country) && $state == '*') jigoshop_countries::base_country_notice();
-                break;
-            case 'multi_select_countries' :
-                $countries = jigoshop_countries::$countries;
-                asort($countries);
-                $selections = (array) get_option($value['id']);
-                ?><tr class="multi_select_countries">
-                        <th scope="row"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label><?php echo $value['name'] ?></label></th>
-                        <td>
-                            <div class="multi_select_countries">
-								<ul><?php
-							if ($countries)
-								foreach ($countries as $key => $val) :
-								?><li><label>
-									<input type="checkbox"
-										   name="<?php echo esc_attr( $value['id'] ) . '[]'; ?>"
-										   value="<?php echo esc_attr( $key ); ?>"
-										   <?php if (in_array($key, $selections)) : ?>
-										   checked="checked"
-										   <?php endif; ?>
-									/>
-									<?php echo $val; ?>
-									</label></li><?php
-								endforeach;
-							  ?></ul>
-							</div>
-                        </td>
-                    </tr><?php
-                    break;
-			case 'coupons' :
-				$coupons = new jigoshop_coupons();
-				$coupon_codes = $coupons->get_coupons();
-			?>
-				<thead><tr><th scope="col" colspan="2"><h3 class="title"><?php _e('Coupon Settings', 'jigoshop'); ?></h3></th></tr></thead>
-				<tr>
-					<td id="coupon_codes">
-						<table class="coupon_rows" cellspacing="0">
-							<tbody>
-					<?php $i = -1; foreach ($coupon_codes as $coupon) : $i++; ?>
-						<p><a href="#"><?php echo $coupon['code']; ?></a></p>
-					<?php endforeach; ?>
-								<?php
-								$i = -1;
-								if ($coupon_codes && is_array($coupon_codes) && sizeof($coupon_codes) > 0)
-									foreach ($coupon_codes as $coupon) : $i++; ?>
-									<p><a href="#" class="remove button" title="<?php _e('Delete this Coupon', 'jigoshop'); ?>">&times; <?php _e('Delete', 'jigoshop'); echo ' ' . $coupon['code']; ?></a></p>
-									<p><label for=""><?php _e('Code', 'jigoshop'); ?></label><input type="text" value="<?php echo esc_attr( $coupon['code'] ); ?>" id="coupon_code[<?php echo esc_attr( $i ); ?>]" name="coupon_code[<?php echo esc_attr( $i ); ?>]" title="<?php _e('Coupon Code', 'jigoshop'); ?>" placeholder="<?php _e('Coupon Code', 'jigoshop'); ?>" class="text" /></p>
-									<p><label for=""><?php _e('Type', 'jigoshop'); ?></label>
-										<select name="coupon_type[<?php echo esc_attr( $i ); ?>]" title="Coupon Type"><?php
-
-										$discount_types = array(
-											'fixed_cart'     => __('Cart Discount'     , 'jigoshop'),
-											'percent'        => __('Cart % Discount'   , 'jigoshop'),
-											'fixed_product'  => __('Product Discount'  , 'jigoshop'),
-											'percent_product'=> __('Product % Discount', 'jigoshop')
-										);
-
-										foreach ($discount_types as $type => $label) : ?>
-											<option value="<?php echo esc_attr( $type ); ?>" <?php echo ($coupon['type'] == $type) ? 'selected="selected"' : ''; ?>><?php echo esc_html( $label ); ?></option>
-										<?php endforeach; ?>
-										</select>
-									</p>
-									<p><label for=""><?php _e('Amount', 'jigoshop'); ?></label>
-											<input type="text"
-												   value="<?php echo esc_attr( $coupon['amount'] ); ?>"
-												   id="coupon_amount[<?php echo esc_attr( $i ); ?>]"
-												   name="coupon_amount[<?php echo esc_attr( $i ); ?>]"
-												   title="<?php _e('Coupon Amount', 'jigoshop'); ?>"
-												   placeholder="<?php _e('Amount', 'jigoshop'); ?>"
-												   class="text" />
-									</p>
-
-										<p><label for=""><?php _e('Usage Limit', 'jigoshop'); ?></label>
-											<input type="text"
-												   value="<?php echo esc_attr( !empty($coupon['usage_limit']) ? $coupon['usage_limit'] : '' ); ?>"
-												   id="usage_limit[<?php echo esc_attr( $i ); ?>]"
-												   name="usage_limit[<?php echo esc_attr( $i ); ?>]"
-												   title="<?php _e('Usage Limit', 'jigoshop'); ?>"
-												   placeholder="<?php _e('No Limit', 'jigoshop'); ?>"
-												   class="text" />
-											Times used: <?php echo !empty($coupon['usage']) ? $coupon['usage'] : '0'; ?>
-										</p>
-
-										<p><label for=""><?php _e('Products', 'jigoshop'); ?></label>
-											<select id="product_ids_<?php echo esc_attr( $i ); ?>" name="product_ids[<?php echo esc_attr( $i ); ?>][]" style="width:100px" class="ajax_chosen_select_products_and_variations" multiple="multiple" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>">
-												<?php
-													$product_ids = $coupon['products'];
-													if ($product_ids) {
-														foreach ($product_ids as $product_id) {
-															$title = get_the_title($product_id);
-															$sku   = get_post_meta($product_id, '_sku', true);
-															if (!$title) continue;
-
-															if (isset($sku) && $sku) $sku = ' (SKU: ' . $sku . ')';
-
-															echo '<option value="'.$product_id.'" selected="selected">'. $title . $sku .'</option>';
-														}
-													}
-												?>
-											</select>
-										</p>
-
-										<p><label for=""><?php _e('Exclude Products', 'jigoshop'); ?></label>
-											<select id="exclude_product_ids_<?php echo esc_attr( $i ); ?>" name="exclude_product_ids[<?php echo esc_attr( $i ); ?>][]" style="width:100px" class="ajax_chosen_select_products_and_variations" multiple="multiple" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>">
-												<?php
-													$exclude_product_ids = $coupon['exclude_products'];
-													if ($exclude_product_ids) {
-														foreach ($exclude_product_ids as $product_id) {
-															$title = get_the_title($product_id);
-															$sku   = get_post_meta($product_id, '_sku', true);
-															if (!$title) continue;
-
-															if (isset($sku) && $sku) $sku = ' (SKU: ' . $sku . ')';
-
-															echo '<option value="'.$product_id.'" selected="selected">'. $title . $sku .'</option>';
-														}
-													}
-												?>
-											</select>
-										</p>
-
-										<?php $categories = get_terms('product_cat', array('hide_empty' => false)); ?>
-										<p><label for=""><?php _e('Categories', 'jigoshop'); ?></label>
-											<select id="coupon_category_<?php echo esc_attr( $i ); ?>" name="coupon_category[<?php echo $i; ?>][]" class="chzn-select" data-placeholder="Categories to apply" multiple="multiple">
-											<?php foreach($categories as $category) : ?>
-												<?php $select_cat = !empty( $coupon['coupon_category'] ) && in_array( $category->term_id, $coupon['coupon_category'] ) ? 'selected' : ''; ?>
-												<option value="<?php echo $category->term_id; ?>" <?php echo $select_cat; ?> ><?php echo $category->name; ?></option>
-											<?php endforeach; ?>
-											</select>
-										</p>
-
-										<p><label for=""><?php _e('Exclude Categories', 'jigoshop'); ?></label>
-											<select id="exclude_categories_<?php echo $i; ?>" name="exclude_categories[<?php echo $i; ?>][]" class="chzn-select" data-placeholder="Categories to apply" multiple="multiple">
-											<?php foreach($categories as $category) : ?>
-												<?php $select_cat = !empty( $coupon['exclude_categories'] ) && in_array( $category->term_id, $coupon['exclude_categories'] ) ? 'selected' : ''; ?>
-												<option value="<?php echo $category->term_id; ?>" <?php echo $select_cat; ?> ><?php echo $category->name; ?></option>
-											<?php endforeach; ?>
-											</select>
-										</p>
-
-										<?php $coupon_date_from = $coupon['date_from']; ?>
-										<p><label for="coupon_date_from[<?php echo esc_attr( $i ); ?>]"><?php _e('From', 'jigoshop'); ?></label>
-											<input type="text"
-												   class="text date-pick"
-												   name="coupon_date_from[<?php echo esc_attr( $i ); ?>]"
-												   id="coupon_date_from[<?php echo esc_attr( $i ); ?>]"
-												   value="<?php if ($coupon_date_from) echo date('Y-m-d', $coupon_date_from); ?>"
-												   placeholder="<?php _e('yyyy-mm-dd', 'jigoshop'); ?>"
-											/>
-										</p>
-
-										<?php $coupon_date_to = $coupon['date_to']; ?>
-										<p><label for="coupon_date_to[<?php echo esc_attr( $i ); ?>]"><?php _e('To', 'jigoshop'); ?></label>
-											<input type="text"
-												   class="text date-pick"
-												   name="coupon_date_to[<?php echo esc_attr( $i ); ?>]"
-												   id="coupon_date_to[<?php echo esc_attr( $i ); ?>]"
-												   value="<?php if ($coupon_date_to) echo date('Y-m-d', $coupon_date_to); ?>"
-												   placeholder="<?php _e('yyyy-mm-dd', 'jigoshop'); ?>"
-											/>
-										</p>
-
-
-										<p><label for=""><?php _e('Alone', 'jigoshop'); ?></label>
-											<input type="checkbox" name="individual[<?php echo esc_attr( $i ); ?>]" id="individual_<?php echo esc_attr( $i ); ?>"
-										<?php if (isset($coupon['individual_use']) && $coupon['individual_use'] == 'yes') : ?>
-											checked="checked"
-										<?php endif; ?> />
-										</p>
-
-										<p><label for=""><?php _e('Free Shipping', 'jigoshop'); ?></label>
-											<input type="checkbox" name="coupon_free_shipping[<?php echo esc_attr( $i ); ?>]" id="coupon_free_shipping_<?php echo esc_attr( $i ); ?>"
-										<?php if (isset($coupon['coupon_free_shipping']) && $coupon['coupon_free_shipping'] == 'yes') : ?>
-											checked="checked"
-										<?php endif; ?> />
-										</p>
-									<tr class="coupon_row">
-
-									</tr>
-									<script type="text/javascript">
-										/* <![CDATA[ */
-										jQuery(function() {
-											jQuery("select#product_ids_<?php echo esc_attr( $i ); ?>").ajaxChosen({
-												method: 	'GET',
-												url: 		'<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>',
-												dataType: 	'json',
-												afterTypeDelay: 100,
-												data:		{
-													action: 		'jigoshop_json_search_products_and_variations',
-													security: 		'<?php echo wp_create_nonce("search-products"); ?>'
-												}
-											}, function (data) {
-
-												var terms = {};
-
-												jQuery.each(data, function (i, val) {
-													terms[i] = val;
-												});
-
-												return terms;
-											});
-											jQuery("select#exclude_product_ids_<?php echo esc_attr( $i ); ?>").ajaxChosen({
-												method: 	'GET',
-												url: 		'<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>',
-												dataType: 	'json',
-												afterTypeDelay: 100,
-												data:		{
-													action: 		'jigoshop_json_search_products_and_variations',
-													security: 		'<?php echo wp_create_nonce("search-products"); ?>'
-												}
-											}, function (data) {
-
-												var terms = {};
-
-												jQuery.each(data, function (i, val) {
-													terms[i] = val;
-												});
-
-												return terms;
-											});
-											jQuery('.date-pick').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
-										});
-										/* ]]> */
-									</script>
-								<?php endforeach; ?>
-							</tbody>
-						</table>
-						<p><a href="#" class="add button"><?php _e('+ Add Coupon', 'jigoshop'); ?></a></p>
-					</td>
-				</tr>
-				<script type="text/javascript">
-					/* <![CDATA[ */
-					jQuery(function() {
-						jQuery('#coupon_codes a.add').live('click', function(){
-							var size = jQuery('#coupon_codes table.coupon_rows tbody .coupon_row').size();
-							// Make sure tbody exists
-							var tbody_size = jQuery('#coupon_codes table.coupon_rows tbody').size();
-							if (tbody_size==0) jQuery('#coupon_codes table.coupon_rows').append('<tbody></tbody>');
-
-							// Add the row
-							jQuery('<tr class="coupon_row">\
-								<td><a href="#" class="remove button" title="<?php __('Delete this Coupon', 'jigoshop'); ?>">&times;</a></td>\
-								<td><input type="text" value="" name="coupon_code[' + size + ']" title="<?php _e('Coupon Code', 'jigoshop'); ?>" placeholder="<?php _e('Coupon Code', 'jigoshop'); ?>" class="text" /></td>\
-								<td><select name="coupon_type[' + size + ']" title="Coupon Type">\
-									<option value="fixed_cart"><?php _e('Cart Discount', 'jigoshop'); ?></option>\
-									<option value="percent"><?php _e('Cart % Discount', 'jigoshop'); ?></option>\
-									<option value="fixed_product"><?php _e('Product Discount', 'jigoshop'); ?></option>\
-									<option value="percent_product"><?php _e('Product % Discount', 'jigoshop'); ?></option>\
-								</select></td>\
-								<td><input type="text" value="" name="coupon_amount[' + size + ']" title="<?php _e('Coupon Amount', 'jigoshop'); ?>" placeholder="<?php _e('Amount', 'jigoshop'); ?>" class="text" /></td>\
-								<td><input type="text" value="" name="usage_limit[' + size + ']" title="<?php _e('Usage Limit', 'jigoshop'); ?>" placeholder="<?php _e('No Limit', 'jigoshop'); ?>" class="text" /></td>\
-								<td><input type="text" value="" name="product_ids[' + size + ']" \
-									placeholder="<?php _e('1, 2, 3,', 'jigoshop'); ?>" class="text" /></td>\
-								<td><select name="coupon_category[' + size + ']"><option value="0">All</option> \
-								<?php foreach($categories as $category) :
-									echo '<option value="' . $category->term_id . '">' . $category->name . '</option>';
-								endforeach; ?>
-								<td><label for="coupon_date_from[' + size + ']"></label>\
-									<input type="text" class="text date-pick" name="coupon_date_from[' + size + ']" \
-									id="coupon_date_from[' + size + ']" value="" \
-									placeholder="<?php _e('yyyy-mm-dd', 'jigoshop'); ?>" /></td>\
-								<td><label for="coupon_date_to[' + size + ']"></label>\
-									<input type="text" class="text date-pick" name="coupon_date_to[' + size + ']" \
-									id="coupon_date_to[' + size + ']" value="" \
-									placeholder="<?php _e('yyyy-mm-dd', 'jigoshop'); ?>" /></td>\
-								<td><input type="checkbox" name="individual[' + size + ']" /></td>\
-								<td><input type="checkbox" name="coupon_free_shipping[' + size + ']" /></td>').appendTo('#coupon_codes table.coupon_rows tbody');
-
-										jQuery(function() {
-											jQuery('.date-pick').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
-										});
-
-											return false;
-										});
-										jQuery('#coupon_codes a.remove').live('click', function(){
-											var answer = confirm("<?php _e('Delete this coupon?', 'jigoshop'); ?>")
-											if (answer) {
-												jQuery('input', jQuery(this).parent().parent()).val('');
-												jQuery(this).parent().parent().hide();
-											}
-											return false;
-										});
-									});
-									/* ]]> */
-				</script>
-							<?php
-							break;
-                            case 'tax_rates' :
-                                $_tax = new jigoshop_tax();
-                                $tax_classes = $_tax->get_tax_classes();
-                                $tax_rates = get_option('jigoshop_tax_rates');
-                                $applied_all_states = array();
-                                ?><tr>
-                        <th><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label><?php echo $value['name'] ?></label></th>
-                        <td id="tax_rates">
-                            <div class="taxrows">
-                <?php
-                $i = -1;
-                if ($tax_rates && is_array($tax_rates) && sizeof($tax_rates) > 0) :
-
-					function array_find($needle,$haystack){
-						foreach($haystack as $key => $val):
-							if( $needle == array( "label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'] ) ):
-								return $key;
-							endif;
-						endforeach;
-						return false;
-					}
-
-					function array_compare($tax_rates) {
-						$after = array();
-						foreach($tax_rates as $key => $val):
-							$first_two = array("label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'] );
-							$found = array_find($first_two,$after);
-							if($found!==false):
-								$combined  = $after[$found]["state"];
-								$combined2 = $after[$found]["country"];
-								$combined = !is_array($combined) ? array($combined) : $combined;
-								$combined2 = !is_array($combined2) ? array($combined2) : $combined2;
-								$after[$found] = array_merge($first_two,array( "state" => array_merge($combined,array($val['state'])), "country" => array_merge($combined2,array($val['country'])) ));
-							else:
-								$after = array_merge($after,array(array_merge($first_two,array("state" => $val['state'], "country" => $val['country']))));
-							endif;
-						endforeach;
-						return $after;
-					}
-
-					$tax_rates = array_compare($tax_rates);
-
-                    foreach ($tax_rates as $rate) :
-						if ( $rate['is_all_states'] && in_array(get_all_states_key($rate), $applied_all_states) )
-							continue;
-
-                        $i++;// increment counter after check for all states having been applied
-
-						echo '<p class="taxrow">
-						<select name="tax_classes[' . esc_attr( $i ) . ']" title="Tax Classes">
-							<option value="*">' . __('Standard Rate', 'jigoshop') . '</option>';
-
-                        if ($tax_classes)
-                            foreach ($tax_classes as $class) :
-                                echo '<option value="' . sanitize_title($class) . '"';
-
-                                if ($rate['class'] == sanitize_title($class))
-                                    echo 'selected="selected"';
-
-                                echo '>' . $class . '</option>';
-                            endforeach;
-
-                        echo '</select>
-
-						<input type="text"
-							   class="text" value="' . esc_attr( $rate['label']  ) . '"
-							   name="tax_label[' . esc_attr( $i ) . ']"
-							   title="' . __('Online Label', 'jigoshop') . '"
-							   placeholder="' . __('Online Label', 'jigoshop') . '"
-							   maxlength="15" />';
-
-                        echo '<select name="tax_country[' . esc_attr( $i ) . '][]" title="Country" multiple="multiple">';
-
-                        if ($rate['is_all_states']) :
-                            if (is_array($applied_all_states) && !in_array(get_all_states_key($rate), $applied_all_states)) :
-                                $applied_all_states[] = get_all_states_key($rate);
-                                jigoshop_countries::country_dropdown_options($rate['country'], '*'); //all-states
-                            else :
-                                continue;
-                            endif;
-                        else :
-                            jigoshop_countries::country_dropdown_options($rate['country'], $rate['state']);
-                        endif;
-
-                        echo '</select>
-
-						<input type="text"
-							   class="text"
-							   value="' . esc_attr( $rate['rate']  ) . '"
-							   name="tax_rate[' . esc_attr( $i ) . ']"
-							   title="' . __('Rate', 'jigoshop') . '"
-							   placeholder="' . __('Rate', 'jigoshop') . '"
-							   maxlength="8" />%
-
-						<label><input type="checkbox" name="tax_shipping[' . esc_attr( $i ) . ']" ';
-
-                        if (isset($rate['shipping']) && $rate['shipping'] == 'yes')
-                            echo 'checked="checked"';
-
-                        echo ' /> ' . __('Apply to shipping', 'jigoshop') . '</label>
-
-						<label><input type="checkbox" name="tax_compound[' . esc_attr( $i ) . ']" ';
-
-                        if (isset($rate['compound']) && $rate['compound'] == 'yes')
-                            echo 'checked="checked"';
-
-                        echo ' /> ' . __('Compound', 'jigoshop') . '</label>
-
-						<a href="#" class="remove button">&times;</a></p>';
-                    endforeach;
-				endif;
-                ?>
-                            </div>
-                            <p><a href="#" class="add button"><?php _e('+ Add Tax Rule', 'jigoshop'); ?></a></p>
-                        </td>
-                    </tr>
-                    <script type="text/javascript">
-                        /* <![CDATA[ */
-                        jQuery(function() {
-                            jQuery('#tax_rates a.add').live('click', function(){
-                                var size = jQuery('.taxrows .taxrow').size();
-
-                                // Add the row
-                                jQuery('<p class="taxrow"> \
-                                    <select name="tax_classes[' + size + ']" title="Tax Classes"> \
-                                        <option value="*"><?php _e('Standard Rate', 'jigoshop'); ?></option><?php
-                $tax_classes = $_tax->get_tax_classes();
-                if ($tax_classes)
-                    foreach ($tax_classes as $class) :
-                        echo '<option value="' . sanitize_title($class) . '">' . $class . '</option>';
-                    endforeach;
-                ?></select><input type="text" class="text" name="tax_label[' + size + ']" title="<?php _e('Online Label', 'jigoshop'); ?>" placeholder="<?php _e('Online Label', 'jigoshop'); ?>" maxlength="15" />\
-                                        </select><select name="tax_country[' + size + '][]" title="Country" multiple="multiple"><?php
-                jigoshop_countries::country_dropdown_options('', '', true);
-                ?></select><input type="text" class="text" name="tax_rate[' + size + ']" title="<?php _e('Rate', 'jigoshop'); ?>" placeholder="<?php _e('Rate', 'jigoshop'); ?>" maxlength="8" />%\
-                                        <label><input type="checkbox" name="tax_shipping[' + size + ']" /> <?php _e('Apply to shipping', 'jigoshop'); ?></label>\
-                                        <label><input type="checkbox" name="tax_compound[' + size + ']" /> <?php _e('Compound', 'jigoshop'); ?></label><a href="#" class="remove button">&times;</a>\
-                                </p>').appendTo('#tax_rates div.taxrows');
-                                                    return false;
-                                                });
-                                                jQuery('#tax_rates a.remove').live('click', function(){
-                                                    var answer = confirm("<?php _e('Delete this rule?', 'jigoshop'); ?>");
-                                                    if (answer) {
-                                                        jQuery('input', jQuery(this).parent()).val('');
-                                                        jQuery(this).parent().hide();
-                                                    }
-                                                    return false;
-                                                });
-                                            });
-                                            /* ]]> */
-                    </script>
-                <?php
-                break;
-            case "shipping_options" :
-
-                foreach (jigoshop_shipping::get_all_methods() as $method) :
-
-                    $method->admin_options();
-
-                endforeach;
-
-                break;
-            case "gateway_options" :
-
-                foreach (jigoshop_payment_gateways::payment_gateways() as $gateway) :
-
-                    $gateway->admin_options();
-
-                endforeach;
-
-                break;
-        endswitch;
-    endforeach;
-    ?>
+		<?php jigoshop_admin_option_display($options); ?>
         <p class="submit"><input name="save" class="button-primary" type="submit" value="<?php _e('Save changes', 'jigoshop') ?>" /></p>
     </div>
     <script type="text/javascript">
@@ -1054,6 +374,693 @@ function jigoshop_admin_fields($options) {
     </script>
     <?php
     flush_rewrite_rules();
+}
+
+/* Big ol' switch function for displaying different settings */
+function jigoshop_admin_option_display($options) {
+
+	if ( empty($options) )
+		return false;
+
+	$counter = 1;
+	foreach ($options as $value) :
+
+		switch ($value['type']) :
+
+		case 'string':
+			?><tr>
+				<th scope="row"><?php echo $value['name']; ?></td>
+				<td><?php echo $value['desc']; ?></td>
+			  </tr><?php
+			break;
+
+		case 'tab':
+			?><div id="<?php echo $value['type'] . $counter; ?>" class="panel">
+			  <table class="form-table"><?php
+			break;
+
+		case 'title':
+			?><thead>
+				<tr>
+					<th scope="col" colspan="2">
+						<h3 class="title"><?php echo $value['name'] ?></h3>
+						<?php if ( !empty($value['desc']) ) : ?>
+						<p><?php echo $value['desc']; ?></p>
+						<?php endif; ?>
+					</th>
+				</tr>
+			  </thead><?php
+			break;
+
+		case 'checkbox':
+			?><tr>
+				<th scope="row"<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
+					<?php if (!empty($value['tip'])) : ?>
+					<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99" ></a>
+					<?php endif; ?>
+					<?php if ( !empty( $value['name'] ) ) : ?>
+					<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
+					<?php endif; ?>
+				</th>
+				<td<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
+					<input
+					id="<?php echo esc_attr( $value['id'] ); ?>"
+					type="checkbox"
+					class="jigoshop-input jigoshop-checkbox"
+					style="<?php if ( !empty($value['css']) ) echo esc_attr( $value['css'] ); ?>"
+					name="<?php echo esc_attr( $value['id'] ); ?>"
+					<?php if (get_option($value['id']) !== false && get_option($value['id']) !== null)
+					echo checked(get_option($value['id']), 'yes', false);
+					else if ( isset($value['std'])) echo checked( $value['std'], 'yes', false ); ?> />
+					<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php if (!empty($value['desc'])) echo $value['desc']; ?></label>
+				</td>
+			  </tr><?php
+			break;
+
+		case 'text':
+			?><tr>
+				<th scope="row"<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
+					<?php if (!empty($value['tip'])) : ?>
+					<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a>
+					<?php endif; ?>
+					<?php if ( !empty( $value['name'] ) ) : ?>
+					<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
+					<?php endif; ?>
+				</th>
+
+				<td<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
+					<input name="<?php echo esc_attr( $value['id'] ); ?>"
+						id="<?php echo esc_attr( $value['id'] ); ?>"
+						type="<?php echo $value['type'] ?>"
+						class="regular-text"
+						style="<?php if ( !empty($value['css']) ) echo esc_attr( $value['css'] ); ?>"
+						value="<?php if (get_option($value['id']) !== false && get_option($value['id']) !== null)
+							echo esc_attr( get_option($value['id']) );
+							else if ( isset($value['std'])) echo esc_attr( $value['std'] ); ?>" />
+					<?php if ( !empty( $value['name'] ) && !empty( $value['atr'] ) && $value['atr'] != 'group' ) : ?>
+						<br /><small><?php echo $value['desc'] ?></small>
+					<?php else: ?>
+						<?php echo $value['desc'] ?>
+					<?php endif; ?>
+				</td>
+			  </tr><?php
+			break;
+
+		case 'select':
+			?><tr>
+				<th scope="row">
+					<?php if (!empty($value['tip'])) : ?>
+					<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a>
+					<?php endif; ?>
+					<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
+				</th>
+				<td>
+					<select name="<?php echo esc_attr( $value['id'] ); ?>" id="<?php echo esc_attr( $value['id'] ); ?>" style="<?php if ( isset($value['css'])) echo esc_attr( $value['css'] ); ?>">
+
+					<?php foreach ($value['options'] as $key => $val) : ?>
+					<option value="<?php echo esc_attr( $key ); ?>" <?php if (get_option($value['id']) == $key) { ?> selected="selected" <?php } ?>><?php echo ucfirst($val) ?></option>
+					<?php endforeach; ?>
+					</select><br /><small><?php echo $value['desc'] ?></small>
+				</td>
+			  </tr><?php
+			break;
+
+		case 'radio':
+			?><tr>
+				<th scope="row">
+					<?php if (!empty($value['tip'])) : ?>
+					<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a>
+					<?php endif; ?>
+					<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
+				</th>
+				<td>
+					<?php foreach ($value['options'] as $key => $val) : ?>
+					<label class="radio">
+					<input type="radio"
+						   name="<?php echo esc_attr( $value['id'] ); ?>"
+						   id="<?php echo esc_attr( $key ); ?>"
+						   value="<?php echo esc_attr( $key ); ?>"
+						   <?php if (get_option($value['id']) == $key) { ?> checked="checked" <?php } ?>>
+					<?php echo esc_attr( ucfirst( $val ) ); ?>
+					</label><br />
+					<?php endforeach; ?>
+				</td>
+			  </tr><?php
+			break;
+
+		case 'image_size' :
+
+			$sizes = array(
+				'jigoshop_shop_tiny'      => 'jigoshop_use_wordpress_tiny_crop',
+				'jigoshop_shop_thumbnail' => 'jigoshop_use_wordpress_thumbnail_crop',
+				'jigoshop_shop_small'     => 'jigoshop_use_wordpress_catalog_crop',
+				'jigoshop_shop_large'     => 'jigoshop_use_wordpress_featured_crop'
+			);
+
+			$altSize = $sizes[$value['id']];
+
+			?><tr>
+				<th scope="row"><?php echo $value['name'] ?></label></th>
+				<td valign="top" style="line-height:25px;height:25px;">
+
+					<label for="<?php echo esc_attr( $value['id'] ); ?>_w"><?php _e('Width', 'jigoshop'); ?></label>
+					<input name="<?php echo esc_attr( $value['id'] ); ?>_w" id="<?php echo esc_attr( $value['id'] ); ?>_w" type="text" size="3" value="<?php if ( $size = get_option( $value['id'].'_w') ) echo $size; else echo $value['std']; ?>" />
+
+					<label for="<?php echo esc_attr( $value['id'] ); ?>_h"><?php _e('Height', 'jigoshop'); ?></label>
+					<input name="<?php echo esc_attr( $value['id'] ); ?>_h" id="<?php echo esc_attr( $value['id'] ); ?>_h" type="text" size="3" value="<?php if ( $size = get_option( $value['id'].'_h') ) echo $size; else echo $value['std']; ?>" />
+					<input
+					id="<?php echo esc_attr( $altSize ); ?>"
+					type="checkbox"
+					class="jigoshop-input jigoshop-checkbox"
+					name="<?php echo esc_attr( $altSize ); ?>"
+					<?php if (get_option($altSize) !== false && get_option($altSize) !== null)
+					echo checked(get_option($altSize), 'yes', false); ?> />
+					<label for="<?php echo esc_attr( $altSize ); ?>"> <?php echo __('Crop?', 'jigoshop'); ?></label>
+					<a href="#" tip="<?php echo __('Leave unchecked to set the image size by resizing the image proportionally (that is, without distorting it).<br />Leave checked to set the image size by hard cropping the image (either from the sides, or from the top and bottom).', 'jigoshop'); ?>" class="tips" style="float:none;display:inline-block;margin: 4px -8px 0 10px;" tabindex="99"></a>
+					<br /><small><?php echo $value['desc'] ?></small>
+				</td>
+			</tr><?php
+			break;
+
+		case 'textarea':
+			?><tr>
+					<th scope="row"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label></th>
+					<td>
+						<textarea <?php if (isset($value['args']))
+				echo $value['args'] . ' '; ?>
+				name="<?php echo esc_attr( $value['id'] ); ?>"
+				id="<?php echo esc_attr( $value['id'] ); ?>"
+				class="large-text" style="<?php echo esc_attr( $value['css'] ); ?>"><?php echo esc_textarea( ( get_option($value['id'])) ? stripslashes(get_option($value['id'])) : $value['std'] ); ?></textarea>
+						<br /><small><?php echo $value['desc'] ?></small>
+					</td>
+				</tr><?php
+			break;
+
+		case 'tabend':
+			?></table></div><?php
+			$counter = $counter + 1;
+			break;
+
+		case 'single_select_page' :
+
+			$args = array(
+				'name'        => $value['id'],
+				'id'          => $value['id'] . '" style="width: 200px;',
+				'sort_column' => 'menu_order',
+				'sort_order'  => 'ASC',
+				'selected'    => (int) get_option($value['id'])
+			);
+
+			if ( !empty($value['args']) ) $args = wp_parse_args($value['args'], $args);
+			?><tr class="single_select_page">
+				<th scope="row"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label></th>
+				<td>
+					<?php wp_dropdown_pages($args); ?>
+					<br /><small><?php echo $value['desc'] ?></small>
+				</td>
+			</tr><?php
+			break;
+			case 'single_select_country' :
+				$countries = jigoshop_countries::$countries;
+				$country_setting = (string) get_option($value['id']);
+				if (strstr($country_setting, ':')) :
+					$country = current(explode(':', $country_setting));
+					$state = end(explode(':', $country_setting));
+				else :
+					$country = $country_setting;
+					$state = '*';
+				endif;
+				?><tr class="multi_select_countries">
+					<th scope="row"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label></th>
+					<td>
+						<select id="<?php echo esc_attr( $value['id'] ); ?>" name="<?php echo esc_attr( $value['id'] ); ?>" title="Country" style="width: 150px;">
+						<?php
+							$show_all = ($value['id'] != 'jigoshop_default_country');
+							echo jigoshop_countries::country_dropdown_options($country, $state, false, $show_all);
+						?>
+						</select>
+					</td>
+				</tr><?php
+				if (!$show_all && jigoshop_countries::country_has_states($country) && $state == '*') jigoshop_countries::base_country_notice();
+			break;
+		case 'multi_select_countries' :
+			$countries = jigoshop_countries::$countries;
+			asort($countries);
+			$selections = (array) get_option($value['id']);
+			?><tr class="multi_select_countries">
+					<th scope="row"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label><?php echo $value['name'] ?></label></th>
+					<td>
+						<div class="multi_select_countries">
+							<ul><?php
+						if ($countries)
+							foreach ($countries as $key => $val) :
+							?><li><label>
+								<input type="checkbox"
+									   name="<?php echo esc_attr( $value['id'] ) . '[]'; ?>"
+									   value="<?php echo esc_attr( $key ); ?>"
+									   <?php if (in_array($key, $selections)) : ?>
+									   checked="checked"
+									   <?php endif; ?>
+								/>
+								<?php echo $val; ?>
+								</label></li><?php
+							endforeach;
+						  ?></ul>
+						</div>
+					</td>
+				</tr><?php
+				break;
+		case 'coupons' :
+			$coupons = new jigoshop_coupons();
+			$coupon_codes = $coupons->get_coupons();
+		?>
+			<thead><tr><th scope="col" colspan="2"><h3 class="title"><?php _e('Coupon Settings', 'jigoshop'); ?></h3></th></tr></thead>
+			<tr>
+				<td id="coupon_codes">
+					<table class="coupon_rows" cellspacing="0">
+						<tbody>
+				<?php $i = -1; foreach ($coupon_codes as $coupon) : $i++; ?>
+					<p><a href="#"><?php echo $coupon['code']; ?></a></p>
+				<?php endforeach; ?>
+							<?php
+							$i = -1;
+							if ($coupon_codes && is_array($coupon_codes) && sizeof($coupon_codes) > 0)
+								foreach ($coupon_codes as $coupon) : $i++; ?>
+								<p><a href="#" class="remove button" title="<?php _e('Delete this Coupon', 'jigoshop'); ?>">&times; <?php _e('Delete', 'jigoshop'); echo ' ' . $coupon['code']; ?></a></p>
+								<p><label for=""><?php _e('Code', 'jigoshop'); ?></label><input type="text" value="<?php echo esc_attr( $coupon['code'] ); ?>" id="coupon_code[<?php echo esc_attr( $i ); ?>]" name="coupon_code[<?php echo esc_attr( $i ); ?>]" title="<?php _e('Coupon Code', 'jigoshop'); ?>" placeholder="<?php _e('Coupon Code', 'jigoshop'); ?>" class="text" /></p>
+								<p><label for=""><?php _e('Type', 'jigoshop'); ?></label>
+									<select name="coupon_type[<?php echo esc_attr( $i ); ?>]" title="Coupon Type"><?php
+
+									$discount_types = array(
+										'fixed_cart'     => __('Cart Discount'     , 'jigoshop'),
+										'percent'        => __('Cart % Discount'   , 'jigoshop'),
+										'fixed_product'  => __('Product Discount'  , 'jigoshop'),
+										'percent_product'=> __('Product % Discount', 'jigoshop')
+									);
+
+									foreach ($discount_types as $type => $label) : ?>
+										<option value="<?php echo esc_attr( $type ); ?>" <?php echo ($coupon['type'] == $type) ? 'selected="selected"' : ''; ?>><?php echo esc_html( $label ); ?></option>
+									<?php endforeach; ?>
+									</select>
+								</p>
+								<p><label for=""><?php _e('Amount', 'jigoshop'); ?></label>
+										<input type="text"
+											   value="<?php echo esc_attr( $coupon['amount'] ); ?>"
+											   id="coupon_amount[<?php echo esc_attr( $i ); ?>]"
+											   name="coupon_amount[<?php echo esc_attr( $i ); ?>]"
+											   title="<?php _e('Coupon Amount', 'jigoshop'); ?>"
+											   placeholder="<?php _e('Amount', 'jigoshop'); ?>"
+											   class="text" />
+								</p>
+
+									<p><label for=""><?php _e('Usage Limit', 'jigoshop'); ?></label>
+										<input type="text"
+											   value="<?php echo esc_attr( !empty($coupon['usage_limit']) ? $coupon['usage_limit'] : '' ); ?>"
+											   id="usage_limit[<?php echo esc_attr( $i ); ?>]"
+											   name="usage_limit[<?php echo esc_attr( $i ); ?>]"
+											   title="<?php _e('Usage Limit', 'jigoshop'); ?>"
+											   placeholder="<?php _e('No Limit', 'jigoshop'); ?>"
+											   class="text" />
+										Times used: <?php echo !empty($coupon['usage']) ? $coupon['usage'] : '0'; ?>
+									</p>
+
+									<p><label for=""><?php _e('Products', 'jigoshop'); ?></label>
+										<select id="product_ids_<?php echo esc_attr( $i ); ?>" name="product_ids[<?php echo esc_attr( $i ); ?>][]" style="width:100px" class="ajax_chosen_select_products_and_variations" multiple="multiple" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>">
+											<?php
+												$product_ids = $coupon['products'];
+												if ($product_ids) {
+													foreach ($product_ids as $product_id) {
+														$title = get_the_title($product_id);
+														$sku   = get_post_meta($product_id, '_sku', true);
+														if (!$title) continue;
+
+														if (isset($sku) && $sku) $sku = ' (SKU: ' . $sku . ')';
+
+														echo '<option value="'.$product_id.'" selected="selected">'. $title . $sku .'</option>';
+													}
+												}
+											?>
+										</select>
+									</p>
+
+									<p><label for=""><?php _e('Exclude Products', 'jigoshop'); ?></label>
+										<select id="exclude_product_ids_<?php echo esc_attr( $i ); ?>" name="exclude_product_ids[<?php echo esc_attr( $i ); ?>][]" style="width:100px" class="ajax_chosen_select_products_and_variations" multiple="multiple" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>">
+											<?php
+												$exclude_product_ids = $coupon['exclude_products'];
+												if ($exclude_product_ids) {
+													foreach ($exclude_product_ids as $product_id) {
+														$title = get_the_title($product_id);
+														$sku   = get_post_meta($product_id, '_sku', true);
+														if (!$title) continue;
+
+														if (isset($sku) && $sku) $sku = ' (SKU: ' . $sku . ')';
+
+														echo '<option value="'.$product_id.'" selected="selected">'. $title . $sku .'</option>';
+													}
+												}
+											?>
+										</select>
+									</p>
+
+									<?php $categories = get_terms('product_cat', array('hide_empty' => false)); ?>
+									<p><label for=""><?php _e('Categories', 'jigoshop'); ?></label>
+										<select id="coupon_category_<?php echo esc_attr( $i ); ?>" name="coupon_category[<?php echo $i; ?>][]" class="chzn-select" data-placeholder="Categories to apply" multiple="multiple">
+										<?php foreach($categories as $category) : ?>
+											<?php $select_cat = !empty( $coupon['coupon_category'] ) && in_array( $category->term_id, $coupon['coupon_category'] ) ? 'selected' : ''; ?>
+											<option value="<?php echo $category->term_id; ?>" <?php echo $select_cat; ?> ><?php echo $category->name; ?></option>
+										<?php endforeach; ?>
+										</select>
+									</p>
+
+									<p><label for=""><?php _e('Exclude Categories', 'jigoshop'); ?></label>
+										<select id="exclude_categories_<?php echo $i; ?>" name="exclude_categories[<?php echo $i; ?>][]" class="chzn-select" data-placeholder="Categories to apply" multiple="multiple">
+										<?php foreach($categories as $category) : ?>
+											<?php $select_cat = !empty( $coupon['exclude_categories'] ) && in_array( $category->term_id, $coupon['exclude_categories'] ) ? 'selected' : ''; ?>
+											<option value="<?php echo $category->term_id; ?>" <?php echo $select_cat; ?> ><?php echo $category->name; ?></option>
+										<?php endforeach; ?>
+										</select>
+									</p>
+
+									<?php $coupon_date_from = $coupon['date_from']; ?>
+									<p><label for="coupon_date_from[<?php echo esc_attr( $i ); ?>]"><?php _e('From', 'jigoshop'); ?></label>
+										<input type="text"
+											   class="text date-pick"
+											   name="coupon_date_from[<?php echo esc_attr( $i ); ?>]"
+											   id="coupon_date_from[<?php echo esc_attr( $i ); ?>]"
+											   value="<?php if ($coupon_date_from) echo date('Y-m-d', $coupon_date_from); ?>"
+											   placeholder="<?php _e('yyyy-mm-dd', 'jigoshop'); ?>"
+										/>
+									</p>
+
+									<?php $coupon_date_to = $coupon['date_to']; ?>
+									<p><label for="coupon_date_to[<?php echo esc_attr( $i ); ?>]"><?php _e('To', 'jigoshop'); ?></label>
+										<input type="text"
+											   class="text date-pick"
+											   name="coupon_date_to[<?php echo esc_attr( $i ); ?>]"
+											   id="coupon_date_to[<?php echo esc_attr( $i ); ?>]"
+											   value="<?php if ($coupon_date_to) echo date('Y-m-d', $coupon_date_to); ?>"
+											   placeholder="<?php _e('yyyy-mm-dd', 'jigoshop'); ?>"
+										/>
+									</p>
+
+
+									<p><label for=""><?php _e('Alone', 'jigoshop'); ?></label>
+										<input type="checkbox" name="individual[<?php echo esc_attr( $i ); ?>]" id="individual_<?php echo esc_attr( $i ); ?>"
+									<?php if (isset($coupon['individual_use']) && $coupon['individual_use'] == 'yes') : ?>
+										checked="checked"
+									<?php endif; ?> />
+									</p>
+
+									<p><label for=""><?php _e('Free Shipping', 'jigoshop'); ?></label>
+										<input type="checkbox" name="coupon_free_shipping[<?php echo esc_attr( $i ); ?>]" id="coupon_free_shipping_<?php echo esc_attr( $i ); ?>"
+									<?php if (isset($coupon['coupon_free_shipping']) && $coupon['coupon_free_shipping'] == 'yes') : ?>
+										checked="checked"
+									<?php endif; ?> />
+									</p>
+								<tr class="coupon_row">
+
+								</tr>
+								<script type="text/javascript">
+									/* <![CDATA[ */
+									jQuery(function() {
+										jQuery("select#product_ids_<?php echo esc_attr( $i ); ?>").ajaxChosen({
+											method: 	'GET',
+											url: 		'<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>',
+											dataType: 	'json',
+											afterTypeDelay: 100,
+											data:		{
+												action: 		'jigoshop_json_search_products_and_variations',
+												security: 		'<?php echo wp_create_nonce("search-products"); ?>'
+											}
+										}, function (data) {
+
+											var terms = {};
+
+											jQuery.each(data, function (i, val) {
+												terms[i] = val;
+											});
+
+											return terms;
+										});
+										jQuery("select#exclude_product_ids_<?php echo esc_attr( $i ); ?>").ajaxChosen({
+											method: 	'GET',
+											url: 		'<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>',
+											dataType: 	'json',
+											afterTypeDelay: 100,
+											data:		{
+												action: 		'jigoshop_json_search_products_and_variations',
+												security: 		'<?php echo wp_create_nonce("search-products"); ?>'
+											}
+										}, function (data) {
+
+											var terms = {};
+
+											jQuery.each(data, function (i, val) {
+												terms[i] = val;
+											});
+
+											return terms;
+										});
+										jQuery('.date-pick').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
+									});
+									/* ]]> */
+								</script>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+					<p><a href="#" class="add button"><?php _e('+ Add Coupon', 'jigoshop'); ?></a></p>
+				</td>
+			</tr>
+			<script type="text/javascript">
+				/* <![CDATA[ */
+				jQuery(function() {
+					jQuery('#coupon_codes a.add').live('click', function(){
+						var size = jQuery('#coupon_codes table.coupon_rows tbody .coupon_row').size();
+						// Make sure tbody exists
+						var tbody_size = jQuery('#coupon_codes table.coupon_rows tbody').size();
+						if (tbody_size==0) jQuery('#coupon_codes table.coupon_rows').append('<tbody></tbody>');
+
+						// Add the row
+						jQuery('<tr class="coupon_row">\
+							<td><a href="#" class="remove button" title="<?php __('Delete this Coupon', 'jigoshop'); ?>">&times;</a></td>\
+							<td><input type="text" value="" name="coupon_code[' + size + ']" title="<?php _e('Coupon Code', 'jigoshop'); ?>" placeholder="<?php _e('Coupon Code', 'jigoshop'); ?>" class="text" /></td>\
+							<td><select name="coupon_type[' + size + ']" title="Coupon Type">\
+								<option value="fixed_cart"><?php _e('Cart Discount', 'jigoshop'); ?></option>\
+								<option value="percent"><?php _e('Cart % Discount', 'jigoshop'); ?></option>\
+								<option value="fixed_product"><?php _e('Product Discount', 'jigoshop'); ?></option>\
+								<option value="percent_product"><?php _e('Product % Discount', 'jigoshop'); ?></option>\
+							</select></td>\
+							<td><input type="text" value="" name="coupon_amount[' + size + ']" title="<?php _e('Coupon Amount', 'jigoshop'); ?>" placeholder="<?php _e('Amount', 'jigoshop'); ?>" class="text" /></td>\
+							<td><input type="text" value="" name="usage_limit[' + size + ']" title="<?php _e('Usage Limit', 'jigoshop'); ?>" placeholder="<?php _e('No Limit', 'jigoshop'); ?>" class="text" /></td>\
+							<td><input type="text" value="" name="product_ids[' + size + ']" \
+								placeholder="<?php _e('1, 2, 3,', 'jigoshop'); ?>" class="text" /></td>\
+							<td><select name="coupon_category[' + size + ']"><option value="0">All</option> \
+							<?php foreach($categories as $category) :
+								echo '<option value="' . $category->term_id . '">' . $category->name . '</option>';
+							endforeach; ?>
+							<td><label for="coupon_date_from[' + size + ']"></label>\
+								<input type="text" class="text date-pick" name="coupon_date_from[' + size + ']" \
+								id="coupon_date_from[' + size + ']" value="" \
+								placeholder="<?php _e('yyyy-mm-dd', 'jigoshop'); ?>" /></td>\
+							<td><label for="coupon_date_to[' + size + ']"></label>\
+								<input type="text" class="text date-pick" name="coupon_date_to[' + size + ']" \
+								id="coupon_date_to[' + size + ']" value="" \
+								placeholder="<?php _e('yyyy-mm-dd', 'jigoshop'); ?>" /></td>\
+							<td><input type="checkbox" name="individual[' + size + ']" /></td>\
+							<td><input type="checkbox" name="coupon_free_shipping[' + size + ']" /></td>').appendTo('#coupon_codes table.coupon_rows tbody');
+
+									jQuery(function() {
+										jQuery('.date-pick').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
+									});
+
+										return false;
+									});
+									jQuery('#coupon_codes a.remove').live('click', function(){
+										var answer = confirm("<?php _e('Delete this coupon?', 'jigoshop'); ?>")
+										if (answer) {
+											jQuery('input', jQuery(this).parent().parent()).val('');
+											jQuery(this).parent().parent().hide();
+										}
+										return false;
+									});
+								});
+								/* ]]> */
+			</script>
+						<?php
+						break;
+						case 'tax_rates' :
+							$_tax = new jigoshop_tax();
+							$tax_classes = $_tax->get_tax_classes();
+							$tax_rates = get_option('jigoshop_tax_rates');
+							$applied_all_states = array();
+							?><tr>
+					<th><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label><?php echo $value['name'] ?></label></th>
+					<td id="tax_rates">
+						<div class="taxrows">
+			<?php
+			$i = -1;
+			if ($tax_rates && is_array($tax_rates) && sizeof($tax_rates) > 0) :
+
+				function array_find($needle,$haystack){
+					foreach($haystack as $key => $val):
+						if( $needle == array( "label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'] ) ):
+							return $key;
+						endif;
+					endforeach;
+					return false;
+				}
+
+				function array_compare($tax_rates) {
+					$after = array();
+					foreach($tax_rates as $key => $val):
+						$first_two = array("label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'] );
+						$found = array_find($first_two,$after);
+						if($found!==false):
+							$combined  = $after[$found]["state"];
+							$combined2 = $after[$found]["country"];
+							$combined = !is_array($combined) ? array($combined) : $combined;
+							$combined2 = !is_array($combined2) ? array($combined2) : $combined2;
+							$after[$found] = array_merge($first_two,array( "state" => array_merge($combined,array($val['state'])), "country" => array_merge($combined2,array($val['country'])) ));
+						else:
+							$after = array_merge($after,array(array_merge($first_two,array("state" => $val['state'], "country" => $val['country']))));
+						endif;
+					endforeach;
+					return $after;
+				}
+
+				$tax_rates = array_compare($tax_rates);
+
+				foreach ($tax_rates as $rate) :
+					if ( $rate['is_all_states'] && in_array(get_all_states_key($rate), $applied_all_states) )
+						continue;
+
+					$i++;// increment counter after check for all states having been applied
+
+					echo '<p class="taxrow">
+					<select name="tax_classes[' . esc_attr( $i ) . ']" title="Tax Classes">
+						<option value="*">' . __('Standard Rate', 'jigoshop') . '</option>';
+
+					if ($tax_classes)
+						foreach ($tax_classes as $class) :
+							echo '<option value="' . sanitize_title($class) . '"';
+
+							if ($rate['class'] == sanitize_title($class))
+								echo 'selected="selected"';
+
+							echo '>' . $class . '</option>';
+						endforeach;
+
+					echo '</select>
+
+					<input type="text"
+						   class="text" value="' . esc_attr( $rate['label']  ) . '"
+						   name="tax_label[' . esc_attr( $i ) . ']"
+						   title="' . __('Online Label', 'jigoshop') . '"
+						   placeholder="' . __('Online Label', 'jigoshop') . '"
+						   maxlength="15" />';
+
+					echo '<select name="tax_country[' . esc_attr( $i ) . '][]" title="Country" multiple="multiple">';
+
+					if ($rate['is_all_states']) :
+						if (is_array($applied_all_states) && !in_array(get_all_states_key($rate), $applied_all_states)) :
+							$applied_all_states[] = get_all_states_key($rate);
+							jigoshop_countries::country_dropdown_options($rate['country'], '*'); //all-states
+						else :
+							continue;
+						endif;
+					else :
+						jigoshop_countries::country_dropdown_options($rate['country'], $rate['state']);
+					endif;
+
+					echo '</select>
+
+					<input type="text"
+						   class="text"
+						   value="' . esc_attr( $rate['rate']  ) . '"
+						   name="tax_rate[' . esc_attr( $i ) . ']"
+						   title="' . __('Rate', 'jigoshop') . '"
+						   placeholder="' . __('Rate', 'jigoshop') . '"
+						   maxlength="8" />%
+
+					<label><input type="checkbox" name="tax_shipping[' . esc_attr( $i ) . ']" ';
+
+					if (isset($rate['shipping']) && $rate['shipping'] == 'yes')
+						echo 'checked="checked"';
+
+					echo ' /> ' . __('Apply to shipping', 'jigoshop') . '</label>
+
+					<label><input type="checkbox" name="tax_compound[' . esc_attr( $i ) . ']" ';
+
+					if (isset($rate['compound']) && $rate['compound'] == 'yes')
+						echo 'checked="checked"';
+
+					echo ' /> ' . __('Compound', 'jigoshop') . '</label>
+
+					<a href="#" class="remove button">&times;</a></p>';
+				endforeach;
+			endif;
+			?>
+						</div>
+						<p><a href="#" class="add button"><?php _e('+ Add Tax Rule', 'jigoshop'); ?></a></p>
+					</td>
+				</tr>
+				<script type="text/javascript">
+					/* <![CDATA[ */
+					jQuery(function() {
+						jQuery('#tax_rates a.add').live('click', function(){
+							var size = jQuery('.taxrows .taxrow').size();
+
+							// Add the row
+							jQuery('<p class="taxrow"> \
+								<select name="tax_classes[' + size + ']" title="Tax Classes"> \
+									<option value="*"><?php _e('Standard Rate', 'jigoshop'); ?></option><?php
+			$tax_classes = $_tax->get_tax_classes();
+			if ($tax_classes)
+				foreach ($tax_classes as $class) :
+					echo '<option value="' . sanitize_title($class) . '">' . $class . '</option>';
+				endforeach;
+			?></select><input type="text" class="text" name="tax_label[' + size + ']" title="<?php _e('Online Label', 'jigoshop'); ?>" placeholder="<?php _e('Online Label', 'jigoshop'); ?>" maxlength="15" />\
+									</select><select name="tax_country[' + size + '][]" title="Country" multiple="multiple"><?php
+			jigoshop_countries::country_dropdown_options('', '', true);
+			?></select><input type="text" class="text" name="tax_rate[' + size + ']" title="<?php _e('Rate', 'jigoshop'); ?>" placeholder="<?php _e('Rate', 'jigoshop'); ?>" maxlength="8" />%\
+									<label><input type="checkbox" name="tax_shipping[' + size + ']" /> <?php _e('Apply to shipping', 'jigoshop'); ?></label>\
+									<label><input type="checkbox" name="tax_compound[' + size + ']" /> <?php _e('Compound', 'jigoshop'); ?></label><a href="#" class="remove button">&times;</a>\
+							</p>').appendTo('#tax_rates div.taxrows');
+												return false;
+											});
+											jQuery('#tax_rates a.remove').live('click', function(){
+												var answer = confirm("<?php _e('Delete this rule?', 'jigoshop'); ?>");
+												if (answer) {
+													jQuery('input', jQuery(this).parent()).val('');
+													jQuery(this).parent().hide();
+												}
+												return false;
+											});
+										});
+										/* ]]> */
+				</script>
+			<?php
+			break;
+		case "shipping_options" :
+
+			foreach (jigoshop_shipping::get_all_methods() as $method) :
+
+				$method->admin_options();
+
+			endforeach;
+
+			break;
+		case "gateway_options" :
+
+			foreach (jigoshop_payment_gateways::payment_gateways() as $gateway) :
+
+				$gateway->admin_options();
+
+			endforeach;
+
+			break;
+	endswitch;
+	endforeach;
 }
 
 /**
