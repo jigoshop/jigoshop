@@ -135,16 +135,6 @@ function jigoshop_update_options() {
 
 add_action('load-jigoshop_page_jigoshop_settings', 'jigoshop_update_options');
 
-/* Remove duplicates from multi dimensional arrays */
-function super_unique($array) {
-	$result = array_map("unserialize", array_unique(array_map("serialize", $array)));
-	foreach ($result as $key => $value) {
-		if ( is_array($value) ) $result[$key] = super_unique($value);
-	}
-
-	return $result;
-}
-
 function jigoshop_update_taxes() {
 
 	$taxFields = array(
@@ -242,7 +232,8 @@ function jigoshop_update_taxes() {
 
 	endfor;
 
-	//$tax_rates = super_unique($tax_rates);
+	/* Remove duplicates. */
+	$tax_rates = array_values(array_unique($tax_rates, SORT_REGULAR));
 	//usort($tax_rates, "csort_tax_rates");
 	update_option('jigoshop_tax_rates', $tax_rates);
 
