@@ -164,7 +164,7 @@ function jigoshop_cart($atts) {
                         <?php $coupons = jigoshop_coupons::get_coupons(); if(!empty($coupons)): ?>
                             <div class="coupon">
                                 <label for="coupon_code"><?php _e('Coupon', 'jigoshop'); ?>:</label> <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" />
-                                <input type="submit" class="button" name="apply_coupon" value="<?php _e('Apply Coupon', 'jigoshop'); ?>" />
+                                <input type="submit" class="button" name="apply_coupon" value="<?php _e('Applyon', 'jigoshop'); ?>" />
                             </div>
                         <?php endif; ?>
 
@@ -178,7 +178,7 @@ function jigoshop_cart($atts) {
                             <div>
                                 <span class="applied-coupons-label"><?php _e('Applied Coupons: ', 'jigoshop'); ?></span>
 								<?php foreach ( jigoshop_cart::$applied_coupons as $code ) : ?>
-                                <a href="?unset_coupon=<?php echo $code; ?>" id="<?php echo $code; ?>" class="applied-coupons-values coup"><?php echo $code; ?>
+                                <a href="?unset_coupon=<?php echo $code; ?>" id="<?php echo $code; ?>" class="applied-coupons-values"><?php echo $code; ?>
 									<span class="close">&times;</span>
 								</a>
 								<?php endforeach; ?>
@@ -234,57 +234,6 @@ function jigoshop_cart($atts) {
                                     <th class="cart-row-discount-title"><?php _e('Discount', 'jigoshop'); ?></th>
 									<td class="cart-row-discount">-<?php echo jigoshop_cart::get_total_discount(); ?></td>
                                 </tr>
-<style>
-.applied-coupons-values {
-	text-decoration:none !important;
-	font-size:13px;
-	font-weight:normal;
-}
-.coup {
-  -webkit-border-radius: 3px;
-  -moz-border-radius   : 3px;
-  border-radius        : 3px;
-  -moz-background-clip   : padding;
-  -webkit-background-clip: padding-box;
-  background-clip        : padding-box;
-  background-color: #e4e4e4;
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f4f4f4', endColorstr='#eeeeee', GradientType=0 );
-  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(20%, #f4f4f4), color-stop(50%, #f0f0f0), color-stop(52%, #e8e8e8), color-stop(100%, #eeeeee));
-  background-image: -webkit-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
-  background-image: -moz-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
-  background-image: -o-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
-  background-image: -ms-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
-  background-image: linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
-  -webkit-box-shadow: 0 0 2px #ffffff inset, 0 1px 0 rgba(0,0,0,0.05);
-  -moz-box-shadow   : 0 0 2px #ffffff inset, 0 1px 0 rgba(0,0,0,0.05);
-  box-shadow        : 0 0 2px #ffffff inset, 0 1px 0 rgba(0,0,0,0.05);
-  color: #333;
-  border: 1px solid #aaaaaa;
-  line-height: 13px;
-  padding: 3px 20px 3px 5px;
-  margin: 3px 0 3px 5px;
-  position: relative;
-}
-.cart-discount-code {
-	font-size: 12px;
-	padding-right:5px;
-	color: #888;
-	float:right;
-}
-.close {
-	display: block;
-	position: absolute;
-	right: 3px;
-	top: 2px;
-	font-size: 18px;
-	font-weight: bold;
-	line-height: 18px;
-	color: black;
-	text-shadow: 0 1px 0 white;
-	opacity: 0.2;
-	filter: alpha(opacity=20);
-}
-</style>
                             <?php
                             endif;
                             if (get_option('jigoshop_display_totals_tax') == 'excluding'
