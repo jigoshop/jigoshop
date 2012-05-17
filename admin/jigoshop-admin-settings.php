@@ -562,67 +562,53 @@ function jigoshop_admin_fields($options) {
 				<tr>
 					<td id="coupon_codes">
 						<table class="coupon_rows" cellspacing="0">
-							<thead>
-								<tr>
-									<th></th>
-									<th><?php _e('Code'              , 'jigoshop'); ?></th>
-									<th><?php _e('Type'              , 'jigoshop'); ?></th>
-									<th><?php _e('Amount'            , 'jigoshop'); ?></th>
-									<th><?php _e('Usage Limit'       , 'jigoshop'); ?></th>
-									<th><?php _e('Products'          , 'jigoshop'); ?></th>
-									<th><?php _e('Exclude Products'  , 'jigoshop'); ?></th>
-									<th><?php _e('Categories'        , 'jigoshop'); ?></th>
-									<th><?php _e('Exclude Categories', 'jigoshop'); ?></th>
-									<th><?php _e('From'              , 'jigoshop'); ?></th>
-									<th><?php _e('To'                , 'jigoshop'); ?></th>
-									<th><?php _e('Alone'             , 'jigoshop'); ?></th>
-									<th><?php _e('Free Shipping'     , 'jigoshop'); ?></th>
-								</tr>
-							</thead>
 							<tbody>
+					<?php $i = -1; foreach ($coupon_codes as $coupon) : $i++; ?>
+						<p><a href="#"><?php echo $coupon['code']; ?></a></p>
+					<?php endforeach; ?>
 								<?php
 								$i = -1;
 								if ($coupon_codes && is_array($coupon_codes) && sizeof($coupon_codes) > 0)
-									foreach ($coupon_codes as $coupon) : $i++;
-									?><tr class="coupon_row">
-										  <td><a href="#" class="remove button" title="' . __('Delete this Coupon', 'jigoshop') . '">&times;</a></td>
-										  <td><input type="text" value="<?php echo esc_attr( $coupon['code'] ); ?>" name="coupon_code[<?php echo esc_attr( $i ); ?>]" title="<?php _e('Coupon Code', 'jigoshop'); ?>" placeholder="<?php _e('Coupon Code', 'jigoshop'); ?>" class="text" /></td>
-										  <td>
-											<select name="coupon_type[<?php echo esc_attr( $i ); ?>]" title="Coupon Type"><?php
+									foreach ($coupon_codes as $coupon) : $i++; ?>
+									<p><a href="#" class="remove button" title="<?php _e('Delete this Coupon', 'jigoshop'); ?>">&times; <?php _e('Delete', 'jigoshop'); echo ' ' . $coupon['code']; ?></a></p>
+									<p><label for=""><?php _e('Code', 'jigoshop'); ?></label><input type="text" value="<?php echo esc_attr( $coupon['code'] ); ?>" id="coupon_code[<?php echo esc_attr( $i ); ?>]" name="coupon_code[<?php echo esc_attr( $i ); ?>]" title="<?php _e('Coupon Code', 'jigoshop'); ?>" placeholder="<?php _e('Coupon Code', 'jigoshop'); ?>" class="text" /></p>
+									<p><label for=""><?php _e('Type', 'jigoshop'); ?></label>
+										<select name="coupon_type[<?php echo esc_attr( $i ); ?>]" title="Coupon Type"><?php
 
-											$discount_types = array(
-												'fixed_cart'     => __('Cart Discount'     , 'jigoshop'),
-												'percent'        => __('Cart % Discount'   , 'jigoshop'),
-												'fixed_product'  => __('Product Discount'  , 'jigoshop'),
-												'percent_product'=> __('Product % Discount', 'jigoshop')
-											);
+										$discount_types = array(
+											'fixed_cart'     => __('Cart Discount'     , 'jigoshop'),
+											'percent'        => __('Cart % Discount'   , 'jigoshop'),
+											'fixed_product'  => __('Product Discount'  , 'jigoshop'),
+											'percent_product'=> __('Product % Discount', 'jigoshop')
+										);
 
-											foreach ($discount_types as $type => $label) : ?>
-												<option value="<?php echo esc_attr( $type ); ?>" <?php echo ($coupon['type'] == $type) ? 'selected="selected"' : ''; ?>><?php echo esc_html( $label ); ?></option>
-											<?php endforeach; ?>
-											</select>
-										  </td>
-
-										<td>
+										foreach ($discount_types as $type => $label) : ?>
+											<option value="<?php echo esc_attr( $type ); ?>" <?php echo ($coupon['type'] == $type) ? 'selected="selected"' : ''; ?>><?php echo esc_html( $label ); ?></option>
+										<?php endforeach; ?>
+										</select>
+									</p>
+									<p><label for=""><?php _e('Amount', 'jigoshop'); ?></label>
 											<input type="text"
 												   value="<?php echo esc_attr( $coupon['amount'] ); ?>"
+												   id="coupon_amount[<?php echo esc_attr( $i ); ?>]"
 												   name="coupon_amount[<?php echo esc_attr( $i ); ?>]"
 												   title="<?php _e('Coupon Amount', 'jigoshop'); ?>"
 												   placeholder="<?php _e('Amount', 'jigoshop'); ?>"
 												   class="text" />
-										</td>
+									</p>
 
-										<td>
+										<p><label for=""><?php _e('Usage Limit', 'jigoshop'); ?></label>
 											<input type="text"
 												   value="<?php echo esc_attr( !empty($coupon['usage_limit']) ? $coupon['usage_limit'] : '' ); ?>"
+												   id="usage_limit[<?php echo esc_attr( $i ); ?>]"
 												   name="usage_limit[<?php echo esc_attr( $i ); ?>]"
 												   title="<?php _e('Usage Limit', 'jigoshop'); ?>"
 												   placeholder="<?php _e('No Limit', 'jigoshop'); ?>"
 												   class="text" />
 											Times used: <?php echo !empty($coupon['usage']) ? $coupon['usage'] : '0'; ?>
-										</td>
+										</p>
 
-										<td>
+										<p><label for=""><?php _e('Products', 'jigoshop'); ?></label>
 											<select id="product_ids_<?php echo esc_attr( $i ); ?>" name="product_ids[<?php echo esc_attr( $i ); ?>][]" style="width:100px" class="ajax_chosen_select_products_and_variations" multiple="multiple" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>">
 												<?php
 													$product_ids = $coupon['products'];
@@ -639,9 +625,9 @@ function jigoshop_admin_fields($options) {
 													}
 												?>
 											</select>
-										</td>
+										</p>
 
-										<td>
+										<p><label for=""><?php _e('Exclude Products', 'jigoshop'); ?></label>
 											<select id="exclude_product_ids_<?php echo esc_attr( $i ); ?>" name="exclude_product_ids[<?php echo esc_attr( $i ); ?>][]" style="width:100px" class="ajax_chosen_select_products_and_variations" multiple="multiple" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>">
 												<?php
 													$exclude_product_ids = $coupon['exclude_products'];
@@ -658,29 +644,29 @@ function jigoshop_admin_fields($options) {
 													}
 												?>
 											</select>
-										</td>
+										</p>
 
 										<?php $categories = get_terms('product_cat', array('hide_empty' => false)); ?>
-										<td>
-											<select name="coupon_category[<?php echo $i; ?>][]" class="chzn-select" data-placeholder="Categories to apply" multiple="multiple">
+										<p><label for=""><?php _e('Categories', 'jigoshop'); ?></label>
+											<select id="coupon_category_<?php echo esc_attr( $i ); ?>" name="coupon_category[<?php echo $i; ?>][]" class="chzn-select" data-placeholder="Categories to apply" multiple="multiple">
 											<?php foreach($categories as $category) : ?>
 												<?php $select_cat = !empty( $coupon['coupon_category'] ) && in_array( $category->term_id, $coupon['coupon_category'] ) ? 'selected' : ''; ?>
 												<option value="<?php echo $category->term_id; ?>" <?php echo $select_cat; ?> ><?php echo $category->name; ?></option>
 											<?php endforeach; ?>
 											</select>
-										</td>
+										</p>
 
-										<td>
-											<select name="exclude_categories[<?php echo $i; ?>][]" class="chzn-select" data-placeholder="Categories to apply" multiple="multiple">
+										<p><label for=""><?php _e('Exclude Categories', 'jigoshop'); ?></label>
+											<select id="exclude_categories_<?php echo $i; ?>" name="exclude_categories[<?php echo $i; ?>][]" class="chzn-select" data-placeholder="Categories to apply" multiple="multiple">
 											<?php foreach($categories as $category) : ?>
 												<?php $select_cat = !empty( $coupon['exclude_categories'] ) && in_array( $category->term_id, $coupon['exclude_categories'] ) ? 'selected' : ''; ?>
 												<option value="<?php echo $category->term_id; ?>" <?php echo $select_cat; ?> ><?php echo $category->name; ?></option>
 											<?php endforeach; ?>
 											</select>
-										</td>
+										</p>
 
 										<?php $coupon_date_from = $coupon['date_from']; ?>
-										<td><label for="coupon_date_from[<?php echo esc_attr( $i ); ?>]"></label>
+										<p><label for="coupon_date_from[<?php echo esc_attr( $i ); ?>]"><?php _e('From', 'jigoshop'); ?></label>
 											<input type="text"
 												   class="text date-pick"
 												   name="coupon_date_from[<?php echo esc_attr( $i ); ?>]"
@@ -688,10 +674,10 @@ function jigoshop_admin_fields($options) {
 												   value="<?php if ($coupon_date_from) echo date('Y-m-d', $coupon_date_from); ?>"
 												   placeholder="<?php _e('yyyy-mm-dd', 'jigoshop'); ?>"
 											/>
-										</td>
+										</p>
 
 										<?php $coupon_date_to = $coupon['date_to']; ?>
-										<td><label for="coupon_date_to[<?php echo esc_attr( $i ); ?>]"></label>
+										<p><label for="coupon_date_to[<?php echo esc_attr( $i ); ?>]"><?php _e('To', 'jigoshop'); ?></label>
 											<input type="text"
 												   class="text date-pick"
 												   name="coupon_date_to[<?php echo esc_attr( $i ); ?>]"
@@ -699,18 +685,24 @@ function jigoshop_admin_fields($options) {
 												   value="<?php if ($coupon_date_to) echo date('Y-m-d', $coupon_date_to); ?>"
 												   placeholder="<?php _e('yyyy-mm-dd', 'jigoshop'); ?>"
 											/>
-										</td>
+										</p>
 
-										<td><input type="checkbox" name="individual[<?php echo esc_attr( $i ); ?>]"
+
+										<p><label for=""><?php _e('Alone', 'jigoshop'); ?></label>
+											<input type="checkbox" name="individual[<?php echo esc_attr( $i ); ?>]" id="individual_<?php echo esc_attr( $i ); ?>"
 										<?php if (isset($coupon['individual_use']) && $coupon['individual_use'] == 'yes') : ?>
 											checked="checked"
 										<?php endif; ?> />
-										</td>
-										<td><input type="checkbox" name="coupon_free_shipping[<?php echo esc_attr( $i ); ?>]"
+										</p>
+
+										<p><label for=""><?php _e('Free Shipping', 'jigoshop'); ?></label>
+											<input type="checkbox" name="coupon_free_shipping[<?php echo esc_attr( $i ); ?>]" id="coupon_free_shipping_<?php echo esc_attr( $i ); ?>"
 										<?php if (isset($coupon['coupon_free_shipping']) && $coupon['coupon_free_shipping'] == 'yes') : ?>
 											checked="checked"
 										<?php endif; ?> />
-										</td>
+										</p>
+									<tr class="coupon_row">
+
 									</tr>
 									<script type="text/javascript">
 										/* <![CDATA[ */
