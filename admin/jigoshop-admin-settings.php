@@ -1052,7 +1052,7 @@ function jigoshop_admin_option_display($options) {
 						</table>\
 						';
 						// Add the row
-						jQuery(new_coupon).appendTo('.coupon-table:last');
+						jQuery('.coupon-table:last').after(new_coupon);
 
 									jQuery(function() {
 										jQuery("select#product_ids_"+size).ajaxChosen({
