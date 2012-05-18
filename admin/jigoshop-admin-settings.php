@@ -639,7 +639,7 @@ function jigoshop_admin_option_display($options) {
 			$i = -1;
 			if ($coupon_codes && is_array($coupon_codes) && sizeof($coupon_codes) > 0)
 				foreach ($coupon_codes as $coupon) : $i++; ?>
-
+				<table class="coupon-table form-table" id="coupons_table_<?php echo $i; ?>">
 				<thead>
 				<tr>
 					<th scope="col" colspan="2">
@@ -669,7 +669,7 @@ function jigoshop_admin_option_display($options) {
 						array(
 							'name'           => __('Code','jigoshop'),
 							'desc'           => '',
-							'tip'            => __('The email used to send all Jigoshop related emails, such as order confirmations and notices.','jigoshop'),
+							'tip'            => __('The coupon code a customer enters on the cart or checkout page.','jigoshop'),
 							'id'             => 'coupon_code[' . esc_attr( $i ) . ']',
 							'css'            => 'width:150px;',
 							'type'           => 'text',
@@ -678,7 +678,7 @@ function jigoshop_admin_option_display($options) {
 						array(
 							'name'           => __('Type','jigoshop'),
 							'desc'           => '',
-							'tip'            => __('The email used to send all Jigoshop related emails, such as order confirmations and notices.','jigoshop'),
+							'tip'            => __('Cart - Applies to whole cart<br/>Product - Applies to individual products only. You must specify individual products.','jigoshop'),
 							'id'             => 'coupon_type[' . esc_attr( $i ) . ']',
 							'css'            => 'width:150px;',
 							'type'           => 'select',
@@ -693,7 +693,7 @@ function jigoshop_admin_option_display($options) {
 						array(
 							'name'           => __('Amount','jigoshop'),
 							'desc'           => '',
-							'tip'            => __('The email used to send all Jigoshop related emails, such as order confirmations and notices.','jigoshop'),
+							'tip'            => __('Amount this coupon is worth. If it is a percentange, just include the number without the percentage sign.','jigoshop'),
 							'id'             => 'coupon_amount[' . esc_attr( $i ) . ']',
 							'css'            => 'width:150px;',
 							'type'           => 'text',
@@ -702,7 +702,7 @@ function jigoshop_admin_option_display($options) {
 						array(
 							'name'           => __('Usage Limit','jigoshop'),
 							'desc'           => '',
-							'tip'            => __('The email used to send all Jigoshop related emails, such as order confirmations and notices.','jigoshop'),
+							'tip'            => __('Control how many times this coupon may be used.','jigoshop'),
 							'id'             => 'usage_limit[' . esc_attr( $i ) . ']',
 							'css'            => 'width:150px;',
 							'type'           => 'text',
@@ -716,7 +716,7 @@ function jigoshop_admin_option_display($options) {
 
 					<tr>
 						<th scope="row">
-							<a href="#" tip="hey" class="tips" tabindex="99"></a>
+							<a href="#" tip="<?php _e('Control which products this coupon can apply to.', 'jigoshop'); ?>" class="tips" tabindex="99"></a>
 							<label for="product_ids_<?php echo esc_attr( $i ); ?>"><?php _e('Products', 'jigoshop'); ?></label>
 						</th>
 
@@ -741,11 +741,8 @@ function jigoshop_admin_option_display($options) {
 					  </tr>
 
 					<tr>
-						<th scope="row">
-							<a href="#" tip="hey" class="tips" tabindex="99"></a>
-						</th>
-
-						<td>
+						<th scope="row"></th>
+						<td style="padding-top:0px;">
 							<select id="exclude_product_ids_<?php echo esc_attr( $i ); ?>" style="width:200px;" name="exclude_product_ids[<?php echo esc_attr( $i ); ?>][]" style="width:100px" class="ajax_chosen_select_products_and_variations" multiple="multiple" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>">
 								<?php
 									$exclude_product_ids = $coupon['exclude_products'];
@@ -767,7 +764,7 @@ function jigoshop_admin_option_display($options) {
 
 					<tr>
 						<th scope="row">
-							<a href="#" tip="hey" class="tips" tabindex="99"></a>
+							<a href="#" tip="<?php _e('Control which categories this coupon can apply to.', 'jigoshop'); ?>" class="tips" tabindex="99"></a>
 							<label for="coupon_category_<?php echo esc_attr( $i ); ?>"><?php _e('Categories', 'jigoshop'); ?></label>
 						</th>
 
@@ -783,11 +780,8 @@ function jigoshop_admin_option_display($options) {
 					  </tr>
 
 					<tr>
-						<th scope="row">
-							<a href="#" tip="hey" class="tips" tabindex="99"></a>
-						</th>
-
-						<td>
+						<th scope="row"></th>
+						<td style="padding-top:0px;">
 						<select id="exclude_categories_<?php echo $i; ?>" style="width:200px;" name="exclude_categories[<?php echo $i; ?>][]" class="chzn-select" data-placeholder="Categories to apply" multiple="multiple">
 						<?php foreach($categories as $category) : ?>
 							<?php $select_cat = !empty( $coupon['exclude_categories'] ) && in_array( $category->term_id, $coupon['exclude_categories'] ) ? 'selected' : ''; ?>
@@ -805,7 +799,7 @@ function jigoshop_admin_option_display($options) {
 						array(
 							'name'           => __('Dates allowed','jigoshop'),
 							'desc'           => __('From','jigoshop'),
-							'tip'            => __('The email used to send all Jigoshop related emails, such as order confirmations and notices.','jigoshop'),
+							'tip'            => __('Choose between which dates this coupon is enabled.','jigoshop'),
 							'id'             => 'coupon_date_from[' . esc_attr( $i ) . ']',
 							'css'            => 'width:150px;',
 							'type'           => 'text',
@@ -814,7 +808,6 @@ function jigoshop_admin_option_display($options) {
 						),
 						array(
 							'desc'           => __('To','jigoshop'),
-							'tip'            => __('The email used to send all Jigoshop related emails, such as order confirmations and notices.','jigoshop'),
 							'id'             => 'coupon_date_to[' . esc_attr( $i ) . ']',
 							'css'            => 'width:150px;',
 							'type'           => 'text',
@@ -824,14 +817,14 @@ function jigoshop_admin_option_display($options) {
 						array(
 							'name'           => __('Misc. settings','jigoshop'),
 							'desc'           => 'Alone?',
-							'tip'            => __('The email used to send all Jigoshop related emails, such as order confirmations and notices.','jigoshop'),
+							'tip'            => __('Prevent other coupons from being used while this one is applied to a cart.','jigoshop'),
 							'id'             => 'individual[' . esc_attr( $i ) . ']',
 							'type'           => 'checkbox',
 							'std'            => (isset($coupon['individual_use']) && $coupon['individual_use'] == 'yes') ? 'yes' : 'no'
 						),
 						array(
 							'desc'           => 'Free Shipping',
-							'tip'            => __('The email used to send all Jigoshop related emails, such as order confirmations and notices.','jigoshop'),
+							'tip'            => __('Show the Free Shipping method on checkout with this enabled.','jigoshop'),
 							'id'             => 'coupon_free_shipping[' . esc_attr( $i ) . ']',
 							'type'           => 'checkbox',
 							'std'            => (isset($coupon['coupon_free_shipping']) && $coupon['coupon_free_shipping'] == 'yes') ? 'yes' : 'no'
@@ -841,6 +834,7 @@ function jigoshop_admin_option_display($options) {
 
 					jigoshop_admin_option_display($options2); ?>
 					</tbody>
+					</table>
 					<script type="text/javascript">
 						/* <![CDATA[ */
 						jQuery(function() {
@@ -900,8 +894,13 @@ function jigoshop_admin_option_display($options) {
 			<script type="text/javascript">
 				/* <![CDATA[ */
 				jQuery(function() {
-					jQuery('#coupon_codes a.add').live('click', function(){
-						var size = jQuery('#coupon_codes table.coupon_rows tbody .coupon_row').size();
+					jQuery('a.add').live('click', function(e){
+						e.preventDefault();
+						var size = jQuery('.couponDisplay').size()-1;
+
+
+						/* jQuery('#coupons_rows_0').clone().appendTo('#coupons_table_3').show(); */
+						return;
 						// Make sure tbody exists
 						var tbody_size = jQuery('#coupon_codes table.coupon_rows tbody').size();
 						if (tbody_size==0) jQuery('#coupon_codes table.coupon_rows').append('<tbody></tbody>');
