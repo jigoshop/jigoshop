@@ -251,7 +251,7 @@ function jigoshop_update_coupons() {
 		'usage_limit'         => '',
 		'product_ids'         => '',
 		'exclude_product_ids' => '',
-		'exclude_categories' => '',
+		'exclude_categories'  => '',
 		'coupon_category'     => '',
 		'coupon_date_from'    => '',
 		'coupon_date_to'      => '',
@@ -260,6 +260,7 @@ function jigoshop_update_coupons() {
 	);
 
 	$coupons = array();
+
 
 	/* Save each array key to a variable */
 	foreach ($couponFields as $name => $val)
@@ -274,7 +275,7 @@ function jigoshop_update_coupons() {
 		$amount              = jigowatt_clean($coupon_amount[$i]);
 		$code                = jigowatt_clean($coupon_code[$i]);
 		$type                = jigowatt_clean($coupon_type[$i]);
-		$usage_limit         = jigowatt_clean($usage_limit[$i]);
+		$usage_limit         = ($usage_limit[$i]);
 		$from_date           = !empty($coupon_date_from[$i])           ? strtotime($coupon_date_from[$i])                    : 0;
 		$free_ship           = !empty($coupon_free_shipping[$i])       ? 'yes'                                               : 'no';
 		$individual_use      = !empty($individual[$i])                 ? 'yes'                                               : 'no';
@@ -300,7 +301,6 @@ function jigoshop_update_coupons() {
 				'usage_limit'         => $usage_limit,
 				'usage'               => !empty($original_coupons[$code]['usage']) ? $original_coupons[$code]['usage'] : 0
 			);
-
 	endfor;
 
 	update_option('jigoshop_coupons', $coupons);
@@ -1055,7 +1055,11 @@ function jigoshop_admin_option_display($options) {
 						</table>\
 						';
 						// Add the row
-						jQuery('.coupon-table:last').after(new_coupon);
+						if (jQuery('.coupon-table').size() != 0)
+							var appendHere = '.coupon-table:last';
+						else var appendHere = jQuery('a.add').parent().parent().parent().parent().parent();
+
+						jQuery(appendHere).after(new_coupon);
 
 									jQuery(function() {
 										jQuery("select#product_ids_"+size).ajaxChosen({
