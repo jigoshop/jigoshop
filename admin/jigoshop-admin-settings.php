@@ -883,13 +883,16 @@ function jigoshop_admin_option_display($options) {
 					<?php endforeach; ?>
 			<script type="text/javascript">
 			jQuery('.couponDisplay').hide();
-			jQuery('a.toggleCoupon').click(function(e) {
-				e.preventDefault();
-				var id = jQuery(this).attr('href').substr(1);
-				jQuery('#' + id).toggle('slow', function() {
-					// Stuff later?
+			function toggle_coupons() {
+				jQuery('a.toggleCoupon').click(function(e) {
+					e.preventDefault();
+					var id = jQuery(this).attr('href').substr(1);
+					jQuery('#' + id).toggle('slow', function() {
+						// Stuff later?
+					});
 				});
-			});
+			}
+			toggle_coupons();
 			</script>
 			<script type="text/javascript">
 				/* <![CDATA[ */
@@ -962,7 +965,7 @@ function jigoshop_admin_option_display($options) {
 									</th>\
 									<td>\
 										<input name="usage_limit[' + size + ']" id="usage_limit[' + size + ']" type="text" class="regular-text "\
-										style="width:60px;" value="" /><?php _e('Times used: 0', 'jigoshop'); ?></td>\
+										style="width:60px;" value="" /> <?php _e('Times used: 0', 'jigoshop'); ?></td>\
 								</tr>\
 								<tr>\
 									<th scope="row">\
@@ -974,14 +977,14 @@ function jigoshop_admin_option_display($options) {
 										<select id="product_ids_' + size + '" style="width:200px;" name="product_ids[' + size + '][]"\
 										style="width:100px" class="ajax_chosen_select_products_and_variations"\
 										multiple="multiple" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>">\
-										</select><?php _e('Include', 'jigoshop'); ?></td>\
+										</select> <?php _e('Include', 'jigoshop'); ?></td>\
 								</tr>\
 								<tr>\
 									<th scope="row"></th>\
 									<td style="padding-top:0px;">\
 										<select id="exclude_product_ids_' + size + '" style="width:200px;" name="exclude_product_ids[' + size + '][]"\
 										style="width:100px" class="ajax_chosen_select_products_and_variations"\
-										multiple="multiple" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>"></select><?php _e('Exclude', 'jigoshop'); ?></td>\
+										multiple="multiple" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>"></select> <?php _e('Exclude', 'jigoshop'); ?></td>\
 								</tr>\
 								<tr>\
 									<th scope="row">\
@@ -993,7 +996,7 @@ function jigoshop_admin_option_display($options) {
 										<select id="coupon_category_' + size + '" style="width:200px;" name="coupon_category[' + size + '][]"\
 										class="chzn-select" data-placeholder="<?php _e('Search for a category...', 'jigoshop'); ?>" multiple="multiple">\
 										<?php foreach($categories as $category) echo '<option value="' . $category->term_id . '">' . $category->name . '</option>'; ?>\
-										</select><?php _e('Include', 'jigoshop'); ?></td>\
+										</select> <?php _e('Include', 'jigoshop'); ?></td>\
 								</tr>\
 								<tr>\
 									<th scope="row"></th>\
@@ -1001,7 +1004,7 @@ function jigoshop_admin_option_display($options) {
 										<select id="exclude_categories_' + size + '" style="width:200px;" name="exclude_categories[' + size + '][]"\
 										class="chzn-select" data-placeholder="<?php _e('Search for a category...', 'jigoshop'); ?>" multiple="multiple">\
 										<?php foreach($categories as $category) echo '<option value="' . $category->term_id . '">' . $category->name . '</option>'; ?>\
-										</select><?php _e('Exclude', 'jigoshop'); ?></td>\
+										</select> <?php _e('Exclude', 'jigoshop'); ?></td>\
 								</tr>\
 								<tr>\
 									<th scope="row">\
@@ -1012,13 +1015,13 @@ function jigoshop_admin_option_display($options) {
 									<td>\
 										<input name="coupon_date_from[' + size + ']" id="coupon_date_from[' + size + ']" type="text"\
 										class="regular-text date-pick" style="width:150px;" value=""\
-										/><?php _e('From', 'jigoshop'); ?></td>\
+										/> <?php _e('From', 'jigoshop'); ?></td>\
 								</tr>\
 								<tr>\
 									<th scope="row" style="padding-top:0px;"></th>\
 									<td style="padding-top:0px;">\
 										<input name="coupon_date_to[' + size + ']" id="coupon_date_to[' + size + ']" type="text" class="regular-text date-pick"\
-										style="width:150px;" value="" /><?php _e('To', 'jigoshop'); ?></td>\
+										style="width:150px;" value="" /> <?php _e('To', 'jigoshop'); ?></td>\
 								</tr>\
 								<tr>\
 									<th scope="row">\
@@ -1093,6 +1096,7 @@ function jigoshop_admin_option_display($options) {
 
 											return terms;
 										});
+										toggle_coupons();
 										jQuery(".chzn-select").chosen();
 										jQuery(".tips").tooltip();
 										jQuery('.date-pick').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
