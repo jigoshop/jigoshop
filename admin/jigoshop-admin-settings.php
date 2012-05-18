@@ -649,7 +649,6 @@ function jigoshop_admin_option_display($options) {
 			  </thead>
 
 				<tbody class="couponDisplay" id="coupons_rows_<?php echo $i; ?>">
-				<tr><td><a href="#" class="remove button" title="<?php _e('Delete this Coupon', 'jigoshop'); ?>">&times; <?php _e('Delete', 'jigoshop'); echo ' ' . $coupon['code']; ?></a></td></tr>
 				<?php
 					/* The option selection for this coupon. */
 					$discount_types = array(
@@ -833,6 +832,7 @@ function jigoshop_admin_option_display($options) {
 					);
 
 					jigoshop_admin_option_display($options2); ?>
+					<tr><td><a href="#" class="remove button" title="<?php _e('Delete this Coupon', 'jigoshop'); ?>">&times; <?php _e('Delete', 'jigoshop'); echo ' ' . $coupon['code']; ?></a></td></tr>
 					</tbody>
 					</table>
 					<script type="text/javascript">
@@ -940,11 +940,11 @@ function jigoshop_admin_option_display($options) {
 
 										return false;
 									});
-									jQuery('#coupon_codes a.remove').live('click', function(){
+									jQuery('.couponDisplay a.remove').live('click', function(){
 										var answer = confirm("<?php _e('Delete this coupon?', 'jigoshop'); ?>")
 										if (answer) {
-											jQuery('input', jQuery(this).parent().parent()).val('');
-											jQuery(this).parent().parent().hide();
+											jQuery('input', jQuery(this).parent().parent().parent().parent()).val('');
+											jQuery(this).parent().parent().parent().parent().hide();
 										}
 										return false;
 									});
