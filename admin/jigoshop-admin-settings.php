@@ -769,7 +769,7 @@ function jigoshop_admin_option_display($options) {
 
 						<td>
 						<?php $categories = get_terms('product_cat', array('hide_empty' => false)); ?>
-						<select id="coupon_category_<?php echo esc_attr( $i ); ?>" style="width:200px;" name="coupon_category[<?php echo $i; ?>][]" class="chzn-select" data-placeholder="Categories to apply" multiple="multiple">
+						<select id="coupon_category_<?php echo esc_attr( $i ); ?>" style="width:200px;" name="coupon_category[<?php echo $i; ?>][]" class="chzn-select" data-placeholder="<?php _e('Search for a category...', 'jigoshop'); ?>" multiple="multiple">
 						<?php foreach($categories as $category) : ?>
 							<?php $select_cat = !empty( $coupon['coupon_category'] ) && in_array( $category->term_id, $coupon['coupon_category'] ) ? 'selected' : ''; ?>
 							<option value="<?php echo $category->term_id; ?>" <?php echo $select_cat; ?> ><?php echo $category->name; ?></option>
@@ -781,7 +781,7 @@ function jigoshop_admin_option_display($options) {
 					<tr>
 						<th scope="row"></th>
 						<td style="padding-top:0px;">
-						<select id="exclude_categories_<?php echo $i; ?>" style="width:200px;" name="exclude_categories[<?php echo $i; ?>][]" class="chzn-select" data-placeholder="Categories to apply" multiple="multiple">
+						<select id="exclude_categories_<?php echo $i; ?>" style="width:200px;" name="exclude_categories[<?php echo $i; ?>][]" class="chzn-select" data-placeholder="<?php _e('Search for a category...', 'jigoshop'); ?>" multiple="multiple">
 						<?php foreach($categories as $category) : ?>
 							<?php $select_cat = !empty( $coupon['exclude_categories'] ) && in_array( $category->term_id, $coupon['exclude_categories'] ) ? 'selected' : ''; ?>
 							<option value="<?php echo $category->term_id; ?>" <?php echo $select_cat; ?> ><?php echo $category->name; ?></option>
@@ -991,7 +991,7 @@ function jigoshop_admin_option_display($options) {
 									</th>\
 									<td>\
 										<select id="coupon_category_' + size + '" style="width:200px;" name="coupon_category[' + size + '][]"\
-										class="chzn-select" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>" multiple="multiple">\
+										class="chzn-select" data-placeholder="<?php _e('Search for a category...', 'jigoshop'); ?>" multiple="multiple">\
 										<?php foreach($categories as $category) echo '<option value="' . $category->term_id . '">' . $category->name . '</option>'; ?>\
 										</select><?php _e('Include', 'jigoshop'); ?></td>\
 								</tr>\
@@ -999,7 +999,7 @@ function jigoshop_admin_option_display($options) {
 									<th scope="row"></th>\
 									<td style="padding-top:0px;">\
 										<select id="exclude_categories_' + size + '" style="width:200px;" name="exclude_categories[' + size + '][]"\
-										class="chzn-select" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>" multiple="multiple">\
+										class="chzn-select" data-placeholder="<?php _e('Search for a category...', 'jigoshop'); ?>" multiple="multiple">\
 										<?php foreach($categories as $category) echo '<option value="' . $category->term_id . '">' . $category->name . '</option>'; ?>\
 										</select><?php _e('Exclude', 'jigoshop'); ?></td>\
 								</tr>\
