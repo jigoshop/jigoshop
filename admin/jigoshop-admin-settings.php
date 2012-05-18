@@ -634,7 +634,7 @@ function jigoshop_admin_option_display($options) {
 			$coupons = new jigoshop_coupons();
 			$coupon_codes = $coupons->get_coupons();
 		?>
-			<tr><td><a href="#" class="add button"><?php _e('+ Add Coupon', 'jigoshop'); ?></a></td></tr>
+			<tr><td><a href="#" class="add button" id="add_coupon"><?php _e('+ Add Coupon', 'jigoshop'); ?></a></td></tr>
 			<?php
 			$i = -1;
 			if ($coupon_codes && is_array($coupon_codes) && sizeof($coupon_codes) > 0)
@@ -897,7 +897,7 @@ function jigoshop_admin_option_display($options) {
 			<script type="text/javascript">
 				/* <![CDATA[ */
 				jQuery(function() {
-					jQuery('a.add').live('click', function(e){
+					jQuery('#add_coupon').live('click', function(e){
 						e.preventDefault();
 						var size = jQuery('.couponDisplay').size();
 
@@ -995,7 +995,7 @@ function jigoshop_admin_option_display($options) {
 									<td>\
 										<select id="coupon_category_' + size + '" style="width:200px;" name="coupon_category[' + size + '][]"\
 										class="chzn-select" data-placeholder="<?php _e('Search for a category...', 'jigoshop'); ?>" multiple="multiple">\
-										<?php foreach($categories as $category) echo '<option value="' . $category->term_id . '">' . $category->name . '</option>'; ?>\
+										<?php $categories = get_terms('product_cat', array('hide_empty' => false)); foreach($categories as $category) echo '<option value="' . $category->term_id . '">' . $category->name . '</option>'; ?>\
 										</select> <?php _e('Include', 'jigoshop'); ?></td>\
 								</tr>\
 								<tr>\
@@ -1057,12 +1057,12 @@ function jigoshop_admin_option_display($options) {
 						// Add the row
 						if (jQuery('.coupon-table').size() != 0)
 							var appendHere = '.coupon-table:last';
-						else var appendHere = jQuery('a.add').parent().parent().parent().parent().parent();
+						else var appendHere = jQuery('#add_coupon').parent().parent().parent().parent();
 
 						jQuery(appendHere).after(new_coupon);
 
 									jQuery(function() {
-										jQuery("select#product_ids_"+size).ajaxChosen({
+										jQuery("select#product_ids_" + size).ajaxChosen({
 											method: 	'GET',
 											url: 		'<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>',
 											dataType: 	'json',
@@ -1081,7 +1081,7 @@ function jigoshop_admin_option_display($options) {
 
 											return terms;
 										});
-										jQuery("select#exclude_product_ids_"+size).ajaxChosen({
+										jQuery("select#exclude_product_ids_" + size).ajaxChosen({
 											method: 	'GET',
 											url: 		'<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>',
 											dataType: 	'json',
