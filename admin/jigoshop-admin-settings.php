@@ -694,16 +694,16 @@ function jigoshop_admin_option_display($options) {
 							'desc'           => '',
 							'tip'            => __('Amount this coupon is worth. If it is a percentange, just include the number without the percentage sign.','jigoshop'),
 							'id'             => 'coupon_amount[' . esc_attr( $i ) . ']',
-							'css'            => 'width:150px;',
+							'css'            => 'width:60px;',
 							'type'           => 'text',
 							'std'            => esc_attr( $coupon['amount'] )
 						),
 						array(
 							'name'           => __('Usage Limit','jigoshop'),
-							'desc'           => '',
+							'desc'           => __(sprintf('Times used: %s', !empty($coupon['usage']) ? $coupon['usage'] : '0'), 'jigoshop'),
 							'tip'            => __('Control how many times this coupon may be used.','jigoshop'),
 							'id'             => 'usage_limit[' . esc_attr( $i ) . ']',
-							'css'            => 'width:150px;',
+							'css'            => 'width:60px;',
 							'type'           => 'text',
 							'std'            => !empty($coupon['usage_limit']) ? $coupon['usage_limit'] : ''
 						),
