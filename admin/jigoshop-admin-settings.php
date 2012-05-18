@@ -899,7 +899,7 @@ function jigoshop_admin_option_display($options) {
 			}
 			function display_coupon_code() {
 				jQuery('.coupon_code').bind('keyup', function(){
-					var codeID = jQuery(this).attr('id').charAt(12);
+					var codeID = jQuery(this).attr('id').replace('coupon_code[', '').replace(']','');
 					jQuery('a[href="#coupons_rows_'+codeID+'"]').html('<?php _e('Coupon: '); ?>' + jQuery(this).val());
 					jQuery('a#remove_coupon_'+codeID).html('&times; <?php _e('Delete '); ?>' + jQuery(this).val());
 				});
