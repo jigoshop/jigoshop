@@ -921,7 +921,7 @@ function jigoshop_comments($comment, $args, $depth) {
 					<p class="meta"><em><?php _e('Your comment is awaiting approval','jigoshop'); ?></em></p>
 				<?php else : ?>
 					<p class="meta">
-						<?php _e('Rating by','jigoshop'); ?> <strong class="reviewer vcard"><span class="fn"><?php comment_author(); ?></span></strong> <?php _e('on','jigoshop'); ?> <?php echo get_comment_date('M jS Y'); ?>:
+						<?php _e('Rating by','jigoshop'); ?> <strong class="reviewer vcard"><span class="fn"><?php comment_author(); ?></span></strong> <?php _e('on','jigoshop'); ?> <?php echo date_i18n('M jS Y', strtotime(get_comment_date('M jS Y'))); ?>:
 					</p>
 				<?php endif; ?>
   				<div class="description"><?php comment_text(); ?></div>
