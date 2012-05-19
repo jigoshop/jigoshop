@@ -275,7 +275,7 @@ function jigoshop_update_coupons() {
 		$amount              = jigowatt_clean($coupon_amount[$i]);
 		$code                = jigowatt_clean($coupon_code[$i]);
 		$type                = jigowatt_clean($coupon_type[$i]);
-		$usage_limit         = ($usage_limit[$i]);
+		$usage_limit         = !empty($usage_limit[$i]) ? $usage_limit[$i] : 0;
 		$from_date           = !empty($coupon_date_from[$i])           ? strtotime($coupon_date_from[$i])                    : 0;
 		$free_ship           = !empty($coupon_free_shipping[$i])       ? 'yes'                                               : 'no';
 		$individual_use      = !empty($individual[$i])                 ? 'yes'                                               : 'no';
@@ -634,19 +634,37 @@ function jigoshop_admin_option_display($options) {
 			$coupons = new jigoshop_coupons();
 			$coupon_codes = $coupons->get_coupons();
 		?>
+		<style>
+table{max-width:100%;background-color:transparent;border-collapse:collapse;border-spacing:0;}
+.table{width:100%;margin-bottom:18px;}.table th,.table td{padding:8px;line-height:18px;text-align:left;vertical-align:top;border-top:1px solid #dddddd;}
+.table th{font-weight:bold;}
+.table thead th{vertical-align:bottom;}
+.table caption+thead tr:first-child th,.table caption+thead tr:first-child td,.table colgroup+thead tr:first-child th,.table colgroup+thead tr:first-child td,.table thead:first-child tr:first-child th,.table thead:first-child tr:first-child td{border-top:0;}
+.table tbody+tbody{border-top:2px solid #dddddd;}
+.table-condensed th,.table-condensed td{padding:4px 5px;}
+.table tbody tr:hover td,.table tbody tr:hover th{background-color:#f5f5f5;}
+</style>
 			<tr><td><a href="#" class="add button" id="add_coupon"><?php _e('+ Add Coupon', 'jigoshop'); ?></a></td></tr>
-			<?php
-			$i = -1;
-			if ($coupon_codes && is_array($coupon_codes) && sizeof($coupon_codes) > 0)
-				foreach ($coupon_codes as $coupon) : $i++; ?>
-				<table class="coupon-table form-table" id="coupons_table_<?php echo $i; ?>">
+
+			<table class="table">
 				<thead>
+					<tr>
+						<th>Coupon</th>
+						<th>Amount</th>
+						<th>Controls</th>
+					</tr>
+				</thead>
+				<tbody>
+
+				<?php
+				$i = -1;
+				if ($coupon_codes && is_array($coupon_codes) && sizeof($coupon_codes) > 0)
+					foreach ($coupon_codes as $coupon) : $i++; ?>
 				<tr>
-					<th scope="col" colspan="2">
-						<h3 class="title"><a class="toggleCoupon" href="#coupons_rows_<?php echo $i; ?>"><?php _e(sprintf('Coupon: %s', $coupon['code']), 'jigoshop'); ?></a></h3>
-					</th>
-				</tr>
-			  </thead>
+				<td>
+				<table class="coupon-table form-table" id="coupons_table_<?php echo $i; ?>">
+				</td>
+				<?php echo $coupon['code']; ?>
 
 				<tbody class="couponDisplay" id="coupons_rows_<?php echo $i; ?>">
 				<?php
@@ -737,7 +755,6 @@ function jigoshop_admin_option_display($options) {
 									}
 								?>
 							</select> <?php _e('Include', 'jigoshop'); ?>
-						</td>
 					  </tr>
 
 					<tr>
@@ -881,6 +898,10 @@ function jigoshop_admin_option_display($options) {
 						});
 						/* ]]> */
 					</script>
+				</td>
+				<td>23.99</td>
+				<td><a class="toggleCoupon" href="#coupons_rows_<?php echo $i; ?>">Show</a></td>
+				</tr>
 					<?php endforeach; ?>
 			<script type="text/javascript">
 
@@ -1141,7 +1162,7 @@ function jigoshop_admin_option_display($options) {
 
 				function array_find($needle,$haystack){
 					foreach($haystack as $key => $val):
-						if( $needle == array( "label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'] ) ):
+						if( $needle == array( "label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'], 'is_all_states' => $val['is_all_states'], 'class' => $val['class'] ) ):
 							return $key;
 						endif;
 					endforeach;
@@ -1151,7 +1172,7 @@ function jigoshop_admin_option_display($options) {
 				function array_compare($tax_rates) {
 					$after = array();
 					foreach($tax_rates as $key => $val):
-						$first_two = array("label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'] );
+						$first_two = array("label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'], 'is_all_states' => $val['is_all_states'], 'class' => $val['class'] );
 						$found = array_find($first_two,$after);
 						if($found!==false):
 							$combined  = $after[$found]["state"];
@@ -1169,6 +1190,7 @@ function jigoshop_admin_option_display($options) {
 				$tax_rates = array_compare($tax_rates);
 
 				foreach ($tax_rates as $rate) :
+
 					if ( $rate['is_all_states'] && in_array(get_all_states_key($rate), $applied_all_states) )
 						continue;
 
@@ -1283,7 +1305,7 @@ function jigoshop_admin_option_display($options) {
 
 			foreach (jigoshop_shipping::get_all_methods() as $method) :
 
-				$method->admin_options();
+				echo $method->admin_options();
 
 			endforeach;
 
@@ -1292,7 +1314,7 @@ function jigoshop_admin_option_display($options) {
 
 			foreach (jigoshop_payment_gateways::payment_gateways() as $gateway) :
 
-				$gateway->admin_options();
+				echo $gateway->admin_options();
 
 			endforeach;
 
