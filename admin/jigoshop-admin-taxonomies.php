@@ -51,7 +51,8 @@ function jigoshop_add_category_thumbnail_field() {
 				tb_remove();
 			}
 
-			jQuery('.upload_image_button').live('click', function(){
+			jQuery('.upload_image_button').live('click', function(e){
+				e.preventDefault();
 				var post_id = 0;
 
 				window.send_to_editor = window.send_to_termmeta;
@@ -73,13 +74,14 @@ function jigoshop_add_category_thumbnail_field() {
 }
 
 function jigoshop_edit_category_thumbnail_field( $term, $taxonomy ) {
+	$image = jigoshop_product_cat_image($term->term_id);
 	?>
 	<tr class="form-field">
 		<th scope="row" valign="top"><label><?php _e('Thumbnail', 'jigoshop'); ?></label></th>
 		<td>
-			<div id="product_cat_thumbnail" style="float:left;margin-right:10px;"><img src="<?php echo jigoshop_product_cat_image($term->term_id) ?>" width="60px" height="60px" /></div>
+			<div id="product_cat_thumbnail" style="float:left;margin-right:10px;"><img src="<?php echo $image['image']; ?>" width="60px" height="60px" /></div>
 			<div style="line-height:60px;">
-				<input type="hidden" id="product_cat_thumbnail_id" name="product_cat_thumbnail_id" value="<?php echo $thumbnail_id; ?>" />
+				<input type="hidden" id="product_cat_thumbnail_id" name="product_cat_thumbnail_id" value="<?php echo $image['thumb_id']; ?>" />
 				<button type="submit" class="upload_image_button button"><?php _e('Upload/Add image', 'jigoshop'); ?></button>
 				<button type="submit" class="remove_image_button button"><?php _e('Remove image', 'jigoshop'); ?></button>
 			</div>
@@ -102,7 +104,8 @@ function jigoshop_edit_category_thumbnail_field( $term, $taxonomy ) {
 					tb_remove();
 				}
 
-				jQuery('.upload_image_button').live('click', function(){
+				jQuery('.upload_image_button').live('click', function(e){
+					e.preventDefault();
 					var post_id = 0;
 
 					window.send_to_editor = window.send_to_termmeta;
@@ -161,7 +164,8 @@ function jigoshop_product_cat_column( $columns, $column, $id ) {
 	if ($column != 'thumb')
 		return false;
 
-	$columns .= '<img src="'.jigoshop_product_cat_image($id).'" alt="Thumbnail" class="wp-post-image" height="48" width="48" />';
+	$image = jigoshop_product_cat_image($id);
+	$columns .= '<img src="'.$image['image'].'" alt="Thumbnail" class="wp-post-image" height="48" width="48" />';
 
 	return $columns;
 

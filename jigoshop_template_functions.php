@@ -657,7 +657,7 @@ if (!function_exists('jigoshop_product_cat_image')) {
 		$category_image = $thumbnail_id ? wp_get_attachment_url( $thumbnail_id )
 										: jigoshop::assets_url().'/assets/images/placeholder.png';
 
-		return $category_image;
+		return array('image' => $category_image, 'thumb_id' => $thumbnail_id);
 
 	}
 }
