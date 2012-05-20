@@ -234,7 +234,7 @@ function jigoshop_update_taxes() {
 
 	/* Remove duplicates. */
 	$tax_rates = array_values(array_unique($tax_rates, SORT_REGULAR));
-	//usort($tax_rates, "csort_tax_rates");
+	usort($tax_rates, "csort_tax_rates");
 	update_option('jigoshop_tax_rates', $tax_rates);
 
 }
