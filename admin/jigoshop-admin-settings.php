@@ -275,14 +275,14 @@ function jigoshop_update_coupons() {
 		$amount              = jigowatt_clean($coupon_amount[$i]);
 		$code                = jigowatt_clean($coupon_code[$i]);
 		$type                = jigowatt_clean($coupon_type[$i]);
-		$usage_limit         = !empty($usage_limit[$i]) ? $usage_limit[$i] : 0;
+		$limit               = !empty($usage_limit[$i]) ? $usage_limit[$i] : 0;
 		$from_date           = !empty($coupon_date_from[$i])           ? strtotime($coupon_date_from[$i])                    : 0;
 		$free_ship           = !empty($coupon_free_shipping[$i])       ? 'yes'                                               : 'no';
 		$individual_use      = !empty($individual[$i])                 ? 'yes'                                               : 'no';
 		$category            = !empty($coupon_category[$i])            ? $coupon_category[$i]                                : array();
 		$products            = !empty($product_ids[$i])                ? $product_ids[$i]                                    : array();
-		$exclude_products    = !empty($exclude_product_ids[$i])        ? $exclude_product_ids[$i]                            : array();
-		$exclude_categories  = !empty($exclude_categories[$i])         ? $exclude_categories[$i]                             : array();
+		$ex_products         = !empty($exclude_product_ids[$i])        ? $exclude_product_ids[$i]                            : array();
+		$ex_categories       = !empty($exclude_categories[$i])         ? $exclude_categories[$i]                             : array();
 		$to_date             = !empty($coupon_date_to[$i])             ? strtotime($coupon_date_to[$i]) + (60 * 60 * 24 - 1) : 0;
 
 		if ($code && $type && $amount)
@@ -291,14 +291,14 @@ function jigoshop_update_coupons() {
 				'amount'              => $amount,
 				'type'                => $type,
 				'products'            => $products,
-				'exclude_products'    => $exclude_products,
-				'exclude_categories'  => $exclude_categories,
+				'exclude_products'    => $ex_products,
+				'exclude_categories'  => $ex_categories,
 				'coupon_category'     => $category,
 				'date_from'           => $from_date,
 				'date_to'             => $to_date,
 				'individual_use'      => $individual_use,
 				'coupon_free_shipping'=> $free_ship,
-				'usage_limit'         => $usage_limit,
+				'usage_limit'         => $limit,
 				'usage'               => !empty($original_coupons[$code]['usage']) ? $original_coupons[$code]['usage'] : 0
 			);
 	endfor;
