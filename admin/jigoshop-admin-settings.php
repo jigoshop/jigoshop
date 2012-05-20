@@ -636,21 +636,22 @@ function jigoshop_admin_option_display($options) {
 		?>
 		<style>
 table{max-width:100%;background-color:transparent;border-collapse:collapse;border-spacing:0;}
-.table{width:100%;margin-bottom:18px;}.table th,.table td{padding:8px;line-height:18px;text-align:left;vertical-align:top;border-top:1px solid #dddddd;}
-.table th{font-weight:bold;}
+.table{width:100%;margin-bottom:18px;}
+.table th,.table td{padding:8px;line-height:18px;text-align:left;vertical-align:top;border-top:1px solid #dddddd;}
 .table thead th{vertical-align:bottom;}
 .table caption+thead tr:first-child th,.table caption+thead tr:first-child td,.table colgroup+thead tr:first-child th,.table colgroup+thead tr:first-child td,.table thead:first-child tr:first-child th,.table thead:first-child tr:first-child td{border-top:0;}
 .table tbody+tbody{border-top:2px solid #dddddd;}
 .table-condensed th,.table-condensed td{padding:4px 5px;}
-.table tbody tr:hover td,.table tbody tr:hover th{background-color:#f5f5f5;}
+.coupon-table th,.coupon-table td{padding:8px;line-height:18px;text-align:left;vertical-align:top;border-top:0px;}
 </style>
 			<tr><td><a href="#" class="add button" id="add_coupon"><?php _e('+ Add Coupon', 'jigoshop'); ?></a></td></tr>
 
-			<table class="table">
+			<table class="coupons table">
 				<thead>
 					<tr>
 						<th>Coupon</th>
 						<th>Amount</th>
+						<th>Usage</th>
 						<th>Controls</th>
 					</tr>
 				</thead>
@@ -661,9 +662,8 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 				if ($coupon_codes && is_array($coupon_codes) && sizeof($coupon_codes) > 0)
 					foreach ($coupon_codes as $coupon) : $i++; ?>
 				<tr>
-				<td>
+				<td style="width:500px;">
 				<table class="coupon-table form-table" id="coupons_table_<?php echo $i; ?>">
-				</td>
 				<?php echo $coupon['code']; ?>
 
 				<tbody class="couponDisplay" id="coupons_rows_<?php echo $i; ?>">
@@ -755,6 +755,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 									}
 								?>
 							</select> <?php _e('Include', 'jigoshop'); ?>
+						</td>
 					  </tr>
 
 					<tr>
@@ -850,7 +851,6 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 					);
 
 					jigoshop_admin_option_display($options2); ?>
-					<tr><td><a href="#" id="remove_coupon_<?php echo esc_attr( $i ); ?>" class="remove_coupon button" title="<?php _e('Delete this Coupon', 'jigoshop'); ?>">&times; <?php _e('Delete', 'jigoshop'); echo ' ' . $coupon['code']; ?></a></td></tr>
 					</tbody>
 					</table>
 					<script type="text/javascript">
@@ -899,8 +899,12 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 						/* ]]> */
 					</script>
 				</td>
-				<td>23.99</td>
-				<td><a class="toggleCoupon" href="#coupons_rows_<?php echo $i; ?>">Show</a></td>
+				<td style="width:100px"><?php echo !empty($coupon['amount']) ? $coupon['amount'] : ''; ?></td>
+				<td style="width:100px"><?php echo !empty($coupon['usage']) ? $coupon['usage'] : '0' ?></td>
+				<td style="width:100px">
+					<a class="toggleCoupon" href="#coupons_rows_<?php echo $i; ?>"><?php _e('Show', 'jigoshop'); ?></a> /
+					<a href="#" id="remove_coupon_<?php echo esc_attr( $i ); ?>" class="remove_coupon" title="<?php _e('Delete this Coupon', 'jigoshop'); ?>"><?php _e('Delete', 'jigoshop'); ?></a>
+				</td>
 				</tr>
 					<?php endforeach; ?>
 			<script type="text/javascript">
@@ -909,24 +913,16 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 
 			/* <![CDATA[ */
 			jQuery(function() {
-			function toggle_coupons() {
-				jQuery('a.toggleCoupon').click(function(e) {
-					e.preventDefault();
-					var id = jQuery(this).attr('href').substr(1);
-					jQuery('#' + id).toggle('slow', function() {
-						// Stuff later?
+				function toggle_coupons() {
+					jQuery('a.toggleCoupon').click(function(e) {
+						e.preventDefault();
+						var id = jQuery(this).attr('href').substr(1);
+						jQuery('#' + id).toggle('slow', function() {
+							// Stuff later?
+						});
 					});
-				});
-			}
-			function display_coupon_code() {
-				jQuery('.coupon_code').bind('keyup', function(){
-					var codeID = jQuery(this).attr('id').replace('coupon_code[', '').replace(']','');
-					jQuery('a[href="#coupons_rows_'+codeID+'"]').html('<?php _e('Coupon: '); ?>' + jQuery(this).val());
-					jQuery('a#remove_coupon_'+codeID).html('&times; <?php _e('Delete '); ?>' + jQuery(this).val());
-				});
-			}
+				}
 
-				display_coupon_code();
 				toggle_coupons();
 
 				jQuery('#add_coupon').live('click', function(e){
@@ -938,7 +934,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							<tr>\
 								<th scope="col" colspan="2">\
 									<h3 class="title">\
-										<a class="toggleCoupon" href="#coupons_rows_' + size + '"><?php _e('Coupon: -new-', 'jigoshop'); ?></a>\
+										<a class="toggleCoupon" href="#coupons_rows_' + size + '"><?php _e('New coupon', 'jigoshop'); ?></a>\
 									</h3>\
 								</th>\
 							</tr>\
@@ -1072,17 +1068,12 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 									<label for="coupon_free_shipping[' + size + ']"><?php _e('Free Shipping', 'jigoshop'); ?></label>\
 								</td>\
 							</tr>\
-							<tr>\
-								<td>\
-									<a href="#" id="remove_coupon_' + size + '" class="remove_coupon button" title="Delete this Coupon">&times; <?php _e('Delete -new-', 'jigoshop'); ?></a>\
-								</td>\
-							</tr>\
 						</tbody>\
 					</table>\
 					';
 					/* Add the table */
-					appendHere = jQuery('#add_coupon').parent().parent().parent().parent();
-					jQuery(appendHere).after(new_coupon);
+					jQuery('.coupons.table').before(new_coupon);
+					jQuery('#coupons_table_' + size).hide().fadeIn('slow');
 
 					jQuery("select#product_ids_" + size).ajaxChosen({
 						method: 	'GET',
@@ -1128,17 +1119,16 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							// Stuff later?
 						});
 					});
-					display_coupon_code();
 					jQuery(".chzn-select").chosen();
 					jQuery(".tips").tooltip();
 					jQuery('.date-pick').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
 					return false;
 				});
-				jQuery('.couponDisplay a.remove_coupon').live('click', function(){
+				jQuery('a.remove_coupon').live('click', function(){
 					var answer = confirm("<?php _e('Delete this coupon?', 'jigoshop'); ?>")
 					if (answer) {
-						jQuery('input', jQuery(this).parent().parent().parent().parent()).val('');
-						jQuery(this).parent().parent().parent().parent().hide();
+						jQuery('input', jQuery(this).parent().parent().children()).val('');
+						jQuery(this).parent().parent().fadeOut();
 					}
 					return false;
 				});
@@ -1305,7 +1295,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 
 			foreach (jigoshop_shipping::get_all_methods() as $method) :
 
-				echo $method->admin_options();
+				$method->admin_options();
 
 			endforeach;
 
@@ -1314,7 +1304,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 
 			foreach (jigoshop_payment_gateways::payment_gateways() as $gateway) :
 
-				echo $gateway->admin_options();
+				$gateway->admin_options();
 
 			endforeach;
 
