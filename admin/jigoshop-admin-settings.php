@@ -258,6 +258,8 @@ function jigoshop_update_coupons() {
 		'individual'          => '',
 		'coupon_free_shipping'=> '',
 		'coupon_pay_methods'  => '',
+		'order_total_min'  => '',
+		'order_total_max'  => '',
 	);
 
 	$coupons = array();
@@ -276,7 +278,9 @@ function jigoshop_update_coupons() {
 		$amount              = jigowatt_clean($coupon_amount[$i]);
 		$code                = jigowatt_clean($coupon_code[$i]);
 		$type                = jigowatt_clean($coupon_type[$i]);
-		$limit               = !empty($usage_limit[$i]) ? $usage_limit[$i] : 0;
+		$limit               = !empty($usage_limit[$i])                ? $usage_limit[$i]                                    : 0;
+		$min_order           = !empty($order_total_min[$i])            ? $order_total_min[$i]                                : 0;
+		$max_order           = !empty($order_total_max[$i])            ? $order_total_max[$i]                                : 0;
 		$from_date           = !empty($coupon_date_from[$i])           ? strtotime($coupon_date_from[$i])                    : 0;
 		$free_ship           = !empty($coupon_free_shipping[$i])       ? 'yes'                                               : 'no';
 		$individual_use      = !empty($individual[$i])                 ? 'yes'                                               : 'no';
@@ -302,6 +306,8 @@ function jigoshop_update_coupons() {
 				'individual_use'      => $individual_use,
 				'coupon_free_shipping'=> $free_ship,
 				'usage_limit'         => $limit,
+				'order_total_min'     => $min_order,
+				'order_total_max'     => $max_order,
 				'usage'               => !empty($original_coupons[$code]['usage']) ? $original_coupons[$code]['usage'] : 0
 			);
 	endfor;
@@ -759,9 +765,9 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							'std'            => !empty($coupon['usage_limit']) ? $coupon['usage_limit'] : ''
 						),
 						array(
-							'name'           => __('Order total','jigoshop'),
+							'name'           => __('Order subtotal','jigoshop'),
 							'desc'           => __('Min', 'jigoshop'),
-							'tip'            => __('Set the required order total for this coupon to be valid on an order.','jigoshop'),
+							'tip'            => __('Set the required subtotal for this coupon to be valid on an order.','jigoshop'),
 							'id'             => 'order_total_min[' . esc_attr( $i ) . ']',
 							'css'            => 'width:60px;',
 							'type'           => 'text',

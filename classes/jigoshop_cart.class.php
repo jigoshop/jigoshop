@@ -864,6 +864,8 @@ class jigoshop_cart extends jigoshop_singleton {
      */
     function add_discount($coupon_code) {
 
+		$the_coupon = jigoshop_coupons::get_coupon($coupon_code);
+
 		/* Don't continue if the coupon isn't valid. */
 		if ( !self::valid_coupon($coupon_code) )
 			return false;
@@ -901,6 +903,23 @@ class jigoshop_cart extends jigoshop_singleton {
 		if ( !empty($payment_method) && !in_array($payment_method, $pay_methods) ) {
 			jigoshop::add_error(__('This coupon is invalid with that payment method!', 'jigoshop'));
 			return false;
+		}
+
+		/* Subtotal minimum */
+		if ( !empty($the_coupon['order_total_min']) || !empty($the_coupon['order_total_max']) ) {
+
+			/* Can't use the jigoshop_cart::get_cart_subtotal() method as it's not ready at this point yet. */
+			$subtotal = jigoshop_cart::$cart_contents_total;
+
+			if ( !empty($the_coupon['order_total_max']) && $subtotal > $the_coupon['order_total_max'] ) {
+				jigoshop::add_error(__('Your subtotal does not match this coupon\'s requirements.', 'jigoshop'));
+				return false;
+			}
+
+			if ( !empty($the_coupon['order_total_min']) && $subtotal < $the_coupon['order_total_min'] ) {
+				jigoshop::add_error(__('Your subtotal does not match this coupon\'s requirements.', 'jigoshop'));
+				return false;
+			}
 		}
 
 		// Check if applied
