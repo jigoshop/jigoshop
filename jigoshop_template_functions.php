@@ -643,6 +643,26 @@ if (!function_exists('jigoshop_get_product_thumbnail')) {
 	}
 }
 
+
+/**
+ * Jigoshop Product Category Image
+ **/
+if (!function_exists('jigoshop_product_cat_image')) {
+	function jigoshop_product_cat_image($id) {
+
+		if( empty($id) )
+			return false;
+
+		$thumbnail_id   = get_metadata('jigoshop_term', $id, 'thumbnail_id', true);
+		$category_image = $thumbnail_id ? wp_get_attachment_url( $thumbnail_id )
+										: jigoshop::assets_url().'/assets/images/placeholder.png';
+
+		return array('image' => $category_image, 'thumb_id' => $thumbnail_id);
+
+	}
+}
+
+
 /**
  * Jigoshop Product Image Placeholder
  * @since 0.9.9
