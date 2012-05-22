@@ -754,7 +754,6 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 						),
 						array(
 							'name'           => __('Amount','jigoshop'),
-							'placeholder'    => __('Any','jigoshop'),
 							'tip'            => __('Amount this coupon is worth. If it is a percentange, just include the number without the percentage sign.','jigoshop'),
 							'id'             => 'coupon_amount[' . esc_attr( $i ) . ']',
 							'css'            => 'width:60px;',
@@ -1007,145 +1006,177 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 					var size = jQuery('.couponDisplay').size();
 					var new_coupon = '\
 					<table class="coupon-table form-table" id="coupons_table_' + size + '">\
-						<thead>\
-							<tr>\
-								<th scope="col" colspan="2">\
-									<h3 class="title">\
-										<a class="toggleCoupon" href="#coupons_rows_' + size + '"><?php _e('New coupon', 'jigoshop'); ?></a>\
-									</h3>\
-								</th>\
-							</tr>\
-						</thead>\
-						<tbody class="couponDisplay" id="coupons_rows_' + size + '">\
-							<tr>\
-								<th scope="row">\
-									<a href="#" tip="<?php _e('The coupon code a customer enters on the cart or checkout page.', 'jigoshop'); ?>"\
-									class="tips" tabindex="99"></a>\
-									<label for="coupon_code[' + size + ']"><?php _e('Code', 'jigoshop'); ?></label>\
-								</th>\
-								<td>\
-									<input name="coupon_code[' + size + ']" id="coupon_code[' + size + ']" type="text" class="regular-text coupon_code"\
-									style="width:150px;" value="" />\
-								</td>\
-							</tr>\
-							<tr>\
-								<th scope="row">\
-									<a href="#" tip="<?php _e('Cart - Applies to whole cart<br/>Product - Applies to individual products only. You must specify individual products.', 'jigoshop'); ?>"\
-									class="tips" tabindex="99"></a>\
-									<label for="coupon_type[' + size + ']"><?php _e('Type', 'jigoshop'); ?></label>\
-								</th>\
-								<td>\
-									<select name="coupon_type[' + size + ']" id="coupon_type[' + size + ']" style="width:150px;">\
-										<option value="fixed_cart"><?php _e('Cart Discount', 'jigoshop'); ?></option>\
-										<option value="percent"><?php _e('Cart % Discount', 'jigoshop'); ?></option>\
-										<option value="fixed_product"><?php _e('Product Discount', 'jigoshop'); ?></option>\
-										<option value="percent_product"><?php _e('Product % Discount', 'jigoshop'); ?></option>\
+					<tbody class="couponDisplay" id="coupons_rows_[' + size + ']">\
+						<tr>\
+							<th scope="row">\
+								<a href="#" tip="<?php _e('The coupon code a customer enters on the cart or checkout page.', 'jigoshop'); ?>"\
+								class="tips" tabindex="99"></a>\
+								<label for="coupon_code[' + size + ']"><?php _e('Code', 'jigoshop'); ?></label>\
+							</th>\
+							<td>\
+								<input name="coupon_code[' + size + ']" id="coupon_code[' + size + ']" type="text" class="regular-text coupon_code"\
+								style="width:150px;" placeholder="" value="" />\
+								<br />\
+								<small></small>\
+							</td>\
+						</tr>\
+						<tr>\
+							<th scope="row">\
+								<a href="#" tip="<?php _e('Cart - Applies to whole cart<br/>Product - Applies to individual products only. You must specify individual products.', 'jigoshop'); ?>"\
+								class="tips" tabindex="99"></a>\
+								<label for="coupon_type[' + size + ']"><?php _e('Type', 'jigoshop'); ?></label>\
+							</th>\
+							<td>\
+								<select name="coupon_type[' + size + ']" id="coupon_type[' + size + ']" style="width:150px;" class="chzn-select">\
+									<option value="fixed_cart"><?php _e('Cart Discount', 'jigoshop'); ?></option>\
+									<option value="percent"><?php _e('Cart % Discount', 'jigoshop'); ?></option>\
+									<option value="fixed_product"><?php _e('Product Discount', 'jigoshop'); ?></option>\
+									<option value="percent_product"><?php _e('Product % Discount', 'jigoshop'); ?></option>\
 									</select>\
-									<br />\
-									<small></small>\
-								</td>\
-							</tr>\
-							<tr>\
-								<th scope="row">\
-									<a href="#" tip="<?php _e('Amount this coupon is worth. If it is a percentange, just include the number without the percentage sign.', 'jigoshop'); ?>"\
-									class="tips" tabindex="99"></a>\
-									<label for="coupon_amount[' + size + ']"><?php _e('Amount', 'jigoshop'); ?></label>\
-								</th>\
-								<td>\
-									<input name="coupon_amount[' + size + ']" id="coupon_amount[' + size + ']" type="text" class="regular-text "\
-									style="width:60px;" value="" />\
-								</td>\
-							</tr>\
-							<tr>\
-								<th scope="row">\
-									<a href="#" tip="<?php _e('Control how many times this coupon may be used.', 'jigoshop'); ?>" class="tips"\
-									tabindex="99"></a>\
-									<label for="usage_limit[' + size + ']"><?php _e('Usage Limit', 'jigoshop'); ?></label>\
-								</th>\
-								<td>\
-									<input name="usage_limit[' + size + ']" id="usage_limit[' + size + ']" type="text" class="regular-text "\
-									style="width:60px;" value="" /> <?php _e('Times used: 0', 'jigoshop'); ?></td>\
-							</tr>\
-							<tr>\
-								<th scope="row">\
-									<a href="#" tip="<?php _e('Control which products this coupon can apply to.', 'jigoshop'); ?>" class="tips"\
-									tabindex="99"></a>\
-									<label for="product_ids_' + size + '"><?php _e('Products', 'jigoshop'); ?></label>\
-								</th>\
-								<td>\
-									<select id="product_ids_' + size + '" style="width:200px;" name="product_ids[' + size + '][]"\
-									style="width:100px" class="ajax_chosen_select_products_and_variations"\
-									multiple="multiple" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>">\
-									</select> <?php _e('Include', 'jigoshop'); ?></td>\
-							</tr>\
-							<tr>\
-								<th scope="row"></th>\
-								<td style="padding-top:0px;">\
-									<select id="exclude_product_ids_' + size + '" style="width:200px;" name="exclude_product_ids[' + size + '][]"\
-									style="width:100px" class="ajax_chosen_select_products_and_variations"\
-									multiple="multiple" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>"></select> <?php _e('Exclude', 'jigoshop'); ?></td>\
-							</tr>\
-							<tr>\
-								<th scope="row">\
-									<a href="#" tip="<?php _e('Control which categories this coupon can apply to.', 'jigoshop'); ?>" class="tips"\
-									tabindex="99"></a>\
-									<label for="coupon_category_' + size + '"><?php _e('Categories', 'jigoshop'); ?></label>\
-								</th>\
-								<td>\
-									<select id="coupon_category_' + size + '" style="width:200px;" name="coupon_category[' + size + '][]"\
-									class="chzn-select" data-placeholder="<?php _e('Search for a category...', 'jigoshop'); ?>" multiple="multiple">\
+								<br />\
+								<small></small>\
+							</td>\
+						</tr>\
+						<tr>\
+							<th scope="row">\
+								<a href="#" tip="<?php _e('Amount this coupon is worth. If it is a percentange, just include the number without the percentage sign.', 'jigoshop'); ?>"\
+								class="tips" tabindex="99"></a>\
+								<label for="coupon_amount[' + size + ']"><?php _e('Amount', 'jigoshop'); ?></label>\
+							</th>\
+							<td>\
+								<input name="coupon_amount[' + size + ']" id="coupon_amount[' + size + ']" type="number" min="0"\
+								max="" class="regular-text " style="width:60px;" value=""\
+								/>\
+								<br />\
+								<small></small>\
+							</td>\
+						</tr>\
+						<tr>\
+							<th scope="row">\
+								<a href="#" tip="<?php _e('Control how many times this coupon may be used.', 'jigoshop'); ?>" class="tips"\
+								tabindex="99"></a>\
+								<label for="usage_limit[' + size + ']"><?php _e('Usage limit', 'jigoshop'); ?></label>\
+							</th>\
+							<td>\
+								<input name="usage_limit[' + size + ']" id="usage_limit[' + size + ']" type="number" min="0"\
+								max="" class="regular-text " style="width:60px;" placeholder="<?php _e('No limit', 'jigoshop'); ?>"\
+								value="" />\
+							</td>\
+						</tr>\
+						<tr>\
+							<th scope="row">\
+								<a href="#" tip="<?php _e('Set the required subtotal for this coupon to be valid on an order.', 'jigoshop'); ?>"\
+								class="tips" tabindex="99"></a>\
+								<label for="order_total_min[' + size + ']"><?php _e('Order subtotal', 'jigoshop'); ?></label>\
+							</th>\
+							<td>\
+								<input name="order_total_min[' + size + ']" id="order_total_min[' + size + ']" type="number"\
+								min="0" max="" class="regular-text " style="width:60px;" placeholder="<?php _e('No min', 'jigoshop'); ?>"\
+								value="" /><?php _e('Min', 'jigoshop'); ?></td>\
+						</tr>\
+						<tr>\
+							<th scope="row" style="padding-top:0px;"></th>\
+							<td style="padding-top:0px;">\
+								<input name="order_total_max[' + size + ']" id="order_total_max[' + size + ']" type="number"\
+								min="0" max="" class="regular-text " style="width:60px;" placeholder="<?php _e('No max', 'jigoshop'); ?>"\
+								value="" /><?php _e('Max', 'jigoshop'); ?></td>\
+						</tr>\
+						<tr>\
+							<th scope="row">\
+								<a href="#" tip="<?php _e('Which payment methods are allowed for this coupon to be effective?', 'jigoshop'); ?>"\
+								class="tips" tabindex="99"></a>\
+								<label for="coupon_pay_methods[' + size + '][]"><?php _e('Payment methods', 'jigoshop'); ?></label>\
+							</th>\
+							<td>\
+								<select name="coupon_pay_methods[' + size + '][]" id="coupon_pay_methods[' + size + '][]" style="width:200px;"\
+								class="chzn-select" multiple="multiple">\
+									<?php foreach($payment_methods as $id => $label) echo '<option value="' . $id . '">' . $label . '</option>'; ?>\
+								</select>\
+								<br />\
+								<small></small>\
+							</td>\
+						</tr>\
+						<tr>\
+							<th scope="row">\
+								<a href="#" tip="<?php _e('Control which products this coupon can apply to.', 'jigoshop'); ?>" class="tips"\
+								tabindex="99"></a>\
+								<label for="product_ids_' + size + '"><?php _e('Products', 'jigoshop'); ?></label>\
+							</th>\
+							<td>\
+								<select id="product_ids_' + size + '" style="width:200px;" name="product_ids[' + size + '][]"\
+								style="width:100px" class="ajax_chosen_select_products_and_variations"\
+								multiple="multiple" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>"></select><?php _e('Include', 'jigoshop'); ?></td>\
+						</tr>\
+						<tr>\
+							<th scope="row"></th>\
+							<td style="padding-top:0px;">\
+								<select id="exclude_product_ids_' + size + '" style="width:200px;" name="exclude_product_ids[' + size + '][]"\
+								style="width:100px" class="ajax_chosen_select_products_and_variations"\
+								multiple="multiple" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>"></select><?php _e('Exclude', 'jigoshop'); ?></td>\
+						</tr>\
+						<tr>\
+							<th scope="row">\
+								<a href="#" tip="<?php _e('Control which categories this coupon can apply to.', 'jigoshop'); ?>" class="tips"\
+								tabindex="99"></a>\
+								<label for="coupon_category[' + size + '][]"><?php _e('Categories', 'jigoshop'); ?></label>\
+							</th>\
+							<td>\
+								<select name="coupon_category[' + size + '][]" id="coupon_category_' + size + '" style="width:200px;"\
+								class="chzn-select" multiple="multiple">\
+								   <?php $categories = get_terms('product_cat', array('hide_empty' => false)); foreach($categories as $category) echo '<option value="' . $category->term_id . '">' . $category->name . '</option>'; ?>\
+								</select><?php _e('Include', 'jigoshop'); ?></td>\
+						</tr>\
+						<tr>\
+							<th scope="row">\
+								<label for="exclude_categories[' + size + '][]"></label>\
+							</th>\
+							<td>\
+								<select name="exclude_categories[' + size + '][]" id="exclude_categories_' + size + '" style="width:200px;"\
+								class="chzn-select" multiple="multiple">\
 									<?php $categories = get_terms('product_cat', array('hide_empty' => false)); foreach($categories as $category) echo '<option value="' . $category->term_id . '">' . $category->name . '</option>'; ?>\
-									</select> <?php _e('Include', 'jigoshop'); ?></td>\
-							</tr>\
-							<tr>\
-								<th scope="row"></th>\
-								<td style="padding-top:0px;">\
-									<select id="exclude_categories_' + size + '" style="width:200px;" name="exclude_categories[' + size + '][]"\
-									class="chzn-select" data-placeholder="<?php _e('Search for a category...', 'jigoshop'); ?>" multiple="multiple">\
-									<?php foreach($categories as $category) echo '<option value="' . $category->term_id . '">' . $category->name . '</option>'; ?>\
-									</select> <?php _e('Exclude', 'jigoshop'); ?></td>\
-							</tr>\
-							<tr>\
-								<th scope="row">\
-									<a href="#" tip="<?php _e('Choose between which dates this coupon is enabled.', 'jigoshop'); ?>" class="tips"\
-									tabindex="99"></a>\
-									<label for="coupon_date_from[' + size + ']"><?php _e('Dates allowed', 'jigoshop'); ?></label>\
-								</th>\
-								<td>\
-									<input name="coupon_date_from[' + size + ']" id="coupon_date_from[' + size + ']" type="text"\
-									class="regular-text date-pick" style="width:150px;" value=""\
-									/> <?php _e('From', 'jigoshop'); ?></td>\
-							</tr>\
-							<tr>\
-								<th scope="row" style="padding-top:0px;"></th>\
-								<td style="padding-top:0px;">\
-									<input name="coupon_date_to[' + size + ']" id="coupon_date_to[' + size + ']" type="text" class="regular-text date-pick"\
-									style="width:150px;" value="" /> <?php _e('To', 'jigoshop'); ?></td>\
-							</tr>\
-							<tr>\
-								<th scope="row">\
-									<a href="#" tip="<?php _e('Prevent other coupons from being used while this one is applied to a cart.', 'jigoshop'); ?>"\
-									class="tips" tabindex="99"></a>\
-									<label for="individual[' + size + ']"><?php _e('Misc. settings', 'jigoshop'); ?></label>\
-								</th>\
-								<td>\
-									<input id="individual[' + size + ']" type="checkbox" class="jigoshop-input jigoshop-checkbox"\
-									style="" name="individual[' + size + ']" />\
-									<label for="individual[' + size + ']"><?php _e('Alone?', 'jigoshop'); ?></label>\
-								</td>\
-							</tr>\
-							<tr>\
-								<th scope="row" style="padding-top:0px;">\
-									<a href="#" tip="<?php _e('Show the Free Shipping method on checkout with this enabled.', 'jigoshop'); ?>"\
-									class="tips" tabindex="99"></a>\
-								</th>\
-								<td style="padding-top:0px;">\
-									<input id="coupon_free_shipping[' + size + ']" type="checkbox" class="jigoshop-input jigoshop-checkbox"\
-									style="" name="coupon_free_shipping[' + size + ']" />\
-									<label for="coupon_free_shipping[' + size + ']"><?php _e('Free Shipping', 'jigoshop'); ?></label>\
-								</td>\
-							</tr>\
-						</tbody>\
+								</select><?php _e('Exclude', 'jigoshop'); ?></td>\
+						</tr>\
+						<tr>\
+							<th scope="row">\
+								<a href="#" tip="<?php _e('Choose between which dates this coupon is enabled.', 'jigoshop'); ?>" class="tips"\
+								tabindex="99"></a>\
+								<label for="coupon_date_from[' + size + ']"><?php _e('Dates allowed', 'jigoshop'); ?></label>\
+							</th>\
+							<td>\
+								<input name="coupon_date_from[' + size + ']" id="coupon_date_from[' + size + ']" type="text"\
+								class="regular-text date-pick" style="width:150px;" placeholder="<?php _e('Any date', 'jigoshop'); ?>"\
+								value="" /><?php _e('From', 'jigoshop'); ?></td>\
+						</tr>\
+						<tr>\
+							<th scope="row" style="padding-top:0px;"></th>\
+							<td style="padding-top:0px;">\
+								<input name="coupon_date_to[' + size + ']" id="coupon_date_to[' + size + ']" type="text" class="regular-text date-pick"\
+								style="width:150px;" placeholder="<?php _e('Any date', 'jigoshop'); ?>" value="" /><?php _e('To', 'jigoshop'); ?></td>\
+						</tr>\
+						<tr>\
+							<th scope="row">\
+								<a href="#" tip="<?php _e('Prevent other coupons from being used while this one is applied to a cart.', 'jigoshop'); ?>"\
+								class="tips" tabindex="99"></a>\
+								<label for="individual[' + size + ']"><?php _e('Misc. settings', 'jigoshop'); ?></label>\
+							</th>\
+							<td>\
+								<input id="individual[' + size + ']" type="checkbox" class="jigoshop-input jigoshop-checkbox "\
+								style="" name="individual[' + size + ']" />\
+								<label for="individual[' + size + ']"><?php _e('Alone?', 'jigoshop'); ?></label>\
+							</td>\
+						</tr>\
+						<tr>\
+							<th scope="row" style="padding-top:0px;">\
+								<a href="#" tip="<?php _e('Show the Free Shipping method on checkout with this enabled.', 'jigoshop'); ?>"\
+								class="tips" tabindex="99"></a>\
+							</th>\
+							<td style="padding-top:0px;">\
+								<input id="coupon_free_shipping[' + size + ']" type="checkbox" class="jigoshop-input jigoshop-checkbox "\
+								style="" name="coupon_free_shipping[' + size + ']" />\
+								<label for="coupon_free_shipping[' + size + ']"><?php _e('Free Shipping', 'jigoshop'); ?></label>\
+							</td>\
+						</tr>\
+					</tbody>\
 					</table>\
 					';
 					/* Add the table */
