@@ -905,7 +905,7 @@ class jigoshop_cart extends jigoshop_singleton {
 			return false;
 		}
 
-		/* Subtotal minimum */
+		/* Subtotal minimum / maximum. */
 		if ( !empty($the_coupon['order_total_min']) || !empty($the_coupon['order_total_max']) ) {
 
 			/* Can't use the jigoshop_cart::get_cart_subtotal() method as it's not ready at this point yet. */
