@@ -278,7 +278,7 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'std'            => 'product-category',
 		'css'            => 'width:130px;',
 		'type'           => 'text',
-		'atr'            => 'group'
+		'group'          => true
 	),
 
 	array(
@@ -288,7 +288,7 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'std'            => 'product-tag',
 		'css'            => 'width:130px;',
 		'type'           => 'text',
-		'atr'            => 'group'
+		'group'          => true
 	),
 
 	array( 'name'        => __('Shop page configuration', 'jigoshop'), 'type' => 'title', 'desc' => '' ),
@@ -455,7 +455,7 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'css'           => 'width:30px;',
 		'std'           => '3',
 		'type'          => 'text',
-		'atr'           => 'group',
+		'group'         => true
 	),
 
 	array(
@@ -465,7 +465,7 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'css'           => 'width:30px;',
 		'std'           => '12',
 		'type'          => 'text',
-		'atr'           => 'group',
+		'group'         => true
 	),
 
 	array( 'name'       => __('Pricing Options', 'jigoshop'), 'type' => 'title','desc' => '', 'id' => '' ),
@@ -548,7 +548,7 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'css'          => 'width:30px;',
 		'std'          => ',',
 		'type'         => 'text',
-		'atr'          => 'group',
+		'group'         => true
 	),
 
 	array(
@@ -558,7 +558,7 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'css'          => 'width:30px;',
 		'std'          => '.',
 		'type'         => 'text',
-		'atr'          => 'group',
+		'group'         => true
 	),
 
 	array(
@@ -568,7 +568,7 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'css'          => 'width:30px;',
 		'std'          => '2',
 		'type'         => 'text',
-		'atr'          => 'group',
+		'group'        => true
 	),
 
 	array( 'type'      => 'tabend'),

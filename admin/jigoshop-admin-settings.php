@@ -460,7 +460,7 @@ function jigoshop_admin_option_display($options) {
 						value="<?php if (get_option($value['id']) !== false && get_option($value['id']) !== null)
 							echo esc_attr( get_option($value['id']) );
 							else if ( isset($value['std'])) echo esc_attr( $value['std'] ); ?>" />
-					<?php if ( !empty( $value['name'] ) && !empty( $value['atr'] ) && $value['atr'] != 'group' ) : ?>
+					<?php if ( !empty( $value['name'] ) && empty( $value['group'] ) ) : ?>
 						<br /><small><?php echo $value['desc'] ?></small>
 					<?php else: ?>
 						<?php echo $value['desc'] ?>
@@ -493,7 +493,12 @@ function jigoshop_admin_option_display($options) {
 					<?php echo ucfirst($val); ?>
 					</option>
 					<?php endforeach; ?>
-					</select><br /><small><?php echo $value['desc'] ?></small>
+					</select>
+					<?php if ( !empty( $value['name'] ) && empty( $value['group'] ) ) : ?>
+						<br /><small><?php echo $value['desc'] ?></small>
+					<?php else: ?>
+						<?php echo $value['desc'] ?>
+					<?php endif; ?>
 				</td>
 			  </tr><?php
 			break;
@@ -687,6 +692,13 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 					'percent_product'=> __('Product % Discount', 'jigoshop')
 				);
 
+				/* Product categories. */
+				$categories = get_terms('product_cat', array('hide_empty' => false));
+				$coupon_cats = array();
+				foreach($categories as $category)
+					$coupon_cats[$category->term_id] = $category->name;
+
+
 				$i = -1;
 				if ($coupon_codes && is_array($coupon_codes) && sizeof($coupon_codes) > 0)
 					foreach ($coupon_codes as $coupon) : $i++; ?>
@@ -807,38 +819,30 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 						</td>
 					  </tr>
 
-					<tr>
-						<th scope="row">
-							<a href="#" tip="<?php _e('Control which categories this coupon can apply to.', 'jigoshop'); ?>" class="tips" tabindex="99"></a>
-							<label for="coupon_category_<?php echo esc_attr( $i ); ?>"><?php _e('Categories', 'jigoshop'); ?></label>
-						</th>
-
-						<td>
-						<?php $categories = get_terms('product_cat', array('hide_empty' => false)); ?>
-						<select id="coupon_category_<?php echo esc_attr( $i ); ?>" style="width:200px;" name="coupon_category[<?php echo $i; ?>][]" class="chzn-select" data-placeholder="<?php _e('Search for a category...', 'jigoshop'); ?>" multiple="multiple">
-						<?php foreach($categories as $category) : ?>
-							<?php $select_cat = !empty( $coupon['coupon_category'] ) && in_array( $category->term_id, $coupon['coupon_category'] ) ? 'selected' : ''; ?>
-							<option value="<?php echo $category->term_id; ?>" <?php echo $select_cat; ?> ><?php echo $category->name; ?></option>
-						<?php endforeach; ?>
-						</select> <?php _e('Include', 'jigoshop'); ?>
-						</td>
-					  </tr>
-
-					<tr>
-						<th scope="row"></th>
-						<td style="padding-top:0px;">
-						<select id="exclude_categories_<?php echo $i; ?>" style="width:200px;" name="exclude_categories[<?php echo $i; ?>][]" class="chzn-select" data-placeholder="<?php _e('Search for a category...', 'jigoshop'); ?>" multiple="multiple">
-						<?php foreach($categories as $category) : ?>
-							<?php $select_cat = !empty( $coupon['exclude_categories'] ) && in_array( $category->term_id, $coupon['exclude_categories'] ) ? 'selected' : ''; ?>
-							<option value="<?php echo $category->term_id; ?>" <?php echo $select_cat; ?> ><?php echo $category->name; ?></option>
-						<?php endforeach; ?>
-						</select> <?php _e('Exclude', 'jigoshop'); ?>
-						</td>
-					  </tr>
-
 					<?php
 					$options2 = array(
-
+						array(
+							'name'           => __('Categories','jigoshop'),
+							'desc'           => __('Include','jigoshop'),
+							'tip'            => __('Control which categories this coupon can apply to.','jigoshop'),
+							'id'             => 'coupon_category[' . esc_attr( $i ) . '][]',
+							'type'           => 'select',
+							'multiple'       => true,
+							'std'            => !empty($coupon['coupon_category']) ? $coupon['coupon_category'] : '',
+							'options'        => $coupon_cats,
+							'class'          => 'chzn-select',
+							'group'          => true
+						),
+						array(
+							'desc'           => __('Exclude','jigoshop'),
+							'id'             => 'exclude_categories[' . esc_attr( $i ) . '][]',
+							'type'           => 'select',
+							'multiple'       => true,
+							'std'            => !empty($coupon['exclude_categories']) ? $coupon['exclude_categories'] : '',
+							'options'        => $coupon_cats,
+							'class'          => 'chzn-select',
+							'group'          => true
+						),
 						array(
 							'name'           => __('Dates allowed','jigoshop'),
 							'desc'           => __('From','jigoshop'),
@@ -847,7 +851,8 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							'css'            => 'width:150px;',
 							'type'           => 'text',
 							'class'          => 'date-pick',
-							'std'            => !empty($coupon['date_from']) ? date('Y-m-d', $coupon['date_from']) : ''
+							'std'            => !empty($coupon['date_from']) ? date('Y-m-d', $coupon['date_from']) : '',
+							'group'          => true
 						),
 						array(
 							'desc'           => __('To','jigoshop'),
@@ -855,7 +860,8 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							'css'            => 'width:150px;',
 							'type'           => 'text',
 							'class'          => 'date-pick',
-							'std'            => !empty($coupon['date_to']) ? date('Y-m-d', $coupon['date_to']) : ''
+							'std'            => !empty($coupon['date_to']) ? date('Y-m-d', $coupon['date_to']) : '',
+							'group'          => true
 						),
 						array(
 							'name'           => __('Misc. settings','jigoshop'),
