@@ -429,7 +429,7 @@ function jigoshop_admin_option_display($options) {
 					<input
 					id="<?php echo esc_attr( $value['id'] ); ?>"
 					type="checkbox"
-					class="jigoshop-input jigoshop-checkbox"
+					class="jigoshop-input jigoshop-checkbox <?php if(!empty($value['class'])) echo esc_attr ( $value['class'] ); ?>"
 					style="<?php if ( !empty($value['css']) ) echo esc_attr( $value['css'] ); ?>"
 					name="<?php echo esc_attr( $value['id'] ); ?>"
 					<?php if (get_option($value['id']) !== false && get_option($value['id']) !== null)
@@ -455,7 +455,7 @@ function jigoshop_admin_option_display($options) {
 					<input name="<?php echo esc_attr( $value['id'] ); ?>"
 						id="<?php echo esc_attr( $value['id'] ); ?>"
 						type="<?php echo $value['type'] ?>"
-						class="regular-text <?php if(!empty($value['class'])) echo $value['class']; ?>"
+						class="regular-text <?php if(!empty($value['class'])) echo esc_attr ( $value['class'] ); ?>"
 						style="<?php if ( !empty($value['css']) ) echo esc_attr( $value['css'] ); ?>"
 						value="<?php if (get_option($value['id']) !== false && get_option($value['id']) !== null)
 							echo esc_attr( get_option($value['id']) );
@@ -481,17 +481,16 @@ function jigoshop_admin_option_display($options) {
 					<select name="<?php echo esc_attr( $value['id'] ); ?>"
 							id="<?php echo esc_attr( $value['id'] ); ?>"
 							style="<?php if ( isset($value['css'])) echo esc_attr( $value['css'] ); ?>"
+							class="<?php if(!empty($value['class'])) echo esc_attr ( $value['class'] ); ?>"
 							<?php if ( !empty($value['multiple']) ) echo 'multiple="multiple"'; ?>>
 
 					<?php $selected = get_option($value['id']); $selected = !empty( $selected ) ? $selected : $value['std']; ?>
 					<?php foreach ($value['options'] as $key => $val) : ?>
-					<option value="<?php echo esc_attr( $key ); ?>"
-					<?php if ( (!is_array($selected) && $selected == $key) || ( is_array($selected) && in_array($key, $selected) ) ) : ?>
-							selected="selected"
-					<?php endif; ?>
-					>
-					<?php echo ucfirst($val); ?>
-					</option>
+						<option value="<?php echo esc_attr( $key ); ?>"
+						<?php if ( (!is_array($selected) && $selected == $key) || ( is_array($selected) && in_array($key, $selected) ) ) : ?>
+								selected="selected"
+						<?php endif; ?>
+						><?php echo ucfirst($val); ?></option>
 					<?php endforeach; ?>
 					</select>
 					<?php if ( !empty( $value['name'] ) && empty( $value['group'] ) ) : ?>
@@ -518,6 +517,7 @@ function jigoshop_admin_option_display($options) {
 						   name="<?php echo esc_attr( $value['id'] ); ?>"
 						   id="<?php echo esc_attr( $key ); ?>"
 						   value="<?php echo esc_attr( $key ); ?>"
+						   class="<?php if(!empty($value['class'])) echo esc_attr ( $value['class'] ); ?>"
 						   <?php if (get_option($value['id']) == $key) { ?> checked="checked" <?php } ?>>
 					<?php echo esc_attr( ucfirst( $val ) ); ?>
 					</label><br />
@@ -564,11 +564,13 @@ function jigoshop_admin_option_display($options) {
 			?><tr>
 					<th scope="row"><?php if ($value['tip']) { ?><a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a><?php } ?><label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label></th>
 					<td>
-						<textarea <?php if (isset($value['args']))
-				echo $value['args'] . ' '; ?>
-				name="<?php echo esc_attr( $value['id'] ); ?>"
-				id="<?php echo esc_attr( $value['id'] ); ?>"
-				class="large-text" style="<?php echo esc_attr( $value['css'] ); ?>"><?php echo esc_textarea( ( get_option($value['id'])) ? stripslashes(get_option($value['id'])) : $value['std'] ); ?></textarea>
+						<textarea <?php if (isset($value['args'])) echo $value['args'] . ' '; ?>
+								name="<?php echo esc_attr( $value['id'] ); ?>"
+								id="<?php echo esc_attr( $value['id'] ); ?>"
+								class="large-text <?php if(!empty($value['class'])) echo esc_attr ( $value['class'] ); ?>"
+								style="<?php echo esc_attr( $value['css'] ); ?>">
+					<?php echo esc_textarea( ( get_option($value['id'])) ? stripslashes(get_option($value['id'])) : $value['std'] ); ?>
+						</textarea>
 						<br /><small><?php echo $value['desc'] ?></small>
 					</td>
 				</tr><?php
@@ -831,6 +833,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							'std'            => !empty($coupon['coupon_category']) ? $coupon['coupon_category'] : '',
 							'options'        => $coupon_cats,
 							'class'          => 'chzn-select',
+							'css'            => 'width:200px;',
 							'group'          => true
 						),
 						array(
@@ -841,6 +844,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							'std'            => !empty($coupon['exclude_categories']) ? $coupon['exclude_categories'] : '',
 							'options'        => $coupon_cats,
 							'class'          => 'chzn-select',
+							'css'            => 'width:200px;',
 							'group'          => true
 						),
 						array(
