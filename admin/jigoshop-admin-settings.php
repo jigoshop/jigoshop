@@ -483,10 +483,10 @@ function jigoshop_admin_option_display($options) {
 							style="<?php if ( isset($value['css'])) echo esc_attr( $value['css'] ); ?>"
 							<?php if ( !empty($value['multiple']) ) echo 'multiple="multiple"'; ?>>
 
-					<?php $selected = get_option($value['id']); ?>
+					<?php $selected = get_option($value['id']); $selected = !empty( $selected ) ? $selected : $value['std']; ?>
 					<?php foreach ($value['options'] as $key => $val) : ?>
 					<option value="<?php echo esc_attr( $key ); ?>"
-					<?php if ( (!is_array($selected) && $selected == $key) || is_array($selected) && in_array($key, $selected) ) : ?>
+					<?php if ( (!is_array($selected) && $selected == $key) || ( is_array($selected) && in_array($key, $selected) ) ) : ?>
 							selected="selected"
 					<?php endif; ?>
 					>
@@ -672,12 +672,20 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 				<tbody>
 
 				<?php
-				/* Payment methods */
+				/* Payment methods. */
 				$payment_methods = array();
 				$available_gateways = jigoshop_payment_gateways::get_available_payment_gateways();
 				if ( !empty($available_gateways) )
 					foreach ( $available_gateways as $id => $info )
 						$payment_methods[$id] = $info->title;
+
+				/* Coupon types. */
+				$discount_types = array(
+					'fixed_cart'     => __('Cart Discount'     , 'jigoshop'),
+					'percent'        => __('Cart % Discount'   , 'jigoshop'),
+					'fixed_product'  => __('Product Discount'  , 'jigoshop'),
+					'percent_product'=> __('Product % Discount', 'jigoshop')
+				);
 
 				$i = -1;
 				if ($coupon_codes && is_array($coupon_codes) && sizeof($coupon_codes) > 0)
@@ -689,13 +697,6 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 
 				<tbody class="couponDisplay" id="coupons_rows_<?php echo $i; ?>">
 				<?php
-					/* The option selection for this coupon. */
-					$discount_types = array(
-						'fixed_cart'     => __('Cart Discount'     , 'jigoshop'),
-						'percent'        => __('Cart % Discount'   , 'jigoshop'),
-						'fixed_product'  => __('Product Discount'  , 'jigoshop'),
-						'percent_product'=> __('Product % Discount', 'jigoshop')
-					);
 
 					$selected_type = '';
 					foreach ($discount_types as $type => $label)
