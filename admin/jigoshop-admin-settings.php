@@ -650,6 +650,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 				<thead>
 					<tr>
 						<th>Coupon</th>
+						<th>Type</th>
 						<th>Amount</th>
 						<th>Usage</th>
 						<th>Controls</th>
@@ -670,14 +671,14 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 				<?php
 					/* The option selection for this coupon. */
 					$discount_types = array(
-						'fixed_cart',
-						'percent',
-						'fixed_product',
-						'percent_product'
+						'fixed_cart'     => __('Cart Discount'     , 'jigoshop'),
+						'percent'        => __('Cart % Discount'   , 'jigoshop'),
+						'fixed_product'  => __('Product Discount'  , 'jigoshop'),
+						'percent_product'=> __('Product % Discount', 'jigoshop')
 					);
 
 					$selected_type = '';
-					foreach ($discount_types as $type)
+					foreach ($discount_types as $type => $label)
 						if ( $coupon['type'] == $type )
 							$selected_type = $type;
 
@@ -899,9 +900,10 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 						/* ]]> */
 					</script>
 				</td>
-				<td style="width:100px"><?php echo !empty($coupon['amount']) ? $coupon['amount'] : ''; ?></td>
-				<td style="width:100px"><?php echo !empty($coupon['usage']) ? $coupon['usage'] : '0' ?></td>
-				<td style="width:100px">
+				<td><?php echo $discount_types[$selected_type]; ?></td>
+				<td><?php echo !empty($coupon['amount']) ? $coupon['amount'] : ''; ?></td>
+				<td><?php echo !empty($coupon['usage']) ? $coupon['usage'] : '0' ?></td>
+				<td>
 					<a class="toggleCoupon" href="#coupons_rows_<?php echo $i; ?>"><?php _e('Show', 'jigoshop'); ?></a> /
 					<a href="#" id="remove_coupon_<?php echo esc_attr( $i ); ?>" class="remove_coupon" title="<?php _e('Delete this Coupon', 'jigoshop'); ?>"><?php _e('Delete', 'jigoshop'); ?></a>
 				</td>
