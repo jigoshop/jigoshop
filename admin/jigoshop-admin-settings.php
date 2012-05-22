@@ -734,7 +734,8 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							'desc'           => '',
 							'tip'            => __('Cart - Applies to whole cart<br/>Product - Applies to individual products only. You must specify individual products.','jigoshop'),
 							'id'             => 'coupon_type[' . esc_attr( $i ) . ']',
-							'css'            => 'width:150px;',
+							'css'            => 'width:200px;',
+							'class'          => 'chzn-select',
 							'type'           => 'select',
 							'std'            => $selected_type,
 							'options'        => $discount_types
@@ -749,16 +750,6 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							'std'            => esc_attr( $coupon['amount'] )
 						),
 						array(
-							'name'           => __('Payment methods','jigoshop'),
-							'tip'            => __('Which payment methods are allowed for this coupon to be effective?','jigoshop'),
-							'id'             => 'coupon_pay_methods[' . esc_attr( $i ) . '][]',
-							'css'            => 'width:150px;',
-							'type'           => 'select',
-							'multiple'       => true,
-							'std'            => !empty($coupon['coupon_pay_methods']) ? $coupon['coupon_pay_methods'] : '',
-							'options'        => $payment_methods
-						),
-						array(
 							'name'           => __('Usage limit','jigoshop'),
 							'desc'           => __(sprintf('Times used: %s', !empty($coupon['usage']) ? $coupon['usage'] : '0'), 'jigoshop'),
 							'tip'            => __('Control how many times this coupon may be used.','jigoshop'),
@@ -766,6 +757,17 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							'css'            => 'width:60px;',
 							'type'           => 'text',
 							'std'            => !empty($coupon['usage_limit']) ? $coupon['usage_limit'] : ''
+						),
+						array(
+							'name'           => __('Payment methods','jigoshop'),
+							'tip'            => __('Which payment methods are allowed for this coupon to be effective?','jigoshop'),
+							'id'             => 'coupon_pay_methods[' . esc_attr( $i ) . '][]',
+							'css'            => 'width:200px;',
+							'class'          => 'chzn-select',
+							'type'           => 'select',
+							'multiple'       => true,
+							'std'            => !empty($coupon['coupon_pay_methods']) ? $coupon['coupon_pay_methods'] : '',
+							'options'        => $payment_methods
 						),
 					);
 
