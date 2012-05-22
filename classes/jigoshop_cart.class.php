@@ -900,7 +900,7 @@ class jigoshop_cart extends jigoshop_singleton {
 		$pay_methods    = !is_array($the_coupon['coupon_pay_methods']) ? array($the_coupon['coupon_pay_methods']) : $the_coupon['coupon_pay_methods'];
 
 		/* Whether the order has a valid payment method which the coupon requires. */
-		if ( !empty($payment_method) && !in_array($payment_method, $pay_methods) ) {
+		if ( ( !empty($payment_method) && !empty($pay_methods) ) && !in_array($payment_method, $pay_methods) ) {
 			jigoshop::add_error(__('This coupon is invalid with that payment method!', 'jigoshop'));
 			return false;
 		}
