@@ -446,7 +446,8 @@ function jigoshop_admin_option_display($options) {
 			  </tr><?php
 			break;
 
-		case 'text':
+		case 'text'   :
+		case 'number' :
 			?><tr>
 				<th scope="row"<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
 					<?php if (!empty($value['tip'])) : ?>
@@ -460,7 +461,11 @@ function jigoshop_admin_option_display($options) {
 				<td<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
 					<input name="<?php echo esc_attr( $value['id'] ); ?>"
 						id="<?php echo esc_attr( $value['id'] ); ?>"
-						type="<?php echo $value['type'] ?>"
+						type="<?php echo $value['type']; ?>"
+						<?php if ($value['type'] == 'number' && !empty($value['restrict']) && is_array($value['restrict']) ): ?>
+						min="<?php echo isset($value['restrict']['min']) ? $value['restrict']['min'] : ''; ?>"
+						max="<?php echo isset($value['restrict']['max']) ? $value['restrict']['min'] : ''; ?>"
+						<?php endif; ?>
 						class="regular-text <?php if(!empty($value['class'])) echo esc_attr ( $value['class'] ); ?>"
 						style="<?php if ( !empty($value['css']) ) echo esc_attr( $value['css'] ); ?>"
 						placeholder="<?php if(!empty($value['placeholder'])) echo esc_attr ( $value['placeholder'] ); ?>"
@@ -753,7 +758,8 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							'tip'            => __('Amount this coupon is worth. If it is a percentange, just include the number without the percentage sign.','jigoshop'),
 							'id'             => 'coupon_amount[' . esc_attr( $i ) . ']',
 							'css'            => 'width:60px;',
-							'type'           => 'text',
+							'type'           => 'number',
+							'restrict'       => array( 'min' => 0 ),
 							'std'            => esc_attr( $coupon['amount'] )
 						),
 						array(
@@ -763,7 +769,8 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							'tip'            => __('Control how many times this coupon may be used.','jigoshop'),
 							'id'             => 'usage_limit[' . esc_attr( $i ) . ']',
 							'css'            => 'width:60px;',
-							'type'           => 'text',
+							'type'           => 'number',
+							'restrict'       => array( 'min' => 0 ),
 							'std'            => !empty($coupon['usage_limit']) ? $coupon['usage_limit'] : ''
 						),
 						array(
@@ -773,7 +780,8 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							'tip'            => __('Set the required subtotal for this coupon to be valid on an order.','jigoshop'),
 							'id'             => 'order_total_min[' . esc_attr( $i ) . ']',
 							'css'            => 'width:60px;',
-							'type'           => 'text',
+							'type'           => 'number',
+							'restrict'       => array( 'min' => 0 ),
 							'std'            => !empty($coupon['order_total_min']) ? $coupon['order_total_min'] : '',
 							'group'          => true
 						),
@@ -782,7 +790,8 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							'placeholder'    => __('No max','jigoshop'),
 							'id'             => 'order_total_max[' . esc_attr( $i ) . ']',
 							'css'            => 'width:60px;',
-							'type'           => 'text',
+							'type'           => 'number',
+							'restrict'       => array( 'min' => 0 ),
 							'std'            => !empty($coupon['order_total_max']) ? $coupon['order_total_max'] : '',
 							'group'          => true
 						),
