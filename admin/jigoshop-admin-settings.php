@@ -257,6 +257,7 @@ function jigoshop_update_coupons() {
 		'coupon_date_to'      => '',
 		'individual'          => '',
 		'coupon_free_shipping'=> '',
+		'coupon_pay_methods'  => '',
 	);
 
 	$coupons = array();
@@ -279,6 +280,7 @@ function jigoshop_update_coupons() {
 		$from_date           = !empty($coupon_date_from[$i])           ? strtotime($coupon_date_from[$i])                    : 0;
 		$free_ship           = !empty($coupon_free_shipping[$i])       ? 'yes'                                               : 'no';
 		$individual_use      = !empty($individual[$i])                 ? 'yes'                                               : 'no';
+		$payments            = !empty($coupon_pay_methods[$i])         ? $coupon_pay_methods[$i]                             : array();
 		$category            = !empty($coupon_category[$i])            ? $coupon_category[$i]                                : array();
 		$products            = !empty($product_ids[$i])                ? $product_ids[$i]                                    : array();
 		$ex_products         = !empty($exclude_product_ids[$i])        ? $exclude_product_ids[$i]                            : array();
@@ -293,6 +295,7 @@ function jigoshop_update_coupons() {
 				'products'            => $products,
 				'exclude_products'    => $ex_products,
 				'exclude_categories'  => $ex_categories,
+				'coupon_pay_methods'  => $payments,
 				'coupon_category'     => $category,
 				'date_from'           => $from_date,
 				'date_to'             => $to_date,
@@ -475,10 +478,20 @@ function jigoshop_admin_option_display($options) {
 					<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
 				</th>
 				<td>
-					<select name="<?php echo esc_attr( $value['id'] ); ?>" id="<?php echo esc_attr( $value['id'] ); ?>" style="<?php if ( isset($value['css'])) echo esc_attr( $value['css'] ); ?>">
+					<select name="<?php echo esc_attr( $value['id'] ); ?>"
+							id="<?php echo esc_attr( $value['id'] ); ?>"
+							style="<?php if ( isset($value['css'])) echo esc_attr( $value['css'] ); ?>"
+							<?php if ( !empty($value['multiple']) ) echo 'multiple="multiple"'; ?>>
 
+					<?php $selected = get_option($value['id']); ?>
 					<?php foreach ($value['options'] as $key => $val) : ?>
-					<option value="<?php echo esc_attr( $key ); ?>" <?php if (get_option($value['id']) == $key) { ?> selected="selected" <?php } ?>><?php echo ucfirst($val) ?></option>
+					<option value="<?php echo esc_attr( $key ); ?>"
+					<?php if ( (!is_array($selected) && $selected == $key) || is_array($selected) && in_array($key, $selected) ) : ?>
+							selected="selected"
+					<?php endif; ?>
+					>
+					<?php echo ucfirst($val); ?>
+					</option>
 					<?php endforeach; ?>
 					</select><br /><small><?php echo $value['desc'] ?></small>
 				</td>
@@ -659,6 +672,13 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 				<tbody>
 
 				<?php
+				/* Payment methods */
+				$payment_methods = array();
+				$available_gateways = jigoshop_payment_gateways::get_available_payment_gateways();
+				if ( !empty($available_gateways) )
+					foreach ( $available_gateways as $id => $info )
+						$payment_methods[$id] = $info->title;
+
 				$i = -1;
 				if ($coupon_codes && is_array($coupon_codes) && sizeof($coupon_codes) > 0)
 					foreach ($coupon_codes as $coupon) : $i++; ?>
@@ -714,7 +734,17 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							'std'            => esc_attr( $coupon['amount'] )
 						),
 						array(
-							'name'           => __('Usage Limit','jigoshop'),
+							'name'           => __('Payment methods','jigoshop'),
+							'tip'            => __('Which payment methods are allowed for this coupon to be effective?','jigoshop'),
+							'id'             => 'coupon_pay_methods[' . esc_attr( $i ) . '][]',
+							'css'            => 'width:150px;',
+							'type'           => 'select',
+							'multiple'       => true,
+							'std'            => !empty($coupon['coupon_pay_methods']) ? $coupon['coupon_pay_methods'] : '',
+							'options'        => $payment_methods
+						),
+						array(
+							'name'           => __('Usage limit','jigoshop'),
 							'desc'           => __(sprintf('Times used: %s', !empty($coupon['usage']) ? $coupon['usage'] : '0'), 'jigoshop'),
 							'tip'            => __('Control how many times this coupon may be used.','jigoshop'),
 							'id'             => 'usage_limit[' . esc_attr( $i ) . ']',
@@ -806,8 +836,6 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 					  </tr>
 
 					<?php
-					$coupon_date_from = !empty($coupon['date_from']) ? date('Y-m-d', $coupon['date_from']) : '';
-					$coupon_date_to   = !empty($coupon['date_to'])   ? date('Y-m-d', $coupon['date_to'])   : '';
 					$options2 = array(
 
 						array(
@@ -818,7 +846,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							'css'            => 'width:150px;',
 							'type'           => 'text',
 							'class'          => 'date-pick',
-							'std'            => $coupon_date_from
+							'std'            => !empty($coupon['date_from']) ? date('Y-m-d', $coupon['date_from']) : ''
 						),
 						array(
 							'desc'           => __('To','jigoshop'),
@@ -826,7 +854,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							'css'            => 'width:150px;',
 							'type'           => 'text',
 							'class'          => 'date-pick',
-							'std'            => $coupon_date_to
+							'std'            => !empty($coupon['date_to']) ? date('Y-m-d', $coupon['date_to']) : ''
 						),
 						array(
 							'name'           => __('Misc. settings','jigoshop'),
