@@ -759,6 +759,24 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							'std'            => !empty($coupon['usage_limit']) ? $coupon['usage_limit'] : ''
 						),
 						array(
+							'name'           => __('Order total','jigoshop'),
+							'desc'           => __('Min', 'jigoshop'),
+							'tip'            => __('Set the required order total for this coupon to be valid on an order.','jigoshop'),
+							'id'             => 'order_total_min[' . esc_attr( $i ) . ']',
+							'css'            => 'width:60px;',
+							'type'           => 'text',
+							'std'            => !empty($coupon['order_total_min']) ? $coupon['order_total_min'] : '',
+							'group'          => true
+						),
+						array(
+							'desc'           => __('Max', 'jigoshop'),
+							'id'             => 'order_total_max[' . esc_attr( $i ) . ']',
+							'css'            => 'width:60px;',
+							'type'           => 'text',
+							'std'            => !empty($coupon['order_total_max']) ? $coupon['order_total_max'] : '',
+							'group'          => true
+						),
+						array(
 							'name'           => __('Payment methods','jigoshop'),
 							'tip'            => __('Which payment methods are allowed for this coupon to be effective?','jigoshop'),
 							'id'             => 'coupon_pay_methods[' . esc_attr( $i ) . '][]',
