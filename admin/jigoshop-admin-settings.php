@@ -918,10 +918,10 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 				function toggle_coupons() {
 					jQuery('a.toggleCoupon').click(function(e) {
 						e.preventDefault();
+						jQuery(this).text(jQuery(this).text() == '<?php _e('Show', 'jigoshop'); ?>' ? '<?php _e('Hide', 'jigoshop'); ?>' : '<?php _e('Show', 'jigoshop'); ?>');
+
 						var id = jQuery(this).attr('href').substr(1);
-						jQuery('#' + id).toggle('slow', function() {
-							// Stuff later?
-						});
+						jQuery('#' + id).toggle('slow');
 					});
 				}
 
