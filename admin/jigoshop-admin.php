@@ -21,6 +21,7 @@ require_once ( 'jigoshop-admin-settings.php' );
 require_once ( 'jigoshop-admin-attributes.php' );
 require_once ( 'jigoshop-admin-post-types.php' );
 require_once ( 'jigoshop-admin-product-quick-bulk-edit.php' );
+require_once ( 'jigoshop-admin-taxonomies.php' );
 
 // Contextual help only works for 3.3 due to updated API
 if ( get_bloginfo('version') >= '3.3' ) {
