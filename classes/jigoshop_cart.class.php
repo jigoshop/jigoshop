@@ -864,60 +864,79 @@ class jigoshop_cart extends jigoshop_singleton {
      */
     function add_discount($coupon_code) {
 
-        if ($the_coupon = jigoshop_coupons::get_coupon($coupon_code)) :
+		/* Don't continue if the coupon isn't valid. */
+		if ( !self::valid_coupon($coupon_code) )
+			return false;
 
-            // Check if applied
-            if (jigoshop_cart::has_discount($coupon_code)) :
-                jigoshop::add_error(__('Discount code already applied!', 'jigoshop'));
-                return false;
-            endif;
+		// before adding this coupon, make sure no individual use coupons already exist
+		foreach (self::$applied_coupons as $coupon) :
+			$coupon = jigoshop_coupons::get_coupon($coupon);
+			if ($coupon['individual_use'] == 'yes') :
+				self::$applied_coupons = array();
+			endif;
+		endforeach;
 
-            // Check it can be used with cart
-            // get_coupon() checks for valid coupon. don't go any further without one
-            if (!jigoshop_coupons::get_coupon($coupon_code)) :
-                jigoshop::add_error(__('Invalid coupon!', 'jigoshop'));
-                return false;
-            endif;
+		// If its individual use then remove other coupons
+		if ($the_coupon['individual_use'] == 'yes') :
+			self::$applied_coupons = array();
+		endif;
 
-            // Check if coupon products are in cart
-            if ( ! jigoshop_cart::has_discounted_products_in_cart( $the_coupon ) ) {
-                jigoshop::add_error(__('No products in your cart match that coupon!', 'jigoshop'));
-                return false;
-            }
-
-            // if it's a percentage discount for products, make sure it's for a specific product, not all products
-
-            if ($the_coupon['type'] == 'percent_product' && sizeof($the_coupon['products']) == 0) :
-                jigoshop::add_error(__('Invalid coupon!', 'jigoshop'));
-                return false;
-            endif;
-
-            // before adding this coupon, make sure no individual use coupons already exist
-            foreach (self::$applied_coupons as $coupon) :
-                $coupon = jigoshop_coupons::get_coupon($coupon);
-                if ($coupon['individual_use'] == 'yes') :
-                    self::$applied_coupons = array();
-                endif;
-            endforeach;
-
-            // If its individual use then remove other coupons
-            if ($the_coupon['individual_use'] == 'yes') :
-                self::$applied_coupons = array();
-            endif;
-
-
-
-            self::$applied_coupons[] = $coupon_code;
-            self::set_session();
-            jigoshop::add_message(__('Discount code applied successfully.', 'jigoshop'));
-            return true;
-
-        else :
-            jigoshop::add_error(__('Coupon does not exist or is no longer valid!', 'jigoshop'));
-            return false;
-        endif;
-        return false;
+		self::$applied_coupons[] = $coupon_code;
+		self::set_session();
+		jigoshop::add_message(__('Discount code applied successfully.', 'jigoshop'));
+		return true;
     }
+
+	function valid_coupon($coupon_code) {
+
+        if (!$the_coupon = jigoshop_coupons::get_coupon($coupon_code)) {
+			jigoshop::add_error(__('Coupon does not exist or is no longer valid!', 'jigoshop'));
+			return false;
+		}
+
+		$payment_method = !empty($_POST['payment_method']) ? $_POST['payment_method'] : '';
+		$pay_methods    = !is_array($the_coupon['coupon_pay_methods']) ? array($the_coupon['coupon_pay_methods']) : $the_coupon['coupon_pay_methods'];
+
+		/* Whether the order has a valid payment method which the coupon requires. */
+		if ( !in_array($payment_method, $pay_methods) ) {
+			jigoshop::add_error(__('This coupon is invalid with that payment method!', 'jigoshop'));
+			return false;
+		}
+
+		// Check if applied
+		if (jigoshop_cart::has_discount($coupon_code)) {
+			jigoshop::add_error(__('Discount code already applied!', 'jigoshop'));
+			return false;
+		}
+
+		// Check it can be used with cart
+		// get_coupon() checks for valid coupon. don't go any further without one
+		if (!jigoshop_coupons::get_coupon($coupon_code)) {
+			jigoshop::add_error(__('Invalid coupon!', 'jigoshop'));
+			return false;
+		}
+
+		// Check if coupon products are in cart
+		if ( ! jigoshop_cart::has_discounted_products_in_cart( $the_coupon ) ) {
+			jigoshop::add_error(__('No products in your cart match that coupon!', 'jigoshop'));
+			return false;
+		}
+
+		// Check if coupon products are in cart
+		if ( ! jigoshop_cart::has_discounted_products_in_cart( $the_coupon ) ) {
+			jigoshop::add_error(__('No products in your cart match that coupon!', 'jigoshop'));
+			return false;
+		}
+
+		// if it's a percentage discount for products, make sure it's for a specific product, not all products
+		if ($the_coupon['type'] == 'percent_product' && sizeof($the_coupon['products']) == 0) {
+			jigoshop::add_error(__('Invalid coupon!', 'jigoshop'));
+			return false;
+		}
+
+		return true;
+
+	}
 
     function has_discounted_products_in_cart( $thecoupon ) {
 

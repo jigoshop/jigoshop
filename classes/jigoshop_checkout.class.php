@@ -271,14 +271,6 @@ class jigoshop_checkout extends jigoshop_singleton {
         jigoshop_cart::get_cart(); // calls get_cart_from_session() if required
         jigoshop_cart::calculate_totals();
 
-		// Process Discount Codes
-		if ( !empty( $_POST['coupon_code'] ) && jigoshop::verify_nonce('process_checkout') ) :
-
-			$coupon_code = stripslashes(trim($_POST['coupon_code']));
-			jigoshop_cart::add_discount($coupon_code);
-
-		endif;
-
 		if (isset($_POST) && $_POST && !isset($_POST['login'])) :
 
 			jigoshop::verify_nonce('process_checkout');
@@ -286,6 +278,18 @@ class jigoshop_checkout extends jigoshop_singleton {
 			if ( sizeof(jigoshop_cart::$cart_contents) == 0 ) :
 				jigoshop::add_error( sprintf(__('Sorry, your session has expired. <a href="%s">Return to homepage &rarr;</a>','jigoshop'), home_url()) );
 			endif;
+
+			// Process Discount Codes
+			if ( !empty( $_POST['coupon_code'] ) ) {
+				$coupon_code = stripslashes(trim($_POST['coupon_code']));
+				jigoshop_cart::add_discount($coupon_code);
+			}
+
+			/* Check if the payment method is allowed for our coupons. */
+			if ( !empty(jigoshop_cart::$applied_coupons) ) {
+				foreach ( jigoshop_cart::$applied_coupons as $coupon_code )
+					jigoshop_cart::valid_coupon($coupon_code);
+			}
 
 			// Checkout fields
 			if (isset($_POST['shipping_method'])) :
