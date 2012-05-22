@@ -730,7 +730,6 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 
 						array(
 							'name'           => __('Code','jigoshop'),
-							'desc'           => '',
 							'tip'            => __('The coupon code a customer enters on the cart or checkout page.','jigoshop'),
 							'id'             => 'coupon_code[' . esc_attr( $i ) . ']',
 							'css'            => 'width:150px;',
@@ -740,7 +739,6 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 						),
 						array(
 							'name'           => __('Type','jigoshop'),
-							'desc'           => '',
 							'tip'            => __('Cart - Applies to whole cart<br/>Product - Applies to individual products only. You must specify individual products.','jigoshop'),
 							'id'             => 'coupon_type[' . esc_attr( $i ) . ']',
 							'css'            => 'width:200px;',
@@ -751,7 +749,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 						),
 						array(
 							'name'           => __('Amount','jigoshop'),
-							'desc'           => '',
+							'placeholder'    => __('Any','jigoshop'),
 							'tip'            => __('Amount this coupon is worth. If it is a percentange, just include the number without the percentage sign.','jigoshop'),
 							'id'             => 'coupon_amount[' . esc_attr( $i ) . ']',
 							'css'            => 'width:60px;',
@@ -761,6 +759,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 						array(
 							'name'           => __('Usage limit','jigoshop'),
 							'desc'           => __(sprintf('Times used: %s', !empty($coupon['usage']) ? $coupon['usage'] : '0'), 'jigoshop'),
+							'placeholder'    => __('No limit','jigoshop'),
 							'tip'            => __('Control how many times this coupon may be used.','jigoshop'),
 							'id'             => 'usage_limit[' . esc_attr( $i ) . ']',
 							'css'            => 'width:60px;',
@@ -769,6 +768,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 						),
 						array(
 							'name'           => __('Order subtotal','jigoshop'),
+							'placeholder'    => __('No min','jigoshop'),
 							'desc'           => __('Min', 'jigoshop'),
 							'tip'            => __('Set the required subtotal for this coupon to be valid on an order.','jigoshop'),
 							'id'             => 'order_total_min[' . esc_attr( $i ) . ']',
@@ -779,6 +779,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 						),
 						array(
 							'desc'           => __('Max', 'jigoshop'),
+							'placeholder'    => __('No max','jigoshop'),
 							'id'             => 'order_total_max[' . esc_attr( $i ) . ']',
 							'css'            => 'width:60px;',
 							'type'           => 'text',
@@ -879,6 +880,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 						array(
 							'name'           => __('Dates allowed','jigoshop'),
 							'desc'           => __('From','jigoshop'),
+							'placeholder'    => __('Any date','jigoshop'),
 							'tip'            => __('Choose between which dates this coupon is enabled.','jigoshop'),
 							'id'             => 'coupon_date_from[' . esc_attr( $i ) . ']',
 							'css'            => 'width:150px;',
@@ -889,6 +891,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 						),
 						array(
 							'desc'           => __('To','jigoshop'),
+							'placeholder'    => __('Any date','jigoshop'),
 							'id'             => 'coupon_date_to[' . esc_attr( $i ) . ']',
 							'css'            => 'width:150px;',
 							'type'           => 'text',
