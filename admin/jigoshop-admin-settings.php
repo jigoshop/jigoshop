@@ -702,12 +702,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							'css'            => 'width:150px;',
 							'type'           => 'select',
 							'std'            => $selected_type,
-							'options'        => array(
-								'fixed_cart'     => __('Cart Discount'     , 'jigoshop'),
-								'percent'        => __('Cart % Discount'   , 'jigoshop'),
-								'fixed_product'  => __('Product Discount'  , 'jigoshop'),
-								'percent_product'=> __('Product % Discount', 'jigoshop')
-							)
+							'options'        => $discount_types
 						),
 						array(
 							'name'           => __('Amount','jigoshop'),
