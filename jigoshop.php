@@ -45,10 +45,6 @@
 if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1203310);
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
-// Override default translations with custom .mo's found in wp-content/languages/jigoshop
-load_textdomain( 'jigoshop', WP_LANG_DIR.'/jigoshop/jigoshop-'.get_locale().'.mo' );
-load_plugin_textdomain( 'jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-
 // Load administration & check if we need to install
 if ( is_admin() ) {
 	include_once( 'admin/jigoshop-admin.php' );
@@ -127,6 +123,10 @@ if (!isset($_SERVER['REQUEST_URI'])) {
  *  Jigoshop Intialization
  */
 function jigoshop_init() {
+
+	// Override default translations with custom .mo's found in wp-content/languages/jigoshop
+	load_textdomain( 'jigoshop', WP_LANG_DIR.'/jigoshop/jigoshop-'.get_locale().'.mo' );
+	load_plugin_textdomain( 'jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
 	/* ensure nothing is output to the browser prior to this (other than headers) */
 	ob_start();
