@@ -95,8 +95,10 @@ class Jigoshop_Options {
 	 * @since	1.2
 	 */	
 	public static function get_option( $name, $default = null ) {
+        $old_option = get_option(substr($name, 0, strlen($name) - 4));
 		if ( isset( self::$current_options[$name] )) return self::$current_options[$name];
 		else if ( isset( $default )) return $default;
+        else if ( isset ( $old_option )) return $old_option;
 		else return null;
 	}
 	
