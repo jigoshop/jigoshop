@@ -344,7 +344,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 
 			
 		// Find the current TAB we are working with and use it's option settings
-		$this_section = sanitize_title( Jigoshop_Options::get_option( 'jigoshop_settings_current_tabname' ) );
+		$this_section = sanitize_title( Jigoshop_Options::get_option( 'jigoshop_settings_current_tabname_new' ) );
 		$tab = $this->our_parser->tabs[$this_section];
 		
 		
@@ -489,7 +489,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			add_settings_error(
 				'',
 				'settings_updated',
-				sprintf(__('"%s" settings were updated successfully.','jigoshop'), Jigoshop_Options::get_option( 'jigoshop_settings_current_tabname' )),
+				sprintf(__('"%s" settings were updated successfully.','jigoshop'), Jigoshop_Options::get_option( 'jigoshop_settings_current_tabname_new' )),
 				'updated'
 			);
 		}
@@ -1238,7 +1238,7 @@ class Jigoshop_Options_Parser {
 	
 		$_tax = new jigoshop_tax();
 		$tax_classes = $_tax->get_tax_classes();
-		$tax_rates = (array) Jigoshop_Options::get_option( 'jigoshop_tax_rates' );
+		$tax_rates = (array) Jigoshop_Options::get_option( 'jigoshop_tax_rates_new' );
 		$applied_all_states = array();
 		
 		ob_start();
