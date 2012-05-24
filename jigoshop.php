@@ -139,9 +139,9 @@ function jigoshop_init() {
 	} else {
 	
 		/* Catalog Filters */
-		add_filter( 'loop-shop-query'   , create_function( '', 'return array("orderby" => "'.get_option('jigoshop_catalog_sort_orderby').'","order" => "'.Jigoshop_Options::get_option('jigoshop_catalog_sort_direction').'");' ) );
-		add_filter( 'loop_shop_columns' , create_function( '', 'return '.Jigoshop_Options::get_option('jigoshop_catalog_columns').';' ) );
-		add_filter( 'loop_shop_per_page', create_function( '', 'return '.Jigoshop_Options::get_option('jigoshop_catalog_per_page').';' ) );
+		add_filter( 'loop-shop-query'   , create_function( '', 'return array("orderby" => "'.Jigoshop_Options::get_option('jigoshop_catalog_sort_orderby_new').'","order" => "'.Jigoshop_Options::get_option('jigoshop_catalog_sort_direction_new').'");' ) );
+		add_filter( 'loop_shop_columns' , create_function( '', 'return '.Jigoshop_Options::get_option('jigoshop_catalog_columns_new').';' ) );
+		add_filter( 'loop_shop_per_page', create_function( '', 'return '.Jigoshop_Options::get_option('jigoshop_catalog_per_page_new').';' ) );
 
 		jigoshop_catalog_query::instance();		// front end queries class
 		
@@ -155,11 +155,11 @@ function jigoshop_init() {
 
 	// Constants
 	if (!defined('JIGOSHOP_USE_CSS')) :
-		if (Jigoshop_Options::get_option('jigoshop_disable_css')=='yes') define('JIGOSHOP_USE_CSS', false);
+		if (Jigoshop_Options::get_option('jigoshop_disable_css_new')=='yes') define('JIGOSHOP_USE_CSS', false);
 		else define('JIGOSHOP_USE_CSS', true);
 	endif;
 	if (!defined('JIGOSHOP_LOAD_FANCYBOX')) :
-		if (Jigoshop_Options::get_option('jigoshop_disable_fancybox')=='yes') define('JIGOSHOP_LOAD_FANCYBOX', false);
+		if (Jigoshop_Options::get_option('jigoshop_disable_fancybox_new')=='yes') define('JIGOSHOP_LOAD_FANCYBOX', false);
 		else define('JIGOSHOP_LOAD_FANCYBOX', true);
 	endif;
 	if ( !defined('JIGOSHOP_TEMPLATE_URL') ) define('JIGOSHOP_TEMPLATE_URL', 'jigoshop/');
@@ -225,16 +225,16 @@ add_filter( 'wp_mail_from', 'jigoshop_mail_from' );
  * @since 0.9.9
  **/
 function jigoshop_set_image_sizes() {
-	$tinycrop = Jigoshop_Options::get_option( 'jigoshop_use_wordpress_tiny_crop', 'no' ) == 'yes' ? true : false;
-	$thumbcrop = Jigoshop_Options::get_option( 'jigoshop_use_wordpress_thumbnail_crop', 'no' ) == 'yes' ? true : false;
-	$catalogcrop = Jigoshop_Options::get_option( 'jigoshop_use_wordpress_catalog_crop', 'no' ) == 'yes' ? true : false;
-	$featuredcrop = Jigoshop_Options::get_option( 'jigoshop_use_wordpress_featured_crop', 'no' ) == 'yes' ? true : false;
+	$tinycrop = Jigoshop_Options::get_option( 'jigoshop_use_wordpress_tiny_crop_new', 'no' ) == 'yes' ? true : false;
+	$thumbcrop = Jigoshop_Options::get_option( 'jigoshop_use_wordpress_thumbnail_crop_new', 'no' ) == 'yes' ? true : false;
+	$catalogcrop = Jigoshop_Options::get_option( 'jigoshop_use_wordpress_catalog_crop_new', 'no' ) == 'yes' ? true : false;
+	$featuredcrop = Jigoshop_Options::get_option( 'jigoshop_use_wordpress_featured_crop_new', 'no' ) == 'yes' ? true : false;
 
 	add_image_size( 'admin_product_list', 32, 32, $tinycrop );
-	add_image_size( 'shop_tiny', Jigoshop_Options::get_option('jigoshop_shop_tiny_w'), Jigoshop_Options::get_option('jigoshop_shop_tiny_h'), $tinycrop );
-	add_image_size( 'shop_thumbnail', Jigoshop_Options::get_option('jigoshop_shop_thumbnail_w'), Jigoshop_Options::get_option('jigoshop_shop_thumbnail_h'), $thumbcrop );
-	add_image_size( 'shop_small', Jigoshop_Options::get_option('jigoshop_shop_small_w'), Jigoshop_Options::get_option('jigoshop_shop_small_h'), $catalogcrop );
-	add_image_size( 'shop_large', Jigoshop_Options::get_option('jigoshop_shop_large_w'), Jigoshop_Options::get_option('jigoshop_shop_large_h'), $featuredcrop );
+	add_image_size( 'shop_tiny', Jigoshop_Options::get_option('jigoshop_shop_tiny_w_new'), Jigoshop_Options::get_option('jigoshop_shop_tiny_h_new'), $tinycrop );
+	add_image_size( 'shop_thumbnail', Jigoshop_Options::get_option('jigoshop_shop_thumbnail_w_new'), Jigoshop_Options::get_option('jigoshop_shop_thumbnail_h_new'), $thumbcrop );
+	add_image_size( 'shop_small', Jigoshop_Options::get_option('jigoshop_shop_small_w_new'), Jigoshop_Options::get_option('jigoshop_shop_small_h_new'), $catalogcrop );
+	add_image_size( 'shop_large', Jigoshop_Options::get_option('jigoshop_shop_large_w_new'), Jigoshop_Options::get_option('jigoshop_shop_large_h_new'), $featuredcrop );
 }
 
 /**
@@ -253,19 +253,19 @@ function jigoshop_get_image_size( $size ) {
 			$image_size = array( 32, 32 );
 			break;
 		case 'shop_tiny':
-			$image_size = array( Jigoshop_Options::get_option('jigoshop_shop_tiny_w'), Jigoshop_Options::get_option('jigoshop_shop_tiny_h') );
+			$image_size = array( Jigoshop_Options::get_option('jigoshop_shop_tiny_w_new'), Jigoshop_Options::get_option('jigoshop_shop_tiny_h_new') );
 			break;
 		case 'shop_thumbnail':
-			$image_size = array( Jigoshop_Options::get_option('jigoshop_shop_thumbnail_w'), Jigoshop_Options::get_option('jigoshop_shop_thumbnail_h') );
+			$image_size = array( Jigoshop_Options::get_option('jigoshop_shop_thumbnail_w_new'), Jigoshop_Options::get_option('jigoshop_shop_thumbnail_h_new') );
 			break;
 		case 'shop_small':
-			$image_size = array( Jigoshop_Options::get_option('jigoshop_shop_small_w'), Jigoshop_Options::get_option('jigoshop_shop_small_h') );
+			$image_size = array( Jigoshop_Options::get_option('jigoshop_shop_small_w_new'), Jigoshop_Options::get_option('jigoshop_shop_small_h_new') );
 			break;
 		case 'shop_large':
-			$image_size = array( Jigoshop_Options::get_option('jigoshop_shop_large_w'), Jigoshop_Options::get_option('jigoshop_shop_large_h') );
+			$image_size = array( Jigoshop_Options::get_option('jigoshop_shop_large_w_new'), Jigoshop_Options::get_option('jigoshop_shop_large_h_new') );
 			break;
 		default:
-			$image_size = array( Jigoshop_Options::get_option('jigoshop_shop_small_w'), Jigoshop_Options::get_option('jigoshop_shop_small_h') );
+			$image_size = array( Jigoshop_Options::get_option('jigoshop_shop_small_w_new'), Jigoshop_Options::get_option('jigoshop_shop_small_h_new') );
 			break;
 	endswitch;
 
@@ -351,7 +351,7 @@ function jigoshop_frontend_scripts() {
 		'currency_symbol' 				=> get_jigoshop_currency_symbol(),
 		'get_variation_nonce' 			=> wp_create_nonce("get-variation"),
 		'load_fancybox'					=> JIGOSHOP_LOAD_FANCYBOX,
-		'option_guest_checkout'			=> Jigoshop_Options::get_option('jigoshop_enable_guest_checkout'),
+		'option_guest_checkout'			=> Jigoshop_Options::get_option('jigoshop_enable_guest_checkout_new'),
 		'select_state_text' 			=> __('Select a state&hellip;', 'jigoshop'),
 		'state_text' 					=> __('state', 'jigoshop'),
 		'update_order_review_nonce' 	=> wp_create_nonce("update-order-review"),
@@ -383,7 +383,7 @@ add_action('template_redirect', 'jigoshop_frontend_scripts');
 */
 function jigoshop_demo_store() {
 
-	if (Jigoshop_Options::get_option('jigoshop_demo_store')=='yes') :
+	if (Jigoshop_Options::get_option('jigoshop_demo_store_new')=='yes') :
 
 		echo '<p class="demo_store">'.__('This is a demo store for testing purposes &mdash; no orders shall be fulfilled.', 'jigoshop').'</p>';
 
@@ -425,7 +425,7 @@ function jigoshop_product_cat_filter_post_link( $permalink, $post, $leavename, $
 	Adds social sharing code to footer
 */
 function jigoshop_sharethis() {
-	if (is_single() && Jigoshop_Options::get_option('jigoshop_sharethis')) :
+	if (is_single() && Jigoshop_Options::get_option('jigoshop_sharethis_new')) :
 
 		if (is_ssl()) :
 			$sharethis = 'https://ws.sharethis.com/button/buttons.js';
@@ -433,7 +433,7 @@ function jigoshop_sharethis() {
 			$sharethis = 'http://w.sharethis.com/button/buttons.js';
 		endif;
 
-		echo '<script type="text/javascript">var switchTo5x=true;</script><script type="text/javascript" src="'.$sharethis.'"></script><script type="text/javascript">stLight.options({publisher:"'.Jigoshop_Options::get_option('jigoshop_sharethis').'"});</script>';
+		echo '<script type="text/javascript">var switchTo5x=true;</script><script type="text/javascript" src="'.$sharethis.'"></script><script type="text/javascript">stLight.options({publisher:"'.Jigoshop_Options::get_option('jigoshop_sharethis_new').'"});</script>';
 
 	endif;
 }
@@ -593,7 +593,7 @@ function jigoshop_force_ssl() {
 		exit;
 	endif;
 }
-if (!is_admin() && Jigoshop_Options::get_option('jigoshop_force_ssl_checkout')=='yes') add_action( 'wp', 'jigoshop_force_ssl');
+if (!is_admin() && Jigoshop_Options::get_option('jigoshop_force_ssl_checkout_new')=='yes') add_action( 'wp', 'jigoshop_force_ssl');
 
 function jigoshop_force_ssl_images( $content ) {
 	if (is_ssl()) :
@@ -628,7 +628,7 @@ add_filter('style_loader_src', 'jigoshop_force_ssl_urls');
 
 // http://www.xe.com/symbols.php
 function get_jigoshop_currency_symbol() {
-	$currency = Jigoshop_Options::get_option('jigoshop_currency');
+	$currency = Jigoshop_Options::get_option('jigoshop_currency_new');
 	$currency_symbol = '';
 	switch ($currency) :
 		case 'AED' : $currency_symbol = '&#1583;&#46;&#1573;'; break;
@@ -679,18 +679,18 @@ function jigoshop_price( $price, $args = array() ) {
 	$return = '';
 	$price = number_format(
 		(double) $price,
-		(int) Jigoshop_Options::get_option('jigoshop_price_num_decimals'),
-		Jigoshop_Options::get_option('jigoshop_price_decimal_sep'),
-		Jigoshop_Options::get_option('jigoshop_price_thousand_sep')
+		(int) Jigoshop_Options::get_option('jigoshop_price_num_decimals_new'),
+		Jigoshop_Options::get_option('jigoshop_price_decimal_sep_new'),
+		Jigoshop_Options::get_option('jigoshop_price_thousand_sep_new')
 	);
 
     $return = $price;
 
     if ($with_currency) :
 
-        $currency_pos = Jigoshop_Options::get_option('jigoshop_currency_pos');
+        $currency_pos = Jigoshop_Options::get_option('jigoshop_currency_pos_new');
         $currency_symbol = get_jigoshop_currency_symbol();
-        $currency_code = Jigoshop_Options::get_option('jigoshop_currency');
+        $currency_code = Jigoshop_Options::get_option('jigoshop_currency_new');
 
         switch ($currency_pos) :
             case 'left' :
@@ -732,7 +732,7 @@ function jigoshop_price( $price, $args = array() ) {
         endswitch;
 
         // only show (ex. tax) if we are going to show the price with currency as well. Otherwise we just want the formatted price
-        if ($ex_tax_label && Jigoshop_Options::get_option('jigoshop_calc_taxes')=='yes') $return .= __(' <small>(ex. tax)</small>', 'jigoshop');
+        if ($ex_tax_label && Jigoshop_Options::get_option('jigoshop_calc_taxes_new')=='yes') $return .= __(' <small>(ex. tax)</small>', 'jigoshop');
     endif;
 
 	return $return;
