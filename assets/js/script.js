@@ -407,6 +407,8 @@ if (params.is_checkout==1) {
 			url: 		params.ajax_url,
 			data: 		data,
 			success: 	function( response ) {
+				/* Prevent stacking of errors. */
+				jQuery('.jigoshop_error, .jigoshop_message').remove();
 				jQuery('#order_methods, #order_review').remove();
 				jQuery('#order_review_heading').after(response);
 				jQuery('#order_review input[name=payment_method]:checked').click();
