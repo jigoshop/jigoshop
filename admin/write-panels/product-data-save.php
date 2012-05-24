@@ -128,7 +128,7 @@ class jigoshop_product_meta
 	private function process_stock( array $post ) {
 
 		// If the global stock switch is off
-		if ( ! Jigoshop_Options::get_option('jigoshop_manage_stock') )
+		if ( ! Jigoshop_Options::get_option('jigoshop_manage_stock_new') )
 			return false;
 
 		// Don't hold stock info for external & grouped products
