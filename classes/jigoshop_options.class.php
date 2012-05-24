@@ -77,6 +77,11 @@ class Jigoshop_Options {
 	 * @since	1.2
 	 */	
 	public static function add_option( $name, $value ) {
+        // take care of keeping the old name updated when setting new options
+        if (strpos($name, '_new') !== false) :
+             update_option(self::get_old_name($name), $value);
+        endif;
+        
 		self::get_current_options();
 		if ( ! isset( self::$current_options[$name] )) {
 			self::$current_options[$name] = $value;

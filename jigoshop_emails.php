@@ -217,8 +217,8 @@ function add_company_information() {
     
     $add_eol = false;
     
-    if (Jigoshop_Options::get_option('jigoshop_company_name')) :
-        echo Jigoshop_Options::get_option('jigoshop_company_name') . PHP_EOL;
+    if (Jigoshop_Options::get_option('jigoshop_company_name_new')) :
+        echo Jigoshop_Options::get_option('jigoshop_company_name_new') . PHP_EOL;
         $add_eol = true;
     endif;
     
