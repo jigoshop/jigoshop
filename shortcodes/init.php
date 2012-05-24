@@ -42,8 +42,8 @@ function jigoshop_recent_products( $atts ) {
 	global $columns, $per_page, $paged;
 
 	extract( shortcode_atts( array(
-		'per_page' 	=> Jigoshop_Options::get_option('jigoshop_catalog_per_page'),
-		'columns' 	=> Jigoshop_Options::get_option('jigoshop_catalog_columns'),
+		'per_page' 	=> Jigoshop_Options::get_option('jigoshop_catalog_per_page_new'),
+		'columns' 	=> Jigoshop_Options::get_option('jigoshop_catalog_columns_new'),
 		'orderby'	=> 'date',
 		'order'		=> 'desc',
 		'pagination'=> false
@@ -83,10 +83,10 @@ function jigoshop_products( $atts ){
 	if ( empty( $atts )) return;
 
 	extract( shortcode_atts( array(
-		'per_page' 	=> Jigoshop_Options::get_option('jigoshop_catalog_per_page'),
-		'columns' 	=> Jigoshop_Options::get_option('jigoshop_catalog_columns'),
-		'orderby'	=> Jigoshop_Options::get_option('jigoshop_catalog_sort_orderby'),
-		'order'		=> Jigoshop_Options::get_option('jigoshop_catalog_sort_direction'),
+		'per_page' 	=> Jigoshop_Options::get_option('jigoshop_catalog_per_page_new'),
+		'columns' 	=> Jigoshop_Options::get_option('jigoshop_catalog_columns_new'),
+		'orderby'	=> Jigoshop_Options::get_option('jigoshop_catalog_sort_orderby_new'),
+		'order'		=> Jigoshop_Options::get_option('jigoshop_catalog_sort_direction_new'),
 		'pagination'=> false
 	), $atts));
 
@@ -177,10 +177,10 @@ function jigoshop_featured_products( $atts ) {
 	global $columns, $per_page, $paged;
 	
 	extract( shortcode_atts( array(
-		'per_page' 	=> Jigoshop_Options::get_option('jigoshop_catalog_per_page'),
-		'columns' 	=> Jigoshop_Options::get_option('jigoshop_catalog_columns'),
-		'orderby'	=> Jigoshop_Options::get_option('jigoshop_catalog_sort_orderby'),
-		'order'		=> Jigoshop_Options::get_option('jigoshop_catalog_sort_direction'),
+		'per_page' 	=> Jigoshop_Options::get_option('jigoshop_catalog_per_page_new'),
+		'columns' 	=> Jigoshop_Options::get_option('jigoshop_catalog_columns_new'),
+		'orderby'	=> Jigoshop_Options::get_option('jigoshop_catalog_sort_orderby_new'),
+		'order'		=> Jigoshop_Options::get_option('jigoshop_catalog_sort_direction_new'),
 		'pagination'=> false
 	), $atts));
 
@@ -224,10 +224,10 @@ function jigoshop_product_category( $atts ) {
 
 	extract( shortcode_atts( array(
 		'slug'            => '',
-		'per_page'        => Jigoshop_Options::get_option('jigoshop_catalog_per_page'),
-		'columns' 	      => Jigoshop_Options::get_option('jigoshop_catalog_columns'),
-		'orderby'	      => Jigoshop_Options::get_option('jigoshop_catalog_sort_orderby'),
-		'order'		      => Jigoshop_Options::get_option('jigoshop_catalog_sort_direction'),
+		'per_page'        => Jigoshop_Options::get_option('jigoshop_catalog_per_page_new'),
+		'columns' 	      => Jigoshop_Options::get_option('jigoshop_catalog_columns_new'),
+		'orderby'	      => Jigoshop_Options::get_option('jigoshop_catalog_sort_orderby_new'),
+		'order'		      => Jigoshop_Options::get_option('jigoshop_catalog_sort_direction_new'),
 		'pagination'      => false,
 		'tax_operator'    => 'IN'
 	), $atts));
