@@ -116,8 +116,10 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * New: Add filters for new Jigoshop Product Addons extensions
 * New: Add CSS classes to product attributes on variations for the front end to allow special effects
 * Tweak: Enable product categories widget showing 'current-cat' CSS class on single products
+* Tweak: Set the Shop Redirect page on fresh install to the base Shop page
 * Fix: Internationalize comment/review dates
 * Fix: Disable guest purchases when setting is enabled
+* Fix: Cross Sells & Up Sells extension - users can define number of cross sells to show via theme functions.php
 
 = 1.2.2 - 2012-04-10 =
 * New: Danish translations
