@@ -54,7 +54,7 @@ function jigoshop_new_order_notification($order_id) {
     $message = apply_filters('jigoshop_change_new_order_email_contents', $message, $order);
     $message = html_entity_decode(strip_tags($message));
 
-    wp_mail(Jigoshop_Options::get_option('jigoshop_email'), $subject, $message, "From: " . Jigoshop_Options::get_option('jigoshop_email') . "\r\n");
+    wp_mail(Jigoshop_Options::get_option('jigoshop_email_new'), $subject, $message, "From: " . Jigoshop_Options::get_option('jigoshop_email_new') . "\r\n");
 }
 
 /**
@@ -101,7 +101,7 @@ function jigoshop_processing_order_customer_notification($order_id) {
     $message = apply_filters('jigoshop_change_processing_order_email_contents', $message, $order);
     $message = html_entity_decode(strip_tags($message));
 
-    wp_mail($order->billing_email, $subject, $message, "From: " . Jigoshop_Options::get_option('jigoshop_email') . "\r\n");
+    wp_mail($order->billing_email, $subject, $message, "From: " . Jigoshop_Options::get_option('jigoshop_email_new') . "\r\n");
 }
 
 /**
@@ -135,7 +135,7 @@ function jigoshop_completed_order_customer_notification($order_id) {
     $message = html_entity_decode(strip_tags($message));
     $message = apply_filters('jigoshop_completed_order_customer_notification_mail_message', $message);
     
-    wp_mail($order->billing_email, $subject, $message, "From: " . Jigoshop_Options::get_option('jigoshop_email') . "\r\n");
+    wp_mail($order->billing_email, $subject, $message, "From: " . Jigoshop_Options::get_option('jigoshop_email_new') . "\r\n");
 }
 
 /**
@@ -168,7 +168,7 @@ function jigoshop_refunded_order_customer_notification($order_id) {
     $message = html_entity_decode(strip_tags($message));
     $message = apply_filters('jigoshop_refunded_order_customer_notification_mail_message', $message);
 
-    wp_mail($order->billing_email, $subject, $message, "From: " . Jigoshop_Options::get_option('jigoshop_email') . "\r\n");
+    wp_mail($order->billing_email, $subject, $message, "From: " . Jigoshop_Options::get_option('jigoshop_email_new') . "\r\n");
 }
 
 /**
@@ -201,7 +201,7 @@ function jigoshop_send_customer_invoice($order_id) {
     $message = apply_filters('jigoshop_change_pay_order_email_contents', $message, $order);
     $customer_message = html_entity_decode(strip_tags($customer_message . $message));
 
-    wp_mail($order->billing_email, $subject, $customer_message, "From: " . Jigoshop_Options::get_option('jigoshop_email') . "\r\n");
+    wp_mail($order->billing_email, $subject, $customer_message, "From: " . Jigoshop_Options::get_option('jigoshop_email_new') . "\r\n");
 }
 
 function add_header_info($order) {
@@ -222,22 +222,22 @@ function add_company_information() {
         $add_eol = true;
     endif;
     
-    if (Jigoshop_Options::get_option('jigoshop_address_line1')) :
+    if (Jigoshop_Options::get_option('jigoshop_address_line1_new')) :
         $add_eol = true;
-        echo Jigoshop_Options::get_option('jigoshop_address_line1') . PHP_EOL;
-        if (Jigoshop_Options::get_option('jigoshop_address_line2')) :
-            echo Jigoshop_Options::get_option('jigoshop_address_line2') . PHP_EOL;
+        echo Jigoshop_Options::get_option('jigoshop_address_line1_new') . PHP_EOL;
+        if (Jigoshop_Options::get_option('jigoshop_address_line2_new')) :
+            echo Jigoshop_Options::get_option('jigoshop_address_line2_new') . PHP_EOL;
         endif;
     endif;
     
-    if (Jigoshop_Options::get_option('jigoshop_company_phone')) :
+    if (Jigoshop_Options::get_option('jigoshop_company_phone_new')) :
         $add_eol = true;
-        echo Jigoshop_Options::get_option('jigoshop_company_phone') . PHP_EOL;
+        echo Jigoshop_Options::get_option('jigoshop_company_phone_new') . PHP_EOL;
     endif;
     
-    if (Jigoshop_Options::get_option('jigoshop_company_email')) :
+    if (Jigoshop_Options::get_option('jigoshop_company_email_new')) :
         $add_eol = true;
-        echo '<a href="mailto:' . Jigoshop_Options::get_option('jigoshop_company_email') . '">' . Jigoshop_Options::get_option('jigoshop_company_email') . '</a>' . PHP_EOL;
+        echo '<a href="mailto:' . Jigoshop_Options::get_option('jigoshop_company_email_new') . '">' . Jigoshop_Options::get_option('jigoshop_company_email_new') . '</a>' . PHP_EOL;
     endif;
     
     if ($add_eol) echo PHP_EOL;
@@ -252,31 +252,31 @@ function add_order_totals($order, $show_download_links, $show_sku) {
         echo PHP_EOL . __('Note:', 'jigoshop') . $order->customer_note . PHP_EOL;
     endif;
 
-    if ((Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
-        || (Jigoshop_Options::get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0))
+    if ((Jigoshop_Options::get_option('jigoshop_calc_taxes_new') == 'yes' && $order->has_compound_tax())
+        || (Jigoshop_Options::get_option('jigoshop_tax_after_coupon_new') == 'yes' && $order->order_discount > 0))
         echo PHP_EOL . __('Retail Price:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_subtotal_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
     else
         echo PHP_EOL . __('Subtotal:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_subtotal_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
     if ($order->order_shipping > 0)
         echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    if (Jigoshop_Options::get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)
+    if (Jigoshop_Options::get_option('jigoshop_tax_after_coupon_new') == 'yes' && $order->order_discount > 0)
         echo __('Discount:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_discount), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    if ((Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
-        || (Jigoshop_Options::get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) :
+    if ((Jigoshop_Options::get_option('jigoshop_calc_taxes_new') == 'yes' && $order->has_compound_tax())
+        || (Jigoshop_Options::get_option('jigoshop_tax_after_coupon_new') == 'yes' && $order->order_discount > 0)) :
         echo __('Subtotal:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_discount_subtotal), ENT_COMPAT, 'UTF-8') . PHP_EOL;
     endif;
-    if (Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes') :
+    if (Jigoshop_Options::get_option('jigoshop_calc_taxes_new') == 'yes') :
         foreach ($order->get_tax_classes() as $tax_class) :
             if ($order->show_tax_entry($tax_class))
                 echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
         endforeach;
     endif;
-    if (Jigoshop_Options::get_option('jigoshop_tax_after_coupon') == 'no' && $order->order_discount > 0)
+    if (Jigoshop_Options::get_option('jigoshop_tax_after_coupon_new') == 'no' && $order->order_discount > 0)
         echo __('Discount:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_discount), ENT_COMPAT, 'UTF-8') . PHP_EOL;
     echo __('Total:', 'jigoshop') . "\t\t\t\t" . html_entity_decode(jigoshop_price($order->order_total), ENT_COMPAT, 'UTF-8') . ' - ' . __('via', 'jigoshop') . ' ' . ucwords($order->payment_method_title) . PHP_EOL . PHP_EOL;
 
-    if (Jigoshop_Options::get_option('jigoshop_calc_taxes') && Jigoshop_Options::get_option('jigoshop_tax_number')) :
-        echo Jigoshop_Options::get_option('jigoshop_tax_number') . PHP_EOL . PHP_EOL;
+    if (Jigoshop_Options::get_option('jigoshop_calc_taxes_new') && Jigoshop_Options::get_option('jigoshop_tax_number_new')) :
+        echo Jigoshop_Options::get_option('jigoshop_tax_number_new') . PHP_EOL . PHP_EOL;
     endif;
 
     do_action('jigoshop_after_email_order_info', $order->id);
@@ -339,7 +339,7 @@ function jigoshop_low_stock_notification($product) {
     $subject = '[' . get_bloginfo('name') . '] ' . __('Product low in stock', 'jigoshop');
     $message = '#' . $_product->id . ' ' . $_product->get_title() . ' (' . $_product->sku . ') ' . __('is low in stock.', 'jigoshop');
     $message = wordwrap(html_entity_decode(strip_tags($message)), 70);
-    wp_mail(Jigoshop_Options::get_option('jigoshop_email'), $subject, $message, "From: " . Jigoshop_Options::get_option('jigoshop_email') . "\r\n");
+    wp_mail(Jigoshop_Options::get_option('jigoshop_email_new'), $subject, $message, "From: " . Jigoshop_Options::get_option('jigoshop_email_new') . "\r\n");
 }
 
 /**
@@ -350,7 +350,7 @@ function jigoshop_no_stock_notification($product) {
     $subject = '[' . get_bloginfo('name') . '] ' . __('Product out of stock', 'jigoshop');
     $message = '#' . $_product->id . ' ' . $_product->get_title() . ' (' . $_product->sku . ') ' . __('is out of stock.', 'jigoshop');
     $message = wordwrap(html_entity_decode(strip_tags($message)), 70);
-    wp_mail(Jigoshop_Options::get_option('jigoshop_email'), $subject, $message, "From: " . Jigoshop_Options::get_option('jigoshop_email') . "\r\n");
+    wp_mail(Jigoshop_Options::get_option('jigoshop_email_new'), $subject, $message, "From: " . Jigoshop_Options::get_option('jigoshop_email_new') . "\r\n");
 }
 
 /**
@@ -369,7 +369,7 @@ function jigoshop_product_on_backorder_notification($order_id, $product, $amount
     $subject = '[' . get_bloginfo('name') . '] ' . sprintf(__('Product Backorder on Order #%s', 'jigoshop'), $order_id);
     $message = sprintf(__("%s units of #%s %s (#%s) are needed to fill Order #%s.", 'jigoshop'), abs($amount), $_product->id, $_product->get_title(), $_product->sku, $order_id);
     $message = wordwrap(html_entity_decode(strip_tags($message)), 70);
-    wp_mail(Jigoshop_Options::get_option('jigoshop_email'), $subject, $message, "From: " . Jigoshop_Options::get_option('jigoshop_email') . "\r\n");
+    wp_mail(Jigoshop_Options::get_option('jigoshop_email_new'), $subject, $message, "From: " . Jigoshop_Options::get_option('jigoshop_email_new') . "\r\n");
 
     // notify the customer if required
     if ($_product->data['backorders'] == 'notify') :
@@ -400,7 +400,7 @@ function jigoshop_product_on_backorder_notification($order_id, $product, $amount
         $message = ob_get_clean();
         $message = html_entity_decode(strip_tags($message));
 
-        wp_mail($order->billing_email, $subject, $message, "From: " . Jigoshop_Options::get_option('jigoshop_email') . "\r\n");
+        wp_mail($order->billing_email, $subject, $message, "From: " . Jigoshop_Options::get_option('jigoshop_email_new') . "\r\n");
     endif;
 }
 
