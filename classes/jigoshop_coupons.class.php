@@ -25,7 +25,7 @@ class jigoshop_coupons {
 	 * @since 0.9.8
 	 */
 	function get_coupons() {
-		return (array ) Jigoshop_Options::get_option( 'jigoshop_coupons' );
+		return (array ) Jigoshop_Options::get_option( 'jigoshop_coupons_new' );
 	}
 
 	/**
