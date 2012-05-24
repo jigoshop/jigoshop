@@ -532,9 +532,6 @@ function jigoshop_download_product() {
 		$order_id            = $download_result->order_id;
 		$user_id             = $download_result->user_id;
 		$downloads_remaining = $download_result->downloads_remaining;
-		
-		var_dump($download_result);
-		exit();
 
 		if ( $user_id && get_option('jigoshop_downloads_require_login') == 'yes' ):
 			if ( !is_user_logged_in() ):
