@@ -922,8 +922,8 @@ class jigoshop_cart extends jigoshop_singleton {
 			}
 		}
 
-		// Check if applied
-		if (jigoshop_cart::has_discount($coupon_code)) {
+		/* See if coupon is already applied. */
+		if (jigoshop_cart::has_discount($coupon_code) && !empty($_POST['coupon_code']) ) {
 			jigoshop::add_error(__('Discount code already applied!', 'jigoshop'));
 			return false;
 		}
@@ -932,12 +932,6 @@ class jigoshop_cart extends jigoshop_singleton {
 		// get_coupon() checks for valid coupon. don't go any further without one
 		if (!jigoshop_coupons::get_coupon($coupon_code)) {
 			jigoshop::add_error(__('Invalid coupon!', 'jigoshop'));
-			return false;
-		}
-
-		// Check if coupon products are in cart
-		if ( ! jigoshop_cart::has_discounted_products_in_cart( $the_coupon ) ) {
-			jigoshop::add_error(__('No products in your cart match that coupon!', 'jigoshop'));
 			return false;
 		}
 
