@@ -323,7 +323,7 @@ function jigoshop_ajax_update_order_review() {
 	check_ajax_referer( 'update-order-review', 'security' );
 
 	if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
-	
+
 	jigoshop_cart::get_cart();
 	if (sizeof(jigoshop_cart::$cart_contents)==0) :
 		echo '<p class="error">'.__('Sorry, your session has expired.', 'jigoshop').' <a href="'.home_url().'">'.__('Return to homepage &rarr;', 'jigoshop').'</a></p>';
@@ -517,7 +517,7 @@ function jigoshop_download_product() {
 		endif;
 
 		$download_result = $wpdb->get_row( $wpdb->prepare("
-			SELECT downloads_remaining
+			SELECT downloads_remaining, user_id
 			FROM ".$wpdb->prefix."jigoshop_downloadable_product_permissions
 			WHERE user_email = %s
 			AND order_key = %s
@@ -529,8 +529,25 @@ function jigoshop_download_product() {
 			exit;
 		endif;
 
-		$order_id = $download_result->order_id;
+		$order_id            = $download_result->order_id;
+		$user_id             = $download_result->user_id;
 		$downloads_remaining = $download_result->downloads_remaining;
+		
+		var_dump($download_result);
+		exit();
+
+		if ( $user_id && get_option('jigoshop_downloads_require_login') == 'yes' ):
+			if ( !is_user_logged_in() ):
+				wp_die( __('You must be logged in to download files.', 'jigoshop') . ' <a href="'.wp_login_url(get_permalink(jigoshop_get_page_id('myaccount'))).'">' . __('Login &rarr;', 'jigoshop') . '</a>' );
+				exit;
+			else:
+				$current_user = wp_get_current_user();
+				if( $user_id != $current_user->ID ):
+					wp_die( __('This is not your download link.', 'jigoshop'));
+					exit;
+				endif;
+			endif;
+		endif;
 
 		if ($order_id) :
 			$order = new jigoshop_order( $order_id );

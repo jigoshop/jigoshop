@@ -91,6 +91,15 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		)
 	),
 
+	array(
+		'name'           => __('Downloads','jigoshop'),
+		'desc'           => __('Enforce login for downloads','jigoshop'),
+		'tip'            => __('If a guest purchases a download, the guest can still download a link without logging in. We recommend disabling guest purchases if you enable this option.','jigoshop'),
+		'id'             => 'jigoshop_downloads_require_login',
+		'std'            => 'no',
+		'type'           => 'checkbox',
+	),
+
 	/* Styles and scripts */
 
 	array(
