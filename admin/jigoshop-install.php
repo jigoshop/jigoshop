@@ -124,7 +124,7 @@ function jigoshop_create_pages() {
 		'comment_status' => 'closed'
 	);
 	jigoshop_create_single_page( 'shop', 'jigoshop_shop_page_id', $page_data );
-	Jigoshop_Options::set_option( 'jigoshop_shop_redirect_page_id', Jigoshop_Options::get_option( 'jigoshop_shop_page_id' ) );
+	Jigoshop_Options::set_option( 'jigoshop_shop_redirect_page_id', Jigoshop_Options::get_option( 'jigoshop_shop_page_id_new' ) );
 	
 	$page_data['post_title'] = __('Cart', 'jigoshop');
 	$page_data['post_content'] = '[jigoshop_cart]';
