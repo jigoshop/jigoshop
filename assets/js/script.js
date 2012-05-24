@@ -398,7 +398,7 @@ if (params.is_checkout==1) {
 			s_state: 			s_state,
 			s_postcode: 		s_postcode,
 			payment_method:     payment_method,
-			coupon:             coupon,
+			coupon_code:        coupon,
 			post_data:			jQuery('form.checkout').serialize()
 		};
 

@@ -343,8 +343,8 @@ function jigoshop_ajax_update_order_review() {
 
 	endif;
 
-	if (!empty($_POST['coupon'])) {
-		jigoshop_cart::add_discount( $_POST['coupon'] );
+	if (!empty($_POST['coupon_code'])) {
+		jigoshop_cart::add_discount( $_POST['coupon_code'] );
 		echo jigoshop::show_messages();
 	}
 	if (isset($_POST['country']))   jigoshop_customer::set_country( $_POST['country'] );

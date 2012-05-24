@@ -923,7 +923,8 @@ class jigoshop_cart extends jigoshop_singleton {
 		}
 
 		/* See if coupon is already applied. */
-		if (jigoshop_cart::has_discount($coupon_code) && !empty($_POST['coupon_code']) ) {
+
+		if ( jigoshop_cart::has_discount($coupon_code) && !empty($_POST['coupon_code']) ) {
 			jigoshop::add_error(__('Discount code already applied!', 'jigoshop'));
 			return false;
 		}
@@ -952,6 +953,8 @@ class jigoshop_cart extends jigoshop_singleton {
 	}
 
     function has_discounted_products_in_cart( $thecoupon ) {
+
+
 
         // Check if we have products associated
         foreach( self::$cart_contents as $product )
