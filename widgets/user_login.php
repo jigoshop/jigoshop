@@ -101,7 +101,7 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 			</p>
 			";
 
-			if ( Jigoshop_Options::get_option( 'jigoshop_enable_signup_form' ) == 'yes' )
+			if ( Jigoshop_Options::get_option( 'jigoshop_enable_signup_form_new' ) == 'yes' )
 			echo "
 			<p class='register'>
 				" . wp_register(__('New user?','jigoshop') . ' ' , '') . "

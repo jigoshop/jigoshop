@@ -212,7 +212,7 @@ class skrill extends jigoshop_payment_gateway {
 
 		// Skirll MD5 concatenation
 
-		$skrill_md = Jigoshop_Options::get_option('jigoshop_skrill_customer_id') . $skrill_args['transaction_id'] . strtoupper(md5(Jigoshop_Options::get_option('jigoshop_skrill_secret_word'))) . $order_total . Jigoshop_Options::get_option('jigoshop_currency') . '2';
+		$skrill_md = Jigoshop_Options::get_option('jigoshop_skrill_customer_id') . $skrill_args['transaction_id'] . strtoupper(md5(Jigoshop_Options::get_option('jigoshop_skrill_secret_word'))) . $order_total . Jigoshop_Options::get_option('jigoshop_currency_new') . '2';
 		$skrill_md = md5($skrill_md);
 
 		add_post_meta($order_id, '_skrillmd', $skrill_md);
