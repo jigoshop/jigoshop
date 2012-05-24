@@ -483,11 +483,13 @@ function jigoshop_admin_option_display($options) {
 
 		case 'select':
 			?><tr>
-				<th scope="row">
+				<th scope="row"<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
 					<?php if (!empty($value['tip'])) : ?>
 					<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a>
 					<?php endif; ?>
+					<?php if ( !empty( $value['name'] ) ) : ?>
 					<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
+					<?php endif; ?>
 				</th>
 				<td>
 					<select name="<?php echo esc_attr( $value['id'] ); ?>"
