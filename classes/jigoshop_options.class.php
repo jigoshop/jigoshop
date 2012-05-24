@@ -95,9 +95,10 @@ class Jigoshop_Options {
 	 * @since	1.2
 	 */	
 	public static function get_option( $name, $default = null ) {
+        // all new options will have a naming convention of _new added to the end
         $old_option = get_option(substr($name, 0, strlen($name) - 4));
 		if ( isset( self::$current_options[$name] )) return self::$current_options[$name];
-		else if ( isset( $default )) return $default;
+        else if ( isset( $default )) return $default;
         else if ( isset ( $old_option )) return $old_option;
 		else return null;
 	}
@@ -364,7 +365,7 @@ class Jigoshop_Options {
 			'name'		=> __( 'Company Name', 'jigoshop' ),
 			'desc' 		=> '',
 			'tip' 		=> __( 'Setting your company name will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
-			'id' 		=> 'jigoshop_company_name',
+			'id' 		=> 'jigoshop_company_name_new',
 			'std' 		=> '',
 			'type' 		=> 'text'
 		);
@@ -373,7 +374,7 @@ class Jigoshop_Options {
 			'name'		=> __( 'Tax Registration Number', 'jigoshop' ),
 			'desc' 		=> __( 'Add your tax registration label before the registration number and it will be printed as well. eg. <code>VAT Number: 88888888</code>', 'jigoshop' ),
 			'tip' 		=> __( 'Setting your tax number will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
-			'id' 		=> 'jigoshop_tax_number',
+			'id' 		=> 'jigoshop_tax_number_new',
 			'std' 		=> '',
 			'type' 		=> 'text'
 		);
@@ -382,7 +383,7 @@ class Jigoshop_Options {
 			'name'		=> __( 'Address Line1', 'jigoshop' ),
 			'desc' 		=> '',
 			'tip' 		=> __( 'Setting your address will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
-			'id' 		=> 'jigoshop_address_line1',
+			'id' 		=> 'jigoshop_address_line1_new',
 			'std' 		=> '',
 			'type' 		=> 'longtext'
 		);
@@ -391,7 +392,7 @@ class Jigoshop_Options {
 			'name' =>	__( 'Address Line2', 'jigoshop' ),
 			'desc' 		=> '',
 			'tip' 		=> __( 'Setting your address will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
-			'id' 		=> 'jigoshop_address_line2',
+			'id' 		=> 'jigoshop_address_line2_new',
 			'std' 		=> '',
 			'type' 		=> 'longtext'
 		);
@@ -400,7 +401,7 @@ class Jigoshop_Options {
 			'name'		=> __( 'Company Email', 'jigoshop' ),
 			'desc' 		=> '',
 			'tip' 		=> __( 'Setting your company email will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
-			'id' 		=> 'jigoshop_company_email',
+			'id' 		=> 'jigoshop_company_email_new',
 			'std' 		=> '',
 			'type' 		=> 'email'
 		);
@@ -411,7 +412,7 @@ class Jigoshop_Options {
 			'name'		=> __( 'Demo store', 'jigoshop' ),
 			'desc' 		=> '',
 			'tip' 		=> __( 'Enable this option to show a banner at the top of every page stating this shop is currently in testing mode.', 'jigoshop' ),
-			'id' 		=> 'jigoshop_demo_store',
+			'id' 		=> 'jigoshop_demo_store_new',
 			'std' 		=> 'no',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -424,7 +425,7 @@ class Jigoshop_Options {
 			'name'		=> __( 'Base Country/Region', 'jigoshop' ),
 			'desc' 		=> '',
 			'tip' 		=> __( 'This is the base country for your business. Tax rates will be based on this country.', 'jigoshop' ),
-			'id' 		=> 'jigoshop_default_country',
+			'id' 		=> 'jigoshop_default_country_new',
 			'std' 		=> 'GB',
 			'type' 		=> 'single_select_country'
 		);
@@ -433,7 +434,7 @@ class Jigoshop_Options {
 			'name'		=> __( 'Allowed Countries', 'jigoshop' ),
 			'desc' 		=> '',
 			'tip' 		=> __( 'These are countries that you are willing to ship to.', 'jigoshop' ),
-			'id' 		=> 'jigoshop_allowed_countries',
+			'id' 		=> 'jigoshop_allowed_countries_new',
 			'std' 		=> 'all',
 			'type' 		=> 'select',
 			'choices'	=> array(
@@ -446,7 +447,7 @@ class Jigoshop_Options {
 			'name'		=> __( 'Specific Countries', 'jigoshop' ),
 			'desc' 		=> '',
 			'tip' 		=> '',
-			'id' 		=> 'jigoshop_specific_allowed_countries',
+			'id' 		=> 'jigoshop_specific_allowed_countries_new',
 			'std' 		=> '',
 			'type' 		=> 'multi_select_countries'
 		);
@@ -463,7 +464,7 @@ class Jigoshop_Options {
 			'name'		=> __('Send Jigoshop emails from','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('The email used to send all Jigoshop related emails, such as order confirmations and notices.','jigoshop'),
-			'id' 		=> 'jigoshop_email',
+			'id' 		=> 'jigoshop_email_new',
 			'type' 		=> 'email',
 			'std' 		=> get_option('admin_email')
 		);
@@ -472,7 +473,7 @@ class Jigoshop_Options {
 			'name'		=> __('After adding product to cart','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('Define what should happen when a user clicks on &#34;Add to Cart&#34; on any product or page.','jigoshop'),
-			'id' 		=> 'jigoshop_redirect_add_to_cart',
+			'id' 		=> 'jigoshop_redirect_add_to_cart_new',
 			'std' 		=> 'same_page',
 			'type' 		=> 'radio',
 			'extra' 	=> array( 'vertical' ),
@@ -487,7 +488,7 @@ class Jigoshop_Options {
 			'name'		=> __('Disable Jigoshop frontend.css','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('Useful if you want to disable Jigoshop styles and theme it yourself via your theme.','jigoshop'),
-			'id' 		=> 'jigoshop_disable_css',
+			'id' 		=> 'jigoshop_disable_css_new',
 			'std' 		=> 'no',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -500,7 +501,7 @@ class Jigoshop_Options {
 			'name'		=> __('Disable bundled Fancybox','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('Useful if or one of your plugin already loads the Fancybox script and css. But be careful, Jigoshop will still try to open product images using Fancybox.','jigoshop'),
-			'id' 		=> 'jigoshop_disable_fancybox',
+			'id' 		=> 'jigoshop_disable_fancybox_new',
 			'std' 		=> 'no',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -515,7 +516,7 @@ class Jigoshop_Options {
 			'name'		=> __('Allow guest purchases','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('Setting this to Yes will allow users to checkout without registering or signing up. Otherwise, users must be signed in or must sign up to checkout.','jigoshop'),
-			'id' 		=> 'jigoshop_enable_guest_checkout',
+			'id' 		=> 'jigoshop_enable_guest_checkout_new',
 			'std' 		=> 'yes',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -527,7 +528,7 @@ class Jigoshop_Options {
 		self::$default_options[] = array(
 			'name'		=> __('Show login form','jigoshop'),
 			'desc' 		=> '',
-			'id' 		=> 'jigoshop_enable_guest_login',
+			'id' 		=> 'jigoshop_enable_guest_login_new',
 			'std' 		=> 'yes',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -539,7 +540,7 @@ class Jigoshop_Options {
 		self::$default_options[] = array(
 			'name'		=> __('Allow registration','jigoshop'),
 			'desc' 		=> '',
-			'id' 		=> 'jigoshop_enable_signup_form',
+			'id' 		=> 'jigoshop_enable_signup_form_new',
 			'std' 		=> 'yes',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -552,7 +553,7 @@ class Jigoshop_Options {
 			'name'		=> __('Force SSL on checkout','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('Forcing SSL is recommended. This will load your checkout page with https://. An SSL certificate is <strong>required</strong> if you choose yes. Contact your hosting provider for more information on SSL Certs.','jigoshop'),
-			'id' 		=> 'jigoshop_force_ssl_checkout',
+			'id' 		=> 'jigoshop_force_ssl_checkout_new',
 			'std' 		=> 'no',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -567,7 +568,7 @@ class Jigoshop_Options {
 			'name'		=> __('ShareThis Publisher ID','jigoshop'),
 			'desc' 		=> __("Enter your <a href='http://sharethis.com/account/'>ShareThis publisher ID</a> to show ShareThis on product pages.",'jigoshop'),
 			'tip' 		=> __('ShareThis is a small social sharing widget for posting links on popular sites such as Twitter and Facebook.','jigoshop'),
-			'id' 		=> 'jigoshop_sharethis',
+			'id' 		=> 'jigoshop_sharethis_new',
 			'type' 		=> 'text',
 			'std' 		=> ''
 		);
@@ -575,7 +576,7 @@ class Jigoshop_Options {
 		self::$default_options[] = array(
 			'name'		=> __('Google Analytics ID', 'jigoshop'),
 			'desc' 		=> __('Log into your Google Analytics account to find your ID. e.g. <code>UA-XXXXXXX-X</code>', 'jigoshop'),
-			'id' 		=> 'jigoshop_ga_id',
+			'id' 		=> 'jigoshop_ga_id_new',
 			'type' 		=> 'text',
 			'std' 		=> '',
 		);
@@ -584,7 +585,7 @@ class Jigoshop_Options {
 			'name'		=> __('Enable eCommerce Tracking', 'jigoshop'),
 			'tip' 		=> __('Add Google Analytics eCommerce tracking code upon successful orders', 'jigoshop'),
 			'desc'		=> __('<a href="//support.google.com/analytics/bin/answer.py?hl=en&answer=1009612">Learn how to enable</a> eCommerce tracking for your Google Analytics account.', 'jigoshop'),
-			'id' 		=> 'jigoshop_ga_ecommerce_tracking_enabled',
+			'id' 		=> 'jigoshop_ga_ecommerce_tracking_enabled_new',
 			'type' 		=> 'checkbox',
 			'std' 		=> 'no',
 			'choices'	=> array(
@@ -605,7 +606,7 @@ class Jigoshop_Options {
 			'name'		=> __('Cart Page','jigoshop'),
 			'desc' 		=> __('Shortcode to place on page: <code>[jigoshop_cart]</code>','jigoshop'),
 			'tip' 		=> '',
-			'id' 		=> 'jigoshop_cart_page_id',
+			'id' 		=> 'jigoshop_cart_page_id_new',
 			'type' 		=> 'single_select_page',
 			'std' 		=> ''
 		);
@@ -614,7 +615,7 @@ class Jigoshop_Options {
 			'name'		=> __('Checkout Page','jigoshop'),
 			'desc' 		=> __('Shortcode to place on page: <code>[jigoshop_checkout]</code>','jigoshop'),
 			'tip' 		=> '',
-			'id' 		=> 'jigoshop_checkout_page_id',
+			'id' 		=> 'jigoshop_checkout_page_id_new',
 			'type' 		=> 'single_select_page',
 			'std' 		=> ''
 		);
@@ -623,7 +624,7 @@ class Jigoshop_Options {
 			'name'		=> __('Pay Page','jigoshop'),
 			'desc' 		=> __('Shortcode to place on page: <code>[jigoshop_pay]</code><br/>Default parent page: Checkout','jigoshop'),
 			'tip' 		=> '',
-			'id' 		=> 'jigoshop_pay_page_id',
+			'id' 		=> 'jigoshop_pay_page_id_new',
 			'type' 		=> 'single_select_page',
 			'std' 		=> ''
 		);
@@ -632,7 +633,7 @@ class Jigoshop_Options {
 			'name'		=> __('Thanks Page','jigoshop'),
 			'desc' 		=> __('Shortcode to place on page: <code>[jigoshop_thankyou]</code><br/>Default parent page: Checkout','jigoshop'),
 			'tip' 		=> '',
-			'id' 		=> 'jigoshop_thanks_page_id',
+			'id' 		=> 'jigoshop_thanks_page_id_new',
 			'type' 		=> 'single_select_page',
 			'std' 		=> ''
 		);
@@ -641,7 +642,7 @@ class Jigoshop_Options {
 			'name'		=> __('My Account Page','jigoshop'),
 			'desc' 		=> __('Shortcode to place on page: <code>[jigoshop_my_account]</code>','jigoshop'),
 			'tip' 		=> '',
-			'id' 		=> 'jigoshop_myaccount_page_id',
+			'id' 		=> 'jigoshop_myaccount_page_id_new',
 			'type' 		=> 'single_select_page',
 			'std' 		=> ''
 		);
@@ -650,7 +651,7 @@ class Jigoshop_Options {
 			'name'		=> __('Edit Address Page','jigoshop'),
 			'desc' 		=> __('Shortcode to place on page: <code>[jigoshop_edit_address]</code><br/>Default parent page: My Account','jigoshop'),
 			'tip' 		=> '',
-			'id' 		=> 'jigoshop_edit_address_page_id',
+			'id' 		=> 'jigoshop_edit_address_page_id_new',
 			'type' 		=> 'single_select_page',
 			'std' 		=> ''
 		);
@@ -659,7 +660,7 @@ class Jigoshop_Options {
 			'name'		=> __('View Order Page','jigoshop'),
 			'desc' 		=> __('Shortcode to place on page:<code>[jigoshop_view_order]</code><br/>Default parent page: My Account','jigoshop'),
 			'tip' 		=> '',
-			'id' 		=> 'jigoshop_view_order_page_id',
+			'id' 		=> 'jigoshop_view_order_page_id_new',
 			'type' 		=> 'single_select_page',
 			'std' 		=> ''
 		);
@@ -668,7 +669,7 @@ class Jigoshop_Options {
 			'name'		=> __('Change Password Page','jigoshop'),
 			'desc' 		=> __('Shortcode to place on page: <code>[jigoshop_change_password]</code><br/>Default parent page: My Account','jigoshop'),
 			'tip' 		=> '',
-			'id' 		=> 'jigoshop_change_password_page_id',
+			'id' 		=> 'jigoshop_change_password_page_id_new',
 			'type' 		=> 'single_select_page',
 			'std' 		=> ''
 		);
@@ -677,7 +678,7 @@ class Jigoshop_Options {
 			'name'		=> __('Track Order Page','jigoshop'),
 			'desc' 		=> __('Shortcode to place on page: <code>[jigoshop_order_tracking]</code>','jigoshop'),
 			'tip' 		=> '',
-			'id' 		=> 'jigoshop_track_order_page_id',
+			'id' 		=> 'jigoshop_track_order_page_id_new',
 			'type' 		=> 'single_select_page',
 			'std' 		=> ''
 		);
@@ -686,7 +687,7 @@ class Jigoshop_Options {
 			'name'		=> __('Terms Page', 'jigoshop'),
 			'desc' 		=> __('If you define a &#34;Terms&#34; page the customer will be asked to accept it before allowing them to place their order.', 'jigoshop'),
 			'tip' 		=> '',
-			'id' 		=> 'jigoshop_terms_page_id',
+			'id' 		=> 'jigoshop_terms_page_id_new',
 			'std' 		=> '',
 			'type' 		=> 'single_select_page',
 			'extra'		=> 'show_option_none=' . __('None', 'jigoshop'),
@@ -704,7 +705,7 @@ class Jigoshop_Options {
 			'name'		=> __('Catalog base page','jigoshop'),
 			'desc'		=> '',
 			'tip' 		=> __('This sets the base page of your shop. You should not change this value once you have launched your site otherwise you risk breaking urls of other sites pointing to yours, etc.','jigoshop'),
-			'id' 		=> 'jigoshop_shop_page_id',
+			'id' 		=> 'jigoshop_shop_page_id_new',
 			'type' 		=> 'single_select_page',
 			'std' 		=> ''
 		);
@@ -713,7 +714,7 @@ class Jigoshop_Options {
 			'name'		=> __('Shop redirection page','jigoshop'),
 			'desc'		=> '',
 			'tip' 		=> __('This will point users to the page you set for buttons like `Return to shop` or `Continue Shopping`.','jigoshop'),
-			'id' 		=> 'jigoshop_shop_redirect_page_id',
+			'id' 		=> 'jigoshop_shop_redirect_page_id_new',
 			'type' 		=> 'single_select_page',
 			'std' 		=> ''
 		);
@@ -722,7 +723,7 @@ class Jigoshop_Options {
 			'name'		=> __('Prepend links with base page','jigoshop'),
 			'desc'		=> '',
 			'tip' 		=> __('This will only apply to tags &amp; categories.<br/>Yes: http://yoursite.com / product_category / YourCategory<br/>No: http://yoursite.com / base_page / product_category / YourCategory', 'jigoshop'),
-			'id' 		=> 'jigoshop_prepend_shop_page_to_urls',
+			'id' 		=> 'jigoshop_prepend_shop_page_to_urls_new',
 			'std' 		=> 'no',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -735,7 +736,7 @@ class Jigoshop_Options {
 			'name'		=> __('Sort products in catalog by','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('Determines the display sort order of products for the Shop, Categories, and Tag pages.','jigoshop'),
-			'id' 		=> 'jigoshop_catalog_sort_orderby',
+			'id' 		=> 'jigoshop_catalog_sort_orderby_new',
 			'std' 		=> 'post_date',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -749,7 +750,7 @@ class Jigoshop_Options {
 			'name'		=> __('Catalog sort direction','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('Determines whether the catalog sort orderby is ascending or descending.','jigoshop'),
-			'id' 		=> 'jigoshop_catalog_sort_direction',
+			'id' 		=> 'jigoshop_catalog_sort_direction_new',
 			'std' 		=> 'asc',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -762,7 +763,7 @@ class Jigoshop_Options {
 			'name'		=> __('Catalog products per row','jigoshop'),
 			'desc' 		=> __('Default = 3','jigoshop'),
 			'tip' 		=> __('Determines how many products to show on one display row for Shop, Category and Tag pages.','jigoshop'),
-			'id' 		=> 'jigoshop_catalog_columns',
+			'id' 		=> 'jigoshop_catalog_columns_new',
 			'std' 		=> '3',
 			'type' 		=> 'range',
 			'extra'		=> array(
@@ -776,7 +777,7 @@ class Jigoshop_Options {
 			'name'		=> __('Catalog products per page','jigoshop'),
 			'desc' 		=> __('Default = 12','jigoshop'),
 			'tip' 		=> __('Determines how many products to display on Shop, Category and Tag pages before needing next and previous page navigation.','jigoshop'),
-			'id' 		=> 'jigoshop_catalog_per_page',
+			'id' 		=> 'jigoshop_catalog_per_page_new',
 			'std' 		=> '12',
 			'type' 		=> 'range',
 			'extra'		=> array(
@@ -792,7 +793,7 @@ class Jigoshop_Options {
 			'name'		=> __('Currency', 'jigoshop'),
 			'desc' 		=> sprintf( __("This controls what currency prices are listed at in the catalog, and which currency PayPal, and other gateways, will take payments in. See the list of supported <a target='_new' href='%s'>PayPal currencies</a>.", 'jigoshop'), 'https://www.paypal.com/cgi-bin/webscr?cmd=p/sell/mc/mc_intro-outside' ),
 			'tip' 		=> '',
-			'id' 		=> 'jigoshop_currency',
+			'id' 		=> 'jigoshop_currency_new',
 			'std' 		=> 'GBP',
 			'type' 		=> 'select',
 			'choices'	=> apply_filters('jigoshop_currencies', array(
@@ -834,14 +835,14 @@ class Jigoshop_Options {
 		);
 		
 		$cSymbol = get_jigoshop_currency_symbol();
-		$cCode = self::get_option( 'jigoshop_currency' ) ? self::get_option( 'jigoshop_currency' ) : 'GBP';
-		$cSep = self::get_option( 'jigoshop_price_decimal_sep' ) ? self::get_option( 'jigoshop_price_decimal_sep' ) : '.';
+		$cCode = self::get_option( 'jigoshop_currency_new' ) ? self::get_option( 'jigoshop_currency_new' ) : 'GBP';
+		$cSep = self::get_option( 'jigoshop_price_decimal_sep_new' ) ? self::get_option( 'jigoshop_price_decimal_sep_new' ) : '.';
 		
 		self::$default_options[] = array(
 			'name'		=> __('Currency display', 'jigoshop'),
 			'desc' 		=> __("This controls the display of the currency symbol and currency code.", 'jigoshop'),
 			'tip' 		=> '',
-			'id' 		=> 'jigoshop_currency_pos',
+			'id' 		=> 'jigoshop_currency_pos_new',
 			'std' 		=> 'left',
 			'type' 		=> 'select',
 			'choices'	=> array(
@@ -864,7 +865,7 @@ class Jigoshop_Options {
 			'name'		=> __('Thousand separator', 'jigoshop'),
 			'desc' 		=> __('This sets the thousand separator of displayed prices.', 'jigoshop'),
 			'tip' 		=> '',
-			'id' 		=> 'jigoshop_price_thousand_sep',
+			'id' 		=> 'jigoshop_price_thousand_sep_new',
 			'std' 		=> ',',
 			'type' 		=> 'text',
 		);
@@ -873,7 +874,7 @@ class Jigoshop_Options {
 			'name'		=> __('Decimal separator', 'jigoshop'),
 			'desc' 		=> __('This sets the decimal separator of displayed prices.', 'jigoshop'),
 			'tip' 		=> '',
-			'id' 		=> 'jigoshop_price_decimal_sep',
+			'id' 		=> 'jigoshop_price_decimal_sep_new',
 			'std' 		=> '.',
 			'type' 		=> 'text',
 		);
@@ -882,7 +883,7 @@ class Jigoshop_Options {
 			'name'		=> __('Number of decimals', 'jigoshop'),
 			'desc' 		=> __('This sets the number of decimal points shown in displayed prices.', 'jigoshop'),
 			'tip' 		=> '',
-			'id' 		=> 'jigoshop_price_num_decimals',
+			'id' 		=> 'jigoshop_price_num_decimals_new',
 			'std' 		=> '2',
 			'type' 		=> 'natural',
 		);
@@ -899,7 +900,7 @@ class Jigoshop_Options {
 			'name' 		=> __('Tiny Image Width','jigoshop'),
 			'desc' 		=> __('Default = 36px','jigoshop'),
 			'tip' 		=> __('Set the width of the small image used in the Cart, Checkout, Orders and Widgets.','jigoshop'),
-			'id' 		=> 'jigoshop_shop_tiny_w',
+			'id' 		=> 'jigoshop_shop_tiny_w_new',
 			'type' 		=> 'natural',
 			'std' 		=> 36
 		);
@@ -908,7 +909,7 @@ class Jigoshop_Options {
 			'name' 		=> __('Tiny Image Height','jigoshop'),
 			'desc' 		=> __('Default = 36px','jigoshop'),
 			'tip' 		=> __('Set the height of the small image used in the Cart, Checkout, Orders and Widgets.','jigoshop'),
-			'id' 		=> 'jigoshop_shop_tiny_h',
+			'id' 		=> 'jigoshop_shop_tiny_h_new',
 			'type' 		=> 'natural',
 			'std' 		=> 36
 		);
@@ -917,7 +918,7 @@ class Jigoshop_Options {
 			'name' 		=> __('Thumbnail Image Width','jigoshop'),
 			'desc' 		=> __('Default = 90px','jigoshop'),
 			'tip' 		=> __('Set the width of the thumbnail image for Single Product page extra images.','jigoshop'),
-			'id' 		=> 'jigoshop_shop_thumbnail_w',
+			'id' 		=> 'jigoshop_shop_thumbnail_w_new',
 			'type' 		=> 'natural',
 			'std' 		=> 90
 		);
@@ -926,7 +927,7 @@ class Jigoshop_Options {
 			'name' 		=> __('Thumbnail Image Height','jigoshop'),
 			'desc' 		=> __('Default = 90px','jigoshop'),
 			'tip' 		=> __('Set the height of the thumbnail image for Single Product page extra images.','jigoshop'),
-			'id' 		=> 'jigoshop_shop_thumbnail_h',
+			'id' 		=> 'jigoshop_shop_thumbnail_h_new',
 			'type' 		=> 'natural',
 			'std' 		=> 90
 		);
@@ -935,7 +936,7 @@ class Jigoshop_Options {
 			'name' 		=> __('Catalog Image Width','jigoshop'),
 			'desc' 		=> __('Default = 150px','jigoshop'),
 			'tip' 		=> __('Set the width of the catalog image for Shop, Categories, Tags, and Related Products.','jigoshop'),
-			'id' 		=> 'jigoshop_shop_small_w',
+			'id' 		=> 'jigoshop_shop_small_w_new',
 			'type' 		=> 'natural',
 			'std' 		=> 150
 		);
@@ -944,7 +945,7 @@ class Jigoshop_Options {
 			'name' 		=> __('Catalog Image Height','jigoshop'),
 			'desc' 		=> __('Default = 150px','jigoshop'),
 			'tip' 		=> __('Set the height of the catalog image for Shop, Categories, Tags, and Related Products.','jigoshop'),
-			'id' 		=> 'jigoshop_shop_small_h',
+			'id' 		=> 'jigoshop_shop_small_h_new',
 			'type' 		=> 'natural',
 			'std' 		=> 150
 		);
@@ -953,7 +954,7 @@ class Jigoshop_Options {
 			'name' 		=> __('Large Image Width','jigoshop'),
 			'desc' 		=> __('Default = 300px','jigoshop'),
 			'tip' 		=> __('Set the width of the Single Product page large or Featured image.','jigoshop'),
-			'id' 		=> 'jigoshop_shop_large_w',
+			'id' 		=> 'jigoshop_shop_large_w_new',
 			'type' 		=> 'natural',
 			'std' 		=> 300
 		);
@@ -962,7 +963,7 @@ class Jigoshop_Options {
 			'name' 		=> __('Large Image Height','jigoshop'),
 			'desc' 		=> __('Default = 300px','jigoshop'),
 			'tip' 		=> __('Set the height of the Single Product page large or Featured image.','jigoshop'),
-			'id' 		=> 'jigoshop_shop_large_h',
+			'id' 		=> 'jigoshop_shop_large_h_new',
 			'type' 		=> 'natural',
 			'std' 		=> 300
 		);
@@ -979,7 +980,7 @@ class Jigoshop_Options {
 			'name'		=> __('Coupons','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> '',
-			'id' 		=> 'jigoshop_coupons',
+			'id' 		=> 'jigoshop_coupons_new',
 			'type' 		=> 'coupons',
 			'std' 		=> array()
 		);
@@ -996,7 +997,7 @@ class Jigoshop_Options {
 			'name'		=> __('Enable SKU field','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('Turning off the SKU field will give products an SKU of their post id.','jigoshop'),
-			'id' 		=> 'jigoshop_enable_sku',
+			'id' 		=> 'jigoshop_enable_sku_new',
 			'std' 		=> 'no',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -1009,7 +1010,7 @@ class Jigoshop_Options {
 			'name'		=> __('Enable weight field','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> '',
-			'id' 		=> 'jigoshop_enable_weight',
+			'id' 		=> 'jigoshop_enable_weight_new',
 			'std' 		=> 'yes',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -1022,7 +1023,7 @@ class Jigoshop_Options {
 			'name'		=> __('Weight Unit', 'jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __("This controls what unit you will define weights in.", 'jigoshop'),
-			'id' 		=> 'jigoshop_weight_unit',
+			'id' 		=> 'jigoshop_weight_unit_new',
 			'std' 		=> 'kg',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -1035,7 +1036,7 @@ class Jigoshop_Options {
 			'name'		=> __('Enable product dimensions','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> '',
-			'id' 		=> 'jigoshop_enable_dimensions',
+			'id' 		=> 'jigoshop_enable_dimensions_new',
 			'std' 		=> 'yes',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -1048,7 +1049,7 @@ class Jigoshop_Options {
 			'name'		=> __('Dimensions Unit', 'jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __("This controls what unit you will define dimensions in.", 'jigoshop'),
-			'id' 		=> 'jigoshop_dimension_unit',
+			'id' 		=> 'jigoshop_dimension_unit_new',
 			'std' 		=> 'cm',
 			'type' 		=> 'radio',
 			'choices'	=> array(
@@ -1061,7 +1062,7 @@ class Jigoshop_Options {
 			'name'		=> __('Show related products','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('To show or hide the related products section on a single product page.','jigoshop'),
-			'id' 		=> 'jigoshop_enable_related_products',
+			'id' 		=> 'jigoshop_enable_related_products_new',
 			'std' 		=> 'yes',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -1076,7 +1077,7 @@ class Jigoshop_Options {
 			'name'		=> __('Manage stock','jigoshop'),
 			'desc' 		=> __('If you are not managing stock, turn it off here to disable it in admin and on the front-end.','jigoshop'),
 			'tip' 		=> __('You can manage stock on a per-item basis if you leave this option on.', 'jigoshop'),
-			'id' 		=> 'jigoshop_manage_stock',
+			'id' 		=> 'jigoshop_manage_stock_new',
 			'std' 		=> 'yes',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -1089,7 +1090,7 @@ class Jigoshop_Options {
 			'name'		=> __('Show stock amounts','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('Set to yes to allow customers to view the amount of stock available for a product.', 'jigoshop'),
-			'id' 		=> 'jigoshop_show_stock',
+			'id' 		=> 'jigoshop_show_stock_new',
 			'std' 		=> 'yes',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -1101,7 +1102,7 @@ class Jigoshop_Options {
 		self::$default_options[] = array(
 			'name'		=> __('Notify on low stock','jigoshop'),
 			'desc' 		=> '',
-			'id' 		=> 'jigoshop_notify_low_stock',
+			'id' 		=> 'jigoshop_notify_low_stock_new',
 			'std' 		=> 'yes',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -1114,7 +1115,7 @@ class Jigoshop_Options {
 			'name'		=> __('Low stock threshold','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('You will receive a notification as soon this threshold is hit (if notifications are turned on).', 'jigoshop'),
-			'id' 		=> 'jigoshop_notify_low_stock_amount',
+			'id' 		=> 'jigoshop_notify_low_stock_amount_new',
 			'type' 		=> 'natural',
 			'std' 		=> '2'
 		);
@@ -1122,7 +1123,7 @@ class Jigoshop_Options {
 		self::$default_options[] = array(
 			'name'		=> __('Notify on out of stock','jigoshop'),
 			'desc' 		=> '',
-			'id' 		=> 'jigoshop_notify_no_stock',
+			'id' 		=> 'jigoshop_notify_no_stock_new',
 			'std' 		=> 'yes',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -1135,7 +1136,7 @@ class Jigoshop_Options {
 			'name'		=> __('Out of stock threshold','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('You will receive a notification as soon this threshold is hit (if notifications are turned on).', 'jigoshop'),
-			'id' 		=> 'jigoshop_notify_no_stock_amount',
+			'id' 		=> 'jigoshop_notify_no_stock_amount_new',
 			'type' 		=> 'natural',
 			'std' 		=> '0'
 		);
@@ -1144,7 +1145,7 @@ class Jigoshop_Options {
 			'name'		=> __('Hide out of stock products','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> 'For Yes: When the Out of Stock Threshold (above) is reached, the product visibility will be set to hidden so that it will not appear on the Catalog or Shop product lists.',
-			'id' 		=> 'jigoshop_hide_no_stock_product',
+			'id' 		=> 'jigoshop_hide_no_stock_product_new',
 			'std' 		=> 'no',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -1165,7 +1166,7 @@ class Jigoshop_Options {
 			'name'		=> __('Calculate Taxes','jigoshop'),
 			'desc' 		=> __('Only turn this off if you are exclusively selling non-taxable items.','jigoshop'),
 			'tip' 		=> __('If you are not calculating taxes then you can ignore all other tax options.', 'jigoshop'),
-			'id' 		=> 'jigoshop_calc_taxes',
+			'id' 		=> 'jigoshop_calc_taxes_new',
 			'std' 		=> 'yes',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -1178,7 +1179,7 @@ class Jigoshop_Options {
 			'name'		=> __('Catalog Prices include tax?','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('If prices include tax then tax calculations will work backwards.','jigoshop'),
-			'id' 		=> 'jigoshop_prices_include_tax',
+			'id' 		=> 'jigoshop_prices_include_tax_new',
 			'std' 		=> 'yes',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -1191,7 +1192,7 @@ class Jigoshop_Options {
 			'name'		=> __('Cart Subtotals include tax?','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('Should the subtotal be shown including or excluding tax on the frontend?','jigoshop'),
-			'id' 		=> 'jigoshop_display_totals_tax',
+			'id' 		=> 'jigoshop_display_totals_tax_new',
 			'std' 		=> 'no',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -1204,7 +1205,7 @@ class Jigoshop_Options {
 			'name'		=> __('Apply Taxes After Coupon','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('If yes, taxes get applied after coupons. When no, taxes get applied before coupons.','jigoshop'),
-			'id' 		=> 'jigoshop_tax_after_coupon',
+			'id' 		=> 'jigoshop_tax_after_coupon_new',
 			'std' 		=> 'yes',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -1217,7 +1218,7 @@ class Jigoshop_Options {
 			'name'		=> __('Additional Tax classes','jigoshop'),
 			'desc' 		=> __('List 1 per line. This is in addition to the default <em>Standard Rate</em>.','jigoshop'),
 			'tip' 		=> __('List product and shipping tax classes here, e.g. Zero Tax, Reduced Rate.','jigoshop'),
-			'id' 		=> 'jigoshop_tax_classes',
+			'id' 		=> 'jigoshop_tax_classes_new',
 			'type' 		=> 'textarea',
 			'std' 		=> "Reduced Rate\nZero Rate"
 		);
@@ -1226,7 +1227,7 @@ class Jigoshop_Options {
 			'name'		=> __('Tax rates','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('To avoid rounding errors, insert tax rates with 4 decimal places.','jigoshop'),
-			'id' 		=> 'jigoshop_tax_rates',
+			'id' 		=> 'jigoshop_tax_rates_new',
 			'type' 		=> 'tax_rates',
 			'std' 		=> array()
 		);
@@ -1243,7 +1244,7 @@ class Jigoshop_Options {
 			'name'		=> __('Calculate Shipping','jigoshop'),
 			'desc' 		=> __('Only turn this off if you are not shipping items, or items have shipping costs included.','jigoshop'),
 			'tip' 		=> __('If you are not calculating shipping then you can ignore all other tax options.', 'jigoshop'),
-			'id' 		=> 'jigoshop_calc_shipping',
+			'id' 		=> 'jigoshop_calc_shipping_new',
 			'std' 		=> 'yes',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -1256,7 +1257,7 @@ class Jigoshop_Options {
 			'name'		=> __('Enable shipping calculator on cart','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> '',
-			'id' 		=> 'jigoshop_enable_shipping_calc',
+			'id' 		=> 'jigoshop_enable_shipping_calc_new',
 			'std' 		=> 'yes',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
@@ -1269,7 +1270,7 @@ class Jigoshop_Options {
 			'name'		=> __('Only ship to billing address?','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> '',
-			'id' 		=> 'jigoshop_ship_to_billing_address_only',
+			'id' 		=> 'jigoshop_ship_to_billing_address_only_new',
 			'std' 		=> 'no',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
