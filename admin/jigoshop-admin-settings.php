@@ -472,9 +472,9 @@ function jigoshop_admin_option_display($options) {
 						value="<?php if (get_option($value['id']) !== false && get_option($value['id']) !== null)
 							echo esc_attr( get_option($value['id']) );
 							else if ( isset($value['std'])) echo esc_attr( $value['std'] ); ?>" />
-					<?php if ( !empty( $value['name'] ) && empty( $value['group'] ) ) : ?>
-						<br /><small><?php echo $value['desc'] ?></small>
-					<?php else: ?>
+					<?php if ( !empty($value['desc']) && (!empty( $value['name'] ) && empty( $value['group'] )) ) : ?>
+							<br /><small><?php echo $value['desc'] ?></small>
+					<?php elseif ( !empty($value['desc']) ) : ?>
 						<?php echo $value['desc'] ?>
 					<?php endif; ?>
 				</td>
@@ -505,9 +505,9 @@ function jigoshop_admin_option_display($options) {
 						><?php echo ucfirst($val); ?></option>
 					<?php endforeach; ?>
 					</select>
-					<?php if ( !empty( $value['name'] ) && empty( $value['group'] ) ) : ?>
+					<?php if ( !empty($value['desc']) && (!empty( $value['name'] ) && empty( $value['group'] )) ) : ?>
 						<br /><small><?php echo $value['desc'] ?></small>
-					<?php else: ?>
+					<?php elseif ( !empty($value['desc']) ) : ?>
 						<?php echo $value['desc'] ?>
 					<?php endif; ?>
 				</td>
