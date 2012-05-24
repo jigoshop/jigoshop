@@ -664,8 +664,8 @@ if (!function_exists('jigoshop_get_image_placeholder')) {
 if (!function_exists('jigoshop_output_related_products')) {
 	function jigoshop_output_related_products() {
 		if (get_option ('jigoshop_enable_related_products') != 'no')
-		// 2 Related Products in 2 columns
-		jigoshop_related_products( 2, 2 );
+			// 2 Related Products in 2 columns
+			jigoshop_related_products( 2, 2 );
 	}
 }
 
@@ -692,8 +692,10 @@ if (!function_exists('jigoshop_related_products')) {
 			query_posts($args);
 			jigoshop_get_template_part( 'loop', 'shop' );
 			echo '</div>';
+			wp_reset_query();
 		endif;
-		wp_reset_query();
+		$per_page = null;   // reset for cross sells if enabled
+		$columns = null;
 
 	}
 }
