@@ -96,13 +96,22 @@ class Jigoshop_Options {
 	 */	
 	public static function get_option( $name, $default = null ) {
         // all new options will have a naming convention of _new added to the end
-        $old_option = get_option(substr($name, 0, strlen($name) - 4));
+        $old_option = get_option(self::get_old_name($name));
 		if ( isset( self::$current_options[$name] )) return self::$current_options[$name];
         else if ( isset( $default )) return $default;
         else if ( isset ( $old_option )) return $old_option;
 		else return null;
 	}
 	
+    /**
+     * helper function to extract the old id name from the name parameter being set
+     * 
+     * @param string the id of the option to set
+     * @return string the id with 4 characters trimmed off the end 
+     */
+    private static function get_old_name( $name ) {
+        return substr($name, 0, strlen($name) - 4);
+    }
 	
 	/**
 	 * Sets a named Jigoshop option
@@ -113,6 +122,12 @@ class Jigoshop_Options {
 	 * @since	1.2
 	 */	
 	public static function set_option( $name, $value ) {
+        
+        // take care of keeping the old name updated when setting new options
+        if (strpos($name, '_new') !== false) :
+             update_option(self::get_old_name($name), $value);
+        endif;
+        
 		self::get_current_options();
 		if ( isset( $name )) {
 			self::$current_options[$name] = $value;
@@ -350,6 +365,9 @@ class Jigoshop_Options {
 	 *
 	 */	
 	public static function set_default_options() {
+        
+        // all pre-existing Jigoshop options will have an id with old_name[_new] attached
+        // this is so that the old id will not be overwritten
 		
 		self::$default_options = array();
 		
