@@ -1280,7 +1280,7 @@ class Jigoshop_Options {
 		
 		self::$default_options[] = array( 'name' => __('Available Shipping Methods', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
-//		self::$default_options[] = array( 'type' => 'shipping_options');  // (-JAP-) should not longer be required
+		self::$default_options[] = array( 'type' => 'shipping_options');  // (-JAP-) should not longer be required
 		
 		/**
 		 * Payment Gateways Tab

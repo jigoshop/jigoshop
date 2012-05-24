@@ -840,9 +840,9 @@ class Jigoshop_Options_Parser {
 			break;
 			
 		case 'shipping_options' :
-// 			foreach ( jigoshop_shipping::get_all_methods() as $shipping_method ) :
-// 				$shipping_method->admin_options();
-// 			endforeach;
+ 			foreach ( jigoshop_shipping::get_all_methods() as $shipping_method ) :
+ 				$shipping_method->admin_options();
+ 			endforeach;
 			break;
 			
 		case 'tax_rates' :
