@@ -24,7 +24,7 @@ class jigoshop_customer extends Jigoshop_Singleton {
 
 		if ( !isset( jigoshop_session::instance()->customer ) ) :
 
-			$default = Jigoshop_Options::get_option('jigoshop_default_country');
+			$default = Jigoshop_Options::get_option('jigoshop_default_country_new');
         	if (strstr($default, ':')) :
         		$country = current(explode(':', $default));
         		$state = end(explode(':', $default));
