@@ -80,7 +80,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
                     $rate += (empty($this->fee) ? 0 : $this->get_fee($this->fee, jigoshop_cart::$cart_contents_total_ex_dl));
 
                     $tax = 0;
-                    if (Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable' && $rate > 0) :
+                    if (Jigoshop_Options::get_option('jigoshop_calc_taxes_new') == 'yes' && $this->tax_status == 'taxable' && $rate > 0) :
                         $tax = $this->calculate_shipping_tax($rate - jigoshop_cart::get_cart_discount_leftover(), $this->id . (empty($this->rates) ? 0 : count($this->rates)));
                     endif;
 
@@ -122,7 +122,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
                     $rate += (empty($this->fee) ? 0 : $this->get_fee($this->fee, jigoshop_cart::$cart_contents_total_ex_dl));
 
                     $tax = 0;
-                    if (Jigoshop_Options::get_option('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable' && $rate > 0) :
+                    if (Jigoshop_Options::get_option('jigoshop_calc_taxes_new') == 'yes' && $this->tax_status == 'taxable' && $rate > 0) :
                         $tax = $this->calculate_shipping_tax($rate - jigoshop_cart::get_cart_discount_leftover(), $this->id . (empty($this->rates) ? 0 : count($this->rates)));
                     endif;
 
