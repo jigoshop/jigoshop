@@ -597,7 +597,7 @@ if (!function_exists('jigoshop_product_customize_panel')) {
 
 		if ( get_post_meta( $_product->ID , 'customizable', true ) == 'yes' ) :
 			echo '<div class="panel" id="tab-customize">';
-			echo '<h2>' . apply_filters('jigoshop_product_customize_heading', __('Enter your personal information as you want it to appear on the product', 'jigoshop')) . '</h2>';
+			echo '<p>' . apply_filters('jigoshop_product_customize_heading', __('Enter your personal information as you want it to appear on the product', 'jigoshop')) . '</p>';
 
 			if ( isset( $_POST['Submit'] ) && $_POST['Submit'] == 'Save Personalization' ) {
 				$custom_products = (array) jigoshop_session::instance()->customized_products;

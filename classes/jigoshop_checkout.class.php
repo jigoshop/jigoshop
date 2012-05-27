@@ -581,11 +581,16 @@ class jigoshop_checkout extends jigoshop_singleton {
 
                         $price_inc_tax = (get_option('jigoshop_calc_taxes') == 'yes' && get_option('jigoshop_prices_include_tax') == 'yes' ? $_product->get_price() : -1);
 
+						if ( !empty( $values['variation_id'] )) {
+							$product_id = $values['variation_id'];
+						} else {
+							$product_id = $values['product_id'];
+						}
 						$custom_products = (array) jigoshop_session::instance()->customized_products;
-						$custom = '';
-						if ( ! empty( $custom_products[$values['product_id']] ) ) :
-							$custom = $custom_products[$values['product_id']];
-							unset( $custom_products[$values['product_id']] );
+						$custom = isset( $custom_products[$product_id] ) ? $custom_products[$product_id] : '';
+						if ( ! empty( $custom_products[$product_id] ) ) :
+							$custom = $custom_products[$product_id];
+							unset( $custom_products[$product_id] );
 							jigoshop_session::instance()->customized_products = $custom_products;
 						endif;
 
