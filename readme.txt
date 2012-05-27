@@ -118,6 +118,8 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * Tweak: Enable product categories widget showing 'current-cat' CSS class on single products
 * Tweak: Set the Shop Redirect page on fresh install to the base Shop page
 * Fix: Internationalize comment/review dates
+* Fix: Incorrect order calculation when adding a new order
+* Fix: Guest bypassing registration when forced
 * Fix: Disable guest purchases when setting is enabled
 * Fix: Cross Sells & Up Sells extension - users can define number of cross sells to show via theme functions.php
 
