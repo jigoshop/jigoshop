@@ -595,15 +595,21 @@ if (!function_exists('jigoshop_product_customize_panel')) {
 	function jigoshop_product_customize_panel() {
 		global $_product;
 
-		if ( get_post_meta( $_product->ID , 'customizable', true ) == 'yes' ) :
-			echo '<div class="panel" id="tab-customize">';
-			echo '<p>' . apply_filters('jigoshop_product_customize_heading', __('Enter your personal information as you want it to appear on the product', 'jigoshop')) . '</p>';
+		if ( isset( $_POST['Submit'] ) && $_POST['Submit'] == 'Save Personalization' ) {
+			$custom_products = (array) jigoshop_session::instance()->customized_products;
+			$custom_products[$_POST['customized_id']] = trim( wptexturize( $_POST['jigoshop_customized_product'] ));
+			jigoshop_session::instance()->customized_products = $custom_products;
+		}
 
-			if ( isset( $_POST['Submit'] ) && $_POST['Submit'] == 'Save Personalization' ) {
-				$custom_products = (array) jigoshop_session::instance()->customized_products;
-				$custom_products[$_POST['customized_id']] = jigowatt_clean( $_POST['jigoshop_customized_product'] );
-				jigoshop_session::instance()->customized_products = $custom_products;
-			}
+		if ( get_post_meta( $_product->ID , 'customizable', true ) == 'yes' ) :
+			$custom_products = (array) jigoshop_session::instance()->customized_products;
+			$custom = isset( $custom_products[$_product->ID] ) ? $custom_products[$_product->ID] : '';
+			$custom_length = get_post_meta( $_product->ID , 'customized_length', true );
+			$length_str = $custom_length == '' ? '' : sprintf( __( 'You may enter a maximum of %s characters.', 'jigoshop' ), $custom_length );
+			
+			echo '<div class="panel" id="tab-customize">';
+			echo '<p>' . apply_filters('jigoshop_product_customize_heading', __('Enter your personal information as you want it to appear on the product.<br />'.$length_str, 'jigoshop')) . '</p>';
+
 			?>
 
 				<form action="" method="post">
@@ -611,16 +617,24 @@ if (!function_exists('jigoshop_product_customize_panel')) {
 					<input type="hidden" name="customized_id" value="<?php echo esc_attr( $_product->ID ); ?>" />
 
 					<?php
-						$custom_products = (array) jigoshop_session::instance()->customized_products;
-						$custom = isset( $custom_products[$_product->ID] ) ? $custom_products[$_product->ID] : '';
+					if ( $custom_length == '' ) :
 					?>
-
-					<textarea
-						id="jigoshop_customized_product"
-						name="jigoshop_customized_product"
-						cols="60"
-						rows="4"><?php echo esc_textarea( $custom ); ?></textarea>
-
+						<textarea
+							id="jigoshop_customized_product"
+							name="jigoshop_customized_product"
+							cols="60"
+							rows="4"><?php echo esc_textarea( $custom ); ?>
+						</textarea>
+					<?php else : ?>
+						<input 
+							type="text"
+							id="jigoshop_customized_product"
+							name="jigoshop_customized_product"
+							size="<?php echo $custom_length; ?>"
+							maxlength="<?php echo $custom_length; ?>"
+							value="<?php echo esc_attr( $custom ); ?>" />
+					<?php endif; ?>
+					
 					<p class="submit"><input name="Submit" type="submit" class="button-alt add_personalization" value="<?php _e( "Save Personalization", 'jigoshop' ); ?>" /></p>
 
 				</form>

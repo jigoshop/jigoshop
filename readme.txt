@@ -113,11 +113,12 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 
 == Changelog ==
 = 1.2.3 - TBA =
-* New: Add filters for new Jigoshop Product Addons extensions
+* New: Add filters for new Jigoshop Product Addons extension
 * New: Add CSS classes to product attributes on variations for the front end to allow special effects
+* New: Personalized products can have a character limit
+* Tweak: Each Product's variations can now be personalized
 * Tweak: Enable product categories widget showing 'current-cat' CSS class on single products
 * Tweak: Set the Shop Redirect page on fresh install to the base Shop page
-* Tweak: Each Product's variations can now be personalized
 * Fix: Internationalize comment/review dates
 * Fix: Incorrect order calculation when adding a new order
 * Fix: Guest bypassing registration when forced

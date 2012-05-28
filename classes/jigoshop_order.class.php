@@ -315,7 +315,7 @@ class jigoshop_order {
 			endif;
 
 			if ( ! empty( $item['customization'] ) ) :
-				$return .= PHP_EOL . apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') ) . $item['customization'];
+				$return .= PHP_EOL . apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') ) . PHP_EOL . $item['customization'];
 			endif;
 
 			if ($show_download_links) :
