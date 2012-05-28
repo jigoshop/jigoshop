@@ -87,6 +87,15 @@ class Jigoshop_Widget_Product_Categories extends WP_Widget {
 			'title_li'		=> null,
 		);
 
+		if ( is_product() ) {
+			global $post;
+			$categories = get_the_terms( $post->ID, 'product_cat' );
+			if ( ! empty( $categories ) ) foreach( $categories as $id => $cat ) {
+				$args['current_category'] = $cat->term_id;
+				break;		// we can only take the first one
+			}
+		}
+
 		// Output as dropdown or unordered list
 		if( $is_dropdown ) {
 

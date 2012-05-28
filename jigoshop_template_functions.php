@@ -293,6 +293,7 @@ if (!function_exists('jigoshop_simple_add_to_cart')) {
 
 		?>
 		<form action="<?php echo esc_url( $_product->add_to_cart_url() ); ?>" class="cart" method="post">
+			<?php do_action('jigoshop_before_add_to_cart_form_button'); ?>
 		 	<div class="quantity"><input name="quantity" value="1" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div>
 		 	<button type="submit" class="button-alt"><?php _e('Add to cart', 'jigoshop'); ?></button>
 		 	<?php do_action('jigoshop_add_to_cart_form'); ?>
@@ -317,6 +318,7 @@ if (!function_exists('jigoshop_downloadable_add_to_cart')) {
 
 		?>
 		<form action="<?php echo esc_url( $_product->add_to_cart_url() ); ?>" class="cart" method="post">
+			<?php do_action('jigoshop_before_add_to_cart_form_button'); ?>
 			<button type="submit" class="button-alt"><?php _e('Add to cart', 'jigoshop'); ?></button>
 			<?php do_action('jigoshop_add_to_cart_form'); ?>
 		</form>
@@ -345,6 +347,7 @@ if (!function_exists('jigoshop_grouped_add_to_cart')) {
 					<?php endforeach; ?>
 				</tbody>
 			</table>
+      <?php do_action('jigoshop_before_add_to_cart_form_button'); ?>			
 			<button type="submit" class="button-alt"><?php _e('Add to cart', 'jigoshop'); ?></button>
 			<?php do_action('jigoshop_add_to_cart_form'); ?>
 		</form>
@@ -456,6 +459,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
                 <?php endforeach;?>
 			</fieldset>
 			<div class="single_variation"></div>
+			<?php do_action('jigoshop_before_add_to_cart_form_button'); ?>
 			<div class="variations_button" style="display:none;">
                 <input type="hidden" name="variation_id" value="" />
                 <input type="hidden" name="product_id" value="<?php echo esc_attr( $post->ID ); ?>" />
@@ -591,15 +595,21 @@ if (!function_exists('jigoshop_product_customize_panel')) {
 	function jigoshop_product_customize_panel() {
 		global $_product;
 
-		if ( get_post_meta( $_product->ID , 'customizable', true ) == 'yes' ) :
-			echo '<div class="panel" id="tab-customize">';
-			echo '<h2>' . apply_filters('jigoshop_product_customize_heading', __('Enter your personal information as you want it to appear on the product', 'jigoshop')) . '</h2>';
+		if ( isset( $_POST['Submit'] ) && $_POST['Submit'] == 'Save Personalization' ) {
+			$custom_products = (array) jigoshop_session::instance()->customized_products;
+			$custom_products[$_POST['customized_id']] = trim( wptexturize( $_POST['jigoshop_customized_product'] ));
+			jigoshop_session::instance()->customized_products = $custom_products;
+		}
 
-			if ( isset( $_POST['Submit'] ) && $_POST['Submit'] == 'Save Personalization' ) {
-				$custom_products = (array) jigoshop_session::instance()->customized_products;
-				$custom_products[$_POST['customized_id']] = jigowatt_clean( $_POST['jigoshop_customized_product'] );
-				jigoshop_session::instance()->customized_products = $custom_products;
-			}
+		if ( get_post_meta( $_product->ID , 'customizable', true ) == 'yes' ) :
+			$custom_products = (array) jigoshop_session::instance()->customized_products;
+			$custom = isset( $custom_products[$_product->ID] ) ? $custom_products[$_product->ID] : '';
+			$custom_length = get_post_meta( $_product->ID , 'customized_length', true );
+			$length_str = $custom_length == '' ? '' : sprintf( __( 'You may enter a maximum of %s characters.', 'jigoshop' ), $custom_length );
+			
+			echo '<div class="panel" id="tab-customize">';
+			echo '<p>' . apply_filters('jigoshop_product_customize_heading', __('Enter your personal information as you want it to appear on the product.<br />'.$length_str, 'jigoshop')) . '</p>';
+
 			?>
 
 				<form action="" method="post">
@@ -607,16 +617,24 @@ if (!function_exists('jigoshop_product_customize_panel')) {
 					<input type="hidden" name="customized_id" value="<?php echo esc_attr( $_product->ID ); ?>" />
 
 					<?php
-						$custom_products = (array) jigoshop_session::instance()->customized_products;
-						$custom = isset( $custom_products[$_product->ID] ) ? $custom_products[$_product->ID] : '';
+					if ( $custom_length == '' ) :
 					?>
-
-					<textarea
-						id="jigoshop_customized_product"
-						name="jigoshop_customized_product"
-						cols="60"
-						rows="4"><?php echo esc_textarea( $custom ); ?></textarea>
-
+						<textarea
+							id="jigoshop_customized_product"
+							name="jigoshop_customized_product"
+							cols="60"
+							rows="4"><?php echo esc_textarea( $custom ); ?>
+						</textarea>
+					<?php else : ?>
+						<input 
+							type="text"
+							id="jigoshop_customized_product"
+							name="jigoshop_customized_product"
+							size="<?php echo $custom_length; ?>"
+							maxlength="<?php echo $custom_length; ?>"
+							value="<?php echo esc_attr( $custom ); ?>" />
+					<?php endif; ?>
+					
 					<p class="submit"><input name="Submit" type="submit" class="button-alt add_personalization" value="<?php _e( "Save Personalization", 'jigoshop' ); ?>" /></p>
 
 				</form>
@@ -680,8 +698,8 @@ if (!function_exists('jigoshop_get_image_placeholder')) {
 if (!function_exists('jigoshop_output_related_products')) {
 	function jigoshop_output_related_products() {
 		if (get_option ('jigoshop_enable_related_products') != 'no')
-		// 2 Related Products in 2 columns
-		jigoshop_related_products( 2, 2 );
+			// 2 Related Products in 2 columns
+			jigoshop_related_products( 2, 2 );
 	}
 }
 
@@ -708,8 +726,10 @@ if (!function_exists('jigoshop_related_products')) {
 			query_posts($args);
 			jigoshop_get_template_part( 'loop', 'shop' );
 			echo '</div>';
+			wp_reset_query();
 		endif;
-		wp_reset_query();
+		$per_page = null;   // reset for cross sells if enabled
+		$columns = null;
 
 	}
 }
