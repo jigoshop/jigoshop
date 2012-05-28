@@ -4,7 +4,7 @@ Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, wid
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.2.1
 Tested up to: 3.4-beta3
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,7 +112,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
-= 1.2.3 - TBA =
+= 1.2.3 - 2012-05-28 =
 * New: Add filters for new Jigoshop Product Addons extension
 * New: Add CSS classes to product attributes on variations for the front end to allow special effects
 * New: Personalized products can have a character limit
