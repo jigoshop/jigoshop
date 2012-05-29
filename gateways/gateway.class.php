@@ -33,7 +33,9 @@ class jigoshop_payment_gateway {
         // instance of jigoshop_options
         $this->jigoshop_options = (func_num_args() == 1 ? func_get_arg(0) : new Jigoshop_Options());
         
-        if ($this->jigoshop_options == NULL || !$this->jigoshop_options instanceof jigoshop_options_interface) :
+        // default to Jigoshop_Options class if the arg passed in isn't implementing the interface or is null
+        if (!$this->jigoshop_options instanceof jigoshop_options_interface) :
+            
             $this->jigoshop_options = new Jigoshop_Options();
         endif;
         
