@@ -29,15 +29,15 @@ class jigoshop_cod extends jigoshop_payment_gateway {
 
 	public function __construct() {
 		
-		Jigoshop_Options::install_external_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
+        parent::__construct();
 		
         $this->id				= 'cod';
         $this->icon 			= '';
         $this->has_fields 		= false;
 
-		$this->enabled			= Jigoshop_Options::get_option('jigoshop_cod_enabled');
-		$this->title 			= Jigoshop_Options::get_option('jigoshop_cod_title');
-		$this->description 		= Jigoshop_Options::get_option('jigoshop_cod_description');
+		$this->enabled			= $this->jigoshop_options->get_option('jigoshop_cod_enabled');
+		$this->title 			= $this->jigoshop_options->get_option('jigoshop_cod_title');
+		$this->description 		= $this->jigoshop_options->get_option('jigoshop_cod_description');
 
     	add_action('thankyou_cod', array(&$this, 'thankyou_page'));
     }

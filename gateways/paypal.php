@@ -29,23 +29,23 @@ class paypal extends jigoshop_payment_gateway {
 	
 	public function __construct() {
 		
-		Jigoshop_Options::install_external_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
+		parent::__construct();
 		
 		$this->id			= 'paypal';
 		$this->icon 		= jigoshop::assets_url() . '/assets/images/icons/paypal.png';
 		$this->has_fields 	= false;
-	  	$this->enabled		= Jigoshop_Options::get_option('jigoshop_paypal_enabled');
-		$this->title 		= Jigoshop_Options::get_option('jigoshop_paypal_title');
-		$this->email 		= Jigoshop_Options::get_option('jigoshop_paypal_email');
-		$this->description  = Jigoshop_Options::get_option('jigoshop_paypal_description');
-		$this->force_payment= Jigoshop_Options::get_option('jigoshop_paypal_force_payment');
+	  	$this->enabled		= $this->jigoshop_options->get_option('jigoshop_paypal_enabled');
+		$this->title 		= $this->jigoshop_options->get_option('jigoshop_paypal_title');
+		$this->email 		= $this->jigoshop_options->get_option('jigoshop_paypal_email');
+		$this->description  = $this->jigoshop_options->get_option('jigoshop_paypal_description');
+		$this->force_payment= $this->jigoshop_options->get_option('jigoshop_paypal_force_payment');
 
 		$this->liveurl 		= 'https://www.paypal.com/webscr';
 		$this->testurl 		= 'https://www.sandbox.paypal.com/webscr';
-		$this->testmode		= Jigoshop_Options::get_option('jigoshop_paypal_testmode');
-		$this->testmail 	= Jigoshop_Options::get_option('jigoshop_sandbox_email');
+		$this->testmode		= $this->jigoshop_options->get_option('jigoshop_paypal_testmode');
+		$this->testmail 	= $this->jigoshop_options->get_option('jigoshop_sandbox_email');
 
-		$this->send_shipping = Jigoshop_Options::get_option('jigoshop_paypal_send_shipping');
+		$this->send_shipping = $this->jigoshop_options->get_option('jigoshop_paypal_send_shipping');
 
 		add_action( 'init', array(&$this, 'check_ipn_response') );
 		add_action('valid-paypal-standard-ipn-request', array(&$this, 'successful_request') );
@@ -185,7 +185,7 @@ class paypal extends jigoshop_payment_gateway {
 	 * There are no payment fields for paypal, but we want to show the description if set.
 	 **/
 	function payment_fields() {
-		if ($jigoshop_paypal_description = Jigoshop_Options::get_option('jigoshop_paypal_description')) echo wpautop(wptexturize($jigoshop_paypal_description));
+		if ($this->description) echo wpautop(wptexturize($this->description));
 	}
 
 	/**
@@ -195,8 +195,8 @@ class paypal extends jigoshop_payment_gateway {
 
 		$order = new jigoshop_order( $order_id );
         
-        $subtotal = (float)(Jigoshop_Options::get_option('jigoshop_prices_include_tax_new') == 'yes' ? (float)$order->order_subtotal + (float)$order->order_tax : $order->order_subtotal);
-        $shipping_total = (float)(Jigoshop_Options::get_option('jigoshop_prices_include_tax_new') == 'yes' ? (float)$order->order_shipping + (float)$order->order_shipping_tax : $order->order_shipping);
+        $subtotal = (float)($this->jigoshop_options->get_option('jigoshop_prices_include_tax_new') == 'yes' ? (float)$order->order_subtotal + (float)$order->order_tax : $order->order_subtotal);
+        $shipping_total = (float)($this->jigoshop_options->get_option('jigoshop_prices_include_tax_new') == 'yes' ? (float)$order->order_shipping + (float)$order->order_shipping_tax : $order->order_shipping);
 
 		if ( $this->testmode == 'yes' ):
 			$paypal_adr = $this->testurl . '?test_ipn=1&';
@@ -231,7 +231,7 @@ class paypal extends jigoshop_payment_gateway {
 				'cmd' 					=> '_cart',
 				'business' 				=> $this->testmode ? $this->testmail : $this->email,
 				'no_note' 				=> 1,
-				'currency_code' 		=> Jigoshop_Options::get_option('jigoshop_currency_new'),
+				'currency_code' 		=> $this->jigoshop_options->get_option('jigoshop_currency_new'),
 				'charset' 				=> 'UTF-8',
 				'rm' 					=> 2,
 				'upload' 				=> 1,
@@ -266,7 +266,7 @@ class paypal extends jigoshop_payment_gateway {
 		);
 
 		// only include tax if prices don't include tax
-		if (Jigoshop_Options::get_option('jigoshop_prices_include_tax_new') != 'yes') :
+		if ($this->jigoshop_options->get_option('jigoshop_prices_include_tax_new') != 'yes') :
 			$paypal_args['tax']					= $order->get_total_tax();
 			$paypal_args['tax_cart']			= $order->get_total_tax();
 		endif;
@@ -322,10 +322,10 @@ class paypal extends jigoshop_payment_gateway {
 
             $shipping_tax = (float)($order->order_shipping_tax ? $order->order_shipping_tax : 0);
 
-            $paypal_args['amount_'.$item_loop] = (Jigoshop_Options::get_option('jigoshop_prices_include_tax_new') == 'yes' ? number_format((float)$order->order_shipping + $shipping_tax, 2) : number_format((float)$order->order_shipping, 2));
+            $paypal_args['amount_'.$item_loop] = ($this->jigoshop_options->get_option('jigoshop_prices_include_tax_new') == 'yes' ? number_format((float)$order->order_shipping + $shipping_tax, 2) : number_format((float)$order->order_shipping, 2));
         endif; 
         
-        if (Jigoshop_Options::get_option('jigoshop_paypal_force_payment') == 'yes') :
+        if ($this->force_payment == 'yes') :
 
             $sum = 0;
             for ($i = 1; $i < $item_loop; $i++) :
@@ -508,7 +508,7 @@ class paypal extends jigoshop_payment_gateway {
         // include tax
         if (($subtotal <= 0 && $shipping_total <= 0) || (($subtotal + $shipping_total) - $discount) == 0) :
             // true when force payment = 'yes'
-            $ret_val = (Jigoshop_Options::get_option('jigoshop_paypal_force_payment') == 'yes');
+            $ret_val = ($this->force_payment == 'yes');
         elseif(($subtotal + $shipping_total) - $discount < 0) :
             // don't process paypal if the sum of the product prices and shipping total is less than the discount
             // as it cannot handle this scenario

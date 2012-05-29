@@ -31,6 +31,7 @@ class jigoshop_tax {
      * args.
      */
     function __construct() {
+        // allow for multiple constructors. One with 1 arg, otherwise no arg constructor
         $this->tax_divisor = (func_num_args() == 1 ? func_get_arg(0) : -1);
         $this->init_tax();
     }

@@ -15,7 +15,7 @@
  * @license		http://jigoshop.com/license/commercial-edition
  */
 
-class Jigoshop_Options {
+class Jigoshop_Options implements jigoshop_options_interface {
 	
 	private static $default_options;
 	private static $current_options;
@@ -60,7 +60,7 @@ class Jigoshop_Options {
 	 *
 	 * @since	1.2
 	 */	
-	public static function update_options() {
+	public function update_options() {
 		update_option( JIGOSHOP_OPTIONS, self::$current_options );
 	}
 	
@@ -76,7 +76,7 @@ class Jigoshop_Options {
 	 *
 	 * @since	1.2
 	 */	
-	public static function add_option( $name, $value ) {
+	public function add_option( $name, $value ) {
         // take care of keeping the old name updated when setting new options
         if (strpos($name, '_new') !== false) :
              update_option(self::get_old_name($name), $value);
@@ -99,7 +99,7 @@ class Jigoshop_Options {
 	 *
 	 * @since	1.2
 	 */	
-	public static function get_option( $name, $default = null ) {
+	public function get_option( $name, $default = null ) {
         // all new options will have a naming convention of _new added to the end
         $old_option = get_option(self::get_old_name($name));
 		if ( isset( self::$current_options[$name] )) return self::$current_options[$name];
@@ -114,7 +114,7 @@ class Jigoshop_Options {
      * @param string the id of the option to set
      * @return string the id with 4 characters trimmed off the end 
      */
-    private static function get_old_name( $name ) {
+    private function get_old_name( $name ) {
         return substr($name, 0, strlen($name) - 4);
     }
 	
@@ -126,7 +126,7 @@ class Jigoshop_Options {
 	 *
 	 * @since	1.2
 	 */	
-	public static function set_option( $name, $value ) {
+	public function set_option( $name, $value ) {
         
         // take care of keeping the old name updated when setting new options
         if (strpos($name, '_new') !== false) :
@@ -149,7 +149,7 @@ class Jigoshop_Options {
 	 *
 	 * @since	1.2
 	 */	
-	public static function delete_option( $name ) {
+	public function delete_option( $name ) {
 		self::get_current_options();
 		if ( isset( $name )) {
 			unset( self::$current_options[$name] );
@@ -167,7 +167,7 @@ class Jigoshop_Options {
 	 *
 	 * @since	1.2
 	 */	
-	public static function exists_option( $name ) {
+	public function exists_option( $name ) {
 		self::get_current_options();
 		if ( isset( self::$current_options[$name] )) return true;
 		else return false;
@@ -183,7 +183,7 @@ class Jigoshop_Options {
 	 *
 	 * @since	1.2
 	 */	
-	public static function install_external_options( $tab, $options ) {
+	public function install_external_options( $tab, $options ) {
 		$our_options = self::get_default_options();
 		$first_index = -1;
 		$second_index = -1;
@@ -224,7 +224,7 @@ class Jigoshop_Options {
 	 *
 	 * @since	1.2
 	 */	
-	public static function get_current_options() {
+	public function get_current_options() {
 		if ( empty( self::$current_options )) {
 			if ( empty( self::$default_options )) self::set_default_options();
 			else self::set_current_options( self::$default_options );
@@ -241,7 +241,7 @@ class Jigoshop_Options {
 	 *
 	 * @since	1.2
 	 */	
-	public static function set_current_options( $options ) {
+	private function set_current_options( $options ) {
 		self::$current_options = $options;
 		add_action( 'shutdown', array( __CLASS__, 'update_options' ));
 	}
@@ -255,7 +255,7 @@ class Jigoshop_Options {
 	 *
 	 * @since	1.2
 	 */	
-	public static function get_default_options() {
+	public function get_default_options() {
 		if ( empty( self::$default_options )) self::set_default_options();
 		return self::$default_options;
 	}
@@ -369,7 +369,7 @@ class Jigoshop_Options {
 			);
 	 *
 	 */	
-	public static function set_default_options() {
+	private function set_default_options() {
         
         // all pre-existing Jigoshop options will have an id with old_name[_new] attached
         // this is so that the old id will not be overwritten

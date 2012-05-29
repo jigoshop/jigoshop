@@ -29,17 +29,15 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 
 	public function __construct() {
 	
-		
-		Jigoshop_Options::install_external_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
-		
+		parent::__construct();
 		
         $this->id				= 'cheque';
         $this->icon 			= '';
         $this->has_fields 		= false;
 
-		$this->enabled			= Jigoshop_Options::get_option('jigoshop_cheque_enabled');
-		$this->title 			= Jigoshop_Options::get_option('jigoshop_cheque_title');
-		$this->description 		= Jigoshop_Options::get_option('jigoshop_cheque_description');
+		$this->enabled			= $this->jigoshop_options->get_option('jigoshop_cheque_enabled');
+		$this->title 			= $this->jigoshop_options->get_option('jigoshop_cheque_title');
+		$this->description 		= $this->jigoshop_options->get_option('jigoshop_cheque_description');
 
     	add_action('thankyou_cheque', array(&$this, 'thankyou_page'));
     }

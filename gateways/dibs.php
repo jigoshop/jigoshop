@@ -29,18 +29,18 @@ class dibs extends jigoshop_payment_gateway {
 
 	public function __construct() {
 		
-		Jigoshop_Options::install_external_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
+        parent::__construct();
 		
 		$this->id = 'dibs';
 		$this->icon = '';
 		$this->has_fields = false;
-		$this->enabled = Jigoshop_Options::get_option('jigoshop_dibs_enabled');
-		$this->title = Jigoshop_Options::get_option('jigoshop_dibs_title');
-		$this->merchant = Jigoshop_Options::get_option('jigoshop_dibs_merchant');
-		$this->description  = Jigoshop_Options::get_option('jigoshop_dibs_description');
-		$this->testmode = Jigoshop_Options::get_option('jigoshop_dibs_testmode');
-		$this->key1 = Jigoshop_Options::get_option('jigoshop_dibs_key1');
-		$this->key2 = Jigoshop_Options::get_option('jigoshop_dibs_key2');
+		$this->enabled = $this->jigoshop_options->get_option('jigoshop_dibs_enabled');
+		$this->title = $this->jigoshop_options->get_option('jigoshop_dibs_title');
+		$this->merchant = $this->jigoshop_options->get_option('jigoshop_dibs_merchant');
+		$this->description  = $this->jigoshop_options->get_option('jigoshop_dibs_description');
+		$this->testmode = $this->jigoshop_options->get_option('jigoshop_dibs_testmode');
+		$this->key1 = $this->jigoshop_options->get_option('jigoshop_dibs_key1');
+		$this->key2 = $this->jigoshop_options->get_option('jigoshop_dibs_key2');
 
 		add_action('init', array(&$this, 'check_callback') );
 		add_action('valid-dibs-callback', array(&$this, 'successful_request') );
