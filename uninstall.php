@@ -28,7 +28,7 @@ delete_transient( 'jigoshop_widget_cache' );
 remove_role( 'customer' );
 
 // Pages
-$page_ids = get_option ( 'jigoshop_page-ids' )
+$page_ids = get_option ( 'jigoshop_page-ids' );
 if ( !empty( $page_ids ) && is_array ( $page_ids ) )
 	foreach ( $page_ids as $id )
 		wp_delete_post ( $id );
