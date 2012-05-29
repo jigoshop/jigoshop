@@ -324,7 +324,7 @@ function jigoshop_product_add_to_cart( $atts ) {
 
 	$_product = new jigoshop_product( $product_meta->ID );
 
-	if (!$_product->is_visible()) continue;
+	if (!$_product->is_visible()) return;
 
 	ob_start();
 	?>
