@@ -180,22 +180,26 @@ function jigoshop_create_pages() {
  * @param string $page_option - the database options entry for page ID storage
  * @param array $page_data - preset default parameters for creating the page - this will finish the slug
  *
- * @since 0.9.9.1
+ * @since 1.3
  */
 function jigoshop_create_single_page( $page_slug, $page_option, $page_data ) {
 
-    global $wpdb;
+	global $wpdb;
 
-    $slug = esc_sql( _x( $page_slug, 'page_slug', 'jigoshop' ) );
-	$page_found = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1", $slug ) );
+	$slug    = esc_sql( _x( $page_slug, 'page_slug', 'jigoshop' ) );
+	$page_id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1", $slug ) );
 
-    if ( ! $page_found ) {
+	if ( ! $page_id ) {
 		$page_data['post_name'] = $slug;
-		$page_options_id = wp_insert_post( $page_data );
-		update_option( $page_option, $page_options_id );
-    } else {
-    	update_option( $page_option, $page_found );
-    }
+		$page_id = wp_insert_post( $page_data );
+	}
+
+	update_option( $page_option, $page_id );
+
+	$ids = get_option ( 'jigoshop_page-ids' );
+	$ids[] = $page_id;
+
+	update_option( 'jigoshop_page-ids', $ids );
 
 }
 
