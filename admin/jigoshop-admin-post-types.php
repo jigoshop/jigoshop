@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Functions used for custom post types in admin
  *
