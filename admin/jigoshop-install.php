@@ -47,7 +47,7 @@ function install_jigoshop() {
 
 function _install_jigoshop() {
 
-	if( ! get_site_option('jigoshop_db_version') )  {
+	if( ! get_option('jigoshop_db_version') )  {
 
 		jigoshop_tables_install();		/* we need tables installed first to eliminate installation errors */
 
