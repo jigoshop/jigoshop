@@ -20,9 +20,9 @@
     <table class="shop_table">
         <thead>
             <tr>
-                <th><?php _e('Product', 'jigoshop'); ?></th>
-                <th><?php _e('Qty', 'jigoshop'); ?></th>
-                <th><?php _e('Totals', 'jigoshop'); ?></th>
+				<th><?php _e('Product', 'jigoshop'); ?></th>
+				<th><?php _e('Qty'    , 'jigoshop'); ?></th>
+				<th><?php _e('Totals' , 'jigoshop'); ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -83,33 +83,34 @@
 
 						$variation = jigoshop_cart::get_item_data($values);
 
-						$customization = '';
-						if ( !empty( $values['variation_id'] )) {
-							$product_id = $values['variation_id'];
-						} else {
-							$product_id = $values['product_id'];
-						}
+						$customization   = '';
 						$custom_products = (array) jigoshop_session::instance()->customized_products;
-						$custom = isset( $custom_products[$product_id] ) ? $custom_products[$product_id] : '';
+						$product_id      = !empty( $values['variation_id'] )      ? $values['variation_id']       : $values['product_id'];
+						$custom          = isset( $custom_products[$product_id] ) ? $custom_products[$product_id] : ''; ?>
 
-						if ( ! empty( $custom_products[$product_id] ) ) :
-
-							$custom = $custom_products[$product_id];
-							$label = apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') );
-							$customization = '<dl class="customization">';
-							$customization = '<dt class="customized_product_label">';
-							$customization .= $label . '</dt>';
-							$customization .= '<dd class="customized_product">';
-							$customization .= $custom . '</dd></dl>';
-						endif;
-
-                        echo '
                             <tr>
-                                <td class="product-name">' . $_product->get_title() . $variation . $customization . '</td>
-								<td>' . $values['quantity'] . '</td>
-								<td>' . jigoshop_price($_product->get_price_excluding_tax($values['quantity']), array('ex_tax_label' => 1)) . '</td>
-							</tr>';
-					endif;
+                                <td class="product-name">
+									<?php echo $_product->get_title() . $variation;
+
+									if ( ! empty( $custom ) ) :
+										$label  = apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') ); ?>
+
+										<dl class="customization">
+											<dt class="customized_product_label">
+												<?php echo $label; ?>
+											</dt>
+											<dd class="customized_product">
+												<?php echo $custom; ?>
+											</dd>
+										</dl>
+
+									<?php endif; ?>
+								</td>
+								<td><?php echo $values['quantity']; ?></td>
+								<td><?php echo igoshop_price($_product->get_price_excluding_tax($values['quantity']), array('ex_tax_label' => 1)); ?></td>
+							</tr>
+
+					<?php endif;
 				endforeach;
 			endif;
 			?>
@@ -145,18 +146,24 @@
                                 endif;
                                 $gateway_set = true;
 
-                            endif;
-    						?>
+                            endif; ?>
                             <li>
-                            <input type="radio" id="payment_method_<?php echo $gateway->id; ?>" class="input-radio" name="payment_method" value="<?php echo esc_attr( $gateway->id ); ?>" <?php if ($gateway->chosen) echo 'checked="checked"'; ?> />
-                            <label for="payment_method_<?php echo $gateway->id; ?>"><?php echo $gateway->title; ?> <?php echo apply_filters('gateway_icon', $gateway->icon(), $gateway->id); ?></label>
-                                <?php
-                                    if ($gateway->has_fields || $gateway->description) :
-                                        echo '<div class="payment_box payment_method_' . esc_attr( $gateway->id ) . '" style="display:none;">';
-                                        $gateway->payment_fields();
-                                        echo '</div>';
-                                    endif;
-                                ?>
+								<input type="radio"
+									   id="payment_method_<?php echo $gateway->id; ?>"
+									   class="input-radio"
+									   name="payment_method"
+									   value="<?php echo esc_attr( $gateway->id ); ?>"
+									   <?php if ($gateway->chosen) echo 'checked="checked"'; ?>
+								/>
+								<label for="payment_method_<?php echo $gateway->id; ?>">
+									<?php echo $gateway->title; ?> <?php echo apply_filters('gateway_icon', $gateway->icon(), $gateway->id); ?>
+								</label>
+								<?php
+									if ( $gateway->has_fields || $gateway->description ) : ?>
+										<div class="payment_box payment_method_<?php echo esc_attr( $gateway->id ); ?>" style="display:none;">
+											<?php $gateway->payment_fields(); ?>
+										</div>
+									<?php endif; ?>
                             </li>
                             <?php
                         endif;
