@@ -34,7 +34,6 @@ class jigoshop_tax {
     function __construct() {
         // allow for multiple constructors. One with 1 arg, otherwise no arg constructor
         $this->tax_divisor = (func_num_args() == 1 ? func_get_arg(0) : -1);
-        $this->jigoshop_options = jigoshop_base_class::get_jigoshop_options();
         $this->init_tax();
     }
 
@@ -45,6 +44,7 @@ class jigoshop_tax {
      */
     public function init_tax() {
         $this->rates = $this->get_tax_rates();
+        $this->jigoshop_options = jigoshop_base_class::get_jigoshop_options();
         $this->compound_tax = false;
         $this->tax_amounts = array();
         $this->imploded_tax_amounts = '';
@@ -197,7 +197,7 @@ class jigoshop_tax {
         //don't include shipping in the call, as the total item price doesn't include shipping
         $total_tax = $this->get_compound_tax_amount(false) + $this->get_non_compounded_tax_amount(false);
         if ($total_item_price > 0) :
-            $tot_tax_rate = (get_option('jigoshop_prices_include_tax') == 'yes' ? round($total_tax / ($total_item_price - $total_tax) * 100, 2) : round($total_tax / $total_item_price * 100, 2));
+            $tot_tax_rate = ($this->jigoshop_options->get_option('jigoshop_prices_include_tax_new') == 'yes' ? round($total_tax / ($total_item_price - $total_tax) * 100, 2) : round($total_tax / $total_item_price * 100, 2));
         endif;
 
         return $tot_tax_rate;
