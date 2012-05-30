@@ -508,6 +508,7 @@ function jigoshop_upgrade_120() {
 function jigoshop_upgrade_200() {
 	
 	global $wpdb;
+    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
 	
 	// get all current 'jigoshop_' namespace options from the 'options' table and include them
 	$options_in_use = $wpdb->get_results( 
@@ -515,7 +516,8 @@ function jigoshop_upgrade_200() {
 	foreach ( $options_in_use as $index => $setting ) {
 		if ( $setting->option_name == 'jigoshop_options' ) continue;
 		if ( $setting->option_name == 'jigoshop_db_version' ) continue;
-		Jigoshop_Options::set_option( $setting->option_name, $setting->option_value );
+        $new_option_name = $setting->option_name . '_new';
+		$jigoshop_options->set_option( $new_option_name, $setting->option_value );
 	}
 	
 	// now do it again, adjusting specific ones based on old settings for the new Jigoshop_Options class
@@ -530,12 +532,12 @@ function jigoshop_upgrade_200() {
 			case 'jigoshop_shop_large':
 				$current = get_option( $setting['id'].'_w' );
 				if ( ! (false === $current) ) {
-					Jigoshop_Options::set_option( $setting['id'].'_w', $current );
+					$jigoshop_options->set_option( $setting['id'].'_w', $current );
 //					delete_option( $setting['id'].'_w' );
 				}
 				$current = get_option( $setting['id'].'_h' );
 				if ( ! (false === $current) ) {
-					Jigoshop_Options::set_option( $setting['id'].'_h', $current );
+					$jigoshop_options->set_option( $setting['id'].'_h', $current );
 //					delete_option( $setting['id'].'_h' );
 				}
 				break;
@@ -543,16 +545,16 @@ function jigoshop_upgrade_200() {
 				$current = get_option( $setting['id'] );
 				if ( ! (false === $current) ) {
 					if ( $current == 'including' )
-						Jigoshop_Options::set_option( $setting['id'], 'yes' );
+						$jigoshop_options->set_option( $setting['id'], 'yes' );
 					else
-						Jigoshop_Options::set_option( $setting['id'], 'no' );
+						$jigoshop_options->set_option( $setting['id'], 'no' );
 //					delete_option( $setting['id'] );
 				}
 				break;
 			default:
 				$current = get_option( $setting['id'] );
 				if ( ! (false === $current) ) {
-					Jigoshop_Options::set_option( $setting['id'], $current );
+					$jigoshop_options->set_option( $setting['id'], $current );
 //					delete_option( $setting['id'] );
 				}
 				break;
@@ -564,15 +566,15 @@ function jigoshop_upgrade_200() {
 	$jigoshop_paypal_email = get_option( 'jigoshop_paypal_email' );
 	$jigoshop_paypal_testmode = get_option( 'jigoshop_paypal_testmode' );
 	if ( $jigoshop_paypal_testmode == 'yes' ) {
-		Jigoshop_Options::set_option( 'jigoshop_paypal_testmode', 'yes' );
-		Jigoshop_Options::set_option( 'jigoshop_sandbox_email', $jigoshop_paypal_email );
-		Jigoshop_Options::set_option( 'jigoshop_paypal_email', '' );
+		$jigoshop_options->set_option( 'jigoshop_paypal_testmode', 'yes' );
+		$jigoshop_options->set_option( 'jigoshop_sandbox_email', $jigoshop_paypal_email );
+		$jigoshop_options->set_option( 'jigoshop_paypal_email', '' );
 	}
 	
 	// remove all jigoshop namespace options from 'options' table
 //	$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->options WHERE option_name LIKE 'jigoshop_%%' AND option_name <> 'jigoshop_options' AND option_name <> 'jigoshop_db_version'" ));
 	
-	Jigoshop_Options::update_options();
+	$jigoshop_options->update_options();
 	
 	flush_rewrite_rules( true );
 
