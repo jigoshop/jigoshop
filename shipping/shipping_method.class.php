@@ -72,8 +72,8 @@ class jigoshop_shipping_method {
 		if ($this->availability == 'specific') :
 			$ship_to_countries = $this->countries;
 		else :
-			if (Jigoshop_Options::get_option('jigoshop_allowed_countries_new')=='specific') :
-				$ship_to_countries = Jigoshop_Options::get_option('jigoshop_specific_allowed_countries_new');
+			if ($this->jigoshop_options->get_option('jigoshop_allowed_countries_new')=='specific') :
+				$ship_to_countries = $this->jigoshop_options->get_option('jigoshop_specific_allowed_countries_new');
 			endif;
 		endif;
 
