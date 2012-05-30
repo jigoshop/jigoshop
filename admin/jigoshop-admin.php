@@ -439,6 +439,7 @@ function jigoshop_dashboard_recent_comments() {
  * @since 3.0.0
  */
 function jigoshop_dashboard_recent_comments_control() {
+    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
 	if ( !$widget_options = get_option( 'dashboard_widget_options' ) )
 		$widget_options = array();
 
@@ -448,7 +449,7 @@ function jigoshop_dashboard_recent_comments_control() {
 	if ( 'POST' == $_SERVER['REQUEST_METHOD'] && isset($_POST['widget-recent-comments']) ) {
 		$number = absint( $_POST['widget-recent-comments']['items'] );
 		$widget_options['dashboard_recent_comments']['items'] = $number;
-		Jigoshop_Options::set_option( 'dashboard_widget_options', $widget_options );
+		$jigoshop_options->set_option( 'dashboard_widget_options', $widget_options );
 	}
 
 	$number = isset( $widget_options['dashboard_recent_comments']['items'] ) ? (int) $widget_options['dashboard_recent_comments']['items'] : '';
