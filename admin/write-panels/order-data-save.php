@@ -21,6 +21,7 @@ add_action('jigoshop_process_shop_order_meta', 'jigoshop_process_shop_order_meta
 function jigoshop_process_shop_order_meta($post_id, $post) {
 
     global $wpdb;
+    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
     $jigoshop_errors = array();
 
     $order = new jigoshop_order($post_id);
@@ -192,9 +193,9 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
                    }
 
                     // stock status notifications
-                    if (Jigoshop_Options::get_option('jigoshop_notify_no_stock_amount_new') >= 0 && Jigoshop_Options::get_option('jigoshop_notify_no_stock_amount_new') >= $new_quantity) {
+                    if ($jigoshop_options->get_option('jigoshop_notify_no_stock_amount_new') >= 0 && $jigoshop_options->get_option('jigoshop_notify_no_stock_amount_new') >= $new_quantity) {
                         do_action('jigoshop_no_stock_notification', $order_item['id']);
-                    } else if (Jigoshop_Options::get_option('jigoshop_notify_low_stock_amount_new') && Jigoshop_Options::get_option('jigoshop_notify_low_stock_amount_new') >= $new_quantity) {
+                    } else if ($jigoshop_options->get_option('jigoshop_notify_low_stock_amount_new') && $jigoshop_options->get_option('jigoshop_notify_low_stock_amount_new') >= $new_quantity) {
                         do_action('jigoshop_low_stock_notification', $order_item['id']);
                     }
                 }
@@ -238,6 +239,6 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
 
     // Error Handling
     if (count($jigoshop_errors) > 0) {
-        Jigoshop_Options::set_option('jigoshop_errors', $jigoshop_errors);
+        $jigoshop_options->set_option('jigoshop_errors', $jigoshop_errors);
     }
 }
