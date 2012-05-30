@@ -212,7 +212,7 @@ add_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name' );
 
 /*
 function jigoshop_mail_from( $email ) {
-	$email = Jigoshop_Options::get_option('jigoshop_email');
+	$email = jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_email');
 	return $email;
 }
 add_filter( 'wp_mail_from', 'jigoshop_mail_from' );
