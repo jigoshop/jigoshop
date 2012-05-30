@@ -16,6 +16,8 @@
  */
 class Jigoshop_Widget_Cart extends WP_Widget {
 
+    private $jigoshop_options;
+    
 	/**
 	 * Constructor
 	 *
@@ -30,6 +32,8 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 
 		// Create the widget
 		parent::__construct( 'jigoshop_cart', __( 'Jigoshop: Cart', 'jigoshop' ), $options );
+        
+        $this->jigoshop_options = jigoshop_base_class::get_jigoshop_options();
 	}
 
 	/**
@@ -99,7 +103,7 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 
 			// Print the cart total
 			echo '<p class="total"><strong>';
-			echo __( ( ( Jigoshop_Options::get_option( 'jigoshop_prices_include_tax_new') == 'yes' ) ? 'Total' : 'Subtotal' ), 'jigoshop' );
+			echo __( ( ( $this->jigoshop_options->get_option( 'jigoshop_prices_include_tax_new') == 'yes' ) ? 'Total' : 'Subtotal' ), 'jigoshop' );
 			echo ':</strong> ' . jigoshop_cart::get_cart_total();
 			echo '</p>';
 
