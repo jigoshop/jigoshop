@@ -706,7 +706,7 @@ class jigoshop_cart extends jigoshop_singleton {
 		if ( get_option('jigoshop_calc_taxes') == 'yes' ) :
 
 			/* Cart total excludes taxes. */
-			if ( get_option('jigoshop_display_totals_tax') == 'excluding' ) :
+			if ( get_option('jigoshop_display_totals_tax') == 'excluding' || (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT) ) :
 				$subtotal = get_option('jigoshop_prices_include_tax') == 'yes' ? self::$subtotal_ex_tax : $subtotal;
 				$tax_desc = __('(ex. tax)', 'jigoshop');
 			else :
