@@ -17,7 +17,7 @@
 
 abstract class jigoshop_base_class {
 
-    protected static $jigoshop_options;
+    private static $jigoshop_options;
     
 	/**
 	 * Wrapper to WordPress add_action() function

@@ -18,6 +18,7 @@
 class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 
 	private $our_parser;
+    private $jigoshop_options;
 	
 	
 	/**
@@ -26,9 +27,10 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 * @since 1.2
 	 */
 	protected function __construct() {
+        $this->jigoshop_options = self::get_jigoshop_options();
 		
 		$this->our_parser = new Jigoshop_Options_Parser( 
-			Jigoshop_Options::get_default_options(), 
+			$this->jigoshop_options->get_default_options(), 
 			JIGOSHOP_OPTIONS
 		);
 
@@ -219,7 +221,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 							<?php do_settings_sections( JIGOSHOP_OPTIONS ); ?>
 							
 							<?php $tabname = $this->get_current_tab_name(); ?>
-							<?php Jigoshop_Options::set_option( 'jigoshop_settings_current_tabname', $tabname ); ?>
+							<?php $this->jigoshop_options->set_option( 'jigoshop_settings_current_tabname', $tabname ); ?>
 							
 							<p class="submit"><input name="Submit" type="submit" class="button-primary" value="<?php echo sprintf( __( "Save %s Changes", 'jigoshop' ), $tabname ); ?>" /></p>
 						
@@ -338,13 +340,13 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		}
 		
 		$defaults = $this->our_parser->these_options;
-		$current_options = Jigoshop_Options::get_current_options();
+		$current_options = $this->jigoshop_options->get_current_options();
 		
 		$valid_input = $current_options;			// we start with the current options
 
 			
 		// Find the current TAB we are working with and use it's option settings
-		$this_section = sanitize_title( Jigoshop_Options::get_option( 'jigoshop_settings_current_tabname_new' ) );
+		$this_section = sanitize_title( $this->jigoshop_options->get_option( 'jigoshop_settings_current_tabname_new' ) );
 		$tab = $this->our_parser->tabs[$this_section];
 		
 		
@@ -489,7 +491,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			add_settings_error(
 				'',
 				'settings_updated',
-				sprintf(__('"%s" settings were updated successfully.','jigoshop'), Jigoshop_Options::get_option( 'jigoshop_settings_current_tabname_new' )),
+				sprintf(__('"%s" settings were updated successfully.','jigoshop'), $this->jigoshop_options->get_option( 'jigoshop_settings_current_tabname_new' )),
 				'updated'
 			);
 		}
@@ -805,7 +807,7 @@ class Jigoshop_Options_Parser {
 	
 	public function format_option_for_display( $item ) {
 	
-		$data = Jigoshop_Options::get_current_options();
+		$data = $this->jigoshop_options->get_current_options();
 		
 		$display = "";					// each item builds it's output into this and it's returned for echoing
 		$class = "";
@@ -1238,7 +1240,7 @@ class Jigoshop_Options_Parser {
 	
 		$_tax = new jigoshop_tax();
 		$tax_classes = $_tax->get_tax_classes();
-		$tax_rates = (array) Jigoshop_Options::get_option( 'jigoshop_tax_rates_new' );
+		$tax_rates = (array) $this->jigoshop_options->get_option( 'jigoshop_tax_rates_new' );
 		$applied_all_states = array();
 		
 		ob_start();
