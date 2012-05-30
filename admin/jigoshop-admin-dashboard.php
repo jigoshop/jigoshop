@@ -27,6 +27,7 @@
  * @usedby 		jigoshop_admin_menu()
  */
 function jigoshop_dashboard() {
+    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
 	?>
 	<div class="wrap jigoshop">
         <div class="icon32 jigoshop_icon"><br/></div>
@@ -140,17 +141,17 @@ function jigoshop_dashboard() {
 						</div>
 					</div><!-- postbox end -->
 					
-					<?php if (Jigoshop_Options::get_option('jigoshop_manage_stock_new')=='yes') : ?>
+					<?php if ($jigoshop_options->get_option('jigoshop_manage_stock_new')=='yes') : ?>
 					<div class="postbox jigoshop_right_now">
 						<h3 class="hndle" id="poststuff"><span><?php _e('Stock Report', 'jigoshop') ?></span></h3>
 						<div class="inside">
 
 							<?php
 
-							$lowstockamount = Jigoshop_Options::get_option('jigoshop_notify_low_stock_amount_new');
+							$lowstockamount = $jigoshop_options->get_option('jigoshop_notify_low_stock_amount_new');
 							if (!is_numeric($lowstockamount)) $lowstockamount = 1;
 
-							$nostockamount = Jigoshop_Options::get_option('jigoshop_notify_no_stock_amount_new');
+							$nostockamount = $jigoshop_options->get_option('jigoshop_notify_no_stock_amount_new');
 							if (!is_numeric($nostockamount)) $nostockamount = 1;
 
 							$outofstock = array();
