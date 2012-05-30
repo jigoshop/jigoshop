@@ -62,7 +62,7 @@
 
             <?php do_action('jigoshop_after_review_order_items'); ?>
 
-				<?php if ( !jigoshop_cart::tax_after_coupon() ) : ?>
+				<?php if ( !jigoshop_cart::tax_after_coupon() && jigoshop_cart::get_total_discount() ) : ?>
 				<tr class="discount">
 					<td colspan="2"><?php _e('Discount', 'jigoshop'); ?></td>
 					<td>-<?php echo jigoshop_cart::get_total_discount(); ?></td>

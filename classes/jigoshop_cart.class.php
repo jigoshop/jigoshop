@@ -786,7 +786,10 @@ class jigoshop_cart extends jigoshop_singleton {
 		if ( get_option('jigoshop_calc_taxes') != 'yes' )
 			return false;
 
-		return ( get_option('jigoshop_tax_after_coupon') == 'yes' && jigoshop_cart::get_total_discount() );
+		if ( !jigoshop_cart::get_total_discount() )
+			return false;
+
+		return ( get_option('jigoshop_tax_after_coupon') == 'yes' );
 
 
 	}

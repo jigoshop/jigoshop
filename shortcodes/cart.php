@@ -255,7 +255,7 @@ function jigoshop_cart($atts) {
                                 endforeach;
                             endif; ?>
 
-							<?php if ( !jigoshop_cart::tax_after_coupon() ) : ?>
+							<?php if ( !jigoshop_cart::tax_after_coupon() && jigoshop_cart::get_total_discount() ) : ?>
 							<tr class="discount">
 								<th class="cart-row-discount-title"><?php _e('Discount', 'jigoshop'); ?></th>
 								<td class="cart-row-discount">-<?php echo jigoshop_cart::get_total_discount(); ?></td>
