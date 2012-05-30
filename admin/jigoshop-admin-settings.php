@@ -584,9 +584,7 @@ function jigoshop_admin_option_display($options) {
 								class="large-text <?php if(!empty($value['class'])) echo esc_attr ( $value['class'] ); ?>"
 								style="<?php echo esc_attr( $value['css'] ); ?>"
 								placeholder="<?php if(!empty($value['placeholder'])) echo esc_attr ( $value['placeholder'] ); ?>"
-						>
-					<?php echo esc_textarea( ( get_option($value['id'])) ? stripslashes(get_option($value['id'])) : $value['std'] ); ?>
-						</textarea>
+						><?php echo esc_textarea( ( get_option($value['id'])) ? stripslashes(get_option($value['id'])) : $value['std'] ); ?></textarea>
 						<br /><small><?php echo $value['desc'] ?></small>
 					</td>
 				</tr><?php
