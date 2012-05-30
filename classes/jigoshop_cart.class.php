@@ -770,6 +770,29 @@ class jigoshop_cart extends jigoshop_singleton {
         return $return;
     }
 
+	public function show_retail_price($order = '') {
+
+		if ( get_option('jigoshop_calc_taxes') != 'yes' )
+			return false;
+
+		if ( get_option('jigoshop_display_totals_tax') != 'excluding' )
+			return false;
+
+		return ( jigoshop_cart::has_compound_tax() || jigoshop_cart::tax_after_coupon() );
+
+	}
+
+
+	public function tax_after_coupon() {
+
+		if ( get_option('jigoshop_calc_taxes') != 'yes' )
+			return false;
+
+		return ( get_option('jigoshop_tax_after_coupon') == 'yes' && jigoshop_cart::get_total_discount() );
+
+
+	}
+
     public static function get_cart_discount_leftover() {
         return self::$cart_discount_leftover;
     }
