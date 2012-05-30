@@ -89,5 +89,5 @@ class jigoshop_payment_gateway {
 	 * These should be installed on the Jigoshop_Options 'Payment Gateways' tab
 	 *
 	 */	
-    public function get_default_options() {}
+    protected function get_default_options() {}
 }

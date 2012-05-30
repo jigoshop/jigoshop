@@ -28,9 +28,25 @@ class jigoshop_shipping_method {
 	var $chosen				= false;
 	var $shipping_total 	= 0;
 	var $shipping_tax 		= 0;
+    
+    protected $jigoshop_options;
 
     private $tax;
     private $error_message = null;
+    
+    public function __construct() {
+        
+        // allows for multiple constructors. Either one with an argument, or default which creates a new
+        // instance of jigoshop_options
+        $this->jigoshop_options = (func_num_args() == 1 ? func_get_arg(0) : new Jigoshop_Options());
+        
+        // default to Jigoshop_Options class if the arg passed in isn't implementing the interface or is null
+        if (!$this->jigoshop_options instanceof jigoshop_options_interface) :
+            
+            $this->jigoshop_options = new Jigoshop_Options();
+        endif;
+        
+    }
 
     public function is_available() {
 
