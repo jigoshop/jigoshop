@@ -46,6 +46,7 @@ class jigoshop_shipping_method {
             $this->jigoshop_options = new Jigoshop_Options();
         endif;
         
+        $this->jigoshop_options->install_external_options( 'Shipping', $this->get_default_options() );
     }
 
     public function is_available() {
@@ -130,8 +131,23 @@ class jigoshop_shipping_method {
         $this->tax = null;
     }
 
+    /**
+     * @deprecated - use get_default_options()
+     */
     public function admin_options() {}
 
+    /**
+     * @deprecated - use get_default_options()
+     */
     public function process_admin_options() {}
+
+    /**
+	 * Default Option settings for WordPress Settings API using an implementation of the jigoshop_options_interface
+	 *
+	 * These should be installed on the Jigoshop_Options 'Shipping' tab
+     * @since 1.3
+	 *
+	 */	
+    protected function get_default_options() {}
 
 }

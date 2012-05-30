@@ -26,15 +26,14 @@ class free_shipping extends jigoshop_shipping_method {
 
 	public function __construct() {
 		
-		
-		Jigoshop_Options::install_external_options( 'Shipping', $this->get_default_options() );
+		parent::__construct();
 		
         $this->id 			= 'free_shipping';
-        $this->enabled		= Jigoshop_Options::get_option('jigoshop_free_shipping_enabled');
-		$this->title 		= Jigoshop_Options::get_option('jigoshop_free_shipping_title');
-		$this->min_amount 	= Jigoshop_Options::get_option('jigoshop_free_shipping_minimum_amount');
-		$this->availability = Jigoshop_Options::get_option('jigoshop_free_shipping_availability');
-		$this->countries 	= Jigoshop_Options::get_option('jigoshop_free_shipping_countries');
+        $this->enabled		= $this->jigoshop_options->get_option('jigoshop_free_shipping_enabled');
+		$this->title 		= $this->jigoshop_options->get_option('jigoshop_free_shipping_title');
+		$this->min_amount 	= $this->jigoshop_options->get_option('jigoshop_free_shipping_minimum_amount');
+		$this->availability = $this->jigoshop_options->get_option('jigoshop_free_shipping_availability');
+		$this->countries 	= $this->jigoshop_options->get_option('jigoshop_free_shipping_countries');
 		
 		if ( isset( jigoshop_session::instance()->chosen_shipping_method_id )
 			&& jigoshop_session::instance()->chosen_shipping_method_id == $this->id ) {
@@ -53,7 +52,7 @@ class free_shipping extends jigoshop_shipping_method {
 	 * These should be installed on the Jigoshop_Options 'Shipping' tab
 	 *
 	 */	
-	public function get_default_options() {
+	protected function get_default_options() {
 	
 		$defaults = array();
 		
