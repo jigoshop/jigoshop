@@ -142,7 +142,7 @@ class dibs extends jigoshop_payment_gateway {
 	* There are no payment fields for dibs, but we want to show the description if set.
 	**/
 	function payment_fields() {
-		if ($jigoshop_dibs_description = Jigoshop_Options::get_option('jigoshop_dibs_description')) echo wpautop(wptexturize($jigoshop_dibs_description));
+		if ($jigoshop_dibs_description = $this->jigoshop_options->get_option('jigoshop_dibs_description')) echo wpautop(wptexturize($jigoshop_dibs_description));
 	}
 
 	/**
@@ -186,7 +186,7 @@ class dibs extends jigoshop_payment_gateway {
 				'amount'     => $order->order_total * 100,
 				'orderid'    => $order_id,
 				'uniqueoid'  => $order->order_key,
-				'currency'   => $dibs_currency[Jigoshop_Options::get_option('jigoshop_currency')],
+				'currency'   => $dibs_currency[$this->jigoshop_options->get_option('jigoshop_currency')],
 				'ordertext'  => 'TEST',
 
 				// URLs
@@ -201,7 +201,7 @@ class dibs extends jigoshop_payment_gateway {
 
 		// Calculate key
 		// http://tech.dibs.dk/dibs_api/other_features/md5-key_control/
-		$args['md5key'] = MD5(Jigoshop_Options::get_option('jigoshop_dibs_key2') . MD5(Jigoshop_Options::get_option('jigoshop_dibs_key1') . 'merchant=' . $args['merchant'] . '&orderid=' . $args['orderid'] . '&currency=' . $args['currency'] . '&amount=' . $args['amount']));
+		$args['md5key'] = MD5($this->jigoshop_options->get_option('jigoshop_dibs_key2') . MD5($this->jigoshop_options->get_option('jigoshop_dibs_key1') . 'merchant=' . $args['merchant'] . '&orderid=' . $args['orderid'] . '&currency=' . $args['currency'] . '&amount=' . $args['amount']));
 
 		if( !empty($_SERVER['HTTP_CLIENT_IP']) ) {
 			$args['ip'] = $_SERVER['HTTP_CLIENT_IP'];
@@ -295,8 +295,8 @@ class dibs extends jigoshop_payment_gateway {
 
 			// Verify MD5 checksum
 			// http://tech.dibs.dk/dibs_api/other_features/md5-key_control/
-			$key1 = Jigoshop_Options::get_option('jigoshop_dibs_key1');
-			$key2 = Jigoshop_Options::get_option('jigoshop_dibs_key2');
+			$key1 = $this->jigoshop_options->get_option('jigoshop_dibs_key1');
+			$key2 = $this->jigoshop_options->get_option('jigoshop_dibs_key2');
 			$vars = 'transact='. $posted['transact'] . '&amount=' . $posted['amount'] . '&currency=' . $posted['currency'];
 			$md5 = MD5($key2 . MD5($key1 . $vars));
 
