@@ -37,7 +37,6 @@ class jigoshop_cart extends Jigoshop_Singleton {
     private static $cart_discount_leftover;
     private static $price_per_tax_class_ex_tax;
     private static $tax;
-    private static $jigoshop_options;
 
     /** constructor */
     protected function __construct() {
