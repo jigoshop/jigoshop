@@ -989,12 +989,20 @@ class jigoshop_cart extends jigoshop_singleton {
 
     }
 
-    /** gets the total discount amount */
+    /** Returns the total discount amount. */
     function get_total_discount() {
-        if (self::$discount_total)
-            return jigoshop_price(self::$discount_total);
-		else
-            return false;
+
+        if (!self::$discount_total)
+			return false;
+
+		$subtotal = jigoshop_cart::get_cart_subtotal(false, true);
+		$discount = self::$discount_total;
+
+		if ( $discount > $subtotal )
+			self::$discount_total = $subtotal;
+
+		return jigoshop_price(self::$discount_total);
+
     }
 
     /**
