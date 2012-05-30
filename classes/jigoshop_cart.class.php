@@ -700,11 +700,11 @@ class jigoshop_cart extends jigoshop_singleton {
 		$discount = self::$discount_total;
 		$subtotal = self::$subtotal;
 
-        /**
+		/**
 		 * Tax calculation turned OFF.
 		 */
 
-        if ( get_option('jigoshop_calc_taxes') != 'yes' ) :
+		if ( get_option('jigoshop_calc_taxes') != 'yes' ) :
 
 			/* Display totals with discount & shipping applied? */
 			if ( $apply_discount_and_shipping ) :
@@ -717,11 +717,11 @@ class jigoshop_cart extends jigoshop_singleton {
 			endif;
 
 			/* Return a pretty number or just the float. */
-            return ($for_display ? jigoshop_price($subtotal) : number_format($subtotal, 2, '.', ''));
+			return ($for_display ? jigoshop_price($subtotal) : number_format($subtotal, 2, '.', ''));
 
 		endif;
 
-        /**
+		/**
 		 * Tax calculation turned ON.
 		 */
 
@@ -753,7 +753,7 @@ class jigoshop_cart extends jigoshop_singleton {
 			$return .= sprintf('<small>%s</small>', $tax_desc);
 		endif;
 
-        return $return;
+		return $return;
 
     }
 
