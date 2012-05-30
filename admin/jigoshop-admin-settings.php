@@ -842,9 +842,8 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 						<td style="padding-top:0px;">
 							<select id="exclude_product_ids_<?php echo esc_attr( $i ); ?>" style="width:200px;" name="exclude_product_ids[<?php echo esc_attr( $i ); ?>][]" style="width:100px" class="ajax_chosen_select_products_and_variations" multiple="multiple" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>">
 								<?php
-									$exclude_product_ids = $coupon['exclude_products'];
-									if ($exclude_product_ids) {
-										foreach ($exclude_product_ids as $product_id) {
+									if ( !empty ( $coupon['exclude_products'] ) )
+										foreach ($coupon['exclude_products'] as $product_id) {
 											$title = get_the_title($product_id);
 											$sku   = get_post_meta($product_id, '_sku', true);
 											if (!$title) continue;
@@ -853,7 +852,6 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 
 											echo '<option value="'.$product_id.'" selected="selected">'. $title . $sku .'</option>';
 										}
-									}
 								?>
 							</select> <?php _e('Exclude', 'jigoshop'); ?>
 						</td>
