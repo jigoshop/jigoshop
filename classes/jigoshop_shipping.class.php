@@ -82,7 +82,20 @@ class jigoshop_shipping extends jigoshop_singleton {
 
         if (self::$enabled == 'yes') :
 
+
+			/* Coupon free shipping */
+			if (jigoshop_cart::$applied_coupons)
+				foreach (jigoshop_cart::$applied_coupons as $code) :
+					if ( $coupon = jigoshop_coupons::get_coupon($code) ) :
+						if ($coupon['coupon_free_shipping'] == 'yes')
+							$free_shipping = 1;
+					endif;
+				endforeach;
+
             foreach (self::get_all_methods() as $method) :
+
+				if ( !empty($free_shipping) && $method->id == 'free_shipping' )
+                    $_available_methods[$method->id] = $method;
 
                 if ($method->is_available()) :
 
@@ -151,7 +164,7 @@ class jigoshop_shipping extends jigoshop_singleton {
                 endif;
             endif;
         endforeach;
-        
+
         if (!empty($_selected_service)) :
             $available_methods[$_cheapest_method]->set_selected_service_index($_selected_service);
         endif;

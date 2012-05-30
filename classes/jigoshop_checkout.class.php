@@ -268,7 +268,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 		if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
 
         // always calculate totals when coming to checkout, as we need the total calculated on the cart here
-        jigoshop_cart::get_cart();		// calls get_cart_from_session() if required
+        jigoshop_cart::get_cart(); // calls get_cart_from_session() if required
         jigoshop_cart::calculate_totals();
 
 		if (isset($_POST) && $_POST && !isset($_POST['login'])) :
@@ -278,6 +278,18 @@ class jigoshop_checkout extends jigoshop_singleton {
 			if ( sizeof(jigoshop_cart::$cart_contents) == 0 ) :
 				jigoshop::add_error( sprintf(__('Sorry, your session has expired. <a href="%s">Return to homepage &rarr;</a>','jigoshop'), home_url()) );
 			endif;
+
+			// Process Discount Codes
+			if ( !empty( $_POST['coupon_code'] ) ) {
+				$coupon_code = stripslashes(trim($_POST['coupon_code']));
+				jigoshop_cart::add_discount($coupon_code);
+			}
+
+			/* Check if the payment method is allowed for our coupons. */
+			if ( !empty(jigoshop_cart::$applied_coupons) ) {
+				foreach ( jigoshop_cart::$applied_coupons as $coupon_code )
+					jigoshop_cart::valid_coupon($coupon_code);
+			}
 
 			// Checkout fields
 			if (isset($_POST['shipping_method'])) :
@@ -653,6 +665,14 @@ class jigoshop_checkout extends jigoshop_singleton {
 					wp_set_object_terms( $order_id, 'pending'      , 'shop_order_status' );
 
 					$order = new jigoshop_order($order_id);
+
+					/* Coupon usage limit */
+					$coupons = get_option('jigoshop_coupons');
+
+					foreach ($data['order_discount_coupons'] as $coupon) :
+						$coupons[$coupon['code']]['usage'] = empty($coupons[$coupon['code']]['usage']) ? 1 : $coupons[$coupon['code']]['usage'] + 1;
+					endforeach;
+					update_option('jigoshop_coupons', $coupons);
 
 					// Inserted successfully
 					do_action('jigoshop_new_order', $order_id);

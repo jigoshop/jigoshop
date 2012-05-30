@@ -280,6 +280,7 @@ function jigoshop_admin_styles() {
 
 	if ( ! jigoshop_is_admin_page() ) return false;
 	wp_enqueue_style( 'jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css' );
+	wp_enqueue_style( 'jquery-chosen', jigoshop::assets_url() . '/assets/css/chosen.css' );
 	wp_enqueue_style( 'jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css' );
 	wp_enqueue_style('thickbox');
 
@@ -296,8 +297,20 @@ function jigoshop_admin_scripts() {
 
 	$pagenow = jigoshop_is_admin_page();
 
-	wp_enqueue_script('jigoshop_backend'    , jigoshop::assets_url() . '/assets/js/jigoshop_backend.js'               , array( 'jquery' ), '1.0' );
+	/* jigoshop_backend.js variables */
+	$params = array(
+		'ajax_url'                 => (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'),
+		'assets_url'               => jigoshop::assets_url(),
+		'search_products_nonce'    => wp_create_nonce("search-products"),
+	);
+
+	$params = apply_filters('jigoshop_params', $params);
+
+	wp_enqueue_script('jquery-chosen'       , jigoshop::assets_url() . '/assets/js/chosen.jquery.min.js'              , array( 'jquery' ), '1.0' );
+	wp_enqueue_script('jquery-ajax-chosen'  , jigoshop::assets_url() . '/assets/js/ajax-chosen.min.js'                , array( 'jquery' ), '1.0' );
 	wp_enqueue_script('jquery-ui-datepicker', jigoshop::assets_url() . '/assets/js/jquery-ui-datepicker-1.8.16.min.js', array( 'jquery' ), '1.8.16', true );
+	wp_enqueue_script('jigoshop_backend'    , jigoshop::assets_url() . '/assets/js/jigoshop_backend.js'               , array( 'jquery' ), '1.0' );
+	wp_localize_script('jigoshop_backend'   , 'params', $params );
 	wp_enqueue_script('thickbox');
 
 	/**
@@ -364,7 +377,83 @@ function jigoshop_frontend_scripts() {
 }
 add_action('template_redirect', 'jigoshop_frontend_scripts');
 
+/* TODO: Move to own file? */
+/**
+ * Search for products and return json
+ */
+add_action('wp_ajax_jigoshop_json_search_products', 'jigoshop_json_search_products');
+add_action('wp_ajax_jigoshop_json_search_products_and_variations', 'jigoshop_json_search_products_and_variations');
 
+function jigoshop_json_search_products( $x = '', $post_types = array('product') ) {
+
+	check_ajax_referer( 'search-products', 'security' );
+
+	$term = (string) urldecode(stripslashes(strip_tags($_GET['term'])));
+
+	if (empty($term)) die();
+
+	if (is_numeric($term)) {
+
+		$args               = array(
+			'post_type'     => $post_types,
+			'post_status'   => 'publish',
+			'posts_per_page'=> -1,
+			'post__in'      => array(0, $term),
+			'fields'        => 'ids'
+		);
+
+		$posts              = get_posts( $args );
+
+	} else {
+
+		$args               = array(
+			'post_type'     => $post_types,
+			'post_status'   => 'publish',
+			'posts_per_page'=> -1,
+			's'             => $term,
+			'fields'        => 'ids'
+		);
+
+		$args2              = array(
+			'post_type'     => $post_types,
+			'post_status'   => 'publish',
+			'posts_per_page'=> -1,
+			'meta_query'    => array(
+				array(
+				'key'       => '_sku',
+				'value'     => $term,
+				'compare'   => 'LIKE'
+				)
+			),
+			'fields'        => 'ids'
+		);
+
+		$posts = array_unique(array_merge( get_posts( $args ), get_posts( $args2 ) ));
+
+	}
+
+	$found_products = array();
+
+	if ($posts) foreach ($posts as $post) {
+
+		$SKU = get_post_meta($post, '_sku', true);
+
+		if (isset($SKU) && $SKU) $SKU = ' (SKU: ' . $SKU . ')';
+
+		$found_products[$post] = get_the_title($post) . $SKU;
+
+	}
+
+	echo json_encode( $found_products );
+
+	die();
+}
+
+function jigoshop_json_search_products_and_variations() {
+
+	jigoshop_json_search_products( '', array('product', 'product_variation') );
+
+}
 /*
 	jigoshop_demo_store
 	Adds a demo store banner to the site
