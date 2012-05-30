@@ -229,17 +229,17 @@ function jigoshop_cart($atts) {
                             </tr>
                             <?php endif; ?>
 
-                            <?php if ( jigoshop_cart::tax_after_coupon() ) : ?>
-                                <tr class="discount">
-                                    <th class="cart-row-discount-title"><?php _e('Discount', 'jigoshop'); ?></th>
-									<td class="cart-row-discount">-<?php echo jigoshop_cart::get_total_discount(); ?></td>
-                                </tr>
-                            <?php endif; ?>
-
                             <?php if ( jigoshop_cart::show_retail_price() ) : ?>
                                 <tr>
                                     <th class="cart-row-subtotal-title"><?php _e('Subtotal', 'jigoshop'); ?></th>
                                     <td class="cart-row-subtotal"><?php echo jigoshop_cart::get_cart_subtotal(true, true); ?></td>
+                                </tr>
+                            <?php endif; ?>
+
+                            <?php if ( jigoshop_cart::tax_after_coupon() ) : ?>
+                                <tr class="discount">
+                                    <th class="cart-row-discount-title"><?php _e('Discount', 'jigoshop'); ?></th>
+									<td class="cart-row-discount">-<?php echo jigoshop_cart::get_total_discount(); ?></td>
                                 </tr>
                             <?php endif; ?>
 
