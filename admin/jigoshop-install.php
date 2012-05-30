@@ -26,6 +26,7 @@
 function install_jigoshop() {
 
 	global $wpdb;
+    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
 
 	if (function_exists('is_multisite') && is_multisite()) {
 
@@ -46,6 +47,8 @@ function install_jigoshop() {
 }
 
 function _install_jigoshop() {
+    
+    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
 
 	if( ! get_site_option('jigoshop_db_version') )  {
 
@@ -60,7 +63,7 @@ function _install_jigoshop() {
 
 		// Clear cron
 		wp_clear_scheduled_hook('jigoshop_update_sale_prices_schedule_check');
-		Jigoshop_Options::set_option('jigoshop_update_sale_prices', 'no');
+		$jigoshop_options->set_option('jigoshop_update_sale_prices', 'no');
 
 		// Flush Rules
 		flush_rewrite_rules( false );
@@ -113,6 +116,8 @@ function jigoshop_default_options() {
  */
 function jigoshop_create_pages() {
 
+    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+    
 	// start out with basic page parameters, modify as we go
 	$page_data = array(
 		'post_status'    => 'publish',
@@ -124,7 +129,7 @@ function jigoshop_create_pages() {
 		'comment_status' => 'closed'
 	);
 	jigoshop_create_single_page( 'shop', 'jigoshop_shop_page_id', $page_data );
-	Jigoshop_Options::set_option( 'jigoshop_shop_redirect_page_id', Jigoshop_Options::get_option( 'jigoshop_shop_page_id_new' ) );
+	$jigoshop_options->set_option( 'jigoshop_shop_redirect_page_id', $jigoshop_options->get_option( 'jigoshop_shop_page_id_new' ) );
 	
 	$page_data['post_title'] = __('Cart', 'jigoshop');
 	$page_data['post_content'] = '[jigoshop_cart]';
@@ -182,15 +187,17 @@ function jigoshop_create_pages() {
 function jigoshop_create_single_page( $page_slug, $page_option, $page_data ) {
 
     global $wpdb;
+    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+    
     $slug = esc_sql( _x( $page_slug, 'page_slug', 'jigoshop' ) );
 	$page_found = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1", $slug ) );
 
     if ( ! $page_found ) {
 		$page_data['post_name'] = $slug;
 		$page_options_id = wp_insert_post( $page_data );
-		Jigoshop_Options::set_option( $page_option, $page_options_id );
+		$jigoshop_options->set_option( $page_option, $page_options_id );
     } else {
-    	Jigoshop_Options::set_option( $page_option, $page_found );
+    	$jigoshop_options->set_option( $page_option, $page_found );
     }
 
 }
