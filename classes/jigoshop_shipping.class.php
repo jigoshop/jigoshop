@@ -29,7 +29,7 @@ class jigoshop_shipping extends Jigoshop_Singleton {
     protected function __construct() {
 
         self::shipping_inits();
-        if (Jigoshop_Options::get_option('jigoshop_calc_shipping_new') != 'no') :
+        if (self::get_jigoshop_options()->get_option('jigoshop_calc_shipping_new') != 'no') :
             self::$enabled = true;
         endif;
     }
@@ -73,7 +73,7 @@ class jigoshop_shipping extends Jigoshop_Singleton {
     }
 
     public static function show_shipping_calculator() {
-        return (self::is_enabled() && Jigoshop_Options::get_option('jigoshop_enable_shipping_calc_new')=='yes' && jigoshop_cart::needs_shipping());
+        return (self::is_enabled() && self::get_jigoshop_options()->get_option('jigoshop_enable_shipping_calc_new')=='yes' && jigoshop_cart::needs_shipping());
     }
 
     public static function get_available_shipping_methods() {
