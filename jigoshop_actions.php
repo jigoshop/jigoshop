@@ -279,7 +279,7 @@ function jigoshop_add_to_cart_action($url = false)
     //if product was successfully added to the cart
     if ($product_added) {
 
-    	switch ( Jigoshop_Options::get_option('jigoshop_redirect_add_to_cart_new', 'same_page') ) {
+    	switch ( $jigoshop_options->get_option('jigoshop_redirect_add_to_cart_new', 'same_page') ) {
     		case 'same_page':
     			jigoshop::add_message(sprintf(__('<a href="%s" class="button">View Cart &rarr;</a> Product successfully added to your cart.', 'jigoshop'), jigoshop_cart::get_cart_url()));
     			break;
@@ -302,11 +302,11 @@ function jigoshop_add_to_cart_action($url = false)
         wp_safe_redirect($url);
     }
     // Redirect directly to checkout if no error messages
-    else if (Jigoshop_Options::get_option('jigoshop_redirect_add_to_cart_new', 'same_page') == 'to_checkout' && jigoshop::error_count() == 0) {
+    else if ($jigoshop_options->get_option('jigoshop_redirect_add_to_cart_new', 'same_page') == 'to_checkout' && jigoshop::error_count() == 0) {
         wp_safe_redirect(jigoshop_cart::get_checkout_url());
     }
     // Redirect directly to cart if no error messages
-    else if (Jigoshop_Options::get_option('jigoshop_redirect_add_to_cart_new', 'to_cart') == 'to_cart' && jigoshop::error_count() == 0) {
+    else if ($jigoshop_options->get_option('jigoshop_redirect_add_to_cart_new', 'to_cart') == 'to_cart' && jigoshop::error_count() == 0) {
         wp_safe_redirect(jigoshop_cart::get_cart_url());
     }
     // Otherwise redirect to where they came
@@ -719,6 +719,8 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 add_action( 'wp_footer', 'jigoshop_ga_tracking' );
 function jigoshop_ga_tracking() {
 
+    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+    
 	// If admin don't track..shouldn't require this
 	if ( is_admin() )
 		return false;
@@ -727,7 +729,7 @@ function jigoshop_ga_tracking() {
 	if ( current_user_can('manage_options') )
 		return false;
 
-	$tracking_id = Jigoshop_Options::get_option('jigoshop_ga_id_new');
+	$tracking_id = $jigoshop_options->get_option('jigoshop_ga_id_new');
 
 	if ( ! $tracking_id )
 		return false;
@@ -761,15 +763,17 @@ function jigoshop_ga_tracking() {
 add_action( 'jigoshop_thankyou', 'jigoshop_ga_ecommerce_tracking' );
 function jigoshop_ga_ecommerce_tracking( $order_id ) {
 
+    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+    
 	// Skip if disabled
-	if ( Jigoshop_Options::get_option('jigoshop_ga_ecommerce_tracking_enabled_new') != 'yes' )
+	if ( $jigoshop_options->get_option('jigoshop_ga_ecommerce_tracking_enabled_new') != 'yes' )
 		return false;
 
 	// Don't track the shop owners roaming
 	if ( current_user_can('manage_options') )
 		return false;
 
-	$tracking_id = Jigoshop_Options::get_option('jigoshop_ga_id_new');
+	$tracking_id = $jigoshop_options->get_option('jigoshop_ga_id_new');
 
 	if ( ! $tracking_id )
 		return false;
