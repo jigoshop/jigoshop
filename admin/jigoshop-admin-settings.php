@@ -496,7 +496,11 @@ function jigoshop_admin_option_display($options) {
 							id="<?php echo esc_attr( $value['id'] ); ?>"
 							style="<?php if ( isset($value['css'])) echo esc_attr( $value['css'] ); ?>"
 							class="<?php if(!empty($value['class'])) echo esc_attr ( $value['class'] ); ?>"
-							<?php if ( !empty($value['multiple']) ) echo 'multiple="multiple"'; ?>>
+							<?php if ( !empty($value['multiple']) ) echo 'multiple="multiple"'; ?>
+							<?php if ( !empty( $value['class'] ) && $value['class'] == 'chzn-select' && !empty( $value['placeholder'] ) ) : ?>
+							data-placeholder="<?php _e( esc_attr( $value['placeholder'] ) ); ?>
+							<?php endif; ?>
+					>
 
 					<?php $selected = get_option($value['id']); $selected = !empty( $selected ) ? $selected : $value['std']; ?>
 					<?php foreach ($value['options'] as $key => $val) : ?>
@@ -801,6 +805,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							'css'            => 'width:200px;',
 							'class'          => 'chzn-select',
 							'type'           => 'select',
+							'placeholder'    => 'Any method',
 							'multiple'       => true,
 							'std'            => !empty($coupon['coupon_pay_methods']) ? $coupon['coupon_pay_methods'] : '',
 							'options'        => $payment_methods
@@ -818,7 +823,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 						</th>
 
 						<td>
-							<select id="product_ids_<?php echo esc_attr( $i ); ?>" style="width:200px;" name="product_ids[<?php echo esc_attr( $i ); ?>][]" style="width:100px" class="ajax_chosen_select_products_and_variations" multiple="multiple" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>">
+							<select id="product_ids_<?php echo esc_attr( $i ); ?>" style="width:200px;" name="product_ids[<?php echo esc_attr( $i ); ?>][]" style="width:100px" class="ajax_chosen_select_products_and_variations" multiple="multiple" data-placeholder="<?php _e('Any product', 'jigoshop'); ?>">
 								<?php
 									$product_ids = $coupon['products'];
 									if ($product_ids) {
@@ -840,7 +845,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 					<tr>
 						<th scope="row"></th>
 						<td style="padding-top:0px;">
-							<select id="exclude_product_ids_<?php echo esc_attr( $i ); ?>" style="width:200px;" name="exclude_product_ids[<?php echo esc_attr( $i ); ?>][]" style="width:100px" class="ajax_chosen_select_products_and_variations" multiple="multiple" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>">
+							<select id="exclude_product_ids_<?php echo esc_attr( $i ); ?>" style="width:200px;" name="exclude_product_ids[<?php echo esc_attr( $i ); ?>][]" style="width:100px" class="ajax_chosen_select_products_and_variations" multiple="multiple" data-placeholder="<?php _e('Any product', 'jigoshop'); ?>">
 								<?php
 									if ( !empty ( $coupon['exclude_products'] ) )
 										foreach ($coupon['exclude_products'] as $product_id) {
@@ -870,6 +875,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							'options'        => $coupon_cats,
 							'class'          => 'chzn-select',
 							'css'            => 'width:200px;',
+							'placeholder'    => 'Any category',
 							'group'          => true
 						),
 						array(
@@ -881,6 +887,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							'options'        => $coupon_cats,
 							'class'          => 'chzn-select',
 							'css'            => 'width:200px;',
+							'placeholder'    => 'Any category',
 							'group'          => true
 						),
 						array(
@@ -1103,14 +1110,14 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							<td>\
 								<select id="product_ids_' + size + '" style="width:200px;" name="product_ids[' + size + '][]"\
 								style="width:100px" class="ajax_chosen_select_products_and_variations"\
-								multiple="multiple" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>"></select><?php _e('Include', 'jigoshop'); ?></td>\
+								multiple="multiple" data-placeholder="<?php _e('Any product', 'jigoshop'); ?>"></select><?php _e('Include', 'jigoshop'); ?></td>\
 						</tr>\
 						<tr>\
 							<th scope="row"></th>\
 							<td style="padding-top:0px;">\
 								<select id="exclude_product_ids_' + size + '" style="width:200px;" name="exclude_product_ids[' + size + '][]"\
 								style="width:100px" class="ajax_chosen_select_products_and_variations"\
-								multiple="multiple" data-placeholder="<?php _e('Search for a product...', 'jigoshop'); ?>"></select><?php _e('Exclude', 'jigoshop'); ?></td>\
+								multiple="multiple" data-placeholder="<?php _e('Any product', 'jigoshop'); ?>"></select><?php _e('Exclude', 'jigoshop'); ?></td>\
 						</tr>\
 						<tr>\
 							<th scope="row">\
