@@ -1322,7 +1322,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 						   placeholder="' . __('Online Label', 'jigoshop') . '"
 						   maxlength="15" />';
 
-					echo '<select name="tax_country[' . esc_attr( $i ) . '][]" title="Country" multiple="multiple">';
+					echo '<select name="tax_country[' . esc_attr( $i ) . '][]" title="Country" multiple="multiple" style="width:250px;">';
 
 					if ($rate['is_all_states']) :
 						if (is_array($applied_all_states) && !in_array(get_all_states_key($rate), $applied_all_states)) :
