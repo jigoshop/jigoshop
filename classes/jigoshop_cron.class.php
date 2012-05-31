@@ -64,7 +64,7 @@ class jigoshop_cron {
 
 		foreach ($orders as $v) :
 			$order = new jigoshop_order($v->post_id);
-			$order->update_status( 'on-hold', __('Archived due to order being in pending state for one month.', 'jigoshop') );
+			$order->update_status( 'on-hold', __('Archived due to order being in pending state for a month or longer.', 'jigoshop') );
 		endforeach;
 
 	}
