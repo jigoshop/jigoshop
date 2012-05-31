@@ -90,6 +90,7 @@ include_once( 'classes/jigoshop_query.class.php' );
 include_once( 'classes/jigoshop.class.php' );
 include_once( 'classes/jigoshop_cart.class.php' );
 include_once( 'classes/jigoshop_checkout.class.php' );
+include_once( 'classes/jigoshop_cron.class.php' );
 
 include_once( 'shortcodes/init.php' );
 include_once( 'widgets/init.php' );
@@ -98,7 +99,6 @@ include_once( 'jigoshop_templates.php' );
 include_once( 'jigoshop_template_actions.php' );
 include_once( 'jigoshop_emails.php' );
 include_once( 'jigoshop_actions.php' );
-//include_once( 'jigoshop_cron.php' );	/* we may use this at some point, leaving -JAP- */
 
 // Constants
 if (!defined('JIGOSHOP_USE_CSS')) :
