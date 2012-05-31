@@ -26,7 +26,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
     protected $tax_status; // determines if tax should be calculated
 
     /** constructor */
-    protected function __construct() {
+    public function __construct() {
         parent::__construct();
 
         $this->rates = array();

@@ -148,6 +148,8 @@ class jigoshop_shipping_method {
      * @since 1.3
 	 *
 	 */	
-    protected function get_default_options() {}
+    protected function get_default_options() {
+        return array();
+    }
 
 }

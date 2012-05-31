@@ -205,12 +205,12 @@ class Jigoshop_Options implements jigoshop_options_interface {
 		/*** get the end of the array ***/
 		$end = array_slice( $our_options, $second_index );
 		/*** add the new elements to the array ***/
-		foreach ( $options as $option ) {
-		 	if ( isset( $option['id'] ) ) {
-		 		self::add_option( $option['id'], $option['std'] );
-		 	}
-		 	$start[] = $option;
-		}
+        foreach ( $options as $option ) {
+            if ( isset( $option['id'] ) ) {
+                self::add_option( $option['id'], $option['std'] );
+            }
+            $start[] = $option;
+        }
 		/*** glue them back together ***/
 		self::$default_options = array_merge( $start, $end );
  	}
