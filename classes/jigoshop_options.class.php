@@ -1304,7 +1304,7 @@ class Jigoshop_Options implements jigoshop_options_interface {
 		
 		self::$default_options[] = array( 'name' => __('Available Shipping Methods', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
-		self::$default_options[] = array( 'type' => 'shipping_options');  // (-JAP-) should not longer be required
+		self::$default_options[] = array( 'type' => 'shipping_options');  // required only for backwards compatibility.
 		
 		/**
 		 * Payment Gateways Tab
@@ -1314,7 +1314,7 @@ class Jigoshop_Options implements jigoshop_options_interface {
 		
 		self::$default_options[] = array( 'name' => __('Available gateways', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
-//		self::$default_options[] = array( 'type' => 'gateway_options');  // (-JAP-) should not longer be required
+		self::$default_options[] = array( 'type' => 'gateway_options');  // required only for backwards compatibility. 
 				
 	}
 	
