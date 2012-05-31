@@ -297,20 +297,10 @@ function jigoshop_admin_scripts() {
 
 	$pagenow = jigoshop_is_admin_page();
 
-	/* jigoshop_backend.js variables */
-	$params = array(
-		'ajax_url'                 => (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'),
-		'assets_url'               => jigoshop::assets_url(),
-		'search_products_nonce'    => wp_create_nonce("search-products"),
-	);
-
-	$params = apply_filters('jigoshop_params', $params);
-
 	wp_enqueue_script('jquery-chosen'       , jigoshop::assets_url() . '/assets/js/chosen.jquery.min.js'              , array( 'jquery' ), '1.0' );
 	wp_enqueue_script('jquery-ajax-chosen'  , jigoshop::assets_url() . '/assets/js/ajax-chosen.min.js'                , array( 'jquery' ), '1.0' );
 	wp_enqueue_script('jquery-ui-datepicker', jigoshop::assets_url() . '/assets/js/jquery-ui-datepicker-1.8.16.min.js', array( 'jquery' ), '1.8.16', true );
 	wp_enqueue_script('jigoshop_backend'    , jigoshop::assets_url() . '/assets/js/jigoshop_backend.js'               , array( 'jquery' ), '1.0' );
-	wp_localize_script('jigoshop_backend'   , 'params', $params );
 	wp_enqueue_script('thickbox');
 
 	/**
