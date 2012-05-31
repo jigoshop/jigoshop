@@ -112,6 +112,9 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.3 - TBA =
+* Tweak: Allow default tax classes to be translated
+
 = 1.2.3 - 2012-05-28 =
 * New: Add filters for new Jigoshop Product Addons extension
 * New: Add CSS classes to product attributes on variations for the front end to allow special effects
