@@ -18,8 +18,7 @@
 /**
  * Jigoshop cron tasks.
  *
- * 1. Update product sale prices.
- * 2. Archive 'pending' orders by setting their status to 'on-hold'.
+ * 1. Archive 'pending' orders by setting their status to 'on-hold'.
  */
 
 class jigoshop_cron {
@@ -31,16 +30,11 @@ class jigoshop_cron {
 
 		$this->jigoshop_schedule_events();
 
-		add_action( 'jigoshop_cron_sale_products' , array( $this, 'jigoshop_update_sale_prices'    ) );
 		add_action( 'jigoshop_cron_pending_orders', array( $this, 'jigoshop_update_pending_orders' ) );
 
 	}
 
 	function jigoshop_schedule_events() {
-
-		/* Update product price if on sale */
-		if ( !wp_next_scheduled( 'jigoshop_cron_sale_products' ) )
-			wp_schedule_event(time(), 'daily', 'jigoshop_cron_sale_products' );
 
 		/* Mark old 'pending' orders to 'on-hold' */
 		if ( !wp_next_scheduled( 'jigoshop_cron_pending_orders' ) )
@@ -48,72 +42,11 @@ class jigoshop_cron {
 
 	}
 
-	function jigoshop_update_sale_prices() {
-
-		$this->jigoshop_on_sale_products();
-		$this->jigoshop_expired_products();
-
-	}
-
-	/* Products still on sale */
-	function jigoshop_on_sale_products() {
-
-		$on_sale = $this->wpdb->get_results("
-			SELECT post_id FROM {$this->wpdb->postmeta}
-			WHERE meta_key = 'sale_price_dates_from'
-			AND meta_value < ".strtotime('NOW')."
-		");
-
-		if ( !$on_sale )
-			return false;
-
-		foreach ($on_sale as $product) :
-
-			$data = unserialize( get_post_meta($product, 'product_data', true) );
-			$price = get_post_meta( $product, 'price', true );
-
-			/* Swap the product's price to the sale price */
-			if ( $data['sale_price'] && $price !== $data['sale_price'] )
-				update_post_meta( $product, 'price', $data['sale_price'] );
-
-		endforeach;
-
-	}
-
-	/* Expired sale products */
-	function jigoshop_expired_products() {
-
-		$sale_expired = $this->wpdb->get_results("
-			SELECT post_id FROM {$this->wpdb->postmeta}
-			WHERE meta_key = 'sale_price_dates_to'
-			AND meta_value < ".strtotime('NOW')."
-		");
-
-		if ( !$sale_expired )
-			return false;
-
-		foreach ( $sale_expired as $product ) :
-
-			$data = unserialize( get_post_meta($product, 'product_data', true) );
-			$price = get_post_meta( $product, 'price', true );
-
-			/* Reset the product price */
-			if ( $data['regular_price'] && $price !== $data['regular_price'] )
-				update_post_meta( $product, 'price', $data['regular_price'] );
-
-			/* Sale has expired - clear the schedule boxes */
-			update_post_meta( $product, 'sale_price_dates_from', '' );
-			update_post_meta( $product, 'sale_price_dates_to'  , '' );
-
-		endforeach;
-
-	}
-
 	function jigoshop_update_pending_orders() {
 
 		$lastMonth = date('Y-m-d', strtotime("-1 months"));
 
-		$orders = $this->wpdb->get_results("
+		$orders = $this->wpdb->get_results($this->wpdb->prepare("
 			SELECT * FROM {$this->wpdb->posts} AS posts
 
 			LEFT JOIN {$this->wpdb->postmeta}           AS meta   ON posts.ID = meta.post_id
@@ -127,7 +60,7 @@ class jigoshop_cron {
 			AND     posts.post_date     < '{$lastMonth}'
 			AND     tax.taxonomy        = 'shop_order_status'
 			AND     term.slug           IN ('pending')
-		");
+		"));
 
 		foreach ($orders as $v) :
 			$order = new jigoshop_order($v->post_id);
