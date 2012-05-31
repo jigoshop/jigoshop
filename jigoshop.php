@@ -420,7 +420,7 @@ function jigoshop_json_search_products( $x = '', $post_types = array('product') 
 			'posts_per_page'=> -1,
 			'meta_query'    => array(
 				array(
-				'key'       => '_sku',
+				'key'       => 'sku',
 				'value'     => $term,
 				'compare'   => 'LIKE'
 				)
