@@ -691,8 +691,10 @@ class jigoshop_cart extends jigoshop_singleton {
     }
 
     /**
-     * gets the sub total (after calculation). For display means that the price and exc, inc tags will be returned. Otherwise
-     * it will return the subtotal numeric value
+     * Returns a calculated subtotal.
+	 *
+	 * @param    boolean    $for_display                    Just the price itself or with currency symbol + price with optional "(ex. tax)" / "(inc. tax)".
+	 * @param    boolean    $apply_discount_and_shipping    Subtotal with discount and shipping prices applied.
      */
     public static function get_cart_subtotal($for_display = true, $apply_discount_and_shipping = false) {
 
@@ -704,6 +706,10 @@ class jigoshop_cart extends jigoshop_singleton {
 		 * Tax calculation turned ON.
 		 */
 		if ( get_option('jigoshop_calc_taxes') == 'yes' ) :
+
+			/* Don't show the discount bit in the subtotal because discount will be calculated after taxes, thus in the grand total (not the subtotal). */
+			if ( get_option('jigoshop_tax_after_coupon') == 'yes' )
+				$discount = 0;
 
 			/* Cart total excludes taxes. */
 			if ( get_option('jigoshop_display_totals_tax') == 'excluding' || (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT) ) :
@@ -732,8 +738,8 @@ class jigoshop_cart extends jigoshop_singleton {
 		$return = $for_display ? jigoshop_price($subtotal) : number_format($subtotal, 2, '.', '');
 
 		/* Shows either 'inc.' or 'ex.' tax. */
-		if ( get_option('jigoshop_calc_taxes') == 'yes' && (self::get_total_cart_tax_without_shipping_tax() > 0 && $for_display) ) :
-			$return .= sprintf('<small>%s</small>', $tax_desc);
+		if ( $for_display && ( get_option('jigoshop_calc_taxes') == 'yes' && self::get_total_cart_tax_without_shipping_tax() > 0 ) ) :
+			$return .= sprintf(' <small>%s</small>', $tax_desc);
 		endif;
 
 		return $return;
@@ -780,7 +786,10 @@ class jigoshop_cart extends jigoshop_singleton {
 		if ( get_option('jigoshop_calc_taxes') != 'yes' )
 			return false;
 
-		return ( get_option('jigoshop_tax_after_coupon') == 'yes' && jigoshop_cart::get_total_discount() );
+		if ( !jigoshop_cart::get_total_discount() )
+			return false;
+
+		return ( get_option('jigoshop_tax_after_coupon') == 'yes' );
 
 
 	}

@@ -90,6 +90,7 @@ include_once( 'classes/jigoshop_query.class.php' );
 include_once( 'classes/jigoshop.class.php' );
 include_once( 'classes/jigoshop_cart.class.php' );
 include_once( 'classes/jigoshop_checkout.class.php' );
+include_once( 'classes/jigoshop_cron.class.php' );
 
 include_once( 'shortcodes/init.php' );
 include_once( 'widgets/init.php' );
@@ -98,7 +99,6 @@ include_once( 'jigoshop_templates.php' );
 include_once( 'jigoshop_template_actions.php' );
 include_once( 'jigoshop_emails.php' );
 include_once( 'jigoshop_actions.php' );
-//include_once( 'jigoshop_cron.php' );	/* we may use this at some point, leaving -JAP- */
 
 // Constants
 if (!defined('JIGOSHOP_USE_CSS')) :
@@ -297,20 +297,10 @@ function jigoshop_admin_scripts() {
 
 	$pagenow = jigoshop_is_admin_page();
 
-	/* jigoshop_backend.js variables */
-	$params = array(
-		'ajax_url'                 => (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'),
-		'assets_url'               => jigoshop::assets_url(),
-		'search_products_nonce'    => wp_create_nonce("search-products"),
-	);
-
-	$params = apply_filters('jigoshop_params', $params);
-
 	wp_enqueue_script('jquery-chosen'       , jigoshop::assets_url() . '/assets/js/chosen.jquery.min.js'              , array( 'jquery' ), '1.0' );
 	wp_enqueue_script('jquery-ajax-chosen'  , jigoshop::assets_url() . '/assets/js/ajax-chosen.min.js'                , array( 'jquery' ), '1.0' );
 	wp_enqueue_script('jquery-ui-datepicker', jigoshop::assets_url() . '/assets/js/jquery-ui-datepicker-1.8.16.min.js', array( 'jquery' ), '1.8.16', true );
 	wp_enqueue_script('jigoshop_backend'    , jigoshop::assets_url() . '/assets/js/jigoshop_backend.js'               , array( 'jquery' ), '1.0' );
-	wp_localize_script('jigoshop_backend'   , 'params', $params );
 	wp_enqueue_script('thickbox');
 
 	/**
@@ -420,7 +410,7 @@ function jigoshop_json_search_products( $x = '', $post_types = array('product') 
 			'posts_per_page'=> -1,
 			'meta_query'    => array(
 				array(
-				'key'       => '_sku',
+				'key'       => 'sku',
 				'value'     => $term,
 				'compare'   => 'LIKE'
 				)

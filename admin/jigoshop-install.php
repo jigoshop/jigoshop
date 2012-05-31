@@ -62,8 +62,7 @@ function _install_jigoshop() {
 		jigoshop_default_taxonomies();
 
 		// Clear cron
-		wp_clear_scheduled_hook('jigoshop_update_sale_prices_schedule_check');
-		update_option('jigoshop_update_sale_prices', 'no');
+		wp_clear_scheduled_hook('jigoshop_cron_pending_orders');
 
 		// Flush Rules
 		flush_rewrite_rules( false );
