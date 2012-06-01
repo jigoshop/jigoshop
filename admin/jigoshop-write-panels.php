@@ -158,7 +158,7 @@ function jigoshop_write_panel_scripts() {
 		'remove_item_notice' 			=>  __("Remove this item? If you have previously reduced this item's stock, or this order was submitted by a customer, will need to manually restore the item's stock.", 'jigoshop'),
 		'cart_total' 					=> __("Calc totals based on order items, discount amount, and shipping?", 'jigoshop'),
 		'copy_billing' 					=> __("Copy billing information to shipping information? This will remove any currently entered shipping information.", 'jigoshop'),
-		'prices_include_tax' 			=> $jigoshop_options->get_option('jigoshop_prices_include_tax_new'),
+		'prices_include_tax' 			=> $jigoshop_options->get_option('jigoshop_prices_include_tax'),
 		'ID' 							=>  __('ID', 'jigoshop'),
 		'item_name' 					=> __('Item Name', 'jigoshop'),
 		'quantity' 						=> __('Quantity e.g. 2', 'jigoshop'),

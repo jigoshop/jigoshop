@@ -27,8 +27,8 @@ $jigoshop_options = jigoshop_base_class::get_jigoshop_options(); ?>
         </thead>
         <tfoot>
             <tr>
-                <?php if (($jigoshop_options->get_option('jigoshop_calc_taxes_new') == 'yes' && jigoshop_cart::has_compound_tax()) 
-                       || ($jigoshop_options->get_option('jigoshop_tax_after_coupon_new') == 'yes' && jigoshop_cart::get_total_discount())) : ?>
+                <?php if (($jigoshop_options->get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::has_compound_tax()) 
+                       || ($jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'yes' && jigoshop_cart::get_total_discount())) : ?>
                     <td colspan="2"><?php _e('Retail Price', 'jigoshop'); ?></td>
                 <?php else : ?>
                     <td colspan="2"><?php _e('Subtotal', 'jigoshop'); ?></td>
@@ -37,22 +37,22 @@ $jigoshop_options = jigoshop_base_class::get_jigoshop_options(); ?>
             </tr>
             <?php
             jigoshop_checkout::get_shipping_dropdown();
-            if ($jigoshop_options->get_option('jigoshop_tax_after_coupon_new') == 'yes' && jigoshop_cart::get_total_discount()) : ?>
+            if ($jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'yes' && jigoshop_cart::get_total_discount()) : ?>
                 <tr class="discount">
                     <td colspan="2"><?php _e('Discount', 'jigoshop'); ?></td>
                     <td>-<?php echo jigoshop_cart::get_total_discount(); ?></td>
                 </tr>
                 <?php 
             endif;
-            if (($jigoshop_options->get_option('jigoshop_calc_taxes_new') == 'yes' && jigoshop_cart::has_compound_tax()) 
-                       || ($jigoshop_options->get_option('jigoshop_tax_after_coupon_new') == 'yes' && jigoshop_cart::get_total_discount())) : ?>
+            if (($jigoshop_options->get_option('jigoshop_calc_taxes') == 'yes' && jigoshop_cart::has_compound_tax()) 
+                       || ($jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'yes' && jigoshop_cart::get_total_discount())) : ?>
                 <tr>
                     <td colspan="2"><?php _e('Subtotal', 'jigoshop'); ?></td>
                     <td><?php echo jigoshop_cart::get_cart_subtotal(true, true); ?></td>
                 </tr>
                 <?php
             endif;
-            if ($jigoshop_options->get_option('jigoshop_calc_taxes_new') == 'yes') :
+            if ($jigoshop_options->get_option('jigoshop_calc_taxes') == 'yes') :
                 foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) : 
                     if (jigoshop_cart::get_tax_for_display($tax_class)) : ?>                    
                         <tr>
@@ -65,7 +65,7 @@ $jigoshop_options = jigoshop_base_class::get_jigoshop_options(); ?>
             endif;
             ?>
             <?php do_action('jigoshop_after_review_order_items'); ?>
-            <?php if ($jigoshop_options->get_option('jigoshop_tax_after_coupon_new') == 'no' && jigoshop_cart::get_total_discount()) : ?><tr class="discount">
+            <?php if ($jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'no' && jigoshop_cart::get_total_discount()) : ?><tr class="discount">
                     <td colspan="2"><?php _e('Discount', 'jigoshop'); ?></td>
                     <td>-<?php echo jigoshop_cart::get_total_discount(); ?></td>
                 </tr><?php endif; ?>

@@ -195,8 +195,8 @@ class paypal extends jigoshop_payment_gateway {
 
 		$order = new jigoshop_order( $order_id );
         
-        $subtotal = (float)($this->jigoshop_options->get_option('jigoshop_prices_include_tax_new') == 'yes' ? (float)$order->order_subtotal + (float)$order->order_tax : $order->order_subtotal);
-        $shipping_total = (float)($this->jigoshop_options->get_option('jigoshop_prices_include_tax_new') == 'yes' ? (float)$order->order_shipping + (float)$order->order_shipping_tax : $order->order_shipping);
+        $subtotal = (float)($this->jigoshop_options->get_option('jigoshop_prices_include_tax') == 'yes' ? (float)$order->order_subtotal + (float)$order->order_tax : $order->order_subtotal);
+        $shipping_total = (float)($this->jigoshop_options->get_option('jigoshop_prices_include_tax') == 'yes' ? (float)$order->order_shipping + (float)$order->order_shipping_tax : $order->order_shipping);
 
 		if ( $this->testmode == 'yes' ):
 			$paypal_adr = $this->testurl . '?test_ipn=1&';
@@ -231,7 +231,7 @@ class paypal extends jigoshop_payment_gateway {
 				'cmd' 					=> '_cart',
 				'business' 				=> $this->testmode ? $this->testmail : $this->email,
 				'no_note' 				=> 1,
-				'currency_code' 		=> $this->jigoshop_options->get_option('jigoshop_currency_new'),
+				'currency_code' 		=> $this->jigoshop_options->get_option('jigoshop_currency'),
 				'charset' 				=> 'UTF-8',
 				'rm' 					=> 2,
 				'upload' 				=> 1,
@@ -266,7 +266,7 @@ class paypal extends jigoshop_payment_gateway {
 		);
 
 		// only include tax if prices don't include tax
-		if ($this->jigoshop_options->get_option('jigoshop_prices_include_tax_new') != 'yes') :
+		if ($this->jigoshop_options->get_option('jigoshop_prices_include_tax') != 'yes') :
 			$paypal_args['tax']					= $order->get_total_tax();
 			$paypal_args['tax_cart']			= $order->get_total_tax();
 		endif;
@@ -322,7 +322,7 @@ class paypal extends jigoshop_payment_gateway {
 
             $shipping_tax = (float)($order->order_shipping_tax ? $order->order_shipping_tax : 0);
 
-            $paypal_args['amount_'.$item_loop] = ($this->jigoshop_options->get_option('jigoshop_prices_include_tax_new') == 'yes' ? number_format((float)$order->order_shipping + $shipping_tax, 2) : number_format((float)$order->order_shipping, 2));
+            $paypal_args['amount_'.$item_loop] = ($this->jigoshop_options->get_option('jigoshop_prices_include_tax') == 'yes' ? number_format((float)$order->order_shipping + $shipping_tax, 2) : number_format((float)$order->order_shipping, 2));
         endif; 
         
         if ($this->force_payment == 'yes') :

@@ -384,7 +384,7 @@ class jigoshop_order {
 
 		$payment_page = apply_filters('jigoshop_get_checkout_payment_url', get_permalink(jigoshop_get_page_id('pay')));
 
-		if ($this->jigoshop_options->get_option('jigoshop_force_ssl_checkout_new')=='yes' || is_ssl()) $payment_page = str_replace('http:', 'https:', $payment_page);
+		if ($this->jigoshop_options->get_option('jigoshop_force_ssl_checkout')=='yes' || is_ssl()) $payment_page = str_replace('http:', 'https:', $payment_page);
 
 		return add_query_arg('pay_for_order', 'true', add_query_arg('order', $this->order_key, add_query_arg('order_id', $this->id, $payment_page)));
 	}
@@ -581,9 +581,9 @@ class jigoshop_order {
 					endif;
 
 					// stock status notifications
-                    if ($this->jigoshop_options->get_option('jigoshop_notify_no_stock_amount_new') >= 0 && $this->jigoshop_options->get_option('jigoshop_notify_no_stock_amount_new') >= $new_quantity) :
+                    if ($this->jigoshop_options->get_option('jigoshop_notify_no_stock_amount') >= 0 && $this->jigoshop_options->get_option('jigoshop_notify_no_stock_amount') >= $new_quantity) :
 						do_action('jigoshop_no_stock_notification', $item['id']);
-					elseif ($this->jigoshop_options->get_option('jigoshop_notify_low_stock_amount_new') && $this->jigoshop_options->get_option('jigoshop_notify_low_stock_amount_new')>=$new_quantity) :
+					elseif ($this->jigoshop_options->get_option('jigoshop_notify_low_stock_amount') && $this->jigoshop_options->get_option('jigoshop_notify_low_stock_amount')>=$new_quantity) :
 						do_action('jigoshop_low_stock_notification', $item['id']);
 					endif;
 
