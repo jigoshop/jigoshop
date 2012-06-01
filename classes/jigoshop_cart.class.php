@@ -634,7 +634,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
         // only do this calculation if tax applied before coupons are applied, otherwise total discount is figured out
         // at the start
-        if (self::$applied_coupons && get_option('jigoshop_tax_after_coupon') == 'no') :
+        if (self::$applied_coupons && $this->jigoshop_options->get_option('jigoshop_tax_after_coupon_new') == 'no') :
             foreach (self::$applied_coupons as $code) :
                 if ($coupon = jigoshop_coupons::get_coupon($code)) :
 
@@ -734,7 +734,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
                     $subtotal = self::$subtotal;
                 else :
                     //don't use accessor function here, as it may not be right
-                    $subtotal = ($apply_discount_and_shipping && get_option('jigoshop_tax_after_coupon') == 'yes' ? self::$subtotal + self::get_total_cart_tax_without_shipping_tax() + $discount + self::$shipping_total : self::$subtotal + self::get_total_cart_tax_without_shipping_tax());
+                    $subtotal = ($apply_discount_and_shipping && $this->jigoshop_options->get_option('jigoshop_tax_after_coupon_new') == 'yes' ? self::$subtotal + self::get_total_cart_tax_without_shipping_tax() + $discount + self::$shipping_total : self::$subtotal + self::get_total_cart_tax_without_shipping_tax());
                 endif;
                 
                 if ($for_display) :
