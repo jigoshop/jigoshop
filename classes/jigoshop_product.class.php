@@ -54,7 +54,7 @@ class jigoshop_product {
 
 	private	$attributes   = array();
 	public  $children     = array(); // : jigoshop_template_functions.php on line 328
-    private $jigoshop_options;
+    protected $jigoshop_options; // : jigoshop_product_variation.php uses as well
 
 	/**
 	 * Loads all product data from custom fields
@@ -233,15 +233,15 @@ class jigoshop_product {
 		update_post_meta( $this->ID, 'stock', $this->stock );
 		update_post_meta( $this->ID, 'stock_sold', $amount_sold );
 
-		if ( get_option('jigoshop_notify_no_stock_amount') >= 0
-			&& get_option('jigoshop_notify_no_stock_amount') >= $this->stock
-			&& get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) {
+		if ( $this->jigoshop_options->get_option('jigoshop_notify_no_stock_amount_new') >= 0
+			&& $this->jigoshop_options->get_option('jigoshop_notify_no_stock_amount_new') >= $this->stock
+			&& $this->jigoshop_options->get_option( 'jigoshop_hide_no_stock_product_new' )  == 'yes' ) {
 			
 			update_post_meta( $this->ID, 'visibility', 'hidden' );
 			
-		} else if ( $this->stock > get_option('jigoshop_notify_no_stock_amount')
+		} else if ( $this->stock > $this->jigoshop_options->get_option('jigoshop_notify_no_stock_amount_new')
 			&& $this->visibility == 'hidden'
-			&& get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) {
+			&& $this->jigoshop_options->get_option( 'jigoshop_hide_no_stock_product_new' )  == 'yes' ) {
 			
 			update_post_meta( $this->ID, 'visibility', 'visible' );
 		}

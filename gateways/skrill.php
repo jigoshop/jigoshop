@@ -171,7 +171,7 @@ class skrill extends jigoshop_payment_gateway {
 			'country'              => 'GBR',
 
 			'amount'               => $order_total,
-			'currency'             => get_option('jigoshop_currency'),
+			'currency'             => $this->jigoshop_options->get_option('jigoshop_currency_new'),
 			'detail1_description'  => 'Order ID',
 			'detail1_text'         => $order_id
 

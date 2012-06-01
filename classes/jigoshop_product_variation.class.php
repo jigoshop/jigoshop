@@ -94,15 +94,15 @@ class jigoshop_product_variation extends jigoshop_product {
 		update_post_meta( $this->variation_id, 'stock', $this->stock );
 		update_post_meta( $this->variation_id, 'stock_sold', $amount_sold );
 		
-		if ( get_option('jigoshop_notify_no_stock_amount') >= 0
-			&& get_option('jigoshop_notify_no_stock_amount') >= $this->stock
-			&& get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) {
+		if ( $this->jigoshop_options->get_option('jigoshop_notify_no_stock_amount_new') >= 0
+			&& $this->jigoshop_options->get_option('jigoshop_notify_no_stock_amount_new') >= $this->stock
+			&& $this->jigoshop_options->get_option( 'jigoshop_hide_no_stock_product_new' )  == 'yes' ) {
 			
 			$wpdb->update( $wpdb->posts, array( 'post_status' => 'draft' ), array( 'ID' => $this->variation_id ) );
 			
-		} else if ( $this->stock > get_option('jigoshop_notify_no_stock_amount')
+		} else if ( $this->stock > $this->jigoshop_options->get_option('jigoshop_notify_no_stock_amount_new')
 			&& get_post_status( $this->variation_id ) == 'draft'
-			&& get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) {
+			&& $this->jigoshop_options->get_option( 'jigoshop_hide_no_stock_product_new' )  == 'yes' ) {
 			
 			$wpdb->update( $wpdb->posts, array( 'post_status' => 'publish' ), array( 'ID' => $this->variation_id ) );
 		}

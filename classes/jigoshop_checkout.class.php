@@ -580,7 +580,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
                         //TODO: need to change this so that the admin pages can use all tax data on the page
 						$rate = jigoshop_cart::get_total_tax_rate();
 
-                        $price_inc_tax = (get_option('jigoshop_calc_taxes') == 'yes' && get_option('jigoshop_prices_include_tax') == 'yes' ? $_product->get_price() : -1);
+                        $price_inc_tax = ($this->jigoshop_options->get_option('jigoshop_calc_taxes_new') == 'yes' && $this->jigoshop_options->get_option('jigoshop_prices_include_tax_new') == 'yes' ? $_product->get_price() : -1);
 
 						$custom_products = (array) jigoshop_session::instance()->customized_products;
 						$custom = '';
