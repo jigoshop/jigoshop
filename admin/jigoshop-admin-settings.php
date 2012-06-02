@@ -526,7 +526,7 @@ function jigoshop_admin_option_display($options) {
 					<?php if (!empty($value['tip'])) : ?>
 					<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a>
 					<?php endif; ?>
-					<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
+					<?php echo $value['name'] ?>
 				</th>
 				<td>
 					<?php foreach ($value['options'] as $key => $val) : ?>
@@ -559,11 +559,26 @@ function jigoshop_admin_option_display($options) {
 				<th scope="row"><?php echo $value['name'] ?></label></th>
 				<td valign="top" style="line-height:25px;height:25px;">
 
-					<label for="<?php echo esc_attr( $value['id'] ); ?>_w"><?php _e('Width', 'jigoshop'); ?></label>
-					<input name="<?php echo esc_attr( $value['id'] ); ?>_w" id="<?php echo esc_attr( $value['id'] ); ?>_w" type="text" size="3" value="<?php if ( $size = get_option( $value['id'].'_w') ) echo $size; else echo $value['std']; ?>" />
+					<input name="<?php echo esc_attr( $value['id'] ); ?>_w"
+						   id="<?php echo esc_attr( $value['id'] ); ?>_w"
+						   type="number"
+						   min="0"
+						   style="width:60px;"
+						   placeholder=<?php if (!empty($value['placeholder'])) echo $value['placeholder']; ?>
+						   value="<?php if ( $size = get_option( $value['id'].'_w') ) echo $size; else echo $value['std']; ?>"
+					/>
 
-					<label for="<?php echo esc_attr( $value['id'] ); ?>_h"><?php _e('Height', 'jigoshop'); ?></label>
-					<input name="<?php echo esc_attr( $value['id'] ); ?>_h" id="<?php echo esc_attr( $value['id'] ); ?>_h" type="text" size="3" value="<?php if ( $size = get_option( $value['id'].'_h') ) echo $size; else echo $value['std']; ?>" />
+					<label for="<?php echo esc_attr( $value['id'] ); ?>_h">x</label>
+
+					<input name="<?php echo esc_attr( $value['id'] ); ?>_h"
+						   id="<?php echo esc_attr( $value['id'] ); ?>_h"
+						   type="number"
+						   min="0"
+						   style="width:60px;"
+						   placeholder=<?php if (!empty($value['placeholder'])) echo $value['placeholder']; ?>
+						   value="<?php if ( $size = get_option( $value['id'].'_h') ) echo $size; else echo $value['std']; ?>"
+					/>
+
 					<input
 					id="<?php echo esc_attr( $altSize ); ?>"
 					type="checkbox"
@@ -571,8 +586,7 @@ function jigoshop_admin_option_display($options) {
 					name="<?php echo esc_attr( $altSize ); ?>"
 					<?php if (get_option($altSize) !== false && get_option($altSize) !== null)
 					echo checked(get_option($altSize), 'yes', false); ?> />
-					<label for="<?php echo esc_attr( $altSize ); ?>"> <?php echo __('Crop?', 'jigoshop'); ?></label>
-					<a href="#" tip="<?php echo __('Leave unchecked to set the image size by resizing the image proportionally (that is, without distorting it).<br />Leave checked to set the image size by hard cropping the image (either from the sides, or from the top and bottom).', 'jigoshop'); ?>" class="tips" style="float:none;display:inline-block;margin: 4px -8px 0 10px;" tabindex="99"></a>
+					<label for="<?php echo esc_attr( $altSize ); ?>"> <?php echo __('Crop', 'jigoshop'); ?></label>
 					<br /><small><?php echo $value['desc'] ?></small>
 				</td>
 			</tr><?php

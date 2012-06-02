@@ -461,9 +461,10 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'desc'          => __('Per row','jigoshop'),
 		'tip'           => __('Determines how many products to show on one display row for Shop, Category and Tag pages. Default = 3.','jigoshop'),
 		'id'            => 'jigoshop_catalog_columns',
-		'css'           => 'width:30px;',
+		'css'           => 'width:60px;',
 		'std'           => '3',
-		'type'          => 'text',
+		'type'          => 'number',
+		'restrict'      => array( 'min' => 0 ),
 		'group'         => true
 	),
 
@@ -471,9 +472,10 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'desc'          => __('Per page','jigoshop'),
 		'tip'           => __('Determines how many products to display on Shop, Category and Tag pages before needing next and previous page navigation. Default = 12.','jigoshop'),
 		'id'            => 'jigoshop_catalog_per_page',
-		'css'           => 'width:30px;',
+		'css'           => 'width:60px;',
 		'std'           => '12',
-		'type'          => 'text',
+		'type'          => 'number',
+		'restrict'      => array( 'min' => 0 ),
 		'group'         => true
 	),
 
@@ -552,7 +554,6 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	array(
 		'name'         => __('Price Separators', 'jigoshop'),
 		'desc'         => __('Thousand separator', 'jigoshop'),
-		'tip'          => '',
 		'id'           => 'jigoshop_price_thousand_sep',
 		'css'          => 'width:30px;',
 		'std'          => ',',
@@ -561,8 +562,7 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'desc'         => __('Decimal separator.', 'jigoshop'),
-		'tip'          => '',
+		'desc'         => __('Decimal separator', 'jigoshop'),
 		'id'           => 'jigoshop_price_decimal_sep',
 		'css'          => 'width:30px;',
 		'std'          => '.',
@@ -572,11 +572,11 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(
 		'desc'         => __('Number of decimals', 'jigoshop'),
-		'tip'          => '',
 		'id'           => 'jigoshop_price_num_decimals',
 		'css'          => 'width:30px;',
 		'std'          => '2',
-		'type'         => 'text',
+		'type'         => 'number',
+		'restrict'      => array( 'min' => 0 ),
 		'group'        => true
 	),
 
@@ -584,43 +584,44 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array( 'type'      => 'tab', 'tabname'                            => __('Images', 'jigoshop') ),
 
-	array( 'name'      => __('Image Options', 'jigoshop'), 'type'     => 'title', 'desc' => sprintf(__('Changing any of these settings will affect the dimensions of images used in your Shop. The display on the front-end will <strong>still</strong> be affected by CSS styles. After changing these settings you may need to <a href="%s">regenerate your thumbnails</a>.', 'jigoshop'), 'http://wordpress.org/extend/plugins/regenerate-thumbnails/'), 'id' => '' ),
+	array( 'name'      => __('Image Options', 'jigoshop'), 'type'     => 'title', 'desc' => sprintf(__('<p>Changing any of these settings will affect the dimensions of images used in your Shop. After changing these settings you may need to <a href="%s">regenerate your thumbnails</a>.</p>
+																										<p>Crop: Leave unchecked to set the image size by resizing the image proportionally (that is, without distorting it). Leave checked to set the image size by hard cropping the image (either from the sides, or from the top and bottom).</p>
+																										<p><strong>Note:</strong> Your images may not display in the size you choose below. This is because they may still be affected by CSS styles, that is, your theme.', 'jigoshop'), 'http://wordpress.org/extend/plugins/regenerate-thumbnails/'), 'id' => '' ),
 
 	array(
 		'name'         => __('Tiny Images','jigoshop'),
-		'tip'          => '',
-		'desc'         => __('The small image used in the Cart, Checkout, Orders and Widgets','jigoshop'),
+		'desc'         => __('Cart, Checkout, Orders and Widgets','jigoshop'),
 		'id'           => 'jigoshop_shop_tiny',
-		'css'          => '',
 		'type'         => 'image_size',
-		'std'          => 36
+		'std'          => 36,
+		'placeholder'  => 36
 	),
 
 	array(
 		'name'         => __('Thumbnail Images','jigoshop'),
-		'desc'         => __('The thumbnail image for Single Product page extra images.','jigoshop'),
+		'desc'         => __('Single Product page extra images.','jigoshop'),
 		'id'           => 'jigoshop_shop_thumbnail',
-		'css'          => '',
 		'type'         => 'image_size',
-		'std'          => 90
+		'std'          => 90,
+		'placeholder'  => 90
 	),
 
 	array(
 		'name'         => __( 'Catalog Images', 'jigoshop' ),
-		'desc'         => __('The catalog image for Shop, Categories, Tags, and Related Products.', 'jigoshop'),
+		'desc'         => __('Shop, Categories, Tags, and Related Products.', 'jigoshop'),
 		'id'           => 'jigoshop_shop_small',
-		'css'          => '',
 		'type'         => 'image_size',
-		'std'          => 150
+		'std'          => 150,
+		'placeholder'  => 150
 	),
 
 	array(
 		'name'         => __('Large Images','jigoshop'),
-		'desc'         => __('Single Product page\'s large or Featured image.','jigoshop'),
+		'desc'         => __('Single Product pages','jigoshop'),
 		'id'           => 'jigoshop_shop_large',
-		'css'          => '',
 		'type'         => 'image_size',
-		'std'          => 300
+		'std'          => 300,
+		'placeholder'  => 300
 	),
 
 	array( 'type'      => 'tabend'),
@@ -744,15 +745,18 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'tip'          => __('You will receive a notification as soon this threshold is hit (if notifications are turned on).', 'jigoshop'),
 		'id'           => 'jigoshop_notify_low_stock_amount',
 		'css'          => 'width:50px;',
-		'type'         => 'text',
-		'std'          => '2'
+		'type'         => 'number',
+		'restrict'     => array( 'min' => 0 ),
+		'std'          => '2',
+		'group'        => true
 	),
 
 	array(
 		'desc'         => __('Notify on out of stock','jigoshop'),
 		'id'           => 'jigoshop_notify_no_stock',
 		'std'          => 'yes',
-		'type'         => 'checkbox'
+		'type'         => 'checkbox',
+		'group'        => true
 	),
 
 	array(
@@ -760,8 +764,10 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'tip'          => __('You will receive a notification as soon this threshold is hit (if notifications are turned on).', 'jigoshop'),
 		'id'           => 'jigoshop_notify_no_stock_amount',
 		'css'          => 'width:50px;',
-		'type'         => 'text',
-		'std'          => '0'
+		'type'         => 'number',
+		'restrict'     => array( 'min' => 0 ),
+		'std'          => '0',
+		'group'        => true
 	),
 
 
