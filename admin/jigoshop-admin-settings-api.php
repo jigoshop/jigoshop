@@ -476,10 +476,17 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		// they will do nothing if this is not the right TAB
 		if ( $result = $this->get_updated_coupons() ) $valid_input['jigoshop_coupons'] = $result;
 		if ( $result = $this->get_updated_tax_classes() ) $valid_input['jigoshop_tax_rates'] = $result;
-		
-		
+
+        // remove all jigoshop_update_options actions on shipping classes when not on the shipping tab
+        if (! isset($_POST['jigoshop_options']['jigoshop_calc_shipping'])) :
+            $this->remove_update_options(jigoshop_shipping::get_all_methods());
+        endif;
+        
+        if (! isset($_POST['jigoshop_options']['jigoshop_paypal_enabled'])) :
+            $this->remove_update_options(jigoshop_payment_gateways::payment_gateways());
+        endif;
+        
 		// Allow any hooked in option updating
-		// TODO: not sure we really need this anymore (-JAP-)
 		do_action( 'jigoshop_update_options' );
 		
 		$errors = get_settings_errors();
@@ -496,6 +503,15 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		
 	}
 	
+	private function remove_update_options($classes) {
+        
+        if (empty($classes)) return;
+        
+        foreach ($classes as $class) :
+            remove_action('jigoshop_update_options', array($class, 'process_admin_options'));
+        endforeach;
+
+    }
 	
 	/**
 	 * When Options are saved, return the 'jigoshop_coupons' option values
