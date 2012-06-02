@@ -101,10 +101,16 @@ class Jigoshop_Options implements jigoshop_options_interface {
         
         $old_option = get_option($name);
         
-		if ( isset( self::$current_options[$name] )) return self::$current_options[$name];
-        else if ( isset( $default )) return $default;
-        else if ( isset ( $old_option )) return $old_option;
-		else return null;
+		if ( isset( self::$current_options[$name] )) :
+            return self::$current_options[$name];
+        elseif ( isset( $default )) :
+            return $default;
+        elseif ( isset ( $old_option )) :
+            return $old_option;
+		else :
+            return null;
+        endif;
+        
 	}
 	
 	/**
@@ -171,6 +177,10 @@ class Jigoshop_Options implements jigoshop_options_interface {
 	 * @since	1.2
 	 */	
 	public function install_external_options( $tab, $options ) {
+        
+        // only proceed with function if we have options to add
+        if (empty ($options)) return;
+        
 		$our_options = $this->get_default_options();
 		$first_index = -1;
 		$second_index = -1;
@@ -193,7 +203,7 @@ class Jigoshop_Options implements jigoshop_options_interface {
 		$end = array_slice( $our_options, $second_index );
 		/*** add the new elements to the array ***/
         foreach ( $options as $option ) {
-            if ( isset( $option['id'] ) ) {
+            if ( isset( $option['id'] ) && !$this->exists_option($option['id'])) {
                 $this->add_option( $option['id'], $option['std'] );
             }
             $start[] = $option;
