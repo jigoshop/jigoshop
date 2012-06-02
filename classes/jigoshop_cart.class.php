@@ -437,7 +437,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
         $total_cart_price_ex_tax = 0;
         // for cart discount, we need to apply the discount on all items evenly. Find out
         // how many items are in the cart, and then find out if there is a discount on the cart
-        if (get_option('jigoshop_tax_after_coupon') == 'yes') :
+        if (self::get_jigoshop_options()->get_option('jigoshop_tax_after_coupon') == 'yes') :
 
             $items_in_cart = 0;
 
@@ -509,7 +509,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
                                 $current_product_discount = ( $coupon['amount'] * $values['quantity'] );
                                 self::$discount_total += $current_product_discount;
                             elseif ($coupon['type'] == 'percent_product') :
-                                $current_product_discount = (( (get_option('jigoshop_tax_after_coupon') == 'yes' ? $values['data']->get_price_excluding_tax($values['quantity']) : $values['data']->get_price() * $values['quantity']) / 100 ) * $coupon['amount']);
+                                $current_product_discount = (( (self::get_jigoshop_options()->get_option('jigoshop_tax_after_coupon') == 'yes' ? $values['data']->get_price_excluding_tax($values['quantity']) : $values['data']->get_price() * $values['quantity']) / 100 ) * $coupon['amount']);
                                 self::$discount_total += $current_product_discount;
                             endif;
                         endif;
@@ -519,7 +519,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
                 // time to calculate discounts into a discounted item price if applying before tax
                 $discounted_item_price = -1;
                 $cart_discount_amount = 0;
-                if (get_option('jigoshop_tax_after_coupon') == 'yes' && self::$applied_coupons) :
+                if (self::get_jigoshop_options()->get_option('jigoshop_tax_after_coupon') == 'yes' && self::$applied_coupons) :
                     $discounted_item_price = round($_product->get_price_excluding_tax($values['quantity']) - $current_product_discount, 2);
                     if ($discounted_item_price > 0 && $cart_discount > 0) :
                         $cart_discount_amount = ($cart_contents_loop_count == 1 ? $cart_discount : $discounted_item_price - round($discounted_item_price * $percentage_discount, 2));
@@ -544,7 +544,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
                             $total_item_price = $_product->get_price_excluding_tax($values['quantity']) * 100;
 
-                            $tax_classes_applied = self::$tax->calculate_tax_amounts((get_option('jigoshop_tax_after_coupon') == 'yes' && $discounted_item_price > 0 ? $discounted_item_price * 100 : $total_item_price), $_product->get_tax_classes(), false);
+                            $tax_classes_applied = self::$tax->calculate_tax_amounts((self::get_jigoshop_options()->get_option('jigoshop_tax_after_coupon') == 'yes' && $discounted_item_price > 0 ? $discounted_item_price * 100 : $total_item_price), $_product->get_tax_classes(), false);
 
                             // now add customer taxes back into the total item price because customer is outside base
                             // and we asked to have prices include taxes
