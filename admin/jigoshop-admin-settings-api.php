@@ -832,9 +832,9 @@ class Jigoshop_Options_Parser {
 			break;
 			
 		case 'gateway_options' :
-// 			foreach ( jigoshop_payment_gateways::payment_gateways() as $gateway ) :
-// 				$gateway->admin_options();
-// 			endforeach;
+ 			foreach ( jigoshop_payment_gateways::payment_gateways() as $gateway ) :
+ 				$gateway->admin_options();
+ 			endforeach;
 			break;
 			
 		case 'shipping_options' :
