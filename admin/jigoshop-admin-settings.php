@@ -767,7 +767,6 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							'tip'            => __('Cart - Applies to whole cart<br/>Product - Applies to individual products only. You must specify individual products.','jigoshop'),
 							'id'             => 'coupon_type[' . esc_attr( $i ) . ']',
 							'css'            => 'width:200px;',
-							'class'          => 'chzn-select',
 							'type'           => 'select',
 							'std'            => $selected_type,
 							'options'        => $discount_types
@@ -1048,7 +1047,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 								<label for="coupon_type[' + size + ']"><?php _e('Type', 'jigoshop'); ?></label>\
 							</th>\
 							<td>\
-								<select name="coupon_type[' + size + ']" id="coupon_type[' + size + ']" style="width:150px;" class="chzn-select">\
+								<select name="coupon_type[' + size + ']" id="coupon_type[' + size + ']" style="width:150px;">\
 									<option value="fixed_cart"><?php _e('Cart Discount', 'jigoshop'); ?></option>\
 									<option value="percent"><?php _e('Cart % Discount', 'jigoshop'); ?></option>\
 									<option value="fixed_product"><?php _e('Product Discount', 'jigoshop'); ?></option>\
