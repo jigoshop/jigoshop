@@ -25,21 +25,9 @@ class jigoshop_payment_gateway {
 	var $enabled;
 	var $icon;
 	var $description;
-    protected $jigoshop_options;
     
     public function __construct() {
-        
-        // allows for multiple constructors. Either one with an argument, or default which creates a new
-        // instance of jigoshop_options
-        $this->jigoshop_options = (func_num_args() == 1 ? func_get_arg(0) : new Jigoshop_Options());
-        
-        // default to Jigoshop_Options class if the arg passed in isn't implementing the interface or is null
-        if (!$this->jigoshop_options instanceof jigoshop_options_interface) :
-            
-            $this->jigoshop_options = new Jigoshop_Options();
-        endif;
-        
-        $this->jigoshop_options->install_external_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
+        jigoshop_base_class::get_jigoshop_options()->install_external_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
     }
 
 	function is_available() {

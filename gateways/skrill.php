@@ -34,9 +34,9 @@ class skrill extends jigoshop_payment_gateway {
         $this->title 		= 'Skrill';
         $this->icon 		= jigoshop::assets_url() . '/assets/images/icons/skrill.png';
         $this->has_fields 	= false;
-      	$this->enabled		= $this->jigoshop_options->get_option('jigoshop_skrill_enabled');
-		$this->title 		= $this->jigoshop_options->get_option('jigoshop_skrill_title');
-		$this->email 		= $this->jigoshop_options->get_option('jigoshop_skrill_email');
+      	$this->enabled		= jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_skrill_enabled');
+		$this->title 		= jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_skrill_title');
+		$this->email 		= jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_skrill_email');
 
 		add_action( 'init', array(&$this, 'check_status_response') );
 
@@ -171,7 +171,7 @@ class skrill extends jigoshop_payment_gateway {
 			'country'              => 'GBR',
 
 			'amount'               => $order_total,
-			'currency'             => $this->jigoshop_options->get_option('jigoshop_currency'),
+			'currency'             => jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_currency'),
 			'detail1_description'  => 'Order ID',
 			'detail1_text'         => $order_id
 
@@ -212,7 +212,7 @@ class skrill extends jigoshop_payment_gateway {
 
 		// Skirll MD5 concatenation
 
-		$skrill_md = $this->jigoshop_options->get_option('jigoshop_skrill_customer_id') . $skrill_args['transaction_id'] . strtoupper(md5($this->jigoshop_options->get_option('jigoshop_skrill_secret_word'))) . $order_total . $this->jigoshop_options->get_option('jigoshop_currency') . '2';
+		$skrill_md = jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_skrill_customer_id') . $skrill_args['transaction_id'] . strtoupper(md5(jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_skrill_secret_word'))) . $order_total . jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_currency') . '2';
 		$skrill_md = md5($skrill_md);
 
 		add_post_meta($order_id, '_skrillmd', $skrill_md);
