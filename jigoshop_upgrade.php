@@ -535,7 +535,6 @@ function jigoshop_upgrade_130() {
 				continue;
 
 			$title = sprintf('%s - %s', get_the_title($post->ID), implode( $taxes, ' ' ) );
-			var_dump($title);
 			if ( !empty($title) )
 				$wpdb->update( $wpdb->posts, array('post_title' => $title), array('ID' => $id) );
 
