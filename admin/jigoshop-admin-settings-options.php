@@ -672,8 +672,7 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(
 		'name'         => __('Weight Unit', 'jigoshop'),
-		'desc'         => __("This controls what unit you will define weights in.", 'jigoshop'),
-		'tip'          => '',
+		'tip'          => __("This controls what unit you will define weights in.", 'jigoshop'),
 		'id'           => 'jigoshop_weight_unit',
 		'std'          => 'kg',
 		'type'         => 'radio',
@@ -685,8 +684,7 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 
 	array(
 		'name'         => __('Dimensions Unit', 'jigoshop'),
-		'desc'         => __("This controls what unit you will define dimensions in.", 'jigoshop'),
-		'tip'          => '',
+		'tip'          => __("This controls what unit you will define dimensions in.", 'jigoshop'),
 		'id'           => 'jigoshop_dimension_unit',
 		'std'          => 'cm',
 		'type'         => 'radio',

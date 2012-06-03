@@ -498,7 +498,7 @@ function jigoshop_admin_option_display($options) {
 							class="<?php if(!empty($value['class'])) echo esc_attr ( $value['class'] ); ?>"
 							<?php if ( !empty($value['multiple']) ) echo 'multiple="multiple"'; ?>
 							<?php if ( !empty( $value['class'] ) && $value['class'] == 'chzn-select' && !empty( $value['placeholder'] ) ) : ?>
-							data-placeholder="<?php _e( esc_attr( $value['placeholder'] ) ); ?>
+							data-placeholder="<?php _e( esc_attr( $value['placeholder'] ) ); ?>"
 							<?php endif; ?>
 					>
 
@@ -508,7 +508,9 @@ function jigoshop_admin_option_display($options) {
 						<?php if ( (!is_array($selected) && $selected == $key) || ( is_array($selected) && in_array($key, $selected) ) ) : ?>
 								selected="selected"
 						<?php endif; ?>
-						><?php echo ucfirst($val); ?></option>
+						>
+							<?php echo ucfirst($val); ?>
+						</option>
 					<?php endforeach; ?>
 					</select>
 					<?php if ( !empty($value['desc']) && (!empty( $value['name'] ) && empty( $value['group'] )) ) : ?>
@@ -522,13 +524,13 @@ function jigoshop_admin_option_display($options) {
 
 		case 'radio':
 			?><tr>
-				<th scope="row">
+				<th scope="row"<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
 					<?php if (!empty($value['tip'])) : ?>
 					<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99"></a>
 					<?php endif; ?>
 					<?php echo $value['name'] ?>
 				</th>
-				<td>
+				<td<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
 					<?php foreach ($value['options'] as $key => $val) : ?>
 					<label class="radio">
 					<input type="radio"
