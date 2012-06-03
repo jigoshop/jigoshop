@@ -433,10 +433,8 @@ function jigoshop_admin_option_display($options) {
 				</th>
 				<td<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
 					<a  id="<?php echo esc_attr( $value['id'] ); ?>"
-						type="checkbox"
 						class="button <?php if(!empty($value['class'])) echo esc_attr ( $value['class'] ); ?>"
 						style="<?php if ( !empty($value['css']) ) echo esc_attr( $value['css'] ); ?>"
-						name="<?php echo esc_attr( $value['id'] ); ?>"
 						href="<?php if ( !empty($value['href']) ) echo esc_attr ( $value['href'] ); ?>"
 					><?php if (!empty($value['desc'])) echo $value['desc']; ?></a>
 				</td>
