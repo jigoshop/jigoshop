@@ -345,7 +345,6 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		$this_section = sanitize_title( self::get_jigoshop_options()->get_option( 'jigoshop_settings_current_tabname' ) );
 		$tab = $this->our_parser->tabs[$this_section];
 		
-		
 		// with each option, get it's type and validate it
 		foreach ( $tab as $index => $setting ) {
 			if ( isset( $setting['id'] ) ) {
@@ -478,11 +477,11 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		if ( $result = $this->get_updated_tax_classes() ) $valid_input['jigoshop_tax_rates'] = $result;
 
         // remove all jigoshop_update_options actions on shipping classes when not on the shipping tab
-        if (! isset($_POST['jigoshop_options']['jigoshop_calc_shipping'])) :
+        if ($this_section != 'shipping') :
             $this->remove_update_options(jigoshop_shipping::get_all_methods());
         endif;
         
-        if (! isset($_POST['jigoshop_options']['jigoshop_paypal_enabled'])) :
+        if ($this_section != 'payment-gateways') :
             $this->remove_update_options(jigoshop_payment_gateways::payment_gateways());
         endif;
         
