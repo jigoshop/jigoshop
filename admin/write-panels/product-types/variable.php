@@ -137,12 +137,30 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 		// Get the attributes to be used later
 		$attributes = (array) maybe_unserialize( get_post_meta($parent_id, 'product_attributes', true) );
-		
+
 		foreach ( $_POST['variations'] as $ID => $meta ) {
 
+			/**
+			 * Generate a post title of the current variation.
+			 * Parent Title - [attribute: variation]
+			 */
+			$taxes = array();
+			foreach ( $meta as $k => $v ) :
+				if ( strstr ( $k, 'tax_' ) ) {
+					$tax     = substr( $k, 4 );
+					$taxes[] = sprintf('[%s: %s]', $tax, !empty($v) ? $v : 'Any ' . $tax );
+				}
+			endforeach;
+
+			$post_title = !empty($_POST['post_title']) ? $_POST['post_title'] : the_title('','',false);
+			$title      = sprintf('%s - %s', $post_title, implode( $taxes, ' ' ) );
+
+			/**
+			 * Prevent duplicate variations
+			 */
 			// Update post data or Add post if new
 			if ( strpos( $ID, '_new' ) ) {
-			
+
 				// check for an existing variation with matching attributes to prevent duplication
 				$current_meta = $meta;
 				foreach ( $current_meta as $current_id => $current_value ) {
@@ -167,10 +185,10 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 					$result = array_diff( $haystack_meta, $current_meta );
 					if ( empty( $result ) ) $duplicate = true;
 				}
-				
+
 				if ( ! $duplicate ) {
 					$ID = wp_insert_post( array(
-						'post_title'  => "#{$parent_id}: Child Variation",
+						'post_title'  => !empty($title) ? $title : "#{$parent_id}: Child Variation",
 						'post_status' => isset($meta['enabled']) ? 'publish' : 'draft',
 						'post_parent' => $parent_id,
 						'post_type'   => 'product_variation'
@@ -178,10 +196,10 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 				} else {
 					// silent fail, should put up a message?
 				}
-				
+
 			} else {
 				$wpdb->update( $wpdb->posts, array(
-					'post_title'  => "#{$parent_id}: Child Variation",
+					'post_title'  => !empty($title) ? $title : "#{$parent_id}: Child Variation",
 					'post_status' => isset($meta['enabled']) ? 'publish' : 'draft'
 				), array( 'ID'    => $ID ) );
 			}

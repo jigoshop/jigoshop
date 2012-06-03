@@ -48,9 +48,13 @@ function jigoshop_upgrade() {
 	if ( $jigoshop_db_version < 1202280 ) {
 		jigoshop_upgrade_111();
 	}
-    
+
     if ( $jigoshop_db_version < 1203310 ) {
         jigoshop_upgrade_120();
+    }
+
+    if ( $jigoshop_db_version < 1206020 ) {
+        jigoshop_upgrade_130();
     }
 
 	// Update the db option
@@ -117,7 +121,7 @@ function jigoshop_convert_db_version() {
 			update_site_option( 'jigoshop_db_version', 1111092 );
 			break;
         //TODO: I'm not sure why cases 1.0 -> are here... the verion of db was
-        // updated since 1.0 to the new standard. No point on continuing to 
+        // updated since 1.0 to the new standard. No point on continuing to
         // add entries here, since anyone that has post 1.0 will also have the
         // new db versions. Anyone before, will get converted from this function.
 		case '1.0':
@@ -344,7 +348,7 @@ function jigoshop_upgrade_100() {
 		$parent_id = $post->post_parent;
 		$parent_reg_price = get_post_meta( $parent_id, 'regular_price', true );
 		$parent_sale_price = get_post_meta( $parent_id, 'sale_price', true );
-		
+
         // weight and dimensions were in pre 1.0. Therefore, make sure all of this
         // data gets converted as well
 		$parent_weight = get_post_meta( $parent_id, 'weight', true );
@@ -357,16 +361,16 @@ function jigoshop_upgrade_100() {
 
 		if( ! get_post_meta( $post->ID, 'sale_price', true) && $parent_sale_price )
 			update_post_meta( $post->ID, 'sale_price', $parent_sale_price );
-			
+
 		if( ! get_post_meta( $post->ID, 'weight', true) && $parent_weight )
 			update_post_meta( $post->ID, 'weight', $parent_weight );
-			
+
 		if( ! get_post_meta( $post->ID, 'length', true) && $parent_length )
 			update_post_meta( $post->ID, 'length', $parent_length );
-		
+
 		if( ! get_post_meta( $post->ID, 'height', true) && $parent_height )
 			update_post_meta( $post->ID, 'height', $parent_height );
-			
+
 		if( ! get_post_meta( $post->ID, 'width', true) && $parent_width )
 			update_post_meta( $post->ID, 'width', $parent_width );
 
@@ -454,12 +458,12 @@ function get_old_taxes_as_array($taxes_as_string) {
 
 /**
  * Execute changes made in Jigoshop 1.2.0
- * 
+ *
  * @since 1.2
  */
 function jigoshop_upgrade_120() {
-    
-    // update orders 
+
+    // update orders
 	$args = array(
 		'post_type'	  => 'shop_order',
 		'numberposts' => -1,
@@ -470,23 +474,73 @@ function jigoshop_upgrade_120() {
 
 	foreach( $posts as $post ) :
         $order_data = get_post_meta($post->ID, 'order_data', true);
-    
+
         if (!empty($order_data['order_tax'])) :
 
             // means someone has posted a manual order. Need to update to new tax string
             if (strpos($order_data['order_tax'], ':') === false) :
                 $order_data['order_tax_total'] = $order_data['order_tax'];
-                $order_data['order_tax'] = jigoshop_tax::create_custom_tax($order_data['order_total'] - $order_data['order_tax_total'], $order_data['order_tax_total'], $order_data['order_shipping_tax'], $order_data['order_tax_divisor']);                
+                $order_data['order_tax'] = jigoshop_tax::create_custom_tax($order_data['order_total'] - $order_data['order_tax_total'], $order_data['order_tax_total'], $order_data['order_shipping_tax'], $order_data['order_tax_divisor']);
             else :
                 $tax_array = get_old_taxes_as_array($order_data['order_tax']);
                 $order_data['order_tax'] = jigoshop_tax::array_implode($tax_array);
             endif;
-            
+
             update_post_meta($post->ID, 'order_data', $order_data);
-            
+
         endif;
-            
+
     endforeach;
-    
+
+}
+
+function jigoshop_upgrade_130() {
+
+	global $wpdb;
+
+	/* Update all product variation titles to something useful. */
+	$args = array(
+			'post_type' => 'product',
+			'tax_query' => array(
+				array(
+					'taxonomy'=> 'product_type',
+					'terms'   => 'variable',
+					'field'   => 'slug',
+					'operator'=> 'IN'
+					)
+				)
+			);
+	$posts_array = get_posts( $args );
+
+	foreach ( $posts_array as $post ) {
+
+		$product = new jigoshop_product ( $post->ID );
+		$var = $product->get_children();
+
+		foreach ( $var as $id ) {
+
+			$variation = $product->get_child( $id )->variation_data;
+			$taxes     = array();
+
+			foreach ( $variation as $k => $v ) :
+
+				if ( strstr ( $k, 'tax_' ) ) {
+					$tax  = substr( $k, 4 );
+					$taxes[] = sprintf('[%s: %s]', $tax, !empty($v) ? $v : 'Any ' . $tax );
+				}
+
+			endforeach;
+
+			if ( !strstr (get_the_title($id), 'Child Variation' ) )
+				continue;
+
+			$title = sprintf('%s - %s', get_the_title($post->ID), implode( $taxes, ' ' ) );
+			var_dump($title);
+			if ( !empty($title) )
+				$wpdb->update( $wpdb->posts, array('post_title' => $title), array('ID' => $id) );
+
+		}
+
+	}
 
 }
