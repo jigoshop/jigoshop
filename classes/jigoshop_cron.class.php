@@ -31,14 +31,29 @@ class jigoshop_cron {
 		$this->jigoshop_schedule_events();
 
 		add_action( 'jigoshop_cron_pending_orders', array( $this, 'jigoshop_update_pending_orders' ) );
+		add_action( 'jigoshop_cron_check_beta'    , array( $this, 'jigoshop_update_beta_init'      ) );
+		add_action( 'init'                        , array( $this, 'jigoshop_update_beta_now'       ) );
 
 	}
 
 	function jigoshop_schedule_events() {
 
 		/* Mark old 'pending' orders to 'on-hold' */
-		if ( !wp_next_scheduled( 'jigoshop_cron_pending_orders' ) )
+		if ( !wp_next_scheduled( 'jigoshop_cron_pending_orders' ) ) {
 			wp_schedule_event(time(), 'daily', 'jigoshop_cron_pending_orders' );
+		}
+
+		/* Remove scheduled beta checker, and clear the plugin update transient. */
+		if ( wp_next_scheduled( 'jigoshop_cron_check_beta' ) && get_option( 'jigoshop_use_beta_version' ) == 'no' ) {
+			delete_site_transient( 'update_plugins' );
+			wp_clear_scheduled_hook('jigoshop_cron_check_beta');
+		}
+		/* Schedule the daily beta checker, and run it now since the user enabled it just now. */
+		else if ( !wp_next_scheduled( 'jigoshop_cron_check_beta' ) && get_option( 'jigoshop_use_beta_version' ) == 'yes' ) {
+			$this->jigoshop_update_beta_init();
+			wp_schedule_event(time(), 'daily', 'jigoshop_cron_check_beta' );
+		}
+
 
 	}
 
@@ -66,6 +81,74 @@ class jigoshop_cron {
 			$order = new jigoshop_order($v->post_id);
 			$order->update_status( 'on-hold', __('Archived due to order being in pending state for a month or longer.', 'jigoshop') );
 		endforeach;
+
+	}
+
+	/* Manually invoke the beta updater if the user requests. */
+	function jigoshop_update_beta_now() {
+
+		if( !empty($_REQUEST['action']) && $_REQUEST['action'] == 'jigoshop_beta_check' && check_admin_referer('jigoshop_check_beta_'.get_current_user_id().'_wpnonce') && is_super_admin() ) {
+
+			update_option('jigoshop_check_beta_manually', true);
+			$this->jigoshop_update_beta_init();
+
+			add_action( 'jigoshop_admin_settings_notices', array ($this, 'jigoshop_beta_check_notice') );
+
+		}
+
+	}
+
+	function jigoshop_beta_check_notice() {
+		echo '<div id="message" class="updated"><p>' . __(sprintf("<strong>Checking for beta...</strong> Visit the <a href='%s'>plugin manager</a> to see if an update is available!", admin_url().'plugins.php'), 'jigoshop') . '</strong></p></div>';
+	}
+
+	function jigoshop_update_beta_init() {
+
+		/* Clear the site transient so we have a clean cache to start with. */
+		delete_site_transient( 'update_plugins' );
+
+		/* Hook into the plugin updater with our beta checker function. */
+		add_filter( 'pre_set_site_transient_update_plugins' , array( $this, 'jigoshop_update_beta_checker'   ) );
+
+	}
+
+	/* Check for Jigoshop beta updates. */
+	function jigoshop_update_beta_checker( $transient ) {
+
+		// Check if the transient contains the 'checked' information
+		if( empty( $transient->checked ) )
+			return $transient;
+
+
+		if( get_option('jigoshop_use_beta_version') == 'no' && get_option('jigoshop_check_beta_manually') === false )
+			return false;
+
+		$url     = 'https://raw.github.com/jigoshop/jigoshop/dev/version.txt';
+		$dir     = plugin_basename( dirname(dirname(__FILE__)) ) . '/jigoshop.php';
+		$request = wp_remote_get( $url, array('sslverify'=> false) );
+
+		if ( is_wp_error( $request ) )
+			return false;
+
+		/* The version number. */
+		$current = $request['body'];
+
+		/* Do we need to update? */
+		if( version_compare($transient->checked[$dir], $current) < 0) {
+			$response                  = new stdClass();
+			$response->new_version     = $current ;
+			$response->slug            = $dir;
+			$response->url             = 'https://github.com/jigoshop/jigoshop';
+			$response->package         = 'https://github.com/jigoshop/jigoshop/zipball/dev';
+
+			if ( false !== $response )
+				$transient->response[ $dir ] = $response;
+
+		}
+
+		delete_option('jigoshop_check_beta_manually');
+
+		return $transient;
 
 	}
 

@@ -160,6 +160,23 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'type'           => 'checkbox',
 	),
 
+	array(
+		'name'           => __('Beta testing', 'jigoshop'),
+		'desc'           => __('Use beta versions','jigoshop'),
+		'tip'            => __('Only beta plugin updates will be shown for Jigoshop. Beta updates will display normally in the Wordpress plugin manager.','jigoshop'),
+		'id'             => 'jigoshop_use_beta_version',
+		'std'            => 'no',
+		'type'           => 'checkbox',
+	),
+
+	array(
+		'desc'           => __('Check for update now','jigoshop'),
+		'tip'            => __('Manually check if a beta update is available.','jigoshop'),
+		'id'             => 'jigoshop_check_beta_now',
+		'type'           => 'button',
+		'href'           => is_multisite() ? admin_url().'network/' : '' . 'admin.php?page=jigoshop_settings&amp;action=jigoshop_beta_check&amp;_wpnonce='.wp_create_nonce('jigoshop_check_beta_'.get_current_user_id().'_wpnonce')
+	),
+
 	array( 'name'        => __('Invoicing', 'jigoshop'), 'type'              => 'title', 'desc' => '' ),
 
 	array(

@@ -421,6 +421,28 @@ function jigoshop_admin_option_display($options) {
 			  </thead><?php
 			break;
 
+		case 'button':
+			?><tr>
+				<th scope="row"<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
+					<?php if (!empty($value['tip'])) : ?>
+					<a href="#" tip="<?php echo $value['tip'] ?>" class="tips" tabindex="99" ></a>
+					<?php endif; ?>
+					<?php if ( !empty( $value['name'] ) ) : ?>
+					<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo $value['name'] ?></label>
+					<?php endif; ?>
+				</th>
+				<td<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
+					<a  id="<?php echo esc_attr( $value['id'] ); ?>"
+						type="checkbox"
+						class="button <?php if(!empty($value['class'])) echo esc_attr ( $value['class'] ); ?>"
+						style="<?php if ( !empty($value['css']) ) echo esc_attr( $value['css'] ); ?>"
+						name="<?php echo esc_attr( $value['id'] ); ?>"
+						href="<?php if ( !empty($value['href']) ) echo esc_attr ( $value['href'] ); ?>"
+					><?php if (!empty($value['desc'])) echo $value['desc']; ?></a>
+				</td>
+			  </tr><?php
+			break;
+
 		case 'checkbox':
 			?><tr>
 				<th scope="row"<?php if ( empty( $value['name'] ) ) : ?> style="padding-top:0px;"<?php endif; ?>>
