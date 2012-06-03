@@ -29,24 +29,11 @@ class jigoshop_shipping_method {
 	var $shipping_total 	= 0;
 	var $shipping_tax 		= 0;
     
-    protected $jigoshop_options;
-
     private $tax;
     private $error_message = null;
     
-    public function __construct() {
-        
-        // allows for multiple constructors. Either one with an argument, or default which creates a new
-        // instance of jigoshop_options
-        $this->jigoshop_options = (func_num_args() == 1 ? func_get_arg(0) : new Jigoshop_Options());
-        
-        // default to Jigoshop_Options class if the arg passed in isn't implementing the interface or is null
-        if (!$this->jigoshop_options instanceof jigoshop_options_interface) :
-            
-            $this->jigoshop_options = new Jigoshop_Options();
-        endif;
-        
-        $this->jigoshop_options->install_external_options( 'Shipping', $this->get_default_options() );
+    public function __construct() {        
+        jigoshop_base_class::get_jigoshop_options()->install_external_options( 'Shipping', $this->get_default_options() );
     }
 
     public function is_available() {
@@ -72,8 +59,8 @@ class jigoshop_shipping_method {
 		if ($this->availability == 'specific') :
 			$ship_to_countries = $this->countries;
 		else :
-			if ($this->jigoshop_options->get_option('jigoshop_allowed_countries')=='specific') :
-				$ship_to_countries = $this->jigoshop_options->get_option('jigoshop_specific_allowed_countries');
+			if (jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_allowed_countries')=='specific') :
+				$ship_to_countries = jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_specific_allowed_countries');
 			endif;
 		endif;
 
