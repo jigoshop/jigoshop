@@ -106,11 +106,11 @@ class Jigoshop_Options implements jigoshop_options_interface {
         
 		if ( isset( self::$current_options[$name] )) :
             return self::$current_options[$name];
-        elseif ( isset( $default )) :
-            return $default;
         elseif ( isset ( $old_option )) :
             return $old_option;
-		else :
+        elseif ( isset( $default )) :
+            return $default;		
+        else :
             return null;
         endif;
         
