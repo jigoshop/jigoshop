@@ -30,6 +30,7 @@ class jigoshop_cron {
 
 		$this->jigoshop_schedule_events();
 
+		add_action('http_request_args'            , array($this , 'no_ssl_http_request_args'), 10, 2);
 		add_action( 'jigoshop_cron_pending_orders', array( $this, 'jigoshop_update_pending_orders' ) );
 		add_action( 'jigoshop_cron_check_beta'    , array( $this, 'jigoshop_update_beta_init'      ) );
 		add_action( 'init'                        , array( $this, 'jigoshop_update_beta_now'       ) );
@@ -109,19 +110,46 @@ class jigoshop_cron {
 
 		/* Hook into the plugin updater with our beta checker function. */
 		add_filter( 'pre_set_site_transient_update_plugins' , array( $this, 'jigoshop_update_beta_checker'   ) );
+		add_filter( 'upgrader_post_install', array( $this, 'jigoshop_upgrader_post_install' ), 10, 3 );
+	}
+
+	public function jigoshop_upgrader_post_install( $true, $hook_extra, $result ) {
+
+		global $wp_filesystem;
+
+		// Move & Activate
+		$proper_dir         = plugin_basename(dirname(dirname(__FILE__)));
+		$plugin_slug        = $proper_dir . '/jigoshop.php';
+		$proper_destination = WP_PLUGIN_DIR.'/' . $proper_dir;
+
+		$wp_filesystem->move( $result['destination'], $proper_destination );
+		$result['destination'] = $proper_destination;
+		$activate = activate_plugin( WP_PLUGIN_DIR.'/'.$plugin_slug );
+
+		// Output the update message
+		$fail		= __('The plugin has been updated, but could not be reactivated. Please reactivate it manually.', 'github_plugin_updater');
+		$success	= __('Plugin reactivated successfully.', 'github_plugin_updater');
+		echo is_wp_error( $activate ) ? $fail : $success;
+		return $result;
+
+	}
+
+	function no_ssl_http_request_args($args, $url) {
+
+		$args['sslverify'] = false;
+		return $args;
 
 	}
 
 	/* Check for Jigoshop beta updates. */
 	function jigoshop_update_beta_checker( $transient ) {
 
+		if( get_option('jigoshop_use_beta_version') == 'no' && get_option('jigoshop_check_beta_manually') === false )
+			return false;
+
 		// Check if the transient contains the 'checked' information
 		if( empty( $transient->checked ) )
 			return $transient;
-
-
-		if( get_option('jigoshop_use_beta_version') == 'no' && get_option('jigoshop_check_beta_manually') === false )
-			return false;
 
 		$url     = 'https://raw.github.com/jigoshop/jigoshop/dev/version.txt';
 		$dir     = plugin_basename( dirname(dirname(__FILE__)) ) . '/jigoshop.php';
