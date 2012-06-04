@@ -127,8 +127,8 @@ class jigoshop_cron {
 		$activate = activate_plugin( WP_PLUGIN_DIR.'/'.$plugin_slug );
 
 		// Output the update message
-		$fail		= __('The plugin has been updated, but could not be reactivated. Please reactivate it manually.', 'github_plugin_updater');
-		$success	= __('Plugin reactivated successfully.', 'github_plugin_updater');
+		$fail		= __('The plugin has been updated, but could not be reactivated. Please reactivate it manually.', 'jigoshop');
+		$success	= __('Plugin reactivated successfully.', 'jigoshop');
 		echo is_wp_error( $activate ) ? $fail : $success;
 		return $result;
 
