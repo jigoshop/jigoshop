@@ -39,7 +39,10 @@ class Jigoshop_Options implements jigoshop_options_interface {
 	
 			foreach ( $this->get_default_options() as $setting ) :
 				if ( isset( $setting['id'] )) :
-					$current_options[$setting['id']] = $setting['std'];
+                    // find out if the option previously existed. If yes, then we'll make sure we use that over the 
+                    // default value
+                    $option = $this->get_option($setting['id']);
+					$current_options[$setting['id']] = ($option == null ? $setting['std'] : $option);
 				endif;
 			endforeach;
 			
