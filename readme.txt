@@ -113,7 +113,36 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 
 == Changelog ==
 = 1.3 - TBA =
+* New: Coupon features
+	* Redesigned coupon setting page
+	* Show coupon input field on checkout page
+	* Allow coupons to be removed from cart
+	* Free shipping option
+	* Limit amount of times coupon can be used, & show a counter
+	* Min & max order subtotal
+	* Specify products to allow / deny
+	* Specify product categories to allow / deny
+* New: Reports
+	* Show reports within a custom timeframe
+	* List of most sales generated from products
+	* List of most quantity sold from products
+	* Total customers
+	* Total orders
+	* Total sales
+* New: Category images
+	* Add an image to your product categories
+* New: Beta updater
+	* Keep track of Jigoshop beta versions by enabling this checkbox in the settings
+	* Allows you to update directly to a beta version
+* New: Force users to login before downloading a purchased product
+* New: Mark 1 month or older orders from 'pending' to 'on-hold'
+* New: Select multiple countries for tax rules
+* Tweak: Checkboxes & radio boxes in the admin settings
+* Tweak: Use Twitter Bootstrap tooltips for setting fields
+* Tweak: Images setting tab is now cleaner
 * Tweak: Allow default tax classes to be translated
+* Fix: When uninstalling, will now only delete Jigoshop created pages instead of pages specified in settings
+* Fix: Variable products now have proper titles, not "#xxx: Child Variaton" anymore
 
 = 1.2.3 - 2012-05-28 =
 * New: Add filters for new Jigoshop Product Addons extension
