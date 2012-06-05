@@ -122,6 +122,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 	* Min & max order subtotal
 	* Specify products to allow / deny
 	* Specify product categories to allow / deny
+	* Specify payment methods to allow
 * New: Reports
 	* Show reports within a custom timeframe
 	* List of most sales generated from products
