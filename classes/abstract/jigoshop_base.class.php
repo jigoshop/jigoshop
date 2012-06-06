@@ -14,6 +14,7 @@
  * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
+
 include_once (dirname(dirname(__FILE__)) . '/jigoshop_options_interface.php');
 
 abstract class jigoshop_base_class {
@@ -53,17 +54,17 @@ abstract class jigoshop_base_class {
     
     /**
      * Allow jigoshop options to be injected into the class. Any implementation of
-     * jigoshop_options_interface can be injected
+     * Jigoshop_Options_Interface can be injected
      * 
-     * @param jigoshop_options_interface $jigoshop_options the options to use on the classes
+     * @param Jigoshop_Options_Interface $jigoshop_options the options to use on the classes
      */
-    protected static function set_jigoshop_options(jigoshop_options_interface $jigoshop_options) {
+    protected static function set_jigoshop_options(Jigoshop_Options_Interface $jigoshop_options) {
         self::$jigoshop_options = $jigoshop_options;
     }
     
     /**
      * helper function for any files that do not inherit jigoshop_base, they can access jigoshop_options
-     * @return jigoshop_options_interface the options that have been set, or null if they haven't been set yet 
+     * @return Jigoshop_Options_Interface the options that have been set, or null if they haven't been set yet 
      */
     public static function get_jigoshop_options() {
         

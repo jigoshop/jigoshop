@@ -129,7 +129,7 @@ class jigoshop_shipping_method {
     public function process_admin_options() {}
 
     /**
-	 * Default Option settings for WordPress Settings API using an implementation of the jigoshop_options_interface
+	 * Default Option settings for WordPress Settings API using an implementation of the Jigoshop_Options_Interface
 	 *
 	 * These should be installed on the Jigoshop_Options 'Shipping' tab
      * @since 1.3

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * jigoshop_options_interface contains all WordPress options used within Jigoshop
+ * Jigoshop_Options_Interface contains all WordPress options used within Jigoshop
  *
  * DISCLAIMER
  *
@@ -15,7 +15,8 @@
  * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
  * @license		http://jigoshop.com/license/commercial-edition
  */
-interface jigoshop_options_interface {
+
+interface Jigoshop_Options_Interface {
 
 	/**
 	 * Updates the database with the current options

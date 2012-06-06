@@ -15,7 +15,7 @@
  * @license		http://jigoshop.com/license/commercial-edition
  */
 
-class Jigoshop_Options implements jigoshop_options_interface {
+class Jigoshop_Options implements Jigoshop_Options_Interface {
 	
 	private static $default_options;
 	private static $current_options;
