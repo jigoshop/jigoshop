@@ -107,33 +107,35 @@ class jigoshop_checkout extends jigoshop_singleton {
 	function checkout_form_shipping() {
 
 		// Shipping Details
-//		if (jigoshop_cart::needs_shipping() && !jigoshop_cart::ship_to_billing_address_only()) :
-		// even if not calculating shipping, we still need to display second shipping address for free shipping
 		if (!jigoshop_cart::ship_to_billing_address_only() && get_option('jigoshop_calc_shipping') == 'yes') :
 
-			echo '<p class="form-row" id="shiptobilling"><input class="input-checkbox" ';
+			$shiptobilling = !$_POST ? apply_filters('shiptobilling_default', 1) : $this->get_value('shiptobilling'); ?>
 
-			if (!$_POST) $shiptobilling = apply_filters('shiptobilling_default', 1); else $shiptobilling = $this->get_value('shiptobilling');
-			if ($shiptobilling) echo 'checked="checked" ';
-			echo 'type="checkbox" name="shiptobilling" /> <label for="shiptobilling" class="checkbox">'.__('Ship to same address?', 'jigoshop').'</label></p>';
+			<p class="form-row" id="shiptobilling">
+				<input
+					class="input-checkbox"
+					type="checkbox"
+					name="shiptobilling"
+					id="shiptobilling-checkbox"
+					<?php if ($shiptobilling) : ?> checked="checked" <?php endif; ?>
+				/>
+				<label for="shiptobilling-checkbox" class="checkbox"><?php _e('Ship to same address?', 'jigoshop'); ?></label>
+			</p>
 
-			echo '<h3>'.__('Shipping Address', 'jigoshop').'</h3>';
+			<h3><?php _e('Shipping Address', 'jigoshop'); ?></h3>
 
-			echo'<div class="shipping-address">';
-
-
-				foreach ($this->shipping_fields as $field) :
+			<div class="shipping-address">
+			<?php foreach ($this->shipping_fields as $field) :
 					$field = apply_filters( 'jigoshop_shipping_field', $field );
 					$this->checkout_form_field( $field );
-				endforeach;
+				endforeach; ?>
+			</div>
 
-			echo'</div>';
+		<?php elseif (jigoshop_cart::ship_to_billing_address_only()) : ?>
 
-		elseif (jigoshop_cart::ship_to_billing_address_only()) :
+			<h3><?php _e('Notes/Comments', 'jigoshop'); ?></h3>
 
-			echo '<h3>'.__('Notes/Comments', 'jigoshop').'</h3>';
-
-		endif;
+		<?php endif;
 
 		$this->checkout_form_field( array( 'type' => 'textarea', 'class' => array('notes'),  'name' => 'order_comments', 'label' => __('Order Notes', 'jigoshop'), 'placeholder' => __('Notes about your order.', 'jigoshop') ) );
 
