@@ -17,15 +17,15 @@
 ?>
 <div id="order_review">
 
-    <table class="shop_table">
-        <thead>
-            <tr>
+	<table class="shop_table">
+		<thead>
+			<tr>
 				<th><?php _e('Product', 'jigoshop'); ?></th>
 				<th><?php _e('Qty'    , 'jigoshop'); ?></th>
 				<th><?php _e('Totals' , 'jigoshop'); ?></th>
-            </tr>
-        </thead>
-        <tfoot>
+			</tr>
+		</thead>
+		<tfoot>
 			<tr>
 			   <?php $price_label = jigoshop_cart::show_retail_price() ? __('Retail Price', 'jigoshop') : __('Subtotal', 'jigoshop'); ?>
 
@@ -33,34 +33,34 @@
 				<td class="cart-row-subtotal"><?php echo jigoshop_cart::get_cart_subtotal(); ?></td>
 			</tr>
 
-            <?php jigoshop_checkout::get_shipping_dropdown(); ?>
+			<?php jigoshop_checkout::get_shipping_dropdown(); ?>
 
-            <?php if ( jigoshop_cart::show_retail_price() ) : ?>
-                <tr>
-                    <td colspan="2"><?php _e('Subtotal', 'jigoshop'); ?></td>
-                    <td><?php echo jigoshop_cart::get_cart_subtotal(true, true); ?></td>
-                </tr>
-            <?php endif; ?>
-
-            <?php if ( jigoshop_cart::tax_after_coupon() ) : ?>
-                <tr class="discount">
-                    <td colspan="2"><?php _e('Discount', 'jigoshop'); ?></td>
-                    <td>-<?php echo jigoshop_cart::get_total_discount(); ?></td>
-                </tr>
+			<?php if ( jigoshop_cart::show_retail_price() ) : ?>
+				<tr>
+					<td colspan="2"><?php _e('Subtotal', 'jigoshop'); ?></td>
+					<td><?php echo jigoshop_cart::get_cart_subtotal(true, true); ?></td>
+				</tr>
 			<?php endif; ?>
 
-            <?php if (get_option('jigoshop_calc_taxes') == 'yes') :
-                foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
-                      if (jigoshop_cart::get_tax_for_display($tax_class)) : ?>
-                        <tr>
-                            <td colspan="2"><?php echo jigoshop_cart::get_tax_for_display($tax_class); ?></td>
-                            <td><?php echo jigoshop_cart::get_tax_amount($tax_class) ?></td>
-                        </tr>
+			<?php if ( jigoshop_cart::tax_after_coupon() ) : ?>
+				<tr class="discount">
+					<td colspan="2"><?php _e('Discount', 'jigoshop'); ?></td>
+					<td>-<?php echo jigoshop_cart::get_total_discount(); ?></td>
+				</tr>
+			<?php endif; ?>
+
+			<?php if (get_option('jigoshop_calc_taxes') == 'yes') :
+				foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
+					  if (jigoshop_cart::get_tax_for_display($tax_class)) : ?>
+						<tr>
+							<td colspan="2"><?php echo jigoshop_cart::get_tax_for_display($tax_class); ?></td>
+							<td><?php echo jigoshop_cart::get_tax_amount($tax_class) ?></td>
+						</tr>
 				<?php endif;
 				endforeach;
 			endif; ?>
 
-            <?php do_action('jigoshop_after_review_order_items'); ?>
+			<?php do_action('jigoshop_after_review_order_items'); ?>
 
 				<?php if ( !jigoshop_cart::tax_after_coupon() && jigoshop_cart::get_total_discount() ) : ?>
 				<tr class="discount">
@@ -69,16 +69,16 @@
 				</tr>
 				<?php endif; ?>
 
-                <td colspan="2"><strong><?php _e('Grand Total', 'jigoshop'); ?></strong></td>
-                <td><strong><?php echo jigoshop_cart::get_total(); ?></strong></td>
-            </tr>
-        </tfoot>
-        <tbody>
-            <?php
-            if (sizeof(jigoshop_cart::$cart_contents) > 0) :
-                foreach (jigoshop_cart::$cart_contents as $item_id => $values) :
-                    $_product = $values['data'];
-                    if ($_product->exists() && $values['quantity'] > 0) :
+				<td colspan="2"><strong><?php _e('Grand Total', 'jigoshop'); ?></strong></td>
+				<td><strong><?php echo jigoshop_cart::get_total(); ?></strong></td>
+			</tr>
+		</tfoot>
+		<tbody>
+			<?php
+			if (sizeof(jigoshop_cart::$cart_contents) > 0) :
+				foreach (jigoshop_cart::$cart_contents as $item_id => $values) :
+					$_product = $values['data'];
+					if ($_product->exists() && $values['quantity'] > 0) :
 
 						$variation = jigoshop_cart::get_item_data($values);
 
@@ -87,8 +87,8 @@
 						$product_id      = !empty( $values['variation_id'] )      ? $values['variation_id']       : $values['product_id'];
 						$custom          = isset( $custom_products[$product_id] ) ? $custom_products[$product_id] : ''; ?>
 
-                            <tr>
-                                <td class="product-name">
+							<tr>
+								<td class="product-name">
 									<?php echo $_product->get_title() . $variation;
 
 									if ( ! empty( $custom ) ) :
@@ -130,23 +130,23 @@
 				$available_gateways = jigoshop_payment_gateways::get_available_payment_gateways();
 				if ($available_gateways) :
 
-                    $gateway_set = false;
+					$gateway_set = false;
 					foreach ($available_gateways as $gateway ) :
-                        if (jigoshop_checkout::process_gateway($gateway)) :
-                            if (!$gateway_set) :
+						if (jigoshop_checkout::process_gateway($gateway)) :
+							if (!$gateway_set) :
 
-                                // Chosen Method
-                                if (sizeof($available_gateways)) :
-                                    if( isset( $_POST[ 'payment_method' ] ) && isset( $available_gateways[ $_POST['payment_method'] ] ) ) :
-                                        $available_gateways[ $_POST[ 'payment_method' ] ]->set_current();
-                                    else :
-                                        $gateway->set_current();
-                                    endif;
-                                endif;
-                                $gateway_set = true;
+								// Chosen Method
+								if (sizeof($available_gateways)) :
+									if( isset( $_POST[ 'payment_method' ] ) && isset( $available_gateways[ $_POST['payment_method'] ] ) ) :
+										$available_gateways[ $_POST[ 'payment_method' ] ]->set_current();
+									else :
+										$gateway->set_current();
+									endif;
+								endif;
+								$gateway_set = true;
 
-                            endif; ?>
-                            <li>
+							endif; ?>
+							<li>
 								<input type="radio"
 									   id="payment_method_<?php echo $gateway->id; ?>"
 									   class="input-radio"
@@ -163,9 +163,9 @@
 											<?php $gateway->payment_fields(); ?>
 										</div>
 									<?php endif; ?>
-                            </li>
-                            <?php
-                        endif;
+							</li>
+							<?php
+						endif;
 					endforeach;
 				else :
 
@@ -194,7 +194,7 @@
 			</p>
 			<?php endif; ?>
 
-            <a href="<?php echo home_url(); ?>" class="button cancel"><?php echo apply_filters( 'jigoshop_order_cancel_button_text', __( 'Cancel', 'jigoshop') ) ?></a>
+			<a href="<?php echo home_url(); ?>" class="button cancel"><?php echo apply_filters( 'jigoshop_order_cancel_button_text', __( 'Cancel', 'jigoshop') ) ?></a>
 
 			<?php $order_button_text = apply_filters( 'jigoshop_order_button_text', __( 'Place order', 'jigoshop') ); ?>
 			<input type="submit" class="button-alt" name="place_order" id="place_order" value="<?php echo esc_attr( $order_button_text ); ?>" />

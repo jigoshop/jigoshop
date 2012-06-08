@@ -62,49 +62,44 @@ function jigoshop_order_tracking( $atts ) {
 						</tr>
 					</thead>
 					<tfoot>
-                        <tr>
-                            <?php if ((get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
-                                || (get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) : ?>
-                                <td colspan="3"><?php _e('Retail Price', 'jigoshop'); ?></td>
-                            <?php else : ?>
-                                <td colspan="3"><?php _e('Subtotal', 'jigoshop'); ?></td>
-                            <?php endif; ?>
-                                <td><?php echo $order->get_subtotal_to_display(); ?></td>
-                        </tr>
-                        <?php
-                        if ($order->order_shipping>0) : ?>
-                            <tr>
-                                <td colspan="3"><?php _e('Shipping', 'jigoshop'); ?></td>
-                                <td><?php echo $order->get_shipping_to_display(); ?></td>
-                            </tr>
-                            <?php 
-                        endif; 
-                        if (get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0) : ?>
-                            <tr class="discount">
-                                <td colspan="3"><?php _e('Discount', 'jigoshop'); ?></td>
-                                <td>-<?php echo jigoshop_price($order->order_discount); ?></td>
-                            </tr>
-                            <?php 
-                        endif; 
-                        if ((get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
-                         || (get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) :  ?>
-                            <tr>
-                                <td colspan="3"><?php _e('Subtotal', 'jigoshop'); ?></td>
-                                <td><?php echo jigoshop_price($order->order_discount_subtotal); ?></td>
-                            </tr>
-                            <?php 
-                        endif;
-                        if (get_option('jigoshop_calc_taxes') == 'yes') :
-                            foreach ( $order->get_tax_classes() as $tax_class ) :
-                                if ($order->show_tax_entry($tax_class)) : ?>
-                                    <tr>
-                                        <td colspan="3"><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></td>
-                                        <td><?php echo $order->get_tax_amount($tax_class) ?></td>
-                                    </tr>
-                                    <?php
-                                endif;
-                            endforeach;
-                        endif; ?>
+						<tr>
+							<?php $price_label = jigoshop_cart::show_retail_price() ? __('Retail Price', 'jigoshop') : __('Subtotal', 'jigoshop'); ?>
+
+							<td colspan="3"><?php echo $price_label; ?></td>
+							<td><?php echo $order->get_subtotal_to_display(); ?></td>
+						</tr>
+						<?php if ($order->order_shipping>0) : ?>
+							<tr>
+								<td colspan="3"><?php _e('Shipping', 'jigoshop'); ?></td>
+								<td><?php echo $order->get_shipping_to_display(); ?></td>
+							</tr>
+						<?php endif;
+						if (get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0) : ?>
+							<tr class="discount">
+								<td colspan="3"><?php _e('Discount', 'jigoshop'); ?></td>
+								<td>-<?php echo jigoshop_price($order->order_discount); ?></td>
+							</tr>
+							<?php
+						endif;
+						if ((get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
+						 || (get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) :  ?>
+							<tr>
+								<td colspan="3"><?php _e('Subtotal', 'jigoshop'); ?></td>
+								<td><?php echo jigoshop_price($order->order_discount_subtotal); ?></td>
+							</tr>
+							<?php
+						endif;
+						if (get_option('jigoshop_calc_taxes') == 'yes') :
+							foreach ( $order->get_tax_classes() as $tax_class ) :
+								if ($order->show_tax_entry($tax_class)) : ?>
+									<tr>
+										<td colspan="3"><?php echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):'; ?></td>
+										<td><?php echo $order->get_tax_amount($tax_class) ?></td>
+									</tr>
+									<?php
+								endif;
+							endforeach;
+						endif; ?>
 						<?php if (get_option('jigoshop_tax_after_coupon') == 'no' && $order->order_discount>0) : ?><tr class="discount">
 							<td colspan="3"><?php _e('Discount', 'jigoshop'); ?></td>
 							<td>-<?php echo jigoshop_price($order->order_discount); ?></td>
@@ -134,7 +129,7 @@ function jigoshop_order_tracking( $atts ) {
 							endif;
 
 							do_action( 'jigoshop_display_item_meta_data', $order_item );
-							
+
 							echo '</td>';
 							echo '<td>'.jigoshop_price($order_item['cost']).'</td>';
 							echo '<td>'.$order_item['qty'].'</td>';
