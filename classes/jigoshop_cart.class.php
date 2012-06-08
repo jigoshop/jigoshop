@@ -1051,14 +1051,16 @@ class jigoshop_cart extends jigoshop_singleton {
 		$subtotal = jigoshop_cart::get_cart_subtotal(false, true);
 		$discount = self::$discount_total;
 
-		return ( $discount > $subtotal ) ? jigoshop_price($subtotal) : jigoshop_price($discount);
+		return ( $discount > $subtotal )
+				? jigoshop_price($subtotal)
+				: jigoshop_price($discount);
 
     }
 
     /**
      * Gets and formats a list of cart item data + variations for display on the frontend
      */
-    static function get_item_data( $cart_item, $flat = FALSE ) {
+    static function get_item_data( $cart_item, $flat = false ) {
 
         $has_data = false;
 
@@ -1072,30 +1074,27 @@ class jigoshop_cart extends jigoshop_singleton {
             foreach ( $cart_item['variation'] as $name => $value ) :
 
                 $name = str_replace('tax_', '', $name);
+                if ( taxonomy_exists( 'pa_'.$name ) ) :
 
-                if ( taxonomy_exists( 'pa_'.$name )) :
                     $terms = get_terms( 'pa_'.$name, array( 'orderby' => 'slug', 'hide_empty' => '0' ) );
-                    foreach ( $terms as $term ) :
+
+                    foreach ( $terms as $term )
                         if ( $term->slug == $value ) $value = $term->name;
-                    endforeach;
+
                     $name = get_taxonomy( 'pa_'.$name )->labels->name;
                     $name = jigoshop_product::attribute_label('pa_'.$name);
+
                 endif;
 
-
-                if ($flat) :
-                    $variation_list[] = $name.': '.$value;
-                else :
-                    $variation_list[] = '<dt>'.$name.':</dt><dd>'.$value.'</dd>';
-                endif;
+				$variation_list[] = $flat
+									? sprintf('%s: %s', $name, $value)
+									: sprintf('<dt>%s</dt>: <dd>%s</dd>', $name, $value);
 
             endforeach;
 
-            if ($flat) :
-                $return .= implode(', ', $variation_list);
-            else :
-                $return .= implode('', $variation_list);
-            endif;
+            $return .= $flat
+					   ? implode(', ', $variation_list)
+					   : implode('',   $variation_list);
 
             $has_data = true;
 
@@ -1104,27 +1103,25 @@ class jigoshop_cart extends jigoshop_singleton {
         // Other data - returned as array with name/value values
         $other_data = apply_filters('jigoshop_get_item_data', array(), $cart_item);
 
-        if ($other_data && is_array($other_data) && sizeof($other_data)>0) :
+        if ($other_data && is_array($other_data) && sizeof($other_data) > 0 ) :
 
             $data_list = array();
 
             foreach ($other_data as $data) :
 
-                $display_value = (isset($data['display']) && $data['display']) ? $data['display'] : $data['value'];
+                $display_value = ( !empty($data['display']) )
+								  ? $data['display']
+								  : $data['value'];
 
-                if ($flat) :
-                    $data_list[] = $data['name'].': '.$display_value;
-                else :
-                    $data_list[] = '<dt>'.$data['name'].':</dt><dd>'.$display_value.'</dd>';
-                endif;
+				$data_list[] = $flat
+							   ? sprintf('%s: %s', $data['name'], $display_value)
+							   : sprintf('<dt>%s</dt>: <dd>%s</dd>', $data['name'], $display_value);
 
             endforeach;
 
-            if ($flat) :
-                $return .= implode(', ', $data_list);
-            else :
-                $return .= implode('', $data_list);
-            endif;
+            $return .= $flat
+					   ? implode(', ', $data_list)
+					   : implode('',   $data_list);
 
             $has_data = true;
 
