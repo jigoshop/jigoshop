@@ -887,38 +887,42 @@ class jigoshop_cart extends jigoshop_singleton {
 		if ( !jigoshop_shipping::get_label() )
 			return false;
 
-		/* Can quit early if the price is 0.00 */
+		/* Shipping price is 0.00. */
 		if ( jigoshop_shipping::get_total() <= 0 )
 			return ($for_display ? __('Free!', 'jigoshop') : 0);
 
-		/* No need to continue if not calculating taxes. */
+		/* Not calculating taxes. */
 		if ( get_option('jigoshop_calc_taxes') == 'no' )
 			return ($for_display ? jigoshop_price(self::$shipping_total) : number_format(self::$shipping_total, 2, '.', ''));
 
-		if ( get_option('jigoshop_display_totals_tax') == 'excluding'  || (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT) ) :
+		if ( get_option('jigoshop_display_totals_tax') == 'excluding'  || (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT) ) {
 
 			$return = ($for_display ? jigoshop_price(self::$shipping_total) : number_format(self::$shipping_total, 2, '.', ''));
-			if (self::$shipping_tax_total > 0 && $for_display)
-				$return .= '<small> ' . __('(ex. tax)', 'jigoshop') . '</small>';
 
-		else :
+			if ( self::$shipping_tax_total > 0 && $for_display )
+				$return .= ' <small>' . __('(ex. tax)', 'jigoshop') . '</small>';
+
+		}
+		else {
 
 			$return = ($for_display ? jigoshop_price(self::$shipping_total + self::$shipping_tax_total) : number_format(self::$shipping_total + self::$shipping_tax_total, 2, '.', ''));
-			if (self::$shipping_tax_total > 0 && $for_display)
-				$return .= '<small> ' . __('(inc. tax)', 'jigoshop') . '</small>';
+			if ( self::$shipping_tax_total > 0 && $for_display )
+				$return .= ' <small>' . __('(inc. tax)', 'jigoshop') . '</small>';
 
-		endif;
+		}
 
 		return $return;
 
 	}
 
-    /** gets title of the chosen shipping method */
+    /* Title of the chosen shipping method. */
     function get_cart_shipping_title() {
-        if (jigoshop_shipping::get_label()) :
-            return __('via ', 'jigoshop') . jigoshop_shipping::get_label();
-        endif;
-        return false;
+
+        if ( !jigoshop_shipping::get_label() )
+			return false;
+
+		return __(sprintf('via %s', jigoshop_shipping::get_label()), 'jigoshop');
+
     }
 
     /**
