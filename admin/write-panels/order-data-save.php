@@ -97,13 +97,13 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
 
 	endforeach;
 
-    //run stripslashes on all valid fields
-    foreach ($order_fields as $field_name) :
+	//run stripslashes on all valid fields
+	foreach ($order_fields as $field_name) :
 
-        if ( isset( $_POST[$field_name] ) && !empty( $data[$field_name] ) )
+		if ( !empty( $_POST[$field_name] ) )
 			$data[$field_name] = stripslashes( $_POST[$field_name] );
 
-    endforeach;
+	endforeach;
 
     // if total tax has been modified from order tax, then create a customized tax array
     // just for the order. At this point, we no longer know about multiple tax classes.
