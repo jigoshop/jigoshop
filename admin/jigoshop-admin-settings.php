@@ -950,14 +950,14 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 						),
 						array(
 							'name'           => __('Misc. settings','jigoshop'),
-							'desc'           => 'Alone?',
+							'desc'           => 'Prevent other coupons',
 							'tip'            => __('Prevent other coupons from being used while this one is applied to a cart.','jigoshop'),
 							'id'             => 'individual[' . esc_attr( $i ) . ']',
 							'type'           => 'checkbox',
 							'std'            => (isset($coupon['individual_use']) && $coupon['individual_use'] == 'yes') ? 'yes' : 'no'
 						),
 						array(
-							'desc'           => 'Free Shipping',
+							'desc'           => 'Free shipping',
 							'tip'            => __('Show the Free Shipping method on checkout with this enabled.','jigoshop'),
 							'id'             => 'coupon_free_shipping[' . esc_attr( $i ) . ']',
 							'type'           => 'checkbox',
@@ -1203,7 +1203,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							<td>\
 								<input id="individual[' + size + ']" type="checkbox" class="jigoshop-input jigoshop-checkbox "\
 								style="" name="individual[' + size + ']" />\
-								<label for="individual[' + size + ']"><?php _e('Alone?', 'jigoshop'); ?></label>\
+								<label for="individual[' + size + ']"><?php _e('Prevent other coupons', 'jigoshop'); ?></label>\
 							</td>\
 						</tr>\
 						<tr>\
@@ -1214,7 +1214,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 							<td style="padding-top:0px;">\
 								<input id="coupon_free_shipping[' + size + ']" type="checkbox" class="jigoshop-input jigoshop-checkbox "\
 								style="" name="coupon_free_shipping[' + size + ']" />\
-								<label for="coupon_free_shipping[' + size + ']"><?php _e('Free Shipping', 'jigoshop'); ?></label>\
+								<label for="coupon_free_shipping[' + size + ']"><?php _e('Free shipping', 'jigoshop'); ?></label>\
 							</td>\
 						</tr>\
 					</tbody>\
