@@ -106,7 +106,7 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
     // just for the order. At this point, we no longer know about multiple tax classes.
     // Even if we used the old tax array data, we still don't know how to break down
     // the amounts since they're customized.
-    if ($order->get_total_tax() != $data['order_tax_total']) :
+    if (isset($data['order_tax_total']) && $order->get_total_tax() != $data['order_tax_total']) :
         // need to create new tax array string
         $new_tax = $data['order_tax_total'];
         $data['order_tax'] = jigoshop_tax::create_custom_tax($data['order_total'] - $data['order_tax_total'], $data['order_tax_total'], $data['order_shipping_tax'], $data['order_tax_divisor']);
