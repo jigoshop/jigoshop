@@ -160,33 +160,32 @@ class jigoshop_checkout extends jigoshop_singleton {
 			'return'     => false
 		);
 
-		$args = wp_parse_args( $args, $defaults );
+		$args           = wp_parse_args( $args, $defaults );
+		$required       = '';
+		$input_required = '';
+		$after          = '';
+		$field          = '';
 
 		if ($args['required']) {
 			$required = ' <span class="required">*</span>';
 			$input_required = ' input-required';
-		} else {
-			$required = '';
-			$input_required = '';
 		}
 
 		if (in_array('form-row-last', $args['class'])) {
 			$after = '<div class="clear"></div>';
-		} else {
-			$after = '';
 		}
-
-		$field = '';
 
 		switch ($args['type']) :
 			case "country" :
 
-                //Remove 'Select a Country' option from drop-down menu for countries.
-                // There is no need to have it, because was assume when user hasn't selected
-                // a country that they are from the shop base country.
-                $field = '<p class="form-row '.implode(' ', $args['class']).'">
-                <label for="'.esc_attr($args['name']).'" class="'.esc_attr(implode(' ', $args['label_class'])).'">'.$args['label'].$required.'</label>
-                <select name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" class="country_to_state" rel="'.esc_attr($args['rel']).'">';
+				/**
+				 * Remove 'Select a Country' option from drop-down menu for countries.
+				 * There is no need to have it, because was assume when user hasn't selected
+				 * a country that they are from the shop base country.
+				 */
+				$field = '<p class="form-row '.implode(' ', $args['class']).'">
+				<label for="'.esc_attr($args['name']).'" class="'.esc_attr(implode(' ', $args['label_class'])).'">'.$args['label'].$required.'</label>
+				<select name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" class="country_to_state" rel="'.esc_attr($args['rel']).'">';
 
 				foreach(jigoshop_countries::get_allowed_countries() as $key=>$value) :
 					$field .= '<option value="'.esc_attr($key).'"';
