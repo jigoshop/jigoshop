@@ -372,19 +372,28 @@ class jigoshop_cart extends jigoshop_singleton {
         return false;
     }
 
-    /** looks through the cart to check each item is in stock */
+    /* Looks through the cart to confirm that each item is in stock. */
     function check_cart_item_stock() {
 
-        foreach (self::$cart_contents as $cart_item_key => $values) {
+        foreach (self::$cart_contents as $cart_item_key => $values) :
+
             $_product = $values['data'];
 
-            if (!$_product->is_in_stock() || ($_product->managing_stock() && !$_product->has_enough_stock($values['quantity']))) {
+            if ( !$_product->is_in_stock() || ( $_product->managing_stock() && !$_product->has_enough_stock($values['quantity']) ) ) {
                 $error = new WP_Error();
-				$errormsg = (get_option('jigoshop_show_stock') == 'yes') ? sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. We only have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title(), $_product->get_stock()) : sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title());
-				$error->add('out-of-stock',$errormsg);
+				$errormsg = (get_option('jigoshop_show_stock') == 'yes')
+
+							? sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. We only have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'),
+							$_product->get_title(), $_product->get_stock())
+
+							: sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'),
+							$_product->get_title());
+
+				$error->add( 'out-of-stock', $errormsg );
                 return $error;
             }
-        }
+
+        endforeach;
 
         return true;
     }
