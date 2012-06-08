@@ -939,23 +939,26 @@ class jigoshop_cart extends jigoshop_singleton {
 		if ( !self::valid_coupon($coupon_code) )
 			return false;
 
-		// before adding this coupon, make sure no individual use coupons already exist
+		/* Check for other individual_use coupons before adding this coupon. */
 		foreach (self::$applied_coupons as $coupon) :
+
 			$coupon = jigoshop_coupons::get_coupon($coupon);
-			if ($coupon['individual_use'] == 'yes') :
+
+			if ($coupon['individual_use'] == 'yes')
 				self::$applied_coupons = array();
-			endif;
+
 		endforeach;
 
-		// If its individual use then remove other coupons
-		if ($the_coupon['individual_use'] == 'yes') :
+		/* Remove other coupons if this one is individual_use. */
+		if ($the_coupon['individual_use'] == 'yes')
 			self::$applied_coupons = array();
-		endif;
 
 		self::$applied_coupons[] = $coupon_code;
 		self::set_session();
 		jigoshop::add_message(__('Discount code applied successfully.', 'jigoshop'));
+
 		return true;
+
     }
 
 	function valid_coupon($coupon_code) {
