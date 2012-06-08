@@ -443,7 +443,7 @@ class jigoshop_cart extends jigoshop_singleton {
 
 		// for cart discount, we need to apply the discount on all items evenly. Find out
 		// how many items are in the cart, and then find out if there is a discount on the cart
-		if (get_option('jigoshop_tax_after_coupon') == 'yes') :
+		if (get_option('jigoshop_calc_taxes') == 'yes' && get_option('jigoshop_tax_after_coupon') == 'yes') :
 
 			$items_in_cart = 0;
 
@@ -474,7 +474,8 @@ class jigoshop_cart extends jigoshop_singleton {
 								break;
 
 							case 'fixed_product' :
-								self::$discount_total += ( $coupon['amount'] * $items_in_cart );
+								if ( sizeof($coupon['products']) == 0 )
+									self::$discount_total += ( $coupon['amount'] * $items_in_cart );
 								break;
 
 						endswitch;
@@ -501,6 +502,7 @@ class jigoshop_cart extends jigoshop_singleton {
 			}
 
 		endif;
+
 		/* ===== End of calculations for cart discounts ===== */
 
 		// Used to determine how many iterations are left on the cart_contents. Applied with cart coupons
@@ -531,13 +533,17 @@ class jigoshop_cart extends jigoshop_singleton {
 						if ( !jigoshop_coupons::is_valid_product($code, $values) )
 							continue;
 
-						if ($coupon['type'] == 'fixed_product')
-							$current_product_discount = ( $coupon['amount'] * $values['quantity'] );
+						switch ( $coupon['type'] ) :
+							case 'fixed_product' :
+								$current_product_discount = ( $coupon['amount'] * $values['quantity'] );
+								break;
 
-						if ($coupon['type'] == 'percent_product')
-							$current_product_discount = (( (get_option('jigoshop_tax_after_coupon') == 'yes'
-														? $values['data']->get_price_excluding_tax($values['quantity'])
-														: $values['data']->get_price() * $values['quantity']) / 100 ) * $coupon['amount']);
+							case 'percent_product' :
+								$current_product_discount = (( (get_option('jigoshop_tax_after_coupon') == 'yes'
+															? $values['data']->get_price_excluding_tax($values['quantity'])
+															: $values['data']->get_price() * $values['quantity']) / 100 ) * $coupon['amount']);
+								break;
+						endswitch;
 
 						self::$discount_total += $current_product_discount;
 
@@ -548,7 +554,7 @@ class jigoshop_cart extends jigoshop_singleton {
 				$discounted_item_price = -1;
 				$cart_discount_amount  =  0;
 
-				if (get_option('jigoshop_tax_after_coupon') == 'yes' && self::$applied_coupons) :
+				if (get_option('jigoshop_calc_taxes') == 'yes' && get_option('jigoshop_tax_after_coupon') == 'yes' && self::$applied_coupons) :
 					$discounted_item_price = round($_product->get_price_excluding_tax($values['quantity']) - $current_product_discount, 2);
 					if ($discounted_item_price > 0 && $cart_discount > 0) :
 
