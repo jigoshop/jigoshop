@@ -484,7 +484,8 @@ function jigoshop_admin_option_display($options) {
 						type="<?php echo $value['type']; ?>"
 						<?php if ($value['type'] == 'number' && !empty($value['restrict']) && is_array($value['restrict']) ): ?>
 						min="<?php echo isset($value['restrict']['min']) ? $value['restrict']['min'] : ''; ?>"
-						max="<?php echo isset($value['restrict']['max']) ? $value['restrict']['min'] : ''; ?>"
+						max="<?php echo isset($value['restrict']['max']) ? $value['restrict']['max'] : ''; ?>"
+						step="<?php echo isset($value['restrict']['step']) ? $value['restrict']['step'] : 'any'; ?>"
 						<?php endif; ?>
 						class="regular-text <?php if(!empty($value['class'])) echo esc_attr ( $value['class'] ); ?>"
 						style="<?php if ( !empty($value['css']) ) echo esc_attr( $value['css'] ); ?>"
