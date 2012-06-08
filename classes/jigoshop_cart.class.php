@@ -880,38 +880,37 @@ class jigoshop_cart extends jigoshop_singleton {
         return self::$tax->is_tax_non_compounded($tax_class);
     }
 
-	/** gets the shipping total (after calculation) */
+	/* Shipping total after calculation. */
 	public static function get_cart_shipping_total($for_display = true) {
-		if (jigoshop_shipping::get_label()) :
-			if (jigoshop_shipping::get_total() > 0) :
 
-				if (get_option('jigoshop_calc_taxes') == 'no') :
-					$return = ($for_display ? jigoshop_price(self::$shipping_total) : number_format(self::$shipping_total, 2, '.', ''));
-				else :
-					if (get_option('jigoshop_display_totals_tax') == 'excluding'  || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
+		/* Quit early if there is no shipping label. */
+		if ( !jigoshop_shipping::get_label() )
+			return false;
 
-						$return = ($for_display ? jigoshop_price(self::$shipping_total) : number_format(self::$shipping_total, 2, '.', ''));
-						if (self::$shipping_tax_total > 0 && $for_display) :
-							$return .= __(' <small>(ex. tax)</small>', 'jigoshop');
-						endif;
+		/* Can quit early if the price is 0.00 */
+		if ( jigoshop_shipping::get_total() <= 0 )
+			return ($for_display ? __('Free!', 'jigoshop') : 0);
 
-					else :
-						$return = ($for_display ? jigoshop_price(self::$shipping_total + self::$shipping_tax_total) : number_format(self::$shipping_total + self::$shipping_tax_total, 2, '.', ''));
-						if (self::$shipping_tax_total > 0 && $for_display) :
-							$return .= __(' <small>(inc. tax)</small>', 'jigoshop');
-						endif;
+		/* No need to continue if not calculating taxes. */
+		if ( get_option('jigoshop_calc_taxes') == 'no' )
+			return ($for_display ? jigoshop_price(self::$shipping_total) : number_format(self::$shipping_total, 2, '.', ''));
 
-					endif;
+		if ( get_option('jigoshop_display_totals_tax') == 'excluding'  || (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT) ) :
 
-				endif;
+			$return = ($for_display ? jigoshop_price(self::$shipping_total) : number_format(self::$shipping_total, 2, '.', ''));
+			if (self::$shipping_tax_total > 0 && $for_display)
+				$return .= '<small> ' . __('(ex. tax)', 'jigoshop') . '</small>';
 
-			else :
-				$return = ($for_display ? __('Free!', 'jigoshop') : 0);
-			endif;
+		else :
 
-			return $return;
+			$return = ($for_display ? jigoshop_price(self::$shipping_total + self::$shipping_tax_total) : number_format(self::$shipping_total + self::$shipping_tax_total, 2, '.', ''));
+			if (self::$shipping_tax_total > 0 && $for_display)
+				$return .= '<small> ' . __('(inc. tax)', 'jigoshop') . '</small>';
 
 		endif;
+
+		return $return;
+
 	}
 
     /** gets title of the chosen shipping method */
