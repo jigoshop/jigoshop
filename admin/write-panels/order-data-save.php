@@ -35,7 +35,7 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
     // Order status
 //    if ( $order->update_status($_POST['order_status'] ) && empty($_POST['invoice']) ) return; // there were errors with status changes, don't continue
 	$order->update_status($_POST['order_status'] );
-	
+
     // Add/Replace data to array
 	$customerDetails = array(
         'billing_first_name',
@@ -92,15 +92,18 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
 			else if (strstr($adr, 'address_2')) $adr = str_replace('address_1', 'address2' , $adr);
 
 			$data[$key] = get_user_meta( $_POST['customer_user'], $adr, true );
+
 		endif;
 
 	endforeach;
 
     //run stripslashes on all valid fields
-    foreach ($order_fields as $field_name) {
+    foreach ($order_fields as $field_name) :
+
         if ( isset( $_POST[$field_name] ) && !empty( $data[$field_name] ) )
 			$data[$field_name] = stripslashes( $_POST[$field_name] );
-    }
+
+    endforeach;
 
     // if total tax has been modified from order tax, then create a customized tax array
     // just for the order. At this point, we no longer know about multiple tax classes.
@@ -119,12 +122,12 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
     $order_items = array();
 
     if (isset($_POST['item_id'])) {
-        $item_id = $_POST['item_id'];
-        $item_variation = $_POST['item_variation_id'];
-        $item_name = $_POST['item_name'];
-        $item_quantity = $_POST['item_quantity'];
-        $item_cost = $_POST['item_cost'];
-        $item_tax_rate = $_POST['item_tax_rate'];
+		$item_id        = $_POST['item_id'];
+		$item_variation = $_POST['item_variation_id'];
+		$item_name      = $_POST['item_name'];
+		$item_quantity  = $_POST['item_quantity'];
+		$item_cost      = $_POST['item_cost'];
+		$item_tax_rate  = $_POST['item_tax_rate'];
 
         for ($i = 0; $i < count($item_id); $i++) {
 
