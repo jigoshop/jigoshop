@@ -391,19 +391,19 @@ class jigoshop_cart extends jigoshop_singleton {
 
     /** reset all Cart totals */
     static function reset_totals() {
-        self::$total = 0;
-        self::$cart_contents_total = 0;
-        self::$cart_contents_total_ex_tax = 0;
-        self::$cart_contents_weight = 0;
-        self::$cart_contents_count = 0;
-        self::$shipping_tax_total = 0;
-        self::$subtotal = 0;
-        self::$subtotal_ex_tax = 0;
-        self::$discount_total = 0;
-        self::$shipping_total = 0;
-        self::$cart_dl_count = 0;
-        self::$cart_discount_leftover = 0; /* cart discounts greater than total product price */
-        self::$cart_contents_total_ex_dl = 0; /* for table rate shipping */
+		self::$total                      = 0;
+		self::$cart_contents_total        = 0;
+		self::$cart_contents_total_ex_tax = 0;
+		self::$cart_contents_weight       = 0;
+		self::$cart_contents_count        = 0;
+		self::$shipping_tax_total         = 0;
+		self::$subtotal                   = 0;
+		self::$subtotal_ex_tax            = 0;
+		self::$discount_total             = 0;
+		self::$shipping_total             = 0;
+		self::$cart_dl_count              = 0;
+		self::$cart_discount_leftover     = 0; /* cart discounts greater than total product price */
+		self::$cart_contents_total_ex_dl  = 0; /* for table rate shipping */
         self::$tax->init_tax();
         self::$price_per_tax_class_ex_tax = array(); /* currently used with norway */
         jigoshop_shipping::reset_shipping();
