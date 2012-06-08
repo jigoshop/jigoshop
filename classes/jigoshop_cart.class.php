@@ -1026,11 +1026,12 @@ class jigoshop_cart extends jigoshop_singleton {
 
     function has_discounted_products_in_cart( $thecoupon ) {
 
-
-
-        // Check if we have products associated
+        /* Look through each product in the cart for a valid coupon. */
         foreach( self::$cart_contents as $product )
-			return jigoshop_coupons::is_valid_product($thecoupon['code'], $product);
+			if ( jigoshop_coupons::is_valid_product($thecoupon['code'], $product) )
+				return true;
+
+		return false;
 
     }
 
