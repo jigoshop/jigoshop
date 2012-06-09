@@ -30,7 +30,7 @@
 
 			<div class="summary">
 
-				<h1 class="product_title page-title"><?php the_title(); ?></h1>
+				<?php do_action( 'jigoshop_template_single_title', $post, $_product ); ?>
 
 				<?php do_action( 'jigoshop_template_single_summary', $post, $_product ); ?>
 

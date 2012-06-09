@@ -52,6 +52,7 @@ add_action( 'jigoshop_after_single_product_summary', 'jigoshop_output_product_da
 add_action( 'jigoshop_after_single_product_summary', 'jigoshop_output_related_products' , 20);
 
 /* Product Summary Box */
+add_action( 'jigoshop_template_single_summary', 'jigoshop_template_single_title'  , 5, 2);
 add_action( 'jigoshop_template_single_summary', 'jigoshop_template_single_price'  , 10, 2);
 add_action( 'jigoshop_template_single_summary', 'jigoshop_template_single_excerpt', 20, 2);
 add_action( 'jigoshop_template_single_summary', 'jigoshop_template_single_meta'   , 40, 2);
