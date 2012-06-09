@@ -107,33 +107,35 @@ class jigoshop_checkout extends jigoshop_singleton {
 	function checkout_form_shipping() {
 
 		// Shipping Details
-//		if (jigoshop_cart::needs_shipping() && !jigoshop_cart::ship_to_billing_address_only()) :
-		// even if not calculating shipping, we still need to display second shipping address for free shipping
 		if (!jigoshop_cart::ship_to_billing_address_only() && get_option('jigoshop_calc_shipping') == 'yes') :
 
-			echo '<p class="form-row" id="shiptobilling"><input class="input-checkbox" ';
+			$shiptobilling = !$_POST ? apply_filters('shiptobilling_default', 1) : $this->get_value('shiptobilling'); ?>
 
-			if (!$_POST) $shiptobilling = apply_filters('shiptobilling_default', 1); else $shiptobilling = $this->get_value('shiptobilling');
-			if ($shiptobilling) echo 'checked="checked" ';
-			echo 'type="checkbox" name="shiptobilling" /> <label for="shiptobilling" class="checkbox">'.__('Ship to same address?', 'jigoshop').'</label></p>';
+			<p class="form-row" id="shiptobilling">
+				<input
+					class="input-checkbox"
+					type="checkbox"
+					name="shiptobilling"
+					id="shiptobilling-checkbox"
+					<?php if ($shiptobilling) : ?> checked="checked" <?php endif; ?>
+				/>
+				<label for="shiptobilling-checkbox" class="checkbox"><?php _e('Ship to same address?', 'jigoshop'); ?></label>
+			</p>
 
-			echo '<h3>'.__('Shipping Address', 'jigoshop').'</h3>';
+			<h3><?php _e('Shipping Address', 'jigoshop'); ?></h3>
 
-			echo'<div class="shipping-address">';
-
-
-				foreach ($this->shipping_fields as $field) :
+			<div class="shipping-address">
+			<?php foreach ($this->shipping_fields as $field) :
 					$field = apply_filters( 'jigoshop_shipping_field', $field );
 					$this->checkout_form_field( $field );
-				endforeach;
+				endforeach; ?>
+			</div>
 
-			echo'</div>';
+		<?php elseif (jigoshop_cart::ship_to_billing_address_only()) : ?>
 
-		elseif (jigoshop_cart::ship_to_billing_address_only()) :
+			<h3><?php _e('Notes/Comments', 'jigoshop'); ?></h3>
 
-			echo '<h3>'.__('Notes/Comments', 'jigoshop').'</h3>';
-
-		endif;
+		<?php endif;
 
 		$this->checkout_form_field( array( 'type' => 'textarea', 'class' => array('notes'),  'name' => 'order_comments', 'label' => __('Order Notes', 'jigoshop'), 'placeholder' => __('Notes about your order.', 'jigoshop') ) );
 
@@ -158,33 +160,32 @@ class jigoshop_checkout extends jigoshop_singleton {
 			'return'     => false
 		);
 
-		$args = wp_parse_args( $args, $defaults );
+		$args           = wp_parse_args( $args, $defaults );
+		$required       = '';
+		$input_required = '';
+		$after          = '';
+		$field          = '';
 
 		if ($args['required']) {
 			$required = ' <span class="required">*</span>';
 			$input_required = ' input-required';
-		} else {
-			$required = '';
-			$input_required = '';
 		}
 
 		if (in_array('form-row-last', $args['class'])) {
 			$after = '<div class="clear"></div>';
-		} else {
-			$after = '';
 		}
-
-		$field = '';
 
 		switch ($args['type']) :
 			case "country" :
 
-                //Remove 'Select a Country' option from drop-down menu for countries.
-                // There is no need to have it, because was assume when user hasn't selected
-                // a country that they are from the shop base country.
-                $field = '<p class="form-row '.implode(' ', $args['class']).'">
-                <label for="'.esc_attr($args['name']).'" class="'.esc_attr(implode(' ', $args['label_class'])).'">'.$args['label'].$required.'</label>
-                <select name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" class="country_to_state" rel="'.esc_attr($args['rel']).'">';
+				/**
+				 * Remove 'Select a Country' option from drop-down menu for countries.
+				 * There is no need to have it, because was assume when user hasn't selected
+				 * a country that they are from the shop base country.
+				 */
+				$field = '<p class="form-row '.implode(' ', $args['class']).'">
+				<label for="'.esc_attr($args['name']).'" class="'.esc_attr(implode(' ', $args['label_class'])).'">'.$args['label'].$required.'</label>
+				<select name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" class="country_to_state" rel="'.esc_attr($args['rel']).'">';
 
 				foreach(jigoshop_countries::get_allowed_countries() as $key=>$value) :
 					$field .= '<option value="'.esc_attr($key).'"';

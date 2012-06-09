@@ -588,7 +588,7 @@ class jigoshop_product {
         // a full subtotal, this is necessary.
         $price = $this->get_price() * 100;
 
-        if (get_option('jigoshop_prices_include_tax') == 'yes') :
+        if (get_option('jigoshop_calc_taxes') == 'yes' && get_option('jigoshop_prices_include_tax') == 'yes') :
             $rates = (array) $this->get_tax_base_rate();
 
             if (count($rates > 0)) :
@@ -622,7 +622,7 @@ class jigoshop_product {
 
         // product prices are always 2 decimal digits. Will get rounding errors on backwards tax calcs if
         // we don't round
-        return round($price / 100, 2);
+        return round( ($price * $quantity) / 100, 2);
 
     }
 
