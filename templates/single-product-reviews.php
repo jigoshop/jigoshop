@@ -112,7 +112,11 @@
 	));
 
 	echo '</div></div>';
-
+	
+	// the following is for the Rich Snippets extension
+	$comments = get_comments( array( 'post_id' => $post->ID ) );
+	do_action( 'jigoshop_single_product_reviews', $comments );
+	
 ?><div class="clear"></div></div>
 <script type="text/javascript">
 /* <![CDATA[ */

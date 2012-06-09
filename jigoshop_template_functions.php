@@ -226,15 +226,21 @@ if (!function_exists('jigoshop_output_product_data_tabs')) {
 /**
  * Product summary box
  **/
+if (!function_exists('jigoshop_template_single_title')) {
+	function jigoshop_template_single_title( $post, $_product ) {
+		?><h1 class="product_title page-title"><?php echo apply_filters( 'jigoshop_single_product_title', the_title( '', '', false ) ); ?></h1><?php
+	}
+}
+
 if (!function_exists('jigoshop_template_single_price')) {
 	function jigoshop_template_single_price( $post, $_product ) {
-		?><p class="price"><?php echo $_product->get_price_html(); ?></p><?php
+		?><p class="price"><?php echo apply_filters( 'jigoshop_single_product_price', $_product->get_price_html() ); ?></p><?php
 	}
 }
 
 if (!function_exists('jigoshop_template_single_excerpt')) {
 	function jigoshop_template_single_excerpt( $post, $_product ) {
-		if ($post->post_excerpt) echo wpautop(wptexturize($post->post_excerpt));
+		if ($post->post_excerpt) echo apply_filters( 'jigoshop_single_product_excerpt', wpautop(wptexturize($post->post_excerpt)) );
 	}
 }
 
@@ -576,7 +582,12 @@ if (!function_exists('jigoshop_product_description_panel')) {
 	function jigoshop_product_description_panel() {
 		echo '<div class="panel" id="tab-description">';
 		echo '<h2>' . apply_filters('jigoshop_product_description_heading', __('Product Description', 'jigoshop')) . '</h2>';
-		the_content();
+		// the following 3 lines replicate the behavior of 'the_content()'
+		// non echoed so Rich Snippets can be applied via a filter
+		$content = get_the_content();
+		$content = apply_filters( 'the_content', $content );
+		$content = str_replace( ']]>', ']]&gt;', $content );
+		echo apply_filters( 'jigoshop_single_product_content', $content );
 		echo '</div>';
 	}
 }
@@ -585,7 +596,7 @@ if (!function_exists('jigoshop_product_attributes_panel')) {
 		global $_product;
 		echo '<div class="panel" id="tab-attributes">';
 		echo '<h2>' . apply_filters('jigoshop_product_attributes_heading', __('Additional Information', 'jigoshop')) . '</h2>';
-		echo $_product->list_attributes();
+		echo apply_filters( 'jigoshop_single_product_attributes', $_product->list_attributes() );
 		echo '</div>';
 	}
 }
