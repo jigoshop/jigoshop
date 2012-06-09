@@ -625,8 +625,7 @@ if (!function_exists('jigoshop_product_customize_panel')) {
 							id="jigoshop_customized_product"
 							name="jigoshop_customized_product"
 							cols="60"
-							rows="4"><?php echo esc_textarea( $custom ); ?>
-						</textarea>
+							rows="4"><?php echo esc_textarea( $custom ); ?></textarea>
 					<?php else : ?>
 						<input 
 							type="text"
