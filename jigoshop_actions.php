@@ -223,7 +223,7 @@ function jigoshop_add_to_cart_action($url = false)
 				unset( $custom_products[$product_id] );
 				jigoshop_session::instance()->customized_products = $custom_products;
 			}
-			
+
             $attributes = (array) maybe_unserialize(get_post_meta($product_id, 'product_attributes', true));
             $variations = array();
             $all_variations_set = true;
@@ -825,29 +825,29 @@ function jigoshop_ga_ecommerce_tracking( $order_id ) {
 			['_trackPageview'],
 
 			['_addTrans',
-			'<?php echo $order_id; ?>',                // Order ID
-			'<?php bloginfo('name'); ?>',              // Store Title
-			'<?php echo $order->order_total; ?>',      // Order Total Amount
-			'<?php echo $order->get_total_tax(); ?>',  // Order Tax Amount
-			'<?php echo $order->order_shipping; ?>',   // Order Shipping Amount
-			'<?php echo $order->billing_city; ?>',     // Billing City
-			'<?php echo $order->billing_state; ?>',    // Billing State
-			'<?php echo $order->billing_country; ?>'   // Billing Country
+			'<?php echo $order_id; ?>',                /* Order ID */
+			'<?php bloginfo('name'); ?>',              /* Store Title */
+			'<?php echo $order->order_total; ?>',      /* Order Total Amount */
+			'<?php echo $order->get_total_tax(); ?>',  /* Order Tax Amount */
+			'<?php echo $order->order_shipping; ?>',   /* Order Shipping Amount */
+			'<?php echo $order->billing_city; ?>',     /* Billing City */
+			'<?php echo $order->billing_state; ?>',    /* Billing State */
+			'<?php echo $order->billing_country; ?>'   /* Billing Country */
 			],
 
 			<?php if ($order->items) foreach($order->items as $item) : $_product = $order->get_product_from_item( $item ); ?>
 				['_addItem',
-				'<?php echo $order_id; ?>',             // Order ID
-				'<?php echo $_product->sku; ?>',        // SKU
-				'<?php echo $item['name']; ?>',         // Product Title
+				'<?php echo $order_id; ?>',             /* Order ID */
+				'<?php echo $_product->sku; ?>',        /* SKU */
+				'<?php echo $item['name']; ?>',         /* Product Title */
 				'<?php if (isset($_product->variation_data))
-					echo jigoshop_get_formatted_variation( $_product->variation_data, true ); ?>',   // category or variation
-				'<?php echo ($item['cost']/$item['qty']); ?>', // Unit Price
-				'<?php echo $item['qty']; ?>'           // Quantity
+					echo jigoshop_get_formatted_variation( $_product->variation_data, true ); ?>',   /* Category or variation */
+				'<?php echo ($item['cost']/$item['qty']); ?>', /* Unit Price */
+				'<?php echo $item['qty']; ?>'          /*  Quantity */
 				],
 			<?php endforeach; ?>
 
-			['_trackTrans'] // Submits the transaction to the Analytics servers
+			['_trackTrans'] /* Submits the transaction to the Analytics servers */
 		];
 
 		(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
