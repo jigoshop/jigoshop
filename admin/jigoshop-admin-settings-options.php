@@ -276,7 +276,7 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	array(
 		'name'           => __('Prepend options','jigoshop'),
 		'desc'           => __('Prepend shop categories / tags with base page','jigoshop'),
-		'tip'            => __('This will only apply to tags &amp; categories.<br/>Enabled: http://yoursite.com / product_category / YourCategory<br/>Disabled: http://yoursite.com / base_page / product_category / YourCategory', 'jigoshop'),
+		'tip'            => __('This will only apply to tags &amp; categories.<br/>Disabled: http://yoursite.com / product_category / YourCategory<br/>Enabled: http://yoursite.com / base_page / product_category / YourCategory', 'jigoshop'),
 		'id'             => 'jigoshop_prepend_shop_page_to_urls',
 		'std'            => 'no',
 		'type'           => 'checkbox',
