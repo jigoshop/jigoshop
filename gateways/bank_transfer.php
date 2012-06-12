@@ -44,67 +44,79 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 	 * Admin Panel Options - Area to set your bank account details and additional information if necessary.
 	 **/
 	public function admin_options() {
-    	?>
-    	<thead><tr><th scope="col" colspan="2"><h3 class="title"><?php _e('Bank Transfer', 'jigoshop'); ?></h3>
-    		<p><?php _e('Accept Bank Transfers as a method of payment. There is no automated process associated with this, you must manually process an order when you receive payment.', 'jigoshop'); ?></p></th></tr></thead>
-    	<tr>
-	        <th scope="row"><?php _e('Enable Bank Transfer', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <select name="jigoshop_bank_transfer_enabled" id="jigoshop_bank_transfer_enabled" style="min-width:100px;">
-		            <option value="yes" <?php if (get_option('jigoshop_bank_transfer_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if (get_option('jigoshop_bank_transfer_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
-		        </select>
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_bank_transfer_title" id="jigoshop_bank_transfer_title" value="<?php if ($value = get_option('jigoshop_bank_transfer_title')) echo $value; else echo 'Bank Transfer Payment'; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('Let the customer know that their order won\'t be shipping until you receive payment.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Customer Message', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <input class="input-text wide-input" type="text" name="jigoshop_bank_transfer_description" id="jigoshop_bank_transfer_description" value="<?php if ($value = get_option('jigoshop_bank_transfer_description')) echo $value; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('Your bank name for reference. e.g. HSBC','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Bank Name', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_bank_transfer_bank_name" id="jigoshop_bank_transfer_bank_name" value="<?php if ($value = get_option('jigoshop_bank_transfer_bank_name')) echo $value; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('Your Bank Account number.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Account Number', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_bank_transfer_acc_number" id="jigoshop_bank_transfer_acc_number" value="<?php if ($value = get_option('jigoshop_bank_transfer_acc_number')) echo $value; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('Your branch Sort Code.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Sort Code', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_bank_transfer_sort_code" id="jigoshop_bank_transfer_sort_code" value="<?php if ($value = get_option('jigoshop_bank_transfer_sort_code')) echo $value; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('Your IBAN number. (for International transfers)','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('IBAN', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_bank_transfer_iban" id="jigoshop_bank_transfer_iban" value="<?php if ($value = get_option('jigoshop_bank_transfer_iban')) echo $value; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('Your Branch Identification Code. (BIC Number)','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('BIC Code', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_bank_transfer_bic" id="jigoshop_bank_transfer_bic" value="<?php if ($value = get_option('jigoshop_bank_transfer_bic')) echo $value; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('Additional information you want to display to your customer.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Additional Info', 'jigoshop') ?></th>
-	        <td class="forminp">
-	        	<textarea class="input-text" name="jigoshop_bank_transfer_additional" id="jigoshop_bank_transfer_additional"><?php if ($value = get_option('jigoshop_bank_transfer_additional')) echo esc_textarea( $value ); ?></textarea>
-	        </td>
-	    </tr>
-    	<?php
+
+		$options = array (
+
+			array( 'name'        => __('Bank Transfer', 'jigoshop'), 'type' => 'title', 'desc' => __('Accept Bank Transfers as a method of payment. There is no automated process associated with this, you must manually process an order when you receive payment.', 'jigoshop') ),
+
+			array(
+				'name'           => __('Enable Bank Transfer','jigoshop'),
+				'id'             => 'jigoshop_bank_transfer_enabled',
+				'type'           => 'checkbox',
+				'std'            => 'no'
+			),
+
+			array(
+				'name'           => __('Method Title','jigoshop'),
+				'tip'            => __('This controls the title which the user sees during checkout.','jigoshop'),
+				'id'             => 'jigoshop_bank_transfer_title',
+				'type'           => 'text',
+				'std'            => 'Bank Transfer'
+			),
+
+			array(
+				'name'           => __('Customer Message','jigoshop'),
+				'id'             => 'jigoshop_bank_transfer_description',
+				'tip'            => __('Let the customer know that their order won\'t be shipping until you receive payment.', 'jigoshop'),
+				'type'           => 'text',
+			),
+
+			array(
+				'name'           => __('Bank Name','jigoshop'),
+				'id'             => 'jigoshop_bank_transfer_bank_name',
+				'tip'            => __('Your bank name for reference. e.g. HSBC', 'jigoshop'),
+				'type'           => 'text',
+			),
+
+			array(
+				'name'           => __('Account Number','jigoshop'),
+				'id'             => 'jigoshop_bank_transfer_acc_number',
+				'tip'            => __('Your Bank Account number.', 'jigoshop'),
+				'type'           => 'text',
+			),
+
+			array(
+				'name'           => __('Sort Code','jigoshop'),
+				'id'             => 'jigoshop_bank_transfer_sort_code',
+				'tip'            => __('Let the customer know that their order won\'t be shipping until you receive payment.', 'jigoshop'),
+				'type'           => 'text',
+			),
+
+			array(
+				'name'           => __('IBAN','jigoshop'),
+				'id'             => 'jigoshop_bank_transfer_iban',
+				'tip'            => __('Your IBAN number. (for International transfers)', 'jigoshop'),
+				'type'           => 'text',
+			),
+
+			array(
+				'name'           => __('BIC Code','jigoshop'),
+				'id'             => 'jigoshop_bank_transfer_bic',
+				'tip'            => __('Your Branch Identification Code. (BIC Number)', 'jigoshop'),
+				'type'           => 'text',
+			),
+
+			array(
+				'name'           => __('Additional Info','jigoshop'),
+				'id'             => 'jigoshop_bank_transfer_additional',
+				'tip'            => __('Additional information you want to display to your customer.', 'jigoshop'),
+				'type'           => 'textarea',
+			),
+
+		);
+
+		jigoshop_admin_option_display($options);
+
     }
 
 	/**

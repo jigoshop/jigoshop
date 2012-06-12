@@ -15,7 +15,7 @@
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class paypal extends jigoshop_payment_gateway {
-    
+
 	public function __construct() {
         $this->id			= 'paypal';
         $this->icon 		= jigoshop::assets_url() . '/assets/images/icons/paypal.png';
@@ -52,65 +52,65 @@ class paypal extends jigoshop_payment_gateway {
 	 * - Options for bits like 'title' and availability on a country-by-country basis
 	 **/
 	public function admin_options() {
-    	?>
-    	<thead><tr><th scope="col" colspan="2">
-    		<h3 class="title"><?php _e('PayPal Standard', 'jigoshop'); ?></h3>
-    		<p><?php _e('PayPal Standard works by sending the user to <a href="https://www.paypal.com/uk/mrb/pal=JFC9L8JJUZZK2">PayPal</a> to enter their payment information.', 'jigoshop'); ?></p></th></tr></thead>
-    	<tr>
-	        <th scope="row"><?php _e('Enable PayPal Standard', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <select name="jigoshop_paypal_enabled" id="jigoshop_paypal_enabled" style="min-width:100px;">
-		            <option value="yes" <?php if (get_option('jigoshop_paypal_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if (get_option('jigoshop_paypal_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
-		        </select>
-	        </td>
-	    </tr>
-    	<tr>
-	        <td class="titledesc"><a href="#" tip="<?php _e('If product totals are free and shipping is also free (excluding taxes), this will force 0.01 to allow paypal to process payment. Shop owner is responsible for refunding customer.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Force payment when free', 'jigoshop') ?>:</td>
-	        <td class="forminp">
-		        <select name="jigoshop_paypal_force_payment" id="jigoshop_paypal_force_payment" style="min-width:100px;">
-		            <option value="yes" <?php if (get_option('jigoshop_paypal_force_payment') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if (get_option('jigoshop_paypal_force_payment') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
-		        </select>
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_paypal_title" id="jigoshop_paypal_title" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_paypal_title')) echo $value; else echo 'PayPal'; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('This controls the description which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Description', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <input class="input-text wide-input" type="text" name="jigoshop_paypal_description" id="jigoshop_paypal_description" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_paypal_description')) echo $value; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('Please enter your PayPal email address; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('PayPal email address', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_paypal_email" id="jigoshop_paypal_email" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_paypal_email')) echo $value; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('If your checkout page does not ask for shipping details, or if you do not want to send shipping information to PayPal, set this option to no. If you enable this option PayPal may restrict where things can be sent, and will prevent some orders going through for your protection.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Send shipping details to PayPal', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <select name="jigoshop_paypal_send_shipping" id="jigoshop_paypal_send_shipping" style="min-width:100px;">
-		            <option value="yes" <?php if (get_option('jigoshop_paypal_send_shipping') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if (get_option('jigoshop_paypal_send_shipping') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
-		        </select>
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><?php _e('Enable PayPal sandbox', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <select name="jigoshop_paypal_testmode" id="jigoshop_paypal_testmode" style="min-width:100px;">
-		            <option value="yes" <?php if (get_option('jigoshop_paypal_testmode') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if (get_option('jigoshop_paypal_testmode') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
-		        </select>
-	        </td>
-	    </tr>
-    	<?php
+
+
+		$options = array (
+
+			array( 'name'        => __('PayPal Standard', 'jigoshop'), 'type' => 'title', 'desc' => __('PayPal Standard works by sending the user to <a href="https://www.paypal.com/uk/mrb/pal=JFC9L8JJUZZK2">PayPal</a> to enter their payment information.', 'jigoshop') ),
+
+			array(
+				'name'           => __('Enable PayPal Standard','jigoshop'),
+				'id'             => 'jigoshop_paypal_enabled',
+				'type'           => 'checkbox',
+				'std'            => 'no'
+			),
+
+			array(
+				'name'           => __('Force payment when free','jigoshop'),
+				'id'             => 'jigoshop_paypal_force_payment',
+				'tip'            => 'If product totals are free and shipping is also free (excluding taxes), this will force 0.01 to allow paypal to process payment. Shop owner is responsible for refunding customer.',
+				'type'           => 'checkbox',
+				'std'            => 'no'
+			),
+
+			array(
+				'name'           => __('Method Title','jigoshop'),
+				'tip'            => __('This controls the title which the user sees during checkout.','jigoshop'),
+				'id'             => 'jigoshop_paypal_title',
+				'type'           => 'text',
+				'std'            => 'PayPal'
+			),
+
+			array(
+				'name'           => __('Description','jigoshop'),
+				'id'             => 'jigoshop_paypal_description',
+				'tip'            => __('This controls the description which the user sees during checkout.', 'jigoshop'),
+				'type'           => 'textarea',
+			),
+
+			array(
+				'name'           => __('PayPal email address','jigoshop'),
+				'id'             => 'jigoshop_paypal_email',
+				'type'           => 'text',
+			),
+
+			array(
+				'name'           => __('Send shipping details to PayPal','jigoshop'),
+				'id'             => 'jigoshop_paypal_send_shipping',
+				'tip'            => __('If your checkout page does not ask for shipping details, or if you do not want to send shipping information to PayPal, set this option to no. If you enable this option PayPal may restrict where things can be sent, and will prevent some orders going through for your protection.', 'jigoshop'),
+				'type'           => 'checkbox',
+			),
+
+			array(
+				'name'           => __('Enable PayPal sandbox','jigoshop'),
+				'id'             => 'jigoshop_paypal_testmode',
+				'type'           => 'checkbox',
+			),
+
+		);
+
+		jigoshop_admin_option_display($options);
+
     }
 
     /**
@@ -140,7 +140,7 @@ class paypal extends jigoshop_payment_gateway {
     public function generate_paypal_form( $order_id ) {
 
 		$order = new jigoshop_order( $order_id );
-        
+
         $subtotal = (float)(get_option('jigoshop_prices_include_tax') == 'yes' ? (float)$order->order_subtotal + (float)$order->order_tax : $order->order_subtotal);
         $shipping_total = (float)(get_option('jigoshop_prices_include_tax') == 'yes' ? (float)$order->order_shipping + (float)$order->order_shipping_tax : $order->order_shipping);
 
@@ -269,24 +269,24 @@ class paypal extends jigoshop_payment_gateway {
             $shipping_tax = (float)($order->order_shipping_tax ? $order->order_shipping_tax : 0);
 
             $paypal_args['amount_'.$item_loop] = (get_option('jigoshop_prices_include_tax') == 'yes' ? number_format((float)$order->order_shipping + $shipping_tax, 2) : number_format((float)$order->order_shipping, 2));
-        endif; 
-        
+        endif;
+
         if (get_option('jigoshop_paypal_force_payment') == 'yes') :
 
             $sum = 0;
             for ($i = 1; $i < $item_loop; $i++) :
                 $sum += $paypal_args['amount_'.$i];
             endfor;
-            
+
             $item_loop++;
             if ($sum == 0 || (isset($order->order_discount) && $sum - $order->order_discount == 0)) :
                 $paypal_args['item_name_'.$item_loop] = __('Force payment on free', 'jigoshop');
                 $paypal_args['quantity_'.$item_loop] = '1';
                 $paypal_args['amount_'.$item_loop] = 0.01; // force payment
             endif;
-            
+
         endif;
-        
+
 		$paypal_args_array = array();
 
 		foreach ($paypal_args as $key => $value) {
@@ -444,12 +444,12 @@ class paypal extends jigoshop_payment_gateway {
 	    }
 
 	}
-    
+
     public function process_gateway($subtotal, $shipping_total, $discount = 0) {
-        
+
         $ret_val = false;
         if (!(isset($subtotal) && isset($shipping_total))) return $ret_val;
-        
+
         // check for free (which is the sum of all products and shipping = 0) Tax doesn't count unless prices
         // include tax
         if (($subtotal <= 0 && $shipping_total <= 0) || (($subtotal + $shipping_total) - $discount) == 0) :
@@ -462,9 +462,9 @@ class paypal extends jigoshop_payment_gateway {
         else :
             $ret_val = true;
         endif;
-        
+
         return $ret_val;
-        
+
     }
 
 }

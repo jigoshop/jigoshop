@@ -38,32 +38,37 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 	 * - Options for bits like 'title' and availability on a country-by-country basis
 	 **/
 	public function admin_options() {
-    	?>
-    	<thead><tr><th scope="col" colspan="2"><h3 class="title"><?php _e('Cheque Payment', 'jigoshop'); ?></h3>
-    		<p><?php _e('Allows cheque payments. Allows you to make test purchases without having to use the sandbox area of a payment gateway. Quite useful for demonstrating to clients and for testing order emails and the \'success\' pages etc.', 'jigoshop'); ?></p></th></tr></thead>
-    	<tr>
-	        <th scope="row"><?php _e('Enable Cheque Payment', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <select name="jigoshop_cheque_enabled" id="jigoshop_cheque_enabled" style="min-width:100px;">
-		            <option value="yes" <?php if (get_option('jigoshop_cheque_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if (get_option('jigoshop_cheque_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
-		        </select>
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_cheque_title" id="jigoshop_cheque_title" value="<?php if ($value = get_option('jigoshop_cheque_title')) echo $value; else echo 'Cheque Payment'; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('Let the customer know the payee and where they should be sending the cheque too and that their order won\'t be shipping until you receive it.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Customer Message', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <input class="input-text wide-input" type="text" name="jigoshop_cheque_description" id="jigoshop_cheque_description" value="<?php if ($value = get_option('jigoshop_cheque_description')) echo $value; ?>" />
-	        </td>
-	    </tr>
 
-    	<?php
+		$options = array (
+
+			array( 'name'        => __('Cheque Payment', 'jigoshop'), 'type' => 'title', 'desc' => __('Allows cheque payments. Allows you to make test purchases without having to use the sandbox area of a payment gateway. Quite useful for demonstrating to clients and for testing order emails and the \'success\' pages etc.', 'jigoshop') ),
+
+			array(
+				'name'           => __('Enable Cheque Payment','jigoshop'),
+				'id'             => 'jigoshop_cheque_enabled',
+				'type'           => 'checkbox',
+				'std'            => 'no'
+			),
+
+			array(
+				'name'           => __('Method Title','jigoshop'),
+				'tip'            => __('This controls the title which the user sees during checkout.','jigoshop'),
+				'id'             => 'jigoshop_cheque_title',
+				'type'           => 'text',
+				'std'            => 'Cheque Payment'
+			),
+
+			array(
+				'name'           => __('Customer Message','jigoshop'),
+				'id'             => 'jigoshop_cheque_description',
+				'tip'            => __('Let the customer know the payee and where they should be sending the cheque to and that their order won\'t be shipping until you receive it.', 'jigoshop'),
+				'type'           => 'textarea',
+			),
+
+		);
+
+		jigoshop_admin_option_display($options);
+
     }
 
 	/**

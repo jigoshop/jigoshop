@@ -38,32 +38,37 @@ class jigoshop_cod extends jigoshop_payment_gateway {
 	 * - Options for bits like 'title' and availability on a country-by-country basis
 	 **/
 	public function admin_options() {
-    	?>
-    	<thead><tr><th scope="col" colspan="2"><h3 class="title"><?php _e('Cash on Delivery', 'jigoshop'); ?></h3>
-    		<p><?php _e('Allows cash payments. Good for offline stores or having customers pay at the time of receiving the product.', 'jigoshop'); ?></p></th></tr></thead>
-    	<tr>
-	        <th scope="row"><?php _e('Enable Cash on Delivery', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <select name="jigoshop_cod_enabled" id="jigoshop_cod_enabled" style="min-width:100px;">
-		            <option value="yes" <?php if (get_option('jigoshop_cod_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if (get_option('jigoshop_cod_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
-		        </select>
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_cod_title" id="jigoshop_cod_title" value="<?php if ($value = get_option('jigoshop_cod_title')) echo $value; else echo 'Cash on Delivery'; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('Let the customer know the payee and where they should be sending the cod too and that their order won\'t be shipping until you receive it.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Customer Message', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <input class="input-text wide-input" type="text" name="jigoshop_cod_description" id="jigoshop_cod_description" value="<?php if ($value = get_option('jigoshop_cod_description')) echo $value; ?>" />
-	        </td>
-	    </tr>
 
-    	<?php
+		$options = array (
+
+			array( 'name'        => __('Cash on Delivery', 'jigoshop'), 'type' => 'title', 'desc' => __('Allows cash payments. Good for offline stores or having customers pay at the time of receiving the product.', 'jigoshop') ),
+
+			array(
+				'name'           => __('Enable Cash on Delivery','jigoshop'),
+				'id'             => 'jigoshop_cod_enabled',
+				'type'           => 'checkbox',
+				'std'            => 'no'
+			),
+
+			array(
+				'name'           => __('Method Title','jigoshop'),
+				'tip'            => __('This controls the title which the user sees during checkout.','jigoshop'),
+				'id'             => 'jigoshop_cod_title',
+				'type'           => 'text',
+				'std'            => 'Cash on Delivery'
+			),
+
+			array(
+				'name'           => __('Customer Message','jigoshop'),
+				'id'             => 'jigoshop_cod_description',
+				'tip'            => __('Let the customer know the payee and where they should be sending the cod too and that their order won\'t be shipping until you receive it.', 'jigoshop'),
+				'type'           => 'textarea',
+			),
+
+		);
+
+		jigoshop_admin_option_display($options);
+
     }
 
 	/**
