@@ -37,49 +37,48 @@ class local_pickup extends jigoshop_shipping_method {
     }
 
     public function admin_options() {
+
+		$options = array (
+
+			array( 'name'        => __('Local pickup', 'jigoshop'), 'type' => 'title', 'desc' => '' ),
+
+			array(
+				'name'           => __('Enable Local pickup','jigoshop'),
+				'id'             => 'jigoshop_local_pickup_enabled',
+				'type'           => 'checkbox',
+				'std'            => 'no'
+			),
+
+			array(
+				'name'           => __('Method Title','jigoshop'),
+				'tip'            => __('This controls the title which the user sees during checkout.','jigoshop'),
+				'id'             => 'jigoshop_local_pickup_title',
+				'type'           => 'text',
+				'std'            => 'Local pickup'
+			),
+
+			array(
+				'name'           => __('Allowed Countries','jigoshop'),
+				'desc'           => '',
+				'tip'            => __('These are countries that you are willing to ship to.','jigoshop'),
+				'id'             => 'jigoshop_local_pickup_availability',
+				'std'            => 'all',
+				'type'           => 'select',
+				'options'        => array(
+					'all'        => __('All Countries', 'jigoshop'),
+					'specific'   => __('Specific Countries', 'jigoshop')
+				)
+			),
+
+			array(
+				'name'           => __('Specific Countries','jigoshop'),
+				'id'             => 'jigoshop_local_pickup_countries',
+				'type'           => 'multi_select_countries'
+			),
+		);
+		jigoshop_admin_option_display($options);
+
     	?>
-    	<thead><tr><th scope="col" colspan="2"><h3 class="title"><?php _e('Local pickup', 'jigoshop'); ?></h3></th></tr></thead>
-    	<tr>
-	        <th scope="row"><?php _e('Enable local pickup', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <select name="jigoshop_local_pickup_enabled" id="jigoshop_local_pickup_enabled" style="min-width:100px;">
-		            <option value="yes" <?php if (get_option('jigoshop_local_pickup_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if (get_option('jigoshop_local_pickup_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
-		        </select>
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <input type="text" name="jigoshop_local_pickup_title" id="jigoshop_local_pickup_title" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_local_pickup_title')) echo $value; else echo 'Local Pickup'; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><?php _e('Method available for', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <select name="jigoshop_local_pickup_availability" id="jigoshop_local_pickup_availability" style="min-width:100px;">
-		            <option value="all" <?php if (get_option('jigoshop_local_pickup_availability') == 'all') echo 'selected="selected"'; ?>><?php _e('All allowed countries', 'jigoshop'); ?></option>
-		            <option value="specific" <?php if (get_option('jigoshop_local_pickup_availability') == 'specific') echo 'selected="selected"'; ?>><?php _e('Specific Countries', 'jigoshop'); ?></option>
-		        </select>
-	        </td>
-	    </tr>
-	    <?php
-    	$countries = jigoshop_countries::$countries;
-    	$selections = get_option('jigoshop_local_pickup_countries', array());
-    	?><tr class="multi_select_countries">
-            <th scope="row"><?php _e('Specific Countries', 'jigoshop'); ?></th>
-            <td class="forminp">
-            	<div class="multi_select_countries"><ul><?php
-        			if ($countries) foreach ($countries as $key=>$val) :
-
-        				echo '<li><label><input type="checkbox" name="jigoshop_local_pickup_countries[]" value="' . esc_attr( $key ) . '" ';
-        				if (in_array($key, $selections)) echo 'checked="checked"';
-        				echo ' />'. __($val, 'jigoshop') .'</label></li>';
-
-            		endforeach;
-       			?></ul></div>
-       		</td>
-       	</tr>
        	<script type="text/javascript">
 		jQuery(function() {
 			jQuery('select#jigoshop_local_pickup_availability').change(function(){

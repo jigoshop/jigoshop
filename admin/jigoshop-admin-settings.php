@@ -657,6 +657,7 @@ function jigoshop_admin_option_display($options) {
 				</td>
 			</tr><?php
 			break;
+
 			case 'single_select_country' :
 				$countries = jigoshop_countries::$countries;
 				$country_setting = (string) get_option($value['id']);
@@ -680,6 +681,7 @@ function jigoshop_admin_option_display($options) {
 				</tr><?php
 				if (!$show_all && jigoshop_countries::country_has_states($country) && $state == '*') jigoshop_countries::base_country_notice();
 			break;
+
 		case 'multi_select_countries' :
 			$countries = jigoshop_countries::$countries;
 			asort($countries);
@@ -706,7 +708,8 @@ function jigoshop_admin_option_display($options) {
 						</div>
 					</td>
 				</tr><?php
-				break;
+			break;
+
 		case 'coupons' :
 			$coupons = new jigoshop_coupons();
 			$coupon_codes = $coupons->get_coupons();
