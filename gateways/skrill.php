@@ -155,7 +155,6 @@ class skrill extends jigoshop_payment_gateway {
 			'cancel_url_target'    => 1,
 			'status_url'           => trailingslashit(get_bloginfo('wpurl')).'?skrillListener=skrill_status',
 			'dynamic_descriptor'   => 'Description',
-			'language'             => 'EN',
 			'hide_login'           => 1,
 			'confirmation_note'    => 'Thank you for your custom',
 			'pay_from_email'       => $order->billing_email,

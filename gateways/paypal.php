@@ -53,7 +53,6 @@ class paypal extends jigoshop_payment_gateway {
 	 **/
 	public function admin_options() {
 
-
 		$options = array (
 
 			array( 'name'        => __('PayPal Standard', 'jigoshop'), 'type' => 'title', 'desc' => __('PayPal Standard works by sending the user to <a href="https://www.paypal.com/uk/mrb/pal=JFC9L8JJUZZK2">PayPal</a> to enter their payment information.', 'jigoshop') ),
