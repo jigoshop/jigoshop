@@ -16,14 +16,17 @@
  */
 class skrill extends jigoshop_payment_gateway {
 
+	protected $_supportedLocales = array('cn', 'cz', 'da', 'en', 'es', 'fi', 'de', 'fr', 'gr', 'it', 'nl', 'ro', 'ru', 'pl', 'sv', 'tr');
+
 	public function __construct() {
-        $this->id			= 'skrill';
-        $this->title 		= 'Skrill';
-        $this->icon 		= jigoshop::assets_url() . '/assets/images/icons/skrill.png';
-        $this->has_fields 	= false;
-      	$this->enabled		= get_option('jigoshop_skrill_enabled');
-		$this->title 		= get_option('jigoshop_skrill_title');
-		$this->email 		= get_option('jigoshop_skrill_email');
+		$this->id         = 'skrill';
+		$this->title      = 'Skrill';
+		$this->icon       = jigoshop::assets_url() . '/assets/images/icons/skrill.png';
+		$this->has_fields = false;
+		$this->enabled    = get_option('jigoshop_skrill_enabled');
+		$this->title      = get_option('jigoshop_skrill_title');
+		$this->email      = get_option('jigoshop_skrill_email');
+		$this->locale     = $this->getLocale();
 
 		add_action( 'init', array(&$this, 'check_status_response') );
 
@@ -40,6 +43,14 @@ class skrill extends jigoshop_payment_gateway {
 
 		add_action('receipt_skrill', array(&$this, 'receipt_skrill'));
     }
+
+	public function getLocale() {
+		$locale = explode('_', get_locale());
+		if (is_array($locale) && !empty($locale) && in_array($locale[0], $this->_supportedLocales)) {
+			return $locale[0];
+		}
+		return $this->get_locale();
+	}
 
 	/**
 	 * Admin Panel Options
@@ -138,6 +149,7 @@ class skrill extends jigoshop_payment_gateway {
 			'hide_login'           => 1,
 			'confirmation_note'    => 'Thank you for your custom',
 			'pay_from_email'       => $order->billing_email,
+			'language'             => $this->getLocale(),
 
 			//'title'              => 'Mr',
 			'firstname'            => $order->billing_first_name,
