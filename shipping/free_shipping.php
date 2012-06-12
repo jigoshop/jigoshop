@@ -27,8 +27,6 @@ class free_shipping extends jigoshop_shipping_method {
 
 		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
 
-		add_option('jigoshop_free_shipping_availability', 'all');
-		add_option('jigoshop_free_shipping_title', 'Free Shipping');
     }
 
     public function calculate_shipping() {

@@ -17,23 +17,21 @@
 class local_pickup extends jigoshop_shipping_method {
 
 	public function __construct() {
-        $this->id 			= 'local_pickup';
-        $this->enabled		= get_option('jigoshop_local_pickup_enabled');
-		$this->title 		= get_option('jigoshop_local_pickup_title');
+		$this->id           = 'local_pickup';
+		$this->enabled      = get_option('jigoshop_local_pickup_enabled');
+		$this->title        = get_option('jigoshop_local_pickup_title');
 		$this->availability = get_option('jigoshop_local_pickup_availability');
-		$this->countries 	= get_option('jigoshop_local_pickup_countries');
+		$this->countries    = get_option('jigoshop_local_pickup_countries');
 		if (isset( jigoshop_session::instance()->chosen_shipping_method_id ) && jigoshop_session::instance()->chosen_shipping_method_id==$this->id) $this->chosen = true;
 
 		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
 
-		add_option('jigoshop_local_pickup_availability', 'all');
-		add_option('jigoshop_local_pickup_title', 'Local Pickup');
     }
 
     public function calculate_shipping() {
-		$this->shipping_total 	= 0;
-		$this->shipping_tax 	= 0;
-		$this->shipping_label 	= $this->title;
+		$this->shipping_total = 0;
+		$this->shipping_tax   = 0;
+		$this->shipping_label = $this->title;
     }
 
     public function admin_options() {
