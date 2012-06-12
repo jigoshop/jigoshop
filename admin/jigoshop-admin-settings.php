@@ -19,37 +19,6 @@
  */
 
 /**
- * Defines a custom sort for the tax_rates array. The sort that is needed is that the array is sorted
- * by country, followed by state, followed by compound tax. The difference is that compound must be sorted based
- * on compound = no before compound = yes. Ultimately, the purpose of the sort is to make sure that country, state
- * are all consecutive in the array, and that within those groups, compound = 'yes' always appears last. This is
- * so that tax classes that are compounded will be executed last in comparison to those that aren't.
- * last.
- * <br>
- * <pre>
- * eg. country = 'CA', state = 'QC', compound = 'yes'<br>
- *     country = 'CA', state = 'QC', compound = 'no'<br>
- *
- * will be sorted to have <br>
- *     country = 'CA', state = 'QC', compound = 'no'<br>
- *     country = 'CA', state = 'QC', compound = 'yes' <br>
- * </pre>
- *
- * @param type $a the first object to compare with (our inner array)
- * @param type $b the second object to compare with (our inner array)
- * @return int the results of strcmp
- */
-function csort_tax_rates($a, $b) {
-	$str1 = '';
-	$str2 = '';
-
-	$str1 .= $a['country'] . $a['state'] . ($a['compound'] == 'no' ? 'a' : 'b');
-	$str2 .= $b['country'] . $b['state'] . ($b['compound'] == 'no' ? 'a' : 'b');
-
-	return strcmp($str1, $str2);
-}
-
-/**
  * Update options
  *
  * Updates the options on the jigoshop settings page.
@@ -134,6 +103,37 @@ function jigoshop_update_options() {
 }
 
 add_action('load-jigoshop_page_jigoshop_settings', 'jigoshop_update_options');
+
+/**
+ * Defines a custom sort for the tax_rates array. The sort that is needed is that the array is sorted
+ * by country, followed by state, followed by compound tax. The difference is that compound must be sorted based
+ * on compound = no before compound = yes. Ultimately, the purpose of the sort is to make sure that country, state
+ * are all consecutive in the array, and that within those groups, compound = 'yes' always appears last. This is
+ * so that tax classes that are compounded will be executed last in comparison to those that aren't.
+ * last.
+ * <br>
+ * <pre>
+ * eg. country = 'CA', state = 'QC', compound = 'yes'<br>
+ *     country = 'CA', state = 'QC', compound = 'no'<br>
+ *
+ * will be sorted to have <br>
+ *     country = 'CA', state = 'QC', compound = 'no'<br>
+ *     country = 'CA', state = 'QC', compound = 'yes' <br>
+ * </pre>
+ *
+ * @param type $a the first object to compare with (our inner array)
+ * @param type $b the second object to compare with (our inner array)
+ * @return int the results of strcmp
+ */
+function csort_tax_rates($a, $b) {
+	$str1 = '';
+	$str2 = '';
+
+	$str1 .= $a['country'] . $a['state'] . ($a['compound'] == 'no' ? 'a' : 'b');
+	$str2 .= $b['country'] . $b['state'] . ($b['compound'] == 'no' ? 'a' : 'b');
+
+	return strcmp($str1, $str2);
+}
 
 function jigoshop_update_taxes() {
 
