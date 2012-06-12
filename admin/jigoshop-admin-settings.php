@@ -258,8 +258,8 @@ function jigoshop_update_coupons() {
 		'individual'          => '',
 		'coupon_free_shipping'=> '',
 		'coupon_pay_methods'  => '',
-		'order_total_min'  => '',
-		'order_total_max'  => '',
+		'order_total_min'     => '',
+		'order_total_max'     => '',
 	);
 
 	$coupons = array();
@@ -358,12 +358,13 @@ function jigoshop_admin_fields($options) {
 
                 jQuery.cookie('jigoshop_settings_tab_index', jQuery(this).index('#jigoshop-nav-tab-wrapper a'))
 
+
                 return false;
             });
 
     <?php if (isset($_COOKIE['jigoshop_settings_tab_index']) && $_COOKIE['jigoshop_settings_tab_index'] > 0) : ?>
 
-                    jQuery('ul.tabs li:eq(<?php echo $_COOKIE['jigoshop_settings_tab_index']; ?>) a').click();
+                    jQuery('#jigoshop-nav-tab-wrapper a:eq(<?php echo $_COOKIE['jigoshop_settings_tab_index']; ?>)').click();
 
     <?php endif; ?>
 
