@@ -118,7 +118,7 @@ class dibs extends jigoshop_payment_gateway {
 	* - Saves the options to the DB
 	**/
 	public function process_admin_options() {
-		if(isset($_POST['jigoshop_dibs_enabled'])) update_option('jigoshop_dibs_enabled', jigowatt_clean($_POST['jigoshop_dibs_enabled'])); else @delete_option('jigoshop_dibs_enabled');
+		if(isset($_POST['jigoshop_dibs_enabled'])) update_option('jigoshop_dibs_enabled', jigowatt_clean($_POST['jigoshop_dibs_enabled'])); else update_option('jigoshop_dibs_enabled', 'no');
 		if(isset($_POST['jigoshop_dibs_title'])) update_option('jigoshop_dibs_title', jigowatt_clean($_POST['jigoshop_dibs_title'])); else @delete_option('jigoshop_dibs_title');
 		if(isset($_POST['jigoshop_dibs_merchant'])) update_option('jigoshop_dibs_merchant', jigowatt_clean($_POST['jigoshop_dibs_merchant'])); else @delete_option('jigoshop_dibs_merchant');
 		if(isset($_POST['jigoshop_dibs_key1'])) update_option('jigoshop_dibs_key1', jigowatt_clean($_POST['jigoshop_dibs_key1'])); else @delete_option('jigoshop_dibs_key1');

@@ -112,7 +112,7 @@ class skrill extends jigoshop_payment_gateway {
 	 * - Saves the options to the DB
 	 **/
     public function process_admin_options() {
-		if(isset($_POST['jigoshop_skrill_enabled']))     update_option('jigoshop_skrill_enabled'    , jigowatt_clean($_POST['jigoshop_skrill_enabled']));     else @delete_option('jigoshop_skrill_enabled');
+		if(isset($_POST['jigoshop_skrill_enabled']))     update_option('jigoshop_skrill_enabled'    , jigowatt_clean($_POST['jigoshop_skrill_enabled']));     else update_option('jigoshop_skrill_enabled', 'no');
 		if(isset($_POST['jigoshop_skrill_title']))       update_option('jigoshop_skrill_title'      , jigowatt_clean($_POST['jigoshop_skrill_title']));       else @delete_option('jigoshop_skrill_title');
 		if(isset($_POST['jigoshop_skrill_email']))       update_option('jigoshop_skrill_email'      , jigowatt_clean($_POST['jigoshop_skrill_email']));       else @delete_option('jigoshop_skrill_email');
 		if(isset($_POST['jigoshop_skrill_secret_word'])) update_option('jigoshop_skrill_secret_word', jigowatt_clean($_POST['jigoshop_skrill_secret_word'])); else @delete_option('jigoshop_skrill_secret_word');

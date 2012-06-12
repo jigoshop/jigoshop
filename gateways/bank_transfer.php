@@ -154,7 +154,7 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 	 **/
     public function process_admin_options() {
 
-    	(isset($_POST['jigoshop_bank_transfer_enabled'])) ? update_option('jigoshop_bank_transfer_enabled', jigowatt_clean($_POST['jigoshop_bank_transfer_enabled'])) : @delete_option('jigoshop_bank_transfer_enabled');
+    	(isset($_POST['jigoshop_bank_transfer_enabled'])) ? update_option('jigoshop_bank_transfer_enabled', jigowatt_clean($_POST['jigoshop_bank_transfer_enabled'])) : update_option('jigoshop_bank_transfer_enabled', 'no');
 
     	(isset($_POST['jigoshop_bank_transfer_title'])) ? update_option('jigoshop_bank_transfer_title', jigowatt_clean($_POST['jigoshop_bank_transfer_title'])) : @delete_option('jigoshop_bank_transfer_title');
 
