@@ -1240,7 +1240,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			'tip' 		=> __('List product and shipping tax classes here, e.g. Zero Tax, Reduced Rate.','jigoshop'),
 			'id' 		=> 'jigoshop_tax_classes',
 			'type' 		=> 'textarea',
-			'std' 		=> "Reduced Rate\nZero Rate"
+			'std' 		=> sprintf( __( 'Reduced Rate%sZero Rate', 'jigoshop' ), PHP_EOL )
 		);
 		
 		self::$default_options[] = array(
