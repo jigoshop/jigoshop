@@ -46,12 +46,6 @@ if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1300000);
 if (!defined("JIGOSHOP_OPTIONS")) define("JIGOSHOP_OPTIONS", 'jigoshop_options');
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
-// Load administration & check if we need to install
-if ( is_admin() ) {
-	include_once( 'admin/jigoshop-admin.php' );
-	register_activation_hook( __FILE__, 'install_jigoshop' );
-}
-
 /**
  * Include core files and classes
  **/
@@ -184,18 +178,7 @@ add_action( 'init', 'jigoshop_load_template_functions', 999 );
 // Add a "Settings" link to the plugins.php page for Jigoshop
 function jigoshop_add_settings_link( $links, $file ) {
 	$this_plugin = plugin_basename( __FILE__ );
-	if( $file == $this_plugin ) {
-		$settings_link = '<a href="admin.php?page=jigoshop_settings">' . __( 'Settings', 'jigoshop' ) . '</a>';
-		array_unshift($links, $settings_link);
-	}
-	return $links;
-}
-add_filter( 'plugin_action_links', 'jigoshop_add_settings_link', 10, 2 );
-
-// Add a "Settings" link to the plugins.php page for Jigoshop
-function jigoshop_add_settings_link( $links, $file ) {
-	$this_plugin = plugin_basename( __FILE__ );
-	if( $file == $this_plugin ) {
+	if ( $file == $this_plugin ) {
 		$settings_link = '<a href="admin.php?page=jigoshop_settings">' . __( 'Settings', 'jigoshop' ) . '</a>';
 		array_unshift($links, $settings_link);
 	}
