@@ -124,7 +124,7 @@ class paypal extends jigoshop_payment_gateway {
 	 * - Saves the options to the DB
 	 **/
     public function process_admin_options() {
-   		if(isset($_POST['jigoshop_paypal_enabled'])) update_option('jigoshop_paypal_enabled', jigowatt_clean($_POST['jigoshop_paypal_enabled'])); else update_option('jigoshop_paypal_enabled', 'no');
+   		if(isset($_POST['jigoshop_paypal_enabled'])) update_option('jigoshop_paypal_enabled', 'yes'); else update_option('jigoshop_paypal_enabled', 'no');
    		if(isset($_POST['jigoshop_paypal_title'])) update_option('jigoshop_paypal_title', jigowatt_clean($_POST['jigoshop_paypal_title'])); else @delete_option('jigoshop_paypal_title');
    		if(isset($_POST['jigoshop_paypal_email'])) update_option('jigoshop_paypal_email', jigowatt_clean($_POST['jigoshop_paypal_email'])); else @delete_option('jigoshop_paypal_email');
    		if(isset($_POST['jigoshop_paypal_description'])) update_option('jigoshop_paypal_description', jigowatt_clean($_POST['jigoshop_paypal_description'])); else @delete_option('jigoshop_paypal_description');

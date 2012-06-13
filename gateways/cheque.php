@@ -87,7 +87,7 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 	 * - Saves the options to the DB
 	 **/
     public function process_admin_options() {
-   		if(isset($_POST['jigoshop_cheque_enabled'])) 	update_option('jigoshop_cheque_enabled', 	jigowatt_clean($_POST['jigoshop_cheque_enabled'])); else update_option('jigoshop_cheque_enabled', 'no');
+   		if(isset($_POST['jigoshop_cheque_enabled'])) 	update_option('jigoshop_cheque_enabled', 'yes'); else update_option('jigoshop_cheque_enabled', 'no');
    		if(isset($_POST['jigoshop_cheque_title'])) 	update_option('jigoshop_cheque_title', 	jigowatt_clean($_POST['jigoshop_cheque_title'])); else @delete_option('jigoshop_cheque_title');
    		if(isset($_POST['jigoshop_cheque_description'])) 	update_option('jigoshop_cheque_description', 	jigowatt_clean($_POST['jigoshop_cheque_description'])); else @delete_option('jigoshop_cheque_description');
     }

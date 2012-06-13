@@ -93,7 +93,7 @@ class local_pickup extends jigoshop_shipping_method {
 
     public function process_admin_options() {
 
-   		if(isset($_POST['jigoshop_local_pickup_enabled'])) update_option('jigoshop_local_pickup_enabled', jigowatt_clean($_POST['jigoshop_local_pickup_enabled'])); else update_option('jigoshop_local_pickup_enabled', 'no');
+   		if(isset($_POST['jigoshop_local_pickup_enabled'])) update_option('jigoshop_local_pickup_enabled', 'yes'); else update_option('jigoshop_local_pickup_enabled', 'no');
    		if(isset($_POST['jigoshop_local_pickup_title'])) update_option('jigoshop_local_pickup_title', jigowatt_clean($_POST['jigoshop_local_pickup_title'])); else @delete_option('jigoshop_local_pickup_title');
    		if(isset($_POST['jigoshop_local_pickup_availability'])) update_option('jigoshop_local_pickup_availability', jigowatt_clean($_POST['jigoshop_local_pickup_availability'])); else @delete_option('jigoshop_local_pickup_availability');
 

@@ -103,7 +103,7 @@ class free_shipping extends jigoshop_shipping_method {
 
     public function process_admin_options() {
 
-   		if(isset($_POST['jigoshop_free_shipping_enabled'])) update_option('jigoshop_free_shipping_enabled', jigowatt_clean($_POST['jigoshop_free_shipping_enabled'])); else update_option('jigoshop_free_shipping_enabled', 'no');
+   		if(isset($_POST['jigoshop_free_shipping_enabled'])) update_option('jigoshop_free_shipping_enabled', 'yes'); else update_option('jigoshop_free_shipping_enabled', 'no');
    		if(isset($_POST['jigoshop_free_shipping_title'])) update_option('jigoshop_free_shipping_title', jigowatt_clean($_POST['jigoshop_free_shipping_title'])); else @delete_option('jigoshop_free_shipping_title');
    		if(isset($_POST['jigoshop_free_shipping_minimum_amount'])) update_option('jigoshop_free_shipping_minimum_amount', jigowatt_clean($_POST['jigoshop_free_shipping_minimum_amount'])); else @delete_option('jigoshop_free_shipping_minimum_amount');
    		if(isset($_POST['jigoshop_free_shipping_availability'])) update_option('jigoshop_free_shipping_availability', jigowatt_clean($_POST['jigoshop_free_shipping_availability'])); else @delete_option('jigoshop_free_shipping_availability');
