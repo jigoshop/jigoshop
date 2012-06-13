@@ -27,7 +27,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	 * @param   none
 	 * @return  Void
 	 *
-	 * @since	1.2
+	 * @since	1.3
 	 */	
 	public function __construct() {
 		
@@ -61,7 +61,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	 *
 	 * If options don't exist (fresh install), they are created with default 'true' for WP autoload
 	 *
-	 * @since	1.2
+	 * @since	1.3
 	 */	
 	public function update_options() {
 		update_option( JIGOSHOP_OPTIONS, self::$current_options );
@@ -77,7 +77,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	 * @param   string	the name of the option to add
 	 * @param   mixed	the value to set if the option doesn't exist
 	 *
-	 * @since	1.2
+	 * @since	1.3
 	 */	
 	public function add_option( $name, $value ) {
         // take care of keeping the old name updated when setting new options
@@ -98,7 +98,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	 * @param   mixed	the value to return if the option doesn't exist
 	 * @return  mixed	the value of the option, null if no $default and doesn't exist
 	 *
-	 * @since	1.2
+	 * @since	1.3
 	 */	
 	public function get_option( $name, $default = null ) {
         
@@ -122,7 +122,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	 * @param   string	the name of the option to set
 	 * @param	mixed	the value to set
 	 *
-	 * @since	1.2
+	 * @since	1.3
 	 */	
 	public function set_option( $name, $value ) {
         
@@ -143,7 +143,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	 * @param   string	the name of the option to delete
 	 * @return	bool	true for successful completion if option found, false otherwise
 	 *
-	 * @since	1.2
+	 * @since	1.3
 	 */	
 	public function delete_option( $name ) {
 		$this->get_current_options();
@@ -161,7 +161,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	 *
 	 * @return	bool	true for successful completion if option found, false otherwise
 	 *
-	 * @since	1.2
+	 * @since	1.3
 	 */	
 	public function exists_option( $name ) {
 		$this->get_current_options();
@@ -177,7 +177,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	 * @param	string	The name of the Tab ('heading') to install onto
 	 * @param	array	The array of options to install
 	 *
-	 * @since	1.2
+	 * @since	1.3
 	 */	
 	public function install_external_options( $tab, $options ) {
         
@@ -222,7 +222,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	 * @param   none
 	 * @return  array	the entire current options array is returned
 	 *
-	 * @since	1.2
+	 * @since	1.3
 	 */	
 	public function get_current_options() {
 		if ( empty( self::$current_options )) {
@@ -239,7 +239,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	 * @param   array	an array containing all the current Jigoshop option => value pairs to use
 	 * @return  Void
 	 *
-	 * @since	1.2
+	 * @since	1.3
 	 */	
 	private function set_current_options( $options ) {
 		self::$current_options = $options;
@@ -253,7 +253,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	 * @param   none
 	 * @return  array	the entire default options array is returned
 	 *
-	 * @since	1.2
+	 * @since	1.3
 	 */	
 	public function get_default_options() {
 		if ( empty( self::$default_options )) $this->set_default_options();
@@ -269,7 +269,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	 * @param   none
 	 * @return  Void
 	 *
-	 * @since	1.2
+	 * @since	1.3
 	 *
 	 *  ====================
 	 *

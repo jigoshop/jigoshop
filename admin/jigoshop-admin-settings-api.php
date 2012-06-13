@@ -22,7 +22,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	/**
 	 * Constructor
 	 *
-	 * @since 1.2
+	 * @since 1.3
 	 */
 	protected function __construct() {
 		
@@ -53,7 +53,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	/**
 	 * Scripts for the Options page
 	 *
-	 * @since 1.2
+	 * @since 1.3
 	 */
 	public function settings_scripts() {
 		
@@ -69,7 +69,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	/**
 	 * Styling for the options page
 	 *
-	 * @since 1.2
+	 * @since 1.3
 	 */
 	public function settings_styles() {
 		do_action( 'jigoshop_settings_styles' );	// user defined stylesheets should be registered and queued
@@ -79,7 +79,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	/**
 	 * Register settings
 	 *
-	 * @since 1.2
+	 * @since 1.3
 	 */
 	public function register_settings() {
 
@@ -106,7 +106,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	/**
 	 * Create a settings field
 	 *
-	 * @since 1.2
+	 * @since 1.3
 	 */
 	public function create_setting( $index, $option = array() ) {
 	
@@ -162,7 +162,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	/**
 	 * Format markup for an option and output it
 	 *
-	 * @since 1.2
+	 * @since 1.3
 	 */
 	public function display_option( $option ) {
 		echo $this->our_parser->format_option_for_display( $option );
@@ -172,7 +172,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	/**
 	 * Description for section
 	 *
-	 * @since 1.2
+	 * @since 1.3
 	 */
 	public function display_section( $section ) {
 	
@@ -191,7 +191,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	/**
 	 * Render the Options page
 	 *
-	 * @since 1.2
+	 * @since 1.3
 	 */
 	public function output_markup() {
 		?>
@@ -264,7 +264,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	/**
 	 * Create the Navigation Menu Tabs
 	 *
-	 * @since 1.2
+	 * @since 1.3
 	 */
 	function build_tab_menu_items() {
 		$menus_li = '';
@@ -288,7 +288,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	/**
 	 * Return the current Tab slug in view
 	 *
-	 * @since 1.2
+	 * @since 1.3
 	 */
 	public function get_current_tab_slug() {
 		$current = "";
@@ -305,7 +305,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	/**
 	 * Return the current Tab full name in view
 	 *
-	 * @since 1.2
+	 * @since 1.3
 	 */
 	public function get_current_tab_name() {
 		$current = "";
@@ -326,7 +326,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	/**
 	 * Validate settings
 	 *
-	 * @since 1.2
+	 * @since 1.3
 	 */
 	public function validate_settings( $input ) {
 
