@@ -87,7 +87,7 @@ class free_shipping extends jigoshop_shipping_method {
 			'desc' 		=> '',
 			'tip' 		=> __('Users will need to spend this amount to get free shipping. Leave blank to disable.','jigoshop'),
 			'id' 		=> 'jigoshop_free_shipping_minimum_amount',
-			'std' 		=> __('Free Shipping','jigoshop'),
+			'std' 		=> '0',
 			'type' 		=> 'decimal'
 		);
 		
