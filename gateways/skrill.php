@@ -66,6 +66,7 @@ class skrill extends jigoshop_payment_gateway {
 				'name'           => __('Enable Skrill','jigoshop'),
 				'id'             => 'jigoshop_skrill_enabled',
 				'type'           => 'checkbox',
+				'class'          => 'collapse',
 				'std'            => 'no'
 			),
 

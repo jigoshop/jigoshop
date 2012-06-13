@@ -44,6 +44,7 @@ class local_pickup extends jigoshop_shipping_method {
 				'name'           => __('Enable Local pickup','jigoshop'),
 				'id'             => 'jigoshop_local_pickup_enabled',
 				'type'           => 'checkbox',
+				'class'          => 'collapse',
 				'std'            => 'no'
 			),
 

@@ -47,6 +47,7 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 				'name'           => __('Enable Cheque Payment','jigoshop'),
 				'id'             => 'jigoshop_cheque_enabled',
 				'type'           => 'checkbox',
+				'class'          => 'collapse',
 				'std'            => 'no'
 			),
 

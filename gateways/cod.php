@@ -47,6 +47,7 @@ class jigoshop_cod extends jigoshop_payment_gateway {
 				'name'           => __('Enable Cash on Delivery','jigoshop'),
 				'id'             => 'jigoshop_cod_enabled',
 				'type'           => 'checkbox',
+				'class'          => 'collapse',
 				'std'            => 'no'
 			),
 

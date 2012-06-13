@@ -98,3 +98,29 @@ var nexttermparent=undefined;if(nexttermid!=undefined){nexttermparent=ui.item.ne
 if((prevtermid==undefined&&nexttermid==undefined)||(nexttermid==undefined&&nexttermparent==prevtermid)||(nexttermid!=undefined&&prevtermparent==termid)){$("table.widefat tbody").sortable('cancel');return;}
 ui.item.find('.check-column input').hide().after('<img alt="processing" src="images/wpspin_light.gif" class="waiting" style="margin-left: 6px;" />');$.post(ajaxurl,{action:'jigoshop-categories-ordering',id:termid,nextid:nexttermid},function(response){if(response=='children')window.location.reload();else{ui.item.find('.check-column input').show().siblings('img').remove();}});$('table.widefat tbody tr').each(function(){var i=jQuery('table.widefat tbody tr').index(this);if(i%2==0)jQuery(this).addClass('alternate');else jQuery(this).removeClass('alternate');});}});});
 }
+
+/* Checkbox hiding on the settings page for gateways & methods. */
+jQuery(function() {
+
+	function unhideHidden() {
+		if (jQuery(this).attr('checked')) {
+			jQuery(this).parent().parent().nextAll().hide().removeClass('hidden').fadeIn();
+		}
+		else {
+			jQuery(this).parent().parent().nextAll().each(
+			function(){
+				if (jQuery(this).filter('.last').length) {
+					jQuery(this).fadeOut(function() { jQuery(this).addClass('hidden') });
+					return false;
+					}
+				jQuery(this).fadeOut(function() { jQuery(this).addClass('hidden') });
+			});
+
+		}
+	}
+
+	jQuery('input:.collapse').click(unhideHidden);
+
+	jQuery(':input:not(:checked).collapse').parent().parent().nextAll().hide().addClass('hidden');
+
+});

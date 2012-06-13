@@ -53,6 +53,7 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 				'name'           => __('Enable Bank Transfer','jigoshop'),
 				'id'             => 'jigoshop_bank_transfer_enabled',
 				'type'           => 'checkbox',
+				'class'          => 'collapse',
 				'std'            => 'no'
 			),
 

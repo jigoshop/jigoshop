@@ -61,6 +61,7 @@ class paypal extends jigoshop_payment_gateway {
 				'name'           => __('Enable PayPal Standard','jigoshop'),
 				'id'             => 'jigoshop_paypal_enabled',
 				'type'           => 'checkbox',
+				'class'          => 'collapse',
 				'std'            => 'no'
 			),
 

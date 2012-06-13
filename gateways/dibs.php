@@ -56,6 +56,7 @@ class dibs extends jigoshop_payment_gateway {
 				'name'           => __('Enable DIBS FlexWin','jigoshop'),
 				'id'             => 'jigoshop_dibs_enabled',
 				'type'           => 'checkbox',
+				'class'          => 'collapse',
 				'std'            => 'no'
 			),
 

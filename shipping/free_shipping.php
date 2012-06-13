@@ -45,6 +45,7 @@ class free_shipping extends jigoshop_shipping_method {
 				'name'           => __('Enable Free Shipping','jigoshop'),
 				'id'             => 'jigoshop_free_shipping_enabled',
 				'type'           => 'checkbox',
+				'class'          => 'collapse',
 				'std'            => 'no'
 			),
 

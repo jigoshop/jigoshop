@@ -84,6 +84,7 @@ class flat_rate extends jigoshop_shipping_method {
 				'name'           => __('Enable Flat Rate','jigoshop'),
 				'id'             => 'jigoshop_flat_rate_enabled',
 				'type'           => 'checkbox',
+				'class'          => 'collapse',
 				'std'            => 'no'
 			),
 
