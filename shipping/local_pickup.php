@@ -62,6 +62,7 @@ class local_pickup extends jigoshop_shipping_method {
 				'tip'            => __('These are countries that you are willing to ship to.','jigoshop'),
 				'id'             => 'jigoshop_local_pickup_availability',
 				'std'            => 'all',
+				'class'          => 'multi_select_countries_parent',
 				'type'           => 'select',
 				'options'        => array(
 					'all'        => __('All Countries', 'jigoshop'),
@@ -75,21 +76,9 @@ class local_pickup extends jigoshop_shipping_method {
 				'type'           => 'multi_select_countries'
 			),
 		);
+
 		jigoshop_admin_option_display($options);
 
-    	?>
-       	<script type="text/javascript">
-		jQuery(function() {
-			jQuery('select#jigoshop_local_pickup_availability').change(function(){
-				if (jQuery(this).val()=="specific") {
-					jQuery(this).parent().parent().next('tr.multi_select_countries').show();
-				} else {
-					jQuery(this).parent().parent().next('tr.multi_select_countries').hide();
-				}
-			}).change();
-		});
-		</script>
-    	<?php
     }
 
     public function process_admin_options() {

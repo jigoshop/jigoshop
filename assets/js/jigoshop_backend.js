@@ -102,9 +102,25 @@ ui.item.find('.check-column input').hide().after('<img alt="processing" src="ima
 /* Checkbox hiding on the settings page for gateways & methods. */
 jQuery(function() {
 
+	/* Multiselect countries toggle. */
+	function toggleCountries() {
+
+		jQuery('select.multi_select_countries_parent').change(function(){
+			if (jQuery(this).val()=="specific") {
+				jQuery(this).parent().parent().next('tr.multi_select_countries').show();
+			} else {
+				jQuery(this).parent().parent().next('tr.multi_select_countries').hide();
+			}
+		}).change();
+
+	}
+
+	toggleCountries();
+
 	function unhideHidden() {
 		if (jQuery(this).attr('checked')) {
 			jQuery(this).parent().parent().nextAll().hide().removeClass('hidden').fadeIn();
+			toggleCountries();
 		}
 		else {
 			jQuery(this).parent().parent().nextAll().each(
@@ -115,12 +131,10 @@ jQuery(function() {
 					}
 				jQuery(this).fadeOut(function() { jQuery(this).addClass('hidden') });
 			});
-
 		}
 	}
 
 	jQuery('input:.collapse').click(unhideHidden);
-
 	jQuery(':input:not(:checked).collapse').parent().parent().nextAll().hide().addClass('hidden');
 
 });

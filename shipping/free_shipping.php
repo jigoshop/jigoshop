@@ -63,6 +63,7 @@ class free_shipping extends jigoshop_shipping_method {
 				'id'             => 'jigoshop_free_shipping_minimum_amount',
 				'css'            => 'width:60px;',
 				'type'           => 'number',
+				'placeholder'    => __('No min', 'jigoshop'),
 				'restrict'       => array( 'min' => 0 ),
 			),
 
@@ -70,7 +71,8 @@ class free_shipping extends jigoshop_shipping_method {
 				'name'           => __('Allowed Countries','jigoshop'),
 				'desc'           => '',
 				'tip'            => __('These are countries that you are willing to ship to.','jigoshop'),
-				'id'             => 'jigoshop_flat_rate_availability',
+				'id'             => 'jigoshop_free_shipping_availability',
+				'class'          => 'multi_select_countries_parent',
 				'std'            => 'all',
 				'type'           => 'select',
 				'options'        => array(
@@ -81,25 +83,13 @@ class free_shipping extends jigoshop_shipping_method {
 
 			array(
 				'name'           => __('Specific Countries','jigoshop'),
-				'id'             => 'jigoshop_flat_rate_countries',
+				'id'             => 'jigoshop_free_shipping_countries',
 				'type'           => 'multi_select_countries'
 			),
 		);
+
 		jigoshop_admin_option_display($options);
 
-    	?>
-       	<script type="text/javascript">
-		jQuery(function() {
-			jQuery('select#jigoshop_free_shipping_availability').change(function(){
-				if (jQuery(this).val()=="specific") {
-					jQuery(this).parent().parent().next('tr.multi_select_countries').show();
-				} else {
-					jQuery(this).parent().parent().next('tr.multi_select_countries').hide();
-				}
-			}).change();
-		});
-		</script>
-    	<?php
     }
 
     public function process_admin_options() {
