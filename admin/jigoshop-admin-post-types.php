@@ -112,7 +112,18 @@ function jigoshop_custom_product_columns($column) {
 		case "stock" :
 			if ( ! $product->is_type( 'grouped' ) && $product->is_in_stock() ) {
 				if ( $product->managing_stock() ) {
-					echo $product->stock.' '.__('In Stock', 'jigoshop');
+					if ( $product->is_type( 'variable' ) && $product->stock > 0 ) {
+						echo $product->stock.' '.__('In Stock', 'jigoshop');
+					} else if ( $product->is_type( 'variable' ) ) {
+						$stock_total = 0;
+						foreach ( $product->get_children() as $child_ID ) {
+							$child = $product->get_child( $child_ID );
+							$stock_total += (int)$child->stock;
+						}
+						echo $stock_total.' '.__('In Stock', 'jigoshop');
+					} else {
+						echo $product->stock.' '.__('In Stock', 'jigoshop');
+					}
 				} else {
 					echo __('In Stock', 'jigoshop');
 				}
