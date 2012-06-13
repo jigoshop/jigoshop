@@ -125,7 +125,7 @@ class dibs extends jigoshop_payment_gateway {
 		if(isset($_POST['jigoshop_dibs_key1'])) update_option('jigoshop_dibs_key1', jigowatt_clean($_POST['jigoshop_dibs_key1'])); else @delete_option('jigoshop_dibs_key1');
 		if(isset($_POST['jigoshop_dibs_key2'])) update_option('jigoshop_dibs_key2', jigowatt_clean($_POST['jigoshop_dibs_key2'])); else @delete_option('jigoshop_dibs_key2');
 		if(isset($_POST['jigoshop_dibs_description'])) update_option('jigoshop_dibs_description', jigowatt_clean($_POST['jigoshop_dibs_description'])); else @delete_option('jigoshop_dibs_description');
-		if(isset($_POST['jigoshop_dibs_testmode'])) update_option('jigoshop_dibs_testmode', jigowatt_clean($_POST['jigoshop_dibs_testmode'])); else @delete_option('jigoshop_dibs_testmode');
+		if(isset($_POST['jigoshop_dibs_testmode'])) update_option('jigoshop_dibs_testmode', 'yes'); else update_option('jigoshop_dibs_testmode', 'no');
 	}
 
 	/**
