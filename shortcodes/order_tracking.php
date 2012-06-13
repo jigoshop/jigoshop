@@ -47,7 +47,7 @@ function jigoshop_order_tracking( $atts ) {
 					$completed = get_post_meta( $order->id, '_js_completed_date' );
 					if ( is_array( $completed ) && ! empty( $completed ) ) $completed = $completed[0];
 					else $completed = 0;    // shouldn't happen, reset to be sure
-					echo __(' and was completed ', 'jigoshop').human_time_diff( $completed, current_time('timestamp')).__(' ago', 'jigoshop');
+					echo sprintf( __(' and was completed %s ago', 'jigoshop'), human_time_diff( $completed, current_time('timestamp')) );
 				}
 				echo '.</p>';
 
