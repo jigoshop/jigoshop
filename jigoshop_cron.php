@@ -61,9 +61,9 @@ function jigoshop_update_sale_prices() {
 
 function jigoshop_update_sale_prices_schedule_check(){
 	wp_schedule_event(time(), 'daily', 'jigoshop_update_sale_prices_schedule_check');
-	jigoshop_base_class::get_jigoshop_options()->set_option('jigoshop_update_sale_prices', 'yes');
+	Jigoshop_Base_Class::get_jigoshop_options()->set_option('jigoshop_update_sale_prices', 'yes');
 }
 
-if (jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_update_sale_prices')!='yes') jigoshop_update_sale_prices_schedule_check();
+if (Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_update_sale_prices')!='yes') jigoshop_update_sale_prices_schedule_check();
 
 add_action('jigoshop_update_sale_prices_schedule_check', 'jigoshop_update_sale_prices');

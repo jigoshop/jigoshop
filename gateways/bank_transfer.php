@@ -34,15 +34,15 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
         $this->id				= 'bank_transfer';
         $this->icon 			= '';
         $this->has_fields 		= false;
-		$this->enabled			= jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_enabled');
-		$this->title 			= jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_title');
-		$this->description 		= jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_description');
-		$this->bank_name 		= jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_bank_name');
-		$this->acc_number 		= jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_acc_number');
-		$this->sort_code 		= jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_sort_code');
-		$this->iban 			= jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_iban');
-		$this->bic 				= jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_bic');
-		$this->additional 		= jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_additional');
+		$this->enabled			= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_enabled');
+		$this->title 			= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_title');
+		$this->description 		= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_description');
+		$this->bank_name 		= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_bank_name');
+		$this->acc_number 		= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_acc_number');
+		$this->sort_code 		= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_sort_code');
+		$this->iban 			= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_iban');
+		$this->bic 				= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_bic');
+		$this->additional 		= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_additional');
 
     	add_action( 'thankyou_bank_transfer', array(&$this, 'thankyou_page') );
     }

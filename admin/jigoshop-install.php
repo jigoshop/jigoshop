@@ -26,7 +26,7 @@
 function install_jigoshop() {
 
 	global $wpdb;
-    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
 
 	if (function_exists('is_multisite') && is_multisite()) {
 
@@ -48,7 +48,7 @@ function install_jigoshop() {
 
 function _install_jigoshop() {
     
-    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
 
 	if( ! get_site_option('jigoshop_db_version') )  {
 
@@ -116,7 +116,7 @@ function jigoshop_default_options() {
  */
 function jigoshop_create_pages() {
 
-    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
     
 	// start out with basic page parameters, modify as we go
 	$page_data = array(
@@ -189,7 +189,7 @@ function jigoshop_create_pages() {
 function jigoshop_create_single_page( $page_slug, $page_option, $page_data ) {
 
     global $wpdb;
-    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
     
     $slug = esc_sql( _x( $page_slug, 'page_slug', 'jigoshop' ) );
 	$page_found = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1", $slug ) );

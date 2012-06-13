@@ -20,7 +20,7 @@
 if( !defined('WP_UNINSTALL_PLUGIN') ) exit();
 
 global $wpdb, $wp_roles;
-$jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+$jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
 
 // Remove the widget cache entry
 delete_transient( 'jigoshop_widget_cache' );

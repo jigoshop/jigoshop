@@ -27,7 +27,7 @@ class jigoshop_payment_gateway {
 	var $description;
     
     public function __construct() {
-        jigoshop_base_class::get_jigoshop_options()->install_external_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
+        Jigoshop_Base_Class::get_jigoshop_options()->install_external_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
     }
 
 	function is_available() {

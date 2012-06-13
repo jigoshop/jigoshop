@@ -121,7 +121,7 @@ function jigoshop_order_data( $data ) {
 add_action( 'admin_notices', 'jigoshop_meta_boxes_save_errors' );
 
 function jigoshop_meta_boxes_save_errors() {
-    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
 	$jigoshop_errors = $jigoshop_options->get_option('jigoshop_errors');
     if (is_array($jigoshop_errors) && count($jigoshop_errors)) :
     	echo '<div id="jigoshop_errors" class="error fade">';
@@ -142,7 +142,7 @@ function jigoshop_meta_boxes_save_errors() {
  */
 function jigoshop_write_panel_scripts() {
 
-    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
 	$post_type = jigoshop_get_current_post_type();
 
 	if( $post_type !== 'product' && $post_type !== 'shop_order' ) return;

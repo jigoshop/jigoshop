@@ -247,7 +247,7 @@ if (!function_exists('jigoshop_template_single_excerpt')) {
 if (!function_exists('jigoshop_template_single_meta')) {
 	function jigoshop_template_single_meta( $post, $_product ) {
 
-        $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+        $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
 		echo '<div class="product_meta">';
 		if ($jigoshop_options->get_option('jigoshop_enable_sku')=='yes' && !empty($_product->sku)) :
 			echo '<div class="sku">SKU: ' . $_product->sku . '</div>';
@@ -263,7 +263,7 @@ if (!function_exists('jigoshop_template_single_meta')) {
 if (!function_exists('jigoshop_template_single_sharing')) {
 	function jigoshop_template_single_sharing( $post, $_product ) {
 
-        $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+        $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
 		if ($jigoshop_options->get_option('jigoshop_sharethis')) :
 			echo '<div class="social">
 				<iframe src="https://www.facebook.com/plugins/like.php?href='.urlencode(get_permalink($post->ID)).'&amp;layout=button_count&amp;show_faces=false&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
@@ -366,7 +366,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 	function jigoshop_variable_add_to_cart() {
 
 		global $post, $_product;
-        $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+        $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
 		
 		$attributes = $_product->get_available_attributes_variations();
 
@@ -692,7 +692,7 @@ if (!function_exists('jigoshop_get_image_placeholder')) {
  **/
 if (!function_exists('jigoshop_output_related_products')) {
 	function jigoshop_output_related_products() {
-        $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+        $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
 		if ($jigoshop_options->get_option ('jigoshop_enable_related_products') != 'no')
 			// 2 Related Products in 2 columns
 			jigoshop_related_products( 2, 2 );
@@ -880,7 +880,7 @@ if (!function_exists('jigoshop_login_form')) {
 if (!function_exists('jigoshop_checkout_login_form')) {
 	function jigoshop_checkout_login_form() {
 
-        $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+        $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
 		if (is_user_logged_in() || $jigoshop_options->get_option('jigoshop_enable_guest_login') != 'yes') return;
 
 		?><p class="info"><?php _e('Already registered?', 'jigoshop'); ?> <a href="#" class="showlogin"><?php _e('Click here to login', 'jigoshop'); ?></a></p><?php
@@ -896,7 +896,7 @@ if (!function_exists('jigoshop_breadcrumb')) {
 	function jigoshop_breadcrumb( $delimiter = ' &rsaquo; ', $wrap_before = '<div id="breadcrumb">', $wrap_after = '</div>', $before = '', $after = '', $home = null ) {
 
 	 	global $post, $wp_query, $author, $paged;
-        $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+        $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
 
 	 	if( !$home ) $home = _x('Home', 'breadcrumb', 'jigoshop');
 

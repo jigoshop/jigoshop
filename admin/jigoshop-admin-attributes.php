@@ -27,7 +27,7 @@
 function jigoshop_attributes() {
 
 	global $wpdb;
-    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
 
 	if (isset($_POST['add_new_attribute']) && $_POST['add_new_attribute']) :
 

@@ -43,7 +43,7 @@ class jigoshop_tax {
      * @since 1.2
      */
     public function init_tax() {
-        $this->jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+        $this->jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
         $this->rates = $this->get_tax_rates();
         $this->compound_tax = false;
         $this->tax_amounts = array();

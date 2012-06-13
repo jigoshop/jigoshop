@@ -818,7 +818,7 @@ class Jigoshop_Options_Parser {
 	
 	public function format_option_for_display( $item ) {
 	
-		$data = jigoshop_base_class::get_jigoshop_options()->get_current_options();
+		$data = Jigoshop_Base_Class::get_jigoshop_options()->get_current_options();
 		
 		$display = "";					// each item builds it's output into this and it's returned for echoing
 		$class = "";
@@ -1251,7 +1251,7 @@ class Jigoshop_Options_Parser {
 	
 		$_tax = new jigoshop_tax();
 		$tax_classes = $_tax->get_tax_classes();
-		$tax_rates = (array) jigoshop_base_class::get_jigoshop_options()->get_option( 'jigoshop_tax_rates' );
+		$tax_rates = (array) Jigoshop_Base_Class::get_jigoshop_options()->get_option( 'jigoshop_tax_rates' );
 		$applied_all_states = array();
 		
 		ob_start();

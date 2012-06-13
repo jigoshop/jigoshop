@@ -22,7 +22,7 @@ class jigoshop_order {
     private $jigoshop_options;
     
     public function __construct() {
-        $this->jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+        $this->jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
     }
     
 	public function __get($variable) {

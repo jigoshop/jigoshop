@@ -34,13 +34,13 @@ class dibs extends jigoshop_payment_gateway {
 		$this->id = 'dibs';
 		$this->icon = '';
 		$this->has_fields = false;
-		$this->enabled = jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_dibs_enabled');
-		$this->title = jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_dibs_title');
-		$this->merchant = jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_dibs_merchant');
-		$this->description  = jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_dibs_description');
-		$this->testmode = jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_dibs_testmode');
-		$this->key1 = jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_dibs_key1');
-		$this->key2 = jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_dibs_key2');
+		$this->enabled = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_enabled');
+		$this->title = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_title');
+		$this->merchant = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_merchant');
+		$this->description  = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_description');
+		$this->testmode = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_testmode');
+		$this->key1 = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_key1');
+		$this->key2 = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_key2');
 
 		add_action('init', array(&$this, 'check_callback') );
 		add_action('valid-dibs-callback', array(&$this, 'successful_request') );
@@ -142,7 +142,7 @@ class dibs extends jigoshop_payment_gateway {
 	* There are no payment fields for dibs, but we want to show the description if set.
 	**/
 	function payment_fields() {
-		if ($jigoshop_dibs_description = jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_dibs_description')) echo wpautop(wptexturize($jigoshop_dibs_description));
+		if ($jigoshop_dibs_description = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_description')) echo wpautop(wptexturize($jigoshop_dibs_description));
 	}
 
 	/**
@@ -186,7 +186,7 @@ class dibs extends jigoshop_payment_gateway {
 				'amount'     => $order->order_total * 100,
 				'orderid'    => $order_id,
 				'uniqueoid'  => $order->order_key,
-				'currency'   => $dibs_currency[jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_currency')],
+				'currency'   => $dibs_currency[Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_currency')],
 				'ordertext'  => 'TEST',
 
 				// URLs
@@ -201,7 +201,7 @@ class dibs extends jigoshop_payment_gateway {
 
 		// Calculate key
 		// http://tech.dibs.dk/dibs_api/other_features/md5-key_control/
-		$args['md5key'] = MD5(jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_dibs_key2') . MD5(jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_dibs_key1') . 'merchant=' . $args['merchant'] . '&orderid=' . $args['orderid'] . '&currency=' . $args['currency'] . '&amount=' . $args['amount']));
+		$args['md5key'] = MD5(Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_key2') . MD5(Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_key1') . 'merchant=' . $args['merchant'] . '&orderid=' . $args['orderid'] . '&currency=' . $args['currency'] . '&amount=' . $args['amount']));
 
 		if( !empty($_SERVER['HTTP_CLIENT_IP']) ) {
 			$args['ip'] = $_SERVER['HTTP_CLIENT_IP'];
@@ -295,8 +295,8 @@ class dibs extends jigoshop_payment_gateway {
 
 			// Verify MD5 checksum
 			// http://tech.dibs.dk/dibs_api/other_features/md5-key_control/
-			$key1 = jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_dibs_key1');
-			$key2 = jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_dibs_key2');
+			$key1 = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_key1');
+			$key2 = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_key2');
 			$vars = 'transact='. $posted['transact'] . '&amount=' . $posted['amount'] . '&currency=' . $posted['currency'];
 			$md5 = MD5($key2 . MD5($key1 . $vars));
 

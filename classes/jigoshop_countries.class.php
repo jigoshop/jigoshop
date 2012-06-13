@@ -810,7 +810,7 @@ class jigoshop_countries {
 	/** get base country */
 	static function get_base_country() {
         
-		$default = jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_default_country');
+		$default = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_default_country');
 		if (strstr($default, ':')) :
 			$country = current(explode(':', $default));
 			$state = end(explode(':', $default));
@@ -824,7 +824,7 @@ class jigoshop_countries {
 
 	/** get base state */
 	static function get_base_state() {
-		$default = jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_default_country');
+		$default = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_default_country');
 		if (strstr($default, ':')) :
 			$country = current(explode(':', $default));
 			$state = end(explode(':', $default));
@@ -843,11 +843,11 @@ class jigoshop_countries {
 
 		asort($countries);
 
-		if (jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_allowed_countries')!=='specific') return $countries;
+		if (Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_allowed_countries')!=='specific') return $countries;
 
 		$allowed_countries = array();
 
-		$allowed_countries_raw = jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_specific_allowed_countries');
+		$allowed_countries_raw = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_specific_allowed_countries');
 
 		foreach ($allowed_countries_raw as $country) :
 
@@ -913,7 +913,7 @@ class jigoshop_countries {
 					// Will only run update_option once
 					// If the state is '*' , update the default country to the last state in the selected country
 					if (!$show_all && ($selected_state == '*' && $selected_country == $key)) :
-						jigoshop_base_class::get_jigoshop_options()->set_option('jigoshop_default_country', $key . ':' . $state_key);
+						Jigoshop_Base_Class::get_jigoshop_options()->set_option('jigoshop_default_country', $key . ':' . $state_key);
 					endif;
 	
 				else :

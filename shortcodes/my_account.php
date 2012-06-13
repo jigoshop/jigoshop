@@ -28,7 +28,7 @@ function jigoshop_my_account( $atts ) {
   	$recent_orders = ('all' == $recent_orders) ? -1 : $recent_orders;
 
 	global $post, $current_user;
-    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
 
 	get_currentuserinfo();
 
@@ -296,7 +296,7 @@ function get_jigoshop_view_order() {
 
 function jigoshop_view_order() {
 	
-    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
     $user_id = get_current_user_id();
 
     if (is_user_logged_in()) :

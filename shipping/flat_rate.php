@@ -29,14 +29,14 @@ class flat_rate extends jigoshop_shipping_method {
 		parent::__construct();
 		
         $this->id 			= 'flat_rate';
-        $this->enabled		= jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_flat_rate_enabled');
-		$this->title 		= jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_flat_rate_title');
-		$this->availability = jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_flat_rate_availability');
-		$this->countries 	= jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_flat_rate_countries');
-		$this->type 		= jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_flat_rate_type');
-		$this->tax_status	= jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_flat_rate_tax_status');
-		$this->cost 		= jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_flat_rate_cost');
-		$this->fee 			= jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_flat_rate_handling_fee');
+        $this->enabled		= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_flat_rate_enabled');
+		$this->title 		= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_flat_rate_title');
+		$this->availability = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_flat_rate_availability');
+		$this->countries 	= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_flat_rate_countries');
+		$this->type 		= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_flat_rate_type');
+		$this->tax_status	= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_flat_rate_tax_status');
+		$this->cost 		= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_flat_rate_cost');
+		$this->fee 			= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_flat_rate_handling_fee');
 
 		add_action( 'jigoshop_settings_scripts', array( &$this, 'admin_scripts' ) );
 		
@@ -160,7 +160,7 @@ class flat_rate extends jigoshop_shipping_method {
 			$this->shipping_total = $this->cost + $this->get_fee( $this->fee, jigoshop_cart::$cart_contents_total );
             $this->shipping_total = ($this->shipping_total < 0 ? 0 : $this->shipping_total);
         
-			if ( jigoshop_base_class::get_jigoshop_options()->get_option('jigoshop_calc_taxes')=='yes' && $this->tax_status=='taxable' ) :
+			if ( Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_calc_taxes')=='yes' && $this->tax_status=='taxable' ) :
 
                 $_tax->calculate_shipping_tax( $this->shipping_total - jigoshop_cart::get_cart_discount_leftover(), $this->id );
                 $this->shipping_tax = $_tax->get_total_shipping_tax_amount();

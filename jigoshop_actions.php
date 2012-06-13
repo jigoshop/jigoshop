@@ -40,7 +40,7 @@ add_action('wp_ajax_jigoshop_add_order_item', 'jigoshop_add_order_item');
 
 function jigoshop_add_order_item() {
     
-    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
 	check_ajax_referer( 'add-order-item', 'security' );
 
 	global $wpdb;
@@ -123,7 +123,7 @@ function jigoshop_add_order_item() {
 /**
  * When default permalinks are enabled, redirect shop page to post type archive url
  **/
-if (jigoshop_base_class::get_jigoshop_options()->get_option( 'permalink_structure' )=="") add_action( 'init', 'jigoshop_shop_page_archive_redirect' );
+if (Jigoshop_Base_Class::get_jigoshop_options()->get_option( 'permalink_structure' )=="") add_action( 'init', 'jigoshop_shop_page_archive_redirect' );
 
 function jigoshop_shop_page_archive_redirect() {
 
@@ -182,7 +182,7 @@ add_action( 'init', 'jigoshop_add_to_cart_action' );
 
 function jigoshop_add_to_cart_action($url = false)
 {
-    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
     
     //if required param is not set or nonce is invalid then just ignore whole function
     if (empty($_GET['add-to-cart']) || !jigoshop::verify_nonce('add_to_cart')) {
@@ -726,7 +726,7 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 add_action( 'wp_footer', 'jigoshop_ga_tracking' );
 function jigoshop_ga_tracking() {
 
-    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
     
 	// If admin don't track..shouldn't require this
 	if ( is_admin() )
@@ -770,7 +770,7 @@ function jigoshop_ga_tracking() {
 add_action( 'jigoshop_thankyou', 'jigoshop_ga_ecommerce_tracking' );
 function jigoshop_ga_ecommerce_tracking( $order_id ) {
 
-    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
     
 	// Skip if disabled
 	if ( $jigoshop_options->get_option('jigoshop_ga_ecommerce_tracking_enabled') != 'yes' )

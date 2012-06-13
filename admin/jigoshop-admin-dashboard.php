@@ -27,7 +27,7 @@
  * @usedby 		jigoshop_admin_menu()
  */
 function jigoshop_dashboard() {
-    $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
 	?>
 	<div class="wrap jigoshop">
         <div class="icon32 jigoshop_icon"><br/></div>

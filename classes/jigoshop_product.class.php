@@ -64,7 +64,7 @@ class jigoshop_product {
 	 */
 	public function __construct( $ID ) {
 
-        $this->jigoshop_options = jigoshop_base_class::get_jigoshop_options();
+        $this->jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
         
 		// Grab the product ID & get the product meta data
 		// TODO: Change to uppercase for consistency sake

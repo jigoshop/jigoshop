@@ -17,7 +17,7 @@
 ?>
 
 <?php global $order; 
-      $jigoshop_options = jigoshop_base_class::get_jigoshop_options();?>
+      $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();?>
 <form id="order_review" method="post">
 
     <table class="shop_table">
