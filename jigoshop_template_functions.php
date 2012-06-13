@@ -379,8 +379,10 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
                 if (has_post_thumbnail($variation->get_variation_id())) {
                     $attachment_id = get_post_thumbnail_id( $variation->get_variation_id() );
                     $large_thumbnail_size = apply_filters('single_product_large_thumbnail_size', 'shop_large');
-                    $image = current(wp_get_attachment_image_src( $attachment_id, $large_thumbnail_size));
-                    $image_link = current(wp_get_attachment_image_src( $attachment_id, 'full'));
+                    $image = wp_get_attachment_image_src( $attachment_id, $large_thumbnail_size);
+                    if ( ! empty( $image ) ) $image = $image[0];
+                    $image_link = wp_get_attachment_image_src( $attachment_id, 'full');
+                    if ( ! empty( $image_link ) ) $image_link = $image_link[0];
                 } else {
                     $image = '';
                     $image_link = '';
