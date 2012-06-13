@@ -57,8 +57,8 @@ function jigoshop_upgrade() {
 		jigoshop_upgrade_120();
 	}
 
-	if ( $jigoshop_db_version < 1300000 ) {
-		jigoshop_upgrade_200();
+	if ( $jigoshop_db_version < 1206130 ) {
+		jigoshop_upgrade_130();
 	}
 
 	// Update the db option
@@ -505,7 +505,7 @@ function jigoshop_upgrade_120() {
  *
  * @since 1.2
  */
-function jigoshop_upgrade_200() {
+function jigoshop_upgrade_130() {
 	
 	global $wpdb;
     $jigoshop_options = jigoshop_base_class::get_jigoshop_options();
