@@ -250,8 +250,11 @@ function jigoshop_product_data_box() {
 						'no'	=> 'No',
 						'yes'	=> 'Yes',
 					), get_post_meta( $post->ID, 'customizable', true ) );
+				// Customizable length
+				echo jigoshop_form::input( 'customized_length', 'Personalized Characters', null, get_post_meta($post->ID, 'customized_length', true), 'short', __('Leave blank for unlimited', 'jigoshop') );
 			?>
 			</fieldset>
+			
 		</div>
 		<?php if ($jigoshop_options->get_option('jigoshop_manage_stock')=='yes') : ?>
 		<div id="inventory" class="panel jigoshop_options_panel">

@@ -4,7 +4,7 @@ Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, wid
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.2.1
 Tested up to: 3.4-beta3
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,19 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.2.3 - 2012-05-28 =
+* New: Add filters for new Jigoshop Product Addons extension
+* New: Add CSS classes to product attributes on variations for the front end to allow special effects
+* New: Personalized products can have a character limit
+* Tweak: Each Product's variations can now be personalized
+* Tweak: Enable product categories widget showing 'current-cat' CSS class on single products
+* Tweak: Set the Shop Redirect page on fresh install to the base Shop page
+* Fix: Internationalize comment/review dates
+* Fix: Incorrect order calculation when adding a new order
+* Fix: Guest bypassing registration when forced
+* Fix: Disable guest purchases when setting is enabled
+* Fix: Cross Sells & Up Sells extension - users can define number of cross sells to show via theme functions.php
+
 = 1.2.2 - 2012-04-10 =
 * New: Danish translations
 * Fix: When tax was included in catalogue price and the quantity of the product increased, the product price only reflected

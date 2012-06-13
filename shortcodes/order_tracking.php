@@ -41,11 +41,14 @@ function jigoshop_order_tracking( $atts ) {
 		elseif ($order->id && $order_email && $order->get_order( $order->id )) :
 
 			if ($order->billing_email == $order_email) :
-
 				echo '<p>'.sprintf( __('Order #%s which was made %s has the status &ldquo;%s&rdquo;', 'jigoshop'), $order->id, human_time_diff(strtotime($order->order_date), current_time('timestamp')).__(' ago', 'jigoshop'), $order->status );
 
-				if ($order->status == 'completed') echo __(' and was completed ', 'jigoshop').human_time_diff(strtotime($order->completed_date), current_time('timestamp')).__(' ago', 'jigoshop');
-
+				if ($order->status == 'completed') {
+					$completed = get_post_meta( $order->id, '_js_completed_date' );
+					if ( is_array( $completed ) && ! empty( $completed ) ) $completed = $completed[0];
+					else $completed = 0;    // shouldn't happen, reset to be sure
+					echo __(' and was completed ', 'jigoshop').human_time_diff( $completed, current_time('timestamp')).__(' ago', 'jigoshop');
+				}
 				echo '.</p>';
 
 				?>
@@ -131,8 +134,10 @@ function jigoshop_order_tracking( $atts ) {
 								echo jigoshop_get_formatted_variation( $_product->variation_data );
 							endif;
 
+							do_action( 'jigoshop_display_item_meta_data', $order_item );
+							
 							echo '</td>';
-							echo '<td>'.jigoshop_price($_product->get_price()).'</td>';
+							echo '<td>'.jigoshop_price($order_item['cost']).'</td>';
 							echo '<td>'.$order_item['qty'].'</td>';
 
 							echo '</tr>';

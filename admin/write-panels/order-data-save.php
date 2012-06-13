@@ -98,7 +98,7 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
 
     //run stripslashes on all valid fields
     foreach ($order_fields as $field_name) {
-        if ( isset( $_POST[$field_name] ) && empty( $data[$field_name] ) )
+        if ( isset( $_POST[$field_name] ) && !empty( $data[$field_name] ) )
 			$data[$field_name] = stripslashes( $_POST[$field_name] );
     }
 
@@ -155,7 +155,7 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
 				'variation'   => $variation,
 				'name'        => htmlspecialchars(stripslashes($item_name[$i])),
 				'qty'         => (int) $item_quantity[$i],
-				'cost'        => number_format((float)jigowatt_clean($item_cost[$i]) * (int) $item_quantity[$i], 2),
+				'cost'        => number_format((float)jigowatt_clean($item_cost[$i]), 2),
 				'cost_inc_tax'=> -1, //TODO: need to look at this action when manually adding order
 				'taxrate'     => number_format((float)jigowatt_clean($item_tax_rate[$i]), 4)
                 ));

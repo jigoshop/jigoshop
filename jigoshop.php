@@ -22,7 +22,7 @@
  * Author:              Jigowatt
  * Author URI:          http://jigowatt.co.uk
  *
- * Version:             2.0
+ * Version:             1.3
  * Requires at least:   3.2.1
  * Tested up to:        3.4-beta3
  *
@@ -46,9 +46,11 @@ if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1300000);
 if (!defined("JIGOSHOP_OPTIONS")) define("JIGOSHOP_OPTIONS", 'jigoshop_options');
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
-// Override default translations with custom .mo's found in wp-content/languages/jigoshop
-load_textdomain( 'jigoshop', WP_LANG_DIR.'/jigoshop/jigoshop-'.get_locale().'.mo' );
-load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
+// Load administration & check if we need to install
+if ( is_admin() ) {
+	include_once( 'admin/jigoshop-admin.php' );
+	register_activation_hook( __FILE__, 'install_jigoshop' );
+}
 
 /**
  * Include core files and classes
@@ -117,6 +119,10 @@ if ( is_admin() ) {
 
 function jigoshop_init() {
 
+	// Override default translations with custom .mo's found in wp-content/languages/jigoshop
+	load_textdomain( 'jigoshop', WP_LANG_DIR.'/jigoshop/jigoshop-'.get_locale().'.mo' );
+	load_plugin_textdomain( 'jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+
 	/* ensure nothing is output to the browser prior to this (other than headers) */
 	ob_start();
 
@@ -139,9 +145,9 @@ function jigoshop_init() {
 	} else {
 	
 		/* Catalog Filters */
-		add_filter( 'loop-shop-query'   , create_function( '', 'return array("orderby" => "'.$jigoshop_options->get_option('jigoshop_catalog_sort_orderby').'","order" => "'.$jigoshop_options->get_option('jigoshop_catalog_sort_direction').'");' ) );
-		add_filter( 'loop_shop_columns' , create_function( '', 'return '.$jigoshop_options->get_option('jigoshop_catalog_columns').';' ) );
-		add_filter( 'loop_shop_per_page', create_function( '', 'return '.$jigoshop_options->get_option('jigoshop_catalog_per_page').';' ) );
+		add_filter( 'loop-shop-query', create_function( '', 'return array("orderby" => "' . $jigoshop_options->get_option('jigoshop_catalog_sort_orderby') . '","order" => "' . $jigoshop_options->get_option('jigoshop_catalog_sort_direction') . '");' ) );
+		add_filter( 'loop_shop_columns' , create_function( '', 'return ' . $jigoshop_options->get_option('jigoshop_catalog_columns') . ';' ) );
+		add_filter( 'loop_shop_per_page', create_function( '', 'return ' . $jigoshop_options->get_option('jigoshop_catalog_per_page') . ';' ) );
 
 		jigoshop_catalog_query::instance();		// front end queries class
 		
@@ -165,7 +171,7 @@ function jigoshop_init() {
 	if ( !defined('JIGOSHOP_TEMPLATE_URL') ) define('JIGOSHOP_TEMPLATE_URL', 'jigoshop/');
 	
 }
-add_action('init', 'jigoshop_init', 0);
+add_action( 'init', 'jigoshop_init', 0 );
 
 /**
  * Include template functions here with a low priority so they are pluggable by themes
@@ -173,7 +179,18 @@ add_action('init', 'jigoshop_init', 0);
 function jigoshop_load_template_functions() {
 	include_once( 'jigoshop_template_functions.php' );
 }
-add_action('init', 'jigoshop_load_template_functions', 999);
+add_action( 'init', 'jigoshop_load_template_functions', 999 );
+
+// Add a "Settings" link to the plugins.php page for Jigoshop
+function jigoshop_add_settings_link( $links, $file ) {
+	$this_plugin = plugin_basename( __FILE__ );
+	if( $file == $this_plugin ) {
+		$settings_link = '<a href="admin.php?page=jigoshop_settings">' . __( 'Settings', 'jigoshop' ) . '</a>';
+		array_unshift($links, $settings_link);
+	}
+	return $links;
+}
+add_filter( 'plugin_action_links', 'jigoshop_add_settings_link', 10, 2 );
 
 // Add a "Settings" link to the plugins.php page for Jigoshop
 function jigoshop_add_settings_link( $links, $file ) {
@@ -951,7 +968,7 @@ function jigoshop_comments($comment, $args, $depth) {
 					<p class="meta"><em><?php _e('Your comment is awaiting approval','jigoshop'); ?></em></p>
 				<?php else : ?>
 					<p class="meta">
-						<?php _e('Rating by','jigoshop'); ?> <strong class="reviewer vcard"><span class="fn"><?php comment_author(); ?></span></strong> <?php _e('on','jigoshop'); ?> <?php echo get_comment_date('M jS Y'); ?>:
+						<?php _e('Rating by','jigoshop'); ?> <strong class="reviewer vcard"><span class="fn"><?php comment_author(); ?></span></strong> <?php _e('on','jigoshop'); ?> <?php echo date_i18n(get_option('date_format'), strtotime(get_comment_date('Y-m-d'))); ?>:
 					</p>
 				<?php endif; ?>
   				<div class="description"><?php comment_text(); ?></div>

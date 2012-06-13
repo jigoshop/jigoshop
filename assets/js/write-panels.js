@@ -197,7 +197,7 @@
 						itemTax		= $('input[name^=item_tax_rate]:eq(' + i + ')').val();
 
 						if (!itemCost) itemCost = 0;
-						if (!itemTax) itemTax = 0;
+						if (!itemTax)  itemTax  = 0;
 
 						totalItemTax = 0;
 

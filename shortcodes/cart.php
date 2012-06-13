@@ -131,9 +131,14 @@ function jigoshop_cart($atts) {
                                     <a href="<?php echo esc_url( apply_filters('jigoshop_product_url_display_in_cart', get_permalink($values['product_id']), $values['product_id']) ); ?>"><?php echo apply_filters('jigoshop_cart_product_title', $_product->get_title(), $_product); ?></a>
                                     <?php echo $additional_description; ?>
                                     <?php
+										if ( !empty( $values['variation_id'] )) {
+											$product_id = $values['variation_id'];
+										} else {
+											$product_id = $values['product_id'];
+										}
 										$custom_products = (array) jigoshop_session::instance()->customized_products;
-										$custom = isset( $custom_products[$_product->ID] ) ? $custom_products[$_product->ID] : '';
-										if ( ! empty( $custom_products[$_product->ID] ) ) :
+										$custom = isset( $custom_products[$product_id] ) ? $custom_products[$product_id] : '';
+										if ( ! empty( $custom_products[$product_id] ) ) :
 											?>
 											<dl class="customization">
 												<dt class="customized_product_label"><?php echo apply_filters('jigoshop_customized_product_label', __('Personal: ','jigoshop') ); ?></dt>

@@ -403,6 +403,8 @@ function jigoshop_view_order() {
                                 echo jigoshop_get_formatted_variation($_product->variation_data);
                             endif;
 
+                            do_action( 'jigoshop_display_item_meta_data', $item );
+                            
                             echo '	</td>
 									<td>' . $item['qty'] . '</td>
 									<td>' . jigoshop_price($item['cost'], array('ex_tax_label' => 1)) . '</td>

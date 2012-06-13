@@ -247,7 +247,7 @@ class jigoshop_order {
 
                     // inc tax used with norway emails
                     $shipping = ($inc_tax ? jigoshop_price($this->order_shipping + $this->order_shipping_tax) : $shipping);
-                    $tax_tag = ($inc_tax ? '(inc. tax)' : '(ex. tax)');
+                    $tax_tag = ($inc_tax ? __('(inc. tax)','jigoshop') : __('(ex. tax)','jigoshop'));
 
                     if ($this->shipping_service != NULL || $this->shipping_service) :
 						$shipping .= sprintf(__(' <small>%s %s via %s</small>', 'jigoshop'), $tax_tag, ucwords($this->shipping_service), ucwords($this->shipping_method_title));
@@ -320,7 +320,7 @@ class jigoshop_order {
 			endif;
 
 			if ( ! empty( $item['customization'] ) ) :
-				$return .= PHP_EOL . apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') ) . $item['customization'];
+				$return .= PHP_EOL . apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') ) . PHP_EOL . $item['customization'];
 			endif;
 
 			if ($show_download_links) :

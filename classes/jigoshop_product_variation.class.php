@@ -117,7 +117,7 @@ class jigoshop_product_variation extends jigoshop_product {
 	 * @param   array $data array of attributes and values
 	 */
 	function set_variation_attributes(array $data) {
-		foreach($this->variation_data as $attribute=>$value) {
+		if ( ! empty( $this->variation_data ) && is_array( $this->variation_data ) ) foreach ($this->variation_data as $attribute=>$value) {
 			if(isset($data[$attribute])) {
 				$this->variation_data[$attribute] = $data[$attribute];
 			}
