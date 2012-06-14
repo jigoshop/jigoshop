@@ -883,72 +883,72 @@ class jigoshop_countries extends Jigoshop_Base_Class {
 	}
 
 	/** Outputs the list of countries and states for use in dropdown boxes */
-	function country_dropdown_options( $selected_country = '', $selected_state = '*', $escape = false, $show_all = true ) {
+	function country_dropdown_options( $selected_country = '', $selected_state = '*', $escape = false, $show_all = true, $echo = true ) {
 
-	if ( is_array($selected_country ) )
-		$selected_country = array_unique($selected_country);
-
-	if ( is_array($selected_state ) )
-		$selected_state = array_unique($selected_state);
-
+		if ( is_array($selected_country ) ) $selected_country = array_unique($selected_country);
+	
+		if ( is_array($selected_state ) ) $selected_state = array_unique($selected_state);
+	
 		$countries = self::$countries;
 		asort($countries);
-
+	
 		if ( $countries ) foreach ( $countries as $key=>$value ) :
 			$value = $escape ? esc_js($value) : $value;
 			if ( $states =  self::get_states($key) ) :
-				echo '<optgroup label="'.$value.'">';
-
+				$output .= '<optgroup label="'.$value.'">';
+	
 				if ($show_all) :
 					if ( !is_array( $selected_country ) ) {
-						echo '<option value="'.esc_attr($key).'"';
-						if ($selected_country == $key && $selected_state == '*') echo ' selected="selected"';
-						echo '>'.__('All of', 'jigoshop').' ' .$value.'</option>';
+						$output .= '<option value="'.esc_attr($key).'"';
+						if ($selected_country==$key && $selected_state=='*') $output .= ' selected="selected"';
+						$output .= '>'.__('All of', 'jigoshop').' ' .$value.'</option>';
 					}
 				endif;
-
-				foreach ($states as $state_key=>$state_value) :
-					echo '<option value="'.$key.':'.$state_key.'"';
-
+	
+				foreach ( $states as $state_key => $state_value ) :
+					$output .= '<option value="'.$key.':'.$state_key.'"';
+	
 					if ( is_array( $selected_state ) ) {
-
+	
 						if ( in_array ( $state_key, $selected_state ) )
-							echo ' selected="selected"';
-
-
+							$output .= ' selected="selected"';
+	
+	
 					} else {
-
+	
 					if (($selected_country==$key && $selected_state==$state_key) || (!$show_all && ($selected_state=='*' && $selected_country==$key)))
-						echo ' selected="selected"';
-
+						$output .= ' selected="selected"';
+	
 					}
-					echo '>'.$value.' &mdash; '. ($escape ? esc_js($state_value) : $state_value) .'</option>';
+					$output .= '>'.$value.' &mdash; '. ($escape ? esc_js($state_value) : $state_value) .'</option>';
 				endforeach;
-
+	
 				echo '</optgroup>';
-
+	
 				// Will only run update_option once
 				// If the state is '*' , update the default country to the last state in the selected country
 				if (!$show_all && ($selected_state == '*' && $selected_country == $key)) :
 					self::get_options()->set_option('jigoshop_default_country', $key . ':' . $state_key);
 				endif;
-
+	
 			else :
-				echo '<option';
-
+				$output .= '<option';
+	
 				if ( is_array( $selected_country ) ) {
 					if ( in_array ( $key, $selected_country ) )
-						echo ' selected="selected"';
+						$output .= ' selected="selected"';
 				} else {
 					if ($selected_country==$key && $selected_state=='*')
-						echo ' selected="selected"';
+						$output .= ' selected="selected"';
 				}
-
-				echo ' value="'.esc_attr($key).'">'. __($value, 'jigoshop') .'</option>';
+	
+				$output .= ' value="'.esc_attr($key).'">'. __($value, 'jigoshop') .'</option>';
 			endif;
-
+	
 		endforeach;
-
+		
+		if ( $echo ) echo $output;
+		else return $output;
 	}
 
 	// Called when a base state is set to '*', #545
