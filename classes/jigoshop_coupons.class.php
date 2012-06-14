@@ -17,7 +17,7 @@
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
-class jigoshop_coupons {
+class jigoshop_coupons extends Jigoshop_Base_Class {
 
 	function __construct() {
 
@@ -33,7 +33,7 @@ class jigoshop_coupons {
 	 * @since 0.9.8
 	 */
 	function get_coupons() {
-		return (array ) Jigoshop_Base_Class::get_jigoshop_options()->get_option( 'jigoshop_coupons' );
+		return (array ) self::get_options()->get_option( 'jigoshop_coupons' );
 	}
 
 	/**

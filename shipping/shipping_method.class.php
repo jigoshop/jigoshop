@@ -33,7 +33,7 @@ class jigoshop_shipping_method {
     private $error_message = null;
     
     public function __construct() {        
-        Jigoshop_Base_Class::get_jigoshop_options()->install_external_options( 'Shipping', $this->get_default_options() );
+        Jigoshop_Base_Class::get_options()->install_external_options( 'Shipping', $this->get_default_options() );
     }
 
     public function is_available() {
@@ -59,8 +59,8 @@ class jigoshop_shipping_method {
 		if ($this->availability == 'specific') :
 			$ship_to_countries = $this->countries;
 		else :
-			if (Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_allowed_countries')=='specific') :
-				$ship_to_countries = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_specific_allowed_countries');
+			if (Jigoshop_Base_Class::get_options()->get_option('jigoshop_allowed_countries')=='specific') :
+				$ship_to_countries = Jigoshop_Base_Class::get_options()->get_option('jigoshop_specific_allowed_countries');
 			endif;
 		endif;
 

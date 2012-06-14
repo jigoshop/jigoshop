@@ -16,7 +16,7 @@
  * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
-class jigoshop_order {
+class jigoshop_order extends Jigoshop_Base_Class {
 
 	public $_data = array();
     
@@ -351,14 +351,14 @@ class jigoshop_order {
 	function email_bank_details() {
 		
 		
-		$title 			= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_title');
-		$description 	= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_description');
-		$bank_name 		= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_bank_name');
-		$acc_number 	= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_acc_number');
-		$sort_code 		= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_sort_code');
-		$iban 			= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_iban');
-		$bic 			= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_bic');
-		$additional 	= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_bank_transfer_additional');
+		$title 			= self::get_options()->get_option('jigoshop_bank_transfer_title');
+		$description 	= self::get_options()->get_option('jigoshop_bank_transfer_description');
+		$bank_name 		= self::get_options()->get_option('jigoshop_bank_transfer_bank_name');
+		$acc_number 	= self::get_options()->get_option('jigoshop_bank_transfer_acc_number');
+		$sort_code 		= self::get_options()->get_option('jigoshop_bank_transfer_sort_code');
+		$iban 			= self::get_options()->get_option('jigoshop_bank_transfer_iban');
+		$bic 			= self::get_options()->get_option('jigoshop_bank_transfer_bic');
+		$additional 	= self::get_options()->get_option('jigoshop_bank_transfer_additional');
 
 		$bank_info = null;
 		if ($description) $bank_info .= wpautop(wptexturize($description)) . PHP_EOL;
@@ -379,7 +379,7 @@ class jigoshop_order {
 
 		$payment_page = apply_filters('jigoshop_get_checkout_payment_url', get_permalink(jigoshop_get_page_id('pay')));
 
-		if (Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_force_ssl_checkout')=='yes' || is_ssl()) $payment_page = str_replace('http:', 'https:', $payment_page);
+		if (self::get_options()->get_option('jigoshop_force_ssl_checkout')=='yes' || is_ssl()) $payment_page = str_replace('http:', 'https:', $payment_page);
 
 		return add_query_arg('pay_for_order', 'true', add_query_arg('order', $this->order_key, add_query_arg('order_id', $this->id, $payment_page)));
 	}
@@ -576,9 +576,9 @@ class jigoshop_order {
 					endif;
 
 					// stock status notifications
-                    if (Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_notify_no_stock_amount') >= 0 && Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_notify_no_stock_amount') >= $new_quantity) :
+                    if (self::get_options()->get_option('jigoshop_notify_no_stock_amount') >= 0 && self::get_options()->get_option('jigoshop_notify_no_stock_amount') >= $new_quantity) :
 						do_action('jigoshop_no_stock_notification', $item['id']);
-					elseif (Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_notify_low_stock_amount') && Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_notify_low_stock_amount')>=$new_quantity) :
+					elseif (self::get_options()->get_option('jigoshop_notify_low_stock_amount') && self::get_options()->get_option('jigoshop_notify_low_stock_amount')>=$new_quantity) :
 						do_action('jigoshop_low_stock_notification', $item['id']);
 					endif;
 

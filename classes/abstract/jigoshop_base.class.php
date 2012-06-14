@@ -58,7 +58,7 @@ abstract class Jigoshop_Base_Class {
      * 
      * @param Jigoshop_Options_Interface $jigoshop_options the options to use on the classes
      */
-    protected static function set_jigoshop_options(Jigoshop_Options_Interface $jigoshop_options) {
+    protected static function set_options(Jigoshop_Options_Interface $jigoshop_options) {
         self::$jigoshop_options = $jigoshop_options;
     }
     
@@ -66,7 +66,7 @@ abstract class Jigoshop_Base_Class {
      * helper function for any files that do not inherit jigoshop_base, they can access jigoshop_options
      * @return Jigoshop_Options_Interface the options that have been set, or null if they haven't been set yet 
      */
-    public static function get_jigoshop_options() {
+    public static function get_options() {
         
         // default options to Jigoshop_Options if they haven't been set
         if (self::$jigoshop_options == null) :

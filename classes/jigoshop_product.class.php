@@ -14,7 +14,7 @@
  * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
-class jigoshop_product {
+class jigoshop_product extends Jigoshop_Base_Class {
 
 	// LEGACY
 	private static $attribute_taxonomies = NULL;
@@ -231,15 +231,15 @@ class jigoshop_product {
 		update_post_meta( $this->ID, 'stock', $this->stock );
 		update_post_meta( $this->ID, 'stock_sold', $amount_sold );
 
-		if ( Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_notify_no_stock_amount') >= 0
-			&& Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_notify_no_stock_amount') >= $this->stock
-			&& Jigoshop_Base_Class::get_jigoshop_options()->get_option( 'jigoshop_hide_no_stock_product' ) == 'yes' ) {
+		if ( self::get_options()->get_option('jigoshop_notify_no_stock_amount') >= 0
+			&& self::get_options()->get_option('jigoshop_notify_no_stock_amount') >= $this->stock
+			&& self::get_options()->get_option( 'jigoshop_hide_no_stock_product' ) == 'yes' ) {
 			
 			update_post_meta( $this->ID, 'visibility', 'hidden' );
 			
-		} else if ( $this->stock > Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_notify_no_stock_amount')
+		} else if ( $this->stock > self::get_options()->get_option('jigoshop_notify_no_stock_amount')
 			&& $this->visibility == 'hidden'
-			&& Jigoshop_Base_Class::get_jigoshop_options()->get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) {
+			&& self::get_options()->get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) {
 			
 			update_post_meta( $this->ID, 'visibility', 'visible' );
 		}
@@ -367,7 +367,7 @@ class jigoshop_product {
 	public function managing_stock() {
 
 		// If we're not managing stock at all
-		if (Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_manage_stock') != 'yes')
+		if (self::get_options()->get_option('jigoshop_manage_stock') != 'yes')
 			return false;
 
 		return (bool) $this->manage_stock;
@@ -381,7 +381,7 @@ class jigoshop_product {
 	public function is_in_stock() {
 
 		// Always return in stock if product is in stock
-		if (Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_manage_stock') != 'yes')
+		if (self::get_options()->get_option('jigoshop_manage_stock') != 'yes')
 			return true;
 
 		if ( $this->is_type( array('grouped', 'variable') ) ) {
@@ -466,7 +466,7 @@ class jigoshop_product {
 		
 		
 		// Do not display availability if we aren't managing stock
-		if ( Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_manage_stock') != 'yes' )
+		if ( self::get_options()->get_option('jigoshop_manage_stock') != 'yes' )
 			return false;
 
 		// Start as in stock
@@ -477,7 +477,7 @@ class jigoshop_product {
 
 		// If stock is being managed & has stock
 		if ( $this->managing_stock() && $this->stock ) {
-			$notice['availability'] .= (Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_show_stock') == 'yes') ? " &ndash; {$this->stock} ".__(' available', 'jigoshop' ) : '';
+			$notice['availability'] .= (self::get_options()->get_option('jigoshop_show_stock') == 'yes') ? " &ndash; {$this->stock} ".__(' available', 'jigoshop' ) : '';
 
 			// If customers require backorder notification
 			if ( $this->backorders_allowed() && $this->backorders_require_notification() ) {
@@ -590,7 +590,7 @@ class jigoshop_product {
         // a full subtotal, this is necessary.
         $price = $this->get_price() * 100;
 
-        if (Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_prices_include_tax') == 'yes') :
+        if (self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes') :
             $rates = (array) $this->get_tax_base_rate();
 
             if (count($rates > 0)) :
@@ -638,7 +638,7 @@ class jigoshop_product {
 
 		$rate = array();
 
-        if ($this->is_taxable() && Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_calc_taxes') == 'yes') :
+        if ($this->is_taxable() && self::get_options()->get_option('jigoshop_calc_taxes') == 'yes') :
             $_tax = new jigoshop_tax();
 
             if ($_tax->get_tax_classes_for_base()) foreach ( $_tax->get_tax_classes_for_base() as $tax_class ) :
@@ -1055,7 +1055,7 @@ class jigoshop_product {
 	 */
 	public function has_dimensions($all_dimensions = false) {
 
-		if ( Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_enable_dimensions') != 'yes' )
+		if ( self::get_options()->get_option('jigoshop_enable_dimensions') != 'yes' )
 			return false;
 
 		return ( $all_dimensions ? ($this->get_length() && $this->get_width() && $this->get_height()) :($this->get_length() || $this->get_width() || $this->get_height()));
@@ -1068,7 +1068,7 @@ class jigoshop_product {
 	 */
 	public function has_weight() {
 
-		if ( Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_enable_weight') != 'yes' )
+		if ( self::get_options()->get_option('jigoshop_enable_weight') != 'yes' )
 			return false;
 
 		return (bool) $this->get_weight();
@@ -1090,18 +1090,18 @@ class jigoshop_product {
 		$html = '<table cellspacing="0" class="shop_attributes">';
 
 		// Output weight if we have it
-		if (Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_enable_weight')=='yes' && $this->get_weight() ) {
-			$html .= '<tr><th>'.__('Weight', 'jigoshop').'</th><td>'. $this->get_weight() . Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_weight_unit') .'</td></tr>';
+		if (self::get_options()->get_option('jigoshop_enable_weight')=='yes' && $this->get_weight() ) {
+			$html .= '<tr><th>'.__('Weight', 'jigoshop').'</th><td>'. $this->get_weight() . self::get_options()->get_option('jigoshop_weight_unit') .'</td></tr>';
 		}
 
 		// Output dimensions if we have it
-		if (Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_enable_dimensions')=='yes') {
+		if (self::get_options()->get_option('jigoshop_enable_dimensions')=='yes') {
 			if ( $this->get_length() )
-				$html .= '<tr><th>'.__('Length', 'jigoshop').'</th><td>'. $this->get_length() . Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dimension_unit') .'</td></tr>';
+				$html .= '<tr><th>'.__('Length', 'jigoshop').'</th><td>'. $this->get_length() . self::get_options()->get_option('jigoshop_dimension_unit') .'</td></tr>';
 			if ( $this->get_width() )
-				$html .= '<tr><th>'.__('Width', 'jigoshop').'</th><td>'. $this->get_width() . Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dimension_unit') .'</td></tr>';
+				$html .= '<tr><th>'.__('Width', 'jigoshop').'</th><td>'. $this->get_width() . self::get_options()->get_option('jigoshop_dimension_unit') .'</td></tr>';
 			if ( $this->get_height() )
-				$html .= '<tr><th>'.__('Height', 'jigoshop').'</th><td>'. $this->get_height() . Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dimension_unit') .'</td></tr>';
+				$html .= '<tr><th>'.__('Height', 'jigoshop').'</th><td>'. $this->get_height() . self::get_options()->get_option('jigoshop_dimension_unit') .'</td></tr>';
 		}
 
 		$attributes = $this->get_attributes();

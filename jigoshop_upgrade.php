@@ -504,7 +504,7 @@ function jigoshop_upgrade_120() {
 function jigoshop_upgrade_130() {
 	
 	global $wpdb;
-    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
+    $jigoshop_options = Jigoshop_Base_Class::get_options();
 	
 	// adjust specific options based on old settings for the new Jigoshop_Options class
 	require_once ( 'admin/jigoshop-admin-settings-options.php' );

@@ -34,18 +34,18 @@ class paypal extends jigoshop_payment_gateway {
 		$this->id			= 'paypal';
 		$this->icon 		= jigoshop::assets_url() . '/assets/images/icons/paypal.png';
 		$this->has_fields 	= false;
-	  	$this->enabled		= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_paypal_enabled');
-		$this->title 		= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_paypal_title');
-		$this->email 		= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_paypal_email');
-		$this->description  = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_paypal_description');
-		$this->force_payment= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_paypal_force_payment');
+	  	$this->enabled		= Jigoshop_Base_Class::get_options()->get_option('jigoshop_paypal_enabled');
+		$this->title 		= Jigoshop_Base_Class::get_options()->get_option('jigoshop_paypal_title');
+		$this->email 		= Jigoshop_Base_Class::get_options()->get_option('jigoshop_paypal_email');
+		$this->description  = Jigoshop_Base_Class::get_options()->get_option('jigoshop_paypal_description');
+		$this->force_payment= Jigoshop_Base_Class::get_options()->get_option('jigoshop_paypal_force_payment');
 
 		$this->liveurl 		= 'https://www.paypal.com/webscr';
 		$this->testurl 		= 'https://www.sandbox.paypal.com/webscr';
-		$this->testmode		= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_paypal_testmode');
-		$this->testmail 	= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_sandbox_email');
+		$this->testmode		= Jigoshop_Base_Class::get_options()->get_option('jigoshop_paypal_testmode');
+		$this->testmail 	= Jigoshop_Base_Class::get_options()->get_option('jigoshop_sandbox_email');
 
-		$this->send_shipping = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_paypal_send_shipping');
+		$this->send_shipping = Jigoshop_Base_Class::get_options()->get_option('jigoshop_paypal_send_shipping');
 
 		add_action( 'init', array(&$this, 'check_ipn_response') );
 		add_action('valid-paypal-standard-ipn-request', array(&$this, 'successful_request') );
@@ -195,8 +195,8 @@ class paypal extends jigoshop_payment_gateway {
 
 		$order = new jigoshop_order( $order_id );
         
-        $subtotal = (float)(Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_prices_include_tax') == 'yes' ? (float)$order->order_subtotal + (float)$order->order_tax : $order->order_subtotal);
-        $shipping_total = (float)(Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_prices_include_tax') == 'yes' ? (float)$order->order_shipping + (float)$order->order_shipping_tax : $order->order_shipping);
+        $subtotal = (float)(Jigoshop_Base_Class::get_options()->get_option('jigoshop_prices_include_tax') == 'yes' ? (float)$order->order_subtotal + (float)$order->order_tax : $order->order_subtotal);
+        $shipping_total = (float)(Jigoshop_Base_Class::get_options()->get_option('jigoshop_prices_include_tax') == 'yes' ? (float)$order->order_shipping + (float)$order->order_shipping_tax : $order->order_shipping);
 
 		if ( $this->testmode == 'yes' ):
 			$paypal_adr = $this->testurl . '?test_ipn=1&';
@@ -231,7 +231,7 @@ class paypal extends jigoshop_payment_gateway {
 				'cmd' 					=> '_cart',
 				'business' 				=> $this->testmode ? $this->testmail : $this->email,
 				'no_note' 				=> 1,
-				'currency_code' 		=> Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_currency'),
+				'currency_code' 		=> Jigoshop_Base_Class::get_options()->get_option('jigoshop_currency'),
 				'charset' 				=> 'UTF-8',
 				'rm' 					=> 2,
 				'upload' 				=> 1,
@@ -266,7 +266,7 @@ class paypal extends jigoshop_payment_gateway {
 		);
 
 		// only include tax if prices don't include tax
-		if (Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_prices_include_tax') != 'yes') :
+		if (Jigoshop_Base_Class::get_options()->get_option('jigoshop_prices_include_tax') != 'yes') :
 			$paypal_args['tax']					= $order->get_total_tax();
 			$paypal_args['tax_cart']			= $order->get_total_tax();
 		endif;
@@ -322,7 +322,7 @@ class paypal extends jigoshop_payment_gateway {
 
             $shipping_tax = (float)($order->order_shipping_tax ? $order->order_shipping_tax : 0);
 
-            $paypal_args['amount_'.$item_loop] = (Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_prices_include_tax') == 'yes' ? number_format((float)$order->order_shipping + $shipping_tax, 2) : number_format((float)$order->order_shipping, 2));
+            $paypal_args['amount_'.$item_loop] = (Jigoshop_Base_Class::get_options()->get_option('jigoshop_prices_include_tax') == 'yes' ? number_format((float)$order->order_shipping + $shipping_tax, 2) : number_format((float)$order->order_shipping, 2));
         endif; 
         
         if ($this->force_payment == 'yes') :

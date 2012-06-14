@@ -51,7 +51,7 @@ function jigoshop_change_insert_into_post( $translation, $original ) {
 function jigoshop_product_data_box() {
 
 	global $post, $wpdb, $thepostid;
-    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
+    $jigoshop_options = Jigoshop_Base_Class::get_options();
 	
 	add_action('admin_footer', 'jigoshop_meta_scripts');
 	wp_nonce_field( 'jigoshop_save_data', 'jigoshop_meta_nonce' );

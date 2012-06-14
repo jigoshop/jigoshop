@@ -51,7 +51,7 @@ add_filter('manage_edit-product_columns', 'jigoshop_edit_product_columns');
 
 function jigoshop_edit_product_columns($columns) {
 
-    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
+    $jigoshop_options = Jigoshop_Base_Class::get_options();
 	$columns = array();
 
 	$columns["cb"]    = "<input type=\"checkbox\" />";
@@ -84,7 +84,7 @@ add_action('manage_product_posts_custom_column', 'jigoshop_custom_product_column
 
 function jigoshop_custom_product_columns($column) {
 	global $post;
-    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
+    $jigoshop_options = Jigoshop_Base_Class::get_options();
 	$product = new jigoshop_product($post->ID);
 
 	switch ($column) {
@@ -315,7 +315,7 @@ add_action('manage_shop_order_posts_custom_column', 'jigoshop_custom_order_colum
 function jigoshop_custom_order_columns($column) {
 
     global $post;
-    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
+    $jigoshop_options = Jigoshop_Base_Class::get_options();
     $order = new jigoshop_order($post->ID);
     switch ($column) {
         case "order_status" :

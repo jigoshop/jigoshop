@@ -21,7 +21,7 @@
  * 1. Archive 'pending' orders by setting their status to 'on-hold'.
  */
 
-class jigoshop_cron {
+class jigoshop_cron extends Jigoshop_Base_Class {
 
 	function __construct () {
 
@@ -45,12 +45,12 @@ class jigoshop_cron {
 		}
 
 		/* Remove scheduled beta checker, and clear the plugin update transient. */
-		if ( wp_next_scheduled( 'jigoshop_cron_check_beta' ) && get_option( 'jigoshop_use_beta_version' ) == 'no' ) {
+		if ( wp_next_scheduled( 'jigoshop_cron_check_beta' ) && self::get_options()->get_option( 'jigoshop_use_beta_version' ) == 'no' ) {
 			delete_site_transient( 'update_plugins' );
 			wp_clear_scheduled_hook('jigoshop_cron_check_beta');
 		}
 		/* Schedule the daily beta checker, and run it now since the user enabled it just now. */
-		else if ( !wp_next_scheduled( 'jigoshop_cron_check_beta' ) && get_option( 'jigoshop_use_beta_version' ) == 'yes' ) {
+		else if ( !wp_next_scheduled( 'jigoshop_cron_check_beta' ) && self::get_options()->get_option( 'jigoshop_use_beta_version' ) == 'yes' ) {
 			$this->jigoshop_update_beta_init();
 			wp_schedule_event(time(), 'daily', 'jigoshop_cron_check_beta' );
 		}
@@ -144,7 +144,7 @@ class jigoshop_cron {
 	/* Check for Jigoshop beta updates. */
 	function jigoshop_update_beta_checker( $transient ) {
 
-		if( get_option('jigoshop_use_beta_version') == 'no' && get_option('jigoshop_check_beta_manually') === false )
+		if( self::get_options()->get_option('jigoshop_use_beta_version') == 'no' && self::get_options()->get_option('jigoshop_check_beta_manually') === false )
 			return false;
 
 		// Check if the transient contains the 'checked' information

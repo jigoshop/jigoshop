@@ -16,7 +16,7 @@
  * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
-class jigoshop_orders {
+class jigoshop_orders extends Jigoshop_Base_Class {
 
 	public $orders;
 	public $count;
