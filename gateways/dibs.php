@@ -14,120 +14,142 @@
  * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
+
+/**
+ * Add the gateway to JigoShop
+ **/
+function add_dibs_gateway( $methods ) {
+	$methods[] = 'dibs';
+	return $methods;
+}
+add_filter( 'jigoshop_payment_gateways', 'add_dibs_gateway', 50 );
+
+
 class dibs extends jigoshop_payment_gateway {
 
 	public function __construct() {
+		
+        parent::__construct();
+		
 		$this->id = 'dibs';
 		$this->icon = '';
 		$this->has_fields = false;
-		$this->enabled = get_option('jigoshop_dibs_enabled');
-		$this->title = get_option('jigoshop_dibs_title');
-		$this->merchant = get_option('jigoshop_dibs_merchant');
-		$this->description  = get_option('jigoshop_dibs_description');
-		$this->testmode = get_option('jigoshop_dibs_testmode');
-		$this->key1 = get_option('jigoshop_dibs_key1');
-		$this->key2 = get_option('jigoshop_dibs_key2');
+		$this->enabled = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_enabled');
+		$this->title = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_title');
+		$this->merchant = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_merchant');
+		$this->description  = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_description');
+		$this->testmode = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_testmode');
+		$this->key1 = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_key1');
+		$this->key2 = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_key2');
 
 		add_action('init', array(&$this, 'check_callback') );
 		add_action('valid-dibs-callback', array(&$this, 'successful_request') );
-		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
 		add_action('receipt_dibs', array(&$this, 'receipt_page'));
 
-		add_option('jigoshop_dibs_enabled', 'yes');
-		add_option('jigoshop_dibs_merchant', '');
-		add_option('jigoshop_dibs_key1', '');
-		add_option('jigoshop_dibs_key2', '');
-		add_option('jigoshop_dibs_title', __('DIBS', 'jigoshop') );
-		add_option('jigoshop_dibs_description', __("Pay via DIBS using credit card or bank transfer.", 'jigoshop') );
-		add_option('jigoshop_dibs_testmode', 'no');
 	}
 
+
 	/**
-	* Admin Panel Options
-	* - Options for bits like 'title' and availability on a country-by-country basis
-	**/
-	public function admin_options() {
-		?>
-		<thead><tr><th scope="col" colspan="2">
-			<h3 class="title"><?php _e('DIBS FlexWin', 'jigoshop'); ?></h3>
-			<p><?php _e('DIBS FlexWin works by sending the user to <a href="http://www.dibspayment.com/">DIBS</a> to enter their payment information.', 'jigoshop'); ?></p></th></tr></thead>
-		<tr>
-			<th scope="row"><?php _e('Enable DIBS FlexWin', 'jigoshop') ?></th>
-			<td class="forminp">
-				<select name="jigoshop_dibs_enabled" id="jigoshop_dibs_enabled" style="min-width:100px;">
-					<option value="yes" <?php if (get_option('jigoshop_dibs_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-					<option value="no" <?php if (get_option('jigoshop_dibs_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<th scope="row"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
-			<td class="forminp">
-				<input class="input-text" type="text" name="jigoshop_dibs_title" id="jigoshop_dibs_title" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_dibs_title')) echo $value; else echo 'DIBS'; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<th scope="row"><a href="#" tip="<?php _e('This controls the description which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Description', 'jigoshop') ?></th>
-			<td class="forminp">
-				<input class="input-text wide-input" type="text" name="jigoshop_dibs_description" id="jigoshop_dibs_description" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_dibs_description')) echo $value; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<th scope="row"><a href="#" tip="<?php _e('Please enter your DIBS merchant id; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('DIBS Merchant id', 'jigoshop') ?></th>
-			<td class="forminp">
-				<input class="input-text" type="text" name="jigoshop_dibs_merchant" id="jigoshop_dibs_merchant" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_dibs_merchant')) echo $value; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<th scope="row"><a href="#" tip="<?php _e('Please enter your DIBS MD5 key #1; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('DIBS MD5 Key 1', 'jigoshop') ?></th>
-			<td class="forminp">
-				<input class="input-text" type="text" name="jigoshop_dibs_key1" id="jigoshop_dibs_key1" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_dibs_key1')) echo $value; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<th scope="row"><a href="#" tip="<?php _e('Please enter your DIBS MD5 key #2; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('DIBS MD5 Key 2', 'jigoshop') ?></th>
-			<td class="forminp">
-				<input class="input-text" type="text" name="jigoshop_dibs_key2" id="jigoshop_dibs_key2" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_dibs_key2')) echo $value; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<th scope="row"><a href="#" tip="<?php _e('When test mode is enabled only DIBS specific test-cards are accepted.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Enable test mode', 'jigoshop') ?></th>
-			<td class="forminp">
-				<select name="jigoshop_dibs_testmode" id="jigoshop_dibs_testmode" style="min-width:100px;">
-					<option value="yes" <?php if (get_option('jigoshop_dibs_testmode') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-					<option value="no" <?php if (get_option('jigoshop_dibs_testmode') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
-				</select>
-			</td>
-		</tr>
-		<?php
+	 * Default Option settings for WordPress Settings API using the Jigoshop_Options class
+	 *
+	 * These should be installed on the Jigoshop_Options 'Payment Gateways' tab
+	 *
+	 */	
+	protected function get_default_options() {
+	
+		$defaults = array();
+		
+		// Define the Section name for the Jigoshop_Options
+		$defaults[] = array( 'name' => __('DIBS FlexWin', 'jigoshop'), 'type' => 'title', 'desc' => __('DIBS FlexWin works by sending the user to <a href="http://www.dibspayment.com/">DIBS</a> to enter their payment information.', 'jigoshop') );
+		
+		// List each option in order of appearance with details
+		$defaults[] = array(
+			'name'		=> __('Enable DIBS FlexWin','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_dibs_enabled',
+			'std' 		=> 'no',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+		
+		$defaults[] = array(
+			'name'		=> __('Method Title','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('This controls the title which the user sees during checkout.','jigoshop'),
+			'id' 		=> 'jigoshop_dibs_title',
+			'std' 		=> __('DIBS','jigoshop'),
+			'type' 		=> 'text'
+		);
+		
+		$defaults[] = array(
+			'name'		=> __('Description','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('This controls the description which the user sees during checkout.','jigoshop'),
+			'id' 		=> 'jigoshop_dibs_description',
+			'std' 		=> __("Pay via DIBS using credit card or bank transfer.", 'jigoshop'),
+			'type' 		=> 'longtext'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('DIBS Merchant id','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Please enter your DIBS merchant id; this is needed in order to take payment!','jigoshop'),
+			'id' 		=> 'jigoshop_dibs_merchant',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('DIBS MD5 Key 1','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Please enter your DIBS MD5 key #1; this is needed in order to take payment!','jigoshop'),
+			'id' 		=> 'jigoshop_dibs_key1',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('DIBS MD5 Key 2','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Please enter your DIBS MD5 key #2; this is needed in order to take payment!','jigoshop'),
+			'id' 		=> 'jigoshop_dibs_key2',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('Enable test mode','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('When test mode is enabled only DIBS specific test-cards are accepted.','jigoshop'),
+			'id' 		=> 'jigoshop_dibs_testmode',
+			'std' 		=> 'no',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+
+		return $defaults;
 	}
+
 
 	/**
 	* There are no payment fields for dibs, but we want to show the description if set.
 	**/
 	function payment_fields() {
-		if ($jigoshop_dibs_description = get_option('jigoshop_dibs_description')) echo wpautop(wptexturize($jigoshop_dibs_description));
-	}
-
-	/**
-	* Admin Panel Options Processing
-	* - Saves the options to the DB
-	**/
-	public function process_admin_options() {
-		if(isset($_POST['jigoshop_dibs_enabled'])) update_option('jigoshop_dibs_enabled', jigowatt_clean($_POST['jigoshop_dibs_enabled'])); else @delete_option('jigoshop_dibs_enabled');
-		if(isset($_POST['jigoshop_dibs_title'])) update_option('jigoshop_dibs_title', jigowatt_clean($_POST['jigoshop_dibs_title'])); else @delete_option('jigoshop_dibs_title');
-		if(isset($_POST['jigoshop_dibs_merchant'])) update_option('jigoshop_dibs_merchant', jigowatt_clean($_POST['jigoshop_dibs_merchant'])); else @delete_option('jigoshop_dibs_merchant');
-		if(isset($_POST['jigoshop_dibs_key1'])) update_option('jigoshop_dibs_key1', jigowatt_clean($_POST['jigoshop_dibs_key1'])); else @delete_option('jigoshop_dibs_key1');
-		if(isset($_POST['jigoshop_dibs_key2'])) update_option('jigoshop_dibs_key2', jigowatt_clean($_POST['jigoshop_dibs_key2'])); else @delete_option('jigoshop_dibs_key2');
-		if(isset($_POST['jigoshop_dibs_description'])) update_option('jigoshop_dibs_description', jigowatt_clean($_POST['jigoshop_dibs_description'])); else @delete_option('jigoshop_dibs_description');
-		if(isset($_POST['jigoshop_dibs_testmode'])) update_option('jigoshop_dibs_testmode', jigowatt_clean($_POST['jigoshop_dibs_testmode'])); else @delete_option('jigoshop_dibs_testmode');
+		if ($jigoshop_dibs_description = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_description')) echo wpautop(wptexturize($jigoshop_dibs_description));
 	}
 
 	/**
 	* Generate the dibs button link
 	**/
 	public function generate_form( $order_id ) {
-
+		
 		$order = new jigoshop_order( $order_id );
 
 		$action_adr = 'https://payment.architrade.com/paymentweb/start.action';
@@ -164,7 +186,7 @@ class dibs extends jigoshop_payment_gateway {
 				'amount'     => $order->order_total * 100,
 				'orderid'    => $order_id,
 				'uniqueoid'  => $order->order_key,
-				'currency'   => $dibs_currency[get_option('jigoshop_currency')],
+				'currency'   => $dibs_currency[Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_currency')],
 				'ordertext'  => 'TEST',
 
 				// URLs
@@ -179,7 +201,7 @@ class dibs extends jigoshop_payment_gateway {
 
 		// Calculate key
 		// http://tech.dibs.dk/dibs_api/other_features/md5-key_control/
-		$args['md5key'] = MD5(get_option('jigoshop_dibs_key2') . MD5(get_option('jigoshop_dibs_key1') . 'merchant=' . $args['merchant'] . '&orderid=' . $args['orderid'] . '&currency=' . $args['currency'] . '&amount=' . $args['amount']));
+		$args['md5key'] = MD5(Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_key2') . MD5(Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_key1') . 'merchant=' . $args['merchant'] . '&orderid=' . $args['orderid'] . '&currency=' . $args['currency'] . '&amount=' . $args['amount']));
 
 		if( !empty($_SERVER['HTTP_CLIENT_IP']) ) {
 			$args['ip'] = $_SERVER['HTTP_CLIENT_IP'];
@@ -266,14 +288,15 @@ class dibs extends jigoshop_payment_gateway {
 	* Successful Payment!
 	**/
 	function successful_request( $posted ) {
-
+	
+		
 		// Custom holds post ID
 		if ( !empty($posted['transact']) && !empty($posted['orderid']) && is_numeric($posted['orderid']) ) {
 
 			// Verify MD5 checksum
 			// http://tech.dibs.dk/dibs_api/other_features/md5-key_control/
-			$key1 = get_option('jigoshop_dibs_key1');
-			$key2 = get_option('jigoshop_dibs_key2');
+			$key1 = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_key1');
+			$key2 = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_dibs_key2');
 			$vars = 'transact='. $posted['transact'] . '&amount=' . $posted['amount'] . '&currency=' . $posted['currency'];
 			$md5 = MD5($key2 . MD5($key1 . $vars));
 
@@ -303,12 +326,3 @@ class dibs extends jigoshop_payment_gateway {
 	}
 
 }
-
-/**
- * Add the gateway to JigoShop
- **/
-function add_dibs_gateway( $methods ) {
-	$methods[] = 'dibs'; return $methods;
-}
-
-add_filter('jigoshop_payment_gateways', 'add_dibs_gateway' );

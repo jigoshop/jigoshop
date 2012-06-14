@@ -53,9 +53,9 @@ function jigoshop_upgrade() {
         jigoshop_upgrade_120();
     }
 
-    if ( $jigoshop_db_version < 1206020 ) {
-        jigoshop_upgrade_130();
-    }
+	if ( $jigoshop_db_version < 1206130 ) {
+		jigoshop_upgrade_130();
+	}
 
 	// Update the db option
 	update_site_option( 'jigoshop_db_version', JIGOSHOP_VERSION );
@@ -132,6 +132,9 @@ function jigoshop_convert_db_version() {
 			break;
 		case '1.1.1':
 			update_site_option( 'jigoshop_db_version', 1202280 );
+			break;
+		case '1.2':
+			update_site_option( 'jigoshop_db_version', 1202290 );
 			break;
 	}
 }
@@ -428,7 +431,6 @@ function jigoshop_upgrade_111() {
 
 }
 
-
 function get_old_taxes_as_array($taxes_as_string) {
 
     $tax_classes = array();
@@ -491,13 +493,89 @@ function jigoshop_upgrade_120() {
         endif;
 
     endforeach;
-
+    
 }
 
+/**
+ * Execute changes made in Jigoshop 1.3
+ *
+ * @since 1.3
+ */
 function jigoshop_upgrade_130() {
-
+	
 	global $wpdb;
-
+    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
+	
+	// adjust specific options based on old settings for the new Jigoshop_Options class
+	require_once ( 'admin/jigoshop-admin-settings-options.php' );
+	global $jigoshop_options_settings;
+    $admin_settings = array();
+	foreach ( $jigoshop_options_settings as $setting ) {
+		if ( ! empty( $setting['id'] )) {
+			switch ( $setting['id'] ) {
+			case 'jigoshop_shop_tiny':
+			case 'jigoshop_shop_thumbnail':
+			case 'jigoshop_shop_small':
+			case 'jigoshop_shop_large':
+				$current = get_option( $setting['id'].'_w' );
+				if ( false !== $current ) {
+					$jigoshop_options->set_option( $setting['id'].'_w', $current );
+                    $admin_settings[] = $setting['id'] . '_w';
+				}
+				$current = get_option( $setting['id'].'_h' );
+				if ( false !== $current ) {
+					$jigoshop_options->set_option( $setting['id'].'_h', $current );
+                    $admin_settings[] = $setting['id'] . '_h';
+				}
+				break;
+            case 'jigoshop_display_totals_tax':
+                $current = get_option( $setting['id'] );
+                if ( false !== $current ) {
+                    if ( $current == 'including' ) :
+                        $jigoshop_options->set_option( $setting['id'], 'yes' );
+                    else :
+                        $jigoshop_options->set_option( $setting['id'], 'no' );
+                    endif;
+                    $admin_settings[] = $setting['id'];
+                }
+                break;
+			default:
+				$current = get_option( $setting['id'] );
+				if ( false !== $current ) {
+					$jigoshop_options->set_option( $setting['id'], $current );
+                    $admin_settings[] = $setting['id'];
+				}
+				break;
+			}
+		}
+	}
+    
+	// get all current 'jigoshop_' namespace options from the 'options' table and include them
+    // excluding above options as we don't want to add the old options to the new array
+    $in_string = "'" . implode("', '", $admin_settings) . "'";
+	$options_in_use = $wpdb->get_results( 
+		$wpdb->prepare( "SELECT * FROM {$wpdb->options} WHERE option_name LIKE 'jigoshop_%%' AND option_name NOT IN ($in_string);" ));
+	foreach ( $options_in_use as $index => $setting ) {
+		if ( $setting->option_name == 'jigoshop_options' ) continue;
+		if ( $setting->option_name == 'jigoshop_db_version' ) continue;
+        // this will add all settings into the new api, even if they will not be called from there.. eg. enabled plugins
+        // may not have utilized the new infrastructure yet.
+        $option_value = get_option($setting->option_name);
+		$jigoshop_options->set_option( $setting->option_name, $option_value );
+	}
+	
+	
+	// convert paypal email address to test mode email if enabled
+	$jigoshop_paypal_email = get_option( 'jigoshop_paypal_email' );
+	$jigoshop_paypal_testmode = get_option( 'jigoshop_paypal_testmode' );
+	if ( $jigoshop_paypal_testmode == 'yes' ) {
+		$jigoshop_options->set_option( 'jigoshop_paypal_testmode', 'yes' );
+		$jigoshop_options->set_option( 'jigoshop_sandbox_email', $jigoshop_paypal_email );
+		$jigoshop_options->set_option( 'jigoshop_paypal_email', '' );
+	}
+		
+	$jigoshop_options->update_options();
+	
 	/* Update all product variation titles to something useful. */
 	$args = array(
 			'post_type' => 'product',
@@ -541,5 +619,7 @@ function jigoshop_upgrade_130() {
 		}
 
 	}
+
+	flush_rewrite_rules( true );
 
 }

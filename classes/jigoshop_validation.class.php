@@ -17,6 +17,43 @@
 class jigoshop_validation {
 
 	/**
+	 * Validates a numeric integer value, positive or negative
+	 * Must contain valid numeric characters [0-9]
+	 *
+	 * @param   string	value to determine if numeric integer value
+	 * @return  boolean
+	 */
+	public static function is_integer( $value ) {
+		if ( $value[0] == '-' || $value[0] == '+' ) {
+			return ctype_digit( substr( $value, 1 ) );
+		}
+  		return ctype_digit( $value );
+	}
+
+	/**
+	 * Validates a numeric natural number, positive only
+	 * Must contain valid numeric characters [0-9]
+	 *
+	 * @param   string	value to determine if natural number
+	 * @return  boolean
+	 */
+	public static function is_natural( $value ) {
+		return ctype_digit( $value );
+	}
+
+	/**
+	 * Validates a decimal value, positive or negative
+	 * Must contain valid numeric characters [0-9]
+	 * May contain optional decimal point followed by numeric characters [0-9]
+	 *
+	 * @param   string	value to determine if decimal value
+	 * @return  boolean
+	 */
+	public static function is_decimal( $value ) {
+  		return is_numeric( $value );
+	}
+
+	/**
 	 * Validates an email using wordpress native is_email function
 	 *
 	 * @param   string	email address

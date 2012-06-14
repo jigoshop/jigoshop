@@ -27,6 +27,7 @@
 function jigoshop_attributes() {
 
 	global $wpdb;
+    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
 
 	if (isset($_POST['add_new_attribute']) && $_POST['add_new_attribute']) :
 
@@ -44,7 +45,7 @@ function jigoshop_attributes() {
 
 			$wpdb->insert( $wpdb->prefix . "jigoshop_attribute_taxonomies", array( 'attribute_name' => $attribute_name, 'attribute_label' => $attribute_label, 'attribute_type' => $attribute_type ), array( '%s', '%s' ) );
 
-			update_option('jigowatt_update_rewrite_rules', '1');
+			$jigoshop_options->set_option('jigowatt_update_rewrite_rules', '1');
 
 			wp_safe_redirect( get_admin_url() . 'edit.php?post_type=product&page=jigoshop_attributes' );
 			exit;

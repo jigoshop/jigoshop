@@ -14,57 +14,83 @@
  * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
+
+/**
+ * Add the gateway to JigoShop
+ **/
+function add_cod_gateway( $methods ) {
+	$methods[] = 'jigoshop_cod';
+	return $methods;
+}
+add_filter( 'jigoshop_payment_gateways', 'add_cod_gateway', 30 );
+
+
 class jigoshop_cod extends jigoshop_payment_gateway {
 
 	public function __construct() {
+		
+        parent::__construct();
+		
         $this->id				= 'cod';
         $this->icon 			= '';
         $this->has_fields 		= false;
 
-		$this->enabled			= get_option('jigoshop_cod_enabled');
-		$this->title 			= get_option('jigoshop_cod_title');
-		$this->description 		= get_option('jigoshop_cod_description');
-
-		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
-		add_option('jigoshop_cod_enabled', 'yes');
-		add_option('jigoshop_cod_title', __('Cash on Delivery', 'jigoshop') );
-		add_option('jigoshop_cod_description', __('Please pay to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'jigoshop'));
+		$this->enabled			= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_cod_enabled');
+		$this->title 			= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_cod_title');
+		$this->description 		= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_cod_description');
 
     	add_action('thankyou_cod', array(&$this, 'thankyou_page'));
     }
 
-	/**
-	 * Admin Panel Options
-	 * - Options for bits like 'title' and availability on a country-by-country basis
-	 **/
-	public function admin_options() {
-    	?>
-    	<thead><tr><th scope="col" colspan="2"><h3 class="title"><?php _e('Cash on Delivery', 'jigoshop'); ?></h3>
-    		<p><?php _e('Allows cash payments. Good for offline stores or having customers pay at the time of receiving the product.', 'jigoshop'); ?></p></th></tr></thead>
-    	<tr>
-	        <th scope="row"><?php _e('Enable Cash on Delivery', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <select name="jigoshop_cod_enabled" id="jigoshop_cod_enabled" style="min-width:100px;">
-		            <option value="yes" <?php if (get_option('jigoshop_cod_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if (get_option('jigoshop_cod_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
-		        </select>
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_cod_title" id="jigoshop_cod_title" value="<?php if ($value = get_option('jigoshop_cod_title')) echo $value; else echo 'Cash on Delivery'; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('Let the customer know the payee and where they should be sending the cod too and that their order won\'t be shipping until you receive it.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Customer Message', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <input class="input-text wide-input" type="text" name="jigoshop_cod_description" id="jigoshop_cod_description" value="<?php if ($value = get_option('jigoshop_cod_description')) echo $value; ?>" />
-	        </td>
-	    </tr>
 
-    	<?php
-    }
+	/**
+	 * Default Option settings for WordPress Settings API using the Jigoshop_Options class
+	 *
+	 * These should be installed on the Jigoshop_Options 'Payment Gateways' tab
+	 *
+	 */	
+	protected function get_default_options() {
+	
+		$defaults = array();
+		
+		// Define the Section name for the Jigoshop_Options
+		$defaults[] = array( 'name' => __('Cash on Delivery', 'jigoshop'), 'type' => 'title', 'desc' => __('Allows cash payments. Good for offline stores or having customers pay at the time of receiving the product.', 'jigoshop') );
+		
+		// List each option in order of appearance with details
+		$defaults[] = array(
+			'name'		=> __('Enable Cash on Delivery','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_cod_enabled',
+			'std' 		=> 'no',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+		
+		$defaults[] = array(
+			'name'		=> __('Method Title','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('This controls the title which the user sees during checkout.','jigoshop'),
+			'id' 		=> 'jigoshop_cod_title',
+			'std' 		=> __('Cash on Delivery','jigoshop'),
+			'type' 		=> 'text'
+		);
+		
+		$defaults[] = array(
+			'name'		=> __('Customer Message','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Let the customer know the payee and where they should be sending the cod too and that their order won\'t be shipping until you receive it.','jigoshop'),
+			'id' 		=> 'jigoshop_cod_description',
+			'std' 		=> __('Please pay to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'jigoshop'),
+			'type' 		=> 'longtext'
+		);
+
+		return $defaults;
+	}
+
 
 	/**
 	* There are no payment fields for cods, but we want to show the description if set.
@@ -76,16 +102,6 @@ class jigoshop_cod extends jigoshop_payment_gateway {
 	function thankyou_page() {
 		if ($this->description) echo wpautop(wptexturize($this->description));
 	}
-
-	/**
-	 * Admin Panel Options Processing
-	 * - Saves the options to the DB
-	 **/
-    public function process_admin_options() {
-   		if(isset($_POST['jigoshop_cod_enabled'])) 	update_option('jigoshop_cod_enabled', 	jigowatt_clean($_POST['jigoshop_cod_enabled'])); else @delete_option('jigoshop_cod_enabled');
-   		if(isset($_POST['jigoshop_cod_title'])) 	update_option('jigoshop_cod_title', 	jigowatt_clean($_POST['jigoshop_cod_title'])); else @delete_option('jigoshop_cod_title');
-   		if(isset($_POST['jigoshop_cod_description'])) 	update_option('jigoshop_cod_description', 	jigowatt_clean($_POST['jigoshop_cod_description'])); else @delete_option('jigoshop_cod_description');
-    }
 
 	/**
 	 * Process the payment and return the result
@@ -110,12 +126,3 @@ class jigoshop_cod extends jigoshop_payment_gateway {
 	}
 
 }
-
-/**
- * Add the gateway to JigoShop
- **/
-function add_cod_gateway( $methods ) {
-	$methods[] = 'jigoshop_cod'; return $methods;
-}
-
-add_filter('jigoshop_payment_gateways', 'add_cod_gateway' );

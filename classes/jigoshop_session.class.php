@@ -14,7 +14,7 @@
  * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
-class jigoshop_session extends jigoshop_singleton {
+class jigoshop_session extends Jigoshop_Singleton {
 
 	protected function __construct() {
 		if ( !session_id() ) session_start();

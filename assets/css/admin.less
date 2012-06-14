@@ -591,7 +591,7 @@ ul.recent-orders {
 	}
 }
 
-/* Settings */
+/* old settings */
 .jigoshop table.widefat {
 	width: 950px;
 	margin-top: 0.5em !important;
@@ -616,6 +616,10 @@ ul.recent-orders {
 	}
 }
 
+.error a.button-secondary {
+	text-decoration: none;
+}
+
 .jigoshop table.widefat th.desc {
 	font-weight: normal;
 	color: #2958aa;
@@ -624,7 +628,6 @@ ul.recent-orders {
 	color: #999;
 }
 .jigoshop #tabs-wrap {
-	background: #ececec;
 	width: 950px;
 	padding: 7px 9px;
 	overflow: hidden;
@@ -632,23 +635,17 @@ ul.recent-orders {
 	margin-bottom: 2em !important;
 	zoom: 1;
 }
+
+.jigoshop-nav-tab-wrapper > .nav-tab {
+	font-size:14px;
+}
+
 .jigoshop #tabs-wrap ul.tabs {
 	padding: 0;
 	margin: 0;
 }
 .jigoshop #tabs-wrap table {
-	margin: 0 0 5px !important;
-	border: 1px solid #e1e1e1;
-	border-top: 0;
-}
-.jigoshop #tabs-wrap table thead tr th {
-	border-top: 4px solid #e1e1e1;
-}
-.jigoshop #tabs-wrap table thead:first-child tr th {
-	border-top: 0;
-}
-.jigoshop #tabs-wrap table thead th {
-	background: #fff;
+	margin: 0 0 5px;
 }
 .jigoshop #tabs-wrap table select {
 	white-space: nowrap;
@@ -1407,6 +1404,203 @@ div.multi_select_countries.shipping_services {
 	.external_url_field {
 		display: block;
 	}
+}
+
+/* Settings */
+
+.jigoshop-settings table.form-table {
+	
+	.button {
+		float: left;
+		margin: 0 3px 3px 0;
+	}
+	.button-right {
+		float: right;
+		margin: 0 0 3px 3px;
+	}
+	td small {
+		color: #555;
+	}
+	
+	th {
+		width: 17%;
+	}
+	
+	td {
+		margin-bottom: 3px;
+		line-height: 12px;
+	}
+	
+	.jigoshop-tooltips {
+		width: 3%;
+		a.tips {
+			height: 16px;
+			width: 16px;
+			margin: 5px 5px 0 0;
+			float: right;
+			background: url(../images/tip.png) no-repeat top left;
+		}
+	}
+	
+	/* this holds all the setting controls */
+	.forminp {
+		width: 80%;
+		.jigoshop-explain {
+			margin: 5px 0;
+		}
+		.input-text, .select {
+			width: 45%;
+		}
+		.wide-input {
+			width: 99%;
+		}
+		.jigoshop-input {
+			margin-right: 5px;
+		}
+		.jigoshop-radio-vert {
+			margin-top: 4px;
+		}
+		.jigoshop-radio, .jigoshop-checkbox, .jigoshop-multi-checkbox-horz, .jigoshop-multi-checkbox-vert {
+			margin: 7px 5px 0;
+		}
+		.jigoshop-radio-vert {
+			margin: 0;
+		}
+		label {
+			margin-right: 10px;
+		}
+		.jigoshop-checkbox label, .jigoshop-multi-checkbox-horz label, .jigoshop-multi-checkbox-vert label {
+			vertical-align: top;
+		}
+		
+		/* range slider */
+		.slider {
+			display: inline-block;
+			background:#efefef;
+			height:9px;
+			position:relative;
+			cursor:pointer;
+			border:1px solid #cfcfcf;
+			width: 50%;
+			margin-top:5px;
+			-moz-border-radius:5px;
+			-webkit-border-radius:5px;
+			-moz-box-shadow:inset 0 0 8px #000;
+		}
+		/* progress bar (enabled with progress: true) */
+		.progress {
+			height:9px;
+			background-color:#C5FF00;
+			display:none;
+			opacity:0.6;
+		}
+		/* drag handle */
+		.handle {
+			background:#fff;
+			height:20px;
+			width:20px;
+			top:-8px;
+			position:absolute;
+			display:block;
+			margin-top:1px;
+			border:1px solid #cfcfcf;
+			cursor:move;
+			-moz-box-shadow:0 0 6px #cfcfcf;
+			-webkit-box-shadow:0 0 6px #cfcfcf;
+			-moz-border-radius:14px;
+			-webkit-border-radius:14px;
+		}
+		/* the input field */
+		.range {
+			border:1px solid #cfcfcf;
+			font-size:14px;
+			font-style: normal;
+			margin:0 0 10px 10px;
+			padding:3px 0px;
+			text-align:center;
+			width:50px;
+			-moz-border-radius:5px;
+			-webkit-border-radius:5px;
+		}
+		
+		thead, tfoot {
+			background: #eaeaea;
+		}
+		
+		/* internal array tables, coupons, taxes, table rates */
+		table {
+			border: 0;
+			a.dp-choose-date {
+				float: left;
+				width: 16px;
+				height: 16px;
+				padding: 0;
+				margin: 4px 9px 0 3px;
+				display: block;
+				text-indent: -2000px;
+				overflow: hidden;
+				background: url(../images/calendar.png) no-repeat;
+	
+				&.disabled {
+					background-position: 0 -20px;
+					cursor: default;
+				}
+			}
+			input.dp-applied {
+				width: 140px;
+				float: left;
+			}
+			thead, tfoot {
+				th {
+					padding: 3px 0 3px 5px;
+					border: 0;
+				}
+			}
+			tbody {
+				td {
+					padding: 3px 0 3px 5px;
+					border: 0;
+					vertical-align: bottom;
+					/* NOTE: not working with Chrome, check others */
+					input[type="checkbox"] {
+						vertical-align: middle;
+					}
+					select {
+						width: 130px;
+					}
+				}
+			}
+		}
+	}
+}
+
+#easyTooltip {
+	padding:8px;
+	border:3px solid #b9e3f0;
+	background:#E3F4F9;
+	font-size: 12px;
+	width:400px;
+	-moz-border-radius:8px;
+	-webkit-border-radius:8px;
+	-o-border-radius:8px;
+	-khtml-border-radius:8px;
+	border-radius:8px;
+}
+
+.jigoshop-settings .section_description {
+	color: #555;
+	margin-bottom: 1em;
+}
+	
+.jigoshop-settings #tabs-wrap h3 {
+	font-size: 13px;
+	padding: 1.5em 10px 3px 10px;
+	margin: 1em 0;
+}
+
+.jigoshop-settings #tabs-wrap p {
+	color: #666;
+	padding: 0 50px;
 }
 
 textarea#system-info-textarea {

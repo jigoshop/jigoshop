@@ -14,7 +14,7 @@
  * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
-class jigoshop_shipping extends jigoshop_singleton {
+class jigoshop_shipping extends Jigoshop_Singleton {
 
     protected static $enabled = false;
     protected static $shipping_methods = array();
@@ -29,7 +29,7 @@ class jigoshop_shipping extends jigoshop_singleton {
     protected function __construct() {
 
         self::shipping_inits();
-        if (get_option('jigoshop_calc_shipping') != 'no') :
+        if (self::get_jigoshop_options()->get_option('jigoshop_calc_shipping') != 'no') :
             self::$enabled = true;
         endif;
     }
@@ -73,7 +73,7 @@ class jigoshop_shipping extends jigoshop_singleton {
     }
 
     public static function show_shipping_calculator() {
-        return (self::is_enabled() && get_option('jigoshop_enable_shipping_calc')=='yes' && jigoshop_cart::needs_shipping());
+        return (self::is_enabled() && self::get_jigoshop_options()->get_option('jigoshop_enable_shipping_calc')=='yes' && jigoshop_cart::needs_shipping());
     }
 
     public static function get_available_shipping_methods() {

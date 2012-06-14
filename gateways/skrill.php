@@ -14,16 +14,29 @@
  * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
+
+/** Add the gateway to JigoShop **/
+
+function add_skrill_gateway( $methods ) {
+	$methods[] = 'skrill';
+	return $methods;
+}
+add_filter( 'jigoshop_payment_gateways', 'add_skrill_gateway', 40 );
+
+
 class skrill extends jigoshop_payment_gateway {
 
 	public function __construct() {
+		
+		parent::__construct();
+
         $this->id			= 'skrill';
         $this->title 		= 'Skrill';
         $this->icon 		= jigoshop::assets_url() . '/assets/images/icons/skrill.png';
         $this->has_fields 	= false;
-      	$this->enabled		= get_option('jigoshop_skrill_enabled');
-		$this->title 		= get_option('jigoshop_skrill_title');
-		$this->email 		= get_option('jigoshop_skrill_email');
+      	$this->enabled		= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_skrill_enabled');
+		$this->title 		= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_skrill_title');
+		$this->email 		= Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_skrill_email');
 
 		add_action( 'init', array(&$this, 'check_status_response') );
 
@@ -32,77 +45,84 @@ class skrill extends jigoshop_payment_gateway {
 		endif;
 
 		add_action('valid-skrill-status-report', array(&$this, 'successful_request') );
-
-		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
-		add_option('jigoshop_skrill_enabled', 'yes');
-		add_option('jigoshop_skrill_email', '');
-		add_option('jigoshop_skrill_title', 'skrill');
-
 		add_action('receipt_skrill', array(&$this, 'receipt_skrill'));
+
     }
 
-	/**
-	 * Admin Panel Options
-	 * - Options for bits like 'title' and availability on a country-by-country basis
-	 **/
-	public function admin_options() {
-    	?>
-    	<thead><tr><th scope="col" colspan="2">
-    		<h3 class="title"><?php _e('Skrill (Moneybookers)', 'jigoshop'); ?></h3>
-    		<p><?php _e('Skrill works by using an iFrame to submit payment information securely to Moneybookers.', 'jigoshop'); ?></p></th></tr></thead>
-    	<tr>
-	        <th scope="row"><?php _e('Enable Skrill', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <select name="jigoshop_skrill_enabled" id="jigoshop_skrill_enabled" style="min-width:100px;">
-		            <option value="yes" <?php if (get_option('jigoshop_skrill_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if (get_option('jigoshop_skrill_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
-		        </select>
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_skrill_title" id="jigoshop_skrill_title" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_skrill_title')) echo $value; else echo 'skrill'; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	        <th scope="row"><a href="#" tip="<?php _e('Please enter your skrill email address; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Skrill merchant e-mail', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_skrill_email" id="jigoshop_skrill_email" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_skrill_email')) echo $value; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	    	<th scope="row"><a href="#" tip="<?php _e('Please enter your skrill secretword; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Skrill Secret Word', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_skrill_secret_word" id="jigoshop_skrill_secret_word" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_skrill_secret_word')) echo $value; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	    	<th scope="row"><a href="#" tip="<?php _e('Please enter your skrill Customer ID; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Skrill Customer ID', 'jigoshop') ?></th>
-	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_skrill_customer_id" id="jigoshop_skrill_customer_id" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_skrill_customer_id')) echo $value; ?>" />
-	        </td>
-	    </tr>
-    	<?php
-    }
 
 	/**
-	 * Admin Panel Options Processing
-	 * - Saves the options to the DB
-	 **/
-    public function process_admin_options() {
-   		if(isset($_POST['jigoshop_skrill_enabled'])) update_option('jigoshop_skrill_enabled', jigowatt_clean($_POST['jigoshop_skrill_enabled'])); else @delete_option('jigoshop_skrill_enabled');
-   		if(isset($_POST['jigoshop_skrill_title'])) update_option('jigoshop_skrill_title', jigowatt_clean($_POST['jigoshop_skrill_title'])); else @delete_option('jigoshop_skrill_title');
-   		if(isset($_POST['jigoshop_skrill_email'])) update_option('jigoshop_skrill_email', jigowatt_clean($_POST['jigoshop_skrill_email'])); else @delete_option('jigoshop_skrill_email');
-   		if(isset($_POST['jigoshop_skrill_secret_word'])) update_option('jigoshop_skrill_secret_word', jigowatt_clean($_POST['jigoshop_skrill_secret_word'])); else @delete_option('jigoshop_skrill_secret_word');
-   		if(isset($_POST['jigoshop_skrill_customer_id'])) update_option('jigoshop_skrill_customer_id', jigowatt_clean($_POST['jigoshop_skrill_customer_id'])); else @delete_option('jigoshop_skrill_customer_id');
-    }
+	 * Default Option settings for WordPress Settings API using the Jigoshop_Options class
+	 *
+	 * These should be installed on the Jigoshop_Options 'Payment Gateways' tab
+	 *
+	 */	
+	protected function get_default_options() {
+	
+		$defaults = array();
+		
+		// Define the Section name for the Jigoshop_Options
+		$defaults[] = array( 'name' => __('Skrill (Moneybookers)', 'jigoshop'), 'type' => 'title', 'desc' => __('Skrill works by using an iFrame to submit payment information securely to Moneybookers.', 'jigoshop') );
+		
+		// List each option in order of appearance with details
+		$defaults[] = array(
+			'name'		=> __('Enable Skrill','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_skrill_enabled',
+			'std' 		=> 'no',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+		
+		$defaults[] = array(
+			'name'		=> __('Method Title','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('This controls the title which the user sees during checkout.','jigoshop'),
+			'id' 		=> 'jigoshop_skrill_title',
+			'std' 		=> __('Skrill','jigoshop'),
+			'type' 		=> 'text'
+		);
+		
+		$defaults[] = array(
+			'name'		=> __('Skrill merchant e-mail','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Please enter your skrill email address; this is needed in order to take payment!','jigoshop'),
+			'id' 		=> 'jigoshop_skrill_email',
+			'std' 		=> '',
+			'type' 		=> 'email'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('Skrill Secret Word','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Please enter your skrill secretword; this is needed in order to take payment!','jigoshop'),
+			'id' 		=> 'jigoshop_skrill_secret_word',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('Skrill Customer ID','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Please enter your skrill Customer ID; this is needed in order to take payment!','jigoshop'),
+			'id' 		=> 'jigoshop_skrill_customer_id',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+
+		return $defaults;
+	}
+
 
 	/**
 	 * Generate the skrill button link
 	 **/
     public function generate_skrill_form() {
-
+		
+		
     	$order_id = $_GET['orderId'];
 
 		$order = new jigoshop_order( $order_id );
@@ -151,7 +171,7 @@ class skrill extends jigoshop_payment_gateway {
 			'country'              => 'GBR',
 
 			'amount'               => $order_total,
-			'currency'             => get_option('jigoshop_currency'),
+			'currency'             => Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_currency'),
 			'detail1_description'  => 'Order ID',
 			'detail1_text'         => $order_id
 
@@ -192,7 +212,7 @@ class skrill extends jigoshop_payment_gateway {
 
 		// Skirll MD5 concatenation
 
-		$skrill_md = get_option('jigoshop_skrill_customer_id') . $skrill_args['transaction_id'] . strtoupper(md5(get_option('jigoshop_skrill_secret_word'))) . $order_total . get_option('jigoshop_currency') . '2';
+		$skrill_md = Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_skrill_customer_id') . $skrill_args['transaction_id'] . strtoupper(md5(Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_skrill_secret_word'))) . $order_total . Jigoshop_Base_Class::get_jigoshop_options()->get_option('jigoshop_currency') . '2';
 		$skrill_md = md5($skrill_md);
 
 		add_post_meta($order_id, '_skrillmd', $skrill_md);
@@ -313,11 +333,3 @@ class skrill extends jigoshop_payment_gateway {
 	}
 
 }
-
-/** Add the gateway to JigoShop **/
-
-function add_skrill_gateway( $methods ) {
-	$methods[] = 'skrill'; return $methods;
-}
-
-add_filter('jigoshop_payment_gateways', 'add_skrill_gateway' );

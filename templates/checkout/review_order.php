@@ -11,10 +11,11 @@
  * @package             Jigoshop
  * @category            Checkout
  * @author              Jigowatt
- * @copyright           Copyright � 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
-?>
+ 
+$jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options(); ?>
 <div id="order_review">
 
     <table class="shop_table">
@@ -49,7 +50,7 @@
                 </tr>
 			<?php endif; ?>
 
-            <?php if (get_option('jigoshop_calc_taxes') == 'yes') :
+            <?php if ($jigoshop_options->get_option('jigoshop_calc_taxes') == 'yes') :
                 foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
                       if (jigoshop_cart::get_tax_for_display($tax_class)) : ?>
                         <tr>

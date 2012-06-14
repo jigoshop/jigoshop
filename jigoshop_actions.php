@@ -39,7 +39,8 @@
 add_action('wp_ajax_jigoshop_add_order_item', 'jigoshop_add_order_item');
 
 function jigoshop_add_order_item() {
-
+    
+    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
 	check_ajax_referer( 'add-order-item', 'security' );
 
 	global $wpdb;
@@ -103,7 +104,7 @@ function jigoshop_add_order_item() {
 		</td>-->
 		<?php do_action('jigoshop_admin_order_item_values', $_product); ?>
 		<td class="quantity"><input type="text" name="item_quantity[]" placeholder="<?php _e('Quantity e.g. 2', 'jigoshop'); ?>" value="1" /></td>
-        <td class="cost"><input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit ex. tax e.g. 2.99', 'jigoshop'); ?>" value="<?php echo esc_attr( get_option('jigoshop_prices_include_tax') == 'yes' ? $_product->get_price_excluding_tax() : $_product->get_price() ); ?>" /></td>
+        <td class="cost"><input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit ex. tax e.g. 2.99', 'jigoshop'); ?>" value="<?php echo esc_attr( $jigoshop_options->get_option('jigoshop_prices_include_tax') == 'yes' ? $_product->get_price_excluding_tax() : $_product->get_price() ); ?>" /></td>
         <td class="tax"><input type="text" name="item_tax_rate[]" placeholder="<?php _e('Tax Rate e.g. 20.0000', 'jigoshop'); ?>" value="<?php echo esc_attr( jigoshop_tax::calculate_total_tax_rate($_product->get_tax_base_rate()) ); ?>" /></td>
 		<td class="center">
 			<input type="hidden" name="item_id[]" value="<?php echo esc_attr( $_product->id ); ?>" />
@@ -122,7 +123,7 @@ function jigoshop_add_order_item() {
 /**
  * When default permalinks are enabled, redirect shop page to post type archive url
  **/
-if (get_option( 'permalink_structure' )=="") add_action( 'init', 'jigoshop_shop_page_archive_redirect' );
+if (Jigoshop_Base_Class::get_jigoshop_options()->get_option( 'permalink_structure' )=="") add_action( 'init', 'jigoshop_shop_page_archive_redirect' );
 
 function jigoshop_shop_page_archive_redirect() {
 
@@ -181,6 +182,8 @@ add_action( 'init', 'jigoshop_add_to_cart_action' );
 
 function jigoshop_add_to_cart_action($url = false)
 {
+    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
+    
     //if required param is not set or nonce is invalid then just ignore whole function
     if (empty($_GET['add-to-cart']) || !jigoshop::verify_nonce('add_to_cart')) {
         return;
@@ -285,7 +288,7 @@ function jigoshop_add_to_cart_action($url = false)
     //if product was successfully added to the cart
     if ($product_added) {
 
-    	switch ( get_option('jigoshop_redirect_add_to_cart', 'same_page') ) {
+    	switch ( $jigoshop_options->get_option('jigoshop_redirect_add_to_cart', 'same_page') ) {
     		case 'same_page':
     			jigoshop::add_message(sprintf(__('<a href="%s" class="button">View Cart &rarr;</a> Product successfully added to your cart.', 'jigoshop'), jigoshop_cart::get_cart_url()));
     			break;
@@ -308,11 +311,11 @@ function jigoshop_add_to_cart_action($url = false)
         wp_safe_redirect($url);
     }
     // Redirect directly to checkout if no error messages
-    else if (get_option('jigoshop_redirect_add_to_cart', 'same_page') == 'to_checkout' && !jigoshop::has_errors()) {
+    else if ($jigoshop_options->get_option('jigoshop_redirect_add_to_cart', 'same_page') == 'to_checkout' && jigoshop::error_count() == 0) {
         wp_safe_redirect(jigoshop_cart::get_checkout_url());
     }
     // Redirect directly to cart if no error messages
-    else if (get_option('jigoshop_redirect_add_to_cart', 'to_cart') == 'to_cart' && !jigoshop::has_errors()) {
+    else if ($jigoshop_options->get_option('jigoshop_redirect_add_to_cart', 'to_cart') == 'to_cart' && jigoshop::error_count() == 0) {
         wp_safe_redirect(jigoshop_cart::get_cart_url());
     }
     // Otherwise redirect to where they came
@@ -330,7 +333,7 @@ function jigoshop_add_to_cart_action($url = false)
 function jigoshop_ajax_update_order_review() {
 
 	check_ajax_referer( 'update-order-review', 'security' );
-
+	
 	if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
 
 	jigoshop_cart::get_cart();
@@ -341,14 +344,14 @@ function jigoshop_ajax_update_order_review() {
 
 	do_action('jigoshop_checkout_update_order_review', $_POST['post_data']);
 
-        if (isset($_POST['shipping_method'])) :
+    if (isset($_POST['shipping_method'])) :
 
 		$shipping_method = explode(":", $_POST['shipping_method']);
 	 	jigoshop_session::instance()->chosen_shipping_method_id = $shipping_method[0];
 
-                if (is_numeric($shipping_method[2])) :
-                    jigoshop_session::instance()->selected_rate_id = $shipping_method[2];
-                endif;
+		if (is_numeric($shipping_method[2])) :
+			jigoshop_session::instance()->selected_rate_id = $shipping_method[2];
+		endif;
 
 	endif;
 
@@ -742,6 +745,8 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 add_action( 'wp_footer', 'jigoshop_ga_tracking' );
 function jigoshop_ga_tracking() {
 
+    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
+    
 	// If admin don't track..shouldn't require this
 	if ( is_admin() )
 		return false;
@@ -750,7 +755,7 @@ function jigoshop_ga_tracking() {
 	if ( current_user_can('manage_options') )
 		return false;
 
-	$tracking_id = get_option('jigoshop_ga_id');
+	$tracking_id = $jigoshop_options->get_option('jigoshop_ga_id');
 
 	if ( ! $tracking_id )
 		return false;
@@ -784,15 +789,17 @@ function jigoshop_ga_tracking() {
 add_action( 'jigoshop_thankyou', 'jigoshop_ga_ecommerce_tracking' );
 function jigoshop_ga_ecommerce_tracking( $order_id ) {
 
+    $jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
+    
 	// Skip if disabled
-	if ( get_option('jigoshop_ga_ecommerce_tracking_enabled') != 'yes' )
+	if ( $jigoshop_options->get_option('jigoshop_ga_ecommerce_tracking_enabled') != 'yes' )
 		return false;
 
 	// Don't track the shop owners roaming
 	if ( current_user_can('manage_options') )
 		return false;
 
-	$tracking_id = get_option('jigoshop_ga_id');
+	$tracking_id = $jigoshop_options->get_option('jigoshop_ga_id');
 
 	if ( ! $tracking_id )
 		return false;

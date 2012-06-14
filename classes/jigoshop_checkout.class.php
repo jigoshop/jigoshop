@@ -17,19 +17,19 @@
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
-class jigoshop_checkout extends jigoshop_singleton {
+class jigoshop_checkout extends Jigoshop_Singleton {
 
 	public $posted;
 	public $billing_fields;
 	public $shipping_fields;
 	private $must_register = true;
 	private $show_signup = false;
-
+    
 	/** constructor */
-	protected function __construct () {
-
-		$this->must_register = ( get_option('jigoshop_enable_guest_checkout') != 'yes' && !is_user_logged_in() );
-		$this->show_signup = ( get_option('jigoshop_enable_signup_form') == 'yes' && !is_user_logged_in() );
+	protected function __construct () {        
+				
+		$this->must_register = ( self::get_jigoshop_options()->get_option('jigoshop_enable_guest_checkout') != 'yes' && !is_user_logged_in() );
+		$this->show_signup = ( self::get_jigoshop_options()->get_option('jigoshop_enable_signup_form') == 'yes' && !is_user_logged_in() );
 
 		add_action('jigoshop_checkout_billing',array(&$this,'checkout_form_billing'));
 		add_action('jigoshop_checkout_shipping',array(&$this,'checkout_form_shipping'));
@@ -107,7 +107,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 	function checkout_form_shipping() {
 
 		// Shipping Details
-		if (!jigoshop_cart::ship_to_billing_address_only() && get_option('jigoshop_calc_shipping') == 'yes') :
+		if (!jigoshop_cart::ship_to_billing_address_only() && self::get_jigoshop_options()->get_option('jigoshop_calc_shipping') == 'yes') :
 
 			$shiptobilling = !$_POST ? apply_filters('shiptobilling_default', 1) : $this->get_value('shiptobilling'); ?>
 
@@ -265,7 +265,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 	function process_checkout() {
 
 		global $wpdb;
-
+				
 		if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
 
         // always calculate totals when coming to checkout, as we need the total calculated on the cart here
@@ -449,7 +449,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 			                $user_pass = $this->posted['account-password'];
 			                $user_id = wp_create_user( $this->posted['account-username'], $user_pass, $this->posted['billing-email'] );
 			                if ( !$user_id ) {
-			                	jigoshop::add_error( sprintf(__('<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the <a href="mailto:%s">webmaster</a> !', 'jigoshop'), get_option('jigoshop_email')));
+			                	jigoshop::add_error( sprintf(__('<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the <a href="mailto:%s">webmaster</a> !', 'jigoshop'), self::get_jigoshop_options()->get_option('jigoshop_email')));
 			                    break;
 							}
 		                    // Change role
@@ -600,7 +600,7 @@ class jigoshop_checkout extends jigoshop_singleton {
                         //TODO: need to change this so that the admin pages can use all tax data on the page
 						$rate = jigoshop_cart::get_total_tax_rate();
 
-                        $price_inc_tax = (get_option('jigoshop_calc_taxes') == 'yes' && get_option('jigoshop_prices_include_tax') == 'yes' ? $_product->get_price() : -1);
+                        $price_inc_tax = (self::get_jigoshop_options()->get_option('jigoshop_calc_taxes') == 'yes' && self::get_jigoshop_options()->get_option('jigoshop_prices_include_tax') == 'yes' ? $_product->get_price() : -1);
 
 						if ( !empty( $values['variation_id'] )) {
 							$product_id = $values['variation_id'];
@@ -629,7 +629,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 
 					 	// Check stock levels
 					 	if ( $_product->managing_stock() && (!$_product->is_in_stock() || !$_product->has_enough_stock($values['quantity']) ) ) :
-							$errormsg = (get_option('jigoshop_show_stock') == 'yes')
+							$errormsg = (self::get_jigoshop_options()->get_option('jigoshop_show_stock') == 'yes')
 							? (sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order.  We have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title(), $_product->get_stock() ))
 							: (sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title() ));
 							jigoshop::add_error($errormsg);
@@ -668,7 +668,7 @@ class jigoshop_checkout extends jigoshop_singleton {
 					$order = new jigoshop_order($order_id);
 
 					/* Coupon usage limit */
-					$coupons = get_option('jigoshop_coupons');
+					$coupons = self::get_jigoshop_options()->get_option('jigoshop_coupons');
 
 					foreach ($data['order_discount_coupons'] as $coupon) :
 						$coupons[$coupon['code']]['usage'] = empty($coupons[$coupon['code']]['usage']) ? 1 : $coupons[$coupon['code']]['usage'] + 1;
@@ -843,7 +843,7 @@ class jigoshop_checkout extends jigoshop_singleton {
             jigoshop::add_error( __('Invalid payment method.','jigoshop') );
             return false;
         else :
-            $shipping_total = (get_option('jigoshop_prices_include_tax') == 'yes' ? jigoshop_cart::$shipping_tax_total + jigoshop_cart::$shipping_total : jigoshop_cart::$shipping_total);
+            $shipping_total = (self::get_jigoshop_options()->get_option('jigoshop_prices_include_tax') == 'yes' ? jigoshop_cart::$shipping_tax_total + jigoshop_cart::$shipping_total : jigoshop_cart::$shipping_total);
             return $payment_gateway->process_gateway(number_format(jigoshop_cart::$subtotal, 2, '.', ''), number_format($shipping_total, 2, '.', ''), number_format(jigoshop_cart::$discount_total, 2, '.', ''));
         endif;
     }

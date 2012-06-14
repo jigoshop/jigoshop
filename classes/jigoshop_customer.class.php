@@ -17,14 +17,14 @@
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
-class jigoshop_customer extends jigoshop_singleton {
+class jigoshop_customer extends Jigoshop_Singleton {
 
 	/** constructor */
 	protected function __construct() {
 
 		if ( !isset( jigoshop_session::instance()->customer ) ) :
 
-			$default = get_option('jigoshop_default_country');
+			$default = self::get_jigoshop_options()->get_option('jigoshop_default_country');
         	if (strstr($default, ':')) :
         		$country = current(explode(':', $default));
         		$state = end(explode(':', $default));

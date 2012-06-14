@@ -25,6 +25,10 @@ class jigoshop_payment_gateway {
 	var $enabled;
 	var $icon;
 	var $description;
+    
+    public function __construct() {
+        Jigoshop_Base_Class::get_jigoshop_options()->install_external_options( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
+    }
 
 	function is_available() {
 
@@ -65,5 +69,15 @@ class jigoshop_payment_gateway {
         // default to cart needs_payment() to keep the same functionality that jigoshop offers today
         // if overridden, the gateway will provide the details when to skip or not
         return jigoshop_cart::needs_payment();
+    }
+    
+	/**
+	 * Default Option settings for WordPress Settings API using the Jigoshop_Options class
+	 *
+	 * These should be installed on the Jigoshop_Options 'Payment Gateways' tab
+	 *
+	 */	
+    protected function get_default_options() {
+        return array();
     }
 }

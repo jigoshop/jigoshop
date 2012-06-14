@@ -25,12 +25,14 @@ class jigoshop_tax {
     private $tax_divisor;
     private $shipping_tax_class;
     private $shipable;
+    private $jigoshop_options;
 
     /**
      * sets up current tax class without a divisor. May or may not have
      * args.
      */
     function __construct() {
+        // allow for multiple constructors. One with 1 arg, otherwise no arg constructor
         $this->tax_divisor = (func_num_args() == 1 ? func_get_arg(0) : -1);
         $this->init_tax();
     }
@@ -41,6 +43,7 @@ class jigoshop_tax {
      * @since 1.2
      */
     public function init_tax() {
+        $this->jigoshop_options = Jigoshop_Base_Class::get_jigoshop_options();
         $this->rates = $this->get_tax_rates();
         $this->compound_tax = false;
         $this->tax_amounts = array();
@@ -194,7 +197,7 @@ class jigoshop_tax {
         //don't include shipping in the call, as the total item price doesn't include shipping
         $total_tax = $this->get_compound_tax_amount(false) + $this->get_non_compounded_tax_amount(false);
         if ($total_item_price > 0) :
-            $tot_tax_rate = (get_option('jigoshop_prices_include_tax') == 'yes' ? round($total_tax / ($total_item_price - $total_tax) * 100, 2) : round($total_tax / $total_item_price * 100, 2));
+            $tot_tax_rate = ($this->jigoshop_options->get_option('jigoshop_prices_include_tax') == 'yes' ? round($total_tax / ($total_item_price - $total_tax) * 100, 2) : round($total_tax / $total_item_price * 100, 2));
         endif;
 
         return $tot_tax_rate;
@@ -206,7 +209,7 @@ class jigoshop_tax {
      * @return  array
      */
     function get_tax_classes() {
-        $classes = get_option( 'jigoshop_tax_classes' );
+        $classes = $this->jigoshop_options->get_option( 'jigoshop_tax_classes' );
 
         $classes = explode("\n", $classes);
 
@@ -232,7 +235,7 @@ class jigoshop_tax {
      * @return  array
      */
     function get_tax_rates() {
-        $tax_rates = get_option( 'jigoshop_tax_rates' );
+        $tax_rates = $this->jigoshop_options->get_option( 'jigoshop_tax_rates' );
         $tax_rates_array = array();
         if ($tax_rates && is_array($tax_rates) && sizeof($tax_rates) > 0)
             foreach ($tax_rates as $rate) :
@@ -555,7 +558,7 @@ class jigoshop_tax {
         $tax_rate = null;
         if ($product_rates_array && is_array($product_rates_array)) :
 
-            if ( get_option( 'jigoshop_calc_taxes' ) == 'yes') :
+            if ( $this->jigoshop_options->get_option( 'jigoshop_calc_taxes' ) == 'yes') :
 
                 if (!empty($product_rates_array)) :
                     $tax_rate = 0;
@@ -641,7 +644,7 @@ class jigoshop_tax {
 
             if ($recalculate_tax) :
                 $rate = $this->get_rate($tax_class);
-                $tax = $this->calc_tax($amount, $rate, ($this->is_compound_tax() ? false : get_option('jigoshop_prices_include_tax') == 'yes'));
+                $tax = $this->calc_tax($amount, $rate, ($this->is_compound_tax() ? false : $this->jigoshop_options->get_option('jigoshop_prices_include_tax') == 'yes'));
                 $this->tax_amounts[$tax_class]['amount'] = $tax;
             else :
             	if ( isset($this->tax_amounts[$tax_class]['amount'])) :
