@@ -57,11 +57,12 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 */
 	public function settings_scripts() {
 		
-    	wp_register_script( 'jigoshop-easytooltip', jigoshop::assets_url() . '/assets/js/easyTooltip.js', '' );
-    	wp_enqueue_script( 'jigoshop-easytooltip' );
     	// http://jquerytools.org/documentation/rangeinput/index.html
     	wp_register_script( 'jquery-tools-slider', 'http://cdn.jquerytools.org/1.2.6/form/jquery.tools.min.js', array( 'jquery' ), '1.2.6' );
     	wp_enqueue_script( 'jquery-tools-slider' );
+    	
+    	wp_register_script( 'jigoshop-bootstrap-tooltip', jigoshop::assets_url() . '/assets/js/bootstrap-tooltip.min.js', array( 'jquery' ), '2.0.3' );
+    	wp_enqueue_script( 'jigoshop-bootstrap-tooltip' );
 
 	}
 	
