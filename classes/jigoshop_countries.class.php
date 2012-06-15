@@ -885,6 +885,8 @@ class jigoshop_countries extends Jigoshop_Base {
 	/** Outputs the list of countries and states for use in dropdown boxes */
 	function country_dropdown_options( $selected_country = '', $selected_state = '*', $escape = false, $show_all = true, $echo = true ) {
 
+		$output = '';
+		
 		if ( is_array($selected_country ) ) $selected_country = array_unique($selected_country);
 	
 		if ( is_array($selected_state ) ) $selected_state = array_unique($selected_state);
