@@ -50,7 +50,7 @@ if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
  * Include core files and classes
  **/
 include_once( 'classes/abstract/jigoshop_base.class.php' );
-include_once( 'classes/abstract/jigoshop_singleton.php' );
+include_once( 'classes/abstract/jigoshop_singleton.class.php' );
 include_once( 'classes/jigoshop_options.class.php' );
 include_once( 'classes/jigoshop_session.class.php' );
 
