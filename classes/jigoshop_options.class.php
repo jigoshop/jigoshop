@@ -1196,6 +1196,19 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		);
 		
 		self::$default_options[] = array(
+			'name' 		=> __('Apply Taxes After Coupon','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('If yes, taxes get applied after coupons. When no, taxes get applied before coupons.','jigoshop'),
+			'id' 		=> 'jigoshop_tax_after_coupon',
+			'std' 		=> 'yes',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+		
+		self::$default_options[] = array(
 			'name'		=> __('Catalog Prices include tax?','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('If prices include tax then tax calculations will work backwards.','jigoshop'),
