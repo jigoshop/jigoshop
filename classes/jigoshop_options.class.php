@@ -1312,7 +1312,10 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		self::$default_options[] = array( 'name' => __('Available gateways', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
 		self::$default_options[] = array( 'type' => 'gateway_options');  // required only for backwards compatibility. 
-				
+		
+		// allow extensions to add options
+//		self::$default_options = apply_filters( 'jigoshop_options_settings', self::$default_options );
+		
 	}
 	
 }
