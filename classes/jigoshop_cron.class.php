@@ -174,7 +174,7 @@ class jigoshop_cron extends Jigoshop_Base {
 
 		}
 
-		delete_option('jigoshop_check_beta_manually');
+		self::get_options()->delete_option('jigoshop_check_beta_manually');
 
 		return $transient;
 
