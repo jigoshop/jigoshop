@@ -673,7 +673,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					foreach ($data['order_discount_coupons'] as $coupon) :
 						$coupons[$coupon['code']]['usage'] = empty($coupons[$coupon['code']]['usage']) ? 1 : $coupons[$coupon['code']]['usage'] + 1;
 					endforeach;
-					update_option('jigoshop_coupons', $coupons);
+					self::get_options()->set_option('jigoshop_coupons', $coupons);
 
 					// Inserted successfully
 					do_action('jigoshop_new_order', $order_id);

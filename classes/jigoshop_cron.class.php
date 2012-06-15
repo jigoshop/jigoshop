@@ -90,7 +90,7 @@ class jigoshop_cron extends Jigoshop_Base {
 
 		if( !empty($_REQUEST['action']) && $_REQUEST['action'] == 'jigoshop_beta_check' && check_admin_referer('jigoshop_check_beta_'.get_current_user_id().'_wpnonce') && is_super_admin() ) {
 
-			update_option('jigoshop_check_beta_manually', true);
+			self::get_options()->set_option('jigoshop_check_beta_manually', true);
 			$this->jigoshop_update_beta_init();
 
 			add_action( 'jigoshop_admin_settings_notices', array ($this, 'jigoshop_beta_check_notice') );
