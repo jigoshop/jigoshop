@@ -25,7 +25,7 @@ function jigoshop_order_tracking( $atts ) {
 	), $atts));
 
 	global $post;
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
 
 	if ($_POST) :
 

@@ -17,7 +17,7 @@
 
 include_once (dirname(dirname(__FILE__)) . '/jigoshop_options_interface.php');
 
-abstract class Jigoshop_Base_Class {
+abstract class Jigoshop_Base {
 
     private static $jigoshop_options;
     

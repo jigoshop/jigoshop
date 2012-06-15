@@ -21,7 +21,7 @@
  * 1. Archive 'pending' orders by setting their status to 'on-hold'.
  */
 
-class jigoshop_cron extends Jigoshop_Base_Class {
+class jigoshop_cron extends Jigoshop_Base {
 
 	function __construct () {
 

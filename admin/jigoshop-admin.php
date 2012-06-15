@@ -454,7 +454,7 @@ function jigoshop_dashboard_recent_comments() {
  * @since 3.0.0
  */
 function jigoshop_dashboard_recent_comments_control() {
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
 	if ( !$widget_options = get_option( 'dashboard_widget_options' ) )
 		$widget_options = array();
 

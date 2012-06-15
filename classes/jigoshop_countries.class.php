@@ -16,7 +16,7 @@
  * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
-class jigoshop_countries extends Jigoshop_Base_Class {
+class jigoshop_countries extends Jigoshop_Base {
 
 	public static $countries = array(
 		'AD'  => 'Andorra',

@@ -14,7 +14,7 @@
  * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
-class jigoshop_product extends Jigoshop_Base_Class {
+class jigoshop_product extends Jigoshop_Base {
 
 	// LEGACY
 	private static $attribute_taxonomies = NULL;

@@ -17,7 +17,7 @@
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
-class jigoshop_coupons extends Jigoshop_Base_Class {
+class jigoshop_coupons extends Jigoshop_Base {
 
 	function __construct() {
 

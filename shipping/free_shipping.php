@@ -29,11 +29,11 @@ class free_shipping extends jigoshop_shipping_method {
 		parent::__construct();
 		
         $this->id 			= 'free_shipping';
-        $this->enabled		= Jigoshop_Base_Class::get_options()->get_option('jigoshop_free_shipping_enabled');
-		$this->title 		= Jigoshop_Base_Class::get_options()->get_option('jigoshop_free_shipping_title');
-		$this->min_amount 	= Jigoshop_Base_Class::get_options()->get_option('jigoshop_free_shipping_minimum_amount');
-		$this->availability = Jigoshop_Base_Class::get_options()->get_option('jigoshop_free_shipping_availability');
-		$this->countries 	= Jigoshop_Base_Class::get_options()->get_option('jigoshop_free_shipping_countries');
+        $this->enabled		= Jigoshop_Base::get_options()->get_option('jigoshop_free_shipping_enabled');
+		$this->title 		= Jigoshop_Base::get_options()->get_option('jigoshop_free_shipping_title');
+		$this->min_amount 	= Jigoshop_Base::get_options()->get_option('jigoshop_free_shipping_minimum_amount');
+		$this->availability = Jigoshop_Base::get_options()->get_option('jigoshop_free_shipping_availability');
+		$this->countries 	= Jigoshop_Base::get_options()->get_option('jigoshop_free_shipping_countries');
 		
 		if ( isset( jigoshop_session::instance()->chosen_shipping_method_id )
 			&& jigoshop_session::instance()->chosen_shipping_method_id == $this->id ) {

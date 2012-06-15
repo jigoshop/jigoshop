@@ -67,7 +67,7 @@ function jigoshop_product_data_box() {
 				<a href="#tax"><?php _e('Advanced', 'jigoshop') ?></a>
 			</li>
 
-			<?php if (Jigoshop_Base_Class::get_options()->get_option('jigoshop_manage_stock') == 'yes') : ?>
+			<?php if (Jigoshop_Base::get_options()->get_option('jigoshop_manage_stock') == 'yes') : ?>
 			<li class="inventory_tab">
 				<a href="#inventory"><?php _e('Inventory', 'jigoshop'); ?></a>
 			</li>
@@ -111,7 +111,7 @@ function jigoshop_product_data_box() {
 				);
 
 				// SKU
-				if ( Jigoshop_Base_Class::get_options()->get_option('jigoshop_enable_sku') !== 'no' ) {
+				if ( Jigoshop_Base::get_options()->get_option('jigoshop_enable_sku') !== 'no' ) {
 					echo jigoshop_form::input( 'sku', __('SKU','jigoshop'), null, null, 'short', $post->ID );
 				}
 			?>
@@ -204,19 +204,19 @@ function jigoshop_product_data_box() {
 				</p>
 			</fieldset>
 
-			<?php if( Jigoshop_Base_Class::get_options()->get_option('jigoshop_enable_weight') !== 'no' || Jigoshop_Base_Class::get_options()->get_option('jigoshop_enable_dimensions', true) !== 'no' ): ?>
+			<?php if( Jigoshop_Base::get_options()->get_option('jigoshop_enable_weight') !== 'no' || Jigoshop_Base::get_options()->get_option('jigoshop_enable_dimensions', true) !== 'no' ): ?>
 			<fieldset id="form_fieldset">
 			<?php
 				// Weight
-				if( Jigoshop_Base_Class::get_options()->get_option('jigoshop_enable_weight') !== 'no' ) {
-					echo jigoshop_form::input( 'weight', 'Weight', null, null, 'short', '0.00', array('after_label' => ' ('.Jigoshop_Base_Class::get_options()->get_option('jigoshop_weight_unit').')') ); // Missing placeholder attribute 0.00
+				if( Jigoshop_Base::get_options()->get_option('jigoshop_enable_weight') !== 'no' ) {
+					echo jigoshop_form::input( 'weight', 'Weight', null, null, 'short', '0.00', array('after_label' => ' ('.Jigoshop_Base::get_options()->get_option('jigoshop_weight_unit').')') ); // Missing placeholder attribute 0.00
 				}
 
 				// Dimensions
-				if( Jigoshop_Base_Class::get_options()->get_option('jigoshop_enable_dimensions', true) !== 'no' ) {
+				if( Jigoshop_Base::get_options()->get_option('jigoshop_enable_dimensions', true) !== 'no' ) {
 					echo '
 					<p class="form-field dimensions_field">
-						<label for"product_length">'. __('Dimensions', 'jigoshop') . ' ('.Jigoshop_Base_Class::get_options()->get_option('jigoshop_dimension_unit').')' . '</label>
+						<label for"product_length">'. __('Dimensions', 'jigoshop') . ' ('.Jigoshop_Base::get_options()->get_option('jigoshop_dimension_unit').')' . '</label>
 						<input type="text" name="length" class="short" value="' . get_post_meta( $thepostid, 'length', true ) . '" placeholder="'. __('Length', 'jigoshop') . '" />
 						<input type="text" name="width" class="short" value="' . get_post_meta( $thepostid, 'width', true ) . '" placeholder="'. __('Width', 'jigoshop') . '" />
 						<input type="text" name="height" class="short" value="' . get_post_meta( $thepostid, 'height', true ) . '" placeholder="'. __('Height', 'jigoshop') . '" />
@@ -255,7 +255,7 @@ function jigoshop_product_data_box() {
 			
 		</div>
 		
-		<?php if (Jigoshop_Base_Class::get_options()->get_option('jigoshop_manage_stock')=='yes') : ?>
+		<?php if (Jigoshop_Base::get_options()->get_option('jigoshop_manage_stock')=='yes') : ?>
 		<div id="inventory" class="panel jigoshop_options_panel">
 			<fieldset>
 			<?php

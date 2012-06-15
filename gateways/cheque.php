@@ -35,9 +35,9 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
         $this->icon 			= '';
         $this->has_fields 		= false;
 
-		$this->enabled			= Jigoshop_Base_Class::get_options()->get_option('jigoshop_cheque_enabled');
-		$this->title 			= Jigoshop_Base_Class::get_options()->get_option('jigoshop_cheque_title');
-		$this->description 		= Jigoshop_Base_Class::get_options()->get_option('jigoshop_cheque_description');
+		$this->enabled			= Jigoshop_Base::get_options()->get_option('jigoshop_cheque_enabled');
+		$this->title 			= Jigoshop_Base::get_options()->get_option('jigoshop_cheque_title');
+		$this->description 		= Jigoshop_Base::get_options()->get_option('jigoshop_cheque_description');
 
     	add_action('thankyou_cheque', array(&$this, 'thankyou_page'));
     }

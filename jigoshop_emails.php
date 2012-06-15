@@ -31,7 +31,7 @@ add_action('order_status_pending_to_on-hold', 'jigoshop_new_order_notification')
 
 function jigoshop_new_order_notification($order_id) {
 	
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
     $order = new jigoshop_order($order_id);
 
     $subject = sprintf(__('[%s] New Customer Order (# %s)', 'jigoshop'), get_bloginfo('name'), $order->id);
@@ -66,7 +66,7 @@ add_action('order_status_pending_to_on-hold', 'jigoshop_processing_order_custome
 
 function jigoshop_processing_order_customer_notification($order_id) {
 	
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
     $order = new jigoshop_order($order_id);
 
     $subject = '[' . get_bloginfo('name') . '] ' . __('Order Received', 'jigoshop');
@@ -113,7 +113,7 @@ add_action('order_status_completed', 'jigoshop_completed_order_customer_notifica
 
 function jigoshop_completed_order_customer_notification($order_id) {
 	
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
     $order = new jigoshop_order($order_id);
 
     $subject = '[' . get_bloginfo('name') . '] ' . __('Order Complete', 'jigoshop');
@@ -148,7 +148,7 @@ add_action('order_status_refunded', 'jigoshop_refunded_order_customer_notificati
 
 function jigoshop_refunded_order_customer_notification($order_id) {
 
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
     $order = new jigoshop_order($order_id);
 
     $subject = '[' . get_bloginfo('name') . '] ' . __('Order Refunded', 'jigoshop');
@@ -183,7 +183,7 @@ function jigoshop_refunded_order_customer_notification($order_id) {
  * */
 function jigoshop_send_customer_invoice($order_id) {
 
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
     $order = new jigoshop_order($order_id);
 
     $subject = '[' . get_bloginfo('name') . '] ' . sprintf(__('Invoice for Order #%s', 'jigoshop'), $order->id);
@@ -220,7 +220,7 @@ function add_header_info($order) {
 
 function add_company_information() {
     
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
     $add_eol = false;
     
     if ($jigoshop_options->get_option('jigoshop_company_name')) :
@@ -252,7 +252,7 @@ function add_company_information() {
 
 function add_order_totals($order, $show_download_links, $show_sku) {
 
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
     echo $order->email_order_items_list($show_download_links, $show_sku);
 
     if ($order->customer_note) :
@@ -342,7 +342,7 @@ function add_shipping_address_details($order) {
  * Low stock notification email
  * */
 function jigoshop_low_stock_notification($product) {
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
     $_product = new jigoshop_product($product);
     $subject = '[' . get_bloginfo('name') . '] ' . __('Product low in stock', 'jigoshop');
     $message = '#' . $_product->id . ' ' . $_product->get_title() . ' (' . $_product->sku . ') ' . __('is low in stock.', 'jigoshop');
@@ -354,7 +354,7 @@ function jigoshop_low_stock_notification($product) {
  * No stock notification email
  * */
 function jigoshop_no_stock_notification($product) {
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
     $_product = new jigoshop_product($product);
     $subject = '[' . get_bloginfo('name') . '] ' . __('Product out of stock', 'jigoshop');
     $message = '#' . $_product->id . ' ' . $_product->get_title() . ' (' . $_product->sku . ') ' . __('is out of stock.', 'jigoshop');
@@ -373,7 +373,7 @@ function jigoshop_no_stock_notification($product) {
  * @param string $amount - the count of the product needed to fill the order
  * */
 function jigoshop_product_on_backorder_notification($order_id, $product, $amount) {
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
     // notify the admin    
     $_product = new jigoshop_product($product);
     $subject = '[' . get_bloginfo('name') . '] ' . sprintf(__('Product Backorder on Order #%s', 'jigoshop'), $order_id);

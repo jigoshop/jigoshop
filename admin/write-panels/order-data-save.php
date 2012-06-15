@@ -21,7 +21,7 @@ add_action('jigoshop_process_shop_order_meta', 'jigoshop_process_shop_order_meta
 function jigoshop_process_shop_order_meta($post_id, $post) {
 
     global $wpdb;
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
     $jigoshop_errors = array();
 
     $order = new jigoshop_order($post_id);

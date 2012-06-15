@@ -120,7 +120,7 @@ function jigoshop_init() {
 	/* ensure nothing is output to the browser prior to this (other than headers) */
 	ob_start();
 
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
 	
 	jigoshop_post_type();						// register taxonomies
 	jigoshop_set_image_sizes();					// called after our Options are loaded
@@ -212,7 +212,7 @@ add_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name' );
 
 /*
 function jigoshop_mail_from( $email ) {
-	$email = Jigoshop_Base_Class::get_options()->get_option('jigoshop_email');
+	$email = Jigoshop_Base::get_options()->get_option('jigoshop_email');
 	return $email;
 }
 add_filter( 'wp_mail_from', 'jigoshop_mail_from' );
@@ -225,7 +225,7 @@ add_filter( 'wp_mail_from', 'jigoshop_mail_from' );
  **/
 function jigoshop_set_image_sizes() {
 
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
 
 	$sizes = array(
 		'shop_tiny'      => 'tiny',
@@ -255,7 +255,7 @@ function jigoshop_set_image_sizes() {
  **/
 function jigoshop_get_image_size( $size ) {
 	
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
 	if ( is_array( $size ) )
 		return $size;
 
@@ -346,7 +346,7 @@ add_action('admin_print_scripts', 'jigoshop_admin_scripts');
 
 function jigoshop_frontend_scripts() {
 
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
 	if ( ! is_jigoshop() && is_admin() ) return false;
 	$css = file_exists(get_stylesheet_directory() . '/jigoshop/style.css') ? get_stylesheet_directory_uri() . '/jigoshop/style.css' : jigoshop::assets_url() . '/assets/css/frontend.css';
 
@@ -481,7 +481,7 @@ function jigoshop_json_search_products_and_variations() {
 */
 function jigoshop_demo_store() {
 
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
 	if ($jigoshop_options->get_option('jigoshop_demo_store')=='yes') :
 
 		echo '<p class="demo_store">'.__('This is a demo store for testing purposes &mdash; no orders shall be fulfilled.', 'jigoshop').'</p>';
@@ -525,7 +525,7 @@ function jigoshop_product_cat_filter_post_link( $permalink, $post, $leavename, $
 */
 function jigoshop_sharethis() {
     
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
 	if (is_single() && $jigoshop_options->get_option('jigoshop_sharethis')) :
 
 		if (is_ssl()) :
@@ -631,7 +631,7 @@ function is_content_wrapped() {
  **/
 if (!function_exists('jigoshop_get_page_id')) {
 	function jigoshop_get_page_id( $page ) {
-        $jigoshop_options = Jigoshop_Base_Class::get_options();
+        $jigoshop_options = Jigoshop_Base::get_options();
 		$page = apply_filters('jigoshop_get_' . $page . '_page_id', $jigoshop_options->get_option('jigoshop_' . $page . '_page_id'));
 		return ($page) ? $page : -1;
 	}
@@ -695,7 +695,7 @@ function jigoshop_force_ssl() {
 		exit;
 	endif;
 }
-if (!is_admin() && Jigoshop_Base_Class::get_options()->get_option('jigoshop_force_ssl_checkout')=='yes') add_action( 'wp', 'jigoshop_force_ssl');
+if (!is_admin() && Jigoshop_Base::get_options()->get_option('jigoshop_force_ssl_checkout')=='yes') add_action( 'wp', 'jigoshop_force_ssl');
 
 function jigoshop_force_ssl_images( $content ) {
 	if (is_ssl()) :
@@ -731,7 +731,7 @@ add_filter('style_loader_src', 'jigoshop_force_ssl_urls');
 // http://www.xe.com/symbols.php
 function get_jigoshop_currency_symbol() {
     
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
 	$currency = $jigoshop_options->get_option('jigoshop_currency');
 	$currency_symbol = '';
 	switch ($currency) :
@@ -775,7 +775,7 @@ function get_jigoshop_currency_symbol() {
 
 function jigoshop_price( $price, $args = array() ) {
 	
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
 	extract(shortcode_atts(array(
 		'ex_tax_label' 	=> '0',
         'with_currency' => true
@@ -1083,7 +1083,7 @@ function jigoshop_exclude_order_admin_comments( $clauses ) {
 function jigoshop_import_start() {
 
 	global $wpdb;
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
 
 	$id = (int) $_POST['import_id'];
 	$file = get_attached_file( $id );

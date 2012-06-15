@@ -40,7 +40,7 @@ function jigoshop_shortcode_wrapper( $function, $atts = array() ) {
 function jigoshop_recent_products( $atts ) {
 
 	global $columns, $per_page, $paged;
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
 
 	extract( shortcode_atts( array(
 		'per_page' 	=> $jigoshop_options->get_option('jigoshop_catalog_per_page'),
@@ -80,7 +80,7 @@ function jigoshop_recent_products( $atts ) {
 
 function jigoshop_products( $atts ){
 	global $columns, $paged;
-	$jigoshop_options = Jigoshop_Base_Class::get_options();
+	$jigoshop_options = Jigoshop_Base::get_options();
     
 	if ( empty( $atts )) return;
 
@@ -177,7 +177,7 @@ function jigoshop_product( $atts ){
 function jigoshop_featured_products( $atts ) {
 
 	global $columns, $per_page, $paged;
-	$jigoshop_options = Jigoshop_Base_Class::get_options();
+	$jigoshop_options = Jigoshop_Base::get_options();
     
 	extract( shortcode_atts( array(
 		'per_page' 	=> $jigoshop_options->get_option('jigoshop_catalog_per_page'),
@@ -222,7 +222,7 @@ function jigoshop_featured_products( $atts ) {
 function jigoshop_product_category( $atts ) {
 
 	global $columns, $per_page, $paged;
-    $jigoshop_options = Jigoshop_Base_Class::get_options();
+    $jigoshop_options = Jigoshop_Base::get_options();
 	
 	if ( empty( $atts ) ) return;
 

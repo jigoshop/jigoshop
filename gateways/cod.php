@@ -35,9 +35,9 @@ class jigoshop_cod extends jigoshop_payment_gateway {
         $this->icon 			= '';
         $this->has_fields 		= false;
 
-		$this->enabled			= Jigoshop_Base_Class::get_options()->get_option('jigoshop_cod_enabled');
-		$this->title 			= Jigoshop_Base_Class::get_options()->get_option('jigoshop_cod_title');
-		$this->description 		= Jigoshop_Base_Class::get_options()->get_option('jigoshop_cod_description');
+		$this->enabled			= Jigoshop_Base::get_options()->get_option('jigoshop_cod_enabled');
+		$this->title 			= Jigoshop_Base::get_options()->get_option('jigoshop_cod_title');
+		$this->description 		= Jigoshop_Base::get_options()->get_option('jigoshop_cod_description');
 
     	add_action('thankyou_cod', array(&$this, 'thankyou_page'));
     }

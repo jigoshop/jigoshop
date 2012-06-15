@@ -207,7 +207,7 @@ function jigoshop_cart($atts) {
             <?php
             // Hide totals if customer has set location and there are no methods going there
             $available_methods = jigoshop_shipping::get_available_shipping_methods();
-            $jigoshop_options = Jigoshop_Base_Class::get_options();
+            $jigoshop_options = Jigoshop_Base::get_options();
             
             if ($available_methods || !jigoshop_customer::get_shipping_country() || !jigoshop_shipping::is_enabled()) :
                 ?>

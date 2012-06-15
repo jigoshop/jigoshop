@@ -128,7 +128,7 @@ class jigoshop_product_meta
 	 **/
 	private function process_stock( array $post ) {
 
-        $jigoshop_options = Jigoshop_Base_Class::get_options();
+        $jigoshop_options = Jigoshop_Base::get_options();
         
 		// If the global stock switch is off
 		if ( !$jigoshop_options->get_option('jigoshop_manage_stock') )

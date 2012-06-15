@@ -15,7 +15,7 @@
  * @license             http://jigoshop.com/license/commercial-edition
  */
  
-$jigoshop_options = Jigoshop_Base_Class::get_options(); ?>
+$jigoshop_options = Jigoshop_Base::get_options(); ?>
 <div id="order_review">
 
     <table class="shop_table">
