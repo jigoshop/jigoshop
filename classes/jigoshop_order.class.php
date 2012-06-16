@@ -19,7 +19,7 @@
 class jigoshop_order extends Jigoshop_Base {
 
 	public $_data = array();
-    
+
 	public function __get($variable) {
 		return isset($this->_data[$variable]) ? $this->_data[$variable] : null;
 	}
@@ -349,8 +349,8 @@ class jigoshop_order extends Jigoshop_Base {
 
 	/** Output bank transfer details for display in emails */
 	function email_bank_details() {
-		
-		
+
+
 		$title 			= self::get_options()->get_option('jigoshop_bank_transfer_title');
 		$description 	= self::get_options()->get_option('jigoshop_bank_transfer_description');
 		$bank_name 		= self::get_options()->get_option('jigoshop_bank_transfer_bank_name');
@@ -454,28 +454,31 @@ class jigoshop_order extends Jigoshop_Base {
 
 		if ($note) $note .= ' ';
 
-		$new_status = get_term_by( 'slug', sanitize_title( $new_status ), 'shop_order_status');
-		if ($new_status) :
+		$old_status = get_term_by( 'slug', sanitize_title( $this->status ), 'shop_order_status');
+		$new_status = get_term_by( 'slug', sanitize_title( $new_status_slug ), 'shop_order_status');
+		if ($new_status) {
 
-			wp_set_object_terms($this->id, $new_status->slug, 'shop_order_status');
+			wp_set_object_terms($this->id, array( $new_status->slug ), 'shop_order_status', false);
 
-			if ( $this->status != $new_status->slug ) :
+			if ( $this->status != $new_status->slug ) {
+
 				// Status was changed
-				do_action( 'order_status_'.$new_status->slug, $this->id );
-				do_action( 'order_status_'.$this->status.'_to_'.$new_status->slug, $this->id );
-				$this->add_order_note( $note . sprintf( __('Order status changed from %s to %s.', 'jigoshop'), $this->status, $new_status->slug ) );
-				clean_term_cache( '', 'shop_order_status' );
+				do_action( 'order_status_' . $new_status->slug , $this->id );
+				do_action( 'order_status_' . $this->status . '_to_' . $new_status->slug, $this->id );
+				$this->add_order_note( $note . sprintf( __('Order status changed from %s to %s.', 'jigoshop'), __($old_status->name, 'jigoshop'), __($new_status->name, 'jigoshop') ) );
 
-				// If completed add completion date to order
-				if( $new_status->slug === 'completed' ) {
-					update_post_meta( $this->id, '_js_completed_date', current_time('timestamp'));
-					$this->add_sale(); // Add the sale to the records
+				// Date
+				if ($new_status->slug == 'completed') {
+					update_post_meta( $this->id, '_js_completed_date', current_time('mysql') );
+					$this->add_sale();
 				}
-			endif;
 
-		endif;
+			}
 
-		return false;		// signal no errors
+		}
+
+		return false;
+
 	}
 
 	/**
@@ -555,8 +558,8 @@ class jigoshop_order extends Jigoshop_Base {
 	 * Reduce stock levels
 	 */
 	function reduce_order_stock() {
-		
-		
+
+
 		// Reduce stock levels and do any other actions with products in the cart
 		if (sizeof($this->items)>0) foreach ($this->items as $item) :
 
