@@ -436,7 +436,7 @@ class jigoshop_order extends Jigoshop_Base {
 	 * @param   string	$new_status		Status to change the order to
 	 * @param   string	$note			Optional note to add
 	 */
-	function update_status( $new_status, $note = '' ) {
+	function update_status( $new_status_slug, $note = '' ) {
 
 // 		if ( $this->status == 'refunded' ) {
 // 			$jigoshop_errors = (array) maybe_unserialize(get_option('jigoshop_errors'));
@@ -456,6 +456,7 @@ class jigoshop_order extends Jigoshop_Base {
 
 		$old_status = get_term_by( 'slug', sanitize_title( $this->status ), 'shop_order_status');
 		$new_status = get_term_by( 'slug', sanitize_title( $new_status_slug ), 'shop_order_status');
+
 		if ($new_status) {
 
 			wp_set_object_terms($this->id, array( $new_status->slug ), 'shop_order_status', false);
