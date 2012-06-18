@@ -27,16 +27,19 @@ add_filter( 'jigoshop_payment_gateways', 'add_skrill_gateway', 40 );
 class skrill extends jigoshop_payment_gateway {
 
 	public function __construct() {
-		
+
+		protected $_supportedLocales = array('cn', 'cz', 'da', 'en', 'es', 'fi', 'de', 'fr', 'gr', 'it', 'nl', 'ro', 'ru', 'pl', 'sv', 'tr');
+
 		parent::__construct();
 
-        $this->id			= 'skrill';
-        $this->title 		= 'Skrill';
-        $this->icon 		= jigoshop::assets_url() . '/assets/images/icons/skrill.png';
-        $this->has_fields 	= false;
-      	$this->enabled		= Jigoshop_Base::get_options()->get_option('jigoshop_skrill_enabled');
-		$this->title 		= Jigoshop_Base::get_options()->get_option('jigoshop_skrill_title');
-		$this->email 		= Jigoshop_Base::get_options()->get_option('jigoshop_skrill_email');
+		$this->id        = 'skrill';
+		$this->title     = 'Skrill';
+		$this->icon      = jigoshop::assets_url() . '/assets/images/icons/skrill.png';
+		$this->has_fields= false;
+		$this->enabled   = Jigoshop_Base::get_options()->get_option('jigoshop_skrill_enabled');
+		$this->title     = Jigoshop_Base::get_options()->get_option('jigoshop_skrill_title');
+		$this->email     = Jigoshop_Base::get_options()->get_option('jigoshop_skrill_email');
+		$this->locale    = $this->getLocale();
 
 		add_action( 'init', array(&$this, 'check_status_response') );
 
@@ -49,20 +52,30 @@ class skrill extends jigoshop_payment_gateway {
 
     }
 
+	public function getLocale() {
+
+		$locale = explode('_', get_locale());
+		if (is_array($locale) && !empty($locale) && in_array($locale[0], $this->_supportedLocales)) {
+			return $locale[0];
+		}
+
+		return false;
+
+	}
 
 	/**
 	 * Default Option settings for WordPress Settings API using the Jigoshop_Options class
 	 *
 	 * These should be installed on the Jigoshop_Options 'Payment Gateways' tab
 	 *
-	 */	
+	 */
 	protected function get_default_options() {
-	
+
 		$defaults = array();
-		
+
 		// Define the Section name for the Jigoshop_Options
 		$defaults[] = array( 'name' => __('Skrill (Moneybookers)', 'jigoshop'), 'type' => 'title', 'desc' => __('Skrill works by using an iFrame to submit payment information securely to Moneybookers.', 'jigoshop') );
-		
+
 		// List each option in order of appearance with details
 		$defaults[] = array(
 			'name'		=> __('Enable Skrill','jigoshop'),
@@ -76,7 +89,7 @@ class skrill extends jigoshop_payment_gateway {
 				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
-		
+
 		$defaults[] = array(
 			'name'		=> __('Method Title','jigoshop'),
 			'desc' 		=> '',
@@ -85,7 +98,7 @@ class skrill extends jigoshop_payment_gateway {
 			'std' 		=> __('Skrill','jigoshop'),
 			'type' 		=> 'text'
 		);
-		
+
 		$defaults[] = array(
 			'name'		=> __('Skrill merchant e-mail','jigoshop'),
 			'desc' 		=> '',
@@ -121,8 +134,8 @@ class skrill extends jigoshop_payment_gateway {
 	 * Generate the skrill button link
 	 **/
     public function generate_skrill_form() {
-		
-		
+
+
     	$order_id = $_GET['orderId'];
 
 		$order = new jigoshop_order( $order_id );
@@ -140,21 +153,19 @@ class skrill extends jigoshop_payment_gateway {
 
 		$skrill_args = array(
 			'merchant_fields'      => 'partner',
-			'partner'              => '21890813',
+			'partner'              => 'Jigoshop',
 			'pay_to_email'         => $this->email,
 			'recipient_description'=> get_bloginfo('name'),
 			'transaction_id'       => $order_id,
 			'return_url'           => get_permalink( $checkout_redirect ),
 			'return_url_text'      => 'Return to Merchant',
 			'new_window_redirect'  => 0,
-			'rid'                  => 20521479,
 			'prepare_only'         => 0,
 			'return_url_target'    => 1,
 			'cancel_url'           => trailingslashit(get_bloginfo('wpurl')).'?skrillListener=skrill_cancel',
 			'cancel_url_target'    => 1,
 			'status_url'           => trailingslashit(get_bloginfo('wpurl')).'?skrillListener=skrill_status',
-			'dynamic_descriptor'   => 'Description',
-			'language'             => 'EN',
+			'language'             => $this->getLocale(),
 			'hide_login'           => 1,
 			'confirmation_note'    => 'Thank you for your custom',
 			'pay_from_email'       => $order->billing_email,
@@ -168,7 +179,7 @@ class skrill extends jigoshop_payment_gateway {
 			'postal_code'          => $order->billing_postcode,
 			'city'                 => $order->billing_city,
 			'state'                => $order->billing_state,
-			'country'              => 'GBR',
+			'country'              => Jigoshop_Base::get_options()->get_option('jigoshop_default_country'),
 
 			'amount'               => $order_total,
 			'currency'             => Jigoshop_Base::get_options()->get_option('jigoshop_currency'),
