@@ -26,7 +26,6 @@
 function install_jigoshop( $network_wide = false ) {
 
 	global $wpdb;
-    $jigoshop_options = Jigoshop_Base::get_options();
 
 	if ( $network_wide ) {
 		$old_blog = $wpdb->blogid;
