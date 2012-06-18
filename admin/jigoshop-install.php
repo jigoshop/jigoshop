@@ -50,7 +50,7 @@ function _install_jigoshop() {
 
 		jigoshop_tables_install();		/* we need tables installed first to eliminate installation errors */
 
-		new Jigoshop_Options();
+		Jigoshop_Base::get_options();   /* instantiate options */
 		
 		jigoshop_create_pages();
 
