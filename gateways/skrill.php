@@ -16,7 +16,6 @@
  */
 
 /** Add the gateway to JigoShop **/
-
 function add_skrill_gateway( $methods ) {
 	$methods[] = 'skrill';
 	return $methods;
@@ -26,9 +25,9 @@ add_filter( 'jigoshop_payment_gateways', 'add_skrill_gateway', 40 );
 
 class skrill extends jigoshop_payment_gateway {
 
-	public function __construct() {
+	protected $_supportedLocales = array('cn', 'cz', 'da', 'en', 'es', 'fi', 'de', 'fr', 'gr', 'it', 'nl', 'ro', 'ru', 'pl', 'sv', 'tr');
 
-		protected $_supportedLocales = array('cn', 'cz', 'da', 'en', 'es', 'fi', 'de', 'fr', 'gr', 'it', 'nl', 'ro', 'ru', 'pl', 'sv', 'tr');
+	public function __construct() {
 
 		parent::__construct();
 
