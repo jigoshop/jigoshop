@@ -314,6 +314,17 @@ class jigoshop_order {
 				$return .= PHP_EOL . jigoshop_get_formatted_variation( $item['variation'], true);
 			endif;
 
+			// Very hacky, used for GFORMS ADDONS -Rob
+			if ( ! isset($_product->variation_data) && isset($item['variation'])) {
+
+				foreach ( $item['variation'] as $variation) {
+
+					$return .= PHP_EOL . $variation['name'].': '.$variation['value'];
+
+				}
+
+			}
+
 			if ( ! empty( $item['customization'] ) ) :
 				$return .= PHP_EOL . apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') ) . PHP_EOL . $item['customization'];
 			endif;
@@ -443,7 +454,7 @@ class jigoshop_order {
 // 			update_option('jigoshop_errors', $jigoshop_errors );
 // 			return true;
 // 		}
-// 
+//
 // 		if ( $this->status == 'completed' && $new_status != 'refunded' ) {
 // 			$jigoshop_errors = (array) maybe_unserialize(get_option('jigoshop_errors'));
 // 			$jigoshop_errors[] = __('Completed Orders may not be changed. You may only issue a Refund.','jigoshop');
