@@ -429,19 +429,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		self::$default_options[] = array( 'name' => __( 'Shop Options', 'jigoshop' ), 'type' => 'title', 'desc' => '' );
 		
 		self::$default_options[] = array(
-			'name'		=> __( 'Demo store', 'jigoshop' ),
-			'desc' 		=> '',
-			'tip' 		=> __( 'Enable this option to show a banner at the top of every page stating this shop is currently in testing mode.', 'jigoshop' ),
-			'id' 		=> 'jigoshop_demo_store',
-			'std' 		=> 'no',
-			'type' 		=> 'checkbox',
-			'choices'	=> array(
-				'no'			=> __('No', 'jigoshop'),
-				'yes'			=> __('Yes', 'jigoshop')
-			)
-		);
-		
-		self::$default_options[] = array(
 			'name'		=> __( 'Base Country/Region', 'jigoshop' ),
 			'desc' 		=> '',
 			'tip' 		=> __( 'This is the base country for your business. Tax rates will be based on this country.', 'jigoshop' ),
@@ -472,6 +459,42 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			'type' 		=> 'multi_select_countries'
 		);
 		
+		self::$default_options[] = array(
+			'name'		=> __( 'Demo store', 'jigoshop' ),
+			'desc' 		=> '',
+			'tip' 		=> __( 'Enable this option to show a banner at the top of every page stating this shop is currently in testing mode.', 'jigoshop' ),
+			'id' 		=> 'jigoshop_demo_store',
+			'std' 		=> 'no',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+		
+		self::$default_options[] = array(
+			'name'		=> __('Beta testing','jigoshop'),
+			'desc' 		=> __('Use beta versions when available','jigoshop'),
+			'tip' 		=> __('Only beta plugin updates will be shown for Jigoshop. Beta updates will display normally in the Wordpress plugin manager.','jigoshop'),
+			'id' 		=> 'jigoshop_use_beta_version',
+			'std' 		=> 'no',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+			
+		self::$default_options[] = array(
+			'name'		=> __('Check for update now','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Manually check if a beta update is available.','jigoshop'),
+			'id' 		=> 'jigoshop_check_beta_now',
+			'std' 		=> 'no',
+			'type' 		=> 'button',
+			'extra'     => is_multisite() ? admin_url().'network/' : '' . 'admin.php?page=jigoshop_settings&amp;action=jigoshop_beta_check&amp;_wpnonce='.wp_create_nonce('jigoshop_check_beta_'.get_current_user_id().'_wpnonce')
+		);
+			
 		/**
 		 * General Tab
 		 *------------------------------------------------------------------------------------------
@@ -501,6 +524,19 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				'same_page'		=> __('Stay on the same page', 'jigoshop'),
 				'to_checkout'	=> __('Redirect to Checkout', 'jigoshop'),
 				'to_cart'		=> __('Redirect to Cart', 'jigoshop'),
+			)
+		);
+		
+		self::$default_options[] = array(
+			'name'		=> __('Downloads','jigoshop'),
+			'desc' 		=> __('Enforce login for downloads','jigoshop'),
+			'tip' 		=> __('If a guest purchases a download, the guest can still download a link without logging in. We recommend disabling guest purchases if you enable this option.','jigoshop'),
+			'id' 		=> 'jigoshop_downloads_require_login',
+			'std' 		=> 'no',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
 		
