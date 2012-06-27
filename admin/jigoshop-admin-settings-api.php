@@ -1099,6 +1099,14 @@ class Jigoshop_Options_Parser {
 					</option>';
 			}
 			$display .= '</select>';
+			$id = $item['id'];
+			?>
+				<script type="text/javascript">
+					jQuery(function() {
+						jQuery("#<?php echo $id; ?>").select2();
+					});
+				</script>
+			<?php
 			break;
 		
 		default:
