@@ -925,7 +925,7 @@ class jigoshop_countries extends Jigoshop_Base {
 					$output .= '>'.$value.' &mdash; '. ($escape ? esc_js($state_value) : $state_value) .'</option>';
 				endforeach;
 	
-				echo '</optgroup>';
+				$output .= '</optgroup>';
 	
 				// Will only run update_option once
 				// If the state is '*' , update the default country to the last state in the selected country
