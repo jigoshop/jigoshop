@@ -36,21 +36,6 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	}
 	
 	/**
-	 * Add options page
-	 *
-	 * @deprecated -- no longer used; is set up in 'jigoshop-admin.php' function 'jigoshop_admin_menu'.
-	 */
-	public function add_settings_page() {
-
-		$admin_page = add_submenu_page( 'jigoshop', __( 'Settings' ), __( 'Settings' ), 'manage_options', JIGOSHOP_OPTIONS, array( &$this, 'output_markup' ) );
-
-		add_action( 'admin_print_scripts-' . $admin_page, array( &$this, 'settings_scripts' ) );
-		add_action( 'admin_print_styles-' . $admin_page, array( &$this, 'settings_styles' ) );
-
-	}
-	
-	
-	/**
 	 * Scripts for the Options page
 	 *
 	 * @since 1.3
@@ -275,11 +260,11 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			if ( $slug == $this_slug ) {
 				$menus_li .= '<a class="nav-tab nav-tab-active" 
 					title="'.$tab.'"
-					href="?page='.JIGOSHOP_OPTIONS.'&tab='.$this_slug.'">' . $tab . '</a>';
+					href="?page=jigoshop_settings&tab='.$this_slug.'">' . $tab . '</a>';
 			} else {
 				$menus_li .= '<a class="nav-tab"
 					title="'.$tab.'"
-					href="?page='.JIGOSHOP_OPTIONS.'&tab='.$this_slug.'">' . $tab . '</a>';
+					href="?page=jigoshop_settings&tab='.$this_slug.'">' . $tab . '</a>';
 			}
 		}
 		return $menus_li;
@@ -340,7 +325,6 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		$current_options = self::get_options()->get_current_options();
 		
 		$valid_input = $current_options;			// we start with the current options
-
 			
 		// Find the current TAB we are working with and use it's option settings
 		$this_section = sanitize_title( self::get_options()->get_option( 'jigoshop_settings_current_tabname' ) );
@@ -478,12 +462,12 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		if ( $result = $this->get_updated_tax_classes() ) $valid_input['jigoshop_tax_rates'] = $result;
 
         // remove all jigoshop_update_options actions on shipping classes when not on the shipping tab
-        if ($this_section != 'shipping') :
-            $this->remove_update_options(jigoshop_shipping::get_all_methods());
+        if ( $this_section != 'shipping' ) :
+            $this->remove_update_options( jigoshop_shipping::get_all_methods() );
         endif;
         
-        if ($this_section != 'payment-gateways') :
-            $this->remove_update_options(jigoshop_payment_gateways::payment_gateways());
+        if ( $this_section != 'payment-gateways' ) :
+            $this->remove_update_options( jigoshop_payment_gateways::payment_gateways() );
         endif;
         
 		// Allow any hooked in option updating
@@ -503,12 +487,17 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		
 	}
 	
-	private function remove_update_options($classes) {
+	/**
+	 * Remove all jigoshop_update_options actions on shipping and payment classes when not on those tabs
+	 *
+	 * @since 	1.3
+	 */
+	private function remove_update_options( $classes ) {
         
-        if (empty($classes)) return;
+        if ( empty( $classes )) return;
         
-        foreach ($classes as $class) :
-            remove_action('jigoshop_update_options', array($class, 'process_admin_options'));
+        foreach ( $classes as $class ) :
+            remove_action( 'jigoshop_update_options', array( $class, 'process_admin_options' ));
         endforeach;
 
     }
@@ -518,7 +507,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 *
 	 * @return	mixed	false if not coupons, array of coupons otherwise
 	 *
-	 * @since 		1.2
+	 * @since 	1.3
 	 */
 	function get_updated_coupons() {
 		
@@ -641,7 +630,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 *
 	 * @return	mixed	false if not rax rates, array of tax rates otherwise
 	 *
-	 * @since 		1.2
+	 * @since 	1.3
 	 */
 	function get_updated_tax_classes() {
 		
@@ -750,7 +739,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
  * Used by the Jigoshop_Admin_Settings class to parse the Jigoshop_Options into sections
  * Provides formatted output for display of all Option types
  *
- * @since 		1.2
+ * @since 	1.3
  */
 class Jigoshop_Options_Parser {
 
@@ -839,7 +828,7 @@ class Jigoshop_Options_Parser {
 		
 		// work off the option type and format output for display for each type
 		switch ( $item['type'] ) {
-		case 'user_defined' :
+		case 'user_defined':
 			if ( isset( $item['display'] ) ) {
 				if ( is_callable( $item['display'], true ) ) {
 					$display .= call_user_func( $item['display'] );
@@ -847,23 +836,23 @@ class Jigoshop_Options_Parser {
 			}
 			break;
 			
-		case 'gateway_options' :
+		case 'gateway_options':
  			foreach ( jigoshop_payment_gateways::payment_gateways() as $gateway ) :
  				$gateway->admin_options();
  			endforeach;
 			break;
 			
-		case 'shipping_options' :
+		case 'shipping_options':
  			foreach ( jigoshop_shipping::get_all_methods() as $shipping_method ) :
  				$shipping_method->admin_options();
  			endforeach;
 			break;
 			
-		case 'tax_rates' :
+		case 'tax_rates':
 			$display .= $this->format_tax_rates_for_display( $item );
 			break;
 			
-		case 'coupons' :
+		case 'coupons':
 			$display .= $this->format_coupons_for_display( $item );
 			break;
 			
@@ -877,7 +866,7 @@ class Jigoshop_Options_Parser {
 				value="'.esc_attr( $data[$item['id']] ).'" />';
 			break;
 */		
-		case 'single_select_page' :
+		case 'single_select_page':
 			$page_setting = (int) $data[$item['id']];
 			$args = array(
 				'name' => JIGOSHOP_OPTIONS . '[' . $item['id'] . ']',
@@ -892,7 +881,7 @@ class Jigoshop_Options_Parser {
 			$display = $parts[0] . '<select class="'.$class.'"' . $parts[1];
 			break;
 
-		case 'single_select_country' :
+		case 'single_select_country':
 			$countries = jigoshop_countries::$countries;
 			$country_setting = (string) $data[$item['id']];
 			if ( strstr( $country_setting, ':' )) :
@@ -907,7 +896,7 @@ class Jigoshop_Options_Parser {
 			$display .= '</select>';
 			break;
 			
-		case 'multi_select_countries' :
+		case 'multi_select_countries':
 			$countries = jigoshop_countries::$countries;
 			asort( $countries );
 			$selections = (array) $data[$item['id']];
@@ -919,6 +908,15 @@ class Jigoshop_Options_Parser {
 				$display .=  esc_attr( $val ) . '</label></li>';
 			}
 			$display .= '</ul></div>';
+			break;
+			
+		case 'button':
+			if ( isset( $item['extra'] ) )
+				$display .= '<a  id="'.$item['id'].'"
+					class="button '.$class.'"
+					href="'. esc_attr( $item['extra'] ) .'"
+					>'. esc_attr( $item['desc'] ) .'</a>';
+			$item['desc'] = '';     // temporarily remove it so it doesn't display twice
 			break;
 			
 		case 'decimal':				// decimal numbers are positive or negative 0-9 inclusive, may include decimal
@@ -1080,8 +1078,8 @@ class Jigoshop_Options_Parser {
 			break;
 		
 		default:
-//			logme( "UNKOWN _type_ in parsing" );
-//			logme( $item );
+			jigoshop_log( "UNKOWN _type_ in Options parsing" );
+			jigoshop_log( $item );
 		}
 
 		if ( $item['type'] != 'heading' ) {
