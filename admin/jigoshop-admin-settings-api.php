@@ -49,6 +49,9 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
     	wp_register_script( 'jigoshop-bootstrap-tooltip', jigoshop::assets_url() . '/assets/js/bootstrap-tooltip.min.js', array( 'jquery' ), '2.0.3' );
     	wp_enqueue_script( 'jigoshop-bootstrap-tooltip' );
 
+    	wp_register_script( 'jigoshop-select2', jigoshop::assets_url() . '/assets/js/select2.js', array( 'jquery' ), '2.1' );
+    	wp_enqueue_script( 'jigoshop-select2' );
+    	
 	}
 	
 	
@@ -58,7 +61,12 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 * @since 1.3
 	 */
 	public function settings_styles() {
+	
+		wp_register_style( 'jigoshop-select2', jigoshop::assets_url() . '/assets/css/select2.css', '', '2.1', 'screen' );
+		wp_enqueue_style( 'jigoshop-select2' );
+		
 		do_action( 'jigoshop_settings_styles' );	// user defined stylesheets should be registered and queued
+		
 	}
 	
 	
@@ -223,7 +231,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 
 					// jQuery Tools range tool
 					jQuery(":range").rangeinput();
-			
+					
 					// Countries
 					jQuery('select#jigoshop_allowed_countries').change(function(){
 						// hide-show multi_select_countries
@@ -878,7 +886,15 @@ class Jigoshop_Options_Parser {
 			if ( isset( $item['extra'] )) $args = wp_parse_args( $item['extra'], $args );
 			$display .= wp_dropdown_pages( $args );
 			$parts = explode( '<select', $display );
-			$display = $parts[0] . '<select class="'.$class.'"' . $parts[1];
+			$id = $item['id'];
+			$display = $parts[0] . '<select id="'.$id.'" class="'.$class.'"' . $parts[1];
+			?>
+				<script type="text/javascript">
+					jQuery(function() {
+						jQuery("#<?php echo $id; ?>").select2();
+					});
+				</script>
+			<?php
 			break;
 
 		case 'single_select_country':
@@ -891,9 +907,17 @@ class Jigoshop_Options_Parser {
 				$country = $country_setting;
 				$state = '*';
 			endif;
-			$display .= '<select class="single_select_country '.$class.'" name="' . JIGOSHOP_OPTIONS . '[' . $item['id'] . ']">';
+			$id = $item['id'];
+			$display .= '<select id="'.$id.'" class="single_select_country '.$class.'" name="' . JIGOSHOP_OPTIONS . '[' . $item['id'] . ']">';
 			$display .= jigoshop_countries::country_dropdown_options($country, $state, false, true, false);
 			$display .= '</select>';
+			?>
+				<script type="text/javascript">
+					jQuery(function() {
+						jQuery("#<?php echo $id; ?>").select2();
+					});
+				</script>
+			<?php
 			break;
 			
 		case 'multi_select_countries':
