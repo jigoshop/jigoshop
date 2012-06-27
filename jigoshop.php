@@ -305,7 +305,6 @@ function jigoshop_admin_styles() {
 
 	if ( ! jigoshop_is_admin_page() ) return false;
 	wp_enqueue_style( 'jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css' );
-	wp_enqueue_style( 'jquery-chosen', jigoshop::assets_url() . '/assets/css/chosen.css' );
 	wp_enqueue_style( 'jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css' );
 	wp_enqueue_style('thickbox');
 
@@ -322,8 +321,6 @@ function jigoshop_admin_scripts() {
 
 	$pagenow = jigoshop_is_admin_page();
 
-	wp_enqueue_script('jquery-chosen'       , jigoshop::assets_url() . '/assets/js/chosen.jquery.min.js'              , array( 'jquery' ), '1.0' );
-	wp_enqueue_script('jquery-ajax-chosen'  , jigoshop::assets_url() . '/assets/js/ajax-chosen.min.js'                , array( 'jquery' ), '1.0' );
 	wp_enqueue_script('jquery-ui-datepicker', jigoshop::assets_url() . '/assets/js/jquery-ui-datepicker-1.8.16.min.js', array( 'jquery' ), '1.8.16', true );
 	wp_enqueue_script('jigoshop_backend'    , jigoshop::assets_url() . '/assets/js/jigoshop_backend.js'               , array( 'jquery' ), '1.0' );
 	wp_enqueue_script('thickbox');
