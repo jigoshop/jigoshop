@@ -505,6 +505,65 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			'extra'     => is_multisite() ? admin_url().'network/' : '' . 'admin.php?page=jigoshop_settings&amp;action=jigoshop_beta_check&amp;_wpnonce='.wp_create_nonce('jigoshop_check_beta_'.get_current_user_id().'_wpnonce')
 		);
 			
+		self::$default_options[] = array( 'name' => __('Permalinks', 'jigoshop'), 'type' => 'title', 'desc' => '' );
+		
+		self::$default_options[] = array(
+			'name'		=> __('Prepend shop categories and tags with base page','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('This will only apply to tags &amp; categories.<br/>Enabled: http://yoursite.com / product_category / YourCategory<br/>Disabled: http://yoursite.com / base_page / product_category / YourCategory', 'jigoshop'),
+			'id' 		=> 'jigoshop_prepend_shop_page_to_urls',
+			'type' 		=> 'checkbox',
+			'std' 		=> 'no',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+		
+		self::$default_options[] = array(
+			'name'		=> __('Prepend product permalinks with shop base page','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_prepend_shop_page_to_product',
+			'type' 		=> 'checkbox',
+			'std' 		=> 'no',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+
+		self::$default_options[] = array(
+			'name'		=> __('Prepend product permalinks with product category','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_prepend_category_to_product',
+			'type' 		=> 'checkbox',
+			'std' 		=> 'no',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+
+		self::$default_options[] = array(
+			'name'		=> __('Product category slug','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Slug displayed in product category URLs. Leave blank to use default "product-category"', 'jigoshop'),
+			'id' 		=> 'jigoshop_product_category_slug',
+			'type' 		=> 'text',
+			'std' 		=> 'product-category'
+		);
+
+		self::$default_options[] = array(
+			'name'		=> __('Product tag slug','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Slug displayed in product tag URLs. Leave blank to use default "product-tag"', 'jigoshop'),
+			'id' 		=> 'jigoshop_product_tag_slug',
+			'type' 		=> 'text',
+			'std' 		=> 'product-tag'
+		);
+
 		/**
 		 * General Tab
 		 *------------------------------------------------------------------------------------------
@@ -666,65 +725,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		*/
 		self::$default_options[] = array( 'type' => 'heading', 'name' => __('Pages', 'jigoshop') );
 		
-		self::$default_options[] = array( 'name' => __('Permalinks', 'jigoshop'), 'type' => 'title', 'desc' => '' );
-		
-		self::$default_options[] = array(
-			'name'		=> __('Prepend shop categories and tags with base page','jigoshop'),
-			'desc' 		=> '',
-			'tip' 		=> __('This will only apply to tags &amp; categories.<br/>Enabled: http://yoursite.com / product_category / YourCategory<br/>Disabled: http://yoursite.com / base_page / product_category / YourCategory', 'jigoshop'),
-			'id' 		=> 'jigoshop_prepend_shop_page_to_urls',
-			'type' 		=> 'checkbox',
-			'std' 		=> 'no',
-			'choices'	=> array(
-				'no'			=> __('No', 'jigoshop'),
-				'yes'			=> __('Yes', 'jigoshop')
-			)
-		);
-		
-		self::$default_options[] = array(
-			'name'		=> __('Prepend product permalinks with shop base page','jigoshop'),
-			'desc' 		=> '',
-			'tip' 		=> '',
-			'id' 		=> 'jigoshop_prepend_shop_page_to_product',
-			'type' 		=> 'checkbox',
-			'std' 		=> 'no',
-			'choices'	=> array(
-				'no'			=> __('No', 'jigoshop'),
-				'yes'			=> __('Yes', 'jigoshop')
-			)
-		);
-
-		self::$default_options[] = array(
-			'name'		=> __('Prepend product permalinks with product category','jigoshop'),
-			'desc' 		=> '',
-			'tip' 		=> '',
-			'id' 		=> 'jigoshop_prepend_category_to_product',
-			'type' 		=> 'checkbox',
-			'std' 		=> 'no',
-			'choices'	=> array(
-				'no'			=> __('No', 'jigoshop'),
-				'yes'			=> __('Yes', 'jigoshop')
-			)
-		);
-
-		self::$default_options[] = array(
-			'name'		=> __('Product category slug','jigoshop'),
-			'desc' 		=> '',
-			'tip' 		=> __('Slug displayed in product category URLs. Leave blank to use default "product-category"', 'jigoshop'),
-			'id' 		=> 'jigoshop_product_category_slug',
-			'type' 		=> 'text',
-			'std' 		=> 'product-category'
-		);
-
-		self::$default_options[] = array(
-			'name'		=> __('Product tag slug','jigoshop'),
-			'desc' 		=> '',
-			'tip' 		=> __('Slug displayed in product tag URLs. Leave blank to use default "product-tag"', 'jigoshop'),
-			'id' 		=> 'jigoshop_product_tag_slug',
-			'type' 		=> 'text',
-			'std' 		=> 'product-tag'
-		);
-
 		self::$default_options[] = array( 'name' => __('Page configurations', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
 		self::$default_options[] = array(
