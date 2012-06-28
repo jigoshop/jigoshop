@@ -1008,6 +1008,8 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		
 		self::$default_options[] = array( 'name' => __('Image Options', 'jigoshop'), 'type' => 'title', 'desc' => sprintf( __('<p>Changing any of these settings will affect the dimensions of images used in your Shop. After changing these settings you may need to <a href="%s">regenerate your thumbnails</a>.</p><p>Crop: Leave unchecked to set the image size by resizing the image proportionally (that is, without distorting it). Leave checked to set the image size by hard cropping the image (either from the sides, or from the top and bottom).</p><p><strong>Note:</strong> Your images may not display in the size you choose below. This is because they may still be affected by CSS styles in your theme.', 'jigoshop'), 'http://wordpress.org/extend/plugins/regenerate-thumbnails/') );
 		
+		self::$default_options[] = array( 'name' => __('Cropping Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
+		
 		self::$default_options[] = array(
 			'name'		=> __('Crop Tiny images','jigoshop'),
 			'desc' 		=> '',
@@ -1059,6 +1061,8 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
+		
+		self::$default_options[] = array( 'name' => __('Image Sizes', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
 		self::$default_options[] = array(
 			'name' 		=> __('Tiny Image Width','jigoshop'),
