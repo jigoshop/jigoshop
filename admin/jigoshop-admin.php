@@ -15,13 +15,13 @@
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
-require_once ( 'jigoshop-install.php' );
-require_once ( 'jigoshop-write-panels.php' );
-require_once ( 'jigoshop-admin-settings-api.php' );
-require_once ( 'jigoshop-admin-attributes.php' );
-require_once ( 'jigoshop-admin-post-types.php' );
-require_once ( 'jigoshop-admin-product-quick-bulk-edit.php' );
-require_once ( 'jigoshop-admin-taxonomies.php' );
+require_once( 'jigoshop-install.php' );
+require_once( 'jigoshop-write-panels.php' );
+require_once( 'jigoshop-admin-settings-api.php' );
+require_once( 'jigoshop-admin-attributes.php' );
+require_once( 'jigoshop-admin-post-types.php' );
+require_once( 'jigoshop-admin-product-quick-bulk-edit.php' );
+require_once( 'jigoshop-admin-taxonomies.php' );
 
 // Contextual help only works for 3.3 due to updated API
 if ( get_bloginfo('version') >= '3.3' ) {
@@ -29,7 +29,7 @@ if ( get_bloginfo('version') >= '3.3' ) {
 }
 
 function jigoshop_admin_init () {
-//	add_action('wp_dashboard_setup', 'jigoshop_setup_dashboard_widgets' );
+	add_action('wp_dashboard_setup', 'jigoshop_setup_dashboard_widgets' );
 }
 add_action('admin_init', 'jigoshop_admin_init');
 
