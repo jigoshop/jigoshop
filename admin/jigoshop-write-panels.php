@@ -112,6 +112,16 @@ function jigoshop_order_data( $data ) {
 
 
 /**
+ * Title boxes
+ */
+add_filter( 'enter_title_here', 'jigoshop_enter_title_here', 1, 2 );
+
+function jigoshop_enter_title_here( $text, $post ) {
+	if ( $post->post_type == 'shop_coupon' ) return __('Coupon code', 'jigoshop');
+	return $text;
+}
+
+/**
  * Save errors
  *
  * Stores error messages in a variable so they can be displayed on the edit post screen after saving.
