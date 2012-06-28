@@ -22,6 +22,7 @@ include('write-panels/product-data-save.php');
 include('write-panels/product-types/variable.php');
 include('write-panels/order-data.php');
 include('write-panels/order-data-save.php');
+include('write-panels/coupon-data.php');
 
 /**
  * Init the meta boxes
@@ -43,6 +44,12 @@ function jigoshop_meta_boxes() {
 
 	remove_meta_box( 'commentstatusdiv', 'shop_order' , 'normal' );
 	remove_meta_box( 'slugdiv', 'shop_order' , 'normal' );
+
+	add_meta_box( 'jigoshop-coupon-data', __('Coupon Data', 'jigoshop'), 'jigoshop_coupon_data_meta_box', 'shop_coupon', 'normal', 'high');
+
+	remove_meta_box( 'commentstatusdiv', 'shop_coupon' , 'normal' );
+	remove_meta_box( 'slugdiv', 'shop_coupon' , 'normal' );
+	remove_post_type_support( 'shop_coupon', 'editor' );
 }
 
 /**
