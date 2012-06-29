@@ -48,26 +48,37 @@ class Jigoshop_Form extends Jigoshop_Base {
 		return $html;
 	}
 
-	public static function select( $ID, $label, $options, $selected = false,  $desc = FALSE, $class = 'select short' ) {
+	public static function select( $field ) {
 		global $post;
 
-		$selected = ($selected) ? $selected : get_post_meta($post->ID, $ID, true);
-		$desc  = ($desc)  ? esc_html($desc) : false;
-		$label = __($label, 'jigoshop');
+		$args = array(
+			'id'            => null,
+			'label'         => null,
+			'after_label'   => null,
+			'class'         => 'select short',
+			'desc'          => false,
+			'tip'           => null,
+			'options'       => array(),
+			'selected'      => false
+		);
+		extract( wp_parse_args( $field, $args ) );
+
+		$selected = ($selected) ? $selected : get_post_meta($post->ID, $id, true);
+		$desc  = ($desc)  ? esc_html( $desc ) : false;
+
 		$html = '';
 
-		$html .= "<p class='form-field {$ID}_field'>";
-		$html .= "<label for='{$ID}'>$label</label>";
-		$html .= "<select id='{$ID}' name='{$ID}' class='{$class}'>";
+		$html .= "<p class='form-field {$id}_field'>";
+		$html .= "<label for='{$id}'>$label{$after_label}</label>";
+		$html .= "<select id='{$id}' name='{$id}' class='{$class}'>";
 
-		foreach( $options as $value => $label ) {
+		foreach ( $options as $value => $label ) {
 			$mark = '';
 
 			// Not the best way but has to be done because selected() echos
-			if( $selected == $value ) {
+			if ( $selected == $value ) {
 				$mark = 'selected="selected"';
 			}
-
 			$html .= "<option value='{$value}' {$mark}>{$label}</option>";
 		}
 
