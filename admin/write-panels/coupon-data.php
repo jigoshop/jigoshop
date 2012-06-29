@@ -49,6 +49,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'id'            => 'coupon_amount',
 				'label'         => __( 'Coupon Amount', 'jigoshop' ),
 				'desc'          => __('Enter an amount e.g. 9.99.','jigoshop'),
+				'tip'           => __('Amount this coupon is worth. If it is a percentange, just include the number without the percentage sign.','jigoshop'),
 				'placeholder'   => '0.00'
 			);
 			echo Jigoshop_Form::input( $args );
@@ -58,6 +59,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'id'            => 'usage_limit',
 				'label'         => __( 'Usage Limit', 'jigoshop' ),
 				'desc'          => __(sprintf('Times used: %s', !empty($coupon['usage']) ? $coupon['usage'] : '0'), 'jigoshop'),
+				'tip'           => __('Control how many times this coupon may be used.','jigoshop'),
 				'placeholder'   => '0'
 			);
 			echo Jigoshop_Form::input( $args );
@@ -67,6 +69,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'id'            => 'order_total_min',
 				'label'         => __( 'Order total min', 'jigoshop' ),
 				'desc'          => __('Set the required minimum subtotal for this coupon to be valid on an order.','jigoshop'),
+				'tip'           => __('Set the required subtotal for this coupon to be valid on an order.','jigoshop'),
 				'placeholder'   => __('No min','jigoshop')
 			);
 			echo Jigoshop_Form::input( $args );
@@ -89,7 +92,8 @@ function jigoshop_coupon_data_box( $post ) {
 // 			$args = array(
 // 				'id'            => 'coupon_pay_methods',
 // 				'label'         => __( 'Payment Methods', 'jigoshop' ),
-// 				'desc'          => __('Which payment methods are allowed for this coupon to be effective?','jigoshop'),
+// 				'desc'          => '',
+// 				'tip'           => __('Which payment methods are allowed for this coupon to be effective?','jigoshop'),
 // 				'options'       => $payment_methods
 // 			);
 // 			echo Jigoshop_Form::select( $args );
