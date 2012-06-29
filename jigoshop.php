@@ -287,7 +287,7 @@ function jigoshop_is_admin_page() {
 
 	global $current_screen;
 
-	if ( $current_screen->post_type == 'product' || $current_screen->post_type == 'shop_order' )
+	if ( $current_screen->post_type == 'product' || $current_screen->post_type == 'shop_order' || $current_screen->post_type == 'shop_coupon'  )
 		return $current_screen->post_type;
 
 	if ( strstr( $current_screen->id, 'jigoshop' ) )
