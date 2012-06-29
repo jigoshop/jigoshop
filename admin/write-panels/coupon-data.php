@@ -80,19 +80,34 @@ function jigoshop_coupon_data_box( $post ) {
 			echo Jigoshop_Form::input( $args );
 
 			// Payment methods
-			$payment_methods = array();
-			$available_gateways = jigoshop_payment_gateways::get_available_payment_gateways();
-			if ( ! empty($available_gateways) )
-				foreach ( $available_gateways as $id => $info )
-					$payment_methods[$id] = $info->title;
-			$args = array(
-				'id'            => 'coupon_pay_methods',
-				'label'         => __( 'Payment Methods', 'jigoshop' ),
-				'desc'          => __('Which payment methods are allowed for this coupon to be effective?','jigoshop'),
-				'options'       => $payment_methods
-			);
-			echo Jigoshop_Form::select( $args );
+// 			$payment_methods = array();
+// 			$available_gateways = jigoshop_payment_gateways::get_available_payment_gateways();
+// 			if ( ! empty($available_gateways) )
+// 				foreach ( $available_gateways as $id => $info )
+// 					$payment_methods[$id] = $info->title;
+// 			$args = array(
+// 				'id'            => 'coupon_pay_methods',
+// 				'label'         => __( 'Payment Methods', 'jigoshop' ),
+// 				'desc'          => __('Which payment methods are allowed for this coupon to be effective?','jigoshop'),
+// 				'options'       => $payment_methods
+// 			);
+// 			echo Jigoshop_Form::select( $args );
 
+			$args = array(
+				'id'            => 'individual_use',
+				'label'         => __('Individual Use','jigoshop'),
+				'desc'          => __('Prevent other coupons from being used while this one is applied to the Cart.','jigoshop'),
+				'value'         => false
+			);
+			echo Jigoshop_Form::checkbox( $args );
+
+			$args = array(
+				'id'            => 'coupon_free_shipping',
+				'label'         => __('Free shipping','jigoshop'),
+				'desc'          => __('Show the Free Shipping method on the Checkout with this enabled.','jigoshop'),
+				'value'         => false
+			);
+			echo Jigoshop_Form::checkbox( $args );
 			
 		?>
 	</div>
@@ -104,19 +119,21 @@ function jigoshop_coupon_data_box( $post ) {
  * 
  * Function for processing and storing all coupon data.
  */
-add_action( 'jigoshop_process_shop_coupon', 'jigoshop_process_shop_coupon', 1, 2 );
+add_action( 'jigoshop_process_shop_coupon_meta', 'jigoshop_process_shop_coupon_meta', 1, 2 );
 
-function jigoshop_process_shop_coupon( $post_id, $post ) {
+function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 
 	global $wpdb, $jigoshop_errors;
 	
 	// Add/Replace data to array
 	$type 			= strip_tags( stripslashes( $_POST['coupon_type'] ));
 	$amount 		= strip_tags( stripslashes( $_POST['coupon_amount'] ));
-	$usage_limit 	= (isset( $_POST['usage_limit'] ) && $_POST['usage_limit'] > 0 ) ? (int) $_POST['usage_limit'] : '';
+	$usage_limit 	= ( isset( $_POST['usage_limit'] ) && $_POST['usage_limit'] > 0 ) ? (int) $_POST['usage_limit'] : '';
 	$minimum_amount = strip_tags( stripslashes( $_POST['order_total_min'] ));
 	$maximum_amount = strip_tags( stripslashes( $_POST['order_total_max'] ));
-
+	$individual     = isset( $_POST['individual_use'] );
+	$free_shipping  = isset( $_POST['coupon_free_shipping'] );
+	
 	if ( isset( $_POST['coupon_pay_methods'] )) {
 		$pay_methods = (array) $_POST['coupon_pay_methods'];
 		$pay_methods = implode( ',', array_filter( array_map( 'intval', $pay_methods )));
@@ -130,6 +147,9 @@ function jigoshop_process_shop_coupon( $post_id, $post ) {
 	update_post_meta( $post_id, 'usage_limit', $usage_limit );
 	update_post_meta( $post_id, 'order_total_min', $minimum_amount );
 	update_post_meta( $post_id, 'order_total_max', $maximum_amount );
-	update_post_meta( $post_id, 'coupon_pay_methods', $pay_methods );
+	update_post_meta( $post_id, 'individual_use', $individual );
+	update_post_meta( $post_id, 'coupon_free_shipping', $free_shipping );
+	
+//	update_post_meta( $post_id, 'coupon_pay_methods', $pay_methods );
 		
 }
