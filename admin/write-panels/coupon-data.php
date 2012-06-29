@@ -42,27 +42,62 @@ function jigoshop_coupon_data_meta_box( $post ) {
 				'fixed_product'     => __('Product Discount', 'jigoshop'),
 				'percent_product'   => __('Product % Discount', 'jigoshop')
 			);
-			echo jigoshop_form::select( 'coupon_type', __( 'Coupon Type', 'jigoshop' ), $coupon_types );
+			$args = array(
+				'id'            => 'coupon_type',
+				'label'         => __( 'Coupon Type', 'jigoshop' ),
+				'options'       => $coupon_types,
+			);
+			echo Jigoshop_Form::select( $args );
 
 			// Amount
-			echo jigoshop_form::input( 'coupon_amount', __( 'Coupon Amount', 'jigoshop' ), __('Enter an amount e.g. 9.99.','jigoshop'), null, null, '0.00' );
+			$args = array(
+				'id'            => 'coupon_amount',
+				'label'         => __( 'Coupon Amount', 'jigoshop' ),
+				'desc'          => __('Enter an amount e.g. 9.99.','jigoshop'),
+				'placeholder'   => '0.00'
+			);
+			echo Jigoshop_Form::input( $args );
 				
 			// Usage limit
-			echo jigoshop_form::input( 'usage_limit', __( 'Usage Limit', 'jigoshop' ), __(sprintf('Times used: %s', !empty($coupon['usage']) ? $coupon['usage'] : '0'), 'jigoshop'), null, null, '0' );
+			$args = array(
+				'id'            => 'usage_limit',
+				'label'         => __( 'Usage Limit', 'jigoshop' ),
+				'desc'          => __(sprintf('Times used: %s', !empty($coupon['usage']) ? $coupon['usage'] : '0'), 'jigoshop'),
+				'placeholder'   => '0'
+			);
+			echo Jigoshop_Form::input( $args );
 
 			// Order total minimum
-			echo jigoshop_form::input( 'order_total_min', __( 'Order total min', 'jigoshop' ), __('Set the required minimum subtotal for this coupon to be valid on an order.','jigoshop'), null, null, __('No min','jigoshop') );
+			$args = array(
+				'id'            => 'order_total_min',
+				'label'         => __( 'Order total min', 'jigoshop' ),
+				'desc'          => __('Set the required minimum subtotal for this coupon to be valid on an order.','jigoshop'),
+				'placeholder'   => __('No min','jigoshop')
+			);
+			echo Jigoshop_Form::input( $args );
 
 			// Order total maximum
-			echo jigoshop_form::input( 'order_total_max', __( 'Order total max', 'jigoshop' ), __('Set the required maximum subtotal for this coupon to be valid on an order.','jigoshop'), null, null, __('No max','jigoshop') );
+			$args = array(
+				'id'            => 'order_total_max',
+				'label'         => __( 'Order total max', 'jigoshop' ),
+				'desc'          => __('Set the required maximum subtotal for this coupon to be valid on an order.','jigoshop'),
+				'placeholder'   => __('No max','jigoshop')
+			);
+			echo Jigoshop_Form::input( $args );
 
 			// Payment methods
 			$payment_methods = array();
 			$available_gateways = jigoshop_payment_gateways::get_available_payment_gateways();
-			if ( !empty($available_gateways) )
+			if ( ! empty($available_gateways) )
 				foreach ( $available_gateways as $id => $info )
 					$payment_methods[$id] = $info->title;
-			echo jigoshop_form::select( 'coupon_pay_methods', __( 'Payment Methods', 'jigoshop' ), $payment_methods, __('Which payment methods are allowed for this coupon to be effective?','jigoshop') );
+			$args = array(
+				'id'            => 'coupon_pay_methods',
+				'label'         => __( 'Payment Methods', 'jigoshop' ),
+				'desc'          => __('Which payment methods are allowed for this coupon to be effective?','jigoshop'),
+				'options'       => $payment_methods
+			);
+			echo Jigoshop_Form::select( $args );
 
 
 		?>
