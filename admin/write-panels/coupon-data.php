@@ -99,7 +99,7 @@ function jigoshop_coupon_data_meta_box( $post ) {
 			);
 			echo Jigoshop_Form::select( $args );
 
-
+			
 		?>
 	</div>
 	<?php	
@@ -110,54 +110,32 @@ function jigoshop_coupon_data_meta_box( $post ) {
  * 
  * Function for processing and storing all coupon data.
  */
-//add_action('jigoshop_process_shop_coupon_meta', 'jigoshop_process_shop_coupon_meta', 1, 2);
+add_action('jigoshop_process_shop_coupon_meta', 'jigoshop_process_shop_coupon_meta', 1, 2);
 
 function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
+
 	global $wpdb, $jigoshop_errors;
 	
 	// Add/Replace data to array
-		$type 			= strip_tags(stripslashes( $_POST['discount_type'] ));
-		$amount 		= strip_tags(stripslashes( $_POST['coupon_amount'] ));
-		$usage_limit 	= (isset($_POST['usage_limit']) && $_POST['usage_limit']>0) ? (int) $_POST['usage_limit'] : '';
-		$individual_use = isset($_POST['individual_use']) ? 'yes' : 'no';
-		$expiry_date 	= strip_tags(stripslashes( $_POST['expiry_date'] ));
-		$apply_before_tax = isset($_POST['apply_before_tax']) ? 'yes' : 'no';
-		$free_shipping = isset($_POST['free_shipping']) ? 'yes' : 'no';
-		$minimum_amount = strip_tags(stripslashes( $_POST['minimum_amount'] ));
-		$customer_email = array_filter(array_map('trim', explode(',', strip_tags(stripslashes( $_POST['customer_email'] )))));
-		
-		if (isset($_POST['product_ids'])) {
-			$product_ids = (array) $_POST['product_ids'];
-			$product_ids = implode(',', array_filter(array_map('intval', $product_ids)));
-		} else {
-			$product_ids = '';
-		}
-		
-		if (isset($_POST['exclude_product_ids'])) {
-			$exclude_product_ids = (array) $_POST['exclude_product_ids'];
-			$exclude_product_ids = implode(',', array_filter(array_map('intval', $exclude_product_ids)));
-		} else {
-			$exclude_product_ids = '';
-		}
-		
-		$product_categories = (isset($_POST['product_categories'])) ? array_map('intval', $_POST['product_categories']) : array();
-		$exclude_product_categories = (isset($_POST['exclude_product_categories'])) ? array_map('intval', $_POST['exclude_product_categories']) : array();
+	$type 			= strip_tags(stripslashes( $_POST['coupon_type'] ));
+	$amount 		= strip_tags(stripslashes( $_POST['coupon_amount'] ));
+	$usage_limit 	= (isset($_POST['usage_limit']) && $_POST['usage_limit']>0) ? (int) $_POST['usage_limit'] : '';
+	$minimum_amount = strip_tags(stripslashes( $_POST['order_total_min'] ));
+	$maximum_amount = strip_tags(stripslashes( $_POST['order_total_max'] ));
+
+	if ( isset( $_POST['coupon_pay_methods'] )) {
+		$pay_methods = (array) $_POST['coupon_pay_methods'];
+		$pay_methods = implode( ',', array_filter( array_map( 'intval', $pay_methods )));
+	} else {
+		$pay_methods = '';
+	}
 		
 	// Save
-		update_post_meta( $post_id, 'discount_type', $type );
-		update_post_meta( $post_id, 'coupon_amount', $amount );
-		update_post_meta( $post_id, 'individual_use', $individual_use );
-		update_post_meta( $post_id, 'product_ids', $product_ids );
-		update_post_meta( $post_id, 'exclude_product_ids', $exclude_product_ids );
-		update_post_meta( $post_id, 'usage_limit', $usage_limit );
-		update_post_meta( $post_id, 'expiry_date', $expiry_date );
-		update_post_meta( $post_id, 'apply_before_tax', $apply_before_tax );
-		update_post_meta( $post_id, 'free_shipping', $free_shipping );
-		update_post_meta( $post_id, 'product_categories', $product_categories );
-		update_post_meta( $post_id, 'exclude_product_categories', $exclude_product_categories );
-		update_post_meta( $post_id, 'minimum_amount', $minimum_amount );
-		update_post_meta( $post_id, 'customer_email', $customer_email );
-		
-		do_action('jigoshop_coupon_options');
+	update_post_meta( $post_id, 'coupon_type', $type );
+	update_post_meta( $post_id, 'coupon_amount', $amount );
+	update_post_meta( $post_id, 'usage_limit', $usage_limit );
+	update_post_meta( $post_id, 'order_total_min', $minimum_amount );
+	update_post_meta( $post_id, 'order_total_max', $maximum_amount );
+	update_post_meta( $post_id, 'coupon_pay_methods', $pay_methods );
 		
 }
