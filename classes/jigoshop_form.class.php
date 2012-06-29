@@ -92,25 +92,36 @@ class Jigoshop_Form extends Jigoshop_Base {
 		return $html;
 	}
 
-	public static function checkbox( $ID, $label, $value = FALSE, $desc = FALSE, $class = 'checkbox' ) {
+	public static function checkbox( $field ) {
 		global $post;
 
-		$value = ($value) ? $value : get_post_meta($post->ID, $ID, true);
+		$args = array(
+			'id'            => null,
+			'label'         => null,
+			'after_label'   => null,
+			'class'         => 'checkbox',
+			'desc'          => false,
+			'tip'           => null,
+			'value'         => false
+		);
+		extract( wp_parse_args( $field, $args ) );
+
+		$value = ($value) ? $value : get_post_meta($post->ID, $id, true);
 		$desc  = ($desc)  ? esc_html($desc) : false;
-		$label = __($label, 'jigoshop');
+
 		$html = '';
 
 		$mark = '';
-		if( $value ) {
+		if ( $value ) {
 			$mark = 'checked="checked"';
 		}
 
-		$html .= "<p class='form-field {$ID}_field'>";
-		$html .= "<label for='{$ID}'>$label</label>";
-		$html .= "<input type='checkbox' name='{$ID}' value='1' class='{$class}' id='{$ID}' {$mark} />";
+		$html .= "<p class='form-field {$id}_field'>";
+		$html .= "<label for='{$id}'>$label{$after_label}</label>";
+		$html .= "<input type='checkbox' name='{$id}' value='1' class='{$class}' id='{$id}' {$mark} />";
 
 		if ( $desc ) {
-			$html .= "<label for='{$ID}' class='description'>$desc</label>";
+			$html .= "<label for='{$id}' class='description'>$desc</label>";
 		}
 
 		$html .= "</p>";

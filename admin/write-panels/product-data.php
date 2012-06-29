@@ -167,7 +167,13 @@ function jigoshop_product_data_box() {
 			<fieldset>
 			<?php
 				// Featured
-				echo Jigoshop_Form::checkbox( 'featured', __('Featured?','jigoshop'), false, __('Enable this option to feature this product', 'jigoshop') );
+				$args = array(
+					'id'            => 'featured',
+					'label'         => __('Featured?','jigoshop'),
+					'desc'          => __('Enable this option to feature this product', 'jigoshop'),
+					'value'         => false
+				);
+				echo Jigoshop_Form::checkbox( $args );
 
 				$args = array(
 					'id'            => 'external_url',
@@ -312,7 +318,13 @@ function jigoshop_product_data_box() {
 			<fieldset>
 			<?php
 			// manage stock
-			echo Jigoshop_Form::checkbox( 'manage_stock', __('Manage Stock?','jigoshop'), false, __('Handle stock for me', 'jigoshop') );
+			$args = array(
+				'id'            => 'manage_stock',
+				'label'         => __('Manage Stock?','jigoshop'),
+				'desc'          => __('Handle stock for me', 'jigoshop'),
+				'value'         => false
+			);
+			echo Jigoshop_Form::checkbox( $args );
 
 			?>
 			</fieldset>
