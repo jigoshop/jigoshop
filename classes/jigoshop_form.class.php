@@ -17,23 +17,31 @@
 
 class Jigoshop_Form extends Jigoshop_Base {
 
-	public static function input( $ID, $label, $desc = FALSE, $value = NULL, $class = 'short', $placeholder = null, array $extras = array() ) {
+	public static function input( $field ) {
 		global $post;
 
-		$value = ($value) ? esc_attr($value) : get_post_meta($post->ID, $ID, true);
-		$desc  = ($desc)  ? $desc : false;
-		$label = __($label, 'jigoshop');
+		$args = array(
+			'id'            => null,
+			'label'         => null,
+			'after_label'   => null,
+			'class'         => 'short',
+			'desc'          => false,
+			'tip'           => null,
+			'value'         => null,
+			'placeholder'   => null,
+		);
+		extract( wp_parse_args( $field, $args ) );
 
-		$after_label = isset($extras['after_label']) ? $extras['after_label'] : null;
+		$value = ($value) ? esc_attr( $value ) : get_post_meta( $post->ID, $id, true) ;
 
 		$html  = '';
 
-		$html .= "<p class='form-field {$ID}_field'>";
-		$html .= "<label for='{$ID}'>$label{$after_label}</label>";
-		$html .= "<input type='text' class='{$class}' name='{$ID}' id='{$ID}' value='{$value}' placeholder='{$placeholder}' />";
+		$html .= "<p class='form-field {$id}_field'>";
+		$html .= "<label for='{$id}'>$label{$after_label}</label>";
+		$html .= "<input type='text' class='{$class}' name='{$id}' id='{$id}' value='{$value}' placeholder='{$placeholder}' />";
 
 		if ( $desc ) {
-			$html .= "$desc";
+			$html .= '<span class="description">'.$desc.'</span>';
 		}
 
 		$html .= "</p>";
