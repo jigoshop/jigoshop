@@ -26,7 +26,7 @@ class Jigoshop_Form extends Jigoshop_Base {
 			'after_label'   => null,
 			'class'         => 'short',
 			'desc'          => false,
-			'tip'           => null,
+			'tip'           => false,
 			'value'         => null,
 			'placeholder'   => null,
 		);
@@ -40,6 +40,10 @@ class Jigoshop_Form extends Jigoshop_Base {
 		$html .= "<label for='{$id}'>$label{$after_label}</label>";
 		$html .= "<input type='text' class='{$class}' name='{$id}' id='{$id}' value='{$value}' placeholder='{$placeholder}' />";
 
+		if ( $tip ) {
+			$html .= '<a href="#" tip="'.$tip.'" class="tips" tabindex="99"></a>';
+		}
+		
 		if ( $desc ) {
 			$html .= '<span class="description">'.$desc.'</span>';
 		}
@@ -57,7 +61,7 @@ class Jigoshop_Form extends Jigoshop_Base {
 			'after_label'   => null,
 			'class'         => 'select short',
 			'desc'          => false,
-			'tip'           => null,
+			'tip'           => false,
 			'options'       => array(),
 			'selected'      => false
 		);
@@ -84,8 +88,12 @@ class Jigoshop_Form extends Jigoshop_Base {
 
 		$html .= "</select>";
 
+		if ( $tip ) {
+			$html .= '<a href="#" tip="'.$tip.'" class="tips" tabindex="99"></a>';
+		}
+		
 		if ( $desc ) {
-			$html .= "<span class='description'>$desc</span>";
+			$html .= '<span class="description">'.$desc.'</span>';
 		}
 
 		$html .= "</p>";
@@ -101,7 +109,7 @@ class Jigoshop_Form extends Jigoshop_Base {
 			'after_label'   => null,
 			'class'         => 'checkbox',
 			'desc'          => false,
-			'tip'           => null,
+			'tip'           => false,
 			'value'         => false
 		);
 		extract( wp_parse_args( $field, $args ) );
@@ -124,6 +132,10 @@ class Jigoshop_Form extends Jigoshop_Base {
 			$html .= "<label for='{$id}' class='description'>$desc</label>";
 		}
 
+		if ( $tip ) {
+			$html .= '<a href="#" tip="'.$tip.'" class="tips" tabindex="99"></a>';
+		}
+		
 		$html .= "</p>";
 		return $html;
 	}

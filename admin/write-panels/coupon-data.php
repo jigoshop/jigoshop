@@ -39,6 +39,7 @@ function jigoshop_coupon_data_box( $post ) {
 			$args = array(
 				'id'            => 'coupon_type',
 				'label'         => __( 'Coupon Type', 'jigoshop' ),
+				'tip'           => __('Cart &ndash; Applies to the whole Cart.  Product &ndash; Applies to individual products only.  You must specify individual products.','jigoshop'),
 				'options'       => jigoshop_coupons::get_coupon_types(),
 			);
 			echo Jigoshop_Form::select( $args );
@@ -125,7 +126,6 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 
 	global $wpdb, $jigoshop_errors;
 	
-	// Add/Replace data to array
 	$type 			= strip_tags( stripslashes( $_POST['coupon_type'] ));
 	$amount 		= strip_tags( stripslashes( $_POST['coupon_amount'] ));
 	$usage_limit 	= ( isset( $_POST['usage_limit'] ) && $_POST['usage_limit'] > 0 ) ? (int) $_POST['usage_limit'] : '';
@@ -141,7 +141,6 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 		$pay_methods = '';
 	}
 		
-	// Save
 	update_post_meta( $post_id, 'coupon_type', $type );
 	update_post_meta( $post_id, 'coupon_amount', $amount );
 	update_post_meta( $post_id, 'usage_limit', $usage_limit );

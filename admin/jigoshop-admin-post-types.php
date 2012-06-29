@@ -671,27 +671,27 @@ function jigoshop_post_updated_messages($messages) {
 }
 
 /**
- * Columns for Coupons page
+ * Column headings display for Coupons List
  **/
 add_filter('manage_edit-shop_coupon_columns', 'jigoshop_edit_coupon_columns');
 
-function jigoshop_edit_coupon_columns( $columns ){
+function jigoshop_edit_coupon_columns( $columns ) {
 	
 	$columns = array();
 	
-	$columns["title"]           = __("Code", 'jigoshop');
-	$columns["coupon_type"]     = __("Coupon type", 'jigoshop');
-	$columns["coupon_amount"]   = __("Coupon amount", 'jigoshop');
-	$columns["usage_limit"]     = __("Usage limit", 'jigoshop');
-	$columns["usage_count"]     = __("Usage count", 'jigoshop');
-	$columns["expiry_date"]     = __("Expiry date", 'jigoshop');
+	$columns['title']           = __('Code', 'jigoshop');
+	$columns['coupon_type']     = __('Coupon Type', 'jigoshop');
+	$columns['coupon_amount']   = __('Coupon Amount', 'jigoshop');
+	$columns['usage_limit']     = __('Usage Limit', 'jigoshop');
+	$columns['usage_count']     = __('Usage Count', 'jigoshop');
+	$columns['expiry_date']     = __('Expiry Date', 'jigoshop');
 
 	return $columns;
 }
 
 
 /**
- * Custom Columns for Coupons page
+ * Column values display for Coupons List
  **/
 add_action('manage_shop_coupon_posts_custom_column', 'jigoshop_custom_coupon_columns', 2);
 
@@ -706,21 +706,21 @@ function jigoshop_custom_coupon_columns($column) {
 	$expiry_date 	= get_post_meta( $post->ID, 'expiry_date', true );
 
 	switch ( $column ) {
-		case "coupon_type" :
+		case 'coupon_type' :
 			$types = jigoshop_coupons::get_coupon_types();
 			echo $types[$type];			
 			break;
-		case "coupon_amount" :
+		case 'coupon_amount' :
 			echo $amount;
 			break;
-		case "usage_limit" :
-			if ($usage_limit) echo $usage_limit; else echo '&ndash;';
+		case 'usage_limit' :
+			if ( $usage_limit ) echo $usage_limit; else echo '&ndash;';
 			break;
-		case "usage_count" :
+		case 'usage_count' :
 			echo $usage_count;
 			break;
-		case "expiry_date" :
-			if ($expiry_date) echo date('F j, Y', strtotime($expiry_date)); else echo '&ndash;';
+		case 'expiry_date' :
+			if ( $expiry_date ) echo date( 'F j, Y', strtotime( $expiry_date )); else echo '&ndash;';
 			break;
 	}
 	

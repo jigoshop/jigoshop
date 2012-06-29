@@ -167,6 +167,9 @@ function jigoshop_write_panel_scripts() {
 	wp_register_script('jigoshop-writepanel', jigoshop::assets_url() . '/assets/js/write-panels.js', array('jquery'));
 	wp_enqueue_script('jigoshop-writepanel');
 
+	wp_register_script( 'jigoshop-bootstrap-tooltip', jigoshop::assets_url() . '/assets/js/bootstrap-tooltip.min.js', array( 'jquery' ), '2.0.3' );
+	wp_enqueue_script( 'jigoshop-bootstrap-tooltip' );
+
 	wp_enqueue_script('media-upload');
 	wp_enqueue_script('thickbox');
 	wp_enqueue_style('thickbox');

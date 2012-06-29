@@ -27,6 +27,22 @@ class jigoshop_coupons extends Jigoshop_Base {
 	}
 
 	/**
+	 * get an array of all coupon types
+	 *
+	 * @return  array - the coupon types that are supported
+	 * @since   1.3
+	 */
+	public static function get_coupon_types() {
+		$coupon_types = array(
+			'fixed_cart'        => __('Cart Discount', 'jigoshop'),
+			'percent'           => __('Cart % Discount', 'jigoshop'),
+			'fixed_product'     => __('Product Discount', 'jigoshop'),
+			'percent_product'   => __('Product % Discount', 'jigoshop')
+		);
+		return $coupon_types;
+	}
+	
+	/**
 	 * get coupons from the options database
 	 *
 	 * @return array - the stored coupons array if any or an empty array otherwise
@@ -176,16 +192,6 @@ class jigoshop_coupons extends Jigoshop_Base {
 
 	}
 
-	public static function get_coupon_types() {
-		$coupon_types = array(
-			'fixed_cart'        => __('Cart Discount', 'jigoshop'),
-			'percent'           => __('Cart % Discount', 'jigoshop'),
-			'fixed_product'     => __('Product Discount', 'jigoshop'),
-			'percent_product'   => __('Product % Discount', 'jigoshop')
-		);
-		return $coupon_types;
-	}
-	
 }
 
 if ( !empty($_GET['unset_coupon']) )
