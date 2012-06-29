@@ -96,10 +96,10 @@ function jigoshop_product_data_box() {
 				$terms = get_the_terms( $thepostid, 'product_type' );
 				$product_type = ($terms) ? current($terms)->slug : 'simple';
 
-				echo jigoshop_form::select(
-					'product-type',
-					__('Product Type', 'jigoshop'),
-					apply_filters('jigoshop_product_type_selector', array(
+				$args = array(
+					'id'            => 'product-type',
+					'label'         => __('Product Type', 'jigoshop'),
+					'options'       => apply_filters( 'jigoshop_product_type_selector', array(
 						'simple'		=> __('Simple', 'jigoshop'),
 						'downloadable'	=> __('Downloadable', 'jigoshop'),
 						'grouped'		=> __('Grouped', 'jigoshop'),
@@ -107,12 +107,18 @@ function jigoshop_product_data_box() {
 						'variable'		=> __('Variable', 'jigoshop'),
 						'external'		=> __('External / Affiliate', 'jigoshop')
 					)),
-					$product_type
+					'selected'      => $product_type,
 				);
+				echo Jigoshop_Form::select( $args );
 
 				// SKU
 				if ( Jigoshop_Base::get_options()->get_option('jigoshop_enable_sku') !== 'no' ) {
-					echo jigoshop_form::input( 'sku', __('SKU','jigoshop'), null, null, 'short', $post->ID );
+					$args = array(
+						'id'            => 'sku',
+						'label'         => __('SKU','jigoshop'),
+						'placeholder'   => $post->ID,
+					);
+					echo Jigoshop_Form::input( $args );
 				}
 			?>
 			</fieldset>
@@ -120,10 +126,23 @@ function jigoshop_product_data_box() {
 			<fieldset id="price_fieldset">
 			<?php
 				// Regular Price
-				echo jigoshop_form::input( 'regular_price', __('Regular Price','jigoshop'), null, null, 'short', __('Price Not Announced','jigoshop'), array('after_label' => ' ('.get_jigoshop_currency_symbol().')') );
+				$args = array(
+					'id'            => 'regular_price',
+					'label'         => __('Regular Price','jigoshop'),
+					'after_label'   => ' ('.get_jigoshop_currency_symbol().')',
+					'placeholder'   => __('Price Not Announced','jigoshop'),
+				);
+				echo Jigoshop_Form::input( $args );
 
 				// Sale Price
-				echo jigoshop_form::input( 'sale_price', __('Sale Price','jigoshop'), '<a href="#" class="sale_schedule">'.__('Schedule','jigoshop').'</a>', null, 'short', __('15% or 19.99','jigoshop'), array('after_label' => ' ('.get_jigoshop_currency_symbol(). __(' or %','jigoshop') . ')' ));
+				$args = array(
+					'id'            => 'sale_price',
+					'label'         => __('Sale Price','jigoshop'),
+					'after_label'   => ' ('.get_jigoshop_currency_symbol(). __(' or %','jigoshop') . ')',
+					'desc'          => '<a href="#" class="sale_schedule">'.__('Schedule','jigoshop').'</a>',
+					'placeholder'   => __('15% or 19.99','jigoshop'),
+				);
+				echo Jigoshop_Form::input( $args );
 
 				// Sale Price date range
 				// TODO: Convert this to a helper somehow?
@@ -148,9 +167,21 @@ function jigoshop_product_data_box() {
 			<fieldset>
 			<?php
 				// Featured
-				echo jigoshop_form::checkbox( 'featured', __('Featured?','jigoshop'), false, __('Enable this option to feature this product', 'jigoshop') );
+				$args = array(
+					'id'            => 'featured',
+					'label'         => __('Featured?','jigoshop'),
+					'desc'          => __('Enable this option to feature this product', 'jigoshop'),
+					'value'         => false
+				);
+				echo Jigoshop_Form::checkbox( $args );
 
-				echo jigoshop_form::input( 'external_url', 'Product Url', null, null, null, 'The URL of the external product (eg. http://www.google.com)' );
+				$args = array(
+					'id'            => 'external_url',
+					'label'         => __( 'Product URL', 'jigoshop' ),
+					'placeholder'   => __( 'The URL of the external product (eg. http://www.google.com)', 'jigoshop' ),
+					'extras'        => array()
+				);
+				echo Jigoshop_Form::input( $args );
 			?>
 			</fieldset>
 		</div>
@@ -159,12 +190,16 @@ function jigoshop_product_data_box() {
 			<?php
 
 				// Tax Status
-				echo jigoshop_form::select( 'tax_status', __('Tax Status','jigoshop'),
-					array(
-						'taxable'	=> __('Taxable','jigoshop'),
-						'shipping'	=> __('Shipping','jigoshop'),
-						'none'		=> __('None','jigoshop')
-					) );
+				$args = array(
+					'id'            => 'tax_status',
+					'label'         => __('Tax Status','jigoshop'),
+					'options'       => array(
+						'taxable'	    => __('Taxable','jigoshop'),
+						'shipping'	    => __('Shipping','jigoshop'),
+						'none'		    => __('None','jigoshop')
+					)
+				);
+				echo Jigoshop_Form::select( $args );
 
 	            ?>
 
@@ -209,7 +244,13 @@ function jigoshop_product_data_box() {
 			<?php
 				// Weight
 				if( Jigoshop_Base::get_options()->get_option('jigoshop_enable_weight') !== 'no' ) {
-					echo jigoshop_form::input( 'weight', 'Weight', null, null, 'short', '0.00', array('after_label' => ' ('.Jigoshop_Base::get_options()->get_option('jigoshop_weight_unit').')') ); // Missing placeholder attribute 0.00
+					$args = array(
+						'id'            => 'weight',
+						'label'         => __( 'Weight', 'jigoshop' ),
+						'after_label'   => ' ('.Jigoshop_Base::get_options()->get_option('jigoshop_weight_unit').')',
+						'placeholder'   => '0.00',
+					);
+					echo Jigoshop_Form::input( $args );
 				}
 
 				// Dimensions
@@ -230,26 +271,43 @@ function jigoshop_product_data_box() {
 			<fieldset>
 			<?php
 				// Visibility
-				echo jigoshop_form::select( 'product_visibility', __('Visibility','jigoshop'),
-					array(
-						'visible'	=> __('Catalog & Search','jigoshop'),
-						'catalog'	=> __('Catalog Only','jigoshop'),
-						'search'	=> __('Search Only','jigoshop'),
-						'hidden'	=> __('Hidden','jigoshop')
-					), get_post_meta( $post->ID, 'visibility', true ) );
+				$args = array(
+					'id'            => 'product_visibility',
+					'label'         => __('Visibility','jigoshop'),
+					'options'       => array(
+						'visible'	    => __('Catalog & Search','jigoshop'),
+						'catalog'	    => __('Catalog Only','jigoshop'),
+						'search'	    => __('Search Only','jigoshop'),
+						'hidden'	    => __('Hidden','jigoshop')
+					),
+					'selected'      => get_post_meta( $post->ID, 'visibility', true )
+				);
+				echo Jigoshop_Form::select( $args );
 			?>
 			</fieldset>
 			
 			<fieldset>
 			<?php
 				// Customizable
-				echo jigoshop_form::select( 'product_customize', __('Can be personalized','jigoshop'),
-					array(
-						'no'	=> __('No','jigoshop'),
-						'yes'	=> __('Yes','jigoshop'),
-					), get_post_meta( $post->ID, 'customizable', true ) );
+				$args = array(
+					'id'            => 'product_customize',
+					'label'         => __('Can be personalized','jigoshop'),
+					'options'       => array(
+						'no'	        => __('No','jigoshop'),
+						'yes'	        => __('Yes','jigoshop'),
+					),
+					'selected'      => get_post_meta( $post->ID, 'customizable', true ),
+				);
+				echo Jigoshop_Form::select( $args );
+				
 				// Customizable length
-				echo jigoshop_form::input( 'customized_length', __('Personalized Characters','jigoshop'), null, get_post_meta($post->ID, 'customized_length', true), 'short', __('Leave blank for unlimited', 'jigoshop') );
+				$args = array(
+					'id'            => 'customized_length',
+					'label'         => __('Personalized Characters','jigoshop'),
+					'value'         => get_post_meta($post->ID, 'customized_length', true),
+					'placeholder'   => __('Leave blank for unlimited', 'jigoshop'),
+				);
+				echo Jigoshop_Form::input( $args );
 			?>
 			</fieldset>
 			
@@ -260,7 +318,13 @@ function jigoshop_product_data_box() {
 			<fieldset>
 			<?php
 			// manage stock
-			echo jigoshop_form::checkbox( 'manage_stock', __('Manage Stock?','jigoshop'), false, __('Handle stock for me', 'jigoshop') );
+			$args = array(
+				'id'            => 'manage_stock',
+				'label'         => __('Manage Stock?','jigoshop'),
+				'desc'          => __('Handle stock for me', 'jigoshop'),
+				'value'         => false
+			);
+			echo Jigoshop_Form::checkbox( $args );
 
 			?>
 			</fieldset>
@@ -268,25 +332,37 @@ function jigoshop_product_data_box() {
 			<?php
 			// Stock Status
 			// TODO: These values should be true/false
-			echo jigoshop_form::select( 'stock_status', 'Stock Status',
-				array(
+			$args = array(
+				'id'            => 'stock_status',
+				'label'         => __( 'Stock Status', 'jigoshop' ),
+				'options'       => array(
 					'instock'		=> __('In Stock','jigoshop'),
 					'outofstock'	=> __('Out of Stock','jigoshop')
-				) );
+				)
+			);
+			echo Jigoshop_Form::select( $args );
 
 			echo '<div class="stock_fields">';
 
 			// Stock
 			// TODO: Missing default value of 0
-			echo jigoshop_form::input( 'stock', __('Stock Quantity','jigoshop') );
+			$args = array(
+				'id'            => 'stock',
+				'label'         => __('Stock Quantity','jigoshop'),
+			);
+			echo Jigoshop_Form::input( $args );
 
 			// Backorders
-			echo jigoshop_form::select( 'backorders', __('Allow Backorders?','jigoshop'),
-				array(
-					'no'		=> __('Do not allow','jigoshop'),
-					'notify'	=> __('Allow, but notify customer','jigoshop'),
-					'yes'		=> __('Allow','jigoshop')
-				), false, false, 'select' );
+			$args = array(
+				'id'            => 'backorders',
+				'label'         => __('Allow Backorders?','jigoshop'),
+				'options'       => array(
+					'no'		    => __('Do not allow','jigoshop'),
+					'notify'	    => __('Allow, but notify customer','jigoshop'),
+					'yes'		    => __('Allow','jigoshop')
+				)
+			);
+			echo Jigoshop_Form::select( $args );
 
 			echo '</div>';
 			?>
@@ -327,11 +403,22 @@ function jigoshop_product_data_box() {
 					$options[$product->ID] = $product->post_title;
 				}
 				// Only echo the form if we have grouped products
-				echo jigoshop_form::select( 'parent_id', 'Product Group', $options, $post->post_parent, false, 'select' );
+				$args = array(
+					'id'            => 'parent_id',
+					'label'         => __( 'Product Group', 'jigoshop' ),
+					'options'       => $options,
+					'selected'      => $post->post_parent,
+				);
+				echo Jigoshop_Form::select( $args );
 			}
 
 			// Ordering
-			echo jigoshop_form::input( 'menu_order', __('Sort Order', 'jigoshop'), false, $post->menu_order );
+			$args = array(
+				'id'            => 'menu_order',
+				'label'         => __('Sort Order', 'jigoshop'),
+				'value'         => $post->menu_order,
+			);
+			echo Jigoshop_Form::input( $args );
 			?>
 		</div>
 
@@ -350,7 +437,13 @@ function jigoshop_product_data_box() {
 			</p>';
 
 			// Download Limit
-			echo jigoshop_form::input( 'download_limit', 'Download Limit', 'Leave blank for unlimited re-downloads' );
+			$args = array(
+				'id'            => 'download_limit',
+				'label'         => __( 'Download Limit', 'jigoshop' ),
+				'desc'          => __( 'Leave blank for unlimited re-downloads', 'jigoshop' ),
+			);
+			echo Jigoshop_Form::input( $args );
+			
 			do_action( 'additional_downloadable_product_type_options' );
 			?>
 			</fieldset>
