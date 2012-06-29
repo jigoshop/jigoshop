@@ -742,12 +742,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 						$payment_methods[$id] = $info->title;
 
 				/* Coupon types. */
-				$discount_types = array(
-					'fixed_cart'     => __('Cart Discount'     , 'jigoshop'),
-					'percent'        => __('Cart % Discount'   , 'jigoshop'),
-					'fixed_product'  => __('Product Discount'  , 'jigoshop'),
-					'percent_product'=> __('Product % Discount', 'jigoshop')
-				);
+				$discount_types = jigoshop_coupons::get_coupon_types();
 
 				/* Product categories. */
 				$categories = get_terms('product_cat', array('hide_empty' => false));

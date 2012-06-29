@@ -45,7 +45,7 @@ function jigoshop_meta_boxes() {
 	remove_meta_box( 'commentstatusdiv', 'shop_order' , 'normal' );
 	remove_meta_box( 'slugdiv', 'shop_order' , 'normal' );
 
-	add_meta_box( 'jigoshop-coupon-data', __('Coupon Data', 'jigoshop'), 'jigoshop_coupon_data_meta_box', 'shop_coupon', 'normal', 'high');
+	add_meta_box( 'jigoshop-coupon-data', __('Coupon Data', 'jigoshop'), 'jigoshop_coupon_data_box', 'shop_coupon', 'normal', 'high');
 
 	remove_meta_box( 'commentstatusdiv', 'shop_coupon' , 'normal' );
 	remove_meta_box( 'slugdiv', 'shop_coupon' , 'normal' );
@@ -68,7 +68,7 @@ function jigoshop_meta_boxes_save( $post_id, $post ) {
 	if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) return $post_id;
 	if ( !isset($_POST['jigoshop_meta_nonce']) || (isset($_POST['jigoshop_meta_nonce']) && !wp_verify_nonce( $_POST['jigoshop_meta_nonce'], 'jigoshop_save_data' ))) return $post_id;
 	if ( !current_user_can( 'edit_post', $post_id )) return $post_id;
-	if ( $post->post_type != 'product' && $post->post_type != 'shop_order' ) return $post_id;
+	if ( $post->post_type != 'product' && $post->post_type != 'shop_order' && $post->post_type != 'shop_coupon' ) return $post_id;
 
 	do_action( 'jigoshop_process_'.$post->post_type.'_meta', $post_id, $post );
 }

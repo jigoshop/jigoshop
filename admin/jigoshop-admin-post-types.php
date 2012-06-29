@@ -675,17 +675,16 @@ function jigoshop_post_updated_messages($messages) {
  **/
 add_filter('manage_edit-shop_coupon_columns', 'jigoshop_edit_coupon_columns');
 
-function jigoshop_edit_coupon_columns($columns){
+function jigoshop_edit_coupon_columns( $columns ){
 	
 	$columns = array();
 	
-//	$columns["cb"] 			= "<input type=\"checkbox\" />";
-	$columns["title"] 		= __("Code", 'jigoshop');
-	$columns["type"] 		= __("Coupon type", 'jigoshop');
-	$columns["amount"] 		= __("Coupon amount", 'jigoshop');
-	$columns["usage_limit"] = __("Usage limit", 'jigoshop');
-	$columns["usage_count"] = __("Usage count", 'jigoshop');
-	$columns["expiry_date"] = __("Expiry date", 'jigoshop');
+	$columns["title"]           = __("Code", 'jigoshop');
+	$columns["coupon_type"]     = __("Coupon type", 'jigoshop');
+	$columns["coupon_amount"]   = __("Coupon amount", 'jigoshop');
+	$columns["usage_limit"]     = __("Usage limit", 'jigoshop');
+	$columns["usage_count"]     = __("Usage count", 'jigoshop');
+	$columns["expiry_date"]     = __("Expiry date", 'jigoshop');
 
 	return $columns;
 }
@@ -697,31 +696,32 @@ function jigoshop_edit_coupon_columns($columns){
 add_action('manage_shop_coupon_posts_custom_column', 'jigoshop_custom_coupon_columns', 2);
 
 function jigoshop_custom_coupon_columns($column) {
+
 	global $post;
 	
-	$type 			= get_post_meta($post->ID, 'discount_type', true);
-	$amount 		= get_post_meta($post->ID, 'coupon_amount', true);
-	$individual_use = get_post_meta($post->ID, 'individual_use', true);
-	$product_ids 	= (get_post_meta($post->ID, 'product_ids', true)) ? explode(',', get_post_meta($post->ID, 'product_ids', true)) : array();
-	$usage_limit 	= get_post_meta($post->ID, 'usage_limit', true);
-	$usage_count 	= (int) get_post_meta($post->ID, 'usage_count', true);
-	$expiry_date 	= get_post_meta($post->ID, 'expiry_date', true);
+	$type 			= get_post_meta( $post->ID, 'coupon_type', true );
+	$amount 		= get_post_meta( $post->ID, 'coupon_amount', true );
+	$usage_limit 	= get_post_meta( $post->ID, 'usage_limit', true );
+	$usage_count 	= (int) get_post_meta( $post->ID, 'usage_count', true );
+	$expiry_date 	= get_post_meta( $post->ID, 'expiry_date', true );
 
-	switch ($column) {
-		case "type" :
-			echo $type;			
-		break;
-		case "amount" :
+	switch ( $column ) {
+		case "coupon_type" :
+			$types = jigoshop_coupons::get_coupon_types();
+			echo $types[$type];			
+			break;
+		case "coupon_amount" :
 			echo $amount;
-		break;
+			break;
 		case "usage_limit" :
 			if ($usage_limit) echo $usage_limit; else echo '&ndash;';
-		break;
+			break;
 		case "usage_count" :
 			echo $usage_count;
-		break;
+			break;
 		case "expiry_date" :
 			if ($expiry_date) echo date('F j, Y', strtotime($expiry_date)); else echo '&ndash;';
-		break;
+			break;
 	}
+	
 }

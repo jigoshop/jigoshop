@@ -23,7 +23,7 @@
  * 
  * Displays the meta box
  */
-function jigoshop_coupon_data_meta_box( $post ) {
+function jigoshop_coupon_data_box( $post ) {
 	global $jigoshop;
 	
 	wp_nonce_field( 'jigoshop_save_data', 'jigoshop_meta_nonce' );
@@ -36,16 +36,10 @@ function jigoshop_coupon_data_meta_box( $post ) {
 			echo '<div class="options_group">';
 			
 			// Coupon Types
-			$coupon_types = array(
-				'fixed_cart'        => __('Cart Discount', 'jigoshop'),
-				'percent'           => __('Cart % Discount', 'jigoshop'),
-				'fixed_product'     => __('Product Discount', 'jigoshop'),
-				'percent_product'   => __('Product % Discount', 'jigoshop')
-			);
 			$args = array(
 				'id'            => 'coupon_type',
 				'label'         => __( 'Coupon Type', 'jigoshop' ),
-				'options'       => $coupon_types,
+				'options'       => jigoshop_coupons::get_coupon_types(),
 			);
 			echo Jigoshop_Form::select( $args );
 
@@ -110,18 +104,18 @@ function jigoshop_coupon_data_meta_box( $post ) {
  * 
  * Function for processing and storing all coupon data.
  */
-add_action('jigoshop_process_shop_coupon_meta', 'jigoshop_process_shop_coupon_meta', 1, 2);
+add_action( 'jigoshop_process_shop_coupon', 'jigoshop_process_shop_coupon', 1, 2 );
 
-function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
+function jigoshop_process_shop_coupon( $post_id, $post ) {
 
 	global $wpdb, $jigoshop_errors;
 	
 	// Add/Replace data to array
-	$type 			= strip_tags(stripslashes( $_POST['coupon_type'] ));
-	$amount 		= strip_tags(stripslashes( $_POST['coupon_amount'] ));
-	$usage_limit 	= (isset($_POST['usage_limit']) && $_POST['usage_limit']>0) ? (int) $_POST['usage_limit'] : '';
-	$minimum_amount = strip_tags(stripslashes( $_POST['order_total_min'] ));
-	$maximum_amount = strip_tags(stripslashes( $_POST['order_total_max'] ));
+	$type 			= strip_tags( stripslashes( $_POST['coupon_type'] ));
+	$amount 		= strip_tags( stripslashes( $_POST['coupon_amount'] ));
+	$usage_limit 	= (isset( $_POST['usage_limit'] ) && $_POST['usage_limit'] > 0 ) ? (int) $_POST['usage_limit'] : '';
+	$minimum_amount = strip_tags( stripslashes( $_POST['order_total_min'] ));
+	$maximum_amount = strip_tags( stripslashes( $_POST['order_total_max'] ));
 
 	if ( isset( $_POST['coupon_pay_methods'] )) {
 		$pay_methods = (array) $_POST['coupon_pay_methods'];

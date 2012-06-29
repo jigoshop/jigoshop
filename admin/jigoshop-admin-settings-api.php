@@ -1176,12 +1176,7 @@ class Jigoshop_Options_Parser {
 							echo '<td><input type="text" value="' . esc_attr( $coupon['code'] ) . '" name="coupon_code[' . esc_attr( $i ) . ']" placeholder="' . __('Coupon Code', 'jigoshop') . '" size="8" /></td>';
 							
 							echo '<td><select name="coupon_type[' . esc_attr( $i ) . ']">';
-							$discount_types = array(
-								'fixed_cart' => __('Cart Discount', 'jigoshop'),
-								'percent' => __('Cart % Discount', 'jigoshop'),
-								'fixed_product' => __('Product Discount', 'jigoshop'),
-								'percent_product' => __('Product % Discount', 'jigoshop')
-							);
+							$discount_types = jigoshop_coupons::get_coupon_types();
 							foreach ( $discount_types as $type => $label ) :
 								$selected = ($coupon['type'] == $type) ? 'selected="selected"' : '';
 								echo '<option value="' . esc_attr( $type ) . '" ' . $selected . '>' . esc_html( $label ) . '</option>';

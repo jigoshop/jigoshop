@@ -176,6 +176,16 @@ class jigoshop_coupons extends Jigoshop_Base {
 
 	}
 
+	public static function get_coupon_types() {
+		$coupon_types = array(
+			'fixed_cart'        => __('Cart Discount', 'jigoshop'),
+			'percent'           => __('Cart % Discount', 'jigoshop'),
+			'fixed_product'     => __('Product Discount', 'jigoshop'),
+			'percent_product'   => __('Product % Discount', 'jigoshop')
+		);
+		return $coupon_types;
+	}
+	
 }
 
 if ( !empty($_GET['unset_coupon']) )
