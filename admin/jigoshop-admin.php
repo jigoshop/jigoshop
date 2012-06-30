@@ -84,7 +84,7 @@ function jigoshop_admin_menu() {
 
 	$menu[] = array( '', 'read', 'separator-jigoshop', '', 'wp-menu-separator jigoshop' );
 
-	add_menu_page(__('Jigoshop'),__('Jigoshop'),'manage_options','jigoshop' ,'jigoshop_dashboard',jigoshop::assets_url() . '/assets/images/icons/menu_icons.png',55);
+	add_menu_page(__('Jigoshop'),__('Jigoshop'),'manage_options','jigoshop' ,'jigoshop_dashboard', null,55);
 	add_submenu_page('jigoshop'                  ,__('Dashboard'       ,'jigoshop'),__('Dashboard'  ,'jigoshop'),'manage_options','jigoshop'           ,'jigoshop_dashboard');
 	add_submenu_page('jigoshop'                  ,__('Reports  '       ,'jigoshop'),__('Reports'    ,'jigoshop'),'manage_options','jigoshop_reports'   ,'jigoshop_reports');
 	add_submenu_page('jigoshop'                  ,__('General Settings','jigoshop'),__('Settings'   ,'jigoshop'),'manage_options','jigoshop_settings'  ,'jigoshop_settings');
