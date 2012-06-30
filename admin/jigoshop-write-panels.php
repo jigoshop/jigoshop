@@ -162,7 +162,7 @@ function jigoshop_write_panel_scripts() {
     $jigoshop_options = Jigoshop_Base::get_options();
 	$post_type = jigoshop_get_current_post_type();
 
-	if( $post_type !== 'product' && $post_type !== 'shop_order' ) return;
+	if( $post_type !== 'product' && $post_type !== 'shop_order' && $post_type !== 'shop_coupon' ) return;
 
 	wp_register_script('jigoshop-writepanel', jigoshop::assets_url() . '/assets/js/write-panels.js', array('jquery'));
 	wp_enqueue_script('jigoshop-writepanel');
