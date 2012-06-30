@@ -84,19 +84,20 @@ function jigoshop_coupon_data_box( $post ) {
 			echo Jigoshop_Form::input( $args );
 
 			// Payment methods
-// 			$payment_methods = array();
-// 			$available_gateways = jigoshop_payment_gateways::get_available_payment_gateways();
-// 			if ( ! empty($available_gateways) )
-// 				foreach ( $available_gateways as $id => $info )
-// 					$payment_methods[$id] = $info->title;
-// 			$args = array(
-// 				'id'            => 'coupon_pay_methods',
-// 				'label'         => __( 'Payment Methods', 'jigoshop' ),
-// 				'desc'          => '',
-// 				'tip'           => __('Which payment methods are allowed for this coupon to be effective?','jigoshop'),
-// 				'options'       => $payment_methods
-// 			);
-// 			echo Jigoshop_Form::select( $args );
+			$payment_methods = array();
+			$available_gateways = jigoshop_payment_gateways::get_available_payment_gateways();
+			if ( ! empty($available_gateways) )
+				foreach ( $available_gateways as $id => $info )
+					$payment_methods[$id] = $info->title;
+			$args = array(
+				'id'            => 'coupon_pay_methods',
+				'label'         => __( 'Payment Methods', 'jigoshop' ),
+				'tip'           => __('Which payment methods are allowed for this coupon to be effective?','jigoshop'),
+				'multiple'      => true,
+				'placeholder'   => __('Any method','jigoshop'),
+				'options'       => $payment_methods
+			);
+			echo Jigoshop_Form::select( $args );
 
 			$args = array(
 				'id'            => 'individual_use',
@@ -140,7 +141,6 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 	
 	if ( isset( $_POST['coupon_pay_methods'] )) {
 		$pay_methods = (array) $_POST['coupon_pay_methods'];
-		$pay_methods = implode( ',', array_filter( array_map( 'intval', $pay_methods )));
 	} else {
 		$pay_methods = '';
 	}
@@ -153,6 +153,6 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 	update_post_meta( $post_id, 'individual_use', $individual );
 	update_post_meta( $post_id, 'coupon_free_shipping', $free_shipping );
 	
-//	update_post_meta( $post_id, 'coupon_pay_methods', $pay_methods );
+	update_post_meta( $post_id, 'coupon_pay_methods', $pay_methods );
 		
 }
