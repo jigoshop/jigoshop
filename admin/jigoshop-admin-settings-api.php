@@ -363,11 +363,12 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					
 				case 'multi_select_countries' :
 					if ( isset( $value ) ) {
+					logme( $value );
 						$countries = jigoshop_countries::$countries;
 						asort( $countries );
 						$selected = array();
 						foreach ( $countries as $key => $val ) {
-							if ( array_key_exists( $key, (array)$value ) ) {
+							if ( in_array( $key, (array)$value ) ) {
 								$selected[] = $key;
 							}
 						}
@@ -924,14 +925,23 @@ class Jigoshop_Options_Parser {
 			$countries = jigoshop_countries::$countries;
 			asort( $countries );
 			$selections = (array) $data[$item['id']];
-			$display .= '<div class="multi_select_countries '.$class.'"><ul>';
-			$index = 0;
+
+			$display .= '<select multiple="multiple" 
+				id="'.$item['id'].'"
+				class="jigoshop-input jigoshop-select '.$class.'"
+				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].'][]" >';
 			foreach ( $countries as $key => $val ) {
-				$display .= '<li><label><input type="checkbox" name="' . JIGOSHOP_OPTIONS . '[' . $item['id'] . ']['.$key.'] value="' . esc_attr( $key ) . '" ';
-				$display .= in_array( $key, $selections ) ? 'checked="checked" />' : ' />';
-				$display .=  esc_attr( $val ) . '</label></li>';
+				$display .= '<option value="'.esc_attr( $key ).'" '.(in_array( $key, $selections ) ? 'selected="selected"' : '').' />'.$val.'</option>';
 			}
-			$display .= '</ul></div>';
+			$display .= '</select>';
+			$id = $item['id'];
+			?>
+				<script type="text/javascript">
+					jQuery(function() {
+						jQuery("#<?php echo $id; ?>").select2();
+					});
+				</script>
+			<?php
 			break;
 			
 		case 'button':
