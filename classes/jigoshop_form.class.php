@@ -62,30 +62,31 @@ class Jigoshop_Form extends Jigoshop_Base {
 			'class'         => 'select short',
 			'desc'          => false,
 			'tip'           => false,
+			'multiple'      => false,
+			'placeholder'   => '',
 			'options'       => array(),
 			'selected'      => false
 		);
 		extract( wp_parse_args( $field, $args ) );
 
-		$selected = ($selected) ? $selected : get_post_meta($post->ID, $id, true);
-		$desc  = ($desc)  ? esc_html( $desc ) : false;
+		$selected = ($selected) ? (array)$selected : (array)get_post_meta($post->ID, $id, true);
+		$name = ($multiple) ? $id.'[]' : $id;
+		$multiple = ($multiple) ? 'multiple="multiple"' : '';
+		$desc = ($desc) ? esc_html( $desc ) : false;
 
 		$html = '';
 
 		$html .= "<p class='form-field {$id}_field'>";
 		$html .= "<label for='{$id}'>$label{$after_label}</label>";
-		$html .= "<select id='{$id}' name='{$id}' class='{$class}'>";
-
+		$html .= "<select {$multiple} id='{$id}' name='{$name}' class='{$class}' data-placeholder='{$placeholder}'>";
+		
 		foreach ( $options as $value => $label ) {
 			$mark = '';
-
-			// Not the best way but has to be done because selected() echos
-			if ( $selected == $value ) {
+			if ( in_array( $value, $selected ) ) {
 				$mark = 'selected="selected"';
 			}
 			$html .= "<option value='{$value}' {$mark}>{$label}</option>";
 		}
-
 		$html .= "</select>";
 
 		if ( $tip ) {
@@ -97,6 +98,12 @@ class Jigoshop_Form extends Jigoshop_Base {
 		}
 
 		$html .= "</p>";
+		$html .=    '<script type="text/javascript">
+						jQuery(function() {
+							jQuery("#'.$id.'").select2();
+						});
+					</script>';
+
 		return $html;
 	}
 
