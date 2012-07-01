@@ -703,7 +703,7 @@ function jigoshop_custom_coupon_columns($column) {
 	$amount 		= get_post_meta( $post->ID, 'coupon_amount', true );
 	$usage_limit 	= get_post_meta( $post->ID, 'usage_limit', true );
 	$usage_count 	= (int) get_post_meta( $post->ID, 'usage_count', true );
-	$expiry_date 	= get_post_meta( $post->ID, 'expiry_date', true );
+	$expiry_date 	= get_post_meta( $post->ID, 'coupon_date_to', true );
 
 	switch ( $column ) {
 		case 'coupon_type' :
@@ -714,13 +714,13 @@ function jigoshop_custom_coupon_columns($column) {
 			echo $amount;
 			break;
 		case 'usage_limit' :
-			if ( $usage_limit ) echo $usage_limit; else echo '&ndash;';
+			echo ( $usage_limit > 0 ) ? $usage_limit : '&ndash;';
 			break;
 		case 'usage_count' :
 			echo $usage_count;
 			break;
 		case 'expiry_date' :
-			if ( $expiry_date ) echo date( 'F j, Y', strtotime( $expiry_date )); else echo '&ndash;';
+			echo ( $expiry_date <> '' ) ? date( 'Y-m-d', $expiry_date ) : '&ndash;';
 			break;
 	}
 	

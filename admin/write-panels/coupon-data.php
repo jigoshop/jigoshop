@@ -58,22 +58,28 @@ function jigoshop_coupon_data_box( $post ) {
 			echo Jigoshop_Form::input( $args );
 				
 			// Date From
+			$coupon_date_from = get_post_meta( $post->ID, 'coupon_date_from', true);
 			$args = array(
 				'id'            => 'coupon_date_from',
 				'label'         => __('Date From','jigoshop'),
 				'desc'          => '',
 				'tip'           => __('Choose between which dates this coupon is enabled.','jigoshop'),
-				'placeholder'   => __('Any date','jigoshop')
+				'class'         => 'short date-pick',
+				'placeholder'   => __('Any date','jigoshop'),
+				'value'         => ($coupon_date_from <> '') ? date( 'Y-m-d', $coupon_date_from ) : ''
 			);
 			echo Jigoshop_Form::input( $args );
 		
 			// Date To
+			$coupon_date_to = get_post_meta( $post->ID, 'coupon_date_to', true);
 			$args = array(
 				'id'            => 'coupon_date_to',
 				'label'         => __('Date To','jigoshop'),
 				'desc'          => '',
 				'tip'           => __('Choose between which dates this coupon is enabled.','jigoshop'),
-				'placeholder'   => __('Any date','jigoshop')
+				'class'         => 'short date-pick',
+				'placeholder'   => __('Any date','jigoshop'),
+				'value'         => ($coupon_date_to <> '') ? date( 'Y-m-d', $coupon_date_to ) : ''
 			);
 			echo Jigoshop_Form::input( $args );
 		
@@ -204,87 +210,92 @@ function jigoshop_coupon_data_box( $post ) {
 			// javascript for product includes and excludes -- need to move this
 		?>
 			<script type="text/javascript">
-				jQuery("#include_products").select2({
-					minimumInputLength: 3,
-					multiple: true,
-					ajax: {
-						url: "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
-						dataType: 'json',
-						quietMillis: 100,
-						data: function(term, page) {
-							return {
-								term:       term,
-								action:     'jigoshop_json_search_products_and_variations',
-								security:   '<?php echo wp_create_nonce( "search-products" ); ?>'
-							};
+				jQuery(document).ready(function() {
+					jQuery('#coupon_date_from').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
+					jQuery('#coupon_date_to').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
+					
+					jQuery("#include_products").select2({
+						minimumInputLength: 3,
+						multiple: true,
+						ajax: {
+							url: "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
+							dataType: 'json',
+							quietMillis: 100,
+							data: function(term, page) {
+								return {
+									term:       term,
+									action:     'jigoshop_json_search_products_and_variations',
+									security:   '<?php echo wp_create_nonce( "search-products" ); ?>'
+								};
+							},
+							results: function( data, page ) {
+								return { results: data };
+							}
 						},
-						results: function( data, page ) {
-							return { results: data };
-						}
-					},
-					initSelection: function(element) {
-						var data = [];
-						jQuery(element.val().split(",")).each(function() {
-							var stuff = {
-								action:     'jigoshop_json_search_products_and_variations',
-								security:   '<?php echo wp_create_nonce( "search-products" ); ?>',
-								term:       this
-							};
-							var value = jQuery.ajax({
-								type: 		'GET',
-								url:        "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
-								dataType: 	"json",
-								data: 		stuff,
-								success: 	function( result ) {
-									return result.text;
-								}
+						initSelection: function(element) {
+							var data = [];
+							jQuery(element.val().split(",")).each(function() {
+								var stuff = {
+									action:     'jigoshop_json_search_products_and_variations',
+									security:   '<?php echo wp_create_nonce( "search-products" ); ?>',
+									term:       this
+								};
+								var value = jQuery.ajax({
+									type: 		'GET',
+									url:        "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
+									dataType: 	"json",
+									data: 		stuff,
+									success: 	function( result ) {
+										return result.text;
+									}
+								});
+								data.push( { id: this, text: value } );
 							});
-							data.push( { id: this, text: value } );
-						});
-						return data;
-					}
-				});
-
-
-				jQuery("#exclude_products").select2({
-					minimumInputLength: 3,
-					multiple: true,
-					ajax: {
-						url: "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
-						dataType: 'json',
-						quietMillis: 100,
-						data: function(term, page) {
-							return {
-								term:       term,
-								action:     'jigoshop_json_search_products_and_variations',
-								security:   '<?php echo wp_create_nonce( "search-products" ); ?>'
-							};
+							return data;
+						}
+					});
+	
+	
+					jQuery("#exclude_products").select2({
+						minimumInputLength: 3,
+						multiple: true,
+						ajax: {
+							url: "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
+							dataType: 'json',
+							quietMillis: 100,
+							data: function(term, page) {
+								return {
+									term:       term,
+									action:     'jigoshop_json_search_products_and_variations',
+									security:   '<?php echo wp_create_nonce( "search-products" ); ?>'
+								};
+							},
+							results: function( data, page ) {
+								return { results: data };
+							}
 						},
-						results: function( data, page ) {
-							return { results: data };
-						}
-					},
-					initSelection: function(element) {
-						var data = [];
-						jQuery(element.val().split(",")).each(function() {
-							var stuff = {
-								action:     'jigoshop_json_search_products_and_variations',
-								security:   '<?php echo wp_create_nonce( "search-products" ); ?>',
-								term:       this
-							};
-							var value = jQuery.ajax({
-								type: 		'GET',
-								url:        "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
-								dataType: 	"json",
-								data: 		stuff,
-								success: 	function( result ) {
-									return result.text;
-								}
+						initSelection: function(element) {
+							var data = [];
+							jQuery(element.val().split(",")).each(function() {
+								var stuff = {
+									action:     'jigoshop_json_search_products_and_variations',
+									security:   '<?php echo wp_create_nonce( "search-products" ); ?>',
+									term:       this
+								};
+								var value = jQuery.ajax({
+									type: 		'GET',
+									url:        "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
+									dataType: 	"json",
+									data: 		stuff,
+									success: 	function( result ) {
+										return result.text;
+									}
+								});
+								data.push( { id: this, text: value } );
 							});
-							data.push( { id: this, text: value } );
-						});
-						return data;
-					}
+							return data;
+						}
+					});
 				});
 			</script>
 		</div></div>
@@ -305,13 +316,13 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 	$type 			= strip_tags( stripslashes( $_POST['coupon_type'] ));
 	$amount 		= strip_tags( stripslashes( $_POST['coupon_amount'] ));
 	
-	if ( isset( $_POST['coupon_date_from'] )) {
+	if ( !empty( $_POST['coupon_date_from'] )) {
 		$coupon_date_from = strtotime( strip_tags( stripslashes( $_POST['coupon_date_from'] )));
 	} else {
 		$coupon_date_from = '';
 	}
 	
-	if ( isset( $_POST['coupon_date_to'] )) {
+	if ( !empty( $_POST['coupon_date_to'] )) {
 		$coupon_date_to = strtotime( strip_tags( stripslashes( $_POST['coupon_date_to'] ))) + (60 * 60 * 24 - 1);
 	} else {
 		$coupon_date_to = '';
