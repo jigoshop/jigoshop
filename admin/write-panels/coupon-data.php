@@ -37,91 +37,256 @@ function jigoshop_coupon_data_box( $post ) {
 
 			<div class="options_group">
 
-	<?php
+			<?php
+				
+			// Coupon Types
+			$args = array(
+				'id'            => 'coupon_type',
+				'label'         => __( 'Coupon Type', 'jigoshop' ),
+				'options'       => jigoshop_coupons::get_coupon_types(),
+			);
+			echo Jigoshop_Form::select( $args );
 		
-	// Coupon Types
-	$args = array(
-		'id'            => 'coupon_type',
-		'label'         => __( 'Coupon Type', 'jigoshop' ),
-		'tip'           => __('Cart &ndash; Applies to the whole Cart.  Product &ndash; Applies to individual products only.  You must specify individual products.','jigoshop'),
-		'options'       => jigoshop_coupons::get_coupon_types(),
-	);
-	echo Jigoshop_Form::select( $args );
-
-	// Amount
-	$args = array(
-		'id'            => 'coupon_amount',
-		'label'         => __( 'Coupon Amount', 'jigoshop' ),
-		'desc'          => __('Enter an amount e.g. 9.99.','jigoshop'),
-		'tip'           => __('Amount this coupon is worth. If it is a percentange, just include the number without the percentage sign.','jigoshop'),
-		'placeholder'   => '0.00'
-	);
-	echo Jigoshop_Form::input( $args );
+			// Amount
+			$args = array(
+				'id'            => 'coupon_amount',
+				'label'         => __( 'Coupon Amount', 'jigoshop' ),
+				'desc'          => __('Enter an amount e.g. 9.99.','jigoshop'),
+				'tip'           => __('Amount this coupon is worth. If it is a percentange, just include the number without the percentage sign.','jigoshop'),
+				'placeholder'   => '0.00'
+			);
+			echo Jigoshop_Form::input( $args );
+				
+			// Date From
+			$args = array(
+				'id'            => 'coupon_date_from',
+				'label'         => __('Date From','jigoshop'),
+				'desc'          => '',
+				'tip'           => __('Choose between which dates this coupon is enabled.','jigoshop'),
+				'placeholder'   => __('Any date','jigoshop')
+			);
+			echo Jigoshop_Form::input( $args );
 		
-	// Usage limit
-	$args = array(
-		'id'            => 'usage_limit',
-		'label'         => __( 'Usage Limit', 'jigoshop' ),
-		'desc'          => __(sprintf('Times used: %s', !empty($coupon['usage']) ? $coupon['usage'] : '0'), 'jigoshop'),
-		'tip'           => __('Control how many times this coupon may be used.','jigoshop'),
-		'placeholder'   => '0'
-	);
-	echo Jigoshop_Form::input( $args );
+			// Date To
+			$args = array(
+				'id'            => 'coupon_date_to',
+				'label'         => __('Date To','jigoshop'),
+				'desc'          => '',
+				'tip'           => __('Choose between which dates this coupon is enabled.','jigoshop'),
+				'placeholder'   => __('Any date','jigoshop')
+			);
+			echo Jigoshop_Form::input( $args );
+		
+			// Usage limit
+			$args = array(
+				'id'            => 'usage_limit',
+				'label'         => __( 'Usage Limit', 'jigoshop' ),
+				'desc'          => __(sprintf('Times used: %s', !empty($coupon['usage']) ? $coupon['usage'] : '0'), 'jigoshop'),
+				'tip'           => __('Control how many times this coupon may be used.','jigoshop'),
+				'placeholder'   => '0'
+			);
+			echo Jigoshop_Form::input( $args );
 
-	// Order total minimum
-	$args = array(
-		'id'            => 'order_total_min',
-		'label'         => __( 'Order total min', 'jigoshop' ),
-		'desc'          => __('Set the required minimum subtotal for this coupon to be valid on an order.','jigoshop'),
-		'tip'           => __('Set the required subtotal for this coupon to be valid on an order.','jigoshop'),
-		'placeholder'   => __('No min','jigoshop')
-	);
-	echo Jigoshop_Form::input( $args );
+			// Individual use
+			$args = array(
+				'id'            => 'individual_use',
+				'label'         => __('Individual Use','jigoshop'),
+				'desc'          => __('Prevent other coupons from being used while this one is applied to the Cart.','jigoshop'),
+				'value'         => false
+			);
+			echo Jigoshop_Form::checkbox( $args );
+		
+			// Free shipping
+			$args = array(
+				'id'            => 'coupon_free_shipping',
+				'label'         => __('Free shipping','jigoshop'),
+				'desc'          => __('Show the Free Shipping method on the Checkout with this enabled.','jigoshop'),
+				'value'         => false
+			);
+			echo Jigoshop_Form::checkbox( $args );
+			
+		?>
+			</div><div class="options_group">
+		<?php
+			
+			// Order total minimum
+			$args = array(
+				'id'            => 'order_total_min',
+				'label'         => __( 'Order total min', 'jigoshop' ),
+				'desc'          => __('Set the required minimum subtotal for this coupon to be valid on an order.','jigoshop'),
+				'tip'           => __('Set the required subtotal for this coupon to be valid on an order.','jigoshop'),
+				'placeholder'   => __('No min','jigoshop')
+			);
+			echo Jigoshop_Form::input( $args );
+		
+			// Order total maximum
+			$args = array(
+				'id'            => 'order_total_max',
+				'label'         => __( 'Order total max', 'jigoshop' ),
+				'desc'          => __('Set the required maximum subtotal for this coupon to be valid on an order.','jigoshop'),
+				'placeholder'   => __('No max','jigoshop')
+			);
+			echo Jigoshop_Form::input( $args );
+			
+		?>
+			</div><div class="options_group">
+		<?php
+			
+			// Include product ID's
+			$selected = get_post_meta( $post->ID, 'include_products', true );
+			$args = array(
+				'id'            => 'include_products',
+				'type'          => 'hidden',
+				'label'         => __( 'Include Products', 'jigoshop' ),
+				'desc'          => __('Control which products this coupon can apply to.','jigoshop')
+			);
+			echo Jigoshop_Form::input( $args );
 
-	// Order total maximum
-	$args = array(
-		'id'            => 'order_total_max',
-		'label'         => __( 'Order total max', 'jigoshop' ),
-		'desc'          => __('Set the required maximum subtotal for this coupon to be valid on an order.','jigoshop'),
-		'placeholder'   => __('No max','jigoshop')
-	);
-	echo Jigoshop_Form::input( $args );
+			// Exclude product ID's
+			$selected = get_post_meta( $post->ID, 'exclude_products', true );
+			$args = array(
+				'id'            => 'exclude_products',
+				'type'          => 'hidden',
+				'label'         => __( 'Exclude Products', 'jigoshop' ),
+				'desc'          => __('Control which products this coupon cannot be applied to.','jigoshop')
+			);
+			echo Jigoshop_Form::input( $args );
+			
+		?>
+			</div><div class="options_group">
+		<?php
+			
+			// Include Categories
+			$categories = get_terms( 'product_cat', array( 'hide_empty' => false ));
+			$coupon_cats = array();
+			foreach ( $categories as $category )
+				$coupon_cats[$category->term_id] = $category->name;
+			$args = array(
+				'id'            => 'include_categories',
+				'label'         => __( 'Include Categories', 'jigoshop' ),
+				'desc'          => __('Control which product categories this coupon can apply to.','jigoshop'),
+				'multiple'      => true,
+				'placeholder'   => __('Any category','jigoshop'),
+				'options'       => $coupon_cats
+			);
+			echo Jigoshop_Form::select( $args );
+			
+			// Exclude Categories
+			$args = array(
+				'id'            => 'exclude_categories',
+				'label'         => __( 'Exclude Categories', 'jigoshop' ),
+				'desc'          => __('Control which product categories this coupon cannot be applied to.','jigoshop'),
+				'multiple'      => true,
+				'placeholder'   => __('Any category','jigoshop'),
+				'options'       => $coupon_cats
+			);
+			echo Jigoshop_Form::select( $args );
+			
+		?>
+			</div><div class="options_group">
+		<?php
+			
+			// Payment methods
+			$payment_methods = array();
+			$available_gateways = jigoshop_payment_gateways::get_available_payment_gateways();
+			if ( ! empty( $available_gateways )) foreach ( $available_gateways as $id => $info )
+				$payment_methods[$id] = $info->title;
+			$args = array(
+				'id'            => 'coupon_pay_methods',
+				'label'         => __( 'Payment Methods', 'jigoshop' ),
+				'desc'          => __('Which payment methods are allowed for this coupon to be effective?','jigoshop'),
+				'multiple'      => true,
+				'placeholder'   => __('Any method','jigoshop'),
+				'options'       => $payment_methods
+			);
+			echo Jigoshop_Form::select( $args );
+		
+			// javascript for product includes and excludes -- need to move this
+		?>
+			<script type="text/javascript">
+				jQuery("#include_products").select2({
+					minimumInputLength: 3,
+					multiple: true,
+					ajax: {
+						url: "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
+						dataType: 'json',
+						quietMillis: 100,
+						data: function(term, page) {
+							return {
+								term:       term,
+								action:     'jigoshop_json_search_products_and_variations',
+								security:   '<?php echo wp_create_nonce( "search-products" ); ?>'
+							};
+						},
+						results: function( data, page ) {
+							return { results: data };
+						}
+					},
+					initSelection: function(element) {
+						var data = [];
+						jQuery(element.val().split(",")).each(function() {
+							var stuff = {
+								action:     'jigoshop_json_search_products_and_variations',
+								security:   '<?php echo wp_create_nonce( "search-products" ); ?>',
+								term:       this
+							};
+							var value = jQuery.ajax({
+								type: 		'GET',
+								url:        "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
+								dataType: 	"json",
+								data: 		stuff,
+								success: 	function( result ) {
+									return result.text;
+								}
+							});
+							data.push( { id: this, text: value } );
+						});
+						return data;
+					}
+				});
 
-	// Payment methods
-	$payment_methods = array();
-	$available_gateways = jigoshop_payment_gateways::get_available_payment_gateways();
-	if ( ! empty( $available_gateways )) foreach ( $available_gateways as $id => $info )
-		$payment_methods[$id] = $info->title;
-	$args = array(
-		'id'            => 'coupon_pay_methods',
-		'label'         => __( 'Payment Methods', 'jigoshop' ),
-		'tip'           => __('Which payment methods are allowed for this coupon to be effective?','jigoshop'),
-		'multiple'      => true,
-		'placeholder'   => __('Any method','jigoshop'),
-		'options'       => $payment_methods
-	);
-	echo Jigoshop_Form::select( $args );
 
-	// Individual use
-	$args = array(
-		'id'            => 'individual_use',
-		'label'         => __('Individual Use','jigoshop'),
-		'desc'          => __('Prevent other coupons from being used while this one is applied to the Cart.','jigoshop'),
-		'value'         => false
-	);
-	echo Jigoshop_Form::checkbox( $args );
-
-	// Free shipping
-	$args = array(
-		'id'            => 'coupon_free_shipping',
-		'label'         => __('Free shipping','jigoshop'),
-		'desc'          => __('Show the Free Shipping method on the Checkout with this enabled.','jigoshop'),
-		'value'         => false
-	);
-	echo Jigoshop_Form::checkbox( $args );
-	
-	
-	?>
+				jQuery("#exclude_products").select2({
+					minimumInputLength: 3,
+					multiple: true,
+					ajax: {
+						url: "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
+						dataType: 'json',
+						quietMillis: 100,
+						data: function(term, page) {
+							return {
+								term:       term,
+								action:     'jigoshop_json_search_products_and_variations',
+								security:   '<?php echo wp_create_nonce( "search-products" ); ?>'
+							};
+						},
+						results: function( data, page ) {
+							return { results: data };
+						}
+					},
+					initSelection: function(element) {
+						var data = [];
+						jQuery(element.val().split(",")).each(function() {
+							var stuff = {
+								action:     'jigoshop_json_search_products_and_variations',
+								security:   '<?php echo wp_create_nonce( "search-products" ); ?>',
+								term:       this
+							};
+							var value = jQuery.ajax({
+								type: 		'GET',
+								url:        "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
+								dataType: 	"json",
+								data: 		stuff,
+								success: 	function( result ) {
+									return result.text;
+								}
+							});
+							data.push( { id: this, text: value } );
+						});
+						return data;
+					}
+				});
+			</script>
 		</div></div>
 	<?php	
 }
@@ -139,11 +304,49 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 	
 	$type 			= strip_tags( stripslashes( $_POST['coupon_type'] ));
 	$amount 		= strip_tags( stripslashes( $_POST['coupon_amount'] ));
-	$usage_limit 	= ( isset( $_POST['usage_limit'] ) && $_POST['usage_limit'] > 0 ) ? (int) $_POST['usage_limit'] : '';
-	$minimum_amount = strip_tags( stripslashes( $_POST['order_total_min'] ));
-	$maximum_amount = strip_tags( stripslashes( $_POST['order_total_max'] ));
+	
+	if ( isset( $_POST['coupon_date_from'] )) {
+		$coupon_date_from = strtotime( strip_tags( stripslashes( $_POST['coupon_date_from'] )));
+	} else {
+		$coupon_date_from = '';
+	}
+	
+	if ( isset( $_POST['coupon_date_to'] )) {
+		$coupon_date_to = strtotime( strip_tags( stripslashes( $_POST['coupon_date_to'] ))) + (60 * 60 * 24 - 1);
+	} else {
+		$coupon_date_to = '';
+	}
+	
+	$usage_limit 	= ( isset( $_POST['usage_limit'] ) && $_POST['usage_limit'] > 0 ) ? (int) strip_tags( stripslashes( $_POST['usage_limit'] )) : '';
 	$individual     = isset( $_POST['individual_use'] );
 	$free_shipping  = isset( $_POST['coupon_free_shipping'] );
+	
+	$minimum_amount = strip_tags( stripslashes( $_POST['order_total_min'] ));
+	$maximum_amount = strip_tags( stripslashes( $_POST['order_total_max'] ));
+
+	if ( isset( $_POST['include_products'] )) {
+		$include_products = $_POST['include_products'];
+	} else {
+		$include_products = '';
+	}
+	
+	if ( isset( $_POST['exclude_products'] )) {
+		$exclude_products = $_POST['exclude_products'];
+	} else {
+		$exclude_products = '';
+	}
+	
+	if ( isset( $_POST['include_categories'] )) {
+		$include_categories = $_POST['include_categories'];
+	} else {
+		$include_categories = '';
+	}
+	
+	if ( isset( $_POST['exclude_categories'] )) {
+		$exclude_categories = $_POST['exclude_categories'];
+	} else {
+		$exclude_categories = '';
+	}
 	
 	if ( isset( $_POST['coupon_pay_methods'] )) {
 		$pay_methods = (array) $_POST['coupon_pay_methods'];
@@ -151,16 +354,21 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 		$pay_methods = '';
 	}
 		
-	update_post_meta( $post_id, 'coupon_type', $type );
-	update_post_meta( $post_id, 'coupon_amount', $amount );
-	update_post_meta( $post_id, 'usage_limit', $usage_limit );
-	update_post_meta( $post_id, 'order_total_min', $minimum_amount );
-	update_post_meta( $post_id, 'order_total_max', $maximum_amount );
-	update_post_meta( $post_id, 'individual_use', $individual );
+	update_post_meta( $post_id, 'coupon_type',          $type );
+	update_post_meta( $post_id, 'coupon_amount',        $amount );
+	update_post_meta( $post_id, 'coupon_date_from',     $coupon_date_from );
+	update_post_meta( $post_id, 'coupon_date_to',       $coupon_date_to );
+	update_post_meta( $post_id, 'usage_limit',          $usage_limit );
+	update_post_meta( $post_id, 'individual_use',       $individual );
 	update_post_meta( $post_id, 'coupon_free_shipping', $free_shipping );
-	
-	update_post_meta( $post_id, 'coupon_pay_methods', $pay_methods );
-		
+	update_post_meta( $post_id, 'order_total_min',      $minimum_amount );
+	update_post_meta( $post_id, 'order_total_max',      $maximum_amount );
+	update_post_meta( $post_id, 'include_products',     $include_products );
+	update_post_meta( $post_id, 'exclude_products',     $exclude_products );
+	update_post_meta( $post_id, 'include_categories',   $include_categories );
+	update_post_meta( $post_id, 'exclude_categories',   $exclude_categories );
+	update_post_meta( $post_id, 'coupon_pay_methods',   $pay_methods );
+
 }
 
 /**
@@ -220,7 +428,7 @@ function jigoshop_json_search_products( $x = '', $post_types = array( 'product' 
 
 		if ( isset( $SKU ) && $SKU ) $SKU = ' (SKU: ' . $SKU . ')';
 
-		$found_products[$post] = get_the_title( $post ) . $SKU;
+		$found_products[] = array( 'id' => $post, 'text' => get_the_title( $post ) . $SKU );
 
 	}
 

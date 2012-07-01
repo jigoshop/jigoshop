@@ -325,7 +325,6 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	public function validate_settings( $input ) {
 
 		if ( empty( $_POST ) ) {
-//			logme( "NO POST is SET in validate" );  // need to check into this
 			return $input;
 		}
 		
@@ -363,7 +362,6 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					
 				case 'multi_select_countries' :
 					if ( isset( $value ) ) {
-					logme( $value );
 						$countries = jigoshop_countries::$countries;
 						asort( $countries );
 						$selected = array();
