@@ -22,6 +22,7 @@ class Jigoshop_Form extends Jigoshop_Base {
 
 		$args = array(
 			'id'            => null,
+			'type'          => 'text',
 			'label'         => null,
 			'after_label'   => null,
 			'class'         => 'short',
@@ -38,7 +39,7 @@ class Jigoshop_Form extends Jigoshop_Base {
 
 		$html .= "<p class='form-field {$id}_field'>";
 		$html .= "<label for='{$id}'>$label{$after_label}</label>";
-		$html .= "<input type='text' class='{$class}' name='{$id}' id='{$id}' value='{$value}' placeholder='{$placeholder}' />";
+		$html .= "<input type='{$type}' class='{$class}' name='{$id}' id='{$id}' value='{$value}' placeholder='{$placeholder}' />";
 
 		if ( $tip ) {
 			$html .= '<a href="#" tip="'.$tip.'" class="tips" tabindex="99"></a>';
