@@ -925,8 +925,9 @@ class Jigoshop_Options_Parser {
 					$display .= '<input
 						class="jigoshop-input jigoshop-radio '.$class.'"
 						name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
+						id="' . $option . '"
 						type="radio"
-						value="'.$option.'" '.checked( $data[$item['id']], $option, false ).' /><label>'.$name.'</label>';
+						value="'.$option.'" '.checked( $data[$item['id']], $option, false ).' /><label for="'. $option .'">'.$name.'</label>';
 				}
 				$display .= '</div>';
 				
@@ -937,8 +938,9 @@ class Jigoshop_Options_Parser {
 					$display .= '<li><input
 						class="jigoshop-input jigoshop-radio '.$class.'"
 						name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
+						id="' . $option . '"
 						type="radio"
-						value="'.$option.'" '.checked( $data[$item['id']], $option, false ).' /><label>'.$name.'</label></li>';
+						value="'.$option.'" '.checked( $data[$item['id']], $option, false ).' /><label for="'. $option .'">'.$name.'</label></li>';
 				}
 				$display .= '</ul>';
 				
