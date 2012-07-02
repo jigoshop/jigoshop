@@ -659,21 +659,23 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 //					endif;
 
 					// Update post meta
-					update_post_meta   ( $order_id, 'order_data'   , $data );
-					update_post_meta   ( $order_id, 'order_key'    , uniqid('order_') );
-					update_post_meta   ( $order_id, 'customer_user', (int) $user_id );
-					update_post_meta   ( $order_id, 'order_items'  , $order_items );
-					wp_set_object_terms( $order_id, 'pending'      , 'shop_order_status' );
+					update_post_meta( $order_id, 'order_data', $data );
+					update_post_meta( $order_id, 'order_key', uniqid('order_') );
+					update_post_meta( $order_id, 'customer_user', (int) $user_id );
+					update_post_meta( $order_id, 'order_items', $order_items );
+					wp_set_object_terms( $order_id, 'pending', 'shop_order_status' );
 
 					$order = new jigoshop_order($order_id);
 
 					/* Coupon usage limit */
-					$coupons = self::get_options()->get_option('jigoshop_coupons');
-
-					foreach ($data['order_discount_coupons'] as $coupon) :
-						$coupons[$coupon['code']]['usage'] = empty($coupons[$coupon['code']]['usage']) ? 1 : $coupons[$coupon['code']]['usage'] + 1;
+					foreach ( $data['order_discount_coupons'] as $coupon ) :
+						$coupon_id = jigoshop_coupons::get_coupon_post_id( $coupon['code'] );
+						if ( $coupon_id !== false ) {
+							$usage_count = get_post_meta( $coupon_id, 'usage', true );
+							$usage_count = empty( $usage_count ) ? 1 : $usage_count + 1;
+							update_post_meta( $coupon_id, 'usage', $usage_count );
+						}
 					endforeach;
-					self::get_options()->set_option('jigoshop_coupons', $coupons);
 
 					// Inserted successfully
 					do_action('jigoshop_new_order', $order_id);

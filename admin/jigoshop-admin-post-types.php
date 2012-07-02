@@ -699,11 +699,11 @@ function jigoshop_custom_coupon_columns($column) {
 
 	global $post;
 	
-	$type 			= get_post_meta( $post->ID, 'coupon_type', true );
-	$amount 		= get_post_meta( $post->ID, 'coupon_amount', true );
+	$type 			= get_post_meta( $post->ID, 'type', true );
+	$amount 		= get_post_meta( $post->ID, 'amount', true );
 	$usage_limit 	= get_post_meta( $post->ID, 'usage_limit', true );
-	$usage_count 	= (int) get_post_meta( $post->ID, 'usage_count', true );
-	$expiry_date 	= get_post_meta( $post->ID, 'coupon_date_to', true );
+	$usage_count 	= (int) get_post_meta( $post->ID, 'usage', true );
+	$expiry_date 	= get_post_meta( $post->ID, 'date_to', true );
 
 	switch ( $column ) {
 		case 'coupon_type' :

@@ -543,15 +543,15 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			)
 		);
 			
-		self::$default_options[] = array(
-			'name'		=> '',
-			'desc' 		=> __('Check for update now','jigoshop'),
-			'tip' 		=> __('Manually check if a beta update is available.','jigoshop'),
-			'id' 		=> 'jigoshop_check_beta_now',
-			'std' 		=> '',
-			'type' 		=> 'button',
-			'extra'     => is_multisite() ? admin_url().'network/' : '' . 'admin.php?page=jigoshop_settings&amp;action=jigoshop_beta_check&amp;_wpnonce='.wp_create_nonce('jigoshop_check_beta_'.get_current_user_id().'_wpnonce')
-		);
+// 		self::$default_options[] = array(
+// 			'name'		=> '',
+// 			'desc' 		=> __('Check for update now','jigoshop'),
+// 			'tip' 		=> __('Manually check if a beta update is available.','jigoshop'),
+// 			'id' 		=> 'jigoshop_check_beta_now',
+// 			'std' 		=> '',
+// 			'type' 		=> 'button',
+// 			'extra'     => is_multisite() ? admin_url().'network/' : '' . 'admin.php?page=jigoshop_settings&amp;action=jigoshop_beta_check&amp;_wpnonce='.wp_create_nonce('jigoshop_check_beta_'.get_current_user_id().'_wpnonce')
+// 		);
 			
 		self::$default_options[] = array( 'name' => __('Permalinks', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		

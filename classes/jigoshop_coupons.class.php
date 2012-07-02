@@ -18,11 +18,13 @@
  */
 
 class jigoshop_coupons extends Jigoshop_Base {
-
+	
+	private static $coupons;
+	
 	function __construct() {
 
-		if(!empty($_GET['unset_coupon']))
-			$this->remove_coupon($_GET['unset_coupon']);
+		if ( !empty( $_GET['unset_coupon'] ))
+			$this->remove_coupon( $_GET['unset_coupon'] );
 
 	}
 
@@ -43,13 +45,75 @@ class jigoshop_coupons extends Jigoshop_Base {
 	}
 	
 	/**
-	 * get coupons from the options database
+	 * get an array of all coupon fields
 	 *
-	 * @return array - the stored coupons array if any or an empty array otherwise
+	 * @return  array - the coupon fields with values that indicate custom meta data fields
+	 * @since   1.3
+	 */
+	public static function get_coupon_fields() {
+		$couponFields = array(
+			'code'                  => false,
+			'type'                  => true,
+			'amount'                => true,
+			'date_from'             => true,
+			'date_to'               => true,
+			'usage_limit'           => true,
+			'usage'                 => true,
+			'coupon_free_shipping'  => true,
+			'individual_use'        => true,
+			'order_total_min'       => true,
+			'order_total_max'       => true,
+			'products'              => true,
+			'exclude_products'      => true,
+			'coupon_category'       => true,
+			'exclude_categories'    => true,
+			'coupon_free_shipping'  => true,
+			'coupon_pay_methods'    => true,
+		);
+		return $couponFields;
+	}
+	
+	function get_coupon_post_id( $code ) {
+		$args = array(
+			'numberposts'	=> -1,
+			'orderby'		=> 'post_date',
+			'order'			=> 'DESC',
+			'post_type'		=> 'shop_coupon',
+			'post_status'	=> 'publish'
+		);
+		$our_coupons = (array) get_posts( $args );
+		if ( ! empty( $our_coupons )) foreach ( $our_coupons as $id => $coupon ) {
+			if ( $code == $coupon->post_title ) return $coupon->ID;
+		}
+		return false;
+	}
+	
+	/**
+	 * get all coupons
+	 *
+	 * @return array - the coupons
 	 * @since 0.9.8
 	 */
 	function get_coupons() {
-		return (array ) self::get_options()->get_option( 'jigoshop_coupons' );
+		if ( empty( self::$coupons ) ) {
+			$args = array(
+				'numberposts'	=> -1,
+				'orderby'		=> 'post_date',
+				'order'			=> 'DESC',
+				'post_type'		=> 'shop_coupon',
+				'post_status'	=> 'publish'
+			);
+			$our_coupons = (array) get_posts( $args );
+			if ( ! empty( $our_coupons )) foreach ( $our_coupons as $id => $coupon ) {
+				$values = array();
+				$values['code'] = $coupon->post_title;
+				
+				foreach ( self::get_coupon_fields() as $name => $meta )
+					if ( $meta ) $values[$name] = get_post_meta( $coupon->ID, $name, true );
+				self::$coupons[$coupon->post_title] = $values;
+			}
+		}
+		return self::$coupons;
 	}
 
 	/**

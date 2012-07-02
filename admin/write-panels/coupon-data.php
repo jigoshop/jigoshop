@@ -41,7 +41,7 @@ function jigoshop_coupon_data_box( $post ) {
 				
 			// Coupon Types
 			$args = array(
-				'id'            => 'coupon_type',
+				'id'            => 'type',
 				'label'         => __( 'Coupon Type', 'jigoshop' ),
 				'options'       => jigoshop_coupons::get_coupon_types(),
 			);
@@ -49,7 +49,7 @@ function jigoshop_coupon_data_box( $post ) {
 		
 			// Amount
 			$args = array(
-				'id'            => 'coupon_amount',
+				'id'            => 'amount',
 				'label'         => __( 'Coupon Amount', 'jigoshop' ),
 				'desc'          => __('Enter an amount e.g. 9.99.','jigoshop'),
 				'tip'           => __('Amount this coupon is worth. If it is a percentange, just include the number without the percentage sign.','jigoshop'),
@@ -58,9 +58,9 @@ function jigoshop_coupon_data_box( $post ) {
 			echo Jigoshop_Form::input( $args );
 				
 			// Date From
-			$coupon_date_from = get_post_meta( $post->ID, 'coupon_date_from', true);
+			$coupon_date_from = get_post_meta( $post->ID, 'date_from', true);
 			$args = array(
-				'id'            => 'coupon_date_from',
+				'id'            => 'date_from',
 				'label'         => __('Date From','jigoshop'),
 				'desc'          => '',
 				'tip'           => __('Choose between which dates this coupon is enabled.','jigoshop'),
@@ -71,9 +71,9 @@ function jigoshop_coupon_data_box( $post ) {
 			echo Jigoshop_Form::input( $args );
 		
 			// Date To
-			$coupon_date_to = get_post_meta( $post->ID, 'coupon_date_to', true);
+			$coupon_date_to = get_post_meta( $post->ID, 'date_to', true);
 			$args = array(
-				'id'            => 'coupon_date_to',
+				'id'            => 'date_to',
 				'label'         => __('Date To','jigoshop'),
 				'desc'          => '',
 				'tip'           => __('Choose between which dates this coupon is enabled.','jigoshop'),
@@ -84,10 +84,11 @@ function jigoshop_coupon_data_box( $post ) {
 			echo Jigoshop_Form::input( $args );
 		
 			// Usage limit
+			$usage = get_post_meta( $post->ID, 'usage', true);
 			$args = array(
 				'id'            => 'usage_limit',
 				'label'         => __( 'Usage Limit', 'jigoshop' ),
-				'desc'          => __(sprintf('Times used: %s', !empty($coupon['usage']) ? $coupon['usage'] : '0'), 'jigoshop'),
+				'desc'          => __(sprintf('Times used: %s', !empty( $usage ) ? $usage : '0'), 'jigoshop'),
 				'tip'           => __('Control how many times this coupon may be used.','jigoshop'),
 				'placeholder'   => '0'
 			);
@@ -139,9 +140,9 @@ function jigoshop_coupon_data_box( $post ) {
 		<?php
 			
 			// Include product ID's
-			$selected = get_post_meta( $post->ID, 'include_products', true );
+			$selected = get_post_meta( $post->ID, 'products', true );
 			$args = array(
-				'id'            => 'include_products',
+				'id'            => 'products',
 				'type'          => 'hidden',
 				'label'         => __( 'Include Products', 'jigoshop' ),
 				'desc'          => __('Control which products this coupon can apply to.','jigoshop')
@@ -168,7 +169,7 @@ function jigoshop_coupon_data_box( $post ) {
 			foreach ( $categories as $category )
 				$coupon_cats[$category->term_id] = $category->name;
 			$args = array(
-				'id'            => 'include_categories',
+				'id'            => 'coupon_category',
 				'label'         => __( 'Include Categories', 'jigoshop' ),
 				'desc'          => __('Control which product categories this coupon can apply to.','jigoshop'),
 				'multiple'      => true,
@@ -211,10 +212,10 @@ function jigoshop_coupon_data_box( $post ) {
 		?>
 			<script type="text/javascript">
 				jQuery(document).ready(function() {
-					jQuery('#coupon_date_from').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
-					jQuery('#coupon_date_to').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
+					jQuery('#date_from').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
+					jQuery('#date_to').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
 					
-					jQuery("#include_products").select2({
+					jQuery("#products").select2({
 						minimumInputLength: 3,
 						multiple: true,
 						ajax: {
@@ -313,30 +314,30 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 
 	global $wpdb, $jigoshop_errors;
 	
-	$type 			= strip_tags( stripslashes( $_POST['coupon_type'] ));
-	$amount 		= strip_tags( stripslashes( $_POST['coupon_amount'] ));
+	$type = strip_tags( stripslashes( $_POST['type'] ));
+	$amount = strip_tags( stripslashes( $_POST['amount'] ));
 	
-	if ( !empty( $_POST['coupon_date_from'] )) {
-		$coupon_date_from = strtotime( strip_tags( stripslashes( $_POST['coupon_date_from'] )));
+	if ( !empty( $_POST['date_from'] )) {
+		$coupon_date_from = strtotime( strip_tags( stripslashes( $_POST['date_from'] )));
 	} else {
 		$coupon_date_from = '';
 	}
 	
-	if ( !empty( $_POST['coupon_date_to'] )) {
-		$coupon_date_to = strtotime( strip_tags( stripslashes( $_POST['coupon_date_to'] ))) + (60 * 60 * 24 - 1);
+	if ( !empty( $_POST['date_to'] )) {
+		$coupon_date_to = strtotime( strip_tags( stripslashes( $_POST['date_to'] ))) + (60 * 60 * 24 - 1);
 	} else {
 		$coupon_date_to = '';
 	}
 	
-	$usage_limit 	= ( isset( $_POST['usage_limit'] ) && $_POST['usage_limit'] > 0 ) ? (int) strip_tags( stripslashes( $_POST['usage_limit'] )) : '';
-	$individual     = isset( $_POST['individual_use'] );
-	$free_shipping  = isset( $_POST['coupon_free_shipping'] );
+	$usage_limit = ( isset( $_POST['usage_limit'] ) && $_POST['usage_limit'] > 0 ) ? (int) strip_tags( stripslashes( $_POST['usage_limit'] )) : '';
+	$individual = isset( $_POST['individual_use'] );
+	$free_shipping = isset( $_POST['coupon_free_shipping'] );
 	
 	$minimum_amount = strip_tags( stripslashes( $_POST['order_total_min'] ));
 	$maximum_amount = strip_tags( stripslashes( $_POST['order_total_max'] ));
 
-	if ( isset( $_POST['include_products'] )) {
-		$include_products = $_POST['include_products'];
+	if ( isset( $_POST['products'] )) {
+		$include_products = $_POST['products'];
 	} else {
 		$include_products = '';
 	}
@@ -347,8 +348,8 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 		$exclude_products = '';
 	}
 	
-	if ( isset( $_POST['include_categories'] )) {
-		$include_categories = $_POST['include_categories'];
+	if ( isset( $_POST['coupon_category'] )) {
+		$include_categories = $_POST['coupon_category'];
 	} else {
 		$include_categories = '';
 	}
@@ -365,18 +366,18 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 		$pay_methods = '';
 	}
 		
-	update_post_meta( $post_id, 'coupon_type',          $type );
-	update_post_meta( $post_id, 'coupon_amount',        $amount );
-	update_post_meta( $post_id, 'coupon_date_from',     $coupon_date_from );
-	update_post_meta( $post_id, 'coupon_date_to',       $coupon_date_to );
+	update_post_meta( $post_id, 'type',                 $type );
+	update_post_meta( $post_id, 'amount',               $amount );
+	update_post_meta( $post_id, 'date_from',            $coupon_date_from );
+	update_post_meta( $post_id, 'date_to',              $coupon_date_to );
 	update_post_meta( $post_id, 'usage_limit',          $usage_limit );
 	update_post_meta( $post_id, 'individual_use',       $individual );
 	update_post_meta( $post_id, 'coupon_free_shipping', $free_shipping );
 	update_post_meta( $post_id, 'order_total_min',      $minimum_amount );
 	update_post_meta( $post_id, 'order_total_max',      $maximum_amount );
-	update_post_meta( $post_id, 'include_products',     $include_products );
+	update_post_meta( $post_id, 'products',             $include_products );
 	update_post_meta( $post_id, 'exclude_products',     $exclude_products );
-	update_post_meta( $post_id, 'include_categories',   $include_categories );
+	update_post_meta( $post_id, 'coupon_category',      $include_categories );
 	update_post_meta( $post_id, 'exclude_categories',   $exclude_categories );
 	update_post_meta( $post_id, 'coupon_pay_methods',   $pay_methods );
 
