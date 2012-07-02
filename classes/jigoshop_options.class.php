@@ -1137,23 +1137,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		);
 		
 		/**
-		 * Coupons Tab
-		 *------------------------------------------------------------------------------------------
-		*/
-		self::$default_options[] = array( 'type' => 'heading', 'name' => __('Coupons', 'jigoshop') );
-		
-		self::$default_options[] = array( 'name' => __('Coupon Information', 'jigoshop'), 'type' => 'title', 'desc' => __('Coupons allow you to give your customers special offers and discounts.','jigoshop') );
-		
-		self::$default_options[] = array(
-			'name'		=> __('Coupons','jigoshop'),
-			'desc' 		=> '',
-			'tip' 		=> '',
-			'id' 		=> 'jigoshop_coupons',
-			'type' 		=> 'coupons',
-			'std' 		=> array()
-		);
-		
-		/**
 		 * Products & Inventory Tab
 		 *------------------------------------------------------------------------------------------
 		*/
