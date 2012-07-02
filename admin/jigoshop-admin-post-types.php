@@ -681,11 +681,13 @@ function jigoshop_edit_coupon_columns( $columns ) {
 	
 	$columns["cb"] 			    = '<input type="checkbox" />';
 	$columns['title']           = __('Code', 'jigoshop');
-	$columns['coupon_type']     = __('Coupon Type', 'jigoshop');
-	$columns['coupon_amount']   = __('Coupon Amount', 'jigoshop');
-	$columns['usage_limit']     = __('Usage Limit', 'jigoshop');
-	$columns['usage_count']     = __('Usage Count', 'jigoshop');
-	$columns['expiry_date']     = __('Expiry Date', 'jigoshop');
+	$columns['coupon_type']     = __('Type', 'jigoshop');
+	$columns['coupon_amount']   = __('Amount', 'jigoshop');
+	$columns['usage_limit']     = __('Used Limit', 'jigoshop');
+	$columns['usage_count']     = __('Used', 'jigoshop');
+	$columns['start_date']      = __('Start Date', 'jigoshop');
+	$columns['end_date']        = __('End Date', 'jigoshop');
+	$columns['individual']      = __('Individual Use', 'jigoshop');
 
 	return $columns;
 }
@@ -704,7 +706,9 @@ function jigoshop_custom_coupon_columns($column) {
 	$amount 		= get_post_meta( $post->ID, 'amount', true );
 	$usage_limit 	= get_post_meta( $post->ID, 'usage_limit', true );
 	$usage_count 	= (int) get_post_meta( $post->ID, 'usage', true );
-	$expiry_date 	= get_post_meta( $post->ID, 'date_to', true );
+	$start_date     = get_post_meta( $post->ID, 'date_from', true );
+	$end_date       = get_post_meta( $post->ID, 'date_to', true );
+	$individual     = get_post_meta( $post->ID, 'individual_use', true );
 
 	switch ( $column ) {
 		case 'coupon_type' :
@@ -720,8 +724,14 @@ function jigoshop_custom_coupon_columns($column) {
 		case 'usage_count' :
 			echo $usage_count;
 			break;
-		case 'expiry_date' :
-			echo ( $expiry_date <> '' ) ? date( 'Y-m-d', $expiry_date ) : '&ndash;';
+		case 'start_date' :
+			echo ( $start_date <> '' ) ? date( 'Y-m-d', $start_date ) : '&ndash;';
+			break;
+		case 'end_date' :
+			echo ( $end_date <> '' ) ? date( 'Y-m-d', $end_date ) : '&ndash;';
+			break;
+		case 'individual' :
+			echo ( $individual ) ? __('Yes','jigoshop') : '&ndash;';
 			break;
 	}
 	
