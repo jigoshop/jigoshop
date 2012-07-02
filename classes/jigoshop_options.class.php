@@ -15,6 +15,106 @@
  * @license		http://jigoshop.com/license/commercial-edition
  */
 
+/**
+ *  ====================
+ *
+ * Supported Option Types:
+ *      text                    - standard text input (display size 20 chars)
+ *      midtext                 - same as text (display size 40 chars)
+ *      longtext                - same as text (display size 80 chars)
+ *      email                   - same as text (display size 40 chars)
+ *      textarea                - same as text (display size 4 rows, 60 cols)
+ *      natural                 - positive number only, leading 0 allowed (display size 20 chars)
+ *      integer                 - integer, positive or negative, no decimals (display size 20 chars)
+ *      decimal                 - positive or negative number, may contain decimal point (display size 20 chars)
+ *      checkbox                - true or false option type
+ *      multicheck              - option grouping allows multiple options for selection (horizontal or vertical display)
+ *      select                  - standard select option with pre-defined choices
+ *      radio                   - option grouping allowing one option for selection (horizontal or vertical display)
+ *      range                   - range slider with min, max, and step values
+ *      single_select_page      - select that lists all available WordPress pages with a 'None' choice as well
+ *      single_select_country   - select allowing a single choice of all Jigoshop defined countries
+ *      multi_select_countries  - multicheck allowing multiple choices of all Jigoshop defined countries
+ *      user_defined            - a user installed option type, must provide display and option update callbacks
+ *
+ *  ====================
+ *
+ *  The Options array uses Tabs for display and each tab begins with a 'heading' option type
+ *  Each Tab Heading may be optionally divided into sections defined by a 'title' option type
+ *  A Payment Gateway for example, would install itself into a 'heading' and provide a section 'title' with options
+ *  List each option sequentially for display under each 'title' or 'heading' option type
+ *
+ *  Each Option may have any or all of the following items: (for an option, 'id' is MANDATORY and should be unique)
+		'tab'           => '',                      - calculated based on position in array
+		'section'       => '',                      - calculated based on position in array
+		'id'            => null,                    - required
+		'type'          => '',                      - required
+		'name'          => __( '', 'jigoshop' ),    - used for Option title in Admin display
+		'desc'          => __( '', 'jigoshop' ),    - option descriptive information appears under the option in Admin
+		'tip'           => __( '', 'jigoshop' ),    - a pop-up tool tip providing help information
+		'std'           => '',                      - default value for the option
+		'choices'       => array(),                 - for selects, radios, etc.
+		'class'         => '',                      - any special CSS classes to assign to the options display
+		'display'       => null,        - call back function for 'user_defined' - array( $this, 'function_name' )
+		'update'        => null,        - call back function for 'user_defined' - array( $this, 'function_name' )
+		'extra'         => null,                    - for display and verification - array( 'horizontal' )
+ *
+ *  ====================
+ *
+ * Example checkbox option definition:              // Choices should be defined with 'yes' and 'no'
+		self::$default_options[] = array(
+			'name'		=> __('Jigoshop Checkbox Testing','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_checkbox_test',
+			'type' 		=> 'checkbox',
+			'std' 		=> 'yes',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+ *
+ *  ====================
+ *
+ * Example range option definition:
+		self::$default_options[] = array(
+			'name'		=> __('Jigoshop Range Testing','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_range_test',
+			'type' 		=> 'range',
+			'std' 		=> 100,
+			'extra'		=> array(
+				'min'			=> 50,
+				'max'			=> 300,
+				'step'			=> 5
+			)
+		);
+ *
+ *  ====================
+ *
+ * Example vertical multicheck option definition:
+		self::$default_options[] = array(
+			'name'		=> __('Display Sidebar on these pages:','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_multicheck_test',
+			'type' 		=> 'multicheck',
+			"std"		=> array('shop' => true,'category' => false,'single' => true,'cart' => false,'checkout' => true,'account' => true),
+			"choices"	=> array(
+				"shop"			=> "Shop",
+				"category"		=> "Product Categories",
+				"single"		=> "Single Products",
+				"cart"			=> "Cart",
+				"checkout"		=> "Checkout",
+				"account"		=> "Account Pages",
+			),
+			'extra'		=> array( 'vertical' )
+		);
+ *
+ */
+
 class Jigoshop_Options implements Jigoshop_Options_Interface {
 	
 	private static $default_options;
@@ -270,103 +370,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	 * @return  Void
 	 *
 	 * @since	1.3
-	 *
-	 *  ====================
-	 *
-	 * Supported Option Types:
-	 *      text                    - standard text input (display size 20 chars)
-	 *      midtext                 - same as text (display size 40 chars)
-	 *      longtext                - same as text (display size 80 chars)
-	 *      email                   - same as text (display size 40 chars)
-	 *      textarea                - same as text (display size 4 rows, 60 cols)
-	 *      natural                 - positive number only, leading 0 allowed (display size 20 chars)
-	 *      integer                 - integer, positive or negative, no decimals (display size 20 chars)
-	 *      decimal                 - positive or negative number, may contain decimal point (display size 20 chars)
-	 *      checkbox                - true or false option type
-	 *      multicheck              - option grouping allows multiple options for selection (horizontal or vertical display)
-	 *      select                  - standard select option with pre-defined choices
-	 *      radio                   - option grouping allowing one option for selection (horizontal or vertical display)
-	 *      range                   - range slider with min, max, and step values
-	 *      single_select_page      - select that lists all available WordPress pages with a 'None' choice as well
-	 *      single_select_country   - select allowing a single choice of all Jigoshop defined countries
-	 *      multi_select_countries  - multicheck allowing multiple choices of all Jigoshop defined countries
-	 *      user_defined            - a user installed option type, must provide display and option update callbacks
-	 *
-	 *  ====================
-	 *
-	 *  The Options array uses Tabs for display and each tab begins with a 'heading' option type
-	 *  Each Tab Heading may be optionally divided into sections defined by a 'title' option type
-	 *  A Payment Gateway for example, would install itself into a 'heading' and provide a section 'title' with options
-	 *  List each option sequentially for display under each 'title' or 'heading' option type
-	 *
-	 *  Each Option may have any or all of the following items: (for an option, 'id' is MANDATORY and should be unique)
-			'tab'           => '',                      - calculated based on position in array
-			'section'       => '',                      - calculated based on position in array
-			'id'            => null,                    - required
-			'type'          => '',                      - required
-			'name'          => __( '', 'jigoshop' ),    - used for Option title in Admin display
-			'desc'          => __( '', 'jigoshop' ),    - option descriptive information appears under the option in Admin
-			'tip'           => __( '', 'jigoshop' ),    - a pop-up tool tip providing help information
-			'std'           => '',                      - default value for the option
-			'choices'       => array(),                 - for selects, radios, etc.
-			'class'         => '',                      - any special CSS classes to assign to the options display
-			'display'       => null,        - call back function for 'user_defined' - array( $this, 'function_name' )
-			'update'        => null,        - call back function for 'user_defined' - array( $this, 'function_name' )
-			'extra'         => null,                    - for display and verification - array( 'horizontal' )
-	 *
-	 *  ====================
-	 *
-	 * Example checkbox option definition:              // Choices should be defined with 'yes' and 'no'
-			self::$default_options[] = array(
-				'name'		=> __('Jigoshop Checkbox Testing','jigoshop'),
-				'desc' 		=> '',
-				'tip' 		=> '',
-				'id' 		=> 'jigoshop_checkbox_test',
-				'type' 		=> 'checkbox',
-				'std' 		=> 'yes',
-				'choices'	=> array(
-					'no'			=> __('No', 'jigoshop'),
-					'yes'			=> __('Yes', 'jigoshop')
-				)
-			);
-	 *
-	 *  ====================
-	 *
-	 * Example range option definition:
-			self::$default_options[] = array(
-				'name'		=> __('Jigoshop Range Testing','jigoshop'),
-				'desc' 		=> '',
-				'tip' 		=> '',
-				'id' 		=> 'jigoshop_range_test',
-				'type' 		=> 'range',
-				'std' 		=> 100,
-				'extra'		=> array(
-					'min'			=> 50,
-					'max'			=> 300,
-					'step'			=> 5
-				)
-			);
-	 *
-	 *  ====================
-	 *
-	 * Example vertical multicheck option definition:
-			self::$default_options[] = array(
-				'name'		=> __('Display Sidebar on these pages:','jigoshop'),
-				'desc' 		=> '',
-				'tip' 		=> '',
-				'id' 		=> 'jigoshop_multicheck_test',
-				'type' 		=> 'multicheck',
-				"std"		=> array('shop' => true,'category' => false,'single' => true,'cart' => false,'checkout' => true,'account' => true),
-				"choices"	=> array(
-					"shop"			=> "Shop",
-					"category"		=> "Product Categories",
-					"single"		=> "Single Products",
-					"cart"			=> "Cart",
-					"checkout"		=> "Checkout",
-					"account"		=> "Account Pages",
-				),
-				'extra'		=> array( 'vertical' )
-			);
 	 *
 	 */	
 	private function set_default_options() {
