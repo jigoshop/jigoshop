@@ -622,7 +622,6 @@ function jigoshop_upgrade_130() {
 	
 	// Convert coupon options to new 'shop_coupon' custom post type and create posts
 	$coupons = get_option( 'jigoshop_coupons' );
-	logme( $coupons );
 	$coupon_data = array(
 		'post_status'    => 'publish',
 		'post_type'      => 'shop_coupon',
@@ -637,7 +636,7 @@ function jigoshop_upgrade_130() {
 		$post_id = wp_insert_post( $coupon_data );
 		update_post_meta( $post_id, 'type', $coupon['type'] );
 		update_post_meta( $post_id, 'amount', $coupon['amount'] );
-		update_post_meta( $post_id, 'products', $coupon['products'] );
+		update_post_meta( $post_id, 'include_products', $coupon['products'] );
 		update_post_meta( $post_id, 'date_from', ($coupon['date_from'] <> 0) ? $coupon['date_from'] : '' );
 		update_post_meta( $post_id, 'date_to', ($coupon['date_to'] <> 0) ? $coupon['date_to'] : '' );
 		update_post_meta( $post_id, 'individual_use', ($coupon['individual_use'] == 'yes') );

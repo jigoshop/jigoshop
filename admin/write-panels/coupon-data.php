@@ -105,7 +105,7 @@ function jigoshop_coupon_data_box( $post ) {
 		
 			// Free shipping
 			$args = array(
-				'id'            => 'coupon_free_shipping',
+				'id'            => 'free_shipping',
 				'label'         => __('Free shipping','jigoshop'),
 				'desc'          => __('Show the Free Shipping method on the Checkout with this enabled.','jigoshop'),
 				'value'         => false
@@ -140,9 +140,9 @@ function jigoshop_coupon_data_box( $post ) {
 		<?php
 			
 			// Include product ID's
-			$selected = get_post_meta( $post->ID, 'products', true );
+			$selected = get_post_meta( $post->ID, 'include_products', true );
 			$args = array(
-				'id'            => 'products',
+				'id'            => 'include_products',
 				'type'          => 'hidden',
 				'label'         => __( 'Include Products', 'jigoshop' ),
 				'desc'          => __('Control which products this coupon can apply to.','jigoshop')
@@ -169,7 +169,7 @@ function jigoshop_coupon_data_box( $post ) {
 			foreach ( $categories as $category )
 				$coupon_cats[$category->term_id] = $category->name;
 			$args = array(
-				'id'            => 'coupon_category',
+				'id'            => 'include_categories',
 				'label'         => __( 'Include Categories', 'jigoshop' ),
 				'desc'          => __('Control which product categories this coupon can apply to.','jigoshop'),
 				'multiple'      => true,
@@ -199,7 +199,7 @@ function jigoshop_coupon_data_box( $post ) {
 			if ( ! empty( $available_gateways )) foreach ( $available_gateways as $id => $info )
 				$payment_methods[$id] = $info->title;
 			$args = array(
-				'id'            => 'coupon_pay_methods',
+				'id'            => 'pay_methods',
 				'label'         => __( 'Payment Methods', 'jigoshop' ),
 				'desc'          => __('Which payment methods are allowed for this coupon to be effective?','jigoshop'),
 				'multiple'      => true,
@@ -215,7 +215,7 @@ function jigoshop_coupon_data_box( $post ) {
 					jQuery('#date_from').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
 					jQuery('#date_to').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
 					
-					jQuery("#products").select2({
+					jQuery("#include_products").select2({
 						minimumInputLength: 3,
 						multiple: true,
 						ajax: {
@@ -331,13 +331,13 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 	
 	$usage_limit = ( isset( $_POST['usage_limit'] ) && $_POST['usage_limit'] > 0 ) ? (int) strip_tags( stripslashes( $_POST['usage_limit'] )) : '';
 	$individual = isset( $_POST['individual_use'] );
-	$free_shipping = isset( $_POST['coupon_free_shipping'] );
+	$free_shipping = isset( $_POST['free_shipping'] );
 	
 	$minimum_amount = strip_tags( stripslashes( $_POST['order_total_min'] ));
 	$maximum_amount = strip_tags( stripslashes( $_POST['order_total_max'] ));
 
-	if ( isset( $_POST['products'] )) {
-		$include_products = $_POST['products'];
+	if ( isset( $_POST['include_products'] )) {
+		$include_products = $_POST['include_products'];
 	} else {
 		$include_products = '';
 	}
@@ -348,8 +348,8 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 		$exclude_products = '';
 	}
 	
-	if ( isset( $_POST['coupon_category'] )) {
-		$include_categories = $_POST['coupon_category'];
+	if ( isset( $_POST['include_categories'] )) {
+		$include_categories = $_POST['include_categories'];
 	} else {
 		$include_categories = '';
 	}
@@ -360,8 +360,8 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 		$exclude_categories = '';
 	}
 	
-	if ( isset( $_POST['coupon_pay_methods'] )) {
-		$pay_methods = (array) $_POST['coupon_pay_methods'];
+	if ( isset( $_POST['pay_methods'] )) {
+		$pay_methods = (array) $_POST['pay_methods'];
 	} else {
 		$pay_methods = '';
 	}
@@ -372,14 +372,14 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 	update_post_meta( $post_id, 'date_to',              $coupon_date_to );
 	update_post_meta( $post_id, 'usage_limit',          $usage_limit );
 	update_post_meta( $post_id, 'individual_use',       $individual );
-	update_post_meta( $post_id, 'coupon_free_shipping', $free_shipping );
+	update_post_meta( $post_id, 'free_shipping',        $free_shipping );
 	update_post_meta( $post_id, 'order_total_min',      $minimum_amount );
 	update_post_meta( $post_id, 'order_total_max',      $maximum_amount );
 	update_post_meta( $post_id, 'products',             $include_products );
 	update_post_meta( $post_id, 'exclude_products',     $exclude_products );
-	update_post_meta( $post_id, 'coupon_category',      $include_categories );
+	update_post_meta( $post_id, 'include_categories',   $include_categories );
 	update_post_meta( $post_id, 'exclude_categories',   $exclude_categories );
-	update_post_meta( $post_id, 'coupon_pay_methods',   $pay_methods );
+	update_post_meta( $post_id, 'pay_methods',          $pay_methods );
 
 }
 

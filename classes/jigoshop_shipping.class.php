@@ -87,7 +87,7 @@ class jigoshop_shipping extends Jigoshop_Singleton {
 			if (jigoshop_cart::$applied_coupons)
 				foreach (jigoshop_cart::$applied_coupons as $code) :
 					if ( $coupon = jigoshop_coupons::get_coupon($code) ) :
-						if ($coupon['coupon_free_shipping'] == 'yes')
+						if ($coupon['free_shipping'] == 'yes')
 							$free_shipping = 1;
 					endif;
 				endforeach;

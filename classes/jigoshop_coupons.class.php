@@ -59,16 +59,15 @@ class jigoshop_coupons extends Jigoshop_Base {
 			'date_to'               => true,
 			'usage_limit'           => true,
 			'usage'                 => true,
-			'coupon_free_shipping'  => true,
+			'free_shipping'         => true,
 			'individual_use'        => true,
 			'order_total_min'       => true,
 			'order_total_max'       => true,
 			'products'              => true,
 			'exclude_products'      => true,
-			'coupon_category'       => true,
+			'include_categories'    => true,
 			'exclude_categories'    => true,
-			'coupon_free_shipping'  => true,
-			'coupon_pay_methods'    => true,
+			'pay_methods'           => true,
 		);
 		return $couponFields;
 	}
@@ -109,7 +108,7 @@ class jigoshop_coupons extends Jigoshop_Base {
 				$values['code'] = $coupon->post_title;
 				
 				foreach ( self::get_coupon_fields() as $name => $meta )
-					if ( $meta ) $values[$name] = get_post_meta( $coupon->ID, $name, true );
+					if ( $meta ) $values[$name] = maybe_unserialize( get_post_meta( $coupon->ID, $name, true ));
 				self::$coupons[$coupon->post_title] = $values;
 			}
 		}
@@ -193,28 +192,28 @@ class jigoshop_coupons extends Jigoshop_Base {
 		endif;
 
 		/* Allow specific products only. */
-		if ( !empty( $coupon['products'] ) ) :
-
-			if ( in_array( $product['product_id'], $coupon['products'] ) )
+		if ( !empty( $coupon['include_products'] ) ) :
+ 
+			if ( in_array( $product['product_id'], $coupon['include_products'] ) )
 				return true;
 
-			if ( !empty( $product['variation_id'] ) && in_array( $product['variation_id'], $coupon['products'] ) )
+			if ( !empty( $product['variation_id'] ) && in_array( $product['variation_id'], $coupon['include_products'] ) )
 				return true;
 
 		endif;
 
 		/* Allow all products in a specific category. */
-		if ( !empty( $coupon['coupon_category'] ) ) :
+		if ( !empty( $coupon['include_categories'] ) ) :
 
 			$category  = reset(wp_get_post_terms($product['product_id'], 'product_cat'));
 
-			if ( in_array( $category->term_id, $coupon['coupon_category'] ) )
+			if ( in_array( $category->term_id, $coupon['include_categories'] ) )
 				return true;
 
 		endif;
 
 		/* If no limits are set on the coupon, allow it to be used. */
-		if ( empty( $coupon['products'] ) && empty( $coupon['exclude_products'] ) && empty( $coupon['exclude_categories'] ) && empty( $coupon['coupon_category'] ) )
+		if ( empty( $coupon['include_products'] ) && empty( $coupon['exclude_products'] ) && empty( $coupon['exclude_categories'] ) && empty( $coupon['include_categories'] ) )
 			return true;
 
 		return false;

@@ -474,7 +474,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
                                 break;
 
                             case 'fixed_product' :
-                                if ( sizeof($coupon['products']) == 0 )
+                                if ( sizeof($coupon['include_products']) == 0 )
                                     self::$discount_total += ( $coupon['amount'] * $items_in_cart );
                                 break;
 
@@ -685,7 +685,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
                         self::$discount_total = self::$discount_total + $coupon['amount'];
                     elseif ($coupon['type'] == 'percent') :
                         self::$discount_total = self::$discount_total + ( self::$subtotal / 100 ) * $coupon['amount'];
-                    elseif ($coupon['type'] == 'fixed_product' && sizeof($coupon['products']) == 0) :
+                    elseif ($coupon['type'] == 'fixed_product' && sizeof($coupon['include_products']) == 0) :
                         // allow coupons for all products without specific product ID's entered
                         self::$discount_total = self::$discount_total + ($coupon['amount'] * self::$cart_contents_count);
                     endif;
@@ -975,7 +975,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
         }
 
         $payment_method = !empty($_POST['payment_method']) ? $_POST['payment_method'] : '';
-        $pay_methods    = !is_array($the_coupon['coupon_pay_methods']) && !empty($the_coupon['coupon_pay_methods']) ? array($the_coupon['coupon_pay_methods']) : $the_coupon['coupon_pay_methods'];
+        $pay_methods    = !is_array($the_coupon['pay_methods']) && !empty($the_coupon['pay_methods']) ? array($the_coupon['pay_methods']) : $the_coupon['pay_methods'];
 
         /* Whether the order has a valid payment method which the coupon requires. */
 		if ( !empty($pay_methods) ) {
@@ -1025,7 +1025,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
         }
 
         // if it's a percentage discount for products, make sure it's for a specific product, not all products
-        if ($the_coupon['type'] == 'percent_product' && sizeof($the_coupon['products']) == 0) {
+        if ($the_coupon['type'] == 'percent_product' && sizeof($the_coupon['include_products']) == 0) {
             jigoshop::add_error(__('Invalid coupon!', 'jigoshop'));
             return false;
         }
