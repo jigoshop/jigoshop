@@ -679,6 +679,7 @@ function jigoshop_edit_coupon_columns( $columns ) {
 	
 	$columns = array();
 	
+	$columns["cb"] 			    = '<input type="checkbox" />';
 	$columns['title']           = __('Code', 'jigoshop');
 	$columns['coupon_type']     = __('Coupon Type', 'jigoshop');
 	$columns['coupon_amount']   = __('Coupon Amount', 'jigoshop');
