@@ -63,7 +63,7 @@ class jigoshop_coupons extends Jigoshop_Base {
 			'individual_use'        => true,
 			'order_total_min'       => true,
 			'order_total_max'       => true,
-			'products'              => true,
+			'include_products'      => true,
 			'exclude_products'      => true,
 			'include_categories'    => true,
 			'exclude_categories'    => true,
