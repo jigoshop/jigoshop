@@ -61,8 +61,8 @@ function jigoshop_coupon_data_box( $post ) {
 			$args = array(
 				'id'            => 'date_from',
 				'label'         => __('Date From','jigoshop'),
-				'desc'          => '',
-				'tip'           => __('Choose between which dates this coupon is enabled.','jigoshop'),
+				'desc'          => __('yyyy-mm-dd','jigoshop'),
+				'tip'           => __('Choose between which dates this coupon is enabled.  Leave empty for any date.','jigoshop'),
 				'class'         => 'short date-pick',
 				'placeholder'   => __('Any date','jigoshop'),
 				'value'         => ($coupon_date_from <> '') ? date( 'Y-m-d', $coupon_date_from ) : ''
@@ -74,8 +74,8 @@ function jigoshop_coupon_data_box( $post ) {
 			$args = array(
 				'id'            => 'date_to',
 				'label'         => __('Date To','jigoshop'),
-				'desc'          => '',
-				'tip'           => __('Choose between which dates this coupon is enabled.','jigoshop'),
+				'desc'          => __('yyyy-mm-dd','jigoshop'),
+				'tip'           => __('Choose between which dates this coupon is enabled.  Leave empty for any date.','jigoshop'),
 				'class'         => 'short date-pick',
 				'placeholder'   => __('Any date','jigoshop'),
 				'value'         => ($coupon_date_to <> '') ? date( 'Y-m-d', $coupon_date_to ) : ''
@@ -120,7 +120,6 @@ function jigoshop_coupon_data_box( $post ) {
 				'id'            => 'order_total_min',
 				'label'         => __( 'Order total min', 'jigoshop' ),
 				'desc'          => __('Set the required minimum subtotal for this coupon to be valid on an order.','jigoshop'),
-				'tip'           => __('Set the required subtotal for this coupon to be valid on an order.','jigoshop'),
 				'placeholder'   => __('No min','jigoshop')
 			);
 			echo Jigoshop_Form::input( $args );
@@ -147,6 +146,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'class'         => 'long',
 				'label'         => __( 'Include Products', 'jigoshop' ),
 				'desc'          => __('Control which products this coupon can apply to.','jigoshop'),
+				'placeholder'   => __('Any product','jigoshop'),
 				'value'         => $selected
 			);
 			echo Jigoshop_Form::input( $args );
@@ -160,6 +160,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'class'         => 'long',
 				'label'         => __( 'Exclude Products', 'jigoshop' ),
 				'desc'          => __('Control which products this coupon cannot be applied to.','jigoshop'),
+				'placeholder'   => __('No exclusions','jigoshop'),
 				'value'         => $selected
 			);
 			echo Jigoshop_Form::input( $args );
@@ -189,7 +190,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'label'         => __( 'Exclude Categories', 'jigoshop' ),
 				'desc'          => __('Control which product categories this coupon cannot be applied to.','jigoshop'),
 				'multiple'      => true,
-				'placeholder'   => __('No category','jigoshop'),
+				'placeholder'   => __('No exclusions','jigoshop'),
 				'options'       => $coupon_cats
 			);
 			echo Jigoshop_Form::select( $args );
@@ -206,7 +207,7 @@ function jigoshop_coupon_data_box( $post ) {
 			$args = array(
 				'id'            => 'pay_methods',
 				'label'         => __( 'Payment Methods', 'jigoshop' ),
-				'desc'          => __('Which payment methods are allowed for this coupon to be effective.','jigoshop'),
+				'desc'          => __('Control which payment methods are allowed for this coupon to be effective.','jigoshop'),
 				'multiple'      => true,
 				'placeholder'   => __('Any method','jigoshop'),
 				'options'       => $payment_methods
@@ -225,7 +226,6 @@ function jigoshop_coupon_data_box( $post ) {
 					jQuery("#include_products").select2({
 						minimumInputLength: 3,
 						multiple: true,
-						placeholder: "<?php _e('Any product','jigoshop'); ?>",
 						closeOnSelect: false,
 						ajax: {
 							url: "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
@@ -263,7 +263,6 @@ function jigoshop_coupon_data_box( $post ) {
 					jQuery("#exclude_products").select2({
 						minimumInputLength: 3,
 						multiple: true,
-						placeholder: "<?php _e('No products','jigoshop'); ?>",
 						closeOnSelect: false,
 						ajax: {
 							url: "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",

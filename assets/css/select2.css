@@ -411,7 +411,7 @@ disabled look for already selected choices in the results dropdown
   border: 1px solid #aaaaaa;
   line-height: 13px;
   padding: 3px 5px 3px 18px;
-  margin: 3px 0 3px 5px;
+  margin: 3px 5px 3px 5px;
   position: relative;
   cursor: default;
 }
