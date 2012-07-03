@@ -189,7 +189,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'label'         => __( 'Exclude Categories', 'jigoshop' ),
 				'desc'          => __('Control which product categories this coupon cannot be applied to.','jigoshop'),
 				'multiple'      => true,
-				'placeholder'   => __('Any category','jigoshop'),
+				'placeholder'   => __('No category','jigoshop'),
 				'options'       => $coupon_cats
 			);
 			echo Jigoshop_Form::select( $args );
@@ -206,7 +206,7 @@ function jigoshop_coupon_data_box( $post ) {
 			$args = array(
 				'id'            => 'pay_methods',
 				'label'         => __( 'Payment Methods', 'jigoshop' ),
-				'desc'          => __('Which payment methods are allowed for this coupon to be effective?','jigoshop'),
+				'desc'          => __('Which payment methods are allowed for this coupon to be effective.','jigoshop'),
 				'multiple'      => true,
 				'placeholder'   => __('Any method','jigoshop'),
 				'options'       => $payment_methods
@@ -225,6 +225,8 @@ function jigoshop_coupon_data_box( $post ) {
 					jQuery("#include_products").select2({
 						minimumInputLength: 3,
 						multiple: true,
+						placeholder: "<?php _e('Any product','jigoshop'); ?>",
+						closeOnSelect: false,
 						ajax: {
 							url: "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
 							dataType: 'json',
@@ -261,6 +263,8 @@ function jigoshop_coupon_data_box( $post ) {
 					jQuery("#exclude_products").select2({
 						minimumInputLength: 3,
 						multiple: true,
+						placeholder: "<?php _e('No products','jigoshop'); ?>",
+						closeOnSelect: false,
 						ajax: {
 							url: "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
 							dataType: 'json',
