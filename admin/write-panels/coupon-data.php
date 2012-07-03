@@ -314,56 +314,58 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 
 	global $wpdb, $jigoshop_errors;
 	
-	$type = strip_tags( stripslashes( $_POST['type'] ));
-	$amount = strip_tags( stripslashes( $_POST['amount'] ));
+	$type = jigowatt_clean( $_POST['type'] );
+	$amount = jigowatt_clean( $_POST['amount'] );
 	
 	if ( !empty( $_POST['date_from'] )) {
-		$coupon_date_from = strtotime( strip_tags( stripslashes( $_POST['date_from'] )));
+		$coupon_date_from = strtotime( jigowatt_clean( $_POST['date_from'] ));
 	} else {
 		$coupon_date_from = '';
 	}
 	
 	if ( !empty( $_POST['date_to'] )) {
-		$coupon_date_to = strtotime( strip_tags( stripslashes( $_POST['date_to'] ))) + (60 * 60 * 24 - 1);
+		$coupon_date_to = strtotime( jigowatt_clean( $_POST['date_to'] )) + (60 * 60 * 24 - 1);
 	} else {
 		$coupon_date_to = '';
 	}
 	
-	$usage_limit = ( isset( $_POST['usage_limit'] ) && $_POST['usage_limit'] > 0 ) ? (int) strip_tags( stripslashes( $_POST['usage_limit'] )) : '';
+	$usage_limit = ( isset( $_POST['usage_limit'] ) && $_POST['usage_limit'] > 0 ) ? (int) jigowatt_clean( $_POST['usage_limit'] ) : '';
 	$individual = isset( $_POST['individual_use'] );
 	$free_shipping = isset( $_POST['free_shipping'] );
 	
-	$minimum_amount = strip_tags( stripslashes( $_POST['order_total_min'] ));
-	$maximum_amount = strip_tags( stripslashes( $_POST['order_total_max'] ));
+	$minimum_amount = jigowatt_clean( $_POST['order_total_min'] );
+	$maximum_amount = jigowatt_clean( $_POST['order_total_max'] );
 
 	if ( isset( $_POST['include_products'] )) {
-		$include_products = $_POST['include_products'];
+		$include_products = jigowatt_clean( $_POST['include_products'] );
+		$include_products = explode( ',', $include_products );
 	} else {
-		$include_products = '';
+		$include_products = array();
 	}
 	
 	if ( isset( $_POST['exclude_products'] )) {
-		$exclude_products = $_POST['exclude_products'];
+		$exclude_products = jigowatt_clean( $_POST['exclude_products'] );
+		$exclude_products = explode( ',', $exclude_products );
 	} else {
-		$exclude_products = '';
+		$exclude_products = array();
 	}
 	
 	if ( isset( $_POST['include_categories'] )) {
 		$include_categories = $_POST['include_categories'];
 	} else {
-		$include_categories = '';
+		$include_categories = array();
 	}
 	
 	if ( isset( $_POST['exclude_categories'] )) {
 		$exclude_categories = $_POST['exclude_categories'];
 	} else {
-		$exclude_categories = '';
+		$exclude_categories = array();
 	}
 	
 	if ( isset( $_POST['pay_methods'] )) {
-		$pay_methods = (array) $_POST['pay_methods'];
+		$pay_methods = $_POST['pay_methods'];
 	} else {
-		$pay_methods = '';
+		$pay_methods = array();
 	}
 		
 	update_post_meta( $post_id, 'type',                 $type );
