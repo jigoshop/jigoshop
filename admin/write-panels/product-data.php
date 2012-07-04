@@ -130,6 +130,7 @@ function jigoshop_product_data_box() {
 					'id'            => 'regular_price',
 					'label'         => __('Regular Price','jigoshop'),
 					'after_label'   => ' ('.get_jigoshop_currency_symbol().')',
+					'type'          => 'number',
 					'placeholder'   => __('Price Not Announced','jigoshop'),
 				);
 				echo Jigoshop_Form::input( $args );
@@ -139,6 +140,7 @@ function jigoshop_product_data_box() {
 					'id'            => 'sale_price',
 					'label'         => __('Sale Price','jigoshop'),
 					'after_label'   => ' ('.get_jigoshop_currency_symbol(). __(' or %','jigoshop') . ')',
+					'type'          => 'number',
 					'desc'          => '<a href="#" class="sale_schedule">'.__('Schedule','jigoshop').'</a>',
 					'placeholder'   => __('15% or 19.99','jigoshop'),
 				);
@@ -248,6 +250,7 @@ function jigoshop_product_data_box() {
 						'id'            => 'weight',
 						'label'         => __( 'Weight', 'jigoshop' ),
 						'after_label'   => ' ('.Jigoshop_Base::get_options()->get_option('jigoshop_weight_unit').')',
+						'type'          => 'number',
 						'placeholder'   => '0.00',
 					);
 					echo Jigoshop_Form::input( $args );
@@ -258,9 +261,9 @@ function jigoshop_product_data_box() {
 					echo '
 					<p class="form-field dimensions_field">
 						<label for"product_length">'. __('Dimensions', 'jigoshop') . ' ('.Jigoshop_Base::get_options()->get_option('jigoshop_dimension_unit').')' . '</label>
-						<input type="text" name="length" class="short" value="' . get_post_meta( $thepostid, 'length', true ) . '" placeholder="'. __('Length', 'jigoshop') . '" />
-						<input type="text" name="width" class="short" value="' . get_post_meta( $thepostid, 'width', true ) . '" placeholder="'. __('Width', 'jigoshop') . '" />
-						<input type="text" name="height" class="short" value="' . get_post_meta( $thepostid, 'height', true ) . '" placeholder="'. __('Height', 'jigoshop') . '" />
+						<input type="number" name="length" class="short" value="' . get_post_meta( $thepostid, 'length', true ) . '" placeholder="'. __('Length', 'jigoshop') . '" />
+						<input type="number" name="width" class="short" value="' . get_post_meta( $thepostid, 'width', true ) . '" placeholder="'. __('Width', 'jigoshop') . '" />
+						<input type="number" name="height" class="short" value="' . get_post_meta( $thepostid, 'height', true ) . '" placeholder="'. __('Height', 'jigoshop') . '" />
 					</p>
 					';
 				}
@@ -304,6 +307,7 @@ function jigoshop_product_data_box() {
 				$args = array(
 					'id'            => 'customized_length',
 					'label'         => __('Personalized Characters','jigoshop'),
+					'type'          => 'number',
 					'value'         => get_post_meta($post->ID, 'customized_length', true),
 					'placeholder'   => __('Leave blank for unlimited', 'jigoshop'),
 				);
@@ -349,6 +353,7 @@ function jigoshop_product_data_box() {
 			$args = array(
 				'id'            => 'stock',
 				'label'         => __('Stock Quantity','jigoshop'),
+				'type'          => 'number',
 			);
 			echo Jigoshop_Form::input( $args );
 
@@ -416,6 +421,7 @@ function jigoshop_product_data_box() {
 			$args = array(
 				'id'            => 'menu_order',
 				'label'         => __('Sort Order', 'jigoshop'),
+				'type'          => 'number',
 				'value'         => $post->menu_order,
 			);
 			echo Jigoshop_Form::input( $args );
@@ -440,6 +446,7 @@ function jigoshop_product_data_box() {
 			$args = array(
 				'id'            => 'download_limit',
 				'label'         => __( 'Download Limit', 'jigoshop' ),
+				'type'          => 'number',
 				'desc'          => __( 'Leave blank for unlimited re-downloads', 'jigoshop' ),
 			);
 			echo Jigoshop_Form::input( $args );

@@ -858,6 +858,15 @@ class Jigoshop_Options_Parser {
 		case 'decimal':				// decimal numbers are positive or negative 0-9 inclusive, may include decimal
 		case 'integer':				// integer numbers are positive or negative 0-9 inclusive
 		case 'natural':				// natural numbers are positive 0-9 inclusive
+			$display .= '<input
+				id="'.$item['id'].'"
+				class="jigoshop-input jigoshop-text '.$class.'"
+				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
+				type="number"
+				size="20"
+				value="'. esc_attr( $data[$item['id']] ).'" />';
+			break;
+
 		case 'text':				// any character sequence
 			$display .= '<input
 				id="'.$item['id'].'"

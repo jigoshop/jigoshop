@@ -2,7 +2,7 @@
 /**
  * Coupon Data
  *
- * Function for displaying the product data meta boxes
+ * Functions for displaying and editing the coupon data meta boxes
  *
  * DISCLAIMER
  *
@@ -50,6 +50,7 @@ function jigoshop_coupon_data_box( $post ) {
 			$args = array(
 				'id'            => 'amount',
 				'label'         => __( 'Coupon Amount', 'jigoshop' ),
+				'type'          => 'number',
 				'desc'          => __('Enter an amount e.g. 9.99.','jigoshop'),
 				'tip'           => __('Amount this coupon is worth. If it is a percentange, just include the number without the percentage sign.','jigoshop'),
 				'placeholder'   => '0.00'
@@ -87,6 +88,7 @@ function jigoshop_coupon_data_box( $post ) {
 			$args = array(
 				'id'            => 'usage_limit',
 				'label'         => __( 'Usage Limit', 'jigoshop' ),
+				'type'          => 'number',
 				'desc'          => __(sprintf('Times used: %s', !empty( $usage ) ? $usage : '0'), 'jigoshop'),
 				'tip'           => __('Control how many times this coupon may be used.','jigoshop'),
 				'placeholder'   => '0'
@@ -119,6 +121,7 @@ function jigoshop_coupon_data_box( $post ) {
 			$args = array(
 				'id'            => 'order_total_min',
 				'label'         => __( 'Order total min', 'jigoshop' ),
+				'type'          => 'number',
 				'desc'          => __('Set the required minimum subtotal for this coupon to be valid on an order.','jigoshop'),
 				'placeholder'   => __('No min','jigoshop')
 			);
@@ -128,6 +131,7 @@ function jigoshop_coupon_data_box( $post ) {
 			$args = array(
 				'id'            => 'order_total_max',
 				'label'         => __( 'Order total max', 'jigoshop' ),
+				'type'          => 'number',
 				'desc'          => __('Set the required maximum subtotal for this coupon to be valid on an order.','jigoshop'),
 				'placeholder'   => __('No max','jigoshop')
 			);
