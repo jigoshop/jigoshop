@@ -957,12 +957,14 @@ class Jigoshop_Options_Parser {
 			break;
 
 		case 'checkbox':
-			$display .= '<input
+			$display .= '<span class="jigoshop-container"><input
 				id="'.$item['id'].'"
 				type="checkbox"
 				class="jigoshop-input jigoshop-checkbox '.$class.'"
 				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
-				'.checked($data[$item['id']], 'yes', false).' />';
+				'.checked($data[$item['id']], 'yes', false).' />
+				<label for="'.$item['id'].'">'.$item['desc'].'</label></span>';
+			$item['desc'] = '';     // temporarily remove it so it doesn't display twice
 			break;
 
 		case 'multicheck':
