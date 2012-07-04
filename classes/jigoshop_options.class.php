@@ -645,6 +645,19 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		);
 		
 		self::$default_options[] = array(
+			'name'		=> __('Reset pending Orders','jigoshop'),
+			'desc' 		=> __("Change all 'Pending' Orders older than one month to 'On Hold'",'jigoshop'),
+			'tip' 		=> __("For customers that have not completed the Checkout process or haven't paid for an Order after a period of time, this will reset the Order to On Hold allowing the Shop owner to take action.  WARNING: For the first use on an existing Shop this setting <em>can</em> generate a <strong>lot</strong> of email!",'jigoshop'),
+			'id' 		=> 'jigoshop_reset_pending_orders',
+			'std' 		=> 'no',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+		
+		self::$default_options[] = array(
 			'name'		=> __('Enforce login for downloads','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('If a guest purchases a download, the guest can still download a link without logging in. We recommend disabling guest purchases if you enable this option.','jigoshop'),
