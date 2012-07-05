@@ -42,26 +42,14 @@ function jigoshop_update() {
 			require_once( jigoshop::plugin_path().'/jigoshop_upgrade.php' );
 			$response = jigoshop_upgrade();
 
-			// If successful inform the user
-			if ( $response ) {
-				echo '
-					<div class="updated">
-						<p>'.__('Your database has been successfully updated. Your shop is now automatically better than the rest, oh happy day!', 'jigoshop').'!</p>
-					</div>
-				';
-			}
-
-		} else {
-
-			echo '
-				<div class="error">
-					<p>' . __('Uh oh! Looks like your Jigoshop database needs updating, just to be safe <strong>please backup your database</strong> before clicking this button!', 'jigoshop') . '</p>
-					<p>
-						<a class="button-secondary" href="' . add_query_arg('jigoshop_update_db', 'true') . '">' . __('I\'ve backed up, now update me!', 'jigoshop') . '</a>
-					</p>
-				</div>
-			';
 		}
+
+		// Display upgrade nag
+		echo '
+			<div class="update-nag">
+				'.sprintf(__('Your database needs an update. Please <strong>backup</strong> &amp; %s.', 'jigoshop'), '<a href="' . add_query_arg('jigoshop_update_db', 'true') . '">' . __('update now', 'jigoshop') . '</a>').'
+			</div>
+		';
 	}
 }
 
@@ -72,22 +60,32 @@ function jigoshop_update() {
  *
  * @since 		1.0
  */
-add_action('admin_menu', 'jigoshop_admin_menu');
-function jigoshop_admin_menu() {
+add_action('admin_menu', 'jigoshop_before_admin_menu', 9);
+function jigoshop_before_admin_menu() {
 
 	global $menu;
 
 	$menu[54] = array( '', 'read', 'separator-jigoshop', '', 'wp-menu-separator jigoshop' );
 
-    add_menu_page( __('Jigoshop'), __('Jigoshop'), 'manage_options', 'jigoshop', 'jigoshop_dashboard', null, 55);
-    add_submenu_page('jigoshop', __('Dashboard', 'jigoshop'), __('Dashboard', 'jigoshop'), 'manage_options', 'jigoshop', 'jigoshop_dashboard');
+  add_menu_page( __('Jigoshop'), __('Jigoshop'), 'manage_options', 'jigoshop', 'jigoshop_dashboard', null, 55);
+  add_submenu_page('jigoshop', __('Dashboard', 'jigoshop'), __('Dashboard', 'jigoshop'), 'manage_options', 'jigoshop', 'jigoshop_dashboard');
+	add_submenu_page('jigoshop', __('Reports  ','jigoshop'), __('Reports','jigoshop'), 'manage_options', 'jigoshop_reports', 'jigoshop_reports');
+  add_submenu_page('edit.php?post_type=product', __('Attributes','jigoshop'), __('Attributes','jigoshop'), 'manage_options', 'jigoshop_attributes', 'jigoshop_attributes');
+
+  do_action('jigoshop_before_admin_menu');
+
+}
+
+add_action('admin_menu', 'jigoshop_after_admin_menu', 50);
+function jigoshop_after_admin_menu() {
 	$admin_page = add_submenu_page( 'jigoshop', __( 'Settings' ), __( 'Settings' ), 'manage_options', 'jigoshop_settings', array( Jigoshop_Admin_Settings::instance(), 'output_markup' ) );
 	add_action( 'admin_print_scripts-' . $admin_page, array( Jigoshop_Admin_Settings::instance(), 'settings_scripts' ) );
 	add_action( 'admin_print_styles-' . $admin_page, array( Jigoshop_Admin_Settings::instance(), 'settings_styles' ) );
-	add_submenu_page('jigoshop', __('Reports','jigoshop'), __('Reports','jigoshop'), 'manage_options', 'jigoshop_reports', 'jigoshop_reports');
-    add_submenu_page('jigoshop', __('System Info','jigoshop'), __('System Info','jigoshop'), 'manage_options', 'jigoshop_sysinfo', 'jigoshop_system_info');
-    add_submenu_page('edit.php?post_type=product', __('Attributes','jigoshop'), __('Attributes','jigoshop'), 'manage_options', 'jigoshop_attributes', 'jigoshop_attributes');
 
+	do_action('jigoshop_after_admin_menu');
+
+	// Adds system info to tools tab
+	add_management_page( __('System Info','jigoshop'), __('System Info','jigoshop'), 'manage_options', 'jigoshop_system_info', 'jigoshop_system_info');
 }
 
 function jigoshop_reports() {
