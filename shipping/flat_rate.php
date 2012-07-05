@@ -107,19 +107,19 @@ class flat_rate extends jigoshop_shipping_method {
 		$defaults[] = array(
 			'name'		=> __('Cost','jigoshop'),
 			'desc' 		=> '',
+			'type' 		=> 'decimal',
 			'tip' 		=> __('Cost excluding tax. Enter an amount, e.g. 2.50.','jigoshop'),
 			'id' 		=> 'jigoshop_flat_rate_cost',
 			'std' 		=> '0',
-			'type' 		=> 'decimal'
 		);
 		
 		$defaults[] = array(
 			'name'		=> __('Handling Fee','jigoshop'),
 			'desc' 		=> '',
+			'type' 		=> 'text',
 			'tip' 		=> __('Fee excluding tax. Enter an amount, e.g. 2.50, or a percentage, e.g. 5%. Leave blank to disable.','jigoshop'),
 			'id' 		=> 'jigoshop_flat_rate_handling_fee',
-			'std' 		=> '',
-			'type' 		=> 'text'
+			'std' 		=> ''
 		);
 		
 		$defaults[] = array(

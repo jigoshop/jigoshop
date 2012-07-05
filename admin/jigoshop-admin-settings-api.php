@@ -192,6 +192,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			<div class="wrap jigoshop">
 			
 				<div class="icon32 icon32-jigoshop-settings" id="icon-jigoshop"><br></div>
+				<?php do_action( 'jigoshop_admin_settings_notices' ); ?>
 				<h2 class="nav-tab-wrapper jigoshop-nav-tab-wrapper">
 					<?php echo $this->build_tab_menu_items(); ?>
 				</h2>
@@ -413,11 +414,11 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					
 				case 'decimal' :
 					$cleaned = jigowatt_clean( $value );
-					if ( ! jigoshop_validation::is_decimal( $cleaned ) ) {
+					if ( ! jigoshop_validation::is_decimal( $cleaned ) && $cleaned <> '' ) {
 						add_settings_error( 
 							$setting['id'],
 							'jigoshop_decimal_error',
-							sprintf(__('You entered "%s" as the value for "%s" and it was not a valid decimal number (may have leading negative sign, with optional decimal point, numbers 0-9).  It was not saved and the original is still in use.','jigoshop'), $value, $setting['name']),
+							sprintf(__('You entered "%s" as the value for "%s" in "%s" and it was not a valid decimal number (may have leading negative sign, with optional decimal point, numbers 0-9).  It was not saved and the original is still in use.','jigoshop'), $value, $setting['name'], $setting['section'] ),
 							'error'
 						);
 						$valid_input[$setting['id']] = $current_options[$setting['id']];
@@ -427,11 +428,11 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					
 				case 'integer' :
 					$cleaned = jigowatt_clean( $value );
-					if ( ! jigoshop_validation::is_integer( $cleaned ) ) {
+					if ( ! jigoshop_validation::is_integer( $cleaned ) && $cleaned <> '' ) {
 						add_settings_error( 
 							$setting['id'],
 							'jigoshop_integer_error',
-							sprintf(__('You entered "%s" as the value for "%s" and it was not a valid integer number (may have leading negative sign, numbers 0-9).  It was not saved and the original is still in use.','jigoshop'), $value, $setting['name']),
+							sprintf(__('You entered "%s" as the value for "%s" in "%s" and it was not a valid integer number (may have leading negative sign, numbers 0-9).  It was not saved and the original is still in use.','jigoshop'), $value, $setting['name'], $setting['section'] ),
 							'error'
 						);
 						$valid_input[$setting['id']] = $current_options[$setting['id']];
@@ -441,11 +442,11 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					
 				case 'natural' :
 					$cleaned = jigowatt_clean( $value );
-					if ( ! jigoshop_validation::is_natural( $cleaned ) ) {
+					if ( ! jigoshop_validation::is_natural( $cleaned ) && $cleaned <> '' ) {
 						add_settings_error( 
 							$setting['id'],
 							'jigoshop_natural_error',
-							sprintf(__('You entered "%s" as the value for "%s" and it was not a valid natural number (numbers 0-9).  It was not saved and the original is still in use.','jigoshop'), $value, $setting['name']),
+							sprintf(__('You entered "%s" as the value for "%s" in "%s" and it was not a valid natural number (numbers 0-9).  It was not saved and the original is still in use.','jigoshop'), $value, $setting['name'], $setting['section'] ),
 							'error'
 						);
 						$valid_input[$setting['id']] = $current_options[$setting['id']];

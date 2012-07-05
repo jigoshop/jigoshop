@@ -85,10 +85,10 @@ class free_shipping extends jigoshop_shipping_method {
 		$defaults[] = array(
 			'name'		=> __('Minimum Order Amount','jigoshop'),
 			'desc' 		=> '',
+			'type' 		=> 'decimal',
 			'tip' 		=> __('Users will need to spend this amount to get free shipping. Leave blank to disable.','jigoshop'),
 			'id' 		=> 'jigoshop_free_shipping_minimum_amount',
-			'std' 		=> '0',
-			'type' 		=> 'decimal'
+			'std' 		=> '0'
 		);
 		
 		$defaults[] = array(
