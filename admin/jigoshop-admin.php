@@ -85,7 +85,7 @@ function jigoshop_after_admin_menu() {
 	do_action('jigoshop_after_admin_menu');
 
 	// Adds system info to tools tab
-	add_management_page( __('System Info','jigoshop'), __('System Info','jigoshop'), 'manage_options', 'jigoshop_system_info', 'jigoshop_system_info');
+	add_management_page( __('System Information','jigoshop'), __('System Info','jigoshop'), 'manage_options', 'jigoshop_system_info', 'jigoshop_system_info');
 }
 
 function jigoshop_reports() {
