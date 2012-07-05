@@ -138,6 +138,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * New: Force users to login before downloading a purchased product
 * New: Mark 1 month or older orders from 'pending' to 'on-hold'
 * New: Select multiple countries for tax rules
+* New: Support for WordPress' admin classic theme
 * Tweak: Checkboxes & radio boxes in the admin settings
 * Tweak: Use Twitter Bootstrap tooltips for setting fields
 * Tweak: Images setting tab is now cleaner
