@@ -192,6 +192,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			<div class="wrap jigoshop">
 			
 				<div class="icon32 icon32-jigoshop-settings" id="icon-jigoshop"><br></div>
+				<?php do_action( 'jigoshop_admin_settings_notices' ); ?>
 				<h2 class="nav-tab-wrapper jigoshop-nav-tab-wrapper">
 					<?php echo $this->build_tab_menu_items(); ?>
 				</h2>
