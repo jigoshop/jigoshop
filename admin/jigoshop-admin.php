@@ -77,7 +77,7 @@ function jigoshop_admin_menu() {
 
 	global $menu;
 
-	$menu[] = array( '', 'read', 'separator-jigoshop', '', 'wp-menu-separator jigoshop' );
+	$menu[54] = array( '', 'read', 'separator-jigoshop', '', 'wp-menu-separator jigoshop' );
 
     add_menu_page( __('Jigoshop'), __('Jigoshop'), 'manage_options', 'jigoshop', 'jigoshop_dashboard', null, 55);
     add_submenu_page('jigoshop', __('Dashboard', 'jigoshop'), __('Dashboard', 'jigoshop'), 'manage_options', 'jigoshop', 'jigoshop_dashboard');
@@ -88,47 +88,6 @@ function jigoshop_admin_menu() {
     add_submenu_page('jigoshop', __('System Info','jigoshop'), __('System Info','jigoshop'), 'manage_options', 'jigoshop_sysinfo', 'jigoshop_system_info');
     add_submenu_page('edit.php?post_type=product', __('Attributes','jigoshop'), __('Attributes','jigoshop'), 'manage_options', 'jigoshop_attributes', 'jigoshop_attributes');
 
-}
-
-add_action('menu_order', 'jigoshop_admin_menu_order');
-function jigoshop_admin_menu_order( $menu_order ) {
-	// Initialize our custom order array
-	$jigoshop_menu_order = array();
-
-	// Get the index of our custom separator
-	$jigoshop_separator = array_search( 'separator-jigoshop', $menu_order );
-	$jigoshop_product = array_search( 'edit.php?post_type=product', $menu_order );
-	$jigoshop_order = array_search( 'edit.php?post_type=shop_order', $menu_order );
-	$jigoshop_coupon = array_search( 'edit.php?post_type=shop_coupon', $menu_order );
-
-	// Loop through menu order and do some rearranging
-	foreach ( $menu_order as $index => $item ) :
-
-		if ( 'jigoshop' == $item ) :
-			$jigoshop_menu_order[] = 'separator-jigoshop';
-			$jigoshop_menu_order[] = $item;
-			$jigoshop_menu_order[] = 'edit.php?post_type=product';
-			$jigoshop_menu_order[] = 'edit.php?post_type=shop_coupon';
-			$jigoshop_menu_order[] = 'edit.php?post_type=shop_order';
-
-			unset( $menu_order[$jigoshop_separator] );
-			unset( $menu_order[$jigoshop_product] );
-			unset( $menu_order[$jigoshop_order] );
-			unset( $menu_order[$jigoshop_coupon] );
-
-		elseif ( !in_array( $item, array( 'separator-jigoshop' ) ) ) :
-			$jigoshop_menu_order[] = $item;
-		endif;
-
-	endforeach;
-
-	// Return order
-	return $jigoshop_menu_order;
-}
-
-add_action('custom_menu_order', 'jigoshop_admin_custom_menu_order');
-function jigoshop_admin_custom_menu_order() {
-	return current_user_can( 'manage_options' );
 }
 
 function jigoshop_reports() {

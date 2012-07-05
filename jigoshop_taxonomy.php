@@ -22,7 +22,7 @@ function jigoshop_post_type() {
 
 	global $wpdb;
     $jigoshop_options = Jigoshop_Base::get_options();
-	
+
 	$shop_page_id = jigoshop_get_page_id('shop');
 
 	$base_slug = ($shop_page_id && $base_page = get_page( $shop_page_id )) ? get_page_uri( $shop_page_id ) : 'shop';
@@ -148,6 +148,7 @@ function jigoshop_post_type() {
 			'supports'           => array( 'title', 'editor', 'thumbnail', 'comments', 'excerpt',/*, 'page-attributes'*/ ),
 			'has_archive'        => $base_slug,
 			'show_in_nav_menus'  => false,
+			'menu_position'      => 56
 		)
 	);
 
@@ -226,7 +227,8 @@ function jigoshop_post_type() {
 			'rewrite'            => false,
 			'query_var'          => true,
 			'supports'           => array( 'title', 'comments' ),
-			'has_archive'        => false
+			'has_archive'        => false,
+			'menu_position'      => 58
 		)
 	);
 
@@ -281,10 +283,11 @@ function jigoshop_post_type() {
 			'exclude_from_search' 		=> true,
 			'hierarchical' 				=> false,
 			'rewrite' 					=> false,
-			'query_var' 				=> true,			
+			'query_var' 				=> true,
 			'supports' 					=> array( 'title', 'editor' ),
 			'show_in_nav_menus'			=> true,
-			'show_in_menu' 				=> true
+			'show_in_menu' 				=> true,
+			'menu_position'      => 57
 		)
 	);
 
