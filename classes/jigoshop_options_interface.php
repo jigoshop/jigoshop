@@ -23,9 +23,9 @@ interface Jigoshop_Options_Interface {
 	 *
 	 * At various times during a page load, options can be set, or added.
 	 * @since	1.2
-	 */	
+	 */
     public function update_options();
-    
+
 	/**
 	 * Adds a named option
 	 *
@@ -36,9 +36,9 @@ interface Jigoshop_Options_Interface {
 	 * @param   mixed	the value to set if the option doesn't exist
 	 *
 	 * @since	1.2
-	 */	
+	 */
     public function add_option($name, $value);
-    
+
 	/**
 	 * Returns a named Jigoshop option
 	 *
@@ -47,9 +47,9 @@ interface Jigoshop_Options_Interface {
 	 * @return  mixed	the value of the option, null if no $default and option doesn't exist
 	 *
 	 * @since	1.2
-	 */	
-    public function get_option($name, $default);
-    
+	 */
+    public function get_option($name, $default = null);
+
 	/**
 	 * Sets a named Jigoshop option
 	 *
@@ -57,9 +57,9 @@ interface Jigoshop_Options_Interface {
 	 * @param	mixed	the value to set
 	 *
 	 * @since	1.2
-	 */	
+	 */
     public function set_option($name, $value);
-    
+
 	/**
 	 * Deletes a named Jigoshop option
 	 *
@@ -67,18 +67,18 @@ interface Jigoshop_Options_Interface {
 	 * @return	bool	true for successful completion if option found, false otherwise
 	 *
 	 * @since	1.2
-	 */	
+	 */
     public function delete_option($name);
-    
+
 	/**
 	 * Determines whether an Option exists
 	 *
 	 * @return	bool	true for successful completion if option found, false otherwise
 	 *
 	 * @since	1.2
-	 */	
+	 */
     public function exists_option($name);
-    
+
 	/**
 	 * Install additional default options for parsing
 	 * Shipping methods and Payment gateways would use this
@@ -87,9 +87,9 @@ interface Jigoshop_Options_Interface {
 	 * @param	array	The array of options to install
 	 *
 	 * @since	1.2
-	 */	
+	 */
     public function install_external_options($tab, $options);
-    
+
 	/**
 	 * Return the Jigoshop current options
 	 *
@@ -97,9 +97,9 @@ interface Jigoshop_Options_Interface {
 	 * @return  array	the entire current options array is returned
 	 *
 	 * @since	1.2
-	 */	
+	 */
     public function get_current_options();
-    
+
 	/**
 	 * Return the Jigoshop default options
 	 *
@@ -107,9 +107,9 @@ interface Jigoshop_Options_Interface {
 	 * @return  array	the entire default options array is returned
 	 *
 	 * @since	1.2
-	 */	
+	 */
     public function get_default_options();
-    
+
 }
 
 ?>
