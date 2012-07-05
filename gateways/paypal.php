@@ -49,7 +49,6 @@ class paypal extends jigoshop_payment_gateway {
 
 		add_action( 'init', array(&$this, 'check_ipn_response') );
 		add_action('valid-paypal-standard-ipn-request', array(&$this, 'successful_request') );
-		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
 		add_action( 'jigoshop_settings_scripts', array( &$this, 'admin_scripts' ) );
 		add_action('receipt_paypal', array(&$this, 'receipt_page'));
 		
@@ -161,7 +160,7 @@ class paypal extends jigoshop_payment_gateway {
 		return $defaults;
 	}
 
-
+    
     public function admin_scripts() {
     	?>
 		<script type="text/javascript">
