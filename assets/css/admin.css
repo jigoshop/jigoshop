@@ -184,7 +184,7 @@ a.tips{height:16px;width:16px;margin:4px -8px 0 0;float:right;background:url(../
 .jigoshop_options_panel .options_group:last-child{border-bottom:0;}
 .jigoshop_options_panel .options_group a.tips{float:left;margin-left:5px;margin-right:2px;}
 #jigoshop_attributes{padding:12px;}
-.jigoshop_attributes_wrapper,.jigoshop_variable_attributes_wrapper{margin:9px;}.jigoshop_attributes_wrapper .ui-state-highlight,.jigoshop_variable_attributes_wrapper .ui-state-highlight{height:auto;background:#eee;border:1px dashed #bbbbbb;margin-bottom:5px;}
+.jigoshop_attributes_wrapper,.jigoshop_variable_attributes_wrapper{margin:9px;}.jigoshop_attributes_wrapper .ui-state-highlight,.jigoshop_variable_attributes_wrapper .ui-state-highlight{height:auto;background:#eee;border:1px dashed #bbbbbb;margin-bottom:5px;border-radius:0;}
 .jigoshop_attributes_wrapper .ui-sortable-helper,.jigoshop_variable_attributes_wrapper .ui-sortable-helper{opacity:0.65;}
 .attribute{margin-bottom:5px;}.attribute h3{font-size:12px !important;font-family:sans-serif !important;padding:10px !important;margin-bottom:5px;}
 .attribute .hide_row{float:right;margin:5px;}
