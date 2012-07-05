@@ -84,7 +84,7 @@ function jigoshop_admin_menu() {
 	$admin_page = add_submenu_page( 'jigoshop', __( 'Settings' ), __( 'Settings' ), 'manage_options', 'jigoshop_settings', array( Jigoshop_Admin_Settings::instance(), 'output_markup' ) );
 	add_action( 'admin_print_scripts-' . $admin_page, array( Jigoshop_Admin_Settings::instance(), 'settings_scripts' ) );
 	add_action( 'admin_print_styles-' . $admin_page, array( Jigoshop_Admin_Settings::instance(), 'settings_styles' ) );
-	add_submenu_page('jigoshop', __('Reports  ','jigoshop'), __('Reports','jigoshop'), 'manage_options', 'jigoshop_reports', 'jigoshop_reports');
+	add_submenu_page('jigoshop', __('Reports','jigoshop'), __('Reports','jigoshop'), 'manage_options', 'jigoshop_reports', 'jigoshop_reports');
     add_submenu_page('jigoshop', __('System Info','jigoshop'), __('System Info','jigoshop'), 'manage_options', 'jigoshop_sysinfo', 'jigoshop_system_info');
     add_submenu_page('edit.php?post_type=product', __('Attributes','jigoshop'), __('Attributes','jigoshop'), 'manage_options', 'jigoshop_attributes', 'jigoshop_attributes');
 

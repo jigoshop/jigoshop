@@ -287,7 +287,7 @@ function jigoshop_post_type() {
 			'supports' 					=> array( 'title', 'editor' ),
 			'show_in_nav_menus'			=> true,
 			'show_in_menu' 				=> true,
-			'menu_position'      => 57
+			'menu_position'             => 57
 		)
 	);
 
