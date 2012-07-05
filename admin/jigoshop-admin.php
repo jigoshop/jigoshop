@@ -42,26 +42,14 @@ function jigoshop_update() {
 			require_once( jigoshop::plugin_path().'/jigoshop_upgrade.php' );
 			$response = jigoshop_upgrade();
 
-			// If successful inform the user
-			if ( $response ) {
-				echo '
-					<div class="updated">
-						<p>'.__('Your database has been successfully updated. Your shop is now automatically better than the rest, oh happy day!', 'jigoshop').'!</p>
-					</div>
-				';
-			}
-
-		} else {
-
-			echo '
-				<div class="error">
-					<p>' . __('Uh oh! Looks like your Jigoshop database needs updating, just to be safe <strong>please backup your database</strong> before clicking this button!', 'jigoshop') . '</p>
-					<p>
-						<a class="button-secondary" href="' . add_query_arg('jigoshop_update_db', 'true') . '">' . __('I\'ve backed up, now update me!', 'jigoshop') . '</a>
-					</p>
-				</div>
-			';
 		}
+
+		// Display upgrade nag
+		echo '
+			<div class="update-nag">
+				'.sprintf(__('Your database needs an update. Please <strong>backup</strong> &amp; %s.', 'jigoshop'), '<a href="' . add_query_arg('jigoshop_update_db', 'true') . '">' . __('update now', 'jigoshop') . '</a>').'
+			</div>
+		';
 	}
 }
 
