@@ -233,10 +233,7 @@ class jigoshop_dashboard {
 				$_product = new jigoshop_product( $my_query->post->ID );
 				if (!$_product->managing_stock()) continue;
 
-				$thisitem = '<tr class="first">
-					<td class="first b"><a href="post.php?post='.$my_query->post->ID.'&action=edit">'.$_product->stock.'</a></td>
-					<td class="t"><a href="post.php?post='.$my_query->post->ID.'&action=edit">'.$my_query->post->post_title.'</a></td>
-				</tr>';
+				$thisitem = '<li><a href="'.get_edit_post_link($my_query->post->ID).'">'.$my_query->post->post_title.'</a></li>';
 
 				if ($_product->stock<=$nostockamount) :
 					$outofstock[] = $thisitem;
@@ -258,19 +255,15 @@ class jigoshop_dashboard {
 			<div id="jigoshop_right_now" class="jigoshop_right_now">
 				<div class="table table_content">
 					<p class="sub"><?php _e('Low Stock', 'jigoshop'); ?></p>
-					<table>
-						<tbody>
-							<?php echo implode('', $lowinstock); ?>
-						</tbody>
-					</table>
+					<ol>
+						<?php echo implode('', $lowinstock); ?>
+					</ol>
 				</div>
 				<div class="table table_discussion">
 					<p class="sub"><?php _e('Out of Stock/Backorders', 'jigoshop'); ?></p>
-					<table>
-						<tbody>
-							<?php echo implode('', $outofstock); ?>
-						</tbody>
-					</table>
+					<ol>
+						<?php echo implode('', $outofstock); ?>
+					</ol>
 				</div>
 				<br class="clear"/>
 			</div>

@@ -933,6 +933,7 @@ a.tips {
 		background: #eee;
 		border: 1px dashed #bbbbbb;
 		margin-bottom: 5px;
+		border-radius: 0;
 	}
 
 	.ui-sortable-helper {
@@ -1433,7 +1434,7 @@ div.multi_select_countries.shipping_services {
 /* Settings */
 
 .jigoshop-settings table.form-table {
-	
+
 	.button {
 		float: left;
 		margin: 0 3px 3px 0;
@@ -1445,16 +1446,16 @@ div.multi_select_countries.shipping_services {
 	td small {
 		color: #555;
 	}
-	
+
 	th {
 		width: 17%;
 	}
-	
+
 	td {
 		margin-bottom: 3px;
 		line-height: 12px;
 	}
-	
+
 	.jigoshop-tooltips {
 		width: 3%;
 		a.tips {
@@ -1465,7 +1466,7 @@ div.multi_select_countries.shipping_services {
 			background: url(../images/tip.png) no-repeat top left;
 		}
 	}
-	
+
 	/* this holds all the setting controls */
 	.forminp {
 		width: 80%;
@@ -1499,7 +1500,7 @@ div.multi_select_countries.shipping_services {
 		.jigoshop-container label, .jigoshop-container label a {
 			vertical-align: bottom;
 		}
-		
+
 		/* range slider */
 		.slider {
 			display: inline-block;
@@ -1549,11 +1550,11 @@ div.multi_select_countries.shipping_services {
 			-moz-border-radius:5px;
 			-webkit-border-radius:5px;
 		}
-		
+
 		thead, tfoot {
 			background: #eaeaea;
 		}
-		
+
 		/* internal array tables, coupons, taxes, table rates */
 		table {
 			border: 0;
@@ -1567,7 +1568,7 @@ div.multi_select_countries.shipping_services {
 				text-indent: -2000px;
 				overflow: hidden;
 				background: url(../images/calendar.png) no-repeat;
-	
+
 				&.disabled {
 					background-position: 0 -20px;
 					cursor: default;
@@ -1618,7 +1619,7 @@ div.multi_select_countries.shipping_services {
 	color: #555;
 	margin-bottom: 1em;
 }
-	
+
 .jigoshop-settings #tabs-wrap h3 {
 	font-size: 13px;
 	padding: 1.5em 10px 3px 10px;
@@ -1635,4 +1636,46 @@ textarea#system-info-textarea {
 	margin: 10px 0 0 0;
 	width: 900px;
 	height: 400px;
+}
+
+// Classic Theme Overrides
+.admin-color-classic {
+	#jigoshop-product-data ul.product_data_tabs, .jigoshop ul.tabs {
+		background-color: #D1E5EE;
+	}
+
+	#jigoshop-product-data ul.product_data_tabs li a, .jigoshop ul.tabs li a {
+		border-color: #D1E5EE;
+		background-color: #EFF8FF;
+	}
+
+	#jigoshop-product-data ul.product_data_tabs li.active a, .jigoshop ul.tabs li.active a {
+		background-color: #F7FCFE;
+	}
+
+	.panel .toolbar {
+		background: -webkit-linear-gradient(top,#F7FCFE,#D1E5EE);
+		border-top-color: #F7FCFE;
+		border-bottom-color: #D1E5EE;
+	}
+
+	.panel fieldset {
+		border-top-color: #F7FCFE;
+		border-bottom-color: #D1E5EE;
+	}
+
+	.column-total_cost table.cost {
+		border-color: #D1E5EE !important;
+		td, th {
+			background-color: #F7FCFE;
+		}
+	}
+
+	#jigoshop-product-data ul.product_data_tabs li a:hover, .jigoshop ul.tabs li a:hover {
+		color: #777;
+	}
+
+	.jigoshop_order_items_wrapper table.jigoshop_order_items thead th {
+		background-color: #D1E5EE;
+	}
 }

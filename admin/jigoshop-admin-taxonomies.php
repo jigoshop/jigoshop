@@ -149,7 +149,7 @@ function jigoshop_product_cat_columns( $columns ) {
 
 	$new_columns = array(
 		'cb'    => $columns['cb'],
-		'thumb' => __('Image', 'jigoshop')
+		'thumb' => null
 	);
 
 	unset($columns['cb']);
@@ -165,7 +165,9 @@ function jigoshop_product_cat_column( $columns, $column, $id ) {
 		return false;
 
 	$image = jigoshop_product_cat_image($id);
-	$columns .= '<img src="'.$image['image'].'" alt="Thumbnail" class="wp-post-image" height="48" width="48" />';
+	$columns .= '<a class="row-title" href="'.get_edit_term_link( $id, 'product_cat' ).'">';
+	$columns .= '<img src="'.$image['image'].'" alt="Thumbnail" class="wp-post-image" height="32" width="32" />';
+	$columns .= '</a>';
 
 	return $columns;
 
