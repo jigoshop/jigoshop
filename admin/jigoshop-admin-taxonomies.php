@@ -149,7 +149,7 @@ function jigoshop_product_cat_columns( $columns ) {
 
 	$new_columns = array(
 		'cb'    => $columns['cb'],
-		'thumb' => __('Image', 'jigoshop')
+		'thumb' => null
 	);
 
 	unset($columns['cb']);
