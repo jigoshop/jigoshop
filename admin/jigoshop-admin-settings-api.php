@@ -18,58 +18,58 @@
 class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 
 	private $our_parser;
-	
+
 	/**
 	 * Constructor
 	 *
 	 * @since 1.3
 	 */
 	protected function __construct() {
-		
-		$this->our_parser = new Jigoshop_Options_Parser( 
-			self::get_options()->get_default_options(), 
+
+		$this->our_parser = new Jigoshop_Options_Parser(
+			self::get_options()->get_default_options(),
 			JIGOSHOP_OPTIONS
 		);
 
 		add_action( 'admin_init', array( &$this, 'register_settings' ) );
 
 	}
-	
+
 	/**
 	 * Scripts for the Options page
 	 *
 	 * @since 1.3
 	 */
 	public function settings_scripts() {
-		
+
     	// http://jquerytools.org/documentation/rangeinput/index.html
     	wp_register_script( 'jquery-tools-slider', 'http://cdn.jquerytools.org/1.2.6/form/jquery.tools.min.js', array( 'jquery' ), '1.2.6' );
     	wp_enqueue_script( 'jquery-tools-slider' );
-    	
+
     	wp_register_script( 'jigoshop-bootstrap-tooltip', jigoshop::assets_url() . '/assets/js/bootstrap-tooltip.min.js', array( 'jquery' ), '2.0.3' );
     	wp_enqueue_script( 'jigoshop-bootstrap-tooltip' );
 
     	wp_register_script( 'jigoshop-select2', jigoshop::assets_url() . '/assets/js/select2.js', array( 'jquery' ), '2.1' );
     	wp_enqueue_script( 'jigoshop-select2' );
-    	
+
 	}
-	
-	
+
+
 	/**
 	 * Styling for the options page
 	 *
 	 * @since 1.3
 	 */
 	public function settings_styles() {
-	
+
 		wp_register_style( 'jigoshop-select2', jigoshop::assets_url() . '/assets/css/select2.css', '', '2.1', 'screen' );
 		wp_enqueue_style( 'jigoshop-select2' );
-		
+
 		do_action( 'jigoshop_settings_styles' );	// user defined stylesheets should be registered and queued
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Register settings
 	 *
@@ -78,32 +78,32 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	public function register_settings() {
 
 		register_setting( JIGOSHOP_OPTIONS, JIGOSHOP_OPTIONS, array ( &$this, 'validate_settings' ) );
-		
+
 		$slug = $this->get_current_tab_slug();
 		$options = $this->our_parser->tabs[$slug];
-		
+
 		foreach ( $options as $index => $option ) {
 			switch ( $option['type'] ) {
 			case 'title':
 				add_settings_section( $option['section'], $option['name'], array( &$this, 'display_section' ), JIGOSHOP_OPTIONS );
 				break;
-				
+
 			default:
 				$this->create_setting( $index, $option );
 				break;
 			}
 		}
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Create a settings field
 	 *
 	 * @since 1.3
 	 */
 	public function create_setting( $index, $option = array() ) {
-	
+
 		$defaults = array(
 			'tab'			=> '',
 			'section'		=> '',
@@ -122,7 +122,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 
 		extract( wp_parse_args( $option, $defaults ) );
 		$id = ! empty( $id ) ? $id : $section.$index;
-		
+
 		$field_args = array(
 			'tab'			=> $tab,
 			'section'		=> $section,
@@ -139,20 +139,20 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			'update'		=> $update,
 			'extra'			=> $extra
 		);
-		
+
 		if ( $type <> 'tab' ) {
-			add_settings_field( 
-				$id, 
-				esc_attr( $name ), 
-				array( &$this, 'display_option' ), 
-				JIGOSHOP_OPTIONS, 
-				$section, 
+			add_settings_field(
+				$id,
+				esc_attr( $name ),
+				array( &$this, 'display_option' ),
+				JIGOSHOP_OPTIONS,
+				$section,
 				$field_args
 			);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Format markup for an option and output it
 	 *
@@ -161,15 +161,15 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	public function display_option( $option ) {
 		echo $this->our_parser->format_option_for_display( $option );
 	}
-	
-	
+
+
 	/**
 	 * Description for section
 	 *
 	 * @since 1.3
 	 */
 	public function display_section( $section ) {
-	
+
 		$options = $this->our_parser->these_options;
 		foreach ( $options as $index => $option ) {
 			if ( isset( $option['name'] ) && $section['title'] == $option['name'] ) {
@@ -178,10 +178,10 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 				}
 			}
 		}
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Render the Options page
 	 *
@@ -190,35 +190,35 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	public function output_markup() {
 		?>
 			<div class="wrap jigoshop">
-			
+
 				<div class="icon32 icon32-jigoshop-settings" id="icon-jigoshop"><br></div>
 				<?php do_action( 'jigoshop_admin_settings_notices' ); ?>
 				<h2 class="nav-tab-wrapper jigoshop-nav-tab-wrapper">
 					<?php echo $this->build_tab_menu_items(); ?>
 				</h2>
-				
+
 				<noscript>
 					<div id="jigoshop-js-warning" class="error"><?php _e( 'Warning- This options panel may not work properly without javascript!', 'jigoshop' ); ?></div>
 				</noscript>
-				
+
 				<?php settings_errors(); ?>
-				
+
 				<form action="options.php" id="mainform" method="post">
 
 					<div class="jigoshop-settings">
 						<div id="tabs-wrap">
-							
+
 							<?php settings_fields( JIGOSHOP_OPTIONS ); ?>
 							<?php do_settings_sections( JIGOSHOP_OPTIONS ); ?>
-							
+
 							<?php $tabname = $this->get_current_tab_name(); ?>
 							<?php self::get_options()->set_option( 'jigoshop_settings_current_tabname', $tabname ); ?>
-							
+
 							<p class="submit"><input name="Submit" type="submit" class="button-primary" value="<?php echo sprintf( __( "Save %s Changes", 'jigoshop' ), $tabname ); ?>" /></p>
-						
+
 						</div>
 					</div>
-					
+
 				</form>
 
 			</div>
@@ -226,13 +226,13 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			<script type="text/javascript">
 				/*<![CDATA[*/
 				jQuery(function($) {
-					
+
 					// Fade out the status message
 					jQuery('.updated').delay(2500).fadeOut(1500);
 
 					// jQuery Tools range tool
 					jQuery(":range").rangeinput();
-					
+
 					// Countries
 					jQuery('select#jigoshop_allowed_countries').change(function(){
 						// hide-show multi_select_countries
@@ -242,20 +242,20 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 							jQuery(this).parent().parent().next('tr').hide();
 						}
 					}).change();
-	
+
 					// permalink double save hack (do we need this anymore -JAP-)
 					jQuery.get('<?php echo admin_url('options-permalink.php') ?>');
-		
+
 				});
 				/*]]>*/
 			</script>
-			
+
 			<?php do_action( 'jigoshop_settings_scripts' ); ?>
-			
+
 		<?php
 	}
-	
-	
+
+
 	/**
 	 * Create the Navigation Menu Tabs
 	 *
@@ -267,7 +267,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		foreach ( $this->our_parser->tab_headers as $tab ) {
 			$this_slug = sanitize_title( $tab );
 			if ( $slug == $this_slug ) {
-				$menus_li .= '<a class="nav-tab nav-tab-active" 
+				$menus_li .= '<a class="nav-tab nav-tab-active"
 					title="'.$tab.'"
 					href="?page=jigoshop_settings&tab='.$this_slug.'">' . $tab . '</a>';
 			} else {
@@ -278,8 +278,8 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		}
 		return $menus_li;
 	}
-	
-	
+
+
 	/**
 	 * Return the current Tab slug in view
 	 *
@@ -295,8 +295,8 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		endif;
 		return $current;
 	}
-	
-	
+
+
 	/**
 	 * Return the current Tab full name in view
 	 *
@@ -316,8 +316,8 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		}
 		return $current;
 	}
-	
-	
+
+
 	/**
 	 * Validate settings
 	 *
@@ -328,16 +328,16 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		if ( empty( $_POST ) ) {
 			return $input;
 		}
-		
+
 		$defaults = $this->our_parser->these_options;
 		$current_options = self::get_options()->get_current_options();
-		
+
 		$valid_input = $current_options;			// we start with the current options
-			
+
 		// Find the current TAB we are working with and use it's option settings
 		$this_section = sanitize_title( self::get_options()->get_option( 'jigoshop_settings_current_tabname' ) );
 		$tab = $this->our_parser->tabs[$this_section];
-		
+
 		// with each option, get it's type and validate it
 		foreach ( $tab as $index => $setting ) {
 			if ( isset( $setting['id'] ) ) {
@@ -347,7 +347,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					}
 				}
 				$value = isset( $input[$setting['id']] ) ? $input[$setting['id']] : null ;
-				
+
 				// we have a $setting
 				// $value has the WordPress user submitted value for this $setting
 				// $option has this $setting parameters
@@ -362,7 +362,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 						}
 					}
 					break;
-					
+
 				case 'multi_select_countries' :
 					if ( isset( $value ) ) {
 						$countries = jigoshop_countries::$countries;
@@ -377,13 +377,13 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 						update_option( $setting['id'], $valid_input[$setting['id']] ); // TODO: remove in v1.4 - provides compatibility
 					}
 					break;
-					
+
 				case 'checkbox' :
 					// there will be no $value for a false checkbox, set it now
 					$valid_input[$setting['id']] = isset( $value ) ? 'yes' : 'no';
 					update_option( $setting['id'], $valid_input[$setting['id']] ); // TODO: remove in v1.4 - provides compatibility
 					break;
-					
+
 				case 'multicheck' :
 					$selected = array();
 					foreach ( $option['choices'] as $key => $val ) {
@@ -396,18 +396,18 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					$valid_input[$setting['id']] = $selected;
 					update_option( $setting['id'], $valid_input[$setting['id']] ); // TODO: remove in v1.4 - provides compatibility
 					break;
-					
+
 				case 'text' :
 				case 'longtext' :
 				case 'textarea' :
 					$valid_input[$setting['id']] = esc_attr( jigowatt_clean( $value ) );
 					update_option( $setting['id'], $valid_input[$setting['id']] ); // TODO: remove in v1.4 - provides compatibility
 					break;
-					
+
 				case 'email' :
 					$email = sanitize_email( $value );
 					if ( $email <> $value ) {
-						add_settings_error( 
+						add_settings_error(
 							$setting['id'],
 							'jigoshop_email_error',
 							sprintf(__('You entered "%s" as the value for "%s" and it was not a valid email address.  It was not saved and the original is still in use.','jigoshop'), $value, $setting['name']),
@@ -419,11 +419,11 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					}
 					update_option( $setting['id'], $valid_input[$setting['id']] ); // TODO: remove in v1.4 - provides compatibility
 					break;
-					
+
 				case 'decimal' :
 					$cleaned = jigowatt_clean( $value );
 					if ( ! jigoshop_validation::is_decimal( $cleaned ) && $cleaned <> '' ) {
-						add_settings_error( 
+						add_settings_error(
 							$setting['id'],
 							'jigoshop_decimal_error',
 							sprintf(__('You entered "%s" as the value for "%s" in "%s" and it was not a valid decimal number (may have leading negative sign, with optional decimal point, numbers 0-9).  It was not saved and the original is still in use.','jigoshop'), $value, $setting['name'], $setting['section'] ),
@@ -435,11 +435,11 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					}
 					update_option( $setting['id'], $valid_input[$setting['id']] ); // TODO: remove in v1.4 - provides compatibility
 					break;
-					
+
 				case 'integer' :
 					$cleaned = jigowatt_clean( $value );
 					if ( ! jigoshop_validation::is_integer( $cleaned ) && $cleaned <> '' ) {
-						add_settings_error( 
+						add_settings_error(
 							$setting['id'],
 							'jigoshop_integer_error',
 							sprintf(__('You entered "%s" as the value for "%s" in "%s" and it was not a valid integer number (may have leading negative sign, numbers 0-9).  It was not saved and the original is still in use.','jigoshop'), $value, $setting['name'], $setting['section'] ),
@@ -451,11 +451,11 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					}
 					update_option( $setting['id'], $valid_input[$setting['id']] ); // TODO: remove in v1.4 - provides compatibility
 					break;
-					
+
 				case 'natural' :
 					$cleaned = jigowatt_clean( $value );
 					if ( ! jigoshop_validation::is_natural( $cleaned ) && $cleaned <> '' ) {
-						add_settings_error( 
+						add_settings_error(
 							$setting['id'],
 							'jigoshop_natural_error',
 							sprintf(__('You entered "%s" as the value for "%s" in "%s" and it was not a valid natural number (numbers 0-9).  It was not saved and the original is still in use.','jigoshop'), $value, $setting['name'], $setting['section'] ),
@@ -467,7 +467,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					}
 					update_option( $setting['id'], $valid_input[$setting['id']] ); // TODO: remove in v1.4 - provides compatibility
 					break;
-					
+
 				default :
 					if ( isset( $value ) ) {
 						$valid_input[$setting['id']] = $value;
@@ -477,27 +477,27 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 				}
 			}
 		}
-		
-		
+
+
 		// tax classes should be updated
 		// they will do nothing if this is not the right TAB
 		if ( $result = $this->get_updated_tax_classes() ) {
 			$valid_input['jigoshop_tax_rates'] = $result;
 			update_option( $setting['id'], $valid_input['jigoshop_tax_rates'] ); // TODO: remove in v1.4 - provides compatibility
 		}
-		
+
         // remove all jigoshop_update_options actions on shipping classes when not on the shipping tab
         if ( $this_section != 'shipping' ) :
             $this->remove_update_options( jigoshop_shipping::get_all_methods() );
         endif;
-        
+
         if ( $this_section != 'payment-gateways' ) :
             $this->remove_update_options( jigoshop_payment_gateways::payment_gateways() );
         endif;
-        
+
 		// Allow any hooked in option updating
 		do_action( 'jigoshop_update_options' );
-		
+
 		$errors = get_settings_errors();
 		if ( empty( $errors ) ) {
 			add_settings_error(
@@ -507,26 +507,26 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 				'updated'
 			);
 		}
-		
+
 		return $valid_input;	// send it back to WordPress for saving
-		
+
 	}
-	
+
 	/**
 	 * Remove all jigoshop_update_options actions on shipping and payment classes when not on those tabs
 	 *
 	 * @since 	1.3
 	 */
 	private function remove_update_options( $classes ) {
-        
+
         if ( empty( $classes )) return;
-        
+
         foreach ( $classes as $class ) :
             remove_action( 'jigoshop_update_options', array( $class, 'process_admin_options' ));
         endforeach;
 
     }
-	
+
 	/**
 	 * Defines a custom sort for the tax_rates array. The sort that is needed is that the array is sorted
 	 * by country, followed by state, followed by compound tax. The difference is that compound must be sorted based
@@ -551,14 +551,14 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	function csort_tax_rates($a, $b) {
 		$str1 = '';
 		$str2 = '';
-	
+
 		$str1 .= $a['country'] . $a['state'] . ($a['compound'] == 'no' ? 'a' : 'b');
 		$str2 .= $b['country'] . $b['state'] . ($b['compound'] == 'no' ? 'a' : 'b');
-	
+
 		return strcmp($str1, $str2);
 	}
-	
-	
+
+
 	/**
 	 * When Options are saved, return the 'jigoshop_tax_rates' option values
 	 *
@@ -567,103 +567,113 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 * @since 	1.3
 	 */
 	function get_updated_tax_classes() {
-		
+
 		// make sure we are on the Tax Tab
 		if ( ! isset( $_POST['tax_classes'] )) return false;
-		
-			$tax_classes = array();
-			$tax_countries = array();
-			$tax_rate = array();
-			$tax_label = array();
-			$tax_rates = array();
-			$tax_shipping = array();
-			$tax_compound = array();
 
-			if ( isset( $_POST['tax_classes'] )) :
-				$tax_classes = $_POST['tax_classes'];
-			endif;
-			if ( isset( $_POST['tax_country'] )) :
-				$tax_countries = $_POST['tax_country'];
-			endif;
-			if ( isset( $_POST['tax_rate'] )) :
-				$tax_rate = $_POST['tax_rate'];
-			endif;
-			if ( isset( $_POST['tax_label'] )) :
-				$tax_label = $_POST['tax_label'];
-			endif;
-			if ( isset( $_POST['tax_shipping'] )) :
-				$tax_shipping = $_POST['tax_shipping'];
-			endif;
-			if ( isset( $_POST['tax_compound'] )) :
-				$tax_compound = $_POST['tax_compound'];
-			endif;
+		$taxFields = array(
+			'tax_classes' => '',
+			'tax_country' => '',
+			'tax_rate'    => '',
+			'tax_label'   => '',
+			'tax_shipping'=> '',
+			'tax_compound'=> ''
+		);
 
-			for ( $i = 0; $i < sizeof( $tax_classes ); $i++ ) :
+		$tax_rates = array();
 
-				if ( isset( $tax_classes[$i] ) && isset( $tax_countries[$i] ) && isset( $tax_rate[$i] ) && $tax_rate[$i] && is_numeric( $tax_rate[$i] )) :
+		/* Save each array key to a variable */
+		foreach ($taxFields as $name => $val)
+			if (isset($_POST[$name])) $taxFields[$name] = $_POST[$name];
 
-					$country = jigowatt_clean($tax_countries[$i]);
-					$label = trim($tax_label[$i]);
-					$state = '*'; // countries with no states have to have a character for products. Therefore use *
-					$rate = number_format((float)jigowatt_clean($tax_rate[$i]), 4);
-					$class = jigowatt_clean($tax_classes[$i]);
+		extract($taxFields);
 
-					if (isset($tax_shipping[$i]) && $tax_shipping[$i])
-						$shipping = 'yes'; else
-						$shipping = 'no';
-					if (isset($tax_compound[$i]) && $tax_compound[$i])
-						$compound = 'yes'; else
-						$compound = 'no';
+		for ($i = 0; $i < sizeof($tax_classes); $i++) :
 
-					// Get state from country input if defined
-					if (strstr($country, ':')) :
-						$cr = explode(':', $country);
-						$country = current($cr);
-						$state = end($cr);
-					endif;
+			if ( empty($tax_rate[$i]) )
+				continue;
 
-					if ($state == '*' && jigoshop_countries::country_has_states($country)) : // handle all-states
+			$countries = $tax_country[$i];
+			$label     = trim($tax_label[$i]);
+			$rate      = number_format((float)jigowatt_clean($tax_rate[$i]), 4);
+			$class     = jigowatt_clean($tax_classes[$i]);
 
-						foreach (array_keys(jigoshop_countries::$states[$country]) as $st) :
-							$tax_rates[] = array(
-								'country' => $country,
-								'label' => $label,
-								'state' => $st,
-								'rate' => $rate,
-								'shipping' => $shipping,
-								'class' => $class,
-								'compound' => $compound,
-								'is_all_states' => true //determines if admin panel should show 'all_states'
-							);
-						endforeach;
+			/* Checkboxes */
+			$shipping = !empty($tax_shipping[$i]) ? 'yes' : 'no';
+			$compound = !empty($tax_compound[$i]) ? 'yes' : 'no';
 
-					else :
-
-						 $tax_rates[] = array(
-							'country' => $country,
-							'label' => $label,
-							'state' => $state,
-							'rate' => $rate,
-							'shipping' => $shipping,
-							'class' => $class,
-							'compound' => $compound,
-							'is_all_states' => false //determines if admin panel should show 'all_states'
-						);
-					endif;
-
-
+			/* Save the state & country separately from options eg US:OH */
+			$states  = array();
+			foreach ( $countries as $k => $countryCode ) :
+				if (strstr($countryCode, ':')) :
+					$cr = explode(':', $countryCode);
+					$states[$cr[1]]  = $cr[0];
+					unset($countries[$k]);
 				endif;
+			endforeach;
 
-			endfor;
+			/* Save individual state taxes, eg OH => US (State => Country) */
+			foreach ( $states as $state => $country ) :
 
+				$tax_rates[] = array(
+					'country'      => $country,
+					'label'        => $label,
+					'state'        => $state,
+					'rate'         => $rate,
+					'shipping'     => $shipping,
+					'class'        => $class,
+					'compound'     => $compound,
+					'is_all_states'=> false //determines if admin panel should show 'all_states'
+				);
 
-		// apply a custom sort to the tax_rates array.
-		usort( $tax_rates, array( &$this, 'csort_tax_rates' ));
-		
+			endforeach;
+
+			foreach ( $countries as $country ) :
+
+				/* Countries with states */
+				if ( jigoshop_countries::country_has_states($country)) {
+
+					foreach (array_keys(jigoshop_countries::$states[$country]) as $st) :
+						$tax_rates[] = array(
+							'country'      => $country,
+							'label'        => $label,
+							'state'        => $st,
+							'rate'         => $rate,
+							'shipping'     => $shipping,
+							'class'        => $class,
+							'compound'     => $compound,
+							'is_all_states'=> true
+						);
+					endforeach;
+
+				/* This country has no states, eg AF */
+				} else {
+
+					 $tax_rates[] = array(
+						'country'      => $country,
+						'label'        => $label,
+						'state'        => '*',
+						'rate'         => $rate,
+						'shipping'     => $shipping,
+						'class'        => $class,
+						'compound'     => $compound,
+						'is_all_states'=> false
+					);
+
+				}
+
+			endforeach;
+
+		endfor;
+
+		/* Remove duplicates. */
+		$tax_rates = array_values(array_unique($tax_rates, SORT_REGULAR));
+		usort($tax_rates, 'csort_tax_rates');
+
 		return $tax_rates;
-		
+
 	}
-		
+
 }
 
 
@@ -690,13 +700,13 @@ class Jigoshop_Options_Parser {
 
 
 	private function parse_options() {
-		
+
 		$tab_headers = array();
 		$tabs = array();
 		$sections = array();
-		
+
 		foreach ( $this->these_options as $item ) {
-			
+
 			$defaults = array(
 				'tab'			=> '',
 				'section'		=> '',
@@ -712,54 +722,54 @@ class Jigoshop_Options_Parser {
 				'update'		=> null,
 				'extra'			=> null
 			);
-	
+
 			$item = wp_parse_args( $item, $defaults );
-			
+
 			if ( isset( $item['id'] ) ) $item['id'] = sanitize_title( $item['id'] );
-			
+
 			if ( $item['type'] == 'tab' ) {
 				$tab_name = sanitize_title( $item['name'] );
 				$tab_headers[$tab_name] = $item['name'];
 				continue;
 			}
-						
+
 			if ( $item['type'] == 'title' ) {
 				$section_name = sanitize_title( $item['name'] );
 			}
-			
+
 			$item['tab'] = $tab_name;
 			$item['section'] = isset( $section_name ) ? $section_name : $tab_name;
 			$tabs[$tab_name][] = $item;
 			$sections[$item['section']][] = $item;
-			
+
 		}
 
 		$this->tab_headers = $tab_headers;
 		$this->tabs = $tabs;
 		$this->sections = $sections;
 	}
-	
-	
+
+
 	public function format_option_for_display( $item ) {
-	
+
 		$data = Jigoshop_Base::get_options()->get_current_options();
-		
+
 		$display = "";					// each item builds it's output into this and it's returned for echoing
 		$class = "";
-		
+
 		if ( isset( $item['class'] ) ) {
 			$class = $item['class'];
 		}
-		
+
 		// display a tooltip if there is one in it's own table data element before the item to display
 		$display .= '<td class="jigoshop-tooltips">';
         if ( ! empty( $item['tip'] )) {
 			$display .= '<a href="#" tip="'.esc_attr( $item['tip'] ).'" class="tips" tabindex="99"></a>';
 		}
 		$display .= '</td>';
-		
+
 		$display .= '<td class="forminp">';
-		
+
 		// work off the option type and format output for display for each type
 		switch ( $item['type'] ) {
 		case 'user_defined':
@@ -769,23 +779,23 @@ class Jigoshop_Options_Parser {
 				}
 			}
 			break;
-			
+
 		case 'gateway_options':
  			foreach ( jigoshop_payment_gateways::payment_gateways() as $gateway ) :
  				$gateway->admin_options();
  			endforeach;
 			break;
-			
+
 		case 'shipping_options':
  			foreach ( jigoshop_shipping::get_all_methods() as $shipping_method ) :
  				$shipping_method->admin_options();
  			endforeach;
 			break;
-			
+
 		case 'tax_rates':
 			$display .= $this->format_tax_rates_for_display( $item );
 			break;
-			
+
 /*		case 'image_size' :			// may not use this, needs work, unhooking (-JAP-)
 			$width = $data[$item['id']];
 			$display .= '<input
@@ -795,7 +805,7 @@ class Jigoshop_Options_Parser {
 				type="text"
 				value="'.esc_attr( $data[$item['id']] ).'" />';
 			break;
-*/		
+*/
 		case 'single_select_page':
 			$page_setting = (int) $data[$item['id']];
 			$args = array(
@@ -841,13 +851,13 @@ class Jigoshop_Options_Parser {
 				</script>
 			<?php
 			break;
-			
+
 		case 'multi_select_countries':
 			$countries = jigoshop_countries::$countries;
 			asort( $countries );
 			$selections = (array) $data[$item['id']];
 
-			$display .= '<select multiple="multiple" 
+			$display .= '<select multiple="multiple"
 				id="'.$item['id'].'"
 				class="jigoshop-input jigoshop-select '.$class.'"
 				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].'][]" >';
@@ -864,7 +874,7 @@ class Jigoshop_Options_Parser {
 				</script>
 			<?php
 			break;
-			
+
 		case 'button':
 			if ( isset( $item['extra'] ) )
 				$display .= '<a  id="'.$item['id'].'"
@@ -873,7 +883,7 @@ class Jigoshop_Options_Parser {
 					>'. esc_attr( $item['desc'] ) .'</a>';
 			$item['desc'] = '';     // temporarily remove it so it doesn't display twice
 			break;
-			
+
 		case 'decimal':				// decimal numbers are positive or negative 0-9 inclusive, may include decimal
 		case 'integer':				// integer numbers are positive or negative 0-9 inclusive
 		case 'natural':				// natural numbers are positive 0-9 inclusive
@@ -958,9 +968,9 @@ class Jigoshop_Options_Parser {
 						value="'.$option.'" '.checked( $data[$item['id']], $option, false ).' /><label for="' . $item['id'] . '[' . $option . ']">'.$name.'</label>';
 				}
 				$display .= '</div>';
-				
+
 			} else if ( isset( $item['extra'] ) && in_array( 'vertical', $item['extra'] ) ) {
-			
+
 				$display .= '<ul class="jigoshop-radio-vert">';
 				foreach ( $item['choices'] as $option => $name ) {
 					$display .= '<li><input
@@ -971,7 +981,7 @@ class Jigoshop_Options_Parser {
 						value="'.$option.'" '.checked( $data[$item['id']], $option, false ).' /><label for="' . $item['id'] . '[' . $option . ']">'.$name.'</label></li>';
 				}
 				$display .= '</ul>';
-				
+
 			}
 			break;
 
@@ -988,10 +998,10 @@ class Jigoshop_Options_Parser {
 
 		case 'multicheck':
 			$multi_stored = $data[$item['id']];
-			
+
 			// default to horizontal display of choices ( 'horizontal' may or may not be defined )
 			if ( ! isset( $item['extra'] ) || ! in_array( 'vertical', $item['extra'] ) ) {
-			
+
 				$display .= '<div class="jigoshop-multi-checkbox-horz '.$class.'">';
 				foreach ( $item['choices'] as $key => $option ) {
 					$display .= '<input
@@ -1003,9 +1013,9 @@ class Jigoshop_Options_Parser {
 						<label for="'.$item['id'].'_'.$key.'">'.$option.'</label>';
 				}
 				$display .= '</div>';
-				
+
 			} else if ( isset( $item['extra'] ) && in_array( 'vertical', $item['extra'] ) ) {
-			
+
 				$display .= '<ul class="jigoshop-multi-checkbox-vert '.$class.'">';
 				foreach ( $item['choices'] as $key => $option ) {
 					$display .= '<li><input
@@ -1052,7 +1062,7 @@ class Jigoshop_Options_Parser {
 				</script>
 			<?php
 			break;
-		
+
 		default:
 			jigoshop_log( "UNKOWN _type_ in Options parsing" );
 			jigoshop_log( $item );
@@ -1067,21 +1077,21 @@ class Jigoshop_Options_Parser {
 			$display .= '<div class="jigoshop-explain"><small>' . $explain_value . '</small></div>';
 			$display .= '</td>';
 		}
-		
+
 		return $display;
 	}
-	
-	
+
+
 	/*
 	 *	Format tax rates array for display
 	 */
 	function format_tax_rates_for_display( $value ) {
-	
+
 		$_tax = new jigoshop_tax();
 		$tax_classes = $_tax->get_tax_classes();
 		$tax_rates = (array) Jigoshop_Base::get_options()->get_option( 'jigoshop_tax_rates' );
 		$applied_all_states = array();
-		
+
 		ob_start();
 		?>
 		<div id="jigoshop_tax_rates">
@@ -1111,33 +1121,60 @@ class Jigoshop_Options_Parser {
 				<tbody>
 					<?php
 					$i = -1;
-					if ( ! empty( $tax_rates ) ) :
-						foreach ( $tax_rates as $rate ) :
-							if ( $rate['is_all_states'] ) :
-								if ( in_array( get_all_states_key( $rate ), $applied_all_states )) :
-									continue;
+					if ($tax_rates && is_array($tax_rates) && sizeof($tax_rates) > 0) :
+
+						function array_find($needle,$haystack){
+							foreach($haystack as $key => $val):
+								if( $needle == array( "label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'] ) ):
+									return $key;
 								endif;
-							endif;
-	
-							$i++; // increment counter after check for all states having been applied
-	
+							endforeach;
+							return false;
+						}
+
+						function array_compare($tax_rates) {
+							$after = array();
+							foreach($tax_rates as $key => $val):
+								$first_two = array("label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'] );
+								$found = array_find($first_two,$after);
+								if($found!==false):
+									$combined  = $after[$found]["state"];
+									$combined2 = $after[$found]["country"];
+									$combined = !is_array($combined) ? array($combined) : $combined;
+									$combined2 = !is_array($combined2) ? array($combined2) : $combined2;
+									$after[$found] = array_merge($first_two,array( "state" => array_merge($combined,array($val['state'])), "country" => array_merge($combined2,array($val['country'])) ));
+								else:
+									$after = array_merge($after,array(array_merge($first_two,array("state" => $val['state'], "country" => $val['country']))));
+								endif;
+							endforeach;
+							return $after;
+						}
+
+						$tax_rates = array_compare($tax_rates);
+
+						foreach ($tax_rates as $rate) :
+							if ( $rate['is_all_states'] && in_array(get_all_states_key($rate), $applied_all_states) )
+								continue;
+
+							$i++;// increment counter after check for all states having been applied
+
 							echo '<tr><td><a href="#" class="remove button">&times;</a></td>';
-	
+
 							echo '<td><select name="tax_classes[' . esc_attr( $i ) . ']"><option value="*">' . __('Standard Rate', 'jigoshop') . '</option>';
 							if ( $tax_classes ) {
 								foreach ( $tax_classes as $class ) :
 									echo '<option value="' . sanitize_title( $class ) . '"';
-	
+
 									if ( $rate['class'] == sanitize_title( $class )) echo 'selected="selected"';
-	
+
 									echo '>' . $class . '</option>';
 								endforeach;
 							}
 							echo '</select></td>';
-							
+
 							echo '<td><input type="text" value="' . esc_attr( $rate['label']  ) . '" name="tax_label[' . esc_attr( $i ) . ']" placeholder="' . __('Online Label', 'jigoshop') . '" size="10" /></td>';
-	
-							echo '<td><select name="tax_country[' . esc_attr( $i ) . ']" style="width:125px;">';
+
+							echo '<td><select name="tax_country[' . esc_attr( $i ) . '][]" multiple="multiple" style="width:125px;">';
 							if ( $rate['is_all_states'] ) :
 								if ( is_array( $applied_all_states ) && !in_array( get_all_states_key( $rate ), $applied_all_states )) :
 									$applied_all_states[] = get_all_states_key( $rate );
@@ -1149,27 +1186,27 @@ class Jigoshop_Options_Parser {
 								jigoshop_countries::country_dropdown_options( $rate['country'], $rate['state'] );
 							endif;
 							echo '</select></td>';
-							
+
 							echo '<td><input type="text" value="' . esc_attr( $rate['rate']  ) . '" name="tax_rate[' . esc_attr( $i ) . ']" placeholder="' . __('Rate (%)', 'jigoshop') . '" size="6" /></td>';
-							
+
 							echo '<td><input type="checkbox" name="tax_shipping[' . esc_attr( $i ) . ']" ';
 							if ( isset( $rate['shipping'] ) && $rate['shipping'] == 'yes' ) echo 'checked="checked"';
 							echo ' /></td>';
-							
+
 							echo '<td><input type="checkbox" name="tax_compound[' . esc_attr( $i ) . ']" ';
-	
+
 							if ( isset( $rate['compound'] ) && $rate['compound'] == 'yes' ) echo 'checked="checked"';
 							echo ' /></td></tr>';
-							
+
 						endforeach;
 					endif;
 					?>
 				</tbody>
-				
+
 			</table>
 			<div><a href="#" class="add button"><?php _e('+ Add Tax Rule', 'jigoshop'); ?></a></div>
 		</div>
-			
+
 		<script type="text/javascript">
 		/* <![CDATA[ */
 			jQuery(function() {
@@ -1182,7 +1219,7 @@ class Jigoshop_Options_Parser {
 								<?php $tax_classes = $_tax->get_tax_classes(); if ( $tax_classes ) : foreach ( $tax_classes as $class ) : echo '<option value="' . sanitize_title($class) . '">' . $class . '</option>'; endforeach; endif; ?> \
 								</select></td> \
 							<td><input type="text" name="tax_label[' + size + ']" placeholder="<?php _e('Online Label', 'jigoshop'); ?>" size="10" /></td> \
-							<td><select name="tax_country[' + size + ']" style="width:125px;"> \
+							<td><select name="tax_country[' + size + '][]" multiple="multiple" style="width:125px;"> \
 									<?php jigoshop_countries::country_dropdown_options('', '', true); ?></select></td> \
 							<td><input type="text" name="tax_rate[' + size + ']" placeholder="<?php _e('Rate (%)', 'jigoshop'); ?>" size="6" /> \
 							<td><input type="checkbox" name="tax_shipping[' + size + ']" /></td> \
@@ -1200,13 +1237,13 @@ class Jigoshop_Options_Parser {
 			/* ]]> */
 			</script>
 		<?php
-		
+
 		$output = ob_get_contents();
 		ob_end_clean();
-		
+
 		return $output;
 	}
-	
+
 }
 
 ?>
