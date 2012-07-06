@@ -119,7 +119,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	
 	private static $default_options;
 	private static $current_options;
-	
+	private $bad_extensions = array();
 	
 	/**
 	 * Instantiates a new Options object
@@ -1468,35 +1468,41 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		
 		self::$default_options[] = array( 'name' => __('Available extensions', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
-		self::$default_options[] = array( 'type' => 'extension_options');
+//		self::$default_options[] = array( 'type' => 'extension_options');
 		
 		/**
 		 * Allow extensions to add options
 		 *------------------------------------------------------------------------------------------
 		*/
-// 		$other_options = apply_filters( 'jigoshop_options_settings', array() );
-// 		if ( ! empty( $other_options )) foreach ( $other_options as $index => $option ) {
-// jigoshop_log( $option );
-// 			switch ( $option['type'] ) {
-// 			case 'tab':
-// 				$fields = array(
-// 					'type' => $option['type'],
-// 					'name' => $option['tabname'],
-// 					'desc' => $option['desc']
-// 				);
-// 				self::$default_options[] = $fields;
-// 				break;
-// 			case 'title':
-// 			case 'name':
-// 			case 'desc':
-// 			case 'tip':
-// 			case 'id':
-// 			case 'std':
-// 				self::$default_options[] = $option;
-// 				break;
-// 			}
-// 		}
+		$other_options = apply_filters( 'jigoshop_options_settings', array() );
 		
+		if ( ! empty( $other_options )) foreach ( $other_options as $index => $option ) {
+			switch ( $option['type'] ) {
+			case 'tab':
+				$fields = array(
+					'type' => $option['type'],
+					'name' => $option['tabname']
+				);
+//				self::$default_options[] = $fields;
+				break;
+			case 'title':
+				$this->bad_extensions[] = $option['name'];
+				add_action( 'admin_notices', array ($this, 'jigoshop_deprecated_options') );
+				break;
+			case 'name':
+			case 'desc':
+			case 'tip':
+			case 'id':
+			case 'std':
+//				self::$default_options[] = $option;
+				break;
+			}
+		}
+		
+	}
+	
+	public function jigoshop_deprecated_options() {
+		echo '<div class="error"><p>' . sprintf( __('Adding Jigoshop Settings this way by (%s) is no longer supported.', 'jigoshop') . '</p></div>', implode( ', ', $this->bad_extensions ));
 	}
 	
 }
