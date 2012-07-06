@@ -1160,7 +1160,7 @@ class Jigoshop_Options_Parser {
 
 							echo '<tr><td><a href="#" class="remove button">&times;</a></td>';
 
-							echo '<td><select name="tax_classes[' . esc_attr( $i ) . ']"><option value="*">' . __('Standard Rate', 'jigoshop') . '</option>';
+							echo '<td><select id="tax_classes[' . esc_attr( $i ) . ']" name="tax_classes[' . esc_attr( $i ) . ']"><option value="*">' . __('Standard Rate', 'jigoshop') . '</option>';
 							if ( $tax_classes ) {
 								foreach ( $tax_classes as $class ) :
 									echo '<option value="' . sanitize_title( $class ) . '"';
@@ -1174,7 +1174,7 @@ class Jigoshop_Options_Parser {
 
 							echo '<td><input type="text" value="' . esc_attr( $rate['label']  ) . '" name="tax_label[' . esc_attr( $i ) . ']" placeholder="' . __('Online Label', 'jigoshop') . '" size="10" /></td>';
 
-							echo '<td><select name="tax_country[' . esc_attr( $i ) . '][]" multiple="multiple" style="width:125px;">';
+							echo '<td><select name="tax_country[' . esc_attr( $i ) . '][]" id="tax_country_' . esc_attr( $i ) . '" multiple="multiple" style="width:400px;">';
 							if ( $rate['is_all_states'] ) :
 								if ( is_array( $applied_all_states ) && !in_array( get_all_states_key( $rate ), $applied_all_states )) :
 									$applied_all_states[] = get_all_states_key( $rate );
@@ -1197,7 +1197,11 @@ class Jigoshop_Options_Parser {
 
 							if ( isset( $rate['compound'] ) && $rate['compound'] == 'yes' ) echo 'checked="checked"';
 							echo ' /></td></tr>';
-
+							?><script>
+								jQuery(function() {
+									jQuery("#tax_country_<?php echo esc_attr( $i ); ?>").select2();
+								});
+							</script><?php
 						endforeach;
 					endif;
 					?>
@@ -1219,13 +1223,14 @@ class Jigoshop_Options_Parser {
 								<?php $tax_classes = $_tax->get_tax_classes(); if ( $tax_classes ) : foreach ( $tax_classes as $class ) : echo '<option value="' . sanitize_title($class) . '">' . $class . '</option>'; endforeach; endif; ?> \
 								</select></td> \
 							<td><input type="text" name="tax_label[' + size + ']" placeholder="<?php _e('Online Label', 'jigoshop'); ?>" size="10" /></td> \
-							<td><select name="tax_country[' + size + '][]" multiple="multiple" style="width:125px;"> \
+							<td><select name="tax_country[' + size + '][]" id="tax_country_' + size +'" multiple="multiple" style="width:400px;"> \
 									<?php jigoshop_countries::country_dropdown_options('', '', true); ?></select></td> \
 							<td><input type="text" name="tax_rate[' + size + ']" placeholder="<?php _e('Rate (%)', 'jigoshop'); ?>" size="6" /> \
 							<td><input type="checkbox" name="tax_shipping[' + size + ']" /></td> \
 							<td><input type="checkbox" name="tax_compound[' + size + ']" /></td> \
 							</tr>'
 					).appendTo('#jigoshop_tax_rates .tax_rate_rules tbody');
+					jQuery('#tax_country_' + size).select2();
 					return false;
 				});
 				jQuery('#jigoshop_tax_rates a.remove').live('click', function(){
