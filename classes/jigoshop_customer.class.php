@@ -219,9 +219,9 @@ class jigoshop_customer extends jigoshop_singleton {
 
 		$title = '<h3>';
 		if($load_address=='billing'):
-			$title .=_e('Billing Address', 'jigoshop');
+			$title .= __('Billing Address', 'jigoshop');
 		else:
-			$title .= _e('Shipping Address', 'jigoshop');
+			$title .= __('Shipping Address', 'jigoshop');
 		endif;
 		$title .='</h3>';
 		echo $title;
