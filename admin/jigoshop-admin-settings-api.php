@@ -1158,7 +1158,7 @@ class Jigoshop_Options_Parser {
 
 							$i++;// increment counter after check for all states having been applied
 
-							echo '<tr><td><a href="#" class="remove button">&times;</a></td>';
+							echo '<tr class="tax_rate"><td><a href="#" class="remove button">&times;</a></td>';
 
 							echo '<td><select id="tax_classes[' . esc_attr( $i ) . ']" name="tax_classes[' . esc_attr( $i ) . ']"><option value="*">' . __('Standard Rate', 'jigoshop') . '</option>';
 							if ( $tax_classes ) {
@@ -1174,7 +1174,7 @@ class Jigoshop_Options_Parser {
 
 							echo '<td><input type="text" value="' . esc_attr( $rate['label']  ) . '" name="tax_label[' . esc_attr( $i ) . ']" placeholder="' . __('Online Label', 'jigoshop') . '" size="10" /></td>';
 
-							echo '<td><select name="tax_country[' . esc_attr( $i ) . '][]" id="tax_country_' . esc_attr( $i ) . '" multiple="multiple" style="width:400px;">';
+							echo '<td><select name="tax_country[' . esc_attr( $i ) . '][]" id="tax_country_' . esc_attr( $i ) . '" class="tax_select2" multiple="multiple" style="width:400px;">';
 							if ( $rate['is_all_states'] ) :
 								if ( is_array( $applied_all_states ) && !in_array( get_all_states_key( $rate ), $applied_all_states )) :
 									$applied_all_states[] = get_all_states_key( $rate );
@@ -1185,8 +1185,9 @@ class Jigoshop_Options_Parser {
 							else :
 								jigoshop_countries::country_dropdown_options( $rate['country'], $rate['state'] );
 							endif;
-							echo '</select></td>';
+							echo '</select>';
 
+							echo '<button class="select_all button">'.__('All', 'jigoshop').'</button><button class="select_none button">'.__('None', 'jigoshop').'</button><button class="button select_us_states">'.__('US States', 'jigoshop').'</button><button class="button select_europe">'.__('EU States', 'jigoshop').'</button></td>';
 							echo '<td><input type="text" value="' . esc_attr( $rate['rate']  ) . '" name="tax_rate[' . esc_attr( $i ) . ']" placeholder="' . __('Rate (%)', 'jigoshop') . '" size="6" /></td>';
 
 							echo '<td><input type="checkbox" name="tax_shipping[' . esc_attr( $i ) . ']" ';
@@ -1214,6 +1215,32 @@ class Jigoshop_Options_Parser {
 		<script type="text/javascript">
 		/* <![CDATA[ */
 			jQuery(function() {
+
+				jQuery('tr.tax_rate .select_all').live('click', function(){
+					jQuery(this).closest('td').find('select option').attr("selected","selected");
+					jQuery(this).closest('td').find('select.tax_select2').trigger("change");
+					return false;
+				});
+				jQuery('tr.tax_rate .select_none').live('click', function(){
+					jQuery(this).closest('td').find('select option').removeAttr("selected");
+					jQuery(this).closest('td').find('select.tax_select2').trigger("change");
+					return false;
+				});
+				jQuery('tr.tax_rate .select_us_states').live('click', function(e){
+					jQuery(this).closest('td').find('select optgroup[label="<?php echo __( 'United States', 'jigoshop' ); ?>"] option').attr("selected","selected");
+					jQuery(this).closest('td').find('select.tax_select2').trigger("change");
+					return false;
+				});
+				jQuery('tr.tax_rate .options select').live('change', function(e){
+					jQuery(this).trigger("liszt:updated");
+					jQuery(this).closest('td').find('label').text( jQuery(":selected", this).length + ' ' + '<?php _e('countries/states selected', 'jigoshop') ?>' );
+				});
+				jQuery('tr.tax_rate .select_europe').live('click', function(e){
+					jQuery(this).closest('td').find('option[value="BE"],option[value="FR"],option[value="DE"],option[value="IT"],option[value="LU"],option[value="NL"],option[value="DK"],option[value="IE"],option[value="GR"],option[value="PT"],option[value="ES"],option[value="AT"],option[value="FI"],option[value="SE"],option[value="CY"],option[value="CZ"],option[value="EE"],option[value="HU"],option[value="LV"],option[value="LT"],option[value="MT"],option[value="PL"],option[value="SK"],option[value="SI"],option[value="RO"],option[value="BG"],option[value="IM"],option[value="GB"]').attr("selected","selected");
+					jQuery(this).closest('td').find('select.tax_select2').trigger("change");
+					return false;
+				});
+
 				jQuery('#jigoshop_tax_rates a.add').live('click', function() {
 					var size = jQuery('.tax_rate_rules tbody tr').size();
 					jQuery('<tr> \
