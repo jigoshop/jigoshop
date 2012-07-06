@@ -39,10 +39,10 @@
  *
  *  ====================
  *
- *  The Options array uses Tabs for display and each tab begins with a 'heading' option type
+ *  The Options array uses Tabs for display and each tab begins with a 'tab' option type
  *  Each Tab Heading may be optionally divided into sections defined by a 'title' option type
- *  A Payment Gateway for example, would install itself into a 'heading' and provide a section 'title' with options
- *  List each option sequentially for display under each 'title' or 'heading' option type
+ *  A Payment Gateway for example, would install itself into a 'tab' and provide a section 'title' with options
+ *  List each option sequentially for display under each 'title' or 'tab' option type
  *
  *  Each Option may have any or all of the following items: (for an option, 'id' is MANDATORY and should be unique)
 		'tab'           => '',                      - calculated based on position in array
@@ -274,7 +274,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	 * Install additional default options for parsing
 	 * Shipping methods and Payment gateways would use this
 	 *
-	 * @param	string	The name of the Tab ('heading') to install onto
+	 * @param	string	The name of the Tab ('tab') to install onto
 	 * @param	array	The array of options to install
 	 *
 	 * @since	1.3
@@ -288,7 +288,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		$first_index = -1;
 		$second_index = -1;
 		foreach ( $our_options as $index => $option ) {
-			if ( $option['type'] <> 'heading' ) continue;
+			if ( $option['type'] <> 'tab' ) continue;
 			if ( $option['name'] == $tab ) {
 				$first_index = $index;
 				continue;
@@ -380,7 +380,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		 * Shop Tab
 		 *------------------------------------------------------------------------------------------
 		*/
-		self::$default_options[] = array( 'type' => 'heading', 'name' => __('Shop', 'jigoshop') );
+		self::$default_options[] = array( 'type' => 'tab', 'name' => __('Shop', 'jigoshop') );
 		
 		self::$default_options[] = array( 'name' => __( 'Invoicing', 'jigoshop' ), 'type' => 'title', 'desc' => '' );
 		
@@ -616,7 +616,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		 * General Tab
 		 *------------------------------------------------------------------------------------------
 		*/
-		self::$default_options[] = array( 'type' => 'heading', 'name' => __('General', 'jigoshop') );
+		self::$default_options[] = array( 'type' => 'tab', 'name' => __('General', 'jigoshop') );
 		
 		self::$default_options[] = array( 'name' => __('General Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
@@ -784,7 +784,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		 * Pages Tab
 		 *------------------------------------------------------------------------------------------
 		*/
-		self::$default_options[] = array( 'type' => 'heading', 'name' => __('Pages', 'jigoshop') );
+		self::$default_options[] = array( 'type' => 'tab', 'name' => __('Pages', 'jigoshop') );
 		
 		self::$default_options[] = array( 'name' => __('Page configurations', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
@@ -883,7 +883,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		 * Catalog & Pricing Tab
 		 *------------------------------------------------------------------------------------------
 		*/
-		self::$default_options[] = array( 'type' => 'heading', 'name' => __('Catalog &amp; Pricing', 'jigoshop') );
+		self::$default_options[] = array( 'type' => 'tab', 'name' => __('Catalog &amp; Pricing', 'jigoshop') );
 		
 		self::$default_options[] = array( 'name' => __('Catalog Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
@@ -1020,7 +1020,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		 * Images Tab
 		 *------------------------------------------------------------------------------------------
 		*/
-		self::$default_options[] = array( 'type' => 'heading', 'name' => __('Images', 'jigoshop') );
+		self::$default_options[] = array( 'type' => 'tab', 'name' => __('Images', 'jigoshop') );
 		
 		self::$default_options[] = array( 'name' => __('Image Options', 'jigoshop'), 'type' => 'title', 'desc' => sprintf( __('<p>Changing any of these settings will affect the dimensions of images used in your Shop. After changing these settings you may need to <a href="%s">regenerate your thumbnails</a>.</p><p>Crop: Leave unchecked to set the image size by resizing the image proportionally (that is, without distorting it). Leave checked to set the image size by hard cropping the image (either from the sides, or from the top and bottom).</p><p><strong>Note:</strong> Your images may not display in the size you choose below. This is because they may still be affected by CSS styles in your theme.', 'jigoshop'), 'http://wordpress.org/extend/plugins/regenerate-thumbnails/') );
 		
@@ -1156,7 +1156,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		 * Products & Inventory Tab
 		 *------------------------------------------------------------------------------------------
 		*/
-		self::$default_options[] = array( 'type' => 'heading', 'name' => __('Products &amp; Inventory', 'jigoshop') );
+		self::$default_options[] = array( 'type' => 'tab', 'name' => __('Products &amp; Inventory', 'jigoshop') );
 		
 		self::$default_options[] = array( 'name' => __('Product Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
@@ -1325,7 +1325,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		 * Tax Tab
 		 *------------------------------------------------------------------------------------------
 		*/
-		self::$default_options[] = array( 'type' => 'heading', 'name' => __('Tax', 'jigoshop') );
+		self::$default_options[] = array( 'type' => 'tab', 'name' => __('Tax', 'jigoshop') );
 		
 		self::$default_options[] = array( 'name' => __('Tax Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
@@ -1403,7 +1403,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		 * Shipping Tab
 		 *------------------------------------------------------------------------------------------
 		*/
-		self::$default_options[] = array( 'type' => 'heading', 'name' => __('Shipping', 'jigoshop') );
+		self::$default_options[] = array( 'type' => 'tab', 'name' => __('Shipping', 'jigoshop') );
 		
 		self::$default_options[] = array( 'name' => __('Shipping Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
@@ -1454,14 +1454,48 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		 * Payment Gateways Tab
 		 *------------------------------------------------------------------------------------------
 		*/
-		self::$default_options[] = array( 'type' => 'heading', 'name' => __('Payment Gateways', 'jigoshop') );
+		self::$default_options[] = array( 'type' => 'tab', 'name' => __('Payment Gateways', 'jigoshop') );
 		
 		self::$default_options[] = array( 'name' => __('Available gateways', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
 		self::$default_options[] = array( 'type' => 'gateway_options');  // required only for backwards compatibility. 
 		
-		// allow extensions to add options
-//		self::$default_options = apply_filters( 'jigoshop_options_settings', self::$default_options );
+		/**
+		 * Extensions Tab
+		 *------------------------------------------------------------------------------------------
+		*/
+		self::$default_options[] = array( 'type' => 'tab', 'name' => __('Extensions', 'jigoshop') );
+		
+		self::$default_options[] = array( 'name' => __('Available extensions', 'jigoshop'), 'type' => 'title', 'desc' => '' );
+		
+		self::$default_options[] = array( 'type' => 'extension_options');
+		
+		/**
+		 * Allow extensions to add options
+		 *------------------------------------------------------------------------------------------
+		*/
+// 		$other_options = apply_filters( 'jigoshop_options_settings', array() );
+// 		if ( ! empty( $other_options )) foreach ( $other_options as $index => $option ) {
+// jigoshop_log( $option );
+// 			switch ( $option['type'] ) {
+// 			case 'tab':
+// 				$fields = array(
+// 					'type' => $option['type'],
+// 					'name' => $option['tabname'],
+// 					'desc' => $option['desc']
+// 				);
+// 				self::$default_options[] = $fields;
+// 				break;
+// 			case 'title':
+// 			case 'name':
+// 			case 'desc':
+// 			case 'tip':
+// 			case 'id':
+// 			case 'std':
+// 				self::$default_options[] = $option;
+// 				break;
+// 			}
+// 		}
 		
 	}
 	

@@ -83,7 +83,7 @@ interface Jigoshop_Options_Interface {
 	 * Install additional default options for parsing
 	 * Shipping methods and Payment gateways would use this
 	 *
-	 * @param	string	The name of the Tab ('heading') to install onto
+	 * @param	string	The name of the Tab ('tab') to install onto
 	 * @param	array	The array of options to install
 	 *
 	 * @since	1.3

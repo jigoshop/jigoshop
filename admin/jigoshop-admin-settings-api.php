@@ -140,7 +140,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			'extra'			=> $extra
 		);
 		
-		if ( $type <> 'heading' ) {
+		if ( $type <> 'tab' ) {
 			add_settings_field( 
 				$id, 
 				esc_attr( $name ), 
@@ -307,7 +307,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 
 		if ( isset( $_GET['tab'] ) ) {
 			foreach ( $this->our_parser->these_options as $option ) {
-				if ( $option['type'] == 'heading' && sanitize_title( $option['name'] ) == $_GET['tab'] ) {
+				if ( $option['type'] == 'tab' && sanitize_title( $option['name'] ) == $_GET['tab'] ) {
 					$current = $option['name'];
 				}
 			}
@@ -356,7 +356,9 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 				case 'user_defined' :
 					if ( isset( $option['update'] ) ) {
 						if ( is_callable( $option['update'], true ) ) {
-							$valid_input[$setting['id']] = call_user_func( $option['update'] );
+							$result = call_user_func( $option['update'] );
+							$valid_input[$setting['id']] = $result;
+							update_option( $setting['id'], $valid_input[$setting['id']] ); // TODO: remove in v1.4 - provides compatibility
 						}
 					}
 					break;
@@ -372,12 +374,14 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 							}
 						}
 						$valid_input[$setting['id']] = $selected;
+						update_option( $setting['id'], $valid_input[$setting['id']] ); // TODO: remove in v1.4 - provides compatibility
 					}
 					break;
 					
 				case 'checkbox' :
 					// there will be no $value for a false checkbox, set it now
 					$valid_input[$setting['id']] = isset( $value ) ? 'yes' : 'no';
+					update_option( $setting['id'], $valid_input[$setting['id']] ); // TODO: remove in v1.4 - provides compatibility
 					break;
 					
 				case 'multicheck' :
@@ -390,12 +394,14 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 						}
 					}
 					$valid_input[$setting['id']] = $selected;
+					update_option( $setting['id'], $valid_input[$setting['id']] ); // TODO: remove in v1.4 - provides compatibility
 					break;
 					
 				case 'text' :
 				case 'longtext' :
 				case 'textarea' :
 					$valid_input[$setting['id']] = esc_attr( jigowatt_clean( $value ) );
+					update_option( $setting['id'], $valid_input[$setting['id']] ); // TODO: remove in v1.4 - provides compatibility
 					break;
 					
 				case 'email' :
@@ -408,8 +414,10 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 							'error'
 						);
 						$valid_input[$setting['id']] = $current_options[$setting['id']];
-					} else
+					} else {
 						$valid_input[$setting['id']] = esc_attr( jigowatt_clean( $email ) );
+					}
+					update_option( $setting['id'], $valid_input[$setting['id']] ); // TODO: remove in v1.4 - provides compatibility
 					break;
 					
 				case 'decimal' :
@@ -422,8 +430,10 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 							'error'
 						);
 						$valid_input[$setting['id']] = $current_options[$setting['id']];
-					} else
+					} else {
 						$valid_input[$setting['id']] = $cleaned;
+					}
+					update_option( $setting['id'], $valid_input[$setting['id']] ); // TODO: remove in v1.4 - provides compatibility
 					break;
 					
 				case 'integer' :
@@ -436,8 +446,10 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 							'error'
 						);
 						$valid_input[$setting['id']] = $current_options[$setting['id']];
-					} else
+					} else {
 						$valid_input[$setting['id']] = $cleaned;
+					}
+					update_option( $setting['id'], $valid_input[$setting['id']] ); // TODO: remove in v1.4 - provides compatibility
 					break;
 					
 				case 'natural' :
@@ -450,13 +462,16 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 							'error'
 						);
 						$valid_input[$setting['id']] = $current_options[$setting['id']];
-					} else
+					} else {
 						$valid_input[$setting['id']] = $cleaned;
+					}
+					update_option( $setting['id'], $valid_input[$setting['id']] ); // TODO: remove in v1.4 - provides compatibility
 					break;
 					
 				default :
 					if ( isset( $value ) ) {
 						$valid_input[$setting['id']] = $value;
+						update_option( $setting['id'], $valid_input[$setting['id']] ); // TODO: remove in v1.4 - provides compatibility
 					}
 					break;
 				}
@@ -466,8 +481,11 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		
 		// tax classes should be updated
 		// they will do nothing if this is not the right TAB
-		if ( $result = $this->get_updated_tax_classes() ) $valid_input['jigoshop_tax_rates'] = $result;
-
+		if ( $result = $this->get_updated_tax_classes() ) {
+			$valid_input['jigoshop_tax_rates'] = $result;
+			update_option( $setting['id'], $valid_input['jigoshop_tax_rates'] ); // TODO: remove in v1.4 - provides compatibility
+		}
+		
         // remove all jigoshop_update_options actions on shipping classes when not on the shipping tab
         if ( $this_section != 'shipping' ) :
             $this->remove_update_options( jigoshop_shipping::get_all_methods() );
@@ -699,13 +717,13 @@ class Jigoshop_Options_Parser {
 			
 			if ( isset( $item['id'] ) ) $item['id'] = sanitize_title( $item['id'] );
 			
-			if ( $item['type'] == "heading" ) {
+			if ( $item['type'] == 'tab' ) {
 				$tab_name = sanitize_title( $item['name'] );
 				$tab_headers[$tab_name] = $item['name'];
 				continue;
 			}
 						
-			if ( $item['type'] == "title" ) {
+			if ( $item['type'] == 'title' ) {
 				$section_name = sanitize_title( $item['name'] );
 			}
 			
@@ -1040,7 +1058,7 @@ class Jigoshop_Options_Parser {
 			jigoshop_log( $item );
 		}
 
-		if ( $item['type'] != 'heading' ) {
+		if ( $item['type'] != 'tab' ) {
 			if ( empty( $item['desc'] ) ) {
 				$explain_value = '';
 			} else {
