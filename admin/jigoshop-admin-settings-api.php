@@ -481,8 +481,8 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 
 		// tax classes should be updated
 		// they will do nothing if this is not the right TAB
-		if ( $result = $this->get_updated_tax_classes() ) {
-			$valid_input['jigoshop_tax_rates'] = $result;
+		if ( $setting['id'] == 'jigoshop_tax_rates' ) {
+			$valid_input['jigoshop_tax_rates'] = $this->get_updated_tax_classes();
 			update_option( $setting['id'], $valid_input['jigoshop_tax_rates'] ); // TODO: remove in v1.4 - provides compatibility
 		}
 
@@ -567,9 +567,6 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 * @since 	1.3
 	 */
 	function get_updated_tax_classes() {
-
-		// make sure we are on the Tax Tab
-		if ( ! isset( $_POST['tax_classes'] )) return false;
 
 		$taxFields = array(
 			'tax_classes' => '',
@@ -1121,7 +1118,7 @@ class Jigoshop_Options_Parser {
 				<tbody>
 					<?php
 					$i = -1;
-					if ($tax_rates && is_array($tax_rates) && sizeof($tax_rates) > 0) :
+					if ($tax_rates && is_array($tax_rates) && sizeof($tax_rates) > 0 ) :
 
 						function array_find($needle,$haystack){
 							foreach($haystack as $key => $val):
