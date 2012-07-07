@@ -37,7 +37,7 @@ interface Jigoshop_Options_Interface {
 	 *
 	 * @since	1.3
 	 */
-    public function add_option($name, $value);
+    public function add_option( $name, $value );
 
 	/**
 	 * Returns a named Jigoshop option
@@ -48,7 +48,7 @@ interface Jigoshop_Options_Interface {
 	 *
 	 * @since	1.3
 	 */
-    public function get_option($name, $default = null);
+    public function get_option( $name, $default = null );
 
 	/**
 	 * Sets a named Jigoshop option
@@ -58,7 +58,7 @@ interface Jigoshop_Options_Interface {
 	 *
 	 * @since	1.3
 	 */
-    public function set_option($name, $value);
+    public function set_option( $name, $value );
 
 	/**
 	 * Deletes a named Jigoshop option
@@ -68,7 +68,7 @@ interface Jigoshop_Options_Interface {
 	 *
 	 * @since	1.3
 	 */
-    public function delete_option($name);
+    public function delete_option( $name );
 
 	/**
 	 * Determines whether an Option exists
@@ -77,19 +77,30 @@ interface Jigoshop_Options_Interface {
 	 *
 	 * @since	1.3
 	 */
-    public function exists_option($name);
+    public function exists_option( $name );
 
 	/**
-	 * Install additional default options for parsing
-	 * Shipping methods and Payment gateways would use this
+	 * Install additional default options for parsing onto a specific Tab
+	 * Shipping methods, Payment gateways and Extensions would use this
 	 *
 	 * @param	string	The name of the Tab ('tab') to install onto
 	 * @param	array	The array of options to install
 	 *
 	 * @since	1.3
-	 */
-    public function install_external_options($tab, $options);
+	 */	
+    public function install_external_options_onto_tab( $tab, $options );
 
+	/**
+	 * Install additional default options for parsing after a specific option ID
+	 * Extensions would use this
+	 *
+	 * @param	string	The name of the ID  to install -after-
+	 * @param	array	The array of options to install
+	 *
+	 * @since	1.3
+	 */	
+    public function install_external_options_after_id( $insert_after_id, $options );
+    
 	/**
 	 * Return the Jigoshop current options
 	 *

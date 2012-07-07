@@ -271,18 +271,19 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	
 	
 	/**
-	 * Install additional default options for parsing
-	 * Shipping methods and Payment gateways would use this
+	 * Install additional default options for parsing onto a specific Tab
+	 * Shipping methods, Payment gateways and Extensions would use this
 	 *
 	 * @param	string	The name of the Tab ('tab') to install onto
 	 * @param	array	The array of options to install
 	 *
 	 * @since	1.3
 	 */	
-	public function install_external_options( $tab, $options ) {
+	public function install_external_options_onto_tab( $tab, $options ) {
         
         // only proceed with function if we have options to add
-        if (empty ($options)) return;
+        if ( empty( $options )) return;
+        if ( empty( $tab )) return;
         
 		$our_options = $this->get_default_options();
 		$first_index = -1;
@@ -314,6 +315,44 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		/*** glue them back together ***/
 		self::$default_options = array_merge( $start, $end );
  	}
+	
+	
+	/**
+	 * Install additional default options for parsing after a specific option ID
+	 * Extensions would use this
+	 *
+	 * @param	string	The name of the ID  to install -after-
+	 * @param	array	The array of options to install
+	 *
+	 * @since	1.3
+	 */	
+	public function install_external_options_after_id( $insert_after_id, $options ) {
+	
+        // only proceed with function if we have options to add
+        if ( empty( $options )) return;
+        if ( empty( $insert_after_id )) return;
+
+		$our_options = $this->get_default_options();
+		$first_index = -1;
+		foreach ( $our_options as $index => $option ) {
+			if ( ! isset( $option['id'] ) || $option['id'] <> $insert_after_id ) continue;
+			$first_index = $index;
+			break;
+		}
+		/*** get the start of the array ***/
+		$start = array_slice( $our_options, 0, $first_index+1 ); 
+		/*** get the end of the array ***/
+		$end = array_slice( $our_options, $first_index+1 );
+		/*** add the new elements to the array ***/
+        foreach ( $options as $option ) {
+            if ( isset( $option['id'] ) && !$this->exists_option($option['id'])) {
+                $this->add_option( $option['id'], $option['std'] );
+            }
+            $start[] = $option;
+        }
+		/*** glue them back together ***/
+		self::$default_options = array_merge( $start, $end );
+	}
 	
 	
 	/**
@@ -1468,8 +1507,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		
 		self::$default_options[] = array( 'name' => __('Available extensions', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
-//		self::$default_options[] = array( 'type' => 'extension_options');
-		
 		/**
 		 * Allow extensions to add options
 		 *------------------------------------------------------------------------------------------
@@ -1479,22 +1516,12 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		if ( ! empty( $other_options )) foreach ( $other_options as $index => $option ) {
 			switch ( $option['type'] ) {
 			case 'tab':
-				$fields = array(
-					'type' => $option['type'],
-					'name' => $option['tabname']
-				);
-//				self::$default_options[] = $fields;
+				$this->bad_extensions[] = $option['tabname'];
+				add_action( 'admin_notices', array ($this, 'jigoshop_deprecated_options') );
 				break;
 			case 'title':
 				$this->bad_extensions[] = $option['name'];
 				add_action( 'admin_notices', array ($this, 'jigoshop_deprecated_options') );
-				break;
-			case 'name':
-			case 'desc':
-			case 'tip':
-			case 'id':
-			case 'std':
-//				self::$default_options[] = $option;
 				break;
 			}
 		}
@@ -1502,7 +1529,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	}
 	
 	public function jigoshop_deprecated_options() {
-		echo '<div class="error"><p>' . sprintf( __('Adding Jigoshop Settings this way by (%s) is no longer supported.', 'jigoshop') . '</p></div>', implode( ', ', $this->bad_extensions ));
+		echo '<div class="error"><p>' . sprintf( __('The following items, from one or more extensions, have tried to add Jigoshop Settings in a manner that is no longer supported as of Jigoshop 1.3. (%s)', 'jigoshop') . '</p></div>', implode( ', ', $this->bad_extensions ));
 	}
 	
 }
