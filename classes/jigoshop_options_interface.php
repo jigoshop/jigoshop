@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Jigoshop_Options_Interface contains all WordPress options used within Jigoshop
  *
@@ -79,6 +78,17 @@ interface Jigoshop_Options_Interface {
 	 */
     public function exists_option( $name );
 
+	/**
+	 * Install additional Tab's to Jigoshop Options
+	 * Extensions would use this to add a new Tab for their own options
+	 *
+	 * @param	string	The name of the Tab ('tab'), eg. 'My Extension'
+	 * @param	array	The array of options to install onto this tab
+	 *
+	 * @since	1.3
+	 */	
+	public function install_external_options_tab( $tab, $options );
+	
 	/**
 	 * Install additional default options for parsing onto a specific Tab
 	 * Shipping methods, Payment gateways and Extensions would use this
