@@ -143,7 +143,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		if ( $type <> 'tab' ) {
 			add_settings_field(
 				$id,
-				esc_attr( $name ),
+				($type == 'checkbox') ? '' : esc_attr( $name ),
 				array( &$this, 'display_option' ),
 				JIGOSHOP_OPTIONS,
 				$section,
@@ -989,8 +989,7 @@ class Jigoshop_Options_Parser {
 				class="jigoshop-input jigoshop-checkbox '.$class.'"
 				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
 				'.checked($data[$item['id']], 'yes', false).' />
-				<label for="'.$item['id'].'">'.$item['desc'].'</label></span>';
-			$item['desc'] = '';     // temporarily remove it so it doesn't display twice
+				<label for="'.$item['id'].'">'.$item['name'].'</label></span>';
 			break;
 
 		case 'multicheck':
