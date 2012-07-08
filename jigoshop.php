@@ -56,7 +56,7 @@ include_once( 'classes/jigoshop_session.class.php' );
 
 include_once( 'classes/jigoshop_sanitize.class.php' );
 include_once( 'classes/jigoshop_validation.class.php' );
-include_once( 'classes/jigoshop_form.class.php' );
+include_once( 'classes/jigoshop_forms.class.php' );
 include_once( 'jigoshop_taxonomy.php' );
 
 include_once( 'classes/jigoshop_countries.class.php' );

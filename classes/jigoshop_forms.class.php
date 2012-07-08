@@ -15,7 +15,7 @@
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
-class Jigoshop_Form extends Jigoshop_Base {
+class Jigoshop_Forms extends Jigoshop_Base {
 
 	public static function input( $field ) {
 		global $post;

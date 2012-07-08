@@ -44,7 +44,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'label'         => __( 'Coupon Type', 'jigoshop' ),
 				'options'       => jigoshop_coupons::get_coupon_types(),
 			);
-			echo Jigoshop_Form::select( $args );
+			echo Jigoshop_Forms::select( $args );
 		
 			// Amount
 			$args = array(
@@ -55,7 +55,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'tip'           => __('Amount this coupon is worth. If it is a percentange, just include the number without the percentage sign.','jigoshop'),
 				'placeholder'   => '0.00'
 			);
-			echo Jigoshop_Form::input( $args );
+			echo Jigoshop_Forms::input( $args );
 				
 			// Date From
 			$coupon_date_from = get_post_meta( $post->ID, 'date_from', true);
@@ -68,7 +68,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'placeholder'   => __('Any date','jigoshop'),
 				'value'         => ($coupon_date_from <> '') ? date( 'Y-m-d', $coupon_date_from ) : ''
 			);
-			echo Jigoshop_Form::input( $args );
+			echo Jigoshop_Forms::input( $args );
 		
 			// Date To
 			$coupon_date_to = get_post_meta( $post->ID, 'date_to', true);
@@ -81,7 +81,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'placeholder'   => __('Any date','jigoshop'),
 				'value'         => ($coupon_date_to <> '') ? date( 'Y-m-d', $coupon_date_to ) : ''
 			);
-			echo Jigoshop_Form::input( $args );
+			echo Jigoshop_Forms::input( $args );
 		
 			// Usage limit
 			$usage = get_post_meta( $post->ID, 'usage', true);
@@ -93,7 +93,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'tip'           => __('Control how many times this coupon may be used.','jigoshop'),
 				'placeholder'   => '0'
 			);
-			echo Jigoshop_Form::input( $args );
+			echo Jigoshop_Forms::input( $args );
 
 			// Individual use
 			$args = array(
@@ -102,7 +102,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'desc'          => __('Prevent other coupons from being used while this one is applied to the Cart.','jigoshop'),
 				'value'         => false
 			);
-			echo Jigoshop_Form::checkbox( $args );
+			echo Jigoshop_Forms::checkbox( $args );
 		
 			// Free shipping
 			$args = array(
@@ -111,7 +111,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'desc'          => __('Show the Free Shipping method on the Checkout with this enabled.','jigoshop'),
 				'value'         => false
 			);
-			echo Jigoshop_Form::checkbox( $args );
+			echo Jigoshop_Forms::checkbox( $args );
 			
 		?>
 			</div><div class="options_group">
@@ -125,7 +125,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'desc'          => __('Set the required minimum subtotal for this coupon to be valid on an order.','jigoshop'),
 				'placeholder'   => __('No min','jigoshop')
 			);
-			echo Jigoshop_Form::input( $args );
+			echo Jigoshop_Forms::input( $args );
 		
 			// Order total maximum
 			$args = array(
@@ -135,7 +135,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'desc'          => __('Set the required maximum subtotal for this coupon to be valid on an order.','jigoshop'),
 				'placeholder'   => __('No max','jigoshop')
 			);
-			echo Jigoshop_Form::input( $args );
+			echo Jigoshop_Forms::input( $args );
 			
 		?>
 			</div><div class="options_group">
@@ -153,7 +153,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'placeholder'   => __('Any product','jigoshop'),
 				'value'         => $selected
 			);
-			echo Jigoshop_Form::input( $args );
+			echo Jigoshop_Forms::input( $args );
 
 			// Exclude product ID's
 			$selected = get_post_meta( $post->ID, 'exclude_products', true );
@@ -167,7 +167,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'placeholder'   => __('No exclusions','jigoshop'),
 				'value'         => $selected
 			);
-			echo Jigoshop_Form::input( $args );
+			echo Jigoshop_Forms::input( $args );
 			
 		?>
 			</div><div class="options_group">
@@ -186,7 +186,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'placeholder'   => __('Any category','jigoshop'),
 				'options'       => $coupon_cats
 			);
-			echo Jigoshop_Form::select( $args );
+			echo Jigoshop_Forms::select( $args );
 			
 			// Exclude Categories
 			$args = array(
@@ -197,7 +197,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'placeholder'   => __('No exclusions','jigoshop'),
 				'options'       => $coupon_cats
 			);
-			echo Jigoshop_Form::select( $args );
+			echo Jigoshop_Forms::select( $args );
 			
 		?>
 			</div><div class="options_group">
@@ -216,7 +216,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'placeholder'   => __('Any method','jigoshop'),
 				'options'       => $payment_methods
 			);
-			echo Jigoshop_Form::select( $args );
+			echo Jigoshop_Forms::select( $args );
 		
 			// javascript for product includes and excludes -- need to move this
 		?>
