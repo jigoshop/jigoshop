@@ -444,63 +444,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		*/
 		self::$default_options[] = array( 'type' => 'tab', 'name' => __('Shop', 'jigoshop') );
 		
-		self::$default_options[] = array( 'name' => __( 'Invoicing', 'jigoshop' ), 'type' => 'title', 'desc' => '' );
-		
-		self::$default_options[] = array(
-			'name'		=> __( 'Company Name', 'jigoshop' ),
-			'desc' 		=> '',
-			'tip' 		=> __( 'Setting your company name will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
-			'id' 		=> 'jigoshop_company_name',
-			'std' 		=> '',
-			'type' 		=> 'text'
-		);
-	
-		self::$default_options[] = array(
-			'name'		=> __( 'Tax Registration Number', 'jigoshop' ),
-			'desc' 		=> __( 'Add your tax registration label before the registration number and it will be printed as well. eg. <code>VAT Number: 88888888</code>', 'jigoshop' ),
-			'tip' 		=> __( 'Setting your tax number will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
-			'id' 		=> 'jigoshop_tax_number',
-			'std' 		=> '',
-			'type' 		=> 'text'
-		);
-	
-		self::$default_options[] = array(
-			'name'		=> __( 'Address Line1', 'jigoshop' ),
-			'desc' 		=> '',
-			'tip' 		=> __( 'Setting your address will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
-			'id' 		=> 'jigoshop_address_line1',
-			'std' 		=> '',
-			'type' 		=> 'longtext'
-		);
-	
-		self::$default_options[] = array(
-			'name' =>	__( 'Address Line2', 'jigoshop' ),
-			'desc' 		=> '',
-			'tip' 		=> __( 'If address line1 is not set, address line2 will not display even if you put a value in it. Setting your address will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
-			'id' 		=> 'jigoshop_address_line2',
-			'std' 		=> '',
-			'type' 		=> 'longtext'
-		);
-	
-		self::$default_options[] = array(
-			'name'		=> __( 'Company Phone', 'jigoshop' ),
-			'desc' 		=> '',
-			'tip' 		=> __( 'Setting your company phone number will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
-			'id' 		=> 'jigoshop_company_phone',
-			'std' 		=> '',
-			'type' 		=> 'text'
-		);
-		
-
-		self::$default_options[] = array(
-			'name'		=> __( 'Company Email', 'jigoshop' ),
-			'desc' 		=> '',
-			'tip' 		=> __( 'Setting your company email will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
-			'id' 		=> 'jigoshop_company_email',
-			'std' 		=> '',
-			'type' 		=> 'email'
-		);
-		
 		self::$default_options[] = array( 'name' => __( 'Shop Options', 'jigoshop' ), 'type' => 'title', 'desc' => '' );
 		
 		self::$default_options[] = array(
@@ -615,6 +558,63 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 // 			'extra'     => is_multisite() ? admin_url().'network/' : '' . 'admin.php?page=jigoshop_settings&amp;action=jigoshop_beta_check&amp;_wpnonce='.wp_create_nonce('jigoshop_check_beta_'.get_current_user_id().'_wpnonce')
 // 		);
 			
+		self::$default_options[] = array( 'name' => __( 'Invoicing', 'jigoshop' ), 'type' => 'title', 'desc' => '' );
+		
+		self::$default_options[] = array(
+			'name'		=> __( 'Company Name', 'jigoshop' ),
+			'desc' 		=> '',
+			'tip' 		=> __( 'Setting your company name will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
+			'id' 		=> 'jigoshop_company_name',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+	
+		self::$default_options[] = array(
+			'name'		=> __( 'Tax Registration Number', 'jigoshop' ),
+			'desc' 		=> __( 'Add your tax registration label before the registration number and it will be printed as well. eg. <code>VAT Number: 88888888</code>', 'jigoshop' ),
+			'tip' 		=> __( 'Setting your tax number will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
+			'id' 		=> 'jigoshop_tax_number',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+	
+		self::$default_options[] = array(
+			'name'		=> __( 'Address Line1', 'jigoshop' ),
+			'desc' 		=> '',
+			'tip' 		=> __( 'Setting your address will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
+			'id' 		=> 'jigoshop_address_line1',
+			'std' 		=> '',
+			'type' 		=> 'longtext'
+		);
+	
+		self::$default_options[] = array(
+			'name' =>	__( 'Address Line2', 'jigoshop' ),
+			'desc' 		=> '',
+			'tip' 		=> __( 'If address line1 is not set, address line2 will not display even if you put a value in it. Setting your address will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
+			'id' 		=> 'jigoshop_address_line2',
+			'std' 		=> '',
+			'type' 		=> 'longtext'
+		);
+	
+		self::$default_options[] = array(
+			'name'		=> __( 'Company Phone', 'jigoshop' ),
+			'desc' 		=> '',
+			'tip' 		=> __( 'Setting your company phone number will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
+			'id' 		=> 'jigoshop_company_phone',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+		
+
+		self::$default_options[] = array(
+			'name'		=> __( 'Company Email', 'jigoshop' ),
+			'desc' 		=> '',
+			'tip' 		=> __( 'Setting your company email will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop' ),
+			'id' 		=> 'jigoshop_company_email',
+			'std' 		=> '',
+			'type' 		=> 'email'
+		);
+		
 		self::$default_options[] = array( 'name' => __('Permalinks', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
 		self::$default_options[] = array(
