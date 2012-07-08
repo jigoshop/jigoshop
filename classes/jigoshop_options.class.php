@@ -1523,15 +1523,9 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		self::$default_options[] = array( 'type' => 'gateway_options');  // required only for backwards compatibility. 
 		
 		/**
-		 * Extensions Tab
-		 *------------------------------------------------------------------------------------------
-		*/
-		self::$default_options[] = array( 'type' => 'tab', 'name' => __('Extensions', 'jigoshop') );
-		
-		self::$default_options[] = array( 'name' => __('Available extensions', 'jigoshop'), 'type' => 'title', 'desc' => '' );
-		
-		/**
-		 * Allow extensions to add options
+		 * Extensions are encouraged to use any of the 'install_external_options' variants here to add options
+		 * We will check for the old means of installing options prior to Jigoshop 1.3 and
+		 * and display a warning if it is detected from the 'jigoshop_options_settings' filter.
 		 *------------------------------------------------------------------------------------------
 		*/
 		$other_options = apply_filters( 'jigoshop_options_settings', array() );
