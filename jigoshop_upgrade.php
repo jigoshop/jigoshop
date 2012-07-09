@@ -53,7 +53,7 @@ function jigoshop_upgrade() {
         jigoshop_upgrade_120();
     }
 
-	if ( $jigoshop_db_version < 1206130 ) {
+	if ( $jigoshop_db_version < 1207090 ) {
 		jigoshop_upgrade_130();
 	}
 
@@ -120,22 +120,9 @@ function jigoshop_convert_db_version() {
 		case '0.9.9.3':
 			update_site_option( 'jigoshop_db_version', 1111092 );
 			break;
-        //TODO: I'm not sure why cases 1.0 -> are here... the verion of db was
-        // updated since 1.0 to the new standard. No point on continuing to
+        // The verion of db was updated since 1.0 to the new standard. No point on continuing to
         // add entries here, since anyone that has post 1.0 will also have the
         // new db versions. Anyone before, will get converted from this function.
-		case '1.0':
-			update_site_option( 'jigoshop_db_version', 1202090 );
-			break;
-		case '1.1':
-			update_site_option( 'jigoshop_db_version', 1202130 );
-			break;
-		case '1.1.1':
-			update_site_option( 'jigoshop_db_version', 1202280 );
-			break;
-		case '1.2':
-			update_site_option( 'jigoshop_db_version', 1202290 );
-			break;
 	}
 }
 
