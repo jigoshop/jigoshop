@@ -89,16 +89,16 @@ class jigoshop_cron extends Jigoshop_Base {
 
 	/* Manually invoke the beta updater if the user requests. */
 	function jigoshop_update_beta_now() {
-
-		if( !empty($_REQUEST['action']) && $_REQUEST['action'] == 'jigoshop_beta_check' && check_admin_referer('jigoshop_check_beta_'.get_current_user_id().'_wpnonce') && is_super_admin() ) {
-
-			self::get_options()->set_option('jigoshop_check_beta_manually', true);
-			$this->jigoshop_update_beta_init();
-
-			add_action( 'jigoshop_admin_settings_notices', array ($this, 'jigoshop_beta_check_notice') );
-
+		if ( self::get_options()->get_option( 'jigoshop_use_beta_version' ) == 'yes' ) {
+			if ( !empty($_REQUEST['action']) && $_REQUEST['action'] == 'jigoshop_beta_check' && check_admin_referer('jigoshop_check_beta_'.get_current_user_id().'_wpnonce') && is_super_admin() ) {
+	
+				self::get_options()->set_option('jigoshop_check_beta_manually', true);
+				$this->jigoshop_update_beta_init();
+	
+				add_action( 'jigoshop_admin_settings_notices', array ($this, 'jigoshop_beta_check_notice') );
+	
+			}
 		}
-
 	}
 
 	function jigoshop_beta_check_notice() {
