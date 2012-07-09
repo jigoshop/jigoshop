@@ -113,8 +113,13 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 
 == Changelog ==
 = 1.3 - TBA =
+* New: Redesigned settings pages using the WordPress Settings API
+	* new settings types including checkboxes, radio buttons, range sliders
+	* each settings tab saves independently of other tabs
+	* searchable pop-up selects for longer option lists
+	* Redesigned Jigoshop Options simplify extension, payment gateway, and shipping method development
 * New: Coupon features
-	* Redesigned coupon setting page
+	* Removed from settings, now a WordPress custom post type with a submenu under Jigoshop Menu
 	* Show coupon input field on checkout page
 	* Allow coupons to be removed from cart
 	* Free shipping option
@@ -135,13 +140,11 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * New: Beta updater
 	* Keep track of Jigoshop beta versions by enabling this checkbox in the settings
 	* Allows you to update directly to a beta version
+* New: Product on Sale shortcode
 * New: Force users to login before downloading a purchased product
-* New: Mark 1 month or older orders from 'pending' to 'on-hold'
-* New: Select multiple countries for tax rules
+* New: Mark 1 month or older orders from 'pending' to 'on-hold' with an option in the Settings to enable
+* New: Select multiple countries and states for tax rules
 * New: Support for WordPress' admin classic theme
-* Tweak: Checkboxes & radio boxes in the admin settings
-* Tweak: Use Twitter Bootstrap tooltips for setting fields
-* Tweak: Images setting tab is now cleaner
 * Tweak: Allow default tax classes to be translated
 * Tweak: UI Sortable helper on attributes now has no border radius
 * Tweak: Pages & CPT's now use menu_position. Fixes array key duplication
