@@ -580,15 +580,14 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		$tax_rates = array();
 
 		/* Save each array key to a variable */
-		foreach ($taxFields as $name => $val)
-			if (isset($_POST[$name])) $taxFields[$name] = $_POST[$name];
+		foreach ( $taxFields as $name => $val )
+			if ( isset( $_POST[$name] )) $taxFields[$name] = $_POST[$name];
 
-		extract($taxFields);
+		extract( $taxFields );
 
-		for ($i = 0; $i < sizeof($tax_classes); $i++) :
+		for ( $i = 0; $i < sizeof( $tax_classes); $i++ ) :
 
-			if ( empty($tax_rate[$i]) )
-				continue;
+			if ( empty( $tax_rate[$i] )) continue;
 
 			$countries = $tax_country[$i];
 			$label     = trim($tax_label[$i]);
@@ -602,7 +601,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			/* Save the state & country separately from options eg US:OH */
 			$states  = array();
 			foreach ( $countries as $k => $countryCode ) :
-				if (strstr($countryCode, ':')) :
+				if ( strstr($countryCode, ':')) :
 					$cr = explode(':', $countryCode);
 					$states[$cr[1]]  = $cr[0];
 					unset($countries[$k]);
@@ -611,7 +610,6 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 
 			/* Save individual state taxes, eg OH => US (State => Country) */
 			foreach ( $states as $state => $country ) :
-
 				$tax_rates[] = array(
 					'country'      => $country,
 					'label'        => $label,
@@ -622,19 +620,18 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					'compound'     => $compound,
 					'is_all_states'=> false //determines if admin panel should show 'all_states'
 				);
-
 			endforeach;
 
 			foreach ( $countries as $country ) :
 
 				/* Countries with states */
-				if ( jigoshop_countries::country_has_states($country)) {
+				if ( jigoshop_countries::country_has_states( $country )) {
 
-					foreach (array_keys(jigoshop_countries::$states[$country]) as $st) :
+					foreach ( array_keys( jigoshop_countries::$states[$country] ) as $state ) :
 						$tax_rates[] = array(
 							'country'      => $country,
 							'label'        => $label,
-							'state'        => $st,
+							'state'        => $state,
 							'rate'         => $rate,
 							'shipping'     => $shipping,
 							'class'        => $class,
@@ -643,8 +640,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 						);
 					endforeach;
 
-				/* This country has no states, eg AF */
-				} else {
+				} else {  /* This country has no states, eg AF */
 
 					 $tax_rates[] = array(
 						'country'      => $country,
@@ -664,7 +660,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		endfor;
 
 		/* Remove duplicates. */
-		$tax_rates = array_values(array_unique($tax_rates, SORT_REGULAR));
+		$tax_rates = array_values( array_unique( $tax_rates, SORT_REGULAR ));
 		usort( $tax_rates, array( &$this, 'csort_tax_rates' ) );
 
 		return $tax_rates;
@@ -1078,6 +1074,35 @@ class Jigoshop_Options_Parser {
 	}
 
 
+	function array_find( $needle, $haystack ) {
+		foreach ( $haystack as $key => $val ):
+			if ( $needle == array( "label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'] ) ):
+				return $key;
+			endif;
+		endforeach;
+		return false;
+	}
+	
+	
+	function array_compare( $tax_rates ) {
+		$after = array();
+		foreach ( $tax_rates as $key => $val ):
+			$first_two = array("label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'] );
+			$found = $this->array_find( $first_two, $after );
+			if ( $found !== false ):
+				$combined  = $after[$found]["state"];
+				$combined2 = $after[$found]["country"];
+				$combined = !is_array($combined) ? array($combined) : $combined;
+				$combined2 = !is_array($combined2) ? array($combined2) : $combined2;
+				$after[$found] = array_merge($first_two,array( "state" => array_merge($combined,array($val['state'])), "country" => array_merge($combined2,array($val['country'])) ));
+			else:
+				$after = array_merge($after,array(array_merge($first_two,array("state" => $val['state'], "country" => $val['country']))));
+			endif;
+		endforeach;
+		return $after;
+	}
+	
+	
 	/*
 	 *	Format tax rates array for display
 	 */
@@ -1117,39 +1142,12 @@ class Jigoshop_Options_Parser {
 				<tbody>
 					<?php
 					$i = -1;
-					if ($tax_rates && is_array($tax_rates) && sizeof($tax_rates) > 0 ) :
+					if ( $tax_rates && is_array( $tax_rates ) && sizeof( $tax_rates ) > 0 ) :
 
-						function array_find($needle,$haystack){
-							foreach($haystack as $key => $val):
-								if( $needle == array( "label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'] ) ):
-									return $key;
-								endif;
-							endforeach;
-							return false;
-						}
-
-						function array_compare($tax_rates) {
-							$after = array();
-							foreach($tax_rates as $key => $val):
-								$first_two = array("label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'] );
-								$found = array_find($first_two,$after);
-								if($found!==false):
-									$combined  = $after[$found]["state"];
-									$combined2 = $after[$found]["country"];
-									$combined = !is_array($combined) ? array($combined) : $combined;
-									$combined2 = !is_array($combined2) ? array($combined2) : $combined2;
-									$after[$found] = array_merge($first_two,array( "state" => array_merge($combined,array($val['state'])), "country" => array_merge($combined2,array($val['country'])) ));
-								else:
-									$after = array_merge($after,array(array_merge($first_two,array("state" => $val['state'], "country" => $val['country']))));
-								endif;
-							endforeach;
-							return $after;
-						}
-
-						$tax_rates = array_compare($tax_rates);
-
-						foreach ($tax_rates as $rate) :
-							if ( isset($rate['is_all_states']) && in_array(get_all_states_key($rate), $applied_all_states) )
+						$tax_rates = $this->array_compare( $tax_rates );
+						
+						foreach ( $tax_rates as $rate ) :
+							if ( isset($rate['is_all_states']) && in_array($tax_rate['country'].$tax_rate['class'], $applied_all_states) )
 								continue;
 
 							$i++;// increment counter after check for all states having been applied
@@ -1172,8 +1170,8 @@ class Jigoshop_Options_Parser {
 
 							echo '<td><select name="tax_country[' . esc_attr( $i ) . '][]" id="tax_country_' . esc_attr( $i ) . '" class="tax_select2" multiple="multiple" style="width:220px;">';
 							if ( isset($rate['is_all_states']) ) :
-								if ( is_array( $applied_all_states ) && !in_array( get_all_states_key( $rate ), $applied_all_states )) :
-									$applied_all_states[] = get_all_states_key( $rate );
+								if ( is_array( $applied_all_states ) && !in_array( $tax_rate['country'].$tax_rate['class'], $applied_all_states )) :
+									$applied_all_states[] = $tax_rate['country'].$tax_rate['class'];
 									jigoshop_countries::country_dropdown_options( $rate['country'], '*' ); //all-states
 								else :
 									continue;
@@ -1194,7 +1192,7 @@ class Jigoshop_Options_Parser {
 
 							if ( isset( $rate['compound'] ) && $rate['compound'] == 'yes' ) echo 'checked="checked"';
 							echo ' /></td></tr>';
-							?><script>
+							?><script type="text/javascript">
 								jQuery(function() {
 									jQuery("#tax_country_<?php echo esc_attr( $i ); ?>").select2();
 								});
@@ -1212,11 +1210,6 @@ class Jigoshop_Options_Parser {
 		/* <![CDATA[ */
 			jQuery(function() {
 
-// 				jQuery('tr.tax_rate .select_all').live('click', function(){
-// 					jQuery(this).closest('td').find('select option').attr("selected","selected");
-// 					jQuery(this).closest('td').find('select.tax_select2').trigger("change");
-// 					return false;
-// 				});
 				jQuery('tr.tax_rate .select_none').live('click', function(){
 					jQuery(this).closest('td').find('select option').removeAttr("selected");
 					jQuery(this).closest('td').find('select.tax_select2').trigger("change");
