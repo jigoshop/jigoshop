@@ -42,14 +42,15 @@ function jigoshop_update() {
 			require_once( jigoshop::plugin_path().'/jigoshop_upgrade.php' );
 			$response = jigoshop_upgrade();
 
-		}
+		} else {
 
-		// Display upgrade nag
-		echo '
-			<div class="update-nag">
-				'.sprintf(__('Your database needs an update. Please <strong>backup</strong> &amp; %s.', 'jigoshop'), '<a href="' . add_query_arg('jigoshop_update_db', 'true') . '">' . __('update now', 'jigoshop') . '</a>').'
-			</div>
-		';
+			// Display upgrade nag
+			echo '
+				<div class="update-nag">
+					'.sprintf(__('Your database needs an update. Please <strong>backup</strong> &amp; %s.', 'jigoshop'), '<a href="' . add_query_arg('jigoshop_update_db', 'true') . '">' . __('update now', 'jigoshop') . '</a>').'
+				</div>
+			';
+		}
 	}
 }
 
