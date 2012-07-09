@@ -365,6 +365,60 @@ function jigoshop_search_shortcode( $atts ) {
 
 }
 
+//### Sale products shortcode #########################################################
+ 
+function jigoshop_sale_products( $atts ) {
+   
+	extract(shortcode_atts(array(
+		'per_page'					=> get_option('jigoshop_catalog_per_page'),
+		'columns'					=> get_option('jigoshop_catalog_columns'),
+		'orderby'					=> get_option('jigoshop_catalog_sort_orderby'),
+		'order'						=> get_option('jigoshop_catalog_sort_direction'),
+		'pagination'				=> false
+	), $atts));
+	
+  	$today = date('Y-m-d',time());
+  	$tomorrow = date('Y-m-d',mktime(0, 0, 0, date("m"), date("d")+1, date("Y")) );
+ 
+	$args = array(
+		'post_type'     			=> 'product',
+		'post_status'				=> 'publish',
+		'ignore_sticky_posts'   	=> 1,
+		'posts_per_page'			=> $per_page,
+		'orderby'					=> $orderby,
+		'order'						=> $order,
+		'meta_query'				=> array(
+				array(
+						'key'		=> 'visibility',
+						'value'	=> array( 'catalog', 'visible' ),
+						'compare'	=> 'IN'
+				),
+				array(
+						'key'		=> 'sale_price',
+						'value'		=> '',
+						'compare'	=> '!=',
+				),
+				array(
+						'key'		=> 'sale_price_dates_from',
+						'value'		=> array( '', $today ),
+						'compare'	=> '<=',
+				),
+				array(
+						'key'		=> 'sale_price_dates_to',
+						'value'		=> array( '', $tomorrow ),
+						'compare'	=> '<=',
+				),
+		)
+	);
+	@query_posts($args);
+	ob_start();
+	jigoshop_get_template_part( 'loop', 'shop' );
+	if ( $pagination ) do_action( 'jigoshop_pagination' );
+	wp_reset_query();
+	return ob_get_clean();
+}
+add_shortcode('sale_products', 'jigoshop_sale_products');
+
 //### Shortcodes #########################################################
 
 add_shortcode('product'                 , 'jigoshop_product');
