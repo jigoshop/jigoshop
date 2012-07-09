@@ -22,7 +22,7 @@
  * Author:              Jigowatt
  * Author URI:          http://jigowatt.co.uk
  *
- * Version:             1.2.2
+ * Version:             1.2.3
  * Requires at least:   3.2.1
  * Tested up to:        3.4-beta3
  *
@@ -50,17 +50,6 @@ if ( is_admin() ) {
 	include_once( 'admin/jigoshop-admin.php' );
 	register_activation_hook( __FILE__, 'install_jigoshop' );
 }
-
-// Add a "Settings" link to the plugins.php page for Jigoshop
-function jigoshop_add_settings_link( $links, $file ) {
-	$this_plugin = plugin_basename( __FILE__ );
-	if( $file == $this_plugin ) {
-		$settings_link = '<a href="admin.php?page=jigoshop_settings">' . __( 'Settings', 'jigoshop' ) . '</a>';
-		array_unshift($links, $settings_link);
-	}
-	return $links;
-}
-add_filter( 'plugin_action_links', 'jigoshop_add_settings_link', 10, 2 );
 
 /**
  * Include core files and classes
@@ -129,6 +118,56 @@ if (!isset($_SERVER['REQUEST_URI'])) {
 	$_SERVER['REQUEST_URI'] = substr($_SERVER['PHP_SELF'],1 );
 	if (isset($_SERVER['QUERY_STRING'])) { $_SERVER['REQUEST_URI'].='?'.$_SERVER['QUERY_STRING']; }
 }
+
+/**
+ *  Jigoshop Intialization
+ */
+function jigoshop_init() {
+
+	// Override default translations with custom .mo's found in wp-content/languages/jigoshop
+	load_textdomain( 'jigoshop', WP_LANG_DIR.'/jigoshop/jigoshop-'.get_locale().'.mo' );
+	load_plugin_textdomain( 'jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+
+	/* ensure nothing is output to the browser prior to this (other than headers) */
+	ob_start();
+
+	jigoshop_post_type();                   // register taxonomies
+
+	// add Singletons here so that the taxonomies are loaded before calling them.
+	jigoshop_session::instance();           // Session management, start them if not running
+	jigoshop::instance();                   // Utility functions
+	jigoshop_customer::instance();          // Customer class, sorts session data such as location
+	jigoshop_shipping::instance();          // Shipping class. loads shipping methods
+	jigoshop_payment_gateways::instance();  // Payment gateways class. loads payment methods
+	jigoshop_cart::instance();              // Cart class, stores the cart contents
+
+	if ( ! is_admin() ) jigoshop_catalog_query::instance();
+
+	// Image sizes
+	jigoshop_set_image_sizes();
+
+	// Include template functions here so they are pluggable by themes
+	include_once( 'jigoshop_template_functions.php' );
+
+	add_role('customer', 'Customer', array(
+		'read'        => true,
+		'edit_posts'  => false,
+		'delete_posts'=> false
+	));
+
+}
+add_action('init', 'jigoshop_init', 0);
+
+// Add a "Settings" link to the plugins.php page for Jigoshop
+function jigoshop_add_settings_link( $links, $file ) {
+	$this_plugin = plugin_basename( __FILE__ );
+	if( $file == $this_plugin ) {
+		$settings_link = '<a href="admin.php?page=jigoshop_settings">' . __( 'Settings', 'jigoshop' ) . '</a>';
+		array_unshift($links, $settings_link);
+	}
+	return $links;
+}
+add_filter( 'plugin_action_links', 'jigoshop_add_settings_link', 10, 2 );
 
 /**
  * Add post thumbnail support to WordPress if needed
@@ -216,41 +255,19 @@ function jigoshop_get_image_size( $size ) {
 	return $image_size;
 }
 
-function jigoshop_init() {
+function jigoshop_is_admin_page() {
 
-	/* ensure nothing is output to the browser prior to this (other than headers) */
-	ob_start();
+	global $current_screen;
 
-	jigoshop_post_type();	/* register taxonomies */
+	if ( $current_screen->post_type == 'product' || $current_screen->post_type == 'shop_order' )
+		return $current_screen->post_type;
 
-	// add Singletons here so that the taxonomies are loaded before calling them.
-	$jigoshop 					= jigoshop::instance();
-	$jigoshop_customer 			= jigoshop_customer::instance();		// Customer class, sorts session data such as location
-	$jigoshop_shipping 			= jigoshop_shipping::instance();		// Shipping class. loads shipping methods
-	$jigoshop_payment_gateways 	= jigoshop_payment_gateways::instance();// Payment gateways class. loads payment methods
-	$jigoshop_cart 				= jigoshop_cart::instance();			// Cart class, stores the cart contents
+	if ( strstr( $current_screen->id, 'jigoshop' ) )
+		return $current_screen->id;
 
-//	if ( ! is_admin() ) $jigoshop_query = new jigoshop_catalog_query();
-	if ( ! is_admin() ) $jigoshop_query = jigoshop_catalog_query::instance();
-
-	// Image sizes
-	jigoshop_set_image_sizes();
-
-	// Include template functions here so they are pluggable by themes
-	include_once( 'jigoshop_template_functions.php' );
-
-	add_role('customer', 'Customer', array(
-		'read'        => true,
-		'edit_posts'  => false,
-		'delete_posts'=> false
-	));
-
-	// Override default translations with custom .mo's found in wp-content/languages/jigoshop
-	load_textdomain( 'jigoshop', WP_LANG_DIR.'/jigoshop/jigoshop-'.get_locale().'.mo' );
-	load_plugin_textdomain('jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
+	return false;
 
 }
-add_action('init', 'jigoshop_init', 0);
 
 function jigoshop_is_admin_page() {
 
@@ -921,7 +938,7 @@ function jigoshop_comments($comment, $args, $depth) {
 					<p class="meta"><em><?php _e('Your comment is awaiting approval','jigoshop'); ?></em></p>
 				<?php else : ?>
 					<p class="meta">
-						<?php _e('Rating by','jigoshop'); ?> <strong class="reviewer vcard"><span class="fn"><?php comment_author(); ?></span></strong> <?php _e('on','jigoshop'); ?> <?php echo get_comment_date('M jS Y'); ?>:
+						<?php _e('Rating by','jigoshop'); ?> <strong class="reviewer vcard"><span class="fn"><?php comment_author(); ?></span></strong> <?php _e('on','jigoshop'); ?> <?php echo date_i18n(get_option('date_format'), strtotime(get_comment_date('Y-m-d'))); ?>:
 					</p>
 				<?php endif; ?>
   				<div class="description"><?php comment_text(); ?></div>

@@ -54,6 +54,7 @@ class jigoshop_product_meta
 		update_post_meta( $post_id, 'visibility',    $_POST['product_visibility']);
 		update_post_meta( $post_id, 'featured',      isset($_POST['featured']) );
 		update_post_meta( $post_id, 'customizable',  $_POST['product_customize'] );
+		update_post_meta( $post_id, 'customized_length',  $_POST['customized_length'] );
 
 		// Downloadable Only
 		if( $_POST['product-type'] == 'downloadable' ) {

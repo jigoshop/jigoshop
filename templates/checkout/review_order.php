@@ -80,16 +80,21 @@
                 foreach (jigoshop_cart::$cart_contents as $item_id => $values) :
                     $_product = $values['data'];
                     if ($_product->exists() && $values['quantity'] > 0) :
-						$variation = '';
-                        if ($_product instanceof jigoshop_product_variation && is_array($values['variation'])) {
-                            $variation = jigoshop_get_formatted_variation($values['variation']);
-                        }
+                    
+                        $variation = jigoshop_cart::get_item_data($values);
 						
 						$customization = '';
+						if ( !empty( $values['variation_id'] )) {
+							$product_id = $values['variation_id'];
+						} else {
+							$product_id = $values['product_id'];
+						}
 						$custom_products = (array) jigoshop_session::instance()->customized_products;
+						$custom = isset( $custom_products[$product_id] ) ? $custom_products[$product_id] : '';
 						
-						if ( ! empty( $custom_products[$_product->ID] ) ) :
-							$custom = $custom_products[$_product->ID];
+						if ( ! empty( $custom_products[$product_id] ) ) :
+						
+							$custom = $custom_products[$product_id];
 							$label = apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') );
 							$customization = '<dl class="customization">';
 							$customization = '<dt class="customized_product_label">';

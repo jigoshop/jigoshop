@@ -215,6 +215,15 @@ function jigoshop_add_to_cart_action($url = false)
                 $quantity = (int) $_POST['quantity'];
             }
 
+			if ( get_post_meta( $product_id , 'customizable', true ) == 'yes' ) {
+				// session personalization initially set to parent product until variation selected
+				$custom_products = (array) jigoshop_session::instance()->customized_products;
+				// transfer it to the variation
+				$custom_products[$variation_id] = $custom_products[$product_id];
+				unset( $custom_products[$product_id] );
+				jigoshop_session::instance()->customized_products = $custom_products;
+			}
+			
             $attributes = (array) maybe_unserialize(get_post_meta($product_id, 'product_attributes', true));
             $variations = array();
             $all_variations_set = true;
@@ -601,14 +610,12 @@ function jigoshop_download_product() {
 				default: $ctype="application/force-download";
 			endswitch;
 
+			@session_write_close();
 			@ini_set('zlib.output_compression', 'Off');
 			@set_time_limit(0);
-			@session_start();
-			@session_cache_limiter('none');
 			@set_magic_quotes_runtime(0);
 			@ob_end_clean();
 			if (ob_get_level()) @ob_end_clean();
-			@session_write_close();
 
 			header("Pragma: no-cache");
 			header("Expires: 0");

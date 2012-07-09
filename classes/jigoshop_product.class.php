@@ -107,10 +107,10 @@ class jigoshop_product {
 		$this->backorders            = isset($meta['backorders'][0]) ? $meta['backorders'][0] : null;
 		$this->stock                 = isset($meta['stock'][0]) ? $meta['stock'][0] : null;
 		$this->stock_sold            = isset($meta['stock_sold'][0]) ? $meta['stock_sold'][0] : null;
-		
+
 		// filter for Paid Memberships Pro plugin courtesy @strangerstudios
 		$this->sale_price = apply_filters( 'jigoshop_sale_price' , $this->sale_price, $this );
-		
+
 		return $this;
 	}
 
@@ -233,16 +233,16 @@ class jigoshop_product {
 		if ( get_option('jigoshop_notify_no_stock_amount') >= 0
 			&& get_option('jigoshop_notify_no_stock_amount') >= $this->stock
 			&& get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) {
-			
+
 			update_post_meta( $this->ID, 'visibility', 'hidden' );
-			
+
 		} else if ( $this->stock > get_option('jigoshop_notify_no_stock_amount')
 			&& $this->visibility == 'hidden'
 			&& get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) {
-			
+
 			update_post_meta( $this->ID, 'visibility', 'visible' );
 		}
-		
+
 		return $this->stock;
 	}
 
@@ -575,8 +575,8 @@ class jigoshop_product {
 		return $this->weight;
 	}
 
-	/** 
-     * Returns the price (excluding tax) 
+	/**
+     * Returns the price (excluding tax)
      * @param int $quantity - provide the amount of the same product to this calculation.
      * To calculate tax from prices include tax, we need to provide the quantity, as calculating
      * each and every product with reverse taxes will cause rounding errors. Therefore calculate
@@ -623,6 +623,10 @@ class jigoshop_product {
         // product prices are always 2 decimal digits. Will get rounding errors on backwards tax calcs if
         // we don't round
         return round($price / 100, 2); 
+
+        // product prices are always 2 decimal digits. Will get rounding errors on backwards tax calcs if
+        // we don't round
+        return round($price / 100, 2);
 
     }
 
@@ -797,7 +801,7 @@ class jigoshop_product {
 			else :	// prices are the same
             	$html = jigoshop_price( reset( $array ) );
 			endif;
-				
+
 			return empty( $array ) ? __( 'Price Not Announced', 'jigoshop' ) : $html;
 		}
 
@@ -1027,20 +1031,27 @@ class jigoshop_product {
 	 * @return  boolean
 	 */
 	public function has_attributes() {
-		$result = false;
 		$attributes = $this->get_attributes();
-		if ( ! empty( $attributes )) foreach ( $attributes as $attribute ) {
-			$result |= isset( $attribute['visible'] );
+
+		// Quit early if there aren't any attributes
+		if ( empty( $attributes ) )
+			return false;
+
+		// If we have attributes that are visible return true
+		foreach ( $attributes as $attribute ) {
+			if ( ! empty($attribute['visible']) )
+				return true;
 		}
-		
-		return $result;
+
+		// By default we don't have any attributes
+		return false;
 	}
 
 	/**
 	 * Checks if the product has dimensions
 	 *
      * @param boolean all_dimensions if true, then all dimensions have to be set
-     * in order for has_dimensions to return true, otherwise if false, then just 1 
+     * in order for has_dimensions to return true, otherwise if false, then just 1
      * of the dimensions has to be set for the function to return true.
 	 * @return  bool
 	 */
@@ -1095,10 +1106,10 @@ class jigoshop_product {
 		}
 
 		$attributes = $this->get_attributes();
-		if ( ! empty( $attributes )) foreach( $attributes as $attr ) {
+		foreach( $attributes as $attr ) {
 
 			// If attribute is invisible skip
-			if ( ! isset( $attr['visible'] ) )
+			if ( empty( $attr['visible'] ) )
 				continue;
 
 			// Get Title & Value from attribute array
@@ -1114,7 +1125,7 @@ class jigoshop_product {
 				$terms = array();
 
 				foreach( $product_terms as $term ) {
-					$terms[] = $term->name;
+					$terms[] = '<span class="val_'.$term->slug.'">'.$term->name.'</span>';
 				}
 
 				$value = implode(', ', $terms);
@@ -1125,7 +1136,7 @@ class jigoshop_product {
 
 			// Generate the remaining html
 			$html .= "
-			<tr>
+			<tr class=\"attr_".$attr['name']."\">
 				<th>$name</th>
 				<td>$value</td>
 			</tr>";
