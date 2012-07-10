@@ -15,7 +15,7 @@
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
-abstract class jigoshop_singleton extends jigoshop_base_class {
+abstract class Jigoshop_Singleton extends Jigoshop_Base {
 
     private static $instance = array();
 

@@ -15,11 +15,6 @@
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
-/* Catalog Filters */
-add_filter( 'loop-shop-query'   , create_function( '', 'return array("orderby" => "'.get_option('jigoshop_catalog_sort_orderby').'","order" => "'.get_option('jigoshop_catalog_sort_direction').'");' ) );
-add_filter( 'loop_shop_columns' , create_function( '', 'return '.get_option('jigoshop_catalog_columns').';' ) );
-add_filter( 'loop_shop_per_page', create_function( '', 'return '.get_option('jigoshop_catalog_per_page').';' ) );
-
 /* Content Wrappers */
 add_action( 'jigoshop_before_main_content', 'jigoshop_output_content_wrapper'    , 10);
 add_action( 'jigoshop_after_main_content' , 'jigoshop_output_content_wrapper_end', 10);
@@ -52,6 +47,7 @@ add_action( 'jigoshop_after_single_product_summary', 'jigoshop_output_product_da
 add_action( 'jigoshop_after_single_product_summary', 'jigoshop_output_related_products' , 20);
 
 /* Product Summary Box */
+add_action( 'jigoshop_template_single_summary', 'jigoshop_template_single_title'  , 5, 2);
 add_action( 'jigoshop_template_single_summary', 'jigoshop_template_single_price'  , 10, 2);
 add_action( 'jigoshop_template_single_summary', 'jigoshop_template_single_excerpt', 20, 2);
 add_action( 'jigoshop_template_single_summary', 'jigoshop_template_single_meta'   , 40, 2);

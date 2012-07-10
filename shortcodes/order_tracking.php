@@ -20,11 +20,12 @@ function get_jigoshop_order_tracking ($atts) {
 }
 
 function jigoshop_order_tracking( $atts ) {
-
+	
 	extract(shortcode_atts(array(
 	), $atts));
 
 	global $post;
+    $jigoshop_options = Jigoshop_Base::get_options();
 
 	if ($_POST) :
 
@@ -46,7 +47,7 @@ function jigoshop_order_tracking( $atts ) {
 					$completed = get_post_meta( $order->id, '_js_completed_date' );
 					if ( is_array( $completed ) && ! empty( $completed ) ) $completed = $completed[0];
 					else $completed = 0;    // shouldn't happen, reset to be sure
-					echo __(' and was completed ', 'jigoshop').human_time_diff( $completed, current_time('timestamp')).__(' ago', 'jigoshop');
+					echo sprintf( __(' and was completed %s ago', 'jigoshop'), human_time_diff( $completed, current_time('timestamp')) );
 				}
 				echo '.</p>';
 
@@ -63,8 +64,8 @@ function jigoshop_order_tracking( $atts ) {
 					</thead>
 					<tfoot>
                         <tr>
-                            <?php if ((get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
-                                || (get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) : ?>
+                            <?php if (($jigoshop_options->get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
+                                || ($jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) : ?>
                                 <td colspan="3"><?php _e('Retail Price', 'jigoshop'); ?></td>
                             <?php else : ?>
                                 <td colspan="3"><?php _e('Subtotal', 'jigoshop'); ?></td>
@@ -79,22 +80,22 @@ function jigoshop_order_tracking( $atts ) {
                             </tr>
                             <?php 
                         endif; 
-                        if (get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0) : ?>
+                        if ($jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0) : ?>
                             <tr class="discount">
                                 <td colspan="3"><?php _e('Discount', 'jigoshop'); ?></td>
                                 <td>-<?php echo jigoshop_price($order->order_discount); ?></td>
                             </tr>
                             <?php 
                         endif; 
-                        if ((get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
-                         || (get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) :  ?>
+                        if (($jigoshop_options->get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
+                         || ($jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) :  ?>
                             <tr>
                                 <td colspan="3"><?php _e('Subtotal', 'jigoshop'); ?></td>
                                 <td><?php echo jigoshop_price($order->order_discount_subtotal); ?></td>
                             </tr>
                             <?php 
                         endif;
-                        if (get_option('jigoshop_calc_taxes') == 'yes') :
+                        if ($jigoshop_options->get_option('jigoshop_calc_taxes') == 'yes') :
                             foreach ( $order->get_tax_classes() as $tax_class ) :
                                 if ($order->show_tax_entry($tax_class)) : ?>
                                     <tr>
@@ -105,7 +106,7 @@ function jigoshop_order_tracking( $atts ) {
                                 endif;
                             endforeach;
                         endif; ?>
-						<?php if (get_option('jigoshop_tax_after_coupon') == 'no' && $order->order_discount>0) : ?><tr class="discount">
+						<?php if ($jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'no' && $order->order_discount>0) : ?><tr class="discount">
 							<td colspan="3"><?php _e('Discount', 'jigoshop'); ?></td>
 							<td>-<?php echo jigoshop_price($order->order_discount); ?></td>
 						</tr><?php endif; ?>

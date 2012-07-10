@@ -137,12 +137,30 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 		// Get the attributes to be used later
 		$attributes = (array) maybe_unserialize( get_post_meta($parent_id, 'product_attributes', true) );
-		
+
 		foreach ( $_POST['variations'] as $ID => $meta ) {
 
+			/**
+			 * Generate a post title of the current variation.
+			 * Parent Title - [attribute: variation]
+			 */
+			$taxes = array();
+			foreach ( $meta as $k => $v ) :
+				if ( strstr ( $k, 'tax_' ) ) {
+					$tax     = substr( $k, 4 );
+					$taxes[] = sprintf('[%s: %s]', $tax, !empty($v) ? $v : 'Any ' . $tax );
+				}
+			endforeach;
+
+			$post_title = !empty($_POST['post_title']) ? $_POST['post_title'] : the_title('','',false);
+			$title      = sprintf('%s - %s', $post_title, implode( $taxes, ' ' ) );
+
+			/**
+			 * Prevent duplicate variations
+			 */
 			// Update post data or Add post if new
 			if ( strpos( $ID, '_new' ) ) {
-			
+
 				// check for an existing variation with matching attributes to prevent duplication
 				$current_meta = $meta;
 				foreach ( $current_meta as $current_id => $current_value ) {
@@ -167,10 +185,10 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 					$result = array_diff( $haystack_meta, $current_meta );
 					if ( empty( $result ) ) $duplicate = true;
 				}
-				
+
 				if ( ! $duplicate ) {
 					$ID = wp_insert_post( array(
-						'post_title'  => "#{$parent_id}: Child Variation",
+						'post_title'  => !empty($title) ? $title : "#{$parent_id}: Child Variation",
 						'post_status' => isset($meta['enabled']) ? 'publish' : 'draft',
 						'post_parent' => $parent_id,
 						'post_type'   => 'product_variation'
@@ -178,10 +196,10 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 				} else {
 					// silent fail, should put up a message?
 				}
-				
+
 			} else {
 				$wpdb->update( $wpdb->posts, array(
-					'post_title'  => "#{$parent_id}: Child Variation",
+					'post_title'  => !empty($title) ? $title : "#{$parent_id}: Child Variation",
 					'post_status' => isset($meta['enabled']) ? 'publish' : 'draft'
 				), array( 'ID'    => $ID ) );
 			}
@@ -353,7 +371,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 											</label>
 										</td>
 											<td colspan="4" class="dimensions">
-												<label>Dimensions <?php echo '('.get_option('jigoshop_dimension_unit'). ')' ?></label>
+                                                <label>Dimensions <?php echo '('.  Jigoshop_Base::get_options()->get_option('jigoshop_dimension_unit'). ')' ?></label>
 												<input type="text" placeholder="Length" value="">
 												<input type="text" placeholder="Width" value="">
 												<input type="text" placeholder="Height" value="">
@@ -569,7 +587,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 								</label>
 							</td>
 							<td colspan="4" class="dimensions">
-								<label><?php _e('Dimensions', 'jigoshop') ?> <?php echo '('.get_option('jigoshop_dimension_unit'). ')' ?></label>
+								<label><?php _e('Dimensions', 'jigoshop') ?> <?php echo '('. Jigoshop_Base::get_options()->get_option('jigoshop_dimension_unit'). ')' ?></label>
 								<input type="text" name="<?php echo esc_attr( $this->field_name('length', $variation) ); ?>" placeholder="Length" value="<?php echo esc_attr( isset($meta['length'][0]) ? $meta['length'][0] : null ); ?>" />
 								<input type="text" name="<?php echo esc_attr( $this->field_name('width', $variation) ); ?>" placeholder="Width" value="<?php echo esc_attr( isset($meta['width'][0]) ? $meta['width'][0] : null ); ?>" />
 								<input type="text" name="<?php echo esc_attr( $this->field_name('height', $variation) ); ?>" placeholder="Height" value="<?php echo esc_attr( isset($meta['height'][0]) ? $meta['height'][0] : null ); ?>" />

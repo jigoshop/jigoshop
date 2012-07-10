@@ -23,53 +23,48 @@
  * @since 		1.0
  */
 
-function install_jigoshop() {
+function install_jigoshop( $network_wide = false ) {
 
 	global $wpdb;
 
-	if (function_exists('is_multisite') && is_multisite()) {
-
-		if (isset($_GET['networkwide']) && ($_GET['networkwide'] == 1)) {
-			$old_blog = $wpdb->blogid;
-			$blogids = $wpdb->get_col($wpdb->prepare("SELECT blog_id FROM $wpdb->blogs"));
-			foreach ($blogids as $blog_id) {
-				switch_to_blog($blog_id);
-				_install_jigoshop();
-			}
-			switch_to_blog($old_blog);
-			return;
+	if ( $network_wide ) {
+		$old_blog = $wpdb->blogid;
+		$blogids = $wpdb->get_col($wpdb->prepare("SELECT blog_id FROM $wpdb->blogs"));
+		foreach ($blogids as $blog_id) {
+			switch_to_blog($blog_id);
+			_install_jigoshop();
 		}
+		switch_to_blog($old_blog);
+		return;
+	} else {
+		_install_jigoshop();
 	}
-
-	_install_jigoshop();
 
 }
 
 function _install_jigoshop() {
+    
+    $jigoshop_options = Jigoshop_Base::get_options();
 
-	if( ! get_site_option('jigoshop_db_version') )  {
+	if( ! get_option('jigoshop_db_version') )  {
 
 		jigoshop_tables_install();		/* we need tables installed first to eliminate installation errors */
 
-		// Get options
-		require_once ( 'jigoshop-admin-settings-options.php' );
-
-		// Do install
-		jigoshop_default_options();
+		Jigoshop_Base::get_options();   /* instantiate options */
+		
 		jigoshop_create_pages();
 
 		jigoshop_post_type();
 		jigoshop_default_taxonomies();
 
 		// Clear cron
-		wp_clear_scheduled_hook('jigoshop_update_sale_prices_schedule_check');
-		update_option('jigoshop_update_sale_prices', 'no');
+		wp_clear_scheduled_hook('jigoshop_cron_pending_orders');
 
 		// Flush Rules
 		flush_rewrite_rules( false );
 
 		// Update version
-		update_option( "jigoshop_db_version", JIGOSHOP_VERSION );
+		update_site_option( "jigoshop_db_version", JIGOSHOP_VERSION );
 	}
 }
 
@@ -77,6 +72,8 @@ function _install_jigoshop() {
  * Default options
  *
  * Sets up the default options used on the settings page
+ *
+ * @deprecated -- no longer required for Jigoshop 1.2 (-JAP-)
  *
  * @since 		1.0
  */
@@ -89,12 +86,12 @@ function jigoshop_default_options() {
 
 				if ($value['type']=='image_size') :
 
-					add_option($value['id'].'_w', $value['std']);
-					add_option($value['id'].'_h', $value['std']);
+					update_option( $value['id'].'_w', $value['std'] );
+					update_option( $value['id'].'_h', $value['std'] );
 
 				else :
 
-					add_option($value['id'], $value['std']);
+					update_option( $value['id'], $value['std'] );
 
 				endif;
 
@@ -102,7 +99,7 @@ function jigoshop_default_options() {
 
     endforeach;
 
-    add_option('jigoshop_shop_slug', 'shop');
+    update_option( 'jigoshop_shop_slug', 'shop' );
 }
 
 /**
@@ -114,6 +111,8 @@ function jigoshop_default_options() {
  */
 function jigoshop_create_pages() {
 
+    $jigoshop_options = Jigoshop_Base::get_options();
+    
 	// start out with basic page parameters, modify as we go
 	$page_data = array(
 		'post_status'    => 'publish',
@@ -126,8 +125,8 @@ function jigoshop_create_pages() {
 	);
 	jigoshop_create_single_page( 'shop', 'jigoshop_shop_page_id', $page_data );
 
-	$shop_page = get_option('jigoshop_shop_page_id');
-	update_option( 'jigoshop_shop_redirect_page_id' , $shop_page );
+	$shop_page = $jigoshop_options->get_option( 'jigoshop_shop_page_id' );
+	$jigoshop_options->set_option( 'jigoshop_shop_redirect_page_id' , $shop_page );
 
 	$page_data['post_title']   = __('Cart', 'jigoshop');
 	$page_data['post_content'] = '[jigoshop_cart]';
@@ -180,22 +179,27 @@ function jigoshop_create_pages() {
  * @param string $page_option - the database options entry for page ID storage
  * @param array $page_data - preset default parameters for creating the page - this will finish the slug
  *
- * @since 0.9.9.1
+ * @since 1.3
  */
 function jigoshop_create_single_page( $page_slug, $page_option, $page_data ) {
 
-    global $wpdb;
+	global $wpdb;
+    $jigoshop_options = Jigoshop_Base::get_options();
 
-    $slug = esc_sql( _x( $page_slug, 'page_slug', 'jigoshop' ) );
-	$page_found = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1", $slug ) );
+	$slug    = esc_sql( _x( $page_slug, 'page_slug', 'jigoshop' ) );
+	$page_id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1", $slug ) );
 
-    if ( ! $page_found ) {
+	if ( ! $page_id ) {
 		$page_data['post_name'] = $slug;
-		$page_options_id = wp_insert_post( $page_data );
-		update_option( $page_option, $page_options_id );
-    } else {
-    	update_option( $page_option, $page_found );
-    }
+		$page_id = wp_insert_post( $page_data );
+	}
+
+	$jigoshop_options->set_option( $page_option, $page_id );
+
+	$ids = $jigoshop_options->get_option( 'jigoshop_page-ids' );
+	$ids[] = $page_id;
+
+	$jigoshop_options->set_option( 'jigoshop_page-ids', $ids );
 
 }
 

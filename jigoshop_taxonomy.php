@@ -21,20 +21,21 @@
 function jigoshop_post_type() {
 
 	global $wpdb;
+    $jigoshop_options = Jigoshop_Base::get_options();
 
 	$shop_page_id = jigoshop_get_page_id('shop');
 
 	$base_slug = ($shop_page_id && $base_page = get_page( $shop_page_id )) ? get_page_uri( $shop_page_id ) : 'shop';
 
-	$category_base = ( get_option('jigoshop_prepend_shop_page_to_urls') == 'yes' ) ? trailingslashit($base_slug) : '';
+	$category_base = ( $jigoshop_options->get_option('jigoshop_prepend_shop_page_to_urls') == 'yes' ) ? trailingslashit($base_slug) : '';
 
-	$category_slug = ( get_option('jigoshop_product_category_slug') ) ? get_option('jigoshop_product_category_slug') : _x('product-category', 'slug', 'jigoshop');
+	$category_slug = ( $jigoshop_options->get_option('jigoshop_product_category_slug') ) ? $jigoshop_options->get_option('jigoshop_product_category_slug') : _x('product-category', 'slug', 'jigoshop');
 
-	$tag_slug = ( get_option('jigoshop_product_tag_slug') ) ? get_option('jigoshop_product_tag_slug') : _x('product-tag', 'slug', 'jigoshop');
+	$tag_slug = ( $jigoshop_options->get_option('jigoshop_product_tag_slug') ) ? $jigoshop_options->get_option('jigoshop_product_tag_slug') : _x('product-tag', 'slug', 'jigoshop');
 
-	$product_base = ( get_option('jigoshop_prepend_shop_page_to_product') == 'yes' ) ? trailingslashit($base_slug) : trailingslashit(_x('product', 'slug', 'jigoshop'));
+	$product_base = ( $jigoshop_options->get_option('jigoshop_prepend_shop_page_to_product') == 'yes' ) ? trailingslashit($base_slug) : trailingslashit(_x('product', 'slug', 'jigoshop'));
 
-	if ( get_option('jigoshop_prepend_category_to_product') == 'yes' ) $product_base .= trailingslashit('%product_cat%');
+	if ( $jigoshop_options->get_option('jigoshop_prepend_category_to_product') == 'yes' ) $product_base .= trailingslashit('%product_cat%');
 	$product_base = untrailingslashit($product_base);
 
 	register_taxonomy( 'product_cat',
@@ -43,9 +44,10 @@ function jigoshop_post_type() {
             'hierarchical' => true,
             'update_count_callback' => '_update_post_term_count',
             'labels' => array(
+          'menu_name'        => __( 'Categories', 'jigoshop' ),
 					'name'             => __( 'Product Categories', 'jigoshop'),
 					'singular_name'    => __( 'Product Category', 'jigoshop'),
-					'search_items'     =>  __( 'Search Product Categories', 'jigoshop'),
+					'search_items'     => __( 'Search Product Categories', 'jigoshop'),
 					'all_items'        => __( 'All Product Categories', 'jigoshop'),
 					'parent_item'      => __( 'Parent Product Category', 'jigoshop'),
 					'parent_item_colon'=> __( 'Parent Product Category:', 'jigoshop'),
@@ -65,9 +67,10 @@ function jigoshop_post_type() {
         array(
 			'hierarchical'=> false,
 			'labels'      => array(
+					'menu_name'        => __( 'Tags', 'jigoshop' ),
 					'name'             => __( 'Product Tags', 'jigoshop'),
 					'singular_name'    => __( 'Product Tag', 'jigoshop'),
-					'search_items'     =>  __( 'Search Product Tags', 'jigoshop'),
+					'search_items'     => __( 'Search Product Tags', 'jigoshop'),
 					'all_items'        => __( 'All Product Tags', 'jigoshop'),
 					'parent_item'      => __( 'Parent Product Tag', 'jigoshop'),
 					'parent_item_colon'=> __( 'Parent Product Tag:', 'jigoshop'),
@@ -97,7 +100,7 @@ function jigoshop_post_type() {
 						'labels'      => array(
 								'name'             => $tax->attribute_name,
 								'singular_name'    =>$tax->attribute_name,
-								'search_items'     =>  __( 'Search ', 'jigoshop') . $tax->attribute_name,
+								'search_items'     => __( 'Search ', 'jigoshop') . $tax->attribute_name,
 								'all_items'        => __( 'All ', 'jigoshop') . $tax->attribute_name,
 								'parent_item'      => __( 'Parent ', 'jigoshop') . $tax->attribute_name,
 								'parent_item_colon'=> __( 'Parent ', 'jigoshop') . $tax->attribute_name . ':',
@@ -123,7 +126,7 @@ function jigoshop_post_type() {
 				'name'              => __( 'Products', 'jigoshop' ),
 				'singular_name'     => __( 'Product', 'jigoshop' ),
 				'all_items'         => __( 'All Products', 'jigoshop' ),
-				'add_new'           => __( 'Add Product', 'jigoshop' ),
+				'add_new'           => __( 'Add New', 'jigoshop' ),
 				'add_new_item'      => __( 'Add New Product', 'jigoshop' ),
 				'edit'              => __( 'Edit', 'jigoshop' ),
 				'edit_item'         => __( 'Edit Product', 'jigoshop' ),
@@ -147,6 +150,7 @@ function jigoshop_post_type() {
 			'supports'           => array( 'title', 'editor', 'thumbnail', 'comments', 'excerpt',/*, 'page-attributes'*/ ),
 			'has_archive'        => $base_slug,
 			'show_in_nav_menus'  => false,
+			'menu_position'      => 56
 		)
 	);
 
@@ -199,8 +203,8 @@ function jigoshop_post_type() {
 				'name'              => __( 'Orders', 'jigoshop' ),
 				'singular_name'     => __( 'Order', 'jigoshop' ),
 				'all_items'         => __( 'All Orders', 'jigoshop' ),
-				'add_new'           => __( 'Add Order', 'jigoshop' ),
-				'add_new_item'      => __( 'Add New Order', 'jigoshop' ),
+				'add_new'           => __( 'Add New', 'jigoshop' ),
+				'add_new_item'      => __( 'New Order', 'jigoshop' ),
 				'edit'              => __( 'Edit', 'jigoshop' ),
 				'edit_item'         => __( 'Edit Order', 'jigoshop' ),
 				'new_item'          => __( 'New Order', 'jigoshop' ),
@@ -225,7 +229,8 @@ function jigoshop_post_type() {
 			'rewrite'            => false,
 			'query_var'          => true,
 			'supports'           => array( 'title', 'comments' ),
-			'has_archive'        => false
+			'has_archive'        => false,
+			'menu_position'      => 58
 		)
 	);
 
@@ -237,7 +242,7 @@ function jigoshop_post_type() {
 			'labels'               => array(
 					'name'             => __( 'Order statuses', 'jigoshop'),
 					'singular_name'    => __( 'Order status', 'jigoshop'),
-					'search_items'     =>  __( 'Search Order statuses', 'jigoshop'),
+					'search_items'     => __( 'Search Order statuses', 'jigoshop'),
 					'all_items'        => __( 'All  Order statuses', 'jigoshop'),
 					'parent_item'      => __( 'Parent Order status', 'jigoshop'),
 					'parent_item_colon'=> __( 'Parent Order status:', 'jigoshop'),
@@ -254,11 +259,44 @@ function jigoshop_post_type() {
         )
     );
 
-    if (get_option('jigowatt_update_rewrite_rules')=='1') :
+	register_post_type( "shop_coupon",
+		array(
+			'labels' => array(
+				'menu_name'           => __( 'Coupons', 'jigoshop' ),
+				'name'                => __( 'Coupons', 'jigoshop' ),
+				'singular_name'       => __( 'Coupon', 'jigoshop' ),
+				'add_new'             => __( 'Add Coupon', 'jigoshop' ),
+				'add_new_item'        => __( 'Add New Coupon', 'jigoshop' ),
+				'edit'                => __( 'Edit', 'jigoshop' ),
+				'edit_item'           => __( 'Edit Coupon', 'jigoshop' ),
+				'new_item'            => __( 'New Coupon', 'jigoshop' ),
+				'view'                => __( 'View Coupons', 'jigoshop' ),
+				'view_item'           => __( 'View Coupon', 'jigoshop' ),
+				'search_items'        => __( 'Search Coupons', 'jigoshop' ),
+				'not_found'           => __( 'No Coupons found', 'jigoshop' ),
+				'not_found_in_trash'  => __( 'No Coupons found in trash', 'jigoshop' ),
+				'parent'              => __( 'Parent Coupon', 'jigoshop' )
+			),
+			'description' 				=> __( 'This is where you can add new coupons that customers can use in your store.', 'jigoshop' ),
+			'public' 					=> true,
+			'show_ui' 					=> true,
+			'capability_type' 			=> 'post',
+			'publicly_queryable' 		=> false,
+			'exclude_from_search' 		=> true,
+			'hierarchical' 				=> false,
+			'rewrite' 					=> false,
+			'query_var' 				=> true,
+			'supports' 					=> array( 'title', 'editor' ),
+			'show_in_nav_menus'			=> false,
+			'show_in_menu' 				=> 'jigoshop'
+		)
+	);
+
+    if ($jigoshop_options->get_option('jigowatt_update_rewrite_rules')=='1') :
     	// Re-generate rewrite rules
     	global $wp_rewrite;
     	$wp_rewrite->flush_rules();
-    	update_option('jigowatt_update_rewrite_rules', '0');
+    	$jigoshop_options->set_option('jigowatt_update_rewrite_rules', '0');
     endif;
 
 }
@@ -444,12 +482,13 @@ function jigoshop_set_category_order ($term_id, $index, $recursive=false) {
  */
 function jigoshop_nav_menu_items_classes ($menu_items, $args) {
 
+    $jigoshop_options = Jigoshop_Base::get_options();
 	$shop_page_id = (int) jigoshop_get_page_id('shop');
 
 	// only add nav menu classes if the queried object is the Shop page or derivative (Product, Category, Tag)
 	if( empty( $shop_page_id ) || ! is_content_wrapped() ) return $menu_items;
 
-	$home_page_id = (int) get_option( 'page_for_posts' );
+	$home_page_id = (int) $jigoshop_options->get_option( 'page_for_posts' );
 
 	foreach ( (array) $menu_items as $key => $menu_item ) {
 

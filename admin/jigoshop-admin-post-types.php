@@ -51,6 +51,7 @@ add_filter('manage_edit-product_columns', 'jigoshop_edit_product_columns');
 
 function jigoshop_edit_product_columns($columns) {
 
+    $jigoshop_options = Jigoshop_Base::get_options();
 	$columns = array();
 
 	$columns["cb"]    = "<input type=\"checkbox\" />";
@@ -60,12 +61,12 @@ function jigoshop_edit_product_columns($columns) {
 
     $columns["featured"] = '<img src="' . jigoshop::plugin_url() . '/assets/images/head_featured.png" alt="' . __('Featured', 'jigoshop') . '" />';
 
-	$columns["product-type"] = __('Type', 'jigoshop');
-	if( get_option('jigoshop_enable_sku', true) == 'yes' ) {
+	$columns["product-type"] = __("Type", 'jigoshop');
+	if( $jigoshop_options->get_option('jigoshop_enable_sku', true) == 'yes' ) {
 		$columns["product-type"] .= ' &amp; ' . __("SKU", 'jigoshop');
 	}
 
-	if ( get_option('jigoshop_manage_stock')=='yes' ) {
+	if ( $jigoshop_options->get_option('jigoshop_manage_stock')=='yes' ) {
 	 	$columns["stock"] = __("Stock", 'jigoshop');
 	}
 
@@ -83,6 +84,7 @@ add_action('manage_product_posts_custom_column', 'jigoshop_custom_product_column
 
 function jigoshop_custom_product_columns($column) {
 	global $post;
+    $jigoshop_options = Jigoshop_Base::get_options();
 	$product = new jigoshop_product($post->ID);
 
 	switch ($column) {
@@ -110,7 +112,18 @@ function jigoshop_custom_product_columns($column) {
 		case "stock" :
 			if ( ! $product->is_type( 'grouped' ) && $product->is_in_stock() ) {
 				if ( $product->managing_stock() ) {
-					echo $product->stock.' '.__('In Stock', 'jigoshop');
+					if ( $product->is_type( 'variable' ) && $product->stock > 0 ) {
+						echo $product->stock.' '.__('In Stock', 'jigoshop');
+					} else if ( $product->is_type( 'variable' ) ) {
+						$stock_total = 0;
+						foreach ( $product->get_children() as $child_ID ) {
+							$child = $product->get_child( $child_ID );
+							$stock_total += (int)$child->stock;
+						}
+						echo $stock_total.' '.__('In Stock', 'jigoshop');
+					} else {
+						echo $product->stock.' '.__('In Stock', 'jigoshop');
+					}
 				} else {
 					echo __('In Stock', 'jigoshop');
 				}
@@ -123,7 +136,7 @@ function jigoshop_custom_product_columns($column) {
 		case "product-type" :
 			echo ucwords($product->product_type);
 			echo '<br/>';
-			if ( get_option('jigoshop_enable_sku', true) == 'yes' && $sku = get_post_meta( $post->ID, 'sku', true )) {
+			if ( $jigoshop_options->get_option('jigoshop_enable_sku', true) == 'yes' && $sku = get_post_meta( $post->ID, 'sku', true )) {
 				echo $sku;
 			}
 			else {
@@ -296,14 +309,13 @@ function my_action_row($actions){
 		echo sprintf(__('Order #%s'), $post->ID);
 
 	return $actions;
-
 }
 
 add_action('manage_shop_order_posts_custom_column', 'jigoshop_custom_order_columns', 2);
-
 function jigoshop_custom_order_columns($column) {
 
     global $post;
+    $jigoshop_options = Jigoshop_Base::get_options();
     $order = new jigoshop_order($post->ID);
     switch ($column) {
         case "order_status" :
@@ -390,8 +402,8 @@ function jigoshop_custom_order_columns($column) {
             ?>
             <table cellpadding="0" cellspacing="0" class="cost">
                 <tr>
-                    <?php if ((get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
-                            || (get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) : ?>
+                    <?php if (($jigoshop_options->get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
+                            || ($jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) : ?>
                         <th><?php _e('Retail Price', 'jigoshop'); ?></th>
                     <?php else : ?>
                         <th><?php _e('Subtotal', 'jigoshop'); ?></th>
@@ -406,22 +418,22 @@ function jigoshop_custom_order_columns($column) {
                     </tr>
                     <?php
                 endif;
-                if (get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0) : ?>
+                if ($jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0) : ?>
                     <tr>
                         <th><?php _e('Discount', 'jigoshop'); ?></th>
                         <td><?php echo jigoshop_price($order->order_discount); ?></td>
                     </tr>
                     <?php
                 endif;
-                if ((get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
-                    || (get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) :
+                if (($jigoshop_options->get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
+                    || ($jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) :
                     ?><tr>
                         <th><?php _e('Subtotal', 'jigoshop'); ?></th>
                         <td><?php echo jigoshop_price($order->order_discount_subtotal); ?></td>
                     </tr>
                     <?php
                 endif;
-                if (get_option('jigoshop_calc_taxes') == 'yes') :
+                if ($jigoshop_options->get_option('jigoshop_calc_taxes') == 'yes') :
                     foreach ($order->get_tax_classes() as $tax_class) :
                         if ($order->show_tax_entry($tax_class)) : ?>
                             <tr>
@@ -463,66 +475,67 @@ function jigoshop_admin_product_search( $wp ) {
     if( ! isset( $wp->query_vars['s'] ) )
         return false;
 
-    if ( ($wp->query_vars['post_type'] == 'product' || $wp->query_vars['post_type'] == 'shop_order') ) {
+    if ( ! ($wp->query_vars['post_type'] == 'product' || $wp->query_vars['post_type'] == 'shop_order') )
+		return false;
 
-        if ( 'ID:' == substr( $wp->query_vars['s'], 0, 3 )) {
+	/* ID of an Order or a Product */
+	if ( 'ID:' == substr( $wp->query_vars['s'], 0, 3 )) {
 
-            $id = absint( substr( $wp->query_vars['s'], 3 ) );
+		$id = absint( substr( $wp->query_vars['s'], 3 ) );
+		if( ! $id ) return false;
 
-            if( ! $id )
-                return false;
+		unset( $wp->query_vars['s'] );
+		$wp->query_vars['p'] = $id;
 
-            unset( $wp->query_vars['s'] );
-            $wp->query_vars['p'] = $id;
-        }
-        elseif( $wp->query_vars['post_type'] == 'product' && 'SKU:' == substr( $wp->query_vars['s'], 0, 4 ) ) {
+		return false;
+	}
 
-            $sku = trim( substr( $wp->query_vars['s'], 4 ) );
+	/* Products */
+	if ( $wp->query_vars['post_type'] == 'product' && 'SKU:' == substr( $wp->query_vars['s'], 0, 4 ) ) {
 
-            if( ! $sku )
-                return false;
+		$sku = trim( substr( $wp->query_vars['s'], 4 ) );
 
-            $id = $wpdb->get_var( $wpdb->prepare( 'SELECT post_id FROM '.$wpdb->postmeta.' WHERE meta_key="sku" AND meta_value LIKE %s', '%' . like_escape( $sku ) . '%' ) );
+		if( ! $sku ) return false;
+		$id = $wpdb->get_var( $wpdb->prepare( 'SELECT post_id FROM '.$wpdb->postmeta.' WHERE meta_key="sku" AND meta_value LIKE %s', '%' . like_escape( $sku ) . '%' ) );
+		if( ! $id )  return false;
 
-            if( ! $id )
-                return false;
+		unset( $wp->query_vars['s'] );
+		$wp->query_vars['p'] = $id;
+		$wp->query_vars['sku'] = $sku;
 
-            unset( $wp->query_vars['s'] );
-            $wp->query_vars['p'] = $id;
-            $wp->query_vars['sku'] = $sku;
+		return false;
+	}
 
-        }
-        elseif( $wp->query_vars['post_type'] == 'shop_order' && 'PID:' == substr( $wp->query_vars['s'], 0, 4 ) ) {
+	/* Orders */
+	if ( $wp->query_vars['post_type'] == 'shop_order' && 'PID:' == substr( $wp->query_vars['s'], 0, 4 ) ) {
 
-            $id = absint( substr( $wp->query_vars['s'], 4 ) );
+		$id = absint( substr( $wp->query_vars['s'], 4 ) );
+		$id_length = strlen($id);
+		// Get candidate orders
+		$query = "%" . like_escape( "s:2:\"id\";s:$id_length:\"$id\"" ) . "%";
 
-            $id_length = strlen($id);
+		$results = $wpdb->get_results(
+			$wpdb->prepare( "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = 'order_items' AND meta_value LIKE %s", $query )
+		);
 
-            // Get candidate orders
-            $query = "%" . like_escape( "s:2:\"id\";s:$id_length:\"$id\"" ) . "%";
+		// Verify orders contain this product id
+		$ids = array();
+		foreach ( $results as $result ) {
+			$items = unserialize($result->meta_value);
+			foreach ( $items as $item ) {
+				if ( $item['id'] == $id ) {
+					$ids[] = $result->post_id;
+					break;
+				}
+			}
+		}
 
-            $results = $wpdb->get_results(
-										$wpdb->prepare( "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = 'order_items' AND meta_value LIKE %s", $query )
-            );
+		// Set search parameters
+		unset( $wp->query_vars['s'] );
+		$wp->query_vars['post__in'] = $ids;
+		$wp->query_vars['order_product_id'] = $id;
 
-            // Verify orders contain this product id
-            $ids = array();
-            foreach ( $results as $result ) {
-                $items = unserialize($result->meta_value);
-                foreach ( $items as $item ) {
-                    if ( $item['id'] == $id ) {
-                        $ids[] = $result->post_id;
-                        break;
-                    }
-                }
-            }
-
-            // Set search parameters
-            unset( $wp->query_vars['s'] );
-            $wp->query_vars['post__in'] = $ids;
-            $wp->query_vars['order_product_id'] = $id;
-
-        }
+		return false;
     }
 
 }
@@ -655,4 +668,71 @@ function jigoshop_post_updated_messages($messages) {
 
     endif;
     return $messages;
+}
+
+/**
+ * Column headings display for Coupons List
+ **/
+add_filter('manage_edit-shop_coupon_columns', 'jigoshop_edit_coupon_columns');
+
+function jigoshop_edit_coupon_columns( $columns ) {
+	
+	$columns = array();
+	
+	$columns["cb"] 			    = '<input type="checkbox" />';
+	$columns['title']           = __('Code', 'jigoshop');
+	$columns['coupon_type']     = __('Type', 'jigoshop');
+	$columns['coupon_amount']   = __('Amount', 'jigoshop');
+	$columns['usage_limit']     = __('Used Limit', 'jigoshop');
+	$columns['usage_count']     = __('Used', 'jigoshop');
+	$columns['start_date']      = __('Start Date', 'jigoshop');
+	$columns['end_date']        = __('End Date', 'jigoshop');
+	$columns['individual']      = __('Individual Use', 'jigoshop');
+
+	return $columns;
+}
+
+
+/**
+ * Column values display for Coupons List
+ **/
+add_action('manage_shop_coupon_posts_custom_column', 'jigoshop_custom_coupon_columns', 2);
+
+function jigoshop_custom_coupon_columns($column) {
+
+	global $post;
+	
+	$type 			= get_post_meta( $post->ID, 'type', true );
+	$amount 		= get_post_meta( $post->ID, 'amount', true );
+	$usage_limit 	= get_post_meta( $post->ID, 'usage_limit', true );
+	$usage_count 	= (int) get_post_meta( $post->ID, 'usage', true );
+	$start_date     = get_post_meta( $post->ID, 'date_from', true );
+	$end_date       = get_post_meta( $post->ID, 'date_to', true );
+	$individual     = get_post_meta( $post->ID, 'individual_use', true );
+
+	switch ( $column ) {
+		case 'coupon_type' :
+			$types = jigoshop_coupons::get_coupon_types();
+			echo $types[$type];			
+			break;
+		case 'coupon_amount' :
+			echo $amount;
+			break;
+		case 'usage_limit' :
+			echo ( $usage_limit > 0 ) ? $usage_limit : '&ndash;';
+			break;
+		case 'usage_count' :
+			echo $usage_count;
+			break;
+		case 'start_date' :
+			echo ( $start_date <> '' ) ? date( 'Y-m-d', $start_date ) : '&ndash;';
+			break;
+		case 'end_date' :
+			echo ( $end_date <> '' ) ? date( 'Y-m-d', $end_date ) : '&ndash;';
+			break;
+		case 'individual' :
+			echo ( $individual ) ? __('Yes','jigoshop') : '&ndash;';
+			break;
+	}
+	
 }

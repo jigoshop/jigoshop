@@ -112,6 +112,45 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.3 - TBA =
+* New: Redesigned settings pages using the WordPress Settings API
+	* new settings types including checkboxes, radio buttons, range sliders
+	* each settings tab saves independently of other tabs
+	* searchable pop-up selects for longer option lists
+	* Redesigned Jigoshop Options simplify extension, payment gateway, and shipping method development
+* New: Coupon features
+	* Removed from settings, now a WordPress custom post type with a submenu under Jigoshop Menu
+	* Show coupon input field on checkout page
+	* Allow coupons to be removed from cart
+	* Free shipping option
+	* Limit amount of times coupon can be used, & show a counter
+	* Min & max order subtotal
+	* Specify products to allow / deny
+	* Specify product categories to allow / deny
+	* Specify payment methods to allow
+* New: Reports
+	* Show reports within a custom timeframe
+	* List of most sales generated from products
+	* List of most quantity sold from products
+	* Total customers
+	* Total orders
+	* Total sales
+* New: Category images
+	* Add an image to your product categories
+* New: Beta updater
+	* Keep track of Jigoshop beta versions by enabling this checkbox in the settings
+	* Allows you to update directly to a beta version
+* New: Product on Sale shortcode
+* New: Force users to login before downloading a purchased product
+* New: Mark 1 month or older orders from 'pending' to 'on-hold' with an option in the Settings to enable
+* New: Select multiple countries and states for tax rules
+* New: Support for WordPress' admin classic theme
+* Tweak: Allow default tax classes to be translated
+* Tweak: UI Sortable helper on attributes now has no border radius
+* Tweak: Pages & CPT's now use menu_position. Fixes array key duplication
+* Fix: When uninstalling, will now only delete Jigoshop created pages instead of pages specified in settings
+* Fix: Variable products now have proper titles, not "#xxx: Child Variaton" anymore
+
 = 1.2.3 - 2012-05-28 =
 * New: Add filters for new Jigoshop Product Addons extension
 * New: Add CSS classes to product attributes on variations for the front end to allow special effects

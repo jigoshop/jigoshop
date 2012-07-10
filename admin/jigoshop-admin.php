@@ -15,29 +15,22 @@
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
-require_once ( 'jigoshop-install.php' );
-require_once ( 'jigoshop-admin-dashboard.php' );
-require_once ( 'jigoshop-write-panels.php' );
-require_once ( 'jigoshop-admin-settings.php' );
-require_once ( 'jigoshop-admin-attributes.php' );
-require_once ( 'jigoshop-admin-post-types.php' );
-require_once ( 'jigoshop-admin-product-quick-bulk-edit.php' );
+require_once( 'jigoshop-install.php' );
+require_once( 'jigoshop-write-panels.php' );
+require_once( 'jigoshop-admin-settings-api.php' );
+require_once( 'jigoshop-admin-attributes.php' );
+require_once( 'jigoshop-admin-post-types.php' );
+require_once( 'jigoshop-admin-product-quick-bulk-edit.php' );
+require_once( 'jigoshop-admin-taxonomies.php' );
 
 // Contextual help only works for 3.3 due to updated API
 if ( get_bloginfo('version') >= '3.3' ) {
-	require_once ( 'jigoshop-admin-help.php' );
+	require_once( 'jigoshop-admin-help.php' );
 }
 
-function jigoshop_admin_init () {
-	require_once ( 'jigoshop-admin-settings-options.php' );
-	add_action('wp_dashboard_setup', 'jigoshop_setup_dashboard_widgets' );
-}
 add_action('admin_init', 'jigoshop_admin_init');
-
-function jigoshop_get_plugin_data( $key = 'Version' ) {
-	$data = get_plugin_data( jigoshop::plugin_path().'/jigoshop.php' );
-
-	return $data[$key];
+function jigoshop_admin_init() {
+	add_action('wp_dashboard_setup', 'jigoshop_setup_dashboard_widgets' );
 }
 
 add_action('admin_notices', 'jigoshop_update');
@@ -49,23 +42,12 @@ function jigoshop_update() {
 			require_once( jigoshop::plugin_path().'/jigoshop_upgrade.php' );
 			$response = jigoshop_upgrade();
 
-			// If we successfull inform the user
-			if ( $response ) {
-				echo '
-					<div class="updated">
-						<p>'.__('Your database has been successfully updated. Your shop is now automatically better than the rest, oh happy day!', 'jigoshop').'!</p>
-					</div>
-				';
-			}
-		}
+		} else {
 
-		else {
+			// Display upgrade nag
 			echo '
-				<div class="error">
-					<p>' . __('Uh oh! Looks like your Jigoshop database needs updating, just to be safe <strong>please backup your database</strong> before clicking this button!', 'jigoshop') . '</p>
-					<p>
-						<a class="button-secondary" href="' . add_query_arg('jigoshop_update_db', 'true') . '">' . __('I\'ve backed up, now update me!', 'jigoshop') . '</a>
-					</p>
+				<div class="update-nag">
+					'.sprintf(__('Your database needs an update. Please <strong>backup</strong> &amp; %s.', 'jigoshop'), '<a href="' . add_query_arg('jigoshop_update_db', 'true') . '">' . __('update now', 'jigoshop') . '</a>').'
 				</div>
 			';
 		}
@@ -79,58 +61,44 @@ function jigoshop_update() {
  *
  * @since 		1.0
  */
-function jigoshop_admin_menu() {
+add_action('admin_menu', 'jigoshop_before_admin_menu', 9);
+function jigoshop_before_admin_menu() {
+
 	global $menu;
 
-	$menu[] = array( '', 'read', 'separator-jigoshop', '', 'wp-menu-separator jigoshop' );
+	$menu[54] = array( '', 'read', 'separator-jigoshop', '', 'wp-menu-separator jigoshop' );
 
-	add_menu_page(__('Jigoshop'), __('Jigoshop'), 'manage_options', 'jigoshop' , 'jigoshop_dashboard', jigoshop::assets_url() . '/assets/images/icons/menu_icons.png', 55);
+	add_menu_page( __('Jigoshop'), __('Jigoshop'), 'manage_options', 'jigoshop', 'jigoshop_dashboard', null, 55);
 	add_submenu_page('jigoshop', __('Dashboard', 'jigoshop'), __('Dashboard', 'jigoshop'), 'manage_options', 'jigoshop', 'jigoshop_dashboard');
-	add_submenu_page('jigoshop', __('General Settings', 'jigoshop'),  __('Settings', 'jigoshop') , 'manage_options', 'jigoshop_settings', 'jigoshop_settings');
-	add_submenu_page('jigoshop', __('System Info','jigoshop'), __('System Info','jigoshop'), 'manage_options', 'jigoshop_sysinfo', 'jigoshop_system_info');
-	$id = add_submenu_page('edit.php?post_type=product', __('Attributes','jigoshop'), __('Attributes','jigoshop'), 'manage_options', 'jigoshop_attributes', 'jigoshop_attributes');
+	add_submenu_page('jigoshop', __('Reports','jigoshop'), __('Reports','jigoshop'), 'manage_options', 'jigoshop_reports', 'jigoshop_reports');
+	add_submenu_page('edit.php?post_type=product', __('Attributes','jigoshop'), __('Attributes','jigoshop'), 'manage_options', 'jigoshop_attributes', 'jigoshop_attributes');
+
+	do_action('jigoshop_before_admin_menu');
+
 }
 
-function jigoshop_admin_menu_order( $menu_order ) {
+add_action('admin_menu', 'jigoshop_after_admin_menu', 50);
+function jigoshop_after_admin_menu() {
 
-	// Initialize our custom order array
-	$jigoshop_menu_order = array();
+	$admin_page = add_submenu_page( 'jigoshop', __( 'Settings' ), __( 'Settings' ), 'manage_options', 'jigoshop_settings', array( Jigoshop_Admin_Settings::instance(), 'output_markup' ) );
+	add_action( 'admin_print_scripts-' . $admin_page, array( Jigoshop_Admin_Settings::instance(), 'settings_scripts' ) );
+	add_action( 'admin_print_styles-' . $admin_page, array( Jigoshop_Admin_Settings::instance(), 'settings_styles' ) );
 
-	// Get the index of our custom separator
-	$jigoshop_separator = array_search( 'separator-jigoshop', $menu_order );
-	$jigoshop_product = array_search( 'edit.php?post_type=product', $menu_order );
-	$jigoshop_order = array_search( 'edit.php?post_type=shop_order', $menu_order );
+	add_submenu_page( 'jigoshop', __('System Information','jigoshop'), __('System Info','jigoshop'), 'manage_options', 'jigoshop_system_info', 'jigoshop_system_info');
 
-	// Loop through menu order and do some rearranging
-	foreach ( $menu_order as $index => $item ) :
+	do_action('jigoshop_after_admin_menu');
 
-		if ( 'jigoshop' == $item ) :
-			$jigoshop_menu_order[] = 'separator-jigoshop';
-			$jigoshop_menu_order[] = $item;
-			$jigoshop_menu_order[] = 'edit.php?post_type=product';
-			$jigoshop_menu_order[] = 'edit.php?post_type=shop_order';
-
-			unset( $menu_order[$jigoshop_separator] );
-			unset( $menu_order[$jigoshop_product] );
-			unset( $menu_order[$jigoshop_order] );
-
-		elseif ( !in_array( $item, array( 'separator-jigoshop' ) ) ) :
-			$jigoshop_menu_order[] = $item;
-		endif;
-
-	endforeach;
-
-	// Return order
-	return $jigoshop_menu_order;
 }
 
-function jigoshop_admin_custom_menu_order() {
-	return current_user_can( 'manage_options' );
+function jigoshop_reports() {
+	require_once( 'jigoshop-admin-reports.php' );
+	$jigoshop_dashboard = new Jigoshop_reports();
 }
 
-add_action('admin_menu', 'jigoshop_admin_menu');
-add_action('menu_order', 'jigoshop_admin_menu_order');
-add_action('custom_menu_order', 'jigoshop_admin_custom_menu_order');
+function jigoshop_dashboard() {
+	require_once( 'jigoshop-admin-dashboard.php' );
+	$jigoshop_dashboard = new jigoshop_dashboard();
+}
 
 /**
  * Admin Head
@@ -173,30 +141,28 @@ function jigoshop_system_info() {
 
 	### Begin System Info ###
 
-	Theme:                    <?php echo get_current_theme() . "\n" ?>
-
 	Multi-site:               <?php echo is_multisite() ? 'Yes' . "\n" : 'No' . "\n" ?>
-	
+
 	SITE_URL:                 <?php echo site_url() . "\n"; ?>
 	HOME_URL:                 <?php echo home_url() . "\n"; ?>
-		
+
 	Jigoshop Version:         <?php echo jigoshop_get_plugin_data() . "\n"; ?>
 	WordPress Version:        <?php echo get_bloginfo('version') . "\n"; ?>
-	
+
 	PHP Version:              <?php echo PHP_VERSION . "\n"; ?>
 	MySQL Version:            <?php echo mysql_get_server_info() . "\n"; ?>
 	Web Server Info:          <?php echo $_SERVER['SERVER_SOFTWARE'] . "\n"; ?>
-	
+
 	PHP Memory Limit:         <?php echo ini_get('memory_limit') . "\n"; ?>
 	PHP Post Max Size:        <?php echo ini_get('post_max_size') . "\n"; ?>
-	
+
 	WP_DEBUG:                 <?php echo defined('WP_DEBUG') ? WP_DEBUG ? 'Enabled' . "\n" : 'Disabled' . "\n" : 'Not set' . "\n" ?>
-	
+
 	Show On Front:            <?php echo get_option('show_on_front') . "\n" ?>
 	Page On Front:            <?php echo get_option('page_on_front') . "\n" ?>
 	Page For Posts:           <?php echo get_option('page_for_posts') . "\n" ?>
 
-	Session:                  <?php echo !empty($_SESSION['enableSessionsTest']) ? 'Enabled' : 'Disabled'; ?><?php echo "\n"; ?>
+	Session:                  <?php @$_SESSION['enableSessionsTest'] = 1; echo !empty($_SESSION['enableSessionsTest']) ? 'Enabled' : 'Disabled'; ?><?php echo "\n"; ?>
 	Session Name:             <?php echo esc_html( ini_get( 'session.name' ) ); ?><?php echo "\n"; ?>
 	Cookie Path:              <?php echo esc_html( ini_get( 'session.cookie_path' ) ); ?><?php echo "\n"; ?>
 	Save Path:                <?php echo esc_html( ini_get( 'session.save_path' ) ); ?><?php echo "\n"; ?>
@@ -211,13 +177,13 @@ function jigoshop_system_info() {
 	FSOCKOPEN:                <?php echo (function_exists('fsockopen')) ? __('Your server supports fsockopen.', 'jigoshop') : __('Your server does not support fsockopen.', 'jigoshop'); ?><?php echo "\n"; ?>
 
 	ACTIVE PLUGINS:
-	
+
 <?php
 $plugins = get_plugins();
 $active_plugins = get_option('active_plugins', array());
 
 foreach ( $plugins as $plugin_path => $plugin ):
-	
+
 	//If the plugin isn't active, don't show it.
 	if ( !in_array($plugin_path, $active_plugins) )
 		continue;
@@ -225,6 +191,12 @@ foreach ( $plugins as $plugin_path => $plugin ):
 	<?php echo $plugin['Name']; ?>: <?php echo $plugin['Version']; ?>
 
 <?php endforeach; ?>
+
+	CURRENT THEME:
+
+<?php $theme_data = get_theme_data(get_stylesheet_directory() . '/style.css'); ?>
+	<?php echo $theme_data['Name']; ?>: <?php echo $theme_data['Version']; ?>
+
 
 	### End System Info ###
 </textarea>
@@ -234,7 +206,13 @@ foreach ( $plugins as $plugin_path => $plugin ):
 <?php
 }
 
-function jigoshop_feature_product () {
+function jigoshop_get_plugin_data( $key = 'Version' ) {
+	$data = get_plugin_data( jigoshop::plugin_path().'/jigoshop.php' );
+
+	return $data[$key];
+}
+
+function jigoshop_feature_product() {
 
 	if( !is_admin() ) die;
 
@@ -292,7 +270,7 @@ function jigoshop_get_current_post_type() {
 /**
  * Load needed scripts to order categories
  */
-function jigoshop_categories_scripts () {
+function jigoshop_categories_scripts() {
 
 	if( !isset($_GET['taxonomy']) || $_GET['taxonomy'] !== 'product_cat') return;
 
@@ -305,7 +283,7 @@ add_action('admin_footer-edit-tags.php', 'jigoshop_categories_scripts');
 /**
  * Ajax request handling for categories ordering
  */
-function jigoshop_categories_ordering () {
+function jigoshop_categories_ordering() {
 
 	global $wpdb;
 
@@ -314,7 +292,7 @@ function jigoshop_categories_ordering () {
 
 	if( ! $id || ! $term = get_term_by('id', $id, 'product_cat') ) die(0);
 
-	jigoshop_order_categories ( $term, $next_id);
+	jigoshop_order_categories( $term, $next_id);
 
 	$children = get_terms('product_cat', "child_of=$id&menu_order=ASC&hide_empty=0");
 	if( $term && sizeof($children) ) {
@@ -432,6 +410,7 @@ function jigoshop_dashboard_recent_comments() {
  * @since 3.0.0
  */
 function jigoshop_dashboard_recent_comments_control() {
+    $jigoshop_options = Jigoshop_Base::get_options();
 	if ( !$widget_options = get_option( 'dashboard_widget_options' ) )
 		$widget_options = array();
 
@@ -441,7 +420,7 @@ function jigoshop_dashboard_recent_comments_control() {
 	if ( 'POST' == $_SERVER['REQUEST_METHOD'] && isset($_POST['widget-recent-comments']) ) {
 		$number = absint( $_POST['widget-recent-comments']['items'] );
 		$widget_options['dashboard_recent_comments']['items'] = $number;
-		update_option( 'dashboard_widget_options', $widget_options );
+		$jigoshop_options->set_option( 'dashboard_widget_options', $widget_options );
 	}
 
 	$number = isset( $widget_options['dashboard_recent_comments']['items'] ) ? (int) $widget_options['dashboard_recent_comments']['items'] : '';

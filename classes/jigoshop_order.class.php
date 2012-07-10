@@ -16,7 +16,7 @@
  * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
-class jigoshop_order {
+class jigoshop_order extends Jigoshop_Base {
 
 	public $_data = array();
 
@@ -314,6 +314,17 @@ class jigoshop_order {
 				$return .= PHP_EOL . jigoshop_get_formatted_variation( $item['variation'], true);
 			endif;
 
+			// Very hacky, used for GFORMS ADDONS -Rob
+			if ( ! isset($_product->variation_data) && isset($item['variation'])) {
+
+				foreach ( $item['variation'] as $variation) {
+
+					$return .= PHP_EOL . $variation['name'].': '.$variation['value'];
+
+				}
+
+			}
+			
 			if ( ! empty( $item['customization'] ) ) :
 				$return .= PHP_EOL . apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') ) . PHP_EOL . $item['customization'];
 			endif;
@@ -350,14 +361,15 @@ class jigoshop_order {
 	/** Output bank transfer details for display in emails */
 	function email_bank_details() {
 
-		$title 			= get_option('jigoshop_bank_transfer_title');
-		$description 	= get_option('jigoshop_bank_transfer_description');
-		$bank_name 		= get_option('jigoshop_bank_transfer_bank_name');
-		$acc_number 	= get_option('jigoshop_bank_transfer_acc_number');
-		$sort_code 		= get_option('jigoshop_bank_transfer_sort_code');
-		$iban 			= get_option('jigoshop_bank_transfer_iban');
-		$bic 			= get_option('jigoshop_bank_transfer_bic');
-		$additional 	= get_option('jigoshop_bank_transfer_additional');
+
+		$title 			= self::get_options()->get_option('jigoshop_bank_transfer_title');
+		$description 	= self::get_options()->get_option('jigoshop_bank_transfer_description');
+		$bank_name 		= self::get_options()->get_option('jigoshop_bank_transfer_bank_name');
+		$acc_number 	= self::get_options()->get_option('jigoshop_bank_transfer_acc_number');
+		$sort_code 		= self::get_options()->get_option('jigoshop_bank_transfer_sort_code');
+		$iban 			= self::get_options()->get_option('jigoshop_bank_transfer_iban');
+		$bic 			= self::get_options()->get_option('jigoshop_bank_transfer_bic');
+		$additional 	= self::get_options()->get_option('jigoshop_bank_transfer_additional');
 
 		$bank_info = null;
 		if ($description) $bank_info .= wpautop(wptexturize($description)) . PHP_EOL;
@@ -378,7 +390,7 @@ class jigoshop_order {
 
 		$payment_page = apply_filters('jigoshop_get_checkout_payment_url', get_permalink(jigoshop_get_page_id('pay')));
 
-		if (get_option('jigoshop_force_ssl_checkout')=='yes' || is_ssl()) $payment_page = str_replace('http:', 'https:', $payment_page);
+		if (self::get_options()->get_option('jigoshop_force_ssl_checkout')=='yes' || is_ssl()) $payment_page = str_replace('http:', 'https:', $payment_page);
 
 		return add_query_arg('pay_for_order', 'true', add_query_arg('order', $this->order_key, add_query_arg('order_id', $this->id, $payment_page)));
 	}
@@ -435,46 +447,50 @@ class jigoshop_order {
 	 * @param   string	$new_status		Status to change the order to
 	 * @param   string	$note			Optional note to add
 	 */
-	function update_status( $new_status, $note = '' ) {
+	function update_status( $new_status_slug, $note = '' ) {
 
 // 		if ( $this->status == 'refunded' ) {
 // 			$jigoshop_errors = (array) maybe_unserialize(get_option('jigoshop_errors'));
 // 			$jigoshop_errors[] = __('Refunded Orders may not be changed.','jigoshop');
-// 			update_option('jigoshop_errors', $jigoshop_errors );
+// 			self::get_options()->set_option('jigoshop_errors', $jigoshop_errors );
 // 			return true;
 // 		}
 // 
 // 		if ( $this->status == 'completed' && $new_status != 'refunded' ) {
 // 			$jigoshop_errors = (array) maybe_unserialize(get_option('jigoshop_errors'));
 // 			$jigoshop_errors[] = __('Completed Orders may not be changed. You may only issue a Refund.','jigoshop');
-// 			update_option('jigoshop_errors', $jigoshop_errors );
+// 			self::get_options()->set_option('jigoshop_errors', $jigoshop_errors );
 // 			return true;
 // 		}
 
 		if ($note) $note .= ' ';
 
-		$new_status = get_term_by( 'slug', sanitize_title( $new_status ), 'shop_order_status');
-		if ($new_status) :
+		$old_status = get_term_by( 'slug', sanitize_title( $this->status ), 'shop_order_status');
+		$new_status = get_term_by( 'slug', sanitize_title( $new_status_slug ), 'shop_order_status');
 
-			wp_set_object_terms($this->id, $new_status->slug, 'shop_order_status');
+		if ($new_status) {
 
-			if ( $this->status != $new_status->slug ) :
+			wp_set_object_terms($this->id, array( $new_status->slug ), 'shop_order_status', false);
+
+			if ( $this->status != $new_status->slug ) {
+
 				// Status was changed
-				do_action( 'order_status_'.$new_status->slug, $this->id );
-				do_action( 'order_status_'.$this->status.'_to_'.$new_status->slug, $this->id );
-				$this->add_order_note( $note . sprintf( __('Order status changed from %s to %s.', 'jigoshop'), $this->status, $new_status->slug ) );
-				clean_term_cache( '', 'shop_order_status' );
+				do_action( 'order_status_' . $new_status->slug , $this->id );
+				do_action( 'order_status_' . $this->status . '_to_' . $new_status->slug, $this->id );
+				$this->add_order_note( $note . sprintf( __('Order status changed from %s to %s.', 'jigoshop'), __($old_status->name, 'jigoshop'), __($new_status->name, 'jigoshop') ) );
 
-				// If completed add completion date to order
-				if( $new_status->slug === 'completed' ) {
-					update_post_meta( $this->id, '_js_completed_date', current_time('timestamp'));
-					$this->add_sale(); // Add the sale to the records
+				// Date
+				if ($new_status->slug == 'completed') {
+					update_post_meta( $this->id, '_js_completed_date', current_time('mysql') );
+					$this->add_sale();
 				}
-			endif;
 
-		endif;
+			}
 
-		return false;		// signal no errors
+		}
+
+		return false;
+
 	}
 
 	/**
@@ -555,6 +571,7 @@ class jigoshop_order {
 	 */
 	function reduce_order_stock() {
 
+
 		// Reduce stock levels and do any other actions with products in the cart
 		if (sizeof($this->items)>0) foreach ($this->items as $item) :
 
@@ -574,9 +591,9 @@ class jigoshop_order {
 					endif;
 
 					// stock status notifications
-                    if (get_option('jigoshop_notify_no_stock_amount') >= 0 && get_option('jigoshop_notify_no_stock_amount') >= $new_quantity) :
+                    if (self::get_options()->get_option('jigoshop_notify_no_stock_amount') >= 0 && self::get_options()->get_option('jigoshop_notify_no_stock_amount') >= $new_quantity) :
 						do_action('jigoshop_no_stock_notification', $item['id']);
-					elseif (get_option('jigoshop_notify_low_stock_amount') && get_option('jigoshop_notify_low_stock_amount')>=$new_quantity) :
+					elseif (self::get_options()->get_option('jigoshop_notify_low_stock_amount') && self::get_options()->get_option('jigoshop_notify_low_stock_amount')>=$new_quantity) :
 						do_action('jigoshop_low_stock_notification', $item['id']);
 					endif;
 

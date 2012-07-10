@@ -28,9 +28,13 @@ class jigoshop_shipping_method {
 	var $chosen				= false;
 	var $shipping_total 	= 0;
 	var $shipping_tax 		= 0;
-
+    
     private $tax;
     private $error_message = null;
+    
+    public function __construct() {        
+        Jigoshop_Base::get_options()->install_external_options_onto_tab( 'Shipping', $this->get_default_options() );
+    }
 
     public function is_available() {
 
@@ -55,8 +59,8 @@ class jigoshop_shipping_method {
 		if ($this->availability == 'specific') :
 			$ship_to_countries = $this->countries;
 		else :
-			if (get_option('jigoshop_allowed_countries')=='specific') :
-				$ship_to_countries = get_option('jigoshop_specific_allowed_countries');
+			if (Jigoshop_Base::get_options()->get_option('jigoshop_allowed_countries')=='specific') :
+				$ship_to_countries = Jigoshop_Base::get_options()->get_option('jigoshop_specific_allowed_countries');
 			endif;
 		endif;
 
@@ -114,8 +118,25 @@ class jigoshop_shipping_method {
         $this->tax = null;
     }
 
+    /**
+     * @deprecated - use get_default_options()
+     */
     public function admin_options() {}
 
+    /**
+     * @deprecated - use get_default_options()
+     */
     public function process_admin_options() {}
+
+    /**
+	 * Default Option settings for WordPress Settings API using an implementation of the Jigoshop_Options_Interface
+	 *
+	 * These should be installed on the Jigoshop_Options 'Shipping' tab
+     * @since 1.3
+	 *
+	 */	
+    protected function get_default_options() {
+        return array();
+    }
 
 }

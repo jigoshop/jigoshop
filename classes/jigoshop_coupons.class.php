@@ -16,16 +16,103 @@
  * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
-class jigoshop_coupons {
+
+class jigoshop_coupons extends Jigoshop_Base {
+	
+	private static $coupons;
+	
+	function __construct() {
+
+		if ( !empty( $_GET['unset_coupon'] ))
+			$this->remove_coupon( $_GET['unset_coupon'] );
+
+	}
 
 	/**
-	 * get coupons from the options database
+	 * get an array of all coupon types
 	 *
-	 * @return array - the stored coupons array if any or an empty array otherwise
+	 * @return  array - the coupon types that are supported
+	 * @since   1.3
+	 */
+	public static function get_coupon_types() {
+		$coupon_types = array(
+			'fixed_cart'        => __('Cart Discount', 'jigoshop'),
+			'percent'           => __('Cart % Discount', 'jigoshop'),
+			'fixed_product'     => __('Product Discount', 'jigoshop'),
+			'percent_product'   => __('Product % Discount', 'jigoshop')
+		);
+		return $coupon_types;
+	}
+	
+	/**
+	 * get an array of all coupon fields
+	 *
+	 * @return  array - the coupon fields with values that indicate custom meta data fields
+	 * @since   1.3
+	 */
+	public static function get_coupon_fields() {
+		$couponFields = array(
+			'code'                  => false,
+			'type'                  => true,
+			'amount'                => true,
+			'date_from'             => true,
+			'date_to'               => true,
+			'usage_limit'           => true,
+			'usage'                 => true,
+			'free_shipping'         => true,
+			'individual_use'        => true,
+			'order_total_min'       => true,
+			'order_total_max'       => true,
+			'include_products'      => true,
+			'exclude_products'      => true,
+			'include_categories'    => true,
+			'exclude_categories'    => true,
+			'pay_methods'           => true,
+		);
+		return $couponFields;
+	}
+	
+	function get_coupon_post_id( $code ) {
+		$args = array(
+			'numberposts'	=> -1,
+			'orderby'		=> 'post_date',
+			'order'			=> 'DESC',
+			'post_type'		=> 'shop_coupon',
+			'post_status'	=> 'publish'
+		);
+		$our_coupons = (array) get_posts( $args );
+		if ( ! empty( $our_coupons )) foreach ( $our_coupons as $id => $coupon ) {
+			if ( $code == $coupon->post_title ) return $coupon->ID;
+		}
+		return false;
+	}
+	
+	/**
+	 * get all coupons
+	 *
+	 * @return array - the coupons
 	 * @since 0.9.8
 	 */
 	function get_coupons() {
-		return get_option('jigoshop_coupons') ? $coupons = (array) get_option('jigoshop_coupons') : $coupons = array();
+		if ( empty( self::$coupons ) ) {
+			$args = array(
+				'numberposts'	=> -1,
+				'orderby'		=> 'post_date',
+				'order'			=> 'DESC',
+				'post_type'		=> 'shop_coupon',
+				'post_status'	=> 'publish'
+			);
+			$our_coupons = (array) get_posts( $args );
+			if ( ! empty( $our_coupons )) foreach ( $our_coupons as $id => $coupon ) {
+				$values = array();
+				$values['code'] = $coupon->post_title;
+				
+				foreach ( self::get_coupon_fields() as $name => $meta )
+					if ( $meta ) $values[$name] = maybe_unserialize( get_post_meta( $coupon->ID, $name, true ));
+				self::$coupons[$coupon->post_title] = $values;
+			}
+		}
+		return self::$coupons;
 	}
 
 	/**
@@ -40,10 +127,30 @@ class jigoshop_coupons {
 	function get_coupon( $code ) {
 		$coupons = self::get_coupons();
 		if ( isset( $coupons[$code] )) :
-			if ( self::in_date_range( $coupons[$code] ) ) return $coupons[$code];
+			if ( self::in_date_range( $coupons[$code] ) && self::under_usage_limit( $coupons[$code] ) ) return $coupons[$code];
 		endif;
 
 		return false;
+	}
+
+	/* Remove an applied coupon. */
+	function remove_coupon( $code ) {
+
+		if ( !is_array( jigoshop_session::instance()->coupons ) )
+			return false;
+
+		/* Loop to find the key of this coupon */
+		foreach ( jigoshop_session::instance()->coupons as $key => $coupon ) :
+
+			if ( $code == $coupon ) {
+			//	unset(jigoshop_cart::$applied_coupons[$key]);
+			//	unset(jigoshop_session::instance()->coupons[$key]);
+				unset($_SESSION['jigoshop'][JIGOSHOP_VERSION]['coupons'][$key]);
+				return true;
+			}
+
+		endforeach;
+
 	}
 
 	/**
@@ -53,22 +160,63 @@ class jigoshop_coupons {
 	 * @param string $code - the coupon code to retrieve
 	 * @param array $product - the Cart $values entry for this product
 	 * @return boolean - whether this product is applicable to this coupon based on product ID, variation ID, and dates
-	 * @since 0.9.9.1
+	 * @since 1.3
 	 */
 	function is_valid_product( $code, $product ) {
-		$valid = false;
+
 		$coupon = self::get_coupon($code);
-		if ( $coupon && sizeof($coupon['products'])>0) :
-			if ( in_array( $product['product_id'], $coupon['products'] )) :
-				$valid = true;
-			endif;
-			if ( $product['variation_id'] <> '' ) :
-				if ( in_array( $product['variation_id'], $coupon['products'] )) :
-					$valid = true;
-				endif;
-			endif;
+
+		/* No coupon exists here. */
+		if ( empty( $coupon ) )
+			return false;
+
+		/* Exclude specific products first. */
+		if ( !empty( $coupon['exclude_products'] ) ) :
+
+			if ( in_array( $product['product_id'], $coupon['exclude_products'] ) )
+				return false;
+
+			if ( !empty( $product['variation_id'] ) && in_array( $product['variation_id'], $coupon['exclude_products'] ) )
+				return false;
+
 		endif;
-		return $valid;
+
+		/* Exclude specific categories next. */
+		if ( !empty( $coupon['exclude_categories'] ) ) :
+
+			$category  = reset(wp_get_post_terms($product['product_id'], 'product_cat'));
+
+			if ( in_array( $category->term_id, $coupon['exclude_categories'] ) )
+				return true;
+
+		endif;
+
+		/* Allow specific products only. */
+		if ( !empty( $coupon['include_products'] ) ) :
+ 
+			if ( in_array( $product['product_id'], $coupon['include_products'] ) )
+				return true;
+
+			if ( !empty( $product['variation_id'] ) && in_array( $product['variation_id'], $coupon['include_products'] ) )
+				return true;
+
+		endif;
+
+		/* Allow all products in a specific category. */
+		if ( !empty( $coupon['include_categories'] ) ) :
+
+			$category  = reset(wp_get_post_terms($product['product_id'], 'product_cat'));
+
+			if ( in_array( $category->term_id, $coupon['include_categories'] ) )
+				return true;
+
+		endif;
+
+		/* If no limits are set on the coupon, allow it to be used. */
+		if ( empty( $coupon['include_products'] ) && empty( $coupon['exclude_products'] ) && empty( $coupon['exclude_categories'] ) && empty( $coupon['include_categories'] ) )
+			return true;
+
+		return false;
 	}
 
 	/**
@@ -79,15 +227,35 @@ class jigoshop_coupons {
 	 * @since 0.9.9.1
 	 */
 	function in_date_range( $coupon ) {
-		$in_range = false;
-		$date_from = (int)$coupon['date_from'];
-		$date_to = (int)$coupon['date_to'];
+
+		$date_from    = (int)$coupon['date_from'];
+		$date_to      = (int)$coupon['date_to'];
 		$current_time = strtotime( 'NOW' );
-		if ( $date_to == 0 && $date_from == 0 ) $in_range = true;
-		else if ( $date_from == 0 || ( $date_from > 0 && $date_from < $current_time )) :
-			if ( $date_to == 0 || $date_to > $current_time ) $in_range = true;
-		endif;
-		return $in_range;
+
+		if ( $date_to == 0 && $date_from == 0 )
+			return true;
+
+		if ( $date_from == 0 || ( $date_from > 0 && $date_from < $current_time ) )
+			if ( $date_to == 0 || $date_to > $current_time )
+				return true;
+
+		return false;
+	}
+
+	/**
+	 * determines whether a coupon code is valid by checking if it has a usage limit, and if that limit has been passed
+	 *
+	 * @param array $coupon - the coupon record to check limit for
+	 * @return boolean - whether coupon is valid based on usage limit
+	 * @since 1.0
+	 */
+	function under_usage_limit( $coupon ) {
+
+		return (empty($coupon['usage_limit']) || (int) $coupon['usage'] < (int) $coupon['usage_limit']);
+
 	}
 
 }
+
+if ( !empty($_GET['unset_coupon']) )
+	$coupons = new jigoshop_coupons();
