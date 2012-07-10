@@ -71,9 +71,9 @@ class Jigoshop_Forms extends Jigoshop_Base {
 		extract( wp_parse_args( $field, $args ) );
 
 		$selected = ($selected) ? (array)$selected : (array)get_post_meta($post->ID, $id, true);
-		$name = ($multiple) ? $id.'[]' : $id;
+		$name     = ($multiple) ? $id.'[]' : $id;
 		$multiple = ($multiple) ? 'multiple="multiple"' : '';
-		$desc = ($desc) ? esc_html( $desc ) : false;
+		$desc     = ($desc)     ? esc_html( $desc ) : false;
 
 		$html = '';
 
