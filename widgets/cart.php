@@ -113,8 +113,8 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 			do_action( 'jigoshop_widget_cart_before_buttons' );
 
 			// Print view cart & checkout buttons
-			$view_cart_button_label	= $instance['view_cart_button']	? $instance['view_cart_button']	: __( 'View Cart &rarr;', 'jigoshop' );
-			$checkout_button_label	= $instance['checkout_button']	? $instance['checkout_button']	: __( 'Checkout &rarr;', 'jigoshop' );
+			$view_cart_button_label	= isset($instance['view_cart_button'])	? $instance['view_cart_button']	: __( 'View Cart &rarr;', 'jigoshop' );
+			$checkout_button_label	= isset($instance['checkout_button'])	? $instance['checkout_button']	: __( 'Checkout &rarr;', 'jigoshop' );
 			
 			echo '<p class="buttons">';
 			echo '<a href="' . esc_attr( jigoshop_cart::get_cart_url() ) . '" class="button">' . __( $view_cart_button_label, 'jigoshop' ) . '</a>';
