@@ -146,8 +146,6 @@ function jigoshop_coupon_data_box( $post ) {
   			$selected = implode( ',', (array)$selected );
 			$args = array(
 				'id'            => 'include_products',
-				'type'          => 'hidden',
-				'class'         => 'long',
 				'label'         => __( 'Include Products', 'jigoshop' ),
 				'desc'          => __('Control which products this coupon can apply to.','jigoshop'),
 				'placeholder'   => __('Any product','jigoshop'),
@@ -160,8 +158,6 @@ function jigoshop_coupon_data_box( $post ) {
 			$selected = implode( ',', (array)$selected );
 			$args = array(
 				'id'            => 'exclude_products',
-				'type'          => 'hidden',
-				'class'         => 'long',
 				'label'         => __( 'Exclude Products', 'jigoshop' ),
 				'desc'          => __('Control which products this coupon cannot be applied to.','jigoshop'),
 				'placeholder'   => __('No exclusions','jigoshop'),
