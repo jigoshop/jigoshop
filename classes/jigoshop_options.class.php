@@ -537,8 +537,8 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		
 		self::$default_options[] = array(
 			'name'		=> __('Beta testing','jigoshop'),
-			'desc' 		=> __('Use beta versions of Jigoshop when available.','jigoshop'),
-			'tip' 		=> __('Allow beta plugin updates to be shown for Jigoshop. Beta updates will display normally in the Wordpress plugin manager.','jigoshop'),
+			'desc' 		=> __('Use <strong><em>at your own risk</em></strong>.  Do <strong><em>not</em></strong> use on your <strong>main</strong> production Shop.','jigoshop'),
+			'tip' 		=> __('Allow Beta versions of Jigoshop updates to be shown in the WordPress plugin manager. Beta updates will display normally there if available. For Jigoshop Beta Testers <strong>ONLY!</strong>','jigoshop'),
 			'id' 		=> 'jigoshop_use_beta_version',
 			'std' 		=> 'no',
 			'type' 		=> 'checkbox',
