@@ -52,6 +52,7 @@ class jigoshop_coupons extends Jigoshop_Base {
 	 */
 	public static function get_coupon_fields() {
 		$couponFields = array(
+			'id'                    => false,
 			'code'                  => false,
 			'type'                  => true,
 			'amount'                => true,
@@ -105,10 +106,11 @@ class jigoshop_coupons extends Jigoshop_Base {
 			$our_coupons = (array) get_posts( $args );
 			if ( ! empty( $our_coupons )) foreach ( $our_coupons as $id => $coupon ) {
 				$values = array();
+				$values['id']   = $coupon->ID;
 				$values['code'] = $coupon->post_title;
 				
 				foreach ( self::get_coupon_fields() as $name => $meta )
-					if ( $meta ) $values[$name] = maybe_unserialize( get_post_meta( $coupon->ID, $name, true ));
+					if ( $meta ) $values[$name] = get_post_meta( $coupon->ID, $name, true );
 				self::$coupons[$coupon->post_title] = $values;
 			}
 		}
@@ -126,10 +128,10 @@ class jigoshop_coupons extends Jigoshop_Base {
 	 */
 	function get_coupon( $code ) {
 		$coupons = self::get_coupons();
-		if ( isset( $coupons[$code] )) :
-			if ( self::in_date_range( $coupons[$code] ) && self::under_usage_limit( $coupons[$code] ) ) return $coupons[$code];
-		endif;
-
+		if ( isset( $coupons[$code] )) {
+			if ( self::in_date_range( $coupons[$code] ) && self::under_usage_limit( $coupons[$code] ) )
+				return $coupons[$code];
+		}
 		return false;
 	}
 
@@ -162,13 +164,9 @@ class jigoshop_coupons extends Jigoshop_Base {
 	 * @return boolean - whether this product is applicable to this coupon based on product ID, variation ID, and dates
 	 * @since 1.3
 	 */
-	function is_valid_product( $code, $product ) {
+	function is_valid_coupon_for_product( $code, $product ) {
 
-		$coupon = self::get_coupon($code);
-
-		/* No coupon exists here. */
-		if ( empty( $coupon ) )
-			return false;
+		if ( ! $coupon = self::get_coupon( $code )) return false;
 
 		/* Exclude specific products first. */
 		if ( !empty( $coupon['exclude_products'] ) ) :
@@ -184,7 +182,7 @@ class jigoshop_coupons extends Jigoshop_Base {
 		/* Exclude specific categories next. */
 		if ( !empty( $coupon['exclude_categories'] ) ) :
 
-			$category  = reset(wp_get_post_terms($product['product_id'], 'product_cat'));
+			$category = reset(wp_get_post_terms($product['product_id'], 'product_cat'));
 
 			if ( in_array( $category->term_id, $coupon['exclude_categories'] ) )
 				return true;
@@ -193,7 +191,7 @@ class jigoshop_coupons extends Jigoshop_Base {
 
 		/* Allow specific products only. */
 		if ( !empty( $coupon['include_products'] ) ) :
- 
+
 			if ( in_array( $product['product_id'], $coupon['include_products'] ) )
 				return true;
 
@@ -204,7 +202,6 @@ class jigoshop_coupons extends Jigoshop_Base {
 
 		/* Allow all products in a specific category. */
 		if ( !empty( $coupon['include_categories'] ) ) :
-
 			$category  = reset(wp_get_post_terms($product['product_id'], 'product_cat'));
 
 			if ( in_array( $category->term_id, $coupon['include_categories'] ) )
@@ -213,9 +210,15 @@ class jigoshop_coupons extends Jigoshop_Base {
 		endif;
 
 		/* If no limits are set on the coupon, allow it to be used. */
-		if ( empty( $coupon['include_products'] ) && empty( $coupon['exclude_products'] ) && empty( $coupon['exclude_categories'] ) && empty( $coupon['include_categories'] ) )
+		if (   empty( $coupon['include_products'] ) 
+			&& empty( $coupon['exclude_products'] ) 
+			&& empty( $coupon['include_categories'] )
+			&& empty( $coupon['exclude_categories'] ) 
+			) {
+			
 			return true;
-
+		}
+		
 		return false;
 	}
 
@@ -238,7 +241,6 @@ class jigoshop_coupons extends Jigoshop_Base {
 		if ( $date_from == 0 || ( $date_from > 0 && $date_from < $current_time ) )
 			if ( $date_to == 0 || $date_to > $current_time )
 				return true;
-
 		return false;
 	}
 
@@ -247,10 +249,9 @@ class jigoshop_coupons extends Jigoshop_Base {
 	 *
 	 * @param array $coupon - the coupon record to check limit for
 	 * @return boolean - whether coupon is valid based on usage limit
-	 * @since 1.0
+	 * @since 1.3
 	 */
 	function under_usage_limit( $coupon ) {
-
 		return (empty($coupon['usage_limit']) || (int) $coupon['usage'] < (int) $coupon['usage_limit']);
 
 	}
