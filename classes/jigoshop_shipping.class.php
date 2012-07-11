@@ -173,6 +173,21 @@ class jigoshop_shipping extends Jigoshop_Singleton {
     }
 
     /**
+     * 
+     * @return mixed the id of the chosen shipping method or false if none are chosen
+     */
+    public static function get_chosen_method() {
+        $_available_methods = self::get_available_shipping_methods();
+        
+        foreach ($_available_methods as $method) :
+            if ($method->is_chosen()) :
+                return $method->id;
+            endif;
+        endforeach;
+        
+        return false;
+    }
+    /**
      * Calculate the shipping price
      *
      * @param type $tax jigoshop_tax class instance
