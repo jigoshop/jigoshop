@@ -1019,7 +1019,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
         }
 
         // Check if coupon products are in cart
-        if ( ! jigoshop_cart::has_discounted_products_in_cart( $the_coupon ) ) {
+        if ( ! jigoshop_cart::has_valid_coupon_for_products( $the_coupon ) ) {
             jigoshop::add_error(__('No products in your cart match that coupon!', 'jigoshop'));
             return false;
         }
@@ -1034,7 +1034,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
     }
 
-    function has_discounted_products_in_cart( $thecoupon ) {
+    function has_valid_coupon_for_products( $thecoupon ) {
 
         /* Look through each product in the cart for a valid coupon. */
         foreach ( self::$cart_contents as $product )
@@ -1051,7 +1051,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 		if ( ! empty( self::$applied_coupons )) foreach ( self::$applied_coupons as $code ) {
 			if ( $coupon = jigoshop_coupons::get_coupon( $code) ) {
 				if ( $coupon['free_shipping'] )
-					if ( self::has_discounted_products_in_cart( $coupon )) return true;
+					if ( self::has_valid_coupon_for_products( $coupon )) return true;
 			}
 		}
 		return false;

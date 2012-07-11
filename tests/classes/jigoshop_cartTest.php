@@ -439,10 +439,10 @@ class jigoshop_cartTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers jigoshop_cart::has_discounted_products_in_cart
-     * @todo Implement testHas_discounted_products_in_cart().
+     * @covers jigoshop_cart::has_valid_coupon_for_products
+     * @todo Implement testHas_valid_coupon_for_products().
      */
-    public function testHas_discounted_products_in_cart() {
+    public function testHas_valid_coupon_for_products() {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
                 'This test has not been implemented yet.'
