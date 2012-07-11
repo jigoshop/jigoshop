@@ -185,7 +185,7 @@ class jigoshop_coupons extends Jigoshop_Base {
 			$category = reset(wp_get_post_terms($product['product_id'], 'product_cat'));
 
 			if ( in_array( $category->term_id, $coupon['exclude_categories'] ) )
-				return true;
+				return false;
 
 		endif;
 
