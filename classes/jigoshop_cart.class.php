@@ -937,31 +937,33 @@ class jigoshop_cart extends Jigoshop_Singleton {
      * @param   string  code    The code to apply
      * @return   bool   True if the coupon is applied, false if it does not exist or cannot be applied
      */
-    function add_discount($coupon_code) {
+    function add_discount( $coupon_code ) {
 
-        $the_coupon = jigoshop_coupons::get_coupon($coupon_code);
+        $the_coupon = jigoshop_coupons::get_coupon( $coupon_code );
 
         /* Don't continue if the coupon isn't valid. */
-        if ( !self::valid_coupon($coupon_code) )
-            return false;
+        if ( ! self::valid_coupon( $coupon_code ) ) return false;
 
         /* Check for other individual_use coupons before adding this coupon. */
-        foreach (self::$applied_coupons as $coupon) :
-
-            $coupon = jigoshop_coupons::get_coupon($coupon);
-
-            if ( $coupon['individual_use'] )
-                self::$applied_coupons = array();
-
-        endforeach;
+        if ( ! empty( self::$applied_coupons )) foreach ( self::$applied_coupons as $coupon ) {
+            $this_coupon = jigoshop_coupons::get_coupon( $coupon );
+            if ( $this_coupon['individual_use'] ) {
+				jigoshop::add_error(__("There is already an 'individual use' coupon on the Cart.  No other coupons can be added until it is removed.", 'jigoshop'));
+				return false;
+			}
+        }
 
         /* Remove other coupons if this one is individual_use. */
-        if ( $the_coupon['individual_use'] )
-            self::$applied_coupons = array();
-
+        if ( $the_coupon['individual_use'] ) {
+        	if ( ! empty( self::$applied_coupons )) {
+				jigoshop::add_error(__("This is an 'individual use' coupon.  All other discount coupons have been removed.", 'jigoshop'));
+				self::$applied_coupons = array();
+			}
+		}
+		
         self::$applied_coupons[] = $coupon_code;
         self::set_session();
-        jigoshop::add_message(__('Discount code applied successfully.', 'jigoshop'));
+        jigoshop::add_message(__('Discount coupon applied successfully.', 'jigoshop'));
 
         return true;
 
