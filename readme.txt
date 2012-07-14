@@ -150,6 +150,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * Tweak: Pages & CPT's now use menu_position. Fixes array key duplication
 * Fix: When uninstalling, will now only delete Jigoshop created pages instead of pages specified in settings
 * Fix: Variable products now have proper titles, not "#xxx: Child Variaton" anymore
+* Fix: Edit Address on My Account page now shows correct saved state
 
 = 1.2.3 - 2012-05-28 =
 * New: Add filters for new Jigoshop Product Addons extension
