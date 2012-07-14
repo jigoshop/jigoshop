@@ -983,7 +983,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 		if ( !empty($pay_methods) ) {
 
 			if ( !empty($payment_method) && !in_array($payment_method, $pay_methods) ) {
-				jigoshop::add_error(__('This coupon is invalid with that payment method!', 'jigoshop'));
+				jigoshop::add_error(sprintf(__("The coupon '%s' is invalid with that payment method!", 'jigoshop'), $coupon_code));
 				return false;
 			}
 
