@@ -67,10 +67,12 @@ class jigoshop_product_meta
 		}
 
 		// Process the SKU
-		( $this->is_unique_sku( $post_id, $_POST['sku'] ) )
-			? update_post_meta( $post_id, 'sku', $_POST['sku'])
-			: delete_post_meta( $post_id, 'sku' );
-
+		if ( Jigoshop_Base::get_options()->get_option('jigoshop_enable_sku') !== 'no' ) {
+			( $this->is_unique_sku( $post_id, $_POST['sku'] ) )
+				? update_post_meta( $post_id, 'sku', $_POST['sku'])
+				: delete_post_meta( $post_id, 'sku' );
+		}
+		
 		// Process the attributes
 		update_post_meta( $post_id, 'product_attributes', $this->process_attributes($_POST, $post_id));
 
@@ -158,10 +160,8 @@ class jigoshop_product_meta
 					}
 				}
 			}
-		} else {
-			$array['stock_status'] = $post['stock_status'];
 		}
-		
+				
 		return $array;
 	}
 
