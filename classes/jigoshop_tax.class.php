@@ -294,7 +294,7 @@ class jigoshop_tax extends Jigoshop_Base {
     private function charge_taxes_to_customer() {
 
         // always charge taxes if chosen shipping method is local_pickup since person is in the taxable country
-        if (jigoshop_shipping::get_chosen_method() == 'local_pickup') :
+        if (jigoshop_session::instance()->chosen_shipping_method_id == 'local_pickup') :
             return true;
         endif;
         
@@ -311,6 +311,7 @@ class jigoshop_tax extends Jigoshop_Base {
         
         return true;
     }
+    
     /**
      * gets the tax classes for the customer based on customer shipping
      * country and state.
@@ -319,9 +320,9 @@ class jigoshop_tax extends Jigoshop_Base {
     private function get_tax_classes_for_customer() {
 
         // if local pickup, we need to use the base tax classes
-        if (jigoshop_shipping::get_chosen_method() == 'local_pickup') {
+        if (jigoshop_session::instance()->chosen_shipping_method_id == 'local_pickup') :
             return $this->get_tax_classes_for_base();
-        }
+        endif;
         
         $country = ($this->shipable ? jigoshop_customer::get_shipping_country() : jigoshop_customer::get_country());
         $state = ($this->shipable ? jigoshop_customer::get_shipping_state() : jigoshop_customer::get_state());
@@ -350,7 +351,7 @@ class jigoshop_tax extends Jigoshop_Base {
 
     private function get_online_label_for_customer($class = '*') {
         
-        if (jigoshop_shipping::get_chosen_method() == 'local_pickup') :
+        if (jigoshop_session::instance()->chosen_shipping_method_id == 'local_pickup') :
             return $this->get_online_label_for_base($class);
         endif;
         
@@ -739,7 +740,7 @@ class jigoshop_tax extends Jigoshop_Base {
      */
     private function get_rate($tax_class = '*', $rate_only = true) {
 
-        if (jigoshop_shipping::get_chosen_method() == 'local_pickup') :
+        if (jigoshop_session::instance()->chosen_shipping_method_id == 'local_pickup') :
             return $this->get_shop_base_rate($tax_class, $rate_only);
         endif;
 
