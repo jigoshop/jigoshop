@@ -137,9 +137,9 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 	* Total sales
 * New: Category images
 	* Add an image to your product categories
-* New: Beta updater
-	* Keep track of Jigoshop beta versions by enabling this checkbox in the settings
-	* Allows you to update directly to a beta version
+* New: Beta Tester updater
+	* Enabling this checkbox in the settings will allow beta versions to appear in the WP Plugin Manager
+	* Allows Jigoshop Beta Testers to update directly to a beta version
 * New: Product on Sale shortcode
 * New: Force users to login before downloading a purchased product
 * New: Mark 1 month or older orders from 'pending' to 'on-hold' with an option in the Settings to enable
@@ -152,6 +152,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * Fix: When uninstalling, will now only delete Jigoshop created pages instead of pages specified in settings
 * Fix: Variable products now have proper titles, not "#xxx: Child Variaton" anymore
 * Fix: Edit Address on My Account page now shows correct saved state
+* Fix: Local Pickup shipping always charges Shop Base Country and State tax
 
 = 1.2.3 - 2012-05-28 =
 * New: Add filters for new Jigoshop Product Addons extension
