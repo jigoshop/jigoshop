@@ -42,7 +42,7 @@
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
-if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1207160);
+if (!defined("JIGOSHOP_VERSION")) define("JIGOSHOP_VERSION", 1207090);
 if (!defined("JIGOSHOP_OPTIONS")) define("JIGOSHOP_OPTIONS", 'jigoshop_options');
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 

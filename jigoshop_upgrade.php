@@ -53,7 +53,7 @@ function jigoshop_upgrade() {
         jigoshop_upgrade_120();
     }
 
-	if ( $jigoshop_db_version < 1207160 ) {
+	if ( $jigoshop_db_version < 1207090 ) {
 		jigoshop_upgrade_130();
 	}
 
