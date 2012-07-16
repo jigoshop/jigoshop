@@ -53,7 +53,7 @@ function jigoshop_upgrade() {
         jigoshop_upgrade_120();
     }
 
-	if ( $jigoshop_db_version < 1207090 ) {
+	if ( $jigoshop_db_version < 1207160 ) {
 		jigoshop_upgrade_130();
 	}
 
@@ -567,7 +567,7 @@ function jigoshop_upgrade_130() {
 	} else {                        /* if CPT based coupons from RC1, convert data for incorrect products meta */
 		foreach ( $new_coupons as $id => $coupon ) {
 			$product_ids = get_post_meta( $coupon->ID, 'products', true );
-			update_post_meta( $coupon->ID, 'include_products', $product_ids );
+			if ( $product_ids <> '' ) update_post_meta( $coupon->ID, 'include_products', $product_ids );
 			delete_post_meta( $coupon->ID, 'products', $product_ids );
 		}
 	}
