@@ -19,6 +19,7 @@
  * Jigoshop cron tasks.
  *
  * 1. Archive 'pending' orders by setting their status to 'on-hold'.
+ * 2. Perform jigoshop beta version availability checks for auto-update.
  */
 
 class jigoshop_cron extends Jigoshop_Base {
@@ -30,10 +31,13 @@ class jigoshop_cron extends Jigoshop_Base {
 
 		$this->jigoshop_schedule_events();
 
-		add_action('http_request_args'            , array($this , 'no_ssl_http_request_args'), 10, 2);
-		add_action( 'jigoshop_cron_pending_orders', array( $this, 'jigoshop_update_pending_orders' ) );
-		add_action( 'jigoshop_cron_check_beta'    , array( $this, 'jigoshop_update_beta_init'      ) );
-		add_action( 'init'                        , array( $this, 'jigoshop_update_beta_now'       ) );
+		add_action( 'http_request_args',                        array( $this, 'no_ssl_http_request_args'), 10, 2);
+		add_action( 'jigoshop_cron_pending_orders',             array( $this, 'jigoshop_update_pending_orders' ) );
+		add_action( 'jigoshop_cron_check_beta',                 array( $this, 'jigoshop_update_beta_init' ) );
+		add_action( 'init',                                     array( $this, 'jigoshop_update_beta_now' ) );
+
+		add_filter( 'pre_set_site_transient_update_plugins',    array( $this, 'jigoshop_update_beta_checker'   ) );
+		add_filter( 'upgrader_post_install',                    array( $this, 'jigoshop_upgrader_post_install' ), 10, 3 );
 
 	}
 
@@ -41,7 +45,7 @@ class jigoshop_cron extends Jigoshop_Base {
 
 		/* Mark old 'pending' orders to 'on-hold' */
 		if ( !wp_next_scheduled( 'jigoshop_cron_pending_orders' ) ) {
-			wp_schedule_event(time(), 'daily', 'jigoshop_cron_pending_orders' );
+			wp_schedule_event( time(), 'daily', 'jigoshop_cron_pending_orders' );
 		}
 
 		/* Remove scheduled beta checker, and clear the plugin update transient. */
@@ -52,7 +56,7 @@ class jigoshop_cron extends Jigoshop_Base {
 		/* Schedule the daily beta checker, and run it now since the user enabled it just now. */
 		else if ( !wp_next_scheduled( 'jigoshop_cron_check_beta' ) && self::get_options()->get_option( 'jigoshop_use_beta_version' ) == 'yes' ) {
 			$this->jigoshop_update_beta_init();
-			wp_schedule_event(time(), 'daily', 'jigoshop_cron_check_beta' );
+			wp_schedule_event( time(), 'daily', 'jigoshop_cron_check_beta' );
 		}
 
 
@@ -89,6 +93,7 @@ class jigoshop_cron extends Jigoshop_Base {
 
 	/* Manually invoke the beta updater if the user requests. */
 	function jigoshop_update_beta_now() {
+
 		if ( self::get_options()->get_option( 'jigoshop_use_beta_version' ) == 'yes' ) {
 			if ( !empty($_REQUEST['action']) && $_REQUEST['action'] == 'jigoshop_beta_check' && check_admin_referer('jigoshop_check_beta_'.get_current_user_id().'_wpnonce') && is_super_admin() ) {
 	
@@ -146,33 +151,29 @@ class jigoshop_cron extends Jigoshop_Base {
 	/* Check for Jigoshop beta updates. */
 	function jigoshop_update_beta_checker( $transient ) {
 
-		if( self::get_options()->get_option('jigoshop_use_beta_version') == 'no' && self::get_options()->get_option('jigoshop_check_beta_manually') === false )
-			return false;
-
-		// Check if the transient contains the 'checked' information
-		if( empty( $transient->checked ) )
-			return $transient;
-
+		if ( self::get_options()->get_option('jigoshop_use_beta_version') == 'no' ) return false;
+		
 		$url     = 'https://raw.github.com/jigoshop/jigoshop/dev/version.txt';
 		$dir     = plugin_basename( dirname(dirname(__FILE__)) ) . '/jigoshop.php';
 		$request = wp_remote_get( $url, array('sslverify'=> false) );
 
-		if ( is_wp_error( $request ) )
-			return false;
+		if ( is_wp_error( $request ) ) return false;
 
 		/* The version number. */
 		$current = $request['body'];
 
 		/* Do we need to update? */
-		if( version_compare($transient->checked[$dir], $current) < 0) {
+		$data = $this->jigoshop_data();
+		if ( version_compare( $data['Version'], $current ) < 0 ) {
 			$response                  = new stdClass();
 			$response->new_version     = $current ;
+			$response->requires        = '3.2.1';
+			$response->tested          = '3.4.1';
 			$response->slug            = $dir;
 			$response->url             = 'https://github.com/jigoshop/jigoshop';
 			$response->package         = 'https://github.com/jigoshop/jigoshop/zipball/dev';
 
-			if ( false !== $response )
-				$transient->response[ $dir ] = $response;
+			if ( false !== $response ) $transient->response[ $dir ] = $response;
 
 		}
 
@@ -182,6 +183,9 @@ class jigoshop_cron extends Jigoshop_Base {
 
 	}
 
-}
-
-$jigoshop_cron = new jigoshop_cron();
+	private function jigoshop_data() {
+		require_once(ABSPATH.'wp-admin/includes/plugin.php');
+		return get_plugin_data(WP_PLUGIN_DIR.'/jigoshop/jigoshop.php');
+	}
+		
+} new jigoshop_cron();
