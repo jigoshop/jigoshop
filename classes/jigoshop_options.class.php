@@ -121,6 +121,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	private static $current_options;
 	private $bad_extensions = array();
 	
+	
 	/**
 	 * Instantiates a new Options object
 	 *
@@ -135,19 +136,90 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		
 		if ( false === self::$current_options ) {
 			
-			$current_options = array();
-	
-			foreach ( $this->get_default_options() as $setting ) :
-				if ( isset( $setting['id'] )) :
-					// find out if the option previously existed. If yes, then we'll make sure we use that over the 
-					// default value
-					$option = $this->get_option($setting['id']);
-					$current_options[$setting['id']] = ($option == null ? $setting['std'] : $option);
-				endif;
-			endforeach;
+			if ( ! $this->need_to_upgrade_from_123_to_130() ) {     // should be from a fresh install
 			
-			self::$current_options = $current_options;
-			update_option( JIGOSHOP_OPTIONS, $current_options );
+				$current_options = array();
+		
+				foreach ( $this->get_default_options() as $setting ) :
+					if ( isset( $setting['id'] )) {
+						$current_options[$setting['id']] = $setting['std'];
+					}
+				endforeach;
+				
+				self::$current_options = $current_options;
+				update_option( JIGOSHOP_OPTIONS, $current_options );
+				
+			}
+			
+		}
+		
+	}
+	
+	
+	/**
+	 * Special case function that's run if no 'jigoshop_options' available in Database
+	 * Typically encountered when first run on upgrade from version 1.2.3 to version 1.3
+	 * when this class is first implemented.
+	 *
+	 * Finds all separate options from 1.2.3 and installs them as our current options with a few changes
+	 * Sets a 'jigoshop_upgraded_from_123' flag option to note that this has been done.
+	 *
+	 * This has to happen here instead of an 'upgrade' script due to 'update_option' changing a few defaults
+	 * and the old existing options are then altered prior to the 'upgrade'.
+	 *
+	 * @param   none
+	 * @return  true if upgrade was needed, false otherwise
+	 *
+	 * @since	1.3
+	 */	
+	private function need_to_upgrade_from_123_to_130() {
+	
+		global $wpdb;
+		
+		$version = get_site_option( 'jigoshop_db_version' );
+		$upgraded = get_option( 'jigoshop_upgraded_from_123' );
+		if ( $version !== false && $version < 1207160 && $upgraded === false ) {
+			
+			$transfer_options = array();
+			$options_in_use = $wpdb->get_results( 
+				$wpdb->prepare( "SELECT * FROM {$wpdb->options} WHERE option_name LIKE 'jigoshop_%%';" ));
+			foreach ( $options_in_use as $index => $setting ) {
+				if ( $setting->option_name == 'jigoshop_options' ) continue;
+				if ( $setting->option_name == 'jigoshop_db_version' ) continue;
+				// this will add all settings into the new api, even if they will not be called from there.
+				// eg. enabled plugins may not have utilized the new infrastructure yet.
+				$transfer_options[$setting->option_name] = get_option( $setting->option_name );
+				if ( $setting->option_name == 'jigoshop_display_totals_tax' ) {
+					$current = get_option( $setting->option_name );
+					if ( false !== $current ) {
+						if ( $current == 'including' ) :
+							$transfer_options[$setting->option_name] = 'yes';
+						else :
+							$transfer_options[$setting->option_name] = 'no';
+						endif;
+					}
+				}
+			}
+
+			if ( $transfer_options['jigoshop_paypal_testmode'] == 'yes' ) {
+				$transfer_options['jigoshop_sandbox_email'] = $transfer_options['jigoshop_paypal_email'];
+				$transfer_options['jigoshop_paypal_email'] = '';
+			}
+			
+			$transfer_options['jigoshop_use_beta_version'] = 'no';
+			
+			$transfer_options['jigoshop_upgraded_from_123'] = 'yes';
+			
+			self::$current_options = $transfer_options;
+ 			update_option( JIGOSHOP_OPTIONS, $transfer_options );
+ 			update_option( 'jigoshop_upgraded_from_123', 'yes' );
+ 			
+ 			return true;
+ 			
+		} else {    // fresh install?
+		
+			return false;
+			
 		}
 		
 	}
@@ -537,8 +609,8 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		
 		self::$default_options[] = array(
 			'name'		=> __('Beta testing','jigoshop'),
-			'desc' 		=> __('Use beta versions of Jigoshop when available.','jigoshop'),
-			'tip' 		=> __('Allow beta plugin updates to be shown for Jigoshop. Beta updates will display normally in the Wordpress plugin manager.','jigoshop'),
+			'desc' 		=> __('Use <strong><em>at your own risk</em></strong>.  Do <strong><em>not</em></strong> use on your <strong>main</strong> production Shop.','jigoshop'),
+			'tip' 		=> __('Allow Beta versions of Jigoshop updates to be shown in the WordPress plugin manager. Beta updates will display normally there if available. For Jigoshop Beta Testers <strong>ONLY!</strong>','jigoshop'),
 			'id' 		=> 'jigoshop_use_beta_version',
 			'std' 		=> 'no',
 			'type' 		=> 'checkbox',
@@ -1470,9 +1542,9 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		self::$default_options[] = array( 'name' => __('Shipping Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
 		self::$default_options[] = array(
-			'name'		=> __('Calculate Shipping','jigoshop'),
-			'desc' 		=> __('Only turn this off if you are not shipping items, or items have shipping costs included.','jigoshop'),
-			'tip' 		=> __('If you are not calculating shipping then you can ignore all other tax options.', 'jigoshop'),
+			'name'		=> __('Enable Shipping','jigoshop'),
+			'desc' 		=> __('Only turn this off if you are <strong>not</strong> shipping items, or items have shipping costs included.','jigoshop'),
+			'tip' 		=> __('If turned off, this will also remove shipping address fields on the Checkout.','jigoshop'),
 			'id' 		=> 'jigoshop_calc_shipping',
 			'std' 		=> 'yes',
 			'type' 		=> 'checkbox',

@@ -123,15 +123,15 @@ function jigoshop_add_order_item() {
 /**
  * When default permalinks are enabled, redirect shop page to post type archive url
  **/
-if (Jigoshop_Base::get_options()->get_option( 'permalink_structure' )=="") add_action( 'init', 'jigoshop_shop_page_archive_redirect' );
+add_action( 'init', 'jigoshop_shop_page_archive_redirect' );
 
 function jigoshop_shop_page_archive_redirect() {
-
-	if ( isset($_GET['page_id']) && $_GET['page_id'] == jigoshop_get_page_id('shop') ) :
-		wp_safe_redirect( get_post_type_archive_link('product') );
-		exit;
+	if (Jigoshop_Base::get_options()->get_option( 'permalink_structure' )=="") :
+		if ( isset($_GET['page_id']) && $_GET['page_id'] == jigoshop_get_page_id('shop') ) :
+			wp_safe_redirect( get_post_type_archive_link('product') );
+			exit;
+		endif;
 	endif;
-
 }
 
 /**

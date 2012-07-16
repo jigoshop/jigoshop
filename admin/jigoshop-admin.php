@@ -161,8 +161,8 @@ function jigoshop_system_info() {
 	Show On Front:            <?php echo get_option('show_on_front') . "\n" ?>
 	Page On Front:            <?php echo get_option('page_on_front') . "\n" ?>
 	Page For Posts:           <?php echo get_option('page_for_posts') . "\n" ?>
-
-	Session:                  <?php @$_SESSION['enableSessionsTest'] = 1; echo !empty($_SESSION['enableSessionsTest']) ? 'Enabled' : 'Disabled'; ?><?php echo "\n"; ?>
+	
+	Session:                  <?php echo isset( $_SESSION ) ? 'Enabled' : 'Disabled'; ?><?php echo "\n"; ?>
 	Session Name:             <?php echo esc_html( ini_get( 'session.name' ) ); ?><?php echo "\n"; ?>
 	Cookie Path:              <?php echo esc_html( ini_get( 'session.cookie_path' ) ); ?><?php echo "\n"; ?>
 	Save Path:                <?php echo esc_html( ini_get( 'session.save_path' ) ); ?><?php echo "\n"; ?>
@@ -194,8 +194,15 @@ foreach ( $plugins as $plugin_path => $plugin ):
 
 	CURRENT THEME:
 
-<?php $theme_data = get_theme_data(get_stylesheet_directory() . '/style.css'); ?>
-	<?php echo $theme_data['Name']; ?>: <?php echo $theme_data['Version']; ?>
+	<?php 
+	if ( get_bloginfo('version') < '3.4' ) {
+		$theme_data = get_theme_data(get_stylesheet_directory() . '/style.css');
+		echo $theme_data['Name'] . ': ' . $theme_data['Version'];
+	} else {
+		$theme_data = wp_get_theme();
+		echo $theme_data->Name . ': ' . $theme_data->Version;
+	}
+?>
 
 
 	### End System Info ###

@@ -146,7 +146,6 @@ function jigoshop_coupon_data_box( $post ) {
   			$selected = implode( ',', (array)$selected );
 			$args = array(
 				'id'            => 'include_products',
-				'type'          => 'hidden',
 				'class'         => 'long',
 				'label'         => __( 'Include Products', 'jigoshop' ),
 				'desc'          => __('Control which products this coupon can apply to.','jigoshop'),
@@ -160,7 +159,6 @@ function jigoshop_coupon_data_box( $post ) {
 			$selected = implode( ',', (array)$selected );
 			$args = array(
 				'id'            => 'exclude_products',
-				'type'          => 'hidden',
 				'class'         => 'long',
 				'label'         => __( 'Exclude Products', 'jigoshop' ),
 				'desc'          => __('Control which products this coupon cannot be applied to.','jigoshop'),
@@ -341,14 +339,14 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 
 	if ( isset( $_POST['include_products'] )) {
 		$include_products = jigowatt_clean( $_POST['include_products'] );
-		$include_products = explode( ',', $include_products );
+		$include_products = $include_products <> '' ? explode( ',', $include_products ) : array();
 	} else {
 		$include_products = array();
 	}
 	
 	if ( isset( $_POST['exclude_products'] )) {
 		$exclude_products = jigowatt_clean( $_POST['exclude_products'] );
-		$exclude_products = explode( ',', $exclude_products );
+		$exclude_products = $exclude_products <> '' ? explode( ',', $exclude_products ) : array();
 	} else {
 		$exclude_products = array();
 	}
@@ -380,7 +378,7 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 	update_post_meta( $post_id, 'free_shipping',        $free_shipping );
 	update_post_meta( $post_id, 'order_total_min',      $minimum_amount );
 	update_post_meta( $post_id, 'order_total_max',      $maximum_amount );
-	update_post_meta( $post_id, 'products',             $include_products );
+	update_post_meta( $post_id, 'include_products',     $include_products );
 	update_post_meta( $post_id, 'exclude_products',     $exclude_products );
 	update_post_meta( $post_id, 'include_categories',   $include_categories );
 	update_post_meta( $post_id, 'exclude_categories',   $exclude_categories );

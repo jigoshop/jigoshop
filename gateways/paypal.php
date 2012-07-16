@@ -271,10 +271,17 @@ class paypal extends jigoshop_payment_gateway {
 		endif;
 
 		if ($this->send_shipping=='yes') :
-			$paypal_args['no_shipping'] = 0;
+			$paypal_args['no_shipping'] = 1;
 			$paypal_args['address_override'] = 1;
+			$paypal_args['address1'] = $order->shipping_address_1;
+			$paypal_args['address2'] = $order->shipping_address_2;
+			$paypal_args['city'] = $order->shipping_city;
+			$paypal_args['state'] = $order->shipping_state;
+			$paypal_args['zip'] = $order->shipping_postcode;
+			$paypal_args['country'] = $order->shipping_country;
 		else :
 			$paypal_args['no_shipping'] = 1;
+			$paypal_args['address_override'] = 0;
 		endif;
 
 		// Cart Contents

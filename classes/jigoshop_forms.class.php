@@ -44,7 +44,7 @@ class Jigoshop_Forms extends Jigoshop_Base {
 		if ( $tip ) {
 			$html .= '<a href="#" tip="'.$tip.'" class="tips" tabindex="99"></a>';
 		}
-		
+
 		if ( $desc ) {
 			$html .= '<span class="description">'.$desc.'</span>';
 		}
@@ -71,16 +71,16 @@ class Jigoshop_Forms extends Jigoshop_Base {
 		extract( wp_parse_args( $field, $args ) );
 
 		$selected = ($selected) ? (array)$selected : (array)get_post_meta($post->ID, $id, true);
-		$name = ($multiple) ? $id.'[]' : $id;
+		$name     = ($multiple) ? $id.'[]' : $id;
 		$multiple = ($multiple) ? 'multiple="multiple"' : '';
-		$desc = ($desc) ? esc_html( $desc ) : false;
+		$desc     = ($desc)     ? esc_html( $desc ) : false;
 
 		$html = '';
 
 		$html .= "<p class='form-field {$id}_field'>";
 		$html .= "<label for='{$id}'>$label{$after_label}</label>";
 		$html .= "<select {$multiple} id='{$id}' name='{$name}' class='{$class}' data-placeholder='{$placeholder}'>";
-		
+
 		foreach ( $options as $value => $label ) {
 			$mark = '';
 			if ( in_array( $value, $selected ) ) {
@@ -93,7 +93,7 @@ class Jigoshop_Forms extends Jigoshop_Base {
 		if ( $tip ) {
 			$html .= '<a href="#" tip="'.$tip.'" class="tips" tabindex="99"></a>';
 		}
-		
+
 		if ( $desc ) {
 			$html .= '<span class="description">'.$desc.'</span>';
 		}
@@ -125,16 +125,12 @@ class Jigoshop_Forms extends Jigoshop_Base {
 		$value = ($value) ? $value : get_post_meta($post->ID, $id, true);
 		$desc  = ($desc)  ? esc_html($desc) : false;
 
-		$html = '';
+		$mark  = checked( $value, 1, false);
 
-		$mark = '';
-		if ( $value ) {
-			$mark = 'checked="checked"';
-		}
-
+		$html  = '';
 		$html .= "<p class='form-field {$id}_field'>";
 		$html .= "<label for='{$id}'>$label{$after_label}</label>";
-		$html .= "<input type='checkbox' name='{$id}' value='1' class='{$class}' id='{$id}' {$mark} />";
+		$html .= "<input type='checkbox' name='{$id}' class='{$class}' id='{$id}' {$mark} />";
 
 		if ( $desc ) {
 			$html .= "<label for='{$id}' class='description'>$desc</label>";
@@ -143,7 +139,7 @@ class Jigoshop_Forms extends Jigoshop_Base {
 		if ( $tip ) {
 			$html .= '<a href="#" tip="'.$tip.'" class="tips" tabindex="99"></a>';
 		}
-		
+
 		$html .= "</p>";
 		return $html;
 	}

@@ -53,7 +53,7 @@ function jigoshop_upgrade() {
         jigoshop_upgrade_120();
     }
 
-	if ( $jigoshop_db_version < 1207090 ) {
+	if ( $jigoshop_db_version < 1207160 ) {
 		jigoshop_upgrade_130();
 	}
 
@@ -491,90 +491,19 @@ function jigoshop_upgrade_120() {
 function jigoshop_upgrade_130() {
 	
 	global $wpdb;
-    $jigoshop_options = Jigoshop_Base::get_options();
-	
-	// adjust specific options based on old settings for the new Jigoshop_Options class
-	require_once ( 'admin/jigoshop-admin-settings-options.php' );
-	global $jigoshop_options_settings;
-    $admin_settings = array();
-	foreach ( $jigoshop_options_settings as $setting ) {
-		if ( ! empty( $setting['id'] )) {
-			switch ( $setting['id'] ) {
-			case 'jigoshop_shop_tiny':
-			case 'jigoshop_shop_thumbnail':
-			case 'jigoshop_shop_small':
-			case 'jigoshop_shop_large':
-				$current = get_option( $setting['id'].'_w' );
-				if ( false !== $current ) {
-					$jigoshop_options->set_option( $setting['id'].'_w', $current );
-                    $admin_settings[] = $setting['id'] . '_w';
-				}
-				$current = get_option( $setting['id'].'_h' );
-				if ( false !== $current ) {
-					$jigoshop_options->set_option( $setting['id'].'_h', $current );
-                    $admin_settings[] = $setting['id'] . '_h';
-				}
-				break;
-            case 'jigoshop_display_totals_tax':
-                $current = get_option( $setting['id'] );
-                if ( false !== $current ) {
-                    if ( $current == 'including' ) :
-                        $jigoshop_options->set_option( $setting['id'], 'yes' );
-                    else :
-                        $jigoshop_options->set_option( $setting['id'], 'no' );
-                    endif;
-                    $admin_settings[] = $setting['id'];
-                }
-                break;
-			default:
-				$current = get_option( $setting['id'] );
-				if ( false !== $current ) {
-					$jigoshop_options->set_option( $setting['id'], $current );
-                    $admin_settings[] = $setting['id'];
-				}
-				break;
-			}
-		}
-	}
-    
-	// get all current 'jigoshop_' namespace options from the 'options' table and include them
-    // excluding above options as we don't want to add the old options to the new array
-    $in_string = "'" . implode("', '", $admin_settings) . "'";
-	$options_in_use = $wpdb->get_results( 
-		$wpdb->prepare( "SELECT * FROM {$wpdb->options} WHERE option_name LIKE 'jigoshop_%%' AND option_name NOT IN ($in_string);" ));
-	foreach ( $options_in_use as $index => $setting ) {
-		if ( $setting->option_name == 'jigoshop_options' ) continue;
-		if ( $setting->option_name == 'jigoshop_db_version' ) continue;
-        // this will add all settings into the new api, even if they will not be called from there.. eg. enabled plugins
-        // may not have utilized the new infrastructure yet.
-        $option_value = get_option($setting->option_name);
-		$jigoshop_options->set_option( $setting->option_name, $option_value );
-	}
-	
-	
-	// convert paypal email address to test mode email if enabled
-	$jigoshop_paypal_email = get_option( 'jigoshop_paypal_email' );
-	$jigoshop_paypal_testmode = get_option( 'jigoshop_paypal_testmode' );
-	if ( $jigoshop_paypal_testmode == 'yes' ) {
-		$jigoshop_options->set_option( 'jigoshop_paypal_testmode', 'yes' );
-		$jigoshop_options->set_option( 'jigoshop_sandbox_email', $jigoshop_paypal_email );
-		$jigoshop_options->set_option( 'jigoshop_paypal_email', '' );
-	}
-		
-	$jigoshop_options->update_options();
 	
 	/* Update all product variation titles to something useful. */
 	$args = array(
-			'post_type' => 'product',
-			'tax_query' => array(
-				array(
-					'taxonomy'=> 'product_type',
-					'terms'   => 'variable',
-					'field'   => 'slug',
-					'operator'=> 'IN'
-					)
-				)
-			);
+		'post_type' => 'product',
+		'tax_query' => array(
+			array(
+				'taxonomy'=> 'product_type',
+				'terms'   => 'variable',
+				'field'   => 'slug',
+				'operator'=> 'IN'
+			)
+		)
+	);
 	$posts_array = get_posts( $args );
 
 	foreach ( $posts_array as $post ) {
@@ -608,28 +537,41 @@ function jigoshop_upgrade_130() {
 	}
 	
 	// Convert coupon options to new 'shop_coupon' custom post type and create posts
-	$coupons = get_option( 'jigoshop_coupons' );
-	$coupon_data = array(
-		'post_status'    => 'publish',
-		'post_type'      => 'shop_coupon',
-		'post_author'    => 1,
-		'post_name'      => '',
-		'post_content'   => '',
-		'comment_status' => 'closed'
+	$args = array(
+		'numberposts'	=> -1,
+		'post_type'		=> 'shop_coupon',
+		'post_status'	=> 'publish'
 	);
-	if ( ! empty( $coupons )) foreach ( $coupons as $coupon ) {
-		$coupon_data['post_name'] = $coupon['code'];
-		$coupon_data['post_title'] = $coupon['code'];
-		$post_id = wp_insert_post( $coupon_data );
-		update_post_meta( $post_id, 'type', $coupon['type'] );
-		update_post_meta( $post_id, 'amount', $coupon['amount'] );
-		update_post_meta( $post_id, 'include_products', $coupon['products'] );
-		update_post_meta( $post_id, 'date_from', ($coupon['date_from'] <> 0) ? $coupon['date_from'] : '' );
-		update_post_meta( $post_id, 'date_to', ($coupon['date_to'] <> 0) ? $coupon['date_to'] : '' );
-		update_post_meta( $post_id, 'individual_use', ($coupon['individual_use'] == 'yes') );
+	$new_coupons = (array) get_posts( $args );
+	if ( empty( $new_coupons )) {   /* probably an upgrade from 1.2.3 or less, convert options based coupons */
+		$coupons = get_option( 'jigoshop_coupons' );
+		$coupon_data = array(
+			'post_status'    => 'publish',
+			'post_type'      => 'shop_coupon',
+			'post_author'    => 1,
+			'post_name'      => '',
+			'post_content'   => '',
+			'comment_status' => 'closed'
+		);
+		if ( ! empty( $coupons )) foreach ( $coupons as $coupon ) {
+			$coupon_data['post_name'] = $coupon['code'];
+			$coupon_data['post_title'] = $coupon['code'];
+			$post_id = wp_insert_post( $coupon_data );
+			update_post_meta( $post_id, 'type', $coupon['type'] );
+			update_post_meta( $post_id, 'amount', $coupon['amount'] );
+			update_post_meta( $post_id, 'include_products', $coupon['products'] );
+			update_post_meta( $post_id, 'date_from', ($coupon['date_from'] <> 0) ? $coupon['date_from'] : '' );
+			update_post_meta( $post_id, 'date_to', ($coupon['date_to'] <> 0) ? $coupon['date_to'] : '' );
+			update_post_meta( $post_id, 'individual_use', ($coupon['individual_use'] == 'yes') );
+		}
+	} else {                        /* if CPT based coupons from RC1, convert data for incorrect products meta */
+		foreach ( $new_coupons as $id => $coupon ) {
+			$product_ids = get_post_meta( $coupon->ID, 'products', true );
+			if ( $product_ids <> '' ) update_post_meta( $coupon->ID, 'include_products', $product_ids );
+			delete_post_meta( $coupon->ID, 'products', $product_ids );
+		}
 	}
 	
-
 	flush_rewrite_rules( true );
 
 }

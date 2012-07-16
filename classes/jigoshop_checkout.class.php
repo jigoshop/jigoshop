@@ -34,37 +34,155 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 		add_action('jigoshop_checkout_billing',array(&$this,'checkout_form_billing'));
 		add_action('jigoshop_checkout_shipping',array(&$this,'checkout_form_shipping'));
 
-		$this->billing_fields = array(
-			array( 'name'=>'billing-first_name', 'label'=> __('First Name', 'jigoshop'), 'placeholder'=> __('First Name', 'jigoshop'), 'required'      => true, 'class'                                   => array('form-row-first') ),
-			array( 'name'=>'billing-last_name', 'label' => __('Last Name', 'jigoshop'), 'placeholder' => __('Last Name', 'jigoshop'), 'required'       => true, 'class'                                   => array('form-row-last') ),
-			array( 'name'=>'billing-company', 'label'   => __('Company', 'jigoshop'), 'placeholder'   => __('Company', 'jigoshop') ),
-			array( 'name'=>'billing-address', 'label'   => __('Address', 'jigoshop'), 'placeholder'   => __('Address 1', 'jigoshop'), 'required'       => true, 'class'                                   => array('form-row-first') ),
-			array( 'name'=>'billing-address-2', 'label' => __('Address 2', 'jigoshop'), 'placeholder' => __('Address 2', 'jigoshop'), 'class'          => array('form-row-last'), 'label_class'           => array('hidden') ),
-			array( 'name'=>'billing-city', 'label'      => __('City', 'jigoshop'), 'placeholder'      => __('City', 'jigoshop'), 'required'            => true, 'class'                                   => array('form-row-first') ),
-			array( 'type'=>'postcode', 'validate'       => 'postcode', 'format'                       => 'postcode', 'name'                            =>'billing-postcode', 'label'                      => __('Postcode', 'jigoshop'), 'placeholder'=> __('Postcode', 'jigoshop'), 'required'=> true, 'class'=> array('form-row-last') ),
-			array( 'type'=> 'country', 'name'           =>'billing-country', 'label'                  => __('Country', 'jigoshop'), 'required'         => true, 'class'                                   => array('form-row-first'), 'rel'           => 'billing-state' ),
-			array( 'type'=> 'state', 'name'             =>'billing-state', 'label'                    => __('State/County', 'jigoshop'), 'required'    => true, 'class'                                   => array('form-row-last'), 'rel'            => 'billing-country' ),
-			array( 'name'=>'billing-email', 'validate'  => 'email', 'label'                           => __('Email Address', 'jigoshop'), 'placeholder'=> __('you@yourdomain.com', 'jigoshop'), 'required'=> true, 'class'                            => array('form-row-first') ),
-			array( 'name'=>'billing-phone', 'validate'  => 'phone', 'label'                           => __('Phone', 'jigoshop'), 'placeholder'        => __('Phone number', 'jigoshop'), 'required'      => true, 'class'                            => array('form-row-last') )
-		);
-
+		$this->billing_fields = self::get_billing_fields();
 		$this->billing_fields = apply_filters( 'jigoshop_billing_fields', $this->billing_fields );
 
-		$this->shipping_fields = array(
-			array( 'name'=>'shipping-first_name', 'label'=> __('First Name', 'jigoshop'), 'placeholder'=> __('First Name', 'jigoshop'), 'required'  => true, 'class'                        => array('form-row-first') ),
-			array( 'name'=>'shipping-last_name', 'label' => __('Last Name', 'jigoshop'), 'placeholder' => __('Last Name', 'jigoshop'), 'required'   => true, 'class'                        => array('form-row-last') ),
-			array( 'name'=>'shipping-company', 'label'   => __('Company', 'jigoshop'), 'placeholder'   => __('Company', 'jigoshop') ),
-			array( 'name'=>'shipping-address', 'label'   => __('Address', 'jigoshop'), 'placeholder'   => __('Address 1', 'jigoshop'), 'required'   => true, 'class'                        => array('form-row-first') ),
-			array( 'name'=>'shipping-address-2', 'label' => __('Address 2', 'jigoshop'), 'placeholder' => __('Address 2', 'jigoshop'), 'class'      => array('form-row-last'), 'label_class'=> array('hidden') ),
-			array( 'name'=>'shipping-city', 'label'      => __('City', 'jigoshop'), 'placeholder'      => __('City', 'jigoshop'), 'required'        => true, 'class'                        => array('form-row-first') ),
-			array( 'type'=>'postcode', 'validate'        => 'postcode', 'format'                       => 'postcode', 'name'                        =>'shipping-postcode', 'label'          => __('Postcode', 'jigoshop'), 'placeholder'=> __('Postcode', 'jigoshop'), 'required'=> true, 'class'=> array('form-row-last') ),
-			array( 'type'=> 'country', 'name'            =>'shipping-country', 'label'                 => __('Country', 'jigoshop'), 'required'     => true, 'class'                        => array('form-row-first'), 'rel'           => 'shipping-state' ),
-			array( 'type'=> 'state', 'name'              =>'shipping-state', 'label'                   => __('State/County', 'jigoshop'), 'required'=> true, 'class'                        => array('form-row-last'), 'rel'            => 'shipping-country' )
-		);
-
+		$this->shipping_fields = self::get_shipping_fields();
 		$this->shipping_fields = apply_filters( 'jigoshop_shipping_fields', $this->shipping_fields );
 	}
+	
+	public static function get_billing_fields() {
+		$billing_fields = array(
+			array( 
+				'name'          => 'billing-country',
+				'type'          => 'country',
+				'label'         => __('Country', 'jigoshop'),
+				'required'      => true,
+				'class'         => array('form-row-first'),
+				'rel'           => 'billing-state' ),
+			array(
+				'name'          => 'billing-state',
+				'type'          => 'state',
+				'label'         => __('State/County', 'jigoshop'),
+				'required'      => true,
+				'class'         => array('form-row-last'),
+				'rel'           => 'billing-country' ),
+			array( 
+				'name'          => 'billing-first_name',
+				'label'         => __('First Name', 'jigoshop'),
+				'placeholder'   => __('First Name', 'jigoshop'),
+				'required'      => true,
+				'class'         => array('form-row-first') ),
+			array( 
+				'name'          => 'billing-last_name',
+				'label'         => __('Last Name', 'jigoshop'),
+				'placeholder'   => __('Last Name', 'jigoshop'),
+				'required'      => true,
+				'class'         => array('form-row-last') ),
+			array(
+				'name'          => 'billing-company',
+				'label'         => __('Company', 'jigoshop'),
+				'placeholder'   => __('Company', 'jigoshop') ),
+			array( 
+				'name'          => 'billing-address',
+				'label'         => __('Address', 'jigoshop'),
+				'placeholder'   => __('Address 1', 'jigoshop'),
+				'required'      => true,
+				'class'         => array('form-row-first') ),
+			array( 
+				'name'          => 'billing-address-2',
+				'label'         => __('Address 2', 'jigoshop'),
+				'placeholder'   => __('Address 2', 'jigoshop'),
+				'class'         => array('form-row-last'),
+				'label_class'   => array('hidden') ),
+			array( 
+				'name'          => 'billing-city',
+				'label'         => __('City', 'jigoshop'),
+				'placeholder'   => __('City', 'jigoshop'),
+				'required'      => true,
+				'class'         => array('form-row-first') ),
+			array( 
+				'name'          =>'billing-postcode',
+				'type'          => 'postcode',
+				'validate'      => 'postcode',
+				'format'        => 'postcode',
+				'label'         => __('Postcode', 'jigoshop'),
+				'placeholder'   => __('Postcode', 'jigoshop'),
+				'required'      => true,
+				'class'         => array('form-row-last') ),
+			array( 
+				'name'          => 'billing-email',
+				'validate'      => 'email',
+				'label'         => __('Email Address', 'jigoshop'),
+				'placeholder'   => __('you@yourdomain.com', 'jigoshop'),
+				'required'      => true,
+				'class'         => array('form-row-first') ),
+			array( 
+				'name'          => 'billing-phone',
+				'validate'      => 'phone',
+				'label'         => __('Phone', 'jigoshop'),
+				'placeholder'   => __('Phone number', 'jigoshop'),
+				'required'      => true,
+				'class'         => array('form-row-last') )
+		);
+		
+		return $billing_fields;
+	}
+	
+	public static function get_shipping_fields() {
+		$shipping_fields = array(
+			array(
+				'name'          =>'shipping-country',
+				'type'          => 'country',
+				'label'         => __('Country', 'jigoshop'),
+				'required'      => true,
+				'class'         => array('form-row-first'),
+				'rel'           => 'shipping-state' ),
+			array( 
+				'name'          => 'shipping-state',
+				'type'          => 'state',
+				'label'         => __('State/County', 'jigoshop'),
+				'required'      => true,
+				'class'         => array('form-row-last'),
+				'rel'           => 'shipping-country' ),
+			array( 
+				'name'          => 'shipping-first_name',
+				'label'         => __('First Name', 'jigoshop'),
+				'placeholder'   => __('First Name', 'jigoshop'),
+				'required'      => true,
+				'class'         => array('form-row-first') ),
+			array( 
+				'name'          => 'shipping-last_name',
+				'label'         => __('Last Name', 'jigoshop'),
+				'placeholder'   => __('Last Name', 'jigoshop'),
+				'required'      => true,
+				'class'         => array('form-row-last') ),
+			array( 
+				'name'          => 'shipping-company',
+				'label'         => __('Company', 'jigoshop'),
+				'placeholder'   => __('Company', 'jigoshop') ),
+			array( 
+				'name'          => 'shipping-address',
+				'label'         => __('Address', 'jigoshop'),
+				'placeholder'   => __('Address 1', 'jigoshop'),
+				'required'      => true,
+				'class'         => array('form-row-first') ),
+			array( 
+				'name'          => 'shipping-address-2',
+				'label'         => __('Address 2', 'jigoshop'),
+				'placeholder'   => __('Address 2', 'jigoshop'),
+				'class'         => array('form-row-last'),
+				'label_class'   => array('hidden') ),
+			array( 
+				'name'          => 'shipping-city',
+				'label'         => __('City', 'jigoshop'),
+				'placeholder'   => __('City', 'jigoshop'),
+				'required'      => true,
+				'class'         => array('form-row-first') ),
+			array( 
+				'name'          =>'shipping-postcode',
+				'type'          => 'postcode',
+				'validate'      => 'postcode',
+				'format'        => 'postcode',
+				'label'         => __('Postcode', 'jigoshop'),
+				'placeholder'   => __('Postcode', 'jigoshop'),
+				'required'      => true,
+				'class'=> array('form-row-last') ),
+		);
 
+		return $shipping_fields;
+	}
+	
 	/** Output the billing information form */
 	function checkout_form_billing() {
 
