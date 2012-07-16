@@ -178,7 +178,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		
 		$version = get_site_option( 'jigoshop_db_version' );
 		$upgraded = get_option( 'jigoshop_upgraded_from_123' );
-		if ( $version !== false && $version < 1207090 && $upgraded === false ) {
+		if ( $version !== false && $version < 1207160 && $upgraded === false ) {
 			
 			$transfer_options = array();
 			$options_in_use = $wpdb->get_results( 

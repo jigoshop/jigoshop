@@ -53,7 +53,7 @@ function jigoshop_upgrade() {
         jigoshop_upgrade_120();
     }
 
-	if ( $jigoshop_db_version < 1207090 ) {
+	if ( $jigoshop_db_version < 1207160 ) {
 		jigoshop_upgrade_130();
 	}
 
@@ -558,7 +558,6 @@ function jigoshop_upgrade_130() {
 		update_post_meta( $post_id, 'individual_use', ($coupon['individual_use'] == 'yes') );
 	}
 	
-
 	flush_rewrite_rules( true );
 
 }
