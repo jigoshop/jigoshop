@@ -490,6 +490,8 @@ function jigoshop_upgrade_120() {
  */
 function jigoshop_upgrade_130() {
 	
+	global $wpdb;
+	
 	/* Update all product variation titles to something useful. */
 	$args = array(
 		'post_type' => 'product',
