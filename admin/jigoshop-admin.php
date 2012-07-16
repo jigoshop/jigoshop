@@ -194,8 +194,15 @@ foreach ( $plugins as $plugin_path => $plugin ):
 
 	CURRENT THEME:
 
-<?php $theme_data = get_theme_data(get_stylesheet_directory() . '/style.css'); ?>
-	<?php echo $theme_data['Name']; ?>: <?php echo $theme_data['Version']; ?>
+	<?php 
+	if ( get_bloginfo('version') < '3.4' ) {
+		$theme_data = get_theme_data(get_stylesheet_directory() . '/style.css');
+		echo $theme_data['Name'] . ': ' . $theme_data['Version'];
+	} else {
+		$theme_data = wp_get_theme();
+		echo $theme_data->Name . ': ' . $theme_data->Version;
+	}
+?>
 
 
 	### End System Info ###
