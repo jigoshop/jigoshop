@@ -129,9 +129,8 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 					echo '</a>';
 
 					// Print the star rating
-					echo "
-					<div class='star-rating' title='{$rating}'>
-						<span style='width:{($rating*$star_size)}px;'>{$rating} ".__( 'out of 5', 'jigoshop' )."</span>
+					echo "<div class='star-rating' title='{$rating}'>
+						<span style='width:".($rating*$star_size)."px;'>{$rating} ".__( 'out of 5', 'jigoshop' )."</span>
 					</div>";
 
 					// Print the author
