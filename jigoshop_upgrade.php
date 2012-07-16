@@ -537,25 +537,39 @@ function jigoshop_upgrade_130() {
 	}
 	
 	// Convert coupon options to new 'shop_coupon' custom post type and create posts
-	$coupons = get_option( 'jigoshop_coupons' );
-	$coupon_data = array(
-		'post_status'    => 'publish',
-		'post_type'      => 'shop_coupon',
-		'post_author'    => 1,
-		'post_name'      => '',
-		'post_content'   => '',
-		'comment_status' => 'closed'
+	$args = array(
+		'numberposts'	=> -1,
+		'post_type'		=> 'shop_coupon',
+		'post_status'	=> 'publish'
 	);
-	if ( ! empty( $coupons )) foreach ( $coupons as $coupon ) {
-		$coupon_data['post_name'] = $coupon['code'];
-		$coupon_data['post_title'] = $coupon['code'];
-		$post_id = wp_insert_post( $coupon_data );
-		update_post_meta( $post_id, 'type', $coupon['type'] );
-		update_post_meta( $post_id, 'amount', $coupon['amount'] );
-		update_post_meta( $post_id, 'include_products', $coupon['products'] );
-		update_post_meta( $post_id, 'date_from', ($coupon['date_from'] <> 0) ? $coupon['date_from'] : '' );
-		update_post_meta( $post_id, 'date_to', ($coupon['date_to'] <> 0) ? $coupon['date_to'] : '' );
-		update_post_meta( $post_id, 'individual_use', ($coupon['individual_use'] == 'yes') );
+	$new_coupons = (array) get_posts( $args );
+	if ( empty( $new_coupons )) {   /* probably an upgrade from 1.2.3 or less, convert options based coupons */
+		$coupons = get_option( 'jigoshop_coupons' );
+		$coupon_data = array(
+			'post_status'    => 'publish',
+			'post_type'      => 'shop_coupon',
+			'post_author'    => 1,
+			'post_name'      => '',
+			'post_content'   => '',
+			'comment_status' => 'closed'
+		);
+		if ( ! empty( $coupons )) foreach ( $coupons as $coupon ) {
+			$coupon_data['post_name'] = $coupon['code'];
+			$coupon_data['post_title'] = $coupon['code'];
+			$post_id = wp_insert_post( $coupon_data );
+			update_post_meta( $post_id, 'type', $coupon['type'] );
+			update_post_meta( $post_id, 'amount', $coupon['amount'] );
+			update_post_meta( $post_id, 'include_products', $coupon['products'] );
+			update_post_meta( $post_id, 'date_from', ($coupon['date_from'] <> 0) ? $coupon['date_from'] : '' );
+			update_post_meta( $post_id, 'date_to', ($coupon['date_to'] <> 0) ? $coupon['date_to'] : '' );
+			update_post_meta( $post_id, 'individual_use', ($coupon['individual_use'] == 'yes') );
+		}
+	} else {                        /* if CPT based coupons from RC1, convert data for incorrect products meta */
+		foreach ( $new_coupons as $id => $coupon ) {
+			$product_ids = get_post_meta( $coupon->ID, 'products', true );
+			update_post_meta( $coupon->ID, 'include_products', $product_ids );
+			delete_post_meta( $coupon->ID, 'products', $product_ids );
+		}
 	}
 	
 	flush_rewrite_rules( true );
