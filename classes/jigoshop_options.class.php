@@ -1542,9 +1542,9 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		self::$default_options[] = array( 'name' => __('Shipping Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
 		self::$default_options[] = array(
-			'name'		=> __('Calculate Shipping','jigoshop'),
-			'desc' 		=> __('Only turn this off if you are not shipping items, or items have shipping costs included.','jigoshop'),
-			'tip' 		=> __('If you are not calculating shipping then you can ignore all other tax options.', 'jigoshop'),
+			'name'		=> __('Enable Shipping','jigoshop'),
+			'desc' 		=> __('Only turn this off if you are <strong>not</strong> shipping items, or items have shipping costs included.','jigoshop'),
+			'tip' 		=> __('If turned off, this will also remove shipping address fields on the Checkout.','jigoshop'),
 			'id' 		=> 'jigoshop_calc_shipping',
 			'std' 		=> 'yes',
 			'type' 		=> 'checkbox',
