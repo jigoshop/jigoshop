@@ -376,9 +376,10 @@ class jigoshop_product extends Jigoshop_Base {
 	/**
 	 * Returns whether or not the product is in stock
 	 *
+	 * @param   bool    Whether to compare against the global setting for no stock threshold
 	 * @return  bool
 	 */
-	public function is_in_stock() {
+	public function is_in_stock( $below_stock_threshold = false ) {
 
 		// Always return in stock if product is in stock
 		if (self::get_options()->get_option('jigoshop_manage_stock') != 'yes')
@@ -405,7 +406,7 @@ class jigoshop_product extends Jigoshop_Base {
 			return true;
 
 		// Check if we have stock
-		if( $this->managing_stock() && $this->stock )
+		if( $this->managing_stock() && ($below_stock_threshold ? $this->stock >= self::get_options()->get_option('jigoshop_notify_no_stock_amount') : $this->stock > 0 ) )
 			return true;
 
 		return false;

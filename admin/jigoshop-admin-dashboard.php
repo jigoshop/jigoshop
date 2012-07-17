@@ -235,7 +235,8 @@ class jigoshop_dashboard {
 
 				$thisitem = '<li><a href="'.get_edit_post_link($my_query->post->ID).'">'.$my_query->post->post_title.'</a></li>';
 
-				if ($_product->stock<=$nostockamount) :
+//				if ($_product->stock<=$nostockamount) :
+				if ( ! $_product->is_in_stock( true ) ) :    /* compare against global no stock threshold */
 					$outofstock[] = $thisitem;
 					continue;
 				endif;
