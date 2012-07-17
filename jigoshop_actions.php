@@ -550,7 +550,7 @@ function jigoshop_download_product() {
 		$user_id             = $download_result->user_id;
 		$downloads_remaining = $download_result->downloads_remaining;
 
-		if ( $user_id && get_option('jigoshop_downloads_require_login') == 'yes' ):
+		if ( $user_id && Jigoshop_Base::get_options()->get_option('jigoshop_downloads_require_login') == 'yes' ):
 			if ( !is_user_logged_in() ):
 				wp_die( __('You must be logged in to download files.', 'jigoshop') . ' <a href="'.wp_login_url(get_permalink(jigoshop_get_page_id('myaccount'))).'">' . __('Login &rarr;', 'jigoshop') . '</a>' );
 				exit;

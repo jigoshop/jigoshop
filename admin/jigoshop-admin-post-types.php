@@ -445,7 +445,7 @@ function jigoshop_custom_order_columns($column) {
                     endforeach;
                 endif;
 
-                if (get_option('jigoshop_tax_after_coupon') == 'no' && $order->order_discount > 0) : ?><tr>
+                if ($jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'no' && $order->order_discount > 0) : ?><tr>
                         <th><?php _e('Discount', 'jigoshop'); ?></th>
                         <td><?php echo jigoshop_price($order->order_discount); ?></td>
                     </tr><?php endif; ?>
