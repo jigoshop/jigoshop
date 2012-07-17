@@ -332,7 +332,17 @@ function add_shipping_address_details($order) {
     if ($order->shipping_company)
         echo $order->shipping_company . PHP_EOL;
     echo $order->formatted_shipping_address . PHP_EOL . PHP_EOL;
+    
+	$available_methods = jigoshop_shipping::get_available_shipping_methods();
+	$ship_method = '';
+	if ( ! empty( $available_methods )) foreach ( $available_methods as $method ) {
+		if ( $order->shipping_method == $method->id ) {
+			$ship_method = $method->title;
+		}
+	}
 
+	echo __('Shipped via: ','jigoshop') . $ship_method . PHP_EOL . PHP_EOL;
+	
     do_action('jigoshop_after_email_shipping_address', $order->id);
 
     

@@ -145,6 +145,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * New: Mark 1 month or older orders from 'pending' to 'on-hold' with an option in the Settings to enable
 * New: Select multiple countries and states for tax rules
 * New: Support for WordPress' admin classic theme
+* Tweak: Add shipping method to emails
 * Tweak: Allow default tax classes to be translated
 * Tweak: UI Sortable helper on attributes now has no border radius
 * Tweak: Pages & CPT's now use menu_position. Fixes array key duplication
