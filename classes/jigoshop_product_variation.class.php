@@ -36,21 +36,23 @@ class jigoshop_product_variation extends jigoshop_product {
 		// Get the meta & for each meta item overwrite with the variations ID
 		$meta = get_post_custom( $ID );
 		foreach( $meta as $key => $array ) {
-
-			if( $array[0] )
-				$this->meta[$key] = $array;
+			if ( $array[0] ) $this->meta[$key] = $array;
+			if ( $key == 'sku' ) if ( empty( $array[0] )) $tempsku = $ID;
 		}
 
 		// Merge with the variation data
 		$this->variation_id = $ID;
 		if ( isset( $this->meta['variation_data'][0] ))
 			$this->variation_data = maybe_unserialize( $this->meta['variation_data'][0] );
-		parent::__construct( $ID );
+		
 
+		parent::__construct( $ID );
+				
 		// Restore the parent ID
 		$this->ID = $parent_id;
 		$this->id = $parent_id;
-
+		if ( ! empty( $tempsku )) $this->sku = $tempsku;
+		
 		return $this;
 	}
 

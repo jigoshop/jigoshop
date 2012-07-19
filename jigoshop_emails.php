@@ -351,9 +351,8 @@ function add_shipping_address_details($order) {
 /**
  * Low stock notification email
  * */
-function jigoshop_low_stock_notification($product) {
+function jigoshop_low_stock_notification($_product) {
     $jigoshop_options = Jigoshop_Base::get_options();
-    $_product = new jigoshop_product($product);
     $subject = '[' . get_bloginfo('name') . '] ' . __('Product low in stock', 'jigoshop');
     $message = '#' . $_product->id . ' ' . $_product->get_title() . ' (' . $_product->sku . ') ' . __('is low in stock.', 'jigoshop');
     $message = wordwrap(html_entity_decode(strip_tags($message)), 70);
@@ -363,9 +362,8 @@ function jigoshop_low_stock_notification($product) {
 /**
  * No stock notification email
  * */
-function jigoshop_no_stock_notification($product) {
+function jigoshop_no_stock_notification($_product) {
     $jigoshop_options = Jigoshop_Base::get_options();
-    $_product = new jigoshop_product($product);
     $subject = '[' . get_bloginfo('name') . '] ' . __('Product out of stock', 'jigoshop');
     $message = '#' . $_product->id . ' ' . $_product->get_title() . ' (' . $_product->sku . ') ' . __('is out of stock.', 'jigoshop');
     $message = wordwrap(html_entity_decode(strip_tags($message)), 70);
@@ -382,17 +380,16 @@ function jigoshop_no_stock_notification($product) {
  * @param string $product - the Product ID on backorder
  * @param string $amount - the count of the product needed to fill the order
  * */
-function jigoshop_product_on_backorder_notification($order_id, $product, $amount) {
+function jigoshop_product_on_backorder_notification($order_id, $_product, $amount) {
     $jigoshop_options = Jigoshop_Base::get_options();
     // notify the admin    
-    $_product = new jigoshop_product($product);
     $subject = '[' . get_bloginfo('name') . '] ' . sprintf(__('Product Backorder on Order #%s', 'jigoshop'), $order_id);
     $message = sprintf(__("%s units of #%s %s (#%s) are needed to fill Order #%s.", 'jigoshop'), abs($amount), $_product->id, $_product->get_title(), $_product->sku, $order_id);
     $message = wordwrap(html_entity_decode(strip_tags($message)), 70);
     wp_mail($jigoshop_options->get_option('jigoshop_email'), $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
 
     // notify the customer if required
-    if ($_product->data['backorders'] == 'notify') :
+    if ($_product->meta['backorders'][0] == 'notify') :
         $order = new jigoshop_order($order_id);
 
         $subject = '[' . get_bloginfo('name') . '] ' . sprintf(__('Product Backorder on Order #%d', 'jigoshop'), $order_id);

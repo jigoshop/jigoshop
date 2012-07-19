@@ -154,6 +154,8 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * Fix: Variable products now have proper titles, not "#xxx: Child Variaton" anymore
 * Fix: Edit Address on My Account page now shows correct saved state
 * Fix: Local Pickup shipping always charges Shop Base Country and State tax
+* Fix: Backorder notification and other emails now show variation sku's
+* Fix: When products are on backorder, customers are now emailed notification if product is set for 'notify'
 
 = 1.2.3 - 2012-05-28 =
 * New: Add filters for new Jigoshop Product Addons extension
