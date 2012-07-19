@@ -52,7 +52,7 @@
 		'name'          => __( '', 'jigoshop' ),    - used for Option title in Admin display
 		'desc'          => __( '', 'jigoshop' ),    - option descriptive information appears under the option in Admin
 		'tip'           => __( '', 'jigoshop' ),    - a pop-up tool tip providing help information
-		'std'           => '',                      - default value for the option
+		'std'           => '',                      - required, default value for the option
 		'choices'       => array(),                 - for selects, radios, etc.
 		'class'         => '',                      - any special CSS classes to assign to the options display
 		'display'       => null,        - call back function for 'user_defined' - array( $this, 'function_name' )
@@ -402,8 +402,8 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		$end = array_slice( $our_options, $second_index );
 		/*** add the new elements to the array ***/
 		foreach ( $options as $option ) {
-			if ( isset( $option['id'] ) && !$this->exists_option($option['id'])) {
-				$this->add_option( $option['id'], $option['std'] );
+			if ( isset( $option['id'] ) && !$this->exists_option( $option['id'] )) {
+				$this->add_option( $option['id'], isset( $option['std'] ) ? $option['std'] : '' );
 			}
 			$start[] = $option;
 		}
@@ -440,8 +440,8 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		$end = array_slice( $our_options, $first_index+1 );
 		/*** add the new elements to the array ***/
 		foreach ( $options as $option ) {
-			if ( isset( $option['id'] ) && !$this->exists_option($option['id'])) {
-				$this->add_option( $option['id'], $option['std'] );
+			if ( isset( $option['id'] ) && !$this->exists_option( $option['id'] )) {
+				$this->add_option( $option['id'], isset( $option['std'] ) ? $option['std'] : '' );
 			}
 			$start[] = $option;
 		}
