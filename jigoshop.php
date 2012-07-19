@@ -404,8 +404,7 @@ add_action('template_redirect', 'jigoshop_frontend_scripts');
 */
 function jigoshop_demo_store() {
 
-    $jigoshop_options = Jigoshop_Base::get_options();
-	if ($jigoshop_options->get_option('jigoshop_demo_store')=='yes') :
+	if ( Jigoshop_Base::get_options()->get_option( 'jigoshop_demo_store' ) == 'yes' && is_jigoshop() ) :
 
 		echo '<p class="demo_store">'.__('This is a demo store for testing purposes &mdash; no orders shall be fulfilled.', 'jigoshop').'</p>';
 
