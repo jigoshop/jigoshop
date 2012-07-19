@@ -30,6 +30,7 @@ if (!isset($columns) || !$columns) $columns = apply_filters('loop_shop_columns',
 
 ob_start();
 
+if ( ! have_posts() ) { wp_reset_query(); }
 if (have_posts()) : while (have_posts()) : the_post(); $_product = new jigoshop_product( $post->ID ); $loop++;
 
 	?>
