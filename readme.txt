@@ -149,6 +149,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * Tweak: Allow default tax classes to be translated
 * Tweak: UI Sortable helper on attributes now has no border radius
 * Tweak: Pages & CPT's now use menu_position. Fixes array key duplication
+* Tweak: Emails are now utf-8 compatible
 * Fix: Paypal gateway now sends shipping address info instead of billing when setting enabled
 * Fix: When uninstalling, will now only delete Jigoshop created pages instead of pages specified in settings
 * Fix: Variable products now have proper titles, not "#xxx: Child Variaton" anymore
