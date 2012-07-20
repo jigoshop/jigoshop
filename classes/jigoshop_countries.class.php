@@ -609,6 +609,25 @@ class jigoshop_countries extends Jigoshop_Base {
 			'Z-H'            => 'Zuid-Holland'
 		),
 
+		// New Zealand: Regions
+		'NZ'                 => array(
+			'AUK'            => 'Auckland',
+			'BOP'            => 'Bay of Plenty',
+			'CAN'            => 'Canterbury',
+			'GIS'            => 'Gisborne',
+			'HKB'            => 'Hawke\'s Bay',
+			'MWT'            => 'Manawatu-Wanganui',
+			'MBH'            => 'Marlborough',
+			'NTL'            => 'Northland',
+			'OTA'            => 'Otago',
+			'STL'            => 'Southland',
+			'TKI'            => 'Taranaki',
+			'TAS'            => 'Tasman',
+			'WKO'            => 'Waikato',
+			'WGN'            => 'Wellington',
+			'WTC'            => 'West Coast'
+		),
+
 		// Romania: Counties
 		'RO'                 => array(
 			'ALB'            => 'Alba',
