@@ -625,7 +625,7 @@ class jigoshop_product extends Jigoshop_Base {
 
         // product prices are always 2 decimal digits. Will get rounding errors on backwards tax calcs if
         // we don't round
-        return round( ($price * $quantity) / 100, 2);
+        return round($price / 100, 2);
 
     }
 
