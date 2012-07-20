@@ -591,10 +591,11 @@ class jigoshop_product extends Jigoshop_Base {
         // a full subtotal, this is necessary.
         $price = $this->get_price() * 100;
 
-        if (self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes') :
+        if (self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes') {
+        
             $rates = (array) $this->get_tax_base_rate();
 
-            if (count($rates > 0)) :
+            if ( count( $rates > 0 )) {
 
                 // rates array sorted so that taxes applied to retail value come first. To reverse taxes
                 // need to reverse this array
@@ -617,15 +618,19 @@ class jigoshop_product extends Jigoshop_Base {
 
                 endforeach;
 
-                $price = $price * $quantity - $tax_totals;
+				// Product prices are always 2 decimal digits.
+				// Will get rounding errors on backwards tax calcs if we don't round
+                return round( ($price * $quantity - $tax_totals) / 100, 2 );
 
-            endif;
+            }
 
-        endif;
+        } else {
 
-        // product prices are always 2 decimal digits. Will get rounding errors on backwards tax calcs if
-        // we don't round
-        return round($price / 100, 2);
+			// Product prices are always 2 decimal digits.
+			// Will get rounding errors on backwards tax calcs if we don't round
+			return round( $price * $quantity / 100, 2 );
+			
+        }
 
     }
 
