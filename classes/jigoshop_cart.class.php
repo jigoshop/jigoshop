@@ -586,7 +586,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
                              && ( self::get_options()->get_option('jigoshop_enable_shipping_calc')=='yes' || (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT ) )
                             ) :
 
-                            $total_item_price    = $_product->get_price_excluding_tax($values['quantity']) * 100;
+                            $total_item_price = $_product->get_price_excluding_tax($values['quantity']) * 100;
                             $tax_classes_applied = self::$tax->calculate_tax_amounts( (self::get_options()->get_option('jigoshop_tax_after_coupon') == 'yes' && $discounted_item_price > 0 ? $discounted_item_price * 100 : $total_item_price ), $_product->get_tax_classes(), false);
 
                             // now add customer taxes back into the total item price because customer is outside base
@@ -707,7 +707,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
         self::$total = self::get_cart_subtotal(false) + self::get_cart_shipping_total(false) - self::$discount_total;
 
-        if (self::get_options()->get_option('jigoshop_calc_taxes') == 'yes' && self::get_options()->get_option('jigoshop_display_totals_tax') == 'no' || ( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
+        if (self::get_options()->get_option('jigoshop_calc_taxes') == 'yes' && self::get_options()->get_option('jigoshop_display_totals_tax') == 'no') :
             self::$total += self::$tax->get_non_compounded_tax_amount() + self::$tax->get_compound_tax_amount();
         endif;
 
@@ -766,7 +766,8 @@ class jigoshop_cart extends Jigoshop_Singleton {
                 $tax_desc = __('(ex. tax)', 'jigoshop');
             else :
             /* Cart total includes taxes. */
-				$subtotal = self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes' ? $subtotal : self::$subtotal_ex_tax;
+				$subtotal = self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes' ? $subtotal : self::$subtotal_ex_tax + self::get_total_cart_tax_without_shipping_tax();
+				
 //                $subtotal = $subtotal + self::get_total_cart_tax_without_shipping_tax();  /* don't appear to need this */
                 $tax_desc = __('(inc. tax)', 'jigoshop');
             endif;
@@ -900,7 +901,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
         if ( self::get_options()->get_option('jigoshop_calc_taxes') == 'no' )
             return ($for_display ? jigoshop_price(self::$shipping_total) : number_format(self::$shipping_total, 2, '.', ''));
 
-        if ( self::get_options()->get_option('jigoshop_display_totals_tax') == 'no'  || (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT) ) {
+        if ( self::get_options()->get_option('jigoshop_display_totals_tax') == 'no' ) {
 
             $return = ($for_display ? jigoshop_price(self::$shipping_total) : number_format(self::$shipping_total, 2, '.', ''));
 

@@ -924,9 +924,15 @@ class jigoshop_checkout extends Jigoshop_Singleton {
                                 echo '>' . $method->title . ' &ndash; ';
 
                                 if ($method->shipping_total > 0) :
-                                    echo jigoshop_price($method->shipping_total);
-                                    if ($method->shipping_tax > 0) : echo __(' (ex. tax)', 'jigoshop');
-                                    endif;
+                                	$display_total = $method->shipping_total;
+                                	if ( self::get_options()->get_option('jigoshop_display_totals_tax') == 'yes' ) {
+                                		$display_total += $method->shipping_tax;
+										echo jigoshop_price($display_total);
+										echo __(' (inc. tax)', 'jigoshop');
+                               		} else {                                	
+										echo jigoshop_price( $method->shipping_total );
+										echo __(' (ex. tax)', 'jigoshop');
+                                    }
                                 else :
                                     echo __('Free', 'jigoshop');
                                 endif;

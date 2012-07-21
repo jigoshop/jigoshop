@@ -1503,9 +1503,9 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		);
 		
 		self::$default_options[] = array(
-			'name'		=> __('Cart Subtotals include tax?','jigoshop'),
+			'name'		=> __('Subtotals include tax?','jigoshop'),
 			'desc' 		=> '',
-			'tip' 		=> __('Should the subtotal be shown including or excluding tax on the frontend?','jigoshop'),
+			'tip' 		=> __('Should any subtotals be shown including or excluding tax on the Cart and Checkout?  This will include Shipping subtotals.','jigoshop'),
 			'id' 		=> 'jigoshop_display_totals_tax',
 			'std' 		=> 'no',
 			'type' 		=> 'checkbox',
