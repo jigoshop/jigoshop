@@ -744,8 +744,9 @@ class jigoshop_cart extends Jigoshop_Singleton {
      * @param boolean $for_display                  Just the price itself or with currency symbol + price with optional
      *                                              "(ex. tax)" / "(inc. tax)".
      * @param boolean $apply_discount_and_shipping  Subtotal with discount and shipping prices applied.
+     * @param boolean $order_exclude_tax            Subtotal without taxes no matter settings used by Orders
      */
-    public static function get_cart_subtotal( $for_display = true, $apply_discount_and_shipping = false ) {
+    public static function get_cart_subtotal( $for_display = true, $apply_discount_and_shipping = false, $order_exclude_tax = false ) {
 
         /* Just some initialization. */
         $discount = self::$discount_total;
@@ -761,7 +762,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
                 $discount = 0;
 
             /* Cart total excludes taxes. */
-            if ( self::get_options()->get_option('jigoshop_display_totals_tax') == 'no' ) :
+            if ( self::get_options()->get_option('jigoshop_display_totals_tax') == 'no' || $order_exclude_tax ) :
 				$subtotal = self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes' ? self::$subtotal_ex_tax : $subtotal;
                 $tax_desc = __('(ex. tax)', 'jigoshop');
             else :
@@ -887,7 +888,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
     }
 
     /* Shipping total after calculation. */
-    public static function get_cart_shipping_total($for_display = true) {
+    public static function get_cart_shipping_total($for_display = true, $order_exclude_tax = false) {
 
         /* Quit early if there is no shipping label. */
         if ( !jigoshop_shipping::get_label() )
@@ -901,7 +902,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
         if ( self::get_options()->get_option('jigoshop_calc_taxes') == 'no' )
             return ($for_display ? jigoshop_price(self::$shipping_total) : number_format(self::$shipping_total, 2, '.', ''));
 
-        if ( self::get_options()->get_option('jigoshop_display_totals_tax') == 'no' ) {
+        if ( self::get_options()->get_option('jigoshop_display_totals_tax') == 'no' || $order_exclude_tax ) {
 
             $return = ($for_display ? jigoshop_price(self::$shipping_total) : number_format(self::$shipping_total, 2, '.', ''));
 
