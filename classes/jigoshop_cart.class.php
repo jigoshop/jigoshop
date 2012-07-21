@@ -655,7 +655,6 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
         if (self::get_options()->get_option('jigoshop_calc_taxes') == 'yes') :
             self::$shipping_tax_total = jigoshop_shipping::get_tax();
-
             //TODO: figure this out with new shipping taxes
             self::$tax->update_tax_amount_with_shipping_tax(self::$shipping_tax_total * 100);
 
@@ -712,8 +711,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
             self::$total += self::$tax->get_non_compounded_tax_amount() + self::$tax->get_compound_tax_amount();
         endif;
 
-        if (self::$total < 0)
-            self::$total = 0;
+        if ( self::$total < 0 ) self::$total = 0;
     }
 
     // will return an empty array if taxes are not calculated
@@ -731,7 +729,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
         return ($for_display ? jigoshop_price(self::$total) : number_format(self::$total, 2, '.', ''));
     }
 
-    /** gets the cart contens total (after calculation) */
+    /** gets the cart contents total (after calculation) */
     function get_cart_total() {
         return jigoshop_price(self::$cart_contents_total);
     }
@@ -743,10 +741,11 @@ class jigoshop_cart extends Jigoshop_Singleton {
     /**
      * Returns a calculated subtotal.
      *
-     * @param    boolean    $for_display                    Just the price itself or with currency symbol + price with optional "(ex. tax)" / "(inc. tax)".
-     * @param    boolean    $apply_discount_and_shipping    Subtotal with discount and shipping prices applied.
+     * @param boolean $for_display                  Just the price itself or with currency symbol + price with optional
+     *                                              "(ex. tax)" / "(inc. tax)".
+     * @param boolean $apply_discount_and_shipping  Subtotal with discount and shipping prices applied.
      */
-    public static function get_cart_subtotal($for_display = true, $apply_discount_and_shipping = false) {
+    public static function get_cart_subtotal( $for_display = true, $apply_discount_and_shipping = false ) {
 
         /* Just some initialization. */
         $discount = self::$discount_total;
@@ -762,13 +761,13 @@ class jigoshop_cart extends Jigoshop_Singleton {
                 $discount = 0;
 
             /* Cart total excludes taxes. */
-            if ( self::get_options()->get_option('jigoshop_display_totals_tax') == 'no' || (defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT) ) :
-                $subtotal = self::get_options()->get_option('jigoshop_prices_include_tax') == 'no' ? self::$subtotal_ex_tax : $subtotal;
+            if ( self::get_options()->get_option('jigoshop_display_totals_tax') == 'no' ) :
+				$subtotal = self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes' ? self::$subtotal_ex_tax : $subtotal;
                 $tax_desc = __('(ex. tax)', 'jigoshop');
             else :
             /* Cart total includes taxes. */
-                $subtotal = self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes' ? $subtotal : self::$subtotal_ex_tax;
-                $subtotal = $subtotal + self::get_total_cart_tax_without_shipping_tax();
+				$subtotal = self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes' ? $subtotal : self::$subtotal_ex_tax;
+//                $subtotal = $subtotal + self::get_total_cart_tax_without_shipping_tax();  /* don't appear to need this */
                 $tax_desc = __('(inc. tax)', 'jigoshop');
             endif;
 
@@ -908,8 +907,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
             if ( self::$shipping_tax_total > 0 && $for_display )
                 $return .= ' <small>' . __('(ex. tax)', 'jigoshop') . '</small>';
 
-        }
-        else {
+        } else {
 
             $return = ($for_display ? jigoshop_price(self::$shipping_total + self::$shipping_tax_total) : number_format(self::$shipping_total + self::$shipping_tax_total, 2, '.', ''));
             if ( self::$shipping_tax_total > 0 && $for_display )
