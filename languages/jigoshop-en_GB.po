@@ -5,16 +5,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Jigoshop v1.3\n"
-"Report-Msgid-Bugs-To: Jeff Parsons <jeff.parsons@jigoshop.com>\n"
-"POT-Creation-Date: 2012-07-20 11:32-0400\n"
-"PO-Revision-Date: 2012-07-20 11:48-0400\n"
-"Last-Translator: Jeff Parsons <jeffrey.allen.parsons@gmail.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-07-22 12:57-0400\n"
+"PO-Revision-Date: 2012-07-22 13:04-0400\n"
+"Last-Translator: Jeff Parsons <jeff.parsons@jigoshop.com>\n"
 "Language-Team: Jigoshop <info@jigoshop.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-KeywordsList: __;_e;_x\n"
+"X-Poedit-KeywordsList: __;_e;_x;_x:2c,1\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
@@ -38,6 +38,7 @@ msgstr ""
 
 #: ../jigoshop.php:434
 #: ../jigoshop_taxonomy.php:36
+msgctxt "slug"
 msgid "product"
 msgstr ""
 
@@ -142,88 +143,92 @@ msgid "Please choose a product&hellip;"
 msgstr ""
 
 #: ../jigoshop_actions.php:293
-#, php-format
-msgid "<a href=\"%s\" class=\"button\">View Cart &rarr;</a> Product successfully added to your cart."
-msgstr ""
-
-#: ../jigoshop_actions.php:301
+#: ../jigoshop_actions.php:304
 msgid "Product successfully added to your cart."
 msgstr ""
 
-#: ../jigoshop_actions.php:341
+#: ../jigoshop_actions.php:294
+msgid "View Cart &rarr;"
+msgstr ""
+
+#: ../jigoshop_actions.php:344
 msgid "Sorry, your session has expired."
 msgstr ""
 
-#: ../jigoshop_actions.php:341
+#: ../jigoshop_actions.php:344
 msgid "Return to homepage &rarr;"
 msgstr ""
 
-#: ../jigoshop_actions.php:436
+#: ../jigoshop_actions.php:439
 msgid "Username is required."
 msgstr ""
 
-#: ../jigoshop_actions.php:437
+#: ../jigoshop_actions.php:440
 msgid "Password is required."
 msgstr ""
 
-#: ../jigoshop_actions.php:495
+#: ../jigoshop_actions.php:498
 msgid "Order cancelled by customer."
 msgstr ""
 
-#: ../jigoshop_actions.php:498
+#: ../jigoshop_actions.php:501
 msgid "Your order was cancelled."
 msgstr ""
 
-#: ../jigoshop_actions.php:502
+#: ../jigoshop_actions.php:505
 msgid "Your order is no longer pending and could not be cancelled. Please contact us if you need assistance."
 msgstr ""
 
-#: ../jigoshop_actions.php:506
-#: ../jigoshop_actions.php:569
+#: ../jigoshop_actions.php:509
+#: ../jigoshop_actions.php:572
 msgid "Invalid order."
 msgstr ""
 
-#: ../jigoshop_actions.php:533
+#: ../jigoshop_actions.php:536
 msgid "Invalid email address."
 msgstr ""
 
-#: ../jigoshop_actions.php:533
-#: ../jigoshop_actions.php:545
-#: ../jigoshop_actions.php:569
+#: ../jigoshop_actions.php:536
+#: ../jigoshop_actions.php:548
+#: ../jigoshop_actions.php:572
 msgid "Go to homepage &rarr;"
 msgstr ""
 
-#: ../jigoshop_actions.php:545
+#: ../jigoshop_actions.php:548
 msgid "Invalid download."
 msgstr ""
 
-#: ../jigoshop_actions.php:555
+#: ../jigoshop_actions.php:558
 msgid "You must be logged in to download files."
 msgstr ""
 
-#: ../jigoshop_actions.php:555
+#: ../jigoshop_actions.php:558
 msgid "Login &rarr;"
 msgstr ""
 
-#: ../jigoshop_actions.php:560
+#: ../jigoshop_actions.php:563
 msgid "This is not your download link."
 msgstr ""
 
-#: ../jigoshop_actions.php:575
+#: ../jigoshop_actions.php:578
 #, php-format
 msgid "Sorry, you have reached your download limit for this file. <a href=\"%s\">Go to homepage &rarr;</a>"
 msgstr ""
 
-#: ../jigoshop_actions.php:589
-#: ../jigoshop_actions.php:664
+#: ../jigoshop_actions.php:592
+#: ../jigoshop_actions.php:667
 #, php-format
 msgid "File not found. <a href=\"%s\">Go to homepage &rarr;</a>"
 msgstr ""
 
-#: ../jigoshop_actions.php:772
-#: ../jigoshop_actions.php:822
+#: ../jigoshop_actions.php:775
+#: ../jigoshop_actions.php:825
 #: ../admin/jigoshop-admin-post-types.php:353
 msgid "Guest"
+msgstr ""
+
+#: ../jigoshop_actions.php:893
+msgid "Select a category"
 msgstr ""
 
 #: ../jigoshop_emails.php:37
@@ -375,10 +380,12 @@ msgid "%d units of #%d %s (#%s) have been backordered."
 msgstr ""
 
 #: ../jigoshop_taxonomy.php:32
+msgctxt "slug"
 msgid "product-category"
 msgstr ""
 
 #: ../jigoshop_taxonomy.php:34
+msgctxt "slug"
 msgid "product-tag"
 msgstr ""
 
@@ -854,6 +861,7 @@ msgid "Click here to login"
 msgstr ""
 
 #: ../jigoshop_template_functions.php:921
+msgctxt "breadcrumb"
 msgid "Home"
 msgstr ""
 
@@ -3274,11 +3282,11 @@ msgid "Shipping Method"
 msgstr ""
 
 #: ../admin/write-panels/order-data.php:395
-msgid "Shipping Tax:"
+msgid "Total Tax:"
 msgstr ""
 
 #: ../admin/write-panels/order-data.php:400
-msgid "Tax:"
+msgid "Shipping Tax:"
 msgstr ""
 
 #: ../admin/write-panels/order-data.php:406
@@ -3681,18 +3689,18 @@ msgstr ""
 msgid "Sorry, we do not have enough \"%s\" in stock to fulfill your order. Please edit your cart and try again. We apologize for any inconvenience caused."
 msgstr ""
 
-#: ../classes/jigoshop_cart.class.php:772
+#: ../classes/jigoshop_cart.class.php:773
 #: ../classes/jigoshop_cart.class.php:916
 msgid "(inc. tax)"
 msgstr ""
 
-#: ../classes/jigoshop_cart.class.php:811
-#: ../classes/jigoshop_cart.class.php:813
+#: ../classes/jigoshop_cart.class.php:812
+#: ../classes/jigoshop_cart.class.php:814
 #, php-format
 msgid "estimated for %s"
 msgstr ""
 
-#: ../classes/jigoshop_cart.class.php:898
+#: ../classes/jigoshop_cart.class.php:899
 msgid "Free!"
 msgstr ""
 
@@ -3872,7 +3880,11 @@ msgstr ""
 msgid "Sorry, we do not have enough \"%s\" in stock to fulfill your order.  We have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused."
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:963
+#: ../classes/jigoshop_checkout.class.php:931
+msgid " (inc. tax)"
+msgstr ""
+
+#: ../classes/jigoshop_checkout.class.php:969
 msgid "Invalid payment method."
 msgstr ""
 
@@ -4166,7 +4178,11 @@ msgid "If you are not calculating taxes then you can ignore all other tax option
 msgstr ""
 
 #: ../classes/jigoshop_options.class.php:1506
-msgid "Cart Subtotals include tax?"
+msgid "Subtotals include tax?"
+msgstr ""
+
+#: ../classes/jigoshop_options.class.php:1508
+msgid "Should any subtotals be shown including or excluding tax on the Cart and Checkout?  This will include Shipping subtotals."
 msgstr ""
 
 #: ../classes/jigoshop_options.class.php:1545
@@ -4272,6 +4288,11 @@ msgstr ""
 
 #: ../classes/jigoshop_product.class.php:779
 msgid "Unavailable"
+msgstr ""
+
+#: ../classes/jigoshop_product.class.php:797
+msgctxt "price"
+msgid "From:"
 msgstr ""
 
 #: ../classes/jigoshop_product.class.php:945
@@ -6026,6 +6047,7 @@ msgid "Very Poor"
 msgstr ""
 
 #: ../templates/single-product-reviews.php:110
+msgctxt "noun"
 msgid "Your Review"
 msgstr ""
 
@@ -6099,10 +6121,6 @@ msgstr ""
 
 #: ../widgets/cart.php:34
 msgid "Jigoshop: Cart"
-msgstr ""
-
-#: ../widgets/cart.php:116
-msgid "View Cart &rarr;"
 msgstr ""
 
 #: ../widgets/cart.php:117
@@ -6259,6 +6277,7 @@ msgstr ""
 
 #: ../widgets/recent_reviews.php:137
 #, php-format
+msgctxt "author"
 msgid "by %1$s"
 msgstr ""
 
