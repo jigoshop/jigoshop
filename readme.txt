@@ -150,6 +150,9 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * Tweak: UI Sortable helper on attributes now has no border radius
 * Tweak: Pages & CPT's now use menu_position. Fixes array key duplication
 * Tweak: Emails are now utf-8 compatible
+* Tweak: Subtotals and Shipping can now display either with or without tax on both the Cart and Checkout
+* Tweak: Cart widget now allows user defined text to display on the Go to Cart/Checkout buttons
+* Fix: Star Ratings width css calculation now works for Recent Reviews widget
 * Fix: Paypal gateway now sends shipping address info instead of billing when setting enabled
 * Fix: When uninstalling, will now only delete Jigoshop created pages instead of pages specified in settings
 * Fix: Variable products now have proper titles, not "#xxx: Child Variaton" anymore
