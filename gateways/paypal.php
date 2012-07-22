@@ -228,7 +228,7 @@ class paypal extends jigoshop_payment_gateway {
 		$paypal_args = array_merge(
 			array(
 				'cmd' 					=> '_cart',
-				'business' 				=> $this->testmode ? $this->testmail : $this->email,
+				'business' 				=> $this->testmode == 'yes' ? $this->testmail : $this->email,
 				'no_note' 				=> 1,
 				'currency_code' 		=> Jigoshop_Base::get_options()->get_option('jigoshop_currency'),
 				'charset' 				=> 'UTF-8',
