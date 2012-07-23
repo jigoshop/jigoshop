@@ -450,14 +450,14 @@ class jigoshop_order extends Jigoshop_Base {
 	function update_status( $new_status_slug, $note = '' ) {
 
 // 		if ( $this->status == 'refunded' ) {
-// 			$jigoshop_errors = (array) maybe_unserialize(get_option('jigoshop_errors'));
+// 			$jigoshop_errors = (array) maybe_unserialize(Jigoshop_Base::get_options()->get_option('jigoshop_errors'));
 // 			$jigoshop_errors[] = __('Refunded Orders may not be changed.','jigoshop');
 // 			self::get_options()->set_option('jigoshop_errors', $jigoshop_errors );
 // 			return true;
 // 		}
 // 
 // 		if ( $this->status == 'completed' && $new_status != 'refunded' ) {
-// 			$jigoshop_errors = (array) maybe_unserialize(get_option('jigoshop_errors'));
+// 			$jigoshop_errors = (array) maybe_unserialize(Jigoshop_Base::get_options()->get_option('jigoshop_errors'));
 // 			$jigoshop_errors[] = __('Completed Orders may not be changed. You may only issue a Refund.','jigoshop');
 // 			self::get_options()->set_option('jigoshop_errors', $jigoshop_errors );
 // 			return true;
@@ -592,9 +592,9 @@ class jigoshop_order extends Jigoshop_Base {
 
 					// stock status notifications
                     if (self::get_options()->get_option('jigoshop_notify_no_stock_amount') >= 0 && self::get_options()->get_option('jigoshop_notify_no_stock_amount') >= $new_quantity) :
-						do_action('jigoshop_no_stock_notification', $item['id']);
+						do_action('jigoshop_no_stock_notification', $_product);
 					elseif (self::get_options()->get_option('jigoshop_notify_low_stock_amount') && self::get_options()->get_option('jigoshop_notify_low_stock_amount')>=$new_quantity) :
-						do_action('jigoshop_low_stock_notification', $item['id']);
+						do_action('jigoshop_low_stock_notification', $_product);
 					endif;
 
 				endif;

@@ -34,7 +34,7 @@ function jigoshop_new_order_notification($order_id) {
     $jigoshop_options = Jigoshop_Base::get_options();
     $order = new jigoshop_order($order_id);
 
-    $subject = sprintf(__('[%s] New Customer Order (# %s)', 'jigoshop'), get_bloginfo('name'), $order->id);
+    $subject = html_entity_decode(sprintf(__('[%s] New Customer Order (# %s)', 'jigoshop'), get_bloginfo('name'), $order->id), ENT_COMPAT, 'UTF-8');
 
     ob_start();
 
@@ -53,7 +53,7 @@ function jigoshop_new_order_notification($order_id) {
     $message = ob_get_clean();
     
     $message = apply_filters('jigoshop_change_new_order_email_contents', $message, $order);
-    $message = html_entity_decode(strip_tags($message));
+    $message = html_entity_decode(strip_tags($message), ENT_COMPAT, 'UTF-8');
 
     wp_mail($jigoshop_options->get_option('jigoshop_email'), $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
 }
@@ -69,7 +69,7 @@ function jigoshop_processing_order_customer_notification($order_id) {
     $jigoshop_options = Jigoshop_Base::get_options();
     $order = new jigoshop_order($order_id);
 
-    $subject = '[' . get_bloginfo('name') . '] ' . __('Order Received', 'jigoshop');
+    $subject = html_entity_decode('[' . get_bloginfo('name') . '] ' . __('Order Received', 'jigoshop'), ENT_COMPAT, 'UTF-8');
 
     ob_start();
     echo __("Thank you, we are now processing your order. Your order's details are below:", 'jigoshop') . PHP_EOL . PHP_EOL;
@@ -101,7 +101,7 @@ function jigoshop_processing_order_customer_notification($order_id) {
     $message = ob_get_clean();
     
     $message = apply_filters('jigoshop_change_processing_order_email_contents', $message, $order);
-    $message = html_entity_decode(strip_tags($message));
+    $message = html_entity_decode(strip_tags($message), ENT_COMPAT, 'UTF-8');
 
     wp_mail($order->billing_email, $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
 }
@@ -116,7 +116,7 @@ function jigoshop_completed_order_customer_notification($order_id) {
     $jigoshop_options = Jigoshop_Base::get_options();
     $order = new jigoshop_order($order_id);
 
-    $subject = '[' . get_bloginfo('name') . '] ' . __('Order Complete', 'jigoshop');
+    $subject = html_entity_decode('[' . get_bloginfo('name') . '] ' . __('Order Complete', 'jigoshop'), ENT_COMPAT, 'UTF-8');
 
     ob_start();
     echo __("Your order is complete. Your order's details are below:", 'jigoshop') . PHP_EOL . PHP_EOL;
@@ -135,7 +135,7 @@ function jigoshop_completed_order_customer_notification($order_id) {
 
     
     $message = apply_filters('jigoshop_change_completed_order_email_contents', $message, $order);
-    $message = html_entity_decode(strip_tags($message));
+    $message = html_entity_decode(strip_tags($message), ENT_COMPAT, 'UTF-8');
     $message = apply_filters('jigoshop_completed_order_customer_notification_mail_message', $message);
     
     wp_mail($order->billing_email, $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
@@ -151,7 +151,7 @@ function jigoshop_refunded_order_customer_notification($order_id) {
     $jigoshop_options = Jigoshop_Base::get_options();
     $order = new jigoshop_order($order_id);
 
-    $subject = '[' . get_bloginfo('name') . '] ' . __('Order Refunded', 'jigoshop');
+    $subject = html_entity_decode('[' . get_bloginfo('name') . '] ' . __('Order Refunded', 'jigoshop'), ENT_COMPAT, 'UTF-8');
 
     ob_start();
     echo __("Your order has been refunded. Your order's details are below:", 'jigoshop') . PHP_EOL . PHP_EOL;
@@ -169,7 +169,7 @@ function jigoshop_refunded_order_customer_notification($order_id) {
     $message = ob_get_clean();
     
     $message = apply_filters('jigoshop_change_refunded_email_message', $message, $order);
-    $message = html_entity_decode(strip_tags($message));
+    $message = html_entity_decode(strip_tags($message), ENT_COMPAT, 'UTF-8');
     $message = apply_filters('jigoshop_refunded_order_customer_notification_mail_message', $message);
 
     wp_mail($order->billing_email, $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
@@ -186,7 +186,7 @@ function jigoshop_send_customer_invoice($order_id) {
     $jigoshop_options = Jigoshop_Base::get_options();
     $order = new jigoshop_order($order_id);
 
-    $subject = '[' . get_bloginfo('name') . '] ' . sprintf(__('Invoice for Order #%s', 'jigoshop'), $order->id);
+    $subject = html_entity_decode('[' . get_bloginfo('name') . '] ' . sprintf(__('Invoice for Order #%s', 'jigoshop'), $order->id), ENT_COMPAT, 'UTF-8');
 	
 	if ($order->status == 'pending') : 
 		$customer_message = sprintf(__("An order has been created for you on &quot;%s&quot;. To pay for this order please use the following link: %s", 'jigoshop') . PHP_EOL . PHP_EOL, get_bloginfo('name'), $order->get_checkout_payment_url());
@@ -204,7 +204,7 @@ function jigoshop_send_customer_invoice($order_id) {
     $message = ob_get_clean();
     
     $message = apply_filters('jigoshop_change_pay_order_email_contents', $message, $order);
-    $customer_message = html_entity_decode(strip_tags($customer_message . $message));
+    $customer_message = html_entity_decode(strip_tags($customer_message . $message), ENT_COMPAT, 'UTF-8');
 
     wp_mail($order->billing_email, $subject, $customer_message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
 }
@@ -332,7 +332,9 @@ function add_shipping_address_details($order) {
     if ($order->shipping_company)
         echo $order->shipping_company . PHP_EOL;
     echo $order->formatted_shipping_address . PHP_EOL . PHP_EOL;
-
+    
+	echo __('Shipped via: ','jigoshop') . html_entity_decode(ucwords($order->shipping_method_title), ENT_COMPAT, 'UTF-8') . PHP_EOL . PHP_EOL;
+	
     do_action('jigoshop_after_email_shipping_address', $order->id);
 
     
@@ -341,24 +343,22 @@ function add_shipping_address_details($order) {
 /**
  * Low stock notification email
  * */
-function jigoshop_low_stock_notification($product) {
+function jigoshop_low_stock_notification($_product) {
     $jigoshop_options = Jigoshop_Base::get_options();
-    $_product = new jigoshop_product($product);
-    $subject = '[' . get_bloginfo('name') . '] ' . __('Product low in stock', 'jigoshop');
+    $subject = html_entity_decode('[' . get_bloginfo('name') . '] ' . __('Product low in stock', 'jigoshop'), ENT_COMPAT, 'UTF-8');
     $message = '#' . $_product->id . ' ' . $_product->get_title() . ' (' . $_product->sku . ') ' . __('is low in stock.', 'jigoshop');
-    $message = wordwrap(html_entity_decode(strip_tags($message)), 70);
+    $message = wordwrap(html_entity_decode(strip_tags($message), ENT_COMPAT, 'UTF-8'), 70);
     wp_mail($jigoshop_options->get_option('jigoshop_email'), $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
 }
 
 /**
  * No stock notification email
  * */
-function jigoshop_no_stock_notification($product) {
+function jigoshop_no_stock_notification($_product) {
     $jigoshop_options = Jigoshop_Base::get_options();
-    $_product = new jigoshop_product($product);
-    $subject = '[' . get_bloginfo('name') . '] ' . __('Product out of stock', 'jigoshop');
+    $subject = html_entity_decode('[' . get_bloginfo('name') . '] ' . __('Product out of stock', 'jigoshop'), ENT_COMPAT, 'UTF-8');
     $message = '#' . $_product->id . ' ' . $_product->get_title() . ' (' . $_product->sku . ') ' . __('is out of stock.', 'jigoshop');
-    $message = wordwrap(html_entity_decode(strip_tags($message)), 70);
+    $message = wordwrap(html_entity_decode(strip_tags($message), ENT_COMPAT, 'UTF-8'), 70);
     wp_mail($jigoshop_options->get_option('jigoshop_email'), $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
 }
 
@@ -372,20 +372,19 @@ function jigoshop_no_stock_notification($product) {
  * @param string $product - the Product ID on backorder
  * @param string $amount - the count of the product needed to fill the order
  * */
-function jigoshop_product_on_backorder_notification($order_id, $product, $amount) {
+function jigoshop_product_on_backorder_notification($order_id, $_product, $amount) {
     $jigoshop_options = Jigoshop_Base::get_options();
     // notify the admin    
-    $_product = new jigoshop_product($product);
-    $subject = '[' . get_bloginfo('name') . '] ' . sprintf(__('Product Backorder on Order #%s', 'jigoshop'), $order_id);
+    $subject = html_entity_decode('[' . get_bloginfo('name') . '] ' . sprintf(__('Product Backorder on Order #%s', 'jigoshop'), $order_id), ENT_COMPAT, 'UTF-8');
     $message = sprintf(__("%s units of #%s %s (#%s) are needed to fill Order #%s.", 'jigoshop'), abs($amount), $_product->id, $_product->get_title(), $_product->sku, $order_id);
-    $message = wordwrap(html_entity_decode(strip_tags($message)), 70);
+    $message = wordwrap(html_entity_decode(strip_tags($message), ENT_COMPAT, 'UTF-8'), 70);
     wp_mail($jigoshop_options->get_option('jigoshop_email'), $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
 
     // notify the customer if required
-    if ($_product->data['backorders'] == 'notify') :
+    if ($_product->meta['backorders'][0] == 'notify') :
         $order = new jigoshop_order($order_id);
 
-        $subject = '[' . get_bloginfo('name') . '] ' . sprintf(__('Product Backorder on Order #%d', 'jigoshop'), $order_id);
+    	$subject = html_entity_decode('[' . get_bloginfo('name') . '] ' . sprintf(__('Product Backorder on Order #%s', 'jigoshop'), $order_id), ENT_COMPAT, 'UTF-8');
 
         ob_start();
         echo sprintf(__("Thank you for your Order #%d. Unfortunately, the following item was found to be on backorder.", 'jigoshop'), $order_id) . PHP_EOL . PHP_EOL;
@@ -408,7 +407,7 @@ function jigoshop_product_on_backorder_notification($order_id, $product, $amount
         add_shipping_address_details($order);
 
         $message = ob_get_clean();
-        $message = html_entity_decode(strip_tags($message));
+        $message = html_entity_decode(strip_tags($message), ENT_COMPAT, 'UTF-8');
 
         wp_mail($order->billing_email, $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
     endif;

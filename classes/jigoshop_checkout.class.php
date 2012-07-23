@@ -697,9 +697,9 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					$data['shipping_service']       = $this->posted['shipping_service'];
 					$data['payment_method']         = $this->posted['payment_method'];
 					$data['payment_method_title']   = !empty($available_gateways[$this->posted['payment_method']]) ? $available_gateways[$this->posted['payment_method']]->title : '';
-					$data['order_subtotal']         = jigoshop_cart::get_cart_subtotal(false);
-					$data['order_discount_subtotal']= jigoshop_cart::get_cart_subtotal(false, true);
-					$data['order_shipping']         = jigoshop_cart::get_cart_shipping_total(false);
+					$data['order_subtotal']         = jigoshop_cart::get_cart_subtotal(false, false, true);/* no display, no shipping, no tax */
+					$data['order_discount_subtotal']= jigoshop_cart::get_cart_subtotal(false, true, true);/* no display, with shipping/discounts, no tax */
+					$data['order_shipping']         = jigoshop_cart::get_cart_shipping_total(false, true);
 					$data['order_discount']         = number_format(jigoshop_cart::$discount_total, 2, '.', '');
 					$data['order_tax']              = jigoshop_cart::get_taxes_as_string();
 					$data['order_tax_divisor']      = jigoshop_cart::get_tax_divisor();
@@ -924,9 +924,15 @@ class jigoshop_checkout extends Jigoshop_Singleton {
                                 echo '>' . $method->title . ' &ndash; ';
 
                                 if ($method->shipping_total > 0) :
-                                    echo jigoshop_price($method->shipping_total);
-                                    if ($method->shipping_tax > 0) : echo __(' (ex. tax)', 'jigoshop');
-                                    endif;
+                                	$display_total = $method->shipping_total;
+                                	if ( self::get_options()->get_option('jigoshop_display_totals_tax') == 'yes' ) {
+                                		$display_total += $method->shipping_tax;
+										echo jigoshop_price($display_total);
+										echo __(' (inc. tax)', 'jigoshop');
+                               		} else {                                	
+										echo jigoshop_price( $method->shipping_total );
+										echo __(' (ex. tax)', 'jigoshop');
+                                    }
                                 else :
                                     echo __('Free', 'jigoshop');
                                 endif;

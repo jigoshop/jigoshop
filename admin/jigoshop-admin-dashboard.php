@@ -211,12 +211,12 @@ class jigoshop_dashboard {
 	*/
 
 	function jigoshop_dash_stock_report() {
-		if (get_option('jigoshop_manage_stock')=='yes') :
+		if (Jigoshop_Base::get_options()->get_option('jigoshop_manage_stock')=='yes') :
 
-			$lowstockamount = get_option('jigoshop_notify_low_stock_amount');
+			$lowstockamount = Jigoshop_Base::get_options()->get_option('jigoshop_notify_low_stock_amount');
 			if (!is_numeric($lowstockamount)) $lowstockamount = 1;
 
-			$nostockamount = get_option('jigoshop_notify_no_stock_amount');
+			$nostockamount = Jigoshop_Base::get_options()->get_option('jigoshop_notify_no_stock_amount');
 			if (!is_numeric($nostockamount)) $nostockamount = 1;
 
 			$outofstock = array();
@@ -235,7 +235,8 @@ class jigoshop_dashboard {
 
 				$thisitem = '<li><a href="'.get_edit_post_link($my_query->post->ID).'">'.$my_query->post->post_title.'</a></li>';
 
-				if ($_product->stock<=$nostockamount) :
+//				if ($_product->stock<=$nostockamount) :
+				if ( ! $_product->is_in_stock( true ) ) :    /* compare against global no stock threshold */
 					$outofstock[] = $thisitem;
 					continue;
 				endif;

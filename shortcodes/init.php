@@ -370,10 +370,10 @@ function jigoshop_search_shortcode( $atts ) {
 function jigoshop_sale_products( $atts ) {
    
 	extract(shortcode_atts(array(
-		'per_page'					=> get_option('jigoshop_catalog_per_page'),
-		'columns'					=> get_option('jigoshop_catalog_columns'),
-		'orderby'					=> get_option('jigoshop_catalog_sort_orderby'),
-		'order'						=> get_option('jigoshop_catalog_sort_direction'),
+		'per_page'					=> Jigoshop_Base::get_options()->get_option('jigoshop_catalog_per_page'),
+		'columns'					=> Jigoshop_Base::get_options()->get_option('jigoshop_catalog_columns'),
+		'orderby'					=> Jigoshop_Base::get_options()->get_option('jigoshop_catalog_sort_orderby'),
+		'order'						=> Jigoshop_Base::get_options()->get_option('jigoshop_catalog_sort_direction'),
 		'pagination'				=> false
 	), $atts));
 	

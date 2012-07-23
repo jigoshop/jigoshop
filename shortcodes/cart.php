@@ -245,7 +245,7 @@ function jigoshop_cart($atts) {
                                 </tr>
                             <?php endif; ?>
 
-                            <?php if (get_option('jigoshop_calc_taxes') == 'yes') :
+                            <?php if (Jigoshop_Base::get_options()->get_option('jigoshop_calc_taxes') == 'yes') :
                                 foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
                                     if (jigoshop_cart::get_tax_for_display($tax_class)) : ?>
                                         <tr>

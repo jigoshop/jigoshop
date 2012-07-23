@@ -290,8 +290,11 @@ function jigoshop_add_to_cart_action($url = false)
 
     	switch ( $jigoshop_options->get_option('jigoshop_redirect_add_to_cart', 'same_page') ) {
     		case 'same_page':
-    			jigoshop::add_message(sprintf(__('<a href="%s" class="button">View Cart &rarr;</a> Product successfully added to your cart.', 'jigoshop'), jigoshop_cart::get_cart_url()));
-    			break;
+				$message = __('Product successfully added to your cart.', 'jigoshop');
+				$button = __('View Cart &rarr;', 'jigoshop');
+				$message = '<a href="%s" class="button">' . $button . '</a> ' . $message;
+				jigoshop::add_message(sprintf( $message, jigoshop_cart::get_cart_url()));
+				break;
 
     		case 'to_checkout':
     				// Do nothing
@@ -550,7 +553,7 @@ function jigoshop_download_product() {
 		$user_id             = $download_result->user_id;
 		$downloads_remaining = $download_result->downloads_remaining;
 
-		if ( $user_id && get_option('jigoshop_downloads_require_login') == 'yes' ):
+		if ( $user_id && Jigoshop_Base::get_options()->get_option('jigoshop_downloads_require_login') == 'yes' ):
 			if ( !is_user_logged_in() ):
 				wp_die( __('You must be logged in to download files.', 'jigoshop') . ' <a href="'.wp_login_url(get_permalink(jigoshop_get_page_id('myaccount'))).'">' . __('Login &rarr;', 'jigoshop') . '</a>' );
 				exit;
@@ -880,13 +883,14 @@ function jigoshop_product_dropdown_categories( $show_counts = true, $hierarchal 
 	$r['hierarchal'] = $hierarchal;
 	$r['hide_empty'] = 1;
 	$r['show_count'] = 1;
-	$r['selected']   = (isset($wp_query->query['product_cat'])) ? $wp_query->query['product_cat'] : '';
+	$r['selected']   = isset( $wp_query->query['product_cat'] ) ? $wp_query->query['product_cat'] : '';
 
 	$terms = get_terms( 'product_cat', $r );
-	if (!$terms) return;
+	if ( ! $terms ) return;
 
 	$output  = "<select name='product_cat' id='dropdown_product_cat'>";
-	$output .= '<option value="">'.esc_html__('Select a category', 'jigoshop').'</option>';
+
+	$output .= '<option value="" ' .  selected( isset( $_GET['product_cat'] ) ? esc_attr( $_GET['product_cat'] ) : '', '', false ) . '>'.__('Select a category', 'jigoshop').'</option>';
 	$output .= jigoshop_walk_category_dropdown_tree( $terms, 0, $r );
 	$output .="</select>";
 
@@ -897,35 +901,49 @@ function jigoshop_product_dropdown_categories( $show_counts = true, $hierarchal 
  * Walk the Product Categories.
  */
 function jigoshop_walk_category_dropdown_tree() {
+
 	$args = func_get_args();
+	
 	// the user's options are the third parameter
-	if ( empty($args[2]['walker']) || !is_a($args[2]['walker'], 'Walker') )
+	if ( empty( $args[2]['walker'] ) || !is_a( $args[2]['walker'], 'Walker' ) )
 		$walker = new Jigoshop_Walker_CategoryDropdown;
 	else
 		$walker = $args[2]['walker'];
 
-	return call_user_func_array(array( &$walker, 'walk' ), $args );
+	return call_user_func_array( array( $walker, 'walk' ), $args );
+	
 }
 
 /**
  * Create HTML dropdown list of Product Categories.
  */
-class Jigoshop_Walker_CategoryDropdown extends Walker {
+class Jigoshop_Walker_CategoryDropdown extends Walker_CategoryDropdown {
 
 	var $tree_type = 'category';
 	var $db_fields = array ('parent' => 'parent', 'id' => 'term_id', 'slug' => 'slug' );
 
-	function start_el(&$output, $object, $depth, $args, $current_object_id = 0) {
-		$pad = str_repeat('&nbsp;', $depth * 3);
+    function start_el( $output, $category, $depth, $args ) {
+    
+        $pad = str_repeat( '&nbsp;', $depth * 3 );
+        $cat_name = apply_filters( 'list_product_cats', $category->name, $category );
 
-		$cat_name = apply_filters('list_product_cats', $object->name, $object);
-		$output .= "\t<option class=\"level-$depth\" value=\"".esc_attr( $object->slug )."\"";
-		if ( $object->slug == $args['selected'] )
-			$output .= ' selected="selected"';
-		$output .= '>';
-		$output .= $pad.$cat_name;
-		if ( $args['show_count'] )
-			$output .= '&nbsp;('. $object->count .')';
-		$output .= "</option>\n";
-	}
+        if ( ! isset( $args['value'] ) ) {
+            $args['value'] = ( $category->taxonomy == 'product_cat' ? 'slug' : 'id' );
+        }
+
+        $value = $args['value'] == 'slug' ? $category->slug : $category->term_id;
+
+        $output .= "\t<option class=\"level-$depth\" value=\"".esc_attr($value)."\"";
+        if ( $value === (string) $args['selected'] ){ 
+            $output .= ' selected="selected"';
+        }
+        $output .= '>';
+        $output .= $pad.$cat_name;
+        if ( $args['show_count'] )
+            $output .= '&nbsp;&nbsp;('. $category->count .')';
+
+        $output .= "</option>\n";
+        
+    }
+
 }

@@ -192,14 +192,14 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
                     if ($new_quantity < 0) {
                     	if ( $old_stock < 0 ) $backorder_qty = $order_item['qty'];
                     	else $backorder_qty = $old_stock - $order_item['qty'];
-						do_action( 'jigoshop_product_on_backorder_notification', $post_id, $order_item['id'], $backorder_qty );
+						do_action( 'jigoshop_product_on_backorder_notification', $post_id, $_product, $backorder_qty );
                    }
 
                     // stock status notifications
                     if ($jigoshop_options->get_option('jigoshop_notify_no_stock_amount') >= 0 && $jigoshop_options->get_option('jigoshop_notify_no_stock_amount') >= $new_quantity) {
-                        do_action('jigoshop_no_stock_notification', $order_item['id']);
+                        do_action('jigoshop_no_stock_notification', $_product);
                     } else if ($jigoshop_options->get_option('jigoshop_notify_low_stock_amount') && $jigoshop_options->get_option('jigoshop_notify_low_stock_amount') >= $new_quantity) {
-                        do_action('jigoshop_low_stock_notification', $order_item['id']);
+                        do_action('jigoshop_low_stock_notification', $_product);
                     }
                 }
             } else {

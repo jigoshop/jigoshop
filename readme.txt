@@ -145,14 +145,21 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * New: Mark 1 month or older orders from 'pending' to 'on-hold' with an option in the Settings to enable
 * New: Select multiple countries and states for tax rules
 * New: Support for WordPress' admin classic theme
+* Tweak: Add shipping method to emails
 * Tweak: Allow default tax classes to be translated
 * Tweak: UI Sortable helper on attributes now has no border radius
 * Tweak: Pages & CPT's now use menu_position. Fixes array key duplication
+* Tweak: Emails are now utf-8 compatible
+* Tweak: Subtotals and Shipping can now display either with or without tax on both the Cart and Checkout
+* Tweak: Cart widget now allows user defined text to display on the Go to Cart/Checkout buttons
+* Fix: Star Ratings width css calculation now works for Recent Reviews widget
 * Fix: Paypal gateway now sends shipping address info instead of billing when setting enabled
 * Fix: When uninstalling, will now only delete Jigoshop created pages instead of pages specified in settings
 * Fix: Variable products now have proper titles, not "#xxx: Child Variaton" anymore
 * Fix: Edit Address on My Account page now shows correct saved state
 * Fix: Local Pickup shipping always charges Shop Base Country and State tax
+* Fix: Backorder notification and other emails now show variation sku's
+* Fix: When products are on backorder, customers are now emailed notification if product is set for 'notify'
 
 = 1.2.3 - 2012-05-28 =
 * New: Add filters for new Jigoshop Product Addons extension
