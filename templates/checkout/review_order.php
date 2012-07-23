@@ -107,7 +107,7 @@ $jigoshop_options = Jigoshop_Base::get_options(); ?>
 									<?php endif; ?>
 								</td>
 								<td><?php echo $values['quantity']; ?></td>
-								<td><?php echo jigoshop_price($_product->get_price_excluding_tax($values['quantity']), array('ex_tax_label' => 1)); ?></td>
+								<td><?php echo jigoshop_price($_product->get_price_excluding_tax($values['quantity']), array('ex_tax_label' => $_product->is_taxable())); ?></td>
 							</tr>
 
 					<?php endif;

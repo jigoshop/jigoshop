@@ -769,7 +769,6 @@ class jigoshop_cart extends Jigoshop_Singleton {
             /* Cart total includes taxes. */
 				$subtotal = self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes' ? $subtotal : self::$subtotal_ex_tax + self::get_total_cart_tax_without_shipping_tax();
 				
-//                $subtotal = $subtotal + self::get_total_cart_tax_without_shipping_tax();  /* don't appear to need this */
                 $tax_desc = __('(inc. tax)', 'jigoshop');
             endif;
 
