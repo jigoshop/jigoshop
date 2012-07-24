@@ -152,6 +152,9 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * Tweak: Emails are now utf-8 compatible
 * Tweak: Subtotals and Shipping can now display either with or without tax on both the Cart and Checkout
 * Tweak: Cart widget now allows user defined text to display on the Go to Cart/Checkout buttons
+* Tweak: Provide easier means of altering Jigoshop frontend styles
+	* create 'jigoshop' folder in theme folder, create style.css, add styles to over-ride Jigoshop frontend.css
+	* both Jigoshop frontend.css and new style.css can be used together, just change a few things, no .less required
 * Fix: Star Ratings width css calculation now works for Recent Reviews widget
 * Fix: Paypal gateway now sends shipping address info instead of billing when setting enabled
 * Fix: When uninstalling, will now only delete Jigoshop created pages instead of pages specified in settings

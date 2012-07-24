@@ -358,7 +358,7 @@ jQuery(function(){
 
 });
 
-if (params.is_checkout==1) {
+if ( params.is_checkout ) {
 
 	var updateTimer;
 	var jqxhr;

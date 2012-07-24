@@ -347,7 +347,20 @@ function jigoshop_frontend_scripts() {
 
     $jigoshop_options = Jigoshop_Base::get_options();
 	if ( ! is_jigoshop() && is_admin() ) return false;
-	$css = file_exists( get_stylesheet_directory() . '/jigoshop/style.css') ? get_stylesheet_directory_uri() . '/jigoshop/style.css' : jigoshop::assets_url() . '/assets/css/frontend.css';
+
+	/* Frontend styles */
+	$frontend_css = jigoshop::assets_url() . '/assets/css/frontend.css';
+	$theme_css = file_exists( get_stylesheet_directory() . '/jigoshop/style.css')
+		? get_stylesheet_directory_uri() . '/jigoshop/style.css'
+		: '';
+	if ( JIGOSHOP_USE_CSS )
+		wp_enqueue_style( 'jigoshop_frontend_styles', $frontend_css );
+	if ( ! empty( $theme_css ) )
+		wp_enqueue_style( 'jigoshop_theme_styles', $theme_css );
+	if ( JIGOSHOP_LOAD_FANCYBOX )
+		wp_enqueue_style( 'jigoshop_fancybox_styles', jigoshop::assets_url() . '/assets/css/fancybox.css' );
+	wp_enqueue_style( 'jqueryui_styles', jigoshop::assets_url() . '/assets/css/ui.css' );
+
 
 	/* Frontend scripts */
 	if ( JIGOSHOP_LOAD_FANCYBOX ) {
@@ -356,13 +369,6 @@ function jigoshop_frontend_scripts() {
 	wp_enqueue_script( 'jigoshop_frontend', jigoshop::assets_url().'/assets/js/jigoshop_frontend.js', array('jquery'), '1.0' );
 	wp_enqueue_script( 'jigoshop_script', jigoshop::assets_url().'/assets/js/script.js', array('jquery'), '1.0' );
 	wp_enqueue_script( 'jqueryui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js', array('jquery'), '1.0' );
-
-	/* Frontend styles */
-	if (JIGOSHOP_USE_CSS)
-		wp_enqueue_style('jigoshop_frontend_styles', $css );
-	if ( JIGOSHOP_LOAD_FANCYBOX )
-		wp_enqueue_style('jigoshop_fancybox_styles', jigoshop::assets_url() . '/assets/css/fancybox.css');
-	wp_enqueue_style('jqueryui_styles'         , jigoshop::assets_url() . '/assets/css/ui.css');
 
 	/* Script.js variables */
 	$params = array(
@@ -387,9 +393,7 @@ function jigoshop_frontend_scripts() {
 	if (isset( jigoshop_session::instance()->max_price ))
 		$params['max_price'] = $_GET['max_price'];
 
-	$params['is_checkout'] = ( is_page(jigoshop_get_page_id('checkout')) || is_page(jigoshop_get_page_id('pay')) )
-						   ? 1
-						   : 0;
+	$params['is_checkout'] = ( is_page( jigoshop_get_page_id( 'checkout' )) || is_page( jigoshop_get_page_id( 'pay' )) );
 
 	$params = apply_filters('jigoshop_params', $params);
 
