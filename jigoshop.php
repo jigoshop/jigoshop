@@ -155,10 +155,6 @@ function jigoshop_init() {
 	));
 
 	// Constants
-	if (!defined('JIGOSHOP_USE_CSS')) :
-		if ($jigoshop_options->get_option('jigoshop_disable_css')=='yes') define('JIGOSHOP_USE_CSS', false);
-		else define('JIGOSHOP_USE_CSS', true);
-	endif;
 	if (!defined('JIGOSHOP_LOAD_FANCYBOX')) :
 		if ($jigoshop_options->get_option('jigoshop_disable_fancybox')=='yes') define('JIGOSHOP_LOAD_FANCYBOX', false);
 		else define('JIGOSHOP_LOAD_FANCYBOX', true);
@@ -345,18 +341,38 @@ add_action('admin_print_scripts', 'jigoshop_admin_scripts');
 
 function jigoshop_frontend_scripts() {
 
-    $jigoshop_options = Jigoshop_Base::get_options();
 	if ( ! is_jigoshop() && is_admin() ) return false;
 
-	/* Frontend styles */
+    $jigoshop_options = Jigoshop_Base::get_options();
+    
+	/**
+	 * Frontend Styles
+	 *
+	 * For Jigoshop 1.3 or better there are 2 CSS related options
+	 * The ususal 'jigoshop_disable_css' must be off to use -any- Jigoshop CSS
+	 *      otherwise the theme is expected to provide -all- CSS located wherever it likes, loaded by the theme
+	 * A user can also copy both frontend.less and frontend.css to a 'jigoshop' folder in the theme folder and
+	 *      rename them to style.less and style.css and compile changes with SimpLESS
+	 *      http://wearekiss.com/simpless
+	 *      If Jigoshop finds this file, it will load -only- that file, or if not found will default to our frontend.css
+	 * A user can also with the second option 'jigoshop_frontend_with_theme_css' enabled, load -both- the default frontend.css
+	 *      -and- any extra bits found in the same 'theme/jigoshop/style.css'
+	 *      This allows only a few modifications to be added in after the default frontend.css
+	 *      It will also allow for easier additions to frontend.css that get missed if themers don't upgrade their version.
+	 * With these 2 options, users should either provide the complete frontend.css (style.css in the theme jigoshop folder)
+	 *      or just the few changes again in the style.css in the theme jigoshop folder and set the 2nd option accordingly
+	 */
 	$frontend_css = jigoshop::assets_url() . '/assets/css/frontend.css';
 	$theme_css = file_exists( get_stylesheet_directory() . '/jigoshop/style.css')
 		? get_stylesheet_directory_uri() . '/jigoshop/style.css'
-		: '';
-	if ( JIGOSHOP_USE_CSS )
-		wp_enqueue_style( 'jigoshop_frontend_styles', $frontend_css );
-	if ( ! empty( $theme_css ) )
+		: jigoshop::assets_url() . '/assets/css/frontend.css';
+	if ( $jigoshop_options->get_option( 'jigoshop_disable_css' ) == 'no' ) {
+		if ( $jigoshop_options->get_option( 'jigoshop_frontend_with_theme_css' ) == 'yes' ) {
+			wp_enqueue_style( 'jigoshop_frontend_styles', $frontend_css );		
+		}
 		wp_enqueue_style( 'jigoshop_theme_styles', $theme_css );
+	}
+	
 	if ( JIGOSHOP_LOAD_FANCYBOX )
 		wp_enqueue_style( 'jigoshop_fancybox_styles', jigoshop::assets_url() . '/assets/css/fancybox.css' );
 	wp_enqueue_style( 'jqueryui_styles', jigoshop::assets_url() . '/assets/css/ui.css' );
@@ -366,6 +382,7 @@ function jigoshop_frontend_scripts() {
 	if ( JIGOSHOP_LOAD_FANCYBOX ) {
 		wp_enqueue_script( 'fancybox', jigoshop::assets_url().'/assets/js/jquery.fancybox-1.3.4.pack.js', array('jquery'), '1.0' );
 	}
+	
 	wp_enqueue_script( 'jigoshop_frontend', jigoshop::assets_url().'/assets/js/jigoshop_frontend.js', array('jquery'), '1.0' );
 	wp_enqueue_script( 'jigoshop_script', jigoshop::assets_url().'/assets/js/script.js', array('jquery'), '1.0' );
 	wp_enqueue_script( 'jqueryui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js', array('jquery'), '1.0' );
