@@ -1216,13 +1216,13 @@ class Jigoshop_Options_Parser {
 					return false;
 				});
 				jQuery('tr.tax_rate .select_us_states').live('click', function(e){
-					jQuery(this).closest('td').find('select optgroup[label="<?php echo __( 'United States', 'jigoshop' ); ?>"] option').attr("selected","selected");
+					jQuery(this).closest('td').find('select optgroup[label="<?php _e( 'United States', 'jigoshop' ); ?>"] option').attr("selected","selected");
 					jQuery(this).closest('td').find('select.tax_select2').trigger("change");
 					return false;
 				});
 				jQuery('tr.tax_rate .options select').live('change', function(e){
 					jQuery(this).trigger("liszt:updated");
-					jQuery(this).closest('td').find('label').text( jQuery(":selected", this).length + ' ' + '<?php _e('countries/states selected', 'jigoshop') ?>' );
+					jQuery(this).closest('td').find('label').text( jQuery(":selected", this).length + ' ' + '<?php _e('countries/states selected', 'jigoshop'); ?>' );
 				});
 				jQuery('tr.tax_rate .select_europe').live('click', function(e){
 					jQuery(this).closest('td').find('option[value="BE"],option[value="FR"],option[value="DE"],option[value="IT"],option[value="LU"],option[value="NL"],option[value="DK"],option[value="IE"],option[value="GR"],option[value="PT"],option[value="ES"],option[value="AT"],option[value="FI"],option[value="SE"],option[value="CY"],option[value="CZ"],option[value="EE"],option[value="HU"],option[value="LV"],option[value="LT"],option[value="MT"],option[value="PL"],option[value="SK"],option[value="SI"],option[value="RO"],option[value="BG"],option[value="IM"],option[value="GB"]').attr("selected","selected");
