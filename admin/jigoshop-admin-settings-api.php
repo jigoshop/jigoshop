@@ -834,7 +834,7 @@ class Jigoshop_Options_Parser {
 			endif;
 			$id = $item['id'];
 			$display .= '<select id="'.$id.'" class="single_select_country '.$class.'" name="' . JIGOSHOP_OPTIONS . '[' . $item['id'] . ']">';
-			$display .= jigoshop_countries::country_dropdown_options($country, $state, false, true, false);
+			$display .= jigoshop_countries::country_dropdown_options($country, $state, true, true, false);
 			$display .= '</select>';
 			?>
 				<script type="text/javascript">
@@ -1172,12 +1172,12 @@ class Jigoshop_Options_Parser {
 							if ( isset($rate['is_all_states']) ) :
 								if ( is_array( $applied_all_states ) && !in_array( $tax_rate['country'].$tax_rate['class'], $applied_all_states )) :
 									$applied_all_states[] = $tax_rate['country'].$tax_rate['class'];
-									jigoshop_countries::country_dropdown_options( $rate['country'], '*' ); //all-states
+									jigoshop_countries::country_dropdown_options( $rate['country'], '*', true ); //all-states
 								else :
 									continue;
 								endif;
 							else :
-								jigoshop_countries::country_dropdown_options( $rate['country'], $rate['state'] );
+								jigoshop_countries::country_dropdown_options( $rate['country'], $rate['state'], true );
 							endif;
 							echo '</select>';
 
