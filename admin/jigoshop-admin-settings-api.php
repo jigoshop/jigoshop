@@ -834,7 +834,7 @@ class Jigoshop_Options_Parser {
 			endif;
 			$id = $item['id'];
 			$display .= '<select id="'.$id.'" class="single_select_country '.$class.'" name="' . JIGOSHOP_OPTIONS . '[' . $item['id'] . ']">';
-			$display .= jigoshop_countries::country_dropdown_options($country, $state, true, true, false);
+			$display .= jigoshop_countries::country_dropdown_options($country, $state, true, false, false);
 			$display .= '</select>';
 			?>
 				<script type="text/javascript">
