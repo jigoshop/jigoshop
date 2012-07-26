@@ -224,14 +224,14 @@ class jigoshop_cart extends Jigoshop_Singleton {
             self::set_quantity($cart_item_key, $quantity);
 
         } else {
-            // otherwise add new item to the cart
-            self::$cart_contents[$cart_id] = apply_filters( 'jigoshop_add_cart_item', array_merge( $cart_item_data, array(
-                'data'        => $product,
-                'product_id'  => $product_id,
-                'quantity'    => (int) $quantity,
-                'variation'   => $variation,
-                'variation_id'=> $variation_id
-            )), $cart_item_key);
+        	// otherwise add new item to the cart
+            self::$cart_contents[$cart_id] = apply_filters( 'jigoshop_add_cart_item', array(
+				'data'        => $product,
+				'product_id'  => $product_id,
+				'quantity'    => (int) $quantity,
+				'variation'   => $variation,
+				'variation_id'=> $variation_id
+			), $cart_item_data);
         }
 
         self::set_session();
