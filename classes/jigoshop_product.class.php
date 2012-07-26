@@ -720,9 +720,9 @@ class jigoshop_product {
 		else if ( $this->sale_price )
 			 return $this->sale_price;
 
-		else return $this->regular_price;
+        else return apply_filters('jigoshop_product_get_regular_price', $this->regular_price, $this->ID);
 
-	}
+    }
 
 	/**
 	 * Returns the products sale value, either with or without a percentage
@@ -818,8 +818,8 @@ class jigoshop_product {
 		if ( $this->regular_price == '' )
 			$html = __( 'Price Not Announced', 'jigoshop' );
 
-		return $html;
-	}
+        return apply_filters('jigoshop_product_get_price_html', $html, $this, $this->regular_price);
+    }
 
 	/**
 	 * Returns the upsell product ids
