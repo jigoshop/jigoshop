@@ -788,7 +788,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
         $return = $for_display ? jigoshop_price($subtotal) : number_format($subtotal, 2, '.', '');
 
         /* Shows either 'inc.' or 'ex.' tax. */
-        if ( $for_display && ( self::get_options()->get_option('jigoshop_calc_taxes') == 'yes' && self::get_total_cart_tax_without_shipping_tax() > 0 ) ) :
+        if ( $for_display && ( self::get_options()->get_option('jigoshop_calc_taxes') == 'yes' ) ) :
             $return .= sprintf(' <small>%s</small>', $tax_desc);
         endif;
 
