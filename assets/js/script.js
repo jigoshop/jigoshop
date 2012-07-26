@@ -295,7 +295,11 @@ jQuery(function(){
 			jQuery('.shop_attributes').append(variation.a_height);
 		}
 
-		jQuery('.variations_button, .single_variation').slideDown();
+		if ( ! variation.in_stock ) {
+			jQuery('.single_variation').slideDown();
+		} else {
+			jQuery('.variations_button, .single_variation').slideDown();
+		}
 	}
 
 	//when one of attributes is changed - check everything to show only valid options
