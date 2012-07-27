@@ -325,6 +325,11 @@ class jigoshop_order extends Jigoshop_Base {
 
 			}
 			
+			$meta_data = apply_filters( 'jigoshop_display_item_meta_data_email', $item );
+			if ( $meta_data != '' ) :
+			  $return .= PHP_EOL . $meta_data;
+			endif;			
+			
 			if ( ! empty( $item['customization'] ) ) :
 				$return .= PHP_EOL . apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') ) . PHP_EOL . $item['customization'];
 			endif;
