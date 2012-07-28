@@ -178,7 +178,7 @@ class skrill extends jigoshop_payment_gateway {
 			'postal_code'          => $order->billing_postcode,
 			'city'                 => $order->billing_city,
 			'state'                => $order->billing_state,
-			'country'              => retrieveIOC($this->getLocale()),
+			'country'              => $this->retrieveIOC($this->getLocale()),
 
 			'amount'               => $order_total,
 			'currency'             => Jigoshop_Base::get_options()->get_option('jigoshop_currency'),
