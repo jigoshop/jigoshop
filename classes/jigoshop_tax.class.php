@@ -738,9 +738,9 @@ class jigoshop_tax extends Jigoshop_Base {
      * @return  mixed return current rate array if rate_only is false, otherwise
      * return the double value of the rate
      */
-    private function get_rate($tax_class = '*', $rate_only = true) {
+    function get_rate( $tax_class = '*', $rate_only = true ) {
 
-        if (jigoshop_session::instance()->chosen_shipping_method_id == 'local_pickup') :
+        if ( jigoshop_session::instance()->chosen_shipping_method_id == 'local_pickup' ) :
             return $this->get_shop_base_rate($tax_class, $rate_only);
         endif;
 
