@@ -579,26 +579,24 @@ class jigoshop_product extends Jigoshop_Base {
 	}
 
 	/**
-     * Returns the price (excluding tax)
-     * @param int $quantity - provide the amount of the same product to this calculation.
-     * To calculate tax from prices include tax, we need to provide the quantity, as calculating
-     * each and every product with reverse taxes will cause rounding errors. Therefore calculate
-     * with the quantity of the product used.
+     * Get the product total price excluding tax
+     *
+     * @param   int     $quantity
+     *
+     * $return  float   the total price of the product times the quantity without any tax included
      */
-	function get_price_excluding_tax($quantity = 1) {
+	function get_price_excluding_tax( $quantity = 1 ) {
 
-        // to avoid rounding errors multiply by 100. Since we loop through the cart, rather than provide
-        // a full subtotal, this is necessary.
+        // to avoid rounding errors multiply by 100
         $price = $this->get_price() * 100;
 
-        if (self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes') {
+        if ( self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes' ) {
         
             $rates = (array) $this->get_tax_base_rate();
 
             if ( count( $rates > 0 )) {
 
-                // rates array sorted so that taxes applied to retail value come first. To reverse taxes
-                // need to reverse this array
+                // rates array sorted so that taxes applied to retail value come first. To reverse taxes, need to reverse this array
                 $new_rates = array_reverse($rates, true);
 
                 $tax_applied_after_retail = 0;
@@ -609,9 +607,9 @@ class jigoshop_product extends Jigoshop_Base {
                 foreach ( $new_rates as $key=>$value ) :
 
                     if ($value['is_not_compound_tax']) :
-                        $tax_totals += $_tax->calc_tax(($price * $quantity) - $tax_applied_after_retail, $value['rate'], true);
+                        $tax_totals += $_tax->calc_tax(( $price * $quantity ) - $tax_applied_after_retail, $value['rate'], true );
                     else :
-                        $tax_amount[$key] = $_tax->calc_tax($price * $quantity, $value['rate'], true);
+                        $tax_amount[$key] = $_tax->calc_tax( $price * $quantity, $value['rate'], true );
                         $tax_applied_after_retail += $tax_amount[$key];
                         $tax_totals += $tax_amount[$key];
                     endif;
@@ -635,10 +633,61 @@ class jigoshop_product extends Jigoshop_Base {
     }
 
 	/**
-	 * Returns the base tax rate
-	 * TODO: why is this here? shouldn't it be in the tax class?
-	 *
-	 * @return  ???|false
+     * Get the product total price including tax
+     *
+     * @param   int     $quantity
+     *
+     * $return  float   the total price of the product times the quantity and destination tax included
+     */
+	function get_price_with_tax( $quantity = 1 ) {
+	
+        // to avoid rounding errors multiply by 100
+        $price = $this->get_price() * 100;
+
+        if ( self::get_options()->get_option('jigoshop_prices_include_tax') == 'no' ) {
+
+			$rates = (array) $this->get_tax_destination_rate();
+			
+			if ( count( $rates > 0 )) {
+	
+				// rates array sorted so that taxes applied to retail value come first. To reverse taxes, need to reverse this array
+				$new_rates = array_reverse( $rates, true );
+	
+				$tax_applied_after_retail = 0;
+				$tax_totals = 0;
+	
+				$_tax = new jigoshop_tax( 100 );
+	
+				foreach ( $new_rates as $key => $value ) {
+					
+					if ( $value['is_not_compound_tax'] ) {
+						$tax_totals += $_tax->calc_tax(( $price * $quantity ) - $tax_applied_after_retail, $value['rate'], false );
+					} else {
+						$tax_amount[$key] = $_tax->calc_tax( $price * $quantity, $value['rate'], false );
+						$tax_applied_after_retail += $tax_amount[$key];
+						$tax_totals += $tax_amount[$key];
+					}
+					
+				}
+	
+				// Product prices are always 2 decimal digits.
+				// Will get rounding errors on backwards tax calcs if we don't round
+				return round( ($price * $quantity + $tax_totals) / 100, 2 );
+	
+			}
+	
+        } else {
+
+			// Product prices are always 2 decimal digits.
+			// Will get rounding errors on backwards tax calcs if we don't round
+			return round( $price * $quantity / 100, 2 );
+			
+        }
+
+	}
+	
+	/**
+	 * Returns the base Country and State tax rate
 	 */
 	public function get_tax_base_rate() {
 
@@ -659,6 +708,33 @@ class jigoshop_product extends Jigoshop_Base {
             endforeach;
 
         endif;
+
+        return $rate;
+	}
+
+	/**
+	 * Returns the destination Country and State tax rate
+	 */
+	public function get_tax_destination_rate() {
+
+		$rate = array();
+
+        if ( $this->is_taxable() && self::get_options()->get_option('jigoshop_calc_taxes') == 'yes' ) {
+        
+            $_tax = new jigoshop_tax();
+
+            if ( $_tax->get_tax_classes_for_base() ) foreach ( $_tax->get_tax_classes_for_base() as $tax_class ) {
+
+                if ( ! in_array( $tax_class, $this->get_tax_classes() )) continue;
+                $my_rate = $_tax->get_rate( $tax_class );
+
+                if ( $my_rate > 0 ) {
+                    $rate[$tax_class] = array( 'rate' => $my_rate, 'is_not_compound_tax' => ! $_tax->is_compound_tax() );
+                }
+
+            }
+
+        }
 
         return $rate;
 	}
