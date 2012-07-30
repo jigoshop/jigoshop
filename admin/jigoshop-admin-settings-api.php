@@ -1040,9 +1040,9 @@ class Jigoshop_Options_Parser {
 				class="jigoshop-input jigoshop-select '.$class.'"
 				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']" >';
 			foreach ( $item['choices'] as $value => $label ) {
-				if (is_array($label)) {
+				if ( is_array( $label )) {
 					$display .= '<optgroup label="'.$value.'">';
-					foreach ($label as $subValue => $subLabel) {
+					foreach ( $label as $subValue => $subLabel ) {
 						$display .= '<option
 							value="'.esc_attr( $subValue ).'" '.selected( $data[$item['id']], $subValue, false ).' />'.$subLabel.'
 							</option>';
