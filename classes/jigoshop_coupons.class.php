@@ -17,7 +17,7 @@
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
-class jigoshop_coupons extends Jigoshop_Base {
+class JS_Coupons extends Jigoshop_Base {
 	
 	private static $coupons;
 	
@@ -258,5 +258,15 @@ class jigoshop_coupons extends Jigoshop_Base {
 
 }
 
-if ( !empty($_GET['unset_coupon']) )
-	$coupons = new jigoshop_coupons();
+if ( ! empty( $_GET['unset_coupon'] ) ) $coupons = new JS_Coupons();
+
+
+/** Depreciated */
+class jigoshop_coupons extends JS_Coupons {
+	
+	public function __construct() {
+		_deprecated_function( 'jigoshop_coupons', '1.3', 'JS_Coupons' );
+		parent::__construct();
+	}
+	
+}

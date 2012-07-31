@@ -166,7 +166,7 @@ function jigoshop_cart($atts) {
                 <tr>
                     <td colspan="6" class="actions">
 
-                        <?php $coupons = jigoshop_coupons::get_coupons(); if(!empty($coupons)): ?>
+                        <?php $coupons = JS_Coupons::get_coupons(); if(!empty($coupons)): ?>
                             <div class="coupon">
                                 <label for="coupon_code"><?php _e('Coupon', 'jigoshop'); ?>:</label> <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" />
                                 <input type="submit" class="button" name="apply_coupon" value="<?php _e('Apply Coupon', 'jigoshop'); ?>" />

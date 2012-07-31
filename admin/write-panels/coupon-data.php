@@ -42,7 +42,7 @@ function jigoshop_coupon_data_box( $post ) {
 			$args = array(
 				'id'            => 'type',
 				'label'         => __( 'Coupon Type', 'jigoshop' ),
-				'options'       => jigoshop_coupons::get_coupon_types(),
+				'options'       => JS_Coupons::get_coupon_types(),
 			);
 			echo Jigoshop_Forms::select( $args );
 		

@@ -669,7 +669,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					$applied_coupons = array();
 
 					foreach ( jigoshop_cart::$applied_coupons as $coupon )
-						$applied_coupons[] = jigoshop_coupons::get_coupon( $coupon );
+						$applied_coupons[] = JS_Coupons::get_coupon( $coupon );
 
 					$data['order_discount_coupons'] = $applied_coupons;
 					$data['billing_first_name']     = $this->posted['billing-first_name'];
@@ -787,7 +787,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
 					/* Coupon usage limit */
 					foreach ( $data['order_discount_coupons'] as $coupon ) :
-						$coupon_id = jigoshop_coupons::get_coupon_post_id( $coupon['code'] );
+						$coupon_id = JS_Coupons::get_coupon_post_id( $coupon['code'] );
 						if ( $coupon_id !== false ) {
 							$usage_count = get_post_meta( $coupon_id, 'usage', true );
 							$usage_count = empty( $usage_count ) ? 1 : $usage_count + 1;

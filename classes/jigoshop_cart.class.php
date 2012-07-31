@@ -260,8 +260,8 @@ class jigoshop_cart extends Jigoshop_Singleton {
             $_product = self::$cart_contents[$cart_item];
             if (self::$applied_coupons) :
                 foreach (self::$applied_coupons as $key => $code) :
-                    $coupon = jigoshop_coupons::get_coupon($code);
-                    if (jigoshop_coupons::is_valid_coupon_for_product($code, $_product)) :
+                    $coupon = JS_Coupons::get_coupon($code);
+                    if (JS_Coupons::is_valid_coupon_for_product($code, $_product)) :
                         if ($coupon['type'] == 'fixed_product') {
                             self::$discount_total = self::$discount_total - ( $coupon['amount'] * $_product['quantity'] );
                             unset(self::$applied_coupons[$key]);
@@ -421,7 +421,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 	private static function calculate_cart_discounts_total( $total_to_use ) {
 	
 		if ( ! empty( self::$applied_coupons )) foreach ( self::$applied_coupons as $code ) {
-			if ( $coupon = jigoshop_coupons::get_coupon( $code )) {
+			if ( $coupon = JS_Coupons::get_coupon( $code )) {
 
 				switch ( $coupon['type'] ) :
 
@@ -543,9 +543,9 @@ class jigoshop_cart extends Jigoshop_Singleton {
 			// Product Discounts for specific product ID's
 			if ( ! empty( self::$applied_coupons )) foreach ( self::$applied_coupons as $code ) {
 
-				$coupon = jigoshop_coupons::get_coupon( $code );
+				$coupon = JS_Coupons::get_coupon( $code );
 
-				if ( ! jigoshop_coupons::is_valid_coupon_for_product( $code, $values ) ) continue;
+				if ( ! JS_Coupons::is_valid_coupon_for_product( $code, $values ) ) continue;
 
 				switch ( $coupon['type'] ) {
 					case 'fixed_product' :
@@ -753,7 +753,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
         // NOTE: this is now done in calculate_cart_total with other coupon calcs -JAP-
 //         if (self::$applied_coupons && self::get_options()->get_option('jigoshop_tax_after_coupon') == 'no') :
 //             foreach (self::$applied_coupons as $code) :
-//                 if ($coupon = jigoshop_coupons::get_coupon($code)) :
+//                 if ($coupon = JS_Coupons::get_coupon($code)) :
 // 
 //                     if ($coupon['type'] == 'fixed_cart') :
 //                         self::$discount_total = self::$discount_total + $coupon['amount'];
@@ -1013,14 +1013,14 @@ class jigoshop_cart extends Jigoshop_Singleton {
      */
     function add_discount( $coupon_code ) {
 
-        $the_coupon = jigoshop_coupons::get_coupon( $coupon_code );
+        $the_coupon = JS_Coupons::get_coupon( $coupon_code );
 
         /* Don't continue if the coupon isn't valid. */
         if ( ! self::valid_coupon( $coupon_code ) ) return false;
 
         /* Check for other individual_use coupons before adding this coupon. */
         if ( ! empty( self::$applied_coupons )) foreach ( self::$applied_coupons as $coupon ) {
-            $this_coupon = jigoshop_coupons::get_coupon( $coupon );
+            $this_coupon = JS_Coupons::get_coupon( $coupon );
             if ( $this_coupon['individual_use'] ) {
 				jigoshop::add_error(__("There is already an 'individual use' coupon on the Cart.  No other coupons can be added until it is removed.", 'jigoshop'));
 				return false;
@@ -1045,7 +1045,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
     function valid_coupon($coupon_code) {
 
-        if (!$the_coupon = jigoshop_coupons::get_coupon($coupon_code)) {
+        if (!$the_coupon = JS_Coupons::get_coupon($coupon_code)) {
             jigoshop::add_error(__('Coupon does not exist or is no longer valid!', 'jigoshop'));
             return false;
         }
@@ -1089,7 +1089,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
         // Check it can be used with cart
         // get_coupon() checks for valid coupon. don't go any further without one
-        if (!jigoshop_coupons::get_coupon($coupon_code)) {
+        if (!JS_Coupons::get_coupon($coupon_code)) {
             jigoshop::add_error(__('Invalid coupon!', 'jigoshop'));
             return false;
         }
@@ -1114,7 +1114,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
         /* Look through each product in the cart for a valid coupon. */
         foreach ( self::$cart_contents as $product )
-            if ( jigoshop_coupons::is_valid_coupon_for_product( $thecoupon['code'], $product ) )
+            if ( JS_Coupons::is_valid_coupon_for_product( $thecoupon['code'], $product ) )
                 return true;
 
         return false;
@@ -1125,7 +1125,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
     function has_free_shipping_coupon() {
 
 		if ( ! empty( self::$applied_coupons )) foreach ( self::$applied_coupons as $code ) {
-			if ( $coupon = jigoshop_coupons::get_coupon( $code) ) {
+			if ( $coupon = JS_Coupons::get_coupon( $code) ) {
 				if ( $coupon['free_shipping'] )
 					if ( self::has_valid_coupon_for_products( $coupon )) return true;
 			}

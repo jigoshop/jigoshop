@@ -117,7 +117,7 @@ $jigoshop_options = Jigoshop_Base::get_options(); ?>
 		</tbody>
 	</table>
 
-	<?php $coupons = jigoshop_coupons::get_coupons(); if(!empty($coupons)): ?>
+	<?php $coupons = JS_Coupons::get_coupons(); if(!empty($coupons)): ?>
 		<div class="coupon">
 			<label for="coupon_code"><?php _e('Coupon', 'jigoshop'); ?>:</label>
 				<input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" />
