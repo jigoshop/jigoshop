@@ -1,7 +1,7 @@
 ﻿/*
  Copyright 2012 Igor Vaynberg
 
- Version: @@ver@@ Timestamp: @@timestamp@@
+ Version: 3.0 Timestamp: Tue Jul 31 21:09:16 PDT 2012
 
  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in
  compliance with the License. You may obtain a copy of the License in the LICENSE file, or at:
@@ -92,7 +92,13 @@
 
     nextUid=(function() { var counter=1; return function() { return counter++; }; }());
 
-    function escapeMarkup(markup) { return markup.replace("&", "&amp;"); }
+    function escapeMarkup(markup) {
+        if (markup && typeof(markup) === "string") {
+            return markup.replace("&", "&amp;");
+        } else {
+            return markup;
+        }
+    }
 
     function indexOf(value, array) {
         var i = 0, l = array.length, v;
@@ -381,13 +387,27 @@
     }
 
     /**
+     * Checks if the formatter function should be used.
+     *
+     * Throws an error if it is not a function. Returns true if it should be used,
+     * false if no formatting should be performed.
+     *
+     * @param formatter
+     */
+    function checkFormatter(formatter, formatterName) {
+        if ($.isFunction(formatter)) return true;
+        if (!formatter) return fasle;
+        throw new Error("formatterName must be a function or a falsy value");
+    }
+
+    /**
      * blurs any Select2 container that has focus when an element outside them was clicked or received focus
      *
      * also takes care of clicks on label tags that point to the source element
      */
     $(document).ready(function () {
         $(document).delegate("*", "mousedown touchend", function (e) {
-            var target = $(e.target).closest("div.select2-container").get(0);
+            var target = $(e.target).closest("div.select2-container").get(0), attr;
             if (target) {
                 $(document).find("div.select2-container-active").each(function () {
                     if (this !== target) $(this).data("select2").blur();
@@ -400,8 +420,9 @@
             }
 
             target=$(e.target);
-            if ("LABEL" === e.target.tagName && target.attr("for").length > 0) {
-                target = $("#"+target.attr("for"));
+            attr = target.attr("for");
+            if ("LABEL" === e.target.tagName && attr && attr.length > 0) {
+                target = $("#"+attr);
                 target = target.data("select2");
                 if (target !== undefined) { target.focus(); e.preventDefault();}
             }
@@ -480,6 +501,8 @@
             this.results = results = this.container.find(resultsSelector);
             this.search = search = this.container.find("input.select2-input");
 
+            search.attr("tabIndex", this.opts.element.attr("tabIndex"));
+
             this.resultsPage = 0;
             this.context = null;
 
@@ -512,7 +535,7 @@
             search.bind("focus", function () { search.addClass("select2-focused"); if (search.val() === " ") search.val(""); });
             search.bind("blur", function () { search.removeClass("select2-focused");});
 
-            this.dropdown.delegate(resultsSelector, "click", this.bind(function (e) {
+            this.dropdown.delegate(resultsSelector, "mouseup", this.bind(function (e) {
                 if ($(e.target).closest(".select2-result-selectable:not(.select2-disabled)").length > 0) {
                     this.highlightUnderEvent(e);
                     this.selectHighlighted(e);
@@ -554,7 +577,7 @@
 
         // abstract
         prepareOpts: function (opts) {
-            var element, select, idKey;
+            var element, select, idKey, ajaxUrl;
 
             element = opts.element;
 
@@ -665,6 +688,10 @@
             } else {
                 if (!("query" in opts)) {
                     if ("ajax" in opts) {
+                        ajaxUrl = opts.element.data("ajax-url");
+                        if (ajaxUrl && ajaxUrl.length > 0) {
+                            opts.ajax.url = ajaxUrl;
+                        }
                         opts.query = ajax(opts.ajax);
                     } else if ("data" in opts) {
                         opts.query = local(opts.data);
@@ -1007,7 +1034,7 @@
          */
         // abstract
         updateResults: function (initial) {
-            var search = this.search, results = this.results, opts = this.opts, self=this;
+            var search = this.search, results = this.results, opts = this.opts, data, self=this;
 
             // if the search is currently hidden we do not alter the results
             if (initial !== true && (this.showSearchInput === false || !this.opened())) {
@@ -1027,7 +1054,15 @@
                 postRender();
             }
 
-            if (search.val().length < opts.minimumInputLength) {
+            if (opts.maximumSelectionSize >=1) {
+                data = this.data();
+                if ($.isArray(data) && data.length >= opts.maximumSelectionSize && checkFormatter(opts.formatSelectionTooBig, "formatSelectionTooBig")) {
+            	    render("<li class='select2-selection-limit'>" + opts.formatSelectionTooBig(opts.maximumSelectionSize) + "</li>");
+            	    return;
+                }
+            }
+
+            if (search.val().length < opts.minimumInputLength && checkFormatter(opts.formatInputTooShort, "formatInputTooShort")) {
                 render("<li class='select2-no-results'>" + opts.formatInputTooShort(search.val(), opts.minimumInputLength) + "</li>");
                 return;
             }
@@ -1057,7 +1092,7 @@
                     }
                 }
 
-                if (data.results.length === 0) {
+                if (data.results.length === 0 && checkFormatter(opts.formatNoMatches, "formatNoMatches")) {
                     render("<li class='select2-no-results'>" + opts.formatNoMatches(search.val()) + "</li>");
                     return;
                 }
@@ -1065,7 +1100,7 @@
                 results.empty();
                 self.opts.populateResults.call(this, results, data.results, {term: search.val(), page: this.resultsPage, context:null});
 
-                if (data.more === true) {
+                if (data.more === true && checkFormatter(opts.formatLoadMore, "formatLoadMore")) {
                     results.children().filter(":last").append("<li class='select2-more-results'>" + escapeMarkup(opts.formatLoadMore(this.resultsPage)) + "</li>");
                     window.setTimeout(function() { self.loadMoreIfNeeded(); }, 10);
                 }
@@ -1285,10 +1320,10 @@
             }));
             this.search.bind("blur", this.bind(function() {
                 if (!this.opened()) this.container.removeClass("select2-container-active");
-                window.setTimeout(this.bind(function() { this.selection.removeAttr("tabIndex"); }), 10);
+                window.setTimeout(this.bind(function() { this.selection.attr("tabIndex", this.opts.element.attr("tabIndex")); }), 10);
             }));
 
-            selection.bind("click", this.bind(function (e) {
+            selection.bind("mousedown", this.bind(function (e) {
                 clickingInside = true;
 
                 if (this.opened()) {
@@ -1302,7 +1337,7 @@
                 clickingInside = false;
             }));
 
-            dropdown.bind("click", this.bind(function() { this.search.focus(); }));
+            dropdown.bind("mousedown", this.bind(function() { this.search.focus(); }));
 
             selection.bind("focus", this.bind(function() {
                 this.container.addClass("select2-container-active");
@@ -1312,7 +1347,7 @@
 
             selection.bind("blur", this.bind(function() {
                 this.container.removeClass("select2-container-active");
-                window.setTimeout(this.bind(function() { this.search.removeAttr("tabIndex"); }), 10);
+                window.setTimeout(this.bind(function() { this.search.attr("tabIndex", this.opts.element.attr("tabIndex")); }), 10);
             }));
 
             selection.bind("keydown", this.bind(function(e) {
@@ -1355,7 +1390,7 @@
                 killEvent(e);
             }));
 
-            selection.delegate("abbr", "click", this.bind(function (e) {
+            selection.delegate("abbr", "mousedown", this.bind(function (e) {
                 if (!this.enabled) return;
                 this.clear();
                 killEvent(e);
@@ -1668,7 +1703,7 @@
                 this.container.removeClass("select2-container-active");
             }));
 
-            this.container.delegate(selector, "click", this.bind(function (e) {
+            this.container.delegate(selector, "mousedown", this.bind(function (e) {
                 if (!this.enabled) return;
                 this.clearPlaceholder();
                 this.open();
@@ -1693,7 +1728,7 @@
 
             this.parent.enable.apply(this, arguments);
 
-            this.search.show();
+            this.search.removeAttr("disabled");
         },
 
         // multi
@@ -1702,7 +1737,7 @@
 
             this.parent.disable.apply(this, arguments);
 
-            this.search.hide();
+            this.search.attr("disabled", true);
         },
 
         // multi
@@ -1974,7 +2009,7 @@
                 $(val).each(function () {
                     if (indexOf(this, unique) < 0) unique.push(this);
                 });
-                this.opts.element.val(unique.length === 0 ? "" : unique.join(","));
+                this.opts.element.val(unique.length === 0 ? "" : unique.join(this.opts.separator));
             }
         },
 
@@ -2060,6 +2095,7 @@
                      .map(function() { return $(this).data("select2-data"); })
                      .get();
             } else {
+                if (!values) { values = []; }
                 ids = $.map(values, function(e) { return self.opts.id(e)});
                 this.setVal(ids);
                 this.updateSelection(values);
@@ -2129,9 +2165,11 @@
         },
         formatNoMatches: function () { return "No matches found"; },
         formatInputTooShort: function (input, min) { return "Please enter " + (min - input.length) + " more characters"; },
+        formatSelectionTooBig: function (limit) { return "You can only select " + limit + " items"; },
         formatLoadMore: function (pageNumber) { return "Loading more results..."; },
         minimumResultsForSearch: 0,
         minimumInputLength: 0,
+        maximumSelectionSize: 0,
         id: function (e) { return e.id; },
         matcher: function(term, text) {
             return text.toUpperCase().indexOf(term.toUpperCase()) >= 0;
