@@ -453,7 +453,7 @@ function jigoshop_json_search_products( $x = '', $post_types = array( 'product' 
 
 	if ( ! empty( $products )) foreach ( $products as $product_id ) {
 
-		$SKU = get_post_meta( $product_id, '_sku', true );
+		$SKU = get_post_meta( $product_id, 'sku', true );
 
 		if ( isset( $SKU ) && $SKU ) $SKU = ' (SKU: ' . $SKU . ')';
 		else $SKU = ' (ID: ' . $product_id . ')';
