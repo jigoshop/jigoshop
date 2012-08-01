@@ -271,47 +271,47 @@ function jigoshop_order_items_meta_box($post) {
 		</table>
 	</div>
 	<p class="buttons">
-		<select class="item_id">
-			<?php
-				$args = array(
-					'post_type' 		=> 'product',
-					'posts_per_page' 	=> -1,
-					'post_status'		=> 'publish',
-					'post_parent'		=> 0,
-					'order'				=> 'ASC',
-					'orderby'			=> 'title'
-				);
-				$products = get_posts( $args );
-
-				if ($products) foreach ($products as $product) :
-
-					$sku = get_post_meta($product->ID, 'SKU', true);
-
-					if ($sku) $sku = ' SKU: '.$sku;
-
-					echo '<option value="'.esc_attr($product->ID).'">'.$product->post_title.$sku.' (#'.$product->ID.''.$sku.')</option>';
-
-					$args_get_children = array(
-						'post_type' => array( 'product_variation', 'product' ),
-						'posts_per_page' 	=> -1,
-						'order'				=> 'ASC',
-						'orderby'			=> 'title',
-						'post_parent'		=> $product->ID
-					);
-
-					if ( $children_products = get_children( $args_get_children ) ) :
-
-						foreach ($children_products as $child) :
-
-							echo '<option value="'.esc_attr($child->ID).'">&nbsp;&nbsp;&mdash;&nbsp;'.$child->post_title.'</option>';
-
-						endforeach;
-
-					endif;
-
-				endforeach;
-			?>
-		</select>
+		<input type='text' class='item_id' name='order_product_select' id='order_product_select' value='' placeholder="<?php _e('Choose a Product', 'jigoshop'); ?>" />
+		<script type="text/javascript">
+			jQuery(function() {
+				jQuery("#order_product_select").select2({
+					minimumInputLength: 3,
+					multiple: true,
+					closeOnSelect: true,
+					ajax: {
+						url: "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
+						dataType: 'json',
+						quietMillis: 100,
+						data: function(term, page) {
+							return {
+								term:       term,
+								action:     'jigoshop_json_search_products_and_variations',
+								security:   '<?php echo wp_create_nonce( "search-products" ); ?>'
+							};
+						},
+						results: function( data, page ) {
+							return { results: data };
+						}
+					},
+					initSelection: function( element, callback ) {
+						var stuff = {
+							action:     'jigoshop_json_search_products_and_variations',
+							security:   '<?php echo wp_create_nonce( "search-products" ); ?>',
+							term:       element.val()
+						};
+						jQuery.ajax({
+							type: 		'GET',
+							url:        "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
+							dataType: 	"json",
+							data: 		stuff,
+							success: 	function( result ) {
+								callback( result );
+							}
+						});
+					}
+				});
+			});
+		</script>
 
 		<button type="button" class="button button-primary add_shop_order_item"><?php _e('Add item', 'jigoshop'); ?></button>
 	</p>

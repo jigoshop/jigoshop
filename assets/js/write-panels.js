@@ -261,13 +261,13 @@
 
 		$('button.add_shop_order_item').click(function(e) {
 			e.preventDefault();
-			var item_id = $('select.item_id').val();
+			var item_id = $("#order_product_select").val();
 			if (item_id) {
 				$('table.jigoshop_order_items').block({ message: null, overlayCSS: { background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
 
 				var data = {
 					action: 		'jigoshop_add_order_item',
-					item_to_add: 	$('select.item_id').val(),
+					item_to_add: 	item_id,
 					security: 		params.add_order_item_nonce
 				};
 
@@ -275,12 +275,13 @@
 
 					$('table.jigoshop_order_items tbody#order_items_list').append( response );
 					$('table.jigoshop_order_items').unblock();
-					$('select.item_id').css('border-color', '').val('');
+					$("#order_product_select").select2('val', '');
+					$("#order_product_select").css('border-color', '');
 
 				});
 
 			} else {
-				$('select.item_id').css('border-color', 'red');
+				$("#order_product_select").css('border-color', 'red');
 			}
 		});
 
