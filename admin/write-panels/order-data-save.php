@@ -112,7 +112,7 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
     if (isset($data['order_tax_total']) && $order->get_total_tax() != $data['order_tax_total']) :
         // need to create new tax array string
         $new_tax = $data['order_tax_total'];
-        $data['order_tax'] = jigoshop_tax::create_custom_tax($data['order_total'] - $data['order_tax_total'], $data['order_tax_total'], $data['order_shipping_tax'], $data['order_tax_divisor']);
+        $data['order_tax'] = jigoshop_tax::create_custom_tax($data['order_total'] - $data['order_tax_total'], $data['order_tax_total'], $data['order_shipping_tax'], isset( $data['order_tax_divisor'] ) ? $data['order_tax_divisor'] : null);
     endif;
 
     // Customer
