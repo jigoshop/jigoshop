@@ -276,7 +276,7 @@ function jigoshop_order_items_meta_box($post) {
 			jQuery(function() {
 				jQuery("#order_product_select").select2({
 					minimumInputLength: 3,
-					multiple: true,
+					multiple: false,
 					closeOnSelect: true,
 					ajax: {
 						url: "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
