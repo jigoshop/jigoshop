@@ -153,6 +153,8 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			
 		}
 		
+		self::$default_options = $this->get_default_options();
+		
 	}
 	
 	
@@ -357,10 +359,12 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		if ( empty( $options )) return;
 		if ( empty( $tab )) return;
 		
-		self::$default_options[] = array( 'type' => 'tab', 'name' => $tab );
+		$our_options = $this->get_default_options();
+		$our_options[] = array( 'type' => 'tab', 'name' => $tab );
 		if ( ! empty( $options )) foreach ( $options as $id => $option ) {
-			self::$default_options[] = $option;
+			$our_options[] = $option;
 		}
+		self::$default_options = $our_options;
 		
 	}
 	
