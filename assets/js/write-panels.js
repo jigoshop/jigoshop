@@ -174,6 +174,19 @@
 			e.preventDefault();
 			var answer = confirm( params.cart_total );
 			if ( answer ){
+				
+				// stuff the normal round function, we'll return it at end of function
+				// replace with alternative, still doesn't work across diff browsers though
+				// TODO: we shouldn't be doing any tax calcs in javascript
+				Math._round = Math.round;
+				Math.round = function( number, precision )
+				{
+					if ( typeof( precision ) == "undefined" ) precision = 0;
+					else precision = Math.abs( parseInt( precision )) || 0;
+					var coefficient = Math.pow( 10, precision );
+					return Math._round( number * coefficient ) / coefficient;
+				}
+				
 
 				var itemTotal = 0;
 				var subtotal = 0;
@@ -203,43 +216,50 @@
 						totalItemTax = 0;
 
 						totalItemCost = parseFloat( itemCost * itemQty );
-						console.log( 'totalItemCost = ' + totalItemCost );
+//						console.log( 'totalItemCost = ' + totalItemCost );
 
 						if ( itemTax && itemTax > 0 ) {
-
+							
+							// get tax rate into a decimal value
 							taxRate = itemTax / Math.pow(10,2);
-							console.log( 'taxRate = ' + taxRate );
+//							console.log( 'taxRate = ' + taxRate );
 							
+							// this will give 4 decimal places or precision
 							itemTax = itemCost * taxRate;
-							console.log( 'itemTax = ' + itemTax );
+//							console.log( 'itemTax = ' + itemTax );
 							
-							itemTax1 = Math.round( itemTax * Math.pow(10,3) ) / Math.pow(10,3);
-							console.log( 'itemTax1 = ' + itemTax1 );
+							// round to 3 decimal places
+							itemTax1 = Math.round( itemTax, 3 );
+//							console.log( 'itemTax1 = ' + itemTax1 );
 							
-							itemTax2 = itemTax1 * Math.pow(10,2);
-							console.log( 'itemTax2 = ' + itemTax2 );
+							// round again to 2 decimal places
+							finalItemTax = Math.round( itemTax1, 2 );
+//							console.log( 'finalItemTax = ' + finalItemTax );
 							
-							finalItemTax = Math.round( itemTax2 ) / Math.pow(10,2);
-							console.log( 'finalItemTax = ' + finalItemTax );
-							
+							// get the total tax for the product including quantities
 							totalItemTax = finalItemTax * itemQty;
-							console.log( 'totalItemTax = ' + totalItemTax );
+//							console.log( 'totalItemTax = ' + totalItemTax );
 
 						}
-
+						
+						// add total tax to total product cost with quantites
 						itemTotal = itemTotal + totalItemCost;
-						console.log( 'itemTotal = ' + itemTotal );
-
+//						console.log( 'itemTotal = ' + itemTotal );
+						
+						// total the tax across all products
 						tax = tax + totalItemTax;
-						console.log( 'total tax = ' + tax );
+//						console.log( 'total tax = ' + tax );
+						
+						// total all products without tax
+						subtotal = subtotal + itemTotal;
+//						console.log( 'subtotal = ' + subtotal );
+
 					}
 				}
 
-				subtotal = itemTotal;
-				console.log( 'subtotal = ' + subtotal );
-
+				// total it all up
 				total = parseFloat(subtotal) + parseFloat(tax) - parseFloat(discount) + parseFloat(shipping) + parseFloat(shipping_tax);
-				console.log( 'total = ' + total );
+//				console.log( 'total = ' + total );
 
 				if ( total < 0 ) total = 0;
 
@@ -247,7 +267,8 @@
 				$('input#order_tax').val( tax.toFixed(2) );
 				$('input#order_shipping_tax').val( shipping_tax.toFixed(2) );
 				$('input#order_total').val( total.toFixed(2) );
-
+				
+				Math.round = Math._round;   // return normal round function we altered at the start of function
 			}
 
 		});
