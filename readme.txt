@@ -145,6 +145,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * New: Mark 1 month or older orders from 'pending' to 'on-hold' with an option in the Settings to enable
 * New: Select multiple countries and states for tax rules
 * New: Support for WordPress' admin classic theme
+* New: Include dummy product .xml file for WordPress importer for testing and demonstration
 * Tweak: Add shipping method to emails
 * Tweak: Shop address is used for Shipping address for local_pickup in notification emails
 * Tweak: Allow default tax classes to be translated
@@ -164,6 +165,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * Fix: Local Pickup shipping always charges Shop Base Country and State tax
 * Fix: Backorder notification and other emails now show variation sku's
 * Fix: When products are on backorder, customers are now emailed notification if product is set for 'notify'
+* Fix: Coupons applied after taxes now works as expected
 
 = 1.2.3 - 2012-05-28 =
 * New: Add filters for new Jigoshop Product Addons extension
