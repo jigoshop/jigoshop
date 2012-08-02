@@ -172,50 +172,49 @@
 
 		$('button.calc_totals').live('click', function(e) {
 			e.preventDefault();
-			var answer = confirm(params.cart_total);
-			if (answer){
+			var answer = confirm( params.cart_total );
+			if ( answer ){
 
-				var item_count = $('#order_items_list tr.item').size();
-				var subtotal = 0;
-				var discount = $('input#order_discount').val();
-				var shipping = $('input#order_shipping').val();
-				var shipping_tax = parseFloat($('input#order_shipping_tax').val());
-				var tax = 0;
 				var itemTotal = 0;
+				var subtotal = 0;
+				var tax = 0;
 				var total = 0;
 
-				if (!discount) discount = 0;
-				if (!shipping) shipping = 0;
-				if (!shipping_tax) shipping_tax = 0;
+				var item_count = $('#order_items_list tr.item').size();
+				var discount = parseFloat($('input#order_discount').val());
+				var shipping = parseFloat($('input#order_shipping').val());
+				var shipping_tax = parseFloat($('input#order_shipping_tax').val());
+
+				if ( ! discount ) discount = 0;
+				if ( ! shipping ) shipping = 0;
+				if ( ! shipping_tax ) shipping_tax = 0;
 
 				// Items
-				if (item_count>0) {
-					for (i=0; i<item_count; i++) {
+				if ( item_count > 0 ) {
+					for ( i=0 ; i < item_count ; i++ ) {
 
-						itemCost 	= $('input[name^=item_cost]:eq(' + i + ')').val();
+						itemCost 	= parseFloat($('input[name^=item_cost]:eq(' + i + ')').val());
 						itemQty 	= parseInt($('input[name^=item_quantity]:eq(' + i + ')').val());
-						itemTax		= $('input[name^=item_tax_rate]:eq(' + i + ')').val();
+						itemTax		= parseFloat($('input[name^=item_tax_rate]:eq(' + i + ')').val());
 
-						if (!itemCost) itemCost = 0;
-						if (!itemTax)  itemTax  = 0;
+						if ( ! itemCost ) itemCost = 0;
+						if ( ! itemTax )  itemTax  = 0;
 
 						totalItemTax = 0;
 
 						totalItemCost = itemCost * itemQty;
 
-						if (itemTax && itemTax>0) {
+						if ( itemTax && itemTax > 0 ) {
 
 							//taxRate = Math.round( ((itemTax / 100) + 1) * 100)/100; // tax rate to 2 decimal places
 
-							taxRate = itemTax/100;
+							taxRate = itemTax / 100;
 
 							//totalItemTax = itemCost * taxRate;
 
-							itemCost = (itemCost * taxRate);
+							itemCost = itemCost * taxRate;
 
-							totalItemTax = Math.round(itemCost*Math.pow(10,2))/Math.pow(10,2);
-
-							alert(totalItemTax);
+							totalItemTax = Math.round( itemCost * Math.pow(10,2) ) / Math.pow(10,2);
 
 							totalItemTax = totalItemTax * itemQty;
 
@@ -231,7 +230,7 @@
 
 				total = parseFloat(subtotal) + parseFloat(tax) - parseFloat(discount) + parseFloat(shipping) + parseFloat(shipping_tax);
 
-				if (total < 0 ) total = 0;
+				if ( total < 0 ) total = 0;
 
 				$('input#order_subtotal').val( subtotal.toFixed(2) );
 				$('input#order_tax').val( tax.toFixed(2) );

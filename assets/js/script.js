@@ -494,17 +494,17 @@ if ( params.is_checkout ) {
 				url: 		params.checkout_url,
 				data: 		jQuery(form).serialize(),
 				success: 	function( code ) {
-								jQuery('.jigoshop_error, .jigoshop_message').remove();
-								try {
-									success = jQuery.parseJSON( code );
-									window.location = decodeURI(success.redirect);
-								}
-								catch(err) {
-								  	jQuery(form).prepend( code );
-									jQuery(form).unblock();
-									jQuery.scrollTo(jQuery(form).parent(), {easing:'swing'});
-								}
-							},
+					jQuery('.jigoshop_error, .jigoshop_message').remove();
+					try {
+						success = jQuery.parseJSON( code );
+						window.location = decodeURI(success.redirect);
+					}
+					catch(err) {
+						jQuery(form).prepend( code );
+						jQuery(form).unblock();
+						jQuery.scrollTo(jQuery(form).parent(), {easing:'swing'});
+					}
+				},
 				dataType: 	"html"
 			});
 			return false;
