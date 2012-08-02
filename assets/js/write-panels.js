@@ -202,33 +202,44 @@
 
 						totalItemTax = 0;
 
-						totalItemCost = itemCost * itemQty;
+						totalItemCost = parseFloat( itemCost * itemQty );
+						console.log( 'totalItemCost = ' + totalItemCost );
 
 						if ( itemTax && itemTax > 0 ) {
 
-							//taxRate = Math.round( ((itemTax / 100) + 1) * 100)/100; // tax rate to 2 decimal places
-
-							taxRate = itemTax / 100;
-
-							//totalItemTax = itemCost * taxRate;
-
-							itemCost = itemCost * taxRate;
-
-							totalItemTax = Math.round( itemCost * Math.pow(10,2) ) / Math.pow(10,2);
-
-							totalItemTax = totalItemTax * itemQty;
+							taxRate = itemTax / Math.pow(10,2);
+							console.log( 'taxRate = ' + taxRate );
+							
+							itemTax = itemCost * taxRate;
+							console.log( 'itemTax = ' + itemTax );
+							
+							itemTax1 = Math.round( itemTax * Math.pow(10,3) ) / Math.pow(10,3);
+							console.log( 'itemTax1 = ' + itemTax1 );
+							
+							itemTax2 = itemTax1 * Math.pow(10,2);
+							console.log( 'itemTax2 = ' + itemTax2 );
+							
+							finalItemTax = Math.round( itemTax2 ) / Math.pow(10,2);
+							console.log( 'finalItemTax = ' + finalItemTax );
+							
+							totalItemTax = finalItemTax * itemQty;
+							console.log( 'totalItemTax = ' + totalItemTax );
 
 						}
 
 						itemTotal = itemTotal + totalItemCost;
+						console.log( 'itemTotal = ' + itemTotal );
 
 						tax = tax + totalItemTax;
+						console.log( 'total tax = ' + tax );
 					}
 				}
 
 				subtotal = itemTotal;
+				console.log( 'subtotal = ' + subtotal );
 
 				total = parseFloat(subtotal) + parseFloat(tax) - parseFloat(discount) + parseFloat(shipping) + parseFloat(shipping_tax);
+				console.log( 'total = ' + total );
 
 				if ( total < 0 ) total = 0;
 
