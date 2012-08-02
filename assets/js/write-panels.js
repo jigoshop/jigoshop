@@ -172,72 +172,103 @@
 
 		$('button.calc_totals').live('click', function(e) {
 			e.preventDefault();
-			var answer = confirm(params.cart_total);
-			if (answer){
+			var answer = confirm( params.cart_total );
+			if ( answer ){
+				
+				// stuff the normal round function, we'll return it at end of function
+				// replace with alternative, still doesn't work across diff browsers though
+				// TODO: we shouldn't be doing any tax calcs in javascript
+				Math._round = Math.round;
+				Math.round = function( number, precision )
+				{
+					if ( typeof( precision ) == "undefined" ) precision = 0;
+					else precision = Math.abs( parseInt( precision )) || 0;
+					var coefficient = Math.pow( 10, precision );
+					return Math._round( number * coefficient ) / coefficient;
+				}
+				
 
-				var item_count = $('#order_items_list tr.item').size();
-				var subtotal = 0;
-				var discount = $('input#order_discount').val();
-				var shipping = $('input#order_shipping').val();
-				var shipping_tax = parseFloat($('input#order_shipping_tax').val());
-				var tax = 0;
 				var itemTotal = 0;
+				var subtotal = 0;
+				var tax = 0;
 				var total = 0;
 
-				if (!discount) discount = 0;
-				if (!shipping) shipping = 0;
-				if (!shipping_tax) shipping_tax = 0;
+				var item_count = $('#order_items_list tr.item').size();
+				var discount = parseFloat($('input#order_discount').val());
+				var shipping = parseFloat($('input#order_shipping').val());
+				var shipping_tax = parseFloat($('input#order_shipping_tax').val());
+
+				if ( ! discount ) discount = 0;
+				if ( ! shipping ) shipping = 0;
+				if ( ! shipping_tax ) shipping_tax = 0;
 
 				// Items
-				if (item_count>0) {
-					for (i=0; i<item_count; i++) {
+				if ( item_count > 0 ) {
+					for ( i=0 ; i < item_count ; i++ ) {
 
-						itemCost 	= $('input[name^=item_cost]:eq(' + i + ')').val();
+						itemCost 	= parseFloat($('input[name^=item_cost]:eq(' + i + ')').val());
 						itemQty 	= parseInt($('input[name^=item_quantity]:eq(' + i + ')').val());
-						itemTax		= $('input[name^=item_tax_rate]:eq(' + i + ')').val();
+						itemTax		= parseFloat($('input[name^=item_tax_rate]:eq(' + i + ')').val());
 
-						if (!itemCost) itemCost = 0;
-						if (!itemTax)  itemTax  = 0;
+						if ( ! itemCost ) itemCost = 0;
+						if ( ! itemTax )  itemTax  = 0;
 
 						totalItemTax = 0;
 
-						totalItemCost = itemCost * itemQty;
+						totalItemCost = parseFloat( itemCost * itemQty );
+//						console.log( 'totalItemCost = ' + totalItemCost );
 
-						if (itemTax && itemTax>0) {
-
-							//taxRate = Math.round( ((itemTax / 100) + 1) * 100)/100; // tax rate to 2 decimal places
-
-							taxRate = itemTax/100;
-
-							//totalItemTax = itemCost * taxRate;
-
-							itemCost = (itemCost * taxRate);
-
-							totalItemTax = Math.round(itemCost*Math.pow(10,2))/Math.pow(10,2);
-
-							alert(totalItemTax);
-
-							totalItemTax = totalItemTax * itemQty;
+						if ( itemTax && itemTax > 0 ) {
+							
+							// get tax rate into a decimal value
+							taxRate = itemTax / Math.pow(10,2);
+//							console.log( 'taxRate = ' + taxRate );
+							
+							// this will give 4 decimal places or precision
+							itemTax = itemCost * taxRate;
+//							console.log( 'itemTax = ' + itemTax );
+							
+							// round to 3 decimal places
+							itemTax1 = Math.round( itemTax, 3 );
+//							console.log( 'itemTax1 = ' + itemTax1 );
+							
+							// round again to 2 decimal places
+							finalItemTax = Math.round( itemTax1, 2 );
+//							console.log( 'finalItemTax = ' + finalItemTax );
+							
+							// get the total tax for the product including quantities
+							totalItemTax = finalItemTax * itemQty;
+//							console.log( 'totalItemTax = ' + totalItemTax );
 
 						}
-
+						
+						// add total tax to total product cost with quantites
 						itemTotal = itemTotal + totalItemCost;
-
+//						console.log( 'itemTotal = ' + itemTotal );
+						
+						// total the tax across all products
 						tax = tax + totalItemTax;
+//						console.log( 'total tax = ' + tax );
+						
+						// total all products without tax
+						subtotal = subtotal + itemTotal;
+//						console.log( 'subtotal = ' + subtotal );
+
 					}
 				}
 
-				subtotal = itemTotal;
-
+				// total it all up
 				total = parseFloat(subtotal) + parseFloat(tax) - parseFloat(discount) + parseFloat(shipping) + parseFloat(shipping_tax);
+//				console.log( 'total = ' + total );
 
-				if (total < 0 ) total = 0;
+				if ( total < 0 ) total = 0;
 
 				$('input#order_subtotal').val( subtotal.toFixed(2) );
 				$('input#order_tax').val( tax.toFixed(2) );
 				$('input#order_shipping_tax').val( shipping_tax.toFixed(2) );
 				$('input#order_total').val( total.toFixed(2) );
-
+				
+				Math.round = Math._round;   // return normal round function we altered at the start of function
 			}
 
 		});
@@ -261,13 +292,13 @@
 
 		$('button.add_shop_order_item').click(function(e) {
 			e.preventDefault();
-			var item_id = $('select.item_id').val();
+			var item_id = $("#order_product_select").val();
 			if (item_id) {
 				$('table.jigoshop_order_items').block({ message: null, overlayCSS: { background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
 
 				var data = {
 					action: 		'jigoshop_add_order_item',
-					item_to_add: 	$('select.item_id').val(),
+					item_to_add: 	item_id,
 					security: 		params.add_order_item_nonce
 				};
 
@@ -275,12 +306,13 @@
 
 					$('table.jigoshop_order_items tbody#order_items_list').append( response );
 					$('table.jigoshop_order_items').unblock();
-					$('select.item_id').css('border-color', '').val('');
+					$("#order_product_select").select2('val', '');
+					$("#order_product_select").css('border-color', '');
 
 				});
 
 			} else {
-				$('select.item_id').css('border-color', 'red');
+				$("#order_product_select").css('border-color', 'red');
 			}
 		});
 

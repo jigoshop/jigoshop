@@ -947,3 +947,99 @@ class Jigoshop_Walker_CategoryDropdown extends Walker_CategoryDropdown {
     }
 
 }
+
+/**
+ * Search for products and variations and return json
+ *
+ * For use with select2 product lookup implementations
+ *
+ */
+function jigoshop_json_search_products_and_variations() {
+
+	jigoshop_json_search_products( '', array( 'product', 'product_variation' ));
+
+}
+add_action( 'wp_ajax_jigoshop_json_search_products_and_variations', 'jigoshop_json_search_products_and_variations' );
+
+/**
+ * Search for products and return json
+ *
+ * For use with select2 product lookup implementations
+ *
+ */
+function jigoshop_json_search_products( $x = '', $post_types = array( 'product' )) {
+
+	check_ajax_referer( 'search-products', 'security' );
+
+	$term = (string) urldecode( stripslashes( strip_tags( $_GET['term'] )));
+
+	if ( empty( $term )) die();
+	
+	if ( strpos( $term, ',' ) !== false ) {
+
+		$term = (array) explode( ',', $term );
+		$args = array(
+			'post_type'     => $post_types,
+			'post_status'   => 'publish',
+			'posts_per_page'=> -1,
+			'post__in'      => $term,
+			'fields'        => 'ids'
+		);
+		$products = get_posts( $args );
+		
+	} elseif ( is_numeric( $term )) {
+
+		$args = array(
+			'post_type'     => $post_types,
+			'post_status'   => 'publish',
+			'posts_per_page'=> -1,
+			'post__in'      => array(0, $term),
+			'fields'        => 'ids'
+		);
+		$products = get_posts( $args );
+
+	} else {
+
+		$args = array(
+			'post_type'     => $post_types,
+			'post_status'   => 'publish',
+			'posts_per_page'=> -1,
+			's'             => $term,
+			'fields'        => 'ids'
+		);
+
+		$args2 = array(
+			'post_type'     => $post_types,
+			'post_status'   => 'publish',
+			'posts_per_page'=> -1,
+			'meta_query'    => array(
+				array(
+				'key'       => 'sku',
+				'value'     => $term,
+				'compare'   => 'LIKE'
+				)
+			),
+			'fields'        => 'ids'
+		);
+		$products = array_unique( array_merge( get_posts( $args ), get_posts( $args2 ) ));
+
+	}
+
+	$found_products = array();
+
+	if ( ! empty( $products )) foreach ( $products as $product_id ) {
+
+		$SKU = get_post_meta( $product_id, 'sku', true );
+
+		if ( isset( $SKU ) && $SKU ) $SKU = ' (SKU: ' . $SKU . ')';
+		else $SKU = ' (ID: ' . $product_id . ')';
+
+		$found_products[] = array( 'id' => $product_id, 'text' => html_entity_decode( get_the_title( $product_id ), ENT_COMPAT, 'UTF-8' ) . $SKU );
+		
+	}
+
+	echo json_encode( $found_products );
+
+	die();
+}
+add_action( 'wp_ajax_jigoshop_json_search_products', 'jigoshop_json_search_products' );

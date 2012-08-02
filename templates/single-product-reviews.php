@@ -43,9 +43,9 @@
 
 		echo '<div class="hreview-aggregate">';
 
-		echo '<div class="star-rating" title="'.sprintf(__('Rated %s out of 5', 'jigoshop'),$average).'"><span style="width:'.($average*16).'px"><span class="rating">'.$average.'</span> '.__('out of 5', 'jigoshop').'</span></div>';
+		echo '<div class="star-rating" title="'.sprintf(__('Rated %s out of 5', 'jigoshop'),$average).'"><span style="width:'.($average*16).'px"><span class="rating">'.apply_filters('jigoshop_single_product_reviews_rating', $average).'</span> '.__('out of 5', 'jigoshop').'</span></div>';
 
-		echo '<h2>'.sprintf( _n('%s review for %s', '%s reviews for %s', $count, 'jigoshop'), '<span class="count">'.$count.'</span>', '<span class="item fn">'.wptexturize($post->post_title).'</span>' ).'</h2>';
+		echo '<h2>'.sprintf( _n('%s review for %s', '%s reviews for %s', $count, 'jigoshop'), '<span class="count">'.apply_filters('jigoshop_single_product_reviews_count', $count).'</span>', '<span class="item fn">'.wptexturize($post->post_title).'</span>' ).'</h2>';
 
 		echo '</div>';
 
@@ -113,9 +113,6 @@
 
 	echo '</div></div>';
 	
-	// the following is for the Rich Snippets extension
-	$comments = get_comments( array( 'post_id' => $post->ID ) );
-	do_action( 'jigoshop_single_product_reviews', $comments );
 	
 ?><div class="clear"></div></div>
 <script type="text/javascript">

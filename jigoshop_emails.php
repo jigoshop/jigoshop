@@ -324,19 +324,30 @@ function add_billing_address_details($order) {
 
 function add_shipping_address_details($order) {
 
-    echo '=====================================================================' . PHP_EOL;
-    echo __('SHIPPING ADDRESS', 'jigoshop') . PHP_EOL;
-    echo '=====================================================================' . PHP_EOL;
-
-    echo $order->shipping_first_name . ' ' . $order->shipping_last_name . PHP_EOL;
-    if ($order->shipping_company)
-        echo $order->shipping_company . PHP_EOL;
-    echo $order->formatted_shipping_address . PHP_EOL . PHP_EOL;
-    
-	echo __('Shipped via: ','jigoshop') . html_entity_decode(ucwords($order->shipping_method_title), ENT_COMPAT, 'UTF-8') . PHP_EOL . PHP_EOL;
+	echo '=====================================================================' . PHP_EOL;
+	echo __('SHIPPING ADDRESS', 'jigoshop') . PHP_EOL;
+	echo '=====================================================================' . PHP_EOL;
 	
-    do_action('jigoshop_after_email_shipping_address', $order->id);
-
+	if ( $order->shipping_method != 'local_pickup' ) {
+	
+		echo $order->shipping_first_name . ' ' . $order->shipping_last_name . PHP_EOL;
+		if ($order->shipping_company) echo $order->shipping_company . PHP_EOL;
+		echo $order->formatted_shipping_address . PHP_EOL . PHP_EOL;
+		
+		echo __('Shipped via: ','jigoshop') . html_entity_decode(ucwords($order->shipping_method_title), ENT_COMPAT, 'UTF-8') . PHP_EOL . PHP_EOL;
+		
+		do_action('jigoshop_after_email_shipping_address', $order->id);
+		
+	} else {
+	
+		echo __('To be picked up by:', 'jigoshop') . PHP_EOL;
+		echo $order->shipping_first_name . ' ' . $order->shipping_last_name . PHP_EOL;
+		if ($order->shipping_company) echo $order->shipping_company . PHP_EOL;
+		echo PHP_EOL;
+		echo __('At location:', 'jigoshop') . PHP_EOL;
+		echo add_company_information() . PHP_EOL . PHP_EOL;
+		
+	}
     
 }
 

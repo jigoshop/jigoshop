@@ -712,7 +712,7 @@ function jigoshop_custom_coupon_columns($column) {
 
 	switch ( $column ) {
 		case 'coupon_type' :
-			$types = jigoshop_coupons::get_coupon_types();
+			$types = JS_Coupons::get_coupon_types();
 			echo $types[$type];			
 			break;
 		case 'coupon_amount' :

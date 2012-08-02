@@ -295,7 +295,11 @@ jQuery(function(){
 			jQuery('.shop_attributes').append(variation.a_height);
 		}
 
-		jQuery('.variations_button, .single_variation').slideDown();
+		if ( ! variation.in_stock ) {
+			jQuery('.single_variation').slideDown();
+		} else {
+			jQuery('.variations_button, .single_variation').slideDown();
+		}
 	}
 
 	//when one of attributes is changed - check everything to show only valid options
@@ -358,7 +362,7 @@ jQuery(function(){
 
 });
 
-if (params.is_checkout==1) {
+if ( params.is_checkout ) {
 
 	var updateTimer;
 	var jqxhr;
@@ -490,17 +494,17 @@ if (params.is_checkout==1) {
 				url: 		params.checkout_url,
 				data: 		jQuery(form).serialize(),
 				success: 	function( code ) {
-								jQuery('.jigoshop_error, .jigoshop_message').remove();
-								try {
-									success = jQuery.parseJSON( code );
-									window.location = decodeURI(success.redirect);
-								}
-								catch(err) {
-								  	jQuery(form).prepend( code );
-									jQuery(form).unblock();
-									jQuery.scrollTo(jQuery(form).parent(), {easing:'swing'});
-								}
-							},
+					jQuery('.jigoshop_error, .jigoshop_message').remove();
+					try {
+						success = jQuery.parseJSON( code );
+						window.location = decodeURI(success.redirect);
+					}
+					catch(err) {
+						jQuery(form).prepend( code );
+						jQuery(form).unblock();
+						jQuery.scrollTo(jQuery(form).parent(), {easing:'swing'});
+					}
+				},
 				dataType: 	"html"
 			});
 			return false;

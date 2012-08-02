@@ -50,12 +50,13 @@ class Jigoshop_Widget_Product_Categories extends WP_Widget {
 	public function widget( $args, $instance ) {
 
 		// Get the widget cache from the transient
-		$cache = get_transient( 'jigoshop_widget_cache' );
+		// NOTE: disabled for Jigoshop 1.3 and WPML -- see rhr #381 -- (JAP)
+//		$cache = get_transient( 'jigoshop_widget_cache' );
 		// If this category widget instance is cached, get from the cache
-		if ( isset( $cache[$this->id] ) ) {
-			echo $cache[$this->id];
-			return false;
-		}
+// 		if ( isset( $cache[$this->id] ) ) {
+// 			echo $cache[$this->id];
+// 			return false;
+// 		}
 
 		// Otherwise Start buffering and output the Widget
 		ob_start();

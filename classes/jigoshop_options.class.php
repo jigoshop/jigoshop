@@ -153,6 +153,8 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			
 		}
 		
+		self::$default_options = $this->get_default_options();
+		
 	}
 	
 	
@@ -357,10 +359,12 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		if ( empty( $options )) return;
 		if ( empty( $tab )) return;
 		
-		self::$default_options[] = array( 'type' => 'tab', 'name' => $tab );
+		$our_options = $this->get_default_options();
+		$our_options[] = array( 'type' => 'tab', 'name' => $tab );
 		if ( ! empty( $options )) foreach ( $options as $id => $option ) {
-			self::$default_options[] = $option;
+			$our_options[] = $option;
 		}
+		self::$default_options = $our_options;
 		
 	}
 	
@@ -806,9 +810,22 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		
 		self::$default_options[] = array(
 			'name'		=> __('Disable Jigoshop frontend.css','jigoshop'),
-			'desc' 		=> '',
+			'desc' 		=> __('(The next option below will have no effect if this one is disabled)','jigoshop'),
 			'tip' 		=> __('Useful if you want to disable Jigoshop styles and theme it yourself via your theme.','jigoshop'),
 			'id' 		=> 'jigoshop_disable_css',
+			'std' 		=> 'no',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+		
+		self::$default_options[] = array(
+			'name'		=> __('Include extra theme styles with Jigoshop frontend.css','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __("With this option <em>on</em>, Jigoshop's default frontend.css will still load, and any extra bits found in 'theme/jigoshop/style.css' for over-rides will also be loaded.",'jigoshop'),
+			'id' 		=> 'jigoshop_frontend_with_theme_css',
 			'std' 		=> 'no',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(

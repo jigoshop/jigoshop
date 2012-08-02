@@ -145,13 +145,18 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * New: Mark 1 month or older orders from 'pending' to 'on-hold' with an option in the Settings to enable
 * New: Select multiple countries and states for tax rules
 * New: Support for WordPress' admin classic theme
+* New: Include dummy product .xml file for WordPress importer for testing and demonstration
 * Tweak: Add shipping method to emails
+* Tweak: Shop address is used for Shipping address for local_pickup in notification emails
 * Tweak: Allow default tax classes to be translated
 * Tweak: UI Sortable helper on attributes now has no border radius
 * Tweak: Pages & CPT's now use menu_position. Fixes array key duplication
 * Tweak: Emails are now utf-8 compatible
 * Tweak: Subtotals and Shipping can now display either with or without tax on both the Cart and Checkout
 * Tweak: Cart widget now allows user defined text to display on the Go to Cart/Checkout buttons
+* Tweak: Provide easier means of altering Jigoshop frontend styles
+	* create 'jigoshop' folder in theme folder, create style.css, add styles to over-ride Jigoshop frontend.css
+	* both Jigoshop frontend.css and new style.css can be used together, just change a few things, no .less required
 * Fix: Star Ratings width css calculation now works for Recent Reviews widget
 * Fix: Paypal gateway now sends shipping address info instead of billing when setting enabled
 * Fix: When uninstalling, will now only delete Jigoshop created pages instead of pages specified in settings
@@ -160,6 +165,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * Fix: Local Pickup shipping always charges Shop Base Country and State tax
 * Fix: Backorder notification and other emails now show variation sku's
 * Fix: When products are on backorder, customers are now emailed notification if product is set for 'notify'
+* Fix: Coupons applied after taxes now works as expected
 
 = 1.2.3 - 2012-05-28 =
 * New: Add filters for new Jigoshop Product Addons extension

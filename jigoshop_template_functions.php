@@ -433,6 +433,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 					'variation_id'     => $variation->get_variation_id(),
 					'sku'              => '<div class="sku">SKU: ' . $variation->get_sku() . '</div>',
 					'attributes'       => $vattrs,
+					'in_stock'         => $variation->is_in_stock(),
 					'image_src'        => $image,
 					'image_link'       => $image_link,
 					'price_html'       => '<span class="price">'.$variation->get_price_html().'</span>',

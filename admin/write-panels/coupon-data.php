@@ -42,7 +42,7 @@ function jigoshop_coupon_data_box( $post ) {
 			$args = array(
 				'id'            => 'type',
 				'label'         => __( 'Coupon Type', 'jigoshop' ),
-				'options'       => jigoshop_coupons::get_coupon_types(),
+				'options'       => JS_Coupons::get_coupon_types(),
 			);
 			echo Jigoshop_Forms::select( $args );
 		
@@ -228,7 +228,7 @@ function jigoshop_coupon_data_box( $post ) {
 					jQuery("#include_products").select2({
 						minimumInputLength: 3,
 						multiple: true,
-						closeOnSelect: false,
+						closeOnSelect: true,
 						ajax: {
 							url: "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
 							dataType: 'json',
@@ -243,21 +243,23 @@ function jigoshop_coupon_data_box( $post ) {
 							results: function( data, page ) {
 								return { results: data };
 							}
-						}
-					});
-					// pre-populate included coupon products with titles
-					var stuff = {
-						action:     'jigoshop_json_search_products_and_variations',
-						security:   '<?php echo wp_create_nonce( "search-products" ); ?>',
-						term:       jQuery("#include_products").val()
-					};
-					jQuery.ajax({
-						type: 		'GET',
-						url:        "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
-						dataType: 	"json",
-						data: 		stuff,
-						success: 	function( result ) {
-							jQuery("#include_products").select2('val', result);
+						},
+						initSelection: function( element, callback ) {
+							var stuff = {
+								action:     'jigoshop_json_search_products_and_variations',
+								security:   '<?php echo wp_create_nonce( "search-products" ); ?>',
+								term:       element.val()
+							};
+							var data = [];
+							jQuery.ajax({
+								type: 		'GET',
+								url:        "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
+								dataType: 	"json",
+								data: 		stuff,
+								success: 	function( result ) {
+									callback( result );
+								}
+							});
 						}
 					});
 					
@@ -265,7 +267,7 @@ function jigoshop_coupon_data_box( $post ) {
 					jQuery("#exclude_products").select2({
 						minimumInputLength: 3,
 						multiple: true,
-						closeOnSelect: false,
+						closeOnSelect: true,
 						ajax: {
 							url: "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
 							dataType: 'json',
@@ -280,24 +282,24 @@ function jigoshop_coupon_data_box( $post ) {
 							results: function( data, page ) {
 								return { results: data };
 							}
+						},
+						initSelection: function( element, callback ) {
+							var stuff = {
+								action:     'jigoshop_json_search_products_and_variations',
+								security:   '<?php echo wp_create_nonce( "search-products" ); ?>',
+								term:       element.val()
+							};
+							jQuery.ajax({
+								type: 		'GET',
+								url:        "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
+								dataType: 	"json",
+								data: 		stuff,
+								success: 	function( result ) {
+									callback( result );
+								}
+							});
 						}
 					});
-					// pre-populate excluded coupon products with titles
-					var stuff = {
-						action:     'jigoshop_json_search_products_and_variations',
-						security:   '<?php echo wp_create_nonce( "search-products" ); ?>',
-						term:       jQuery("#exclude_products").val()
-					};
-					jQuery.ajax({
-						type: 		'GET',
-						url:        "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
-						dataType: 	"json",
-						data: 		stuff,
-						success: 	function( result ) {
-							jQuery("#exclude_products").select2('val', result);
-						}
-					});
-					
 				});
 			</script>
 		</div></div>
@@ -385,90 +387,3 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 	update_post_meta( $post_id, 'pay_methods',          $pay_methods );
 
 }
-
-/**
- * Search for products and return json
- */
-function jigoshop_json_search_products( $x = '', $post_types = array( 'product' )) {
-
-	check_ajax_referer( 'search-products', 'security' );
-
-	$term = (string) urldecode( stripslashes( strip_tags( $_GET['term'] )));
-
-	if ( empty( $term )) die();
-	
-	if ( strpos( $term, ',' ) !== false ) {
-	
-		$term = (array) explode( ',', $term );
-		$args = array(
-			'post_type'     => $post_types,
-			'post_status'   => 'publish',
-			'posts_per_page'=> -1,
-			'post__in'      => $term,
-			'fields'        => 'ids'
-		);
-		$posts = get_posts( $args );
-		
-	} elseif ( is_numeric( $term )) {
-
-		$args = array(
-			'post_type'     => $post_types,
-			'post_status'   => 'publish',
-			'posts_per_page'=> -1,
-			'post__in'      => array(0, $term),
-			'fields'        => 'ids'
-		);
-		$posts = get_posts( $args );
-
-	} else {
-
-		$args = array(
-			'post_type'     => $post_types,
-			'post_status'   => 'publish',
-			'posts_per_page'=> -1,
-			's'             => $term,
-			'fields'        => 'ids'
-		);
-
-		$args2 = array(
-			'post_type'     => $post_types,
-			'post_status'   => 'publish',
-			'posts_per_page'=> -1,
-			'meta_query'    => array(
-				array(
-				'key'       => 'sku',
-				'value'     => $term,
-				'compare'   => 'LIKE'
-				)
-			),
-			'fields'        => 'ids'
-		);
-		$posts = array_unique( array_merge( get_posts( $args ), get_posts( $args2 ) ));
-
-	}
-
-	$found_products = array();
-
-	if ( $posts ) foreach ( $posts as $post ) {
-
-		$SKU = get_post_meta( $post, '_sku', true );
-
-		if ( isset( $SKU ) && $SKU ) $SKU = ' (SKU: ' . $SKU . ')';
-
-		$found_products[] = array( 'id' => $post, 'text' => get_the_title( $post ) . $SKU );
-		
-	}
-
-	echo json_encode( $found_products );
-
-	die();
-}
-add_action( 'wp_ajax_jigoshop_json_search_products', 'jigoshop_json_search_products' );
-
-
-function jigoshop_json_search_products_and_variations() {
-
-	jigoshop_json_search_products( '', array( 'product', 'product_variation' ));
-
-}
-add_action( 'wp_ajax_jigoshop_json_search_products_and_variations', 'jigoshop_json_search_products_and_variations' );

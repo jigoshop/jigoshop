@@ -49,7 +49,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
     	wp_register_script( 'jigoshop-bootstrap-tooltip', jigoshop::assets_url() . '/assets/js/bootstrap-tooltip.min.js', array( 'jquery' ), '2.0.3' );
     	wp_enqueue_script( 'jigoshop-bootstrap-tooltip' );
 
-    	wp_register_script( 'jigoshop-select2', jigoshop::assets_url() . '/assets/js/select2.js', array( 'jquery' ), '2.1' );
+    	wp_register_script( 'jigoshop-select2', jigoshop::assets_url() . '/assets/js/select2.min.js', array( 'jquery' ), '3.0' );
     	wp_enqueue_script( 'jigoshop-select2' );
 
 	}
@@ -834,7 +834,7 @@ class Jigoshop_Options_Parser {
 			endif;
 			$id = $item['id'];
 			$display .= '<select id="'.$id.'" class="single_select_country '.$class.'" name="' . JIGOSHOP_OPTIONS . '[' . $item['id'] . ']">';
-			$display .= jigoshop_countries::country_dropdown_options($country, $state, false, true, false);
+			$display .= jigoshop_countries::country_dropdown_options($country, $state, true, false, false);
 			$display .= '</select>';
 			?>
 				<script type="text/javascript">
@@ -1040,9 +1040,20 @@ class Jigoshop_Options_Parser {
 				class="jigoshop-input jigoshop-select '.$class.'"
 				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']" >';
 			foreach ( $item['choices'] as $value => $label ) {
-				$display .= '<option
-					value="'.esc_attr( $value ).'" '.selected( $data[$item['id']], $value, false ).' />'.$label.'
-					</option>';
+				if ( is_array( $label )) {
+					$display .= '<optgroup label="'.$value.'">';
+					foreach ( $label as $subValue => $subLabel ) {
+						$display .= '<option
+							value="'.esc_attr( $subValue ).'" '.selected( $data[$item['id']], $subValue, false ).' />'.$subLabel.'
+							</option>';
+					}
+					$display .= '</optgroup>';             
+				} 
+				else {
+					$display .= '<option
+						value="'.esc_attr( $value ).'" '.selected( $data[$item['id']], $value, false ).' />'.$label.'
+						</option>';
+				}
 			}
 			$display .= '</select>';
 			$id = $item['id'];
@@ -1172,12 +1183,12 @@ class Jigoshop_Options_Parser {
 							if ( isset($rate['is_all_states']) ) :
 								if ( is_array( $applied_all_states ) && !in_array( $tax_rate['country'].$tax_rate['class'], $applied_all_states )) :
 									$applied_all_states[] = $tax_rate['country'].$tax_rate['class'];
-									jigoshop_countries::country_dropdown_options( $rate['country'], '*' ); //all-states
+									jigoshop_countries::country_dropdown_options( $rate['country'], '*', true ); //all-states
 								else :
 									continue;
 								endif;
 							else :
-								jigoshop_countries::country_dropdown_options( $rate['country'], $rate['state'] );
+								jigoshop_countries::country_dropdown_options( $rate['country'], $rate['state'], true );
 							endif;
 							echo '</select>';
 
@@ -1216,13 +1227,13 @@ class Jigoshop_Options_Parser {
 					return false;
 				});
 				jQuery('tr.tax_rate .select_us_states').live('click', function(e){
-					jQuery(this).closest('td').find('select optgroup[label="<?php echo __( 'United States', 'jigoshop' ); ?>"] option').attr("selected","selected");
+					jQuery(this).closest('td').find('select optgroup[label="<?php _e( 'United States', 'jigoshop' ); ?>"] option').attr("selected","selected");
 					jQuery(this).closest('td').find('select.tax_select2').trigger("change");
 					return false;
 				});
 				jQuery('tr.tax_rate .options select').live('change', function(e){
 					jQuery(this).trigger("liszt:updated");
-					jQuery(this).closest('td').find('label').text( jQuery(":selected", this).length + ' ' + '<?php _e('countries/states selected', 'jigoshop') ?>' );
+					jQuery(this).closest('td').find('label').text( jQuery(":selected", this).length + ' ' + '<?php _e('countries/states selected', 'jigoshop'); ?>' );
 				});
 				jQuery('tr.tax_rate .select_europe').live('click', function(e){
 					jQuery(this).closest('td').find('option[value="BE"],option[value="FR"],option[value="DE"],option[value="IT"],option[value="LU"],option[value="NL"],option[value="DK"],option[value="IE"],option[value="GR"],option[value="PT"],option[value="ES"],option[value="AT"],option[value="FI"],option[value="SE"],option[value="CY"],option[value="CZ"],option[value="EE"],option[value="HU"],option[value="LV"],option[value="LT"],option[value="MT"],option[value="PL"],option[value="SK"],option[value="SI"],option[value="RO"],option[value="BG"],option[value="IM"],option[value="GB"]').attr("selected","selected");
