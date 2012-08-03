@@ -816,7 +816,7 @@ class Jigoshop_Options_Parser {
 			?>
 				<script type="text/javascript">
 					jQuery(function() {
-						jQuery("#<?php echo $id; ?>").select2();
+						jQuery("#<?php echo $id; ?>").select2({ width: '250px' });
 					});
 				</script>
 			<?php
@@ -839,7 +839,7 @@ class Jigoshop_Options_Parser {
 			?>
 				<script type="text/javascript">
 					jQuery(function() {
-						jQuery("#<?php echo $id; ?>").select2();
+						jQuery("#<?php echo $id; ?>").select2({ width: '500px' });
 					});
 				</script>
 			<?php
@@ -1060,7 +1060,7 @@ class Jigoshop_Options_Parser {
 			?>
 				<script type="text/javascript">
 					jQuery(function() {
-						jQuery("#<?php echo $id; ?>").select2();
+						jQuery("#<?php echo $id; ?>").select2({ width: '250px' });
 					});
 				</script>
 			<?php
