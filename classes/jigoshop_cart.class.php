@@ -426,16 +426,38 @@ class jigoshop_cart extends Jigoshop_Singleton {
 				switch ( $coupon['type'] ) :
 
 					case 'fixed_cart' :
+						if ($coupon['amount'] < 0){
+						$invertcoupon=$coupon['amount']*(-1);
+						self::$discount_total += $invertcoupon;
+						break;
+						}
+						else {
 						self::$discount_total += $coupon['amount'];
 						break;
-
+						}
 					case 'percent' :
-						self::$discount_total += ( $total_to_use / 100 ) * $coupon['amount'];
+						if ($coupon['amount'] < 0){
+						$invertcoupon=$coupon['amount']*(-1);
+						self::$discount_total += ( $total_to_use / 100 ) * $invertcoupon;
 						break;
+						}
+						else {
+						self::$discount_total += ( $total_to_use / 100 ) *$coupon['amount'];
+						break;
+						}
+						
 
 					case 'fixed_product' :
 						if ( sizeof( $coupon['include_products'] ) == 0 )
+							if ($coupon['amount'] < 0)
+							{
+							$invertcoupon=$coupon['amount']*(-1);
+							self::$discount_total += ( $invertcoupon * sizeof( self::$cart_contents ) );
+							}
+							else {
 							self::$discount_total += ( $coupon['amount'] * sizeof( self::$cart_contents ) );
+							}
+							
 						break;
 
 				endswitch;
