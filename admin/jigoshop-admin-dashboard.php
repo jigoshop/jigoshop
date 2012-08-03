@@ -193,10 +193,15 @@ class jigoshop_dashboard {
 
 				$this_order = new jigoshop_order( $order->ID );
 
+				$total_items = 0;
+				foreach ( $this_order->items as $index => $item ) {
+					$total_items += $item['qty'];
+				}
+				
 				echo '
 				<li>
 					<span class="order-status '.sanitize_title($this_order->status).'">'.ucwords(__($this_order->status, 'jigoshop')).'</span> <a href="'.admin_url('post.php?post='.$order->ID).'&action=edit">'.get_the_time(__('l jS \of F Y h:i:s A', 'jigoshop'), $order->ID).'</a><br />
-					<small>'.sizeof($this_order->items).' '._n('item', 'items', sizeof($this_order->items), 'jigoshop').' <span class="order-cost">'.__('Total: ', 'jigoshop').jigoshop_price($this_order->order_total).'</span></small>
+					<small>'.sizeof($this_order->items).' '._n('Item', 'Items', sizeof($this_order->items), 'jigoshop').' ('.__('Total Quantity','jigoshop').' '.$total_items.') <span class="order-cost">'.__('Total: ', 'jigoshop').jigoshop_price($this_order->order_total).'</span></small>
 				</li>';
 
 			endforeach;
