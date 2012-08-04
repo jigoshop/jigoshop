@@ -147,10 +147,10 @@ function jigoshop_coupon_data_box( $post ) {
   			$selected = implode( ',', (array)$selected );
 			$args = array(
 				'id'            => 'include_products',
+				'type'          => 'hidden',        /* use hidden input type for Select2 custom data loading */
 				'class'         => 'long',
 				'label'         => __( 'Include Products', 'jigoshop' ),
 				'desc'          => __('Control which products this coupon can apply to.','jigoshop'),
-				'placeholder'   => __('Any product','jigoshop'),
 				'value'         => $selected
 			);
 			echo Jigoshop_Forms::input( $args );
@@ -160,10 +160,10 @@ function jigoshop_coupon_data_box( $post ) {
 			$selected = implode( ',', (array)$selected );
 			$args = array(
 				'id'            => 'exclude_products',
+				'type'          => 'hidden',        /* use hidden input type for Select2 custom data loading */
 				'class'         => 'long',
 				'label'         => __( 'Exclude Products', 'jigoshop' ),
 				'desc'          => __('Control which products this coupon cannot be applied to.','jigoshop'),
-				'placeholder'   => __('No exclusions','jigoshop'),
 				'value'         => $selected
 			);
 			echo Jigoshop_Forms::input( $args );
@@ -230,6 +230,7 @@ function jigoshop_coupon_data_box( $post ) {
 						minimumInputLength: 3,
 						multiple: true,
 						closeOnSelect: true,
+						placeholder: "<?php _e('Any product','jigoshop'); ?>",
 						ajax: {
 							url: "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
 							dataType: 'json',
@@ -269,6 +270,7 @@ function jigoshop_coupon_data_box( $post ) {
 						minimumInputLength: 3,
 						multiple: true,
 						closeOnSelect: true,
+						placeholder: "<?php _e( 'No exclusions', 'jigoshop' ); ?>",
 						ajax: {
 							url: "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
 							dataType: 'json',
