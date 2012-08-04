@@ -318,7 +318,7 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 	global $wpdb, $jigoshop_errors;
 	
 	$type = jigowatt_clean( $_POST['type'] );
-	$amount = jigowatt_clean( $_POST['amount'] );
+	$amount = abs( jigowatt_clean( $_POST['amount'] ));
 	
 	if ( !empty( $_POST['date_from'] )) {
 		$coupon_date_from = strtotime( jigowatt_clean( $_POST['date_from'] ));
@@ -341,6 +341,7 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 
 	if ( isset( $_POST['include_products'] )) {
 		$include_products = jigowatt_clean( $_POST['include_products'] );
+		if ( $include_products == 'Array' ) $include_products = '';
 		$include_products = $include_products <> '' ? explode( ',', $include_products ) : array();
 	} else {
 		$include_products = array();
@@ -348,6 +349,7 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 	
 	if ( isset( $_POST['exclude_products'] )) {
 		$exclude_products = jigowatt_clean( $_POST['exclude_products'] );
+		if ( $exclude_products == 'Array' ) $exclude_products = '';
 		$exclude_products = $exclude_products <> '' ? explode( ',', $exclude_products ) : array();
 	} else {
 		$exclude_products = array();
