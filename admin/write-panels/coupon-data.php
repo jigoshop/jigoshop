@@ -51,6 +51,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'id'            => 'amount',
 				'label'         => __( 'Coupon Amount', 'jigoshop' ),
 				'type'          => 'number',
+				'min'           => 0,
 				'desc'          => __('Enter an amount e.g. 9.99.','jigoshop'),
 				'tip'           => __('Amount this coupon is worth. If it is a percentange, just include the number without the percentage sign.','jigoshop'),
 				'placeholder'   => '0.00'
