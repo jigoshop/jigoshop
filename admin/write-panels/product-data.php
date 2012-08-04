@@ -509,8 +509,9 @@ function display_attribute() { ?>
 		// This is whats applied to the product
 		$attributes = get_post_meta($post->ID, 'product_attributes', true);
 	?>
-	<?php if( ! $attributes ): ?>
-		<div class="demo attribute">
+	<!--    Disabling Demo attribute help display for 1.3 per support personnel request     -JAP-   -->
+	<!--?php if( ! $attributes ): ?-->
+		<!--div class="demo attribute">
 			<a href="http://forum.jigoshop.com/kb" target="_blank" class="overlay"><span><?php _e('Learn how to set up Product Attributes', 'jigoshop'); ?></span></a>
 			<div class="inside">
 				<div class="postbox attribute">
@@ -542,8 +543,8 @@ function display_attribute() { ?>
 					</div>
 				</div>
 			</div>
-		</div>
-	<?php endif; ?>
+		</div-->
+	<!--?php endif; ?-->
 	<?php
 		$i = -1;
 		foreach ($attribute_taxonomies as $tax) : $i++;

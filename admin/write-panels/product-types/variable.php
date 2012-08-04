@@ -301,10 +301,11 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 		<?php endif; ?>
 			<div class='jigoshop_variations'>
 
-				<?php if ( ! $variations ): ?>
+				<!--    Disabling Demo variation help display for 1.3 per support personnel request     -JAP-   -->
+				
+				<!--?php if ( ! $variations ): ?-->
 
-
-				<div class="demo variation ">
+				<!--div class="demo variation ">
 					<a href="http://forum.jigoshop.com/kb/creating-products/variable-products" target="_blank" class="overlay"><span><?php _e('Learn how to make a Variation', 'jigoshop'); ?></span></a>
 					<div class="inside">
 						<div class="jigoshop_variation postbox">
@@ -323,7 +324,6 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 											<a href="#" class="upload_image_button " rel="0_new">
 												<img src="<?php echo jigoshop::assets_url().'/assets/images/placeholder.png' ?>" width="93px">
 												<input type="hidden" class="upload_image_id" value="">
-												<!-- TODO: APPEND THIS IN JS <span class="overlay"></span> -->
 											</a>
 										</td>
 
@@ -382,8 +382,8 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 							</div>
 						</div>
 					</div>
-				</div>
-				<?php endif; ?>
+				</div-->
+				<!--?php endif; ?-->
 
 				<?php if ( $this->has_variable_attributes( $attributes ) ): ?>
 					<?php

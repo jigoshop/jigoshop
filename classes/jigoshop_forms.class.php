@@ -29,6 +29,9 @@ class Jigoshop_Forms extends Jigoshop_Base {
 			'desc'          => false,
 			'tip'           => false,
 			'value'         => null,
+			'min'           => null,
+			'max'           => null,
+			'step'          => null,
 			'placeholder'   => null,
 		);
 		extract( wp_parse_args( $field, $args ) );
@@ -39,7 +42,14 @@ class Jigoshop_Forms extends Jigoshop_Base {
 
 		$html .= "<p class='form-field {$id}_field'>";
 		$html .= "<label for='{$id}'>$label{$after_label}</label>";
-		$html .= "<input type='{$type}' class='{$class}' name='{$id}' id='{$id}' value='{$value}' placeholder='{$placeholder}' />";
+		$html .= "<input type='{$type}' id='{$id}' name='{$id}' class='{$class}'";
+		$html .= " value='{$value}'";
+		if ( $type == 'number' ) {
+			if ( ! empty( $min ))   $html .= " min='{$min}'";
+			if ( ! empty( $max ))   $html .= " max='{$max}'";
+			if ( ! empty( $step ))  $html .= " step='{$step}'";
+		}
+		$html .= " placeholder='{$placeholder}' />";
 
 		if ( $tip ) {
 			$html .= '<a href="#" tip="'.$tip.'" class="tips" tabindex="99"></a>';
