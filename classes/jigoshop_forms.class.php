@@ -36,7 +36,7 @@ class Jigoshop_Forms extends Jigoshop_Base {
 		);
 		extract( wp_parse_args( $field, $args ) );
 
-		$value = ($value) ? esc_attr( $value ) : get_post_meta( $post->ID, $id, true) ;
+		$value = isset( $value ) ? esc_attr( $value ) : get_post_meta( $post->ID, $id, true) ;
 
 		$html  = '';
 
