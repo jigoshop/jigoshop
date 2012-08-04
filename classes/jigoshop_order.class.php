@@ -20,6 +20,22 @@ class jigoshop_order extends Jigoshop_Base {
 
 	public $_data = array();
 
+	public static function get_order_statuses_and_names() {
+		$order_types = array(
+			'pending'       => __('Pending', 'jigoshop'),
+			'on-hold'       => __('On-Hold', 'jigoshop'),
+			'processing'    => __('Processing', 'jigoshop'),
+			'completed'     => __('Completed', 'jigoshop'),
+			'cancelled'     => __('Cancelled', 'jigoshop'),
+			'refunded'      => __('Refunded', 'jigoshop'),
+			'failed'        => __('Failed', 'jigoshop'),        /* can be set from PayPal, not currently shown anywhere -JAP- */
+			'denied'        => __('Denied', 'jigoshop'),        /* can be set from PayPal, not currently shown anywhere -JAP- */
+			'expired'       => __('Expired', 'jigoshop'),       /* can be set from PayPal, not currently shown anywhere -JAP- */
+			'voided'        => __('Voided', 'jigoshop'),        /* can be set from PayPal, not currently shown anywhere -JAP- */
+		);
+		return $order_types;
+	}
+		
 	public function __get($variable) {
 		return isset($this->_data[$variable]) ? $this->_data[$variable] : null;
 	}

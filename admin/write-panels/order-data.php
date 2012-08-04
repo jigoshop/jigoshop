@@ -73,10 +73,11 @@ function jigoshop_order_data_meta_box($post) {
 			<select id="order_status" name="order_status">
 				<?php
 					$statuses = (array) get_terms('shop_order_status', array('hide_empty' => 0, 'orderby' => 'id'));
+					$names = jigoshop_order::get_order_statuses_and_names();
 					foreach ($statuses as $status) :
 						echo '<option value="'.esc_attr($status->slug).'" ';
 						if ($status->slug==$data['order_status']) echo 'selected="selected"';
-						echo '>'. __($status->name,'jigoshop').'</option>';
+						echo '>'. $names[$status->name] .'</option>';
 					endforeach;
 				?>
 			</select></p>
