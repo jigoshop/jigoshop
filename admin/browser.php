@@ -3,6 +3,12 @@
 	 * Modified to work for Jigoshop by
 	 * Chris Christoff on 8/2/2012
 	 * Changes: Removed the browser string return and added spacing. Also removed return HTML formatting.
+	 *
+	 * Modified to add formatted User Agent string for Jigoshop System Info by
+	 * Chris Christoff on 8/4/2012
+	 * Changes: Split user string and add formatting so we can print a nicely
+	 * formatted user agent string on the Jigoshop System Info
+	 *
 	 * File: Browser.php
 	 * Author: Chris Schuld (http://chrisschuld.com/)
 	 * Last Modified: August 20th, 2010
@@ -336,10 +342,26 @@
 		* @return string formatted string with a summary of the browser
 		*/
 		function __toString() {
-			return "Browser Name:             {$this->getBrowser()}  \n" .
+		$text1   = $this->getUserAgent(); //grabs the UA (user agent) string
+		$UAline1 = substr($text1, 0, 32); //the first line we print should only be the first 32 characters of the UA string
+		$text2       = $this->getUserAgent();//now we grab it again and save it to a string
+		$towrapUA    = str_replace($UAline1, '', $text2);//the rest of the printoff (other than first line) is equivolent
+		// to the whole string minus the part we printed off. IE
+		// User Agent:      thefirst32charactersfromUAline1
+		//                  the rest of it is now stored in
+		//                  $text2 to be printed off
+		// but we need to add spaces before each line that is split other than line 1
+		$space = '';
+		for($i = 0; $i < 33; $i++) {
+		$space .= ' ';
+		}
+		// now we split the remaining string of UA ($text2) into lines that are prefixed by spaces for formatting
+		$wordwrapped = chunk_split($towrapUA, 32, "\n $space");
+			return "Platform:                 {$this->getPlatform()} \n".
+				   "        Browser Name:             {$this->getBrowser()}  \n" .
 			       "	Browser Version:          {$this->getVersion()} \n" .
-			       //"	Browser User Agent String:           {$this->getUserAgent()} \n" .
-			       "	Platform:                 {$this->getPlatform()} ";
+			       "	User Agent String:        $UAline1 \n                                  " .
+				   "$wordwrapped ";
 		}
 		/**
 		 * Protected routine to calculate and determine what the browser is in use (including platform)

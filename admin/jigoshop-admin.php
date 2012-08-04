@@ -149,7 +149,7 @@ function jigoshop_system_info() {
 	Jigoshop Version:         <?php echo jigoshop_get_plugin_data() . "\n"; ?>
 	WordPress Version:        <?php echo get_bloginfo('version') . "\n"; ?>
 	
-	<?php require_once('browser.php'); $browser =  new Browser(); echo $browser . "\n"; ?>
+	<?php require_once('browser.php'); $browser =  new Browser(); echo $browser ; ?>
 	
 	PHP Version:              <?php echo PHP_VERSION . "\n"; ?>
 	MySQL Version:            <?php echo mysql_get_server_info() . "\n"; ?>
