@@ -194,24 +194,33 @@
 				var total = 0;
 
 				var item_count = $('#order_items_list tr.item').size();
+//				console.log( 'initial item_count = ' + item_count );
 				var discount = parseFloat($('input#order_discount').val());
+//				console.log( 'discount = ' + discount );
 				var shipping = parseFloat($('input#order_shipping').val());
+//				console.log( 'shipping = ' + shipping );
 				var shipping_tax = parseFloat($('input#order_shipping_tax').val());
+//				console.log( 'shipping_tax = ' + shipping_tax );
 
-				if ( ! discount ) discount = 0;
-				if ( ! shipping ) shipping = 0;
-				if ( ! shipping_tax ) shipping_tax = 0;
+				if ( isNaN( discount) ) discount = 0;
+				if ( isNaN( shipping ) ) shipping = 0;
+				if ( isNaN( shipping_tax ) ) shipping_tax = 0;
+//				console.log( 'discount = ' + discount );
+//				console.log( 'shipping = ' + shipping );
+//				console.log( 'shipping_tax = ' + shipping_tax );
 
 				// Items
 				if ( item_count > 0 ) {
 					for ( i=0 ; i < item_count ; i++ ) {
 
 						itemCost 	= parseFloat($('input[name^=item_cost]:eq(' + i + ')').val());
+//						console.log( 'itemCost = ' + itemCost );
 						itemQty 	= parseInt($('input[name^=item_quantity]:eq(' + i + ')').val());
+//						console.log( 'itemQty = ' + itemQty );
 						itemTax		= parseFloat($('input[name^=item_tax_rate]:eq(' + i + ')').val());
 
-						if ( ! itemCost ) itemCost = 0;
-						if ( ! itemTax )  itemTax  = 0;
+						if ( isNaN( itemCost ) ) itemCost = 0;
+						if ( isNaN( itemTax ) )  itemTax  = 0;
 
 						totalItemTax = 0;
 
@@ -242,16 +251,12 @@
 
 						}
 						
-						// add total tax to total product cost with quantites
-						itemTotal = itemTotal + totalItemCost;
-//						console.log( 'itemTotal = ' + itemTotal );
-						
 						// total the tax across all products
 						tax = tax + totalItemTax;
 //						console.log( 'total tax = ' + tax );
 						
 						// total all products without tax
-						subtotal = subtotal + itemTotal;
+						subtotal = subtotal + totalItemCost;
 //						console.log( 'subtotal = ' + subtotal );
 
 					}
