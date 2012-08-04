@@ -141,11 +141,7 @@ function jigoshop_init() {
 	jigoshop_payment_gateways::instance();		// Payment gateways class. loads payment methods
 	jigoshop_cart::instance();					// Cart class
 
-	if ( is_admin()) {
-	
-		Jigoshop_Admin_Settings::instance();	// the WP Settings API manager
-		
-	} else {
+	if ( ! is_admin()) {
 	
 		/* Catalog Filters */
 		add_filter( 'loop-shop-query', create_function( '', 'return array("orderby" => "' . $jigoshop_options->get_option('jigoshop_catalog_sort_orderby') . '","order" => "' . $jigoshop_options->get_option('jigoshop_catalog_sort_direction') . '");' ) );
