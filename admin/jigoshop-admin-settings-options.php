@@ -15,6 +15,16 @@
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
+
+
+
+
+/***********************    NOTE:   AS OF JIGOSHOP 1.3, THIS FILE IS NO LONGER IN USE       ************************/
+
+
+
+
+
 /**
  * options_settings
  *
