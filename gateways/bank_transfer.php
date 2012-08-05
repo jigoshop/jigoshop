@@ -40,6 +40,7 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 		$this->bank_name 		= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_bank_name');
 		$this->acc_number 		= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_acc_number');
 		$this->sort_code 		= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_sort_code');
+		$this->account_holder 	= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_account_holder');
 		$this->iban 			= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_iban');
 		$this->bic 				= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_bic');
 		$this->additional 		= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_additional');
@@ -112,6 +113,15 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 		);
 
 		$defaults[] = array(
+			'name'		=> __('Account Holder','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('The account name your account is registered to.','jigoshop'),
+			'id' 		=> 'jigoshop_bank_transfer_account_holder',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+
+		$defaults[] = array(
 			'name'		=> __('Sort Code','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('Your branch Sort Code.','jigoshop'),
@@ -158,6 +168,7 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 		$bank_info = null;
 		if ($this->bank_name) $bank_info .= '<strong>'.__('Bank Name', 'jigoshop').'</strong>: ' . wptexturize($this->bank_name) . '<br />';
 		if ($this->acc_number) $bank_info .= '<strong>'.__('Account Number', 'jigoshop').'</strong>: '.wptexturize($this->acc_number) . '<br />';
+		if ($this->account_holder) $bank_info .= '<strong>'.__('Account Holder', 'jigoshop').'</strong>: '. wptexturize($this->account_holder) . '<br />';
 		if ($this->sort_code) $bank_info .= '<strong>'.__('Sort Code', 'jigoshop').'</strong>: '. wptexturize($this->sort_code) . '<br />';
 		if ($this->iban) $bank_info .= '<strong>'.__('IBAN', 'jigoshop').'</strong>: '.wptexturize($this->iban) . '<br />';
 		if ($this->bic) $bank_info .= '<strong>'.__('BIC', 'jigoshop').'</strong>: '.wptexturize($this->bic) . '<br />';
@@ -171,6 +182,7 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 		$bank_info = null;
 		if ($this->bank_name) $bank_info .= '<strong>'.__('Bank Name', 'jigoshop').'</strong>: ' . wptexturize($this->bank_name) . '<br />';
 		if ($this->acc_number) $bank_info .= '<strong>'.__('Account Number', 'jigoshop').'</strong>: '.wptexturize($this->acc_number) . '<br />';
+		if ($this->account_holder) $bank_info .= '<strong>'.__('Account Holder', 'jigoshop').'</strong>: '. wptexturize($this->account_holder) . '<br />';
 		if ($this->sort_code) $bank_info .= '<strong>'.__('Sort Code', 'jigoshop').'</strong>: '. wptexturize($this->sort_code) . '<br />';
 		if ($this->iban) $bank_info .= '<strong>'.__('IBAN', 'jigoshop').'</strong>: '.wptexturize($this->iban) . '<br />';
 		if ($this->bic) $bank_info .= '<strong>'.__('BIC', 'jigoshop').'</strong>: '.wptexturize($this->bic) . '<br />';
