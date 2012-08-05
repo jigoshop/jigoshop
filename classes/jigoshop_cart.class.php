@@ -1152,8 +1152,8 @@ class jigoshop_cart extends Jigoshop_Singleton {
                 endif;
 
                 $variation_list[] = $flat
-                                    ? sprintf('%s: %s', $name, $value)
-                                    : sprintf('<dt>%s</dt>: <dd>%s</dd>', $name, $value);
+                                    ? sprintf('%s: %s<br />', $name, $value)
+                                    : sprintf('<dt>%s:</dt> <dd>%s</dd><br />', $name, $value);
 
             endforeach;
 
@@ -1179,8 +1179,8 @@ class jigoshop_cart extends Jigoshop_Singleton {
                                   : $data['value'];
 
                 $data_list[] = $flat
-                               ? sprintf('%s: %s', $data['name'], $display_value)
-                               : sprintf('<dt>%s</dt>: <dd>%s</dd>', $data['name'], $display_value);
+                               ? sprintf('%s: %s<br />', $data['name'], $display_value)
+                               : sprintf('<dt>%s:</dt> <dd>%s</dd><br />', $data['name'], $display_value);
 
             endforeach;
 
