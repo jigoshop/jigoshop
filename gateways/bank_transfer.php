@@ -52,7 +52,7 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 	/**
 	 * Default Option settings for WordPress Settings API using the Jigoshop_Options class
 	 *
-	 * These should be installed on the Jigoshop_Options 'Payment Gateways' tab
+	 * These will be installed on the Jigoshop_Options 'Payment Gateways' tab by the parent class 'jigoshop_payment_gateway'
 	 *
 	 */	
 	protected function get_default_options() {
