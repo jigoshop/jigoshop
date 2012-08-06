@@ -28,7 +28,6 @@ class jigoshop_product_meta
 		wp_set_object_terms( $post_id, sanitize_title($_POST['product-type']), 'product_type');
 
 		// Process general product data
-		// How to sanitize this block?
 		update_post_meta( $post_id, 'regular_price', !empty($_POST['regular_price']) ? jigoshop_sanitize_num($_POST['regular_price']) : '');
 
 		$sale_price = ! empty( $_POST['sale_price'] )
@@ -42,6 +41,14 @@ class jigoshop_product_meta
 			// silently fail if entered sale price > regular price (or nothing entered)
 			update_post_meta( $post_id, 'sale_price', '' );
 		}
+		// finally, if this product is a 'variable' or 'grouped', then there should never be a sale_price here
+		// perhaps it was a 'simple' product once and was changed (see rhr #437)
+		$terms = wp_get_object_terms( $post_id, 'product_type' );
+		if ( ! empty( $terms ))
+			if ( ! is_wp_error( $terms ))
+				if ( sizeof( $terms ) == 1 )
+					if ( in_array( $terms[0]->slug, array( 'variable', 'grouped' ) ) )
+						delete_post_meta( $post_id, 'sale_price' );
 		
 		update_post_meta( $post_id, 'weight',        (float) $_POST['weight']);
 		update_post_meta( $post_id, 'length',        (float) $_POST['length']);
