@@ -112,7 +112,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
-= 1.3 - TBA =
+= 1.3 - 2012-08-08 =
 * New: Redesigned settings pages using the WordPress Settings API
 	* new settings types including checkboxes, radio buttons, range sliders
 	* each settings tab saves independently of other tabs
