@@ -759,9 +759,9 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		self::$default_options[] = array( 'name' => __('General Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
 		self::$default_options[] = array(
-			'name'		=> __('Send Jigoshop emails from','jigoshop'),
+			'name'		=> __('Jigoshop email address','jigoshop'),
 			'desc' 		=> '',
-			'tip' 		=> __('The email used to send all Jigoshop related emails, such as order confirmations and notices.','jigoshop'),
+			'tip' 		=> __('The email address used to send all Jigoshop related emails, such as order confirmations and notices.  This may be different than your Company email address on "Shop Tab -> Invoicing".','jigoshop'),
 			'id' 		=> 'jigoshop_email',
 			'type' 		=> 'email',
 			'std' 		=> get_option('admin_email')
