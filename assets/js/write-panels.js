@@ -187,10 +187,10 @@
 					return Math._round( number * coefficient ) / coefficient;
 				}
 				
-
+				var taxBeforeDiscount = "<?php Jigoshop_Base::get_options()->get_option('jigoshop_tax_after_coupon'); ?>";
 				var itemTotal = 0;
 				var subtotal = 0;
-				var tax = 0;
+				var totalTax = 0;
 				var total = 0;
 
 				var item_count = $('#order_items_list tr.item').size();
@@ -237,21 +237,26 @@
 						}
 						
 						// total the tax across all products
-						tax = tax + totalItemTax;
+						totalTax = totalTax + totalItemTax;
 						
 						// total all products without tax
 						subtotal = subtotal + totalItemCost;
 
 					}
 				}
-
+				
+				totalTax = totalTax + parseFloat(shipping_tax);
+				
 				// total it all up
-				total = parseFloat(subtotal) + parseFloat(tax) - parseFloat(discount) + parseFloat(shipping) + parseFloat(shipping_tax);
+				if ( taxBeforeDiscount == 'no' )
+					total = parseFloat(subtotal) - parseFloat(discount) + parseFloat(totalTax) + parseFloat(shipping);
+				else
+					total = parseFloat(subtotal) + parseFloat(totalTax) - parseFloat(discount) + parseFloat(shipping);
 
 				if ( total < 0 ) total = 0;
 
 				$('input#order_subtotal').val( subtotal.toFixed(2) );
-				$('input#order_tax').val( tax.toFixed(2) );
+				$('input#order_tax').val( totalTax.toFixed(2) );
 				$('input#order_shipping_tax').val( shipping_tax.toFixed(2) );
 				$('input#order_total').val( total.toFixed(2) );
 				
