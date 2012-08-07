@@ -194,29 +194,20 @@
 				var total = 0;
 
 				var item_count = $('#order_items_list tr.item').size();
-//				console.log( 'initial item_count = ' + item_count );
 				var discount = parseFloat($('input#order_discount').val());
-//				console.log( 'discount = ' + discount );
 				var shipping = parseFloat($('input#order_shipping').val());
-//				console.log( 'shipping = ' + shipping );
 				var shipping_tax = parseFloat($('input#order_shipping_tax').val());
-//				console.log( 'shipping_tax = ' + shipping_tax );
 
 				if ( isNaN( discount) ) discount = 0;
 				if ( isNaN( shipping ) ) shipping = 0;
 				if ( isNaN( shipping_tax ) ) shipping_tax = 0;
-//				console.log( 'discount = ' + discount );
-//				console.log( 'shipping = ' + shipping );
-//				console.log( 'shipping_tax = ' + shipping_tax );
 
 				// Items
 				if ( item_count > 0 ) {
 					for ( i=0 ; i < item_count ; i++ ) {
 
 						itemCost 	= parseFloat($('input[name^=item_cost]:eq(' + i + ')').val());
-//						console.log( 'itemCost = ' + itemCost );
 						itemQty 	= parseInt($('input[name^=item_quantity]:eq(' + i + ')').val());
-//						console.log( 'itemQty = ' + itemQty );
 						itemTax		= parseFloat($('input[name^=item_tax_rate]:eq(' + i + ')').val());
 
 						if ( isNaN( itemCost ) ) itemCost = 0;
@@ -225,46 +216,37 @@
 						totalItemTax = 0;
 
 						totalItemCost = parseFloat( itemCost * itemQty );
-//						console.log( 'totalItemCost = ' + totalItemCost );
 
 						if ( itemTax && itemTax > 0 ) {
 							
 							// get tax rate into a decimal value
 							taxRate = itemTax / Math.pow(10,2);
-//							console.log( 'taxRate = ' + taxRate );
 							
 							// this will give 4 decimal places or precision
 							itemTax = itemCost * taxRate;
-//							console.log( 'itemTax = ' + itemTax );
 							
 							// round to 3 decimal places
 							itemTax1 = Math.round( itemTax, 3 );
-//							console.log( 'itemTax1 = ' + itemTax1 );
 							
 							// round again to 2 decimal places
 							finalItemTax = Math.round( itemTax1, 2 );
-//							console.log( 'finalItemTax = ' + finalItemTax );
 							
 							// get the total tax for the product including quantities
 							totalItemTax = finalItemTax * itemQty;
-//							console.log( 'totalItemTax = ' + totalItemTax );
 
 						}
 						
 						// total the tax across all products
 						tax = tax + totalItemTax;
-//						console.log( 'total tax = ' + tax );
 						
 						// total all products without tax
 						subtotal = subtotal + totalItemCost;
-//						console.log( 'subtotal = ' + subtotal );
 
 					}
 				}
 
 				// total it all up
 				total = parseFloat(subtotal) + parseFloat(tax) - parseFloat(discount) + parseFloat(shipping) + parseFloat(shipping_tax);
-//				console.log( 'total = ' + total );
 
 				if ( total < 0 ) total = 0;
 
