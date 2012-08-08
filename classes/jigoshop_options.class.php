@@ -209,6 +209,9 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			}
 			
 			$transfer_options['jigoshop_use_beta_version'] = 'no';
+			$transfer_options['jigoshop_reset_pending_orders'] = 'no';
+			$transfer_options['jigoshop_downloads_require_login'] = 'no';
+			$transfer_options['jigoshop_frontend_with_theme_css'] = 'no';
 			
 			$transfer_options['jigoshop_upgraded_from_123'] = 'yes';
 			
