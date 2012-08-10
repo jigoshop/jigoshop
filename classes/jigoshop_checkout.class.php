@@ -698,7 +698,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					$data['shipping_method_title']  = !empty($available_methods) ? $available_methods[$this->posted['shipping_method']]->title : '';
 					$data['shipping_service']       = $this->posted['shipping_service'];
 					$data['payment_method']         = $this->posted['payment_method'];
-					$data['payment_method_title']   = !empty($available_gateways[$this->posted['payment_method']]) ? $available_gateways[$this->posted['payment_method']]->title : '';
+					$data['payment_method_title']   = !empty($available_gateways[$this->posted['payment_method']]) ?$available_gateways[$this->posted['payment_method']]->title : '';
 					$data['order_subtotal']         = jigoshop_cart::get_cart_subtotal(false, false, true);/* no display, no shipping, no tax */
 					$data['order_discount_subtotal']= jigoshop_cart::get_cart_subtotal(false, true, true);/* no display, with shipping/discounts, no tax */
 					$data['order_shipping']         = jigoshop_cart::get_cart_shipping_total(false, true);
@@ -718,9 +718,20 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
 						// Calc item tax to store
                         //TODO: need to change this so that the admin pages can use all tax data on the page
-						$rate = jigoshop_cart::get_total_tax_rate();
+//						$rate = jigoshop_cart::get_total_tax_rate();
+						// the above line was changed for 1.3, whatever this was doesn't give the correct tax rate
+						// what follows may not be right either, but seems to work
+						$rates = $_product->get_tax_destination_rate();
+						$rates = current( $rates );
+						$rate = $rates['rate'];     // store this with the product for display in the Admin Order
 
-                        $price_inc_tax = (self::get_options()->get_option('jigoshop_calc_taxes') == 'yes' && self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes' ? $_product->get_price() : -1);
+						$price_inc_tax = (
+							self::get_options()->get_option('jigoshop_calc_taxes') == 'yes'
+							&& self::get_options()->get_option('jigoshop_prices_include_tax' == 'yes'
+							)
+							? $_product->get_price()
+							: -1
+						);
 
 						if ( !empty( $values['variation_id'] )) {
 							$product_id = $values['variation_id'];

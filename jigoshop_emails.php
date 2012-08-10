@@ -188,6 +188,7 @@ function jigoshop_send_customer_invoice($order_id) {
 
     $subject = html_entity_decode('[' . get_bloginfo('name') . '] ' . sprintf(__('Invoice for Order #%s', 'jigoshop'), $order->id), ENT_COMPAT, 'UTF-8');
 	
+	$customer_message = '';
 	if ($order->status == 'pending') : 
 		$customer_message = sprintf(__("An order has been created for you on &quot;%s&quot;. To pay for this order please use the following link: %s", 'jigoshop') . PHP_EOL . PHP_EOL, get_bloginfo('name'), $order->get_checkout_payment_url());
 	endif;

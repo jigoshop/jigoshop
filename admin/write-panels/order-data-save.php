@@ -104,13 +104,28 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
 			$data[$field_name] = stripslashes( $_POST[$field_name] );
 
 	endforeach;
-
+	
+	// if a shipping or payment methods has changed, update the method title for pretty display
+	if ( isset( $_POST['shipping_method'] )) {
+		$data['shipping_method_title'] = '';
+		$shipping_methods = jigoshop_shipping::get_all_methods();
+		if ( ! empty( $shipping_methods )) foreach( $shipping_methods as $index => $method ) {
+			if ( $_POST['shipping_method'] == $method->id ) $data['shipping_method_title'] = $method->title;
+		}
+	}
+	if ( isset( $_POST['payment_method'] )) {
+		$data['payment_method_title'] = '';
+		$payment_methods = jigoshop_payment_gateways::get_available_payment_gateways();
+		if ( ! empty( $payment_methods )) foreach( $payment_methods as $index => $method ) {
+			if ( $_POST['payment_method'] == $method->id ) $data['payment_method_title'] = $method->title;
+		}
+	}
+	
     // if total tax has been modified from order tax, then create a customized tax array
     // just for the order. At this point, we no longer know about multiple tax classes.
     // Even if we used the old tax array data, we still don't know how to break down
     // the amounts since they're customized.
     if (isset($data['order_tax_total']) && $order->get_total_tax() != $data['order_tax_total']) :
-        // need to create new tax array string
         $new_tax = $data['order_tax_total'];
         $data['order_tax'] = jigoshop_tax::create_custom_tax($data['order_total'] - $data['order_tax_total'], $data['order_tax_total'], $data['order_shipping_tax'], isset( $data['order_tax_divisor'] ) ? $data['order_tax_divisor'] : null);
     endif;

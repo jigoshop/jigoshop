@@ -652,7 +652,6 @@ class jigoshop_cart extends Jigoshop_Singleton {
 							) {
 						
 							$total_item_price = $_product->get_price_with_tax( $values['quantity'] ) * 100;
-//							$total_item_price = ($_product->get_price_excluding_tax( $values['quantity'] ) + self::$tax->get_non_compounded_tax_amount() + self::$tax->get_compound_tax_amount()) * 100;
 							
 						} else {
 						

@@ -109,7 +109,7 @@ class jigoshop_order extends Jigoshop_Base {
 		$this->order_shipping 		= (string) $this->get_value_from_data('order_shipping');
 		$this->order_discount 		= (string) $this->get_value_from_data('order_discount');
         $this->order_discount_coupons = $this->get_value_from_data('order_discount_coupons'); //array
-		$this->order_tax 		= $this->get_order_tax_array('order_tax');
+		$this->order_tax 		    = $this->get_order_tax_array('order_tax');
 		$this->order_shipping_tax	= (string) $this->get_value_from_data('order_shipping_tax');
 		$this->order_total 			= (string) $this->get_value_from_data('order_total');
 
@@ -191,6 +191,7 @@ class jigoshop_order extends Jigoshop_Base {
         if ($this->get_tax_classes() && is_array($this->get_tax_classes())) :
 
             foreach ($this->get_tax_classes() as $tax_class) :
+            
                 $order_tax += $this->order_tax[$tax_class]['amount'];
                 if (isset($this->order_tax[$tax_class][$this->shipping_method])) :
                     $order_tax += $this->order_tax[$tax_class][$this->shipping_method];
@@ -333,7 +334,7 @@ class jigoshop_order extends Jigoshop_Base {
 			// Very hacky, used for GFORMS ADDONS -Rob
 			if ( ! isset($_product->variation_data) && isset($item['variation'])) {
 
-				foreach ( $item['variation'] as $variation) {
+				if ( ! empty( $item['variation'] )) foreach ( $item['variation'] as $variation) {
 
 					$return .= PHP_EOL . $variation['name'].': '.$variation['value'];
 

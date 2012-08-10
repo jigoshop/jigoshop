@@ -150,6 +150,7 @@ class jigoshop_product_meta
 		// Always return the stock switch
 		$array = array(
 			'manage_stock' 	=> isset($post['manage_stock']),
+			'stock_status'  => $post['stock_status']
 		);
 
 		// Store suitable stock data

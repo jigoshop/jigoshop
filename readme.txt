@@ -112,7 +112,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
-= 1.3 - 2012-08-08 =
+= 1.3 - 2012-13-08 =
 * New: Redesigned settings pages using the WordPress Settings API
 	* new settings types including checkboxes, radio buttons, range sliders
 	* each settings tab saves independently of other tabs
@@ -166,6 +166,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * Fix: Backorder notification and other emails now show variation sku's
 * Fix: When products are on backorder, customers are now emailed notification if product is set for 'notify'
 * Fix: Coupons applied after taxes now works as expected
+* Fix: Manual Order creation Calculate Totals now works
 
 = 1.2.3 - 2012-05-28 =
 * New: Add filters for new Jigoshop Product Addons extension

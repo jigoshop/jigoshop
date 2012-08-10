@@ -113,10 +113,12 @@ class jigoshop_tax extends Jigoshop_Base {
                 $divisor = -1;
             endif;
             
-            //absolute order must be amount, rate, compound, display, shipping. This is how the original tax
+            // absolute order must be amount, rate, compound, display, shipping. This is how the original tax
             // array is created, and order matters when calling array_implode as reversing
             // the string back into the array depends on the order
-            $tax_amount['jigoshop_custom_rate']['amount'] = ($divisor > 0 ? ($total_tax - $shipping_tax) * $divisor : $total_tax - $shipping_tax);
+//            $tax_amount['jigoshop_custom_rate']['amount'] = ($divisor > 0 ? ($total_tax - $shipping_tax) * $divisor : $total_tax - $shipping_tax);
+			// NOTE: above line commented out in 1.3, this function only used in order-data-save.php if an order is altered and we want total tax
+            $tax_amount['jigoshop_custom_rate']['amount'] = ($divisor > 0 ? $total_tax * $divisor : $total_tax);
             $tax_rate = (empty($price_ex_tax) ? 0 : $total_tax / $price_ex_tax) * 100;
             $tax_amount['jigoshop_custom_rate']['rate'] = number_format($tax_rate, 4, '.', '');
             $tax_amount['jigoshop_custom_rate']['compound'] = false;

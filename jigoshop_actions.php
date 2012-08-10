@@ -545,11 +545,11 @@ function jigoshop_download_product() {
 		;", $email, $order, $download_file ) );
 
 		if (!$download_result) :
-			wp_die( __('Invalid download.', 'jigoshop') . ' <a href="'.home_url().'">' . __('Go to homepage &rarr;', 'jigoshop') . '</a>' );
+			wp_die( __('Invalid downloads.', 'jigoshop') . ' <a href="'.home_url().'">' . __('Go to homepage &rarr;', 'jigoshop') . '</a>' );
 			exit;
 		endif;
 
-		$order_id            = $download_result->order_id;
+		$order_id            = isset( $download_result->order_id ) ? $download_result->order_id : false;
 		$user_id             = $download_result->user_id;
 		$downloads_remaining = $download_result->downloads_remaining;
 
@@ -634,7 +634,9 @@ function jigoshop_download_product() {
 				case "jpe": case "jpeg": case "jpg": $ctype="image/jpg"; break;
 				default: $ctype="application/force-download";
 			endswitch;
-
+            
+            do_action( 'jigoshop_before_download', $file_path, $order );
+            
 			@session_write_close();
 			@ini_set('zlib.output_compression', 'Off');
 			@set_time_limit(0);
@@ -659,10 +661,9 @@ function jigoshop_download_product() {
 			}
 
 			header("Content-Length: ".@filesize($file_path));
-
-
+            
 			if ( $remote_file ) {
-				 header('Location: '.$file_path);
+				header('Location: '.$file_path);
 			} else {
 				@readfile("$file_path") or wp_die( sprintf(__('File not found. <a href="%s">Go to homepage &rarr;</a>', 'jigoshop'), home_url()) );
 			}

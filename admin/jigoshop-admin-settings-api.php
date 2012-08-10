@@ -25,13 +25,13 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 * @since 1.3
 	 */
 	protected function __construct() {
-
+		
 		$this->our_parser = new Jigoshop_Options_Parser(
 			self::get_options()->get_default_options(),
 			JIGOSHOP_OPTIONS
 		);
 
-		add_action( 'admin_init', array( &$this, 'register_settings' ) );
+		add_action( 'current_screen', array( $this, 'register_settings' ) );
 
 	}
 
@@ -76,8 +76,14 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 * @since 1.3
 	 */
 	public function register_settings() {
-
-		register_setting( JIGOSHOP_OPTIONS, JIGOSHOP_OPTIONS, array ( &$this, 'validate_settings' ) );
+		
+		// Weed out all admin pages except the Jigoshop Settings page hits
+		global $pagenow;
+		if ( $pagenow <> 'admin.php' && $pagenow <> 'options.php' ) return;
+		$screen = get_current_screen();
+		if ( $screen->base <> 'jigoshop_page_jigoshop_settings' && $screen->base <> 'options' ) return;
+		
+		register_setting( JIGOSHOP_OPTIONS, JIGOSHOP_OPTIONS, array ( $this, 'validate_settings' ) );
 
 		$slug = $this->get_current_tab_slug();
 		$options = $this->our_parser->tabs[$slug];
@@ -85,7 +91,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		foreach ( $options as $index => $option ) {
 			switch ( $option['type'] ) {
 			case 'title':
-				add_settings_section( $option['section'], $option['name'], array( &$this, 'display_section' ), JIGOSHOP_OPTIONS );
+				add_settings_section( $option['section'], $option['name'], array( $this, 'display_section' ), JIGOSHOP_OPTIONS );
 				break;
 
 			default:
@@ -144,7 +150,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			add_settings_field(
 				$id,
 				($type == 'checkbox') ? '' : esc_attr( $name ),
-				array( &$this, 'display_option' ),
+				array( $this, 'display_option' ),
 				JIGOSHOP_OPTIONS,
 				$section,
 				$field_args
@@ -487,13 +493,13 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		}
 
         // remove all jigoshop_update_options actions on shipping classes when not on the shipping tab
-        if ( $this_section != 'shipping' ) :
+        if ( $this_section != 'shipping' ) {
             $this->remove_update_options( jigoshop_shipping::get_all_methods() );
-        endif;
+        }
 
-        if ( $this_section != 'payment-gateways' ) :
+        if ( $this_section != 'payment-gateways' ) {
             $this->remove_update_options( jigoshop_payment_gateways::payment_gateways() );
-        endif;
+        }
 
 		// Allow any hooked in option updating
 		do_action( 'jigoshop_update_options' );
@@ -661,7 +667,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 
 		/* Remove duplicates. */
 		$tax_rates = array_values( array_unique( $tax_rates, SORT_REGULAR ));
-		usort( $tax_rates, array( &$this, 'csort_tax_rates' ) );
+		usort( $tax_rates, array( $this, 'csort_tax_rates' ) );
 
 		return $tax_rates;
 
@@ -862,7 +868,7 @@ class Jigoshop_Options_Parser {
 			?>
 				<script type="text/javascript">
 					jQuery(function() {
-						jQuery("#<?php echo $id; ?>").select2();
+						jQuery("#<?php echo $id; ?>").select2({ width: '500px' });
 					});
 				</script>
 			<?php
