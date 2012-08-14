@@ -481,8 +481,8 @@ class jigoshop_dashboard {
 						$after = date('Y-m-d', $first_day);
 						$before = date('Y-m-d', $last_day);
 
-						$where .= " AND post_date > '$after'";
-						$where .= " AND post_date < '$before'";
+						$where .= " AND post_date >= '$after'";
+						$where .= " AND post_date <= '$before'";
 
 						return $where;
 					}

@@ -115,7 +115,7 @@ function jigoshop_cart($atts) {
                             ?>
                             <tr>
                                 <td class="product-remove"><a href="<?php echo esc_url( jigoshop_cart::get_remove_url($cart_item_key) ); ?>" class="remove" title="<?php echo esc_attr( __('Remove this item.', 'jigoshop') ); ?>">&times;</a></td>
-                                <td class="product-thumbnail"><a href="<?php echo esc_url( apply_filters('jigoshop_product_url_display_in_cart', get_permalink($values['product_id']), $values['product_id']) ); ?>">
+                                <td class="product-thumbnail"><a href="<?php echo esc_url( apply_filters('jigoshop_product_url_display_in_cart', get_permalink($values['product_id']), $cart_item_key) ); ?>">
                                     <?php
                                         if ($values['variation_id'] && has_post_thumbnail($values['variation_id'])) {
                                             echo get_the_post_thumbnail($values['variation_id'], 'shop_tiny');
@@ -128,7 +128,7 @@ function jigoshop_cart($atts) {
                                 </td>
 
                                 <td class="product-name">
-                                    <a href="<?php echo esc_url( apply_filters('jigoshop_product_url_display_in_cart', get_permalink($values['product_id']), $values['product_id']) ); ?>"><?php echo apply_filters('jigoshop_cart_product_title', $_product->get_title(), $_product); ?></a>
+                                    <a href="<?php echo esc_url( apply_filters('jigoshop_product_url_display_in_cart', get_permalink($values['product_id']), $cart_item_key) ); ?>"><?php echo apply_filters('jigoshop_cart_product_title', $_product->get_title(), $_product); ?></a>
                                     <?php echo $additional_description; ?>
                                     <?php
 										if ( !empty( $values['variation_id'] )) {

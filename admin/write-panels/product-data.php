@@ -164,6 +164,7 @@ function jigoshop_product_data_box() {
 							<a href="#" class="cancel_sale_schedule">'.__('Cancel', 'jigoshop').'</a>
 						</p>';
 			?>
+			<?php do_action( 'jigoshop_product_pricing_options' ); /* allow extensions like sales flash pro to add pricing options */ ?>
 			</fieldset>
 
 			<fieldset>

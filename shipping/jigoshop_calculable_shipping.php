@@ -283,7 +283,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
         return $this->has_error;
     }
 
-    private function get_selected_rate($rate_index) {
+    protected function get_selected_rate($rate_index) {
 
         return ($this->rates == NULL ? NULL : $this->rates[$rate_index]);
     }
