@@ -50,10 +50,14 @@ class jigoshop_product_meta
 					if ( in_array( $terms[0]->slug, array( 'variable', 'grouped' ) ) )
 						delete_post_meta( $post_id, 'sale_price' );
 		
-		update_post_meta( $post_id, 'weight',        (float) $_POST['weight']);
-		update_post_meta( $post_id, 'length',        (float) $_POST['length']);
-		update_post_meta( $post_id, 'width',         (float) $_POST['width']);
-		update_post_meta( $post_id, 'height',        (float) $_POST['height']);
+		if ( isset( $_POST['weight'] ) )
+			update_post_meta( $post_id, 'weight',        (float) $_POST['weight']);
+		if ( isset( $_POST['length'] ) )
+			update_post_meta( $post_id, 'length',        (float) $_POST['length']);
+		if ( isset( $_POST['width'] ) )
+			update_post_meta( $post_id, 'width',         (float) $_POST['width']);
+		if ( isset( $_POST['height'] ) )
+			update_post_meta( $post_id, 'height',        (float) $_POST['height']);
 
 		update_post_meta( $post_id, 'tax_status',    $_POST['tax_status']);
 		update_post_meta( $post_id, 'tax_classes',   isset($_POST['tax_classes']) ? $_POST['tax_classes'] : array() );
@@ -150,7 +154,7 @@ class jigoshop_product_meta
 		// Always return the stock switch
 		$array = array(
 			'manage_stock' 	=> isset($post['manage_stock']),
-			'stock_status'  => $post['stock_status']
+			'stock_status'  => isset($post['stock_status']) ? $post['stock_status'] : 0
 		);
 
 		// Store suitable stock data
