@@ -131,6 +131,7 @@ function jigoshop_product_data_box() {
 					'label'         => __('Regular Price','jigoshop'),
 					'after_label'   => ' ('.get_jigoshop_currency_symbol().')',
 					'type'          => 'number',
+					'step'          => 'any',
 					'placeholder'   => __('Price Not Announced','jigoshop'),
 				);
 				echo Jigoshop_Forms::input( $args );
@@ -262,9 +263,9 @@ function jigoshop_product_data_box() {
 					echo '
 					<p class="form-field dimensions_field">
 						<label for"product_length">'. __('Dimensions', 'jigoshop') . ' ('.Jigoshop_Base::get_options()->get_option('jigoshop_dimension_unit').')' . '</label>
-						<input type="number" name="length" class="short" value="' . get_post_meta( $thepostid, 'length', true ) . '" placeholder="'. __('Length', 'jigoshop') . '" />
-						<input type="number" name="width" class="short" value="' . get_post_meta( $thepostid, 'width', true ) . '" placeholder="'. __('Width', 'jigoshop') . '" />
-						<input type="number" name="height" class="short" value="' . get_post_meta( $thepostid, 'height', true ) . '" placeholder="'. __('Height', 'jigoshop') . '" />
+						<input type="number" step="any" name="length" class="short" value="' . get_post_meta( $thepostid, 'length', true ) . '" placeholder="'. __('Length', 'jigoshop') . '" />
+						<input type="number" step="any" name="width" class="short" value="' . get_post_meta( $thepostid, 'width', true ) . '" placeholder="'. __('Width', 'jigoshop') . '" />
+						<input type="number" step="any" name="height" class="short" value="' . get_post_meta( $thepostid, 'height', true ) . '" placeholder="'. __('Height', 'jigoshop') . '" />
 					</p>
 					';
 				}
