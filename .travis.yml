@@ -17,7 +17,7 @@ before_script:
   - cp vendor/unittests-config.travis.php vendor/wordpress-tests/unittests-config.php
   - wget http://wordpress.org/latest.tar.gz
   - tar -xzf latest.tar.gz -C vendor
-  - mysql -e "create database IF NOT EXISTS test;" -uroot
+  - mysql -e "create database IF NOT EXISTS jigoshop_test;" -uroot
 
 # omitting "script:" will default to phpunit
 script: phpunit
