@@ -7,7 +7,7 @@ $path = './vendor/wordpress-tests/bootstrap.php';
 if( file_exists( $path ) ) {
     require_once $path;
 } else {
-    exit( "Couldn't find wordpress-tests please run git submodule init \n" );
+    exit( "Couldn't find wordpress-tests please run\n git submodule init && git submodule update\n" );
 }
-//load jiigoshop all
-require_once './jigoshop.php';;
+//load all jigoshop classes
+require_once './jigoshop.php';

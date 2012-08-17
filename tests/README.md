@@ -39,8 +39,6 @@ Run the test from jiigoshop plugin root folder
     phpunit
 
 
-cd j
-
 Install phpunit on Ubuntu
 -----------
 
