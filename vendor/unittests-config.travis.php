@@ -1,6 +1,10 @@
 <?php
-/* Path to the WordPress codebase you'd like to test. Add a backslash in the end. */
-define( 'ABSPATH', 'path-to-WP/' );
+/*
+This file is used in travis-ci testing and copied into vendor/wordpress-tests
+
+
+Path to the WordPress codebase which is copied into vendor/wordpress  */
+define( 'ABSPATH', '../wordpress/' );
 
 define( 'DB_NAME', 'jigoshop_test' );
 define( 'DB_USER', 'user' );
