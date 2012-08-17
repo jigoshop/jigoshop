@@ -6,16 +6,11 @@ php:
   # using major version aliases
 
   # aliased to 5.2.17
-  - 5.2
+  #- 5.2
   # aliased to a recent 5.3.x version
   - 5.3
   # aliased to a recent 5.4.x version
-  - 5.4
-
-# optionally specify a list of environments, for example to test different RDBMS
-env:
-  - DB=mysql
-  - DB=pgsql
+  #- 5.4
 
 # execute any number of scripts before the test run, custom env's are available as variables
 before_script:
@@ -26,11 +21,4 @@ before_script:
 
 # omitting "script:" will default to phpunit
 # use the $DB env variable to determine the phpunit.xml to use
-script: phpunit --configuration phpunit_$DB.xml --coverage-text
-
-# configure notifications (email, IRC, campfire etc)
-notifications:
-  irc: "irc.freenode.org#travis"
-
-  wget http://pecl.php.net/get/memcache-2.2.6.tgz
-  tar -xzf memcache-2.2.6.tgz
+script: phpunit
