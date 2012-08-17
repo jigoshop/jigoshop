@@ -14,7 +14,7 @@ php:
 
 # execute any number of scripts before the test run, custom env's are available as variables
 before_script:
-  - cp vendor/unittests-config.travis.php vendor/wordpress-tests/unittests-config.php
+  - cp tests/unittests-config.travis.php vendor/wordpress-tests/unittests-config.php
   - wget http://wordpress.org/latest.tar.gz
   - tar -xzf latest.tar.gz -C vendor
   - mysql -e "create database IF NOT EXISTS jigoshop_test;" -uroot
