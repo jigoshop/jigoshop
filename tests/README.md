@@ -13,7 +13,7 @@ Clone the repo, best into a local wordpress plugin folder.
 
     cd jigoshop
     # init submodules to grab wordpress test helper
-    git submodule init & git submodule update
+    git submodule init && git submodule update
 
 
 Copy & edit wordpress test environment file
@@ -39,7 +39,7 @@ Run the test from jiigoshop plugin root folder
     phpunit
 
 
-
+cd j
 
 Install phpunit on Ubuntu
 -----------
