@@ -6,7 +6,8 @@ This file is used in travis-ci testing and copied into vendor/wordpress-tests
 Path to the WordPress codebase could alose be detected dynami, as wordpress is copied into vendor/wordpress
 also see .travis.yml
 */
-define( 'ABSPATH', '/home/vagrant/builds/schorsch/jigoshop/vendor/wordpress/' );
+define( 'ABSPATH', realpath(dirname(__FILE__)).'/../wordpress/' );
+
 
 define( 'DB_NAME', 'jigoshop_test' );
 define( 'DB_USER', 'user' );
