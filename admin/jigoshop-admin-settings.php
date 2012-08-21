@@ -706,6 +706,7 @@ function jigoshop_admin_option_display($options) {
 				</tr><?php
 				break;
 		case 'coupons' :
+			_deprecated_argument( 'jigoshop_admin_option_display', '1.3', 'The coupons type has no alternative. Use the new custom post Coupons Menu item under Jigoshop.' );
 			$coupons = new jigoshop_coupons();
 			$coupon_codes = $coupons->get_coupons();
 		?>
