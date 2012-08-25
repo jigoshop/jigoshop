@@ -284,7 +284,7 @@ function jigoshop_add_to_cart_action($url = false)
             exit;
         }
     }
-} //End make pluggable
+
     //if product was successfully added to the cart
     if ($product_added) {
 
@@ -332,7 +332,7 @@ function jigoshop_add_to_cart_action($url = false)
 
     exit;
 }
-
+} //End make pluggable
 function jigoshop_ajax_update_order_review() {
 
 	check_ajax_referer( 'update-order-review', 'security' );
