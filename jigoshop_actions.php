@@ -179,7 +179,7 @@ function jigoshop_update_cart_action() {
  * Add to cart
  **/
 add_action( 'init', 'jigoshop_add_to_cart_action' );
-
+if (!function_exists('jigoshop_add_to_cart_action')) { //make function pluggable
 function jigoshop_add_to_cart_action($url = false)
 {
     $jigoshop_options = Jigoshop_Base::get_options();
@@ -284,7 +284,7 @@ function jigoshop_add_to_cart_action($url = false)
             exit;
         }
     }
-
+} //End make pluggable
     //if product was successfully added to the cart
     if ($product_added) {
 
