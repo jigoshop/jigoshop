@@ -160,6 +160,8 @@ function jigoshop_system_info() {
 
 	WP_DEBUG:                 <?php echo defined('WP_DEBUG') ? WP_DEBUG ? 'Enabled' . "\n" : 'Disabled' . "\n" : 'Not set' . "\n" ?>
 
+	WP Table Prefix:          <?php global $wpdb; echo "Length: ". strlen($wpdb->prefix); echo " Status:"; if (strlen($wpdb->prefix)>16){echo " ERROR: Too Long";} else {echo " Acceptable";} echo "\n"; ?>
+
 	Show On Front:            <?php echo get_option('show_on_front') . "\n" ?>
 	Page On Front:            <?php echo get_option('page_on_front') . "\n" ?>
 	Page For Posts:           <?php echo get_option('page_for_posts') . "\n" ?>
