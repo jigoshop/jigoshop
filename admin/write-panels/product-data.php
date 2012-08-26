@@ -253,7 +253,9 @@ function jigoshop_product_data_box() {
 						'label'         => __( 'Weight', 'jigoshop' ),
 						'after_label'   => ' ('.Jigoshop_Base::get_options()->get_option('jigoshop_weight_unit').')',
 						'type'          => 'number',
+						'step'          => 'any', 
 						'placeholder'   => '0.00',
+						//Fixes glitch: Steps not explicitly defined "Any" not allowing decimal weights
 					);
 					echo Jigoshop_Forms::input( $args );
 				}
@@ -262,6 +264,7 @@ function jigoshop_product_data_box() {
 				if( Jigoshop_Base::get_options()->get_option('jigoshop_enable_dimensions', true) !== 'no' ) {
 					echo '
 					<p class="form-field dimensions_field">
+					//Step set to 0.01 -> Fixes glitch: Step "Any" not allowing decimal weights/dimensions in some versions of Chrome
 						<label for"product_length">'. __('Dimensions', 'jigoshop') . ' ('.Jigoshop_Base::get_options()->get_option('jigoshop_dimension_unit').')' . '</label>
 						<input type="number" step="any" name="length" class="short" value="' . get_post_meta( $thepostid, 'length', true ) . '" placeholder="'. __('Length', 'jigoshop') . '" />
 						<input type="number" step="any" name="width" class="short" value="' . get_post_meta( $thepostid, 'width', true ) . '" placeholder="'. __('Width', 'jigoshop') . '" />
