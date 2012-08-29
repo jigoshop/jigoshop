@@ -1313,41 +1313,6 @@ class jigoshop_product extends Jigoshop_Base {
 
 		return $available_attributes;
 	}
-/*
-				//check attributes of all variations that are visible (enabled)
-				if ($variation instanceof jigoshop_product_variation && $variation->is_visible()) {
-					$options = $variation->get_variation_attributes();
-
-					if (is_array($options)) {
-						foreach ($options as $aname => $avalue) {
-							if ($aname == $name) {
-								$values[] = $avalue;
-							}
-						}
-					}
-				}
-			}
-
-			sort( $values );
-
-
-			if ( in_array(  '', $values)) {
-				$options = $attribute['value'];
-				if (!is_array($options)) {
-					$options = explode(',', $options);
-				}
-
-				$values = $options;
-			}
-
-			//make sure values are unique
-			$values = array_unique($values);
-
-			$available[$attribute['name']] = $values;
-		}
-
-		return $available;
-	}*/
 
 	/**
 	 * Get attribute taxonomies. Taxonomies are lazy loaded.

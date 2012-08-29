@@ -28,6 +28,9 @@ delete_transient( 'jigoshop_widget_cache' );
 remove_role( 'customer' );
 
 // Pages
+if ( !defined( "JIGOSHOP_OPTIONS" )) define( "JIGOSHOP_OPTIONS", 'jigoshop_options' );
+include_once( 'classes/abstract/jigoshop_base.class.php' );
+include_once( 'classes/jigoshop_options.class.php' );
 $page_ids = Jigoshop_Base::get_options()->get_option( 'jigoshop_page-ids' );
 if ( !empty( $page_ids ) && is_array( $page_ids ) )
 	foreach ( $page_ids as $id )

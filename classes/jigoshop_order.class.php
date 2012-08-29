@@ -124,8 +124,8 @@ class jigoshop_order extends Jigoshop_Base {
 			$this->billing_address_2,
 			$this->billing_city,
 			$this->billing_state,
-			$this->billing_postcode,
-			$country
+			$country,
+			$this->billing_postcode
 		));
 		foreach ($address as $part) if (!empty($part)) $formatted_address[] = $part;
 		$this->formatted_billing_address = implode(', ', $formatted_address);
@@ -138,8 +138,8 @@ class jigoshop_order extends Jigoshop_Base {
 				$this->shipping_address_2,
 				$this->shipping_city,
 				$this->shipping_state,
-				$this->shipping_postcode,
-				$country
+				$country,
+				$this->shipping_postcode
 			));
 			foreach ($address as $part) if (!empty($part)) $formatted_address[] = $part;
 			$this->formatted_shipping_address = implode(', ', $formatted_address);
@@ -342,10 +342,17 @@ class jigoshop_order extends Jigoshop_Base {
 
 			}
 			
-			$meta_data = apply_filters( 'jigoshop_display_item_meta_data_email', $item );
-			if ( $meta_data != '' ) :
-			  $return .= PHP_EOL . $meta_data;
-			endif;			
+			//  Check that this filter supplied by OptArt is in use before applying it.
+			//  This filter in Jigoshop 1.3 is only used by Jigoshop Product Addons and should be revised because
+			//  if that plugin is not active, emails will have a line item with 'Array' on each product description.
+			//  TODO: Jigoshop never intends to use $item like this, a filter is incorrect. -JAP-
+			global $wp_filter;
+			if ( isset( $wp_filter['jigoshop_display_item_meta_data_email'] )) {
+				$meta_data = apply_filters( 'jigoshop_display_item_meta_data_email', $item );
+				if ( $meta_data != '' ) {
+				  $return .= PHP_EOL . $meta_data;
+				}		
+			}
 			
 			if ( ! empty( $item['customization'] ) ) :
 				$return .= PHP_EOL . apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') ) . PHP_EOL . $item['customization'];
@@ -377,33 +384,6 @@ class jigoshop_order extends Jigoshop_Base {
 		endforeach;
 
 		return $return;
-
-	}
-
-	/** Output bank transfer details for display in emails */
-	function email_bank_details() {
-
-
-		$title 			= self::get_options()->get_option('jigoshop_bank_transfer_title');
-		$description 	= self::get_options()->get_option('jigoshop_bank_transfer_description');
-		$bank_name 		= self::get_options()->get_option('jigoshop_bank_transfer_bank_name');
-		$acc_number 	= self::get_options()->get_option('jigoshop_bank_transfer_acc_number');
-		$sort_code 		= self::get_options()->get_option('jigoshop_bank_transfer_sort_code');
-		$iban 			= self::get_options()->get_option('jigoshop_bank_transfer_iban');
-		$bic 			= self::get_options()->get_option('jigoshop_bank_transfer_bic');
-		$additional 	= self::get_options()->get_option('jigoshop_bank_transfer_additional');
-
-		$bank_info = null;
-		if ($description) $bank_info .= wpautop(wptexturize($description)) . PHP_EOL;
-		if ($bank_name) $bank_info .= __('Bank Name', 'jigoshop').": \t" . wptexturize($bank_name) . PHP_EOL;
-		if ($acc_number) $bank_info .= __('Account Number', 'jigoshop').":\t " .wptexturize($acc_number) . PHP_EOL;
-		if ($sort_code) $bank_info .= __('Sort Code', 'jigoshop').":\t" . wptexturize($sort_code) . PHP_EOL;
-		if ($iban) $bank_info .= __('IBAN', 'jigoshop').": \t\t" .wptexturize($iban) . PHP_EOL;
-		if ($bic) $bank_info .= __('BIC', 'jigoshop').": \t\t " .wptexturize($bic) . PHP_EOL;
-		if ($additional) $bank_info .= wpautop(__('Additional Information', 'jigoshop').": " . PHP_EOL . wpautop(wptexturize($additional)));
-
-		if ($bank_info)
-			return wpautop($bank_info);
 
 	}
 

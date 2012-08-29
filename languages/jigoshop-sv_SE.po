@@ -588,7 +588,7 @@ msgstr "har restbeställts."
 msgid "You have taken too long. Please go back and refresh the page."
 msgstr "Du har tagit för lång tid. Gå tillbaka och uppdatera sidan."
 
-# @ jigowatt
+# @ jigoshop
 #: jigoshop.php:472
 msgid "Please rate the product."
 msgstr "Bedöm produkten."

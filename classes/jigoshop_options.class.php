@@ -614,28 +614,28 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			)
 		);
 		
-		self::$default_options[] = array(
-			'name'		=> __('Beta testing','jigoshop'),
-			'desc' 		=> __('Use <strong><em>at your own risk</em></strong>.  Do <strong><em>not</em></strong> use on your <strong>main</strong> production Shop.','jigoshop'),
-			'tip' 		=> __('Allow Beta versions of Jigoshop updates to be shown in the WordPress plugin manager. Beta updates will display normally there if available. For Jigoshop Beta Testers <strong>ONLY!</strong>','jigoshop'),
-			'id' 		=> 'jigoshop_use_beta_version',
-			'std' 		=> 'no',
-			'type' 		=> 'checkbox',
-			'choices'	=> array(
-				'no'			=> __('No', 'jigoshop'),
-				'yes'			=> __('Yes', 'jigoshop')
-			)
-		);
-			
-		self::$default_options[] = array(
-			'name'		=> '',
-			'desc' 		=> __('Check for update now','jigoshop'),
-			'tip' 		=> __('Manually check if a beta version is available.','jigoshop'),
-			'id' 		=> 'jigoshop_check_beta_now',
-			'std' 		=> '',
-			'type' 		=> 'button',
-			'extra'     => is_multisite() ? admin_url().'network/' : '' . 'admin.php?page=jigoshop_settings&amp;action=jigoshop_beta_check&amp;_wpnonce='.(function_exists('wp_create_nonce')?wp_create_nonce('jigoshop_check_beta_'.get_current_user_id().'_wpnonce'):'')
-		);
+// 		self::$default_options[] = array(
+// 			'name'		=> __('Beta testing','jigoshop'),
+// 			'desc' 		=> __('Use <strong><em>at your own risk</em></strong>.  Do <strong><em>not</em></strong> use on your <strong>main</strong> production Shop.','jigoshop'),
+// 			'tip' 		=> __('Allow Beta versions of Jigoshop updates to be shown in the WordPress plugin manager. Beta updates will display normally there if available. For Jigoshop Beta Testers <strong>ONLY!</strong>','jigoshop'),
+// 			'id' 		=> 'jigoshop_use_beta_version',
+// 			'std' 		=> 'no',
+// 			'type' 		=> 'checkbox',
+// 			'choices'	=> array(
+// 				'no'			=> __('No', 'jigoshop'),
+// 				'yes'			=> __('Yes', 'jigoshop')
+// 			)
+// 		);
+// 			
+// 		self::$default_options[] = array(
+// 			'name'		=> '',
+// 			'desc' 		=> __('Check for update now','jigoshop'),
+// 			'tip' 		=> __('Manually check if a beta version is available.','jigoshop'),
+// 			'id' 		=> 'jigoshop_check_beta_now',
+// 			'std' 		=> '',
+// 			'type' 		=> 'button',
+// 			'extra'     => is_multisite() ? admin_url().'network/' : '' . 'admin.php?page=jigoshop_settings&amp;action=jigoshop_beta_check&amp;_wpnonce='.(function_exists('wp_create_nonce')?wp_create_nonce('jigoshop_check_beta_'.get_current_user_id().'_wpnonce'):'')
+// 		);
 			
 		self::$default_options[] = array( 'name' => __( 'Invoicing', 'jigoshop' ), 'type' => 'title', 'desc' => '' );
 		
@@ -1116,7 +1116,8 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		
 		self::$default_options[] = array( 'name' => __('Pricing Options', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 		
-		$cSymbol = get_jigoshop_currency_symbol();
+		if ( function_exists('get_jigoshop_currency_symbol') ) $cSymbol = get_jigoshop_currency_symbol();
+		else $cSymbol = '';
 		$cCode = $this->get_option( 'jigoshop_currency' ) ? $this->get_option( 'jigoshop_currency' ) : 'GBP';
 		$cSep = $this->get_option( 'jigoshop_price_decimal_sep' ) ? $this->get_option( 'jigoshop_price_decimal_sep' ) : '.';
 		

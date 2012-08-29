@@ -5,10 +5,10 @@ jQuery.fn.animateHighlight = function(highlightColor, duration) {
 	this.stop().css("background-color", highlightBg).animate({backgroundColor: originalBg}, animateMs);
 };
 
-jQuery(function(){
+jQuery(function() {
 
 	// Lightbox
-	if (params.load_fancybox) {
+	if (jigoshop_params.load_fancybox) {
 		jQuery('a.zoom').fancybox({
 			'transitionIn'	:	'elastic',
 			'transitionOut'	:	'elastic',
@@ -32,14 +32,14 @@ jQuery(function(){
 	var min_price = parseInt(jQuery('.price_slider_amount #min_price').val());
 	var max_price = parseInt(jQuery('.price_slider_amount #max_price').val());
 
-	if (params.min_price) {
-		current_min_price = params.min_price;
+	if (jigoshop_params.min_price) {
+		current_min_price = jigoshop_params.min_price;
 	} else {
 		current_min_price = min_price;
 	}
 
-	if (params.max_price) {
-		current_max_price = params.max_price;
+	if (jigoshop_params.max_price) {
+		current_max_price = jigoshop_params.max_price;
 	} else {
 		current_max_price = max_price;
 	}
@@ -50,12 +50,12 @@ jQuery(function(){
 		max: max_price,
 		values: [ current_min_price, current_max_price ],
 		create : function( event, ui ) {
-			jQuery( ".price_slider_amount span" ).html( params.currency_symbol + current_min_price + " - " + params.currency_symbol + current_max_price );
+			jQuery( ".price_slider_amount span" ).html( jigoshop_params.currency_symbol + current_min_price + " - " + jigoshop_params.currency_symbol + current_max_price );
 			jQuery( ".price_slider_amount #min_price" ).val(current_min_price);
 			jQuery( ".price_slider_amount #max_price" ).val(current_max_price);
 		},
 		slide: function( event, ui ) {
-			jQuery( ".price_slider_amount span" ).html( params.currency_symbol + ui.values[ 0 ] + " - " + params.currency_symbol + ui.values[ 1 ] );
+			jQuery( ".price_slider_amount span" ).html( jigoshop_params.currency_symbol + ui.values[ 0 ] + " - " + jigoshop_params.currency_symbol + ui.values[ 1 ] );
 			jQuery( "input#min_price" ).val(ui.values[ 0 ]);
 			jQuery( "input#max_price" ).val(ui.values[ 1 ]);
 		}
@@ -83,7 +83,7 @@ jQuery(function(){
 	});
 
 	/* states */
-    var states_json = params.countries.replace(/&quot;/g, '"');
+    var states_json = jigoshop_params.countries.replace(/&quot;/g, '"');
     var states = jQuery.parseJSON( states_json );
 
     jQuery('select.country_to_state').change(function(){
@@ -97,12 +97,12 @@ jQuery(function(){
         if (states[country]) {
             var options = '';
             var state = states[country];
-            var state_selected = params.billing_state;
+            var state_selected = jigoshop_params.billing_state;
             if (input_name == 'calc_shipping_state') {
                 state_selected = jQuery('#calc_shipping_state').val();
             }
             else {
-                state_selected = params.shipping_state;
+                state_selected = jigoshop_params.shipping_state;
             }
             for(var index in state) {
 
@@ -114,13 +114,13 @@ jQuery(function(){
             }
             if (jQuery(state_box).is('input')) {
                 // Change for select
-                jQuery(state_box).replaceWith('<select name="' + input_name + '" id="' + input_id + '"><option value="">' + params.select_state_text + '</option></select>');
+                jQuery(state_box).replaceWith('<select name="' + input_name + '" id="' + input_id + '"><option value="">' + jigoshop_params.select_state_text + '</option></select>');
                 state_box = jQuery('#' + jQuery(this).attr('rel'));
             }
             jQuery(state_box).html(options);
         } else {
             if (jQuery(state_box).is('select')) {
-                jQuery(state_box).replaceWith('<input class="input-text" type="text" placeholder="' + params.state_text + '" name="' + input_name + '" id="' + input_id + '" />');
+                jQuery(state_box).replaceWith('<input class="input-text" type="text" placeholder="' + jigoshop_params.state_text + '" name="' + input_name + '" id="' + input_id + '" />');
                 state_box = jQuery('#' + jQuery(this).attr('rel'));
             }
         }
@@ -161,7 +161,7 @@ jQuery(function(){
 	jQuery("input[name=shipping_rates]").click(function(){
 		var dataString = 'shipping_rates=' + jQuery(this).val();
 		var cart_url = jQuery("input[name=cart-url]").val();
-		jQuery('.cart_totals_table').block({message: null, overlayCSS: {background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
+		jQuery('.cart_totals_table').block({message: null, overlayCSS: {background: '#fff url(' + jigoshop_params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
 		jQuery.ajax({
 			type: "POST",
 			url: cart_url,
@@ -360,158 +360,157 @@ jQuery(function(){
 		jQuery(item).data('num', i);
 	});
 
-});
+	if ( jigoshop_params.is_checkout ) {
 
-if ( params.is_checkout ) {
+		var updateTimer;
+		var jqxhr;
 
-	var updateTimer;
-	var jqxhr;
+		function update_checkout() {
 
-	function update_checkout() {
+			if (jqxhr) jqxhr.abort();
 
-		if (jqxhr) jqxhr.abort();
+			var method        = jQuery('#shipping_method').val();
+			var coupon        = jQuery('#coupon_code').val();
+			var payment_method= jQuery('input[name=payment_method]:checked').val();
+			var country       = jQuery('#billing-country').val();
+			var state         = jQuery('#billing-state').val();
+			var postcode      = jQuery('input#billing-postcode').val();
 
-		var method        = jQuery('#shipping_method').val();
-		var coupon        = jQuery('#coupon_code').val();
-		var payment_method= jQuery('input[name=payment_method]:checked').val();
-		var country       = jQuery('#billing-country').val();
-		var state         = jQuery('#billing-state').val();
-		var postcode      = jQuery('input#billing-postcode').val();
+			if (jQuery('#shiptobilling input').is(':checked') || jQuery('#shiptobilling input').size()==0) {
+				var s_country = jQuery('#billing-country').val();
+				var s_state   = jQuery('#billing-state').val();
+				var s_postcode= jQuery('input#billing-postcode').val();
 
-		if (jQuery('#shiptobilling input').is(':checked') || jQuery('#shiptobilling input').size()==0) {
-			var s_country = jQuery('#billing-country').val();
-			var s_state   = jQuery('#billing-state').val();
-			var s_postcode= jQuery('input#billing-postcode').val();
+			} else {
+				var s_country = jQuery('#shipping-country').val();
+				var s_state   = jQuery('#shipping-state').val();
+				var s_postcode= jQuery('input#shipping-postcode').val();
+			}
 
-		} else {
-			var s_country = jQuery('#shipping-country').val();
-			var s_state   = jQuery('#shipping-state').val();
-			var s_postcode= jQuery('input#shipping-postcode').val();
+			jQuery('#order_methods, #order_review').block({message: null, overlayCSS: {background: '#fff url(' + jigoshop_params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
+
+			var data = {
+				action:             'jigoshop_update_order_review',
+				security:           jigoshop_params.update_order_review_nonce,
+				shipping_method:    method,
+				country:            country,
+				state:              state,
+				postcode:           postcode,
+				s_country:          s_country,
+				s_state:            s_state,
+				s_postcode:         s_postcode,
+				payment_method:     payment_method,
+				coupon_code:        coupon,
+				post_data:          jQuery('form.checkout').serialize()
+			};
+
+			jqxhr = jQuery.ajax({
+				type:       'POST',
+				url:        jigoshop_params.ajax_url,
+				data:       data,
+				success:    function( response ) {
+					/* Prevent stacking of errors. */
+					jQuery('.jigoshop_error, .jigoshop_message').remove();
+					jQuery('#order_methods, #order_review').remove();
+					jQuery('#order_review_heading').after(response);
+					jQuery('#order_review input[name=payment_method]:checked').click();
+				}
+			});
+
 		}
 
-		jQuery('#order_methods, #order_review').block({message: null, overlayCSS: {background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
+		jQuery(function(){
 
-		var data = {
-			action: 			'jigoshop_update_order_review',
-			security: 			params.update_order_review_nonce,
-			shipping_method: 	method,
-			country: 			country,
-			state: 				state,
-			postcode: 			postcode,
-			s_country: 			s_country,
-			s_state: 			s_state,
-			s_postcode: 		s_postcode,
-			payment_method:     payment_method,
-			coupon_code:        coupon,
-			post_data:			jQuery('form.checkout').serialize()
-		};
+			jQuery('p.password').hide();
 
-		jqxhr = jQuery.ajax({
-			type: 		'POST',
-			url: 		params.ajax_url,
-			data: 		data,
-			success: 	function( response ) {
-				/* Prevent stacking of errors. */
-				jQuery('.jigoshop_error, .jigoshop_message').remove();
-				jQuery('#order_methods, #order_review').remove();
-				jQuery('#order_review_heading').after(response);
-				jQuery('#order_review input[name=payment_method]:checked').click();
-			}
-		});
+			jQuery('input.show_password').change(function(){
+				jQuery('p.password').slideToggle();
+			});
 
-	}
-
-	jQuery(function(){
-
-		jQuery('p.password').hide();
-
-		jQuery('input.show_password').change(function(){
-			jQuery('p.password').slideToggle();
-		});
-
-		jQuery('div.shipping-address').hide();
-
-		jQuery('#shiptobilling input').change(function(){
 			jQuery('div.shipping-address').hide();
-			if (!jQuery(this).is(':checked')) {
-				jQuery('div.shipping-address').slideDown();
-			}
-		}).change();
 
-		if (params.option_guest_checkout=='yes') {
-
-			jQuery('div.create-account').hide();
-
-			jQuery('input#createaccount').change(function(){
-				jQuery('div.create-account').hide();
-				if (jQuery(this).is(':checked')) {
-					jQuery('div.create-account').slideDown();
+			jQuery('#shiptobilling input').change(function(){
+				jQuery('div.shipping-address').hide();
+				if (!jQuery(this).is(':checked')) {
+					jQuery('div.shipping-address').slideDown();
 				}
 			}).change();
 
-		}
+			if (jigoshop_params.option_guest_checkout=='yes') {
 
-		jQuery('.payment_methods input.input-radio').live('click', function(){
-			jQuery('div.payment_box').hide();
-			if (jQuery(this).is(':checked')) {
-				jQuery('div.payment_box.' + jQuery(this).attr('ID')).slideDown();
+				jQuery('div.create-account').hide();
+
+				jQuery('input#createaccount').change(function(){
+					jQuery('div.create-account').hide();
+					if (jQuery(this).is(':checked')) {
+						jQuery('div.create-account').slideDown();
+					}
+				}).change();
+
 			}
-		});
 
-		jQuery('#order_review input[name=payment_method]:checked').click();
-
-		jQuery('form.login').hide();
-
-		jQuery('a.showlogin').click(function(e){
-			e.preventDefault();
-			jQuery('form.login').slideToggle();
-		});
-
-		/* Update totals */
-		jQuery('#shipping_method').live('change', function(){
-			clearTimeout(updateTimer);
-			update_checkout();
-		}).change();
-		jQuery('#coupon_code').live('change', function(e){
-			clearTimeout(updateTimer);
-			update_checkout();
-		}).change();
-		jQuery('input#billing-country, input#billing-state, #billing-postcode, input#shipping-country, input#shipping-state, #shipping-postcode').live('keydown', function(){
-			clearTimeout(updateTimer);
-			updateTimer = setTimeout("update_checkout()", '5000');
-		});
-		jQuery('select#billing-country, select#billing-state, select#shipping-country, select#shipping-state, #shiptobilling input').live('change', function(){
-			clearTimeout(updateTimer);
-			update_checkout();
-		});
-
-		/* AJAX Form Submission */
-		jQuery('form.checkout').submit(function(){
-			var form = this;
-			jQuery(form).block({message: null, overlayCSS: {background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
-			jQuery.ajax({
-				type: 		'POST',
-				url: 		params.checkout_url,
-				data: 		jQuery(form).serialize(),
-				success: 	function( code ) {
-					jQuery('.jigoshop_error, .jigoshop_message').remove();
-					try {
-						success = jQuery.parseJSON( code );
-						window.location = decodeURI(success.redirect);
-					}
-					catch(err) {
-						jQuery(form).prepend( code );
-						jQuery(form).unblock();
-						jQuery.scrollTo(jQuery(form).parent(), {easing:'swing'});
-					}
-				},
-				dataType: 	"html"
+			jQuery('.payment_methods input.input-radio').live('click', function(){
+				jQuery('div.payment_box').hide();
+				if (jQuery(this).is(':checked')) {
+					jQuery('div.payment_box.' + jQuery(this).attr('ID')).slideDown();
+				}
 			});
-			return false;
-		});
 
-	});
-}
+			jQuery('#order_review input[name=payment_method]:checked').click();
+
+			jQuery('form.login').hide();
+
+			jQuery('a.showlogin').click(function(e){
+				e.preventDefault();
+				jQuery('form.login').slideToggle();
+			});
+
+			/* Update totals */
+			jQuery('#shipping_method').live('change', function(){
+				clearTimeout(updateTimer);
+				update_checkout();
+			}).change();
+			jQuery('#coupon_code').live('change', function(e){
+				clearTimeout(updateTimer);
+				update_checkout();
+			}).change();
+			jQuery('input#billing-country, input#billing-state, #billing-postcode, input#shipping-country, input#shipping-state, #shipping-postcode').live('keydown', function(){
+				clearTimeout(updateTimer);
+				updateTimer = setTimeout("update_checkout()", '5000');
+			});
+			jQuery('select#billing-country, select#billing-state, select#shipping-country, select#shipping-state, #shiptobilling input').live('change', function(){
+				clearTimeout(updateTimer);
+				update_checkout();
+			});
+
+			/* AJAX Form Submission */
+			jQuery('form.checkout').submit(function(){
+				var form = this;
+				jQuery(form).block({message: null, overlayCSS: {background: '#fff url(' + jigoshop_params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
+				jQuery.ajax({
+					type: 		'POST',
+					url: 		jigoshop_params.checkout_url,
+					data: 		jQuery(form).serialize(),
+					success: 	function( code ) {
+						jQuery('.jigoshop_error, .jigoshop_message').remove();
+						try {
+							success = jQuery.parseJSON( code );
+							window.location = decodeURI(success.redirect);
+						}
+						catch(err) {
+							jQuery(form).prepend( code );
+							jQuery(form).unblock();
+							jQuery.scrollTo(jQuery(form).parent(), {easing:'swing'});
+						}
+					},
+					dataType: 	"html"
+				});
+				return false;
+			});
+
+		});
+	}
+});
 
 //message fade in
 jQuery(document).ready(function(){

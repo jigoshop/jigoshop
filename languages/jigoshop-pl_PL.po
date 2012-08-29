@@ -50,7 +50,7 @@ msgstr "  <small>(bez podatku)</small>"
 msgid "You have taken too long. Please go back and refresh the page."
 msgstr "Zbyt długi okres bezczynności na stronie. Proszę wrócić i odświeżyć stronę."
 
-#@ jigowatt
+#@ jigoshop
 #: jigoshop.php:897
 msgid "Please rate the product."
 msgstr "Oceń produkt proszę."

@@ -250,7 +250,7 @@ if (!function_exists('jigoshop_template_single_meta')) {
         $jigoshop_options = Jigoshop_Base::get_options();
 		echo '<div class="product_meta">';
 		if ($jigoshop_options->get_option('jigoshop_enable_sku')=='yes' && !empty($_product->sku)) :
-			echo '<div class="sku">SKU: ' . $_product->sku . '</div>';
+			echo '<div class="sku">'.__('SKU','jigoshop').': ' . $_product->sku . '</div>';
 		endif;
 
 		echo $_product->get_categories( ', ', ' <div class="posted_in">' . __( 'Posted in ', 'jigoshop' ) . '', '.</div>');
@@ -377,7 +377,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
         foreach($children as $child) {
             /* @var $variation jigoshop_product_variation */
             $variation = $_product->get_child( $child );
-            if($variation instanceof jigoshop_product_variation && $variation->is_visible()) {
+            if($variation instanceof jigoshop_product_variation) {
                 $vattrs = $variation->get_variation_attributes();
                 $availability = $variation->get_availability();
 
@@ -431,7 +431,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 
                 $variationsAvailable[] = array(
 					'variation_id'     => $variation->get_variation_id(),
-					'sku'              => '<div class="sku">SKU: ' . $variation->get_sku() . '</div>',
+					'sku'              => '<div class="sku">'.__('SKU','jigoshop').': ' . $variation->get_sku() . '</div>',
 					'attributes'       => $vattrs,
 					'in_stock'         => $variation->is_in_stock(),
 					'image_src'        => $image,

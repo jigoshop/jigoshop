@@ -747,7 +747,7 @@ msgstr " <small>(ex. btw)</small>"
 msgid "You have taken too long. Please go back and refresh the page."
 msgstr "U heeft er te lang over gedaan. Gelieve terug te gaan en de pagina te vernieuwen."
 
-# @ jigowatt
+# @ jigoshop
 #: jigoshop.php:500
 msgid "Please rate the product."
 msgstr "Gelieve het product te beoordelen."

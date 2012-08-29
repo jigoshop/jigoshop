@@ -52,7 +52,7 @@ msgstr " <small>(eksl. moms)</small>"
 msgid "You have taken too long. Please go back and refresh the page."
 msgstr "Du har brukt for lang tid. Vennligst gå tilbake og oppdater siden."
 
-# @ jigowatt
+# @ jigoshop
 #: \wp-content\plugins\jigoshop\jigoshop.php:825
 msgid "Please rate the product."
 msgstr "Gi karakter på produktet"

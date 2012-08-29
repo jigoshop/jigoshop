@@ -134,7 +134,7 @@ function jigoshop_custom_product_columns($column) {
 			}
 		break;
 		case "product-type" :
-			echo ucwords($product->product_type);
+			echo __(ucwords($product->product_type), 'jigoshop');
 			echo '<br/>';
 			if ( $jigoshop_options->get_option('jigoshop_enable_sku', true) == 'yes' && $sku = get_post_meta( $post->ID, 'sku', true )) {
 				echo $sku;
@@ -263,7 +263,7 @@ function jigoshop_filter_products_type() {
 	echo "<option value='0'>" . __('Show all types', 'jigoshop') . "</option>";
 
 	foreach($terms as $term) {
-		echo "<option value='" . esc_attr( $term->slug ) . "' ".selected($term->slug, isset($wp_query->query['product_type']) ? $wp_query->query['product_type'] : '', false).">".esc_html( ucfirst($term->name) )." (".absint( $term->count ).")</option>";
+		echo "<option value='" . esc_attr( $term->slug ) . "' ".selected($term->slug, isset($wp_query->query['product_type']) ? $wp_query->query['product_type'] : '', false).">".__(esc_html( ucfirst($term->name) ), 'jigoshop')." (".absint( $term->count ).")</option>";
 	}
 
 	echo "</select>";

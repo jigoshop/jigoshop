@@ -41,13 +41,13 @@ function jigoshop_order_tracking( $atts ) {
 		elseif ($order->id && $order_email && $order->get_order( $order->id )) :
 
 			if ($order->billing_email == $order_email) :
-				echo '<p>'.sprintf( __('Order #%s which was made %s has the status &ldquo;%s&rdquo;', 'jigoshop'), $order->id, human_time_diff(strtotime($order->order_date), current_time('timestamp')).__(' ago', 'jigoshop'), $order->status );
+				echo '<p>'.sprintf( __('Order #%s which was made %s ago and has the status "%s"', 'jigoshop'), $order->id, human_time_diff( strtotime( $order->order_date ), current_time( 'timestamp' )), __( $order->status, 'jigoshop' ) );
 
-				if ($order->status == 'completed') {
-					$completed = get_post_meta( $order->id, '_js_completed_date' );
-					if ( is_array( $completed ) && ! empty( $completed ) ) $completed = $completed[0];
-					else $completed = 0;    // shouldn't happen, reset to be sure
-					echo sprintf( __(' and was completed %s ago', 'jigoshop'), human_time_diff( $completed, current_time('timestamp')) );
+				if ( $order->status == 'completed' ) {
+					$completed = (array)get_post_meta( $order->id, '_js_completed_date', true );
+					if ( ! empty( $completed )) $completed = $completed[0];
+					else $completed = '';    // shouldn't happen, reset to be sure
+					echo sprintf( __( ' was completed %s ago', 'jigoshop' ), human_time_diff( strtotime( $completed ), current_time( 'timestamp' )) );
 				}
 				echo '.</p>';
 

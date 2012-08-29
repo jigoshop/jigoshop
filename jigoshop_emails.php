@@ -84,7 +84,7 @@ function jigoshop_processing_order_customer_notification($order_id) {
 		echo __('BANK PAYMENT DETAILS', 'jigoshop') . PHP_EOL;
 		echo '=====================================================================' . PHP_EOL;
 
-		echo $order->email_bank_details();
+		echo jigoshop_bank_transfer::get_bank_details();
 
 		echo PHP_EOL;
 

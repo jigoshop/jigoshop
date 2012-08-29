@@ -49,7 +49,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
     	wp_register_script( 'jigoshop-bootstrap-tooltip', jigoshop::assets_url() . '/assets/js/bootstrap-tooltip.min.js', array( 'jquery' ), '2.0.3' );
     	wp_enqueue_script( 'jigoshop-bootstrap-tooltip' );
 
-    	wp_register_script( 'jigoshop-select2', jigoshop::assets_url() . '/assets/js/select2.min.js', array( 'jquery' ), '3.0' );
+    	wp_register_script( 'jigoshop-select2', jigoshop::assets_url() . '/assets/js/select2.min.js', array( 'jquery' ), '3.1' );
     	wp_enqueue_script( 'jigoshop-select2' );
 
 	}
@@ -62,7 +62,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 */
 	public function settings_styles() {
 
-		wp_register_style( 'jigoshop-select2', jigoshop::assets_url() . '/assets/css/select2.css', '', '2.1', 'screen' );
+		wp_register_style( 'jigoshop-select2', jigoshop::assets_url() . '/assets/css/select2.css', '', '3.1', 'screen' );
 		wp_enqueue_style( 'jigoshop-select2' );
 
 		do_action( 'jigoshop_settings_styles' );	// user defined stylesheets should be registered and queued
@@ -884,6 +884,16 @@ class Jigoshop_Options_Parser {
 			break;
 
 		case 'decimal':				// decimal numbers are positive or negative 0-9 inclusive, may include decimal
+			$display .= '<input
+				id="'.$item['id'].'"
+				class="jigoshop-input jigoshop-text '.$class.'"
+				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
+				type="number"
+				step="any"
+				size="20"
+				value="'. esc_attr( $data[$item['id']] ).'" />';
+			break;
+
 		case 'integer':				// integer numbers are positive or negative 0-9 inclusive
 		case 'natural':				// natural numbers are positive 0-9 inclusive
 			$display .= '<input

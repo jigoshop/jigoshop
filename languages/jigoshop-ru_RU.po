@@ -93,7 +93,7 @@ msgstr "<small>(без налогов)</small>"
 msgid "You have taken too long. Please go back and refresh the page."
 msgstr "Процесс слишком затянулся. Пожалуйста, обновите страницу."
 
-# @ jigowatt
+# @ jigoshop
 #: jigoshop.php:700
 msgid "Please rate the product."
 msgstr "Пожалуйста, оцените товар."

@@ -51,7 +51,7 @@ msgstr "<small> (örneğin vergi) </small>"
 msgid "You have taken too long. Please go back and refresh the page."
 msgstr "Çok uzun zaman almış. Lütfen geri dönün ve sayfayı yenileyin."
 
-# @ jigowatt
+# @ jigoshop
 #: \wp-content\plugins\jigoshop\jigoshop.php:825
 msgid "Please rate the product."
 msgstr "Lütfen ürünü oylayın."
