@@ -106,7 +106,14 @@ class jigoshop_cart extends Jigoshop_Singleton {
         // is really the cart total and not shipping. All functions that use set_session are functions
         // that either add to the cart or apply coupons, etc. If the cart page is reloaded, the full
         // calculate_totals is already called.
-        self::calculate_cart_total();
+	// self::calculate_cart_totals();
+
+	// The above five lines speak of not having to calculate the shipping total anymore, this raises
+	// an issue when you have set the option to include tax with your shipping price. Details about
+	// this problem are described here: http://forum.jigoshop.com/discussions/problems/3940-shipping-costs-only-include-tax-after-refresh-shipping-tax-on-price-isnt-included-after-cart-update
+	// When commenting out the 'unset' statement on line #98 the problem would disappear, this didn't
+	// seem like an elegant solution though. Using the function call below the problem was solved.
+        self::calculate_totals();
     }
 	
 	
