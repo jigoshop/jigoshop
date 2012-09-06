@@ -62,32 +62,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
     function get_cart_from_session() {
 
         self::$cart_contents = (array) jigoshop_session::instance()->cart;
-        // NB: Why are we filtering this data out?
-        // return true;
-
-        // if (isset( jigoshop_session::instance()->cart ) && is_array( jigoshop_session::instance()->cart )) :
-        //     $cart = jigoshop_session::instance()->cart;
-
-        //     foreach ($cart as $key => $values) :
-        //         if ($values['data']->exists() && $values['quantity'] > 0) :
-
-        //             self::$cart_contents[$key] = array(
-        //                 'product_id'    => $values['product_id'],
-        //                 'variation_id'  => $values['variation_id'],
-        //                 'variation'     => $values['variation'],
-        //                 'quantity'      => $values['quantity'],
-        //                 'data'          => $values['data']
-        //             );
-
-        //         endif;
-        //     endforeach;
-
-        // else :
-        //     self::$cart_contents = array();
-        // endif;
-
-        // if (!is_array(self::$cart_contents))
-        //     self::$cart_contents = array();
+        
     }
 	
 	
@@ -102,17 +77,6 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
         jigoshop_session::instance()->coupons = self::$applied_coupons;
 
-        // This has to be tested. I believe all that needs to be calculated at time of setting session
-        // is really the cart total and not shipping. All functions that use set_session are functions
-        // that either add to the cart or apply coupons, etc. If the cart page is reloaded, the full
-        // calculate_totals is already called.
-	// self::calculate_cart_totals();
-
-	// The above five lines speak of not having to calculate the shipping total anymore, this raises
-	// an issue when you have set the option to include tax with your shipping price. Details about
-	// this problem are described here: http://forum.jigoshop.com/discussions/problems/3940-shipping-costs-only-include-tax-after-refresh-shipping-tax-on-price-isnt-included-after-cart-update
-	// When commenting out the 'unset' statement on line #98 the problem would disappear, this didn't
-	// seem like an elegant solution though. Using the function call below the problem was solved.
         self::calculate_totals();
     }
 	

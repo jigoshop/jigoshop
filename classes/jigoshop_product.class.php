@@ -477,8 +477,8 @@ class jigoshop_product extends Jigoshop_Base {
 		);
 
 		// If stock is being managed & has stock
-		if ( $this->managing_stock() && $this->stock ) {
-			$notice['availability'] .= (self::get_options()->get_option('jigoshop_show_stock') == 'yes') ? " &ndash; {$this->stock} ".__(' available', 'jigoshop' ) : '';
+		if ( $this->managing_stock() && $this->is_in_stock() ) {
+			$notice['availability'] .= (self::get_options()->get_option('jigoshop_show_stock') == 'yes' && ! $this->has_child() ) ? " &ndash; {$this->stock} ".__(' available', 'jigoshop' ) : '';
 
 			// If customers require backorder notification
 			if ( $this->backorders_allowed() && $this->backorders_require_notification() ) {

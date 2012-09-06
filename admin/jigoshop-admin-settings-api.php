@@ -341,8 +341,8 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		$valid_input = $current_options;			// we start with the current options
 
 		// Find the current TAB we are working with and use it's option settings
-		$this_section = sanitize_title( self::get_options()->get_option( 'jigoshop_settings_current_tabname' ) );
-		$tab = $this->our_parser->tabs[$this_section];
+		$this_section = self::get_options()->get_option( 'jigoshop_settings_current_tabname' );
+		$tab = $this->our_parser->tabs[sanitize_title( $this_section )];
 
 		// with each option, get it's type and validate it
 		foreach ( $tab as $index => $setting ) {
@@ -493,11 +493,11 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		}
 
         // remove all jigoshop_update_options actions on shipping classes when not on the shipping tab
-        if ( $this_section != 'shipping' ) {
+        if ( $this_section != __('Shipping','jigoshop') ) {
             $this->remove_update_options( jigoshop_shipping::get_all_methods() );
         }
 
-        if ( $this_section != 'payment-gateways' ) {
+        if ( $this_section != __('Payment Gateways','jigoshop') ) {
             $this->remove_update_options( jigoshop_payment_gateways::payment_gateways() );
         }
 

@@ -360,157 +360,158 @@ jQuery(function() {
 		jQuery(item).data('num', i);
 	});
 
-	if ( jigoshop_params.is_checkout ) {
+});
 
-		var updateTimer;
-		var jqxhr;
+if ( jigoshop_params.is_checkout ) {
 
-		function update_checkout() {
+	var updateTimer;
+	var jqxhr;
 
-			if (jqxhr) jqxhr.abort();
+	function update_checkout() {
 
-			var method        = jQuery('#shipping_method').val();
-			var coupon        = jQuery('#coupon_code').val();
-			var payment_method= jQuery('input[name=payment_method]:checked').val();
-			var country       = jQuery('#billing-country').val();
-			var state         = jQuery('#billing-state').val();
-			var postcode      = jQuery('input#billing-postcode').val();
+		if (jqxhr) jqxhr.abort();
 
-			if (jQuery('#shiptobilling input').is(':checked') || jQuery('#shiptobilling input').size()==0) {
-				var s_country = jQuery('#billing-country').val();
-				var s_state   = jQuery('#billing-state').val();
-				var s_postcode= jQuery('input#billing-postcode').val();
+		var method        = jQuery('#shipping_method').val();
+		var coupon        = jQuery('#coupon_code').val();
+		var payment_method= jQuery('input[name=payment_method]:checked').val();
+		var country       = jQuery('#billing-country').val();
+		var state         = jQuery('#billing-state').val();
+		var postcode      = jQuery('input#billing-postcode').val();
 
-			} else {
-				var s_country = jQuery('#shipping-country').val();
-				var s_state   = jQuery('#shipping-state').val();
-				var s_postcode= jQuery('input#shipping-postcode').val();
+		if (jQuery('#shiptobilling input').is(':checked') || jQuery('#shiptobilling input').size()==0) {
+			var s_country = jQuery('#billing-country').val();
+			var s_state   = jQuery('#billing-state').val();
+			var s_postcode= jQuery('input#billing-postcode').val();
+
+		} else {
+			var s_country = jQuery('#shipping-country').val();
+			var s_state   = jQuery('#shipping-state').val();
+			var s_postcode= jQuery('input#shipping-postcode').val();
+		}
+
+		jQuery('#order_methods, #order_review').block({message: null, overlayCSS: {background: '#fff url(' + jigoshop_params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
+
+		var data = {
+			action:             'jigoshop_update_order_review',
+			security:           jigoshop_params.update_order_review_nonce,
+			shipping_method:    method,
+			country:            country,
+			state:              state,
+			postcode:           postcode,
+			s_country:          s_country,
+			s_state:            s_state,
+			s_postcode:         s_postcode,
+			payment_method:     payment_method,
+			coupon_code:        coupon,
+			post_data:          jQuery('form.checkout').serialize()
+		};
+
+		jqxhr = jQuery.ajax({
+			type:       'POST',
+			url:        jigoshop_params.ajax_url,
+			data:       data,
+			success:    function( response ) {
+				/* Prevent stacking of errors. */
+				jQuery('.jigoshop_error, .jigoshop_message').remove();
+				jQuery('#order_methods, #order_review').remove();
+				jQuery('#order_review_heading').after(response);
+				jQuery('#order_review input[name=payment_method]:checked').click();
 			}
+		});
 
-			jQuery('#order_methods, #order_review').block({message: null, overlayCSS: {background: '#fff url(' + jigoshop_params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
+	}
 
-			var data = {
-				action:             'jigoshop_update_order_review',
-				security:           jigoshop_params.update_order_review_nonce,
-				shipping_method:    method,
-				country:            country,
-				state:              state,
-				postcode:           postcode,
-				s_country:          s_country,
-				s_state:            s_state,
-				s_postcode:         s_postcode,
-				payment_method:     payment_method,
-				coupon_code:        coupon,
-				post_data:          jQuery('form.checkout').serialize()
-			};
+	jQuery(function(){
 
-			jqxhr = jQuery.ajax({
-				type:       'POST',
-				url:        jigoshop_params.ajax_url,
-				data:       data,
-				success:    function( response ) {
-					/* Prevent stacking of errors. */
-					jQuery('.jigoshop_error, .jigoshop_message').remove();
-					jQuery('#order_methods, #order_review').remove();
-					jQuery('#order_review_heading').after(response);
-					jQuery('#order_review input[name=payment_method]:checked').click();
+		jQuery('p.password').hide();
+
+		jQuery('input.show_password').change(function(){
+			jQuery('p.password').slideToggle();
+		});
+
+		jQuery('div.shipping-address').hide();
+
+		jQuery('#shiptobilling input').change(function(){
+			jQuery('div.shipping-address').hide();
+			if (!jQuery(this).is(':checked')) {
+				jQuery('div.shipping-address').slideDown();
+			}
+		}).change();
+
+		if (jigoshop_params.option_guest_checkout=='yes') {
+
+			jQuery('div.create-account').hide();
+
+			jQuery('input#createaccount').change(function(){
+				jQuery('div.create-account').hide();
+				if (jQuery(this).is(':checked')) {
+					jQuery('div.create-account').slideDown();
 				}
-			});
+			}).change();
 
 		}
 
-		jQuery(function(){
-
-			jQuery('p.password').hide();
-
-			jQuery('input.show_password').change(function(){
-				jQuery('p.password').slideToggle();
-			});
-
-			jQuery('div.shipping-address').hide();
-
-			jQuery('#shiptobilling input').change(function(){
-				jQuery('div.shipping-address').hide();
-				if (!jQuery(this).is(':checked')) {
-					jQuery('div.shipping-address').slideDown();
-				}
-			}).change();
-
-			if (jigoshop_params.option_guest_checkout=='yes') {
-
-				jQuery('div.create-account').hide();
-
-				jQuery('input#createaccount').change(function(){
-					jQuery('div.create-account').hide();
-					if (jQuery(this).is(':checked')) {
-						jQuery('div.create-account').slideDown();
-					}
-				}).change();
-
+		jQuery('.payment_methods input.input-radio').live('click', function(){
+			jQuery('div.payment_box').hide();
+			if (jQuery(this).is(':checked')) {
+				jQuery('div.payment_box.' + jQuery(this).attr('ID')).slideDown();
 			}
-
-			jQuery('.payment_methods input.input-radio').live('click', function(){
-				jQuery('div.payment_box').hide();
-				if (jQuery(this).is(':checked')) {
-					jQuery('div.payment_box.' + jQuery(this).attr('ID')).slideDown();
-				}
-			});
-
-			jQuery('#order_review input[name=payment_method]:checked').click();
-
-			jQuery('form.login').hide();
-
-			jQuery('a.showlogin').click(function(e){
-				e.preventDefault();
-				jQuery('form.login').slideToggle();
-			});
-
-			/* Update totals */
-			jQuery('#shipping_method').live('change', function(){
-				clearTimeout(updateTimer);
-				update_checkout();
-			}).change();
-			jQuery('#coupon_code').live('change', function(e){
-				clearTimeout(updateTimer);
-				update_checkout();
-			}).change();
-			jQuery('input#billing-country, input#billing-state, #billing-postcode, input#shipping-country, input#shipping-state, #shipping-postcode').live('keydown', function(){
-				clearTimeout(updateTimer);
-				updateTimer = setTimeout("update_checkout()", '5000');
-			});
-			jQuery('select#billing-country, select#billing-state, select#shipping-country, select#shipping-state, #shiptobilling input').live('change', function(){
-				clearTimeout(updateTimer);
-				update_checkout();
-			});
-
-			/* AJAX Form Submission */
-			jQuery('form.checkout').submit(function(){
-				var form = this;
-				jQuery(form).block({message: null, overlayCSS: {background: '#fff url(' + jigoshop_params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
-				jQuery.ajax({
-					type: 		'POST',
-					url: 		jigoshop_params.checkout_url,
-					data: 		jQuery(form).serialize(),
-					success: 	function( code ) {
-						jQuery('.jigoshop_error, .jigoshop_message').remove();
-						try {
-							success = jQuery.parseJSON( code );
-							window.location = decodeURI(success.redirect);
-						}
-						catch(err) {
-							jQuery(form).prepend( code );
-							jQuery(form).unblock();
-							jQuery.scrollTo(jQuery(form).parent(), {easing:'swing'});
-						}
-					},
-					dataType: 	"html"
-				});
-				return false;
-			});
-
 		});
-	}
-});
+
+		jQuery('#order_review input[name=payment_method]:checked').click();
+
+		jQuery('form.login').hide();
+
+		jQuery('a.showlogin').click(function(e){
+			e.preventDefault();
+			jQuery('form.login').slideToggle();
+		});
+
+		/* Update totals */
+		jQuery('#shipping_method').live('change', function(){
+			clearTimeout(updateTimer);
+			update_checkout();
+		}).change();
+		jQuery('#coupon_code').live('change', function(e){
+			clearTimeout(updateTimer);
+			update_checkout();
+		}).change();
+		jQuery('input#billing-country, input#billing-state, #billing-postcode, input#shipping-country, input#shipping-state, #shipping-postcode').live('keydown', function(){
+			clearTimeout(updateTimer);
+			updateTimer = setTimeout("update_checkout()", '5000');
+		});
+		jQuery('select#billing-country, select#billing-state, select#shipping-country, select#shipping-state, #shiptobilling input').live('change', function(){
+			clearTimeout(updateTimer);
+			update_checkout();
+		});
+
+		/* AJAX Form Submission */
+		jQuery('form.checkout').submit(function(){
+			var form = this;
+			jQuery(form).block({message: null, overlayCSS: {background: '#fff url(' + jigoshop_params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
+			jQuery.ajax({
+				type: 		'POST',
+				url: 		jigoshop_params.checkout_url,
+				data: 		jQuery(form).serialize(),
+				success: 	function( code ) {
+					jQuery('.jigoshop_error, .jigoshop_message').remove();
+					try {
+						success = jQuery.parseJSON( code );
+						window.location = decodeURI(success.redirect);
+					}
+					catch(err) {
+						jQuery(form).prepend( code );
+						jQuery(form).unblock();
+						jQuery.scrollTo(jQuery(form).parent(), {easing:'swing'});
+					}
+				},
+				dataType: 	"html"
+			});
+			return false;
+		});
+
+	});
+}
 
 //message fade in
 jQuery(document).ready(function(){
