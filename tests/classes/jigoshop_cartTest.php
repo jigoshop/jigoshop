@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '/../../classes/abstract/jigoshop_base.class.php';
-require_once dirname(__FILE__) . '/../../classes/abstract/jigoshop_singleton.php';
+require_once dirname(__FILE__) . '/../../classes/abstract/jigoshop_singleton.class.php';
 require_once dirname(__FILE__) . '/../../classes/jigoshop_cart.class.php';
 
 /**

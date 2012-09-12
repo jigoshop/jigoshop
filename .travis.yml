@@ -1,0 +1,23 @@
+# see http://about.travis-ci.org/docs/user/languages/php/ for more hints
+language: php
+
+# list any PHP version you want to test against
+php:
+  # using major version aliases
+
+  # aliased to 5.2.17
+  #- 5.2
+  # aliased to a recent 5.3.x version
+  - 5.3
+  # aliased to a recent 5.4.x version
+  #- 5.4
+
+# execute any number of scripts before the test run, custom env's are available as variables
+before_script:
+  - cp tests/unittests-config.travis.php vendor/wordpress-tests/unittests-config.php
+  - wget http://wordpress.org/latest.tar.gz
+  - tar -xzf latest.tar.gz -C vendor
+  - mysql -e "create database IF NOT EXISTS jigoshop_test;" -uroot
+
+# omitting "script:" will default to phpunit
+script: phpunit
