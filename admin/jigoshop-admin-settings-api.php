@@ -1093,7 +1093,7 @@ class Jigoshop_Options_Parser {
 
 	function array_find( $needle, $haystack ) {
 		foreach ( $haystack as $key => $val ):
-			if ( $needle == array( "label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'] ) ):
+			if ( $needle == array( "label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'], 'class' => $val['class'] ) ):
 				return $key;
 			endif;
 		endforeach;
@@ -1104,7 +1104,7 @@ class Jigoshop_Options_Parser {
 	function array_compare( $tax_rates ) {
 		$after = array();
 		foreach ( $tax_rates as $key => $val ):
-			$first_two = array("label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'] );
+			$first_two = array("label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'], 'class' => $val['class'] );
 			$found = $this->array_find( $first_two, $after );
 			if ( $found !== false ):
 				$combined  = $after[$found]["state"];
