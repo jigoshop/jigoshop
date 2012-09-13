@@ -183,7 +183,7 @@ class jigoshopTest extends WP_UnitTestCase
 //		ob_start();
 //		jigoshop::show_messages();
 //		$this->assertEquals('<div class="jigoshop_message">Foo Bar</div>', ob_get_clean());
-	}
+//	}
 
 	/**
 	 * Test Nonce field creation
