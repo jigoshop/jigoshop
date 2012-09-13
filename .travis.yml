@@ -1,8 +1,7 @@
-# see http://about.travis-ci.org/docs/user/languages/php/ for more hints
 language: php
-
-# list any PHP version you want to test against
 php:
+# PHP Versions Jigoshop Officially Supports
+  - 5.3
   # using major version aliases
 
   # aliased to 5.2.17
