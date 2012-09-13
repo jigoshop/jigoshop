@@ -2,21 +2,49 @@ language: php
 php:
 # PHP Versions Jigoshop Officially Supports
   - 5.3
-  # using major version aliases
-
-  # aliased to 5.2.17
-  #- 5.2
-  # aliased to a recent 5.3.x version
-  - 5.3
-  # aliased to a recent 5.4.x version
-  #- 5.4
-
-# execute any number of scripts before the test run, custom env's are available as variables
+#  - 5.4
+# Ones that support for legacy reasons
+#  - 5.2
+env:
+# Officialy Supported WP Versions (w/ and w/o MS)
+ - WP_VERSION=3.4.2 WP_MULTISITE=0
+# - WP_VERSION=3.4.1 WP_MULTISITE=0
+# - WP_VERSION=3.4 WP_MULTISITE=0
+# - WP_VERSION=3.4.2 WP_MULTISITE=1
+# - WP_VERSION=3.4.1 WP_MULTISITE=1
+# - WP_VERSION=3.4 WP_MULTISITE=1
+# Tested (but not officially supported) WP versions
+# - WP_VERSION=master WP_MULTISITE=1
+# - WP_VERSION=master WP_MULTISITE=0
+# - WP_VERSION=3.3.3 WP_MULTISITE=0
+# - WP_VERSION=3.3.2 WP_MULTISITE=0
+# - WP_VERSION=3.3.1 WP_MULTISITE=0
+# - WP_VERSION=3.2.1 WP_MULTISITE=0
+# - WP_VERSION=3.2 WP_MULTISITE=0
+# Test against (but allow fail) on older WP and PHP versions
+# Also test against the current Master (development) Github repo of WordPress
+#matrix:
+#  allow_failures:
+#    - env: WP_VERSION=master WP_MULTISITE=1
+#    - env: WP_VERSION=master WP_MULTISITE=0
+#    - env: WP_VERSION=3.3.3 WP_MULTISITE=0
+#    - env: WP_VERSION=3.3.2 WP_MULTISITE=0
+#    - env: WP_VERSION=3.3.1 WP_MULTISITE=0
+#    - env: WP_VERSION=3.2.1 WP_MULTISITE=0
+#    - env: WP_VERSION=3.2 WP_MULTISITE=0
+#    - php: 5.2
+# whitelist(don't test master or the setup branch)
+branches:
+  only:
+    - dev
 before_script:
   - cp tests/unittests-config.travis.php vendor/wordpress-tests/unittests-config.php
-  - wget http://wordpress.org/latest.tar.gz
-  - tar -xzf latest.tar.gz -C vendor
+  - wget wordpress.tar.gz https://github.com/WordPress/WordPress/tarball/$WP_VERSION
+  - tar -xzf wordpress.tar.gz -C vendor
   - mysql -e "create database IF NOT EXISTS jigoshop_test;" -uroot
 
 # omitting "script:" will default to phpunit
 script: phpunit
+# To discuss at next Developer meeting
+notifications:
+  email: false
