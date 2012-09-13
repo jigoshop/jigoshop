@@ -8,31 +8,31 @@ php:
 env:
 # Officialy Supported WP Versions (w/ and w/o MS)
  - WP_VERSION=3.4.2 WP_MULTISITE=0
-# - WP_VERSION=3.4.1 WP_MULTISITE=0
-# - WP_VERSION=3.4 WP_MULTISITE=0
-# - WP_VERSION=3.4.2 WP_MULTISITE=1
-# - WP_VERSION=3.4.1 WP_MULTISITE=1
-# - WP_VERSION=3.4 WP_MULTISITE=1
-# Tested (but not officially supported) WP versions
-# - WP_VERSION=master WP_MULTISITE=1
-# - WP_VERSION=master WP_MULTISITE=0
-# - WP_VERSION=3.3.3 WP_MULTISITE=0
-# - WP_VERSION=3.3.2 WP_MULTISITE=0
-# - WP_VERSION=3.3.1 WP_MULTISITE=0
-# - WP_VERSION=3.2.1 WP_MULTISITE=0
-# - WP_VERSION=3.2 WP_MULTISITE=0
+ - WP_VERSION=3.4.1 WP_MULTISITE=0
+  - WP_VERSION=3.4 WP_MULTISITE=0
+  - WP_VERSION=3.4.2 WP_MULTISITE=1
+  - WP_VERSION=3.4.1 WP_MULTISITE=1
+  - WP_VERSION=3.4 WP_MULTISITE=1
+#  Tested (but not officially supported) WP versions
+  - WP_VERSION=master WP_MULTISITE=1
+  - WP_VERSION=master WP_MULTISITE=0
+  - WP_VERSION=3.3.3 WP_MULTISITE=0
+  - WP_VERSION=3.3.2 WP_MULTISITE=0
+  - WP_VERSION=3.3.1 WP_MULTISITE=0
+  - WP_VERSION=3.2.1 WP_MULTISITE=0
+  - WP_VERSION=3.2 WP_MULTISITE=0
 # Test against (but allow fail) on older WP and PHP versions
 # Also test against the current Master (development) Github repo of WordPress
-#matrix:
-#  allow_failures:
-#    - env: WP_VERSION=master WP_MULTISITE=1
-#    - env: WP_VERSION=master WP_MULTISITE=0
-#    - env: WP_VERSION=3.3.3 WP_MULTISITE=0
-#    - env: WP_VERSION=3.3.2 WP_MULTISITE=0
-#    - env: WP_VERSION=3.3.1 WP_MULTISITE=0
-#    - env: WP_VERSION=3.2.1 WP_MULTISITE=0
-#    - env: WP_VERSION=3.2 WP_MULTISITE=0
-#    - php: 5.2
+matrix:
+   allow_failures:
+     - env: WP_VERSION=master WP_MULTISITE=1
+     - env: WP_VERSION=master WP_MULTISITE=0
+     - env: WP_VERSION=3.3.3 WP_MULTISITE=0
+     - env: WP_VERSION=3.3.2 WP_MULTISITE=0
+     - env: WP_VERSION=3.3.1 WP_MULTISITE=0
+     - env: WP_VERSION=3.2.1 WP_MULTISITE=0
+     - env: WP_VERSION=3.2 WP_MULTISITE=0
+     - php: 5.2
 # whitelist(don't test master or the setup branch)
 branches:
   only:
