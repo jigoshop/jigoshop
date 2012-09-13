@@ -1,7 +1,7 @@
 [Jigoshop](http://jigoshop.com) Tests
 =================
 
-[![Build Status](https://secure.travis-ci.org/schorsch/jigoshop.png?branch=master)](http://travis-ci.org/schorsch/jigoshop)
+[![Build Status](https://secure.travis-ci.org/chriscct7clone/jigoshop.png?branch=master)](http://travis-ci.org/chriscct7clone/jigoshop)
 
 This test-suite uses phpunit to ensure Jigoshop's code quality.
 
