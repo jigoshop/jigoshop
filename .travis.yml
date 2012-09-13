@@ -1,6 +1,6 @@
 language: php
 php:
-# PHP Versions Jigoshop Officially Supports
+# PHP Versions Jigoshop Officially  Supports
   - 5.3
 #  - 5.4
 # Ones that support for legacy reasons
