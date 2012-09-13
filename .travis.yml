@@ -39,7 +39,7 @@ branches:
     - dev
 before_script:
   - cp tests/unittests-config.travis.php vendor/wordpress-tests/unittests-config.php
-  - wget  -O wordpress.tar.gz https://github.com/WordPress/WordPress/tarball/$WP_VERSION
+  - wget -O wordpress.tar.gz --strip-components=1 -zxmf https://github.com/WordPress/WordPress/tarball/$WP_VERSION
   - tar -xzf wordpress.tar.gz -C vendor
   - mysql -e "create database IF NOT EXISTS jigoshop_test;" -uroot
 
