@@ -23,3 +23,5 @@ CV
 .project
 nbproject
 deploy.sh
+vendor/wordpress
+vendor/wordpress-tests/unittests-config.php
