@@ -4,7 +4,7 @@ php:
   - 5.3
   - 5.4
 # Ones that support for legacy reasons
-#  - 5.2
+  - 5.2
 env:
 # Officialy Supported WP Versions (w/ and w/o MS)
  - WP_VERSION=3.4.2 WP_MULTISITE=0
