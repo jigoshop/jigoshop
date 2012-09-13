@@ -5,10 +5,10 @@ jQuery.fn.animateHighlight = function(highlightColor, duration) {
 	this.stop().css("background-color", highlightBg).animate({backgroundColor: originalBg}, animateMs);
 };
 
-jQuery(function(){
+jQuery(function() {
 
 	// Lightbox
-	if (params.load_fancybox) {
+	if (jigoshop_params.load_fancybox) {
 		jQuery('a.zoom').fancybox({
 			'transitionIn'	:	'elastic',
 			'transitionOut'	:	'elastic',
@@ -32,14 +32,14 @@ jQuery(function(){
 	var min_price = parseInt(jQuery('.price_slider_amount #min_price').val());
 	var max_price = parseInt(jQuery('.price_slider_amount #max_price').val());
 
-	if (params.min_price) {
-		current_min_price = params.min_price;
+	if (jigoshop_params.min_price) {
+		current_min_price = jigoshop_params.min_price;
 	} else {
 		current_min_price = min_price;
 	}
 
-	if (params.max_price) {
-		current_max_price = params.max_price;
+	if (jigoshop_params.max_price) {
+		current_max_price = jigoshop_params.max_price;
 	} else {
 		current_max_price = max_price;
 	}
@@ -50,12 +50,12 @@ jQuery(function(){
 		max: max_price,
 		values: [ current_min_price, current_max_price ],
 		create : function( event, ui ) {
-			jQuery( ".price_slider_amount span" ).html( params.currency_symbol + current_min_price + " - " + params.currency_symbol + current_max_price );
+			jQuery( ".price_slider_amount span" ).html( jigoshop_params.currency_symbol + current_min_price + " - " + jigoshop_params.currency_symbol + current_max_price );
 			jQuery( ".price_slider_amount #min_price" ).val(current_min_price);
 			jQuery( ".price_slider_amount #max_price" ).val(current_max_price);
 		},
 		slide: function( event, ui ) {
-			jQuery( ".price_slider_amount span" ).html( params.currency_symbol + ui.values[ 0 ] + " - " + params.currency_symbol + ui.values[ 1 ] );
+			jQuery( ".price_slider_amount span" ).html( jigoshop_params.currency_symbol + ui.values[ 0 ] + " - " + jigoshop_params.currency_symbol + ui.values[ 1 ] );
 			jQuery( "input#min_price" ).val(ui.values[ 0 ]);
 			jQuery( "input#max_price" ).val(ui.values[ 1 ]);
 		}
@@ -83,7 +83,7 @@ jQuery(function(){
 	});
 
 	/* states */
-    var states_json = params.countries.replace(/&quot;/g, '"');
+    var states_json = jigoshop_params.countries.replace(/&quot;/g, '"');
     var states = jQuery.parseJSON( states_json );
 
     jQuery('select.country_to_state').change(function(){
@@ -97,12 +97,12 @@ jQuery(function(){
         if (states[country]) {
             var options = '';
             var state = states[country];
-            var state_selected = params.billing_state;
+            var state_selected = jigoshop_params.billing_state;
             if (input_name == 'calc_shipping_state') {
                 state_selected = jQuery('#calc_shipping_state').val();
             }
             else {
-                state_selected = params.shipping_state;
+                state_selected = jigoshop_params.shipping_state;
             }
             for(var index in state) {
 
@@ -114,13 +114,13 @@ jQuery(function(){
             }
             if (jQuery(state_box).is('input')) {
                 // Change for select
-                jQuery(state_box).replaceWith('<select name="' + input_name + '" id="' + input_id + '"><option value="">' + params.select_state_text + '</option></select>');
+                jQuery(state_box).replaceWith('<select name="' + input_name + '" id="' + input_id + '"><option value="">' + jigoshop_params.select_state_text + '</option></select>');
                 state_box = jQuery('#' + jQuery(this).attr('rel'));
             }
             jQuery(state_box).html(options);
         } else {
             if (jQuery(state_box).is('select')) {
-                jQuery(state_box).replaceWith('<input class="input-text" type="text" placeholder="' + params.state_text + '" name="' + input_name + '" id="' + input_id + '" />');
+                jQuery(state_box).replaceWith('<input class="input-text" type="text" placeholder="' + jigoshop_params.state_text + '" name="' + input_name + '" id="' + input_id + '" />');
                 state_box = jQuery('#' + jQuery(this).attr('rel'));
             }
         }
@@ -161,7 +161,7 @@ jQuery(function(){
 	jQuery("input[name=shipping_rates]").click(function(){
 		var dataString = 'shipping_rates=' + jQuery(this).val();
 		var cart_url = jQuery("input[name=cart-url]").val();
-		jQuery('.cart_totals_table').block({message: null, overlayCSS: {background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
+		jQuery('.cart_totals_table').block({message: null, overlayCSS: {background: '#fff url(' + jigoshop_params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
 		jQuery.ajax({
 			type: "POST",
 			url: cart_url,
@@ -362,7 +362,7 @@ jQuery(function(){
 
 });
 
-if ( params.is_checkout ) {
+if ( jigoshop_params.is_checkout ) {
 
 	var updateTimer;
 	var jqxhr;
@@ -389,28 +389,28 @@ if ( params.is_checkout ) {
 			var s_postcode= jQuery('input#shipping-postcode').val();
 		}
 
-		jQuery('#order_methods, #order_review').block({message: null, overlayCSS: {background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
+		jQuery('#order_methods, #order_review').block({message: null, overlayCSS: {background: '#fff url(' + jigoshop_params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
 
 		var data = {
-			action: 			'jigoshop_update_order_review',
-			security: 			params.update_order_review_nonce,
-			shipping_method: 	method,
-			country: 			country,
-			state: 				state,
-			postcode: 			postcode,
-			s_country: 			s_country,
-			s_state: 			s_state,
-			s_postcode: 		s_postcode,
+			action:             'jigoshop_update_order_review',
+			security:           jigoshop_params.update_order_review_nonce,
+			shipping_method:    method,
+			country:            country,
+			state:              state,
+			postcode:           postcode,
+			s_country:          s_country,
+			s_state:            s_state,
+			s_postcode:         s_postcode,
 			payment_method:     payment_method,
 			coupon_code:        coupon,
-			post_data:			jQuery('form.checkout').serialize()
+			post_data:          jQuery('form.checkout').serialize()
 		};
 
 		jqxhr = jQuery.ajax({
-			type: 		'POST',
-			url: 		params.ajax_url,
-			data: 		data,
-			success: 	function( response ) {
+			type:       'POST',
+			url:        jigoshop_params.ajax_url,
+			data:       data,
+			success:    function( response ) {
 				/* Prevent stacking of errors. */
 				jQuery('.jigoshop_error, .jigoshop_message').remove();
 				jQuery('#order_methods, #order_review').remove();
@@ -438,7 +438,7 @@ if ( params.is_checkout ) {
 			}
 		}).change();
 
-		if (params.option_guest_checkout=='yes') {
+		if (jigoshop_params.option_guest_checkout=='yes') {
 
 			jQuery('div.create-account').hide();
 
@@ -488,10 +488,10 @@ if ( params.is_checkout ) {
 		/* AJAX Form Submission */
 		jQuery('form.checkout').submit(function(){
 			var form = this;
-			jQuery(form).block({message: null, overlayCSS: {background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
+			jQuery(form).block({message: null, overlayCSS: {background: '#fff url(' + jigoshop_params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6}});
 			jQuery.ajax({
 				type: 		'POST',
-				url: 		params.checkout_url,
+				url: 		jigoshop_params.checkout_url,
 				data: 		jQuery(form).serialize(),
 				success: 	function( code ) {
 					jQuery('.jigoshop_error, .jigoshop_message').remove();

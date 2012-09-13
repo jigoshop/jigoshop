@@ -20,6 +20,7 @@
 
 
 /***********************    NOTE:   AS OF JIGOSHOP 1.3, THIS FILE IS NO LONGER IN USE       ************************/
+_deprecated_file( __FILE__, '1.3', 'Jigoshop_Base::get_options()')
 
 
 

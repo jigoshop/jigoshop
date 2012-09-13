@@ -2452,7 +2452,7 @@ msgid "New "
 msgstr "Új "
 
 #: jigoshop.php:402
-#@ jigowatt
+#@ jigoshop
 msgid "Please rate the product."
 msgstr "Kérjük értékeld a terméket!"
 

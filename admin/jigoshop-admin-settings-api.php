@@ -49,7 +49,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
     	wp_register_script( 'jigoshop-bootstrap-tooltip', jigoshop::assets_url() . '/assets/js/bootstrap-tooltip.min.js', array( 'jquery' ), '2.0.3' );
     	wp_enqueue_script( 'jigoshop-bootstrap-tooltip' );
 
-    	wp_register_script( 'jigoshop-select2', jigoshop::assets_url() . '/assets/js/select2.min.js', array( 'jquery' ), '3.0' );
+    	wp_register_script( 'jigoshop-select2', jigoshop::assets_url() . '/assets/js/select2.min.js', array( 'jquery' ), '3.1' );
     	wp_enqueue_script( 'jigoshop-select2' );
 
 	}
@@ -62,7 +62,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 */
 	public function settings_styles() {
 
-		wp_register_style( 'jigoshop-select2', jigoshop::assets_url() . '/assets/css/select2.css', '', '2.1', 'screen' );
+		wp_register_style( 'jigoshop-select2', jigoshop::assets_url() . '/assets/css/select2.css', '', '3.1', 'screen' );
 		wp_enqueue_style( 'jigoshop-select2' );
 
 		do_action( 'jigoshop_settings_styles' );	// user defined stylesheets should be registered and queued
@@ -341,8 +341,8 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		$valid_input = $current_options;			// we start with the current options
 
 		// Find the current TAB we are working with and use it's option settings
-		$this_section = sanitize_title( self::get_options()->get_option( 'jigoshop_settings_current_tabname' ) );
-		$tab = $this->our_parser->tabs[$this_section];
+		$this_section = self::get_options()->get_option( 'jigoshop_settings_current_tabname' );
+		$tab = $this->our_parser->tabs[sanitize_title( $this_section )];
 
 		// with each option, get it's type and validate it
 		foreach ( $tab as $index => $setting ) {
@@ -493,11 +493,11 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		}
 
         // remove all jigoshop_update_options actions on shipping classes when not on the shipping tab
-        if ( $this_section != 'shipping' ) {
+        if ( $this_section != __('Shipping','jigoshop') ) {
             $this->remove_update_options( jigoshop_shipping::get_all_methods() );
         }
 
-        if ( $this_section != 'payment-gateways' ) {
+        if ( $this_section != __('Payment Gateways','jigoshop') ) {
             $this->remove_update_options( jigoshop_payment_gateways::payment_gateways() );
         }
 
@@ -884,6 +884,16 @@ class Jigoshop_Options_Parser {
 			break;
 
 		case 'decimal':				// decimal numbers are positive or negative 0-9 inclusive, may include decimal
+			$display .= '<input
+				id="'.$item['id'].'"
+				class="jigoshop-input jigoshop-text '.$class.'"
+				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']"
+				type="number"
+				step="any"
+				size="20"
+				value="'. esc_attr( $data[$item['id']] ).'" />';
+			break;
+
 		case 'integer':				// integer numbers are positive or negative 0-9 inclusive
 		case 'natural':				// natural numbers are positive 0-9 inclusive
 			$display .= '<input
@@ -1093,7 +1103,7 @@ class Jigoshop_Options_Parser {
 
 	function array_find( $needle, $haystack ) {
 		foreach ( $haystack as $key => $val ):
-			if ( $needle == array( "label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'] ) ):
+			if ( $needle == array( "label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'], 'class' => $val['class'] ) ):
 				return $key;
 			endif;
 		endforeach;
@@ -1104,7 +1114,7 @@ class Jigoshop_Options_Parser {
 	function array_compare( $tax_rates ) {
 		$after = array();
 		foreach ( $tax_rates as $key => $val ):
-			$first_two = array("label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'] );
+			$first_two = array("label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'], 'class' => $val['class'] );
 			$found = $this->array_find( $first_two, $after );
 			if ( $found !== false ):
 				$combined  = $after[$found]["state"];

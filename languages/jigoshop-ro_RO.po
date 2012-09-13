@@ -2447,7 +2447,7 @@ msgstr "Adauga nou"
 msgid "New "
 msgstr "Nou"
 
-#@ jigowatt
+#@ jigoshop
 #: jigoshop.php:402
 msgid "Please rate the product."
 msgstr "Te rog voteaza produsul."

@@ -264,7 +264,7 @@ function jigoshop_order_items_meta_box($post) {
 								<tbody></tbody>
 							</table>
 						</td>-->
-						<?php do_action('jigoshop_admin_order_item_values', $_product, $item); ?>
+						<?php do_action('jigoshop_admin_order_item_values', $_product, $item, $post->ID); ?>
 						<td class="quantity">
                             <input type="text" name="item_quantity[]" placeholder="<?php _e('Quantity e.g. 2', 'jigoshop'); ?>" value="<?php echo esc_attr( $item['qty'] ); ?>" />
                         </td>

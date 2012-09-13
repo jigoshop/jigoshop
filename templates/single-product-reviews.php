@@ -119,7 +119,7 @@
 /* <![CDATA[ */
 	jQuery(function(){
 		jQuery('#review_form_wrapper').hide();
-		if (params.load_fancybox) {
+		if (jigoshop_params.load_fancybox) {
 			jQuery('a.show_review_form').fancybox({
 				'transitionIn'	:	'fade',
 				'transitionOut'	:	'fade',

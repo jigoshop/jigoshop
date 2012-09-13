@@ -212,8 +212,10 @@ function jigoshop_create_single_page( $page_slug, $page_option, $page_data ) {
  */
 function jigoshop_tables_install() {
 	global $wpdb;
-
-	//$wpdb->show_errors();
+	
+	if ( is_multisite() ) define( 'DIEONDBERROR', true );
+	
+	$wpdb->show_errors();
 
     $collate = '';
     if($wpdb->supports_collation()) {
@@ -227,8 +229,11 @@ function jigoshop_tables_install() {
 		`attribute_label`		longtext NULL,
         `attribute_type`		varchar(200) NOT NULL,
         PRIMARY KEY id (`attribute_id`)) $collate;";
-    $wpdb->query($sql);
-
+    if ( $wpdb->query($sql) === false ) {
+		$wpdb->print_error();
+		wp_die(__('We were not able to create a Jigoshop database table during installation! (jigoshop_attribute_taxonomies)','jigoshop'));
+	}
+		
     $sql = "CREATE TABLE IF NOT EXISTS ". $wpdb->prefix . "jigoshop_downloadable_product_permissions" ." (
         `product_id` 			mediumint(9) NOT NULL,
         `user_email`			varchar(200) NOT NULL,
@@ -236,15 +241,23 @@ function jigoshop_tables_install() {
         `order_key`				varchar(200) NOT NULL,
         `downloads_remaining`	varchar(9) NULL,
         PRIMARY KEY id (`product_id`, `order_key`)) $collate;";
-    $wpdb->query($sql);
-
+    if ( $wpdb->query($sql) === false ) {
+		$wpdb->print_error();
+		wp_die(__('We were not able to create a Jigoshop database table during installation! (jigoshop_downloadable_product_permissions)','jigoshop'));
+	}
+	
     $sql = "CREATE TABLE IF NOT EXISTS ". $wpdb->prefix . "jigoshop_termmeta" ." (
 		`meta_id` 				bigint(20) NOT NULL AUTO_INCREMENT,
       	`jigoshop_term_id` 		bigint(20) NOT NULL,
       	`meta_key` 				varchar(255) NULL,
       	`meta_value` 			longtext NULL,
       	PRIMARY KEY id (`meta_id`)) $collate;";
-    $wpdb->query($sql);
+    if ( $wpdb->query($sql) === false ) {
+		$wpdb->print_error();
+		wp_die(__('We were not able to create a Jigoshop database table during installation! (jigoshop_termmeta)','jigoshop'));
+	}
+    
+    $wpdb->hide_errors();
 
 }
 

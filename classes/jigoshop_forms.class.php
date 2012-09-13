@@ -31,7 +31,7 @@ class Jigoshop_Forms extends Jigoshop_Base {
 			'value'         => null,
 			'min'           => null,
 			'max'           => null,
-			'step'          => null,
+			'step'          => 'any',
 			'placeholder'   => null,
 		);
 		extract( wp_parse_args( $field, $args ) );
@@ -92,11 +92,24 @@ class Jigoshop_Forms extends Jigoshop_Base {
 		$html .= "<select {$multiple} id='{$id}' name='{$name}' class='{$class}' data-placeholder='{$placeholder}'>";
 
 		foreach ( $options as $value => $label ) {
-			$mark = '';
-			if ( in_array( $value, $selected ) ) {
-				$mark = 'selected="selected"';
+			if ( is_array( $label )) {
+				$html .= '<optgroup label="'.esc_attr( $value ).'">';
+				foreach ( $label as $opt_value => $opt_label ) {
+					$mark = '';
+					if ( in_array( $opt_value, $selected ) ) {
+						$mark = 'selected="selected"';
+					}
+					$html .= '<option value="'.esc_attr($opt_value).'"' .$mark.'>'.$opt_label.'</option>';
+				}
+				$html .= '</optgroup>';
 			}
-			$html .= "<option value='{$value}' {$mark}>{$label}</option>";
+			else {
+				$mark = '';
+				if ( in_array( $value, $selected ) ) {
+					$mark = 'selected="selected"';
+				}
+				$html .= '<option value="'.esc_attr($value).'"' .$mark.'>'.$label.'</option>';
+			}
 		}
 		$html .= "</select>";
 

@@ -69,7 +69,7 @@ class Jigoshop_reports {
 			'tax_query' => array(
 				array(
 					'taxonomy'=> 'shop_order_status',
-					'terms'   => array('completed', 'processing', 'on-hold'),
+					'terms'   => array('completed'),
 					'field'   => 'slug',
 					'operator'=> 'IN'
 				)
@@ -144,7 +144,7 @@ h6{font-size:11px;color:#999999;text-transform:uppercase;}
 
 				<div class="span3 thumbnail">
 					<h1><?php echo $this->jigoshop_total_customers(); ?></h1>
-					<h3>Total Customers</h3>
+					<h3>Total New Customers</h3>
 				</div>
 
 				<div class="span3 thumbnail">
@@ -241,7 +241,7 @@ jQuery(function(){
 			AND 	posts.post_type 	= 'shop_order'
 			AND 	posts.post_status 	= 'publish'
 			AND 	tax.taxonomy		= 'shop_order_status'
-			AND		term.slug			IN ('completed', 'processing', 'on-hold')
+			AND		term.slug			IN ('completed')
 		");
 
 		return $total_orders->total_orders;
@@ -303,10 +303,12 @@ jQuery(function(){
 
 		if ($this->orders) :
 			foreach ($this->orders as $order) :
-				$order_items = (array) get_post_meta( $order->ID, 'order_items', true );
-				foreach ($order_items as $item) :
-					$row_cost[] = $item['cost'] * $item['qty'];
-				endforeach;
+// 				$order_items = (array) get_post_meta( $order->ID, 'order_items', true );
+// 				foreach ($order_items as $item) :
+// 					$row_cost[] = $item['cost'] * $item['qty'];
+// 				endforeach;
+ 				$order_data = (array) get_post_meta( $order->ID, 'order_data', true );
+				$row_cost[] = $order_data['order_total'];
 			endforeach;
 		endif;
 
@@ -510,7 +512,7 @@ jQuery(function(){
 						'tax_query' => array(
 							array(
 								'taxonomy' => 'shop_order_status',
-								'terms' => array('completed', 'processing', 'on-hold', 'pending'),
+								'terms' => array('completed'),
 								'field' => 'slug',
 								'operator' => 'IN'
 							)
@@ -539,6 +541,7 @@ jQuery(function(){
 						foreach ($orders as $order) :
 
 							$order_data = new jigoshop_order($order->ID);
+
 							$time = strtotime(date('Ymd', strtotime($order->post_date))).'000';
 
 							if (isset($order_counts[$time])) :

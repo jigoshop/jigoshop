@@ -746,7 +746,7 @@ msgstr " <small>(HT)</small>"
 msgid "You have taken too long. Please go back and refresh the page."
 msgstr "Vous avez mis trop de temps. Merci de revenir en ari&egrave;re et de rafraichir la page."
 
-# @ jigowatt
+# @ jigoshop
 #: jigoshop.php:500
 msgid "Please rate the product."
 msgstr "Merci de noter ce produit."
@@ -2427,7 +2427,7 @@ msgstr "Ajoutez un r&eacute;sum&eacute; de votre produit &ndash; c'est une descr
 msgid "SKU"
 msgstr "SKU"
 
-# @ jigowatt
+# @ jigoshop
 #: admin/write-panels/product-data.php:69
 msgid "Leave blank to use product ID"
 msgstr "Laisser blanc pour utiliser l'ID du produit"

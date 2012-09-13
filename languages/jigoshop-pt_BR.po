@@ -807,7 +807,7 @@ msgid "You have taken too long. Please go back and refresh the page."
 msgstr "Você demorou muito. Por favor, volte e atualize a página."
 
 #: jigoshop.php:837
-#@ jigowatt
+#@ jigoshop
 msgid "Please rate the product."
 msgstr "Por favor, avalie este produto."
 
