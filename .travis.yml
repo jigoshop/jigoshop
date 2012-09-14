@@ -39,11 +39,11 @@ branches:
     - dev
 before_script:
   - cp tests/unittests-config.travis.php vendor/wordpress-tests/unittests-config.php
-  - wget -O wordpress.tar.gz https://github.com/WordPress/WordPress/tarball/wordpress-$WP_VERSION.zip
+  - wget -O wordpress.tar.gz http://wordpress.org/wordpress-$WP_VERSION.tar.gz
   - tar -xzf wordpress.tar.gz -C vendor
   - mysql -e "create database IF NOT EXISTS jigoshop_test;" -uroot
     
-script: phpunit All
+script: phpunit
 # To discuss at next Developer meeting
 notifications:
   email: false
