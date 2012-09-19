@@ -373,7 +373,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					<label for="' . esc_attr( $args['name'] ) . '" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
 					<select name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" class="input-text" rel="'.esc_attr($args['rel']).'">';
 
-				foreach(esc_attr($args['options']) as $key=>$value) :
+				foreach($args['options'] as $key=>$value) :
 					$field .= '<option value="'.esc_attr($key).'"';
 					if (esc_attr($args['selected'])==$key) $field .= 'selected="selected"';
 					$field .= '>'.__($value, 'jigoshop').'</option>';
