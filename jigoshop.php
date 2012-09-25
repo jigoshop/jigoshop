@@ -919,8 +919,10 @@ function jigoshop_sanitize_user($username, $raw_username, $strict) {
 }
 
 add_action( 'wp_head', 'jigoshop_head_version' );
+if( ! function_exists('jigoshop_head_version') ) {
 function jigoshop_head_version() {
-echo "\n\n" . '<!-- Jigoshop Version:'.JIGOSHOP_HEAD_VERSION.' -->' . "\n\n";
+echo "\n" . '<!-- Jigoshop Version: '.JIGOSHOP_HEAD_VERSION.' -->' . "\n";
+}
 }
 
 
