@@ -229,16 +229,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
 			$shiptobilling = !$_POST ? apply_filters('shiptobilling_default', 1) : $this->get_value('shiptobilling'); ?>
 
-			<p class="form-row" id="shiptobilling">
-				<input
-					class="input-checkbox"
-					type="checkbox"
-					name="shiptobilling"
-					id="shiptobilling-checkbox"
-					<?php if ($shiptobilling) : ?> checked="checked" <?php endif; ?>
-				/>
-				<label for="shiptobilling-checkbox" class="checkbox"><?php _e('Ship to same address?', 'jigoshop'); ?></label>
-			</p>
+			<p class="form-row" id="shiptobilling"><input class="input-checkbox" type="checkbox" name="shiptobilling" id="shiptobilling-checkbox" <?php if ($shiptobilling) : ?> checked="checked" <?php endif; ?> /> <label for="shiptobilling-checkbox" class="checkbox"><?php _e('Ship to same address?', 'jigoshop'); ?></label> </p>
 
 			<h3><?php _e('Shipping Address', 'jigoshop'); ?></h3>
 
