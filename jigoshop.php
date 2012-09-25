@@ -45,6 +45,7 @@
 if ( !defined( "JIGOSHOP_VERSION" )) define( "JIGOSHOP_VERSION", 1208170) ;
 if ( !defined( "JIGOSHOP_OPTIONS" )) define( "JIGOSHOP_OPTIONS", 'jigoshop_options' );
 if ( !defined( 'JIGOSHOP_TEMPLATE_URL' ) ) define( 'JIGOSHOP_TEMPLATE_URL', 'jigoshop/' );
+if ( !defined( "JIGOSHOP_HEAD_VERSION" )) define( "JIGOSHOP_HEAD_VERSION", 1.4) ;
 if ( !defined( "PHP_EOL" )) define( "PHP_EOL", "\r\n" );
 
 /**
@@ -916,6 +917,14 @@ function jigoshop_sanitize_user($username, $raw_username, $strict) {
 
 	return $username;
 }
+
+add_action( 'wp_head', 'jigoshop_head_version' );
+if( ! function_exists('jigoshop_head_version') ) {
+function jigoshop_head_version() {
+echo "\n" . '<!-- Jigoshop Version: '.JIGOSHOP_HEAD_VERSION.' -->' . "\n";
+}
+}
+
 
 global $jigoshop_body_classes;
 
