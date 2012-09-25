@@ -147,22 +147,10 @@ $jigoshop_options = Jigoshop_Base::get_options(); ?>
                                 $gateway_set = true;
 
                             endif; ?>
-                            <li>
-								<input type="radio"
-									   id="payment_method_<?php echo $gateway->id; ?>"
-									   class="input-radio"
-									   name="payment_method"
-									   value="<?php echo esc_attr( $gateway->id ); ?>"
-									   <?php if ($gateway->chosen) echo 'checked="checked"'; ?>
-								/>
-								<label for="payment_method_<?php echo $gateway->id; ?>">
-									<?php echo $gateway->title; ?> <?php echo apply_filters('gateway_icon', $gateway->icon(), $gateway->id); ?>
-								</label>
+                            <li><input type="radio" id="payment_method_<?php echo $gateway->id; ?>" class="input-radio" name="payment_method" value="<?php echo esc_attr( $gateway->id ); ?>" <?php if ($gateway->chosen) echo 'checked="checked"'; ?> /> <label for="payment_method_<?php echo $gateway->id; ?>"><?php echo $gateway->title; ?> <?php echo apply_filters('gateway_icon', $gateway->icon(), $gateway->id); ?></label>
 								<?php
 									if ( $gateway->has_fields || $gateway->description ) : ?>
-										<div class="payment_box payment_method_<?php echo esc_attr( $gateway->id ); ?>" style="display:none;">
-											<?php $gateway->payment_fields(); ?>
-										</div>
+										<div class="payment_box payment_method_<?php echo esc_attr( $gateway->id ); ?>" style="display:none;"><?php $gateway->payment_fields(); ?></div>
 									<?php endif; ?>
                             </li>
                             <?php
