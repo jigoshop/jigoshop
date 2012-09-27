@@ -43,6 +43,28 @@ class jigoshop extends Jigoshop_Singleton {
 	}
 
 	/**
+	 * Get the current path to Jigoshop
+	 *
+	 * @return  string	local filesystem path with trailing slash
+	 */
+	public static function jigoshop_path() {
+		return plugin_dir_path( dirname( __FILE__ ) );
+	}
+	
+	/**
+	 * Get the current version of Jigoshop
+	 *
+	 * @return  string	current Jigoshop version
+	 */
+	public static function jigoshop_version() {
+		if ( ! function_exists( 'get_plugin_data' ) ) {
+			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		}
+		$plugin_data = get_plugin_data( self::jigoshop_path() . 'jigoshop.php' );
+		return $plugin_data['Version'];
+	}
+
+	/**
 	 * Get the assets url
 	 * Provide a filter to allow asset location elsewhere such as on a CDN
 	 *

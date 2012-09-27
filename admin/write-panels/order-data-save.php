@@ -107,10 +107,10 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
 	
 	// if a shipping or payment methods has changed, update the method title for pretty display
 	if ( isset( $_POST['shipping_method'] )) {
-		$data['shipping_method_title'] = '';
+		$data['shipping_service'] = '';
 		$shipping_methods = jigoshop_shipping::get_all_methods();
 		if ( ! empty( $shipping_methods )) foreach( $shipping_methods as $index => $method ) {
-			if ( $_POST['shipping_method'] == $method->id ) $data['shipping_method_title'] = $method->title;
+			if ( $_POST['shipping_method'] == $method->id ) $data['shipping_service'] = $method->title;
 		}
 	}
 	if ( isset( $_POST['payment_method'] )) {
@@ -167,6 +167,7 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
                 }
             }
 
+            $cost_inc_tax = $jigoshop_options->get_option('jigoshop_prices_include_tax' == 'yes') ? number_format((float)jigowatt_clean($item_cost[$i]), 2) : -1;
             $order_items[] = apply_filters('update_order_item', array(
 				'id'          => htmlspecialchars(stripslashes($item_id[$i])),
 				'variation_id'=> $variation_id,
@@ -174,7 +175,7 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
 				'name'        => htmlspecialchars(stripslashes($item_name[$i])),
 				'qty'         => (int) $item_quantity[$i],
 				'cost'        => number_format((float)jigowatt_clean($item_cost[$i]), 2),
-				'cost_inc_tax'=> -1, //TODO: need to look at this action when manually adding order
+				'cost_inc_tax'=> $cost_inc_tax,
 				'taxrate'     => number_format((float)jigowatt_clean($item_tax_rate[$i]), 4)
                 ));
         }

@@ -107,7 +107,8 @@ if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 		else :
 			$output = '<span class="nostock">'.__('Out of Stock', 'jigoshop').'</span>';
 		endif;
-		echo $output;
+		
+		echo apply_filters( 'jigoshop_loop_add_to_cart_output', $output, $post, $_product );
 
 		do_action('jigoshop_after_add_to_cart_button');
 
@@ -808,53 +809,38 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 			<p><button type="submit" name="calc_shipping" value="1" class="button"><?php _e('Update Totals', 'jigoshop'); ?></button></p>
 			<p>
 			<?php
-			if (jigoshop_shipping::has_calculable_shipping()) :
 				$available_methods = jigoshop_shipping::get_available_shipping_methods();
 				foreach ( $available_methods as $method ) :
-					if ( $method instanceof jigoshop_calculable_shipping ) :
 
-						for ($i = 0; $i < $method->get_rates_amount(); $i++) {
-						?>
-							<div class="col2-set">
-								<p class="form-row col-1">
+                    for ($i = 0; $i < $method->get_rates_amount(); $i++) {
+                    ?>
+                        <div class="col2-set">
+                            <p class="form-row col-1">
 
-									<?php
-									echo '<input type="radio" name="shipping_rates" value="' . esc_attr( $method->id . ':' . $i ) . '"' . ' class="shipping_select"';
-									if ( $method->get_cheapest_service() == $method->get_selected_service($i) && $method->is_chosen() ) echo ' checked>'; else echo '>';
-									echo $method->get_selected_service($i) . ' via ' . $method->title;
-									?>
-								<p class="form-row col-2"><?php
-									echo jigoshop_price($method->get_selected_price($i));
-									if ($method->shipping_tax>0) : __(' (ex. tax)', 'jigoshop'); endif;
-									?>
-							</div>
-						<?php
-						}
-
-					else :
-					?>
-					<div class="col2-set">
-						<p class="form-row col-1">
-							<?php
-							// value has : as there are no services on non calculable methods, since they are identified only by the id
-							echo '<input type="radio" name="shipping_rates" value="' . esc_attr( $method->id . ':' ) .'" class="shipping_select"';
-							if ( $method->is_chosen() ) echo 'checked>'; else echo '>';
-							echo $method->title;
-
-							?>
-						<p class="form-row col-2"><?php
-							if ($method->shipping_total>0) :
-								echo jigoshop_price($method->shipping_total);
-								if ($method->shipping_tax>0) : __(' (ex. tax)', 'jigoshop'); endif;
-							else :
-								echo __('Free', 'jigoshop');
-							endif;
-						?>
-					</div>
-					<?php
-					endif;
+                                <?php
+                                echo '<input type="radio" name="shipping_rates" value="' . esc_attr( $method->id . ':' . $i ) . '"' . ' class="shipping_select"';
+                                if ( $method->get_cheapest_service() == $method->get_selected_service($i) && $method->is_chosen() ) echo ' checked>'; else echo '>';
+                                echo $method->get_selected_service($i);
+                                ?>
+                            <p class="form-row col-2"><?php
+                            
+                                if ($method->get_selected_price($i) > 0) :
+                                    if (Jigoshop_Base::get_options()->get_option('jigoshop_display_totals_tax') == 'yes' ) {
+                                        echo jigoshop_price($method->get_selected_price($i) + $method->get_selected_tax($i));
+                                        echo __(' (inc. tax)', 'jigoshop');
+                                    }
+                                    else {
+                                        echo jigoshop_price($method->get_selected_price($i));
+                                        echo __(' (ex. tax)', 'jigoshop');
+                                    }
+                                else :
+                                    echo __('Free', 'jigoshop');
+                                endif;
+                                ?>
+                        </div>
+                    <?php
+                    }
 				endforeach;
-			endif;
 			?>
 			<input type="hidden" name="cart-url" value="<?php echo esc_attr( jigoshop_cart::get_cart_url() ); ?>">
 			<?php jigoshop::nonce_field('cart') ?>

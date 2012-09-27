@@ -335,7 +335,7 @@ function add_shipping_address_details($order) {
 		if ($order->shipping_company) echo $order->shipping_company . PHP_EOL;
 		echo $order->formatted_shipping_address . PHP_EOL . PHP_EOL;
 		
-		echo __('Shipped via: ','jigoshop') . html_entity_decode(ucwords($order->shipping_method_title), ENT_COMPAT, 'UTF-8') . PHP_EOL . PHP_EOL;
+		echo __('Shipping: ','jigoshop') . html_entity_decode(ucwords($order->shipping_service), ENT_COMPAT, 'UTF-8') . PHP_EOL . PHP_EOL;
 		
 		do_action('jigoshop_after_email_shipping_address', $order->id);
 		

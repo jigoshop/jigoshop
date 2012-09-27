@@ -98,7 +98,6 @@ class jigoshop_order extends Jigoshop_Base {
 		$this->shipping_state 		= (string) $this->get_value_from_data('shipping_state');
 
 		$this->shipping_method 		= (string) $this->get_value_from_data('shipping_method');
-		$this->shipping_method_title= (string) $this->get_value_from_data('shipping_method_title');
 		$this->shipping_service		= (string) $this->get_value_from_data('shipping_service');
 
 		$this->payment_method 		= (string) $this->get_value_from_data('payment_method');
@@ -254,25 +253,16 @@ class jigoshop_order extends Jigoshop_Base {
 
 		if ($this->order_shipping > 0) :
 
-				$shipping = jigoshop_price($this->order_shipping);
-				if ($this->order_shipping_tax > 0) : //tax applied to shipping
+            $shipping = jigoshop_price($this->order_shipping);
+            if ($this->order_shipping_tax > 0) : //tax applied to shipping
 
-                    // inc tax used with norway emails
-                    $shipping = ($inc_tax ? jigoshop_price($this->order_shipping + $this->order_shipping_tax) : $shipping);
-                    $tax_tag = ($inc_tax ? __('(inc. tax)','jigoshop') : __('(ex. tax)','jigoshop'));
-
-                    if ($this->shipping_service != NULL || $this->shipping_service) :
-						$shipping .= sprintf(__(' <small>%s %s via %s</small>', 'jigoshop'), $tax_tag, ucwords($this->shipping_service), ucwords($this->shipping_method_title));
-					else :
-						$shipping .= sprintf(__(' <small>%s via %s</small>', 'jigoshop'), $tax_tag, ucwords($this->shipping_method_title));
-					endif;
-				else : // when no tax applied to shipping
-                    if ($this->shipping_service != NULL || $this->shipping_service) :
-                        $shipping .= sprintf(__(' <small>%s via %s</small>', 'jigoshop'), ucwords($this->shipping_service), ucwords($this->shipping_method_title));
-                    else :
-                        $shipping .= sprintf(__(' <small>via %s</small>', 'jigoshop'), ucwords($this->shipping_method_title));
-                    endif;
-                endif;
+                // inc tax used with norway emails
+                $shipping = ($inc_tax ? jigoshop_price($this->order_shipping + $this->order_shipping_tax) : $shipping);
+                $tax_tag = ($inc_tax ? __('(inc. tax)','jigoshop') : __('(ex. tax)','jigoshop'));
+                $shipping .= sprintf(__(' <small>%s %s</small>', 'jigoshop'), $tax_tag, ucwords($this->shipping_service));
+            else : // when no tax applied to shipping
+                $shipping .= sprintf(__(' <small>%s</small>', 'jigoshop'), ucwords($this->shipping_service));
+            endif;
 
 		else :
 			$shipping = __('Free!', 'jigoshop');
@@ -565,7 +555,9 @@ class jigoshop_order extends Jigoshop_Base {
 
 		// Add the sale
 		$this->add_sale();
-
+		
+		do_action( 'jigoshop_payment_complete', $this->id );
+		
 	}
 
 	/**

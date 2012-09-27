@@ -164,7 +164,7 @@
 
 		$('#order_items_list button.remove_row').live('click', function(e) {
 			e.preventDefault();
-			var answer = confirm(params.remove_item_notice);
+			var answer = confirm(jigoshop_params.remove_item_notice);
 			if (answer){
 				$(this).parent().parent().remove();
 			}
@@ -172,7 +172,7 @@
 
 		$('button.calc_totals').live('click', function(e) {
 			e.preventDefault();
-			var answer = confirm( params.cart_total );
+			var answer = confirm( jigoshop_params.cart_total );
 			if ( answer ){
 				
 				// stuff the normal round function, we'll return it at end of function
@@ -268,7 +268,7 @@
 
 		$('button.billing-same-as-shipping').live('click', function(e){
 			e.preventDefault();
-			var answer = confirm(params.copy_billing);
+			var answer = confirm(jigoshop_params.copy_billing);
 			if (answer){
 				$('input#shipping_first_name').val( $('input#billing_first_name').val() );
 				$('input#shipping_last_name').val( $('input#billing_last_name').val() );
@@ -286,15 +286,15 @@
 			e.preventDefault();
 			var item_id = $("#order_product_select").val();
 			if (item_id) {
-				$('table.jigoshop_order_items').block({ message: null, overlayCSS: { background: '#fff url(' + params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
+				$('table.jigoshop_order_items').block({ message: null, overlayCSS: { background: '#fff url(' + jigoshop_params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
 
 				var data = {
 					action: 		'jigoshop_add_order_item',
 					item_to_add: 	item_id,
-					security: 		params.add_order_item_nonce
+					security: 		jigoshop_params.add_order_item_nonce
 				};
 
-				$.post( params.ajax_url, data, function(response) {
+				$.post( jigoshop_params.ajax_url, data, function(response) {
 
 					$('table.jigoshop_order_items tbody#order_items_list').append( response );
 					$('table.jigoshop_order_items').unblock();

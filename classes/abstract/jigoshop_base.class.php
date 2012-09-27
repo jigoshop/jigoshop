@@ -26,7 +26,7 @@ abstract class Jigoshop_Base {
 	 * adds the necessary class address on the function passed for WordPress to use
 	 *
 	 * @param string $tag - the action hook name
-	 * @params callback $function_to_add - the function name to add to the action hook
+	 * @param callback $function_to_add - the function name to add to the action hook
 	 * @param int $priority - the priority of the function to add to the action hook
 	 * @param int $accepted_args - the number of arguments to pass to the function to add
 	 *
@@ -42,7 +42,7 @@ abstract class Jigoshop_Base {
 	 * adds the necessary class address on the function passed for WordPress to use
 	 *
 	 * @param string $tag - the filter hook name
-	 * @params callback $function_to_add - the function name to add to the filter hook
+	 * @param callback $function_to_add - the function name to add to the filter hook
 	 * @param int $priority - the priority of the function to add to the filter hook
 	 * @param int $accepted_args - the number of arguments to pass to the filter to add
 	 *

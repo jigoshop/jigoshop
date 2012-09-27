@@ -81,7 +81,7 @@ function jigoshop_recent_products( $atts ) {
 function jigoshop_products( $atts ){
 	global $columns, $paged;
 	$jigoshop_options = Jigoshop_Base::get_options();
-    
+
 	if ( empty( $atts )) return;
 
 	extract( shortcode_atts( array(
@@ -178,7 +178,7 @@ function jigoshop_featured_products( $atts ) {
 
 	global $columns, $per_page, $paged;
 	$jigoshop_options = Jigoshop_Base::get_options();
-    
+
 	extract( shortcode_atts( array(
 		'per_page' 	=> $jigoshop_options->get_option('jigoshop_catalog_per_page'),
 		'columns' 	=> $jigoshop_options->get_option('jigoshop_catalog_columns'),
@@ -223,7 +223,7 @@ function jigoshop_product_category( $atts ) {
 
 	global $columns, $per_page, $paged;
     $jigoshop_options = Jigoshop_Base::get_options();
-	
+
 	if ( empty( $atts ) ) return;
 
 	extract( shortcode_atts( array(
@@ -366,47 +366,48 @@ function jigoshop_search_shortcode( $atts ) {
 }
 
 //### Sale products shortcode #########################################################
- 
+
 function jigoshop_sale_products( $atts ) {
-   
+	global $columns, $per_page, $paged;
+
 	extract(shortcode_atts(array(
-		'per_page'					=> Jigoshop_Base::get_options()->get_option('jigoshop_catalog_per_page'),
-		'columns'					=> Jigoshop_Base::get_options()->get_option('jigoshop_catalog_columns'),
-		'orderby'					=> Jigoshop_Base::get_options()->get_option('jigoshop_catalog_sort_orderby'),
-		'order'						=> Jigoshop_Base::get_options()->get_option('jigoshop_catalog_sort_direction'),
-		'pagination'				=> false
+		'per_page'                  => Jigoshop_Base::get_options()->get_option('jigoshop_catalog_per_page'),
+		'columns'                   => Jigoshop_Base::get_options()->get_option('jigoshop_catalog_columns'),
+		'orderby'                   => Jigoshop_Base::get_options()->get_option('jigoshop_catalog_sort_orderby'),
+		'order'                     => Jigoshop_Base::get_options()->get_option('jigoshop_catalog_sort_direction'),
+		'pagination'                => false
 	), $atts));
-	
+
   	$today = date('Y-m-d',time());
   	$tomorrow = date('Y-m-d',mktime(0, 0, 0, date("m"), date("d")+1, date("Y")) );
- 
+
 	$args = array(
-		'post_type'     			=> 'product',
-		'post_status'				=> 'publish',
-		'ignore_sticky_posts'   	=> 1,
-		'posts_per_page'			=> $per_page,
-		'orderby'					=> $orderby,
-		'order'						=> $order,
-		'meta_query'				=> array(
+		'post_type'                 => array( 'product' ),
+		'post_status'               => 'publish',
+		'ignore_sticky_posts'       => 1,
+		'posts_per_page'            => $per_page,
+		'orderby'                   => $orderby,
+		'order'                     => $order,
+		'meta_query'                => array(
 				array(
-						'key'		=> 'visibility',
-						'value'	=> array( 'catalog', 'visible' ),
-						'compare'	=> 'IN'
+						'key'       => 'visibility',
+						'value'     => array( 'catalog', 'visible' ),
+						'compare'   => 'IN'
 				),
 				array(
-						'key'		=> 'sale_price',
-						'value'		=> '',
-						'compare'	=> '!=',
+						'key'       => 'sale_price',
+						'value'     => '',
+						'compare'   => '!=',
 				),
 				array(
-						'key'		=> 'sale_price_dates_from',
-						'value'		=> array( '', $today ),
-						'compare'	=> '<=',
+						'key'       => 'sale_price_dates_from',
+						'value'     => array( '', $today ),
+						'compare'   => '<=',
 				),
 				array(
-						'key'		=> 'sale_price_dates_to',
-						'value'		=> array( '', $tomorrow ),
-						'compare'	=> '<=',
+						'key'       => 'sale_price_dates_to',
+						'value'     => array( '', $tomorrow ),
+						'compare'   => '<=',
 				),
 		)
 	);

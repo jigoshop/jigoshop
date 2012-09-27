@@ -316,7 +316,7 @@ class paypal extends jigoshop_payment_gateway {
 				$paypal_args['item_name_'.$item_loop] = $title;
 				$paypal_args['quantity_'.$item_loop] = $item['qty'];
 				// use product price since we want the base price if it's including tax or if it's not including tax
-				$paypal_args['amount_'.$item_loop] = number_format($_product->get_price(), 2); //Apparently, Paypal did not like "28.4525" as the amount. Changing that to "28.45" fixed the issue.
+				$paypal_args['amount_'.$item_loop] = number_format( apply_filters( 'jigoshop_paypal_adjust_item_price' ,$_product->get_price(), $item), 2); //Apparently, Paypal did not like "28.4525" as the amount. Changing that to "28.45" fixed the issue.
 			endif;
 		endforeach; endif;
 
@@ -412,49 +412,85 @@ class paypal extends jigoshop_payment_gateway {
 	 **/
 	function check_ipn_request_is_valid() {
 
+		jigoshop_log( 'Checking if PayPal IPN response is valid ...' );
+		
+		// Get recieved values from post data
+		$current_values = (array) stripslashes_deep( $_POST );
+		
 		 // Add cmd to the post array
-		$_POST['cmd'] = '_notify-validate';
+		$current_values['cmd'] = '_notify-validate';
 
 		// Send back post vars to paypal
-		$params = array( 'body' => $_POST, 'sslverify' => apply_filters('https_local_ssl_verify', false));
+		$paypal_params = array( 
+			'body'          => $current_values,
+			'sslverify'     => false,
+			'timeout'       => 30,
+			'user-agent'    => 'Jigoshop/' . jigoshop::jigoshop_version()
+		);
 
 		// Get url
-	   	if ( $this->testmode == 'yes' ):
-			$paypal_adr = $this->testurl;
-		else :
-			$paypal_adr = $this->liveurl;
-		endif;
-
-		// Post back to get a response
-		$response = wp_remote_post( $paypal_adr, $params );
-
-		 // Clean
-		unset($_POST['cmd']);
-
-		// check to see if the request was valid
-		if ( !is_wp_error($response) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 && (strcmp( $response['body'], "VERIFIED") == 0)) {
-			return true;
+		if ( $this->testmode == 'yes' ) {
+			$paypal_adr = $this->testurl;		
+		} else {
+			$paypal_adr = $this->liveurl;		
 		}
-
-		return false;
+		
+		// Post back to get a response
+		$response = wp_remote_post( $paypal_adr, $paypal_params );
+		
+		// check to see if the request was valid
+		if ( ! is_wp_error( $response )
+			&& $response['response']['code'] >= 200
+			&& $response['response']['code'] < 300
+			&& (strcmp( $response['body'], "VERIFIED") == 0)) {
+		
+			jigoshop_log( 'Received valid response from PayPal' );
+			return true;
+			
+		} else {
+		
+			jigoshop_log( 'Received invalid response from PayPal!' );
+			jigoshop_log( 'IPN Response: ' . print_r( $response, true ) );
+			
+			if ( is_wp_error( $response ) ) {
+				jigoshop_log( 'PayPal IPN WordPress Error message: ' . $result->get_error_message() );
+			}
+			
+			return false;
+		
+		}
+		
 	}
 
 	/**
 	 * Check for PayPal IPN Response
 	 **/
 	function check_ipn_response() {
+		
+		if ( is_admin() ) return;
+		
+		if ( isset($_GET['paypalListener']) && $_GET['paypalListener'] == 'paypal_standard_IPN' ) {
 
-		if (isset($_GET['paypalListener']) && $_GET['paypalListener'] == 'paypal_standard_IPN'):
-
+			@ob_clean();
+			
 			$_POST = stripslashes_deep($_POST);
-
-			if (self::check_ipn_request_is_valid()) :
-
+			
+			if ( self::check_ipn_request_is_valid() ) {
+				
+				header('HTTP/1.1 200 OK');
+				
 				do_action("valid-paypal-standard-ipn-request", $_POST);
+			
+			} else {
+			
+				wp_die("PayPal IPN Request Failure");
+			
+			}
 
-	   		endif;
-
-	   	endif;
+		} else {
+//			if ( ! empty( $_GET )) jigoshop_log( "Paypal function 'check_ipn_response' -- GET['paypalListener'] is NOT set\nGET values: " . print_r( $_GET, true ) );
+//			if ( ! empty( $_POST )) jigoshop_log( "Paypal function 'check_ipn_response' -- GET['paypalListener'] is NOT set\nPOST values: " . print_r( $_POST, true ) );
+		}
 
 	}
 
@@ -462,69 +498,88 @@ class paypal extends jigoshop_payment_gateway {
 	 * Successful Payment!
 	 **/
 	function successful_request( $posted ) {
-
-		// Custom holds post ID
-		if ( !empty($posted['txn_type']) && !empty($posted['invoice']) ) {
+		
+		// 'custom' holds post ID (Order ID)
+		if ( !empty($posted['custom']) && !empty($posted['txn_type']) && !empty($posted['invoice']) ) {
 
 			$accepted_types = array('cart', 'instant', 'express_checkout', 'web_accept', 'masspay', 'send_money');
 
-			if (!in_array(strtolower($posted['txn_type']), $accepted_types)) exit;
-
+			if ( ! in_array( strtolower( $posted['txn_type'] ), $accepted_types )) {
+				jigoshop_log( "PAYPAL: function 'successful_request' -- unknown 'txn_type' of '".$posted['txn_type']."' for Order ID: ".$posted['custom']." -- EXITING!" );
+				exit;
+			}
+			
 			$order = new jigoshop_order( (int) $posted['custom'] );
 
-			if ($order->order_key!==$posted['invoice']) exit;
+			if ( $order->order_key !== $posted['invoice'] ) {
+				jigoshop_log( "PAYPAL: function 'successful_request' -- order_key does NOT match posted invoice for Order ID: ".$posted['custom']." -- EXITING!" );
+				exit;
+			}
 
-			// Sandbox fix
-			if ($posted['test_ipn']==1 && $posted['payment_status']=='Pending') $posted['payment_status'] = 'completed';
+			// Sandbox fix (note: not sure what this is, but the 'isset' is added for undefined index -JAP-)
+			// TODO: test that the Pending should really be pending (lowercase)
+			if ( isset($posted['test_ipn']) && $posted['test_ipn']==1 && $posted['payment_status']=='Pending' ) {
+				$posted['payment_status'] = 'completed';
+			}
 
-
-			if ($order->status !== 'completed') :
+			if ( $order->status !== 'completed' ) {
 				// We are here so lets check status and do actions
 				switch (strtolower($posted['payment_status'])) :
 					case 'completed' :
 						// Payment completed
 						$order->add_order_note( __('IPN payment completed', 'jigoshop') );
+						jigoshop_log( "PAYPAL: IPN payment completed for Order ID: " . $posted['custom'] );
 						$order->payment_complete();
-					break;
+						break;
 					case 'denied' :
 					case 'expired' :
 					case 'failed' :
 					case 'voided' :
-						// Hold order
-						$order->update_status('on-hold', sprintf(__('Payment %s via IPN.', 'jigoshop'), strtolower($posted['payment_status']) ) );
-					break;
+						// Failed order
+						$order->update_status('failed', sprintf(__('Payment %s via IPN.', 'jigoshop'), strtolower($posted['payment_status']) ) );
+						jigoshop_log( "PAYPAL: failed order with status = " . strtolower($posted['payment_status']) . "for Order ID: " . $posted['custom'] );
+						break;
+					case 'refunded' :
+					case 'reversed' :
+					case 'chargeback' :
+						jigoshop_log( "PAYPAL: payment status type - '" . $posted['payment_status'] . "' - not supported for Order ID: " . $posted['custom'] );
+						break;
 					default:
 						// No action
-					break;
+						break;
 				endswitch;
-			endif;
+			}
 
 			exit;
 
+		} else {
+			
+			jigoshop_log( "PAYPAL: function 'successful_request' -- empty initial required values -- EXITING!\n'posted' values = " . print_r( $posted, true ) );
+			
 		}
 
 	}
-    
-    public function process_gateway($subtotal, $shipping_total, $discount = 0) {
-        
-        $ret_val = false;
-        if (!(isset($subtotal) && isset($shipping_total))) return $ret_val;
-        
-        // check for free (which is the sum of all products and shipping = 0) Tax doesn't count unless prices
-        // include tax
-        if (($subtotal <= 0 && $shipping_total <= 0) || (($subtotal + $shipping_total) - $discount) == 0) :
-            // true when force payment = 'yes'
-            $ret_val = ($this->force_payment == 'yes');
-        elseif(($subtotal + $shipping_total) - $discount < 0) :
-            // don't process paypal if the sum of the product prices and shipping total is less than the discount
-            // as it cannot handle this scenario
-            $ret_val = false;
-        else :
-            $ret_val = true;
-        endif;
-        
-        return $ret_val;
-        
-    }
+	
+	public function process_gateway($subtotal, $shipping_total, $discount = 0) {
+		
+		$ret_val = false;
+		if (!(isset($subtotal) && isset($shipping_total))) return $ret_val;
+		
+		// check for free (which is the sum of all products and shipping = 0) Tax doesn't count unless prices
+		// include tax
+		if (($subtotal <= 0 && $shipping_total <= 0) || (($subtotal + $shipping_total) - $discount) == 0) :
+			// true when force payment = 'yes'
+			$ret_val = ($this->force_payment == 'yes');
+		elseif(($subtotal + $shipping_total) - $discount < 0) :
+			// don't process paypal if the sum of the product prices and shipping total is less than the discount
+			// as it cannot handle this scenario
+			$ret_val = false;
+		else :
+			$ret_val = true;
+		endif;
+		
+		return $ret_val;
+		
+	}
 
 }

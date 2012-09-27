@@ -28,7 +28,7 @@ class jigoshop_product_meta
 		wp_set_object_terms( $post_id, sanitize_title($_POST['product-type']), 'product_type');
 
 		// Process general product data
-		update_post_meta( $post_id, 'regular_price', !empty($_POST['regular_price']) ? jigoshop_sanitize_num($_POST['regular_price']) : '');
+		update_post_meta( $post_id, 'regular_price', (isset($_POST['regular_price']) && $_POST['regular_price'] != null) ? jigoshop_sanitize_num($_POST['regular_price']) : '');
 
 		$sale_price = ! empty( $_POST['sale_price'] )
 			? ( ! strstr( $_POST['sale_price'], '%' ) ? jigoshop_sanitize_num( $_POST['sale_price'] ) : $_POST['sale_price'] )
@@ -49,7 +49,7 @@ class jigoshop_product_meta
 				if ( sizeof( $terms ) == 1 )
 					if ( in_array( $terms[0]->slug, array( 'variable', 'grouped' ) ) )
 						delete_post_meta( $post_id, 'sale_price' );
-		
+
 		if ( isset( $_POST['weight'] ) )
 			update_post_meta( $post_id, 'weight',        (float) $_POST['weight']);
 		if ( isset( $_POST['length'] ) )
@@ -83,7 +83,7 @@ class jigoshop_product_meta
 				? update_post_meta( $post_id, 'sku', $_POST['sku'])
 				: delete_post_meta( $post_id, 'sku' );
 		}
-		
+
 		// Process the attributes
 		update_post_meta( $post_id, 'product_attributes', $this->process_attributes($_POST, $post_id));
 
@@ -142,7 +142,7 @@ class jigoshop_product_meta
 	private function process_stock( array $post ) {
 
         $jigoshop_options = Jigoshop_Base::get_options();
-        
+
 		// If the global stock switch is off
 		if ( !$jigoshop_options->get_option('jigoshop_manage_stock') )
 			return false;
@@ -173,7 +173,7 @@ class jigoshop_product_meta
 				}
 			}
 		}
-				
+
 		return $array;
 	}
 

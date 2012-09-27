@@ -229,16 +229,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
 			$shiptobilling = !$_POST ? apply_filters('shiptobilling_default', 1) : $this->get_value('shiptobilling'); ?>
 
-			<p class="form-row" id="shiptobilling">
-				<input
-					class="input-checkbox"
-					type="checkbox"
-					name="shiptobilling"
-					id="shiptobilling-checkbox"
-					<?php if ($shiptobilling) : ?> checked="checked" <?php endif; ?>
-				/>
-				<label for="shiptobilling-checkbox" class="checkbox"><?php _e('Ship to same address?', 'jigoshop'); ?></label>
-			</p>
+			<p class="form-row" id="shiptobilling"><input class="input-checkbox" type="checkbox" name="shiptobilling" id="shiptobilling-checkbox" <?php if ($shiptobilling) : ?> checked="checked" <?php endif; ?> /> <label for="shiptobilling-checkbox" class="checkbox"><?php _e('Ship to same address?', 'jigoshop'); ?></label> </p>
 
 			<h3><?php _e('Shipping Address', 'jigoshop'); ?></h3>
 
@@ -274,6 +265,8 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 			'required'   => false,
 			'class'      => array(),
 			'label_class'=> array(),
+			'options'    => array(),
+			'selected'   => '',
 			'rel'        => '',
 			'return'     => false
 		);
@@ -364,6 +357,20 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					<label for="' . esc_attr( $args['name'] ) . '" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
 					<textarea name="'.esc_attr($args['name']).'" class="input-text' . esc_attr( $input_required ) . '" id="'.esc_attr($args['name']).'" placeholder="'.$args['placeholder'].'" cols="5" rows="2">'. esc_textarea( $this->get_value( $args['name'] ) ).'</textarea>
 				</p>'.$after;
+
+			break;
+			case "select" :
+				$field = '<p class="form-row '.implode(' ', $args['class']).'">
+					<label for="' . esc_attr( $args['name'] ) . '" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
+					<select name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" class="input-text" rel="'.esc_attr($args['rel']).'">';
+
+				foreach($args['options'] as $key=>$value) :
+					$field .= '<option value="'.esc_attr($key).'"';
+					if (esc_attr($args['selected'])==$key) $field .= 'selected="selected"';
+					$field .= '>'.__($value, 'jigoshop').'</option>';
+				endforeach;
+
+				$field .= '</select></p>'.$after;
 
 			break;
 			default :
@@ -695,7 +702,6 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					$data['shipping_country']       = $shipping_country;
 					$data['shipping_state']         = $shipping_state;
 					$data['shipping_method']        = $this->posted['shipping_method'];
-					$data['shipping_method_title']  = !empty($available_methods) ? $available_methods[$this->posted['shipping_method']]->title : '';
 					$data['shipping_service']       = $this->posted['shipping_service'];
 					$data['payment_method']         = $this->posted['payment_method'];
 					$data['payment_method_title']   = !empty($available_gateways[$this->posted['payment_method']]) ?$available_gateways[$this->posted['payment_method']]->title : '';
@@ -732,12 +738,13 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 							? $_product->get_price()
 							: -1
 						);
-
+                        
 						if ( !empty( $values['variation_id'] )) {
 							$product_id = $values['variation_id'];
 						} else {
 							$product_id = $values['product_id'];
 						}
+                        
 						$custom_products = (array) jigoshop_session::instance()->customized_products;
 						$custom = isset( $custom_products[$product_id] ) ? $custom_products[$product_id] : '';
 						if ( ! empty( $custom_products[$product_id] ) ) :
@@ -746,14 +753,14 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 							jigoshop_session::instance()->customized_products = $custom_products;
 						endif;
 
-						$order_items[] = apply_filters('new_order_item', array(
+                        $order_items[] = apply_filters('new_order_item', array(
 					 		'id' 			=> $values['product_id'],
 					 		'variation_id' 	=> $values['variation_id'],
                             'variation'     => $values['variation'],
                             'customization' => $custom,
 					 		'name' 			=> $_product->get_title(),
 					 		'qty' 			=> (int) $values['quantity'],
-					 		'cost' 			=> $_product->get_price_excluding_tax((int) $values['quantity']),
+					 		'cost'          => $_product->get_price_excluding_tax((int) $values['quantity']),
                             'cost_inc_tax'  => $price_inc_tax, // if less than 0 don't use this
 					 		'taxrate' 		=> $rate
 					 	), $values);
@@ -908,50 +915,52 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
                         foreach ($available_methods as $method) :
 
-                            if ($method instanceof jigoshop_calculable_shipping) :
-                                $selected_service = NULL;
-                                if ($method->is_chosen()) :
+                            $selected_service = NULL;
+                            if ($method->is_chosen()) :
 
-                                    if (is_numeric( jigoshop_session::instance()->selected_rate_id )) :
-                                        $selected_service = $method->get_selected_service( jigoshop_session::instance()->selected_rate_id );
-                                    else :
-                                        $selected_service = $method->get_cheapest_service();
-                                    endif;
+                                if (is_numeric( jigoshop_session::instance()->selected_rate_id )) :
+                                    $selected_service = $method->get_selected_service( jigoshop_session::instance()->selected_rate_id );
+                                else :
+                                    $selected_service = $method->get_cheapest_service();
                                 endif;
-                                for ($i = 0; $i < $method->get_rates_amount(); $i++) :
-                                    echo '<option value="' . $method->id . ':' . $method->get_selected_service($i) . ':' . $i . '" ';
-                                    if ($method->get_selected_service($i) == $selected_service) :
-                                        echo 'selected="selected"';
-                                    endif;
-                                    echo '>' . $method->get_selected_service($i) . ' via ' . $method->title . ' &ndash; ';
-                                    echo jigoshop_price($method->get_selected_price($i));
-                                    if ($method->shipping_tax > 0) : echo __(' (ex. tax)', 'jigoshop');
-                                    endif;
-                                    echo '</option>';
-                                endfor;
-                            else :
-                                echo '<option value="' . esc_attr( $method->id  ) . '::" ';
-                                if ($method->is_chosen())
+                            endif;
+                            for ($i = 0; $i < $method->get_rates_amount(); $i++) :
+                                echo '<option value="' . esc_attr( $method->id . ':' . $method->get_selected_service($i) . ':' . $i ) . '" ';
+                                if ($method->get_selected_service($i) == $selected_service) :
                                     echo 'selected="selected"';
+                                endif;
+                                echo '>' . $method->get_selected_service($i) . ' &ndash; ';
 
-                                echo '>' . $method->title . ' &ndash; ';
+                                if ($method->get_selected_price($i) > 0) :
+                                    
+                                    $tax_label = 0; // 0 no label, 1 ex. tax, 2 inc. tax
+                                    $price = 0;
+                                    if (self::get_options()->get_option('jigoshop_display_totals_tax') == 'yes' ) {
 
-                                if ($method->shipping_total > 0) :
-                                	$display_total = $method->shipping_total;
-                                	if ( self::get_options()->get_option('jigoshop_display_totals_tax') == 'yes' ) {
-                                		$display_total += $method->shipping_tax;
-										echo jigoshop_price($display_total);
-										echo __(' (inc. tax)', 'jigoshop');
-                               		} else {                                	
-										echo jigoshop_price( $method->shipping_total );
-										echo __(' (ex. tax)', 'jigoshop');
+                                        // check that shipping is indeed taxed.
+                                        if (jigoshop_cart::$shipping_tax_total > 0) {
+                                            $tax_label = 2; // inc. tax
+                                        }
+                                        
+                                        $price = $method->get_selected_price($i) + $method->get_selected_tax($i);
+                                        
                                     }
+                                    else {
+                                        
+                                        // check that shipping is indeed taxed.
+                                        if (jigoshop_cart::$shipping_tax_total > 0) {
+                                            $tax_label = 1; // ex. tax
+                                        }
+                                        
+                                        $price = $method->get_selected_price($i);
+                                        
+                                    }
+                                    echo jigoshop_price($price, array('ex_tax_label' => $tax_label));
                                 else :
                                     echo __('Free', 'jigoshop');
                                 endif;
-
                                 echo '</option>';
-                            endif;
+                            endfor;
 
                         endforeach;
 

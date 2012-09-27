@@ -351,6 +351,9 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	 * Install additional Tab's to Jigoshop Options
 	 * Extensions would use this to add a new Tab for their own options
 	 *
+	 * NOTE: External code should not call this function any earlier than the WordPress 'init'
+	 *       action hook in order for Jigoshop language translations to function properly
+	 *
 	 * @param	string	The name of the Tab ('tab'), eg. 'My Extension'
 	 * @param	array	The array of options to install onto this tab
 	 *
@@ -375,6 +378,9 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	/**
 	 * Install additional default options for parsing onto a specific Tab
 	 * Shipping methods, Payment gateways and Extensions would use this
+	 *
+	 * NOTE: External code should not call this function any earlier than the WordPress 'init'
+	 *       action hook in order for Jigoshop language translations to function properly
 	 *
 	 * @param	string	The name of the Tab ('tab') to install onto
 	 * @param	array	The array of options to install at the end of the current options on this Tab
@@ -422,6 +428,9 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	/**
 	 * Install additional default options for parsing after a specific option ID
 	 * Extensions would use this
+	 *
+	 * NOTE: External code should not call this function any earlier than the WordPress 'init'
+	 *       action hook in order for Jigoshop language translations to function properly
 	 *
 	 * @param	string	The name of the ID  to install -after-
 	 * @param	array	The array of options to install

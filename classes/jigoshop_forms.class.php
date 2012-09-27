@@ -22,6 +22,7 @@ class Jigoshop_Forms extends Jigoshop_Base {
 
 		$args = array(
 			'id'            => null,
+			'name'          => null,
 			'type'          => 'text',
 			'label'         => null,
 			'after_label'   => null,
@@ -37,12 +38,13 @@ class Jigoshop_Forms extends Jigoshop_Base {
 		extract( wp_parse_args( $field, $args ) );
 
 		$value = isset( $value ) ? esc_attr( $value ) : get_post_meta( $post->ID, $id, true) ;
-
+		$name = isset( $name ) ? $name : $id;
+		    
 		$html  = '';
 
 		$html .= "<p class='form-field {$id}_field'>";
 		$html .= "<label for='{$id}'>$label{$after_label}</label>";
-		$html .= "<input type='{$type}' id='{$id}' name='{$id}' class='{$class}'";
+		$html .= "<input type='{$type}' id='{$id}' name='{$name}' class='{$class}'";
 		$html .= " value='{$value}'";
 		if ( $type == 'number' ) {
 			if ( ! empty( $min ))   $html .= " min='{$min}'";
@@ -68,6 +70,7 @@ class Jigoshop_Forms extends Jigoshop_Base {
 
 		$args = array(
 			'id'            => null,
+			'name'          => null,
 			'label'         => null,
 			'after_label'   => null,
 			'class'         => 'select short',
@@ -81,7 +84,8 @@ class Jigoshop_Forms extends Jigoshop_Base {
 		extract( wp_parse_args( $field, $args ) );
 
 		$selected = ($selected) ? (array)$selected : (array)get_post_meta($post->ID, $id, true);
-		$name     = ($multiple) ? $id.'[]' : $id;
+		$name     = isset( $name ) ? $name : $id;
+		$name     = ($multiple) ? $name.'[]' : $name;
 		$multiple = ($multiple) ? 'multiple="multiple"' : '';
 		$desc     = ($desc)     ? esc_html( $desc ) : false;
 
@@ -136,6 +140,7 @@ class Jigoshop_Forms extends Jigoshop_Base {
 
 		$args = array(
 			'id'            => null,
+			'name'          => null,
 			'label'         => null,
 			'after_label'   => null,
 			'class'         => 'checkbox',
@@ -145,6 +150,7 @@ class Jigoshop_Forms extends Jigoshop_Base {
 		);
 		extract( wp_parse_args( $field, $args ) );
 
+		$name  = isset( $name ) ? $name : $id;
 		$value = ($value) ? $value : get_post_meta($post->ID, $id, true);
 		$desc  = ($desc)  ? esc_html($desc) : false;
 
@@ -153,7 +159,7 @@ class Jigoshop_Forms extends Jigoshop_Base {
 		$html  = '';
 		$html .= "<p class='form-field {$id}_field'>";
 		$html .= "<label for='{$id}'>$label{$after_label}</label>";
-		$html .= "<input type='checkbox' name='{$id}' class='{$class}' id='{$id}' {$mark} />";
+		$html .= "<input type='checkbox' name='{$name}' class='{$class}' id='{$id}' {$mark} />";
 
 		if ( $desc ) {
 			$html .= "<label for='{$id}' class='description'>$desc</label>";
