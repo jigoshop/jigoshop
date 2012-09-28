@@ -3,8 +3,8 @@ Contributors: Jigowatt
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigowatt, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.2.1
-Tested up to: 3.4.1
-Stable tag: 1.3.3
+Tested up to: 3.4.2
+Stable tag: 1.4.1
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,10 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.4.1 - 2012-09-28 =
+* Fix: Adding variations to cart
+* Fix: Adding grouped products to cart
+
 = 1.4 - 2012-09-27 =
 * New: Additions to Core Shipping for new Premium Shipping extension available with release of Jigoshop 1.4
 * Tweak: The DIBS payment gateway has been removed from the Jigoshop core.  It is updated with a number of enhancements and freely available as a separate plugin here:

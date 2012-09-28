@@ -233,7 +233,7 @@ if ( ! function_exists( 'jigoshop_add_to_cart_action' )) { //make function plugg
 				$is_valid = apply_filters('jigoshop_add_to_cart_validation', true, $product_id, $quantity);
 
 				if ( $all_variations_set && $is_valid ) {
-					jigoshop_cart::add_to_cart($product_id, $quantity);
+					jigoshop_cart::add_to_cart($product_id, $quantity, $variation_id, $variations);
 					$product_added = true;
 				}
 
@@ -244,7 +244,7 @@ if ( ! function_exists( 'jigoshop_add_to_cart_action' )) { //make function plugg
 				if ( empty($_REQUEST['quantity']) || !is_array($_REQUEST['quantity']) )
 					break; // do nothing
 
-				foreach ( $_REQUEST['quantity'] as $item => $quantity ) {
+				foreach ( $_REQUEST['quantity'] as $product_id => $quantity ) {
 
 					// Skip if no quantity
 					if ( ! $quantity )
