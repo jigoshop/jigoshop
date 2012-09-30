@@ -422,6 +422,7 @@ function jigoshop_disable_autosave( $src, $handle ) {
  * Adds a demo store banner to the site
  */
 add_action( 'wp_footer', 'jigoshop_demo_store' );
+if( ! function_exists('jigoshop_demo_store') ) {
 function jigoshop_demo_store() {
 
 	if ( Jigoshop_Base::get_options()->get_option( 'jigoshop_demo_store' ) == 'yes' && is_jigoshop() ) :
@@ -430,7 +431,7 @@ function jigoshop_demo_store() {
 
 	endif;
 }
-
+}
 
 /**
  * jigoshop_sharethis
