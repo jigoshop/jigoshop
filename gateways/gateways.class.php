@@ -17,18 +17,22 @@
 
 class jigoshop_payment_gateways extends Jigoshop_Singleton {
 
-	protected static $payment_gateways;
+	protected static $payment_gateways = array();
 
 
 	/** Constructor */
     protected function __construct() {
 
-		self::gateway_inits();
-
+		// this constructor is called on the 'init' hook with a priority of 0 (highest)
+		// this doesn't give gateways time to install themselves and load text domains
+		// allow translations to function by re-adding initializations to the 'init' hook with a default priority
+		self::add_action( 'init', 'gateway_inits' );
+		
 	}
 
-	private static function gateway_inits() {
-
+	public static function gateway_inits() {
+		
+		// Gateways need to add themselves to this filter -prior- to the 'init' action hook
     	$load_gateways = apply_filters('jigoshop_payment_gateways', array());
 
 		foreach ($load_gateways as $gateway) :

@@ -27,7 +27,10 @@ class jigoshop_shipping extends Jigoshop_Singleton {
     /** Constructor */
     protected function __construct() {
 
-        self::shipping_inits();
+		// this constructor is called on the 'init' hook with a priority of 0 (highest)
+		// this doesn't give shipping methods time to install themselves and load text domains
+		// allow translations to function by re-adding initializations to the 'init' hook with a default priority
+		self::add_action( 'init', 'shipping_inits' );
         if (self::get_options()->get_option('jigoshop_calc_shipping') != 'no') :
             self::$enabled = true;
         endif;
@@ -36,8 +39,8 @@ class jigoshop_shipping extends Jigoshop_Singleton {
     /**
      * Initialize all shipping modules.
      */
-    private static function shipping_inits() {
-
+    public static function shipping_inits() {
+		
         do_action('jigoshop_shipping_init'); /* loaded plugins for shipping inits */
 
         $load_methods = apply_filters('jigoshop_shipping_methods', array());

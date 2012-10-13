@@ -54,13 +54,15 @@ add_action('wp_head', 'jigoshop_front_page_archive', 0);
  **/
 if (!function_exists('jigoshop_output_content_wrapper')) {
 	function jigoshop_output_content_wrapper() {
-		if(  get_option('template') === 'twentyeleven' ) echo '<section id="primary"><div id="content" role="main">';
+		if ( get_option('template') === 'twentytwelve' ) echo '<div id="primary" class="site-content"><div id="content" role="main">';
+		elseif ( get_option('template') === 'twentyeleven' ) echo '<section id="primary"><div id="content" role="main">';
 		else echo '<div id="container"><div id="content" role="main">';  /* twenty-ten */
 	}
 }
 if (!function_exists('jigoshop_output_content_wrapper_end')) {
 	function jigoshop_output_content_wrapper_end() {
-		if(  get_option('template') === 'twentyeleven' ) echo  '</div></section>';
+		if ( get_option('template') === 'twentytwelve' ) echo '</div></div>';
+		elseif ( get_option('template') === 'twentyeleven' ) echo  '</div></section>';
 		else echo '</div></div>'; /* twenty-ten */
 	}
 }
@@ -490,14 +492,16 @@ if (!function_exists('jigoshop_external_add_to_cart')) {
 		global $_product;
 		$external_url = get_post_meta( $_product->ID, 'external_url', true );
 
-		if ( ! $external_url )
-			return false;
+		if ( ! $external_url ) return false;
+			
 		?>
-
-		<p>
-			<a href="<?php echo esc_url( $external_url ); ?>" rel="nofollow" class="button"><?php _e('Buy product', 'jigoshop'); ?></a>
-		</p>
-
+			<form action="" class="cart" method="">
+				<?php do_action('jigoshop_before_add_to_cart_form_button'); ?>
+				<p>
+					<a href="<?php echo esc_url( $external_url ); ?>" rel="nofollow" class="button"><?php _e('Buy product', 'jigoshop'); ?></a>
+				</p>
+				<?php do_action('jigoshop_add_to_cart_form'); ?>
+			</form>
 		<?php
 	}
 }

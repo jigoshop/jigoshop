@@ -73,10 +73,6 @@ class jigoshop_product_meta
 			update_post_meta( $post_id, 'download_limit', $_POST['download_limit']);
 		}
 
-		if( $_POST['product-type'] == 'external' ) {
-			update_post_meta( $post_id, 'external_url',   $_POST['external_url']);
-		}
-
 		// Process the SKU
 		if ( Jigoshop_Base::get_options()->get_option('jigoshop_enable_sku') !== 'no' ) {
 			( $this->is_unique_sku( $post_id, $_POST['sku'] ) )
@@ -88,8 +84,14 @@ class jigoshop_product_meta
 		update_post_meta( $post_id, 'product_attributes', $this->process_attributes($_POST, $post_id));
 
 		// Process the stock information
-		foreach( $this->process_stock( $_POST ) as $key => $value ) {
+		$stockresult = $this->process_stock( $_POST );
+		if ( is_array( $stockresult ) ) foreach( $stockresult as $key => $value ) {
 			update_post_meta( $post_id, $key, $value );
+		}
+
+		if( $_POST['product-type'] == 'external' ) {
+			update_post_meta( $post_id, 'external_url', $_POST['external_url']);
+			update_post_meta( $post_id, 'stock_status', 'instock' );
 		}
 
 		// Process the sale dates

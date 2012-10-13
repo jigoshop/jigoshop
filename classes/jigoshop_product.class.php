@@ -849,7 +849,7 @@ class jigoshop_product extends Jigoshop_Base {
 		$html = null;
 
 		// First check if the product has child products
-			if ( ($this->is_type( array('grouped', 'variable') )) && ($this->regular_price == null)) {
+		if ( ($this->is_type( array('grouped', 'variable') )) && ($this->regular_price == null)) {
 
 			if ( ! ($children = $this->get_children()) )
 				return __( 'Unavailable', 'jigoshop' );

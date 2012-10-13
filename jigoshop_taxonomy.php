@@ -44,44 +44,56 @@ function jigoshop_post_type() {
             'hierarchical' => true,
             'update_count_callback' => '_update_post_term_count',
             'labels' => array(
-          'menu_name'        => __( 'Categories', 'jigoshop' ),
-					'name'             => __( 'Product Categories', 'jigoshop'),
-					'singular_name'    => __( 'Product Category', 'jigoshop'),
-					'search_items'     => __( 'Search Product Categories', 'jigoshop'),
-					'all_items'        => __( 'All Product Categories', 'jigoshop'),
-					'parent_item'      => __( 'Parent Product Category', 'jigoshop'),
-					'parent_item_colon'=> __( 'Parent Product Category:', 'jigoshop'),
-					'edit_item'        => __( 'Edit Product Category', 'jigoshop'),
-					'update_item'      => __( 'Update Product Category', 'jigoshop'),
-					'add_new_item'     => __( 'Add New Product Category', 'jigoshop'),
-					'new_item_name'    => __( 'New Product Category Name', 'jigoshop')
+				'menu_name'         => __( 'Categories', 'jigoshop' ),
+				'name'              => __( 'Product Categories', 'jigoshop'),
+				'singular_name'     => __( 'Product Category', 'jigoshop'),
+				'search_items'      => __( 'Search Product Categories', 'jigoshop'),
+				'all_items'         => __( 'All Product Categories', 'jigoshop'),
+				'parent_item'       => __( 'Parent Product Category', 'jigoshop'),
+				'parent_item_colon' => __( 'Parent Product Category:', 'jigoshop'),
+				'edit_item'         => __( 'Edit Product Category', 'jigoshop'),
+				'update_item'       => __( 'Update Product Category', 'jigoshop'),
+				'add_new_item'      => __( 'Add New Product Category', 'jigoshop'),
+				'new_item_name'     => __( 'New Product Category Name', 'jigoshop')
             ),
-			'show_ui'  => true,
-			'query_var'=> true,
-			'rewrite'  => array( 'slug'=> $category_base . $category_slug, 'with_front'=> false, 'hierarchical'=> false ),
+			'capabilities' => array(
+				'manage_terms' => 'manage_product_terms',
+				'edit_terms'   => 'edit_product_terms',
+				'delete_terms' => 'delete_product_terms',
+				'assign_terms' => 'assign_product_terms',
+            ),
+			'show_ui'   => true,
+			'query_var' => true,
+			'rewrite'   => array( 'slug'=> $category_base . $category_slug, 'with_front'=> false, 'hierarchical'=> false ),
         )
     );
 
     register_taxonomy( 'product_tag',
         array('product'),
         array(
-			'hierarchical'=> false,
-			'labels'      => array(
-					'menu_name'        => __( 'Tags', 'jigoshop' ),
-					'name'             => __( 'Product Tags', 'jigoshop'),
-					'singular_name'    => __( 'Product Tag', 'jigoshop'),
-					'search_items'     => __( 'Search Product Tags', 'jigoshop'),
-					'all_items'        => __( 'All Product Tags', 'jigoshop'),
-					'parent_item'      => __( 'Parent Product Tag', 'jigoshop'),
-					'parent_item_colon'=> __( 'Parent Product Tag:', 'jigoshop'),
-					'edit_item'        => __( 'Edit Product Tag', 'jigoshop'),
-					'update_item'      => __( 'Update Product Tag', 'jigoshop'),
-					'add_new_item'     => __( 'Add New Product Tag', 'jigoshop'),
-					'new_item_name'    => __( 'New Product Tag Name', 'jigoshop')
+			'hierarchical' => false,
+			'labels' => array(
+					'menu_name'         => __( 'Tags', 'jigoshop' ),
+					'name'              => __( 'Product Tags', 'jigoshop'),
+					'singular_name'     => __( 'Product Tag', 'jigoshop'),
+					'search_items'      => __( 'Search Product Tags', 'jigoshop'),
+					'all_items'         => __( 'All Product Tags', 'jigoshop'),
+					'parent_item'       => __( 'Parent Product Tag', 'jigoshop'),
+					'parent_item_colon' => __( 'Parent Product Tag:', 'jigoshop'),
+					'edit_item'         => __( 'Edit Product Tag', 'jigoshop'),
+					'update_item'       => __( 'Update Product Tag', 'jigoshop'),
+					'add_new_item'      => __( 'Add New Product Tag', 'jigoshop'),
+					'new_item_name'     => __( 'New Product Tag Name', 'jigoshop')
             ),
-			'show_ui'  => true,
-			'query_var'=> true,
-			'rewrite'  => array( 'slug'=> $category_base . $tag_slug, 'with_front'=> false ),
+			'capabilities' => array(
+				'manage_terms' => 'manage_product_terms',
+				'edit_terms'   => 'edit_product_terms',
+				'delete_terms' => 'delete_product_terms',
+				'assign_terms' => 'assign_product_terms',
+            ),
+			'show_ui'   => true,
+			'query_var' => true,
+			'rewrite'   => array( 'slug'=> $category_base . $tag_slug, 'with_front'=> false ),
         )
     );
 
@@ -97,22 +109,28 @@ function jigoshop_post_type() {
 			        array('product'),
 			        array(
 						'hierarchical'=> $hierarchical,
-						'labels'      => array(
-								'name'             => $tax->attribute_name,
-								'singular_name'    =>$tax->attribute_name,
-								'search_items'     => __( 'Search ', 'jigoshop') . $tax->attribute_name,
-								'all_items'        => __( 'All ', 'jigoshop') . $tax->attribute_name,
-								'parent_item'      => __( 'Parent ', 'jigoshop') . $tax->attribute_name,
-								'parent_item_colon'=> __( 'Parent ', 'jigoshop') . $tax->attribute_name . ':',
-								'edit_item'        => __( 'Edit ', 'jigoshop') . $tax->attribute_name,
-								'update_item'      => __( 'Update ', 'jigoshop') . $tax->attribute_name,
-								'add_new_item'     => __( 'Add New ', 'jigoshop') . $tax->attribute_name,
-								'new_item_name'    => __( 'New ', 'jigoshop') . $tax->attribute_name
-			            ),
-						'show_ui'          => false,
-						'query_var'        => true,
-						'show_in_nav_menus'=> false,
-						'rewrite'          => array( 'slug'=> $category_base . sanitize_title($tax->attribute_name), 'with_front'=> false, 'hierarchical'=> $hierarchical ),
+						'labels' => array(
+							'name'              => $tax->attribute_name,
+							'singular_name'     =>$tax->attribute_name,
+							'search_items'      => __( 'Search ', 'jigoshop') . $tax->attribute_name,
+							'all_items'         => __( 'All ', 'jigoshop') . $tax->attribute_name,
+							'parent_item'       => __( 'Parent ', 'jigoshop') . $tax->attribute_name,
+							'parent_item_colon' => __( 'Parent ', 'jigoshop') . $tax->attribute_name . ':',
+							'edit_item'         => __( 'Edit ', 'jigoshop') . $tax->attribute_name,
+							'update_item'       => __( 'Update ', 'jigoshop') . $tax->attribute_name,
+							'add_new_item'      => __( 'Add New ', 'jigoshop') . $tax->attribute_name,
+							'new_item_name'     => __( 'New ', 'jigoshop') . $tax->attribute_name
+						),
+						'capabilities' => array(
+							'manage_terms' => 'manage_product_terms',
+							'edit_terms'   => 'edit_product_terms',
+							'delete_terms' => 'delete_product_terms',
+							'assign_terms' => 'assign_product_terms',
+						),
+						'show_ui'           => false,
+						'query_var'         => true,
+						'show_in_nav_menus' => false,
+						'rewrite'           => array( 'slug'=> $category_base . sanitize_title($tax->attribute_name), 'with_front'=> false, 'hierarchical'=> $hierarchical ),
 			        )
 			    );
 
@@ -123,34 +141,35 @@ function jigoshop_post_type() {
 	register_post_type( "product",
 		array(
 			'labels' => array(
-				'name'              => __( 'Products', 'jigoshop' ),
-				'singular_name'     => __( 'Product', 'jigoshop' ),
-				'all_items'         => __( 'All Products', 'jigoshop' ),
-				'add_new'           => __( 'Add New', 'jigoshop' ),
-				'add_new_item'      => __( 'Add New Product', 'jigoshop' ),
-				'edit'              => __( 'Edit', 'jigoshop' ),
-				'edit_item'         => __( 'Edit Product', 'jigoshop' ),
-				'new_item'          => __( 'New Product', 'jigoshop' ),
-				'view'              => __( 'View Product', 'jigoshop' ),
-				'view_item'         => __( 'View Product', 'jigoshop' ),
-				'search_items'      => __( 'Search Products', 'jigoshop' ),
-				'not_found'         => __( 'No Products found', 'jigoshop' ),
-				'not_found_in_trash'=> __( 'No Products found in trash', 'jigoshop' ),
-				'parent'            => __( 'Parent Product', 'jigoshop' )
+				'name'               => __( 'Products', 'jigoshop' ),
+				'singular_name'      => __( 'Product', 'jigoshop' ),
+				'all_items'          => __( 'All Products', 'jigoshop' ),
+				'add_new'            => __( 'Add New', 'jigoshop' ),
+				'add_new_item'       => __( 'Add New Product', 'jigoshop' ),
+				'edit'               => __( 'Edit', 'jigoshop' ),
+				'edit_item'          => __( 'Edit Product', 'jigoshop' ),
+				'new_item'           => __( 'New Product', 'jigoshop' ),
+				'view'               => __( 'View Product', 'jigoshop' ),
+				'view_item'          => __( 'View Product', 'jigoshop' ),
+				'search_items'       => __( 'Search Products', 'jigoshop' ),
+				'not_found'          => __( 'No Products found', 'jigoshop' ),
+				'not_found_in_trash' => __( 'No Products found in trash', 'jigoshop' ),
+				'parent'             => __( 'Parent Product', 'jigoshop' )
 			),
-			'description'        => __( 'This is where you can add new products to your store.', 'jigoshop' ),
-			'public'             => true,
-			'show_ui'            => true,
-			'capability_type'    => 'post',
-			'publicly_queryable' => true,
-			'exclude_from_search'=> false,
-			'hierarchical'       => false, // Hierarchial causes a memory leak http://core.trac.wordpress.org/ticket/15459
-			'rewrite'            => array( 'slug'=> $product_base, 'with_front'=> false, 'feeds'=> $base_slug ),
-			'query_var'          => true,
-			'supports'           => array( 'title', 'editor', 'thumbnail', 'comments', 'excerpt',/*, 'page-attributes'*/ ),
-			'has_archive'        => $base_slug,
-			'show_in_nav_menus'  => false,
-			'menu_position'      => 56
+			'description'         => __( 'This is where you can add new products to your store.', 'jigoshop' ),
+			'public'              => true,
+			'show_ui'             => true,
+			'capability_type'     => 'product',
+			'map_meta_cap'        => true,
+			'publicly_queryable'  => true,
+			'exclude_from_search' => false,
+			'hierarchical'        => false, // Hierarchial causes a memory leak http://core.trac.wordpress.org/ticket/15459
+			'rewrite'             => array( 'slug'=> $product_base, 'with_front'=> false, 'feeds'=> $base_slug ),
+			'query_var'           => true,
+			'supports'            => array( 'title', 'editor', 'thumbnail', 'comments', 'excerpt',/*, 'page-attributes'*/ ),
+			'has_archive'         => $base_slug,
+			'show_in_nav_menus'   => false,
+			'menu_position'       => 56
 		)
 	);
 
@@ -172,18 +191,19 @@ function jigoshop_post_type() {
 				'parent'            => __( 'Parent Variation', 'jigoshop' )
 			),
 
-			'public'             => false,
-			'show_ui'            => false,
-			'publicly_queryable' => true,
-			'exclude_from_search'=> true,
-			'show_in_nav_menus'  => false,
+			'public'              => false,
+			'show_ui'             => false,
+			'publicly_queryable'  => true,
+			'exclude_from_search' => true,
+			'show_in_nav_menus'   => false,
 
-			'capability_type'    => 'post',
-			'hierarchical'       => false,
-			'rewrite'            => false,
-			'query_var'          => true,
-			'supports'           => array( 'title', 'editor', 'custom-fields' ),
-			'show_in_menu'       => 'edit.php?post_type=product'
+			'capability_type'     => 'product',
+			'map_meta_cap'        => true,
+			'hierarchical'        => false,
+			'rewrite'             => false,
+			'query_var'           => true,
+			'supports'            => array( 'title', 'editor', 'custom-fields' ),
+			'show_in_menu'        => 'edit.php?post_type=product'
 		)
 	);
 
@@ -215,22 +235,23 @@ function jigoshop_post_type() {
 				'not_found_in_trash'=> __( 'No Orders found in trash', 'jigoshop' ),
 				'parent'            => __( 'Parent Orders', 'jigoshop' )
 			),
-			'description'        => __( 'This is where store orders are stored.', 'jigoshop' ),
+			'description'         => __( 'This is where store orders are stored.', 'jigoshop' ),
 
-			'public'             => false,
-			'show_ui'            => true,
-			'show_in_nav_menus'  => false,
-			'publicly_queryable' => false,
-			'exclude_from_search'=> true,
+			'public'              => false,
+			'show_ui'             => true,
+			'show_in_nav_menus'   => false,
+			'publicly_queryable'  => false,
+			'exclude_from_search' => true,
 
-			'capability_type'    => 'post',
-			'hierarchical'       => false,
+			'capability_type'     => 'shop_order',
+			'map_meta_cap'        => true,
+			'hierarchical'        => false,
 
-			'rewrite'            => false,
-			'query_var'          => true,
-			'supports'           => array( 'title', 'comments' ),
-			'has_archive'        => false,
-			'menu_position'      => 58
+			'rewrite'             => false,
+			'query_var'           => true,
+			'supports'            => array( 'title', 'comments' ),
+			'has_archive'         => false,
+			'menu_position'       => 58
 		)
 	);
 
@@ -277,18 +298,19 @@ function jigoshop_post_type() {
 				'not_found_in_trash'  => __( 'No Coupons found in trash', 'jigoshop' ),
 				'parent'              => __( 'Parent Coupon', 'jigoshop' )
 			),
-			'description' 				=> __( 'This is where you can add new coupons that customers can use in your store.', 'jigoshop' ),
-			'public' 					=> true,
-			'show_ui' 					=> true,
-			'capability_type' 			=> 'post',
-			'publicly_queryable' 		=> false,
-			'exclude_from_search' 		=> true,
-			'hierarchical' 				=> false,
-			'rewrite' 					=> false,
-			'query_var' 				=> true,
-			'supports' 					=> array( 'title', 'editor' ),
-			'show_in_nav_menus'			=> false,
-			'show_in_menu' 				=> 'jigoshop'
+			'description'         => __( 'This is where you can add new coupons that customers can use in your store.', 'jigoshop' ),
+			'public'              => true,
+			'show_ui'             => true,
+			'capability_type'     => 'shop_coupon',
+			'map_meta_cap'        => true,
+			'publicly_queryable'  => false,
+			'exclude_from_search' => true,
+			'hierarchical'        => false,
+			'rewrite'             => false,
+			'query_var'           => true,
+			'supports'            => array( 'title', 'editor' ),
+			'show_in_nav_menus'   => false,
+			'show_in_menu'        => 'jigoshop'
 		)
 	);
 
