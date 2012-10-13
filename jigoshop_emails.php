@@ -254,7 +254,12 @@ function add_company_information() {
 function add_order_totals($order, $show_download_links, $show_sku) {
 
     $jigoshop_options = Jigoshop_Base::get_options();
-    echo $order->email_order_items_list($show_download_links, $show_sku);
+    $inc_tax=false;
+    if (($jigoshop_options->get_option('jigoshop_calc_taxes') == 'no')||($jigoshop_options->get_option('jigoshop_prices_include_tax') == 'yes')){
+	$inc_tax=true;
+    }
+    echo $order->email_order_items_list($show_download_links, $show_sku, $inc_tax);
+
 
     if ($order->customer_note) :
         echo PHP_EOL . __('Note:', 'jigoshop') . $order->customer_note . PHP_EOL;
