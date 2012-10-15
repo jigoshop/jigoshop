@@ -124,7 +124,7 @@ function jigoshop_order_data( $data ) {
 add_filter( 'enter_title_here', 'jigoshop_enter_title_here', 1, 2 );
 
 function jigoshop_enter_title_here( $text, $post ) {
-	if ( $post->post_type == 'shop_coupon' ) return __('Coupon code', 'jigoshop');
+	if ( $post->post_type == 'shop_coupon' ) return __('Coupon Title (converted to lower case for Code, multiple words will end up hyphenated)', 'jigoshop');
 	return $text;
 }
 

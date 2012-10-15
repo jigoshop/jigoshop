@@ -105,13 +105,14 @@ class JS_Coupons extends Jigoshop_Base {
 			);
 			$our_coupons = (array) get_posts( $args );
 			if ( ! empty( $our_coupons )) foreach ( $our_coupons as $id => $coupon ) {
+
 				$values = array();
 				$values['id']   = $coupon->ID;
-				$values['code'] = $coupon->post_title;
+				$values['code'] = $coupon->post_name;
 				
 				foreach ( self::get_coupon_fields() as $name => $meta )
 					if ( $meta ) $values[$name] = get_post_meta( $coupon->ID, $name, true );
-				self::$coupons[$coupon->post_title] = $values;
+				self::$coupons[$coupon->post_name] = $values;
 			}
 		}
 		return self::$coupons;

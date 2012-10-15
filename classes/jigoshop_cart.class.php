@@ -1075,10 +1075,11 @@ class jigoshop_cart extends Jigoshop_Singleton {
         }
 
         // if it's a percentage discount for products, make sure it's for a specific product, not all products
-        if ($the_coupon['type'] == 'percent_product' && sizeof($the_coupon['include_products']) == 0) {
-            jigoshop::add_error(__('Invalid coupon!', 'jigoshop'));
-            return false;
-        }
+        // NOTE: disengaging for Jigoshop 1.4.2, there should be no need to restrict this coupon type to specific products
+//         if ($the_coupon['type'] == 'percent_product' && sizeof($the_coupon['include_products']) == 0) {
+//             jigoshop::add_error(__('Invalid coupon!', 'jigoshop'));
+//             return false;
+//         }
 
         return true;
 

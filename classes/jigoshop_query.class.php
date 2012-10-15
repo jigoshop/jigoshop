@@ -219,15 +219,17 @@ class jigoshop_catalog_query extends Jigoshop_Singleton {
 				$this_query->query,
 				array(
 					'page_id'       => '',
+					'fields'        => 'ids',
 					'posts_per_page'=> -1,
 					'post_type'     => 'product',
 					'post_status'   => 'publish',
 					'meta_query'    => self::meta_query( $this_query )
 				)
 			);
-			$custom_query  = new WP_Query( $args );
 
-			foreach ($custom_query->posts as $p) $jigoshop_all_post_ids_in_view[] = $p->ID;
+			$custom_query = get_posts($args);
+
+			$jigoshop_all_post_ids_in_view = array_merge($jigoshop_all_post_ids_in_view, $custom_query);
 
 		endif;
 

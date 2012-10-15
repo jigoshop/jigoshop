@@ -22,7 +22,7 @@
  * Author:              Jigowatt
  * Author URI:          http://jigowatt.co.uk
  *
- * Version:             1.4.1
+ * Version:             1.4.2
  * Requires at least:   3.2.1
  * Tested up to:        3.4.2
  *
@@ -165,6 +165,72 @@ function jigoshop_init() {
 
 	jigoshop_roles_init();
 
+}
+
+function jigoshop_get_core_capabilities() {
+	$capabilities = array();
+
+	$capabilities['core'] = array(
+		"manage_jigoshop",
+		"view_jigoshop_reports"
+	);
+
+	$capability_types = array( 'product', 'shop_order', 'shop_coupon' );
+
+	foreach( $capability_types as $capability_type ) {
+
+		$capabilities[ $capability_type ] = array(
+
+			// Post type
+			"edit_{$capability_type}",
+			"read_{$capability_type}",
+			"delete_{$capability_type}",
+			"edit_{$capability_type}s",
+			"edit_others_{$capability_type}s",
+			"publish_{$capability_type}s",
+			"read_private_{$capability_type}s",
+			"delete_{$capability_type}s",
+			"delete_private_{$capability_type}s",
+			"delete_published_{$capability_type}s",
+			"delete_others_{$capability_type}s",
+			"edit_private_{$capability_type}s",
+			"edit_published_{$capability_type}s",
+
+			// Terms
+			"manage_{$capability_type}_terms",
+			"edit_{$capability_type}_terms",
+			"delete_{$capability_type}_terms",
+			"assign_{$capability_type}_terms"
+		);
+	}
+
+	return $capabilities;
+}
+
+function jigoshop_roles_init() {
+	global $wp_roles;
+
+	if ( class_exists('WP_Roles') )
+		if ( ! isset( $wp_roles ) )
+			$wp_roles = new WP_Roles();
+
+	if ( is_object( $wp_roles ) ) {
+
+		// Customer role
+		add_role( 'customer', __('Customer', 'jigoshop'), array(
+			'read'         => true,
+			'edit_posts'   => false,
+			'delete_posts' => false
+		) );
+
+		$capabilities = jigoshop_get_core_capabilities();
+
+		foreach( $capabilities as $cap_group ) {
+			foreach( $cap_group as $cap ) {
+				$wp_roles->add_cap( 'administrator', $cap );
+			}
+		}
+	}
 }
 
 function jigoshop_get_core_capabilities() {
@@ -1117,6 +1183,7 @@ function jigoshop_exclude_order_admin_comments( $clauses ) {
 
 	// Hide all those comments which aren't of type jigoshop
 	$clauses['where'] .= ' AND comment_type != "jigoshop"';
+	$clauses['where'] .= ' AND comment_type != "order_note"'; // Removes order notes
 
 	return $clauses;
 }

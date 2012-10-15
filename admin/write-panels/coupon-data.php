@@ -28,6 +28,13 @@ function jigoshop_coupon_data_box( $post ) {
 	
 	wp_nonce_field( 'jigoshop_save_data', 'jigoshop_meta_nonce' );
 	
+	$coupon_code  = '';
+	$coupon_code .= "<p class='form-field'>";
+	$coupon_code .= "<label>".__('Coupon Code','jigoshop')."</label>";
+	$coupon_code .= "<span><strong>".$post->post_name."</strong></span>";
+	$coupon_code .= '<span class="description">'.__('Will not appear until coupon is saved.  This is the front end code for use on the Cart.','jigoshop').'</span>';
+	$coupon_code .= "</p>";
+		
 	// disable the permalink slug display
 	?>
 		<style type="text/css">#edit-slug-box { display:none }</style>
@@ -37,7 +44,10 @@ function jigoshop_coupon_data_box( $post ) {
 			<div class="options_group">
 
 			<?php
-				
+			
+			// The coupon code from the title after 'sanitize_title'
+			echo $coupon_code;
+			
 			// Coupon Types
 			$args = array(
 				'id'            => 'type',
