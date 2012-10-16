@@ -737,7 +737,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 							? $_product->get_price()
 							: -1
 						);
-
+                        
 						if ( !empty( $values['variation_id'] )) {
 							$product_id = $values['variation_id'];
 						} else {

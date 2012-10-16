@@ -50,12 +50,12 @@ class jigoshop_customer extends Jigoshop_Singleton {
 			'shipping_postcode'=> isset($shipping_postcode) ? $shipping_postcode : ''
 		);
 	}
-
+    
     /**
      * Find out if the customer should be taxed or not
      * @param boolean $shipable tells if the cart has shipable items, and therefore we should use
      * shipping country. Otherwise if not shippable items, we need to use the customer country.
-     * @return boolean true if customer is taxable, false otherwise
+     * @return boolean true if customer is taxable, false otherwise 
      * @since 1.4
      */
 	public static function is_taxable($shipable) {
