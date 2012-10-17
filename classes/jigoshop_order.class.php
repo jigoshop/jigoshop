@@ -35,7 +35,7 @@ class jigoshop_order extends Jigoshop_Base {
 		);
 		return $order_types;
 	}
-		
+
 	public function __get($variable) {
 		return isset($this->_data[$variable]) ? $this->_data[$variable] : null;
 	}
@@ -48,6 +48,17 @@ class jigoshop_order extends Jigoshop_Base {
 	function jigoshop_order( $id='' ) {
 		if ($id>0) apply_filters('jigoshop_get_order', $this->get_order( $id ), $id);
         do_action('customized_emails_init'); /* load plugins for customized emails */
+	}
+
+    /**
+     * Returns the order number for display purposes.
+     *
+     * @access public
+     *
+     * @return string Order number.
+     */
+	function get_order_number() {
+		return apply_filters( 'jigoshop_order_number', _x( '#', 'hash before order number', 'jigoshop' ) . $this->id, $this );
 	}
 
 	/** Gets an order from the database */
@@ -190,7 +201,7 @@ class jigoshop_order extends Jigoshop_Base {
         if ($this->get_tax_classes() && is_array($this->get_tax_classes())) :
 
             foreach ($this->get_tax_classes() as $tax_class) :
-            
+
                 $order_tax += $this->order_tax[$tax_class]['amount'];
                 if (isset($this->order_tax[$tax_class][$this->shipping_method])) :
                     $order_tax += $this->order_tax[$tax_class][$this->shipping_method];
@@ -331,7 +342,7 @@ class jigoshop_order extends Jigoshop_Base {
 				}
 
 			}
-			
+
 			//  Check that this filter supplied by OptArt is in use before applying it.
 			//  This filter in Jigoshop 1.3 is only used by Jigoshop Product Addons and should be revised because
 			//  if that plugin is not active, emails will have a line item with 'Array' on each product description.
@@ -341,9 +352,9 @@ class jigoshop_order extends Jigoshop_Base {
 				$meta_data = apply_filters( 'jigoshop_display_item_meta_data_email', $item );
 				if ( $meta_data != '' ) {
 				  $return .= PHP_EOL . $meta_data;
-				}		
+				}
 			}
-			
+
 			if ( ! empty( $item['customization'] ) ) :
 				$return .= PHP_EOL . apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') ) . PHP_EOL . $item['customization'];
 			endif;
@@ -447,7 +458,7 @@ class jigoshop_order extends Jigoshop_Base {
 // 			self::get_options()->set_option('jigoshop_errors', $jigoshop_errors );
 // 			return true;
 // 		}
-// 
+//
 // 		if ( $this->status == 'completed' && $new_status != 'refunded' ) {
 // 			$jigoshop_errors = (array) maybe_unserialize(Jigoshop_Base::get_options()->get_option('jigoshop_errors'));
 // 			$jigoshop_errors[] = __('Completed Orders may not be changed. You may only issue a Refund.','jigoshop');
@@ -555,9 +566,9 @@ class jigoshop_order extends Jigoshop_Base {
 
 		// Add the sale
 		$this->add_sale();
-		
+
 		do_action( 'jigoshop_payment_complete', $this->id );
-		
+
 	}
 
 	/**

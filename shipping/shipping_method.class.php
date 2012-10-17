@@ -38,7 +38,7 @@ class jigoshop_shipping_method {
     private $error_message = null;
     
     public function __construct() {        
-        Jigoshop_Base::get_options()->install_external_options_onto_tab( __('Shipping','jigoshop'), $this->get_default_options() );
+    	Jigoshop_Base::get_options()->install_external_options_onto_tab( __( 'Shipping', 'jigoshop' ), $this->get_default_options() );
     }
 
     public function is_available() {

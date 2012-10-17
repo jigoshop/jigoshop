@@ -233,8 +233,7 @@ if ( ! function_exists( 'jigoshop_add_to_cart_action' )) { //make function plugg
 				$is_valid = apply_filters('jigoshop_add_to_cart_validation', true, $product_id, $quantity);
 
 				if ( $all_variations_set && $is_valid ) {
-					jigoshop_cart::add_to_cart($product_id, $quantity, $variation_id, $variations);
-					$product_added = true;
+					if ( jigoshop_cart::add_to_cart($product_id, $quantity, $variation_id, $variations) ) $product_added = true;
 				}
 
 			break;
@@ -257,8 +256,7 @@ if ( ! function_exists( 'jigoshop_add_to_cart_action' )) { //make function plugg
 
 					// Add to the cart if passsed validation
 					if ( $is_valid ) {
-						jigoshop_cart::add_to_cart($product_id, $quantity);
-						$product_added = true;
+						if ( jigoshop_cart::add_to_cart($product_id, $quantity) ) $product_added = true;
 					}
 				}
 
@@ -279,8 +277,7 @@ if ( ! function_exists( 'jigoshop_add_to_cart_action' )) { //make function plugg
 
 				// Add to the cart if passsed validation
 				if ( $is_valid ) {
-					jigoshop_cart::add_to_cart($product_id, $quantity);
-					$product_added = true;
+					if ( jigoshop_cart::add_to_cart($product_id, $quantity) ) $product_added = true;
 				}
 
 			break;
@@ -749,7 +746,7 @@ function jigoshop_ga_tracking() {
 		return false;
 
 	// Don't track the shop owners roaming
-	if ( current_user_can('manage_options') )
+	if ( current_user_can('manage_jigoshop') )
 		return false;
 
 	$tracking_id = $jigoshop_options->get_option('jigoshop_ga_id');
@@ -793,7 +790,7 @@ function jigoshop_ga_ecommerce_tracking( $order_id ) {
 		return false;
 
 	// Don't track the shop owners roaming
-	if ( current_user_can('manage_options') )
+	if ( current_user_can('manage_jigoshop') )
 		return false;
 
 	$tracking_id = $jigoshop_options->get_option('jigoshop_ga_id');
@@ -829,7 +826,7 @@ function jigoshop_ga_ecommerce_tracking( $order_id ) {
 			['_trackPageview'],
 
 			['_addTrans',
-			'<?php echo $order_id; ?>',                // Order ID
+			'<?php echo $order->get_order_number(); ?>', // Order ID
 			'<?php bloginfo('name'); ?>',              // Store Title
 			'<?php echo $order->order_total; ?>',      // Order Total Amount
 			'<?php echo $order->get_total_tax(); ?>',  // Order Tax Amount
@@ -841,7 +838,7 @@ function jigoshop_ga_ecommerce_tracking( $order_id ) {
 
 			<?php if ($order->items) foreach($order->items as $item) : $_product = $order->get_product_from_item( $item ); ?>
 				['_addItem',
-				'<?php echo $order_id; ?>',             // Order ID
+				'<?php echo $order->get_order_number(); ?>', // Order ID
 				'<?php echo $_product->sku; ?>',        // SKU
 				'<?php echo $item['name']; ?>',         // Product Title
 				'<?php if (isset($_product->variation_data))

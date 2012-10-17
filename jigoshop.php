@@ -22,7 +22,7 @@
  * Author:              Jigowatt
  * Author URI:          http://jigowatt.co.uk
  *
- * Version:             1.4.1
+ * Version:             1.4.2
  * Requires at least:   3.2.1
  * Tested up to:        3.4.2
  *
@@ -123,8 +123,11 @@ function jigoshop_init() {
 
 	/* ensure nothing is output to the browser prior to this (other than headers) */
 	ob_start();
-
-	// Override default translations with custom .mo's found in wp-content/languages/jigoshop
+	
+	// http://www.geertdedeckere.be/article/loading-wordpress-language-files-the-right-way
+	// this means that all Jigoshop extensions, shipping modules and gateways must load their text domains on the 'init' action hook
+	// 
+	// Override default translations with custom .mo's found in wp-content/languages/jigoshop first.
 	load_textdomain( 'jigoshop', WP_LANG_DIR.'/jigoshop/jigoshop-'.get_locale().'.mo' );
 	load_plugin_textdomain( 'jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
@@ -141,8 +144,12 @@ function jigoshop_init() {
 	jigoshop_session::instance();               // Start sessions if they aren't already
 	jigoshop::instance();                       // Utility functions, uses sessions
 	jigoshop_customer::instance();              // Customer class, sorts session data such as location
+	
+	// Jigoshop will instantiate gateways and shipping methods on this same 'init' action hook
+	// with a very low priority to ensure text domains are loaded first prior to installing any external options
 	jigoshop_shipping::instance();              // Shipping class. loads shipping methods
 	jigoshop_payment_gateways::instance();      // Payment gateways class. loads payment methods
+
 	jigoshop_cart::instance();                  // Cart class, uses sessions
 
 	if ( ! is_admin()) {
@@ -156,12 +163,74 @@ function jigoshop_init() {
 
 	}
 
-	add_role('customer', 'Customer', array(
-		'read'        => true,
-		'edit_posts'  => false,
-		'delete_posts'=> false
-	));
+	jigoshop_roles_init();
 
+}
+
+function jigoshop_get_core_capabilities() {
+	$capabilities = array();
+
+	$capabilities['core'] = array(
+		"manage_jigoshop",
+		"view_jigoshop_reports"
+	);
+
+	$capability_types = array( 'product', 'shop_order', 'shop_coupon' );
+
+	foreach( $capability_types as $capability_type ) {
+
+		$capabilities[ $capability_type ] = array(
+
+			// Post type
+			"edit_{$capability_type}",
+			"read_{$capability_type}",
+			"delete_{$capability_type}",
+			"edit_{$capability_type}s",
+			"edit_others_{$capability_type}s",
+			"publish_{$capability_type}s",
+			"read_private_{$capability_type}s",
+			"delete_{$capability_type}s",
+			"delete_private_{$capability_type}s",
+			"delete_published_{$capability_type}s",
+			"delete_others_{$capability_type}s",
+			"edit_private_{$capability_type}s",
+			"edit_published_{$capability_type}s",
+
+			// Terms
+			"manage_{$capability_type}_terms",
+			"edit_{$capability_type}_terms",
+			"delete_{$capability_type}_terms",
+			"assign_{$capability_type}_terms"
+		);
+	}
+
+	return $capabilities;
+}
+
+function jigoshop_roles_init() {
+	global $wp_roles;
+
+	if ( class_exists('WP_Roles') )
+		if ( ! isset( $wp_roles ) )
+			$wp_roles = new WP_Roles();
+
+	if ( is_object( $wp_roles ) ) {
+
+		// Customer role
+		add_role( 'customer', __('Customer', 'jigoshop'), array(
+			'read'         => true,
+			'edit_posts'   => false,
+			'delete_posts' => false
+		) );
+
+		$capabilities = jigoshop_get_core_capabilities();
+
+		foreach( $capabilities as $cap_group ) {
+			foreach( $cap_group as $cap ) {
+				$wp_roles->add_cap( 'administrator', $cap );
+			}
+		}
+	}
 }
 
 
@@ -425,8 +494,9 @@ add_action( 'wp_footer', 'jigoshop_demo_store' );
 function jigoshop_demo_store() {
 
 	if ( Jigoshop_Base::get_options()->get_option( 'jigoshop_demo_store' ) == 'yes' && is_jigoshop() ) :
-
-		echo '<p class="demo_store">'.__('This is a demo store for testing purposes &mdash; no orders shall be fulfilled.', 'jigoshop').'</p>';
+		
+		$bannner_text = apply_filters( 'jigoshop_demo_banner_text', __('This is a demo store for testing purposes &mdash; no orders shall be fulfilled.', 'jigoshop') );
+		echo '<p class="demo_store">'.$bannner_text.'</p>';
 
 	endif;
 }

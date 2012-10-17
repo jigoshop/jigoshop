@@ -101,6 +101,9 @@ jQuery(function() {
             if (input_name == 'calc_shipping_state') {
                 state_selected = jQuery('#calc_shipping_state').val();
             }
+            else if ( input_name == 'billing-state' ) {
+            	state_selected = jigoshop_params.billing_state;
+            }
             else {
                 state_selected = jigoshop_params.shipping_state;
             }

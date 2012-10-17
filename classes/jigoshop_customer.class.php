@@ -22,28 +22,33 @@ class jigoshop_customer extends Jigoshop_Singleton {
 	/** constructor */
 	protected function __construct() {
 
-		if ( !isset( jigoshop_session::instance()->customer ) ) :
+		if (is_user_logged_in()) {
+			$country = get_user_meta( get_current_user_id(), 'billing-country', true );
+			$state = get_user_meta( get_current_user_id(), 'billing-state', true );
+			$postcode = get_user_meta( get_current_user_id(), 'billing-postcode', true );
+			$shipping_country = get_user_meta( get_current_user_id(), 'shipping-country', true );
+			$shipping_state    = get_user_meta( get_current_user_id(), 'shipping-state', true );
+			$shipping_postcode = get_user_meta( get_current_user_id(), 'shipping-postcode', true );
+		}
 
-			$default = self::get_options()->get_option('jigoshop_default_country');
-        	if (strstr($default, ':')) :
-        		$country = current(explode(':', $default));
-        		$state = end(explode(':', $default));
-        	else :
-        		$country = $default;
-        		$state = '';
-        	endif;
-			$data = array(
-				'country'          => $country,
-				'state'            => $state,
-				'postcode'         => '',
-				'shipping_country' => $country,
-				'shipping_state'   => $state,
-				'shipping_postcode'=> ''
-			);
-			jigoshop_session::instance()->customer  = $data;
+		$default = self::get_options()->get_option('jigoshop_default_country');
+		if (strstr($default, ':')) {
+			$dcountry = current(explode(':', $default));
+			$dstate = end(explode(':', $default));
+		}
+		else {
+			$dcountry = $default;
+			$dstate = '';
+		}
 
-		endif;
-
+		jigoshop_session::instance()->customer = array(
+			'country'          => isset($country) ? $country : $dcountry,
+			'state'            => isset($state) ? $state : $dstate,
+			'postcode'         => isset($postcode) ? $postcode : '',
+			'shipping_country' => isset($shipping_country) ? $shipping_country : $dcountry,
+			'shipping_state'   => isset($shipping_state) ? $shipping_state : $dstate,
+			'shipping_postcode'=> isset($shipping_postcode) ? $shipping_postcode : ''
+		);
 	}
     
     /**
@@ -53,26 +58,26 @@ class jigoshop_customer extends Jigoshop_Singleton {
      * @return boolean true if customer is taxable, false otherwise 
      * @since 1.4
      */
-    public static function is_taxable($shipable) {
-        // if no taxes, than no one is taxable
-        if (self::get_options()->get_option('jigoshop_calc_taxes') == 'no') {
-            return false;
-        }
-        
-        $shop_country = jigoshop_countries::get_base_country();
-        $my_country = ($shipable ? self::get_shipping_country() : self::get_country());
-        
-        $taxable = false;
-        if (jigoshop_countries::is_eu_country($shop_country)) {
-            $taxable = jigoshop_countries::is_eu_country($my_country);
-        }
-        else {
-            $taxable = ($shop_country == $my_country);
-        }
-        // in order for a customer to be taxed, they have to be shipping to the taxing country
-        // or belong to that country. Also, if the shop is eu shop, then 
-        return $taxable;
-    }
+	public static function is_taxable($shipable) {
+		// if no taxes, than no one is taxable
+		if (self::get_options()->get_option('jigoshop_calc_taxes') == 'no') {
+			return false;
+		}
+		
+		$shop_country = jigoshop_countries::get_base_country();
+		$my_country = ($shipable ? self::get_shipping_country() : self::get_country());
+		
+		$taxable = false;
+		if (jigoshop_countries::is_eu_country($shop_country)) {
+			$taxable = jigoshop_countries::is_eu_country($my_country);
+		}
+		else {
+			$taxable = ($shop_country == $my_country);
+		}
+		// in order for a customer to be taxed, they have to be shipping to the taxing country
+		// or belong to that country. Also, if the shop is eu shop, then 
+		return $taxable;
+	}
 
     /**
      * Is customer shipping outside base, but within the same country? This is

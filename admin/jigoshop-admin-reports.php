@@ -16,9 +16,9 @@
  */
 
 if (!function_exists ('add_action')) {
-		header('Status: 403 Forbidden');
-		header('HTTP/1.1 403 Forbidden');
-		exit();
+	header('Status: 403 Forbidden');
+	header('HTTP/1.1 403 Forbidden');
+	exit();
 }
 
 class Jigoshop_reports {
@@ -26,7 +26,7 @@ class Jigoshop_reports {
 	function __construct() {
 
 		add_filter( 'posts_where', array(&$this, 'orders_within_range') );
-		$this->orders = $this->jigoshop_get_orders();
+		$this->orders = apply_filters( 'jigoshop_reports_orders', $this->jigoshop_get_orders());
 		remove_filter( 'posts_where', array(&$this, 'orders_within_range') );
 
 		$this->on_show_page();
@@ -60,18 +60,18 @@ class Jigoshop_reports {
 					  : strtotime(date('Ymd', current_time('timestamp')));
 
 		$args = array(
-			'numberposts'     => -1,
-			'orderby'         => 'post_date',
-			'order'           => 'ASC',
-			'post_type'       => 'shop_order',
-			'post_status'     => 'publish' ,
-			'suppress_filters'=> 0,
-			'tax_query' => array(
+			'numberposts'      => -1,
+			'orderby'          => 'post_date',
+			'order'            => 'ASC',
+			'post_type'        => 'shop_order',
+			'post_status'      => 'publish' ,
+			'suppress_filters' => 0,
+			'tax_query'        => array(
 				array(
-					'taxonomy'=> 'shop_order_status',
-					'terms'   => array('completed'),
-					'field'   => 'slug',
-					'operator'=> 'IN'
+					'taxonomy' => 'shop_order_status',
+					'terms'    => array('completed'),
+					'field'    => 'slug',
+					'operator' => 'IN'
 				)
 			)
 		);
@@ -81,7 +81,6 @@ class Jigoshop_reports {
 	}
 
 	function on_show_page() {
-
 		global $start_date, $end_date;
 
 		?>
@@ -90,7 +89,14 @@ class Jigoshop_reports {
 			<h2><?php _e('Jigoshop Reports','jigoshop'); ?></h2>
 
 			<form method="post" action="admin.php?page=jigoshop_reports">
-				<p><label for="from"><?php _e('From:', 'jigoshop'); ?></label> <input class="date-pick" type="date" name="start_date" id="from" readonly="readonly" value="<?php echo esc_attr( date('Y-m-d', $start_date) ); ?>" /> <label for="to"><?php _e('To:', 'jigoshop'); ?></label> <input type="date" class="date-pick" name="end_date" id="to" readonly="readonly" value="<?php echo esc_attr( date('Y-m-d', $end_date) ); ?>" /> <input type="submit" class="button" value="<?php _e('Show', 'jigoshop'); ?>" /></p>
+				<p>
+					<label for="from"><?php _e('From:', 'jigoshop'); ?></label>
+					<input class="date-pick" type="date" name="start_date" id="from" readonly="readonly" value="<?php echo esc_attr( date('Y-m-d', $start_date) ); ?>" />
+					<label for="to"><?php _e('To:', 'jigoshop'); ?></label>
+					<input type="date" class="date-pick" name="end_date" id="to" readonly="readonly" value="<?php echo esc_attr( date('Y-m-d', $end_date) ); ?>" />
+					<?php do_action('jigoshop_report_form_fields'); ?>
+					<input type="submit" class="button" value="<?php _e('Show', 'jigoshop'); ?>" />
+				</p>
 			</form>
 
 			<style>
@@ -226,30 +232,14 @@ jQuery(function(){
 }
 
 	function jigoshop_total_orders() {
-		global $wpdb, $start_date, $end_date;
+		global $start_date, $end_date;
 
-		$total_orders = $wpdb->get_row("
-			SELECT COUNT(posts.ID) AS total_orders FROM {$wpdb->posts} AS posts
+		$total_orders = $this->orders ? count($this->orders) : 0;
 
-			LEFT JOIN {$wpdb->postmeta} AS meta ON posts.ID = meta.post_id
-			LEFT JOIN {$wpdb->term_relationships} AS rel ON posts.ID=rel.object_ID
-			LEFT JOIN {$wpdb->term_taxonomy} AS tax USING( term_taxonomy_id )
-			LEFT JOIN {$wpdb->terms} AS term USING( term_id )
-
-			WHERE 	meta.meta_key 		= 'order_data'
-			{$this->orders_within_range()}
-			AND 	posts.post_type 	= 'shop_order'
-			AND 	posts.post_status 	= 'publish'
-			AND 	tax.taxonomy		= 'shop_order_status'
-			AND		term.slug			IN ('completed')
-		");
-
-		return $total_orders->total_orders;
-
+		return $total_orders;
 	}
 
 	function jigoshop_most_sold() {
-
 		global $start_date, $end_date;
 
 		$found_products = array();
@@ -500,25 +490,7 @@ jQuery(function(){
 
 				<?php
 
-					add_filter( 'posts_where', array(&$this, 'orders_within_range') );
-
-					$args = array(
-						'numberposts'     => -1,
-						'orderby'         => 'post_date',
-						'order'           => 'DESC',
-						'post_type'       => 'shop_order',
-						'post_status'     => 'publish' ,
-						'suppress_filters'=> false,
-						'tax_query' => array(
-							array(
-								'taxonomy' => 'shop_order_status',
-								'terms' => array('completed'),
-								'field' => 'slug',
-								'operator' => 'IN'
-							)
-						)
-					);
-					$orders = get_posts( $args );
+					$orders = $this->orders;
 
 					$order_counts = array();
 					$order_amounts = array();
@@ -559,7 +531,6 @@ jQuery(function(){
 						endforeach;
 					endif;
 
-					remove_filter( 'posts_where', array(&$this, 'orders_within_range') );
 				?>
 
 				var d = [

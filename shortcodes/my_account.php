@@ -71,7 +71,7 @@ function jigoshop_my_account( $atts ) {
 				$jigoshop_orders->get_customer_orders( get_current_user_id(), $recent_orders );
 				if ($jigoshop_orders->orders) foreach ($jigoshop_orders->orders as $order) :
 					?><tr class="order">
-						<td><?php echo $order->id; ?></td>
+						<td><?php echo $order->get_order_number(); ?></td>
 						<td><time title="<?php echo esc_attr( date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($order->order_date)) ); ?>"><?php echo date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($order->order_date)); ?></time></td>
 						<?php if ( $jigoshop_options->get_option( 'jigoshop_calc_shipping' ) == 'yes' ) : ?>
 							<td><address>
@@ -180,49 +180,49 @@ function jigoshop_edit_address() {
 		if ( isset($_GET['address']) ) $load_address = $_GET['address']; else $load_address = 'billing';
 		if ( $load_address == 'billing' ) $load_address = 'billing'; else $load_address = 'shipping';
 		$address = array(
-			array( 
+			array(
 				'name'        => $load_address . '-first_name',
 				'label'       => __('First Name', 'jigoshop'),
 				'placeholder' => __('First Name', 'jigoshop'),
 				'required'    => true,
 				'class'       => array('form-row-first'),
 				'value'       => get_user_meta( get_current_user_id(), $load_address . '-first_name', true )),
-			array( 
+			array(
 				'name'        => $load_address . '-last_name',
 				'label'       => __('Last Name', 'jigoshop'),
 				'placeholder' => __('Last Name', 'jigoshop'),
 				'required'    => true,
 				'class'       => array('form-row-last columned'),
 				'value'       => get_user_meta( get_current_user_id(), $load_address . '-last_name', true )),
-			array( 
+			array(
 				'name'        => $load_address . '-company',
 				'label'       => __('Company', 'jigoshop'),
 				'placeholder' => __('Company', 'jigoshop'),
 				'class'       => array('columned full-row clear'),
 				'value'       => get_user_meta( get_current_user_id(), $load_address . '-company_name', true ) ),
-			array( 
+			array(
 				'name'        => $load_address . '-address',
 				'label'       => __('Address', 'jigoshop'),
 				'placeholder' => __('Address 1', 'jigoshop'),
 				'required'    => true,
 				'class'       => array('form-row-first'),
 				'value'       => get_user_meta( get_current_user_id(), $load_address . '-address', true ) ),
-			array( 
+			array(
 				'name'        => $load_address . '-address2',
 				'label'       => __('Address 2', 'jigoshop'),
 				'placeholder' => __('Address 2', 'jigoshop'),
 				'class'       => array('form-row-last'),
 				'label_class' => array('hidden'),
 				'value'       => get_user_meta( get_current_user_id(), $load_address . '-address2', true ) ),
-			array( 
+			array(
 				'name'        => $load_address . '-city',
 				'label'       => __('City', 'jigoshop'),
 				'placeholder' => __('City', 'jigoshop'),
 				'required'    => true,
 				'class'       => array('form-row-first'),
 				'value'       => get_user_meta( get_current_user_id(), $load_address . '-city', true ) ),
-			array( 
-				'type'        => 'postcode', 
+			array(
+				'type'        => 'postcode',
 				'validate'    => 'postcode',
 				'format'      => 'postcode',
 				'name'        => $load_address . '-postcode',
@@ -231,7 +231,7 @@ function jigoshop_edit_address() {
 				'required'    => true,
 				'class'       => array('form-row-last'),
 				'value'       => get_user_meta( get_current_user_id(), $load_address . '-postcode', true ) ),
-			array( 
+			array(
 				'type'        => 'country',
 				'name'        => $load_address . '-country',
 				'label'       => __('Country', 'jigoshop'),
@@ -239,7 +239,7 @@ function jigoshop_edit_address() {
 				'class'       => array('form-row-first'),
 				'rel'         => $load_address . '-state',
 				'value'       => get_user_meta( get_current_user_id(), $load_address . '-country', true ) ),
-			array( 
+			array(
 				'type'        => 'state',
 				'name'        => $load_address . '-state',
 				'label'       => __('State/County', 'jigoshop'),
@@ -247,7 +247,7 @@ function jigoshop_edit_address() {
 				'class'       => array('form-row-last'),
 				'rel'         => $load_address . '-country',
 				'value'       => get_user_meta( get_current_user_id(), $load_address . '-state', true ) ),
-			array( 
+			array(
 				'name'        => $load_address . '-email',
 				'validate'    => 'email',
 				'label'       => __('Email Address', 'jigoshop'),
@@ -255,7 +255,7 @@ function jigoshop_edit_address() {
 				'required'    => true,
 				'class'       => array('form-row-first'),
 				'value'       => get_user_meta( get_current_user_id(), $load_address . '-email', true ) ),
-			array( 
+			array(
 				'name'        => $load_address . '-phone',
 				'validate'    => 'phone',
 				'label'       => __('Phone', 'jigoshop'),
@@ -265,7 +265,7 @@ function jigoshop_edit_address() {
 				'value'       => get_user_meta( get_current_user_id(), $load_address . '-phone', true ) )
 		);
 		$address = apply_filters( 'jigoshop_customer_account_address_fields', $address );
-		
+
 		if ($_POST) :
 
 			if ( $user_id > 0 && jigoshop::verify_nonce('edit_address') ) :
@@ -294,7 +294,7 @@ function jigoshop_edit_address() {
 
 		wp_safe_redirect( apply_filters( 'jigoshop_get_myaccount_page_id', get_permalink( jigoshop_get_page_id( 'myaccount' )) ));
 		exit;
-		
+
     endif;
 }
 
@@ -369,7 +369,7 @@ function get_jigoshop_view_order() {
 }
 
 function jigoshop_view_order() {
-	
+
     $jigoshop_options = Jigoshop_Base::get_options();
     $user_id = get_current_user_id();
 
@@ -383,7 +383,7 @@ function jigoshop_view_order() {
 
         if ($order_id > 0 && $order->user_id == get_current_user_id()) :
 
-            echo '<p>' . sprintf(__('Order <mark>#%s</mark> made on <mark>%s</mark>.', 'jigoshop'), $order->id, date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($order->order_date))) . ' ';
+            echo '<p>' . sprintf(__('Order <mark>%s</mark> made on <mark>%s</mark>.', 'jigoshop'), $order->get_order_number(), date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($order->order_date))) . ' ';
             echo sprintf(__('Order status: <mark class="%s">%s</mark>', 'jigoshop'), sanitize_title($order->status), __($order->status, 'jigoshop') );
 
             echo '.</p>';
@@ -478,7 +478,7 @@ function jigoshop_view_order() {
                             endif;
 
                             do_action( 'jigoshop_display_item_meta_data', $item );
-                            
+
                             echo '	</td>
 									<td>' . $item['qty'] . '</td>
 									<td>' . jigoshop_price($item['cost'], array('ex_tax_label' => 1)) . '</td>

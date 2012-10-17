@@ -4,7 +4,7 @@ Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, wid
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.2.1
 Tested up to: 3.4.2
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,18 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.4.2 - 2012-10-15 =
+* Tweak: template content wrapping for theme twentytwelve
+* Tweak: Updated Croatian language files courtesy of Ivica Delic
+* Tweak: Added new WordPress roles and capabilities to Shop management for extensions to use
+* Tweak: provide code filter for changing text of 'Demo Store' banner
+* Fix: Coupon Codes for front end Cart use are now lowercase only based on the Coupon Title.  Multiple words are hyphenated.
+* Fix: Coupon type Product % Discount no longer requires attached products, allows coupon categories to function
+* Fix: When javascript is disabled state selectors in checkout wouldn't replace text ones
+* Fix: Previous signed up customers state & country were still set to the base default state and country
+* Fix: Coupons using cart min and max totals are now checked when cart item quantities are adjusted
+* Fix: Saving new or updated external products now properly handles stock status, out of stock no longer displayed
+
 = 1.4.1 - 2012-09-28 =
 * Fix: Adding variations to cart
 * Fix: Adding grouped products to cart

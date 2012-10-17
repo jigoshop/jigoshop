@@ -41,7 +41,7 @@ function jigoshop_thankyou() {
 			<ul class="order_details">
 				<li class="order">
 					<?php _e('Order:', 'jigoshop'); ?>
-					<strong># <?php echo $order->id; ?></strong>
+					<strong><?php echo $order->get_order_number(); ?></strong>
 				</li>
 				<li class="date">
 					<?php _e('Date:', 'jigoshop'); ?>

@@ -388,6 +388,7 @@ function jigoshop_sale_products( $atts ) {
 		'posts_per_page'            => $per_page,
 		'orderby'                   => $orderby,
 		'order'                     => $order,
+		'paged'                     => $paged,
 		'meta_query'                => array(
 				array(
 						'key'       => 'visibility',
