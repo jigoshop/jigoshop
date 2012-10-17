@@ -4,7 +4,7 @@ Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, wid
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.2.1
 Tested up to: 3.4.2
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,10 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.4.3 - 2012-10-16 =
+* Fix: Orders not being set to processing by gateways
+* Fix: Coupon include and exclude Categories now work with multiple Product Categories, not just the first one
+
 = 1.4.2 - 2012-10-15 =
 * Tweak: template content wrapping for theme twentytwelve
 * Tweak: Updated Croatian language files courtesy of Ivica Delic

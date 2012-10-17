@@ -358,7 +358,7 @@
 		// now we split the remaining string of UA ($text2) into lines that are prefixed by spaces for formatting
 		$wordwrapped = chunk_split($towrapUA, 32, "\n $space");
 			return "Platform:                 {$this->getPlatform()} \n".
-				   "        Browser Name:             {$this->getBrowser()}  \n" .
+				   "	Browser Name:             {$this->getBrowser()}  \n" .
 			       "	Browser Version:          {$this->getVersion()} \n" .
 			       "	User Agent String:        $UAline1 \n                                  " .
 				   "$wordwrapped ";

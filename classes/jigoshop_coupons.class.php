@@ -183,10 +183,11 @@ class JS_Coupons extends Jigoshop_Base {
 		/* Exclude specific categories next. */
 		if ( !empty( $coupon['exclude_categories'] ) ) :
 
-			$category = reset(wp_get_post_terms($product['product_id'], 'product_cat'));
-
-			if ( in_array( $category->term_id, $coupon['exclude_categories'] ) )
-				return false;
+			$categories  = get_the_terms( $product['product_id'], 'product_cat' );
+			if ( ! empty( $categories )) foreach ( $categories as $index => $category ) {
+				if ( in_array( $category->term_id, $coupon['exclude_categories'] ) )
+					return false;
+			}
 
 		endif;
 
@@ -203,10 +204,12 @@ class JS_Coupons extends Jigoshop_Base {
 
 		/* Allow all products in a specific category. */
 		if ( !empty( $coupon['include_categories'] ) ) :
-			$category  = reset(wp_get_post_terms($product['product_id'], 'product_cat'));
 
-			if ( in_array( $category->term_id, $coupon['include_categories'] ) )
-				return true;
+			$categories  = get_the_terms( $product['product_id'], 'product_cat' );
+			if ( ! empty( $categories )) foreach ( $categories as $index => $category ) {
+				if ( in_array( $category->term_id, $coupon['include_categories'] ) )
+					return true;
+			}
 
 		endif;
 

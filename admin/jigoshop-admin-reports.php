@@ -248,6 +248,7 @@ jQuery(function(){
 			foreach ($this->orders as $order) :
 				$order_items = (array) get_post_meta( $order->ID, 'order_items', true );
 				foreach ($order_items as $item) :
+					if ( !isset($item['cost']) && !isset($item['qty'])) continue;
 					$row_cost = $item['qty'];
 					$found_products[$item['id']] = isset($found_products[$item['id']]) ? $found_products[$item['id']] + $row_cost : $row_cost;
 				endforeach;
@@ -297,7 +298,7 @@ jQuery(function(){
 // 				foreach ($order_items as $item) :
 // 					$row_cost[] = $item['cost'] * $item['qty'];
 // 				endforeach;
- 				$order_data = (array) get_post_meta( $order->ID, 'order_data', true );
+				$order_data = (array) get_post_meta( $order->ID, 'order_data', true );
 				$row_cost[] = $order_data['order_total'];
 			endforeach;
 		endif;
@@ -337,6 +338,7 @@ jQuery(function(){
 			foreach ($this->orders as $order) :
 				$order_items = (array) get_post_meta( $order->ID, 'order_items', true );
 				foreach ($order_items as $item) :
+					if ( !isset($item['cost']) || !isset($item['qty'])) continue;
 					$row_cost = $item['cost'] * $item['qty'];
 					$found_products[$item['id']] = isset($found_products[$item['id']]) ? $found_products[$item['id']] + $row_cost : $row_cost;
 				endforeach;

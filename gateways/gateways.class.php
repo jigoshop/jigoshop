@@ -24,9 +24,8 @@ class jigoshop_payment_gateways extends Jigoshop_Singleton {
     protected function __construct() {
 
 		// this constructor is called on the 'init' hook with a priority of 0 (highest)
-		// this doesn't give gateways time to install themselves and load text domains
-		// allow translations to function by re-adding initializations to the 'init' hook with a default priority
-		self::add_action( 'init', 'gateway_inits' );
+		// gateways will need to add themselves to the Jigoshop filter 'jigoshop_payment_gateways' prior to this
+		self::gateway_inits();
 		
 	}
 
