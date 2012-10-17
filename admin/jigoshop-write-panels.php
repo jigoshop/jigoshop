@@ -124,7 +124,7 @@ function jigoshop_order_data( $data ) {
 add_filter( 'enter_title_here', 'jigoshop_enter_title_here', 1, 2 );
 
 function jigoshop_enter_title_here( $text, $post ) {
-	if ( $post->post_type == 'shop_coupon' ) return __('Coupon code', 'jigoshop');
+	if ( $post->post_type == 'shop_coupon' ) return __('Coupon Title (converted to lower case for Code, multiple words will end up hyphenated)', 'jigoshop');
 	return $text;
 }
 
@@ -174,7 +174,7 @@ function jigoshop_write_panel_scripts() {
 	wp_enqueue_script('thickbox');
 	wp_enqueue_style('thickbox');
 
-	$params = array(
+	$jigoshop_params = array(
 		'remove_item_notice' 			=>  __("Remove this item? If you have previously reduced this item's stock, or this order was submitted by a customer, will need to manually restore the item's stock.", 'jigoshop'),
 		'cart_total' 					=> __("Calc totals based on order items and taxes?", 'jigoshop'),
 		'copy_billing' 					=> __("Copy billing information to shipping information? This will remove any currently entered shipping information.", 'jigoshop'),
@@ -191,7 +191,7 @@ function jigoshop_write_panel_scripts() {
 		'add_order_item_nonce' 			=> wp_create_nonce("add-order-item")
 	 );
 
-	wp_localize_script( 'jigoshop-writepanel', 'params', $params );
+	wp_localize_script( 'jigoshop-writepanel', 'jigoshop_params', $jigoshop_params );
 
 
 }

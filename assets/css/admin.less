@@ -240,11 +240,11 @@ ul.totals {
 	th.column-id {
 		width:60px !important;
 	}
-	
+
 	dd {
 		margin-left: 0px;
 	}
-	
+
 	.column-total_cost {
 		width:250px !important;
 	}
@@ -1378,61 +1378,90 @@ div.multi_select_countries.shipping_services {
 	display: none;
 }
 
-.simple_product {
-	.file_tab, .variable_tab {
-		display: none;
-	}
+// Global Disable
+.file_tab,
+.variable_tab
+{
+	display: none;
 }
-.downloadable_product, .virtual_product {
 
-	.variable_tab {
-		display: none
-	}
-
-	#form_fieldset {
-		display: none;
-	}
-}
-.grouped_product {
-
-	.file_tab, .inventory_tab, .variable_tab, .grouped_tab {
-		display: none;
-	}
-	#price_fieldset, #tax_fieldset, #form_fieldset {
-		display: none;
-	}
-}
-.variable_product {
-
-	.file_tab, .parent_id_field {
+.downloadable_product {
+	// Disable
+	#form_fieldset
+	{
 		display: none;
 	}
 
-	#form_fieldset, {
-		display: none;
-	}
-
-	.regular_price_field, .sale_price_field, .cancel_sale_schedule {
-		display: none;
-	}
-	.sale_price_dates_fields {
-		display: block !important;
-	}
-	.attribute_is_variable {
+	// Enable
+	.file_tab
+	{
 		display: block;
 	}
 }
+
+.virtual_product {
+
+	// Disable
+	#form_fieldset
+	{
+		display: none;
+	}
+}
+
+.grouped_product {
+
+	// Disable
+	.inventory_tab,
+	.grouped_tab,
+	#price_fieldset,
+	#tax_fieldset,
+	#form_fieldset
+	{
+		display: none;
+	}
+
+	// Enable
+}
+
+.variable_product {
+
+	// Disable
+	#form_fieldset,
+	.regular_price_field,
+	.sale_price_field,
+	.cancel_sale_schedule,
+	.parent_id_field
+	{
+		display: none;
+	}
+
+	// Enable
+	.variable_tab,
+	.attribute_is_variable
+	{
+		display: block;
+	}
+
+	// Overrides JS
+	.sale_price_dates_fields
+	{
+		display: block !important;
+	}
+}
+
 .external_product {
 
-	.file_tab, .inventory_tab, .variable_tab, .grouped_tab {
+	// Disable
+	.inventory_tab,
+	.grouped_tab,
+	#tax_fieldset
+	{
 		display: none;
 	}
 
-	#tax_fieldset {
-		display: none;
-	}
-
-	.external_url_field {
+	// Enable
+	.external_url_field
+	{
 		display: block;
 	}
 }
@@ -1513,7 +1542,7 @@ div.multi_select_countries.shipping_services {
 			overflow: auto;
 			width: 250px;
 		}
-		
+
 		/* range slider */
 		.slider {
 			display: inline-block;

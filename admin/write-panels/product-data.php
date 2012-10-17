@@ -141,8 +141,6 @@ function jigoshop_product_data_box() {
 					'id'            => 'sale_price',
 					'label'         => __('Sale Price','jigoshop'),
 					'after_label'   => ' ('.get_jigoshop_currency_symbol(). __(' or %','jigoshop') . ')',
-					'type'          => 'number',
-					'step'          => 'any',
 					'desc'          => '<a href="#" class="sale_schedule">'.__('Schedule','jigoshop').'</a>',
 					'placeholder'   => __('15% or 19.99','jigoshop'),
 				);

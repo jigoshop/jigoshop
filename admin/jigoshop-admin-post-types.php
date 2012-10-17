@@ -305,8 +305,10 @@ function my_action_row($actions){
 
 	global $post;
 
-	if ($post->post_type =="shop_order" && $post->post_status == 'trash')
-		echo sprintf(__('Order #%s'), $post->ID);
+	if ($post->post_type =="shop_order" && $post->post_status == 'trash') {
+		$order = new jigoshop_order($post->ID);
+		echo sprintf(__('Order %s'), $order->get_order_number());
+	}
 
 	return $actions;
 }
@@ -325,7 +327,7 @@ function jigoshop_custom_order_columns($column) {
             break;
         case "order_title" :
 
-            echo '<a href="' . admin_url('post.php?post=' . $post->ID . '&action=edit') . '">' . sprintf(__('Order #%s', 'jigoshop'), $post->ID) . '</a>';
+            echo '<a href="' . admin_url('post.php?post=' . $post->ID . '&action=edit') . '">' . sprintf(__('Order %s', 'jigoshop'), $order->get_order_number()) . '</a>';
 
             echo '<time title="' . date_i18n('c', strtotime($post->post_date)) . '">' . date_i18n('F j, Y, g:i a', strtotime($post->post_date)) . '</time>';
 
@@ -384,17 +386,7 @@ function jigoshop_custom_order_columns($column) {
                 <dt><?php _e('Payment:', 'jigoshop'); ?></dt>
                 <dd><?php echo $order->payment_method_title; ?></dd>
                 <dt><?php _e('Shipping:', 'jigoshop'); ?></dt>
-                <?php
-                if ($order->shipping_service) :
-                    ?>
-                    <dd><?php echo sprintf( __('%s via %s', 'jigoshop'), $order->shipping_service, $order->shipping_method_title); ?></dd>
-                    <?php
-                else :
-                    ?>
-                    <dd><?php echo $order->shipping_method_title; ?></dd>
-                <?php
-                endif;
-                ?>
+                <dd><?php echo sprintf( __('%s', 'jigoshop'), $order->shipping_service); ?></dd>
             </dl>
             <?php
             break;
@@ -676,9 +668,9 @@ function jigoshop_post_updated_messages($messages) {
 add_filter('manage_edit-shop_coupon_columns', 'jigoshop_edit_coupon_columns');
 
 function jigoshop_edit_coupon_columns( $columns ) {
-	
+
 	$columns = array();
-	
+
 	$columns["cb"] 			    = '<input type="checkbox" />';
 	$columns['title']           = __('Code', 'jigoshop');
 	$columns['coupon_type']     = __('Type', 'jigoshop');
@@ -701,7 +693,7 @@ add_action('manage_shop_coupon_posts_custom_column', 'jigoshop_custom_coupon_col
 function jigoshop_custom_coupon_columns($column) {
 
 	global $post;
-	
+
 	$type 			= get_post_meta( $post->ID, 'type', true );
 	$amount 		= get_post_meta( $post->ID, 'amount', true );
 	$usage_limit 	= get_post_meta( $post->ID, 'usage_limit', true );
@@ -713,7 +705,7 @@ function jigoshop_custom_coupon_columns($column) {
 	switch ( $column ) {
 		case 'coupon_type' :
 			$types = JS_Coupons::get_coupon_types();
-			echo $types[$type];			
+			echo $types[$type];
 			break;
 		case 'coupon_amount' :
 			echo $amount;
@@ -734,5 +726,5 @@ function jigoshop_custom_coupon_columns($column) {
 			echo ( $individual ) ? __('Yes','jigoshop') : '&ndash;';
 			break;
 	}
-	
+
 }

@@ -3,8 +3,8 @@ Contributors: Jigowatt
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigowatt, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.2.1
-Tested up to: 3.4.1
-Stable tag: 1.3.3
+Tested up to: 3.4.2
+Stable tag: 1.4.3
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,14 +112,47 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
-= 1.3.3 - 2012-06-09 =
+= 1.4.3 - 2012-10-16 =
+* Fix: Orders not being set to processing by gateways
+* Fix: Coupon include and exclude Categories now work with multiple Product Categories, not just the first one
+
+= 1.4.2 - 2012-10-15 =
+* Tweak: template content wrapping for theme twentytwelve
+* Tweak: Updated Croatian language files courtesy of Ivica Delic
+* Tweak: Added new WordPress roles and capabilities to Shop management for extensions to use
+* Tweak: provide code filter for changing text of 'Demo Store' banner
+* Fix: Coupon Codes for front end Cart use are now lowercase only based on the Coupon Title.  Multiple words are hyphenated.
+* Fix: Coupon type Product % Discount no longer requires attached products, allows coupon categories to function
+* Fix: When javascript is disabled state selectors in checkout wouldn't replace text ones
+* Fix: Previous signed up customers state & country were still set to the base default state and country
+* Fix: Coupons using cart min and max totals are now checked when cart item quantities are adjusted
+* Fix: Saving new or updated external products now properly handles stock status, out of stock no longer displayed
+
+= 1.4.1 - 2012-09-28 =
+* Fix: Adding variations to cart
+* Fix: Adding grouped products to cart
+
+= 1.4 - 2012-09-27 =
+* New: Additions to Core Shipping for new Premium Shipping extension available with release of Jigoshop 1.4
+* Tweak: The DIBS payment gateway has been removed from the Jigoshop core.  It is updated with a number of enhancements and freely available as a separate plugin here:
+	https://github.com/bazooka/jigoshop-dibs
+* Tweak: Table Rates Shipping extension will require an update to be compatible with Jigoshop 1.4.  Download from your account and install first.
+* Fix: Cart and Checkout out of base state tax calcs now work for 'catalog prices include tax'
+* Fix: Allow product sale prices to use percentages instead of numbers only
+* Fix: Checkout 'shipping address' showing HTML code on certain sites resolved
+* Fix: Add customization to PayPal gateway for extension Jigoshop Product Addons - additional costs per product now shown to PayPal
+* Fix: Tax classes are now saved with tax rules
+* Fix: Tax charged to customers outside of tax country
+* Fix: Tax calculations not working on configurations with totals including tax, catalogue includes tax
+
+= 1.3.3 - 2012-09-06 =
 * Tweak: improve variations out of stock display for backorders allowed
 * Fix: Ensure taxes are calculated for Shipping when Shipping includes tax on the Cart and Checkout
 * Fix: Allow Settings for Shipping and Payment Gateways to save for languages other than English
 * Fix: repair 'update_checkout' javascript preventing 3rd party shipping extensions from bring back shipping rates
 * Fix: repair 'Reports' to show completed Sales only and New Customers in the given time period.
 
-= 1.3.2 - 2012-29-08 =
+= 1.3.2 - 2012-08-29 =
 * Tweak: updated Spanish translations for v1.3 courtesy - Jorge Figueroa
 * Tweak: Allow variable products 'add to cart' when parent product is Search only
 * Fix: Danish translation now works thanks to @IvicaDelic
@@ -132,14 +165,14 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * Fix: Cart Totals display for Firefox
 * Fix: Shipping Tab in the Settings is now properly translated and shipping modules will install for all languages
 
-= 1.3.1 - 2012-17-08 =
+= 1.3.1 - 2012-08-17 =
 * Tweak: updated German translations for v1.3 courtesy @deckerweb
 * Tweak: Minor translation string updates for translators
 * Fix: Translations for the Jigoshop Settings will now appear in the Admin
 * Fix: Floating point numbers can now be entered for Product weights and dimensions when Editing a product
 * Fix: A number of minor PHP warnings resolved
 
-= 1.3 - 2012-14-08 =
+= 1.3 - 2012-08-14 =
 * New: Redesigned settings pages using the WordPress Settings API
 	* new settings types including checkboxes, radio buttons, range sliders
 	* each settings tab saves independently of other tabs
