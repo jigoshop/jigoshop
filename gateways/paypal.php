@@ -346,7 +346,9 @@ class paypal extends jigoshop_payment_gateway {
             endif;
             
         endif;
-        
+
+		$paypal_args = apply_filters( 'jigoshop_paypal_args', $paypal_args );
+
 		$paypal_args_array = array();
 
 		foreach ($paypal_args as $key => $value) {
@@ -502,7 +504,7 @@ class paypal extends jigoshop_payment_gateway {
 		// 'custom' holds post ID (Order ID)
 		if ( !empty($posted['custom']) && !empty($posted['txn_type']) && !empty($posted['invoice']) ) {
 
-			$accepted_types = array('cart', 'instant', 'express_checkout', 'web_accept', 'masspay', 'send_money');
+			$accepted_types = array('cart', 'instant', 'express_checkout', 'web_accept', 'masspay', 'send_money', 'subscr_payment');
 
 			if ( ! in_array( strtolower( $posted['txn_type'] ), $accepted_types )) {
 				jigoshop_log( "PAYPAL: function 'successful_request' -- unknown 'txn_type' of '".$posted['txn_type']."' for Order ID: ".$posted['custom']." -- EXITING!" );

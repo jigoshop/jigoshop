@@ -254,7 +254,7 @@ class jigoshop_product extends Jigoshop_Base {
 	 */
 	public function requires_shipping() {
 		// If it's virtual or downloadable dont require shipping
-		return (!($this->is_type( array('downloadable', 'virtual'))));
+		return (!($this->is_type( array('downloadable', 'virtual', 'subscription'))));
 	}
 	/**
 	 * Checks the product type
@@ -495,7 +495,7 @@ class jigoshop_product extends Jigoshop_Base {
 			$notice['class']		= 'out-of-stock';
 		}
 
-		return $notice;
+		return apply_filters( 'jigoshop_product_availability', $notice, $this );
 	}
 
 	/**
@@ -794,13 +794,15 @@ class jigoshop_product extends Jigoshop_Base {
 	 */
 	public function get_price() {
 
-		if ( strstr($this->sale_price,'%') )
-			return round($this->regular_price * ( (100 - str_replace('%','',$this->sale_price) ) / 100 ), 2);
-
-		else if ( $this->sale_price )
-			 return $this->sale_price;
-
-        else return apply_filters('jigoshop_product_get_regular_price', $this->regular_price, $this->ID);
+		$price = null;
+		if ( strstr($this->sale_price,'%') ) {
+			$price = round($this->regular_price * ( (100 - str_replace('%','',$this->sale_price) ) / 100 ), 2);
+		} else if ( $this->sale_price ) {
+			$price = $this->sale_price;
+		} else {
+			$price = apply_filters('jigoshop_product_get_regular_price', $this->regular_price, $this->ID);
+		}
+		return apply_filters( 'jigoshop_product_get_price', $price, $this->ID );
 
     }
 
