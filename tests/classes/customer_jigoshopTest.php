@@ -1,13 +1,13 @@
 <?php
 
 // Load the plugin
-require_once '../classes/jigoshop_options_interface.php';
-require_once '../classes/jigoshop_options.class.php';
-require_once '../classes/abstract/jigoshop_base.class.php';
-require_once '../classes/abstract/jigoshop_singleton.class.php';
-require_once '../classes/jigoshop_session.class.php';
-require_once '../classes/jigoshop_customer.class.php';
-require_once '../classes/jigoshop_countries.class.php';
+require_once '../../classes/jigoshop_options_interface.php';
+require_once '../../classes/jigoshop_options.class.php';
+require_once '../../classes/abstract/jigoshop_base.class.php';
+require_once '../../classes/abstract/jigoshop_singleton.class.php';
+require_once '../../classes/jigoshop_session.class.php';
+require_once '../../classes/jigoshop_customer.class.php';
+require_once '../../classes/jigoshop_countries.class.php';
 
 class WP_Test_Jigoshop_Customer extends WP_UnitTestCase
 {

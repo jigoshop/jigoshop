@@ -4,8 +4,8 @@
 session_start();
 
 // Load the plugin
-require_once '../jigoshop.php';
-require_once '../admin/jigoshop-install.php';
+require_once '../../jigoshop.php';
+require_once '../../admin/jigoshop-install.php';
 
 class WP_Test_Jigoshop extends WP_UnitTestCase
 {

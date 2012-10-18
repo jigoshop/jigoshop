@@ -1,9 +1,9 @@
 <?php
 
 // Load the plugin
-require_once '../classes/abstract/jigoshop_base.class.php';
-require_once '../classes/abstract/jigoshop_singleton.class.php';
-require_once '../classes/jigoshop_session.class.php';
+require_once '../../classes/abstract/jigoshop_base.class.php';
+require_once '../../classes/abstract/jigoshop_singleton.class.php';
+require_once '../../classes/jigoshop_session.class.php';
 
 
 class WP_Test_Jigoshop_Session extends WP_UnitTestCase

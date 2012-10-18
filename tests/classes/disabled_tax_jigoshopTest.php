@@ -9,8 +9,8 @@ if ( !defined( 'JIGOSHOP_TEMPLATE_URL' ) ) define( 'JIGOSHOP_TEMPLATE_URL', 'jig
 if ( !defined( "PHP_EOL" )) define( "PHP_EOL", "\r\n" );
 
 // Load the plugin
-require_once '../classes/jigoshop_options.class.php';
-require_once '../classes/jigoshop_tax.class.php';
+require_once '../../classes/jigoshop_options.class.php';
+require_once '../../classes/jigoshop_tax.class.php';
 
 /**
  * Test class for jigoshop_tax.
