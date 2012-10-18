@@ -3,28 +3,15 @@
  * ConfigTest Tests
  */
 class ConfigTest extends WP_UnitTestCase {
-
-    // public function setUp() {
-    //     parent::setUp();
-    //     $this->my_plugin = $GLOBALS['my_plugin'];
-    // }
-
-    // public function testAppendContent() {
-    //     $array = array();
-    //     $this->assertEquals( "<p>Hello WordPress Unit Tests</p>", $this->my_plugin->append_content(''), '->append_content() appends text' );
-    // }
-
     function test_is_email_only_letters_with_dot_com_domain() {
-        $this->assertEquals( 'nb@nikolay.com', is_email( 'nb@nikolay.com' ) );
+        $this->assertEquals( 'chriscct7@gmail.com', is_email( 'chriscct7@gmail.com' ) );
     }
     
     function test_is_email_should_not_allow_missing_tld() {
-        $this->assertFalse( is_email( 'nb@nikolay' ) );
+        $this->assertFalse( is_email( 'chriscct7@gmail' ) );
     }
     
     function test_is_email_should_allow_bg_domain() {
-        $this->assertEquals( 'nb@nikolay.bg', is_email( 'nb@nikolay.bg' ) );
+        $this->assertEquals( 'chriscct7@gmail.bg', is_email( 'chriscct7@gmail.bg' ) );
     }
-
-
 }
