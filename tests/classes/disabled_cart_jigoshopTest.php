@@ -4,10 +4,10 @@
 if(!session_id()) session_start();
 
 // Load the plugin
-require_once '../../classes/abstract/jigoshop_base.class.php';
-require_once '../../classes/abstract/jigoshop_singleton.class.php';
-require_once '../../classes/jigoshop_cart.class.php';
-require_once '../../classes/jigoshop_session.class.php';
+require_once './../../classes/abstract/jigoshop_base.class.php';
+require_once './../../classes/abstract/jigoshop_singleton.class.php';
+require_once './../../classes/jigoshop_cart.class.php';
+require_once './../../classes/jigoshop_session.class.php';
 
 /**
  * Test class for jigoshop_cart.

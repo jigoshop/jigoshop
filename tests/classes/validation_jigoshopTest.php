@@ -1,7 +1,7 @@
 <?php
 
 // Load the files
-require_once '../classes/jigoshop_validation.class.php';
+require_once './../classes/jigoshop_validation.class.php';
 
 class WP_Test_Jigoshop_Validation extends WP_UnitTestCase
 {
