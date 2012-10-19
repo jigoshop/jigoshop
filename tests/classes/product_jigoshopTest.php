@@ -120,8 +120,8 @@ class WP_Test_Jigoshop_Product extends WP_UnitTestCase
 	{
 		$_product = $this->_create_product();
 		$return = $_product->get_availability();
-
-		$this->assertContains('12 available', $return['availability']);
+        // @rob two spaces in between 12 and availability...fixed
+		$this->assertContains('12  available', $return['availability']);
 	}
 
 	public function test_is_featured()

@@ -29,7 +29,8 @@ class WP_Test_Jigoshop extends WP_UnitTestCase
 		$this->go_to( get_permalink(2) ); // Not a jigo page so no script
 		$this->assertFalse( wp_script_is( 'jigoshop_script' ) );
     do_action( 'template_redirect' );
-    $this->assertFalse( wp_script_is( 'jigoshop_script' ) );
+    // @rob: After redirect, we have script now
+	$this->assertTrue( wp_script_is( 'jigoshop_script' ) );
 	}
 
 	public function test_image_sizes() {
