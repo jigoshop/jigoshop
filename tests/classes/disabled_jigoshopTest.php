@@ -1,10 +1,9 @@
 <?php
 
 // Start session dead early so phpunit prints don't affect headers
-if(!session_id()) session_start();
 
 // Load the plugin
-require_once('jigoshop.php)';
+require_once('jigoshop.php');
 require_once('admin/jigoshop-install.php');
 
 class WP_Test_Jigoshop extends WP_UnitTestCase
