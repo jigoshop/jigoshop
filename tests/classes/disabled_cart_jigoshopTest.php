@@ -1,7 +1,4 @@
 <?php
-
-// Start session dead early so phpunit prints don't affect headers
-
 // Load the plugin
 require_once('classes/abstract/jigoshop_base.class.php');
 require_once('classes/abstract/jigoshop_singleton.class.php');

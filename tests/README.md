@@ -3,9 +3,17 @@
 
 [![Build Status](https://secure.travis-ci.org/jigoshop/jigoshop.png?branch=dev)](http://travis-ci.org/jigoshop/jigoshop)
 
-This test-suite uses phpunit to ensure Jigoshop's code quality.
+This test-suite uses PHPUnit to ensure Jigoshop's code quality.
 
-Quick start
+Travis-CI Automated Testing
+-----------
+
+The dev branch of Jigoshop is automatically tested on Travis-ci.org. 
+Click on the image above to see the latest test's output.
+Travis-CI will also automatically test all new pull requests to make sure they will not break our build.
+
+
+Quick start (for manual runs)
 -----------
 
 Clone the repo.
@@ -50,3 +58,4 @@ In case your are using ubuntu(12+), install phpunit like this:
     sudo apt-get install pear
     sudo pear config-set auto_discover 1
     sudo pear install pear.phpunit.de/PHPUnit
+	

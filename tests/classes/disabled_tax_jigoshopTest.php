@@ -1,7 +1,4 @@
 <?php
-
-// Start session dead early so phpunit prints don't affect headers
-
 if ( !defined( "JIGOSHOP_VERSION" )) define( "JIGOSHOP_VERSION", 1208170) ;
 if ( !defined( "JIGOSHOP_OPTIONS" )) define( "JIGOSHOP_OPTIONS", 'jigoshop_options' );
 if ( !defined( 'JIGOSHOP_TEMPLATE_URL' ) ) define( 'JIGOSHOP_TEMPLATE_URL', 'jigoshop/' );

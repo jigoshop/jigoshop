@@ -1,5 +1,4 @@
 <?php
-
 // Load the plugin
 require_once('classes/abstract/jigoshop_base.class.php');
 require_once('classes/jigoshop_countries.class.php');

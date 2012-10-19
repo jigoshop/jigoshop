@@ -1,6 +1,7 @@
 <?php
 /**
  * ConfigTest Tests
+ * Some basic tests
  */
 class ConfigTest extends WP_UnitTestCase {
     function test_is_email_only_letters_with_dot_com_domain() {
