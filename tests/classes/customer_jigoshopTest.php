@@ -1,7 +1,7 @@
 <?php
 
 // Load the plugin
-require_once '/../../classes/jigoshop_options_interface.php';
+require_once '../../classes/jigoshop_options_interface.php';
 require_once './../../classes/jigoshop_options.class.php';
 require_once './../../classes/abstract/jigoshop_base.class.php';
 require_once './../../classes/abstract/jigoshop_singleton.class.php';
