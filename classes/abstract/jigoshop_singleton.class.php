@@ -18,7 +18,7 @@
 abstract class Jigoshop_Singleton extends Jigoshop_Base {
 
     private static $instance = array();
-
+    public static $testing = false;
 
     protected function __construct() { }
 
@@ -36,7 +36,9 @@ abstract class Jigoshop_Singleton extends Jigoshop_Base {
     	return self::$instance[$class];
 
     }
-
+	public static function reset() {
+		self::$instance = null;	
+	}
 
 	public function __clone() {
         trigger_error( "Cloning Singleton's is not allowed.", E_USER_ERROR );
