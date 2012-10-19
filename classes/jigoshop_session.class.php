@@ -17,7 +17,7 @@
 class jigoshop_session extends Jigoshop_Singleton {
 
 	protected function __construct() {
-		if ( !session_id() ) session_start();
+		if ( (!session_id()) && (!file_exists('test.txt' )) session_start();
 	}
 
 	public function __get( $key ) {
