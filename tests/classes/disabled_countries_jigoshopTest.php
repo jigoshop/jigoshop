@@ -49,7 +49,7 @@ class WP_Test_Jigoshop_Countries extends WP_UnitTestCase
   public function test_shipping_to_prefix() {
 
   	// Weak point, what if this fails?
-  	require_once('classes/jigoshop_customer.class.php)';
+  	require_once('classes/jigoshop_customer.class.php');
 
   	// If they're on the list
   	jigoshop_customer::instance()->set_country('GB');
