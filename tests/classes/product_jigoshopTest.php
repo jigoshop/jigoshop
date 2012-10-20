@@ -1,4 +1,8 @@
 <?php
+	// @rob: we are getting alot of errors for "Trying to get property of non-object".
+	// Only happens on the 3.5.0 beta2 build WITH MU, https://travis-ci.org/#!/chriscct7/jigoshop/jobs/2860365
+	// Maybe a WP beta bug?
+	
 require_once('classes/jigoshop_options_interface.php');
 require_once('classes/jigoshop_options.class.php');
 require_once('classes/abstract/jigoshop_base.class.php');
