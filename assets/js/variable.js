@@ -25,8 +25,8 @@
 
 		.on('click', '.postbox h3', function(e) {
 
-			//console.log( e.target.tagName.toLowerCase() );
-			if ( e.target.tagName.toLowerCase() === 'select' )
+			// the jquery event can still be triggered by other child elements, so we need to be explicit
+			if ( e.target.tagName.toLowerCase() != 'h3' && !$(this).hasClass('handlediv'))
 				return false;
 
 			$(this).parent().toggleClass('closed');
