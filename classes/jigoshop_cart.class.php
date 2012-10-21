@@ -199,7 +199,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
             $quantity = (int) $quantity + self::$cart_contents[$cart_item_key]['quantity'];
 
-            self::set_quantity($cart_item_key, $quantity);
+            self::set_quantity( $cart_item_key, apply_filters( 'jigoshop_cart_item_quantity', $quantity, $product, $cart_item_key ) );
 
         } else {
         	// otherwise add new item to the cart
