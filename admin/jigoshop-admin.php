@@ -28,11 +28,6 @@ if ( get_bloginfo('version') >= '3.3' ) {
 	require_once( 'jigoshop-admin-help.php' );
 }
 
-add_action('admin_init', 'jigoshop_admin_init');
-function jigoshop_admin_init() {
-	add_action('wp_dashboard_setup', 'jigoshop_setup_dashboard_widgets' );
-}
-
 add_action('admin_notices', 'jigoshop_update');
 function jigoshop_update() {
 	// Run database upgrade if required
@@ -343,100 +338,4 @@ if (!function_exists('boolval')) {
 		}
 		return $out;
 	}
-}
-
-/**
- * Replaces Recent Comments Dashboard widget with shop message filtered ver
- *
- * The only difference between the two is the query now takes into account
- * shop order messages. Unfortunately WordPress hasn't made this very easy
- * to achieve due to the query being hard coded so a complete
- * replacement was necessary :(
- *
- * Sourced from dashboard.php
- */
-function jigoshop_setup_dashboard_widgets() {
-	remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'normal' );
-	wp_add_dashboard_widget('jigoshop_recent_comments', 'Recent Comments', 'jigoshop_dashboard_recent_comments', 'jigoshop_dashboard_recent_comments_control');
-}
-
-function jigoshop_dashboard_recent_comments() {
-	global $wpdb;
-
-	if ( current_user_can('edit_posts') )
-		$allowed_states = array('0', '1');
-	else
-		$allowed_states = array('1');
-
-	// Select all comment types and filter out spam later for better query performance.
-	$comments = array();
-	$start = 0;
-
-	$widgets = get_option( 'dashboard_widget_options' );
-	$total_items = isset( $widgets['dashboard_recent_comments'] ) && isset( $widgets['dashboard_recent_comments']['items'] )
-		? absint( $widgets['dashboard_recent_comments']['items'] ) : 5;
-
-	while ( count( $comments ) < $total_items && $possible = $wpdb->get_results( "SELECT * FROM $wpdb->comments c LEFT JOIN $wpdb->posts p ON c.comment_post_ID = p.ID WHERE p.post_status != 'trash' AND c.comment_type != 'jigoshop' ORDER BY c.comment_date_gmt DESC LIMIT $start, 50" ) ) {
-
-		foreach ( $possible as $comment ) {
-			if ( count( $comments ) >= $total_items )
-				break;
-			if ( in_array( $comment->comment_approved, $allowed_states ) && current_user_can( 'read_post', $comment->comment_post_ID ) )
-				$comments[] = $comment;
-		}
-
-		$start = $start + 50;
-	}
-
-	if ( $comments ) :
-?>
-
-		<div id="the-comment-list" class="list:comment">
-<?php
-		foreach ( $comments as $comment )
-			_wp_dashboard_recent_comments_row( $comment );
-?>
-
-		</div>
-
-<?php
-		if ( current_user_can('edit_posts') ) { ?>
-			<?php _get_list_table('WP_Comments_List_Table')->views(); ?>
-<?php	}
-
-		wp_comment_reply( -1, false, 'dashboard', false );
-		wp_comment_trashnotice();
-
-	else :
-?>
-
-	<p><?php _e( 'No comments yet.' ); ?></p>
-
-<?php
-	endif; // $comments;
-}
-
-/**
- * The recent comments dashboard widget control.
- *
- * @since 3.0.0
- */
-function jigoshop_dashboard_recent_comments_control() {
-    $jigoshop_options = Jigoshop_Base::get_options();
-	if ( !$widget_options = get_option( 'dashboard_widget_options' ) )
-		$widget_options = array();
-
-	if ( !isset($widget_options['dashboard_recent_comments']) )
-		$widget_options['dashboard_recent_comments'] = array();
-
-	if ( 'POST' == $_SERVER['REQUEST_METHOD'] && isset($_POST['widget-recent-comments']) ) {
-		$number = absint( $_POST['widget-recent-comments']['items'] );
-		$widget_options['dashboard_recent_comments']['items'] = $number;
-		$jigoshop_options->set_option( 'dashboard_widget_options', $widget_options );
-	}
-
-	$number = isset( $widget_options['dashboard_recent_comments']['items'] ) ? (int) $widget_options['dashboard_recent_comments']['items'] : '';
-
-	echo '<p><label for="comments-number">' . __('Number of comments to show:') . '</label>';
-	echo '<input id="comments-number" name="widget-recent-comments[items]" type="text" value="' . esc_attr( $number ) . '" size="3" /></p>';
 }

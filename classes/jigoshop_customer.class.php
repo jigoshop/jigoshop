@@ -22,15 +22,27 @@ class jigoshop_customer extends Jigoshop_Singleton {
 	/** constructor */
 	protected function __construct() {
 
-		if (is_user_logged_in()) {
-			$country = get_user_meta( get_current_user_id(), 'billing-country', true );
-			$state = get_user_meta( get_current_user_id(), 'billing-state', true );
-			$postcode = get_user_meta( get_current_user_id(), 'billing-postcode', true );
-			$shipping_country = get_user_meta( get_current_user_id(), 'shipping-country', true );
-			$shipping_state    = get_user_meta( get_current_user_id(), 'shipping-state', true );
-			$shipping_postcode = get_user_meta( get_current_user_id(), 'shipping-postcode', true );
+		// update the customer if a user signs in
+		$this->add_action('wp_login', 'update_signed_in_customer', 10, 2);
+		
+		// remove customer billing/shipping information
+		$this->add_action('wp_logout', 'update_signed_out_customer');
+		
+		// if we don't check the status of the customer, we will constantly destroy what the customer
+		// has selected in their forms as pages get reloaded or refreshed.
+		if ( !isset( jigoshop_session::instance()->customer ) ) {
+			$this->set_default_customer();
 		}
-
+	}
+	
+	/**
+	 * Provide a default value for the customer shipping/billing information. It 
+	 * utilizes the base country information to set up the default values.
+	 * 
+	 * @since 1.4.4
+	 */
+	private function set_default_customer() {
+		
 		$default = self::get_options()->get_option('jigoshop_default_country');
 		if (strstr($default, ':')) {
 			$dcountry = current(explode(':', $default));
@@ -42,20 +54,58 @@ class jigoshop_customer extends Jigoshop_Singleton {
 		}
 
 		jigoshop_session::instance()->customer = array(
-			'country'          => isset($country) ? $country : $dcountry,
-			'state'            => isset($state) ? $state : $dstate,
-			'postcode'         => isset($postcode) ? $postcode : '',
-			'shipping_country' => isset($shipping_country) ? $shipping_country : $dcountry,
-			'shipping_state'   => isset($shipping_state) ? $shipping_state : $dstate,
-			'shipping_postcode'=> isset($shipping_postcode) ? $shipping_postcode : ''
+			'country'          => $dcountry,
+			'state'            => $dstate,
+			'postcode'         => '',
+			'shipping_country' => $dcountry,
+			'shipping_state'   => $dstate,
+			'shipping_postcode'=> ''
 		);
+		
 	}
-    
+	
+	/**
+	 * remove the logged out user shipping information from the session once they log out
+	 * 
+	 * @since 1.4.4
+	 */
+	public function update_signed_out_customer() {
+		unset(jigoshop_session::instance()->customer);
+		$this->set_default_customer();
+	}
+	
+	/**
+	 * set the customer shipping and billing information from their saved data
+	 * 
+	 * @param string $user_login - the user name of the customer logged in
+	 * @param user $user the user object from wp
+	 * @since 1.4.4
+	 */
+	public function update_signed_in_customer($user_login, $user) {
+		
+		$country = get_user_meta( $user->ID, 'billing-country', true );
+		$state = get_user_meta( $user->ID, 'billing-state', true );
+		$postcode = get_user_meta( $user->ID, 'billing-postcode', true );
+		$shipping_country = get_user_meta( $user->ID, 'shipping-country', true );
+		$shipping_state    = get_user_meta( $user->ID, 'shipping-state', true );
+		$shipping_postcode = get_user_meta( $user->ID, 'shipping-postcode', true );
+		
+		jigoshop_session::instance()->customer = array(
+			'country'          => $country,
+			'state'            => $state,
+			'postcode'         => $postcode,
+			'shipping_country' => $shipping_country,
+			'shipping_state'   => $shipping_state,
+			'shipping_postcode'=> $shipping_postcode
+		);
+
+	}
+
     /**
      * Find out if the customer should be taxed or not
      * @param boolean $shipable tells if the cart has shipable items, and therefore we should use
      * shipping country. Otherwise if not shippable items, we need to use the customer country.
-     * @return boolean true if customer is taxable, false otherwise 
+     * @return boolean true if customer is taxable, false otherwise
      * @since 1.4
      */
 	public static function is_taxable($shipable) {

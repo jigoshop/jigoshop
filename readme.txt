@@ -4,7 +4,7 @@ Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, wid
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.2.1
 Tested up to: 3.4.2
-Stable tag: 1.4.3
+Stable tag: 1.4.4
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,7 +112,16 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
-= 1.4.3 - 2012-10-16 =
+= 1.4.4 - 2012-10-22 =
+* Tweak: Products with stock = 0 always show 'Out of Stock' when stock is managed
+* Fix: Variable products on sale again show the sale price instead of 0.00
+* Fix: With 'prices include tax' the correct price is now sent to PayPal without tax
+       * There will now be a separate tax item sent to PayPal at all times that reflects the total Order tax
+* Fix: Logged in user with no country/state defined will now be set to default country/state
+* Fix: Premium Shipping interfering with Free Shipping on cheapest method selection
+* Fix: Flat Rate shipping uses the correct tax amount if required
+
+= 1.4.3 - 2012-10-17 =
 * Fix: Orders not being set to processing by gateways
 * Fix: Coupon include and exclude Categories now work with multiple Product Categories, not just the first one
 

@@ -22,7 +22,7 @@
  * Author:              Jigowatt
  * Author URI:          http://jigowatt.co.uk
  *
- * Version:             1.4.3
+ * Version:             1.4.4
  * Requires at least:   3.2.1
  * Tested up to:        3.4.2
  *
@@ -232,7 +232,6 @@ function jigoshop_roles_init() {
 		}
 	}
 }
-
 
 /**
  * Include template functions here with a low priority so they are pluggable by themes
@@ -1117,6 +1116,7 @@ function jigoshop_exclude_order_admin_comments( $clauses ) {
 
 	// Hide all those comments which aren't of type jigoshop
 	$clauses['where'] .= ' AND comment_type != "jigoshop"';
+	$clauses['where'] .= ' AND comment_type != "order_note"'; // Removes order notes
 
 	return $clauses;
 }

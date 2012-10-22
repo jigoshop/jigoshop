@@ -824,7 +824,7 @@ if (!function_exists('jigoshop_shipping_calculator')) {
                                 <?php
                                 echo '<input type="radio" name="shipping_rates" value="' . esc_attr( $method->id . ':' . $i ) . '"' . ' class="shipping_select"';
                                 if ( $method->get_cheapest_service() == $method->get_selected_service($i) && $method->is_chosen() ) echo ' checked>'; else echo '>';
-                                echo $method->get_selected_service($i);
+								echo $method->get_selected_service($i);
                                 ?>
                             <p class="form-row col-2"><?php
                             

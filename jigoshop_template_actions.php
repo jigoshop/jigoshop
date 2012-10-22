@@ -56,7 +56,6 @@ add_action( 'jigoshop_template_single_summary', 'jigoshop_template_single_sharin
 /* Product Add to cart */
 add_action( 'jigoshop_template_single_summary', 'jigoshop_template_single_add_to_cart', 30, 2 );
 add_action( 'simple_add_to_cart'              , 'jigoshop_simple_add_to_cart' );
-add_action( 'external_add_to_cart'            , 'jigoshop_external_add_to_cart' );
 add_action( 'virtual_add_to_cart'             , 'jigoshop_simple_add_to_cart' );
 add_action( 'downloadable_add_to_cart'        , 'jigoshop_downloadable_add_to_cart' );
 add_action( 'grouped_add_to_cart'             , 'jigoshop_grouped_add_to_cart' );
