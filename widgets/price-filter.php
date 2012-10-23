@@ -33,6 +33,21 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 
 		// Add price filter init to init hook
 		add_action('init', array( &$this, 'jigoshop_price_filter_init') );
+
+		// Add own hidden fields to filter
+		add_filter('jigoshop_get_hidden_fields', array( &$this, 'jigoshop_price_filter_hidden_fields' ) );
+	}
+
+	public function jigoshop_price_filter_hidden_fields($fields) {
+		if( isset( $_GET['max_price'] ) ) {
+			$fields['max_price'] = $_GET['max_price'];
+		}
+
+		if( isset( $_GET['min_price'] ) )	{
+			$fields['min_price'] = $_GET['min_price'];
+		}
+
+		return $fields;
 	}
 
 	/**
@@ -65,18 +80,24 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 		echo $before_title . $title . $after_title;
 
 		// Remember current filters/search
-		$fields = '';
+		$fields = array();
+
+		// Support for other plugins which uses GET parameters
+		$fields = apply_filters('jigoshop_get_hidden_fields', $fields);
 
 		if ( get_search_query() ) {
-			$fields .= '<input type="hidden" name="s" value="' . get_search_query() . '" />';
+			$fields['s'] = get_search_query();
+//			$fields .= '<input type="hidden" name="s" value="' . get_search_query() . '" />';
 		}
 
 		if ( isset( $_GET['post_type'] ) ) {
-			$fields .= '<input type="hidden" name="post_type" value="' . esc_attr( $_GET['post_type'] ) . '" />';
+			$fields['post_type'] = esc_attr( $_GET['post_type'] );
+//			$fields .= '<input type="hidden" name="post_type" value="' . esc_attr( $_GET['post_type'] ) . '" />';
 		}
 
 		if ( ! empty( $_chosen_attributes )) foreach ( $_chosen_attributes as $attribute => $value ) {
-			$fields .= '<input type="hidden" name="'.str_replace('pa_', 'filter_', $attribute).'" value="'.implode(',', $value).'" />';
+			$fields[str_replace('pa_', 'filter_', $attribute)] = implode(',', $value);
+//			$fields .= '<input type="hidden" name="'.str_replace('pa_', 'filter_', $attribute).'" value="'.implode(',', $value).'" />';
 		}
 
 		// Get maximum price
@@ -99,7 +120,13 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 					<button type="submit" class="button">Filter</button>' . __( 'Price: ', 'jigoshop' ) . '<span></span>
 					<input type="hidden" id="max_price" name="max_price" value="' . esc_attr( $max ) . '" />
 					<input type="hidden" id="min_price" name="min_price" value="0" />
-					' . $fields . '
+					';
+		foreach($fields as $key => $value) {
+			if( !in_array( $key, array( 'max_price', 'min_price' ) ) ) {
+				echo '<input type="hidden" name="'.$key.'" value="'.$value.'" />';
+			}
+		}
+		echo '
 				</div>
 			</div>
 		</form>';
