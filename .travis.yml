@@ -14,6 +14,8 @@ env:
   - WP_VERSION=3.4 WP_MULTISITE=0
   - WP_VERSION=3.4 WP_MULTISITE=1
 # Tested (but not officially supported) WP versions
+  - WP_VERSION=3.5-beta2 WP_MULTISITE=0 
+  - WP_VERSION=3.5-beta2 WP_MULTISITE=1
   - WP_VERSION=3.5-beta2 WP_MULTISITE=0
   - WP_VERSION=3.5-beta2 WP_MULTISITE=1 
   - WP_VERSION=3.5-beta-1 WP_MULTISITE=0
@@ -31,6 +33,8 @@ env:
 matrix:
   allow_failures:
 # Beta Versions
+    - env: WP_VERSION=3.5-beta3 WP_MULTISITE=0 
+    - env: WP_VERSION=3.5-beta3 WP_MULTISITE=1
     - env: WP_VERSION=3.5-beta2 WP_MULTISITE=0 
     - env: WP_VERSION=3.5-beta2 WP_MULTISITE=1
     - env: WP_VERSION=3.5-beta-1 WP_MULTISITE=0 
@@ -48,8 +52,8 @@ matrix:
     - env: WP_VERSION=3.2 WP_MULTISITE=1
     - php: 5.2
 branches:
-  only:
-    - dev
+  exclude:
+    - master
 before_script:
   - cp tests/unittests-config.travis.php vendor/wordpress-tests/unittests-config.php
   - wget -O wordpress.tar.gz http://wordpress.org/wordpress-$WP_VERSION.tar.gz
