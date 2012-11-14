@@ -218,7 +218,6 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 							<?php do_settings_sections( JIGOSHOP_OPTIONS ); ?>
 
 							<?php $tabname = $this->get_current_tab_name(); ?>
-							<?php self::get_options()->set_option( 'jigoshop_settings_current_tabname', $tabname ); ?>
 
 							<p class="submit"><input name="Submit" type="submit" class="button-primary" value="<?php echo sprintf( __( "Save %s Changes", 'jigoshop' ), $tabname ); ?>" /></p>
 
@@ -294,11 +293,21 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	public function get_current_tab_slug() {
 		$current = "";
 
-		if ( isset( $_GET['tab'] ) ):
+		if ( isset( $_GET['tab'] ) ) {
 			$current = $_GET['tab'];
-		else:
+		} else if ( isset( $_POST['_wp_http_referer'] ) ) {
+			// /site/wp-admin/admin.php?page=jigoshop_settings&tab=products-inventory&settings-updated=true
+			// find the 'tab'
+			$result = strstr( $_POST['_wp_http_referer'], '&tab=' );
+			// &tab=products-inventory&settings-updated=true
+			$result = substr( $result, 5 );
+			// products-inventory&settings-updated=true
+			$end_pos = strpos( $result, '&' );
+			$current = substr( $result, 0 , $end_pos !== false ? $end_pos : strlen( $result ) );
+			// products-inventory
+		} else {
 			$current = sanitize_title( $this->our_parser->these_options[0]['name'] );
-		endif;
+		}
 		return $current;
 	}
 
@@ -314,6 +323,21 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		if ( isset( $_GET['tab'] ) ) {
 			foreach ( $this->our_parser->these_options as $option ) {
 				if ( $option['type'] == 'tab' && sanitize_title( $option['name'] ) == $_GET['tab'] ) {
+					$current = $option['name'];
+				}
+			}
+		} else if ( isset( $_POST['_wp_http_referer'] ) ) {
+			// /site/wp-admin/admin.php?page=jigoshop_settings&tab=products-inventory&settings-updated=true
+			// find the 'tab'
+			$result = strstr( $_POST['_wp_http_referer'], '&tab=' );
+			// &tab=products-inventory&settings-updated=true
+			$result = substr( $result, 5 );
+			// products-inventory&settings-updated=true
+			$end_pos = strpos( $result, '&' );
+			$tab_slug = substr( $result, 0 , $end_pos !== false ? $end_pos : strlen( $result ) );
+			// products-inventory
+			foreach ( $this->our_parser->these_options as $option ) {
+				if ( $option['type'] == 'tab' && sanitize_title( $option['name'] ) == $tab_slug ) {
 					$current = $option['name'];
 				}
 			}
@@ -341,7 +365,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		$valid_input = $current_options;			// we start with the current options
 
 		// Find the current TAB we are working with and use it's option settings
-		$this_section = self::get_options()->get_option( 'jigoshop_settings_current_tabname' );
+		$this_section = self::get_current_tab_name();
 		$tab = $this->our_parser->tabs[sanitize_title( $this_section )];
 
 		// with each option, get it's type and validate it
@@ -509,7 +533,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			add_settings_error(
 				'',
 				'settings_updated',
-				sprintf(__('"%s" settings were updated successfully.','jigoshop'), self::get_options()->get_option( 'jigoshop_settings_current_tabname' )),
+				sprintf(__('"%s" settings were updated successfully.','jigoshop'), self::get_current_tab_name()),
 				'updated'
 			);
 		}

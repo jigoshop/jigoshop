@@ -30,8 +30,6 @@
 
 			<div class="summary">
 
-				<?php do_action( 'jigoshop_template_single_title', $post, $_product ); ?>
-
 				<?php do_action( 'jigoshop_template_single_summary', $post, $_product ); ?>
 
 			</div>

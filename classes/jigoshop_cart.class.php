@@ -199,7 +199,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
             $quantity = (int) $quantity + self::$cart_contents[$cart_item_key]['quantity'];
 
-            self::set_quantity($cart_item_key, $quantity);
+            self::set_quantity( $cart_item_key, apply_filters( 'jigoshop_cart_item_quantity', $quantity, $product, $cart_item_key ) );
 
         } else {
         	// otherwise add new item to the cart
@@ -968,10 +968,14 @@ class jigoshop_cart extends Jigoshop_Singleton {
     /* Title of the chosen shipping method. */
     function get_cart_shipping_title() {
 
-        if ( !jigoshop_shipping::get_label() )
+		// in this instance we want the title of the shipping method only. If no title is provided, use
+		// the label. 
+		$title = jigoshop_shipping::get_chosen_method_title();
+		$label = ($title ? $title : jigoshop_shipping::get_label());
+        if ( !$label ) 
             return false;
 
-        return __(sprintf('via %s', jigoshop_shipping::get_label()), 'jigoshop');
+        return __(sprintf('via %s', $label), 'jigoshop');
 
     }
 

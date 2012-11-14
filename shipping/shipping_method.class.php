@@ -194,10 +194,18 @@ class jigoshop_shipping_method {
     // label to the service name displayed
     public function get_cheapest_service() {
         $my_cheapest_rate = $this->get_cheapest_rate();
-        return ($my_cheapest_rate == NULL ? $this->title : __($my_cheapest_rate['service'] . ' via ' . $this->title, 'jigoshop'));
+
+		if ($this->title && $my_cheapest_rate['service'] != $this->title) :
+			$service = __($my_cheapest_rate['service'] . ' via ' . $this->title, 'jigoshop');
+		else :
+			$service = __($my_cheapest_rate['service']);
+		endif;
+		
+        return ($my_cheapest_rate == NULL ? $this->title : $service);
     }
 
-    protected function get_cheapest_price() {
+	// call from shipping when calculating cheapest method
+    public function get_cheapest_price() {
         $my_cheapest_rate = $this->get_cheapest_rate();
         return ($my_cheapest_rate == NULL ? $this->shipping_total : $my_cheapest_rate['price']);
     }
@@ -215,7 +223,14 @@ class jigoshop_shipping_method {
      */
     public function get_selected_service($rate_index) {
         $my_rate = $this->get_selected_rate($rate_index);
-        return ($my_rate == NULL ? $this->title : __($my_rate['service'] . ' via ' . $this->title, 'jigoshop'));
+		
+		if ($this->title && $my_rate['service'] != $this->title) :
+			$service = __($my_rate['service'] . ' via ' . $this->title, 'jigoshop');
+		else :
+			$service = __($my_rate['service']);
+		endif;
+		
+        return ($my_rate == NULL ? $this->title : $service);
     }
 
     // if the method doesn't utilize the rates array, return the shipping total

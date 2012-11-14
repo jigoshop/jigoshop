@@ -148,11 +148,18 @@ function jigoshop_cart($atts) {
 										endif;
                                     ?>
                                 </td>
-                                <td class="product-price"><?php echo jigoshop_price($_product->get_price()); ?></td>
+                                <td class="product-price"><?php echo apply_filters( 'jigoshop_product_price_display_in_cart', jigoshop_price($_product->get_price()), $values['product_id'], $values ); ?></td>
                                 <td class="product-quantity">
+                                	<?php ob_start(); ?>
                                      <div class="quantity"><input name="cart[<?php echo $cart_item_key ?>][qty]" value="<?php echo esc_attr( $values['quantity'] ); ?>" size="4" title="Qty" class="input-text qty text" maxlength="12" /></div>
+                                    <?php
+                                    	$quantity_display = ob_get_contents();
+                                    	ob_end_clean();
+                                    	echo apply_filters( 'jigoshop_product_quantity_display_in_cart', $quantity_display, $values['product_id'], $values );
+                                    	
+                                    ?>
                                 </td>
-                                <td class="product-subtotal"><?php echo jigoshop_price($_product->get_price() * $values['quantity']); ?></td>
+                                <td class="product-subtotal"><?php echo apply_filters( 'jigoshop_product_subtotal_display_in_cart', jigoshop_price($_product->get_price() * $values['quantity']), $values['product_id'], $values ); ?></td>
                             </tr>
                             <?php
                         endif;
@@ -210,6 +217,7 @@ function jigoshop_cart($atts) {
             $jigoshop_options = Jigoshop_Base::get_options();
             
             if ($available_methods || !jigoshop_customer::get_shipping_country() || !jigoshop_shipping::is_enabled()) :
+            	do_action( 'jigoshop_before_cart_totals' );
                 ?>
                 <h2><?php _e('Cart Totals', 'jigoshop'); ?></h2>
 
@@ -273,14 +281,20 @@ function jigoshop_cart($atts) {
 					</table>
 				</div>
 			<?php
+			do_action( 'jigoshop_after_cart_totals' );
 			else :
                 echo '<p>' . __(jigoshop_shipping::get_shipping_error_message(), 'jigoshop') . '</p>';
 			endif;
 		?>
 		</div>
 
+		<?php
+			do_action( 'jigoshop_before_shipping_calculator' );
+		?>
 		<?php jigoshop_shipping_calculator(); ?>
-
+		<?php
+			do_action( 'jigoshop_after_shipping_calculator' );
+		?>
 	</div>
 	<?php
 }

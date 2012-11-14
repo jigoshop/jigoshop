@@ -164,7 +164,9 @@ function jigoshop_update_cart_action() {
 		if (sizeof(jigoshop_cart::$cart_contents)>0) :
 			foreach (jigoshop_cart::$cart_contents as $cart_item_key => $values) :
 
-				if (isset($cart_totals[$cart_item_key]['qty'])) jigoshop_cart::set_quantity( $cart_item_key, $cart_totals[$cart_item_key]['qty'] );
+				if ( isset( $cart_totals[$cart_item_key]['qty'] ) ) {
+					jigoshop_cart::set_quantity( $cart_item_key, apply_filters( 'jigoshop_cart_item_quantity', $cart_totals[$cart_item_key]['qty'], $values['data'], $cart_item_key ) );
+				}
 
 			endforeach;
 		endif;

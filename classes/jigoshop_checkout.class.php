@@ -737,7 +737,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 							? $_product->get_price()
 							: -1
 						);
-                        
+
 						if ( !empty( $values['variation_id'] )) {
 							$product_id = $values['variation_id'];
 						} else {
@@ -928,8 +928,9 @@ class jigoshop_checkout extends Jigoshop_Singleton {
                                 if ($method->get_selected_service($i) == $selected_service) :
                                     echo 'selected="selected"';
                                 endif;
-                                echo '>' . $method->get_selected_service($i) . ' &ndash; ';
-
+								
+								echo '>' . $method->get_selected_service($i) . ' &ndash; ';
+									
                                 if ($method->get_selected_price($i) > 0) :
 
                                     $tax_label = 0; // 0 no label, 1 ex. tax, 2 inc. tax
