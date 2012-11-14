@@ -1175,7 +1175,7 @@ class jigoshop_product extends Jigoshop_Base {
 			return false;
 
 		// Start the html output
-		$html = '<table cellspacing="0" class="shop_attributes">';
+		$html = '<table class="shop_attributes">';
 
 		// Output weight if we have it
 		if (self::get_options()->get_option('jigoshop_enable_weight')=='yes' && $this->get_weight() ) {
