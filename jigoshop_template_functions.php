@@ -343,7 +343,7 @@ if (!function_exists('jigoshop_grouped_add_to_cart')) {
 		if(!$_product->get_children()) return;
 		?>
 		<form action="<?php echo esc_url( $_product->add_to_cart_url() ); ?>" class="cart" method="post">
-			<table cellspacing="0">
+			<table>
 				<tbody>
 					<?php foreach ($_product->get_children() as $child_ID) : $child = $_product->get_child($child_ID); $cavailability = $child->get_availability(); ?>
 						<tr>
