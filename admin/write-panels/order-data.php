@@ -65,6 +65,8 @@ function jigoshop_order_data_meta_box($post) {
 
 			<li><a href="#order_customer_shipping_data"><?php _e('Customer Shipping Address', 'jigoshop'); ?></a></li>
 
+			<?php do_action("jigoshop_order_data_tabs", $post, $data); ?>
+			
 		</ul>
 
 		<div id="order_data" class="panel jigoshop_options_panel">
@@ -176,6 +178,9 @@ function jigoshop_order_data_meta_box($post) {
                 }
 			?>
 		</div>
+		
+		<?php do_action("jigoshop_order_data_panels", $post, $data); ?>
+		
 	</div>
 	<?php
 
