@@ -1,32 +1,19 @@
-#toplevel_page_jigoshop .wp-menu-image {
-    background: url(../images/icons/menu_icons.png) no-repeat 0px -32px !important;
-}
-#toplevel_page_jigoshop:hover .wp-menu-image,
-#toplevel_page_jigoshop.wp-has-current-submenu .wp-menu-image {
-    background: url(../images/icons/menu_icons.png) no-repeat 0px 0px !important;
-}
-#toplevel_page_jigoshop .wp-menu-image img {
-	display: none;
-}
-
-#menu-posts-product .wp-menu-image {
-    background: url(../images/icons/menu_icons.png) no-repeat -35px -32px !important;
-}
-#menu-posts-product:hover .wp-menu-image,
-#menu-posts-product.wp-has-current-submenu .wp-menu-image {
-    background: url(../images/icons/menu_icons.png) no-repeat -35px 0px !important;
-}
-
-#menu-posts-shop_order .wp-menu-image {
-    background: url(../images/icons/menu_icons.png) no-repeat -70px -32px !important;
-}
-#menu-posts-shop_order:hover .wp-menu-image,
-#menu-posts-shop_order.wp-has-current-submenu .wp-menu-image {
-    background: url(../images/icons/menu_icons.png) no-repeat -70px 0px !important;
-}
+// FROM BOOTSTRAP
+.tooltip{position:absolute;z-index:1020;display:block;visibility:visible;padding:5px;font-size:11px;opacity:0;filter:alpha(opacity=0);}.tooltip.in{opacity:0.8;filter:alpha(opacity=80);}
+.tooltip.top{margin-top:-2px;}
+.tooltip.right{margin-left:2px;}
+.tooltip.bottom{margin-top:2px;}
+.tooltip.left{margin-left:-2px;}
+.tooltip.top .tooltip-arrow{bottom:0;left:50%;margin-left:-5px;border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid #000000;}
+.tooltip.left .tooltip-arrow{top:50%;right:0;margin-top:-5px;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:5px solid #000000;}
+.tooltip.bottom .tooltip-arrow{top:0;left:50%;margin-left:-5px;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:5px solid #000000;}
+.tooltip.right .tooltip-arrow{top:50%;left:0;margin-top:-5px;border-top:5px solid transparent;border-bottom:5px solid transparent;border-right:5px solid #000000;}
+.tooltip-inner{max-width:200px;padding:3px 8px;color:#ffffff;font-weight: normal;text-align:center;text-decoration:none;background-color:#000000;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}
+.tooltip-arrow{position:absolute;width:0;height:0;}
+.fade{-webkit-transition:opacity 0.15s linear;-moz-transition:opacity 0.15s linear;-ms-transition:opacity 0.15s linear;-o-transition:opacity 0.15s linear;transition:opacity 0.15s linear;opacity:0;}.fade.in{opacity:1;}
 
 
-#icon-jigoshop, .jigoshop_icon, .icon32-posts-product, .icon32-posts-shop_order {
+#icon-jigoshop, .jigoshop_icon, .icon32-posts-product, .icon32-posts-shop_order, .icon32-posts-shop_coupon {
 	background-image: url(../images/icons/jigoshop-icons.png) !important;
 	background-position: -11px -5px;
 }
@@ -38,6 +25,9 @@
 }
 .icon32-posts-shop_order {
 	background-position: -127px -5px !important;
+}
+.icon32-posts-shop_coupon {
+	background-position: -300px -5px !important;
 }
 .icon32-attributes {
 	background-position: -185px -5px !important;
@@ -58,7 +48,7 @@
 		border-bottom: 1px solid #ddd;
 		padding: 6px;
 		margin: 0;
-		line-height: 1.6em; 
+		line-height: 1.6em;
 	}
 }
 #jigoshop-order-items {
@@ -155,7 +145,7 @@ ul.totals {
 			input, textarea {
 				width: 100%;
 			}
-			select { 
+			select {
 				width: 50%;
 			}
 			input, textarea {
@@ -163,7 +153,7 @@ ul.totals {
 				padding: 4px;
 				color: #555;
 			}
-		} 
+		}
 		.name {
 			min-width: 100px;
 		}
@@ -250,30 +240,34 @@ ul.totals {
 	th.column-id {
 		width:60px !important;
 	}
-	
+
+	dd {
+		margin-left: 0px;
+	}
+
 	.column-total_cost {
 		width:250px !important;
 	}
-	
+
 	.column-order_title {
 		width:120px;
-		
+
 		a {
 			display: block;
 		}
-		
+
 		time {
 			color:#999;
 		}
 	}
-	
+
 	.column-customer {
 		width:140px;
 	}
 	.column-order_status {
 		width:80px;
-		text-align: center; 
-		
+		text-align: center;
+
 		mark {
 			display: block;
 			text-align: left;
@@ -353,13 +347,24 @@ ul.subsubsub {
 }
 
 /* Product list */
+
 .fixed {
 	.column-sku, .column-product-type, .column-price, .column-stock, .column-product-date, .column-product-cat, .column-product-tags {
-		width: 15%;
+		width: 12%;
 	}
 
+	th.column-featured img { display: none; }
+	th.column-featured a, th.column-featured.desc a:hover { background: url('../images/head_featured.png') top center no-repeat; }
+	th.column-featured a:hover, th.column-featured.desc a { background: url('../images/head_featured_desc.png') top center no-repeat; }
 	.column-featured {
-		width: 75px;
+		width: 60px;
+
+		div { text-indent: 100%; white-space: nowrap; overflow: hidden; }
+
+		&.sortable a span, &.sorted a span { float: none; }
+
+
+		&:hover span.sorting-indicator, span.sorting-indicator { display: none; }
 	}
 }
 
@@ -413,9 +418,12 @@ div.star img { margin:0;}
 }
 
 .stats {
-	h3 a {
-		float: right;
-		margin-left: 8px;
+	p {
+		padding-bottom:15px;
+		a {
+			float:right;
+			margin-left: 8px;
+		}
 	}
 }
 
@@ -467,9 +475,6 @@ ul.recent-orders {
 	padding: 5px 10px 15px;
 	color: #777;
 	font-size: 13px;
-	position: absolute;
-	top: -17px;
-	left: 15px;
 }
 .jigoshop_right_now .table {
 	margin: 0 -9px;
@@ -478,12 +483,10 @@ ul.recent-orders {
 }
 .jigoshop_right_now .table_content {
 	float: left;
-	border-top: #ececec 1px solid;
 	width: 45%;
 }
 .jigoshop_right_now .table_discussion {
 	float: right;
-	border-top: #ececec 1px solid;
 	width: 45%;
 }
 .jigoshop_right_now table td {
@@ -535,7 +538,9 @@ ul.recent-orders {
 }
 
 .jigoshop-links-widget {
-	ul.links {
+	width:100%;
+	height:100%;
+	div.links {
 		float: left;
 		width: 49%;
 	}
@@ -593,7 +598,7 @@ ul.recent-orders {
 	}
 }
 
-/* Settings */
+/* old settings */
 .jigoshop table.widefat {
 	width: 950px;
 	margin-top: 0.5em !important;
@@ -618,6 +623,11 @@ ul.recent-orders {
 	}
 }
 
+// This may be redundant
+.error a.button-secondary {
+	text-decoration: none;
+}
+
 .jigoshop table.widefat th.desc {
 	font-weight: normal;
 	color: #2958aa;
@@ -626,7 +636,6 @@ ul.recent-orders {
 	color: #999;
 }
 .jigoshop #tabs-wrap {
-	background: #ececec;
 	width: 950px;
 	padding: 7px 9px;
 	overflow: hidden;
@@ -634,23 +643,18 @@ ul.recent-orders {
 	margin-bottom: 2em !important;
 	zoom: 1;
 }
+
+.jigoshop-nav-tab-wrapper > .nav-tab {
+	font-size:14px;
+	margin: 0 2px -1px 0;
+}
+
 .jigoshop #tabs-wrap ul.tabs {
 	padding: 0;
 	margin: 0;
 }
 .jigoshop #tabs-wrap table {
-	margin: 0 0 5px !important;
-	border: 1px solid #e1e1e1;
-	border-top: 0;
-}
-.jigoshop #tabs-wrap table thead tr th {
-	border-top: 4px solid #e1e1e1;
-}
-.jigoshop #tabs-wrap table thead:first-child tr th {
-	border-top: 0;
-}
-.jigoshop #tabs-wrap table thead th {
-	background: #fff;
+	margin: 0 0 5px;
 }
 .jigoshop #tabs-wrap table select {
 	white-space: nowrap;
@@ -742,18 +746,6 @@ a.tips {
 	float: right;
 	background: url(../images/tip.png) no-repeat top left;
 }
-#easyTooltip { 
-	padding:8px;  
-	border:3px solid #b9e3f0;  
-	background:#E3F4F9;  
-	font-size: 12px;
-	width:400px;
-	-moz-border-radius:8px;
-	-webkit-border-radius:8px;
-	-o-border-radius:8px;
-	-khtml-border-radius:8px;
-	border-radius:8px;
-}
 .jigoshop #tabs-wrap table a.remove {
 	margin-left: 4px;
 }
@@ -794,7 +786,7 @@ a.tips {
 #jigoshop-product-data ul.product_data_tabs li a, .jigoshop ul.tabs li a {
 	padding: 0;
 	margin: 0;
-	border: 0;	
+	border: 0;
 	border: 1px solid #DEDEDE;
 	border-bottom: 0;
 	float: left;
@@ -802,7 +794,7 @@ a.tips {
 	background: #F0F0F0;
 	text-decoration: none;
 	color: #777;
-	
+
 	-moz-border-radius-topleft: 3px;
 	-moz-border-radius-topright: 3px;
 	-webkit-border-top-left-radius: 3px;
@@ -876,6 +868,7 @@ a.tips {
 	padding: 0;
 	margin: 0 0 0 7px;
 	width: auto;
+	vertical-align: top;
 }
 .jigoshop_options_panel .description-block {
 	margin-left: 0;
@@ -913,6 +906,26 @@ a.tips {
 	min-width: 125px;
 	margin-right: 10px;
 }
+.jigoshop_options_panel .long {
+	width: 20%;
+	min-width: 300px;
+	margin-right: 10px;
+}
+.jigoshop_options_panel .options_group {
+	border-top: 1px solid white;
+	border-bottom: 1px solid #DFDFDF;
+}
+.jigoshop_options_panel .options_group:first-child {
+	border-top: 0;
+}
+.jigoshop_options_panel .options_group:last-child {
+	border-bottom: 0;
+}
+.jigoshop_options_panel .options_group a.tips {
+	float: left;
+	margin-left: 5px;
+	margin-right: 2px;
+}
 
 #jigoshop_attributes {
 	padding: 12px;
@@ -921,11 +934,12 @@ a.tips {
 	//margin-top: 1px;
 	margin: 9px;
 
-	.ui-state-highlight { 
+	.ui-state-highlight {
 		height: auto;
 		background: #eee;
 		border: 1px dashed #bbbbbb;
 		margin-bottom: 5px;
+		border-radius: 0;
 	}
 
 	.ui-sortable-helper {
@@ -976,7 +990,7 @@ a.tips {
 					margin-right: 5px;
 				}
 			}
-			
+
 		}
 
 		.value {
@@ -994,7 +1008,7 @@ a.tips {
 		}
 	}
 
-	
+
 }
 
 table.jigoshop_attributes, table.jigoshop_variable_attributes {
@@ -1016,7 +1030,7 @@ table.jigoshop_attributes td, table.jigoshop_variable_attributes td {
 table.jigoshop_attributes td input, table.jigoshop_variable_attributes td input, table.jigoshop_variable_attributes td textarea {
 	width: 100%;
 }
-table.jigoshop_attributes td select { 
+table.jigoshop_attributes td select {
 	width: 100%;
 }
 table.jigoshop_attributes td select.multiselect {
@@ -1043,12 +1057,15 @@ div.multi_select_products_wrapper {
 	float: left;
 	padding: 0 9px 9px;
 }
-.multi_select_products, div.multi_select_countries {
+.multi_select_products {
 	border: 1px solid #ececec;
 	height: 200px;
 	overflow: auto;
 	width: 250px;
 	float: left;
+}
+div.multi_select_countries.shipping_services {
+    height: 100px;
 }
 .multi_select_products li {
 	padding: 7px 9px;
@@ -1081,7 +1098,7 @@ div.multi_select_products_wrapper {
 	display: block;
 	text-indent: -2000px;
 	overflow: hidden;
-	background: url(../images/calendar.png) no-repeat; 
+	background: url(../images/calendar.png) no-repeat;
 }
 #jigoshop-product-data a.dp-choose-date.dp-disabled {
 	background-position: 0 -20px;
@@ -1112,7 +1129,7 @@ div.multi_select_products_wrapper {
 	margin: 9px;
 }
 .jigoshop_variation {
-	
+
 	margin-bottom: 5px;
 
 	h3 {
@@ -1188,7 +1205,7 @@ div.multi_select_products_wrapper {
 				width: 32.5%;
 			}
 		}
-	}	
+	}
 }
 
 .widefat .product-cat-placeholder {
@@ -1198,7 +1215,7 @@ div.multi_select_products_wrapper {
 }
 
 .tax_classes_field {
-	
+
 	.multiselect {
 		float: left;
 		display: inline-block;
@@ -1217,7 +1234,7 @@ div.multi_select_products_wrapper {
 		float: left;
 		clear: left;
 		margin-left: 150px;
-	}	
+	}
 }
 
 .sale_price_dates_fields label {
@@ -1271,7 +1288,7 @@ div.multi_select_products_wrapper {
 	}
 }
 
-.demo { 
+.demo {
 	position: relative;
 	.inside {
 		opacity: 0.60;
@@ -1288,7 +1305,7 @@ div.multi_select_products_wrapper {
 		text-align: center;
 		text-decoration:none;
 		padding-top: 60px;
-		
+
 
 		&:hover span {
 			background-color: #A0C443;
@@ -1306,53 +1323,6 @@ div.multi_select_products_wrapper {
 	}
 }
 
-/* Custom Recent Products Widget */
-#jigoshop_recent_comments .inside {
-	margin-top: 0;
-}
-#jigoshop_recent_comments #the-comment-list .trackback blockquote,
-#jigoshop_recent_comments #the-comment-list .pingback blockquote {
-	display: block;
-}
-#jigoshop_recent_comments h3 {
-	margin-bottom: 0;
-}
-
-#jigoshop_recent_comments .inside {
-	margin-top: 0;
-}
-
-#jigoshop_recent_comments .comment-meta .approve {
-	font-style: italic;
-	font-family: sans-serif;
-	font-size: 10px;
-}
-
-#jigoshop_recent_comments .subsubsub {
-	float: none;
-	white-space: normal;
-}
-#jigoshop_recent_comments div.undo {
-	border-top-style: solid;
-	border-top-width: 1px;
-	margin: 0 -10px;
-	padding: 3px 8px;
-	font-size: 11px;
-}
-#jigoshop_recent_comments .delete a,
-#jigoshop_recent_comments .trash a,
-#jigoshop_recent_comments .spam a {
-	color: #bc0b0b;
-}
-#jigoshop_recent_comments .delete a:hover,
-#jigoshop_recent_comments .trash a:hover
-#jigoshop_recent_comments .spam a:hover {
-	color: #f00;
-}
-#jigoshop_recent_comments div.undo {
-	border-top-color: #dfdfdf;
-}
-
 /* Hidden Tabs Ect Settings */
 .attribute_is_variable {
 	display: none;
@@ -1361,61 +1331,351 @@ div.multi_select_products_wrapper {
 	display: none;
 }
 
-.simple_product {
-	.file_tab, .variable_tab {
+// Global Disable
+.file_tab,
+.variable_tab
+{
+	display: none;
+}
+
+.downloadable_product {
+	// Disable
+	#form_fieldset
+	{
+		display: none;
+	}
+
+	// Enable
+	.file_tab
+	{
+		display: block;
+	}
+}
+
+.virtual_product {
+
+	// Disable
+	#form_fieldset
+	{
 		display: none;
 	}
 }
-.downloadable_product, .virtual_product {
 
-	.variable_tab {
-		display: none
-	}
-
-	#form_fieldset {
-		display: none;
-	}
-}
 .grouped_product {
 
-	.file_tab, .inventory_tab, .variable_tab, .grouped_tab {
+	// Disable
+	.inventory_tab,
+	.grouped_tab,
+	#price_fieldset,
+	#tax_fieldset,
+	#form_fieldset
+	{
 		display: none;
 	}
-	#price_fieldset, #tax_fieldset, #form_fieldset {
-		display: none;
-	}
+
+	// Enable
 }
+
 .variable_product {
 
-	.file_tab, .grouped_tab {
+	// Disable
+	#form_fieldset,
+	.regular_price_field,
+	.sale_price_field,
+	.cancel_sale_schedule,
+	.parent_id_field
+	{
 		display: none;
 	}
 
-	#form_fieldset, {
-		display: none;
+	// Enable
+	.variable_tab,
+	.attribute_is_variable
+	{
+		display: block;
 	}
 
-	.regular_price_field, .sale_price_field, .cancel_sale_schedule {
-		display: none;
-	}
-	.sale_price_dates_fields {
+	// Overrides JS
+	.sale_price_dates_fields
+	{
 		display: block !important;
 	}
-	.attribute_is_variable {
+}
+
+.external_product {
+
+	// Disable
+	.inventory_tab,
+	.grouped_tab,
+	#tax_fieldset
+	{
+		display: none;
+	}
+
+	// Enable
+	.external_url_field
+	{
 		display: block;
 	}
 }
-.external_product {
 
-	.file_tab, .inventory_tab, .variable_tab, .grouped_tab {
-		display: none;
+/* Settings */
+
+.jigoshop-settings table.form-table {
+
+	.button {
+		float: left;
+		margin: 0 3px 3px 0;
+	}
+	.button-right {
+		float: right;
+		margin: 0 0 3px 3px;
+	}
+	td small {
+		color: #555;
 	}
 
-	#tax_fieldset {
-		display: none;
+	th {
+		width: 17%;
 	}
 
-	.external_url_field {
-		display: block;
+	td {
+		margin-bottom: 3px;
+		line-height: 12px;
 	}
+
+	.jigoshop-tooltips {
+		width: 3%;
+		a.tips {
+			height: 16px;
+			width: 16px;
+			margin: 5px 5px 0 0;
+			float: right;
+			background: url(../images/tip.png) no-repeat top left;
+		}
+	}
+
+	/* this holds all the setting controls */
+	.forminp {
+		width: 80%;
+		.jigoshop-explain {
+			margin: 5px 0;
+		}
+		.input-text, .select {
+			width: 45%;
+		}
+		.wide-input {
+			width: 99%;
+		}
+		.jigoshop-input {
+			margin-right: 5px;
+		}
+		.jigoshop-radio {
+			margin: 2px 5px 0;
+		}
+		.jigoshop-radio-vert, .jigoshop-radio-horz {
+			margin-top: 4px;
+		}
+		.jigoshop-checkbox, .jigoshop-multi-checkbox-horz, .jigoshop-multi-checkbox-vert {
+			margin: 7px 5px 0;
+		}
+		label {
+			margin-right: 10px;
+		}
+		.jigoshop-checkbox label, .jigoshop-multi-checkbox-horz label, .jigoshop-multi-checkbox-vert label {
+			vertical-align: top;
+		}
+		.jigoshop-container label, .jigoshop-container label a {
+			vertical-align: bottom;
+		}
+
+		.multi_select_countries {
+			border: 1px solid #ececec;
+			height: 200px;
+			overflow: auto;
+			width: 250px;
+		}
+
+		/* range slider */
+		.slider {
+			display: inline-block;
+			background:#efefef;
+			height:9px;
+			position:relative;
+			cursor:pointer;
+			border:1px solid #cfcfcf;
+			width: 50%;
+			margin-top:5px;
+			-moz-border-radius:5px;
+			-webkit-border-radius:5px;
+			-moz-box-shadow:inset 0 0 8px #000;
+		}
+		/* progress bar (enabled with progress: true) */
+		.progress {
+			height:9px;
+			background-color:#C5FF00;
+			display:none;
+			opacity:0.6;
+		}
+		/* drag handle */
+		.handle {
+			background:#fff;
+			height:20px;
+			width:20px;
+			top:-8px;
+			position:absolute;
+			display:block;
+			margin-top:1px;
+			border:1px solid #cfcfcf;
+			cursor:move;
+			-moz-box-shadow:0 0 6px #cfcfcf;
+			-webkit-box-shadow:0 0 6px #cfcfcf;
+			-moz-border-radius:14px;
+			-webkit-border-radius:14px;
+		}
+		/* the input field */
+		.range {
+			border:1px solid #cfcfcf;
+			font-size:14px;
+			font-style: normal;
+			margin:0 0 10px 10px;
+			padding:3px 0px;
+			text-align:center;
+			width:50px;
+			-moz-border-radius:5px;
+			-webkit-border-radius:5px;
+		}
+
+		thead, tfoot {
+			background: #eaeaea;
+		}
+
+		/* internal array tables, coupons, taxes, table rates */
+		table {
+			border: 0;
+			a.dp-choose-date {
+				float: left;
+				width: 16px;
+				height: 16px;
+				padding: 0;
+				margin: 4px 9px 0 3px;
+				display: block;
+				text-indent: -2000px;
+				overflow: hidden;
+				background: url(../images/calendar.png) no-repeat;
+
+				&.disabled {
+					background-position: 0 -20px;
+					cursor: default;
+				}
+			}
+			input.dp-applied {
+				width: 140px;
+				float: left;
+			}
+			thead, tfoot {
+				th {
+					padding: 3px 0 3px 5px;
+					border: 0;
+				}
+			}
+			tbody {
+				td {
+					padding: 3px 0 3px 5px;
+					border: 0;
+					vertical-align: bottom;
+					/* NOTE: not working with Chrome, check others */
+					input[type="checkbox"] {
+						vertical-align: middle;
+					}
+					select {
+						width: 130px;
+					}
+				}
+			}
+		}
+	}
+}
+
+#easyTooltip {
+	padding:8px;
+	border:3px solid #b9e3f0;
+	background:#E3F4F9;
+	font-size: 12px;
+	width:400px;
+	-moz-border-radius:8px;
+	-webkit-border-radius:8px;
+	-o-border-radius:8px;
+	-khtml-border-radius:8px;
+	border-radius:8px;
+}
+
+.jigoshop-settings .section_description {
+	color: #555;
+	margin-bottom: 1em;
+}
+
+.jigoshop-settings #tabs-wrap h3 {
+	font-size: 13px;
+	padding: 1.5em 10px 3px 10px;
+	margin: 1em 0;
+}
+
+.jigoshop-settings #tabs-wrap p {
+	color: #666;
+	padding: 0 50px;
+}
+
+textarea#system-info-textarea {
+	font-family: 'courier new', monospace;
+	margin: 10px 0 0 0;
+	width: 900px;
+	height: 400px;
+}
+
+// Classic Theme Overrides
+.admin-color-classic {
+	#jigoshop-product-data ul.product_data_tabs, .jigoshop ul.tabs {
+		background-color: #D1E5EE;
+	}
+
+	#jigoshop-product-data ul.product_data_tabs li a, .jigoshop ul.tabs li a {
+		border-color: #D1E5EE;
+		background-color: #EFF8FF;
+	}
+
+	#jigoshop-product-data ul.product_data_tabs li.active a, .jigoshop ul.tabs li.active a {
+		background-color: #F7FCFE;
+	}
+
+	.panel .toolbar {
+		background: -webkit-linear-gradient(top,#F7FCFE,#D1E5EE);
+		border-top-color: #F7FCFE;
+		border-bottom-color: #D1E5EE;
+	}
+
+	.panel fieldset {
+		border-top-color: #F7FCFE;
+		border-bottom-color: #D1E5EE;
+	}
+
+	.column-total_cost table.cost {
+		border-color: #D1E5EE !important;
+		td, th {
+			background-color: #F7FCFE;
+		}
+	}
+
+	#jigoshop-product-data ul.product_data_tabs li a:hover, .jigoshop ul.tabs li a:hover {
+		color: #777;
+	}
+
+	.jigoshop_order_items_wrapper table.jigoshop_order_items thead th {
+		background-color: #D1E5EE;
+	}
+}
+
+input:-ms-input-placeholder {
+	background: white;
+	color: LightGray;
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * Variable Product Type
- * 
+ *
  * Functions specific to variable products (for the write panels)
  *
  * DISCLAIMER
@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Admin
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Admin
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 // Temporary fix for selectbox triggering the click event.
@@ -24,7 +24,7 @@
 add_action( 'admin_enqueue_scripts', 'jigoshop_product_meta_variable_script' );
 function jigoshop_product_meta_variable_script( $hook ) {
 	global $post;
-		
+
 	// Don't enqueue script if not on product edit screen
 	if ( $hook != 'post.php' || $post->post_type != 'product' )
 		return false;
@@ -62,11 +62,11 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	 */
 	public function admin_enqueue_scripts( $hook ) {
 		global $post;
-		
+
 		// Don't enqueue script if not on product edit screen
 		if ( $hook != 'post.php' || $post->post_type != 'product' )
 			return false;
-		
+
 		// wp_enqueue_script('jigoshop-variable-js', jigoshop::assets_url() . '/assets/js/variable.js', array('postbox', 'jquery'), true);
 
 		// Shouldn't we namespace? -Rob
@@ -138,20 +138,68 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 		// Get the attributes to be used later
 		$attributes = (array) maybe_unserialize( get_post_meta($parent_id, 'product_attributes', true) );
 
-		foreach( $_POST['variations'] as $ID => $meta ) {
+		foreach ( $_POST['variations'] as $ID => $meta ) {
 
+			/**
+			 * Generate a post title of the current variation.
+			 * Parent Title - [attribute: variation]
+			 */
+			$taxes = array();
+			foreach ( $meta as $k => $v ) :
+				if ( strstr ( $k, 'tax_' ) ) {
+					$tax     = substr( $k, 4 );
+					$taxes[] = sprintf('[%s: %s]', $tax, !empty($v) ? $v : 'Any ' . $tax );
+				}
+			endforeach;
+
+			$post_title = !empty($_POST['post_title']) ? $_POST['post_title'] : the_title('','',false);
+			$title      = sprintf('%s - %s', $post_title, implode( $taxes, ' ' ) );
+
+			/**
+			 * Prevent duplicate variations
+			 */
 			// Update post data or Add post if new
-			if ( strpos($ID, '_new') ) {
-				$ID = wp_insert_post( array(
-					'post_title'  => "#{$parent_id}: Child Variation",
-					'post_status' => isset($meta['enabled']) ? 'publish' : 'draft',
-					'post_parent' => $parent_id,
-					'post_type'   => 'product_variation'
-				));
-			}
-			else {
+			if ( strpos( $ID, '_new' ) ) {
+
+				// check for an existing variation with matching attributes to prevent duplication
+				$current_meta = $meta;
+				foreach ( $current_meta as $current_id => $current_value ) {
+					// discard everything but the taxonomies
+					if ( strpos( $current_id, 'tax_' ) !== 0 ) {
+						unset( $current_meta[$current_id] );
+					}
+				}
+				// we now have just the taxonomies in use for this new variation in $current_meta, match them up to others
+				$all_variations = $_POST['variations'];
+				unset( $all_variations[$ID] );		// we don't need the current new variation
+				$duplicate = false;
+				foreach ( $all_variations as $this_id => $this_meta ) {
+					$haystack_meta = $this_meta;
+					foreach ( $haystack_meta as $haystack_id => $haystack_value ) {
+						// discard everything but the taxonomies
+						if ( strpos( $haystack_id, 'tax_' ) !== 0 ) {
+							unset( $haystack_meta[$haystack_id] );
+						}
+					}
+					// we now have the taxonomies only for this haystack variation
+					$result = array_diff( $haystack_meta, $current_meta );
+					if ( empty( $result ) ) $duplicate = true;
+				}
+
+				if ( ! $duplicate ) {
+					$ID = wp_insert_post( array(
+						'post_title'  => !empty($title) ? $title : "#{$parent_id}: Child Variation",
+						'post_status' => isset($meta['enabled']) ? 'publish' : 'draft',
+						'post_parent' => $parent_id,
+						'post_type'   => 'product_variation'
+					));
+				} else {
+					// silent fail, should put up a message?
+				}
+
+			} else {
 				$wpdb->update( $wpdb->posts, array(
-					'post_title'  => "#{$parent_id}: Child Variation",
+					'post_title'  => !empty($title) ? $title : "#{$parent_id}: Child Variation",
 					'post_status' => isset($meta['enabled']) ? 'publish' : 'draft'
 				), array( 'ID'    => $ID ) );
 			}
@@ -163,7 +211,18 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			// Set variation meta data
 			update_post_meta( $ID, 'sku',           $meta['sku'] );
 			update_post_meta( $ID, 'regular_price', $meta['regular_price'] );
-			update_post_meta( $ID, 'sale_price',    $meta['sale_price'] );
+
+			$sale_price = ! empty( $meta['sale_price'] )
+				? ( !strstr( $meta['sale_price'], '%' ) ? jigoshop_sanitize_num( $meta['sale_price'] ) : $meta['sale_price'] )
+				: '';
+			if ( strstr( $meta['sale_price'], '%' ) ) {
+				update_post_meta( $ID, 'sale_price', $sale_price );
+			} else if ( ! empty( $sale_price ) && $sale_price < jigoshop_sanitize_num( $meta['regular_price'] ) ) {
+				update_post_meta( $ID, 'sale_price', $sale_price );
+			} else {
+				// silently fail if entered sale price > regular price (or nothing entered)
+				update_post_meta( $ID, 'sale_price', '' );
+			}
 
 			update_post_meta( $ID, 'weight',        $meta['weight'] );
 			update_post_meta( $ID, 'length',        $meta['length'] );
@@ -184,7 +243,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 			// Remove the current data
 			delete_post_meta( $ID, 'variation_data' );
-			
+
 			// Update taxonomies
 			$variation_data = array();
 			foreach ( $attributes as $attribute ) {
@@ -221,6 +280,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 		?>
 
 		<div id='variable_product_options' class='panel'>
+		<?php if($this->has_variable_attributes($attributes)): ?>
 			<div class="toolbar">
 				<select name="variation_actions">
 					<option value="default"><?php _e('Bulk Actions', 'jigoshop') ?></option>
@@ -236,19 +296,18 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 					</optgroup>
 				</select>
 				<input id="do_actions" type="submit" class="button-secondary" value="Apply">
-
-				<?php if($this->has_variable_attributes($attributes)): ?>
-					<button type='button' class='button button-secondary add_variation'><?php _e('Add Variation', 'jigoshop') ?></button>
-				<?php endif; ?>
+					<button type='button' class='button button-seconday add_variation'><?php _e('Add Variation', 'jigoshop') ?></button>
 			</div>
+		<?php endif; ?>
 			<div class='jigoshop_variations'>
 
-				<?php if ( ! $variations ): ?>
+				<!--    Disabling Demo variation help display for 1.3 per support personnel request     -JAP-   -->
+				
+				<!--?php if ( ! $variations ): ?-->
 
-
-				<div class="demo variation ">
+				<!--div class="demo variation ">
 					<a href="http://forum.jigoshop.com/kb/creating-products/variable-products" target="_blank" class="overlay"><span><?php _e('Learn how to make a Variation', 'jigoshop'); ?></span></a>
-					<div class="inside">			
+					<div class="inside">
 						<div class="jigoshop_variation postbox">
 							<button type="button" class="remove_variation button">Remove</button>
 							<div class="handlediv" title="Click to toggle"><br></div>
@@ -265,7 +324,6 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 											<a href="#" class="upload_image_button " rel="0_new">
 												<img src="<?php echo jigoshop::assets_url().'/assets/images/placeholder.png' ?>" width="93px">
 												<input type="hidden" class="upload_image_id" value="">
-												<!-- TODO: APPEND THIS IN JS <span class="overlay"></span> -->
 											</a>
 										</td>
 
@@ -283,13 +341,13 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 										</td>
 
 										<td>
-											<label>Stock Qty	
+											<label>Stock Qty
 												<input type="text" value="12">
 											</label>
 										</td>
 
 										<td>
-											<label>Price	
+											<label>Price
 												<input type="text" value="19.99">
 											</label>
 										</td>
@@ -313,7 +371,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 											</label>
 										</td>
 											<td colspan="4" class="dimensions">
-												<label>Dimensions <?php echo '('.get_option('jigoshop_dimension_unit'). ')' ?></label>
+                                                <label>Dimensions <?php echo '('.  Jigoshop_Base::get_options()->get_option('jigoshop_dimension_unit'). ')' ?></label>
 												<input type="text" placeholder="Length" value="">
 												<input type="text" placeholder="Width" value="">
 												<input type="text" placeholder="Height" value="">
@@ -324,8 +382,8 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 							</div>
 						</div>
 					</div>
-				</div>
-				<?php endif; ?>
+				</div-->
+				<!--?php endif; ?-->
 
 				<?php if ( $this->has_variable_attributes( $attributes ) ): ?>
 					<?php
@@ -381,12 +439,12 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 			// Open the select & set a default value
 			$html .= '<select name="' . $this->field_name('tax_' . sanitize_title($attr['name']), $variation) . '" >
-						<option value="">Any ' . sanitize_title($attr['name']) . '</option>';
+						<option value="">'.__('Any', 'jigoshop') . ' ' .jigoshop_product::attribute_label('pa_'.$attr['name']).'&hellip;</option>';
 
 			// Get terms for attribute taxonomy or value if its a custom attribute
 			if ( $attr['is_taxonomy'] ) {
 
-				$options = get_the_terms( $post->ID, 'pa_'.sanitize_title($attr['name']));
+				$options = wp_get_object_terms( $post->ID, 'pa_'.sanitize_title($attr['name']), array( 'orderby' => 'slug' ) );
 				foreach( $options as $option ) {
 					$html .= '<option value="'.esc_attr($option->slug).'" '.selected($selected, $option->slug, false).'>'.$option->name.'</option>';
 				}
@@ -494,7 +552,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 							<td>
 								<label><?php _e('SKU', 'jigoshop'); ?>
-									<input type="text" name="<?php echo esc_attr( $this->field_name('sku', $variation) ); ?>" value="<?php echo esc_attr( isset($meta['sku'][0]) ? $meta['sku'][0] : null ); ?>" />
+									<input type="text" name="<?php echo esc_attr( $this->field_name('sku', $variation) ); ?>" placeholder="<?php echo esc_attr( $variation->ID ); ?>" value="<?php echo esc_attr( isset($meta['sku'][0]) ? $meta['sku'][0] : null ); ?>" />
 								</label>
 							</td>
 
@@ -522,20 +580,18 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 								</label>
 							</td>
 						</tr>
-						<tr class="simple options">
+						<tr class="simple options" <?php echo ( ('simple' == $product_type) || ('variable' == $product_type)) ? 'style="display: table-row;"' : 'style="display: none;"';?>>
 							<td>
 								<label><?php _e('Weight', 'jigoshop') ?>
 									<input type="text" name="<?php echo esc_attr( $this->field_name('weight', $variation) ); ?>" value="<?php echo esc_attr( isset($meta['weight'][0]) ? $meta['weight'][0] : null ); ?>" />
 								</label>
 							</td>
 							<td colspan="4" class="dimensions">
-								<label><?php _e('Dimensions', 'jigoshop') ?> <?php echo '('.get_option('jigoshop_dimension_unit'). ')' ?></label>
+								<label><?php _e('Dimensions', 'jigoshop') ?> <?php echo '('. Jigoshop_Base::get_options()->get_option('jigoshop_dimension_unit'). ')' ?></label>
 								<input type="text" name="<?php echo esc_attr( $this->field_name('length', $variation) ); ?>" placeholder="Length" value="<?php echo esc_attr( isset($meta['length'][0]) ? $meta['length'][0] : null ); ?>" />
 								<input type="text" name="<?php echo esc_attr( $this->field_name('width', $variation) ); ?>" placeholder="Width" value="<?php echo esc_attr( isset($meta['width'][0]) ? $meta['width'][0] : null ); ?>" />
 								<input type="text" name="<?php echo esc_attr( $this->field_name('height', $variation) ); ?>" placeholder="Height" value="<?php echo esc_attr( isset($meta['height'][0]) ? $meta['height'][0] : null ); ?>" />
-								<td colspan="3">
-									&nbsp;
-								</td>
+								<td colspan="3"></td>
 							</td>
 						</tr>
 						<tr class="downloadable options" <?php echo ('downloadable' == $product_type) ? 'style="display: table-row;"' : 'style="display: none;"';?>>

@@ -8,19 +8,18 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package 	Jigoshop
- * @category  	Widgets
- * @author    	Jigowatt
- * @since 	1.0
- * @copyright 	Copyright (c) 2011 Jigowatt Ltd.
- * @license   	http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Widgets
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Setup the widget with the available options
 	 * Add actions to clear the cache whenever a post is saved|deleted or a theme is switched
 	 */
@@ -29,7 +28,7 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 			'classname'	=> 'widget_recent_reviews',
 			'description'	=> __( 'Display a list of your most recent product reviews', 'jigoshop' )
 		);
-		
+
 		parent::__construct( 'recent-reviews', __( 'Jigoshop: Recent Reviews', 'jigoshop' ), $options );
 
 		// Flush cache after every save
@@ -40,7 +39,7 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 
 	/**
 	 * Widget
-	 * 
+	 *
 	 * Display the widget in the sidebar
 	 * Save output to the cache if empty
 	 *
@@ -48,10 +47,10 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 	 * @param	array	instance
 	 */
 	public function widget( $args, $instance ) {
-	
+
 		// Get the most recent products from the cache
 		$cache = wp_cache_get( 'widget_recent_reviews', 'widget' );
-		
+
 		// If no entry exists use array
 		if ( ! is_array( $cache ) ) {
 			$cache = array();
@@ -69,12 +68,12 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 
 		// Set the widget title
 		$title = apply_filters(
-			'widget_title', 
-			($instance['title']) ? $instance['title'] : __( 'Recent Reviews', 'jigoshop' ), 
+			'widget_title',
+			($instance['title']) ? $instance['title'] : __( 'Recent Reviews', 'jigoshop' ),
 			$instance,
 			$this->id_base
 		);
-		
+
 		// Set number of products to fetch
 		if ( ! $number = absint( $instance['number'] ) ) {
 			$number = 5;
@@ -85,22 +84,22 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 
 		// Get the latest reviews
 		$comments = get_comments(array(
-			'number'	=> $number,
-			'status'		=> 'approve',
-			'post_status'	=> 'publish',
-			'post_type'	=> 'product',
+			'number'     => $number,
+			'status'     => 'approve',
+			'post_status'=> 'publish',
+			'post_type'  => 'product',
 		));
-		
+
 		// If there are products
 		if( $comments ) {
-		
+
 			// Print the widget wrapper & title
 			echo $before_widget;
-			echo $before_title . $title . $after_title; 
-			
+			echo $before_title . $title . $after_title;
+
 			// Open the list
 			echo '<ul class="product_list_widget">';
-			
+
 			// Print out each product
 			foreach( $comments as $comment ) {
 
@@ -122,7 +121,7 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 					echo '<a href="'.esc_url( get_comment_link($comment->comment_ID) ).'">';
 
 					// Print the product image
-					echo ( has_post_thumbnail( $_product->id ) ) 
+					echo ( has_post_thumbnail( $_product->id ) )
 						? get_the_post_thumbnail( $_product->id,'shop_tiny' )
 						: jigoshop_get_image_placeholder( 'shop_tiny' );
 
@@ -130,26 +129,25 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 					echo '</a>';
 
 					// Print the star rating
-					echo "
-					<div class='star-rating' title='{$rating}'>
-						<span style='width:{($rating*$star_size)}px;'>{$rating} ".__( 'out of 5', 'jigoshop' )."</span>
+					echo "<div class='star-rating' title='{$rating}'>
+						<span style='width:".($rating*$star_size)."px;'>{$rating} ".__( 'out of 5', 'jigoshop' )."</span>
 					</div>";
-					
+
 					// Print the author
-					printf( _x('by %1$s', 'jigoshop' ), get_comment_author() );
+					printf( _x('by %1$s', 'author', 'jigoshop' ), get_comment_author() );
 
 				echo '</li>';
 			}
-			
+
 			echo '</ul>'; // Close the list
-			
+
 			// Print closing widget wrapper
 			echo $after_widget;
 
 			// Remove the filter on comments to stop other queries from being manipulated
 			remove_filter( 'comments_clauses', array(&$this, 'where_product_is_visible') );
 		}
-		
+
 		// Flush output buffer and save to cache
 		$cache[$args['widget_id']] = ob_get_flush();
 		wp_cache_set( 'widget_recent_reviews', $cache, 'widget' );
@@ -157,7 +155,7 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 
 	/**
 	 * Update
-	 * 
+	 *
 	 * Handles the processing of information entered in the wordpress admin
 	 * Flushes the cache & removes entry from options array
 	 *
@@ -167,7 +165,7 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
-		
+
 		// Save the new values
 		$instance['title'] = strip_tags( $new_instance['title'] );
 		$instance['number'] = absint( $new_instance['number'] );
@@ -199,10 +197,10 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 
 		return $clauses;
 	}
-	
+
 	/**
 	 * Flush Widget Cache
-	 * 
+	 *
 	 * Flushes the cached output
 	 */
 	public function flush_widget_cache() {
@@ -211,17 +209,17 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 
 	/**
 	 * Form
-	 * 
+	 *
 	 * Displays the form for the wordpress admin
 	 *
 	 * @param	array	instance
 	 */
 	public function form( $instance ) {
-	
+
 		// Get instance data
 		$title 		= isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : null;
 		$number 	= isset( $instance['number'] ) ? absint( $instance['number'] ) : 5;
-		
+
 		// Widget Title
 		echo "
 		<p>
@@ -237,5 +235,5 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 		</p>";
 
 	}
-	
+
 } // class Jigoshop_Widget_Recent_Products

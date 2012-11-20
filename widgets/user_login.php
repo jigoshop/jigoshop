@@ -8,19 +8,18 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package 	Jigoshop
- * @category  	Widgets
- * @author 	Jigowatt
- * @since 	1.0
- * @copyright	Copyright (c) 2011 Jigowatt Ltd.
- * @license 	http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Widgets
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 class Jigoshop_Widget_User_Login extends WP_Widget {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Setup the widget with the available options
 	 * Add actions to clear the cache whenever a post is saved|deleted or a theme is switched
 	 */
@@ -29,13 +28,13 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 			'classname'	=> 'widget_user_login',
 			'description'	=> __( 'Displays a handy login form for users', 'jigoshop' )
 		);
-		
+
 		parent::__construct( 'user-login', __( 'Jigoshop: Login', 'jigoshop' ), $options );
 	}
 
 	/**
 	 * Widget
-	 * 
+	 *
 	 * Display the widget in the sidebar
 	 * Save output to the cache if empty
 	 *
@@ -43,7 +42,7 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 	 * @param	array	instance
 	 */
 	public function widget( $args, $instance ) {
-	
+
 		extract( $args );
 
 		// Print the widget wrapper
@@ -60,9 +59,9 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 
 			// Create the default set of links
 			$links = apply_filters( 'jigoshop_widget_logout_user_links' , array(
-				__( 'My Account', 'jigoshop' )		=> get_permalink( get_option( 'jigoshop_myaccount_page_id' ) ),
-				__( 'Change Password', 'jigoshop' )	=> get_permalink( get_option( 'jigoshop_change_password_page_id' ) ),
-				__( 'Logout', 'jigoshop' )		=> wp_logout_url( home_url() ),
+				__( 'My Account', 'jigoshop' )     => get_permalink( jigoshop_get_page_id('myaccount') ),
+				__( 'Change Password', 'jigoshop' )=> get_permalink( jigoshop_get_page_id('change_password') ),
+				__( 'Logout', 'jigoshop' )         => wp_logout_url( home_url() ),
 			));
 
 		} else {
@@ -74,16 +73,16 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 			do_action( 'jigoshop_widget_login_before_form' );
 
 			// Get redirect URI
-			$redirect_to = apply_filters( 'jigoshop_widget_login_redirect', get_permalink( get_option( 'jigoshop_myaccount_page_id' ) ) );
+			$redirect_to = apply_filters( 'jigoshop_widget_login_redirect', get_permalink( jigoshop_get_page_id('myaccount') ) );
 			$user_login = isset( $user_login ) ? $user_login : null;
 
-			echo "<form action='".wp_login_url( $redirect_to )."' method='post'>";
-			
+			echo "<form action='".wp_login_url( $redirect_to )."' method='post' class='jigoshop_login_widget'>";
+
 			// Username
 			echo "
 			<p>
 				<label for='log'>".__( 'Username', 'jigoshop' )."</label>
-				<input type='text' name='log' id='log' class='input-text' />
+				<input type='text' name='log' id='log' class='input-text username' />
 			</p>
 			";
 
@@ -91,14 +90,21 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 			echo "
 			<p>
 				<label for='user_login'>".__( 'Password', 'jigoshop' )."</label>
-				<input type='password' name='pwd' id='pwd' class='input-text' />
+				<input type='password' name='pwd' id='pwd' class='input-text password' />
 			</p>
 			";
 
 			echo "
 			<p>
 				<input type='submit' name='submit' value='".__( 'Login', 'jigoshop' )."' class='input-submit' />
-				<a href='".wp_lostpassword_url( $redirect_to )."'>".__( 'Forgotten?', 'jigoshop' )."</a>
+				<a class='forgot' href='".wp_lostpassword_url( $redirect_to )."'>".__( 'Forgot it?', 'jigoshop' )."</a>
+			</p>
+			";
+
+			if (Jigoshop_Base::get_options()->get_option( 'jigoshop_enable_signup_form' ) == 'yes' )
+			echo "
+			<p class='register'>
+				" . wp_register(__('New user?','jigoshop') . ' ' , '') . "
 			</p>
 			";
 
@@ -130,7 +136,7 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 
 	/**
 	 * Update
-	 * 
+	 *
 	 * Handles the processing of information entered in the wordpress admin
 	 * Flushes the cache & removes entry from options array
 	 *
@@ -140,7 +146,7 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
-		
+
 		// Save the new values
 		$instance['title_guest']	= strip_tags( $new_instance['title_guest'] );
 		$instance['title_user']	= strip_tags( $new_instance['title_user'] );
@@ -150,17 +156,17 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 
 	/**
 	 * Form
-	 * 
+	 *
 	 * Displays the form for the wordpress admin
 	 *
 	 * @param	array	instance
 	 */
 	public function form( $instance ) {
-	
+
 		// Get instance data
 		$title_guest 	= isset( $instance['title_guest'] ) ? esc_attr( $instance['title_guest'] ) : null;
 		$title_user	= isset( $instance['title_user'] ) ? esc_attr( $instance['title_user'] ) : null;
-		
+
 		// Title for Guests
 		echo "
 		<p>
@@ -177,5 +183,5 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 		</p>
 		";
 	}
-	
+
 } // class Jigoshop_Widget_Recent_Products

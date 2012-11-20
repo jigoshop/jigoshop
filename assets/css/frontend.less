@@ -5,7 +5,7 @@ zoom:1;
 
 .clear() {
 clear: both;
-} 
+}
 
 .border_radius(@radius:4px) {
 -webkit-border-radius:@radius;
@@ -22,7 +22,7 @@ border-top-right-radius: @radius;
 border-bottom-right-radius: @radius;
 }
 
-.border_radius_left(@radius:4px) { 
+.border_radius_left(@radius:4px) {
 -webkit-border-top-left-radius: @radius;
 -webkit-border-bottom-left-radius: @radius;
 -moz-border-radius-topleft: @radius;
@@ -101,21 +101,21 @@ div.jigoshop_error, div.jigoshop_message {
 	padding:10px 10px 10px 32px;
 	background-repeat: no-repeat;
 	background-position: 10px center;
-	
+
 	a.button {
 		margin-top:0;
-		float: right; 
+		float: right;
 	}
 }
 div.jigoshop_error {
 	color: #D8000C;
 	background-color: #ffd4d4;
-	background-image: url('../images/error.gif');
+	background-image: url('../images/error.png');
 }
 div.jigoshop_message {
 	color: #4F8A10;
 	background-color: #DFF2BF;
-	background-image:url('../images/success.gif');
+	background-image:url('../images/success.png');
 }
 p small {
 	color: #999;
@@ -169,7 +169,7 @@ div.product {
 		font-size: 1.3em;
 		del {
 			font-size: 14px;
-			color: #ccc;
+			color: #aaa;
 		}
 	}
 	p.stock {
@@ -181,6 +181,7 @@ div.product {
 		float: left;
 		width: 314px;
 		margin-bottom: 10px;
+		position: relative;
 		img {
 			border: 1px solid #ddd;
 			background: #f5f5f5;
@@ -207,7 +208,8 @@ div.product {
 		}
 	}
 	div.summary {
-		float: left;
+		float: right;
+		width: 300px;
 	}
 	div.social {
 		text-align: right;
@@ -278,6 +280,9 @@ p.cart {
 
 form.cart {
 	margin-bottom: 24px;
+	float: right;
+	width: 100%;
+	clear: both;
 	div.quantity {
 		float: left;
 		margin: 0 4px 0 0;
@@ -325,7 +330,7 @@ span.onsale {
 	text-align: center;
 	line-height: 32px;
 	top:0;
-	right: 320px;
+	left: -15px;
 	margin: -6px 0 0 0;
 	.border_radius(20px);
 }
@@ -348,7 +353,7 @@ span.onsale {
 			top: 0;
 			right: 0;
 			left: auto;
-			margin: -6px -6px 0 0;	
+			margin: -6px -6px 0 0;
 		}
 		a {
 			text-decoration: none;
@@ -378,14 +383,15 @@ span.onsale {
 				line-height: 10px;
 				margin: -2px 0 0 0;
 				display: block;
-				color: #ccc;
+				color: #aaa;
 			}
 			.from {
 				font-size: 10px;
 				line-height: 10px;
 				margin: -2px 0 0 0;
 				display: block;
-				color: #ccc;
+				color: #aaa;
+				padding-bottom: 3px;
 			}
 		}
 	}
@@ -428,7 +434,7 @@ table.shop_attributes {
 /* =Buttons
 -------------------------------------------------------------- */
 a.button, button.button, input.button, #review_form #submit {
-	color: #fff !important;
+	color: #fff;
 	background: #ff9c07;
 	padding: 6px;
 	line-height: 1em !important;
@@ -455,7 +461,7 @@ a.button:hover, button.button:hover, input.button:hover, #review_form #submit:ho
 }
 
 .button-alt {
-	color: #fff !important;
+	color: #fff;
 	background: #069bcd;
 	padding: 6px;
 	line-height: 1em !important;
@@ -575,6 +581,7 @@ a.button:hover, button.button:hover, input.button:hover, #review_form #submit:ho
 		border: 1px solid #E7E7E7;
 		margin: 0 !important;
 		padding: 10px 20px 20px;
+		width: auto;
 		p {
 			margin: 0 0 10px !important;
 		}
@@ -634,7 +641,7 @@ table.shop_table {
 		border-top: 1px solid #E7E7E7;
 		padding: 6px 12px !important;
 		vertical-align: middle;
-		
+
 		a.button {
 			margin:0 3px;
 		}
@@ -668,19 +675,29 @@ ul.cart_list, ul.product_list_widget {
 		.clearfix;
 		a {
 			display: block;
-			font-weight: bold;	
+			font-weight: bold;
 		}
 		img {
 			float: left;
 			margin-right: 4px;
 			border: 1px solid #ddd;
 		}
+		dt {
+			font-weight: bold;
+			display: inline-block;
+			margin: 0 4px 0 0;
+			padding: 0;
+		}
+		dd {
+			display: inline;
+			padding: 0;
+		}
 	}
 }
-.widget_shopping_cart {
+.jigoshop_cart {
 	.total {
 		border-top: 3px double #ddd;
-		padding: 4px 0 0;
+		padding: 4px 0 4px;
 		margin: 0 !important;
 		strong {
 			min-width: 40px;
@@ -732,7 +749,7 @@ td.product-name {
 		margin: 0;
 		dt {
 			font-weight: bold;
-			display: inline;
+			display: inline-block;
 			margin: 0 4px 0 0;
 			padding: 0;
 		}
@@ -743,15 +760,15 @@ td.product-name {
 		}
 	}
 }
-td.quantity {
+td.quantity, .jigoshop #content div.quantity {
 	min-width: 80px;
 }
 .quantity input {
 	margin-left:0; margin-right:0;
 }
 .quantity input.qty {
-	border:1px solid #ccc; 
-	width:20px; 
+	border:1px solid #ccc;
+	width:20px;
 	display: inline;
 	padding:1px 5px 2px;
 	line-height: 1em !important;
@@ -797,7 +814,7 @@ td.quantity {
 		width:310px;
 		float: left;
 	}
-	
+
 	.cross-sells {
 		width:314px;
 		float: left;
@@ -822,9 +839,14 @@ td.quantity {
 	}
 	.cart_totals {
 		float: right;
-		
-		width:225px;
+
+		width: 225px;
 		text-align: right;
+		h2 {
+			text-align: left;
+			margin: 0;
+			margin-left: 10px;
+		}
 		p {
 			margin: 0 !important;
 		}
@@ -909,9 +931,9 @@ form, #content {
 			-webkit-box-sizing:border-box;
 			-moz-box-sizing:border-box;
 			box-sizing:border-box;
-			
+
 			.inset_box_shadow(0, 1px, 4px, 0, rgba(0,0,0,0.1));
-			
+
 			border: 1px solid #ccc;
 			width: 100%;
 			padding: 6px;
@@ -960,7 +982,7 @@ form.login {
 #payment {
 	background: #F9F9F9;
 	.border_radius(5px);
-	
+
 	ul.payment_methods {
 		.clearfix;
 		text-align: left;
@@ -983,7 +1005,7 @@ form.login {
 			}
 		}
 	}
-	
+
 	div.form-row {
 		padding: 1em;
 		border-top: 1px solid #fff;
@@ -1023,7 +1045,7 @@ form.login {
 			margin: 0 0 1em;
 		}
 	}
-	
+
 	div.payment_box:after {
 		content: "";
 		display: block;
@@ -1036,12 +1058,12 @@ form.login {
 		left: 0;
 		margin: -1em 0 0 2em;
 	}
-	
+
 }
 
 div.shipping-address {
 	padding: 0;
-	clear: left; 
+	clear: left;
 }
 
 #shiptobilling {
@@ -1049,7 +1071,7 @@ div.shipping-address {
 	line-height: 1.62em !important;
 	margin: 0 0 0 0 !important;
 	padding:0;
-	
+
 	label {
 		font-size:0.6875em;
 	}
@@ -1061,11 +1083,11 @@ div.shipping-address {
 			float: left;
 			clear: none;
 		}
-		
+
 		.notes {
 			clear:left;
 		}
-		
+
 		.form-row-first {
 			clear: left;
 		}
@@ -1081,7 +1103,7 @@ div.shipping-address {
 	zoom:1;
 	margin:0 0 1.5em;
 	list-style: none;
-	
+
 	li {
 		float: left;
 		margin-right:2em;
@@ -1090,7 +1112,7 @@ div.shipping-address {
 		line-height: 1em;
 		border-right:1px dashed #ccc;
 		padding-right:2em;
-		
+
 		strong {
 			display: block;
 			font-size:1.4em;
@@ -1099,7 +1121,7 @@ div.shipping-address {
 			color: #333;
 		}
 	}
-	
+
 	li.method {
 		border:none;
 	}
@@ -1112,11 +1134,11 @@ div.shipping-address {
 	.title {
 		overflow: hidden;
 		zoom:1;
-		
+
 		h3 {
 			float: left;
 		}
-		
+
 		.edit {
 			float: right;
 		}
@@ -1126,7 +1148,7 @@ div.shipping-address {
 /* =Layered Nav Widgets
 -------------------------------------------------------------- */
 
-.widget_price_filter { 
+.widget_price_filter {
 	.price_slider_wrapper {
 		.button {
 			float: right;
@@ -1175,5 +1197,118 @@ div.shipping-address {
 		font-size: 1em;
 		padding: 1px 0;
 		color: #999;
+	}
+}
+
+fieldset.variations {
+    border: none;
+}
+
+// 0.9.9.3 Legacy styles
+div.product div.product_meta, div.product div.variations_button {
+	clear: left;
+}
+
+section#primary div.product div.summary {
+	width: 42%;
+}
+
+.single_variation .price {
+	float: left;
+}
+.single_variation, .stock {
+	clear: left;
+}
+
+.customized_product_label {
+	font-weight: bold;
+}
+.customized_product {
+}
+dl.customization {
+	margin: 0;
+	dt {
+		font-weight: bold;
+		display: inline-block;
+		margin: 0 4px 0 0;
+		padding: 0;
+	}
+	dd {
+		display: inline;
+		margin: 0 12px 0 0;
+		padding: 0;
+	}
+}
+
+.applied-coupons-values {
+	text-decoration:none !important;
+	font-size:13px;
+	font-weight:normal;
+	-webkit-border-radius: 3px;
+	-moz-border-radius   : 3px;
+	border-radius        : 3px;
+	-moz-background-clip   : padding;
+	-webkit-background-clip: padding-box;
+	background-clip        : padding-box;
+	background-color: #e4e4e4;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f4f4f4', endColorstr='#eeeeee', GradientType=0 );
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(20%, #f4f4f4), color-stop(50%, #f0f0f0), color-stop(52%, #e8e8e8), color-stop(100%, #eeeeee));
+	background-image: -webkit-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+	background-image: -moz-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+	background-image: -o-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+	background-image: -ms-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+	background-image: linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+	-webkit-box-shadow: 0 0 2px #ffffff inset, 0 1px 0 rgba(0,0,0,0.05);
+	-moz-box-shadow   : 0 0 2px #ffffff inset, 0 1px 0 rgba(0,0,0,0.05);
+	box-shadow        : 0 0 2px #ffffff inset, 0 1px 0 rgba(0,0,0,0.05);
+	color: #333;
+	border: 1px solid #aaaaaa;
+	line-height: 13px;
+	padding: 3px 20px 3px 5px;
+	margin: 3px 0 3px 5px;
+	position: relative;
+}
+.cart-discount-code {
+	font-size: 12px;
+	padding-right:5px;
+	color: #888;
+	float:right;
+}
+.close {
+	display: block;
+	position: absolute;
+	right: 3px;
+	top: 2px;
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 18px;
+	color: black;
+	text-shadow: 0 1px 0 white;
+	opacity: 0.2;
+	filter: alpha(opacity=20);
+}
+
+input:-ms-input-placeholder {
+	background: white;
+	color: LightGray;
+}
+
+/* =Twenty Twelve
+-------------------------------------------------------------- */
+
+.jigoshop .site-content {
+//	width: 65.104166667%;  /*twenty-twelve default, not quite wide enough to have 4 columns on Shop */
+	width: 66%;
+}
+
+.jigoshop .site-content .cross-sells {
+	width: auto;
+}
+ 
+.jigoshop .site-content div.jigoshop_error, .jigoshop .site-content div.jigoshop_message {
+	padding: 15px 10px 15px 32px;
+ 
+	a.button {
+		margin-top: -4px;
 	}
 }

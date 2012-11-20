@@ -1,7 +1,7 @@
 <?php
 /**
  * Product Data Save
- * 
+ *
  * Function for processing and storing all product data.
  *
  * DISCLAIMER
@@ -10,11 +10,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Admin
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Admin
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_product_meta
 {
@@ -28,20 +28,44 @@ class jigoshop_product_meta
 		wp_set_object_terms( $post_id, sanitize_title($_POST['product-type']), 'product_type');
 
 		// Process general product data
-		// How to sanitize this block?
-		update_post_meta( $post_id, 'regular_price', (float) $_POST['regular_price']);
-		update_post_meta( $post_id, 'sale_price', 	 $_POST['sale_price']);
+		update_post_meta( $post_id, 'regular_price', (isset($_POST['regular_price']) && $_POST['regular_price'] != null) ? jigoshop_sanitize_num($_POST['regular_price']) : '');
 
-		update_post_meta( $post_id, 'weight',        (float) $_POST['weight']);
-		update_post_meta( $post_id, 'length',        (float) $_POST['length']);
-		update_post_meta( $post_id, 'width',         (float) $_POST['width']);
-		update_post_meta( $post_id, 'height',        (float) $_POST['height']);
+		$sale_price = ! empty( $_POST['sale_price'] )
+			? ( ! strstr( $_POST['sale_price'], '%' ) ? jigoshop_sanitize_num( $_POST['sale_price'] ) : $_POST['sale_price'] )
+			: '';
+		if ( strstr( $_POST['sale_price'], '%' ) ) {
+			update_post_meta( $post_id, 'sale_price', $sale_price );
+		} else if ( ! empty( $sale_price ) && $sale_price < jigoshop_sanitize_num( $_POST['regular_price'] ) ) {
+			update_post_meta( $post_id, 'sale_price', $sale_price );
+		} else {
+			// silently fail if entered sale price > regular price (or nothing entered)
+			update_post_meta( $post_id, 'sale_price', '' );
+		}
+		// finally, if this product is a 'variable' or 'grouped', then there should never be a sale_price here
+		// perhaps it was a 'simple' product once and was changed (see rhr #437)
+		$terms = wp_get_object_terms( $post_id, 'product_type' );
+		if ( ! empty( $terms ))
+			if ( ! is_wp_error( $terms ))
+				if ( sizeof( $terms ) == 1 )
+					if ( in_array( $terms[0]->slug, array( 'variable', 'grouped' ) ) )
+						delete_post_meta( $post_id, 'sale_price' );
+
+		if ( isset( $_POST['weight'] ) )
+			update_post_meta( $post_id, 'weight',        (float) $_POST['weight']);
+		if ( isset( $_POST['length'] ) )
+			update_post_meta( $post_id, 'length',        (float) $_POST['length']);
+		if ( isset( $_POST['width'] ) )
+			update_post_meta( $post_id, 'width',         (float) $_POST['width']);
+		if ( isset( $_POST['height'] ) )
+			update_post_meta( $post_id, 'height',        (float) $_POST['height']);
 
 		update_post_meta( $post_id, 'tax_status',    $_POST['tax_status']);
-		update_post_meta( $post_id, 'tax_classes',   $_POST['tax_classes']);
+		update_post_meta( $post_id, 'tax_classes',   isset($_POST['tax_classes']) ? $_POST['tax_classes'] : array() );
 
 		update_post_meta( $post_id, 'visibility',    $_POST['product_visibility']);
 		update_post_meta( $post_id, 'featured',      isset($_POST['featured']) );
+		update_post_meta( $post_id, 'customizable',  $_POST['product_customize'] );
+		update_post_meta( $post_id, 'customized_length',  $_POST['customized_length'] );
 
 		// Downloadable Only
 		if( $_POST['product-type'] == 'downloadable' ) {
@@ -49,42 +73,36 @@ class jigoshop_product_meta
 			update_post_meta( $post_id, 'download_limit', $_POST['download_limit']);
 		}
 
-		if( $_POST['product-type'] == 'external' ) {
-			update_post_meta( $post_id, 'external_url',   $_POST['external_url']);
-		}
-
 		// Process the SKU
-		( $this->is_unique_sku( $post_id, $_POST['sku'] ) )
-			? update_post_meta( $post_id, 'sku', $_POST['sku'])
-			: delete_post_meta( $post_id, 'sku' );
+		if ( Jigoshop_Base::get_options()->get_option('jigoshop_enable_sku') !== 'no' ) {
+			( $this->is_unique_sku( $post_id, $_POST['sku'] ) )
+				? update_post_meta( $post_id, 'sku', $_POST['sku'])
+				: delete_post_meta( $post_id, 'sku' );
+		}
 
 		// Process the attributes
 		update_post_meta( $post_id, 'product_attributes', $this->process_attributes($_POST, $post_id));
 
 		// Process the stock information
-		foreach( $this->process_stock( $_POST ) as $key => $value ) {
+		$stockresult = $this->process_stock( $_POST );
+		if ( is_array( $stockresult ) ) foreach( $stockresult as $key => $value ) {
 			update_post_meta( $post_id, $key, $value );
 		}
-		
+
+		if( $_POST['product-type'] == 'external' ) {
+			update_post_meta( $post_id, 'external_url', $_POST['external_url']);
+			update_post_meta( $post_id, 'stock_status', 'instock' );
+		}
+
 		// Process the sale dates
 		foreach( $this->process_sale_dates( $_POST ) as $key => $value ) {
 			update_post_meta( $post_id, $key, $value );
 		}
 
-		// Process upsells
-		( ! empty($_POST['upsell_ids']) )
-			? update_post_meta( $post_id, 'upsell_ids', $_POST['upsell_ids'] )
-			: delete_post_meta( $post_id, 'upsell_ids' );
-		
-		// Process crossells
-		( ! empty($_POST['crosssell_ids']) )
-			? update_post_meta( $post_id, 'crosssell_ids', $_POST['crosssell_ids'] )
-			: delete_post_meta( $post_id, 'crosssell_ids' );
-
 		// Do action for product type
 		do_action( 'jigoshop_process_product_meta_' . $_POST['product-type'], $post_id );
 	}
-	
+
 	/**
 	 * Processes the sale dates
 	 *
@@ -105,7 +123,7 @@ class jigoshop_product_meta
 			// Only set sale dates if we have an end
 			// Set start as current time if null
 			if( $sale_end = strtotime($post['sale_price_dates_to']) ) {
-				$sale_start	= ($post['sale_price_dates_from']) 
+				$sale_start	= ($post['sale_price_dates_from'])
 					? strtotime($post['sale_price_dates_from'])
 					: current_time('timestamp');
 
@@ -125,8 +143,10 @@ class jigoshop_product_meta
 	 **/
 	private function process_stock( array $post ) {
 
+        $jigoshop_options = Jigoshop_Base::get_options();
+
 		// If the global stock switch is off
-		if ( ! get_option('jigoshop_manage_stock', false) )
+		if ( !$jigoshop_options->get_option('jigoshop_manage_stock') )
 			return false;
 
 		// Don't hold stock info for external & grouped products
@@ -136,6 +156,7 @@ class jigoshop_product_meta
 		// Always return the stock switch
 		$array = array(
 			'manage_stock' 	=> isset($post['manage_stock']),
+			'stock_status'  => isset($post['stock_status']) ? $post['stock_status'] : 0
 		);
 
 		// Store suitable stock data
@@ -143,8 +164,16 @@ class jigoshop_product_meta
 			$array['stock']        = absint( $post['stock'] );
 			$array['backorders']   = $post['backorders']; // should have a space
 			$array['stock_status'] = -1; // Discount if stock is managed
-		} else {
-			$array['stock_status'] = $post['stock_status'];
+			if ( $jigoshop_options->get_option( 'jigoshop_hide_no_stock_product' ) == 'yes' ) {
+				if ( $array['stock'] <= $jigoshop_options->get_option( 'jigoshop_notify_no_stock_amount' ) ) {
+					if ( $post['product-type'] <> 'grouped' && $post['product-type'] <> 'variable' ) {
+						update_post_meta( $post['ID'], 'visibility', 'hidden' );
+					} else {
+						// how to handle grouped and variable?  for now, ensure they are visible
+						update_post_meta( $post['ID'], 'visibility', $_POST['product_visibility'] );
+					}
+				}
+			}
 		}
 
 		return $array;
@@ -164,7 +193,7 @@ class jigoshop_product_meta
 		if ( ! $new_sku )
 			return false;
 
-		// Skip check if sku is the same 
+		// Skip check if sku is the same
 		if( $new_sku === get_post_meta( $post_id, 'sku', true ) )
 			return true;
 
@@ -190,8 +219,8 @@ class jigoshop_product_meta
 	private function process_attributes( array $post, $post_id ) {
 
 		if ( ! isset($_POST['attribute_values']) )
-			return false; 
-		
+			return false;
+
 		$attr_names      = $post['attribute_names']; // This data returns all attributes?
 		$attr_values     = $post['attribute_values'];
 		$attr_visibility = $post['attribute_visibility'];
@@ -207,13 +236,15 @@ class jigoshop_product_meta
 			// Skip if no value
 			if ( ! $value )
 				continue;
-				
-			if ( !is_array( $value )) {
+
+			if ( ! is_array( $value ) && $attr_variation[$key] ) {
 			 	$value = explode( ',', $value );
 			 	$value = array_map( 'trim', $value );
 			 	$value = implode( ',', $value );
+			} else if ( ! is_array( $value ) ) {
+				$value = trim( $value );
 			}
-			
+
 			// If attribute is standard then create the relationship
 			if ( (bool) $attr_is_tax[$key] && taxonomy_exists('pa_'.sanitize_title($attr_names[$key])) ) {
 				// TODO: Adding pa and sanitizing fixes the bug but why not automatic?

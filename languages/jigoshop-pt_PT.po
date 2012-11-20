@@ -747,7 +747,7 @@ msgstr " <small>(s/ IVA)</small>"
 msgid "You have taken too long. Please go back and refresh the page."
 msgstr "Demorou demasiado tempo. Por favor actualize a página."
 
-# @ jigowatt
+# @ jigoshop
 #: jigoshop.php:500
 msgid "Please rate the product."
 msgstr "Por favor avalie o produto."

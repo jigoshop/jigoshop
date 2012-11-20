@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Jigoshop Emails
  *
@@ -9,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Core
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Core
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 /**
  * Hooks for emails
@@ -32,100 +31,31 @@ add_action('order_status_pending_to_on-hold', 'jigoshop_new_order_notification')
 
 function jigoshop_new_order_notification($order_id) {
 
-    $order = new jigoshop_order($order_id);
+	$jigoshop_options = Jigoshop_Base::get_options();
+	$order = new jigoshop_order($order_id);
 
-    $subject = sprintf(__('[%s] New Customer Order (# %s)', 'jigoshop'), get_bloginfo('name'), $order->id);
+	$subject = html_entity_decode(sprintf(__('[%s] New Customer Order (%s)', 'jigoshop'), get_bloginfo('name'), $order->get_order_number()), ENT_QUOTES, 'UTF-8');
 
-    ob_start();
+	ob_start();
 
-    echo __("You have received an order from ", 'jigoshop') . $order->billing_first_name . ' ' . $order->billing_last_name . __(". Their order is as follows:", 'jigoshop') . PHP_EOL . PHP_EOL;
+	echo __("You have received an order from ", 'jigoshop') . $order->billing_first_name . ' ' . $order->billing_last_name . __(". Their order is as follows:", 'jigoshop') . PHP_EOL . PHP_EOL;
 
-    echo '=====================================================================' . PHP_EOL;
-    echo __('ORDER #: ', 'jigoshop') . $order->id . '' . PHP_EOL;
-    echo '=====================================================================' . PHP_EOL;
+	add_header_info($order);
 
-    echo $order->email_order_items_list(false, true);  // no download links, show SKU
+	add_order_totals($order, false, true);
 
-    if ($order->customer_note) :
-        echo PHP_EOL . __('Note:', 'jigoshop') . $order->customer_note . PHP_EOL;
-    endif;
+	add_customer_details($order);
 
-    if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax)
-        echo PHP_EOL . __('Retail Price:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_subtotal_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    else
-        echo PHP_EOL . __('Subtotal:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_subtotal_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) :
-        if ($order->order_shipping > 0)
-            echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-        foreach ($order->get_tax_classes() as $tax_class) :
-            if ($order->tax_class_is_not_compound($tax_class)) :
-                echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-            endif;
-        endforeach;
-        echo __('Subtotal:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_subtotal_inc_tax), ENT_COMPAT, 'UTF-8') . PHP_EOL;
+	add_billing_address_details($order);
 
-    else :
-        if ($order->order_shipping > 0)
-            echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    endif;
-    if ($order->order_discount > 0)
-        echo __('Discount:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_discount), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    if (get_option('jigoshop_calc_taxes') == 'yes') :
-        if ($order->order_subtotal_inc_tax) :
-            foreach ($order->get_tax_classes() as $tax_class) :
-                if (!$order->tax_class_is_not_compound($tax_class)) :
-                    echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-                endif;
-            endforeach;
-        else :
-            foreach ($order->get_tax_classes() as $tax_class) :
-                echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-            endforeach;
-        endif;
-    endif;
-    echo __('Total:', 'jigoshop') . "\t\t\t\t" . html_entity_decode(jigoshop_price($order->order_total), ENT_COMPAT, 'UTF-8') . ' - ' . __('via', 'jigoshop') . ' ' . ucwords($order->payment_method) . PHP_EOL . PHP_EOL;
+	add_shipping_address_details($order);
 
-    do_action('jigoshop_after_email_order_info', $order->id);
+	$message = ob_get_clean();
 
-    echo '=====================================================================' . PHP_EOL;
-    echo __('CUSTOMER DETAILS', 'jigoshop') . PHP_EOL;
-    echo '=====================================================================' . PHP_EOL;
+	$message = apply_filters('jigoshop_change_new_order_email_contents', $message, $order);
+	$message = html_entity_decode(strip_tags($message), ENT_QUOTES, 'UTF-8');
 
-    if ($order->billing_email)
-        echo __('Email:', 'jigoshop') . "\t\t\t\t" . $order->billing_email . PHP_EOL;
-    if ($order->billing_phone)
-        echo __('Tel:', 'jigoshop') . "\t\t\t\t\t" . $order->billing_phone . PHP_EOL;
-
-    echo PHP_EOL;
-
-    do_action('jigoshop_after_email_customer_details', $order->id);
-
-    echo '=====================================================================' . PHP_EOL;
-    echo __('BILLING ADDRESS', 'jigoshop') . PHP_EOL;
-    echo '=====================================================================' . PHP_EOL;
-
-    echo $order->billing_first_name . ' ' . $order->billing_last_name . PHP_EOL;
-    if ($order->billing_company)
-        echo $order->billing_company . PHP_EOL;
-    echo $order->formatted_billing_address . PHP_EOL . PHP_EOL;
-
-    do_action('jigoshop_after_email_billing_address', $order->id);
-
-    echo '=====================================================================' . PHP_EOL;
-    echo __('SHIPPING ADDRESS', 'jigoshop') . PHP_EOL;
-    echo '=====================================================================' . PHP_EOL;
-
-    echo $order->shipping_first_name . ' ' . $order->shipping_last_name . PHP_EOL;
-    if ($order->shipping_company)
-        echo $order->shipping_company . PHP_EOL;
-    echo $order->formatted_shipping_address . PHP_EOL . PHP_EOL;
-
-    do_action('jigoshop_after_email_shipping_address', $order->id);
-
-    $message = ob_get_clean();
-    $message = html_entity_decode(strip_tags($message));
-
-    wp_mail(get_option('jigoshop_email'), $subject, $message);
+	wp_mail($jigoshop_options->get_option('jigoshop_email'), $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
 }
 
 /**
@@ -136,99 +66,44 @@ add_action('order_status_pending_to_on-hold', 'jigoshop_processing_order_custome
 
 function jigoshop_processing_order_customer_notification($order_id) {
 
-    $order = new jigoshop_order($order_id);
+	$jigoshop_options = Jigoshop_Base::get_options();
+	$order = new jigoshop_order($order_id);
 
-    $subject = '[' . get_bloginfo('name') . '] ' . __('Order Received', 'jigoshop');
+	$subject = html_entity_decode('[' . get_bloginfo('name') . '] ' . __('Order Received', 'jigoshop'), ENT_QUOTES, 'UTF-8');
 
-    ob_start();
-    echo __("Thank you, we are now processing your order. Your order's details are below:", 'jigoshop') . PHP_EOL . PHP_EOL;
+	ob_start();
+	echo __("Thank you, we are now processing your order. Your order's details are below:", 'jigoshop') . PHP_EOL . PHP_EOL;
 
-    echo '=====================================================================' . PHP_EOL;
-    echo __('ORDER #: ', 'jigoshop') . $order->id . '' . PHP_EOL;
-    echo '=====================================================================' . PHP_EOL;
+	add_header_info($order);
 
-    echo $order->email_order_items_list(false, true); // no download links, show SKU
+	add_order_totals($order, false, true);
 
-    if ($order->customer_note) :
-        echo PHP_EOL . __('Note:', 'jigoshop') . $order->customer_note . PHP_EOL;
-    endif;
+	if (strtolower($order->payment_method) == "bank_transfer") :
 
-    if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax)
-        echo PHP_EOL . __('Retail Price:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_subtotal_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    else
-        echo PHP_EOL . __('Subtotal:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_subtotal_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) :
-        if ($order->order_shipping > 0)
-            echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
+		echo add_email_separator( '-' ) . PHP_EOL;
+		echo __('BANK PAYMENT DETAILS', 'jigoshop') . PHP_EOL;
+		echo add_email_separator( '-' ) . PHP_EOL;
 
-        foreach ($order->get_tax_classes() as $tax_class) :
-            if ($order->tax_class_is_not_compound($tax_class)) :
-                echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-            endif;
-        endforeach;
-        echo __('Subtotal:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_subtotal_inc_tax), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    else :
-        if ($order->order_shipping > 0)
-            echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    endif;
-    if ($order->order_discount > 0)
-        echo __('Discount:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_discount), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    if (get_option('jigoshop_calc_taxes') == 'yes') :
-        if ($order->order_subtotal_inc_tax) :
-            foreach ($order->get_tax_classes() as $tax_class) :
-                if (!$order->tax_class_is_not_compound($tax_class)) :
-                    echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-                endif;
-            endforeach;
-        else :
-            foreach ($order->get_tax_classes() as $tax_class) :
-                echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-            endforeach;
-        endif;
-    endif;
-    echo __('Total:', 'jigoshop') . "\t\t\t\t" . html_entity_decode(jigoshop_price($order->order_total), ENT_COMPAT, 'UTF-8') . ' - ' . __('via', 'jigoshop') . ' ' . ucwords($order->payment_method) . PHP_EOL . PHP_EOL;
+		echo jigoshop_bank_transfer::get_bank_details();
 
-    do_action('jigoshop_after_email_order_info', $order->id);
+		echo PHP_EOL;
 
-    echo '=====================================================================' . PHP_EOL;
-    echo __('CUSTOMER DETAILS', 'jigoshop') . PHP_EOL;
-    echo '=====================================================================' . PHP_EOL;
+		do_action('jigoshop_after_email_bank_payment_details', $order->id);
 
-    if ($order->billing_email)
-        echo __('Email:', 'jigoshop') . "\t\t\t\t" . $order->billing_email . PHP_EOL;
-    if ($order->billing_phone)
-        echo __('Tel:', 'jigoshop') . "\t\t\t\t\t" . $order->billing_phone . PHP_EOL;
+	endif;
 
-    echo PHP_EOL;
+	add_customer_details($order);
 
-    do_action('jigoshop_after_email_customer_details', $order->id);
+	add_billing_address_details($order);
 
-    echo '=====================================================================' . PHP_EOL;
-    echo __('BILLING ADDRESS', 'jigoshop') . PHP_EOL;
-    echo '=====================================================================' . PHP_EOL;
+	add_shipping_address_details($order);
 
-    echo $order->billing_first_name . ' ' . $order->billing_last_name . PHP_EOL;
-    if ($order->billing_company)
-        echo $order->billing_company . PHP_EOL;
-    echo $order->formatted_billing_address . PHP_EOL . PHP_EOL;
+	$message = ob_get_clean();
 
-    do_action('jigoshop_after_email_billing_address', $order->id);
+	$message = apply_filters('jigoshop_change_processing_order_email_contents', $message, $order);
+	$message = html_entity_decode(strip_tags($message), ENT_QUOTES, 'UTF-8');
 
-    '=====================================================================' . PHP_EOL;
-    echo __('SHIPPING ADDRESS', 'jigoshop') . PHP_EOL;
-    echo '=====================================================================' . PHP_EOL;
-
-    echo $order->shipping_first_name . ' ' . $order->shipping_last_name . PHP_EOL;
-    if ($order->shipping_company)
-        echo $order->shipping_company . PHP_EOL;
-    echo $order->formatted_shipping_address . PHP_EOL . PHP_EOL;
-
-    do_action('jigoshop_after_email_shipping_address', $order->id);
-
-    $message = ob_get_clean();
-    $message = html_entity_decode(strip_tags($message));
-
-    wp_mail($order->billing_email, $subject, $message);
+	wp_mail($order->billing_email, $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
 }
 
 /**
@@ -238,100 +113,32 @@ add_action('order_status_completed', 'jigoshop_completed_order_customer_notifica
 
 function jigoshop_completed_order_customer_notification($order_id) {
 
-    $order = new jigoshop_order($order_id);
+	$jigoshop_options = Jigoshop_Base::get_options();
+	$order = new jigoshop_order($order_id);
 
-    $subject = '[' . get_bloginfo('name') . '] ' . __('Order Complete', 'jigoshop');
+	$subject = html_entity_decode('[' . get_bloginfo('name') . '] ' . __('Order Complete', 'jigoshop'), ENT_QUOTES, 'UTF-8');
 
-    ob_start();
-    echo __("Your order is complete. Your order's details are below:", 'jigoshop') . PHP_EOL . PHP_EOL;
+	ob_start();
+	echo __("Your order is complete. Your order's details are below:", 'jigoshop') . PHP_EOL . PHP_EOL;
 
-    echo '=====================================================================' . PHP_EOL;
-    echo __('ORDER #: ', 'jigoshop') . $order->id . '' . PHP_EOL;
-    echo '=====================================================================' . PHP_EOL;
+	add_header_info($order);
 
-    echo $order->email_order_items_list(true, true); // show download links and SKU
+	add_order_totals($order, true, true);
 
-    if ($order->customer_note) :
-        echo PHP_EOL . __('Note:', 'jigoshop') . $order->customer_note . PHP_EOL;
-    endif;
+	add_customer_details($order);
 
-    if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax)
-        echo PHP_EOL . __('Retail Price:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_subtotal_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    else
-        echo PHP_EOL . __('Subtotal:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_subtotal_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) :
-        if ($order->order_shipping > 0)
-            echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
+	add_billing_address_details($order);
 
-        foreach ($order->get_tax_classes() as $tax_class) :
-            if ($order->tax_class_is_not_compound($tax_class)) :
-                echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-            endif;
-        endforeach;
-        echo __('Subtotal:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_subtotal_inc_tax), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    else :
-        if ($order->order_shipping > 0)
-            echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    endif;
-    if ($order->order_discount > 0)
-        echo __('Discount:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_discount), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    if (get_option('jigoshop_calc_taxes') == 'yes') :
-        if ($order->order_subtotal_inc_tax) :
-            foreach ($order->get_tax_classes() as $tax_class) :
-                if (!$order->tax_class_is_not_compound($tax_class)) :
-                    echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-                endif;
-            endforeach;
-        else :
-            foreach ($order->get_tax_classes() as $tax_class) :
-                echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-            endforeach;
-        endif;
-    endif;
-    echo __('Total:', 'jigoshop') . "\t\t\t\t" . html_entity_decode(jigoshop_price($order->order_total), ENT_COMPAT, 'UTF-8') . ' - ' . __('via', 'jigoshop') . ' ' . ucwords($order->payment_method) . PHP_EOL . PHP_EOL;
+	add_shipping_address_details($order);
 
-    do_action('jigoshop_after_email_order_info', $order->id);
+	$message = ob_get_clean();
 
-    echo '=====================================================================' . PHP_EOL;
-    echo __('CUSTOMER DETAILS', 'jigoshop') . PHP_EOL;
-    echo '=====================================================================' . PHP_EOL;
 
-    if ($order->billing_email)
-        echo __('Email:', 'jigoshop') . "\t\t\t\t" . $order->billing_email . PHP_EOL;
-    if ($order->billing_phone)
-        echo __('Tel:', 'jigoshop') . "\t\t\t\t\t" . $order->billing_phone . PHP_EOL;
+	$message = apply_filters('jigoshop_change_completed_order_email_contents', $message, $order);
+	$message = html_entity_decode(strip_tags($message), ENT_QUOTES, 'UTF-8');
+	$message = apply_filters('jigoshop_completed_order_customer_notification_mail_message', $message);
 
-    echo PHP_EOL;
-
-    do_action('jigoshop_after_email_customer_details', $order->id);
-
-    echo '=====================================================================' . PHP_EOL;
-    echo __('BILLING ADDRESS', 'jigoshop') . PHP_EOL;
-    echo '=====================================================================' . PHP_EOL;
-
-    echo $order->billing_first_name . ' ' . $order->billing_last_name . PHP_EOL;
-    if ($order->billing_company)
-        echo $order->billing_company . PHP_EOL;
-    echo $order->formatted_billing_address . PHP_EOL . PHP_EOL;
-
-    do_action('jigoshop_after_email_billing_address', $order->id);
-
-    echo '=====================================================================' . PHP_EOL;
-    echo __('SHIPPING ADDRESS', 'jigoshop') . PHP_EOL;
-    echo '=====================================================================' . PHP_EOL;
-
-    echo $order->shipping_first_name . ' ' . $order->shipping_last_name . PHP_EOL;
-    if ($order->shipping_company)
-        echo $order->shipping_company . PHP_EOL;
-    echo $order->formatted_shipping_address . PHP_EOL . PHP_EOL;
-
-    do_action('jigoshop_after_email_shipping_address', $order->id);
-
-    $message = ob_get_clean();
-    $message = html_entity_decode(strip_tags($message));
-    $message = apply_filters('jigoshop_completed_order_customer_notification_mail_message', $message);
-
-    wp_mail($order->billing_email, $subject, $message);
+	wp_mail($order->billing_email, $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
 }
 
 /**
@@ -341,186 +148,304 @@ add_action('order_status_refunded', 'jigoshop_refunded_order_customer_notificati
 
 function jigoshop_refunded_order_customer_notification($order_id) {
 
-    $order = new jigoshop_order($order_id);
+	$jigoshop_options = Jigoshop_Base::get_options();
+	$order = new jigoshop_order($order_id);
 
-    $subject = '[' . get_bloginfo('name') . '] ' . __('Order Refunded', 'jigoshop');
+	$subject = html_entity_decode('[' . get_bloginfo('name') . '] ' . __('Order Refunded', 'jigoshop'), ENT_QUOTES, 'UTF-8');
 
-    ob_start();
-    echo __("Your order has been refunded. Your order's details are below:", 'jigoshop') . PHP_EOL . PHP_EOL;
+	ob_start();
+	echo __("Your order has been refunded. Your order's details are below:", 'jigoshop') . PHP_EOL . PHP_EOL;
 
-    echo '=====================================================================' . PHP_EOL;
-    echo __('ORDER #: ', 'jigoshop') . $order->id . '' . PHP_EOL;
-    echo '=====================================================================' . PHP_EOL;
+	add_header_info($order);
 
-    echo $order->email_order_items_list(false, true); // don't show download links and show SKU
+	add_order_totals($order, false, true);
 
-    if ($order->customer_note) :
-        echo PHP_EOL . __('Note:', 'jigoshop') . $order->customer_note . PHP_EOL;
-    endif;
+	add_customer_details($order);
 
-    if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax)
-        echo PHP_EOL . __('Retail Price:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_subtotal_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    else
-        echo PHP_EOL . __('Subtotal:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_subtotal_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) :
-        if ($order->order_shipping > 0)
-            echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
+	add_billing_address_details($order);
 
-        foreach ($order->get_tax_classes() as $tax_class) :
-            if ($order->tax_class_is_not_compound($tax_class)) :
-                echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-            endif;
-        endforeach;
-        echo __('Subtotal:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_subtotal_inc_tax), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    else :
-        if ($order->order_shipping > 0)
-            echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    endif;
-    if ($order->order_discount > 0)
-        echo __('Discount:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_discount), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    if (get_option('jigoshop_calc_taxes') == 'yes') :
-        if ($order->order_subtotal_inc_tax) :
-            foreach ($order->get_tax_classes() as $tax_class) :
-                if (!$order->tax_class_is_not_compound($tax_class)) :
-                    echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-                endif;
-            endforeach;
-        else :
-            foreach ($order->get_tax_classes() as $tax_class) :
-                echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-            endforeach;
-        endif;
-    endif;
-    echo __('Total:', 'jigoshop') . "\t\t\t\t" . html_entity_decode(jigoshop_price($order->order_total), ENT_COMPAT, 'UTF-8') . ' - ' . __('via', 'jigoshop') . ' ' . ucwords($order->payment_method) . PHP_EOL . PHP_EOL;
+	add_shipping_address_details($order);
 
-    do_action('jigoshop_after_email_order_info', $order->id);
+	$message = ob_get_clean();
 
-    echo '=====================================================================' . PHP_EOL;
-    echo __('CUSTOMER DETAILS', 'jigoshop') . PHP_EOL;
-    echo '=====================================================================' . PHP_EOL;
+	$message = apply_filters('jigoshop_change_refunded_email_message', $message, $order);
+	$message = html_entity_decode(strip_tags($message), ENT_QUOTES, 'UTF-8');
+	$message = apply_filters('jigoshop_refunded_order_customer_notification_mail_message', $message);
 
-    if ($order->billing_email)
-        echo __('Email:', 'jigoshop') . "\t\t\t\t" . $order->billing_email . PHP_EOL;
-    if ($order->billing_phone)
-        echo __('Tel:', 'jigoshop') . "\t\t\t\t\t" . $order->billing_phone . PHP_EOL;
-
-    echo PHP_EOL;
-
-    do_action('jigoshop_after_email_customer_details', $order->id);
-
-    echo '=====================================================================' . PHP_EOL;
-    echo __('BILLING ADDRESS', 'jigoshop') . PHP_EOL;
-    echo '=====================================================================' . PHP_EOL;
-
-    echo $order->billing_first_name . ' ' . $order->billing_last_name . PHP_EOL;
-    if ($order->billing_company)
-        echo $order->billing_company . PHP_EOL;
-    echo $order->formatted_billing_address . PHP_EOL . PHP_EOL;
-
-    do_action('jigoshop_after_email_billing_address', $order->id);
-
-    echo '=====================================================================' . PHP_EOL;
-    echo __('SHIPPING ADDRESS', 'jigoshop') . PHP_EOL;
-    echo '=====================================================================' . PHP_EOL;
-
-    echo $order->shipping_first_name . ' ' . $order->shipping_last_name . PHP_EOL;
-    if ($order->shipping_company)
-        echo $order->shipping_company . PHP_EOL;
-    echo $order->formatted_shipping_address . PHP_EOL . PHP_EOL;
-
-    do_action('jigoshop_after_email_shipping_address', $order->id);
-
-    $message = ob_get_clean();
-    $message = html_entity_decode(strip_tags($message));
-    $message = apply_filters('jigoshop_refunded_order_customer_notification_mail_message', $message);
-
-    wp_mail($order->billing_email, $subject, $message);
+	wp_mail($order->billing_email, $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
 }
 
 /**
- * Pay for order notification email template - this one includes a payment link
+ * Customer invoice for an order.
+ *
+ * Displays link for payment if the order is marked pending.
+ * Includes download link if order is completed.
  * */
-function jigoshop_pay_for_order_customer_notification($order_id) {
+function jigoshop_send_customer_invoice($order_id) {
 
-    $order = new jigoshop_order($order_id);
+	$jigoshop_options = Jigoshop_Base::get_options();
+	$order = new jigoshop_order($order_id);
 
-    $subject = '[' . get_bloginfo('name') . '] ' . __('Pay for Order', 'jigoshop');
+	$subject = html_entity_decode('[' . get_bloginfo('name') . '] ' . sprintf(__('Invoice for Order %s', 'jigoshop'), $order->get_order_number()), ENT_QUOTES, 'UTF-8');
 
-    $customer_message = sprintf(__("An order has been created for you on \"%s\". To pay for this order please use the following link: %s", 'jigoshop') . PHP_EOL . PHP_EOL, get_bloginfo('name'), $order->get_checkout_payment_url());
+	$customer_message = '';
+	if ($order->status == 'pending') :
+		$customer_message = sprintf(__("An order has been created for you on &quot;%s&quot;. To pay for this order please use the following link: %s", 'jigoshop') . PHP_EOL . PHP_EOL, get_bloginfo('name'), $order->get_checkout_payment_url());
+	endif;
 
-    ob_start();
-    echo '=====================================================================' . PHP_EOL;
-    echo __('ORDER #: ', 'jigoshop') . $order->id . '' . PHP_EOL;
-    echo '=====================================================================' . PHP_EOL;
+	ob_start();
+	add_header_info($order);
 
-    echo $order->email_order_items_list(false, true);  // no download links, show SKU
+	if ($order->status == 'completed') :
+		add_order_totals($order, true, true);
+	else :
+		add_order_totals($order, false, true);
+	endif;
 
-    if ($order->customer_note) :
-        echo PHP_EOL . __('Note:', 'jigoshop') . $order->customer_note . PHP_EOL;
-    endif;
+	$message = ob_get_clean();
 
-    if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax)
-        echo PHP_EOL . __('Retail Price:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_subtotal_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    else
-        echo PHP_EOL . __('Subtotal:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_subtotal_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    if (get_option('jigoshop_calc_taxes') == 'yes' && $order->order_subtotal_inc_tax) :
-        if ($order->order_shipping > 0)
-            echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-        foreach ($order->get_tax_classes() as $tax_class) :
-            if ($order->tax_class_is_not_compound($tax_class)) :
-                echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-            endif;
-        endforeach;
-        echo __('Subtotal:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_subtotal_inc_tax), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    else :
-        if ($order->order_shipping > 0)
-            echo __('Shipping:', 'jigoshop') . "\t\t\t" . html_entity_decode($order->get_shipping_to_display(), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    endif;
-    if ($order->order_discount > 0)
-        echo __('Discount:', 'jigoshop') . "\t\t\t" . html_entity_decode(jigoshop_price($order->order_discount), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-    if (get_option('jigoshop_calc_taxes') == 'yes') :
-        if ($order->order_subtotal_inc_tax) :
-            foreach ($order->get_tax_classes() as $tax_class) :
-                if (!$order->tax_class_is_not_compound($tax_class)) :
-                    echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-                endif;
-            endforeach;
-        else :
-            foreach ($order->get_tax_classes() as $tax_class) :
-                echo $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):' . "\t\t\t" . html_entity_decode($order->get_tax_amount($tax_class), ENT_COMPAT, 'UTF-8') . PHP_EOL;
-            endforeach;
-        endif;
-    endif;
-    echo __('Total:', 'jigoshop') . "\t\t\t\t" . html_entity_decode(jigoshop_price($order->order_total), ENT_COMPAT, 'UTF-8') . ' - ' . __('via', 'jigoshop') . ' ' . ucwords($order->payment_method) . PHP_EOL . PHP_EOL;
+	$message = apply_filters('jigoshop_change_pay_order_email_contents', $message, $order);
+	$customer_message = html_entity_decode(strip_tags($customer_message . $message), ENT_QUOTES, 'UTF-8');
 
-    do_action('jigoshop_after_email_order_info', $order->id);
+	wp_mail($order->billing_email, $subject, $customer_message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
+}
 
-    $message = ob_get_clean();
-    $customer_message = html_entity_decode(strip_tags($customer_message . $message));
+function add_header_info($order) {
 
-    wp_mail($order->billing_email, $subject, $customer_message);
+	echo add_email_separator( '=' ) . PHP_EOL;
+	add_company_information();
+	
+	$info = __('ORDER ', 'jigoshop') . $order->get_order_number();
+	$date = __('Date: ','jigoshop') . date_i18n( get_option('date_format') );
+	$info .= add_padding_to_email_lines( 80 - strlen( $date ) - strlen( $info ) );
+	$info .= $date;
+	echo $info . PHP_EOL;
+	echo add_email_separator( '=' ) . PHP_EOL;
+
+}
+
+function add_email_separator( $char ) {
+	$sep = '';
+	for ( $i = 0 ; $i < 80 ; $i++ ) {
+		$sep .= $char;
+	}
+	return $sep;
+}
+
+function add_padding_to_email_lines( $amount ) {
+	$padding = '';
+	for ( $i = 0 ; $i < $amount ; $i++ ) {
+		$padding .= ' ';
+	}
+	return $padding;
+}
+
+function add_company_information() {
+
+	$jigoshop_options = Jigoshop_Base::get_options();
+	$add_eol = false;
+
+	if ($jigoshop_options->get_option('jigoshop_company_name')) :
+		echo $jigoshop_options->get_option('jigoshop_company_name') . PHP_EOL;
+		$add_eol = true;
+	endif;
+
+	if ($jigoshop_options->get_option('jigoshop_address_line1')) :
+		$add_eol = true;
+		echo $jigoshop_options->get_option('jigoshop_address_line1') . PHP_EOL;
+		if ($jigoshop_options->get_option('jigoshop_address_line2')) :
+			echo $jigoshop_options->get_option('jigoshop_address_line2') . PHP_EOL;
+		endif;
+	endif;
+
+	if ($jigoshop_options->get_option('jigoshop_company_phone')) :
+		$add_eol = true;
+		echo $jigoshop_options->get_option('jigoshop_company_phone') . PHP_EOL;
+	endif;
+
+	if ($jigoshop_options->get_option('jigoshop_company_email')) :
+		$add_eol = true;
+		echo '<a href="mailto:' . $jigoshop_options->get_option('jigoshop_company_email') . '">' . $jigoshop_options->get_option('jigoshop_company_email') . '</a>' . PHP_EOL;
+	endif;
+
+	if ($add_eol) echo PHP_EOL;
+
+}
+
+function add_order_totals($order, $show_download_links, $show_sku) {
+
+	$jigoshop_options = Jigoshop_Base::get_options();
+	$inc_tax = ($jigoshop_options->get_option('jigoshop_calc_taxes') == 'no')||($jigoshop_options->get_option('jigoshop_prices_include_tax') == 'yes');
+	
+	echo PHP_EOL;
+	echo $order->email_order_items_list($show_download_links, $show_sku, $inc_tax);
+
+	if ( $order->customer_note ) {
+		echo PHP_EOL . __('Note:', 'jigoshop') . $order->customer_note . PHP_EOL;
+	}
+
+	if (   ( $jigoshop_options->get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax() )
+		|| ( $jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0) ) {
+		
+		echo PHP_EOL;
+		$info = __('Retail Price:', 'jigoshop');
+		$info .= add_padding_to_email_lines( 30 - strlen( $info ) );
+		$info .= html_entity_decode($order->get_subtotal_to_display(), ENT_QUOTES, 'UTF-8');
+		echo $info . PHP_EOL;
+
+	} else {
+		
+		echo PHP_EOL;
+		$info = __('Subtotal:', 'jigoshop');
+		$info .= add_padding_to_email_lines( 30 - strlen( $info ) );
+		$info .= html_entity_decode($order->get_subtotal_to_display(), ENT_QUOTES, 'UTF-8');
+		echo $info . PHP_EOL;
+		
+	}
+	
+	if ( $order->order_shipping > 0 ) {
+		$info = __('Shipping:', 'jigoshop');
+		$info .= add_padding_to_email_lines( 30 - strlen( $info ) );
+		$info .= html_entity_decode($order->get_shipping_to_display(), ENT_QUOTES, 'UTF-8');
+		echo $info . PHP_EOL;
+		
+	}
+	
+	if ( $jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0 ) {
+		$info = __('Discount:', 'jigoshop');
+		$info .= add_padding_to_email_lines( 30 - strlen( $info ) );
+		$info .= html_entity_decode(jigoshop_price($order->order_discount), ENT_QUOTES, 'UTF-8');
+		echo $info . PHP_EOL;
+		
+	}
+	
+// 	if (   ($jigoshop_options->get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
+// 		|| ($jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) {
+// 		
+// 		$info = __('Subtotal:', 'jigoshop');
+// 		$info .= add_padding_to_email_lines( 30 - strlen( $info ) );
+// 		$info .= html_entity_decode(jigoshop_price($order->order_discount_subtotal), ENT_QUOTES, 'UTF-8');
+// 		echo $info . PHP_EOL;
+// 
+// 	}
+	
+	if ( $jigoshop_options->get_option('jigoshop_calc_taxes') == 'yes') {
+		foreach ($order->get_tax_classes() as $tax_class) {
+			if ($order->show_tax_entry($tax_class)) {
+			
+				$info = $order->get_tax_class_for_display($tax_class) . ' (' . (float) $order->get_tax_rate($tax_class) . '%):';
+				$info .= add_padding_to_email_lines( 30 - strlen( $info ) );
+				$info .= html_entity_decode($order->get_tax_amount($tax_class), ENT_QUOTES, 'UTF-8');
+				echo $info . PHP_EOL;
+
+			}
+		}
+	}
+	
+	if ( $jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'no' && $order->order_discount > 0 ) {
+		
+		$info = __('Discount:', 'jigoshop');
+		$info .= add_padding_to_email_lines( 30 - strlen( $info ) );
+		$info .= html_entity_decode(jigoshop_price($order->order_discount), ENT_QUOTES, 'UTF-8');
+		echo $info . PHP_EOL;
+
+	}
+	
+	$info = __('Total:', 'jigoshop');
+	$info .= add_padding_to_email_lines( 30 - strlen( $info ) );
+	$info .= html_entity_decode(jigoshop_price($order->order_total), ENT_QUOTES, 'UTF-8');
+	$info .= ' - ' . __('via', 'jigoshop') . ' ' . ucwords($order->payment_method_title);
+	echo $info . PHP_EOL . PHP_EOL;
+
+	if ($jigoshop_options->get_option('jigoshop_calc_taxes') && $jigoshop_options->get_option('jigoshop_tax_number')) :
+		echo $jigoshop_options->get_option('jigoshop_tax_number') . PHP_EOL . PHP_EOL;
+	endif;
+
+	do_action('jigoshop_after_email_order_info', $order->id);
+
+}
+
+function add_customer_details($order) {
+
+	echo add_email_separator( '-' ) . PHP_EOL;
+	echo __('CUSTOMER DETAILS', 'jigoshop') . PHP_EOL;
+	echo add_email_separator( '-' ) . PHP_EOL;
+
+	if ($order->billing_email)
+		echo __('Email:', 'jigoshop') . "\t\t\t\t" . $order->billing_email . PHP_EOL;
+	if ($order->billing_phone)
+		echo __('Tel:', 'jigoshop') . "\t\t\t\t\t" . $order->billing_phone . PHP_EOL;
+
+	echo PHP_EOL;
+
+	do_action('jigoshop_after_email_customer_details', $order->id);
+
+}
+
+function add_billing_address_details($order) {
+
+	echo add_email_separator( '-' ) . PHP_EOL;
+	echo __('BILLING ADDRESS', 'jigoshop') . PHP_EOL;
+	echo add_email_separator( '-' ) . PHP_EOL;
+
+	echo $order->billing_first_name . ' ' . $order->billing_last_name . PHP_EOL;
+	if ($order->billing_company)
+		echo $order->billing_company . PHP_EOL;
+	echo $order->formatted_billing_address . PHP_EOL . PHP_EOL;
+
+	do_action('jigoshop_after_email_billing_address', $order->id);
+
+}
+
+function add_shipping_address_details($order) {
+
+	echo add_email_separator( '-' ) . PHP_EOL;
+	echo __('SHIPPING ADDRESS', 'jigoshop') . PHP_EOL;
+	echo add_email_separator( '-' ) . PHP_EOL;
+
+	if ( $order->shipping_method != 'local_pickup' ) {
+
+		echo $order->shipping_first_name . ' ' . $order->shipping_last_name . PHP_EOL;
+		if ($order->shipping_company) echo $order->shipping_company . PHP_EOL;
+		echo $order->formatted_shipping_address . PHP_EOL . PHP_EOL;
+
+		echo __('Shipping: ','jigoshop') . html_entity_decode(ucwords($order->shipping_service), ENT_QUOTES, 'UTF-8') . PHP_EOL . PHP_EOL;
+
+		do_action('jigoshop_after_email_shipping_address', $order->id);
+
+	} else {
+
+		echo __('To be picked up by:', 'jigoshop') . PHP_EOL;
+		echo $order->shipping_first_name . ' ' . $order->shipping_last_name . PHP_EOL;
+		if ($order->shipping_company) echo $order->shipping_company . PHP_EOL;
+		echo PHP_EOL;
+		echo __('At location:', 'jigoshop') . PHP_EOL;
+		echo add_company_information() . PHP_EOL . PHP_EOL;
+
+	}
+
 }
 
 /**
  * Low stock notification email
  * */
-function jigoshop_low_stock_notification($product) {
-    $_product = new jigoshop_product($product);
-    $subject = '[' . get_bloginfo('name') . '] ' . __('Product low in stock', 'jigoshop');
-    $message = '#' . $_product->id . ' ' . $_product->get_title() . ' (' . $_product->sku . ') ' . __('is low in stock.', 'jigoshop');
-    $message = wordwrap(html_entity_decode(strip_tags($message)), 70);
-    wp_mail(get_option('jigoshop_email'), $subject, $message);
+function jigoshop_low_stock_notification($_product) {
+	$jigoshop_options = Jigoshop_Base::get_options();
+	$subject = html_entity_decode('[' . get_bloginfo('name') . '] ' . __('Product low in stock', 'jigoshop'), ENT_QUOTES, 'UTF-8');
+	$message = '#' . $_product->id . ' ' . $_product->get_title() . ' (' . $_product->sku . ') ' . __('is low in stock.', 'jigoshop');
+	$message = wordwrap(html_entity_decode(strip_tags($message), ENT_QUOTES, 'UTF-8'), 70);
+	wp_mail($jigoshop_options->get_option('jigoshop_email'), $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
 }
 
 /**
  * No stock notification email
  * */
-function jigoshop_no_stock_notification($product) {
-    $_product = new jigoshop_product($product);
-    $subject = '[' . get_bloginfo('name') . '] ' . __('Product out of stock', 'jigoshop');
-    $message = '#' . $_product->id . ' ' . $_product->get_title() . ' (' . $_product->sku . ') ' . __('is out of stock.', 'jigoshop');
-    $message = wordwrap(html_entity_decode(strip_tags($message)), 70);
-    wp_mail(get_option('jigoshop_email'), $subject, $message);
+function jigoshop_no_stock_notification($_product) {
+	$jigoshop_options = Jigoshop_Base::get_options();
+	$subject = html_entity_decode('[' . get_bloginfo('name') . '] ' . __('Product out of stock', 'jigoshop'), ENT_QUOTES, 'UTF-8');
+	$message = '#' . $_product->id . ' ' . $_product->get_title() . ' (' . $_product->sku . ') ' . __('is out of stock.', 'jigoshop');
+	$message = wordwrap(html_entity_decode(strip_tags($message), ENT_QUOTES, 'UTF-8'), 70);
+	wp_mail($jigoshop_options->get_option('jigoshop_email'), $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
 }
 
 /**
@@ -533,76 +458,45 @@ function jigoshop_no_stock_notification($product) {
  * @param string $product - the Product ID on backorder
  * @param string $amount - the count of the product needed to fill the order
  * */
-function jigoshop_product_on_backorder_notification($order_id, $product, $amount) {
-    // notify the admin
-    $_product = new jigoshop_product($product);
-    $subject = '[' . get_bloginfo('name') . '] ' . sprintf(__('Product Backorder on Order #%s', 'jigoshop'), $order_id);
-    $message = sprintf(__("%s units of #%s %s (#%s) are needed to fill Order #%s.", 'jigoshop'), abs($amount), $_product->id, $_product->get_title(), $_product->sku, $order_id);
-    $message = wordwrap(html_entity_decode(strip_tags($message)), 70);
-    wp_mail(get_option('jigoshop_email'), $subject, $message);
+function jigoshop_product_on_backorder_notification($order_id, $_product, $amount) {
+	$jigoshop_options = Jigoshop_Base::get_options();
+	$order = new jigoshop_order($order_id);
 
-    // notify the customer if required
-    if ($_product->data['backorders'] == 'notify') :
-        $order = new jigoshop_order($order_id);
+	// notify the admin
+	$subject = html_entity_decode('[' . get_bloginfo('name') . '] ' . sprintf(__('Product Backorder on Order %s', 'jigoshop'), $order->get_order_number()), ENT_QUOTES, 'UTF-8');
+	$message = sprintf(__("%s units of #%s %s (#%s) are needed to fill Order %s.", 'jigoshop'), abs($amount), $_product->id, $_product->get_title(), $_product->sku, $order->get_order_number());
+	$message = wordwrap(html_entity_decode(strip_tags($message), ENT_QUOTES, 'UTF-8'), 70);
+	wp_mail($jigoshop_options->get_option('jigoshop_email'), $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
 
-        $subject = '[' . get_bloginfo('name') . '] ' . sprintf(__('Product Backorder on Order #%d', 'jigoshop'), $order_id);
+	// notify the customer if required
+	if ($_product->meta['backorders'][0] == 'notify') :
 
-        ob_start();
-        echo sprintf(__("Thank you for your Order #%d. Unfortunately, the following item was found to be on backorder.", 'jigoshop'), $order_id);
+		$subject = html_entity_decode('[' . get_bloginfo('name') . '] ' . sprintf(__('Product Backorder on Order %s', 'jigoshop'), $order->get_order_number()), ENT_QUOTES, 'UTF-8');
 
-        echo PHP_EOL . PHP_EOL;
-        echo '=====================================================================' . PHP_EOL;
-        echo __('ORDER #: ', 'jigoshop') . $order->id . '' . PHP_EOL;
-        echo '=====================================================================' . PHP_EOL;
+		ob_start();
+		echo sprintf(__("Thank you for your Order %s. Unfortunately, the following item was found to be on backorder.", 'jigoshop'), $order->get_order_number()) . PHP_EOL . PHP_EOL;
 
-        echo sprintf(__("%d units of #%d %s (#%s) have been backordered.", 'jigoshop'), abs($amount), $_product->id, $_product->get_title(), $_product->sku);
+		add_header_info($order);
 
-        echo PHP_EOL . PHP_EOL;
-        if ($order->customer_note) :
-            echo PHP_EOL . __('Note:', 'jigoshop') . $order->customer_note . PHP_EOL;
-        endif;
+		echo sprintf(__("%d units of #%d %s (#%s) have been backordered.", 'jigoshop'), abs($amount), $_product->id, $_product->get_title(), $_product->sku);
 
-        do_action('jigoshop_after_email_order_info', $order->id);
+		echo PHP_EOL . PHP_EOL;
+		if ($order->customer_note) :
+			echo PHP_EOL . __('Note:', 'jigoshop') . $order->customer_note . PHP_EOL;
+		endif;
 
-        echo '=====================================================================' . PHP_EOL;
-        echo __('CUSTOMER DETAILS', 'jigoshop') . PHP_EOL;
-        echo '=====================================================================' . PHP_EOL;
+		do_action('jigoshop_after_email_order_info', $order->id);
 
-        if ($order->billing_email)
-            echo __('Email:', 'jigoshop') . "\t\t\t\t" . $order->billing_email . PHP_EOL;
-        if ($order->billing_phone)
-            echo __('Tel:', 'jigoshop') . "\t\t\t\t\t" . $order->billing_phone . PHP_EOL;
+		add_customer_details($order);
 
-        echo PHP_EOL;
+		add_billing_address_details($order);
 
-        do_action('jigoshop_after_email_customer_details', $order->id);
+		add_shipping_address_details($order);
 
-        echo '=====================================================================' . PHP_EOL;
-        echo __('BILLING ADDRESS', 'jigoshop') . PHP_EOL;
-        echo '=====================================================================' . PHP_EOL;
+		$message = ob_get_clean();
+		$message = html_entity_decode(strip_tags($message), ENT_QUOTES, 'UTF-8');
 
-        echo $order->billing_first_name . ' ' . $order->billing_last_name . PHP_EOL;
-        if ($order->billing_company)
-            echo $order->billing_company . PHP_EOL;
-        echo $order->formatted_billing_address . PHP_EOL . PHP_EOL;
-
-        do_action('jigoshop_after_email_billing_address', $order->id);
-
-        echo '=====================================================================' . PHP_EOL;
-        echo __('SHIPPING ADDRESS', 'jigoshop') . PHP_EOL;
-        echo '=====================================================================' . PHP_EOL;
-
-        echo $order->shipping_first_name . ' ' . $order->shipping_last_name . PHP_EOL;
-        if ($order->shipping_company)
-            echo $order->shipping_company . PHP_EOL;
-        echo $order->formatted_shipping_address . PHP_EOL . PHP_EOL;
-
-        do_action('jigoshop_after_email_shipping_address', $order->id);
-
-        $message = ob_get_clean();
-        $message = html_entity_decode(strip_tags($message));
-
-        wp_mail($order->billing_email, $subject, $message);
-    endif;
+		wp_mail($order->billing_email, $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
+	endif;
 }
 

@@ -10,18 +10,17 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package 	Jigoshop
- * @category	Widgets
- * @author 	Jigowatt
- * @since 	1.0
- * @copyright 	Copyright (c) 2011 Jigowatt Ltd.
- * @license 	http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Widgets
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
  class Jigoshop_Widget_Products_On_Sale extends WP_Widget {
 
    	/**
 	 * Constructor
-	 * 
+	 *
 	 * Setup the widget with the available options
 	 * Add actions to clear the cache whenever a post is saved|deleted or a theme is switched
 	 */
@@ -42,7 +41,7 @@
 
 	/**
 	* Widget
-	* 
+	*
  	* Display the widget in the sidebar
  	* Save output to the cache if empty
 	*
@@ -71,8 +70,8 @@
 
 		// Set the widget title
 		$title = apply_filters(
-			'widget_title', 
-			( $instance['title'] ) ? $instance['title'] : __( 'Special Offers', 'jigoshop' ), 
+			'widget_title',
+			( $instance['title'] ) ? $instance['title'] : __( 'Special Offers', 'jigoshop' ),
 			$instance,
 			$this->id_base
 		);
@@ -84,7 +83,7 @@
 
 		// Set up query
 		$query_args = array(
-			'posts_per_page' => $number,
+			'posts_per_page' => -1,
 			'post_type'	     => 'product',
 			'post_status'    => 'publish',
 			'orderby'        => 'rand',
@@ -104,51 +103,51 @@
 
 			// Print the widget wrapper & title
 			echo $before_widget;
-			echo $before_title . $title . $after_title; 
-			
+			echo $before_title . $title . $after_title;
+
 			// Open the list
 			echo '<ul class="product_list_widget">';
 
 			// Print out each product
-			while($q->have_posts()) : $q->the_post();  
-				
+			for($i = 0; $q->have_posts() && $i < $number;) : $q->the_post();
+
 				// Get new jigoshop_product instance
 				$_product = new jigoshop_product( get_the_ID() );
 
 				// Skip if not on sale
-				if ( ! $_product->is_on_sale() )
-					continue;
-			
+				if( ! $_product->is_on_sale() ) continue; else $i++;
+
 				echo '<li>';
 					// Print the product image & title with a link to the permalink
 					echo '<a href="'.get_permalink().'" title="'.esc_attr( get_the_title() ).'">';
-					
+
 					// Print the product image
-					echo ( has_post_thumbnail() ) 
+					echo ( has_post_thumbnail() )
 						? the_post_thumbnail( 'shop_tiny' )
 						: jigoshop_get_image_placeholder( 'shop_tiny' );
 
 					echo '<span class="js_widget_product_title">' . get_the_title() . '</span>';
 					echo '</a>';
-					
+
 					// Print the price with html wrappers
 					echo '<span class="js_widget_product_price">' . $_product->get_price_html() . '</span>';
 				echo '</li>';
-			endwhile;
-			
+			endfor;
+
 			echo '</ul>'; // Close the list
-			
+
 			// Print closing widget wrapper
 			echo $after_widget;
-			
+
 			// Reset the global $the_post as this query will have stomped on it
 			wp_reset_postdata();
 		}
+		ob_get_flush();
 	}
 
 	/**
 	 * Update
-	 * 
+	 *
 	 * Handles the processing of information entered in the wordpress admin
 	 * Flushes the cache & removes entry from options array
 	 *
@@ -158,7 +157,7 @@
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
-		
+
 		// Save the new values
 		$instance['title'] = strip_tags( $new_instance['title'] );
 		$instance['number'] = absint( $new_instance['number'] );
@@ -177,7 +176,7 @@
 
 	/**
 	 * Flush Widget Cache
-	 * 
+	 *
 	 * Flushes the cached output
 	 */
 	public function flush_widget_cache() {
@@ -186,7 +185,7 @@
 
 	/**
 	 * Form
-	 * 
+	 *
 	 * Displays the form for the wordpress admin
 	 *
 	 * @param	array	instance

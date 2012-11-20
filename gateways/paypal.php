@@ -8,133 +8,188 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Checkout
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Checkout
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
+
+/**
+ * Add the gateway to JigoShop
+ **/
+function add_paypal_gateway( $methods ) {
+	$methods[] = 'paypal';
+	return $methods;
+}
+add_filter( 'jigoshop_payment_gateways', 'add_paypal_gateway', 10 );
+
+
 class paypal extends jigoshop_payment_gateway {
+	
+	public function __construct() {
 		
-	public function __construct() { 
-        $this->id			= 'paypal';
-        $this->icon 		= jigoshop::assets_url() . '/assets/images/icons/paypal.png';
-        $this->has_fields 	= false;
-      	$this->enabled		= get_option('jigoshop_paypal_enabled');
-		$this->title 		= get_option('jigoshop_paypal_title');
-		$this->email 		= get_option('jigoshop_paypal_email');
-		$this->description  = get_option('jigoshop_paypal_description');
+		parent::__construct();
 		
+		$this->id			= 'paypal';
+		$this->icon 		= jigoshop::assets_url() . '/assets/images/icons/paypal.png';
+		$this->has_fields 	= false;
+	  	$this->enabled		= Jigoshop_Base::get_options()->get_option('jigoshop_paypal_enabled');
+		$this->title 		= Jigoshop_Base::get_options()->get_option('jigoshop_paypal_title');
+		$this->email 		= Jigoshop_Base::get_options()->get_option('jigoshop_paypal_email');
+		$this->description  = Jigoshop_Base::get_options()->get_option('jigoshop_paypal_description');
+		$this->force_payment= Jigoshop_Base::get_options()->get_option('jigoshop_paypal_force_payment');
+
 		$this->liveurl 		= 'https://www.paypal.com/webscr';
 		$this->testurl 		= 'https://www.sandbox.paypal.com/webscr';
-		$this->testmode		= get_option('jigoshop_paypal_testmode');		
-		
-		$this->send_shipping = get_option('jigoshop_paypal_send_shipping');
-		
+		$this->testmode		= Jigoshop_Base::get_options()->get_option('jigoshop_paypal_testmode');
+		$this->testmail 	= Jigoshop_Base::get_options()->get_option('jigoshop_sandbox_email');
+
 		add_action( 'init', array(&$this, 'check_ipn_response') );
 		add_action('valid-paypal-standard-ipn-request', array(&$this, 'successful_request') );
-		
-		add_action('jigoshop_update_options', array(&$this, 'process_admin_options'));
-		add_option('jigoshop_paypal_enabled', 'yes');
-		add_option('jigoshop_paypal_email', '');
-		add_option('jigoshop_paypal_title', __('PayPal', 'jigoshop') );
-		add_option('jigoshop_paypal_description', __("Pay via PayPal; you can pay with your credit card if you don't have a PayPal account", 'jigoshop') );
-		add_option('jigoshop_paypal_testmode', 'no');
-		add_option('jigoshop_paypal_send_shipping', 'no');
-		
+		add_action( 'jigoshop_settings_scripts', array( &$this, 'admin_scripts' ) );
 		add_action('receipt_paypal', array(&$this, 'receipt_page'));
-    } 
-    
+		
+	}
+
+
 	/**
-	 * Admin Panel Options 
-	 * - Options for bits like 'title' and availability on a country-by-country basis
-	 **/
-	public function admin_options() {
+	 * Default Option settings for WordPress Settings API using the Jigoshop_Options class
+	 *
+	 * These will be installed on the Jigoshop_Options 'Payment Gateways' tab by the parent class 'jigoshop_payment_gateway'
+	 *
+	 */	
+	protected function get_default_options() {
+	
+		$defaults = array();
+		
+		// Define the Section name for the Jigoshop_Options
+		$defaults[] = array( 'name' => __('PayPal Standard', 'jigoshop'), 'type' => 'title', 'desc' => __('PayPal Standard works by sending the user to <a href="https://www.paypal.com/">PayPal</a> to enter their payment information.', 'jigoshop') );
+		
+		// List each option in order of appearance with details
+		$defaults[] = array(
+			'name'		=> __('Enable PayPal Standard','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_paypal_enabled',
+			'std' 		=> 'yes',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+		
+		$defaults[] = array(
+			'name'		=> __('Method Title','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('This controls the title which the user sees during checkout.','jigoshop'),
+			'id' 		=> 'jigoshop_paypal_title',
+			'std' 		=> __('PayPal','jigoshop'),
+			'type' 		=> 'text'
+		);
+		
+		$defaults[] = array(
+			'name'		=> __('Description','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('This controls the description which the user sees during checkout.','jigoshop'),
+			'id' 		=> 'jigoshop_paypal_description',
+			'std' 		=> __("Pay via PayPal; you can pay with your credit card if you don't have a PayPal account", 'jigoshop'),
+			'type' 		=> 'longtext'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('PayPal email address','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Please enter your PayPal email address; this is needed in order to take payment!','jigoshop'),
+			'id' 		=> 'jigoshop_paypal_email',
+			'std' 		=> '',
+			'type' 		=> 'email'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('Force payment when free','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('If product totals are free and shipping is also free (excluding taxes), this will force 0.01 to allow paypal to process payment. Shop owner is responsible for refunding customer.','jigoshop'),
+			'id' 		=> 'jigoshop_paypal_force_payment',
+			'std' 		=> 'no',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+
+		$defaults[] = array(
+			'name'		=> __('Enable PayPal sandbox','jigoshop'),
+			'desc' 		=> __('Turn on to enable the PalPal sandbox for testing.  Visit <a href="http://developer.paypal.com/">http://developer.paypal.com/</a> for more information and to register a merchant and customer testing account.','jigoshop'),
+			'tip' 		=> '',
+			'id' 		=> 'jigoshop_paypal_testmode',
+			'std' 		=> 'no',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+
+		$defaults[] = array(
+			'name'		=> __('Sandbox email address','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Please enter your Sandbox Merchant email address for use as your sandbox storefront if you have enabled the PayPal sandbox.','jigoshop'),
+			'id' 		=> 'jigoshop_sandbox_email',
+			'std' 		=> '',
+			'type' 		=> 'midtext'
+		);
+
+		return $defaults;
+	}
+
+    
+    public function admin_scripts() {
     	?>
-    	<thead><tr><th scope="col" width="200px"><?php _e('PayPal Standard', 'jigoshop'); ?></th><th scope="col" class="desc"><?php _e('PayPal Standard works by sending the user to <a href="https://www.paypal.com/uk/mrb/pal=JFC9L8JJUZZK2">PayPal</a> to enter their payment information.', 'jigoshop'); ?></th></tr></thead>
-    	<tr>
-	        <td class="titledesc"><?php _e('Enable PayPal Standard', 'jigoshop') ?>:</td>
-	        <td class="forminp">
-		        <select name="jigoshop_paypal_enabled" id="jigoshop_paypal_enabled" style="min-width:100px;">
-		            <option value="yes" <?php if (get_option('jigoshop_paypal_enabled') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if (get_option('jigoshop_paypal_enabled') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
-		        </select>
-	        </td>
-	    </tr>
-	    <tr>
-	        <td class="titledesc"><a href="#" tip="<?php _e('This controls the title which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Method Title', 'jigoshop') ?>:</td>
-	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_paypal_title" id="jigoshop_paypal_title" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_paypal_title')) echo $value; else echo 'PayPal'; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	        <td class="titledesc"><a href="#" tip="<?php _e('This controls the description which the user sees during checkout.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Description', 'jigoshop') ?>:</td>
-	        <td class="forminp">
-		        <input class="input-text wide-input" type="text" name="jigoshop_paypal_description" id="jigoshop_paypal_description" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_paypal_description')) echo $value; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	        <td class="titledesc"><a href="#" tip="<?php _e('Please enter your PayPal email address; this is needed in order to take payment!','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('PayPal email address', 'jigoshop') ?>:</td>
-	        <td class="forminp">
-		        <input class="input-text" type="text" name="jigoshop_paypal_email" id="jigoshop_paypal_email" style="min-width:50px;" value="<?php if ($value = get_option('jigoshop_paypal_email')) echo $value; ?>" />
-	        </td>
-	    </tr>
-	    <tr>
-	        <td class="titledesc"><a href="#" tip="<?php _e('If your checkout page does not ask for shipping details, or if you do not want to send shipping information to PayPal, set this option to no. If you enable this option PayPal may restrict where things can be sent, and will prevent some orders going through for your protection.','jigoshop') ?>" class="tips" tabindex="99"></a><?php _e('Send shipping details to PayPal', 'jigoshop') ?>:</td>
-	        <td class="forminp">
-		        <select name="jigoshop_paypal_send_shipping" id="jigoshop_paypal_send_shipping" style="min-width:100px;">
-		            <option value="yes" <?php if (get_option('jigoshop_paypal_send_shipping') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if (get_option('jigoshop_paypal_send_shipping') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
-		        </select>
-	        </td>
-	    </tr>
-	    <tr>
-	        <td class="titledesc"><?php _e('Enable PayPal sandbox', 'jigoshop') ?>:</td>
-	        <td class="forminp">
-		        <select name="jigoshop_paypal_testmode" id="jigoshop_paypal_testmode" style="min-width:100px;">
-		            <option value="yes" <?php if (get_option('jigoshop_paypal_testmode') == 'yes') echo 'selected="selected"'; ?>><?php _e('Yes', 'jigoshop'); ?></option>
-		            <option value="no" <?php if (get_option('jigoshop_paypal_testmode') == 'no') echo 'selected="selected"'; ?>><?php _e('No', 'jigoshop'); ?></option>
-		        </select>
-	        </td>
-	    </tr>
+		<script type="text/javascript">
+			/*<![CDATA[*/
+				jQuery(function($) {
+					jQuery('input#jigoshop_paypal_testmode').click( function() {;
+						if (jQuery(this).is(':checked')) {
+							jQuery(this).parent().parent().next('tr').show();
+						} else {
+							jQuery(this).parent().parent().next('tr').hide();
+						}
+					});
+				});
+			/*]]>*/
+		</script>
     	<?php
     }
-    
-    /**
+	
+	
+	/**
 	 * There are no payment fields for paypal, but we want to show the description if set.
 	 **/
-    function payment_fields() {
-    	if ($jigoshop_paypal_description = get_option('jigoshop_paypal_description')) echo wpautop(wptexturize($jigoshop_paypal_description));
-    }
-    
-	/**
-	 * Admin Panel Options Processing
-	 * - Saves the options to the DB
-	 **/
-    public function process_admin_options() {
-   		if(isset($_POST['jigoshop_paypal_enabled'])) update_option('jigoshop_paypal_enabled', jigowatt_clean($_POST['jigoshop_paypal_enabled'])); else @delete_option('jigoshop_paypal_enabled');
-   		if(isset($_POST['jigoshop_paypal_title'])) update_option('jigoshop_paypal_title', jigowatt_clean($_POST['jigoshop_paypal_title'])); else @delete_option('jigoshop_paypal_title');
-   		if(isset($_POST['jigoshop_paypal_email'])) update_option('jigoshop_paypal_email', jigowatt_clean($_POST['jigoshop_paypal_email'])); else @delete_option('jigoshop_paypal_email');
-   		if(isset($_POST['jigoshop_paypal_description'])) update_option('jigoshop_paypal_description', jigowatt_clean($_POST['jigoshop_paypal_description'])); else @delete_option('jigoshop_paypal_description');
-   		if(isset($_POST['jigoshop_paypal_testmode'])) update_option('jigoshop_paypal_testmode', jigowatt_clean($_POST['jigoshop_paypal_testmode'])); else @delete_option('jigoshop_paypal_testmode');
-   		if(isset($_POST['jigoshop_paypal_send_shipping'])) update_option('jigoshop_paypal_send_shipping', jigowatt_clean($_POST['jigoshop_paypal_send_shipping'])); else @delete_option('jigoshop_paypal_send_shipping');
-    }
-    
+	function payment_fields() {
+		if ($this->description) echo wpautop(wptexturize($this->description));
+	}
+
 	/**
 	 * Generate the paypal button link
 	 **/
-    public function generate_paypal_form( $order_id ) {
-		
+	public function generate_paypal_form( $order_id ) {
+
 		$order = new jigoshop_order( $order_id );
-		
+        
+        $subtotal = (float)(Jigoshop_Base::get_options()->get_option('jigoshop_prices_include_tax') == 'yes' ? (float)$order->order_subtotal + (float)$order->order_tax : $order->order_subtotal);
+        $shipping_total = (float)(Jigoshop_Base::get_options()->get_option('jigoshop_prices_include_tax') == 'yes' ? (float)$order->order_shipping + (float)$order->order_shipping_tax : $order->order_shipping);
+
 		if ( $this->testmode == 'yes' ):
-			$paypal_adr = $this->testurl . '?test_ipn=1&';		
+			$paypal_adr = $this->testurl . '?test_ipn=1&';
 		else :
-			$paypal_adr = $this->liveurl . '?';		
+			$paypal_adr = $this->liveurl . '?';
 		endif;
-		
+
 		$shipping_name = explode(' ', $order->shipping_method);
-		
+
 		if (in_array($order->billing_country, array('US','CA'))) :
 			$order->billing_phone = str_replace(array('(', '-', ' ', ')'), '', $order->billing_phone);
 			$phone_args = array(
@@ -150,30 +205,30 @@ class paypal extends jigoshop_payment_gateway {
 				'night_phone_b' => $order->billing_phone,
 				'day_phone_b' 	=> $order->billing_phone
 			);
-		endif;		
-		
+		endif;
+
 		// filter redirect page
-		$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', get_option( 'jigoshop_thanks_page_id' ) );
-		
+		$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', jigoshop_get_page_id('thanks') );
+
 		$paypal_args = array_merge(
 			array(
 				'cmd' 					=> '_cart',
-				'business' 				=> $this->email,
+				'business' 				=> $this->testmode == 'yes' ? $this->testmail : $this->email,
 				'no_note' 				=> 1,
-				'currency_code' 		=> get_option('jigoshop_currency'),
+				'currency_code' 		=> Jigoshop_Base::get_options()->get_option('jigoshop_currency'),
 				'charset' 				=> 'UTF-8',
 				'rm' 					=> 2,
 				'upload' 				=> 1,
 				'return' 				=> add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink( $checkout_redirect ))),
 				'cancel_return'			=> $order->get_cancel_order_url(),
 				//'cancel_return'			=> home_url(),
-				
+
 				// Order key
 				'custom'				=> $order_id,
-				
+
 				// IPN
 				'notify_url'			=> trailingslashit(get_bloginfo('wpurl')).'?paypalListener=paypal_standard_IPN',
-				
+
 				// Address info
 				'first_name'			=> $order->billing_first_name,
 				'last_name'				=> $order->billing_last_name,
@@ -185,239 +240,331 @@ class paypal extends jigoshop_payment_gateway {
 				'zip'					=> $order->billing_postcode,
 				'country'				=> $order->billing_country,
 				'email'					=> $order->billing_email,
-	
+
 				// Payment Info
 				'invoice' 				=> $order->order_key,
 				'amount' 				=> $order->order_total,
-				'discount_amount_cart' 	=> $order->order_discount
-			), 
+				'discount_amount_cart'  => $order->order_discount
+			),
 			$phone_args
 		);
-        
-        // only include tax if prices don't include tax
-        if (get_option('jigoshop_prices_include_tax') != 'yes') :
-            $paypal_args['tax']					= $order->get_total_tax();
-            $paypal_args['tax_cart']			= $order->get_total_tax();
-        endif;
 
-		
-		if ($this->send_shipping=='yes') :
-			$paypal_args['no_shipping'] = 0;
-			$paypal_args['address_override'] = 1;
-		else :
+		// changed for Jigoshop 1.4.4 - we -always- send a separate tax amount to PayPal regardless of settings
+		$paypal_args['tax']					= $order->get_total_tax();
+		$paypal_args['tax_cart']			= $order->get_total_tax();
+
+		// For Jigoshop 1.4.5 we will always send shipping information to paypal, even if it's just the billing info
+		// 'no_shipping' must ALWAYS be '1', as this will NOT allow paypal to prompt for an address
+		// 'address_override' MUST be '1' to allow addresses other than the paypal stored address for the customer
+		// These are the ONLY settings that Jigoshop can allow so that addresses can't be edited at paypal
+		// - which bypasses cart/checkout tax calcs for shipping destination
+		// If addresses ARE allowed to be edited at paypal, they will NOT appear in final orders
+		// Ultimately, the Jigoshop Checkout determines -all- addresses
+//		if ($this->send_shipping=='yes') :
 			$paypal_args['no_shipping'] = 1;
-		endif;
-		
+			$paypal_args['address_override'] = 1;
+			$paypal_args['first_name'] = $order->shipping_first_name;
+			$paypal_args['last_name'] = $order->shipping_last_name;
+			$paypal_args['address1'] = $order->shipping_address_1;
+			$paypal_args['address2'] = $order->shipping_address_2;
+			$paypal_args['city'] = $order->shipping_city;
+			$paypal_args['state'] = $order->shipping_state;
+			$paypal_args['zip'] = $order->shipping_postcode;
+			$paypal_args['country'] = $order->shipping_country;
+// 		else :
+// 			$paypal_args['no_shipping'] = 1;
+// 			$paypal_args['address_override'] = 0;
+// 		endif;
+
 		// Cart Contents
 		$item_loop = 0;
 		if (sizeof($order->items)>0) : foreach ($order->items as $item) :
-            
-            if(!empty($item['variation_id'])) {
-                $_product = new jigoshop_product_variation($item['variation_id']);
-            } else {
-                $_product = new jigoshop_product($item['id']);
-            }
-            
-			if ($_product->exists() && $item['qty']) :
-				
-				$item_loop++;
-            
-                $title = $_product->get_title();
-                
-                //if variation, insert variation details into product title
-                if ($_product instanceof jigoshop_product_variation) {
-                    $variation_details = array();
-                    
-                    foreach ($_product->get_variation_attributes() as $name => $value) {
-                        $variation_details[] = ucfirst(str_replace('tax_', '', $name)) . ': ' . ucfirst($value);
-                    }
 
-                    if (count($variation_details) > 0) {
-                        $title .= ' (' . implode(', ', $variation_details) . ')';
-                    }
-                }
-				
+			$_product = $order->get_product_from_item( $item );
+
+			if ($_product->exists() && $item['qty']) :
+
+				$item_loop++;
+
+				$title = $_product->get_title();
+
+				//if variation, insert variation details into product title
+				if ($_product instanceof jigoshop_product_variation) {
+
+					$title .= ' (' . jigoshop_get_formatted_variation( $item['variation'], true) . ')';
+
+				}
+
 				$paypal_args['item_name_'.$item_loop] = $title;
 				$paypal_args['quantity_'.$item_loop] = $item['qty'];
-				// use product price since we want the base price if it's including tax or if it's not including tax
-                $paypal_args['amount_'.$item_loop] = number_format($_product->get_price(), 2); //Apparently, Paypal did not like "28.4525" as the amount. Changing that to "28.45" fixed the issue.				
+
+				$paypal_args['amount_'.$item_loop] = number_format( apply_filters( 'jigoshop_paypal_adjust_item_price' ,$_product->get_price_excluding_tax(), $item, 10, 2 ), 2); //Apparently, Paypal did not like "28.4525" as the amount. Changing that to "28.45" fixed the issue.
 			endif;
 		endforeach; endif;
-       
+
 		// Shipping Cost
-		$item_loop++;
-		$paypal_args['item_name_'.$item_loop] = __('Shipping cost', 'jigoshop');
-		$paypal_args['quantity_'.$item_loop] = '1';
+        if (jigoshop_shipping::is_enabled()) :
+            $item_loop++;
+            $paypal_args['item_name_'.$item_loop] = __('Shipping cost', 'jigoshop');
+            $paypal_args['quantity_'.$item_loop] = '1';
+
+            $shipping_tax = (float)($order->order_shipping_tax ? $order->order_shipping_tax : 0);
+
+            // changed for Jigoshop 1.4.4 - always show shipping as separate item, tax will be included in Tax parameter
+            $paypal_args['amount_'.$item_loop] = number_format((float)$order->order_shipping, 2);
+        endif; 
         
-        $shipping_tax = ($order->order_shipping_tax ? $order->order_shipping_tax : 0);
-        
-		$paypal_args['amount_'.$item_loop] = (get_option('jigoshop_prices_include_tax') == 'yes' ? number_format($order->order_shipping + $shipping_tax, 2) : number_format($order->order_shipping, 2));
-		
+        if ($this->force_payment == 'yes') :
+
+            $sum = 0;
+            for ($i = 1; $i < $item_loop; $i++) :
+                $sum += $paypal_args['amount_'.$i];
+            endfor;
+            
+            $item_loop++;
+            if ($sum == 0 || (isset($order->order_discount) && $sum - $order->order_discount == 0)) :
+                $paypal_args['item_name_'.$item_loop] = __('Force payment on free', 'jigoshop');
+                $paypal_args['quantity_'.$item_loop] = '1';
+                $paypal_args['amount_'.$item_loop] = 0.01; // force payment
+            endif;
+            
+        endif;
+
+		$paypal_args = apply_filters( 'jigoshop_paypal_args', $paypal_args );
+
 		$paypal_args_array = array();
 
 		foreach ($paypal_args as $key => $value) {
 			$paypal_args_array[] = '<input type="hidden" name="'.esc_attr($key).'" value="'.esc_attr($value).'" />';
 		}
-		
+
 		return '<form action="'.$paypal_adr.'" method="post" id="paypal_payment_form">
 				' . implode('', $paypal_args_array) . '
 				<input type="submit" class="button-alt" id="submit_paypal_payment_form" value="'.__('Pay via PayPal', 'jigoshop').'" /> <a class="button cancel" href="'.esc_url($order->get_cancel_order_url()).'">'.__('Cancel order &amp; restore cart', 'jigoshop').'</a>
 				<script type="text/javascript">
 					jQuery(function(){
 						jQuery("body").block(
-							{ 
-								message: "<img src=\"'.jigoshop::assets_url().'/assets/images/ajax-loader.gif\" alt=\"Redirecting...\" />'.__('Thank you for your order. We are now redirecting you to PayPal to make payment.', 'jigoshop').'", 
-								overlayCSS: 
-								{ 
-									background: "#fff", 
-									opacity: 0.6 
+							{
+								message: "<img src=\"'.jigoshop::assets_url().'/assets/images/ajax-loader.gif\" alt=\"Redirecting...\" />'.__('Thank you for your order. We are now redirecting you to PayPal to make payment.', 'jigoshop').'",
+								overlayCSS:
+								{
+									background: "#fff",
+									opacity: 0.6
 								},
-								css: { 
-							        padding:        20, 
-							        textAlign:      "center", 
-							        color:          "#555", 
-							        border:         "3px solid #aaa", 
-							        backgroundColor:"#fff", 
-							        cursor:         "wait" 
-							    } 
+								css: {
+									padding:		20,
+									textAlign:	  "center",
+									color:		  "#555",
+									border:		 "3px solid #aaa",
+									backgroundColor:"#fff",
+									cursor:		 "wait"
+								}
 							});
 						jQuery("#submit_paypal_payment_form").click();
 					});
 				</script>
 			</form>';
-		
+
 	}
-	
+
 	/**
 	 * Process the payment and return the result
 	 **/
 	function process_payment( $order_id ) {
-		
+
 		$order = new jigoshop_order( $order_id );
-		
+
 		return array(
 			'result' 	=> 'success',
-			'redirect'	=> add_query_arg('order', $order->id, add_query_arg('key', $order->order_key, get_permalink(get_option('jigoshop_pay_page_id'))))
+			'redirect'	=> add_query_arg('order', $order->id, add_query_arg('key', $order->order_key, get_permalink(jigoshop_get_page_id('pay'))))
 		);
-		
+
 	}
-	
+
 	/**
 	 * receipt_page
 	 **/
 	function receipt_page( $order ) {
-		
+
 		echo '<p>'.__('Thank you for your order, please click the button below to pay with PayPal.', 'jigoshop').'</p>';
-		
+
 		echo $this->generate_paypal_form( $order );
-		
+
 	}
-	
+
 	/**
 	 * Check PayPal IPN validity
 	 **/
 	function check_ipn_request_is_valid() {
-    
-    	 // Add cmd to the post array
-        $_POST['cmd'] = '_notify-validate';
 
-        // Send back post vars to paypal
-        $params = array( 'body' => $_POST, 'sslverify' => apply_filters('https_local_ssl_verify', false));
+		jigoshop_log( 'Checking if PayPal IPN response is valid ...' );
+		
+		// Get recieved values from post data
+		$current_values = (array) stripslashes_deep( $_POST );
+		
+		 // Add cmd to the post array
+		$current_values['cmd'] = '_notify-validate';
 
-        // Get url
-       	if ( $this->testmode == 'yes' ):
+		// Send back post vars to paypal
+		$paypal_params = array( 
+			'body'          => $current_values,
+			'sslverify'     => false,
+			'timeout'       => 30,
+			'user-agent'    => 'Jigoshop/' . jigoshop::jigoshop_version()
+		);
+
+		// Get url
+		if ( $this->testmode == 'yes' ) {
 			$paypal_adr = $this->testurl;		
-		else :
+		} else {
 			$paypal_adr = $this->liveurl;		
-		endif;
+		}
 		
 		// Post back to get a response
-        $response = wp_remote_post( $paypal_adr, $params );
+		$response = wp_remote_post( $paypal_adr, $paypal_params );
 		
-		 // Clean
-        unset($_POST['cmd']);
-        
-        // check to see if the request was valid
-        if ( !is_wp_error($response) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 && (strcmp( $response['body'], "VERIFIED") == 0)) {
-            return true;
-        } 
-        
-        return false;
-    }
-	
+		// check to see if the request was valid
+		if ( ! is_wp_error( $response )
+			&& $response['response']['code'] >= 200
+			&& $response['response']['code'] < 300
+			&& (strcmp( $response['body'], "VERIFIED") == 0)) {
+		
+			jigoshop_log( 'Received valid response from PayPal' );
+			return true;
+			
+		} else {
+		
+			jigoshop_log( 'Received invalid response from PayPal!' );
+			jigoshop_log( 'IPN Response: ' . print_r( $response, true ) );
+			
+			if ( is_wp_error( $response ) ) {
+				jigoshop_log( 'PayPal IPN WordPress Error message: ' . $result->get_error_message() );
+			}
+			
+			return false;
+		
+		}
+		
+	}
+
 	/**
 	 * Check for PayPal IPN Response
 	 **/
 	function check_ipn_response() {
-			
-		if (isset($_GET['paypalListener']) && $_GET['paypalListener'] == 'paypal_standard_IPN'):
 		
-        	$_POST = stripslashes_deep($_POST);
-        	
-        	if (self::check_ipn_request_is_valid()) :
-        	
-            	do_action("valid-paypal-standard-ipn-request", $_POST);
+		if ( is_admin() ) return;
+		
+		if ( isset($_GET['paypalListener']) && $_GET['paypalListener'] == 'paypal_standard_IPN' ) {
 
-       		endif;
-       		
-       	endif;
+			@ob_clean();
 			
+			$_POST = stripslashes_deep($_POST);
+			
+			if ( self::check_ipn_request_is_valid() ) {
+				
+				header('HTTP/1.1 200 OK');
+				
+				do_action("valid-paypal-standard-ipn-request", $_POST);
+			
+			} else {
+			
+				wp_die("PayPal IPN Request Failure");
+			
+			}
+
+		} else {
+//			if ( ! empty( $_GET )) jigoshop_log( "Paypal function 'check_ipn_response' -- GET['paypalListener'] is NOT set\nGET values: " . print_r( $_GET, true ) );
+//			if ( ! empty( $_POST )) jigoshop_log( "Paypal function 'check_ipn_response' -- GET['paypalListener'] is NOT set\nPOST values: " . print_r( $_POST, true ) );
+		}
+
 	}
-	
+
 	/**
 	 * Successful Payment!
 	 **/
 	function successful_request( $posted ) {
 		
-		// Custom holds post ID
-	    if ( !empty($posted['txn_type']) && !empty($posted['invoice']) ) {
-	
-	        $accepted_types = array('cart', 'instant', 'express_checkout', 'web_accept', 'masspay', 'send_money');
-	
-	        if (!in_array(strtolower($posted['txn_type']), $accepted_types)) exit;
+		// 'custom' holds post ID (Order ID)
+		if ( !empty($posted['custom']) && !empty($posted['txn_type']) && !empty($posted['invoice']) ) {
+
+			$accepted_types = array('cart', 'instant', 'express_checkout', 'web_accept', 'masspay', 'send_money', 'subscr_payment');
+
+			if ( ! in_array( strtolower( $posted['txn_type'] ), $accepted_types )) {
+				jigoshop_log( "PAYPAL: function 'successful_request' -- unknown 'txn_type' of '".$posted['txn_type']."' for Order ID: ".$posted['custom']." -- EXITING!" );
+				exit;
+			}
 			
 			$order = new jigoshop_order( (int) $posted['custom'] );
-	
-	        if ($order->order_key!==$posted['invoice']) exit;
-	        
-	        // Sandbox fix
-	        if ($posted['test_ipn']==1 && $posted['payment_status']=='Pending') $posted['payment_status'] = 'completed';
-			
-			
-			if ($order->status !== 'completed') :
-		        // We are here so lets check status and do actions
-		        switch (strtolower($posted['payment_status'])) :
-		            case 'completed' :
-		            	// Payment completed
-		                $order->add_order_note( __('IPN payment completed', 'jigoshop') );
-		                $order->payment_complete();
-		            break;
-		            case 'denied' :
-		            case 'expired' :
-		            case 'failed' :
-		            case 'voided' :
-		                // Hold order
-		                $order->update_status('on-hold', sprintf(__('Payment %s via IPN.', 'jigoshop'), strtolower($posted['payment_status']) ) );
-		            break;
-		            default:
-		            	// No action
-		            break;
-		        endswitch;
-			endif;
-			
+
+			if ( $order->order_key !== $posted['invoice'] ) {
+				jigoshop_log( "PAYPAL: function 'successful_request' -- order_key does NOT match posted invoice for Order ID: ".$posted['custom']." -- EXITING!" );
+				exit;
+			}
+
+			// Sandbox fix (note: not sure what this is, but the 'isset' is added for undefined index -JAP-)
+			// TODO: test that the Pending should really be pending (lowercase)
+			if ( isset($posted['test_ipn']) && $posted['test_ipn']==1 && $posted['payment_status']=='Pending' ) {
+				$posted['payment_status'] = 'completed';
+			}
+
+			if ( $order->status !== 'completed' ) {
+				// We are here so lets check status and do actions
+				switch (strtolower($posted['payment_status'])) :
+					case 'completed' :
+						// Payment completed
+						$order->add_order_note( __('IPN payment completed', 'jigoshop') );
+						jigoshop_log( "PAYPAL: IPN payment completed for Order ID: " . $posted['custom'] );
+						$order->payment_complete();
+						break;
+					case 'denied' :
+					case 'expired' :
+					case 'failed' :
+					case 'voided' :
+						// Failed order
+						$order->update_status('failed', sprintf(__('Payment %s via IPN.', 'jigoshop'), strtolower($posted['payment_status']) ) );
+						jigoshop_log( "PAYPAL: failed order with status = " . strtolower($posted['payment_status']) . "for Order ID: " . $posted['custom'] );
+						break;
+					case 'refunded' :
+					case 'reversed' :
+					case 'chargeback' :
+						jigoshop_log( "PAYPAL: payment status type - '" . $posted['payment_status'] . "' - not supported for Order ID: " . $posted['custom'] );
+						break;
+					default:
+						// No action
+						break;
+				endswitch;
+			}
+
 			exit;
+
+		} else {
 			
-	    }
+			jigoshop_log( "PAYPAL: function 'successful_request' -- empty initial required values -- EXITING!\n'posted' values = " . print_r( $posted, true ) );
+			
+		}
+
+	}
+	
+	public function process_gateway($subtotal, $shipping_total, $discount = 0) {
+		
+		$ret_val = false;
+		if (!(isset($subtotal) && isset($shipping_total))) return $ret_val;
+		
+		// check for free (which is the sum of all products and shipping = 0) Tax doesn't count unless prices
+		// include tax
+		if (($subtotal <= 0 && $shipping_total <= 0) || (($subtotal + $shipping_total) - $discount) == 0) :
+			// true when force payment = 'yes'
+			$ret_val = ($this->force_payment == 'yes');
+		elseif(($subtotal + $shipping_total) - $discount < 0) :
+			// don't process paypal if the sum of the product prices and shipping total is less than the discount
+			// as it cannot handle this scenario
+			$ret_val = false;
+		else :
+			$ret_val = true;
+		endif;
+		
+		return $ret_val;
 		
 	}
 
 }
-
-/**
- * Add the gateway to JigoShop
- **/
-function add_paypal_gateway( $methods ) {
-	$methods[] = 'paypal'; return $methods;
-}
-
-add_filter('jigoshop_payment_gateways', 'add_paypal_gateway' );

@@ -8,22 +8,22 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package    Jigoshop
- * @category   Checkout
- * @author     Jigowatt
- * @copyright  Copyright (c) 2011 Jigowatt Ltd.
- * @license    http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Checkout
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 function get_jigoshop_thankyou( $atts ) {
-	return jigoshop::shortcode_wrapper('jigoshop_thankyou', $atts);
+	return jigoshop_shortcode_wrapper('jigoshop_thankyou', $atts);
 }
 
 /**
  * Outputs the thankyou page
  **/
 function jigoshop_thankyou() {
-	
+
 	$thankyou_message = __('<p>Thank you. Your order has been processed successfully.</p>', 'jigoshop');
 	echo apply_filters( 'jigoshop_thankyou_message', $thankyou_message );
 
@@ -41,7 +41,7 @@ function jigoshop_thankyou() {
 			<ul class="order_details">
 				<li class="order">
 					<?php _e('Order:', 'jigoshop'); ?>
-					<strong># <?php echo $order->id; ?></strong>
+					<strong><?php echo $order->get_order_number(); ?></strong>
 				</li>
 				<li class="date">
 					<?php _e('Date:', 'jigoshop'); ?>
@@ -69,7 +69,7 @@ function jigoshop_thankyou() {
 		endif;
 
 	endif;
-	
+
 	echo '<p><a class="button" href="'.esc_url( jigoshop_cart::get_shop_url() ).'">'.__('&larr; Continue Shopping', 'jigoshop').'</a></p>';
 
 }

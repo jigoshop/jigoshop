@@ -8,24 +8,23 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Widgets
- * @author		Jigowatt
- * @since		1.0
- * @copyright 	Copyright (c) 2011 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package             Jigoshop
+ * @category            Widgets
+ * @author              Jigowatt
+ * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @license             http://jigoshop.com/license/commercial-edition
  */
 
 class Jigoshop_Widget_Featured_Products extends WP_Widget {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Setup the widget with the available options
 	 * Add actions to clear the cache whenever a post is saved|deleted or a theme is switched
 	 */
 	public function __construct() {
-	
+
 		$options = array(
 			'classname'		=> 'jigoshop_featured_products',
 			'description'	=> __( 'Featured products on your site', 'jigoshop' )
@@ -42,7 +41,7 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 
 	/**
 	 * Widget
-	 * 
+	 *
 	 * Display the widget in the sidebar
 	 * Save output to the cache if empty
 	 *
@@ -53,7 +52,7 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 
 		// Get the best selling products from the transient
 		$cache = get_transient( 'jigoshop_widget_cache' );
-		
+
 		// If cached get from the cache
 		if ( isset( $cache[$args['widget_id']] ) ) {
 			echo $cache[$args['widget_id']];
@@ -66,29 +65,29 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 
 		// Set the widget title
 		$title = apply_filters(
-			'widget_title', 
-			( $instance['title'] ) ? $instance['title'] : __( 'Featured Products', 'jigoshop' ), 
+			'widget_title',
+			( $instance['title'] ) ? $instance['title'] : __( 'Featured Products', 'jigoshop' ),
 			$instance,
 			$this->id_base
 		);
-		
+
 		// Set number of products to fetch
 		if ( ! $number = absint( $instance['number'] ) ) {
 			$number = 5;
 		}
-		
+
 		// Set up query
 		$query_args = array(
-			'posts_per_page' => $number,
-			'post_type'      => 'product',
-			'post_status'    => 'publish',
-			'meta_key'       => 'featured',
-			'meta_value'	     => 'yes',
-			'meta_query'     => array(
+			'posts_per_page'=> $number,
+			'post_type'     => 'product',
+			'post_status'   => 'publish',
+			'meta_key'      => 'featured',
+			'meta_value'    => '1',
+			'meta_query'    => array(
 				array(
-					'key'       => 'visibility',
-					'value'     => array('catalog', 'visible'),
-					'compare'   => 'IN',
+					'key'    => 'visibility',
+					'value'  => array('catalog', 'visible'),
+					'compare'=> 'IN',
 				),
 			)
 		);
@@ -100,13 +99,13 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 
 			// Print the widget wrapper & title
 			echo $before_widget;
-			echo $before_title . $title . $after_title; 
+			echo $before_title . $title . $after_title;
 
 			// Open the list
 			echo '<ul class="product_list_widget">';
 
 			// Print each product
-			while( $q->have_posts() ) : $q->the_post();  
+			while( $q->have_posts() ) : $q->the_post();
 
 				// Get a new jigoshop_product instance
 				$_product = new jigoshop_product( get_the_ID() );
@@ -116,7 +115,7 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 					echo '<a href="' . esc_attr( get_permalink() ) . '" title="' . esc_attr( get_the_title() ) . '">';
 
 					// Print the product image
-					echo ( has_post_thumbnail() ) 
+					echo ( has_post_thumbnail() )
 						? the_post_thumbnail( 'shop_tiny' )
 						: jigoshop_get_image_placeholder( 'shop_tiny' );
 
@@ -144,7 +143,7 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 
 	/**
 	 * Update
-	 * 
+	 *
 	 * Handles the processing of information entered in the wordpress admin
 	 * Flushes the cache & removes entry from options array
 	 *
@@ -154,11 +153,11 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
-		
+
 		// Save the new values
 		$instance['title'] = strip_tags( $new_instance['title'] );
 		$instance['number'] = absint( $new_instance['number'] );
-		
+
 		// Flush the cache
 		$this->flush_widget_cache();
 
@@ -167,7 +166,7 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 
 	/**
 	 * Flush Widget Cache
-	 * 
+	 *
 	 * Flushes the cached output
 	 */
 	public function flush_widget_cache() {
@@ -176,17 +175,17 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 
 	/**
 	 * Form
-	 * 
+	 *
 	 * Displays the form for the wordpress admin
 	 *
 	 * @param	array	instance
 	 */
 	function form( $instance ) {
-		
+
 		// Get instance data
 		$title 		= isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : null;
 		$number 	= isset( $instance['number'] ) ? absint( $instance['number'] ) : 5;
-		
+
 		// Widget Title
 		echo "
 		<p>
