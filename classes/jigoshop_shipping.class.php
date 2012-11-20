@@ -90,6 +90,10 @@ class jigoshop_shipping extends Jigoshop_Singleton {
 
         endif;
 
+		//throw error if there are no shipping methods
+		if(empty($_available_methods))
+			self::$shipping_error_message = __('Please enter your complete shipping address to view shipping options.', 'jigoshop');
+		
         return $_available_methods;
     }
 
