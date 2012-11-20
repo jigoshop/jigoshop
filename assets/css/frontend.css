@@ -376,7 +376,7 @@ a.button,
 button.button,
 input.button,
 #review_form #submit {
-  color: #fff !important;
+  color: #fff;
   background: #ff9c07;
   padding: 6px;
   line-height: 1em !important;
@@ -406,7 +406,7 @@ input.button:hover,
   float: none;
 }
 .button-alt {
-  color: #fff !important;
+  color: #fff;
   background: #069bcd;
   padding: 6px;
   line-height: 1em !important;
@@ -818,6 +818,7 @@ td.quantity,
 }
 .cart-collaterals .cart_totals h2 {
   text-align: left;
+  margin: 0;
   margin-left: 10px;
 }
 .cart-collaterals .cart_totals p {
@@ -1240,4 +1241,20 @@ dl.customization dd {
 input:-ms-input-placeholder {
   background: white;
   color: LightGray;
+}
+/* =Twenty Twelve
+-------------------------------------------------------------- */
+.jigoshop .site-content {
+  width: 66%;
+}
+.jigoshop .site-content .cross-sells {
+  width: auto;
+}
+.jigoshop .site-content div.jigoshop_error,
+.jigoshop .site-content div.jigoshop_message {
+  padding: 15px 10px 15px 32px;
+}
+.jigoshop .site-content div.jigoshop_error a.button,
+.jigoshop .site-content div.jigoshop_message a.button {
+  margin-top: -4px;
 }

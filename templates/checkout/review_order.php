@@ -31,16 +31,25 @@ $jigoshop_options = Jigoshop_Base::get_options(); ?>
 			   <?php $price_label = jigoshop_cart::show_retail_price() ? __('Retail Price', 'jigoshop') : __('Subtotal', 'jigoshop'); ?>
 
 				<td colspan="2"><?php echo $price_label; ?></td>
-				<td class="cart-row-subtotal"><?php echo jigoshop_cart::get_cart_subtotal(); ?></td>
+				<td class="cart-row-subtotal"><?php echo jigoshop_cart::get_cart_subtotal(true,false,true); ?></td>
 			</tr>
 
             <?php jigoshop_checkout::get_shipping_dropdown(); ?>
 
-            <?php if ( jigoshop_cart::show_retail_price() ) : ?>
+            <?php if ( jigoshop_cart::show_retail_price() && Jigoshop_Base::get_options()->get_option( 'jigoshop_prices_include_tax' ) == 'no' ) : ?>
                 <tr>
                     <td colspan="2"><?php _e('Subtotal', 'jigoshop'); ?></td>
                     <td><?php echo jigoshop_cart::get_cart_subtotal(true, true); ?></td>
                 </tr>
+			<?php elseif ( jigoshop_cart::show_retail_price() ) : ?>
+				<tr>
+					<td colspan="2"><?php _e('Subtotal', 'jigoshop'); ?></th>
+					<?php
+					$price = jigoshop_cart::$cart_contents_total_ex_tax + jigoshop_cart::$shipping_total;
+					$price = jigoshop_price($price, array('ex_tax_label' => 1));
+					?>
+					<td><?php echo $price; ?></td>
+				</tr>
             <?php endif; ?>
 
             <?php if ( jigoshop_cart::tax_after_coupon() ) : ?>
@@ -110,7 +119,7 @@ $jigoshop_options = Jigoshop_Base::get_options(); ?>
 								<td>
                                 <?php 
                                     //TODO: I was thinking we were using the order item here, but we're not. Therefore we could display including taxes if we want.
-                                    echo jigoshop_price($_product->get_price_excluding_tax($values['quantity']), array('ex_tax_label' => 1)); 
+                                    echo jigoshop_price($_product->get_price_excluding_tax()*$values['quantity'], array('ex_tax_label' => 1)); 
                                 ?></td>   
 							</tr>
 

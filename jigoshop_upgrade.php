@@ -57,6 +57,10 @@ function jigoshop_upgrade() {
 		jigoshop_upgrade_130();
 	}
 
+	if ( $jigoshop_db_version < 1211190 ) {
+		jigoshop_upgrade_145();
+	}
+
 	// Update the db option
 	update_site_option( 'jigoshop_db_version', JIGOSHOP_VERSION );
 
@@ -574,4 +578,18 @@ function jigoshop_upgrade_130() {
 	
 	flush_rewrite_rules( true );
 
+}
+
+/**
+ * Execute changes made in Jigoshop 1.4.5
+ *
+ * @since 1.4.5
+ */
+function jigoshop_upgrade_145() {
+	
+	Jigoshop_Base::get_options()->delete_option( 'jigoshop_paypal_send_shipping' );
+	delete_option( 'jigoshop_paypal_send_shipping' );
+	Jigoshop_Base::get_options()->delete_option( 'jigoshop_display_totals_tax' );
+	delete_option( 'jigoshop_display_totals_tax' );
+	
 }

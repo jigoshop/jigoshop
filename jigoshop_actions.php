@@ -195,15 +195,18 @@ if ( ! function_exists( 'jigoshop_add_to_cart_action' )) { //make function plugg
 
 			case 'variation':
 
-				if ( empty($_REQUEST['variation_id']) || !is_numeric($_REQUEST['variation_id']) ) {
-					jigoshop::add_error( __('Please choose product options&hellip;', 'jigoshop') );
-					wp_safe_redirect( apply_filters('jigoshop_product_id_add_to_cart_filter', get_permalink($_REQUEST['product_id'])) );
-					exit;
+				// ensure we have a valid quantity, product and variation id, that is numeric, without any SQL injection attempts.
+				$product_id   = (isset($_REQUEST['product_id']) && is_numeric($_REQUEST['product_id'])) ? (int) $_REQUEST['product_id'] : -1;
+				if ( $product_id < 0 ) {
+					break;      // drop out and put up message, unable to add product.
 				}
-
-				$product_id   = apply_filters('jigoshop_product_id_add_to_cart_filter',   (int) $_REQUEST['product_id']);
+				if ( empty($_REQUEST['variation_id']) || !is_numeric($_REQUEST['variation_id']) ) {
+					break;      // drop out and put up message, unable to add product.
+				}
+				$quantity     = (isset($_REQUEST['quantity']) && is_numeric($_REQUEST['quantity'])) ? (int) $_REQUEST['quantity'] : 1;
+								
+				$product_id   = apply_filters('jigoshop_product_id_add_to_cart_filter', $product_id);
 				$variation_id = apply_filters('jigoshop_variation_id_add_to_cart_filter', (int) $_REQUEST['variation_id']);
-				$quantity     = (isset($_REQUEST['quantity'])) ? (int) $_REQUEST['quantity'] : 1;
 				$attributes   = (array) maybe_unserialize(get_post_meta($product_id, 'product_attributes', true));
 				$variations   = array();
 
@@ -271,7 +274,7 @@ if ( ! function_exists( 'jigoshop_add_to_cart_action' )) { //make function plugg
 					break;
 
 				// Get product ID & quantity
-				$product_id = apply_filters('jigoshop_product_id_add_to_cart_filter', (int) $_GET['add-to-cart']);
+				$product_id = apply_filters('jigoshop_product_id_add_to_cart_filter', (int) $_REQUEST['add-to-cart']);
 				$quantity   = (isset($_REQUEST['quantity'])) ? (int) $_REQUEST['quantity'] : 1;
 
 				// Add to cart validation
@@ -286,7 +289,7 @@ if ( ! function_exists( 'jigoshop_add_to_cart_action' )) { //make function plugg
 		}
 
 		if ( ! $product_added ) {
-			jigoshop::add_error( __('Product could not be added to the cart', 'jigoshop') );
+			jigoshop::add_error( __('The Product could not be added to the cart.  Please try again.', 'jigoshop') );
 			return false;
 		}
 
@@ -351,7 +354,7 @@ function jigoshop_ajax_update_order_review() {
 	endif;
 
 	if (!empty($_POST['coupon_code'])) {
-		jigoshop_cart::add_discount( $_POST['coupon_code'] );
+		jigoshop_cart::add_discount( sanitize_title( $_POST['coupon_code'] ) );
 		jigoshop::show_messages();
 	}
 
@@ -630,12 +633,14 @@ function jigoshop_download_product() {
             do_action( 'jigoshop_before_download', $file_path, $order );
 
 			@session_write_close();
-			@ini_set('zlib.output_compression', 'Off');
 			@set_time_limit(0);
 			@set_magic_quotes_runtime(0);
 			@ob_end_clean();
 			if (ob_get_level()) @ob_end_clean();
-
+			// required for IE, otherwise Content-Disposition may be ignored
+			if(ini_get('zlib.output_compression'))
+			ini_set('zlib.output_compression', 'Off');
+		
 			header("Pragma: no-cache");
 			header("Expires: 0");
 			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
@@ -883,7 +888,7 @@ function jigoshop_product_dropdown_categories( $show_counts = true, $hierarchal 
 
 	$output  = "<select name='product_cat' id='dropdown_product_cat'>";
 
-	$output .= '<option value="" ' .  selected( isset( $_GET['product_cat'] ) ? esc_attr( $_GET['product_cat'] ) : '', '', false ) . '>'.__('Select a category', 'jigoshop').'</option>';
+	$output .= '<option value="" ' .  selected( isset( $_GET['product_cat'] ) ? esc_attr( $_GET['product_cat'] ) : '', '', false ) . '>'.__('View all categories', 'jigoshop').'</option>';
 	$output .= jigoshop_walk_category_dropdown_tree( $terms, 0, $r );
 	$output .="</select>";
 
@@ -915,7 +920,7 @@ class Jigoshop_Walker_CategoryDropdown extends Walker_CategoryDropdown {
 	var $tree_type = 'category';
 	var $db_fields = array ('parent' => 'parent', 'id' => 'term_id', 'slug' => 'slug' );
 
-    function start_el( $output, $category, $depth, $args ) {
+    function start_el( &$output, $category, $depth, $args ) {
 
         $pad = str_repeat( '&nbsp;', $depth * 3 );
         $cat_name = apply_filters( 'list_product_cats', $category->name, $category );

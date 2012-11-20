@@ -151,8 +151,9 @@ class jigoshop_shipping_method {
             $tax = $this->calculate_shipping_tax($price - jigoshop_cart::get_cart_discount_leftover());
         }
         
-        // only apply rates that aren't free, as Jigoshop already includes a free shipping service
-        if ($price > 0) {
+        // changed for 1.4.5 since there are instances where a shipping method may want to provide their own rules for
+		// when shipping is free...that cannot be obtained within the free shipping method itself.
+        if ($price >= 0) {
             $this->rates[] = array('service' => $service_name, 'price' => $price, 'tax' => $tax);
         }
         

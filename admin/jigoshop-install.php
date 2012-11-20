@@ -213,12 +213,11 @@ function jigoshop_create_single_page( $page_slug, $page_option, $page_data ) {
 function jigoshop_tables_install() {
 	global $wpdb;
 	
-	if ( is_multisite() ) define( 'DIEONDBERROR', true );
-	
+	if((!defined('DIEONDBERROR'))&&(is_multisite())){define('DIEONDBERROR',true);}
 	$wpdb->show_errors();
 
     $collate = '';
-    if($wpdb->supports_collation()) {
+    if($wpdb->has_cap( 'collation' )) {
 		if(!empty($wpdb->charset)) $collate = "DEFAULT CHARACTER SET $wpdb->charset";
 		if(!empty($wpdb->collate)) $collate .= " COLLATE $wpdb->collate";
     }

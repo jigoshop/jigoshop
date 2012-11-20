@@ -25,9 +25,9 @@ class Jigoshop_reports {
 
 	function __construct() {
 
-		add_filter( 'posts_where', array(&$this, 'orders_within_range') );
+		add_filter( 'posts_where', array($this, 'orders_within_range') );
 		$this->orders = apply_filters( 'jigoshop_reports_orders', $this->jigoshop_get_orders());
-		remove_filter( 'posts_where', array(&$this, 'orders_within_range') );
+		remove_filter( 'posts_where', array($this, 'orders_within_range') );
 
 		$this->on_show_page();
 
@@ -127,14 +127,14 @@ h6{font-size:11px;color:#999999;text-transform:uppercase;}
 			<div id="report-widgets" class="metabox-holder">
 
 				<div class='thumbnail mainGraph' style=''>
-					<h1>Sales</h1>
+					<h1><?php _e('Sales','jigoshop'); ?></h1>
 					<?php $this->jigoshop_dash_monthly_report(); ?>
 				</div>
 
 				<br class="clear"/>
 
 				<div class="span3 thumbnail">
-					<h2>Top Earners</h2>
+					<h2><?php _e('Top Earners','jigoshop'); ?></h2>
 					<div id="top_earners_pie" style="height:300px"></div>
 					<?php $this->jigoshop_top_earners(); ?>
 					<?php echo $this->jigoshop_pie_charts('top_earners_pie'); ?>
@@ -142,7 +142,7 @@ h6{font-size:11px;color:#999999;text-transform:uppercase;}
 				</div>
 
 				<div class="span3 thumbnail">
-					<h2>Most Sold</h2>
+					<h2><?php _e('Most Sold','jigoshop'); ?></h2>
 					<div id="most_sold_pie" style="height:300px"></div>
 					<?php $this->jigoshop_most_sold(); ?>
 					<?php echo $this->jigoshop_pie_charts('most_sold_pie'); ?>
@@ -150,17 +150,17 @@ h6{font-size:11px;color:#999999;text-transform:uppercase;}
 
 				<div class="span3 thumbnail">
 					<h1><?php echo $this->jigoshop_total_customers(); ?></h1>
-					<h3>Total New Customers</h3>
+					<h3><?php _e('Total New Customers','jigoshop'); ?></h3>
 				</div>
 
 				<div class="span3 thumbnail">
 					<h1><?php echo $this->jigoshop_total_orders(); ?></h1>
-					<h3>Total Orders</h3>
+					<h3><?php _e('Total Orders','jigoshop'); ?></h3>
 				</div>
 
 				<div class="span3 thumbnail">
 					<h1><?php echo $this->jigoshop_total_sales(); ?></h1>
-					<h3>Total Sales</h3>
+					<h3><?php _e('Total Sales','jigoshop'); ?></h3>
 				</div>
 
 			</div>
@@ -555,7 +555,7 @@ jQuery(function(){
 
 				for (var i = 0; i < d2.length; ++i) d2[i][0] += 60 * 60 * 1000;
 
-				var plot = jQuery.plot(jQuery("#placeholder"), [ { label: "Number of sales", data: d }, { label: "Sales amount", data: d2, yaxis: 2 } ], {
+				var plot = jQuery.plot(jQuery("#placeholder"), [ { label: "<?php _e('Number of sales','jigoshop'); ?>", data: d }, { label: "<?php _e('Sales amount','jigoshop'); ?>", data: d2, yaxis: 2 } ], {
 					series: {
 						lines: { show: true },
 						points: { show: true }
@@ -602,7 +602,7 @@ jQuery(function(){
 
 							jQuery("#tooltip").remove();
 
-							if (item.series.label=="Number of sales") {
+							if (item.series.label=="<?php _e('Number of sales','jigoshop'); ?>") {
 
 								var y = item.datapoint[1];
 								showTooltip(item.pageX, item.pageY, item.series.label + " - " + y);

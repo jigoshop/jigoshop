@@ -2,9 +2,9 @@
 Contributors: Jigowatt
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigowatt, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
-Requires at least: 3.2.1
-Tested up to: 3.4.2
-Stable tag: 1.4.4
+Requires at least: 3.3
+Tested up to: 3.5 B3
+Stable tag: 1.4.5
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,29 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.4.5 - 2012-11-18 =
+* Tweak: The setting 'Totals include tax' has been removed
+* Tweak: The setting 'Prices include tax' only works for the Shop and Product pages
+* Tweak: The setting 'Apply Taxes After Coupon' now works correctly in all situations
+* Tweak: Coupons are no longer dependant on the setting 'Calculate Taxes', they will be applied regardless of tax calculations
+* Tweak: Coupon types 'product discounts' will never be more than the price of the product
+* Tweak: Coupon types 'cart discounts' will now apply to the whole cart including shipping and taxes depending on settings
+* Tweak: PayPal gateway will now always display shipping address, the option is removed from this gateway's settings
+* Tweak: Shipping address fields on the Checkout will appear by default determined by Shipping tab setting 'Only ship to billing Address'
+* Tweak: Product variation popup selects on single product page - can change selection on earlier variations without 'Choose an Option'
+* Tweak: Variable product stock status if managed will not be displayed until the customer selects a variation
+* Tweak: Updated .pot file for language translators
+* Tweak: Product thumbnails now respect WordPress gallery 'menu_order' sorting for display
+* Tweak: Updated language files for Japan and Croatia
+* Tweak: Add Kenyan Shilling to currencies
+* Fix: Instance where dropdown categories wouldn't output any content
+* Fix: Shop tab page now saves when coming from menu Jigoshop->settings.
+* Fix: Translated Settings pages now work with languages with Cyrillic characters
+* Fix: 'Quick Edit' of  product price reverts no-entry (not announced) to FREE, no longer happens.
+* Fix: Product variations will now show correct labels instead of slugs when submitted to PayPal
+* Fix: Skrill gateway now includes tax
+* Fix: Convert upper or mixed case coupon codes to lowercase so they can be applied on the Cart
+
 = 1.4.4 - 2012-10-22 =
 * Tweak: Products with stock = 0 always show 'Out of Stock' when stock is managed
 * Fix: Variable products on sale again show the sale price instead of 0.00

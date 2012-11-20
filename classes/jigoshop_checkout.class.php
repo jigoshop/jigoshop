@@ -226,9 +226,11 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 		// Shipping Details
 		if (!jigoshop_cart::ship_to_billing_address_only() && self::get_options()->get_option('jigoshop_calc_shipping') == 'yes') :
 
-			$shiptobilling = !$_POST ? apply_filters('shiptobilling_default', 1) : $this->get_value('shiptobilling'); ?>
-
-			<p class="form-row" id="shiptobilling"><input class="input-checkbox" type="checkbox" name="shiptobilling" id="shiptobilling-checkbox" <?php if ($shiptobilling) : ?> checked="checked" <?php endif; ?> /> <label for="shiptobilling-checkbox" class="checkbox"><?php _e('Ship to same address?', 'jigoshop'); ?></label> </p>
+			$shiptobilling = !$_POST ? apply_filters('shiptobilling_default', 1) : $this->get_value('shiptobilling');
+			$shiptodisplay = self::get_options()->get_option('jigoshop_ship_to_billing_address_only') == 'yes' ? 'checked="checked"' : '';
+			?>
+			
+			<p class="form-row" id="shiptobilling"><input class="input-checkbox" type="checkbox" name="shiptobilling" id="shiptobilling-checkbox" <?php if ($shiptobilling) : echo $shiptodisplay; endif; ?> /> <label for="shiptobilling-checkbox" class="checkbox"><?php _e('Ship to billing address?', 'jigoshop'); ?></label> </p>
 
 			<h3><?php _e('Shipping Address', 'jigoshop'); ?></h3>
 
@@ -406,7 +408,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
 			// Process Discount Codes
 			if ( !empty( $_POST['coupon_code'] ) ) {
-				$coupon_code = stripslashes(trim($_POST['coupon_code']));
+				$coupon_code = sanitize_title( $_POST['coupon_code'] );
 				jigoshop_cart::add_discount($coupon_code);
 			}
 
@@ -705,7 +707,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					$data['payment_method']         = $this->posted['payment_method'];
 					$data['payment_method_title']   = !empty($available_gateways[$this->posted['payment_method']]) ?$available_gateways[$this->posted['payment_method']]->title : '';
 					$data['order_subtotal']         = jigoshop_cart::get_cart_subtotal(false, false, true);/* no display, no shipping, no tax */
-					$data['order_discount_subtotal']= jigoshop_cart::get_cart_subtotal(false, true, true);/* no display, with shipping/discounts, no tax */
+					$data['order_discount_subtotal']= jigoshop_cart::get_cart_subtotal(false, false, true)-jigoshop_cart::$discount_total;
 					$data['order_shipping']         = jigoshop_cart::get_cart_shipping_total(false, true);
 					$data['order_discount']         = number_format(jigoshop_cart::$discount_total, 2, '.', '');
 					$data['order_tax']              = jigoshop_cart::get_taxes_as_string();
@@ -759,7 +761,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
                             'customization' => $custom,
 					 		'name' 			=> $_product->get_title(),
 					 		'qty' 			=> (int) $values['quantity'],
-					 		'cost'          => $_product->get_price_excluding_tax((int) $values['quantity']),
+					 		'cost'          => $_product->get_price_excluding_tax() * (int) $values['quantity'],
                             'cost_inc_tax'  => $price_inc_tax, // if less than 0 don't use this
 					 		'taxrate' 		=> $rate
 					 	), $values);
@@ -935,14 +937,15 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
                                     $tax_label = 0; // 0 no label, 1 ex. tax, 2 inc. tax
                                     $price = 0;
-                                    if (self::get_options()->get_option('jigoshop_display_totals_tax') == 'yes' ) {
+                                    if (self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes' ) {
 
                                         // check that shipping is indeed taxed.
                                         if (jigoshop_cart::$shipping_tax_total > 0) {
-                                            $tax_label = 2; // inc. tax
+                                            $tax_label = 1; // inc. tax
                                         }
 
-                                        $price = $method->get_selected_price($i) + $method->get_selected_tax($i);
+//                                        $price = $method->get_selected_price($i) + $method->get_selected_tax($i);
+                                        $price = $method->get_selected_price($i);
 
                                     }
                                     else {

@@ -102,7 +102,7 @@ if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 			elseif ( $_product->is_type('external') ) :
 				$output = '<a href="'.get_post_meta( $_product->id, 'external_url', true ).'" class="button">'.__('Buy product', 'jigoshop').'</a>';
 			else :
-				$output = '<a href="'.esc_url($_product->add_to_cart_url()).'" class="button">'.__('Add to cart', 'jigoshop').'</a>';
+				$output = '<a href="'.esc_url($_product->add_to_cart_url()).'" class="button" rel="nofollow">'.__('Add to cart', 'jigoshop').'</a>';
 			endif;
 		elseif ( ($_product->is_type(array('grouped')) ) ) :
 			return;
@@ -168,7 +168,7 @@ if (!function_exists('jigoshop_show_product_thumbnails')) {
 		$thumb_id = get_post_thumbnail_id();
 		$small_thumbnail_size = jigoshop_get_image_size( 'shop_thumbnail' );
 
-		$args = array( 'post_type' => 'attachment', 'post_mime_type' => 'image', 'numberposts' => -1, 'post_status' => null, 'post_parent' => $post->ID, 'orderby' => 'id', 'order' => 'asc' );
+		$args = array( 'post_type' => 'attachment', 'post_mime_type' => 'image', 'numberposts' => -1, 'post_status' => null, 'post_parent' => $post->ID, 'orderby' => 'menu_order', 'order' => 'asc' );
 
 		$attachments = get_posts($args);
 		if ($attachments) :
@@ -828,18 +828,12 @@ if (!function_exists('jigoshop_shipping_calculator')) {
                                 ?>
                             <p class="form-row col-2"><?php
                             
-                                if ($method->get_selected_price($i) > 0) :
-                                    if (Jigoshop_Base::get_options()->get_option('jigoshop_display_totals_tax') == 'yes' ) {
-                                        echo jigoshop_price($method->get_selected_price($i) + $method->get_selected_tax($i));
-                                        echo __(' (inc. tax)', 'jigoshop');
-                                    }
-                                    else {
-                                        echo jigoshop_price($method->get_selected_price($i));
-                                        echo __(' (ex. tax)', 'jigoshop');
-                                    }
-                                else :
-                                    echo __('Free', 'jigoshop');
-                                endif;
+								if ($method->get_selected_price($i) > 0) :
+									echo jigoshop_price($method->get_selected_price($i));
+									echo __(' (ex. tax)', 'jigoshop');
+								else :
+									echo __('Free', 'jigoshop');
+								endif;
                                 ?>
                         </div>
                     <?php

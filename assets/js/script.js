@@ -224,7 +224,7 @@ jQuery(function() {
         	current_attr_select.find('option:gt(0)').attr('disabled', 'disabled');
 
         	// Get name
-	        var current_attr_name 	= current_attr_select.attr('name');
+	        var current_attr_name = current_attr_select.attr('name');
 
 	        // Loop through variations
 	        for(num in variations) {
@@ -242,6 +242,9 @@ jQuery(function() {
 	                }
 	            }
 	        }
+			
+			// completely re-enable the previous select so 'Choose an option' isn't required to change selections
+	        current_attr_select.parent().prev().find('select').find('option:gt(0)').removeAttr('disabled');
 
         });
 
@@ -479,9 +482,9 @@ if ( jigoshop_params.is_checkout ) {
 			clearTimeout(updateTimer);
 			update_checkout();
 		}).change();
-		jQuery('input#billing-country, input#billing-state, #billing-postcode, input#shipping-country, input#shipping-state, #shipping-postcode').live('keydown', function(){
+		jQuery('input#billing-country, input#billing-state, #billing-postcode, input#shipping-country, input#shipping-state, #shipping-postcode').live('change', function(){
 			clearTimeout(updateTimer);
-			updateTimer = setTimeout("update_checkout()", '5000');
+			update_checkout();
 		});
 		jQuery('select#billing-country, select#billing-state, select#shipping-country, select#shipping-state, #shiptobilling input').live('change', function(){
 			clearTimeout(updateTimer);

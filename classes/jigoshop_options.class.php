@@ -258,7 +258,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	 */
 	public function add_option( $name, $value ) {
 		// take care of keeping the old name updated when setting new options
-		update_option($name, $value);
+		add_option($name, $value);
 
 		$this->get_current_options();
 		if ( ! isset( self::$current_options[$name] )) {
@@ -568,6 +568,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				'ILS' => __('Israeli Shekel (&#8362;)', 'jigoshop'),
 				'INR' => __('Indian Rupee (&#8360;)', 'jigoshop'),
 				'JPY' => __('Japanese Yen (&yen;)', 'jigoshop'),
+				'KES' => __('Kenyan Shilling (KSh)', 'jigoshop'),
 				'MXN' => __('Mexican Peso (&#36;)', 'jigoshop'),
 				'MYR' => __('Malaysian Ringgits (RM)', 'jigoshop'),
 				'NGN' => __('Nigerian Naira (&#8358;)', 'jigoshop'),
@@ -1508,7 +1509,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 
 		self::$default_options[] = array(
 			'name' 		=> __('Apply Taxes After Coupon','jigoshop'),
-			'desc' 		=> '',
+			'desc' 		=> __('This will have no effect if Calculate Taxes is turned off.','jigoshop'),
 			'tip' 		=> __('If yes, taxes get applied after coupons. When no, taxes get applied before coupons.','jigoshop'),
 			'id' 		=> 'jigoshop_tax_after_coupon',
 			'std' 		=> 'yes',
@@ -1521,23 +1522,10 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 
 		self::$default_options[] = array(
 			'name'		=> __('Catalog Prices include tax?','jigoshop'),
-			'desc' 		=> '',
-			'tip' 		=> __('If prices include tax then tax calculations will work backwards.','jigoshop'),
+			'desc' 		=> __('This will only apply to the Shop, Category and Product pages.','jigoshop'),
+			'tip' 		=> __('This will have no effect on the Cart, Checkout, Emails, or final Orders; prices are always shown with tax out.','jigoshop'),
 			'id' 		=> 'jigoshop_prices_include_tax',
 			'std' 		=> 'yes',
-			'type' 		=> 'checkbox',
-			'choices'	=> array(
-				'no'			=> __('No', 'jigoshop'),
-				'yes'			=> __('Yes', 'jigoshop')
-			)
-		);
-
-		self::$default_options[] = array(
-			'name'		=> __('Subtotals include tax?','jigoshop'),
-			'desc' 		=> '',
-			'tip' 		=> __('Should any subtotals be shown including or excluding tax on the Cart and Checkout?  This will include Shipping subtotals.','jigoshop'),
-			'id' 		=> 'jigoshop_display_totals_tax',
-			'std' 		=> 'no',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
@@ -1600,7 +1588,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		self::$default_options[] = array(
 			'name'		=> __('Only ship to billing address?','jigoshop'),
 			'desc' 		=> '',
-			'tip' 		=> '',
+			'tip' 		=> __('When activated, Shipping address fields will not appear on the Checkout.','jigoshop'),
 			'id' 		=> 'jigoshop_ship_to_billing_address_only',
 			'std' 		=> 'no',
 			'type' 		=> 'checkbox',

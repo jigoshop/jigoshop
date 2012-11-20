@@ -647,7 +647,7 @@ class jigoshop_tax extends Jigoshop_Base {
         
     }
 
-    public function update_tax_amount($tax_class, $amount, $recalculate_tax = true) {
+    public function update_tax_amount($tax_class, $amount, $recalculate_tax = true, $overwrite = false) {
 
         if ($tax_class) :
 
@@ -663,6 +663,8 @@ class jigoshop_tax extends Jigoshop_Base {
                 $rate = $this->get_rate($tax_class);
                 $tax = $this->calc_tax($amount, $rate, ($this->is_compound_tax() ? false : self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes'));
                 $this->tax_amounts[$tax_class]['amount'] = $tax;
+            elseif ( $overwrite ) :
+                $this->tax_amounts[$tax_class]['amount'] = $amount;
             else :
             	if ( isset($this->tax_amounts[$tax_class]['amount'])) :
                 	$this->tax_amounts[$tax_class]['amount'] += $amount;

@@ -203,7 +203,7 @@ class skrill extends jigoshop_payment_gateway {
 
 				$skrill_args['item_name_'.$item_loop]= $_product->get_title();
 				$skrill_args['quantity_'.$item_loop] = $item['qty'];
-				$skrill_args['amount_'.$item_loop]   = $_product->get_price_excluding_tax();
+				$skrill_args['amount_'.$item_loop]   = $_product->get_price_with_tax();
 
 			endif;
 		endforeach; endif;

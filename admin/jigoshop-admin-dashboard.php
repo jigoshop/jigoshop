@@ -50,13 +50,13 @@ class jigoshop_dashboard {
 		wp_enqueue_script('wp-lists');
 		wp_enqueue_script('postbox');
 
-		add_meta_box('jigoshop_dash_right_now',     'Right Now',     array(&$this, 'jigoshop_dash_right_now'),     $this->page, 'side',   'core');
-		add_meta_box('jigoshop_dash_recent_orders', 'Recent Orders', array(&$this, 'jigoshop_dash_recent_orders'), $this->page, 'side',   'core');
-		add_meta_box('jigoshop_dash_stock_report',  'Stock Report',  array(&$this, 'jigoshop_dash_stock_report'),  $this->page, 'side',   'core');
-		add_meta_box('jigoshop_dash_monthly_report','Monthly Report',array(&$this, 'jigoshop_dash_monthly_report'),$this->page, 'normal', 'core');
-		add_meta_box('jigoshop_dash_recent_reviews','Recent Reviews',array(&$this, 'jigoshop_dash_recent_reviews'),$this->page, 'normal', 'core');
-		add_meta_box('jigoshop_dash_latest_news',   'Latest News',   array(&$this, 'jigoshop_dash_latest_news'),   $this->page, 'normal', 'core');
-		add_meta_box('jigoshop_dash_useful_links',  'Useful Links',  array(&$this, 'jigoshop_dash_useful_links'),  $this->page, 'normal', 'core');
+		add_meta_box('jigoshop_dash_right_now', __('Right Now','jigoshop'), array($this, 'jigoshop_dash_right_now'), $this->page, 'side', 'core');
+		add_meta_box('jigoshop_dash_recent_orders', __('Recent Orders','jigoshop'), array($this, 'jigoshop_dash_recent_orders'), $this->page, 'side',   'core');
+		add_meta_box('jigoshop_dash_stock_report', __('Stock Report','jigoshop'), array($this, 'jigoshop_dash_stock_report'), $this->page, 'side',   'core');
+		add_meta_box('jigoshop_dash_monthly_report', __('Monthly Report','jigoshop'), array($this, 'jigoshop_dash_monthly_report'),$this->page, 'normal', 'core');
+		add_meta_box('jigoshop_dash_recent_reviews', __('Recent Reviews','jigoshop'), array($this, 'jigoshop_dash_recent_reviews'),$this->page, 'normal', 'core');
+		add_meta_box('jigoshop_dash_latest_news', __('Latest News','jigoshop'), array($this, 'jigoshop_dash_latest_news'), $this->page, 'normal', 'core');
+		add_meta_box('jigoshop_dash_useful_links', __('Useful Links','jigoshop'), array($this, 'jigoshop_dash_useful_links'), $this->page, 'normal', 'core');
 	}
 
 	function on_show_page() {

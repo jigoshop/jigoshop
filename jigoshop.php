@@ -22,9 +22,9 @@
  * Author:              Jigowatt
  * Author URI:          http://jigowatt.co.uk
  *
- * Version:             1.4.4
- * Requires at least:   3.2.1
- * Tested up to:        3.4.2
+ * Version:             1.4.5
+ * Requires at least:   3.3
+ * Tested up to:        3.5 B3
  *
  * Text Domain:         jigoshop
  * Domain Path:         /languages/
@@ -42,7 +42,7 @@
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
-if ( !defined( "JIGOSHOP_VERSION" )) define( "JIGOSHOP_VERSION", 1208170) ;
+if ( !defined( "JIGOSHOP_VERSION" )) define( "JIGOSHOP_VERSION", 1211190) ;
 if ( !defined( "JIGOSHOP_OPTIONS" )) define( "JIGOSHOP_OPTIONS", 'jigoshop_options' );
 if ( !defined( 'JIGOSHOP_TEMPLATE_URL' ) ) define( 'JIGOSHOP_TEMPLATE_URL', 'jigoshop/' );
 if ( !defined( "PHP_EOL" )) define( "PHP_EOL", "\r\n" );
@@ -784,6 +784,7 @@ function get_jigoshop_currency_symbol() {
 		case 'ILS' : $currency_symbol = '&#8362;'; break;
 		case 'INR' : $currency_symbol = '&#8360;'; break;
 		case 'JPY' : $currency_symbol = '&yen;'; break;
+		case 'KES' : $currency_symbol = 'KSh'; break;
 		case 'MXN' : $currency_symbol = '&#36;'; break;
 		case 'MYR' : $currency_symbol = 'RM'; break;
 		case 'NGN' : $currency_symbol = '&#8358;'; break;
