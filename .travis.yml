@@ -1,3 +1,6 @@
+# If you fork Jigoshop and want to use Travis on your fork, please go to:
+# https://github.com/yourname/jigoshop/admin/hooks#travis_minibucket
+# and follow the instructions
 language: php
 php:
 # PHP Versions Jigoshop Officially Supports
