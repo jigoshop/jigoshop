@@ -1,0 +1,68 @@
+language: php
+php:
+# PHP Versions Jigoshop Officially Supports
+  - 5.3
+  - 5.4
+# Ones that support for legacy reasons
+  - 5.2
+env:
+# Officialy Supported WP Versions (w/ and w/o MS)
+  - WP_VERSION=3.4.2 WP_MULTISITE=0
+  - WP_VERSION=3.4.2 WP_MULTISITE=1
+  - WP_VERSION=3.4.1 WP_MULTISITE=0
+  - WP_VERSION=3.4.1 WP_MULTISITE=1
+  - WP_VERSION=3.4 WP_MULTISITE=0
+  - WP_VERSION=3.4 WP_MULTISITE=1
+# Tested (but not officially supported) WP versions
+  - WP_VERSION=3.5-beta3 WP_MULTISITE=0 
+  - WP_VERSION=3.5-beta3 WP_MULTISITE=1
+  - WP_VERSION=3.5-beta2 WP_MULTISITE=0 
+  - WP_VERSION=3.5-beta2 WP_MULTISITE=1
+  - WP_VERSION=3.5-beta2 WP_MULTISITE=0
+  - WP_VERSION=3.5-beta2 WP_MULTISITE=1 
+  - WP_VERSION=3.5-beta-1 WP_MULTISITE=0
+  - WP_VERSION=3.5-beta-1 WP_MULTISITE=1 
+  - WP_VERSION=3.3.3 WP_MULTISITE=0
+  - WP_VERSION=3.3.3 WP_MULTISITE=1 
+  - WP_VERSION=3.3.2 WP_MULTISITE=0
+  - WP_VERSION=3.3.2 WP_MULTISITE=1
+  - WP_VERSION=3.3.1 WP_MULTISITE=0
+  - WP_VERSION=3.2.1 WP_MULTISITE=1
+  - WP_VERSION=3.2 WP_MULTISITE=0
+  - WP_VERSION=3.2 WP_MULTISITE=1
+# Test against (but allow fail) on older WP and PHP versions, as well as beta WP
+# Also test against the current Master (development) Github repo of WordPress
+matrix:
+  allow_failures:
+# Beta Versions
+    - env: WP_VERSION=3.5-beta3 WP_MULTISITE=0 
+    - env: WP_VERSION=3.5-beta3 WP_MULTISITE=1
+    - env: WP_VERSION=3.5-beta2 WP_MULTISITE=0 
+    - env: WP_VERSION=3.5-beta2 WP_MULTISITE=1
+    - env: WP_VERSION=3.5-beta-1 WP_MULTISITE=0 
+    - env: WP_VERSION=3.5-beta-1 WP_MULTISITE=1 
+# Old Versions
+    - env: WP_VERSION=3.3.3 WP_MULTISITE=0
+    - env: WP_VERSION=3.3.3 WP_MULTISITE=1 
+    - env: WP_VERSION=3.3.2 WP_MULTISITE=0
+    - env: WP_VERSION=3.3.2 WP_MULTISITE=1
+    - env: WP_VERSION=3.3.1 WP_MULTISITE=0
+    - env: WP_VERSION=3.3.1 WP_MULTISITE=1
+    - env: WP_VERSION=3.2.1 WP_MULTISITE=0
+    - env: WP_VERSION=3.2.1 WP_MULTISITE=1
+    - env: WP_VERSION=3.2 WP_MULTISITE=0
+    - env: WP_VERSION=3.2 WP_MULTISITE=1
+    - php: 5.2
+branches:
+  exclude:
+    - master
+before_script:
+  - cp tests/unittests-config.travis.php vendor/wordpress-tests/unittests-config.php
+  - wget -O wordpress.tar.gz http://wordpress.org/wordpress-$WP_VERSION.tar.gz
+  - tar -xzf wordpress.tar.gz -C vendor
+  - mysql -e "create database IF NOT EXISTS jigoshop_test;" -uroot
+    
+script: phpunit
+# To discuss at next Developer meeting
+notifications:
+  email: false

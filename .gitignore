@@ -1,8 +1,44 @@
-# osx noise
-.DS_Store
-profile
+# This file specifies intentionally untracked files that all Jigoshop git
+# repositories should ignore. It is recommended not to modify this file in your
+# local clone. 
 
-# xcode noise
+# OS Generated Files #
+# Apple/Windows Only #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+profile
+*.swp
+*~.nib
+Desktop.ini
+
+# NotePad++ Noise #
+#####################
+*.bak
+
+# Code::Blocks Noise #
+######################
+*.depend
+*.layout
+
+# NetBeans Noise #
+#####################
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+# XCode Noise #
+###############
 build/*
 *.mode1
 *.mode1v3
@@ -13,13 +49,26 @@ build/*
 *.xcworkspace
 xcuserdata
 
-# svn & cvs
+# Sublime Noise #
+#################
+*.sublime-project
+*.sublime-workspace
+
+
+# SVN and CVS #
+##############
 .svn
 CV
 
-# Extra noise
+# Extra Noise #
+###############
 .settings/*
 .buildpath
 .project
 nbproject
 deploy.sh
+
+# Tests Noise #
+###############
+vendor/wordpress
+vendor/wordpress-tests/unittests-config.php
