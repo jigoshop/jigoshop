@@ -1,7 +1,5 @@
-[Jigoshop](http://jigoshop.com) Tests
+[Jigoshop](http://jigoshop.com) Testing Suite [Jigoshop](http://jigoshop.com)  [![Build Status](https://secure.travis-ci.org/jigoshop/jigoshop.png?branch=dev)](http://travis-ci.org/jigoshop/jigoshop)
 =================
-
-[![Build Status](https://secure.travis-ci.org/jigoshop/jigoshop.png?branch=dev)](http://travis-ci.org/jigoshop/jigoshop)
 
 This test-suite uses PHPUnit to ensure Jigoshop's code quality.
 
@@ -14,7 +12,7 @@ Travis-CI will also automatically test all new pull requests to make sure they w
 
 
 Quick start (for manual runs)
------------
+-----------------------------
 
 Clone the repo.
 
@@ -51,11 +49,44 @@ Run the test from jiigoshop plugin root folder
 
 
 Install phpunit on Ubuntu
------------
+-------------------------
 
 In case your are using ubuntu(12+), install phpunit like this:
 
     sudo apt-get install pear
     sudo pear config-set auto_discover 1
     sudo pear install pear.phpunit.de/PHPUnit
+	
+##Install phpunit on Windows
+--------------------------
+###Step 1A: Install PEAR (if your localhost **does not** come with it)
+Easiest way is to install PEAR is to download go-pear.phar.
+Put it in your PHP bin folder.
+Then open CMD (make sure you right click run as admin, **even** if you are admin) and run:
+
+	php -d phar.require_hash=0 PEAR/go-pear.phar
+
+For prompts:
+Enter, Enter, Enter, Enter
+
+Then open a new CMD and type in
+
+	pear
+
+Should produce output.
+
+###Step 1B: Install PEAR (if your localhost **does** come with it)
+Depending on your OS distribution and/or your PHP environment, you may need to install 
+PEAR or update your existing PEAR installation before you can proceed with the instructions
+in this section.
+
+	pear upgrade PEAR
+
+Above usually suffices to upgrade an existing PEAR installation. 
+The PEAR Manual explains how to perform a fresh installation of PEAR.
+
+### Step 2: Install PHPUnit by doing:
+
+	pear config-set auto_discover 1
+	pear install --force --alldeps pear.phpunit.de/PHPUnit
 	
