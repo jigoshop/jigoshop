@@ -76,6 +76,6 @@ before_script:
   - tar -xzf wordpress.tar.gz -C vendor
   - mysql -e "create database IF NOT EXISTS jigoshop_test;" -uroot
     
-script: phpunit --coverage-text
+script: phpunit
 notifications:
   email: false
