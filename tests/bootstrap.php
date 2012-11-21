@@ -9,5 +9,5 @@ if( file_exists( $path ) ) {
     exit( "Couldn't find wordpress-tests please run\n git submodule init && git submodule update\n" );
 }
 //load all jigoshop classes
- $_SESSION['travis']='true';
+$_SESSION['travis']='true';
 require_once './jigoshop.php';
