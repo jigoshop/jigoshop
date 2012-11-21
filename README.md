@@ -26,6 +26,8 @@ https://github.com/jigoshop/jigoshop/issues
 
 Contributing
 ------------
+See CONTRIBUTING.md
+------------
 
 Anyone and everyone is welcome to contribute. Jigoshop wouldn't be what it is today without the github community.
 
