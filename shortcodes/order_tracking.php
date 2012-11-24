@@ -52,6 +52,7 @@ function jigoshop_order_tracking( $atts ) {
 				echo '.</p>';
 
 				?>
+				<?php do_action('jigoshop_before_track_order_details', $order->id);?>
 				<h2><?php _e('Order Details', 'jigoshop'); ?></h2>
 				<table class="shop_table">
 					<thead>
@@ -146,7 +147,8 @@ function jigoshop_order_tracking( $atts ) {
 						?>
 					</tbody>
 				</table>
-
+				<?php do_action('jigoshop_after_track_order_details', $order->id);?>
+				
 				<div style="width: 49%; float:left;">
 					<h2><?php _e('Billing Address', 'jigoshop'); ?></h2>
 					<p><?php
