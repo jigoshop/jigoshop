@@ -1598,6 +1598,19 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			)
 		);
 
+		self::$default_options[] = array(
+			'name'		=> __('Checkout always shows Shipping fields?','jigoshop'),
+			'desc' 		=> __('This will have no effect if "Only ship to billing address" is activated.','jigoshop'),
+			'tip' 		=> __('When activated, Shipping address fields will appear by default on the Checkout.','jigoshop'),
+			'id' 		=> 'jigoshop_show_checkout_shipping_fields',
+			'std' 		=> 'yes',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+
 		self::$default_options[] = array( 'name' => __('Available Shipping Methods', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 
 		self::$default_options[] = array( 'type' => 'shipping_options');  // required only for backwards compatibility.

@@ -17,7 +17,7 @@
 class jigoshop_session extends Jigoshop_Singleton {
 
 	protected function __construct() {
-		if ( (!session_id()) && (!$_SESSION['travis']=='true')) session_start();
+		if ( ! session_id() && ! isset( $_SESSION['travis'] ) ) session_start();
 	}
 
 	public function __get( $key ) {

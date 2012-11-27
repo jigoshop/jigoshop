@@ -45,17 +45,4 @@ class WP_Test_Jigoshop_Countries extends WP_UnitTestCase
 		$this->markTestIncomplete('This test has not been implemented yet.');
   }
 
-  public function test_shipping_to_prefix() {
-
-  	// Weak point, what if this fails?
-  	require_once('classes/jigoshop_customer.class.php');
-
-  	// If they're on the list
-  	jigoshop_customer::instance()->set_country('GB');
-  	$this->assertEquals('to the', $this->object->shipping_to_prefix());
-
-  	// If they're not on the list
-  	jigoshop_customer::instance()->set_country('Nothing');
-  	$this->assertEquals('to', $this->object->shipping_to_prefix());
-  }
 }

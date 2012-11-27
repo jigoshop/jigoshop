@@ -728,9 +728,12 @@ class jigoshop_cart extends Jigoshop_Singleton {
 				foreach ( self::get_applied_tax_classes() as $tax_class ) {
 					// recalc tax based on discounts
 					$rate = self::$tax->get_rate($tax_class);
-					$tax = self::$tax->calc_tax( 
-						self::$cart_contents_total_ex_tax + self::$shipping_total - $total_cart_discounts - $total_product_discounts, $rate, false
-					);
+					if ( self::$shipping_tax_total > 0 ) {
+						$total_to_use = self::$cart_contents_total_ex_tax + self::$shipping_total;
+					} else {
+						$total_to_use = self::$cart_contents_total_ex_tax;
+					}
+					$tax = self::$tax->calc_tax( $total_to_use - $total_cart_discounts - $total_product_discounts, $rate, false );
 					self::$tax->update_tax_amount( $tax_class, $tax * 100, false, true );
 					$temp += self::$tax->get_tax_amount($tax_class);
 				}
@@ -756,9 +759,12 @@ class jigoshop_cart extends Jigoshop_Singleton {
 					// with an initial discount, recalc taxes and get a proper discount
 					foreach ( self::get_applied_tax_classes() as $tax_class ) {
 						$rate = self::$tax->get_rate($tax_class);
-						$tax = self::$tax->calc_tax( 
-							self::$cart_contents_total_ex_tax + self::$shipping_total, $rate, false
-						);
+						if ( self::$shipping_tax_total > 0 ) {
+							$total_to_use = self::$cart_contents_total_ex_tax + self::$shipping_total;
+						} else {
+							$total_to_use = self::$cart_contents_total_ex_tax;
+						}
+						$tax = self::$tax->calc_tax( $total_to_use, $rate, false );
 						self::$tax->update_tax_amount( $tax_class, $tax * 100, false, true );
 						$temp += self::$tax->get_tax_amount($tax_class);
 					}
@@ -878,21 +884,23 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
         $return = false;
 
-        if ( (jigoshop_cart::get_tax_amount($tax_class, false) > 0 && jigoshop_cart::get_tax_rate($tax_class) > 0) || jigoshop_cart::get_tax_rate($tax_class) !== false ) :
+        if ( (jigoshop_cart::get_tax_amount($tax_class, false) > 0 
+        	&& jigoshop_cart::get_tax_rate($tax_class) > 0) 
+        	|| jigoshop_cart::get_tax_rate($tax_class) !== false ) {
+        	
             $return = self::$tax->get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%): ';
 
-            // only show estimated tag when customer is on the cart page and no shipping calculator is enabled to be able to change
-            // country
-            if (!jigoshop_shipping::show_shipping_calculator() && is_cart()) :
+            // only show estimated tag when customer is on the cart page and no shipping calculator is enabled to be able to change country
+            if (!jigoshop_shipping::show_shipping_calculator() && is_cart()) {
 
-                if (self::needs_shipping() && jigoshop_shipping::is_enabled()) :
-                    $return .= '<small>' . sprintf(__('estimated for %s', 'jigoshop'), jigoshop_countries::estimated_for_prefix() . __(jigoshop_countries::$countries[jigoshop_countries::get_base_country()], 'jigoshop')) . '</small>';
-                else :
-                    $return .= '<small>' . sprintf(__('estimated for %s', 'jigoshop'), jigoshop_countries::estimated_for_prefix() . __(jigoshop_countries::$countries[jigoshop_customer::get_country()], 'jigoshop')) . '</small>';
-                endif;
+                if (self::needs_shipping() && jigoshop_shipping::is_enabled()) {
+                    $return .= '<small>' . sprintf(__('estimated for: %s', 'jigoshop'), __(jigoshop_countries::$countries[jigoshop_countries::get_base_country()], 'jigoshop')) . '</small>';
+                } else {
+                    $return .= '<small>' . sprintf(__('estimated for: %s', 'jigoshop'), __(jigoshop_countries::$countries[jigoshop_customer::get_country()], 'jigoshop')) . '</small>';
+                }
 
-            endif;
-        endif;
+            }
+        }
 
         return $return;
     }

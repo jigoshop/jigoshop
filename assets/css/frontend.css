@@ -823,6 +823,7 @@ td.quantity,
 }
 .cart-collaterals .cart_totals p {
   margin: 0 !important;
+  text-align: left;
 }
 .cart-collaterals .cart_totals table {
   border-collapse: separate;

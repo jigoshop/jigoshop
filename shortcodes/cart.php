@@ -234,7 +234,7 @@ function jigoshop_cart($atts) {
 
                             <?php if (jigoshop_cart::get_cart_shipping_total()) : ?>
 							<tr>
-                                <th class="cart-row-shipping-title"><?php _e('Shipping', 'jigoshop'); ?> <small><?php echo jigoshop_countries::shipping_to_prefix() . ' ' . __(jigoshop_customer::get_shipping_country_or_state(), 'jigoshop'); ?></small></th>
+                                <th class="cart-row-shipping-title"><?php _e('Shipping', 'jigoshop'); ?> <small><?php echo _x('To: ','shipping destination','jigoshop') . __(jigoshop_customer::get_shipping_country_or_state(), 'jigoshop'); ?></small></th>
                                 <td class="cart-row-shipping"><?php echo jigoshop_cart::get_cart_shipping_total(true,true); ?> <small><?php echo jigoshop_cart::get_cart_shipping_title(); ?></small></td>
                             </tr>
                             <?php endif; ?>

@@ -765,10 +765,10 @@ class Jigoshop_Options_Parser {
 
 	public function format_option_for_display( $item ) {
 
-		if ( empty( $item['id'] )) return '';   // ensure we have an id to work with
-		
 		$data = Jigoshop_Base::get_options()->get_current_options();
 
+		if ( ! isset( $data[$item['id']] )) return '';   // ensure we have an id to work with
+		
 		$display = "";					// each item builds it's output into this and it's returned for echoing
 		$class = "";
 		

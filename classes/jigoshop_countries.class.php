@@ -879,22 +879,6 @@ class jigoshop_countries extends Jigoshop_Base {
 		return $allowed_countries;
 	}
 
-	/** Gets the correct string for shipping - ether 'to the' or 'to' */
-	function shipping_to_prefix() {
-		$return = '';
-		if (in_array(jigoshop_customer::get_country(), array( 'GB', 'US', 'AE', 'CZ', 'DO', 'NL', 'PH', 'USAF' ))) $return = __('to the', 'jigoshop');
-		else $return = __('to', 'jigoshop');
-		$return = apply_filters('shipping_to_prefix', $return, jigoshop_customer::get_shipping_country());
-		return $return;
-	}
-
-	function estimated_for_prefix() {
-		$return = '';
-		if (in_array(jigoshop_customer::get_country(), array( 'GB', 'US', 'AE', 'CZ', 'DO', 'NL', 'PH', 'USAF' ))) $return = __('the ', 'jigoshop');
-		$return = apply_filters('estimated_for_prefix', $return, jigoshop_customer::get_shipping_country());
-		return $return;
-	}
-
 	/** get states */
 	function get_states( $cc ) {
 		if (isset( self::$states[$cc] )) return self::$states[$cc];

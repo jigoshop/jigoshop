@@ -91,8 +91,13 @@ class jigoshop_shipping extends Jigoshop_Singleton {
         endif;
 
 		//throw error if there are no shipping methods
-		if(empty($_available_methods))
-			self::$shipping_error_message = __('Please enter your complete shipping address to view shipping options.', 'jigoshop');
+		if ( empty( $_available_methods )) {
+			self::$shipping_error_message = __('Please enter your shipping destination to view shipping options.', 'jigoshop');
+			if ( self::get_options()->get_option('jigoshop_enable_shipping_calc') == 'no' && is_cart() ) {
+			self::$shipping_error_message .= __(' If the Shipping Calculator is not available here, you will need to advance to the Checkout to do this.','jigoshop');
+			}
+			self::$shipping_error_message .= __(' There may be no methods available for your destination and you should contact us for assistance.', 'jigoshop');
+		}
 		
         return $_available_methods;
     }
