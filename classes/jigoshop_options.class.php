@@ -282,11 +282,11 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		$old_option = get_option($name);
 
 		if ( isset( self::$current_options[$name] )) :
-			return self::$current_options[$name];
+			return apply_filters( 'jigoshop_get_option', self::$current_options[$name], $name, $default);
 		elseif ( isset ( $old_option )) :
-			return $old_option;
+			return apply_filters( 'jigoshop_get_option', $old_option, $name, $default);
 		elseif ( isset( $default )) :
-			return $default;
+			return apply_filters( 'jigoshop_get_option', $default, $name, $default);
 		else :
 			return null;
 		endif;

@@ -73,7 +73,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
         unset( jigoshop_session::instance()->chosen_shipping_method_id );
         unset( jigoshop_session::instance()->selected_rate_id ); // calculable shipping
 
-        jigoshop_session::instance()->cart = self::$cart_contents;
+        jigoshop_session::instance()->cart = apply_filters( 'jigoshop_cart_set_session', self::$cart_contents );
 
         jigoshop_session::instance()->coupons = self::$applied_coupons;
 
@@ -237,7 +237,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 				$coupon = JS_Coupons::get_coupon($code);
 				if (JS_Coupons::is_valid_coupon_for_product($code, $_product)) {
 					if ($coupon['type'] == 'fixed_product') {
-						self::$discount_total = self::$discount_total - ( $coupon['amount'] * $_product['quantity'] );
+						self::$discount_total = self::$discount_total - ( apply_filters( 'jigoshop_coupon_product_fixed_amount', $coupon['amount'], $coupon ) * $_product['quantity'] );
 						unset(self::$applied_coupons[$key]);
 					} else if ($coupon['type'] == 'percent_product') {
 						self::$discount_total = self::$discount_total - (( $_product['data']->get_price() * $_product['quantity'] / 100 ) * $coupon['amount']);
@@ -408,7 +408,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 				switch ( $coupon['type'] ) :
 
 					case 'fixed_cart' :
-						$cart_discount += $coupon['amount'];
+						$cart_discount += apply_filters( 'jigoshop_coupon_cart_fixed_amount', $coupon['amount'], $coupon);
 						break;
 
 					case 'percent' :
@@ -449,7 +449,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 			switch ( $coupon['type'] ) {
 			
 				case 'fixed_product' :
-					$coupon_discount = ( $coupon['amount'] * $values['quantity'] );
+					$coupon_discount = ( apply_filters( 'jigoshop_coupon_product_fixed_amount', $coupon['amount'], $coupon) * $values['quantity'] );
 					if ( $coupon_discount > $price * $values['quantity'] )
 						$coupon_discount = $price * $values['quantity'];
 					break;
@@ -1087,13 +1087,15 @@ class jigoshop_cart extends Jigoshop_Singleton {
             /* Can't use the jigoshop_cart::get_cart_subtotal() method as it's not ready at this point yet. */
             $subtotal = self::$cart_contents_total;
 			
-            if ( !empty($the_coupon['order_total_max']) && $subtotal > $the_coupon['order_total_max'] ) {
-                jigoshop::add_error(sprintf(__('Your subtotal does not match the <strong>maximum</strong> order total requirements of %.2f for coupon "%s" and it has been removed.', 'jigoshop'), $the_coupon['order_total_max'], $coupon_code));
+            $order_total_max = apply_filters( 'jigoshop_coupon_order_total_max', $the_coupon['order_total_max'], $the_coupon);
+            if ( !empty($the_coupon['order_total_max']) && $subtotal > $order_total_max ) {
+                jigoshop::add_error(sprintf(__('Your subtotal does not match the <strong>maximum</strong> order total requirements of %.2f for coupon "%s" and it has been removed.', 'jigoshop'), $order_total_max, $coupon_code));
                 return false;
             }
 
-            if ( !empty($the_coupon['order_total_min']) && $subtotal < $the_coupon['order_total_min'] ) {
-                jigoshop::add_error(sprintf(__('Your subtotal does not match the <strong>minimum</strong> order total requirements of %.2f for coupon "%s" and it has been removed.', 'jigoshop'), $the_coupon['order_total_min'], $coupon_code));
+            $order_total_min = apply_filters( 'jigoshop_coupon_order_total_min', $the_coupon['order_total_min'], $the_coupon);
+            if ( !empty($the_coupon['order_total_min']) && $subtotal < $order_total_min ) {
+                jigoshop::add_error(sprintf(__('Your subtotal does not match the <strong>minimum</strong> order total requirements of %.2f for coupon "%s" and it has been removed.', 'jigoshop'), $order_total_min, $coupon_code));
                 return false;
             }
         }
