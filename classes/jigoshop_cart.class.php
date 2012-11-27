@@ -1087,13 +1087,15 @@ class jigoshop_cart extends Jigoshop_Singleton {
             /* Can't use the jigoshop_cart::get_cart_subtotal() method as it's not ready at this point yet. */
             $subtotal = self::$cart_contents_total;
 			
-            if ( !empty($the_coupon['order_total_max']) && $subtotal > $the_coupon['order_total_max'] ) {
-                jigoshop::add_error(sprintf(__('Your subtotal does not match the <strong>maximum</strong> order total requirements of %.2f for coupon "%s" and it has been removed.', 'jigoshop'), $the_coupon['order_total_max'], $coupon_code));
+            $order_total_max = apply_filters( 'jigoshop_coupon_order_total_max', $the_coupon['order_total_max'], $the_coupon);
+            if ( !empty($the_coupon['order_total_max']) && $subtotal > $order_total_max ) {
+                jigoshop::add_error(sprintf(__('Your subtotal does not match the <strong>maximum</strong> order total requirements of %.2f for coupon "%s" and it has been removed.', 'jigoshop'), $order_total_max, $coupon_code));
                 return false;
             }
 
-            if ( !empty($the_coupon['order_total_min']) && $subtotal < $the_coupon['order_total_min'] ) {
-                jigoshop::add_error(sprintf(__('Your subtotal does not match the <strong>minimum</strong> order total requirements of %.2f for coupon "%s" and it has been removed.', 'jigoshop'), $the_coupon['order_total_min'], $coupon_code));
+            $order_total_min = apply_filters( 'jigoshop_coupon_order_total_min', $the_coupon['order_total_min'], $the_coupon);
+            if ( !empty($the_coupon['order_total_min']) && $subtotal < $order_total_min ) {
+                jigoshop::add_error(sprintf(__('Your subtotal does not match the <strong>minimum</strong> order total requirements of %.2f for coupon "%s" and it has been removed.', 'jigoshop'), $order_total_min, $coupon_code));
                 return false;
             }
         }
