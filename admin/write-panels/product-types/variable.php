@@ -258,6 +258,8 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			}
 
 			update_post_meta( $ID, 'variation_data', $variation_data );
+			
+			do_action( 'jigoshop_variable_product_table_data_save' , $ID, $meta);	
 		}
 	}
 
@@ -528,6 +530,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			<div class="inside">
 				<table cellpadding="0" cellspacing="0" class="jigoshop_variable_attributes">
 					<tbody>
+					
+						<?php do_action('jigoshop_variable_product_table_begin', $variation, $attributes)?>
+					
 						<tr>
 							<td class="upload_image" rowspan="2">
 								<a href="#" class="upload_image_button <?php if (isset($image_id)) echo 'remove'; ?>" rel="<?php echo $variation->ID; ?>">
@@ -611,6 +616,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 								&nbsp;
 							</td>
 						</tr>
+						
+						<?php do_action( 'jigoshop_variable_product_table_end' , $variation, $attributes)?>
+						
 					</tbody>
 				</table>
 			</div>
