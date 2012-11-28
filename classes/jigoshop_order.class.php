@@ -195,7 +195,7 @@ class jigoshop_order extends Jigoshop_Base {
 	}
 
 	/** Gets shipping and product tax */
-	function get_total_tax($with_currency = false) {
+	function get_total_tax($with_currency = false, $with_price_options = true) {
         $order_tax = 0;
 
         if ($this->get_tax_classes() && is_array($this->get_tax_classes())) :
@@ -209,8 +209,11 @@ class jigoshop_order extends Jigoshop_Base {
             endforeach;
 
         endif;
-
-        return jigoshop_price($order_tax, array('with_currency' => $with_currency));
+        
+		if ( $with_price_options )
+			return jigoshop_price($order_tax, array('with_currency' => $with_currency));
+		else
+			return number_format( (double)$order_tax, 2 );  // no formatting for pricing options for separators, use defaults
 	}
 
     public function get_tax_classes() {

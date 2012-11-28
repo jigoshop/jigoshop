@@ -4,7 +4,7 @@ Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, wid
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.3
 Tested up to: 3.5 RC1
-Stable tag: 1.4.6
+Stable tag: 1.4.7
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,11 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.4.7 - 2012-11-28 =
+* Fix: Shipping and Payment gateway extensions will now appear in the Settings
+* Fix: Tax now shows at PayPal with pricing options that have commas for decimal separator
+* Fix: Coupons that exclude products or categories will now work for products that are not excluded
+
 = 1.4.6 - 2012-11-27 =
 * Tweak: Provide setting on the Shipping tab to show Checkout shipping fields by default or not
 * Tweak: Updated .pot file for language translators
