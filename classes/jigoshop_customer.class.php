@@ -363,7 +363,7 @@ class jigoshop_customer extends Jigoshop_Singleton {
 			break;
 		endswitch;
 
-		apply_filters('jigoshop_address_field_types', $field, $args);
+		$field = apply_filters('jigoshop_address_field_types', $field, $args);
 
 		if ($args['return']) return $field; else echo $field;
 	}
