@@ -59,7 +59,7 @@ function jigoshop_edit_product_columns($columns) {
 	$columns["thumb"] = null;
 	$columns["title"] = __("Title", 'jigoshop');
 
-    $columns["featured"] = '<img src="' . jigoshop::plugin_url() . '/assets/images/head_featured.png" alt="' . __('Featured', 'jigoshop') . '" />';
+    $columns["featured"] = '<img src="' . jigoshop::assets_url() . '/assets/images/head_featured.png" alt="' . __('Featured', 'jigoshop') . '" />';
 
 	$columns["product-type"] = __("Type", 'jigoshop');
 	if( $jigoshop_options->get_option('jigoshop_enable_sku', true) == 'yes' ) {
