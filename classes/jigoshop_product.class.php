@@ -86,8 +86,8 @@ class jigoshop_product extends Jigoshop_Base {
 		$this->product_type = ( ! empty( $terms ) ) ? $terms->slug : 'simple';
 
 		// Define data
-		$this->regular_price         = isset($meta['regular_price'][0]) ? $meta['regular_price'][0] : null;
-		$this->sale_price            = isset($meta['sale_price'][0]) 	? $meta['sale_price'][0] : null;
+		$this->regular_price         = isset($meta['regular_price'][0]) ? apply_filters( 'jigoshop_get_regular_price', $meta['regular_price'][0], $this) : null;
+		$this->sale_price            = isset($meta['sale_price'][0]) 	? apply_filters( 'jigoshop_get_sale_price', $meta['sale_price'][0], $this) : null;
 		$this->sale_price_dates_from = isset($meta['sale_price_dates_from'][0]) ? $meta['sale_price_dates_from'][0] : null;
 		$this->sale_price_dates_to   = isset($meta['sale_price_dates_to'][0]) ? $meta['sale_price_dates_to'][0] : null;
 

@@ -45,7 +45,7 @@ class jigoshop_shipping_method {
 
     	if ($this->get_enabled()=="no") return false;
 
-		if (isset(jigoshop_cart::$cart_contents_total_ex_dl) && isset($this->min_amount) && $this->min_amount && $this->min_amount > jigoshop_cart::$cart_contents_total_ex_dl) return false;
+		if (isset(jigoshop_cart::$cart_contents_total_ex_dl) && isset($this->min_amount) && $this->min_amount && apply_filters( 'jigoshop_shipping_min_amount', $this->min_amount, $this) > jigoshop_cart::$cart_contents_total_ex_dl) return false;
 
 		if (is_array($this->get_ship_to_countries())) :
 			if (!in_array(jigoshop_customer::get_shipping_country(), $this->get_ship_to_countries())) :
@@ -208,12 +208,12 @@ class jigoshop_shipping_method {
 	// call from shipping when calculating cheapest method
     public function get_cheapest_price() {
         $my_cheapest_rate = $this->get_cheapest_rate();
-        return ($my_cheapest_rate == NULL ? $this->shipping_total : $my_cheapest_rate['price']);
+        return apply_filters( 'jigoshop_shipping_total_price', ($my_cheapest_rate == NULL ? $this->shipping_total : $my_cheapest_rate['price']) );
     }
 
     protected function get_cheapest_price_tax() {
         $my_cheapest_rate = $this->get_cheapest_rate();
-        return ($my_cheapest_rate == NULL ? $this->shipping_tax : $my_cheapest_rate['tax']);
+        return apply_filters( 'jigoshop_shipping_tax_price', ($my_cheapest_rate == NULL ? $this->shipping_tax : $my_cheapest_rate['tax']) );
     }
 
     /**
@@ -237,14 +237,14 @@ class jigoshop_shipping_method {
     // if the method doesn't utilize the rates array, return the shipping total
     public function get_selected_price($rate_index) {
         $my_rate = $this->get_selected_rate($rate_index);
-        return ($my_rate == NULL ? $this->shipping_total : $my_rate['price']);
+        return apply_filters( 'jigoshop_shipping_total_price', ($my_rate == NULL ? $this->shipping_total : $my_rate['price']) );
     }
 
     // if the method doesn't utilize the rates array, return what the method should return, and that is
     // the shipping tax
     public function get_selected_tax($rate_index) {
         $my_rate = $this->get_selected_rate($rate_index);
-        return ($my_rate == NULL ? $this->shipping_tax : $my_rate['tax']);
+        return apply_filters( 'jigoshop_shipping_tax_price', ($my_rate == NULL ? $this->shipping_tax : $my_rate['tax']) );
     }
     
     // essentially if the method doesn't use the array, there is only 1 rate to return. Therefore if rates == null,
