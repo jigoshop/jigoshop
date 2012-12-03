@@ -165,7 +165,7 @@ function jigoshop_product_cat_column( $columns, $column, $id ) {
 		return false;
 
 	$image = jigoshop_product_cat_image($id);
-	$columns .= '<a class="row-title" href="'.get_edit_term_link( $id, 'product_cat' ).'">';
+	$columns .= '<a class="row-title" href="'.get_edit_term_link( $id, 'product_cat', 'product' ).'">';
 	$columns .= '<img src="'.$image['image'].'" alt="Thumbnail" class="wp-post-image" height="32" width="32" />';
 	$columns .= '</a>';
 
