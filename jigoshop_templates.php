@@ -96,17 +96,23 @@ function jigoshop_get_template_part( $slug, $name = '' ) {
 }
 
 //################################################################################
+// Returns the template to be used ( child-theme or theme or plugin )
+//################################################################################
+
+function jigoshop_return_template( $template_name ) {
+	$template = locate_template(array( $template_name , JIGOSHOP_TEMPLATE_URL . $template_name )  ,false );
+	if ( !$template)
+		$template = jigoshop::plugin_path() . '/templates/' . $template_name ;
+	return $template;
+}
+
+//################################################################################
 // Get the reviews template (comments)
 //################################################################################
 
 function jigoshop_comments_template($template) {
-
 	if(get_post_type() !== 'product') return $template;
-
-	if (file_exists( STYLESHEETPATH . '/' . JIGOSHOP_TEMPLATE_URL . 'single-product-reviews.php' ))
-		return STYLESHEETPATH . '/' . JIGOSHOP_TEMPLATE_URL . 'single-product-reviews.php';
-	else
-		return jigoshop::plugin_path() . '/templates/single-product-reviews.php';
+	return  jigoshop_return_template('single-product-reviews.php') ;
 }
 
 add_filter('comments_template', 'jigoshop_comments_template' );
@@ -117,8 +123,6 @@ add_filter('comments_template', 'jigoshop_comments_template' );
 //################################################################################
 
 function jigoshop_get_template($template_name, $require_once = true) {
-	if (file_exists( STYLESHEETPATH . '/' . JIGOSHOP_TEMPLATE_URL . $template_name )) load_template( STYLESHEETPATH . '/' . JIGOSHOP_TEMPLATE_URL . $template_name, $require_once );
-	elseif (file_exists( STYLESHEETPATH . '/' . $template_name )) load_template( STYLESHEETPATH . '/' . $template_name , $require_once);
-	else load_template( jigoshop::plugin_path() . '/templates/' . $template_name , $require_once);
+	load_template( jigoshop_return_template( $template_name), $require_once);
 }
 
