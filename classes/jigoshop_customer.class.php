@@ -368,6 +368,13 @@ class jigoshop_customer extends Jigoshop_Singleton {
 		switch ($args['type']) :
 			case "country" :
 
+				$current_c = self::get_value($args['name']);
+				$is_shipping_c = strpos($args['name'], 'shipping');
+				if (!$current_c) :
+					if ($is_shipping_c === false) $current_c = jigoshop_customer::get_country();
+					else $current_c = jigoshop_customer::get_shipping_country();
+				endif;
+				
                 //Remove 'Select a Country' option from drop-down menu for countries.
                 // There is no need to have it, because was assume when user hasn't selected
                 // a country that they are from the shop base country.
@@ -378,7 +385,7 @@ class jigoshop_customer extends Jigoshop_Singleton {
 				foreach(jigoshop_countries::get_allowed_countries() as $key=>$value) :
 					$field .= '<option value="'.esc_attr($key).'"';
 					if (self::get_value($args['name'])==$key) $field .= 'selected="selected"';
-					elseif (self::get_value($args['name']) && jigoshop_customer::get_country()==$key) $field .= 'selected="selected"';
+					elseif (self::get_value($args['name']) && $current_c==$key) $field .= 'selected="selected"';
 					$field .= '>'.__($value, 'jigoshop').'</option>';
 				endforeach;
 
@@ -389,11 +396,18 @@ class jigoshop_customer extends Jigoshop_Singleton {
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="' . esc_attr( $args['name'] ) . '" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>';
 
+				$is_shipping_s = strpos($args['name'], 'shipping');
 				$current_cc = self::get_value($args['rel']);
-				if (!$current_cc) $current_cc = jigoshop_customer::get_country();
-
+				if (!$current_cc) :
+					if ($is_shipping_s === false) $current_cc = jigoshop_customer::get_country();
+					else $current_cc = jigoshop_customer::get_shipping_country();
+				endif;
+				
 				$current_r = self::get_value($args['name']);
-				if (!$current_r) $current_r = jigoshop_customer::get_state();
+				if (!$current_r) :
+					if ($is_shipping_s === false) $current_r = jigoshop_customer::get_state();
+					else $current_r = jigoshop_customer::get_shipping_state();
+				endif;
 
 				$states = jigoshop_countries::get_states( $current_cc );
 
