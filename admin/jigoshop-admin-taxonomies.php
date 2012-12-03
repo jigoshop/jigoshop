@@ -22,8 +22,6 @@ add_action('product_cat_add_form_fields' , 'jigoshop_add_category_thumbnail_fiel
 add_action('product_cat_edit_form_fields', 'jigoshop_edit_category_thumbnail_field', 10,2);
 
 function jigoshop_add_category_thumbnail_field() {
-	wp_enqueue_style('thickbox');
-	wp_enqueue_script('thickbox');
 	$image = jigoshop::assets_url().'/assets/images/placeholder.png';
 	?>
 	<div class="form-field">
@@ -76,8 +74,6 @@ function jigoshop_add_category_thumbnail_field() {
 }
 
 function jigoshop_edit_category_thumbnail_field( $term, $taxonomy ) {
-	wp_enqueue_style('thickbox');
-	wp_enqueue_script('thickbox');
 	$image = jigoshop_product_cat_image($term->term_id);
 	?>
 	<tr class="form-field">
@@ -169,7 +165,7 @@ function jigoshop_product_cat_column( $columns, $column, $id ) {
 		return false;
 
 	$image = jigoshop_product_cat_image($id);
-	$columns .= '<a class="row-title" href="'.get_edit_term_link( $id, 'product_cat' ).'">';
+	$columns .= '<a class="row-title" href="'.get_edit_term_link( $id, 'product_cat', 'product' ).'">';
 	$columns .= '<img src="'.$image['image'].'" alt="Thumbnail" class="wp-post-image" height="32" width="32" />';
 	$columns .= '</a>';
 
