@@ -67,8 +67,8 @@ class jigoshop_cron extends Jigoshop_Base {
 		if ( self::get_options()->get_option( 'jigoshop_reset_pending_orders' ) == 'yes' ) {
 			$lastMonth = date('Y-m-d', strtotime("-1 months"));
 	
-			$orders = $this->wpdb->get_results($this->wpdb->prepare("
-				SELECT * FROM {$this->wpdb->posts} AS posts
+			$orders = $this->wpdb->get_results(
+				"SELECT * FROM {$this->wpdb->posts} AS posts
 	
 				LEFT JOIN {$this->wpdb->postmeta}           AS meta   ON posts.ID = meta.post_id
 				LEFT JOIN {$this->wpdb->term_relationships} AS rel    ON posts.ID = rel.object_ID
@@ -80,9 +80,9 @@ class jigoshop_cron extends Jigoshop_Base {
 				AND     posts.post_status   = 'publish'
 				AND     posts.post_date     < '{$lastMonth}'
 				AND     tax.taxonomy        = 'shop_order_status'
-				AND     term.slug           IN ('pending')
-			"));
-	
+				AND     term.slug           IN ('pending');"
+			);
+
 			foreach ($orders as $v) :
 				$order = new jigoshop_order($v->post_id);
 				$order->update_status( 'on-hold', __('Archived due to order being in pending state for a month or longer.', 'jigoshop') );
