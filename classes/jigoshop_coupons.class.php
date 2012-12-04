@@ -223,6 +223,11 @@ class JS_Coupons extends Jigoshop_Base {
 			return true;
 		}
 		
+		// some products may have passed the earlier exclusion tests, allow them now if we got this far
+		if ( !empty( $coupon['exclude_categories'] ) ) return true;
+		if ( !empty( $coupon['exclude_products'] ) ) return true;
+		
+		// otherwise we've failed
 		return false;
 	}
 

@@ -581,16 +581,21 @@ class jigoshop_cart extends Jigoshop_Singleton {
 						 && jigoshop_customer::is_customer_outside_base( $shipable )
 						) {
 
-						$total_item_price = $_product->get_price_with_tax() * $values['quantity'] * 100;
-                        // tax_classes_applied is for special email processing 
-                        // that needs to know what tax classes (%) were applied to each product. 
-                        // Specifically for Norway. Others may utilize it too
+						$total_item_price = $_product->get_price_excluding_tax() * $values['quantity'] * 100;
+
+						$product_discounted_price = (self::get_options()->get_option('jigoshop_tax_after_coupon') == 'yes'
+								&& ($cart_discount_amount > 0 || $current_product_discount > 0) 
+									? $discounted_item_price * 100
+									: $total_item_price);
+
                         $tax_classes_applied = self::$tax->calculate_tax_amounts(
-                                $total_item_price, 
+                                $product_discounted_price, 
                                 $_product->get_tax_classes(), 
                                 false
                         );
 
+                        $total_item_price = ($discounted_item_price + self::$tax->get_non_compounded_tax_amount() + self::$tax->get_compound_tax_amount()) * 100;
+                        
 					} else {   // all other scenarios
 
 						$price_includes_tax =

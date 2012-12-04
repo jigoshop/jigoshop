@@ -250,8 +250,8 @@ class paypal extends jigoshop_payment_gateway {
 		);
 
 		// changed for Jigoshop 1.4.4 - we -always- send a separate tax amount to PayPal regardless of settings
-		$paypal_args['tax']					= $order->get_total_tax();
-		$paypal_args['tax_cart']			= $order->get_total_tax();
+		$paypal_args['tax']       = $order->get_total_tax(false,false); // no currency sign or pricing options for separators
+		$paypal_args['tax_cart']  = $order->get_total_tax(false,false); // no currency sign or pricing options for separators
 
 		// For Jigoshop 1.4.5 we will always send shipping information to paypal, even if it's just the billing info
 		// 'no_shipping' must ALWAYS be '1', as this will NOT allow paypal to prompt for an address
@@ -260,21 +260,16 @@ class paypal extends jigoshop_payment_gateway {
 		// - which bypasses cart/checkout tax calcs for shipping destination
 		// If addresses ARE allowed to be edited at paypal, they will NOT appear in final orders
 		// Ultimately, the Jigoshop Checkout determines -all- addresses
-//		if ($this->send_shipping=='yes') :
-			$paypal_args['no_shipping'] = 1;
-			$paypal_args['address_override'] = 1;
-			$paypal_args['first_name'] = $order->shipping_first_name;
-			$paypal_args['last_name'] = $order->shipping_last_name;
-			$paypal_args['address1'] = $order->shipping_address_1;
-			$paypal_args['address2'] = $order->shipping_address_2;
-			$paypal_args['city'] = $order->shipping_city;
-			$paypal_args['state'] = $order->shipping_state;
-			$paypal_args['zip'] = $order->shipping_postcode;
-			$paypal_args['country'] = $order->shipping_country;
-// 		else :
-// 			$paypal_args['no_shipping'] = 1;
-// 			$paypal_args['address_override'] = 0;
-// 		endif;
+		$paypal_args['no_shipping'] = 1;
+		$paypal_args['address_override'] = 1;
+		$paypal_args['first_name'] = $order->shipping_first_name;
+		$paypal_args['last_name'] = $order->shipping_last_name;
+		$paypal_args['address1'] = $order->shipping_address_1;
+		$paypal_args['address2'] = $order->shipping_address_2;
+		$paypal_args['city'] = $order->shipping_city;
+		$paypal_args['state'] = $order->shipping_state;
+		$paypal_args['zip'] = $order->shipping_postcode;
+		$paypal_args['country'] = $order->shipping_country;
 
 		// Cart Contents
 		$item_loop = 0;

@@ -3,8 +3,8 @@ Contributors: Jigowatt
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigowatt, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.3
-Tested up to: 3.5 RC1
-Stable tag: 1.4.6
+Tested up to: 3.5 RC2
+Stable tag: 1.4.8
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,16 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.4.8 - 2012-12-03 =
+* Fix: Out of base state taxes are now correct with setting 'Catalog prices include tax'
+* Fix: Fatal error on product backorder emails
+* Fix: Incorrect edit link on Admin product category thumbnails
+
+= 1.4.7 - 2012-11-28 =
+* Fix: Shipping and Payment gateway extensions will now appear in the Settings
+* Fix: Tax now shows at PayPal with pricing options that have commas for decimal separator
+* Fix: Coupons that exclude products or categories will now work for products that are not excluded
+
 = 1.4.6 - 2012-11-27 =
 * Tweak: Provide setting on the Shipping tab to show Checkout shipping fields by default or not
 * Tweak: Updated .pot file for language translators
