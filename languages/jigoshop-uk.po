@@ -30,7 +30,7 @@ msgstr "Виберіть штат&hellip;"
 
 #: ../jigoshop.php:307 ../jigoshop_template_functions.php:803
 msgid "state"
-msgstr "Область"
+msgstr "область"
 
 #: ../jigoshop.php:335 ../admin/jigoshop-admin.php:79
 msgid "Settings"
@@ -63,7 +63,7 @@ msgstr ""
 
 #: ../jigoshop.php:1069
 msgid "Please rate the product."
-msgstr "Будь ласка оцініть товар."
+msgstr "Будь ласка, оцініть товар."
 
 #: ../jigoshop.php:1089 ../admin/jigoshop-admin-dashboard.php:308
 #: ../classes/jigoshop_product.class.php:1030
@@ -86,11 +86,11 @@ msgstr ", "
 
 #: ../jigoshop.php:1177 ../jigoshop_taxonomy.php:115
 msgid "Search "
-msgstr "Шукати"
+msgstr "Шукати "
 
 #: ../jigoshop.php:1178 ../jigoshop_taxonomy.php:116
 msgid "All "
-msgstr "Всі"
+msgstr "Всі "
 
 #: ../jigoshop.php:1179 ../jigoshop.php:1180 ../jigoshop_taxonomy.php:117
 #: ../jigoshop_taxonomy.php:118
@@ -157,11 +157,11 @@ msgstr "Повернутись на головну &rarr;"
 
 #: ../jigoshop_actions.php:434
 msgid "Username is required."
-msgstr "Нік є обов'язковим"
+msgstr "Нік є обов’язковим"
 
 #: ../jigoshop_actions.php:435
 msgid "Password is required."
-msgstr "Пароль є обов'язковим"
+msgstr "Пароль є обов’язковим"
 
 #: ../jigoshop_actions.php:493
 msgid "Order cancelled by customer."
@@ -176,7 +176,7 @@ msgid ""
 "Your order is no longer pending and could not be cancelled. Please contact "
 "us if you need assistance."
 msgstr ""
-"Ваше замовлення більше не очікує і не може бути скасоване. Будь ласка "
+"Ваше замовлення більше не очікує і не може бути скасоване. Будь ласка, "
 "напишіть у разі потреби."
 
 #: ../jigoshop_actions.php:504 ../jigoshop_actions.php:567
@@ -240,11 +240,11 @@ msgstr "[%s] Нове замовлення покупця (%s)"
 
 #: ../jigoshop_emails.php:41
 msgid "You have received an order from "
-msgstr "Ви отримали замовлення від"
+msgstr "Ви отримали замовлення від "
 
 #: ../jigoshop_emails.php:41
 msgid ". Their order is as follows:"
-msgstr ". Their order is as follows:"
+msgstr ". Замовлення такі:"
 
 #: ../jigoshop_emails.php:72
 msgid "Order Received"
@@ -286,7 +286,7 @@ msgid ""
 "An order has been created for you on &quot;%s&quot;. To pay for this order "
 "please use the following link: %s"
 msgstr ""
-"Замовлення успішно створено для вас на &quot;%s&quot;. Для оплати цього "
+"Замовлення успішно створено для вас на «%s». Для оплати цього "
 "замовлення скористайтесь посиланням: %s"
 
 #: ../jigoshop_emails.php:218
@@ -342,7 +342,7 @@ msgstr "Тел.:"
 
 #: ../jigoshop_emails.php:388
 msgid "BILLING ADDRESS"
-msgstr "АДРЕСА РАХУНКА"
+msgstr "АДРЕСА РАХУНКУ"
 
 #: ../jigoshop_emails.php:403
 msgid "SHIPPING ADDRESS"
@@ -562,7 +562,7 @@ msgstr "Батьківський товар"
 
 #: ../jigoshop_taxonomy.php:159
 msgid "This is where you can add new products to your store."
-msgstr "Місце де ви можете додати новий товар у свій магазин."
+msgstr "Тут можна додати новий товар у свій магазин."
 
 #: ../jigoshop_taxonomy.php:179 ../admin/jigoshop-admin-help.php:303
 msgid "Variations"
@@ -583,7 +583,7 @@ msgstr "Додати новий варіант"
 
 #: ../jigoshop_taxonomy.php:184
 msgid "Edit Variation"
-msgstr "Ред. варіант"
+msgstr "Редагувати варіант"
 
 #: ../jigoshop_taxonomy.php:185
 msgid "New Variation"
@@ -591,7 +591,7 @@ msgstr "Новий варіант"
 
 #: ../jigoshop_taxonomy.php:186 ../jigoshop_taxonomy.php:187
 msgid "View Variation"
-msgstr "Перегл. варіант"
+msgstr "Переглянути варіант"
 
 #: ../jigoshop_taxonomy.php:188
 msgid "Search Variations"
@@ -654,7 +654,7 @@ msgstr "Батьківські замовлення"
 
 #: ../jigoshop_taxonomy.php:238
 msgid "This is where store orders are stored."
-msgstr "Місце де зберігаються замовлення."
+msgstr "Тут зберігаються замовлення."
 
 #: ../jigoshop_taxonomy.php:264
 msgid "Order statuses"
@@ -979,7 +979,7 @@ msgstr "Назва атрибута"
 #: ../admin/jigoshop-admin-attributes.php:147
 #: ../admin/jigoshop-admin-attributes.php:246
 msgid "The label is how it appears on your site."
-msgstr "Назва як вона буде показана на сайті"
+msgstr "Назва, як вона буде показана на сайті."
 
 #: ../admin/jigoshop-admin-attributes.php:150
 #: ../admin/jigoshop-admin-attributes.php:254
@@ -1025,11 +1025,11 @@ msgstr "Видалити"
 
 #: ../admin/jigoshop-admin-attributes.php:226
 msgid "Configure&nbsp;terms"
-msgstr "Налаштувати умови"
+msgstr "Налаштувати&nbsp;умови"
 
 #: ../admin/jigoshop-admin-attributes.php:230
 msgid "No attributes currently exist."
-msgstr "Не існує жодного атрибута"
+msgstr "Не існує жодного атрибута."
 
 #: ../admin/jigoshop-admin-attributes.php:240
 msgid "Add New Attribute"
@@ -1041,11 +1041,11 @@ msgstr "Скорочення атрибута"
 
 #: ../admin/jigoshop-admin-attributes.php:251
 msgid "Slug for your attribute (optional)."
-msgstr "Скорочення для атрибута (опціонально)"
+msgstr "Скорочення для атрибута (необов’язково)."
 
 #: ../admin/jigoshop-admin-attributes.php:272
 msgid "Are you sure you want to delete this?"
-msgstr "Ви впевнені що хочете це видалити?"
+msgstr "Ви впевнені, що хочете це видалити?"
 
 #: ../admin/jigoshop-admin-dashboard.php:53
 msgid "Right Now"
@@ -1078,7 +1078,7 @@ msgstr "Корисні посилання"
 
 #: ../admin/jigoshop-admin-dashboard.php:67
 msgid "Jigoshop Dashboard"
-msgstr "Jigoshop майстерня"
+msgstr "Керування Jigoshop"
 
 #: ../admin/jigoshop-admin-dashboard.php:109
 msgid "Shop Content"
@@ -1211,7 +1211,7 @@ msgstr "Підтримка"
 
 #: ../admin/jigoshop-admin-dashboard.php:389
 msgid "Receive priority, technical help from our dedicated support team."
-msgstr "Отримати пріоритетну технічну підтримку від нашої команди підтримки."
+msgstr "Отримати пріоритет, технічну підтримку від нашої команди."
 
 #: ../admin/jigoshop-admin-dashboard.php:390
 msgid "Extensions"
@@ -1243,7 +1243,7 @@ msgstr "Jigoshop на Github"
 
 #: ../admin/jigoshop-admin-dashboard.php:393
 msgid "Help extend Jigoshop."
-msgstr "Допоможи розширити Jigoshop."
+msgstr "Допоможіть розширити Jigoshop."
 
 #: ../admin/jigoshop-admin-dashboard.php:394
 msgid "Jigoshop on WordPress.org"
@@ -1255,7 +1255,7 @@ msgstr "Оцініть нас!"
 
 #: ../admin/jigoshop-admin-dashboard.php:399
 msgid "Jigoshop Project"
-msgstr "Jigoshop Project"
+msgstr "Проект Jigoshop"
 
 #: ../admin/jigoshop-admin-dashboard.php:400
 msgid ""
@@ -1267,11 +1267,11 @@ msgstr ""
 
 #: ../admin/jigoshop-admin-dashboard.php:405
 msgid "Jigoshop Social"
-msgstr ""
+msgstr "Jigoshop громадський"
 
 #: ../admin/jigoshop-admin-dashboard.php:413
 msgid "Jigoshop is brought to you by&hellip;"
-msgstr "Jigoshop підготовано для вас &hellip;"
+msgstr "Jigoshop підготовано для вас&hellip;"
 
 #: ../admin/jigoshop-admin-help.php:40 ../admin/jigoshop-admin-help.php:91
 #: ../admin/jigoshop-admin-help.php:134 ../admin/jigoshop-admin-help.php:188
@@ -1329,6 +1329,9 @@ msgid ""
 "upper left to show All, Published, Draft, or Trashed products. The default "
 "view is to show all products"
 msgstr ""
+"Можна фільтрувати список товарів по статусу, використовуючи текстові "
+"посилання вгорі ліворуч, щоб показати усі, опубліковані, редаговані чи "
+"видалені товари. Початково показаються усі."
 
 #: ../admin/jigoshop-admin-help.php:168
 msgid ""
@@ -1336,10 +1339,13 @@ msgid ""
 "specific month, or by a specific type by using the dropdown menus above the "
 "products list. Click the Filter button after making your selection"
 msgstr ""
+"Можна вдосконалити список щоб показувати тільки товари певної категорії, "
+"певного місяця чи типу, використовуючи випадаючі меню над списком товарів. "
+"Клацніть на клавішу «Фільтрувати» після вибору."
 
 #: ../admin/jigoshop-admin-help.php:173
 msgid "You can search for products in a number of ways"
-msgstr "Ви может шукати товари кількома шляхами"
+msgstr "Можна шукати товари кількома способами"
 
 #: ../admin/jigoshop-admin-help.php:181
 msgid ""
@@ -1349,7 +1355,7 @@ msgid ""
 msgstr ""
 "Ви також можете редагувати або видаляти у кошик кілька товарів за раз. Для "
 "цього відзначте потрібні товари галочкою, потім виберіть дію у випадаючому "
-"списку з меню Групові дії і натисніть Застосувати"
+"списку з меню Групові дії і натисніть «Застосувати»."
 
 #: ../admin/jigoshop-admin-help.php:183
 msgid ""
@@ -1363,7 +1369,7 @@ msgstr ""
 
 #: ../admin/jigoshop-admin-help.php:202
 msgid "Screen Content"
-msgstr ""
+msgstr "Вміст екрану"
 
 #: ../admin/jigoshop-admin-help.php:208
 msgid "Searching for Products"
@@ -1388,7 +1394,7 @@ msgstr "Управління інвентарем"
 
 #: ../admin/jigoshop-admin-help.php:298
 msgid "Group & File"
-msgstr "Група та файл"
+msgstr "Група і файл"
 
 #: ../admin/jigoshop-admin-post-types.php:29
 #, php-format
@@ -1432,7 +1438,7 @@ msgid ""
 "Product scheduled for: <strong>%1$s</strong>. <a target=\"_blank\" href="
 "\"%2$s\">Preview Product</a>"
 msgstr ""
-"Товар запановано на: <strong>%1$s</strong>. <a target=\"_blank\" href=\"%2$s"
+"Товар заплановано на: <strong>%1$s</strong>. <a target=\"_blank\" href=\"%2$s"
 "\">Попередній перегляд</a>"
 
 #: ../admin/jigoshop-admin-post-types.php:40
@@ -1573,7 +1579,7 @@ msgstr "Спосіб оплати:"
 #: ../admin/jigoshop-admin-post-types.php:389
 #, php-format
 msgid "%s"
-msgstr ""
+msgstr "%s"
 
 #: ../admin/jigoshop-admin-post-types.php:399 ../shortcodes/cart.php:229
 #: ../shortcodes/my_account.php:404 ../shortcodes/order_tracking.php:69
@@ -3109,8 +3115,9 @@ msgid ""
 "If you are not managing stock, turn it off here to disable it in admin and "
 "on the front-end. You can manage stock on a per-item basis if you leave this "
 "option on."
-msgstr "Якщо ви не хочете керувати запасами, вимкніть тут. Інакше ви зможете"
-"Керувати запасами кожного товару."
+msgstr ""
+"Якщо ви не хочете керувати запасами, вимкніть тут. Інакше ви зможетеКерувати "
+"запасами кожного товару."
 
 # @ default
 #: ../admin/jigoshop-admin-settings-options.php:746
@@ -3189,8 +3196,9 @@ msgid ""
 "costs included. If you are not calculating shipping then you can ignore all "
 "other tax options."
 msgstr ""
-"Встановіть, тільки якщо ви не постачаєте товар, або ціна постачання включена."
-" Якщо ви не рахуєте постачання, можна проігнорувати всі інші опції податкування."
+"Встановіть, тільки якщо ви не постачаєте товар, або ціна постачання "
+"включена. Якщо ви не рахуєте постачання, можна проігнорувати всі інші опції "
+"податкування."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:817
@@ -3231,8 +3239,8 @@ msgid ""
 "Only disable this if you are exclusively selling non-taxable items. If you "
 "are not calculating taxes then you can ignore all other tax options."
 msgstr ""
-"Вимкніть це, тільки якщо ви продаєте товар, який не податкується. "
-"Якщо ви не розраховуєте податки, тоді сміливо ігноруйте решту налаштувань."
+"Вимкніть це, тільки якщо ви продаєте товар, який не податкується. Якщо ви не "
+"розраховуєте податки, тоді сміливо ігноруйте решту налаштувань."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:850
@@ -3486,8 +3494,7 @@ msgstr "Різне"
 #: ../admin/jigoshop-admin-settings.php:1195
 msgid ""
 "Prevent other coupons from being used while this one is applied to a cart."
-msgstr ""
-"Завадити використати інші купони, поки до кошика застосовано цей."
+msgstr "Завадити використати інші купони, поки до кошика застосовано цей."
 
 #: ../admin/jigoshop-admin-settings.php:957
 #: ../admin/jigoshop-admin-settings.php:1207
@@ -3738,8 +3745,7 @@ msgstr ""
 # @ jigoshop
 #: ../admin/jigoshop-write-panels.php:179
 msgid "Calc totals based on order items and taxes?"
-msgstr ""
-"Рахувати підсумок базуючись на товарах у замовленні і податках?"
+msgstr "Рахувати підсумок базуючись на товарах у замовленні і податках?"
 
 # @ jigoshop
 #: ../admin/jigoshop-write-panels.php:180
@@ -5018,8 +5024,8 @@ msgid ""
 "This controls what currency the prices are listed with in the Catalog, and "
 "which currency PayPal, and other gateways, will take payments in."
 msgstr ""
-"Контролює, у якій валюті вказані ціни у каталозі, та у якій валюті "
-"приймати оплату з допомогою PayPal або інших платіжних шлюзів."
+"Контролює, у якій валюті вказані ціни у каталозі, та у якій валюті приймати "
+"оплату з допомогою PayPal або інших платіжних шлюзів."
 
 #: ../classes/jigoshop_options.class.php:571
 msgid "Kenyan Shilling (KSh)"
@@ -5054,8 +5060,8 @@ msgid ""
 "address on \"Shop Tab -> Invoicing\"."
 msgstr ""
 "Вкажіть адресу електронної пошти з якої надсилатимуться листи зв'язані з "
-"плагіном (наприклад підтвердження замовлення чи сповіщення). Може відрізнятися "
-"від адреси вашої компанії."
+"плагіном (наприклад підтвердження замовлення чи сповіщення). Може "
+"відрізнятися від адреси вашої компанії."
 
 #: ../classes/jigoshop_options.class.php:799
 msgid "Reset pending Orders"
@@ -5063,7 +5069,9 @@ msgstr "Скинути замовлення в очікуванні"
 
 #: ../classes/jigoshop_options.class.php:800
 msgid "Change all 'Pending' Orders older than one month to 'On Hold'"
-msgstr "Змінити всі замовлення «В очікуванні», старші, ніж один місяць, на «Утримання»"
+msgstr ""
+"Змінити всі замовлення «В очікуванні», старші, ніж один місяць, на "
+"«Утримання»"
 
 #: ../classes/jigoshop_options.class.php:801
 msgid ""
@@ -5231,8 +5239,8 @@ msgid ""
 "Set the width of the small image used in the Cart, Checkout, Orders and "
 "Widgets."
 msgstr ""
-"Встановіть ширину маленьких зображень у кошику, оформленні, замовленнях і "
-"у віджетах."
+"Встановіть ширину маленьких зображень у кошику, оформленні, замовленнях і у "
+"віджетах."
 
 #: ../classes/jigoshop_options.class.php:1258
 msgid "Tiny Image Height"
@@ -5243,8 +5251,8 @@ msgid ""
 "Set the height of the small image used in the Cart, Checkout, Orders and "
 "Widgets."
 msgstr ""
-"Встановіть висоту маленьких зображень у кошику, оформленні, замовленнях і "
-"у віджетах."
+"Встановіть висоту маленьких зображень у кошику, оформленні, замовленнях і у "
+"віджетах."
 
 #: ../classes/jigoshop_options.class.php:1267
 msgid "Thumbnail Image Width"
@@ -5283,7 +5291,9 @@ msgstr "Стандартно = 150px"
 msgid ""
 "Set the width of the catalog image for Shop, Categories, Tags, and Related "
 "Products."
-msgstr "Встановити ширину зображення в магазині, категоріях, мітках і подібних товарах."
+msgstr ""
+"Встановити ширину зображення в магазині, категоріях, мітках і подібних "
+"товарах."
 
 # @ jigoshop
 #: ../classes/jigoshop_options.class.php:1294
@@ -5294,7 +5304,9 @@ msgstr "Висота зображення у каталозі"
 msgid ""
 "Set the height of the catalog image for Shop, Categories, Tags, and Related "
 "Products."
-msgstr "Встановити висоту зображення в магазині, категоріях, мітках і подібних товарах."
+msgstr ""
+"Встановити висоту зображення в магазині, категоріях, мітках і подібних "
+"товарах."
 
 #: ../classes/jigoshop_options.class.php:1303
 msgid "Large Image Width"
@@ -5387,8 +5399,8 @@ msgid ""
 "Only turn this off if you are <strong>not</strong> shipping items, or items "
 "have shipping costs included."
 msgstr ""
-"Вимкніть, лише якщо товар <strong>not</strong> потребує доставки або його вартість "
-"вже вклчюає доставку."
+"Вимкніть, лише якщо товар <strong>not</strong> потребує доставки або його "
+"вартість вже вклчюає доставку."
 
 #: ../classes/jigoshop_options.class.php:1565
 msgid ""
