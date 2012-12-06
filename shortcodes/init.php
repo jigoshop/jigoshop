@@ -22,7 +22,7 @@ include_once('pay.php');
 include_once('thankyou.php');
 
 function jigoshop_shortcode_wrapper( $function, $atts = array() ) {
-	$key = $function.'-shortcode-'.serialize($atts);
+	/*$key = $function.'-shortcode-'.serialize($atts);
 	if ( $shortcode = wp_cache_get($key, 'jigoshop') )
 		return $shortcode;
 
@@ -33,6 +33,12 @@ function jigoshop_shortcode_wrapper( $function, $atts = array() ) {
 	wp_cache_replace($key, $shortcode, 'jigoshop');
 
 	return $shortcode;
+	
+	*/
+	// don't need caching here.. ( messing with apc ) , jigoshop shortcodes
+	ob_start();
+	call_user_func($function, $atts);
+	return ob_get_clean();
 }
 
 //### Recent Products #########################################################
