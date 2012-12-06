@@ -1944,11 +1944,11 @@ msgstr "Жоден"
 
 #: ../admin/jigoshop-admin-settings-api.php:1227
 msgid "US States"
-msgstr ""
+msgstr "Штати US"
 
 #: ../admin/jigoshop-admin-settings-api.php:1227
 msgid "EU States"
-msgstr ""
+msgstr "Країни EU"
 
 #: ../admin/jigoshop-admin-settings-api.php:1249
 #: ../admin/jigoshop-admin-settings.php:1399
@@ -2003,7 +2003,7 @@ msgid ""
 "This is the base country for your business. Tax rates will be based on this "
 "country."
 msgstr ""
-"Це країна місцезнаходження вашого бізнесу. Ставки податків будуть прив'язані "
+"Це країна місцезнаходження вашої справи. Ставки податків будуть прив’язані "
 "до цієї країни."
 
 #: ../admin/jigoshop-admin-settings-options.php:67
@@ -2042,18 +2042,18 @@ msgid ""
 "Define what should happen when a user clicks on &#34;Add to Cart&#34; on any "
 "product or page."
 msgstr ""
-"Зазначте, що повинно відбуватись коли користувач клацає на &#34;Додати у "
-"кошик&#34; для будь-якого товару на будь-якій сторінці."
+"Зазначте, що повинно відбуватись коли користувач клацає на «Додати у "
+"кошик» для будь-якого товару на будь-якій сторінці."
 
 #: ../admin/jigoshop-admin-settings-options.php:99
 #: ../classes/jigoshop_options.class.php:792
 msgid "Stay on the same page"
-msgstr "Залишатись на ті же сторінці"
+msgstr "Залишатись на ті самій сторінці"
 
 #: ../admin/jigoshop-admin-settings-options.php:100
 #: ../classes/jigoshop_options.class.php:793
 msgid "Redirect to Checkout"
-msgstr "Перейти до оформлення &rarr;"
+msgstr "Перейти до оформлення"
 
 #: ../admin/jigoshop-admin-settings-options.php:101
 #: ../classes/jigoshop_options.class.php:794
@@ -2085,7 +2085,7 @@ msgstr "Стилі і скрипти"
 
 #: ../admin/jigoshop-admin-settings-options.php:118
 msgid "Demo store banner"
-msgstr "Банер демо магазину"
+msgstr "Банер демо-магазину"
 
 #: ../admin/jigoshop-admin-settings-options.php:119
 #: ../classes/jigoshop_options.class.php:617
@@ -2123,7 +2123,7 @@ msgid ""
 "Fancybox."
 msgstr ""
 "Корисно, якщо один з ваших плагінів вже завантажує скрипт Fancybox. Але "
-"будьте уважні, Jigoshop всерівно намагатиметься відкрити зображення товару "
+"будьте уважні, Jigoshop все одно намагатиметься відкрити зображення товару "
 "використовуючи Fancybox."
 
 #: ../admin/jigoshop-admin-settings-options.php:144
@@ -2142,8 +2142,8 @@ msgid ""
 "Setting this to Yes will allow users to checkout without registering or "
 "signing up. Otherwise, users must be signed in or must sign up to checkout."
 msgstr ""
-"Вказавши \"Так\" ви дозволите користувачам купувати товари без необхідності "
-"їхньої реєстрації на сайті. У іншому разі, користувач повинен буде увійти "
+"Вказавши «Так», ви дозволите користувачам купувати товари без "
+"реєстрації на сайті. У іншому разі користувач повинен буде увійти "
 "або зареєструватись перш ніж замовляти."
 
 #: ../admin/jigoshop-admin-settings-options.php:153
@@ -2159,7 +2159,7 @@ msgstr "Дозволити реєстрацію"
 #: ../admin/jigoshop-admin-settings-options.php:167
 #: ../classes/jigoshop_options.class.php:903
 msgid "Force SSL on checkout"
-msgstr "Вкл. SSL при оформленні товару"
+msgstr "Обов’язк. SSL при оформленні товару"
 
 #: ../admin/jigoshop-admin-settings-options.php:168
 msgid ""
@@ -2167,9 +2167,10 @@ msgid ""
 "An SSL certificate is <strong>required</strong> if you choose yes. Contact "
 "your hosting provider for more information on SSL Certs."
 msgstr ""
-"Примусове використання SSL є рекомендованим. ЦЕ дозволить завантажувати вашу "
-"стоірнку оформлення замовлення з https://. SSL сертифікат "
-"<strong>обов'язковий</strong> якщо ви виберете так."
+"Примусове використання SSL є рекомендованим. Це дозволить завантажувати вашу "
+"сторінку оформлення замовлення з https://. SSL сертифікат "
+"<strong>обов'язковий</strong>, якщо ви виберете так. Зверніться до вашого "
+"провайдера щоб дізнатися про сертифікати SSL більше."
 
 #: ../admin/jigoshop-admin-settings-options.php:175
 msgid "Beta testing"
@@ -2184,6 +2185,8 @@ msgid ""
 "Only beta plugin updates will be shown for Jigoshop. Beta updates will "
 "display normally in the Wordpress plugin manager."
 msgstr ""
+"Будуть показані тільки бета-поновлення плагіна Jigoshop. Бета-поновлення "
+"показуватимуться зазвичай у керуванні плагінми Wordpress."
 
 #: ../admin/jigoshop-admin-settings-options.php:184
 msgid "Check for update now"
@@ -2191,7 +2194,7 @@ msgstr "Перевірити поновлення зараз"
 
 #: ../admin/jigoshop-admin-settings-options.php:185
 msgid "Manually check if a beta update is available."
-msgstr ""
+msgstr "Перевірити, чи доступний бета-плагін."
 
 #: ../admin/jigoshop-admin-settings-options.php:191
 #: ../classes/jigoshop_options.class.php:650
@@ -2209,7 +2212,7 @@ msgid ""
 "Setting your company name will enable us to print it out on your invoice "
 "emails. Leave blank to disable."
 msgstr ""
-"Вказавши назву компанії ви дасьте нам можливість друкувати її у рахунку. "
+"Вказавши назву компанії, ви дасте нам можливість друкувати її у рахунку. "
 "Залиште поле порожнім щоб відключити цю опцію."
 
 #: ../admin/jigoshop-admin-settings-options.php:204
@@ -2223,7 +2226,7 @@ msgid ""
 "Setting your tax number will enable us to print it out on your invoice "
 "emails. Leave blank to disable."
 msgstr ""
-"Вказавши свій ІПН ви дасьте нам можливість друкувати його у рахунку. Залиште "
+"Вказавши свій ІПН, ви дасте нам можливість друкувати його у рахунку. Залиште "
 "поле порожнім щоб відключити цю опцію."
 
 #: ../admin/jigoshop-admin-settings-options.php:214
@@ -2237,7 +2240,7 @@ msgid ""
 "Setting your address will enable us to print it out on your invoice emails. "
 "Leave blank to disable."
 msgstr ""
-"Вказавши свою адресу ви дасте нам можливість друкувати її у рахунку. Залиште "
+"Вказавши свою адресу, ви дасте нам можливість друкувати її у рахунку. Залиште "
 "поле порожнім щоб відключити цю опцію."
 
 #: ../admin/jigoshop-admin-settings-options.php:224
@@ -2253,8 +2256,8 @@ msgid ""
 "invoice emails. Leave blank to disable."
 msgstr ""
 "Якщо ви нічого не вкажете у полі Адреса 1, то значення поля Адреса 2 "
-"всерівно не буде показано, навіть якщо ви щось вказали уньому. Вказавши свою "
-"адресу ви дасьте нам можливість друкувати його у рахунку. Залиште поле "
+"все одно не буде показано, навіть якщо ви щось вказали уньому. Вказавши свою "
+"адресу ви дасте нам можливість друкувати його у рахунку. Залиште поле "
 "порожнім щоб відключити цю опцію."
 
 #: ../admin/jigoshop-admin-settings-options.php:234
@@ -2268,7 +2271,7 @@ msgid ""
 "Setting your company phone number will enable us to print it out on your "
 "invoice emails. Leave blank to disable."
 msgstr ""
-"Вказавши телефон компанії ви дасте нам можливість друкувати його у рахунку. "
+"Вказавши телефон компанії, ви дасте нам можливість друкувати його у рахунку. "
 "Залиште поле порожнім щоб відключити цю опцію."
 
 #: ../admin/jigoshop-admin-settings-options.php:244
@@ -2282,7 +2285,7 @@ msgid ""
 "Setting your company email will enable us to print it out on your invoice "
 "emails. Leave blank to disable."
 msgstr ""
-"Вказавши адресу е-пошти компанії ви дасьте нам можливість друкувати її у "
+"Вказавши адресу е-пошти компанії, ви дасте нам можливість друкувати її у "
 "рахунку. Залиште поле порожнім щоб відключити цю опцію."
 
 #: ../admin/jigoshop-admin-settings-options.php:253
@@ -2293,7 +2296,7 @@ msgstr "Інтеграція"
 #: ../admin/jigoshop-admin-settings-options.php:256
 #: ../classes/jigoshop_options.class.php:918
 msgid "ShareThis Publisher ID"
-msgstr "ShareThis Publisher ID"
+msgstr "ShareThis ID видавця"
 
 #: ../admin/jigoshop-admin-settings-options.php:257
 #: ../classes/jigoshop_options.class.php:919
@@ -2301,7 +2304,7 @@ msgid ""
 "Enter your <a href='http://sharethis.com/account/'>ShareThis publisher ID</"
 "a> to show ShareThis on product pages."
 msgstr ""
-"Вкажіть свій <a href='http://sharethis.com/account/'>ShareThis publisher ID</"
+"Вкажіть свій <a href='http://sharethis.com/account/'>ShareThis ID видавця</"
 "a> щоб відображати ShareThis на сторінках товарів."
 
 #: ../admin/jigoshop-admin-settings-options.php:258
@@ -2310,8 +2313,8 @@ msgid ""
 "ShareThis is a small social sharing widget for posting links on popular "
 "sites such as Twitter and Facebook."
 msgstr ""
-"ShareThis це маленький віджет соціального розшарювання, щоб постити "
-"посилання на товар наприклад у Твітері або Фейсбуці."
+"ShareThis — це маленький віджет соціального поширювання, щоб публікувати "
+"посилання на товар, наприклад, у Твітері або Фейсбуці."
 
 #: ../admin/jigoshop-admin-settings-options.php:266
 #: ../classes/jigoshop_options.class.php:927
@@ -2334,7 +2337,7 @@ msgstr "Увімкнути Google eCommerce"
 #: ../admin/jigoshop-admin-settings-options.php:275
 #: ../classes/jigoshop_options.class.php:936
 msgid "Add Google Analytics eCommerce tracking code upon successful orders"
-msgstr "Додайте Google Analytics eCommerce код на успішних замовленнях"
+msgstr "Додайте код відслідковування Google Analytics eCommerce при успішних замовленнях"
 
 #: ../admin/jigoshop-admin-settings-options.php:276
 msgid ""
@@ -2342,6 +2345,9 @@ msgid ""
 "hl=en&answer=1009612\" target=\"_TOP\">Learn how to enable</a> eCommerce "
 "tracking for your Google Analytics account."
 msgstr ""
+"<a href=\"//support.google.com/analytics/bin/answer.py?"
+"hl=en&answer=1009612\" target=\"_TOP\">Дізнайтеся, як увімкнути</a> "
+"відслідковування eCommerce до вашого облікового запису Google Analytics."
 
 #: ../admin/jigoshop-admin-settings-options.php:283
 #: ../classes/jigoshop_options.class.php:951
@@ -2368,20 +2374,23 @@ msgid ""
 "com / product_category / YourCategory<br/>Disabled: http://yoursite.com / "
 "base_page / product_category / YourCategory"
 msgstr ""
+"Це застосується тільки до міток і категорій.<br/>Увімкнено: http://сторінка."
+"com / категорія_товару / ВашаКатегорія<br/>Вимкнено: http://сторінка.com / "
+"базова_сторінка / категорія_товару / ВашаКатегорія"
 
 #: ../admin/jigoshop-admin-settings-options.php:297
 #: ../classes/jigoshop_options.class.php:723
 msgid "Prepend product permalinks with shop base page"
-msgstr ""
+msgstr "Додати до пермалінків товару базову сторінку магазина"
 
 #: ../admin/jigoshop-admin-settings-options.php:304
 #: ../classes/jigoshop_options.class.php:736
 msgid "Prepend product permalinks with product category"
-msgstr ""
+msgstr "Додати до пермалінків товару категорію продукту"
 
 #: ../admin/jigoshop-admin-settings-options.php:311
 msgid "Slug variables"
-msgstr ""
+msgstr "Змінні скорочення"
 
 #: ../admin/jigoshop-admin-settings-options.php:313
 #: ../classes/jigoshop_options.class.php:751
@@ -2389,6 +2398,8 @@ msgid ""
 "Slug displayed in product category URLs. Leave blank to use default "
 "\"product-category\""
 msgstr ""
+"Скорочення, показане в URL категорії товарів. Залиште порожнім, щоб "
+"використати «product-category»"
 
 #: ../admin/jigoshop-admin-settings-options.php:322
 #: ../classes/jigoshop_options.class.php:758
@@ -2401,6 +2412,8 @@ msgid ""
 "Slug displayed in product tag URLs. Leave blank to use default \"product-tag"
 "\""
 msgstr ""
+"Скорочення, показане в URL мітки товару. Залиште порожнім, щоб використати "
+"«product-tag»"
 
 #: ../admin/jigoshop-admin-settings-options.php:331
 msgid "Shop page configuration"
@@ -2438,7 +2451,7 @@ msgid ""
 "page: Checkout"
 msgstr ""
 "Шорткод для цієї сторінки: <code>[jigoshop_pay]</code><br/>Батьківська "
-"сторінка: Checkout"
+"сторінка: Оформлення"
 
 #: ../admin/jigoshop-admin-settings-options.php:364
 #: ../classes/jigoshop_options.class.php:983
@@ -2452,12 +2465,12 @@ msgid ""
 "parent page: Checkout"
 msgstr ""
 "Шорткод для цієї сторінки: <code>[jigoshop_thankyou]</code><br/>Батьківська "
-"сторінка: Checkout"
+"сторінка: Оформлення"
 
 #: ../admin/jigoshop-admin-settings-options.php:374
 #: ../classes/jigoshop_options.class.php:992
 msgid "My Account Page"
-msgstr "Сторінка мого акаунта"
+msgstr "Мій обліковий запис"
 
 #: ../admin/jigoshop-admin-settings-options.php:375
 #: ../classes/jigoshop_options.class.php:993
@@ -2467,7 +2480,7 @@ msgstr "Шорткод для цієї сторінки: <code>[jigoshop_my_acco
 #: ../admin/jigoshop-admin-settings-options.php:384
 #: ../classes/jigoshop_options.class.php:1001
 msgid "Edit Address Page"
-msgstr "Сторінка Редагувати адресу"
+msgstr "Редагувати адресу"
 
 #: ../admin/jigoshop-admin-settings-options.php:385
 #: ../classes/jigoshop_options.class.php:1002
@@ -2476,7 +2489,7 @@ msgid ""
 "parent page: My Account"
 msgstr ""
 "Шорткод для цієї сторінки: <code>[jigoshop_edit_address]</code><br/"
-">Батьківська сторінка: My Account"
+">Батьківська сторінка: Мій обліковий запис"
 
 #: ../admin/jigoshop-admin-settings-options.php:394
 #: ../classes/jigoshop_options.class.php:1010
@@ -2490,12 +2503,12 @@ msgid ""
 "parent page: My Account"
 msgstr ""
 "Шорткод для цієї сторінки: <code>[jigoshop_view_order]</code><br/"
-">Батьківська сторінка: My Account"
+">Батьківська сторінка: Мій обліковий запис"
 
 #: ../admin/jigoshop-admin-settings-options.php:404
 #: ../classes/jigoshop_options.class.php:1019
 msgid "Change Password Page"
-msgstr "Змінити сторінку пароля"
+msgstr "Змінити пароль"
 
 #: ../admin/jigoshop-admin-settings-options.php:405
 #: ../classes/jigoshop_options.class.php:1020
@@ -2504,12 +2517,12 @@ msgid ""
 ">Default parent page: My Account"
 msgstr ""
 "Шорткод для цієї сторінки: <code>[jigoshop_change_password]</code><br/"
-">Батьківська сторінка: My Account"
+">Батьківська сторінка: Мій обліковий запис"
 
 #: ../admin/jigoshop-admin-settings-options.php:414
 #: ../classes/jigoshop_options.class.php:1028
 msgid "Track Order Page"
-msgstr "Стоірнка Відслідкувати замовлення"
+msgstr "Відслідкувати замовлення"
 
 #: ../admin/jigoshop-admin-settings-options.php:415
 #: ../classes/jigoshop_options.class.php:1029
@@ -2519,7 +2532,7 @@ msgstr "Шорткод для цієї сторінки: <code>[jigoshop_order_t
 #: ../admin/jigoshop-admin-settings-options.php:424
 #: ../classes/jigoshop_options.class.php:1037
 msgid "Terms Page"
-msgstr "Сторінка \"Умови використання\""
+msgstr "Умови використання"
 
 #: ../admin/jigoshop-admin-settings-options.php:425
 #: ../classes/jigoshop_options.class.php:1038
@@ -2527,13 +2540,13 @@ msgid ""
 "If you define a &#34;Terms&#34; page the customer will be asked to accept it "
 "before allowing them to place their order."
 msgstr ""
-"Якщо ви вкажете сторінку \"Умови використання\", то покупцям буде "
-"запропоновано погодитись з ними при покупці."
+"Якщо ви вкажете сторінку «Умови використання», покупцям буде "
+"запропоновано погодитись з ними, щоб зробити замовлення."
 
 #: ../admin/jigoshop-admin-settings-options.php:436
 #: ../classes/jigoshop_options.class.php:1050
 msgid "Catalog &amp; Pricing"
-msgstr "Каталог та ціни"
+msgstr "Каталог і ціни"
 
 #: ../admin/jigoshop-admin-settings-options.php:438
 #: ../classes/jigoshop_options.class.php:1052
@@ -2543,7 +2556,7 @@ msgstr "Опції каталога"
 #: ../admin/jigoshop-admin-settings-options.php:442
 #: ../classes/jigoshop_options.class.php:1055
 msgid "Catalog base page"
-msgstr "Сторінка Каталог"
+msgstr "Базова сторінка каталога"
 
 #: ../admin/jigoshop-admin-settings-options.php:444
 #: ../classes/jigoshop_options.class.php:1057
@@ -2552,14 +2565,14 @@ msgid ""
 "you have launched your site otherwise you risk breaking urls of other sites "
 "pointing to yours, etc."
 msgstr ""
-"Ця опція встановлює базову сторінку вашого магазину, тобто т.з. Каталог. Ви "
-"не повинні змінювати це значення після запуску магазину інакше ризикуєте "
-"поламати посилання з інших сайтів, що адресовані вам і т.п."
+"Ця опція встановлює базову сторінку вашого магазину, так званий Каталог. "
+"Не змінюйте це значення після запуску магазину інакше ризикуєте "
+"поламати посилання з інших сайтів, що адресовані вам і т. ін."
 
 #: ../admin/jigoshop-admin-settings-options.php:451
 #: ../classes/jigoshop_options.class.php:1064
 msgid "Shop redirection page"
-msgstr "Сторінка редиректу магазину"
+msgstr "Сторінка перенаправлення магазину"
 
 #: ../admin/jigoshop-admin-settings-options.php:453
 #: ../classes/jigoshop_options.class.php:1066
@@ -2567,8 +2580,8 @@ msgid ""
 "This will point users to the page you set for buttons like `Return to shop` "
 "or `Continue Shopping`."
 msgstr ""
-"Перенаправлятиме користувачів на цю сторінку при кліку на `Повернутись у "
-"магазин` або `Продовжити покупки`."
+"Перенаправлятиме користувачів на сторінки, призначені клавішам на кшталт "
+"«Повернутись у магазин» або «Продовжити купувати»."
 
 #: ../admin/jigoshop-admin-settings-options.php:461
 #: ../classes/jigoshop_options.class.php:1073
@@ -2606,7 +2619,7 @@ msgstr "Напрямок сортування"
 #: ../admin/jigoshop-admin-settings-options.php:477
 #: ../classes/jigoshop_options.class.php:1089
 msgid "Determines whether the catalog sort orderby is ascending or descending."
-msgstr "Визначає сортування товарів у спадаючому або зростаючому порядку."
+msgstr "Визначає сортування товарів у спадному чи висхідному порядку."
 
 #: ../admin/jigoshop-admin-settings-options.php:482
 #: ../classes/jigoshop_options.class.php:1094
@@ -2632,7 +2645,7 @@ msgid ""
 "Determines how many products to show on one display row for Shop, Category "
 "and Tag pages. Default = 3."
 msgstr ""
-"Визначає скільки товарів показувати у одному рядку для Каталогу,  Категорії "
+"Визначає скільки товарів показувати у одному рядку для Каталогу, Категорії "
 "або Міток. Початково 3."
 
 # @ jigoshop
@@ -2670,37 +2683,37 @@ msgid ""
 msgstr ""
 "Ця опція контролює у якій валюті вказані ціни у каталозі та у якій валюті "
 "приймати оплату з допомогою PayPal або інших платіжних шлюзів. Будь ласка, "
-"ознайомтесь з переліком доступних <a target='_new' href='%s'>валют для "
+"ознайомтесь з переліком доступних <a target='_new' href='%s'>валют "
 "PayPal</a>."
 
 #: ../admin/jigoshop-admin-settings-options.php:521
 #: ../classes/jigoshop_options.class.php:554
 msgid "United Arab Emirates dirham (&#1583;&#46;&#1573;)"
-msgstr "ОАЕ дирхам (&#1583;&#46;&#1573;)"
+msgstr "Дирхам ОАЕ (&#1583;&#46;&#1573;)"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:522
 #: ../classes/jigoshop_options.class.php:555
 msgid "Australian Dollar (&#36;)"
-msgstr "Австралійські долари (&#36;)"
+msgstr "Австралійський долар (&#36;)"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:523
 #: ../classes/jigoshop_options.class.php:556
 msgid "Brazilian Real (&#82;&#36;)"
-msgstr "Бразильські реали (&#36;)"
+msgstr "Бразильський реал (&#36;)"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:524
 #: ../classes/jigoshop_options.class.php:557
 msgid "Canadian Dollar (&#36;)"
-msgstr "Канадські долари (&#36;)"
+msgstr "Канадський долар (&#36;)"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:525
 #: ../classes/jigoshop_options.class.php:558
 msgid "Swiss Franc (SFr.)"
-msgstr "Швейцарський франи (SFr.)"
+msgstr "Швейцарський франк (SFr.)"
 
 #: ../admin/jigoshop-admin-settings-options.php:526
 #: ../classes/jigoshop_options.class.php:559
@@ -2729,13 +2742,13 @@ msgstr "Євро (&euro;)"
 #: ../admin/jigoshop-admin-settings-options.php:530
 #: ../classes/jigoshop_options.class.php:563
 msgid "Pounds Sterling (&pound;)"
-msgstr "Фунти стерлінгів (&pound;)"
+msgstr "Фунт стерлінгів (&pound;)"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:531
 #: ../classes/jigoshop_options.class.php:564
 msgid "Hong Kong Dollar (&#36;)"
-msgstr "Гонкконгський долар (&#36;)"
+msgstr "Гонконгський долар (&#36;)"
 
 #: ../admin/jigoshop-admin-settings-options.php:532
 #: ../classes/jigoshop_options.class.php:565
@@ -2746,7 +2759,7 @@ msgstr "Хорватська куна (&#107;&#110;)"
 #: ../admin/jigoshop-admin-settings-options.php:533
 #: ../classes/jigoshop_options.class.php:566
 msgid "Hungarian Forint (&#70;&#116;)"
-msgstr "Угорський форінт (&#70;&#116;)"
+msgstr "Угорський форинт (&#70;&#116;)"
 
 #: ../admin/jigoshop-admin-settings-options.php:534
 #: ../classes/jigoshop_options.class.php:567
@@ -2775,13 +2788,13 @@ msgstr "Японська єна (&yen;)"
 #: ../admin/jigoshop-admin-settings-options.php:538
 #: ../classes/jigoshop_options.class.php:572
 msgid "Mexican Peso (&#36;)"
-msgstr "Мексиканське песо (&#36;)"
+msgstr "Мексиканський песо (&#36;)"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:539
 #: ../classes/jigoshop_options.class.php:573
 msgid "Malaysian Ringgits (RM)"
-msgstr "Малазійський рінггіт (RM)"
+msgstr "Малазійський ринггіт (RM)"
 
 #: ../admin/jigoshop-admin-settings-options.php:540
 #: ../classes/jigoshop_options.class.php:574
@@ -2792,7 +2805,7 @@ msgstr "Нігерійська найра (&#8358;)"
 #: ../admin/jigoshop-admin-settings-options.php:541
 #: ../classes/jigoshop_options.class.php:575
 msgid "Norwegian Krone (kr)"
-msgstr "Норвежська крона (kr)"
+msgstr "Норвезька крона (kr)"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:542
@@ -2804,7 +2817,7 @@ msgstr "Новозеландський долар (&#36;)"
 #: ../admin/jigoshop-admin-settings-options.php:543
 #: ../classes/jigoshop_options.class.php:577
 msgid "Philippine Pesos (&#8369;)"
-msgstr "Філіпінське песо (&#8369;)"
+msgstr "Філіпінський песо (&#8369;)"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:544
@@ -2820,7 +2833,7 @@ msgstr "Румунська нова лея (&#108;&#101;&#105;)"
 #: ../admin/jigoshop-admin-settings-options.php:546
 #: ../classes/jigoshop_options.class.php:580
 msgid "Russian Ruble (&#1088;&#1091;&#1073;)"
-msgstr "Російський рубль (&#1088;&#1091;&#1073;)"
+msgstr "Російський карбованець (&#1088;&#1091;&#1073;)"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:547
@@ -2838,7 +2851,7 @@ msgstr "Сингапурський долар (&#36;)"
 #: ../admin/jigoshop-admin-settings-options.php:549
 #: ../classes/jigoshop_options.class.php:583
 msgid "Thai Baht (&#3647;)"
-msgstr "Тайський бахт (&#3647;)"
+msgstr "Тайський бат (&#3647;)"
 
 #: ../admin/jigoshop-admin-settings-options.php:550
 #: ../classes/jigoshop_options.class.php:584
@@ -2855,7 +2868,7 @@ msgstr "Тайванський новий долар (&#36;)"
 #: ../admin/jigoshop-admin-settings-options.php:552
 #: ../classes/jigoshop_options.class.php:586
 msgid "US Dollar (&#36;)"
-msgstr "Долари США (&#36;)"
+msgstr "Долар США (&#36;)"
 
 #: ../admin/jigoshop-admin-settings-options.php:553
 #: ../classes/jigoshop_options.class.php:587
@@ -2866,7 +2879,7 @@ msgstr "ПАР ранд (R)"
 #: ../admin/jigoshop-admin-settings-options.php:559
 #: ../classes/jigoshop_options.class.php:1135
 msgid "Currency display"
-msgstr "Валюта"
+msgstr "Показ валюти"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:560
@@ -2911,7 +2924,7 @@ msgstr "Розділювач ціни"
 #: ../admin/jigoshop-admin-settings-options.php:584
 #: ../classes/jigoshop_options.class.php:1158
 msgid "Thousand separator"
-msgstr "Розділювач для тисяч"
+msgstr "Розділювач тисяч"
 
 #: ../admin/jigoshop-admin-settings-options.php:593
 #: ../classes/jigoshop_options.class.php:1167
@@ -2949,6 +2962,16 @@ msgid ""
 "strong> Your images may not display in the size you choose below. This is "
 "because they may still be affected by CSS styles, that is, your theme."
 msgstr ""
+"<p>Зміна якоїсь із цих налаштувань вплине на розміри зображень, використаних "
+"у вашому магазині. Після зміни цих налаштувань, можливо, вам доведеться "
+"<a href=\"%s\">ще раз створити мініатюри</a>.</p>\n"
+"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<p>Обрізати: Не вибирайте "
+"щоб змінити розмір зображень пропорційно (тобто, без "
+"спотворення). Позначіть, щоб встановити розмір зображень, обрізаючи "
+"вихідні (або з боків, або згори й знизу).</p>\n"
+"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<p><strong>Примітка:</"
+"strong> Зображення можуть не влізти цілком у вибраний нижче розмір. Це "
+"тому що на них можуть вплинути стилі CSS, тобто, ваша тема."
 
 #: ../admin/jigoshop-admin-settings-options.php:620
 msgid "Tiny Images"
@@ -2986,25 +3009,27 @@ msgstr "Сторінки товару"
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:659
 msgid "Coupon Information"
-msgstr "Інформація про купони"
+msgstr "Інформація про купон"
 
 #: ../admin/jigoshop-admin-settings-options.php:659
 msgid ""
 "<div>Coupons allow you to give your customers special offers and discounts. "
 "</div>"
 msgstr ""
+"<div>Купони дозволяють надати вашим покупцям спеціальні пропозиції і знижки. "
+"</div>"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:663
 #: ../admin/jigoshop-admin-settings-options.php:890
 msgid "All fields are required."
-msgstr "Всі поля обов'язкові."
+msgstr "Всі поля обов’язкові."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:672
 #: ../classes/jigoshop_options.class.php:1324
 msgid "Products &amp; Inventory"
-msgstr "Товари та інвентар"
+msgstr "Товари й інвентар"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:674
@@ -3026,13 +3051,12 @@ msgstr "Активувати Артикул"
 #: ../classes/jigoshop_options.class.php:1331
 msgid "Turning off the SKU field will give products an SKU of their post id."
 msgstr ""
-"Відключення поля Артикул означатиме, що товар автом. отримуватиме номер його "
-"поста у якості артикула."
+"Вимкнення поля Артикул надасть товарам в якості артикула номер публікації."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:686
 msgid "Enable weight"
-msgstr "Включити Вага"
+msgstr "Увімкнути масу"
 
 #: ../admin/jigoshop-admin-settings-options.php:694
 #: ../classes/jigoshop_options.class.php:1368
@@ -3043,13 +3067,13 @@ msgstr "Увімкнути розміри товару"
 #: ../admin/jigoshop-admin-settings-options.php:702
 #: ../classes/jigoshop_options.class.php:1355
 msgid "Weight Unit"
-msgstr "Од. маси"
+msgstr "Одиниця маси"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:703
 #: ../classes/jigoshop_options.class.php:1357
 msgid "This controls what unit you will define weights in."
-msgstr "Вкажіть одиницю маси для товарів"
+msgstr "Це керує одиницею виміру маси товарів."
 
 #: ../admin/jigoshop-admin-settings-options.php:708
 #: ../classes/jigoshop_options.class.php:1362
@@ -3071,12 +3095,12 @@ msgstr "Одиниці розмірів"
 #: ../admin/jigoshop-admin-settings-options.php:715
 #: ../classes/jigoshop_options.class.php:1383
 msgid "This controls what unit you will define dimensions in."
-msgstr "Це управління одиницями виміру розміру товару."
+msgstr "Це керує одиницею виміру розміру товару."
 
 #: ../admin/jigoshop-admin-settings-options.php:720
 #: ../classes/jigoshop_options.class.php:1388
 msgid "centimeters"
-msgstr "Сантиметри"
+msgstr "сантиметри"
 
 #: ../admin/jigoshop-admin-settings-options.php:721
 #: ../classes/jigoshop_options.class.php:1389
@@ -3098,12 +3122,12 @@ msgstr "Показувати чи приховувати блок подібни
 #: ../admin/jigoshop-admin-settings-options.php:734
 #: ../classes/jigoshop_options.class.php:1406
 msgid "Inventory Options"
-msgstr "Опції інвентаря"
+msgstr "Опції опису"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:737
 msgid "General inventory options"
-msgstr "Загальні опції інвентаря"
+msgstr "Загальні опції опису"
 
 #: ../admin/jigoshop-admin-settings-options.php:738
 msgid "Enable product stock"
@@ -3123,14 +3147,14 @@ msgstr ""
 #: ../admin/jigoshop-admin-settings-options.php:746
 #: ../classes/jigoshop_options.class.php:1422
 msgid "Show stock amounts"
-msgstr "Показати к-сть запасів"
+msgstr "Показати обсяги запасів"
 
 #: ../admin/jigoshop-admin-settings-options.php:747
 #: ../classes/jigoshop_options.class.php:1424
 msgid ""
 "Set to yes to allow customers to view the amount of stock available for a "
 "product."
-msgstr "Виберіть так щоб дозволити покупцям бачити к-сть запасу товару."
+msgstr "Виберіть так щоб дозволити покупцям бачити обсяг запасу товару."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:754
@@ -3162,6 +3186,8 @@ msgid ""
 "You will receive a notification as soon this threshold is hit (if "
 "notifications are turned on)."
 msgstr ""
+"Ви отримаєте повідомлення, як тільки цей поріг пройдено (якщо "
+"увімкнено повідомлення)."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:781
