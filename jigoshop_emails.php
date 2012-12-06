@@ -274,6 +274,8 @@ function add_company_information() {
 
 function add_order_totals($order, $show_download_links, $show_sku) {
 
+	do_action('jigoshop_before_email_order_info', $order->id);  
+  
 	$jigoshop_options = Jigoshop_Base::get_options();
 	$inc_tax = ($jigoshop_options->get_option('jigoshop_calc_taxes') == 'no')||($jigoshop_options->get_option('jigoshop_prices_include_tax') == 'yes');
 	
