@@ -3266,7 +3266,7 @@ msgid ""
 "are not calculating taxes then you can ignore all other tax options."
 msgstr ""
 "Вимкніть це, тільки якщо ви продаєте товар, який не податкується. Якщо ви не "
-"розраховуєте податки, тоді сміливо ігноруйте решту налаштувань."
+"розраховуєте податки, сміливо ігноруйте решту налаштувань."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:850
@@ -3280,6 +3280,8 @@ msgid ""
 "If yes, taxes get applied after coupons. When no, taxes get applied before "
 "coupons."
 msgstr ""
+"Якщо так, податки обраховуються після купонів. Якщо ні, податки "
+"застосовуються перед купонами."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:858
@@ -3301,17 +3303,17 @@ msgstr "Усього в кошику"
 #: ../admin/jigoshop-admin-settings-options.php:868
 msgid ""
 "Should the subtotal be shown including or excluding tax on the frontend?"
-msgstr "Проміжнйи підсумок повинен включати чи не включати податки?"
+msgstr "Проміжний підсумок повинен бути з чи без податків?"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:873
 msgid "price including tax"
-msgstr "ціна включає податок"
+msgstr "ціна з податком"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:874
 msgid "price excluding tax"
-msgstr "ціна не включає податок"
+msgstr "ціна без податку"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:879
@@ -3337,7 +3339,7 @@ msgstr "Вкажіть типи податків, наприклад Нульо�
 #: ../classes/jigoshop_options.class.php:1542
 #, php-format
 msgid "Reduced Rate%sZero Rate"
-msgstr ""
+msgstr "Знижена ставка%sНульова"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:889
@@ -3368,7 +3370,7 @@ msgstr "+ Додати купон"
 #: ../admin/jigoshop-admin-settings.php:775
 #: ../admin/jigoshop-admin-settings.php:1049
 msgid "The coupon code a customer enters on the cart or checkout page."
-msgstr ""
+msgstr "Код купона, який покупець уводить на сторінці кошика чи оформлення."
 
 #: ../admin/jigoshop-admin-settings.php:784
 #: ../admin/jigoshop-admin-settings.php:1062
@@ -3376,6 +3378,8 @@ msgid ""
 "Cart - Applies to whole cart<br/>Product - Applies to individual products "
 "only. You must specify individual products."
 msgstr ""
+"Кошик — Застосовується до всього кошика<br/>Товар — Застосовується тільки "
+"до окремих товарів. Вам доведеться вказати конкретні товари."
 
 #: ../admin/jigoshop-admin-settings.php:793
 #: ../admin/jigoshop-admin-settings.php:1079
@@ -3384,6 +3388,8 @@ msgid ""
 "Amount this coupon is worth. If it is a percentange, just include the number "
 "without the percentage sign."
 msgstr ""
+"Скільки вартий цей купон. Якщо це відсоток, просто вкажіть число "
+"без знаку відсотків."
 
 #: ../admin/jigoshop-admin-settings.php:801
 #: ../admin/jigoshop-admin-settings.php:1095
@@ -3404,23 +3410,24 @@ msgstr "Скільки разів можна використати цей ку�
 #: ../admin/jigoshop-admin-settings.php:812
 #: ../admin/jigoshop-admin-settings.php:1107
 msgid "Order subtotal"
-msgstr "Проміжна підсумок замовлення."
+msgstr "Проміжний підсумок замовлення."
 
 #: ../admin/jigoshop-admin-settings.php:813
 #: ../admin/jigoshop-admin-settings.php:1111
 #: ../admin/write-panels/coupon-data.php:137
 msgid "No min"
-msgstr ""
+msgstr "Без мін."
 
 #: ../admin/jigoshop-admin-settings.php:814
 #: ../admin/jigoshop-admin-settings.php:1112
 msgid "Min"
-msgstr ""
+msgstr "Мін."
 
 #: ../admin/jigoshop-admin-settings.php:815
 #: ../admin/jigoshop-admin-settings.php:1105
 msgid "Set the required subtotal for this coupon to be valid on an order."
-msgstr ""
+msgstr "Встановити потрібний проміжний підсумок, щоб цей купон був дійсним "
+"у замовленні."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings.php:824
@@ -3443,13 +3450,13 @@ msgstr "Методи оплати"
 #: ../admin/jigoshop-admin-settings.php:835
 #: ../admin/jigoshop-admin-settings.php:1123
 msgid "Which payment methods are allowed for this coupon to be effective?"
-msgstr ""
+msgstr "Які методи оплати дозволені, щоб цей купон був дійсним?"
 
 #: ../admin/jigoshop-admin-settings.php:853
 #: ../admin/jigoshop-admin-settings.php:1138
 #: ../admin/write-panels/coupon-data.php:163
 msgid "Control which products this coupon can apply to."
-msgstr ""
+msgstr "До яких продуктів можна застосувати цей купон."
 
 #: ../admin/jigoshop-admin-settings.php:858
 #: ../admin/jigoshop-admin-settings.php:880
@@ -3525,7 +3532,7 @@ msgstr "Завадити використати інші купони, поки 
 #: ../admin/jigoshop-admin-settings.php:957
 #: ../admin/jigoshop-admin-settings.php:1207
 msgid "Show the Free Shipping method on checkout with this enabled."
-msgstr ""
+msgstr "Показати метод безкоштовної доставки при оформленні, коли це увімкнуто."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings.php:1019
@@ -3581,7 +3588,7 @@ msgstr "Видалити цей купон?"
 #: ../admin/jigoshop-admin-settings.php:1377
 #: ../admin/jigoshop-admin-settings.php:1420
 msgid "Rate"
-msgstr "тариф"
+msgstr "Тариф"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings.php:1476
@@ -3596,21 +3603,22 @@ msgstr "Мініатюри"
 #: ../admin/jigoshop-admin-taxonomies.php:32
 #: ../admin/jigoshop-admin-taxonomies.php:85
 msgid "Upload/Add image"
-msgstr "Завантажити/додати картинку"
+msgstr "Завантажити/додати зображення"
 
 #: ../admin/jigoshop-admin-taxonomies.php:33
 #: ../admin/jigoshop-admin-taxonomies.php:86
 msgid "Remove image"
-msgstr "Видалити картинку"
+msgstr "Видалити зображення"
 
 #: ../admin/jigoshop-admin.php:45
 #, php-format
 msgid "Your database needs an update. Please <strong>backup</strong> &amp; %s."
-msgstr ""
+msgstr "Ваша база даних потребує поновлення. Будь ласка, <strong>зробіть "
+"резервну копію</strong> і %s."
 
 #: ../admin/jigoshop-admin.php:45
 msgid "update now"
-msgstr "обновити зараз"
+msgstr "обновіть зараз"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin.php:68
@@ -3654,7 +3662,7 @@ msgstr "Ваш сервер не підтримує fsockopen."
 #: ../admin/jigoshop-admin.php:226
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
-"Ви не маєте достатньо повноважень, щоб отримати доступ до цієї сторінки."
+"У вас недостатньо повноважень, щоб отримати доступ до цієї сторінки."
 
 #: ../admin/jigoshop-install.php:122 ../classes/jigoshop_options.class.php:533
 msgid "Shop"
@@ -3673,12 +3681,12 @@ msgstr "Відслідкувати замовлення"
 # @ jigoshop
 #: ../admin/jigoshop-install.php:139 ../widgets/user_login.php:62
 msgid "My Account"
-msgstr "Мій акаунт"
+msgstr "Обліковий запис"
 
 # @ jigoshop
 #: ../admin/jigoshop-install.php:143
 msgid "Edit My Address"
-msgstr "Редагувати мою даресу"
+msgstr "Редагувати адресу"
 
 # @ jigoshop
 #: ../admin/jigoshop-install.php:148 ../widgets/user_login.php:63
@@ -3704,18 +3712,24 @@ msgid ""
 "We were not able to create a Jigoshop database table during installation! "
 "(jigoshop_attribute_taxonomies)"
 msgstr ""
+"Не вдалося створити таблицю бази даних Jigoshop під час встановлення! "
+"(jigoshop_attribute_taxonomies)"
 
 #: ../admin/jigoshop-install.php:245
 msgid ""
 "We were not able to create a Jigoshop database table during installation! "
 "(jigoshop_downloadable_product_permissions)"
 msgstr ""
+"Не вдалося створити таблицю бази даних Jigoshop під час встановлення! "
+"(jigoshop_downloadable_product_permissions)"
 
 #: ../admin/jigoshop-install.php:256
 msgid ""
 "We were not able to create a Jigoshop database table during installation! "
 "(jigoshop_termmeta)"
 msgstr ""
+"Не вдалося створити таблицю бази даних Jigoshop під час встановлення! "
+"(jigoshop_termmeta)"
 
 # @ jigoshop
 #: ../admin/jigoshop-write-panels.php:37
@@ -3734,18 +3748,18 @@ msgid ""
 "the order you will need to manually change the item's stock levels.</small>"
 msgstr ""
 "Позиції замовлення <small>&ndash; Примітка: якщо ви редагуєте к-сть або "
-"видаляєте позиції із замовлення вам потрібно вручну змінити рівень запасів "
+"видаляєте позиції із замовлення, вам потрібно вручну змінити рівень запасів "
 "товарів.</small>"
 
 # @ jigoshop
 #: ../admin/jigoshop-write-panels.php:41
 msgid "Order Totals"
-msgstr ""
+msgstr "Замовлення всього"
 
 # @ jigoshop
 #: ../admin/jigoshop-write-panels.php:43
 msgid "Order Actions"
-msgstr "Дії із замовленнями"
+msgstr "Дії із замовленням"
 
 #: ../admin/jigoshop-write-panels.php:48
 msgid "Coupon Data"
@@ -3756,6 +3770,8 @@ msgid ""
 "Coupon Title (converted to lower case for Code, multiple words will end up "
 "hyphenated)"
 msgstr ""
+"Назва купону (малі літери буде використано для коду, слова буде розділено "
+"дефісами)"
 
 # @ jigoshop
 #: ../admin/jigoshop-write-panels.php:178
@@ -3771,7 +3787,7 @@ msgstr ""
 # @ jigoshop
 #: ../admin/jigoshop-write-panels.php:179
 msgid "Calc totals based on order items and taxes?"
-msgstr "Рахувати підсумок базуючись на товарах у замовленні і податках?"
+msgstr "Рахувати підсумок, базуючись на товарах у замовленні і податках?"
 
 # @ jigoshop
 #: ../admin/jigoshop-write-panels.php:180
@@ -3779,6 +3795,8 @@ msgid ""
 "Copy billing information to shipping information? This will remove any "
 "currently entered shipping information."
 msgstr "Копіювати інформацію дял рахунку"
+"Скопіювати дані оплати у дані доставки? Це видалить будь-які уведені "
+"дотепер дані доставки."
 
 # @ jigoshop
 #: ../admin/jigoshop-write-panels.php:182
@@ -3794,28 +3812,30 @@ msgstr "Назва"
 # @ jigoshop
 #: ../admin/jigoshop-write-panels.php:185
 msgid "Cost per unit e.g. 2.99"
-msgstr "Ціна за одиницю, напр. 2.99"
+msgstr "Ціна за одиницю, напр. 2,99"
 
 # @ jigoshop
 #: ../admin/jigoshop-write-panels.php:187
 msgid "Meta Name"
-msgstr ""
+msgstr "Назва мета"
 
 # @ jigoshop
 #: ../admin/jigoshop-write-panels.php:188
 msgid "Meta Value"
-msgstr ""
+msgstr "Значення мета"
 
 # @ jigoshop
 #: ../admin/write-panels/coupon-data.php:33
 msgid "Coupon Code"
-msgstr "Код купона"
+msgstr "Код купону"
 
 #: ../admin/write-panels/coupon-data.php:35
 msgid ""
 "Will not appear until coupon is saved.  This is the front end code for use "
 "on the Cart."
 msgstr ""
+"Не з’явиться доки не зберегти купон. Це лицевий код для використання "
+"у кошику."
 
 # @ jigoshop
 #: ../admin/write-panels/coupon-data.php:54
@@ -3830,11 +3850,11 @@ msgstr "Розмір купона"
 # @ jigoshop
 #: ../admin/write-panels/coupon-data.php:65
 msgid "Enter an amount e.g. 9.99."
-msgstr "Кількість, напр. 2.99"
+msgstr "Кількість, напр. 2,99"
 
 #: ../admin/write-panels/coupon-data.php:75
 msgid "Date From"
-msgstr "Дата з: "
+msgstr "Дата з"
 
 #: ../admin/write-panels/coupon-data.php:76
 #: ../admin/write-panels/coupon-data.php:89
@@ -3846,10 +3866,11 @@ msgstr "рррр-мм-дд"
 msgid ""
 "Choose between which dates this coupon is enabled.  Leave empty for any date."
 msgstr ""
+"Вибрати, між якими датами дозволено цей купон. Порожнє — будь-коли."
 
 #: ../admin/write-panels/coupon-data.php:88
 msgid "Date To"
-msgstr "Дата до: "
+msgstr "Дата до"
 
 #: ../admin/write-panels/coupon-data.php:101
 msgid "Usage Limit"
@@ -3859,10 +3880,11 @@ msgstr "Межа використання"
 msgid ""
 "Prevent other coupons from being used while this one is applied to the Cart."
 msgstr ""
+"Запобігти використанню інших купонів, коли цей застосовано до кошика."
 
 #: ../admin/write-panels/coupon-data.php:122
 msgid "Show the Free Shipping method on the Checkout with this enabled."
-msgstr ""
+msgstr "Показати метод безкоштовної доставки в оформленні з цим застосованим."
 
 # @ jigoshop
 #: ../admin/write-panels/coupon-data.php:134
@@ -3873,6 +3895,8 @@ msgstr "Замовлення усього найменше"
 msgid ""
 "Set the required minimum subtotal for this coupon to be valid on an order."
 msgstr ""
+"Встановти найменший потрібний проміжний рахунок, щоб цей купон був дійсний "
+"у замовленні."
 
 # @ jigoshop
 #: ../admin/write-panels/coupon-data.php:144
@@ -3883,6 +3907,8 @@ msgstr "Замовлення усього найбільше"
 msgid ""
 "Set the required maximum subtotal for this coupon to be valid on an order."
 msgstr ""
+"Встановити найбільший потрібний проміжний рахунок, щоб цей купон був дійсний "
+"у замовленні."
 
 #: ../admin/write-panels/coupon-data.php:162
 msgid "Include Products"
@@ -3894,7 +3920,7 @@ msgstr "Виключити товари"
 
 #: ../admin/write-panels/coupon-data.php:176
 msgid "Control which products this coupon cannot be applied to."
-msgstr ""
+msgstr "До яких товарів можна застосувати цей купон."
 
 #: ../admin/write-panels/coupon-data.php:192
 msgid "Include Categories"
@@ -3902,11 +3928,11 @@ msgstr "Включити категорії"
 
 #: ../admin/write-panels/coupon-data.php:193
 msgid "Control which product categories this coupon can apply to."
-msgstr ""
+msgstr "До яких категорій товарів можна застосувати цей купон."
 
 #: ../admin/write-panels/coupon-data.php:195
 msgid "Any category"
-msgstr ""
+msgstr "Будь-яка категорія"
 
 #: ../admin/write-panels/coupon-data.php:203
 msgid "Exclude Categories"
@@ -3914,12 +3940,12 @@ msgstr "Виключити категорії"
 
 #: ../admin/write-panels/coupon-data.php:204
 msgid "Control which product categories this coupon cannot be applied to."
-msgstr ""
+msgstr "До яких категорій товарів можна застосувати цей купон."
 
 #: ../admin/write-panels/coupon-data.php:206
 #: ../admin/write-panels/coupon-data.php:283
 msgid "No exclusions"
-msgstr ""
+msgstr "Без винятків"
 
 # @ jigoshop
 #: ../admin/write-panels/coupon-data.php:222
@@ -3930,6 +3956,7 @@ msgstr "Методи оплати"
 msgid ""
 "Control which payment methods are allowed for this coupon to be effective."
 msgstr ""
+"Які методи оплати дозволені, щоб цей купон був дієвий."
 
 # @ jigoshop
 #: ../admin/write-panels/coupon-data.php:225
@@ -3979,7 +4006,7 @@ msgstr "Ручне відновлення запасів завершене."
 # @ jigoshop
 #: ../admin/write-panels/order-data.php:64
 msgid "Customer Billing Address"
-msgstr "Адреса виставлення рахунку"
+msgstr "Платіжна адреса клієнта"
 
 # @ jigoshop
 #: ../admin/write-panels/order-data.php:66
