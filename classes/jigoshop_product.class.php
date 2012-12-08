@@ -1219,10 +1219,10 @@ class jigoshop_product extends Jigoshop_Base {
 					$terms[] = '<span class="val_'.$term->slug.'">'.$term->name.'</span>';
 				}
 
-				$value = implode(', ', $terms);
+				$value = apply_filters('jigoshop_product_attribute_value_taxonomy',implode(', ', $terms), $terms, $attr);
 			}
 			else {
-				$value = wptexturize($attr['value']);
+				$value = apply_filters('jigoshop_product_attribute_value_custom',wptexturize($attr['value']), $attr);
 			}
 
 			// Generate the remaining html

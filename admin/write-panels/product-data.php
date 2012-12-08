@@ -699,7 +699,7 @@ function display_attribute() {
 						</td>
 	
 						<td class="value">
-							<textarea name="attribute_values[<?php echo esc_attr( $i ); ?>]" cols="5" rows="2"><?php echo esc_textarea( $attribute['value'] ); ?></textarea>
+							<textarea name="attribute_values[<?php echo esc_attr( $i ); ?>]" cols="5" rows="2"><?php echo esc_textarea( apply_filters('jigoshop_product_attribute_value_custom_edit',$attribute['value'], $attribute) ); ?></textarea>
 						</td>
 					</tr>
 				</table>
