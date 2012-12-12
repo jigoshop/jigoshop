@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Jigoshop v1.4.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-07-01 12:21+1100\n"
-"PO-Revision-Date: 2012-12-06 15:30:12+0000\n"
+"PO-Revision-Date: 2012-12-12 00:53:29+0000\n"
 "Last-Translator: Raphael Suzuki <raphaelsuzuki@daijoubu.ws>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -2377,7 +2377,7 @@ msgstr "Sobrenome"
 #: shortcodes/my_account.php:200
 #@ jigoshop
 msgid "Company"
-msgstr "Empresa"
+msgstr "CPF/CNPJ"
 
 #: classes/jigoshop_checkout.class.php:77
 #: classes/jigoshop_checkout.class.php:155
@@ -2393,7 +2393,7 @@ msgstr "Endereço"
 #: shortcodes/my_account.php:206
 #@ jigoshop
 msgid "Address 1"
-msgstr "Endereço 1"
+msgstr "Endereço"
 
 #: admin/write-panels/order-data.php:126
 #: admin/write-panels/order-data.php:161
@@ -2405,7 +2405,7 @@ msgstr "Endereço 1"
 #: shortcodes/my_account.php:213
 #@ jigoshop
 msgid "Address 2"
-msgstr "Endereço 2"
+msgstr "Bairro"
 
 #: admin/write-panels/order-data.php:127
 #: admin/write-panels/order-data.php:162
@@ -3318,7 +3318,7 @@ msgstr "Atualizar total"
 #: templates/checkout/review_order.php:201
 #@ jigoshop
 msgid "Place order"
-msgstr "Envia seu pedido"
+msgstr "Enviar pedido"
 
 #: templates/checkout/review_order.php:194
 #@ jigoshop
