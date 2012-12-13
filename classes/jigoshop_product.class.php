@@ -886,7 +886,7 @@ class jigoshop_product extends Jigoshop_Base {
 				if ( $child->is_on_sale() )
 					$html .= $child->get_calculated_sale_price_html();
 				else
-					$html .= jigoshop_price( $child->git_price() );
+					$html .= jigoshop_price( $child->get_price() );
 			elseif ( $onsale ) : // prices may be the same, but we could be on sale and need the 'From'
 				$html = '<span class="from">' . _x('From:', 'price', 'jigoshop') . '</span> ';
 				reset( $array );
