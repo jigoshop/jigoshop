@@ -2,7 +2,7 @@
 /**
  * Customer Class
  *
- * The JigoShop custoemr class handles storage of the current customer's data, such as location.
+ * The JigoShop customer class handles storage of the current customer's data, such as location.
  *
  * DISCLAIMER
  *
@@ -375,14 +375,14 @@ class jigoshop_customer extends Jigoshop_Singleton {
 					else $current_c = jigoshop_customer::get_shipping_country();
 				endif;
 				
-                //Remove 'Select a Country' option from drop-down menu for countries.
+                // Remove 'Select a Country' option from drop-down menu for countries.
                 // There is no need to have it, because was assume when user hasn't selected
                 // a country that they are from the shop base country.
                 $field = '<p class="form-row '.implode(' ', $args['class']).'">
                 <label for="'.esc_attr($args['name']).'" class="'.esc_attr(implode(' ', $args['label_class'])).'">'.$args['label'].$required.'</label>
                 <select name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" class="country_to_state" rel="'.esc_attr($args['rel']).'">';
 
-				foreach(jigoshop_countries::get_allowed_countries() as $key=>$value) :
+				foreach (jigoshop_countries::get_allowed_countries() as $key=>$value) :
 					$field .= '<option value="'.esc_attr($key).'"';
 					if (self::get_value($args['name'])==$key) $field .= 'selected="selected"';
 					elseif (self::get_value($args['name']) && $current_c==$key) $field .= 'selected="selected"';

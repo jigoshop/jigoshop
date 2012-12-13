@@ -1177,8 +1177,9 @@ class jigoshop_cart extends Jigoshop_Singleton {
     static function get_item_data( $cart_item, $flat = false ) {
 
         $has_data = false;
-
-        if (!$flat) $return = '<dl class="variation">';
+		$return = '';
+		
+        if (!$flat) $return .= '<dl class="variation">';
 
         // Variation data
         if($cart_item['data'] instanceof jigoshop_product_variation && is_array($cart_item['variation'])) :

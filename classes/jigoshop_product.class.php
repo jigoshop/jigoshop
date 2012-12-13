@@ -783,7 +783,16 @@ class jigoshop_product extends Jigoshop_Base {
 	}
 
 	/**
-	 * Returns the products current price
+	 * Returns the products regular price
+	 *
+	 * @return  float
+	 */
+	public function get_regular_price() {
+		return $this->regular_price;
+	}
+	
+	/**
+	 * Returns the products current price, either regular or sale
 	 *
 	 * @return  int
 	 */
@@ -1219,10 +1228,10 @@ class jigoshop_product extends Jigoshop_Base {
 					$terms[] = '<span class="val_'.$term->slug.'">'.$term->name.'</span>';
 				}
 
-				$value = implode(', ', $terms);
+				$value = apply_filters('jigoshop_product_attribute_value_taxonomy',implode(', ', $terms), $terms, $attr);
 			}
 			else {
-				$value = wptexturize($attr['value']);
+				$value = apply_filters('jigoshop_product_attribute_value_custom',wptexturize($attr['value']), $attr);
 			}
 
 			// Generate the remaining html

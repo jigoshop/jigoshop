@@ -22,22 +22,9 @@ include_once('pay.php');
 include_once('thankyou.php');
 
 function jigoshop_shortcode_wrapper( $function, $atts = array() ) {
-	/*$key = $function.'-shortcode-'.serialize($atts);
-	if ( $shortcode = wp_cache_get($key, 'jigoshop') )
-		return $shortcode;
-
-	// Get the shortcode & save in object cache
+	// WordPress caching of shortcodes stripped out in version 1.4.9 for compatibility with Cache plugins on Cart and Checkout
 	ob_start();
-	call_user_func($function, $atts);
-	$shortcode = ob_get_clean();
-	wp_cache_replace($key, $shortcode, 'jigoshop');
-
-	return $shortcode;
-	
-	*/
-	// don't need caching here.. ( messing with apc ) , jigoshop shortcodes
-	ob_start();
-	call_user_func($function, $atts);
+	call_user_func( $function, $atts );
 	return ob_get_clean();
 }
 

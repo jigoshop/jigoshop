@@ -709,7 +709,7 @@ if (!function_exists('jigoshop_product_cat_image')) {
 if (!function_exists('jigoshop_get_image_placeholder')) {
 	function jigoshop_get_image_placeholder( $size = 'shop_small' ) {
 		$image_size = jigoshop_get_image_size( $size );
-		return '<img src="'.jigoshop::assets_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.$image_size[0].'px" height="'.$image_size[1].'px" />';
+		return '<img src="'.jigoshop::assets_url().'/assets/images/placeholder.png" alt="Placeholder" width="'.$image_size[0].'" height="'.$image_size[1].'" />';
 	}
 }
 

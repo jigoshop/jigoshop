@@ -100,7 +100,7 @@ function jigoshop_get_template_part( $slug, $name = '' ) {
 //################################################################################
 
 function jigoshop_return_template( $template_name ) {
-	$template = locate_template(array( $template_name , JIGOSHOP_TEMPLATE_URL . $template_name )  ,false );
+	$template = locate_template( array( $template_name, JIGOSHOP_TEMPLATE_URL . $template_name ), false );
 	if ( !$template)
 		$template = jigoshop::plugin_path() . '/templates/' . $template_name ;
 	return $template;
@@ -110,19 +110,18 @@ function jigoshop_return_template( $template_name ) {
 // Get the reviews template (comments)
 //################################################################################
 
-function jigoshop_comments_template($template) {
-	if(get_post_type() !== 'product') return $template;
-	return  jigoshop_return_template('single-product-reviews.php') ;
+function jigoshop_comments_template( $template ) {
+	if ( get_post_type() !== 'product' ) return $template;
+	return jigoshop_return_template( 'single-product-reviews.php' ) ;
 }
-
-add_filter('comments_template', 'jigoshop_comments_template' );
+add_filter( 'comments_template', 'jigoshop_comments_template' );
 
 
 //################################################################################
 // Get other templates (e.g. product attributes)
 //################################################################################
 
-function jigoshop_get_template($template_name, $require_once = true) {
-	load_template( jigoshop_return_template( $template_name), $require_once);
+function jigoshop_get_template( $template_name, $require_once = true ) {
+	load_template( jigoshop_return_template( $template_name ), $require_once );
 }
 

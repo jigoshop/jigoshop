@@ -76,7 +76,7 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 			$redirect_to = apply_filters( 'jigoshop_widget_login_redirect', get_permalink( jigoshop_get_page_id('myaccount') ) );
 			$user_login = isset( $user_login ) ? $user_login : null;
 
-			echo "<form action='".wp_login_url( $redirect_to )."' method='post' class='jigoshop_login_widget'>";
+			echo "<form action='".esc_url(wp_login_url( $redirect_to ))."' method='post' class='jigoshop_login_widget'>";
 
 			// Username
 			echo "
@@ -89,7 +89,7 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 			// Password
 			echo "
 			<p>
-				<label for='user_login'>".__( 'Password', 'jigoshop' )."</label>
+				<label for='pwd'>".__( 'Password', 'jigoshop' )."</label>
 				<input type='password' name='pwd' id='pwd' class='input-text password' />
 			</p>
 			";
@@ -97,17 +97,16 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 			echo "
 			<p>
 				<input type='submit' name='submit' value='".__( 'Login', 'jigoshop' )."' class='input-submit' />
-				<a class='forgot' href='".wp_lostpassword_url( $redirect_to )."'>".__( 'Forgot it?', 'jigoshop' )."</a>
+				<a class='forgot' href='".esc_url(wp_lostpassword_url( $redirect_to ))."'>".__( 'Forgot it?', 'jigoshop' )."</a>
 			</p>
 			";
 
-			if (Jigoshop_Base::get_options()->get_option( 'jigoshop_enable_signup_form' ) == 'yes' )
-			echo "
-			<p class='register'>
-				" . wp_register(__('New user?','jigoshop') . ' ' , '') . "
-			</p>
-			";
-
+			if (Jigoshop_Base::get_options()->get_option( 'jigoshop_enable_signup_form' ) == 'yes' ) {
+				echo '<p class="register">';
+				wp_register(__('New user?','jigoshop') . ' ' , '');
+				echo '</p>';
+			}
+			
 			echo "</form>";
 
 			do_action( 'jigoshop_widget_login_after_form' );
@@ -122,6 +121,7 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 				<ul class='pagenav'>";
 
 				foreach( $links as $title => $href ) {
+					$href = esc_url( $href );
 					echo "<li><a title='Go to {$title}' href='{$href}'>{$title}</a></li>";
 				}
 

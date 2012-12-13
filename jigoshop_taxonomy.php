@@ -64,7 +64,7 @@ function jigoshop_post_type() {
             ),
 			'show_ui'   => true,
 			'query_var' => true,
-			'rewrite'   => array( 'slug'=> $category_base . $category_slug, 'with_front'=> false, 'hierarchical'=> true ),
+			'rewrite'   => array( 'slug'=> $category_base . $category_slug, 'with_front'=> false, 'hierarchical'=> false ),
         )
     );
 

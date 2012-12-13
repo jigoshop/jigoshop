@@ -45,6 +45,8 @@ class paypal extends jigoshop_payment_gateway {
 		$this->testmode		= Jigoshop_Base::get_options()->get_option('jigoshop_paypal_testmode');
 		$this->testmail 	= Jigoshop_Base::get_options()->get_option('jigoshop_sandbox_email');
 
+		$this->send_shipping = Jigoshop_Base::get_options()->get_option('jigoshop_paypal_send_shipping');
+
 		add_action( 'init', array(&$this, 'check_ipn_response') );
 		add_action('valid-paypal-standard-ipn-request', array(&$this, 'successful_request') );
 		add_action( 'jigoshop_settings_scripts', array( &$this, 'admin_scripts' ) );
@@ -105,6 +107,19 @@ class paypal extends jigoshop_payment_gateway {
 			'id' 		=> 'jigoshop_paypal_email',
 			'std' 		=> '',
 			'type' 		=> 'email'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('Send shipping details to PayPal','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('If your checkout page does not ask for shipping details, or if you do not want to send shipping information to PayPal, set this option to no. If you enable this option PayPal may restrict where things can be sent, and will prevent some orders going through for your protection.','jigoshop'),
+			'id' 		=> 'jigoshop_paypal_send_shipping',
+			'std' 		=> 'no',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
 		);
 
 		$defaults[] = array(
@@ -253,23 +268,21 @@ class paypal extends jigoshop_payment_gateway {
 		$paypal_args['tax']       = $order->get_total_tax(false,false); // no currency sign or pricing options for separators
 		$paypal_args['tax_cart']  = $order->get_total_tax(false,false); // no currency sign or pricing options for separators
 
-		// For Jigoshop 1.4.5 we will always send shipping information to paypal, even if it's just the billing info
-		// 'no_shipping' must ALWAYS be '1', as this will NOT allow paypal to prompt for an address
-		// 'address_override' MUST be '1' to allow addresses other than the paypal stored address for the customer
-		// These are the ONLY settings that Jigoshop can allow so that addresses can't be edited at paypal
-		// - which bypasses cart/checkout tax calcs for shipping destination
-		// If addresses ARE allowed to be edited at paypal, they will NOT appear in final orders
-		// Ultimately, the Jigoshop Checkout determines -all- addresses
-		$paypal_args['no_shipping'] = 1;
-		$paypal_args['address_override'] = 1;
-		$paypal_args['first_name'] = $order->shipping_first_name;
-		$paypal_args['last_name'] = $order->shipping_last_name;
-		$paypal_args['address1'] = $order->shipping_address_1;
-		$paypal_args['address2'] = $order->shipping_address_2;
-		$paypal_args['city'] = $order->shipping_city;
-		$paypal_args['state'] = $order->shipping_state;
-		$paypal_args['zip'] = $order->shipping_postcode;
-		$paypal_args['country'] = $order->shipping_country;
+		if ($this->send_shipping=='yes') :
+			$paypal_args['no_shipping'] = 1;
+			$paypal_args['address_override'] = 1;
+			$paypal_args['first_name'] = $order->shipping_first_name;
+			$paypal_args['last_name'] = $order->shipping_last_name;
+			$paypal_args['address1'] = $order->shipping_address_1;
+			$paypal_args['address2'] = $order->shipping_address_2;
+			$paypal_args['city'] = $order->shipping_city;
+			$paypal_args['state'] = $order->shipping_state;
+			$paypal_args['zip'] = $order->shipping_postcode;
+			$paypal_args['country'] = $order->shipping_country;
+		else :
+			$paypal_args['no_shipping'] = 1;
+			$paypal_args['address_override'] = 0;
+		endif;
 
 		// Cart Contents
 		$item_loop = 0;
