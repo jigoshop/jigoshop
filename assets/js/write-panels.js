@@ -343,7 +343,7 @@
 			if (answer){
 				$parent = $(this).parent();
 				$parent.fadeOut('slow', function() {
-					$parent.find('select, input[type=text], input[type=checkbox], textarea').not('.attribute-name').val(null);
+					$parent.find('select, input[type=text], input[type=checkbox], textarea').not('.attribute-name').val(null).trigger('attribute_clear_value');
 				});
 
 
