@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Jigoshop v1.4.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-07-01 12:21+1100\n"
-"PO-Revision-Date: 2012-12-15 15:47:41+0000\n"
+"PO-Revision-Date: 2012-12-15 21:14:23+0000\n"
 "Last-Translator: Raphael Suzuki <raphaelsuzuki@daijoubu.ws>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -24,58 +24,58 @@ msgstr ""
 #: widgets/product-categories.php:68
 #@ jigoshop
 msgid "Product Categories"
-msgstr "Tipos de Produtos"
+msgstr "Categorias de Produtos"
 
 #: jigoshop_taxonomy.php:49
 #@ jigoshop
 msgid "Product Category"
-msgstr "Tipo de Produto"
+msgstr "Categoria de Produto"
 
 #: jigoshop_taxonomy.php:50
 #@ jigoshop
 msgid "Search Product Categories"
-msgstr "Pesquisar por Tipos de Produtos"
+msgstr "Pesquisar por Categorias de Produtos"
 
 #: jigoshop_taxonomy.php:51
 #@ jigoshop
 msgid "All Product Categories"
-msgstr "Todos os Tipos de Produtos"
+msgstr "Todas Categorias de Produtos"
 
 #: jigoshop_taxonomy.php:52
 #@ jigoshop
 msgid "Parent Product Category"
-msgstr "Tipo de Produto Principal"
+msgstr "Categoria de Produto Primário"
 
 #: jigoshop_taxonomy.php:53
 #@ jigoshop
 msgid "Parent Product Category:"
-msgstr "Tipo de Produto Principal:"
+msgstr "Categoria de Produto Primário:"
 
 #: jigoshop_taxonomy.php:54
 #@ jigoshop
 msgid "Edit Product Category"
-msgstr "Editar Tipo de Produto"
+msgstr "Editar Categoria de Produto"
 
 #: jigoshop_taxonomy.php:55
 #@ jigoshop
 msgid "Update Product Category"
-msgstr "Atualizar Tipo de Produto"
+msgstr "Atualizar Categoria de Produto"
 
 #: jigoshop_taxonomy.php:56
 #@ jigoshop
 msgid "Add New Product Category"
-msgstr "Adicionar Novo Tipo de Produto"
+msgstr "Adicionar Nova Categoria de Produto"
 
 #: jigoshop_taxonomy.php:57
 #@ jigoshop
 msgid "New Product Category Name"
-msgstr "Nome do Novo Tipo de Produto"
+msgstr "Nome da Nova Categoria de Produto"
 
 #: jigoshop_taxonomy.php:32
 #@ jigoshop
 msgctxt "slug"
 msgid "product-category"
-msgstr "tipo"
+msgstr "categoria-de-produto"
 
 #: jigoshop_taxonomy.php:77
 #: widgets/product_tag_cloud.php:60
@@ -133,7 +133,7 @@ msgstr "Nome da Nova Etiqueta"
 #@ jigoshop
 msgctxt "slug"
 msgid "product-tag"
-msgstr "etiqueta-de-produto"
+msgstr "etiqueta"
 
 #: jigoshop.php:1177
 #: jigoshop_taxonomy.php:115
@@ -3053,7 +3053,7 @@ msgstr "<p>Obrigado. Seu pedido foi processado com sucesso.</p>"
 #: widgets/product-categories.php:29
 #@ jigoshop
 msgid "A list or dropdown of product categories"
-msgstr "Uma lista ou uma lista suspensa com tipos de produtos"
+msgstr "Uma lista ou uma lista suspensa com categorias de produtos"
 
 #: widgets/best-sellers.php:192
 #: widgets/cart.php:170
@@ -3140,7 +3140,7 @@ msgstr "Produtos Destacados"
 #: widgets/layered_nav.php:27
 #@ jigoshop
 msgid "Shows a custom attribute in a widget which lets you narrow down the list of shown products in categories."
-msgstr "Exibe um atributo personalizado em um widget que permite filtrar o catálogo por tipos de produtos."
+msgstr "Exibe um atributo personalizado em um widget que permite filtrar o catálogo por categorias de produtos."
 
 #: widgets/layered_nav.php:221
 #@ jigoshop
@@ -6091,7 +6091,7 @@ msgstr "Comprar"
 #: jigoshop_template_functions.php:259
 #@ jigoshop
 msgid "Posted in "
-msgstr "Tipos: "
+msgstr "Categorias "
 
 #: jigoshop_template_functions.php:260
 #@ jigoshop
@@ -6176,7 +6176,7 @@ msgstr "Filtrar por Preço"
 #: widgets/product-categories.php:33
 #@ jigoshop
 msgid "Jigoshop: Product Categories"
-msgstr "Jigoshop: Tipos de Produtos"
+msgstr "Jigoshop: Categorias de Produtos"
 
 #: widgets/product_search.php:28
 #@ jigoshop
@@ -6191,7 +6191,7 @@ msgstr "Jigoshop: Pesquisa de Produtos"
 #: widgets/product_tag_cloud.php:32
 #@ jigoshop
 msgid "Jigoshop: Product Tag Cloud"
-msgstr "Jigoshop: Nuvem de Tipos de Produtos"
+msgstr "Jigoshop: Nuvem de Etiquetas de Produtos"
 
 #: widgets/products_on_sale.php:30
 #@ jigoshop
@@ -6993,13 +6993,13 @@ msgstr "Prefixar opções"
 #: admin/jigoshop-admin-settings-options.php:289
 #@ jigoshop
 msgid "Prepend shop categories / tags with base page"
-msgstr "Prefixar tipos/etiquetas da loja com a página base"
+msgstr "Prefixar categorias / etiquetas da loja com a página base"
 
 #: admin/jigoshop-admin-settings-options.php:290
 #: classes/jigoshop_options.class.php:712
 #@ jigoshop
 msgid "This will only apply to tags &amp; categories.<br/>Enabled: http://yoursite.com / product_category / YourCategory<br/>Disabled: http://yoursite.com / base_page / product_category / YourCategory"
-msgstr "Isto será aplicado somente a etiquetas &amp; tipos.<br/>Habilitado: http://seusite.com / tipo / nome-do-tipo<br/>Desabilitado: http://seusite.com / página-base / tipo / nome-do-tipo"
+msgstr "Isto será aplicado somente a etiquetas &amp; categorias.<br/>Habilitado: http://seusite.com / categoria-de-produto / nome-da-categoria<br/>Desabilitado: http://seusite.com / página-base / categoria-de-produto / nome-da-categoria"
 
 #: admin/jigoshop-admin-settings-options.php:297
 #: classes/jigoshop_options.class.php:723
@@ -7011,7 +7011,7 @@ msgstr "Prefixar links permanentes da loja com a página base"
 #: classes/jigoshop_options.class.php:736
 #@ jigoshop
 msgid "Prepend product permalinks with product category"
-msgstr "Prefixar links permanentes de produtos com o tipo"
+msgstr "Prefixar links permanentes de produtos com categorias"
 
 #: admin/jigoshop-admin-settings-options.php:311
 #@ jigoshop
@@ -7022,7 +7022,7 @@ msgstr "Slug de variáveis"
 #: classes/jigoshop_options.class.php:751
 #@ jigoshop
 msgid "Slug displayed in product category URLs. Leave blank to use default \"product-category\""
-msgstr "Slug exibido nas URLs de tipos de produtos. Deixe em branco para usar o padrão \"tipo\""
+msgstr "Slug exibido nas URLs de categorias de produtos. Deixe em branco para usar o padrão \"categoria-de-produto\""
 
 #: admin/jigoshop-admin-settings-options.php:322
 #: classes/jigoshop_options.class.php:758
@@ -7049,7 +7049,7 @@ msgstr "Por linha"
 #: admin/jigoshop-admin-settings-options.php:490
 #@ jigoshop
 msgid "Determines how many products to show on one display row for Shop, Category and Tag pages. Default = 3."
-msgstr "Determine quantos produtos serão exibidos em uma linha nas páginas de loja, tipos e etiquetas. Padrão = 3."
+msgstr "Determine quantos produtos serão exibidos em uma linha nas páginas de loja, categorias e etiquetas. Padrão = 3."
 
 #: admin/jigoshop-admin-settings-options.php:500
 #@ jigoshop
@@ -7059,7 +7059,7 @@ msgstr "Por página"
 #: admin/jigoshop-admin-settings-options.php:501
 #@ jigoshop
 msgid "Determines how many products to display on Shop, Category and Tag pages before needing next and previous page navigation. Default = 12."
-msgstr "Determine quantos produtos serão exibidos nas páginas de loja, tipos e etiquetas. Padrão = 12."
+msgstr "Determine quantos produtos serão exibidos nas páginas de loja, categorias e etiquetas. Padrão = 12."
 
 #: admin/jigoshop-admin-settings-options.php:583
 #@ jigoshop
@@ -7091,7 +7091,7 @@ msgstr "Página de imagens extras de produtos individuais."
 #: admin/jigoshop-admin-settings-options.php:639
 #@ jigoshop
 msgid "Shop, Categories, Tags, and Related Products."
-msgstr "Loja, Tipos, Etiquetas e Produtos Relacionados"
+msgstr "Loja, Categorias, Etiquetas e Produtos Relacionados"
 
 #: admin/jigoshop-admin-settings-options.php:648
 #@ jigoshop
@@ -7322,13 +7322,13 @@ msgstr "Excluir"
 #: jigoshop_taxonomy.php:47
 #@ jigoshop
 msgid "Categories"
-msgstr "Tipos"
+msgstr "Categorias"
 
 #: admin/jigoshop-admin-settings.php:902
 #: admin/jigoshop-admin-settings.php:1156
 #@ jigoshop
 msgid "Control which categories this coupon can apply to."
-msgstr "Controle em quais tipos este cupom pode ser aplicado."
+msgstr "Controle em quais categorias este cupom pode ser aplicado."
 
 #: admin/jigoshop-admin-settings.php:926
 #: admin/jigoshop-admin-settings.php:1180
@@ -7534,27 +7534,27 @@ msgstr "Controle em quais produtos este cupom não pode ser aplicado."
 #: admin/write-panels/coupon-data.php:192
 #@ jigoshop
 msgid "Include Categories"
-msgstr "Incluir Tipos"
+msgstr "Incluir Categorias"
 
 #: admin/write-panels/coupon-data.php:193
 #@ jigoshop
 msgid "Control which product categories this coupon can apply to."
-msgstr "Controle em quais tipos de produto este cupom pode ser aplicado."
+msgstr "Controle em quais categorias de produto este cupom pode ser aplicado."
 
 #: admin/write-panels/coupon-data.php:195
 #@ jigoshop
 msgid "Any category"
-msgstr "Qualquer tipo"
+msgstr "Qualquer categoria"
 
 #: admin/write-panels/coupon-data.php:203
 #@ jigoshop
 msgid "Exclude Categories"
-msgstr "Excluir Tipos"
+msgstr "Excluir Categorias"
 
 #: admin/write-panels/coupon-data.php:204
 #@ jigoshop
 msgid "Control which product categories this coupon cannot be applied to."
-msgstr "Controle em quais tipos de produto este cupom não pode ser aplicado."
+msgstr "Controle em quais categorias de produto este cupom não pode ser aplicado."
 
 #: admin/write-panels/coupon-data.php:206
 #: admin/write-panels/coupon-data.php:283
@@ -7819,12 +7819,12 @@ msgstr " "
 #: classes/jigoshop_options.class.php:710
 #@ jigoshop
 msgid "Prepend shop categories and tags with base page"
-msgstr "Prefixar tipos e etiquetas da loja com a página base"
+msgstr "Prefixar categorias e etiquetas da loja com a página base"
 
 #: classes/jigoshop_options.class.php:749
 #@ jigoshop
 msgid "Product category slug"
-msgstr "Slug de tipos de produto"
+msgstr "Slug de categorias de produto"
 
 #: classes/jigoshop_options.class.php:775
 #@ jigoshop
@@ -8014,7 +8014,7 @@ msgstr "Padrão = 150px"
 #: classes/jigoshop_options.class.php:1287
 #@ jigoshop
 msgid "Set the width of the catalog image for Shop, Categories, Tags, and Related Products."
-msgstr "Defina a largura da imagem pequena usada na loja, tipos, etiquetas e produtos relacionados."
+msgstr "Defina a largura da imagem pequena usada na Loja, Categorias, Etiquetas e Produtos Relacionados."
 
 #: classes/jigoshop_options.class.php:1294
 #@ jigoshop
@@ -8024,7 +8024,7 @@ msgstr "Altura da Imagem de Catálogo"
 #: classes/jigoshop_options.class.php:1296
 #@ jigoshop
 msgid "Set the height of the catalog image for Shop, Categories, Tags, and Related Products."
-msgstr "Defina a altura da imagem pequena usada na loja, tipos, etiquetas e produtos relacionados."
+msgstr "Defina a altura da imagem pequena usada na Loja, Categorias, Etiquetas e Produtos Relacionados."
 
 #: classes/jigoshop_options.class.php:1303
 #@ jigoshop
@@ -8065,7 +8065,7 @@ msgstr "Esta opção não terá efeito se a opção acima estiver desabilitada."
 #: classes/jigoshop_options.class.php:1525
 #@ jigoshop
 msgid "This will only apply to the Shop, Category and Product pages."
-msgstr "Isto será aplicado somente à Loja, Tipos e Páginas de Produtos."
+msgstr "Isto será aplicado somente à Loja, Categorias e Páginas de Produtos."
 
 #: classes/jigoshop_options.class.php:1526
 #@ jigoshop
@@ -8306,7 +8306,7 @@ msgstr "Este não é o seu link de download."
 #: jigoshop_actions.php:891
 #@ jigoshop
 msgid "View all categories"
-msgstr "Ver todas os tipos"
+msgstr "Ver todas as categorias"
 
 #: jigoshop_emails.php:37
 #, php-format
