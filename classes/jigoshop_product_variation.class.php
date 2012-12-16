@@ -76,6 +76,25 @@ class jigoshop_product_variation extends jigoshop_product {
 	}
 
 	/**
+	 * Returns the products current price, either regular or sale
+	 *
+	 * @return  int
+	 */
+	public function get_price() {
+
+		$price = null;
+		if ( strstr($this->sale_price,'%') ) {
+			$price = round($this->regular_price * ( (100 - str_replace('%','',$this->sale_price) ) / 100 ), 2);
+		} else if ( $this->sale_price ) {
+			$price = $this->sale_price;
+		} else {
+			$price = apply_filters('jigoshop_product_get_regular_price', $this->regular_price, $this->variation_id);
+		}
+		return apply_filters( 'jigoshop_product_get_price', $price, $this->variation_id );
+
+	}
+
+	/**
 	 * Modifies the stock levels for variations
 	 *
 	 * @param   int   Amount to modify
