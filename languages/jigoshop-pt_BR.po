@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Jigoshop v1.4.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-07-01 12:21+1100\n"
-"PO-Revision-Date: 2012-12-15 21:14:23+0000\n"
+"PO-Revision-Date: 2012-12-17 19:20:13+0000\n"
 "Last-Translator: Raphael Suzuki <raphaelsuzuki@daijoubu.ws>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -39,7 +39,7 @@ msgstr "Pesquisar por Categorias de Produtos"
 #: jigoshop_taxonomy.php:51
 #@ jigoshop
 msgid "All Product Categories"
-msgstr "Todas Categorias de Produtos"
+msgstr "Todas"
 
 #: jigoshop_taxonomy.php:52
 #@ jigoshop
@@ -294,12 +294,12 @@ msgstr "Pesquisar Pedido"
 #: jigoshop_taxonomy.php:234
 #@ jigoshop
 msgid "No Orders found"
-msgstr "Não foram encontrados Pedidos"
+msgstr "Não foram encontrados pedidos"
 
 #: jigoshop_taxonomy.php:235
 #@ jigoshop
 msgid "No Orders found in trash"
-msgstr "Não foram encontrados pedidos na Lixeira"
+msgstr "Não foram encontrados pedidos na lixeira"
 
 #: jigoshop_taxonomy.php:236
 #@ jigoshop
@@ -512,7 +512,7 @@ msgstr "Produtos marcados como &ldquo;"
 #: jigoshop_template_functions.php:1068
 #@ jigoshop
 msgid "Search results for &ldquo;"
-msgstr "Resultados da pesquisa por &ldquo;"
+msgstr "Resultados de pesquisa para &ldquo;"
 
 #: jigoshop_template_functions.php:1032
 #@ jigoshop
@@ -587,7 +587,7 @@ msgstr "Um pedido foi realizado por "
 #: jigoshop_emails.php:41
 #@ jigoshop
 msgid ". Their order is as follows:"
-msgstr ". O pedido é o seguinte:"
+msgstr ". Os detalhes seguem abaixo:"
 
 #: jigoshop_emails.php:284
 #: jigoshop_emails.php:485
@@ -600,7 +600,7 @@ msgstr "Nota:"
 #: jigoshop_emails.php:299
 #@ jigoshop
 msgid "Subtotal:"
-msgstr "Sub-total:"
+msgstr "Subtotal:"
 
 #: admin/jigoshop-admin-post-types.php:388
 #: admin/write-panels/order-data.php:422
@@ -1105,12 +1105,12 @@ msgstr "F jS Y"
 #: admin/jigoshop-admin-dashboard.php:368
 #@ jigoshop
 msgid "No items found."
-msgstr "Não foram encontrados ítens."
+msgstr "Não foram encontrados itens."
 
 #: admin/jigoshop-admin-dashboard.php:59
 #@ jigoshop
 msgid "Useful Links"
-msgstr "Links Úteis"
+msgstr "Links úteis"
 
 #. translators: plugin header field 'Name'
 #: admin/jigoshop-admin-dashboard.php:385
@@ -1129,7 +1129,7 @@ msgstr "Aprenda mais sobre o plugin Jigoshop"
 #: admin/jigoshop-admin-dashboard.php:386
 #@ jigoshop
 msgid "Tour"
-msgstr "Tournê"
+msgstr "Turnê"
 
 #: admin/jigoshop-admin-dashboard.php:386
 #@ jigoshop
@@ -1174,7 +1174,7 @@ msgstr "Jigoshop no Github."
 #: admin/jigoshop-admin-dashboard.php:393
 #@ jigoshop
 msgid "Help extend Jigoshop."
-msgstr "Ajude a extender o Jigoshop."
+msgstr "Ajude a melhorar o Jigoshop."
 
 #: admin/jigoshop-admin-dashboard.php:394
 #@ jigoshop
@@ -1184,7 +1184,7 @@ msgstr "Jigoshop no WordPress.org"
 #: admin/jigoshop-admin-dashboard.php:394
 #@ jigoshop
 msgid "Leave us a rating!"
-msgstr "Faça uma avaliação nossa!"
+msgstr "Faça uma avaliação sobre nós!"
 
 #: admin/jigoshop-install.php:122
 #: classes/jigoshop_options.class.php:533
@@ -1311,7 +1311,7 @@ msgstr "Avalie"
 #: admin/jigoshop-admin-settings.php:1421
 #@ jigoshop
 msgid "Apply to shipping"
-msgstr "Aplicar ao envio"
+msgstr "Aplicar à entrega"
 
 #: admin/jigoshop-admin-settings-api.php:1249
 #: admin/jigoshop-admin-settings.php:1399
@@ -1478,7 +1478,7 @@ msgstr "Endereço de Entrega"
 #: admin/jigoshop-admin-post-types.php:297
 #@ jigoshop
 msgid "Billing & Shipping"
-msgstr "Cobrança & Envio"
+msgstr "Cobrança & Entrega"
 
 #: admin/jigoshop-admin-post-types.php:298
 #@ jigoshop
@@ -2237,7 +2237,7 @@ msgstr "Notas do consumidor sobre o pedido"
 #: admin/write-panels/order-data.php:152
 #@ jigoshop
 msgid "Copy billing address to shipping address"
-msgstr "Copiar endereço de cobrança para endereço de envio"
+msgstr "Copiar endereço de cobrança para endereço de entrega"
 
 #: admin/write-panels/order-data.php:212
 #: shortcodes/cart.php:102
@@ -2452,7 +2452,7 @@ msgstr "Endereço de Email"
 #: shortcodes/my_account.php:254
 #@ jigoshop
 msgid "you@yourdomain.com"
-msgstr "seunome@seusite.com.br"
+msgstr "Email"
 
 #: classes/jigoshop_checkout.class.php:112
 #: shortcodes/my_account.php:261
@@ -2464,7 +2464,7 @@ msgstr "Telefone"
 #: shortcodes/my_account.php:262
 #@ jigoshop
 msgid "Phone number"
-msgstr "Número de telefone"
+msgstr "Telefone/Celular"
 
 #: classes/jigoshop_checkout.class.php:190
 #@ jigoshop
@@ -2661,7 +2661,7 @@ msgstr "ID de Cliente do Skrill"
 #: gateways/skrill.php:213
 #@ jigoshop
 msgid "Shipping cost"
-msgstr "Custa de entrega"
+msgstr "Valor do frete"
 
 #: gateways/skrill.php:262
 #@ jigoshop
@@ -2760,7 +2760,7 @@ msgstr "Pagar via PayPal"
 #: gateways/paypal.php:351
 #@ jigoshop
 msgid "Cancel order &amp; restore cart"
-msgstr "Calncelar pedido &amp; limpar carrinho"
+msgstr "Cancelar pedido &amp; retornar ao carrinho"
 
 #: gateways/paypal.php:356
 #@ jigoshop
@@ -2937,7 +2937,7 @@ msgstr "Por favor, digite um CEP válido."
 #: shortcodes/cart.php:60
 #@ jigoshop
 msgid "Shipping costs updated."
-msgstr "Custa de entrega atualizado."
+msgstr "Valor de entrega atualizado."
 
 #: shortcodes/cart.php:89
 #@ jigoshop
@@ -5586,7 +5586,7 @@ msgstr "Avançado"
 #: admin/write-panels/product-data.php:81
 #@ jigoshop
 msgid "Grouping"
-msgstr "Agrupar"
+msgstr "Agrupado"
 
 #: admin/write-panels/product-data.php:85
 #@ jigoshop
@@ -5872,7 +5872,7 @@ msgstr "Indisponível"
 #: classes/jigoshop_product.class.php:917
 #@ jigoshop
 msgid "Price Not Announced"
-msgstr "Preço não anunciado"
+msgstr "Indisponível"
 
 #: gateways/bank_transfer.php:63
 #@ jigoshop
@@ -7608,7 +7608,7 @@ msgstr "Preço Normal"
 #: admin/write-panels/product-data.php:143
 #@ jigoshop
 msgid " or %"
-msgstr "ou %"
+msgstr " ou %"
 
 #: admin/write-panels/product-data.php:144
 #@ jigoshop
@@ -7663,12 +7663,12 @@ msgstr "Pode ser personalizado"
 #: admin/write-panels/product-data.php:311
 #@ jigoshop
 msgid "Personalized Characters"
-msgstr "Caracteres Personalizados"
+msgstr "Personalização"
 
 #: admin/write-panels/product-data.php:314
 #@ jigoshop
 msgid "Leave blank for unlimited"
-msgstr "Deixe um branco para ilimitado"
+msgstr "Em branco para ilimitado"
 
 #: admin/write-panels/product-data.php:329
 #@ jigoshop
@@ -7713,7 +7713,7 @@ msgstr "Grupo do Produto"
 #: admin/write-panels/product-data.php:425
 #@ jigoshop
 msgid "Sort Order"
-msgstr "Exibir por"
+msgstr "Ordem de Exibição"
 
 #: admin/write-panels/product-data.php:450
 #@ jigoshop
@@ -7814,7 +7814,7 @@ msgstr "Xelim Queniano (KSh)"
 #: classes/jigoshop_options.class.php:663
 #@ jigoshop
 msgid "Add your tax registration label before the registration number and it will be printed as well. eg. <code>VAT Number: 88888888</code>"
-msgstr " "
+msgstr "O nome do documento (CPF ou CNPJ) também será adicionado antes do número. Exemplo: <code>CPF: 000.000.000-00</code>"
 
 #: classes/jigoshop_options.class.php:710
 #@ jigoshop
@@ -8110,7 +8110,7 @@ msgstr "Quando habilitado, os campos de endereço de entrega aparecerão por pad
 #: classes/jigoshop_options.class.php:1614
 #@ jigoshop
 msgid "Available Shipping Methods"
-msgstr "Métodos de Envio Disponíveis"
+msgstr "Métodos de Entrega Disponíveis"
 
 #: classes/jigoshop_options.class.php:1624
 #@ jigoshop
@@ -8177,7 +8177,7 @@ msgstr "De:"
 #: classes/jigoshop_shipping.class.php:95
 #@ jigoshop
 msgid "Please enter your shipping destination to view shipping options."
-msgstr "Por favor, digite o seu endereço de entrega para ver as opções de envio."
+msgstr "Por favor, digite o seu endereço de entrega para ver as opções disponíveis."
 
 #: classes/jigoshop_shipping.class.php:97
 #@ jigoshop
@@ -8220,7 +8220,7 @@ msgstr "Forçar pagamento quando grátis."
 #: gateways/paypal.php:128
 #@ jigoshop
 msgid "If product totals are free and shipping is also free (excluding taxes), this will force 0.01 to allow paypal to process payment. Shop owner is responsible for refunding customer."
-msgstr "Caso o total dos produtos seja grátis e o envio também seja grátis (sem taxas), isto forçará o valor de 0,01 para que o PayPal processe o pagamento. O dono da loja será responsável por reembolsar o cliente."
+msgstr "Caso o total dos produtos seja grátis e a entrega também seja grátis (sem taxas), isto forçará o valor de 0,01 para que o PayPal processe o pagamento. O dono da loja será responsável por reembolsar o cliente."
 
 #: gateways/paypal.php:140
 #@ jigoshop
@@ -8339,7 +8339,7 @@ msgstr "Data: "
 #: jigoshop_emails.php:412
 #@ jigoshop
 msgid "Shipping: "
-msgstr "Envio: "
+msgstr "Entrega: "
 
 #: jigoshop_emails.php:418
 #@ jigoshop
@@ -8419,12 +8419,12 @@ msgstr "Pesquisar Cupons"
 #: jigoshop_taxonomy.php:297
 #@ jigoshop
 msgid "No Coupons found"
-msgstr "Não foram encontrados Cupons"
+msgstr "Não foram encontrados cupons"
 
 #: jigoshop_taxonomy.php:298
 #@ jigoshop
 msgid "No Coupons found in trash"
-msgstr "Não foram encontrados Cupons na lixeira"
+msgstr "Não foram encontrados cupons na lixeira"
 
 #: jigoshop_taxonomy.php:299
 #@ jigoshop
