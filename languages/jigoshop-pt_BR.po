@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Jigoshop v1.4.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-07-01 12:21+1100\n"
-"PO-Revision-Date: 2012-12-17 19:20:13+0000\n"
+"PO-Revision-Date: 2012-12-18 13:32:25+0000\n"
 "Last-Translator: Raphael Suzuki <raphaelsuzuki@daijoubu.ws>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1463,7 +1463,7 @@ msgstr "Cliente"
 #: shortcodes/order_tracking.php:151
 #@ jigoshop
 msgid "Billing Address"
-msgstr "Endereço de Pagamento"
+msgstr "Endereço de Cobrança"
 
 #: admin/jigoshop-admin-post-types.php:296
 #: classes/jigoshop_checkout.class.php:235
@@ -1672,7 +1672,7 @@ msgstr "Remover este item? Se você já reduziu o estoque deste item anteriormen
 #: admin/jigoshop-write-panels.php:180
 #@ jigoshop
 msgid "Copy billing information to shipping information? This will remove any currently entered shipping information."
-msgstr "Copiar informação de pagamento para informação de entrega? Isto removerá todas as informações digitadas."
+msgstr "Copiar informação de cobrança para informação de entrega? Isto removerá todas as informações digitadas."
 
 #: admin/jigoshop-write-panels.php:182
 #: admin/write-panels/order-data.php:205
