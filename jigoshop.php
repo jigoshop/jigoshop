@@ -564,7 +564,7 @@ function jigoshop_product_cat_filter_post_link( $permalink, $post, $leavename, $
         $permalink = str_replace( '%product_cat%', _x('product', 'slug', 'jigoshop'), $permalink );
     else :
     	// Replace the placeholder rewrite tag with the first term's slug
-        $first_term = array_shift( $terms );
+        $first_term = apply_filters( 'jigoshop_product_cat_permalink_terms', array_shift( $terms ), $terms);
         $permalink = str_replace( '%product_cat%', $first_term->slug, $permalink );
     endif;
 
