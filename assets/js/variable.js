@@ -85,31 +85,22 @@
 				$this.removeClass('remove');
 			}
 			else {
+			    var send_attachment_bkp = wp.media.editor.send.attachment;
 
-				window.send_to_editor = function( html ) {
-
-					// Set up variables
-					var $img		= $(html).find('img');
-						imgsrc		= $img.attr('src');
-						imgclass		= $img.attr('class');
-						imgid 		= parseInt(imgclass.replace(/\D/g, ''), 10);
-
+			    wp.media.editor.send.attachment = function(props, attachment) {
 					// Set the vhidden input value with the thumb ID
-					$imgID.val(imgid);
+					$imgID.val(attachment.id);
 
 					// Replace the image with a preview of the image
-					$('img', $parent).attr('src', imgsrc);
+					$('img', $parent).attr('src', attachment.url);
 					$this.addClass('remove');
 
-					// Hide thickbox
-					tb_remove();
-				}
+			        wp.media.editor.send.attachment = send_attachment_bkp;
+			    }
 
-				// @todo: Why do we need this? -Rob
-				// formfield = $('.upload_image_id', $parent).attr('name');
+			    wp.media.editor.open();
 
-				// Show thickbox
-				tb_show('', 'media-upload.php?post_id'+post_id+'&type=image&TB_iframe=true');
+			    return false;
 			}
 		})
 
@@ -123,20 +114,19 @@
 			    $file   = $this.prev();
 			    post_id = $this.parents('.jigoshop_variation').attr('rel');
 
-			window.send_to_editor = function(html) {
+		    var send_attachment_bkp = wp.media.editor.send.attachment;
+
+		    wp.media.editor.send.attachment = function(props, attachment) {
 
 				// Attach the file URI to the relevant
-				$file.val( $(html).attr('href') );
+				$file.val( attachment.url );
 
-				// Hide thickbox
-				tb_remove();
-			}
+		        wp.media.editor.send.attachment = send_attachment_bkp;
+		    }
 
-			// @todo: Why do we need this? -Rob
-			// formfield = $(parent).attr('name');
+		    wp.media.editor.open();
 
-			// Show thickbox
-			tb_show('', 'media-upload.php?post_id=' + post_id + '&type=downloadable_product&from=jigoshop_variation&TB_iframe=true');
+		    return false;
 		})
 
 		.on('click', '#do_actions', function(e) {

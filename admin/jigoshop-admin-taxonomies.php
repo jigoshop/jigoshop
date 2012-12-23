@@ -33,32 +33,22 @@ function jigoshop_add_category_thumbnail_field() {
 			<button type="submit" class="remove_image_button button"><?php _e('Remove image', 'jigoshop'); ?></button>
 		</div>
 		<script type="text/javascript">
+			var wpActiveEditor;
 
-			window.send_to_termmeta = function(html) {
+			jQuery('.upload_image_button').click(function() {
 
-				jQuery('body').append('<div id="temp_image">' + html + '</div>');
+			    var send_attachment_bkp = wp.media.editor.send.attachment;
 
-				var img = jQuery('#temp_image').find('img');
+			    wp.media.editor.send.attachment = function(props, attachment) {
+					jQuery('#product_cat_thumbnail_id').val(attachment.id);
+					jQuery('#product_cat_thumbnail img').attr('src', attachment.url);
 
-				imgurl 		= img.attr('src');
-				imgclass 	= img.attr('class');
-				imgid		= parseInt(imgclass.replace(/\D/g, ''), 10);
+			        wp.media.editor.send.attachment = send_attachment_bkp;
+			    }
 
-				jQuery('#product_cat_thumbnail_id').val(imgid);
-				jQuery('#product_cat_thumbnail img').attr('src', imgurl);
-				jQuery('#temp_image').remove();
+			    wp.media.editor.open();
 
-				tb_remove();
-			}
-
-			jQuery('.upload_image_button').live('click', function(e){
-				e.preventDefault();
-				var post_id = 0;
-
-				window.send_to_editor = window.send_to_termmeta;
-
-				tb_show('', 'media-upload.php?post_id=' + post_id + '&amp;type=image&amp;TB_iframe=true');
-				return false;
+			    return false;
 			});
 
 			jQuery('.remove_image_button').live('click', function(){
@@ -86,32 +76,22 @@ function jigoshop_edit_category_thumbnail_field( $term, $taxonomy ) {
 				<button type="submit" class="remove_image_button button"><?php _e('Remove image', 'jigoshop'); ?></button>
 			</div>
 			<script type="text/javascript">
+				var wpActiveEditor;
 
-				window.send_to_termmeta = function(html) {
+				jQuery('.upload_image_button').click(function() {
 
-					jQuery('body').append('<div id="temp_image">' + html + '</div>');
+				    var send_attachment_bkp = wp.media.editor.send.attachment;
 
-					var img = jQuery('#temp_image').find('img');
+				    wp.media.editor.send.attachment = function(props, attachment) {
+						jQuery('#product_cat_thumbnail_id').val(attachment.id);
+						jQuery('#product_cat_thumbnail img').attr('src', attachment.url);
 
-					imgurl 		= img.attr('src');
-					imgclass 	= img.attr('class');
-					imgid		= parseInt(imgclass.replace(/\D/g, ''), 10);
+				        wp.media.editor.send.attachment = send_attachment_bkp;
+				    }
 
-					jQuery('#product_cat_thumbnail_id').val(imgid);
-					jQuery('#product_cat_thumbnail img').attr('src', imgurl);
-					jQuery('#temp_image').remove();
+				    wp.media.editor.open();
 
-					tb_remove();
-				}
-
-				jQuery('.upload_image_button').live('click', function(e){
-					e.preventDefault();
-					var post_id = 0;
-
-					window.send_to_editor = window.send_to_termmeta;
-
-					tb_show('', 'media-upload.php?post_id=' + post_id + '&amp;type=image&amp;TB_iframe=true');
-					return false;
+				    return false;
 				});
 
 				jQuery('.remove_image_button').live('click', function(){

@@ -170,9 +170,13 @@ function jigoshop_write_panel_scripts() {
 	wp_register_script( 'jigoshop-bootstrap-tooltip', jigoshop::assets_url() . '/assets/js/bootstrap-tooltip.min.js', array( 'jquery' ), '2.0.3' );
 	wp_enqueue_script( 'jigoshop-bootstrap-tooltip' );
 
-	wp_enqueue_script('media-upload');
-	wp_enqueue_script('thickbox');
-	wp_enqueue_style('thickbox');
+	if ( function_exists( 'wp_enqueue_media' ) ) {
+	    wp_enqueue_media();
+	} else {
+	    wp_enqueue_style('thickbox');
+	    wp_enqueue_script('media-upload');
+	    wp_enqueue_script('thickbox');
+	}
 
 	$jigoshop_params = array(
 		'remove_item_notice' 			=>  __("Remove this item? If you have previously reduced this item's stock, or this order was submitted by a customer, will need to manually restore the item's stock.", 'jigoshop'),
@@ -260,5 +264,5 @@ class jigoshop_form {
 		return Jigoshop_Forms::checkbox( $args );
 
 	}
-	
+
 }
