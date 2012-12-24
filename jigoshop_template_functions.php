@@ -996,7 +996,7 @@ if (!function_exists('jigoshop_breadcrumb')) {
 	       			echo $prepend;
 
 	       			if ($terms = get_the_terms( $post->ID, 'product_cat' )) :
-						$term = current($terms);
+						$term = apply_filters( 'jigoshop_product_cat_breadcrumb_terms', current($terms), $terms);
 						$parents = array();
 						$parent = $term->parent;
 						while ($parent):
