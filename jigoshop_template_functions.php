@@ -630,7 +630,7 @@ if (!function_exists('jigoshop_product_customize_panel')) {
 			$length_str = $custom_length == '' ? '' : sprintf( __( 'You may enter a maximum of %s characters.', 'jigoshop' ), $custom_length );
 			
 			echo '<div class="panel" id="tab-customize">';
-			echo '<p>' . apply_filters('jigoshop_product_customize_heading', __('Enter your personal information as you want it to appear on the product.<br />'.$length_str, 'jigoshop')) . '</p>';
+			echo '<p>' . apply_filters('jigoshop_product_customize_heading', __('Enter your personal information as you want it to appear on the product.<br />', 'jigoshop').$length_str) . '</p>';
 
 			?>
 
