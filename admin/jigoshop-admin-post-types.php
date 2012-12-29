@@ -329,7 +329,7 @@ function jigoshop_custom_order_columns($column) {
 
             echo '<a href="' . admin_url('post.php?post=' . $post->ID . '&action=edit') . '">' . sprintf(__('Order %s', 'jigoshop'), $order->get_order_number()) . '</a>';
 
-            echo '<time title="' . date_i18n(__('c', 'jigoshop'), strtotime($post->post_date)) . '">' . date_i18n(__('F j, Y, g:i a', 'jigoshop'), strtotime($post->post_date)) . '</time>';
+            echo '<time title="' . date_i18n(_x('c', 'date', 'jigoshop'), strtotime($post->post_date)) . '">' . date_i18n(__('F j, Y, g:i a', 'jigoshop'), strtotime($post->post_date)) . '</time>';
 
             break;
         case "customer" :
