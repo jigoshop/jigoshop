@@ -22,9 +22,9 @@ function jigoshop_product_attributes_help() {
 	$types = '
 		<p>'.__('Attributes can have many types which affect how they are displayed in both the admin &amp; frontend, these include', 'jigoshop').':</p>
 		<ul>
-			<li>'.__('<strong>Select</strong> is used for attributes which can only have <strong>one</strong> value. Note: this type can not be used for variations', 'jigoshop').'.</li>
-			<li>'.__('<strong>Multiple Select</strong> is used in situations where a product can belong to many but not all possible attributes, for example available colours. This attribute type can be used for variations', 'jigoshop').'.</li>
-			<li>'.__('<strong>Text</strong> is used when you do not know what options there are until it comes to creating a product', 'jigoshop').'.</li>
+			<li><strong>'.__('Select', 'jigoshop').'</strong> '.__('is used for attributes which can only have <strong>one</strong> value. Note: this type can not be used for variations', 'jigoshop').'.</li>
+			<li><strong>'.__('Multiple Select', 'jigoshop').'</strong> '.__('is used in situations where a product can belong to many but not all possible attributes, for example available colours. This attribute type can be used for variations', 'jigoshop').'.</li>
+			<li><strong>'.__('Text', 'jigoshop').'</strong> '.__('is used when you do not know what options there are until it comes to creating a product', 'jigoshop').'.</li>
 		</ul>
 		<p>'.__('In addition to all these types there are also custom attributes which are created in the product creation screen, these attributes are mainly only used for one-off attributes', 'jigoshop').'.</p>
 	';
@@ -32,7 +32,7 @@ function jigoshop_product_attributes_help() {
 	$adding_options = '
 		<p>'.__('Once youve set up your attribute with a name &amp; a type the final task is to create some options', 'jigoshop').'.</p>
 		<p>'.__('To create an option click on the attribute name to the right of the screen, this should take you to a new screen. Once there simply add options the same as you would a category/tag', 'jigoshop').'.</p>
-		<p>'.__('Thats really all there is to it, enjoy!', 'jigoshop').'</p>
+		<p>'.__('Thats really all there is to it, enjoy', 'jigoshop').'!</p>
 	';
 
 	// TODO: ADD RELEVANT ARTICLE
@@ -78,10 +78,10 @@ function jigoshop_product_category_help() {
     $product_categories = '
 		<p>'.__('When adding a new category on this screen, you’ll fill in the following fields', 'jigoshop').':</p>
 		<ul>
-			<li>'.__('<strong>Name</strong> - The name is how it appears on your site', 'jigoshop').'.</li>
-			<li>'.__('<strong>Slug</strong> - The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens', 'jigoshop').'.</li>
-			<li>'.__('<strong>Parent</strong> - Categories, unlike tags, can have a hierarchy. You might have a Jazz category, and under that have children categories for Bebop and Big Band. Totally optional. To create a subcategory, just choose another category from the Parent dropdown', 'jigoshop').'.</li>
-			<li>'.__('<strong>Description</strong> - The description is not prominent by default; however, some themes may display it', 'jigoshop').'.</li>
+			<li><strong>'.__('Name', 'jigoshop').'</strong> - '.__('The name is how it appears on your site', 'jigoshop').'.</li>
+			<li><strong>'.__('Slug', 'jigoshop').'</strong> - '.__('The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens', 'jigoshop').'.</li>
+			<li><strong>'.__('Parent', 'jigoshop').'</strong> - '.__('Categories, unlike tags, can have a hierarchy. You might have a Jazz category, and under that have children categories for Bebop and Big Band. Totally optional. To create a subcategory, just choose another category from the Parent dropdown', 'jigoshop').'.</li>
+			<li><strong>'.__('Description', 'jigoshop').'</strong> - '.__('The description is not prominent by default; however, some themes may display it', 'jigoshop').'.</li>
 		</ul>
 		<p>'.__('You can change the display of this screen using the Screen Options tab to set how many items are displayed per screen and to display/hide columns in the table', 'jigoshop').'.</p>
     ';
@@ -122,9 +122,9 @@ function jigoshop_product_tag_help() {
     $tags = '
 		<p>'.__('When adding a new tag on this screen, you’ll fill in the following fields', 'jigoshop').':</p>
 		<ul>
-			<li>'.__('<strong>Name</strong> - The name is how it appears on your site', 'jigoshop').'.</li>
-			<li>'.__('<strong>Slug</strong> - The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens', 'jigoshop').'.</li>
-			<li>'.__('<strong>Description</strong> - The description is not prominent by default; however, some themes may display it', 'jigoshop').'.</li>
+			<li><strong>'.__('Name', 'jigoshop').'</strong> - '.__('The name is how it appears on your site', 'jigoshop').'.</li>
+			<li><strong>'.__('Slug', 'jigoshop').'</strong> - '.__('The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens', 'jigoshop').'.</li>
+			<li><strong>'.__('Description', 'jigoshop').'</strong> - '.__('The description is not prominent by default; however, some themes may display it', 'jigoshop').'.</li>
 		</ul>
 		<p>'.__('You can change the display of this screen using the Screen Options tab to set how many items are displayed per screen and to display/hide columns in the table', 'jigoshop').'.</p>
     ';
@@ -172,8 +172,8 @@ function jigoshop_product_list_help() {
     $searching = '
 		<p>'.__('You can search for products in a number of ways', 'jigoshop').':</p>
 		<ul>
-			<li>'.__('<strong>ID</strong>: You can search for products by ID simply type ID: followed by the ID you want to search by into the search box', 'jigoshop').'.</li>
-			<li>'.__('<strong>SKU</strong>: You can search for products by SKU simply type SKU: followed by the SKU you want to search by into the search box', 'jigoshop').'.</li>
+			<li><strong>'.__('ID', 'jigoshop').'</strong>: '.__('You can search for products by ID simply type ID: followed by the ID you want to search by into the search box', 'jigoshop').'.</li>
+			<li><strong>'.__('SKU', 'jigoshop').'</strong>: '.__('You can search for products by SKU simply type SKU: followed by the SKU you want to search by into the search box', 'jigoshop').'.</li>
 		</ul>
     ';
 
@@ -224,43 +224,43 @@ function jigoshop_product_data_help ( $post_type , $post ) {
 
 	$general = '
 		<p>'.__('Hi! It looks like you\'re in need of some help, this help section has been categorized by tabs & runs through quickly what each one does. If you need an extra hand please check out the links to the right', 'jigoshop').'.</p>
-		<p>'.__('<strong>Product Type</strong> - Products are categorized into types which determine what kind of shopping experience your customers will have. Simple products are the most common type & offer the standard view. For more info on product types please consult the documentation', 'jigoshop').'.</p>
-		<p>'.__('<strong>Regular Price</strong> - This is the baseline price for your product & is what Jigoshop will always default to', 'jigoshop').'.</p>
-		<p>'.__('<strong>Sale Price</strong> - Entering a price or percentage here will place your product on sale unless it is scheduled by clicking the schedule link', 'jigoshop').'.</p>
-		<p>'.__('<strong>Featured</strong> - Featuring a product enables its display on the featured products shortcode & widget', 'jigoshop').'.</p>
+		<p><strong>'.__('Product Type', 'jigoshop').'</strong> - '.__('Products are categorized into types which determine what kind of shopping experience your customers will have. Simple products are the most common type & offer the standard view. For more info on product types please consult the documentation', 'jigoshop').'.</p>
+		<p><strong>'.__('Regular Price', 'jigoshop').'</strong> - '.__('This is the baseline price for your product & is what Jigoshop will always default to', 'jigoshop').'.</p>
+		<p><strong>'.__('Sale Price', 'jigoshop').'</strong> - '.__('Entering a price or percentage here will place your product on sale unless it is scheduled by clicking the schedule link', 'jigoshop').'.</p>
+		<p><strong>'.__('Featured', 'jigoshop').'</strong> - '.__('Featuring a product enables its display on the featured products shortcode & widget', 'jigoshop').'.</p>
 	';
 
 	$advanced = '
-		<p>'.__('<strong>Tax Status</strong> - Switches where taxation rules are applied to the product. Selecting Shipping will only apply tax to the shipping cost of the product', 'jigoshop').'.</p>
-		<p>'.__('<strong>Tax Classes</strong> - Choose what defined tax classes apply to this product. By default Standard rate taxation is selected', 'jigoshop').'.</p>
-		<p>'.__('<strong>Visibilty</strong> - Determines where the product is visible. <strong>Catalog only</strong> hides the product from search results, on the other hand <strong>Search only</strong> hides the product from the shops catalog. <strong>Hidden</strong> hides the product completely whereas <strong>Catalog & Search</strong> enables the product in all areas', 'jigoshop').'.</p>
+		<p><strong>'.__('Tax Status', 'jigoshop').'</strong> - '.__('Switches where taxation rules are applied to the product. Selecting Shipping will only apply tax to the shipping cost of the product', 'jigoshop').'.</p>
+		<p><strong>'.__('Tax Classes', 'jigoshop').'</strong> - '.__('Choose what defined tax classes apply to this product. By default Standard rate taxation is selected', 'jigoshop').'.</p>
+		<p><strong>'.__('Visibilty', 'jigoshop').'</strong> - '.__('Determines where the product is visible. <strong>Catalog only</strong> hides the product from search results, on the other hand <strong>Search only</strong> hides the product from the shops catalog. <strong>Hidden</strong> hides the product completely whereas <strong>Catalog & Search</strong> enables the product in all areas', 'jigoshop').'.</p>
 	';
 
 	$inventory = '
-		<p>'.__('<strong>Manage Stock</strong> - Enabling this will allow Jigoshop to automatically decrease stock & warn you when supplies are low on the dashboard page', 'jigoshop').'.
-		<p>'.__('<strong>Stock Status</strong> - Manually switch the stock status of the product between In Stock & Out of Stock', 'jigoshop').'.</p>
-		<p>'.__('<strong>Stock Quantity</strong> - Set the initial stock quantity for Jigoshop stock management. This can be adjusted when new shipments arrive & stock levels increase', 'jigoshop').'.</p>
-		<p>'.__('<strong>Allow Backorders</strong> - Sometimes you may want to sell past your stock levels, allowing backorders enables this. Notification to the customer can also be set which displays a message on the catalog screen when stocks are low', 'jigoshop').'.</p>
+		<p><strong>'.__('Manage Stock', 'jigoshop').'</strong> - '.__('Enabling this will allow Jigoshop to automatically decrease stock & warn you when supplies are low on the dashboard page', 'jigoshop').'.</p>
+		<p><strong>'.__('Stock Status', 'jigoshop').'</strong> - '.__('Manually switch the stock status of the product between In Stock & Out of Stock', 'jigoshop').'.</p>
+		<p><strong>'.__('Stock Quantity', 'jigoshop').'</strong> - '.__('Set the initial stock quantity for Jigoshop stock management. This can be adjusted when new shipments arrive & stock levels increase', 'jigoshop').'.</p>
+		<p><strong>'.__('Allow Backorders', 'jigoshop').'</strong> - '.__('Sometimes you may want to sell past your stock levels, allowing backorders enables this. Notification to the customer can also be set which displays a message on the catalog screen when stocks are low', 'jigoshop').'.</p>
 	';
 
 	$attributes = '
 		<p>'.__('Attributes define various characteristics of your product, these attributes can then be used to filter & describe your product. They are first configured in the Attributes screen, then added to products in the attributes tab of the product data panel. Attributes can be added by first selecting the attribute to be added and then clicking the Add Attribute button. Attributes can be ordered by dragging & dropping the attributes', 'jigoshop').'.</p>
-		<p>'.__('<strong>Display on product page</strong> - You may only want to use attributes for filtering or variations. Enabling this will display the attribute & its values in the Additional Information tab of the product view', 'jigoshop').'.</p>
-		<p>'.__('<strong>Is for variations</strong> - Marks the attribute for variation. You must first mark your attributes for variation before adding any variations', 'jigoshop').'.</p>
+		<p><strong>'.__('Display on product page', 'jigoshop').'</strong> - '.__('You may only want to use attributes for filtering or variations. Enabling this will display the attribute & its values in the Additional Information tab of the product view', 'jigoshop').'.</p>
+		<p><strong>'.__('Is for variations', 'jigoshop').'</strong> - '.__('Marks the attribute for variation. You must first mark your attributes for variation before adding any variations', 'jigoshop').'.</p>
 	';
 
 	$group = '
-		<p>'.__('<strong>Product Group</strong> - Specify the Grouped product to attach this product to. Before you can attach a product you must first create the grouped product', 'jigoshop').'.</p>
-		<p>'.__('<strong>Sort Order</strong> - Specify the order in which these products appear in the grouping. Similar to post order for WordPress Posts', 'jigoshop').'.</p>
-		<p>'.__('<strong>File URL</strong> - Specify the location of your downloadable asset. The file can be either stored locally & accessed using the Media Uploader or externally', 'jigoshop').'.</p>
-		<p>'.__('<strong>Download Limit</strong> - Restricts the number of redownloads a customer can use on that product. Once the limit is up they must re purchase the file', 'jigoshop').'.</p>
+		<p><strong>'.__('Product Group', 'jigoshop').'</strong> - '.__('Specify the Grouped product to attach this product to. Before you can attach a product you must first create the grouped product', 'jigoshop').'.</p>
+		<p><strong>'.__('Sort Order', 'jigoshop').'</strong> - '.__('Specify the order in which these products appear in the grouping. Similar to post order for WordPress Posts', 'jigoshop').'.</p>
+		<p><strong>'.__('File URL', 'jigoshop').'</strong> - '.__('Specify the location of your downloadable asset. The file can be either stored locally & accessed using the Media Uploader or externally', 'jigoshop').'.</p>
+		<p><strong>'.__('Download Limit', 'jigoshop').'</strong> - '.__('Restricts the number of redownloads a customer can use on that product. Once the limit is up they must re purchase the file', 'jigoshop').'.</p>
 	';
 
 	$variations = '
 		<p>'.__('Variations are a very powerful aspect of Jigoshop, they allow customers to pick a specific variant of the product. For example a Shirt could come in sizes Small, Medium & Large each with varying stocks & pricing', 'jigoshop').'.</p>
 		<p>'.__('Variations currently come in 3 different types, Simple, Downloadable & Virtual. These types behave much the same as their main product counter parts which enables you to create powerful combinations. For example when selling a book what format it arrives in (Printed or e-Book)', 'jigoshop').'.</p>
 		<p>'.__('To create variations you must first add & save your attributes for variation. Once this has been done you can then add & configure as many variations as there are combinations', 'jigoshop').'.</p>
-		<p>'.__('<strong>For more information</strong> <a href="http://forum.jigoshop.com/kb/creating-products/variable-products">click here to learn more about variable products</a>', 'jigoshop').'.</p>
+		<p><strong>'.__('For more information', 'jigoshop').'</strong> <a href="http://forum.jigoshop.com/kb/creating-products/variable-products">'.__('click here to learn more about variable products', 'jigoshop').'</a>', 'jigoshop').'.</p>
 	';
 
 	$sidebar_content = '
