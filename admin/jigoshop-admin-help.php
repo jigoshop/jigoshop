@@ -233,7 +233,7 @@ function jigoshop_product_data_help ( $post_type , $post ) {
 	$advanced = '
 		<p><strong>'.__('Tax Status', 'jigoshop').'</strong> - '.__('Switches where taxation rules are applied to the product. Selecting Shipping will only apply tax to the shipping cost of the product', 'jigoshop').'.</p>
 		<p><strong>'.__('Tax Classes', 'jigoshop').'</strong> - '.__('Choose what defined tax classes apply to this product. By default Standard rate taxation is selected', 'jigoshop').'.</p>
-		<p><strong>'.__('Visibilty', 'jigoshop').'</strong> - '.__('Determines where the product is visible. <strong>Catalog only</strong> hides the product from search results, on the other hand <strong>Search only</strong> hides the product from the shops catalog. <strong>Hidden</strong> hides the product completely whereas <strong>Catalog & Search</strong> enables the product in all areas', 'jigoshop').'.</p>
+		<p><strong>'.__('Visibility', 'jigoshop').'</strong> - '.__('Determines where the product is visible. <strong>Catalog only</strong> hides the product from search results, on the other hand <strong>Search only</strong> hides the product from the shops catalog. <strong>Hidden</strong> hides the product completely whereas <strong>Catalog & Search</strong> enables the product in all areas', 'jigoshop').'.</p>
 	';
 
 	$inventory = '
