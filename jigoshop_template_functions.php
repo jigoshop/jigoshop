@@ -98,7 +98,7 @@ if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 
 		if ( $_product->is_in_stock() OR $_product->is_type('external') ) :
 			if ( $_product->is_type(array('variable', 'grouped')) ) :
-				$output = '<a href="'.get_permalink($_product->id).'" class="button">'.__('Select', 'jigoshop').'</a>';
+				$output = '<a href="'.get_permalink($_product->id).'" class="button">'._x('Select', 'verb', 'jigoshop').'</a>';
 			elseif ( $_product->is_type('external') ) :
 				$output = '<a href="'.get_post_meta( $_product->id, 'external_url', true ).'" class="button">'.__('Buy product', 'jigoshop').'</a>';
 			else :
