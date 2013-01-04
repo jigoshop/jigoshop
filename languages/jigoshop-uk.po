@@ -59,7 +59,8 @@ msgstr " <small>(з податком)</small>"
 #: ../jigoshop.php:1066
 msgid "You have taken too long. Please go back and refresh the page."
 msgstr ""
-"Попередня дія тривала надто довго. Будь ласка, поверніться і оновіть сторінку."
+"Попередня дія тривала надто довго. Будь ласка, поверніться і оновіть "
+"сторінку."
 
 #: ../jigoshop.php:1069
 msgid "Please rate the product."
@@ -286,8 +287,8 @@ msgid ""
 "An order has been created for you on &quot;%s&quot;. To pay for this order "
 "please use the following link: %s"
 msgstr ""
-"Замовлення успішно створено для вас на «%s». Для оплати цього "
-"замовлення скористайтесь посиланням: %s"
+"Замовлення успішно створено для вас на «%s». Для оплати цього замовлення "
+"скористайтесь посиланням: %s"
 
 #: ../jigoshop_emails.php:218
 msgid "ORDER "
@@ -392,8 +393,8 @@ msgid ""
 "Thank you for your Order %s. Unfortunately, the following item was found to "
 "be on backorder."
 msgstr ""
-"Дякуємо за замовлення %s. На жаль, цей товар зараз доступний тільки "
-"для попереднього замовлення."
+"Дякуємо за замовлення %s. На жаль, цей товар зараз доступний тільки для "
+"попереднього замовлення."
 
 #: ../jigoshop_emails.php:481
 #, php-format
@@ -1262,8 +1263,8 @@ msgid ""
 "Join our growing developer community today, contribute to the jigoshop "
 "project via GitHub."
 msgstr ""
-"Приєднайтеся сьогодні до нашої зростаючої спільноти, вкладайте у "
-"проект jigoshop на GitHub."
+"Приєднайтеся сьогодні до нашої зростаючої спільноти, вкладайте у проект "
+"jigoshop на GitHub."
 
 #: ../admin/jigoshop-admin-dashboard.php:405
 msgid "Jigoshop Social"
@@ -1363,9 +1364,10 @@ msgid ""
 "for all selected products at once. To remove a product from the grouping, "
 "just click the x next to its name in the Bulk Edit area that appears"
 msgstr ""
-"З допомогою «Групового редагування» ви можете змінити дані (категорію, автора "
-"і т.д.) для всіх вибраних товарів за раз. Щоб прибрати товар з групування, "
-"просто натисніть Х поруч з його назвою у області Групового редагування"
+"З допомогою «Групового редагування» ви можете змінити дані (категорію, "
+"автора і т.д.) для всіх вибраних товарів за раз. Щоб прибрати товар з "
+"групування, просто натисніть Х поруч з його назвою у області Групового "
+"редагування"
 
 #: ../admin/jigoshop-admin-help.php:202
 msgid "Screen Content"
@@ -1842,20 +1844,20 @@ msgid ""
 "decimal number (may have leading negative sign, with optional decimal point, "
 "numbers 0-9).  It was not saved and the original is still in use."
 msgstr ""
-"Ви ввели «%s» як значення для «%s» у «%s» і це не правильне десяткове "
-"число (може мати від’ємний знак на початку, можливо, десяткову кому, цифри "
-"0–9). Не збережено, все ще використовується початкове."
+"Ви ввели «%s» як значення для «%s» у «%s» і це не правильне десяткове число "
+"(може мати від’ємний знак на початку, можливо, десяткову кому, цифри 0–9). "
+"Не збережено, все ще використовується початкове."
 
 #: ../admin/jigoshop-admin-settings-api.php:474
 #, php-format
 msgid ""
 "You entered \"%s\" as the value for \"%s\" in \"%s\" and it was not a valid "
-"integer number (may have leading negative sign, numbers 0–9).  It was not "
+"integer number (may have leading negative sign, numbers 0-9).  It was not "
 "saved and the original is still in use."
 msgstr ""
-"Ви ввели «%s» як значення для «%s» у «%s», і це не правильне ціле "
-"число (може мати від’ємний знак на початку, цифри 0–9). Не збережено, все "
-"ще використовується початкове."
+"Ви ввели «%s» як значення для «%s» у «%s», і це не правильне ціле число "
+"(може мати від’ємний знак на початку, цифри 0–9). Не збережено, все ще "
+"використовується початкове."
 
 #: ../admin/jigoshop-admin-settings-api.php:490
 #, php-format
@@ -1864,8 +1866,8 @@ msgid ""
 "natural number (numbers 0-9).  It was not saved and the original is still in "
 "use."
 msgstr ""
-"Ви ввели «%s» як значення для «%s» у «%s» і це не правильне натуральне "
-"число (цифри 0–9). Не збережено, все ще використовується початкове."
+"Ви ввели «%s» як значення для «%s» у «%s» і це не правильне натуральне число "
+"(цифри 0–9). Не збережено, все ще використовується початкове."
 
 #: ../admin/jigoshop-admin-settings-api.php:516
 #: ../admin/jigoshop-admin-settings-options.php:900
@@ -2003,8 +2005,8 @@ msgid ""
 "This is the base country for your business. Tax rates will be based on this "
 "country."
 msgstr ""
-"Це країна знаходження вашої справи. Ставки податків будуть прив’язані "
-"до цієї країни."
+"Це країна знаходження вашої справи. Ставки податків будуть прив’язані до "
+"цієї країни."
 
 #: ../admin/jigoshop-admin-settings-options.php:67
 #: ../classes/jigoshop_options.class.php:593
@@ -2042,8 +2044,8 @@ msgid ""
 "Define what should happen when a user clicks on &#34;Add to Cart&#34; on any "
 "product or page."
 msgstr ""
-"Зазначте, що повинно відбуватись коли користувач клацає на «Додати у "
-"кошик» для будь-якого товару на будь-якій сторінці."
+"Зазначте, що повинно відбуватись коли користувач клацає на «Додати у кошик» "
+"для будь-якого товару на будь-якій сторінці."
 
 #: ../admin/jigoshop-admin-settings-options.php:99
 #: ../classes/jigoshop_options.class.php:792
@@ -2142,9 +2144,9 @@ msgid ""
 "Setting this to Yes will allow users to checkout without registering or "
 "signing up. Otherwise, users must be signed in or must sign up to checkout."
 msgstr ""
-"Вказавши «Так», ви дозволите користувачам купувати товари без "
-"реєстрації на сайті. У іншому разі користувач повинен буде увійти "
-"або зареєструватись перш ніж замовляти."
+"Вказавши «Так», ви дозволите користувачам купувати товари без реєстрації на "
+"сайті. У іншому разі користувач повинен буде увійти або зареєструватись перш "
+"ніж замовляти."
 
 #: ../admin/jigoshop-admin-settings-options.php:153
 #: ../classes/jigoshop_options.class.php:879
@@ -2240,8 +2242,8 @@ msgid ""
 "Setting your address will enable us to print it out on your invoice emails. "
 "Leave blank to disable."
 msgstr ""
-"Вказавши свою адресу, ви дасте нам можливість друкувати її у рахунку. Залиште "
-"поле порожнім, щоб відключити цю опцію."
+"Вказавши свою адресу, ви дасте нам можливість друкувати її у рахунку. "
+"Залиште поле порожнім, щоб відключити цю опцію."
 
 #: ../admin/jigoshop-admin-settings-options.php:224
 #: ../classes/jigoshop_options.class.php:680
@@ -2255,8 +2257,8 @@ msgid ""
 "a value in it. Setting your address will enable us to print it out on your "
 "invoice emails. Leave blank to disable."
 msgstr ""
-"Якщо ви нічого не вкажете у полі Адреса 1, то значення поля Адреса 2 "
-"все одно не буде показано, навіть якщо ви щось вказали у ньому. Вказавши свою "
+"Якщо ви нічого не вкажете у полі Адреса 1, то значення поля Адреса 2 все "
+"одно не буде показано, навіть якщо ви щось вказали у ньому. Вказавши свою "
 "адресу ви дасте нам можливість друкувати його у рахунку. Залиште поле "
 "порожнім, щоб відключити цю опцію."
 
@@ -2327,8 +2329,8 @@ msgid ""
 "Log into your Google Analytics account to find your ID. e.g. <code>UA-"
 "XXXXXXX-X</code>"
 msgstr ""
-"Увійдіть у свій обліковий запис Google Analytics, щоб знайти там ID виду <code>UA-"
-"XXXXXXX-X</code>"
+"Увійдіть у свій обліковий запис Google Analytics, щоб знайти там ID виду "
+"<code>UA-XXXXXXX-X</code>"
 
 #: ../admin/jigoshop-admin-settings-options.php:274
 msgid "Enable Google eCommerce"
@@ -2337,7 +2339,9 @@ msgstr "Увімкнути Google eCommerce"
 #: ../admin/jigoshop-admin-settings-options.php:275
 #: ../classes/jigoshop_options.class.php:936
 msgid "Add Google Analytics eCommerce tracking code upon successful orders"
-msgstr "Додайте код відслідковування Google Analytics eCommerce при успішних замовленнях"
+msgstr ""
+"Додайте код відслідковування Google Analytics eCommerce при успішних "
+"замовленнях"
 
 #: ../admin/jigoshop-admin-settings-options.php:276
 msgid ""
@@ -2540,8 +2544,8 @@ msgid ""
 "If you define a &#34;Terms&#34; page the customer will be asked to accept it "
 "before allowing them to place their order."
 msgstr ""
-"Якщо ви вкажете сторінку «Умови використання», покупцям буде "
-"запропоновано погодитись з ними, щоб зробити замовлення."
+"Якщо ви вкажете сторінку «Умови використання», покупцям буде запропоновано "
+"погодитись з ними, щоб зробити замовлення."
 
 #: ../admin/jigoshop-admin-settings-options.php:436
 #: ../classes/jigoshop_options.class.php:1050
@@ -2565,9 +2569,9 @@ msgid ""
 "you have launched your site otherwise you risk breaking urls of other sites "
 "pointing to yours, etc."
 msgstr ""
-"Ця опція встановлює базову сторінку вашого магазину, так званий Каталог. "
-"Не змінюйте це значення після запуску магазину інакше ризикуєте "
-"поламати посилання з інших сайтів, що адресовані вам і т. ін."
+"Ця опція встановлює базову сторінку вашого магазину, так званий Каталог. Не "
+"змінюйте це значення після запуску магазину інакше ризикуєте поламати "
+"посилання з інших сайтів, що адресовані вам і т. ін."
 
 #: ../admin/jigoshop-admin-settings-options.php:451
 #: ../classes/jigoshop_options.class.php:1064
@@ -2683,8 +2687,8 @@ msgid ""
 msgstr ""
 "Ця опція контролює у якій валюті вказані ціни у каталозі та у якій валюті "
 "приймати оплату з допомогою PayPal або інших платіжних шлюзів. Будь ласка, "
-"ознайомтесь з переліком доступних <a target='_new' href='%s'>валют "
-"PayPal</a>."
+"ознайомтесь з переліком доступних <a target='_new' href='%s'>валют PayPal</"
+"a>."
 
 #: ../admin/jigoshop-admin-settings-options.php:521
 #: ../classes/jigoshop_options.class.php:554
@@ -2963,15 +2967,15 @@ msgid ""
 "because they may still be affected by CSS styles, that is, your theme."
 msgstr ""
 "<p>Зміна якоїсь із цих налаштувань вплине на розміри зображень, використаних "
-"у вашому магазині. Після зміни цих налаштувань, можливо, вам доведеться "
-"<a href=\"%s\">ще раз створити мініатюри</a>.</p>\n"
-"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<p>Обрізати: Не вибирайте "
-"щоб змінити розмір зображень пропорційно (тобто, без "
-"спотворення). Позначіть, щоб встановити розмір зображень, обрізуючи "
-"вихідні (або з боків, або згори й знизу).</p>\n"
+"у вашому магазині. Після зміни цих налаштувань, можливо, вам доведеться <a "
+"href=\"%s\">ще раз створити мініатюри</a>.</p>\n"
+"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<p>Обрізати: Не "
+"вибирайте щоб змінити розмір зображень пропорційно (тобто, без спотворення). "
+"Позначіть, щоб встановити розмір зображень, обрізуючи вихідні (або з боків, "
+"або згори й знизу).</p>\n"
 "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<p><strong>Примітка:</"
-"strong> Зображення можуть не влізти цілком у вибраний нижче розмір. Це "
-"тому що на них можуть вплинути стилі CSS, тобто, ваша тема."
+"strong> Зображення можуть не влізти цілком у вибраний нижче розмір. Це тому "
+"що на них можуть вплинути стилі CSS, тобто, ваша тема."
 
 #: ../admin/jigoshop-admin-settings-options.php:620
 msgid "Tiny Images"
@@ -3140,8 +3144,8 @@ msgid ""
 "on the front-end. You can manage stock on a per-item basis if you leave this "
 "option on."
 msgstr ""
-"Якщо ви не хочете керувати запасами, вимкніть тут. Інакше ви зможете керувати "
-"запасами кожного товару."
+"Якщо ви не хочете керувати запасами, вимкніть тут. Інакше ви зможете "
+"керувати запасами кожного товару."
 
 # @ default
 #: ../admin/jigoshop-admin-settings-options.php:746
@@ -3186,8 +3190,8 @@ msgid ""
 "You will receive a notification as soon this threshold is hit (if "
 "notifications are turned on)."
 msgstr ""
-"Ви отримаєте повідомлення, як тільки цей поріг пройдено (якщо "
-"увімкнено повідомлення)."
+"Ви отримаєте повідомлення, як тільки цей поріг пройдено (якщо увімкнено "
+"повідомлення)."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:781
@@ -3378,8 +3382,8 @@ msgid ""
 "Cart - Applies to whole cart<br/>Product - Applies to individual products "
 "only. You must specify individual products."
 msgstr ""
-"Кошик — Застосовується до всього кошика<br/>Товар — Застосовується тільки "
-"до окремих товарів. Вам доведеться вказати конкретні товари."
+"Кошик — Застосовується до всього кошика<br/>Товар — Застосовується тільки до "
+"окремих товарів. Вам доведеться вказати конкретні товари."
 
 #: ../admin/jigoshop-admin-settings.php:793
 #: ../admin/jigoshop-admin-settings.php:1079
@@ -3388,8 +3392,8 @@ msgid ""
 "Amount this coupon is worth. If it is a percentange, just include the number "
 "without the percentage sign."
 msgstr ""
-"Скільки вартий цей купон. Якщо це відсоток, просто вкажіть число "
-"без знаку відсотків."
+"Скільки вартий цей купон. Якщо це відсоток, просто вкажіть число без знаку "
+"відсотків."
 
 #: ../admin/jigoshop-admin-settings.php:801
 #: ../admin/jigoshop-admin-settings.php:1095
@@ -3426,8 +3430,9 @@ msgstr "Мін."
 #: ../admin/jigoshop-admin-settings.php:815
 #: ../admin/jigoshop-admin-settings.php:1105
 msgid "Set the required subtotal for this coupon to be valid on an order."
-msgstr "Встановити потрібний проміжний підсумок, щоб цей купон був дійсним "
-"у замовленні."
+msgstr ""
+"Встановити потрібний проміжний підсумок, щоб цей купон був дійсним у "
+"замовленні."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings.php:824
@@ -3532,7 +3537,8 @@ msgstr "Завадити використати інші купони, поки 
 #: ../admin/jigoshop-admin-settings.php:957
 #: ../admin/jigoshop-admin-settings.php:1207
 msgid "Show the Free Shipping method on checkout with this enabled."
-msgstr "Показати метод безкоштовної доставки при оформленні, коли це увімкнуто."
+msgstr ""
+"Показати метод безкоштовної доставки при оформленні, коли це увімкнуто."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings.php:1019
@@ -3613,8 +3619,9 @@ msgstr "Видалити зображення"
 #: ../admin/jigoshop-admin.php:45
 #, php-format
 msgid "Your database needs an update. Please <strong>backup</strong> &amp; %s."
-msgstr "Ваша база даних потребує поновлення. Будь ласка, <strong>зробіть "
-"резервну копію</strong> і %s."
+msgstr ""
+"Ваша база даних потребує поновлення. Будь ласка, <strong>зробіть резервну "
+"копію</strong> і %s."
 
 #: ../admin/jigoshop-admin.php:45
 msgid "update now"
@@ -3661,8 +3668,7 @@ msgstr "Ваш сервер не підтримує fsockopen."
 
 #: ../admin/jigoshop-admin.php:226
 msgid "You do not have sufficient permissions to access this page."
-msgstr ""
-"У вас недостатньо повноважень, щоб отримати доступ до цієї сторінки."
+msgstr "У вас недостатньо повноважень, щоб отримати доступ до цієї сторінки."
 
 #: ../admin/jigoshop-install.php:122 ../classes/jigoshop_options.class.php:533
 msgid "Shop"
@@ -3795,8 +3801,8 @@ msgid ""
 "Copy billing information to shipping information? This will remove any "
 "currently entered shipping information."
 msgstr ""
-"Скопіювати дані оплати у дані доставки? Це видалить будь-які уведені "
-"дотепер дані доставки."
+"Скопіювати дані оплати у дані доставки? Це видалить будь-які уведені дотепер "
+"дані доставки."
 
 # @ jigoshop
 #: ../admin/jigoshop-write-panels.php:182
@@ -3834,8 +3840,8 @@ msgid ""
 "Will not appear until coupon is saved.  This is the front end code for use "
 "on the Cart."
 msgstr ""
-"Не з’явиться доки не зберегти купон. Це лицевий код для використання "
-"у кошику."
+"Не з’явиться доки не зберегти купон. Це лицевий код для використання у "
+"кошику."
 
 # @ jigoshop
 #: ../admin/write-panels/coupon-data.php:54
@@ -3865,8 +3871,7 @@ msgstr "рррр-мм-дд"
 #: ../admin/write-panels/coupon-data.php:90
 msgid ""
 "Choose between which dates this coupon is enabled.  Leave empty for any date."
-msgstr ""
-"Вибрати, між якими датами дозволено цей купон. Порожнє — будь-коли."
+msgstr "Вибрати, між якими датами дозволено цей купон. Порожнє — будь-коли."
 
 #: ../admin/write-panels/coupon-data.php:88
 msgid "Date To"
@@ -3879,8 +3884,7 @@ msgstr "Межа використання"
 #: ../admin/write-panels/coupon-data.php:113
 msgid ""
 "Prevent other coupons from being used while this one is applied to the Cart."
-msgstr ""
-"Запобігти використанню інших купонів, коли цей застосовано до кошика."
+msgstr "Запобігти використанню інших купонів, коли цей застосовано до кошика."
 
 #: ../admin/write-panels/coupon-data.php:122
 msgid "Show the Free Shipping method on the Checkout with this enabled."
@@ -3955,8 +3959,7 @@ msgstr "Методи оплати"
 #: ../admin/write-panels/coupon-data.php:223
 msgid ""
 "Control which payment methods are allowed for this coupon to be effective."
-msgstr ""
-"Які методи оплати дозволені, щоб цей купон був дієвий."
+msgstr "Які методи оплати дозволені, щоб цей купон був дієвий."
 
 # @ jigoshop
 #: ../admin/write-panels/coupon-data.php:225
@@ -4730,8 +4733,8 @@ msgid ""
 "We are sorry.  We do not have enough \"%s\" to fill your request.  You have "
 "%d of them in your Cart and we have %d available at this time."
 msgstr ""
-"Вибачте. У нас не досить «%s», щоб задовольнити ваш запит. У вас "
-"%d у кошику, і ми маємо тільки %d зараз."
+"Вибачте. У нас не досить «%s», щоб задовольнити ваш запит. У вас %d у "
+"кошику, і ми маємо тільки %d зараз."
 
 #: ../classes/jigoshop_cart.class.php:189
 #: ../classes/jigoshop_cart.class.php:191
@@ -4756,9 +4759,9 @@ msgid ""
 "have %d available at this time. Please edit your cart and try again. We "
 "apologize for any inconvenience caused."
 msgstr ""
-"Вибачте, у нас не досить запасів товару «%s» для вашого замовлення. "
-"Зараз доступно лише %d. Будь ласка, відредагуйте вміст кошика і спробуйте ще "
-"раз. Вибачте за незручності."
+"Вибачте, у нас не досить запасів товару «%s» для вашого замовлення. Зараз "
+"доступно лише %d. Будь ласка, відредагуйте вміст кошика і спробуйте ще раз. "
+"Вибачте за незручності."
 
 # @ jigoshop
 #: ../classes/jigoshop_cart.class.php:361
@@ -4795,8 +4798,8 @@ msgid ""
 "There is already an 'individual use' coupon on the Cart.  No other coupons "
 "can be added until it is removed."
 msgstr ""
-"У кошику вже є купон «виняткового використання». Не можна додати "
-"до кошика жоден інший, доки не вилучено цей."
+"У кошику вже є купон «виняткового використання». Не можна додати до кошика "
+"жоден інший, доки не вилучено цей."
 
 #: ../classes/jigoshop_cart.class.php:1048
 msgid ""
@@ -5030,8 +5033,8 @@ msgid ""
 "%d available at this time. Please edit your cart and try again. We apologize "
 "for any inconvenience caused."
 msgstr ""
-"Вибачте, у нас недостатньо запасів товару «%s» для вашого замовлення. "
-"Зараз доступно %d. Будь ласка, відредагуйте вміст кошика і спробуйте ще раз. "
+"Вибачте, у нас недостатньо запасів товару «%s» для вашого замовлення. Зараз "
+"доступно %d. Будь ласка, відредагуйте вміст кошика і спробуйте ще раз. "
 "Вибачте за незручності."
 
 # @ jigoshop
@@ -5102,8 +5105,8 @@ msgid ""
 "Add your tax registration label before the registration number and it will "
 "be printed as well. eg. <code>VAT Number: 88888888</code>"
 msgstr ""
-"Додати мітку вашої податкової реєстрації перед реєстраційним номером, "
-"і її також буде надруковано, напр. <code>Номер ПДВ: 88888888</code>"
+"Додати мітку вашої податкової реєстрації перед реєстраційним номером, і її "
+"також буде надруковано, напр. <code>Номер ПДВ: 88888888</code>"
 
 #: ../classes/jigoshop_options.class.php:710
 msgid "Prepend shop categories and tags with base page"
@@ -5145,11 +5148,11 @@ msgid ""
 "existing Shop this setting <em>can</em> generate a <strong>lot</strong> of "
 "email!"
 msgstr ""
-"Для покупців, які не закінчили процес оформлення або не сплатили рахунок "
-"за певний період часу, це встановить замовлення у «утримується», "
-"дозволивши власникові магазину вжити заходів. ПОПЕРЕДЖЕННЯ: при першому "
-"вживанні у існуючому магазині ця опція <em>може</em> згенерувати "
-"<strong>багато</strong> пошти!"
+"Для покупців, які не закінчили процес оформлення або не сплатили рахунок за "
+"певний період часу, це встановить замовлення у «утримується», дозволивши "
+"власникові магазину вжити заходів. ПОПЕРЕДЖЕННЯ: при першому вживанні у "
+"існуючому магазині ця опція <em>може</em> згенерувати <strong>багато</"
+"strong> пошти!"
 
 #: ../classes/jigoshop_options.class.php:826
 msgid "(The next option below will have no effect if this one is disabled)"
@@ -5165,9 +5168,9 @@ msgid ""
 "load, and any extra bits found in 'theme/jigoshop/style.css' for over-rides "
 "will also be loaded."
 msgstr ""
-"Коли цю опцію <em>увімкнено</em>, Jigoshop все одно завантажуватиме початковий "
-"frontend.css, і будь-які додаткові частини у 'theme/jigoshop/style.css' для "
-"перевизначення будуть завантажені також."
+"Коли цю опцію <em>увімкнено</em>, Jigoshop все одно завантажуватиме "
+"початковий frontend.css, і будь-які додаткові частини у 'theme/jigoshop/"
+"style.css' для перевизначення будуть завантажені також."
 
 #: ../classes/jigoshop_options.class.php:905
 msgid ""
@@ -5191,8 +5194,8 @@ msgid ""
 "Google Analytics account."
 msgstr ""
 "<a href=\"//support.google.com/analytics/bin/answer.py?"
-"hl=en&answer=1009612\">Дізнайтеся, як увімкнути</a> відслідковування eCommerce для "
-"свого облікового запиту Google Analytics."
+"hl=en&answer=1009612\">Дізнайтеся, як увімкнути</a> відслідковування "
+"eCommerce для свого облікового запиту Google Analytics."
 
 #: ../classes/jigoshop_options.class.php:953
 msgid "Page configurations"
@@ -5254,12 +5257,12 @@ msgid ""
 "Your images may not display in the size you choose below. This is because "
 "they may still be affected by CSS styles in your theme."
 msgstr ""
-"<p>Зміна будь-якої з цих опцій вплине на розміри зображень, що використовуються "
-"у вашому магазині. Після зміни цих опцій, можливо, вам доведеться <a href=\"%s"
-"\">перестворити мініатюри</a>.</p><p>Обрізати: Залиште вимкненим, щоб встановити "
-"розмір зображень пропорційно (тобто, без спотворення його). "
-"Увімкніть, щоб встановити розмір зображень жорстким обрізанням (чи "
-"з боків, чи згори і знизу).</p><p><strong>Примітка:</strong> "
+"<p>Зміна будь-якої з цих опцій вплине на розміри зображень, що "
+"використовуються у вашому магазині. Після зміни цих опцій, можливо, вам "
+"доведеться <a href=\"%s\">перестворити мініатюри</a>.</p><p>Обрізати: "
+"Залиште вимкненим, щоб встановити розмір зображень пропорційно (тобто, без "
+"спотворення його). Увімкніть, щоб встановити розмір зображень жорстким "
+"обрізанням (чи з боків, чи згори і знизу).</p><p><strong>Примітка:</strong> "
 "ваші зображення, можливо, не покажуться у розмірі, який ви виберете нижче. "
 "Це тому що на них все ще впливають стилі CSS вашої теми."
 
@@ -5281,9 +5284,9 @@ msgid ""
 "without distorting it).<br />Use Yes to set the image size by hard cropping "
 "the image (either from the sides, or from the top and bottom)."
 msgstr ""
-"Вкажіть «ні», щоб змінювати розмір зображень пропорційно.<br />Вкажіть «так», "
-"щоб обрізати зображення до потрібного розміру (одночасно з обох боків, а "
-"також згори і знизу)."
+"Вкажіть «ні», щоб змінювати розмір зображень пропорційно.<br />Вкажіть "
+"«так», щоб обрізати зображення до потрібного розміру (одночасно з обох "
+"боків, а також згори і знизу)."
 
 #: ../classes/jigoshop_options.class.php:1208
 msgid "Crop Thumbnail images"
@@ -5399,7 +5402,9 @@ msgstr "Стандартно = 300px"
 
 #: ../classes/jigoshop_options.class.php:1305
 msgid "Set the width of the Single Product page large or Featured image."
-msgstr "Встановити ширину великих зображень чи для вибраного на сторінці «один товар»."
+msgstr ""
+"Встановити ширину великих зображень чи для вибраного на сторінці «один "
+"товар»."
 
 #: ../classes/jigoshop_options.class.php:1312
 msgid "Large Image Height"
@@ -5407,7 +5412,9 @@ msgstr "Висота великого зображення"
 
 #: ../classes/jigoshop_options.class.php:1314
 msgid "Set the height of the Single Product page large or Featured image."
-msgstr "Встановити висоту великих зображень чи для вибраного на сторінці «один товар»."
+msgstr ""
+"Встановити висоту великих зображень чи для вибраного на сторінці «один "
+"товар»."
 
 # @ jigoshop
 #: ../classes/jigoshop_options.class.php:1329
@@ -5429,8 +5436,9 @@ msgstr "Керувати запасами"
 msgid ""
 "If you are not managing stock, turn it off here to disable it in admin and "
 "on the front-end."
-msgstr "Якщо ви не хочете керувати запасами, вимкніть цю опцію, щоб заборонити "
-"це на сторінці адміністратора і лицевій сторінці."
+msgstr ""
+"Якщо ви не хочете керувати запасами, вимкніть цю опцію, щоб заборонити це на "
+"сторінці адміністратора і лицевій сторінці."
 
 # @ jigoshop
 #: ../classes/jigoshop_options.class.php:1411
@@ -5468,8 +5476,8 @@ msgid ""
 "This will have no effect on the Cart, Checkout, Emails, or final Orders; "
 "prices are always shown with tax out."
 msgstr ""
-"Це не вплине на кошик, оформлення, ел. листи чи остаточні замовлення; "
-"ціни завжди показано без податків."
+"Це не вплине на кошик, оформлення, ел. листи чи остаточні замовлення; ціни "
+"завжди показано без податків."
 
 # @ jigoshop
 #: ../classes/jigoshop_options.class.php:1563
@@ -5488,14 +5496,12 @@ msgstr ""
 #: ../classes/jigoshop_options.class.php:1565
 msgid ""
 "If turned off, this will also remove shipping address fields on the Checkout."
-msgstr ""
-"Якщо вимкнено, це також видалить поля адреси доставки при оформленні."
+msgstr "Якщо вимкнено, це також видалить поля адреси доставки при оформленні."
 
 #: ../classes/jigoshop_options.class.php:1591
 msgid ""
 "When activated, Shipping address fields will not appear on the Checkout."
-msgstr ""
-"Коли увімкнено, поля адреси доставки не з’являтимуться при оформленні."
+msgstr "Коли увімкнено, поля адреси доставки не з’являтимуться при оформленні."
 
 #: ../classes/jigoshop_options.class.php:1602
 msgid "Checkout always shows Shipping fields?"
@@ -5627,8 +5633,8 @@ msgid ""
 " If the Shipping Calculator is not available here, you will need to advance "
 "to the Checkout to do this."
 msgstr ""
-" Якщо калькулятор доставки не доступний тут, вам доведеться перейти до сторінки "
-"оформлення, щоб це зробити."
+" Якщо калькулятор доставки не доступний тут, вам доведеться перейти до "
+"сторінки оформлення, щоб це зробити."
 
 #: ../classes/jigoshop_shipping.class.php:99
 msgid ""
@@ -5649,8 +5655,8 @@ msgid ""
 "payment."
 msgstr ""
 "Прийміть банківський переказ як метод оплати. Немає асоційованого з цим "
-"автоматизованого процесу, вам доведеться вручну обробити замовлення, "
-"коли ви отримаєте рахунок."
+"автоматизованого процесу, вам доведеться вручну обробити замовлення, коли ви "
+"отримаєте рахунок."
 
 # @ jigoshop
 #: ../gateways/bank_transfer.php:67
@@ -5697,8 +5703,8 @@ msgid ""
 "Please use the details below to transfer the payment for your order, once "
 "payment is received your order will be processed."
 msgstr ""
-"Будь ласка, використайте такі деталі для переказу по вашому замовленню, як тільки "
-"оплату отримано, ваше замовлення буде оброблено."
+"Будь ласка, використайте такі деталі для переказу по вашому замовленню, як "
+"тільки оплату отримано, ваше замовлення буде оброблено."
 
 # @ jigoshop
 #: ../gateways/bank_transfer.php:98 ../gateways/bank_transfer.php:169
@@ -5788,9 +5794,9 @@ msgid ""
 "use the sandbox area of a payment gateway. Quite useful for demonstrating to "
 "clients and for testing order emails and the 'success' pages etc."
 msgstr ""
-"Дозволити оплату чеком. Дозволить зробити тестову покупку без "
-"необхідності переходу у режим пісочниці. Досить корисне для демонстрації "
-"клієнтам і для тестування листів замовлень, сторінки «вдало» і т. ін."
+"Дозволити оплату чеком. Дозволить зробити тестову покупку без необхідності "
+"переходу у режим пісочниці. Досить корисне для демонстрації клієнтам і для "
+"тестування листів замовлень, сторінки «вдало» і т. ін."
 
 # @ jigoshop
 #: ../gateways/cheque.php:61
@@ -5812,8 +5818,8 @@ msgid ""
 "Please send your cheque to Store Name, Store Street, Store Town, Store "
 "State / County, Store Postcode."
 msgstr ""
-"Будь ласка, надішліть ваш чек у магазин (назва, адреса, місто, "
-"штат/країна, поштовий код)."
+"Будь ласка, надішліть ваш чек у магазин (назва, адреса, місто, штат/країна, "
+"поштовий код)."
 
 # @ jigoshop
 #: ../gateways/cheque.php:116
@@ -5851,8 +5857,8 @@ msgid ""
 "Please pay to Store Name, Store Street, Store Town, Store State / County, "
 "Store Postcode."
 msgstr ""
-"Будь ласка, заплатіть у магазині (назва, адреса, місто, "
-"штат/країна, поштовий код)."
+"Будь ласка, заплатіть у магазині (назва, адреса, місто, штат/країна, "
+"поштовий код)."
 
 #: ../gateways/cod.php:114
 msgid "Waiting for cash delivery"
@@ -5869,8 +5875,8 @@ msgid ""
 "PayPal Standard works by sending the user to <a href=\"https://www.paypal."
 "com/\">PayPal</a> to enter their payment information."
 msgstr ""
-"Стандартний PayPal працює, надсилаючи користувача на <a href=\"https://www.paypal."
-"com/\">PayPal</a>, щоб увести дані для оплати."
+"Стандартний PayPal працює, надсилаючи користувача на <a href=\"https://www."
+"paypal.com/\">PayPal</a>, щоб увести дані для оплати."
 
 # @ jigoshop
 #: ../gateways/paypal.php:71
@@ -5892,8 +5898,8 @@ msgid ""
 "Pay via PayPal; you can pay with your credit card if you don't have a PayPal "
 "account"
 msgstr ""
-"Оплатити через PayPal; ви можете оплатити своєю банківською карткою, якщо не маєте "
-"рахунок у PayPal."
+"Оплатити через PayPal; ви можете оплатити своєю банківською карткою, якщо не "
+"маєте рахунок у PayPal."
 
 # @ jigoshop
 #: ../gateways/paypal.php:102
@@ -5919,9 +5925,9 @@ msgid ""
 "will force 0.01 to allow paypal to process payment. Shop owner is "
 "responsible for refunding customer."
 msgstr ""
-"Якщо товар безкоштовний, і доставка теж безкоштовна (без податків), у "
-"формі писатиме 0,01, щоб сервіс зміг опрацювати цю оплату. Власник "
-"магазину є відповідальним за повернення коштів покупцеві."
+"Якщо товар безкоштовний, і доставка теж безкоштовна (без податків), у формі "
+"писатиме 0,01, щоб сервіс зміг опрацювати цю оплату. Власник магазину є "
+"відповідальним за повернення коштів покупцеві."
 
 # @ jigoshop
 #: ../gateways/paypal.php:124
@@ -5947,8 +5953,8 @@ msgid ""
 "Please enter your Sandbox Merchant email address for use as your sandbox "
 "storefront if you have enabled the PayPal sandbox."
 msgstr ""
-"Будь ласка, введіть вашу електронну адресу продавця, щоб використати її "
-"як лицеву пісочницю, якщо ви увімкнули пісочницю PayPal."
+"Будь ласка, введіть вашу електронну адресу продавця, щоб використати її як "
+"лицеву пісочницю, якщо ви увімкнули пісочницю PayPal."
 
 # @ jigoshop
 #: ../gateways/paypal.php:308 ../gateways/skrill.php:213
@@ -5983,8 +5989,8 @@ msgstr ""
 msgid ""
 "Thank you for your order, please click the button below to pay with PayPal."
 msgstr ""
-"Дякуємо за ваше замовлення, будь ласка, натисніть кнопку нижче, щоб оплатити з "
-"допомогою PayPal."
+"Дякуємо за ваше замовлення, будь ласка, натисніть кнопку нижче, щоб оплатити "
+"з допомогою PayPal."
 
 # @ jigoshop
 #: ../gateways/paypal.php:515
@@ -6032,8 +6038,8 @@ msgid ""
 "Please enter your skrill email address; this is needed in order to take "
 "payment!"
 msgstr ""
-"Будь ласка, вкажіть вашу адресу електронної пошти облікового запису skrill; це "
-"потрібно для отримання оплати!"
+"Будь ласка, вкажіть вашу адресу електронної пошти облікового запису skrill; "
+"це потрібно для отримання оплати!"
 
 # @ jigoshop
 #: ../gateways/skrill.php:111
@@ -6045,8 +6051,8 @@ msgstr "Таємне слово Skrill"
 msgid ""
 "Please enter your skrill secretword; this is needed in order to take payment!"
 msgstr ""
-"Будь ласка, вкажіть таємне слово облікового запису skrill; це потрібно для отримання "
-"оплати!"
+"Будь ласка, вкажіть таємне слово облікового запису skrill; це потрібно для "
+"отримання оплати!"
 
 # @ jigoshop
 #: ../gateways/skrill.php:120
@@ -7175,8 +7181,8 @@ msgid ""
 "Fee excluding tax. Enter an amount, e.g. 2.50, or a percentage, e.g. 5%. "
 "Leave blank to disable."
 msgstr ""
-"Мито без податку. Вкажіть суму, напр. 2,50, або відсоток, напр. 5%. "
-"Або залиште порожнім, щоб відключити цю опцію."
+"Мито без податку. Вкажіть суму, напр. 2,50, або відсоток, напр. 5%. Або "
+"залиште порожнім, щоб відключити цю опцію."
 
 # @ jigoshop
 #: ../shipping/flat_rate.php:126 ../shipping/free_shipping.php:95
@@ -7499,10 +7505,9 @@ msgid ""
 "boxes below and press return. This was given to you on your receipt and in "
 "the confirmation email you should have received."
 msgstr ""
-"Щоб відслідкувати ваше замовлення, будь ласка, введіть номер вашого замовлення "
-"й ел. адресу у поля нижче."
-"Їх було вам дано в чеку й електронному листі з підтвердженням, який ви мали "
-"отримати."
+"Щоб відслідкувати ваше замовлення, будь ласка, введіть номер вашого "
+"замовлення й ел. адресу у поля нижче.Їх було вам дано в чеку й електронному "
+"листі з підтвердженням, який ви мали отримати."
 
 # @ jigoshop
 #: ../shortcodes/order_tracking.php:185
@@ -7677,7 +7682,8 @@ msgstr "Оплатити замовлення"
 # @ jigoshop
 #: ../templates/checkout/review_order.php:175
 msgid "Please fill in your details above to see available payment methods."
-msgstr "Будь ласка, вкажіть ваші дані вище, щоб побачити доступні методи оплати."
+msgstr ""
+"Будь ласка, вкажіть ваші дані вище, щоб побачити доступні методи оплати."
 
 # @ jigoshop
 #: ../templates/checkout/review_order.php:177
