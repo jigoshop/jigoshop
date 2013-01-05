@@ -307,7 +307,7 @@ class jigoshop_dashboard {
 				echo '<div class="star-rating" title="'.esc_attr($rating).'">
 					<span style="width:'.($rating*16).'px">'.$rating.' '.__('out of 5', 'jigoshop').'</span></div>';
 
-				echo '<h4 class="meta"><a href="'.get_permalink($comment->ID).'#comment-'.$comment->comment_ID .'">'.$comment->post_title.'</a> reviewed by ' .strip_tags($comment->comment_author) .'</h4>';
+				echo '<h4 class="meta"><a href="'.get_permalink($comment->ID).'#comment-'.$comment->comment_ID .'">'.$comment->post_title.'</a>'.__(' reviewed by ', 'jigoshop').'' .strip_tags($comment->comment_author) .'</h4>';
 				echo '<blockquote>'.strip_tags($comment->comment_excerpt).' [...]</blockquote></li>';
 
 			endforeach;
@@ -397,7 +397,7 @@ class jigoshop_dashboard {
 			<div class="social">
 
 				<h4 class="first"><?php _e('Jigoshop Project', 'jigoshop') ?></h4>
-				<p><?php _e('Join our growing developer community today, contribute to the jigoshop project via GitHub.') ?></p>
+				<p><?php _e('Join our growing developer community today, contribute to the jigoshop project via GitHub.', 'jigoshop') ?></p>
 
 				<p><a href="https://github.com/jigoshop/Jigoshop" class="gitforked-button gitforked-forks gitforked-watchers">Fork</a></p>
 				<script src="http://gitforked.com/api/1.1/button.js" type="text/javascript"></script>
@@ -414,7 +414,7 @@ class jigoshop_dashboard {
 
 				<p><a href="http://jigowatt.co.uk/"><img src="<?php echo jigoshop::assets_url(); ?>/assets/images/jigowatt.png" alt="Jigowatt" /></a></p>
 
-				<p>From design to deployment Jigowatt delivers expert solutions to enterprise customers using Magento & WordPress open source platforms.</p>
+				<p><?php _e('From design to deployment Jigowatt delivers expert solutions to enterprise customers using Magento & WordPress open source platforms.', 'jigoshop'); ?></p>
 
 			</div>
 			<br class="clear"/>
@@ -437,9 +437,9 @@ class jigoshop_dashboard {
 		<div class="stats" id="jigoshop-stats">
 			<p>
 				<?php if ($current_month_offset!=date('m')) : ?>
-					<a href="admin.php?page=jigoshop&amp;month=<?php echo $current_month_offset+1; ?>" class="next">Next Month &rarr;</a>
+					<a href="admin.php?page=jigoshop&amp;month=<?php echo $current_month_offset+1; ?>" class="next"><?php _e('Next Month &rarr;', 'jigoshop'); ?></a>
 				<?php endif; ?>
-				<a href="admin.php?page=jigoshop&amp;month=<?php echo $current_month_offset-1; ?>" class="previous">&larr; Previous Month</a>
+				<a href="admin.php?page=jigoshop&amp;month=<?php echo $current_month_offset-1; ?>" class="previous"><?php _e('&larr; Previous Month', 'jigoshop'); ?></a>
 			</p>
 	<div class="inside">
 		<div id="placeholder" style="width:100%; height:300px; position:relative;"></div>
@@ -572,7 +572,7 @@ class jigoshop_dashboard {
 
 				for (var i = 0; i < d2.length; ++i) d2[i][0] += 60 * 60 * 1000;
 
-				var plot = jQuery.plot(jQuery("#placeholder"), [ { label: "Number of sales", data: d }, { label: "Sales amount", data: d2, yaxis: 2 } ], {
+				var plot = jQuery.plot(jQuery("#placeholder"), [ { label: "<?php _e('Number of sales','jigoshop'); ?>", data: d }, { label: "<?php _e('Sales amount','jigoshop'); ?>", data: d2, yaxis: 2 } ], {
 					series: {
 						lines: { show: true },
 						points: { show: true }
@@ -619,7 +619,7 @@ class jigoshop_dashboard {
 
 							jQuery("#tooltip").remove();
 
-							if (item.series.label=="Number of sales") {
+							if (item.series.label=="<?php _e('Number of sales','jigoshop'); ?>") {
 
 								var y = item.datapoint[1];
 								showTooltip(item.pageX, item.pageY, item.series.label + " - " + y);

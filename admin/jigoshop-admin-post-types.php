@@ -26,19 +26,19 @@ function jigoshop_product_updated_messages( $messages ) {
 
   $messages['product'] = array(
     0 => '', // Unused. Messages start at index 1.
-    1 => sprintf( __('Product updated. <a href="%s">View Product</a>'), esc_url( get_permalink($post_ID) ) ),
-    2 => __('Custom field updated.'),
-    3 => __('Custom field deleted.'),
-    4 => __('Product updated.'),
+    1 => sprintf( __('Product updated. <a href="%s">View Product</a>', 'jigoshop'), esc_url( get_permalink($post_ID) ) ),
+    2 => __('Custom field updated.', 'jigoshop'),
+    3 => __('Custom field deleted.', 'jigoshop'),
+    4 => __('Product updated.', 'jigoshop'),
     /* translators: %s: date and time of the revision */
-    5 => isset($_GET['revision']) ? sprintf( __('Product restored to revision from %s'), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-    6 => sprintf( __('Product published. <a href="%s">View Product</a>'), esc_url( get_permalink($post_ID) ) ),
-    7 => __('Product saved.'),
-    8 => sprintf( __('Product submitted. <a target="_blank" href="%s">Preview Product</a>'), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
-    9 => sprintf( __('Product scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview Product</a>'),
+    5 => isset($_GET['revision']) ? sprintf( __('Product restored to revision from %s', 'jigoshop'), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+    6 => sprintf( __('Product published. <a href="%s">View Product</a>', 'jigoshop'), esc_url( get_permalink($post_ID) ) ),
+    7 => __('Product saved.', 'jigoshop'),
+    8 => sprintf( __('Product submitted. <a target="_blank" href="%s">Preview Product</a>', 'jigoshop'), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
+    9 => sprintf( __('Product scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview Product</a>', 'jigoshop'),
       // translators: Publish box date format, see http://php.net/date
-      date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink($post_ID) ) ),
-    10 => sprintf( __('Product draft updated. <a target="_blank" href="%s">Preview Product</a>'), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
+      date_i18n( __('M j, Y @ G:i', 'jigoshop'), strtotime( $post->post_date ) ), esc_url( get_permalink($post_ID) ) ),
+    10 => sprintf( __('Product draft updated. <a target="_blank" href="%s">Preview Product</a>', 'jigoshop'), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
   );
 
   return $messages;
@@ -307,7 +307,7 @@ function my_action_row($actions){
 
 	if ($post->post_type =="shop_order" && $post->post_status == 'trash') {
 		$order = new jigoshop_order($post->ID);
-		echo sprintf(__('Order %s'), $order->get_order_number());
+		echo sprintf(__('Order %s', 'jigoshop'), $order->get_order_number());
 	}
 
 	return $actions;
@@ -329,7 +329,7 @@ function jigoshop_custom_order_columns($column) {
 
             echo '<a href="' . admin_url('post.php?post=' . $post->ID . '&action=edit') . '">' . sprintf(__('Order %s', 'jigoshop'), $order->get_order_number()) . '</a>';
 
-            echo '<time title="' . date_i18n('c', strtotime($post->post_date)) . '">' . date_i18n('F j, Y, g:i a', strtotime($post->post_date)) . '</time>';
+            echo '<time title="' . date_i18n(_x('c', 'date', 'jigoshop'), strtotime($post->post_date)) . '">' . date_i18n(__('F j, Y, g:i a', 'jigoshop'), strtotime($post->post_date)) . '</time>';
 
             break;
         case "customer" :
