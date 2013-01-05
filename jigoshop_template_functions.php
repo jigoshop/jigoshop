@@ -98,7 +98,7 @@ if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 
 		if ( $_product->is_in_stock() OR $_product->is_type('external') ) :
 			if ( $_product->is_type(array('variable', 'grouped')) ) :
-				$output = '<a href="'.get_permalink($_product->id).'" class="button">'.__('Select', 'jigoshop').'</a>';
+				$output = '<a href="'.get_permalink($_product->id).'" class="button">'._x('Select', 'verb', 'jigoshop').'</a>';
 			elseif ( $_product->is_type('external') ) :
 				$output = '<a href="'.get_post_meta( $_product->id, 'external_url', true ).'" class="button">'.__('Buy product', 'jigoshop').'</a>';
 			else :
@@ -617,7 +617,7 @@ if (!function_exists('jigoshop_product_customize_panel')) {
 	function jigoshop_product_customize_panel() {
 		global $_product;
 
-		if ( isset( $_POST['Submit'] ) && $_POST['Submit'] == 'Save Personalization' ) {
+		if ( isset( $_POST['Submit'] ) && $_POST['Submit'] == __('Save Personalization', 'jigoshop') ) {
 			$custom_products = (array) jigoshop_session::instance()->customized_products;
 			$custom_products[$_POST['customized_id']] = trim( wptexturize( $_POST['jigoshop_customized_product'] ));
 			jigoshop_session::instance()->customized_products = $custom_products;
@@ -630,7 +630,7 @@ if (!function_exists('jigoshop_product_customize_panel')) {
 			$length_str = $custom_length == '' ? '' : sprintf( __( 'You may enter a maximum of %s characters.', 'jigoshop' ), $custom_length );
 			
 			echo '<div class="panel" id="tab-customize">';
-			echo '<p>' . apply_filters('jigoshop_product_customize_heading', __('Enter your personal information as you want it to appear on the product.<br />'.$length_str, 'jigoshop')) . '</p>';
+			echo '<p>' . apply_filters('jigoshop_product_customize_heading', __('Enter your personal information as you want it to appear on the product.<br />', 'jigoshop').$length_str) . '</p>';
 
 			?>
 

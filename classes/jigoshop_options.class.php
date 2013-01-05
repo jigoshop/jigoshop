@@ -1008,7 +1008,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 
 		self::$default_options[] = array(
 			'name'		=> __('View Order Page','jigoshop'),
-			'desc' 		=> __('Shortcode to place on page:<code>[jigoshop_view_order]</code><br/>Default parent page: My Account','jigoshop'),
+			'desc' 		=> __('Shortcode to place on page: <code>[jigoshop_view_order]</code><br/>Default parent page: My Account','jigoshop'),
 			'tip' 		=> '',
 			'id' 		=> 'jigoshop_view_order_page_id',
 			'type' 		=> 'single_select_page',

@@ -236,8 +236,8 @@ function jigoshop_product_data_box() {
 	            ?>
 	            	</span>
 	            	<span class="multiselect-controls">
-						<a class="check-all" href="#"><?php _e('Check All'); ?></a>&nbsp;|
-						<a class="uncheck-all" href="#"><?php _e('Uncheck All');?></a>
+						<a class="check-all" href="#"><?php _e('Check All', 'jigoshop'); ?></a>&nbsp;|
+						<a class="uncheck-all" href="#"><?php _e('Uncheck All', 'jigoshop');?></a>
 					</span>
 				</p>
 			</fieldset>
@@ -569,8 +569,8 @@ function display_attribute() {
 		?>
 	
 		<div class="postbox attribute <?php if ( $has_terms ) echo 'closed'; ?> <?php echo esc_attr( $attribute_taxonomy_name ); ?>" data-attribute-name="<?php echo esc_attr( $attribute_taxonomy_name ); ?>" rel="<?php echo $position; ?>"  <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
-			<button type="button" class="hide_row button">Remove</button>
-			<div class="handlediv" title="Click to toggle"><br></div>
+			<button type="button" class="hide_row button"><?php _e('Remove', 'jigoshop'); ?></button>
+			<div class="handlediv" title="<?php _e('Click to toggle', 'jigoshop') ?>"><br></div>
 			<h3 class="handle">
 			<?php $label = ($tax->attribute_label) ? $tax->attribute_label : $tax->attribute_name;
 			echo esc_attr ( $label ); ?>
@@ -639,10 +639,10 @@ function display_attribute() {
 									?>
 								</div>
 								<div class="multiselect-controls">
-									<a class="check-all" href="#"><?php _e('Check All'); ?></a>&nbsp;|
-									<a class="uncheck-all" href="#"><?php _e('Uncheck All');?></a>&nbsp;|
-									<a class="toggle" href="#"><?php _e('Toggle');?></a>&nbsp;|
-									<a class="show-all" href="#"><?php _e('Show all'); ?></a>
+									<a class="check-all" href="#"><?php _e('Check All', 'jigoshop'); ?></a>&nbsp;|
+									<a class="uncheck-all" href="#"><?php _e('Uncheck All', 'jigoshop');?></a>&nbsp;|
+									<a class="toggle" href="#"><?php _e('Toggle', 'jigoshop');?></a>&nbsp;|
+									<a class="show-all" href="#"><?php _e('Show all', 'jigoshop'); ?></a>
 								</div>
 	
 							<?php elseif ($tax->attribute_type=="text") : ?>
@@ -673,8 +673,8 @@ function display_attribute() {
 
 		?>
 		<div class="postbox attribute closed <?php echo sanitize_title($attribute['name']); ?>" rel="<?php echo isset($attribute['position']) ? $attribute['position'] : 0; ?>">
-			<button type="button" class="hide_row button">Remove</button>
-			<div class="handlediv" title="Click to toggle"><br></div>
+			<button type="button" class="hide_row button"><?php _e('Remove', 'jigoshop'); ?></button>
+			<div class="handlediv" title="<?php _e('Click to toggle', 'jigoshop') ?>"><br></div>
 			<h3 class="handle"><?php echo esc_attr( $attribute['name'] ); ?></h3>
 	
 			<input type="hidden" name="attribute_is_taxonomy[<?php echo $i; ?>]" value="0" />
