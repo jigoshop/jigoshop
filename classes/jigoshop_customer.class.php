@@ -189,7 +189,7 @@ class jigoshop_customer extends Jigoshop_Singleton {
 	/** Gets the country and state from the current session for cart shipping display */
 	public static function get_shipping_country_or_state() {
 		if (self::get_customer_session('shipping_country'))	{
-			if (self::get_customer_session('shipping_state')) {
+			if (self::get_customer_session('shipping_state') && isset(jigoshop_countries::$states[self::get_customer_session('shipping_state')])) {
 				return jigoshop_countries::$states[self::get_customer_session('shipping_country')][self::get_customer_session('shipping_state')];
 			} else {
 				return jigoshop_countries::$countries[self::get_customer_session('shipping_country')];
