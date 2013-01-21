@@ -51,6 +51,8 @@ function jigoshop_order_tracking( $atts ) {
 				}
 				echo '.</p>';
 
+				do_action( 'jigoshop_tracking_details_info', $order );
+				
 				?>
 				<h2><?php _e('Order Details', 'jigoshop'); ?></h2>
 				<table class="shop_table">
