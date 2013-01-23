@@ -797,7 +797,7 @@ function get_jigoshop_currency_symbol() {
 		case 'SEK' : $currency_symbol = 'kr'; break;
 		case 'SGD' : $currency_symbol = '&#36;'; break;
 		case 'THB' : $currency_symbol = '&#3647;'; break;
-		case 'TRY' : $currency_symbol = '&#8356;'; break;
+		case 'TRY' : $currency_symbol = 'TL'; break;
 		case 'TWD' : $currency_symbol = '&#78;&#84;&#36;'; break;
 		case 'USD' : $currency_symbol = '&#36;'; break;
 		case 'ZAR' : $currency_symbol = 'R'; break;
