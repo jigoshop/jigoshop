@@ -618,6 +618,7 @@ class jigoshop_countries extends Jigoshop_Base {
 			'HKB'            => 'Hawke\'s Bay',
 			'MWT'            => 'Manawatu-Wanganui',
 			'MBH'            => 'Marlborough',
+			'NSN'            => 'Nelson',
 			'NTL'            => 'Northland',
 			'OTA'            => 'Otago',
 			'STL'            => 'Southland',

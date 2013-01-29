@@ -83,10 +83,12 @@ class jigoshop_product_variation extends jigoshop_product {
 	public function get_price() {
 
 		$price = null;
-		if ( strstr($this->sale_price,'%') ) {
-			$price = round($this->regular_price * ( (100 - str_replace('%','',$this->sale_price) ) / 100 ), 2);
-		} else if ( $this->sale_price ) {
-			$price = $this->sale_price;
+		if ( $this->is_on_sale() ) {
+			if ( strstr($this->sale_price,'%') ) {
+				$price = round($this->regular_price * ( (100 - str_replace('%','',$this->sale_price) ) / 100 ), 4);
+			} else if ( $this->sale_price ) {
+				$price = $this->sale_price;
+			}
 		} else {
 			$price = apply_filters('jigoshop_product_get_regular_price', $this->regular_price, $this->variation_id);
 		}

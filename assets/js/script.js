@@ -117,12 +117,14 @@ jQuery(function() {
             }
             if (jQuery(state_box).is('input')) {
                 // Change for select
+        		jQuery(state_box).prev().append(' <span class="required">*</span>');
                 jQuery(state_box).replaceWith('<select name="' + input_name + '" id="' + input_id + '"><option value="">' + jigoshop_params.select_state_text + '</option></select>');
                 state_box = jQuery('#' + jQuery(this).attr('rel'));
             }
             jQuery(state_box).html(options);
         } else {
             if (jQuery(state_box).is('select')) {
+        		jQuery(state_box).prev().find('span.required').remove();
                 jQuery(state_box).replaceWith('<input class="input-text" type="text" placeholder="' + jigoshop_params.state_text + '" name="' + input_name + '" id="' + input_id + '" />');
                 state_box = jQuery('#' + jQuery(this).attr('rel'));
             }

@@ -282,11 +282,11 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		$old_option = get_option($name);
 
 		if ( isset( self::$current_options[$name] )) :
-			return self::$current_options[$name];
-		elseif ( isset ( $old_option )) :
-			return $old_option;
+			return apply_filters( 'jigoshop_get_option', self::$current_options[$name], $name, $default);
+		elseif ( isset( $old_option ) && $old_option !== false ) :
+			return apply_filters( 'jigoshop_get_option', $old_option, $name, $default);
 		elseif ( isset( $default )) :
-			return $default;
+			return apply_filters( 'jigoshop_get_option', $default, $name, $default);
 		else :
 			return null;
 		endif;
@@ -543,6 +543,13 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			'type' 		=> 'single_select_country'
 		);
 
+		$symbols = jigoshop::currency_symbols();
+		$countries = jigoshop::currency_countries();
+		$currencies = array();
+		foreach ( $countries as $key => $country ) {
+			$currencies[$key] = $country . ' (' . $symbols[$key] . ')';
+		}
+		$currencies = apply_filters('jigoshop_currencies', $currencies );
 		self::$default_options[] = array(
 			'name'		=> __('Currency', 'jigoshop'),
 			'desc' 		=> '',
@@ -550,43 +557,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			'id' 		=> 'jigoshop_currency',
 			'std' 		=> 'GBP',
 			'type' 		=> 'select',
-			'choices'	=> apply_filters('jigoshop_currencies', array(
-				'AED' => __('United Arab Emirates dirham (&#1583;&#46;&#1573;)', 'jigoshop'),
-				'AUD' => __('Australian Dollar (&#36;)', 'jigoshop'),
-				'BRL' => __('Brazilian Real (&#82;&#36;)', 'jigoshop'),
-				'CAD' => __('Canadian Dollar (&#36;)', 'jigoshop'),
-				'CHF' => __('Swiss Franc (SFr.)', 'jigoshop'),
-				'CNY' => __('Chinese yuan (&#165;)', 'jigoshop'),
-				'CZK' => __('Czech Koruna (&#75;&#269;)', 'jigoshop'),
-				'DKK' => __('Danish Krone (kr)', 'jigoshop'),
-				'EUR' => __('Euro (&euro;)', 'jigoshop'),
-				'GBP' => __('Pounds Sterling (&pound;)', 'jigoshop'),
-				'HKD' => __('Hong Kong Dollar (&#36;)', 'jigoshop'),
-				'HRK' => __('Croatian Kuna (&#107;&#110;)', 'jigoshop'),
-				'HUF' => __('Hungarian Forint (&#70;&#116;)', 'jigoshop'),
-				'IDR' => __('Indonesia Rupiah (&#82;&#112;)', 'jigoshop'),
-				'ILS' => __('Israeli Shekel (&#8362;)', 'jigoshop'),
-				'INR' => __('Indian Rupee (&#8360;)', 'jigoshop'),
-				'JPY' => __('Japanese Yen (&yen;)', 'jigoshop'),
-				'KES' => __('Kenyan Shilling (KSh)', 'jigoshop'),
-				'MXN' => __('Mexican Peso (&#36;)', 'jigoshop'),
-				'MYR' => __('Malaysian Ringgits (RM)', 'jigoshop'),
-				'NGN' => __('Nigerian Naira (&#8358;)', 'jigoshop'),
-				'NOK' => __('Norwegian Krone (kr)', 'jigoshop'),
-				'NZD' => __('New Zealand Dollar (&#36;)', 'jigoshop'),
-				'PHP' => __('Philippine Pesos (&#8369;)', 'jigoshop'),
-				'PLN' => __('Polish Zloty (&#122;&#322;)', 'jigoshop'),
-				'RON' => __('Romanian New Leu (&#108;&#101;&#105;)', 'jigoshop'),
-				'RUB' => __('Russian Ruble (&#1088;&#1091;&#1073;)', 'jigoshop'),
-				'SEK' => __('Swedish Krona (kr)', 'jigoshop'),
-				'SGD' => __('Singapore Dollar (&#36;)', 'jigoshop'),
-				'THB' => __('Thai Baht (&#3647;)', 'jigoshop'),
-				'TRY' => __('Turkish Lira (&#8356;)', 'jigoshop'),
-				'TWD' => __('Taiwan New Dollar (&#36;)', 'jigoshop'),
-				'USD' => __('US Dollar (&#36;)', 'jigoshop'),
-				'ZAR' => __('South African rand (R)', 'jigoshop')
-				)
-			)
+			'choices'	=> $currencies
 		);
 
 		self::$default_options[] = array(
@@ -623,29 +594,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
-
-// 		self::$default_options[] = array(
-// 			'name'		=> __('Beta testing','jigoshop'),
-// 			'desc' 		=> __('Use <strong><em>at your own risk</em></strong>.  Do <strong><em>not</em></strong> use on your <strong>main</strong> production Shop.','jigoshop'),
-// 			'tip' 		=> __('Allow Beta versions of Jigoshop updates to be shown in the WordPress plugin manager. Beta updates will display normally there if available. For Jigoshop Beta Testers <strong>ONLY!</strong>','jigoshop'),
-// 			'id' 		=> 'jigoshop_use_beta_version',
-// 			'std' 		=> 'no',
-// 			'type' 		=> 'checkbox',
-// 			'choices'	=> array(
-// 				'no'			=> __('No', 'jigoshop'),
-// 				'yes'			=> __('Yes', 'jigoshop')
-// 			)
-// 		);
-//
-// 		self::$default_options[] = array(
-// 			'name'		=> '',
-// 			'desc' 		=> __('Check for update now','jigoshop'),
-// 			'tip' 		=> __('Manually check if a beta version is available.','jigoshop'),
-// 			'id' 		=> 'jigoshop_check_beta_now',
-// 			'std' 		=> '',
-// 			'type' 		=> 'button',
-// 			'extra'     => is_multisite() ? admin_url().'network/' : '' . 'admin.php?page=jigoshop_settings&amp;action=jigoshop_beta_check&amp;_wpnonce='.(function_exists('wp_create_nonce')?wp_create_nonce('jigoshop_check_beta_'.get_current_user_id().'_wpnonce'):'')
-// 		);
 
 		self::$default_options[] = array( 'name' => __( 'Invoicing', 'jigoshop' ), 'type' => 'title', 'desc' => '' );
 
@@ -781,6 +729,19 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		);
 
 		self::$default_options[] = array(
+			'name'		=> __('Cart shows "Return to Shop" button','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Enabling this setting will display a "Return to Shop" button on the Cart page along with the "Continue to Checkout" button.','jigoshop'),
+			'id' 		=> 'jigoshop_cart_shows_shop_button',
+			'std' 		=> 'no',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+
+		self::$default_options[] = array(
 			'name'		=> __('After adding product to cart','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('Define what should happen when a user clicks on &#34;Add to Cart&#34; on any product or page.','jigoshop'),
@@ -863,9 +824,22 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		self::$default_options[] = array( 'name' => __('Checkout page', 'jigoshop'), 'type' => 'title', 'desc' => '' );
 
 		self::$default_options[] = array(
+			'name'		=> __('Validate postal/zip codes','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Enabling this setting will force proper postcodes to be entered by a customer for a country.','jigoshop'),
+			'id' 		=> 'jigoshop_enable_postcode_validating',
+			'std' 		=> 'no',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+
+		self::$default_options[] = array(
 			'name'		=> __('Allow guest purchases','jigoshop'),
 			'desc' 		=> '',
-			'tip' 		=> __('Setting this to Yes will allow users to checkout without registering or signing up. Otherwise, users must be signed in or must sign up to checkout.','jigoshop'),
+			'tip' 		=> __('Enabling this setting will allow users to checkout without registering or signing up. Otherwise, users must be signed in or must sign up to checkout.','jigoshop'),
 			'id' 		=> 'jigoshop_enable_guest_checkout',
 			'std' 		=> 'yes',
 			'type' 		=> 'checkbox',
@@ -1391,6 +1365,20 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		);
 
 		self::$default_options[] = array(
+			'name'		=> __('Product thumbnail images per row','jigoshop'),
+			'desc' 		=> __('Default = 3','jigoshop'),
+			'tip' 		=> __('Determines how many extra product thumbnail images attached to a product to show on one row for the Single Product page.','jigoshop'),
+			'id' 		=> 'jigoshop_product_thumbnail_columns',
+			'std' 		=> '3',
+			'type' 		=> 'range',
+			'extra'		=> array(
+				'min'			=> 1,
+				'max'			=> 10,
+				'step'			=> 1
+			)
+		);
+
+		self::$default_options[] = array(
 			'name'		=> __('Show related products','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('To show or hide the related products section on a single product page.','jigoshop'),
@@ -1476,7 +1464,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		self::$default_options[] = array(
 			'name'		=> __('Hide out of stock products','jigoshop'),
 			'desc' 		=> '',
-			'tip' 		=> 'For Yes: When the Out of Stock Threshold (above) is reached, the product visibility will be set to hidden so that it will not appear on the Catalog or Shop product lists.',
+			'tip' 		=> __('For Yes: When the Out of Stock Threshold (above) is reached, the product visibility will be set to hidden so that it will not appear on the Catalog or Shop product lists.','jigoshop'),
 			'id' 		=> 'jigoshop_hide_no_stock_product',
 			'std' 		=> 'no',
 			'type' 		=> 'checkbox',

@@ -86,8 +86,8 @@ class jigoshop_product extends Jigoshop_Base {
 		$this->product_type = ( ! empty( $terms ) ) ? $terms->slug : 'simple';
 
 		// Define data
-		$this->regular_price         = isset($meta['regular_price'][0]) ? $meta['regular_price'][0] : null;
-		$this->sale_price            = isset($meta['sale_price'][0]) 	? $meta['sale_price'][0] : null;
+		$this->regular_price         = isset($meta['regular_price'][0]) ? apply_filters( 'jigoshop_get_regular_price', $meta['regular_price'][0], $this) : null;
+		$this->sale_price            = isset($meta['sale_price'][0]) 	? apply_filters( 'jigoshop_get_sale_price', $meta['sale_price'][0], $this) : null;
 		$this->sale_price_dates_from = isset($meta['sale_price_dates_from'][0]) ? $meta['sale_price_dates_from'][0] : null;
 		$this->sale_price_dates_to   = isset($meta['sale_price_dates_to'][0]) ? $meta['sale_price_dates_to'][0] : null;
 
@@ -428,8 +428,6 @@ class jigoshop_product extends Jigoshop_Base {
 	/**
 	 * Returns whether or not the product needs to notify the customer on backorder
 	 *
-	 * TODO: Consider a shorter method name?
-	 *
 	 * @return  bool
 	 */
 	public function backorders_require_notification() {
@@ -440,13 +438,15 @@ class jigoshop_product extends Jigoshop_Base {
 	/**
 	 * Returns whether or not the product has enough stock for the order
 	 *
-	 * TODO: Consider a shorter method name?
-	 *
 	 * @return  bool
 	 */
 	public function has_enough_stock( $quantity ) {
-
-		return ($this->backorders_allowed() || $this->stock >= $quantity);
+	
+		// always work from a new product to check actual stock available
+		// this product instance could be sitting in a Cart for a user and
+		// another customer purchases the last available
+		$temp = new jigoshop_product( $this->ID );
+		return ($this->backorders_allowed() || $temp->stock >= $quantity);
 	}
 
 	/**
@@ -603,7 +603,6 @@ class jigoshop_product extends Jigoshop_Base {
                 // rates array sorted so that taxes applied to retail value come first. To reverse taxes, need to reverse this array
                 $new_rates = array_reverse($rates, true);
 
-                $tax_applied_after_retail = 0;
                 $tax_totals = 0;
 
                 $_tax = new jigoshop_tax(100);
@@ -611,28 +610,21 @@ class jigoshop_product extends Jigoshop_Base {
                 foreach ( $new_rates as $key=>$value ) :
 
                     if ($value['is_not_compound_tax']) :
-                        $tax_totals += $_tax->calc_tax(( $price * $quantity ) - $tax_applied_after_retail, $value['rate'], true );
+                        $tax_totals += $_tax->calc_tax( $price * $quantity, $value['rate'], true );
                     else :
                         $tax_amount[$key] = $_tax->calc_tax( $price * $quantity, $value['rate'], true );
-                        $tax_applied_after_retail += $tax_amount[$key];
                         $tax_totals += $tax_amount[$key];
                     endif;
 
                 endforeach;
                 
-				// Product prices are always 2 decimal digits.
-				// Will get rounding errors on backwards tax calcs if we don't round
-                return round( ($price * $quantity - $tax_totals) / 100, 2 );
+                return round( ($price * $quantity - $tax_totals) / 100, 4 );
 
             }
 
-        } else {
-
-			// Product prices are always 2 decimal digits.
-			// Will get rounding errors on backwards tax calcs if we don't round
-			return round( $price * $quantity / 100, 2 );
-			
         }
+
+		return round( $price * $quantity / 100, 4 );
 
     }
 
@@ -655,7 +647,6 @@ class jigoshop_product extends Jigoshop_Base {
 			// rates array sorted so that taxes applied to retail value come first. To reverse taxes, need to reverse this array
 			$new_rates = array_reverse( $rates, true );
 
-			$tax_applied_after_retail = 0;
 			$tax_totals = 0;
 
 			$_tax = new jigoshop_tax( 100 );
@@ -663,10 +654,9 @@ class jigoshop_product extends Jigoshop_Base {
 			foreach ( $new_rates as $key => $value ) {
 				
 				if ( $value['is_not_compound_tax'] ) {
-					$tax_totals += $_tax->calc_tax(( $price * $quantity ) - $tax_applied_after_retail, $value['rate'], false );
+					$tax_totals += $_tax->calc_tax( $price * $quantity, $value['rate'], false );
 				} else {
 					$tax_amount[$key] = $_tax->calc_tax( $price * $quantity, $value['rate'], false );
-					$tax_applied_after_retail += $tax_amount[$key];
 					$tax_totals += $tax_amount[$key];
 				}
 				$tax_totals = round( $tax_totals, 1 );  // without this we were getting rounding errors
@@ -675,9 +665,7 @@ class jigoshop_product extends Jigoshop_Base {
 
 		}
 
-		// Product prices are always 2 decimal digits.
-		// Will get rounding errors on backwards tax calcs if we don't round
-		return round( ($price * $quantity + $tax_totals) / 100, 2 );
+		return round( ($price * $quantity + $tax_totals) / 100, 4 );
 
 	}
 	
@@ -799,10 +787,12 @@ class jigoshop_product extends Jigoshop_Base {
 	public function get_price() {
 
 		$price = null;
-		if ( strstr($this->sale_price,'%') ) {
-			$price = round($this->regular_price * ( (100 - str_replace('%','',$this->sale_price) ) / 100 ), 2);
-		} else if ( $this->sale_price ) {
-			$price = $this->sale_price;
+		if ( $this->is_on_sale() ) {
+			if ( strstr($this->sale_price,'%') ) {
+				$price = round($this->regular_price * ( (100 - str_replace('%','',$this->sale_price) ) / 100 ), 4);
+			} else if ( $this->sale_price ) {
+				$price = $this->sale_price;
+			}
 		} else {
 			$price = apply_filters('jigoshop_product_get_regular_price', $this->regular_price, $this->ID);
 		}
@@ -1221,6 +1211,11 @@ class jigoshop_product extends Jigoshop_Base {
 				// Get the taxonomy terms
 				$product_terms = wp_get_object_terms( $this->ID, 'pa_'.sanitize_title($attr['name']), array( 'orderby' => 'slug' ) );
 
+				if ( is_wp_error( $product_terms )) {
+					jigoshop_log( "product::list_attributes() - Attribute for invalid taxonomy = " . $attr['name'] );
+					continue;
+				}
+				
 				// Convert them into a array to be imploded
 				$terms = array();
 
@@ -1341,8 +1336,9 @@ class jigoshop_product extends Jigoshop_Base {
 	public static function getAttributeTaxonomies() {
 		global $wpdb;
 
+		// Jigoshop 1.5 only accepts text and multi-select attribute types for taxonomies
 		if(self::$attribute_taxonomies === NULL) {
-			self::$attribute_taxonomies = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."jigoshop_attribute_taxonomies;");
+			self::$attribute_taxonomies = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."jigoshop_attribute_taxonomies WHERE attribute_type <> 'select';");
 		}
 
 		return self::$attribute_taxonomies;

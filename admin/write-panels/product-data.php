@@ -236,8 +236,8 @@ function jigoshop_product_data_box() {
 	            ?>
 	            	</span>
 	            	<span class="multiselect-controls">
-						<a class="check-all" href="#"><?php _e('Check All', 'jigoshop'); ?></a>&nbsp;|
-						<a class="uncheck-all" href="#"><?php _e('Uncheck All', 'jigoshop');?></a>
+						<a class="check-all" href="#"><?php _e('Check All','jigoshop'); ?></a>&nbsp;|
+						<a class="uncheck-all" href="#"><?php _e('Uncheck All','jigoshop');?></a>
 					</span>
 				</p>
 			</fieldset>
@@ -263,9 +263,9 @@ function jigoshop_product_data_box() {
 					echo '
 					<p class="form-field dimensions_field">
 						<label for"product_length">'. __('Dimensions', 'jigoshop') . ' ('.Jigoshop_Base::get_options()->get_option('jigoshop_dimension_unit').')' . '</label>
-						<input type="number" step="any" name="length" class="short" value="' . get_post_meta( $thepostid, 'length', true ) . '" placeholder="'. __('Length', 'jigoshop') . '" />
-						<input type="number" step="any" name="width" class="short" value="' . get_post_meta( $thepostid, 'width', true ) . '" placeholder="'. __('Width', 'jigoshop') . '" />
-						<input type="number" step="any" name="height" class="short" value="' . get_post_meta( $thepostid, 'height', true ) . '" placeholder="'. __('Height', 'jigoshop') . '" />
+						<input type="number" step="any" name="length" class="short" value="' . get_post_meta( $thepostid, 'length', true ) . '" placeholder="'. _e('Length', 'jigoshop') . '" />
+						<input type="number" step="any" name="width" class="short" value="' . get_post_meta( $thepostid, 'width', true ) . '" placeholder="'. _e('Width', 'jigoshop') . '" />
+						<input type="number" step="any" name="height" class="short" value="' . get_post_meta( $thepostid, 'height', true ) . '" placeholder="'. _e('Height', 'jigoshop') . '" />
 					</p>
 					';
 				}
@@ -600,6 +600,7 @@ function display_attribute() {
 							</div>
 						</td>
 						<td class="value">
+							<!-- Jigoshop 1.5, 'select' attribute types are no longer retrieved for display -->
 							<?php if ($tax->attribute_type=="select") : ?>
 								<select name="attribute_values[<?php echo $i ?>]">
 									<option value=""><?php _e('Choose an option&hellip;', 'jigoshop'); ?></option>
@@ -639,10 +640,10 @@ function display_attribute() {
 									?>
 								</div>
 								<div class="multiselect-controls">
-									<a class="check-all" href="#"><?php _e('Check All', 'jigoshop'); ?></a>&nbsp;|
-									<a class="uncheck-all" href="#"><?php _e('Uncheck All', 'jigoshop');?></a>&nbsp;|
-									<a class="toggle" href="#"><?php _e('Toggle', 'jigoshop');?></a>&nbsp;|
-									<a class="show-all" href="#"><?php _e('Show all', 'jigoshop'); ?></a>
+									<a class="check-all" href="#"><?php _e('Check All','jigoshop'); ?></a>&nbsp;|
+									<a class="uncheck-all" href="#"><?php _e('Uncheck All','jigoshop');?></a>&nbsp;|
+									<a class="toggle" href="#"><?php _e('Toggle','jigoshop');?></a>&nbsp;|
+									<a class="show-all" href="#"><?php _e('Show All','jigoshop'); ?></a>
 								</div>
 	
 							<?php elseif ($tax->attribute_type=="text") : ?>

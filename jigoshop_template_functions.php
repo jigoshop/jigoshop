@@ -173,7 +173,8 @@ if (!function_exists('jigoshop_show_product_thumbnails')) {
 		$attachments = get_posts($args);
 		if ($attachments) :
 			$loop = 0;
-			$columns = apply_filters( 'single_thumbnail_columns', 3 );
+			$columns = Jigoshop_Base::get_options()->get_option( 'jigoshop_product_thumbnail_columns', '3' );
+			$columns = apply_filters( 'single_thumbnail_columns', $columns );
 			foreach ( $attachments as $attachment ) :
 
 				if ($thumb_id==$attachment->ID) continue;
@@ -586,24 +587,30 @@ if (!function_exists('jigoshop_product_customize_tab')) {
  **/
 if (!function_exists('jigoshop_product_description_panel')) {
 	function jigoshop_product_description_panel() {
-		echo '<div class="panel" id="tab-description">';
-		echo '<h2>' . apply_filters('jigoshop_product_description_heading', __('Product Description', 'jigoshop')) . '</h2>';
-		// the following 3 lines replicate the behavior of 'the_content()'
-		// non echoed so Rich Snippets can be applied via a filter
 		$content = get_the_content();
 		$content = apply_filters( 'the_content', $content );
 		$content = str_replace( ']]>', ']]&gt;', $content );
-		echo apply_filters( 'jigoshop_single_product_content', $content );
-		echo '</div>';
+		$content = apply_filters( 'jigoshop_single_product_content', $content );
+		if ( $content <> '' ) {
+			echo '<div class="panel" id="tab-description">';
+			echo '<h2>' . apply_filters('jigoshop_product_description_heading', __('Product Description', 'jigoshop')) . '</h2>';
+			// the following 3 lines replicate the behavior of 'the_content()'
+			// non echoed so Rich Snippets can be applied via a filter
+			echo $content;
+			echo '</div>';
+		}
 	}
 }
 if (!function_exists('jigoshop_product_attributes_panel')) {
 	function jigoshop_product_attributes_panel() {
 		global $_product;
-		echo '<div class="panel" id="tab-attributes">';
-		echo '<h2>' . apply_filters('jigoshop_product_attributes_heading', __('Additional Information', 'jigoshop')) . '</h2>';
-		echo apply_filters( 'jigoshop_single_product_attributes', $_product->list_attributes() );
-		echo '</div>';
+		$content = apply_filters( 'jigoshop_single_product_attributes', $_product->list_attributes() );
+		if ( $content <> '' ) {
+			echo '<div class="panel" id="tab-attributes">';
+			echo '<h2>' . apply_filters('jigoshop_product_attributes_heading', __('Additional Information', 'jigoshop')) . '</h2>';
+			echo $content;
+			echo '</div>';
+		}
 	}
 }
 if (!function_exists('jigoshop_product_reviews_panel')) {
@@ -891,6 +898,18 @@ if (!function_exists('jigoshop_checkout_login_form')) {
 		?><p class="info"><?php _e('Already registered?', 'jigoshop'); ?> <a href="#" class="showlogin"><?php _e('Click here to login', 'jigoshop'); ?></a></p><?php
 
 		jigoshop_login_form();
+	}
+}
+
+/**
+ * Jigoshop Verify Checkout States Message
+ **/
+if (!function_exists('jigoshop_verify_checkout_states_for_countries_message')) {
+	function jigoshop_verify_checkout_states_for_countries_message() {
+		// the following will return true or false if a country requires states
+		if ( ! jigoshop_customer::has_valid_shipping_state() ) {
+			echo '<div class="clearfix">&nbsp;</div><div class="jigoshop_error">' . __('Please verify your Billing and Shipping state is correctly set for your country before placing your Order.','jigoshop') . '</div>';
+		}
 	}
 }
 

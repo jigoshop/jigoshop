@@ -204,7 +204,7 @@ if ( ! function_exists( 'jigoshop_add_to_cart_action' )) { //make function plugg
 					break;      // drop out and put up message, unable to add product.
 				}
 				$quantity     = (isset($_REQUEST['quantity']) && is_numeric($_REQUEST['quantity'])) ? (int) $_REQUEST['quantity'] : 1;
-								
+
 				$product_id   = apply_filters('jigoshop_product_id_add_to_cart_filter', $product_id);
 				$variation_id = apply_filters('jigoshop_variation_id_add_to_cart_filter', (int) $_REQUEST['variation_id']);
 				$attributes   = (array) maybe_unserialize(get_post_meta($product_id, 'product_attributes', true));
@@ -311,19 +311,19 @@ if ( ! function_exists( 'jigoshop_add_to_cart_action' )) { //make function plugg
 		}
 
 		if ( apply_filters('add_to_cart_redirect', $url) ) {
-			wp_safe_redirect($url); exit;
+			wp_safe_redirect($url, 301); exit;
 		}
 		else if ( $jigoshop_options->get_option('jigoshop_redirect_add_to_cart', 'same_page') == 'to_checkout' && !jigoshop::has_errors() ) {
-			wp_safe_redirect(jigoshop_cart::get_checkout_url()); exit;
+			wp_safe_redirect(jigoshop_cart::get_checkout_url(), 301); exit;
 		}
 		else if ($jigoshop_options->get_option('jigoshop_redirect_add_to_cart', 'to_cart') == 'to_cart' && !jigoshop::has_errors()) {
-			wp_safe_redirect(jigoshop_cart::get_cart_url()); exit;
+			wp_safe_redirect(jigoshop_cart::get_cart_url(), 301); exit;
 		}
 		else if ( wp_get_referer() ) {
-			wp_safe_redirect( remove_query_arg( array( 'add-to-cart', 'quantity', 'product_id' ), wp_get_referer() ) ); exit;
+			wp_safe_redirect( remove_query_arg( array( 'add-to-cart', 'quantity', 'product_id' ), wp_get_referer() ), 301 ); exit;
 		}
 		else {
-			wp_safe_redirect(home_url()); exit;
+			wp_safe_redirect(home_url(), 301); exit;
 		}
 	}
 }
@@ -640,7 +640,7 @@ function jigoshop_download_product() {
 			// required for IE, otherwise Content-Disposition may be ignored
 			if(ini_get('zlib.output_compression'))
 			ini_set('zlib.output_compression', 'Off');
-		
+
 			header("Pragma: no-cache");
 			header("Expires: 0");
 			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");

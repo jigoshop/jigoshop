@@ -78,7 +78,7 @@ function jigoshop_my_account( $atts ) {
 							<?php if ($order->formatted_shipping_address) echo $order->formatted_shipping_address; else echo '&ndash;'; ?>
 							</address></td>
 						<?php endif; ?>
-						<td><?php echo jigoshop_price($order->order_total); ?></td>
+						<td><?php echo apply_filters( 'jigoshop_display_order_total', jigoshop_price($order->order_total), $order); ?></td>
 						<td class="nobr"><?php _e($order->status, 'jigoshop'); ?></td>
 						<td class="nobr alignright">
 							<?php if ($order->status=='pending') : ?>
@@ -382,7 +382,7 @@ function jigoshop_view_order() {
         $order = new jigoshop_order($order_id);
 
         if ($order_id > 0 && $order->user_id == get_current_user_id()) :
-
+            do_action('jigoshop_before_order_summary_details', $order->id);
             echo '<p>' . sprintf(__('Order <mark>%s</mark> made on <mark>%s</mark>.', 'jigoshop'), $order->get_order_number(), date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($order->order_date))) . ' ';
             echo sprintf(__('Order status: <mark class="%s">%s</mark>', 'jigoshop'), sanitize_title($order->status), __($order->status, 'jigoshop') );
 

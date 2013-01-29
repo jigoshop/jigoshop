@@ -339,7 +339,7 @@
 		// Remove attribute
 		$('button.hide_row').live('click', function(e) {
 			e.preventDefault();
-			var answer = confirm("Remove this attribute?")
+			var answer = confirm(jigoshop_params.confirm_remove_attr)
 			if (answer){
 				$parent = $(this).parent();
 				$parent.fadeOut('slow', function() {
@@ -370,12 +370,13 @@
 
 			if (!attribute) {
 				var size = $('.attribute').size();
+				
 				// Add custom attribute row
 				var $custom_panel = $('\
 					<div class="postbox attribute custom">\
 						<button type="button" class="hide_row button">Remove</button>\
 						<div class="handlediv" title="Click to toggle"><br></div>\
-						<h3 class="handle">Custom Attribute</h3>\
+						<h3 class="handle">'+jigoshop_params.custom_attr_heading+'</h3>\
 \
 						<input type="hidden" name="attribute_is_taxonomy[' + size + ']" value="0">\
 						<input type="hidden" name="attribute_enabled[' + size + ']" value="1">\
@@ -389,12 +390,12 @@
 										<div>\
 											<label>\
 												<input type="checkbox" checked="checked" name="attribute_visibility[' + size + ']" value="1">\
-												Display on product page\
+												'+jigoshop_params.display_attr_label+'\
 											</label>\
 \
 											<label class="attribute_is_variable">\
 												<input type="checkbox" checked="checked" name="attribute_variation[' + size + ']" value="1">\
-												Is for variations\
+												'+jigoshop_params.variation_attr_label+'\
 											</label>\
 										</div>\
 									</td>\

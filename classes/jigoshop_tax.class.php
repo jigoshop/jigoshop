@@ -122,7 +122,7 @@ class jigoshop_tax extends Jigoshop_Base {
             $tax_rate = (empty($price_ex_tax) ? 0 : $total_tax / $price_ex_tax) * 100;
             $tax_amount['jigoshop_custom_rate']['rate'] = number_format($tax_rate, 4, '.', '');
             $tax_amount['jigoshop_custom_rate']['compound'] = false;
-            $tax_amount['jigoshop_custom_rate']['display'] = 'Tax';
+            $tax_amount['jigoshop_custom_rate']['display'] = __('Tax','jigoshop');
             $tax_amount['jigoshop_custom_rate']['shipping'] = ($divisor > 0 ? $shipping_tax * $divisor : $shipping_tax);
             
             return self::array_implode($tax_amount);
@@ -348,7 +348,7 @@ class jigoshop_tax extends Jigoshop_Base {
         $state = jigoshop_countries::get_base_state();
         $state = (jigoshop_countries::country_has_states($country) && $state ? $state : '*');
 
-        return (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state][$class]['label'] : 'Tax');
+        return (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state][$class]['label'] : __('Tax','jigoshop'));
     }
 
     private function get_online_label_for_customer($class = '*') {
@@ -362,7 +362,7 @@ class jigoshop_tax extends Jigoshop_Base {
 
         $state = (jigoshop_countries::country_has_states($country) && $state ? $state : '*');
 
-        return (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state][$class]['label'] : 'Tax');
+        return (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state][$class]['label'] : __('Tax','jigoshop'));
     }
 
     /**
@@ -505,7 +505,7 @@ class jigoshop_tax extends Jigoshop_Base {
                         $tax_amount[$tax_class]['amount'] = $tax;
                         $tax_amount[$tax_class]['rate'] = $tax_rate;
                         $tax_amount[$tax_class]['compound'] = false;
-                        $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
+                        $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : __('Tax','jigoshop'));
                         $tax_classes_applied[] = $tax_class;
                     endif;
                     
@@ -523,7 +523,7 @@ class jigoshop_tax extends Jigoshop_Base {
                         $tax_amount[$tax_class]['amount'] = $tax;
                         $tax_amount[$tax_class]['rate'] = $tax_rate;
                         $tax_amount[$tax_class]['compound'] = true;
-                        $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
+                        $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : __('Tax','jigoshop'));
                         $tax_classes_applied[] = $tax_class;
                     endif;
                     
@@ -543,7 +543,7 @@ class jigoshop_tax extends Jigoshop_Base {
                     $tax_amount[$tax_class]['amount'] = 0;
                     $tax_amount[$tax_class]['rate'] = 0;
                     $tax_amount[$tax_class]['compound'] = false;
-                    $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_base($tax_class) ? $this->get_online_label_for_base($tax_class) : 'Tax');
+                    $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_base($tax_class) ? $this->get_online_label_for_base($tax_class) : __('Tax','jigoshop'));
                     $tax_classes_applied[] = $tax_class;
                 endforeach;
             else :
@@ -551,7 +551,7 @@ class jigoshop_tax extends Jigoshop_Base {
                 $tax_amount['jigoshop_zero_rate']['amount'] = 0;
                 $tax_amount['jigoshop_zero_rate']['rate'] = 0;
                 $tax_amount['jigoshop_zero_rate']['compound'] = false;
-                $tax_amount['jigoshop_zero_rate']['display'] = 'Tax';
+                $tax_amount['jigoshop_zero_rate']['display'] = __('Tax','jigoshop');
                 $tax_classes_applied[] = 'jigoshop_zero_rate';
             endif;
         endif;
@@ -655,7 +655,7 @@ class jigoshop_tax extends Jigoshop_Base {
                 
                 $rate = $this->get_rate($tax_class, false);
                 $this->tax_amounts[$tax_class]['rate'] = $rate['rate'];
-                $this->tax_amounts[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
+                $this->tax_amounts[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : __('Tax','jigoshop'));
                 $this->tax_amounts[$tax_class]['compound'] = false;
             endif;
 
@@ -691,7 +691,7 @@ class jigoshop_tax extends Jigoshop_Base {
      * @return string which is the unsanitized tax class
      */
     public function get_tax_class_for_display($tax_class) {
-        return (!empty($this->tax_amounts[$tax_class]['display']) ? $this->tax_amounts[$tax_class]['display'] : 'Tax');
+        return (!empty($this->tax_amounts[$tax_class]['display']) ? $this->tax_amounts[$tax_class]['display'] : __('Tax','jigoshop'));
     }
 
     /**
@@ -970,7 +970,7 @@ class jigoshop_tax extends Jigoshop_Base {
                     $this->tax_amounts[$tax_class]['amount'] = 0;
                     $this->tax_amounts[$tax_class]['rate'] = $rate['rate'];
                     $this->tax_amounts[$tax_class]['compound'] = $rate['compound'];
-                    $this->tax_amounts[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
+                    $this->tax_amounts[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : __('Tax','jigoshop'));
                     $this->tax_amounts[$tax_class][$shipping_method_id] = 0;
                 endif;
 

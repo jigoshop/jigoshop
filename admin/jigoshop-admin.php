@@ -42,7 +42,7 @@ function jigoshop_update() {
 			// Display upgrade nag
 			echo '
 				<div class="update-nag">
-					'.sprintf(__('Your database needs an update. Please <strong>backup</strong> &amp; %s.', 'jigoshop'), '<a href="' . add_query_arg('jigoshop_update_db', 'true') . '">' . __('update now', 'jigoshop') . '</a>').'
+					'.sprintf(__('Your database needs an update for Jigoshop. Please <strong>backup</strong> &amp; %s.', 'jigoshop'), '<a href="' . add_query_arg('jigoshop_update_db', 'true') . '">' . __('update now', 'jigoshop') . '</a>').'
 				</div>
 			';
 		}

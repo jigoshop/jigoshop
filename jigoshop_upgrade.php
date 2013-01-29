@@ -65,6 +65,10 @@ function jigoshop_upgrade() {
 		jigoshop_upgrade_146();
 	}
 
+ 	if ( $jigoshop_db_version < 1301230 ) {
+ 		jigoshop_upgrade_150();
+ 	}
+
 	// Update the db option
 	update_site_option( 'jigoshop_db_version', JIGOSHOP_VERSION );
 
@@ -606,5 +610,18 @@ function jigoshop_upgrade_145() {
 function jigoshop_upgrade_146() {
 	
 	Jigoshop_Base::get_options()->add_option( 'jigoshop_show_checkout_shipping_fields', 'yes' );
+	
+}
+
+/**
+ * Execute changes made in Jigoshop 1.5
+ *
+ * @since 1.5
+ */
+function jigoshop_upgrade_150() {
+	
+	Jigoshop_Base::get_options()->add_option( 'jigoshop_cart_shows_shop_button', 'no' );
+	Jigoshop_Base::get_options()->add_option( 'jigoshop_enable_postcode_validating', 'no' );
+	Jigoshop_Base::get_options()->add_option( 'jigoshop_product_thumbnail_columns', '3' );
 	
 }

@@ -395,17 +395,17 @@ function jigoshop_sale_products( $atts ) {
 				),
 				array(
 						'key'       => 'sale_price_dates_from',
-						'value'     => array( '', $today ),
+						'value'     => $today,
 						'compare'   => '<=',
 				),
 				array(
 						'key'       => 'sale_price_dates_to',
-						'value'     => array( '', $tomorrow ),
+						'value'     => $tomorrow,
 						'compare'   => '<=',
 				),
 		)
 	);
-	@query_posts($args);
+	query_posts($args);
 	ob_start();
 	jigoshop_get_template_part( 'loop', 'shop' );
 	if ( $pagination ) do_action( 'jigoshop_pagination' );

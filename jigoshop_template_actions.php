@@ -82,6 +82,7 @@ add_action( 'jigoshop_product_tab_panels', 'jigoshop_product_customize_panel'  ,
 /* Checkout */
 add_action( 'before_checkout_form'          , 'jigoshop_checkout_login_form', 10 );
 add_action( 'jigoshop_checkout_order_review', 'jigoshop_order_review'       , 10 );
+add_action( 'jigoshop_review_order_after_submit', 'jigoshop_verify_checkout_states_for_countries_message' );
 
 /* Remove the singular class for jigoshop single product */
 add_action( 'after_setup_theme', 'jigoshop_body_classes_check' );

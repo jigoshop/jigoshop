@@ -100,7 +100,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'id'            => 'usage_limit',
 				'label'         => __( 'Usage Limit', 'jigoshop' ),
 				'type'          => 'number',
-				'desc'          => __(sprintf('Times used: %s', !empty( $usage ) ? $usage : '0'), 'jigoshop'),
+				'desc'          => sprintf(__('Times used: %s','jigoshop'), !empty( $usage ) ? $usage : '0'),
 				'tip'           => __('Control how many times this coupon may be used.','jigoshop'),
 				'placeholder'   => '0'
 			);

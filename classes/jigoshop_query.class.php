@@ -18,8 +18,7 @@
 
 class jigoshop_catalog_query extends Jigoshop_Singleton {
 
-	private $original_query;
-	private $all_posts_in_view;
+	private static $original_query;
 
 	/**
 	 * Singleton constructor
@@ -45,11 +44,12 @@ class jigoshop_catalog_query extends Jigoshop_Singleton {
 	 *
 	 * @since 1.0
 	 */
-	public function is_product_list() {
+	public static function is_product_list() {
 
-		return $this->original_query->is_post_type_archive( 'product' )
-			 	|| $this->original_query->is_tax( 'product_cat' )
-		 	 	|| $this->original_query->is_tax( 'product_tag' );
+		if ( self::$original_query ) return self::$original_query->is_post_type_archive( 'product' )
+			 	|| self::$original_query->is_tax( 'product_cat' )
+		 	 	|| self::$original_query->is_tax( 'product_tag' );
+		return false;
 	}
 
 
@@ -60,9 +60,10 @@ class jigoshop_catalog_query extends Jigoshop_Singleton {
 	 *
 	 * @since 1.0
 	 */
-	public function is_search() {
+	public static function is_search() {
 
-		return $this->original_query->is_search;
+		if ( self::$original_query ) return self::$original_query->is_search;
+		return false;
 
 	}
 
@@ -81,11 +82,11 @@ class jigoshop_catalog_query extends Jigoshop_Singleton {
 	 */
 	public function parse_original_request( $request ) {
 
-		if ( $this->original_query ) return $request;
+		if ( self::$original_query ) return $request;
 
-		$this->original_query = new WP_Query();
+		self::$original_query = new WP_Query();
 
-		$this->original_query->parse_query( $request );
+		self::$original_query->parse_query( $request );
 
 		return $request;
 	}
@@ -112,7 +113,7 @@ class jigoshop_catalog_query extends Jigoshop_Singleton {
 		global $jigoshop_all_post_ids_in_view;
 
 		// we only work on Jigoshop product lists
-		if ( ! $this->is_product_list() ) return $request;
+		if ( ! self::is_product_list() ) return $request;
 
 		$request['post_status'] = 'publish';
 		$request['posts_per_page'] = apply_filters( 'loop_shop_per_page', Jigoshop_Base::get_options()->get_option( 'jigoshop_catalog_per_page' ));
@@ -178,10 +179,10 @@ class jigoshop_catalog_query extends Jigoshop_Singleton {
 
 		$in = array( 'visible' );
 
-		if ( $this->is_search() ) $in[] = 'search';
+		if ( self::is_search() ) $in[] = 'search';
 		else $in[] = 'catalog';
 
-		$meta = $this->original_query->get( 'meta_query' );
+		$meta = self::$original_query->get( 'meta_query' );
 
 		$meta[] = array(
 			'key' => 'visibility',

@@ -22,9 +22,9 @@
  * Author:              Jigowatt
  * Author URI:          http://jigowatt.co.uk
  *
- * Version:             1.4.9
+ * Version:             1.5
  * Requires at least:   3.3
- * Tested up to:        3.5
+ * Tested up to:        3.5.1
  *
  * Text Domain:         jigoshop
  * Domain Path:         /languages/
@@ -42,7 +42,7 @@
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
-if ( !defined( "JIGOSHOP_VERSION" )) define( "JIGOSHOP_VERSION", 1211270) ;
+if ( !defined( "JIGOSHOP_VERSION" )) define( "JIGOSHOP_VERSION", 1301280) ;
 if ( !defined( "JIGOSHOP_OPTIONS" )) define( "JIGOSHOP_OPTIONS", 'jigoshop_options' );
 if ( !defined( 'JIGOSHOP_TEMPLATE_URL' ) ) define( 'JIGOSHOP_TEMPLATE_URL', 'jigoshop/' );
 if ( !defined( "PHP_EOL" )) define( "PHP_EOL", "\r\n" );
@@ -716,8 +716,10 @@ function is_account() {
 
 if (!function_exists('is_ajax')) {
 	function is_ajax() {
-		if ( isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ) return true;
-		return false;
+		if ( defined('DOING_AJAX') )
+			return true;
+
+		return ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' );
 	}
 }
 
@@ -760,50 +762,16 @@ add_filter('option_template_url', 'jigoshop_force_ssl_urls');
 add_filter('script_loader_src', 'jigoshop_force_ssl_urls');
 add_filter('style_loader_src', 'jigoshop_force_ssl_urls');
 
-// http://www.xe.com/symbols.php
+
 function get_jigoshop_currency_symbol() {
 
     $jigoshop_options = Jigoshop_Base::get_options();
 	$currency = $jigoshop_options->get_option('jigoshop_currency');
-	$currency_symbol = '';
-	switch ($currency) :
-		case 'AED' : $currency_symbol = '&#1583;&#46;&#1573;'; break;
-		case 'AUD' : $currency_symbol = '&#36;'; break;
-		case 'BRL' : $currency_symbol = '&#82;&#36;'; break;
-		case 'CAD' : $currency_symbol = '&#36;'; break;
-		case 'CHF' : $currency_symbol = 'SFr.'; break;
-		case 'CNY' : $currency_symbol = '&#165;'; break;
-		case 'CZK' : $currency_symbol = '&#75;&#269;'; break;
-		case 'DKK' : $currency_symbol = 'kr'; break;
-		case 'EUR' : $currency_symbol = '&euro;'; break;
-		case 'GBP' : $currency_symbol = '&pound;'; break;
-		case 'HKD' : $currency_symbol = '&#36;'; break;
-		case 'HRK' : $currency_symbol = '&#107;&#110;'; break;
-		case 'HUF' : $currency_symbol = '&#70;&#116;'; break;
-		case 'IDR' : $currency_symbol = '&#82;&#112;'; break;
-		case 'ILS' : $currency_symbol = '&#8362;'; break;
-		case 'INR' : $currency_symbol = '&#8360;'; break;
-		case 'JPY' : $currency_symbol = '&yen;'; break;
-		case 'KES' : $currency_symbol = 'KSh'; break;
-		case 'MXN' : $currency_symbol = '&#36;'; break;
-		case 'MYR' : $currency_symbol = 'RM'; break;
-		case 'NGN' : $currency_symbol = '&#8358;'; break;
-		case 'NOK' : $currency_symbol = 'kr'; break;
-		case 'NZD' : $currency_symbol = '&#36;'; break;
-		case 'PHP' : $currency_symbol = '&#8369;'; break;
-		case 'PLN' : $currency_symbol = '&#122;&#322;'; break;
-		case 'RON' : $currency_symbol = '&#108;&#101;&#105;'; break;
-		case 'RUB' : $currency_symbol = '&#1088;&#1091;&#1073;'; break;
-		case 'SEK' : $currency_symbol = 'kr'; break;
-		case 'SGD' : $currency_symbol = '&#36;'; break;
-		case 'THB' : $currency_symbol = '&#3647;'; break;
-		case 'TRY' : $currency_symbol = '&#8356;'; break;
-		case 'TWD' : $currency_symbol = '&#78;&#84;&#36;'; break;
-		case 'USD' : $currency_symbol = '&#36;'; break;
-		case 'ZAR' : $currency_symbol = 'R'; break;
-		default    : $currency_symbol = '&pound;'; break;
-	endswitch;
+	$symbols = jigoshop::currency_symbols();
+	$currency_symbol = $symbols[$currency];
+	
 	return apply_filters('jigoshop_currency_symbol', $currency_symbol, $currency);
+	
 }
 
 function jigoshop_price( $price, $args = array() ) {

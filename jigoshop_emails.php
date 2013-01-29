@@ -274,6 +274,8 @@ function add_company_information() {
 
 function add_order_totals($order, $show_download_links, $show_sku) {
 
+	do_action('jigoshop_before_email_order_info', $order->id);  
+  
 	$jigoshop_options = Jigoshop_Base::get_options();
 	$inc_tax = ($jigoshop_options->get_option('jigoshop_calc_taxes') == 'no')||($jigoshop_options->get_option('jigoshop_prices_include_tax') == 'yes');
 	
@@ -351,10 +353,11 @@ function add_order_totals($order, $show_download_links, $show_sku) {
 
 	}
 	
+	$method = $order->payment_method_title <> '' ? ucwords($order->payment_method_title) : __("Free",'jigoshop');
 	$info = __('Total:', 'jigoshop');
 	$info .= add_padding_to_email_lines( 30 - strlen( $info ) );
 	$info .= html_entity_decode(jigoshop_price($order->order_total), ENT_QUOTES, 'UTF-8');
-	$info .= ' - ' . __('via', 'jigoshop') . ' ' . ucwords($order->payment_method_title);
+	$info .= ' - ' . __('via', 'jigoshop') . ' ' . $method;
 	echo $info . PHP_EOL . PHP_EOL;
 
 	if ($jigoshop_options->get_option('jigoshop_calc_taxes') && $jigoshop_options->get_option('jigoshop_tax_number')) :

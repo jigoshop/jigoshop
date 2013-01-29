@@ -719,7 +719,8 @@ function jigoshop_edit_coupon_columns( $columns ) {
 	$columns = array();
 
 	$columns["cb"] 			    = '<input type="checkbox" />';
-	$columns['title']           = __('Code', 'jigoshop');
+	$columns["title"]           = __('Title', 'jigoshop');
+	$columns["coupon_code"]     = __('Code', 'jigoshop');
 	$columns['coupon_type']     = __('Type', 'jigoshop');
 	$columns['coupon_amount']   = __('Amount', 'jigoshop');
 	$columns['usage_limit']     = __('Used Limit', 'jigoshop');
@@ -750,6 +751,9 @@ function jigoshop_custom_coupon_columns($column) {
 	$individual     = get_post_meta( $post->ID, 'individual_use', true );
 
 	switch ( $column ) {
+        case "coupon_code" :
+            echo '<a href="' . admin_url('post.php?post=' . $post->ID . '&action=edit') . '">' . $post->post_name . '</a>';
+			break;
 		case 'coupon_type' :
 			$types = JS_Coupons::get_coupon_types();
 			echo $types[$type];

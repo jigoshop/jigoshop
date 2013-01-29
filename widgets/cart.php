@@ -36,6 +36,15 @@ class Jigoshop_Widget_Cart extends WP_Widget {
         $this->jigoshop_options = Jigoshop_Base::get_options();
 	}
 
+	public function total_cart_items() {
+		$total = 0;
+		if ( ! empty( jigoshop_cart::$cart_contents )) foreach ( jigoshop_cart::$cart_contents as $cart_item_key => $values ) {
+			$_product = $values['data'];
+			$total += $_product->get_price();
+		}
+		return $total;
+	}
+	
 	/**
 	 * Widget
 	 *
@@ -47,8 +56,8 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 
-		// Hide widget if page is the cart
-		if ( is_cart() )
+		// Hide widget if page is the cart or checkout
+		if ( is_cart() || is_checkout() )
 			return false;
 
 		extract( $args );
@@ -106,8 +115,8 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 
 			// Print the cart total
 			echo '<p class="total"><strong>';
-			echo __( ( ( $this->jigoshop_options->get_option( 'jigoshop_prices_include_tax') == 'yes' ) ? 'Total' : 'Subtotal' ), 'jigoshop' );
-			echo ':</strong> ' . jigoshop_cart::get_cart_total();
+			echo __( 'Subtotal', 'jigoshop' );
+			echo ':</strong> ' . jigoshop_price( $this->total_cart_items() );
 			echo '</p>';
 
 			do_action( 'jigoshop_widget_cart_before_buttons' );

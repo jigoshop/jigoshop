@@ -186,6 +186,10 @@ function jigoshop_write_panel_scripts() {
 		'tax_rate' 						=> __('Tax Rate e.g. 20.0000', 'jigoshop'),
 		'meta_name'						=> __('Meta Name', 'jigoshop'),
 		'meta_value'					=> __('Meta Value', 'jigoshop'),
+		'custom_attr_heading'           => __('Custom Attribute','jigoshop'),
+		'display_attr_label'            => __('Display on product page','jigoshop'),
+		'variation_attr_label'          => __('Is for variations','jigoshop'),
+		'confirm_remove_attr'           => __('Remove this attribute?','jigoshop'),
 		'assets_url' 					=> jigoshop::assets_url(),
 		'ajax_url' 						=> admin_url('admin-ajax.php'),
 		'add_order_item_nonce' 			=> wp_create_nonce("add-order-item")

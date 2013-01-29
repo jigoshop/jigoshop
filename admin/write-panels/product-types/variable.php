@@ -35,12 +35,12 @@ function jigoshop_product_meta_variable_script( $hook ) {
 class jigoshop_product_meta_variable extends jigoshop_product_meta
 {
 	public function __construct() {
-		add_action( 'jigoshop_product_write_panel_tabs',       array(&$this, 'register_tab') );
-		add_action( 'jigoshop_process_product_meta_variable',  array(&$this, 'save'), 1 );
-		add_action( 'jigoshop_product_write_panels',	           array(&$this, 'display') );
-		add_action( 'admin_enqueue_scripts',                   array(&$this, 'admin_enqueue_scripts') );
+		add_action( 'jigoshop_product_write_panel_tabs',       array($this, 'register_tab') );
+		add_action( 'jigoshop_process_product_meta_variable',  array($this, 'save'), 1 );
+		add_action( 'jigoshop_product_write_panels',	       array($this, 'display') );
+		add_action( 'admin_enqueue_scripts',                   array($this, 'admin_enqueue_scripts') );
 
-		add_action( 'wp_ajax_jigoshop_remove_variation',       array(&$this, 'remove') );
+		add_action( 'wp_ajax_jigoshop_remove_variation',       array($this, 'remove') );
 	}
 
 	/**
@@ -50,7 +50,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	 */
 	public function register_tab() {
 		echo '<li class="variable_tab">
-				<a href="#variable_product_options">'.__('Variations', 'jigoshop').'</a>
+				<a href="#variable_product_options">'.__('Variations','jigoshop').'</a>
 			</li>';
 	}
 
@@ -69,7 +69,6 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 		// wp_enqueue_script('jigoshop-variable-js', jigoshop::assets_url() . '/assets/js/variable.js', array('postbox', 'jquery'), true);
 
-		// Shouldn't we namespace? -Rob
 		wp_localize_script( 'jigoshop-variable-js', 'varmeta', array(
 			'assets_url'  => jigoshop::assets_url(),
 			'ajax_url'    => admin_url('admin-ajax.php'),
@@ -258,6 +257,8 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			}
 
 			update_post_meta( $ID, 'variation_data', $variation_data );
+			
+			do_action( 'jigoshop_variable_product_table_data_save' , $ID, $meta);	
 		}
 	}
 
@@ -295,7 +296,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 						<option value="set_all_height"><?php _e('Height', 'jigoshop') ?></option>
 					</optgroup>
 				</select>
-				<input id="do_actions" type="submit" class="button-secondary" value="<?php _e('Apply', 'jigoshop') ?>">
+				<input id="do_actions" type="submit" class="button-secondary" value="<?php _e('Apply','jigoshop'); ?>">
 					<button type='button' class='button button-seconday add_variation'><?php _e('Add Variation', 'jigoshop') ?></button>
 			</div>
 		<?php endif; ?>
@@ -528,6 +529,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			<div class="inside">
 				<table cellpadding="0" cellspacing="0" class="jigoshop_variable_attributes">
 					<tbody>
+					
+						<?php do_action('jigoshop_variable_product_table_begin', $variation, $attributes)?>
+					
 						<tr>
 							<td class="upload_image" rowspan="2">
 								<a href="#" class="upload_image_button <?php if (isset($image_id)) echo 'remove'; ?>" rel="<?php echo $variation->ID; ?>">
@@ -611,6 +615,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 								&nbsp;
 							</td>
 						</tr>
+						
+						<?php do_action( 'jigoshop_variable_product_table_end' , $variation, $attributes)?>
+						
 					</tbody>
 				</table>
 			</div>
