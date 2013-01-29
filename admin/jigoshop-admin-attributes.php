@@ -45,6 +45,8 @@ function jigoshop_attributes() {
 
 			$wpdb->insert( $wpdb->prefix . "jigoshop_attribute_taxonomies", array( 'attribute_name' => $attribute_name, 'attribute_label' => $attribute_label, 'attribute_type' => $attribute_type ), array( '%s', '%s' ) );
 
+			do_action( 'jigoshop_attribute_admin_add_after_save', $attribute_name, $attribute_label, $attribute_type);
+      
 			$jigoshop_options->set_option('jigowatt_update_rewrite_rules', '1');
 
 			wp_safe_redirect( get_admin_url() . 'edit.php?post_type=product&page=jigoshop_attributes' );
@@ -66,6 +68,8 @@ function jigoshop_attributes() {
 
 			$wpdb->update( $wpdb->prefix . "jigoshop_attribute_taxonomies", array( 'attribute_type' => $attribute_type, 'attribute_label' => $attribute_label ), array( 'attribute_id' => $_GET['edit'] ), array( '%s', '%s') );
 
+			do_action( 'jigoshop_attribute_admin_edit_after_update', $edit, $attribute_label, $attribute_type);
+      
 		endif;
 
 		wp_safe_redirect( get_admin_url() . 'edit.php?post_type=product&page=jigoshop_attributes' );
@@ -95,6 +99,8 @@ function jigoshop_attributes() {
 
 				endif;
 
+				do_action( 'jigoshop_attribute_admin_delete_after', $delete, $att_name);
+        
 				wp_safe_redirect( get_admin_url() . 'edit.php?post_type=product&page=jigoshop_attributes' );
 				exit;
 
@@ -155,6 +161,8 @@ function jigoshop_edit_attribute() {
 								</select>
 							</div>
 
+							<?php do_action('jigoshop_attribute_admin_edit_before_submit', $edit, $att_type, $att_label) ?>
+              
 							<p class="submit"><input type="submit" name="save_attribute" id="submit" class="button" value="<?php esc_html_e('Save Attribute', 'jigoshop'); ?>"></p>
 	    				</form>
 	    			</div>
@@ -259,6 +267,8 @@ function jigoshop_add_attribute() {
 								</select>
 							</div>
 
+							<?php do_action('jigoshop_attribute_admin_add_before_submit') ?>
+              
 							<p class="submit"><input type="submit" name="add_new_attribute" id="submit" class="button" value="<?php esc_html_e('Add Attribute', 'jigoshop'); ?>"></p>
 	    				</form>
 	    			</div>
