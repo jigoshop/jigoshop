@@ -123,10 +123,10 @@ function jigoshop_init() {
 
 	/* ensure nothing is output to the browser prior to this (other than headers) */
 	ob_start();
-	
+
 	// http://www.geertdedeckere.be/article/loading-wordpress-language-files-the-right-way
 	// this means that all Jigoshop extensions, shipping modules and gateways must load their text domains on the 'init' action hook
-	// 
+	//
 	// Override default translations with custom .mo's found in wp-content/languages/jigoshop first.
 	load_textdomain( 'jigoshop', WP_LANG_DIR.'/jigoshop/jigoshop-'.get_locale().'.mo' );
 	load_plugin_textdomain( 'jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
@@ -144,7 +144,7 @@ function jigoshop_init() {
 	jigoshop_session::instance();               // Start sessions if they aren't already
 	jigoshop::instance();                       // Utility functions, uses sessions
 	jigoshop_customer::instance();              // Customer class, sorts session data such as location
-	
+
 	// Jigoshop will instantiate gateways and shipping methods on this same 'init' action hook
 	// with a very low priority to ensure text domains are loaded first prior to installing any external options
 	jigoshop_shipping::instance();              // Shipping class. loads shipping methods
@@ -364,8 +364,13 @@ function jigoshop_admin_styles() {
 	wp_enqueue_style( 'jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css' );
 	wp_enqueue_style( 'jigoshop-select2', jigoshop::assets_url() . '/assets/css/select2.css', '', '3.1', 'screen' );
 	wp_enqueue_style( 'jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css' );
-	wp_enqueue_style( 'thickbox' );
-
+	if(function_exists( 'wp_enqueue_media' )){
+	    wp_enqueue_media();
+	}else{
+	    wp_enqueue_style('thickbox');
+	    wp_enqueue_script('media-upload');
+	    wp_enqueue_script('thickbox');
+	}
 }
 
 
@@ -380,7 +385,6 @@ function jigoshop_admin_scripts() {
 	wp_enqueue_script( 'jquery-ui-datepicker', jigoshop::assets_url().'/assets/js/jquery-ui-datepicker-1.8.16.min.js', array( 'jquery' ), '1.8.16' );
 	wp_enqueue_script( 'jigoshop_blockui', jigoshop::assets_url() . '/assets/js/blockui.js', array( 'jquery' ), '2.4.6' );
 	wp_enqueue_script( 'jigoshop_backend', jigoshop::assets_url() . '/assets/js/jigoshop_backend.js', array( 'jquery' ), '1.0' );
-	wp_enqueue_script( 'thickbox' );
 
 	if ( $pagenow == 'jigoshop_page_jigoshop_reports' || $pagenow == 'toplevel_page_jigoshop' ) {
 		wp_enqueue_script('jquery_flot', jigoshop::assets_url().'/assets/js/jquery.flot.min.js', array( 'jquery' ), '1.0' );
@@ -493,7 +497,7 @@ add_action( 'wp_footer', 'jigoshop_demo_store' );
 function jigoshop_demo_store() {
 
 	if ( Jigoshop_Base::get_options()->get_option( 'jigoshop_demo_store' ) == 'yes' && is_jigoshop() ) :
-		
+
 		$bannner_text = apply_filters( 'jigoshop_demo_banner_text', __('This is a demo store for testing purposes &mdash; no orders shall be fulfilled.', 'jigoshop') );
 		echo '<p class="demo_store">'.$bannner_text.'</p>';
 
