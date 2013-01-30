@@ -88,6 +88,7 @@ function jigoshop_products( $atts ){
 	$args = array(
 		'post_type'          => 'product',
 		'post_status'        => 'publish',
+		'posts_per_page'     => $per_page,
 		'ignore_sticky_posts'=> 1,
 		'orderby'            => $orderby,
 		'order'              => $order,
