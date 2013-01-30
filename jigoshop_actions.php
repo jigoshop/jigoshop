@@ -204,7 +204,7 @@ if ( ! function_exists( 'jigoshop_add_to_cart_action' )) { //make function plugg
 					break;      // drop out and put up message, unable to add product.
 				}
 				$quantity     = (isset($_REQUEST['quantity']) && is_numeric($_REQUEST['quantity'])) ? (int) $_REQUEST['quantity'] : 1;
-								
+
 				$product_id   = apply_filters('jigoshop_product_id_add_to_cart_filter', $product_id);
 				$variation_id = apply_filters('jigoshop_variation_id_add_to_cart_filter', (int) $_REQUEST['variation_id']);
 				$attributes   = (array) maybe_unserialize(get_post_meta($product_id, 'product_attributes', true));
@@ -640,7 +640,7 @@ function jigoshop_download_product() {
 			// required for IE, otherwise Content-Disposition may be ignored
 			if(ini_get('zlib.output_compression'))
 			ini_set('zlib.output_compression', 'Off');
-		
+
 			header("Pragma: no-cache");
 			header("Expires: 0");
 			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
