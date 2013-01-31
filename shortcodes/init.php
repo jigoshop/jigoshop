@@ -371,8 +371,8 @@ function jigoshop_sale_products( $atts ) {
 		'pagination'                => false
 	), $atts));
 
-  	$today = date('Y-m-d',time());
-  	$tomorrow = date('Y-m-d',mktime(0, 0, 0, date("m"), date("d")+1, date("Y")) );
+  	$today = strotime(date('Y-m-d',time()));
+  	$tomorrow = strtotime(date('Y-m-d',mktime(0, 0, 0, date("m"), date("d")+1, date("Y")) ));
 
 	$args = array(
 		'post_type'                 => array( 'product' ),
@@ -401,7 +401,7 @@ function jigoshop_sale_products( $atts ) {
 				array(
 						'key'       => 'sale_price_dates_to',
 						'value'     => $tomorrow,
-						'compare'   => '<=',
+						'compare'   => '>=',
 				),
 		)
 	);
