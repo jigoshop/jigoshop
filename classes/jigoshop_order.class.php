@@ -209,7 +209,7 @@ class jigoshop_order extends Jigoshop_Base {
             endforeach;
 
         endif;
-        
+
 		if ( $with_price_options )
 			return jigoshop_price($order_tax, array('with_currency' => $with_currency));
 		else
@@ -469,7 +469,7 @@ class jigoshop_order extends Jigoshop_Base {
 // 			return true;
 // 		}
 
-		if ($note) $note .= ' ';
+		if ($note) $note .= ' - ';
 
 		$old_status = get_term_by( 'slug', sanitize_title( $this->status ), 'shop_order_status');
 		$new_status = get_term_by( 'slug', sanitize_title( $new_status_slug ), 'shop_order_status');

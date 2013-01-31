@@ -49,7 +49,7 @@ class jigoshop_tax extends Jigoshop_Base {
         $this->shipping_tax_class = '';
         $this->shipable = true; // default to true, as most shops will use shipping
     }
-    
+
     /**
      * create a defined string out of the array to be saved during checkout
      *
@@ -65,18 +65,18 @@ class jigoshop_tax extends Jigoshop_Base {
             return '';
         $array_string = array();
         foreach ($array as $key => $val) {
-            
+
             if (is_array($val)) :
-                
+
                 // -- reset internal_array
                 $internal_array = array();
                 foreach ($val as $index => $value) :
                     $internal_array[] = "{$index}{$internal_glue}{$value}";
                 endforeach;
                 $val = implode(',', $internal_array);
-            
+
             endif;
-                
+
             $array_string[] = "{$key}{$glue}{$val}";
         }
         return implode('|', $array_string);
@@ -108,11 +108,11 @@ class jigoshop_tax extends Jigoshop_Base {
             if (empty($shipping_tax)) :
                 $shipping_tax = 0;
             endif;
-            
+
             if (empty($divisor)) :
                 $divisor = -1;
             endif;
-            
+
             // absolute order must be amount, rate, compound, display, shipping. This is how the original tax
             // array is created, and order matters when calling array_implode as reversing
             // the string back into the array depends on the order
@@ -122,15 +122,15 @@ class jigoshop_tax extends Jigoshop_Base {
             $tax_rate = (empty($price_ex_tax) ? 0 : $total_tax / $price_ex_tax) * 100;
             $tax_amount['jigoshop_custom_rate']['rate'] = number_format($tax_rate, 4, '.', '');
             $tax_amount['jigoshop_custom_rate']['compound'] = false;
-            $tax_amount['jigoshop_custom_rate']['display'] = 'Tax';
+            $tax_amount['jigoshop_custom_rate']['display'] = __('Tax','jigoshop');
             $tax_amount['jigoshop_custom_rate']['shipping'] = ($divisor > 0 ? $shipping_tax * $divisor : $shipping_tax);
-            
+
             return self::array_implode($tax_amount);
         endif;
-        
+
         return '';
     }
-    
+
     /**
      * Converts the string back into the array. To be used with the order class
      *
@@ -187,7 +187,7 @@ class jigoshop_tax extends Jigoshop_Base {
     public function get_tax_divisor() {
         return $this->tax_divisor;
     }
-    
+
     // TODO: currently used for admin pages. This should change in the future and the proper data displayed on the admin pages
     // this doesn't work correctly as shipping is applied to grand total, and also, discounts etc. Therefore, this calculation is only right if
     // the grandtotal was the total of the cart without the rest. Still this is not a good way of figuring out the tax rate.
@@ -202,7 +202,7 @@ class jigoshop_tax extends Jigoshop_Base {
 
         return $tot_tax_rate;
     }
-    
+
     /**
      * Get an array of tax classes
      *
@@ -299,21 +299,21 @@ class jigoshop_tax extends Jigoshop_Base {
         if (jigoshop_session::instance()->chosen_shipping_method_id == 'local_pickup') :
             return true;
         endif;
-        
+
         $country = ($this->shipable ? jigoshop_customer::get_shipping_country() : jigoshop_customer::get_country());
         $base_country = jigoshop_countries::get_base_country();
-        
+
         if (jigoshop_countries::is_eu_country($base_country)) :
-            if (!jigoshop_countries::is_eu_country($country)) : 
+            if (!jigoshop_countries::is_eu_country($country)) :
                 return false;
             endif;
         elseif ($country != $base_country) :
             return false;
         endif;
-        
+
         return true;
     }
-    
+
     /**
      * gets the tax classes for the customer based on customer shipping
      * country and state.
@@ -325,12 +325,12 @@ class jigoshop_tax extends Jigoshop_Base {
         if (jigoshop_session::instance()->chosen_shipping_method_id == 'local_pickup') :
             return $this->get_tax_classes_for_base();
         endif;
-        
+
         $country = ($this->shipable ? jigoshop_customer::get_shipping_country() : jigoshop_customer::get_country());
         $state = ($this->shipable ? jigoshop_customer::get_shipping_state() : jigoshop_customer::get_state());
-        
+
         if (!$this->charge_taxes_to_customer()) return array();
-        
+
         $state = ($state && jigoshop_countries::country_has_states($country)? $state : '*');
         $tax_classes = (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state] : false);
         return ($tax_classes && is_array($tax_classes) ? array_keys( $tax_classes ) : array());
@@ -340,7 +340,7 @@ class jigoshop_tax extends Jigoshop_Base {
     /**
      * return the label for display for base country, if one is set. Otherwise Tax will be returned
      * @param string $class the tax class to lookup
-     * @return string label for online display 
+     * @return string label for online display
      * @since 1.2
      */
     private function get_online_label_for_base($class = '*') {
@@ -348,21 +348,21 @@ class jigoshop_tax extends Jigoshop_Base {
         $state = jigoshop_countries::get_base_state();
         $state = (jigoshop_countries::country_has_states($country) && $state ? $state : '*');
 
-        return (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state][$class]['label'] : 'Tax');
+        return (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state][$class]['label'] : __('Tax','jigoshop'));
     }
 
     private function get_online_label_for_customer($class = '*') {
-        
+
         if (jigoshop_session::instance()->chosen_shipping_method_id == 'local_pickup') :
             return $this->get_online_label_for_base($class);
         endif;
-        
+
         $country = ($this->shipable ? jigoshop_customer::get_shipping_country() : jigoshop_customer::get_country());
         $state = ($this->shipable ? jigoshop_customer::get_shipping_state() : jigoshop_customer::get_state());
 
         $state = (jigoshop_countries::country_has_states($country) && $state ? $state : '*');
 
-        return (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state][$class]['label'] : 'Tax');
+        return (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state][$class]['label'] : __('Tax','jigoshop'));
     }
 
     /**
@@ -391,15 +391,15 @@ class jigoshop_tax extends Jigoshop_Base {
 
     /**
      * returns the total tax amount for all classes based on compounded or not compounded
-     * @param boolean $compounded 
-     * @return double the total tax amount of all classes on $compounded value. If $compounded is true, then 
+     * @param boolean $compounded
+     * @return double the total tax amount of all classes on $compounded value. If $compounded is true, then
      * the total amount of compounded tax amounts will be returned. Otherwise the total amount of regular
      * tax will be returned
-     * @since 1.2 
+     * @since 1.2
      */
     private function get_total_tax_amount($compounded, $inc_shipping = true) {
         $tax_amount = 0;
-        
+
         if (!empty($this->tax_amounts)) :
             foreach ($this->get_applied_tax_classes() as $tax_class) :
                 if (isset($this->tax_amounts[$tax_class]['amount']) && isset($this->tax_amounts[$tax_class]['compound'])) :
@@ -417,24 +417,24 @@ class jigoshop_tax extends Jigoshop_Base {
                 endif;
             endforeach;
         endif;
-        
+
         return $tax_amount;
-        
+
     }
-    
+
     /**
      * sets whether the product being taxed is shipable or not
-     * @param boolean $is_shipable 
+     * @param boolean $is_shipable
      * @since 1.2
      */
     public function set_is_shipable($is_shipable = true) {
-    
+
         $this->shipable = $is_shipable;
     }
 
     public function get_total_shipping_tax_amount() {
         $tax_amount = 0;
-        
+
         if (!empty($this->tax_amounts)) :
             foreach($this->get_applied_tax_classes() as $tax_class) :
                 if (isset($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id . jigoshop_session::instance()->selected_rate_id])) :
@@ -442,22 +442,22 @@ class jigoshop_tax extends Jigoshop_Base {
                 endif;
             endforeach;
         endif;
-        
+
         return ($this->tax_divisor > 0 ? number_format($tax_amount / $this->tax_divisor, 2, '.', '') : number_format($tax_amount, 2, '.', ''));
     }
-    
+
     /**
      * gets the amount of tax that has not been compounded
      * @return double value of non compound tax tax
      */
     public function get_non_compounded_tax_amount($inc_shipping = true) {
-        
+
         $tax_amount = $this->get_total_tax_amount(false, $inc_shipping);
         //TODO: number_format... might need to change this because of jigoshop options available for formatting numbers on cart
         return ($this->tax_divisor > 0 ? number_format($tax_amount / $this->tax_divisor, 2, '.', '') : number_format($tax_amount, 2, '.', ''));
 
     }
-    
+
     /**
      * gets the amount of tax that has been compounded
      * @return type float value of compound tax
@@ -494,7 +494,7 @@ class jigoshop_tax extends Jigoshop_Base {
 
                 $rate = $this->get_rate($tax_class, false);
                 $tax_rate = $rate['rate'];
-                
+
                 if (!$this->is_compound_tax($rate)) :
                     $tax = $this->calc_tax($total_item_price - $compounded_tax_amount, $tax_rate, $prices_include_tax);
 
@@ -505,15 +505,15 @@ class jigoshop_tax extends Jigoshop_Base {
                         $tax_amount[$tax_class]['amount'] = $tax;
                         $tax_amount[$tax_class]['rate'] = $tax_rate;
                         $tax_amount[$tax_class]['compound'] = false;
-                        $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
+                        $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : __('Tax','jigoshop'));
                         $tax_classes_applied[] = $tax_class;
                     endif;
-                    
+
                     $non_compound_tax_amount += $tax;
                     $total_tax += $tax;
 
                 else :
-                    
+
                     $tax = $this->calc_tax($total_item_price + $non_compound_tax_amount, $tax_rate, $prices_include_tax);
 
                     if ($this->has_tax($tax_class)) :
@@ -523,10 +523,10 @@ class jigoshop_tax extends Jigoshop_Base {
                         $tax_amount[$tax_class]['amount'] = $tax;
                         $tax_amount[$tax_class]['rate'] = $tax_rate;
                         $tax_amount[$tax_class]['compound'] = true;
-                        $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
+                        $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : __('Tax','jigoshop'));
                         $tax_classes_applied[] = $tax_class;
                     endif;
-                    
+
                     $compounded_tax_amount += $tax;
                     $total_tax += $tax;
 
@@ -536,14 +536,14 @@ class jigoshop_tax extends Jigoshop_Base {
 
         else :
             $tax_classes = $this->get_tax_classes_for_base();
-        
+
             if (!empty($tax_classes)) :
                 foreach ($tax_classes as $tax_class) :
                     // auto calculate zero rate for all other countries outside of tax base
                     $tax_amount[$tax_class]['amount'] = 0;
                     $tax_amount[$tax_class]['rate'] = 0;
                     $tax_amount[$tax_class]['compound'] = false;
-                    $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_base($tax_class) ? $this->get_online_label_for_base($tax_class) : 'Tax');
+                    $tax_amount[$tax_class]['display'] = ($this->get_online_label_for_base($tax_class) ? $this->get_online_label_for_base($tax_class) : __('Tax','jigoshop'));
                     $tax_classes_applied[] = $tax_class;
                 endforeach;
             else :
@@ -551,7 +551,7 @@ class jigoshop_tax extends Jigoshop_Base {
                 $tax_amount['jigoshop_zero_rate']['amount'] = 0;
                 $tax_amount['jigoshop_zero_rate']['rate'] = 0;
                 $tax_amount['jigoshop_zero_rate']['compound'] = false;
-                $tax_amount['jigoshop_zero_rate']['display'] = 'Tax';
+                $tax_amount['jigoshop_zero_rate']['display'] = __('Tax','jigoshop');
                 $tax_classes_applied[] = 'jigoshop_zero_rate';
             endif;
         endif;
@@ -560,7 +560,7 @@ class jigoshop_tax extends Jigoshop_Base {
         $this->imploded_tax_amounts = self::array_implode($this->tax_amounts);
 
         return $tax_classes_applied;
-        
+
     }
 
     /**
@@ -596,11 +596,11 @@ class jigoshop_tax extends Jigoshop_Base {
         return $tax_rate;
 
     }
-    
+
     /**
      * get applied shipping tax classes
      * @return array tax classes that have applied shipping
-     * @since 1.2 
+     * @since 1.2
      */
     public function get_shipping_tax_classes() {
         // TODO: once deprecated functions for shipping go, the new_shipping_tax flag
@@ -608,14 +608,14 @@ class jigoshop_tax extends Jigoshop_Base {
         // from the tax_amounts array.
         $tax_classes = array();
         $new_shipping_tax = false;
-        
+
         foreach($this->tax_amounts as $tax_class => $value) :
             if (isset($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id . jigoshop_session::instance()->selected_rate_id])) :
                 $tax_classes[] = $tax_class;
                 $new_shipping_tax = true;
             endif;
         endforeach;
-        
+
         if ($new_shipping_tax) :
             return $tax_classes;
         else :
@@ -628,7 +628,7 @@ class jigoshop_tax extends Jigoshop_Base {
      * @deprecated shipping classes are to use calculate_shipping_tax($price, $tax_classes)
      */
     public function update_tax_amount_with_shipping_tax($tax_amount) {
-        
+
         // shipping taxes may not be checked, and if they aren't, there will be no shipping tax class. Don't update
         // as the amount will be 0
         $new_shipping_tax = false;
@@ -638,13 +638,13 @@ class jigoshop_tax extends Jigoshop_Base {
                 break;
             endif;
         endforeach;
-        
+
         if (!$new_shipping_tax) :
             if ($this->shipping_tax_class) :
                 $this->update_tax_amount($this->shipping_tax_class, round($tax_amount), false);
             endif;
         endif;
-        
+
     }
 
     public function update_tax_amount($tax_class, $amount, $recalculate_tax = true, $overwrite = false) {
@@ -652,10 +652,10 @@ class jigoshop_tax extends Jigoshop_Base {
         if ($tax_class) :
 
             if (empty($this->tax_amounts)) :
-                
+
                 $rate = $this->get_rate($tax_class, false);
                 $this->tax_amounts[$tax_class]['rate'] = $rate['rate'];
-                $this->tax_amounts[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
+                $this->tax_amounts[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : __('Tax','jigoshop'));
                 $this->tax_amounts[$tax_class]['compound'] = false;
             endif;
 
@@ -671,7 +671,7 @@ class jigoshop_tax extends Jigoshop_Base {
                 else :
                     $this->tax_amounts[$tax_class]['amount'] = $amount;
                 endif;
-                    
+
             endif;
 
             $this->imploded_tax_amounts = self::array_implode($this->tax_amounts);
@@ -691,7 +691,7 @@ class jigoshop_tax extends Jigoshop_Base {
      * @return string which is the unsanitized tax class
      */
     public function get_tax_class_for_display($tax_class) {
-        return (!empty($this->tax_amounts[$tax_class]['display']) ? $this->tax_amounts[$tax_class]['display'] : 'Tax');
+        return (!empty($this->tax_amounts[$tax_class]['display']) ? $this->tax_amounts[$tax_class]['display'] : __('Tax','jigoshop'));
     }
 
     /**
@@ -701,15 +701,15 @@ class jigoshop_tax extends Jigoshop_Base {
      */
     function get_tax_amount($tax_class) {
         $tax_amount = 0;
-        
+
         if (isset($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id . jigoshop_session::instance()->selected_rate_id])) :
             $tax_amount += round($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id . jigoshop_session::instance()->selected_rate_id], 2);
         endif;
-        
+
         if (isset($this->tax_amounts[$tax_class]['amount'])) :
             $tax_amount += round($this->tax_amounts[$tax_class]['amount']);
         endif;
-        
+
         return ($this->tax_divisor > 0 ? $tax_amount / $this->tax_divisor : $tax_amount);
     }
 
@@ -750,7 +750,7 @@ class jigoshop_tax extends Jigoshop_Base {
 
         $country = ($this->shipable ? jigoshop_customer::get_shipping_country() : jigoshop_customer::get_country());
         $state = ($this->shipable ? jigoshop_customer::get_shipping_state() : jigoshop_customer::get_state());
-        
+
         $state = (jigoshop_countries::country_has_states($country) && $state ? $state : '*');
         $rate = $this->find_rate($country, $state, $tax_class);
         return ($rate_only ? $rate['rate'] : $rate);
@@ -787,24 +787,24 @@ class jigoshop_tax extends Jigoshop_Base {
         $customer_tax_classes = $this->get_tax_classes_for_customer();
         // If we are here then shipping is taxable - work it out
         if (!empty($tax_classes)) :
-            
+
             if ($customer_tax_classes) :
                 //per item shipping
                 foreach ($customer_tax_classes as $tax_class) :
-                
+
                     // make sure that the product is charging this particular tax_class.
                     if (!in_array($tax_class, $tax_classes))
                         continue;
-                    
+
                     $rate = $this->find_rate($country, $state, $tax_class);
                     if (isset($rate['shipping']) && $rate['shipping'] == 'yes') :
                         $rates[$tax_class] = $rate;
                     endif;
                 endforeach;
-            
+
                 return $rates;
             endif;
-            
+
         else :
             //per order shipping
             $found_rates = array();
@@ -819,11 +819,11 @@ class jigoshop_tax extends Jigoshop_Base {
                     $found_shipping_rates[$tax_class] = $found_rate;
                 endif;
             endforeach;
-            
+
             if ($total_tax_rate) :
                 $rates[$total_tax_rate] = $found_shipping_rates;
             endif;
-            
+
             if (sizeof($rates) > 0) :
                 // sort reverse by keys. Largest key wins
                 krsort($rates);
@@ -831,13 +831,13 @@ class jigoshop_tax extends Jigoshop_Base {
                 reset($rates);
                 return $rates[key($rates)];
             endif;
-            
+
         endif;
-        
+
         return $rates; // it will be an empty array
-   
+
     }
-    
+
     /**
      * Get the tax rate based on the country and state.
      *
@@ -890,7 +890,7 @@ class jigoshop_tax extends Jigoshop_Base {
                     $found_shipping_rates[] = $found_rate['rate'];
                 endif;
             endforeach;
-            
+
             if (sizeof($found_shipping_rates) > 0) :
                 rsort($found_shipping_rates);
                 return $found_shipping_rates[0];
@@ -946,8 +946,8 @@ class jigoshop_tax extends Jigoshop_Base {
 
         return round($tax_amount, 2);
     }
-    
-    
+
+
     /**
      * Calculate the shipping tax using the final price from shipping
      *
@@ -956,21 +956,21 @@ class jigoshop_tax extends Jigoshop_Base {
      * @since   1.2
      */
      public function calculate_shipping_tax($price, $shipping_method_id, $tax_classes = array()) {
-        
+
         $rates = $this->get_shipping_tax_rates($tax_classes);
         $non_compound_amount = 0;
         $tax_amount = 0;
-        
+
         if (!empty($rates)) :
             foreach ($rates as $tax_class => $rate) :
-                
+
                 // no tax on products, but shipping tax should be applied
                 if (!isset($this->tax_amounts[$tax_class])) :
-                    
+
                     $this->tax_amounts[$tax_class]['amount'] = 0;
                     $this->tax_amounts[$tax_class]['rate'] = $rate['rate'];
                     $this->tax_amounts[$tax_class]['compound'] = $rate['compound'];
-                    $this->tax_amounts[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : 'Tax');
+                    $this->tax_amounts[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : __('Tax','jigoshop'));
                     $this->tax_amounts[$tax_class][$shipping_method_id] = 0;
                 endif;
 
@@ -993,7 +993,7 @@ class jigoshop_tax extends Jigoshop_Base {
             endforeach;
         else :
             $tax_classes = $this->get_tax_classes_for_base();
-        
+
             if (!empty($tax_classes)) :
                 foreach ($tax_classes as $tax_class) :
                     $this->tax_amounts[$tax_class][$shipping_method_id] = 0;
@@ -1003,9 +1003,9 @@ class jigoshop_tax extends Jigoshop_Base {
                 $this->tax_amounts['jigoshop_zero_rate'][$shipping_method_id] = 0;
             endif;
         endif;
-        
+
         $this->imploded_tax_amounts = self::array_implode($this->tax_amounts);
-        
+
     }
 
 }

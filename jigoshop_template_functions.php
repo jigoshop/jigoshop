@@ -98,7 +98,7 @@ if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 
 		if ( $_product->is_in_stock() OR $_product->is_type('external') ) :
 			if ( $_product->is_type(array('variable', 'grouped')) ) :
-				$output = '<a href="'.get_permalink($_product->id).'" class="button">'.__('Select', 'jigoshop').'</a>';
+				$output = '<a href="'.get_permalink($_product->id).'" class="button">'._x('Select', 'verb', 'jigoshop').'</a>';
 			elseif ( $_product->is_type('external') ) :
 				$output = '<a href="'.get_post_meta( $_product->id, 'external_url', true ).'" class="button">'.__('Buy product', 'jigoshop').'</a>';
 			else :
@@ -109,7 +109,7 @@ if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 		else :
 			$output = '<span class="nostock">'.__('Out of Stock', 'jigoshop').'</span>';
 		endif;
-		
+
 		echo apply_filters( 'jigoshop_loop_add_to_cart_output', $output, $post, $_product );
 
 		do_action('jigoshop_after_add_to_cart_button');
@@ -173,7 +173,8 @@ if (!function_exists('jigoshop_show_product_thumbnails')) {
 		$attachments = get_posts($args);
 		if ($attachments) :
 			$loop = 0;
-			$columns = apply_filters( 'single_thumbnail_columns', 3 );
+			$columns = Jigoshop_Base::get_options()->get_option( 'jigoshop_product_thumbnail_columns', '3' );
+			$columns = apply_filters( 'single_thumbnail_columns', $columns );
 			foreach ( $attachments as $attachment ) :
 
 				if ($thumb_id==$attachment->ID) continue;
@@ -358,7 +359,7 @@ if (!function_exists('jigoshop_grouped_add_to_cart')) {
 					<?php endforeach; ?>
 				</tbody>
 			</table>
-      <?php do_action('jigoshop_before_add_to_cart_form_button'); ?>			
+      <?php do_action('jigoshop_before_add_to_cart_form_button'); ?>
 			<button type="submit" class="button-alt"><?php _e('Add to cart', 'jigoshop'); ?></button>
 			<?php do_action('jigoshop_add_to_cart_form'); ?>
 		</form>
@@ -370,7 +371,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 
 		global $post, $_product;
         $jigoshop_options = Jigoshop_Base::get_options();
-		
+
 		$attributes = $_product->get_available_attributes_variations();
 
         //get all variations available as an array for easy usage by javascript
@@ -493,7 +494,7 @@ if (!function_exists('jigoshop_external_add_to_cart')) {
 		$external_url = get_post_meta( $_product->ID, 'external_url', true );
 
 		if ( ! $external_url ) return false;
-			
+
 		?>
 			<form action="" class="cart" method="">
 				<?php do_action('jigoshop_before_add_to_cart_form_button'); ?>
@@ -586,24 +587,30 @@ if (!function_exists('jigoshop_product_customize_tab')) {
  **/
 if (!function_exists('jigoshop_product_description_panel')) {
 	function jigoshop_product_description_panel() {
-		echo '<div class="panel" id="tab-description">';
-		echo '<h2>' . apply_filters('jigoshop_product_description_heading', __('Product Description', 'jigoshop')) . '</h2>';
-		// the following 3 lines replicate the behavior of 'the_content()'
-		// non echoed so Rich Snippets can be applied via a filter
 		$content = get_the_content();
 		$content = apply_filters( 'the_content', $content );
 		$content = str_replace( ']]>', ']]&gt;', $content );
-		echo apply_filters( 'jigoshop_single_product_content', $content );
-		echo '</div>';
+		$content = apply_filters( 'jigoshop_single_product_content', $content );
+		if ( $content <> '' ) {
+			echo '<div class="panel" id="tab-description">';
+			echo '<h2>' . apply_filters('jigoshop_product_description_heading', __('Product Description', 'jigoshop')) . '</h2>';
+			// the following 3 lines replicate the behavior of 'the_content()'
+			// non echoed so Rich Snippets can be applied via a filter
+			echo $content;
+			echo '</div>';
+		}
 	}
 }
 if (!function_exists('jigoshop_product_attributes_panel')) {
 	function jigoshop_product_attributes_panel() {
 		global $_product;
-		echo '<div class="panel" id="tab-attributes">';
-		echo '<h2>' . apply_filters('jigoshop_product_attributes_heading', __('Additional Information', 'jigoshop')) . '</h2>';
-		echo apply_filters( 'jigoshop_single_product_attributes', $_product->list_attributes() );
-		echo '</div>';
+		$content = apply_filters( 'jigoshop_single_product_attributes', $_product->list_attributes() );
+		if ( $content <> '' ) {
+			echo '<div class="panel" id="tab-attributes">';
+			echo '<h2>' . apply_filters('jigoshop_product_attributes_heading', __('Additional Information', 'jigoshop')) . '</h2>';
+			echo $content;
+			echo '</div>';
+		}
 	}
 }
 if (!function_exists('jigoshop_product_reviews_panel')) {
@@ -617,7 +624,7 @@ if (!function_exists('jigoshop_product_customize_panel')) {
 	function jigoshop_product_customize_panel() {
 		global $_product;
 
-		if ( isset( $_POST['Submit'] ) && $_POST['Submit'] == 'Save Personalization' ) {
+		if ( isset( $_POST['Submit'] ) && $_POST['Submit'] == __('Save Personalization', 'jigoshop') ) {
 			$custom_products = (array) jigoshop_session::instance()->customized_products;
 			$custom_products[$_POST['customized_id']] = trim( wptexturize( $_POST['jigoshop_customized_product'] ));
 			jigoshop_session::instance()->customized_products = $custom_products;
@@ -628,9 +635,9 @@ if (!function_exists('jigoshop_product_customize_panel')) {
 			$custom = isset( $custom_products[$_product->ID] ) ? $custom_products[$_product->ID] : '';
 			$custom_length = get_post_meta( $_product->ID , 'customized_length', true );
 			$length_str = $custom_length == '' ? '' : sprintf( __( 'You may enter a maximum of %s characters.', 'jigoshop' ), $custom_length );
-			
+
 			echo '<div class="panel" id="tab-customize">';
-			echo '<p>' . apply_filters('jigoshop_product_customize_heading', __('Enter your personal information as you want it to appear on the product.<br />'.$length_str, 'jigoshop')) . '</p>';
+			echo '<p>' . apply_filters('jigoshop_product_customize_heading', __('Enter your personal information as you want it to appear on the product.<br />', 'jigoshop').$length_str) . '</p>';
 
 			?>
 
@@ -647,7 +654,7 @@ if (!function_exists('jigoshop_product_customize_panel')) {
 							cols="60"
 							rows="4"><?php echo esc_textarea( $custom ); ?></textarea>
 					<?php else : ?>
-						<input 
+						<input
 							type="text"
 							id="jigoshop_customized_product"
 							name="jigoshop_customized_product"
@@ -655,7 +662,7 @@ if (!function_exists('jigoshop_product_customize_panel')) {
 							maxlength="<?php echo $custom_length; ?>"
 							value="<?php echo esc_attr( $custom ); ?>" />
 					<?php endif; ?>
-					
+
 					<p class="submit"><input name="Submit" type="submit" class="button-alt add_personalization" value="<?php _e( "Save Personalization", 'jigoshop' ); ?>" /></p>
 
 				</form>
@@ -827,7 +834,7 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 								echo $method->get_selected_service($i);
                                 ?>
                             <p class="form-row col-2"><?php
-                            
+
 								if ($method->get_selected_price($i) > 0) :
 									echo jigoshop_price($method->get_selected_price($i));
 									echo __(' (ex. tax)', 'jigoshop');
@@ -891,6 +898,18 @@ if (!function_exists('jigoshop_checkout_login_form')) {
 		?><p class="info"><?php _e('Already registered?', 'jigoshop'); ?> <a href="#" class="showlogin"><?php _e('Click here to login', 'jigoshop'); ?></a></p><?php
 
 		jigoshop_login_form();
+	}
+}
+
+/**
+ * Jigoshop Verify Checkout States Message
+ **/
+if (!function_exists('jigoshop_verify_checkout_states_for_countries_message')) {
+	function jigoshop_verify_checkout_states_for_countries_message() {
+		// the following will return true or false if a country requires states
+		if ( ! jigoshop_customer::has_valid_shipping_state() ) {
+			echo '<div class="clearfix">&nbsp;</div><div class="jigoshop_error">' . __('Please verify your Billing and Shipping state is correctly set for your country before placing your Order.','jigoshop') . '</div>';
+		}
 	}
 }
 
@@ -996,7 +1015,7 @@ if (!function_exists('jigoshop_breadcrumb')) {
 	       			echo $prepend;
 
 	       			if ($terms = get_the_terms( $post->ID, 'product_cat' )) :
-						$term = current($terms);
+						$term = apply_filters( 'jigoshop_product_cat_breadcrumb_terms', current($terms), $terms);
 						$parents = array();
 						$parent = $term->parent;
 						while ($parent):
@@ -1112,4 +1131,3 @@ function jigoshop_body_classes ($classes) {
 function jigoshop_order_review() {
 	jigoshop_get_template('checkout/review_order.php', false);
 }
-

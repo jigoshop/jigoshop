@@ -311,19 +311,19 @@ if ( ! function_exists( 'jigoshop_add_to_cart_action' )) { //make function plugg
 		}
 
 		if ( apply_filters('add_to_cart_redirect', $url) ) {
-			wp_safe_redirect($url); exit;
+			wp_safe_redirect($url, 301); exit;
 		}
 		else if ( $jigoshop_options->get_option('jigoshop_redirect_add_to_cart', 'same_page') == 'to_checkout' && !jigoshop::has_errors() ) {
-			wp_safe_redirect(jigoshop_cart::get_checkout_url()); exit;
+			wp_safe_redirect(jigoshop_cart::get_checkout_url(), 301); exit;
 		}
 		else if ($jigoshop_options->get_option('jigoshop_redirect_add_to_cart', 'to_cart') == 'to_cart' && !jigoshop::has_errors()) {
-			wp_safe_redirect(jigoshop_cart::get_cart_url()); exit;
+			wp_safe_redirect(jigoshop_cart::get_cart_url(), 301); exit;
 		}
 		else if ( wp_get_referer() ) {
-			wp_safe_redirect( remove_query_arg( array( 'add-to-cart', 'quantity', 'product_id' ), wp_get_referer() ) ); exit;
+			wp_safe_redirect( remove_query_arg( array( 'add-to-cart', 'quantity', 'product_id' ), wp_get_referer() ), 301 ); exit;
 		}
 		else {
-			wp_safe_redirect(home_url()); exit;
+			wp_safe_redirect(home_url(), 301); exit;
 		}
 	}
 }

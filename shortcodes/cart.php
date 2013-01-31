@@ -156,7 +156,7 @@ function jigoshop_cart($atts) {
                                     	$quantity_display = ob_get_contents();
                                     	ob_end_clean();
                                     	echo apply_filters( 'jigoshop_product_quantity_display_in_cart', $quantity_display, $values['product_id'], $values );
-                                    	
+
                                     ?>
                                 </td>
                                 <td class="product-subtotal"><?php echo apply_filters( 'jigoshop_product_subtotal_display_in_cart', jigoshop_price($_product->get_price_excluding_tax() * $values['quantity']), $values['product_id'], $values ); ?></td>
@@ -181,7 +181,12 @@ function jigoshop_cart($atts) {
                         <?php endif; ?>
 
                         <?php jigoshop::nonce_field('cart') ?>
-                        <input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" /> <a href="<?php echo esc_url( jigoshop_cart::get_checkout_url() ); ?>" class="checkout-button button-alt"><?php _e('Proceed to Checkout &rarr;', 'jigoshop'); ?></a>
+
+                        <?php if ( Jigoshop_Base::get_options()->get_option( 'jigoshop_cart_shows_shop_button' ) == 'no' ) : ?>
+                        	<input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" /> <a href="<?php echo esc_url( jigoshop_cart::get_checkout_url() ); ?>" class="checkout-button button-alt"><?php _e('Proceed to Checkout &rarr;', 'jigoshop'); ?></a>
+                        <?php else : ?>
+							<input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" />
+                        <?php endif; ?>
                     </td>
                 </tr>
                 <?php if (count(jigoshop_cart::$applied_coupons)) : ?>
@@ -197,9 +202,15 @@ function jigoshop_cart($atts) {
                             </div>
                         </td>
                     </tr>
-                    <?php
-                endif;
-
+                <?php endif; ?>
+                <?php if ( Jigoshop_Base::get_options()->get_option( 'jigoshop_cart_shows_shop_button' ) == 'yes' ) : ?>
+					<tr>
+						<td colspan="6" class="actions">
+							<a href="<?php echo esc_url( jigoshop_cart::get_shop_url() ); ?>" class="checkout-button button-alt" style="float:left;"><?php _e('&larr; Return to Shop', 'jigoshop'); ?></a>
+							<a href="<?php echo esc_url( jigoshop_cart::get_checkout_url() ); ?>" class="checkout-button button-alt"><?php _e('Proceed to Checkout &rarr;', 'jigoshop'); ?></a>
+						</td>
+					</tr>
+                <?php endif;
                 do_action('jigoshop_shop_table_cart_foot');
                 ?>
             </tfoot>
@@ -215,12 +226,12 @@ function jigoshop_cart($atts) {
             // Hide totals if customer has set location and there are no methods going there
             $available_methods = jigoshop_shipping::get_available_shipping_methods();
             $jigoshop_options = Jigoshop_Base::get_options();
-            
+
             if ($available_methods || !jigoshop_customer::get_shipping_country() || !jigoshop_shipping::is_enabled()) :
             	do_action( 'jigoshop_before_cart_totals' );
                 ?>
                 <h2><?php _e('Cart Totals', 'jigoshop'); ?></h2>
-				
+
                 <div class="cart_totals_table">
                     <table cellspacing="0" cellpadding="0">
                         <tbody>

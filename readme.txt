@@ -3,8 +3,8 @@ Contributors: Jigowatt
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigowatt, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.3
-Tested up to: 3.5
-Stable tag: 1.4.9
+Tested up to: 3.5.1
+Stable tag: 1.5
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,39 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.5 - 2013-01-29 =
+* New: General tab setting to display 'Return to Shop' button on the Cart page
+* New: Products tab setting to adjust thumbnail images per row on Product pages
+* New: Core additions for the new Jigoshop Multiple Currency extension
+	* http://jigoshop.com/product/jigoshop-multiple-currencies/
+* New: Limited theme support for twenty-twelve
+* New: Checkout zip and postal code validation for most countries enabled with setting on General Tab
+* Tweak: Add existing currencies for most countries
+* Tweak: Checkout will not longer -require- the 'state' field on countries that don't have states
+* Tweak: Checkout now shows selected shipping destination the same as the Cart
+* Tweak: updated .pot file for language translators
+* Tweak: Updated Brazilian translations courtesy of Raphael Suzuki
+* Tweak: Updated Ukranian translations courtesy of Anatolii Sakhnik
+* Tweak: Updated Japanese translations courtesy of @bigtom
+* Tweak: Updated Czech translations courtesy of Jaroslav Ondra
+* Tweak: Updated Russian translations courtesy of Алексей Важнов
+* Tweak: Checkout will display message asking customers to verify their state when required before ordering
+* Tweak: PayPal gateway will show one item for all items with 'Catalog prices include tax'
+     * This prevents tax rounding errors at PayPal with that setting
+* Fix: Small tax rounding error for 'Catalog prices include tax' on Cart and Checkout
+* Fix: Totals for 'Catalog prices include tax' correct for states other than base with multiple cart items
+* Fix: Taxes after coupon had wrong tax calcs with non-taxable products
+* Fix: Cart widget displays correct subtotals for 'Catalog prices include tax'
+* Fix: Products no longer on sale if out of established date range
+* Fix: Product variations display correct price when on sale
+* Fix: Variable products no longer show the sale price as the cheapest price if out of established date range
+* Fix: Coupon usage counter now increments after each use of a coupon
+* Fix: Reports top earners now gives correct totals
+* Fix: Global Attribute type of 'select' no longer available to apply to a product
+* Fix: Correct applied discount and totals for cart and product discounts larger than required for 0.00 total
+* Fix: Products in Cart won't process if stock is no longer available and Backorders not allowed
+* Fix: New Order emails no longer sent out to customers when the setting to reset pending orders to on-hold is used
+
 = 1.4.9 - 2012-12-13 =
 * New: Lithuanian translations courtesy of Jonas Gavelis
 * Tweak: Updated Ukranian translations courtesy of Anatolii Sakhnik

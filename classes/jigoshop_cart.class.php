@@ -34,11 +34,11 @@ class jigoshop_cart extends Jigoshop_Singleton {
     public static $applied_coupons;
     public static $cart_contents;
 
-    private static $cart_discount_leftover;
+    private static $cart_discount_leftover;     // TODO: version 1.5 needs investigation, not used
     private static $price_per_tax_class_ex_tax;
     private static $tax;
-	
-	
+
+
     /** constructor */
     protected function __construct() {
 
@@ -56,16 +56,16 @@ class jigoshop_cart extends Jigoshop_Singleton {
         // api's often per page request isn't a good idea.
         self::calculate_cart_total();
     }
-	
-	
+
+
     /** Gets the cart data from the PHP session */
     function get_cart_from_session() {
 
         self::$cart_contents = (array) jigoshop_session::instance()->cart;
-        
+
     }
-	
-	
+
+
     /** sets the php session data for the cart and coupon */
     function set_session() {
         // we get here from cart additions, quantity adjustments, and coupon additions
@@ -73,14 +73,14 @@ class jigoshop_cart extends Jigoshop_Singleton {
         unset( jigoshop_session::instance()->chosen_shipping_method_id );
         unset( jigoshop_session::instance()->selected_rate_id ); // calculable shipping
 
-        jigoshop_session::instance()->cart = self::$cart_contents;
+        jigoshop_session::instance()->cart = apply_filters( 'jigoshop_cart_set_session', self::$cart_contents );
 
         jigoshop_session::instance()->coupons = self::$applied_coupons;
 
         self::calculate_totals();
     }
-	
-	
+
+
     /** Empty the cart */
     function empty_cart() {
         self::$cart_contents = array();
@@ -91,8 +91,8 @@ class jigoshop_cart extends Jigoshop_Singleton {
         unset(jigoshop_session::instance()->chosen_shipping_method_id);
         unset(jigoshop_session::instance()->selected_rate_id);
     }
-	
-	
+
+
     /**
      * Generate a unique ID for the cart item being added
      *
@@ -127,8 +127,8 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
         return md5( implode( '_', $id_parts ) );
     }
-	
-	
+
+
     /**
      * Check if product is in the cart and return cart item key
      *
@@ -143,8 +143,8 @@ class jigoshop_cart extends Jigoshop_Singleton {
                 if ( $cart_item_key == $cart_id )
                     return $cart_item_key;
     }
-	
-	
+
+
     /**
      * Add a product to the cart
      *
@@ -183,8 +183,9 @@ class jigoshop_cart extends Jigoshop_Singleton {
         }
 
         // prevents adding products to the cart without enough quantity on hand
-        $in_cart_qty = is_numeric($cart_item_key) ? self::$cart_contents[$cart_item_key]['quantity'] : 0;
-        if ($product->managing_stock() && !$product->has_enough_stock($quantity + $in_cart_qty)) :
+        $in_cart_qty = ( $cart_item_key ) ? self::$cart_contents[$cart_item_key]['quantity'] : 0;
+
+        if ($product->managing_stock() && ! $product->has_enough_stock($quantity + $in_cart_qty, $variation_id)) :
             if ($in_cart_qty > 0) :
                 $error = (self::get_options()->get_option('jigoshop_show_stock') == 'yes') ? sprintf(__('We are sorry.  We do not have enough "%s" to fill your request.  You have %d of them in your Cart and we have %d available at this time.', 'jigoshop'), $product->get_title(), $in_cart_qty, $product->get_stock()) : sprintf(__('We are sorry.  We do not have enough "%s" to fill your request.', 'jigoshop'), $product->get_title());
             else :
@@ -220,8 +221,8 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
         return true;
     }
-	
-	
+
+
     /**
      * Set the quantity for an item in the cart
      * Remove the item from the cart if no quantity
@@ -237,7 +238,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 				$coupon = JS_Coupons::get_coupon($code);
 				if (JS_Coupons::is_valid_coupon_for_product($code, $_product)) {
 					if ($coupon['type'] == 'fixed_product') {
-						self::$discount_total = self::$discount_total - ( $coupon['amount'] * $_product['quantity'] );
+						self::$discount_total = self::$discount_total - ( apply_filters( 'jigoshop_coupon_product_fixed_amount', $coupon['amount'], $coupon ) * $_product['quantity'] );
 						unset(self::$applied_coupons[$key]);
 					} else if ($coupon['type'] == 'percent_product') {
 						self::$discount_total = self::$discount_total - (( $_product['data']->get_price() * $_product['quantity'] / 100 ) * $coupon['amount']);
@@ -258,8 +259,8 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
         self::set_session();
     }
-	
-	
+
+
     /**
      * Returns the contents of the cart
      *
@@ -269,16 +270,16 @@ class jigoshop_cart extends Jigoshop_Singleton {
         if ( empty( self::$cart_contents ) ) self::get_cart_from_session();
         return self::$cart_contents;
     }
-	
-	
+
+
     /** gets the url to the cart page */
     function get_cart_url() {
         $cart_page_id = jigoshop_get_page_id('cart');
         if ($cart_page_id)
             return apply_filters('jigoshop_get_cart_url', get_permalink($cart_page_id));
     }
-	
-	
+
+
     /** gets the url to the checkout page */
     function get_checkout_url() {
         $checkout_page_id = jigoshop_get_page_id('checkout');
@@ -288,8 +289,8 @@ class jigoshop_cart extends Jigoshop_Singleton {
             return apply_filters('jigoshop_get_checkout_url', get_permalink($checkout_page_id));
         endif;
     }
-	
-	
+
+
     /** gets the url to the shop page */
     function get_shop_url() {
         $shop_page_id = jigoshop_get_page_id('shop_redirect');
@@ -297,8 +298,8 @@ class jigoshop_cart extends Jigoshop_Singleton {
             return apply_filters('jigoshop_get_shop_page_id', get_permalink($shop_page_id));
         endif;
     }
-	
-	
+
+
     /** gets the url to remove an item from the cart */
     function get_remove_url($cart_item_key) {
         $cart_page_id = jigoshop_get_page_id('cart');
@@ -306,8 +307,8 @@ class jigoshop_cart extends Jigoshop_Singleton {
             return apply_filters('jigoshop_get_remove_url', jigoshop::nonce_url( 'cart', add_query_arg('remove_item', $cart_item_key, get_permalink($cart_page_id))));
         }
     }
-	
-	
+
+
     /** looks through the cart to see if shipping is actually required */
     public static function needs_shipping() {
 
@@ -328,30 +329,31 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
         return $needs_shipping;
     }
-	
-	
+
+
     /** Sees if we need a shipping address */
     function ship_to_billing_address_only() {
         return (self::get_options()->get_option('jigoshop_ship_to_billing_address_only') == 'yes');
     }
-	
-	
+
+
     /** looks at the totals to see if payment is actually required */
     function needs_payment() {
         if (self::$total > 0)
             return true;
         return false;
     }
-	
-	
+
+
     /* Looks through the cart to confirm that each item is in stock. */
     function check_cart_item_stock() {
 
         foreach (self::$cart_contents as $cart_item_key => $values) :
 
             $_product = $values['data'];
+			$variation_id = isset ( $_product->variation_id ) ? $_product->variation_id : '';
 
-            if ( !$_product->is_in_stock() || ( $_product->managing_stock() && !$_product->has_enough_stock($values['quantity']) ) ) {
+            if ( !$_product->is_in_stock() || ( $_product->managing_stock() && !$_product->has_enough_stock($values['quantity'], $variation_id ) ) ) {
                 $error = new WP_Error();
                 $errormsg = (self::get_options()->get_option('jigoshop_show_stock') == 'yes')
 
@@ -369,8 +371,8 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
         return true;
     }
-	
-	
+
+
     /** reset all Cart totals */
     private static function reset_totals() {
         self::$total                      = 0;
@@ -390,8 +392,8 @@ class jigoshop_cart extends Jigoshop_Singleton {
         self::$price_per_tax_class_ex_tax = array(); /* currently used with norway */
         jigoshop_shipping::reset_shipping();
     }
-	
-	
+
+
 	/**
 	 *  Calculate total 'cart fixed' and 'cart percentage' discounts
 	 *
@@ -400,7 +402,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 	 *  @return $cart_discount  a total monetary amount from the applied cart discount coupons
 	 */
 	private static function calculate_cart_discounts_total( $total_to_use ) {
-		
+
 		$cart_discount = 0;
 		if ( ! empty( self::$applied_coupons )) foreach ( self::$applied_coupons as $code ) {
 			if ( $coupon = JS_Coupons::get_coupon( $code )) {
@@ -408,7 +410,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 				switch ( $coupon['type'] ) :
 
 					case 'fixed_cart' :
-						$cart_discount += $coupon['amount'];
+						$cart_discount += apply_filters( 'jigoshop_coupon_cart_fixed_amount', $coupon['amount'], $coupon);
 						break;
 
 					case 'percent' :
@@ -422,7 +424,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 		}
 		return $cart_discount;
 	}
-	
+
 	/**
 	 *  Calculate total 'product fixed' and 'product percentage' discounts
 	 *
@@ -432,11 +434,11 @@ class jigoshop_cart extends Jigoshop_Singleton {
 	 *  @return $current_product_discount
 	 */
 	private static function calculate_product_discounts_total( $_product, $values ) {
-	
+
 		$current_product_discount = 0;
-		
+
 		if ( ! empty( self::$applied_coupons )) foreach ( self::$applied_coupons as $code ) {
-			
+
 			$coupon_discount = 0;
 			$coupon = JS_Coupons::get_coupon( $code );
 
@@ -447,15 +449,14 @@ class jigoshop_cart extends Jigoshop_Singleton {
 				: $_product->get_price_with_tax();
 
 			switch ( $coupon['type'] ) {
-			
+
 				case 'fixed_product' :
-					$coupon_discount = ( $coupon['amount'] * $values['quantity'] );
+					$coupon_discount = apply_filters( 'jigoshop_coupon_product_fixed_amount', $coupon['amount'], $coupon ) * $values['quantity'];
 					if ( $coupon_discount > $price * $values['quantity'] )
 						$coupon_discount = $price * $values['quantity'];
 					break;
 
 				case 'percent_product' :
-					
 					$coupon_discount = ( $price * $values['quantity'] / 100 ) * $coupon['amount'];
 					break;
 			}
@@ -463,13 +464,13 @@ class jigoshop_cart extends Jigoshop_Singleton {
 			$current_product_discount += $coupon_discount;
 
 		}
-		
+
 		return $current_product_discount;
-	
+
 	}
-	
+
 	/**
-	 *  
+	 *
 	 */
     private static function calculate_cart_total() {
 
@@ -481,157 +482,63 @@ class jigoshop_cart extends Jigoshop_Singleton {
             return;
         }
 
-        $percentage_discount        = 1;
-        $total_cart_discounts       = 0; // determines how much cart discount is left over
-        $total_cart_price_ex_tax    = 0;
-        $total_cart_price_with_tax  = 0;
-        $current_product_discount   = 0;
-        $discounted_item_price      = 0;
-        // Used to determine how many iterations are left on the cart_contents. Applied with cart coupons
-        // NOTE: cart coupons are moved out of here in 1.4.5, not sure we need this anymore
-        $cart_contents_loop_count = count( self::$cart_contents );
-        
-
-		// total up all products without and with taxes based on shipping destination
-		if ( ! empty( self::$cart_contents )) foreach ( self::$cart_contents as $cart_item_key => $values ) {
-
-// the following isn't yet used as of 1.4.5, but might be what we implement
-			$_product = $values['data'];
-			$values['price_includes_tax'] = self::get_options()->get_option('jigoshop_prices_include_tax');
-			$values['unit_price'] = $_product->get_price_excluding_tax();
-			$values['discount'] = round( self::calculate_product_discounts_total( $_product, $values ), 2 );
-			if ( $values['discount'] > 0 && self::get_options()->get_option('jigoshop_tax_after_coupon') == 'yes' ) {
-				$values['unit_price'] -= $values['discount'];
-			}
-			$this_tax = new jigoshop_tax( 100 );
-			
-			if ( $_product->is_taxable() ) {
-				$this_tax->set_is_shipable( jigoshop_shipping::is_enabled() && $_product->requires_shipping() );
-			}
-			$this_tax->calculate_tax_amounts(
-				$values['unit_price'],
-				$_product->get_tax_classes(),
-				$values['price_includes_tax']
-			);
-			// following commented out, always the wrong answer
-//			$values['tax'] = $this_tax->get_taxes_as_array( $this_tax->get_taxes_as_string() );
-			// this isn't right either, but ...
-			$values['tax'] = ($_product->get_price_with_tax() * $values['quantity']) - ($_product->get_price_excluding_tax() * $values['quantity']);
-			
-// END of unused portion, the following is used
-
-			$total_cart_price_ex_tax += $_product->get_price_excluding_tax() * $values['quantity'] ;
-			$total_cart_price_with_tax += $_product->get_price_with_tax() * $values['quantity'];
-			
-			// the aim is to have all pertinent info attached to a cart item, not used as of 1.4.5
-//			self::$cart_contents[$cart_item_key] = $values;
-		}
-
 		/*
-		 *  Loop through each product in the cart  (for now, to be reworked post 1.4.5)
+		 *  Loop through each product in the cart
 		 */
         if ( ! empty( self::$cart_contents )) foreach ( self::$cart_contents as $cart_item_key => $values ) {
-        
-			$cart_contents_loop_count--;
 
             $_product = $values['data'];
 
 			self::$cart_contents_count += $values['quantity'];
-			
+
+			// get actual applied discounts from coupons for this product
 			$current_product_discount = self::calculate_product_discounts_total( $_product, $values );
 			self::$discount_total += $current_product_discount;
-			
-			$discounted_item_price = -1;
-			$cart_discount_amount  =  0;
 
-			
-			$discounted_item_price = round( $_product->get_price_excluding_tax() * $values['quantity'] - $current_product_discount, 2 );
-			
-			if ( $discounted_item_price > 0 && $total_cart_discounts > 0 ) {
-
-				$cart_discount_amount =
-					$cart_contents_loop_count == 1
-					? $total_cart_discounts
-					: $discounted_item_price - round( $discounted_item_price * $percentage_discount, 2 );
-				$total_cart_discounts -= $cart_discount_amount;
-
-				if ( $cart_contents_loop_count == 1 && $cart_discount_amount > $discounted_item_price )
-					self::$cart_discount_leftover = $cart_discount_amount - $discounted_item_price; // to use with shipping cost
-
-				$discounted_item_price = ( $cart_discount_amount > $discounted_item_price ? 0 : $discounted_item_price - $cart_discount_amount );
-
-			}
-			
-			$cart_contents_loop_count--;
-				
-			
+			// this should never be less that 0.00 due to 'calculate_product_discounts_total()'
+			$discounted_item_price = $_product->get_price_excluding_tax() * $values['quantity'] - $current_product_discount;
 			$total_item_price = $_product->get_price() * $values['quantity'] * 100;
 
 			if ( self::get_options()->get_option('jigoshop_calc_taxes') == 'yes' ) {
 
 				$tax_classes_applied = array();
-				
+
 				if ( $_product->is_taxable() ) {
-				
+
                     $shipable = jigoshop_shipping::is_enabled() && $_product->requires_shipping();
-                    
+
 					self::$tax->set_is_shipable( $shipable );
 
-					if ( self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes'
-						 && jigoshop_customer::is_customer_outside_base( $shipable )
-						) {
+					$price_includes_tax =
+						self::get_options()->get_option('jigoshop_tax_after_coupon') == 'yes'
+						&& $current_product_discount > 0
+						? false
+						: self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes';
 
-						$total_item_price = $_product->get_price_excluding_tax() * $values['quantity'] * 100;
+					$product_discounted_price = self::get_options()->get_option('jigoshop_tax_after_coupon') == 'yes'
+							&& $current_product_discount > 0
+								? $discounted_item_price * 100
+								: $total_item_price;
 
-						$product_discounted_price = (self::get_options()->get_option('jigoshop_tax_after_coupon') == 'yes'
-								&& ($cart_discount_amount > 0 || $current_product_discount > 0) 
-									? $discounted_item_price * 100
-									: $total_item_price);
+					$tax_classes_applied = self::$tax->calculate_tax_amounts(
+							$product_discounted_price,
+							$_product->get_tax_classes(),
+							$price_includes_tax
+					);
 
-                        $tax_classes_applied = self::$tax->calculate_tax_amounts(
-                                $product_discounted_price, 
-                                $_product->get_tax_classes(), 
-                                false
-                        );
+					if ( self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes') {
 
-                        $total_item_price = ($discounted_item_price + self::$tax->get_non_compounded_tax_amount() + self::$tax->get_compound_tax_amount()) * 100;
-                        
-					} else {   // all other scenarios
+						if (self::get_options()->get_option('jigoshop_tax_after_coupon') == 'yes' && $discounted_item_price >= 0) {
 
-						$price_includes_tax =
-							self::get_options()->get_option('jigoshop_tax_after_coupon') == 'yes'
-							&& ($cart_discount_amount > 0 || $current_product_discount > 0)
-							? false
-							: self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes';
-						
-						$product_discounted_price = (self::get_options()->get_option('jigoshop_tax_after_coupon') == 'yes'
-								&& ($cart_discount_amount > 0 || $current_product_discount > 0) 
-									? $discounted_item_price * 100
-									: $total_item_price);
-						
-						$tax_classes_applied = self::$tax->calculate_tax_amounts(
-								$product_discounted_price,
-								$_product->get_tax_classes(),
-								$price_includes_tax
-						);
-						
-						if ( self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes') {
-                            
-							if (self::get_options()->get_option('jigoshop_tax_after_coupon') == 'yes' && $discounted_item_price >= 0) {
-							
-                                $total_item_price = ($discounted_item_price + self::$tax->get_non_compounded_tax_amount() + self::$tax->get_compound_tax_amount()) * 100;
+							$total_item_price = ($discounted_item_price + self::$tax->get_non_compounded_tax_amount() + self::$tax->get_compound_tax_amount()) * 100;
 
-                            }
-                            // adjust total_item_price for customers that are not in the taxable shop country... this is definitely needed.
-                            else if (!jigoshop_customer::is_taxable($shipable)) {
-                                $total_item_price = $_product->get_price_excluding_tax() * $values['quantity'] * 100;
-                            }
-							
+						} else if ( !jigoshop_customer::is_taxable($shipable) ) {
+							// adjust total_item_price for customers that are not in the taxable shop country
+							$total_item_price = $_product->get_price_excluding_tax() * $values['quantity'] * 100;
 						}
-												
+
 					}
-				
-				
+
 					// reason we cannot use get_applied_tax_classes is because we may not have applied all tax classes for this product.
 					// get_applied_tax_classes will return all of the tax classes that have been applied on all products
 					foreach ( $tax_classes_applied as $tax_class ) {
@@ -646,7 +553,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 					}
 				}
 			}
-			
+
 			$total_item_price = $total_item_price / 100;
 
 			/* Apply weight only to non-downloadable products. */
@@ -659,11 +566,51 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
 			self::$cart_contents_total += $total_item_price;
 			self::$cart_contents_total_ex_tax += $_product->get_price_excluding_tax() * $values['quantity'];
-			
+
 
         }
-        
+
     }
+
+    /** calculate totals for all taxable products in the cart */
+	private function get_cart_taxable_products_total_excluding_tax() {
+
+		$total = 0;
+
+        if ( ! empty( self::$cart_contents )) foreach ( self::$cart_contents as $cart_item_key => $values ) {
+
+            $_product = $values['data'];
+
+            // do we need to exclude taxable products that have a zero tax rate?
+			if ( $_product->is_taxable() ) {
+				$total += $_product->get_price_excluding_tax() * $values['quantity'];
+			}
+
+        }
+
+        return $total;
+
+	}
+
+    /** calculate totals for all non-taxable products in the cart */
+	private function get_cart_non_taxable_products_total() {
+
+		$total = 0;
+
+        if ( ! empty( self::$cart_contents )) foreach ( self::$cart_contents as $cart_item_key => $values ) {
+
+            $_product = $values['data'];
+
+            // we may need to include taxable products that have a zero tax rate?
+			if ( ! $_product->is_taxable() ) {
+				$total += $_product->get_price_excluding_tax() * $values['quantity'];
+			}
+
+        }
+
+        return $total;
+
+	}
 
     /** calculate totals for the items in the cart */
     function calculate_totals() {
@@ -711,80 +658,97 @@ class jigoshop_cart extends Jigoshop_Singleton {
                 endif;
             endforeach;
         endif;
-		
+
 		self::$total = self::get_cart_subtotal(false) + self::get_cart_shipping_total(false);
 		if ( self::get_options()->get_option('jigoshop_calc_taxes') == 'yes'
 			&& self::get_options()->get_option('jigoshop_prices_include_tax') == 'no'
 			&& self::get_options()->get_option('jigoshop_tax_after_coupon') == 'no' ) {
-			
+
 			self::$total += self::$tax->get_non_compounded_tax_amount() + self::$tax->get_compound_tax_amount();
 		}
-		
+
 		// calculate any cart wide discounts from coupons
 		$total_product_discounts = self::$discount_total;
-		$total_cart_discounts = 0;
-		$temp = 0;
+		self::$discount_total = $total_cart_discounts = $temp = 0;
+
 		if ( self::get_options()->get_option('jigoshop_tax_after_coupon') == 'yes' ) {
-		
+
 			// we need products and shipping with tax out
 			$total_cart_discounts = round( self::calculate_cart_discounts_total(
 				self::$cart_contents_total_ex_tax + self::get_cart_shipping_total(false,true)), 2 );
 			if ( $total_cart_discounts > 0 ) {
+				$total_to_use = self::$cart_contents_total_ex_tax + self::$shipping_total;
+				if ( $total_cart_discounts > $total_to_use ) $total_cart_discounts = $total_to_use - $total_product_discounts;
+				$total_discounts = $total_cart_discounts + $total_product_discounts;
+				if ( $total_discounts > $total_to_use ) $total_discounts = $total_to_use;
 				foreach ( self::get_applied_tax_classes() as $tax_class ) {
-					// recalc tax based on discounts
+					// recalc taxes based on discounts already applied, no effect if tax calcs disabled
 					$rate = self::$tax->get_rate($tax_class);
-					if ( self::$shipping_tax_total > 0 ) {
-						$total_to_use = self::$cart_contents_total_ex_tax + self::$shipping_total;
-					} else {
-						$total_to_use = self::$cart_contents_total_ex_tax;
+					$taxable_total = self::get_cart_taxable_products_total_excluding_tax();
+					// if shipping is taxable, add it into the total for a revised tax calc
+					if ( self::$shipping_tax_total > 0.00 ) {
+						$taxable_total += self::$shipping_total;
+						self::$shipping_tax_total = 0.00; // too complicated, reset this, total tax will be only tax
 					}
-					$tax = self::$tax->calc_tax( $total_to_use - $total_cart_discounts - $total_product_discounts, $rate, false );
+					$non_taxable_total = self::get_cart_non_taxable_products_total();
+					// we have calculated a discount to taxable and non taxable products with shipping already
+					// we need a ratio for this to recalc taxes for taxable items only, non-taxable products out
+					$discount_ratio = abs(($total_discounts - $total_to_use) / $total_to_use);
+					$revised_discount = $taxable_total - ($taxable_total * $discount_ratio);
+					$revised_total = $taxable_total - $revised_discount;
+					$tax = self::$tax->calc_tax( $revised_total, $rate, false );
+					if ( $tax == 0.00 ) self::$shipping_tax_total = 0;
 					self::$tax->update_tax_amount( $tax_class, $tax * 100, false, true );
+					self::$tax->update_tax_amount_with_shipping_tax(self::$shipping_tax_total * 100);
 					$temp += self::$tax->get_tax_amount($tax_class);
 				}
+				// check again in case tax calcs are disabled
+				$total_discounts = $total_cart_discounts + $total_product_discounts;
+				if ( $total_discounts > $total_to_use ) $total_cart_discounts = $total_to_use - $total_product_discounts;
 			} else {
 				foreach ( self::get_applied_tax_classes() as $tax_class ) {
 					// otherwise use existing tax
 					$temp += self::$tax->get_tax_amount($tax_class);
 				}
 			}
-			
+
 			if ( self::get_options()->get_option('jigoshop_prices_include_tax') == 'no' ) {
 				self::$total += $temp;
 			} else {
 				self::$total = self::$cart_contents_total_ex_tax + self::$shipping_total + $temp;
 			}
+
 		} else {    //  Taxes are applied before coupons, 'jigoshop_tax_after_coupon' == 'no'
 
 			if ( self::get_options()->get_option('jigoshop_prices_include_tax') == 'no' ) {
 				$total_cart_discounts = self::calculate_cart_discounts_total( self::$total );
+				if ( $total_cart_discounts > self::$total ) $total_cart_discounts = self::$total - $total_product_discounts;
 			} else {
 				$total_cart_discounts = self::calculate_cart_discounts_total( self::$cart_contents_total_ex_tax + self::$shipping_total );
 				if ( $total_cart_discounts > 0 ) {
 					// with an initial discount, recalc taxes and get a proper discount
 					foreach ( self::get_applied_tax_classes() as $tax_class ) {
 						$rate = self::$tax->get_rate($tax_class);
-						if ( self::$shipping_tax_total > 0 ) {
-							$total_to_use = self::$cart_contents_total_ex_tax + self::$shipping_total;
-						} else {
-							$total_to_use = self::$cart_contents_total_ex_tax;
-						}
+						$total_to_use = self::$cart_contents_total_ex_tax + self::$shipping_total;
 						$tax = self::$tax->calc_tax( $total_to_use, $rate, false );
 						self::$tax->update_tax_amount( $tax_class, $tax * 100, false, true );
 						$temp += self::$tax->get_tax_amount($tax_class);
 					}
-					$total_cart_discounts = self::calculate_cart_discounts_total( self::$cart_contents_total_ex_tax + self::$shipping_total + $temp );
+					$total_to_use = self::$cart_contents_total_ex_tax + self::$shipping_total + $temp;
+					$total_cart_discounts = self::calculate_cart_discounts_total( $total_to_use );
+					if ( $total_cart_discounts > $total_to_use ) $total_cart_discounts = $total_to_use - $total_product_discounts;
 				}
 			}
+
 		}
-		
-		// self::$discount_total already contains product discounts
-		self::$discount_total += $total_cart_discounts;
-		
+
+		// set the final discount
+		self::$discount_total = $total_cart_discounts + $total_product_discounts;
+
 		// adjust the grand total after all discounts
-        self::$total -= self::$discount_total;
+		self::$total -= self::$discount_total;
         if ( self::$total < 0 ) self::$total = 0;
-		
+
 		// with everything calculated, check that coupons depending on cart totals are still valid
 		// if they are not, remove them and recursively re-calculate everything all over again.
 		$recalc = false;
@@ -844,7 +808,6 @@ class jigoshop_cart extends Jigoshop_Singleton {
          */
         if ( self::get_options()->get_option('jigoshop_calc_taxes') == 'yes' ) :
 
-//            if ( self::get_options()->get_option('jigoshop_display_totals_tax') == 'no' || $order_exclude_tax ) :
 			// for final Orders in the Admin we always need tax out
             if ( $order_exclude_tax ) :
 				$subtotal = self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes' ? self::$subtotal_ex_tax : $subtotal;
@@ -856,7 +819,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
             		$subtotal = self::$subtotal_ex_tax;
                 	$tax_label = 1; //inc. tax
             	}
-                
+
             endif;
 
         endif;
@@ -866,14 +829,14 @@ class jigoshop_cart extends Jigoshop_Singleton {
 		if ( self::get_options()->get_option('jigoshop_tax_after_coupon') == 'yes' ) {
 			$discount = 0;
 		}
-		
+
         /* Display totals with discount & shipping applied? */
+        // This is only 'true' with the 'Retail Price' displays on Cart, Checkout, View Order
+        // Someone should explain why this is used instead of 'Subtotal'
         if ( $apply_discount_and_shipping ) :
 
             $subtotal = $subtotal + jigoshop_cart::get_cart_shipping_total( false );
 
-            /* Check if the discount is greater than our total first. */
-            // NOTE: this is broken when called from process checkout and assigning to $order->order_discount_subtotal
             $subtotal = ( $discount > $subtotal ) ? $subtotal : $subtotal - $discount;
 
         endif;
@@ -889,10 +852,10 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
         $return = false;
 
-        if ( (jigoshop_cart::get_tax_amount($tax_class, false) > 0 
-        	&& jigoshop_cart::get_tax_rate($tax_class) > 0) 
+        if ( (jigoshop_cart::get_tax_amount($tax_class, false) > 0
+        	&& jigoshop_cart::get_tax_rate($tax_class) > 0)
         	|| jigoshop_cart::get_tax_rate($tax_class) !== false ) {
-        	
+
             $return = self::$tax->get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%): ';
 
             // only show estimated tag when customer is on the cart page and no shipping calculator is enabled to be able to change country
@@ -1015,13 +978,13 @@ class jigoshop_cart extends Jigoshop_Singleton {
     function get_cart_shipping_title() {
 
 		// in this instance we want the title of the shipping method only. If no title is provided, use
-		// the label. 
+		// the label.
 		$title = jigoshop_shipping::get_chosen_method_title();
 		$label = ($title ? $title : jigoshop_shipping::get_label());
-        if ( !$label ) 
+        if ( !$label )
             return false;
 
-        return __(sprintf('via %s', $label), 'jigoshop');
+        return sprintf(__('via %s','jigoshop'), $label);
 
     }
 
@@ -1054,11 +1017,11 @@ class jigoshop_cart extends Jigoshop_Singleton {
 				self::$applied_coupons = array();
 			}
 		}
-		
+
 		// for Jigoshop 1.4.2 'self::valid_coupon' no longer returns error if coupon already applied
 		// check now and only add a new coupon if it isn't already applied
         if ( ! self::has_discount( $coupon_code ) && !empty( $_POST['coupon_code'] ) ) self::$applied_coupons[] = $coupon_code;
-        
+
         self::set_session();
         jigoshop::add_message(__('Discount coupon applied successfully.', 'jigoshop'));
 
@@ -1091,14 +1054,16 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
             /* Can't use the jigoshop_cart::get_cart_subtotal() method as it's not ready at this point yet. */
             $subtotal = self::$cart_contents_total;
-			
-            if ( !empty($the_coupon['order_total_max']) && $subtotal > $the_coupon['order_total_max'] ) {
-                jigoshop::add_error(sprintf(__('Your subtotal does not match the <strong>maximum</strong> order total requirements of %.2f for coupon "%s" and it has been removed.', 'jigoshop'), $the_coupon['order_total_max'], $coupon_code));
+
+            $order_total_max = apply_filters( 'jigoshop_coupon_order_total_max', $the_coupon['order_total_max'], $the_coupon);
+            if ( !empty($the_coupon['order_total_max']) && $subtotal > $order_total_max ) {
+                jigoshop::add_error(sprintf(__('Your subtotal does not match the <strong>maximum</strong> order total requirements of %.2f for coupon "%s" and it has been removed.', 'jigoshop'), $order_total_max, $coupon_code));
                 return false;
             }
 
-            if ( !empty($the_coupon['order_total_min']) && $subtotal < $the_coupon['order_total_min'] ) {
-                jigoshop::add_error(sprintf(__('Your subtotal does not match the <strong>minimum</strong> order total requirements of %.2f for coupon "%s" and it has been removed.', 'jigoshop'), $the_coupon['order_total_min'], $coupon_code));
+            $order_total_min = apply_filters( 'jigoshop_coupon_order_total_min', $the_coupon['order_total_min'], $the_coupon);
+            if ( !empty($the_coupon['order_total_min']) && $subtotal < $order_total_min ) {
+                jigoshop::add_error(sprintf(__('Your subtotal does not match the <strong>minimum</strong> order total requirements of %.2f for coupon "%s" and it has been removed.', 'jigoshop'), $order_total_min, $coupon_code));
                 return false;
             }
         }
@@ -1157,11 +1122,16 @@ class jigoshop_cart extends Jigoshop_Singleton {
         if ( empty( self::$discount_total ) )
             return false;
 
+		return ( jigoshop_price(self::$discount_total) );
+
+		/*
+		 * No idea what all the following is ... hacking as above 'return' ignores it
+		 */
         $total = self::get_cart_subtotal(false) + self::get_cart_shipping_total(false);
-		
+
 		if ( self::get_options()->get_option('jigoshop_calc_taxes') == 'yes'
 			&& self::get_options()->get_option('jigoshop_prices_include_tax') == 'no') {
-			
+
 			$total += self::$tax->get_non_compounded_tax_amount() + self::$tax->get_compound_tax_amount();
 		}
 		$discount = self::$discount_total;
@@ -1178,7 +1148,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
         $has_data = false;
 		$return = '';
-		
+
         if (!$flat) $return .= '<dl class="variation">';
 
         // Variation data

@@ -242,7 +242,7 @@ jQuery(function() {
 	                }
 	            }
 	        }
-			
+
 			// completely re-enable the previous select so 'Choose an option' isn't required to change selections
 	        current_attr_select.parent().prev().find('select').find('option:gt(0)').removeAttr('disabled');
 

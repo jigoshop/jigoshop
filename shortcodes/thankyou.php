@@ -38,6 +38,7 @@ function jigoshop_thankyou() {
 		if ($order->order_key == $order_key) :
 
 			?>
+			<?php do_action( 'jigoshop_thankyou_before_order_details', $order->id ); ?>
 			<ul class="order_details">
 				<li class="order">
 					<?php _e('Order:', 'jigoshop'); ?>

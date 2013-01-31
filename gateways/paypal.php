@@ -26,11 +26,11 @@ add_filter( 'jigoshop_payment_gateways', 'add_paypal_gateway', 10 );
 
 
 class paypal extends jigoshop_payment_gateway {
-	
+
 	public function __construct() {
-		
+
 		parent::__construct();
-		
+
 		$this->id			= 'paypal';
 		$this->icon 		= jigoshop::assets_url() . '/assets/images/icons/paypal.png';
 		$this->has_fields 	= false;
@@ -51,7 +51,7 @@ class paypal extends jigoshop_payment_gateway {
 		add_action('valid-paypal-standard-ipn-request', array(&$this, 'successful_request') );
 		add_action( 'jigoshop_settings_scripts', array( &$this, 'admin_scripts' ) );
 		add_action('receipt_paypal', array(&$this, 'receipt_page'));
-		
+
 	}
 
 
@@ -60,14 +60,14 @@ class paypal extends jigoshop_payment_gateway {
 	 *
 	 * These will be installed on the Jigoshop_Options 'Payment Gateways' tab by the parent class 'jigoshop_payment_gateway'
 	 *
-	 */	
+	 */
 	protected function get_default_options() {
-	
+
 		$defaults = array();
-		
+
 		// Define the Section name for the Jigoshop_Options
 		$defaults[] = array( 'name' => __('PayPal Standard', 'jigoshop'), 'type' => 'title', 'desc' => __('PayPal Standard works by sending the user to <a href="https://www.paypal.com/">PayPal</a> to enter their payment information.', 'jigoshop') );
-		
+
 		// List each option in order of appearance with details
 		$defaults[] = array(
 			'name'		=> __('Enable PayPal Standard','jigoshop'),
@@ -81,7 +81,7 @@ class paypal extends jigoshop_payment_gateway {
 				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
-		
+
 		$defaults[] = array(
 			'name'		=> __('Method Title','jigoshop'),
 			'desc' 		=> '',
@@ -90,7 +90,7 @@ class paypal extends jigoshop_payment_gateway {
 			'std' 		=> __('PayPal','jigoshop'),
 			'type' 		=> 'text'
 		);
-		
+
 		$defaults[] = array(
 			'name'		=> __('Description','jigoshop'),
 			'desc' 		=> '',
@@ -160,7 +160,7 @@ class paypal extends jigoshop_payment_gateway {
 		return $defaults;
 	}
 
-    
+
     public function admin_scripts() {
     	?>
 		<script type="text/javascript">
@@ -178,8 +178,8 @@ class paypal extends jigoshop_payment_gateway {
 		</script>
     	<?php
     }
-	
-	
+
+
 	/**
 	 * There are no payment fields for paypal, but we want to show the description if set.
 	 **/
@@ -193,7 +193,7 @@ class paypal extends jigoshop_payment_gateway {
 	public function generate_paypal_form( $order_id ) {
 
 		$order = new jigoshop_order( $order_id );
-        
+
         $subtotal = (float)(Jigoshop_Base::get_options()->get_option('jigoshop_prices_include_tax') == 'yes' ? (float)$order->order_subtotal + (float)$order->order_tax : $order->order_subtotal);
         $shipping_total = (float)(Jigoshop_Base::get_options()->get_option('jigoshop_prices_include_tax') == 'yes' ? (float)$order->order_shipping + (float)$order->order_shipping_tax : $order->order_shipping);
 
@@ -236,7 +236,6 @@ class paypal extends jigoshop_payment_gateway {
 				'upload' 				=> 1,
 				'return' 				=> add_query_arg('key', $order->order_key, add_query_arg('order', $order_id, get_permalink( $checkout_redirect ))),
 				'cancel_return'			=> $order->get_cancel_order_url(),
-				//'cancel_return'			=> home_url(),
 
 				// Order key
 				'custom'				=> $order_id,
@@ -259,14 +258,10 @@ class paypal extends jigoshop_payment_gateway {
 				// Payment Info
 				'invoice' 				=> $order->order_key,
 				'amount' 				=> $order->order_total,
-				'discount_amount_cart'  => $order->order_discount
 			),
 			$phone_args
 		);
 
-		// changed for Jigoshop 1.4.4 - we -always- send a separate tax amount to PayPal regardless of settings
-		$paypal_args['tax']       = $order->get_total_tax(false,false); // no currency sign or pricing options for separators
-		$paypal_args['tax_cart']  = $order->get_total_tax(false,false); // no currency sign or pricing options for separators
 
 		if ($this->send_shipping=='yes') :
 			$paypal_args['no_shipping'] = 1;
@@ -284,59 +279,101 @@ class paypal extends jigoshop_payment_gateway {
 			$paypal_args['address_override'] = 0;
 		endif;
 
-		// Cart Contents
-		$item_loop = 0;
-		if (sizeof($order->items)>0) : foreach ($order->items as $item) :
 
-			$_product = $order->get_product_from_item( $item );
 
-			if ($_product->exists() && $item['qty']) :
+		// If prices include tax, send the whole order as a single item
+		if ( Jigoshop_Base::get_options()->get_option('jigoshop_prices_include_tax') == 'yes' ) {
 
-				$item_loop++;
+			// Discount
+			$paypal_args['discount_amount_cart'] = $order->order_discount;
 
+			// Don't pass items - PayPal breaks tax due to catalog prices include tax.
+			// PayPal has no option for tax inclusive pricing.
+			// Pass 1 item for the order items overall
+			$item_names = array();
+
+			if ( sizeof( $order->items ) > 0 ) foreach ( $order->items as $item ) {
+
+				$_product = $order->get_product_from_item( $item );
 				$title = $_product->get_title();
-
 				//if variation, insert variation details into product title
 				if ($_product instanceof jigoshop_product_variation) {
-
 					$title .= ' (' . jigoshop_get_formatted_variation( $item['variation'], true) . ')';
-
 				}
 
-				$paypal_args['item_name_'.$item_loop] = $title;
-				$paypal_args['quantity_'.$item_loop] = $item['qty'];
+				$item_names[] = $title . ' x ' . $item['qty'];
 
-				$paypal_args['amount_'.$item_loop] = number_format( apply_filters( 'jigoshop_paypal_adjust_item_price' ,$_product->get_price_excluding_tax(), $item, 10, 2 ), 2); //Apparently, Paypal did not like "28.4525" as the amount. Changing that to "28.45" fixed the issue.
+			}
+
+			$paypal_args['item_name_1'] = sprintf( __('Order %s' , 'jigoshop'), $order->get_order_number() ) . ' - ' . implode(', ', $item_names);
+			$paypal_args['quantity_1'] = 1;
+			$paypal_args['amount_1'] = number_format( $order->order_total - $order->order_shipping - $order->order_shipping_tax + $order->order_discount, 2, '.', '' );
+
+			if ( ( $order->order_shipping + $order->order_shipping_tax ) > 0 ) {
+				$paypal_args['item_name_2'] = __('Shipping cost', 'jigoshop');
+				$paypal_args['quantity_2'] 	= '1';
+				$paypal_args['amount_2'] 	= number_format( $order->order_shipping + $order->order_shipping_tax , 2, '.', '' );
+			}
+
+		} else {
+
+			// Cart Contents
+			$item_loop = 0;
+			if (sizeof($order->items)>0) : foreach ($order->items as $item) :
+
+				$_product = $order->get_product_from_item( $item );
+
+				if ($_product->exists() && $item['qty']) :
+
+					$item_loop++;
+
+					$title = $_product->get_title();
+
+					//if variation, insert variation details into product title
+					if ($_product instanceof jigoshop_product_variation) {
+						$title .= ' (' . jigoshop_get_formatted_variation( $item['variation'], true) . ')';
+					}
+
+					$paypal_args['item_name_'.$item_loop] = $title;
+					$paypal_args['quantity_'.$item_loop] = $item['qty'];
+
+					$paypal_args['amount_'.$item_loop] = number_format( apply_filters( 'jigoshop_paypal_adjust_item_price' ,$_product->get_price_excluding_tax(), $item, 10, 2 ), 2); //Apparently, Paypal did not like "28.4525" as the amount. Changing that to "28.45" fixed the issue.
+				endif;
+			endforeach; endif;
+
+			// Shipping Cost
+			if (jigoshop_shipping::is_enabled()) :
+				$item_loop++;
+				$paypal_args['item_name_'.$item_loop] = __('Shipping cost', 'jigoshop');
+				$paypal_args['quantity_'.$item_loop] = '1';
+
+				// changed for Jigoshop 1.4.4 - always show shipping as separate item, tax will be included in Tax parameter
+				$paypal_args['amount_'.$item_loop] = number_format((float)$order->order_shipping, 2);
 			endif;
-		endforeach; endif;
 
-		// Shipping Cost
-        if (jigoshop_shipping::is_enabled()) :
-            $item_loop++;
-            $paypal_args['item_name_'.$item_loop] = __('Shipping cost', 'jigoshop');
-            $paypal_args['quantity_'.$item_loop] = '1';
+			$paypal_args['tax'] = $order->get_total_tax(false,false); // no currency sign or pricing options for separators
+			$paypal_args['tax_cart'] = $order->get_total_tax(false,false); // no currency sign or pricing options for separators
+			$paypal_args['discount_amount_cart'] = $order->order_discount;
 
-            $shipping_tax = (float)($order->order_shipping_tax ? $order->order_shipping_tax : 0);
+			if ($this->force_payment == 'yes') :
 
-            // changed for Jigoshop 1.4.4 - always show shipping as separate item, tax will be included in Tax parameter
-            $paypal_args['amount_'.$item_loop] = number_format((float)$order->order_shipping, 2);
-        endif; 
-        
-        if ($this->force_payment == 'yes') :
+				$sum = 0;
+				for ($i = 1; $i < $item_loop; $i++) :
+					$sum += $paypal_args['amount_'.$i];
+				endfor;
 
-            $sum = 0;
-            for ($i = 1; $i < $item_loop; $i++) :
-                $sum += $paypal_args['amount_'.$i];
-            endfor;
-            
-            $item_loop++;
-            if ($sum == 0 || (isset($order->order_discount) && $sum - $order->order_discount == 0)) :
-                $paypal_args['item_name_'.$item_loop] = __('Force payment on free', 'jigoshop');
-                $paypal_args['quantity_'.$item_loop] = '1';
-                $paypal_args['amount_'.$item_loop] = 0.01; // force payment
-            endif;
-            
-        endif;
+				$item_loop++;
+				if ($sum == 0 || (isset($order->order_discount) && $sum - $order->order_discount == 0)) :
+					$paypal_args['item_name_'.$item_loop] = __('Force payment on free', 'jigoshop');
+					$paypal_args['quantity_'.$item_loop] = '1';
+					$paypal_args['amount_'.$item_loop] = 0.01; // force payment
+				endif;
+
+			endif;
+
+
+		}
+
 
 		$paypal_args = apply_filters( 'jigoshop_paypal_args', $paypal_args );
 
@@ -406,15 +443,15 @@ class paypal extends jigoshop_payment_gateway {
 	function check_ipn_request_is_valid() {
 
 		jigoshop_log( 'Checking if PayPal IPN response is valid ...' );
-		
+
 		// Get recieved values from post data
 		$current_values = (array) stripslashes_deep( $_POST );
-		
+
 		 // Add cmd to the post array
 		$current_values['cmd'] = '_notify-validate';
 
 		// Send back post vars to paypal
-		$paypal_params = array( 
+		$paypal_params = array(
 			'body'          => $current_values,
 			'sslverify'     => false,
 			'timeout'       => 30,
@@ -423,61 +460,61 @@ class paypal extends jigoshop_payment_gateway {
 
 		// Get url
 		if ( $this->testmode == 'yes' ) {
-			$paypal_adr = $this->testurl;		
+			$paypal_adr = $this->testurl;
 		} else {
-			$paypal_adr = $this->liveurl;		
+			$paypal_adr = $this->liveurl;
 		}
-		
+
 		// Post back to get a response
 		$response = wp_remote_post( $paypal_adr, $paypal_params );
-		
+
 		// check to see if the request was valid
 		if ( ! is_wp_error( $response )
 			&& $response['response']['code'] >= 200
 			&& $response['response']['code'] < 300
 			&& (strcmp( $response['body'], "VERIFIED") == 0)) {
-		
+
 			jigoshop_log( 'Received valid response from PayPal' );
 			return true;
-			
+
 		} else {
-		
+
 			jigoshop_log( 'Received invalid response from PayPal!' );
 			jigoshop_log( 'IPN Response: ' . print_r( $response, true ) );
-			
+
 			if ( is_wp_error( $response ) ) {
 				jigoshop_log( 'PayPal IPN WordPress Error message: ' . $result->get_error_message() );
 			}
-			
+
 			return false;
-		
+
 		}
-		
+
 	}
 
 	/**
 	 * Check for PayPal IPN Response
 	 **/
 	function check_ipn_response() {
-		
+
 		if ( is_admin() ) return;
-		
+
 		if ( isset($_GET['paypalListener']) && $_GET['paypalListener'] == 'paypal_standard_IPN' ) {
 
 			@ob_clean();
-			
+
 			$_POST = stripslashes_deep($_POST);
-			
+
 			if ( self::check_ipn_request_is_valid() ) {
-				
+
 				header('HTTP/1.1 200 OK');
-				
+
 				do_action("valid-paypal-standard-ipn-request", $_POST);
-			
+
 			} else {
-			
+
 				wp_die("PayPal IPN Request Failure");
-			
+
 			}
 
 		} else {
@@ -491,7 +528,7 @@ class paypal extends jigoshop_payment_gateway {
 	 * Successful Payment!
 	 **/
 	function successful_request( $posted ) {
-		
+
 		// 'custom' holds post ID (Order ID)
 		if ( !empty($posted['custom']) && !empty($posted['txn_type']) && !empty($posted['invoice']) ) {
 
@@ -501,7 +538,7 @@ class paypal extends jigoshop_payment_gateway {
 				jigoshop_log( "PAYPAL: function 'successful_request' -- unknown 'txn_type' of '".$posted['txn_type']."' for Order ID: ".$posted['custom']." -- EXITING!" );
 				exit;
 			}
-			
+
 			$order = new jigoshop_order( (int) $posted['custom'] );
 
 			if ( $order->order_key !== $posted['invoice'] ) {
@@ -546,18 +583,18 @@ class paypal extends jigoshop_payment_gateway {
 			exit;
 
 		} else {
-			
+
 			jigoshop_log( "PAYPAL: function 'successful_request' -- empty initial required values -- EXITING!\n'posted' values = " . print_r( $posted, true ) );
-			
+
 		}
 
 	}
-	
+
 	public function process_gateway($subtotal, $shipping_total, $discount = 0) {
-		
+
 		$ret_val = false;
 		if (!(isset($subtotal) && isset($shipping_total))) return $ret_val;
-		
+
 		// check for free (which is the sum of all products and shipping = 0) Tax doesn't count unless prices
 		// include tax
 		if (($subtotal <= 0 && $shipping_total <= 0) || (($subtotal + $shipping_total) - $discount) == 0) :
@@ -570,9 +607,9 @@ class paypal extends jigoshop_payment_gateway {
 		else :
 			$ret_val = true;
 		endif;
-		
+
 		return $ret_val;
-		
+
 	}
 
 }

@@ -174,7 +174,7 @@
 			e.preventDefault();
 			var answer = confirm( jigoshop_params.cart_total );
 			if ( answer ){
-				
+
 				// stuff the normal round function, we'll return it at end of function
 				// replace with alternative, still doesn't work across diff browsers though
 				// TODO: we shouldn't be doing any tax calcs in javascript
@@ -186,7 +186,7 @@
 					var coefficient = Math.pow( 10, precision );
 					return Math._round( number * coefficient ) / coefficient;
 				}
-				
+
 				var taxBeforeDiscount = "<?php Jigoshop_Base::get_options()->get_option('jigoshop_tax_after_coupon'); ?>";
 				var itemTotal = 0;
 				var subtotal = 0;
@@ -218,35 +218,35 @@
 						totalItemCost = parseFloat( itemCost * itemQty );
 
 						if ( itemTax && itemTax > 0 ) {
-							
+
 							// get tax rate into a decimal value
 							taxRate = itemTax / Math.pow(10,2);
-							
+
 							// this will give 4 decimal places or precision
 							itemTax = itemCost * taxRate;
-							
+
 							// round to 3 decimal places
 							itemTax1 = Math.round( itemTax, 3 );
-							
+
 							// round again to 2 decimal places
 							finalItemTax = Math.round( itemTax1, 2 );
-							
+
 							// get the total tax for the product including quantities
 							totalItemTax = finalItemTax * itemQty;
 
 						}
-						
+
 						// total the tax across all products
 						totalTax = totalTax + totalItemTax;
-						
+
 						// total all products without tax
 						subtotal = subtotal + totalItemCost;
 
 					}
 				}
-				
+
 				totalTax = totalTax + parseFloat(shipping_tax);
-				
+
 				// total it all up
 				if ( taxBeforeDiscount == 'no' )
 					total = parseFloat(subtotal) - parseFloat(discount) + parseFloat(totalTax) + parseFloat(shipping);
@@ -259,7 +259,7 @@
 				$('input#order_tax').val( totalTax.toFixed(2) );
 				$('input#order_shipping_tax').val( shipping_tax.toFixed(2) );
 				$('input#order_total').val( total.toFixed(2) );
-				
+
 				Math.round = Math._round;   // return normal round function we altered at the start of function
 			}
 
@@ -339,7 +339,7 @@
 		// Remove attribute
 		$('button.hide_row').live('click', function(e) {
 			e.preventDefault();
-			var answer = confirm("Remove this attribute?")
+			var answer = confirm(jigoshop_params.confirm_remove_attr)
 			if (answer){
 				$parent = $(this).parent();
 				$parent.fadeOut('slow', function() {
@@ -370,12 +370,13 @@
 
 			if (!attribute) {
 				var size = $('.attribute').size();
+
 				// Add custom attribute row
 				var $custom_panel = $('\
 					<div class="postbox attribute custom">\
 						<button type="button" class="hide_row button">Remove</button>\
 						<div class="handlediv" title="Click to toggle"><br></div>\
-						<h3 class="handle">Custom Attribute</h3>\
+						<h3 class="handle">'+jigoshop_params.custom_attr_heading+'</h3>\
 \
 						<input type="hidden" name="attribute_is_taxonomy[' + size + ']" value="0">\
 						<input type="hidden" name="attribute_enabled[' + size + ']" value="1">\
@@ -389,12 +390,12 @@
 										<div>\
 											<label>\
 												<input type="checkbox" checked="checked" name="attribute_visibility[' + size + ']" value="1">\
-												Display on product page\
+												'+jigoshop_params.display_attr_label+'\
 											</label>\
 \
 											<label class="attribute_is_variable">\
 												<input type="checkbox" checked="checked" name="attribute_variation[' + size + ']" value="1">\
-												Is for variations\
+												'+jigoshop_params.variation_attr_label+'\
 											</label>\
 										</div>\
 									</td>\

@@ -339,7 +339,7 @@ jQuery(function(){
 				$order_items = (array) get_post_meta( $order->ID, 'order_items', true );
 				foreach ($order_items as $item) :
 					if ( !isset($item['cost']) || !isset($item['qty'])) continue;
-					$row_cost = $item['cost'] * $item['qty'];
+					$row_cost = $item['cost']; /* this is total final cost multiplied by quantities */
 					$found_products[$item['id']] = isset($found_products[$item['id']]) ? $found_products[$item['id']] + $row_cost : $row_cost;
 				endforeach;
 			endforeach;

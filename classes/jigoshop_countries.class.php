@@ -618,6 +618,7 @@ class jigoshop_countries extends Jigoshop_Base {
 			'HKB'            => 'Hawke\'s Bay',
 			'MWT'            => 'Manawatu-Wanganui',
 			'MBH'            => 'Marlborough',
+			'NSN'            => 'Nelson',
 			'NTL'            => 'Northland',
 			'OTA'            => 'Otago',
 			'STL'            => 'Southland',
@@ -886,12 +887,12 @@ class jigoshop_countries extends Jigoshop_Base {
 	}
 
 	/** Outputs the list of countries and states for use in dropdown boxes */
-	function country_dropdown_options( 
-		$selected_country = '', 
-		$selected_state = '*', 
-		$escape = true, 
-		$show_all = true, 
-		$echo = true 
+	function country_dropdown_options(
+		$selected_country = '',
+		$selected_state = '*',
+		$escape = true,
+		$show_all = true,
+		$echo = true
 		) {
 
 		$output = '';
