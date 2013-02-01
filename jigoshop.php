@@ -22,7 +22,7 @@
  * Author:              Jigowatt
  * Author URI:          http://jigowatt.co.uk
  *
- * Version:             1.5
+ * Version:             1.5.1
  * Requires at least:   3.3
  * Tested up to:        3.5.1
  *

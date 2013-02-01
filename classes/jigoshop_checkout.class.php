@@ -882,7 +882,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 						// Redirect to success/confirmation/payment page
 						$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', jigoshop_get_page_id('thanks') );
 						if (is_ajax()) :
-							echo json_encode( array( 'redirect'	=> get_permalink( $checkout_redirect ) ) );
+							echo json_encode( array( 'result' => 'success', 'redirect' => get_permalink( $checkout_redirect ) ) );
 							exit;
 						else :
 							wp_safe_redirect( get_permalink( $checkout_redirect ) );
