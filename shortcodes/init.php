@@ -372,8 +372,8 @@ function jigoshop_sale_products( $atts ) {
 		'pagination'                => false
 	), $atts));
 
-  	$today = date('Y-m-d',time());
-  	$tomorrow = date('Y-m-d',mktime(0, 0, 0, date("m"), date("d")+1, date("Y")) );
+	$today = strtotime(date('Y-m-d',mktime(0, 0, 0, date("m"), date("d"), date("Y")) ));
+	$tomorrow = date('Y-m-d',mktime(0, 0, 0, date("m"), date("d")+1, date("Y")) );
 
 	$args = array(
 		'post_type'                 => array( 'product' ),

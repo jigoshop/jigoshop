@@ -4,7 +4,7 @@ Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, wid
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.5
+Stable tag: 1.5.1
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,8 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.5.1 - 2013-02-01 =
+* Fix: 3rd party Shipping modules and Payment gateways will now display in settings
 = 1.5 - 2013-01-29 =
 * New: General tab setting to display 'Return to Shop' button on the Cart page
 * New: Products tab setting to adjust thumbnail images per row on Product pages

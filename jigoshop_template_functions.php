@@ -359,7 +359,7 @@ if (!function_exists('jigoshop_grouped_add_to_cart')) {
 					<?php endforeach; ?>
 				</tbody>
 			</table>
-      <?php do_action('jigoshop_before_add_to_cart_form_button'); ?>
+			<?php do_action('jigoshop_before_add_to_cart_form_button'); ?>
 			<button type="submit" class="button-alt"><?php _e('Add to cart', 'jigoshop'); ?></button>
 			<?php do_action('jigoshop_add_to_cart_form'); ?>
 		</form>
@@ -725,7 +725,7 @@ if (!function_exists('jigoshop_get_image_placeholder')) {
  **/
 if (!function_exists('jigoshop_output_related_products')) {
 	function jigoshop_output_related_products() {
-        $jigoshop_options = Jigoshop_Base::get_options();
+		$jigoshop_options = Jigoshop_Base::get_options();
 		if ($jigoshop_options->get_option ('jigoshop_enable_related_products') != 'no')
 			// 2 Related Products in 2 columns
 			jigoshop_related_products( 2, 2 );

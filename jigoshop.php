@@ -22,7 +22,7 @@
  * Author:              Jigowatt
  * Author URI:          http://jigowatt.co.uk
  *
- * Version:             1.5
+ * Version:             1.5.1
  * Requires at least:   3.3
  * Tested up to:        3.5.1
  *
@@ -42,14 +42,25 @@
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
-if ( !defined( "JIGOSHOP_VERSION" )) define( "JIGOSHOP_VERSION", 1301280) ;
-if ( !defined( "JIGOSHOP_OPTIONS" )) define( "JIGOSHOP_OPTIONS", 'jigoshop_options' );
-if ( !defined( 'JIGOSHOP_TEMPLATE_URL' ) ) define( 'JIGOSHOP_TEMPLATE_URL', 'jigoshop/' );
-if ( !defined( "PHP_EOL" )) define( "PHP_EOL", "\r\n" );
+if ( ! defined( "JIGOSHOP_VERSION" ) ) {
+	define( "JIGOSHOP_VERSION", 1301280 );
+}
+
+if ( ! defined( "JIGOSHOP_OPTIONS" ) ) {
+	define( "JIGOSHOP_OPTIONS", 'jigoshop_options' );
+}
+
+if ( ! defined( 'JIGOSHOP_TEMPLATE_URL' ) ) {
+	define( 'JIGOSHOP_TEMPLATE_URL', 'jigoshop/' );
+}
+
+if ( ! defined( "PHP_EOL" ) ) {
+	define( "PHP_EOL", "\r\n" );
+}
 
 /**
  * Include core files and classes
- **/
+ */
 include_once( 'classes/abstract/jigoshop_base.class.php' );
 include_once( 'classes/abstract/jigoshop_singleton.class.php' );
 include_once( 'classes/jigoshop_options.class.php' );
@@ -101,12 +112,11 @@ include_once( 'jigoshop_actions.php' );
 
 /**
  * IIS compat fix/fallback
- **/
+ */
 if ( ! isset( $_SERVER['REQUEST_URI'] )) {
 	$_SERVER['REQUEST_URI'] = substr( $_SERVER['PHP_SELF'], 1 );
 	if ( isset( $_SERVER['QUERY_STRING'] )) { $_SERVER['REQUEST_URI'] .= '?' . $_SERVER['QUERY_STRING']; }
 }
-
 
 // Load administration & check if we need to install
 if ( is_admin() ) {
@@ -114,13 +124,11 @@ if ( is_admin() ) {
 	register_activation_hook( __FILE__, 'install_jigoshop' );
 }
 
-
 /**
  * Jigoshop Inits
- **/
+ */
 add_action( 'init', 'jigoshop_init', 0 );
 function jigoshop_init() {
-
 	/* ensure nothing is output to the browser prior to this (other than headers) */
 	ob_start();
 
@@ -152,15 +160,13 @@ function jigoshop_init() {
 
 	jigoshop_cart::instance();                  // Cart class, uses sessions
 
-	if ( ! is_admin()) {
-
+	if ( ! is_admin() ) {
 		/* Catalog Filters */
 		add_filter( 'loop-shop-query', create_function( '', 'return array("orderby" => "' . $jigoshop_options->get_option('jigoshop_catalog_sort_orderby') . '","order" => "' . $jigoshop_options->get_option('jigoshop_catalog_sort_direction') . '");' ) );
 		add_filter( 'loop_shop_columns' , create_function( '', 'return ' . $jigoshop_options->get_option('jigoshop_catalog_columns') . ';' ) );
 		add_filter( 'loop_shop_per_page', create_function( '', 'return ' . $jigoshop_options->get_option('jigoshop_catalog_per_page') . ';' ) );
 
 		jigoshop_catalog_query::instance();		// front end queries class
-
 	}
 
 	jigoshop_roles_init();
