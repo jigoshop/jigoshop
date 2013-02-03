@@ -772,7 +772,6 @@ msgid "Sale!"
 msgstr "Розпродаж!"
 
 #: ../jigoshop_template_functions.php:101
-#, fuzzy
 msgctxt "verb"
 msgid "Select"
 msgstr "Вибрати"
@@ -934,7 +933,9 @@ msgstr "Клацніть тут, щоб увійти"
 msgid ""
 "Please verify your Billing and Shipping state is correctly set for your "
 "country before placing your Order."
-msgstr ""
+msgstr "Будь ласка, перевірте, що область (штат) для виставлення рахунку "
+"і доставки правильно встановлені для вашої країни перед надсиланням "
+"замовлення."
 
 #: ../jigoshop_template_functions.php:925
 msgctxt "breadcrumb"
@@ -1026,9 +1027,8 @@ msgid "Text"
 msgstr "Текст"
 
 #: ../admin/jigoshop-admin-attributes.php:158
-#, fuzzy
 msgid "Save Attribute"
-msgstr "Атрибути"
+msgstr "Зберегти атрибут"
 
 #: ../admin/jigoshop-admin-attributes.php:189
 msgid "Label"
@@ -1197,9 +1197,8 @@ msgstr "Без залишків/Попереднє замовлення"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-dashboard.php:310
-#, fuzzy
 msgid " reviewed by "
-msgstr "%s огляд для %s"
+msgstr " оглянуто "
 
 #: ../admin/jigoshop-admin-dashboard.php:316
 msgid "There are no product reviews yet."
@@ -1325,16 +1324,18 @@ msgid ""
 "From design to deployment Jigowatt delivers expert solutions to enterprise "
 "customers using Magento & WordPress open source platforms."
 msgstr ""
+"Від дизайну до розгортання Jigowatt надає для підприємств-замовників "
+"експертні рішення, використовуючи платформи з відкритим початковим кодом "
+"Magento і Wordpress."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-dashboard.php:440
-#, fuzzy
 msgid "Next Month &rarr;"
-msgstr "Оформити &rarr;"
+msgstr "Наступний місяць &rarr;"
 
 #: ../admin/jigoshop-admin-dashboard.php:442
 msgid "&larr; Previous Month"
-msgstr ""
+msgstr "&larr; Попередній місяць"
 
 #: ../admin/jigoshop-admin-dashboard.php:575
 #: ../admin/jigoshop-admin-dashboard.php:622
@@ -1353,15 +1354,18 @@ msgid ""
 "Attributes can have many types which affect how they are displayed in both "
 "the admin &amp; frontend, these include"
 msgstr ""
+"Атрибути можуть мати багато типів, які впливають на те, як вони "
+"відображаються у адмінці і на сторінці. Вони включають"
 
 #: ../admin/jigoshop-admin-help.php:25
 msgid ""
 "is used for attributes which can only have <strong>one</strong> value. Note: "
 "this type can not be used for variations"
 msgstr ""
+"використовується для атрибутів, які можуть мати <strong>одне</strong> "
+"значення. Примітка: цей тип не можна використати для варіацій."
 
 #: ../admin/jigoshop-admin-help.php:26
-#, fuzzy
 msgid "Multiple Select"
 msgstr "Вибір множини"
 
@@ -1371,12 +1375,16 @@ msgid ""
 "possible attributes, for example available colours. This attribute type can "
 "be used for variations"
 msgstr ""
+"використовується у ситуаціях, коли товар може належати до багатьох, але не "
+"всіх можливих атрибутів, наприклад, доступні кольори. Цей атрибут можна "
+"використовувати для варіацій."
 
 #: ../admin/jigoshop-admin-help.php:27
 msgid ""
 "is used when you do not know what options there are until it comes to "
 "creating a product"
 msgstr ""
+"використовується, коли невідомо, які є опції доки товар не створено."
 
 #: ../admin/jigoshop-admin-help.php:29
 msgid ""
@@ -1384,12 +1392,17 @@ msgid ""
 "created in the product creation screen, these attributes are mainly only "
 "used for one-off attributes"
 msgstr ""
+"Додатково до цих всіх типів ще є довільні атрибути, які створюються "
+"на сторінці створення товару, ці атрибути в основному використовуються тільки "
+"для одного разу."
 
 #: ../admin/jigoshop-admin-help.php:33
 msgid ""
 "Once youve set up your attribute with a name &amp; a type the final task is "
 "to create some options"
 msgstr ""
+"Як тільки ви встановили атрибут з назвою і типом, залишається тільки "
+"створити якісь опції."
 
 #: ../admin/jigoshop-admin-help.php:34
 msgid ""
@@ -1397,10 +1410,13 @@ msgid ""
 "this should take you to a new screen. Once there simply add options the same "
 "as you would a category/tag"
 msgstr ""
+"Щоб створити опцію, клацніть на назві атрибута праворуч на сторінці, "
+"це має привести до нової сторінки. На ній просто додайте опції так само, "
+"як категорію чи мітку."
 
 #: ../admin/jigoshop-admin-help.php:35
 msgid "Thats really all there is to it, enjoy"
-msgstr ""
+msgstr "Це геть все на цю тему, насолоджуйтеся!"
 
 #: ../admin/jigoshop-admin-help.php:40 ../admin/jigoshop-admin-help.php:91
 #: ../admin/jigoshop-admin-help.php:134 ../admin/jigoshop-admin-help.php:188
@@ -1411,21 +1427,18 @@ msgstr "Більше інформації"
 #: ../admin/jigoshop-admin-help.php:41 ../admin/jigoshop-admin-help.php:92
 #: ../admin/jigoshop-admin-help.php:135 ../admin/jigoshop-admin-help.php:189
 #: ../admin/jigoshop-admin-help.php:268
-#, fuzzy
 msgid "Documentation on"
-msgstr "Документація"
+msgstr "Документація на"
 
 #: ../admin/jigoshop-admin-help.php:41
-#, fuzzy
 msgid "Product Attributes"
-msgstr "Редагувати атрибут"
+msgstr "Атрибути товару"
 
 #: ../admin/jigoshop-admin-help.php:42 ../admin/jigoshop-admin-help.php:93
 #: ../admin/jigoshop-admin-help.php:136 ../admin/jigoshop-admin-help.php:190
 #: ../admin/jigoshop-admin-help.php:269
-#, fuzzy
 msgid "Support Forum"
-msgstr "Підтримка"
+msgstr "Форум підтримки"
 
 #: ../admin/jigoshop-admin-help.php:48 ../admin/jigoshop-admin-help.php:99
 #: ../admin/jigoshop-admin-help.php:142 ../admin/jigoshop-admin-help.php:196
@@ -1455,6 +1468,8 @@ msgid ""
 "You can use categories to define sections of your site and group related "
 "products"
 msgstr ""
+"Можна скористатися категоріями, щоб визначити розділи сайту і згрупувати "
+"пов’язані товари."
 
 #: ../admin/jigoshop-admin-help.php:75 ../admin/jigoshop-admin-help.php:119
 msgid ""
@@ -1464,12 +1479,19 @@ msgid ""
 "determined sections. If you think of your site like a book, the categories "
 "are like the Table of Contents and the tags are like the terms in the index"
 msgstr ""
+"Яка різниця між категоріями і мітками? Зазвичай, мітки — це ключові слова "
+"для цього випадку, які ідентифікують важливу інформацію у вашій "
+"публікації (назви, теми тощо), що можливо повториться у інших товарах. "
+"А категорії — це наперед визначері розділи. "
+"Якщо уявити ваш сайт як книжку, категорії "
+"схожі на зміст, а мітки на терміни в показнку."
 
 #: ../admin/jigoshop-admin-help.php:79
 msgid ""
 "When adding a new category on this screen, you’ll fill in the following "
 "fields"
 msgstr ""
+"Додаючи нову категорію на цій сторінці, ви заповните такі поля"
 
 # @ jigoshop
 # @ default
@@ -1477,23 +1499,23 @@ msgstr ""
 #: ../admin/write-panels/order-data.php:208
 #: ../templates/single-product-reviews.php:94
 msgid "Name"
-msgstr "Ім’я"
+msgstr "Назва"
 
 #: ../admin/jigoshop-admin-help.php:81 ../admin/jigoshop-admin-help.php:125
-#, fuzzy
 msgid "The name is how it appears on your site"
-msgstr "Назва, як вона буде показана на сайті."
+msgstr "Назва, як її буде показано на сторінці."
 
 #: ../admin/jigoshop-admin-help.php:82 ../admin/jigoshop-admin-help.php:126
 msgid ""
 "The “slug” is the URL-friendly version of the name. It is usually all "
 "lowercase and contains only letters, numbers, and hyphens"
 msgstr ""
+"«Скорочення» це версія назви для URL. Зазвичай це малі літери "
+"і містить тільки букви, цифри і дефіс."
 
 #: ../admin/jigoshop-admin-help.php:83
-#, fuzzy
 msgid "Parent"
-msgstr "Батьківські "
+msgstr "Батько"
 
 #: ../admin/jigoshop-admin-help.php:83
 msgid ""
@@ -1502,12 +1524,18 @@ msgid ""
 "Totally optional. To create a subcategory, just choose another category from "
 "the Parent dropdown"
 msgstr ""
+"Категорії на відміну від міток можуть мати ієрархію. У вас може бути "
+"категорія Джаз, "
+"і під ним похідні категорії для Bebop і Big Band. "
+"Цілком необов’язково. Щоб створити підкатегорію, просто виберіть іншу "
+"категорію з випадного списку «Батько»."
 
 #: ../admin/jigoshop-admin-help.php:84 ../admin/jigoshop-admin-help.php:127
 msgid ""
 "The description is not prominent by default; however, some themes may "
 "display it"
 msgstr ""
+"Опис зазвичай не видно; проте, деякі теми можуть його показувати."
 
 #: ../admin/jigoshop-admin-help.php:86 ../admin/jigoshop-admin-help.php:129
 msgid ""
@@ -1515,6 +1543,9 @@ msgid ""
 "set how many items are displayed per screen and to display/hide columns in "
 "the table"
 msgstr ""
+"Ви можете змінити відображення цієї сторінки, скориставшись вкладкою "
+"«Опції екрану» щоб встановити, скільки елементів показувати на екрані "
+"і щоб показати/сховати стовпці в таблиці."
 
 #: ../admin/jigoshop-admin-help.php:105
 msgid "Adding Product Categories"
@@ -1526,11 +1557,16 @@ msgid ""
 "categories, tags have no hierarchy, meaning there’s no relationship from one "
 "tag to another"
 msgstr ""
+"Ви можете призначити ключові слова до ваших товарів, використовуючи "
+"<strong>мітки</strong>. На відміну від "
+"категорій, мітки не мають ієрархії, тобто немає зв’язку однієї мітки "
+"з іншою."
 
 #: ../admin/jigoshop-admin-help.php:123
 msgid ""
 "When adding a new tag on this screen, you’ll fill in the following fields"
 msgstr ""
+"Додаючи нову мітку на цій сторінці, ви заповните такі поля"
 
 #: ../admin/jigoshop-admin-help.php:148
 msgid "Adding Product Tags"
@@ -1584,12 +1620,16 @@ msgid ""
 "You can search for products by ID simply type ID: followed by the ID you "
 "want to search by into the search box"
 msgstr ""
+"Ви можете шукати товари по ідентифікатору. Просто введіть ID:, за ним "
+"той ідентифікатор, який треба знайти, у поле пошуку."
 
 #: ../admin/jigoshop-admin-help.php:176
 msgid ""
 "You can search for products by SKU simply type SKU: followed by the SKU you "
 "want to search by into the search box"
 msgstr ""
+"Ви можете шукати товари по артикулу. Просто введіть SKU:, за ним "
+"той артикул, який треба знайти, у поле пошуку. "
 
 #: ../admin/jigoshop-admin-help.php:181
 msgid ""
@@ -1614,15 +1654,16 @@ msgstr ""
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-help.php:189
-#, fuzzy
 msgid "Managing Products"
-msgstr "Випадкові товари"
+msgstr "Керування товарами"
 
 #: ../admin/jigoshop-admin-help.php:197
 msgid ""
 "This screen provides access to all of your products. You can customize the "
 "display of this screen to suit your workflow"
 msgstr ""
+"На цій сторінці можна доступитися до всіх ваших товарів. Ви можете "
+"пристосувати відображення цієї сторінки до вашого робочого циклу."
 
 #: ../admin/jigoshop-admin-help.php:202
 msgid "Screen Content"
@@ -1643,6 +1684,9 @@ msgid ""
 "categorized by tabs & runs through quickly what each one does. If you need "
 "an extra hand please check out the links to the right"
 msgstr ""
+"Привіт! Здається, вам потрібна допомога. Цей розділ допомоги категоризовано "
+"вкладками, і швидко пояснює, що робить кожна з них. Якщо вам потрібна "
+"додаткова допомога, будь ласка, відвідайте посилання праворуч."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-help.php:227
@@ -1657,6 +1701,10 @@ msgid ""
 "type & offer the standard view. For more info on product types please "
 "consult the documentation"
 msgstr ""
+"Товари розбито на типи, які визначають спосіб купівлі "
+"для ваших замовників. Прості товари найбільш типові і "
+"пропонують стандартний перегляд. Щоб дізнатися більше про типи товарів, "
+"будь ласка, зверніться до документації."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-help.php:228
@@ -1669,6 +1717,7 @@ msgid ""
 "This is the baseline price for your product & is what Jigoshop will always "
 "default to"
 msgstr ""
+"Це базова ціна вашого товару, і Jigoshop починатиме завжди з неї."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-help.php:229
@@ -1682,6 +1731,8 @@ msgid ""
 "Entering a price or percentage here will place your product on sale unless "
 "it is scheduled by clicking the schedule link"
 msgstr ""
+"Введення тут ціни чи відсотку виставить ваш товар на розпродаж, доки "
+"його не заплановано натисненням на відповідне посилання."
 
 #: ../admin/jigoshop-admin-help.php:230
 #: ../admin/jigoshop-admin-post-types.php:62
@@ -1693,6 +1744,7 @@ msgid ""
 "Featuring a product enables its display on the featured products shortcode & "
 "widget"
 msgstr ""
+"Виділення товару дозволяє його показ серед вибраного."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-help.php:234
@@ -1705,6 +1757,8 @@ msgid ""
 "Switches where taxation rules are applied to the product. Selecting Shipping "
 "will only apply tax to the shipping cost of the product"
 msgstr ""
+"Перемикає, як застосовуються правила нарахування податків до товару. "
+"Вибір «Доставка» застосує податок тільки на ціну доставки товару."
 
 #: ../admin/jigoshop-admin-help.php:235
 #: ../admin/jigoshop-admin-settings-api.php:1171
@@ -1718,6 +1772,8 @@ msgid ""
 "Choose what defined tax classes apply to this product. By default Standard "
 "rate taxation is selected"
 msgstr ""
+"Виберіть, що визначає класи податків для цього товару. Типово "
+"вибирається стандартна норма податкування."
 
 #: ../admin/jigoshop-admin-help.php:236
 #: ../admin/write-panels/product-data.php:281
@@ -1732,18 +1788,24 @@ msgid ""
 "hides the product completely whereas <strong>Catalog & Search</strong> "
 "enables the product in all areas"
 msgstr ""
+"Визначає, де товар видно. <strong>Тільки каталог</strong> приховує "
+"товар з результатів пошуку, з іншого боку <strong>Тільки пошук</"
+"strong> приховує товар у каталогу магазину. <strong>Прихований</strong> "
+"ховає товар цілком, а <strong>Каталог і пошук</strong> "
+"показує товар всюди."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-help.php:240
-#, fuzzy
 msgid "Manage Stock"
-msgstr "Керувати запасами?"
+msgstr "Керувати запасами"
 
 #: ../admin/jigoshop-admin-help.php:240
 msgid ""
 "Enabling this will allow Jigoshop to automatically decrease stock & warn you "
 "when supplies are low on the dashboard page"
 msgstr ""
+"Увімкнення цього дозволить Jigoshop автоматично зменшувати запаси і "
+"попереджувати вас на сторінці майстерні, коли ресурси низькі."
 
 #: ../admin/jigoshop-admin-help.php:241
 #: ../admin/write-panels/product-data.php:343
@@ -1755,6 +1817,7 @@ msgid ""
 "Manually switch the stock status of the product between In Stock & Out of "
 "Stock"
 msgstr ""
+"Вручну перемикати статус запасів товару між «Є» і «Немає»."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-help.php:242
@@ -1767,12 +1830,13 @@ msgid ""
 "Set the initial stock quantity for Jigoshop stock management. This can be "
 "adjusted when new shipments arrive & stock levels increase"
 msgstr ""
+"Встановити початковий обсяг запасів для керування запасами. "
+"Його можна підганяти, як з’являються надходження і обсяги запасів зростають."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-help.php:243
-#, fuzzy
 msgid "Allow Backorders"
-msgstr "Доступний для попереднього замовлення?"
+msgstr "Дозволити попереднє замовлення"
 
 #: ../admin/jigoshop-admin-help.php:243
 msgid ""
@@ -1780,6 +1844,10 @@ msgid ""
 "enables this. Notification to the customer can also be set which displays a "
 "message on the catalog screen when stocks are low"
 msgstr ""
+"Іноді вам може знадобитися продавати нижче рівнів обсягів запасів. "
+"Увімкнення попередніх замовлень дозволяє це. Також можна встановити "
+"оголошення замовникові, яке покаже повідомлення на сторінці каталогу, "
+"коли when запаси малі."
 
 #: ../admin/jigoshop-admin-help.php:247
 msgid ""
@@ -1790,6 +1858,12 @@ msgid ""
 "selecting the attribute to be added and then clicking the Add Attribute "
 "button. Attributes can be ordered by dragging & dropping the attributes"
 msgstr ""
+"Атрибути визначають різні характеристики вашого товару. Їх "
+"потім можна використати, щоб відібрати і описати ваш товар. Їх треба "
+"спочатку сконфігурувати на сторінці «Атрибути», потім додати до товарів "
+"на вкладці атрибутів панелі даних товару. Атрибути можна додати, спершу "
+"вибравши і потім клацнувши на клавішу «Додати атрибут». "
+"Атрибути можна впорядкувати перетягуючи їх."
 
 #: ../admin/jigoshop-admin-help.php:248 ../admin/jigoshop-write-panels.php:190
 #: ../admin/write-panels/product-data.php:592
@@ -1803,6 +1877,9 @@ msgid ""
 "this will display the attribute & its values in the Additional Information "
 "tab of the product view"
 msgstr ""
+"Ви можете використовувати атрибути для фільтрування чи варіацій. Увімкнення "
+"цього покаже атрибут і його значення у вкладці «Додаткова інформація» "
+"при перегляді товару."
 
 #: ../admin/jigoshop-admin-help.php:249 ../admin/jigoshop-write-panels.php:191
 #: ../admin/write-panels/product-data.php:597
@@ -1815,6 +1892,8 @@ msgid ""
 "Marks the attribute for variation. You must first mark your attributes for "
 "variation before adding any variations"
 msgstr ""
+"Позначає атрибут як варіацію. Спочатку потрібно позначити ваші атрибути "
+"перед додаванням будь-якої варіації."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-help.php:253
@@ -1827,6 +1906,8 @@ msgid ""
 "Specify the Grouped product to attach this product to. Before you can attach "
 "a product you must first create the grouped product"
 msgstr ""
+"Зазначте груповий товар, до якого додати цей товар. Передусім ви маєте "
+"створити груповий товар."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-help.php:254
@@ -1839,18 +1920,21 @@ msgid ""
 "Specify the order in which these products appear in the grouping. Similar to "
 "post order for WordPress Posts"
 msgstr ""
+"Зазначте порядок відображення цих товарів у групуванні. Схоже на порядок "
+"публікацій у WordPress."
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-help.php:255
-#, fuzzy
 msgid "File URL"
-msgstr "Файл"
+msgstr "URL файлу"
 
 #: ../admin/jigoshop-admin-help.php:255
 msgid ""
 "Specify the location of your downloadable asset. The file can be either "
 "stored locally & accessed using the Media Uploader or externally"
 msgstr ""
+"Зазначте місце ваших завантажувальних активів. Або вайл зберігається "
+"локально і доступний через «Вивантажувач медіа», або зовні."
 
 #: ../admin/jigoshop-admin-help.php:256
 #: ../admin/write-panels/product-data.php:450
@@ -1862,6 +1946,8 @@ msgid ""
 "Restricts the number of redownloads a customer can use on that product. Once "
 "the limit is up they must re purchase the file"
 msgstr ""
+"Обмежує кількість повторних завантажень, які замовник може здійснити. Як "
+"тільки обмеження встановлене, вони мають замовити файл повторно."
 
 #: ../admin/jigoshop-admin-help.php:260
 msgid ""
@@ -1869,6 +1955,9 @@ msgid ""
 "pick a specific variant of the product. For example a Shirt could come in "
 "sizes Small, Medium & Large each with varying stocks & pricing"
 msgstr ""
+"Варіації — це дуже потужний аспект Jigoshop, вони дозволяють замовникам "
+"вибрати певний варіант товару. Наприклад, розмір сорочки може бути "
+"малий, середній і великий, кожний з різним запасом і ціною."
 
 #: ../admin/jigoshop-admin-help.php:261
 msgid ""
@@ -1877,6 +1966,10 @@ msgid ""
 "parts which enables you to create powerful combinations. For example when "
 "selling a book what format it arrives in (Printed or e-Book)"
 msgstr ""
+"Наразі варіації можуть мати три різні типи: прості, завантажувальні і "
+"віртуальні. Ці типи поводяться майже так само, як їхні аналоги "
+"головного товару, що дозволяє вам створювати потужні комбінації. "
+"Наприклад, в якому форматі продається книжка (друкованому чи електронному)."
 
 #: ../admin/jigoshop-admin-help.php:262
 msgid ""
@@ -1884,15 +1977,17 @@ msgid ""
 "variation. Once this has been done you can then add & configure as many "
 "variations as there are combinations"
 msgstr ""
+"Щоб створити варіації, спершу ви маєте додати і зберегти атрибути для "
+"варіацій. Як тільки це зроблено, ви можете додати і сконфігурувати стільки "
+"варіацій, скільки є комбінацій."
 
 #: ../admin/jigoshop-admin-help.php:263
 msgid "click here to learn more about variable products"
-msgstr ""
+msgstr "клацніть тут, щоб дізнатися більше про варіаційні товари"
 
 #: ../admin/jigoshop-admin-help.php:268
-#, fuzzy
 msgid "Creating Products"
-msgstr "Подібні товари"
+msgstr "Створення товарів"
 
 #: ../admin/jigoshop-admin-help.php:278
 msgid "General Settings"
@@ -2074,10 +2169,9 @@ msgstr "Замовлення %s"
 #: ../admin/jigoshop-admin-post-types.php:332
 msgctxt "date"
 msgid "c"
-msgstr ""
+msgstr "c"
 
 #: ../admin/jigoshop-admin-post-types.php:332
-#, fuzzy
 msgid "F j, Y, g:i a"
 msgstr "M j, Y @ G:i"
 
@@ -2398,6 +2492,8 @@ msgid ""
 "No setting was found in your database for this option.  Make sure you have "
 "upgraded your database for Jigoshop."
 msgstr ""
+"Нічого не знайдено в базі даних для цієї опції. Переконайтеся, що ви "
+"поновили базу даних для Jigoshop."
 
 #: ../admin/jigoshop-admin-settings-api.php:1170
 #: ../admin/jigoshop-admin-settings-api.php:1181
@@ -3016,13 +3112,12 @@ msgstr "Переглянути сторінку замовлення"
 
 #: ../admin/jigoshop-admin-settings-options.php:395
 #: ../classes/jigoshop_options.class.php:985
-#, fuzzy
 msgid ""
 "Shortcode to place on page: <code>[jigoshop_view_order]</code><br/>Default "
 "parent page: My Account"
 msgstr ""
-"Шорткод для цієї сторінки: <code>[jigoshop_view_order]</code><br/"
-">Батьківська сторінка: Мій обліковий запис"
+"Шорткод для сторінки: <code>[jigoshop_view_order]</code><br/"
+">Початкова батьківська сторінка: Мій обліковий запис"
 
 #: ../admin/jigoshop-admin-settings-options.php:404
 #: ../classes/jigoshop_options.class.php:993
@@ -4104,13 +4199,13 @@ msgid "Remove image"
 msgstr "Видалити зображення"
 
 #: ../admin/jigoshop-admin.php:45
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Your database needs an update for Jigoshop. Please <strong>backup</strong> "
 "&amp; %s."
 msgstr ""
-"Ваша база даних потребує поновлення. Будь ласка, <strong>зробіть резервну "
-"копію</strong> і %s."
+"Ваша база даних потребує поновлення для Jigoshop. Будь ласка, "
+"<strong>зробіть резервну копію</strong> і %s."
 
 #: ../admin/jigoshop-admin.php:45
 msgid "update now"
@@ -4315,14 +4410,12 @@ msgstr "Значення мета"
 
 # @ jigoshop
 #: ../admin/jigoshop-write-panels.php:189
-#, fuzzy
 msgid "Custom Attribute"
-msgstr "Налагоджений атрибут товару"
+msgstr "Особливий атрибут"
 
 #: ../admin/jigoshop-write-panels.php:192
-#, fuzzy
 msgid "Remove this attribute?"
-msgstr "Видалити цю позицію."
+msgstr "Знищити цей атрибут?"
 
 # @ jigoshop
 #: ../admin/write-panels/coupon-data.php:33
@@ -4378,7 +4471,7 @@ msgstr "Межа використання"
 #: ../admin/write-panels/coupon-data.php:103
 #, php-format
 msgid "Times used: %s"
-msgstr ""
+msgstr "Використано разів: %s"
 
 #: ../admin/write-panels/coupon-data.php:113
 msgid ""
@@ -4846,7 +4939,7 @@ msgstr "Заплановано"
 #: ../admin/write-panels/product-data.php:145
 #, php-format
 msgid "15% or 19.99"
-msgstr ""
+msgstr "15% чи 19,99"
 
 #: ../admin/write-panels/product-data.php:151
 msgid "On Sale Between"
@@ -5055,9 +5148,8 @@ msgstr "Дізнайтеся, як створювати атрибути тов�
 
 #: ../admin/write-panels/product-data.php:573
 #: ../admin/write-panels/product-data.php:678
-#, fuzzy
 msgid "Click to toggle"
-msgstr "Клацніть тут, щоб увійти"
+msgstr "Клацніть тут, щоб перемкнути"
 
 # @ jigoshop
 #: ../admin/write-panels/product-data.php:606
@@ -5066,10 +5158,9 @@ msgstr "Виберіть опцію&hellip;"
 
 #: ../admin/write-panels/product-data.php:645
 msgid "Toggle"
-msgstr "Відкрити"
+msgstr "Перемкнути"
 
 #: ../admin/write-panels/product-data.php:646
-#, fuzzy
 msgid "Show All"
 msgstr "Показати всі"
 
@@ -5137,7 +5228,7 @@ msgstr "Розпродажні ціни"
 
 #: ../admin/write-panels/product-types/variable.php:299
 msgid "Apply"
-msgstr ""
+msgstr "Застосувати"
 
 #: ../admin/write-panels/product-types/variable.php:310
 msgid "Learn how to make a Variation"
@@ -5170,579 +5261,475 @@ msgid "Action failed. Please refresh the page and retry."
 msgstr "Невдала дія. Будь ласка оновіть сторінку і спробуйте знову."
 
 #: ../classes/jigoshop.class.php:365
-#, fuzzy
 msgid "United Arab Emirates dirham"
-msgstr "Об’єднані Арабські Емірати"
+msgstr "Дирхам Об’єднаних Арабських Еміратів"
 
 #: ../classes/jigoshop.class.php:366
-#, fuzzy
 msgid "Afghanistan Afghani"
-msgstr "Афганістан"
+msgstr "Афгані Афганістану"
 
 #: ../classes/jigoshop.class.php:367
-#, fuzzy
 msgid "Albania Lek"
-msgstr "Албанія"
+msgstr "Албанський лек"
 
 #: ../classes/jigoshop.class.php:368
-#, fuzzy
 msgid "Netherlands Antilles Guilder"
-msgstr "Нідерландські Антильські острови"
+msgstr "Гільдер Нідерландських Антильських островів"
 
 #: ../classes/jigoshop.class.php:369
-#, fuzzy
 msgid "Argentina Peso"
-msgstr "Аргентина"
+msgstr "Аргентинський песо"
 
 # @ jigoshop
 #: ../classes/jigoshop.class.php:370
-#, fuzzy
 msgid "Australia Dollar"
-msgstr "Австралійський долар (&#36;)"
+msgstr "Австралійський долар"
 
 #: ../classes/jigoshop.class.php:371
 msgid "Aruba Guilder"
-msgstr ""
+msgstr "Арубський гільдер"
 
 #: ../classes/jigoshop.class.php:372
-#, fuzzy
 msgid "Azerbaijan New Manat"
-msgstr "Азербайджан"
+msgstr "Новий азербайджанський манат"
 
 #: ../classes/jigoshop.class.php:373
-#, fuzzy
 msgid "Bosnia and Herzegovina Convertible Marka"
-msgstr "Боснія і Герцеговина"
+msgstr "Конвертована марка Боснії і Герцеговини"
 
 #: ../classes/jigoshop.class.php:374
-#, fuzzy
 msgid "Barbados Dollar"
-msgstr "Барбадос"
+msgstr "Барбадоський долар"
 
 #: ../classes/jigoshop.class.php:375
-#, fuzzy
 msgid "Bulgaria Lev"
-msgstr "Болгарія"
+msgstr "Болгарський лев"
 
 #: ../classes/jigoshop.class.php:376
-#, fuzzy
 msgid "Bermuda Dollar"
-msgstr "Бермуди"
+msgstr "Бермудський долар"
 
 #: ../classes/jigoshop.class.php:377
 msgid "Brunei Darussalam Dollar"
-msgstr ""
+msgstr "Брунейський долар дарусалам"
 
 #: ../classes/jigoshop.class.php:378
 msgid "Bolivia Boliviano"
-msgstr ""
+msgstr "Болівійський болів’яно"
 
 #: ../classes/jigoshop.class.php:379
-#, fuzzy
 msgid "Brazil Real"
-msgstr "Бразилія"
+msgstr "Бразильський реал"
 
 #: ../classes/jigoshop.class.php:380
-#, fuzzy
 msgid "Bahamas Dollar"
-msgstr "Багами"
+msgstr "Багамський долар"
 
 #: ../classes/jigoshop.class.php:381
-#, fuzzy
 msgid "Botswana Pula"
-msgstr "Botswana"
+msgstr "Ботсванська пула"
 
 #: ../classes/jigoshop.class.php:382
-#, fuzzy
 msgid "Belarus Ruble"
-msgstr "Білорусь"
+msgstr "Білоруський карбованець"
 
 #: ../classes/jigoshop.class.php:383
-#, fuzzy
 msgid "Belize Dollar"
-msgstr "Беліз"
+msgstr "Белізький долар"
 
 # @ jigoshop
 #: ../classes/jigoshop.class.php:384
-#, fuzzy
 msgid "Canada Dollar"
-msgstr "Канадський долар (&#36;)"
+msgstr "Канадський долар"
 
 #: ../classes/jigoshop.class.php:385
-#, fuzzy
 msgid "Switzerland Franc"
-msgstr "Швейцарія"
+msgstr "Швейцарський франк"
 
 # @ jigoshop
 #: ../classes/jigoshop.class.php:386
-#, fuzzy
 msgid "Chile Peso"
-msgstr "Чилі"
+msgstr "Чилійський песо"
 
 #: ../classes/jigoshop.class.php:387
 msgid "China Yuan Renminbi"
-msgstr ""
+msgstr "Чилійський юан ренмінбі"
 
 #: ../classes/jigoshop.class.php:388
-#, fuzzy
 msgid "Colombia Peso"
-msgstr "Колумбія"
+msgstr "Колумбійський песо"
 
 #: ../classes/jigoshop.class.php:389
-#, fuzzy
 msgid "Costa Rica Colon"
-msgstr "Коста-Рика"
+msgstr "Костариканський колон"
 
 #: ../classes/jigoshop.class.php:390
-#, fuzzy
 msgid "Cuba Peso"
-msgstr "Куба"
+msgstr "Кубинський песо"
 
 #: ../classes/jigoshop.class.php:391
-#, fuzzy
 msgid "Czech Republic Koruna"
-msgstr "Чехія"
+msgstr "Чеська крона"
 
 #: ../classes/jigoshop.class.php:392
-#, fuzzy
 msgid "Denmark Krone"
-msgstr "Данія"
+msgstr "Данська крона"
 
 #: ../classes/jigoshop.class.php:393
-#, fuzzy
 msgid "Dominican Republic Peso"
-msgstr "Домініканська Республіка"
+msgstr "Домініканський песо"
 
 #: ../classes/jigoshop.class.php:394
-#, fuzzy
 msgid "Estonia Kroon"
-msgstr "Естонія"
+msgstr "Естонська крона"
 
 #: ../classes/jigoshop.class.php:395
-#, fuzzy
 msgid "Egypt Pound"
-msgstr "Єгипет"
+msgstr "Єгипетський фунт"
 
 #: ../classes/jigoshop.class.php:396
-#, fuzzy
 msgid "Euro Member Countries"
-msgstr "Дозволені країни"
+msgstr "Країни-члени Євро"
 
 #: ../classes/jigoshop.class.php:397
 msgid "Fiji Dollar"
-msgstr ""
+msgstr "Фуджійський долар"
 
 #: ../classes/jigoshop.class.php:398 ../languages/countries.php:90
 msgid "Falkland Islands"
 msgstr "Фолклендські острови"
 
 #: ../classes/jigoshop.class.php:399
-#, fuzzy
 msgid "United Kingdom Pound"
-msgstr "Велика Британія"
+msgstr "Англійський фунт"
 
 # @ jigoshop
 #: ../classes/jigoshop.class.php:400
-#, fuzzy
 msgid "Guernsey Pound"
-msgstr "Гернсі"
+msgstr "Фунт Гернсі"
 
 #: ../classes/jigoshop.class.php:401
-#, fuzzy
 msgid "Ghana Cedis"
-msgstr "Гана"
+msgstr "Ганський цедіс"
 
 #: ../classes/jigoshop.class.php:402
-#, fuzzy
 msgid "Gibraltar Pound"
-msgstr "Гібралтар"
+msgstr "Гібралтарський фунт"
 
 #: ../classes/jigoshop.class.php:403
-#, fuzzy
 msgid "Guatemala Quetzal"
-msgstr "Гватемала"
+msgstr "Гватемальський кетзал"
 
 #: ../classes/jigoshop.class.php:404
-#, fuzzy
 msgid "Guyana Dollar"
-msgstr "Гаяна"
+msgstr "Гаянський долар"
 
 # @ jigoshop
 #: ../classes/jigoshop.class.php:405
-#, fuzzy
 msgid "Hong Kong Dollar"
-msgstr "Гонконгський долар (&#36;)"
+msgstr "Гонконгський долар"
 
 #: ../classes/jigoshop.class.php:406
-#, fuzzy
 msgid "Honduras Lempira"
-msgstr "Гондурас"
+msgstr "Гондураська лемпіра"
 
 #: ../classes/jigoshop.class.php:407
-#, fuzzy
 msgid "Croatia Kuna"
-msgstr "Хорватія"
+msgstr "Хорватська куна"
 
 #: ../classes/jigoshop.class.php:408
-#, fuzzy
 msgid "Hungary Forint"
-msgstr "Угорщина"
+msgstr "Угорський форинт"
 
 #: ../classes/jigoshop.class.php:409
-#, fuzzy
 msgid "Indonesia Rupiah"
-msgstr "Індонезія"
+msgstr "Індонезійська рупія"
 
 # @ jigoshop
 #: ../classes/jigoshop.class.php:410
-#, fuzzy
 msgid "Israel Shekel"
-msgstr "Ізраїльский шекель (&#8362;)"
+msgstr "Ізраїльский шекель"
 
 #: ../classes/jigoshop.class.php:411
-#, fuzzy
 msgid "Isle of Man Pound"
-msgstr "Мен"
+msgstr "Менський фунт"
 
 # @ jigoshop
 #: ../classes/jigoshop.class.php:412
-#, fuzzy
 msgid "India Rupee"
-msgstr "Індійська рупія (&#8360;)"
+msgstr "Індійська рупія"
 
 #: ../classes/jigoshop.class.php:413
-#, fuzzy
 msgid "Iran Rial"
-msgstr "Іран"
+msgstr "Іранський ріал"
 
 #: ../classes/jigoshop.class.php:414
-#, fuzzy
 msgid "Iceland Krona"
-msgstr "Ісландія"
+msgstr "Ісландська крона"
 
 #: ../classes/jigoshop.class.php:415
-#, fuzzy
 msgid "Jersey Pound"
-msgstr "Джерсі"
+msgstr "Джерський фунт"
 
 #: ../classes/jigoshop.class.php:416
-#, fuzzy
 msgid "Jamaica Dollar"
-msgstr "Ямайка"
+msgstr "Ямайський долар"
 
 #: ../classes/jigoshop.class.php:417
-#, fuzzy
 msgid "Japan Yen"
-msgstr "Японія"
+msgstr "Японська єна"
 
 #: ../classes/jigoshop.class.php:418
-#, fuzzy
 msgid "Kyrgyzstan Som"
-msgstr "Киргизстан"
+msgstr "Киргизстанський сом"
 
 #: ../classes/jigoshop.class.php:419
-#, fuzzy
 msgid "Cambodia Riel"
-msgstr "Камбоджа"
+msgstr "Камбоджийський рієл"
 
 #: ../classes/jigoshop.class.php:420
-#, fuzzy
 msgid "North Korea Won"
-msgstr "Північна Корея"
+msgstr "Північнокорейський вон"
 
 #: ../classes/jigoshop.class.php:421
-#, fuzzy
 msgid "South Korea Won"
-msgstr "Південна Корея"
+msgstr "Південнокорейський вон"
 
 #: ../classes/jigoshop.class.php:422
-#, fuzzy
 msgid "Cayman Islands Dollar"
-msgstr "Кайманові острови"
+msgstr "Кайманський долар"
 
 #: ../classes/jigoshop.class.php:423
-#, fuzzy
 msgid "Kazakhstan Tenge"
-msgstr "Казахстан"
+msgstr "Казахстанський тенге"
 
 #: ../classes/jigoshop.class.php:424
-#, fuzzy
 msgid "Laos Kip"
-msgstr "Лаос"
+msgstr "Лаоський кіп"
 
 #: ../classes/jigoshop.class.php:425
-#, fuzzy
 msgid "Lebanon Pound"
-msgstr "Ліван"
+msgstr "Ліванський фунт"
 
 #: ../classes/jigoshop.class.php:426
-#, fuzzy
 msgid "Sri Lanka Rupee"
-msgstr "Шрі-Ланка"
+msgstr "Рупія Шрі-Ланки"
 
 #: ../classes/jigoshop.class.php:427
-#, fuzzy
 msgid "Liberia Dollar"
-msgstr "Ліберія"
+msgstr "Ліберійський долар"
 
 #: ../classes/jigoshop.class.php:428
-#, fuzzy
 msgid "Lithuania Litas"
-msgstr "Литва"
+msgstr "Литовський літ"
 
 # @ jigoshop
 #: ../classes/jigoshop.class.php:429
-#, fuzzy
 msgid "Latvia Lat"
-msgstr "Латвія"
+msgstr "Латвійський лат"
 
 #: ../classes/jigoshop.class.php:430
-#, fuzzy
 msgid "Macedonia Denar"
-msgstr "Македонія"
+msgstr "Македонський денар"
 
 #: ../classes/jigoshop.class.php:431
-#, fuzzy
 msgid "Mongolia Tughrik"
-msgstr "Монголія"
+msgstr "Монгольський тугрик"
 
 #: ../classes/jigoshop.class.php:432
-#, fuzzy
 msgid "Mauritius Rupee"
-msgstr "Маврикій"
+msgstr "Маврикійська рупія"
 
 #: ../classes/jigoshop.class.php:433
-#, fuzzy
 msgid "Mexico Peso"
-msgstr "Мексика"
+msgstr "Мексиканський песо"
 
 # @ jigoshop
 #: ../classes/jigoshop.class.php:434
-#, fuzzy
 msgid "Malaysia Ringgit"
-msgstr "Малазійський ринггіт (RM)"
+msgstr "Малазійський ринггіт"
 
 #: ../classes/jigoshop.class.php:435
-#, fuzzy
 msgid "Mozambique Metical"
-msgstr "Мозамбік"
+msgstr "Мозамбікський метикал"
 
 #: ../classes/jigoshop.class.php:436
-#, fuzzy
 msgid "Namibia Dollar"
-msgstr "Намібія"
+msgstr "Намібійський долар"
 
 #: ../classes/jigoshop.class.php:437
-#, fuzzy
 msgid "Nigeria Naira"
-msgstr "Нігерійська найра (&#8358;)"
+msgstr "Нігерійська найра"
 
 #: ../classes/jigoshop.class.php:438
-#, fuzzy
 msgid "Nicaragua Cordoba"
-msgstr "Нікарагуа"
+msgstr "Нікарагуанська кордоба"
 
 # @ jigoshop
 #: ../classes/jigoshop.class.php:439
-#, fuzzy
 msgid "Norway Krone"
-msgstr "Норвезька крона (kr)"
+msgstr "Норвезька крона"
 
 #: ../classes/jigoshop.class.php:440
-#, fuzzy
 msgid "Nepal Rupee"
-msgstr "Непал"
+msgstr "Непальська рупія"
 
 # @ jigoshop
 #: ../classes/jigoshop.class.php:441
-#, fuzzy
 msgid "New Zealand Dollar"
-msgstr "Новозеландський долар (&#36;)"
+msgstr "Новозеландський долар"
 
 # @ jigoshop
 #: ../classes/jigoshop.class.php:442
-#, fuzzy
 msgid "Oman Rial"
-msgstr "Оман"
+msgstr "Оманський ріал"
 
 #: ../classes/jigoshop.class.php:443
-#, fuzzy
 msgid "Panama Balboa"
-msgstr "Панама"
+msgstr "Панамська бальбоа"
 
 #: ../classes/jigoshop.class.php:444
 msgid "Peru Nuevo Sol"
-msgstr ""
+msgstr "Перуанський новий соль"
 
 # @ jigoshop
 #: ../classes/jigoshop.class.php:445
-#, fuzzy
 msgid "Philippines Peso"
-msgstr "Філіппіни"
+msgstr "Філіпінський песо"
 
 #: ../classes/jigoshop.class.php:446
-#, fuzzy
 msgid "Pakistan Rupee"
-msgstr "Пакистан"
+msgstr "Пакистанська рупія"
 
 # @ jigoshop
 #: ../classes/jigoshop.class.php:447
-#, fuzzy
 msgid "Poland Zloty &#122;&#322;)"
-msgstr "Польський злотий (&#122;&#322;)"
+msgstr "Польський злотий"
 
 #: ../classes/jigoshop.class.php:448
-#, fuzzy
 msgid "Paraguay Guarani"
-msgstr "Парагвай"
+msgstr "Парагвайський гарані"
 
 #: ../classes/jigoshop.class.php:449
-#, fuzzy
 msgid "Qatar Riyal"
-msgstr "Катар"
+msgstr "Катарський ріял"
 
 #: ../classes/jigoshop.class.php:450
-#, fuzzy
 msgid "Romania New Leu"
-msgstr "Румунія"
+msgstr "Румунська нова лея"
 
 #: ../classes/jigoshop.class.php:451
-#, fuzzy
 msgid "Serbia Dinar"
-msgstr "Сербія"
+msgstr "Сербський динар"
 
 #: ../classes/jigoshop.class.php:452
-#, fuzzy
 msgid "Russia Ruble"
-msgstr "Росія"
+msgstr "Російський карбованець"
 
 #: ../classes/jigoshop.class.php:453
-#, fuzzy
 msgid "Saudi Arabia Riyal"
-msgstr "Саудівська Аравія"
+msgstr "Ріял Саудівської Аравії"
 
 #: ../classes/jigoshop.class.php:454
-#, fuzzy
 msgid "Solomon Islands Dollar"
-msgstr "Соломонові острови"
+msgstr "Долар Соломонових островів"
 
 #: ../classes/jigoshop.class.php:455
-#, fuzzy
 msgid "Seychelles Rupee"
-msgstr "Сейшели"
+msgstr "Сейшельська рупія"
 
 # @ jigoshop
 #: ../classes/jigoshop.class.php:456
-#, fuzzy
 msgid "Sweden Krona"
-msgstr "Шведська крона (kr)"
+msgstr "Шведська крона"
 
 # @ jigoshop
 #: ../classes/jigoshop.class.php:457
-#, fuzzy
 msgid "Singapore Dollar"
-msgstr "Сингапурський долар (&#36;)"
+msgstr "Сингапурський долар"
 
 #: ../classes/jigoshop.class.php:458
-#, fuzzy
 msgid "Saint Helena Pound"
-msgstr "Острів Святої Єлени"
+msgstr "Фунт Острова Святої Єлени"
 
 #: ../classes/jigoshop.class.php:459
-#, fuzzy
 msgid "Somalia Shilling"
-msgstr "Сомалія"
+msgstr "Сомалійський шилінг"
 
 # @ jigoshop
 #: ../classes/jigoshop.class.php:460
-#, fuzzy
 msgid "Suriname Dollar"
-msgstr "Суринам"
+msgstr "Суринамський долар"
 
 #: ../classes/jigoshop.class.php:461
-#, fuzzy
 msgid "El Salvador Colon"
-msgstr "Сальвадор"
+msgstr "Сальвадорський колон"
 
 #: ../classes/jigoshop.class.php:462
-#, fuzzy
 msgid "Syria Pound"
-msgstr "Сирія"
+msgstr "Сирійський фунт"
 
 #: ../classes/jigoshop.class.php:463
-#, fuzzy
 msgid "Thailand Baht"
-msgstr "Тайланд"
+msgstr "Тайландський бат"
 
 # @ jigoshop
 #: ../classes/jigoshop.class.php:464 ../classes/jigoshop.class.php:465
-#, fuzzy
 msgid "Turkey Lira"
-msgstr "Туреччина"
+msgstr "Турецька ліра"
 
 #: ../classes/jigoshop.class.php:466
-#, fuzzy
 msgid "Trinidad and Tobago Dollar"
-msgstr "Тринідад і Тобаго"
+msgstr "Долар Тринідаду і Тобаго"
 
 #: ../classes/jigoshop.class.php:467
-#, fuzzy
 msgid "Tuvalu Dollar"
-msgstr "Тувалу"
+msgstr "Тувальський долар"
 
 # @ jigoshop
 #: ../classes/jigoshop.class.php:468
-#, fuzzy
 msgid "Taiwan New Dollar"
-msgstr "Тайванський новий долар (&#36;)"
+msgstr "Тайванський новий долар"
 
 #: ../classes/jigoshop.class.php:469
-#, fuzzy
 msgid "Ukraine Hryvna"
-msgstr "Україна"
+msgstr "Українська гривня"
 
 #: ../classes/jigoshop.class.php:470
-#, fuzzy
 msgid "United States Dollar"
-msgstr "Сполучені Штати"
+msgstr "Долар США"
 
 #: ../classes/jigoshop.class.php:471
-#, fuzzy
 msgid "Uruguay Peso"
-msgstr "Уругвай"
+msgstr "Уругвайський песо"
 
 #: ../classes/jigoshop.class.php:472
-#, fuzzy
 msgid "Uzbekistan Som"
-msgstr "Узбекистан"
+msgstr "Узбекистанський сом"
 
 #: ../classes/jigoshop.class.php:473
 msgid "Venezuela Bolivar Fuerte"
-msgstr ""
+msgstr "Венесуельський міцний болівар"
 
 #: ../classes/jigoshop.class.php:474
-#, fuzzy
 msgid "Viet Nam Dong"
-msgstr "В’єтнам"
+msgstr "В’єтнамський донг"
 
 #: ../classes/jigoshop.class.php:475
 msgid "East Caribbean Dollar"
-msgstr ""
+msgstr "Східно-карибський долар"
 
 #: ../classes/jigoshop.class.php:476
-#, fuzzy
 msgid "Yemen Rial"
-msgstr "Ємен"
+msgstr "Єменський ріал"
 
 #: ../classes/jigoshop.class.php:477
-#, fuzzy
 msgid "South Africa Rand"
-msgstr "Південно-Африканська Республіка"
+msgstr "Південноафриканський ранд"
 
 #: ../classes/jigoshop.class.php:478
-#, fuzzy
 msgid "Zimbabwe Dollar"
-msgstr "Зімбабве"
+msgstr "Зімбабвійський долар"
 
 #: ../classes/jigoshop_cart.class.php:181
 msgid ""
@@ -5819,9 +5806,9 @@ msgstr "(вкл. податок)"
 
 # @ jigoshop
 #: ../classes/jigoshop_cart.class.php:992
-#, fuzzy, php-format
+#, php-format
 msgid "via %s"
-msgstr " з "
+msgstr "через %s"
 
 #: ../classes/jigoshop_cart.class.php:1013
 msgid ""
@@ -6149,15 +6136,16 @@ msgstr ""
 "відрізнятися від адреси вашої компанії."
 
 #: ../classes/jigoshop_options.class.php:732
-#, fuzzy
 msgid "Cart shows \"Return to Shop\" button"
-msgstr "&larr; Повернутись у магазин"
+msgstr "Кошик показує клавішу «Повернутись у магазин»"
 
 #: ../classes/jigoshop_options.class.php:734
 msgid ""
 "Enabling this setting will display a \"Return to Shop\" button on the Cart "
 "page along with the \"Continue to Checkout\" button."
 msgstr ""
+"Увімкнення цього налаштування покаже клавішу «Повернутися до магазину» "
+"на сторінці кошика разом із клавішею «Продовжити замовлення»."
 
 #: ../classes/jigoshop_options.class.php:760
 msgid "Reset pending Orders"
@@ -6203,21 +6191,21 @@ msgstr ""
 
 #: ../classes/jigoshop_options.class.php:827
 msgid "Validate postal/zip codes"
-msgstr ""
+msgstr "Перевіряти поштові коди"
 
 #: ../classes/jigoshop_options.class.php:829
 msgid ""
 "Enabling this setting will force proper postcodes to be entered by a "
 "customer for a country."
 msgstr ""
+"Увімкнення змусить замовника вводити правильні поштові коди країни."
 
 #: ../classes/jigoshop_options.class.php:842
-#, fuzzy
 msgid ""
 "Enabling this setting will allow users to checkout without registering or "
 "signing up. Otherwise, users must be signed in or must sign up to checkout."
 msgstr ""
-"Вказавши «Так», ви дозволите користувачам купувати товари без реєстрації на "
+"Увімкнувши це, ви дозволите користувачам купувати товари без реєстрації на "
 "сайті. У іншому разі користувач повинен буде увійти або зареєструватись перш "
 "ніж замовляти."
 
@@ -6477,18 +6465,16 @@ msgid "Enable weight field"
 msgstr "Увімкнути поле «Маса»"
 
 #: ../classes/jigoshop_options.class.php:1368
-#, fuzzy
 msgid "Product thumbnail images per row"
-msgstr "Обрізати мініатюри"
+msgstr "Кількість мініатюр товарів у рядку"
 
 #: ../classes/jigoshop_options.class.php:1370
-#, fuzzy
 msgid ""
 "Determines how many extra product thumbnail images attached to a product to "
 "show on one row for the Single Product page."
 msgstr ""
-"Визначає, скільки товарів показувати у одному рядку для каталогу, категорії "
-"або міток."
+"Визначає, скільки показувати додаткових мініатюр показувати у одному рядку "
+"для сторінки Товар."
 
 # @ jigoshop
 #: ../classes/jigoshop_options.class.php:1397
@@ -6516,6 +6502,9 @@ msgid ""
 "visibility will be set to hidden so that it will not appear on the Catalog "
 "or Shop product lists."
 msgstr ""
+"Для «Так»: коли досягнено порогу низьких запасів (згори), товар "
+"буде приховано, так що його не буде видно у списках товарів каталогу "
+"чи магазину."
 
 # @ jigoshop
 #: ../classes/jigoshop_options.class.php:1486
@@ -6988,7 +6977,7 @@ msgstr ""
 
 #: ../gateways/paypal.php:113
 msgid "Send shipping details to PayPal"
-msgstr ""
+msgstr "Надіслати деталі доставки до PayPal"
 
 #: ../gateways/paypal.php:115
 msgid ""
@@ -6997,6 +6986,10 @@ msgid ""
 "enable this option PayPal may restrict where things can be sent, and will "
 "prevent some orders going through for your protection."
 msgstr ""
+"Якщо сторінка оформлення замовлення не запитує деталі доставки, чи якщо ви "
+"не хочете надсилати інформацію про доставки до PayPal, встановіть цю опцію "
+"у «Ні». Якщо ви увімкнете цю опцію, PayPal може обмежити, куди можна "
+"надсилати, і запобігатиме деяким замовленням для вашого захисту."
 
 #: ../gateways/paypal.php:126
 msgid "Force payment when free"
@@ -8920,7 +8913,7 @@ msgstr "Вибрати по ціні"
 
 #: ../widgets/price-filter.php:120
 msgid "Filter"
-msgstr ""
+msgstr "Відібрати"
 
 # @ jigoshop
 #: ../widgets/price-filter.php:120
