@@ -375,7 +375,7 @@ class jigoshop_order extends Jigoshop_Base {
 					}
 
 					if ( $this->get_downloadable_file_url( $product_id ) )
-						$return .= PHP_EOL . 'Your download link for this file is:';
+						$return .= PHP_EOL . __('Your download link for this file is:', 'jigoshop');
 						$return .= PHP_EOL . ' - ' . $this->get_downloadable_file_url( $product_id ) . '';
 					endif;
 
