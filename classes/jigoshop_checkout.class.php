@@ -773,8 +773,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 						
 						$price_inc_tax = (
 							self::get_options()->get_option('jigoshop_calc_taxes') == 'yes'
-							&& self::get_options()->get_option('jigoshop_prices_include_tax' == 'yes'
-							)
+							&& self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes'
 							? $_product->get_price()
 							: -1
 						);
