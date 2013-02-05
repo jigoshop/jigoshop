@@ -390,7 +390,7 @@ msgstr "закінчився."
 #: ../jigoshop_emails.php:469 ../jigoshop_emails.php:477
 #, php-format
 msgid "Product Backorder on Order %s"
-msgstr "Передзамовлення товару на %s"
+msgstr "Попереднє замовлення товару на %s"
 
 #: ../jigoshop_emails.php:470
 #, php-format
@@ -1482,9 +1482,9 @@ msgstr ""
 "Яка різниця між категоріями і мітками? Зазвичай, мітки — це ключові слова "
 "для цього випадку, які ідентифікують важливу інформацію у вашій "
 "публікації (назви, теми тощо), що можливо повториться у інших товарах. "
-"А категорії — це наперед визначері розділи. "
+"А категорії — це наперед визначені розділи. "
 "Якщо уявити ваш сайт як книжку, категорії "
-"схожі на зміст, а мітки на терміни в показнку."
+"схожі на зміст, а мітки на терміни в показнику."
 
 #: ../admin/jigoshop-admin-help.php:79
 msgid ""
@@ -1724,7 +1724,7 @@ msgstr ""
 #: ../admin/write-panels/product-data.php:142
 #: ../admin/write-panels/product-types/variable.php:576
 msgid "Sale Price"
-msgstr "Розпродажна ціна"
+msgstr "Ціна розпродажу"
 
 #: ../admin/jigoshop-admin-help.php:229
 msgid ""
@@ -1933,7 +1933,7 @@ msgid ""
 "Specify the location of your downloadable asset. The file can be either "
 "stored locally & accessed using the Media Uploader or externally"
 msgstr ""
-"Зазначте місце ваших завантажувальних активів. Або вайл зберігається "
+"Зазначте місце ваших завантажувальних активів. Або файл зберігається "
 "локально і доступний через «Вивантажувач медіа», або зовні."
 
 #: ../admin/jigoshop-admin-help.php:256
@@ -3369,7 +3369,7 @@ msgstr "Індонезійська рупія (&#82;&#112;)"
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:535
 msgid "Israeli Shekel (&#8362;)"
-msgstr "Ізраїльский шекель (&#8362;)"
+msgstr "Ізраїльський шекель (&#8362;)"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:536
@@ -3408,7 +3408,7 @@ msgstr "Новозеландський долар (&#36;)"
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:543
 msgid "Philippine Pesos (&#8369;)"
-msgstr "Філіпінський песо (&#8369;)"
+msgstr "Філіппінський песо (&#8369;)"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:544
@@ -5266,7 +5266,7 @@ msgstr "Дирхам Об’єднаних Арабських Еміратів"
 
 #: ../classes/jigoshop.class.php:366
 msgid "Afghanistan Afghani"
-msgstr "Афгані Афганістану"
+msgstr "Афганістанський афгані"
 
 #: ../classes/jigoshop.class.php:367
 msgid "Albania Lek"
@@ -5448,7 +5448,7 @@ msgstr "Індонезійська рупія"
 # @ jigoshop
 #: ../classes/jigoshop.class.php:410
 msgid "Israel Shekel"
-msgstr "Ізраїльский шекель"
+msgstr "Ізраїльський шекель"
 
 #: ../classes/jigoshop.class.php:411
 msgid "Isle of Man Pound"
@@ -5485,7 +5485,7 @@ msgstr "Киргизстанський сом"
 
 #: ../classes/jigoshop.class.php:419
 msgid "Cambodia Riel"
-msgstr "Камбоджийський рієл"
+msgstr "Камбоджийський ріел"
 
 #: ../classes/jigoshop.class.php:420
 msgid "North Korea Won"
@@ -5595,7 +5595,7 @@ msgstr "Перуанський новий соль"
 # @ jigoshop
 #: ../classes/jigoshop.class.php:445
 msgid "Philippines Peso"
-msgstr "Філіпінський песо"
+msgstr "Філіппінський песо"
 
 #: ../classes/jigoshop.class.php:446
 msgid "Pakistan Rupee"
@@ -5717,7 +5717,7 @@ msgstr "В’єтнамський донг"
 
 #: ../classes/jigoshop.class.php:475
 msgid "East Caribbean Dollar"
-msgstr "Східно-карибський долар"
+msgstr "Східнокарибський долар"
 
 #: ../classes/jigoshop.class.php:476
 msgid "Yemen Rial"
