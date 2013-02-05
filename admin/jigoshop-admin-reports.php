@@ -11,7 +11,7 @@
  * @package             Jigoshop
  * @category            Admin
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright ï¿½ 2011-2012 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -299,7 +299,7 @@ jQuery(function(){
 // 					$row_cost[] = $item['cost'] * $item['qty'];
 // 				endforeach;
 				$order_data = (array) get_post_meta( $order->ID, 'order_data', true );
-				$row_cost[] = $order_data['order_total'];
+				$row_cost[] = apply_filters('jigoshop_reports_order_total_cost', $order_data['order_total'], $order);
 			endforeach;
 		endif;
 
@@ -339,7 +339,7 @@ jQuery(function(){
 				$order_items = (array) get_post_meta( $order->ID, 'order_items', true );
 				foreach ($order_items as $item) :
 					if ( !isset($item['cost']) || !isset($item['qty'])) continue;
-					$row_cost = $item['cost']; /* this is total final cost multiplied by quantities */
+					$row_cost = apply_filters('jigoshop_reports_order_item_cost', $item['cost'], $item, $order); /* this is total final cost multiplied by quantities */
 					$found_products[$item['id']] = isset($found_products[$item['id']]) ? $found_products[$item['id']] + $row_cost : $row_cost;
 				endforeach;
 			endforeach;
@@ -524,10 +524,12 @@ jQuery(function(){
 								$order_counts[$time] = 1;
 							endif;
 
+							$order_total = apply_filters('jigoshop_reports_order_total_cost', $order_data->order_total, $order);
+							
 							if (isset($order_amounts[$time])) :
-								$order_amounts[$time] = $order_amounts[$time] + $order_data->order_total;
+								$order_amounts[$time] = $order_amounts[$time] + $order_total;
 							else :
-								$order_amounts[$time] = (float) $order_data->order_total;
+								$order_amounts[$time] = (float) $order_total;
 							endif;
 
 						endforeach;
