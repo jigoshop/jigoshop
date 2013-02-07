@@ -1329,6 +1329,18 @@ class jigoshop_product extends Jigoshop_Base {
 	}
 
 	/**
+	 * Gets the default attributes for a variable product.
+	 *
+	 * @return array
+	 */
+	function get_default_attributes() {
+
+		$default = isset( $this->meta['_default_attributes'][0] ) ? $this->meta['_default_attributes'][0] : '';
+
+		return apply_filters( 'jigoshop_product_default_attributes', (array) maybe_unserialize( $default ), $this );
+	}	
+	
+	/**
 	 * Get attribute taxonomies. Taxonomies are lazy loaded.
 	 *
 	 * @return  array of stdClass objects representing attributes
