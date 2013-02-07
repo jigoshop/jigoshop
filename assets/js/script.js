@@ -368,6 +368,31 @@ jQuery(function() {
 		jQuery(item).data('num', i);
 	});
 
+	//default attributes
+	var initial_change = null; //which default attributes element trigger 
+	var current_attributes = {}; 
+	var number_of_variations = jQuery('form.variations_form .variations select').length;
+	jQuery('form.variations_form .variations select').each(function(i) {
+		current_attributes[jQuery(this).attr('name')] = jQuery(this).val();
+	   
+		if (jQuery(this).val() != '') {
+			//if default attribute is set remember it
+			if ( i == number_of_variations - 1 && find_matching_variations(current_attributes).length == 0) {
+				//if all default attributes are set, checks if any variation matches. 
+				// If not, break the loop and trigger one before last
+				return false;
+			}
+			initial_change = jQuery(this);
+		}
+		else {
+			//break loop if any of default attributes is not set
+			return false;
+		}
+	});
+	if (initial_change) {
+		initial_change.change();
+	}	
+	
 });
 
 if ( jigoshop_params.is_checkout ) {

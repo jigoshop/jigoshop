@@ -454,6 +454,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
         <script type="text/javascript">
             var product_variations = <?php echo json_encode($variationsAvailable) ?>;
         </script>
+        <?php $default_attributes = $_product->get_default_attributes() ?>
 		<form action="<?php echo esc_url( $_product->add_to_cart_url() ); ?>" class="variations_form cart" method="post">
 			<fieldset class="variations">
 				<?php foreach ( $attributes as $name => $options ): ?>
@@ -462,12 +463,19 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 						<span class="select_label"><?php echo jigoshop_product::attribute_label('pa_'.$name); ?></span>
 						<select id="<?php echo esc_attr( $sanitized_name ); ?>" name="tax_<?php echo $sanitized_name; ?>">
 							<option value=""><?php echo __('Choose an option ', 'jigoshop') ?>&hellip;</option>
+							
+							<?php if ( empty( $_POST ) ): ?>
+									<?php $selected_value = ( isset( $default_attributes[ $sanitized_name ] ) ) ? $default_attributes[ $sanitized_name ] : ''; ?>
+							<?php else: ?>
+									<?php $selected_value = isset( $_POST[ 'tax_' . $sanitized_name ] ) ? $_POST[ 'tax_' . $sanitized_name ] : ''; ?>
+							<?php endif; ?>
+
 							<?php foreach ( $options as $value ) : ?>
 								<?php if ( taxonomy_exists( 'pa_'.$sanitized_name )) : ?>
 									<?php $term = get_term_by( 'slug', $value, 'pa_'.$sanitized_name ); ?>
-									<option value="<?php echo esc_attr( $term->slug ); ?>"><?php echo $term->name; ?></option>
+									<option value="<?php echo esc_attr( $term->slug ); ?>" <?php selected( $selected_value, $term->slug) ?>><?php echo $term->name; ?></option>
 								<?php else : ?>
-									<option value="<?php echo esc_attr( sanitize_title( $value ) ); ?>"><?php echo $value; ?></option>
+									<option value="<?php echo esc_attr( sanitize_title( $value ) ); ?>"<?php selected( $selected_value, sanitize_title( $value )) ?> ><?php echo $value; ?></option>
 								<?php endif;?>
 							<?php endforeach; ?>
 						</select>

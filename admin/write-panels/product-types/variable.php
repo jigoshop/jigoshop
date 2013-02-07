@@ -260,6 +260,20 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			
 			do_action( 'jigoshop_variable_product_table_data_save' , $ID, $meta);	
 		}
+		
+		// Update default attribute options setting
+		$default_attributes = array();
+  
+		foreach ($attributes as $attribute) {
+			if ( $attribute['variation'] ) {
+				$value = esc_attr(trim($_POST[ 'default_attribute_' . sanitize_title($attribute['name']) ]));
+				if ($value) {
+					$default_attributes[sanitize_title($attribute['name'])] = $value;
+				}
+			}
+  		}
+  
+		update_post_meta( $parent_id, '_default_attributes', $default_attributes );
 	}
 
 	public function display() {
@@ -396,6 +410,51 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 					?>
 				<?php endif; ?>
 			</div>
+			
+			<div class="toolbar">
+				<strong><?php _e('Default selections:', 'jigoshop'); ?></strong>
+				<?php
+					$default_attributes = (array) maybe_unserialize(get_post_meta( $post->ID, '_default_attributes', true ));
+
+					foreach ($attributes as $attr) {
+
+						// If not variable attribute then skip
+						if ( ! $attr['variation'] )
+							continue;
+  
+						// Get current value for variation (if set)
+						$selected = (isset($default_attributes[sanitize_title($attr['name'])])) ? $default_attributes[sanitize_title($attr['name'])] : '';
+  
+						// Open the select & set a default value
+						echo '<select name="default_attribute_' . sanitize_title($attr['name']).'" >';
+						echo '<option value="">'.__('No default', 'jigoshop') . ' ' . jigoshop_product::attribute_label('pa_'.$attr['name']).'&hellip;</option>';
+  
+						// Get terms for attribute taxonomy or value if its a custom attribute
+						if ( $attr['is_taxonomy'] ) {
+      
+							$options = wp_get_object_terms( $post->ID, 'pa_'.sanitize_title($attr['name']), array( 'orderby' => 'slug' ) );
+							foreach( $options as $option ) {
+								echo '<option value="'.esc_attr($option->slug).'" '.selected($selected, $option->slug, false).'>'.$option->name.'</option>';
+							}
+      
+						}
+						else {
+      
+ 							$options = explode(',', $attr['value']);
+							foreach( $options as $option ) {
+								$option = trim($option);
+								echo '<option '.selected($selected, $option, false).' value="'.esc_attr($option).'">'.$option.'</option>';
+							}
+      
+						}
+  
+						// Close the select
+						echo '</select>';					
+
+					}
+				?>
+			</div>
+			
 		</div>
 	<?php
 	}
