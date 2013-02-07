@@ -799,7 +799,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
                             'customization' => $custom,
 					 		'name' 			=> $_product->get_title(),
 					 		'qty' 			=> (int) $values['quantity'],
-					 		'cost'          => $_product->get_price_excluding_tax() * (int) $values['quantity'],
+					 		'cost'          => $_product->get_price_excluding_tax(),
                             'cost_inc_tax'  => $price_inc_tax, // if less than 0 don't use this
 					 		'taxrate' 		=> $rate
 					 	), $values);
