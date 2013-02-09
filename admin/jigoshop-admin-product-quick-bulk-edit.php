@@ -51,7 +51,6 @@ function jigoshop_enqueue_product_quick_scripts() {
  *	AJAX callback to get current stock and price for a Product for Quick Edit
  */
 add_action( 'wp_ajax_jigoshop_get_product_stock_price', 'jigoshop_ajax_get_product_stock_price' );
-add_action( 'wp_ajax_nopriv_jigoshop_get_product_stock_price', 'jigoshop_ajax_get_product_stock_price' );
 
 function jigoshop_ajax_get_product_stock_price() {
 
@@ -158,7 +157,6 @@ function jigoshop_save_quick_edit( $post_id, $post ) {
  *	AJAX callback for Bulk Edit save routine
  */
 add_action( 'wp_ajax_jigoshop_save_bulk_edit', 'jigoshop_save_bulk_edit' );
-add_action( 'wp_ajax_nopriv_jigoshop_save_bulk_edit', 'jigoshop_save_bulk_edit' );
 
 function jigoshop_save_bulk_edit() {
 
