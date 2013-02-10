@@ -311,6 +311,8 @@ function add_order_totals($order, $show_download_links, $show_sku) {
 		
 	}
 	
+	do_action('jigoshop_email_order_professing_fee_info', $order->id);
+	
 	if ( $jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0 ) {
 		$info = __('Discount:', 'jigoshop');
 		$info .= add_padding_to_email_lines( 30 - strlen( $info ) );

@@ -452,6 +452,7 @@ function jigoshop_order_totals_meta_box($post) {
 			}
 			$payment_select .= "</select>";
 		?>
+		<?php do_action( 'jigoshop_admin_order_totals_after_shipping', $post->ID ) ?>
 		<li>
 			<label><?php _e('Total:', 'jigoshop'); ?></label>
             <input type="text" id="order_total" name="order_total" placeholder="0.00" value="<?php echo esc_attr( $_order->get_value_from_data('order_total') ); ?>" class="first" /> <?php echo $payment_select; ?>
