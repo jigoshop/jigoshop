@@ -35,12 +35,12 @@ class skrill extends jigoshop_payment_gateway {
 		$this->title     = 'Skrill';
 
 		$skrillIcon = Jigoshop_Base::get_options()->get_option('jigoshop_skrill_icon');
-		if($skrillIcon == '') {
+		if(!filter_var($skrillIcon, FILTER_VALIDATE_URL)) {
 			$this->icon	= trim(jigoshop::assets_url() . '/assets/images/icons/skrill.png');
-		} else {
+  	} else {
 			$this->icon = $skrillIcon;
-		}
-
+  	}
+		
 		$this->has_fields= false;
 		$this->enabled   = Jigoshop_Base::get_options()->get_option('jigoshop_skrill_enabled');
 		$this->title     = Jigoshop_Base::get_options()->get_option('jigoshop_skrill_title');
@@ -138,7 +138,7 @@ class skrill extends jigoshop_payment_gateway {
 
 		$defaults[] = array (
 			'name'	=>	__('Skrill payment icon','jigoshop'),
-			'desc'	=>	'',
+			'desc'	=>	'Use the full URL to the image including http://',
 			'tip'		=>	'The icon displayed with the radiobutton',
 			'id'		=>	'jigoshop_skrill_icon',
 			'std' 		=> $this->icon,
@@ -195,14 +195,12 @@ class skrill extends jigoshop_payment_gateway {
 			'status_url'           => trailingslashit(get_bloginfo('url')).'?skrillListener=skrill_status',
 			'language'             => $this->getLocale(),
 			'hide_login'           => 1,
-			'confirmation_note'    => 'Thank you for shopping', /* TODO: Not sure what this means. Should at least be translated or a setting or something?*/
+			'confirmation_note'    => __('Thank you for shopping','jigoshop'),
 						
 			'pay_from_email'       => $order->billing_email,
 
-			//'title'              => 'Mr',
 			'firstname'            => $order->billing_first_name,
 			'lastname'             => $order->billing_last_name,
-/*			'date_of_birth'				 => 12112013, TODO: I would really like to add this field because then it would be possible to remove one that step from Moneybookers registration */
 			'address'              => $order->billing_address_1,
 			'address2'             => $order->billing_address_2,
 			'phone_number'         => $order->billing_phone,
@@ -217,7 +215,6 @@ class skrill extends jigoshop_payment_gateway {
 			'detail1_text'         => $order_id,
 
 			'payment_methods'				=> $this->payment_methods
-
 		);
 
 		// Cart Contents
