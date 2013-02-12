@@ -33,13 +33,21 @@ class skrill extends jigoshop_payment_gateway {
 
 		$this->id        = 'skrill';
 		$this->title     = 'Skrill';
-		$this->icon      = jigoshop::assets_url() . '/assets/images/icons/skrill.png';
+
+		$skrillIcon = Jigoshop_Base::get_options()->get_option('jigoshop_skrill_icon');
+		if($skrillIcon == '') {
+			$this->icon	= trim(jigoshop::assets_url() . '/assets/images/icons/skrill.png');
+		} else {
+			$this->icon = $skrillIcon;
+		}
+
 		$this->has_fields= false;
 		$this->enabled   = Jigoshop_Base::get_options()->get_option('jigoshop_skrill_enabled');
 		$this->title     = Jigoshop_Base::get_options()->get_option('jigoshop_skrill_title');
 		$this->email     = Jigoshop_Base::get_options()->get_option('jigoshop_skrill_email');
 		$this->locale    = $this->getLocale();
-
+		$this->payment_methods = Jigoshop_Base::get_options()->get_option('jigoshop_skrill_payment_methods');
+	
 		add_action( 'init', array(&$this, 'check_status_response') );
 
 		if(isset($_GET['skrillPayment']) && $_GET['skrillPayment'] == true):
@@ -73,7 +81,11 @@ class skrill extends jigoshop_payment_gateway {
 		$defaults = array();
 
 		// Define the Section name for the Jigoshop_Options
-		$defaults[] = array( 'name' => __('Skrill (Moneybookers)', 'jigoshop'), 'type' => 'title', 'desc' => __('Skrill works by using an iFrame to submit payment information securely to Moneybookers.', 'jigoshop') );
+		$defaults[] = array( 	
+			'name' => __('Skrill (Moneybookers)', 'jigoshop'), 
+			'type' => 'title', 
+			'desc' => __('Skrill works by using an iFrame to submit payment information securely to Moneybookers.', 'jigoshop') 
+		);
 
 		// List each option in order of appearance with details
 		$defaults[] = array(
@@ -85,8 +97,7 @@ class skrill extends jigoshop_payment_gateway {
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
-				'yes'			=> __('Yes', 'jigoshop')
-			)
+				'yes'			=> __('Yes', 'jigoshop') )
 		);
 
 		$defaults[] = array(
@@ -125,6 +136,24 @@ class skrill extends jigoshop_payment_gateway {
 			'type' 		=> 'text'
 		);
 
+		$defaults[] = array (
+			'name'	=>	__('Skrill payment icon','jigoshop'),
+			'desc'	=>	'',
+			'tip'		=>	'The icon displayed with the radiobutton',
+			'id'		=>	'jigoshop_skrill_icon',
+			'std' 		=> $this->icon,
+			'type' 		=> 'text'
+		);
+		
+		$defaults[] = array (
+			'name'	=>	__('Skrill payment methods','jigoshop'),
+			'desc'	=>	'',
+			'tip'		=>	'A comma separated list of payment methods that should be used',
+			'id'		=>	'jigoshop_skrill_payment_methods',
+			'std' 		=> '',
+			'type' 		=> 'text'
+		);
+		
 		return $defaults;
 	}
 
@@ -166,12 +195,14 @@ class skrill extends jigoshop_payment_gateway {
 			'status_url'           => trailingslashit(get_bloginfo('url')).'?skrillListener=skrill_status',
 			'language'             => $this->getLocale(),
 			'hide_login'           => 1,
-			'confirmation_note'    => 'Thank you for your custom',
+			'confirmation_note'    => 'Thank you for shopping', /* TODO: Not sure what this means. Should at least be translated or a setting or something?*/
+						
 			'pay_from_email'       => $order->billing_email,
 
 			//'title'              => 'Mr',
 			'firstname'            => $order->billing_first_name,
 			'lastname'             => $order->billing_last_name,
+/*			'date_of_birth'				 => 12112013, TODO: I would really like to add this field because then it would be possible to remove one that step from Moneybookers registration */
 			'address'              => $order->billing_address_1,
 			'address2'             => $order->billing_address_2,
 			'phone_number'         => $order->billing_phone,
@@ -183,7 +214,9 @@ class skrill extends jigoshop_payment_gateway {
 			'amount'               => $order_total,
 			'currency'             => Jigoshop_Base::get_options()->get_option('jigoshop_currency'),
 			'detail1_description'  => 'Order ID',
-			'detail1_text'         => $order_id
+			'detail1_text'         => $order_id,
+
+			'payment_methods'				=> $this->payment_methods
 
 		);
 
