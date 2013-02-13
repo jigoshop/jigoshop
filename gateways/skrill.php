@@ -46,8 +46,19 @@ class skrill extends jigoshop_payment_gateway {
 		$this->title     = Jigoshop_Base::get_options()->get_option('jigoshop_skrill_title');
 		$this->email     = Jigoshop_Base::get_options()->get_option('jigoshop_skrill_email');
 		$this->locale    = $this->getLocale();
-		$this->payment_methods = Jigoshop_Base::get_options()->get_option('jigoshop_skrill_payment_methods');
-	
+		
+		$pMeth = Jigoshop_Base::get_options()->get_option('jigoshop_skrill_payment_methods_multicheck');	
+		foreach ($pMeth as $key => $value) {	
+			if($value) {
+				$cList = $cList . $key . ','; 
+			}
+		}
+		unset($value);
+		unset($key);
+		$cList = rtrim($cList,",");
+		$this->payment_methods = $cList;
+		unset($cList);
+	 	
 		add_action( 'init', array(&$this, 'check_status_response') );
 
 		if(isset($_GET['skrillPayment']) && $_GET['skrillPayment'] == true):
@@ -144,14 +155,20 @@ class skrill extends jigoshop_payment_gateway {
 			'std' 		=> $this->icon,
 			'type' 		=> 'text'
 		);
-		
-		$defaults[] = array (
-			'name'	=>	__('Skrill payment methods','jigoshop'),
-			'desc'	=>	'',
-			'tip'		=>	'A comma separated list of payment methods that should be used',
-			'id'		=>	'jigoshop_skrill_payment_methods',
-			'std' 		=> '',
-			'type' 		=> 'text'
+
+		$defaults[] = array(
+			'name'		=> __('Skrill payment methods','jigoshop'),
+			'desc' 		=> __('Select a max of 5. See page 40 for more info <br>https://www.moneybookers.com/merchant/en/moneybookers_gateway_manual.pdf. <br>Leave empty for default.'),
+			'tip' 		=> __('The type of payments that should be allowed via Skrill.'),
+			'id' 			=> 'jigoshop_skrill_payment_methods_multicheck',
+			'type' 		=> 'multicheck',
+			"choices"	=> array(
+											"ACC" 			=> "All credit card types",
+											"VSA"				=> "Visa",
+											"MSC"				=> "MasterCard",
+											"VSE"				=> "Visa Electron"
+											),
+			'extra'		=> array( 'vertical' )
 		);
 		
 		return $defaults;
