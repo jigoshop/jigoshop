@@ -163,10 +163,10 @@ class skrill extends jigoshop_payment_gateway {
 			'id' 			=> 'jigoshop_skrill_payment_methods_multicheck',
 			'type' 		=> 'multicheck',
 			"choices"	=> array(
-											"ACC" 			=> "All credit card types",
-											"VSA"				=> "Visa",
-											"MSC"				=> "MasterCard",
-											"VSE"				=> "Visa Electron"
+											"ACC" 			=> __('All credit card types','jigoshop'),
+											"VSA"				=> __('Visa','jigoshop'),
+											"MSC"				=> __('MasterCard','jigoshop'),
+											"VSE"				=> __('Visa Electron','jigoshop')
 											),
 			'extra'		=> array( 'vertical' )
 		);
