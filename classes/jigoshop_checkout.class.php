@@ -703,6 +703,8 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					foreach ( jigoshop_cart::$applied_coupons as $coupon )
 						$applied_coupons[] = JS_Coupons::get_coupon( $coupon );
 
+					do_action('jigoshop_checkout_update_order_total', $this->posted);
+					
 					$data['order_discount_coupons'] = $applied_coupons;
 					$data['billing_first_name']     = $this->posted['billing-first_name'];
 					$data['billing_last_name']      = $this->posted['billing-last_name'];
@@ -847,6 +849,8 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
 					// Inserted successfully
 					do_action('jigoshop_new_order', $order_id);
+
+					do_action('jigoshop_checkout_update_order_meta', $order_id, $this->posted );
 
                     // can't just simply check needs_payment() here, as paypal may have force payment set to true
 					if (!empty($this->posted['payment_method']) && self::process_gateway($available_gateways[$this->posted['payment_method']])) :

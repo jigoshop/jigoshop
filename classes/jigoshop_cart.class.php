@@ -795,6 +795,8 @@ class jigoshop_cart extends Jigoshop_Singleton {
      * @param boolean $order_exclude_tax            Subtotal without taxes no matter settings used by Orders
      */
     public static function get_cart_subtotal( $for_display = true, $apply_discount_and_shipping = false, $order_exclude_tax = false ) {
+		
+		do_action( 'jigoshop_calculate_totals' );
 
         /* Just some initialization. */
         $discount = self::$discount_total;
