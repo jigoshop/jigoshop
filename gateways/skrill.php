@@ -33,13 +33,32 @@ class skrill extends jigoshop_payment_gateway {
 
 		$this->id        = 'skrill';
 		$this->title     = 'Skrill';
-		$this->icon      = jigoshop::assets_url() . '/assets/images/icons/skrill.png';
+
+		$skrillIcon = Jigoshop_Base::get_options()->get_option('jigoshop_skrill_icon');
+		if(!filter_var($skrillIcon, FILTER_VALIDATE_URL)) {
+			$this->icon	= trim(jigoshop::assets_url() . '/assets/images/icons/skrill.png');
+  	} else {
+			$this->icon = $skrillIcon;
+  	}
+		
 		$this->has_fields= false;
 		$this->enabled   = Jigoshop_Base::get_options()->get_option('jigoshop_skrill_enabled');
 		$this->title     = Jigoshop_Base::get_options()->get_option('jigoshop_skrill_title');
 		$this->email     = Jigoshop_Base::get_options()->get_option('jigoshop_skrill_email');
 		$this->locale    = $this->getLocale();
-
+		
+		$pMeth = Jigoshop_Base::get_options()->get_option('jigoshop_skrill_payment_methods_multicheck');	
+		foreach ($pMeth as $key => $value) {	
+			if($value) {
+				$cList = $cList . $key . ','; 
+			}
+		}
+		unset($value);
+		unset($key);
+		$cList = rtrim($cList,",");
+		$this->payment_methods = $cList;
+		unset($cList);
+	 	
 		add_action( 'init', array(&$this, 'check_status_response') );
 
 		if(isset($_GET['skrillPayment']) && $_GET['skrillPayment'] == true):
@@ -73,7 +92,11 @@ class skrill extends jigoshop_payment_gateway {
 		$defaults = array();
 
 		// Define the Section name for the Jigoshop_Options
-		$defaults[] = array( 'name' => __('Skrill (Moneybookers)', 'jigoshop'), 'type' => 'title', 'desc' => __('Skrill works by using an iFrame to submit payment information securely to Moneybookers.', 'jigoshop') );
+		$defaults[] = array( 	
+			'name' => __('Skrill (Moneybookers)', 'jigoshop'), 
+			'type' => 'title', 
+			'desc' => __('Skrill works by using an iFrame to submit payment information securely to Moneybookers.', 'jigoshop') 
+		);
 
 		// List each option in order of appearance with details
 		$defaults[] = array(
@@ -85,8 +108,7 @@ class skrill extends jigoshop_payment_gateway {
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
-				'yes'			=> __('Yes', 'jigoshop')
-			)
+				'yes'			=> __('Yes', 'jigoshop') )
 		);
 
 		$defaults[] = array(
@@ -125,6 +147,30 @@ class skrill extends jigoshop_payment_gateway {
 			'type' 		=> 'text'
 		);
 
+		$defaults[] = array (
+			'name'	=>	__('Skrill payment icon','jigoshop'),
+			'desc'	=>	'Use the full URL to the image including http://',
+			'tip'		=>	'The icon displayed with the radiobutton',
+			'id'		=>	'jigoshop_skrill_icon',
+			'std' 		=> $this->icon,
+			'type' 		=> 'text'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('Skrill payment methods','jigoshop'),
+			'desc' 		=> __('Select a max of 5. See page 40 for more info <br>https://www.moneybookers.com/merchant/en/moneybookers_gateway_manual.pdf. <br>Leave empty for default.'),
+			'tip' 		=> __('The type of payments that should be allowed via Skrill.'),
+			'id' 			=> 'jigoshop_skrill_payment_methods_multicheck',
+			'type' 		=> 'multicheck',
+			"choices"	=> array(
+											"ACC" 			=> __('All credit card types','jigoshop'),
+											"VSA"				=> __('Visa','jigoshop'),
+											"MSC"				=> __('MasterCard','jigoshop'),
+											"VSE"				=> __('Visa Electron','jigoshop')
+											),
+			'extra'		=> array( 'vertical' )
+		);
+		
 		return $defaults;
 	}
 
@@ -166,10 +212,10 @@ class skrill extends jigoshop_payment_gateway {
 			'status_url'           => trailingslashit(get_bloginfo('url')).'?skrillListener=skrill_status',
 			'language'             => $this->getLocale(),
 			'hide_login'           => 1,
-			'confirmation_note'    => 'Thank you for your custom',
+			'confirmation_note'    => __('Thank you for shopping','jigoshop'),
+						
 			'pay_from_email'       => $order->billing_email,
 
-			//'title'              => 'Mr',
 			'firstname'            => $order->billing_first_name,
 			'lastname'             => $order->billing_last_name,
 			'address'              => $order->billing_address_1,
@@ -183,8 +229,9 @@ class skrill extends jigoshop_payment_gateway {
 			'amount'               => $order_total,
 			'currency'             => Jigoshop_Base::get_options()->get_option('jigoshop_currency'),
 			'detail1_description'  => 'Order ID',
-			'detail1_text'         => $order_id
+			'detail1_text'         => $order_id,
 
+			'payment_methods'				=> $this->payment_methods
 		);
 
 		// Cart Contents
