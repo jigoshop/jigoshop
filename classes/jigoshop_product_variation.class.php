@@ -13,7 +13,7 @@
  * @package             Jigoshop
  * @category            Catalog
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright © 2011-2013 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_product_variation extends jigoshop_product {
@@ -94,6 +94,20 @@ class jigoshop_product_variation extends jigoshop_product {
 		}
 		return apply_filters( 'jigoshop_product_get_price', $price, $this->variation_id );
 
+	}
+
+	/**
+	 * Check the stock levels to unsure we have enough to match request
+	 *
+	 * @param   int $quantity   Amount to verify that we have
+	 * @return  bool
+	 */
+	public function has_enough_stock( $quantity ) {
+		// always work from a new product to check actual stock available
+		// this product instance could be sitting in a Cart for a user and
+		// another customer purchases the last available
+		$temp = new jigoshop_product_variation( $this->get_variation_id() );
+		return ($this->backorders_allowed() || $temp->stock >= $quantity);
 	}
 
 	/**

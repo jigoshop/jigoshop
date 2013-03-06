@@ -11,7 +11,7 @@
  * @package             Jigoshop
  * @category            Core
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright © 2011-2013 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 /**
@@ -123,6 +123,7 @@ function jigoshop_completed_order_customer_notification($order_id) {
 
 	add_header_info($order);
 
+	$download_links =  apply_filters('jigoshop_download_links_on_completed',true);
 	add_order_totals($order, true, true);
 
 	add_customer_details($order);
@@ -197,6 +198,7 @@ function jigoshop_send_customer_invoice($order_id) {
 	add_header_info($order);
 
 	if ($order->status == 'completed') :
+		$download_links = apply_filters('jigoshop_download_links_on_invoice',true);
 		add_order_totals($order, true, true);
 	else :
 		add_order_totals($order, false, true);
@@ -376,11 +378,18 @@ function add_customer_details($order) {
 	echo __('CUSTOMER DETAILS', 'jigoshop') . PHP_EOL;
 	echo add_email_separator( '-' ) . PHP_EOL;
 
-	if ($order->billing_email)
-		echo __('Email:', 'jigoshop') . "\t\t\t\t" . $order->billing_email . PHP_EOL;
-	if ($order->billing_phone)
-		echo __('Tel:', 'jigoshop') . "\t\t\t\t\t" . $order->billing_phone . PHP_EOL;
-
+	if ($order->billing_email) {
+		$temp = __('Email:', 'jigoshop');
+		echo $temp . add_padding_to_email_lines( 30 - strlen( $temp ) ) . $order->billing_email . PHP_EOL;
+	}
+	if ($order->billing_phone) {
+		$temp = __('Tel:', 'jigoshop');
+		echo $temp . add_padding_to_email_lines( 30 - strlen( $temp ) ) . $order->billing_phone . PHP_EOL;
+	}
+	if ( $order->billing_euvatno ) {
+		$temp = __('EU VAT Number:', 'jigoshop');
+		echo $temp . add_padding_to_email_lines( 30 - strlen( $temp ) ) . $order->billing_euvatno . PHP_EOL;
+	}
 	echo PHP_EOL;
 
 	do_action('jigoshop_after_email_customer_details', $order->id);
@@ -397,7 +406,7 @@ function add_billing_address_details($order) {
 	if ($order->billing_company)
 		echo $order->billing_company . PHP_EOL;
 	echo $order->formatted_billing_address . PHP_EOL . PHP_EOL;
-
+	
 	do_action('jigoshop_after_email_billing_address', $order->id);
 
 }
@@ -504,4 +513,3 @@ function jigoshop_product_on_backorder_notification($order_id, $_product, $amoun
 		wp_mail($order->billing_email, $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
 	endif;
 }
-

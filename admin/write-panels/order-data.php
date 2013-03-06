@@ -13,7 +13,7 @@
  * @package             Jigoshop
  * @category            Admin
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright © 2011-2013 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -116,7 +116,7 @@ function jigoshop_order_data_meta_box($post) {
 
 		<div id="order_customer_billing_data" class="panel jigoshop_options_panel">
             <?php
-            //display billing fieds and values
+				// display billing fields and values
 
                 $billing_fields = array(
 					'company'   => __('Company', 'jigoshop'),
@@ -132,6 +132,18 @@ function jigoshop_order_data_meta_box($post) {
 					'email'     => __('Email Address', 'jigoshop'),
 				);
 
+				if ( isset( $data['billing_euvatno'] )) {
+					$start = $billing_fields;
+					array_splice( $start, 1 );
+					$end = $billing_fields;
+					array_splice( $end, 0, 1 );
+					$billing_fields = array_merge(
+						$start,
+						array( 'euvatno' => __('EU VAT Number', 'jigoshop') ),
+						$end
+					);
+				}
+				
                 foreach($billing_fields as $field_id => $field_desc) {
                     $field_id = 'billing_' . $field_id;
                     $field_value = '';

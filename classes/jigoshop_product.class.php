@@ -11,7 +11,7 @@
  * @package             Jigoshop
  * @category            Catalog
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright © 2011-2013 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_product extends Jigoshop_Base {
@@ -254,7 +254,7 @@ class jigoshop_product extends Jigoshop_Base {
 	 */
 	public function requires_shipping() {
 		// If it's virtual or downloadable don't require shipping, same for subscriptions
-		return (!($this->is_type( array('downloadable', 'virtual', 'subscription'))));
+		return  apply_filters('jigoshop_requires_shipping',(!($this->is_type( array('downloadable', 'virtual', 'subscription')))),$this->id);
 	}
 	/**
 	 * Checks the product type
@@ -436,8 +436,9 @@ class jigoshop_product extends Jigoshop_Base {
 	}
 
 	/**
-	 * Returns whether or not the product has enough stock for the order
+	 * Check the stock levels to unsure we have enough to match request
 	 *
+	 * @param   int $quantity   Amount to verify that we have
 	 * @return  bool
 	 */
 	public function has_enough_stock( $quantity ) {

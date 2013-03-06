@@ -11,7 +11,7 @@
  * @package		Jigoshop
  * @category	Core
  * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
+ * @copyright	Copyright (c) 2011-2013 Jigowatt Ltd.
  * @license		http://jigoshop.com/license/commercial-edition
  */
 
@@ -368,6 +368,9 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		$our_options = $this->get_default_options();
 		$our_options[] = array( 'type' => 'tab', 'name' => $tab );
 		if ( ! empty( $options )) foreach ( $options as $id => $option ) {
+			if ( isset( $option['id'] ) && !$this->exists_option( $option['id'] )) {
+				$this->add_option( $option['id'], isset( $option['std'] ) ? $option['std'] : '' );
+			}
 			$our_options[] = $option;
 		}
 		self::$default_options = $our_options;
@@ -829,6 +832,32 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			'tip' 		=> __('Enabling this setting will force proper postcodes to be entered by a customer for a country.','jigoshop'),
 			'id' 		=> 'jigoshop_enable_postcode_validating',
 			'std' 		=> 'no',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+
+		self::$default_options[] = array(
+			'name'		=> __('Show verify information message','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('Enabling this setting will display a message at the bottom of the Checkout asking customers to verify all their informatioin is correctly entered before placing their Order.  This is useful in particular for Countries that have states to ensure the correct shipping state is selected.','jigoshop'),
+			'id' 		=> 'jigoshop_verify_checkout_info_message',
+			'std' 		=> 'yes',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+
+		self::$default_options[] = array(
+			'name'		=> __('Show EU VAT reduction message','jigoshop'),
+			'desc' 		=> __('This will only apply to EU Union based Shops.','jigoshop'),
+			'tip' 		=> __('Enabling this setting will display a message at the bottom of the Checkout informing the customer that EU VAT will not be removed until the Order is placed and only if they have provided a valid EU VAT Number.','jigoshop'),
+			'id' 		=> 'jigoshop_eu_vat_reduction_message',
+			'std' 		=> 'yes',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),

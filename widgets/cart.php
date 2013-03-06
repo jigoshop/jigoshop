@@ -11,7 +11,7 @@
  * @package             Jigoshop
  * @category            Widgets
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright © 2011-2013 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class Jigoshop_Widget_Cart extends WP_Widget {
@@ -40,7 +40,7 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 		$total = 0;
 		if ( ! empty( jigoshop_cart::$cart_contents )) foreach ( jigoshop_cart::$cart_contents as $cart_item_key => $values ) {
 			$_product = $values['data'];
-			$total += $_product->get_price();
+			$total += $_product->get_price() * $values['quantity'];
 		}
 		return $total;
 	}

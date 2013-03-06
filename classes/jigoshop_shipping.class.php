@@ -11,7 +11,7 @@
  * @package             Jigoshop
  * @category            Checkout
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright © 2011-2013 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_shipping extends Jigoshop_Singleton {
@@ -92,7 +92,7 @@ class jigoshop_shipping extends Jigoshop_Singleton {
 
 		//throw error if there are no shipping methods
 		if ( empty( $_available_methods )) {
-			self::$shipping_error_message = __('Please enter your shipping destination to view shipping options.', 'jigoshop');
+			self::$shipping_error_message = __('Please enter your shipping destination and postal code to view shipping options and rates.', 'jigoshop');
 			if ( self::get_options()->get_option('jigoshop_enable_shipping_calc') == 'no' && is_cart() ) {
 			self::$shipping_error_message .= __(' If the Shipping Calculator is not available here, you will need to advance to the Checkout to do this.','jigoshop');
 			}

@@ -157,6 +157,28 @@ small.note {
 	}
 }
 
+/* =WP-PageNavi Plugin
+-------------------------------------------------------------- */
+.wp-pagenavi {
+	clear: both;
+	margin-bottom: 15px;
+}
+
+.wp-pagenavi a, .wp-pagenavi span {
+	text-decoration: none;
+	border: 1px solid #aaa;
+	padding: 3px 5px;
+	margin: 2px;
+}
+
+.wp-pagenavi a:hover, .wp-pagenavi span.current {
+	border-color: #000;
+}
+
+.wp-pagenavi span.current {
+	font-weight: bold;
+}
+
 /* =Product Page
 -------------------------------------------------------------- */
 div.product {
@@ -338,7 +360,6 @@ span.onsale {
 .products ul, ul.products {
 	margin: 0 0 14px !important;
 	padding: 0 !important;
-	list-style: none;
 	float: left;
 }
 .products {
@@ -639,7 +660,7 @@ table.shop_table {
 	}
 	td {
 		border-top: 1px solid #E7E7E7;
-		padding: 6px 12px !important;
+		padding: 6px 10px;
 		vertical-align: middle;
 
 		a.button {
@@ -767,12 +788,14 @@ td.quantity, .jigoshop #content div.quantity {
 	margin-left:0; margin-right:0;
 }
 .quantity input.qty {
-	border:1px solid #ccc;
-	width:20px;
+	border: 1px solid #ccc;
+	width: 20px;
+	height: 14px;
 	display: inline;
-	padding:1px 5px 2px;
+	padding: 1px 5px 2px;
 	line-height: 1em !important;
 	vertical-align: middle;
+	text-align: right;
 }
 .quantity input.plus, .quantity input.minus {
 	background: #ccc;
@@ -784,7 +807,9 @@ td.quantity, .jigoshop #content div.quantity {
 	cursor: pointer;
 }
 .quantity input.minus { .border_radius_left(5px); }
+.quantity input.minus { .border_radius_right(0px); }
 .quantity input.plus { .border_radius_right(5px); }
+.quantity input.plus { .border_radius_left(0px); }
 .quantity input.minus:hover, .quantity input.plus:hover { background: #f93; }
 
 .cart input {
@@ -1060,6 +1085,30 @@ form.login {
 		margin: -1em 0 0 2em;
 	}
 
+	div.payment_message {
+		position:relative;
+		width: 96%;
+		background: #f5f5f5;
+		color: red;
+		border: 1px solid #eee;
+		.inset_box_shadow(0, 1px, 1px, rgba(255,255,255,0.5));
+		padding: 1em 2% 1em;
+		margin: 1em 0 1em 0;
+		font-size: 0.92em;
+	}
+
+	div.payment_message:after {
+		content: "";
+		display: block;
+		border: 8px solid #eee; /* arrow size / color */
+		border-right-color: transparent;
+		border-left-color: transparent;
+		border-top-color: transparent;
+		position: absolute;
+		top: -4px;
+		left: 85%;
+		margin: -1em 0 0 2em;
+	}
 }
 
 div.shipping-address {
@@ -1341,10 +1390,10 @@ input:-ms-input-placeholder {
 .jigoshop .site-content .quantity input.plus { .border_radius_right(5px); .border_radius_left(0px); }
 .jigoshop .site-content .quantity input.minus:hover, .jigoshop .site-content .quantity input.plus:hover { background: rgba(169,193,70,1); }
 
-.site-content .cross-sells ul, .site-content .cross-sells li {
+.cross-sells ul, .cross-sells li {
 	list-style: none outside !important;
 }
 
-.site-content .products ul, .site-content .products li {
+.products ul, ul.products, .products li {
 	list-style: none outside !important;
 }

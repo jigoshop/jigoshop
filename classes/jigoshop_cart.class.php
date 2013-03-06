@@ -14,7 +14,7 @@
  * @package             Jigoshop
  * @category            Checkout
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright © 2011-2013 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_cart extends Jigoshop_Singleton {
@@ -182,8 +182,10 @@ class jigoshop_cart extends Jigoshop_Singleton {
             return false;
         }
 
-        // prevents adding products to the cart without enough quantity on hand
-        $in_cart_qty = is_numeric($cart_item_key) ? self::$cart_contents[$cart_item_key]['quantity'] : 0;
+		// products newly added to the Cart will not have a $cart_item_key, use 0 quantity
+        $in_cart_qty = !empty($cart_item_key) ? self::$cart_contents[$cart_item_key]['quantity'] : 0;
+        
+		// prevents adding products to the cart without enough quantity on hand
         if ($product->managing_stock() && !$product->has_enough_stock($quantity + $in_cart_qty)) :
             if ($in_cart_qty > 0) :
                 $error = (self::get_options()->get_option('jigoshop_show_stock') == 'yes') ? sprintf(__('We are sorry.  We do not have enough "%s" to fill your request.  You have %d of them in your Cart and we have %d available at this time.', 'jigoshop'), $product->get_title(), $in_cart_qty, $product->get_stock()) : sprintf(__('We are sorry.  We do not have enough "%s" to fill your request.', 'jigoshop'), $product->get_title());
@@ -782,7 +784,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
         return jigoshop_price(self::$cart_contents_total);
     }
 
-    private static function get_total_cart_tax_without_shipping_tax() {
+    public static function get_total_cart_tax_without_shipping_tax() {
         return self::$tax->get_non_compounded_tax_amount() + self::$tax->get_compound_tax_amount() - self::$shipping_tax_total;
     }
 

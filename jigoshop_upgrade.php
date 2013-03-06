@@ -11,7 +11,7 @@
  * @package             Jigoshop
  * @category            Core
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright © 2011-2013 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -67,6 +67,10 @@ function jigoshop_upgrade() {
 
  	if ( $jigoshop_db_version < 1301280 ) {
  		jigoshop_upgrade_150();
+ 	}
+
+ 	if ( $jigoshop_db_version < 1303050 ) {
+ 		jigoshop_upgrade_160();
  	}
 
 	// Update the db option
@@ -624,4 +628,18 @@ function jigoshop_upgrade_150() {
 	Jigoshop_Base::get_options()->add_option( 'jigoshop_enable_postcode_validating', 'no' );
 	Jigoshop_Base::get_options()->add_option( 'jigoshop_product_thumbnail_columns', '3' );
 	
+}
+
+/**
+ * Execute changes made in Jigoshop 1.6
+ *
+ * @since 1.6
+ */
+function jigoshop_upgrade_160() {
+	
+	Jigoshop_Base::get_options()->add_option( 'jigoshop_skrill_icon', '' );
+	Jigoshop_Base::get_options()->add_option( 'jigoshop_skrill_payment_methods_multicheck', 'ACC' );
+	Jigoshop_Base::get_options()->add_option( 'jigoshop_verify_checkout_info_message', 'yes' );
+	Jigoshop_Base::get_options()->add_option( 'jigoshop_eu_vat_reduction_message', 'yes' );
+
 }

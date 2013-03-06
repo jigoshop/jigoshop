@@ -11,7 +11,7 @@
  * @package             Jigoshop
  * @category            Admin
  * @author              Jigowatt
- * @copyright           Copyright � 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright © 2011-2013 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -91,9 +91,9 @@ class Jigoshop_reports {
 			<form method="post" action="admin.php?page=jigoshop_reports">
 				<p>
 					<label for="from"><?php _e('From:', 'jigoshop'); ?></label>
-					<input class="date-pick" type="date" name="start_date" id="from" readonly="readonly" value="<?php echo esc_attr( date('Y-m-d', $start_date) ); ?>" />
+					<input class="date-pick" type="date" name="start_date" id="from" value="<?php echo esc_attr( date('Y-m-d', $start_date) ); ?>" />
 					<label for="to"><?php _e('To:', 'jigoshop'); ?></label>
-					<input type="date" class="date-pick" name="end_date" id="to" readonly="readonly" value="<?php echo esc_attr( date('Y-m-d', $end_date) ); ?>" />
+					<input type="date" class="date-pick" name="end_date" id="to" value="<?php echo esc_attr( date('Y-m-d', $end_date) ); ?>" />
 					<?php do_action('jigoshop_report_form_fields'); ?>
 					<input type="submit" class="button" value="<?php _e('Show', 'jigoshop'); ?>" />
 				</p>
@@ -294,10 +294,6 @@ jQuery(function(){
 
 		if ($this->orders) :
 			foreach ($this->orders as $order) :
-// 				$order_items = (array) get_post_meta( $order->ID, 'order_items', true );
-// 				foreach ($order_items as $item) :
-// 					$row_cost[] = $item['cost'] * $item['qty'];
-// 				endforeach;
 				$order_data = (array) get_post_meta( $order->ID, 'order_data', true );
 				$row_cost[] = apply_filters('jigoshop_reports_order_total_cost', $order_data['order_total'], $order);
 			endforeach;

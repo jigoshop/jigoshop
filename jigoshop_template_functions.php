@@ -11,7 +11,7 @@
  * @package             Jigoshop
  * @category            Core
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright © 2011-2013 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -284,11 +284,11 @@ if (!function_exists('jigoshop_template_single_sharing')) {
 if (!function_exists('jigoshop_template_single_add_to_cart')) {
 	function jigoshop_template_single_add_to_cart( $post, $_product ) {
 		$availability = $_product->get_availability();
-
-		?>
-		<p class="stock <?php echo $availability['class'] ?>"><?php echo $availability['availability']; ?></p>
-		<?php
-
+		if ( $availability <> '' ) {
+			?>
+			<p class="stock <?php echo $availability['class'] ?>"><?php echo $availability['availability']; ?></p>
+			<?php
+		}
 		if ( $_product->is_in_stock() ) {
 			do_action( $_product->product_type . '_add_to_cart' );
 		}
@@ -536,8 +536,12 @@ if (!function_exists('jigoshop_pagination')) {
 		if (  $wp_query->max_num_pages > 1 ) :
 			?>
 			<div class="navigation">
-				<div class="nav-next"><?php next_posts_link( __( 'Next <span class="meta-nav">&rarr;</span>', 'jigoshop' ) ); ?></div>
-				<div class="nav-previous"><?php previous_posts_link( __( '<span class="meta-nav">&larr;</span> Previous', 'jigoshop' ) ); ?></div>
+				<?php if ( function_exists( 'wp_pagenavi' )) : ?>
+					<?php wp_pagenavi(); ?>
+				<?php else : ?>
+					<div class="nav-next"><?php next_posts_link( __( 'Next <span class="meta-nav">&rarr;</span>', 'jigoshop' ) ); ?></div>
+					<div class="nav-previous"><?php previous_posts_link( __( '<span class="meta-nav">&larr;</span> Previous', 'jigoshop' ) ); ?></div>
+				<?php endif; ?>
 			</div>
 			<?php
 		endif;
@@ -914,9 +918,25 @@ if (!function_exists('jigoshop_checkout_login_form')) {
  **/
 if (!function_exists('jigoshop_verify_checkout_states_for_countries_message')) {
 	function jigoshop_verify_checkout_states_for_countries_message() {
-		// the following will return true or false if a country requires states
-		if ( ! jigoshop_customer::has_valid_shipping_state() ) {
-			echo '<div class="clearfix">&nbsp;</div><div class="jigoshop_error">' . __('Please verify your Billing and Shipping state is correctly set for your country before placing your Order.','jigoshop') . '</div>';
+		if ( Jigoshop_Base::get_options()->get_option( 'jigoshop_verify_checkout_info_message' ) == 'yes' ) {
+			// the following will return true or false if a country requires states
+			if ( ! jigoshop_customer::has_valid_shipping_state() ) {
+				echo '<div class="clear"></div><div class="payment_message">' . __('You may have already established your Billing and Shipping state, but please verify it is correctly set for your location as well as all the rest of your information before placing your Order.','jigoshop') . '</div>';
+			} else {
+				echo '<div class="clear"></div><div class="payment_message">' . __('Please verify that all your information is correctly entered before placing your Order.','jigoshop') . '</div>';
+			}
+		}
+	}
+}
+
+/**
+ * Jigoshop EU B2B VAT Message
+ **/
+if (!function_exists('jigoshop_eu_b2b_vat_message')) {
+	function jigoshop_eu_b2b_vat_message() {
+		if ( jigoshop_countries::is_eu_country( jigoshop_customer::get_country() )
+		&& Jigoshop_Base::get_options()->get_option( 'jigoshop_eu_vat_reduction_message' ) == 'yes' ) {
+			echo '<div class="clear"></div><div class="payment_message">' . __('If you have entered an EU VAT Number, it will be looked up when you <strong>Place</strong> your Order and verified.  At that time <strong><em>Only</em></strong>, will VAT then be removed from the final Order and totals adjusted.  You may enter your EU VAT Number either with, or without, the 2 character EU country code in front.','jigoshop') . '</div>';
 		}
 	}
 }

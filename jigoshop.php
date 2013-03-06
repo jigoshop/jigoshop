@@ -22,8 +22,8 @@
  * Author:              Jigowatt
  * Author URI:          http://jigowatt.co.uk
  *
- * Version:             1.5.1
- * Requires at least:   3.3
+ * Version:             1.6
+ * Requires at least:   3.4
  * Tested up to:        3.5.1
  *
  * Text Domain:         jigoshop
@@ -38,11 +38,11 @@
  * @package             Jigoshop
  * @category            Core
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright © 2011-2013 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
-if ( !defined( "JIGOSHOP_VERSION" )) define( "JIGOSHOP_VERSION", 1301280) ;
+if ( !defined( "JIGOSHOP_VERSION" )) define( "JIGOSHOP_VERSION", 1303050) ;
 if ( !defined( "JIGOSHOP_OPTIONS" )) define( "JIGOSHOP_OPTIONS", 'jigoshop_options' );
 if ( !defined( 'JIGOSHOP_TEMPLATE_URL' ) ) define( 'JIGOSHOP_TEMPLATE_URL', 'jigoshop/' );
 if ( !defined( "PHP_EOL" )) define( "PHP_EOL", "\r\n" );
@@ -167,12 +167,24 @@ function jigoshop_init() {
 
 }
 
+/**
+ * Include template functions here with a low priority so they are pluggable by themes
+ **/
+add_action( 'init', 'jigoshop_load_template_functions', 999 );
+function jigoshop_load_template_functions() {
+	include_once( 'jigoshop_template_functions.php' );
+}
+
+
 function jigoshop_get_core_capabilities() {
 	$capabilities = array();
 
 	$capabilities['core'] = array(
-		"manage_jigoshop",
-		"view_jigoshop_reports"
+		'manage_jigoshop',
+		'view_jigoshop_reports',
+		'manage_jigoshop_orders',
+		'manage_jigoshop_coupons',
+		'manage_jigoshop_products'
 	);
 
 	$capability_types = array( 'product', 'shop_order', 'shop_coupon' );
@@ -218,29 +230,55 @@ function jigoshop_roles_init() {
 
 		// Customer role
 		add_role( 'customer', __('Customer', 'jigoshop'), array(
-			'read'         => true,
-			'edit_posts'   => false,
-			'delete_posts' => false
+			'read'						=> true,
+			'edit_posts'				=> false,
+			'delete_posts'				=> false
 		) );
 
+		// Shop manager role
+		add_role( 'shop_manager', __('Shop Manager', 'jigoshop'), array(
+			'read'						=> true,
+			'read_private_pages'		=> true,
+			'read_private_posts'		=> true,
+			'edit_users'				=> true,
+			'edit_posts' 				=> true,
+			'edit_pages' 				=> true,
+			'edit_published_posts'		=> true,
+			'edit_published_pages'		=> true,
+			'edit_private_pages'		=> true,
+			'edit_private_posts'		=> true,
+			'edit_others_posts' 		=> true,
+			'edit_others_pages' 		=> true,
+			'publish_posts' 			=> true,
+			'publish_pages'				=> true,
+			'delete_posts' 				=> true,
+			'delete_pages' 				=> true,
+			'delete_private_pages'		=> true,
+			'delete_private_posts'		=> true,
+			'delete_published_pages'	=> true,
+			'delete_published_posts'	=> true,
+			'delete_others_posts' 		=> true,
+			'delete_others_pages' 		=> true,
+			'manage_categories' 		=> true,
+			'manage_links'				=> true,
+			'moderate_comments'			=> true,
+			'unfiltered_html'			=> true,
+			'upload_files'				=> true,
+			'export'					=> true,
+			'import'					=> true,
+		) );
+		
 		$capabilities = jigoshop_get_core_capabilities();
 
 		foreach( $capabilities as $cap_group ) {
 			foreach( $cap_group as $cap ) {
 				$wp_roles->add_cap( 'administrator', $cap );
+				$wp_roles->add_cap( 'shop_manager', $cap );
 			}
 		}
+		
 	}
 }
-
-/**
- * Include template functions here with a low priority so they are pluggable by themes
- **/
-add_action( 'init', 'jigoshop_load_template_functions', 999 );
-function jigoshop_load_template_functions() {
-	include_once( 'jigoshop_template_functions.php' );
-}
-
 
 /**
  * Jigoshop Frontend Styles and Scripts
@@ -716,9 +754,7 @@ function is_account() {
 
 if (!function_exists('is_ajax')) {
 	function is_ajax() {
-		if ( defined('DOING_AJAX') )
-			return true;
-
+		if ( defined('DOING_AJAX') ) return true;
 		return ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' );
 	}
 }
@@ -1078,12 +1114,12 @@ function jigoshop_exclude_order_admin_comments( $clauses ) {
 
 	// NOTE: bit of a hack, tests if we're in the admin & its an ajax call
 	// Don't hide when viewing orders in admin
-	if (is_admin() && is_ajax()) {
-
+	// TODO: removing the is_ajax() call for version 1.6, isn't working for some reason, order notes were not appearing in Admin
+	if ( is_admin() ) {
 		return $clauses;
 	}
 
-	// Hide all those comments which aren't of type jigoshop
+	// Hide all those comments which are of type jigoshop or order_note
 	$clauses['where'] .= ' AND comment_type != "jigoshop"';
 	$clauses['where'] .= ' AND comment_type != "order_note"'; // Removes order notes
 

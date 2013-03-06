@@ -13,7 +13,7 @@
  * @package             Jigoshop
  * @category            Admin
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright © 2011-2013 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 add_action('jigoshop_process_shop_order_meta', 'jigoshop_process_shop_order_meta', 1, 2);
@@ -167,16 +167,16 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
                 }
             }
 
-            $cost_inc_tax = $jigoshop_options->get_option('jigoshop_prices_include_tax') == 'yes' ? number_format((float)jigowatt_clean($item_cost[$i]), 2) : -1;
+            $cost_inc_tax = $jigoshop_options->get_option('jigoshop_prices_include_tax') == 'yes' ? number_format((float)jigowatt_clean($item_cost[$i]), 2, '.', '') : -1;
             $order_items[] = apply_filters('update_order_item', array(
 				'id'          => htmlspecialchars(stripslashes($item_id[$i])),
 				'variation_id'=> $variation_id,
 				'variation'   => $variation,
 				'name'        => htmlspecialchars(stripslashes($item_name[$i])),
 				'qty'         => (int) $item_quantity[$i],
-				'cost'        => number_format((float)jigowatt_clean($item_cost[$i]), 2),
+				'cost'        => number_format((float)jigowatt_clean($item_cost[$i]), 2, '.', ''),
 				'cost_inc_tax'=> $cost_inc_tax,
-				'taxrate'     => number_format((float)jigowatt_clean($item_tax_rate[$i]), 4)
+				'taxrate'     => number_format((float)jigowatt_clean($item_tax_rate[$i]), 4, '.', '')
                 ));
         }
     }

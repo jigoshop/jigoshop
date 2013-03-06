@@ -2,9 +2,9 @@
 Contributors: Jigowatt
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigowatt, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
-Requires at least: 3.3
+Requires at least: 3.4
 Tested up to: 3.5.1
-Stable tag: 1.5.1
+Stable tag: 1.6
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,23 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.6 - 2013-03-05 =
+* New: VAT reduction -after- processing an Order for customers out of the Shop Base Country and with a valid EU VAT Number for EU Countries
+* New: Authenticated customers can now log out and back in again on a different device and get their cart back
+* New: Added default attributes for variable products to be pre-selected on front end Product page
+* New: Added a Wordpress 'Shop Manager' role for Users
+* New: Support for WP-PageNavi plugin
+* Tweak: Added 2 options on Settings->General for displaying certain messages on the Checkout
+* Tweak: Updated Brazilian translations courtesy of Raphael Suzuki
+* Tweak: Updated Ukranian translations courtesy of Anatolii Sakhnik
+* Tweak: Updated French translations courtesy of Laurent Dinclaux
+* Fix: products on sale shortcode now accurately displays simple products on sale
+* Fix: internal product attributes and variations saving of custom text attributes
+* Fix: Adding products to the Cart if not sufficient stock available
+* Fix: Variations now check for sufficient stock available
+* Fix: Reports date range selectors now work in all browsers
+* Fix: Order notes now appear on Orders in the Admin
+
 = 1.5.1 - 2013-02-01 =
 * Fix: 3rd party Shipping modules and Payment gateways will now display in settings
 

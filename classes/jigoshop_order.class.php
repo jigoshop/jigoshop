@@ -13,7 +13,7 @@
  * @package             Jigoshop
  * @category            Customer
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright © 2011-2013 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_order extends Jigoshop_Base {
@@ -90,6 +90,7 @@ class jigoshop_order extends Jigoshop_Base {
 		$this->billing_first_name 	= (string) $this->get_value_from_data('billing_first_name');
 		$this->billing_last_name 	= (string) $this->get_value_from_data('billing_last_name');
 		$this->billing_company	 	= (string) $this->get_value_from_data('billing_company');
+		$this->billing_euvatno	 	= (string) $this->get_value_from_data('billing_euvatno');
 		$this->billing_address_1 	= (string) $this->get_value_from_data('billing_address_1');
 		$this->billing_address_2 	= (string) $this->get_value_from_data('billing_address_2');
 		$this->billing_city 		= (string) $this->get_value_from_data('billing_city');
@@ -433,18 +434,21 @@ class jigoshop_order extends Jigoshop_Base {
 
 		$comment = array(
 			'comment_post_ID'      => $this->id,
-			'comment_author'       => 'Jigoshop',
-			'comment_author_email' => null,
-			'comment_author_url'   => null,
+			'comment_author'       => __('Jigoshop', 'jigoshop'),
+			'comment_author_email' => strtolower( __('Jigoshop', 'jigoshop') ) . '@127.0.0.1',
+			'comment_author_url'   => '',
 			'comment_content'      => $note,
-			'comment_type'         => 'jigoshop',
+			'comment_type'         => 'order_note',
+			'comment_agent'        => __('Jigoshop', 'jigoshop'),
 			'comment_parent'       => 0,
 			'comment_date'         => current_time('mysql'),
 			'comment_date_gmt'     => current_time('mysql', 1),
+			'comment_approved'     => true
 		);
 
 		$comment_id = wp_insert_comment( $comment );
 		add_comment_meta($comment_id, 'private', $private);
+		return $comment_id;
 	}
 
 	/**

@@ -13,7 +13,7 @@
  * @package             Jigoshop
  * @category            Checkout
  * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @copyright           Copyright © 2011-2013 Jigowatt Ltd.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_checkout extends Jigoshop_Singleton {
@@ -23,7 +23,8 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 	public $shipping_fields;
 	private $must_register = true;
 	private $show_signup = false;
-
+	private $valid_euvatno = false;
+	
 	/** constructor */
 	protected function __construct () {
 
@@ -114,6 +115,23 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 				'required'      => true,
 				'class'         => array('form-row-last') )
 		);
+
+		if ( jigoshop_countries::is_eu_country( jigoshop_countries::get_base_country() ) ) {
+			$start = $billing_fields;
+			array_splice( $start, 5 );
+			$end = $billing_fields;
+			array_splice( $end, 0, 5 );
+			$billing_fields = array_merge(
+				$start,
+				array( array(
+					'name'          => 'billing-euvatno',
+					'label'         => __('EU VAT Number', 'jigoshop'),
+					'placeholder'   => __('EU VAT Number', 'jigoshop'),
+					/*'class'         => array('form-row-last')*/
+				)),
+				$end
+			);
+		}
 
 		return $billing_fields;
 	}
@@ -473,29 +491,55 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 				}
 				if ( isset($field['required']) && $field['required'] && empty($this->posted[$field['name']]) ) jigoshop::add_error( $field['label'] . __(' (billing) is a required field.','jigoshop') );
 
+				if ( $field['name'] == 'billing-euvatno' ) {
+					$vatno = !empty( $this->posted[$field['name']] ) ? $this->posted[$field['name']] : '';
+					$vatno = str_replace( ' ', '', $vatno );
+					// strip any country code from the beginning of the number
+					if ( strtolower( substr( $vatno, 0, strlen($country) )) == strtolower( $country ) ) {
+						$vatno = substr( $vatno, strlen($country) );
+					}
+					if ( $vatno <> '' ) {
+						$url = 'http://isvat.appspot.com/' . $country . '/' . $vatno . '/';
+						$httpRequest = curl_init();
+						curl_setopt( $httpRequest, CURLOPT_FAILONERROR, true );
+						curl_setopt( $httpRequest, CURLOPT_RETURNTRANSFER, true );
+						curl_setopt( $httpRequest, CURLOPT_HEADER, false );
+						curl_setopt( $httpRequest, CURLOPT_URL, $url );
+						$result = curl_exec( $httpRequest );
+						curl_close( $httpRequest );
+						if ( $result === 'false' ) {
+							jigoshop_log( "EU VAT validation error with URL: " . $url );
+							jigoshop::add_error( $field['label'] . __(' (billing) is not a valid VAT Number.  Leave it blank to disable VAT validation.  (VAT may be charged depending on your location)','jigoshop') );
+						} else {
+							if ( $country != jigoshop_countries::get_base_country() ) $this->valid_euvatno = true;
+						}
+    				}
+				}
+				
 				// Validation
-				if (isset($field['validate']) && !empty($this->posted[$field['name']]))
+				if (isset($field['validate']) && !empty($this->posted[$field['name']])) {
 
-				switch ( $field['validate'] ) :
+					switch ( $field['validate'] ) {
+						case 'phone' :
+							if (!jigoshop_validation::is_phone( $this->posted[$field['name']] ))
+								jigoshop::add_error( $field['label'] . __(' (billing) is not a valid number.','jigoshop') );
+							break;
 
-					case 'phone' :
-						if (!jigoshop_validation::is_phone( $this->posted[$field['name']] ))
-							jigoshop::add_error( $field['label'] . __(' (billing) is not a valid number.','jigoshop') );
-					break;
+						case 'email' :
+							if (!jigoshop_validation::is_email( $this->posted[$field['name']] ))
+								jigoshop::add_error( $field['label'] . __(' (billing) is not a valid email address.','jigoshop') );
+							break;
 
-					case 'email' :
-						if (!jigoshop_validation::is_email( $this->posted[$field['name']] ))
-							jigoshop::add_error( $field['label'] . __(' (billing) is not a valid email address.','jigoshop') );
-					break;
+						case 'postcode' :
+							if (!jigoshop_validation::is_postcode( $this->posted[$field['name']], $_POST['billing-country'] ))
+								jigoshop::add_error( $field['label'] . __(' (billing) is not a valid postcode/ZIP.','jigoshop') );
+							else
+								$this->posted[$field['name']] = jigoshop_validation::format_postcode( $this->posted[$field['name']], $_POST['billing-country'] );
+							break;
+					}
 
-					case 'postcode' :
-						if (!jigoshop_validation::is_postcode( $this->posted[$field['name']], $_POST['billing-country'] ))
-							jigoshop::add_error( $field['label'] . __(' (billing) is not a valid postcode/ZIP.','jigoshop') );
-						else
-							$this->posted[$field['name']] = jigoshop_validation::format_postcode( $this->posted[$field['name']], $_POST['billing-country'] );
-					break;
-				endswitch;
-
+				}
+				
 			endforeach;
 
 			// Shipping Information
@@ -619,11 +663,11 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
 					endif;
 
-					$shipping_first_name = $shipping_last_name = $shipping_company = $shipping_address_1 =
+					$shipping_first_name = $shipping_last_name = $shipping_company = $shipping_euvatno = $shipping_address_1 =
 					$shipping_address_2 = $shipping_city = $shipping_state = $shipping_postcode = $shipping_country = '';
 
 					// Get shipping/billing
-					if ( !empty($this->posted['shiptobilling']) ) :
+					if ( !empty($this->posted['shiptobilling']) ) {
 
 						$shipping_first_name= $this->posted['billing-first_name'];
 						$shipping_last_name = $this->posted['billing-last_name'];
@@ -634,8 +678,20 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 						$shipping_state     = $this->posted['billing-state'];
 						$shipping_postcode  = $this->posted['billing-postcode'];
 						$shipping_country   = $this->posted['billing-country'];
+						if ( $this->valid_euvatno ) {
+							$vatno = $this->posted['billing-euvatno'];
+							$vatno = str_replace( ' ', '', $vatno );
+							// some may enter the 2 character country code, some may not
+							// strip any country code from the beginning of the number
+							if ( strtolower( substr( $vatno, 0, strlen($shipping_country) )) == strtolower( $shipping_country ) ) {
+								$vatno = substr( $vatno, strlen($shipping_country) );
+							}
+							// now add the country code back into the beginning
+							$shipping_euvatno = $shipping_country . $vatno;
+							$this->posted['billing-euvatno'] = $shipping_euvatno;
+						}
 
-					elseif ( jigoshop_shipping::is_enabled() ) :
+					} elseif ( jigoshop_shipping::is_enabled() ) {
 
 						$shipping_first_name= $this->posted['shipping-first_name'];
 						$shipping_last_name = $this->posted['shipping-last_name'];
@@ -647,13 +703,14 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 						$shipping_postcode  = $this->posted['shipping-postcode'];
 						$shipping_country   = $this->posted['shipping-country'];
 
-					endif;
+					}
 
 					// Save billing/shipping to user meta fields
 					if ($user_id>0) :
 						update_user_meta( $user_id, 'billing-first_name', $this->posted['billing-first_name'] );
 						update_user_meta( $user_id, 'billing-last_name' , $this->posted['billing-last_name'] );
 						update_user_meta( $user_id, 'billing-company'   , $this->posted['billing-company'] );
+						if ( $this->valid_euvatno ) update_user_meta( $user_id, 'billing-euvatno', $this->posted['billing-euvatno'] );
 						update_user_meta( $user_id, 'billing-email'     , $this->posted['billing-email'] );
 						update_user_meta( $user_id, 'billing-address'   , $this->posted['billing-address'] );
 						update_user_meta( $user_id, 'billing-address-2' , $this->posted['billing-address-2'] );
@@ -709,6 +766,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					$data['billing_first_name']     = $this->posted['billing-first_name'];
 					$data['billing_last_name']      = $this->posted['billing-last_name'];
 					$data['billing_company']        = $this->posted['billing-company'];
+					if ( $this->valid_euvatno ) $data['billing_euvatno'] = $this->posted['billing-euvatno'];
 					$data['billing_address_1']      = $this->posted['billing-address'];
 					$data['billing_address_2']      = $this->posted['billing-address-2'];
 					$data['billing_city']           = $this->posted['billing-city'];
@@ -741,7 +799,14 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					$data['order_shipping_tax']     = number_format(jigoshop_cart::$shipping_tax_total, 2, '.', '');
 					$data['order_total']            = jigoshop_cart::get_total(false);
 					$data['order_total_prices_per_tax_class_ex_tax'] = jigoshop_cart::get_price_per_tax_class_ex_tax();
-
+					
+					if ( $this->valid_euvatno ) {
+						$data['order_tax'] = '';
+						$temp = jigoshop_cart::get_total_cart_tax_without_shipping_tax();
+						$data['order_total'] -= ($temp + $data['order_shipping_tax']);
+						$data['order_shipping_tax'] = 0;
+					}
+					
 					// Cart items
 					$order_items = array();
 
@@ -772,6 +837,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 						} else {
 							$rate = 0.00;
 						}
+						if ( $this->valid_euvatno ) $rate = 0.00;
 						
 						$price_inc_tax = (
 							self::get_options()->get_option('jigoshop_calc_taxes') == 'yes'

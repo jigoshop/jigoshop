@@ -3,6 +3,7 @@
 	// On document Load
 	$(function() {
 
+		$('#product-type').select2({ width: '200px' });
 		$('.backorders_field').hide();
 
 		// Set up tabs
@@ -34,6 +35,7 @@
 	});
 
 	function jigoshop_start_tabs() {
+		
 		var $tabs = $('.tabs');
 
 		// First show tabs & hide each panel
@@ -51,6 +53,7 @@
 			$('div.panel', $panels).hide();
 			$( $(this).attr('href') ).show();
 		});
+		
 	}
 
 	function jigoshop_stock_options() {
@@ -162,7 +165,7 @@
 
 	function jigoshop_orders() {
 
-		$('#order_items_list button.remove_row').live('click', function(e) {
+		$(document.body).on('click', '#order_items_list button.remove_row', function(e) {
 			e.preventDefault();
 			var answer = confirm(jigoshop_params.remove_item_notice);
 			if (answer){
@@ -170,7 +173,7 @@
 			}
 		});
 
-		$('button.calc_totals').live('click', function(e) {
+		$(document.body).on('click', 'button.calc_totals', function(e) {
 			e.preventDefault();
 			var answer = confirm( jigoshop_params.cart_total );
 			if ( answer ){
@@ -266,7 +269,7 @@
 		});
 
 
-		$('button.billing-same-as-shipping').live('click', function(e){
+		$(document.body).on('click', 'button.billing-same-as-shipping', function(e){
 			e.preventDefault();
 			var answer = confirm(jigoshop_params.copy_billing);
 			if (answer){
@@ -321,12 +324,12 @@
 		$(jigoshop_attributes_table_items).each( function(idx, itm) { $('.jigoshop_attributes_wrapper').append(itm); } );
 
 		// Polyfill for custom attributes not closing
-		$('.custom .handle, .custom .handlediv').live('click', function(){
+		$(document.body).on('click', '.custom .handle, .custom .handlediv', function(){
 			$(this).parent().toggleClass('closed');
 		});
 
 		// Custom attributes autogenerate name
-		$('.attribute-name').live('keyup', function(e) {
+		$(document.body).on('keyup', '.attribute-name', function(e) {
 
 			if( ! $(this).val() )
 				val = 'Custom Attribute';
@@ -337,7 +340,7 @@
 		});
 
 		// Remove attribute
-		$('button.hide_row').live('click', function(e) {
+		$(document.body).on('click', 'button.hide_row', function(e) {
 			e.preventDefault();
 			var answer = confirm(jigoshop_params.confirm_remove_attr)
 			if (answer){
