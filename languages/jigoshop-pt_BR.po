@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Jigoshop v1.6\n"
 "Report-Msgid-Bugs-To: Jeff Parsons <jeff.parsons@jigoshop.com>\n"
 "POT-Creation-Date: 2013-03-05 03:20-0400\n"
-"PO-Revision-Date: 2013-03-07 22:36:56+0000\n"
+"PO-Revision-Date: 2013-03-09 02:48:11+0000\n"
 "Last-Translator: Jeff Parsons <jeff.parsons@jigoshop.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -3141,13 +3141,13 @@ msgstr "Defina seu endereço, que será impresso em seus emails de cobrança. De
 #: classes/jigoshop_options.class.php:631
 #@ jigoshop
 msgid "Address Line2"
-msgstr "Bairro"
+msgstr "Endereço (Linha 2)"
 
 #: admin/jigoshop-admin-settings-options.php:226
 #: classes/jigoshop_options.class.php:633
 #@ jigoshop
 msgid "If address line1 is not set, address line2 will not display even if you put a value in it. Setting your address will enable us to print it out on your invoice emails. Leave blank to disable."
-msgstr "Defina seu bairro, que será impresso em seus emails de cobrança. Deixa em branco para desabilitar. Caso o campo de endereço esteja em branco, o bairro não será exibido, mesmo que você o defina."
+msgstr "Caso a primeira linha do endereço não for definida, a segunda também não aparecerá, mesmo que coloque nela um valor. Definindo seu endereço, ele será impresso nos seus emails de cobrança. Deixe em branco para desabilitar."
 
 #: admin/jigoshop-admin-settings-options.php:234
 #: classes/jigoshop_options.class.php:640
@@ -4860,7 +4860,7 @@ msgstr "Notas do consumidor sobre o pedido"
 #: shortcodes/my_account.php:200
 #@ jigoshop
 msgid "Company"
-msgstr "CPF/CNPJ"
+msgstr "Empresa"
 
 #: admin/write-panels/order-data.php:123
 #: admin/write-panels/order-data.php:170
@@ -4905,7 +4905,7 @@ msgstr "Endereço"
 #: shortcodes/my_account.php:213
 #@ jigoshop
 msgid "Address 2"
-msgstr "Bairro"
+msgstr "Endereço (2)"
 
 #: admin/write-panels/order-data.php:127
 #: admin/write-panels/order-data.php:174
