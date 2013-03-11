@@ -889,7 +889,7 @@ function jigoshop_price( $price, $args = array() ) {
 
     endif;
 
-	return $return;
+	return apply_filters( 'jigoshop_price_display_filter', $return);
 }
 
 /** Show variation info if set */
