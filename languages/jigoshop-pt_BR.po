@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Jigoshop v1.6\n"
 "Report-Msgid-Bugs-To: Jeff Parsons <jeff.parsons@jigoshop.com>\n"
 "POT-Creation-Date: 2013-03-05 03:20-0400\n"
-"PO-Revision-Date: 2013-03-09 02:48:11+0000\n"
+"PO-Revision-Date: 2013-03-14 03:01:53+0000\n"
 "Last-Translator: Jeff Parsons <jeff.parsons@jigoshop.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -447,7 +447,7 @@ msgstr "Telefone:"
 #: jigoshop_emails.php:390
 #@ jigoshop
 msgid "EU VAT Number:"
-msgstr ""
+msgstr "Número de IVA da UE:"
 
 #: jigoshop_emails.php:402
 #@ jigoshop
@@ -1192,7 +1192,7 @@ msgstr "Verifique se o estado do Endereço de Cobrança e Envio está correto pa
 #: jigoshop_template_functions.php:939
 #@ jigoshop
 msgid "If you have entered an EU VAT Number, it will be looked up when you <strong>Place</strong> your Order and verified.  At that time <strong><em>Only</em></strong>, will VAT then be removed from the final Order and totals adjusted.  You may enter your EU VAT Number either with, or without, the 2 character EU country code in front."
-msgstr ""
+msgstr "Caso você tenha fornecido um número de IVA da UE, ele será analisado e verificado quando você <strong>Confirmar</strong> seu Pedido. Nesse período <strong><em>Somente</em></strong>, o IVA então será removido do Pedido final e o valor total será ajustado.  Você deve fornecer seu número de IVA da UE com ou sem os 2 caracteres da país da UE à frente."
 
 #: jigoshop_template_functions.php:953
 #@ jigoshop
@@ -1508,7 +1508,7 @@ msgstr "Fora de Estoque/Encomendas"
 #, fuzzy
 #@ jigoshop
 msgid " reviewed by "
-msgstr "%s avaliação para %s"
+msgstr " avaliado por "
 
 #: admin/jigoshop-admin-dashboard.php:316
 #@ jigoshop
@@ -2210,7 +2210,7 @@ msgstr "Agrupar & Arquivar"
 #, php-format
 #@ jigoshop
 msgid "Product updated. <a href=\"%s\">View Product</a>"
-msgstr "Produto atualizado. <a href=\"%s\">View produto</a>"
+msgstr "Produto atualizado. <a href=\"%s\">Ver produto</a>"
 
 #: admin/jigoshop-admin-post-types.php:30
 #@ jigoshop
@@ -4429,7 +4429,7 @@ msgid "Remove image"
 msgstr "Remover imagem"
 
 #: admin/jigoshop-admin.php:45
-#, fuzzy, php-format, php-format
+#, fuzzy, php-format, php-format, php-format
 #@ jigoshop
 msgid "Your database needs an update for Jigoshop. Please <strong>backup</strong> &amp; %s."
 msgstr "Seu banco de dados necessita de uma atualização. Por favor, <strong>faça um backup</strong> &amp; %s."
@@ -4956,7 +4956,7 @@ msgstr "Endereço de Email"
 #: classes/jigoshop_checkout.class.php:129
 #@ jigoshop
 msgid "EU VAT Number"
-msgstr ""
+msgstr "Número de VAT da UE"
 
 #: admin/write-panels/order-data.php:164
 #@ jigoshop
@@ -4996,7 +4996,7 @@ msgstr "Taxa de imposto"
 #: templates/checkout/review_order.php:105
 #@ jigoshop
 msgid " Personal: "
-msgstr "Pessoal: "
+msgstr " Pessoal: "
 
 #: admin/write-panels/order-data.php:306
 #@ jigoshop
@@ -6426,7 +6426,7 @@ msgstr " (cobrança) é um campo requerido."
 #: classes/jigoshop_checkout.class.php:512
 #@ jigoshop
 msgid " (billing) is not a valid VAT Number.  Leave it blank to disable VAT validation.  (VAT may be charged depending on your location)"
-msgstr ""
+msgstr " (cobrança) não é um número de IVA válido.  Deixe em branco para desabilitar a validação de IVA.  (IVA poderá ser cobrado dependendo de sua localização)"
 
 #: classes/jigoshop_checkout.class.php:525
 #@ jigoshop
@@ -6665,7 +6665,7 @@ msgstr "Isto será aplicado somente à Loja, Categorias e Páginas de Produtos."
 #: classes/jigoshop_options.class.php:858
 #@ jigoshop
 msgid "Enabling this setting will display a message at the bottom of the Checkout informing the customer that EU VAT will not be removed until the Order is placed and only if they have provided a valid EU VAT Number."
-msgstr ""
+msgstr "Habilitando esta configuração, será exibida uma mensagem no rodapé da página de Finalização informando o cliente que o IVA da UE não será removido até que o Pedido seja confirmado e somente se o cliente tiver fornecido um número de IVA da UE válido."
 
 #: classes/jigoshop_options.class.php:871
 #, fuzzy
@@ -7096,7 +7096,7 @@ msgstr "Indisponível"
 #@ jigoshop
 msgctxt "price"
 msgid "From:"
-msgstr "De:"
+msgstr "A partir de:"
 
 #: classes/jigoshop_product.class.php:1030
 #: templates/single-product-reviews.php:46
