@@ -123,8 +123,18 @@ function jigoshop_product_data_box() {
 					'selected'      => get_post_meta( $post->ID, 'visibility', true )
 				);
 				echo Jigoshop_Forms::select( $args );
+
+				// Featured
+				$args = array(
+					'id'            => 'featured',
+					'label'         => __('Featured?','jigoshop'),
+					'desc'          => __('Enable this option to feature this product', 'jigoshop'),
+					'value'         => false
+				);
+				echo Jigoshop_Forms::checkbox( $args );
 			?>
 			</fieldset>
+			<fieldset>
 			<?php
 				// SKU
 				if ( Jigoshop_Base::get_options()->get_option('jigoshop_enable_sku') !== 'no' ) {
@@ -184,15 +194,7 @@ function jigoshop_product_data_box() {
 
 			<fieldset>
 			<?php
-				// Featured
-				$args = array(
-					'id'            => 'featured',
-					'label'         => __('Featured?','jigoshop'),
-					'desc'          => __('Enable this option to feature this product', 'jigoshop'),
-					'value'         => false
-				);
-				echo Jigoshop_Forms::checkbox( $args );
-
+				// External products
 				$args = array(
 					'id'            => 'external_url',
 					'label'         => __( 'Product URL', 'jigoshop' ),

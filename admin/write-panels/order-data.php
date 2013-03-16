@@ -95,8 +95,9 @@ function jigoshop_order_data_meta_box($post) {
 			<select id="customer_user" name="customer_user">
 				<option value=""><?php _e('Guest', 'jigoshop') ?></option>
 				<?php
-					$users = new WP_User_Query( array( 'orderby' => 'display_name' ) );
-					$users = $users->get_results();
+					$users_fields = array( 'ID', 'display_name', 'user_email' );
+					$users = new WP_User_Query( array( 'orderby' => 'display_name', 'fields' => $users_fields ) );
+ 					$users = $users->get_results();
 					if ($users) foreach ( $users as $user ) :
 						echo '<option value="'.esc_attr($user->ID).'" '; selected($data['customer_user'], $user->ID); echo '>' . $user->display_name . ' ('.$user->user_email.')</option>';
 					endforeach;
