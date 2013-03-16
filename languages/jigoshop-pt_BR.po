@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Jigoshop v1.6\n"
 "Report-Msgid-Bugs-To: Jeff Parsons <jeff.parsons@jigoshop.com>\n"
 "POT-Creation-Date: 2013-03-05 03:20-0400\n"
-"PO-Revision-Date: 2013-03-14 03:01:53+0000\n"
+"PO-Revision-Date: 2013-03-16 22:13:35+0000\n"
 "Last-Translator: Jeff Parsons <jeff.parsons@jigoshop.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1340,7 +1340,7 @@ msgstr "Deletar"
 #: admin/jigoshop-admin-attributes.php:234
 #@ jigoshop
 msgid "Configure&nbsp;terms"
-msgstr "Configurar&nbsp; termos"
+msgstr "Configure&nbsp;os termos"
 
 #: admin/jigoshop-admin-attributes.php:238
 #@ jigoshop
@@ -3141,7 +3141,7 @@ msgstr "Defina seu endereço, que será impresso em seus emails de cobrança. De
 #: classes/jigoshop_options.class.php:631
 #@ jigoshop
 msgid "Address Line2"
-msgstr "Endereço (Linha 2)"
+msgstr "Endereço (2)"
 
 #: admin/jigoshop-admin-settings-options.php:226
 #: classes/jigoshop_options.class.php:633
@@ -4429,7 +4429,7 @@ msgid "Remove image"
 msgstr "Remover imagem"
 
 #: admin/jigoshop-admin.php:45
-#, fuzzy, php-format, php-format, php-format
+#, fuzzy, php-format, php-format
 #@ jigoshop
 msgid "Your database needs an update for Jigoshop. Please <strong>backup</strong> &amp; %s."
 msgstr "Seu banco de dados necessita de uma atualização. Por favor, <strong>faça um backup</strong> &amp; %s."
@@ -6643,12 +6643,12 @@ msgstr "Habilitando esta configuração, as caixas postais (CEP) digitadas pelos
 #: classes/jigoshop_options.class.php:843
 #@ jigoshop
 msgid "Show verify information message"
-msgstr "Exibir mensagem com informações de verificação"
+msgstr "Exibir mensagem de verificação de informação"
 
 #: classes/jigoshop_options.class.php:845
 #@ jigoshop
 msgid "Enabling this setting will display a message at the bottom of the Checkout asking customers to verify all their informatioin is correctly entered before placing their Order.  This is useful in particular for Countries that have states to ensure the correct shipping state is selected."
-msgstr "Quando habilitada, estas configurações irão exibir uma mensagem no rodapé da página de finalização perguntando aos seus clientes para verificarem todas as informações corretamente antes de confirmarem o pedido.  Isto é útil em países que possuem estados, para certificar-se de que o estado foi selecionado corretamente."
+msgstr "Habilitando esta configuração, será exibida uma mensagem no rodapé da Finalização, pedindo aos seus clientes que verifiquem se todas as suas informações estão corretas antes de confirmar o Pedido.  Isto é particularmente útil em países que possuem estados, para certificar-se de que o estado correto está selecionado."
 
 #: classes/jigoshop_options.class.php:856
 #, fuzzy
@@ -7051,7 +7051,7 @@ msgstr " <small>%s</small>"
 #: classes/jigoshop_order.class.php:379
 #@ jigoshop
 msgid "Your download link for this file is:"
-msgstr "Seu link de download para o arquivo é:"
+msgstr "O link de download para este arquivo é:"
 
 #: classes/jigoshop_order.class.php:490
 #, php-format
@@ -7497,7 +7497,7 @@ msgstr "Por favor, digite seu endereço de email do Skrill; isto é necessário 
 #: gateways/skrill.php:131
 #@ jigoshop
 msgid "Skrill Secret Word"
-msgstr "Senha do Skrill"
+msgstr "Palavra Secreta do Skrill"
 
 #: gateways/skrill.php:133
 #@ jigoshop
@@ -7518,38 +7518,38 @@ msgstr "Por favor, digite seu ID de cliente do Skrill; isto é necessário para 
 #, fuzzy
 #@ jigoshop
 msgid "Skrill payment icon"
-msgstr "Pagamento com Skrill foi concluído"
+msgstr "Ícone de pagamento do Skrill"
 
 #: gateways/skrill.php:150
 #@ jigoshop
 msgid "Use the full URL to the image including http://"
-msgstr "Use a URL inteira da imagem, incluindo http://"
+msgstr "Use a URL completa para a imagem, incluindo http://"
 
 #: gateways/skrill.php:151
 #@ jigoshop
 msgid "The URL to an icon image to display on the Checkout"
-msgstr "A URL de um ícone para ser exibida na Finalização"
+msgstr "A URL de uma imagem de ícone para ser exibida na Finalização"
 
 #: gateways/skrill.php:158
 #, fuzzy
 #@ jigoshop
 msgid "Skrill payment methods"
-msgstr "Pagamento com Skrill foi concluído"
+msgstr "Métodos de pagamento do Skrill"
 
 #: gateways/skrill.php:159
 #@ default
 msgid "Select a max of 5. See page 40 for more info <br>https://www.moneybookers.com/merchant/en/moneybookers_gateway_manual.pdf. <br>Leave empty for default."
-msgstr "Selecione um máximo de 5. Veja a página 40 para maiores informações <br>https://www.moneybookers.com/merchant/en/moneybookers_gateway_manual.pdf. <br>Deixe um branco para utilizar o padrão."
+msgstr ""
 
 #: gateways/skrill.php:160
 #@ default
 msgid "The type of payments that should be allowed via Skrill."
-msgstr "Os tipos de pagamento que devem ser permitidos via Skrill."
+msgstr ""
 
 #: gateways/skrill.php:165
 #@ jigoshop
 msgid "All credit card types"
-msgstr "Todos os tipos de cartões de crédito"
+msgstr "Todos os tipos de cartão de crédito"
 
 #: gateways/skrill.php:166
 #@ jigoshop
@@ -7559,7 +7559,7 @@ msgstr "Visa"
 #: gateways/skrill.php:167
 #@ jigoshop
 msgid "MasterCard"
-msgstr "Mastercard"
+msgstr "MasterCard"
 
 #: gateways/skrill.php:168
 #@ jigoshop
@@ -9756,13 +9756,13 @@ msgstr ""
 #: jigoshop.php:0
 #@ jigoshop
 msgid "http://jigoshop.com/"
-msgstr "http://jigoshop.com/"
+msgstr ""
 
 #. translators: plugin header field 'Description'
 #: jigoshop.php:0
 #@ jigoshop
 msgid "Jigoshop, a WordPress eCommerce plugin that works."
-msgstr "Jigoshop, um plugin de eCommerce para WordPress."
+msgstr ""
 
 #. translators: plugin header field 'Author'
 #: jigoshop.php:0
@@ -9786,5 +9786,5 @@ msgstr ""
 #: shipping/shipping_method.class.php:231
 #@ default
 msgid "service"
-msgstr "serviço"
+msgstr ""
 
