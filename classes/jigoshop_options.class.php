@@ -1073,6 +1073,20 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		);
 
 		self::$default_options[] = array(
+			'name'		=> __('Catalog product buttons show','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('This will determine the type of button and the action it will used when clicked on the Shop and Category product listings.  You can also set it to use no button.','jigoshop'),
+			'id' 		=> 'jigoshop_catalog_product_button',
+			'std' 		=> 'add',
+			'type' 		=> 'radio',
+			'choices'	=> array(
+				'add'           => __('Add to Cart', 'jigoshop'),
+				'view'          => __('View Product', 'jigoshop'),
+				'none'          => __('No Button', 'jigoshop')
+			)
+		);
+
+		self::$default_options[] = array(
 			'name'		=> __('Sort products in catalog by','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('Determines the display sort order of products for the Shop, Categories, and Tag pages.','jigoshop'),

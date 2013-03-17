@@ -73,6 +73,10 @@ function jigoshop_upgrade() {
  		jigoshop_upgrade_160();
  	}
 
+ 	if ( $jigoshop_db_version < 1303180 ) {
+ 		jigoshop_upgrade_161();
+ 	}
+
 	// Update the db option
 	update_site_option( 'jigoshop_db_version', JIGOSHOP_VERSION );
 
@@ -641,5 +645,16 @@ function jigoshop_upgrade_160() {
 	Jigoshop_Base::get_options()->add_option( 'jigoshop_skrill_payment_methods_multicheck', 'ACC' );
 	Jigoshop_Base::get_options()->add_option( 'jigoshop_verify_checkout_info_message', 'yes' );
 	Jigoshop_Base::get_options()->add_option( 'jigoshop_eu_vat_reduction_message', 'yes' );
+
+}
+
+/**
+ * Execute changes made in Jigoshop 1.6.1
+ *
+ * @since 1.6.1
+ */
+function jigoshop_upgrade_161() {
+	
+	Jigoshop_Base::get_options()->add_option( 'jigoshop_catalog_product_button', 'cart' );
 
 }
