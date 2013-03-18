@@ -112,9 +112,12 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
-= 1.6.1 - 2013-03-12 =
-* New: Added option to Settings->Catalog & Pricing to determine product button actions of the Shop page
-* Fix: Edit Product->Attributes checkboxes for 'display on product page' save correctly
+= 1.6.1 - 2013-03-18 =
+* New: Added option to Settings->Catalog & Pricing Tab to determine product button display and actions of the Shop page
+* Tweak: Updated .pot file for language translators
+* Tweak: Add a filter to single product pages for extensions and themes to add large image CSS classes
+* Fix: Edit Product->Attributes checkboxes for 'display on product page' now save correctly
+* Fix: Repair single-product-reviews template error message
 
 = 1.6 - 2013-03-05 =
 * New: VAT reduction -after- processing an Order for customers out of the Shop Base Country and with a valid EU VAT Number for EU Countries

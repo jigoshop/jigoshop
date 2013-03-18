@@ -1075,7 +1075,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		self::$default_options[] = array(
 			'name'		=> __('Catalog product buttons show','jigoshop'),
 			'desc' 		=> '',
-			'tip' 		=> __('This will determine the type of button and the action it will used when clicked on the Shop and Category product listings.  You can also set it to use no button.','jigoshop'),
+			'tip' 		=> __('This will determine the type of button and the action it will use when clicked on the Shop and Category product listings.  You can also set it to use no button.','jigoshop'),
 			'id' 		=> 'jigoshop_catalog_product_button',
 			'std' 		=> 'add',
 			'type' 		=> 'radio',
