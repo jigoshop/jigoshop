@@ -256,8 +256,8 @@ class jigoshop_product_meta
 				'name'        => $attr_names[$key],
 				'value'       => $value,
 				'position'    => $attr_position[$key],
-				'visible'     => isset( $attr_visibility[$key] ),
-				'variation'   => isset( $attr_variation[$key] ),
+				'visible'     => isset( $attr_visibility[$key] ) ? $attr_visibility[$key] : null,
+				'variation'   => isset( $attr_variation[$key] ) ? $attr_variation[$key] : null,
 				'is_taxonomy' => $has_tax
 			);
 		}
