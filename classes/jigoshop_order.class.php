@@ -367,7 +367,7 @@ class jigoshop_order extends Jigoshop_Base {
 
 				if ($_product->exists) :
 
-					if ( ($_product->is_type('downloadable') || $_product->is_type('virtual')) ) :
+					if ( ( $_product->is_type('downloadable') ) ) :
 
 					if ( (bool) $item['variation_id'] ) {
 						$product_id = $_product->variation_id;
