@@ -10,8 +10,8 @@
  *
  * @package             Jigoshop
  * @category            Customer
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2013 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 

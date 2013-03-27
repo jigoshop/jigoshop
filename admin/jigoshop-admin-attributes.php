@@ -12,8 +12,8 @@
  *
  * @package             Jigoshop
  * @category            Admin
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2013 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -261,9 +261,8 @@ function jigoshop_add_attribute() {
 							<div class="form-field">
 								<label for="attribute_type"><?php _e('Attribute type', 'jigoshop'); ?></label>
 								<select name="attribute_type" id="attribute_type" class="postform">
-									<!-- Jigoshop 1.5, 'select' attribute types are no longer retrieved for display -->
-									<!--option value="select"><?php _e('Select','jigoshop') ?></option-->
 									<option value="multiselect"><?php _e('Multiselect','jigoshop') ?></option>
+									<option value="select"><?php _e('Select','jigoshop') ?></option>
 									<option value="text"><?php _e('Text','jigoshop') ?></option>
 								</select>
 							</div>

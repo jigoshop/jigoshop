@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Admin
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2013 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package     Jigoshop
+ * @category    Admin
+ * @author      Jigoshop
+ * @copyright   Copyright © 2011-2013 Jigoshop.
+ * @license     http://jigoshop.com/license/commercial-edition
  */
 
 class Jigoshop_Admin_Settings extends Jigoshop_Singleton {

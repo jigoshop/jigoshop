@@ -1,10 +1,10 @@
 === Jigoshop ===
-Contributors: Jigowatt
+Contributors: Jigoshop
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigowatt, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.4
 Tested up to: 3.5.1
-Stable tag: 1.6.1
+Stable tag: 1.6.2
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,13 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.6.2 - 2013-03-27 =
+* Tweak: Updated Spanish translation courtesy of David Bravo
+* Tweak: Updated Brazilian translations courtesy of Raphael Suzuki
+* Fix: Attributes not listed for variations no longer appear on Variations
+* Fix: Virtual products will no longer show incorrect file URL in emails
+* Fix: Allow the Jigoshop plugin to be deleted via the WordPress Plugin Manager
+
 = 1.6.1 - 2013-03-18 =
 * New: Added option to Settings->Catalog & Pricing Tab to determine product button display and actions of the Shop page
 * Tweak: Updated .pot file for language translators

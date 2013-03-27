@@ -12,8 +12,8 @@
  *
  * @package             Jigoshop
  * @category            Admin
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2013 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -566,7 +566,6 @@ function display_attribute() {
 							</div>
 						</td>
 						<td class="value">
-							<!-- Jigoshop 1.5, 'select' attribute types are no longer retrieved for display -->
 							<?php if ($tax->attribute_type=="select") : ?>
 								<select name="attribute_values[<?php echo $i ?>]">
 									<option value=""><?php _e('Choose an option&hellip;', 'jigoshop'); ?></option>

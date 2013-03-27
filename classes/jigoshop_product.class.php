@@ -10,8 +10,8 @@
  *
  * @package             Jigoshop
  * @category            Catalog
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2013 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_product extends Jigoshop_Base {
@@ -1351,9 +1351,8 @@ class jigoshop_product extends Jigoshop_Base {
 	public static function getAttributeTaxonomies() {
 		global $wpdb;
 
-		// Jigoshop 1.5 only accepts text and multi-select attribute types for taxonomies
 		if(self::$attribute_taxonomies === NULL) {
-			self::$attribute_taxonomies = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."jigoshop_attribute_taxonomies WHERE attribute_type <> 'select';");
+			self::$attribute_taxonomies = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."jigoshop_attribute_taxonomies;");
 		}
 
 		return self::$attribute_taxonomies;

@@ -11,7 +11,7 @@ More information and examples: http://fancybox.net/
 
 License: http://fancybox.net/
 
-Copyright (c) 2011 Janis Skarnelis - janis@fancyapps.com
+Copyright © 2011 Janis Skarnelis - janis@fancyapps.com
 
 ***********************************************************************
                      GNU GENERAL PUBLIC LICENSE

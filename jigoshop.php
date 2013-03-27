@@ -19,10 +19,10 @@
  * Plugin Name:         Jigoshop
  * Plugin URI:          http://jigoshop.com/
  * Description:         Jigoshop, a WordPress eCommerce plugin that works.
- * Author:              Jigowatt
- * Author URI:          http://jigowatt.co.uk
+ * Author:              Jigoshop
+ * Author URI:          http://jigoshop.com
  *
- * Version:             1.6.1
+ * Version:             1.6.2
  * Requires at least:   3.4
  * Tested up to:        3.5.1
  *
@@ -37,8 +37,8 @@
  *
  * @package             Jigoshop
  * @category            Core
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2013 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 

@@ -1,7 +1,7 @@
 /**
  * jQuery Cookie plugin
  *
- * Copyright (c) 2010 Klaus Hartl (stilbuero.de)
+ * Copyright © 2010 Klaus Hartl (stilbuero.de)
  * Dual licensed under the MIT and GPL licenses:
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl.html
@@ -17,7 +17,7 @@ options=value||{};var result,decode=options.raw?function(s){return s;}:decodeURI
  *	written by Alen Grakalic
  *	http://cssglobe.com/post/4380/easy-tooltip--jquery-plugin
  *
- *	Copyright (c) 2009 Alen Grakalic (http://cssglobe.com)
+ *	Copyright © 2009 Alen Grakalic (http://cssglobe.com)
  *	Dual licensed under the MIT (MIT-LICENSE.txt)
  *	and GPL (GPL-LICENSE.txt) licenses.
  *
@@ -41,7 +41,7 @@ function clearPlaceholdersBeforeSubmit(form){form.find(':input[placeholder]').ea
 
 /**
  * jQuery.ScrollTo - Easy element scrolling using jQuery.
- * Copyright (c) 2007-2009 Ariel Flesler - aflesler(at)gmail(dot)com | http://flesler.blogspot.com
+ * Copyright © 2007-2009 Ariel Flesler - aflesler(at)gmail(dot)com | http://flesler.blogspot.com
  * Dual licensed under MIT and GPL.
  * Date: 5/25/2009
  * @author Ariel Flesler

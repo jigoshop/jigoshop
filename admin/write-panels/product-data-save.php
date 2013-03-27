@@ -12,8 +12,8 @@
  *
  * @package             Jigoshop
  * @category            Admin
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2013 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_product_meta
@@ -257,7 +257,7 @@ class jigoshop_product_meta
 				'value'       => $value,
 				'position'    => $attr_position[$key],
 				'visible'     => isset( $attr_visibility[$key] ),
-				'variation'   => isset( $attr_variation[$key] ),
+				'variation'   => isset( $attr_variation[$key] ) ? $attr_variation[$key] : null,
 				'is_taxonomy' => $has_tax
 			);
 		}
