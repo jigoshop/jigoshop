@@ -1009,7 +1009,7 @@ msgstr "SKU"
 
 #: ../jigoshop_template_functions.php:260
 msgid "Posted in "
-msgstr ""
+msgstr "Postad i"
 
 #: ../jigoshop_template_functions.php:261
 msgid "Tagged as "
@@ -1170,7 +1170,7 @@ msgstr ""
 #: ../jigoshop_template_functions.php:953
 msgctxt "breadcrumb"
 msgid "Home"
-msgstr ""
+msgstr "Hem"
 
 # @ jigoshop
 #: ../jigoshop_template_functions.php:1007
@@ -2362,15 +2362,15 @@ msgstr ""
 
 #: ../admin/jigoshop-admin-post-types.php:171
 msgid "Scheduled"
-msgstr ""
+msgstr "Schemalagd"
 
 #: ../admin/jigoshop-admin-post-types.php:174
 msgid "Draft"
-msgstr ""
+msgstr "Utkast"
 
 #: ../admin/jigoshop-admin-post-types.php:263
 msgid "Show all types"
-msgstr ""
+msgstr "Visa alla typer"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-post-types.php:282 ../shortcodes/my_account.php:65
@@ -3849,7 +3849,7 @@ msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:620
 msgid "Tiny Images"
-msgstr ""
+msgstr "Små bilder"
 
 #: ../admin/jigoshop-admin-settings-options.php:621
 msgid "Cart, Checkout, Orders and Widgets"
@@ -3877,7 +3877,7 @@ msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:647
 msgid "Large Images"
-msgstr ""
+msgstr "Stora bilder"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings-options.php:648
@@ -3963,7 +3963,7 @@ msgstr "Detta styr vilken enhet du kommer att definiera vikter i."
 #: ../admin/jigoshop-admin-settings-options.php:708
 #: ../classes/jigoshop_options.class.php:1365
 msgid "Kilograms"
-msgstr ""
+msgstr "Kilogram"
 
 #: ../admin/jigoshop-admin-settings-options.php:709
 #: ../classes/jigoshop_options.class.php:1366
@@ -3985,7 +3985,7 @@ msgstr "Detta styr vilken enhet du kommer att definiera vikter i."
 #: ../admin/jigoshop-admin-settings-options.php:720
 #: ../classes/jigoshop_options.class.php:1391
 msgid "centimeters"
-msgstr ""
+msgstr "Centimeter"
 
 #: ../admin/jigoshop-admin-settings-options.php:721
 #: ../classes/jigoshop_options.class.php:1392
@@ -4301,12 +4301,12 @@ msgstr ""
 #: ../admin/jigoshop-admin-settings.php:801
 #: ../admin/jigoshop-admin-settings.php:1095
 msgid "Usage limit"
-msgstr ""
+msgstr "Bruksgräns"
 
 #: ../admin/jigoshop-admin-settings.php:803
 #: ../admin/jigoshop-admin-settings.php:1099
 msgid "No limit"
-msgstr ""
+msgstr "Ingen gräns"
 
 #: ../admin/jigoshop-admin-settings.php:804
 #: ../admin/jigoshop-admin-settings.php:1093
@@ -4383,7 +4383,7 @@ msgstr "Lägg till produkt"
 #: ../admin/jigoshop-admin-settings.php:1145
 #: ../admin/jigoshop-admin-settings.php:1164
 msgid "Include"
-msgstr ""
+msgstr "Inkludera"
 
 #: ../admin/jigoshop-admin-settings.php:893
 #: ../admin/jigoshop-admin-settings.php:914
@@ -4459,7 +4459,7 @@ msgstr "Ta bort den här kupongen?"
 
 #: ../admin/jigoshop-admin-settings.php:1032
 msgid "Hide"
-msgstr ""
+msgstr "Dölj"
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-settings.php:1068
@@ -5318,7 +5318,7 @@ msgstr ""
 
 #: ../admin/write-panels/product-data.php:159
 msgid "Schedule"
-msgstr ""
+msgstr "Schema"
 
 #: ../admin/write-panels/product-data.php:160
 #, php-format
@@ -5365,12 +5365,12 @@ msgstr "Standard"
 #: ../admin/write-panels/product-data.php:254
 #: ../admin/write-panels/product-data.php:607
 msgid "Check All"
-msgstr ""
+msgstr "Markera alla"
 
 #: ../admin/write-panels/product-data.php:255
 #: ../admin/write-panels/product-data.php:608
 msgid "Uncheck All"
-msgstr ""
+msgstr "Avmarkera alla"
 
 #: ../admin/write-panels/product-data.php:267
 #: ../admin/write-panels/product-types/variable.php:309
@@ -5391,14 +5391,14 @@ msgstr "Versioner"
 #: ../admin/write-panels/product-types/variable.php:573
 #: ../classes/jigoshop_product.class.php:1192
 msgid "Length"
-msgstr ""
+msgstr "Längd"
 
 #: ../admin/write-panels/product-data.php:282
 #: ../admin/write-panels/product-types/variable.php:310
 #: ../admin/write-panels/product-types/variable.php:574
 #: ../classes/jigoshop_product.class.php:1194
 msgid "Width"
-msgstr ""
+msgstr "Bredd"
 
 #: ../admin/write-panels/product-data.php:283
 #: ../admin/write-panels/product-types/variable.php:312
@@ -7061,11 +7061,11 @@ msgstr ""
 
 #: ../classes/jigoshop_order.class.php:31
 msgid "Failed"
-msgstr ""
+msgstr "Misslyckades"
 
 #: ../classes/jigoshop_order.class.php:32
 msgid "Denied"
-msgstr ""
+msgstr "Nekad"
 
 #: ../classes/jigoshop_order.class.php:33
 msgid "Expired"
@@ -7361,7 +7361,7 @@ msgstr "Avvaktar checkbetalning"
 
 #: ../gateways/cod.php:57 ../gateways/cod.php:78
 msgid "Cash on Delivery"
-msgstr ""
+msgstr "Postförskott"
 
 #: ../gateways/cod.php:57
 msgid ""
@@ -7371,7 +7371,7 @@ msgstr ""
 
 #: ../gateways/cod.php:61
 msgid "Enable Cash on Delivery"
-msgstr ""
+msgstr "Tillåta postförskott"
 
 # @ jigoshop
 #: ../gateways/cod.php:85
@@ -8787,11 +8787,11 @@ msgstr ""
 
 #: ../shipping/local_pickup.php:59 ../shipping/local_pickup.php:80
 msgid "Local pickup"
-msgstr ""
+msgstr "Hämta på plats"
 
 #: ../shipping/local_pickup.php:63
 msgid "Enable local pickup"
-msgstr ""
+msgstr "Tillåta hämta på plats"
 
 # @ jigoshop
 #: ../shipping/shipping_method.class.php:200
@@ -9350,7 +9350,7 @@ msgstr "Inga produkter i kundvagnen."
 
 #: ../widgets/cart.php:186
 msgid "View cart button:"
-msgstr ""
+msgstr "Visa varukorg"
 
 #: ../widgets/cart.php:193
 #, fuzzy
@@ -9595,11 +9595,11 @@ msgstr ""
 
 #: ../widgets/user_login.php:64
 msgid "Logout"
-msgstr ""
+msgstr "Logga UT"
 
 #: ../widgets/user_login.php:100
 msgid "Forgot it?"
-msgstr ""
+msgstr "Glömt?"
 
 # @ jigoshop
 #: ../widgets/user_login.php:106
