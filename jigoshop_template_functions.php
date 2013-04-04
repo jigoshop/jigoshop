@@ -119,7 +119,7 @@ if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 				} else {
 					$output = '';
 				}
-			} else if ( $button_type == 'add' ) {
+			} else if ( $button_type == 'add' || $button_type == 'cart' ) {
 				$output = '<a href="'.esc_url($_product->add_to_cart_url()).'" class="button" rel="nofollow">'.__('Add to cart', 'jigoshop').'</a>';
 			} else if ( $button_type == 'view' ) {
 				$output = '<a href="'.esc_url(get_permalink($_product->id)).'" class="button">'.__('View Product', 'jigoshop').'</a>';
