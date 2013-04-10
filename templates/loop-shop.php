@@ -57,14 +57,16 @@ endwhile; endif;
 
 if ($loop==0) :
 
-	echo '<p class="info">'.__('No products found which match your selection.', 'jigoshop').'</p>';
+	$content = '<p class="info">'.__('No products found which match your selection.', 'jigoshop').'</p>';
 
 else :
 
 	$found_posts = ob_get_clean();
 
-	echo '<ul class="products">' . $found_posts . '</ul><div class="clear"></div>';
+	$content = '<ul class="products">' . $found_posts . '</ul><div class="clear"></div>';
 
 endif;
+
+echo apply_filters( 'jigoshop_loop_shop_content', $content );
 
 do_action('jigoshop_after_shop_loop');
