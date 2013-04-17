@@ -736,7 +736,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			'desc' 		=> '',
 			'tip' 		=> __('Enabling this setting will display a "Return to Shop" button on the Cart page along with the "Continue to Checkout" button.','jigoshop'),
 			'id' 		=> 'jigoshop_cart_shows_shop_button',
-			'std' 		=> 'no',
+			'std' 		=> 'yes',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
@@ -1556,7 +1556,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			'desc' 		=> __('This will only apply to the Shop, Category and Product pages.','jigoshop'),
 			'tip' 		=> __('This will have no effect on the Cart, Checkout, Emails, or final Orders; prices are always shown with tax out.','jigoshop'),
 			'id' 		=> 'jigoshop_prices_include_tax',
-			'std' 		=> 'yes',
+			'std' 		=> 'no',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
@@ -1634,7 +1634,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			'desc' 		=> __('This will have no effect if "Only ship to billing address" is activated.','jigoshop'),
 			'tip' 		=> __('When activated, Shipping address fields will appear by default on the Checkout.','jigoshop'),
 			'id' 		=> 'jigoshop_show_checkout_shipping_fields',
-			'std' 		=> 'yes',
+			'std' 		=> 'no',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),

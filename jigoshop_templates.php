@@ -92,6 +92,12 @@ function jigoshop_get_template_part( $slug, $name = '' ) {
 			return;
 		endif;
 	endif;
+	if ($name=='on_sale') :
+		if (!locate_template(array( 'loop-on_sale.php', JIGOSHOP_TEMPLATE_URL . 'loop-on_sale.php' ))) :
+			load_template( jigoshop::plugin_path() . '/templates/loop-on_sale.php',false );
+			return;
+		endif;
+	endif;
 	get_template_part( JIGOSHOP_TEMPLATE_URL . $slug, $name );
 }
 

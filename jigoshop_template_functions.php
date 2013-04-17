@@ -630,9 +630,10 @@ if (!function_exists('jigoshop_product_description_panel')) {
 		$content = apply_filters( 'jigoshop_single_product_content', $content );
 		if ( $content <> '' ) {
 			echo '<div class="panel" id="tab-description">';
-			echo '<h2>' . apply_filters('jigoshop_product_description_heading', __('Product Description', 'jigoshop')) . '</h2>';
-			// the following 3 lines replicate the behavior of 'the_content()'
-			// non echoed so Rich Snippets can be applied via a filter
+			$heading = apply_filters('jigoshop_product_description_heading', '');
+			if ( ! empty( $heading )) {
+				echo '<h2>' . $heading . '</h2>';
+			}
 			echo $content;
 			echo '</div>';
 		}
@@ -644,7 +645,10 @@ if (!function_exists('jigoshop_product_attributes_panel')) {
 		$content = apply_filters( 'jigoshop_single_product_attributes', $_product->list_attributes() );
 		if ( $content <> '' ) {
 			echo '<div class="panel" id="tab-attributes">';
-			echo '<h2>' . apply_filters('jigoshop_product_attributes_heading', __('Additional Information', 'jigoshop')) . '</h2>';
+			$heading = apply_filters('jigoshop_product_attributes_heading', '');
+			if ( ! empty( $heading )) {
+				echo '<h2>' . $heading . '</h2>';
+			}
 			echo $content;
 			echo '</div>';
 		}

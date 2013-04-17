@@ -92,6 +92,7 @@ class jigoshop_product_meta
 		if( $_POST['product-type'] == 'external' ) {
 			update_post_meta( $post_id, 'external_url', $_POST['external_url']);
 			update_post_meta( $post_id, 'stock_status', 'instock' );
+			update_post_meta( $post_id, 'manage_stock', false );
 		}
 
 		// Process the sale dates

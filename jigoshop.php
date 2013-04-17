@@ -22,7 +22,7 @@
  * Author:              Jigoshop
  * Author URI:          http://jigoshop.com
  *
- * Version:             1.6.2
+ * Version:             1.6.3
  * Requires at least:   3.4
  * Tested up to:        3.5.1
  *
@@ -1112,18 +1112,23 @@ function jigoshop_comments($comment, $args, $depth) {
 add_filter( 'comments_clauses', 'jigoshop_exclude_order_admin_comments', 10, 1);
 function jigoshop_exclude_order_admin_comments( $clauses ) {
 
-	// NOTE: bit of a hack, tests if we're in the admin & its an ajax call
-	// Don't hide when viewing orders in admin
-	// TODO: removing the is_ajax() call for version 1.6, isn't working for some reason, order notes were not appearing in Admin
-	if ( is_admin() ) {
-		return $clauses;
-	}
+	global $wpdb, $typenow, $pagenow;
 
-	// Hide all those comments which are of type jigoshop or order_note
-	$clauses['where'] .= ' AND comment_type != "jigoshop"';
-	$clauses['where'] .= ' AND comment_type != "order_note"'; // Removes order notes
+	// NOTE: bit of a hack, tests if we're in the admin & its an ajax call
+	if ( is_admin() && ( $typenow == 'shop_order' || $pagenow == 'admin-ajax.php' ) && current_user_can( 'manage_jigoshop' ) )
+		return $clauses; // Don't hide when viewing orders in admin
+
+	if ( ! $clauses['join'] ) $clauses['join'] = '';
+
+	if ( ! strstr( $clauses['join'], "JOIN $wpdb->posts" ) )
+		$clauses['join'] .= " LEFT JOIN $wpdb->posts ON $wpdb->comments.comment_post_ID = $wpdb->posts.ID ";
+
+	if ( $clauses['where'] ) $clauses['where'] .= ' AND ';
+
+	$clauses['where'] .= " $wpdb->posts.post_type NOT IN ('shop_order') ";
 
 	return $clauses;
+
 }
 
 /**

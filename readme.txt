@@ -4,7 +4,7 @@ Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, wid
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.4
 Tested up to: 3.5.1
-Stable tag: 1.6.2
+Stable tag: 1.6.3
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,16 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.6.3 - 2013-04-17 =
+* Fix: Order notes no longer appear in WordPress dashboard, still show on Orders
+* Fix: Add to Cart button redirect now redirects correctly to the Setting for Product, Cart, or Checkout
+* Fix: Payable 'pending' orders are now 'cancelled' on the My Account page if any products out of stock and backorders not allowed
+* Fix: Allow different WordPress table prefixes for sale short code
+* Fix: Allow the 'on_sale' template to be located within a theme
+* Fix: Shortcode for 'jigoshop_products' now uses the 'per_page' parameter from settings
+* Fix: Recent reviews widget no longer shows Anonymous as author on Home and Shop pages
+* Fix: When sending shipping info to PayPal, allow Puerto Rico to process as a US state
+
 = 1.6.2 - 2013-03-27 =
 * Tweak: Updated Spanish translation courtesy of David Bravo
 * Tweak: Updated Brazilian translations courtesy of Raphael Suzuki

@@ -858,7 +858,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
         	&& jigoshop_cart::get_tax_rate($tax_class) > 0) 
         	|| jigoshop_cart::get_tax_rate($tax_class) !== false ) {
         	
-            $return = self::$tax->get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%): ';
+            $return = self::$tax->get_tax_class_for_display($tax_class) . ' (' . (float) jigoshop_cart::get_tax_rate($tax_class) . '%) ';
 
             // only show estimated tag when customer is on the cart page and no shipping calculator is enabled to be able to change country
             if (!jigoshop_shipping::show_shipping_calculator() && is_cart()) {

@@ -88,6 +88,7 @@ function jigoshop_products( $atts ){
 	$args = array(
 		'post_type'          => 'product',
 		'post_status'        => 'publish',
+		'posts_per_page'     => $per_page,
 		'ignore_sticky_posts'=> 1,
 		'orderby'            => $orderby,
 		'order'              => $order,
@@ -372,9 +373,11 @@ function jigoshop_sale_products( $atts ) {
 	), $atts));
 
 	$today = current_time('timestamp');
-
+	$posts_table = $wpdb->prefix . 'posts';
+	$meta_table = $wpdb->prefix . 'postmeta';
+	
 	// TODO: currently as of Jigoshop 1.6, this still won't handle variations
-	$sql = "SELECT wp_posts.* FROM wp_posts INNER JOIN wp_postmeta ON (wp_posts.ID = wp_postmeta.post_id) INNER JOIN wp_postmeta AS mt1 ON (wp_posts.ID = mt1.post_id) INNER JOIN wp_postmeta AS mt2 ON (wp_posts.ID = mt2.post_id) INNER JOIN wp_postmeta AS mt3 ON (wp_posts.ID = mt3.post_id) INNER JOIN wp_postmeta AS mt4 ON (wp_posts.ID = mt4.post_id) INNER JOIN wp_postmeta AS mt5 ON (wp_posts.ID = mt5.post_id) WHERE 1=1 AND wp_posts.post_type = 'product' AND (wp_posts.post_status = 'publish') AND ( (wp_postmeta.meta_key = 'visibility' AND CAST(wp_postmeta.meta_value AS CHAR) IN ('catalog','visible')) AND (mt1.meta_key = 'sale_price' AND CAST(mt1.meta_value AS CHAR) != '') AND ((mt2.meta_key = 'sale_price_dates_from' AND CAST(mt2.meta_value AS SIGNED) <= %d) OR (mt3.meta_key = 'sale_price_dates_from' AND CAST(mt3.meta_value AS CHAR) = '')) AND ((mt4.meta_key = 'sale_price_dates_to' AND CAST(mt4.meta_value AS SIGNED) >= %d) OR (mt5.meta_key = 'sale_price_dates_to' AND CAST(mt5.meta_value AS CHAR) = '') )) GROUP BY wp_posts.ID ORDER BY wp_posts.post_title ".$order;
+	$sql = "SELECT {$posts_table}.* FROM {$posts_table} INNER JOIN {$meta_table} ON ({$posts_table}.ID = {$meta_table}.post_id) INNER JOIN {$meta_table} AS mt1 ON ({$posts_table}.ID = mt1.post_id) INNER JOIN {$meta_table} AS mt2 ON ({$posts_table}.ID = mt2.post_id) INNER JOIN {$meta_table} AS mt3 ON ({$posts_table}.ID = mt3.post_id) INNER JOIN {$meta_table} AS mt4 ON ({$posts_table}.ID = mt4.post_id) INNER JOIN {$meta_table} AS mt5 ON ({$posts_table}.ID = mt5.post_id) WHERE 1=1 AND {$posts_table}.post_type = 'product' AND ({$posts_table}.post_status = 'publish') AND ( ({$meta_table}.meta_key = 'visibility' AND CAST({$meta_table}.meta_value AS CHAR) IN ('catalog','visible')) AND (mt1.meta_key = 'sale_price' AND CAST(mt1.meta_value AS CHAR) != '') AND ((mt2.meta_key = 'sale_price_dates_from' AND CAST(mt2.meta_value AS SIGNED) <= %d) OR (mt3.meta_key = 'sale_price_dates_from' AND CAST(mt3.meta_value AS CHAR) = '')) AND ((mt4.meta_key = 'sale_price_dates_to' AND CAST(mt4.meta_value AS SIGNED) >= %d) OR (mt5.meta_key = 'sale_price_dates_to' AND CAST(mt5.meta_value AS CHAR) = '') )) GROUP BY {$posts_table}.ID ORDER BY {$posts_table}.post_title ".$order;
 	
 	global $jigoshop_sale_products;
 	$jigoshop_sale_products = $wpdb->get_results( $wpdb->prepare( $sql, $today, $today ), OBJECT );

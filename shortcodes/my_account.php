@@ -21,14 +21,19 @@ function get_jigoshop_my_account($atts) {
 
 function jigoshop_my_account( $atts ) {
 
+	global $post, $current_user;
+    $jigoshop_options = Jigoshop_Base::get_options();
+
 	extract(shortcode_atts(array(
     'recent_orders' => 5
 	), $atts));
 
+	// if any products in payable orders are found now out of stock
+	// then the order will be set to 'cancelled' and we'll come here to start over
+restart:
+	ob_start();
+	
   	$recent_orders = ('all' == $recent_orders) ? -1 : $recent_orders;
-
-	global $post, $current_user;
-    $jigoshop_options = Jigoshop_Base::get_options();
 
 	get_currentuserinfo();
 
@@ -70,6 +75,19 @@ function jigoshop_my_account( $atts ) {
 				$jigoshop_orders = new jigoshop_orders();
 				$jigoshop_orders->get_customer_orders( get_current_user_id(), $recent_orders );
 				if ($jigoshop_orders->orders) foreach ($jigoshop_orders->orders as $order) :
+				
+					if ($order->status=='pending') {
+						foreach ( $order->items as $item ) {
+							$_product = $order->get_product_from_item( $item );
+							$temp = new jigoshop_product( $_product->ID );
+							if ( $temp->managing_stock() && (!$temp->is_in_stock()
+								|| !$temp->has_enough_stock($item['qty']) ) ) {
+								$order->cancel_order( sprintf(__("Product - %s - is now out of stock -- Canceling Order", 'jigoshop'), $_product->get_title() ) );
+								$junk = ob_get_clean();
+								goto restart; // kinda hate this, but need to start over
+							}
+						}
+					}
 					?><tr class="order">
 						<td><?php echo $order->get_order_number(); ?></td>
 						<td><time title="<?php echo esc_attr( date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($order->order_date)) ); ?>"><?php echo date_i18n(get_option('date_format').' '.get_option('time_format'), strtotime($order->order_date)); ?></time></td>
@@ -81,10 +99,14 @@ function jigoshop_my_account( $atts ) {
 						<td><?php echo apply_filters( 'jigoshop_display_order_total', jigoshop_price($order->order_total), $order); ?></td>
 						<td class="nobr"><?php _e($order->status, 'jigoshop'); ?></td>
 						<td class="nobr alignright">
-							<?php if ($order->status=='pending') : ?>
-								<a href="<?php echo esc_url( $order->get_checkout_payment_url() ); ?>" class="button pay"><?php _e('Pay', 'jigoshop'); ?></a>
-								<a href="<?php echo esc_url( $order->get_cancel_order_url() ); ?>" class="button cancel"><?php _e('Cancel', 'jigoshop'); ?></a>
-							<?php endif; ?>
+							<?php
+								if ($order->status=='pending') {
+								?>
+									<a href="<?php echo esc_url( $order->get_checkout_payment_url() ); ?>" class="button pay"><?php _e('Pay', 'jigoshop'); ?></a>
+									<a href="<?php echo esc_url( $order->get_cancel_order_url() ); ?>" class="button cancel"><?php _e('Cancel', 'jigoshop'); ?></a>
+								<?php
+								}
+							?>
 							<a href="<?php echo esc_url( add_query_arg('order', $order->id, apply_filters('jigoshop_get_view_order_page_id', get_permalink(jigoshop_get_page_id('view_order')))) ); ?>" class="button"><?php _e('View', 'jigoshop'); ?></a>
 						</td>
 					</tr><?php
@@ -92,6 +114,8 @@ function jigoshop_my_account( $atts ) {
 			?></tbody>
 
 		</table>
+
+		<?php echo ob_get_clean(); /* all orders have been rendered, dump them out */ ?>
 
 		<h2><?php _e('My Addresses', 'jigoshop'); ?></h2>
 		<p><?php _e('The following addresses will be used on the checkout page by default.', 'jigoshop'); ?></p>
@@ -165,6 +189,7 @@ function jigoshop_my_account( $atts ) {
 		jigoshop_login_form();
 
 	endif;
+	
 }
 
 function get_jigoshop_edit_address() {
@@ -373,15 +398,17 @@ function jigoshop_view_order() {
     $jigoshop_options = Jigoshop_Base::get_options();
     $user_id = get_current_user_id();
 
-    if (is_user_logged_in()) :
+    if (is_user_logged_in()) {
 
         if (isset($_GET['order']))
-            $order_id = (int) $_GET['order']; else
+            $order_id = (int) $_GET['order'];
+        else
             $order_id = 0;
 
         $order = new jigoshop_order($order_id);
 
-        if ($order_id > 0 && $order->user_id == get_current_user_id()) :
+        if ($order_id > 0 && $order->user_id == get_current_user_id()) {
+        
             do_action('jigoshop_before_order_summary_details', $order->id);
             echo '<p>' . sprintf(__('Order <mark>%s</mark> made on <mark>%s</mark>.', 'jigoshop'), $order->get_order_number(), date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($order->order_date))) . ' ';
             echo sprintf(__('Order status: <mark class="%s">%s</mark>', 'jigoshop'), sanitize_title($order->status), __($order->status, 'jigoshop') );
@@ -411,12 +438,12 @@ function jigoshop_view_order() {
                     <?php endif; ?>
                         <td><strong><?php echo $order->get_subtotal_to_display(); ?></strong></td>
                     </tr>
-            <?php
-            if ($order->order_shipping > 0) : ?>
+            <?php if ($order->order_shipping > 0) : ?>
                 <tr>
                     <td colspan="3"><?php _e('Shipping', 'jigoshop'); ?></td>
                     <td><?php echo $order->get_shipping_to_display(); ?></small></td>
-                </tr><?php
+                </tr>
+            <?php
             endif;
 			
             do_action('jigoshop_processing_fee_after_shipping');
@@ -495,7 +522,7 @@ function jigoshop_view_order() {
                     ?>
                 </tbody>
             </table>
-			<?php do_action('jigoshop_before_order_customer_details', $order->id);?>
+			<?php do_action('jigoshop_before_order_customer_details', $order->id); ?>
             <header>
                 <h2><?php _e('Customer details', 'jigoshop'); ?></h2>
             </header>
@@ -507,7 +534,7 @@ function jigoshop_view_order() {
                     echo '<dt>' . __('Telephone:', 'jigoshop') . '</dt><dd>' . $order->billing_phone . '</dd>';
                 ?>
             </dl>
-			<?php do_action('jigoshop_after_order_customer_details', $order->id);?>
+			<?php do_action('jigoshop_after_order_customer_details', $order->id); ?>
             <div class="col2-set addresses">
 
                 <div class="col-1">
@@ -515,7 +542,7 @@ function jigoshop_view_order() {
                     <header class="title">
                         <h3><?php _e('Shipping Address', 'jigoshop'); ?></h3>
                     </header>
-			<?php do_action('jigoshop_before_order_shipping_address', $order->id);?>
+			<?php do_action('jigoshop_before_order_shipping_address', $order->id); ?>
                     <address><p>
             <?php
             if (!$order->formatted_shipping_address)
@@ -523,13 +550,13 @@ function jigoshop_view_order() {
                 echo $order->formatted_shipping_address;
             ?>
                         </p></address>
-			<?php do_action('jigoshop_after_order_shipping_address', $order->id);?>
+			<?php do_action('jigoshop_after_order_shipping_address', $order->id); ?>
                 </div><!-- /.col-1 -->
 
                 <div class="col-2">
 
                     <header class="title">
-			<?php do_action('jigoshop_before_order_billing_address', $order->id);?>
+			<?php do_action('jigoshop_before_order_billing_address', $order->id); ?>
                         <h3><?php _e('Billing Address', 'jigoshop'); ?></h3>
                     </header>
                     <address><p>
@@ -539,7 +566,7 @@ function jigoshop_view_order() {
                 echo $order->formatted_billing_address;
             ?>
                         </p></address>
-			<?php do_action('jigoshop_after_order_billing_address', $order->id);?>
+			<?php do_action('jigoshop_after_order_billing_address', $order->id); ?>
                 </div><!-- /.col-2 -->
 
             </div><!-- /.col2-set -->
@@ -547,16 +574,18 @@ function jigoshop_view_order() {
             <div class="clear"></div>
 
             <?php
-        else :
+            
+        } else {
 
 			wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount')) ));
 			exit;
 
-        endif;
+        }
 
-    else :
+    } else {
 
 		wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount')) ));
 		exit;
-    endif;
+    }
+    
 }

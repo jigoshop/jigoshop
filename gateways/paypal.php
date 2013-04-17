@@ -274,11 +274,16 @@ class paypal extends jigoshop_payment_gateway {
 			$paypal_args['state'] = $order->shipping_state;
 			$paypal_args['zip'] = $order->shipping_postcode;
 			$paypal_args['country'] = $order->shipping_country;
+			// PayPal counts Puero Rico as a US Territory, won't allow payment without it
+			if ( $paypal_args['country'] == 'PR' ) :
+				$paypal_args['country'] = 'US';
+				$paypal_args['state'] = 'PR';
+			endif;
+
 		else :
 			$paypal_args['no_shipping'] = 1;
 			$paypal_args['address_override'] = 0;
 		endif;
-
 
 
 		// If prices include tax, send the whole order as a single item

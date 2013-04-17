@@ -655,6 +655,6 @@ function jigoshop_upgrade_160() {
  */
 function jigoshop_upgrade_161() {
 	
-	Jigoshop_Base::get_options()->add_option( 'jigoshop_catalog_product_button', 'cart' );
+	Jigoshop_Base::get_options()->add_option( 'jigoshop_catalog_product_button', 'add' );
 
 }

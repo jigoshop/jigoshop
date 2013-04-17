@@ -308,8 +308,9 @@ if ( ! function_exists( 'jigoshop_add_to_cart_action' )) { //make function plugg
 					break;
 			}
 
-			if ( apply_filters('add_to_cart_redirect', $url) ) {
-				wp_safe_redirect($url, 301); exit;
+			$url = apply_filters( 'add_to_cart_redirect', $url );
+			if ( $url ) {
+				wp_safe_redirect( $url, 301 ); exit;
 			}
 			else if ( $jigoshop_options->get_option('jigoshop_redirect_add_to_cart', 'same_page') == 'to_checkout' && !jigoshop::has_errors() ) {
 				wp_safe_redirect(jigoshop_cart::get_checkout_url(), 301); exit;

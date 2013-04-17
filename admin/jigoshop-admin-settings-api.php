@@ -235,7 +235,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			</div>
 
 			<script type="text/javascript">
-				/*<![CDATA[*/
+			/*<![CDATA[*/
 				jQuery(function($) {
 
 					// Fade out the status message
@@ -258,7 +258,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					jQuery.get('<?php echo admin_url('options-permalink.php') ?>');
 
 				});
-				/*]]>*/
+			/*]]>*/
 			</script>
 
 			<?php do_action( 'jigoshop_settings_scripts' ); ?>
@@ -837,9 +837,11 @@ class Jigoshop_Options_Parser {
 			$display = $parts[0] . '<select id="'.$id.'" class="'.$class.'"' . $parts[1];
 			?>
 				<script type="text/javascript">
+				/*<![CDATA[*/
 					jQuery(function() {
 						jQuery("#<?php echo $id; ?>").select2({ width: '250px' });
 					});
+				/*]]>*/
 				</script>
 			<?php
 			break;
@@ -860,9 +862,11 @@ class Jigoshop_Options_Parser {
 			$display .= '</select>';
 			?>
 				<script type="text/javascript">
+				/*<![CDATA[*/
 					jQuery(function() {
 						jQuery("#<?php echo $id; ?>").select2({ width: '500px' });
 					});
+				/*]]>*/
 				</script>
 			<?php
 			break;
@@ -883,9 +887,11 @@ class Jigoshop_Options_Parser {
 			$id = $item['id'];
 			?>
 				<script type="text/javascript">
+				/*<![CDATA[*/
 					jQuery(function() {
 						jQuery("#<?php echo $id; ?>").select2({ width: '500px' });
 					});
+				/*]]>*/
 				</script>
 			<?php
 			break;
@@ -1091,9 +1097,11 @@ class Jigoshop_Options_Parser {
 			$id = $item['id'];
 			?>
 				<script type="text/javascript">
+				/*<![CDATA[*/
 					jQuery(function() {
 						jQuery("#<?php echo $id; ?>").select2({ width: '250px' });
 					});
+				/*]]>*/
 				</script>
 			<?php
 			break;
@@ -1236,9 +1244,11 @@ class Jigoshop_Options_Parser {
 							if ( isset( $rate['compound'] ) && $rate['compound'] == 'yes' ) echo 'checked="checked"';
 							echo ' /></td></tr>';
 							?><script type="text/javascript">
+							/*<![CDATA[*/
 								jQuery(function() {
 									jQuery("#tax_country_<?php echo esc_attr( $i ); ?>").select2();
 								});
+							/*]]>*/
 							</script><?php
 						endforeach;
 					endif;
@@ -1250,7 +1260,7 @@ class Jigoshop_Options_Parser {
 		</div>
 
 		<script type="text/javascript">
-		/* <![CDATA[ */
+		/*<![CDATA[*/
 			jQuery(function() {
 
 				jQuery(document.body).on('click', 'tr.tax_rate .select_none', function(){
@@ -1298,7 +1308,7 @@ class Jigoshop_Options_Parser {
 					return false;
 				});
 			});
-			/* ]]> */
+			/*]]>*/
 			</script>
 		<?php
 

@@ -38,106 +38,6 @@ function jigoshop_post_type() {
 	if ( $jigoshop_options->get_option('jigoshop_prepend_category_to_product') == 'yes' ) $product_base .= trailingslashit('%product_cat%');
 	$product_base = untrailingslashit($product_base);
 
-	register_taxonomy( 'product_cat',
-        array('product'),
-        array(
-            'hierarchical' => true,
-            'update_count_callback' => '_update_post_term_count',
-            'labels' => array(
-				'menu_name'         => __( 'Categories', 'jigoshop' ),
-				'name'              => __( 'Product Categories', 'jigoshop'),
-				'singular_name'     => __( 'Product Category', 'jigoshop'),
-				'search_items'      => __( 'Search Product Categories', 'jigoshop'),
-				'all_items'         => __( 'All Product Categories', 'jigoshop'),
-				'parent_item'       => __( 'Parent Product Category', 'jigoshop'),
-				'parent_item_colon' => __( 'Parent Product Category:', 'jigoshop'),
-				'edit_item'         => __( 'Edit Product Category', 'jigoshop'),
-				'update_item'       => __( 'Update Product Category', 'jigoshop'),
-				'add_new_item'      => __( 'Add New Product Category', 'jigoshop'),
-				'new_item_name'     => __( 'New Product Category Name', 'jigoshop')
-            ),
-			'capabilities' => array(
-				'manage_terms' => 'manage_product_terms',
-				'edit_terms'   => 'edit_product_terms',
-				'delete_terms' => 'delete_product_terms',
-				'assign_terms' => 'assign_product_terms',
-            ),
-			'show_ui'   => true,
-			'query_var' => true,
-			'rewrite'   => array( 'slug'=> $category_base . $category_slug, 'with_front'=> false, 'hierarchical'=> false ),
-        )
-    );
-
-    register_taxonomy( 'product_tag',
-        array('product'),
-        array(
-			'hierarchical' => false,
-			'labels' => array(
-					'menu_name'         => __( 'Tags', 'jigoshop' ),
-					'name'              => __( 'Product Tags', 'jigoshop'),
-					'singular_name'     => __( 'Product Tag', 'jigoshop'),
-					'search_items'      => __( 'Search Product Tags', 'jigoshop'),
-					'all_items'         => __( 'All Product Tags', 'jigoshop'),
-					'parent_item'       => __( 'Parent Product Tag', 'jigoshop'),
-					'parent_item_colon' => __( 'Parent Product Tag:', 'jigoshop'),
-					'edit_item'         => __( 'Edit Product Tag', 'jigoshop'),
-					'update_item'       => __( 'Update Product Tag', 'jigoshop'),
-					'add_new_item'      => __( 'Add New Product Tag', 'jigoshop'),
-					'new_item_name'     => __( 'New Product Tag Name', 'jigoshop')
-            ),
-			'capabilities' => array(
-				'manage_terms' => 'manage_product_terms',
-				'edit_terms'   => 'edit_product_terms',
-				'delete_terms' => 'delete_product_terms',
-				'assign_terms' => 'assign_product_terms',
-            ),
-			'show_ui'   => true,
-			'query_var' => true,
-			'rewrite'   => array( 'slug'=> $category_base . $tag_slug, 'with_front'=> false ),
-        )
-    );
-
-    $attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();
-	if ( $attribute_taxonomies ) :
-		foreach ($attribute_taxonomies as $tax) :
-
-	    	$name = 'pa_'.sanitize_title($tax->attribute_name);
-	    	$hierarchical = true;
-	    	if ($name) :
-
-	    		register_taxonomy( $name,
-			        array('product'),
-			        array(
-						'hierarchical'=> $hierarchical,
-						'labels' => array(
-							'name'              => $tax->attribute_name,
-							'singular_name'     =>$tax->attribute_name,
-							'search_items'      => __( 'Search ', 'jigoshop') . $tax->attribute_name,
-							'all_items'         => __( 'All ', 'jigoshop') . $tax->attribute_name,
-							'parent_item'       => __( 'Parent ', 'jigoshop') . $tax->attribute_name,
-							'parent_item_colon' => __( 'Parent ', 'jigoshop') . $tax->attribute_name . ':',
-							'edit_item'         => __( 'Edit ', 'jigoshop') . $tax->attribute_name,
-							'update_item'       => __( 'Update ', 'jigoshop') . $tax->attribute_name,
-							'add_new_item'      => __( 'Add New ', 'jigoshop') . $tax->attribute_name,
-							'new_item_name'     => __( 'New ', 'jigoshop') . $tax->attribute_name
-						),
-						'capabilities' => array(
-							'manage_terms' => 'manage_product_terms',
-							'edit_terms'   => 'edit_product_terms',
-							'delete_terms' => 'delete_product_terms',
-							'assign_terms' => 'assign_product_terms',
-						),
-						'show_ui'           => false,
-						'query_var'         => true,
-						'show_in_nav_menus' => false,
-						'rewrite'           => array( 'slug'=> $category_base . sanitize_title($tax->attribute_name), 'with_front'=> false, 'hierarchical'=> $hierarchical ),
-			        )
-			    );
-
-	    	endif;
-	    endforeach;
-    endif;
-
 	register_post_type( "product",
 		array(
 			'labels' => array(
@@ -216,6 +116,108 @@ function jigoshop_post_type() {
 			'show_in_nav_menus'=> false,
         )
     );
+
+	register_taxonomy( 'product_cat',
+        array('product'),
+        array(
+            'hierarchical' => true,
+            'update_count_callback' => '_update_post_term_count',
+            'labels' => array(
+				'menu_name'         => __( 'Categories', 'jigoshop' ),
+				'name'              => __( 'Product Categories', 'jigoshop'),
+				'singular_name'     => __( 'Product Category', 'jigoshop'),
+				'search_items'      => __( 'Search Product Categories', 'jigoshop'),
+				'all_items'         => __( 'All Product Categories', 'jigoshop'),
+				'parent_item'       => __( 'Parent Product Category', 'jigoshop'),
+				'parent_item_colon' => __( 'Parent Product Category:', 'jigoshop'),
+				'edit_item'         => __( 'Edit Product Category', 'jigoshop'),
+				'update_item'       => __( 'Update Product Category', 'jigoshop'),
+				'add_new_item'      => __( 'Add New Product Category', 'jigoshop'),
+				'new_item_name'     => __( 'New Product Category Name', 'jigoshop')
+            ),
+			'capabilities' => array(
+				'manage_terms' => 'manage_product_terms',
+				'edit_terms'   => 'edit_product_terms',
+				'delete_terms' => 'delete_product_terms',
+				'assign_terms' => 'assign_product_terms',
+            ),
+			'show_ui'   => true,
+			'query_var' => true,
+			'rewrite'   => array( 'slug'=> $category_base . $category_slug, 'with_front'=> false, 'hierarchical'=> false ),
+        )
+    );
+	register_taxonomy_for_object_type( 'product_cat', 'product' );
+	
+    register_taxonomy( 'product_tag',
+        array('product'),
+        array(
+			'hierarchical' => false,
+			'labels' => array(
+					'menu_name'         => __( 'Tags', 'jigoshop' ),
+					'name'              => __( 'Product Tags', 'jigoshop'),
+					'singular_name'     => __( 'Product Tag', 'jigoshop'),
+					'search_items'      => __( 'Search Product Tags', 'jigoshop'),
+					'all_items'         => __( 'All Product Tags', 'jigoshop'),
+					'parent_item'       => __( 'Parent Product Tag', 'jigoshop'),
+					'parent_item_colon' => __( 'Parent Product Tag:', 'jigoshop'),
+					'edit_item'         => __( 'Edit Product Tag', 'jigoshop'),
+					'update_item'       => __( 'Update Product Tag', 'jigoshop'),
+					'add_new_item'      => __( 'Add New Product Tag', 'jigoshop'),
+					'new_item_name'     => __( 'New Product Tag Name', 'jigoshop')
+            ),
+			'capabilities' => array(
+				'manage_terms' => 'manage_product_terms',
+				'edit_terms'   => 'edit_product_terms',
+				'delete_terms' => 'delete_product_terms',
+				'assign_terms' => 'assign_product_terms',
+            ),
+			'show_ui'   => true,
+			'query_var' => true,
+			'rewrite'   => array( 'slug'=> $category_base . $tag_slug, 'with_front'=> false ),
+        )
+    );
+	register_taxonomy_for_object_type( 'product_tag', 'product' );
+
+    $attribute_taxonomies = jigoshop_product::getAttributeTaxonomies();
+	if ( $attribute_taxonomies ) :
+		foreach ($attribute_taxonomies as $tax) :
+
+	    	$name = 'pa_'.sanitize_title($tax->attribute_name);
+	    	$hierarchical = true;
+	    	if ($name) :
+
+	    		register_taxonomy( $name,
+			        array('product'),
+			        array(
+						'hierarchical'=> $hierarchical,
+						'labels' => array(
+							'name'              => $tax->attribute_name,
+							'singular_name'     =>$tax->attribute_name,
+							'search_items'      => __( 'Search ', 'jigoshop') . $tax->attribute_name,
+							'all_items'         => __( 'All ', 'jigoshop') . $tax->attribute_name,
+							'parent_item'       => __( 'Parent ', 'jigoshop') . $tax->attribute_name,
+							'parent_item_colon' => __( 'Parent ', 'jigoshop') . $tax->attribute_name . ':',
+							'edit_item'         => __( 'Edit ', 'jigoshop') . $tax->attribute_name,
+							'update_item'       => __( 'Update ', 'jigoshop') . $tax->attribute_name,
+							'add_new_item'      => __( 'Add New ', 'jigoshop') . $tax->attribute_name,
+							'new_item_name'     => __( 'New ', 'jigoshop') . $tax->attribute_name
+						),
+						'capabilities' => array(
+							'manage_terms' => 'manage_product_terms',
+							'edit_terms'   => 'edit_product_terms',
+							'delete_terms' => 'delete_product_terms',
+							'assign_terms' => 'assign_product_terms',
+						),
+						'show_ui'           => false,
+						'query_var'         => true,
+						'show_in_nav_menus' => false,
+						'rewrite'           => array( 'slug'=> $category_base . sanitize_title($tax->attribute_name), 'with_front'=> false, 'hierarchical'=> $hierarchical ),
+			        )
+			    );
+
+	    	endif;
+	    endforeach;
+    endif;
 
     register_post_type( "shop_order",
 		array(

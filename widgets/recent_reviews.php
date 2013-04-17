@@ -134,7 +134,7 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 					</div>";
 
 					// Print the author
-					printf( _x('by %1$s', 'author', 'jigoshop' ), get_comment_author() );
+					printf( _x('by %1$s', 'author', 'jigoshop' ), get_comment_author($comment->comment_ID) );
 
 				echo '</li>';
 			}
