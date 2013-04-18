@@ -50,15 +50,6 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 	 */
 	function widget($args, $instance) {
 
-		// Get the best selling products from the transient
-		$cache = get_transient( 'jigoshop_widget_cache' );
-
-		// If cached get from the cache
-		if ( isset( $cache[$args['widget_id']] ) ) {
-			echo $cache[$args['widget_id']];
-			return false;
-		}
-
 		// Start buffering
 		ob_start();
 		extract( $args );
@@ -135,10 +126,6 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 			// Reset the global $the_post as this query will have stomped on it
 			wp_reset_postdata();
 		}
-
-		// Flush output buffer and save to transient cache
-		$cache[$args['widget_id']] = ob_get_flush();
-		set_transient( 'jigoshop_widget_cache', $cache, 3600*3 ); // 3 hours ahead
 	}
 
 	/**
@@ -158,19 +145,7 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 		$instance['title'] = strip_tags( $new_instance['title'] );
 		$instance['number'] = absint( $new_instance['number'] );
 
-		// Flush the cache
-		$this->flush_widget_cache();
-
 		return $instance;
-	}
-
-	/**
-	 * Flush Widget Cache
-	 *
-	 * Flushes the cached output
-	 */
-	public function flush_widget_cache() {
-		delete_transient( 'jigoshop_widget_cache' );
 	}
 
 	/**
