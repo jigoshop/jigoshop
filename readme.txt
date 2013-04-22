@@ -2,9 +2,9 @@
 Contributors: Jigoshop
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigowatt, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
-Requires at least: 3.4
+Requires at least: 3.5
 Tested up to: 3.5.1
-Stable tag: 1.6.3
+Stable tag: 1.6.4
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -55,8 +55,8 @@ http://jigoshop.com
 
 = Requirements =
 
-* WordPress 3.3 or greater
-* PHP version 5.2.4 or greater
+* WordPress 3.5 or greater
+* PHP version 5.3 or greater
 * MySQL version 5.0 or greater
 * The mod_rewrite Apache module (for permalinks)
 * Some payment gateways require fsockopen support (for IPN access)
@@ -112,6 +112,9 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.6.4 - 2013-04-22 =
+* Fix: My Account shortcode error will no longer require PHP 5.3
+
 = 1.6.3 - 2013-04-17 =
 * Fix: Order notes no longer appear in WordPress dashboard, still show on Orders
 * Fix: Add to Cart button redirect now redirects correctly to the Setting for Product, Cart, or Checkout

@@ -28,9 +28,6 @@ function jigoshop_my_account( $atts ) {
     'recent_orders' => 5
 	), $atts));
 
-	// if any products in payable orders are found now out of stock
-	// then the order will be set to 'cancelled' and we'll come here to start over
-restart:
 	ob_start();
 	
   	$recent_orders = ('all' == $recent_orders) ? -1 : $recent_orders;
@@ -84,7 +81,8 @@ restart:
 								|| !$temp->has_enough_stock($item['qty']) ) ) {
 								$order->cancel_order( sprintf(__("Product - %s - is now out of stock -- Canceling Order", 'jigoshop'), $_product->get_title() ) );
 								$junk = ob_get_clean();
-								goto restart; // kinda hate this, but need to start over
+								wp_safe_redirect( apply_filters( 'jigoshop_get_myaccount_page_id', get_permalink( jigoshop_get_page_id( 'myaccount' ))) );
+								exit;
 							}
 						}
 					}

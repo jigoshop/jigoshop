@@ -197,9 +197,9 @@ class jigoshop_shipping_method {
         $my_cheapest_rate = $this->get_cheapest_rate();
 
 		if ($this->title && $my_cheapest_rate['service'] != $this->title) :
-			$service = __($my_cheapest_rate['service'] . ' via ' . $this->title, 'jigoshop');
+			$service = $my_cheapest_rate['service'] . __( ' via ', 'jigoshop') . $this->title;
 		else :
-			$service = __($my_cheapest_rate['service']);
+			$service = $my_cheapest_rate['service'];
 		endif;
 		
         return ($my_cheapest_rate == NULL ? $this->title : $service);
@@ -226,9 +226,9 @@ class jigoshop_shipping_method {
         $my_rate = $this->get_selected_rate($rate_index);
 		
 		if ($this->title && $my_rate['service'] != $this->title) :
-			$service = __($my_rate['service'] . ' via ' . $this->title, 'jigoshop');
+			$service = $my_rate['service'] . __( ' via ', 'jigoshop') . $this->title;
 		else :
-			$service = __($my_rate['service']);
+			$service = $my_rate['service'];
 		endif;
 		
         return ($my_rate == NULL ? $this->title : $service);

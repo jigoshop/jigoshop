@@ -22,8 +22,8 @@
  * Author:              Jigoshop
  * Author URI:          http://jigoshop.com
  *
- * Version:             1.6.3
- * Requires at least:   3.4
+ * Version:             1.6.4
+ * Requires at least:   3.5
  * Tested up to:        3.5.1
  *
  * Text Domain:         jigoshop
