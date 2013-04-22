@@ -149,6 +149,14 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 	}
 
 	/**
+	 * Flush Widget Cache
+	 *
+	 * Flushes the cached output
+	 */
+	public function flush_widget_cache() {
+	}
+
+	/**
 	 * Form
 	 *
 	 * Displays the form for the wordpress admin
