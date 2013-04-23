@@ -28,7 +28,11 @@ if (!isset($columns) || !$columns) $columns = apply_filters('loop_shop_columns',
 
 //if ($per_page > get_option('posts_per_page')) query_posts( array_merge( $wp_query->query, array( 'posts_per_page' => $per_page ) ) );
 
-ob_start();
+//only start output buffering if there are products to list
+if (have_posts())
+{
+	ob_start();
+}
 
 if (have_posts()) : while (have_posts()) : the_post(); $_product = new jigoshop_product( $post->ID ); $loop++;
 
