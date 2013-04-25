@@ -4,7 +4,7 @@ Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, wid
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.5
 Tested up to: 3.5.1
-Stable tag: 1.6.4
+Stable tag: 1.6.5
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,9 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.6.5 - 2013-04-25 =
+* Fix: Featured Product Widget Cache warning
+
 = 1.6.4 - 2013-04-22 =
 * Fix: My Account shortcode error will no longer require PHP 5.3
 
