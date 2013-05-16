@@ -230,7 +230,9 @@ class skrill extends jigoshop_payment_gateway {
 			'detail1_description'  => 'Order ID',
 			'detail1_text'         => $order_id,
 
-			'payment_methods'				=> $this->payment_methods
+			'payment_methods'				=> $this->payment_methods,
+			
+			'status_url2'						=> 'mailto:'.$this->email
 		);
 
 		// Cart Contents
