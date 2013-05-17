@@ -1361,6 +1361,7 @@ class jigoshop_product extends Jigoshop_Base {
 	/**
 	 * Get a product attributes label
 	 */
+
 	public function attribute_label( $name ) {
 		global $wpdb;
 
@@ -1369,10 +1370,11 @@ class jigoshop_product extends Jigoshop_Base {
 
 			$label = $wpdb->get_var( $wpdb->prepare( "SELECT attribute_label FROM ".$wpdb->prefix."jigoshop_attribute_taxonomies WHERE attribute_name = %s;", $name ) );
 
-			if ($label) return $label; else return ucfirst($name);
+			if (!$label): $label = ucfirst($name); endif;
 		else :
-			return $name;
+			$label =  $name;
 		endif;
+		return apply_filters('jigoshop_attribute_label',$label);
 	}
 
 }
