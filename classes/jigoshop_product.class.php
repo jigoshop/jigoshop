@@ -162,7 +162,7 @@ class jigoshop_product extends Jigoshop_Base {
 			return $this->children;
 
 		// Get the child IDs
-		$this->children = get_posts(array(
+		$children = get_posts(array(
 			'post_parent'  => $this->ID,
 			'post_type'    => ($this->is_type('variable')) ? 'product_variation' : 'product',
 			'orderby'      => 'menu_order',
@@ -172,7 +172,7 @@ class jigoshop_product extends Jigoshop_Base {
 			'numberposts'  => -1
 		));
 
-		return $this->children;
+		return apply_filters('jigoshop_get_children',$children,$this);
 	}
 
 	/**
