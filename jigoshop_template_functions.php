@@ -170,7 +170,7 @@ if (!function_exists('jigoshop_show_product_images')) {
 			$image_classes = apply_filters( 'jigoshop_product_image_classes', array(), $_product );
 			array_unshift( $image_classes, 'zoom' );
 			$image_classes = implode( ' ', $image_classes );
-			echo '<a href="'.wp_get_attachment_url($thumb_id).'" class="'.$image_classes.'" rel="thumbnails">';
+			echo '<a href="'.wp_get_attachment_url($thumb_id).'" class="'.$image_classes.'">';
 			the_post_thumbnail($large_thumbnail_size);
 			echo '</a>';
 		else :
@@ -214,7 +214,7 @@ if (!function_exists('jigoshop_show_product_thumbnails')) {
 				if ( ! $image || $url == get_post_meta($post->ID, 'file_path', true) )
 					continue;
 
-				echo '<a href="'.esc_url($url).'" title="'.esc_attr($post_title).'" rel="thumbnails" class="zoom ';
+				echo '<a href="'.esc_url($url).'" title="'.esc_attr($post_title).'" class="zoom ';
 				if ($loop==1 || ($loop-1)%$columns==0) echo 'first';
 				if ($loop%$columns==0) echo 'last';
 				echo '">'.$image.'</a>';

@@ -120,12 +120,16 @@
 	jQuery(function(){
 		jQuery('#review_form_wrapper').hide();
 		if (jigoshop_params.load_fancybox) {
-			jQuery('a.show_review_form').fancybox({
-				'transitionIn'	:	'fade',
-				'transitionOut'	:	'fade',
-				'speedIn'		:	600,
-				'speedOut'		:	200,
-				'overlayShow'	:	true
+			jQuery('a.show_review_form').prettyPhoto({
+				animation_speed: 'normal', /* fast/slow/normal */
+				slideshow: 5000, /* false OR interval time in ms */
+				autoplay_slideshow: false, /* true/false */
+				show_title: false,
+				theme: 'pp_default', /* pp_default / light_rounded / dark_rounded / light_square / dark_square / facebook */
+				horizontal_padding: 50,
+				opacity: 0.7,
+				deeplinking: false,
+				social_tools: false,
 			});
 		}
 	});

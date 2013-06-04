@@ -275,6 +275,7 @@ class jigoshop extends Jigoshop_Singleton {
 			'FJD' => '$',                       /*'Fiji Dollar'*/
 			'FKP' => '&pound;',                 /*'Falkland Islands'*/
 			'GBP' => '&pound;',                 /*'United Kingdom Pound'*/
+			'GEL' => 'ლ',                      /*'Georgia Lari'*/
 			'GGP' => '&pound;',                 /*'Guernsey Pound'*/
 			'GHC' => '&cent;',                  /*'Ghana Cedis'*/
 			'GIP' => '&cent;',                  /*'Gibraltar Pound'*/
@@ -397,6 +398,7 @@ class jigoshop extends Jigoshop_Singleton {
 			'FJD' => __('Fiji Dollar', 'jigoshop'),
 			'FKP' => __('Falkland Islands', 'jigoshop'),
 			'GBP' => __('United Kingdom Pound', 'jigoshop'),
+			'GEL' => __('Georgian Lari', 'jigoshop'),
 			'GGP' => __('Guernsey Pound', 'jigoshop'),
 			'GHC' => __('Ghana Cedis', 'jigoshop'),
 			'GIP' => __('Gibraltar Pound', 'jigoshop'),

@@ -77,6 +77,10 @@ function jigoshop_upgrade() {
  		jigoshop_upgrade_161();
  	}
 
+ 	if ( $jigoshop_db_version < 1306040 ) {
+ 		jigoshop_upgrade_170();
+ 	}
+
 	// Update the db option
 	update_site_option( 'jigoshop_db_version', JIGOSHOP_VERSION );
 
@@ -656,5 +660,16 @@ function jigoshop_upgrade_160() {
 function jigoshop_upgrade_161() {
 	
 	Jigoshop_Base::get_options()->add_option( 'jigoshop_catalog_product_button', 'add' );
+
+}
+
+/**
+ * Execute changes made in Jigoshop 1.7
+ *
+ * @since 1.7
+ */
+function jigoshop_upgrade_170() {
+	
+	Jigoshop_Base::get_options()->add_option( 'jigoshop_default_gateway', 'cheque' );
 
 }

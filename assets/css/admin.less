@@ -1431,15 +1431,19 @@ div.multi_select_countries.shipping_services {
 /* Settings */
 
 .jigoshop-settings table.form-table {
-
+	
+	border-bottom: 1px solid #ccc;
+	
 	.button {
 		float: left;
 		margin: 0 3px 3px 0;
 	}
+	
 	.button-right {
 		float: right;
 		margin: 0 0 3px 3px;
 	}
+	
 	td small {
 		color: #555;
 	}
@@ -1452,7 +1456,11 @@ div.multi_select_countries.shipping_services {
 		margin-bottom: 3px;
 		line-height: 12px;
 	}
-
+	
+	tr:last-child td {
+		padding-bottom: 30px;
+	}
+	
 	.jigoshop-tooltips {
 		width: 3%;
 		a.tips {
@@ -1604,6 +1612,12 @@ div.multi_select_countries.shipping_services {
 			}
 		}
 	}
+}
+
+.jigoshop-settings #tabs-wrap .submit {
+	float: right;
+	margin-top: 20px !important;
+	padding: 0 !important;
 }
 
 #easyTooltip {

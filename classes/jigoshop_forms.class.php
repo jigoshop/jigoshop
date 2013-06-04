@@ -127,9 +127,11 @@ class Jigoshop_Forms extends Jigoshop_Base {
 
 		$html .= "</p>";
 		$html .=    '<script type="text/javascript">
+					/*<![CDATA[*/
 						jQuery(function() {
 							jQuery("#'.$id.'").select2();
 						});
+					/*]]>*/
 					</script>';
 
 		return $html;

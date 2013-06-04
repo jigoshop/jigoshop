@@ -22,7 +22,7 @@ function add_paypal_gateway( $methods ) {
 	$methods[] = 'paypal';
 	return $methods;
 }
-add_filter( 'jigoshop_payment_gateways', 'add_paypal_gateway', 10 );
+add_filter( 'jigoshop_payment_gateways', 'add_paypal_gateway', 5 );
 
 
 class paypal extends jigoshop_payment_gateway {
@@ -66,7 +66,7 @@ class paypal extends jigoshop_payment_gateway {
 		$defaults = array();
 		
 		// Define the Section name for the Jigoshop_Options
-		$defaults[] = array( 'name' => __('PayPal Standard', 'jigoshop'), 'type' => 'title', 'desc' => __('PayPal Standard works by sending the user to <a href="https://www.paypal.com/">PayPal</a> to enter their payment information.', 'jigoshop') );
+		$defaults[] = array( 'name' => sprintf(__('PayPal Standard %s', 'jigoshop'), '<img style="vertical-align:middle;margin-top:-4px;margin-left:10px;" src="http://diverge.blogdns.com/test/wp-content/plugins/jigoshop/assets/images/icons/paypal.png" alt="PayPal">'), 'type' => 'title', 'desc' => __('PayPal Standard works by sending the user to <a href="https://www.paypal.com/">PayPal</a> to enter their payment information.', 'jigoshop') );
 		
 		// List each option in order of appearance with details
 		$defaults[] = array(

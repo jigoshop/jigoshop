@@ -785,14 +785,40 @@ class Jigoshop_Options_Parser {
 
 		$display .= '<td class="forminp">';
 
-		// work off the option type and format output for display for each type
+
+		/*
+		 *  work off the option type and format output for display for each type
+		 */
 		switch ( $item['type'] ) {
+		
 		case 'user_defined':
 			if ( isset( $item['display'] ) ) {
 				if ( is_callable( $item['display'], true ) ) {
 					$display .= call_user_func( $item['display'] );
 				}
 			}
+			break;
+
+		case 'default_gateway':
+			$display .= '<select
+				id="'.$item['id'].'"
+				class="jigoshop-input jigoshop-select '.$class.'"
+				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']" >';
+			$gateways = jigoshop_payment_gateways::get_available_payment_gateways();
+			foreach ( $gateways as $slug => $gateway ) {
+				$display .= '<option value="'.esc_attr( $slug ).'" '.selected( $data[$item['id']], $slug, false ).' />'.$gateway->title.'</option>';
+			}
+			$display .= '</select>';
+			$id = $item['id'];
+			?>
+				<script type="text/javascript">
+				/*<![CDATA[*/
+					jQuery(function() {
+						jQuery("#<?php echo $id; ?>").select2({ width: '250px' });
+					});
+				/*]]>*/
+				</script>
+			<?php
 			break;
 
 		case 'gateway_options':

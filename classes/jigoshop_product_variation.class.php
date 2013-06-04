@@ -97,6 +97,31 @@ class jigoshop_product_variation extends jigoshop_product {
 	}
 
 	/**
+	 * Returns whether or not the variation is on sale.
+	 *
+	 * @return  bool
+	 */
+	public function is_on_sale() {
+		
+		$time = current_time('timestamp');
+
+		// Check if the sale is still in range (if we have a range)
+		if ( ! empty( $this->sale_price_dates_from ) && ! empty( $this->sale_price_dates_to ) ) {
+			if ( $this->sale_price_dates_from	<= $time &&
+				 $this->sale_price_dates_to		>= $time &&
+				 $this->sale_price) {
+				 
+				return true;
+			}
+		}
+		// Otherwise if we have a sale price
+		if ( empty( $this->sale_price_dates_to ) && $this->sale_price ) return true;
+
+		// Just incase return false
+		return false;
+	}
+
+	/**
 	 * Check the stock levels to unsure we have enough to match request
 	 *
 	 * @param   int $quantity   Amount to verify that we have
@@ -149,7 +174,6 @@ class jigoshop_product_variation extends jigoshop_product {
 
 	/**
 	 * Update values of variation attributes using given values
-	 * TODO: Why do we need this?
 	 *
 	 * @param   array $data array of attributes and values
 	 */

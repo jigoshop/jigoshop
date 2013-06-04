@@ -22,6 +22,10 @@ $get_checkout_url = apply_filters( 'jigoshop_get_checkout_url', jigoshop_cart::g
 
 <form name="checkout" method="post" class="checkout" action="<?php echo esc_url( $get_checkout_url ); ?>">
 
+	<h3 id="order_review_heading"><?php _e('Your Order', 'jigoshop'); ?></h3>
+
+	<?php do_action('jigoshop_checkout_order_review'); ?>
+
 	<div class="col2-set" id="customer_details">
 		<div class="col-1">
 
@@ -35,10 +39,10 @@ $get_checkout_url = apply_filters( 'jigoshop_get_checkout_url', jigoshop_cart::g
 		</div>
 	</div>
 
-	<h3 id="order_review_heading"><?php _e('Your order', 'jigoshop'); ?></h3>
+	<h3 id="payment_methods_heading"><?php _e('Payment Methods', 'jigoshop'); ?></h3>
 
-	<?php do_action('jigoshop_checkout_order_review'); ?>
-
+	<?php do_action('jigoshop_checkout_payment_methods'); ?>
+	
 </form>
 
 <?php do_action('after_checkout_form'); ?>

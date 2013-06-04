@@ -22,7 +22,7 @@ function add_cheque_gateway( $methods ) {
 	$methods[] = 'jigoshop_cheque';
 	return $methods;
 }
-add_filter( 'jigoshop_payment_gateways', 'add_cheque_gateway', 5 );
+add_filter( 'jigoshop_payment_gateways', 'add_cheque_gateway', 15 );
 
 
 class jigoshop_cheque extends jigoshop_payment_gateway {

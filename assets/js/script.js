@@ -9,12 +9,16 @@ jQuery(function() {
 
 	// Lightbox
 	if (jigoshop_params.load_fancybox) {
-		jQuery('a.zoom').fancybox({
-			'transitionIn'	:	'elastic',
-			'transitionOut'	:	'elastic',
-			'speedIn'		:	600,
-			'speedOut'		:	200,
-			'overlayShow'	:	true
+		jQuery('a.zoom').prettyPhoto({
+			animation_speed: 'normal', /* fast/slow/normal */
+			slideshow: 5000, /* false OR interval time in ms */
+			autoplay_slideshow: false, /* true/false */
+			show_title: false,
+			theme: 'pp_default', /* pp_default / light_rounded / dark_rounded / light_square / dark_square / facebook */
+			horizontal_padding: 50,
+			opacity: 0.7,
+			deeplinking: false,
+			social_tools: false,
 		});
 	}
 
@@ -117,7 +121,8 @@ jQuery(function() {
             }
             if (jQuery(state_box).is('input')) {
                 // Change for select
-        		jQuery(state_box).prev().append(' <span class="required">*</span>');
+                var required = jQuery(state_box).prev().find('span.required');
+                if ( required.val() == undefined ) jQuery(state_box).prev().append(' <span class="required">*</span>');
                 jQuery(state_box).replaceWith('<select name="' + input_name + '" id="' + input_id + '"><option value="">' + jigoshop_params.select_state_text + '</option></select>');
                 state_box = jQuery('#' + jQuery(this).attr('rel'));
             }
@@ -401,6 +406,8 @@ if ( jigoshop_params.is_checkout ) {
 	var jqxhr;
 
 	function update_checkout() {
+		
+		payment_id = jQuery('#payment input[name=payment_method]:checked').attr('id');
 
 		if (jqxhr) jqxhr.abort();
 
@@ -448,14 +455,21 @@ if ( jigoshop_params.is_checkout ) {
 				jQuery('.jigoshop_error, .jigoshop_message').remove();
 				jQuery('#order_methods, #order_review').remove();
 				jQuery('#order_review_heading').after(response);
-				jQuery('#order_review input[name=payment_method]:checked').click();
+				// jigoshop 1.7 alters review_order.php, ensure there is no duplicate #payment from themes
+				jQuery('div#payment:not(:last)').remove();
+				// reset currently selected gateway
+				jQuery('#'+payment_id).attr('checked',true);
+				jQuery('#payment input[name=payment_method]:checked').click();
 			}
 		});
 
 	}
 
 	jQuery(function(){
-
+		
+		// jigoshop 1.7 alters review_order.php, ensure there is no duplicate #payment from themes
+		jQuery('div#payment:not(:last)').remove();
+		
 		jQuery('p.password').hide();
 
 		jQuery('input.show_password').change(function(){
@@ -491,7 +505,7 @@ if ( jigoshop_params.is_checkout ) {
 			}
 		});
 
-		jQuery('#order_review input[name=payment_method]:checked').click();
+		jQuery('#payment input[name=payment_method]:checked').click();
 
 		jQuery('form.login').hide();
 

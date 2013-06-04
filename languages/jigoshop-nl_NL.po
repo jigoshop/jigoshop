@@ -996,7 +996,6 @@ msgstr "Toevoegen aan winkelwagen"
 #: ../admin/write-panels/product-data.php:343
 #: ../classes/jigoshop_product.class.php:483
 #: ../classes/jigoshop_product.class.php:499
-#, fuzzy
 msgid "Out of Stock"
 msgstr "Niet in voorraad"
 

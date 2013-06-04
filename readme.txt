@@ -3,8 +3,8 @@ Contributors: Jigoshop
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigowatt, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.5
-Tested up to: 3.5.1
-Stable tag: 1.6.5
+Tested up to: 3.6 Beta 3
+Stable tag: 1.7
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,24 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.7 - 2013-06-04 =
+* New: Add Setting for Default Payment gateway on the Checkout
+* New: Add new FuturePay US gateway into the core.  Buy now, pay later, no credit card.
+* New: Remove Skrill gateway from the core.
+	* Updated standalone version is available: http://jigoshop.com/product/jigoshop-skrill/
+* Tweak: Re-factor Checkout display to increase conversions (affects form.php and review_order.php in themes)
+* Tweak: Eliminate Checkout errors from themes loading old jQuery. Jigoshop forces WordPress version to load.
+* Tweak: Replace product image lightbox implementation for W3C compliance
+* Tweak: Updated Checkout block-ui javascript for WordPress 3.6 jQuery compliance
+* Tweak: Load most javascript files in the footer for better page load performance
+* Tweak: Settings sections css for better appearance of modules
+* Tweak: Add Georgian Lari to currencies
+* Fix: Variable Products now correctly show variations on sale
+* Fix: Variable products out of stock when saving product will be hidden from front end if settings require it
+* Fix: Products on sale shortcode now shows variable products on sale
+* Translation: Updated Swedish translation courtesy of Peter Hjalmarsson
+* Translation: Updated .pot file for translators
+
 = 1.6.5 - 2013-04-25 =
 * Fix: Featured Product Widget Cache warning
 

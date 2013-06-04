@@ -230,6 +230,7 @@ function jigoshop_coupon_data_box( $post ) {
 			// javascript for product includes and excludes -- need to move this
 		?>
 			<script type="text/javascript">
+			/*<![CDATA[*/
 				jQuery(document).ready(function() {
 				
 					jQuery('#date_from').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
@@ -314,6 +315,7 @@ function jigoshop_coupon_data_box( $post ) {
 						}
 					});
 				});
+			/*]]>*/
 			</script>
 		</div></div>
 	<?php	
