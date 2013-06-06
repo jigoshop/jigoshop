@@ -733,7 +733,8 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 	                    	do_action( 'jigoshop_created_customer', $user_id );
 
 		                    // send the user a confirmation and their login details
-		                    wp_new_user_notification( $user_id, $user_pass );
+		                    if(apply_filters("jigoshop_new_user_notification", true, $user_id, $user_pass))
+								wp_new_user_notification( $user_id, $user_pass );
 
 		                    // set the WP login cookie
 		                    $secure_cookie = is_ssl() ? true : false;
