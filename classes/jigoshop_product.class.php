@@ -1366,8 +1366,8 @@ class jigoshop_product extends Jigoshop_Base {
 		global $wpdb;
 
 		if (strstr( $name, 'pa_' )) :
-			$name = str_replace( 'pa_', '', sanitize_title( $name ) );
-
+			//$name = str_replace( 'pa_', '', sanitize_title( $name ) );
+			$name = str_replace( 'pa_', '', sanitize_text_field( $name ) );
 			$label = $wpdb->get_var( $wpdb->prepare( "SELECT attribute_label FROM ".$wpdb->prefix."jigoshop_attribute_taxonomies WHERE attribute_name = %s;", $name ) );
 
 			if (!$label): $label = ucfirst($name); endif;
