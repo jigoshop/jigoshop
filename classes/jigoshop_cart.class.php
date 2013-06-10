@@ -165,27 +165,35 @@ class jigoshop_cart extends Jigoshop_Singleton {
         $cart_id = self::generate_cart_id($product_id, $variation_id, $variation, $cart_item_data);
         $cart_item_key = self::find_product_in_cart( $cart_id );
 
-        if (empty($variation_id)) {
-            $product = new jigoshop_product($product_id);
-        } else {
-            $product = new jigoshop_product_variation($variation_id);
-        }
-
-        //product with a given ID doesn't exists
-        if (empty($product)) {
+		//  prevents adding non-valid products to the cart
+		$this_post = get_post( $product_id );
+		if ( $this_post->post_type != 'product' ) {
+			jigoshop::add_error(__('You cannot add this item to your Cart as it does not appear to be a valid Product.', 'jigoshop'));
+			return false;
+		}
+		
+		//  create a product record to work from
+		if ( empty( $variation_id )) {
+			$product = new jigoshop_product( $product_id );
+		} else {
+			$product = new jigoshop_product_variation( $variation_id );
+		}
+		
+        //  product with a given ID doesn't exists
+        if ( empty( $product )) {
             return false;
         }
-
-        // prevents adding products with no price to the cart
-        if ($product->get_price() === '') {
+		
+        //  prevents adding products with no price to the cart
+        if ( $product->get_price() === '' ) {
             jigoshop::add_error(__('You cannot add this product to your cart because its price is not yet announced', 'jigoshop'));
             return false;
         }
 
-		// products newly added to the Cart will not have a $cart_item_key, use 0 quantity
+		//  products newly added to the Cart will not have a $cart_item_key, use 0 quantity
         $in_cart_qty = !empty($cart_item_key) ? self::$cart_contents[$cart_item_key]['quantity'] : 0;
         
-		// prevents adding products to the cart without enough quantity on hand
+		//  prevents adding products to the cart without enough quantity on hand
         if ($product->managing_stock() && !$product->has_enough_stock($quantity + $in_cart_qty)) :
             if ($in_cart_qty > 0) :
                 $error = (self::get_options()->get_option('jigoshop_show_stock') == 'yes') ? sprintf(__('We are sorry.  We do not have enough "%s" to fill your request.  You have %d of them in your Cart and we have %d available at this time.', 'jigoshop'), $product->get_title(), $in_cart_qty, $product->get_stock()) : sprintf(__('We are sorry.  We do not have enough "%s" to fill your request.', 'jigoshop'), $product->get_title());
@@ -196,7 +204,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
             return false;
         endif;
 
-        //if product is already in the cart change its quantity
+        //  if product is already in the cart change its quantity
         if ($cart_item_key) {
 
             $quantity = (int) $quantity + self::$cart_contents[$cart_item_key]['quantity'];
@@ -1174,8 +1182,8 @@ class jigoshop_cart extends Jigoshop_Singleton {
                 endif;
 
                 $variation_list[] = $flat
-                                    ? sprintf('%s: %s<br />', $name, $value)
-                                    : sprintf('<dt>%s:</dt> <dd>%s</dd><br />', $name, $value);
+                                    ? sprintf('%s: %s<br />', $cart_item['data']->attribute_label($name), $value)
+                                    : sprintf('<dt>%s:</dt> <dd>%s</dd><br />', $cart_item['data']->attribute_label($name), $value);
 
             endforeach;
 

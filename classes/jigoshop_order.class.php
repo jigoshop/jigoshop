@@ -511,9 +511,9 @@ class jigoshop_order extends Jigoshop_Base {
 
 		if( $this->items ) {
 			foreach($this->items as $item) {
-				$sales =	absint(get_post_meta($item['id'], 'total_sales', true));
+				$sales =	absint(get_post_meta($item['id'], 'quantity_sold', true));
 				$sales +=	absint($item['qty']);
-				update_post_meta($item['id'], '_js_total_sales', $sales);
+				update_post_meta($item['id'], 'quantity_sold', $sales);
 			}
 		}
 	}

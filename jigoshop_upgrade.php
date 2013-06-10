@@ -81,6 +81,10 @@ function jigoshop_upgrade() {
  		jigoshop_upgrade_170();
  	}
 
+ 	if ( $jigoshop_db_version < 1306100 ) {
+ 		jigoshop_upgrade_171();
+ 	}
+
 	// Update the db option
 	update_site_option( 'jigoshop_db_version', JIGOSHOP_VERSION );
 
@@ -673,3 +677,113 @@ function jigoshop_upgrade_170() {
 	Jigoshop_Base::get_options()->add_option( 'jigoshop_default_gateway', 'cheque' );
 
 }
+
+/**
+ * Execute changes made in Jigoshop 1.7.1
+ *
+ * @since 1.7.1
+ */
+function jigoshop_upgrade_171() {
+	
+	//  perform quantity sold update on all products for Best Sellers Widget
+	//  https://github.com/jigoshop/redhillsranch/issues/761
+	
+	//  to be sure, delete any current meta values
+	//  ('_js_total_sales' should be only current one and it is deprecated)
+	$args = array(
+		'numberposts'      => -1,
+		'orderby'          => 'post_date',
+		'order'            => 'ASC',
+		'post_type'        => array( 'product' ),
+		'suppress_filters' => 1,
+		'fields'           => 'ids',
+	);
+
+	$products = get_posts( $args );
+	
+	foreach ( $products as $index => $product_id ) {
+		delete_post_meta( $product_id, 'quantity_sold' );
+		delete_post_meta( $product_id, '_js_total_sales' );
+	}
+	
+	//  gather all orders, cycle through all products in Order, update product 'quantity_sold' meta value
+	$args = array(
+		'numberposts'      => -1,
+		'orderby'          => 'post_date',
+		'order'            => 'ASC',
+		'post_type'        => 'shop_order',
+		'post_status'      => 'publish' ,
+		'suppress_filters' => 1,
+		'fields'           => 'ids',
+		'tax_query'        => array(
+			array(
+				'taxonomy' => 'shop_order_status',
+				'terms'    => array('completed'),
+				'field'    => 'slug',
+				'operator' => 'IN'
+			)
+		)
+	);
+	
+	$orders = get_posts( $args );
+	$found_products = array();
+	
+	foreach ( $orders as $index => $order_id ) {
+		$order = new jigoshop_order( $order_id );
+		$order_items = (array) get_post_meta( $order_id, 'order_items', true );
+		foreach ( $order_items as $item ) {
+			if ( ! isset( $item['cost'] ) && ! isset( $item['qty'] )) continue;
+			
+			//  a product or variation could now be missing or invalid, suppress errors and add anyway
+			$_product = @$order->get_product_from_item( $item );
+			
+			$qty_sold = $item['qty'];
+			$found_products[$item['id']] = isset( $found_products[$item['id']] ) ? $found_products[$item['id']] + $qty_sold : $qty_sold;
+
+		}
+	}
+	
+	//  now update all the products with a new meta key 'quantity_sold'
+	$args = array(
+		'numberposts'      => -1,
+		'post_type'        => array( 'product' ),
+		'suppress_filters' => 1,
+		'fields'           => 'ids',
+		'posts__in'        => array_keys( $found_products )
+	);
+
+	$products = get_posts( $args );
+
+	foreach ( $products as $index => $product_id ) {
+		$_product = new jigoshop_product( $product_id );
+		if ( $_product->exists() ) {
+			if ( isset( $found_products[$product_id] )) {
+				update_post_meta( $product_id, 'quantity_sold', $found_products[$product_id] );
+			}
+		}
+	}
+	
+	//  and finally output a log of the changed products with their quantities
+	$args = array(
+		'numberposts'      => -1,
+		'meta_key'         => 'quantity_sold',
+		'orderby'          => 'meta_value_num+0',
+		'order'            => 'desc',
+		'post_type'        => array( 'product', 'product_variation' ),
+		'suppress_filters' => 1,
+		'fields'           => 'ids',
+		'posts__in'        => array_keys( $found_products )
+	);
+
+	$products = get_posts( $args );
+	
+	jigoshop_log( "" );
+	jigoshop_log( "PRODUCTS quantity sold are updated with the following counts in Jigoshop 1.7.1" );
+	foreach ( $products as $index => $product_id ) {
+		$this_post = get_post( $product_id );
+		jigoshop_log( $this_post->post_title . " == " . $found_products[$product_id] );
+	}
+	jigoshop_log( "" );
+
+}
+

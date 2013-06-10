@@ -92,8 +92,8 @@ function jigoshop_get_template_part( $slug, $name = '' ) {
 		if ( ! locate_template( array( $filename, JIGOSHOP_TEMPLATE_URL . $filename ), true )) {
 			// if not found then load our default, always require template
 			load_template( jigoshop::plugin_path() . '/templates/' . $filename, false );
+			return;
 		}
-		return;
 	}
 	get_template_part( JIGOSHOP_TEMPLATE_URL . $slug, $name );
 }

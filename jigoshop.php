@@ -22,9 +22,9 @@
  * Author:              Jigoshop
  * Author URI:          http://jigoshop.com
  *
- * Version:             1.7
+ * Version:             1.7.1
  * Requires at least:   3.5
- * Tested up to:        3.6 Beta 3
+ * Tested up to:        3.6-beta3-24432
  *
  * Text Domain:         jigoshop
  * Domain Path:         /languages/
@@ -42,7 +42,7 @@
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
-if ( !defined( "JIGOSHOP_VERSION" )) define( "JIGOSHOP_VERSION", 1306040 ) ;
+if ( !defined( "JIGOSHOP_VERSION" )) define( "JIGOSHOP_VERSION", 1306100 ) ;
 if ( !defined( "JIGOSHOP_OPTIONS" )) define( "JIGOSHOP_OPTIONS", 'jigoshop_options' );
 if ( !defined( 'JIGOSHOP_TEMPLATE_URL' ) ) define( 'JIGOSHOP_TEMPLATE_URL', 'jigoshop/' );
 if ( !defined( "PHP_EOL" )) define( "PHP_EOL", "\r\n" );
@@ -319,20 +319,17 @@ function jigoshop_frontend_scripts() {
 		wp_enqueue_style( 'jigoshop_theme_styles', $theme_css );
 	}
 
-	// load these javascript in the footer
-	
 	if ( $jigoshop_options->get_option( 'jigoshop_disable_fancybox' ) == 'no' ) {
 		wp_enqueue_style( 'prettyphoto_styles', jigoshop::assets_url().'/assets/css/prettyPhoto.css' );
-		// pretty photo can't load in the footer, load in header
-		wp_enqueue_script( 'prettyphoto', jigoshop::assets_url().'/assets/js/jquery.prettyPhoto.js', array('jquery'), '1.4.15', true );
+		wp_enqueue_script( 'prettyphoto', jigoshop::assets_url().'/assets/js/jquery.prettyPhoto.js', array('jquery'), '1.4.15');
 	}
 
 	wp_enqueue_style( 'jqueryui_styles', jigoshop::assets_url().'/assets/css/ui.css' );
-	wp_enqueue_script( 'jqueryui', jigoshop::assets_url().'/assets/js/jquery-ui-1.9.2.min.js', array('jquery'), '1.9.2', true );
+	wp_enqueue_script( 'jqueryui', jigoshop::assets_url().'/assets/js/jquery-ui-1.9.2.min.js', array('jquery'), '1.9.2');
 
-	wp_enqueue_script( 'jigoshop_blockui', jigoshop::assets_url().'/assets/js/blockui.js', array('jquery'), '', true);
-	wp_enqueue_script( 'jigoshop_frontend', jigoshop::assets_url().'/assets/js/jigoshop_frontend.js', array('jquery'), '', true);
-	wp_enqueue_script( 'jigoshop_script', jigoshop::assets_url().'/assets/js/script.js', array('jquery'), '', true);
+	wp_enqueue_script( 'jigoshop_blockui', jigoshop::assets_url().'/assets/js/blockui.js', array('jquery') );
+	wp_enqueue_script( 'jigoshop_frontend', jigoshop::assets_url().'/assets/js/jigoshop_frontend.js', array('jquery') );
+	wp_enqueue_script( 'jigoshop_script', jigoshop::assets_url().'/assets/js/script.js', array('jquery') );
 
 	/* Script.js variables */
 	// TODO: clean this up, a lot aren't even used anymore, do away with it
@@ -925,7 +922,7 @@ function jigoshop_get_formatted_variation( $variation = '', $flat = false ) {
 			$return = '<dl class="variation">';
 		endif;
 
-		$varation_list = array();
+		$variation_list = array();
 
 		foreach ($variation as $name => $value) :
 
@@ -937,21 +934,26 @@ function jigoshop_get_formatted_variation( $variation = '', $flat = false ) {
 					if ( $term->slug == $value ) $value = $term->name;
 				endforeach;
 				$name = get_taxonomy( 'pa_'.$name )->labels->name;
+				// TODO: this is -not- a static class function and shouldn't be called like this Mr Gates
 				$name = jigoshop_product::attribute_label('pa_'.$name);
 			endif;
 
+			// TODO: if it is a custom text attribute, 'pa_' taxonomies are not created and we
+			// have no way to get the 'label' as submitted on the Edit Product->Attributes tab.
+			// (don't ask me why not, I don't know, but it seems that we should be creating taxonomies)
+			// this function really requires the product passed to it for: $product->attribute_label( $name )
 			if ($flat) :
-				$varation_list[] = $name.': '.$value;
+				$variation_list[] = $name.': '.$value;
 			else :
-				$varation_list[] = '<dt>'.$name.':</dt><dd>'.$value.'</dd>';
+				$variation_list[] = '<dt>'.$name.':</dt><dd>'.$value.'</dd>';
 			endif;
 
 		endforeach;
 
 		if ($flat) :
-			$return .= implode(', ', $varation_list);
+			$return .= implode(', ', $variation_list);
 		else :
-			$return .= implode('', $varation_list);
+			$return .= implode('', $variation_list);
 		endif;
 
 		if (!$flat) :

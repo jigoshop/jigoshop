@@ -4,7 +4,7 @@ Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, wid
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.5
 Tested up to: 3.6 Beta 3
-Stable tag: 1.7
+Stable tag: 1.7.1
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,20 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.7.1 - 2013-06-10 =
+* Fix: FuturePay gateway is no longer enabled by default
+* Fix: FuturePay gateway has better error checking and display and thankyou page redirects
+* Fix: Product image galleries will now show properly in the lightbox with next/prev navigation
+* Fix: Product reviews will now function with the new lightbox
+* Fix: Cart is always cleared for payment Gateways with successful orders that direct to the thankyou page
+* Fix: Prevent non-products from being added to the Cart
+* Fix: Pending Orders still awaiting payment are no longer duplicated in the Admin with different ID
+* Fix: Template loader will again load 'loop-shop.php' from theme's for multiple shortcodes on a page
+* Fix: Paypal won't show a shipping line if there is no shipping cost
+* Fix: Allow custom text attributes for variations, display them in readable form
+* Fix: Database upgrade script for this version will update all products with quantities sold based on orders
+* Fix: Best Sellers widget will now correctly show top selling products based on quantity sold
+
 = 1.7 - 2013-06-04 =
 * New: Add Setting for Default Payment gateway on the Checkout
 * New: Add new FuturePay US gateway into the core.  Buy now, pay later, no credit card.

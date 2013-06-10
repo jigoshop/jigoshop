@@ -49,8 +49,9 @@ class jigoshop_product extends Jigoshop_Base {
 	private $manage_stock = false;
 	private $stock_status = 'instock';
 	private $backorders;
-	public  $stock;       // : admin/jigoshop-admin-post-types.php on line 180
-	private $stock_sold;
+	public  $stock;         // : admin/jigoshop-admin-post-types.php on line 180
+	private $stock_sold;    // for managed stock only
+	private $quantity_sold; // all sales whether managed stock or not
 
 	private	$attributes   = array();
 	public  $children     = array(); // : jigoshop_template_functions.php on line 328
@@ -108,6 +109,7 @@ class jigoshop_product extends Jigoshop_Base {
 		$this->backorders            = isset($meta['backorders'][0]) ? $meta['backorders'][0] : null;
 		$this->stock                 = isset($meta['stock'][0]) ? $meta['stock'][0] : null;
 		$this->stock_sold            = isset($meta['stock_sold'][0]) ? $meta['stock_sold'][0] : null;
+		$this->quantity_sold         = isset($meta['quantity_sold'][0]) ? $meta['quantity_sold'][0] : null;
 
 		// filter for Paid Memberships Pro plugin courtesy @strangerstudios
 		$this->sale_price = apply_filters( 'jigoshop_sale_price' , $this->sale_price, $this );
@@ -1301,7 +1303,7 @@ class jigoshop_product extends Jigoshop_Base {
 					$options = array();
 					$terms = wp_get_object_terms( $this->ID, 'pa_'.sanitize_title($attribute['name']), array( 'orderby' => 'slug' ) );
 
-					foreach($terms as $term) {
+					foreach ($terms as $term) {
 						$options[] = $term->slug;
 					}
 				}
@@ -1366,13 +1368,20 @@ class jigoshop_product extends Jigoshop_Base {
 		global $wpdb;
 
 		if (strstr( $name, 'pa_' )) :
-			$name = str_replace( 'pa_', '', sanitize_title( $name ) );
+			$name = str_replace( 'pa_', '', sanitize_text_field( $name ) );
 
 			$label = $wpdb->get_var( $wpdb->prepare( "SELECT attribute_label FROM ".$wpdb->prefix."jigoshop_attribute_taxonomies WHERE attribute_name = %s;", $name ) );
 
 			if (!$label): $label = ucfirst($name); endif;
-		else :
-			$label =  $name;
+		else :  // taxonomies aren't created for custom text attributes, get name from the attribute instead
+			$label = $name;
+			$attributes = $this->get_attributes();
+			foreach ( $attributes as $key => $attr ) {
+				if ( ! $attr['is_taxonomy'] && $key == $name ) {
+					$label = $attr['name'];
+					break;
+				}
+			}
 		endif;
 		return apply_filters('jigoshop_attribute_label',$label);
 	}
