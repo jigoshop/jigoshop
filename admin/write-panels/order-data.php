@@ -482,3 +482,87 @@ function jigoshop_order_totals_meta_box($post) {
 	<div class="clear"></div>
 	<?php
 }
+
+/**
+ * Order attributes meta box
+ *
+ * Displays a list of all attributes which were selected in the order
+ */
+function jigoshop_order_attributes_meta_box( $post ) {
+
+    $order  = new jigoshop_order( $post->ID );
+    $data   = array();
+
+    // prepare the data to display
+    foreach ( $order->items as $i => $item ) {
+
+        $data[$i] = array(
+            'name' => $item['name'],
+            'data' => array()
+        );
+
+        foreach ( jigoshop_product::getAttributeTaxonomies() as $attr_tax ) {
+            
+            if ( !isset( $item['variation']['tax_' . $attr_tax->attribute_name] ) ) {
+                continue;
+            }
+
+            $data[$i]['data'][$attr_tax->attribute_name] = array(
+                'name'      => $attr_tax->attribute_label ? $attr_tax->attribute_label : $attr_tax->attribute_name,
+                'data'      => array(),
+                'selected'  => $item['variation']['tax_' . $attr_tax->attribute_name]
+            );
+
+            // all possible attribute values
+            $terms = get_terms( 'pa_'. $attr_tax->attribute_name, array( 'orderby' => 'slug', 'hide_empty' => false ) );
+            foreach ( $terms as $term ) {
+
+                $data[$i]['data'][$attr_tax->attribute_name]['data'][$term->term_id] = array(
+                    'name' => $term->name,
+                    'slug' => $term->slug
+                );
+            }
+        }
+    }
+
+    ?>
+    <ul class="order-attributes">
+
+        <?php foreach ( $data as $order_item ) : ?>
+
+            <?php if ( empty( $order_item['data'] ) ) {
+                continue;
+            } ?>
+
+            <li>
+                <b><?php echo esc_html( $order_item['name'] ); ?></b>
+                <?php foreach ( $order_item['data'] as $attribute ) : ?>
+
+                    <?php if ( empty( $attribute['data'] ) ) {
+                        continue;
+                    } ?>
+
+                    <div class="order-item-attribute" style="display:block">
+                        <span style="display:block"><?php echo esc_html( $attribute['name'] ); ?></span>
+                        <select>
+                            <?php foreach( $attribute['data'] as $option ) : ?>
+                                <option <?php selected( $attribute['selected'], $option['slug'] ); ?> value="<?php echo esc_attr( $option['slug'] ); ?>">
+                                    <?php echo esc_html( $option['name'] ); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                <?php endforeach; ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+    <script type="text/javascript">
+        /*<![CDATA[*/
+            jQuery(function() {
+                jQuery(".order-item-attribute select").select2({ width: '255px' });
+            });
+        /*]]>*/
+    </script>
+    <?php
+
+}
