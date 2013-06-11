@@ -494,30 +494,28 @@ function jigoshop_order_attributes_meta_box( $post ) {
     $data   = array();
 
     // prepare the data to display
-    foreach ( $order->items as $i => $item ) {
+    foreach ( $order->items as $item ) {
 
-        $data[$i] = array(
+        $data[$item['variation_id']] = array(
             'name' => $item['name'],
             'data' => array()
         );
-
         foreach ( jigoshop_product::getAttributeTaxonomies() as $attr_tax ) {
-            
-            if ( !isset( $item['variation']['tax_' . $attr_tax->attribute_name] ) ) {
+
+            $identifier = 'tax_' . $attr_tax->attribute_name;
+            if ( !isset( $item['variation'][$identifier] ) ) {
                 continue;
             }
-
-            $data[$i]['data'][$attr_tax->attribute_name] = array(
+            $data[$item['variation_id']]['data'][$identifier] = array(
                 'name'      => $attr_tax->attribute_label ? $attr_tax->attribute_label : $attr_tax->attribute_name,
                 'data'      => array(),
-                'selected'  => $item['variation']['tax_' . $attr_tax->attribute_name]
+                'selected'  => $item['variation'][$identifier]
             );
-
             // all possible attribute values
             $terms = get_terms( 'pa_'. $attr_tax->attribute_name, array( 'orderby' => 'slug', 'hide_empty' => false ) );
             foreach ( $terms as $term ) {
 
-                $data[$i]['data'][$attr_tax->attribute_name]['data'][$term->term_id] = array(
+                $data[$item['variation_id']]['data'][$identifier]['data'][$term->term_id] = array(
                     'name' => $term->name,
                     'slug' => $term->slug
                 );
@@ -528,23 +526,19 @@ function jigoshop_order_attributes_meta_box( $post ) {
     ?>
     <ul class="order-attributes">
 
-        <?php foreach ( $data as $order_item ) : ?>
-
+        <?php foreach ( $data as $item['variation_id'] => $order_item ) : ?>
             <?php if ( empty( $order_item['data'] ) ) {
                 continue;
             } ?>
-
             <li>
                 <b><?php echo esc_html( $order_item['name'] ); ?></b>
-                <?php foreach ( $order_item['data'] as $attribute ) : ?>
-
+                <?php foreach ( $order_item['data'] as $identifier => $attribute ) : ?>
                     <?php if ( empty( $attribute['data'] ) ) {
                         continue;
                     } ?>
-
                     <div class="order-item-attribute" style="display:block">
                         <span style="display:block"><?php echo esc_html( $attribute['name'] ); ?></span>
-                        <select>
+                        <select name="order_attributes[<?php echo $item['variation_id']; ?>][<?php echo $identifier; ?>]">
                             <?php foreach( $attribute['data'] as $option ) : ?>
                                 <option <?php selected( $attribute['selected'], $option['slug'] ); ?> value="<?php echo esc_attr( $option['slug'] ); ?>">
                                     <?php echo esc_html( $option['name'] ); ?>
