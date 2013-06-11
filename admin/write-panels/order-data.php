@@ -496,6 +496,11 @@ function jigoshop_order_attributes_meta_box( $post ) {
     // prepare the data to display
     foreach ( $order->items as $item ) {
 
+        // process only variations
+        if ( !isset( $item['variation_id'] ) || empty( $item['variation_id'] ) ) {
+            continue;
+        }
+
         $data[$item['variation_id']] = array(
             'name' => $item['name'],
             'data' => array()
@@ -522,23 +527,27 @@ function jigoshop_order_attributes_meta_box( $post ) {
             }
         }
     }
+    
+    if ( empty( $data ) ) {
+        _e( 'There are no variations in this order.', 'jigoshop' );
+    }
 
     ?>
     <ul class="order-attributes">
 
-        <?php foreach ( $data as $item['variation_id'] => $order_item ) : ?>
+        <?php foreach ( $data as $variation_id => $order_item ) : ?>
             <?php if ( empty( $order_item['data'] ) ) {
                 continue;
             } ?>
             <li>
-                <b><?php echo esc_html( $order_item['name'] ); ?></b>
+                <b><?php echo esc_html( $order_item['name'] ); ?></b> (<?php _e( 'Variation ID:', 'jigoshop' ); ?> <?php echo $variation_id; ?>)
                 <?php foreach ( $order_item['data'] as $identifier => $attribute ) : ?>
                     <?php if ( empty( $attribute['data'] ) ) {
                         continue;
                     } ?>
                     <div class="order-item-attribute" style="display:block">
                         <span style="display:block"><?php echo esc_html( $attribute['name'] ); ?></span>
-                        <select name="order_attributes[<?php echo $item['variation_id']; ?>][<?php echo $identifier; ?>]">
+                        <select name="order_attributes[<?php echo $variation_id; ?>][<?php echo $identifier; ?>]">
                             <?php foreach( $attribute['data'] as $option ) : ?>
                                 <option <?php selected( $attribute['selected'], $option['slug'] ); ?> value="<?php echo esc_attr( $option['slug'] ); ?>">
                                     <?php echo esc_html( $option['name'] ); ?>
