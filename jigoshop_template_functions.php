@@ -170,7 +170,17 @@ if (!function_exists('jigoshop_show_product_images')) {
 			$image_classes = apply_filters( 'jigoshop_product_image_classes', array(), $_product );
 			array_unshift( $image_classes, 'zoom' );
 			$image_classes = implode( ' ', $image_classes );
-			echo '<a href="'.wp_get_attachment_url($thumb_id).'" class="'.$image_classes.'">';
+			
+			$args = array( 'post_type' => 'attachment', 'post_mime_type' => 'image', 'numberposts' => -1, 'post_status' => null, 'post_parent' => $post->ID, 'orderby' => 'menu_order', 'order' => 'asc', 'fields' => 'ids' );
+			$attachments = get_posts($args);
+			$attachment_count = count( $attachments );
+			if ( $attachment_count > 1 ) {
+				$gallery = '[product-gallery]';
+			} else {
+				$gallery = '';
+			}
+			
+			echo '<a href="'.wp_get_attachment_url($thumb_id).'" class="'.$image_classes.'" rel="prettyPhoto'.$gallery.'">';
 			the_post_thumbnail($large_thumbnail_size);
 			echo '</a>';
 		else :
@@ -193,28 +203,38 @@ if (!function_exists('jigoshop_show_product_thumbnails')) {
 		$thumb_id = get_post_thumbnail_id();
 		$small_thumbnail_size = jigoshop_get_image_size( 'shop_thumbnail' );
 
-		$args = array( 'post_type' => 'attachment', 'post_mime_type' => 'image', 'numberposts' => -1, 'post_status' => null, 'post_parent' => $post->ID, 'orderby' => 'menu_order', 'order' => 'asc' );
+		$args = array( 'post_type' => 'attachment', 'post_mime_type' => 'image', 'numberposts' => -1, 'post_status' => null, 'post_parent' => $post->ID, 'orderby' => 'menu_order', 'order' => 'asc', 'fields' => 'ids' );
 
 		$attachments = get_posts($args);
+
 		if ($attachments) :
+		
 			$loop = 0;
+			$attachment_count = count( $attachments );
+			if ( $attachment_count > 1 ) {
+				$gallery = '[product-gallery]';
+			} else {
+				$gallery = '';
+			}
+			
 			$columns = Jigoshop_Base::get_options()->get_option( 'jigoshop_product_thumbnail_columns', '3' );
 			$columns = apply_filters( 'single_thumbnail_columns', $columns );
-			foreach ( $attachments as $attachment ) :
+			
+			foreach ( $attachments as $attachment_id ) :
 
-				if ($thumb_id==$attachment->ID) continue;
+				if ($thumb_id==$attachment_id) continue; /* ignore the large featured image */
 
 				$loop++;
 
-				$_post =  get_post( $attachment->ID );
+				$_post = get_post( $attachment_id );
 				$url = wp_get_attachment_url($_post->ID);
 				$post_title = esc_attr($_post->post_title);
-				$image = wp_get_attachment_image($attachment->ID, $small_thumbnail_size);
+				$image = wp_get_attachment_image($attachment_id, $small_thumbnail_size);
 
 				if ( ! $image || $url == get_post_meta($post->ID, 'file_path', true) )
 					continue;
 
-				echo '<a href="'.esc_url($url).'" title="'.esc_attr($post_title).'" class="zoom ';
+				echo '<a rel="prettyPhoto'.$gallery.'" href="'.esc_url($url).'" title="'.esc_attr($post_title).'" class="zoom ';
 				if ($loop==1 || ($loop-1)%$columns==0) echo 'first';
 				if ($loop%$columns==0) echo 'last';
 				echo '">'.$image.'</a>';
@@ -500,7 +520,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 									<?php $term = get_term_by( 'slug', $value, 'pa_'.$sanitized_name ); ?>
 									<option value="<?php echo esc_attr( $term->slug ); ?>" <?php selected( $selected_value, $term->slug) ?>><?php echo $term->name; ?></option>
 								<?php else : ?>
-									<option value="<?php echo esc_attr( sanitize_title( $value ) ); ?>"<?php selected( $selected_value, sanitize_title( $value )) ?> ><?php echo $value; ?></option>
+									<option value="<?php echo esc_attr( sanitize_text_field( $value ) ); ?>"<?php selected( $selected_value, sanitize_text_field( $value )) ?> ><?php echo $value; ?></option>
 								<?php endif;?>
 							<?php endforeach; ?>
 						</select>

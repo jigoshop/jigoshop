@@ -211,7 +211,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 		endif;
 
 		// Billing Details
-		do_action("jigoshop_before_billing_fields");
+		do_action( 'jigoshop_before_billing_fields' );
 		foreach ($this->billing_fields as $field) :
 			$field = apply_filters( 'jigoshop_billing_field', $field );
 			$this->checkout_form_field( $field );
@@ -251,7 +251,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 			<h3><?php _e('Shipping Address', 'jigoshop'); ?></h3>
 
 			<div class="shipping-address">
-			<?php do_action("jigoshop_before_shipping_fields"); ?>
+			<?php do_action( 'jigoshop_before_shipping_fields' ); ?>
 			<?php foreach ($this->shipping_fields as $field) :
 					$field = apply_filters( 'jigoshop_shipping_field', $field );
 					$this->checkout_form_field( $field );
@@ -735,9 +735,10 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 	                    	do_action( 'jigoshop_created_customer', $user_id );
 
 		                    // send the user a confirmation and their login details
-		                    if(apply_filters("jigoshop_new_user_notification", true, $user_id, $user_pass))
+		                    if ( apply_filters( 'jigoshop_new_user_notification', true, $user_id, $user_pass )) {
 								wp_new_user_notification( $user_id, $user_pass );
-
+							}
+							
 		                    // set the WP login cookie
 		                    $secure_cookie = is_ssl() ? true : false;
 		                    wp_set_auth_cookie($user_id, true, $secure_cookie);
@@ -964,9 +965,9 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					if ( jigoshop::has_errors() ) break;
 
 					// Insert or update the post data
-					if (isset($_SESSION['order_awaiting_payment']) && $_SESSION['order_awaiting_payment'] > 0) :
+					if (isset(jigoshop_session::instance()->order_awaiting_payment) && jigoshop_session::instance()->order_awaiting_payment > 0) :
 
-						$order_id = (int) $_SESSION['order_awaiting_payment'];
+						$order_id = (int) jigoshop_session::instance()->order_awaiting_payment;
 						$order_data['ID'] = $order_id;
 						wp_update_post( $order_data );
 

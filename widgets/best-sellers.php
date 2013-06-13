@@ -79,8 +79,9 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 			'posts_per_page' => $number,
 			'post_type'      => 'product',
 			'post_status'    => 'publish',
-			'meta_key'       => '_js_total_sales',
-			'orderby'        => 'meta_value_num',
+			'meta_key'       => 'quantity_sold',
+			'orderby'        => 'meta_value_num+0',
+			'order'          => 'desc',
 			'nopaging'       => false,
 			'meta_query'     => array(
 				array(

@@ -377,7 +377,7 @@ add_action('wp_ajax_nopriv_jigoshop_update_order_review', 'jigoshop_ajax_update_
 /**
  * Clear cart
  **/
-add_action( 'wp_header', 'jigoshop_clear_cart_on_return' );
+add_action( 'wp_head', 'jigoshop_clear_cart_on_return' );
 
 function jigoshop_clear_cart_on_return() {
 

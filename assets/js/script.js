@@ -17,20 +17,11 @@ jQuery(function() {
 			theme: 'pp_default', /* pp_default / light_rounded / dark_rounded / light_square / dark_square / facebook */
 			horizontal_padding: 50,
 			opacity: 0.7,
+			overlay_gallery: false,
 			deeplinking: false,
 			social_tools: false,
 		});
 	}
-
-	// Star ratings
-	jQuery('#rating').hide().before('<p class="stars"><span><a class="star-1" href="#">1</a><a class="star-2" href="#">2</a><a class="star-3" href="#">3</a><a class="star-4" href="#">4</a><a class="star-5" href="#">5</a></span></p>');
-
-	jQuery('p.stars a').click(function(){
-		jQuery('#rating').val(jQuery(this).text());
-		jQuery('p.stars a').removeClass('active');
-		jQuery(this).addClass('active');
-		return false;
-	});
 
 	// Price slider
 	var min_price = parseInt(jQuery('.price_slider_amount #min_price').val());

@@ -66,7 +66,7 @@ class paypal extends jigoshop_payment_gateway {
 		$defaults = array();
 		
 		// Define the Section name for the Jigoshop_Options
-		$defaults[] = array( 'name' => sprintf(__('PayPal Standard %s', 'jigoshop'), '<img style="vertical-align:middle;margin-top:-4px;margin-left:10px;" src="http://diverge.blogdns.com/test/wp-content/plugins/jigoshop/assets/images/icons/paypal.png" alt="PayPal">'), 'type' => 'title', 'desc' => __('PayPal Standard works by sending the user to <a href="https://www.paypal.com/">PayPal</a> to enter their payment information.', 'jigoshop') );
+		$defaults[] = array( 'name' => sprintf(__('PayPal Standard %s', 'jigoshop'), '<img style="vertical-align:middle;margin-top:-4px;margin-left:10px;" src="'.jigoshop::assets_url() .'/assets/images/icons/paypal.png" alt="PayPal">'), 'type' => 'title', 'desc' => __('PayPal Standard works by sending the user to <a href="https://www.paypal.com/">PayPal</a> to enter their payment information.', 'jigoshop') );
 		
 		// List each option in order of appearance with details
 		$defaults[] = array(
@@ -92,7 +92,7 @@ class paypal extends jigoshop_payment_gateway {
 		);
 		
 		$defaults[] = array(
-			'name'		=> __('Description','jigoshop'),
+			'name'		=> __('Customer Message','jigoshop'),
 			'desc' 		=> '',
 			'tip' 		=> __('This controls the description which the user sees during checkout.','jigoshop'),
 			'id' 		=> 'jigoshop_paypal_description',
@@ -347,7 +347,7 @@ class paypal extends jigoshop_payment_gateway {
 			endforeach; endif;
 
 			// Shipping Cost
-			if (jigoshop_shipping::is_enabled()) :
+			if (jigoshop_shipping::is_enabled() && $order->order_shipping > 0) :
 				$item_loop++;
 				$paypal_args['item_name_'.$item_loop] = __('Shipping cost', 'jigoshop');
 				$paypal_args['quantity_'.$item_loop] = '1';

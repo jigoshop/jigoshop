@@ -242,7 +242,7 @@ class jigoshop_product_meta
 			if ( ! is_array( $value ) && isset( $attr_variation[$key] ) && $attr_variation[$key] ) {
 			 	$value = explode( ',', $value );
 			 	$value = array_map( 'trim', $value );
-			 	$value = implode( ',', $value );
+			 	$value = implode( ', ', $value );
 			} else if ( ! is_array( $value ) ) {
 				$value = trim( $value );
 			}

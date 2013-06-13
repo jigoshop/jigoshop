@@ -132,6 +132,26 @@
 				social_tools: false,
 			});
 		}
+		// Star ratings for comments
+		jQuery('#rating').hide().before('<p class="stars"><span><a class="star-1" href="#">1</a><a class="star-2" href="#">2</a><a class="star-3" href="#">3</a><a class="star-4" href="#">4</a><a class="star-5" href="#">5</a></span></p>');
+
+		jQuery('body').on( 'click', '#respond p.stars a', function() {
+			var $star   = jQuery(this);
+			var $rating = jQuery(this).closest('#respond').find('#rating');
+
+			$rating.val( $star.text() );
+			$star.siblings('a').removeClass('active');
+			$star.addClass('active');
+
+			return false;
+		}).on( 'click', '#respond #submit', function() {
+			var $rating = jQuery(this).closest('#respond').find('#rating');
+			var rating  = $rating.val();
+			if ( $rating.size() > 0 && ! rating ) {
+				alert("<?php _e('Please select a star to rate your review.','jigoshop'); ?>");
+				return false;
+			}
+		});
 	});
 /* ]]> */
 </script>
