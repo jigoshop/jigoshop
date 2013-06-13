@@ -153,10 +153,9 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
             $variation_id = '';
             $variation = '';
             if(!empty($item_variation[$i])) {
-                $variation_id = (int)$item_variation[$i];
-
-                if ( isset( $_POST['order_attributes'][$variation_id] ) ) {
-                    $variation = $_POST['order_attributes'][$variation_id];
+               $variation_id = (int)$item_variation[$i];
+                if ( isset( $_POST['order_attributes'][$i] ) ) {
+                    $variation = $_POST['order_attributes'][$i];
                 } else {
                     //if this is a variation, we should check if it is an old one
                     //and copy the 'variation' field describing details of variation
