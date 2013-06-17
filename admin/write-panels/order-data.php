@@ -230,7 +230,7 @@ function jigoshop_order_items_meta_box($post) {
 			</thead>
 			<tbody id="order_items_list">
 
-				<?php if (sizeof($order_items)>0 && isset($order_items[0]['id'])) foreach ($order_items as $item) :
+				<?php if (sizeof($order_items)>0 && isset($order_items[0]['id'])) foreach ($order_items as $item_no => $item) :
 
 					if (isset($item['variation_id']) && $item['variation_id'] > 0) {
 						$_product = new jigoshop_product_variation( $item['variation_id'] );
@@ -243,6 +243,7 @@ function jigoshop_order_items_meta_box($post) {
 
 					?>
 					<tr class="item">
+                        <?php do_action( 'jigoshop_admin_order_item_before_prod_id', $item_no ) ?>
 						<td class="product-id"><?php echo $item['id']; ?></td>
 						<td class="variation-id"><?php if ( isset($item['variation_id']) ) echo $item['variation_id']; else echo '-'; ?></td>
 						<td class="product-sku"><?php if ($_product->sku) echo $_product->sku; ?></td>
