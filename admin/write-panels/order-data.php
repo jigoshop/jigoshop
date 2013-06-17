@@ -215,6 +215,7 @@ function jigoshop_order_items_meta_box($post) {
 		<table cellpadding="0" cellspacing="0" class="jigoshop_order_items">
 			<thead>
 				<tr>
+                    <?php do_action('jigoshop_admin_order_item_header_before_prod_id'); ?>
 					<th class="product-id"><?php _e('ID', 'jigoshop'); ?></th>
 					<th class="variation-id"><?php _e('Variation ID', 'jigoshop'); ?></th>
 					<th class="product-sku"><?php _e('SKU', 'jigoshop'); ?></th>
@@ -244,61 +245,51 @@ function jigoshop_order_items_meta_box($post) {
 					?>
 					<tr class="item">
                         <?php do_action( 'jigoshop_admin_order_item_before_prod_id', $item_no ) ?>
-						<td class="product-id"><?php echo $item['id']; ?></td>
-						<td class="variation-id"><?php if ( isset($item['variation_id']) ) echo $item['variation_id']; else echo '-'; ?></td>
-						<td class="product-sku"><?php if ($_product->sku) echo $_product->sku; ?></td>
-						<td class="name"><a href="<?php echo esc_url( admin_url('post.php?post='. $_product->id .'&action=edit') ); ?>"><?php echo $item['name']; ?></a>
-							<?php
-								if ( ! empty( $item['customization'] ) ) :
+                        <td class="product-id"><?php echo $item['id']; ?></td>
+                        <td class="variation-id"><?php if ( isset($item['variation_id']) ) echo $item['variation_id']; else echo '-'; ?></td>
+                        <td class="product-sku"><?php if ($_product->sku) echo $_product->sku; ?></td>
+                        <td class="name"><a href="<?php echo esc_url( admin_url('post.php?post='. $_product->id .'&action=edit') ); ?>"><?php echo $item['name']; ?></a>
+                            <?php
+                            if ( ! empty( $item['customization'] ) ) :
 
-									$custom = $item['customization'];
-									$label = apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') );
-									?>
-										<div class="customization">
-											<span class="customized_product_label"><?php echo $label; ?></span>
-											<span class="customized_product"><?php echo $custom; ?></span>
-										</div>
-									<?php
-								endif;
-							?>
-							</td>
-						<td class="variation"><?php
-							if (isset($_product->variation_data)) :
-								echo jigoshop_get_formatted_variation( $_product->variation_data, true );
-							elseif ( isset($item['variation']) && is_array($item['variation']) ) :
-								foreach( $item['variation'] as $var ) {
-									echo "{$var['name']} : {$var['value']}";
-								}
-							else :
-								echo '-';
-							endif;
-						?></td>
-						<!--<td>
-							<table class="meta" cellspacing="0">
-								<tfoot>
-									<tr>
-										<td colspan="3"><button class="add_meta button"><?php _e('Add meta', 'jigoshop'); ?></button></td>
-									</tr>
-								</tfoot>
-								<tbody></tbody>
-							</table>
-						</td>-->
-						<?php do_action('jigoshop_admin_order_item_values', $_product, $item, $post->ID); ?>
-						<td class="quantity">
+                                $custom = $item['customization'];
+                                $label = apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') );
+                                ?>
+                                <div class="customization">
+                                    <span class="customized_product_label"><?php echo $label; ?></span>
+                                    <span class="customized_product"><?php echo $custom; ?></span>
+                                </div>
+                                <?php
+                            endif;
+                            ?>
+                        </td>
+                        <td class="variation"><?php
+                            if (isset($_product->variation_data)) :
+                                echo jigoshop_get_formatted_variation( $_product->variation_data, true );
+                            elseif ( isset($item['variation']) && is_array($item['variation']) ) :
+                                foreach( $item['variation'] as $var ) {
+                                    echo "{$var['name']} : {$var['value']}";
+                                }
+                            else :
+                                echo '-';
+                            endif;
+                        ?></td>
+                        <?php do_action('jigoshop_admin_order_item_values', $_product, $item, $post->ID); ?>
+                        <td class="quantity">
                             <input type="text" name="item_quantity[]" placeholder="<?php _e('Quantity e.g. 2', 'jigoshop'); ?>" value="<?php echo esc_attr( $item['qty'] ); ?>" />
                         </td>
-						<td class="cost">
+                        <td class="cost">
                             <input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit ex. tax e.g. 2.99', 'jigoshop'); ?>" value="<?php echo esc_attr( $item['cost'] ); ?>" />
                         </td>
-						<td class="tax">
+                        <td class="tax">
                             <input type="text" name="item_tax_rate[]" placeholder="<?php _e('Tax Rate e.g. 20.0000', 'jigoshop'); ?>" value="<?php echo esc_attr( $item['taxrate'] ); ?>" />
                         </td>
-						<td class="center">
-							<input type="hidden" name="item_id[]" value="<?php echo esc_attr( $item['id'] ); ?>" />
-							<input type="hidden" name="item_name[]" value="<?php echo esc_attr( $item['name'] ); ?>" />
+                        <td class="center">
+                            <input type="hidden" name="item_id[]" value="<?php echo esc_attr( $item['id'] ); ?>" />
+                            <input type="hidden" name="item_name[]" value="<?php echo esc_attr( $item['name'] ); ?>" />
                             <input type="hidden" name="item_variation_id[]" value="<?php if ($item['variation_id']) echo $item['variation_id']; else echo ''; ?>" />
-							<button type="button" class="remove_row button">&times;</button>
-						</td>
+                            <button type="button" class="remove_row button">&times;</button>
+                        </td>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>
