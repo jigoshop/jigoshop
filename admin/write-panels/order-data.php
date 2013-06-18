@@ -489,7 +489,7 @@ function jigoshop_order_attributes_meta_box( $post ) {
     // prepare the data to display
     foreach ( $order->items as $item_id => $item ) { ?>
         <li>
-            <?php do_action( 'jigoshop_order_attributes_meta_box_before_item', $item ); ?>
+            <?php do_action( 'jigoshop_order_attributes_meta_box_before_item', $item, $item_id ); ?>
             <b>
                 <?php do_action( 'jigoshop_order_attributes_meta_box_before_item_title', $item_id ); ?>
                 <?php echo esc_html( $item['name'] ); ?>
@@ -524,11 +524,11 @@ function jigoshop_order_attributes_meta_box( $post ) {
                 }
             }
             else { ?>
-                <div class="order-item-attribute" style="display:block"> <?php
+                <div class="order-item-attribute no-items-in-order" style="display:block"> <?php
                     _e( 'No attributes for this item.', 'jigoshop' ); ?>
                 </div><?php
             }
-            do_action( 'jigoshop_order_attributes_meta_box_after_item', $item ); ?>
+            do_action( 'jigoshop_order_attributes_meta_box_after_item', $item, $item_id ); ?>
         </li><?php
     } ?>
     </ul>
