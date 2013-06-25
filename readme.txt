@@ -3,8 +3,8 @@ Contributors: Jigoshop
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigowatt, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.5
-Tested up to: 3.6 Beta 3
-Stable tag: 1.7.1
+Tested up to: 3.6 -beta4
+Stable tag: 1.7.2
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -89,7 +89,7 @@ You can also <a href="http://forum.jigoshop.com/kb/customize-jigoshop/languages"
 
 = Which payment gateways do you have? =
 
-Take a look through <a href="http://forum.jigoshop.com/kb/jigoshop-settings/payment-gateways">our list of payment gateways</a>. There are some free ones that are included with Jigoshop, and a couple which <a href="http://jigoshop.com/product-category/extensions/">can be purchased as extensions</a>.
+Take a look through <a href="http://forum.jigoshop.com/kb/jigoshop-settings/payment-gateways">our list of payment gateways</a>. There are some free ones that are included with Jigoshop, and even more are available <a href="http://jigoshop.com/product-category/extensions/">on jigoshop.com</a>.
 
 = Will tax settings work in my country? =
 
@@ -112,6 +112,19 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.7.2 - 2013-06-25 =
+* New: Allow Order variable product attribute editing to change variation in use on an Order
+* Tweak: FuturePay will redirect to the Checkout instead of the Cart for any errors
+* Tweak: Improved UI on Admin Jigoshop Attributes by not showing all attribute terms and taking a lot of space
+* Fix: Checkout will no longer 404 error when the Cart is empty
+* Fix: Product Search shortcode is again functional
+* Fix: Repair template loader that was duplicating Shop products
+* Fix: Lightbox repairs for IE7 and IE8
+* Fix: Setting for converting old pending orders to on-hold is now functional
+* Fix: Formatted Product variation and attribute labels check for available product instead of erroring
+* Fix: Jigoshop dashboard monthly report now shows full month instead of last day short
+* Fix: Variable products on sale with future dates will not show on sale until that date
+
 = 1.7.1 - 2013-06-10 =
 * Fix: FuturePay gateway is no longer enabled by default
 * Fix: FuturePay gateway has better error checking and display and thankyou page redirects

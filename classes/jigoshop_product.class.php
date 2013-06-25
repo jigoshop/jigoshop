@@ -32,8 +32,8 @@ class jigoshop_product extends Jigoshop_Base {
 
 	protected $regular_price;
 	protected $sale_price;
-	private   $sale_price_dates_from;
-	private   $sale_price_dates_to;
+	protected   $sale_price_dates_from;
+	protected   $sale_price_dates_to;
 
 	private $weight;
 	private $length;
@@ -1367,22 +1367,32 @@ class jigoshop_product extends Jigoshop_Base {
 	public function attribute_label( $name ) {
 		global $wpdb;
 
-		if (strstr( $name, 'pa_' )) :
+		if ( strstr( $name, 'pa_' )) {
 			$name = str_replace( 'pa_', '', sanitize_text_field( $name ) );
-
 			$label = $wpdb->get_var( $wpdb->prepare( "SELECT attribute_label FROM ".$wpdb->prefix."jigoshop_attribute_taxonomies WHERE attribute_name = %s;", $name ) );
 
-			if (!$label): $label = ucfirst($name); endif;
-		else :  // taxonomies aren't created for custom text attributes, get name from the attribute instead
-			$label = $name;
-			$attributes = $this->get_attributes();
-			foreach ( $attributes as $key => $attr ) {
-				if ( ! $attr['is_taxonomy'] && $key == $name ) {
-					$label = $attr['name'];
-					break;
-				}
+			if ( ! $label ) {
+				$label = ucfirst( $name );
 			}
-		endif;
+		} else {  // taxonomies aren't created for custom text attributes, get name from the attribute instead
+		
+			// Discovered in Jigoshop 1.7, this function can be incorrectly called from
+			// 'jigoshop_get_formatted_variation' as a static class method
+			// make sure we have an instance to work with here for custom text attributes before calling $this
+			if ( $this instanceof jigoshop_product ) {
+				$label = $name;
+				$attributes = $this->get_attributes();
+				foreach ( $attributes as $key => $attr ) {
+					if ( ! $attr['is_taxonomy'] && $key == $name ) {
+						$label = $attr['name'];
+						break;
+					}
+				}
+			} else {
+				$name = str_replace( 'pa_', '', sanitize_text_field( $name ) );
+				$label = ucfirst($name);
+			}
+		}
 		return apply_filters('jigoshop_attribute_label',$label);
 	}
 

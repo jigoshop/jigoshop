@@ -19,7 +19,7 @@ jQuery(function() {
 			opacity: 0.7,
 			overlay_gallery: false,
 			deeplinking: false,
-			social_tools: false,
+			social_tools: false
 		});
 	}
 

@@ -197,7 +197,7 @@ function jigoshop_add_attribute() {
 				                <th scope="col"><?php _e('Label','jigoshop') ?></th>
 				                <th scope="col"><?php _e('Slug','jigoshop') ?></th>
 				                <th scope="col"><?php _e('Type','jigoshop') ?></th>
-				                <th scope="col" colspan="2"><?php _e('Terms','jigoshop') ?></th>
+				                <th scope="col">&nbsp;</th>
 				            </tr>
 				        </thead>
 				        <tbody>
@@ -215,22 +215,6 @@ function jigoshop_add_attribute() {
 				        					</td>
 				        					<td><?php echo $tax->attribute_name; ?></td>
 				        					<td><?php echo esc_html ( ucwords( $tax->attribute_type ) ); ?></td>
-				        					<td><?php
-				        						if (taxonomy_exists('pa_'.sanitize_title($tax->attribute_name))) :
-					        						$terms_array = array();
-					        						$terms = get_terms( 'pa_'.sanitize_title($tax->attribute_name), 'orderby=name&hide_empty=0' );
-					        						if ($terms) :
-						        						foreach ($terms as $term) :
-															$terms_array[] = $term->name;
-														endforeach;
-														echo implode(', ', $terms_array);
-													else :
-														echo '<span class="na">&ndash;</span>';
-													endif;
-												else :
-													echo '<span class="na">&ndash;</span>';
-												endif;
-				        					?></td>
 				        					<td><a href="edit-tags.php?taxonomy=pa_<?php echo sanitize_title( $tax->attribute_name ); ?>&amp;post_type=product" class="button alignright"><?php _e('Configure&nbsp;terms', 'jigoshop'); ?></a></td>
 				        				</tr><?php
 				        			endforeach;

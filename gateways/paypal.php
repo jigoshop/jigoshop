@@ -22,7 +22,7 @@ function add_paypal_gateway( $methods ) {
 	$methods[] = 'paypal';
 	return $methods;
 }
-add_filter( 'jigoshop_payment_gateways', 'add_paypal_gateway', 5 );
+add_filter( 'jigoshop_payment_gateways', 'add_paypal_gateway', 10 );
 
 
 class paypal extends jigoshop_payment_gateway {

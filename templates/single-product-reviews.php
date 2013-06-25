@@ -129,7 +129,7 @@
 				horizontal_padding: 50,
 				opacity: 0.7,
 				deeplinking: false,
-				social_tools: false,
+				social_tools: false
 			});
 		}
 		// Star ratings for comments

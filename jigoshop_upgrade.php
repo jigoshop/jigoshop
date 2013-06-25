@@ -85,6 +85,10 @@ function jigoshop_upgrade() {
  		jigoshop_upgrade_171();
  	}
 
+ 	if ( $jigoshop_db_version < 1306250 ) {
+ 		jigoshop_upgrade_172();
+ 	}
+
 	// Update the db option
 	update_site_option( 'jigoshop_db_version', JIGOSHOP_VERSION );
 
@@ -787,3 +791,14 @@ function jigoshop_upgrade_171() {
 
 }
 
+/**
+ * Execute changes made in Jigoshop 1.7.2
+ *
+ * @since 1.7.2
+ */
+function jigoshop_upgrade_172() {
+
+	Jigoshop_Base::get_options()->set_option( 'jigoshop_futurepay_title', __('FuturePay', 'jigoshop' ) );
+	Jigoshop_Base::get_options()->set_option( 'jigoshop_futurepay_description', __('Pay with FuturePay. Buy now and pay later. No credit card needed.  You will be asked to enter your FuturePay username and password, or create an account when you Place your Order.', 'jigoshop' ) );
+
+}

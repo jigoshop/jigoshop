@@ -339,23 +339,22 @@ function jigoshop_product_add_to_cart( $atts ) {
 
 //### Search shortcode #########################################################
 
-function jigoshop_search_shortcode( $args ) {
-
-	// Extract the arguments
-	extract( $args );
-
+function jigoshop_search_shortcode() {
+	
+	$unique = uniqid();
+	
 	// Construct the form
-	$form = '<form role="search" method="get" id="searchform" action="' . home_url() . '">';
+	$form = '<form role="search" method="get" class="jigoshop-shortcode-searchform" id="searchform'.$unique.'" action="' . home_url() . '">';
 	$form .= '<div>';
-		$form .= '<label class="assistive-text" for="s">' . __('Search for:', 'jigoshop') . '</label>';
-		$form .= '<input type="text" value="' . get_search_query() . '" name="s" id="s" placeholder="' . __('Search for products', 'jigoshop') . '" />';
-		$form .= '<input type="submit" id="searchsubmit" value="' . __('Search', 'jigoshop') . '" />';
+		$form .= '<label class="assistive-text" for="s'.$unique.'">' . __('Search for:', 'jigoshop') . '</label>';
+		$form .= '<input type="text" value="' . get_search_query() . '" name="s" id="s'.$unique.'" placeholder="' . __('Search for products', 'jigoshop') . '" />';
+		$form .= '<input class="jigoshop-shortcode-submit button" type="submit" id="searchsubmit'.$unique.'" value="' . __('Search', 'jigoshop') . '" />';
 		$form .= '<input type="hidden" name="post_type" value="product" />';
 	$form .= '</div>';
 	$form .= '</form>';
 
 	// Apply a filter to allow for additional fields
-	echo apply_filters('jigoshop_product_search_shortcode', $form, $instance);
+	echo apply_filters('jigoshop_product_search_shortcode', $form);
 
 }
 

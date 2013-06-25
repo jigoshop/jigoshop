@@ -434,7 +434,7 @@ class jigoshop_order extends Jigoshop_Base {
 		$comment = array(
 			'comment_post_ID'      => $this->id,
 			'comment_author'       => __('Jigoshop', 'jigoshop'),
-			'comment_author_email' => strtolower( __('Jigoshop', 'jigoshop') ) . '@127.0.0.1',
+			'comment_author_email' => '',
 			'comment_author_url'   => '',
 			'comment_content'      => $note,
 			'comment_type'         => 'order_note',

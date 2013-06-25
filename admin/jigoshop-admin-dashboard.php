@@ -478,8 +478,8 @@ class jigoshop_dashboard {
 						$first_day = strtotime("{$year}-{$month}-01");
 						$last_day = strtotime('-1 second', strtotime('+1 month', $first_day));
 
-						$after = date('Y-m-d', $first_day);
-						$before = date('Y-m-d', $last_day);
+						$after = date('Y-m-d H:i:s', $first_day);
+						$before = date('Y-m-d H:i:s', $last_day);
 
 						$where .= " AND post_date >= '$after'";
 						$where .= " AND post_date <= '$before'";
@@ -532,7 +532,7 @@ class jigoshop_dashboard {
 
 							if ($order_data->status=='cancelled' || $order_data->status=='refunded') continue;
 
-							$time = strtotime(date('Ymd', strtotime($order->post_date))).'000';
+							$time = strtotime(date('Ymd', strtotime($order->post_date))) . '000';
 
 							if (isset($order_counts[$time])) :
 								$order_counts[$time]++;

@@ -89,7 +89,7 @@ function jigoshop_get_template_part( $slug, $name = '' ) {
 	$filename = $slug . '-' . $name . '.php';
 	if ( $name == 'shop' || $name == 'on_sale' ) {
 		// load template if found. priority order = theme, 'jigoshop' folder in theme
-		if ( ! locate_template( array( $filename, JIGOSHOP_TEMPLATE_URL . $filename ), true )) {
+		if ( ! locate_template( array( $filename, JIGOSHOP_TEMPLATE_URL . $filename ), true, false )) {
 			// if not found then load our default, always require template
 			load_template( jigoshop::plugin_path() . '/templates/' . $filename, false );
 			return;

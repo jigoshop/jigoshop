@@ -22,7 +22,7 @@ function add_futurepay_gateway( $methods ) {
 	$methods[] = 'futurepay';
 	return $methods;
 }
-add_filter( 'jigoshop_payment_gateways', 'add_futurepay_gateway', 1 );
+add_filter( 'jigoshop_payment_gateways', 'add_futurepay_gateway', 5 );
 
 
 class futurepay extends jigoshop_payment_gateway {
@@ -32,8 +32,8 @@ class futurepay extends jigoshop_payment_gateway {
 		'no' => 'https://api.futurepay.com/remote/'
 	);
 	
-	private $merchant_countries = array( 'US' );
 	private $shop_base_country;
+	private $merchant_countries = array( 'US' );
 	private $allowed_currency = array( 'USD' );
 	
 	
@@ -57,7 +57,7 @@ class futurepay extends jigoshop_payment_gateway {
 		add_action( 'admin_notices', array( $this, 'futurepay_notices' ) );
 
 		$this->shop_base_country = (strpos( Jigoshop_Base::get_options()->get_option( 'jigoshop_default_country' ), ':' ) !== false ) 
-	      ? substr( Jigoshop_Base::get_options()->get_option( 'jigoshop_default_country'), 0, strpos( get_option('jigoshop_default_country' ), ':' )) 
+	      ? substr( Jigoshop_Base::get_options()->get_option( 'jigoshop_default_country'), 0, strpos( Jigoshop_Base::get_options()->get_option('jigoshop_default_country' ), ':' )) 
 	      : Jigoshop_Base::get_options()->get_option( 'jigoshop_default_country' );
 	}
 
@@ -75,7 +75,7 @@ class futurepay extends jigoshop_payment_gateway {
 		$defaults[] = array( 
 			'name' => sprintf(__('FuturePay %s', 'jigoshop'), '<img style="vertical-align:middle;margin-top:-4px;margin-left:10px;" src="'.jigoshop::assets_url() .'/assets/images/icons/futurepay.png" alt="FuturePay">'), 
 			'type' => 'title', 
-			'desc' => sprintf(__('This module allows you to accept online payments via FuturePay, allowing customers to buy now and pay later, without a credit card.  FuturePay is a safe, convenient and secure way for US customers to buy online in one-step.  %s', 'jigoshop'), '<a href="https://www.futurepay.com/main/merchant-signup?platform=77_FPM495845-1" target="_blank">'.__('Signup for a Merchant Account','jigoshop').'</a>' )
+			'desc' => sprintf(__('This module allows you to accept online payments via %s allowing customers to buy now and pay later without a credit card.  FuturePay is a safe, convenient and secure way for US customers to buy online in one-step.  %s', 'jigoshop'), '<a href="http://www.futurepay.com/" target="_blank">'.__('FuturePay','jigoshop').'</a>', '<a href="https://www.futurepay.com/main/merchant-signup?platform=77_FPM495845-1" target="_blank">'.__('Signup for a Merchant Account','jigoshop').'</a>' )
 		);
 
 		// List each option in order of appearance with details
@@ -106,7 +106,7 @@ class futurepay extends jigoshop_payment_gateway {
 			'desc' 		=> '',
 			'tip' 		=> __('This controls the description which the user sees during checkout.','jigoshop'),
 			'id' 		=> 'jigoshop_futurepay_description',
-			'std' 		=> __('Pay with FuturePay. Buy now and pay later.', 'jigoshop'),
+			'std' 		=> __('Pay with FuturePay. Buy now and pay later. No credit card needed.  You will be asked to enter your FuturePay username and password, or create an account when you Place your Order.', 'jigoshop'),
 			'type' 		=> 'longtext'
 		);
 
@@ -144,7 +144,7 @@ class futurepay extends jigoshop_payment_gateway {
 		if ( $this->enabled == 'no' ) return;
 		
 		if ( ! in_array( Jigoshop_Base::get_options()->get_option( 'jigoshop_currency' ), $this->allowed_currency )) {
-			echo '<div class="error"><p>'.sprintf(__('The FuturePay gateway accepts payments in currencies of %s.  Your current currency is %s.  FuturePay won\'t work until you change the Jigoshop currency to an accepted one.  FuturePay is not enabled at this time.','jigoshop'), implode( ', ', $this->allowed_currency ), Jigoshop_Base::get_options()->get_option( 'jigoshop_currency' ) ).'</p></div>';
+			echo '<div class="error"><p>'.sprintf(__('The FuturePay gateway accepts payments in currencies of %s.  Your current currency is %s.  FuturePay won\'t work until you change the Jigoshop currency to an accepted one.  FuturePay is currently disabled on the Payment Gateways settings tab.','jigoshop'), implode( ', ', $this->allowed_currency ), Jigoshop_Base::get_options()->get_option( 'jigoshop_currency' ) ).'</p></div>';
 			Jigoshop_Base::get_options()->set_option( 'jigoshop_futurepay_enabled', 'no' );
 		}
 		
@@ -153,7 +153,7 @@ class futurepay extends jigoshop_payment_gateway {
 			foreach ( $this->merchant_countries as $this_country ) {
 				$country_list[] = jigoshop_countries::$countries[$this_country];
 			}
-			echo '<div class="error"><p>'.sprintf(__('The FuturePay gateway is available to merchants from: %s.  Your country is: %s.  FuturePay won\'t work until you change the Jigoshop Shop Base country to an accepted one.  FuturePay is not enabled at this time.','jigoshop'), implode( ', ', $country_list ), jigoshop_countries::$countries[$this->shop_base_country] ).'</p></div>';
+			echo '<div class="error"><p>'.sprintf(__('The FuturePay gateway is available to merchants from: %s.  Your country is: %s.  FuturePay won\'t work until you change the Jigoshop Shop Base country to an accepted one.  FuturePay is currently disabled on the Payment Gateways settings tab.','jigoshop'), implode( ', ', $country_list ), jigoshop_countries::$countries[$this->shop_base_country] ).'</p></div>';
 			Jigoshop_Base::get_options()->set_option( 'jigoshop_futurepay_enabled', 'no' );
 		}
 		
@@ -317,7 +317,7 @@ class futurepay extends jigoshop_payment_gateway {
 			if ( ! strstr( $response, 'FPTK' ) ) {
 				$order->add_order_note( sprintf(__('FUTUREPAY: declined order, reason = %s', 'jigoshop'), $response ) );
 				jigoshop::add_error( sprintf(__('FUTUREPAY: declined order, reason = %s.  Please try again or select another gateway for your Order.', 'jigoshop'), $response ) );
-				wp_safe_redirect( get_permalink( jigoshop_get_page_id('cart') ) );
+				wp_safe_redirect( get_permalink( jigoshop_get_page_id( 'checkout' ) ) );
 				exit;
 			}
 			

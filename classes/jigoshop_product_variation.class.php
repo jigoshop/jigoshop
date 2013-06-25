@@ -20,7 +20,10 @@ class jigoshop_product_variation extends jigoshop_product {
 
 	public $variation_id;
 	public $variation_data; // For formatting of variations
-
+	public $sale_price_dates_from;
+	public $sale_price_dates_to;
+	
+	
 	/**
 	 * Extends the parent constructor to overwrite with variable data
 	 *
@@ -45,6 +48,8 @@ class jigoshop_product_variation extends jigoshop_product {
 		if ( isset( $this->meta['variation_data'][0] ))
 			$this->variation_data = maybe_unserialize( $this->meta['variation_data'][0] );
 		
+		$sale_from = $this->sale_price_dates_from;
+		$sale_to = $this->sale_price_dates_to;
 
 		parent::__construct( $ID );
 				
@@ -52,6 +57,8 @@ class jigoshop_product_variation extends jigoshop_product {
 		$this->ID = $parent_id;
 		$this->id = $parent_id;
 		if ( ! empty( $tempsku )) $this->sku = $tempsku;
+		$this->sale_price_dates_from = $sale_from;
+		$this->sale_price_dates_to = $sale_to;
 		
 		return $this;
 	}

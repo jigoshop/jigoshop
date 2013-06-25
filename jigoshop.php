@@ -22,9 +22,9 @@
  * Author:              Jigoshop
  * Author URI:          http://jigoshop.com
  *
- * Version:             1.7.1
+ * Version:             1.7.2
  * Requires at least:   3.5
- * Tested up to:        3.6-beta3-24432
+ * Tested up to:        3.6 -beta4
  *
  * Text Domain:         jigoshop
  * Domain Path:         /languages/
@@ -42,7 +42,7 @@
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
-if ( !defined( "JIGOSHOP_VERSION" )) define( "JIGOSHOP_VERSION", 1306100 ) ;
+if ( !defined( "JIGOSHOP_VERSION" )) define( "JIGOSHOP_VERSION", 1306250 ) ;
 if ( !defined( "JIGOSHOP_OPTIONS" )) define( "JIGOSHOP_OPTIONS", 'jigoshop_options' );
 if ( !defined( 'JIGOSHOP_TEMPLATE_URL' ) ) define( 'JIGOSHOP_TEMPLATE_URL', 'jigoshop/' );
 if ( !defined( "PHP_EOL" )) define( "PHP_EOL", "\r\n" );
