@@ -4,7 +4,7 @@ Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, wid
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.5
 Tested up to: 3.6 -beta4
-Stable tag: 1.7.2
+Stable tag: 1.7.3
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,13 +112,15 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.7.3 - 2013-06-26 =
+* Fix: Repair template loader that was duplicating Shop products
+
 = 1.7.2 - 2013-06-25 =
 * New: Allow Order variable product attribute editing to change variation in use on an Order
 * Tweak: FuturePay will redirect to the Checkout instead of the Cart for any errors
 * Tweak: Improved UI on Admin Jigoshop Attributes by not showing all attribute terms and taking a lot of space
 * Fix: Checkout will no longer 404 error when the Cart is empty
 * Fix: Product Search shortcode is again functional
-* Fix: Repair template loader that was duplicating Shop products
 * Fix: Lightbox repairs for IE7 and IE8
 * Fix: Setting for converting old pending orders to on-hold is now functional
 * Fix: Formatted Product variation and attribute labels check for available product instead of erroring

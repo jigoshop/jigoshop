@@ -92,8 +92,8 @@ function jigoshop_get_template_part( $slug, $name = '' ) {
 		if ( ! locate_template( array( $filename, JIGOSHOP_TEMPLATE_URL . $filename ), true, false )) {
 			// if not found then load our default, always require template
 			load_template( jigoshop::plugin_path() . '/templates/' . $filename, false );
-			return;
 		}
+		return;
 	}
 	get_template_part( JIGOSHOP_TEMPLATE_URL . $slug, $name );
 }
@@ -127,4 +127,3 @@ add_filter( 'comments_template', 'jigoshop_comments_template' );
 function jigoshop_get_template( $template_name, $require_once = true ) {
 	load_template( jigoshop_return_template( $template_name ), $require_once );
 }
-
