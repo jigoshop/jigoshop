@@ -519,8 +519,10 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 								<?php if ( taxonomy_exists( 'pa_'.$sanitized_name )) : ?>
 									<?php $term = get_term_by( 'slug', $value, 'pa_'.$sanitized_name ); ?>
 									<option value="<?php echo esc_attr( $term->slug ); ?>" <?php selected( $selected_value, $term->slug) ?>><?php echo $term->name; ?></option>
-								<?php else : ?>
-									<option value="<?php echo esc_attr( sanitize_text_field( $value ) ); ?>"<?php selected( $selected_value, sanitize_text_field( $value )) ?> ><?php echo $value; ?></option>
+								<?php else :  
+									$display_value = apply_filters('jigoshop_product_attribute_value_custom',esc_attr(sanitize_text_field($value)),$sanitized_name);
+								?>
+									<option value="<?php echo $value; ?>"<?php selected( $selected_value, $value) ?> ><?php echo $display_value; ?></option>
 								<?php endif;?>
 							<?php endforeach; ?>
 						</select>
