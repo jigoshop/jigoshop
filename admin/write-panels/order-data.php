@@ -215,6 +215,7 @@ function jigoshop_order_items_meta_box($post) {
 		<table cellpadding="0" cellspacing="0" class="jigoshop_order_items">
 			<thead>
 				<tr>
+                    <?php do_action('jigoshop_admin_order_item_header_before_prod_id'); ?>
 					<th class="product-id"><?php _e('ID', 'jigoshop'); ?></th>
 					<th class="variation-id"><?php _e('Variation ID', 'jigoshop'); ?></th>
 					<th class="product-sku"><?php _e('SKU', 'jigoshop'); ?></th>
@@ -230,7 +231,7 @@ function jigoshop_order_items_meta_box($post) {
 			</thead>
 			<tbody id="order_items_list">
 
-				<?php if (sizeof($order_items)>0 && isset($order_items[0]['id'])) foreach ($order_items as $item) :
+				<?php if (sizeof($order_items)>0 && isset($order_items[0]['id'])) foreach ($order_items as $item_no => $item) :
 
 					if (isset($item['variation_id']) && $item['variation_id'] > 0) {
 						$_product = new jigoshop_product_variation( $item['variation_id'] );
@@ -243,61 +244,52 @@ function jigoshop_order_items_meta_box($post) {
 
 					?>
 					<tr class="item">
-						<td class="product-id"><?php echo $item['id']; ?></td>
-						<td class="variation-id"><?php if ( isset($item['variation_id']) ) echo $item['variation_id']; else echo '-'; ?></td>
-						<td class="product-sku"><?php if ($_product->sku) echo $_product->sku; ?></td>
-						<td class="name"><a href="<?php echo esc_url( admin_url('post.php?post='. $_product->id .'&action=edit') ); ?>"><?php echo $item['name']; ?></a>
-							<?php
-								if ( ! empty( $item['customization'] ) ) :
+                        <?php do_action( 'jigoshop_admin_order_item_before_prod_id', $item_no ) ?>
+                        <td class="product-id"><?php echo $item['id']; ?></td>
+                        <td class="variation-id"><?php if ( isset($item['variation_id']) ) echo $item['variation_id']; else echo '-'; ?></td>
+                        <td class="product-sku"><?php if ($_product->sku) echo $_product->sku; ?></td>
+                        <td class="name"><a href="<?php echo esc_url( admin_url('post.php?post='. $_product->id .'&action=edit') ); ?>"><?php echo $item['name']; ?></a>
+                            <?php
+                            if ( ! empty( $item['customization'] ) ) :
 
-									$custom = $item['customization'];
-									$label = apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') );
-									?>
-										<div class="customization">
-											<span class="customized_product_label"><?php echo $label; ?></span>
-											<span class="customized_product"><?php echo $custom; ?></span>
-										</div>
-									<?php
-								endif;
-							?>
-							</td>
-						<td class="variation"><?php
-							if (isset($_product->variation_data)) :
-								echo jigoshop_get_formatted_variation( $_product->variation_data, true );
-							elseif ( isset($item['variation']) && is_array($item['variation']) ) :
-								foreach( $item['variation'] as $var ) {
-									echo "{$var['name']} : {$var['value']}";
-								}
-							else :
-								echo '-';
-							endif;
-						?></td>
-						<!--<td>
-							<table class="meta" cellspacing="0">
-								<tfoot>
-									<tr>
-										<td colspan="3"><button class="add_meta button"><?php _e('Add meta', 'jigoshop'); ?></button></td>
-									</tr>
-								</tfoot>
-								<tbody></tbody>
-							</table>
-						</td>-->
-						<?php do_action('jigoshop_admin_order_item_values', $_product, $item, $post->ID); ?>
-						<td class="quantity">
+                                $custom = $item['customization'];
+                                $label = apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') );
+                                ?>
+                                <div class="customization">
+                                    <span class="customized_product_label"><?php echo $label; ?></span>
+                                    <span class="customized_product"><?php echo $custom; ?></span>
+                                </div>
+                                <?php
+                            endif;
+                            ?>
+                        </td>
+                        <td class="variation"><?php
+                            if (isset($_product->variation_data)) :
+                                echo jigoshop_get_formatted_variation( $_product->variation_data, true );
+                            elseif ( isset($item['variation']) && is_array($item['variation']) ) :
+                                foreach( $item['variation'] as $var ) {
+                                    echo "{$var['name']} : {$var['value']}";
+                                }
+                            else :
+                                echo '-';
+                            endif;
+                        ?></td>
+                        <?php do_action('jigoshop_admin_order_item_values', $_product, $item, $post->ID); ?>
+                        <td class="quantity">
                             <input type="text" name="item_quantity[]" placeholder="<?php _e('Quantity e.g. 2', 'jigoshop'); ?>" value="<?php echo esc_attr( $item['qty'] ); ?>" />
                         </td>
-						<td class="cost">
+                        <td class="cost">
                             <input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit ex. tax e.g. 2.99', 'jigoshop'); ?>" value="<?php echo esc_attr( $item['cost'] ); ?>" />
                         </td>
-						<td class="tax">
+                        <td class="tax">
                             <input type="text" name="item_tax_rate[]" placeholder="<?php _e('Tax Rate e.g. 20.0000', 'jigoshop'); ?>" value="<?php echo esc_attr( $item['taxrate'] ); ?>" />
                         </td>
-						<td class="center">
-							<input type="hidden" name="item_id[]" value="<?php echo esc_attr( $item['id'] ); ?>" />
-							<input type="hidden" name="item_name[]" value="<?php echo esc_attr( $item['name'] ); ?>" />
+                        <td class="center">
+                            <input type="hidden" name="item_id[]" value="<?php echo esc_attr( $item['id'] ); ?>" />
+                            <input type="hidden" name="item_name[]" value="<?php echo esc_attr( $item['name'] ); ?>" />
                             <input type="hidden" name="item_variation_id[]" value="<?php if ($item['variation_id']) echo $item['variation_id']; else echo ''; ?>" />
-							<button type="button" class="remove_row button">&times;</button>
-						</td>
+                            <button type="button" class="remove_row button">&times;</button>
+                        </td>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>
@@ -490,80 +482,59 @@ function jigoshop_order_totals_meta_box($post) {
  */
 function jigoshop_order_attributes_meta_box( $post ) {
 
-    $order  = new jigoshop_order( $post->ID );
-    $data   = array();
+    $order = new jigoshop_order( $post->ID );
+    ?>
+    <ul class="order-attributes"><?php
 
     // prepare the data to display
-    foreach ( $order->items as $item_id => $item ) {
+    foreach ( $order->items as $item_id => $item ) { ?>
+        <li>
+            <?php do_action( 'jigoshop_order_attributes_meta_box_before_item', $item, $item_id ); ?>
+            <b>
+                <?php do_action( 'jigoshop_order_attributes_meta_box_before_item_title', $item_id ); ?>
+                <?php echo esc_html( $item['name'] ); ?>
+            </b>
+            <?php            
+        
+            $taxonomies_count = 0;
 
-        // process only variations
-        if ( !isset( $item['variation_id'] ) || empty( $item['variation_id'] ) ) {
-            continue;
-        }
+            // process only variations
+            if ( isset( $item['variation_id'] ) && !empty( $item['variation_id'] ) ) {
 
-        $data[$item_id] = array(
-            'name'          => $item['name'],
-            'data'          => array(),
-            'variation_id'  => $item['variation_id']
-        );
-        foreach ( jigoshop_product::getAttributeTaxonomies() as $attr_tax ) {
+                foreach ( jigoshop_product::getAttributeTaxonomies() as $attr_tax ) {
 
-            $identifier = 'tax_' . $attr_tax->attribute_name;
-            if ( !isset( $item['variation'][$identifier] ) ) {
-                continue;
-            }
-            $data[$item_id]['data'][$identifier] = array(
-                'name'      => $attr_tax->attribute_label ? $attr_tax->attribute_label : $attr_tax->attribute_name,
-                'data'      => array(),
-                'selected'  => $item['variation'][$identifier]
-            );
-            // all possible attribute values
-            $terms = get_terms( 'pa_'. $attr_tax->attribute_name, array( 'orderby' => 'slug', 'hide_empty' => false ) );
-            foreach ( $terms as $term ) {
+                    $identifier = 'tax_' . $attr_tax->attribute_name;
+                    if ( !isset( $item['variation'][$identifier] ) ) {
+                        continue;
+                    }
+                    
+                    // all possible attribute values
+                    $terms = get_terms( 'pa_'. $attr_tax->attribute_name, array( 'orderby' => 'slug', 'hide_empty' => false ) ); ?>
 
-                $data[$item_id]['data'][$identifier]['data'][$term->term_id] = array(
-                    'name' => $term->name,
-                    'slug' => $term->slug
-                );
-            }
-        }
-    }
-    
-    if ( empty( $data ) ) {
-        _e( 'There are no variations in this order.', 'jigoshop' );
-    }
-
-    ?>
-    <ul class="order-attributes">
-
-        <?php foreach ( $data as $item_id => $order_item ) : ?>
-            <?php if ( empty( $order_item['data'] ) ) {
-                continue;
-            } ?>
-            <li>
-                <b><?php echo esc_html( $order_item['name'] ); ?></b> (<?php _e( 'Variation ID:', 'jigoshop' ); ?> <?php echo $order_item['variation_id']; ?>)
-                <?php foreach ( $order_item['data'] as $identifier => $attribute ) : ?>
-                    <?php 
-                    	if ( empty( $attribute['data'] ) ) {
-                        	continue;
-                    	}
-                    	$product = new jigoshop_product_variation( $order_item['variation_id'] );
-                    	$label = str_replace('tax_', '', $identifier);
-                    	$label = $product->attribute_label('pa_'.$label);
-                    ?>
                     <div class="order-item-attribute" style="display:block">
-                        <span style="display:block"><?php echo esc_html( $label ); ?></span>
-                        <select name="order_attributes[<?php echo $order_item['variation_id']; ?>][<?php echo $identifier; ?>]">
-                            <?php foreach( $attribute['data'] as $option ) : ?>
-                                <option <?php selected( $attribute['selected'], $option['slug'] ); ?> value="<?php echo esc_attr( $option['slug'] ); ?>">
-                                    <?php echo esc_html( $option['name'] ); ?>
+                        <span style="display:block">
+                            <?php echo esc_html( $attr_tax->attribute_label ? $attr_tax->attribute_label : $attr_tax->attribute_name ); ?>
+                        </span>
+                        <select name="order_attributes[<?php echo $item_id; ?>][<?php echo $identifier; ?>]">
+                            <?php foreach( $terms as $term ) : ?>
+                                <option <?php selected( $item['variation'][$identifier], $term->slug ); ?> value="<?php echo esc_attr( $term->slug ); ?>">
+                                    <?php echo esc_html( $term->name ); ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
-                    </div>
-                <?php endforeach; ?>
-            </li>
-        <?php endforeach; ?>
+                    </div> <?php
+                    $taxonomies_count++;
+                }
+            }
+
+            if ( $taxonomies_count === 0 ) { ?>
+                <div class="order-item-attribute no-items-in-order" style="display:block"> <?php
+                    _e( 'No attributes for this item.', 'jigoshop' ); ?>
+                </div><?php
+            }
+            do_action( 'jigoshop_order_attributes_meta_box_after_item', $item, $item_id ); ?>
+        </li><?php
+    } ?>
     </ul>
     <script type="text/javascript">
         /*<![CDATA[*/
