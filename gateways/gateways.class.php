@@ -54,7 +54,7 @@ class jigoshop_payment_gateways extends Jigoshop_Singleton {
 			endforeach;
 		endif;
 
-		return $_available_gateways;
+		return apply_filters( 'jigoshop_payment_gateways',$_available_gateways);
 	}
 
 	function get_available_payment_gateways() {
