@@ -605,6 +605,8 @@ function jigoshop_download_product() {
 				// Now try to replace upload URL
 				$file_path = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $file_path);
 			endif;
+			
+			$file_path = apply_filters('jigoshop_download_file_path', $file_path, $download_file, $order, $email);
 
 			// See if its local or remote
 			if (strstr($file_path, 'http:') || strstr($file_path, 'https:') || strstr($file_path, 'ftp:')) :
