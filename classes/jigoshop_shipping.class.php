@@ -99,7 +99,7 @@ class jigoshop_shipping extends Jigoshop_Singleton {
 			self::$shipping_error_message .= __(' There may be no methods available for your destination and you should contact us for assistance.', 'jigoshop');
 		}
 		
-        return $_available_methods;
+        return apply_filters('jigoshop_available_shipping_methods',$_available_methods);
     }
 
     public static function get_shipping_error_message() {
