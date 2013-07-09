@@ -17,25 +17,24 @@
 
 
 class jigoshop_cron extends Jigoshop_Base {
-	
-	
+
+
 	function __construct () {
 
 		$this->jigoshop_schedule_events();
-
 		add_action( 'jigoshop_cron_pending_orders', array( $this, 'jigoshop_update_pending_orders' ) );
+		add_action( 'jigoshop_cron_processing_orders', array( $this, 'jigoshop_complete_processing_orders' ));
 
 	}
-	
-	
-	function jigoshop_schedule_events() {
 
+	function jigoshop_schedule_events() {
 		if ( ! wp_next_scheduled( 'jigoshop_cron_pending_orders' ) ) {
-			
 			wp_schedule_event( time(), 'daily', 'jigoshop_cron_pending_orders' );
-			
 		}
 
+		if ( ! wp_next_scheduled( 'jigoshop_cron_processing_orders' ) ) {
+			wp_schedule_event( time(), 'daily', 'jigoshop_cron_processing_orders' );
+		}
 	}
 	
 	
@@ -46,7 +45,7 @@ class jigoshop_cron extends Jigoshop_Base {
 			add_filter( 'posts_where', array( $this, 'orders_filter_when' ));
 			
 			$orders = get_posts( array(
-		
+
 				'post_status'       => 'publish',
 				'post_type'         => 'shop_order',
 				'shop_order_status' => 'pending',
@@ -56,7 +55,6 @@ class jigoshop_cron extends Jigoshop_Base {
 			));
 			
 			remove_filter( 'posts_where', array( $this, 'orders_filter_when' ));
-			
 			remove_action( 'order_status_pending_to_on-hold', 'jigoshop_processing_order_customer_notification' );
 			
 			foreach ( $orders as $index => $order_id ) {
@@ -69,13 +67,37 @@ class jigoshop_cron extends Jigoshop_Base {
 		}
 
 	}
+
+	function jigoshop_complete_processing_orders() {
 	
-	
-	function orders_filter_when( $when = '' ) {
-	
-		$when .= " AND post_date < '" . date('Y-m-d', strtotime('-30 days')) . "'";
-		return $when;
+		if ( self::get_options()->get_option( 'jigoshop_complete_processing_orders' ) == 'yes' ) {
 		
+			add_filter( 'posts_where', array( $this, 'orders_filter_when' ));
+
+			$orders = get_posts( array(
+				'post_status'       => 'publish',
+				'post_type'         => 'shop_order',
+				'shop_order_status' => 'processing',
+				'suppress_filters'  => false,
+				'fields'            => 'ids',
+			));
+		
+			remove_filter( 'posts_where', array( $this, 'orders_filter_when' ));
+			remove_action( 'order_status_completed', 'jigoshop_processing_order_customer_notification' );
+
+			foreach ( $orders as $index => $order_id ) {
+				$order = new jigoshop_order( $order_id );
+				$order->update_status( 'completed', __('Completed due to order being in processing state for a month or longer.', 'jigoshop') );
+			}
+
+			add_action( 'order_status_completed', 'jigoshop_processing_order_customer_notification' );
+
+		}
 	}
 
+	function orders_filter_when( $when = '' ) {
+		$when .= " AND post_date < '" . date('Y-m-d', strtotime('-30 days')) . "'";
+		return $when;
+
+	}
 }

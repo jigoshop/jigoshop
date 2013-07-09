@@ -486,7 +486,6 @@ function jigoshop_order_attributes_meta_box( $post ) {
     ?>
     <ul class="order-attributes"><?php
 
-    // prepare the data to display
     foreach ( $order->items as $item_id => $item ) { ?>
         <li>
             <?php do_action( 'jigoshop_order_attributes_meta_box_before_item', $item, $item_id ); ?>
@@ -507,14 +506,14 @@ function jigoshop_order_attributes_meta_box( $post ) {
                     if ( !isset( $item['variation'][$identifier] ) ) {
                         continue;
                     }
+					$product = new jigoshop_product_variation( $item['variation_id'] );
+					$attr_label = str_replace('tax_', '', $identifier);
+					$attr_label = $product->attribute_label('pa_'.$attr_label);
                     
-                    // all possible attribute values
                     $terms = get_terms( 'pa_'. $attr_tax->attribute_name, array( 'orderby' => 'slug', 'hide_empty' => false ) ); ?>
 
                     <div class="order-item-attribute" style="display:block">
-                        <span style="display:block">
-                            <?php echo esc_html( $attr_tax->attribute_label ? $attr_tax->attribute_label : $attr_tax->attribute_name ); ?>
-                        </span>
+                        <span style="display:block"><?php echo esc_html( $attr_label ); ?></span>
                         <select name="order_attributes[<?php echo $item_id; ?>][<?php echo $identifier; ?>]">
                             <?php foreach( $terms as $term ) : ?>
                                 <option <?php selected( $item['variation'][$identifier], $term->slug ); ?> value="<?php echo esc_attr( $term->slug ); ?>">

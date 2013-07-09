@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Jigoshop v1.7\n"
 "Report-Msgid-Bugs-To: Jeff Parsons <jeff.parsons@jigoshop.com>\n"
-"POT-Creation-Date: 2013-06-04 05:56-0400\n"
-"PO-Revision-Date: 2013-06-04 05:57-0400\n"
+"POT-Creation-Date: 2013-07-09 04:19-0400\n"
+"PO-Revision-Date: 2013-07-09 04:19-0400\n"
 "Last-Translator: Jeff Parsons <jeff.parsons@jigoshop.com>\n"
 "Language-Team: Jigoshop <info@jigoshop.com>\n"
 "MIME-Version: 1.0\n"
@@ -33,110 +33,116 @@ msgstr ""
 msgid "Shop Manager"
 msgstr ""
 
-#: ../jigoshop.php:348 ../jigoshop_template_functions.php:839
-#: ../classes/jigoshop_checkout.class.php:431
+#: ../jigoshop.php:337 ../jigoshop_template_functions.php:861
+#: ../classes/jigoshop_checkout.class.php:437
 #: ../classes/jigoshop_customer.class.php:453
 msgid "Select a state&hellip;"
 msgstr ""
 
-#: ../jigoshop.php:349 ../jigoshop_template_functions.php:851
+#: ../jigoshop.php:338 ../jigoshop_template_functions.php:873
 msgid "state"
 msgstr ""
 
-#: ../jigoshop.php:377 ../admin/jigoshop-admin.php:79
+#: ../jigoshop.php:342
+msgid ""
+"Please review your Order and ensure you have entered all the required "
+"information."
+msgstr ""
+
+#: ../jigoshop.php:367 ../admin/jigoshop-admin.php:79
 msgid "Settings"
 msgstr ""
 
-#: ../jigoshop.php:558
+#: ../jigoshop.php:562
 msgid ""
 "This is a demo store for testing purposes &mdash; no orders shall be "
 "fulfilled."
 msgstr ""
 
-#: ../jigoshop.php:625 ../jigoshop_taxonomy.php:36
+#: ../jigoshop.php:629 ../jigoshop_taxonomy.php:36
 msgctxt "slug"
 msgid "product"
 msgstr ""
 
-#: ../jigoshop.php:848 ../classes/jigoshop_order.class.php:260
+#: ../jigoshop.php:852 ../classes/jigoshop_order.class.php:260
 msgid " <small>(ex. tax)</small>"
 msgstr ""
 
-#: ../jigoshop.php:850
+#: ../jigoshop.php:854
 msgid " <small>(inc. tax)</small>"
 msgstr ""
 
-#: ../jigoshop.php:1093
+#: ../jigoshop.php:1102
 msgid "You have taken too long. Please go back and refresh the page."
 msgstr ""
 
-#: ../jigoshop.php:1096
+#: ../jigoshop.php:1105
 msgid "Please rate the product."
 msgstr ""
 
-#: ../jigoshop.php:1116 ../admin/jigoshop-admin-dashboard.php:308
-#: ../classes/jigoshop_product.class.php:1032
+#: ../jigoshop.php:1125 ../admin/jigoshop-admin-dashboard.php:308
+#: ../classes/jigoshop_product.class.php:1034
 #: ../templates/single-product-reviews.php:46
 #: ../widgets/recent_reviews.php:133
 msgid "out of 5"
 msgstr ""
 
-#: ../jigoshop.php:1120
+#: ../jigoshop.php:1129
 msgid "Your comment is awaiting approval"
 msgstr ""
 
-#: ../jigoshop.php:1123
+#: ../jigoshop.php:1132
 msgid "Rating by"
 msgstr ""
 
-#: ../jigoshop.php:1123
+#: ../jigoshop.php:1132
 msgid "on"
 msgstr ""
 
-#: ../jigoshop.php:1209 ../jigoshop_taxonomy.php:196
+#: ../jigoshop.php:1218 ../jigoshop_taxonomy.php:196
 msgid "Search "
 msgstr ""
 
-#: ../jigoshop.php:1210 ../jigoshop_taxonomy.php:197
+#: ../jigoshop.php:1219 ../jigoshop_taxonomy.php:197
 msgid "All "
 msgstr ""
 
-#: ../jigoshop.php:1211 ../jigoshop.php:1212 ../jigoshop_taxonomy.php:198
+#: ../jigoshop.php:1220 ../jigoshop.php:1221 ../jigoshop_taxonomy.php:198
 #: ../jigoshop_taxonomy.php:199
 msgid "Parent "
 msgstr ""
 
-#: ../jigoshop.php:1213 ../jigoshop_taxonomy.php:200
+#: ../jigoshop.php:1222 ../jigoshop_taxonomy.php:200
 msgid "Edit "
 msgstr ""
 
-#: ../jigoshop.php:1214 ../jigoshop_taxonomy.php:201
+#: ../jigoshop.php:1223 ../jigoshop_taxonomy.php:201
 msgid "Update "
 msgstr ""
 
-#: ../jigoshop.php:1215 ../jigoshop_taxonomy.php:202
+#: ../jigoshop.php:1224 ../jigoshop_taxonomy.php:202
 msgid "Add New "
 msgstr ""
 
-#: ../jigoshop.php:1216 ../jigoshop_taxonomy.php:203
+#: ../jigoshop.php:1225 ../jigoshop_taxonomy.php:203
 msgid "New "
 msgstr ""
 
-#: ../jigoshop_actions.php:99 ../admin/write-panels/order-data.php:279
+#: ../jigoshop_actions.php:99
 msgid "Add meta"
 msgstr ""
 
-#: ../jigoshop_actions.php:106 ../admin/jigoshop-write-panels.php:184
-#: ../admin/write-panels/order-data.php:287
+#: ../jigoshop_actions.php:106 ../admin/jigoshop-write-panels.php:185
+#: ../admin/write-panels/order-data.php:279
 msgid "Quantity e.g. 2"
 msgstr ""
 
-#: ../jigoshop_actions.php:107 ../admin/write-panels/order-data.php:290
+#: ../jigoshop_actions.php:107 ../admin/write-panels/order-data.php:282
 msgid "Cost per unit ex. tax e.g. 2.99"
 msgstr ""
 
-#: ../jigoshop_actions.php:108 ../admin/jigoshop-write-panels.php:186
-#: ../admin/write-panels/order-data.php:293
+#: ../jigoshop_actions.php:108 ../admin/jigoshop-write-panels.php:187
+#: ../admin/write-panels/order-data.php:285
 msgid "Tax Rate e.g. 20.0000"
 msgstr ""
 
@@ -223,18 +229,18 @@ msgid ""
 "to homepage &rarr;</a>"
 msgstr ""
 
-#: ../jigoshop_actions.php:587 ../jigoshop_actions.php:665
+#: ../jigoshop_actions.php:587 ../jigoshop_actions.php:667
 #, php-format
 msgid "File not found. <a href=\"%s\">Go to homepage &rarr;</a>"
 msgstr ""
 
-#: ../jigoshop_actions.php:773 ../jigoshop_actions.php:823
+#: ../jigoshop_actions.php:775 ../jigoshop_actions.php:825
 #: ../admin/jigoshop-admin-post-types.php:355
 #: ../admin/write-panels/order-data.php:96
 msgid "Guest"
 msgstr ""
 
-#: ../jigoshop_actions.php:891
+#: ../jigoshop_actions.php:893
 msgid "View all categories"
 msgstr ""
 
@@ -300,7 +306,7 @@ msgstr ""
 msgid "Date: "
 msgstr ""
 
-#: ../jigoshop_emails.php:288 ../jigoshop_emails.php:499
+#: ../jigoshop_emails.php:288 ../jigoshop_emails.php:500
 #: ../shortcodes/my_account.php:482
 msgid "Note:"
 msgstr ""
@@ -309,12 +315,12 @@ msgstr ""
 msgid "Retail Price:"
 msgstr ""
 
-#: ../jigoshop_emails.php:303 ../admin/write-panels/order-data.php:413
+#: ../jigoshop_emails.php:303 ../admin/write-panels/order-data.php:405
 msgid "Subtotal:"
 msgstr ""
 
 #: ../jigoshop_emails.php:311 ../admin/jigoshop-admin-post-types.php:388
-#: ../admin/write-panels/order-data.php:435
+#: ../admin/write-panels/order-data.php:427
 msgid "Shipping:"
 msgstr ""
 
@@ -322,13 +328,13 @@ msgstr ""
 msgid "Discount:"
 msgstr ""
 
-#: ../jigoshop_emails.php:360 ../jigoshop_template_functions.php:883
-#: ../classes/jigoshop_checkout.class.php:1142
-#: ../classes/jigoshop_product.class.php:907
+#: ../jigoshop_emails.php:360 ../jigoshop_template_functions.php:905
+#: ../classes/jigoshop_checkout.class.php:1154
+#: ../classes/jigoshop_product.class.php:909
 msgid "Free"
 msgstr ""
 
-#: ../jigoshop_emails.php:361 ../admin/write-panels/order-data.php:470
+#: ../jigoshop_emails.php:361 ../admin/write-panels/order-data.php:462
 #: ../shortcodes/pay.php:116 ../shortcodes/thankyou.php:52
 msgid "Total:"
 msgstr ""
@@ -361,52 +367,52 @@ msgstr ""
 msgid "SHIPPING ADDRESS"
 msgstr ""
 
-#: ../jigoshop_emails.php:426
+#: ../jigoshop_emails.php:427
 msgid "Shipping: "
 msgstr ""
 
-#: ../jigoshop_emails.php:432
+#: ../jigoshop_emails.php:433
 msgid "To be picked up by:"
 msgstr ""
 
-#: ../jigoshop_emails.php:436
+#: ../jigoshop_emails.php:437
 msgid "At location:"
 msgstr ""
 
-#: ../jigoshop_emails.php:448
+#: ../jigoshop_emails.php:449
 msgid "Product low in stock"
 msgstr ""
 
-#: ../jigoshop_emails.php:449
+#: ../jigoshop_emails.php:450
 msgid "is low in stock."
 msgstr ""
 
-#: ../jigoshop_emails.php:459
+#: ../jigoshop_emails.php:460
 msgid "Product out of stock"
 msgstr ""
 
-#: ../jigoshop_emails.php:460
+#: ../jigoshop_emails.php:461
 msgid "is out of stock."
 msgstr ""
 
-#: ../jigoshop_emails.php:480 ../jigoshop_emails.php:488
+#: ../jigoshop_emails.php:481 ../jigoshop_emails.php:489
 #, php-format
 msgid "Product Backorder on Order %s"
 msgstr ""
 
-#: ../jigoshop_emails.php:481
+#: ../jigoshop_emails.php:482
 #, php-format
 msgid "%s units of #%s %s (#%s) are needed to fill Order %s."
 msgstr ""
 
-#: ../jigoshop_emails.php:491
+#: ../jigoshop_emails.php:492
 #, php-format
 msgid ""
 "Thank you for your Order %s. Unfortunately, the following item was found to "
 "be on backorder."
 msgstr ""
 
-#: ../jigoshop_emails.php:495
+#: ../jigoshop_emails.php:496
 #, php-format
 msgid "%d units of #%d %s (#%s) have been backordered."
 msgstr ""
@@ -465,7 +471,7 @@ msgstr ""
 #: ../jigoshop_template_functions.php:105
 #: ../jigoshop_template_functions.php:115
 #: ../jigoshop_template_functions.php:125
-#: ../classes/jigoshop_options.class.php:1084
+#: ../classes/jigoshop_options.class.php:1099
 msgid "View Product"
 msgstr ""
 
@@ -494,7 +500,7 @@ msgstr ""
 msgid "Variations"
 msgstr ""
 
-#: ../jigoshop_taxonomy.php:80 ../admin/write-panels/order-data.php:222
+#: ../jigoshop_taxonomy.php:80 ../admin/write-panels/order-data.php:223
 msgid "Variation"
 msgstr ""
 
@@ -779,106 +785,105 @@ msgid "Select"
 msgstr ""
 
 #: ../jigoshop_template_functions.php:117
-#: ../jigoshop_template_functions.php:535
+#: ../jigoshop_template_functions.php:557
 msgid "Buy product"
 msgstr ""
 
 #: ../jigoshop_template_functions.php:123
-#: ../jigoshop_template_functions.php:335
-#: ../jigoshop_template_functions.php:359
-#: ../jigoshop_template_functions.php:388
-#: ../jigoshop_template_functions.php:516
+#: ../jigoshop_template_functions.php:355
+#: ../jigoshop_template_functions.php:379
+#: ../jigoshop_template_functions.php:408
+#: ../jigoshop_template_functions.php:538
 msgid "Add to cart"
 msgstr ""
 
 #: ../jigoshop_template_functions.php:132
 #: ../admin/jigoshop-admin-post-types.php:133
 #: ../admin/write-panels/product-data.php:345
-#: ../classes/jigoshop_product.class.php:485
-#: ../classes/jigoshop_product.class.php:501
+#: ../classes/jigoshop_product.class.php:487
+#: ../classes/jigoshop_product.class.php:503
 msgid "Out of Stock"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:282
-#: ../jigoshop_template_functions.php:463 ../admin/jigoshop-admin-help.php:176
+#: ../jigoshop_template_functions.php:302
+#: ../jigoshop_template_functions.php:483 ../admin/jigoshop-admin-help.php:176
 #: ../admin/jigoshop-admin-post-types.php:66
-#: ../admin/write-panels/order-data.php:220
+#: ../admin/write-panels/order-data.php:221
 #: ../admin/write-panels/product-data.php:143
 #: ../admin/write-panels/product-types/variable.php:545
 msgid "SKU"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:285
+#: ../jigoshop_template_functions.php:305
 msgid "Posted in "
 msgstr ""
 
-#: ../jigoshop_template_functions.php:286
+#: ../jigoshop_template_functions.php:306
 msgid "Tagged as "
 msgstr ""
 
-#: ../jigoshop_template_functions.php:490
+#: ../jigoshop_template_functions.php:510
 msgid "Choose an option "
 msgstr ""
 
-#: ../jigoshop_template_functions.php:567
+#: ../jigoshop_template_functions.php:589
 #: ../templates/single-product-reviews.php:69
 msgid "Next <span class=\"meta-nav\">&rarr;</span>"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:568
+#: ../jigoshop_template_functions.php:590
 #: ../templates/single-product-reviews.php:68
 msgid "<span class=\"meta-nav\">&larr;</span> Previous"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:586 ../admin/jigoshop-admin-help.php:84
-#: ../admin/jigoshop-admin-help.php:127 ../gateways/futurepay.php:94
-#: ../gateways/paypal.php:95
+#: ../jigoshop_template_functions.php:608 ../admin/jigoshop-admin-help.php:84
+#: ../admin/jigoshop-admin-help.php:127
 msgid "Description"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:596 ../gateways/bank_transfer.php:177
+#: ../jigoshop_template_functions.php:618 ../gateways/bank_transfer.php:177
 #: ../gateways/bank_transfer.php:192 ../gateways/bank_transfer.php:235
 msgid "Additional Information"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:603
+#: ../jigoshop_template_functions.php:625
 #: ../templates/single-product-reviews.php:53
 msgid "Reviews"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:614
+#: ../jigoshop_template_functions.php:636
 msgid "Personalize"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:668
-#: ../jigoshop_template_functions.php:707
+#: ../jigoshop_template_functions.php:690
+#: ../jigoshop_template_functions.php:729
 msgid "Save Personalization"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:678
+#: ../jigoshop_template_functions.php:700
 #, php-format
 msgid "You may enter a maximum of %s characters."
 msgstr ""
 
-#: ../jigoshop_template_functions.php:681
+#: ../jigoshop_template_functions.php:703
 msgid ""
 "Enter your personal information as you want it to appear on the product.<br /"
 ">"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:787
+#: ../jigoshop_template_functions.php:809
 msgid "Related Products"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:815
+#: ../jigoshop_template_functions.php:837
 msgid "Calculate Shipping"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:857
+#: ../jigoshop_template_functions.php:879
 msgid "Postcode/Zip"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:857
+#: ../jigoshop_template_functions.php:879
 #: ../admin/write-panels/order-data.php:129
 #: ../admin/write-panels/order-data.php:176
 #: ../classes/jigoshop_checkout.class.php:92
@@ -889,55 +894,55 @@ msgstr ""
 msgid "Postcode"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:861
+#: ../jigoshop_template_functions.php:883
 msgid "Update Totals"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:881
+#: ../jigoshop_template_functions.php:903
 msgid " (ex. tax)"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:911
-#: ../classes/jigoshop_checkout.class.php:230 ../widgets/user_login.php:84
+#: ../jigoshop_template_functions.php:933
+#: ../classes/jigoshop_checkout.class.php:229 ../widgets/user_login.php:84
 msgid "Username"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:915
-#: ../classes/jigoshop_checkout.class.php:228 ../widgets/user_login.php:92
+#: ../jigoshop_template_functions.php:937
+#: ../classes/jigoshop_checkout.class.php:231 ../widgets/user_login.php:92
 msgid "Password"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:922 ../widgets/user_login.php:70
+#: ../jigoshop_template_functions.php:944 ../widgets/user_login.php:70
 #: ../widgets/user_login.php:99
 msgid "Login"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:923
+#: ../jigoshop_template_functions.php:945
 msgid "Lost Password?"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:939
+#: ../jigoshop_template_functions.php:961
 msgid "Already registered?"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:939
+#: ../jigoshop_template_functions.php:961
 msgid "Click here to login"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:953
+#: ../jigoshop_template_functions.php:975
 msgid ""
 "You may have already established your Billing and Shipping state, but please "
 "verify it is correctly set for your location as well as all the rest of your "
 "information before placing your Order."
 msgstr ""
 
-#: ../jigoshop_template_functions.php:955
+#: ../jigoshop_template_functions.php:977
 msgid ""
 "Please verify that all your information is correctly entered before placing "
 "your Order."
 msgstr ""
 
-#: ../jigoshop_template_functions.php:968
+#: ../jigoshop_template_functions.php:990
 msgid ""
 "If you have entered an EU VAT Number, it will be looked up when you "
 "<strong>Place</strong> your Order and verified.  At that time "
@@ -946,34 +951,46 @@ msgid ""
 "without, the 2 character EU country code in front."
 msgstr ""
 
-#: ../jigoshop_template_functions.php:982
+#: ../jigoshop_template_functions.php:1004
 msgctxt "breadcrumb"
 msgid "Home"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:1036
+#: ../jigoshop_template_functions.php:1058
 msgid "Products tagged &ldquo;"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:1059
-#: ../jigoshop_template_functions.php:1144
+#: ../jigoshop_template_functions.php:1081
+#: ../jigoshop_template_functions.php:1166
 msgid "Search results for &ldquo;"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:1108
+#: ../jigoshop_template_functions.php:1130
 msgid "Error 404"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:1148
+#: ../jigoshop_template_functions.php:1170
 msgid "Posts tagged &ldquo;"
 msgstr ""
 
-#: ../jigoshop_template_functions.php:1153
+#: ../jigoshop_template_functions.php:1175
 msgid "Author: "
 msgstr ""
 
-#: ../jigoshop_template_functions.php:1159
+#: ../jigoshop_template_functions.php:1181
 msgid "Page"
+msgstr ""
+
+#: ../jigoshop_upgrade.php:805 ../gateways/futurepay.php:78
+#: ../gateways/futurepay.php:100
+msgid "FuturePay"
+msgstr ""
+
+#: ../jigoshop_upgrade.php:806 ../gateways/futurepay.php:109
+msgid ""
+"Pay with FuturePay. Buy now and pay later. No credit card needed.  You will "
+"be asked to enter your FuturePay username and password, or create an account "
+"when you Place your Order."
 msgstr ""
 
 #: ../admin/jigoshop-admin-attributes.php:43
@@ -1002,33 +1019,33 @@ msgid ""
 msgstr ""
 
 #: ../admin/jigoshop-admin-attributes.php:151
-#: ../admin/jigoshop-admin-attributes.php:252
+#: ../admin/jigoshop-admin-attributes.php:236
 msgid "Attribute Label"
 msgstr ""
 
 #: ../admin/jigoshop-admin-attributes.php:153
-#: ../admin/jigoshop-admin-attributes.php:254
+#: ../admin/jigoshop-admin-attributes.php:238
 msgid "The label is how it appears on your site."
 msgstr ""
 
 #: ../admin/jigoshop-admin-attributes.php:156
-#: ../admin/jigoshop-admin-attributes.php:262
+#: ../admin/jigoshop-admin-attributes.php:246
 msgid "Attribute type"
 msgstr ""
 
 #: ../admin/jigoshop-admin-attributes.php:158
-#: ../admin/jigoshop-admin-attributes.php:265
+#: ../admin/jigoshop-admin-attributes.php:249
 #: ../admin/jigoshop-admin-help.php:25
 msgid "Select"
 msgstr ""
 
 #: ../admin/jigoshop-admin-attributes.php:159
-#: ../admin/jigoshop-admin-attributes.php:264
+#: ../admin/jigoshop-admin-attributes.php:248
 msgid "Multiselect"
 msgstr ""
 
 #: ../admin/jigoshop-admin-attributes.php:160
-#: ../admin/jigoshop-admin-attributes.php:266
+#: ../admin/jigoshop-admin-attributes.php:250
 #: ../admin/jigoshop-admin-help.php:27
 msgid "Text"
 msgstr ""
@@ -1056,41 +1073,37 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: ../admin/jigoshop-admin-attributes.php:200
-msgid "Terms"
-msgstr ""
-
 #: ../admin/jigoshop-admin-attributes.php:214
 #: ../admin/jigoshop-admin-settings.php:1019
 msgid "Delete"
 msgstr ""
 
-#: ../admin/jigoshop-admin-attributes.php:234
+#: ../admin/jigoshop-admin-attributes.php:218
 msgid "Configure&nbsp;terms"
 msgstr ""
 
-#: ../admin/jigoshop-admin-attributes.php:238
+#: ../admin/jigoshop-admin-attributes.php:222
 msgid "No attributes currently exist."
 msgstr ""
 
-#: ../admin/jigoshop-admin-attributes.php:248
+#: ../admin/jigoshop-admin-attributes.php:232
 msgid "Add New Attribute"
 msgstr ""
 
-#: ../admin/jigoshop-admin-attributes.php:257
+#: ../admin/jigoshop-admin-attributes.php:241
 msgid "Attribute Slug"
 msgstr ""
 
-#: ../admin/jigoshop-admin-attributes.php:259
+#: ../admin/jigoshop-admin-attributes.php:243
 msgid "Slug for your attribute (optional)."
 msgstr ""
 
-#: ../admin/jigoshop-admin-attributes.php:272
+#: ../admin/jigoshop-admin-attributes.php:256
 #: ../admin/write-panels/product-data.php:471
 msgid "Add Attribute"
 msgstr ""
 
-#: ../admin/jigoshop-admin-attributes.php:282
+#: ../admin/jigoshop-admin-attributes.php:266
 msgid "Are you sure you want to delete this?"
 msgstr ""
 
@@ -1225,7 +1238,6 @@ msgstr ""
 
 #: ../admin/jigoshop-admin-dashboard.php:385 ../admin/jigoshop-admin.php:67
 #: ../classes/jigoshop_order.class.php:436
-#: ../classes/jigoshop_order.class.php:437
 #: ../classes/jigoshop_order.class.php:441
 msgid "Jigoshop"
 msgstr ""
@@ -1467,7 +1479,7 @@ msgid ""
 msgstr ""
 
 #: ../admin/jigoshop-admin-help.php:81 ../admin/jigoshop-admin-help.php:125
-#: ../admin/write-panels/order-data.php:221
+#: ../admin/write-panels/order-data.php:222
 #: ../templates/single-product-reviews.php:94
 msgid "Name"
 msgstr ""
@@ -1556,8 +1568,8 @@ msgstr ""
 msgid "You can search for products in a number of ways"
 msgstr ""
 
-#: ../admin/jigoshop-admin-help.php:175 ../admin/jigoshop-write-panels.php:182
-#: ../admin/write-panels/order-data.php:218
+#: ../admin/jigoshop-admin-help.php:175 ../admin/jigoshop-write-panels.php:183
+#: ../admin/write-panels/order-data.php:219
 msgid "ID"
 msgstr ""
 
@@ -1676,8 +1688,8 @@ msgid ""
 msgstr ""
 
 #: ../admin/jigoshop-admin-help.php:235
-#: ../admin/jigoshop-admin-settings-api.php:1200
-#: ../admin/jigoshop-admin-settings-api.php:1211
+#: ../admin/jigoshop-admin-settings-api.php:1223
+#: ../admin/jigoshop-admin-settings-api.php:1234
 #: ../admin/write-panels/product-data.php:227
 msgid "Tax Classes"
 msgstr ""
@@ -1755,7 +1767,7 @@ msgid ""
 "button. Attributes can be ordered by dragging & dropping the attributes"
 msgstr ""
 
-#: ../admin/jigoshop-admin-help.php:248 ../admin/jigoshop-write-panels.php:190
+#: ../admin/jigoshop-admin-help.php:248 ../admin/jigoshop-write-panels.php:191
 #: ../admin/write-panels/product-data.php:558
 #: ../admin/write-panels/product-data.php:658
 msgid "Display on product page"
@@ -1768,7 +1780,7 @@ msgid ""
 "tab of the product view"
 msgstr ""
 
-#: ../admin/jigoshop-admin-help.php:249 ../admin/jigoshop-write-panels.php:191
+#: ../admin/jigoshop-admin-help.php:249 ../admin/jigoshop-write-panels.php:192
 #: ../admin/write-panels/product-data.php:563
 #: ../admin/write-panels/product-data.php:662
 msgid "Is for variations"
@@ -1954,7 +1966,7 @@ msgstr ""
 #: ../admin/jigoshop-admin-post-types.php:125
 #: ../admin/jigoshop-admin-post-types.php:128
 #: ../admin/write-panels/product-data.php:344
-#: ../classes/jigoshop_product.class.php:478
+#: ../classes/jigoshop_product.class.php:480
 msgid "In Stock"
 msgstr ""
 
@@ -2006,7 +2018,7 @@ msgid "Billing Address"
 msgstr ""
 
 #: ../admin/jigoshop-admin-post-types.php:296
-#: ../classes/jigoshop_checkout.class.php:250
+#: ../classes/jigoshop_checkout.class.php:254
 #: ../classes/jigoshop_customer.class.php:355 ../shortcodes/my_account.php:154
 #: ../shortcodes/my_account.php:541 ../shortcodes/order_tracking.php:167
 msgid "Shipping Address"
@@ -2021,7 +2033,7 @@ msgid "Order Cost"
 msgstr ""
 
 #: ../admin/jigoshop-admin-post-types.php:310
-#: ../admin/jigoshop-admin-post-types.php:330 ../gateways/futurepay.php:189
+#: ../admin/jigoshop-admin-post-types.php:330 ../gateways/futurepay.php:247
 #: ../gateways/paypal.php:313
 #, php-format
 msgid "Order %s"
@@ -2078,11 +2090,11 @@ msgid "Subtotal"
 msgstr ""
 
 #: ../admin/jigoshop-admin-post-types.php:408
-#: ../admin/jigoshop-admin-settings-api.php:512
+#: ../admin/jigoshop-admin-settings-api.php:534
 #: ../admin/jigoshop-admin-settings-options.php:803
 #: ../admin/write-panels/product-data.php:218
-#: ../classes/jigoshop_checkout.class.php:1086
-#: ../classes/jigoshop_options.class.php:1589
+#: ../classes/jigoshop_checkout.class.php:1098
+#: ../classes/jigoshop_options.class.php:1604
 #: ../shipping/shipping_method.class.php:41 ../shortcodes/cart.php:248
 #: ../shortcodes/my_account.php:441 ../shortcodes/order_tracking.php:81
 #: ../templates/checkout/pay_for_order.php:44
@@ -2183,46 +2195,47 @@ msgstr ""
 
 #: ../admin/jigoshop-admin-post-types.php:780
 #: ../admin/write-panels/product-data.php:301
-#: ../classes/jigoshop_options.class.php:597
-#: ../classes/jigoshop_options.class.php:669
-#: ../classes/jigoshop_options.class.php:682
-#: ../classes/jigoshop_options.class.php:695
-#: ../classes/jigoshop_options.class.php:743
-#: ../classes/jigoshop_options.class.php:771
-#: ../classes/jigoshop_options.class.php:784
-#: ../classes/jigoshop_options.class.php:797
-#: ../classes/jigoshop_options.class.php:810
-#: ../classes/jigoshop_options.class.php:823
+#: ../classes/jigoshop_options.class.php:599
+#: ../classes/jigoshop_options.class.php:671
+#: ../classes/jigoshop_options.class.php:684
+#: ../classes/jigoshop_options.class.php:697
+#: ../classes/jigoshop_options.class.php:745
+#: ../classes/jigoshop_options.class.php:773
+#: ../classes/jigoshop_options.class.php:786
+#: ../classes/jigoshop_options.class.php:799
+#: ../classes/jigoshop_options.class.php:812
+#: ../classes/jigoshop_options.class.php:825
 #: ../classes/jigoshop_options.class.php:838
-#: ../classes/jigoshop_options.class.php:851
-#: ../classes/jigoshop_options.class.php:864
-#: ../classes/jigoshop_options.class.php:877
-#: ../classes/jigoshop_options.class.php:889
-#: ../classes/jigoshop_options.class.php:901
-#: ../classes/jigoshop_options.class.php:914
-#: ../classes/jigoshop_options.class.php:946
-#: ../classes/jigoshop_options.class.php:1220
-#: ../classes/jigoshop_options.class.php:1233
-#: ../classes/jigoshop_options.class.php:1246
-#: ../classes/jigoshop_options.class.php:1259
-#: ../classes/jigoshop_options.class.php:1354
-#: ../classes/jigoshop_options.class.php:1367
-#: ../classes/jigoshop_options.class.php:1393
-#: ../classes/jigoshop_options.class.php:1433
+#: ../classes/jigoshop_options.class.php:853
+#: ../classes/jigoshop_options.class.php:866
+#: ../classes/jigoshop_options.class.php:879
+#: ../classes/jigoshop_options.class.php:892
+#: ../classes/jigoshop_options.class.php:904
+#: ../classes/jigoshop_options.class.php:916
+#: ../classes/jigoshop_options.class.php:929
+#: ../classes/jigoshop_options.class.php:961
+#: ../classes/jigoshop_options.class.php:1235
+#: ../classes/jigoshop_options.class.php:1248
+#: ../classes/jigoshop_options.class.php:1261
+#: ../classes/jigoshop_options.class.php:1274
+#: ../classes/jigoshop_options.class.php:1369
+#: ../classes/jigoshop_options.class.php:1382
+#: ../classes/jigoshop_options.class.php:1408
 #: ../classes/jigoshop_options.class.php:1448
-#: ../classes/jigoshop_options.class.php:1461
-#: ../classes/jigoshop_options.class.php:1473
-#: ../classes/jigoshop_options.class.php:1494
-#: ../classes/jigoshop_options.class.php:1516
-#: ../classes/jigoshop_options.class.php:1537
-#: ../classes/jigoshop_options.class.php:1550
-#: ../classes/jigoshop_options.class.php:1563
-#: ../classes/jigoshop_options.class.php:1602
-#: ../classes/jigoshop_options.class.php:1615
-#: ../classes/jigoshop_options.class.php:1628
-#: ../classes/jigoshop_options.class.php:1641 ../gateways/bank_transfer.php:75
+#: ../classes/jigoshop_options.class.php:1463
+#: ../classes/jigoshop_options.class.php:1476
+#: ../classes/jigoshop_options.class.php:1488
+#: ../classes/jigoshop_options.class.php:1509
+#: ../classes/jigoshop_options.class.php:1531
+#: ../classes/jigoshop_options.class.php:1552
+#: ../classes/jigoshop_options.class.php:1565
+#: ../classes/jigoshop_options.class.php:1578
+#: ../classes/jigoshop_options.class.php:1617
+#: ../classes/jigoshop_options.class.php:1630
+#: ../classes/jigoshop_options.class.php:1643
+#: ../classes/jigoshop_options.class.php:1656 ../gateways/bank_transfer.php:75
 #: ../gateways/cheque.php:69 ../gateways/cod.php:69
-#: ../gateways/futurepay.php:80 ../gateways/futurepay.php:120
+#: ../gateways/futurepay.php:91 ../gateways/futurepay.php:131
 #: ../gateways/paypal.php:81 ../gateways/paypal.php:121
 #: ../gateways/paypal.php:134 ../gateways/paypal.php:147
 #: ../shipping/flat_rate.php:68 ../shipping/free_shipping.php:72
@@ -2299,14 +2312,14 @@ msgstr ""
 msgid "Save %s Changes"
 msgstr ""
 
-#: ../admin/jigoshop-admin-settings-api.php:442
+#: ../admin/jigoshop-admin-settings-api.php:464
 #, php-format
 msgid ""
 "You entered \"%s\" as the value for \"%s\" and it was not a valid email "
 "address.  It was not saved and the original is still in use."
 msgstr ""
 
-#: ../admin/jigoshop-admin-settings-api.php:458
+#: ../admin/jigoshop-admin-settings-api.php:480
 #, php-format
 msgid ""
 "You entered \"%s\" as the value for \"%s\" in \"%s\" and it was not a valid "
@@ -2314,7 +2327,7 @@ msgid ""
 "numbers 0-9).  It was not saved and the original is still in use."
 msgstr ""
 
-#: ../admin/jigoshop-admin-settings-api.php:474
+#: ../admin/jigoshop-admin-settings-api.php:496
 #, php-format
 msgid ""
 "You entered \"%s\" as the value for \"%s\" in \"%s\" and it was not a valid "
@@ -2322,7 +2335,7 @@ msgid ""
 "saved and the original is still in use."
 msgstr ""
 
-#: ../admin/jigoshop-admin-settings-api.php:490
+#: ../admin/jigoshop-admin-settings-api.php:512
 #, php-format
 msgid ""
 "You entered \"%s\" as the value for \"%s\" in \"%s\" and it was not a valid "
@@ -2330,111 +2343,111 @@ msgid ""
 "use."
 msgstr ""
 
-#: ../admin/jigoshop-admin-settings-api.php:516
+#: ../admin/jigoshop-admin-settings-api.php:538
 #: ../admin/jigoshop-admin-settings-options.php:900
-#: ../classes/jigoshop_options.class.php:1653 ../gateways/gateway.class.php:30
+#: ../classes/jigoshop_options.class.php:1668 ../gateways/gateway.class.php:30
 msgid "Payment Gateways"
 msgstr ""
 
-#: ../admin/jigoshop-admin-settings-api.php:528
+#: ../admin/jigoshop-admin-settings-api.php:550
 #, php-format
 msgid "\"%s\" settings were updated successfully."
 msgstr ""
 
-#: ../admin/jigoshop-admin-settings-api.php:1199
-#: ../admin/jigoshop-admin-settings-api.php:1210
-#: ../admin/write-panels/order-data.php:228
+#: ../admin/jigoshop-admin-settings-api.php:1222
+#: ../admin/jigoshop-admin-settings-api.php:1233
+#: ../admin/write-panels/order-data.php:229
 #: ../admin/write-panels/product-data.php:538
 #: ../admin/write-panels/product-data.php:642
 #: ../admin/write-panels/product-types/variable.php:512
 msgid "Remove"
 msgstr ""
 
-#: ../admin/jigoshop-admin-settings-api.php:1201
-#: ../admin/jigoshop-admin-settings-api.php:1212
-#: ../admin/jigoshop-admin-settings-api.php:1246
-#: ../admin/jigoshop-admin-settings-api.php:1320
+#: ../admin/jigoshop-admin-settings-api.php:1224
+#: ../admin/jigoshop-admin-settings-api.php:1235
+#: ../admin/jigoshop-admin-settings-api.php:1269
+#: ../admin/jigoshop-admin-settings-api.php:1343
 #: ../admin/jigoshop-admin-settings.php:1353
 #: ../admin/jigoshop-admin-settings.php:1354
 #: ../admin/jigoshop-admin-settings.php:1417
 msgid "Online Label"
 msgstr ""
 
-#: ../admin/jigoshop-admin-settings-api.php:1202
-#: ../admin/jigoshop-admin-settings-api.php:1213
+#: ../admin/jigoshop-admin-settings-api.php:1225
+#: ../admin/jigoshop-admin-settings-api.php:1236
 msgid "Country/State"
 msgstr ""
 
-#: ../admin/jigoshop-admin-settings-api.php:1203
-#: ../admin/jigoshop-admin-settings-api.php:1214
-#: ../admin/jigoshop-admin-settings-api.php:1262
-#: ../admin/jigoshop-admin-settings-api.php:1323
+#: ../admin/jigoshop-admin-settings-api.php:1226
+#: ../admin/jigoshop-admin-settings-api.php:1237
+#: ../admin/jigoshop-admin-settings-api.php:1285
+#: ../admin/jigoshop-admin-settings-api.php:1346
 msgid "Rate (%)"
 msgstr ""
 
-#: ../admin/jigoshop-admin-settings-api.php:1204
-#: ../admin/jigoshop-admin-settings-api.php:1215
+#: ../admin/jigoshop-admin-settings-api.php:1227
+#: ../admin/jigoshop-admin-settings-api.php:1238
 #: ../admin/jigoshop-admin-settings.php:1385
 #: ../admin/jigoshop-admin-settings.php:1421
 msgid "Apply to shipping"
 msgstr ""
 
-#: ../admin/jigoshop-admin-settings-api.php:1205
-#: ../admin/jigoshop-admin-settings-api.php:1216
+#: ../admin/jigoshop-admin-settings-api.php:1228
+#: ../admin/jigoshop-admin-settings-api.php:1239
 #: ../admin/jigoshop-admin-settings.php:1392
 #: ../admin/jigoshop-admin-settings.php:1422
 msgid "Compound"
 msgstr ""
 
-#: ../admin/jigoshop-admin-settings-api.php:1234
-#: ../admin/jigoshop-admin-settings-api.php:1317
+#: ../admin/jigoshop-admin-settings-api.php:1257
+#: ../admin/jigoshop-admin-settings-api.php:1340
 #: ../admin/jigoshop-admin-settings.php:1336
 #: ../admin/jigoshop-admin-settings.php:1411
 msgid "Standard Rate"
 msgstr ""
 
-#: ../admin/jigoshop-admin-settings-api.php:1261
+#: ../admin/jigoshop-admin-settings-api.php:1284
 #: ../admin/jigoshop-admin-settings-options.php:431
 #: ../admin/write-panels/product-data.php:219
-#: ../classes/jigoshop_options.class.php:1046 ../shipping/flat_rate.php:103
+#: ../classes/jigoshop_options.class.php:1061 ../shipping/flat_rate.php:103
 msgid "None"
 msgstr ""
 
-#: ../admin/jigoshop-admin-settings-api.php:1261
+#: ../admin/jigoshop-admin-settings-api.php:1284
 msgid "US States"
 msgstr ""
 
-#: ../admin/jigoshop-admin-settings-api.php:1261
+#: ../admin/jigoshop-admin-settings-api.php:1284
 msgid "EU States"
 msgstr ""
 
-#: ../admin/jigoshop-admin-settings-api.php:1285
+#: ../admin/jigoshop-admin-settings-api.php:1308
 #: ../admin/jigoshop-admin-settings.php:1399
 msgid "+ Add Tax Rule"
 msgstr ""
 
-#: ../admin/jigoshop-admin-settings-api.php:1298
+#: ../admin/jigoshop-admin-settings-api.php:1321
 #: ../languages/countries.php:248
 msgid "United States"
 msgstr ""
 
-#: ../admin/jigoshop-admin-settings-api.php:1304
+#: ../admin/jigoshop-admin-settings-api.php:1327
 msgid "countries/states selected"
 msgstr ""
 
-#: ../admin/jigoshop-admin-settings-api.php:1332
+#: ../admin/jigoshop-admin-settings-api.php:1355
 #: ../admin/jigoshop-admin-settings.php:1427
 msgid "Delete this rule?"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:42
 #: ../admin/write-panels/product-data.php:81
-#: ../classes/jigoshop_options.class.php:721
+#: ../classes/jigoshop_options.class.php:723
 msgid "General"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:44
-#: ../classes/jigoshop_options.class.php:723
+#: ../classes/jigoshop_options.class.php:725
 msgid "General Options"
 msgstr ""
 
@@ -2449,36 +2462,36 @@ msgid ""
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:57
-#: ../classes/jigoshop_options.class.php:541
+#: ../classes/jigoshop_options.class.php:543
 msgid "Base Country/Region"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:59
-#: ../classes/jigoshop_options.class.php:543
+#: ../classes/jigoshop_options.class.php:545
 msgid ""
 "This is the base country for your business. Tax rates will be based on this "
 "country."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:67
-#: ../classes/jigoshop_options.class.php:567
+#: ../classes/jigoshop_options.class.php:569
 msgid "Allowed Countries"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:69
-#: ../classes/jigoshop_options.class.php:569
+#: ../classes/jigoshop_options.class.php:571
 msgid "These are countries that you are willing to ship to."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:75
-#: ../classes/jigoshop_options.class.php:574
+#: ../classes/jigoshop_options.class.php:576
 msgid "All Countries"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:76
 #: ../admin/jigoshop-admin-settings-options.php:81
-#: ../classes/jigoshop_options.class.php:575
-#: ../classes/jigoshop_options.class.php:580 ../shipping/flat_rate.php:134
+#: ../classes/jigoshop_options.class.php:577
+#: ../classes/jigoshop_options.class.php:582 ../shipping/flat_rate.php:134
 #: ../shipping/flat_rate.php:139 ../shipping/free_shipping.php:103
 #: ../shipping/free_shipping.php:108 ../shipping/local_pickup.php:93
 #: ../shipping/local_pickup.php:98
@@ -2486,29 +2499,29 @@ msgid "Specific Countries"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:91
-#: ../classes/jigoshop_options.class.php:748
+#: ../classes/jigoshop_options.class.php:750
 msgid "After adding product to cart"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:93
-#: ../classes/jigoshop_options.class.php:750
+#: ../classes/jigoshop_options.class.php:752
 msgid ""
 "Define what should happen when a user clicks on &#34;Add to Cart&#34; on any "
 "product or page."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:99
-#: ../classes/jigoshop_options.class.php:756
+#: ../classes/jigoshop_options.class.php:758
 msgid "Stay on the same page"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:100
-#: ../classes/jigoshop_options.class.php:757
+#: ../classes/jigoshop_options.class.php:759
 msgid "Redirect to Checkout"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:101
-#: ../classes/jigoshop_options.class.php:758
+#: ../classes/jigoshop_options.class.php:760
 msgid "Redirect to Cart"
 msgstr ""
 
@@ -2517,12 +2530,12 @@ msgid "Downloads"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:107
-#: ../classes/jigoshop_options.class.php:776
+#: ../classes/jigoshop_options.class.php:791
 msgid "Enforce login for downloads"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:108
-#: ../classes/jigoshop_options.class.php:778
+#: ../classes/jigoshop_options.class.php:793
 msgid ""
 "If a guest purchases a download, the guest can still download a link without "
 "logging in. We recommend disabling guest purchases if you enable this option."
@@ -2537,19 +2550,19 @@ msgid "Demo store banner"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:119
-#: ../classes/jigoshop_options.class.php:591
+#: ../classes/jigoshop_options.class.php:593
 msgid ""
 "Enable this option to show a banner at the top of every page stating this "
 "shop is currently in testing mode."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:126
-#: ../classes/jigoshop_options.class.php:789
+#: ../classes/jigoshop_options.class.php:804
 msgid "Disable Jigoshop frontend.css"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:127
-#: ../classes/jigoshop_options.class.php:791
+#: ../classes/jigoshop_options.class.php:806
 msgid ""
 "Useful if you want to disable Jigoshop styles and theme it yourself via your "
 "theme."
@@ -2567,12 +2580,12 @@ msgid ""
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:144
-#: ../classes/jigoshop_options.class.php:827
+#: ../classes/jigoshop_options.class.php:842
 msgid "Checkout page"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:145
-#: ../classes/jigoshop_options.class.php:869
+#: ../classes/jigoshop_options.class.php:884
 msgid "Allow guest purchases"
 msgstr ""
 
@@ -2583,17 +2596,17 @@ msgid ""
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:153
-#: ../classes/jigoshop_options.class.php:882
+#: ../classes/jigoshop_options.class.php:897
 msgid "Show login form"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:160
-#: ../classes/jigoshop_options.class.php:894
+#: ../classes/jigoshop_options.class.php:909
 msgid "Allow registration"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:167
-#: ../classes/jigoshop_options.class.php:906
+#: ../classes/jigoshop_options.class.php:921
 msgid "Force SSL on checkout"
 msgstr ""
 
@@ -2627,53 +2640,53 @@ msgid "Manually check if a beta update is available."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:191
-#: ../classes/jigoshop_options.class.php:601
+#: ../classes/jigoshop_options.class.php:603
 msgid "Invoicing"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:194
-#: ../classes/jigoshop_options.class.php:604
+#: ../classes/jigoshop_options.class.php:606
 msgid "Company Name"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:196
-#: ../classes/jigoshop_options.class.php:606
+#: ../classes/jigoshop_options.class.php:608
 msgid ""
 "Setting your company name will enable us to print it out on your invoice "
 "emails. Leave blank to disable."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:204
-#: ../classes/jigoshop_options.class.php:613
+#: ../classes/jigoshop_options.class.php:615
 msgid "Tax Registration Number"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:206
-#: ../classes/jigoshop_options.class.php:615
+#: ../classes/jigoshop_options.class.php:617
 msgid ""
 "Setting your tax number will enable us to print it out on your invoice "
 "emails. Leave blank to disable."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:214
-#: ../classes/jigoshop_options.class.php:622
+#: ../classes/jigoshop_options.class.php:624
 msgid "Address Line1"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:216
-#: ../classes/jigoshop_options.class.php:624
+#: ../classes/jigoshop_options.class.php:626
 msgid ""
 "Setting your address will enable us to print it out on your invoice emails. "
 "Leave blank to disable."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:224
-#: ../classes/jigoshop_options.class.php:631
+#: ../classes/jigoshop_options.class.php:633
 msgid "Address Line2"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:226
-#: ../classes/jigoshop_options.class.php:633
+#: ../classes/jigoshop_options.class.php:635
 msgid ""
 "If address line1 is not set, address line2 will not display even if you put "
 "a value in it. Setting your address will enable us to print it out on your "
@@ -2681,60 +2694,60 @@ msgid ""
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:234
-#: ../classes/jigoshop_options.class.php:640
+#: ../classes/jigoshop_options.class.php:642
 msgid "Company Phone"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:236
-#: ../classes/jigoshop_options.class.php:642
+#: ../classes/jigoshop_options.class.php:644
 msgid ""
 "Setting your company phone number will enable us to print it out on your "
 "invoice emails. Leave blank to disable."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:244
-#: ../classes/jigoshop_options.class.php:650
+#: ../classes/jigoshop_options.class.php:652
 msgid "Company Email"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:246
-#: ../classes/jigoshop_options.class.php:652
+#: ../classes/jigoshop_options.class.php:654
 msgid ""
 "Setting your company email will enable us to print it out on your invoice "
 "emails. Leave blank to disable."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:253
-#: ../classes/jigoshop_options.class.php:918
+#: ../classes/jigoshop_options.class.php:933
 msgid "Integration"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:256
-#: ../classes/jigoshop_options.class.php:921
+#: ../classes/jigoshop_options.class.php:936
 msgid "ShareThis Publisher ID"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:257
-#: ../classes/jigoshop_options.class.php:922
+#: ../classes/jigoshop_options.class.php:937
 msgid ""
 "Enter your <a href='http://sharethis.com/account/'>ShareThis publisher ID</"
 "a> to show ShareThis on product pages."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:258
-#: ../classes/jigoshop_options.class.php:923
+#: ../classes/jigoshop_options.class.php:938
 msgid ""
 "ShareThis is a small social sharing widget for posting links on popular "
 "sites such as Twitter and Facebook."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:266
-#: ../classes/jigoshop_options.class.php:930
+#: ../classes/jigoshop_options.class.php:945
 msgid "Google Analytics ID"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:267
-#: ../classes/jigoshop_options.class.php:931
+#: ../classes/jigoshop_options.class.php:946
 msgid ""
 "Log into your Google Analytics account to find your ID. e.g. <code>UA-"
 "XXXXXXX-X</code>"
@@ -2745,7 +2758,7 @@ msgid "Enable Google eCommerce"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:275
-#: ../classes/jigoshop_options.class.php:939
+#: ../classes/jigoshop_options.class.php:954
 msgid "Add Google Analytics eCommerce tracking code upon successful orders"
 msgstr ""
 
@@ -2757,12 +2770,12 @@ msgid ""
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:283
-#: ../classes/jigoshop_options.class.php:954
+#: ../classes/jigoshop_options.class.php:969
 msgid "Pages"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:285
-#: ../classes/jigoshop_options.class.php:658
+#: ../classes/jigoshop_options.class.php:660
 msgid "Permalinks"
 msgstr ""
 
@@ -2775,7 +2788,7 @@ msgid "Prepend shop categories / tags with base page"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:290
-#: ../classes/jigoshop_options.class.php:663
+#: ../classes/jigoshop_options.class.php:665
 msgid ""
 "This will only apply to tags &amp; categories.<br/>Enabled: http://yoursite."
 "com / product_category / YourCategory<br/>Disabled: http://yoursite.com / "
@@ -2783,12 +2796,12 @@ msgid ""
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:297
-#: ../classes/jigoshop_options.class.php:674
+#: ../classes/jigoshop_options.class.php:676
 msgid "Prepend product permalinks with shop base page"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:304
-#: ../classes/jigoshop_options.class.php:687
+#: ../classes/jigoshop_options.class.php:689
 msgid "Prepend product permalinks with product category"
 msgstr ""
 
@@ -2797,19 +2810,19 @@ msgid "Slug variables"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:313
-#: ../classes/jigoshop_options.class.php:702
+#: ../classes/jigoshop_options.class.php:704
 msgid ""
 "Slug displayed in product category URLs. Leave blank to use default "
 "\"product-category\""
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:322
-#: ../classes/jigoshop_options.class.php:709
+#: ../classes/jigoshop_options.class.php:711
 msgid "Product tag slug"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:323
-#: ../classes/jigoshop_options.class.php:711
+#: ../classes/jigoshop_options.class.php:713
 msgid ""
 "Slug displayed in product tag URLs. Leave blank to use default \"product-tag"
 "\""
@@ -2820,134 +2833,134 @@ msgid "Shop page configuration"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:334
-#: ../classes/jigoshop_options.class.php:959
+#: ../classes/jigoshop_options.class.php:974
 msgid "Cart Page"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:335
-#: ../classes/jigoshop_options.class.php:960
+#: ../classes/jigoshop_options.class.php:975
 msgid "Shortcode to place on page: <code>[jigoshop_cart]</code>"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:344
-#: ../classes/jigoshop_options.class.php:968
+#: ../classes/jigoshop_options.class.php:983
 msgid "Checkout Page"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:345
-#: ../classes/jigoshop_options.class.php:969
+#: ../classes/jigoshop_options.class.php:984
 msgid "Shortcode to place on page: <code>[jigoshop_checkout]</code>"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:354
-#: ../classes/jigoshop_options.class.php:977
+#: ../classes/jigoshop_options.class.php:992
 msgid "Pay Page"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:355
-#: ../classes/jigoshop_options.class.php:978
+#: ../classes/jigoshop_options.class.php:993
 msgid ""
 "Shortcode to place on page: <code>[jigoshop_pay]</code><br/>Default parent "
 "page: Checkout"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:364
-#: ../classes/jigoshop_options.class.php:986
+#: ../classes/jigoshop_options.class.php:1001
 msgid "Thanks Page"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:365
-#: ../classes/jigoshop_options.class.php:987
+#: ../classes/jigoshop_options.class.php:1002
 msgid ""
 "Shortcode to place on page: <code>[jigoshop_thankyou]</code><br/>Default "
 "parent page: Checkout"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:374
-#: ../classes/jigoshop_options.class.php:995
+#: ../classes/jigoshop_options.class.php:1010
 msgid "My Account Page"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:375
-#: ../classes/jigoshop_options.class.php:996
+#: ../classes/jigoshop_options.class.php:1011
 msgid "Shortcode to place on page: <code>[jigoshop_my_account]</code>"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:384
-#: ../classes/jigoshop_options.class.php:1004
+#: ../classes/jigoshop_options.class.php:1019
 msgid "Edit Address Page"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:385
-#: ../classes/jigoshop_options.class.php:1005
+#: ../classes/jigoshop_options.class.php:1020
 msgid ""
 "Shortcode to place on page: <code>[jigoshop_edit_address]</code><br/>Default "
 "parent page: My Account"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:394
-#: ../classes/jigoshop_options.class.php:1013
+#: ../classes/jigoshop_options.class.php:1028
 msgid "View Order Page"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:395
-#: ../classes/jigoshop_options.class.php:1014
+#: ../classes/jigoshop_options.class.php:1029
 msgid ""
 "Shortcode to place on page: <code>[jigoshop_view_order]</code><br/>Default "
 "parent page: My Account"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:404
-#: ../classes/jigoshop_options.class.php:1022
+#: ../classes/jigoshop_options.class.php:1037
 msgid "Change Password Page"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:405
-#: ../classes/jigoshop_options.class.php:1023
+#: ../classes/jigoshop_options.class.php:1038
 msgid ""
 "Shortcode to place on page: <code>[jigoshop_change_password]</code><br/"
 ">Default parent page: My Account"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:414
-#: ../classes/jigoshop_options.class.php:1031
+#: ../classes/jigoshop_options.class.php:1046
 msgid "Track Order Page"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:415
-#: ../classes/jigoshop_options.class.php:1032
+#: ../classes/jigoshop_options.class.php:1047
 msgid "Shortcode to place on page: <code>[jigoshop_order_tracking]</code>"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:424
-#: ../classes/jigoshop_options.class.php:1040
+#: ../classes/jigoshop_options.class.php:1055
 msgid "Terms Page"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:425
-#: ../classes/jigoshop_options.class.php:1041
+#: ../classes/jigoshop_options.class.php:1056
 msgid ""
 "If you define a &#34;Terms&#34; page the customer will be asked to accept it "
 "before allowing them to place their order."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:436
-#: ../classes/jigoshop_options.class.php:1053
+#: ../classes/jigoshop_options.class.php:1068
 msgid "Catalog &amp; Pricing"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:438
-#: ../classes/jigoshop_options.class.php:1055
+#: ../classes/jigoshop_options.class.php:1070
 msgid "Catalog Options"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:442
-#: ../classes/jigoshop_options.class.php:1058
+#: ../classes/jigoshop_options.class.php:1073
 msgid "Catalog base page"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:444
-#: ../classes/jigoshop_options.class.php:1060
+#: ../classes/jigoshop_options.class.php:1075
 msgid ""
 "This sets the base page of your shop. You should not change this value once "
 "you have launched your site otherwise you risk breaking urls of other sites "
@@ -2955,61 +2968,61 @@ msgid ""
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:451
-#: ../classes/jigoshop_options.class.php:1067
+#: ../classes/jigoshop_options.class.php:1082
 msgid "Shop redirection page"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:453
-#: ../classes/jigoshop_options.class.php:1069
+#: ../classes/jigoshop_options.class.php:1084
 msgid ""
 "This will point users to the page you set for buttons like `Return to shop` "
 "or `Continue Shopping`."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:461
-#: ../classes/jigoshop_options.class.php:1090
+#: ../classes/jigoshop_options.class.php:1105
 msgid "Sort products in catalog by"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:463
-#: ../classes/jigoshop_options.class.php:1092
+#: ../classes/jigoshop_options.class.php:1107
 msgid ""
 "Determines the display sort order of products for the Shop, Categories, and "
 "Tag pages."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:468
-#: ../classes/jigoshop_options.class.php:1097
+#: ../classes/jigoshop_options.class.php:1112
 msgid "Creation Date"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:469
-#: ../classes/jigoshop_options.class.php:1098
+#: ../classes/jigoshop_options.class.php:1113
 msgid "Product Title"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:470
-#: ../classes/jigoshop_options.class.php:1099
+#: ../classes/jigoshop_options.class.php:1114
 msgid "Product Post Order"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:475
-#: ../classes/jigoshop_options.class.php:1104
+#: ../classes/jigoshop_options.class.php:1119
 msgid "Catalog sort direction"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:477
-#: ../classes/jigoshop_options.class.php:1106
+#: ../classes/jigoshop_options.class.php:1121
 msgid "Determines whether the catalog sort orderby is ascending or descending."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:482
-#: ../classes/jigoshop_options.class.php:1111
+#: ../classes/jigoshop_options.class.php:1126
 msgid "Ascending"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:483
-#: ../classes/jigoshop_options.class.php:1112
+#: ../classes/jigoshop_options.class.php:1127
 msgid "Descending"
 msgstr ""
 
@@ -3038,12 +3051,12 @@ msgid ""
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:510
-#: ../classes/jigoshop_options.class.php:1144
+#: ../classes/jigoshop_options.class.php:1159
 msgid "Pricing Options"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:513
-#: ../classes/jigoshop_options.class.php:557
+#: ../classes/jigoshop_options.class.php:559
 msgid "Currency"
 msgstr ""
 
@@ -3188,12 +3201,12 @@ msgid "South African rand (R)"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:559
-#: ../classes/jigoshop_options.class.php:1152
+#: ../classes/jigoshop_options.class.php:1167
 msgid "Currency display"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:560
-#: ../classes/jigoshop_options.class.php:1153
+#: ../classes/jigoshop_options.class.php:1168
 msgid "This controls the display of the currency symbol and currency code."
 msgstr ""
 
@@ -3205,14 +3218,14 @@ msgstr ""
 #: ../admin/jigoshop-admin-settings-options.php:574
 #: ../admin/jigoshop-admin-settings-options.php:575
 #: ../admin/jigoshop-admin-settings-options.php:577
-#: ../classes/jigoshop_options.class.php:1159
-#: ../classes/jigoshop_options.class.php:1161
-#: ../classes/jigoshop_options.class.php:1162
-#: ../classes/jigoshop_options.class.php:1163
-#: ../classes/jigoshop_options.class.php:1165
-#: ../classes/jigoshop_options.class.php:1166
-#: ../classes/jigoshop_options.class.php:1167
-#: ../classes/jigoshop_options.class.php:1169
+#: ../classes/jigoshop_options.class.php:1174
+#: ../classes/jigoshop_options.class.php:1176
+#: ../classes/jigoshop_options.class.php:1177
+#: ../classes/jigoshop_options.class.php:1178
+#: ../classes/jigoshop_options.class.php:1180
+#: ../classes/jigoshop_options.class.php:1181
+#: ../classes/jigoshop_options.class.php:1182
+#: ../classes/jigoshop_options.class.php:1184
 msgid "0"
 msgstr ""
 
@@ -3220,10 +3233,10 @@ msgstr ""
 #: ../admin/jigoshop-admin-settings-options.php:572
 #: ../admin/jigoshop-admin-settings-options.php:576
 #: ../admin/jigoshop-admin-settings-options.php:578
-#: ../classes/jigoshop_options.class.php:1160
-#: ../classes/jigoshop_options.class.php:1164
-#: ../classes/jigoshop_options.class.php:1168
-#: ../classes/jigoshop_options.class.php:1170
+#: ../classes/jigoshop_options.class.php:1175
+#: ../classes/jigoshop_options.class.php:1179
+#: ../classes/jigoshop_options.class.php:1183
+#: ../classes/jigoshop_options.class.php:1185
 msgid " 0"
 msgstr ""
 
@@ -3232,27 +3245,27 @@ msgid "Price Separators"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:584
-#: ../classes/jigoshop_options.class.php:1175
+#: ../classes/jigoshop_options.class.php:1190
 msgid "Thousand separator"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:593
-#: ../classes/jigoshop_options.class.php:1184
+#: ../classes/jigoshop_options.class.php:1199
 msgid "Decimal separator"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:602
-#: ../classes/jigoshop_options.class.php:1193
+#: ../classes/jigoshop_options.class.php:1208
 msgid "Number of decimals"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:613
-#: ../classes/jigoshop_options.class.php:1205
+#: ../classes/jigoshop_options.class.php:1220
 msgid "Images"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:615
-#: ../classes/jigoshop_options.class.php:1207
+#: ../classes/jigoshop_options.class.php:1222
 msgid "Image Options"
 msgstr ""
 
@@ -3323,7 +3336,7 @@ msgid "Products &amp; Inventory"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:674
-#: ../classes/jigoshop_options.class.php:1343
+#: ../classes/jigoshop_options.class.php:1358
 msgid "Product Options"
 msgstr ""
 
@@ -3336,7 +3349,7 @@ msgid "Enable SKU"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:679
-#: ../classes/jigoshop_options.class.php:1348
+#: ../classes/jigoshop_options.class.php:1363
 msgid "Turning off the SKU field will give products an SKU of their post id."
 msgstr ""
 
@@ -3345,62 +3358,62 @@ msgid "Enable weight"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:694
-#: ../classes/jigoshop_options.class.php:1385
+#: ../classes/jigoshop_options.class.php:1400
 msgid "Enable product dimensions"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:702
-#: ../classes/jigoshop_options.class.php:1372
+#: ../classes/jigoshop_options.class.php:1387
 msgid "Weight Unit"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:703
-#: ../classes/jigoshop_options.class.php:1374
+#: ../classes/jigoshop_options.class.php:1389
 msgid "This controls what unit you will define weights in."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:708
-#: ../classes/jigoshop_options.class.php:1379
+#: ../classes/jigoshop_options.class.php:1394
 msgid "Kilograms"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:709
-#: ../classes/jigoshop_options.class.php:1380
+#: ../classes/jigoshop_options.class.php:1395
 msgid "Pounds"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:714
-#: ../classes/jigoshop_options.class.php:1398
+#: ../classes/jigoshop_options.class.php:1413
 msgid "Dimensions Unit"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:715
-#: ../classes/jigoshop_options.class.php:1400
+#: ../classes/jigoshop_options.class.php:1415
 msgid "This controls what unit you will define dimensions in."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:720
-#: ../classes/jigoshop_options.class.php:1405
+#: ../classes/jigoshop_options.class.php:1420
 msgid "centimeters"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:721
-#: ../classes/jigoshop_options.class.php:1406
+#: ../classes/jigoshop_options.class.php:1421
 msgid "inches"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:726
-#: ../classes/jigoshop_options.class.php:1425
+#: ../classes/jigoshop_options.class.php:1440
 msgid "Show related products"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:728
-#: ../classes/jigoshop_options.class.php:1427
+#: ../classes/jigoshop_options.class.php:1442
 msgid "To show or hide the related products section on a single product page."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:734
-#: ../classes/jigoshop_options.class.php:1437
+#: ../classes/jigoshop_options.class.php:1452
 msgid "Inventory Options"
 msgstr ""
 
@@ -3420,19 +3433,19 @@ msgid ""
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:746
-#: ../classes/jigoshop_options.class.php:1453
+#: ../classes/jigoshop_options.class.php:1468
 msgid "Show stock amounts"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:747
-#: ../classes/jigoshop_options.class.php:1455
+#: ../classes/jigoshop_options.class.php:1470
 msgid ""
 "Set to yes to allow customers to view the amount of stock available for a "
 "product."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:754
-#: ../classes/jigoshop_options.class.php:1508
+#: ../classes/jigoshop_options.class.php:1523
 msgid "Hide out of stock products"
 msgstr ""
 
@@ -3441,36 +3454,36 @@ msgid "Notifications"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:763
-#: ../classes/jigoshop_options.class.php:1466
+#: ../classes/jigoshop_options.class.php:1481
 msgid "Notify on low stock"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:770
-#: ../classes/jigoshop_options.class.php:1478
+#: ../classes/jigoshop_options.class.php:1493
 msgid "Low stock threshold"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:771
 #: ../admin/jigoshop-admin-settings-options.php:790
-#: ../classes/jigoshop_options.class.php:1480
-#: ../classes/jigoshop_options.class.php:1501
+#: ../classes/jigoshop_options.class.php:1495
+#: ../classes/jigoshop_options.class.php:1516
 msgid ""
 "You will receive a notification as soon this threshold is hit (if "
 "notifications are turned on)."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:781
-#: ../classes/jigoshop_options.class.php:1487
+#: ../classes/jigoshop_options.class.php:1502
 msgid "Notify on out of stock"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:789
-#: ../classes/jigoshop_options.class.php:1499
+#: ../classes/jigoshop_options.class.php:1514
 msgid "Out of stock threshold"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:805
-#: ../classes/jigoshop_options.class.php:1591
+#: ../classes/jigoshop_options.class.php:1606
 msgid "Shipping Options"
 msgstr ""
 
@@ -3490,17 +3503,17 @@ msgid ""
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:817
-#: ../classes/jigoshop_options.class.php:1607
+#: ../classes/jigoshop_options.class.php:1622
 msgid "Enable shipping calculator on cart"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:825
-#: ../classes/jigoshop_options.class.php:1620
+#: ../classes/jigoshop_options.class.php:1635
 msgid "Only ship to billing address?"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:836
-#: ../classes/jigoshop_options.class.php:1524
+#: ../classes/jigoshop_options.class.php:1539
 #: ../classes/jigoshop_tax.class.php:125 ../classes/jigoshop_tax.class.php:351
 #: ../classes/jigoshop_tax.class.php:365 ../classes/jigoshop_tax.class.php:508
 #: ../classes/jigoshop_tax.class.php:526 ../classes/jigoshop_tax.class.php:546
@@ -3510,7 +3523,7 @@ msgid "Tax"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:838
-#: ../classes/jigoshop_options.class.php:1526
+#: ../classes/jigoshop_options.class.php:1541
 msgid "Tax Options"
 msgstr ""
 
@@ -3529,19 +3542,19 @@ msgid ""
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:850
-#: ../classes/jigoshop_options.class.php:1542
+#: ../classes/jigoshop_options.class.php:1557
 msgid "Apply Taxes After Coupon"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:851
-#: ../classes/jigoshop_options.class.php:1544
+#: ../classes/jigoshop_options.class.php:1559
 msgid ""
 "If yes, taxes get applied after coupons. When no, taxes get applied before "
 "coupons."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:858
-#: ../classes/jigoshop_options.class.php:1555
+#: ../classes/jigoshop_options.class.php:1570
 msgid "Catalog Prices include tax?"
 msgstr ""
 
@@ -3567,35 +3580,35 @@ msgid "price excluding tax"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:879
-#: ../classes/jigoshop_options.class.php:1568
+#: ../classes/jigoshop_options.class.php:1583
 msgid "Additional Tax classes"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:880
-#: ../classes/jigoshop_options.class.php:1569
+#: ../classes/jigoshop_options.class.php:1584
 msgid ""
 "List 1 per line. This is in addition to the default <em>Standard Rate</em>."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:881
-#: ../classes/jigoshop_options.class.php:1570
+#: ../classes/jigoshop_options.class.php:1585
 msgid ""
 "List product and shipping tax classes here, e.g. Zero Tax, Reduced Rate."
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:885
-#: ../classes/jigoshop_options.class.php:1573
+#: ../classes/jigoshop_options.class.php:1588
 #, php-format
 msgid "Reduced Rate%sZero Rate"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:889
-#: ../classes/jigoshop_options.class.php:1577
+#: ../classes/jigoshop_options.class.php:1592
 msgid "Tax rates"
 msgstr ""
 
 #: ../admin/jigoshop-admin-settings-options.php:891
-#: ../classes/jigoshop_options.class.php:1579
+#: ../classes/jigoshop_options.class.php:1594
 msgid "To avoid rounding errors, insert tax rates with 4 decimal places."
 msgstr ""
 
@@ -3883,7 +3896,7 @@ msgstr ""
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: ../admin/jigoshop-install.php:122 ../classes/jigoshop_options.class.php:536
+#: ../admin/jigoshop-install.php:122 ../classes/jigoshop_options.class.php:538
 msgid "Shop"
 msgstr ""
 
@@ -3955,58 +3968,62 @@ msgstr ""
 msgid "Order Totals"
 msgstr ""
 
-#: ../admin/jigoshop-write-panels.php:43
+#: ../admin/jigoshop-write-panels.php:42
+msgid "Order Variation Attributes / Addons"
+msgstr ""
+
+#: ../admin/jigoshop-write-panels.php:44
 msgid "Order Actions"
 msgstr ""
 
-#: ../admin/jigoshop-write-panels.php:48
+#: ../admin/jigoshop-write-panels.php:49
 msgid "Coupon Data"
 msgstr ""
 
-#: ../admin/jigoshop-write-panels.php:127
+#: ../admin/jigoshop-write-panels.php:128
 msgid ""
 "Coupon Title (converted to lower case for Code, multiple words will end up "
 "hyphenated)"
 msgstr ""
 
-#: ../admin/jigoshop-write-panels.php:178
+#: ../admin/jigoshop-write-panels.php:179
 msgid ""
 "Remove this item? If you have previously reduced this item's stock, or this "
 "order was submitted by a customer, will need to manually restore the item's "
 "stock."
 msgstr ""
 
-#: ../admin/jigoshop-write-panels.php:179
+#: ../admin/jigoshop-write-panels.php:180
 msgid "Calc totals based on order items and taxes?"
 msgstr ""
 
-#: ../admin/jigoshop-write-panels.php:180
+#: ../admin/jigoshop-write-panels.php:181
 msgid ""
 "Copy billing information to shipping information? This will remove any "
 "currently entered shipping information."
 msgstr ""
 
-#: ../admin/jigoshop-write-panels.php:183
+#: ../admin/jigoshop-write-panels.php:184
 msgid "Item Name"
 msgstr ""
 
-#: ../admin/jigoshop-write-panels.php:185
+#: ../admin/jigoshop-write-panels.php:186
 msgid "Cost per unit e.g. 2.99"
 msgstr ""
 
-#: ../admin/jigoshop-write-panels.php:187
+#: ../admin/jigoshop-write-panels.php:188
 msgid "Meta Name"
 msgstr ""
 
-#: ../admin/jigoshop-write-panels.php:188
+#: ../admin/jigoshop-write-panels.php:189
 msgid "Meta Value"
 msgstr ""
 
-#: ../admin/jigoshop-write-panels.php:189
+#: ../admin/jigoshop-write-panels.php:190
 msgid "Custom Attribute"
 msgstr ""
 
-#: ../admin/jigoshop-write-panels.php:192
+#: ../admin/jigoshop-write-panels.php:193
 msgid "Remove this attribute?"
 msgstr ""
 
@@ -4137,36 +4154,36 @@ msgstr ""
 msgid "Any method"
 msgstr ""
 
-#: ../admin/write-panels/order-data-save.php:192
+#: ../admin/write-panels/order-data-save.php:198
 msgid "Manually reducing stock."
 msgstr ""
 
-#: ../admin/write-panels/order-data-save.php:206
+#: ../admin/write-panels/order-data-save.php:212
 #: ../classes/jigoshop_order.class.php:598
 #, php-format
 msgid "Item #%s stock reduced from %s to %s."
 msgstr ""
 
-#: ../admin/write-panels/order-data-save.php:223
-#: ../admin/write-panels/order-data-save.php:248
+#: ../admin/write-panels/order-data-save.php:229
+#: ../admin/write-panels/order-data-save.php:254
 #, php-format
 msgid "Item %s %s not found, skipping."
 msgstr ""
 
-#: ../admin/write-panels/order-data-save.php:227
+#: ../admin/write-panels/order-data-save.php:233
 msgid "Manual stock reduction complete."
 msgstr ""
 
-#: ../admin/write-panels/order-data-save.php:230
+#: ../admin/write-panels/order-data-save.php:236
 msgid "Manually restoring stock."
 msgstr ""
 
-#: ../admin/write-panels/order-data-save.php:244
+#: ../admin/write-panels/order-data-save.php:250
 #, php-format
 msgid "Item #%s stock increased from %s to %s."
 msgstr ""
 
-#: ../admin/write-panels/order-data-save.php:252
+#: ../admin/write-panels/order-data-save.php:258
 msgid "Manual stock restore complete."
 msgstr ""
 
@@ -4260,7 +4277,7 @@ msgstr ""
 
 #: ../admin/write-panels/order-data.php:131
 #: ../admin/write-panels/order-data.php:178
-#: ../classes/jigoshop_checkout.class.php:440
+#: ../classes/jigoshop_checkout.class.php:446
 #: ../classes/jigoshop_customer.class.php:462 ../shortcodes/my_account.php:268
 msgid "State/County"
 msgstr ""
@@ -4284,111 +4301,115 @@ msgstr ""
 msgid "Copy billing address to shipping address"
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:219
+#: ../admin/write-panels/order-data.php:220
 msgid "Variation ID"
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:223
+#: ../admin/write-panels/order-data.php:224
 msgid "Order Item Meta"
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:225 ../shortcodes/cart.php:102
+#: ../admin/write-panels/order-data.php:226 ../shortcodes/cart.php:102
 #: ../shortcodes/order_tracking.php:65
 msgid "Quantity"
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:226 ../shipping/flat_rate.php:108
+#: ../admin/write-panels/order-data.php:227 ../shipping/flat_rate.php:108
 msgid "Cost"
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:227
+#: ../admin/write-panels/order-data.php:228
 msgid "Tax Rate"
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:254
+#: ../admin/write-panels/order-data.php:256
 #: ../classes/jigoshop_order.class.php:361
 #: ../templates/checkout/review_order.php:105
 msgid " Personal: "
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:307
+#: ../admin/write-panels/order-data.php:299
 msgid "Choose a Product"
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:349
+#: ../admin/write-panels/order-data.php:341
 msgid "Add item"
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:352
+#: ../admin/write-panels/order-data.php:344
 msgid "Calculate totals"
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:370
+#: ../admin/write-panels/order-data.php:362
 msgid "Save Order"
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:370
+#: ../admin/write-panels/order-data.php:362
 msgid "- Save/update the order."
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:372
+#: ../admin/write-panels/order-data.php:364
 msgid "Reduce stock"
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:372
+#: ../admin/write-panels/order-data.php:364
 msgid ""
 "- Reduces stock for each item in the order; useful after manually creating "
 "an order or manually marking an order as complete/processing after payment."
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:373
+#: ../admin/write-panels/order-data.php:365
 msgid "Restore stock"
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:373
+#: ../admin/write-panels/order-data.php:365
 msgid ""
 "- Restores stock for each item in the order; useful after refunding or "
 "canceling the entire order."
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:375
+#: ../admin/write-panels/order-data.php:367
 msgid "Email invoice"
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:375
+#: ../admin/write-panels/order-data.php:367
 msgid "- Emails the customer order details and a payment link."
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:381
+#: ../admin/write-panels/order-data.php:373
 msgid "Delete Permanently"
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:383
+#: ../admin/write-panels/order-data.php:375
 msgid "Move to Trash"
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:414
-#: ../admin/write-panels/order-data.php:436
-#: ../classes/jigoshop_cart.class.php:965
+#: ../admin/write-panels/order-data.php:406
+#: ../admin/write-panels/order-data.php:428
+#: ../classes/jigoshop_cart.class.php:973
 #: ../classes/jigoshop_order.class.php:276
 msgid "(ex. tax)"
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:418
+#: ../admin/write-panels/order-data.php:410
 msgid "Discount: "
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:423
-#: ../admin/write-panels/order-data.php:457
+#: ../admin/write-panels/order-data.php:415
+#: ../admin/write-panels/order-data.php:449
 msgid "Choose"
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:447
+#: ../admin/write-panels/order-data.php:439
 msgid "Total Tax:"
 msgstr ""
 
-#: ../admin/write-panels/order-data.php:452
+#: ../admin/write-panels/order-data.php:444
 msgid "Shipping Tax:"
+msgstr ""
+
+#: ../admin/write-panels/order-data.php:531
+msgid "No attributes for this item."
 msgstr ""
 
 #: ../admin/write-panels/product-data-save.php:206
@@ -4472,8 +4493,8 @@ msgid "Enable this option to feature this product"
 msgstr ""
 
 #: ../admin/write-panels/product-data.php:160
-#: ../classes/jigoshop_product.class.php:894
-#: ../classes/jigoshop_product.class.php:910
+#: ../classes/jigoshop_product.class.php:896
+#: ../classes/jigoshop_product.class.php:912
 msgid "Price Not Announced"
 msgstr ""
 
@@ -4495,7 +4516,7 @@ msgid "On Sale Between"
 msgstr ""
 
 #: ../admin/write-panels/product-data.php:189
-#: ../classes/jigoshop_checkout.class.php:342 ../shortcodes/my_account.php:104
+#: ../classes/jigoshop_checkout.class.php:347 ../shortcodes/my_account.php:104
 msgid "Cancel"
 msgstr ""
 
@@ -4528,7 +4549,7 @@ msgstr ""
 #: ../admin/write-panels/product-data.php:269
 #: ../admin/write-panels/product-types/variable.php:318
 #: ../admin/write-panels/product-types/variable.php:576
-#: ../classes/jigoshop_product.class.php:1188
+#: ../classes/jigoshop_product.class.php:1190
 msgid "Weight"
 msgstr ""
 
@@ -4540,21 +4561,21 @@ msgstr ""
 #: ../admin/write-panels/product-data.php:283
 #: ../admin/write-panels/product-types/variable.php:320
 #: ../admin/write-panels/product-types/variable.php:582
-#: ../classes/jigoshop_product.class.php:1194
+#: ../classes/jigoshop_product.class.php:1196
 msgid "Length"
 msgstr ""
 
 #: ../admin/write-panels/product-data.php:284
 #: ../admin/write-panels/product-types/variable.php:319
 #: ../admin/write-panels/product-types/variable.php:583
-#: ../classes/jigoshop_product.class.php:1196
+#: ../classes/jigoshop_product.class.php:1198
 msgid "Width"
 msgstr ""
 
 #: ../admin/write-panels/product-data.php:285
 #: ../admin/write-panels/product-types/variable.php:321
 #: ../admin/write-panels/product-types/variable.php:584
-#: ../classes/jigoshop_product.class.php:1198
+#: ../classes/jigoshop_product.class.php:1200
 msgid "Height"
 msgstr ""
 
@@ -4563,46 +4584,47 @@ msgid "Can be personalized"
 msgstr ""
 
 #: ../admin/write-panels/product-data.php:300
-#: ../classes/jigoshop_options.class.php:596
-#: ../classes/jigoshop_options.class.php:668
-#: ../classes/jigoshop_options.class.php:681
-#: ../classes/jigoshop_options.class.php:694
-#: ../classes/jigoshop_options.class.php:742
-#: ../classes/jigoshop_options.class.php:770
-#: ../classes/jigoshop_options.class.php:783
-#: ../classes/jigoshop_options.class.php:796
-#: ../classes/jigoshop_options.class.php:809
-#: ../classes/jigoshop_options.class.php:822
+#: ../classes/jigoshop_options.class.php:598
+#: ../classes/jigoshop_options.class.php:670
+#: ../classes/jigoshop_options.class.php:683
+#: ../classes/jigoshop_options.class.php:696
+#: ../classes/jigoshop_options.class.php:744
+#: ../classes/jigoshop_options.class.php:772
+#: ../classes/jigoshop_options.class.php:785
+#: ../classes/jigoshop_options.class.php:798
+#: ../classes/jigoshop_options.class.php:811
+#: ../classes/jigoshop_options.class.php:824
 #: ../classes/jigoshop_options.class.php:837
-#: ../classes/jigoshop_options.class.php:850
-#: ../classes/jigoshop_options.class.php:863
-#: ../classes/jigoshop_options.class.php:876
-#: ../classes/jigoshop_options.class.php:888
-#: ../classes/jigoshop_options.class.php:900
-#: ../classes/jigoshop_options.class.php:913
-#: ../classes/jigoshop_options.class.php:945
-#: ../classes/jigoshop_options.class.php:1219
-#: ../classes/jigoshop_options.class.php:1232
-#: ../classes/jigoshop_options.class.php:1245
-#: ../classes/jigoshop_options.class.php:1258
-#: ../classes/jigoshop_options.class.php:1353
-#: ../classes/jigoshop_options.class.php:1366
-#: ../classes/jigoshop_options.class.php:1392
-#: ../classes/jigoshop_options.class.php:1432
+#: ../classes/jigoshop_options.class.php:852
+#: ../classes/jigoshop_options.class.php:865
+#: ../classes/jigoshop_options.class.php:878
+#: ../classes/jigoshop_options.class.php:891
+#: ../classes/jigoshop_options.class.php:903
+#: ../classes/jigoshop_options.class.php:915
+#: ../classes/jigoshop_options.class.php:928
+#: ../classes/jigoshop_options.class.php:960
+#: ../classes/jigoshop_options.class.php:1234
+#: ../classes/jigoshop_options.class.php:1247
+#: ../classes/jigoshop_options.class.php:1260
+#: ../classes/jigoshop_options.class.php:1273
+#: ../classes/jigoshop_options.class.php:1368
+#: ../classes/jigoshop_options.class.php:1381
+#: ../classes/jigoshop_options.class.php:1407
 #: ../classes/jigoshop_options.class.php:1447
-#: ../classes/jigoshop_options.class.php:1460
-#: ../classes/jigoshop_options.class.php:1472
-#: ../classes/jigoshop_options.class.php:1493
-#: ../classes/jigoshop_options.class.php:1515
-#: ../classes/jigoshop_options.class.php:1536
-#: ../classes/jigoshop_options.class.php:1549
-#: ../classes/jigoshop_options.class.php:1562
-#: ../classes/jigoshop_options.class.php:1601
-#: ../classes/jigoshop_options.class.php:1614
-#: ../classes/jigoshop_options.class.php:1627
-#: ../classes/jigoshop_options.class.php:1640 ../gateways/bank_transfer.php:74
+#: ../classes/jigoshop_options.class.php:1462
+#: ../classes/jigoshop_options.class.php:1475
+#: ../classes/jigoshop_options.class.php:1487
+#: ../classes/jigoshop_options.class.php:1508
+#: ../classes/jigoshop_options.class.php:1530
+#: ../classes/jigoshop_options.class.php:1551
+#: ../classes/jigoshop_options.class.php:1564
+#: ../classes/jigoshop_options.class.php:1577
+#: ../classes/jigoshop_options.class.php:1616
+#: ../classes/jigoshop_options.class.php:1629
+#: ../classes/jigoshop_options.class.php:1642
+#: ../classes/jigoshop_options.class.php:1655 ../gateways/bank_transfer.php:74
 #: ../gateways/cheque.php:68 ../gateways/cod.php:68
-#: ../gateways/futurepay.php:79 ../gateways/futurepay.php:119
+#: ../gateways/futurepay.php:90 ../gateways/futurepay.php:130
 #: ../gateways/paypal.php:80 ../gateways/paypal.php:120
 #: ../gateways/paypal.php:133 ../gateways/paypal.php:146
 #: ../shipping/flat_rate.php:67 ../shipping/free_shipping.php:71
@@ -4763,493 +4785,499 @@ msgstr ""
 msgid "Re-downloads Limit"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:219
+#: ../classes/jigoshop.class.php:227
 msgid "Action failed. Please refresh the page and retry."
 msgstr ""
 
-#: ../classes/jigoshop.class.php:366
+#: ../classes/jigoshop.class.php:374
 msgid "United Arab Emirates dirham"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:367
+#: ../classes/jigoshop.class.php:375
 msgid "Afghanistan Afghani"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:368
+#: ../classes/jigoshop.class.php:376
 msgid "Albania Lek"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:369
+#: ../classes/jigoshop.class.php:377
 msgid "Netherlands Antilles Guilder"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:370
+#: ../classes/jigoshop.class.php:378
 msgid "Argentina Peso"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:371
+#: ../classes/jigoshop.class.php:379
 msgid "Australia Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:372
+#: ../classes/jigoshop.class.php:380
 msgid "Aruba Guilder"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:373
+#: ../classes/jigoshop.class.php:381
 msgid "Azerbaijan New Manat"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:374
+#: ../classes/jigoshop.class.php:382
 msgid "Bosnia and Herzegovina Convertible Marka"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:375
+#: ../classes/jigoshop.class.php:383
 msgid "Barbados Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:376
+#: ../classes/jigoshop.class.php:384
 msgid "Bulgaria Lev"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:377
+#: ../classes/jigoshop.class.php:385
 msgid "Bermuda Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:378
+#: ../classes/jigoshop.class.php:386
 msgid "Brunei Darussalam Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:379
+#: ../classes/jigoshop.class.php:387
 msgid "Bolivia Boliviano"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:380
+#: ../classes/jigoshop.class.php:388
 msgid "Brazil Real"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:381
+#: ../classes/jigoshop.class.php:389
 msgid "Bahamas Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:382
+#: ../classes/jigoshop.class.php:390
 msgid "Botswana Pula"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:383
+#: ../classes/jigoshop.class.php:391
 msgid "Belarus Ruble"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:384
+#: ../classes/jigoshop.class.php:392
 msgid "Belize Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:385
+#: ../classes/jigoshop.class.php:393
 msgid "Canada Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:386
+#: ../classes/jigoshop.class.php:394
 msgid "Switzerland Franc"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:387
+#: ../classes/jigoshop.class.php:395
 msgid "Chile Peso"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:388
+#: ../classes/jigoshop.class.php:396
 msgid "China Yuan Renminbi"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:389
+#: ../classes/jigoshop.class.php:397
 msgid "Colombia Peso"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:390
+#: ../classes/jigoshop.class.php:398
 msgid "Costa Rica Colon"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:391
+#: ../classes/jigoshop.class.php:399
 msgid "Cuba Peso"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:392
+#: ../classes/jigoshop.class.php:400
 msgid "Czech Republic Koruna"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:393
+#: ../classes/jigoshop.class.php:401
 msgid "Denmark Krone"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:394
+#: ../classes/jigoshop.class.php:402
 msgid "Dominican Republic Peso"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:395
+#: ../classes/jigoshop.class.php:403
 msgid "Estonia Kroon"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:396
+#: ../classes/jigoshop.class.php:404
 msgid "Egypt Pound"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:397
+#: ../classes/jigoshop.class.php:405
 msgid "Euro Member Countries"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:398
+#: ../classes/jigoshop.class.php:406
 msgid "Fiji Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:399 ../languages/countries.php:90
+#: ../classes/jigoshop.class.php:407 ../languages/countries.php:90
 msgid "Falkland Islands"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:400
+#: ../classes/jigoshop.class.php:408
 msgid "United Kingdom Pound"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:401
+#: ../classes/jigoshop.class.php:409
 msgid "Georgian Lari"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:402
+#: ../classes/jigoshop.class.php:410
 msgid "Guernsey Pound"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:403
+#: ../classes/jigoshop.class.php:411
 msgid "Ghana Cedis"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:404
+#: ../classes/jigoshop.class.php:412
 msgid "Gibraltar Pound"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:405
+#: ../classes/jigoshop.class.php:413
 msgid "Guatemala Quetzal"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:406
+#: ../classes/jigoshop.class.php:414
 msgid "Guyana Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:407
+#: ../classes/jigoshop.class.php:415
 msgid "Hong Kong Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:408
+#: ../classes/jigoshop.class.php:416
 msgid "Honduras Lempira"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:409
+#: ../classes/jigoshop.class.php:417
 msgid "Croatia Kuna"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:410
+#: ../classes/jigoshop.class.php:418
 msgid "Hungary Forint"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:411
+#: ../classes/jigoshop.class.php:419
 msgid "Indonesia Rupiah"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:412
+#: ../classes/jigoshop.class.php:420
 msgid "Israel Shekel"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:413
+#: ../classes/jigoshop.class.php:421
 msgid "Isle of Man Pound"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:414
+#: ../classes/jigoshop.class.php:422
 msgid "India Rupee"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:415
+#: ../classes/jigoshop.class.php:423
 msgid "Iran Rial"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:416
+#: ../classes/jigoshop.class.php:424
 msgid "Iceland Krona"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:417
+#: ../classes/jigoshop.class.php:425
 msgid "Jersey Pound"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:418
+#: ../classes/jigoshop.class.php:426
 msgid "Jamaica Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:419
+#: ../classes/jigoshop.class.php:427
 msgid "Japan Yen"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:420
+#: ../classes/jigoshop.class.php:428
 msgid "Kyrgyzstan Som"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:421
+#: ../classes/jigoshop.class.php:429
 msgid "Cambodia Riel"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:422
+#: ../classes/jigoshop.class.php:430
 msgid "North Korea Won"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:423
+#: ../classes/jigoshop.class.php:431
 msgid "South Korea Won"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:424
+#: ../classes/jigoshop.class.php:432
 msgid "Cayman Islands Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:425
+#: ../classes/jigoshop.class.php:433
 msgid "Kazakhstan Tenge"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:426
+#: ../classes/jigoshop.class.php:434
 msgid "Laos Kip"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:427
+#: ../classes/jigoshop.class.php:435
 msgid "Lebanon Pound"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:428
+#: ../classes/jigoshop.class.php:436
 msgid "Sri Lanka Rupee"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:429
+#: ../classes/jigoshop.class.php:437
 msgid "Liberia Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:430
+#: ../classes/jigoshop.class.php:438
 msgid "Lithuania Litas"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:431
+#: ../classes/jigoshop.class.php:439
 msgid "Latvia Lat"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:432
+#: ../classes/jigoshop.class.php:440
 msgid "Macedonia Denar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:433
+#: ../classes/jigoshop.class.php:441
 msgid "Mongolia Tughrik"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:434
+#: ../classes/jigoshop.class.php:442
 msgid "Mauritius Rupee"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:435
+#: ../classes/jigoshop.class.php:443
 msgid "Mexico Peso"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:436
+#: ../classes/jigoshop.class.php:444
 msgid "Malaysia Ringgit"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:437
+#: ../classes/jigoshop.class.php:445
 msgid "Mozambique Metical"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:438
+#: ../classes/jigoshop.class.php:446
 msgid "Namibia Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:439
+#: ../classes/jigoshop.class.php:447
 msgid "Nigeria Naira"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:440
+#: ../classes/jigoshop.class.php:448
 msgid "Nicaragua Cordoba"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:441
+#: ../classes/jigoshop.class.php:449
 msgid "Norway Krone"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:442
+#: ../classes/jigoshop.class.php:450
 msgid "Nepal Rupee"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:443
+#: ../classes/jigoshop.class.php:451
 msgid "New Zealand Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:444
+#: ../classes/jigoshop.class.php:452
 msgid "Oman Rial"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:445
+#: ../classes/jigoshop.class.php:453
 msgid "Panama Balboa"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:446
+#: ../classes/jigoshop.class.php:454
 msgid "Peru Nuevo Sol"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:447
+#: ../classes/jigoshop.class.php:455
 msgid "Philippines Peso"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:448
+#: ../classes/jigoshop.class.php:456
 msgid "Pakistan Rupee"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:449
+#: ../classes/jigoshop.class.php:457
 msgid "Poland Zloty &#122;&#322;)"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:450
+#: ../classes/jigoshop.class.php:458
 msgid "Paraguay Guarani"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:451
+#: ../classes/jigoshop.class.php:459
 msgid "Qatar Riyal"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:452
+#: ../classes/jigoshop.class.php:460
 msgid "Romania New Leu"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:453
+#: ../classes/jigoshop.class.php:461
 msgid "Serbia Dinar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:454
+#: ../classes/jigoshop.class.php:462
 msgid "Russia Ruble"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:455
+#: ../classes/jigoshop.class.php:463
 msgid "Saudi Arabia Riyal"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:456
+#: ../classes/jigoshop.class.php:464
 msgid "Solomon Islands Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:457
+#: ../classes/jigoshop.class.php:465
 msgid "Seychelles Rupee"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:458
+#: ../classes/jigoshop.class.php:466
 msgid "Sweden Krona"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:459
+#: ../classes/jigoshop.class.php:467
 msgid "Singapore Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:460
+#: ../classes/jigoshop.class.php:468
 msgid "Saint Helena Pound"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:461
+#: ../classes/jigoshop.class.php:469
 msgid "Somalia Shilling"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:462
+#: ../classes/jigoshop.class.php:470
 msgid "Suriname Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:463
+#: ../classes/jigoshop.class.php:471
 msgid "El Salvador Colon"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:464
+#: ../classes/jigoshop.class.php:472
 msgid "Syria Pound"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:465
+#: ../classes/jigoshop.class.php:473
 msgid "Thailand Baht"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:466 ../classes/jigoshop.class.php:467
+#: ../classes/jigoshop.class.php:474 ../classes/jigoshop.class.php:475
 msgid "Turkey Lira"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:468
+#: ../classes/jigoshop.class.php:476
 msgid "Trinidad and Tobago Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:469
+#: ../classes/jigoshop.class.php:477
 msgid "Tuvalu Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:470
+#: ../classes/jigoshop.class.php:478
 msgid "Taiwan New Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:471
+#: ../classes/jigoshop.class.php:479
 msgid "Ukraine Hryvna"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:472
+#: ../classes/jigoshop.class.php:480
 msgid "United States Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:473
+#: ../classes/jigoshop.class.php:481
 msgid "Uruguay Peso"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:474
+#: ../classes/jigoshop.class.php:482
 msgid "Uzbekistan Som"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:475
+#: ../classes/jigoshop.class.php:483
 msgid "Venezuela Bolivar Fuerte"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:476
+#: ../classes/jigoshop.class.php:484
 msgid "Viet Nam Dong"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:477
+#: ../classes/jigoshop.class.php:485
 msgid "East Caribbean Dollar"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:478
+#: ../classes/jigoshop.class.php:486
 msgid "Yemen Rial"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:479
+#: ../classes/jigoshop.class.php:487
 msgid "South Africa Rand"
 msgstr ""
 
-#: ../classes/jigoshop.class.php:480
+#: ../classes/jigoshop.class.php:488
 msgid "Zimbabwe Dollar"
 msgstr ""
 
-#: ../classes/jigoshop_cart.class.php:181
+#: ../classes/jigoshop_cart.class.php:171
+msgid ""
+"You cannot add this item to your Cart as it does not appear to be a valid "
+"Product."
+msgstr ""
+
+#: ../classes/jigoshop_cart.class.php:189
 msgid ""
 "You cannot add this product to your cart because its price is not yet "
 "announced"
 msgstr ""
 
-#: ../classes/jigoshop_cart.class.php:191
+#: ../classes/jigoshop_cart.class.php:199
 #, php-format
 msgid ""
 "We are sorry.  We do not have enough \"%s\" to fill your request.  You have "
 "%d of them in your Cart and we have %d available at this time."
 msgstr ""
 
-#: ../classes/jigoshop_cart.class.php:191
-#: ../classes/jigoshop_cart.class.php:193
+#: ../classes/jigoshop_cart.class.php:199
+#: ../classes/jigoshop_cart.class.php:201
 #, php-format
 msgid "We are sorry.  We do not have enough \"%s\" to fill your request."
 msgstr ""
 
-#: ../classes/jigoshop_cart.class.php:193
+#: ../classes/jigoshop_cart.class.php:201
 #, php-format
 msgid ""
 "We are sorry.  We do not have enough \"%s\" to fill your request. There are "
 "only %d left in stock."
 msgstr ""
 
-#: ../classes/jigoshop_cart.class.php:360
+#: ../classes/jigoshop_cart.class.php:368
 #, php-format
 msgid ""
 "Sorry, we do not have enough \"%s\" in stock to fulfill your order. We only "
@@ -5257,79 +5285,79 @@ msgid ""
 "apologize for any inconvenience caused."
 msgstr ""
 
-#: ../classes/jigoshop_cart.class.php:363
-#: ../classes/jigoshop_checkout.class.php:907
+#: ../classes/jigoshop_cart.class.php:371
+#: ../classes/jigoshop_checkout.class.php:919
 #, php-format
 msgid ""
 "Sorry, we do not have enough \"%s\" in stock to fulfill your order. Please "
 "edit your cart and try again. We apologize for any inconvenience caused."
 msgstr ""
 
-#: ../classes/jigoshop_cart.class.php:867
-#: ../classes/jigoshop_cart.class.php:869
+#: ../classes/jigoshop_cart.class.php:875
+#: ../classes/jigoshop_cart.class.php:877
 #, php-format
 msgid "estimated for: %s"
 msgstr ""
 
-#: ../classes/jigoshop_cart.class.php:954
+#: ../classes/jigoshop_cart.class.php:962
 #: ../classes/jigoshop_order.class.php:283
 msgid "Free!"
 msgstr ""
 
-#: ../classes/jigoshop_cart.class.php:971
+#: ../classes/jigoshop_cart.class.php:979
 #: ../classes/jigoshop_order.class.php:276
 msgid "(inc. tax)"
 msgstr ""
 
-#: ../classes/jigoshop_cart.class.php:989
+#: ../classes/jigoshop_cart.class.php:997
 #, php-format
 msgid "via %s"
 msgstr ""
 
-#: ../classes/jigoshop_cart.class.php:1010
+#: ../classes/jigoshop_cart.class.php:1018
 msgid ""
 "There is already an 'individual use' coupon on the Cart.  No other coupons "
 "can be added until it is removed."
 msgstr ""
 
-#: ../classes/jigoshop_cart.class.php:1018
+#: ../classes/jigoshop_cart.class.php:1026
 msgid ""
 "This is an 'individual use' coupon.  All other discount coupons have been "
 "removed."
 msgstr ""
 
-#: ../classes/jigoshop_cart.class.php:1028
+#: ../classes/jigoshop_cart.class.php:1036
 msgid "Discount coupon applied successfully."
 msgstr ""
 
-#: ../classes/jigoshop_cart.class.php:1037
+#: ../classes/jigoshop_cart.class.php:1045
 msgid "Coupon does not exist or is no longer valid!"
 msgstr ""
 
-#: ../classes/jigoshop_cart.class.php:1048
+#: ../classes/jigoshop_cart.class.php:1056
 #, php-format
 msgid "The coupon '%s' is invalid with that payment method!"
 msgstr ""
 
-#: ../classes/jigoshop_cart.class.php:1062
+#: ../classes/jigoshop_cart.class.php:1070
 #, php-format
 msgid ""
 "Your subtotal does not match the <strong>maximum</strong> order total "
 "requirements of %.2f for coupon \"%s\" and it has been removed."
 msgstr ""
 
-#: ../classes/jigoshop_cart.class.php:1068
+#: ../classes/jigoshop_cart.class.php:1076
 #, php-format
 msgid ""
 "Your subtotal does not match the <strong>minimum</strong> order total "
 "requirements of %.2f for coupon \"%s\" and it has been removed."
 msgstr ""
 
-#: ../classes/jigoshop_cart.class.php:1076
+#: ../classes/jigoshop_cart.class.php:1084
 msgid "Invalid coupon!"
 msgstr ""
 
-#: ../classes/jigoshop_cart.class.php:1082
+#: ../classes/jigoshop_cart.class.php:1090
 msgid "No products in your cart match that coupon!"
 msgstr ""
 
@@ -5359,57 +5387,57 @@ msgstr ""
 msgid "Billing &amp; Shipping"
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:224
+#: ../classes/jigoshop_checkout.class.php:225
 msgid "Create an account?"
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:228
 #: ../classes/jigoshop_checkout.class.php:229
-msgid "Account password"
-msgstr ""
-
-#: ../classes/jigoshop_checkout.class.php:229
-msgid "Password again"
-msgstr ""
-
-#: ../classes/jigoshop_checkout.class.php:230
 msgid "Account username"
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:232
+#: ../classes/jigoshop_checkout.class.php:231
+#: ../classes/jigoshop_checkout.class.php:233
+msgid "Account password"
+msgstr ""
+
+#: ../classes/jigoshop_checkout.class.php:233
+msgid "Password again"
+msgstr ""
+
+#: ../classes/jigoshop_checkout.class.php:236
 msgid ""
 "Save time in the future and check the status of your order by creating an "
 "account."
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:248
+#: ../classes/jigoshop_checkout.class.php:252
 msgid "Ship to billing address?"
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:261
+#: ../classes/jigoshop_checkout.class.php:266
 msgid "Notes/Comments"
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:265
+#: ../classes/jigoshop_checkout.class.php:270
 msgid "Order Notes"
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:265
+#: ../classes/jigoshop_checkout.class.php:270
 msgid "Notes about your order."
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:318
+#: ../classes/jigoshop_checkout.class.php:323
 msgid "Please fill in your details above to see available payment methods."
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:320
+#: ../classes/jigoshop_checkout.class.php:325
 msgid ""
 "Sorry, it seems that there are no available payment methods for your state. "
 "Please contact us if you require assistance or wish to make alternate "
 "arrangements."
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:329
+#: ../classes/jigoshop_checkout.class.php:334
 msgid ""
 "Since your browser does not support JavaScript, or it is disabled, please "
 "ensure you click the <em>Update Totals</em> button before placing your "
@@ -5417,107 +5445,107 @@ msgid ""
 "do so."
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:329
+#: ../classes/jigoshop_checkout.class.php:334
 msgid "Update totals"
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:337
+#: ../classes/jigoshop_checkout.class.php:342
 msgid "I accept the"
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:337
+#: ../classes/jigoshop_checkout.class.php:342
 msgid "terms &amp; conditions"
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:344
+#: ../classes/jigoshop_checkout.class.php:349
 msgid "Place order"
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:510
+#: ../classes/jigoshop_checkout.class.php:520
 #, php-format
 msgid ""
 "Sorry, your session has expired. <a href=\"%s\">Return to homepage &rarr;</a>"
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:575
+#: ../classes/jigoshop_checkout.class.php:585
 msgid " (billing) is a required field."
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:595
+#: ../classes/jigoshop_checkout.class.php:605
 msgid ""
 " (billing) is not a valid VAT Number.  Leave it blank to disable VAT "
 "validation.  (VAT may be charged depending on your location)"
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:608
+#: ../classes/jigoshop_checkout.class.php:618
 msgid " (billing) is not a valid number."
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:613
+#: ../classes/jigoshop_checkout.class.php:623
 msgid " (billing) is not a valid email address."
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:618
+#: ../classes/jigoshop_checkout.class.php:628
 msgid " (billing) is not a valid postcode/ZIP."
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:645
+#: ../classes/jigoshop_checkout.class.php:655
 msgid " (shipping) is a required field."
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:650
+#: ../classes/jigoshop_checkout.class.php:660
 msgid " (shipping) is not a valid postcode/ZIP."
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:661
+#: ../classes/jigoshop_checkout.class.php:671
 msgid "Sorry, you must agree to creating an account"
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:665
+#: ../classes/jigoshop_checkout.class.php:675
 msgid "Sorry, the shop owner has disabled guest purchases."
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:667
+#: ../classes/jigoshop_checkout.class.php:677
 msgid "Please enter an account username."
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:668
+#: ../classes/jigoshop_checkout.class.php:678
 msgid "Please enter an account password."
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:669 ../shortcodes/my_account.php:350
+#: ../classes/jigoshop_checkout.class.php:679 ../shortcodes/my_account.php:350
 msgid "Passwords do not match."
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:673
+#: ../classes/jigoshop_checkout.class.php:683
 msgid "Invalid email/username."
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:675
+#: ../classes/jigoshop_checkout.class.php:685
 msgid ""
 "An account is already registered with that username. Please choose another."
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:680
+#: ../classes/jigoshop_checkout.class.php:690
 msgid "An account is already registered with your email address. Please login."
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:685
+#: ../classes/jigoshop_checkout.class.php:695
 msgid "You must accept our Terms &amp; Conditions."
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:692
+#: ../classes/jigoshop_checkout.class.php:702
 msgid "Invalid shipping method."
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:727
+#: ../classes/jigoshop_checkout.class.php:737
 #, php-format
 msgid ""
 "<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the <a "
 "href=\"mailto:%s\">webmaster</a> !"
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:906
+#: ../classes/jigoshop_checkout.class.php:918
 #, php-format
 msgid ""
 "Sorry, we do not have enough \"%s\" in stock to fulfill your order.  We have "
@@ -5525,12 +5553,12 @@ msgid ""
 "for any inconvenience caused."
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:1086 ../shortcodes/cart.php:248
+#: ../classes/jigoshop_checkout.class.php:1098 ../shortcodes/cart.php:248
 msgctxt "shipping destination"
 msgid "To: "
 msgstr ""
 
-#: ../classes/jigoshop_checkout.class.php:1173
+#: ../classes/jigoshop_checkout.class.php:1185
 msgid "Invalid payment method."
 msgstr ""
 
@@ -5549,68 +5577,72 @@ msgstr ""
 msgid "<a href=\"%s\" target=\"_TOP\">Read why</a> we did this for you."
 msgstr ""
 
-#: ../classes/jigoshop_cron.class.php:71
+#: ../classes/jigoshop_cron.class.php:62
 msgid "Archived due to order being in pending state for a month or longer."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:538
+#: ../classes/jigoshop_cron.class.php:90
+msgid "Completed due to order being in processing state for a month or longer."
+msgstr ""
+
+#: ../classes/jigoshop_options.class.php:540
 msgid "Shop Options"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:559
+#: ../classes/jigoshop_options.class.php:561
 msgid ""
 "This controls what currency the prices are listed with in the Catalog, and "
 "which currency PayPal, and other gateways, will take payments in."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:589
+#: ../classes/jigoshop_options.class.php:591
 msgid "Demo store"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:614
+#: ../classes/jigoshop_options.class.php:616
 msgid ""
 "Add your tax registration label before the registration number and it will "
 "be printed as well. eg. <code>VAT Number: 88888888</code>"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:661
+#: ../classes/jigoshop_options.class.php:663
 msgid "Prepend shop categories and tags with base page"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:700
+#: ../classes/jigoshop_options.class.php:702
 msgid "Product category slug"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:726
+#: ../classes/jigoshop_options.class.php:728
 msgid "Jigoshop email address"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:728
+#: ../classes/jigoshop_options.class.php:730
 msgid ""
 "The email address used to send all Jigoshop related emails, such as order "
 "confirmations and notices.  This may be different than your Company email "
 "address on \"Shop Tab -> Invoicing\"."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:735
+#: ../classes/jigoshop_options.class.php:737
 msgid "Cart shows \"Return to Shop\" button"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:737
+#: ../classes/jigoshop_options.class.php:739
 msgid ""
 "Enabling this setting will display a \"Return to Shop\" button on the Cart "
 "page along with the \"Continue to Checkout\" button."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:763
+#: ../classes/jigoshop_options.class.php:765
 msgid "Reset pending Orders"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:764
+#: ../classes/jigoshop_options.class.php:766
 msgid "Change all 'Pending' Orders older than one month to 'On Hold'"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:765
+#: ../classes/jigoshop_options.class.php:767
 msgid ""
 "For customers that have not completed the Checkout process or haven't paid "
 "for an Order after a period of time, this will reset the Order to On Hold "
@@ -5619,52 +5651,67 @@ msgid ""
 "email!"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:790
+#: ../classes/jigoshop_options.class.php:778
+msgid "Complete processing Orders"
+msgstr ""
+
+#: ../classes/jigoshop_options.class.php:779
+msgid "Change all 'Processing' Orders older than one month to 'Completed'"
+msgstr ""
+
+#: ../classes/jigoshop_options.class.php:780
+msgid ""
+"For orders that have been completed but the status is still set to "
+"'processing'.  This will move them to a 'completed' status without sending "
+"an email out to all the customers."
+msgstr ""
+
+#: ../classes/jigoshop_options.class.php:805
 msgid "(The next option below will have no effect if this one is disabled)"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:802
+#: ../classes/jigoshop_options.class.php:817
 msgid "Include extra theme styles with Jigoshop frontend.css"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:804
+#: ../classes/jigoshop_options.class.php:819
 msgid ""
 "With this option <em>on</em>, Jigoshop's default frontend.css will still "
 "load, and any extra bits found in 'theme/jigoshop/style.css' for over-rides "
 "will also be loaded."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:815
+#: ../classes/jigoshop_options.class.php:830
 msgid "Disable bundled Lightbox"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:816
+#: ../classes/jigoshop_options.class.php:831
 msgid ""
 "Product galleries and images as well as the Add Review form will open in a "
 "lightbox."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:817
+#: ../classes/jigoshop_options.class.php:832
 msgid ""
 "Useful if your theme or other plugin already loads our Lightbox script and "
 "css (prettyPhoto), or you want to use a different one."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:830
+#: ../classes/jigoshop_options.class.php:845
 msgid "Validate postal/zip codes"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:832
+#: ../classes/jigoshop_options.class.php:847
 msgid ""
 "Enabling this setting will force proper postcodes to be entered by a "
 "customer for a country."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:843
+#: ../classes/jigoshop_options.class.php:858
 msgid "Show verify information message"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:845
+#: ../classes/jigoshop_options.class.php:860
 msgid ""
 "Enabling this setting will display a message at the bottom of the Checkout "
 "asking customers to verify all their informatioin is correctly entered "
@@ -5672,110 +5719,110 @@ msgid ""
 "have states to ensure the correct shipping state is selected."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:856
+#: ../classes/jigoshop_options.class.php:871
 msgid "Show EU VAT reduction message"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:857
+#: ../classes/jigoshop_options.class.php:872
 msgid "This will only apply to EU Union based Shops."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:858
+#: ../classes/jigoshop_options.class.php:873
 msgid ""
 "Enabling this setting will display a message at the bottom of the Checkout "
 "informing the customer that EU VAT will not be removed until the Order is "
 "placed and only if they have provided a valid EU VAT Number."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:871
+#: ../classes/jigoshop_options.class.php:886
 msgid ""
 "Enabling this setting will allow users to checkout without registering or "
 "signing up. Otherwise, users must be signed in or must sign up to checkout."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:908
+#: ../classes/jigoshop_options.class.php:923
 msgid ""
 "This will load your checkout page with https://. An SSL certificate is "
 "<strong>required</strong> if you choose yes. Contact your hosting provider "
 "for more information on SSL Certs."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:938
+#: ../classes/jigoshop_options.class.php:953
 msgid "Enable eCommerce Tracking"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:940
+#: ../classes/jigoshop_options.class.php:955
 msgid ""
 "<a href=\"//support.google.com/analytics/bin/answer.py?"
 "hl=en&answer=1009612\">Learn how to enable</a> eCommerce tracking for your "
 "Google Analytics account."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:956
+#: ../classes/jigoshop_options.class.php:971
 msgid "Page configurations"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1076
+#: ../classes/jigoshop_options.class.php:1091
 msgid "Catalog product buttons show"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1078
+#: ../classes/jigoshop_options.class.php:1093
 msgid ""
 "This will determine the type of button and the action it will use when "
 "clicked on the Shop and Category product listings.  You can also set it to "
 "use no button."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1083
+#: ../classes/jigoshop_options.class.php:1098
 msgid "Add to Cart"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1085
+#: ../classes/jigoshop_options.class.php:1100
 msgid "No Button"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1117
+#: ../classes/jigoshop_options.class.php:1132
 msgid "Catalog products per row"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1118
-#: ../classes/jigoshop_options.class.php:1412
+#: ../classes/jigoshop_options.class.php:1133
+#: ../classes/jigoshop_options.class.php:1427
 msgid "Default = 3"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1119
+#: ../classes/jigoshop_options.class.php:1134
 msgid ""
 "Determines how many products to show on one display row for Shop, Category "
 "and Tag pages."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1131
+#: ../classes/jigoshop_options.class.php:1146
 msgid "Catalog products per page"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1132
+#: ../classes/jigoshop_options.class.php:1147
 msgid "Default = 12"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1133
+#: ../classes/jigoshop_options.class.php:1148
 msgid ""
 "Determines how many products to display on Shop, Category and Tag pages "
 "before needing next and previous page navigation."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1176
+#: ../classes/jigoshop_options.class.php:1191
 msgid "This sets the thousand separator of displayed prices."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1185
+#: ../classes/jigoshop_options.class.php:1200
 msgid "This sets the decimal separator of displayed prices."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1194
+#: ../classes/jigoshop_options.class.php:1209
 msgid "This sets the number of decimal points shown in displayed prices."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1207
+#: ../classes/jigoshop_options.class.php:1222
 #, php-format
 msgid ""
 "<p>Changing any of these settings will affect the dimensions of images used "
@@ -5788,278 +5835,278 @@ msgid ""
 "they may still be affected by CSS styles in your theme."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1209
+#: ../classes/jigoshop_options.class.php:1224
 msgid "Cropping Options"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1212
+#: ../classes/jigoshop_options.class.php:1227
 msgid "Crop Tiny images"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1214
-#: ../classes/jigoshop_options.class.php:1227
-#: ../classes/jigoshop_options.class.php:1240
-#: ../classes/jigoshop_options.class.php:1253
+#: ../classes/jigoshop_options.class.php:1229
+#: ../classes/jigoshop_options.class.php:1242
+#: ../classes/jigoshop_options.class.php:1255
+#: ../classes/jigoshop_options.class.php:1268
 msgid ""
 "Use No to set the image size by resizing the image proportionally (that is, "
 "without distorting it).<br />Use Yes to set the image size by hard cropping "
 "the image (either from the sides, or from the top and bottom)."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1225
+#: ../classes/jigoshop_options.class.php:1240
 msgid "Crop Thumbnail images"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1238
+#: ../classes/jigoshop_options.class.php:1253
 msgid "Crop Catalog images"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1251
+#: ../classes/jigoshop_options.class.php:1266
 msgid "Crop Large images"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1263
+#: ../classes/jigoshop_options.class.php:1278
 msgid "Image Sizes"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1266
+#: ../classes/jigoshop_options.class.php:1281
 msgid "Tiny Image Width"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1267
-#: ../classes/jigoshop_options.class.php:1276
+#: ../classes/jigoshop_options.class.php:1282
+#: ../classes/jigoshop_options.class.php:1291
 msgid "Default = 36px"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1268
+#: ../classes/jigoshop_options.class.php:1283
 msgid ""
 "Set the width of the small image used in the Cart, Checkout, Orders and "
 "Widgets."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1275
+#: ../classes/jigoshop_options.class.php:1290
 msgid "Tiny Image Height"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1277
+#: ../classes/jigoshop_options.class.php:1292
 msgid ""
 "Set the height of the small image used in the Cart, Checkout, Orders and "
 "Widgets."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1284
+#: ../classes/jigoshop_options.class.php:1299
 msgid "Thumbnail Image Width"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1285
-#: ../classes/jigoshop_options.class.php:1294
+#: ../classes/jigoshop_options.class.php:1300
+#: ../classes/jigoshop_options.class.php:1309
 msgid "Default = 90px"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1286
+#: ../classes/jigoshop_options.class.php:1301
 msgid ""
 "Set the width of the thumbnail image for Single Product page extra images."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1293
+#: ../classes/jigoshop_options.class.php:1308
 msgid "Thumbnail Image Height"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1295
+#: ../classes/jigoshop_options.class.php:1310
 msgid ""
 "Set the height of the thumbnail image for Single Product page extra images."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1302
+#: ../classes/jigoshop_options.class.php:1317
 msgid "Catalog Image Width"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1303
-#: ../classes/jigoshop_options.class.php:1312
+#: ../classes/jigoshop_options.class.php:1318
+#: ../classes/jigoshop_options.class.php:1327
 msgid "Default = 150px"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1304
+#: ../classes/jigoshop_options.class.php:1319
 msgid ""
 "Set the width of the catalog image for Shop, Categories, Tags, and Related "
 "Products."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1311
+#: ../classes/jigoshop_options.class.php:1326
 msgid "Catalog Image Height"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1313
+#: ../classes/jigoshop_options.class.php:1328
 msgid ""
 "Set the height of the catalog image for Shop, Categories, Tags, and Related "
 "Products."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1320
+#: ../classes/jigoshop_options.class.php:1335
 msgid "Large Image Width"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1321
-#: ../classes/jigoshop_options.class.php:1330
+#: ../classes/jigoshop_options.class.php:1336
+#: ../classes/jigoshop_options.class.php:1345
 msgid "Default = 300px"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1322
+#: ../classes/jigoshop_options.class.php:1337
 msgid "Set the width of the Single Product page large or Featured image."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1329
+#: ../classes/jigoshop_options.class.php:1344
 msgid "Large Image Height"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1331
+#: ../classes/jigoshop_options.class.php:1346
 msgid "Set the height of the Single Product page large or Featured image."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1341
+#: ../classes/jigoshop_options.class.php:1356
 msgid "Products & Inventory"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1346
+#: ../classes/jigoshop_options.class.php:1361
 msgid "Enable SKU field"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1359
+#: ../classes/jigoshop_options.class.php:1374
 msgid "Enable weight field"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1411
+#: ../classes/jigoshop_options.class.php:1426
 msgid "Product thumbnail images per row"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1413
+#: ../classes/jigoshop_options.class.php:1428
 msgid ""
 "Determines how many extra product thumbnail images attached to a product to "
 "show on one row for the Single Product page."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1440
+#: ../classes/jigoshop_options.class.php:1455
 msgid "Manage stock"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1441
+#: ../classes/jigoshop_options.class.php:1456
 msgid ""
 "If you are not managing stock, turn it off here to disable it in admin and "
 "on the front-end."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1442
+#: ../classes/jigoshop_options.class.php:1457
 msgid "You can manage stock on a per-item basis if you leave this option on."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1510
+#: ../classes/jigoshop_options.class.php:1525
 msgid ""
 "For Yes: When the Out of Stock Threshold (above) is reached, the product "
 "visibility will be set to hidden so that it will not appear on the Catalog "
 "or Shop product lists."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1529
+#: ../classes/jigoshop_options.class.php:1544
 msgid "Calculate Taxes"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1530
+#: ../classes/jigoshop_options.class.php:1545
 msgid "Only turn this off if you are exclusively selling non-taxable items."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1531
+#: ../classes/jigoshop_options.class.php:1546
 msgid ""
 "If you are not calculating taxes then you can ignore all other tax options."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1543
+#: ../classes/jigoshop_options.class.php:1558
 msgid "This will have no effect if Calculate Taxes is turned off."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1556
+#: ../classes/jigoshop_options.class.php:1571
 msgid "This will only apply to the Shop, Category and Product pages."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1557
+#: ../classes/jigoshop_options.class.php:1572
 msgid ""
 "This will have no effect on the Cart, Checkout, Emails, or final Orders; "
 "prices are always shown with tax out."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1594
+#: ../classes/jigoshop_options.class.php:1609
 msgid "Enable Shipping"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1595
+#: ../classes/jigoshop_options.class.php:1610
 msgid ""
 "Only turn this off if you are <strong>not</strong> shipping items, or items "
 "have shipping costs included."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1596
+#: ../classes/jigoshop_options.class.php:1611
 msgid ""
 "If turned off, this will also remove shipping address fields on the Checkout."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1622
+#: ../classes/jigoshop_options.class.php:1637
 msgid ""
 "When activated, Shipping address fields will not appear on the Checkout."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1633
+#: ../classes/jigoshop_options.class.php:1648
 msgid "Checkout always shows Shipping fields?"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1634
+#: ../classes/jigoshop_options.class.php:1649
 msgid ""
 "This will have no effect if \"Only ship to billing address\" is activated."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1635
+#: ../classes/jigoshop_options.class.php:1650
 msgid ""
 "When activated, Shipping address fields will appear by default on the "
 "Checkout."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1645
+#: ../classes/jigoshop_options.class.php:1660
 msgid "Available Shipping Methods"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1645
+#: ../classes/jigoshop_options.class.php:1660
 msgid ""
 "Please enable all of the Shipping Methods you wish to make available to your "
 "customers."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1655
+#: ../classes/jigoshop_options.class.php:1670
 msgid "Gateway Options"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1658
+#: ../classes/jigoshop_options.class.php:1673
 msgid "Default Gateway"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1659
+#: ../classes/jigoshop_options.class.php:1674
 msgid "Only enabled gateways will appear in this list."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1660
+#: ../classes/jigoshop_options.class.php:1675
 msgid ""
 "This will determine which gateway appears first in the Payment Methods list "
 "on the Checkout."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1667
+#: ../classes/jigoshop_options.class.php:1682
 msgid "Available gateways"
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1667
+#: ../classes/jigoshop_options.class.php:1682
 msgid ""
 "Please enable all of the Payment Gateways you wish to make available to your "
 "customers."
 msgstr ""
 
-#: ../classes/jigoshop_options.class.php:1695
+#: ../classes/jigoshop_options.class.php:1710
 #, php-format
 msgid ""
 "The following items, from one or more extensions, have tried to add Jigoshop "
@@ -6110,35 +6157,35 @@ msgstr ""
 msgid "Order item stock reduced successfully."
 msgstr ""
 
-#: ../classes/jigoshop_product.class.php:486
 #: ../classes/jigoshop_product.class.php:488
+#: ../classes/jigoshop_product.class.php:490
 msgid " available"
 msgstr ""
 
-#: ../classes/jigoshop_product.class.php:492
+#: ../classes/jigoshop_product.class.php:494
 msgid "backorders allowed"
 msgstr ""
 
-#: ../classes/jigoshop_product.class.php:496
+#: ../classes/jigoshop_product.class.php:498
 msgid "Available on Backorder"
 msgstr ""
 
-#: ../classes/jigoshop_product.class.php:830
+#: ../classes/jigoshop_product.class.php:832
 #, php-format
 msgid "%s off!"
 msgstr ""
 
-#: ../classes/jigoshop_product.class.php:853
+#: ../classes/jigoshop_product.class.php:855
 msgid "Unavailable"
 msgstr ""
 
-#: ../classes/jigoshop_product.class.php:873
-#: ../classes/jigoshop_product.class.php:882
+#: ../classes/jigoshop_product.class.php:875
+#: ../classes/jigoshop_product.class.php:884
 msgctxt "price"
 msgid "From:"
 msgstr ""
 
-#: ../classes/jigoshop_product.class.php:1032
+#: ../classes/jigoshop_product.class.php:1034
 #: ../templates/single-product-reviews.php:46
 #, php-format
 msgid "Rated %s out of 5"
@@ -6178,14 +6225,14 @@ msgid "Enable Bank Transfer"
 msgstr ""
 
 #: ../gateways/bank_transfer.php:80 ../gateways/cheque.php:74
-#: ../gateways/cod.php:74 ../gateways/futurepay.php:85
+#: ../gateways/cod.php:74 ../gateways/futurepay.php:96
 #: ../gateways/paypal.php:86 ../shipping/flat_rate.php:73
 #: ../shipping/free_shipping.php:77 ../shipping/local_pickup.php:76
 msgid "Method Title"
 msgstr ""
 
 #: ../gateways/bank_transfer.php:82 ../gateways/cheque.php:76
-#: ../gateways/cod.php:76 ../gateways/futurepay.php:87
+#: ../gateways/cod.php:76 ../gateways/futurepay.php:98
 #: ../gateways/paypal.php:88 ../shipping/flat_rate.php:75
 #: ../shipping/free_shipping.php:79 ../shipping/local_pickup.php:78
 msgid "This controls the title which the user sees during checkout."
@@ -6196,7 +6243,8 @@ msgid "Bank Transfer Payment"
 msgstr ""
 
 #: ../gateways/bank_transfer.php:89 ../gateways/cheque.php:83
-#: ../gateways/cod.php:83
+#: ../gateways/cod.php:83 ../gateways/futurepay.php:105
+#: ../gateways/paypal.php:95
 msgid "Customer Message"
 msgstr ""
 
@@ -6343,67 +6391,92 @@ msgstr ""
 msgid "Waiting for cash delivery"
 msgstr ""
 
-#: ../gateways/futurepay.php:65
+#: ../gateways/futurepay.php:76
 #, php-format
-msgid "Future Pay %s"
+msgid "FuturePay %s"
 msgstr ""
 
-#: ../gateways/futurepay.php:67
+#: ../gateways/futurepay.php:78
 #, php-format
 msgid ""
-"This module allow you to accept online payments via FuturePay, allowing "
-"customers to buy now and pay later, without a credit card.  FuturePay is a "
-"safe, convenient and secure way for US customers to buy online in one-step.  "
-"%s"
+"This module allows you to accept online payments via %s allowing customers "
+"to buy now and pay later without a credit card.  FuturePay is a safe, "
+"convenient and secure way for US customers to buy online in one-step.  %s"
 msgstr ""
 
-#: ../gateways/futurepay.php:72
-msgid "Enable Future Pay"
+#: ../gateways/futurepay.php:78
+msgid "Signup for a Merchant Account"
 msgstr ""
 
-#: ../gateways/futurepay.php:89
-msgid "Future Pay"
+#: ../gateways/futurepay.php:83
+msgid "Enable FuturePay"
 msgstr ""
 
-#: ../gateways/futurepay.php:96 ../gateways/paypal.php:97
+#: ../gateways/futurepay.php:107 ../gateways/paypal.php:97
 msgid "This controls the description which the user sees during checkout."
 msgstr ""
 
-#: ../gateways/futurepay.php:98
-msgid "Pay with Future Pay. Buy now and pay later."
-msgstr ""
-
-#: ../gateways/futurepay.php:103
+#: ../gateways/futurepay.php:114
 msgid "Merchant API Key"
 msgstr ""
 
-#: ../gateways/futurepay.php:105
+#: ../gateways/futurepay.php:116
 msgid ""
 "Your unique FuturePay Merchant Identifier is provided to you when you create "
 "a Merchant Account with FuturePay."
 msgstr ""
 
-#: ../gateways/futurepay.php:112
+#: ../gateways/futurepay.php:123
 msgid "Enable Sandbox"
 msgstr ""
 
-#: ../gateways/futurepay.php:113
+#: ../gateways/futurepay.php:124
 msgid "Turn on to enable the FuturePay sandbox for testing."
 msgstr ""
 
-#: ../gateways/futurepay.php:314
+#: ../gateways/futurepay.php:147
+#, php-format
 msgid ""
-"Thank you for your order, please fill out the form below to pay with Future "
-"Pay."
+"The FuturePay gateway accepts payments in currencies of %s.  Your current "
+"currency is %s.  FuturePay won't work until you change the Jigoshop currency "
+"to an accepted one.  FuturePay is currently disabled on the Payment Gateways "
+"settings tab."
 msgstr ""
 
-#: ../gateways/futurepay.php:361
+#: ../gateways/futurepay.php:156
+#, php-format
+msgid ""
+"The FuturePay gateway is available to merchants from: %s.  Your country is: "
+"%s.  FuturePay won't work until you change the Jigoshop Shop Base country to "
+"an accepted one.  FuturePay is currently disabled on the Payment Gateways "
+"settings tab."
+msgstr ""
+
+#: ../gateways/futurepay.php:318
+#, php-format
+msgid "FUTUREPAY: declined order, reason = %s"
+msgstr ""
+
+#: ../gateways/futurepay.php:319
+#, php-format
+msgid ""
+"FUTUREPAY: declined order, reason = %s.  Please try again or select another "
+"gateway for your Order."
+msgstr ""
+
+#: ../gateways/futurepay.php:387
+msgid ""
+"Thank you for your order, please fill out the form below to pay with "
+"FuturePay."
+msgstr ""
+
+#: ../gateways/futurepay.php:437
 msgid "Payment Authorized"
 msgstr ""
 
-#: ../gateways/futurepay.php:368 ../gateways/futurepay.php:374
+#: ../gateways/futurepay.php:444 ../gateways/futurepay.php:450
 #, php-format
-msgid "Payment %s via Future Pay."
+msgid "Payment %s via FuturePay."
 msgstr ""
 
 #: ../gateways/paypal.php:69
@@ -7658,15 +7731,15 @@ msgid ""
 "the Place Order button at the bottom of the page."
 msgstr ""
 
-#: ../shortcodes/init.php:350 ../widgets/product_search.php:63
+#: ../shortcodes/init.php:349 ../widgets/product_search.php:63
 msgid "Search for:"
 msgstr ""
 
-#: ../shortcodes/init.php:351 ../widgets/product_search.php:64
+#: ../shortcodes/init.php:350 ../widgets/product_search.php:64
 msgid "Search for products"
 msgstr ""
 
-#: ../shortcodes/init.php:352 ../widgets/product_search.php:65
+#: ../shortcodes/init.php:351 ../widgets/product_search.php:65
 msgid "Search"
 msgstr ""
 
@@ -7970,9 +8043,9 @@ msgstr ""
 msgid "Best Sellers"
 msgstr ""
 
-#: ../widgets/best-sellers.php:192 ../widgets/cart.php:179
+#: ../widgets/best-sellers.php:193 ../widgets/cart.php:179
 #: ../widgets/featured-products.php:163 ../widgets/layered_nav.php:214
-#: ../widgets/price-filter.php:187 ../widgets/product-categories.php:196
+#: ../widgets/price-filter.php:192 ../widgets/product-categories.php:196
 #: ../widgets/product_search.php:110 ../widgets/product_tag_cloud.php:113
 #: ../widgets/products_on_sale.php:202 ../widgets/random-products.php:156
 #: ../widgets/recent_products.php:212 ../widgets/recent_reviews.php:226
@@ -7980,7 +8053,7 @@ msgstr ""
 msgid "Title:"
 msgstr ""
 
-#: ../widgets/best-sellers.php:199 ../widgets/featured-products.php:170
+#: ../widgets/best-sellers.php:200 ../widgets/featured-products.php:170
 #: ../widgets/products_on_sale.php:209 ../widgets/random-products.php:163
 #: ../widgets/recent_products.php:219 ../widgets/recent_reviews.php:233
 #: ../widgets/recently_viewed.php:249 ../widgets/top-rated.php:230

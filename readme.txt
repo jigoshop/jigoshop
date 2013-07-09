@@ -4,7 +4,7 @@ Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, wid
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.5
 Tested up to: 3.6 -beta4
-Stable tag: 1.7.3
+Stable tag: 1.8
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,21 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.8 - 2013-07-11 =
+* Please CLEAR or empty your browser caches after updating Jigoshop for this release
+*
+* New: Settings->General->`Complete processing Orders` option for 'processing' orders older than 30 days
+* New: Javascript Checkout field validation to enhance payment conversion. Shows correct and incorrect fields.
+	* Orders won't be placed until all Checkout fields required data are input and validated
+* Tweak: Revamped all Jigoshop frontend javascript for modularity and efficiency
+* Tweak: Updated several external javascript libraries (jQuery blockUI, select2)
+* Tweak: Removed large jQuery UI library from front end loading, loads required bits as needed (Price Filter)
+* Tweak: Add a codeblock option type in the settings for extensions to use internally
+* Tweak: Combine Edit Order variation attributes with product addons extension in one panel for Orders
+* Tweak: Add some filters for Jigoshop WPML extension to allow more translated items
+* Languages: Updated .pot file for translators
+* Languages: Updated Brazilian translation courtesy of Raphael Suzuki
+
 = 1.7.3 - 2013-06-26 =
 * Fix: Repair template loader that was duplicating Shop products
 

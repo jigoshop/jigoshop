@@ -330,7 +330,8 @@ class futurepay extends jigoshop_payment_gateway {
 			
 			echo '<script src="'. $this->request_url .'cart-integration/'.$response.'"></script>';
 
-			echo '<script>
+			echo '<script type="text/javascript">
+				/*<![CDATA[*/
 				jQuery(window).load(function() {
 					FP.CartIntegration();
 
@@ -349,7 +350,7 @@ class futurepay extends jigoshop_payment_gateway {
 					}
 
 				}
-				
+				/*]]>*/
 			</script>';
 
 			echo '<input type="button" class="button alt" name="place_order" id="place_order" value="Place Order" onclick="FP.CartIntegration.placeOrder();" />';

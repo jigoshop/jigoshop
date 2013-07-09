@@ -62,7 +62,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 */
 	public function settings_styles() {
 
-		wp_register_style( 'jigoshop-select2', jigoshop::assets_url() . '/assets/css/select2.css', '', '3.1', 'screen' );
+		wp_register_style( 'jigoshop-select2', jigoshop::assets_url() . '/assets/css/select2.css' );
 		wp_enqueue_style( 'jigoshop-select2' );
 
 		do_action( 'jigoshop_settings_styles' );	// user defined stylesheets should be registered and queued
@@ -430,6 +430,28 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 				case 'longtext' :
 				case 'textarea' :
 					$valid_input[$setting['id']] = esc_attr( jigowatt_clean( $value ) );
+					update_option( $setting['id'], $valid_input[$setting['id']] ); // TODO: remove in v1.5 - provides compatibility
+					break;
+
+				case 'codeblock' :
+					$allowedtags = array(
+						'a' => array( 'href' => true, 'title' => true ),
+						'img' => array( 'src' => true, 'title' => true, 'alt' => true ),
+						'abbr' => array( 'title' => true ),
+						'acronym' => array( 'title' => true ),
+						'b' => array(),
+						'blockquote' => array( 'cite' => true ),
+						'cite' => array(),
+						'code' => array(),
+						'script' => array( 'src' => true, 'language' => true, 'type' => true ),
+						'del' => array( 'datetime' => true ),
+						'em' => array(),
+						'i' => array(),
+						'q' => array( 'cite' => true ),
+						'strike' => array(),
+						'strong' => array(),
+					);
+					$valid_input[$setting['id']] = wp_kses( $value, $allowedtags );
 					update_option( $setting['id'], $valid_input[$setting['id']] ); // TODO: remove in v1.5 - provides compatibility
 					break;
 
@@ -993,6 +1015,7 @@ class Jigoshop_Options_Parser {
 				value="'. esc_attr( $data[$item['id']] ).'" />';
 			break;
 
+		case 'codeblock':
 		case 'textarea':
 			$cols = '60';
 			$ta_value = '';

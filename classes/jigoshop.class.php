@@ -175,11 +175,19 @@ class jigoshop extends Jigoshop_Singleton {
 	 */
 	public static function show_messages() {
 		if ( self::has_errors() ) {
-			echo '<div class="jigoshop_error">'.self::$errors[0].'</div>';
+			echo '<div class="jigoshop_error">';
+			foreach ( self::$errors as $error ) {
+				echo '<span>'.$error.'</span><br />';
+			}
+			echo '</div>';
 		}
 
 		if ( self::has_messages() ) {
-			echo '<div class="jigoshop_message">'.self::$messages[0].'</div>';
+			echo '<div class="jigoshop_message">';
+			foreach ( self::$messages as $message ) {
+				echo '<span>'.$message.'</span><br />';
+			}
+			echo '</div>';
 		}
 
 		self::clear_messages();

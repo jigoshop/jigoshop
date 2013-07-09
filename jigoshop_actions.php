@@ -1043,3 +1043,24 @@ function jigoshop_json_search_products( $x = '', $post_types = array( 'product' 
 	die();
 }
 add_action( 'wp_ajax_jigoshop_json_search_products', 'jigoshop_json_search_products' );
+
+
+/**
+ * AJAX validate postcode
+ */
+function jigoshop_validate_postcode() {
+
+	check_ajax_referer( 'update-order-review', 'security' );
+
+	$postcode = (string) urldecode( stripslashes( strip_tags( $_GET['postcode'] )));
+	if ( empty( $postcode )) die();
+
+	$country = (string) urldecode( stripslashes( strip_tags( $_GET['country'] )));
+	if ( empty( $country )) die();
+	
+	echo jigoshop_validation::is_postcode( $postcode, $country );
+	
+	die();
+}
+add_action( 'wp_ajax_jigoshop_validate_postcode', 'jigoshop_validate_postcode' );
+add_action( 'wp_ajax_nopriv_jigoshop_validate_postcode', 'jigoshop_validate_postcode');

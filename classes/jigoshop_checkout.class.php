@@ -226,9 +226,12 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
 			echo '<div class="create-account">';
 
-			$this->checkout_form_field( array( 'type'=> 'password', 'name'=> 'account-password', 'label'  => __('Account password', 'jigoshop'), 'placeholder'=> __('Password', 'jigoshop'),'class'      => array('form-row-first')) );
-			$this->checkout_form_field( array( 'type'=> 'password', 'name'=> 'account-password-2', 'label'=> __('Account password', 'jigoshop'), 'placeholder'=> __('Password again', 'jigoshop'),'class'=> array('form-row-last'), 'label_class'=> array('hidden')) );
-			$this->checkout_form_field( array( 'type'=> 'text', 'name'    => 'account-username', 'label'  => __('Account username', 'jigoshop'), 'placeholder'=> __('Username', 'jigoshop') ) );
+			$field = array( 'type'=> 'text', 'name'    => 'account-username', 'label'  => __('Account username', 'jigoshop'), 'placeholder'=> __('Username', 'jigoshop'), 'required' => true );
+			$this->checkout_form_field( $field );
+			$field = array( 'type'=> 'password', 'name'=> 'account-password', 'label'  => __('Account password', 'jigoshop'), 'placeholder'=> __('Password', 'jigoshop'), 'class' => array('form-row-first'), 'required' => true );
+			$this->checkout_form_field( $field );
+			$field = array( 'type'=> 'password', 'name'=> 'account-password-2', 'label'=> __('Account password', 'jigoshop'), 'placeholder'=> __('Password again', 'jigoshop'),'class'=> array('form-row-last'), 'label_class'=> array('hidden'), 'required' => true );
+			$this->checkout_form_field( $field );
 
 			echo '<p><small>'.__('Save time in the future and check the status of your order by creating an account.', 'jigoshop').'</small></p></div>';
 
@@ -403,7 +406,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 				 */
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 				<label for="'.esc_attr($args['name']).'" class="'.esc_attr(implode(' ', $args['label_class'])).'">'.$args['label'].$required.'</label>
-				<select name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" class="country_to_state" rel="'.esc_attr($args['rel']).'">';
+				<select name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" class="country_to_state'.esc_attr($input_required).'" rel="'.esc_attr($args['rel']).'">';
 
 				foreach(jigoshop_countries::get_allowed_countries() as $key=>$value) :
 					$field .= '<option value="'.esc_attr($key).'"';
@@ -414,7 +417,8 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
 				$field .= '</select></p>'.$after;
 
-			break;
+				break;
+			
 			case "state" :
 
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
@@ -439,12 +443,13 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					$field .= '</select>';
 				else :
 					// Input
-					$field .= '<input type="text" class="input-text" value="'.esc_attr($current_r).'" placeholder="'.__('State/County', 'jigoshop').'" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" />';
+					$field .= '<input type="text" class="input-text' . esc_attr( $input_required ) . '" value="'.esc_attr($current_r).'" placeholder="'.__('State/County', 'jigoshop').'" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" />';
 				endif;
 
 				$field .= '</p>'.$after;
 
-			break;
+				break;
+				
 			case "postcode" :
 				$current_pc = $this->get_value($args['name']);
 				$is_shipping_pc = strpos($args['name'], 'shipping');
@@ -455,9 +460,10 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="' . esc_attr( $args['name'] ) . '" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
-					<input type="text" class="input-text" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" placeholder="'.$args['placeholder'].'" value="' . esc_attr( $current_pc ) . '" />
+					<input type="text" class="input-text' . esc_attr( $input_required ) . '" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" placeholder="'.$args['placeholder'].'" value="' . esc_attr( $current_pc ) . '" />
 				</p>'.$after;
-			break;
+				break;
+				
 			case "textarea" :
 
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
@@ -465,11 +471,12 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					<textarea name="'.esc_attr($args['name']).'" class="input-text' . esc_attr( $input_required ) . '" id="'.esc_attr($args['name']).'" placeholder="'.$args['placeholder'].'" cols="5" rows="2">'. esc_textarea( $this->get_value( $args['name'] ) ).'</textarea>
 				</p>'.$after;
 
-			break;
+				break;
+				
 			case "select" :
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="' . esc_attr( $args['name'] ) . '" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
-					<select name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" class="input-text" rel="'.esc_attr($args['rel']).'">';
+					<select name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" class="input-text' . esc_attr( $input_required ) . '" rel="'.esc_attr($args['rel']).'">';
 
 				foreach($args['options'] as $key=>$value) :
 					$field .= '<option value="'.esc_attr($key).'"';
@@ -479,7 +486,8 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
 				$field .= '</select></p>'.$after;
 
-			break;
+				break;
+				
 			default :
 
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
@@ -487,7 +495,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					<input type="'.$args['type'].'" class="input-text' . esc_attr( $input_required ) . '" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" placeholder="'.$args['placeholder'].'" value="'. $this->get_value( $args['name'] ).'" />
 				</p>'.$after;
 
-			break;
+				break;
 		endswitch;
 
 		if ($args['return']) return $field; else echo $field;

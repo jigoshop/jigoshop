@@ -24,6 +24,7 @@
  *      longtext                - same as text (display size 80 chars)
  *      email                   - same as text (display size 40 chars)
  *      textarea                - same as text (display size 4 rows, 60 cols)
+ *      codeblock               - intended for markup and embedded javascript for inclusion elsewhere
  *      natural                 - positive number only, leading 0 allowed (display size 20 chars)
  *      integer                 - integer, positive or negative, no decimals (display size 20 chars)
  *      decimal                 - positive or negative number, may contain decimal point (display size 20 chars)
@@ -210,6 +211,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 
 			$transfer_options['jigoshop_use_beta_version'] = 'no';
 			$transfer_options['jigoshop_reset_pending_orders'] = 'no';
+			$transfer_options['jigoshop_complete_processing_orders'] = 'no'; 
 			$transfer_options['jigoshop_downloads_require_login'] = 'no';
 			$transfer_options['jigoshop_frontend_with_theme_css'] = 'no';
 
@@ -764,6 +766,19 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			'desc' 		=> __("Change all 'Pending' Orders older than one month to 'On Hold'",'jigoshop'),
 			'tip' 		=> __("For customers that have not completed the Checkout process or haven't paid for an Order after a period of time, this will reset the Order to On Hold allowing the Shop owner to take action.  WARNING: For the first use on an existing Shop this setting <em>can</em> generate a <strong>lot</strong> of email!",'jigoshop'),
 			'id' 		=> 'jigoshop_reset_pending_orders',
+			'std' 		=> 'no',
+			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+
+		self::$default_options[] = array(
+			'name'		=> __('Complete processing Orders','jigoshop'),
+			'desc' 		=> __("Change all 'Processing' Orders older than one month to 'Completed'",'jigoshop'),
+			'tip' 		=> __("For orders that have been completed but the status is still set to 'processing'.  This will move them to a 'completed' status without sending an email out to all the customers.",'jigoshop'),
+			'id' 		=> 'jigoshop_complete_processing_orders',
 			'std' 		=> 'no',
 			'type' 		=> 'checkbox',
 			'choices'	=> array(

@@ -39,7 +39,7 @@ function jigoshop_meta_boxes() {
     add_meta_box( 'jigoshop-order-data', __('Order Data', 'jigoshop'), 'jigoshop_order_data_meta_box', 'shop_order', 'normal', 'high' );
     add_meta_box( 'jigoshop-order-items', __('Order Items <small>&ndash; Note: if you edit quantities or remove items from the order you will need to manually change the item\'s stock levels.</small>', 'jigoshop'), 'jigoshop_order_items_meta_box', 'shop_order', 'normal', 'high');
     add_meta_box( 'jigoshop-order-totals', __('Order Totals', 'jigoshop'), 'jigoshop_order_totals_meta_box', 'shop_order', 'side', 'default');
-    add_meta_box( 'jigoshop-order-attributes', __('Order Variation Attributes', 'jigoshop'), 'jigoshop_order_attributes_meta_box', 'shop_order', 'side', 'default');
+    add_meta_box( 'jigoshop-order-attributes', __('Order Variation Attributes / Addons', 'jigoshop'), 'jigoshop_order_attributes_meta_box', 'shop_order', 'side', 'default');
 
     add_meta_box( 'jigoshop-order-actions', __('Order Actions', 'jigoshop'), 'jigoshop_order_actions_meta_box', 'shop_order', 'side', 'default');
 
