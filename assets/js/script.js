@@ -23,39 +23,6 @@ jQuery(function() {
 		});
 	}
 
-	// Price slider
-	var min_price = parseInt(jQuery('.price_slider_amount #min_price').val());
-	var max_price = parseInt(jQuery('.price_slider_amount #max_price').val());
-
-	if (jigoshop_params.min_price) {
-		current_min_price = jigoshop_params.min_price;
-	} else {
-		current_min_price = min_price;
-	}
-
-	if (jigoshop_params.max_price) {
-		current_max_price = jigoshop_params.max_price;
-	} else {
-		current_max_price = max_price;
-	}
-
-	jQuery('.price_slider').slider({
-		range: true,
-		min: min_price,
-		max: max_price,
-		values: [ current_min_price, current_max_price ],
-		create : function( event, ui ) {
-			jQuery( ".price_slider_amount span" ).html( jigoshop_params.currency_symbol + current_min_price + " - " + jigoshop_params.currency_symbol + current_max_price );
-			jQuery( ".price_slider_amount #min_price" ).val(current_min_price);
-			jQuery( ".price_slider_amount #max_price" ).val(current_max_price);
-		},
-		slide: function( event, ui ) {
-			jQuery( ".price_slider_amount span" ).html( jigoshop_params.currency_symbol + ui.values[ 0 ] + " - " + jigoshop_params.currency_symbol + ui.values[ 1 ] );
-			jQuery( "input#min_price" ).val(ui.values[ 0 ]);
-			jQuery( "input#max_price" ).val(ui.values[ 1 ]);
-		}
-	});
-
 	// Quantity buttons
 	jQuery("div.quantity, td.quantity").append('<input type="button" value="+" id="add1" class="plus" />').prepend('<input type="button" value="-" id="minus1" class="minus" />');
 	jQuery(".plus").click(function()
