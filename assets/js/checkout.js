@@ -97,17 +97,16 @@ jQuery(document).ready( function($) {
 		
 			var $this = $(this);
 			var $parent = $this.closest('.form-row');
-			var validated = false;
+			var validated = true;
 			
 			// ensure fields aren't empty
 			if ( $this.val() == '' || $this.val() == 'undefined' )
 			{
-				$parent.removeClass( 'jigoshop-validated' ).addClass( 'jigoshop-invalid jigoshop-invalid-required-field' );
 				validated = false;
 			}
 			
 			// ignore shipping fields if billing fields are only ones allowed
-			if ( $this.attr('id').indexOf('shipping') > -1 && $('#shiptobilling-checkbox').val() ) {
+			if ( $this.attr('id').indexOf('shipping') > -1 && $('#shiptobilling-checkbox').checked ) {
 				validated = true;
 			}
 			
@@ -135,11 +134,6 @@ jQuery(document).ready( function($) {
 					data: 		stuff,
 					success: 	function( result ) {
 						validated = result;
-						if ( ! validated ) {
-							$parent.removeClass( 'jigoshop-validated' ).addClass( 'jigoshop-invalid jigoshop-invalid-required-field' );
-						} else {
-							$parent.removeClass( 'jigoshop-invalid jigoshop-invalid-required-field' ).addClass( 'jigoshop-validated' );
-						}
 					}
 				});
 			}
@@ -147,6 +141,8 @@ jQuery(document).ready( function($) {
 			if ( validated )
 			{
 				$parent.removeClass( 'jigoshop-invalid jigoshop-invalid-required-field' ).addClass( 'jigoshop-validated' );
+			} else {
+				$parent.removeClass( 'jigoshop-validated' ).addClass( 'jigoshop-invalid jigoshop-invalid-required-field' );
 			}
 		});
 		
@@ -266,6 +262,8 @@ jQuery(document).ready( function($) {
             $(state_box).html(options);
         } else {
             if ( $(state_box).is('select') ) {
+            	var $parent = $(state_box).closest('.form-row');
+            	$parent.removeClass( 'jigoshop-validated jigoshop-invalid jigoshop-invalid-required-field' );
         		$(state_box).prev().find('span.required').remove();
                 $(state_box).replaceWith('<input class="input-text" type="text" placeholder="' + jigoshop_params.state_text + '" name="' + input_name + '" id="' + input_id + '" />');
                 state_box = $('#' + $(this).attr('rel'));

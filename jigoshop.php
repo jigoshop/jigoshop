@@ -302,25 +302,25 @@ function jigoshop_frontend_scripts() {
 		wp_enqueue_style( 'jigoshop_styles', $theme_css );
 	}
 
+	wp_enqueue_script( 'jigoshop_global', jigoshop::assets_url().'/assets/js/global.js', array('jquery'), '', true );
+	
 	if ( $jigoshop_options->get_option( 'jigoshop_disable_fancybox' ) == 'no' ) {
-		wp_enqueue_script( 'prettyphoto', jigoshop::assets_url().'/assets/js/jquery.prettyPhoto.js', array('jquery'), '1.4.15');
+		wp_enqueue_script( 'prettyphoto', jigoshop::assets_url().'/assets/js/jquery.prettyPhoto.js', array('jquery'), '', true );
 	}
 
-	wp_enqueue_script( 'jigoshop_blockui', jigoshop::assets_url().'/assets/js/blockui.js', array('jquery') );
-	wp_enqueue_script( 'jigoshop_frontend', jigoshop::assets_url().'/assets/js/jigoshop_frontend.js', array('jquery') );
-	wp_enqueue_script( 'jigoshop_script', jigoshop::assets_url().'/assets/js/script.js', array('jquery') );
+	wp_enqueue_script( 'jigoshop_blockui', jigoshop::assets_url().'/assets/js/blockui.js', array('jquery'), '', true );
 
 	if ( is_cart() ) {
-		wp_enqueue_script( 'jigoshop-cart', jigoshop::assets_url().'/assets/js/cart.js', array( 'jquery' ) );
+		wp_enqueue_script( 'jigoshop-cart', jigoshop::assets_url().'/assets/js/cart.js', array( 'jquery' ), '', true );
 	}
 		
 	if ( is_checkout() ) {
-//		wp_enqueue_script( 'jigoshop-select2', jigoshop::assets_url().'/assets/js/select2.min.js', array( 'jquery' ), '3.4.1' );
-		wp_enqueue_script( 'jigoshop-checkout', jigoshop::assets_url().'/assets/js/checkout.js', array( 'jquery' ) );
+//		wp_enqueue_script( 'jigoshop-select2', jigoshop::assets_url().'/assets/js/select2.min.js', array( 'jquery' ), '', true );
+		wp_enqueue_script( 'jigoshop-checkout', jigoshop::assets_url().'/assets/js/checkout.js', array( 'jquery' ), '', true );
 	}
 		
 	if ( is_product() ) {
-		wp_enqueue_script( 'jigoshop-single-product', jigoshop::assets_url().'/assets/js/single-product.js', array( 'jquery' ) );
+		wp_enqueue_script( 'jigoshop-single-product', jigoshop::assets_url().'/assets/js/single-product.js', array( 'jquery' ), '', true );
 	}
 	
 	/* Script.js variables */
@@ -332,14 +332,13 @@ function jigoshop_frontend_scripts() {
 		'countries' 					=> json_encode(jigoshop_countries::$states),
 		'currency_symbol' 				=> get_jigoshop_currency_symbol(),
 		'get_variation_nonce' 			=> wp_create_nonce("get-variation"),
-		'load_fancybox'					=> $jigoshop_options->get_option( 'jigoshop_disable_fancybox' )=='no'?true:false,
+		'load_fancybox'					=> $jigoshop_options->get_option( 'jigoshop_disable_fancybox' )=='no',
 		'option_guest_checkout'			=> $jigoshop_options->get_option('jigoshop_enable_guest_checkout'),
 		'select_state_text' 			=> __('Select a state&hellip;', 'jigoshop'),
 		'state_text' 					=> __('state', 'jigoshop'),
 		'update_order_review_nonce' 	=> wp_create_nonce("update-order-review"),
         'billing_state'                 => jigoshop_customer::get_state(),
-        'shipping_state'                => jigoshop_customer::get_shipping_state(),
-        'confirmation_text'             => __('Please review your Order and ensure you have entered all the required information.','jigoshop')
+        'shipping_state'                => jigoshop_customer::get_shipping_state()
 	);
 
 	if ( isset( jigoshop_session::instance()->min_price ))
@@ -352,7 +351,7 @@ function jigoshop_frontend_scripts() {
 
 	$jigoshop_params = apply_filters('jigoshop_params', $jigoshop_params);
 
-	wp_localize_script( 'jigoshop_script', 'jigoshop_params', $jigoshop_params );
+	wp_localize_script( 'jigoshop_global', 'jigoshop_params', $jigoshop_params );
 
 }
 
