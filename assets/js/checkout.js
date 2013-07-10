@@ -93,7 +93,7 @@ jQuery(document).ready( function($) {
 	
 	function validate_required() {
 		
-		$('.input-required, select').each( function() {
+		$('.input-required').each( function() {
 		
 			var $this = $(this);
 			var $parent = $this.closest('.form-row');
@@ -107,11 +107,6 @@ jQuery(document).ready( function($) {
 			
 			// ignore shipping fields if billing fields are only ones allowed
 			if ( $this.attr('id').indexOf('shipping') > -1 && $('#shiptobilling-checkbox').checked ) {
-				validated = true;
-			}
-			
-			// ignore account creation fields if not creating account
-			if ( $this.attr('id').indexOf('account') > -1 && ! $('#createaccount').checked ) {
 				validated = true;
 			}
 			
@@ -179,15 +174,52 @@ jQuery(document).ready( function($) {
 	
 	
 	// handle hiding and showing the create account panel
-	if ( jigoshop_params.option_guest_checkout == 'yes' ) {
-		$('div.create-account').hide();
-		$('input#createaccount').change( function() {
-			$('div.create-account').hide();
-			if ( $(this).is(':checked') ) {
-				$('div.create-account').slideDown();
-			}
-		}).change();
+	if ( jigoshop_params.option_guest_checkout == 'no' ) {
+//		$('#createaccount').addClass('input-required');
+		$('#createaccount').next().append(' <span class="required">*</span>');
 	}
+	$('#createaccount').change( function() {
+		if ( $(this).is(':checked') ) {
+			$('div.create-account').slideDown();
+			$('#account-username')
+				.addClass('input-required')
+				.closest('.form-row')
+				.removeClass('jigoshop-validated jigoshop-invalid jigoshop-invalid-required-field'
+			);
+			$('#account-username').prev().append(' <span class="required">*</span>');
+			$('#account-password')
+				.addClass('input-required')
+				.closest('.form-row')
+				.removeClass('jigoshop-validated jigoshop-invalid jigoshop-invalid-required-field'
+			);
+			$('#account-password').prev().append(' <span class="required">*</span>');
+			$('#account-password-2')
+				.addClass('input-required')
+				.closest('.form-row')
+				.removeClass('jigoshop-validated jigoshop-invalid jigoshop-invalid-required-field'
+			);
+			$('#account-password-2').prev().append(' <span class="required">*</span>');
+		} else {
+			$('#account-username')
+				.removeClass('input-required')
+				.closest('.form-row')
+				.removeClass('jigoshop-validated jigoshop-invalid jigoshop-invalid-required-field'
+			);
+			$('#account-username').prev().find('span.required').remove();
+			$('#account-password')
+				.removeClass('input-required')
+				.closest('.form-row')
+				.removeClass('jigoshop-validated jigoshop-invalid jigoshop-invalid-required-field'
+			);
+			$('#account-password').prev().find('span.required').remove();
+			$('#account-password-2')
+				.removeClass('input-required')
+				.closest('.form-row')
+				.removeClass('jigoshop-validated jigoshop-invalid jigoshop-invalid-required-field'
+			);
+			$('#account-password-2').prev().find('span.required').remove();
+		}
+	}).change();
 	
 	
 	// handle clicks on payment methods
@@ -274,7 +306,7 @@ jQuery(document).ready( function($) {
 	
 	
 	// handle inline validation of all required checkout fields
-	$('form.checkout').on( 'blur change', '.input-required, select', function() {
+	$('form.checkout').on( 'blur change', '.input-required', function() {
 	
 		var $this = $(this);
 		var $parent = $this.closest('.form-row');
