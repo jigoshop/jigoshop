@@ -135,13 +135,13 @@ jQuery(document).ready( function($) {
 			
 			if ( validated )
 			{
-				$parent.removeClass( 'jigoshop-invalid jigoshop-invalid-required-field' ).addClass( 'jigoshop-validated' );
+				$parent.removeClass( 'jigoshop-invalid' ).addClass( 'jigoshop-validated' );
 			} else {
-				$parent.removeClass( 'jigoshop-validated' ).addClass( 'jigoshop-invalid jigoshop-invalid-required-field' );
+				$parent.removeClass( 'jigoshop-validated' ).addClass( 'jigoshop-invalid' );
 			}
 		});
 		
-		if ( $('.jigoshop-invalid-required-field').size() == 0 ) {
+		if ( $('.jigoshop-invalid').size() == 0 ) {
 			$valid_checkout = true;
 		}
 		
@@ -177,47 +177,67 @@ jQuery(document).ready( function($) {
 	if ( jigoshop_params.option_guest_checkout == 'no' ) {
 //		$('#createaccount').addClass('input-required');
 		$('#createaccount').next().append(' <span class="required">*</span>');
+		$('#account-username').prev().append(' <span class="required">*</span>');
+		$('#account-password').prev().append(' <span class="required">*</span>');
+		$('#account-password-2').prev().append(' <span class="required">*</span>');
+		$('#account-username')
+			.addClass('input-required')
+			.closest('.form-row')
+			.removeClass('jigoshop-validated jigoshop-invalid'
+		);
+		$('#account-password')
+			.addClass('input-required')
+			.closest('.form-row')
+			.removeClass('jigoshop-validated jigoshop-invalid'
+		);
+		$('#account-password-2')
+			.addClass('input-required')
+			.closest('.form-row')
+			.removeClass('jigoshop-validated jigoshop-invalid'
+		);
+	} else {
+		$('#createaccount').prev().find('span.required').remove();
 	}
 	$('#createaccount').change( function() {
-		if ( $(this).is(':checked') ) {
-			$('div.create-account').slideDown();
-			$('#account-username')
-				.addClass('input-required')
-				.closest('.form-row')
-				.removeClass('jigoshop-validated jigoshop-invalid jigoshop-invalid-required-field'
-			);
-			$('#account-username').prev().append(' <span class="required">*</span>');
-			$('#account-password')
-				.addClass('input-required')
-				.closest('.form-row')
-				.removeClass('jigoshop-validated jigoshop-invalid jigoshop-invalid-required-field'
-			);
-			$('#account-password').prev().append(' <span class="required">*</span>');
-			$('#account-password-2')
-				.addClass('input-required')
-				.closest('.form-row')
-				.removeClass('jigoshop-validated jigoshop-invalid jigoshop-invalid-required-field'
-			);
-			$('#account-password-2').prev().append(' <span class="required">*</span>');
-		} else {
+		if ( jigoshop_params.option_guest_checkout == 'no' ) {
+		} else if ( ! $(this).is(':checked') ) {
 			$('#account-username')
 				.removeClass('input-required')
 				.closest('.form-row')
-				.removeClass('jigoshop-validated jigoshop-invalid jigoshop-invalid-required-field'
+				.removeClass('jigoshop-validated jigoshop-invalid'
 			);
 			$('#account-username').prev().find('span.required').remove();
 			$('#account-password')
 				.removeClass('input-required')
 				.closest('.form-row')
-				.removeClass('jigoshop-validated jigoshop-invalid jigoshop-invalid-required-field'
+				.removeClass('jigoshop-validated jigoshop-invalid'
 			);
 			$('#account-password').prev().find('span.required').remove();
 			$('#account-password-2')
 				.removeClass('input-required')
 				.closest('.form-row')
-				.removeClass('jigoshop-validated jigoshop-invalid jigoshop-invalid-required-field'
+				.removeClass('jigoshop-validated jigoshop-invalid'
 			);
 			$('#account-password-2').prev().find('span.required').remove();
+		} else {
+			$('#account-username')
+				.addClass('input-required')
+				.closest('.form-row')
+				.removeClass('jigoshop-validated jigoshop-invalid'
+			);
+			$('#account-username').prev().append(' <span class="required">*</span>');
+			$('#account-password')
+				.addClass('input-required')
+				.closest('.form-row')
+				.removeClass('jigoshop-validated jigoshop-invalid'
+			);
+			$('#account-password').prev().append(' <span class="required">*</span>');
+			$('#account-password-2')
+				.addClass('input-required')
+				.closest('.form-row')
+				.removeClass('jigoshop-validated jigoshop-invalid'
+			);
+			$('#account-password-2').prev().append(' <span class="required">*</span>');
 		}
 	}).change();
 	
@@ -241,20 +261,6 @@ jQuery(document).ready( function($) {
 		clearTimeout(updateTimer);
 		update_checkout();
 		validate_required();
-	});
-	
-	
-	// handle the Place Order button
-	$('#payment #place_order').click( function(event) {
-		event.preventDefault();
-		validate_required();
-		if ( ! $valid_checkout ) {
-			$('html, body').animate( {
-				scrollTop: ( $('#customer_details').offset().top - 20 )
-			}, 1000);
-		} else {
-			$('form.checkout').submit();
-		}
 	});
 	
 	
@@ -295,7 +301,7 @@ jQuery(document).ready( function($) {
         } else {
             if ( $(state_box).is('select') ) {
             	var $parent = $(state_box).closest('.form-row');
-            	$parent.removeClass( 'jigoshop-validated jigoshop-invalid jigoshop-invalid-required-field' );
+            	$parent.removeClass( 'jigoshop-validated jigoshop-invalid' );
         		$(state_box).prev().find('span.required').remove();
                 $(state_box).replaceWith('<input class="input-text" type="text" placeholder="' + jigoshop_params.state_text + '" name="' + input_name + '" id="' + input_id + '" />');
                 state_box = $('#' + $(this).attr('rel'));
@@ -315,7 +321,7 @@ jQuery(document).ready( function($) {
 		// ensure required fields aren't empty
 		if ( $this.val() == '' || $this.val() == 'undefined' )
 		{
-			$parent.removeClass( 'jigoshop-validated' ).addClass( 'jigoshop-invalid jigoshop-invalid-required-field' );
+			$parent.removeClass( 'jigoshop-validated' ).addClass( 'jigoshop-invalid' );
 			validated = false;
 		}
 		
@@ -340,9 +346,9 @@ jQuery(document).ready( function($) {
 				success: 	function( result ) {
 					validated = result;
 					if ( ! validated ) {
-						$parent.removeClass( 'jigoshop-validated' ).addClass( 'jigoshop-invalid jigoshop-invalid-required-field' );
+						$parent.removeClass( 'jigoshop-validated' ).addClass( 'jigoshop-invalid' );
 					} else {
-						$parent.removeClass( 'jigoshop-invalid jigoshop-invalid-required-field' ).addClass( 'jigoshop-validated' );
+						$parent.removeClass( 'jigoshop-invalid' ).addClass( 'jigoshop-validated' );
 					}
 				}
 			});
@@ -355,7 +361,7 @@ jQuery(document).ready( function($) {
 				var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
 
 				if ( ! pattern.test( $this.val()  ) ) {
-					$parent.removeClass( 'jigoshop-validated' ).addClass( 'jigoshop-invalid jigoshop-invalid-required-field' );
+					$parent.removeClass( 'jigoshop-validated' ).addClass( 'jigoshop-invalid' );
 					validated = false;
 				}
 			}
@@ -363,7 +369,7 @@ jQuery(document).ready( function($) {
 		
 		if ( validated )
 		{
-			$parent.removeClass( 'jigoshop-invalid jigoshop-invalid-required-field' ).addClass( 'jigoshop-validated' );
+			$parent.removeClass( 'jigoshop-invalid' ).addClass( 'jigoshop-validated' );
 		}
 		
 	});
@@ -371,6 +377,7 @@ jQuery(document).ready( function($) {
 	
 	// AJAX Form Submission
 	$('form.checkout').submit( function() {
+		validate_required();
 		var form = this;
 		$(form).block( {
 			message: null,
@@ -395,6 +402,7 @@ jQuery(document).ready( function($) {
 					$('html, body').animate( {
 						scrollTop: ( $('form.checkout').offset().top - 150 )
 					}, 1000);
+					return false;
 				}
 			},
 			dataType: 	"html"
