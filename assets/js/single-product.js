@@ -7,7 +7,6 @@ jQuery(document).ready(function($) {
 		$('div.panel').hide();
 		$('div' + href).show();
 		$(this).parent().addClass('active');
-		$.cookie('current_tab', href);
 		return false;
 	});
 	if ($('#tabs li.active').size()==0) {

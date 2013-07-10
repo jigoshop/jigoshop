@@ -220,21 +220,28 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
 		// Registration Form
 		if ($this->show_signup) :
-
+			
+			echo '<div class="checkout-signup" style="margin-top:20px;">';
+			$guests_allowed = self::get_options()->get_option('jigoshop_enable_guest_checkout') == 'yes';
+			$account_label = $guests_allowed
+				? __('Would you like to create an account?', 'jigoshop')
+				: __('You must check this to agree to creating an account', 'jigoshop'
+			);
 			echo '<p class="form-row"><input class="input-checkbox" id="createaccount" ';
 			if ($this->get_value('createaccount')) echo 'checked="checked" ';
-			echo 'type="checkbox" name="createaccount" /> <label for="createaccount" class="checkbox">'.__('Create an account?', 'jigoshop').'</label></p>';
+			echo 'type="checkbox" name="createaccount" /> <label for="createaccount" class="checkbox">'.$account_label.'</label></p>';
 
 			echo '<div class="create-account">';
 
-			$field = array( 'type'=> 'text', 'name'    => 'account-username', 'label'  => __('Account username', 'jigoshop'), 'placeholder'=> __('Username', 'jigoshop') );
+			$field = array( 'type'=> 'text', 'name'    => 'account-username', 'label'  => __('Account Username', 'jigoshop'), 'placeholder'=> __('Username', 'jigoshop') );
 			$this->checkout_form_field( $field );
-			$field = array( 'type'=> 'password', 'name'=> 'account-password', 'label'  => __('Account password', 'jigoshop'), 'placeholder'=> __('Password', 'jigoshop'), 'class' => array('form-row-first') );
+			$field = array( 'type'=> 'password', 'name'=> 'account-password', 'label'  => __('Account Password', 'jigoshop'), 'placeholder'=> __('Password', 'jigoshop'), 'class' => array('form-row-first') );
 			$this->checkout_form_field( $field );
-			$field = array( 'type'=> 'password', 'name'=> 'account-password-2', 'label'=> __('Account password', 'jigoshop'), 'placeholder'=> __('Password again', 'jigoshop'),'class'=> array('form-row-last'), 'label_class'=> array('hidden') );
+			$field = array( 'type'=> 'password', 'name'=> 'account-password-2', 'label'=> __('Account Password', 'jigoshop'), 'placeholder'=> __('Password again', 'jigoshop'),'class'=> array('form-row-last'), 'label_class'=> array('hidden') );
 			$this->checkout_form_field( $field );
 
-			echo '<p><small>'.__('Save time in the future and check the status of your order by creating an account.', 'jigoshop').'</small></p></div>';
+			echo '<p><small>'.__('Save time in the future and check the status of your orders by creating an account.', 'jigoshop').'</small></p></div>';
+			echo '</div>';
 
 		endif;
 
@@ -503,7 +510,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 	}
 	
 	
-	/** Validate the checkout after the confirm order button is pressed */
+	/** Validate the checkout after the Place Order button is pressed */
 	function validate_checkout() {
 
 		if ( sizeof(jigoshop_cart::$cart_contents) == 0 ) :
@@ -722,6 +729,8 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
 			jigoshop::verify_nonce('process_checkout');
 			
+			// this will fill in our $posted array with validated data
+			// $available_gateways will be set with the selected gateway information
 			$available_gateways = self::validate_checkout();
 			
 			// hook, to be able to use the validation, but to be able to do something different afterwards

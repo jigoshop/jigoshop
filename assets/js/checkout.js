@@ -173,75 +173,6 @@ jQuery(document).ready( function($) {
 	}).change();
 	
 	
-	// handle hiding and showing the create account panel
-	if ( jigoshop_params.option_guest_checkout == 'no' ) {
-//		$('#createaccount').addClass('input-required');
-		$('#createaccount').next().append(' <span class="required">*</span>');
-		$('#account-username').prev().append(' <span class="required">*</span>');
-		$('#account-password').prev().append(' <span class="required">*</span>');
-		$('#account-password-2').prev().append(' <span class="required">*</span>');
-		$('#account-username')
-			.addClass('input-required')
-			.closest('.form-row')
-			.removeClass('jigoshop-validated jigoshop-invalid'
-		);
-		$('#account-password')
-			.addClass('input-required')
-			.closest('.form-row')
-			.removeClass('jigoshop-validated jigoshop-invalid'
-		);
-		$('#account-password-2')
-			.addClass('input-required')
-			.closest('.form-row')
-			.removeClass('jigoshop-validated jigoshop-invalid'
-		);
-	} else {
-		$('#createaccount').prev().find('span.required').remove();
-	}
-	$('#createaccount').change( function() {
-		if ( jigoshop_params.option_guest_checkout == 'no' ) {
-		} else if ( ! $(this).is(':checked') ) {
-			$('#account-username')
-				.removeClass('input-required')
-				.closest('.form-row')
-				.removeClass('jigoshop-validated jigoshop-invalid'
-			);
-			$('#account-username').prev().find('span.required').remove();
-			$('#account-password')
-				.removeClass('input-required')
-				.closest('.form-row')
-				.removeClass('jigoshop-validated jigoshop-invalid'
-			);
-			$('#account-password').prev().find('span.required').remove();
-			$('#account-password-2')
-				.removeClass('input-required')
-				.closest('.form-row')
-				.removeClass('jigoshop-validated jigoshop-invalid'
-			);
-			$('#account-password-2').prev().find('span.required').remove();
-		} else {
-			$('#account-username')
-				.addClass('input-required')
-				.closest('.form-row')
-				.removeClass('jigoshop-validated jigoshop-invalid'
-			);
-			$('#account-username').prev().append(' <span class="required">*</span>');
-			$('#account-password')
-				.addClass('input-required')
-				.closest('.form-row')
-				.removeClass('jigoshop-validated jigoshop-invalid'
-			);
-			$('#account-password').prev().append(' <span class="required">*</span>');
-			$('#account-password-2')
-				.addClass('input-required')
-				.closest('.form-row')
-				.removeClass('jigoshop-validated jigoshop-invalid'
-			);
-			$('#account-password-2').prev().append(' <span class="required">*</span>');
-		}
-	}).change();
-	
-	
 	// handle clicks on payment methods
 	$(document.body).on('click', '.payment_methods input.input-radio', function() {
 		if ( $('.payment_methods input.input-radio').length > 1 ) {
@@ -262,6 +193,77 @@ jQuery(document).ready( function($) {
 		update_checkout();
 		validate_required();
 	});
+	
+	
+	// handle account panel 'input-required' for guests allowed or not
+	if ( jigoshop_params.option_guest_checkout == 'no' ) {
+		$('#createaccount').next().append(' <span class="required">*</span>');
+		$('#account-username').prev().append(' <span class="required">*</span>');
+		$('#account-password').prev().append(' <span class="required">*</span>');
+		$('#account-password-2').prev().append(' <span class="required">*</span>');
+		$('#account-username')
+			.addClass('input-required')
+			.closest('.form-row')
+			.removeClass('jigoshop-validated jigoshop-invalid'
+		);
+		$('#account-password')
+			.addClass('input-required')
+			.closest('.form-row')
+			.removeClass('jigoshop-validated jigoshop-invalid'
+		);
+		$('#account-password-2')
+			.addClass('input-required')
+			.closest('.form-row')
+			.removeClass('jigoshop-validated jigoshop-invalid'
+		);
+	} else {
+		$('div.create-account').hide();
+		$('#createaccount').prev().find('span.required').remove();
+	}
+	$('#createaccount').change( function() {
+		if ( jigoshop_params.option_guest_checkout == 'no' ) {
+		} else if ( ! $(this).is(':checked') ) {
+			$('div.create-account').slideUp();
+			$('#account-username')
+				.removeClass('input-required')
+				.closest('.form-row')
+				.removeClass('jigoshop-validated jigoshop-invalid'
+			);
+			$('#account-username').prev().find('span.required').remove();
+			$('#account-password')
+				.removeClass('input-required')
+				.closest('.form-row')
+				.removeClass('jigoshop-validated jigoshop-invalid'
+			);
+			$('#account-password').prev().find('span.required').remove();
+			$('#account-password-2')
+				.removeClass('input-required')
+				.closest('.form-row')
+				.removeClass('jigoshop-validated jigoshop-invalid'
+			);
+			$('#account-password-2').prev().find('span.required').remove();
+		} else {
+			$('div.create-account').slideDown();
+			$('#account-username')
+				.addClass('input-required')
+				.closest('.form-row')
+				.removeClass('jigoshop-validated jigoshop-invalid'
+			);
+			$('#account-username').prev().append(' <span class="required">*</span>');
+			$('#account-password')
+				.addClass('input-required')
+				.closest('.form-row')
+				.removeClass('jigoshop-validated jigoshop-invalid'
+			);
+			$('#account-password').prev().append(' <span class="required">*</span>');
+			$('#account-password-2')
+				.addClass('input-required')
+				.closest('.form-row')
+				.removeClass('jigoshop-validated jigoshop-invalid'
+			);
+			$('#account-password-2').prev().append(' <span class="required">*</span>');
+		}
+	}).change();
 	
 	
 	// handle changes to Countries that dont' require states and back again
@@ -375,7 +377,7 @@ jQuery(document).ready( function($) {
 	});
 	
 	
-	// AJAX Form Submission
+	// AJAX Form Submission from 'Place Order' button
 	$('form.checkout').submit( function() {
 		validate_required();
 		var form = this;
