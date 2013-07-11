@@ -352,9 +352,10 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 				</p>
 				<?php endif; ?>
 
-				<a href="<?php echo home_url(); ?>" class="button cancel"><?php echo apply_filters( 'jigoshop_order_cancel_button_text', __( 'Cancel', 'jigoshop') ) ?></a>
+				<?php /*  showing a Cancel button on the Checkout is .....  UMB DAY  */ ?>
+				<!--a href="<?php echo home_url(); ?>" class="button cancel"><?php echo apply_filters( 'jigoshop_order_cancel_button_text', __( 'Cancel', 'jigoshop') ) ?></a-->
 
-				<?php $order_button_text = apply_filters( 'jigoshop_order_button_text', __( 'Place order', 'jigoshop') ); ?>
+				<?php $order_button_text = apply_filters( 'jigoshop_order_button_text', __( 'Place Order', 'jigoshop') ); ?>
 				<input type="submit" class="button-alt" name="place_order" id="place_order" value="<?php echo esc_attr( $order_button_text ); ?>" />
 
 				<?php do_action( 'jigoshop_review_order_after_submit' ); ?>
@@ -654,9 +655,9 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 				// Validation
 				if (isset($field['validate']) && !empty($this->posted[$field['name']])) switch ( $field['validate'] ) :
 					case 'postcode' :
-						if (!jigoshop_validation::is_postcode( $this->posted[$field['name']], $this->posted['shipping-country'] )) : jigoshop::add_error( $field['label'] . __(' (shipping) is not a valid postcode/ZIP.','jigoshop') );
+						if (!jigoshop_validation::is_postcode( $this->posted[$field['name']], $country )) : jigoshop::add_error( $field['label'] . __(' (shipping) is not a valid postcode/ZIP.','jigoshop') );
 						else :
-							$this->posted[$field['name']] = jigoshop_validation::format_postcode( $this->posted[$field['name']], $this->posted['shipping-country'] );
+							$this->posted[$field['name']] = jigoshop_validation::format_postcode( $this->posted[$field['name']], $country );
 						endif;
 					break;
 				endswitch;

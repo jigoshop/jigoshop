@@ -395,6 +395,7 @@ function jigoshop_admin_styles() {
 	wp_enqueue_style( 'jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css' );
 	wp_enqueue_style( 'jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css' );
 	wp_enqueue_style( 'thickbox' );
+	wp_enqueue_style( 'jigoshop-required', jigoshop::assets_url() . '/assets/css/required.css' );
 
 }
 

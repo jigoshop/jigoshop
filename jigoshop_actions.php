@@ -741,11 +741,11 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 }
 
 /**
- * Displays Google Analytics tracking code in the footer
+ * Displays Google Analytics tracking code in the header as the LAST item before closing </head> tag
  *
  * @return  void
  */
-add_action( 'wp_footer', 'jigoshop_ga_tracking' );
+add_action( 'wp_head', 'jigoshop_ga_tracking', 9999 );
 function jigoshop_ga_tracking() {
 
     $jigoshop_options = Jigoshop_Base::get_options();
@@ -775,7 +775,7 @@ function jigoshop_ga_tracking() {
 		$username 		= __('Guest', 'jigoshop');
 	}
 	?>
-	<script>
+	<script type="text/javascript">
 	    var _gaq=[['_setAccount','<?php echo $tracking_id; ?>'],['_setCustomVar',1,'logged-in','<?php echo $loggedin; ?>',1],['_setCustomVar',2,'user-id','<?php echo $user_id; ?>',1],['_setCustomVar',3, 'username','<?php echo $username; ?>',1],['_trackPageview']];
 	    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
 	    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
@@ -826,7 +826,7 @@ function jigoshop_ga_ecommerce_tracking( $order_id ) {
 	}
 
 	?>
-	<script>
+	<script type="text/javascript">
 		var _gaq = [
 			['_setAccount', '<?php echo $tracking_id; ?>'],
 			['_setCustomVar', 1, 'logged-in', '<?php echo $loggedin; ?>', 1],
