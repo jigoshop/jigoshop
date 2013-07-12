@@ -808,7 +808,7 @@ function jigoshop_ga_ecommerce_tracking( $order_id ) {
 		return false;
 
 	// Unhook standard tracking so we don't count a view twice
-	remove_action('wp_footer', 'jigoshop_ga_tracking');
+	remove_action( 'wp_head', 'jigoshop_ga_tracking', 9999 );
 
 	// Get the order and output tracking code
 	$order = new jigoshop_order($order_id);
