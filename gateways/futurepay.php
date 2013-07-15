@@ -27,6 +27,8 @@ add_filter( 'jigoshop_payment_gateways', 'add_futurepay_gateway', 5 );
 
 class futurepay extends jigoshop_payment_gateway {
 	
+	private static $credit_limit = '500.00';
+	
 	private static $request_url = array(
 		'yes' => 'https://demo.futurepay.com/remote/',
 		'no' => 'https://api.futurepay.com/remote/'
@@ -35,6 +37,7 @@ class futurepay extends jigoshop_payment_gateway {
 	private $shop_base_country;
 	private $merchant_countries = array( 'US' );
 	private $allowed_currency = array( 'USD' );
+	private $currency_symbol;
 	
 	
 	public function __construct() {
@@ -50,12 +53,13 @@ class futurepay extends jigoshop_payment_gateway {
 		$this->gmid         = Jigoshop_Base::get_options()->get_option('jigoshop_futurepay_gmid');
 		$this->request_url  = self::$request_url[Jigoshop_Base::get_options()->get_option('jigoshop_futurepay_mode')];
 
-		add_action( 'init', array( $this, 'check_ipn_response' ) );
-		add_action( 'valid-futurepay-ipn-request', array( $this, 'successful_request' ), 10, 2 );
+		add_action( 'init', array( $this, 'check_response' ) );
+		add_action( 'valid-futurepay-request', array( $this, 'successful_request' ), 10, 2 );
 		add_action( 'receipt_futurepay', array( $this, 'receipt_page' ) );
-
 		add_action( 'admin_notices', array( $this, 'futurepay_notices' ) );
-
+		add_action( 'wp_footer', array( $this, 'futurepay_script' ) );
+		
+		$this->currency_symbol = get_jigoshop_currency_symbol();
 		$this->shop_base_country = (strpos( Jigoshop_Base::get_options()->get_option( 'jigoshop_default_country' ), ':' ) !== false ) 
 	      ? substr( Jigoshop_Base::get_options()->get_option( 'jigoshop_default_country'), 0, strpos( Jigoshop_Base::get_options()->get_option('jigoshop_default_country' ), ':' )) 
 	      : Jigoshop_Base::get_options()->get_option( 'jigoshop_default_country' );
@@ -178,6 +182,49 @@ class futurepay extends jigoshop_payment_gateway {
 		}
 		
 		return true;
+	}
+	
+	
+	/**
+	 *  
+	 */
+	public function futurepay_script() {
+		if ( ! is_checkout() ) return;
+    	?>
+		<script type="text/javascript">
+			/*<![CDATA[*/
+				jQuery(document).ready( function($) {
+					var credit_limit = '<?php echo self::$credit_limit; ?>';
+					var currency_symbol = '<?php echo $this->currency_symbol; ?>';
+					var fp_label = $('#payment_method_futurepay').next().html();
+					var totalstr = $('.shop_table tfoot td:last()').find('strong').html().split(currency_symbol);
+					var total = parseFloat(totalstr[1]);
+					if ( total > credit_limit ) {
+						$('#payment_method_futurepay').attr('disabled', 'disabled');
+						$('#payment_method_futurepay').next().html('FuturePay -- unavailable for Orders over '+currency_symbol+credit_limit);
+						$('#payment input[name=payment_method]:not(:disabled):first').attr('checked',true).trigger('click');
+					} else {
+						$('#payment_method_futurepay').removeAttr('disabled');
+						$('#payment_method_futurepay').next().html(fp_label);
+					}
+					$(document).ajaxStop( function(event,request,settings) {
+						if ( event.isTrigger ) {
+							totalstr = $('.shop_table tfoot td:last()').find('strong').html().split(currency_symbol);
+							total = parseFloat(totalstr[1]);
+							if ( total > credit_limit ) {
+								$('#payment_method_futurepay').next().html('FuturePay -- unavailable for Orders over $500.00');
+								$('#payment_method_futurepay').attr('disabled', 'disabled');
+								$('#payment input[name=payment_method]:not(:disabled):first').attr('checked',true).trigger('click');
+							} else {
+								$('#payment_method_futurepay').next().html(fp_label);
+								$('#payment_method_futurepay').removeAttr('disabled');
+							}
+						}
+					});
+				});
+			/*]]>*/
+		</script>
+    	<?php
 	}
 	
 	
@@ -315,8 +362,11 @@ class futurepay extends jigoshop_payment_gateway {
 			
 			// we need something to validate the response.  Valid transactions begin with 'FPTK'
 			if ( ! strstr( $response, 'FPTK' ) ) {
-				$order->add_order_note( sprintf(__('FUTUREPAY: declined order, reason = %s', 'jigoshop'), $response ) );
-				jigoshop::add_error( sprintf(__('FUTUREPAY: declined order, reason = %s.  Please try again or select another gateway for your Order.', 'jigoshop'), $response ) );
+				$error_message = isset( self::$futurepay_errorcodes[$response] )
+					? self::$futurepay_errorcodes[$response]
+					: __('An unknown error has occured with code = ', 'jigoshop') . $response;
+				$order->add_order_note( sprintf(__('FUTUREPAY: %s', 'jigoshop'), $error_message ) );
+				jigoshop::add_error( sprintf(__('FUTUREPAY: %s.  Please try again or select another gateway for your Order.', 'jigoshop'), $error_message ) );
 				wp_safe_redirect( get_permalink( jigoshop_get_page_id( 'checkout' ) ) );
 				exit;
 			}
@@ -332,7 +382,7 @@ class futurepay extends jigoshop_payment_gateway {
 
 			echo '<script type="text/javascript">
 				/*<![CDATA[*/
-				jQuery(window).load(function() {
+				jQuery(window).load( function() {
 					FP.CartIntegration();
 
 					// Need to replace form html
@@ -390,9 +440,9 @@ class futurepay extends jigoshop_payment_gateway {
 	
 	
 	/**
-	 *  Check for futurepay IPN Response
+	 *  Check for Futurepay Response
 	 */
-	public function check_ipn_response() {
+	public function check_response() {
 
 		// Only run the following code if theres a response from futurepay
 		if ( isset( $_GET['futurepay'] ) ) {
@@ -416,7 +466,7 @@ class futurepay extends jigoshop_payment_gateway {
 				$order = new jigoshop_order( $order_id );
 
 				// Response is valid but lets check it more closly
-				do_action( "valid-futurepay-ipn-request", $response, $order );
+				do_action( "valid-futurepay-request", $response, $order );
 				
 				// set the $_GET query vars for the thankyou page, this empties the Cart
 				wp_safe_redirect( add_query_arg( 'key', $order->order_key, add_query_arg( 'order', $order_id, get_permalink( jigoshop_get_page_id('thanks') ) ) ) );
@@ -453,5 +503,65 @@ class futurepay extends jigoshop_payment_gateway {
 		}
 
 	}
+	
+	
+	private static $futurepay_errorcodes = array(
+		'FP_EXISTING_INVALID_CUSTOMER_STATUS'
+		=> 'Invalid Customer Status, the customer exists in FuturePay and is in an Active or Accepted Status', 'jigoshop',
+		'FP_INVALID_ID_REQUEST'
+		=> 'Error: The GMID could not be validated – either missing or not valid format – Contact FuturePay', 'jigoshop',
+		'FP_INVALID_SERVER_REQUEST'
+		=> 'Error: Either the Merchant Server is not on our IP Whitelist or the Order Reference was Missing', 'jigoshop',
+		'FP_PRE_ORDER_EXCEEDS_MAXIMUM'
+		=> 'The Maximum Amount for a FuturePay order has been exceeded: Currently $500.00', 'jigoshop',
+		'FP_MISSING_REFERENCE' =>
+		'Reference was not detected in the Query String', 'jigoshop',
+		'FP_INVALID_REFERENCE'
+		=> 'Reference was invalid', 'jigoshop',
+		'FP_ORDER_EXISTS'
+		=> 'The reference exists with an order that has completed sales attached', 'jigoshop',
+		'FP_MISSING_REQUIRED_FIRST_NAME'
+		=> 'First Name was not detected in the Query String', 'jigoshop',
+		'FP_MISSING_REQUIRED_LAST_NAME'
+		=> 'Last Name was not detected in the Query String', 'jigoshop',
+		'FP_MISSING_REQUIRED_PHONE'
+		=> 'Phone Name was not detected in the Query String', 'jigoshop',
+		'FP_MISSING_REQUIRED_CITY'
+		=> 'City was not detected in the Query String', 'jigoshop',
+		'FP_MISSING_REQUIRED_STATE'
+		=> 'State was not detected in the Query String', 'jigoshop',
+		'FP_MISSING_REQUIRED_ADDRESS'
+		=> 'Address was not detected in the Query String', 'jigoshop',
+		'FP_MISSING_REQUIRED_COUNTRY'
+		=> 'Country was not detected in the Query String', 'jigoshop',
+		'FP_COUNTRY_US_ONLY'
+		=> 'The Country was not USA', 'jigoshop',
+		'FP_MISSING_EMAIL'
+		=> 'Email was not detected in the Query String', 'jigoshop',
+		'FP_INVALID_EMAIL_SIZE'
+		=> 'Email Size was greater than 85', 'jigoshop',
+		'FP_INVALID_EMAIL_FORMAT'
+		=> 'Email Format was not valid', 'jigoshop',
+		'FP_MISSING_REQUIRED_ZIP'
+		=> 'Zip was not detected in the Query String', 'jigoshop',
+		'FP_NO_ZIP_FOUND'
+		=> 'The Zip Code could not be found in the FuturePay lookup, may be a PO Box or Military Address which are not Accepted', 'jigoshop',
+		'FP_FAILED_ZIP_LOOKUP'
+		=> 'FuturePay failed to lookup the Zip Code – FuturePay needs to investigate the cause', 'jigoshop',
+		'FP_MISSING_ORDER_ITEM_FIELDS'
+		=> 'At least one order item must exist and for each order item all of the fields must exist for price, quantity, sku, description, tax_amount', 'jigoshop',
+		'FP_INVALID_PRICE'
+		=> 'Price must be a non-negative float value', 'jigoshop',
+		'FP_INVALID_TAX'
+		=> 'Tax must be a non-negative float value', 'jigoshop',
+		'FP_INVALID_QUANTITY'
+		=> 'Quantity must be an integer', 'jigoshop',
+		'FP_INVALID_SHIPPING_DATE'
+		=> 'The Shipping date could not be parsed', 'jigoshop',
+		'FP_SHIPPING_IN_PAST'
+		=> 'The Shipping date must be today or in the Future', 'jigoshop',
+		'FP_PRE_ORDER_FAILED'
+		=> 'An Error occurred in trying to save the Order – FuturePay needs to investigate the cause', 'jigoshop'
+	);
 	
 }

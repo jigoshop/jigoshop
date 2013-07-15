@@ -3,7 +3,7 @@ Contributors: Jigoshop
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigowatt, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.5
-Tested up to: 3.6 -beta4
+Tested up to: 3.6-RC1-24704
 Stable tag: 1.8
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
@@ -113,8 +113,6 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 
 == Changelog ==
 = 1.8 - 2013-07-15 =
-* Please CLEAR or empty your browser caches after updating Jigoshop for this release
-*
 * New: Settings->General->`Complete processing Orders` option for 'processing' orders older than 30 days
 * New: Javascript Checkout field validation to enhance payment conversion. Shows correct and incorrect fields.
 	* Orders won't be placed until all Checkout fields required data are input and validated
@@ -125,9 +123,9 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * Tweak: Add a codeblock option type in the settings for extensions to use internally
 * Tweak: Combine Edit Order variation attributes with product addons extension in one panel for Orders
 * Tweak: Add some filters for Jigoshop WPML extension to allow more translated items
-*
 * Fix: Repair Google Analytics function for tracking code to load in header where it's required
-*
+* Fix: Unpaid 'on-hold' orders from cash or cheque gateways will no longer be overwritten with another order
+* Fix: FuturePay gateway will not be selectable on the Checkout for Orders over $500.00 (current credit limit)
 * Languages: Updated .pot file for translators
 * Languages: Updated Brazilian translation courtesy of Raphael Suzuki
 
