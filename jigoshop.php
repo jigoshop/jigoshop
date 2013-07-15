@@ -22,7 +22,7 @@
  * Author:              Jigoshop
  * Author URI:          http://jigoshop.com
  *
- * Version:             1.8 Beta 1
+ * Version:             1.8 Beta 2
  * Requires at least:   3.5
  * Tested up to:        3.6-RC1-24704
  *
