@@ -50,6 +50,10 @@ if ( !defined( "PHP_EOL" )) define( "PHP_EOL", "\r\n" );
 /**
  * Include core files and classes
  **/
+
+// API Class
+include_once( 'classes/jigoshop_api.class.php' );
+
 include_once( 'classes/abstract/jigoshop_base.class.php' );
 include_once( 'classes/abstract/jigoshop_singleton.class.php' );
 include_once( 'classes/jigoshop_options.class.php' );
@@ -137,6 +141,9 @@ function jigoshop_init() {
 	jigoshop_post_type();                       // register taxonomies
 
 	new jigoshop_cron();                        // -after- text domains and Options instantiation allows settings translations
+
+	// Init API
+	$this->api = new JS_API();
 
 	jigoshop_set_image_sizes();                 // called -after- our Options are loaded
 
@@ -1263,4 +1270,23 @@ if(!function_exists('jigoshop_log')){
         endif;
 
     }
+}
+
+/**
+ * Return the JS API URL for a given request
+ *
+ * @access public
+ * @param mixed $request
+ * @param mixed $ssl (default: null)
+ * @return string
+ */
+function api_request_url( $request, $ssl = null ) {
+	if ( is_null( $ssl ) ) {
+		$scheme = parse_url( get_option( 'home' ), PHP_URL_SCHEME );
+	} elseif ( $ssl ) {
+		$scheme = 'https';
+	} else {
+		$scheme = 'http';
+	}
+	return esc_url_raw( trailingslashit( home_url( '/js-api/' . $request, $scheme ) ) );
 }
