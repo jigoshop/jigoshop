@@ -143,7 +143,7 @@ function jigoshop_init() {
 	new jigoshop_cron();                        // -after- text domains and Options instantiation allows settings translations
 
 	// Init API
-	$this->api = new JS_API();
+	$api = new JS_API();
 
 	jigoshop_set_image_sizes();                 // called -after- our Options are loaded
 
