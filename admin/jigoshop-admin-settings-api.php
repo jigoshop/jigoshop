@@ -125,6 +125,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			'desc'			=> '',
 			'tip'			=> '',
 			'std'			=> '',
+			'multiple'		=> false, // added
 			'choices'		=> array(),
 			'class'			=> '',
 			'display'		=> null,
@@ -144,6 +145,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			'desc'			=> $desc,
 			'tip'			=> $tip,
 			"std"			=> $std,
+			'multiple'		=> $multiple, // added
 			'choices'		=> $choices,
 			'label_for'		=> $id,
 			'class'			=> $class,
@@ -984,7 +986,6 @@ class Jigoshop_Options_Parser {
 				size="20"
 				value="'. esc_attr( $data[$item['id']] ).'" />';
 			break;
-
 		case 'midtext':
 			$display .= '<input
 				id="'.$item['id'].'"
@@ -1122,10 +1123,17 @@ class Jigoshop_Options_Parser {
 			break;
 
 		case 'select':
+			$multiple =  ( !empty($item['multiple']) and  $item['multiple'] == true) ? 'multiple="multiple"' : ""; 
+			$brckt = "";
+			$width = 250;
+			if($item['multiple']){
+				$brckt = "[]";
+				$width = 500;
+			}
 			$display .= '<select
 				id="'.$item['id'].'"
 				class="jigoshop-input jigoshop-select '.$class.'"
-				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']" >';
+				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']'.$brckt.'"' .$multiple .' >';
 			foreach ( $item['choices'] as $value => $label ) {
 				if ( is_array( $label )) {
 					$display .= '<optgroup label="'.$value.'">';
@@ -1148,7 +1156,7 @@ class Jigoshop_Options_Parser {
 				<script type="text/javascript">
 				/*<![CDATA[*/
 					jQuery(function() {
-						jQuery("#<?php echo $id; ?>").select2({ width: '250px' });
+						jQuery("#<?php echo $id; ?>").select2({ width: '<?= $width; ?>px' });
 					});
 				/*]]>*/
 				</script>
