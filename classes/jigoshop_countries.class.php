@@ -12,8 +12,8 @@
  *
  * @package             Jigoshop
  * @category            Internationalization
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_countries extends Jigoshop_Base {
@@ -618,6 +618,7 @@ class jigoshop_countries extends Jigoshop_Base {
 			'HKB'            => 'Hawke\'s Bay',
 			'MWT'            => 'Manawatu-Wanganui',
 			'MBH'            => 'Marlborough',
+			'NSN'            => 'Nelson',
 			'NTL'            => 'Northland',
 			'OTA'            => 'Otago',
 			'STL'            => 'Southland',

@@ -12,15 +12,15 @@
  *
  * @package             Jigoshop
  * @category            Orders
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
 class JS_Coupons extends Jigoshop_Base {
-	
+
 	private static $coupons;
-	
+
 	function __construct() {
 
 		if ( !empty( $_GET['unset_coupon'] ))
@@ -43,7 +43,7 @@ class JS_Coupons extends Jigoshop_Base {
 		);
 		return $coupon_types;
 	}
-	
+
 	/**
 	 * get an array of all coupon fields
 	 *
@@ -72,7 +72,7 @@ class JS_Coupons extends Jigoshop_Base {
 		);
 		return $couponFields;
 	}
-	
+
 	function get_coupon_post_id( $code ) {
 		$args = array(
 			'numberposts'	=> -1,
@@ -83,11 +83,11 @@ class JS_Coupons extends Jigoshop_Base {
 		);
 		$our_coupons = (array) get_posts( $args );
 		if ( ! empty( $our_coupons )) foreach ( $our_coupons as $id => $coupon ) {
-			if ( $code == $coupon->post_title ) return $coupon->ID;
+			if ( $code == $coupon->post_name ) return $coupon->ID;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * get all coupons
 	 *
@@ -109,13 +109,13 @@ class JS_Coupons extends Jigoshop_Base {
 				$values = array();
 				$values['id']   = $coupon->ID;
 				$values['code'] = $coupon->post_name;
-				
+
 				foreach ( self::get_coupon_fields() as $name => $meta )
 					if ( $meta ) $values[$name] = get_post_meta( $coupon->ID, $name, true );
-				self::$coupons[$coupon->post_name] = $values;
+				self::$coupons[$coupon->post_name] = apply_filters( 'jigoshop_get_shop_coupon_data', $values, $coupon->post_name );
 			}
 		}
-		return self::$coupons;
+		return apply_filters( 'jigoshop_coupons', self::$coupons );
 	}
 
 	/**
@@ -214,19 +214,19 @@ class JS_Coupons extends Jigoshop_Base {
 		endif;
 
 		/* If no limits are set on the coupon, allow it to be used. */
-		if (   empty( $coupon['include_products'] ) 
-			&& empty( $coupon['exclude_products'] ) 
+		if (   empty( $coupon['include_products'] )
+			&& empty( $coupon['exclude_products'] )
 			&& empty( $coupon['include_categories'] )
-			&& empty( $coupon['exclude_categories'] ) 
+			&& empty( $coupon['exclude_categories'] )
 			) {
-			
+
 			return true;
 		}
-		
+
 		// some products may have passed the earlier exclusion tests, allow them now if we got this far
 		if ( !empty( $coupon['exclude_categories'] ) ) return true;
 		if ( !empty( $coupon['exclude_products'] ) ) return true;
-		
+
 		// otherwise we've failed
 		return false;
 	}
@@ -272,10 +272,10 @@ if ( ! empty( $_GET['unset_coupon'] ) ) $coupons = new JS_Coupons();
 
 /** Depreciated */
 class jigoshop_coupons extends JS_Coupons {
-	
+
 	public function __construct() {
 		_deprecated_function( 'jigoshop_coupons', '1.3', 'JS_Coupons' );
 		parent::__construct();
 	}
-	
+
 }

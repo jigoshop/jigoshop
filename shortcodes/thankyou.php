@@ -10,8 +10,8 @@
  *
  * @package             Jigoshop
  * @category            Checkout
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -38,6 +38,7 @@ function jigoshop_thankyou() {
 		if ($order->order_key == $order_key) :
 
 			?>
+			<?php do_action( 'jigoshop_thankyou_before_order_details', $order->id ); ?>
 			<ul class="order_details">
 				<li class="order">
 					<?php _e('Order:', 'jigoshop'); ?>

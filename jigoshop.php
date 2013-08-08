@@ -19,12 +19,12 @@
  * Plugin Name:         Jigoshop
  * Plugin URI:          http://jigoshop.com/
  * Description:         Jigoshop, a WordPress eCommerce plugin that works.
- * Author:              Jigowatt
- * Author URI:          http://jigowatt.co.uk
+ * Author:              Jigoshop
+ * Author URI:          http://jigoshop.com
  *
- * Version:             1.4.9
- * Requires at least:   3.3
- * Tested up to:        3.5
+ * Version:             1.8 Beta 2
+ * Requires at least:   3.5
+ * Tested up to:        3.6-RC1-24704
  *
  * Text Domain:         jigoshop
  * Domain Path:         /languages/
@@ -37,12 +37,12 @@
  *
  * @package             Jigoshop
  * @category            Core
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
-if ( !defined( "JIGOSHOP_VERSION" )) define( "JIGOSHOP_VERSION", 1211270) ;
+if ( !defined( "JIGOSHOP_VERSION" )) define( "JIGOSHOP_VERSION", 1307110 ) ;
 if ( !defined( "JIGOSHOP_OPTIONS" )) define( "JIGOSHOP_OPTIONS", 'jigoshop_options' );
 if ( !defined( 'JIGOSHOP_TEMPLATE_URL' ) ) define( 'JIGOSHOP_TEMPLATE_URL', 'jigoshop/' );
 if ( !defined( "PHP_EOL" )) define( "PHP_EOL", "\r\n" );
@@ -76,7 +76,7 @@ include_once( 'gateways/bank_transfer.php' );
 include_once( 'gateways/cheque.php' );
 include_once( 'gateways/cod.php' );
 include_once( 'gateways/paypal.php' );
-include_once( 'gateways/skrill.php' );
+include_once( 'gateways/futurepay.php' );
 
 include_once( 'shipping/shipping_method.class.php' );
 include_once( 'shipping/jigoshop_calculable_shipping.php' );
@@ -123,10 +123,10 @@ function jigoshop_init() {
 
 	/* ensure nothing is output to the browser prior to this (other than headers) */
 	ob_start();
-	
+
 	// http://www.geertdedeckere.be/article/loading-wordpress-language-files-the-right-way
 	// this means that all Jigoshop extensions, shipping modules and gateways must load their text domains on the 'init' action hook
-	// 
+	//
 	// Override default translations with custom .mo's found in wp-content/languages/jigoshop first.
 	load_textdomain( 'jigoshop', WP_LANG_DIR.'/jigoshop/jigoshop-'.get_locale().'.mo' );
 	load_plugin_textdomain( 'jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
@@ -144,7 +144,7 @@ function jigoshop_init() {
 	jigoshop_session::instance();               // Start sessions if they aren't already
 	jigoshop::instance();                       // Utility functions, uses sessions
 	jigoshop_customer::instance();              // Customer class, sorts session data such as location
-	
+
 	// Jigoshop will instantiate gateways and shipping methods on this same 'init' action hook
 	// with a very low priority to ensure text domains are loaded first prior to installing any external options
 	jigoshop_shipping::instance();              // Shipping class. loads shipping methods
@@ -167,12 +167,24 @@ function jigoshop_init() {
 
 }
 
+/**
+ * Include template functions here with a low priority so they are pluggable by themes
+ **/
+add_action( 'init', 'jigoshop_load_template_functions', 999 );
+function jigoshop_load_template_functions() {
+	include_once( 'jigoshop_template_functions.php' );
+}
+
+
 function jigoshop_get_core_capabilities() {
 	$capabilities = array();
 
 	$capabilities['core'] = array(
-		"manage_jigoshop",
-		"view_jigoshop_reports"
+		'manage_jigoshop',
+		'view_jigoshop_reports',
+		'manage_jigoshop_orders',
+		'manage_jigoshop_coupons',
+		'manage_jigoshop_products'
 	);
 
 	$capability_types = array( 'product', 'shop_order', 'shop_coupon' );
@@ -218,29 +230,55 @@ function jigoshop_roles_init() {
 
 		// Customer role
 		add_role( 'customer', __('Customer', 'jigoshop'), array(
-			'read'         => true,
-			'edit_posts'   => false,
-			'delete_posts' => false
+			'read'						=> true,
+			'edit_posts'				=> false,
+			'delete_posts'				=> false
 		) );
 
+		// Shop manager role
+		add_role( 'shop_manager', __('Shop Manager', 'jigoshop'), array(
+			'read'						=> true,
+			'read_private_pages'		=> true,
+			'read_private_posts'		=> true,
+			'edit_users'				=> true,
+			'edit_posts' 				=> true,
+			'edit_pages' 				=> true,
+			'edit_published_posts'		=> true,
+			'edit_published_pages'		=> true,
+			'edit_private_pages'		=> true,
+			'edit_private_posts'		=> true,
+			'edit_others_posts' 		=> true,
+			'edit_others_pages' 		=> true,
+			'publish_posts' 			=> true,
+			'publish_pages'				=> true,
+			'delete_posts' 				=> true,
+			'delete_pages' 				=> true,
+			'delete_private_pages'		=> true,
+			'delete_private_posts'		=> true,
+			'delete_published_pages'	=> true,
+			'delete_published_posts'	=> true,
+			'delete_others_posts' 		=> true,
+			'delete_others_pages' 		=> true,
+			'manage_categories' 		=> true,
+			'manage_links'				=> true,
+			'moderate_comments'			=> true,
+			'unfiltered_html'			=> true,
+			'upload_files'				=> true,
+			'export'					=> true,
+			'import'					=> true,
+		) );
+		
 		$capabilities = jigoshop_get_core_capabilities();
 
 		foreach( $capabilities as $cap_group ) {
 			foreach( $cap_group as $cap ) {
 				$wp_roles->add_cap( 'administrator', $cap );
+				$wp_roles->add_cap( 'shop_manager', $cap );
 			}
 		}
+		
 	}
 }
-
-/**
- * Include template functions here with a low priority so they are pluggable by themes
- **/
-add_action( 'init', 'jigoshop_load_template_functions', 999 );
-function jigoshop_load_template_functions() {
-	include_once( 'jigoshop_template_functions.php' );
-}
-
 
 /**
  * Jigoshop Frontend Styles and Scripts
@@ -248,27 +286,10 @@ function jigoshop_load_template_functions() {
 add_action( 'template_redirect', 'jigoshop_frontend_scripts' );
 function jigoshop_frontend_scripts() {
 
-	if ( ! is_jigoshop() && is_admin() ) return false;
+	if ( is_admin() ) return false;
 
     $jigoshop_options = Jigoshop_Base::get_options();
 
-	/**
-	 * Frontend Styles
-	 *
-	 * For Jigoshop 1.3 or better there are 2 CSS related options
-	 * The ususal 'jigoshop_disable_css' must be off to use -any- Jigoshop CSS
-	 *      otherwise the theme is expected to provide -all- CSS located wherever it likes, loaded by the theme
-	 * A user can also copy both frontend.less and frontend.css to a 'jigoshop' folder in the theme folder and
-	 *      rename them to style.less and style.css and compile changes with SimpLESS
-	 *      http://wearekiss.com/simpless
-	 *      If Jigoshop finds this file, it will load -only- that file, or if not found will default to our frontend.css
-	 * A user can also with the second option 'jigoshop_frontend_with_theme_css' enabled, load -both- the default frontend.css
-	 *      -and- any extra bits found in the same 'theme/jigoshop/style.css'
-	 *      This allows only a few modifications to be added in after the default frontend.css
-	 *      It will also allow for easier additions to frontend.css that get missed if themers don't upgrade their version.
-	 * With these 2 options, users should either provide the complete frontend.css (style.css in the theme jigoshop folder)
-	 *      or just the few changes again in the style.css in the theme jigoshop folder and set the 2nd option accordingly
-	 */
 	$frontend_css = jigoshop::assets_url() . '/assets/css/frontend.css';
 	$theme_css = file_exists( get_stylesheet_directory() . '/jigoshop/style.css')
 		? get_stylesheet_directory_uri() . '/jigoshop/style.css'
@@ -276,24 +297,34 @@ function jigoshop_frontend_scripts() {
 
 	if ( $jigoshop_options->get_option( 'jigoshop_disable_css' ) == 'no' ) {
 		if ( $jigoshop_options->get_option( 'jigoshop_frontend_with_theme_css' ) == 'yes' ) {
-			wp_enqueue_style( 'jigoshop_frontend_styles', $frontend_css );
+			wp_enqueue_style( 'jigoshop_theme_styles', $frontend_css );
 		}
-		wp_enqueue_style( 'jigoshop_theme_styles', $theme_css );
+		wp_enqueue_style( 'jigoshop_styles', $theme_css );
 	}
 
-	 if ( $jigoshop_options->get_option( 'jigoshop_disable_fancybox' ) == 'no' ) {
-		wp_enqueue_style( 'jigoshop_fancybox_styles', jigoshop::assets_url() . '/assets/css/fancybox.css' );
-		wp_enqueue_script( 'fancybox', jigoshop::assets_url().'/assets/js/jquery.fancybox-1.3.4.pack.js', array('jquery'));
+	wp_enqueue_script( 'jigoshop_global', jigoshop::assets_url().'/assets/js/global.js', array('jquery'), '', true );
+	
+	if ( $jigoshop_options->get_option( 'jigoshop_disable_fancybox' ) == 'no' ) {
+		wp_enqueue_script( 'prettyphoto', jigoshop::assets_url().'/assets/js/jquery.prettyPhoto.js', array('jquery'), '', true );
 	}
 
-	wp_enqueue_style( 'jqueryui_styles', jigoshop::assets_url().'/assets/css/ui.css' );
-	wp_enqueue_script( 'jqueryui', jigoshop::assets_url().'/assets/js/jquery-ui-1.9.2.min.js', array('jquery'), '1.9.2' );
+	wp_enqueue_script( 'jigoshop_blockui', jigoshop::assets_url().'/assets/js/blockui.js', array('jquery'), '', true );
 
-	wp_enqueue_script( 'jigoshop_blockui', jigoshop::assets_url().'/assets/js/blockui.js', array('jquery'));
-	wp_enqueue_script( 'jigoshop_frontend', jigoshop::assets_url().'/assets/js/jigoshop_frontend.js', array('jquery'));
-	wp_enqueue_script( 'jigoshop_script', jigoshop::assets_url().'/assets/js/script.js', array('jquery'));
-
+	if ( is_cart() ) {
+		wp_enqueue_script( 'jigoshop-cart', jigoshop::assets_url().'/assets/js/cart.js', array( 'jquery' ), '', true );
+	}
+		
+	if ( is_checkout() ) {
+//		wp_enqueue_script( 'jigoshop-select2', jigoshop::assets_url().'/assets/js/select2.min.js', array( 'jquery' ), '', true );
+		wp_enqueue_script( 'jigoshop-checkout', jigoshop::assets_url().'/assets/js/checkout.js', array( 'jquery' ), '', true );
+	}
+		
+	if ( is_product() ) {
+		wp_enqueue_script( 'jigoshop-single-product', jigoshop::assets_url().'/assets/js/single-product.js', array( 'jquery' ), '', true );
+	}
+	
 	/* Script.js variables */
+	// TODO: clean this up, a lot aren't even used anymore, do away with it
 	$jigoshop_params = array(
 		'ajax_url' 						=> admin_url('admin-ajax.php'),
 		'assets_url' 					=> jigoshop::assets_url(),
@@ -301,7 +332,7 @@ function jigoshop_frontend_scripts() {
 		'countries' 					=> json_encode(jigoshop_countries::$states),
 		'currency_symbol' 				=> get_jigoshop_currency_symbol(),
 		'get_variation_nonce' 			=> wp_create_nonce("get-variation"),
-		'load_fancybox'					=> $jigoshop_options->get_option( 'jigoshop_disable_fancybox' )=='no'?true:false,
+		'load_fancybox'					=> $jigoshop_options->get_option( 'jigoshop_disable_fancybox' )=='no',
 		'option_guest_checkout'			=> $jigoshop_options->get_option('jigoshop_enable_guest_checkout'),
 		'select_state_text' 			=> __('Select a state&hellip;', 'jigoshop'),
 		'state_text' 					=> __('state', 'jigoshop'),
@@ -320,7 +351,7 @@ function jigoshop_frontend_scripts() {
 
 	$jigoshop_params = apply_filters('jigoshop_params', $jigoshop_params);
 
-	wp_localize_script( 'jigoshop_script', 'jigoshop_params', $jigoshop_params );
+	wp_localize_script( 'jigoshop_global', 'jigoshop_params', $jigoshop_params );
 
 }
 
@@ -362,9 +393,9 @@ function jigoshop_admin_styles() {
 
 	if ( ! jigoshop_is_admin_page() ) return false;
 	wp_enqueue_style( 'jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css' );
-	wp_enqueue_style( 'jigoshop-select2', jigoshop::assets_url() . '/assets/css/select2.css', '', '3.1', 'screen' );
 	wp_enqueue_style( 'jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css' );
 	wp_enqueue_style( 'thickbox' );
+	wp_enqueue_style( 'jigoshop-required', jigoshop::assets_url() . '/assets/css/required.css' );
 
 }
 
@@ -376,7 +407,7 @@ function jigoshop_admin_scripts() {
 
 	$pagenow = jigoshop_is_admin_page();
 
-	wp_enqueue_script( 'jigoshop-select2', jigoshop::assets_url().'/assets/js/select2.min.js', array( 'jquery' ), '3.1' );
+	wp_enqueue_script( 'jigoshop-select2', jigoshop::assets_url().'/assets/js/select2.min.js', array( 'jquery' ) );
 	wp_enqueue_script( 'jquery-ui-datepicker', jigoshop::assets_url().'/assets/js/jquery-ui-datepicker-1.8.16.min.js', array( 'jquery' ), '1.8.16' );
 	wp_enqueue_script( 'jigoshop_blockui', jigoshop::assets_url() . '/assets/js/blockui.js', array( 'jquery' ), '2.4.6' );
 	wp_enqueue_script( 'jigoshop_backend', jigoshop::assets_url() . '/assets/js/jigoshop_backend.js', array( 'jquery' ), '1.0' );
@@ -394,6 +425,40 @@ function jigoshop_admin_scripts() {
 	if ( $pagenow == 'shop_order' || $pagenow == 'shop_coupon' )
 		add_filter( 'script_loader_src', 'jigoshop_disable_autosave', 10, 2 );
 
+}
+
+
+/**
+ *  Jigoshop requires minumum jQuery 1.7 since it uses functions like .on() for events.
+ *  If, by the time 'wp_print_scripts' is called and jQuery is outdated (i.e not
+ *  using the version in the WP core), we need to de-register it and register the
+ *  core version of the file.
+ */
+add_action( 'wp_print_scripts', 'jigoshop_check_jquery', 99 );
+function jigoshop_check_jquery() {
+	global $wp_scripts;
+
+	// Enforce minimum version of jQuery from WordPress 3.5 core which is 1.8.3
+	if ( ! empty( $wp_scripts->registered['jquery']->ver ) && ! empty( $wp_scripts->registered['jquery']->src ) && $wp_scripts->registered['jquery']->ver < '1.7' ) {
+		wp_deregister_script( 'jquery' );
+		wp_register_script( 'jquery', '/wp-includes/js/jquery/jquery.js', array(), '1.8.3' );
+		wp_enqueue_script( 'jquery' );
+	}
+}
+
+
+/**
+ *  Jigoshop 1.8 has a change that moves javascript library CSS to our frontend.css instead of loading
+ *  individually (PrettyPhoto, jQuery UI, Select2)
+ *  For Shops that might have our frontend.css disabled, install the required bits for these libraries
+ */
+add_action( 'wp_print_scripts', 'jigoshop_check_required_css', 99 );
+function jigoshop_check_required_css() {
+	global $wp_styles;
+
+	if ( empty( $wp_styles->registered['jigoshop_styles'] )) {
+		wp_enqueue_style( 'jigoshop-required', jigoshop::assets_url() . '/assets/css/required.css' );
+	}
 }
 
 
@@ -493,7 +558,7 @@ add_action( 'wp_footer', 'jigoshop_demo_store' );
 function jigoshop_demo_store() {
 
 	if ( Jigoshop_Base::get_options()->get_option( 'jigoshop_demo_store' ) == 'yes' && is_jigoshop() ) :
-		
+
 		$bannner_text = apply_filters( 'jigoshop_demo_banner_text', __('This is a demo store for testing purposes &mdash; no orders shall be fulfilled.', 'jigoshop') );
 		echo '<p class="demo_store">'.$bannner_text.'</p>';
 
@@ -716,8 +781,8 @@ function is_account() {
 
 if (!function_exists('is_ajax')) {
 	function is_ajax() {
-		if ( isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ) return true;
-		return false;
+		if ( defined('DOING_AJAX') ) return true;
+		return ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' );
 	}
 }
 
@@ -760,50 +825,16 @@ add_filter('option_template_url', 'jigoshop_force_ssl_urls');
 add_filter('script_loader_src', 'jigoshop_force_ssl_urls');
 add_filter('style_loader_src', 'jigoshop_force_ssl_urls');
 
-// http://www.xe.com/symbols.php
+
 function get_jigoshop_currency_symbol() {
 
     $jigoshop_options = Jigoshop_Base::get_options();
 	$currency = $jigoshop_options->get_option('jigoshop_currency');
-	$currency_symbol = '';
-	switch ($currency) :
-		case 'AED' : $currency_symbol = '&#1583;&#46;&#1573;'; break;
-		case 'AUD' : $currency_symbol = '&#36;'; break;
-		case 'BRL' : $currency_symbol = '&#82;&#36;'; break;
-		case 'CAD' : $currency_symbol = '&#36;'; break;
-		case 'CHF' : $currency_symbol = 'SFr.'; break;
-		case 'CNY' : $currency_symbol = '&#165;'; break;
-		case 'CZK' : $currency_symbol = '&#75;&#269;'; break;
-		case 'DKK' : $currency_symbol = 'kr'; break;
-		case 'EUR' : $currency_symbol = '&euro;'; break;
-		case 'GBP' : $currency_symbol = '&pound;'; break;
-		case 'HKD' : $currency_symbol = '&#36;'; break;
-		case 'HRK' : $currency_symbol = '&#107;&#110;'; break;
-		case 'HUF' : $currency_symbol = '&#70;&#116;'; break;
-		case 'IDR' : $currency_symbol = '&#82;&#112;'; break;
-		case 'ILS' : $currency_symbol = '&#8362;'; break;
-		case 'INR' : $currency_symbol = '&#8360;'; break;
-		case 'JPY' : $currency_symbol = '&yen;'; break;
-		case 'KES' : $currency_symbol = 'KSh'; break;
-		case 'MXN' : $currency_symbol = '&#36;'; break;
-		case 'MYR' : $currency_symbol = 'RM'; break;
-		case 'NGN' : $currency_symbol = '&#8358;'; break;
-		case 'NOK' : $currency_symbol = 'kr'; break;
-		case 'NZD' : $currency_symbol = '&#36;'; break;
-		case 'PHP' : $currency_symbol = '&#8369;'; break;
-		case 'PLN' : $currency_symbol = '&#122;&#322;'; break;
-		case 'RON' : $currency_symbol = '&#108;&#101;&#105;'; break;
-		case 'RUB' : $currency_symbol = '&#1088;&#1091;&#1073;'; break;
-		case 'SEK' : $currency_symbol = 'kr'; break;
-		case 'SGD' : $currency_symbol = '&#36;'; break;
-		case 'THB' : $currency_symbol = '&#3647;'; break;
-		case 'TRY' : $currency_symbol = '&#8356;'; break;
-		case 'TWD' : $currency_symbol = '&#78;&#84;&#36;'; break;
-		case 'USD' : $currency_symbol = '&#36;'; break;
-		case 'ZAR' : $currency_symbol = 'R'; break;
-		default    : $currency_symbol = '&pound;'; break;
-	endswitch;
+	$symbols = jigoshop::currency_symbols();
+	$currency_symbol = $symbols[$currency];
+	
 	return apply_filters('jigoshop_currency_symbol', $currency_symbol, $currency);
+	
 }
 
 function jigoshop_price( $price, $args = array() ) {
@@ -885,7 +916,7 @@ function jigoshop_price( $price, $args = array() ) {
 
     endif;
 
-	return $return;
+	return apply_filters( 'jigoshop_price_display_filter', $return);
 }
 
 /** Show variation info if set */
@@ -898,7 +929,7 @@ function jigoshop_get_formatted_variation( $variation = '', $flat = false ) {
 			$return = '<dl class="variation">';
 		endif;
 
-		$varation_list = array();
+		$variation_list = array();
 
 		foreach ($variation as $name => $value) :
 
@@ -910,21 +941,26 @@ function jigoshop_get_formatted_variation( $variation = '', $flat = false ) {
 					if ( $term->slug == $value ) $value = $term->name;
 				endforeach;
 				$name = get_taxonomy( 'pa_'.$name )->labels->name;
+				// TODO: this is -not- a static class function and shouldn't be called like this Mr Gates
 				$name = jigoshop_product::attribute_label('pa_'.$name);
 			endif;
 
+			// TODO: if it is a custom text attribute, 'pa_' taxonomies are not created and we
+			// have no way to get the 'label' as submitted on the Edit Product->Attributes tab.
+			// (don't ask me why not, I don't know, but it seems that we should be creating taxonomies)
+			// this function really requires the product passed to it for: $product->attribute_label( $name )
 			if ($flat) :
-				$varation_list[] = $name.': '.$value;
+				$variation_list[] = $name.': '.$value;
 			else :
-				$varation_list[] = '<dt>'.$name.':</dt><dd>'.$value.'</dd>';
+				$variation_list[] = '<dt>'.$name.':</dt><dd>'.$value.'</dd>';
 			endif;
 
 		endforeach;
 
 		if ($flat) :
-			$return .= implode(', ', $varation_list);
+			$return .= implode(', ', $variation_list);
 		else :
-			$return .= implode('', $varation_list);
+			$return .= implode('', $variation_list);
 		endif;
 
 		if (!$flat) :
@@ -1108,18 +1144,23 @@ function jigoshop_comments($comment, $args, $depth) {
 add_filter( 'comments_clauses', 'jigoshop_exclude_order_admin_comments', 10, 1);
 function jigoshop_exclude_order_admin_comments( $clauses ) {
 
+	global $wpdb, $typenow, $pagenow;
+
 	// NOTE: bit of a hack, tests if we're in the admin & its an ajax call
-	// Don't hide when viewing orders in admin
-	if (is_admin() && is_ajax()) {
+	if ( is_admin() && ( $typenow == 'shop_order' || $pagenow == 'admin-ajax.php' ) && current_user_can( 'manage_jigoshop' ) )
+		return $clauses; // Don't hide when viewing orders in admin
 
-		return $clauses;
-	}
+	if ( ! $clauses['join'] ) $clauses['join'] = '';
 
-	// Hide all those comments which aren't of type jigoshop
-	$clauses['where'] .= ' AND comment_type != "jigoshop"';
-	$clauses['where'] .= ' AND comment_type != "order_note"'; // Removes order notes
+	if ( ! strstr( $clauses['join'], "JOIN $wpdb->posts" ) )
+		$clauses['join'] .= " LEFT JOIN $wpdb->posts ON $wpdb->comments.comment_post_ID = $wpdb->posts.ID ";
+
+	if ( $clauses['where'] ) $clauses['where'] .= ' AND ';
+
+	$clauses['where'] .= " $wpdb->posts.post_type NOT IN ('shop_order') ";
 
 	return $clauses;
+
 }
 
 /**

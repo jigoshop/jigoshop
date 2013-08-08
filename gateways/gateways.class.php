@@ -10,8 +10,8 @@
  *
  * @package             Jigoshop
  * @category            Checkout
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -54,7 +54,7 @@ class jigoshop_payment_gateways extends Jigoshop_Singleton {
 			endforeach;
 		endif;
 
-		return $_available_gateways;
+		return apply_filters( 'jigoshop_payment_gateways_installed', $_available_gateways );
 	}
 
 	function get_available_payment_gateways() {

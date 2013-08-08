@@ -12,8 +12,8 @@
  *
  * @package             Jigoshop
  * @category            Admin
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -34,22 +34,23 @@ include('write-panels/coupon-data.php');
 add_action( 'add_meta_boxes', 'jigoshop_meta_boxes' );
 
 function jigoshop_meta_boxes() {
-	add_meta_box( 'jigoshop-product-data', __('Product Data', 'jigoshop'), 'jigoshop_product_data_box', 'product', 'normal', 'high' );
+    add_meta_box( 'jigoshop-product-data', __('Product Data', 'jigoshop'), 'jigoshop_product_data_box', 'product', 'normal', 'high' );
 
-	add_meta_box( 'jigoshop-order-data', __('Order Data', 'jigoshop'), 'jigoshop_order_data_meta_box', 'shop_order', 'normal', 'high' );
-	add_meta_box( 'jigoshop-order-items', __('Order Items <small>&ndash; Note: if you edit quantities or remove items from the order you will need to manually change the item\'s stock levels.</small>', 'jigoshop'), 'jigoshop_order_items_meta_box', 'shop_order', 'normal', 'high');
-	add_meta_box( 'jigoshop-order-totals', __('Order Totals', 'jigoshop'), 'jigoshop_order_totals_meta_box', 'shop_order', 'side', 'default');
+    add_meta_box( 'jigoshop-order-data', __('Order Data', 'jigoshop'), 'jigoshop_order_data_meta_box', 'shop_order', 'normal', 'high' );
+    add_meta_box( 'jigoshop-order-items', __('Order Items <small>&ndash; Note: if you edit quantities or remove items from the order you will need to manually change the item\'s stock levels.</small>', 'jigoshop'), 'jigoshop_order_items_meta_box', 'shop_order', 'normal', 'high');
+    add_meta_box( 'jigoshop-order-totals', __('Order Totals', 'jigoshop'), 'jigoshop_order_totals_meta_box', 'shop_order', 'side', 'default');
+    add_meta_box( 'jigoshop-order-attributes', __('Order Variation Attributes / Addons', 'jigoshop'), 'jigoshop_order_attributes_meta_box', 'shop_order', 'side', 'default');
 
-	add_meta_box( 'jigoshop-order-actions', __('Order Actions', 'jigoshop'), 'jigoshop_order_actions_meta_box', 'shop_order', 'side', 'default');
+    add_meta_box( 'jigoshop-order-actions', __('Order Actions', 'jigoshop'), 'jigoshop_order_actions_meta_box', 'shop_order', 'side', 'default');
 
-	remove_meta_box( 'commentstatusdiv', 'shop_order' , 'normal' );
-	remove_meta_box( 'slugdiv', 'shop_order' , 'normal' );
+    remove_meta_box( 'commentstatusdiv', 'shop_order' , 'normal' );
+    remove_meta_box( 'slugdiv', 'shop_order' , 'normal' );
 
-	add_meta_box( 'jigoshop-coupon-data', __('Coupon Data', 'jigoshop'), 'jigoshop_coupon_data_box', 'shop_coupon', 'normal', 'high');
+    add_meta_box( 'jigoshop-coupon-data', __('Coupon Data', 'jigoshop'), 'jigoshop_coupon_data_box', 'shop_coupon', 'normal', 'high');
 
-	remove_meta_box( 'commentstatusdiv', 'shop_coupon' , 'normal' );
-	remove_meta_box( 'slugdiv', 'shop_coupon' , 'normal' );
-	remove_post_type_support( 'shop_coupon', 'editor' );
+    remove_meta_box( 'commentstatusdiv', 'shop_coupon' , 'normal' );
+    remove_meta_box( 'slugdiv', 'shop_coupon' , 'normal' );
+    remove_post_type_support( 'shop_coupon', 'editor' );
 }
 
 /**
@@ -186,6 +187,10 @@ function jigoshop_write_panel_scripts() {
 		'tax_rate' 						=> __('Tax Rate e.g. 20.0000', 'jigoshop'),
 		'meta_name'						=> __('Meta Name', 'jigoshop'),
 		'meta_value'					=> __('Meta Value', 'jigoshop'),
+		'custom_attr_heading'           => __('Custom Attribute','jigoshop'),
+		'display_attr_label'            => __('Display on product page','jigoshop'),
+		'variation_attr_label'          => __('Is for variations','jigoshop'),
+		'confirm_remove_attr'           => __('Remove this attribute?','jigoshop'),
 		'assets_url' 					=> jigoshop::assets_url(),
 		'ajax_url' 						=> admin_url('admin-ajax.php'),
 		'add_order_item_nonce' 			=> wp_create_nonce("add-order-item")

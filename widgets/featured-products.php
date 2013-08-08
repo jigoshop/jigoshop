@@ -10,8 +10,8 @@
  *
  * @package             Jigoshop
  * @category            Widgets
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -33,10 +33,6 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 		// Create the widget
 		parent::__construct( 'jigoshop_featured_products', __( 'Jigoshop: Featured Products', 'jigoshop' ), $options );
 
-		// Flush cache after every save
-		add_action( 'save_post',	array(&$this, 'flush_widget_cache') );
-		add_action( 'deleted_post', array(&$this, 'flush_widget_cache') );
-		add_action( 'switch_theme', array(&$this, 'flush_widget_cache') );
 	}
 
 	/**
@@ -49,15 +45,6 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 	 * @param	array	instance
 	 */
 	function widget($args, $instance) {
-
-		// Get the best selling products from the transient
-		$cache = get_transient( 'jigoshop_widget_cache' );
-
-		// If cached get from the cache
-		if ( isset( $cache[$args['widget_id']] ) ) {
-			echo $cache[$args['widget_id']];
-			return false;
-		}
 
 		// Start buffering
 		ob_start();
@@ -135,10 +122,6 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 			// Reset the global $the_post as this query will have stomped on it
 			wp_reset_postdata();
 		}
-
-		// Flush output buffer and save to transient cache
-		$cache[$args['widget_id']] = ob_get_flush();
-		set_transient( 'jigoshop_widget_cache', $cache, 3600*3 ); // 3 hours ahead
 	}
 
 	/**
@@ -158,19 +141,7 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 		$instance['title'] = strip_tags( $new_instance['title'] );
 		$instance['number'] = absint( $new_instance['number'] );
 
-		// Flush the cache
-		$this->flush_widget_cache();
-
 		return $instance;
-	}
-
-	/**
-	 * Flush Widget Cache
-	 *
-	 * Flushes the cached output
-	 */
-	public function flush_widget_cache() {
-		delete_transient( 'jigoshop_widget_cache' );
 	}
 
 	/**

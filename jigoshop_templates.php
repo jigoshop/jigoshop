@@ -12,8 +12,8 @@
  *
  * @package             Jigoshop
  * @category            Core
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -86,12 +86,15 @@ add_filter( 'template_include', 'jigoshop_template_loader' );
 //################################################################################
 
 function jigoshop_get_template_part( $slug, $name = '' ) {
-	if ($name=='shop') :
-		if (!locate_template(array( 'loop-shop.php', JIGOSHOP_TEMPLATE_URL . 'loop-shop.php' ))) :
-			load_template( jigoshop::plugin_path() . '/templates/loop-shop.php',false );
-			return;
-		endif;
-	endif;
+	$filename = $slug . '-' . $name . '.php';
+	if ( $name == 'shop' || $name == 'on_sale' ) {
+		// load template if found. priority order = theme, 'jigoshop' folder in theme
+		if ( ! locate_template( array( $filename, JIGOSHOP_TEMPLATE_URL . $filename ), true, false )) {
+			// if not found then load our default, always require template
+			load_template( jigoshop::plugin_path() . '/templates/' . $filename, false );
+		}
+		return;
+	}
 	get_template_part( JIGOSHOP_TEMPLATE_URL . $slug, $name );
 }
 
@@ -124,4 +127,3 @@ add_filter( 'comments_template', 'jigoshop_comments_template' );
 function jigoshop_get_template( $template_name, $require_once = true ) {
 	load_template( jigoshop_return_template( $template_name ), $require_once );
 }
-

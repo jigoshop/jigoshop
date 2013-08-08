@@ -10,8 +10,8 @@
  *
  * @package             Jigoshop
  * @category            Checkout
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -24,10 +24,10 @@ function jigoshop_checkout( $atts ) {
 	if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
 	
 	jigoshop_cart::get_cart();
-	if (sizeof(jigoshop_cart::$cart_contents)==0) :
-		wp_redirect(get_permalink(jigoshop_get_page_id('cart')));
+	if (sizeof(jigoshop_cart::$cart_contents)==0) {
+		wp_safe_redirect( get_permalink( jigoshop_get_page_id( 'cart' )));
 		exit;
-	endif;
+	}
 
 	$non_js_checkout = (isset($_POST['update_totals']) && $_POST['update_totals']) ? true : false;
 

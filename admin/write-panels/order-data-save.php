@@ -12,8 +12,8 @@
  *
  * @package             Jigoshop
  * @category            Admin
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 add_action('jigoshop_process_shop_order_meta', 'jigoshop_process_shop_order_meta', 1, 2);
@@ -104,7 +104,7 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
 			$data[$field_name] = stripslashes( $_POST[$field_name] );
 
 	endforeach;
-	
+
 	// if a shipping or payment methods has changed, update the method title for pretty display
 	if ( isset( $_POST['shipping_method'] )) {
 		$data['shipping_service'] = '';
@@ -120,7 +120,7 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
 			if ( $_POST['payment_method'] == $method->id ) $data['payment_method_title'] = $method->title;
 		}
 	}
-	
+
     // if total tax has been modified from order tax, then create a customized tax array
     // just for the order. At this point, we no longer know about multiple tax classes.
     // Even if we used the old tax array data, we still don't know how to break down
@@ -152,31 +152,37 @@ function jigoshop_process_shop_order_meta($post_id, $post) {
 
             $variation_id = '';
             $variation = '';
-            if(!empty($item_variation[$i])) {
+            if ( ! empty( $item_variation[$i] ) ) {
                 $variation_id = (int)$item_variation[$i];
 
-                //if this is a variation, we should check if it is an old one
-                //and copy the 'variation' field describing details of variation
-                foreach($old_order_items as $old_item_index => $old_item) {
-                    if($old_item['variation_id'] == $variation_id) {
+                // if this is a variation, we should check if it is an old one
+                // and copy the 'variation' field describing details of variation
+                foreach ( $old_order_items as $old_item_index => $old_item ) {
+                    if ( $old_item['variation_id'] == $variation_id ) {
                         $variation = $old_item['variation'];
 
                         unset($old_order_items[$old_item_index]);
                         break;
                     }
                 }
-            }
 
-            $cost_inc_tax = $jigoshop_options->get_option('jigoshop_prices_include_tax' == 'yes') ? number_format((float)jigowatt_clean($item_cost[$i]), 2) : -1;
+                // override variation with values from $_POST
+                if ( isset( $_POST['order_attributes'][$i] ) && is_array( $_POST['order_attributes'][$i] ) ) {
+                    foreach( $_POST['order_attributes'][$i] as $var_key => $var_value ) {
+                        $variation[$var_key] = $var_value;
+                    }
+                }
+            }
+            $cost_inc_tax = $jigoshop_options->get_option('jigoshop_prices_include_tax') == 'yes' ? number_format((float)jigowatt_clean($item_cost[$i]), 2, '.', '') : -1;
             $order_items[] = apply_filters('update_order_item', array(
 				'id'          => htmlspecialchars(stripslashes($item_id[$i])),
 				'variation_id'=> $variation_id,
 				'variation'   => $variation,
 				'name'        => htmlspecialchars(stripslashes($item_name[$i])),
 				'qty'         => (int) $item_quantity[$i],
-				'cost'        => number_format((float)jigowatt_clean($item_cost[$i]), 2),
+				'cost'        => number_format((float)jigowatt_clean($item_cost[$i]), 2, '.', ''),
 				'cost_inc_tax'=> $cost_inc_tax,
-				'taxrate'     => number_format((float)jigowatt_clean($item_tax_rate[$i]), 4)
+				'taxrate'     => number_format((float)jigowatt_clean($item_tax_rate[$i]), 4, '.', '')
                 ));
         }
     }

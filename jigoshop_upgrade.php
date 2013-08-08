@@ -10,8 +10,8 @@
  *
  * @package             Jigoshop
  * @category            Core
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -64,6 +64,34 @@ function jigoshop_upgrade() {
 	if ( $jigoshop_db_version < 1211270 ) {
 		jigoshop_upgrade_146();
 	}
+
+ 	if ( $jigoshop_db_version < 1301280 ) {
+ 		jigoshop_upgrade_150();
+ 	}
+
+ 	if ( $jigoshop_db_version < 1303050 ) {
+ 		jigoshop_upgrade_160();
+ 	}
+
+ 	if ( $jigoshop_db_version < 1303180 ) {
+ 		jigoshop_upgrade_161();
+ 	}
+
+ 	if ( $jigoshop_db_version < 1306040 ) {
+ 		jigoshop_upgrade_170();
+ 	}
+
+ 	if ( $jigoshop_db_version < 1306100 ) {
+ 		jigoshop_upgrade_171();
+ 	}
+
+ 	if ( $jigoshop_db_version < 1306250 ) {
+ 		jigoshop_upgrade_172();
+ 	}
+
+ 	if ( $jigoshop_db_version < 1307110 ) {
+ 		jigoshop_upgrade_180();
+ 	}
 
 	// Update the db option
 	update_site_option( 'jigoshop_db_version', JIGOSHOP_VERSION );
@@ -607,4 +635,186 @@ function jigoshop_upgrade_146() {
 	
 	Jigoshop_Base::get_options()->add_option( 'jigoshop_show_checkout_shipping_fields', 'yes' );
 	
+}
+
+/**
+ * Execute changes made in Jigoshop 1.5
+ *
+ * @since 1.5
+ */
+function jigoshop_upgrade_150() {
+	
+	Jigoshop_Base::get_options()->add_option( 'jigoshop_cart_shows_shop_button', 'no' );
+	Jigoshop_Base::get_options()->add_option( 'jigoshop_enable_postcode_validating', 'no' );
+	Jigoshop_Base::get_options()->add_option( 'jigoshop_product_thumbnail_columns', '3' );
+	
+}
+
+/**
+ * Execute changes made in Jigoshop 1.6
+ *
+ * @since 1.6
+ */
+function jigoshop_upgrade_160() {
+	
+	Jigoshop_Base::get_options()->add_option( 'jigoshop_skrill_icon', '' );
+	Jigoshop_Base::get_options()->add_option( 'jigoshop_skrill_payment_methods_multicheck', 'ACC' );
+	Jigoshop_Base::get_options()->add_option( 'jigoshop_verify_checkout_info_message', 'yes' );
+	Jigoshop_Base::get_options()->add_option( 'jigoshop_eu_vat_reduction_message', 'yes' );
+
+}
+
+/**
+ * Execute changes made in Jigoshop 1.6.1
+ *
+ * @since 1.6.1
+ */
+function jigoshop_upgrade_161() {
+	
+	Jigoshop_Base::get_options()->add_option( 'jigoshop_catalog_product_button', 'add' );
+
+}
+
+/**
+ * Execute changes made in Jigoshop 1.7
+ *
+ * @since 1.7
+ */
+function jigoshop_upgrade_170() {
+	
+	Jigoshop_Base::get_options()->add_option( 'jigoshop_default_gateway', 'cheque' );
+
+}
+
+/**
+ * Execute changes made in Jigoshop 1.7.1
+ *
+ * @since 1.7.1
+ */
+function jigoshop_upgrade_171() {
+	
+	//  perform quantity sold update on all products for Best Sellers Widget
+	//  https://github.com/jigoshop/redhillsranch/issues/761
+	
+	//  to be sure, delete any current meta values
+	//  ('_js_total_sales' should be only current one and it is deprecated)
+	$args = array(
+		'numberposts'      => -1,
+		'orderby'          => 'post_date',
+		'order'            => 'ASC',
+		'post_type'        => array( 'product' ),
+		'suppress_filters' => 1,
+		'fields'           => 'ids',
+	);
+
+	$products = get_posts( $args );
+	
+	foreach ( $products as $index => $product_id ) {
+		delete_post_meta( $product_id, 'quantity_sold' );
+		delete_post_meta( $product_id, '_js_total_sales' );
+	}
+	
+	//  gather all orders, cycle through all products in Order, update product 'quantity_sold' meta value
+	$args = array(
+		'numberposts'      => -1,
+		'orderby'          => 'post_date',
+		'order'            => 'ASC',
+		'post_type'        => 'shop_order',
+		'post_status'      => 'publish' ,
+		'suppress_filters' => 1,
+		'fields'           => 'ids',
+		'tax_query'        => array(
+			array(
+				'taxonomy' => 'shop_order_status',
+				'terms'    => array('completed'),
+				'field'    => 'slug',
+				'operator' => 'IN'
+			)
+		)
+	);
+	
+	$orders = get_posts( $args );
+	$found_products = array();
+	
+	foreach ( $orders as $index => $order_id ) {
+		$order = new jigoshop_order( $order_id );
+		$order_items = (array) get_post_meta( $order_id, 'order_items', true );
+		foreach ( $order_items as $item ) {
+			if ( ! isset( $item['cost'] ) && ! isset( $item['qty'] )) continue;
+			
+			//  a product or variation could now be missing or invalid, suppress errors and add anyway
+			$_product = @$order->get_product_from_item( $item );
+			
+			$qty_sold = $item['qty'];
+			$found_products[$item['id']] = isset( $found_products[$item['id']] ) ? $found_products[$item['id']] + $qty_sold : $qty_sold;
+
+		}
+	}
+	
+	//  now update all the products with a new meta key 'quantity_sold'
+	$args = array(
+		'numberposts'      => -1,
+		'post_type'        => array( 'product' ),
+		'suppress_filters' => 1,
+		'fields'           => 'ids',
+		'posts__in'        => array_keys( $found_products )
+	);
+
+	$products = get_posts( $args );
+
+	foreach ( $products as $index => $product_id ) {
+		$_product = new jigoshop_product( $product_id );
+		if ( $_product->exists() ) {
+			if ( isset( $found_products[$product_id] )) {
+				update_post_meta( $product_id, 'quantity_sold', $found_products[$product_id] );
+			}
+		}
+	}
+	
+	//  and finally output a log of the changed products with their quantities
+	$args = array(
+		'numberposts'      => -1,
+		'meta_key'         => 'quantity_sold',
+		'orderby'          => 'meta_value_num+0',
+		'order'            => 'desc',
+		'post_type'        => array( 'product', 'product_variation' ),
+		'suppress_filters' => 1,
+		'fields'           => 'ids',
+		'posts__in'        => array_keys( $found_products )
+	);
+
+	$products = get_posts( $args );
+	
+	jigoshop_log( "" );
+	jigoshop_log( "PRODUCTS quantity sold are updated with the following counts in Jigoshop 1.7.1" );
+	foreach ( $products as $index => $product_id ) {
+		$this_post = get_post( $product_id );
+		jigoshop_log( $this_post->post_title . " == " . $found_products[$product_id] );
+	}
+	jigoshop_log( "" );
+
+}
+
+/**
+ * Execute changes made in Jigoshop 1.7.2
+ *
+ * @since 1.7.2
+ */
+function jigoshop_upgrade_172() {
+
+	Jigoshop_Base::get_options()->set_option( 'jigoshop_futurepay_title', __('FuturePay', 'jigoshop' ) );
+	Jigoshop_Base::get_options()->set_option( 'jigoshop_futurepay_description', __('Pay with FuturePay. Buy now and pay later. No credit card needed.  You will be asked to enter your FuturePay username and password, or create an account when you Place your Order.', 'jigoshop' ) );
+
+}
+
+
+/**
+ * Execute changes made in Jigoshop 1.8
+ *
+ * @since 1.8
+ */
+function jigoshop_upgrade_180() {
+
+	Jigoshop_Base::get_options()->add_option( 'jigoshop_complete_processing_orders', 'no' );
+
 }

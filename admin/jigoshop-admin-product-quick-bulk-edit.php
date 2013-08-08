@@ -10,8 +10,8 @@
  *
  * @package             Jigoshop
  * @category            Admin
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -19,30 +19,30 @@
  *	Props to Rachel Carden (http://rachelcarden.com/)
  *	Adapted from: http://rachelcarden.com/2012/03/manage-wordpress-posts-using-bulk-edit-and-quick-edit/
  */
- 
+
 /**
  *	Product Bulk and Quick Edit scripts
  */
 add_action( 'admin_print_scripts-edit.php', 'jigoshop_enqueue_product_quick_scripts' );
 
 function jigoshop_enqueue_product_quick_scripts() {
-	
+
 	global $pagenow, $typenow;
-	
+
 	if ( empty( $typenow ) && ! empty( $_GET['post'] ) ) {
 		$post = get_post( $_GET['post'] );
 		$typenow = $post->post_type;
 	}
 	if ( $typenow == 'product' ) {
 		wp_enqueue_script( 'jigoshop-admin-quickedit', jigoshop::assets_url().'/assets/js/product_quick_edit.js', array( 'jquery', 'inline-edit-post' ), '', true );
-	
+
 		$jigoshop_quick_edit_params = array(
 			'assets_url' 				=> jigoshop::assets_url(),
 			'ajax_url' 					=> ( ! is_ssl() ) ? str_replace( 'https', 'http', admin_url( 'admin-ajax.php' ) ) : admin_url( 'admin-ajax.php' ),
 			'get_stock_price_nonce'		=> wp_create_nonce( "get-product-stock-price" ),
 			'update_stock_price_nonce'	=> wp_create_nonce( "update-product-stock-price" ),
 		);
-	
+
 		wp_localize_script( 'jigoshop-admin-quickedit', 'jigoshop_quick_edit_params', $jigoshop_quick_edit_params );
 	}
 }
@@ -51,16 +51,15 @@ function jigoshop_enqueue_product_quick_scripts() {
  *	AJAX callback to get current stock and price for a Product for Quick Edit
  */
 add_action( 'wp_ajax_jigoshop_get_product_stock_price', 'jigoshop_ajax_get_product_stock_price' );
-add_action( 'wp_ajax_nopriv_jigoshop_get_product_stock_price', 'jigoshop_ajax_get_product_stock_price' );
 
 function jigoshop_ajax_get_product_stock_price() {
 
 	check_ajax_referer( 'get-product-stock-price', 'security' );
-	
+
 	$values = array();
-	
+
 	$_product = new jigoshop_product( $_GET['post_id'] );
-	
+
 	if ( $_product->managing_stock() ) {
 		$values['stock'] = get_post_meta( $_GET['post_id'], 'stock', true );
 	} else {
@@ -76,7 +75,7 @@ function jigoshop_ajax_get_product_stock_price() {
 		$values['price'] = sprintf( "%.2F", get_post_meta( $_GET['post_id'], 'regular_price', true ) );
 		}
 	}
-	
+
 	die( json_encode( $values ) );
 }
 
@@ -144,7 +143,7 @@ function jigoshop_save_quick_edit( $post_id, $post ) {
 				if ($_POST[ 'price' ] == null){
 				update_post_meta( $post_id, 'regular_price', '' );
 				}
-				else{	
+				else{
 				update_post_meta( $post_id, 'regular_price', jigoshop_sanitize_num( $_POST[ 'price' ] ) );
 				}
 			}
@@ -158,16 +157,15 @@ function jigoshop_save_quick_edit( $post_id, $post ) {
  *	AJAX callback for Bulk Edit save routine
  */
 add_action( 'wp_ajax_jigoshop_save_bulk_edit', 'jigoshop_save_bulk_edit' );
-add_action( 'wp_ajax_nopriv_jigoshop_save_bulk_edit', 'jigoshop_save_bulk_edit' );
 
 function jigoshop_save_bulk_edit() {
 
 	check_ajax_referer( 'update-product-stock-price', 'security' );
-	
+
 	$post_ids = ( isset( $_POST[ 'post_ids' ] ) && ! empty( $_POST[ 'post_ids' ] ) ) ? $_POST[ 'post_ids' ] : array();
 	$stock = ( isset( $_POST[ 'stock' ] ) && ! empty( $_POST[ 'stock' ] ) ) ? $_POST[ 'stock' ] : NULL;
 	$price = ( isset( $_POST[ 'price' ] ) && ! empty( $_POST[ 'price' ] ) ) ? $_POST[ 'price' ] : NULL;
-	
+
 	if ( ! empty( $post_ids ) && is_array( $post_ids ) ) {
 		foreach ( $post_ids as $post_id ) {
 			$_product = new jigoshop_product( $post_id );
@@ -181,8 +179,8 @@ function jigoshop_save_bulk_edit() {
 			}
 		}
 	}
-	
+
 	die();
-	
+
 }
 

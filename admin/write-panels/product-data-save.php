@@ -12,8 +12,8 @@
  *
  * @package             Jigoshop
  * @category            Admin
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_product_meta
@@ -92,6 +92,7 @@ class jigoshop_product_meta
 		if( $_POST['product-type'] == 'external' ) {
 			update_post_meta( $post_id, 'external_url', $_POST['external_url']);
 			update_post_meta( $post_id, 'stock_status', 'instock' );
+			update_post_meta( $post_id, 'manage_stock', false );
 		}
 
 		// Process the sale dates
@@ -221,44 +222,44 @@ class jigoshop_product_meta
 		if ( ! isset($_POST['attribute_values']) )
 			return false;
 
-		$attr_names      = $post['attribute_names']; // This data returns all attributes?
+		$attr_names      = $post['attribute_names'];
 		$attr_values     = $post['attribute_values'];
-		$attr_visibility = $post['attribute_visibility'];
-		$attr_variation  = isset($post['attribute_variation']) ? $post['attribute_variation'] : null; // Null so unsure
-		$attr_is_tax     = $post['attribute_is_taxonomy']; // Likewise
-		$attr_position   = $post['attribute_position']; // and this?
+		$attr_visibility = isset($post['attribute_visibility']) ? $post['attribute_visibility'] : null;
+		$attr_variation  = isset($post['attribute_variation']) ? $post['attribute_variation'] : null;
+		$attr_is_tax     = $post['attribute_is_taxonomy'];
+		$attr_position   = $post['attribute_position'];
 
 		// Create empty attributes array
 		$attributes = array();
-
+		
 		foreach( $attr_values as $key => $value ) {
 
 			// Skip if no value
-			if ( ! $value )
-				continue;
-
-			if ( ! is_array( $value ) && $attr_variation[$key] ) {
+			if ( empty( $value )) continue;
+			
+			$has_tax = false;
+			
+			if ( ! is_array( $value ) && isset( $attr_variation[$key] ) && $attr_variation[$key] ) {
 			 	$value = explode( ',', $value );
 			 	$value = array_map( 'trim', $value );
-			 	$value = implode( ',', $value );
+			 	$value = implode( ', ', $value );
 			} else if ( ! is_array( $value ) ) {
 				$value = trim( $value );
 			}
 
 			// If attribute is standard then create the relationship
-			if ( (bool) $attr_is_tax[$key] && taxonomy_exists('pa_'.sanitize_title($attr_names[$key])) ) {
-				// TODO: Adding pa and sanitizing fixes the bug but why not automatic?
+			if ( $attr_is_tax[$key] && taxonomy_exists('pa_'.sanitize_title($attr_names[$key])) ) {
 				wp_set_object_terms( $post_id, $value, 'pa_'.sanitize_title($attr_names[$key]) );
-				$value = null; // Set as null
+				$has_tax = true;
 			}
-
+			
 			$attributes[ sanitize_title($attr_names[$key]) ] = array(
 				'name'        => $attr_names[$key],
 				'value'       => $value,
-				'position'    => (int)  $attr_position[$key],
-				'visible'     => (bool) $attr_visibility[$key],
-				'variation'   => (bool) $attr_variation[$key],
-				'is_taxonomy' => (bool) $attr_is_tax[$key]
+				'position'    => $attr_position[$key],
+				'visible'     => isset( $attr_visibility[$key] ),
+				'variation'   => isset( $attr_variation[$key] ) ? $attr_variation[$key] : null,
+				'is_taxonomy' => $has_tax
 			);
 		}
 

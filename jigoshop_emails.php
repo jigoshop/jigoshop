@@ -10,8 +10,8 @@
  *
  * @package             Jigoshop
  * @category            Core
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 /**
@@ -123,6 +123,7 @@ function jigoshop_completed_order_customer_notification($order_id) {
 
 	add_header_info($order);
 
+	$download_links =  apply_filters('jigoshop_download_links_on_completed',true);
 	add_order_totals($order, true, true);
 
 	add_customer_details($order);
@@ -197,6 +198,7 @@ function jigoshop_send_customer_invoice($order_id) {
 	add_header_info($order);
 
 	if ($order->status == 'completed') :
+		$download_links = apply_filters('jigoshop_download_links_on_invoice',true);
 		add_order_totals($order, true, true);
 	else :
 		add_order_totals($order, false, true);
@@ -274,6 +276,8 @@ function add_company_information() {
 
 function add_order_totals($order, $show_download_links, $show_sku) {
 
+	do_action('jigoshop_before_email_order_info', $order->id);  
+  
 	$jigoshop_options = Jigoshop_Base::get_options();
 	$inc_tax = ($jigoshop_options->get_option('jigoshop_calc_taxes') == 'no')||($jigoshop_options->get_option('jigoshop_prices_include_tax') == 'yes');
 	
@@ -310,6 +314,8 @@ function add_order_totals($order, $show_download_links, $show_sku) {
 		echo $info . PHP_EOL;
 		
 	}
+	
+	do_action('jigoshop_email_order_professing_fee_info', $order->id);
 	
 	if ( $jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0 ) {
 		$info = __('Discount:', 'jigoshop');
@@ -351,10 +357,11 @@ function add_order_totals($order, $show_download_links, $show_sku) {
 
 	}
 	
+	$method = $order->payment_method_title <> '' ? ucwords($order->payment_method_title) : __("Free",'jigoshop');
 	$info = __('Total:', 'jigoshop');
 	$info .= add_padding_to_email_lines( 30 - strlen( $info ) );
 	$info .= html_entity_decode(jigoshop_price($order->order_total), ENT_QUOTES, 'UTF-8');
-	$info .= ' - ' . __('via', 'jigoshop') . ' ' . ucwords($order->payment_method_title);
+	$info .= ' - ' . __('via', 'jigoshop') . ' ' . $method;
 	echo $info . PHP_EOL . PHP_EOL;
 
 	if ($jigoshop_options->get_option('jigoshop_calc_taxes') && $jigoshop_options->get_option('jigoshop_tax_number')) :
@@ -371,11 +378,18 @@ function add_customer_details($order) {
 	echo __('CUSTOMER DETAILS', 'jigoshop') . PHP_EOL;
 	echo add_email_separator( '-' ) . PHP_EOL;
 
-	if ($order->billing_email)
-		echo __('Email:', 'jigoshop') . "\t\t\t\t" . $order->billing_email . PHP_EOL;
-	if ($order->billing_phone)
-		echo __('Tel:', 'jigoshop') . "\t\t\t\t\t" . $order->billing_phone . PHP_EOL;
-
+	if ($order->billing_email) {
+		$temp = __('Email:', 'jigoshop');
+		echo $temp . add_padding_to_email_lines( 30 - strlen( $temp ) ) . $order->billing_email . PHP_EOL;
+	}
+	if ($order->billing_phone) {
+		$temp = __('Tel:', 'jigoshop');
+		echo $temp . add_padding_to_email_lines( 30 - strlen( $temp ) ) . $order->billing_phone . PHP_EOL;
+	}
+	if ( $order->billing_euvatno ) {
+		$temp = __('EU VAT Number:', 'jigoshop');
+		echo $temp . add_padding_to_email_lines( 30 - strlen( $temp ) ) . $order->billing_euvatno . PHP_EOL;
+	}
 	echo PHP_EOL;
 
 	do_action('jigoshop_after_email_customer_details', $order->id);
@@ -392,7 +406,7 @@ function add_billing_address_details($order) {
 	if ($order->billing_company)
 		echo $order->billing_company . PHP_EOL;
 	echo $order->formatted_billing_address . PHP_EOL . PHP_EOL;
-
+	
 	do_action('jigoshop_after_email_billing_address', $order->id);
 
 }
@@ -409,7 +423,8 @@ function add_shipping_address_details($order) {
 		if ($order->shipping_company) echo $order->shipping_company . PHP_EOL;
 		echo $order->formatted_shipping_address . PHP_EOL . PHP_EOL;
 
-		echo __('Shipping: ','jigoshop') . html_entity_decode(ucwords($order->shipping_service), ENT_QUOTES, 'UTF-8') . PHP_EOL . PHP_EOL;
+		if(!empty($order->shipping_service))
+			echo __('Shipping: ','jigoshop') . html_entity_decode(ucwords($order->shipping_service), ENT_QUOTES, 'UTF-8') . PHP_EOL . PHP_EOL;
 
 		do_action('jigoshop_after_email_shipping_address', $order->id);
 
@@ -499,4 +514,3 @@ function jigoshop_product_on_backorder_notification($order_id, $_product, $amoun
 		wp_mail($order->billing_email, $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
 	endif;
 }
-

@@ -10,8 +10,8 @@
  *
  * @package             Jigoshop
  * @category            Core
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -204,7 +204,7 @@ if ( ! function_exists( 'jigoshop_add_to_cart_action' )) { //make function plugg
 					break;      // drop out and put up message, unable to add product.
 				}
 				$quantity     = (isset($_REQUEST['quantity']) && is_numeric($_REQUEST['quantity'])) ? (int) $_REQUEST['quantity'] : 1;
-								
+
 				$product_id   = apply_filters('jigoshop_product_id_add_to_cart_filter', $product_id);
 				$variation_id = apply_filters('jigoshop_variation_id_add_to_cart_filter', (int) $_REQUEST['variation_id']);
 				$attributes   = (array) maybe_unserialize(get_post_meta($product_id, 'product_attributes', true));
@@ -290,40 +290,40 @@ if ( ! function_exists( 'jigoshop_add_to_cart_action' )) { //make function plugg
 
 		if ( ! $product_added ) {
 			jigoshop::add_error( __('The Product could not be added to the cart.  Please try again.', 'jigoshop') );
-			return false;
-		}
+		} else {
+			switch ( $jigoshop_options->get_option('jigoshop_redirect_add_to_cart', 'same_page') ) {
+				case 'same_page':
+					$message = __('Product successfully added to your cart.', 'jigoshop');
+					$button = __('View Cart &rarr;', 'jigoshop');
+					$message = '<a href="%s" class="button">' . $button . '</a> ' . $message;
+					jigoshop::add_message(sprintf( $message, jigoshop_cart::get_cart_url()));
+					break;
 
-		switch ( $jigoshop_options->get_option('jigoshop_redirect_add_to_cart', 'same_page') ) {
-			case 'same_page':
-				$message = __('Product successfully added to your cart.', 'jigoshop');
-				$button = __('View Cart &rarr;', 'jigoshop');
-				$message = '<a href="%s" class="button">' . $button . '</a> ' . $message;
-				jigoshop::add_message(sprintf( $message, jigoshop_cart::get_cart_url()));
-				break;
+				case 'to_checkout':
+						// Do nothing
+					break;
 
-			case 'to_checkout':
-					// Do nothing
-				break;
+				default:
+					jigoshop::add_message(__('Product successfully added to your cart.', 'jigoshop'));
+					break;
+			}
 
-			default:
-				jigoshop::add_message(__('Product successfully added to your cart.', 'jigoshop'));
-				break;
-		}
-
-		if ( apply_filters('add_to_cart_redirect', $url) ) {
-			wp_safe_redirect($url); exit;
-		}
-		else if ( $jigoshop_options->get_option('jigoshop_redirect_add_to_cart', 'same_page') == 'to_checkout' && !jigoshop::has_errors() ) {
-			wp_safe_redirect(jigoshop_cart::get_checkout_url()); exit;
-		}
-		else if ($jigoshop_options->get_option('jigoshop_redirect_add_to_cart', 'to_cart') == 'to_cart' && !jigoshop::has_errors()) {
-			wp_safe_redirect(jigoshop_cart::get_cart_url()); exit;
-		}
-		else if ( wp_get_referer() ) {
-			wp_safe_redirect( remove_query_arg( array( 'add-to-cart', 'quantity', 'product_id' ), wp_get_referer() ) ); exit;
-		}
-		else {
-			wp_safe_redirect(home_url()); exit;
+			$url = apply_filters( 'add_to_cart_redirect', $url );
+			if ( $url ) {
+				wp_safe_redirect( $url, 301 ); exit;
+			}
+			else if ( $jigoshop_options->get_option('jigoshop_redirect_add_to_cart', 'same_page') == 'to_checkout' && !jigoshop::has_errors() ) {
+				wp_safe_redirect(jigoshop_cart::get_checkout_url(), 301); exit;
+			}
+			else if ($jigoshop_options->get_option('jigoshop_redirect_add_to_cart', 'to_cart') == 'to_cart' && !jigoshop::has_errors()) {
+				wp_safe_redirect(jigoshop_cart::get_cart_url(), 301); exit;
+			}
+			else if ( wp_get_referer() ) {
+				wp_safe_redirect( remove_query_arg( array( 'add-to-cart', 'quantity', 'product_id' ), wp_get_referer() ), 301 ); exit;
+			}
+			else {
+				wp_safe_redirect(home_url(), 301); exit;
+			}
 		}
 	}
 }
@@ -377,7 +377,7 @@ add_action('wp_ajax_nopriv_jigoshop_update_order_review', 'jigoshop_ajax_update_
 /**
  * Clear cart
  **/
-add_action( 'wp_header', 'jigoshop_clear_cart_on_return' );
+add_action( 'wp_head', 'jigoshop_clear_cart_on_return' );
 
 function jigoshop_clear_cart_on_return() {
 
@@ -605,6 +605,8 @@ function jigoshop_download_product() {
 				// Now try to replace upload URL
 				$file_path = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $file_path);
 			endif;
+			
+			$file_path = apply_filters('jigoshop_download_file_path', $file_path, $download_file, $order, $email);
 
 			// See if its local or remote
 			if (strstr($file_path, 'http:') || strstr($file_path, 'https:') || strstr($file_path, 'ftp:')) :
@@ -640,7 +642,7 @@ function jigoshop_download_product() {
 			// required for IE, otherwise Content-Disposition may be ignored
 			if(ini_get('zlib.output_compression'))
 			ini_set('zlib.output_compression', 'Off');
-		
+
 			header("Pragma: no-cache");
 			header("Expires: 0");
 			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
@@ -739,11 +741,11 @@ function jigoshop_downloadable_product_permissions( $order_id ) {
 }
 
 /**
- * Displays Google Analytics tracking code in the footer
+ * Displays Google Analytics tracking code in the header as the LAST item before closing </head> tag
  *
  * @return  void
  */
-add_action( 'wp_footer', 'jigoshop_ga_tracking' );
+add_action( 'wp_head', 'jigoshop_ga_tracking', 9999 );
 function jigoshop_ga_tracking() {
 
     $jigoshop_options = Jigoshop_Base::get_options();
@@ -773,7 +775,7 @@ function jigoshop_ga_tracking() {
 		$username 		= __('Guest', 'jigoshop');
 	}
 	?>
-	<script>
+	<script type="text/javascript">
 	    var _gaq=[['_setAccount','<?php echo $tracking_id; ?>'],['_setCustomVar',1,'logged-in','<?php echo $loggedin; ?>',1],['_setCustomVar',2,'user-id','<?php echo $user_id; ?>',1],['_setCustomVar',3, 'username','<?php echo $username; ?>',1],['_trackPageview']];
 	    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
 	    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
@@ -806,7 +808,7 @@ function jigoshop_ga_ecommerce_tracking( $order_id ) {
 		return false;
 
 	// Unhook standard tracking so we don't count a view twice
-	remove_action('wp_footer', 'jigoshop_ga_tracking');
+	remove_action( 'wp_head', 'jigoshop_ga_tracking', 9999 );
 
 	// Get the order and output tracking code
 	$order = new jigoshop_order($order_id);
@@ -824,7 +826,7 @@ function jigoshop_ga_ecommerce_tracking( $order_id ) {
 	}
 
 	?>
-	<script>
+	<script type="text/javascript">
 		var _gaq = [
 			['_setAccount', '<?php echo $tracking_id; ?>'],
 			['_setCustomVar', 1, 'logged-in', '<?php echo $loggedin; ?>', 1],
@@ -1041,3 +1043,24 @@ function jigoshop_json_search_products( $x = '', $post_types = array( 'product' 
 	die();
 }
 add_action( 'wp_ajax_jigoshop_json_search_products', 'jigoshop_json_search_products' );
+
+
+/**
+ * AJAX validate postcode
+ */
+function jigoshop_validate_postcode() {
+
+	check_ajax_referer( 'update-order-review', 'security' );
+
+	$postcode = (string) urldecode( stripslashes( strip_tags( $_GET['postcode'] )));
+	if ( empty( $postcode )) die();
+
+	$country = (string) urldecode( stripslashes( strip_tags( $_GET['country'] )));
+	if ( empty( $country )) die();
+	
+	echo jigoshop_validation::is_postcode( $postcode, $country );
+	
+	die();
+}
+add_action( 'wp_ajax_jigoshop_validate_postcode', 'jigoshop_validate_postcode' );
+add_action( 'wp_ajax_nopriv_jigoshop_validate_postcode', 'jigoshop_validate_postcode');

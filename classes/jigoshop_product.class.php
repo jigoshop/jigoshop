@@ -10,8 +10,8 @@
  *
  * @package             Jigoshop
  * @category            Catalog
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_product extends Jigoshop_Base {
@@ -32,8 +32,8 @@ class jigoshop_product extends Jigoshop_Base {
 
 	protected $regular_price;
 	protected $sale_price;
-	private   $sale_price_dates_from;
-	private   $sale_price_dates_to;
+	protected   $sale_price_dates_from;
+	protected   $sale_price_dates_to;
 
 	private $weight;
 	private $length;
@@ -49,8 +49,9 @@ class jigoshop_product extends Jigoshop_Base {
 	private $manage_stock = false;
 	private $stock_status = 'instock';
 	private $backorders;
-	public  $stock;       // : admin/jigoshop-admin-post-types.php on line 180
-	private $stock_sold;
+	public  $stock;         // : admin/jigoshop-admin-post-types.php on line 180
+	private $stock_sold;    // for managed stock only
+	private $quantity_sold; // all sales whether managed stock or not
 
 	private	$attributes   = array();
 	public  $children     = array(); // : jigoshop_template_functions.php on line 328
@@ -86,8 +87,8 @@ class jigoshop_product extends Jigoshop_Base {
 		$this->product_type = ( ! empty( $terms ) ) ? $terms->slug : 'simple';
 
 		// Define data
-		$this->regular_price         = isset($meta['regular_price'][0]) ? $meta['regular_price'][0] : null;
-		$this->sale_price            = isset($meta['sale_price'][0]) 	? $meta['sale_price'][0] : null;
+		$this->regular_price         = isset($meta['regular_price'][0]) ? apply_filters( 'jigoshop_get_regular_price', $meta['regular_price'][0], $this) : null;
+		$this->sale_price            = isset($meta['sale_price'][0]) 	? apply_filters( 'jigoshop_get_sale_price', $meta['sale_price'][0], $this) : null;
 		$this->sale_price_dates_from = isset($meta['sale_price_dates_from'][0]) ? $meta['sale_price_dates_from'][0] : null;
 		$this->sale_price_dates_to   = isset($meta['sale_price_dates_to'][0]) ? $meta['sale_price_dates_to'][0] : null;
 
@@ -108,6 +109,7 @@ class jigoshop_product extends Jigoshop_Base {
 		$this->backorders            = isset($meta['backorders'][0]) ? $meta['backorders'][0] : null;
 		$this->stock                 = isset($meta['stock'][0]) ? $meta['stock'][0] : null;
 		$this->stock_sold            = isset($meta['stock_sold'][0]) ? $meta['stock_sold'][0] : null;
+		$this->quantity_sold         = isset($meta['quantity_sold'][0]) ? $meta['quantity_sold'][0] : null;
 
 		// filter for Paid Memberships Pro plugin courtesy @strangerstudios
 		$this->sale_price = apply_filters( 'jigoshop_sale_price' , $this->sale_price, $this );
@@ -162,7 +164,7 @@ class jigoshop_product extends Jigoshop_Base {
 			return $this->children;
 
 		// Get the child IDs
-		$this->children = get_posts(array(
+		$children = get_posts(array(
 			'post_parent'  => $this->ID,
 			'post_type'    => ($this->is_type('variable')) ? 'product_variation' : 'product',
 			'orderby'      => 'menu_order',
@@ -172,6 +174,8 @@ class jigoshop_product extends Jigoshop_Base {
 			'numberposts'  => -1
 		));
 
+		$this->children = apply_filters( 'jigoshop_get_product_children', $children, $this );
+		
 		return $this->children;
 	}
 
@@ -234,13 +238,13 @@ class jigoshop_product extends Jigoshop_Base {
 		if ( self::get_options()->get_option('jigoshop_notify_no_stock_amount') >= 0
 			&& self::get_options()->get_option('jigoshop_notify_no_stock_amount') >= $this->stock
 			&& self::get_options()->get_option( 'jigoshop_hide_no_stock_product' ) == 'yes' ) {
-			
+
 			update_post_meta( $this->ID, 'visibility', 'hidden' );
-			
+
 		} else if ( $this->stock > self::get_options()->get_option('jigoshop_notify_no_stock_amount')
 			&& $this->visibility == 'hidden'
 			&& self::get_options()->get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) {
-			
+
 			update_post_meta( $this->ID, 'visibility', 'visible' );
 		}
 
@@ -254,7 +258,7 @@ class jigoshop_product extends Jigoshop_Base {
 	 */
 	public function requires_shipping() {
 		// If it's virtual or downloadable don't require shipping, same for subscriptions
-		return (!($this->is_type( array('downloadable', 'virtual', 'subscription'))));
+		return  apply_filters('jigoshop_requires_shipping',(!($this->is_type( array('downloadable', 'virtual', 'subscription')))),$this->id);
 	}
 	/**
 	 * Checks the product type
@@ -428,8 +432,6 @@ class jigoshop_product extends Jigoshop_Base {
 	/**
 	 * Returns whether or not the product needs to notify the customer on backorder
 	 *
-	 * TODO: Consider a shorter method name?
-	 *
 	 * @return  bool
 	 */
 	public function backorders_require_notification() {
@@ -438,15 +440,18 @@ class jigoshop_product extends Jigoshop_Base {
 	}
 
 	/**
-	 * Returns whether or not the product has enough stock for the order
+	 * Check the stock levels to unsure we have enough to match request
 	 *
-	 * TODO: Consider a shorter method name?
-	 *
+	 * @param   int $quantity   Amount to verify that we have
 	 * @return  bool
 	 */
 	public function has_enough_stock( $quantity ) {
 
-		return ($this->backorders_allowed() || $this->stock >= $quantity);
+		// always work from a new product to check actual stock available
+		// this product instance could be sitting in a Cart for a user and
+		// another customer purchases the last available
+		$temp = new jigoshop_product( $this->ID );
+		return ($this->backorders_allowed() || $temp->stock >= $quantity);
 	}
 
 	/**
@@ -464,8 +469,8 @@ class jigoshop_product extends Jigoshop_Base {
 	 * @return  string
 	 */
 	public function get_availability() {
-		
-		
+
+
 		// Do not display initial availability if we aren't managing stock or if variable or grouped
 		if ( self::get_options()->get_option('jigoshop_manage_stock') != 'yes' || $this->is_type( array('grouped', 'variable')) )
 			return false;
@@ -549,10 +554,8 @@ class jigoshop_product extends Jigoshop_Base {
 		if ( $this->is_type( array('grouped', 'variable') ) ) {
 
 			foreach( $this->get_children() as $child_ID ) {
-
 				$child = $this->get_child( $child_ID );
-				if( $child->is_on_sale() )
-					return true;
+				if ( $child->is_on_sale() ) return true;
 			}
 		}
 
@@ -561,12 +564,12 @@ class jigoshop_product extends Jigoshop_Base {
 		// Check if the sale is still in range (if we have a range)
 		if ( $this->sale_price_dates_from	<= $time &&
 			 $this->sale_price_dates_to		>= $time &&
-			 $this->sale_price)
+			 $this->sale_price) {
+			 
 			return true;
-
+		}
 		// Otherwise if we have a sale price
-		if ( ! $this->sale_price_dates_to && $this->sale_price )
-			return true;
+		if ( ! $this->sale_price_dates_to && $this->sale_price ) return true;
 
 		// Just incase return false
 		return false;
@@ -595,7 +598,7 @@ class jigoshop_product extends Jigoshop_Base {
         $price = $this->get_price() * 100;
 
         if ( self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes' ) {
-        
+
             $rates = (array) $this->get_tax_base_rate();
 
             if ( count( $rates > 0 )) {
@@ -603,7 +606,6 @@ class jigoshop_product extends Jigoshop_Base {
                 // rates array sorted so that taxes applied to retail value come first. To reverse taxes, need to reverse this array
                 $new_rates = array_reverse($rates, true);
 
-                $tax_applied_after_retail = 0;
                 $tax_totals = 0;
 
                 $_tax = new jigoshop_tax(100);
@@ -611,28 +613,21 @@ class jigoshop_product extends Jigoshop_Base {
                 foreach ( $new_rates as $key=>$value ) :
 
                     if ($value['is_not_compound_tax']) :
-                        $tax_totals += $_tax->calc_tax(( $price * $quantity ) - $tax_applied_after_retail, $value['rate'], true );
+                        $tax_totals += $_tax->calc_tax( $price * $quantity, $value['rate'], true );
                     else :
                         $tax_amount[$key] = $_tax->calc_tax( $price * $quantity, $value['rate'], true );
-                        $tax_applied_after_retail += $tax_amount[$key];
                         $tax_totals += $tax_amount[$key];
                     endif;
 
                 endforeach;
-                
-				// Product prices are always 2 decimal digits.
-				// Will get rounding errors on backwards tax calcs if we don't round
-                return round( ($price * $quantity - $tax_totals) / 100, 2 );
+
+                return round( ($price * $quantity - $tax_totals) / 100, 4 );
 
             }
 
-        } else {
-
-			// Product prices are always 2 decimal digits.
-			// Will get rounding errors on backwards tax calcs if we don't round
-			return round( $price * $quantity / 100, 2 );
-			
         }
+
+		return round( $price * $quantity / 100, 4 );
 
     }
 
@@ -644,43 +639,39 @@ class jigoshop_product extends Jigoshop_Base {
      * $return  float   the total price of the product times the quantity and destination tax included
      */
 	function get_price_with_tax( $quantity = 1 ) {
-	
+
         // to avoid rounding errors multiply by 100
         $price = $this->get_price_excluding_tax() * 100;
 		$tax_totals = 0;
 		$rates = (array) $this->get_tax_destination_rate();
-		
+
 		if ( count( $rates > 0 )) {
 
 			// rates array sorted so that taxes applied to retail value come first. To reverse taxes, need to reverse this array
 			$new_rates = array_reverse( $rates, true );
 
-			$tax_applied_after_retail = 0;
 			$tax_totals = 0;
 
 			$_tax = new jigoshop_tax( 100 );
 
 			foreach ( $new_rates as $key => $value ) {
-				
+
 				if ( $value['is_not_compound_tax'] ) {
-					$tax_totals += $_tax->calc_tax(( $price * $quantity ) - $tax_applied_after_retail, $value['rate'], false );
+					$tax_totals += $_tax->calc_tax( $price * $quantity, $value['rate'], false );
 				} else {
 					$tax_amount[$key] = $_tax->calc_tax( $price * $quantity, $value['rate'], false );
-					$tax_applied_after_retail += $tax_amount[$key];
 					$tax_totals += $tax_amount[$key];
 				}
 				$tax_totals = round( $tax_totals, 1 );  // without this we were getting rounding errors
-				
+
 			}
 
 		}
 
-		// Product prices are always 2 decimal digits.
-		// Will get rounding errors on backwards tax calcs if we don't round
-		return round( ($price * $quantity + $tax_totals) / 100, 2 );
+		return round( ($price * $quantity + $tax_totals) / 100, 4 );
 
 	}
-	
+
 	/**
 	 * Returns the base Country and State tax rate
 	 */
@@ -715,7 +706,7 @@ class jigoshop_product extends Jigoshop_Base {
 		$rate = array();
 
         if ( $this->is_taxable() && self::get_options()->get_option('jigoshop_calc_taxes') == 'yes' ) {
-        
+
             $_tax = new jigoshop_tax();
 
             if ( $_tax->get_tax_classes_for_base() ) foreach ( $_tax->get_tax_classes_for_base() as $tax_class ) {
@@ -790,7 +781,7 @@ class jigoshop_product extends Jigoshop_Base {
 	public function get_regular_price() {
 		return $this->regular_price;
 	}
-	
+
 	/**
 	 * Returns the products current price, either regular or sale
 	 *
@@ -799,10 +790,12 @@ class jigoshop_product extends Jigoshop_Base {
 	public function get_price() {
 
 		$price = null;
-		if ( strstr($this->sale_price,'%') ) {
-			$price = round($this->regular_price * ( (100 - str_replace('%','',$this->sale_price) ) / 100 ), 2);
-		} else if ( $this->sale_price ) {
-			$price = $this->sale_price;
+		if ( $this->is_on_sale() ) {
+			if ( strstr($this->sale_price,'%') ) {
+				$price = round($this->regular_price * ( (100 - str_replace('%','',$this->sale_price) ) / 100 ), 4);
+			} else if ( $this->sale_price ) {
+				$price = $this->sale_price;
+			}
 		} else {
 			$price = apply_filters('jigoshop_product_get_regular_price', $this->regular_price, $this->ID);
 		}
@@ -900,7 +893,9 @@ class jigoshop_product extends Jigoshop_Base {
             	$html = jigoshop_price( reset( $array ) );
 			endif;
 
-			return empty( $array ) ? __( 'Price Not Announced', 'jigoshop' ) : $html;
+			$html = empty( $array ) ? __( 'Price Not Announced', 'jigoshop' ) : $html;
+
+			return apply_filters('jigoshop_product_get_price_html', $html, $this, $this->regular_price);
 		}
 
 		// For standard products
@@ -1181,8 +1176,8 @@ class jigoshop_product extends Jigoshop_Base {
 	 * @return  html
 	 **/
 	public function list_attributes() {
-		
-		
+
+
 		// Check that we have some attributes that are visible
 		if ( !( $this->has_attributes() || $this->has_dimensions() || $this->has_weight() ) )
 			return false;
@@ -1220,6 +1215,11 @@ class jigoshop_product extends Jigoshop_Base {
 
 				// Get the taxonomy terms
 				$product_terms = wp_get_object_terms( $this->ID, 'pa_'.sanitize_title($attr['name']), array( 'orderby' => 'slug' ) );
+
+				if ( is_wp_error( $product_terms )) {
+					jigoshop_log( "product::list_attributes() - Attribute for invalid taxonomy = " . $attr['name'] );
+					continue;
+				}
 
 				// Convert them into a array to be imploded
 				$terms = array();
@@ -1303,7 +1303,7 @@ class jigoshop_product extends Jigoshop_Base {
 					$options = array();
 					$terms = wp_get_object_terms( $this->ID, 'pa_'.sanitize_title($attribute['name']), array( 'orderby' => 'slug' ) );
 
-					foreach($terms as $term) {
+					foreach ($terms as $term) {
 						$options[] = $term->slug;
 					}
 				}
@@ -1334,6 +1334,18 @@ class jigoshop_product extends Jigoshop_Base {
 	}
 
 	/**
+	 * Gets the default attributes for a variable product.
+	 *
+	 * @return array
+	 */
+	function get_default_attributes() {
+
+		$default = isset( $this->meta['_default_attributes'][0] ) ? $this->meta['_default_attributes'][0] : '';
+
+		return apply_filters( 'jigoshop_product_default_attributes', (array) maybe_unserialize( $default ), $this );
+	}
+
+	/**
 	 * Get attribute taxonomies. Taxonomies are lazy loaded.
 	 *
 	 * @return  array of stdClass objects representing attributes
@@ -1351,18 +1363,96 @@ class jigoshop_product extends Jigoshop_Base {
 	/**
 	 * Get a product attributes label
 	 */
+
 	public function attribute_label( $name ) {
 		global $wpdb;
 
-		if (strstr( $name, 'pa_' )) :
-			$name = str_replace( 'pa_', '', sanitize_title( $name ) );
-
+		if ( strstr( $name, 'pa_' )) {
+			$name = str_replace( 'pa_', '', sanitize_text_field( $name ) );
 			$label = $wpdb->get_var( $wpdb->prepare( "SELECT attribute_label FROM ".$wpdb->prefix."jigoshop_attribute_taxonomies WHERE attribute_name = %s;", $name ) );
 
-			if ($label) return $label; else return ucfirst($name);
-		else :
-			return $name;
-		endif;
+			if ( ! $label ) {
+				$label = ucfirst( $name );
+			}
+		} else {  // taxonomies aren't created for custom text attributes, get name from the attribute instead
+		
+			// Discovered in Jigoshop 1.7, this function can be incorrectly called from
+			// 'jigoshop_get_formatted_variation' as a static class method
+			// make sure we have an instance to work with here for custom text attributes before calling $this
+			if ( $this instanceof jigoshop_product ) {
+				$label = $name;
+				$attributes = $this->get_attributes();
+				foreach ( $attributes as $key => $attr ) {
+					if ( ! $attr['is_taxonomy'] && $key == $name ) {
+						$label = $attr['name'];
+						break;
+					}
+				}
+			} else {
+				$name = str_replace( 'pa_', '', sanitize_text_field( $name ) );
+				$label = ucfirst($name);
+			}
+		}
+		return apply_filters('jigoshop_attribute_label',$label);
 	}
 
+	/**
+	 * Class Function that returns an array containing the IDs of the products that are on sale.
+	 *
+	 * @since 1.6.6
+	 * @return array
+	 */
+	public static function get_product_ids_on_sale() {
+
+		$product_ids_on_sale = get_transient( 'jigoshop_products_on_sale' );
+
+		if ( false !== $product_ids_on_sale ) return $product_ids_on_sale;
+
+		$on_sale = get_posts( array(
+			'post_type'      => array( 'product', 'product_variation' ),
+			'posts_per_page' => -1,
+			'post_status'    => 'publish',
+			'meta_query'     => array(
+				array(
+					'key'        => 'sale_price',
+					'value'      => 0,
+					'compare'    => '>=',
+					'type'       => 'DECIMAL',
+				),
+				array(
+					'key'        => 'sale_price',
+					'value'      => '',
+					'compare'    => '!=',
+					'type'       => '',
+				)
+			),
+			'fields'         => 'id=>parent',
+		) );
+
+		$product_ids = array_keys( $on_sale );
+		$parent_ids  = array_values( $on_sale );
+
+		foreach ( $product_ids as $key => $id ) {
+			$sale_from = get_post_meta( $id, 'sale_price_dates_from', true );
+			if ( ! empty( $sale_from )) {
+				if ( $sale_from > current_time( 'timestamp' ) ) {
+					unset( $product_ids[ $key ] );
+					continue;
+				}
+			}
+			$sale_to = get_post_meta( $id, 'sale_price_dates_to', true );
+			if ( ! empty( $sale_to )) {
+				if ( $sale_to < current_time( 'timestamp' ) ) {
+					unset( $product_ids[ $key ] );
+				}
+			}
+		}
+
+		$product_ids_on_sale = array_unique( array_merge( $product_ids, $parent_ids ) );
+
+		set_transient( 'jigoshop_products_on_sale', $product_ids_on_sale );
+
+		return $product_ids_on_sale;
+	}
+	
 }

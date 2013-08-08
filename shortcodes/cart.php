@@ -10,8 +10,8 @@
  *
  * @package             Jigoshop
  * @category            Checkout
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 function get_jigoshop_cart($atts) {
@@ -181,7 +181,12 @@ function jigoshop_cart($atts) {
                         <?php endif; ?>
 
                         <?php jigoshop::nonce_field('cart') ?>
-                        <input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" /> <a href="<?php echo esc_url( jigoshop_cart::get_checkout_url() ); ?>" class="checkout-button button-alt"><?php _e('Proceed to Checkout &rarr;', 'jigoshop'); ?></a>
+                        
+                        <?php if ( Jigoshop_Base::get_options()->get_option( 'jigoshop_cart_shows_shop_button' ) == 'no' ) : ?>
+                        	<input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" /> <a href="<?php echo esc_url( jigoshop_cart::get_checkout_url() ); ?>" class="checkout-button button-alt"><?php _e('Proceed to Checkout &rarr;', 'jigoshop'); ?></a>
+                        <?php else : ?>
+							<input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" />
+                        <?php endif; ?>
                     </td>
                 </tr>
                 <?php if (count(jigoshop_cart::$applied_coupons)) : ?>
@@ -197,9 +202,15 @@ function jigoshop_cart($atts) {
                             </div>
                         </td>
                     </tr>
-                    <?php
-                endif;
-
+                <?php endif; ?>
+                <?php if ( Jigoshop_Base::get_options()->get_option( 'jigoshop_cart_shows_shop_button' ) == 'yes' ) : ?>
+					<tr>
+						<td colspan="6" class="actions">
+							<a href="<?php echo esc_url( jigoshop_cart::get_shop_url() ); ?>" class="checkout-button button-alt" style="float:left;"><?php _e('&larr; Return to Shop', 'jigoshop'); ?></a>
+							<a href="<?php echo esc_url( jigoshop_cart::get_checkout_url() ); ?>" class="checkout-button button-alt"><?php _e('Proceed to Checkout &rarr;', 'jigoshop'); ?></a>
+						</td>
+					</tr>
+                <?php endif;
                 do_action('jigoshop_shop_table_cart_foot');
                 ?>
             </tfoot>

@@ -10,8 +10,8 @@
  *
  * @package             Jigoshop
  * @category            Widgets
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class Jigoshop_Widget_Price_Filter extends WP_Widget {
@@ -32,10 +32,11 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 		parent::__construct( 'jigoshop_price_filter', __( 'Jigoshop: Price Filter', 'jigoshop' ), $options );
 
 		// Add price filter init to init hook
-		add_action('init', array( &$this, 'jigoshop_price_filter_init') );
+		add_action('init', array( $this, 'jigoshop_price_filter_init') );
 
 		// Add own hidden fields to filter
-		add_filter('jigoshop_get_hidden_fields', array( &$this, 'jigoshop_price_filter_hidden_fields' ) );
+		add_filter('jigoshop_get_hidden_fields', array( $this, 'jigoshop_price_filter_hidden_fields' ) );
+		
 	}
 
 	public function jigoshop_price_filter_hidden_fields($fields) {
@@ -117,7 +118,7 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 			<div class="price_slider_wrapper">
 				<div class="price_slider"></div>
 				<div class="price_slider_amount">
-					<button type="submit" class="button">'.__('Filter', 'jigoshop').'</button>' . __( 'Price: ', 'jigoshop' ) . '<span></span>
+					<button type="submit" class="button">'.__('Filter','jigoshop').'</button>' . __( 'Price: ', 'jigoshop' ) . '<span></span>
 					<input type="hidden" id="max_price" name="max_price" value="' . esc_attr( $max ) . '" />
 					<input type="hidden" id="min_price" name="min_price" value="0" />
 					';
@@ -128,9 +129,50 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 		}
 		echo '
 				</div>
+				<div class="clear"></div>
 			</div>
 		</form>';
 
+		?>
+		<script type="text/javascript">
+		/*<![CDATA[*/
+			jQuery(document).ready(function($) {
+				// Price slider
+				var min_price = parseInt($('.price_slider_amount #min_price').val());
+				var max_price = parseInt($('.price_slider_amount #max_price').val());
+
+				if (jigoshop_params.min_price) {
+					current_min_price = jigoshop_params.min_price;
+				} else {
+					current_min_price = min_price;
+				}
+
+				if (jigoshop_params.max_price) {
+					current_max_price = jigoshop_params.max_price;
+				} else {
+					current_max_price = max_price;
+				}
+
+				$('.price_slider').slider({
+					range: true,
+					min: min_price,
+					max: max_price,
+					values: [ current_min_price, current_max_price ],
+					create : function( event, ui ) {
+						$( ".price_slider_amount span" ).html( jigoshop_params.currency_symbol + current_min_price + " - " + jigoshop_params.currency_symbol + current_max_price );
+						$( ".price_slider_amount #min_price" ).val(current_min_price);
+						$( ".price_slider_amount #max_price" ).val(current_max_price);
+					},
+					slide: function( event, ui ) {
+						$( ".price_slider_amount span" ).html( jigoshop_params.currency_symbol + ui.values[ 0 ] + " - " + jigoshop_params.currency_symbol + ui.values[ 1 ] );
+						$( "input#min_price" ).val(ui.values[ 0 ]);
+						$( "input#max_price" ).val(ui.values[ 1 ]);
+					}
+				});
+			});
+		/*]]>*/
+		</script>
+		<?php
 		// Print closing widget wrapper
 		echo $after_widget;
 	}
@@ -155,7 +197,12 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 	}
 
 	public function jigoshop_price_filter_init() {
-
+		
+		// if price filter in use on front end, load jquery-ui slider (WP loads in footer)
+		if ( is_active_widget( false, false, 'jigoshop_price_filter', true ) && ! is_admin() ) {
+			wp_enqueue_script( 'jquery-ui-slider' );
+		}
+		
 		unset(jigoshop_session::instance()->min_price);
 		unset(jigoshop_session::instance()->max_price);
 

@@ -13,8 +13,8 @@
  *
  * @package             Jigoshop
  * @category            Widgets
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class Jigoshop_Widget_Random_Products extends WP_Widget {

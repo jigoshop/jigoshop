@@ -12,8 +12,8 @@
  *
  * @package             Jigoshop
  * @category            Admin
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -45,6 +45,8 @@ function jigoshop_attributes() {
 
 			$wpdb->insert( $wpdb->prefix . "jigoshop_attribute_taxonomies", array( 'attribute_name' => $attribute_name, 'attribute_label' => $attribute_label, 'attribute_type' => $attribute_type ), array( '%s', '%s' ) );
 
+			do_action( 'jigoshop_attribute_admin_add_after_save', $attribute_name, $attribute_label, $attribute_type);
+      
 			$jigoshop_options->set_option('jigowatt_update_rewrite_rules', '1');
 
 			wp_safe_redirect( get_admin_url() . 'edit.php?post_type=product&page=jigoshop_attributes' );
@@ -66,6 +68,8 @@ function jigoshop_attributes() {
 
 			$wpdb->update( $wpdb->prefix . "jigoshop_attribute_taxonomies", array( 'attribute_type' => $attribute_type, 'attribute_label' => $attribute_label ), array( 'attribute_id' => $_GET['edit'] ), array( '%s', '%s') );
 
+			do_action( 'jigoshop_attribute_admin_edit_after_update', $edit, $attribute_label, $attribute_type);
+      
 		endif;
 
 		wp_safe_redirect( get_admin_url() . 'edit.php?post_type=product&page=jigoshop_attributes' );
@@ -95,6 +99,8 @@ function jigoshop_attributes() {
 
 				endif;
 
+				do_action( 'jigoshop_attribute_admin_delete_after', $delete, $att_name);
+        
 				wp_safe_redirect( get_admin_url() . 'edit.php?post_type=product&page=jigoshop_attributes' );
 				exit;
 
@@ -155,6 +161,8 @@ function jigoshop_edit_attribute() {
 								</select>
 							</div>
 
+							<?php do_action('jigoshop_attribute_admin_edit_before_submit', $edit, $att_type, $att_label) ?>
+              
 							<p class="submit"><input type="submit" name="save_attribute" id="submit" class="button" value="<?php esc_html_e('Save Attribute', 'jigoshop'); ?>"></p>
 	    				</form>
 	    			</div>
@@ -189,7 +197,7 @@ function jigoshop_add_attribute() {
 				                <th scope="col"><?php _e('Label','jigoshop') ?></th>
 				                <th scope="col"><?php _e('Slug','jigoshop') ?></th>
 				                <th scope="col"><?php _e('Type','jigoshop') ?></th>
-				                <th scope="col" colspan="2"><?php _e('Terms','jigoshop') ?></th>
+				                <th scope="col">&nbsp;</th>
 				            </tr>
 				        </thead>
 				        <tbody>
@@ -207,22 +215,6 @@ function jigoshop_add_attribute() {
 				        					</td>
 				        					<td><?php echo $tax->attribute_name; ?></td>
 				        					<td><?php echo esc_html ( ucwords( $tax->attribute_type ) ); ?></td>
-				        					<td><?php
-				        						if (taxonomy_exists('pa_'.sanitize_title($tax->attribute_name))) :
-					        						$terms_array = array();
-					        						$terms = get_terms( 'pa_'.sanitize_title($tax->attribute_name), 'orderby=name&hide_empty=0' );
-					        						if ($terms) :
-						        						foreach ($terms as $term) :
-															$terms_array[] = $term->name;
-														endforeach;
-														echo implode(', ', $terms_array);
-													else :
-														echo '<span class="na">&ndash;</span>';
-													endif;
-												else :
-													echo '<span class="na">&ndash;</span>';
-												endif;
-				        					?></td>
 				        					<td><a href="edit-tags.php?taxonomy=pa_<?php echo sanitize_title( $tax->attribute_name ); ?>&amp;post_type=product" class="button alignright"><?php _e('Configure&nbsp;terms', 'jigoshop'); ?></a></td>
 				        				</tr><?php
 				        			endforeach;
@@ -253,12 +245,14 @@ function jigoshop_add_attribute() {
 							<div class="form-field">
 								<label for="attribute_type"><?php _e('Attribute type', 'jigoshop'); ?></label>
 								<select name="attribute_type" id="attribute_type" class="postform">
-									<option value="select"><?php _e('Select','jigoshop') ?></option>
 									<option value="multiselect"><?php _e('Multiselect','jigoshop') ?></option>
+									<option value="select"><?php _e('Select','jigoshop') ?></option>
 									<option value="text"><?php _e('Text','jigoshop') ?></option>
 								</select>
 							</div>
 
+							<?php do_action('jigoshop_attribute_admin_add_before_submit') ?>
+              
 							<p class="submit"><input type="submit" name="add_new_attribute" id="submit" class="button" value="<?php esc_html_e('Add Attribute', 'jigoshop'); ?>"></p>
 	    				</form>
 	    			</div>

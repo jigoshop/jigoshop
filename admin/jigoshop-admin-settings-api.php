@@ -8,11 +8,11 @@
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package		Jigoshop
- * @category	Admin
- * @author		Jigowatt
- * @copyright	Copyright (c) 2011-2012 Jigowatt Ltd.
- * @license		http://jigoshop.com/license/commercial-edition
+ * @package     Jigoshop
+ * @category    Admin
+ * @author      Jigoshop
+ * @copyright   Copyright © 2011-2013 Jigoshop.
+ * @license     http://jigoshop.com/license/commercial-edition
  */
 
 class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
@@ -43,13 +43,13 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	public function settings_scripts() {
 
     	// http://jquerytools.org/documentation/rangeinput/index.html
-    	wp_register_script( 'jquery-tools-slider', 'http://cdn.jquerytools.org/1.2.6/form/jquery.tools.min.js', array( 'jquery' ), '1.2.6' );
-    	wp_enqueue_script( 'jquery-tools-slider' );
+    	wp_register_script( 'jquery-tools', jigoshop::assets_url() . '/assets/js/jquery.tools.min.js', array( 'jquery' ), '1.2.7' );
+    	wp_enqueue_script( 'jquery-tools' );
 
     	wp_register_script( 'jigoshop-bootstrap-tooltip', jigoshop::assets_url() . '/assets/js/bootstrap-tooltip.min.js', array( 'jquery' ), '2.0.3' );
     	wp_enqueue_script( 'jigoshop-bootstrap-tooltip' );
 
-    	wp_register_script( 'jigoshop-select2', jigoshop::assets_url() . '/assets/js/select2.min.js', array( 'jquery' ), '3.1' );
+    	wp_register_script( 'jigoshop-select2', jigoshop::assets_url() . '/assets/js/select2.min.js', array( 'jquery' ) );
     	wp_enqueue_script( 'jigoshop-select2' );
 
 	}
@@ -62,7 +62,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 */
 	public function settings_styles() {
 
-		wp_register_style( 'jigoshop-select2', jigoshop::assets_url() . '/assets/css/select2.css', '', '3.1', 'screen' );
+		wp_register_style( 'jigoshop-select2', jigoshop::assets_url() . '/assets/css/select2.css' );
 		wp_enqueue_style( 'jigoshop-select2' );
 
 		do_action( 'jigoshop_settings_styles' );	// user defined stylesheets should be registered and queued
@@ -84,11 +84,11 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		if ( $screen->base <> 'jigoshop_page_jigoshop_settings' && $screen->base <> 'options' ) return;
 		
 		$slug = $this->get_current_tab_slug();
-		$options = $this->our_parser->tabs[$slug];
+		$options = isset( $this->our_parser->tabs[$slug] ) ? $this->our_parser->tabs[$slug] : '';
 
 		if ( ! is_array( $options ) ) {
 			jigoshop_log( "Jigoshop Settings API: -NO- valid options for 'register_settings()' - EXITING with:" );
-			jigoshop_log( $options );
+			jigoshop_log( $slug );
 			return;
 		}
 
@@ -235,7 +235,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			</div>
 
 			<script type="text/javascript">
-				/*<![CDATA[*/
+			/*<![CDATA[*/
 				jQuery(function($) {
 
 					// Fade out the status message
@@ -258,7 +258,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					jQuery.get('<?php echo admin_url('options-permalink.php') ?>');
 
 				});
-				/*]]>*/
+			/*]]>*/
 			</script>
 
 			<?php do_action( 'jigoshop_settings_scripts' ); ?>
@@ -430,6 +430,28 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 				case 'longtext' :
 				case 'textarea' :
 					$valid_input[$setting['id']] = esc_attr( jigowatt_clean( $value ) );
+					update_option( $setting['id'], $valid_input[$setting['id']] ); // TODO: remove in v1.5 - provides compatibility
+					break;
+
+				case 'codeblock' :
+					$allowedtags = array(
+						'a' => array( 'href' => true, 'title' => true ),
+						'img' => array( 'src' => true, 'title' => true, 'alt' => true ),
+						'abbr' => array( 'title' => true ),
+						'acronym' => array( 'title' => true ),
+						'b' => array(),
+						'blockquote' => array( 'cite' => true ),
+						'cite' => array(),
+						'code' => array(),
+						'script' => array( 'src' => true, 'language' => true, 'type' => true ),
+						'del' => array( 'datetime' => true ),
+						'em' => array(),
+						'i' => array(),
+						'q' => array( 'cite' => true ),
+						'strike' => array(),
+						'strong' => array(),
+					);
+					$valid_input[$setting['id']] = wp_kses( $value, $allowedtags );
 					update_option( $setting['id'], $valid_input[$setting['id']] ); // TODO: remove in v1.5 - provides compatibility
 					break;
 
@@ -767,7 +789,7 @@ class Jigoshop_Options_Parser {
 
 		$data = Jigoshop_Base::get_options()->get_current_options();
 
-		if ( ! isset( $item['id'] )) return '';   // ensure we have an id to work with
+		if ( ! isset( $item['id'] )) return '';         // ensure we have an id to work with
 		
 		$display = "";					// each item builds it's output into this and it's returned for echoing
 		$class = "";
@@ -785,8 +807,12 @@ class Jigoshop_Options_Parser {
 
 		$display .= '<td class="forminp">';
 
-		// work off the option type and format output for display for each type
+
+		/*
+		 *  work off the option type and format output for display for each type
+		 */
 		switch ( $item['type'] ) {
+		
 		case 'user_defined':
 			if ( isset( $item['display'] ) ) {
 				if ( is_callable( $item['display'], true ) ) {
@@ -795,16 +821,38 @@ class Jigoshop_Options_Parser {
 			}
 			break;
 
+		case 'default_gateway':
+			$display .= '<select
+				id="'.$item['id'].'"
+				class="jigoshop-input jigoshop-select '.$class.'"
+				name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']" >';
+			$gateways = jigoshop_payment_gateways::get_available_payment_gateways();
+			foreach ( $gateways as $slug => $gateway ) {
+				$display .= '<option value="'.esc_attr( $slug ).'" '.selected( $data[$item['id']], $slug, false ).' />'.$gateway->title.'</option>';
+			}
+			$display .= '</select>';
+			$id = $item['id'];
+			?>
+				<script type="text/javascript">
+				/*<![CDATA[*/
+					jQuery(function() {
+						jQuery("#<?php echo $id; ?>").select2({ width: '250px' });
+					});
+				/*]]>*/
+				</script>
+			<?php
+			break;
+
 		case 'gateway_options':
- 			foreach ( jigoshop_payment_gateways::payment_gateways() as $gateway ) :
- 				$gateway->admin_options();
- 			endforeach;
+			foreach ( jigoshop_payment_gateways::payment_gateways() as $gateway ) :
+				$gateway->admin_options();
+			endforeach;
 			break;
 
 		case 'shipping_options':
- 			foreach ( jigoshop_shipping::get_all_methods() as $shipping_method ) :
- 				$shipping_method->admin_options();
- 			endforeach;
+			foreach ( jigoshop_shipping::get_all_methods() as $shipping_method ) :
+				$shipping_method->admin_options();
+			endforeach;
 			break;
 
 		case 'tax_rates':
@@ -837,9 +885,11 @@ class Jigoshop_Options_Parser {
 			$display = $parts[0] . '<select id="'.$id.'" class="'.$class.'"' . $parts[1];
 			?>
 				<script type="text/javascript">
+				/*<![CDATA[*/
 					jQuery(function() {
 						jQuery("#<?php echo $id; ?>").select2({ width: '250px' });
 					});
+				/*]]>*/
 				</script>
 			<?php
 			break;
@@ -860,9 +910,11 @@ class Jigoshop_Options_Parser {
 			$display .= '</select>';
 			?>
 				<script type="text/javascript">
+				/*<![CDATA[*/
 					jQuery(function() {
 						jQuery("#<?php echo $id; ?>").select2({ width: '500px' });
 					});
+				/*]]>*/
 				</script>
 			<?php
 			break;
@@ -883,9 +935,11 @@ class Jigoshop_Options_Parser {
 			$id = $item['id'];
 			?>
 				<script type="text/javascript">
+				/*<![CDATA[*/
 					jQuery(function() {
 						jQuery("#<?php echo $id; ?>").select2({ width: '500px' });
 					});
+				/*]]>*/
 				</script>
 			<?php
 			break;
@@ -961,6 +1015,7 @@ class Jigoshop_Options_Parser {
 				value="'. esc_attr( $data[$item['id']] ).'" />';
 			break;
 
+		case 'codeblock':
 		case 'textarea':
 			$cols = '60';
 			$ta_value = '';
@@ -1091,9 +1146,11 @@ class Jigoshop_Options_Parser {
 			$id = $item['id'];
 			?>
 				<script type="text/javascript">
+				/*<![CDATA[*/
 					jQuery(function() {
 						jQuery("#<?php echo $id; ?>").select2({ width: '250px' });
 					});
+				/*]]>*/
 				</script>
 			<?php
 			break;
@@ -1102,7 +1159,7 @@ class Jigoshop_Options_Parser {
 			jigoshop_log( "UNKOWN _type_ in Options parsing" );
 			jigoshop_log( $item );
 		}
-
+		
 		if ( $item['type'] != 'tab' ) {
 			if ( empty( $item['desc'] ) ) {
 				$explain_value = '';
@@ -1236,9 +1293,11 @@ class Jigoshop_Options_Parser {
 							if ( isset( $rate['compound'] ) && $rate['compound'] == 'yes' ) echo 'checked="checked"';
 							echo ' /></td></tr>';
 							?><script type="text/javascript">
+							/*<![CDATA[*/
 								jQuery(function() {
 									jQuery("#tax_country_<?php echo esc_attr( $i ); ?>").select2();
 								});
+							/*]]>*/
 							</script><?php
 						endforeach;
 					endif;
@@ -1250,30 +1309,30 @@ class Jigoshop_Options_Parser {
 		</div>
 
 		<script type="text/javascript">
-		/* <![CDATA[ */
+		/*<![CDATA[*/
 			jQuery(function() {
 
-				jQuery('tr.tax_rate .select_none').live('click', function(){
+				jQuery(document.body).on('click', 'tr.tax_rate .select_none', function(){
 					jQuery(this).closest('td').find('select option').removeAttr("selected");
 					jQuery(this).closest('td').find('select.tax_select2').trigger("change");
 					return false;
 				});
-				jQuery('tr.tax_rate .select_us_states').live('click', function(e){
+				jQuery(document.body).on('click', 'tr.tax_rate .select_us_states', function(e){
 					jQuery(this).closest('td').find('select optgroup[label="<?php _e( 'United States', 'jigoshop' ); ?>"] option').attr("selected","selected");
 					jQuery(this).closest('td').find('select.tax_select2').trigger("change");
 					return false;
 				});
-				jQuery('tr.tax_rate .options select').live('change', function(e){
+				jQuery(document.body).on('change', 'tr.tax_rate .options select', function(e){
 					jQuery(this).trigger("liszt:updated");
 					jQuery(this).closest('td').find('label').text( jQuery(":selected", this).length + ' ' + '<?php _e('countries/states selected', 'jigoshop'); ?>' );
 				});
-				jQuery('tr.tax_rate .select_europe').live('click', function(e){
+				jQuery(document.body).on('click', 'tr.tax_rate .select_europe', function(e){
 					jQuery(this).closest('td').find('option[value="BE"],option[value="FR"],option[value="DE"],option[value="IT"],option[value="LU"],option[value="NL"],option[value="DK"],option[value="IE"],option[value="GR"],option[value="PT"],option[value="ES"],option[value="AT"],option[value="FI"],option[value="SE"],option[value="CY"],option[value="CZ"],option[value="EE"],option[value="HU"],option[value="LV"],option[value="LT"],option[value="MT"],option[value="PL"],option[value="SK"],option[value="SI"],option[value="RO"],option[value="BG"],option[value="IM"],option[value="GB"]').attr("selected","selected");
 					jQuery(this).closest('td').find('select.tax_select2').trigger("change");
 					return false;
 				});
 
-				jQuery('#jigoshop_tax_rates a.add').live('click', function() {
+				jQuery(document.body).on('click', '#jigoshop_tax_rates a.add', function() {
 					var size = jQuery('.tax_rate_rules tbody tr').size();
 					jQuery('<tr> \
 							<td><a href="#" class="remove button">&times;</a></td> \
@@ -1292,13 +1351,13 @@ class Jigoshop_Options_Parser {
 					jQuery('#tax_country_' + size).select2();
 					return false;
 				});
-				jQuery('#jigoshop_tax_rates a.remove').live('click', function(){
+				jQuery(document.body).on('click', '#jigoshop_tax_rates a.remove', function(){
 					var answer = confirm("<?php _e('Delete this rule?', 'jigoshop'); ?>");
 					if (answer) jQuery(this).parent().parent().remove();
 					return false;
 				});
 			});
-			/* ]]> */
+			/*]]>*/
 			</script>
 		<?php
 

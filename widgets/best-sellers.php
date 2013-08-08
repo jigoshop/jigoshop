@@ -10,8 +10,8 @@
  *
  * @package             Jigoshop
  * @category            Widgets
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class Jigoshop_Widget_Best_Sellers extends WP_Widget {
@@ -79,8 +79,9 @@ class Jigoshop_Widget_Best_Sellers extends WP_Widget {
 			'posts_per_page' => $number,
 			'post_type'      => 'product',
 			'post_status'    => 'publish',
-			'meta_key'       => '_js_total_sales',
-			'orderby'        => 'meta_value_num',
+			'meta_key'       => 'quantity_sold',
+			'orderby'        => 'meta_value_num+0',
+			'order'          => 'desc',
 			'nopaging'       => false,
 			'meta_query'     => array(
 				array(

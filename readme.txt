@@ -1,10 +1,10 @@
 === Jigoshop ===
-Contributors: Jigowatt
+Contributors: Jigoshop
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigowatt, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
-Requires at least: 3.3
-Tested up to: 3.5
-Stable tag: 1.4.9
+Requires at least: 3.5
+Tested up to: 3.6-RC1-24704
+Stable tag: 1.8
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -55,8 +55,8 @@ http://jigoshop.com
 
 = Requirements =
 
-* WordPress 3.3 or greater
-* PHP version 5.2.4 or greater
+* WordPress 3.5 or greater
+* PHP version 5.3 or greater
 * MySQL version 5.0 or greater
 * The mod_rewrite Apache module (for permalinks)
 * Some payment gateways require fsockopen support (for IPN access)
@@ -89,7 +89,7 @@ You can also <a href="http://forum.jigoshop.com/kb/customize-jigoshop/languages"
 
 = Which payment gateways do you have? =
 
-Take a look through <a href="http://forum.jigoshop.com/kb/jigoshop-settings/payment-gateways">our list of payment gateways</a>. There are some free ones that are included with Jigoshop, and a couple which <a href="http://jigoshop.com/product-category/extensions/">can be purchased as extensions</a>.
+Take a look through <a href="http://forum.jigoshop.com/kb/jigoshop-settings/payment-gateways">our list of payment gateways</a>. There are some free ones that are included with Jigoshop, and even more are available <a href="http://jigoshop.com/product-category/extensions/">on jigoshop.com</a>.
 
 = Will tax settings work in my country? =
 
@@ -112,6 +112,153 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.8 - 2013-07-15 =
+* New: Settings->General->`Complete processing Orders` option for 'processing' orders older than 30 days
+* New: Javascript Checkout field validation to enhance payment conversion. Shows correct and incorrect fields.
+	* Orders won't be placed until all Checkout fields required data are input and validated
+* Tweak: Revamped all Jigoshop frontend javascript for modularity and efficiency
+	* all Jigoshop javascript loads in footer for improved performance
+* Tweak: Updated several external javascript libraries (jQuery blockUI, select2)
+* Tweak: Removed large jQuery UI library from front end loading, loads required bits as needed (Price Filter)
+* Tweak: Add a codeblock option type in the settings for extensions to use internally
+* Tweak: Combine Edit Order variation attributes with product addons extension in one panel for Orders
+* Tweak: Add some filters for Jigoshop WPML extension to allow more translated items
+* Fix: Repair Google Analytics function for tracking code to load in header where it's required
+* Fix: Unpaid 'on-hold' orders from cash or cheque gateways will no longer be overwritten with another order
+* Fix: FuturePay gateway will not be selectable on the Checkout for Orders over $500.00 (current credit limit)
+* Languages: Updated .pot file for translators
+* Languages: Updated Brazilian translation courtesy of Raphael Suzuki
+
+= 1.7.3 - 2013-06-26 =
+* Fix: Repair template loader that was duplicating Shop products
+
+= 1.7.2 - 2013-06-25 =
+* New: Allow Order variable product attribute editing to change variation in use on an Order
+* Tweak: FuturePay will redirect to the Checkout instead of the Cart for any errors
+* Tweak: Improved UI on Admin Jigoshop Attributes by not showing all attribute terms and taking a lot of space
+* Fix: Checkout will no longer 404 error when the Cart is empty
+* Fix: Product Search shortcode is again functional
+* Fix: Lightbox repairs for IE7 and IE8
+* Fix: Setting for converting old pending orders to on-hold is now functional
+* Fix: Formatted Product variation and attribute labels check for available product instead of erroring
+* Fix: Jigoshop dashboard monthly report now shows full month instead of last day short
+* Fix: Variable products on sale with future dates will not show on sale until that date
+
+= 1.7.1 - 2013-06-10 =
+* Fix: FuturePay gateway is no longer enabled by default
+* Fix: FuturePay gateway has better error checking and display and thankyou page redirects
+* Fix: Product image galleries will now show properly in the lightbox with next/prev navigation
+* Fix: Product reviews will now function with the new lightbox
+* Fix: Cart is always cleared for payment Gateways with successful orders that direct to the thankyou page
+* Fix: Prevent non-products from being added to the Cart
+* Fix: Pending Orders still awaiting payment are no longer duplicated in the Admin with different ID
+* Fix: Template loader will again load 'loop-shop.php' from theme's for multiple shortcodes on a page
+* Fix: Paypal won't show a shipping line if there is no shipping cost
+* Fix: Allow custom text attributes for variations, display them in readable form
+* Fix: Database upgrade script for this version will update all products with quantities sold based on orders
+* Fix: Best Sellers widget will now correctly show top selling products based on quantity sold
+
+= 1.7 - 2013-06-04 =
+* New: Add Setting for Default Payment gateway on the Checkout
+* New: Add new FuturePay US gateway into the core.  Buy now, pay later, no credit card.
+* New: Remove Skrill gateway from the core.
+	* Updated standalone version is available: http://jigoshop.com/product/jigoshop-skrill/
+* Tweak: Re-factor Checkout display to increase conversions (affects form.php and review_order.php in themes)
+* Tweak: Eliminate Checkout errors from themes loading old jQuery. Jigoshop forces WordPress version to load.
+* Tweak: Replace product image lightbox implementation for W3C compliance
+* Tweak: Updated Checkout block-ui javascript for WordPress 3.6 jQuery compliance
+* Tweak: Load most javascript files in the footer for better page load performance
+* Tweak: Settings sections css for better appearance of modules
+* Tweak: Add Georgian Lari to currencies
+* Fix: Variable Products now correctly show variations on sale
+* Fix: Variable products out of stock when saving product will be hidden from front end if settings require it
+* Fix: Products on sale shortcode now shows variable products on sale
+* Translation: Updated Swedish translation courtesy of Peter Hjalmarsson
+* Translation: Updated .pot file for translators
+
+= 1.6.5 - 2013-04-25 =
+* Fix: Featured Product Widget Cache warning
+
+= 1.6.4 - 2013-04-22 =
+* Fix: My Account shortcode error will no longer require PHP 5.3
+
+= 1.6.3 - 2013-04-17 =
+* Fix: Order notes no longer appear in WordPress dashboard, still show on Orders
+* Fix: Add to Cart button redirect now redirects correctly to the Setting for Product, Cart, or Checkout
+* Fix: Payable 'pending' orders are now 'cancelled' on the My Account page if any products out of stock and backorders not allowed
+* Fix: Allow different WordPress table prefixes for sale short code
+* Fix: Allow the 'on_sale' template to be located within a theme
+* Fix: Shortcode for 'jigoshop_products' now uses the 'per_page' parameter from settings
+* Fix: Recent reviews widget no longer shows Anonymous as author on Home and Shop pages
+* Fix: When sending shipping info to PayPal, allow Puerto Rico to process as a US state
+
+= 1.6.2 - 2013-03-27 =
+* Tweak: Updated Spanish translation courtesy of David Bravo
+* Tweak: Updated Brazilian translations courtesy of Raphael Suzuki
+* Fix: Attributes not listed for variations no longer appear on Variations
+* Fix: Virtual products will no longer show incorrect file URL in emails
+* Fix: Allow the Jigoshop plugin to be deleted via the WordPress Plugin Manager
+
+= 1.6.1 - 2013-03-18 =
+* New: Added option to Settings->Catalog & Pricing Tab to determine product button display and actions of the Shop page
+* Tweak: Updated .pot file for language translators
+* Tweak: Add a filter to single product pages for extensions and themes to add large image CSS classes
+* Fix: Edit Product->Attributes checkboxes for 'display on product page' now save correctly
+* Fix: Repair single-product-reviews template error message
+
+= 1.6 - 2013-03-05 =
+* New: VAT reduction -after- processing an Order for customers out of the Shop Base Country and with a valid EU VAT Number for EU Countries
+* New: Authenticated customers can now log out and back in again on a different device and get their cart back
+* New: Added default attributes for variable products to be pre-selected on front end Product page
+* New: Added a Wordpress 'Shop Manager' role for Users
+* New: Support for WP-PageNavi plugin
+* Tweak: Added 2 options on Settings->General for displaying certain messages on the Checkout
+* Tweak: Updated Brazilian translations courtesy of Raphael Suzuki
+* Tweak: Updated Ukranian translations courtesy of Anatolii Sakhnik
+* Tweak: Updated French translations courtesy of Laurent Dinclaux
+* Fix: products on sale shortcode now accurately displays simple products on sale
+* Fix: internal product attributes and variations saving of custom text attributes
+* Fix: Adding products to the Cart if not sufficient stock available
+* Fix: Variations now check for sufficient stock available
+* Fix: Reports date range selectors now work in all browsers
+* Fix: Order notes now appear on Orders in the Admin
+
+= 1.5.1 - 2013-02-01 =
+* Fix: 3rd party Shipping modules and Payment gateways will now display in settings
+
+= 1.5 - 2013-01-29 =
+* New: General tab setting to display 'Return to Shop' button on the Cart page
+* New: Products tab setting to adjust thumbnail images per row on Product pages
+* New: Core additions for the new Jigoshop Multiple Currency extension
+	* http://jigoshop.com/product/jigoshop-multiple-currencies/
+* New: Limited theme support for twenty-twelve
+* New: Checkout zip and postal code validation for most countries enabled with setting on General Tab
+* Tweak: Add existing currencies for most countries
+* Tweak: Checkout will not longer -require- the 'state' field on countries that don't have states
+* Tweak: Checkout now shows selected shipping destination the same as the Cart
+* Tweak: updated .pot file for language translators
+* Tweak: Updated Brazilian translations courtesy of Raphael Suzuki
+* Tweak: Updated Ukranian translations courtesy of Anatolii Sakhnik
+* Tweak: Updated Japanese translations courtesy of @bigtom
+* Tweak: Updated Czech translations courtesy of Jaroslav Ondra
+* Tweak: Updated Russian translations courtesy of Алексей Важнов
+* Tweak: Checkout will display message asking customers to verify their state when required before ordering
+* Tweak: PayPal gateway will show one item for all items with 'Catalog prices include tax'
+     * This prevents tax rounding errors at PayPal with that setting
+* Fix: Small tax rounding error for 'Catalog prices include tax' on Cart and Checkout
+* Fix: Totals for 'Catalog prices include tax' correct for states other than base with multiple cart items
+* Fix: Taxes after coupon had wrong tax calcs with non-taxable products
+* Fix: Cart widget displays correct subtotals for 'Catalog prices include tax'
+* Fix: Products no longer on sale if out of established date range
+* Fix: Product variations display correct price when on sale
+* Fix: Variable products no longer show the sale price as the cheapest price if out of established date range
+* Fix: Coupon usage counter now increments after each use of a coupon
+* Fix: Reports top earners now gives correct totals
+* Fix: Global Attribute type of 'select' no longer available to apply to a product
+* Fix: Correct applied discount and totals for cart and product discounts larger than required for 0.00 total
+* Fix: Products in Cart won't process if stock is no longer available and Backorders not allowed
+* Fix: New Order emails no longer sent out to customers when the setting to reset pending orders to on-hold is used
+
 = 1.4.9 - 2012-12-13 =
 * New: Lithuanian translations courtesy of Jonas Gavelis
 * Tweak: Updated Ukranian translations courtesy of Anatolii Sakhnik

@@ -10,8 +10,8 @@
  *
  * @package             Jigoshop
  * @category            Widgets
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -134,7 +134,7 @@ class Jigoshop_Widget_Recent_Reviews extends WP_Widget {
 					</div>";
 
 					// Print the author
-					printf( _x('by %1$s', 'author', 'jigoshop' ), get_comment_author() );
+					printf( _x('by %1$s', 'author', 'jigoshop' ), get_comment_author($comment->comment_ID) );
 
 				echo '</li>';
 			}

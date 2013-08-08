@@ -10,8 +10,8 @@
  *
  * @package             Jigoshop
  * @category            Admin
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -437,9 +437,9 @@ class jigoshop_dashboard {
 		<div class="stats" id="jigoshop-stats">
 			<p>
 				<?php if ($current_month_offset!=date('m')) : ?>
-					<a href="admin.php?page=jigoshop&amp;month=<?php echo $current_month_offset+1; ?>" class="next"><?php _e('Next Month &rarr;', 'jigoshop'); ?></a>
+					<a href="admin.php?page=jigoshop&amp;month=<?php echo $current_month_offset+1; ?>" class="next"><?php _e('Next Month &rarr;','jigoshop'); ?></a>
 				<?php endif; ?>
-				<a href="admin.php?page=jigoshop&amp;month=<?php echo $current_month_offset-1; ?>" class="previous"><?php _e('&larr; Previous Month', 'jigoshop'); ?></a>
+				<a href="admin.php?page=jigoshop&amp;month=<?php echo $current_month_offset-1; ?>" class="previous"><?php _e('&larr; Previous Month','jigoshop'); ?></a>
 			</p>
 	<div class="inside">
 		<div id="placeholder" style="width:100%; height:300px; position:relative;"></div>
@@ -478,8 +478,8 @@ class jigoshop_dashboard {
 						$first_day = strtotime("{$year}-{$month}-01");
 						$last_day = strtotime('-1 second', strtotime('+1 month', $first_day));
 
-						$after = date('Y-m-d', $first_day);
-						$before = date('Y-m-d', $last_day);
+						$after = date('Y-m-d H:i:s', $first_day);
+						$before = date('Y-m-d H:i:s', $last_day);
 
 						$where .= " AND post_date >= '$after'";
 						$where .= " AND post_date <= '$before'";
@@ -532,7 +532,7 @@ class jigoshop_dashboard {
 
 							if ($order_data->status=='cancelled' || $order_data->status=='refunded') continue;
 
-							$time = strtotime(date('Ymd', strtotime($order->post_date))).'000';
+							$time = strtotime(date('Ymd', strtotime($order->post_date))) . '000';
 
 							if (isset($order_counts[$time])) :
 								$order_counts[$time]++;
@@ -572,7 +572,7 @@ class jigoshop_dashboard {
 
 				for (var i = 0; i < d2.length; ++i) d2[i][0] += 60 * 60 * 1000;
 
-				var plot = jQuery.plot(jQuery("#placeholder"), [ { label: "<?php _e('Number of sales','jigoshop'); ?>", data: d }, { label: "<?php _e('Sales amount','jigoshop'); ?>", data: d2, yaxis: 2 } ], {
+				var plot = jQuery.plot(jQuery("#placeholder"), [ { label: "<?php __('Number of sales','jigoshop'); ?>", data: d }, { label: "<?php __('Sales amount','jigoshop'); ?>", data: d2, yaxis: 2 } ], {
 					series: {
 						lines: { show: true },
 						points: { show: true }
@@ -619,7 +619,7 @@ class jigoshop_dashboard {
 
 							jQuery("#tooltip").remove();
 
-							if (item.series.label=="<?php _e('Number of sales','jigoshop'); ?>") {
+							if (item.series.label=="<?php __('Number of sales','jigoshop'); ?>") {
 
 								var y = item.datapoint[1];
 								showTooltip(item.pageX, item.pageY, item.series.label + " - " + y);

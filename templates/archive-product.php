@@ -10,15 +10,15 @@
  *
  * @package             Jigoshop
  * @category            Catalog
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 ?>
 
 <?php get_header('shop'); ?>
 
-<?php do_action('jigoshop_before_main_content'); // <div id="container"><div id="content" role="main"> ?>
+<?php do_action('jigoshop_before_main_content'); ?>
 
 	<?php if (is_search()) : ?>
 		<h1 class="page-title"><?php _e('Search Results:', 'jigoshop'); ?> &ldquo;<?php the_search_query(); ?>&rdquo; <?php if (get_query_var('paged')) echo ' &mdash; Page '.get_query_var('paged'); ?></h1>
@@ -36,7 +36,7 @@
 
 	<?php do_action('jigoshop_pagination'); ?>
 
-<?php do_action('jigoshop_after_main_content'); // </div></div> ?>
+<?php do_action('jigoshop_after_main_content'); ?>
 
 <?php do_action('jigoshop_sidebar'); ?>
 

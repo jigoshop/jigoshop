@@ -10,8 +10,8 @@
  *
  * @package             Jigoshop
  * @category            Admin
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -51,7 +51,7 @@ function jigoshop_add_category_thumbnail_field() {
 				tb_remove();
 			}
 
-			jQuery('.upload_image_button').live('click', function(e){
+			jQuery(document.body).on('click', '.upload_image_button', function(e){
 				e.preventDefault();
 				var post_id = 0;
 
@@ -61,7 +61,7 @@ function jigoshop_add_category_thumbnail_field() {
 				return false;
 			});
 
-			jQuery('.remove_image_button').live('click', function(){
+			jQuery(document.body).on('click', '.remove_image_button', function(){
 				jQuery('#product_cat_thumbnail img').attr('src', '<?php echo $image; ?>');
 				jQuery('#product_cat_thumbnail_id').val('');
 				return false;
@@ -104,7 +104,7 @@ function jigoshop_edit_category_thumbnail_field( $term, $taxonomy ) {
 					tb_remove();
 				}
 
-				jQuery('.upload_image_button').live('click', function(e){
+				jQuery(document.body).on('click', '.upload_image_button', function(e){
 					e.preventDefault();
 					var post_id = 0;
 
@@ -114,7 +114,7 @@ function jigoshop_edit_category_thumbnail_field( $term, $taxonomy ) {
 					return false;
 				});
 
-				jQuery('.remove_image_button').live('click', function(){
+				jQuery(document.body).on('click', '.remove_image_button', function(){
 					jQuery('#product_cat_thumbnail img').attr('src', '<?php echo jigoshop::assets_url().'/assets/images/placeholder.png'; ?>');
 					jQuery('#product_cat_thumbnail_id').val('');
 					return false;

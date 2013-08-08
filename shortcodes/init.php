@@ -10,8 +10,8 @@
  *
  * @package             Jigoshop
  * @category            Core
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 include_once('cart.php');
@@ -88,6 +88,7 @@ function jigoshop_products( $atts ){
 	$args = array(
 		'post_type'          => 'product',
 		'post_status'        => 'publish',
+		'posts_per_page'     => $per_page,
 		'ignore_sticky_posts'=> 1,
 		'orderby'            => $orderby,
 		'order'              => $order,
@@ -338,81 +339,59 @@ function jigoshop_product_add_to_cart( $atts ) {
 
 //### Search shortcode #########################################################
 
-function jigoshop_search_shortcode( $atts ) {
-
-	// Extract the arguments
-	extract( $args );
-
+function jigoshop_search_shortcode() {
+	
+	$unique = uniqid();
+	
 	// Construct the form
-	$form = '<form role="search" method="get" id="searchform" action="' . home_url() . '">';
+	$form = '<form role="search" method="get" class="jigoshop-shortcode-searchform" id="searchform'.$unique.'" action="' . home_url() . '">';
 	$form .= '<div>';
-		$form .= '<label class="assistive-text" for="s">' . __('Search for:', 'jigoshop') . '</label>';
-		$form .= '<input type="text" value="' . get_search_query() . '" name="s" id="s" placeholder="' . __('Search for products', 'jigoshop') . '" />';
-		$form .= '<input type="submit" id="searchsubmit" value="' . __('Search', 'jigoshop') . '" />';
+		$form .= '<label class="assistive-text" for="s'.$unique.'">' . __('Search for:', 'jigoshop') . '</label>';
+		$form .= '<input type="text" value="' . get_search_query() . '" name="s" id="s'.$unique.'" placeholder="' . __('Search for products', 'jigoshop') . '" />';
+		$form .= '<input class="jigoshop-shortcode-submit button" type="submit" id="searchsubmit'.$unique.'" value="' . __('Search', 'jigoshop') . '" />';
 		$form .= '<input type="hidden" name="post_type" value="product" />';
 	$form .= '</div>';
 	$form .= '</form>';
 
 	// Apply a filter to allow for additional fields
-	echo apply_filters('jigoshop_product_search_shortcode', $form, $instance);
+	echo apply_filters('jigoshop_product_search_shortcode', $form);
 
 }
 
 //### Sale products shortcode #########################################################
 
 function jigoshop_sale_products( $atts ) {
-	global $columns, $per_page, $paged;
 
-	extract(shortcode_atts(array(
-		'per_page'                  => Jigoshop_Base::get_options()->get_option('jigoshop_catalog_per_page'),
-		'columns'                   => Jigoshop_Base::get_options()->get_option('jigoshop_catalog_columns'),
-		'orderby'                   => Jigoshop_Base::get_options()->get_option('jigoshop_catalog_sort_orderby'),
-		'order'                     => Jigoshop_Base::get_options()->get_option('jigoshop_catalog_sort_direction'),
-		'pagination'                => false
-	), $atts));
+	global $jigoshop_sale_products;
 
-  	$today = date('Y-m-d',time());
-  	$tomorrow = date('Y-m-d',mktime(0, 0, 0, date("m"), date("d")+1, date("Y")) );
+	extract( shortcode_atts( array(
+		'per_page'          => Jigoshop_Base::get_options()->get_option('jigoshop_catalog_per_page'),
+		'columns'           => Jigoshop_Base::get_options()->get_option('jigoshop_catalog_columns'),
+		'orderby'           => Jigoshop_Base::get_options()->get_option('jigoshop_catalog_sort_orderby'),
+		'order'             => Jigoshop_Base::get_options()->get_option('jigoshop_catalog_sort_direction'),
+		'pagination'        => false
+		), $atts ) );
 
 	$args = array(
-		'post_type'                 => array( 'product' ),
-		'post_status'               => 'publish',
-		'ignore_sticky_posts'       => 1,
-		'posts_per_page'            => $per_page,
-		'orderby'                   => $orderby,
-		'order'                     => $order,
-		'paged'                     => $paged,
-		'meta_query'                => array(
-				array(
-						'key'       => 'visibility',
-						'value'     => array( 'catalog', 'visible' ),
-						'compare'   => 'IN'
-				),
-				array(
-						'key'       => 'sale_price',
-						'value'     => '',
-						'compare'   => '!=',
-				),
-				array(
-						'key'       => 'sale_price_dates_from',
-						'value'     => array( '', $today ),
-						'compare'   => '<=',
-				),
-				array(
-						'key'       => 'sale_price_dates_to',
-						'value'     => array( '', $tomorrow ),
-						'compare'   => '<=',
-				),
-		)
+		'posts_per_page'    => $per_page,
+		'orderby'           => $orderby,
+		'order'             => $order,
+		'no_found_rows'     => 1,
+		'post_status'       => 'publish',
+		'post_type'         => 'product',
+		'post__in'          => jigoshop_product::get_product_ids_on_sale()
 	);
-	@query_posts($args);
+
+	$jigoshop_sale_products = get_posts( $args );
+
 	ob_start();
-	jigoshop_get_template_part( 'loop', 'shop' );
+	jigoshop_get_template_part( 'loop', 'on_sale' );
 	if ( $pagination ) do_action( 'jigoshop_pagination' );
-	wp_reset_query();
-	return ob_get_clean();
+	wp_reset_postdata();
+	
+	return ob_get_clean();	
+
 }
-add_shortcode('sale_products', 'jigoshop_sale_products');
 
 //### Shortcodes #########################################################
 
@@ -425,6 +404,7 @@ add_shortcode('product_search'          , 'jigoshop_search_shortcode');
 add_shortcode('recent_products'         , 'jigoshop_recent_products');
 add_shortcode('featured_products'       , 'jigoshop_featured_products');
 add_shortcode('jigoshop_category'       , 'jigoshop_product_category');
+add_shortcode('sale_products'           , 'jigoshop_sale_products');
 
 add_shortcode('jigoshop_cart'           , 'get_jigoshop_cart');
 add_shortcode('jigoshop_checkout'       , 'get_jigoshop_checkout');

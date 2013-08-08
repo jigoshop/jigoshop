@@ -10,8 +10,8 @@
  *
  * @package             Jigoshop
  * @category            Customer
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -31,7 +31,7 @@ function jigoshop_order_tracking( $atts ) {
 
 		$order = new jigoshop_order();
 
-		if (isset($_POST['orderid']) && $_POST['orderid'] > 0) $order->id = (int) $_POST['orderid']; else $order->id = 0;
+		$order->id = !empty( $_POST['orderid'] ) ? $_POST['orderid'] : 0;
 		if (isset($_POST['order_email']) && $_POST['order_email']) $order_email = trim($_POST['order_email']); else $order_email = '';
 
 		if ( !jigoshop::verify_nonce('order_tracking') ):
@@ -51,7 +51,10 @@ function jigoshop_order_tracking( $atts ) {
 				}
 				echo '.</p>';
 
+				do_action( 'jigoshop_tracking_details_info', $order );
+
 				?>
+				<?php do_action('jigoshop_before_track_order_details', $order->id);?>
 				<h2><?php _e('Order Details', 'jigoshop'); ?></h2>
 				<table class="shop_table">
 					<thead>
@@ -80,6 +83,9 @@ function jigoshop_order_tracking( $atts ) {
                             </tr>
                             <?php
                         endif;
+
+			            do_action('jigoshop_processing_fee_after_shipping');
+
                         if ($jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0) : ?>
                             <tr class="discount">
                                 <td colspan="3"><?php _e('Discount', 'jigoshop'); ?></td>
@@ -146,6 +152,7 @@ function jigoshop_order_tracking( $atts ) {
 						?>
 					</tbody>
 				</table>
+				<?php do_action('jigoshop_after_track_order_details', $order->id);?>
 
 				<div style="width: 49%; float:left;">
 					<h2><?php _e('Billing Address', 'jigoshop'); ?></h2>

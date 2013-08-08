@@ -12,15 +12,18 @@
  *
  * @package             Jigoshop
  * @category            Catalog
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_product_variation extends jigoshop_product {
 
 	public $variation_id;
 	public $variation_data; // For formatting of variations
-
+	public $sale_price_dates_from;
+	public $sale_price_dates_to;
+	
+	
 	/**
 	 * Extends the parent constructor to overwrite with variable data
 	 *
@@ -45,6 +48,8 @@ class jigoshop_product_variation extends jigoshop_product {
 		if ( isset( $this->meta['variation_data'][0] ))
 			$this->variation_data = maybe_unserialize( $this->meta['variation_data'][0] );
 		
+		$sale_from = $this->sale_price_dates_from;
+		$sale_to = $this->sale_price_dates_to;
 
 		parent::__construct( $ID );
 				
@@ -52,6 +57,8 @@ class jigoshop_product_variation extends jigoshop_product {
 		$this->ID = $parent_id;
 		$this->id = $parent_id;
 		if ( ! empty( $tempsku )) $this->sku = $tempsku;
+		$this->sale_price_dates_from = $sale_from;
+		$this->sale_price_dates_to = $sale_to;
 		
 		return $this;
 	}
@@ -83,15 +90,56 @@ class jigoshop_product_variation extends jigoshop_product {
 	public function get_price() {
 
 		$price = null;
-		if ( strstr($this->sale_price,'%') ) {
-			$price = round($this->regular_price * ( (100 - str_replace('%','',$this->sale_price) ) / 100 ), 2);
-		} else if ( $this->sale_price ) {
-			$price = $this->sale_price;
+		if ( $this->is_on_sale() ) {
+			if ( strstr($this->sale_price,'%') ) {
+				$price = round($this->regular_price * ( (100 - str_replace('%','',$this->sale_price) ) / 100 ), 4);
+			} else if ( $this->sale_price ) {
+				$price = $this->sale_price;
+			}
 		} else {
 			$price = apply_filters('jigoshop_product_get_regular_price', $this->regular_price, $this->variation_id);
 		}
 		return apply_filters( 'jigoshop_product_get_price', $price, $this->variation_id );
 
+	}
+
+	/**
+	 * Returns whether or not the variation is on sale.
+	 *
+	 * @return  bool
+	 */
+	public function is_on_sale() {
+		
+		$time = current_time('timestamp');
+
+		// Check if the sale is still in range (if we have a range)
+		if ( ! empty( $this->sale_price_dates_from ) && ! empty( $this->sale_price_dates_to ) ) {
+			if ( $this->sale_price_dates_from	<= $time &&
+				 $this->sale_price_dates_to		>= $time &&
+				 $this->sale_price) {
+				 
+				return true;
+			}
+		}
+		// Otherwise if we have a sale price
+		if ( empty( $this->sale_price_dates_to ) && $this->sale_price ) return true;
+
+		// Just incase return false
+		return false;
+	}
+
+	/**
+	 * Check the stock levels to unsure we have enough to match request
+	 *
+	 * @param   int $quantity   Amount to verify that we have
+	 * @return  bool
+	 */
+	public function has_enough_stock( $quantity ) {
+		// always work from a new product to check actual stock available
+		// this product instance could be sitting in a Cart for a user and
+		// another customer purchases the last available
+		$temp = new jigoshop_product_variation( $this->get_variation_id() );
+		return ($this->backorders_allowed() || $temp->stock >= $quantity);
 	}
 
 	/**
@@ -133,7 +181,6 @@ class jigoshop_product_variation extends jigoshop_product {
 
 	/**
 	 * Update values of variation attributes using given values
-	 * TODO: Why do we need this?
 	 *
 	 * @param   array $data array of attributes and values
 	 */

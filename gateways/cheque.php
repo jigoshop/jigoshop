@@ -10,8 +10,8 @@
  *
  * @package             Jigoshop
  * @category            Checkout
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -22,7 +22,7 @@ function add_cheque_gateway( $methods ) {
 	$methods[] = 'jigoshop_cheque';
 	return $methods;
 }
-add_filter( 'jigoshop_payment_gateways', 'add_cheque_gateway', 5 );
+add_filter( 'jigoshop_payment_gateways', 'add_cheque_gateway', 15 );
 
 
 class jigoshop_cheque extends jigoshop_payment_gateway {

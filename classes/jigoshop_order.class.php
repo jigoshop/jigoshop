@@ -12,8 +12,8 @@
  *
  * @package             Jigoshop
  * @category            Customer
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 class jigoshop_order extends Jigoshop_Base {
@@ -90,6 +90,7 @@ class jigoshop_order extends Jigoshop_Base {
 		$this->billing_first_name 	= (string) $this->get_value_from_data('billing_first_name');
 		$this->billing_last_name 	= (string) $this->get_value_from_data('billing_last_name');
 		$this->billing_company	 	= (string) $this->get_value_from_data('billing_company');
+		$this->billing_euvatno	 	= (string) $this->get_value_from_data('billing_euvatno');
 		$this->billing_address_1 	= (string) $this->get_value_from_data('billing_address_1');
 		$this->billing_address_2 	= (string) $this->get_value_from_data('billing_address_2');
 		$this->billing_city 		= (string) $this->get_value_from_data('billing_city');
@@ -313,27 +314,25 @@ class jigoshop_order extends Jigoshop_Base {
             endforeach;
         endif;
 
-		foreach($this->items as $item) :
+		foreach ( $this->items as $item ) {
 
 			$_product = $this->get_product_from_item( $item );
 
 			$return .= $item['qty'] . ' x ' . html_entity_decode(apply_filters('jigoshop_order_product_title', $item['name'], $_product), ENT_QUOTES, 'UTF-8');
 
-			if ($show_sku) :
-
+			if ( $show_sku ) {
 				$return .= ' (#' . $_product->sku . ')';
+			}
 
-			endif;
-
-            if ($use_inc_tax && $item['cost_inc_tax'] >= 0) :
+            if ($use_inc_tax && $item['cost_inc_tax'] >= 0) {
                 $return .= ' - ' . html_entity_decode(strip_tags(jigoshop_price( $item['cost_inc_tax']*$item['qty'], array('ex_tax_label' => 0 ))), ENT_COMPAT, 'UTF-8');
-            else :
+            } else {
                 $return .= ' - ' . html_entity_decode(strip_tags(jigoshop_price( $item['cost'], array('ex_tax_label' => 1 ))), ENT_COMPAT, 'UTF-8');
-            endif;
+            }
 
-			if (isset($_product->variation_data)) :
+			if (isset($_product->variation_data)) {
 				$return .= PHP_EOL . jigoshop_get_formatted_variation( $item['variation'], true);
-			endif;
+			}
 
 			// Very hacky, used for GFORMS ADDONS -Rob
 			if ( ! isset($_product->variation_data) && isset($item['variation'])) {
@@ -358,34 +357,35 @@ class jigoshop_order extends Jigoshop_Base {
 				}
 			}
 
-			if ( ! empty( $item['customization'] ) ) :
+			if ( ! empty( $item['customization'] ) ) {
 				$return .= PHP_EOL . apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') ) . PHP_EOL . $item['customization'];
-			endif;
+			}
 
-			if ($show_download_links) :
+			if ( $show_download_links ) {
 
-				if ($_product->exists) :
+				if ( $_product->exists() ) {
 
-					if ( ($_product->is_type('downloadable') || $_product->is_type('virtual')) ) :
+					if ( $_product->is_type( 'downloadable' )) {
 
-					if ( (bool) $item['variation_id'] ) {
-						$product_id = $_product->variation_id;
-					} else {
-						$product_id = $_product->ID;
+						if ( (bool) $item['variation_id'] ) {
+							$product_id = $_product->variation_id;
+						} else {
+							$product_id = $_product->ID;
+						}
+
+						if ( $this->get_downloadable_file_url( $product_id ) ) {
+							$return .= PHP_EOL . __('Your download link for this file is:', 'jigoshop');
+							$return .= PHP_EOL . ' - ' . $this->get_downloadable_file_url( $product_id ) . '';
+						}
 					}
 
-					if ( $this->get_downloadable_file_url( $product_id ) )
-						$return .= PHP_EOL . 'Your download link for this file is:';
-						$return .= PHP_EOL . ' - ' . $this->get_downloadable_file_url( $product_id ) . '';
-					endif;
+				}
 
-				endif;
-
-			endif;
+			}
 
 			$return .= PHP_EOL;
 
-		endforeach;
+		}
 
 		return $return;
 
@@ -433,18 +433,21 @@ class jigoshop_order extends Jigoshop_Base {
 
 		$comment = array(
 			'comment_post_ID'      => $this->id,
-			'comment_author'       => 'Jigoshop',
-			'comment_author_email' => null,
-			'comment_author_url'   => null,
+			'comment_author'       => __('Jigoshop', 'jigoshop'),
+			'comment_author_email' => '',
+			'comment_author_url'   => '',
 			'comment_content'      => $note,
-			'comment_type'         => 'jigoshop',
+			'comment_type'         => 'order_note',
+			'comment_agent'        => __('Jigoshop', 'jigoshop'),
 			'comment_parent'       => 0,
 			'comment_date'         => current_time('mysql'),
 			'comment_date_gmt'     => current_time('mysql', 1),
+			'comment_approved'     => true
 		);
 
 		$comment_id = wp_insert_comment( $comment );
 		add_comment_meta($comment_id, 'private', $private);
+		return $comment_id;
 	}
 
 	/**
@@ -469,7 +472,7 @@ class jigoshop_order extends Jigoshop_Base {
 // 			return true;
 // 		}
 
-		if ($note) $note .= ' ';
+		if ($note) $note .= ' - ';
 
 		$old_status = get_term_by( 'slug', sanitize_title( $this->status ), 'shop_order_status');
 		$new_status = get_term_by( 'slug', sanitize_title( $new_status_slug ), 'shop_order_status');
@@ -508,9 +511,9 @@ class jigoshop_order extends Jigoshop_Base {
 
 		if( $this->items ) {
 			foreach($this->items as $item) {
-				$sales =	absint(get_post_meta($item['id'], 'total_sales', true));
+				$sales =	absint(get_post_meta($item['id'], 'quantity_sold', true));
 				$sales +=	absint($item['qty']);
-				update_post_meta($item['id'], '_js_total_sales', $sales);
+				update_post_meta($item['id'], 'quantity_sold', $sales);
 			}
 		}
 	}

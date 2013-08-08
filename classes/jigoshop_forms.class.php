@@ -10,8 +10,8 @@
  *
  * @package             Jigoshop
  * @category            Admin
- * @author              Jigowatt
- * @copyright           Copyright © 2011-2012 Jigowatt Ltd.
+ * @author              Jigoshop
+ * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  */
 
@@ -127,9 +127,11 @@ class Jigoshop_Forms extends Jigoshop_Base {
 
 		$html .= "</p>";
 		$html .=    '<script type="text/javascript">
+					/*<![CDATA[*/
 						jQuery(function() {
 							jQuery("#'.$id.'").select2();
 						});
+					/*]]>*/
 					</script>';
 
 		return $html;
