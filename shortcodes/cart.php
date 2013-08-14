@@ -117,10 +117,10 @@ function jigoshop_cart($atts) {
                                 <td class="product-remove"><a href="<?php echo esc_url( jigoshop_cart::get_remove_url($cart_item_key) ); ?>" class="remove" title="<?php echo esc_attr( __('Remove this item.', 'jigoshop') ); ?>">&times;</a></td>
                                 <td class="product-thumbnail"><a href="<?php echo esc_url( apply_filters('jigoshop_product_url_display_in_cart', get_permalink($values['product_id']), $cart_item_key) ); ?>">
                                     <?php
-                                        if ($values['variation_id'] && has_post_thumbnail($values['variation_id'])) {
-                                            echo get_the_post_thumbnail($values['variation_id'], 'shop_tiny');
-                                        } else if (has_post_thumbnail($values['product_id'])) {
-                                            echo get_the_post_thumbnail($values['product_id'], 'shop_tiny');
+                                        if ($values['variation_id'] && jigoshop_cart_has_post_thumbnail($cart_item_key, $values['variation_id'])) {
+                                            echo jigoshop_cart_get_post_thumbnail($cart_item_key, $values['variation_id'], 'shop_tiny');
+                                        } else if (jigoshop_cart_has_post_thumbnail($cart_item_key, $values['product_id'])) {
+                                            echo jigoshop_cart_get_post_thumbnail($cart_item_key, $values['product_id'], 'shop_tiny');
                                         } else {
                                             echo '<img src="' . jigoshop::assets_url() . '/assets/images/placeholder.png" alt="Placeholder" width="' . jigoshop::get_var('shop_tiny_w') . '" height="' . jigoshop::get_var('shop_tiny_h') . '" />';
                                         }
@@ -156,7 +156,7 @@ function jigoshop_cart($atts) {
                                     	$quantity_display = ob_get_contents();
                                     	ob_end_clean();
                                     	echo apply_filters( 'jigoshop_product_quantity_display_in_cart', $quantity_display, $values['product_id'], $values );
-                                    	
+
                                     ?>
                                 </td>
                                 <td class="product-subtotal"><?php echo apply_filters( 'jigoshop_product_subtotal_display_in_cart', jigoshop_price($_product->get_price_excluding_tax() * $values['quantity']), $values['product_id'], $values ); ?></td>
@@ -181,7 +181,7 @@ function jigoshop_cart($atts) {
                         <?php endif; ?>
 
                         <?php jigoshop::nonce_field('cart') ?>
-                        
+
                         <?php if ( Jigoshop_Base::get_options()->get_option( 'jigoshop_cart_shows_shop_button' ) == 'no' ) : ?>
                         	<input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" /> <a href="<?php echo esc_url( jigoshop_cart::get_checkout_url() ); ?>" class="checkout-button button-alt"><?php _e('Proceed to Checkout &rarr;', 'jigoshop'); ?></a>
                         <?php else : ?>
@@ -226,12 +226,12 @@ function jigoshop_cart($atts) {
             // Hide totals if customer has set location and there are no methods going there
             $available_methods = jigoshop_shipping::get_available_shipping_methods();
             $jigoshop_options = Jigoshop_Base::get_options();
-            
+
             if ($available_methods || !jigoshop_customer::get_shipping_country() || !jigoshop_shipping::is_enabled()) :
             	do_action( 'jigoshop_before_cart_totals' );
                 ?>
                 <h2><?php _e('Cart Totals', 'jigoshop'); ?></h2>
-				
+
                 <div class="cart_totals_table">
                     <table cellspacing="0" cellpadding="0">
                         <tbody>

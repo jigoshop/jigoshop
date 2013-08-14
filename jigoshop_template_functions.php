@@ -131,7 +131,7 @@ if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 		} else {
 			$output = '<span class="nostock">'.__('Out of Stock', 'jigoshop').'</span>';
 		}
-		
+
 		echo apply_filters( 'jigoshop_loop_add_to_cart_output', $output, $post, $_product );
 
 		do_action('jigoshop_after_add_to_cart_button');
@@ -146,6 +146,32 @@ if (!function_exists('jigoshop_template_loop_product_thumbnail')) {
 if (!function_exists('jigoshop_template_loop_price')) {
 	function jigoshop_template_loop_price( $post, $_product ) {
 		?><span class="price"><?php echo $_product->get_price_html(); ?></span><?php
+	}
+}
+
+if ( ! function_exists( 'jigoshop_cart_has_post_thumbnail' ) ) {
+	/**
+	 * Check if product in cart has an image attached. Applies `jigoshop_cart_has_post_thumbnail` filter.
+	 *
+	 * @param string $cart_item_key Cart key
+	 * @param int $post_id Optional. Post ID.
+	 * @return bool Whether post has an image attached.
+	 */
+	function jigoshop_cart_has_post_thumbnail( $cart_item_key, $post_id ) {
+		return apply_filters( 'jigoshop_cart_has_post_thumbnail', has_post_thumbnail( $post_id ), $cart_item_key, $post_id );
+	}
+}
+
+if ( ! function_exists( 'jigoshop_cart_get_post_thumbnail' ) ) {
+	/**
+	 * Retrieve product in cart thumbnail. Applies `jigoshop_cart_get_post_thumbnail` filter.
+	 *
+	 * @param int $post_id Optional. Post ID.
+	 * @param string $size Optional. Image size. Defaults to 'post-thumbnail'.
+	 * @param string|array $attr Optional. Query string or array of attributes.
+	 */
+	function jigoshop_cart_get_post_thumbnail( $cart_item_key, $post_id, $size = 'post-thumbnail', $attr = '' ) {
+		return apply_filters( 'jigoshop_cart_get_post_thumbnail', get_the_post_thumbnail( $post_id, $size, $attr ), $cart_item_key, $post_id, $size, $attr );
 	}
 }
 
@@ -170,7 +196,7 @@ if (!function_exists('jigoshop_show_product_images')) {
 			$image_classes = apply_filters( 'jigoshop_product_image_classes', array(), $_product );
 			array_unshift( $image_classes, 'zoom' );
 			$image_classes = implode( ' ', $image_classes );
-			
+
 			$args = array( 'post_type' => 'attachment', 'post_mime_type' => 'image', 'numberposts' => -1, 'post_status' => null, 'post_parent' => $post->ID, 'orderby' => 'menu_order', 'order' => 'asc', 'fields' => 'ids' );
 			$attachments = get_posts($args);
 			$attachment_count = count( $attachments );
@@ -179,7 +205,7 @@ if (!function_exists('jigoshop_show_product_images')) {
 			} else {
 				$gallery = '';
 			}
-			
+
 			echo '<a href="'.wp_get_attachment_url($thumb_id).'" class="'.$image_classes.'" rel="prettyPhoto'.$gallery.'">';
 			the_post_thumbnail($large_thumbnail_size);
 			echo '</a>';
@@ -208,7 +234,7 @@ if (!function_exists('jigoshop_show_product_thumbnails')) {
 		$attachments = get_posts($args);
 
 		if ($attachments) :
-		
+
 			$loop = 0;
 			$attachment_count = count( $attachments );
 			if ( $attachment_count > 1 ) {
@@ -216,10 +242,10 @@ if (!function_exists('jigoshop_show_product_thumbnails')) {
 			} else {
 				$gallery = '';
 			}
-			
+
 			$columns = Jigoshop_Base::get_options()->get_option( 'jigoshop_product_thumbnail_columns', '3' );
 			$columns = apply_filters( 'single_thumbnail_columns', $columns );
-			
+
 			foreach ( $attachments as $attachment_id ) :
 
 				if ($thumb_id==$attachment_id) continue; /* ignore the large featured image */
@@ -404,7 +430,7 @@ if (!function_exists('jigoshop_grouped_add_to_cart')) {
 					<?php endforeach; ?>
 				</tbody>
 			</table>
-      <?php do_action('jigoshop_before_add_to_cart_form_button'); ?>			
+      <?php do_action('jigoshop_before_add_to_cart_form_button'); ?>
 			<button type="submit" class="button-alt"><?php _e('Add to cart', 'jigoshop'); ?></button>
 			<?php do_action('jigoshop_add_to_cart_form'); ?>
 		</form>
@@ -416,7 +442,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 
 		global $post, $_product;
         $jigoshop_options = Jigoshop_Base::get_options();
-		
+
 		$attributes = $_product->get_available_attributes_variations();
 
         //get all variations available as an array for easy usage by javascript
@@ -508,7 +534,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 						<span class="select_label"><?php echo jigoshop_product::attribute_label('pa_'.$name); ?></span>
 						<select id="<?php echo esc_attr( $sanitized_name ); ?>" name="tax_<?php echo $sanitized_name; ?>">
 							<option value=""><?php echo __('Choose an option ', 'jigoshop') ?>&hellip;</option>
-							
+
 							<?php if ( empty( $_POST ) ): ?>
 									<?php $selected_value = ( isset( $default_attributes[ $sanitized_name ] ) ) ? $default_attributes[ $sanitized_name ] : ''; ?>
 							<?php else: ?>
@@ -519,7 +545,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 								<?php if ( taxonomy_exists( 'pa_'.$sanitized_name )) : ?>
 									<?php $term = get_term_by( 'slug', $value, 'pa_'.$sanitized_name ); ?>
 									<option value="<?php echo esc_attr( $term->slug ); ?>" <?php selected( $selected_value, $term->slug) ?>><?php echo $term->name; ?></option>
-								<?php else :  
+								<?php else :
 									$display_value = apply_filters('jigoshop_product_attribute_value_custom',esc_attr(sanitize_text_field($value)),$sanitized_name);
 								?>
 									<option value="<?php echo $value; ?>"<?php selected( $selected_value, $value) ?> ><?php echo $display_value; ?></option>
@@ -549,7 +575,7 @@ if (!function_exists('jigoshop_external_add_to_cart')) {
 		$external_url = get_post_meta( $_product->ID, 'external_url', true );
 
 		if ( ! $external_url ) return false;
-			
+
 		?>
 			<form action="" class="cart" method="">
 				<?php do_action('jigoshop_before_add_to_cart_form_button'); ?>
@@ -698,7 +724,7 @@ if (!function_exists('jigoshop_product_customize_panel')) {
 			$custom = isset( $custom_products[$_product->ID] ) ? $custom_products[$_product->ID] : '';
 			$custom_length = get_post_meta( $_product->ID , 'customized_length', true );
 			$length_str = $custom_length == '' ? '' : sprintf( __( 'You may enter a maximum of %s characters.', 'jigoshop' ), $custom_length );
-			
+
 			echo '<div class="panel" id="tab-customize">';
 			echo '<p>' . apply_filters('jigoshop_product_customize_heading', __('Enter your personal information as you want it to appear on the product.<br />', 'jigoshop').$length_str) . '</p>';
 
@@ -717,7 +743,7 @@ if (!function_exists('jigoshop_product_customize_panel')) {
 							cols="60"
 							rows="4"><?php echo esc_textarea( $custom ); ?></textarea>
 					<?php else : ?>
-						<input 
+						<input
 							type="text"
 							id="jigoshop_customized_product"
 							name="jigoshop_customized_product"
@@ -725,7 +751,7 @@ if (!function_exists('jigoshop_product_customize_panel')) {
 							maxlength="<?php echo $custom_length; ?>"
 							value="<?php echo esc_attr( $custom ); ?>" />
 					<?php endif; ?>
-					
+
 					<p class="submit"><input name="Submit" type="submit" class="button-alt add_personalization" value="<?php _e( "Save Personalization", 'jigoshop' ); ?>" /></p>
 
 				</form>
@@ -897,7 +923,7 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 								echo $method->get_selected_service($i);
                                 ?>
                             <p class="form-row col-2"><?php
-                            
+
 								if ($method->get_selected_price($i) > 0) :
 									echo jigoshop_price($method->get_selected_price($i));
 									echo __(' (ex. tax)', 'jigoshop');
