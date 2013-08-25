@@ -23,7 +23,7 @@
 	<?php if (is_search()) : ?>
 		<h1 class="page-title"><?php _e('Search Results:', 'jigoshop'); ?> &ldquo;<?php the_search_query(); ?>&rdquo; <?php if (get_query_var('paged')) echo ' &mdash; Page '.get_query_var('paged'); ?></h1>
 	<?php else : ?>
-		<h1 class="page-title"><?php _e('All Products', 'jigoshop'); ?></h1>
+		<?php echo apply_filters( 'jigoshop_products_list_title', '<h1 class="page-title">' . __( 'All Products', 'jigoshop' ) . '</h1>' ); ?>
 	<?php endif; ?>
 
 	<?php
@@ -32,7 +32,12 @@
 		echo apply_filters('the_content', $shop_page->post_content);
 	?>
 
-	<?php jigoshop_get_template_part( 'loop', 'shop' ); ?>
+	<?php 
+	ob_start();
+	jigoshop_get_template_part( 'loop', 'shop' );
+	$products_list_html = ob_get_clean();
+	echo apply_filters( 'jigoshop_products_list', $products_list_html );
+	?>
 
 	<?php do_action('jigoshop_pagination'); ?>
 
