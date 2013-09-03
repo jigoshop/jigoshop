@@ -25,7 +25,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 * @since 1.3
 	 */
 	protected function __construct() {
-		
+
 		$this->our_parser = new Jigoshop_Options_Parser(
 			self::get_options()->get_default_options(),
 			JIGOSHOP_OPTIONS
@@ -76,13 +76,13 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 * @since 1.3
 	 */
 	public function register_settings() {
-		
+
 		// Weed out all admin pages except the Jigoshop Settings page hits
 		global $pagenow;
 		if ( $pagenow <> 'admin.php' && $pagenow <> 'options.php' ) return;
 		$screen = get_current_screen();
 		if ( $screen->base <> 'jigoshop_page_jigoshop_settings' && $screen->base <> 'options' ) return;
-		
+
 		$slug = $this->get_current_tab_slug();
 		$options = isset( $this->our_parser->tabs[$slug] ) ? $this->our_parser->tabs[$slug] : '';
 
@@ -363,17 +363,19 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		// with each option, get it's type and validate it
 		if ( ! empty( $tab )) foreach ( $tab as $index => $setting ) {
 			if ( isset( $setting['id'] ) ) {
-			
+
 				// special case tax classes should be updated, they will do nothing if this is not the right TAB
 				if ( $setting['id'] == 'jigoshop_tax_rates' ) {
 					$valid_input['jigoshop_tax_rates'] = $this->get_updated_tax_classes();
 					update_option( $setting['id'], $valid_input['jigoshop_tax_rates'] ); // TODO: remove in v1.5 - provides compatibility
 					continue;
 				}
-				
+
 				// get this settings options
-				foreach ( $defaults as $default_index => $option ) {
-					if ( in_array( $setting['id'], $option ) ) {
+				$option = array();
+				foreach ( $defaults as $default_index => $default_options ) {
+					if ( in_array( $setting['id'], $default_options, true ) ) {
+						$option = $default_options;
 						break;
 					}
 				}
@@ -792,10 +794,10 @@ class Jigoshop_Options_Parser {
 		$data = Jigoshop_Base::get_options()->get_current_options();
 
 		if ( ! isset( $item['id'] )) return '';         // ensure we have an id to work with
-		
+
 		$display = "";					// each item builds it's output into this and it's returned for echoing
 		$class = "";
-		
+
 		if ( isset( $item['class'] ) ) {
 			$class = $item['class'];
 		}
@@ -814,7 +816,7 @@ class Jigoshop_Options_Parser {
 		 *  work off the option type and format output for display for each type
 		 */
 		switch ( $item['type'] ) {
-		
+
 		case 'user_defined':
 			if ( isset( $item['display'] ) ) {
 				if ( is_callable( $item['display'], true ) ) {
@@ -1123,7 +1125,7 @@ class Jigoshop_Options_Parser {
 			break;
 
 		case 'select':
-			$multiple =  ( !empty($item['multiple']) and  $item['multiple'] == true) ? 'multiple="multiple"' : ""; 
+			$multiple =  ( !empty($item['multiple']) and  $item['multiple'] == true) ? 'multiple="multiple"' : "";
 			$brckt = "";
 			$width = 250;
 			if($item['multiple']){
@@ -1142,8 +1144,8 @@ class Jigoshop_Options_Parser {
 							value="'.esc_attr( $subValue ).'" '.selected( $data[$item['id']], $subValue, false ).' />'.$subLabel.'
 							</option>';
 					}
-					$display .= '</optgroup>';             
-				} 
+					$display .= '</optgroup>';
+				}
 				else {
 					$display .= '<option
 						value="'.esc_attr( $value ).'" '.selected( $data[$item['id']], $value, false ).' />'.$label.'
@@ -1167,7 +1169,7 @@ class Jigoshop_Options_Parser {
 			jigoshop_log( "UNKOWN _type_ in Options parsing" );
 			jigoshop_log( $item );
 		}
-		
+
 		if ( $item['type'] != 'tab' ) {
 			if ( empty( $item['desc'] ) ) {
 				$explain_value = '';
@@ -1190,8 +1192,8 @@ class Jigoshop_Options_Parser {
 		endforeach;
 		return false;
 	}
-	
-	
+
+
 	function array_compare( $tax_rates ) {
 		$after = array();
 		foreach ( $tax_rates as $key => $val ):
@@ -1209,8 +1211,8 @@ class Jigoshop_Options_Parser {
 		endforeach;
 		return $after;
 	}
-	
-	
+
+
 	/*
 	 *	Format tax rates array for display
 	 */
@@ -1253,7 +1255,7 @@ class Jigoshop_Options_Parser {
 					if ( $tax_rates && is_array( $tax_rates ) && sizeof( $tax_rates ) > 0 ) :
 
 						$tax_rates = $this->array_compare( $tax_rates );
-						
+
 						foreach ( $tax_rates as $rate ) :
 							if ( isset($rate['is_all_states']) && in_array($tax_rate['country'].$tax_rate['class'], $applied_all_states) )
 								continue;
