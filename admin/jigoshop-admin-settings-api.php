@@ -383,7 +383,8 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 				// $value has the WordPress user submitted value for this $setting
 				// $option has this $setting parameters
 				// validate for $option 'type' checking for a submitted $value
-				switch ( $option['type'] ) {
+
+				switch ( $setting['type'] ) {
 				case 'user_defined' :
 					if ( isset( $option['update'] ) ) {
 						if ( is_callable( $option['update'], true ) ) {
