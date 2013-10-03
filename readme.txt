@@ -112,8 +112,10 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
-= 1.8 - 2013-07-15 =
+= 1.8 - 2013-09-16 =
+* New: WorldPay payment gateway added to Jigoshop core
 * New: Settings->General->`Complete processing Orders` option for 'processing' orders older than 30 days
+* New: Implement Jigoshop Request API for extensions and gateways
 * New: Javascript Checkout field validation to enhance payment conversion. Shows correct and incorrect fields.
 	* Orders won't be placed until all Checkout fields required data are input and validated
 * Tweak: Revamped all Jigoshop frontend javascript for modularity and efficiency
@@ -123,11 +125,17 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * Tweak: Add a codeblock option type in the settings for extensions to use internally
 * Tweak: Combine Edit Order variation attributes with product addons extension in one panel for Orders
 * Tweak: Add some filters for Jigoshop WPML extension to allow more translated items
+* Tweak: Jigoshop Reports pie chart cleanup with separate legend that won't over write charts
+* Tweak: Jigoshop Reports pie chart products now show with 5% share
+* Fix: Jigoshop Reports pie chart for 'Most Sold' per period now accurately reflects top products sold
 * Fix: Repair Google Analytics function for tracking code to load in header where it's required
 * Fix: Unpaid 'on-hold' orders from cash or cheque gateways will no longer be overwritten with another order
 * Fix: FuturePay gateway will not be selectable on the Checkout for Orders over $500.00 (current credit limit)
+* Fix: Test to ensure PayPal payment amount matches initially submitted order as a security check
+* Fix: Remove filter that was overriding Contact Form 7 or other mail extensions for 'From' name on emails
 * Languages: Updated .pot file for translators
 * Languages: Updated Brazilian translation courtesy of Raphael Suzuki
+* Languages: Updated Czech translation courtesy of Jaroslav Ondra
 
 = 1.7.3 - 2013-06-26 =
 * Fix: Repair template loader that was duplicating Shop products

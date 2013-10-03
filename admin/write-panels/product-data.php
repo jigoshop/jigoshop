@@ -100,7 +100,7 @@ function jigoshop_product_data_box() {
 			</li>
 
 			<li class="file_tab">
-				<a href="#files"><?php _e('File', 'jigoshop') ?></a>
+				<a href="#files"><?php _e('Download', 'jigoshop') ?></a>
 			</li>
 
 			<?php do_action('jigoshop_product_write_panel_tabs'); ?>

@@ -1404,10 +1404,6 @@ class jigoshop_product extends Jigoshop_Base {
 	 */
 	public static function get_product_ids_on_sale() {
 
-		$product_ids_on_sale = get_transient( 'jigoshop_products_on_sale' );
-
-		if ( false !== $product_ids_on_sale ) return $product_ids_on_sale;
-
 		$on_sale = get_posts( array(
 			'post_type'      => array( 'product', 'product_variation' ),
 			'posts_per_page' => -1,
@@ -1429,9 +1425,18 @@ class jigoshop_product extends Jigoshop_Base {
 			'fields'         => 'id=>parent',
 		) );
 
-		$product_ids = array_keys( $on_sale );
-		$parent_ids  = array_values( $on_sale );
-
+		// filter out duplicates and 0 id's leaving only actual parent product ID's for variations
+		$parent_ids  = array_filter( array_unique( array_values( $on_sale ) ) );
+		// remove the variable products from the originals ID's
+		foreach ( $on_sale as $id => $parent ) {
+			if ( $parent <> 0 ) unset( $on_sale[$id] );
+		}
+		// these are non-variable products
+		$all_ids = array_keys( $on_sale );
+		// munge the variable parents and other products together
+		$product_ids = array_unique( array_merge( $all_ids, $parent_ids ) );
+		
+		// now check the sale date fields on the main products
 		foreach ( $product_ids as $key => $id ) {
 			$sale_from = get_post_meta( $id, 'sale_price_dates_from', true );
 			if ( ! empty( $sale_from )) {
@@ -1448,11 +1453,7 @@ class jigoshop_product extends Jigoshop_Base {
 			}
 		}
 
-		$product_ids_on_sale = array_unique( array_merge( $product_ids, $parent_ids ) );
-
-		set_transient( 'jigoshop_products_on_sale', $product_ids_on_sale );
-
-		return $product_ids_on_sale;
+		return $product_ids;
 	}
 
 }

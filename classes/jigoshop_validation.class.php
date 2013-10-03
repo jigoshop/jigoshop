@@ -85,13 +85,12 @@ class jigoshop_validation {
 		if ( strlen( trim( preg_replace( '/[\s\-A-Za-z0-9]/', '', $postcode ))) > 0 ) return false;
 		$postcode = strtoupper( trim( $postcode ));
 		$regex = isset( self::$postcode_regex[$country] ) ? self::$postcode_regex[$country] : '';
-		jigoshop_log( "VALIDATE POSTCODE: country = " . $country );
 		
 		if ( Jigoshop_Base::get_options()->get_option( 'jigoshop_enable_postcode_validating' ) == 'yes' 
 			&& $regex <> '' ) {
 
 			$regex = '/' . $regex . '/';
-			jigoshop_log( "VALIDATE POSTCODE: regex = " . $regex );
+			jigoshop_log( "VALIDATE POSTCODE: country = " . $country . " = regex = " . $regex );
 			
 			switch ( $country ) {
 				case 'GB':

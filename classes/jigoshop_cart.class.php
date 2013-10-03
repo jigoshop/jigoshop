@@ -82,7 +82,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 	
 	
     /** Empty the cart */
-    function empty_cart() {
+    public static function empty_cart() {
         self::$cart_contents = array();
         self::$applied_coupons = array();
         self::reset_totals();

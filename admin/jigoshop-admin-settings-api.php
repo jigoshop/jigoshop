@@ -125,7 +125,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			'desc'			=> '',
 			'tip'			=> '',
 			'std'			=> '',
-			'multiple'		=> false, // added
+			'multiple'		=> false,
 			'choices'		=> array(),
 			'class'			=> '',
 			'display'		=> null,
@@ -145,7 +145,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			'desc'			=> $desc,
 			'tip'			=> $tip,
 			"std"			=> $std,
-			'multiple'		=> $multiple, // added
+			'multiple'		=> $multiple,
 			'choices'		=> $choices,
 			'label_for'		=> $id,
 			'class'			=> $class,
@@ -372,8 +372,10 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 				}
 				
 				// get this settings options
-				foreach ( $defaults as $default_index => $option ) {
-					if ( in_array( $setting['id'], $option ) ) {
+				$option = array();
+				foreach ( $defaults as $default_index => $default_options ) {
+					if ( in_array( $setting['id'], $default_options, true ) ) {
+						$option = $default_options;
 						break;
 					}
 				}
@@ -1123,10 +1125,12 @@ class Jigoshop_Options_Parser {
 			break;
 
 		case 'select':
-			$multiple =  ( !empty($item['multiple']) and  $item['multiple'] == true) ? 'multiple="multiple"' : ""; 
+			$multiple =  ( ! empty( $item['multiple'] ) &&  $item['multiple'] == true )
+				? 'multiple="multiple"'
+				: ""; 
 			$brckt = "";
 			$width = 250;
-			if($item['multiple']){
+			if ( $item['multiple'] ){
 				$brckt = "[]";
 				$width = 500;
 			}

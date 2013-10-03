@@ -29,19 +29,18 @@ class futurepay extends jigoshop_payment_gateway {
 	
 	private static $credit_limit = '500.00';
 	
-	private static $request_url = array(
-		'yes' => 'https://demo.futurepay.com/remote/',
-		'no' => 'https://api.futurepay.com/remote/'
-	);
-	
 	private $shop_base_country;
 	private $merchant_countries = array( 'US' );
 	private $allowed_currency = array( 'USD' );
 	private $currency_symbol;
+	private static $request_url;
 	
+	const FUTUREPAY_LIVE_URL = 'https://api.futurepay.com/remote/';
+	const FUTUREPAY_SANDBOX_URL = 'https://demo.futurepay.com/remote/';
+
 	
 	public function __construct() {
-
+		
 		parent::__construct();      /* installs our gateway options in the settings */
 
 		$this->id           = 'futurepay';
@@ -51,8 +50,11 @@ class futurepay extends jigoshop_payment_gateway {
 		$this->title        = Jigoshop_Base::get_options()->get_option('jigoshop_futurepay_title');
 		$this->description  = Jigoshop_Base::get_options()->get_option('jigoshop_futurepay_description');
 		$this->gmid         = Jigoshop_Base::get_options()->get_option('jigoshop_futurepay_gmid');
-		$this->request_url  = self::$request_url[Jigoshop_Base::get_options()->get_option('jigoshop_futurepay_mode')];
-
+		self::$request_url  = 
+			Jigoshop_Base::get_options()->get_option('jigoshop_futurepay_mode') == 'no'
+			? self::FUTUREPAY_LIVE_URL
+			: self::FUTUREPAY_SANDBOX_URL;
+		
 		add_action( 'init', array( $this, 'check_response' ) );
 		add_action( 'valid-futurepay-request', array( $this, 'successful_request' ), 10, 2 );
 		add_action( 'receipt_futurepay', array( $this, 'receipt_page' ) );
@@ -341,7 +343,7 @@ class futurepay extends jigoshop_payment_gateway {
 		
 		try {
 			
-			$response = wp_remote_post( $this->request_url . 'merchant-request-order-token', array(
+			$response = wp_remote_post( self::$request_url . 'merchant-request-order-token', array(
 				'body' => http_build_query($data),
 				'sslverify' => false
 			) );
@@ -378,7 +380,7 @@ class futurepay extends jigoshop_payment_gateway {
 			
 			echo '<div id="futurepay"></div>';
 			
-			echo '<script src="'. $this->request_url .'cart-integration/'.$response.'"></script>';
+			echo '<script src="'. self::$request_url .'cart-integration/'.$response.'"></script>';
 
 			echo '<script type="text/javascript">
 				/*<![CDATA[*/
@@ -452,7 +454,7 @@ class futurepay extends jigoshop_payment_gateway {
 				'otxnid' => $_GET['futurepay']
 			);
 
-			$response = wp_remote_post( $this->request_url . 'merchant-order-verification?', array(
+			$response = wp_remote_post( self::$request_url . 'merchant-order-verification?', array(
 				'body' => http_build_query($data),
 				'sslverify' => false
 			) );

@@ -922,7 +922,7 @@ class Jigoshop_Walker_CategoryDropdown extends Walker_CategoryDropdown {
 	var $tree_type = 'category';
 	var $db_fields = array ('parent' => 'parent', 'id' => 'term_id', 'slug' => 'slug' );
 
-    function start_el( &$output, $category, $depth, $args ) {
+    function start_el( &$output, $category, $depth = 0, $args = array(), $current_object_id = 0 ) {
 
         $pad = str_repeat( '&nbsp;', $depth * 3 );
         $cat_name = apply_filters( 'list_product_cats', $category->name, $category );

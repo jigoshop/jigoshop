@@ -491,7 +491,7 @@ function jigoshop_order_attributes_meta_box( $post ) {
             <?php do_action( 'jigoshop_order_attributes_meta_box_before_item', $item, $item_id ); ?>
             <b>
                 <?php do_action( 'jigoshop_order_attributes_meta_box_before_item_title', $item_id ); ?>
-                <?php echo esc_html( $item['name'] ); ?>
+                <?php echo esc_html( isset( $item['name'] ) ? $item['name'] : '' ); ?>
             </b>
             <?php            
         

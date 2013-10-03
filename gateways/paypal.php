@@ -31,27 +31,31 @@ class paypal extends jigoshop_payment_gateway {
 		
 		parent::__construct();
 		
-		$this->id			= 'paypal';
-		$this->icon 		= jigoshop::assets_url() . '/assets/images/icons/paypal.png';
-		$this->has_fields 	= false;
-	  	$this->enabled		= Jigoshop_Base::get_options()->get_option('jigoshop_paypal_enabled');
-		$this->title 		= Jigoshop_Base::get_options()->get_option('jigoshop_paypal_title');
-		$this->email 		= Jigoshop_Base::get_options()->get_option('jigoshop_paypal_email');
-		$this->description  = Jigoshop_Base::get_options()->get_option('jigoshop_paypal_description');
-		$this->force_payment= Jigoshop_Base::get_options()->get_option('jigoshop_paypal_force_payment');
-
-		$this->liveurl 		= 'https://www.paypal.com/webscr';
-		$this->testurl 		= 'https://www.sandbox.paypal.com/webscr';
-		$this->testmode		= Jigoshop_Base::get_options()->get_option('jigoshop_paypal_testmode');
-		$this->testmail 	= Jigoshop_Base::get_options()->get_option('jigoshop_sandbox_email');
-
-		$this->send_shipping = Jigoshop_Base::get_options()->get_option('jigoshop_paypal_send_shipping');
-
-		add_action( 'init', array(&$this, 'check_ipn_response') );
-		add_action('valid-paypal-standard-ipn-request', array(&$this, 'successful_request') );
-		add_action( 'jigoshop_settings_scripts', array( &$this, 'admin_scripts' ) );
-		add_action('receipt_paypal', array(&$this, 'receipt_page'));
+		$options = Jigoshop_Base::get_options();
 		
+		$this->id               = 'paypal';
+		$this->icon             = jigoshop::assets_url() . '/assets/images/icons/paypal.png';
+		$this->has_fields       = false;
+		$this->enabled          = $options->get_option( 'jigoshop_paypal_enabled' );
+		$this->title            = $options->get_option( 'jigoshop_paypal_title' );
+		$this->email            = $options->get_option( 'jigoshop_paypal_email' );
+		$this->description      = $options->get_option( 'jigoshop_paypal_description' );
+		$this->force_payment    = $options->get_option( 'jigoshop_paypal_force_payment' );
+		$this->testmode         = $options->get_option( 'jigoshop_paypal_testmode' );
+		$this->testemail        = $options->get_option( 'jigoshop_sandbox_email' );
+		$this->send_shipping    = $options->get_option( 'jigoshop_paypal_send_shipping');
+		
+		$this->liveurl          = 'https://www.paypal.com/webscr';
+		$this->testurl          = 'https://www.sandbox.paypal.com/webscr';
+		$this->notify_url       = jigoshop_request_api::query_request( '?js-api=JS_Gateway_Paypal', false );
+        
+		add_action( 'jigoshop_settings_scripts', array( $this, 'admin_scripts' ) );
+		add_action( 'receipt_paypal', array( $this, 'receipt_page' ) );
+		add_action( 'valid-paypal-standard-ipn-request', array( $this, 'successful_request') );
+		
+		add_action( 'jigoshop_api_js_gateway_paypal', array( $this, 'check_ipn_response' ) );
+		add_action( 'init', array( $this, 'legacy_ipn_response' ) );
+        
 	}
 
 
@@ -228,7 +232,7 @@ class paypal extends jigoshop_payment_gateway {
 		$paypal_args = array_merge(
 			array(
 				'cmd' 					=> '_cart',
-				'business' 				=> $this->testmode == 'yes' ? $this->testmail : $this->email,
+				'business' 				=> $this->testmode == 'yes' ? $this->testemail : $this->email,
 				'no_note' 				=> 1,
 				'currency_code' 		=> Jigoshop_Base::get_options()->get_option('jigoshop_currency'),
 				'charset' 				=> 'UTF-8',
@@ -241,7 +245,7 @@ class paypal extends jigoshop_payment_gateway {
 				'custom'				=> $order_id,
 
 				// IPN
-				'notify_url'			=> trailingslashit(get_bloginfo('wpurl')).'?paypalListener=paypal_standard_IPN',
+				'notify_url'			=> $this->notify_url,
 
 				// Address info
 				'first_name'			=> $order->billing_first_name,
@@ -256,7 +260,7 @@ class paypal extends jigoshop_payment_gateway {
 				'email'					=> $order->billing_email,
 
 				// Payment Info
-				'invoice' 				=> $order->order_key,
+				'invoice' 				=> $order->get_order_number(),
 				'amount' 				=> $order->order_total,
 			),
 			$phone_args
@@ -390,10 +394,11 @@ class paypal extends jigoshop_payment_gateway {
 
 		return '<form action="'.$paypal_adr.'" method="post" id="paypal_payment_form">
 				' . implode('', $paypal_args_array) . '
-				<input type="submit" class="button-alt" id="submit_paypal_payment_form" value="'.__('Pay via PayPal', 'jigoshop').'" /> <a class="button cancel" href="'.esc_url($order->get_cancel_order_url()).'">'.__('Cancel order &amp; restore cart', 'jigoshop').'</a>
+				<input type="submit" class="button-alt" id="submit_paypal_payment_form" value="'.__('Pay via PayPal', 'jigoshop').'" />
 				<script type="text/javascript">
-					jQuery(function(){
-						jQuery("body").block(
+				/*<![CDATA[*/
+					jQuery(document).ready( function($) {
+						$("body").block(
 							{
 								message: "<img src=\"'.jigoshop::assets_url().'/assets/images/ajax-loader.gif\" alt=\"Redirecting...\" />'.__('Thank you for your order. We are now redirecting you to PayPal to make payment.', 'jigoshop').'",
 								overlayCSS:
@@ -410,8 +415,9 @@ class paypal extends jigoshop_payment_gateway {
 									cursor:		 "wait"
 								}
 							});
-						jQuery("#submit_paypal_payment_form").click();
+						$("#submit_paypal_payment_form").click();
 					});
+				/*]]>*/
 				</script>
 			</form>';
 
@@ -447,8 +453,6 @@ class paypal extends jigoshop_payment_gateway {
 	 **/
 	function check_ipn_request_is_valid() {
 
-		jigoshop_log( 'Checking if PayPal IPN response is valid ...' );
-		
 		// Get recieved values from post data
 		$current_values = (array) stripslashes_deep( $_POST );
 		
@@ -479,7 +483,6 @@ class paypal extends jigoshop_payment_gateway {
 			&& $response['response']['code'] < 300
 			&& (strcmp( $response['body'], "VERIFIED") == 0)) {
 		
-			jigoshop_log( 'Received valid response from PayPal' );
 			return true;
 			
 		} else {
@@ -488,7 +491,7 @@ class paypal extends jigoshop_payment_gateway {
 			jigoshop_log( 'IPN Response: ' . print_r( $response, true ) );
 			
 			if ( is_wp_error( $response ) ) {
-				jigoshop_log( 'PayPal IPN WordPress Error message: ' . $result->get_error_message() );
+				jigoshop_log( 'PayPal IPN WordPress Error message: ' . $response->get_error_message() );
 			}
 			
 			return false;
@@ -498,33 +501,35 @@ class paypal extends jigoshop_payment_gateway {
 	}
 
 	/**
+	 * Check for Legacy PayPal IPN Response
+	 **/
+	function legacy_ipn_response() {
+		
+		if ( ! empty( $_GET['paypalListener'] ) && $_GET['paypalListener'] == 'paypal_standard_IPN' ) {
+
+			do_action( 'jigoshop_api_js_gateway_paypal' );
+			
+		}
+		
+	}
+
+	/**
 	 * Check for PayPal IPN Response
 	 **/
 	function check_ipn_response() {
 		
-		if ( is_admin() ) return;
+		@ob_clean();
 		
-		if ( isset($_GET['paypalListener']) && $_GET['paypalListener'] == 'paypal_standard_IPN' ) {
-
-			@ob_clean();
+    	if ( ! empty( $_POST ) && $this->check_ipn_request_is_valid() ) {
 			
-			$_POST = stripslashes_deep($_POST);
+			header('HTTP/1.1 200 OK');
 			
-			if ( self::check_ipn_request_is_valid() ) {
-				
-				header('HTTP/1.1 200 OK');
-				
-				do_action("valid-paypal-standard-ipn-request", $_POST);
-			
-			} else {
-			
-				wp_die("PayPal IPN Request Failure");
-			
-			}
-
+			do_action( "valid-paypal-standard-ipn-request", $_POST );
+		
 		} else {
-//			if ( ! empty( $_GET )) jigoshop_log( "Paypal function 'check_ipn_response' -- GET['paypalListener'] is NOT set\nGET values: " . print_r( $_GET, true ) );
-//			if ( ! empty( $_POST )) jigoshop_log( "Paypal function 'check_ipn_response' -- GET['paypalListener'] is NOT set\nPOST values: " . print_r( $_POST, true ) );
+		
+			wp_die( "PayPal IPN Request Failure" );
+		
 		}
 
 	}
@@ -534,38 +539,74 @@ class paypal extends jigoshop_payment_gateway {
 	 **/
 	function successful_request( $posted ) {
 		
+		$posted = stripslashes_deep( $posted );
+		
 		// 'custom' holds post ID (Order ID)
 		if ( !empty($posted['custom']) && !empty($posted['txn_type']) && !empty($posted['invoice']) ) {
 
 			$accepted_types = array('cart', 'instant', 'express_checkout', 'web_accept', 'masspay', 'send_money', 'subscr_payment');
 
-			if ( ! in_array( strtolower( $posted['txn_type'] ), $accepted_types )) {
-				jigoshop_log( "PAYPAL: function 'successful_request' -- unknown 'txn_type' of '".$posted['txn_type']."' for Order ID: ".$posted['custom']." -- EXITING!" );
-				exit;
-			}
-			
 			$order = new jigoshop_order( (int) $posted['custom'] );
 
-			if ( $order->order_key !== $posted['invoice'] ) {
-				jigoshop_log( "PAYPAL: function 'successful_request' -- order_key does NOT match posted invoice for Order ID: ".$posted['custom']." -- EXITING!" );
-				exit;
-			}
-
-			// Sandbox fix (note: not sure what this is, but the 'isset' is added for undefined index -JAP-)
-			// TODO: test that the Pending should really be pending (lowercase)
-			if ( isset($posted['test_ipn']) && $posted['test_ipn']==1 && $posted['payment_status']=='Pending' ) {
+			// Sandbox fix
+			if ( isset( $posted['test_ipn'] )
+				&& $posted['test_ipn'] == 1
+				&& strtolower( $posted['payment_status'] ) == 'pending' ) {
+				
 				$posted['payment_status'] = 'completed';
 			}
-
+			
+			$merchant = ($this->testmode == 'no') ? $this->email : $this->testemail;
+			
 			if ( $order->status !== 'completed' ) {
+			
 				// We are here so lets check status and do actions
-				switch (strtolower($posted['payment_status'])) :
+				switch ( strtolower( $posted['payment_status'] ) ) {
+				
 					case 'completed' :
-						// Payment completed
-						$order->add_order_note( __('IPN payment completed', 'jigoshop') );
-						jigoshop_log( "PAYPAL: IPN payment completed for Order ID: " . $posted['custom'] );
+
+						if ( ! in_array( strtolower( $posted['txn_type'] ), $accepted_types )) {
+
+							// Put this order on-hold for manual checking
+							$order->update_status( 'on-hold', sprintf( __( 'PayPal Validation Error: Unknown "txn_type" of "%s" for Order ID: %s.', 'jigoshop' ), $posted['txn_type'], $posted['custom'] ) );
+							exit;
+						}
+			
+						if ( $order->get_order_number() !== $posted['invoice'] ) {
+						
+							// Put this order on-hold for manual checking
+							$order->update_status( 'on-hold', sprintf( __( 'PayPal Validation Error: Order Invoice Number does NOT match PayPal posted invoice (%s) for Order ID: .', 'jigoshop' ), $posted['invoice'], $posted['custom'] ) );
+							exit;
+						}
+
+						// Validate Amount
+						if ( $order->order_total != $posted['mc_gross'] ) {
+							
+							// Put this order on-hold for manual checking
+							$order->update_status( 'on-hold', sprintf( __( 'PayPal Validation Error: Payment amounts do not match initial order (gross %s).', 'jigoshop' ), $posted['mc_gross'] ) );
+							exit;
+						}
+						
+						if ( strcasecmp( trim( $posted['business'] ), trim( $merchant ) ) != 0 ) {
+							
+							// Put this order on-hold for manual checking
+							$order->update_status( 'on-hold', sprintf( __( 'PayPal Validation Error: Payment Merchant email received does not match PayPal Gateway settings. (%s)', 'jigoshop' ), $posted['business'] ) );
+							exit;
+						}
+						
+						if ( Jigoshop_Base::get_options()->get_option( 'jigoshop_currency' ) <> $posted['mc_currency'] ) {
+							
+							// Put this order on-hold for manual checking
+							$order->update_status( 'on-hold', sprintf( __( 'PayPal Validation Error: Payment currency received (%s) does not match Shop currency.', 'jigoshop' ), $posted['mc_currency'] ) );
+							exit;
+						}
+						
 						$order->payment_complete();
+						
+						$order->add_order_note( __('IPN payment completed', 'jigoshop') );
+						jigoshop_log( 'PAYPAL: IPN payment completed for Order ID: ' . $posted['custom'] );
 						break;
+						
 					case 'denied' :
 					case 'expired' :
 					case 'failed' :
@@ -574,15 +615,18 @@ class paypal extends jigoshop_payment_gateway {
 						$order->update_status('failed', sprintf(__('Payment %s via IPN.', 'jigoshop'), strtolower($posted['payment_status']) ) );
 						jigoshop_log( "PAYPAL: failed order with status = " . strtolower($posted['payment_status']) . "for Order ID: " . $posted['custom'] );
 						break;
+						
 					case 'refunded' :
 					case 'reversed' :
 					case 'chargeback' :
 						jigoshop_log( "PAYPAL: payment status type - '" . $posted['payment_status'] . "' - not supported for Order ID: " . $posted['custom'] );
 						break;
+						
 					default:
 						// No action
 						break;
-				endswitch;
+						
+				}
 			}
 
 			exit;

@@ -54,14 +54,16 @@ add_action('wp_head', 'jigoshop_front_page_archive', 0);
  **/
 if (!function_exists('jigoshop_output_content_wrapper')) {
 	function jigoshop_output_content_wrapper() {
-		if ( get_option('template') === 'twentytwelve' ) echo '<div id="primary" class="site-content"><div id="content" role="main">';
+		if ( get_option('template') === 'twentythirteen' ) echo '<div id="primary" class="content-area"><div id="content" class="site-content" role="main">';
+		elseif ( get_option('template') === 'twentytwelve' ) echo '<div id="primary" class="site-content"><div id="content" role="main">';
 		elseif ( get_option('template') === 'twentyeleven' ) echo '<section id="primary"><div id="content" role="main">';
 		else echo '<div id="container"><div id="content" role="main">';  /* twenty-ten */
 	}
 }
 if (!function_exists('jigoshop_output_content_wrapper_end')) {
 	function jigoshop_output_content_wrapper_end() {
-		if ( get_option('template') === 'twentytwelve' ) echo '</div></div>';
+		if ( get_option('template') === 'twentythirteen' ) echo '</div></div>';
+		elseif ( get_option('template') === 'twentytwelve' ) echo '</div></div>';
 		elseif ( get_option('template') === 'twentyeleven' ) echo  '</div></section>';
 		else echo '</div></div>'; /* twenty-ten */
 	}
