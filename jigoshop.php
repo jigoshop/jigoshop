@@ -22,7 +22,7 @@
  * Author:              Jigoshop
  * Author URI:          http://jigoshop.com
  *
- * Version:             1.8 Beta 3
+ * Version:             1.8
  * Requires at least:   3.5
  * Tested up to:        3.6.1
  *
@@ -1010,10 +1010,7 @@ function jigowatt_clean( $var ) {
 
 // Returns a float value
 function jigoshop_sanitize_num( $var ) {
-	// TODO: as it stands, it doesn't allow negative values (-JAP-)
-	// should be - preg_replace("/^[^[\-\+]0-9\.]/","",$var)
-	// currently only used for prices in product-data-save.php
-	return strip_tags(stripslashes(floatval(preg_replace("/^[^0-9\.]/","",$var))));
+	return strip_tags(stripslashes(floatval(preg_replace("/^[^[\-\+]0-9\.]/","",$var))));
 }
 
 // Author: Sergey Biryukov

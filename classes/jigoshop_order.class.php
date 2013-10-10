@@ -28,12 +28,12 @@ class jigoshop_order extends Jigoshop_Base {
 			'completed'     => __('Completed', 'jigoshop'),
 			'cancelled'     => __('Cancelled', 'jigoshop'),
 			'refunded'      => __('Refunded', 'jigoshop'),
-			'failed'        => __('Failed', 'jigoshop'),        /* can be set from PayPal, not currently shown anywhere -JAP- */
-			'denied'        => __('Denied', 'jigoshop'),        /* can be set from PayPal, not currently shown anywhere -JAP- */
-			'expired'       => __('Expired', 'jigoshop'),       /* can be set from PayPal, not currently shown anywhere -JAP- */
-			'voided'        => __('Voided', 'jigoshop'),        /* can be set from PayPal, not currently shown anywhere -JAP- */
+			'failed'        => __('Failed', 'jigoshop'), /* can be set from PayPal, not currently shown anywhere -JAP- */
+			'denied'        => __('Denied', 'jigoshop'), /* can be set from PayPal, not currently shown anywhere -JAP- */
+			'expired'       => __('Expired', 'jigoshop'), /* can be set from PayPal, not currently shown anywhere -JAP- */
+			'voided'        => __('Voided', 'jigoshop'), /* can be set from PayPal, not currently shown anywhere -JAP- */
 		);
-		return $order_types;
+		return apply_filters( 'jigoshop_filter_order_status_names', $order_types );
 	}
 
 	public function __get($variable) {
@@ -588,7 +588,14 @@ class jigoshop_order extends Jigoshop_Base {
 
 			if ($item['id']>0) :
 				$_product = $this->get_product_from_item( $item );
-
+				
+				if ( $_product instanceof jigoshop_product_variation ) {
+					if ( $_product->stock == '-9999999' ) {
+						// the parent product is used for variation stock tracking
+						$_product = new jigoshop_product( $_product->id );
+					}
+				}
+				
 				if ( $_product->exists && $_product->managing_stock() ) :
 
 					$old_stock = $_product->stock;

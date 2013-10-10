@@ -410,6 +410,10 @@ class jigoshop_product extends Jigoshop_Base {
 			return true;
 
 		// Check if we have stock
+		if ( $this->stock == '-9999999' ) {
+			$_parent = new jigoshop_product( $this->ID );
+			$this->stock = $_parent->stock;
+		}
 		if( $this->managing_stock() && ($below_stock_threshold ? $this->stock >= self::get_options()->get_option('jigoshop_notify_no_stock_amount') : $this->stock > 0 ) )
 			return true;
 

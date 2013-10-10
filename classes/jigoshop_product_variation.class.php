@@ -41,6 +41,12 @@ class jigoshop_product_variation extends jigoshop_product {
 		foreach( $meta as $key => $array ) {
 			if ( $array[0] ) $this->meta[$key] = $array;
 			if ( $key == 'sku' ) if ( empty( $array[0] )) $tempsku = $ID;
+			if ( $key == 'stock' ) {
+				// if no value then parent stock value is used for variation stock tracking
+				// otherwise the variation stock even if '0' as that is a value, is used
+				if ( $array[0] == '' ) $variable_stock = '-9999999'; /* signal parent stock tracking */
+				else $variable_stock = $array[0];
+			}
 		}
 
 		// Merge with the variation data
@@ -50,7 +56,7 @@ class jigoshop_product_variation extends jigoshop_product {
 		
 		$sale_from = $this->sale_price_dates_from;
 		$sale_to = $this->sale_price_dates_to;
-
+		
 		parent::__construct( $ID );
 				
 		// Restore the parent ID
@@ -59,6 +65,8 @@ class jigoshop_product_variation extends jigoshop_product {
 		if ( ! empty( $tempsku )) $this->sku = $tempsku;
 		$this->sale_price_dates_from = $sale_from;
 		$this->sale_price_dates_to = $sale_to;
+		// signal parent stock tracking or variation stock tracking
+		$this->stock = $variable_stock == '-9999999' ? $variable_stock : $this->stock;
 		
 		return $this;
 	}
@@ -139,7 +147,27 @@ class jigoshop_product_variation extends jigoshop_product {
 		// this product instance could be sitting in a Cart for a user and
 		// another customer purchases the last available
 		$temp = new jigoshop_product_variation( $this->get_variation_id() );
+		if ( $temp->stock == '-9999999' ) {
+			$_parent = new jigoshop_product( $temp->ID );
+			$temp->stock = $_parent->stock;
+		}
 		return ($this->backorders_allowed() || $temp->stock >= $quantity);
+	}
+
+	/**
+	 * Reduce stock level of the product
+	 * Acts as an alias for modify_stock()
+	 *
+	 * @param   int   Amount to reduce by
+	 * @return  int
+	 */
+	public function reduce_stock( $by = -1 ) {
+		if ( $this->stock == '-9999999' ) {
+			$_parent = new jigoshop_product( $this->ID );
+			return $_parent->modify_stock( -$by );
+		} else {
+			return $this->modify_stock( -$by );
+		}
 	}
 
 	/**

@@ -17,7 +17,7 @@
  * @copyright           Copyright © 2011-2013 Jigoshop.
  * @license             http://jigoshop.com/license/commercial-edition
  *
- * @version 1.1 - 2013-10-01
+ * @version 1.2 - 2013-10-09
  */
 
 
@@ -116,7 +116,7 @@ class jigoshop_licence_validator
 		?>
 			<div class="error">
 				<p>
-					<?php echo sprintf(	__( 'The License key for <i><b>%s</b></i> is not valid . Please activate your Licence Key on the Jigoshop->Manage Licences menu with your Order email address.  Until then, the plugin will not be enabled for use.', $this->validator_token ), $this->title ); ?>
+					<?php echo sprintf(	__( 'The License key for <i><b>%s</b></i> is not valid . Please enter your <b>Licence Key</b> on the Jigoshop->Manage Licences Menu with your <b>Order email address</b>.  Until then, the plugin will not be enabled for use.', 'jigoshop' ), $this->title ); ?>
 				</p>
 			</div>
 		<?php
@@ -137,8 +137,8 @@ class jigoshop_licence_validator
 
 		add_submenu_page(
 			'jigoshop',
-			__( 'Manage Licences', $this->validator_token ),
-			__( 'Manage Licences', $this->validator_token ),
+			__( 'Manage Licences', 'jigoshop' ),
+			__( 'Manage Licences', 'jigoshop' ),
 			'manage_jigoshop',
 			$this->validator_token,
 			array( $this, 'admin_manage_licences' )
@@ -214,7 +214,7 @@ class jigoshop_licence_validator
 			$licence_key		= trim( $licence_key );
 			$activation_email	= ( isset( $_POST['licence_emails'][$product_id] ) && is_email( $_POST['licence_emails'][$product_id] ) )
 			? $_POST['licence_emails'][$product_id]
-			: $this->get_current_user_email();
+			: '';
 			$licence_active		= ( isset( $keys[$product_id]['status'] ) && $keys[$product_id]['status'] );
 
 			// Deactivate this key as it was removed
@@ -223,7 +223,7 @@ class jigoshop_licence_validator
 				if ( isset( $response->success ) && $response->success ) {
 					$messages[] = array(
 						'success'	=> true,
-						'message'	=> sprintf( __( '<b>Key deactivated.</b> License key for <i>%s</i> has been <b>deactivated</b>.', $this->validator_token ), self::$plugins[$product_id]['title'] )
+						'message'	=> sprintf( __( '<b>Key deactivated.</b> License key for <i>%s</i> has been <b>deactivated</b>.', 'jigoshop' ), self::$plugins[$product_id]['title'] )
 					);
 					// set status as inactive and remove licence from database
 					$keys[$product_id] = array(
@@ -235,7 +235,7 @@ class jigoshop_licence_validator
 				else {
 					$messages[] = array(
 						'success'	=> false,
-						'message'	=> sprintf( __( '%s deactivation: ', $this->validator_token ), self::$plugins[$product_id]['title'] ) . $response->error
+						'message'	=> sprintf( __( '%s deactivation: ', 'jigoshop' ), self::$plugins[$product_id]['title'] ) . $response->error
 					);
 					// set status as inactive and remove licence from database
 					$keys[$product_id] = array(
@@ -251,7 +251,7 @@ class jigoshop_licence_validator
 				if ( isset( $response->success ) && $response->success ) {
 					$messages[] = array(
 						'success'	=> true,
-						'message'	=> sprintf( __( '<b>Key activated.</b> License key for <i>%s</i> has been <b>activated</b>.', $this->validator_token ), self::$plugins[$product_id]['title'] )
+						'message'	=> sprintf( __( '<b>Key activated.</b> License key for <i>%s</i> has been <b>activated</b>.', 'jigoshop' ), self::$plugins[$product_id]['title'] )
 					);
 
 					$keys[$product_id] = array(
@@ -264,7 +264,7 @@ class jigoshop_licence_validator
 				else {
 					$messages[] = array(
 						'success'	=> false,
-						'message'	=> sprintf( __( '%s activation: ', $this->validator_token ), self::$plugins[$product_id]['title'] ) . $response->error
+						'message'	=> sprintf( __( '%s activation: ', 'jigoshop' ), self::$plugins[$product_id]['title'] ) . $response->error
 					);
 					// set status as inactive and remove licence from database
 					$keys[$product_id] = array(
@@ -352,7 +352,7 @@ class jigoshop_licence_validator
 					}
 					$obj->sections = $converted;
 				} else {
-					$obj->sections = array( 'changelog' => __('No update information available.', $this->validator_token) );
+					$obj->sections = array( 'changelog' => __('No update information available.', 'jigoshop') );
 				}
 				return $obj;
 			}
@@ -535,15 +535,15 @@ class jigoshop_licence_validator
 <div class="wrap">
 
 	<?php screen_icon( 'plugins' ); ?>
-	<h2><?php _e( 'Manage Jigoshop Digital Plugin Licences', $this->validator_token ); ?></h2>
+	<h2><?php _e( 'Manage Jigoshop Digital Plugin Licences', 'jigoshop' ); ?></h2>
 	<?php foreach( $messages as $message ) : ?>
 		<div class="<?php echo ( $message['success'] ? 'updated below-h2' : 'error' ); ?>">
 			<p><?php echo $message['message']; ?></p>
 		</div>
 	<?php endforeach; ?>
 	<p>
-		<?php _e( 'To <em>activate</em> the licence, enter your licence keys and email addresses you used when you ordered the plugins.', $this->validator_token ); ?>
-		<?php _e( '<br />To <em>de-activate</em> the licence, remove the licence key, but leave the email address.', $this->validator_token ); ?>
+		<?php _e( 'To <em>activate</em> the licence, enter your licence keys and email addresses you used when you ordered the plugins.', 'jigoshop' ); ?>
+		<?php _e( '<br />To <em>de-activate</em> the licence, remove the licence key, but leave the email address.', 'jigoshop' ); ?>
 	</p>
 
 	<form name="<?php echo $this->validator_token; ?>-login" id="<?php echo $this->validator_token; ?>-login"
@@ -567,7 +567,7 @@ class jigoshop_licence_validator
 									   id="licence_key-<?php echo $plugin_identifier;?>" value="<?php echo $value; ?>" />
 							</td>
 							<th scope="row" style="vertical-align: middle;">
-								<label for="licence_key_email-<?php echo $plugin_identifier;?>"><?php _e( 'Activation email', $this->validator_token ) ?></label>
+								<label for="licence_key_email-<?php echo $plugin_identifier;?>"><?php _e( 'Activation email', 'jigoshop' ) ?></label>
 							</th>
 							<td>
 								<input type="email" class="input-text input-licence regular-text" placeholder="<?php echo $user_email; ?>" value="<?php echo $email; ?>"
@@ -575,7 +575,7 @@ class jigoshop_licence_validator
 							</td>
 							<th>
 								<?php if ( !isset( $keys[$plugin_identifier]['status'] ) || !$keys[$plugin_identifier]['status'] ) : ?>
-									<b class="inactive-licence" style="color: #CC0000;"><?php _e( 'Licence is inactive!', $this->validator_token ); ?></b>
+									<b class="inactive-licence" style="color: #CC0000;"><?php _e( 'Licence is inactive!', 'jigoshop' ); ?></b>
 								<?php endif; ?>
 							</th>
 						</tr>
@@ -587,7 +587,7 @@ class jigoshop_licence_validator
 		<fieldset>
 			<p class="submit">
 				<button type="submit" name="<?php echo $this->validator_token; ?>-login" id="<?php echo $this->validator_token; ?>-login" class="button-primary">
-					<?php _e( 'Save', $this->validator_token ); ?>
+					<?php _e( 'Save', 'jigoshop' ); ?>
 				</button>
 			</p>
 		</fieldset>
