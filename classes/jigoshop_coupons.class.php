@@ -41,7 +41,7 @@ class JS_Coupons extends Jigoshop_Base {
 			'fixed_product'     => __('Product Discount', 'jigoshop'),
 			'percent_product'   => __('Product % Discount', 'jigoshop')
 		);
-		return $coupon_types;
+		return apply_filters( 'jigoshop_coupon_discount_types', $coupon_types );
 	}
 
 	/**
