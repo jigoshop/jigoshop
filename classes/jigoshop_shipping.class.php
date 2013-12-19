@@ -102,6 +102,10 @@ class jigoshop_shipping extends Jigoshop_Singleton {
         return apply_filters('jigoshop_available_shipping_methods',$_available_methods);
     }
 
+    public static function set_shipping_error_message($message) {
+        self::$shipping_error_message = $message;
+    }
+
     public static function get_shipping_error_message() {
     	return self::$shipping_error_message;
     }
