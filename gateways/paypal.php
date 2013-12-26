@@ -594,7 +594,7 @@ class paypal extends jigoshop_payment_gateway {
 							exit;
 						}
 						
-						if ( Jigoshop_Base::get_options()->get_option( 'jigoshop_currency' ) <> $posted['mc_currency'] ) {
+						if ( !in_array( $posted['mc_currency'], apply_filters( 'jigoshop_multi_currencies_available', array( Jigoshop_Base::get_options()->get_option( 'jigoshop_currency' ) ) ) ) ) {
 							
 							// Put this order on-hold for manual checking
 							$order->update_status( 'on-hold', sprintf( __( 'PayPal Validation Error: Payment currency received (%s) does not match Shop currency.', 'jigoshop' ), $posted['mc_currency'] ) );
