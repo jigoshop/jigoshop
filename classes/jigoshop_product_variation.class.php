@@ -118,22 +118,22 @@ class jigoshop_product_variation extends jigoshop_product {
 	 */
 	public function is_on_sale() {
 		
+		$on_sale = false;
 		$time = current_time('timestamp');
-
+		
 		// Check if the sale is still in range (if we have a range)
 		if ( ! empty( $this->sale_price_dates_from ) && ! empty( $this->sale_price_dates_to ) ) {
 			if ( $this->sale_price_dates_from	<= $time &&
-				 $this->sale_price_dates_to		>= $time &&
-				 $this->sale_price) {
+				 $this->sale_price_dates_to >= $time &&
+				 $this->sale_price ) {
 				 
-				return true;
+				$on_sale = true;
 			}
 		}
 		// Otherwise if we have a sale price
-		if ( empty( $this->sale_price_dates_to ) && $this->sale_price ) return true;
+		if ( empty( $this->sale_price_dates_to ) && $this->sale_price ) $on_sale = true;
 
-		// Just incase return false
-		return false;
+		return $on_sale;
 	}
 
 	/**

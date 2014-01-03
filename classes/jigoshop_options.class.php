@@ -265,7 +265,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		$this->get_current_options();
 		if ( ! isset( self::$current_options[$name] )) {
 			self::$current_options[$name] = $value;
-			add_action( 'shutdown', array( __CLASS__, 'update_options' ));
+			add_action( 'shutdown', array( $this, 'update_options' ));
 		}
 	}
 

@@ -22,9 +22,9 @@
  * Author:              Jigoshop
  * Author URI:          http://jigoshop.com
  *
- * Version:             1.8
+ * Version:             1.8.1
  * Requires at least:   3.5
- * Tested up to:        3.6.1
+ * Tested up to:        3.8
  *
  * Text Domain:         jigoshop
  * Domain Path:         /languages/
@@ -342,6 +342,7 @@ function jigoshop_frontend_scripts() {
 		'option_guest_checkout'			=> $jigoshop_options->get_option('jigoshop_enable_guest_checkout'),
 		'select_state_text' 			=> __('Select a state&hellip;', 'jigoshop'),
 		'state_text' 					=> __('state', 'jigoshop'),
+		'ratings_message' 				=> __('Please select a star to rate your review.','jigoshop'),
 		'update_order_review_nonce' 	=> wp_create_nonce("update-order-review"),
         'billing_state'                 => jigoshop_customer::get_state(),
         'shipping_state'                => jigoshop_customer::get_shipping_state()
