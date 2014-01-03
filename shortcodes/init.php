@@ -362,7 +362,7 @@ function jigoshop_search_shortcode() {
 
 function jigoshop_sale_products( $atts ) {
 
-	global $jigoshop_sale_products;
+	global $columns, $per_page, $paged;
 
 	extract( shortcode_atts( array(
 		'per_page'          => Jigoshop_Base::get_options()->get_option('jigoshop_catalog_per_page'),
@@ -372,20 +372,23 @@ function jigoshop_sale_products( $atts ) {
 		'pagination'        => false
 		), $atts ) );
 
+	$ids = jigoshop_product::get_product_ids_on_sale();
+	if ( empty( $ids ) ) $ids = array( '0' );
+	
 	$args = array(
+		'post_status'       => 'publish',
+		'post_type'         => 'product',
 		'posts_per_page'    => $per_page,
 		'orderby'           => $orderby,
 		'order'             => $order,
-		'no_found_rows'     => 1,
-		'post_status'       => 'publish',
-		'post_type'         => 'product',
-		'post__in'          => jigoshop_product::get_product_ids_on_sale()
+		'paged'             => $paged,
+		'post__in'          => $ids
 	);
 
-	$jigoshop_sale_products = get_posts( $args );
+	query_posts( $args );
 
 	ob_start();
-	jigoshop_get_template_part( 'loop', 'on_sale' );
+	jigoshop_get_template_part( 'loop', 'shop' );
 	if ( $pagination ) do_action( 'jigoshop_pagination' );
 	wp_reset_postdata();
 	

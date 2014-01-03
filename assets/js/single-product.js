@@ -45,7 +45,7 @@ jQuery(document).ready(function($) {
 		var $rating = $(this).closest('#respond').find('#rating');
 		var rating  = $rating.val();
 		if ( $rating.size() > 0 && ! rating ) {
-			alert("<?php _e('Please select a star to rate your review.','jigoshop'); ?>");
+			alert( jigoshop_params.ratings_message );
 			return false;
 		}
 	});

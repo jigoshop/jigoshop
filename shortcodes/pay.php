@@ -102,6 +102,8 @@ function jigoshop_pay() {
 
 			if ($order->order_key == $order_key && $order->status=='pending') :
 
+    			jigoshop::show_messages();
+
 				?>
 				<ul class="order_details">
 					<li class="order">

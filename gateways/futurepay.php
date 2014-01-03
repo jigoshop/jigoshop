@@ -191,7 +191,7 @@ class futurepay extends jigoshop_payment_gateway {
 	 *  
 	 */
 	public function futurepay_script() {
-		if ( ! is_checkout() ) return;
+		if ( ! is_page( jigoshop_get_page_id( 'checkout' )) ) return;
     	?>
 		<script type="text/javascript">
 			/*<![CDATA[*/

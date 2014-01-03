@@ -42,7 +42,7 @@ class jigoshop_payment_gateways extends Jigoshop_Singleton {
 
     }
 
-    function payment_gateways() {
+    public static function payment_gateways() {
 
 		$_available_gateways = array();
 
@@ -57,7 +57,7 @@ class jigoshop_payment_gateways extends Jigoshop_Singleton {
 		return apply_filters( 'jigoshop_payment_gateways_installed', $_available_gateways );
 	}
 
-	function get_available_payment_gateways() {
+	public static function get_available_payment_gateways() {
 
 		$_available_gateways = array();
 

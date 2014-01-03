@@ -42,7 +42,7 @@ class Jigoshop_reports {
 		$after  = date('Y-m-d', $start_date);
 		$before = date('Y-m-d', strtotime('+1 day', $end_date));
 
-		$where .= " AND post_date > '$after'";
+		$where .= " AND post_date >= '$after'";
 		$where .= " AND post_date < '$before'";
 
 		return $where;
@@ -267,6 +267,7 @@ jQuery(function(){
 		?>
 
 		<table class="table table-condensed">
+			<?php $total_sold = 0; ?>
 			<thead>
 				<tr>
 					<th><?php _e('Product', 'jigoshop'); ?></th>
@@ -282,10 +283,17 @@ jQuery(function(){
 						<tr>
 							<td><?php echo $product_name; ?></td>
 							<td><?php echo $qty; ?></td>
+							<?php $total_sold += $qty; ?>
 						</tr>
 					<?php endforeach; ?>
 
 			</tbody>
+			<tfoot>
+				<tr>
+					<th><?php _e('Total Products Sold', 'jigoshop'); ?></th>
+					<th><?php echo $total_sold; ?></th>
+				</tr>
+			</tfoot>
 		</table>
 	<?php
 
@@ -355,6 +363,7 @@ jQuery(function(){
 		?>
 
 		<table class="table table-condensed">
+			<?php $total_sales = 0; ?>
 			<thead>
 				<tr>
 					<th><?php _e('Product', 'jigoshop'); ?></th>
@@ -370,10 +379,17 @@ jQuery(function(){
 						<tr>
 							<td><?php echo $product_name; ?></td>
 							<td><?php echo jigoshop_price($sales); ?></td>
+							<?php $total_sales += $sales; ?>
 						</tr>
 					<?php endforeach; ?>
 
 			</tbody>
+			<tfoot>
+				<tr>
+					<th><?php _e('Total Sales', 'jigoshop'); ?></th>
+					<th><?php echo jigoshop_price($total_sales); ?></th>
+				</tr>
+			</tfoot>
 		</table>
 	<?php
 	}

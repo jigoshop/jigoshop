@@ -128,8 +128,12 @@ jQuery(document).ready( function($) {
 
 		var variation_image = variation.image_src;
 		var variation_link = variation.image_link;
+		var var_display;
+		
+		if ( variation.same_prices ) var_display = variation.availability_html;
+		else var_display = variation.price_html + variation.availability_html;
 
-		$('.single_variation').html( variation.price_html + variation.availability_html );
+		$('.single_variation').html( var_display );
 
 		if ( ! o_src ) {
 			$(img).attr('original-src', $(img).attr('src'));

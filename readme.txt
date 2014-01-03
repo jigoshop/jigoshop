@@ -3,8 +3,8 @@ Contributors: Jigoshop
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigowatt, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.5
-Tested up to: 3.6.1
-Stable tag: 1.8
+Tested up to: 3.8
+Stable tag: 1.8.1
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,22 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+= 1.8.1 - 2014-01-03 =
+* Tweak: Variations that are all priced the same will no longer show the secondary price when selected
+* Tweak: Free Shipping module only activates on totals after applied coupon amounts
+* Tweak: Provide total quantity products sold for Reports
+* Fix: Reports include orders from beginning day of date range
+* Fix: After coupon removal on Cart, totals recalcualted
+* Fix: Products on sale shortcode now uses default loop-shop template to allow pagination
+* Fix: Products on sale shortcode won't show all products if non actually on sale
+* Fix: Clicks on Checkout's 'ship to billing' will force a recalc for selected states and taxes
+* Fix: Numerous fixes for PHP Strict warnings
+* Languages: Updated pot file for translators
+* Languages: Updated Ukranian translation courtesy of Anatolii Sakhnik
+* Languages: Updated Croatian translation courtesy of Ivica Delic
+* Languages: Updated German translation courtesy of Andy Jordan
+* Languages: New Slovenian translation courtesy of David Bratuša
+
 = 1.8 - 2013-10-10 =
 * New: WorldPay payment gateway added to Jigoshop core
 * New: Settings->General->`Complete processing Orders` option for 'processing' orders older than 30 days

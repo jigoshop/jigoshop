@@ -82,7 +82,7 @@ class jigoshop_cod extends jigoshop_payment_gateway {
 		$defaults[] = array(
 			'name'		=> __('Customer Message','jigoshop'),
 			'desc' 		=> '',
-			'tip' 		=> __('Let the customer know the payee and where they should be sending the cod too and that their order won\'t be shipping until you receive it.','jigoshop'),
+			'tip' 		=> '',
 			'id' 		=> 'jigoshop_cod_description',
 			'std' 		=> __('Please pay to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'jigoshop'),
 			'type' 		=> 'longtext'

@@ -32,8 +32,8 @@ class jigoshop_product extends Jigoshop_Base {
 
 	protected $regular_price;
 	protected $sale_price;
-	protected   $sale_price_dates_from;
-	protected   $sale_price_dates_to;
+	protected $sale_price_dates_from;
+	protected $sale_price_dates_to;
 
 	private $weight;
 	private $length;
@@ -56,7 +56,7 @@ class jigoshop_product extends Jigoshop_Base {
 	private	$attributes   = array();
 	public  $children     = array(); // : jigoshop_template_functions.php on line 328
     protected $jigoshop_options; // : jigoshop_product_variation.php uses as well
-
+	
 	/**
 	 * Loads all product data from custom fields
 	 *
@@ -842,7 +842,34 @@ class jigoshop_product extends Jigoshop_Base {
 		endif;
 		return '';
 	}
-
+	
+	public function variations_priced_the_same() {
+		$variations_priced_the_same = true;
+		if ( $this->is_type( 'variable') ) {
+			$children = $this->get_children();
+			$array = array();
+			$onsale = false;
+			$sameprice = true;
+			foreach ( $children as $child_ID ) {
+				$child = $this->get_child($child_ID);
+				if ( $child->is_in_stock() ) {
+					if ( $child->is_on_sale() ) $onsale = true; // signal at least one child is on sale
+					$array[$child_ID] = $child->get_price();
+				}
+			}
+			asort( $array );	// cheapest price first
+			if ( count( $array ) >= 2 && reset( $array ) != end( $array ) ) $sameprice = false;
+			if ( ! $sameprice ) {
+				$variations_priced_the_same = false;
+			} elseif ( $onsale ) { // prices may be the same, but we could be on sale
+				$variations_priced_the_same = false;
+			} else {	// prices are the same
+            	$variations_priced_the_same = true;
+			}
+		}
+		return $variations_priced_the_same;
+	}
+	
 	/**
 	 * Returns the price in html format
 	 *
@@ -1456,7 +1483,9 @@ class jigoshop_product extends Jigoshop_Base {
 				}
 			}
 		}
-
+		
+		$product_ids = array_values( $product_ids );
+		
 		return $product_ids;
 	}
 

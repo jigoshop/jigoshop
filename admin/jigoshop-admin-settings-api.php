@@ -902,8 +902,9 @@ class Jigoshop_Options_Parser {
 			$countries = jigoshop_countries::$countries;
 			$country_setting = (string) $data[$item['id']];
 			if ( strstr( $country_setting, ':' )) :
-				$country = current( explode( ':', $country_setting) );
-				$state = end( explode( ':', $country_setting) );
+				$temp = explode( ':', $country_setting );
+				$country = current( $temp );
+				$state = end( $temp );
 			else :
 				$country = $country_setting;
 				$state = '*';
