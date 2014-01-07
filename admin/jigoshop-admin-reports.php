@@ -180,7 +180,7 @@ function jigoshop_pie_charts($id = '') {
 	if (empty($id)) return false;
 
 	$total = array_sum($this->pie_products);
-
+	if ($total != 0){
 	$values = array();
 	foreach ($this->pie_products as $name => $sales) $values[] = '{ label: "'.esc_attr(mb_substr($name, 0, 40)).'", data: '. (round($sales/$total, 3)*100).'}';
 
@@ -230,7 +230,7 @@ jQuery(function(){
 /* ]]> */
 </script>
 <?php
-
+	}
 }
 
 	function jigoshop_total_orders() {
