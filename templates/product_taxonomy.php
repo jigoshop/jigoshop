@@ -18,19 +18,19 @@
 
 <?php get_header('shop'); ?>
 
-<?php do_action('jigoshop_before_main_content'); // <div id="container"><div id="content" role="main"> ?>
+<?php do_action('jigoshop_before_main_content'); ?>
 
-	<?php $term = get_term_by( 'slug', get_query_var($wp_query->query_vars['taxonomy']), $wp_query->query_vars['taxonomy']); ?>
+<?php $term = get_term_by( 'slug', get_query_var($wp_query->query_vars['taxonomy']), $wp_query->query_vars['taxonomy']); ?>
 
-    <?php echo apply_filters( 'jigoshop_product_taxonomy_header', '<h1 class="page-title">' . wptexturize( $term->name ) . '</h1>' ); ?>
+<?php echo apply_filters( 'jigoshop_product_taxonomy_header', '<h1 class="page-title">' . wptexturize( $term->name ) . '</h1>' ); ?>
 
-	<?php echo apply_filters( 'jigoshop_product_taxonomy_description', wpautop(wptexturize($term->description)) ); ?>
+<?php echo apply_filters( 'jigoshop_product_taxonomy_description', wpautop(wptexturize($term->description)) ); ?>
 
-	<?php jigoshop_get_template_part( 'loop', 'shop' ); ?>
+<?php jigoshop_get_template_part( 'loop', 'shop' ); ?>
 
-	<?php do_action('jigoshop_pagination'); ?>
+<?php do_action('jigoshop_pagination'); ?>
 
-<?php do_action('jigoshop_after_main_content'); // </div></div> ?>
+<?php do_action('jigoshop_after_main_content'); ?>
 
 <?php do_action('jigoshop_sidebar'); ?>
 

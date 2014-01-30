@@ -22,9 +22,9 @@
  * Author:              Jigoshop
  * Author URI:          http://jigoshop.com
  *
- * Version:             1.8 Beta 2
+ * Version:             1.8.1
  * Requires at least:   3.5
- * Tested up to:        3.6-RC1-24704
+ * Tested up to:        3.8
  *
  * Text Domain:         jigoshop
  * Domain Path:         /languages/
@@ -51,9 +51,6 @@ if ( !defined( "PHP_EOL" )) define( "PHP_EOL", "\r\n" );
  * Include core files and classes
  **/
 
-// API Class
-include_once( 'classes/jigoshop_api.class.php' );
-
 include_once( 'classes/abstract/jigoshop_base.class.php' );
 include_once( 'classes/abstract/jigoshop_singleton.class.php' );
 include_once( 'classes/jigoshop_options.class.php' );
@@ -73,6 +70,7 @@ include_once( 'classes/jigoshop_orders.class.php' );
 include_once( 'classes/jigoshop_tax.class.php' );
 include_once( 'classes/jigoshop_shipping.class.php' );
 include_once( 'classes/jigoshop_coupons.class.php' );
+include_once( 'classes/jigoshop_licence_validator.class.php' );
 
 include_once( 'gateways/gateways.class.php' );
 include_once( 'gateways/gateway.class.php' );
@@ -81,6 +79,7 @@ include_once( 'gateways/cheque.php' );
 include_once( 'gateways/cod.php' );
 include_once( 'gateways/paypal.php' );
 include_once( 'gateways/futurepay.php' );
+include_once( 'gateways/worldpay.php' );
 
 include_once( 'shipping/shipping_method.class.php' );
 include_once( 'shipping/jigoshop_calculable_shipping.php' );
@@ -89,6 +88,8 @@ include_once( 'shipping/free_shipping.php' );
 include_once( 'shipping/local_pickup.php' );
 
 include_once( 'classes/jigoshop_query.class.php' );
+include_once( 'classes/jigoshop_request_api.class.php' );
+
 include_once( 'classes/jigoshop.class.php' );
 include_once( 'classes/jigoshop_cart.class.php' );
 include_once( 'classes/jigoshop_checkout.class.php' );
@@ -142,9 +143,6 @@ function jigoshop_init() {
 
 	new jigoshop_cron();                        // -after- text domains and Options instantiation allows settings translations
 
-	// Init API
-	$api = new JS_API();
-
 	jigoshop_set_image_sizes();                 // called -after- our Options are loaded
 
 	// add Singletons here so that the taxonomies are loaded before calling them.
@@ -167,6 +165,7 @@ function jigoshop_init() {
 		add_filter( 'loop_shop_per_page', create_function( '', 'return ' . $jigoshop_options->get_option('jigoshop_catalog_per_page') . ';' ) );
 
 		jigoshop_catalog_query::instance();		// front end queries class
+		jigoshop_request_api::instance();		// front end request api for URL's
 
 	}
 
@@ -343,6 +342,7 @@ function jigoshop_frontend_scripts() {
 		'option_guest_checkout'			=> $jigoshop_options->get_option('jigoshop_enable_guest_checkout'),
 		'select_state_text' 			=> __('Select a state&hellip;', 'jigoshop'),
 		'state_text' 					=> __('state', 'jigoshop'),
+		'ratings_message' 				=> __('Please select a star to rate your review.','jigoshop'),
 		'update_order_review_nonce' 	=> wp_create_nonce("update-order-review"),
         'billing_state'                 => jigoshop_customer::get_state(),
         'shipping_state'                => jigoshop_customer::get_shipping_state()
@@ -596,23 +596,14 @@ function jigoshop_sharethis() {
 
 
 /**
- * Mail from name/email
+ * Jigoshop Mail 'from' name on emails
+ * We will add a filter to WordPress to get this as the site name when emails are sent
  **/
-add_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name' );
 function jigoshop_mail_from_name( $name ) {
 	$name = get_bloginfo('name');
 	$name = esc_attr($name);
 	return $name;
 }
-
-
-/*
-add_filter( 'wp_mail_from', 'jigoshop_mail_from' );
-function jigoshop_mail_from( $email ) {
-	$email = Jigoshop_Base::get_options()->get_option('jigoshop_email');
-	return $email;
-}
-*/
 
 
 /**
@@ -1020,10 +1011,7 @@ function jigowatt_clean( $var ) {
 
 // Returns a float value
 function jigoshop_sanitize_num( $var ) {
-	// TODO: as it stands, it doesn't allow negative values (-JAP-)
-	// should be - preg_replace("/^[^[\-\+]0-9\.]/","",$var)
-	// currently only used for prices in product-data-save.php
-	return strip_tags(stripslashes(floatval(preg_replace("/^[^0-9\.]/","",$var))));
+	return strip_tags(stripslashes(floatval(preg_replace("/^[^[\-\+]0-9\.]/","",$var))));
 }
 
 // Author: Sergey Biryukov
@@ -1277,23 +1265,4 @@ if(!function_exists('jigoshop_log')){
         endif;
 
     }
-}
-
-/**
- * Return the JS API URL for a given request
- *
- * @access public
- * @param mixed $request
- * @param mixed $ssl (default: null)
- * @return string
- */
-function api_request_url( $request, $ssl = null ) {
-	if ( is_null( $ssl ) ) {
-		$scheme = parse_url( get_option( 'home' ), PHP_URL_SCHEME );
-	} elseif ( $ssl ) {
-		$scheme = 'https';
-	} else {
-		$scheme = 'http';
-	}
-	return esc_url_raw( trailingslashit( home_url( '/js-api/' . $request, $scheme ) ) );
 }

@@ -45,7 +45,7 @@ class jigoshop_shipping_method {
 
     	if ($this->get_enabled()=="no") return false;
 
-		if (isset(jigoshop_cart::$cart_contents_total_ex_dl) && isset($this->min_amount) && $this->min_amount && apply_filters( 'jigoshop_shipping_min_amount', $this->min_amount, $this) > jigoshop_cart::$cart_contents_total_ex_dl) return false;
+		if (isset(jigoshop_cart::$cart_contents_total_ex_dl) && isset($this->min_amount) && $this->min_amount && apply_filters( 'jigoshop_shipping_min_amount', $this->min_amount, $this) > jigoshop_cart::$cart_contents_total_ex_dl - jigoshop_cart::$discount_total) return false;
 
 		if (is_array($this->get_ship_to_countries())) :
 			if (!in_array(jigoshop_customer::get_shipping_country(), $this->get_ship_to_countries())) :

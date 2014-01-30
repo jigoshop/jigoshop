@@ -888,7 +888,7 @@ function jigoshop_product_dropdown_categories( $show_counts = true, $hierarchal 
 	$terms = get_terms( 'product_cat', $r );
 	if ( ! $terms ) return;
 
-	$output  = "<select name='product_cat' id='dropdown_product_cat'>";
+	$output  = "<select multiple name='product_cat' id='dropdown_product_cat'>";
 
 	$output .= '<option value="" ' .  selected( isset( $_GET['product_cat'] ) ? esc_attr( $_GET['product_cat'] ) : '', '', false ) . '>'.__('View all categories', 'jigoshop').'</option>';
 	$output .= jigoshop_walk_category_dropdown_tree( $terms, 0, $r );
@@ -922,7 +922,7 @@ class Jigoshop_Walker_CategoryDropdown extends Walker_CategoryDropdown {
 	var $tree_type = 'category';
 	var $db_fields = array ('parent' => 'parent', 'id' => 'term_id', 'slug' => 'slug' );
 
-    function start_el( &$output, $category, $depth, $args ) {
+    function start_el( &$output, $category, $depth = 0, $args = array(), $current_object_id = 0 ) {
 
         $pad = str_repeat( '&nbsp;', $depth * 3 );
         $cat_name = apply_filters( 'list_product_cats', $category->name, $category );

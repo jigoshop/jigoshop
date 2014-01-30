@@ -82,9 +82,11 @@ class jigoshop_shipping extends Jigoshop_Singleton {
 				if ( jigoshop_cart::has_free_shipping_coupon() && $method->id == 'free_shipping' )
                     $_available_methods[$method->id] = $method;
 
-                if ($method->is_available()) :
-                    $_available_methods[$method->id] = $method;
-                endif;
+                if ( $method->is_available() ) {
+					if ( $method->cost >= 0 ) {
+						$_available_methods[$method->id] = $method; 
+					}
+                }
 
             endforeach;
 
@@ -106,6 +108,10 @@ class jigoshop_shipping extends Jigoshop_Singleton {
     	return self::$shipping_error_message;
     }
 
+	public static function set_shipping_error_message( $message ) {
+		self::$shipping_error_message = $message;
+	}
+	
     public static function reset_shipping_methods() {
         foreach (self::$shipping_methods as $method) :
             $method->reset_method();

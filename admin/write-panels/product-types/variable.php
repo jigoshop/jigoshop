@@ -127,7 +127,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	 * @param   int   Product ID
 	 * @return  void
 	 */
-	public function save( $parent_id ) {
+	public function save( $parent_id, $post ) {
 		global $wpdb;
 
 		// Do not run if there are no variations
@@ -200,7 +200,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 				$_product = new jigoshop_product_variation( $ID );
 				if ( Jigoshop_Base::get_options()->get_option( 'jigoshop_hide_no_stock_product' ) == 'yes'
 					&& $_product->managing_stock() ) {
-					if ( $meta['stock'] <= Jigoshop_Base::get_options()->get_option( 'jigoshop_notify_no_stock_amount' ) ) {
+					if ( $meta['stock'] <= Jigoshop_Base::get_options()->get_option( 'jigoshop_notify_no_stock_amount' ) && $meta['stock'] <> '' ) {
 						unset( $meta['enabled'] );
 					} else {
 						$meta['enabled'] = true;
@@ -354,7 +354,8 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
   
 						// Open the select & set a default value
 						echo '<select name="default_attribute_' . sanitize_title($attr['name']).'" >';
-						echo '<option value="">'.__('No default', 'jigoshop') . ' ' . jigoshop_product::attribute_label('pa_'.$attr['name']).'&hellip;</option>';
+						$product = new jigoshop_product( $post->ID );
+						echo '<option value="">'.__('No default', 'jigoshop') . ' ' . $product->attribute_label('pa_'.$attr['name']).'&hellip;</option>';
   
 						// Get terms for attribute taxonomy or value if its a custom attribute
 						if ( $attr['is_taxonomy'] ) {
@@ -426,8 +427,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			}
 
 			// Open the select & set a default value
+			$product = new jigoshop_product( $post->ID );
 			$html .= '<select name="' . $this->field_name('tax_' . sanitize_title($attr['name']), $variation) . '" >
-						<option value="">'.__('Any', 'jigoshop') . ' ' .jigoshop_product::attribute_label('pa_'.$attr['name']).'&hellip;</option>';
+						<option value="">'.__('Any', 'jigoshop') . ' ' .$product->attribute_label('pa_'.$attr['name']).'&hellip;</option>';
 
 			// Get terms for attribute taxonomy or value if its a custom attribute
 			if ( $attr['is_taxonomy'] ) {

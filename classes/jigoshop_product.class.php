@@ -32,8 +32,8 @@ class jigoshop_product extends Jigoshop_Base {
 
 	protected $regular_price;
 	protected $sale_price;
-	protected   $sale_price_dates_from;
-	protected   $sale_price_dates_to;
+	protected $sale_price_dates_from;
+	protected $sale_price_dates_to;
 
 	private $weight;
 	private $length;
@@ -56,7 +56,7 @@ class jigoshop_product extends Jigoshop_Base {
 	private	$attributes   = array();
 	public  $children     = array(); // : jigoshop_template_functions.php on line 328
     protected $jigoshop_options; // : jigoshop_product_variation.php uses as well
-
+	
 	/**
 	 * Loads all product data from custom fields
 	 *
@@ -410,6 +410,10 @@ class jigoshop_product extends Jigoshop_Base {
 			return true;
 
 		// Check if we have stock
+		if ( $this->stock == '-9999999' ) {
+			$_parent = new jigoshop_product( $this->ID );
+			$this->stock = $_parent->stock;
+		}
 		if( $this->managing_stock() && ($below_stock_threshold ? $this->stock >= self::get_options()->get_option('jigoshop_notify_no_stock_amount') : $this->stock > 0 ) )
 			return true;
 
@@ -838,7 +842,34 @@ class jigoshop_product extends Jigoshop_Base {
 		endif;
 		return '';
 	}
-
+	
+	public function variations_priced_the_same() {
+		$variations_priced_the_same = true;
+		if ( $this->is_type( 'variable') ) {
+			$children = $this->get_children();
+			$array = array();
+			$onsale = false;
+			$sameprice = true;
+			foreach ( $children as $child_ID ) {
+				$child = $this->get_child($child_ID);
+				if ( $child->is_in_stock() ) {
+					if ( $child->is_on_sale() ) $onsale = true; // signal at least one child is on sale
+					$array[$child_ID] = $child->get_price();
+				}
+			}
+			asort( $array );	// cheapest price first
+			if ( count( $array ) >= 2 && reset( $array ) != end( $array ) ) $sameprice = false;
+			if ( ! $sameprice ) {
+				$variations_priced_the_same = false;
+			} elseif ( $onsale ) { // prices may be the same, but we could be on sale
+				$variations_priced_the_same = false;
+			} else {	// prices are the same
+            	$variations_priced_the_same = true;
+			}
+		}
+		return $variations_priced_the_same;
+	}
+	
 	/**
 	 * Returns the price in html format
 	 *
@@ -1404,10 +1435,6 @@ class jigoshop_product extends Jigoshop_Base {
 	 */
 	public static function get_product_ids_on_sale() {
 
-		$product_ids_on_sale = get_transient( 'jigoshop_products_on_sale' );
-
-		if ( false !== $product_ids_on_sale ) return $product_ids_on_sale;
-
 		$on_sale = get_posts( array(
 			'post_type'      => array( 'product', 'product_variation' ),
 			'posts_per_page' => -1,
@@ -1429,9 +1456,18 @@ class jigoshop_product extends Jigoshop_Base {
 			'fields'         => 'id=>parent',
 		) );
 
-		$product_ids = array_keys( $on_sale );
-		$parent_ids  = array_values( $on_sale );
-
+		// filter out duplicates and 0 id's leaving only actual parent product ID's for variations
+		$parent_ids  = array_filter( array_unique( array_values( $on_sale ) ) );
+		// remove the variable products from the originals ID's
+		foreach ( $on_sale as $id => $parent ) {
+			if ( $parent <> 0 ) unset( $on_sale[$id] );
+		}
+		// these are non-variable products
+		$all_ids = array_keys( $on_sale );
+		// munge the variable parents and other products together
+		$product_ids = array_unique( array_merge( $all_ids, $parent_ids ) );
+		
+		// now check the sale date fields on the main products
 		foreach ( $product_ids as $key => $id ) {
 			$sale_from = get_post_meta( $id, 'sale_price_dates_from', true );
 			if ( ! empty( $sale_from )) {
@@ -1447,12 +1483,10 @@ class jigoshop_product extends Jigoshop_Base {
 				}
 			}
 		}
-
-		$product_ids_on_sale = array_unique( array_merge( $product_ids, $parent_ids ) );
-
-		set_transient( 'jigoshop_products_on_sale', $product_ids_on_sale );
-
-		return $product_ids_on_sale;
+		
+		$product_ids = array_values( $product_ids );
+		
+		return $product_ids;
 	}
 
 }

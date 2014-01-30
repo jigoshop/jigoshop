@@ -42,7 +42,7 @@ class Jigoshop_reports {
 		$after  = date('Y-m-d', $start_date);
 		$before = date('Y-m-d', strtotime('+1 day', $end_date));
 
-		$where .= " AND post_date > '$after'";
+		$where .= " AND post_date >= '$after'";
 		$where .= " AND post_date < '$before'";
 
 		return $where;
@@ -135,14 +135,15 @@ h6{font-size:11px;color:#999999;text-transform:uppercase;}
 
 				<div class="span3 thumbnail">
 					<h2><?php _e('Top Earners','jigoshop'); ?></h2>
+					<div id="top_earners_pie_keys" style="margin-top:20px;"></div>
 					<div id="top_earners_pie" style="height:300px"></div>
 					<?php $this->jigoshop_top_earners(); ?>
 					<?php echo $this->jigoshop_pie_charts('top_earners_pie'); ?>
-					<div id="plothover"></div>
 				</div>
 
 				<div class="span3 thumbnail">
 					<h2><?php _e('Most Sold','jigoshop'); ?></h2>
+					<div id="most_sold_pie_keys" style="margin-top:20px;"></div>
 					<div id="most_sold_pie" style="height:300px"></div>
 					<?php $this->jigoshop_most_sold(); ?>
 					<?php echo $this->jigoshop_pie_charts('most_sold_pie'); ?>
@@ -179,9 +180,9 @@ function jigoshop_pie_charts($id = '') {
 	if (empty($id)) return false;
 
 	$total = array_sum($this->pie_products);
-
+	if ($total != 0){
 	$values = array();
-	foreach ($this->pie_products as $name => $sales) $values[] = '{ label: "'.esc_attr(mb_substr($name, 0, 20)).'", data: '. (round($sales/$total, 3)*100).'}';
+	foreach ($this->pie_products as $name => $sales) $values[] = '{ label: "'.esc_attr(mb_substr($name, 0, 40)).'", data: '. (round($sales/$total, 3)*100).'}';
 
 ?>
 <script type="text/javascript">
@@ -206,20 +207,21 @@ jQuery(function(){
 				show: true,
 				combine: {
 					color: '#999',
-					threshold: 0.08
+					threshold: 0.045 /* rounding up for 5% */
 				},
 				radius: 1,
 				label: {
 					show: true,
 					radius: 2/3,
 					formatter: function(label, series){
-						return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+						return '<div style="font-size:8pt;text-align:center;padding:2px;color:black;">'+Math.round(series.percent)+'%</div>';
 					},
 				}
 			}
 		},
 		legend: {
-		show: true
+			show: true,
+			container: jQuery("#<?php echo $id; ?>").prev()
 		}
 	});
 	//jQuery("#top_earners_pie").bind("plothover", pieHover);
@@ -228,7 +230,7 @@ jQuery(function(){
 /* ]]> */
 </script>
 <?php
-
+	}
 }
 
 	function jigoshop_total_orders() {
@@ -257,12 +259,15 @@ jQuery(function(){
 
 		asort($found_products);
 		$found_products = array_reverse($found_products, true);
-		$found_products = array_slice($found_products, 0, 25, true);
+//		$found_products = array_slice($found_products, 0, 25, true);
 		reset($found_products);
 
+		$this->pie_products = array();
+		
 		?>
 
 		<table class="table table-condensed">
+			<?php $total_sold = 0; ?>
 			<thead>
 				<tr>
 					<th><?php _e('Product', 'jigoshop'); ?></th>
@@ -278,10 +283,17 @@ jQuery(function(){
 						<tr>
 							<td><?php echo $product_name; ?></td>
 							<td><?php echo $qty; ?></td>
+							<?php $total_sold += $qty; ?>
 						</tr>
 					<?php endforeach; ?>
 
 			</tbody>
+			<tfoot>
+				<tr>
+					<th><?php _e('Total Products Sold', 'jigoshop'); ?></th>
+					<th><?php echo $total_sold; ?></th>
+				</tr>
+			</tfoot>
 		</table>
 	<?php
 
@@ -343,7 +355,7 @@ jQuery(function(){
 
 		asort($found_products);
 		$found_products = array_reverse($found_products, true);
-		$found_products = array_slice($found_products, 0, 25, true);
+//		$found_products = array_slice($found_products, 0, 25, true);
 		reset($found_products);
 
 		$this->pie_products = array();
@@ -351,6 +363,7 @@ jQuery(function(){
 		?>
 
 		<table class="table table-condensed">
+			<?php $total_sales = 0; ?>
 			<thead>
 				<tr>
 					<th><?php _e('Product', 'jigoshop'); ?></th>
@@ -366,10 +379,17 @@ jQuery(function(){
 						<tr>
 							<td><?php echo $product_name; ?></td>
 							<td><?php echo jigoshop_price($sales); ?></td>
+							<?php $total_sales += $sales; ?>
 						</tr>
 					<?php endforeach; ?>
 
 			</tbody>
+			<tfoot>
+				<tr>
+					<th><?php _e('Total Sales', 'jigoshop'); ?></th>
+					<th><?php echo jigoshop_price($total_sales); ?></th>
+				</tr>
+			</tfoot>
 		</table>
 	<?php
 	}

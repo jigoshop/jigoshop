@@ -3,8 +3,8 @@ Contributors: Jigoshop
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigowatt, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.5
-Tested up to: 3.6-RC1-24704
-Stable tag: 1.8
+Tested up to: 3.8
+Stable tag: 1.8.1
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,22 +112,49 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
-= 1.8 - 2013-07-15 =
+= 1.8.1 - 2014-01-03 =
+* Tweak: Variations that are all priced the same will no longer show the secondary price when selected
+* Tweak: Free Shipping module only activates on totals after applied coupon amounts
+* Tweak: Provide total quantity products sold for Reports
+* Fix: Reports include orders from beginning day of date range
+* Fix: After coupon removal on Cart, totals recalcualted
+* Fix: Products on sale shortcode now uses default loop-shop template to allow pagination
+* Fix: Products on sale shortcode won't show all products if non actually on sale
+* Fix: Clicks on Checkout's 'ship to billing' will force a recalc for selected states and taxes
+* Fix: Numerous fixes for PHP Strict warnings
+* Languages: Updated pot file for translators
+* Languages: Updated Ukranian translation courtesy of Anatolii Sakhnik
+* Languages: Updated Croatian translation courtesy of Ivica Delic
+* Languages: Updated German translation courtesy of Andy Jordan
+* Languages: New Slovenian translation courtesy of David Bratuša
+
+= 1.8 - 2013-10-10 =
+* New: WorldPay payment gateway added to Jigoshop core
 * New: Settings->General->`Complete processing Orders` option for 'processing' orders older than 30 days
+* New: Implement Jigoshop Request API for extensions and gateways
 * New: Javascript Checkout field validation to enhance payment conversion. Shows correct and incorrect fields.
 	* Orders won't be placed until all Checkout fields required data are input and validated
 * Tweak: Revamped all Jigoshop frontend javascript for modularity and efficiency
 	* all Jigoshop javascript loads in footer for improved performance
 * Tweak: Updated several external javascript libraries (jQuery blockUI, select2)
 * Tweak: Removed large jQuery UI library from front end loading, loads required bits as needed (Price Filter)
+* Tweak: Jigoshop now only loads one CSS file from all internal sources for efficiency
 * Tweak: Add a codeblock option type in the settings for extensions to use internally
 * Tweak: Combine Edit Order variation attributes with product addons extension in one panel for Orders
 * Tweak: Add some filters for Jigoshop WPML extension to allow more translated items
+* Tweak: Jigoshop Reports pie chart cleanup with separate legend that won't over write charts
+* Tweak: Jigoshop Reports pie chart products now show with 5% share
+* Fix: Jigoshop Reports pie chart for 'Most Sold' per period now accurately reflects top products sold
 * Fix: Repair Google Analytics function for tracking code to load in header where it's required
+* Fix: Repair Google eCommerce Product tracking for Thank You page
 * Fix: Unpaid 'on-hold' orders from cash or cheque gateways will no longer be overwritten with another order
 * Fix: FuturePay gateway will not be selectable on the Checkout for Orders over $500.00 (current credit limit)
+* Fix: Test to ensure PayPal payment amounts and addresses matches initially submitted order as a security check
+* Fix: Remove filter that was overriding Contact Form 7 or other mail extensions for 'From' name on emails
+* Fix: Variations that use Parent Product for stock tracking, Parent will now reduce stock upon order payment
 * Languages: Updated .pot file for translators
 * Languages: Updated Brazilian translation courtesy of Raphael Suzuki
+* Languages: Updated Czech translation courtesy of Jaroslav Ondra
 
 = 1.7.3 - 2013-06-26 =
 * Fix: Repair template loader that was duplicating Shop products

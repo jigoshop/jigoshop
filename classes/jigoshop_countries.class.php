@@ -828,12 +828,13 @@ class jigoshop_countries extends Jigoshop_Base {
     }
 
 	/** get base country */
-	static function get_base_country() {
+	public static function get_base_country() {
 
 		$default = self::get_options()->get_option('jigoshop_default_country');
-		if (strstr($default, ':')) :
-			$country = current(explode(':', $default));
-			$state = end(explode(':', $default));
+		if ( strstr( $default, ':' ) ) :
+			$temp = explode( ':', $default );
+			$country = current( $temp );
+			$state = end( $temp );
 		else :
 			$country = $default;
 			$state = '*';
@@ -843,11 +844,12 @@ class jigoshop_countries extends Jigoshop_Base {
 	}
 
 	/** get base state */
-	static function get_base_state() {
+	public static function get_base_state() {
 		$default = self::get_options()->get_option('jigoshop_default_country');
-		if (strstr($default, ':')) :
-			$country = current(explode(':', $default));
-			$state = end(explode(':', $default));
+		if ( strstr( $default, ':' ) ) :
+			$temp = explode( ':', $default );
+			$country = current( $temp );
+			$state = end( $temp );
 		else :
 			$country = $default;
 			$state = '*';
@@ -857,7 +859,7 @@ class jigoshop_countries extends Jigoshop_Base {
 	}
 
 	/** get countries we allow only */
-	function get_allowed_countries() {
+	public static function get_allowed_countries() {
 
 		$countries = self::$countries;
 
@@ -881,13 +883,13 @@ class jigoshop_countries extends Jigoshop_Base {
 	}
 
 	/** get states */
-	function get_states( $cc ) {
+	public static function get_states( $cc ) {
 		if (isset( self::$states[$cc] )) return self::$states[$cc];
 		else return array();
 	}
 
 	/** Outputs the list of countries and states for use in dropdown boxes */
-	function country_dropdown_options( 
+	public static function country_dropdown_options( 
 		$selected_country = '', 
 		$selected_state = '*', 
 		$escape = true, 

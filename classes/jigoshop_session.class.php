@@ -19,7 +19,7 @@ class jigoshop_session extends Jigoshop_Singleton {
 	static $cart_transient_prefix = "jigo_usercart_";
 	
 	protected function __construct() {
-		if ( ! session_id() && ! isset( $_SESSION['travis'] ) ) session_start();
+		if ( ! session_id()) session_start();
 	}
 
 	public function __get( $key ) {

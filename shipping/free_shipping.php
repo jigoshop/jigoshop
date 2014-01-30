@@ -42,7 +42,7 @@ class free_shipping extends jigoshop_shipping_method {
 			
 		}
 
-		add_action( 'jigoshop_settings_scripts', array( &$this, 'admin_scripts' ) );
+		add_action( 'jigoshop_settings_scripts', array( $this, 'admin_scripts' ) );
 
     }
 

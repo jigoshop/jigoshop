@@ -82,7 +82,7 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 		$defaults[] = array(
 			'name'		=> __('Customer Message','jigoshop'),
 			'desc' 		=> '',
-			'tip' 		=> __('Let the customer know the payee and where they should be sending the cheque too and that their order won\'t be shipping until you receive it.','jigoshop'),
+			'tip' 		=> __('Let the customer know the payee and where they should be sending the cheque to and that their order won\'t be shipping until you receive it.','jigoshop'),
 			'id' 		=> 'jigoshop_cheque_description',
 			'std' 		=> __('Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'jigoshop'),
 			'type' 		=> 'longtext'

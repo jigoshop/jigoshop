@@ -1,4 +1,4 @@
-[Jigoshop](http://jigoshop.com)  [![Build Status](https://secure.travis-ci.org/jigoshop/jigoshop.png?branch=dev)](http://travis-ci.org/jigoshop/jigoshop)
+[Jigoshop](http://jigoshop.com)
 =================
 Jigoshop is a feature-packed eCommerce plugin built upon Wordpress core functionality ensuring excellent performance and customizability.
 

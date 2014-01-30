@@ -59,7 +59,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 	
 	
     /** Gets the cart data from the PHP session */
-    function get_cart_from_session() {
+    public static function get_cart_from_session() {
 
         self::$cart_contents = (array) jigoshop_session::instance()->cart;
         
@@ -67,7 +67,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 	
 	
     /** sets the php session data for the cart and coupon */
-    function set_session() {
+    public static function set_session() {
         // we get here from cart additions, quantity adjustments, and coupon additions
         // reset any chosen shipping methods as these adjustments can effect shipping (free shipping)
         unset( jigoshop_session::instance()->chosen_shipping_method_id );
@@ -82,7 +82,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 	
 	
     /** Empty the cart */
-    function empty_cart() {
+    public static function empty_cart() {
         self::$cart_contents = array();
         self::$applied_coupons = array();
         self::reset_totals();
@@ -102,7 +102,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
      * @param array $cart_item_data other cart item data passed which affects this items uniqueness in the cart
      * @return string cart item key
      */
-    function generate_cart_id( $product_id, $variation_id = '', $variation = '', $cart_item_data = '' ) {
+    public static function generate_cart_id( $product_id, $variation_id = '', $variation = '', $cart_item_data = '' ) {
 
         $id_parts = array( $product_id );
 
@@ -137,7 +137,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
      * @param mixed id of product to find in the cart
      * @return string cart item key
      */
-    function find_product_in_cart( $cart_id = false ) {
+    public static function find_product_in_cart( $cart_id = false ) {
         if ( $cart_id !== false )
             foreach ( self::$cart_contents as $cart_item_key => $cart_item )
                 if ( $cart_item_key == $cart_id )
@@ -153,7 +153,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
      * @param   int     variation_id
      * @param   array   variation attribute values
      */
-    function add_to_cart($product_id, $quantity = 1, $variation_id = '', $variation = array()) {
+    public static function add_to_cart($product_id, $quantity = 1, $variation_id = '', $variation = array()) {
 
         if ($quantity < 0) {
             $quantity = 0;
@@ -240,7 +240,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
      * @param   string  cart_item_key   contains the id of the cart item
      * @param   string  quantity    contains the quantity of the item
      */
-    function set_quantity($cart_item, $quantity = 1) {
+    public static function set_quantity($cart_item, $quantity = 1) {
         if ($quantity == 0 || $quantity < 0) {
             $_product = self::$cart_contents[$cart_item];
             if ( ! empty( self::$applied_coupons )) foreach (self::$applied_coupons as $key => $code) {
@@ -275,14 +275,14 @@ class jigoshop_cart extends Jigoshop_Singleton {
      *
      * @return   array  cart_contents
      */
-    static function get_cart() {
+    public static function get_cart() {
         if ( empty( self::$cart_contents ) ) self::get_cart_from_session();
         return self::$cart_contents;
     }
 	
 	
     /** gets the url to the cart page */
-    function get_cart_url() {
+    public static function get_cart_url() {
         $cart_page_id = jigoshop_get_page_id('cart');
         if ($cart_page_id)
             return apply_filters('jigoshop_get_cart_url', get_permalink($cart_page_id));
@@ -290,7 +290,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 	
 	
     /** gets the url to the checkout page */
-    function get_checkout_url() {
+    public static function get_checkout_url() {
         $checkout_page_id = jigoshop_get_page_id('checkout');
         if ($checkout_page_id) :
             if (is_ssl())
@@ -301,7 +301,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 	
 	
     /** gets the url to the shop page */
-    function get_shop_url() {
+    public static function get_shop_url() {
         $shop_page_id = jigoshop_get_page_id('shop_redirect');
         if ($shop_page_id) :
             return apply_filters('jigoshop_get_shop_page_id', get_permalink($shop_page_id));
@@ -310,7 +310,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 	
 	
     /** gets the url to remove an item from the cart */
-    function get_remove_url($cart_item_key) {
+    public static function get_remove_url($cart_item_key) {
         $cart_page_id = jigoshop_get_page_id('cart');
         if ($cart_page_id) {
             return apply_filters('jigoshop_get_remove_url', jigoshop::nonce_url( 'cart', add_query_arg('remove_item', $cart_item_key, get_permalink($cart_page_id))));
@@ -341,13 +341,13 @@ class jigoshop_cart extends Jigoshop_Singleton {
 	
 	
     /** Sees if we need a shipping address */
-    function ship_to_billing_address_only() {
+    public static function ship_to_billing_address_only() {
         return (self::get_options()->get_option('jigoshop_ship_to_billing_address_only') == 'yes');
     }
 	
 	
     /** looks at the totals to see if payment is actually required */
-    function needs_payment() {
+    public static function needs_payment() {
         if (self::$total > 0)
             return true;
         return false;
@@ -355,7 +355,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 	
 	
     /* Looks through the cart to confirm that each item is in stock. */
-    function check_cart_item_stock() {
+    public static function check_cart_item_stock() {
 
         foreach (self::$cart_contents as $cart_item_key => $values) :
 
@@ -581,7 +581,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
     }
 
     /** calculate totals for all taxable products in the cart */
-	private function get_cart_taxable_products_total_excluding_tax() {
+	private static function get_cart_taxable_products_total_excluding_tax() {
 		
 		$total = 0;
 		
@@ -601,7 +601,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 	}
 	
     /** calculate totals for all non-taxable products in the cart */
-	private function get_cart_non_taxable_products_total() {
+	private static function get_cart_non_taxable_products_total() {
 		
 		$total = 0;
 		
@@ -621,7 +621,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 	}
 	
     /** calculate totals for the items in the cart */
-    function calculate_totals() {
+    public static function calculate_totals() {
 
         // extracted cart totals so that the constructor can call it, rather than
         // this full method. Cart totals are needed for cart widget and themes.
@@ -788,7 +788,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
     }
 
     /** gets the cart contents total (after calculation) */
-    function get_cart_total() {
+    public static function get_cart_total() {
         return jigoshop_price(self::$cart_contents_total);
     }
 
@@ -883,7 +883,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
         return $return;
     }
 
-    public function show_retail_price($order = '') {
+    public static function show_retail_price($order = '') {
 
         if ( self::get_options()->get_option('jigoshop_calc_taxes') != 'yes' )
             return false;
@@ -896,7 +896,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
     }
 
 
-    public function tax_after_coupon() {
+    public static function tax_after_coupon() {
 
         if ( self::get_options()->get_option('jigoshop_calc_taxes') != 'yes' )
             return false;
@@ -985,7 +985,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
     }
 
     /* Title of the chosen shipping method. */
-    function get_cart_shipping_title() {
+    public static function get_cart_shipping_title() {
 
 		// in this instance we want the title of the shipping method only. If no title is provided, use
 		// the label. 
@@ -1004,7 +1004,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
      * @param   string  code    The code to apply
      * @return   bool   True if the coupon is applied, false if it does not exist or cannot be applied
      */
-    function add_discount( $coupon_code ) {
+    public static function add_discount( $coupon_code ) {
 
         $the_coupon = JS_Coupons::get_coupon( $coupon_code );
 
@@ -1039,7 +1039,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
     }
 
-    function valid_coupon($coupon_code) {
+    public static function valid_coupon($coupon_code) {
 
         if (!$the_coupon = JS_Coupons::get_coupon($coupon_code)) {
             jigoshop::add_error(__('Coupon does not exist or is no longer valid!', 'jigoshop'));
@@ -1095,7 +1095,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
     }
 
-    function has_valid_coupon_for_products( $thecoupon ) {
+    public static function has_valid_coupon_for_products( $thecoupon ) {
 
         /* Look through each product in the cart for a valid coupon. */
         foreach ( self::$cart_contents as $product )
@@ -1107,7 +1107,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
     }
 
     /** returns whether or not a free shipping coupon has been applied */
-    function has_free_shipping_coupon() {
+    public static function has_free_shipping_coupon() {
 
 		if ( ! empty( self::$applied_coupons )) foreach ( self::$applied_coupons as $code ) {
 			if ( $coupon = JS_Coupons::get_coupon( $code) ) {
@@ -1120,14 +1120,14 @@ class jigoshop_cart extends Jigoshop_Singleton {
     }
 
     /** returns whether or not a discount has been applied */
-    function has_discount($code) {
+    public static function has_discount($code) {
 
         return (in_array($code, self::$applied_coupons));
 
     }
 
     /** Returns the total discount amount. */
-    function get_total_discount() {
+    public static function get_total_discount() {
 
         if ( empty( self::$discount_total ) )
             return false;
@@ -1154,7 +1154,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
     /**
      * Gets and formats a list of cart item data + variations for display on the frontend
      */
-    static function get_item_data( $cart_item, $flat = false ) {
+    public static function get_item_data( $cart_item, $flat = false ) {
 
         $has_data = false;
 		$return = '';
@@ -1177,9 +1177,9 @@ class jigoshop_cart extends Jigoshop_Singleton {
                         if ( $term->slug == $value ) $value = $term->name;
 
                     $name = get_taxonomy( 'pa_'.$name )->labels->name;
-                    $name = jigoshop_product::attribute_label('pa_'.$name);
+                    $name = $cart_item['data']->attribute_label('pa_'.$name);
 
-                else: $name = jigoshop_product::attribute_label('pa_'.$name); 
+                else: $name = $cart_item['data']->attribute_label('pa_'.$name); 
                    $value = apply_filters('jigoshop_product_attribute_value_custom',$value,'pa_'.$name);
                 endif;
 

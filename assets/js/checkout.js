@@ -188,7 +188,7 @@ jQuery(document).ready( function($) {
 	
 	
 	// handle selections from items requiring an update of totals
-	$(document.body).on('change', '#shipping_method, #coupon_code, #billing-country, #billing-state, #billing-postcode, #shipping-country, #shipping-state, #shipping-postcode', function() {
+	$(document.body).on('change', '#shipping_method, #coupon_code, #billing-country, #billing-state, #billing-postcode, #shipping-country, #shipping-state, #shipping-postcode, #shiptobilling', function() {
 		clearTimeout(updateTimer);
 		update_checkout();
 		validate_required();

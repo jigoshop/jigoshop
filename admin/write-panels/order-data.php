@@ -112,7 +112,7 @@ function jigoshop_order_data_meta_box($post) {
 			</script>
 
 			<p class="form-field"><label for="excerpt"><?php _e('Customer Note:', 'jigoshop') ?></label>
-				<textarea rows="1" cols="40" name="excerpt" tabindex="6" id="excerpt" placeholder="<?php _e('Customer\'s notes about the order', 'jigoshop'); ?>"><?php echo esc_textarea( $post->post_excerpt ); ?></textarea></p>
+				<textarea rows="1" cols="40" name="excerpt" tabindex="6" id="excerpt" placeholder="<?php _e('Customer\'s notes about the order', 'jigoshop'); ?>"><?php echo esc_textarea( html_entity_decode( $post->post_excerpt, ENT_QUOTES, 'UTF-8' ) ); ?></textarea></p>
 		</div>
 
 		<div id="order_customer_billing_data" class="panel jigoshop_options_panel">
@@ -298,6 +298,7 @@ function jigoshop_order_items_meta_box($post) {
 	<p class="buttons">
 		<input type='text' class='item_id' name='order_product_select' id='order_product_select' value='' placeholder="<?php _e('Choose a Product', 'jigoshop'); ?>" />
 		<script type="text/javascript">
+		/*<![CDATA[*/
 			jQuery(function() {
 				jQuery("#order_product_select").select2({
 					minimumInputLength: 3,
@@ -336,6 +337,7 @@ function jigoshop_order_items_meta_box($post) {
 					}
 				});
 			});
+		/*]]>*/
 		</script>
 
 		<button type="button" class="button button-primary add_shop_order_item"><?php _e('Add item', 'jigoshop'); ?></button>
@@ -491,7 +493,7 @@ function jigoshop_order_attributes_meta_box( $post ) {
             <?php do_action( 'jigoshop_order_attributes_meta_box_before_item', $item, $item_id ); ?>
             <b>
                 <?php do_action( 'jigoshop_order_attributes_meta_box_before_item_title', $item_id ); ?>
-                <?php echo esc_html( $item['name'] ); ?>
+                <?php echo esc_html( isset( $item['name'] ) ? $item['name'] : '' ); ?>
             </b>
             <?php            
         

@@ -55,7 +55,10 @@ function jigoshop_new_order_notification($order_id) {
 	$message = apply_filters('jigoshop_change_new_order_email_contents', $message, $order);
 	$message = html_entity_decode(strip_tags($message), ENT_QUOTES, 'UTF-8');
 
+	add_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name', 99 );
 	wp_mail($jigoshop_options->get_option('jigoshop_email'), $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
+	remove_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name', 99 );
+	
 }
 
 /**
@@ -103,7 +106,9 @@ function jigoshop_processing_order_customer_notification($order_id) {
 	$message = apply_filters('jigoshop_change_processing_order_email_contents', $message, $order);
 	$message = html_entity_decode(strip_tags($message), ENT_QUOTES, 'UTF-8');
 
+	add_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name', 99 );
 	wp_mail($order->billing_email, $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
+	remove_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name', 99 );
 }
 
 /**
@@ -139,7 +144,9 @@ function jigoshop_completed_order_customer_notification($order_id) {
 	$message = html_entity_decode(strip_tags($message), ENT_QUOTES, 'UTF-8');
 	$message = apply_filters('jigoshop_completed_order_customer_notification_mail_message', $message);
 
+	add_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name', 99 );
 	wp_mail($order->billing_email, $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
+	remove_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name', 99 );
 }
 
 /**
@@ -173,7 +180,9 @@ function jigoshop_refunded_order_customer_notification($order_id) {
 	$message = html_entity_decode(strip_tags($message), ENT_QUOTES, 'UTF-8');
 	$message = apply_filters('jigoshop_refunded_order_customer_notification_mail_message', $message);
 
+	add_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name', 99 );
 	wp_mail($order->billing_email, $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
+	remove_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name', 99 );
 }
 
 /**
@@ -209,7 +218,9 @@ function jigoshop_send_customer_invoice($order_id) {
 	$message = apply_filters('jigoshop_change_pay_order_email_contents', $message, $order);
 	$customer_message = html_entity_decode(strip_tags($customer_message . $message), ENT_QUOTES, 'UTF-8');
 
+	add_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name', 99 );
 	wp_mail($order->billing_email, $subject, $customer_message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
+	remove_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name', 99 );
 }
 
 function add_header_info($order) {
@@ -449,7 +460,9 @@ function jigoshop_low_stock_notification($_product) {
 	$subject = html_entity_decode('[' . get_bloginfo('name') . '] ' . __('Product low in stock', 'jigoshop'), ENT_QUOTES, 'UTF-8');
 	$message = '#' . $_product->id . ' ' . $_product->get_title() . ' (' . $_product->sku . ') ' . __('is low in stock.', 'jigoshop');
 	$message = wordwrap(html_entity_decode(strip_tags($message), ENT_QUOTES, 'UTF-8'), 70);
+	add_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name', 99 );
 	wp_mail($jigoshop_options->get_option('jigoshop_email'), $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
+	remove_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name', 99 );
 }
 
 /**
@@ -460,7 +473,9 @@ function jigoshop_no_stock_notification($_product) {
 	$subject = html_entity_decode('[' . get_bloginfo('name') . '] ' . __('Product out of stock', 'jigoshop'), ENT_QUOTES, 'UTF-8');
 	$message = '#' . $_product->id . ' ' . $_product->get_title() . ' (' . $_product->sku . ') ' . __('is out of stock.', 'jigoshop');
 	$message = wordwrap(html_entity_decode(strip_tags($message), ENT_QUOTES, 'UTF-8'), 70);
+	add_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name', 99 );
 	wp_mail($jigoshop_options->get_option('jigoshop_email'), $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
+	remove_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name', 99 );
 }
 
 /**
@@ -481,7 +496,9 @@ function jigoshop_product_on_backorder_notification($order_id, $_product, $amoun
 	$subject = html_entity_decode('[' . get_bloginfo('name') . '] ' . sprintf(__('Product Backorder on Order %s', 'jigoshop'), $order->get_order_number()), ENT_QUOTES, 'UTF-8');
 	$message = sprintf(__("%s units of #%s %s (#%s) are needed to fill Order %s.", 'jigoshop'), abs($amount), $_product->id, $_product->get_title(), $_product->sku, $order->get_order_number());
 	$message = wordwrap(html_entity_decode(strip_tags($message), ENT_QUOTES, 'UTF-8'), 70);
+	add_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name', 99 );
 	wp_mail($jigoshop_options->get_option('jigoshop_email'), $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
+	remove_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name', 99 );
 
 	// notify the customer if required
 	if ($_product->meta['backorders'][0] == 'notify') :
@@ -511,6 +528,8 @@ function jigoshop_product_on_backorder_notification($order_id, $_product, $amoun
 		$message = ob_get_clean();
 		$message = html_entity_decode(strip_tags($message), ENT_QUOTES, 'UTF-8');
 
+		add_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name', 99 );
 		wp_mail($order->billing_email, $subject, $message, "From: " . $jigoshop_options->get_option('jigoshop_email') . "\r\n");
+		remove_filter( 'wp_mail_from_name', 'jigoshop_mail_from_name', 99 );
 	endif;
 }

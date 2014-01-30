@@ -20,14 +20,26 @@
 class JS_Coupons extends Jigoshop_Base {
 
 	private static $coupons;
-
+	
+	
 	function __construct() {
-
-		if ( !empty( $_GET['unset_coupon'] ))
-			$this->remove_coupon( $_GET['unset_coupon'] );
+		
+		add_action( 'init', array( $this, 'check_remove_coupon' ) );
 
 	}
-
+	
+	
+	public static function check_remove_coupon() {
+	
+		if ( ! empty( $_GET['unset_coupon'] ) ) {
+			self::remove_coupon( $_GET['unset_coupon'] );
+			jigoshop_session::instance()->chosen_shipping_method_id = null;
+			jigoshop_cart::calculate_totals();
+		}
+		
+	}
+	
+	
 	/**
 	 * get an array of all coupon types
 	 *
@@ -41,7 +53,7 @@ class JS_Coupons extends Jigoshop_Base {
 			'fixed_product'     => __('Product Discount', 'jigoshop'),
 			'percent_product'   => __('Product % Discount', 'jigoshop')
 		);
-		return $coupon_types;
+		return apply_filters( 'jigoshop_coupon_discount_types', $coupon_types );
 	}
 
 	/**
@@ -73,7 +85,7 @@ class JS_Coupons extends Jigoshop_Base {
 		return $couponFields;
 	}
 
-	function get_coupon_post_id( $code ) {
+	public static function get_coupon_post_id( $code ) {
 		$args = array(
 			'numberposts'	=> -1,
 			'orderby'		=> 'post_date',
@@ -94,7 +106,7 @@ class JS_Coupons extends Jigoshop_Base {
 	 * @return array - the coupons
 	 * @since 0.9.8
 	 */
-	function get_coupons() {
+	public static function get_coupons() {
 		if ( empty( self::$coupons ) ) {
 			$args = array(
 				'numberposts'	=> -1,
@@ -127,7 +139,7 @@ class JS_Coupons extends Jigoshop_Base {
 	 * @return array - the stored coupon entry from the coupons array or false if no coupon code exists, or is invalid
 	 * @since 0.9.8
 	 */
-	function get_coupon( $code ) {
+	public static function get_coupon( $code ) {
 		$coupons = self::get_coupons();
 		if ( isset( $coupons[$code] )) {
 			if ( self::in_date_range( $coupons[$code] ) && self::under_usage_limit( $coupons[$code] ) )
@@ -137,7 +149,7 @@ class JS_Coupons extends Jigoshop_Base {
 	}
 
 	/* Remove an applied coupon. */
-	function remove_coupon( $code ) {
+	public static function remove_coupon( $code ) {
 
 		if ( !is_array( jigoshop_session::instance()->coupons ) )
 			return false;
@@ -146,10 +158,14 @@ class JS_Coupons extends Jigoshop_Base {
 		foreach ( jigoshop_session::instance()->coupons as $key => $coupon ) :
 
 			if ( $code == $coupon ) {
-			//	unset(jigoshop_cart::$applied_coupons[$key]);
-			//	unset(jigoshop_session::instance()->coupons[$key]);
-				unset($_SESSION['jigoshop'][JIGOSHOP_VERSION]['coupons'][$key]);
+
+				unset( jigoshop_cart::$applied_coupons[$key] );
+				$data = (array) jigoshop_session::instance()->coupons;
+				unset( $data[$key] );
+				jigoshop_session::instance()->coupons = $data;
+
 				return true;
+				
 			}
 
 		endforeach;
@@ -165,7 +181,7 @@ class JS_Coupons extends Jigoshop_Base {
 	 * @return boolean - whether this product is applicable to this coupon based on product ID, variation ID, and dates
 	 * @since 1.3
 	 */
-	function is_valid_coupon_for_product( $code, $product ) {
+	public static function is_valid_coupon_for_product( $code, $product ) {
 
 		if ( ! $coupon = self::get_coupon( $code )) return false;
 
@@ -238,7 +254,7 @@ class JS_Coupons extends Jigoshop_Base {
 	 * @return boolean - whether coupon is valid based on dates
 	 * @since 0.9.9.1
 	 */
-	function in_date_range( $coupon ) {
+	public static function in_date_range( $coupon ) {
 
 		$date_from    = (int)$coupon['date_from'];
 		$date_to      = (int)$coupon['date_to'];
@@ -260,7 +276,7 @@ class JS_Coupons extends Jigoshop_Base {
 	 * @return boolean - whether coupon is valid based on usage limit
 	 * @since 1.3
 	 */
-	function under_usage_limit( $coupon ) {
+	public static function under_usage_limit( $coupon ) {
 		return (empty($coupon['usage_limit']) || (int) $coupon['usage'] < (int) $coupon['usage_limit']);
 
 	}
@@ -270,7 +286,7 @@ class JS_Coupons extends Jigoshop_Base {
 if ( ! empty( $_GET['unset_coupon'] ) ) $coupons = new JS_Coupons();
 
 
-/** Depreciated */
+/** Deprecated */
 class jigoshop_coupons extends JS_Coupons {
 
 	public function __construct() {
