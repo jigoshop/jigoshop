@@ -292,8 +292,11 @@ function jigoshop_roles_init() {
  * Calls filter `jigoshop_add_script`. If the filter returns empty value the script is omitted.
  *
  * Available options:
- *   * version - Wordpress script version number,
+ *   * version - Wordpress script version number
  *   * in_footer - is this script required to add to the footer?
+ *   * page - list of pages to use the script
+ *
+ * Options could be extended by plugins.
  *
  * @param string $handle Handle name.
  * @param bool $src Source file.
@@ -301,7 +304,7 @@ function jigoshop_roles_init() {
  * @param array $options List of options.
  */
 function jigoshop_add_script($handle, $src, array $dependencies = array(), array $options = array()){
-	$page = isset($options['page']) ? $options['page'] : array('all');
+	$page = isset($options['page']) ? (array)$options['page'] : array('all');
 
 	if(is_jigoshop_page($page)){
 		$handle = apply_filters('jigoshop_add_script', $handle, $src, $dependencies, $options);
@@ -320,8 +323,11 @@ function jigoshop_add_script($handle, $src, array $dependencies = array(), array
  * Calls filter `jigoshop_add_style`. If the filter returns empty value the style is omitted.
  *
  * Available options:
- *   * version - Wordpress script version number,
- *   * media - CSS media this script represents.
+ *   * version - Wordpress script version number
+ *   * media - CSS media this script represents
+ *   * page - list of pages to use the style
+ *
+ * Options could be extended by plugins.
  *
  * @param string $handle Handle name.
  * @param bool $src Source file.
@@ -329,12 +335,16 @@ function jigoshop_add_script($handle, $src, array $dependencies = array(), array
  * @param array $options List of options.
  */
 function jigoshop_add_style($handle, $src, array $dependencies = array(), array $options = array()) {
-	$handle = apply_filters('jigoshop_add_style', $handle, $src, $dependencies, $options);
+	$page = isset($options['page']) ? (array)$options['page'] : array('all');
 
-	if(!empty($handle)){
-		$version = isset($options['version']) ? $options['version'] : false;
-		$media = isset($options['media']) ? $options['media'] : 'all';
-		wp_enqueue_style($handle, $src, $dependencies, $version, $media);
+	if(is_jigoshop_page($page)){
+		$handle = apply_filters('jigoshop_add_style', $handle, $src, $dependencies, $options);
+
+		if(!empty($handle)){
+			$version = isset($options['version']) ? $options['version'] : false;
+			$media = isset($options['media']) ? $options['media'] : 'all';
+			wp_enqueue_style($handle, $src, $dependencies, $version, $media);
+		}
 	}
 }
 
@@ -355,6 +365,32 @@ function is_jigoshop_page($pages) {
 	return $result;
 }
 
+// Define all Jigoshop page constants
+define('JIGOSHOP_CART', 'cart');
+define('JIGOSHOP_CHECKOUT', 'checkout');
+define('JIGOSHOP_PRODUCT', 'product');
+define('JIGOSHOP_PRODUCT_CATEGORY', 'product_category');
+define('JIGOSHOP_PRODUCT_LIST', 'product_list');
+define('JIGOSHOP_PRODUCT_TAG', 'product_tag');
+define('JIGOSHOP_ALL', 'all');
+
+/**
+ * Returns list of pages supported by is_jigoshop_single_page() and is_jigoshop_page().
+ *
+ * @return array List of supported pages.
+ */
+function jigoshop_get_available_pages() {
+	return array(
+		JIGOSHOP_CART,
+		JIGOSHOP_CHECKOUT,
+		JIGOSHOP_PRODUCT,
+		JIGOSHOP_PRODUCT_CATEGORY,
+		JIGOSHOP_PRODUCT_LIST,
+		JIGOSHOP_PRODUCT_TAG,
+		JIGOSHOP_ALL,
+	);
+}
+
 /**
  * Checks if current page is of given page type.
  *
@@ -363,19 +399,19 @@ function is_jigoshop_page($pages) {
  */
 function is_jigoshop_single_page($page) {
 	switch($page){
-		case 'cart':
+		case JIGOSHOP_CART:
 			return is_cart();
-		case 'checkout':
+		case JIGOSHOP_CHECKOUT:
 			return is_checkout();
-		case 'product':
+		case JIGOSHOP_PRODUCT:
 			return is_product();
-		case 'product_category':
+		case JIGOSHOP_PRODUCT_CATEGORY:
 			return is_product_category();
-		case 'product_list':
+		case JIGOSHOP_PRODUCT_LIST:
 			return is_product_list();
-		case 'product_tag':
+		case JIGOSHOP_PRODUCT_TAG:
 			return is_product_tag();
-		case 'all':
+		case JIGOSHOP_ALL:
 			return true;
 		default:
 			return jigoshop_is_admin_page() == $page;
@@ -411,10 +447,10 @@ function jigoshop_frontend_scripts() {
 	}
 
 	jigoshop_add_script( 'jigoshop_blockui', jigoshop::assets_url().'/assets/js/blockui.js', array('jquery'), array('in_footer' => true) );
-	jigoshop_add_script( 'jigoshop-cart', jigoshop::assets_url().'/assets/js/cart.js', array( 'jquery' ), array('in_footer' => true, 'page' => 'cart') );
-//	jigoshop_add_script( 'jigoshop-select2', jigoshop::assets_url().'/assets/js/select2.min.js', array( 'jquery' ), array('in_footer' => true, 'page' => 'checkout') );
-	jigoshop_add_script( 'jigoshop-checkout', jigoshop::assets_url().'/assets/js/checkout.js', array( 'jquery' ), array('in_footer' => true, 'page' => 'checkout') );
-	jigoshop_add_script( 'jigoshop-single-product', jigoshop::assets_url().'/assets/js/single-product.js', array( 'jquery' ), array('in_footer' => true, 'page' => 'product') );
+	jigoshop_add_script( 'jigoshop-cart', jigoshop::assets_url().'/assets/js/cart.js', array( 'jquery' ), array('in_footer' => true, 'page' => JIGOSHOP_CART) );
+//	jigoshop_add_script( 'jigoshop-select2', jigoshop::assets_url().'/assets/js/select2.min.js', array( 'jquery' ), array('in_footer' => true, 'page' => JIGOSHOP_CHECKOUT) );
+	jigoshop_add_script( 'jigoshop-checkout', jigoshop::assets_url().'/assets/js/checkout.js', array( 'jquery' ), array('in_footer' => true, 'page' => JIGOSHOP_CHECKOUT) );
+	jigoshop_add_script( 'jigoshop-single-product', jigoshop::assets_url().'/assets/js/single-product.js', array( 'jquery' ), array('in_footer' => true, 'page' => JIGOSHOP_PRODUCT) );
 
 	/* Script.js variables */
 	// TODO: clean this up, a lot aren't even used anymore, do away with it
