@@ -9,6 +9,7 @@
     * Fix: Use calculated order price when using PayPal Standard gateway
     * Fix: Force 0.01 charge on free orders at PayPal to allow it to process through PayPal
     * Fix: Jigoshop categories widget will again use a pop-up select when 'dropdown' setting is enabled
+    * Fix: Resolve problems with Ukrainian translation
     * Languages: New Chinese Taiwan translation courtesy of Eason Chen
     * Languages: Updated Danish translation courtesy of Tine Kristensen
     * Languages: Updated German translation courtesy of Andy Jordan
