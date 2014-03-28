@@ -12,7 +12,7 @@
  * @category            Admin
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 if (!function_exists ('add_action')) {
@@ -263,7 +263,7 @@ jQuery(function(){
 		reset($found_products);
 
 		$this->pie_products = array();
-		
+
 		?>
 
 		<table class="table table-condensed">
@@ -541,7 +541,7 @@ jQuery(function(){
 							endif;
 
 							$order_total = apply_filters('jigoshop_reports_order_total_cost', $order_data->order_total, $order);
-							
+
 							if (isset($order_amounts[$time])) :
 								$order_amounts[$time] = $order_amounts[$time] + $order_total;
 							else :

@@ -12,7 +12,7 @@
  * @category            Widgets
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 class Jigoshop_Widget_Featured_Products extends WP_Widget {

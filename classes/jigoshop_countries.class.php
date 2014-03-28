@@ -14,7 +14,7 @@
  * @category            Internationalization
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 class jigoshop_countries extends Jigoshop_Base {
 
@@ -889,12 +889,12 @@ class jigoshop_countries extends Jigoshop_Base {
 	}
 
 	/** Outputs the list of countries and states for use in dropdown boxes */
-	public static function country_dropdown_options( 
-		$selected_country = '', 
-		$selected_state = '*', 
-		$escape = true, 
-		$show_all = true, 
-		$echo = true 
+	public static function country_dropdown_options(
+		$selected_country = '',
+		$selected_state = '*',
+		$escape = true,
+		$show_all = true,
+		$echo = true
 		) {
 
 		$output = '';

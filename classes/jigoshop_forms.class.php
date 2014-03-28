@@ -12,7 +12,7 @@
  * @category            Admin
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 class Jigoshop_Forms extends Jigoshop_Base {
@@ -39,7 +39,7 @@ class Jigoshop_Forms extends Jigoshop_Base {
 
 		$value = isset( $value ) ? esc_attr( $value ) : get_post_meta( $post->ID, $id, true) ;
 		$name = isset( $name ) ? $name : $id;
-		    
+
 		$html  = '';
 
 		$html .= "<p class='form-field {$id}_field'>";

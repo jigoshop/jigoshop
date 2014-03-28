@@ -17,10 +17,10 @@
  *
  *
  * Plugin Name:         Jigoshop
- * Plugin URI:          http://jigoshop.com/
+ * Plugin URI:          http://www.jigoshop.com/
  * Description:         Jigoshop, a WordPress eCommerce plugin that works.
  * Author:              Jigoshop
- * Author URI:          http://jigoshop.com
+ * Author URI:          http://www.jigoshop.com
  *
  * Version:             1.8.1
  * Requires at least:   3.5
@@ -39,7 +39,7 @@
  * @category            Core
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 if ( !defined( "JIGOSHOP_VERSION" )) define( "JIGOSHOP_VERSION", 1307110 ) ;
@@ -273,7 +273,7 @@ function jigoshop_roles_init() {
 			'export'					=> true,
 			'import'					=> true,
 		) );
-		
+
 		$capabilities = jigoshop_get_core_capabilities();
 
 		foreach( $capabilities as $cap_group ) {
@@ -282,7 +282,7 @@ function jigoshop_roles_init() {
 				$wp_roles->add_cap( 'shop_manager', $cap );
 			}
 		}
-		
+
 	}
 }
 
@@ -309,7 +309,7 @@ function jigoshop_frontend_scripts() {
 	}
 
 	wp_enqueue_script( 'jigoshop_global', jigoshop::assets_url().'/assets/js/global.js', array('jquery'), '', true );
-	
+
 	if ( $jigoshop_options->get_option( 'jigoshop_disable_fancybox' ) == 'no' ) {
 		wp_enqueue_script( 'prettyphoto', jigoshop::assets_url().'/assets/js/jquery.prettyPhoto.js', array('jquery'), '', true );
 	}
@@ -319,16 +319,16 @@ function jigoshop_frontend_scripts() {
 	if ( is_cart() ) {
 		wp_enqueue_script( 'jigoshop-cart', jigoshop::assets_url().'/assets/js/cart.js', array( 'jquery' ), '', true );
 	}
-		
+
 	if ( is_checkout() ) {
 //		wp_enqueue_script( 'jigoshop-select2', jigoshop::assets_url().'/assets/js/select2.min.js', array( 'jquery' ), '', true );
 		wp_enqueue_script( 'jigoshop-checkout', jigoshop::assets_url().'/assets/js/checkout.js', array( 'jquery' ), '', true );
 	}
-		
+
 	if ( is_product() ) {
 		wp_enqueue_script( 'jigoshop-single-product', jigoshop::assets_url().'/assets/js/single-product.js', array( 'jquery' ), '', true );
 	}
-	
+
 	/* Script.js variables */
 	// TODO: clean this up, a lot aren't even used anymore, do away with it
 	$jigoshop_params = array(
@@ -830,9 +830,9 @@ function get_jigoshop_currency_symbol() {
 	$currency = $jigoshop_options->get_option('jigoshop_currency');
 	$symbols = jigoshop::currency_symbols();
 	$currency_symbol = $symbols[$currency];
-	
+
 	return apply_filters('jigoshop_currency_symbol', $currency_symbol, $currency);
-	
+
 }
 
 function jigoshop_price( $price, $args = array() ) {

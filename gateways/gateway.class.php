@@ -12,7 +12,7 @@
  * @category            Checkout
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 class jigoshop_payment_gateway {
 
@@ -25,11 +25,11 @@ class jigoshop_payment_gateway {
 	var $enabled;
 	var $icon;
 	var $description;
-    
+
 	public function __construct() {
         Jigoshop_Base::get_options()->install_external_options_onto_tab( __( 'Payment Gateways', 'jigoshop' ), $this->get_default_options() );
 	}
-	
+
 	function is_available() {
 
 		if ($this->enabled=="yes") :
@@ -56,27 +56,27 @@ class jigoshop_payment_gateway {
 	function process_payment( $order_id ) {}
 
 	function validate_fields() { return true; }
-    
+
     /**
-     * provides functionality to tell checkout if 
-     * the gateway should be processed or not. If false, the gateway will not be 
+     * provides functionality to tell checkout if
+     * the gateway should be processed or not. If false, the gateway will not be
      * processed, otherwise the gateway will be processed.
      * @return boolean defaults to needs_payment from cart class. If overridden, the gateway will provide
      * details as to when it should or shouldn't be processed.
      * @since 1.2
      */
-    public function process_gateway($subtotal, $shipping_total, $discount = 0) { 
+    public function process_gateway($subtotal, $shipping_total, $discount = 0) {
         // default to cart needs_payment() to keep the same functionality that jigoshop offers today
         // if overridden, the gateway will provide the details when to skip or not
         return jigoshop_cart::needs_payment();
     }
-    
+
 	/**
 	 * Default Option settings for WordPress Settings API using the Jigoshop_Options class
 	 *
 	 * These should be installed on the Jigoshop_Options 'Payment Gateways' tab
 	 *
-	 */	
+	 */
     protected function get_default_options() {
         return array();
     }

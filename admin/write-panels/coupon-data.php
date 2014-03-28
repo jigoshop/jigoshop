@@ -14,40 +14,40 @@
  * @category            Admin
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 
 /**
  * Coupon data meta box
- * 
+ *
  * Displays the meta box
  */
 function jigoshop_coupon_data_box( $post ) {
 	global $jigoshop;
-	
+
 	wp_nonce_field( 'jigoshop_save_data', 'jigoshop_meta_nonce' );
-	
+
 	$coupon_code  = '';
 	$coupon_code .= "<p class='form-field'>";
 	$coupon_code .= "<label>".__('Coupon Code','jigoshop')."</label>";
 	$coupon_code .= "<span><strong>".$post->post_name."</strong></span>";
 	$coupon_code .= '<span class="description">'.__('Will not appear until coupon is saved.  This is the front end code for use on the Cart.','jigoshop').'</span>';
 	$coupon_code .= "</p>";
-		
+
 	// disable the permalink slug display
 	?>
 		<style type="text/css">#edit-slug-box { display:none }</style>
-		
+
 		<div id="coupon_options" class="panel jigoshop_options_panel">
 
 			<div class="options_group">
 
 			<?php
-			
+
 			// The coupon code from the title after 'sanitize_title'
 			echo $coupon_code;
-			
+
 			// Coupon Types
 			$args = array(
 				'id'            => 'type',
@@ -55,7 +55,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'options'       => JS_Coupons::get_coupon_types(),
 			);
 			echo Jigoshop_Forms::select( $args );
-		
+
 			// Amount
 			$args = array(
 				'id'            => 'amount',
@@ -67,7 +67,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'placeholder'   => '0.00'
 			);
 			echo Jigoshop_Forms::input( $args );
-				
+
 			// Date From
 			$coupon_date_from = get_post_meta( $post->ID, 'date_from', true);
 			$args = array(
@@ -80,7 +80,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'value'         => ($coupon_date_from <> '') ? date( 'Y-m-d', $coupon_date_from ) : ''
 			);
 			echo Jigoshop_Forms::input( $args );
-		
+
 			// Date To
 			$coupon_date_to = get_post_meta( $post->ID, 'date_to', true);
 			$args = array(
@@ -93,7 +93,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'value'         => ($coupon_date_to <> '') ? date( 'Y-m-d', $coupon_date_to ) : ''
 			);
 			echo Jigoshop_Forms::input( $args );
-		
+
 			// Usage limit
 			$usage = get_post_meta( $post->ID, 'usage', true);
 			$args = array(
@@ -114,7 +114,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'value'         => false
 			);
 			echo Jigoshop_Forms::checkbox( $args );
-		
+
 			// Free shipping
 			$args = array(
 				'id'            => 'free_shipping',
@@ -123,11 +123,11 @@ function jigoshop_coupon_data_box( $post ) {
 				'value'         => false
 			);
 			echo Jigoshop_Forms::checkbox( $args );
-			
+
 		?>
 			</div><div class="options_group">
 		<?php
-			
+
 			// Order total minimum
 			$args = array(
 				'id'            => 'order_total_min',
@@ -137,7 +137,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'placeholder'   => __('No min','jigoshop')
 			);
 			echo Jigoshop_Forms::input( $args );
-		
+
 			// Order total maximum
 			$args = array(
 				'id'            => 'order_total_max',
@@ -147,11 +147,11 @@ function jigoshop_coupon_data_box( $post ) {
 				'placeholder'   => __('No max','jigoshop')
 			);
 			echo Jigoshop_Forms::input( $args );
-			
+
 		?>
 			</div><div class="options_group">
 		<?php
-			
+
 			// Include product ID's
  			$selected = get_post_meta( $post->ID, 'include_products', true );
   			$selected = implode( ',', (array)$selected );
@@ -177,11 +177,11 @@ function jigoshop_coupon_data_box( $post ) {
 				'value'         => $selected
 			);
 			echo Jigoshop_Forms::input( $args );
-			
+
 		?>
 			</div><div class="options_group">
 		<?php
-			
+
 			// Include Categories
 			$categories = get_terms( 'product_cat', array( 'hide_empty' => false ));
 			$coupon_cats = array();
@@ -196,7 +196,7 @@ function jigoshop_coupon_data_box( $post ) {
 				'options'       => $coupon_cats
 			);
 			echo Jigoshop_Forms::select( $args );
-			
+
 			// Exclude Categories
 			$args = array(
 				'id'            => 'exclude_categories',
@@ -207,11 +207,11 @@ function jigoshop_coupon_data_box( $post ) {
 				'options'       => $coupon_cats
 			);
 			echo Jigoshop_Forms::select( $args );
-			
+
 		?>
 			</div><div class="options_group">
 		<?php
-			
+
 			// Payment methods
 			$payment_methods = array();
 			$available_gateways = jigoshop_payment_gateways::get_available_payment_gateways();
@@ -226,16 +226,16 @@ function jigoshop_coupon_data_box( $post ) {
 				'options'       => $payment_methods
 			);
 			echo Jigoshop_Forms::select( $args );
-		
+
 			// javascript for product includes and excludes -- need to move this
 		?>
 			<script type="text/javascript">
 			/*<![CDATA[*/
 				jQuery(document).ready(function() {
-				
+
 					jQuery('#date_from').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
 					jQuery('#date_to').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
-					
+
 					// allow searching of products to use on a coupon
 					jQuery("#include_products").select2({
 						minimumInputLength: 3,
@@ -275,7 +275,7 @@ function jigoshop_coupon_data_box( $post ) {
 							});
 						}
 					});
-					
+
 					// allow searching of products to exclude on a coupon
 					jQuery("#exclude_products").select2({
 						minimumInputLength: 3,
@@ -318,12 +318,12 @@ function jigoshop_coupon_data_box( $post ) {
 			/*]]>*/
 			</script>
 		</div></div>
-	<?php	
+	<?php
 }
 
 /**
  * Coupon Data Save
- * 
+ *
  * Function for processing and storing all coupon data.
  */
 add_action( 'jigoshop_process_shop_coupon_meta', 'jigoshop_process_shop_coupon_meta', 1, 2 );
@@ -331,26 +331,26 @@ add_action( 'jigoshop_process_shop_coupon_meta', 'jigoshop_process_shop_coupon_m
 function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 
 	global $wpdb, $jigoshop_errors;
-	
+
 	$type = jigowatt_clean( $_POST['type'] );
 	$amount = abs( jigowatt_clean( $_POST['amount'] ));
-	
+
 	if ( !empty( $_POST['date_from'] )) {
 		$coupon_date_from = strtotime( jigowatt_clean( $_POST['date_from'] ));
 	} else {
 		$coupon_date_from = '';
 	}
-	
+
 	if ( !empty( $_POST['date_to'] )) {
 		$coupon_date_to = strtotime( jigowatt_clean( $_POST['date_to'] )) + (60 * 60 * 24 - 1);
 	} else {
 		$coupon_date_to = '';
 	}
-	
+
 	$usage_limit = ( isset( $_POST['usage_limit'] ) && $_POST['usage_limit'] > 0 ) ? (int) jigowatt_clean( $_POST['usage_limit'] ) : '';
 	$individual = isset( $_POST['individual_use'] );
 	$free_shipping = isset( $_POST['free_shipping'] );
-	
+
 	$minimum_amount = jigowatt_clean( $_POST['order_total_min'] );
 	$maximum_amount = jigowatt_clean( $_POST['order_total_max'] );
 
@@ -361,7 +361,7 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 	} else {
 		$include_products = array();
 	}
-	
+
 	if ( isset( $_POST['exclude_products'] )) {
 		$exclude_products = jigowatt_clean( $_POST['exclude_products'] );
 		if ( $exclude_products == 'Array' ) $exclude_products = '';
@@ -369,25 +369,25 @@ function jigoshop_process_shop_coupon_meta( $post_id, $post ) {
 	} else {
 		$exclude_products = array();
 	}
-	
+
 	if ( isset( $_POST['include_categories'] )) {
 		$include_categories = $_POST['include_categories'];
 	} else {
 		$include_categories = array();
 	}
-	
+
 	if ( isset( $_POST['exclude_categories'] )) {
 		$exclude_categories = $_POST['exclude_categories'];
 	} else {
 		$exclude_categories = array();
 	}
-	
+
 	if ( isset( $_POST['pay_methods'] )) {
 		$pay_methods = $_POST['pay_methods'];
 	} else {
 		$pay_methods = array();
 	}
-		
+
 	update_post_meta( $post_id, 'type',                 $type );
 	update_post_meta( $post_id, 'amount',               $amount );
 	update_post_meta( $post_id, 'date_from',            $coupon_date_from );

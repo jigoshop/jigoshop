@@ -12,7 +12,7 @@
  * @category            Checkout
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 class jigoshop_shipping_method {
 
@@ -28,16 +28,16 @@ class jigoshop_shipping_method {
 	var $chosen				= false;
 	var $shipping_total 	= 0;
 	var $shipping_tax 		= 0;
-    
+
     protected $tax_status = '';
-    
+
     protected $rates; // the rates in array format
     protected $has_error = false; // used for shipping methods that have issues and cannot be chosen
 
     private $tax;
     private $error_message = null;
-    
-    public function __construct() {        
+
+    public function __construct() {
     	Jigoshop_Base::get_options()->install_external_options_onto_tab( __( 'Shipping', 'jigoshop' ), $this->get_default_options() );
     }
 
@@ -117,7 +117,7 @@ class jigoshop_shipping_method {
     	$this->chosen = true;
     	jigoshop_session::instance()->chosen_shipping_method_id = $this->id;
     }
-    
+
     // leave as a protected function so that services that override the functions that call this one can still call this function
     protected function get_selected_rate($rate_index) {
 
@@ -141,24 +141,24 @@ class jigoshop_shipping_method {
 
         return $cheapest_rate;
     }
-    
+
     protected function add_rate($price, $service_name) {
-        
+
         $price += (empty($this->fee) ? 0 : $this->get_fee($this->fee, jigoshop_cart::$cart_contents_total_ex_dl));
 
         $tax = 0;
         if (Jigoshop_Base::get_options()->get_option('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable' && $price > 0) {
             $tax = $this->calculate_shipping_tax($price - jigoshop_cart::get_cart_discount_leftover());
         }
-        
+
         // changed for 1.4.5 since there are instances where a shipping method may want to provide their own rules for
 		// when shipping is free...that cannot be obtained within the free shipping method itself.
         if ($price >= 0) {
             $this->rates[] = array('service' => $service_name, 'price' => $price, 'tax' => $tax);
         }
-        
+
     }
-    
+
     protected function calculate_shipping_tax($rate) {
 
         $_tax = $this->get_tax();
@@ -174,12 +174,12 @@ class jigoshop_shipping_method {
 
     /**
      * Set the index to the selected service on the session (selected_rate_id)
-     * 
-     * @param string $selected_service 
+     *
+     * @param string $selected_service
      * @since 1.2
      */
     public function set_selected_service_index($selected_service = '') {
-        
+
         if (!empty($selected_service)) :
             for ($i = 0; $i < $this->get_rates_amount(); $i++) :
                 if ($this->get_selected_service($i) == $selected_service) :
@@ -188,9 +188,9 @@ class jigoshop_shipping_method {
                 endif;
             endfor;
         endif;
-        
+
     }
-    
+
     // Override this functions if you want to provide your own
     // label to the service name displayed
     public function get_cheapest_service() {
@@ -201,7 +201,7 @@ class jigoshop_shipping_method {
 		else :
 			$service = $my_cheapest_rate['service'];
 		endif;
-		
+
         return ($my_cheapest_rate == NULL ? $this->title : $service);
     }
 
@@ -224,13 +224,13 @@ class jigoshop_shipping_method {
      */
     public function get_selected_service($rate_index) {
         $my_rate = $this->get_selected_rate($rate_index);
-		
+
 		if ($this->title && $my_rate['service'] != $this->title) :
 			$service = $my_rate['service'] . __( ' via ', 'jigoshop') . $this->title;
 		else :
 			$service = $my_rate['service'];
 		endif;
-		
+
         return ($my_rate == NULL ? $this->title : $service);
     }
 
@@ -246,7 +246,7 @@ class jigoshop_shipping_method {
         $my_rate = $this->get_selected_rate($rate_index);
         return apply_filters( 'jigoshop_shipping_tax_price', ($my_rate == NULL ? $this->shipping_tax : $my_rate['tax']) );
     }
-    
+
     // essentially if the method doesn't use the array, there is only 1 rate to return. Therefore if rates == null,
     // return a 1 from this function
     public function get_rates_amount() {
@@ -255,15 +255,15 @@ class jigoshop_shipping_method {
 
 
     /**
-     * If a shop sells mixed products and non-shippable products are all added to 
+     * If a shop sells mixed products and non-shippable products are all added to
      * the cart, then the calculable service can call this method in that scenario
      * and it will create a free shipping charge.
      * @since 1.2
      */
     protected function create_no_shipping_rate() {
         $this->rates[] = array('service' => 'non-shippable', 'price' => 0, 'tax' => 0);
-    }    
-    
+    }
+
     public function has_error() {
         return $this->has_error;
     }
@@ -295,7 +295,7 @@ class jigoshop_shipping_method {
 	 * These should be installed on the Jigoshop_Options 'Shipping' tab
      * @since 1.3
 	 *
-	 */	
+	 */
     protected function get_default_options() {
         return array();
     }

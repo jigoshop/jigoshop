@@ -12,7 +12,7 @@
  * @category            Admin
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -43,7 +43,7 @@ function install_jigoshop( $network_wide = false ) {
 }
 
 function _install_jigoshop() {
-    
+
     $jigoshop_options = Jigoshop_Base::get_options();
 
 	if( ! get_option('jigoshop_db_version') )  {
@@ -51,7 +51,7 @@ function _install_jigoshop() {
 		jigoshop_tables_install();		/* we need tables installed first to eliminate installation errors */
 
 		Jigoshop_Base::get_options();   /* instantiate options */
-		
+
 		jigoshop_create_pages();
 
 		jigoshop_post_type();
@@ -112,7 +112,7 @@ function jigoshop_default_options() {
 function jigoshop_create_pages() {
 
     $jigoshop_options = Jigoshop_Base::get_options();
-    
+
 	// start out with basic page parameters, modify as we go
 	$page_data = array(
 		'post_status'    => 'publish',
@@ -212,7 +212,7 @@ function jigoshop_create_single_page( $page_slug, $page_option, $page_data ) {
  */
 function jigoshop_tables_install() {
 	global $wpdb;
-	
+
 	if((!defined('DIEONDBERROR'))&&(is_multisite())){define('DIEONDBERROR',true);}
 	$wpdb->show_errors();
 
@@ -232,7 +232,7 @@ function jigoshop_tables_install() {
 		$wpdb->print_error();
 		wp_die(__('We were not able to create a Jigoshop database table during installation! (jigoshop_attribute_taxonomies)','jigoshop'));
 	}
-		
+
     $sql = "CREATE TABLE IF NOT EXISTS ". $wpdb->prefix . "jigoshop_downloadable_product_permissions" ." (
         `product_id` 			mediumint(9) NOT NULL,
         `user_email`			varchar(200) NOT NULL,
@@ -244,7 +244,7 @@ function jigoshop_tables_install() {
 		$wpdb->print_error();
 		wp_die(__('We were not able to create a Jigoshop database table during installation! (jigoshop_downloadable_product_permissions)','jigoshop'));
 	}
-	
+
     $sql = "CREATE TABLE IF NOT EXISTS ". $wpdb->prefix . "jigoshop_termmeta" ." (
 		`meta_id` 				bigint(20) NOT NULL AUTO_INCREMENT,
       	`jigoshop_term_id` 		bigint(20) NOT NULL,
@@ -255,7 +255,7 @@ function jigoshop_tables_install() {
 		$wpdb->print_error();
 		wp_die(__('We were not able to create a Jigoshop database table during installation! (jigoshop_termmeta)','jigoshop'));
 	}
-    
+
     $wpdb->hide_errors();
 
 }

@@ -12,7 +12,7 @@
  * @category            Checkout
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 ?>
 
@@ -42,7 +42,7 @@ $get_checkout_url = apply_filters( 'jigoshop_get_checkout_url', jigoshop_cart::g
 	<h3 id="payment_methods_heading"><?php _e('Payment Methods', 'jigoshop'); ?></h3>
 
 	<?php do_action('jigoshop_checkout_payment_methods'); ?>
-	
+
 </form>
 
 <?php do_action('after_checkout_form'); ?>

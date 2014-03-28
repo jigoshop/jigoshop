@@ -12,7 +12,7 @@
  * @category    Core
  * @author      Jigoshop
  * @copyright   Copyright © 2011-2013 Jigoshop.
- * @license     http://jigoshop.com/license/commercial-edition
+ * @license     http://www.jigoshop.com/license/commercial-edition
  */
 
 interface Jigoshop_Options_Interface {
@@ -86,9 +86,9 @@ interface Jigoshop_Options_Interface {
 	 * @param	array	The array of options to install onto this tab
 	 *
 	 * @since	1.3
-	 */	
+	 */
 	public function install_external_options_tab( $tab, $options );
-	
+
 	/**
 	 * Install additional default options for parsing onto a specific Tab
 	 * Shipping methods, Payment gateways and Extensions would use this
@@ -97,7 +97,7 @@ interface Jigoshop_Options_Interface {
 	 * @param	array	The array of options to install
 	 *
 	 * @since	1.3
-	 */	
+	 */
     public function install_external_options_onto_tab( $tab, $options );
 
 	/**
@@ -108,9 +108,9 @@ interface Jigoshop_Options_Interface {
 	 * @param	array	The array of options to install
 	 *
 	 * @since	1.3
-	 */	
+	 */
     public function install_external_options_after_id( $insert_after_id, $options );
-    
+
 	/**
 	 * Return the Jigoshop current options
 	 *

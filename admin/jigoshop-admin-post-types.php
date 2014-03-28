@@ -14,7 +14,7 @@
  * @category            Admin
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 // Add filter to ensure the text is context relevant when updated
@@ -410,9 +410,9 @@ function jigoshop_custom_order_columns($column) {
                     </tr>
                     <?php
                 endif;
-				
+
             	do_action('jigoshop_processing_fee_after_shipping');
-				
+
                 if ($jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0) : ?>
                     <tr>
                         <th><?php _e('Discount', 'jigoshop'); ?></th>
@@ -532,7 +532,7 @@ function jigoshop_admin_product_search( $wp ) {
 
 		return false;
     }
-	
+
 	/* Orders Text Search */
 	if ( $wp->query_vars['post_type'] == 'shop_order' && 'PID:' != substr( $wp->query_vars['s'], 0, 4 ) ) {
 
@@ -542,41 +542,41 @@ function jigoshop_admin_product_search( $wp ) {
 		//anything to search?
 		if(empty($terms))
 			return false;
-		
+
 		/*
 			Get order ids for any order with terms in the post_title, post_content, or order_data meta_value
 		*/
 		//start of query
 		$sqlQuery = "SELECT p.ID FROM $wpdb->posts p LEFT JOIN $wpdb->postmeta pm ON (p.ID = pm.post_id AND pm.meta_key = 'order_data') WHERE p.post_type = 'shop_order' AND ";
-		
+
 		//build where clauses for each term
 		$term_clauses = array();
 		foreach($terms as $term)
 		{
 			$term_clauses[] = "(p.ID = '" . $wpdb->escape($term) . "' OR
-							p.post_title LIKE '%" . $wpdb->escape($term) . "%' OR 														
+							p.post_title LIKE '%" . $wpdb->escape($term) . "%' OR
 							p.post_content LIKE '%" . $wpdb->escape($term) . "%' OR
 							pm.meta_value LIKE '%" . $wpdb->escape($term) . "%')
 						";
 		}
-		
+
 		//add where clauses to query
 		$sqlQuery .= implode(" AND ", $term_clauses);
-				
+
 		//get ids
 		$ids = $wpdb->get_col($sqlQuery);
-		
+
 		if(empty($ids))
 		{
 			//leave the query var set, should results in 0 results
 		}
 		else
-		{		
+		{
 			// Set search parameters
 			unset( $wp->query_vars['s'] );
-			$wp->query_vars['post__in'] = $ids;		
+			$wp->query_vars['post__in'] = $ids;
 		}
-			
+
 		return false;
     }
 

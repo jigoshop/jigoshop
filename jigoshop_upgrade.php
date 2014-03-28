@@ -12,7 +12,7 @@
  * @category            Core
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -516,7 +516,7 @@ function jigoshop_upgrade_120() {
         endif;
 
     endforeach;
-    
+
 }
 
 /**
@@ -525,9 +525,9 @@ function jigoshop_upgrade_120() {
  * @since 1.3
  */
 function jigoshop_upgrade_130() {
-	
+
 	global $wpdb;
-	
+
 	/* Update all product variation titles to something useful. */
 	$args = array(
 		'post_type' => 'product',
@@ -571,7 +571,7 @@ function jigoshop_upgrade_130() {
 		}
 
 	}
-	
+
 	// Convert coupon options to new 'shop_coupon' custom post type and create posts
 	$args = array(
 		'numberposts'	=> -1,
@@ -607,7 +607,7 @@ function jigoshop_upgrade_130() {
 			delete_post_meta( $coupon->ID, 'products', $product_ids );
 		}
 	}
-	
+
 	flush_rewrite_rules( true );
 
 }
@@ -618,12 +618,12 @@ function jigoshop_upgrade_130() {
  * @since 1.4.5
  */
 function jigoshop_upgrade_145() {
-	
+
 	Jigoshop_Base::get_options()->delete_option( 'jigoshop_paypal_send_shipping' );
 	delete_option( 'jigoshop_paypal_send_shipping' );
 	Jigoshop_Base::get_options()->delete_option( 'jigoshop_display_totals_tax' );
 	delete_option( 'jigoshop_display_totals_tax' );
-	
+
 }
 
 /**
@@ -632,9 +632,9 @@ function jigoshop_upgrade_145() {
  * @since 1.4.6
  */
 function jigoshop_upgrade_146() {
-	
+
 	Jigoshop_Base::get_options()->add_option( 'jigoshop_show_checkout_shipping_fields', 'yes' );
-	
+
 }
 
 /**
@@ -643,11 +643,11 @@ function jigoshop_upgrade_146() {
  * @since 1.5
  */
 function jigoshop_upgrade_150() {
-	
+
 	Jigoshop_Base::get_options()->add_option( 'jigoshop_cart_shows_shop_button', 'no' );
 	Jigoshop_Base::get_options()->add_option( 'jigoshop_enable_postcode_validating', 'no' );
 	Jigoshop_Base::get_options()->add_option( 'jigoshop_product_thumbnail_columns', '3' );
-	
+
 }
 
 /**
@@ -656,7 +656,7 @@ function jigoshop_upgrade_150() {
  * @since 1.6
  */
 function jigoshop_upgrade_160() {
-	
+
 	Jigoshop_Base::get_options()->add_option( 'jigoshop_skrill_icon', '' );
 	Jigoshop_Base::get_options()->add_option( 'jigoshop_skrill_payment_methods_multicheck', 'ACC' );
 	Jigoshop_Base::get_options()->add_option( 'jigoshop_verify_checkout_info_message', 'yes' );
@@ -670,7 +670,7 @@ function jigoshop_upgrade_160() {
  * @since 1.6.1
  */
 function jigoshop_upgrade_161() {
-	
+
 	Jigoshop_Base::get_options()->add_option( 'jigoshop_catalog_product_button', 'add' );
 
 }
@@ -681,7 +681,7 @@ function jigoshop_upgrade_161() {
  * @since 1.7
  */
 function jigoshop_upgrade_170() {
-	
+
 	Jigoshop_Base::get_options()->add_option( 'jigoshop_default_gateway', 'cheque' );
 
 }
@@ -692,10 +692,10 @@ function jigoshop_upgrade_170() {
  * @since 1.7.1
  */
 function jigoshop_upgrade_171() {
-	
+
 	//  perform quantity sold update on all products for Best Sellers Widget
 	//  https://github.com/jigoshop/redhillsranch/issues/761
-	
+
 	//  to be sure, delete any current meta values
 	//  ('_js_total_sales' should be only current one and it is deprecated)
 	$args = array(
@@ -708,12 +708,12 @@ function jigoshop_upgrade_171() {
 	);
 
 	$products = get_posts( $args );
-	
+
 	foreach ( $products as $index => $product_id ) {
 		delete_post_meta( $product_id, 'quantity_sold' );
 		delete_post_meta( $product_id, '_js_total_sales' );
 	}
-	
+
 	//  gather all orders, cycle through all products in Order, update product 'quantity_sold' meta value
 	$args = array(
 		'numberposts'      => -1,
@@ -732,25 +732,25 @@ function jigoshop_upgrade_171() {
 			)
 		)
 	);
-	
+
 	$orders = get_posts( $args );
 	$found_products = array();
-	
+
 	foreach ( $orders as $index => $order_id ) {
 		$order = new jigoshop_order( $order_id );
 		$order_items = (array) get_post_meta( $order_id, 'order_items', true );
 		foreach ( $order_items as $item ) {
 			if ( ! isset( $item['cost'] ) && ! isset( $item['qty'] )) continue;
-			
+
 			//  a product or variation could now be missing or invalid, suppress errors and add anyway
 			$_product = @$order->get_product_from_item( $item );
-			
+
 			$qty_sold = $item['qty'];
 			$found_products[$item['id']] = isset( $found_products[$item['id']] ) ? $found_products[$item['id']] + $qty_sold : $qty_sold;
 
 		}
 	}
-	
+
 	//  now update all the products with a new meta key 'quantity_sold'
 	$args = array(
 		'numberposts'      => -1,
@@ -770,7 +770,7 @@ function jigoshop_upgrade_171() {
 			}
 		}
 	}
-	
+
 	//  and finally output a log of the changed products with their quantities
 	$args = array(
 		'numberposts'      => -1,
@@ -784,7 +784,7 @@ function jigoshop_upgrade_171() {
 	);
 
 	$products = get_posts( $args );
-	
+
 	jigoshop_log( "" );
 	jigoshop_log( "PRODUCTS quantity sold are updated with the following counts in Jigoshop 1.7.1" );
 	foreach ( $products as $index => $product_id ) {

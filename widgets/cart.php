@@ -12,12 +12,12 @@
  * @category            Widgets
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 class Jigoshop_Widget_Cart extends WP_Widget {
 
     private $jigoshop_options;
-    
+
 	/**
 	 * Constructor
 	 *
@@ -32,7 +32,7 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 
 		// Create the widget
 		parent::__construct( 'jigoshop_cart', __( 'Jigoshop: Cart', 'jigoshop' ), $options );
-        
+
         $this->jigoshop_options = Jigoshop_Base::get_options();
 	}
 
@@ -44,7 +44,7 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 		}
 		return $total;
 	}
-	
+
 	/**
 	 * Widget
 	 *
@@ -104,7 +104,7 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 
 					// Displays variations and cart item meta
 					echo jigoshop_cart::get_item_data($value);
-					
+
 					// Print the quantity & price per product
 					echo '<span class="js_widget_product_price">' . $value['quantity'].' &times; '. $_product->get_price_html() . '</span>';
 				echo '</li>';
@@ -124,7 +124,7 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 			// Print view cart & checkout buttons
 			$view_cart_button_label	= isset($instance['view_cart_button'])	? $instance['view_cart_button']	: __( 'View Cart &rarr;', 'jigoshop' );
 			$checkout_button_label	= isset($instance['checkout_button'])	? $instance['checkout_button']	: __( 'Checkout &rarr;', 'jigoshop' );
-			
+
 			echo '<p class="buttons">';
 			echo '<a href="' . esc_attr( jigoshop_cart::get_cart_url() ) . '" class="button">' . __( $view_cart_button_label, 'jigoshop' ) . '</a>';
 			echo '<a href="' . esc_attr( jigoshop_cart::get_checkout_url() ) . '" class="button checkout">' . __( $checkout_button_label, 'jigoshop' ) . '</a>';
@@ -179,14 +179,14 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 			<label for='{$this->get_field_id( 'title' )}'>" . __( 'Title:', 'jigoshop' ) . "</label>
 			<input class='widefat' id='{$this->get_field_id( 'title' )}' name='{$this->get_field_name( 'title' )}' type='text' value='{$title}' />
 		</p>";
-		
+
 		// View cart button label
 		echo "
 		<p>
 			<label for='{$this->get_field_id( 'view_cart_button' )}'>" . __( 'View cart button:', 'jigoshop' ) . "</label>
 			<input class='widefat' id='{$this->get_field_id( 'view_cart_button' )}' name='{$this->get_field_name( 'view_cart_button' )}' type='text' value='{$view_cart_button}' />
 		</p>";
-		
+
 		// Checkout button label
 		echo "
 		<p>

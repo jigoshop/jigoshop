@@ -12,7 +12,7 @@
  * @category            Admin
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 require_once( 'jigoshop-install.php' );
@@ -131,7 +131,7 @@ function jigoshop_system_info() {
 <div class="wrap jigoshop">
 		<div class="icon32 icon32-jigoshop-debug" id="icon-jigoshop"><br/></div>
 		<h2><?php _e('System Information','jigoshop') ?></h2>
-		<p>Use the information below when submitting technical support requests via <a href="http://jigoshop.com/support/" title="Jigoshop Support" target="_blank">Jigoshop Support</a>.</p>
+		<p>Use the information below when submitting technical support requests via <a href="http://www.jigoshop.com/support/" title="Jigoshop Support" target="_blank">Jigoshop Support</a>.</p>
 
 <textarea readonly="readonly" id="system-info-textarea" title="To copy the system info, click below then press Ctrl + C (PC) or Cmd + C (Mac).">
 
