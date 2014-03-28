@@ -9,26 +9,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Jigoshop v1.8.1\n"
 "Report-Msgid-Bugs-To: Jeff Parsons <jeff.parsons@jigoshop.com>\n"
-<<<<<<< HEAD
-"POT-Creation-Date: 2014-01-03 09:32-0400\n"
-"PO-Revision-Date: 2014-01-03 09:53-0400\n"
-"Last-Translator: Jeff Parsons <jeff.parsons@jigoshop.com>\n"
-=======
 "POT-Creation-Date: 2013-10-10 06:46-0400\n"
 "PO-Revision-Date: 2013-10-17 12:09+0300\n"
 "Last-Translator: Anatolii Sakhnik <sakhnik@gmail.com>\n"
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 "Language-Team: українська <>\n"
 "Language: Ukrainian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-<<<<<<< HEAD
-"X-Generator: Poedit 1.5.7\n"
-=======
-"X-Generator: Gtranslator 2.91.6\n"
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 "X-Textdomain-Support: yes\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
@@ -46,17 +35,12 @@ msgstr "Покупець"
 msgid "Shop Manager"
 msgstr "Менеджер магазину"
 
-<<<<<<< HEAD
-#: ../jigoshop.php:343 ../jigoshop_template_functions.php:892
-=======
 #: ../jigoshop.php:343 ../jigoshop_template_functions.php:889
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../classes/jigoshop_checkout.class.php:375
 #: ../classes/jigoshop_customer.class.php:453
 msgid "Select a state&hellip;"
 msgstr "Виберіть штат&hellip;"
 
-<<<<<<< HEAD
 #: ../jigoshop.php:344 ../jigoshop_template_functions.php:904
 msgid "state"
 msgstr "область"
@@ -70,33 +54,17 @@ msgid "Settings"
 msgstr "Налаштування"
 
 #: ../jigoshop.php:569
-=======
-#: ../jigoshop.php:344 ../jigoshop_template_functions.php:901
-msgid "state"
-msgstr "область"
-
-#: ../jigoshop.php:372 ../admin/jigoshop-admin.php:79
-msgid "Settings"
-msgstr "Налаштування"
-
-#: ../jigoshop.php:568
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid ""
 "This is a demo store for testing purposes &mdash; no orders shall be "
 "fulfilled."
 msgstr ""
 "Це демо магазин для тестування &mdash; жодних замовлень не буде виконано."
 
-<<<<<<< HEAD
 #: ../jigoshop.php:627 ../jigoshop_taxonomy.php:36
-=======
-#: ../jigoshop.php:626 ../jigoshop_taxonomy.php:36
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgctxt "slug"
 msgid "product"
 msgstr "product"
 
-<<<<<<< HEAD
 #: ../jigoshop.php:850 ../classes/jigoshop_order.class.php:260
 msgid " <small>(ex. tax)</small>"
 msgstr " <small>(без податку)</small>"
@@ -106,43 +74,22 @@ msgid " <small>(inc. tax)</small>"
 msgstr " <small>(з податком)</small>"
 
 #: ../jigoshop.php:1097
-=======
-#: ../jigoshop.php:849 ../classes/jigoshop_order.class.php:260
-msgid " <small>(ex. tax)</small>"
-msgstr " <small>(без податку)</small>"
-
-#: ../jigoshop.php:851
-msgid " <small>(inc. tax)</small>"
-msgstr " <small>(з податком)</small>"
-
-#: ../jigoshop.php:1096
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "You have taken too long. Please go back and refresh the page."
 msgstr ""
 "Попередня дія тривала надто довго. Будь ласка, поверніться і оновіть "
 "сторінку."
 
-<<<<<<< HEAD
 #: ../jigoshop.php:1100
 msgid "Please rate the product."
 msgstr "Будь ласка, оцініть товар."
 
 #: ../jigoshop.php:1120 ../admin/jigoshop-admin-dashboard.php:308
 #: ../classes/jigoshop_product.class.php:1065
-=======
-#: ../jigoshop.php:1099
-msgid "Please rate the product."
-msgstr "Будь ласка, оцініть товар."
-
-#: ../jigoshop.php:1119 ../admin/jigoshop-admin-dashboard.php:308
-#: ../classes/jigoshop_product.class.php:1038
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../templates/single-product-reviews.php:46
 #: ../widgets/recent_reviews.php:133
 msgid "out of 5"
 msgstr "з 5"
 
-<<<<<<< HEAD
 #: ../jigoshop.php:1124
 msgid "Your comment is awaiting approval"
 msgstr "Ваш коментар очікує на узгодження"
@@ -164,34 +111,10 @@ msgid "All "
 msgstr "Всі "
 
 #: ../jigoshop.php:1215 ../jigoshop.php:1216 ../jigoshop_taxonomy.php:198
-=======
-#: ../jigoshop.php:1123
-msgid "Your comment is awaiting approval"
-msgstr "Ваш коментар очікує на узгодження"
-
-#: ../jigoshop.php:1126
-msgid "Rating by"
-msgstr "Оцінено"
-
-#: ../jigoshop.php:1126
-msgid "on"
-msgstr ", "
-
-#: ../jigoshop.php:1212 ../jigoshop_taxonomy.php:196
-msgid "Search "
-msgstr "Шукати "
-
-#: ../jigoshop.php:1213 ../jigoshop_taxonomy.php:197
-msgid "All "
-msgstr "Всі "
-
-#: ../jigoshop.php:1214 ../jigoshop.php:1215 ../jigoshop_taxonomy.php:198
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../jigoshop_taxonomy.php:199
 msgid "Parent "
 msgstr "Батьківські "
 
-<<<<<<< HEAD
 #: ../jigoshop.php:1217 ../jigoshop_taxonomy.php:200
 msgid "Edit "
 msgstr "Редагувати "
@@ -205,21 +128,6 @@ msgid "Add New "
 msgstr "Додати новий "
 
 #: ../jigoshop.php:1220 ../jigoshop_taxonomy.php:203
-=======
-#: ../jigoshop.php:1216 ../jigoshop_taxonomy.php:200
-msgid "Edit "
-msgstr "Редагувати "
-
-#: ../jigoshop.php:1217 ../jigoshop_taxonomy.php:201
-msgid "Update "
-msgstr "Оновити "
-
-#: ../jigoshop.php:1218 ../jigoshop_taxonomy.php:202
-msgid "Add New "
-msgstr "Додати новий "
-
-#: ../jigoshop.php:1219 ../jigoshop_taxonomy.php:203
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "New "
 msgstr "Новий "
 
@@ -416,20 +324,12 @@ msgstr "Примітка:"
 msgid "Retail Price:"
 msgstr "Роздрібна ціна:"
 
-<<<<<<< HEAD
 #: ../jigoshop_emails.php:314 ../admin/write-panels/order-data.php:407
-=======
-#: ../jigoshop_emails.php:314 ../admin/write-panels/order-data.php:405
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Subtotal:"
 msgstr "Проміжний підсумок:"
 
 #: ../jigoshop_emails.php:322 ../admin/jigoshop-admin-post-types.php:388
-<<<<<<< HEAD
 #: ../admin/write-panels/order-data.php:429
-=======
-#: ../admin/write-panels/order-data.php:427
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Shipping:"
 msgstr "Доставка:"
 
@@ -437,7 +337,6 @@ msgstr "Доставка:"
 msgid "Discount:"
 msgstr "Знижка:"
 
-<<<<<<< HEAD
 #: ../jigoshop_emails.php:371 ../jigoshop_template_functions.php:936
 #: ../classes/jigoshop_checkout.class.php:1212
 #: ../classes/jigoshop_product.class.php:940
@@ -446,16 +345,6 @@ msgstr "Безкоштовно"
 
 #: ../jigoshop_emails.php:372 ../admin/write-panels/order-data.php:464
 #: ../shortcodes/pay.php:118 ../shortcodes/thankyou.php:52
-=======
-#: ../jigoshop_emails.php:371 ../jigoshop_template_functions.php:933
-#: ../classes/jigoshop_checkout.class.php:1212
-#: ../classes/jigoshop_product.class.php:913
-msgid "Free"
-msgstr "Безкоштовно"
-
-#: ../jigoshop_emails.php:372 ../admin/write-panels/order-data.php:462
-#: ../shortcodes/pay.php:116 ../shortcodes/thankyou.php:52
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Total:"
 msgstr "Підсумок:"
 
@@ -555,13 +444,8 @@ msgstr "product-tag"
 msgid "Products"
 msgstr "Товари"
 
-<<<<<<< HEAD
 #: ../jigoshop_taxonomy.php:45 ../admin/jigoshop-admin-reports.php:273
 #: ../admin/jigoshop-admin-reports.php:369 ../shortcodes/my_account.php:424
-=======
-#: ../jigoshop_taxonomy.php:45 ../admin/jigoshop-admin-reports.php:272
-#: ../admin/jigoshop-admin-reports.php:360 ../shortcodes/my_account.php:424
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../templates/checkout/pay_for_order.php:26
 #: ../templates/checkout/review_order.php:24
 msgid "Product"
@@ -595,15 +479,9 @@ msgid "New Product"
 msgstr "Новий товар"
 
 #: ../jigoshop_taxonomy.php:52 ../jigoshop_taxonomy.php:53
-<<<<<<< HEAD
 #: ../jigoshop_template_functions.php:109
 #: ../jigoshop_template_functions.php:119
 #: ../jigoshop_template_functions.php:129
-=======
-#: ../jigoshop_template_functions.php:107
-#: ../jigoshop_template_functions.php:117
-#: ../jigoshop_template_functions.php:127
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../classes/jigoshop_options.class.php:1099
 msgid "View Product"
 msgstr "Переглянути товар"
@@ -910,24 +788,15 @@ msgstr ""
 "Тут можна додати нові купони, які клієнти зможуть використати у вашому "
 "магазині."
 
-<<<<<<< HEAD
 #: ../jigoshop_template_functions.php:79
 msgid "Sale!"
 msgstr "Розпродаж!"
 
 #: ../jigoshop_template_functions.php:111
-=======
-#: ../jigoshop_template_functions.php:77
-msgid "Sale!"
-msgstr "Розпродаж!"
-
-#: ../jigoshop_template_functions.php:109
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgctxt "verb"
 msgid "Select"
 msgstr "Вибрати"
 
-<<<<<<< HEAD
 #: ../jigoshop_template_functions.php:121
 #: ../jigoshop_template_functions.php:588
 msgid "Buy product"
@@ -942,22 +811,6 @@ msgid "Add to cart"
 msgstr "Додати до кошика"
 
 #: ../jigoshop_template_functions.php:136
-=======
-#: ../jigoshop_template_functions.php:119
-#: ../jigoshop_template_functions.php:585
-msgid "Buy product"
-msgstr "Купити товар"
-
-#: ../jigoshop_template_functions.php:125
-#: ../jigoshop_template_functions.php:383
-#: ../jigoshop_template_functions.php:407
-#: ../jigoshop_template_functions.php:436
-#: ../jigoshop_template_functions.php:566
-msgid "Add to cart"
-msgstr "Додати до кошика"
-
-#: ../jigoshop_template_functions.php:134
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../admin/jigoshop-admin-post-types.php:133
 #: ../admin/write-panels/product-data.php:345
 #: ../classes/jigoshop_product.class.php:491
@@ -965,7 +818,6 @@ msgstr "Додати до кошика"
 msgid "Out of Stock"
 msgstr "Закінчився."
 
-<<<<<<< HEAD
 #: ../jigoshop_template_functions.php:332
 #: ../jigoshop_template_functions.php:513 ../admin/jigoshop-admin-help.php:176
 #: ../admin/jigoshop-admin-post-types.php:66
@@ -988,71 +840,30 @@ msgid "Choose an option "
 msgstr "Виберіть опцію "
 
 #: ../jigoshop_template_functions.php:620
-=======
-#: ../jigoshop_template_functions.php:330
-#: ../jigoshop_template_functions.php:511 ../admin/jigoshop-admin-help.php:176
-#: ../admin/jigoshop-admin-post-types.php:66
-#: ../admin/write-panels/order-data.php:221
-#: ../admin/write-panels/product-data.php:143
-#: ../admin/write-panels/product-types/variable.php:545
-msgid "SKU"
-msgstr "Артикул"
-
-#: ../jigoshop_template_functions.php:333
-msgid "Posted in "
-msgstr "Опубліковано у "
-
-#: ../jigoshop_template_functions.php:334
-msgid "Tagged as "
-msgstr "Мітка(и) "
-
-#: ../jigoshop_template_functions.php:538
-msgid "Choose an option "
-msgstr "Виберіть опцію "
-
-#: ../jigoshop_template_functions.php:617
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../templates/single-product-reviews.php:69
 msgid "Next <span class=\"meta-nav\">&rarr;</span>"
 msgstr "Вперед <span class=\"meta-nav\">&rarr;</span>"
 
-<<<<<<< HEAD
 #: ../jigoshop_template_functions.php:621
-=======
-#: ../jigoshop_template_functions.php:618
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../templates/single-product-reviews.php:68
 msgid "<span class=\"meta-nav\">&larr;</span> Previous"
 msgstr "<span class=\"meta-nav\">&larr;</span> Назад"
 
-<<<<<<< HEAD
 #: ../jigoshop_template_functions.php:639 ../admin/jigoshop-admin-help.php:84
-=======
-#: ../jigoshop_template_functions.php:636 ../admin/jigoshop-admin-help.php:84
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../admin/jigoshop-admin-help.php:127 ../gateways/worldpay.php:626
 msgid "Description"
 msgstr "Опис"
 
-<<<<<<< HEAD
 #: ../jigoshop_template_functions.php:649 ../gateways/bank_transfer.php:177
-=======
-#: ../jigoshop_template_functions.php:646 ../gateways/bank_transfer.php:177
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../gateways/bank_transfer.php:192 ../gateways/bank_transfer.php:235
 msgid "Additional Information"
 msgstr "Додаткова інформація"
 
-<<<<<<< HEAD
 #: ../jigoshop_template_functions.php:656
-=======
-#: ../jigoshop_template_functions.php:653
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../templates/single-product-reviews.php:53
 msgid "Reviews"
 msgstr "Огляди"
 
-<<<<<<< HEAD
 #: ../jigoshop_template_functions.php:667
 msgid "Personalize"
 msgstr "Персоналізувати"
@@ -1063,27 +874,11 @@ msgid "Save Personalization"
 msgstr "Зберегти персоналізацію"
 
 #: ../jigoshop_template_functions.php:731
-=======
-#: ../jigoshop_template_functions.php:664
-msgid "Personalize"
-msgstr "Персоналізувати"
-
-#: ../jigoshop_template_functions.php:718
-#: ../jigoshop_template_functions.php:757
-msgid "Save Personalization"
-msgstr "Зберегти персоналізацію"
-
-#: ../jigoshop_template_functions.php:728
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #, php-format
 msgid "You may enter a maximum of %s characters."
 msgstr "Можна ввести щонайбільше %s символів."
 
-<<<<<<< HEAD
 #: ../jigoshop_template_functions.php:734
-=======
-#: ../jigoshop_template_functions.php:731
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid ""
 "Enter your personal information as you want it to appear on the product.<br /"
 ">"
@@ -1091,7 +886,6 @@ msgstr ""
 "Уведіть ваші персональні дані так, як хочете, щоб вони з’явилися на товарі."
 "<br />"
 
-<<<<<<< HEAD
 #: ../jigoshop_template_functions.php:840
 msgid "Related Products"
 msgstr "Подібні товари"
@@ -1105,21 +899,6 @@ msgid "Postcode/Zip"
 msgstr "Поштовий індекс"
 
 #: ../jigoshop_template_functions.php:910
-=======
-#: ../jigoshop_template_functions.php:837
-msgid "Related Products"
-msgstr "Подібні товари"
-
-#: ../jigoshop_template_functions.php:865
-msgid "Calculate Shipping"
-msgstr "Розрахувати доставку"
-
-#: ../jigoshop_template_functions.php:907
-msgid "Postcode/Zip"
-msgstr "Поштовий індекс"
-
-#: ../jigoshop_template_functions.php:907
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../admin/write-panels/order-data.php:129
 #: ../admin/write-panels/order-data.php:176
 #: ../classes/jigoshop_checkout.class.php:100
@@ -1130,7 +909,6 @@ msgstr "Поштовий індекс"
 msgid "Postcode"
 msgstr "Поштовий індекс"
 
-<<<<<<< HEAD
 #: ../jigoshop_template_functions.php:914
 msgid "Update Totals"
 msgstr "Оновити підсумок"
@@ -1140,41 +918,21 @@ msgid " (ex. tax)"
 msgstr " (без податку)"
 
 #: ../jigoshop_template_functions.php:964
-=======
-#: ../jigoshop_template_functions.php:911
-msgid "Update Totals"
-msgstr "Оновити підсумок"
-
-#: ../jigoshop_template_functions.php:931
-msgid " (ex. tax)"
-msgstr " (без податку)"
-
-#: ../jigoshop_template_functions.php:961
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../classes/jigoshop_checkout.class.php:251 ../widgets/user_login.php:84
 msgid "Username"
 msgstr "Користувач"
 
-<<<<<<< HEAD
 #: ../jigoshop_template_functions.php:968
-=======
-#: ../jigoshop_template_functions.php:965
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../classes/jigoshop_checkout.class.php:253 ../widgets/user_login.php:92
 msgid "Password"
 msgstr "Пароль"
 
 # @ jigoshop
-<<<<<<< HEAD
 #: ../jigoshop_template_functions.php:975 ../widgets/user_login.php:70
-=======
-#: ../jigoshop_template_functions.php:972 ../widgets/user_login.php:70
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../widgets/user_login.php:99
 msgid "Login"
 msgstr "Увійти"
 
-<<<<<<< HEAD
 #: ../jigoshop_template_functions.php:976
 msgid "Lost Password?"
 msgstr "Забули пароль?"
@@ -1188,38 +946,16 @@ msgid "Click here to login"
 msgstr "Клацніть тут, щоб увійти"
 
 #: ../jigoshop_template_functions.php:1006
-=======
-#: ../jigoshop_template_functions.php:973
-msgid "Lost Password?"
-msgstr "Забули пароль?"
-
-#: ../jigoshop_template_functions.php:989
-msgid "Already registered?"
-msgstr "Вже зареєстровані?"
-
-#: ../jigoshop_template_functions.php:989
-msgid "Click here to login"
-msgstr "Клацніть тут, щоб увійти"
-
-#: ../jigoshop_template_functions.php:1003
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid ""
 "You may have already established your Billing and Shipping state, but please "
 "verify it is correctly set for your location as well as all the rest of your "
 "information before placing your Order."
 msgstr ""
 "Напевне, ви вже зазначили область (штат) для виставлення рахунку і доставки, "
-<<<<<<< HEAD
 "але, будь ласка, перевірте перед надсиланням замовлення, що ваше місце "
 "перебування і решта відомостей правильно встановлені."
 
 #: ../jigoshop_template_functions.php:1008
-=======
-"але, будь ласка, перевірте перед надсиланням замовлення, що ваше місце перебування і "
-"решта відомостей правильно встановлені."
-
-#: ../jigoshop_template_functions.php:1005
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid ""
 "Please verify that all your information is correctly entered before placing "
 "your Order."
@@ -1227,11 +963,7 @@ msgstr ""
 "Будь ласка, перевірте, що всі відомості введені правильно перед надсиланням "
 "замовлення."
 
-<<<<<<< HEAD
 #: ../jigoshop_template_functions.php:1021
-=======
-#: ../jigoshop_template_functions.php:1018
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid ""
 "If you have entered an EU VAT Number, it will be looked up when you "
 "<strong>Place</strong> your Order and verified.  At that time "
@@ -1239,14 +971,6 @@ msgid ""
 "Order and totals adjusted.  You may enter your EU VAT Number either with, or "
 "without, the 2 character EU country code in front."
 msgstr ""
-<<<<<<< HEAD
-"Якщо ви задали номер ПДВ ЄС, його буде знайдено, коли ви <strong>надсилаєте</"
-"strong> ваше замовлення, і перевірено. <strong><em>тільки</em></strong> тоді "
-"ПДВ буде прибрано з остаточного Замовлення, і підсумки поновлено.  Можете "
-"ввести ваш номер ПДВ ЄС з або без дволітерного коду країни ЄС на початку."
-
-#: ../jigoshop_template_functions.php:1035
-=======
 "Якщо ви задали номер ПДВ ЄС, його буде знайдено, коли ви "
 "<strong>надсилаєте</strong> ваше замовлення, і перевірено. "
 "<strong><em>тільки</em></strong> тоді ПДВ буде прибрано з остаточного "
@@ -1254,12 +978,10 @@ msgstr ""
 "дволітерного коду країни ЄС на початку."
 
 #: ../jigoshop_template_functions.php:1032
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgctxt "breadcrumb"
 msgid "Home"
 msgstr "Головна"
 
-<<<<<<< HEAD
 #: ../jigoshop_template_functions.php:1089
 msgid "Products tagged &ldquo;"
 msgstr "Товари з міткою &ldquo;"
@@ -1282,30 +1004,6 @@ msgid "Author: "
 msgstr "Автор: "
 
 #: ../jigoshop_template_functions.php:1212
-=======
-#: ../jigoshop_template_functions.php:1086
-msgid "Products tagged &ldquo;"
-msgstr "Товари з міткою &ldquo;"
-
-#: ../jigoshop_template_functions.php:1109
-#: ../jigoshop_template_functions.php:1194
-msgid "Search results for &ldquo;"
-msgstr "Результати пошуку для &ldquo;"
-
-#: ../jigoshop_template_functions.php:1158
-msgid "Error 404"
-msgstr "Помилка 404"
-
-#: ../jigoshop_template_functions.php:1198
-msgid "Posts tagged &ldquo;"
-msgstr "Дописи з міткою &ldquo;"
-
-#: ../jigoshop_template_functions.php:1203
-msgid "Author: "
-msgstr "Автор: "
-
-#: ../jigoshop_template_functions.php:1209
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Page"
 msgstr "Сторінка"
 
@@ -1320,15 +1018,9 @@ msgid ""
 "be asked to enter your FuturePay username and password, or create an account "
 "when you Place your Order."
 msgstr ""
-<<<<<<< HEAD
 "Заплатіть з допомогою FuturePay. Купіть зараз і розрахуйтеся пізніше. Ніяких "
 "кредитних карток. Вас попросять зазначити назву користувача і пароль "
 "FuturePay або створити рахунок, коли ви надсилаєте замовлення."
-=======
-"Заплатіть з допомогою FuturePay. Купіть зараз і розрахуйтеся пізніше. Ніяких кредитних карток. Вас "
-"попросять зазначити назву користувача і пароль FuturePay або створити рахунок, "
-"коли ви надсилаєте замовлення."
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 
 #: ../admin/jigoshop-admin-attributes.php:43
 msgid "Please enter an attribute label."
@@ -1407,11 +1099,7 @@ msgstr "Скорочення"
 #: ../admin/jigoshop-admin-post-types.php:727
 #: ../admin/jigoshop-admin-settings.php:783
 #: ../admin/jigoshop-admin-settings.php:1064
-<<<<<<< HEAD
 #: ../admin/write-panels/product-types/variable.php:538
-=======
-#: ../admin/write-panels/product-types/variable.php:536
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../shipping/flat_rate.php:82
 msgid "Type"
 msgstr "Тип"
@@ -1540,38 +1228,22 @@ msgid "Total: "
 msgstr "Підсумок: "
 
 #: ../admin/jigoshop-admin-dashboard.php:255
-<<<<<<< HEAD
 #: ../admin/jigoshop-admin-reports.php:442
-=======
-#: ../admin/jigoshop-admin-reports.php:426
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "No products are low in stock."
 msgstr "Жодного товару з малим запасом залишків."
 
 #: ../admin/jigoshop-admin-dashboard.php:258
-<<<<<<< HEAD
 #: ../admin/jigoshop-admin-reports.php:445
-=======
-#: ../admin/jigoshop-admin-reports.php:429
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "No products are out of stock."
 msgstr "Жодного товару без залишків."
 
 #: ../admin/jigoshop-admin-dashboard.php:263
-<<<<<<< HEAD
 #: ../admin/jigoshop-admin-reports.php:450
-=======
-#: ../admin/jigoshop-admin-reports.php:434
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Low Stock"
 msgstr "Малий запас"
 
 #: ../admin/jigoshop-admin-dashboard.php:269
-<<<<<<< HEAD
 #: ../admin/jigoshop-admin-reports.php:458
-=======
-#: ../admin/jigoshop-admin-reports.php:442
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Out of Stock/Backorders"
 msgstr "Без залишків/Попереднє замовлення"
 
@@ -1721,22 +1393,13 @@ msgstr "&larr; Попередній місяць"
 
 #: ../admin/jigoshop-admin-dashboard.php:575
 #: ../admin/jigoshop-admin-dashboard.php:622
-<<<<<<< HEAD
 #: ../admin/jigoshop-admin-reports.php:576
 #: ../admin/jigoshop-admin-reports.php:623
-=======
-#: ../admin/jigoshop-admin-reports.php:560
-#: ../admin/jigoshop-admin-reports.php:607
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Number of sales"
 msgstr "Кількість продажу"
 
 #: ../admin/jigoshop-admin-dashboard.php:575
-<<<<<<< HEAD
 #: ../admin/jigoshop-admin-reports.php:576
-=======
-#: ../admin/jigoshop-admin-reports.php:560
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Sales amount"
 msgstr "Розмір продажу"
 
@@ -1745,13 +1408,8 @@ msgid ""
 "Attributes can have many types which affect how they are displayed in both "
 "the admin &amp; frontend, these include"
 msgstr ""
-<<<<<<< HEAD
 "Атрибути можуть мати багато типів, які впливають на те, як вони показуються "
 "на сторінці адміністрування і користувача. Вони включають"
-=======
-"Атрибути можуть мати багато типів, які впливають на те, як вони "
-"показуються на сторінці адміністрування і користувача. Вони включають"
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 
 #: ../admin/jigoshop-admin-help.php:25
 msgid ""
@@ -1934,15 +1592,9 @@ msgid ""
 "set how many items are displayed per screen and to display/hide columns in "
 "the table"
 msgstr ""
-<<<<<<< HEAD
 "Ви можете змінити показ цієї сторінки, скориставшись вкладкою «Опції екрану» "
 "щоб встановити, скільки елементів показувати на екрані і щоб показати/"
 "сховати стовпці в таблиці."
-=======
-"Ви можете змінити показ цієї сторінки, скориставшись вкладкою «Опції "
-"екрану» щоб встановити, скільки елементів показувати на екрані і щоб "
-"показати/сховати стовпці в таблиці."
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 
 #: ../admin/jigoshop-admin-help.php:105
 msgid "Adding Product Categories"
@@ -2115,11 +1767,7 @@ msgstr "Це базова ціна вашого товару, і Jigoshop поч
 # @ jigoshop
 #: ../admin/jigoshop-admin-help.php:229
 #: ../admin/write-panels/product-data.php:167
-<<<<<<< HEAD
 #: ../admin/write-panels/product-types/variable.php:565
-=======
-#: ../admin/write-panels/product-types/variable.php:563
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Sale Price"
 msgstr "Ціна розпродажу"
 
@@ -2157,13 +1805,8 @@ msgstr ""
 "«Доставка» застосує податок тільки на ціну доставки товару."
 
 #: ../admin/jigoshop-admin-help.php:235
-<<<<<<< HEAD
 #: ../admin/jigoshop-admin-settings-api.php:1236
 #: ../admin/jigoshop-admin-settings-api.php:1247
-=======
-#: ../admin/jigoshop-admin-settings-api.php:1235
-#: ../admin/jigoshop-admin-settings-api.php:1246
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../admin/write-panels/product-data.php:227
 msgid "Tax Classes"
 msgstr "Класи податків"
@@ -2319,13 +1962,8 @@ msgid ""
 "Specify the order in which these products appear in the grouping. Similar to "
 "post order for WordPress Posts"
 msgstr ""
-<<<<<<< HEAD
 "Зазначте порядок показ цих товарів у групуванні. Схоже на порядок публікацій "
 "у WordPress."
-=======
-"Зазначте порядок показ цих товарів у групуванні. Схоже на порядок "
-"публікацій у WordPress."
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 
 # @ jigoshop
 #: ../admin/jigoshop-admin-help.php:255
@@ -2480,11 +2118,7 @@ msgstr "Запас"
 
 #: ../admin/jigoshop-admin-post-types.php:73
 #: ../admin/jigoshop-admin-product-quick-bulk-edit.php:108
-<<<<<<< HEAD
 #: ../admin/write-panels/product-types/variable.php:559
-=======
-#: ../admin/write-panels/product-types/variable.php:557
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../shortcodes/cart.php:103 ../shortcodes/order_tracking.php:64
 msgid "Price"
 msgstr "Ціна"
@@ -2808,11 +2442,7 @@ msgid "Show"
 msgstr "Показати"
 
 #: ../admin/jigoshop-admin-reports.php:130
-<<<<<<< HEAD
 #: ../admin/jigoshop-admin-reports.php:370
-=======
-#: ../admin/jigoshop-admin-reports.php:361
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Sales"
 msgstr "Продаж"
 
@@ -2833,7 +2463,6 @@ msgid "Total Orders"
 msgstr "Всього замовлень"
 
 #: ../admin/jigoshop-admin-reports.php:164
-<<<<<<< HEAD
 #: ../admin/jigoshop-admin-reports.php:389
 msgid "Total Sales"
 msgstr "Всього продажу"
@@ -2852,20 +2481,6 @@ msgstr "Продукти, яких більше немає"
 msgid "Total Products Sold"
 msgstr "Жодних товарів не знайдено"
 
-=======
-msgid "Total Sales"
-msgstr "Всього продажу"
-
-#: ../admin/jigoshop-admin-reports.php:273
-msgid "Quantity Sold"
-msgstr "Кількість проданого"
-
-#: ../admin/jigoshop-admin-reports.php:281
-#: ../admin/jigoshop-admin-reports.php:368
-msgid "Product no longer exists"
-msgstr "Продукти, яких більше немає"
-
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../admin/jigoshop-admin-settings-api.php:215
 msgid "Warning- This options panel may not work properly without javascript!"
 msgstr "Увага- Ця панель опцій може не працювати коректно без javascript!"
@@ -2927,7 +2542,6 @@ msgstr "Шлюзи сплати"
 msgid "\"%s\" settings were updated successfully."
 msgstr "«%s» налаштування було оновлено успішно."
 
-<<<<<<< HEAD
 #: ../admin/jigoshop-admin-settings-api.php:1235
 #: ../admin/jigoshop-admin-settings-api.php:1246
 #: ../admin/write-panels/order-data.php:229
@@ -2941,28 +2555,12 @@ msgstr "Видалити"
 #: ../admin/jigoshop-admin-settings-api.php:1248
 #: ../admin/jigoshop-admin-settings-api.php:1282
 #: ../admin/jigoshop-admin-settings-api.php:1356
-=======
-#: ../admin/jigoshop-admin-settings-api.php:1234
-#: ../admin/jigoshop-admin-settings-api.php:1245
-#: ../admin/write-panels/order-data.php:229
-#: ../admin/write-panels/product-data.php:538
-#: ../admin/write-panels/product-data.php:642
-#: ../admin/write-panels/product-types/variable.php:512
-msgid "Remove"
-msgstr "Видалити"
-
-#: ../admin/jigoshop-admin-settings-api.php:1236
-#: ../admin/jigoshop-admin-settings-api.php:1247
-#: ../admin/jigoshop-admin-settings-api.php:1281
-#: ../admin/jigoshop-admin-settings-api.php:1355
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../admin/jigoshop-admin-settings.php:1353
 #: ../admin/jigoshop-admin-settings.php:1354
 #: ../admin/jigoshop-admin-settings.php:1417
 msgid "Online Label"
 msgstr "Мітка Online"
 
-<<<<<<< HEAD
 #: ../admin/jigoshop-admin-settings-api.php:1238
 #: ../admin/jigoshop-admin-settings-api.php:1249
 msgid "Country/State"
@@ -2977,64 +2575,33 @@ msgstr "Рейтинг (%)"
 
 #: ../admin/jigoshop-admin-settings-api.php:1240
 #: ../admin/jigoshop-admin-settings-api.php:1251
-=======
-#: ../admin/jigoshop-admin-settings-api.php:1237
-#: ../admin/jigoshop-admin-settings-api.php:1248
-msgid "Country/State"
-msgstr "Країна/Штат"
-
-#: ../admin/jigoshop-admin-settings-api.php:1238
-#: ../admin/jigoshop-admin-settings-api.php:1249
-#: ../admin/jigoshop-admin-settings-api.php:1297
-#: ../admin/jigoshop-admin-settings-api.php:1358
-msgid "Rate (%)"
-msgstr "Рейтинг (%)"
-
-#: ../admin/jigoshop-admin-settings-api.php:1239
-#: ../admin/jigoshop-admin-settings-api.php:1250
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../admin/jigoshop-admin-settings.php:1385
 #: ../admin/jigoshop-admin-settings.php:1421
 msgid "Apply to shipping"
 msgstr "Застосувати до доставки"
 
 # @ jigoshop
-<<<<<<< HEAD
 #: ../admin/jigoshop-admin-settings-api.php:1241
 #: ../admin/jigoshop-admin-settings-api.php:1252
-=======
-#: ../admin/jigoshop-admin-settings-api.php:1240
-#: ../admin/jigoshop-admin-settings-api.php:1251
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../admin/jigoshop-admin-settings.php:1392
 #: ../admin/jigoshop-admin-settings.php:1422
 msgid "Compound"
 msgstr "З’єднання"
 
-<<<<<<< HEAD
 #: ../admin/jigoshop-admin-settings-api.php:1270
 #: ../admin/jigoshop-admin-settings-api.php:1353
-=======
-#: ../admin/jigoshop-admin-settings-api.php:1269
-#: ../admin/jigoshop-admin-settings-api.php:1352
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../admin/jigoshop-admin-settings.php:1336
 #: ../admin/jigoshop-admin-settings.php:1411
 msgid "Standard Rate"
 msgstr "Стандартний тариф"
 
-<<<<<<< HEAD
 #: ../admin/jigoshop-admin-settings-api.php:1297
-=======
-#: ../admin/jigoshop-admin-settings-api.php:1296
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../admin/jigoshop-admin-settings-options.php:431
 #: ../admin/write-panels/product-data.php:219
 #: ../classes/jigoshop_options.class.php:1061 ../shipping/flat_rate.php:103
 msgid "None"
 msgstr "Жоден"
 
-<<<<<<< HEAD
 #: ../admin/jigoshop-admin-settings-api.php:1297
 msgid "US States"
 msgstr "Штати US"
@@ -3044,43 +2611,20 @@ msgid "EU States"
 msgstr "Країни EU"
 
 #: ../admin/jigoshop-admin-settings-api.php:1321
-=======
-#: ../admin/jigoshop-admin-settings-api.php:1296
-msgid "US States"
-msgstr "Штати US"
-
-#: ../admin/jigoshop-admin-settings-api.php:1296
-msgid "EU States"
-msgstr "Країни EU"
-
-#: ../admin/jigoshop-admin-settings-api.php:1320
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../admin/jigoshop-admin-settings.php:1399
 msgid "+ Add Tax Rule"
 msgstr "+ Додати ставку податку"
 
-<<<<<<< HEAD
 #: ../admin/jigoshop-admin-settings-api.php:1334
-=======
-#: ../admin/jigoshop-admin-settings-api.php:1333
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../languages/countries.php:248
 msgid "United States"
 msgstr "Сполучені Штати"
 
-<<<<<<< HEAD
 #: ../admin/jigoshop-admin-settings-api.php:1340
 msgid "countries/states selected"
 msgstr "вибрані країни/штати"
 
 #: ../admin/jigoshop-admin-settings-api.php:1368
-=======
-#: ../admin/jigoshop-admin-settings-api.php:1339
-msgid "countries/states selected"
-msgstr "вибрані країни/штати"
-
-#: ../admin/jigoshop-admin-settings-api.php:1367
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../admin/jigoshop-admin-settings.php:1427
 msgid "Delete this rule?"
 msgstr "Видалити цю ставку?"
@@ -3451,12 +2995,7 @@ msgstr "Увімкнути Google eCommerce"
 #: ../classes/jigoshop_options.class.php:954
 msgid "Add Google Analytics eCommerce tracking code upon successful orders"
 msgstr ""
-<<<<<<< HEAD
 "Додайте код відстеження Google Analytics eCommerce при успішних замовленнях"
-=======
-"Додайте код відстеження Google Analytics eCommerce при успішних "
-"замовленнях"
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 
 #: ../admin/jigoshop-admin-settings-options.php:276
 msgid ""
@@ -3569,13 +3108,8 @@ msgid ""
 "Shortcode to place on page: <code>[jigoshop_pay]</code><br/>Default parent "
 "page: Checkout"
 msgstr ""
-<<<<<<< HEAD
 "Код для цієї сторінки: <code>[jigoshop_pay]</code><br/>Батьківська сторінка: "
 "Оформлення"
-=======
-"Код для цієї сторінки: <code>[jigoshop_pay]</code><br/>Батьківська "
-"сторінка: Оформлення"
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 
 #: ../admin/jigoshop-admin-settings-options.php:364
 #: ../classes/jigoshop_options.class.php:1001
@@ -3612,13 +3146,8 @@ msgid ""
 "Shortcode to place on page: <code>[jigoshop_edit_address]</code><br/>Default "
 "parent page: My Account"
 msgstr ""
-<<<<<<< HEAD
 "Код для цієї сторінки: <code>[jigoshop_edit_address]</code><br/>Батьківська "
 "сторінка: Мій обліковий запис"
-=======
-"Код для цієї сторінки: <code>[jigoshop_edit_address]</code><br/"
-">Батьківська сторінка: Мій обліковий запис"
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 
 #: ../admin/jigoshop-admin-settings-options.php:394
 #: ../classes/jigoshop_options.class.php:1028
@@ -5283,56 +4812,32 @@ msgid "Choose a Product"
 msgstr "Виберіть товар"
 
 # @ jigoshop
-<<<<<<< HEAD
 #: ../admin/write-panels/order-data.php:343
-=======
-#: ../admin/write-panels/order-data.php:341
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Add item"
 msgstr "Додати позицію"
 
 # @ jigoshop
-<<<<<<< HEAD
 #: ../admin/write-panels/order-data.php:346
-=======
-#: ../admin/write-panels/order-data.php:344
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Calculate totals"
 msgstr "Підбити підсумок"
 
 # @ jigoshop
-<<<<<<< HEAD
 #: ../admin/write-panels/order-data.php:364
-=======
-#: ../admin/write-panels/order-data.php:362
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Save Order"
 msgstr "Зберегти замовлення"
 
 # @ jigoshop
-<<<<<<< HEAD
 #: ../admin/write-panels/order-data.php:364
-=======
-#: ../admin/write-panels/order-data.php:362
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "- Save/update the order."
 msgstr "- Зберегти/оновити замовлення."
 
 # @ jigoshop
-<<<<<<< HEAD
 #: ../admin/write-panels/order-data.php:366
-=======
-#: ../admin/write-panels/order-data.php:364
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Reduce stock"
 msgstr "Зменшити запас"
 
 # @ jigoshop
-<<<<<<< HEAD
 #: ../admin/write-panels/order-data.php:366
-=======
-#: ../admin/write-panels/order-data.php:364
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid ""
 "- Reduces stock for each item in the order; useful after manually creating "
 "an order or manually marking an order as complete/processing after payment."
@@ -5342,20 +4847,12 @@ msgstr ""
 "після сплати."
 
 # @ jigoshop
-<<<<<<< HEAD
 #: ../admin/write-panels/order-data.php:367
-=======
-#: ../admin/write-panels/order-data.php:365
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Restore stock"
 msgstr "Відновити запас"
 
 # @ jigoshop
-<<<<<<< HEAD
 #: ../admin/write-panels/order-data.php:367
-=======
-#: ../admin/write-panels/order-data.php:365
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid ""
 "- Restores stock for each item in the order; useful after refunding or "
 "canceling the entire order."
@@ -5364,56 +4861,34 @@ msgstr ""
 "або скасування сплати всього замовлення."
 
 # @ jigoshop
-<<<<<<< HEAD
 #: ../admin/write-panels/order-data.php:369
-=======
-#: ../admin/write-panels/order-data.php:367
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Email invoice"
 msgstr "Рахунок по ел. пошті"
 
 # @ jigoshop
-<<<<<<< HEAD
 #: ../admin/write-panels/order-data.php:369
-=======
-#: ../admin/write-panels/order-data.php:367
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "- Emails the customer order details and a payment link."
 msgstr "- Надсилає лист покупцю з деталями замовлення і посиланням для сплати."
 
 # @ default
-<<<<<<< HEAD
 #: ../admin/write-panels/order-data.php:375
-=======
-#: ../admin/write-panels/order-data.php:373
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Delete Permanently"
 msgstr "Видалити назавжди"
 
 # @ default
-<<<<<<< HEAD
 #: ../admin/write-panels/order-data.php:377
-=======
-#: ../admin/write-panels/order-data.php:375
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Move to Trash"
 msgstr "Перемістити у смітник"
 
 # @ jigoshop
-<<<<<<< HEAD
 #: ../admin/write-panels/order-data.php:408
 #: ../admin/write-panels/order-data.php:430
-=======
-#: ../admin/write-panels/order-data.php:406
-#: ../admin/write-panels/order-data.php:428
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../classes/jigoshop_cart.class.php:973
 #: ../classes/jigoshop_order.class.php:276
 msgid "(ex. tax)"
 msgstr "(без податку)"
 
 # @ jigoshop
-<<<<<<< HEAD
 #: ../admin/write-panels/order-data.php:412
 msgid "Discount: "
 msgstr "Знижка: "
@@ -5424,35 +4899,15 @@ msgid "Choose"
 msgstr "Вибрати"
 
 #: ../admin/write-panels/order-data.php:441
-=======
-#: ../admin/write-panels/order-data.php:410
-msgid "Discount: "
-msgstr "Знижка: "
-
-#: ../admin/write-panels/order-data.php:415
-#: ../admin/write-panels/order-data.php:449
-msgid "Choose"
-msgstr "Вибрати"
-
-#: ../admin/write-panels/order-data.php:439
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Total Tax:"
 msgstr "Усього податку:"
 
 # @ jigoshop
-<<<<<<< HEAD
 #: ../admin/write-panels/order-data.php:446
 msgid "Shipping Tax:"
 msgstr "Вартість доставки:"
 
 #: ../admin/write-panels/order-data.php:533
-=======
-#: ../admin/write-panels/order-data.php:444
-msgid "Shipping Tax:"
-msgstr "Вартість доставки:"
-
-#: ../admin/write-panels/order-data.php:531
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "No attributes for this item."
 msgstr "Жодного атрибута для цього товару."
 
@@ -5472,21 +4927,13 @@ msgstr "Приєднати до товару"
 
 # @ jigoshop
 #: ../admin/write-panels/product-data.php:63
-<<<<<<< HEAD
 #: ../admin/write-panels/product-types/variable.php:540
-=======
-#: ../admin/write-panels/product-types/variable.php:538
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Simple"
 msgstr "Простий"
 
 # @ jigoshop
 #: ../admin/write-panels/product-data.php:64
-<<<<<<< HEAD
 #: ../admin/write-panels/product-types/variable.php:541
-=======
-#: ../admin/write-panels/product-types/variable.php:539
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Downloadable"
 msgstr "Цифровий"
 
@@ -5497,11 +4944,7 @@ msgstr "Товар-група"
 
 # @ jigoshop
 #: ../admin/write-panels/product-data.php:66
-<<<<<<< HEAD
 #: ../admin/write-panels/product-types/variable.php:542
-=======
-#: ../admin/write-panels/product-types/variable.php:540
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Virtual"
 msgstr "Віртуальний"
 
@@ -5558,13 +5001,8 @@ msgid "Enable this option to feature this product"
 msgstr "Включіть цю опцію, щоб додати цей товар у вибране"
 
 #: ../admin/write-panels/product-data.php:160
-<<<<<<< HEAD
 #: ../classes/jigoshop_product.class.php:927
 #: ../classes/jigoshop_product.class.php:943
-=======
-#: ../classes/jigoshop_product.class.php:900
-#: ../classes/jigoshop_product.class.php:916
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Price Not Announced"
 msgstr "Ціну не оголошено"
 
@@ -5622,61 +5060,37 @@ msgstr "Зняти всі"
 # @ jigoshop
 #: ../admin/write-panels/product-data.php:269
 #: ../admin/write-panels/product-types/variable.php:318
-<<<<<<< HEAD
 #: ../admin/write-panels/product-types/variable.php:578
 #: ../classes/jigoshop_product.class.php:1221
-=======
-#: ../admin/write-panels/product-types/variable.php:576
-#: ../classes/jigoshop_product.class.php:1194
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Weight"
 msgstr "Вага"
 
 # @ jigoshop
 #: ../admin/write-panels/product-data.php:282
-<<<<<<< HEAD
 #: ../admin/write-panels/product-types/variable.php:583
-=======
-#: ../admin/write-panels/product-types/variable.php:581
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Dimensions"
 msgstr "Розмір"
 
 # @ jigoshop
 #: ../admin/write-panels/product-data.php:283
 #: ../admin/write-panels/product-types/variable.php:320
-<<<<<<< HEAD
 #: ../admin/write-panels/product-types/variable.php:584
 #: ../classes/jigoshop_product.class.php:1227
-=======
-#: ../admin/write-panels/product-types/variable.php:582
-#: ../classes/jigoshop_product.class.php:1200
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Length"
 msgstr "Довжина"
 
 #: ../admin/write-panels/product-data.php:284
 #: ../admin/write-panels/product-types/variable.php:319
-<<<<<<< HEAD
 #: ../admin/write-panels/product-types/variable.php:585
 #: ../classes/jigoshop_product.class.php:1229
-=======
-#: ../admin/write-panels/product-types/variable.php:583
-#: ../classes/jigoshop_product.class.php:1202
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Width"
 msgstr "Ширина"
 
 # @ jigoshop
 #: ../admin/write-panels/product-data.php:285
 #: ../admin/write-panels/product-types/variable.php:321
-<<<<<<< HEAD
 #: ../admin/write-panels/product-types/variable.php:586
 #: ../classes/jigoshop_product.class.php:1231
-=======
-#: ../admin/write-panels/product-types/variable.php:584
-#: ../classes/jigoshop_product.class.php:1204
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Height"
 msgstr "Висота"
 
@@ -5875,33 +5289,20 @@ msgstr "Застосувати"
 msgid "Default selections:"
 msgstr "Початковий вибір:"
 
-<<<<<<< HEAD
 #: ../admin/write-panels/product-types/variable.php:358
 msgid "No default"
 msgstr "Немає"
 
 #: ../admin/write-panels/product-types/variable.php:432
-=======
-#: ../admin/write-panels/product-types/variable.php:357
-msgid "No default"
-msgstr "Немає"
-
-#: ../admin/write-panels/product-types/variable.php:430
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Any"
 msgstr "Будь-які"
 
 # @ jigoshop
-<<<<<<< HEAD
 #: ../admin/write-panels/product-types/variable.php:553
-=======
-#: ../admin/write-panels/product-types/variable.php:551
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Stock Qty"
 msgstr "Обсяг запасів"
 
 # @ jigoshop
-<<<<<<< HEAD
 #: ../admin/write-panels/product-types/variable.php:571
 msgid "Enabled"
 msgstr "Увімкнено"
@@ -5911,17 +5312,6 @@ msgid "File Location"
 msgstr "Місце файлу"
 
 #: ../admin/write-panels/product-types/variable.php:597
-=======
-#: ../admin/write-panels/product-types/variable.php:569
-msgid "Enabled"
-msgstr "Увімкнено"
-
-#: ../admin/write-panels/product-types/variable.php:590
-msgid "File Location"
-msgstr "Місце файлу"
-
-#: ../admin/write-panels/product-types/variable.php:595
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Re-downloads Limit"
 msgstr "Ліміт повторних завантажень"
 
@@ -6614,13 +6004,8 @@ msgid ""
 "Save time in the future and check the status of your orders by creating an "
 "account."
 msgstr ""
-<<<<<<< HEAD
 "Заощадьте час у майбутньому і перевіряйте статус ваших замовлень, створивши "
 "обліковий запис."
-=======
-"Заощадьте час у майбутньому і перевіряйте статус ваших замовлень, "
-"створивши обліковий запис."
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 
 # @ jigoshop
 #: ../classes/jigoshop_checkout.class.php:279
@@ -6854,14 +6239,9 @@ msgid ""
 "email address</b>.  Until then, the plugin will not be enabled for use."
 msgstr ""
 "Ключ ліцензії для <i><b>%s</b></i> не дійсний. Будь ласка, введіть ваш "
-<<<<<<< HEAD
 "<b>ключ ліцензії</b> у Jigoshop → меню керування ліцензіями з вашою "
 "<b>електронною адресою замовлення</b>.  До тих пір додаток не буде увімкнено "
 "для використання."
-=======
-"<b>ключ ліцензії</b> у Jigoshop → меню керування ліцензіями з вашою <b>електронною "
-"адресою замовлення</b>.  До тих пір додаток не буде увімкнено для використання."
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 
 #: ../classes/jigoshop_licence_validator.class.php:140
 #: ../classes/jigoshop_licence_validator.class.php:141
@@ -6915,13 +6295,8 @@ msgid ""
 "<br />To <em>de-activate</em> the licence, remove the licence key, but leave "
 "the email address."
 msgstr ""
-<<<<<<< HEAD
 "<br />Щоб <em>деактивувати</em> ліцензію, знищте ключ, але залиште "
 "електронну адресу."
-=======
-"<br />Щоб <em>деактивувати</em> ліцензію, знищте ключ, але залиште електронну "
-"адресу."
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 
 #: ../classes/jigoshop_licence_validator.class.php:570
 msgid "Activation email"
@@ -7028,12 +6403,7 @@ msgstr "Закінчити оброблення замовлень"
 #: ../classes/jigoshop_options.class.php:779
 msgid "Change all 'Processing' Orders older than one month to 'Completed'"
 msgstr ""
-<<<<<<< HEAD
 "Змінити всі замовлення «В обробці», старші, ніж один місяць, на «Закінчені»."
-=======
-"Змінити всі замовлення «В обробці», старші, ніж один місяць, на "
-"«Закінчені»."
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 
 #: ../classes/jigoshop_options.class.php:780
 msgid ""
@@ -7041,13 +6411,8 @@ msgid ""
 "'processing'.  This will move them to a 'completed' status without sending "
 "an email out to all the customers."
 msgstr ""
-<<<<<<< HEAD
 "Для замовлень, які було закінчено але статус все ще встановлено у «В "
 "обробці».  Це перенесе їх у статус «Закінчені» без надсилання електронного "
-=======
-"Для замовлень, які було закінчено але статус все ще встановлено у "
-"«В обробці».  Це перенесе їх у статус «Закінчені» без надсилання електронного "
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 "повідомлення до всіх покупців."
 
 #: ../classes/jigoshop_options.class.php:805
@@ -7085,13 +6450,8 @@ msgid ""
 "Useful if your theme or other plugin already loads our Lightbox script and "
 "css (prettyPhoto), or you want to use a different one."
 msgstr ""
-<<<<<<< HEAD
 "Корисно, якщо ваша тема чи інший додаток вже завантажує наш скрипт Lightbox "
 "і css (prettyPhoto), або ви хочете використовувати інший."
-=======
-"Корисно, якщо ваша тема чи інший додаток вже завантажує наш скрипт Lightbox і "
-"css (prettyPhoto), або ви хочете використовувати інший."
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 
 #: ../classes/jigoshop_options.class.php:845
 msgid "Validate postal/zip codes"
@@ -7115,15 +6475,9 @@ msgid ""
 "have states to ensure the correct shipping state is selected."
 msgstr ""
 "Увімкнення цього налаштування показуватиме повідомлення знизу оформлення "
-<<<<<<< HEAD
 "перед надсиланням замовлення з проханням перевірити, що вся введена "
 "інформація правильна. Це корисно у певних країнах із штатами щоб упевнитися, "
 "що вибрана правильна адреса доставки."
-=======
-"перед надсиланням замовлення з проханням перевірити, що вся введена інформація правильна. "
-"Це корисно у певних країнах із штатами щоб упевнитися, що вибрана правильна адреса "
-"доставки."
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 
 #: ../classes/jigoshop_options.class.php:871
 msgid "Show EU VAT reduction message"
@@ -7139,15 +6493,9 @@ msgid ""
 "informing the customer that EU VAT will not be removed until the Order is "
 "placed and only if they have provided a valid EU VAT Number."
 msgstr ""
-<<<<<<< HEAD
 "Увімкнення цієї опції показуватиме повідомлення знизу оформлення, яку "
 "інформуватиме покупців, що ПДВ ЄС не буде прибрано до тих пір, доки "
 "замовлення не надіслано, і тільки якщо вони надали дійсний номер ПДВ ЄС."
-=======
-"Увімкнення цієї опції показуватиме повідомлення знизу оформлення, "
-"яку інформуватиме покупців, що ПДВ ЄС не буде прибрано до тих пір, доки замовлення не "
-"надіслано, і тільки якщо вони надали дійсний номер ПДВ ЄС."
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 
 #: ../classes/jigoshop_options.class.php:886
 msgid ""
@@ -7180,7 +6528,6 @@ msgid ""
 "Google Analytics account."
 msgstr ""
 "<a href=\"//support.google.com/analytics/bin/answer.py?"
-<<<<<<< HEAD
 "hl=en&answer=1009612\">Дізнайтеся, як увімкнути</a> відстеження eCommerce "
 "для свого облікового запиту Google Analytics."
 
@@ -7209,37 +6556,6 @@ msgstr "Додати до кошика"
 msgid "No Button"
 msgstr "Без кнопки"
 
-=======
-"hl=en&answer=1009612\">Дізнайтеся, як увімкнути</a> відстеження "
-"eCommerce для свого облікового запиту Google Analytics."
-
-#: ../classes/jigoshop_options.class.php:971
-msgid "Page configurations"
-msgstr "Налаштування сторінки"
-
-#: ../classes/jigoshop_options.class.php:1091
-msgid "Catalog product buttons show"
-msgstr "Показ кнопок каталогу товарів"
-
-#: ../classes/jigoshop_options.class.php:1093
-msgid ""
-"This will determine the type of button and the action it will use when "
-"clicked on the Shop and Category product listings.  You can also set it to "
-"use no button."
-msgstr ""
-"Це визначить тип кнопки і дію, яку вона спричинить при клацанні "
-"на списках товарів у магазині і категоріях.  Також можна встановити "
-"вживання без кнопки."
-
-#: ../classes/jigoshop_options.class.php:1098
-msgid "Add to Cart"
-msgstr "Додати до кошика"
-
-#: ../classes/jigoshop_options.class.php:1100
-msgid "No Button"
-msgstr "Без кнопки"
-
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../classes/jigoshop_options.class.php:1132
 msgid "Catalog products per row"
 msgstr "Товарів каталогу у рядку"
@@ -7616,13 +6932,8 @@ msgid ""
 "This will determine which gateway appears first in the Payment Methods list "
 "on the Checkout."
 msgstr ""
-<<<<<<< HEAD
 "Це визначить, який шлюз буде показано спочатку у списку методів сплати під "
 "час оформлення."
-=======
-"Це визначить, який шлюз буде показано спочатку у списку методів сплати "
-"під час оформлення."
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 
 # @ jigoshop
 #: ../classes/jigoshop_options.class.php:1682
@@ -7717,52 +7028,30 @@ msgid "%s off!"
 msgstr "%s знижка!"
 
 # @ jigoshop
-<<<<<<< HEAD
 #: ../classes/jigoshop_product.class.php:886
-=======
-#: ../classes/jigoshop_product.class.php:859
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid "Unavailable"
 msgstr "Недоступно"
 
 # @ jigoshop
-<<<<<<< HEAD
 #: ../classes/jigoshop_product.class.php:906
 #: ../classes/jigoshop_product.class.php:915
-=======
-#: ../classes/jigoshop_product.class.php:879
-#: ../classes/jigoshop_product.class.php:888
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgctxt "price"
 msgid "From:"
 msgstr "Від:"
 
 # @ jigoshop
-<<<<<<< HEAD
 #: ../classes/jigoshop_product.class.php:1065
-=======
-#: ../classes/jigoshop_product.class.php:1038
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../templates/single-product-reviews.php:46
 #, php-format
 msgid "Rated %s out of 5"
 msgstr "Оцінений на %s з 5"
 
-<<<<<<< HEAD
 #: ../classes/jigoshop_shipping.class.php:97
-=======
-#: ../classes/jigoshop_shipping.class.php:95
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid ""
 "Please enter your shipping destination and postal code to view shipping "
 "options and rates."
 msgstr ""
-<<<<<<< HEAD
-"Будь ласка, введіть призначення і поштовий код, щоб побачити опції і ціну "
-"доставки."
-=======
 "Будь ласка, введіть призначення і поштовий код, щоб побачити опції і ціну доставки."
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 
 #: ../classes/jigoshop_shipping.class.php:99
 msgid ""
@@ -8006,14 +7295,9 @@ msgid ""
 "convenient and secure way for US customers to buy online in one-step.  %s"
 msgstr ""
 "Цей модуль дозволяє приймати онлайн-платежі через %s, що дозволяє покупцям "
-<<<<<<< HEAD
 "купувати тепер і сплачувати пізніше без кредитної картки.  FuturePay — "
 "надійний, зручний і безпечний спосіб для покупців із США, щоб купувати у "
 "мережі за один крок. %s"
-=======
-"купувати тепер і сплачувати пізніше без кредитної картки.  FuturePay — надійний, "
-"зручний і безпечний спосіб для покупців із США, щоб купувати у мережі за один крок. %s"
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 
 #: ../gateways/futurepay.php:84
 msgid "Signup for a Merchant Account"
@@ -8059,16 +7343,10 @@ msgid ""
 "to an accepted one.  FuturePay is currently disabled on the Payment Gateways "
 "settings tab."
 msgstr ""
-<<<<<<< HEAD
 "Шлюз FuturePay приймає платежі у грошових одиницях %s.  Ваша теперішня є "
 "%s.  FuturePay не працюватиме, доки ви не зміните грошову одиницю Jigoshop "
 "до прийнятної.  Зараз FuturePay вимкнено на сторінці налаштувань шлюзів "
 "сплати."
-=======
-"Шлюз FuturePay приймає платежі у грошових одиницях %s.  Ваша теперішня "
-"є %s.  FuturePay не працюватиме, доки ви не зміните грошову одиницю Jigoshop "
-"до прийнятної.  Зараз FuturePay вимкнено на сторінці налаштувань шлюзів сплати."
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 
 #: ../gateways/futurepay.php:162
 #, php-format
@@ -8078,15 +7356,9 @@ msgid ""
 "an accepted one.  FuturePay is currently disabled on the Payment Gateways "
 "settings tab."
 msgstr ""
-<<<<<<< HEAD
 "Шлюз FuturePay доступний для купців з: %s.  Ваша країна: %s.  FuturePay не "
 "працюватиме, доки ви не зміните базову країну до дозволеної.  Зараз "
 "FuturePay вимкнено на сторінці налаштувань шлюзів сплати."
-=======
-"Шлюз FuturePay доступний для купців з: %s.  Ваша країна: "
-"%s.  FuturePay не працюватиме, доки ви не зміните базову країну "
-"до дозволеної.  Зараз FuturePay вимкнено на сторінці налаштувань шлюзів сплати."
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 
 #: ../gateways/futurepay.php:369
 msgid "An unknown error has occured with code = "
@@ -8102,12 +7374,8 @@ msgstr "FUTUREPAY: %s"
 msgid ""
 "FUTUREPAY: %s.  Please try again or select another gateway for your Order."
 msgstr ""
-<<<<<<< HEAD
 "FUTUREPAY: %s.  Будь ласка, спробуйте ще або виберіть інший платіжний шлюз "
 "для вашого замовлення."
-=======
-"FUTUREPAY: %s.  Будь ласка, спробуйте ще або виберіть інший платіжний шлюз для вашого замовлення."
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 
 # @ jigoshop
 #: ../gateways/futurepay.php:439
@@ -8117,7 +7385,6 @@ msgid ""
 msgstr ""
 "Дякуємо за ваше замовлення, будь ласка, натисніть кнопку нижче, щоб сплатити "
 "з допомогою FuturePay."
-<<<<<<< HEAD
 
 # @ jigoshop
 #: ../gateways/futurepay.php:489
@@ -8137,27 +7404,6 @@ msgid "PayPal Standard %s"
 msgstr "Стандартний PayPal %s"
 
 # @ jigoshop
-=======
-
-# @ jigoshop
-#: ../gateways/futurepay.php:489
-msgid "Payment Authorized"
-msgstr "Сплату дозволено"
-
-# @ jigoshop
-#: ../gateways/futurepay.php:496 ../gateways/futurepay.php:502
-#, php-format
-msgid "Payment %s via FuturePay."
-msgstr "Сплата %s через FuturePay."
-
-# @ jigoshop
-#: ../gateways/paypal.php:73
-#, php-format
-msgid "PayPal Standard %s"
-msgstr "Стандартний PayPal %s"
-
-# @ jigoshop
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../gateways/paypal.php:73
 msgid ""
 "PayPal Standard works by sending the user to <a href=\"https://www.paypal."
@@ -8234,10 +7480,6 @@ msgid "Enable PayPal sandbox"
 msgstr "Увімкнути пісочницю PayPal"
 
 #: ../gateways/paypal.php:144
-<<<<<<< HEAD
-#, fuzzy
-=======
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 msgid ""
 "Turn on to enable the PayPal sandbox for testing.  Visit <a href=\"http://"
 "developer.paypal.com/\">http://developer.paypal.com/</a> for more "
@@ -8296,54 +7538,8 @@ msgid ""
 "PayPal Validation Error: Unknown \"txn_type\" of \"%s\" for Order ID: %s."
 msgstr ""
 "Помилка перевірки PayPal: Невідомий «txn_type» з «%s» для замовлення: %s."
-<<<<<<< HEAD
 
 #: ../gateways/paypal.php:578
-=======
-
-#: ../gateways/paypal.php:578
-#, php-format
-msgid ""
-"PayPal Validation Error: Order Invoice Number does NOT match PayPal posted "
-"invoice (%s) for Order ID: ."
-msgstr ""
-"Помилка перевірки PayPal: номер рахунку-фактури не збігається з надісланим на PayPal "
-"рахунком фактурою (%s) для замовлення: ."
-
-#: ../gateways/paypal.php:586
-#, php-format
-msgid ""
-"PayPal Validation Error: Payment amounts do not match initial order (gross "
-"%s)."
-msgstr ""
-"Помилка перевірки PayPal: розмір сплати не відповідає початковому замовленню (всього "
-"%s)."
-
-#: ../gateways/paypal.php:593
-#, php-format
-msgid ""
-"PayPal Validation Error: Payment Merchant email received does not match "
-"PayPal Gateway settings. (%s)"
-msgstr ""
-"Помилка перевірки PayPal: отримана електронна адреса купця Payment не збігається "
-"з налаштуваннями шлюзу PayPal. (%s)"
-
-#: ../gateways/paypal.php:600
-#, php-format
-msgid ""
-"PayPal Validation Error: Payment currency received (%s) does not match Shop "
-"currency."
-msgstr ""
-"Помилка перевірки PayPal: отримана грошова одиниця (%s) не відповідає валюті магазину."
-
-# @ jigoshop
-#: ../gateways/paypal.php:606
-msgid "IPN payment completed"
-msgstr "IPN-оплата завершена"
-
-# @ jigoshop
-#: ../gateways/paypal.php:615
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #, php-format
 msgid ""
 "PayPal Validation Error: Order Invoice Number does NOT match PayPal posted "
@@ -8352,7 +7548,6 @@ msgstr ""
 "Помилка перевірки PayPal: номер рахунку-фактури не збігається з надісланим "
 "на PayPal рахунком фактурою (%s) для замовлення: ."
 
-<<<<<<< HEAD
 #: ../gateways/paypal.php:586
 #, php-format
 msgid ""
@@ -8740,365 +7935,11 @@ msgstr ""
 #: ../gateways/worldpay.php:701
 msgid "Receive Error Logs"
 msgstr "Отримувати журнал помилок"
-
-=======
-#: ../gateways/worldpay.php:117
-msgid ""
-"The WorldPay gateway does not have values entered for <strong>Installation "
-"ID</strong> and the gateway is set to enabled.  Please enter your "
-"credentials for this or the gateway <strong>will not</strong> be available "
-"on the Checkout.  Disable the gateway to remove this warning."
-msgstr ""
-"Шлюз WorldPay не має значень для <strong>ідентифікатор встановлення</strong>, "
-"і шлюз увімкнено.  Будь ласка, введіть ваші ідентифікаційні дані для цього, "
-"або цей шлюз <strong>не буде</strong> доступний "
-"під час оформлення.  Вимкніть шлюз щоб прибрати це попередження."
-
-#: ../gateways/worldpay.php:121
-#, php-format
-msgid ""
-"The WorldPay gateway accepts payments in currencies of %s.  Your current "
-"currency is %s.  WorldPay won't work until you change the Jigoshop currency "
-"to an accepted one.  WorldPay is <strong>currently disabled</strong> on the "
-"Payment Gateways settings tab."
-msgstr ""
-"Шлюз WorldPay приймає платежі у грошових одиницях %s.  Ваша теперішня "
-"одиниця %s.  WorldPay не буде працювати, доки ви не зміните валюту Jigoshop "
-"на прийнятну.  WorldPay <strong>зараз вимкнено</strong> на сторінці налаштувань "
-"платіжних шлюзів."
-
-#: ../gateways/worldpay.php:126
-msgid ""
-"The WorldPay gateway <strong>Use MD5 Signature</strong> setting is enabled, "
-"but you have not entered a <strong>Secret Word</strong>.  The WorldPay "
-"gateway will not be available on the Checkout until you resolve this."
-msgstr ""
-"Налаштування шлюзу WorldPay <strong>Використовувати підпис MD5</strong> увімкнено, "
-"але ви не ввели <strong>Таємне слово</strong>.  Шлюз WorldPay "
-"не буде доступний при оформленні, доки ви з цим не розберетеся."
-
-# @ jigoshop
-#: ../gateways/worldpay.php:189
-msgid ""
-"Thank you for your order, please click the button below to pay with WorldPay."
-msgstr ""
-"Дякуємо за ваше замовлення, будь ласка, натисніть кнопку нижче, щоб сплатити "
-"з допомогою WorldPay."
-
-# @ jigoshop
-#: ../gateways/worldpay.php:303
-msgid "Pay via WorldPay"
-msgstr "Сплатити через WorldPay"
-
-# @ jigoshop
-#: ../gateways/worldpay.php:309
-msgid ""
-"Thank you for your order. We are now redirecting you to WorldPay to make a "
-"payment."
-msgstr ""
-"Дякуємо за ваше замовлення. Зараз ми перенаправляємо вас до WorldPay для "
-"здійснення сплати."
-
-#: ../gateways/worldpay.php:371
-#, php-format
-msgid ""
-"Your shop payment response password: '%s', WorldPay payment response "
-"password: '%s'.  The passwords for Payment Response Password from your "
-"Jigoshop WorldPay gateway settings and your WorldPay Merchant account do NOT "
-"match."
-msgstr ""
-"Пароль на відповідь про сплату у вашому магазині: '%s', пароль на відповідь про сплату "
-"WorldPay: '%s'.  Паролі на відповідь про сплату з налаштувань вашого шлюзу "
-"Jigoshop WorldPay і вашого облікового запису купця WorldPay не збігаються."
-
-#: ../gateways/worldpay.php:380
-#, php-format
-msgid ""
-"Your shop payment response password: '%s', WorldPay payment response "
-"password: '%s'.  If you are using a Payment Response Password, make sure it "
-"is entered in BOTH the WorldPay Gateway settings in Jigoshop AND in your "
-"WorldPay Merchant Account."
-msgstr ""
-"Пароль на відповідь про сплату у вашому магазині: '%s', пароль на відповідь про сплату "
-"WorldPay: '%s'.  Якщо ви використовуєте Payment Response Password, переконайтеся, "
-"що він уведений у налаштування шлюзу WorldPay у Jigoshop І у вашому обліковому записі "
-"купця WorldPay."
-
-#: ../gateways/worldpay.php:385
-#, php-format
-msgid ""
-"The Payment response came from IP: %s and Domain: %s -- and this does not "
-"appear to be a WorldPay domain."
-msgstr ""
-"Відповідь про сплату прийшла з IP: %s і домену: %s — це не схоже на "
-"домен WorldPay."
-
-#: ../gateways/worldpay.php:391 ../gateways/worldpay.php:493
-#, php-format
-msgid "Order #%s "
-msgstr "Замовлення №%s"
-
-#: ../gateways/worldpay.php:429
-#, php-format
-msgid ""
-"The currency paid in was different than the one requested. Order #: %s. "
-"Currency paid in: %s, the amount paid: %s. You should investigate further."
-msgstr ""
-"Грошова одиниця сплати відмінна від запитаної. Замовлення №: %s. "
-"Грошова одиниця сплати: %s, розмір сплати: %s. Вам слід розібратися ретельніше."
-
-#: ../gateways/worldpay.php:434
-#, php-format
-msgid ""
-"There were differences in the amounts received. Order #: %s. Submitted: %s, "
-"Paid: %s, Order Total: %s. You should investigate further."
-msgstr ""
-"Є відмінності у розмірах отриманого. Замовлення №: %s. Надіслано: %s, "
-"заплачено: %s, всього замовлення: %s. Вам слід розібратися ретельніше."
-
-#: ../gateways/worldpay.php:442
-#, php-format
-msgid ""
-"The currency submitted to WorldPay (%s) is different than the main currency "
-"of your shop (%s). You should investigate further."
-msgstr ""
-"Грошова одиниця, надіслана до WorldPay, (%s) відрізняється від головної одиниці "
-"вашого магазину (%s). Вам слід розібратися ретельніше."
-
-#: ../gateways/worldpay.php:447
-#, php-format
-msgid ""
-"The order total (%s) is different than the amount submitted to WorldPay "
-"(%s). You should investigate further."
-msgstr ""
-"Всього замовлення (%s) відрізняється від обсягу, надісланого до WorldPay "
-"(%s). Вам слід розібратися ретельніше."
-
-#: ../gateways/worldpay.php:454
-#, php-format
-msgid ""
-"Order was paid to installation ID: %s, which is different than the "
-"Installation ID set in your shop: %s. You should investigate further."
-msgstr ""
-"Замовлення було сплачене ідентифікаторові: %s, який відрізняється "
-"від ідентифікатора, встановленого у вашому магазині: %s. Вам слід розібратися ретельніше."
-
-#: ../gateways/worldpay.php:458
-#, php-format
-msgid ""
-"Payment with the same transaction ID (%s) was already processed for this "
-"order. You should investigate further."
-msgstr ""
-"Платіж з таким самим ідентифікатором транзакції (%s) вже було опрацьовано для цього "
-"замовлення. Вам слід розібратися ретельніше."
-
-#: ../gateways/worldpay.php:462
-msgid ""
-"Your shop is in Live mode, but you received a Test mode transaction. You "
-"should investigate further."
-msgstr ""
-"Ваш магазин у ефірі, але ви отримали транзакцію тестового режиму. Вам "
-"слід розібратися ретельніше."
-
-#: ../gateways/worldpay.php:468
-msgid "WorldPay payment completed. Transaction ID: "
-msgstr "Платіж WorldPay здійснено. Транзакція: "
-
-#: ../gateways/worldpay.php:480
-msgid "TESTMODE: WorldPay payment completed. Transaction ID: "
-msgstr "ТЕСТУВАННЯ: платіж WorldPay здійснено. Транзакція: "
-
-#: ../gateways/worldpay.php:506
-msgid "Order was canceled by customer at WorldPay."
-msgstr "Замовлення скасоване покупцем на WorldPay."
-
-#: ../gateways/worldpay.php:512
-msgid "TESTMODE: Order was canceled by customer at WorldPay."
-msgstr "ТЕСТУВАННЯ: Замовлення скасоване покупцем на WorldPay."
-
-#: ../gateways/worldpay.php:542
-#, php-format
-msgid "[%s] Jigoshop WorldPay Error Log for %s"
-msgstr "[%s] Журнал помилок Jigoshop WorldPay для %s"
-
-#: ../gateways/worldpay.php:546
-msgid "Errors logged during the Jigoshop WorldPay payment response validation:"
-msgstr "Помилки, записані під час перевірки відповіді про платіж WorldPay:"
-
-#: ../gateways/worldpay.php:595
-#, php-format
-msgid "WorldPay %s"
-msgstr "WorldPay %s"
-
-#: ../gateways/worldpay.php:597
-#, php-format
-msgid ""
-"To ensure your <strong>Preferential Jigoshop Partner Rates</strong>, please "
-"complete your %s.  Merchants who fail to register here will be put on "
-"WorldPay standard new business accounts which carry higher rates.<br/><br/"
-">The WorldPay gateway uses a Dynamic Response URL. You <strong>must "
-"activate</strong> this in your %s with the following:<br/>1) Go to "
-"<strong>WorldPay Merchant Interface -> Installations -> Integration Setup "
-"(TEST / PRODUCTION)</strong><br/>2) Check the <strong>Payment Response "
-"enabled?</strong> checkbox. <br/>3) Copy and Paste the full tag in bold "
-"<strong>&lt;wpdisplay item=MC_callback&gt;</strong> to the <strong>Payment "
-"Response URL</strong> input field.<br/>4) Check the <strong>Enable the "
-"Shopper Response</strong> checkbox. <br/>5) Save Changes."
-msgstr ""
-"Щоб забезпечити ваші <strong>тарифи з перевагами для партнера Jigoshop</strong>, будь ласка, "
-"заповніть ваш %s.  Для купців, які тут не зареєструються, буде вибрано "
-"стандартний обліковий запис WorldPay для нових записів, який встановлює вищі ціни.<br/><br/"
-">Шлюз WorldPay використовує URL динамічної відповіді. Вам <strong>слід "
-"активувати</strong> це у вашому %s таким чином:<br/>1) Перейдіть до "
-"<strong>Інтерфейс купця WorldPay → Встановлення → Налаштування інтеграції "
-"(ТЕСТ / РОБОТА)</strong><br/>2) Встановіть галочку <strong>Відповідь про платіж "
-"увімкнена?</strong>. <br/>3) Скопіюйте і вставте повний тег, виділений жирним шрифтом, "
-"<strong>&lt;wpdisplay item=MC_callback&gt;</strong> у поле введення <strong>Payment "
-"Response URL</strong>.<br/>4) Поставте галочку <strong>Увімкнути Enable the "
-"Shopper Response</strong>. <br/>5) Збережіть зміни."
-
-# @ jigoshop
-#: ../gateways/worldpay.php:604
-msgid "Enable WorldPay"
-msgstr "Увімкнути WorldPay"
-
-# @ jigoshop
-#: ../gateways/worldpay.php:619
-msgid ""
-"This controls the title which the user sees during checkout and also appears "
-"as the Payment Method on final Orders."
-msgstr ""
-"Контролює заголовок, який бачить покупець під час сплати, а також "
-"показується як метод сплати у кінцевому замовленні."
-
-#: ../gateways/worldpay.php:621
-msgid "Credit Card via WorldPay"
-msgstr "Кредитною карткою через WorldPay"
-
-#: ../gateways/worldpay.php:630
-msgid ""
-"When you Place your Order, you will be directed to the secured WorldPay "
-"servers to enter your credit card information.  (Your Billing Address above "
-"must match that used on your Credit Card)"
-msgstr ""
-"Коли ви надсилаєте замовлення, ваш оглядач надішлють на захищені сервери WorldPay, "
-"щоб ввести інформацію про кредитну картку.  (Ваша адреса надсилання рахунку вище "
-"має збігатися з адресою вашої кредитної картки)"
-
-#: ../gateways/worldpay.php:635
-msgid "Enable WorldPay Test Mode"
-msgstr "Увімкнути тестовий режим WorldPay"
-
-#: ../gateways/worldpay.php:648
-msgid "Installation ID"
-msgstr "Ідентифікатор"
-
-# @ jigoshop
-#: ../gateways/worldpay.php:650
-msgid "Please enter your WorldPay Installation ID."
-msgstr "Будь ласка, вкажіть ваш ідентифікатор WorldPay."
-
-# @ jigoshop
-#: ../gateways/worldpay.php:657
-msgid "Payment Response Password"
-msgstr "Пароль на відповідь про сплату"
-
-#: ../gateways/worldpay.php:659
-msgid ""
-"This option adds an additional security check to the Payment Response sent "
-"from WorldPay to Jigoshop, to help validate that the Payment has been sent "
-"from WorldPay<br/>1. Add a <strong>'Payment Response Password'</strong> here "
-"<br/>2. Add the password in <strong>Merchant Interface->Installations-"
-">Integration Setup (TEST or PRODUCTION)-><em>Payment Response Password</em></"
-"strong> field.<br/>Leave both empty to skip this check."
-msgstr ""
-"Ця опція додає перевірку безпеки до відповіді про платіж, яка надсилається "
-"з WorldPay до Jigoshop, щоб переконатися, що платіж було надіслано з "
-"WorldPay<br/>1. Додайте <strong>'Пароль на відповідь про платіж'</strong> тут "
-"<br/>2. Додайте пароль у поле <strong>Інтерфейс купця→Встановлення→"
-"Налаштування інтеграції (ТЕСТ чи РОБОТА)→<em>Пароль на відповідь про платіж</em></"
-"strong>.<br/>Залиште обидва порожніми, щоб пропустити цю перевірку."
-
-#: ../gateways/worldpay.php:666
-msgid "Use MD5 SignatureFields"
-msgstr "Використовувати підпис MD5"
-
-#: ../gateways/worldpay.php:668
-msgid ""
-"This option enables you to use a 'MD5 + secret word' encrypted signature "
-"before sending order details to WorldPay as a measure against unauthorized "
-"tampering.<br/>The signature will encrypt the mandatory parameters "
-"(Installation Id, Order Id, amount, currency).<br/>To enable:<br/>1) Copy "
-"the exact phrase (case sensitive, in bold) shown under the setting checkbox."
-"<br>2) Paste into your <strong>WorldPay Merchant Interface -> Installations -"
-"> Integration Setup (TEST or PRODUCTION) -><em>SignatureFields</em></strong> "
-"input box and also enable this setting checkbox.<br>2) You must also enter a "
-"<strong>Secret Word</strong> in the next setting and save the settings."
-msgstr ""
-"Ця опція дозволяє вам використовувати зашифрований підпис 'MD5 + таємне слово' "
-"перед надсиланням деталей замовлення до WorldPay як захід проти не санкціонованого "
-"втручання.<br/>Підпис зашифрує обов’язкові параметри "
-"(ідентифікатор, номер замовлення, обсяг, грошова одиниця).<br/>Щоб увімкнути:<br/>1) Скопіюйте "
-"точну фразу (зважаючи на регістр, жирним), яку показано під налаштуваннями."
-"<br>2) Вставте у поле введення <strong>Інтерфейс купця WorldPay → Встановлення →"
-" Налаштування інтеграції (TEST чи РОБОТА) →<em>SignatureFields</em></strong> "
-" і також увімкніть ці налаштування.<br>2) Ви також маєте ввести "
-"<strong>таємне слово</strong> у наступне поле, і зберегти налаштування."
-
-# @ jigoshop
-#: ../gateways/worldpay.php:679
-msgid "Secret Word"
-msgstr "Таємне слово"
-
-#: ../gateways/worldpay.php:681
-msgid ""
-"<strong>(REQUIRED IF MD5 SIGNATURE IS ENABLED)</strong> Enter here the "
-"Secret Word you will use to hash the MD5 signature. The word needs to be up "
-"to 16 characters, known only to yourself and to WorldPay.<br/> This secret "
-"must also be entered into the <strong>WorldPay Merchant Interface -> "
-"Installations -> Integration Setup (TEST or PRODUCTION) -><em>MD5 secret for "
-"transactions</em></strong> field."
-msgstr ""
-"<strong>(НЕОБХІДНО, ЯКЩО ПІДПИС MD5 УВІМКНЕНО)</strong> Уведіть тут "
-"таємне слово, яку використати для створення підпису MD5. Слово має бути не довше, ніж "
-"16 символів, відоме тільки вам і WorldPay.<br/> Цю таємницю "
-"потрібно також увести у поле <strong>Інтерфейс купця WorldPay → "
-"Встановлення → Налаштування інтеграції (TEST чи РОБОТА) →<em>таємниця MD5 для "
-"перекладів</em></strong>."
-
-#: ../gateways/worldpay.php:688
-msgid "Fixed Payment Currency"
-msgstr "Фіксована грошова одиниця для сплати"
-
-#: ../gateways/worldpay.php:690
-msgid ""
-"This option hides the currency menu on the WorldPay page, which will fix the "
-"currency that the shopper must purchase in.<br/><b>The currency submitted is "
-"the main currency of your Shop.</b>  With this option disabled, customers "
-"will be able to select their currency and see the corrected price for the "
-"Order."
-msgstr ""
-"Ця опція ховає меню грошової одиниці на сторінці WorldPay, що фіксує "
-"грошову одиницю, за яку можна купувати.<br/><b>Надіслана одиниця — "
-"це основна валюта вашого магазину.</b>  Коли це вимкнено, покупці "
-"зможуть вибирати їхню грошову одиницю і бачити виправлену ціну "
-"замовлення."
-
-#: ../gateways/worldpay.php:701
-msgid "Receive Error Logs"
-msgstr "Отримувати журнал помилок"
-
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 #: ../gateways/worldpay.php:703
 msgid ""
 "Do you want to receive emails for the error logs from Jigoshop security/"
 "fraud checks."
-<<<<<<< HEAD
 msgstr "Чи хочете отримувати електронні листи з журналом перевірок безпеки."
-=======
-msgstr ""
-"Чи хочете отримувати електронні листи з журналом перевірок безпеки."
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 
 #: ../gateways/worldpay.php:714
 msgid "Email error logs to"
@@ -10511,15 +9352,9 @@ msgid ""
 "boxes below and press return. This was given to you on your receipt and in "
 "the confirmation email you should have received."
 msgstr ""
-<<<<<<< HEAD
 "Щоб відстежити ваше замовлення, будь ласка, введіть номер вашого замовлення "
 "й ел. адресу у поля нижче.Їх було вам дано в чеку й електронному листі з "
 "підтвердженням, який ви мали отримати."
-=======
-"Щоб відстежити ваше замовлення, будь ласка, введіть номер вашого "
-"замовлення й ел. адресу у поля нижче.Їх було вам дано в чеку й електронному "
-"листі з підтвердженням, який ви мали отримати."
->>>>>>> 2a251f3756b10f31e2001c8f74c63473bc2c61f8
 
 # @ jigoshop
 #: ../shortcodes/order_tracking.php:192
