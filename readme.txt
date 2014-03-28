@@ -112,6 +112,20 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 4. Standard customer checkout screen
 
 == Changelog ==
+
+= 1.8.2 - 2014-03-28 =
+* New: Jigoshop manages its assets through new API `jigoshop_add_style()` and `jigoshop_add_script()`
+* Tweak: PayPal landing page will now show Credit Card entry fields by default
+* Tweak: Remove duplicated values from System Info
+* Tweak: Redirect after error while adding product into cart
+* Fix: Use calculated order price when using PayPal Standard gateway
+* Fix: Force 0.01 charge on free orders at PayPal to allow it to process through PayPal
+* Fix: Jigoshop categories widget will again use a pop-up select when 'dropdown' setting is enabled
+* Languages: New Chinese Taiwan translation courtesy of Eason Chen
+* Languages: Updated Danish translation courtesy of Tine Kristensen
+* Languages: Updated German translation courtesy of Andy Jordan
+* Languages: Updated Polish translation courtesy of OptArt
+
 = 1.8.1 - 2014-01-03 =
 * Tweak: Variations that are all priced the same will no longer show the secondary price when selected
 * Tweak: Free Shipping module only activates on totals after applied coupon amounts
