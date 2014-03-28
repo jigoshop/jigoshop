@@ -37,11 +37,11 @@ Manage your stock levels and customer orders easily. Jigoshop has been engineere
 
 Extend Jigoshop with Payment Gateways, Shipping Methods, and various other plugins:
 
-http://jigoshop.com/product-category/extensions/
+http://www.jigoshop.com/product-category/extensions/
 
 Premium themes optimised for Jigoshop:
 
-http://jigoshop.com/product-category/themes
+http://www.jigoshop.com/product-category/themes/
 
 = MORE INFO =
 
@@ -49,7 +49,7 @@ Built upon the WordPress core you get all the benefits of this global leading pl
 
 Find out more on our official Jigoshop website:
 
-http://jigoshop.com
+http://www.jigoshop.com/
 
 == Installation ==
 
@@ -78,7 +78,7 @@ Take a look through our <a href="http://forum.jigoshop.com/kb/" title="Jigoshop 
 
 = Will Jigoshop work with X theme? =
 
-Jigoshop will in theory work with any theme, but of course, certain parts may need to be styled using CSS to make them match up. We've added default styling for Twenty Ten (the WordPress default theme) and we also offer <a href="http://jigoshop.com/product-category/themes/">premium themes optimised for Jigoshop</a>.
+Jigoshop will in theory work with any theme, but of course, certain parts may need to be styled using CSS to make them match up. We've added default styling for Twenty Ten (the WordPress default theme) and we also offer <a href="http://www.jigoshop.com/product-category/themes/">premium themes optimised for Jigoshop</a>.
 
 If you need a theme built, or have a theme that needs styling, <a href="http://jigowatt.co.uk/contact/">give us a shout</a> and we may be able to assist.
 
@@ -89,7 +89,7 @@ You can also <a href="http://forum.jigoshop.com/kb/customize-jigoshop/languages"
 
 = Which payment gateways do you have? =
 
-Take a look through <a href="http://forum.jigoshop.com/kb/jigoshop-settings/payment-gateways">our list of payment gateways</a>. There are some free ones that are included with Jigoshop, and even more are available <a href="http://jigoshop.com/product-category/extensions/">on jigoshop.com</a>.
+Take a look through <a href="http://forum.jigoshop.com/kb/jigoshop-settings/payment-gateways">our list of payment gateways</a>. There are some free ones that are included with Jigoshop, and even more are available <a href="http://www.jigoshop.com/product-category/extensions/">on jigoshop.com</a>.
 
 = Will tax settings work in my country? =
 
@@ -102,7 +102,7 @@ You're in luck! We offer <a href="http://jigowatt.co.uk">optimised hosting packa
 = I need help! =
 
 We have a <a href="http://forum.jigoshop.com" title="Jigoshop support forum">community forum</a> for getting help from other users.
-However, if you want priority, dedicated support from Jigoshop staff, we do offer <a href="http://jigoshop.com/support/" title="Jigoshop Premium Support">premium support packages</a>.
+However, if you want priority, dedicated support from Jigoshop staff, we dp offer <a href="http://www.jigoshop.com/support/" title="Jigoshop Premium Support">premium support packages</a>.
 
 == Screenshots ==
 
@@ -112,6 +112,21 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 4. Standard customer checkout screen
 
 == Changelog ==
+
+= 1.8.2 - 2014-03-28 =
+* New: Jigoshop manages its assets through new API `jigoshop_add_style()` and `jigoshop_add_script()`
+* Tweak: PayPal landing page will now show Credit Card entry fields by default
+* Tweak: Remove duplicated values from System Info
+* Tweak: Redirect after error while adding product into cart
+* Fix: Use calculated order price when using PayPal Standard gateway
+* Fix: Force 0.01 charge on free orders at PayPal to allow it to process through PayPal
+* Fix: Jigoshop categories widget will again use a pop-up select when 'dropdown' setting is enabled
+* Fix: Resolve problems with Ukrainian translation
+* Languages: New Chinese Taiwan translation courtesy of Eason Chen
+* Languages: Updated Danish translation courtesy of Tine Kristensen
+* Languages: Updated German translation courtesy of Andy Jordan
+* Languages: Updated Polish translation courtesy of OptArt
+
 = 1.8.1 - 2014-01-03 =
 * Tweak: Variations that are all priced the same will no longer show the secondary price when selected
 * Tweak: Free Shipping module only activates on totals after applied coupon amounts
@@ -189,7 +204,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we do offe
 * New: Add Setting for Default Payment gateway on the Checkout
 * New: Add new FuturePay US gateway into the core.  Buy now, pay later, no credit card.
 * New: Remove Skrill gateway from the core.
-	* Updated standalone version is available: http://jigoshop.com/product/jigoshop-skrill/
+	* Updated standalone version is available: http://www.jigoshop.com/product/jigoshop-skrill/
 * Tweak: Re-factor Checkout display to increase conversions (affects form.php and review_order.php in themes)
 * Tweak: Eliminate Checkout errors from themes loading old jQuery. Jigoshop forces WordPress version to load.
 * Tweak: Replace product image lightbox implementation for W3C compliance

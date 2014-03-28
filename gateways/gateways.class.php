@@ -12,7 +12,7 @@
  * @category            Checkout
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 class jigoshop_payment_gateways extends Jigoshop_Singleton {
@@ -26,11 +26,11 @@ class jigoshop_payment_gateways extends Jigoshop_Singleton {
 		// this constructor is called on the 'init' hook with a priority of 0 (highest)
 		// gateways will need to add themselves to the Jigoshop filter 'jigoshop_payment_gateways' prior to this
 		self::gateway_inits();
-		
+
 	}
 
 	public static function gateway_inits() {
-		
+
 		// Gateways need to add themselves to this filter -prior- to the 'init' action hook
     	$load_gateways = apply_filters('jigoshop_payment_gateways', array());
 
@@ -69,5 +69,5 @@ class jigoshop_payment_gateways extends Jigoshop_Singleton {
 
 		return apply_filters( 'jigoshop_available_payment_gateways', $_available_gateways );
 	}
-    
+
 }

@@ -14,7 +14,7 @@
  * @category            Admin
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -303,7 +303,7 @@ function jigoshop_product_data_box() {
 					'selected'      => get_post_meta( $post->ID, 'customizable', true ),
 				);
 				echo Jigoshop_Forms::select( $args );
-				
+
 				// Customizable length
 				$args = array(
 					'id'            => 'customized_length',
@@ -315,9 +315,9 @@ function jigoshop_product_data_box() {
 				echo Jigoshop_Forms::input( $args );
 			?>
 			</fieldset>
-			
+
 		</div>
-		
+
 		<?php if (Jigoshop_Base::get_options()->get_option('jigoshop_manage_stock')=='yes') : ?>
 		<div id="inventory" class="panel jigoshop_options_panel">
 			<fieldset>
@@ -451,7 +451,7 @@ function jigoshop_product_data_box() {
 				'desc'          => __( 'Leave blank for unlimited re-downloads', 'jigoshop' ),
 			);
 			echo Jigoshop_Forms::input( $args );
-			
+
 			do_action( 'additional_downloadable_product_type_options' );
 			?>
 			</fieldset>
@@ -511,10 +511,10 @@ function display_attribute() {
 
 	$i = -1;
 	foreach ($attribute_taxonomies as $tax) :
-		
+
 		$i++;
 		$attribute = array();
-		
+
 		$attribute_taxonomy_name = sanitize_title($tax->attribute_name);
 		if (isset($attributes[$attribute_taxonomy_name])) $attribute = $attributes[$attribute_taxonomy_name];
 		$position = (isset($attribute['position'])) ? $attribute['position'] : -1;
@@ -525,7 +525,7 @@ function display_attribute() {
 			$allterms = array();
 		}
 		$has_terms = ! ( is_wp_error( $allterms ) || empty( $allterms ) );
-		
+
 		$term_slugs = array();
 		if ( ! is_wp_error($allterms) && ! empty($allterms) ) :
 			foreach ($allterms as $term) :
@@ -533,7 +533,7 @@ function display_attribute() {
 			endforeach;
 		endif;
 		?>
-	
+
 		<div class="postbox attribute <?php if ( $has_terms ) echo 'closed'; ?> <?php echo esc_attr( $attribute_taxonomy_name ); ?>" data-attribute-name="<?php echo esc_attr( $attribute_taxonomy_name ); ?>" rel="<?php echo $position; ?>"  <?php if ( !$has_terms ) echo 'style="display:none"'; ?>>
 			<button type="button" class="hide_row button"><?php _e('Remove', 'jigoshop'); ?></button>
 			<div class="handlediv" title="<?php _e('Click to toggle', 'jigoshop') ?>"><br></div>
@@ -541,23 +541,23 @@ function display_attribute() {
 			<?php $label = ($tax->attribute_label) ? $tax->attribute_label : $tax->attribute_name;
 			echo esc_attr ( $label ); ?>
 			</h3>
-	
+
 			<input type="hidden" name="attribute_names[<?php echo $i; ?>]" value="<?php echo esc_attr( sanitize_title ( $tax->attribute_name ) ); ?>" />
 			<input type="hidden" name="attribute_is_taxonomy[<?php echo $i; ?>]" value="1" />
 			<input type="hidden" name="attribute_enabled[<?php echo $i; ?>]" value="1" />
 			<input type="hidden" name="attribute_position[<?php echo $i; ?>]" class="attribute_position" value="<?php echo esc_attr( $position ); ?>" />
-	
+
 			<div class="inside">
 				<table>
 					<tr>
 						<td class="options">
 							<input type="text" class="attribute-name" name="attribute_names[<?php echo $i; ?>]" value="<?php echo esc_attr( $label ); ?>" disabled="disabled" />
-	
+
 							<div>
 								<label>
 									<input type="checkbox" <?php checked(boolval( isset($attribute['visible']) ? $attribute['visible'] : 1 ), true); ?> name="attribute_visibility[<?php echo $i; ?>]" value="1" /><?php _e('Display on product page', 'jigoshop'); ?>
 								</label>
-	
+
 								<?php if ($tax->attribute_type!="select") : // always disable variation for select elements ?>
 								<label class="attribute_is_variable">
 									<input type="checkbox" <?php checked(boolval( isset($attribute['variation']) ? $attribute['variation'] : 0 ), true); ?> name="attribute_variation[<?php echo $i; ?>]" value="1" /><?php _e('Is for variations', 'jigoshop'); ?>
@@ -583,9 +583,9 @@ function display_attribute() {
 									endif;
 									?>
 								</select>
-	
+
 							<?php elseif ($tax->attribute_type=="multiselect") : ?>
-	
+
 								<div class="multiselect">
 									<?php
 									if (taxonomy_exists('pa_'.$attribute_taxonomy_name)) :
@@ -610,7 +610,7 @@ function display_attribute() {
 									<a class="toggle" href="#"><?php _e('Toggle','jigoshop');?></a>&nbsp;|
 									<a class="show-all" href="#"><?php _e('Show All','jigoshop'); ?></a>
 								</div>
-	
+
 							<?php elseif ($tax->attribute_type=="text") : ?>
 								<textarea name="attribute_values[<?php echo esc_attr( $i ); ?>]"><?php
 									if ($allterms) :
@@ -642,28 +642,28 @@ function display_attribute() {
 			<button type="button" class="hide_row button"><?php _e('Remove', 'jigoshop'); ?></button>
 			<div class="handlediv" title="<?php _e('Click to toggle', 'jigoshop') ?>"><br></div>
 			<h3 class="handle"><?php echo esc_attr( $attribute['name'] ); ?></h3>
-	
+
 			<input type="hidden" name="attribute_is_taxonomy[<?php echo $i; ?>]" value="0" />
 			<input type="hidden" name="attribute_enabled[<?php echo $i; ?>]" value="1" />
 			<input type="hidden" name="attribute_position[<?php echo $i; ?>]" class="attribute_position" value="<?php echo esc_attr( $position ); ?>" />
-	
+
 			<div class="inside">
 				<table>
 					<tr>
 						<td class="options">
 							<input type="text" class="attribute-name" name="attribute_names[<?php echo $i; ?>]" value="<?php echo esc_attr( $attribute['name'] ); ?>" />
-	
+
 							<div>
 								<label>
 									<input type="checkbox" <?php checked(boolval( isset($attribute['visible']) ? $attribute['visible'] : 0 ), true); ?> name="attribute_visibility[<?php echo $i; ?>]" value="1" /><?php _e('Display on product page', 'jigoshop'); ?>
 								</label>
-	
+
 								<label class="attribute_is_variable">
 									<input type="checkbox" <?php checked(boolval( isset($attribute['variation']) ? $attribute['variation'] : 0 ), true); ?> name="attribute_variation[<?php echo $i; ?>]" value="1" /><?php _e('Is for variations', 'jigoshop'); ?>
 								</label>
 							</div>
 						</td>
-	
+
 						<td class="value">
 							<textarea name="attribute_values[<?php echo esc_attr( $i ); ?>]" cols="5" rows="2"><?php echo esc_textarea( apply_filters('jigoshop_product_attribute_value_custom_edit',$attribute['value'], $attribute) ); ?></textarea>
 						</td>

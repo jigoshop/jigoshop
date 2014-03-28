@@ -12,7 +12,7 @@
  * @category            Catalog
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 ?>
 
@@ -32,7 +32,7 @@
 		echo apply_filters('the_content', $shop_page->post_content);
 	?>
 
-	<?php 
+	<?php
 	ob_start();
 	jigoshop_get_template_part( 'loop', 'shop' );
 	$products_list_html = ob_get_clean();

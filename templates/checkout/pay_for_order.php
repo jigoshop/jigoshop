@@ -12,11 +12,11 @@
  * @category            Checkout
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 ?>
 
-<?php global $order; 
+<?php global $order;
       $jigoshop_options = Jigoshop_Base::get_options();?>
 <form id="order_review" method="post">
 
@@ -50,10 +50,10 @@
                     <td colspan="2"><?php _e('Discount', 'jigoshop'); ?></td>
                     <td>-<?php echo jigoshop_price($order->order_discount); ?></td>
                 </tr>
-                <?php 
+                <?php
             endif;
             if (($jigoshop_options->get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
-              || ($jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) : 
+              || ($jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) :
                 ?><tr>
                     <td colspan="2"><?php _e('Subtotal', 'jigoshop'); ?></td>
                     <td><?php echo jigoshop_price($order->order_discount_subtotal); ?></td>
@@ -70,7 +70,7 @@
                         <?php
                     endif;
                 endforeach;
-            endif; 
+            endif;
             if ($jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'no' && $order->order_discount > 0) : ?><tr class="discount">
                     <td colspan="2"><?php _e('Discount', 'jigoshop'); ?></td>
                     <td>-<?php echo jigoshop_price($order->order_discount); ?></td>

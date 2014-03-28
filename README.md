@@ -1,9 +1,8 @@
-[Jigoshop](http://jigoshop.com)
-=================
+# [Jigoshop](http://www.jigoshop.com)
+
 Jigoshop is a feature-packed eCommerce plugin built upon Wordpress core functionality ensuring excellent performance and customizability.
 
-Quick start
------------
+## Quick start
 
 To get started, [check out our installation guide](http://forum.jigoshop.com/kb/getting-started/installation)!
 
@@ -17,17 +16,15 @@ To get started, [check out our installation guide](http://forum.jigoshop.com/kb/
 
 	https://github.com/jigoshop/jigoshop/zipball/master
 
-Bug tracker
------------
+## Bug tracker
 
 Have a bug? Please create an issue here on GitHub!
 
 https://github.com/jigoshop/jigoshop/issues
 
-Contributing
-------------
-See CONTRIBUTING.md
-------------
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 Anyone and everyone is welcome to contribute. Jigoshop wouldn't be what it is today without the github community.
 
@@ -37,10 +34,13 @@ There are several ways you can help out:
 * Submit bug fixes or offer new features / improvements by sending [pull requests](http://help.github.com/send-pull-requests/).
 * Offering [your own translations](http://forum.jigoshop.com/kb/shortcodes/languages).
 
-Project information
--------------------
+## Change Log
 
-* Web: http://jigoshop.com
+See [CHANGELOG.md](CHANGELOG.md)
+
+## Project information
+
+* Web: http://www.jigoshop.com
 * Docs: http://forum.jigoshop.com/kb
 * Twitter: http://twitter.com/jigoshop
 * Source: http://github.com/jigoshop/jigoshop
