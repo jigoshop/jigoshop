@@ -12,7 +12,7 @@
  * @category            Widgets
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 class Jigoshop_Widget_User_Login extends WP_Widget {
@@ -106,7 +106,7 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 				wp_register(__('New user?','jigoshop') . ' ' , '');
 				echo '</p>';
 			}
-			
+
 			echo "</form>";
 
 			do_action( 'jigoshop_widget_login_after_form' );

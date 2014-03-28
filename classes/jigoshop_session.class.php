@@ -12,20 +12,20 @@
  * @category            Checkout
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 class jigoshop_session extends Jigoshop_Singleton {
-	
+
 	static $cart_transient_prefix = "jigo_usercart_";
-	
+
 	protected function __construct() {
 		if ( ! session_id()) session_start();
 	}
 
 	public function __get( $key ) {
 		// Intercept requests to the cart session variable and use the WordPress Transients API
-		// for cart persistence among authenticated users. If we're not logged in or can't find 
-		// a cart there, fall back to the session. This also ensures customers don't lose their 
+		// for cart persistence among authenticated users. If we're not logged in or can't find
+		// a cart there, fall back to the session. This also ensures customers don't lose their
 		// carts the first time this file is upgraded to use transients.
 		if ($key=='cart') {
 			global $current_user;

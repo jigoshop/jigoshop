@@ -14,7 +14,7 @@
  * @category            Admin
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 // Temporary fix for selectbox triggering the click event.
@@ -264,13 +264,13 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			}
 
 			update_post_meta( $ID, 'variation_data', $variation_data );
-			
-			do_action( 'jigoshop_variable_product_table_data_save' , $ID, $meta);	
+
+			do_action( 'jigoshop_variable_product_table_data_save' , $ID, $meta);
 		}
-		
+
 		// Update default attribute options setting
 		$default_attributes = array();
-  
+
 		foreach ($attributes as $attribute) {
 			if ( isset( $attribute['variation'] ) ) {
 				$value = 'default_attribute_' . sanitize_title($attribute['name']);
@@ -285,7 +285,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			}
   		}
 		update_post_meta( $parent_id, '_default_attributes', $default_attributes );
-		
+
 	}
 
 	public function display() {
@@ -337,7 +337,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 					?>
 				<?php endif; ?>
 			</div>
-			
+
 			<div class="toolbar">
 				<strong><?php _e('Default selections:', 'jigoshop'); ?></strong>
 				<?php
@@ -348,41 +348,41 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 						// If not variable attribute then skip
 						if ( ! isset( $attr['variation'] ) )
 							continue;
-  
+
 						// Get current value for variation (if set)
 						$selected = (isset($default_attributes[sanitize_title($attr['name'])])) ? $default_attributes[sanitize_title($attr['name'])] : '';
-  
+
 						// Open the select & set a default value
 						echo '<select name="default_attribute_' . sanitize_title($attr['name']).'" >';
 						$product = new jigoshop_product( $post->ID );
 						echo '<option value="">'.__('No default', 'jigoshop') . ' ' . $product->attribute_label('pa_'.$attr['name']).'&hellip;</option>';
-  
+
 						// Get terms for attribute taxonomy or value if its a custom attribute
 						if ( $attr['is_taxonomy'] ) {
-      
+
 							$options = wp_get_object_terms( $post->ID, 'pa_'.sanitize_title($attr['name']), array( 'orderby' => 'slug' ) );
 							if( ! is_wp_error( $options )) foreach( $options as $option ) {
 								echo '<option value="'.esc_attr($option->slug).'" '.selected($selected, $option->slug, false).'>'.$option->name.'</option>';
 							}
-      
+
 						}
 						else {
-      
+
  							$options = explode(',', $attr['value']);
 							foreach( $options as $option ) {
 								$option = trim($option);
 								echo '<option '.selected($selected, $option, false).' value="'.esc_attr($option).'">'.$option.'</option>';
 							}
-      
+
 						}
-  
+
 						// Close the select
-						echo '</select>';					
+						echo '</select>';
 
 					}
 				?>
 			</div>
-			
+
 		</div>
 	<?php
 	}
@@ -518,9 +518,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			<div class="inside">
 				<table cellpadding="0" cellspacing="0" class="jigoshop_variable_attributes">
 					<tbody>
-					
+
 						<?php do_action('jigoshop_variable_product_table_begin', $variation, $attributes)?>
-					
+
 						<tr>
 							<td class="upload_image" rowspan="2">
 								<a href="#" class="upload_image_button <?php if (isset($image_id)) echo 'remove'; ?>" rel="<?php echo $variation->ID; ?>">
@@ -604,9 +604,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 								&nbsp;
 							</td>
 						</tr>
-						
+
 						<?php do_action( 'jigoshop_variable_product_table_end' , $variation, $attributes)?>
-						
+
 					</tbody>
 				</table>
 			</div>

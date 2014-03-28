@@ -14,7 +14,7 @@
  * @category            Catalog
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 class jigoshop_product_variation extends jigoshop_product {
 
@@ -22,8 +22,8 @@ class jigoshop_product_variation extends jigoshop_product {
 	public $variation_data; // For formatting of variations
 	public $sale_price_dates_from;
 	public $sale_price_dates_to;
-	
-	
+
+
 	/**
 	 * Extends the parent constructor to overwrite with variable data
 	 *
@@ -53,12 +53,12 @@ class jigoshop_product_variation extends jigoshop_product {
 		$this->variation_id = $ID;
 		if ( isset( $this->meta['variation_data'][0] ))
 			$this->variation_data = maybe_unserialize( $this->meta['variation_data'][0] );
-		
+
 		$sale_from = $this->sale_price_dates_from;
 		$sale_to = $this->sale_price_dates_to;
-		
+
 		parent::__construct( $ID );
-				
+
 		// Restore the parent ID
 		$this->ID = $parent_id;
 		$this->id = $parent_id;
@@ -67,7 +67,7 @@ class jigoshop_product_variation extends jigoshop_product {
 		$this->sale_price_dates_to = $sale_to;
 		// signal parent stock tracking or variation stock tracking
 		$this->stock = $variable_stock == '-9999999' ? $variable_stock : $this->stock;
-		
+
 		return $this;
 	}
 
@@ -117,16 +117,16 @@ class jigoshop_product_variation extends jigoshop_product {
 	 * @return  bool
 	 */
 	public function is_on_sale() {
-		
+
 		$on_sale = false;
 		$time = current_time('timestamp');
-		
+
 		// Check if the sale is still in range (if we have a range)
 		if ( ! empty( $this->sale_price_dates_from ) && ! empty( $this->sale_price_dates_to ) ) {
 			if ( $this->sale_price_dates_from	<= $time &&
 				 $this->sale_price_dates_to >= $time &&
 				 $this->sale_price ) {
-				 
+
 				$on_sale = true;
 			}
 		}
@@ -178,7 +178,7 @@ class jigoshop_product_variation extends jigoshop_product {
 	 */
 	public function modify_stock( $by ) {
 		global $wpdb;
-		
+
 		// Only do this if we're updating
 		if ( ! $this->managing_stock() )
 			return false;
@@ -190,20 +190,20 @@ class jigoshop_product_variation extends jigoshop_product {
 		// Update & return the new value
 		update_post_meta( $this->variation_id, 'stock', $this->stock );
 		update_post_meta( $this->variation_id, 'stock_sold', $amount_sold );
-		
+
 		if ( self::get_options()->get_option('jigoshop_notify_no_stock_amount') >= 0
 			&& self::get_options()->get_option('jigoshop_notify_no_stock_amount') >= $this->stock
 			&& self::get_options()->get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) {
-			
+
 			$wpdb->update( $wpdb->posts, array( 'post_status' => 'draft' ), array( 'ID' => $this->variation_id ) );
-			
+
 		} else if ( $this->stock > self::get_options()->get_option('jigoshop_notify_no_stock_amount')
 			&& get_post_status( $this->variation_id ) == 'draft'
 			&& self::get_options()->get_option( 'jigoshop_hide_no_stock_product' )  == 'yes' ) {
-			
+
 			$wpdb->update( $wpdb->posts, array( 'post_status' => 'publish' ), array( 'ID' => $this->variation_id ) );
 		}
-		
+
 		return $this->stock;
 	}
 

@@ -12,7 +12,7 @@
  * @category            Admin
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 if (!function_exists ('add_action')) {
@@ -180,7 +180,7 @@ function jigoshop_pie_charts($id = '') {
 	if (empty($id)) return false;
 
 	$total = array_sum($this->pie_products);
-
+	if ($total != 0){
 	$values = array();
 	foreach ($this->pie_products as $name => $sales) $values[] = '{ label: "'.esc_attr(mb_substr($name, 0, 40)).'", data: '. (round($sales/$total, 3)*100).'}';
 
@@ -230,7 +230,7 @@ jQuery(function(){
 /* ]]> */
 </script>
 <?php
-
+	}
 }
 
 	function jigoshop_total_orders() {
@@ -263,7 +263,7 @@ jQuery(function(){
 		reset($found_products);
 
 		$this->pie_products = array();
-		
+
 		?>
 
 		<table class="table table-condensed">
@@ -541,7 +541,7 @@ jQuery(function(){
 							endif;
 
 							$order_total = apply_filters('jigoshop_reports_order_total_cost', $order_data->order_total, $order);
-							
+
 							if (isset($order_amounts[$time])) :
 								$order_amounts[$time] = $order_amounts[$time] + $order_total;
 							else :

@@ -14,7 +14,7 @@
  * @category            Customer
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 class jigoshop_customer extends Jigoshop_Singleton {
@@ -491,7 +491,7 @@ class jigoshop_customer extends Jigoshop_Singleton {
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 						  <label for="' . esc_attr( $args['name'] ) . '" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>';
 				$field .= '<select name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" class="'.esc_attr($input_required).'">';
-				foreach($option as $value=>$label){
+				foreach($args['options'] as $value=>$label){
 					$field .= '<option value="'.esc_attr($value).'"';
 					if (self::get_value($args['name'])==$value) $field .= 'selected="selected"';
 					$field .= '>'.__($label, 'jigoshop').'</option>';

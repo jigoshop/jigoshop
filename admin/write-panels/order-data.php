@@ -14,7 +14,7 @@
  * @category            Admin
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -66,7 +66,7 @@ function jigoshop_order_data_meta_box($post) {
 			<li><a href="#order_customer_shipping_data"><?php _e('Customer Shipping Address', 'jigoshop'); ?></a></li>
 
 			<?php do_action("jigoshop_order_data_tabs", $post, $data); ?>
-			
+
 		</ul>
 
 		<div id="order_data" class="panel jigoshop_options_panel">
@@ -144,7 +144,7 @@ function jigoshop_order_data_meta_box($post) {
 						$end
 					);
 				}
-				
+
                 foreach($billing_fields as $field_id => $field_desc) {
                     $field_id = 'billing_' . $field_id;
                     $field_value = '';
@@ -191,9 +191,9 @@ function jigoshop_order_data_meta_box($post) {
                 }
 			?>
 		</div>
-		
+
 		<?php do_action("jigoshop_order_data_panels", $post, $data); ?>
-		
+
 	</div>
 	<?php
 
@@ -495,8 +495,8 @@ function jigoshop_order_attributes_meta_box( $post ) {
                 <?php do_action( 'jigoshop_order_attributes_meta_box_before_item_title', $item_id ); ?>
                 <?php echo esc_html( isset( $item['name'] ) ? $item['name'] : '' ); ?>
             </b>
-            <?php            
-        
+            <?php
+
             $taxonomies_count = 0;
 
             // process only variations
@@ -511,7 +511,7 @@ function jigoshop_order_attributes_meta_box( $post ) {
 					$product = new jigoshop_product_variation( $item['variation_id'] );
 					$attr_label = str_replace('tax_', '', $identifier);
 					$attr_label = $product->attribute_label('pa_'.$attr_label);
-                    
+
                     $terms = get_terms( 'pa_'. $attr_tax->attribute_name, array( 'orderby' => 'slug', 'hide_empty' => false ) ); ?>
 
                     <div class="order-item-attribute" style="display:block">

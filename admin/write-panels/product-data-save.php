@@ -14,7 +14,7 @@
  * @category            Admin
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 class jigoshop_product_meta
 {
@@ -231,14 +231,14 @@ class jigoshop_product_meta
 
 		// Create empty attributes array
 		$attributes = array();
-		
+
 		foreach( $attr_values as $key => $value ) {
 
 			// Skip if no value
 			if ( empty( $value )) continue;
-			
+
 			$has_tax = false;
-			
+
 			if ( ! is_array( $value ) && isset( $attr_variation[$key] ) && $attr_variation[$key] ) {
 			 	$value = explode( ',', $value );
 			 	$value = array_map( 'trim', $value );
@@ -252,7 +252,7 @@ class jigoshop_product_meta
 				wp_set_object_terms( $post_id, $value, 'pa_'.sanitize_title($attr_names[$key]) );
 				$has_tax = true;
 			}
-			
+
 			$attributes[ sanitize_title($attr_names[$key]) ] = array(
 				'name'        => $attr_names[$key],
 				'value'       => $value,

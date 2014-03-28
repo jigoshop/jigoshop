@@ -13,7 +13,7 @@
  * @category            Checkout
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
 
@@ -21,7 +21,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
     protected $url; // url to connect to the shipping calculator server
     protected $user_id; // the user id to connect to the shipping servers
     protected $services; // services that have been selected to be used by wp-admin
-    
+
     /** constructor */
     public function __construct() {
         parent::__construct();
@@ -64,11 +64,11 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
 
                     // sums up the rates from flattened array, and generates amounts.
                     $rate = $this->retrieve_rate_from_response($xml_response);
-                    
+
                     if ($this->has_error()) :
                         jigoshop_log($xml_response, 'jigoshop_calculable_shipping');
                     endif;
-                    
+
                     $this->add_rate($rate, $current_service);
 
                 endif;
@@ -94,7 +94,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method {
 
                 // services are obtained from response
                 $services = $this->get_services_from_response($xml_response);
-                
+
                 if (empty($services)) :
                     jigoshop_log($xml_response, 'jigoshop_calculable_shipping');
                 endif;

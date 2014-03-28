@@ -12,7 +12,7 @@
  * @category            Checkout
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 function add_flat_rate_method( $methods ) {
@@ -25,9 +25,9 @@ add_filter( 'jigoshop_shipping_methods', 'add_flat_rate_method', 10 );
 class flat_rate extends jigoshop_shipping_method {
 
 	public function __construct() {
-		
+
 		parent::__construct();
-		
+
         $this->id 			= 'flat_rate';
         $this->enabled		= Jigoshop_Base::get_options()->get_option('jigoshop_flat_rate_enabled');
 		$this->title 		= Jigoshop_Base::get_options()->get_option('jigoshop_flat_rate_title');
@@ -39,7 +39,7 @@ class flat_rate extends jigoshop_shipping_method {
 		$this->fee 			= Jigoshop_Base::get_options()->get_option('jigoshop_flat_rate_handling_fee');
 
 		add_action( 'jigoshop_settings_scripts', array( &$this, 'admin_scripts' ) );
-		
+
     }
 
 	/**
@@ -47,14 +47,14 @@ class flat_rate extends jigoshop_shipping_method {
 	 *
 	 * These should be installed on the Jigoshop_Options 'Shipping' tab
 	 *
-	 */	
+	 */
 	protected function get_default_options() {
-	
+
 		$defaults = array();
-		
+
 		// Define the Section name for the Jigoshop_Options
 		$defaults[] = array( 'name' => __('Flat Rates', 'jigoshop'), 'type' => 'title', 'desc' => __('Flat rates let you define a standard rate per item, or per order.', 'jigoshop') );
-		
+
 		// List each option in order of appearance with details
 		$defaults[] = array(
 			'name'		=> __('Enable Flat Rate','jigoshop'),
@@ -68,7 +68,7 @@ class flat_rate extends jigoshop_shipping_method {
 				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
-		
+
 		$defaults[] = array(
 			'name'		=> __('Method Title','jigoshop'),
 			'desc' 		=> '',
@@ -77,7 +77,7 @@ class flat_rate extends jigoshop_shipping_method {
 			'std' 		=> __('Flat Rate','jigoshop'),
 			'type' 		=> 'text'
 		);
-		
+
 		$defaults[] = array(
 			'name'		=> __('Type','jigoshop'),
 			'desc' 		=> '',
@@ -90,7 +90,7 @@ class flat_rate extends jigoshop_shipping_method {
 				'item'			=> __('Per Item', 'jigoshop')
 			)
 		);
-		
+
 		$defaults[] = array(
 			'name'		=> __('Tax Status','jigoshop'),
 			'desc' 		=> '',
@@ -103,7 +103,7 @@ class flat_rate extends jigoshop_shipping_method {
 				'none'			=> __('None', 'jigoshop')
 			)
 		);
-		
+
 		$defaults[] = array(
 			'name'		=> __('Cost','jigoshop'),
 			'desc' 		=> '',
@@ -112,7 +112,7 @@ class flat_rate extends jigoshop_shipping_method {
 			'id' 		=> 'jigoshop_flat_rate_cost',
 			'std' 		=> '0',
 		);
-		
+
 		$defaults[] = array(
 			'name'		=> __('Handling Fee','jigoshop'),
 			'desc' 		=> '',
@@ -121,7 +121,7 @@ class flat_rate extends jigoshop_shipping_method {
 			'id' 		=> 'jigoshop_flat_rate_handling_fee',
 			'std' 		=> ''
 		);
-		
+
 		$defaults[] = array(
 			'name'		=> __('Method available for','jigoshop'),
 			'desc' 		=> '',
@@ -134,7 +134,7 @@ class flat_rate extends jigoshop_shipping_method {
 				'specific'		=> __('Specific Countries', 'jigoshop')
 			)
 		);
-		
+
 		$defaults[] = array(
 			'name'		=> __('Specific Countries','jigoshop'),
 			'desc' 		=> '',
@@ -143,13 +143,13 @@ class flat_rate extends jigoshop_shipping_method {
 			'std' 		=> '',
 			'type' 		=> 'multi_select_countries'
 		);
-		
+
 		return $defaults;
 	}
-	
+
     public function calculate_shipping() {
 
-		
+
     	$_tax = $this->get_tax();
 
     	$this->shipping_total 	= 0;
@@ -159,7 +159,7 @@ class flat_rate extends jigoshop_shipping_method {
 			// Shipping for whole order
 			$this->shipping_total = $this->cost + $this->get_fee( $this->fee, jigoshop_cart::$cart_contents_total );
             $this->shipping_total = ($this->shipping_total < 0 ? 0 : $this->shipping_total);
-        
+
 			if ( Jigoshop_Base::get_options()->get_option('jigoshop_calc_taxes')=='yes' && $this->tax_status=='taxable' ) :
 
 				// fix flat rate taxes for now. This is old and deprecated, but need to think about how to utilize the total_shipping_tax_amount yet
@@ -167,12 +167,12 @@ class flat_rate extends jigoshop_shipping_method {
                 //$_tax->calculate_shipping_tax( $this->shipping_total - jigoshop_cart::get_cart_discount_leftover(), $this->id );
                 //$this->shipping_tax = //$_tax->get_total_shipping_tax_amount();
 				//$this->shipping_tax = $this->get_selected_tax(0);
-				
+
 			endif;
 		else :
-            
+
 			// Shipping per item
-            if (sizeof(jigoshop_cart::$cart_contents)>0) : 
+            if (sizeof(jigoshop_cart::$cart_contents)>0) :
                 foreach (jigoshop_cart::$cart_contents as $item_id => $values) :
                     $_product = $values['data'];
                     if ($_product->exists() && $values['quantity']>0 && $_product->product_type <> 'downloadable') :

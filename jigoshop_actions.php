@@ -12,7 +12,7 @@
  * @category            Core
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -290,6 +290,7 @@ if ( ! function_exists( 'jigoshop_add_to_cart_action' )) { //make function plugg
 
 		if ( ! $product_added ) {
 			jigoshop::add_error( __('The Product could not be added to the cart.  Please try again.', 'jigoshop') );
+			wp_safe_redirect( remove_query_arg( array( 'add-to-cart', 'quantity', 'product_id', '_n' ), wp_get_referer() ), 301 ); exit;
 		} else {
 			switch ( $jigoshop_options->get_option('jigoshop_redirect_add_to_cart', 'same_page') ) {
 				case 'same_page':
@@ -605,7 +606,7 @@ function jigoshop_download_product() {
 				// Now try to replace upload URL
 				$file_path = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $file_path);
 			endif;
-			
+
 			$file_path = apply_filters('jigoshop_download_file_path', $file_path, $download_file, $order, $email);
 
 			// See if its local or remote
@@ -1057,9 +1058,9 @@ function jigoshop_validate_postcode() {
 
 	$country = (string) urldecode( stripslashes( strip_tags( $_GET['country'] )));
 	if ( empty( $country )) die();
-	
+
 	echo jigoshop_validation::is_postcode( $postcode, $country );
-	
+
 	die();
 }
 add_action( 'wp_ajax_jigoshop_validate_postcode', 'jigoshop_validate_postcode' );

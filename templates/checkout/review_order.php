@@ -12,9 +12,9 @@
  * @category            Checkout
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
- 
+
 $jigoshop_options = Jigoshop_Base::get_options(); ?>
 <div id="order_review">
 
@@ -117,9 +117,9 @@ $jigoshop_options = Jigoshop_Base::get_options(); ?>
 								</td>
 								<td><?php echo $values['quantity']; ?></td>
 								<td>
-                                <?php 
-                                    echo jigoshop_price($_product->get_price_excluding_tax()*$values['quantity'], array('ex_tax_label' => 1)); 
-                                ?></td>   
+                                <?php
+                                    echo jigoshop_price($_product->get_price_excluding_tax()*$values['quantity'], array('ex_tax_label' => 1));
+                                ?></td>
 							</tr>
 
 					<?php endif;

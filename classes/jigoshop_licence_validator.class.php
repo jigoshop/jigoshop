@@ -15,7 +15,7 @@
  * @category            Extensions
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  *
  * @version 1.2 - 2013-10-09
  */
@@ -23,7 +23,7 @@
 
 class jigoshop_licence_validator
 {
-	
+
 	private $identifier;        /* Product ID from the selling shop */
 	private $path;              /* full server path to this plugin folder */
 	private $file;              /* full server path to this plugin main file */
@@ -38,8 +38,8 @@ class jigoshop_licence_validator
 
 	private static $instance    = false;
 	private static $plugins     = array();
-	
-	
+
+
 	/**
 	 * Constructor for Licence Validator in each plugin
 	 *
@@ -49,7 +49,7 @@ class jigoshop_licence_validator
 	 */
 	public function __construct( $file, $identifier, $home_shop_url )
 	{
-		
+
 		$info = get_file_data( $file, array( 'Title' => 'Plugin Name', 'Version' => 'Version' ), 'plugin' );
 
 		$this->identifier	    = $identifier;
@@ -61,7 +61,7 @@ class jigoshop_licence_validator
 		$this->title		    = $info['Title'];
 		$this->version	        = $info['Version'];
 		$this->home_shop_url    = $home_shop_url;
-		
+
 		self::$plugins[$this->identifier] = array(
 			'version'       => $this->version,
 			'plugin_slug'   => $this->plugin_slug,
@@ -71,22 +71,22 @@ class jigoshop_licence_validator
 		);
 
 		if ( ! self::$instance ) {
-		
+
 			self::$instance = true;
-			
+
 			add_action( 'admin_menu', array( $this, 'register_nav_menu_link' ) );
-			
+
 			// define the alternative API for updating checking
 			add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_for_update' ));
 
 			// Define the alternative response for information checking
 			add_filter( 'plugins_api', array( $this, 'get_update_info'), 20, 3 );
-			
+
 		}
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Is Licence Active for this plugin
 	 *
@@ -106,8 +106,8 @@ class jigoshop_licence_validator
 
 		return $active;
 	}
-	
-	
+
+
 	/**
 	 * Displaying the error message in admin panel when plugin is activated without a valid licence key
 	 */
@@ -121,8 +121,8 @@ class jigoshop_licence_validator
 			</div>
 		<?php
 	}
-	
-	
+
+
 	/**
 	 * Adding the Manage Licences menu to Jigoshop Menu
 	 *
@@ -131,7 +131,7 @@ class jigoshop_licence_validator
 	public function register_nav_menu_link()
 	{
 		// Don't register the Jigoshop Manage Licences submenu if it's already available.
-		if ( $this->submenu_exists() ) { 
+		if ( $this->submenu_exists() ) {
 			return false;
 		}
 
@@ -143,10 +143,10 @@ class jigoshop_licence_validator
 			$this->validator_token,
 			array( $this, 'admin_manage_licences' )
 		);
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Method checks whether Jigoshop submenu option is already added by another extension
 	 *
@@ -170,8 +170,8 @@ class jigoshop_licence_validator
 
 		return $exists;
 	}
-	
-	
+
+
 	/**
 	 * Returns a set of licence keys for this site from the options table
 	 *
@@ -181,8 +181,8 @@ class jigoshop_licence_validator
 	{
 		return get_option( $this->validator_prefix . 'licence_keys' );
 	}
-	
-	
+
+
 	/**
 	 * Saves a new set of licence keys in database options table
 	 *
@@ -193,7 +193,7 @@ class jigoshop_licence_validator
 	{
 		return update_option( $this->validator_prefix . 'licence_keys', $keys );
 	}
-	
+
 
 	/**
 	 * Storing licence keys in database
@@ -279,8 +279,8 @@ class jigoshop_licence_validator
 		$this->set_keys( $keys );
 		return $messages;
 	}
-	
-	
+
+
 	/**
 	 * Add our self-hosted autoupdate plugin to the filter transient
 	 *
@@ -296,10 +296,10 @@ class jigoshop_licence_validator
 		$licence_email = isset( $keys[$this->identifier]['email'] )
 			? $keys[$this->identifier]['email']
 			: '';
-		
+
 		// Get the remote version
 		$response = $this->get_update_version( $this->identifier, $licence_key, $licence_email );
-		
+
 		if ( isset( $response->version )) {
 			// If a newer version is available, add the update
 			if ( version_compare( $this->version, $response->version, '<' )) {
@@ -309,15 +309,15 @@ class jigoshop_licence_validator
 				$obj->new_version = $response->version;
 				$obj->download_link = $response->update_url;
 				$obj->package = $response->update_url;
-			
+
 				$transient->response[$this->plugin_slug] = $obj;
 			}
 		}
-		
+
 		return $transient;
 	}
-	
-	
+
+
 	/**
 	 * Get our self-hosted update description from the 'plugins_api' filter
 	 *
@@ -330,7 +330,7 @@ class jigoshop_licence_validator
 	{
 		if ( $action == 'plugin_information' ) {
 			if ( $arg->slug === $this->plugin_slug ) {
-				
+
 				$keys = $this->get_keys();
 				$licence_key = isset( $keys[$this->identifier]['licence_key'] )
 					? $keys[$this->identifier]['licence_key']
@@ -338,10 +338,10 @@ class jigoshop_licence_validator
 				$licence_email = isset( $keys[$this->identifier]['email'] )
 					? $keys[$this->identifier]['email']
 					: '';
-		
+
 				// Get the remote information
 				$response = $this->get_update_version( $this->identifier, $licence_key, $licence_email );
-				
+
 				$obj = new stdClass();
 				$obj->plugin_name = $this->title;
 				$obj->slug = $this->plugin_slug;
@@ -357,11 +357,11 @@ class jigoshop_licence_validator
 				return $obj;
 			}
 		}
-		
+
 		return false;
 	}
-	
-	
+
+
 	/**
 	 * Plugin Version and update Information for a Jigoshop Licence API request
 	 *
@@ -383,8 +383,8 @@ class jigoshop_licence_validator
 		// Send request for detailed information
 		return $this->prepare_request( 'update_version', $args );
 	}
-	
-	
+
+
 	/**
 	 * Check for a valid licence Jigoshop Licence API request
 	 *
@@ -406,8 +406,8 @@ class jigoshop_licence_validator
 		// Send request for detailed information
 		return $this->prepare_request( 'check', $args );
 	}
-	
-	
+
+
 	/**
 	 * Activate Jigoshop Licence API request
 	 *
@@ -429,8 +429,8 @@ class jigoshop_licence_validator
 		// Send request for detailed information
 		return $this->prepare_request( 'activation', $args );
 	}
-	
-	
+
+
 	/**
 	 * Deactivate Jigoshop Licence API request
 	 *
@@ -452,8 +452,8 @@ class jigoshop_licence_validator
 		// Send request for detailed information
 		return $this->prepare_request( 'deactivation', $args );
 	}
-	
-	
+
+
 	/**
 	 * Prepare a request and send it to the Jigoshop Licence API on the selling shop
 	 *
@@ -486,8 +486,8 @@ class jigoshop_licence_validator
 		// Read server response and return it
 		return json_decode( wp_remote_retrieve_body( $request ) );
 	}
-	
-	
+
+
 	/**
 	 * Instance key for current WP installation
 	 *
@@ -497,8 +497,8 @@ class jigoshop_licence_validator
 	{
 		return $_SERVER['SERVER_ADDR'] . '@' . $_SERVER['HTTP_HOST'];
 	}
-	
-	
+
+
 	/**
 	 * Gets the email address of the currently logged in user
 	 *
@@ -509,8 +509,8 @@ class jigoshop_licence_validator
 		$current_user = wp_get_current_user();
 		return $current_user->user_email;
 	}
-	
-		
+
+
 	/**
 	 * Display Jigoshop Manage Licences page.
 	 *
@@ -520,17 +520,17 @@ class jigoshop_licence_validator
 	{
 		$user_email	= $this->get_current_user_email();
 		$messages	= array();
-		
+
 		if ( !empty( $_POST[$this->validator_prefix . 'nonce'] ) &&
 			 wp_verify_nonce( $_POST[$this->validator_prefix . 'nonce'], $this->validator_token . '-nonce' ) ) {
 			if ( isset( $_POST[ $this->validator_token . '-login'] ) ) {
 				$messages = $this->save_licence_keys();
 			}
 		}
-		
+
 		// getting new keys after they were updated
 		$keys = $this->get_keys();
-		
+
 ?>
 <div class="wrap">
 
@@ -595,5 +595,5 @@ class jigoshop_licence_validator
 </div>
 <?php
 	}
-	
+
 }

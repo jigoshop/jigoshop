@@ -12,7 +12,7 @@
  * @category            Core
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 include_once('cart.php');
 include_once('checkout.php');
@@ -340,9 +340,9 @@ function jigoshop_product_add_to_cart( $atts ) {
 //### Search shortcode #########################################################
 
 function jigoshop_search_shortcode() {
-	
+
 	$unique = uniqid();
-	
+
 	// Construct the form
 	$form = '<form role="search" method="get" class="jigoshop-shortcode-searchform" id="searchform'.$unique.'" action="' . home_url() . '">';
 	$form .= '<div>';
@@ -374,7 +374,7 @@ function jigoshop_sale_products( $atts ) {
 
 	$ids = jigoshop_product::get_product_ids_on_sale();
 	if ( empty( $ids ) ) $ids = array( '0' );
-	
+
 	$args = array(
 		'post_status'       => 'publish',
 		'post_type'         => 'product',
@@ -391,8 +391,8 @@ function jigoshop_sale_products( $atts ) {
 	jigoshop_get_template_part( 'loop', 'shop' );
 	if ( $pagination ) do_action( 'jigoshop_pagination' );
 	wp_reset_postdata();
-	
-	return ob_get_clean();	
+
+	return ob_get_clean();
 
 }
 

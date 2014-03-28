@@ -14,8 +14,8 @@
  * @package             Jigoshop
  * @category            Core
  * @author              Jigoshop
- * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @copyright           Copyright Â© 2011-2013 Jigoshop.
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 __('pending', 'jigoshop');
