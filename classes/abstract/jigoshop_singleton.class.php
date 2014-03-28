@@ -12,7 +12,7 @@
  * @category            Core
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 abstract class Jigoshop_Singleton extends Jigoshop_Base {
@@ -37,7 +37,7 @@ abstract class Jigoshop_Singleton extends Jigoshop_Base {
 
     }
 	public static function reset() {
-		self::$instance = null;	
+		self::$instance = null;
 	}
 
 	public function __clone() {

@@ -12,7 +12,7 @@
  * @category            Core
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 class jigoshop_validation {
 
@@ -85,13 +85,13 @@ class jigoshop_validation {
 		if ( strlen( trim( preg_replace( '/[\s\-A-Za-z0-9]/', '', $postcode ))) > 0 ) return false;
 		$postcode = strtoupper( trim( $postcode ));
 		$regex = isset( self::$postcode_regex[$country] ) ? self::$postcode_regex[$country] : '';
-		
-		if ( Jigoshop_Base::get_options()->get_option( 'jigoshop_enable_postcode_validating' ) == 'yes' 
+
+		if ( Jigoshop_Base::get_options()->get_option( 'jigoshop_enable_postcode_validating' ) == 'yes'
 			&& $regex <> '' ) {
 
 			$regex = '/' . $regex . '/';
 			jigoshop_log( "VALIDATE POSTCODE: country = " . $country . " = regex = " . $regex );
-			
+
 			switch ( $country ) {
 				case 'GB':
 					return self::is_GB_postcode( $postcode );
@@ -187,7 +187,7 @@ class jigoshop_validation {
 	public static $postcode_regex = array(
 		"AD" => "AD\d{3}",
 		"AM" => "(37)?\d{4}",
-		"AR" => "^([A-HJ-TP-Z]{1}\d{4}[A-Z]{3}|[a-z]{1}\d{4}[a-hj-tp-z]{3})$", 
+		"AR" => "^([A-HJ-TP-Z]{1}\d{4}[A-Z]{3}|[a-z]{1}\d{4}[a-hj-tp-z]{3})$",
 		"AS" => "96799",
 		"AT" => "\d{4}",
 		"AU" => "^(0[289][0-9]{2})|([1345689][0-9]{3})|(2[0-8][0-9]{2})|(290[0-9])|(291[0-4])|(7[0-4][0-9]{2})|(7[8-9][0-9]{2})$",

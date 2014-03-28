@@ -1,4 +1,4 @@
-[Jigoshop](http://jigoshop.com)
+[Jigoshop](http://www.jigoshop.com)
 =================
 Jigoshop is a feature-packed eCommerce plugin built upon Wordpress core functionality ensuring excellent performance and customizability.
 
@@ -40,7 +40,7 @@ There are several ways you can help out:
 Project information
 -------------------
 
-* Web: http://jigoshop.com
+* Web: http://www.jigoshop.com
 * Docs: http://forum.jigoshop.com/kb
 * Twitter: http://twitter.com/jigoshop
 * Source: http://github.com/jigoshop/jigoshop

@@ -12,7 +12,7 @@
  * @category            Core
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -147,7 +147,7 @@ function jigoshop_post_type() {
         )
     );
 	register_taxonomy_for_object_type( 'product_cat', 'product' );
-	
+
     register_taxonomy( 'product_tag',
         array('product'),
         array(

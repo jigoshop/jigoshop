@@ -12,7 +12,7 @@
  * @category    Admin
  * @author      Jigoshop
  * @copyright   Copyright © 2011-2013 Jigoshop.
- * @license     http://jigoshop.com/license/commercial-edition
+ * @license     http://www.jigoshop.com/license/commercial-edition
  */
 
 class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
@@ -1128,7 +1128,7 @@ class Jigoshop_Options_Parser {
 		case 'select':
 			$multiple =  ( ! empty( $item['multiple'] ) &&  $item['multiple'] == true )
 				? 'multiple="multiple"'
-				: ""; 
+				: "";
 			$brckt = "";
 			$width = 250;
 			if ( $item['multiple'] ){

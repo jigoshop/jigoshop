@@ -17,12 +17,12 @@
  * @category            Core
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 
 class jigoshop_request_api extends jigoshop_singleton {
-	
+
 	/**
 	 * __construct function.
 	 *
@@ -30,14 +30,14 @@ class jigoshop_request_api extends jigoshop_singleton {
 	 * @return void
 	 */
 	public function __construct() {
-		
+
 		add_filter( 'query_vars', array( $this, 'add_query_vars'), 0 );
 		add_action( 'init', array( $this, 'add_endpoint'), 1 );
 		add_action( 'parse_request', array( $this, 'api_requests'), 0 );
-		
+
 	}
-	
-	
+
+
 	/**
 	 * add_query_vars function.
 	 *
@@ -45,13 +45,13 @@ class jigoshop_request_api extends jigoshop_singleton {
 	 * @return void
 	 */
 	public static function add_query_vars( $vars ) {
-		
+
 		$vars[] = 'js-api';
 		return $vars;
-		
+
 	}
-	
-	
+
+
 	/**
 	 * add_endpoint function.
 	 *
@@ -59,12 +59,12 @@ class jigoshop_request_api extends jigoshop_singleton {
 	 * @return void
 	 */
 	public static function add_endpoint() {
-		
+
 		add_rewrite_endpoint( 'js-api', EP_ALL );
-		
+
 	}
-	
-	
+
+
 	/**
 	 * API request - Trigger any API requests (handy for third party plugins/gateways).
 	 *
@@ -72,34 +72,34 @@ class jigoshop_request_api extends jigoshop_singleton {
 	 * @return void
 	 */
 	public static function api_requests() {
-		
+
 		global $wp;
-		
+
 		if ( ! empty( $_GET['js-api'] ) )
 			$wp->query_vars['js-api'] = $_GET['js-api'];
-		
+
 		if ( ! empty( $wp->query_vars['js-api'] ) ) {
 			// Buffer, we won't want any output here
 			ob_start();
-			
+
 			// Get API trigger
 			$api = strtolower( esc_attr( $wp->query_vars['js-api'] ) );
-			
+
 			// Load class if exists
 			if ( class_exists( $api ) )
 				$api_class = new $api();
-			
+
 			// Trigger actions
 			do_action( 'jigoshop_api_' . $api );
-			
+
 			// Done, clear buffer and exit
 			ob_end_clean();
 			die('1');
 		}
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Return the cleaned and schemed Jigoshop API URL for a given request
 	 *
@@ -111,7 +111,7 @@ class jigoshop_request_api extends jigoshop_singleton {
 	 * @return string
 	 */
 	public static function query_request( $request, $ssl = null ) {
-		
+
 		if ( is_null( $ssl ) ) {
 			$scheme = parse_url( get_option( 'home' ), PHP_URL_SCHEME );
 		} elseif ( $ssl ) {
@@ -119,9 +119,9 @@ class jigoshop_request_api extends jigoshop_singleton {
 		} else {
 			$scheme = 'http';
 		}
-		
+
 		return esc_url_raw( home_url( '/', $scheme ) . $request );
-		
+
 	}
-	
+
 }

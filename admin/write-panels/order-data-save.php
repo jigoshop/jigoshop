@@ -14,7 +14,7 @@
  * @category            Admin
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 add_action('jigoshop_process_shop_order_meta', 'jigoshop_process_shop_order_meta', 1, 2);
 

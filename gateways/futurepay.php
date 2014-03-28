@@ -12,7 +12,7 @@
  * @category            Checkout
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -26,21 +26,21 @@ add_filter( 'jigoshop_payment_gateways', 'add_futurepay_gateway', 5 );
 
 
 class futurepay extends jigoshop_payment_gateway {
-	
+
 	private static $credit_limit = '500.00';
-	
+
 	private $shop_base_country;
 	private $merchant_countries = array( 'US' );
 	private $allowed_currency = array( 'USD' );
 	private $currency_symbol;
 	private static $request_url;
-	
+
 	const FUTUREPAY_LIVE_URL = 'https://api.futurepay.com/remote/';
 	const FUTUREPAY_SANDBOX_URL = 'https://demo.futurepay.com/remote/';
 
-	
+
 	public function __construct() {
-		
+
 		parent::__construct();      /* installs our gateway options in the settings */
 
 		$this->id           = 'futurepay';
@@ -50,20 +50,20 @@ class futurepay extends jigoshop_payment_gateway {
 		$this->title        = Jigoshop_Base::get_options()->get_option('jigoshop_futurepay_title');
 		$this->description  = Jigoshop_Base::get_options()->get_option('jigoshop_futurepay_description');
 		$this->gmid         = Jigoshop_Base::get_options()->get_option('jigoshop_futurepay_gmid');
-		self::$request_url  = 
+		self::$request_url  =
 			Jigoshop_Base::get_options()->get_option('jigoshop_futurepay_mode') == 'no'
 			? self::FUTUREPAY_LIVE_URL
 			: self::FUTUREPAY_SANDBOX_URL;
-		
+
 		add_action( 'init', array( $this, 'check_response' ) );
 		add_action( 'valid-futurepay-request', array( $this, 'successful_request' ), 10, 2 );
 		add_action( 'receipt_futurepay', array( $this, 'receipt_page' ) );
 		add_action( 'admin_notices', array( $this, 'futurepay_notices' ) );
 		add_action( 'wp_footer', array( $this, 'futurepay_script' ) );
-		
+
 		$this->currency_symbol = get_jigoshop_currency_symbol();
-		$this->shop_base_country = (strpos( Jigoshop_Base::get_options()->get_option( 'jigoshop_default_country' ), ':' ) !== false ) 
-	      ? substr( Jigoshop_Base::get_options()->get_option( 'jigoshop_default_country'), 0, strpos( Jigoshop_Base::get_options()->get_option('jigoshop_default_country' ), ':' )) 
+		$this->shop_base_country = (strpos( Jigoshop_Base::get_options()->get_option( 'jigoshop_default_country' ), ':' ) !== false )
+	      ? substr( Jigoshop_Base::get_options()->get_option( 'jigoshop_default_country'), 0, strpos( Jigoshop_Base::get_options()->get_option('jigoshop_default_country' ), ':' ))
 	      : Jigoshop_Base::get_options()->get_option( 'jigoshop_default_country' );
 	}
 
@@ -78,9 +78,9 @@ class futurepay extends jigoshop_payment_gateway {
 		$defaults = array();
 
 		// Define the Section name for the Jigoshop_Options
-		$defaults[] = array( 
-			'name' => sprintf(__('FuturePay %s', 'jigoshop'), '<img style="vertical-align:middle;margin-top:-4px;margin-left:10px;" src="'.jigoshop::assets_url() .'/assets/images/icons/futurepay.png" alt="FuturePay">'), 
-			'type' => 'title', 
+		$defaults[] = array(
+			'name' => sprintf(__('FuturePay %s', 'jigoshop'), '<img style="vertical-align:middle;margin-top:-4px;margin-left:10px;" src="'.jigoshop::assets_url() .'/assets/images/icons/futurepay.png" alt="FuturePay">'),
+			'type' => 'title',
 			'desc' => sprintf(__('This module allows you to accept online payments via %s allowing customers to buy now and pay later without a credit card.  FuturePay is a safe, convenient and secure way for US customers to buy online in one-step.  %s', 'jigoshop'), '<a href="http://www.futurepay.com/" target="_blank">'.__('FuturePay','jigoshop').'</a>', '<a href="https://www.futurepay.com/main/merchant-signup?platform=77_FPM495845-1" target="_blank">'.__('Signup for a Merchant Account','jigoshop').'</a>' )
 		);
 
@@ -140,20 +140,20 @@ class futurepay extends jigoshop_payment_gateway {
 
 		return $defaults;
 	}
-	
-	
+
+
 	/**
 	 *  Admin Notices for conditions under which FuturePay is available on a Shop
 	 */
 	public function futurepay_notices() {
-	    
+
 		if ( $this->enabled == 'no' ) return;
-		
+
 		if ( ! in_array( Jigoshop_Base::get_options()->get_option( 'jigoshop_currency' ), $this->allowed_currency )) {
 			echo '<div class="error"><p>'.sprintf(__('The FuturePay gateway accepts payments in currencies of %s.  Your current currency is %s.  FuturePay won\'t work until you change the Jigoshop currency to an accepted one.  FuturePay is currently disabled on the Payment Gateways settings tab.','jigoshop'), implode( ', ', $this->allowed_currency ), Jigoshop_Base::get_options()->get_option( 'jigoshop_currency' ) ).'</p></div>';
 			Jigoshop_Base::get_options()->set_option( 'jigoshop_futurepay_enabled', 'no' );
 		}
-		
+
 		if ( ! in_array( $this->shop_base_country, $this->merchant_countries )) {
 			$country_list = array();
 			foreach ( $this->merchant_countries as $this_country ) {
@@ -162,15 +162,15 @@ class futurepay extends jigoshop_payment_gateway {
 			echo '<div class="error"><p>'.sprintf(__('The FuturePay gateway is available to merchants from: %s.  Your country is: %s.  FuturePay won\'t work until you change the Jigoshop Shop Base country to an accepted one.  FuturePay is currently disabled on the Payment Gateways settings tab.','jigoshop'), implode( ', ', $country_list ), jigoshop_countries::$countries[$this->shop_base_country] ).'</p></div>';
 			Jigoshop_Base::get_options()->set_option( 'jigoshop_futurepay_enabled', 'no' );
 		}
-		
+
 	}
-	
-	
+
+
 	/**
 	 *  Determine conditions for which FuturePay is available on a Shop
 	 */
 	public function is_available() {
-	
+
 		if ( $this->enabled != 'yes' ) {
 			return false;
 		}
@@ -182,13 +182,13 @@ class futurepay extends jigoshop_payment_gateway {
 		if ( ! in_array( $this->shop_base_country, $this->merchant_countries )) {
 			return false;
 		}
-		
+
 		return true;
 	}
-	
-	
+
+
 	/**
-	 *  
+	 *
 	 */
 	public function futurepay_script() {
 		if ( ! is_page( jigoshop_get_page_id( 'checkout' )) ) return;
@@ -228,18 +228,18 @@ class futurepay extends jigoshop_payment_gateway {
 		</script>
     	<?php
 	}
-	
-	
+
+
 	/**
 	 *  There are payment fields, but first we need to file the order before contacting futurepay
 	 *  This is displayed on the Checkout for the gateway description when selected
 	 */
 	public function payment_fields() {
-		if ($this->description) 
+		if ($this->description)
 			echo wpautop(wptexturize($this->description));
 	}
-	
-	
+
+
 	/**
 	 *  Generate the futurepay payment iframe
 	 */
@@ -278,16 +278,16 @@ class futurepay extends jigoshop_payment_gateway {
 		// all product titles will be comma delimited with their quantities
 		$item_names = array();
 		if ( sizeof( $order->items ) > 0 ) foreach ( $order->items as $item ) {
-		
+
 			$_product = $order->get_product_from_item( $item );
 			$title = $_product->get_title();
 			// if variation, insert variation details into product title
 			if ( $_product instanceof jigoshop_product_variation ) {
 				$title .= ' (' . jigoshop_get_formatted_variation( $item['variation'], true) . ')';
 			}
-			
+
 			$item_names[] = $item['qty'] . ' x ' . $title;
-			
+
 		}
 		// now add the one line item to the necessary product field arrays
 		$data['sku'][] = "Products";
@@ -295,15 +295,15 @@ class futurepay extends jigoshop_payment_gateway {
 		$data['tax_amount'][]  = 0;
 		$data['description'][] = sprintf( __('Order %s' , 'jigoshop'), $order->get_order_number() ) . ' = ' . implode(', ', $item_names);
 		$data['quantity'][]    = 1;
-		
-		
+
+
 		/**
 		 *  we will leave this commented out for now, we may be able to use it with modifications
 		 *  to FuturePay at a later date and adjust this previous code
 		 */
 // 		foreach ($order->items as $item) {
 // 			$_product = $order->get_product_from_item($item);
-// 
+//
 // 			$data['sku'][] = $_product->get_sku();
 // 			$data['price'][] = $_product->get_price();
 // 			$data['tax_amount'][]  = 0;
@@ -314,7 +314,7 @@ class futurepay extends jigoshop_payment_gateway {
 // 			$data['description'][] = $title;
 // 			$data['quantity'][]    = $item['qty'];
 // 		}
-// 		
+//
 // 		if ( $order->order_discount > 0 ) {
 // 			$data['sku'][] = "Discount";
 // 			$data['price'][] = $order->order_discount * -1; /* convert to negative for futurepay calcs */
@@ -322,7 +322,7 @@ class futurepay extends jigoshop_payment_gateway {
 // 			$data['description'][] = __('Discount','jigoshop');
 // 			$data['quantity'][]    = 1;
 // 		}
-// 
+//
 // 		if ( $order->order_shipping > 0 ) {
 // 			$data['sku'][] = "Shipping";
 // 			$data['price'][] = $order->order_shipping;
@@ -330,7 +330,7 @@ class futurepay extends jigoshop_payment_gateway {
 // 			$data['description'][] = __('Shipping','jigoshop');
 // 			$data['quantity'][]    = 1;
 // 		}
-// 
+//
 // 		$tax = $order->get_total_tax(false,false);
 // 		if ( $tax > 0 ) {
 // 			$data['sku'][] = "Tax";
@@ -339,10 +339,10 @@ class futurepay extends jigoshop_payment_gateway {
 // 			$data['description'][] = __('Tax','jigoshop');
 // 			$data['quantity'][]    = 1;
 // 		}
-		
-		
+
+
 		try {
-			
+
 			$response = wp_remote_post( self::$request_url . 'merchant-request-order-token', array(
 				'body' => http_build_query($data),
 				'sslverify' => false
@@ -361,7 +361,7 @@ class futurepay extends jigoshop_payment_gateway {
 
 			// Fetch the body from the result, any errors should be caught before proceeding
 			$response = trim( wp_remote_retrieve_body( $response ) );
-			
+
 			// we need something to validate the response.  Valid transactions begin with 'FPTK'
 			if ( ! strstr( $response, 'FPTK' ) ) {
 				$error_message = isset( self::$futurepay_errorcodes[$response] )
@@ -372,14 +372,14 @@ class futurepay extends jigoshop_payment_gateway {
 				wp_safe_redirect( get_permalink( jigoshop_get_page_id( 'checkout' ) ) );
 				exit;
 			}
-			
+
 			/**
 			 *  If we're good to go, haul in FuturePay's javascript and display the payment form
 			 *  so that the customer can enter his ID and password
 			 */
-			
+
 			echo '<div id="futurepay"></div>';
-			
+
 			echo '<script src="'. self::$request_url .'cart-integration/'.$response.'"></script>';
 
 			echo '<script type="text/javascript">
@@ -408,15 +408,15 @@ class futurepay extends jigoshop_payment_gateway {
 			echo '<input type="button" class="button alt" name="place_order" id="place_order" value="Place Order" onclick="FP.CartIntegration.placeOrder();" />';
 		}
 		catch ( Exception $e ) {
-		
+
 			echo '<div class="jigoshop_error">'.$e->getMessage().'</div>';
 			jigoshop_log( 'FUTUREPAY ERROR: '.$e->getMessage() );
-			
+
 		}
 
 	}
-	
-	
+
+
 	/**
 	 *  Process the payment and return the result
 	 */
@@ -429,8 +429,8 @@ class futurepay extends jigoshop_payment_gateway {
 		);
 
 	}
-	
-	
+
+
 	/**
 	 *  Receipt_page
 	 */
@@ -439,8 +439,8 @@ class futurepay extends jigoshop_payment_gateway {
 		echo '<p>'.__('Thank you for your order, please fill out the form below to pay with FuturePay.', 'jigoshop').'</p>';
 		echo $this->call_futurepay( $order );
 	}
-	
-	
+
+
 	/**
 	 *  Check for Futurepay Response
 	 */
@@ -469,7 +469,7 @@ class futurepay extends jigoshop_payment_gateway {
 
 				// Response is valid but lets check it more closly
 				do_action( "valid-futurepay-request", $response, $order );
-				
+
 				// set the $_GET query vars for the thankyou page, this empties the Cart
 				wp_safe_redirect( add_query_arg( 'key', $order->order_key, add_query_arg( 'order', $order_id, get_permalink( jigoshop_get_page_id('thanks') ) ) ) );
 				exit;
@@ -477,8 +477,8 @@ class futurepay extends jigoshop_payment_gateway {
 		}
 
 	}
-	
-	
+
+
 	/**
 	 *  Successful Payment!
 	 */
@@ -496,7 +496,7 @@ class futurepay extends jigoshop_payment_gateway {
 		        $order->update_status( 'on-hold', sprintf(__('Payment %s via FuturePay.', 'jigoshop'), strtolower( $response['OrderStatusCode'] ) ) );
 		        jigoshop_log( "FUTUREPAY: declined order for Order ID: " . $order->id );
 				break;
-			
+
 			default:
 				// Hold order
 		        $order->update_status( 'on-hold', sprintf(__('Payment %s via FuturePay.', 'jigoshop'), strtolower( $response['OrderStatusCode'] ) ) );
@@ -505,8 +505,8 @@ class futurepay extends jigoshop_payment_gateway {
 		}
 
 	}
-	
-	
+
+
 	private static $futurepay_errorcodes = array(
 		'FP_EXISTING_INVALID_CUSTOMER_STATUS'
 		=> 'Invalid Customer Status, the customer exists in FuturePay and is in an Active or Accepted Status', 'jigoshop',
@@ -565,5 +565,5 @@ class futurepay extends jigoshop_payment_gateway {
 		'FP_PRE_ORDER_FAILED'
 		=> 'An Error occurred in trying to save the Order – FuturePay needs to investigate the cause', 'jigoshop'
 	);
-	
+
 }

@@ -12,7 +12,7 @@
  * @category            Checkout
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 function add_local_pickup_method( $methods ) {
@@ -25,22 +25,22 @@ add_filter( 'jigoshop_shipping_methods', 'add_local_pickup_method', 30 );
 class local_pickup extends jigoshop_shipping_method {
 
 	public function __construct() {
-		
+
 		parent::__construct();
-		
+
         $this->id 			= 'local_pickup';
         $this->enabled		= Jigoshop_Base::get_options()->get_option('jigoshop_local_pickup_enabled');
 		$this->title 		= Jigoshop_Base::get_options()->get_option('jigoshop_local_pickup_title');
 		$this->availability = Jigoshop_Base::get_options()->get_option('jigoshop_local_pickup_availability');
 		$this->countries 	= Jigoshop_Base::get_options()->get_option('jigoshop_local_pickup_countries');
-		
+
 		if ( isset( jigoshop_session::instance()->chosen_shipping_method_id )
 			&& jigoshop_session::instance()->chosen_shipping_method_id == $this->id ) {
-			
+
 			$this->chosen = true;
-		
+
 		}
-		
+
 		add_action( 'jigoshop_settings_scripts', array( &$this, 'admin_scripts' ) );
 
     }
@@ -50,14 +50,14 @@ class local_pickup extends jigoshop_shipping_method {
 	 *
 	 * These should be installed on the Jigoshop_Options 'Shipping' tab
 	 *
-	 */	
+	 */
 	protected function get_default_options() {
-	
+
 		$defaults = array();
-		
+
 		// Define the Section name for the Jigoshop_Options
 		$defaults[] = array( 'name' => __('Local pickup', 'jigoshop'), 'type' => 'title', 'desc' => '' );
-		
+
 		// List each option in order of appearance with details
 		$defaults[] = array(
 			'name'		=> __('Enable local pickup','jigoshop'),
@@ -71,7 +71,7 @@ class local_pickup extends jigoshop_shipping_method {
 				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
-		
+
 		$defaults[] = array(
 			'name'		=> __('Method Title','jigoshop'),
 			'desc' 		=> '',
@@ -80,7 +80,7 @@ class local_pickup extends jigoshop_shipping_method {
 			'std' 		=> __('Local pickup','jigoshop'),
 			'type' 		=> 'text'
 		);
-		
+
 		$defaults[] = array(
 			'name'		=> __('Method available for','jigoshop'),
 			'desc' 		=> '',
@@ -105,13 +105,13 @@ class local_pickup extends jigoshop_shipping_method {
 
 		return $defaults;
 	}
-	
+
     public function calculate_shipping() {
 		$this->shipping_total 	= 0;
 		$this->shipping_tax 	= 0;
 		$this->shipping_label 	= $this->title;
     }
-	
+
     public function admin_scripts() {
     	?>
 		<script type="text/javascript">

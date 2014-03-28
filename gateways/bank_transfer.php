@@ -12,7 +12,7 @@
  * @category            Checkout
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 /**
@@ -28,9 +28,9 @@ add_filter( 'jigoshop_payment_gateways', 'add_bank_transfer_gateway', 20 );
 class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 
 	public function __construct() {
-	
+
         parent::__construct();
-		
+
         $this->id				= 'bank_transfer';
         $this->icon 			= '';
         $this->has_fields 		= false;
@@ -54,14 +54,14 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 	 *
 	 * These will be installed on the Jigoshop_Options 'Payment Gateways' tab by the parent class 'jigoshop_payment_gateway'
 	 *
-	 */	
+	 */
 	protected function get_default_options() {
-	
+
 		$defaults = array();
-		
+
 		// Define the Section name for the Jigoshop_Options
 		$defaults[] = array( 'name' => __('Bank Transfer', 'jigoshop'), 'type' => 'title', 'desc' => __('Accept Bank Transfers as a method of payment. There is no automated process associated with this, you must manually process an order when you receive payment.', 'jigoshop') );
-		
+
 		// List each option in order of appearance with details
 		$defaults[] = array(
 			'name'		=> __('Enable Bank Transfer','jigoshop'),
@@ -75,7 +75,7 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
-		
+
 		$defaults[] = array(
 			'name'		=> __('Method Title','jigoshop'),
 			'desc' 		=> '',
@@ -84,7 +84,7 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 			'std' 		=> __('Bank Transfer Payment','jigoshop'),
 			'type' 		=> 'text'
 		);
-		
+
 		$defaults[] = array(
 			'name'		=> __('Customer Message','jigoshop'),
 			'desc' 		=> '',

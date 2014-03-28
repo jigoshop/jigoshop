@@ -14,7 +14,7 @@
  * @category            Customer
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 class jigoshop_order extends Jigoshop_Base {
 
@@ -210,7 +210,7 @@ class jigoshop_order extends Jigoshop_Base {
             endforeach;
 
         endif;
-        
+
 		if ( $with_price_options )
 			return jigoshop_price($order_tax, array('with_currency' => $with_currency));
 		else
@@ -588,14 +588,14 @@ class jigoshop_order extends Jigoshop_Base {
 
 			if ($item['id']>0) :
 				$_product = $this->get_product_from_item( $item );
-				
+
 				if ( $_product instanceof jigoshop_product_variation ) {
 					if ( $_product->stock == '-9999999' ) {
 						// the parent product is used for variation stock tracking
 						$_product = new jigoshop_product( $_product->id );
 					}
 				}
-				
+
 				if ( $_product->exists && $_product->managing_stock() ) :
 
 					$old_stock = $_product->stock;

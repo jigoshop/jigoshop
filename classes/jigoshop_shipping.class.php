@@ -12,7 +12,7 @@
  * @category            Checkout
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 class jigoshop_shipping extends Jigoshop_Singleton {
 
@@ -37,7 +37,7 @@ class jigoshop_shipping extends Jigoshop_Singleton {
      * Initialize all shipping modules.
      */
     public static function shipping_inits() {
-		
+
         do_action('jigoshop_shipping_init'); /* loaded plugins for shipping inits */
 
         $load_methods = apply_filters('jigoshop_shipping_methods', array());
@@ -76,7 +76,7 @@ class jigoshop_shipping extends Jigoshop_Singleton {
         $_available_methods = array();
 
         if (self::$enabled == 'yes') :
-			
+
             foreach (self::get_all_methods() as $method) :
 
 				if ( jigoshop_cart::has_free_shipping_coupon() && $method->id == 'free_shipping' )
@@ -84,7 +84,7 @@ class jigoshop_shipping extends Jigoshop_Singleton {
 
                 if ( $method->is_available() ) {
 					if ( $method->cost >= 0 ) {
-						$_available_methods[$method->id] = $method; 
+						$_available_methods[$method->id] = $method;
 					}
                 }
 
@@ -100,7 +100,7 @@ class jigoshop_shipping extends Jigoshop_Singleton {
 			}
 			self::$shipping_error_message .= __(' There may be no methods available for your destination and you should contact us for assistance.', 'jigoshop');
 		}
-		
+
         return apply_filters('jigoshop_available_shipping_methods',$_available_methods);
     }
 
@@ -111,7 +111,7 @@ class jigoshop_shipping extends Jigoshop_Singleton {
 	public static function set_shipping_error_message( $message ) {
 		self::$shipping_error_message = $message;
 	}
-	
+
     public static function reset_shipping_methods() {
         foreach (self::$shipping_methods as $method) :
             $method->reset_method();
@@ -143,11 +143,11 @@ class jigoshop_shipping extends Jigoshop_Singleton {
                     endif;
                 else :
                     $method_error_message = $method->get_error_message();
-                
+
                     if ($method_error_message) :
                         self::$shipping_error_message .= $method_error_message . PHP_EOL;
                     endif;
-                    
+
                 endif;
             endif;
         endforeach;
@@ -160,28 +160,28 @@ class jigoshop_shipping extends Jigoshop_Singleton {
     }
 
     /**
-     * 
+     *
      * @return mixed the id of the chosen shipping method or false if none are chosen
      */
     public static function get_chosen_method() {
         $_available_methods = self::get_available_shipping_methods();
-        
+
         foreach ($_available_methods as $method) :
             if ($method->is_chosen()) :
                 return $method->id;
             endif;
         endforeach;
-        
+
         return false;
     }
-	
+
 	public static function get_chosen_method_title() {
 		$_available_methods = self::get_available_shipping_methods();
-		
+
 		$chosen_method = self::get_chosen_method();
 		return $_available_methods[$chosen_method]->title;
 	}
-	
+
     /**
      * Calculate the shipping price
      *
@@ -216,7 +216,7 @@ class jigoshop_shipping extends Jigoshop_Singleton {
                         $method->calculate_shipping();
                     endforeach;
 
-                    // select chosen method. 
+                    // select chosen method.
                     if (isset($_available_methods[$chosen_method]) && $_available_methods[$chosen_method] && !$_available_methods[$chosen_method]->has_error()) :
                         $chosen_method = $_available_methods[$chosen_method]->id;
 

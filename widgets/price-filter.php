@@ -12,7 +12,7 @@
  * @category            Widgets
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 class Jigoshop_Widget_Price_Filter extends WP_Widget {
 
@@ -36,7 +36,7 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 
 		// Add own hidden fields to filter
 		add_filter('jigoshop_get_hidden_fields', array( $this, 'jigoshop_price_filter_hidden_fields' ) );
-		
+
 	}
 
 	public function jigoshop_price_filter_hidden_fields($fields) {
@@ -197,12 +197,12 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 	}
 
 	public function jigoshop_price_filter_init() {
-		
+
 		// if price filter in use on front end, load jquery-ui slider (WP loads in footer)
 		if ( is_active_widget( false, false, 'jigoshop_price_filter', true ) && ! is_admin() ) {
 			wp_enqueue_script( 'jquery-ui-slider' );
 		}
-		
+
 		unset(jigoshop_session::instance()->min_price);
 		unset(jigoshop_session::instance()->max_price);
 

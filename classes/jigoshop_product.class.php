@@ -12,7 +12,7 @@
  * @category            Catalog
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 class jigoshop_product extends Jigoshop_Base {
 
@@ -56,7 +56,7 @@ class jigoshop_product extends Jigoshop_Base {
 	private	$attributes   = array();
 	public  $children     = array(); // : jigoshop_template_functions.php on line 328
     protected $jigoshop_options; // : jigoshop_product_variation.php uses as well
-	
+
 	/**
 	 * Loads all product data from custom fields
 	 *
@@ -842,7 +842,7 @@ class jigoshop_product extends Jigoshop_Base {
 		endif;
 		return '';
 	}
-	
+
 	public function variations_priced_the_same() {
 		$variations_priced_the_same = true;
 		if ( $this->is_type( 'variable') ) {
@@ -869,7 +869,7 @@ class jigoshop_product extends Jigoshop_Base {
 		}
 		return $variations_priced_the_same;
 	}
-	
+
 	/**
 	 * Returns the price in html format
 	 *
@@ -1466,7 +1466,7 @@ class jigoshop_product extends Jigoshop_Base {
 		$all_ids = array_keys( $on_sale );
 		// munge the variable parents and other products together
 		$product_ids = array_unique( array_merge( $all_ids, $parent_ids ) );
-		
+
 		// now check the sale date fields on the main products
 		foreach ( $product_ids as $key => $id ) {
 			$sale_from = get_post_meta( $id, 'sale_price_dates_from', true );
@@ -1483,9 +1483,9 @@ class jigoshop_product extends Jigoshop_Base {
 				}
 			}
 		}
-		
+
 		$product_ids = array_values( $product_ids );
-		
+
 		return $product_ids;
 	}
 

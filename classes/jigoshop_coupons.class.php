@@ -14,32 +14,32 @@
  * @category            Orders
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @license             http://www.jigoshop.com/license/commercial-edition
  */
 
 class JS_Coupons extends Jigoshop_Base {
 
 	private static $coupons;
-	
-	
+
+
 	function __construct() {
-		
+
 		add_action( 'init', array( $this, 'check_remove_coupon' ) );
 
 	}
-	
-	
+
+
 	public static function check_remove_coupon() {
-	
+
 		if ( ! empty( $_GET['unset_coupon'] ) ) {
 			self::remove_coupon( $_GET['unset_coupon'] );
 			jigoshop_session::instance()->chosen_shipping_method_id = null;
 			jigoshop_cart::calculate_totals();
 		}
-		
+
 	}
-	
-	
+
+
 	/**
 	 * get an array of all coupon types
 	 *
@@ -165,7 +165,7 @@ class JS_Coupons extends Jigoshop_Base {
 				jigoshop_session::instance()->coupons = $data;
 
 				return true;
-				
+
 			}
 
 		endforeach;
