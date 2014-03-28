@@ -296,51 +296,6 @@ class futurepay extends jigoshop_payment_gateway {
 		$data['description'][] = sprintf( __('Order %s' , 'jigoshop'), $order->get_order_number() ) . ' = ' . implode(', ', $item_names);
 		$data['quantity'][]    = 1;
 
-
-		/**
-		 *  we will leave this commented out for now, we may be able to use it with modifications
-		 *  to FuturePay at a later date and adjust this previous code
-		 */
-// 		foreach ($order->items as $item) {
-// 			$_product = $order->get_product_from_item($item);
-//
-// 			$data['sku'][] = $_product->get_sku();
-// 			$data['price'][] = $_product->get_price();
-// 			$data['tax_amount'][]  = 0;
-// 			$title = $_product->get_title();
-// 			if ($_product instanceof jigoshop_product_variation) {
-// 				$title .= ' (' . jigoshop_get_formatted_variation( $item['variation'], true) . ')';
-// 			}
-// 			$data['description'][] = $title;
-// 			$data['quantity'][]    = $item['qty'];
-// 		}
-//
-// 		if ( $order->order_discount > 0 ) {
-// 			$data['sku'][] = "Discount";
-// 			$data['price'][] = $order->order_discount * -1; /* convert to negative for futurepay calcs */
-// 			$data['tax_amount'][]  = 0;
-// 			$data['description'][] = __('Discount','jigoshop');
-// 			$data['quantity'][]    = 1;
-// 		}
-//
-// 		if ( $order->order_shipping > 0 ) {
-// 			$data['sku'][] = "Shipping";
-// 			$data['price'][] = $order->order_shipping;
-// 			$data['tax_amount'][]  = 0;
-// 			$data['description'][] = __('Shipping','jigoshop');
-// 			$data['quantity'][]    = 1;
-// 		}
-//
-// 		$tax = $order->get_total_tax(false,false);
-// 		if ( $tax > 0 ) {
-// 			$data['sku'][] = "Tax";
-// 			$data['price'][] = $tax;
-// 			$data['tax_amount'][]  = 0;
-// 			$data['description'][] = __('Tax','jigoshop');
-// 			$data['quantity'][]    = 1;
-// 		}
-
-
 		try {
 
 			$response = wp_remote_post( self::$request_url . 'merchant-request-order-token', array(
