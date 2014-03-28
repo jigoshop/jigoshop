@@ -336,16 +336,6 @@ function add_order_totals($order, $show_download_links, $show_sku) {
 
 	}
 
-// 	if (   ($jigoshop_options->get_option('jigoshop_calc_taxes') == 'yes' && $order->has_compound_tax())
-// 		|| ($jigoshop_options->get_option('jigoshop_tax_after_coupon') == 'yes' && $order->order_discount > 0)) {
-//
-// 		$info = __('Subtotal:', 'jigoshop');
-// 		$info .= add_padding_to_email_lines( 30 - strlen( $info ) );
-// 		$info .= html_entity_decode(jigoshop_price($order->order_discount_subtotal), ENT_QUOTES, 'UTF-8');
-// 		echo $info . PHP_EOL;
-//
-// 	}
-
 	if ( $jigoshop_options->get_option('jigoshop_calc_taxes') == 'yes') {
 		foreach ($order->get_tax_classes() as $tax_class) {
 			if ($order->show_tax_entry($tax_class)) {
