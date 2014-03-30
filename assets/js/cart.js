@@ -1,9 +1,8 @@
 jQuery(document).ready(function($) {
-	
-    var states_json = jigoshop_params.countries.replace(/&quot;/g, '"');
-    var states = $.parseJSON( states_json );
-    
-    
+
+  var states = jigoshop_countries;
+
+
 	/* Shipping calculator */
 	$('.shipping-calculator-form').hide();
 
@@ -12,16 +11,16 @@ jQuery(document).ready(function($) {
 			// Animation complete.
 		});
 	});
-	
-	
+
+
 	// Stop anchors moving the viewport
 	$(".shipping-calculator-button").click( function() { return false; });
 
 	$("input[name=shipping_rates]").click( function() {
-	
+
 		var dataString = 'shipping_rates=' + $(this).val();
 		var cart_url = $("input[name=cart-url]").val();
-		
+
 		$('.cart_totals_table').block( {
 			message: null,
 			overlayCSS: {
@@ -29,7 +28,7 @@ jQuery(document).ready(function($) {
 				opacity: 0.6
 			}
 		});
-		
+
 		$.ajax( {
 			type: "POST",
 			url: cart_url,
@@ -40,10 +39,10 @@ jQuery(document).ready(function($) {
 				$('.cart_totals_table').unblock();
 			}
 		});
-		
+
 	});
-	
-	
+
+
     $('select.country_to_state').change( function() {
 
         var country = $(this).val();
@@ -86,5 +85,5 @@ jQuery(document).ready(function($) {
         }
 
     });
-    
+
 });

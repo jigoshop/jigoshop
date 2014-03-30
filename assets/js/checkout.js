@@ -1,19 +1,18 @@
 jQuery(document).ready( function($) {
-	
-    var states_json = jigoshop_params.countries.replace(/&quot;/g, '"');
-    var states = $.parseJSON( states_json );
+
+  var states = jigoshop_countries;
 
 	var updateTimer;
 	var jqxhr;
-	
+
 	var $valid_checkout = false;
-	
-	
+
+
 	// Update on page load
 	if ( jigoshop_params.is_checkout == 1 ) {
 		$('body').trigger('init_checkout');
 	}
-	
+
 	// Init trigger
 	$('body').bind('init_checkout', function() {
 		$('#billing_country, #shipping_country, .country_to_state').change();
@@ -25,12 +24,12 @@ jQuery(document).ready( function($) {
 		update_checkout();
 		validate_required();
 	});
-	
-	
+
+
 	function update_checkout() {
-		
+
 		if (jqxhr) jqxhr.abort();
-		
+
 		var payment_id		= $('#payment input[name=payment_method]:checked').attr('id');
 		var method			= $('#shipping_method').val();
 		var coupon			= $('#coupon_code').val();
@@ -89,27 +88,27 @@ jQuery(document).ready( function($) {
 		});
 
 	}
-	
-	
+
+
 	function validate_required() {
-		
+
 		$('.input-required').each( function() {
-		
+
 			var $this = $(this);
 			var $parent = $this.closest('.form-row');
 			var validated = true;
-			
+
 			// ensure fields aren't empty
 			if ( $this.val() == '' || $this.val() == 'undefined' )
 			{
 				validated = false;
 			}
-			
+
 			// ignore shipping fields if billing fields are only ones allowed
 			if ( $this.attr('id').indexOf('shipping') > -1 && $('#shiptobilling-checkbox').checked ) {
 				validated = true;
 			}
-			
+
 			// check postcodes and zips for valid format for country (uses jigoshop_validation class)
 			if ( validated && $this.attr('id').indexOf('postcode') > -1 ) {
 				if ( $this.attr('id') == 'billing-postcode' ) {
@@ -132,7 +131,7 @@ jQuery(document).ready( function($) {
 					}
 				});
 			}
-			
+
 			if ( validated )
 			{
 				$parent.removeClass( 'jigoshop-invalid' ).addClass( 'jigoshop-validated' );
@@ -140,29 +139,29 @@ jQuery(document).ready( function($) {
 				$parent.removeClass( 'jigoshop-validated' ).addClass( 'jigoshop-invalid' );
 			}
 		});
-		
+
 		if ( $('.jigoshop-invalid').size() == 0 ) {
 			$valid_checkout = true;
 		}
-		
+
 	}
-	
-	
+
+
 	// use select2 for all selects
 //	$('select').select2({ width: 'off' });
-	
+
 	// ensure there is no duplicate #payment from themes
 	$('div#payment:not(:last)').remove();
-	
-	
+
+
 	// handle hiding and showing the login form
 	$('form.login').hide();
 	$('a.showlogin').click( function(e) {
 		e.preventDefault();
 		$('form.login').slideToggle();
 	});
-	
-	
+
+
 	// handle hiding and showing the shipping fields
 	$('div.shipping-address').hide();
 	$('#shiptobilling input').change( function() {
@@ -171,8 +170,8 @@ jQuery(document).ready( function($) {
 			$('div.shipping-address').slideDown();
 		}
 	}).change();
-	
-	
+
+
 	// handle clicks on payment methods
 	$(document.body).on('click', '.payment_methods input.input-radio', function() {
 		if ( $('.payment_methods input.input-radio').length > 1 ) {
@@ -185,16 +184,16 @@ jQuery(document).ready( function($) {
 		}
 	});
 	$('#payment input[name=payment_method]:checked').click();
-	
-	
+
+
 	// handle selections from items requiring an update of totals
 	$(document.body).on('change', '#shipping_method, #coupon_code, #billing-country, #billing-state, #billing-postcode, #shipping-country, #shipping-state, #shipping-postcode, #shiptobilling', function() {
 		clearTimeout(updateTimer);
 		update_checkout();
 		validate_required();
 	});
-	
-	
+
+
 	// handle account panel 'input-required' for guests allowed or not
 	if ( jigoshop_params.option_guest_checkout == 'no' ) {
 		$('#createaccount').next().append(' <span class="required">*</span>');
@@ -264,8 +263,8 @@ jQuery(document).ready( function($) {
 			$('#account-password-2').prev().append(' <span class="required">*</span>');
 		}
 	}).change();
-	
-	
+
+
 	// handle changes to Countries that dont' require states and back again
     $('select.country_to_state').change( function() {
 
@@ -311,22 +310,22 @@ jQuery(document).ready( function($) {
         }
 
     });
-	
-	
+
+
 	// handle inline validation of all required checkout fields
 	$('form.checkout').on( 'blur change', '.input-required', function() {
-	
+
 		var $this = $(this);
 		var $parent = $this.closest('.form-row');
 		var validated = true;
-		
+
 		// ensure required fields aren't empty
 		if ( $this.val() == '' || $this.val() == 'undefined' )
 		{
 			$parent.removeClass( 'jigoshop-validated' ).addClass( 'jigoshop-invalid' );
 			validated = false;
 		}
-		
+
 		// validate postcode fields for both billing and shipping
 		// (requires validation option enabled in General Settings, otherwise only checks for non-empty)
 		if ( validated && $this.attr('id').indexOf('postcode') > -1 ) {
@@ -355,7 +354,7 @@ jQuery(document).ready( function($) {
 				}
 			});
 		}
-		
+
 		// ensure valid email addresses
 		if ( validated && $this.attr('id').indexOf('email') > -1 ) {
 			if ( $this.val() ) {
@@ -368,15 +367,15 @@ jQuery(document).ready( function($) {
 				}
 			}
 		}
-		
+
 		if ( validated )
 		{
 			$parent.removeClass( 'jigoshop-invalid' ).addClass( 'jigoshop-validated' );
 		}
-		
+
 	});
-	
-	
+
+
 	// AJAX Form Submission from 'Place Order' button
 	$('form.checkout').submit( function() {
 		validate_required();
@@ -411,5 +410,5 @@ jQuery(document).ready( function($) {
 		});
 		return false;
 	});
-	
+
 });

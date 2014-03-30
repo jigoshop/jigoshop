@@ -451,6 +451,7 @@ function jigoshop_frontend_scripts() {
 //	jigoshop_add_script( 'jigoshop-select2', jigoshop::assets_url().'/assets/js/select2.min.js', array( 'jquery' ), array('in_footer' => true, 'page' => JIGOSHOP_CHECKOUT) );
 	jigoshop_add_script( 'jigoshop-checkout', jigoshop::assets_url().'/assets/js/checkout.js', array( 'jquery' ), array('in_footer' => true, 'page' => JIGOSHOP_CHECKOUT) );
 	jigoshop_add_script( 'jigoshop-single-product', jigoshop::assets_url().'/assets/js/single-product.js', array( 'jquery' ), array('in_footer' => true, 'page' => JIGOSHOP_PRODUCT) );
+	jigoshop_add_script( 'jigoshop-countries', jigoshop::assets_url().'/assets/js/countries.js', array(), array('in_footer' => true, 'page' => array(JIGOSHOP_CHECKOUT, JIGOSHOP_CART)));
 
 	/* Script.js variables */
 	// TODO: clean this up, a lot aren't even used anymore, do away with it
@@ -458,7 +459,6 @@ function jigoshop_frontend_scripts() {
 		'ajax_url' => admin_url('admin-ajax.php'),
 		'assets_url' => jigoshop::assets_url(),
 		'checkout_url' => admin_url('admin-ajax.php?action=jigoshop-checkout'),
-		'countries' => json_encode(jigoshop_countries::$states),
 		'currency_symbol' => get_jigoshop_currency_symbol(),
 		'get_variation_nonce' => wp_create_nonce("get-variation"),
 		'load_fancybox' => $jigoshop_options->get_option('jigoshop_disable_fancybox') == 'no',
