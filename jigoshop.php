@@ -286,6 +286,16 @@ function jigoshop_roles_init() {
 	}
 }
 
+function jigoshop_prepare_dashboard_title($title)
+{
+	$result = '<span>'.preg_replace('/ /', '</span> ', $title, 1);
+	if(strpos($result, '</span>') === false)
+	{
+		$result .= '</span>';
+	}
+	return $result;
+}
+
 /**
  * Enqueues script.
  *

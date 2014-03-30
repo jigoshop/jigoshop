@@ -50,32 +50,50 @@ class jigoshop_dashboard {
 		wp_enqueue_script('wp-lists');
 		wp_enqueue_script('postbox');
 
-		add_meta_box('jigoshop_dash_right_now', __('Right Now','jigoshop'), array($this, 'jigoshop_dash_right_now'), $this->page, 'side', 'core');
-		add_meta_box('jigoshop_dash_recent_orders', __('Recent Orders','jigoshop'), array($this, 'jigoshop_dash_recent_orders'), $this->page, 'side',   'core');
-		add_meta_box('jigoshop_dash_stock_report', __('Stock Report','jigoshop'), array($this, 'jigoshop_dash_stock_report'), $this->page, 'side',   'core');
-		add_meta_box('jigoshop_dash_monthly_report', __('Monthly Report','jigoshop'), array($this, 'jigoshop_dash_monthly_report'),$this->page, 'normal', 'core');
-		add_meta_box('jigoshop_dash_recent_reviews', __('Recent Reviews','jigoshop'), array($this, 'jigoshop_dash_recent_reviews'),$this->page, 'normal', 'core');
-		add_meta_box('jigoshop_dash_latest_news', __('Latest News','jigoshop'), array($this, 'jigoshop_dash_latest_news'), $this->page, 'normal', 'core');
-		add_meta_box('jigoshop_dash_useful_links', __('Useful Links','jigoshop'), array($this, 'jigoshop_dash_useful_links'), $this->page, 'normal', 'core');
+		add_meta_box('jigoshop_dash_right_now', __('Right Now','jigoshop'), array($this, 'jigoshop_dash_right_now'),
+			$this->page, 'side', 'core');
+		add_meta_box('jigoshop_dash_recent_orders', jigoshop_prepare_dashboard_title(__('Recent Orders','jigoshop')), array($this, 'jigoshop_dash_recent_orders'),
+			$this->page, 'side', 'core');
+		add_meta_box('jigoshop_dash_stock_report', jigoshop_prepare_dashboard_title(__('Stock Report','jigoshop')), array($this, 'jigoshop_dash_stock_report'),
+			$this->page, 'side', 'core');
+		add_meta_box('jigoshop_dash_monthly_report', jigoshop_prepare_dashboard_title(__('Monthly Report','jigoshop')), array($this, 'jigoshop_dash_monthly_report'),
+			$this->page, 'normal', 'core');
+		add_meta_box('jigoshop_dash_recent_reviews', jigoshop_prepare_dashboard_title(__('Recent Reviews','jigoshop')), array($this, 'jigoshop_dash_recent_reviews'),
+			$this->page, 'normal', 'core');
+		add_meta_box('jigoshop_dash_latest_news', jigoshop_prepare_dashboard_title(__('Latest News','jigoshop')), array($this, 'jigoshop_dash_latest_news'),
+			$this->page, 'normal', 'core');
+		add_meta_box('jigoshop_dash_useful_links', jigoshop_prepare_dashboard_title(__('Useful Links','jigoshop')), array($this, 'jigoshop_dash_useful_links'),
+			$this->page, 'normal', 'core');
 	}
 
 	function on_show_page() {
 		global $screen_layout_columns; ?>
 		<div id="jigoshop-metaboxes-main" class="wrap">
 		<form action="admin-post.php" method="post">
-			<div class="icon32 jigoshop_icon"><br/></div>
 			<h2><?php _e('Jigoshop Dashboard','jigoshop'); ?></h2>
+			<p id="wp-version-message"><?php _e('You are using', 'jigoshop'); ?>
+				<strong>Jigoshop <?php echo jigoshop_get_plugin_data(); ?></strong>
+			</p>
 
 				<?php wp_nonce_field('jigoshop-metaboxes-main'); ?>
 				<?php wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false ); ?>
 				<?php wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false ); ?>
 
+			<div class="pages">
+				<ul class="pages">
+					<?php global $submenu; ?>
+					<?php foreach($submenu['jigoshop'] as $item): ?>
+					<li><a href="<?php echo (strpos($item[2], 'edit.php') === false ? 'admin.php?page=' : '').$item[2]; ?>"><?php echo $item[0]; ?></a></li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+
 			<div id="dashboard-widgets" class="metabox-holder">
-				<div id='postbox-container-1' class='postbox-container' style='width:50%;'>
+				<div id="postbox-container-1" class="postbox-container" style="width:50%;">
 					<?php do_meta_boxes($this->page, 'side', null); ?>
 				</div>
 				<div id="post-body" class="has-sidebar">
-					<div id='postbox-container-2' class='postbox-container' style='width:50%;'>
+					<div id="postbox-container-2" class="postbox-container" style="width:50%;">
 						<?php do_meta_boxes($this->page, 'normal', null); ?>
 					</div>
 				</div>
@@ -106,7 +124,7 @@ class jigoshop_dashboard {
 
 	<div id="jigoshop_right_now" class="jigoshop_right_now">
 		<div class="table table_content">
-			<p class="sub"><?php _e('Shop Content', 'jigoshop'); ?></p>
+			<p class="sub"><?php echo jigoshop_prepare_dashboard_title(__('Shop Content', 'jigoshop')); ?></p>
 			<table>
 				<tbody>
 					<tr class="first">
@@ -139,23 +157,23 @@ class jigoshop_dashboard {
 			</table>
 		</div>
 		<div class="table table_discussion">
-			<p class="sub"><?php _e('Orders', 'jigoshop'); ?></p>
+			<p class="sub"><?php jigoshop_prepare_dashboard_title(__('Orders', 'jigoshop')); ?></p>
 			<table>
 				<tbody>
 					<?php $jigoshop_orders = new jigoshop_orders(); ?>
-					<tr class="first">
+					<tr class="first pending-orders">
 						<td class="b"><a href="edit.php?post_type=shop_order&shop_order_status=pending"><span class="total-count"><?php echo $jigoshop_orders->pending_count; ?></span></a></td>
 						<td class="last t"><a class="pending" href="edit.php?post_type=shop_order&shop_order_status=pending"><?php _e('Pending', 'jigoshop'); ?></a></td>
 					</tr>
-					<tr>
+					<tr class="on-hold-orders">
 						<td class="b"><a href="edit.php?post_type=shop_order&shop_order_status=on-hold"><span class="total-count"><?php echo $jigoshop_orders->on_hold_count; ?></span></a></td>
 						<td class="last t"><a class="onhold" href="edit.php?post_type=shop_order&shop_order_status=on-hold"><?php _e('On-Hold', 'jigoshop'); ?></a></td>
 					</tr>
-					<tr>
+					<tr class="processing-orders">
 						<td class="b"><a href="edit.php?post_type=shop_order&shop_order_status=processing"><span class="total-count"><?php echo $jigoshop_orders->processing_count; ?></span></a></td>
 						<td class="last t"><a class="processing" href="edit.php?post_type=shop_order&shop_order_status=processing"><?php _e('Processing', 'jigoshop'); ?></a></td>
 					</tr>
-					<tr>
+					<tr class="completed-orders">
 						<td class="b"><a href="edit.php?post_type=shop_order&shop_order_status=completed"><span class="total-count"><?php echo $jigoshop_orders->completed_count; ?></span></a></td>
 						<td class="last t"><a class="complete" href="edit.php?post_type=shop_order&shop_order_status=completed"><?php _e('Completed', 'jigoshop'); ?></a></td>
 					</tr>
@@ -163,11 +181,6 @@ class jigoshop_dashboard {
 			</table>
 		</div>
 		<br class="clear"/>
-		<div class="versions">
-			<p id="wp-version-message"><?php _e('You are using', 'jigoshop'); ?>
-				<strong>JigoShop <?php echo jigoshop_get_plugin_data(); ?></strong>
-			</p>
-		</div>
 	</div>
 		<?php
 	}
@@ -200,8 +213,8 @@ class jigoshop_dashboard {
 
 				echo '
 				<li>
-					<span class="order-status '.sanitize_title($this_order->status).'">'.ucwords(__($this_order->status, 'jigoshop')).'</span> <a href="'.admin_url('post.php?post='.$order->ID).'&action=edit">'.get_the_time(__('l jS \of F Y h:i:s A', 'jigoshop'), $order->ID).'</a><br />
-					<small>'.sizeof($this_order->items).' '._n('Item', 'Items', sizeof($this_order->items), 'jigoshop').' ('.__('Total Quantity','jigoshop').' '.$total_items.') <span class="order-cost">'.__('Total: ', 'jigoshop').jigoshop_price($this_order->order_total).'</span></small>
+					<span class="order-status '.sanitize_title($this_order->status).'">'.ucwords(__($this_order->status, 'jigoshop')).'</span> <a href="'.admin_url('post.php?post='.$order->ID).'&action=edit">'.get_the_time(__('M d, Y', 'jigoshop'), $order->ID).'</a><br />
+					<small>'.sizeof($this_order->items).' '._n('Item', 'Items', sizeof($this_order->items), 'jigoshop').', <span class="total-quantity">'.__('Total Quantity','jigoshop').' '.$total_items.'</span> <span class="order-cost">'.jigoshop_price($this_order->order_total).'</span></small>
 				</li>';
 
 			endforeach;
