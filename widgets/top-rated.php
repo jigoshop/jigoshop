@@ -11,8 +11,8 @@
  * @package             Jigoshop
  * @category            Widgets
  * @author              Jigoshop
- * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://www.jigoshop.com/license/commercial-edition
+ * @copyright           Copyright © 2011-2014 Jigoshop.
+ * @license             GNU General Public License v3
  */
 
 class Jigoshop_Widget_Top_Rated extends WP_Widget {

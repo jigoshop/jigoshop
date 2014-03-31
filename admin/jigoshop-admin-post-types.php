@@ -13,8 +13,8 @@
  * @package             Jigoshop
  * @category            Admin
  * @author              Jigoshop
- * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://www.jigoshop.com/license/commercial-edition
+ * @copyright           Copyright © 2011-2014 Jigoshop.
+ * @license             GNU General Public License v3
  */
 
 // Add filter to ensure the text is context relevant when updated
