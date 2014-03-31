@@ -13,8 +13,8 @@
  * @package             Jigoshop
  * @category            Admin
  * @author              Jigoshop
- * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://www.jigoshop.com/license/commercial-edition
+ * @copyright           Copyright © 2011-2014 Jigoshop.
+ * @license             GNU General Public License v3
  */
 add_action('jigoshop_process_shop_order_meta', 'jigoshop_process_shop_order_meta', 1, 2);
 

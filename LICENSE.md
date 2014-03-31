@@ -1,17 +1,12 @@
 This program incorporates work covered by the following copyright and
 permission notices:
 
-fancyBox
-========
+# PrettyPhoto
 
-fancyBox is a tool that offers a nice and elegant way to add zooming
-functionality for images, html content and multi-media on your webpages
+PrettyPhoto is licenced under
+[Creative Commons 2.5](http://creativecommons.org/licenses/by/2.5)
 
-More information and examples: http://fancybox.net/
-
-License: http://fancybox.net/
-
-Copyright © 2011 Janis Skarnelis - janis@fancyapps.com
+Author: Stephane Caron (http://www.no-margin-for-errors.com)
 
 ***********************************************************************
                      GNU GENERAL PUBLIC LICENSE
