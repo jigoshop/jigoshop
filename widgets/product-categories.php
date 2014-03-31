@@ -11,8 +11,8 @@
  * @package             Jigoshop
  * @category            Widgets
  * @author              Jigoshop
- * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://www.jigoshop.com/license/commercial-edition
+ * @copyright           Copyright © 2011-2014 Jigoshop.
+ * @license             GNU General Public License v3
  */
 
 class Jigoshop_Widget_Product_Categories extends WP_Widget {
@@ -117,6 +117,8 @@ class Jigoshop_Widget_Product_Categories extends WP_Widget {
 				function onCatChange() {
 					if ( dropdown.options[dropdown.selectedIndex].value !=='' ) {
 						location.href = "<?php echo home_url(); ?>/?product_cat="+dropdown.options[dropdown.selectedIndex].value;
+					} else {
+						location.href = "<?php echo get_permalink(jigoshop_get_page_id('shop')); ?>"
 					}
 				}
 				dropdown.onchange = onCatChange;

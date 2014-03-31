@@ -11,8 +11,8 @@
  * @package             Jigoshop
  * @category            Checkout
  * @author              Jigoshop
- * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://www.jigoshop.com/license/commercial-edition
+ * @copyright           Copyright © 2011-2014 Jigoshop.
+ * @license             GNU General Public License v3
  */
 class jigoshop_session extends Jigoshop_Singleton {
 
