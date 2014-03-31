@@ -22,7 +22,7 @@
  * Author:              Jigoshop
  * Author URI:          http://www.jigoshop.com
  *
- * Version:             1.8.2
+ * Version:             1.8.3
  * Requires at least:   3.5
  * Tested up to:        3.8
  *

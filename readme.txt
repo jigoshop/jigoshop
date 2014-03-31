@@ -4,7 +4,7 @@ Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, wid
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.5
 Tested up to: 3.8
-Stable tag: 1.8.2
+Stable tag: 1.8.3
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -113,6 +113,11 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 == Changelog ==
 
+= 1.8.3 - 2014-03-31 =
+* New: Orders in admin panel can be filtered by date
+* Tweak: Updated licences
+* Tweak: Moved country-states javascript to separate file
+* Fix: Categories widget can redirect to "All" page too
 = 1.8.2 - 2014-03-28 =
 * New: Jigoshop manages its assets through new API `jigoshop_add_style()` and `jigoshop_add_script()`
 * Tweak: PayPal landing page will now show Credit Card entry fields by default
