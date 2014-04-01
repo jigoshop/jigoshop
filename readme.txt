@@ -4,7 +4,7 @@ Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, wid
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.5
 Tested up to: 3.8
-Stable tag: 1.8.3
+Stable tag: 1.8.4
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -113,6 +113,10 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 == Changelog ==
 
+
+= 1.8.4 - 2014-04-01 =
+* Fix: Category dropdown is now single selection. Thanks to Riccardo F
+* Fix: Closing tags in `jigoshop_customer` class are now correctly included. Thanks to robselway
 = 1.8.3 - 2014-03-31 =
 * New: Orders in admin panel can be filtered by date
 * Tweak: Updated licences

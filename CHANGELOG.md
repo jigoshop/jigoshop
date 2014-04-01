@@ -2,6 +2,8 @@
 
 * 1.8.4 - 2014-04-01
     * Fix: Category dropdown is now single selection. Thanks to Riccardo F
+    * Fix: Closing tags in `jigoshop_customer` class are now correctly included. Thanks to robselway
+
 * 1.8.3 - 2014-03-31
     * New: Orders in admin panel can be filtered by date
     * Tweak: Updated licences
