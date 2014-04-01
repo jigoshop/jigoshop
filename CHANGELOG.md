@@ -1,10 +1,13 @@
 ## Changelog
 
+* 1.8.4 - 2014-04-01
+    * Fix: Category dropdown is now single selection. Thanks to Riccardo F
 * 1.8.3 - 2014-03-31
     * New: Orders in admin panel can be filtered by date
     * Tweak: Updated licences
     * Tweak: Moved country-states javascript to separate file
     * Fix: Categories widget can redirect to "All" page too
+
 * 1.8.2 - 2014-03-28
     * New: Jigoshop manages its assets through new API `jigoshop_add_style()` and `jigoshop_add_script()`
     * Tweak: PayPal landing page will now show Credit Card entry fields by default
