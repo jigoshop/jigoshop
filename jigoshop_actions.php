@@ -889,7 +889,7 @@ function jigoshop_product_dropdown_categories( $show_counts = true, $hierarchal 
 	$terms = get_terms( 'product_cat', $r );
 	if ( ! $terms ) return;
 
-	$output  = "<select multiple name='product_cat' id='dropdown_product_cat'>";
+	$output  = "<select name='product_cat' id='dropdown_product_cat'>";
 
 	$output .= '<option value="" ' .  selected( isset( $_GET['product_cat'] ) ? esc_attr( $_GET['product_cat'] ) : '', '', false ) . '>'.__('View all categories', 'jigoshop').'</option>';
 	$output .= jigoshop_walk_category_dropdown_tree( $terms, 0, $r );
