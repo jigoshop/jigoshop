@@ -496,7 +496,7 @@ class jigoshop_customer extends Jigoshop_Singleton {
 					if (self::get_value($args['name'])==$value) $field .= 'selected="selected"';
 					$field .= '>'.__($label, 'jigoshop').'</option>';
 				};
-				'</select></p>'.$after;
+				$field .= '</select></p>'.$after;
 			break;
 			default :
 
