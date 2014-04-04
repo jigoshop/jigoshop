@@ -842,7 +842,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			'name'           => __('Enable scripts and styles compression', 'jigoshop'),
 			'desc'            => __('Enables script and styles minification. This will improve speed as everything from Jigoshop will be packed into 2 files only.', 'jigoshop'),
 			'id'             => 'jigoshop_enable_jwof',
-			'std'            => 'no',
+			'std'            => 'yes',
 			'type'           => 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),

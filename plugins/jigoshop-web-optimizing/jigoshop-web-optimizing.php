@@ -18,7 +18,7 @@ if(!defined('JIGOSHOP_WEB_OPTIMIZING_URL'))
 
 function init_jigoshop_web_optimizing()
 {
-	if(class_exists('jigoshop') && Jigoshop_Base::get_options()->get_option('jigoshop_enable_jwof', 'no') == 'yes')
+	if(class_exists('jigoshop') && Jigoshop_Base::get_options()->get_option('jigoshop_enable_jwof', 'yes') == 'yes')
 	{
 		load_plugin_textdomain('jigoshop_web_optimizing', false, dirname(plugin_basename(__FILE__)).'/languages/');
 
