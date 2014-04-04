@@ -11,6 +11,7 @@ use Assetic\Filter\JSMinPlusFilter;
 use Assetic\FilterManager;
 use Assetic\Asset\FileAsset;
 use Assetic\Util\VarUtils;
+use Jigoshop\Web\Optimizing\Filter\WordpressCssRewriteFilter;
 
 /**
  * Main class of Jigoshop Web Optimizing framework.
@@ -36,7 +37,8 @@ class Optimizing
 		$filterManager = new FilterManager();
 		$filterManager->set('jsmin', new JSMinPlusFilter());
 		$filterManager->set('cssmin', new CssMinFilter());
-		$this->_factory = new AssetFactory(JIGOSHOP_WEB_OPTIMIZING_DIR.'/cache/');
+		$filterManager->set('cssrewrite', new WordpressCssRewriteFilter(JIGOSHOP_WEB_OPTIMIZING_DIR.'/cache'));
+		$this->_factory = new AssetFactory(JIGOSHOP_WEB_OPTIMIZING_DIR.'/cache');
 		$this->_factory->setAssetManager(new AssetManager());
 		$this->_factory->setFilterManager($filterManager);
 		$this->_factory->addWorker(new CacheBustingWorker());
