@@ -103,6 +103,8 @@ include_once( 'jigoshop_template_actions.php' );
 include_once( 'jigoshop_emails.php' );
 include_once( 'jigoshop_actions.php' );
 
+// Plugins
+include_once('plugins/jigoshop-web-optimizing/jigoshop-web-optimizing.php');
 
 /**
  * IIS compat fix/fallback
@@ -170,6 +172,7 @@ function jigoshop_init() {
 	}
 
 	jigoshop_roles_init();
+	do_action('jigoshop_initialize_plugins');
 
 }
 
