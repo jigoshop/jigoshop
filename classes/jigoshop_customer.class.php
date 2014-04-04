@@ -78,7 +78,7 @@ class jigoshop_customer extends Jigoshop_Singleton {
 	 * set the customer shipping and billing information from their saved data
 	 *
 	 * @param string $user_login - the user name of the customer logged in
-	 * @param user $user the user object from wp
+	 * @param WP_User $user the user object from wp
 	 * @since 1.4.4
 	 */
 	public function update_signed_in_customer($user_login, $user) {
@@ -103,30 +103,24 @@ class jigoshop_customer extends Jigoshop_Singleton {
 
     /**
      * Find out if the customer should be taxed or not
-     * @param boolean $shipable tells if the cart has shipable items, and therefore we should use
-     * shipping country. Otherwise if not shippable items, we need to use the customer country.
+     * @param boolean $shippable tells if the cart has shipable items, and therefore we should use shipping country. Otherwise if not shippable items, we need to use the customer country.
+     *
      * @return boolean true if customer is taxable, false otherwise
      * @since 1.4
      */
-	public static function is_taxable($shipable) {
+	public static function is_taxable($shippable) {
 		// if no taxes, than no one is taxable
 		if (self::get_options()->get_option('jigoshop_calc_taxes') == 'no') {
 			return false;
 		}
 
 		$shop_country = jigoshop_countries::get_base_country();
-		$my_country = ($shipable ? self::get_shipping_country() : self::get_country());
+		$my_country = ($shippable ? self::get_shipping_country() : self::get_country());
 
-		$taxable = false;
 		if (jigoshop_countries::is_eu_country($shop_country)) {
-			$taxable = jigoshop_countries::is_eu_country($my_country);
+			return jigoshop_countries::is_eu_country($my_country);
 		}
-		else {
-			$taxable = ($shop_country == $my_country);
-		}
-		// in order for a customer to be taxed, they have to be shipping to the taxing country
-		// or belong to that country. Also, if the shop is eu shop, then
-		return $taxable;
+		return ($shop_country == $my_country);
 	}
 
     /**
@@ -163,17 +157,29 @@ class jigoshop_customer extends Jigoshop_Singleton {
 
 	/** Gets the state from the current session */
 	public static function get_state() {
-		if (self::get_customer_session('state')) return self::get_customer_session('state');
+		if (self::get_customer_session('state'))
+		{
+			return self::get_customer_session('state');
+		}
+		return '';
 	}
 
 	/** Gets the country from the current session */
 	public static function get_country() {
-		if (self::get_customer_session('country')) return self::get_customer_session('country');
+		if (self::get_customer_session('country'))
+		{
+			return self::get_customer_session('country');
+		}
+		return Jigoshop_Base::get_options()->get_option('jigoshop_default_country');
 	}
 
 	/** Gets the postcode from the current session */
 	public static function get_postcode() {
-		if ( self::get_customer_session('postcode')) return strtolower(str_replace(' ', '', self::get_customer_session('postcode')));
+		if ( self::get_customer_session('postcode'))
+		{
+			return strtolower(str_replace(' ', '', self::get_customer_session('postcode')));
+		}
+		return '';
 	}
 
 	/** Checks for a customer requiring a state for a country that has states */
@@ -215,12 +221,20 @@ class jigoshop_customer extends Jigoshop_Singleton {
 
 	/** Gets the state from the current session */
 	public static function get_shipping_state() {
-		if (self::get_customer_session('shipping_state')) return self::get_customer_session('shipping_state');
+		if (self::get_customer_session('shipping_state'))
+		{
+			return self::get_customer_session('shipping_state');
+		}
+		return '';
 	}
 
 	/** Gets the country from the current session */
 	public static function get_shipping_country() {
-		if (self::get_customer_session('shipping_country'))	return self::get_customer_session('shipping_country');
+		if (self::get_customer_session('shipping_country'))
+		{
+			return self::get_customer_session('shipping_country');
+		}
+		return Jigoshop_Base::get_options()->get_option('jigoshop_default_country');
 	}
 
 	/** Gets the country and state from the current session for cart shipping display */
@@ -232,11 +246,16 @@ class jigoshop_customer extends Jigoshop_Singleton {
 				return jigoshop_countries::$countries[self::get_customer_session('shipping_country')];
 			}
 		}
+		return Jigoshop_Base::get_options()->get_option('jigoshop_default_country');
 	}
 
 	/** Gets the postcode from the current session */
 	public static function get_shipping_postcode() {
-        if (self::get_customer_session('shipping_postcode')) return strtolower(str_replace(' ', '', self::get_customer_session('shipping_postcode')));
+		if (self::get_customer_session('shipping_postcode'))
+		{
+			return strtolower(str_replace(' ', '', self::get_customer_session('shipping_postcode')));
+		}
+		return '';
 	}
 
 	/** Sets session data for the location */
@@ -366,7 +385,8 @@ class jigoshop_customer extends Jigoshop_Singleton {
 	/**
 	 * Outputs a form field
 	 *
-	 * @param   array	args	contains a list of args for showing the field, merged with defaults (below)
+	 * @param array $args contains a list of args for showing the field, merged with defaults (below)
+	 * @return string
 	 */
 	function address_form_field( $args ) {
 
@@ -400,8 +420,6 @@ class jigoshop_customer extends Jigoshop_Singleton {
 			$after = '';
 		}
 
-		$field = '';
-
 		switch ($args['type']) :
 			case "country" :
 
@@ -412,12 +430,12 @@ class jigoshop_customer extends Jigoshop_Singleton {
 					else $current_c = jigoshop_customer::get_shipping_country();
 				endif;
 
-                // Remove 'Select a Country' option from drop-down menu for countries.
-                // There is no need to have it, because was assume when user hasn't selected
-                // a country that they are from the shop base country.
-                $field = '<p class="form-row '.implode(' ', $args['class']).'">
-                <label for="'.esc_attr($args['name']).'" class="'.esc_attr(implode(' ', $args['label_class'])).'">'.$args['label'].$required.'</label>
-                <select name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" class="country_to_state" rel="'.esc_attr($args['rel']).'">';
+        // Remove 'Select a Country' option from drop-down menu for countries.
+        // There is no need to have it, because was assume when user hasn't selected
+        // a country that they are from the shop base country.
+        $field = '<p class="form-row '.implode(' ', $args['class']).'">
+        <label for="'.esc_attr($args['name']).'" class="'.esc_attr(implode(' ', $args['label_class'])).'">'.$args['label'].$required.'</label>
+        <select name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" class="country_to_state" rel="'.esc_attr($args['rel']).'">';
 
 				foreach (jigoshop_countries::get_allowed_countries() as $key=>$value) :
 					$field .= '<option value="'.esc_attr($key).'"';
@@ -510,8 +528,16 @@ class jigoshop_customer extends Jigoshop_Singleton {
 
 		$field = apply_filters('jigoshop_address_field_types', $field, $args);
 
-		if ($args['return']) return $field; else echo $field;
+		if ($args['return'])
+		{
+			return $field;
+		} else
+		{
+			echo $field;
+			return null;
+		}
 	}
+
 	/** Gets the value either from the posted data, or from the users meta data */
 	function get_value( $input ) {
 		if (isset( $_POST[$input] ) && !empty($_POST[$input])) :
@@ -529,6 +555,8 @@ class jigoshop_customer extends Jigoshop_Singleton {
 
 			endswitch;
 		endif;
+
+		return '';
 	}
 
 }
