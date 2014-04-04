@@ -97,14 +97,14 @@ div.pages ul.pages li a:hover {background-color: #474f40;}
 #wp-version-message strong {font-weight: bold !important;color: #464e3f;}
 #dashboard-widgets {clear: both;}
 
-#jigoshop_dash_right_now .sub span,#jigoshop-metaboxes-main .postbox h3 span span {
+.sub span,.postbox h3 span span {
 	display: block !important;
 	font: 700 12.5px "Open Sans",arial,sans-serif;
 	text-transform: uppercase;
 	letter-spacing: 4px;
 	margin-bottom: -10px;
 }
-#jigoshop_dash_right_now .sub span:before,#jigoshop-metaboxes-main .postbox h3 span span:before {
+.sub span:before,.postbox h3 span span:before {
 	display: none;
 }
 #jigoshop-stats {

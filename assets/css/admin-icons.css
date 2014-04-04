@@ -24,10 +24,78 @@
 	padding-left: 38px !important;
 	position: relative;
 }
-#toplevel_page_jigoshop ul.wp-submenu a:before {
+#toplevel_page_jigoshop ul.wp-submenu a:before{
 	background-position: 0 -22px;
 	width: 13px;
 	height: 13px;
 	left: 13px;
 	top: 7px;
+}
+#toplevel_page_jigoshop ul.wp-submenu .wp-first-item +li a:before {
+	background-position: 0 -42px;
+}
+#toplevel_page_jigoshop ul.wp-submenu .wp-first-item +li+li a:before {
+	background-position: 0 -61px;
+}
+#toplevel_page_jigoshop ul.wp-submenu .wp-first-item +li+li+li a:before {
+	background-position: 0 -80px;
+}
+#toplevel_page_jigoshop ul.wp-submenu .wp-first-item +li+li+li a:before {
+	background-position: 0 -80px;
+}
+#toplevel_page_jigoshop ul.wp-submenu .wp-first-item +li+li+li+li a:before {
+	background-position: 0 -80px;
+}
+#toplevel_page_jigoshop ul.wp-submenu .wp-first-item +li+li+li+li+li a:before {
+	background-position: 0 -80px;
+}
+#toplevel_page_jigoshop ul.wp-submenu .wp-first-item +li+li+li+li+li+li a:before {
+	background-position: 0 -80px;
+}
+#toplevel_page_jigoshop ul.wp-submenu .wp-first-item +li+li+li+li+li+li+li a:before {
+	background-position: 0 -99px;
+}
+#toplevel_page_jigoshop ul.wp-submenu .wp-first-item +li+li+li+li+li+li+li+li a:before {
+	background-position: 0 -80px;
+}
+div.pages ul.pages li a {
+	position: relative;
+}
+div.pages ul.pages li a:before {
+	background: url(../images/jigo-ico.png) -27px -21px no-repeat;
+	content: "";
+	width: 19px;
+	height: 19px;
+	position: absolute;
+	left: 13px;
+	top: 14px;
+	text-indent: -9999999px;
+	padding: 0;
+}
+div.pages ul.pages li +li a:before {
+	background-position: -27px -40px;
+}
+div.pages ul.pages li +li+li a:before {
+	background-position: -27px -63px;
+}
+div.pages ul.pages li +li+li+li a:before {
+	background-position: -27px -83px;
+}
+div.pages ul.pages li +li+li+li a:before {
+	background-position: -27px -83px;
+}
+div.pages ul.pages li +li+li+li+li a:before {
+	background-position: -27px -83px;
+}
+div.pages ul.pages li +li+li+li+li+li a:before {
+	background-position: -27px -83px;
+}
+div.pages ul.pages li +li+li+li+li+li+li a:before {
+	background-position: -27px -83px;
+}
+div.pages ul.pages li +li+li+li+li+li+li+li a:before {
+	background-position: -27px -103px;
+}
+div.pages ul.pages li +li+li+li+li+li+li+li+li a:before {
+	background-position: -27px -83px;
 }
