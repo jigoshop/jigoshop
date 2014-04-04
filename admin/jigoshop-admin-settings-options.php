@@ -131,9 +131,17 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 	),
 
 	array(
-		'desc'           => __('Disable bundled Fancybox','jigoshop'),
-		'tip'            => __('Useful if or one of your plugin already loads the Fancybox script and css. But be careful, Jigoshop will still try to open product images using Fancybox.','jigoshop'),
+		'desc'           => __('Disable bundled PrettyPhoto','jigoshop'),
+		'tip'            => __('Useful if or one of your plugin already loads the PrettyPhoto script and css. But be careful, Jigoshop will still try to open product images using Fancybox.','jigoshop'),
 		'id'             => 'jigoshop_disable_fancybox',
+		'std'            => 'no',
+		'type'           => 'checkbox'
+	),
+
+	array(
+		'desc'           => __('Enable scripts and styles compression','jigoshop'),
+		'tip'            => __('Enables script and styles minification. This will improve speed as everything from Jigoshop will be packed into 2 files only.','jigoshop'),
+		'id'             => 'jigoshop_enable_jwof',
 		'std'            => 'no',
 		'type'           => 'checkbox'
 	),
