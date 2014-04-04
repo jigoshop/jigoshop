@@ -13,6 +13,6 @@ class Stylesheet extends BaseStylesheet
 {
 	protected function getAssetFilters()
 	{
-		return array('cssmin');
+		return array('cssmin', 'cssrewrite');
 	}
 }
