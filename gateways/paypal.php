@@ -307,7 +307,7 @@ class paypal extends jigoshop_payment_gateway {
 				$title = $_product->get_title();
 				//if variation, insert variation details into product title
 				if ($_product instanceof jigoshop_product_variation) {
-					$title .= ' (' . jigoshop_get_formatted_variation( $item['variation'], true) . ')';
+					$title .= ' (' . jigoshop_get_formatted_variation( $_product, true) . ')';
 				}
 
 				$item_names[] = $title . ' x ' . $item['qty'];
@@ -340,7 +340,7 @@ class paypal extends jigoshop_payment_gateway {
 
 					//if variation, insert variation details into product title
 					if ($_product instanceof jigoshop_product_variation) {
-						$title .= ' (' . jigoshop_get_formatted_variation( $item['variation'], true) . ')';
+						$title .= ' (' . jigoshop_get_formatted_variation( $_product, true) . ')';
 					}
 
 					$paypal_args['item_name_'.$item_loop] = $title;

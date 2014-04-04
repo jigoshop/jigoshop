@@ -1023,8 +1023,8 @@ function jigoshop_price( $price, $args = array() ) {
 }
 
 /** Show variation info if set */
-function jigoshop_get_formatted_variation( $variation = '', $flat = false ) {
-	if ($variation && is_array($variation)) :
+function jigoshop_get_formatted_variation(jigoshop_product $product, $flat = false ) {
+	if ($product instanceof jigoshop_product_variation && is_array($product->variation_data)) :
 
 		$return = '';
 
@@ -1034,7 +1034,7 @@ function jigoshop_get_formatted_variation( $variation = '', $flat = false ) {
 
 		$variation_list = array();
 
-		foreach ($variation as $name => $value) :
+		foreach ($product->variation_data as $name => $value) :
 
 			$name = str_replace('tax_', '', $name);
 
@@ -1044,8 +1044,7 @@ function jigoshop_get_formatted_variation( $variation = '', $flat = false ) {
 					if ( $term->slug == $value ) $value = $term->name;
 				endforeach;
 				$name = get_taxonomy( 'pa_'.$name )->labels->name;
-				// TODO: this is -not- a static class function and shouldn't be called like this Mr Gates
-				$name = jigoshop_product::attribute_label('pa_'.$name);
+				$name = $product->attribute_label('pa_'.$name);
 			endif;
 
 			// TODO: if it is a custom text attribute, 'pa_' taxonomies are not created and we
