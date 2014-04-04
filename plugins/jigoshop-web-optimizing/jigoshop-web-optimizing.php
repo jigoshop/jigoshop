@@ -5,6 +5,11 @@ if(!defined('JIGOSHOP_WEB_OPTIMIZING_DIR'))
 {
 	define('JIGOSHOP_WEB_OPTIMIZING_DIR', dirname(__FILE__));
 }
+// Define cache directory
+if(!defined('JIGOSHOP_WEB_OPTIMIZING_CACHE'))
+{
+	define('JIGOSHOP_WEB_OPTIMIZING_CACHE', JIGOSHOP_WEB_OPTIMIZING_DIR.DIRECTORY_SEPARATOR.'cache');
+}
 // Define plugin URL for assets
 if(!defined('JIGOSHOP_WEB_OPTIMIZING_URL'))
 {
