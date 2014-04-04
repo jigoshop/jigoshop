@@ -136,8 +136,8 @@ function jigoshop_order_tracking( $atts ) {
 							echo '<td>'.$_product->sku.'</td>';
 							echo '<td class="product-name">'.$_product->get_title();
 
-							if (isset($_product->variation_data)) :
-								echo jigoshop_get_formatted_variation( $_product->variation_data );
+							if ($_product instanceof jigoshop_product_variation) :
+								echo jigoshop_get_formatted_variation( $_product );
 							endif;
 
 							do_action( 'jigoshop_display_item_meta_data', $order_item );

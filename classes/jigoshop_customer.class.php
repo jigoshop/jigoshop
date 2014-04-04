@@ -327,7 +327,7 @@ class jigoshop_customer extends Jigoshop_Singleton {
 							$download_name = $_product->ID ? get_the_title($_product->ID) : get_the_title($result->product_id);
 
 							if (isset($_product->variation_data)) :
-								$download_name = $download_name .' (' . jigoshop_get_formatted_variation( $_product->variation_data, true ).')';
+								$download_name = $download_name .' (' . jigoshop_get_formatted_variation( $_product, true ).')';
 							endif;
 							$downloads[] = array(
 								'download_url'       => add_query_arg('download_file', $result->product_id, add_query_arg('order', $result->order_key, add_query_arg('email', $user_info->user_email, home_url()))),

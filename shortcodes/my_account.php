@@ -505,8 +505,8 @@ function jigoshop_view_order() {
 								    <td>' . $_product->get_sku() . '</td>
 									<td class="product-name">' . $item['name'];
 
-                            if (isset($_product->variation_data)) :
-                                echo jigoshop_get_formatted_variation($_product->variation_data);
+                            if ($_product instanceof jigoshop_product_variation) :
+                                echo jigoshop_get_formatted_variation($_product);
                             endif;
 
                             do_action( 'jigoshop_display_item_meta_data', $item );
