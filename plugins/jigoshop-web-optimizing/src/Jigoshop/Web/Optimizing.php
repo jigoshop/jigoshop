@@ -3,13 +3,13 @@
 namespace Jigoshop\Web;
 
 use Assetic\Asset\AssetInterface;
+use Assetic\Asset\FileAsset;
 use Assetic\AssetManager;
 use Assetic\Factory\AssetFactory;
 use Assetic\Factory\Worker\CacheBustingWorker;
 use Assetic\Filter\CssMinFilter;
 use Assetic\Filter\JSMinPlusFilter;
 use Assetic\FilterManager;
-use Assetic\Asset\FileAsset;
 use Assetic\Util\VarUtils;
 use Jigoshop\Web\Optimizing\Filter\WordpressCssRewriteFilter;
 
@@ -37,8 +37,8 @@ class Optimizing
 		$filterManager = new FilterManager();
 		$filterManager->set('jsmin', new JSMinPlusFilter());
 		$filterManager->set('cssmin', new CssMinFilter());
-		$filterManager->set('cssrewrite', new WordpressCssRewriteFilter(JIGOSHOP_WEB_OPTIMIZING_DIR.'/cache'));
-		$this->_factory = new AssetFactory(JIGOSHOP_WEB_OPTIMIZING_DIR.'/cache');
+		$filterManager->set('cssrewrite', new WordpressCssRewriteFilter(JIGOSHOP_WEB_OPTIMIZING_CACHE));
+		$this->_factory = new AssetFactory(JIGOSHOP_WEB_OPTIMIZING_CACHE);
 		$this->_factory->setAssetManager(new AssetManager());
 		$this->_factory->setFilterManager($filterManager);
 		$this->_factory->addWorker(new CacheBustingWorker());
@@ -51,6 +51,7 @@ class Optimizing
 		{
 			add_action('admin_print_scripts', array($this, 'admin_print_scripts'));
 			add_action('admin_print_styles', array($this, 'admin_print_styles'));
+			\Jigoshop_Base::get_options()->install_external_options_tab(__('Web Optimizing', 'jigoshop_web_optimizing'), $this->admin_settings());
 		}
 		// Front
 		else
@@ -66,6 +67,52 @@ class Optimizing
 			$this->_scripts[$page] = array();
 		}
 		$this->_styles = $this->_scripts;
+	}
+
+	/** Plugin page in administration panel. */
+	public function admin_settings()
+	{
+		return array(
+			array(
+				'name' => __('Jigoshop Web Optimizing', 'jigoshop_web_optimizing'),
+				'type' => 'title',
+				'desc' => '',
+				'id' => '',
+			),
+			array(
+				'name' => __('Plugin status', 'jigoshop_web_optimizing'),
+				'id' => 'jigoshop_web_optimizing_clear_cache',
+				'type' => 'user_defined',
+				'display' => array($this, 'admin_plugin_status'),
+				'update' => array($this, 'admin_clear_cache'),
+			),
+		);
+	}
+
+	/** Plugin status item in administration panel. */
+	public function admin_plugin_status()
+	{
+		/** @noinspection PhpUnusedLocalVariableInspection */
+		$files = iterator_count(new \FilesystemIterator(JIGOSHOP_WEB_OPTIMIZING_CACHE, \FilesystemIterator::SKIP_DOTS));
+		ob_start();
+		include(JIGOSHOP_WEB_OPTIMIZING_DIR.'/templates/plugin_status.php');
+
+		return ob_get_clean();
+	}
+
+	public function admin_clear_cache()
+	{
+		if(isset($_POST['clear_cache']) && $_POST['clear_cache'] == 'on')
+		{
+			foreach(new \DirectoryIterator(JIGOSHOP_WEB_OPTIMIZING_CACHE) as $file)
+			{
+				/** @var $file \DirectoryIterator */
+				if(!$file->isDot())
+				{
+					unlink($file->getPathname());
+				}
+			}
+		}
 	}
 
 	/**

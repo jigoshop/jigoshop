@@ -31,7 +31,7 @@ abstract class Asset
 	 */
 	public function getAsset()
 	{
-		$writer = new Writer(JIGOSHOP_WEB_OPTIMIZING_DIR.'/cache', array_map(function($item){
+		$writer = new Writer(JIGOSHOP_WEB_OPTIMIZING_CACHE, array_map(function($item){
 			return array($item);
 		}, $this->values));
 
@@ -44,7 +44,7 @@ abstract class Asset
 					'vars' => $this->getAssetVariables(),
 				)
 			),
-			new FilesystemCache(JIGOSHOP_WEB_OPTIMIZING_DIR.'/cache')
+			new FilesystemCache(JIGOSHOP_WEB_OPTIMIZING_CACHE)
 		);
 		$asset->setValues($this->values);
 		$writer->writeAsset($asset);
