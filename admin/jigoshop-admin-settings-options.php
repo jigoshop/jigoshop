@@ -142,7 +142,7 @@ $jigoshop_options_settings = apply_filters('jigoshop_options_settings', array(
 		'desc'           => __('Enable scripts and styles compression','jigoshop'),
 		'tip'            => __('Enables script and styles minification. This will improve speed as everything from Jigoshop will be packed into 2 files only.','jigoshop'),
 		'id'             => 'jigoshop_enable_jwof',
-		'std'            => 'no',
+		'std'            => 'yes',
 		'type'           => 'checkbox'
 	),
 
