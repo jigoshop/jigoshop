@@ -283,7 +283,7 @@ class futurepay extends jigoshop_payment_gateway {
 			$title = $_product->get_title();
 			// if variation, insert variation details into product title
 			if ( $_product instanceof jigoshop_product_variation ) {
-				$title .= ' (' . jigoshop_get_formatted_variation( $item['variation'], true) . ')';
+				$title .= ' (' . jigoshop_get_formatted_variation( $_product, true) . ')';
 			}
 
 			$item_names[] = $item['qty'] . ' x ' . $title;

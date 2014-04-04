@@ -255,7 +255,7 @@ class jigoshop_worldpay extends jigoshop_payment_gateway {
 
 					// if variation, insert variation details into product title
 					if ( $_product instanceof jigoshop_product_variation ) {
-						$title .= ' (' . jigoshop_get_formatted_variation( $item['variation'], true) . ')';
+						$title .= ' (' . jigoshop_get_formatted_variation( $_product, true) . ')';
 					}
 
 					$desc .= $item['qty'] .' x '. $title .'<br/>';
