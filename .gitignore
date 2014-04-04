@@ -1,6 +1,6 @@
 # This file specifies intentionally untracked files that all Jigoshop git
 # repositories should ignore. It is recommended not to modify this file in your
-# local clone. 
+# local clone.
 
 # OS Generated Files #
 # Apple/Windows Only #
@@ -72,3 +72,7 @@ deploy.sh
 ###############
 vendor/wordpress
 vendor/wordpress-tests/unittests-config.php
+
+# Plugins #
+plugins/jigoshop-web-optimizing/cache/*
+!lugins/jigoshop-web-optimizing/cache/.ignore

@@ -133,7 +133,8 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	 */
 	public function __construct() {
 
-		self::$current_options = get_option( JIGOSHOP_OPTIONS );	// load existing from database, false if none
+		self::$default_options = $this->get_default_options();
+		self::$current_options = array_merge_recursive(self::$default_options, get_option( JIGOSHOP_OPTIONS ));	// load existing from database, false if none
 
 		if ( false === self::$current_options ) {
 
@@ -153,8 +154,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			}
 
 		}
-
-		self::$default_options = $this->get_default_options();
 
 	}
 
@@ -482,7 +481,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	public function get_current_options() {
 		if ( empty( self::$current_options )) {
 			if ( empty( self::$default_options )) $this->set_default_options();
-			else $this->set_current_options( self::$default_options );
+			$this->set_current_options( self::$default_options );
 		}
 		return self::$current_options;
 	}
@@ -833,6 +832,18 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			'id' 		=> 'jigoshop_disable_fancybox',
 			'std' 		=> 'no',
 			'type' 		=> 'checkbox',
+			'choices'	=> array(
+				'no'			=> __('No', 'jigoshop'),
+				'yes'			=> __('Yes', 'jigoshop')
+			)
+		);
+
+		self::$default_options[] = array(
+			'name'           => __('Enable scripts and styles compression', 'jigoshop'),
+			'desc'            => __('Enables script and styles minification. This will improve speed as everything from Jigoshop will be packed into 2 files only.', 'jigoshop'),
+			'id'             => 'jigoshop_enable_jwof',
+			'std'            => 'no',
+			'type'           => 'checkbox',
 			'choices'	=> array(
 				'no'			=> __('No', 'jigoshop'),
 				'yes'			=> __('Yes', 'jigoshop')
