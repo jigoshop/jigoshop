@@ -26,6 +26,7 @@ class Scripts
 	 * @param bool $src Source file.
 	 * @param array $dependencies List of dependencies to the script.
 	 * @param array $options List of options.
+	 * @since 2.0
 	 */
 	public static function add($handle, $src, array $dependencies = array(), array $options = array())
 	{
