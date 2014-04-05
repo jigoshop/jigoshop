@@ -217,7 +217,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 
 				<?php settings_errors(); ?>
 
-				<form action="options.php" id="mainform" method="post">
+				<form action="options.php" id="mainform" method="post" enctype="multipart/form-data">
 
 					<div class="jigoshop-settings">
 						<div id="tabs-wrap">
