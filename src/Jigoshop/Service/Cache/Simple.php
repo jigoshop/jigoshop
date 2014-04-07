@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Service\Cache;
 
+use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Service\ServiceInterface;
 
 /**
@@ -53,5 +54,15 @@ class Simple implements ServiceInterface
 		}
 
 		return $this->_cache[$hash];
+	}
+
+	/**
+	 * Saves entity to database.
+	 *
+	 * @param $object EntityInterface Entity to save.
+	 */
+	public function save(EntityInterface $object)
+	{
+		$this->_service->save($object);
 	}
 }

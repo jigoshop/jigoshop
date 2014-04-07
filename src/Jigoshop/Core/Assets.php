@@ -9,6 +9,8 @@ use Jigoshop\Pages;
 /**
  * Class for adding required assets.
  *
+ * TODO: Rethink if all assets are needed.
+ *
  * @package Jigoshop\Core
  * @author Jigoshop
  */

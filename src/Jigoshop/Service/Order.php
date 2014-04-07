@@ -2,6 +2,8 @@
 
 namespace Jigoshop\Service;
 
+use Jigoshop\Entity\EntityInterface;
+
 /**
  * Orders service.
  *
@@ -14,11 +16,12 @@ class Order implements ServiceInterface
 	 * Finds order specified by ID.
 	 *
 	 * @param $id int Order ID.
-	 * @return \Jigoshop\Order
+	 * @return \Jigoshop\Entity\Order
 	 */
 	public function find($id)
 	{
-		return new \Jigoshop\Order();
+		// TODO: Implement
+		return new \Jigoshop\Entity\Order();
 	}
 
 	/**
@@ -38,5 +41,35 @@ class Order implements ServiceInterface
 		}, $results);
 
 		return $orders;
+	}
+
+	/**
+	 * Saves order to database.
+	 *
+	 * @param $object EntityInterface Order to save.
+	 * @throws Exception
+	 */
+	public function save(EntityInterface $object)
+	{
+		if(!($object instanceof \Jigoshop\Entity\Order))
+		{
+			throw new Exception('Trying to save not an order!');
+		}
+
+//		$fields = $object->getDirtyFields();
+//
+//		if(in_array('id', $fields) || in_array('name', $fields))
+//		{
+//			wp_update_post(array(
+//				'ID' => $object->getId(),
+//				'post_title' => $object->getName(),
+//			));
+//			unset($fields[array_search('id', $fields)], $fields[array_search('name', $fields)]);
+//		}
+//
+//		foreach($fields as $field)
+//		{
+//			update_post_meta($object->getId(), $field, $object->get($field));
+//		}
 	}
 }
