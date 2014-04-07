@@ -30,7 +30,7 @@ class Reports implements PageInterface
 	 */
 	public function getMenuSlug()
 	{
-		return 'reports';
+		return 'jigoshop_reports';
 	}
 
 	/**

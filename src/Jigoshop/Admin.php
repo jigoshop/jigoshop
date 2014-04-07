@@ -4,10 +4,10 @@ namespace Jigoshop;
 
 use Jigoshop\Admin\Dashboard;
 use Jigoshop\Admin\PageInterface;
+use Jigoshop\Admin\Product\Attributes;
 use Jigoshop\Admin\Reports;
 use Jigoshop\Admin\Settings;
 use Jigoshop\Admin\SystemInfo;
-use Jigoshop\Product\Admin\Attributes;
 
 /**
  * Class for handling administration panel.
@@ -39,21 +39,12 @@ class Admin
 		$this->addPage('jigoshop', new Reports());
 		$this->addPage('products', new Attributes());
 
-		add_action('admin_menu', array($this, '_beforeMenu'), 9);
-		add_action('admin_menu', array($this, '_afterMenu'), 50);
-	}
-
-	/**
-	 * @return Core\Options Options handler.
-	 */
-	public function getOptions()
-	{
-		return $this->core->getOptions();
+		add_action('admin_menu', array($this, 'beforeMenu'), 9);
+		add_action('admin_menu', array($this, 'afterMenu'), 50);
 	}
 
 	/**
 	 * Adds new page to Jigoshop admin panel.
-	 *
 	 * Available parents:
 	 *   * jigoshop - main Jigoshop menu,
 	 *   * products - Jigoshop products menu
@@ -73,14 +64,27 @@ class Admin
 		$this->pages[$parent][] = $page;
 	}
 
-	/** @noinspection PhpUnusedPrivateMethodInspection */
-	private function _beforeMenu()
+	/**
+	 * @return Core\Options Options handler.
+	 */
+	public function getOptions()
 	{
-//		global $menu;
-//
-//		if ( current_user_can( 'manage_jigoshop' ) )
-//			$menu[54] = array( '', 'read', 'separator-jigoshop', '', 'wp-menu-separator jigoshop' );
+		return $this->core->getOptions();
+	}
 
+	/**
+	 * Adds Jigoshop menus.
+	 */
+	public function beforeMenu()
+	{
+		global $menu;
+
+		if(current_user_can('manage_jigoshop'))
+		{
+			$menu[54] = array('', 'read', 'separator-jigoshop', '', 'wp-menu-separator jigoshop');
+		}
+
+		// TODO: Add Jigoshop icon!
 		add_menu_page(__('Jigoshop'), __('Jigoshop'), 'manage_jigoshop', 'jigoshop', array($this->dashboard, 'display'), null, 55);
 		foreach($this->pages['jigoshop'] as $page)
 		{
@@ -103,8 +107,10 @@ class Admin
 		do_action('jigoshop\\admin\\before_menu');
 	}
 
-	/** @noinspection PhpUnusedPrivateMethodInspection */
-	private function _afterMenu()
+	/**
+	 * Adds Jigoshop settings and system information menus (to the end of Jigoshop sub-menu).
+	 */
+	public function afterMenu()
 	{
 		$admin_page = add_submenu_page('jigoshop', $this->settings->getTitle(), $this->settings->getTitle(), $this->settings->getCapability(),
 			$this->settings->getMenuSlug(), array($this->settings, 'display'));

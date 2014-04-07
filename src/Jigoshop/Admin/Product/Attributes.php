@@ -1,6 +1,6 @@
 <?php
 
-namespace Jigoshop\Product\Admin;
+namespace Jigoshop\Admin\Product;
 
 use Jigoshop\Admin\PageInterface;
 
@@ -33,7 +33,7 @@ class Attributes implements PageInterface
 	 */
 	public function getMenuSlug()
 	{
-		return 'product_attributes';
+		return 'jigoshop_product_attributes';
 	}
 
 	/**

@@ -25,12 +25,13 @@ class Options
 		'reset_pending_orders' => 'no',
 	);
 	private $options = array();
+	private $dirty = false;
 
 	public function __construct()
 	{
 		$this->_loadOptions();
 		$this->_addImageSizes();
-		add_action('shutdown', array($this, '_updateOptions'));
+		add_action('shutdown', array($this, 'saveOptions'));
 	}
 
 	public function getImageSizes()
@@ -80,6 +81,7 @@ class Options
 	public function update($name, $value)
 	{
 		$this->options[$name] = $value;
+		$this->dirty = true;
 	}
 
 	private function _addImageSizes()
@@ -94,12 +96,20 @@ class Options
 //		add_image_size('admin_product_list', 32, 32, $this->get('jigoshop_use_wordpress_tiny_crop', 'no') == 'yes' ? true : false); // TODO: Is this needed?
 	}
 
-	/** @noinspection PhpUnusedPrivateMethodInspection */
-	private function _updateOptions()
+	/**
+	 * Saves current option values (if needed).
+	 */
+	public function saveOptions()
 	{
-		update_option('jigoshop', $this->options);
+		if($this->dirty)
+		{
+			update_option('jigoshop', $this->options);
+		}
 	}
 
+	/**
+	 * Loads stored options and merges them with default ones.
+	 */
 	private function _loadOptions()
 	{
 		$options = (array)get_option('jigoshop');

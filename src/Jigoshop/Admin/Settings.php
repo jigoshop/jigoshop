@@ -31,7 +31,7 @@ class Settings implements PageInterface
 	 */
 	public function getMenuSlug()
 	{
-		return 'settings';
+		return 'jigoshop_settings';
 	}
 
 	/**

@@ -2,6 +2,8 @@
 
 namespace Jigoshop\Helper;
 
+use Jigoshop\Pages;
+
 /**
  * Scripts helper.
  *
@@ -32,7 +34,7 @@ class Scripts
 	{
 		$page = isset($options['page']) ? (array)$options['page'] : array('all');
 
-		if(is_jigoshop_page($page))
+		if(Pages::isOneOfPages($page))
 		{
 			$handle = apply_filters('jigoshop_add_script', $handle, $src, $dependencies, $options);
 

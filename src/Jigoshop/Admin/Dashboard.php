@@ -31,7 +31,7 @@ class Dashboard implements PageInterface
 	 */
 	public function getMenuSlug()
 	{
-		return 'dashboard';
+		return 'jigoshop';
 	}
 
 	/**

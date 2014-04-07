@@ -31,7 +31,7 @@ class SystemInfo implements PageInterface
 	 */
 	public function getMenuSlug()
 	{
-		return 'system_information';
+		return 'jigoshop_system_information';
 	}
 
 	/**

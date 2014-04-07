@@ -29,7 +29,7 @@ class Messages
 			$this->errors = $_SESSION['jigoshop_errors'];
 		}
 
-		add_action('shutdown', array($this, '_preserveMessages'));
+		add_action('shutdown', array($this, 'preserveMessages'));
 	}
 
 	/**
@@ -98,8 +98,10 @@ class Messages
 		}, $this->errors);
 	}
 
-	/** @noinspection PhpUnusedPrivateMethodInspection */
-	private function _preserveMessages()
+	/**
+	 * Preserves messages storing them to PHP session.
+	 */
+	public function preserveMessages()
 	{
 		$_SESSION['jigoshop_notices'] = array_filter($this->notices, function($item){
 			return $item['persistent'];
