@@ -11,6 +11,19 @@ namespace Jigoshop\Core;
  */
 class Options
 {
+	// TODO: Fill default options
+	private $_defaults = array(
+		'cache_mechanism' => 'simple',
+		'catalog_per_page' => 9,
+		'catalog_sort_orderby' => 'post_date',
+		'catalog_sort_order' => 'DESC',
+		'catalog_sort_columns' => 3,
+		'disable_css' => 'no',
+		'disable_prettyphoto' => 'no',
+		'load_frontend_css' => 'yes',
+		'complete_processing_orders' => 'no',
+		'reset_pending_orders' => 'no',
+	);
 	private $_options = array();
 
 	public function __construct()
@@ -89,7 +102,7 @@ class Options
 
 	private function _loadOptions()
 	{
-		$this->_options = get_option('jigoshop');
-		// TODO: Think on something like "default" options.
+		$options = (array)get_option('jigoshop');
+		$this->_options = array_merge_recursive($this->_defaults, $options);
 	}
 }

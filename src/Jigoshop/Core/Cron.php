@@ -19,6 +19,12 @@ class Cron
 		add_action('jigoshop_cron_processing_orders', array($this, '_completeProcessingOrders'));
 	}
 
+	public static function clear()
+	{
+		wp_clear_scheduled_hook('jigoshop_cron_pending_orders');
+		wp_clear_scheduled_hook('jigoshop_cron_processing_orders');
+	}
+
 	/** Schedules order processing events if not scheduled already. */
 	private function _scheduleEvents()
 	{

@@ -10,11 +10,17 @@ namespace Jigoshop\Helper;
  */
 class Pages
 {
+	const SHOP = 'shop';
+	const CART = 'cart';
+	const CHECKOUT = 'checkout';
+	const ACCOUNT = 'account';
+	const ORDER_TRACKING = 'order_tracking';
+
 	/**
 	 * Evaluates to true for all Jigoshop pages
 	 *
 	 * @return bool
-	 * @since 0.9.9
+	 * @since 2.0
 	 */
 	public static function isJigoshop()
 	{
@@ -40,8 +46,7 @@ class Pages
 	 */
 	public static function isProductList()
 	{
-		// TODO: Remove jigoshop_get_page_id() call.
-		return is_post_type_archive('product') || is_page(jigoshop_get_page_id('shop')) || self::isProductTag() || self::isProductCategory();
+		return is_post_type_archive('product') || is_page(Core::getPageId(self::SHOP)) || self::isProductTag() || self::isProductCategory();
 	}
 
 	/**
@@ -85,9 +90,7 @@ class Pages
 	 */
 	public static function isAccount()
 	{
-		// TODO: Remove jigoshop_get_page_id() calls.
-		return is_page(jigoshop_get_page_id('myaccount')) || is_page(jigoshop_get_page_id('edit_address')) || is_page(jigoshop_get_page_id('change_password'))
-		|| is_page(jigoshop_get_page_id('view_order'));
+		return is_page(Core::getPageId(self::ACCOUNT));// || is_page(jigoshop_get_page_id('edit_address')) || is_page(jigoshop_get_page_id('change_password')) || is_page(jigoshop_get_page_id('view_order'));
 	}
 
 	/**
@@ -98,8 +101,7 @@ class Pages
 	 */
 	public static function isCart()
 	{
-		// TODO: Remove jigoshop_get_page_id() call.
-		return is_page(jigoshop_get_page_id('cart'));
+		return is_page(Core::getPageId(self::CART));
 	}
 
 	/**
@@ -110,8 +112,7 @@ class Pages
 	 */
 	public static function isCheckout()
 	{
-		// TODO: Remove jigoshop_get_page_id() calls.
-		return is_page(jigoshop_get_page_id('checkout')) || is_page(jigoshop_get_page_id('pay'));
+		return is_page(Core::getPageId(self::CHECKOUT));// || is_page(jigoshop_get_page_id('pay'));
 	}
 
 	/**
@@ -122,8 +123,7 @@ class Pages
 	 */
 	public static function isOrderTracker()
 	{
-		// TODO: Remove jigoshop_get_page_id() call.
-		return is_page(jigoshop_get_page_id('track_order'));
+		return is_page(Core::getPageId(self::ORDER_TRACKING));
 	}
 
 	public static function isAjax()
