@@ -20,6 +20,7 @@ class Core
 	private $services = array();
 	private $cron;
 	private $messages;
+	private $admin;
 
 	public function __construct()
 	{
@@ -30,6 +31,11 @@ class Core
 		$this->_addQueryFilters();
 		$this->cron = new Cron($this->options, $this->getOrderService());
 		$this->assets = new Assets($this->options);
+
+		if(is_admin())
+		{
+			$this->admin = new Admin($this);
+		}
 	}
 
 	private function _addQueryFilters()
@@ -41,6 +47,22 @@ class Core
 			add_filter('jigoshop\\shop\\columns', array($this, '_shopVisibleColumnsFilter'));
 			add_filter('jigoshop\\shop\\per_page', array($this, '_shopPerPageFilter'));
 		}
+	}
+
+	/**
+	 * Returns admin panel manager.
+	 *
+	 * @return Admin Admin panel manager.
+	 * @throws Exception When called not in admin.
+	 */
+	public function getAdmin()
+	{
+		if(!is_admin())
+		{
+			throw new Exception('Invalid use of Core::getAdmin() function - not in admin panel!');
+		}
+
+		return $this->admin;
 	}
 
 	/**
