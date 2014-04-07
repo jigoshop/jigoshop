@@ -6,13 +6,13 @@ use Jigoshop\Service\Order as OrderService;
 
 class Cron
 {
-	private $_options;
-	private $_service;
+	private $options;
+	private $service;
 
 	public function __construct(Options $options, OrderService $service)
 	{
-		$this->_options = $options;
-		$this->_service = $service;
+		$this->options = $options;
+		$this->service = $service;
 		$this->_scheduleEvents();
 
 		add_action('jigoshop_cron_pending_orders', array($this, '_updatePendingOrders'));
@@ -46,7 +46,7 @@ class Cron
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function _updatePendingOrders()
 	{
-		if($this->_options->get('reset_pending_orders') == 'yes')
+		if($this->options->get('reset_pending_orders') == 'yes')
 		{
 			add_filter('posts_where', array($this, '_ordersFilter'));
 			$query = new \WP_Query(array(
@@ -56,7 +56,7 @@ class Cron
 				'suppress_filters' => false,
 				'fields' => 'ids',
 			));
-			$orders = $this->_service->findByQuery($query);
+			$orders = $this->service->findByQuery($query);
 
 			remove_filter('posts_where', array($this, '_ordersFilter'));
 			remove_action('order_status_pending_to_on-hold', 'jigoshop_processing_order_customer_notification');
@@ -77,7 +77,7 @@ class Cron
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function _completeProcessingOrders()
 	{
-		if($this->_options->get('complete_processing_orders') == 'yes')
+		if($this->options->get('complete_processing_orders') == 'yes')
 		{
 			add_filter('posts_where', array($this, '_ordersFilter'));
 			$query = new \WP_Query(array(
@@ -87,7 +87,7 @@ class Cron
 				'suppress_filters' => false,
 				'fields' => 'ids',
 			));
-			$orders = $this->_service->findByQuery($query);
+			$orders = $this->service->findByQuery($query);
 
 			remove_filter('posts_where', array($this, '_ordersFilter'));
 			remove_action('order_status_completed', 'jigoshop_processing_order_customer_notification');

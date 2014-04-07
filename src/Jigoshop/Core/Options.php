@@ -12,7 +12,7 @@ namespace Jigoshop\Core;
 class Options
 {
 	// TODO: Fill default options
-	private $_defaults = array(
+	private $defaults = array(
 		'cache_mechanism' => 'simple',
 		'catalog_per_page' => 9,
 		'catalog_sort_orderby' => 'post_date',
@@ -24,7 +24,7 @@ class Options
 		'complete_processing_orders' => 'no',
 		'reset_pending_orders' => 'no',
 	);
-	private $_options = array();
+	private $options = array();
 
 	public function __construct()
 	{
@@ -66,9 +66,9 @@ class Options
 	 */
 	public function get($name, $default = null)
 	{
-		if(isset($this->_options[$name]))
+		if(isset($this->options[$name]))
 		{
-			return $this->_options[$name];
+			return $this->options[$name];
 		}
 		return $default;
 	}
@@ -79,7 +79,7 @@ class Options
 	 */
 	public function update($name, $value)
 	{
-		$this->_options[$name] = $value;
+		$this->options[$name] = $value;
 	}
 
 	private function _addImageSizes()
@@ -97,12 +97,12 @@ class Options
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function _updateOptions()
 	{
-		update_option('jigoshop', $this->_options);
+		update_option('jigoshop', $this->options);
 	}
 
 	private function _loadOptions()
 	{
 		$options = (array)get_option('jigoshop');
-		$this->_options = array_merge_recursive($this->_defaults, $options);
+		$this->options = array_merge_recursive($this->defaults, $options);
 	}
 }

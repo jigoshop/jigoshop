@@ -16,11 +16,11 @@ use Jigoshop\Pages;
  */
 class Assets
 {
-	private $_options;
+	private $options;
 
 	public function __construct(Options $options)
 	{
-		$this->_options = $options;
+		$this->options = $options;
 		add_action('admin_enqueue_scripts', array($this, 'loadAdminAssets'));
 		add_action('wp_enqueue_scripts', array($this, 'loadFrontendAssets'));
 	}
@@ -84,9 +84,9 @@ class Assets
 		$frontend_css = JIGOSHOP_URL.'/assets/css/frontend.css';
 		$theme_css = file_exists(get_stylesheet_directory().'/jigoshop/style.css') ? get_stylesheet_directory_uri().'/jigoshop/style.css' : $frontend_css;
 
-		if($this->_options->get('disable_css') == 'no')
+		if($this->options->get('disable_css') == 'no')
 		{
-			if($this->_options->get('load_frontend_css') == 'yes')
+			if($this->options->get('load_frontend_css') == 'yes')
 			{
 				Styles::add('jigoshop_theme_styles', $frontend_css);
 			}
@@ -95,7 +95,7 @@ class Assets
 
 		Scripts::add('jigoshop_global', JIGOSHOP_URL.'/assets/js/global.js', array('jquery'), array('in_footer' => true));
 
-		if($this->_options->get('disable_prettyphoto') == 'no')
+		if($this->options->get('disable_prettyphoto') == 'no')
 		{
 			Scripts::add('prettyphoto', JIGOSHOP_URL.'/assets/js/jquery.prettyPhoto.js', array('jquery'), array('in_footer' => true));
 		}

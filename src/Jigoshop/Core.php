@@ -16,20 +16,20 @@ class Core
 {
 	const VERSION = '2.0';
 
-	private $_options;
-	private $_services = array();
-	private $_cron;
-	private $_messages;
+	private $options;
+	private $services = array();
+	private $cron;
+	private $messages;
 
 	public function __construct()
 	{
 		PostTypes::initialize();
 		Roles::initialize();
-		$this->_options = new Options();
-		$this->_messages = new Messages();
+		$this->options = new Options();
+		$this->messages = new Messages();
 		$this->_addQueryFilters();
-		$this->_cron = new Cron($this->_options, $this->getOrderService());
-		$this->_assets = new Assets($this->_options);
+		$this->cron = new Cron($this->options, $this->getOrderService());
+		$this->assets = new Assets($this->options);
 	}
 
 	private function _addQueryFilters()
@@ -49,12 +49,12 @@ class Core
 	 */
 	public function getOrderService()
 	{
-		if(!isset($this->_services['order']))
+		if(!isset($this->services['order']))
 		{
-			$this->_services['order'] = $this->_addCaching(new OrderService());
+			$this->services['order'] = $this->_addCaching(new OrderService());
 		}
 
-		return $this->_services['order'];
+		return $this->services['order'];
 	}
 
 	/**
@@ -65,7 +65,7 @@ class Core
 	 */
 	private function _addCaching(ServiceInterface $service)
 	{
-		switch($this->_options->get('cache_mechanism'))
+		switch($this->options->get('cache_mechanism'))
 		{
 			default:
 				return new Service\Cache\Simple($service);
@@ -78,7 +78,7 @@ class Core
 	 */
 	public function getOptions()
 	{
-		return $this->_options;
+		return $this->options;
 	}
 
 	/**
@@ -87,7 +87,7 @@ class Core
 	 */
 	public function getMessages()
 	{
-		return $this->_messages;
+		return $this->messages;
 	}
 
 	/**
@@ -96,32 +96,32 @@ class Core
 	 */
 	public function getProductService()
 	{
-		if(!isset($this->_services['product']))
+		if(!isset($this->services['product']))
 		{
-			$this->_services['product'] = $this->_addCaching(new ProductService());
+			$this->services['product'] = $this->_addCaching(new ProductService());
 		}
 
-		return $this->_services['product'];
+		return $this->services['product'];
 	}
 
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function _shopSortingFilter()
 	{
 		return array(
-			'orderby' => $this->_options->get('catalog_sort_orderby'),
-			'order' => $this->_options->get('catalog_sort_direction'),
+			'orderby' => $this->options->get('catalog_sort_orderby'),
+			'order' => $this->options->get('catalog_sort_direction'),
 		);
 	}
 
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function _shopVisibleColumnsFilter()
 	{
-		return $this->_options->get('catalog_columns');
+		return $this->options->get('catalog_columns');
 	}
 
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function _shopPerPageFilter()
 	{
-		return $this->_options->get('catalog_per_page');
+		return $this->options->get('catalog_per_page');
 	}
 }

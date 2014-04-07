@@ -10,23 +10,23 @@ namespace Jigoshop\Core;
  */
 class Messages
 {
-	private $_notices = array();
-	private $_warnings = array();
-	private $_errors = array();
+	private $notices = array();
+	private $warnings = array();
+	private $errors = array();
 
 	public function __construct()
 	{
 		if(isset($_SESSION['jigoshop_notices']))
 		{
-			$this->_notices = $_SESSION['jigoshop_notices'];
+			$this->notices = $_SESSION['jigoshop_notices'];
 		}
 		if(isset($_SESSION['jigoshop_warnings']))
 		{
-			$this->_warnings = $_SESSION['jigoshop_warnings'];
+			$this->warnings = $_SESSION['jigoshop_warnings'];
 		}
 		if(isset($_SESSION['jigoshop_errors']))
 		{
-			$this->_errors = $_SESSION['jigoshop_errors'];
+			$this->errors = $_SESSION['jigoshop_errors'];
 		}
 
 		add_action('shutdown', array($this, '_preserveMessages'));
@@ -38,7 +38,7 @@ class Messages
 	 */
 	public function addNotice($message, $persistent = true)
 	{
-		$this->_notices[] = array(
+		$this->notices[] = array(
 			'message' => $message,
 			'persistent' => $persistent,
 		);
@@ -51,7 +51,7 @@ class Messages
 	{
 		return array_map(function($item){
 			return $item['message'];
-		}, $this->_notices);
+		}, $this->notices);
 	}
 
 	/**
@@ -60,7 +60,7 @@ class Messages
 	 */
 	public function addWarning($message, $persistent = true)
 	{
-		$this->_warnings[] = array(
+		$this->warnings[] = array(
 			'message' => $message,
 			'persistent' => $persistent,
 		);
@@ -73,7 +73,7 @@ class Messages
 	{
 		return array_map(function($item){
 			return $item['message'];
-		}, $this->_warnings);
+		}, $this->warnings);
 	}
 
 	/**
@@ -82,7 +82,7 @@ class Messages
 	 */
 	public function addError($message, $persistent = true)
 	{
-		$this->_errors[] = array(
+		$this->errors[] = array(
 			'message' => $message,
 			'persistent' => $persistent,
 		);
@@ -95,19 +95,19 @@ class Messages
 	{
 		return array_map(function($item){
 			return $item['message'];
-		}, $this->_errors);
+		}, $this->errors);
 	}
 
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function _preserveMessages()
 	{
-		$_SESSION['jigoshop_notices'] = array_filter($this->_notices, function($item){
+		$_SESSION['jigoshop_notices'] = array_filter($this->notices, function($item){
 			return $item['persistent'];
 		});
-		$_SESSION['jigoshop_warnings'] = array_filter($this->_warnings, function($item){
+		$_SESSION['jigoshop_warnings'] = array_filter($this->warnings, function($item){
 			return $item['persistent'];
 		});
-		$_SESSION['jigoshop_errors'] = array_filter($this->_errors, function($item){
+		$_SESSION['jigoshop_errors'] = array_filter($this->errors, function($item){
 			return $item['persistent'];
 		});
 	}

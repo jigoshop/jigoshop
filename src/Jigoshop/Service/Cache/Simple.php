@@ -12,15 +12,15 @@ use Jigoshop\Service\ServiceInterface;
  */
 class Simple implements ServiceInterface
 {
-	private $_objects = array();
-	private $_queries = array();
+	private $objects = array();
+	private $queries = array();
 
 	/** @var \Jigoshop\Service\ServiceInterface */
-	private $_service;
+	private $service;
 
 	public function __construct(ServiceInterface $service)
 	{
-		$this->_service = $service;
+		$this->service = $service;
 	}
 
 	/**
@@ -31,11 +31,11 @@ class Simple implements ServiceInterface
 	 */
 	public function find($id)
 	{
-		if(!isset($this->_objects[$id]))
+		if(!isset($this->objects[$id]))
 		{
-			$this->_objects[$id] = $this->_service->find($id);
+			$this->objects[$id] = $this->service->find($id);
 		}
-		return $this->_objects[$id];
+		return $this->objects[$id];
 	}
 
 	/**
@@ -49,12 +49,12 @@ class Simple implements ServiceInterface
 		// TODO: Check on various occasions if this is sufficient as hashing method.
 		$hash = hash('md5', serialize($query->query_vars));
 
-		if(!isset($this->_queries[$hash]))
+		if(!isset($this->queries[$hash]))
 		{
-			$this->_queries[$hash] = $this->_service->findByQuery($query);
+			$this->queries[$hash] = $this->service->findByQuery($query);
 		}
 
-		return $this->_queries[$hash];
+		return $this->queries[$hash];
 	}
 
 	/**
@@ -64,8 +64,8 @@ class Simple implements ServiceInterface
 	 */
 	public function save(EntityInterface $object)
 	{
-		$this->_queries = array();
-		$this->_objects[$object->getId()] = $object;
-		$this->_service->save($object);
+		$this->queries = array();
+		$this->objects[$object->getId()] = $object;
+		$this->service->save($object);
 	}
 }
