@@ -194,7 +194,19 @@ class Dashboard implements PageInterface
 	 */
 	public function recentReviews()
 	{
-		//
+		/** @var $wpdb \WPDB */
+		global $wpdb;
+		/** @noinspection PhpUnusedLocalVariableInspection */
+		$comments = $wpdb->get_results("SELECT *, SUBSTRING(comment_content,1,100) AS comment_excerpt
+				FROM $wpdb->comments
+				LEFT JOIN $wpdb->posts ON ($wpdb->comments.comment_post_ID = $wpdb->posts.ID)
+				WHERE comment_approved = '1'
+				AND comment_type = ''
+				AND post_password = ''
+				AND post_type = 'product'
+				ORDER BY comment_date_gmt DESC
+				LIMIT 5");
+		include(JIGOSHOP_DIR.'/templates/admin/dashboard/recentReviews.php');
 	}
 
 	/**
@@ -219,6 +231,7 @@ class Dashboard implements PageInterface
 				{
 					/** @noinspection PhpUnusedLocalVariableInspection */
 					$items = array_map(function($item){
+						/** @var $item \SimplePie_Item */
 						$date = $item->get_date('U');
 						return array(
 							'title' => wptexturize($item->get_title(), ENT_QUOTES, 'UTF-8'),
