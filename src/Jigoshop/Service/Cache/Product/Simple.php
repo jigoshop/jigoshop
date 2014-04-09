@@ -1,24 +1,24 @@
 <?php
 
-namespace Jigoshop\Service\Cache;
+namespace Jigoshop\Service\Cache\Product;
 
 use Jigoshop\Entity\EntityInterface;
-use Jigoshop\Service\ServiceInterface;
+use Jigoshop\Service\ProductServiceInterface;
 
 /**
- * Simple cache class for Jigoshop services.
+ * Simple cache class for Jigoshop products service.
  *
- * @package Jigoshop\Service\Cache
+ * @package Jigoshop\Service\Cache\Product
  */
-class Simple implements ServiceInterface
+class Simple implements ProductServiceInterface
 {
 	private $objects = array();
 	private $queries = array();
 
-	/** @var \Jigoshop\Service\ServiceInterface */
+	/** @var \Jigoshop\Service\ProductServiceInterface */
 	private $service;
 
-	public function __construct(ServiceInterface $service)
+	public function __construct(ProductServiceInterface $service)
 	{
 		$this->service = $service;
 	}
@@ -67,5 +67,32 @@ class Simple implements ServiceInterface
 		$this->queries = array();
 		$this->objects[$object->getId()] = $object;
 		$this->service->save($object);
+	}
+
+	/**
+	 * @return array List of products that are out of stock.
+	 */
+	public function findOutOfStock()
+	{
+		if(!isset($this->queries['out_of_stock']))
+		{
+			$this->queries['out_of_stock'] = $this->service->findOutOfStock();
+		}
+
+		return $this->queries['out_of_stock'];
+	}
+
+	/**
+	 * @param $threshold int Threshold where to assume product is low in stock.
+	 * @return array List of products that are low in stock.
+	 */
+	public function findLowStock($threshold)
+	{
+		if(!isset($this->queries['low_stock_'.$threshold]))
+		{
+			$this->queries['low_stock_'.$threshold] = $this->service->findLowStock($threshold);
+		}
+
+		return $this->queries['low_stock_'.$threshold];
 	}
 }

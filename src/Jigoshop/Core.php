@@ -10,7 +10,6 @@ use Jigoshop\Core\PostTypes;
 use Jigoshop\Core\Roles;
 use Jigoshop\Service\Order as OrderService;
 use Jigoshop\Service\Product as ProductService;
-use Jigoshop\Service\ServiceInterface;
 
 class Core
 {
@@ -73,25 +72,21 @@ class Core
 	{
 		if(!isset($this->services['order']))
 		{
-			$this->services['order'] = $this->_addCaching(new OrderService());
+			$service = new OrderService();
+
+			switch($this->options->get('cache_mechanism'))
+			{
+				case 'simple':
+					$service = new Service\Cache\Order\Simple($service);
+					break;
+				default:
+					$service = apply_filters('jigoshop\\core\\get_order_service', $service);
+			}
+
+			$this->services['order'] = $service;
 		}
 
 		return $this->services['order'];
-	}
-
-	/**
-	 * Decorates given factory with caching mechanism.
-	 *
-	 * @param ServiceInterface $service Service to cache.
-	 * @return ServiceInterface Caching service.
-	 */
-	private function _addCaching(ServiceInterface $service)
-	{
-		switch($this->options->get('cache_mechanism'))
-		{
-			default:
-				return new Service\Cache\Simple($service);
-		}
 	}
 
 	/**
@@ -120,7 +115,18 @@ class Core
 	{
 		if(!isset($this->services['product']))
 		{
-			$this->services['product'] = $this->_addCaching(new ProductService());
+			$service = new ProductService();
+
+			switch($this->options->get('cache_mechanism'))
+			{
+				case 'simple':
+					$service = new Service\Cache\Product\Simple($service);
+					break;
+				default:
+					$service = apply_filters('jigoshop\\core\\get_product_service', $service);
+			}
+
+			$this->services['product'] = $service;
 		}
 
 		return $this->services['product'];

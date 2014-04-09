@@ -2,17 +2,16 @@
 
 namespace Jigoshop\Core;
 
-use Jigoshop\Service\Order as OrderService;
-use Jigoshop\Service\ServiceInterface;
+use Jigoshop\Service\OrderServiceInterface;
 
 class Cron
 {
 	/** @var Options */
 	private $options;
-	/** @var OrderService */
+	/** @var OrderServiceInterface */
 	private $service;
 
-	public function __construct(Options $options, ServiceInterface $service)
+	public function __construct(Options $options, OrderServiceInterface $service)
 	{
 		$this->options = $options;
 		$this->service = $service;

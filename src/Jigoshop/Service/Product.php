@@ -10,7 +10,7 @@ use Jigoshop\Entity\EntityInterface;
  * @package Jigoshop\Service
  * @author Jigoshop
  */
-class Product implements ServiceInterface
+class Product implements ProductServiceInterface
 {
 	/**
 	 * Finds product specified by ID.
@@ -98,4 +98,20 @@ endif;
 
 if ($_product->stock<=$lowstockamount) $lowinstock[] = $thisitem;
 	 */
+	/**
+	 * @return array List of products that are out of stock.
+	 */
+	function findOutOfStock()
+	{
+		// TODO: Implement findOutOfStock() method.
+	}
+
+	/**
+	 * @param $threshold int Threshold where to assume product is low in stock.
+	 * @return array List of products that are low in stock.
+	 */
+	function findLowStock($threshold)
+	{
+		// TODO: Implement findLowStock() method.
+	}
 }

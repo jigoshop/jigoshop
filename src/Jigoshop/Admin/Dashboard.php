@@ -3,7 +3,8 @@
 namespace Jigoshop\Admin;
 
 use Jigoshop\Core\Options;
-use Jigoshop\Service\ServiceInterface;
+use Jigoshop\Service\OrderServiceInterface;
+use Jigoshop\Service\ProductServiceInterface;
 
 /**
  * Jigoshop dashboard.
@@ -13,14 +14,14 @@ use Jigoshop\Service\ServiceInterface;
  */
 class Dashboard implements PageInterface
 {
-	/** @var \Jigoshop\Service\Order */
+	/** @var \Jigoshop\Service\OrderServiceInterface */
 	private $orderService;
-	/** @var \Jigoshop\Service\Product */
+	/** @var \Jigoshop\Service\ProductServiceInterface */
 	private $productService;
 	/** @var Options */
 	private $options;
 
-	public function __construct(Options $options, ServiceInterface $orderService, ServiceInterface $productService)
+	public function __construct(Options $options, OrderServiceInterface $orderService, ProductServiceInterface $productService)
 	{
 		$this->options = $options;
 		$this->orderService = $orderService;
@@ -125,10 +126,14 @@ class Dashboard implements PageInterface
 	public function stockReport()
 	{
 		$lowStockAmount = $this->options->get('notify_low_stock_amount', 1);
-		$noStockAmount = $this->options->get('notify_no_stock_amount', 1);
+		$notifyOufOfStock = $this->options->get('notify_out_of_stock', true);
 
-		/** @noinspection PhpUnusedLocalVariableInspection */
-		$outOfStock = $this->productService->findOutOfStock($noStockAmount);
+		if($notifyOufOfStock)
+		{
+			/** @noinspection PhpUnusedLocalVariableInspection */
+			$outOfStock = $this->productService->findOutOfStock();
+		}
+
 		/** @noinspection PhpUnusedLocalVariableInspection */
 		$lowStock = $this->productService->findLowStock($lowStockAmount);
 

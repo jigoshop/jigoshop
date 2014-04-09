@@ -10,7 +10,7 @@ use Jigoshop\Entity\EntityInterface;
  * @package Jigoshop\Service
  * @author Jigoshop
  */
-class Order implements ServiceInterface
+class Order implements OrderServiceInterface
 {
 	/**
 	 * Finds order specified by ID.

@@ -2,6 +2,7 @@
 /**
  * @var $lowStock array List of products with low stock.
  * @var $outOfStock array List of products out of stock.
+ * @var $notifyOutOfStock boolean Do the user want to be notified about out of stock products?
  */
 ?>
 <div id="jigoshop_right_now" class="jigoshop_right_now">
@@ -17,6 +18,7 @@
 			<p><?= __('No products are low in stock.', 'jigoshop'); ?></p>
 		<?php endif; ?>
 	</div>
+	<?php if($notifyOutOfStock): ?>
 	<div class="table table_discussion">
 		<p class="sub"><?php _e('Out of Stock/Backorders', 'jigoshop'); ?></p>
 		<?php if(count($outOfStock) > 0): ?>
@@ -29,5 +31,6 @@
 		<p><?= __('No products are out of stock.', 'jigoshop'); ?></p>
 		<?php endif; ?>
 	</div>
+	<?php endif; ?>
 	<br class="clear"/>
 </div>
