@@ -38,15 +38,6 @@ class Product implements EntityInterface
 	private $dirtyFields = array();
 
 	/**
-	 * @param $name string Name of attribute to retrieve.
-	 * @return mixed
-	 */
-	public function get($name)
-	{
-		return $this->$name;
-	}
-
-	/**
 	 * @param int $id New ID for the product.
 	 */
 	public function setId($id)
@@ -391,14 +382,6 @@ class Product implements EntityInterface
 	}
 
 	/**
-	 * @return array List of changed fields (to update).
-	 */
-	public function getDirtyFields()
-	{
-		return $this->dirtyFields;
-	}
-
-	/**
 	 * @param string $attribute Attribute name to find.
 	 * @return int Key in attributes array.
 	 */
@@ -408,5 +391,75 @@ class Product implements EntityInterface
 			/** @var $item \Jigoshop\Entity\Product\Attribute */
 			return $item->getName();
 		}, $this->attributes));
+	}
+
+	/**
+	 * @return array List of fields to update with according values.
+	 */
+	public function getStateToSave()
+	{
+		$toSave = array();
+
+		foreach($this->dirtyFields as $field)
+		{
+			switch($field)
+			{
+				case 'sales':
+					$toSave['sales_from'] = $this->sales->getFrom()->getTimestamp();
+					$toSave['sales_to'] = $this->sales->getTo()->getTimestamp();
+					$toSave['sales_price'] = $this->sales->getPrice();
+					break;
+				case 'size':
+					$toSave['size_weight'] = $this->size->getWeight();
+					$toSave['size_width'] = $this->size->getWidth();
+					$toSave['size_height'] = $this->size->getHeight();
+					$toSave['size_length'] = $this->size->getLength();
+					break;
+				case 'stock':
+					$toSave['stock_manage'] = $this->stock->getManage();
+					$toSave['stock_allowed_backorders'] = $this->stock->getAllowBackorders();
+					$toSave['stock_status'] = $this->stock->getStatus();
+					$toSave['stock_stock'] = $this->stock->getStock();
+					break;
+				// TODO: Save tax properly
+				default:
+					$toSave[$field] = $this->$field;
+			}
+		}
+
+		// TODO: Save attributes?
+
+		return $toSave;
+	}
+
+	/**
+	 * @param array $state State to restore entity to.
+	 */
+	public function restoreState(array $state)
+	{
+		$this->type = $state['type'];
+		$this->price = floatval($state['price']);
+		$this->regularPrice = floatval($state['regular_price']);
+		$this->visibility = intval($state['visibility']);
+
+		$this->sales = new Sales();
+		$this->sales->setFrom(new \DateTime($state['sales_from']));
+		$this->sales->setTo(new \DateTime($state['sales_to']));
+		$this->sales->setPrice(floatval($state['sales_price']));
+
+		$this->size = new Size();
+		$this->size->setWeight(floatval($state['size_weight']));
+		$this->size->setWidth(floatval($state['size_width']));
+		$this->size->setHeight(floatval($state['size_height']));
+		$this->size->setLength(floatval($state['size_length']));
+
+		$this->stock = new StockStatus();
+		$this->stock->setManage(boolval($state['stock_manage']));
+		$this->stock->setAllowBackorders(boolval($state['stock_allowed_backorders']));
+		$this->stock->setStatus(intval($state['stock_status']));
+		$this->stock->setStock(intval($state['stock_stock']));
+
+		// TODO: Restore tax (after thinking it over and implementing).
+		// TODO: Restore attributes?
 	}
 }

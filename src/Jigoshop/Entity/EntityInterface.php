@@ -11,18 +11,17 @@ namespace Jigoshop\Entity;
 interface EntityInterface
 {
 	/**
-	 * @return array List of changed fields (to update).
-	 */
-	public function getDirtyFields();
-
-	/**
 	 * @return int Entity ID.
 	 */
 	public function getId();
 
 	/**
-	 * @param $name string Name of attribute to retrieve.
-	 * @return mixed
+	 * @return array List of fields to update with according values.
 	 */
-	public function get($name);
+	public function getStateToSave();
+
+	/**
+	 * @param array $state State to restore entity to.
+	 */
+	public function restoreState(array $state);
 }

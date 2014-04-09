@@ -112,14 +112,6 @@ class Order implements EntityInterface
 	}
 
 	/**
-	 * @return array List of changed fields (to update).
-	 */
-	public function getDirtyFields()
-	{
-		// TODO: Implement getDirtyFields() method.
-	}
-
-	/**
 	 * @return int Entity ID.
 	 */
 	public function getId()
@@ -128,11 +120,18 @@ class Order implements EntityInterface
 	}
 
 	/**
-	 * @param $name string Name of attribute to retrieve.
-	 * @return mixed
+	 * @return array List of fields to update with according values.
 	 */
-	public function get($name)
+	public function getStateToSave()
 	{
-		// TODO: Implement get() method.
+		// TODO: Implement getStateToSave() method.
+	}
+
+	/**
+	 * @param array $state State to restore entity to.
+	 */
+	public function restoreState(array $state)
+	{
+		// TODO: Implement restoreState() method.
 	}
 }

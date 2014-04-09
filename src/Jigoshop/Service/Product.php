@@ -25,17 +25,14 @@ class Product implements ProductServiceInterface
 		if($id !== null)
 		{
 			$post = get_post($id);
-			$meta = get_post_meta($id);
+			$meta = array_map(function($item){
+				return $item[0];
+			}, get_post_meta($id));
 
 			$product->setId($id);
-			$product->setType($meta['type'][0]);
 			$product->setName($post->post_title);
-			$product->setPrice(floatval($meta['price'][0]));
-			$product->setRegularPrice(floatval($meta['regular_price'][0]));
-			$product->setVisibility(intval($meta['visibility'][0]));
-			$product->setSales($meta['sales'][0]);
-			$product->setSize($meta['size'][0]);
-			$product->setStock($meta['stock'][0]);
+			$product->restoreState($meta);
+			// TODO: Restoring attributes
 
 			$product = apply_filters('jigoshop\\find\\product', $product, $meta);
 		}
@@ -67,37 +64,25 @@ class Product implements ProductServiceInterface
 			throw new Exception('Trying to save not a product!');
 		}
 
-		$fields = $object->getDirtyFields();
+		$fields = $object->getStateToSave();
 
-		if(in_array('id', $fields) || in_array('name', $fields))
+		if(isset($fields['id']) || isset($fields['name']))
 		{
 			wp_update_post(array(
 				'ID' => $object->getId(),
 				'post_title' => $object->getName(),
 			));
-			unset($fields[array_search('id', $fields)], $fields[array_search('name', $fields)]);
+			unset($fields['id'], $fields['name']);
 		}
 
-		foreach($fields as $field)
+		foreach($fields as $field => $value)
 		{
-			update_post_meta($object->getId(), $field, $object->get($field));
+			update_post_meta($object->getId(), $field, $value);
 		}
+
+		// TODO: Saving attributes
 	}
 
-	/*
-	 * $_product = new jigoshop_product( $my_query->post->ID );
-				if (!$_product->managing_stock()) continue;
-
-				$thisitem = '<li><a href="'.get_edit_post_link($my_query->post->ID).'">'.$my_query->post->post_title.'</a></li>';
-
-//				if ($_product->stock<=$nostockamount) :
-				if ( ! $_product->is_in_stock( true ) ) :    // compare against global no stock threshold
-$outofstock[] = $thisitem;
-continue;
-endif;
-
-if ($_product->stock<=$lowstockamount) $lowinstock[] = $thisitem;
-	 */
 	/**
 	 * @return array List of products that are out of stock.
 	 */
@@ -112,6 +97,20 @@ if ($_product->stock<=$lowstockamount) $lowinstock[] = $thisitem;
 	 */
 	function findLowStock($threshold)
 	{
+		/*
+		 * $_product = new jigoshop_product( $my_query->post->ID );
+					if (!$_product->managing_stock()) continue;
+
+					$thisitem = '<li><a href="'.get_edit_post_link($my_query->post->ID).'">'.$my_query->post->post_title.'</a></li>';
+
+	//				if ($_product->stock<=$nostockamount) :
+					if ( ! $_product->is_in_stock( true ) ) :    // compare against global no stock threshold
+	$outofstock[] = $thisitem;
+	continue;
+	endif;
+
+	if ($_product->stock<=$lowstockamount) $lowinstock[] = $thisitem;
+		 */
 		// TODO: Implement findLowStock() method.
 	}
 }
