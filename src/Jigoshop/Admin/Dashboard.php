@@ -210,6 +210,6 @@ class Dashboard implements PageInterface
 	 */
 	public function usefulLinks()
 	{
-		//
+		include(JIGOSHOP_DIR.'/templates/admin/dashboard/usefulLinks.php');
 	}
 }

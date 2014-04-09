@@ -118,7 +118,7 @@
 								showTooltip(item.pageX, item.pageY, item.series.label + " - " + y);
 							} else {
 								y = item.datapoint[1].toFixed(2);
-								showTooltip(item.pageX, item.pageY, item.series.label + " - <?= get_jigoshop_currency_symbol(); ?>" + y);
+								showTooltip(item.pageX, item.pageY, item.series.label + " - <?php //echo get_jigoshop_currency_symbol(); ?>" + y);
 							}
 						}
 					} else {
