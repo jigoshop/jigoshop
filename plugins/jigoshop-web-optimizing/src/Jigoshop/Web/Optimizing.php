@@ -25,6 +25,7 @@ class Optimizing
 
 	private $_scripts = array();
 	private $_styles = array();
+	private $_dependencies = array();
 
 	/** @var \Assetic\Factory\AssetFactory */
 	private $_factory;
@@ -136,6 +137,7 @@ class Optimizing
 		$manager = $this->_factory->getAssetManager();
 		if(!$manager->has($handle) && $src && $this->check_script_dependencies($dependencies))
 		{
+			$this->_dependencies = array_merge($this->_dependencies, $dependencies);
 			$manager->set($handle, new FileAsset($this->get_source_path($src)));
 			foreach($pages as $page)
 			{
@@ -210,7 +212,8 @@ class Optimizing
 				$js->getTargetPath(),
 				$js->getVars(),
 				$js->getValues()
-			)
+			),
+			$this->_dependencies
 		);
 	}
 
@@ -243,7 +246,7 @@ class Optimizing
 		$asset = new Optimizing\Asset\Minified\Javascript($this->_factory, $scripts, array('page' => $current_page, 'location' => 'frontend'));
 		$js = $asset->getAsset();
 
-		wp_enqueue_script('jigoshop_web_optimized', JIGOSHOP_WEB_OPTIMIZING_URL.'/cache/'.$this->get_asset_name($js));
+		wp_enqueue_script('jigoshop_web_optimized', JIGOSHOP_WEB_OPTIMIZING_URL.'/cache/'.$this->get_asset_name($js), $this->_dependencies);
 	}
 
 	private function get_source_path($src)

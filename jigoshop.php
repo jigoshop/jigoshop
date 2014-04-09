@@ -439,7 +439,7 @@ function jigoshop_frontend_scripts() {
 
 	if ( is_admin() ) return false;
 
-    $jigoshop_options = Jigoshop_Base::get_options();
+  $jigoshop_options = Jigoshop_Base::get_options();
 
 	$frontend_css = jigoshop::assets_url() . '/assets/css/frontend.css';
 	$theme_css = file_exists( get_stylesheet_directory() . '/jigoshop/style.css')
@@ -456,12 +456,11 @@ function jigoshop_frontend_scripts() {
 	jigoshop_add_script( 'jigoshop_global', jigoshop::assets_url().'/assets/js/global.js', array('jquery'), array('in_footer' => true) );
 
 	if ( $jigoshop_options->get_option( 'jigoshop_disable_fancybox' ) == 'no' ) {
-		jigoshop_add_script( 'prettyphoto', jigoshop::assets_url().'/assets/js/jquery.prettyPhoto.js', array('jquery'), array('in_footer' => true) );
+		wp_enqueue_script( 'prettyphoto', jigoshop::assets_url().'/assets/js/jquery.prettyPhoto.js', array('jquery'), false, true );
 	}
 
 	jigoshop_add_script( 'jigoshop_blockui', jigoshop::assets_url().'/assets/js/blockui.js', array('jquery'), array('in_footer' => true) );
 	jigoshop_add_script( 'jigoshop-cart', jigoshop::assets_url().'/assets/js/cart.js', array( 'jquery' ), array('in_footer' => true, 'page' => JIGOSHOP_CART) );
-//	jigoshop_add_script( 'jigoshop-select2', jigoshop::assets_url().'/assets/js/select2.min.js', array( 'jquery' ), array('in_footer' => true, 'page' => JIGOSHOP_CHECKOUT) );
 	jigoshop_add_script( 'jigoshop-checkout', jigoshop::assets_url().'/assets/js/checkout.js', array( 'jquery' ), array('in_footer' => true, 'page' => JIGOSHOP_CHECKOUT) );
 	jigoshop_add_script( 'jigoshop-single-product', jigoshop::assets_url().'/assets/js/single-product.js', array( 'jquery' ), array('in_footer' => true, 'page' => JIGOSHOP_PRODUCT) );
 	jigoshop_add_script( 'jigoshop-countries', jigoshop::assets_url().'/assets/js/countries.js', array(), array('in_footer' => true, 'page' => array(JIGOSHOP_CHECKOUT, JIGOSHOP_CART)));
@@ -493,7 +492,7 @@ function jigoshop_frontend_scripts() {
 
 	$jigoshop_params = apply_filters('jigoshop_params', $jigoshop_params);
 
-	wp_localize_script( 'jigoshop_global', 'jigoshop_params', $jigoshop_params );
+	wp_localize_script( 'jquery', 'jigoshop_params', $jigoshop_params );
 
 }
 
