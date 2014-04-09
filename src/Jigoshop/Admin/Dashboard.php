@@ -3,6 +3,7 @@
 namespace Jigoshop\Admin;
 
 use Jigoshop\Core\Options;
+use Jigoshop\Entity\Order;
 use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 
@@ -145,7 +146,47 @@ class Dashboard implements PageInterface
 	 */
 	public function monthlyReport()
 	{
-		//
+		$currentMonth = intval(date('m'));
+		$currentYear = intval(date('Y'));
+		$selectedMonth = isset($_GET['month']) ? intval($_GET['month']) : $currentMonth;
+		$selectedYear = isset($_GET['year']) ? intval($_GET['year']) : $currentYear;
+
+		/** @noinspection PhpUnusedLocalVariableInspection */
+		$nextYear = ($selectedMonth == 12) ? $selectedYear + 1 : $selectedYear;
+		/** @noinspection PhpUnusedLocalVariableInspection */
+		$nextMonth = ($selectedMonth == 12) ? 1 : $selectedMonth + 1;
+		/** @noinspection PhpUnusedLocalVariableInspection */
+		$previousYear = ($selectedMonth == 1) ? $selectedYear - 1 : $selectedYear;
+		/** @noinspection PhpUnusedLocalVariableInspection */
+		$previousMonth = ($selectedMonth == 1) ? 12 : $selectedMonth - 1;
+
+		$orders = $this->orderService->findFromMonth($selectedMonth);
+		$days = range(strtotime($selectedYear.'-'.$selectedMonth.'-01'), time(), 24*3600);
+		$orderAmountsData = $orderCountsData = array_fill_keys($days, 0);
+		$orderAmounts = $orderCounts = array();
+
+		foreach($orders as $order)
+		{
+			/** @var $order Order */
+			if(!in_array($order->getStatus(), array(Order\Status::REFUNDED, Order\Status::CANCELLED)))
+			{
+				$day = strtotime(date('Y-m-d', $order->getCreatedAt()->getTimestamp()));
+				$orderCountsData[$day] += 1;
+				$orderAmountsData[$day] += $order->getSubtotal() + $order->getShipping();
+			}
+		}
+
+		foreach($orderCountsData as $day => $value)
+		{
+			$orderCounts[] = array($day, $value);
+		}
+		foreach($orderAmountsData as $day => $value)
+		{
+			$orderAmounts[] = array($day, $value);
+		}
+
+		unset($orderAmountsData, $orderCountsData);
+		include(JIGOSHOP_DIR.'/templates/admin/dashboard/monthlyReport.php');
 	}
 
 	/**

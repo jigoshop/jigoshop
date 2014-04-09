@@ -68,4 +68,14 @@ class Simple implements OrderServiceInterface
 		$this->objects[$object->getId()] = $object;
 		$this->service->save($object);
 	}
+
+	/**
+	 * @param $month int Month to find orders from.
+	 * @return array List of orders from selected month.
+	 */
+	public function findFromMonth($month)
+	{
+		// TODO: Implement findFromMonth() method.
+		return $this->service->findFromMonth($month);
+	}
 }

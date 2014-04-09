@@ -2,6 +2,8 @@
 
 namespace Jigoshop\Entity;
 
+use Jigoshop\Entity\Order\Status;
+
 /**
  * Order class.
  * TODO: Fully implement the class.
@@ -13,7 +15,8 @@ class Order implements EntityInterface
 {
 	private $id;
 	private $date;
-	private $update_date;
+	private $created_at;
+	private $updated_at;
 	private $customer;
 	private $items;
 	private $billingAddress;
@@ -31,16 +34,12 @@ class Order implements EntityInterface
 	public function getStatuses()
 	{
 		$order_types = array(
-			'pending' => __('Pending', 'jigoshop'),
-			'on-hold' => __('On-Hold', 'jigoshop'),
-			'processing' => __('Processing', 'jigoshop'),
-			'completed' => __('Completed', 'jigoshop'),
-			'cancelled' => __('Cancelled', 'jigoshop'),
-			'refunded' => __('Refunded', 'jigoshop'),
-			'failed' => __('Failed', 'jigoshop'), /* can be set from PayPal, not currently shown anywhere -JAP- */
-			'denied' => __('Denied', 'jigoshop'), /* can be set from PayPal, not currently shown anywhere -JAP- */
-			'expired' => __('Expired', 'jigoshop'), /* can be set from PayPal, not currently shown anywhere -JAP- */
-			'voided' => __('Voided', 'jigoshop'), /* can be set from PayPal, not currently shown anywhere -JAP- */
+			Status::PENDING => __('Pending', 'jigoshop'),
+			Status::ON_HOLD => __('On-Hold', 'jigoshop'),
+			Status::PROCESSING => __('Processing', 'jigoshop'),
+			Status::COMPLETED => __('Completed', 'jigoshop'),
+			Status::CANCELLED => __('Cancelled', 'jigoshop'),
+			Status::REFUNDED => __('Refunded', 'jigoshop'),
 		);
 
 		return apply_filters('jigoshop_filter_order_status_names', $order_types);
@@ -117,6 +116,110 @@ class Order implements EntityInterface
 	public function getId()
 	{
 		// TODO: Implement getId() method.
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getBillingAddress()
+	{
+		return $this->billingAddress;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCreatedAt()
+	{
+		return $this->created_at;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCustomer()
+	{
+		return $this->customer;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDate()
+	{
+		return $this->date;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDiscount()
+	{
+		return $this->discount;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getItems()
+	{
+		return $this->items;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPayment()
+	{
+		return $this->payment;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getShipping()
+	{
+		return $this->shipping;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getShippingAddress()
+	{
+		return $this->shippingAddress;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getStatus()
+	{
+		return $this->status;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSubtotal()
+	{
+		return $this->subtotal;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTax()
+	{
+		return $this->tax;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getUpdatedAt()
+	{
+		return $this->updated_at;
 	}
 
 	/**
