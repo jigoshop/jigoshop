@@ -32,7 +32,8 @@ class Order implements OrderServiceInterface
 	 */
 	public function findByQuery(\WP_Query $query)
 	{
-		// TODO: Update query to retrieve only post IDs
+		// Fetch only IDs
+		$query->query_vars['fields'] = 'ids';
 		$results = $query->get_posts();
 		$that = $this;
 		// TODO: Maybe it is good to optimize this to fetch all found orders data at once?

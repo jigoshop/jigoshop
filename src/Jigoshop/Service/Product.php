@@ -48,7 +48,16 @@ class Product implements ProductServiceInterface
 	 */
 	public function findByQuery(\WP_Query $query)
 	{
-		// TODO: Implement findByQuery() method.
+		// Fetch only IDs
+		$query->query_vars['fields'] = 'ids';
+		$results = $query->get_posts();
+		$that = $this;
+		// TODO: Maybe it is good to optimize this to fetch all found products data at once?
+		$products = array_map(function($product) use ($that){
+			return $that->find($product->ID);
+		}, $results);
+
+		return $products;
 	}
 
 	/**
@@ -88,7 +97,26 @@ class Product implements ProductServiceInterface
 	 */
 	function findOutOfStock()
 	{
-		// TODO: Implement findOutOfStock() method.
+		$query = new \WP_Query(array(
+			'post_type' => 'product',
+			'post_status' => 'publish',
+			'ignore_sticky_posts'	=> 1,
+			'posts_per_page' => -1,
+			'meta_query' => array(
+				array(
+					'key' => 'stock_manage',
+					'value' => 1,
+					'compare' => '=',
+				),
+				array(
+					'key' => 'stock_stock',
+					'value' => 0,
+					'compare' => '=',
+				),
+			),
+		));
+
+		return $this->findByQuery($query);
 	}
 
 	/**
@@ -97,20 +125,25 @@ class Product implements ProductServiceInterface
 	 */
 	function findLowStock($threshold)
 	{
-		/*
-		 * $_product = new jigoshop_product( $my_query->post->ID );
-					if (!$_product->managing_stock()) continue;
+		$query = new \WP_Query(array(
+			'post_type' => 'product',
+			'post_status' => 'publish',
+			'ignore_sticky_posts'	=> 1,
+			'posts_per_page' => -1,
+			'meta_query' => array(
+				array(
+					'key' => 'stock_manage',
+					'value' => 1,
+					'compare' => '=',
+				),
+				array(
+					'key' => 'stock_stock',
+					'value' => $threshold,
+					'compare' => '<',
+				),
+			),
+		));
 
-					$thisitem = '<li><a href="'.get_edit_post_link($my_query->post->ID).'">'.$my_query->post->post_title.'</a></li>';
-
-	//				if ($_product->stock<=$nostockamount) :
-					if ( ! $_product->is_in_stock( true ) ) :    // compare against global no stock threshold
-	$outofstock[] = $thisitem;
-	continue;
-	endif;
-
-	if ($_product->stock<=$lowstockamount) $lowinstock[] = $thisitem;
-		 */
-		// TODO: Implement findLowStock() method.
+		return $this->findByQuery($query);
 	}
 }
