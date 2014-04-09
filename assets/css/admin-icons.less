@@ -1,0 +1,43 @@
+#toplevel_page_jigoshop, #menu-posts-product, #menu-posts-shop_order {
+ .wp-menu-image {
+		background: url(../images/icons/menu_icons.png) no-repeat;
+	}
+}
+
+// For classic WP style
+.admin-color-classic {
+	#toplevel_page_jigoshop, #menu-posts-product, #menu-posts-shop_order {
+	 .wp-menu-image {
+			background: url(../images/icons/menu_icons_classic.png) no-repeat;
+		}
+	}
+}
+
+#toplevel_page_jigoshop .wp-menu-image img {
+	display: none;
+}
+
+/*= Icon Position Settings
+------------------------------------------------------------------*/
+#toplevel_page_jigoshop .wp-menu-image {
+	background-position: 0px -32px !important;
+}
+#toplevel_page_jigoshop:hover .wp-menu-image,
+#toplevel_page_jigoshop.wp-has-current-submenu .wp-menu-image {
+	background-position: 0px 0px !important;
+}
+#menu-posts-product .wp-menu-image {
+	background-position: -35px -32px !important;
+}
+#menu-posts-product:hover .wp-menu-image,
+#menu-posts-product.wp-has-current-submenu .wp-menu-image {
+	background-position: -35px 0px !important;
+}
+
+#menu-posts-shop_order .wp-menu-image {
+	background-position: -70px -32px !important;
+}
+#menu-posts-shop_order:hover .wp-menu-image,
+#menu-posts-shop_order.wp-has-current-submenu .wp-menu-image {
+	background-position: -70px 0px !important;
+}
