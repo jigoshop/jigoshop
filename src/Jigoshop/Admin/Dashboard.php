@@ -202,7 +202,35 @@ class Dashboard implements PageInterface
 	 */
 	public function latestNews()
 	{
-		//
+		if(file_exists(ABSPATH.WPINC.'/class-simplepie.php'))
+		{
+			include_once(ABSPATH.WPINC.'/class-simplepie.php');
+
+			$rss = fetch_feed('http://www.jigoshop.com/feed');
+			/** @noinspection PhpUnusedLocalVariableInspection */
+			$items = array();
+
+			if(!is_wp_error($rss))
+			{
+				$maxItems = $rss->get_item_quantity(5);
+				$rssItems = $rss->get_items(0, $maxItems);
+
+				if($maxItems > 0)
+				{
+					/** @noinspection PhpUnusedLocalVariableInspection */
+					$items = array_map(function($item){
+						$date = $item->get_date('U');
+						return array(
+							'title' => wptexturize($item->get_title(), ENT_QUOTES, 'UTF-8'),
+							'link' => $item->get_permalink(),
+							'date' => (abs(time() - $date)) < 86400 ? sprintf(__('%s ago', 'jigoshop'), human_time_diff($date)) : date(__('F jS Y', 'jigoshop'), $date),
+						);
+					}, $rssItems);
+				}
+			}
+
+			include(JIGOSHOP_DIR.'/templates/admin/dashboard/latestNews.php');
+		}
 	}
 
 	/**
