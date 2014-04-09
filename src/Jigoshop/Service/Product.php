@@ -83,4 +83,19 @@ class Product implements ServiceInterface
 			update_post_meta($object->getId(), $field, $object->get($field));
 		}
 	}
+
+	/*
+	 * $_product = new jigoshop_product( $my_query->post->ID );
+				if (!$_product->managing_stock()) continue;
+
+				$thisitem = '<li><a href="'.get_edit_post_link($my_query->post->ID).'">'.$my_query->post->post_title.'</a></li>';
+
+//				if ($_product->stock<=$nostockamount) :
+				if ( ! $_product->is_in_stock( true ) ) :    // compare against global no stock threshold
+$outofstock[] = $thisitem;
+continue;
+endif;
+
+if ($_product->stock<=$lowstockamount) $lowinstock[] = $thisitem;
+	 */
 }
