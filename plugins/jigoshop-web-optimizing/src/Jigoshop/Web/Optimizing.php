@@ -50,15 +50,15 @@ class Optimizing
 		// Admin
 		if(is_admin())
 		{
-			add_action('admin_print_scripts', array($this, 'admin_print_scripts'));
-			add_action('admin_print_styles', array($this, 'admin_print_styles'));
+			add_action('admin_enqueue_scripts', array($this, 'admin_print_scripts'), 1000);
+			add_action('admin_enqueue_scripts', array($this, 'admin_print_styles'), 1000);
 			\Jigoshop_Base::get_options()->install_external_options_tab(__('Web Optimizing', 'jigoshop_web_optimizing'), $this->admin_settings());
 		}
 		// Front
 		else
 		{
-			add_action('wp_print_scripts', array($this, 'front_print_scripts'));
-			add_action('wp_print_styles', array($this, 'front_print_styles'));
+			add_action('wp_enqueue_scripts', array($this, 'front_print_scripts'), 1000);
+			add_action('wp_enqueue_scripts', array($this, 'front_print_styles'), 1000);
 		}
 
 		// Initialize script and style arrays
@@ -184,17 +184,12 @@ class Optimizing
 	 */
 	public function admin_print_styles()
 	{
+		// TODO: Think how to improve this call
 		$styles = call_user_func_array('array_merge', $this->_styles);
 		$asset = new Optimizing\Asset\Minified\Stylesheet($this->_factory, $styles, array('page' => 'all', 'location' => 'admin'));
 		$css = $asset->getAsset();
 
-		wp_enqueue_style('jigoshop_web_optimized_admin_styles', JIGOSHOP_WEB_OPTIMIZING_URL.'/cache/'.
-			VarUtils::resolve(
-        $css->getTargetPath(),
-        $css->getVars(),
-        $css->getValues()
-			)
-		);
+		wp_enqueue_style('jigoshop_web_optimized_admin_styles', JIGOSHOP_WEB_OPTIMIZING_URL.'/cache/'.$this->get_asset_name($css));
 	}
 
 	/**
@@ -202,17 +197,13 @@ class Optimizing
 	 */
 	public function admin_print_scripts()
 	{
+		// TODO: Think how to improve this call
 		$scripts = call_user_func_array('array_merge', $this->_scripts);
 		$asset = new Optimizing\Asset\Javascript($this->_factory, $scripts, array('page' => 'all', 'location' => 'admin'));
 		$js = $asset->getAsset();
 
 		wp_enqueue_script(
-			'jigoshop_web_optimized_admin_scripts', JIGOSHOP_WEB_OPTIMIZING_URL.'/cache/'.
-			VarUtils::resolve(
-				$js->getTargetPath(),
-				$js->getVars(),
-				$js->getValues()
-			),
+			'jigoshop_web_optimized_admin_scripts', JIGOSHOP_WEB_OPTIMIZING_URL.'/cache/'.$this->get_asset_name($js),
 			$this->_dependencies
 		);
 	}
