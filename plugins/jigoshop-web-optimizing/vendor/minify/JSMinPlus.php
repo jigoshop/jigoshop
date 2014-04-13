@@ -189,6 +189,7 @@ class JSMinPlus
 		// in isValidIdentifier (See jslint source code)
 		'arguments', 'eval', 'true', 'false', 'Infinity', 'NaN', 'null', 'undefined'
 	);
+	private $fileSize;
 
 	private function __construct()
 	{
@@ -210,6 +211,8 @@ class JSMinPlus
 	{
 		try
 		{
+			$js = trim($js);
+			$this->fileSize = strlen($js);
 			$n = $this->parser->parse($js, $filename, 1);
 			return $this->parseTree($n);
 		}
@@ -573,6 +576,7 @@ class JSMinPlus
 
 			case JS_CALL:
 				$s = $this->parseTree($n->treeNodes[0]) . '(' . $this->parseTree($n->treeNodes[1]) . ')';
+				if($this->fileSize == $n->end+1) $s .= ';';
 			break;
 
 			case KEYWORD_NEW:
