@@ -55,7 +55,9 @@ class Jigoshop_Widget_Product_Search extends WP_Widget {
 
 		// Print the widget wrapper & title
 		echo $before_widget;
-		echo $before_title . $title . $after_title;
+		if($title):
+			echo $before_title . $title . $after_title;
+		endif;
 
 		// Construct the form
 		$form = '<form role="search" method="get" id="searchform" action="' . home_url() . '">';

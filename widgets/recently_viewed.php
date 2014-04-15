@@ -111,7 +111,9 @@
 
 			// Print the widget wrapper & title
 			echo $before_widget;
-			echo $before_title . $title . $after_title;
+			if($title):
+				echo $before_title . $title . $after_title;
+			endif;
 
 			// Open the list
 			echo '<ul class="product_list_widget recently_viewed_products">';

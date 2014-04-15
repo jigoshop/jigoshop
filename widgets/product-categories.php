@@ -77,7 +77,9 @@ class Jigoshop_Widget_Product_Categories extends WP_Widget {
 
 		// Print the widget wrapper & title
 		echo $before_widget;
-		echo $before_title . $title . $after_title;
+		if($title):
+			echo $before_title . $title . $after_title;
+		endif;
 
 		// Define options for the list
 		$args = array(
