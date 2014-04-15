@@ -72,7 +72,9 @@ class Jigoshop_Widget_Cart extends WP_Widget {
 
 		// Print the widget wrapper & title
 		echo $before_widget;
-		echo $before_title . $title . $after_title;
+		if($title):
+			echo $before_title . $title . $after_title;
+		endif;
 
 		// Get the contents of the cart
 		$cart_contents = jigoshop_cart::$cart_contents;

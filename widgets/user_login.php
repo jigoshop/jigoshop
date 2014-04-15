@@ -68,7 +68,9 @@ class Jigoshop_Widget_User_Login extends WP_Widget {
 
 			// Print title
 			$title = ( $instance['title_guest'] ) ? $instance['title_guest'] : __( 'Login', 'jigoshop' );
-			echo $before_title . $title . $after_title;
+			if($title):
+				echo $before_title . $title . $after_title;
+			endif;
 
 			do_action( 'jigoshop_widget_login_before_form' );
 

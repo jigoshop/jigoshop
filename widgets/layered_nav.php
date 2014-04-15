@@ -79,7 +79,9 @@ class Jigoshop_Widget_Layered_Nav extends WP_Widget {
 
 			// Print the widget wrapper & title
 			echo $before_widget;
-			echo $before_title . $title . $after_title;
+			if($title):
+				echo $before_title . $title . $after_title;
+			endif;
 
 			//Remove param link
 			$remove_link = remove_query_arg('filter_'.sanitize_title($instance['attribute']));
