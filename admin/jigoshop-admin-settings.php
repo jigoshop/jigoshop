@@ -398,7 +398,7 @@ function jigoshop_admin_option_display($options) {
 
 		case 'string':
 			?><tr>
-				<th scope="row"><?php echo $value['name']; ?></td>
+				<th scope="row"><?php echo $value['name']; ?></th>
 				<td><?php echo $value['desc']; ?></td>
 			  </tr><?php
 			break;
