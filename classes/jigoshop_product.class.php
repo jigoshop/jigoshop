@@ -481,31 +481,22 @@ class jigoshop_product extends Jigoshop_Base {
 
 		// Start as in stock
 		$notice = array(
-			'availability'	=> __( 'In Stock', 'jigoshop' ),
-			'class'			=> null,
+			'availability' => __( 'In Stock', 'jigoshop' ),
+			'class' => null,
 		);
 
 		// If stock is being managed & has stock
-		if ( $this->managing_stock() && $this->is_in_stock() ) {
-			if ( $this->stock <= 0 ) {
-				$notice['availability'] = __( 'Out of Stock', 'jigoshop' );
-				$notice['availability'] .= (self::get_options()->get_option('jigoshop_show_stock') == 'yes' && ! $this->has_child() ) ? " &ndash; {$this->stock} ".__(' available', 'jigoshop' ) : '';
-			} else
-				$notice['availability'] .= (self::get_options()->get_option('jigoshop_show_stock') == 'yes' && ! $this->has_child() ) ? " &ndash; {$this->stock} ".__(' available', 'jigoshop' ) : '';
-
-			// If customers require backorder notification
-			if ( $this->backorders_allowed() ) {
-				$notice['availability'] = $notice['availability'] .' ('.__('backorders allowed','jigoshop').')';
+		if ( $this->is_in_stock() ) {
+			// Check if we allow backorders
+			if ( $this->stock <= 0 && $this->backorders_allowed() ) {
+				$notice['availability'] = __( 'Available for order', 'jigoshop' );
+			} else if ( self::get_options()->get_option('jigoshop_show_stock') == 'yes' && ! $this->has_child() ){
+				// Check if we want user to get how many items is available
+				$notice['availability'] .= ' &ndash; '.$this->stock.' '.__(' available', 'jigoshop' );
 			}
-		}
-		else if ( $this->managing_stock() && $this->backorders_allowed() ) {
-			$notice['availability']	= __( 'Available on Backorder', 'jigoshop' );
-		}
-
-		// Declare out of stock if we don't have any stock
-		if ( ! $this->is_in_stock() ) {
+		} else {
 			$notice['availability']	= __( 'Out of Stock', 'jigoshop' );
-			$notice['class']		= 'out-of-stock';
+			$notice['class'] = 'out-of-stock';
 		}
 
 		return apply_filters( 'jigoshop_product_availability', $notice, $this );
@@ -1464,7 +1455,7 @@ class jigoshop_product extends Jigoshop_Base {
 		}
 		// these are non-variable products
 		$all_ids = array_keys( $on_sale );
-		// munge the variable parents and other products together
+		// merge the variable parents and other products together
 		$product_ids = array_unique( array_merge( $all_ids, $parent_ids ) );
 
 		// now check the sale date fields on the main products

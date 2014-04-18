@@ -62,7 +62,9 @@ class Jigoshop_Widget_Tag_Cloud extends WP_Widget {
 
 		// Print the widget wrapper & title
 		echo $before_widget;
-		echo $before_title . $title . $after_title;
+		if($title):
+			echo $before_title . $title . $after_title;
+		endif;
 
 		// Print tag cloud with wrapper
 		echo '<div class="tagcloud">';

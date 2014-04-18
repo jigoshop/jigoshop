@@ -78,7 +78,9 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 
 		// Print the widget wrapper & title
 		echo $before_widget;
-		echo $before_title . $title . $after_title;
+		if($title):
+			echo $before_title . $title . $after_title;
+		endif;
 
 		// Remember current filters/search
 		$fields = array();

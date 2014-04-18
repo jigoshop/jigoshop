@@ -426,12 +426,20 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
 				break;
 
-			default :
-
+			case "text":
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="' . esc_attr( $args['name'] ) . '" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
-					<input type="'.$args['type'].'" class="input-text' . esc_attr( $input_required ) . '" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" placeholder="'.$args['placeholder'].'" value="'. $this->get_value( $args['name'] ).'" />
+					<input type="text" class="input-text' . esc_attr( $input_required ) . '" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" placeholder="'.$args['placeholder'].'" value="'. $this->get_value( $args['name'] ).'" />
 				</p>'.$after;
+
+				break;
+
+			default :
+
+				ob_start();
+				do_action('jigoshop_display_checkout_field', $args['type'], $args, $this->get_value($args['name']));
+				echo $after;
+				$field = ob_get_clean();
 
 				break;
 		endswitch;
@@ -840,7 +848,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 						$shipping_address_1 = $this->posted['billing-address'];
 						$shipping_address_2 = $this->posted['billing-address-2'];
 						$shipping_city      = $this->posted['billing-city'];
-						$shipping_state     = $this->posted['billing-state'];
+						$shipping_state     = isset($this->posted['billing-state']) ? $this->posted['billing-state'] : '';
 						$shipping_postcode  = $this->posted['billing-postcode'];
 						$shipping_country   = $this->posted['billing-country'];
 						if ( $this->valid_euvatno ) {
@@ -864,7 +872,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 						$shipping_address_1 = $this->posted['shipping-address'];
 						$shipping_address_2 = $this->posted['shipping-address-2'];
 						$shipping_city      = $this->posted['shipping-city'];
-						$shipping_state     = $this->posted['shipping-state'];
+						$shipping_state     = isset($this->posted['shipping-state']) ? $this->posted['shipping-state'] : '';
 						$shipping_postcode  = $this->posted['shipping-postcode'];
 						$shipping_country   = $this->posted['shipping-country'];
 
@@ -882,7 +890,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 						update_user_meta( $user_id, 'billing-city'      , $this->posted['billing-city'] );
 						update_user_meta( $user_id, 'billing-postcode'  , $this->posted['billing-postcode'] );
 						update_user_meta( $user_id, 'billing-country'   , $this->posted['billing-country'] );
-						update_user_meta( $user_id, 'billing-state'     , $this->posted['billing-state'] );
+						update_user_meta( $user_id, 'billing-state'     , isset($this->posted['billing-state']) ? $this->posted['billing-state'] : '' );
 						update_user_meta( $user_id, 'billing-phone'     , $this->posted['billing-phone'] );
 
 						if ( empty($this->posted['shiptobilling']) && jigoshop_shipping::is_enabled() ) :
@@ -894,7 +902,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 							update_user_meta( $user_id, 'shipping-city', $this->posted['shipping-city'] );
 							update_user_meta( $user_id, 'shipping-postcode', $this->posted['shipping-postcode'] );
 							update_user_meta( $user_id, 'shipping-country', $this->posted['shipping-country'] );
-							update_user_meta( $user_id, 'shipping-state', $this->posted['shipping-state'] );
+							update_user_meta( $user_id, 'shipping-state', isset($this->posted['shipping-state']) ? $this->posted['shipping-state'] : '');
 						elseif ( $this->posted['shiptobilling'] && jigoshop_shipping::is_enabled() ) :
 							update_user_meta( $user_id, 'shipping-first_name', $this->posted['billing-first_name'] );
 							update_user_meta( $user_id, 'shipping-last_name' , $this->posted['billing-last_name'] );
@@ -904,7 +912,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 							update_user_meta( $user_id, 'shipping-city'      , $this->posted['billing-city'] );
 							update_user_meta( $user_id, 'shipping-postcode'  , $this->posted['billing-postcode'] );
 							update_user_meta( $user_id, 'shipping-country'   , $this->posted['billing-country'] );
-							update_user_meta( $user_id, 'shipping-state'     , $this->posted['billing-state'] );
+							update_user_meta( $user_id, 'shipping-state'     , isset($this->posted['billing-state']) ? $this->posted['billing-state'] : '' );
 						endif;
 
 					endif;
@@ -937,7 +945,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					$data['billing_city']           = $this->posted['billing-city'];
 					$data['billing_postcode']       = $this->posted['billing-postcode'];
 					$data['billing_country']        = $this->posted['billing-country'];
-					$data['billing_state']          = $this->posted['billing-state'];
+					$data['billing_state']          = isset($this->posted['billing-state']) ? $this->posted['billing-state'] : '';
 					$data['billing_email']          = $this->posted['billing-email'];
 					$data['billing_phone']          = $this->posted['billing-phone'];
 					$data['shipping_first_name']    = $shipping_first_name;
