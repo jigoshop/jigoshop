@@ -297,6 +297,7 @@ function jigoshop_edit_address() {
 						update_user_meta( $user_id, $field['name'], jigowatt_clean($_POST[$field['name']]) );
 					endif;
 				}
+				do_action('jigoshop_user_edit_address', $user_id, $address);
 			endif;
 
 			wp_safe_redirect( apply_filters( 'jigoshop_get_myaccount_page_id', get_permalink( jigoshop_get_page_id( 'myaccount' ))) );

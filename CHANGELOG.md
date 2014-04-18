@@ -1,7 +1,8 @@
 ## Changelog
 
 * 1.8.5 - 2014-04-15
-    * New: Checking if widgets has titles - otherwise skipping displaying them.
+    * New: Checking if widgets has titles - otherwise skipping displaying them. Thanks to Stephen Cronin
+    * New: Action `jigoshop_user_edit_address` after address edition. Thanks to robselway
     * Fix: Product statuses now matches these from Google Feed.
 
 * 1.8.4 - 2014-04-01
