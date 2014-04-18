@@ -418,6 +418,7 @@ class JSMinPlus
 			case KEYWORD_VAR:
 			case KEYWORD_CONST:
 				$s = $n->value . ' ';
+				$u = false;
 				$childs = $n->treeNodes;
 				for ($i = 0, $j = count($childs); $i < $j; $i++)
 				{
@@ -427,6 +428,7 @@ class JSMinPlus
 					if ($u)
 						$s .= '=' . $this->parseTree($u);
 				}
+				if($u && $this->fileSize == $u->end+2 && $s[strlen($s)-1] == OP_RIGHT_CURLY) $s .= ';';
 			break;
 
 			case KEYWORD_IN:
