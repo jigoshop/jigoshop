@@ -11,6 +11,9 @@ namespace Jigoshop\Core;
  */
 class Options
 {
+	/** @var \Jigoshop\Core\Wordpress */
+	private $wordpress;
+
 	// TODO: Fill default options
 	private $defaults = array(
 		'cache_mechanism' => 'simple',
@@ -27,37 +30,38 @@ class Options
 	private $options = array();
 	private $dirty = false;
 
-	public function __construct()
+	public function __construct(Wordpress $wordpress)
 	{
+		$this->wordpress = $wordpress;
 		$this->_loadOptions();
 		$this->_addImageSizes();
-		add_action('shutdown', array($this, 'saveOptions'));
+		$this->wordpress->addAction('shutdown', array($this, 'saveOptions'));
 	}
 
 	public function getImageSizes()
 	{
-		return apply_filters('jigoshop\\image\\sizes', array(
+		return array_values($this->wordpress->applyFilters('jigoshop\\image\\sizes', array(
 			'shop_tiny' => array(
-				'crop' => apply_filters('jigoshop\\image\\size\\crop', false, 'shop_tiny'),
+				'crop' => $this->wordpress->applyFilters('jigoshop\\image\\size\\crop', false, 'shop_tiny'),
 				'width' => '36',
 				'height' => '36',
 			),
 			'shop_thumbnail' => array(
-				'crop' => apply_filters('jigoshop\\image\\size\\crop', false, 'shop_thumbnail'),
+				'crop' => $this->wordpress->applyFilters('jigoshop\\image\\size\\crop', false, 'shop_thumbnail'),
 				'width' => '90',
 				'height' => '90',
 			),
 			'shop_small' => array(
-				'crop' => apply_filters('jigoshop\\image\\size\\crop', false, 'shop_small'),
+				'crop' => $this->wordpress->applyFilters('jigoshop\\image\\size\\crop', false, 'shop_small'),
 				'width' => '150',
 				'height' => '150',
 			),
 			'shop_large' => array(
-				'crop' => apply_filters('jigoshop\\image\\size\\crop', false, 'shop_large'),
+				'crop' => $this->wordpress->applyFilters('jigoshop\\image\\size\\crop', false, 'shop_large'),
 				'width' => '300',
 				'height' => '300',
 			),
-		));
+		)));
 	}
 
 	/**
@@ -90,7 +94,7 @@ class Options
 
 		foreach($sizes as $size => $options)
 		{
-			add_image_size($size, $options['width'], $options['height'], $options['crop']);
+			$this->wordpress->addImageSize($size, $options['width'], $options['height'], $options['crop']);
 		}
 
 //		add_image_size('admin_product_list', 32, 32, $this->get('jigoshop_use_wordpress_tiny_crop', 'no') == 'yes' ? true : false); // TODO: Is this needed?
@@ -103,7 +107,7 @@ class Options
 	{
 		if($this->dirty)
 		{
-			update_option('jigoshop', $this->options);
+			$this->wordpress->updateOption('jigoshop', $this->options);
 		}
 	}
 
@@ -112,7 +116,7 @@ class Options
 	 */
 	private function _loadOptions()
 	{
-		$options = (array)get_option('jigoshop');
+		$options = (array)$this->wordpress->getOption('jigoshop');
 		$this->options = array_merge_recursive($this->defaults, $options);
 	}
 }
