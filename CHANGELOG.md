@@ -1,5 +1,8 @@
 ## Changelog
 
+* 1.8.6
+		* New: Checking for product type when loading products on sale.
+
 * 1.8.5 - 2014-04-15
     * New: Checking if widgets has titles - otherwise skipping displaying them. Thanks to Stephen Cronin
     * New: Action `jigoshop_user_edit_address` after address edition. Thanks to robselway
