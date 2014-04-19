@@ -10,26 +10,30 @@ namespace Jigoshop\Core;
  */
 class Messages
 {
+	const NOTICES = 'jigoshop_notices';
+	const WARNINGS = 'jigoshop_warnings';
+	const ERRORS = 'jigoshop_errors';
+
 	private $notices = array();
 	private $warnings = array();
 	private $errors = array();
 
-	public function __construct()
+	public function __construct(Wordpress $wordpress)
 	{
-		if(isset($_SESSION['jigoshop_notices']))
+		if(isset($_SESSION[self::NOTICES]))
 		{
-			$this->notices = $_SESSION['jigoshop_notices'];
+			$this->notices = $_SESSION[self::NOTICES];
 		}
-		if(isset($_SESSION['jigoshop_warnings']))
+		if(isset($_SESSION[self::WARNINGS]))
 		{
-			$this->warnings = $_SESSION['jigoshop_warnings'];
+			$this->warnings = $_SESSION[self::WARNINGS];
 		}
-		if(isset($_SESSION['jigoshop_errors']))
+		if(isset($_SESSION[self::ERRORS]))
 		{
-			$this->errors = $_SESSION['jigoshop_errors'];
+			$this->errors = $_SESSION[self::ERRORS];
 		}
 
-		add_action('shutdown', array($this, 'preserveMessages'));
+		$wordpress->addAction('shutdown', array($this, 'preserveMessages'));
 	}
 
 	/**
@@ -103,14 +107,14 @@ class Messages
 	 */
 	public function preserveMessages()
 	{
-		$_SESSION['jigoshop_notices'] = array_filter($this->notices, function($item){
+		$_SESSION[self::NOTICES] = array_values(array_filter($this->notices, function($item){
 			return $item['persistent'];
-		});
-		$_SESSION['jigoshop_warnings'] = array_filter($this->warnings, function($item){
+		}));
+		$_SESSION[self::WARNINGS] = array_values(array_filter($this->warnings, function($item){
 			return $item['persistent'];
-		});
-		$_SESSION['jigoshop_errors'] = array_filter($this->errors, function($item){
+		}));
+		$_SESSION[self::ERRORS] = array_values(array_filter($this->errors, function($item){
 			return $item['persistent'];
-		});
+		}));
 	}
 }

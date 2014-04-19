@@ -6,42 +6,43 @@ use Jigoshop\Service\OrderServiceInterface;
 
 class Cron
 {
-	/** @var \Jigoshop\Core\Database */
-	private $database;
+	/** @var \Jigoshop\Core\Wordpress */
+	private $wordpress;
 	/** @var Options */
 	private $options;
 	/** @var OrderServiceInterface */
 	private $service;
 
-	public function __construct(Database $database, Options $options, OrderServiceInterface $service)
+	public function __construct(Wordpress $wordpress, Options $options, OrderServiceInterface $service)
 	{
-		$this->database = $database;
+		$this->wordpress = $wordpress;
 		$this->options = $options;
 		$this->service = $service;
 		$this->_scheduleEvents();
 
-		add_action('jigoshop_cron_pending_orders', array($this, '_updatePendingOrders'));
-		add_action('jigoshop_cron_processing_orders', array($this, '_completeProcessingOrders'));
+		$wordpress->addAction('jigoshop\\cron\\pending_orders', array($this, '_updatePendingOrders'));
+		$wordpress->addAction('jigoshop\\cron\\processing_orders', array($this, '_completeProcessingOrders'));
 	}
 
 	public static function clear()
 	{
-		wp_clear_scheduled_hook('jigoshop_cron_pending_orders');
-		wp_clear_scheduled_hook('jigoshop_cron_processing_orders');
+		$wordpress = new Wordpress();
+		$wordpress->clearScheduledHook('jigoshop\\cron\\pending_orders');
+		$wordpress->clearScheduledHook('jigoshop\\cron\\processing_orders');
 	}
 
 	/** Schedules order processing events if not scheduled already. */
 	private function _scheduleEvents()
 	{
 		$time = time();
-		if(!wp_next_scheduled('jigoshop_cron_pending_orders'))
+		if(!$this->wordpress->nextScheduled('jigoshop\\cron\\pending_orders'))
 		{
-			wp_schedule_event($time, 'daily', 'jigoshop_cron_pending_orders');
+			$this->wordpress->scheduleEvent($time, 'daily', 'jigoshop\\cron\\pending_orders');
 		}
 
-		if(!wp_next_scheduled('jigoshop_cron_processing_orders'))
+		if(!$this->wordpress->nextScheduled('jigoshop\\cron\\processing_orders'))
 		{
-			wp_schedule_event($time, 'daily', 'jigoshop_cron_processing_orders');
+			$this->wordpress->scheduleEvent($time, 'daily', 'jigoshop\\cron\\processing_orders');
 		}
 	}
 
@@ -53,7 +54,7 @@ class Cron
 	{
 		if($this->options->get('reset_pending_orders') == 'yes')
 		{
-			add_filter('posts_where', array($this, '_ordersFilter'));
+			$this->wordpress->addFilter('posts_where', array($this, '_ordersFilter'));
 			$query = new \WP_Query(array(
 				'post_status' => 'publish',
 				'post_type' => 'shop_order',
@@ -63,8 +64,9 @@ class Cron
 			));
 			$orders = $this->service->findByQuery($query);
 
-			remove_filter('posts_where', array($this, '_ordersFilter'));
-			remove_action('order_status_pending_to_on-hold', 'jigoshop_processing_order_customer_notification');
+			$this->wordpress->removeFilter('posts_where', array($this, '_ordersFilter'));
+			// TODO: Update function to call
+			$this->wordpress->removeAction('order_status_pending_to_on-hold', 'jigoshop_processing_order_customer_notification');
 
 			// TODO: Proper status handling
 			foreach($orders as $order)
@@ -74,7 +76,8 @@ class Cron
 			}
 
 			// TODO: Proper action naming
-			add_action('order_status_pending_to_on-hold', 'jigoshop_processing_order_customer_notification');
+			// TODO: Update function to call
+			$this->wordpress->addAction('order_status_pending_to_on-hold', 'jigoshop_processing_order_customer_notification');
 		}
 	}
 
@@ -86,7 +89,7 @@ class Cron
 	{
 		if($this->options->get('complete_processing_orders') == 'yes')
 		{
-			add_filter('posts_where', array($this, '_ordersFilter'));
+			$this->wordpress->addFilter('posts_where', array($this, '_ordersFilter'));
 			$query = new \WP_Query(array(
 				'post_status' => 'publish',
 				'post_type' => 'shop_order',
@@ -96,8 +99,9 @@ class Cron
 			));
 			$orders = $this->service->findByQuery($query);
 
-			remove_filter('posts_where', array($this, '_ordersFilter'));
-			remove_action('order_status_completed', 'jigoshop_processing_order_customer_notification');
+			$this->wordpress->removeFilter('posts_where', array($this, '_ordersFilter'));
+			// TODO: Update function to call
+			$this->wordpress->removeAction('order_status_completed', 'jigoshop_processing_order_customer_notification');
 
 			// TODO: Proper status handling
 			foreach($orders as $order)
@@ -107,7 +111,8 @@ class Cron
 			}
 
 			// TODO: Proper action naming
-			add_action('order_status_completed', 'jigoshop_processing_order_customer_notification');
+			// TODO: Update function to call
+			$this->wordpress->addAction('order_status_completed', 'jigoshop_processing_order_customer_notification');
 		}
 	}
 
@@ -115,8 +120,9 @@ class Cron
 	 * @param string $when Base query.
 	 * @return string Query for orders older than 30 days.
 	 */
+	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function _ordersFilter($when = '')
 	{
-		return $when.$this->database->getWPDB()->prepare(' AND post_date < %s', date('Y-m-d', time()-30*24*3600));
+		return $when.$this->wordpress->getWPDB()->prepare(' AND post_date < %s', date('Y-m-d', time()-30*24*3600));
 	}
 }

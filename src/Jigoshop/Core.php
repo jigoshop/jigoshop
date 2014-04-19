@@ -4,11 +4,11 @@ namespace Jigoshop;
 
 use Jigoshop\Core\Assets;
 use Jigoshop\Core\Cron;
-use Jigoshop\Core\Database;
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\PostTypes;
 use Jigoshop\Core\Roles;
+use Jigoshop\Core\Wordpress;
 use Jigoshop\Service\Order as OrderService;
 use Jigoshop\Service\Product as ProductService;
 
@@ -26,18 +26,18 @@ class Core
 	private $messages;
 	/** @var \Jigoshop\Admin */
 	private $admin;
-	/** @var \Jigoshop\Core\Database */
-	private $database;
+	/** @var \Jigoshop\Core\Wordpress */
+	private $wordpress;
 
 	public function __construct()
 	{
 		PostTypes::initialize();
 		Roles::initialize();
-		$this->database = new Database();
+		$this->wordpress = new Wordpress();
 		$this->options = new Options();
-		$this->messages = new Messages();
+		$this->messages = new Messages($this->wordpress);
 		$this->_addQueryFilters();
-		$this->cron = new Cron($this->database, $this->options, $this->getOrderService());
+		$this->cron = new Cron($this->wordpress, $this->options, $this->getOrderService());
 		$this->assets = new Assets($this->options);
 
 		if(is_admin())
@@ -58,11 +58,11 @@ class Core
 	}
 
 	/**
-	 * @return \wpdb Database instance.
+	 * @return Wordpress WordPress abstraction instance.
 	 */
-	public function getDatabase()
+	public function getWordpress()
 	{
-		return $this->database;
+		return $this->wordpress;
 	}
 
 	/**
