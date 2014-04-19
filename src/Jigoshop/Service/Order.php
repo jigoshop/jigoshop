@@ -27,6 +27,7 @@ class Order implements OrderServiceInterface
 	/**
 	 * Finds order specified using WordPress query.
 	 *
+	 * TODO: Replace \WP_Query in order to make Jigoshop testable
 	 * @param $query \WP_Query WordPress query.
 	 * @return array Collection of found orders
 	 */

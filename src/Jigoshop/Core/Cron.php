@@ -6,13 +6,16 @@ use Jigoshop\Service\OrderServiceInterface;
 
 class Cron
 {
+	/** @var \Jigoshop\Core\Database */
+	private $database;
 	/** @var Options */
 	private $options;
 	/** @var OrderServiceInterface */
 	private $service;
 
-	public function __construct(Options $options, OrderServiceInterface $service)
+	public function __construct(Database $database, Options $options, OrderServiceInterface $service)
 	{
+		$this->database = $database;
 		$this->options = $options;
 		$this->service = $service;
 		$this->_scheduleEvents();
@@ -114,8 +117,6 @@ class Cron
 	 */
 	private function _ordersFilter($when = '')
 	{
-		/** @var $wpdb \WPDB */
-		global $wpdb;
-		return $when.$wpdb->prepare(' AND post_date < %s', date('Y-m-d', time()-30*24*3600));
+		return $when.$this->database->getWPDB()->prepare(' AND post_date < %s', date('Y-m-d', time()-30*24*3600));
 	}
 }

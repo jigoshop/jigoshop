@@ -4,6 +4,7 @@ namespace Jigoshop;
 
 use Jigoshop\Core\Assets;
 use Jigoshop\Core\Cron;
+use Jigoshop\Core\Database;
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\PostTypes;
@@ -15,20 +16,28 @@ class Core
 {
 	const VERSION = '2.0';
 
+	/** @var \Jigoshop\Core\Options */
 	private $options;
+	/** @var array  */
 	private $services = array();
+	/** @var \Jigoshop\Core\Cron  */
 	private $cron;
+	/** @var \Jigoshop\Core\Messages */
 	private $messages;
+	/** @var \Jigoshop\Admin */
 	private $admin;
+	/** @var \Jigoshop\Core\Database */
+	private $database;
 
 	public function __construct()
 	{
 		PostTypes::initialize();
 		Roles::initialize();
+		$this->database = new Database();
 		$this->options = new Options();
 		$this->messages = new Messages();
 		$this->_addQueryFilters();
-		$this->cron = new Cron($this->options, $this->getOrderService());
+		$this->cron = new Cron($this->database, $this->options, $this->getOrderService());
 		$this->assets = new Assets($this->options);
 
 		if(is_admin())
@@ -46,6 +55,14 @@ class Core
 			add_filter('jigoshop\\shop\\columns', array($this, '_shopVisibleColumnsFilter'));
 			add_filter('jigoshop\\shop\\per_page', array($this, '_shopPerPageFilter'));
 		}
+	}
+
+	/**
+	 * @return \wpdb Database instance.
+	 */
+	public function getDatabase()
+	{
+		return $this->database;
 	}
 
 	/**

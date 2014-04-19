@@ -24,7 +24,9 @@ class Product implements ProductServiceInterface
 
 		if($id !== null)
 		{
+			// TODO: Remove get_post() call in order to make Jigoshop testable
 			$post = get_post($id);
+			// TODO: Remove get_post_meta() call in order to make Jigoshop testable
 			$meta = array_map(function($item){
 				return $item[0];
 			}, get_post_meta($id));
@@ -43,6 +45,7 @@ class Product implements ProductServiceInterface
 	/**
 	 * Finds items specified using WordPress query.
 	 *
+	 * TODO: Replace \WP_Query in order to make Jigoshop testable
 	 * @param $query \WP_Query WordPress query.
 	 * @return array Collection of found items.
 	 */
@@ -77,6 +80,7 @@ class Product implements ProductServiceInterface
 
 		if(isset($fields['id']) || isset($fields['name']))
 		{
+			// TODO: Remove wp_update_post() call in order to make Jigoshop testable
 			wp_update_post(array(
 				'ID' => $object->getId(),
 				'post_title' => $object->getName(),
@@ -86,6 +90,7 @@ class Product implements ProductServiceInterface
 
 		foreach($fields as $field => $value)
 		{
+			// TODO: Remove update_post_meta() call in order to make Jigoshop testable
 			update_post_meta($object->getId(), $field, $value);
 		}
 
@@ -97,6 +102,7 @@ class Product implements ProductServiceInterface
 	 */
 	function findOutOfStock()
 	{
+		// TODO: Replace \WP_Query in order to make Jigoshop testable
 		$query = new \WP_Query(array(
 			'post_type' => 'product',
 			'post_status' => 'publish',
@@ -125,6 +131,7 @@ class Product implements ProductServiceInterface
 	 */
 	function findLowStock($threshold)
 	{
+		// TODO: Replace \WP_Query in order to make Jigoshop testable
 		$query = new \WP_Query(array(
 			'post_type' => 'product',
 			'post_status' => 'publish',
