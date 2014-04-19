@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Admin;
 
+use Jigoshop\Core\Database;
 use Jigoshop\Core\Options;
 use Jigoshop\Entity\Order;
 use Jigoshop\Service\OrderServiceInterface;
@@ -15,6 +16,8 @@ use Jigoshop\Service\ProductServiceInterface;
  */
 class Dashboard implements PageInterface
 {
+	/** @var \Jigoshop\Core\Database */
+	private $database;
 	/** @var \Jigoshop\Service\OrderServiceInterface */
 	private $orderService;
 	/** @var \Jigoshop\Service\ProductServiceInterface */
@@ -22,8 +25,9 @@ class Dashboard implements PageInterface
 	/** @var Options */
 	private $options;
 
-	public function __construct(Options $options, OrderServiceInterface $orderService, ProductServiceInterface $productService)
+	public function __construct(Database $database, Options $options, OrderServiceInterface $orderService, ProductServiceInterface $productService)
 	{
+		$this->database = $database;
 		$this->options = $options;
 		$this->orderService = $orderService;
 		$this->productService = $productService;
@@ -74,7 +78,7 @@ class Dashboard implements PageInterface
 		add_meta_box('jigoshop_dashboard_useful_links', __('Useful Links', 'jigoshop'), array($this, 'usefulLinks'), 'jigoshop', 'normal', 'core');
 
 		/** @noinspection PhpUnusedLocalVariableInspection */
-		global $submenu;
+		global $submenu; // TODO: Create proper abstraction when testing code appears
 		include(JIGOSHOP_DIR.'/templates/admin/dashboard.php');
 	}
 
@@ -110,6 +114,7 @@ class Dashboard implements PageInterface
 	public function recentOrders()
 	{
 		/** @noinspection PhpUnusedLocalVariableInspection */
+		// TODO: Replace \WP_Query in order to make Jigoshop testable
 		$orders = $this->orderService->findByQuery(new \WP_Query(array(
 			'numberposts' => 10,
 			'orderby' => 'post_date',
@@ -194,8 +199,7 @@ class Dashboard implements PageInterface
 	 */
 	public function recentReviews()
 	{
-		/** @var $wpdb \WPDB */
-		global $wpdb;
+		$wpdb = $this->database->getWPDB();
 		/** @noinspection PhpUnusedLocalVariableInspection */
 		$comments = $wpdb->get_results("SELECT *, SUBSTRING(comment_content,1,100) AS comment_excerpt
 				FROM $wpdb->comments

@@ -92,6 +92,7 @@ function jigoshop_update($network_wide = false)
 		new \Jigoshop\Core\Install($wpdb);
 		return;
 	}
+
 	$blog = $wpdb->blogid;
 	$ids = $wpdb->get_col("SELECT blog_id FROM {$wpdb->blogs}");
 

@@ -32,7 +32,7 @@ class Admin
 	public function __construct(Core $core)
 	{
 		$this->core = $core;
-		$this->dashboard = new Dashboard($core->getOptions(), $core->getOrderService(), $core->getProductService());
+		$this->dashboard = new Dashboard($core->getDatabase(), $core->getOptions(), $core->getOrderService(), $core->getProductService());
 		$this->settings = new Settings();
 		$this->systemInfo = new SystemInfo();
 		$this->addPage('jigoshop', $this->dashboard);
