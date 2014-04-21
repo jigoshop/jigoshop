@@ -6,7 +6,7 @@ namespace Jigoshop;
  * Class containing available pages in Jigoshop.
  *
  * @package Jigoshop
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Pages
 {

@@ -8,7 +8,7 @@ use Jigoshop\Entity\EntityInterface;
  * Interface for Jigoshop services.
  *
  * @package Jigoshop\Service
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 interface ServiceInterface
 {

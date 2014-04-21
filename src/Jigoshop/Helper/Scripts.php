@@ -8,7 +8,7 @@ use Jigoshop\Pages;
  * Scripts helper.
  *
  * @package Jigoshop\Helper
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Scripts
 {

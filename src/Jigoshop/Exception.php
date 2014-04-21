@@ -6,7 +6,7 @@ namespace Jigoshop;
  * Jigoshop exception.
  *
  * @package Jigoshop
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Exception extends \RuntimeException
 {

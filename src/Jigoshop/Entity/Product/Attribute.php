@@ -8,7 +8,7 @@ namespace Jigoshop\Entity\Product;
  * TODO: Implement
  *
  * @package Jigoshop\Entity\Product
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Attribute implements \Serializable
 {

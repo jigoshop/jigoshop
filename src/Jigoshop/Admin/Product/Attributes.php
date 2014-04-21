@@ -8,7 +8,7 @@ use Jigoshop\Admin\PageInterface;
  * Product attributes admin page.
  *
  * @package Jigoshop\Product\Admin
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Attributes implements PageInterface
 {

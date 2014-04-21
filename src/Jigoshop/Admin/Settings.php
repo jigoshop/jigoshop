@@ -6,7 +6,7 @@ namespace Jigoshop\Admin;
  * Jigoshop settings.
  *
  * @package Jigoshop\Admin
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Settings implements PageInterface
 {

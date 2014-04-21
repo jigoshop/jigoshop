@@ -12,7 +12,7 @@ use Jigoshop\Pages;
  * TODO: Rethink if all assets are needed.
  *
  * @package Jigoshop\Core
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Assets
 {

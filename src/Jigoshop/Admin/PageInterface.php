@@ -6,7 +6,7 @@ namespace Jigoshop\Admin;
  * Interface for admin pages.
  *
  * @package Jigoshop\Admin
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 interface PageInterface
 {

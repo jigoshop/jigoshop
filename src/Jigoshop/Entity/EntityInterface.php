@@ -6,7 +6,7 @@ namespace Jigoshop\Entity;
  * Entity interface.
  *
  * @package Jigoshop\Entity
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 interface EntityInterface
 {

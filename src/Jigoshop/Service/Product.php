@@ -8,7 +8,7 @@ use Jigoshop\Entity\EntityInterface;
  * Product service.
  *
  * @package Jigoshop\Service
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Product implements ProductServiceInterface
 {

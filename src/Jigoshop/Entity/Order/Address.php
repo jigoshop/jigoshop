@@ -6,7 +6,7 @@ namespace Jigoshop\Entity\Order;
  * Address of the customer.
  *
  * @package Jigoshop\Entity\Order
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Address
 {

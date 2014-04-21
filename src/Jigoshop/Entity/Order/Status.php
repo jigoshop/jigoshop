@@ -6,7 +6,7 @@ namespace Jigoshop\Entity\Order;
  * Order statuses.
  *
  * @package Jigoshop\Entity\Order
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Status
 {

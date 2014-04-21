@@ -6,7 +6,7 @@ namespace Jigoshop\Service;
  * Orders service interface.
  *
  * @package Jigoshop\Service
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 interface OrderServiceInterface extends ServiceInterface
 {

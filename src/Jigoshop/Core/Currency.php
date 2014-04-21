@@ -6,7 +6,7 @@ namespace Jigoshop\Core;
  * Available currencies.
  *
  * @package Jigoshop\Core
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Currency
 {

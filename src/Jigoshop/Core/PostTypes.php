@@ -6,7 +6,7 @@ namespace Jigoshop\Core;
  * Registers required post types.
  *
  * @package Jigoshop\Core
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class PostTypes
 {

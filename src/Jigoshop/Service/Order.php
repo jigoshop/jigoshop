@@ -8,7 +8,7 @@ use Jigoshop\Entity\EntityInterface;
  * Orders service.
  *
  * @package Jigoshop\Service
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Order implements OrderServiceInterface
 {

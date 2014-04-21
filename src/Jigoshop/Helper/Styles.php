@@ -8,7 +8,7 @@ use Jigoshop\Pages;
  * Styles helper.
  *
  * @package Jigoshop\Helper
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Styles
 {

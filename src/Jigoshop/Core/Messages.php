@@ -6,7 +6,7 @@ namespace Jigoshop\Core;
  * Class containing Jigoshop messages.
  *
  * @package Jigoshop\Core
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Messages
 {

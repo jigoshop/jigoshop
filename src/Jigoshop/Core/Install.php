@@ -9,7 +9,7 @@ use Jigoshop\Helper\Pages;
  * Jigoshop installer class.
  *
  * @package Jigoshop\Core
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Install
 {

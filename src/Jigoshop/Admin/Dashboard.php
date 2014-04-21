@@ -12,7 +12,7 @@ use Jigoshop\Service\ProductServiceInterface;
  * Jigoshop dashboard.
  *
  * @package Jigoshop\Admin
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Dashboard implements PageInterface
 {

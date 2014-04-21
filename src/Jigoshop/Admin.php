@@ -13,7 +13,7 @@ use Jigoshop\Admin\SystemInfo;
  * Class for handling administration panel.
  *
  * @package Jigoshop
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Admin
 {

@@ -6,7 +6,7 @@ namespace Jigoshop\Entity\Product;
  * Product size.
  *
  * @package Jigoshop\Entity\Product
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Size implements \Serializable
 {

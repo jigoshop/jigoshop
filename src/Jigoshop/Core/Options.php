@@ -7,7 +7,7 @@ namespace Jigoshop\Core;
  * Use this class instead of manually calling to WordPress options database as it will cache all retrieves and updates to speed-up.
  *
  * @package Jigoshop\Core
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Options
 {

@@ -6,7 +6,7 @@ namespace Jigoshop\Service;
  * Products service interface.
  *
  * @package Jigoshop\Service
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 interface ProductServiceInterface extends ServiceInterface
 {

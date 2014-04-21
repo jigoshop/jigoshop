@@ -6,7 +6,7 @@ namespace Jigoshop\Helper;
  * Core helper.
  *
  * @package Jigoshop\Helper
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Core
 {

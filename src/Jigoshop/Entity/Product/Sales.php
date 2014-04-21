@@ -6,7 +6,7 @@ namespace Jigoshop\Entity\Product;
  * Product sales data.
  *
  * @package Jigoshop\Entity\Product
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Sales implements \Serializable
 {

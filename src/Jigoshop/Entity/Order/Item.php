@@ -8,7 +8,7 @@ use Jigoshop\Entity\Product;
  * Order item.
  *
  * @package Jigoshop\Entity\Order
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Item
 {

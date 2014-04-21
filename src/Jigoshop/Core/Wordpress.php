@@ -6,7 +6,7 @@ namespace Jigoshop\Core;
  * Provides abstraction for WordPress calls.
  *
  * @package Jigoshop\Core
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Wordpress
 {

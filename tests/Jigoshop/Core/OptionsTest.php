@@ -6,7 +6,7 @@ namespace Jigoshop\Core;
  * Options tests.
  *
  * @package Jigoshop\Core
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class OptionsTest extends \PHPUnit_Framework_TestCase
 {

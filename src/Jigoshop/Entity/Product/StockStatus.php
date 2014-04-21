@@ -6,7 +6,7 @@ namespace Jigoshop\Entity\Product;
  * Product's stock status.
  *
  * @package Jigoshop\Entity\Product
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class StockStatus
 {

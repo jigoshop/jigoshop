@@ -6,7 +6,7 @@ namespace Jigoshop\Service;
  * Service exception.
  *
  * @package Jigoshop\Service
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Exception extends \RuntimeException
 {

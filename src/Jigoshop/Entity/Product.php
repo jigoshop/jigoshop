@@ -10,7 +10,7 @@ use Jigoshop\Entity\Product\StockStatus;
  * Product class.
  *
  * @package Jigoshop\Entity
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Product implements EntityInterface
 {

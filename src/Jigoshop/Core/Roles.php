@@ -6,7 +6,7 @@ namespace Jigoshop\Core;
  * Roles
  *
  * @package Jigoshop\Core
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Roles
 {

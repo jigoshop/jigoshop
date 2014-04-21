@@ -9,7 +9,7 @@ use Jigoshop\Entity\Order\Status;
  * TODO: Fully implement the class.
  *
  * @package Jigoshop\Entity
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Order implements EntityInterface
 {

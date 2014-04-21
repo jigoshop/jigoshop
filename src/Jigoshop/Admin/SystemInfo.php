@@ -6,7 +6,7 @@ namespace Jigoshop\Admin;
  * Jigoshop system info page.
  *
  * @package Jigoshop\Admin
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class SystemInfo implements PageInterface
 {

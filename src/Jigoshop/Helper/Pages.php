@@ -6,7 +6,7 @@ namespace Jigoshop\Helper;
  * Helper class - useful to determine what page we are currently on.
  *
  * @package Jigoshop\Helper
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Pages
 {
