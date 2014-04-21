@@ -3,7 +3,7 @@
 namespace Jigoshop\Core;
 
 /**
- * Class OptionsTest
+ * Options tests.
  *
  * @package Jigoshop\Core
  * @author Jigoshop
@@ -12,8 +12,6 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
 {
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
 	private $wordpress;
-	/** @var \Jigoshop\Core\Options */
-	private $options;
 
 	public function setUp()
 	{
@@ -22,7 +20,14 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
 			->method('getOption')
 			->with($this->equalTo('jigoshop'))
 			->will($this->returnValue(array(
-				'test' => 'value'
+				'test' => 'value',
+				'load_frontend_css' => 'no',
+				'array' => array('the' => 'value'),
+				'catalog_sort' => array(
+					'order_by' => 'post_title',
+					'order' => 'ASC',
+					'test' => 'value',
+				),
 			)));
 		$this->wordpress->expects($this->any())
 			->method('applyFilters')
@@ -43,13 +48,15 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
 				}
 				return null;
 			}));
-		$this->options = new Options($this->wordpress);
 	}
 
 	public function testGetOptionValue()
 	{
+		// Given
+		$options = new Options($this->wordpress);
+
 		// When
-		$option = $this->options->get('test');
+		$option = $options->get('test');
 
 		// Then
 		$this->assertEquals('value', $option);
@@ -57,17 +64,23 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
 
 	public function testUpdateOptionValue()
 	{
+		// Given
+		$options = new Options($this->wordpress);
+
 		// When
-		$this->options->update('test', 'test_value');
+		$options->update('test', 'test_value');
 
 		// Then
-		$this->assertEquals('test_value', $this->options->get('test'));
+		$this->assertEquals('test_value', $options->get('test'));
 	}
 
 	public function testGetImageSizes()
 	{
+		// Given
+		$options = new Options($this->wordpress);
+
 		// When
-		$sizes = $this->options->getImageSizes();
+		$sizes = $options->getImageSizes();
 
 		// Then
 		$this->assertCount(1, $sizes);
@@ -79,15 +92,44 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
 	public function testUpdateAndSaveOptionsValue()
 	{
 		// Given
-		$this->wordpress->expects($this->any())
+		$this->wordpress->expects($this->once())
 			->method('updateOption')
 			->withAnyParameters();
+		$options = new Options($this->wordpress);
 
 		// When
-		$this->options->update('test', 'test_value');
-		$this->options->saveOptions();
+		$options->update('test', 'test_value');
+		$options->saveOptions();
 
 		// Then
-		$this->assertEquals('test_value', $this->options->get('test'));
+		$this->assertEquals('test_value', $options->get('test'));
+	}
+
+	public function testDefaultOptionsMerging()
+	{
+		// Given
+		$options = new Options($this->wordpress);
+
+		// When / Then
+		$this->assertEquals('simple', $options->get('cache_mechanism'));
+		$this->assertEquals('value', $options->get('test'));
+		$this->assertEquals('no', $options->get('load_frontend_css'));
+		$this->assertEquals('non-existent', $options->get('non-existent', 'non-existent'));
+		$this->assertEquals(array('the' => 'value'), $options->get('array'));
+		$catalogSort = $options->get('catalog_sort');
+		$this->assertCount(3, $catalogSort);
+		$this->assertEquals('post_title', $catalogSort['order_by']);
+		$this->assertEquals('ASC', $catalogSort['order']);
+		$this->assertEquals('value', $catalogSort['test']);
+	}
+
+	public function testGettingNestedValues()
+	{
+		// Given
+		$options = new Options($this->wordpress);
+
+		// When / Then
+		$this->assertEquals('value', $options->get('array.the'));
+		$this->assertEquals('post_title', $options->get('catalog_sort.order_by'));
 	}
 }

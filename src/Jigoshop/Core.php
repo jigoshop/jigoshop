@@ -152,16 +152,17 @@ class Core
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function _shopSortingFilter()
 	{
+		$options = $this->options->get('catalog_sort');
 		return array(
-			'orderby' => $this->options->get('catalog_sort_orderby'),
-			'order' => $this->options->get('catalog_sort_direction'),
+			'orderby' => $options['order_by'],
+			'order' => $options['order'],
 		);
 	}
 
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function _shopVisibleColumnsFilter()
 	{
-		return $this->options->get('catalog_columns');
+		return $this->options->get('catalog_sort.columns');
 	}
 
 	/** @noinspection PhpUnusedPrivateMethodInspection */

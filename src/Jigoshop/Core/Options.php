@@ -18,9 +18,11 @@ class Options
 	private $defaults = array(
 		'cache_mechanism' => 'simple',
 		'catalog_per_page' => 9,
-		'catalog_sort_orderby' => 'post_date',
-		'catalog_sort_order' => 'DESC',
-		'catalog_sort_columns' => 3,
+		'catalog_sort' => array(
+			'order_by' => 'post_date',
+			'order' => 'DESC',
+			'columns' => 3,
+		),
 		'disable_css' => 'no',
 		'disable_prettyphoto' => 'no',
 		'load_frontend_css' => 'yes',
@@ -71,11 +73,24 @@ class Options
 	 */
 	public function get($name, $default = null)
 	{
-		if(isset($this->options[$name]))
+		return $this->_get(explode('.', $name), $this->options, $default);
+	}
+
+	private function _get(array $names, array $options, $default = null)
+	{
+		$name = array_shift($names);
+
+		if(!isset($options[$name]))
 		{
-			return $this->options[$name];
+			return $default;
 		}
-		return $default;
+
+		if(empty($names))
+		{
+			return $options[$name];
+		}
+
+		return $this->_get($names, $options[$name], $default);
 	}
 
 	/**
@@ -117,6 +132,6 @@ class Options
 	private function _loadOptions()
 	{
 		$options = (array)$this->wordpress->getOption('jigoshop');
-		$this->options = array_merge_recursive($this->defaults, $options);
+		$this->options = array_merge($this->defaults, $options);
 	}
 }
