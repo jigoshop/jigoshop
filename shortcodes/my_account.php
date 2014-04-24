@@ -132,7 +132,7 @@ function jigoshop_my_account( $atts ) {
 							get_user_meta( get_current_user_id(), 'billing-first_name', true ) . ' ' . get_user_meta( get_current_user_id(), 'billing-last_name', true )
 							,get_user_meta( get_current_user_id(), 'billing-company', true )
 							,get_user_meta( get_current_user_id(), 'billing-address', true )
-							,get_user_meta( get_current_user_id(), 'billing-address2', true )
+							,get_user_meta( get_current_user_id(), 'billing-address-2', true )
 							,get_user_meta( get_current_user_id(), 'billing-city', true )
 							,get_user_meta( get_current_user_id(), 'billing-state', true )
 							,get_user_meta( get_current_user_id(), 'billing-postcode', true )
@@ -161,7 +161,7 @@ function jigoshop_my_account( $atts ) {
 							get_user_meta( get_current_user_id(), 'shipping-first_name', true ) . ' ' . get_user_meta( get_current_user_id(), 'shipping-last_name', true )
 							,get_user_meta( get_current_user_id(), 'shipping-company', true )
 							,get_user_meta( get_current_user_id(), 'shipping-address', true )
-							,get_user_meta( get_current_user_id(), 'shipping-address2', true )
+							,get_user_meta( get_current_user_id(), 'shipping-address-2', true )
 							,get_user_meta( get_current_user_id(), 'shipping-city', true )
 							,get_user_meta( get_current_user_id(), 'shipping-state', true )
 							,get_user_meta( get_current_user_id(), 'shipping-postcode', true )
@@ -231,12 +231,12 @@ function jigoshop_edit_address() {
 				'class'       => array('form-row-first'),
 				'value'       => get_user_meta( get_current_user_id(), $load_address . '-address', true ) ),
 			array(
-				'name'        => $load_address . '-address2',
+				'name'        => $load_address . '-address-2',
 				'label'       => __('Address 2', 'jigoshop'),
 				'placeholder' => __('Address 2', 'jigoshop'),
 				'class'       => array('form-row-last'),
 				'label_class' => array('hidden'),
-				'value'       => get_user_meta( get_current_user_id(), $load_address . '-address2', true ) ),
+				'value'       => get_user_meta( get_current_user_id(), $load_address . '-address-2', true ) ),
 			array(
 				'name'        => $load_address . '-city',
 				'label'       => __('City', 'jigoshop'),

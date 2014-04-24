@@ -427,9 +427,10 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 				break;
 
 			case "text":
+			case "password":
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="' . esc_attr( $args['name'] ) . '" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
-					<input type="text" class="input-text' . esc_attr( $input_required ) . '" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" placeholder="'.$args['placeholder'].'" value="'. $this->get_value( $args['name'] ).'" />
+					<input type="'.$args['type'].'" class="input-text' . esc_attr( $input_required ) . '" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" placeholder="'.$args['placeholder'].'" value="'. $this->get_value( $args['name'] ).'" />
 				</p>'.$after;
 
 				break;
