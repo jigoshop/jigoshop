@@ -75,4 +75,7 @@ vendor/wordpress-tests/unittests-config.php
 
 # Plugins #
 plugins/jigoshop-web-optimizing/cache/*
-!lugins/jigoshop-web-optimizing/cache/.ignore
+!plugins/jigoshop-web-optimizing/cache/.ignore
+
+# Deploying script #
+deploy.sh
