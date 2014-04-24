@@ -423,7 +423,6 @@ class jigoshop_dashboard {
 				</ul>
 			</div>
 			<div class="jigo-help">
-				<span class="jigo-phone">UK 44 888 699 8911</span>
 				<span class="jigo-email"><a href="mailto:sales@jigoshop.com">sales@jigoshop.com</a></span>
 			</div>
 		</div>
