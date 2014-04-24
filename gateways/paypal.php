@@ -380,7 +380,6 @@ class paypal extends jigoshop_payment_gateway {
 
 			endif;
 
-
 		}
 
 

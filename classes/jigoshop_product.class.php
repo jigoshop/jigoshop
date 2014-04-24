@@ -1449,6 +1449,15 @@ class jigoshop_product extends Jigoshop_Base {
 
 		// filter out duplicates and 0 id's leaving only actual parent product ID's for variations
 		$parent_ids  = array_filter( array_unique( array_values( $on_sale ) ) );
+
+		// Check if parents are still variable
+		foreach($parent_ids as $key => $id) {
+			$terms = get_the_terms( $id, 'product_type' );
+			if($terms[0]->slug != 'variable'){
+				unset($parent_ids[$key]);
+			}
+		}
+
 		// remove the variable products from the originals ID's
 		foreach ( $on_sale as $id => $parent ) {
 			if ( $parent <> 0 ) unset( $on_sale[$id] );

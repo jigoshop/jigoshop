@@ -46,6 +46,7 @@
 
 			// Append a new variation panel
 			$(html).removeClass('closed').hide().prependTo('.jigoshop_variations').slideDown( 150 );
+			$(this).trigger('jigoshop_add_variation');
 		})
 
 		// @todo: this should be an ID

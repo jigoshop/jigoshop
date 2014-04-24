@@ -1,5 +1,11 @@
 ## Changelog
 
+* 1.8.6 - 2014-04-24
+		* New: Checking for product type when loading products on sale.
+		* New: jQuery `jigoshop_add_variation` action after adding new variation in admin panel.
+		* Fix: Password type field on Checkout. Thanks to jlalunz
+		* Fix: Different user meta used for `address 2` line in checkout and `my_account` shortcode. Thanks to robselway
+
 * 1.8.5 - 2014-04-15
     * New: Checking if widgets has titles - otherwise skipping displaying them. Thanks to Stephen Cronin
     * New: Action `jigoshop_user_edit_address` after address edition. Thanks to robselway

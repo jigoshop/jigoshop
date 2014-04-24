@@ -584,8 +584,8 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 								<input type="text" name="<?php echo esc_attr( $this->field_name('length', $variation) ); ?>" placeholder="<?php _e('Length', 'jigoshop') ?>" value="<?php echo esc_attr( isset($meta['length'][0]) ? $meta['length'][0] : null ); ?>" />
 								<input type="text" name="<?php echo esc_attr( $this->field_name('width', $variation) ); ?>" placeholder="<?php _e('Width', 'jigoshop') ?>" value="<?php echo esc_attr( isset($meta['width'][0]) ? $meta['width'][0] : null ); ?>" />
 								<input type="text" name="<?php echo esc_attr( $this->field_name('height', $variation) ); ?>" placeholder="<?php _e('Height', 'jigoshop') ?>" value="<?php echo esc_attr( isset($meta['height'][0]) ? $meta['height'][0] : null ); ?>" />
-								<td colspan="3"></td>
 							</td>
+							<td colspan="2"></td>
 						</tr>
 						<tr class="downloadable options" <?php echo ('downloadable' == $product_type) ? 'style="display: table-row;"' : 'style="display: none;"';?>>
 							<td colspan="4" class="download_file">
@@ -593,7 +593,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 								<input type="text" name="<?php echo esc_attr( $this->field_name('file_path', $variation) ); ?>" value="<?php echo esc_attr( isset($meta['file_path'][0]) ? $meta['file_path'][0] : null ); ?>" />
 								<input type="submit" class="upload_file_button button-secondary" value="Upload">
 							</td>
-							<td colspan="2">
+							<td colspan="3">
 								<label><?php _e('Re-downloads Limit', 'jigoshop') ?>
 									<input type="text" name="<?php echo esc_attr( $this->field_name('download_limit', $variation) ); ?>" value="<?php echo esc_attr( isset($meta['file_path'][0]) ? $meta['download_limit'][0] : null ); ?>" />
 								</label>
