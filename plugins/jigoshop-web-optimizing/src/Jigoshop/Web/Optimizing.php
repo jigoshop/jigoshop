@@ -21,11 +21,10 @@ use Jigoshop\Web\Optimizing\Filter\WordpressCssRewriteFilter;
  */
 class Optimizing
 {
-	const VERSION = '1.0';
-
 	private $_scripts = array();
 	private $_styles = array();
 	private $_dependencies = array();
+	private $_localizations = array();
 
 	/** @var \Assetic\Factory\AssetFactory */
 	private $_factory;
@@ -45,6 +44,7 @@ class Optimizing
 		$this->_factory->addWorker(new CacheBustingWorker());
 
 		add_filter('jigoshop_add_script', array($this, 'add_script'), 99999, 4);
+		add_filter('jigoshop_localize_script', array($this, 'localize_script'), 99999, 3);
 		add_filter('jigoshop_add_style', array($this, 'add_style'), 99999, 4);
 
 		// Admin
@@ -149,6 +149,32 @@ class Optimizing
 	}
 
 	/**
+	 * Localizes selected handle.
+	 *
+	 * Use this function for each script added through {@link add_script()} as it won't be accessible otherwise.
+	 *
+	 * Function checks if script is managed by Optimizing so be sure you have added it earlier.
+	 *
+	 * @param $handle string Name of script.
+	 * @param $object string Name of object to store values.
+	 * @param $values array Values to store.
+	 * @return string
+	 */
+	public function localize_script($handle, $object, array $values)
+	{
+		foreach($this->_scripts as $pack)
+		{
+			if(in_array($handle, $pack))
+			{
+				$this->_localizations[$object] = $values;
+				return '';
+			}
+		}
+
+		return $handle;
+	}
+
+	/**
 	 * Adds file to managed stylesheets.
 	 *
 	 * Stylesheets added through this function will be minimized and packed into single file.
@@ -203,6 +229,11 @@ class Optimizing
 		$js = $asset->getAsset();
 
 		wp_enqueue_script('jigoshop_web_optimized_admin_scripts', JIGOSHOP_WEB_OPTIMIZING_URL.'/cache/'.$this->get_asset_name($js), array_unique($this->_dependencies));
+
+		foreach($this->_localizations as $object => $values)
+		{
+			wp_localize_script('jigoshop_web_optimized_admin_scripts', $object, $values);
+		}
 	}
 
 	/**
