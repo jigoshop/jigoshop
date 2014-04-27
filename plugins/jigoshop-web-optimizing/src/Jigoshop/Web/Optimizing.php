@@ -301,12 +301,12 @@ class Optimizing
 
 	private function prepare_script_handle($handle)
 	{
-		return 'script_'.str_replace('-', '_', $handle);
+		return 'script_'.str_replace(array('-', '.'), '_', $handle);
 	}
 
 	private function prepare_style_handle($handle)
 	{
-		return 'style_'.str_replace('-', '_', $handle);
+		return 'style_'.str_replace(array('-', '.'), '_', $handle);
 	}
 
 	private function get_asset_name(AssetInterface $asset)
