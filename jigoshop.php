@@ -434,7 +434,7 @@ function is_jigoshop_single_page($page) {
 /**
  * Jigoshop Frontend Styles and Scripts
  **/
-add_action( 'template_redirect', 'jigoshop_frontend_scripts' );
+add_action( 'template_redirect', 'jigoshop_frontend_scripts', 1 );
 function jigoshop_frontend_scripts() {
 
 	if ( is_admin() ) return false;
@@ -456,7 +456,7 @@ function jigoshop_frontend_scripts() {
 	jigoshop_add_script( 'jigoshop_global', jigoshop::assets_url().'/assets/js/global.js', array('jquery'), array('in_footer' => true) );
 
 	if ( $jigoshop_options->get_option( 'jigoshop_disable_fancybox' ) == 'no' ) {
-		wp_enqueue_script( 'prettyphoto', jigoshop::assets_url().'/assets/js/jquery.prettyPhoto.js', array('jquery'), false, true );
+		jigoshop_add_script( 'prettyphoto', jigoshop::assets_url().'/assets/js/jquery.prettyPhoto.js', array('jquery'), array('in_footer' => true) );
 	}
 
 	jigoshop_add_script( 'jigoshop_blockui', jigoshop::assets_url().'/assets/js/blockui.js', array('jquery'), array('in_footer' => true) );

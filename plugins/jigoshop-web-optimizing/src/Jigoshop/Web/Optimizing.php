@@ -202,10 +202,7 @@ class Optimizing
 		$asset = new Optimizing\Asset\Javascript($this->_factory, $scripts, array('page' => 'all', 'location' => 'admin'));
 		$js = $asset->getAsset();
 
-		wp_enqueue_script(
-			'jigoshop_web_optimized_admin_scripts', JIGOSHOP_WEB_OPTIMIZING_URL.'/cache/'.$this->get_asset_name($js),
-			$this->_dependencies
-		);
+		wp_enqueue_script('jigoshop_web_optimized_admin_scripts', JIGOSHOP_WEB_OPTIMIZING_URL.'/cache/'.$this->get_asset_name($js), array_unique($this->_dependencies));
 	}
 
 	/**
@@ -237,7 +234,7 @@ class Optimizing
 		$asset = new Optimizing\Asset\Minified\Javascript($this->_factory, $scripts, array('page' => $current_page, 'location' => 'frontend'));
 		$js = $asset->getAsset();
 
-		wp_enqueue_script('jigoshop_web_optimized', JIGOSHOP_WEB_OPTIMIZING_URL.'/cache/'.$this->get_asset_name($js), $this->_dependencies);
+		wp_enqueue_script('jigoshop_web_optimized', JIGOSHOP_WEB_OPTIMIZING_URL.'/cache/'.$this->get_asset_name($js), array_unique($this->_dependencies));
 	}
 
 	private function get_source_path($src)
@@ -245,7 +242,7 @@ class Optimizing
 		return str_replace(\jigoshop::assets_url(), \jigoshop::plugin_path(), $src);
 	}
 
-	private function check_script_dependencies(array $dependencies)
+	private function check_script_dependencies(array &$dependencies)
 	{
 		/** @var $wp_scripts \WP_Scripts */
 		global $wp_scripts;
@@ -253,8 +250,9 @@ class Optimizing
 		$current_page = $this->get_current_page();
 
 		// Check if non-WordPress dependencies are present.
-		foreach($diff as $dependency)
+		foreach($diff as $key => $dependency)
 		{
+			unset($dependencies[$key]);
 			$dependency = '@'.$this->prepare_script_handle($dependency);
 			if(!in_array($dependency, $this->_scripts[JIGOSHOP_ALL]) && !in_array($dependency, $this->_scripts[$current_page]))
 			{
@@ -265,7 +263,7 @@ class Optimizing
 		return true;
 	}
 
-	private function check_style_dependencies(array $dependencies)
+	private function check_style_dependencies(array &$dependencies)
 	{
 		/** @var $wp_styles \WP_Styles */
 		global $wp_styles;
@@ -273,8 +271,9 @@ class Optimizing
 		$current_page = $this->get_current_page();
 
 		// Check if non-WordPress dependencies are present.
-		foreach($diff as $dependency)
+		foreach($diff as $key => $dependency)
 		{
+			unset($dependencies[$key]);
 			$dependency = '@'.$this->prepare_style_handle($dependency);
 			if(!in_array($dependency, $this->_styles[JIGOSHOP_ALL]) && !in_array($dependency, $this->_styles[$current_page]))
 			{
