@@ -331,6 +331,23 @@ function jigoshop_add_script($handle, $src, array $dependencies = array(), array
 }
 
 /**
+ * Localizes script.
+ *
+ * Calls filter `jigoshop_localize_script`. If the filter returns empty value the script is omitted.
+ *
+ * @param string $handle Handle name.
+ * @param string $object Object name.
+ * @param array $values List of values to localize.
+ */
+function jigoshop_localize_script($handle, $object, array $values){
+	$handle = apply_filters('jigoshop_localize_script', $handle, $object, $values);
+
+	if(!empty($handle)){
+		wp_localize_script($handle, $object, $values);
+	}
+}
+
+/**
  * Enqueues stylesheet.
  *
  * Calls filter `jigoshop_add_style`. If the filter returns empty value the style is omitted.
