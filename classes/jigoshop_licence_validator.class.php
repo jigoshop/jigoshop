@@ -17,7 +17,7 @@
  * @copyright           Copyright © 2011-2014 Jigoshop.
  * @license             GNU General Public License v3
  *
- * @version 1.2 - 2013-10-09
+ * @version 1.2.1 - 2014-04-28
  */
 
 
@@ -237,12 +237,6 @@ class jigoshop_licence_validator
 						'success'	=> false,
 						'message'	=> sprintf( __( '%s deactivation: ', 'jigoshop' ), self::$plugins[$product_id]['title'] ) . $response->error
 					);
-					// set status as inactive and remove licence from database
-					$keys[$product_id] = array(
-						'licence_key'	=> '',
-						'status'		=> false,
-						'email'			=> ''
-					);
 				}
 			}
 			// Activate this key
@@ -265,12 +259,6 @@ class jigoshop_licence_validator
 					$messages[] = array(
 						'success'	=> false,
 						'message'	=> sprintf( __( '%s activation: ', 'jigoshop' ), self::$plugins[$product_id]['title'] ) . $response->error
-					);
-					// set status as inactive and remove licence from database
-					$keys[$product_id] = array(
-						'licence_key'	=> '',
-						'status'		=> false,
-						'email'			=> ''
 					);
 				}
 			}
