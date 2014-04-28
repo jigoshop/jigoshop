@@ -362,11 +362,24 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="' . esc_attr( $args['name'] ) . '" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>';
 
+				$allowed_countries = Jigoshop_Base::get_options()->get_option('jigoshop_allowed_countries');
 				$current_cc = $this->get_value($args['rel']);
-				if (!$current_cc) $current_cc = jigoshop_customer::get_country();
+
+				if(!$current_cc){
+					$current_cc = jigoshop_customer::get_country();
+				}
+
+				if($allowed_countries === 'specific'){
+					$specific_countries = Jigoshop_Base::get_options()->get_option('jigoshop_specific_allowed_countries');
+					if(!in_array($current_cc, $specific_countries)){
+						$current_cc = array_shift($specific_countries);
+					}
+				}
 
 				$current_r = $this->get_value($args['name']);
-				if (!$current_r) $current_r = jigoshop_customer::get_state();
+				if(!$current_r){
+					$current_r = jigoshop_customer::get_state();
+				}
 
 				$states = jigoshop_countries::get_states( $current_cc );
 
