@@ -81,6 +81,7 @@ function jigoshop_add_order_item() {
 	$loop = 0;
 	?>
 	<tr class="item">
+		<?php do_action( 'jigoshop_admin_order_item_before_prod_id', intval($_POST['item_no']) ) ?>
 		<td class="product-id">#<?php echo $_product->id; ?></td>
 		<td class="variation-id"><?php if (isset($_product->variation_id)) echo $_product->variation_id; else echo '-'; ?></td>
 		<td class="product-sku"><?php if ($_product->sku) echo $_product->sku; ?></td>
@@ -102,7 +103,7 @@ function jigoshop_add_order_item() {
 				<tbody></tbody>
 			</table>
 		</td>-->
-		<?php do_action('jigoshop_admin_order_item_values', $_product); ?>
+		<?php do_action('jigoshop_admin_order_item_values', $_product, array(), 0); ?>
 		<td class="quantity"><input type="text" name="item_quantity[]" placeholder="<?php _e('Quantity e.g. 2', 'jigoshop'); ?>" value="1" /></td>
         <td class="cost"><input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit ex. tax e.g. 2.99', 'jigoshop'); ?>" value="<?php echo esc_attr( $jigoshop_options->get_option('jigoshop_prices_include_tax') == 'yes' ? $_product->get_price_excluding_tax() : $_product->get_price() ); ?>" /></td>
         <td class="tax"><input type="text" name="item_tax_rate[]" placeholder="<?php _e('Tax Rate e.g. 20.0000', 'jigoshop'); ?>" value="<?php echo esc_attr( jigoshop_tax::calculate_total_tax_rate($_product->get_tax_base_rate()) ); ?>" /></td>
