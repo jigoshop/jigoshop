@@ -8,6 +8,7 @@ use Jigoshop\Web\Optimizing\Asset\Stylesheet as BaseStylesheet;
  * Class representing stylesheet asset.
  *
  * @package Jigoshop\Web\Optimizing
+ * @author Amadeusz Starzykiewicz
  */
 class Stylesheet extends BaseStylesheet
 {

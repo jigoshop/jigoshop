@@ -6,6 +6,7 @@ namespace Jigoshop\Web\Optimizing\Asset;
  * Class representing stylesheet asset.
  *
  * @package Jigoshop\Web\Optimizing
+ * @author Amadeusz Starzykiewicz
  */
 class Stylesheet extends Asset
 {

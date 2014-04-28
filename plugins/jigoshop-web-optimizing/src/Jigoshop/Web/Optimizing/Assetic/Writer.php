@@ -12,6 +12,7 @@ use Assetic\Util\VarUtils;
  * Checks if file exists before writing it again.
  *
  * @package Jigoshop\Web\Optimizing\Assetic
+ * @author Amadeusz Starzykiewicz
  */
 class Writer extends AssetWriter
 {

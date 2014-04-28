@@ -3,7 +3,6 @@
 namespace Jigoshop\Web\Optimizing\Asset;
 
 use Assetic\Asset\AssetCache;
-use Assetic\AssetWriter;
 use Assetic\Cache\FilesystemCache;
 use Assetic\Factory\AssetFactory;
 use Jigoshop\Web\Optimizing\Assetic\Writer;
@@ -12,6 +11,7 @@ use Jigoshop\Web\Optimizing\Assetic\Writer;
  * Abstract class for asset creation.
  *
  * @package Jigoshop\Web\Optimizing
+ * @author Amadeusz Starzykiewicz
  */
 abstract class Asset
 {

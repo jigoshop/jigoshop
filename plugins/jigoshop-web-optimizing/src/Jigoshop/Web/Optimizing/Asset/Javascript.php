@@ -6,6 +6,7 @@ namespace Jigoshop\Web\Optimizing\Asset;
  * Class representing JavaScript asset.
  *
  * @package Jigoshop\Web\Optimizing
+ * @author Amadeusz Starzykiewicz
  */
 class Javascript extends Asset
 {

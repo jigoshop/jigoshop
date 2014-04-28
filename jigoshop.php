@@ -970,26 +970,26 @@ function get_jigoshop_currency_symbol() {
 
 }
 
-function jigoshop_price( $price, $args = array() ) {
+function jigoshop_price($price, $args = array()){
+	$jigoshop_options = Jigoshop_Base::get_options();
+	$ex_tax_label = 0;
+	$with_currency = true;
 
-    $jigoshop_options = Jigoshop_Base::get_options();
 	extract(shortcode_atts(array(
-		'ex_tax_label' 	=> 0, // 0 for no label, 1 for ex. tax, 2 for inc. tax
-        'with_currency' => true
+		'ex_tax_label' => 0, // 0 for no label, 1 for ex. tax, 2 for inc. tax
+		'with_currency' => true
 	), $args));
 
+	if($ex_tax_label === 1){
+		$tax_label = __(' <small>(ex. tax)</small>', 'jigoshop');
+	} else {
+		if($ex_tax_label === 2){
+			$tax_label = __(' <small>(inc. tax)</small>', 'jigoshop');
+		} else {
+			$tax_label = '';
+		}
+	}
 
-    $tax_label = '';
-
-    if ($ex_tax_label === 1) {
-        $tax_label = __(' <small>(ex. tax)</small>', 'jigoshop');
-    } else if ($ex_tax_label === 2) {
-        $tax_label = __(' <small>(inc. tax)</small>', 'jigoshop');
-    } else {
-        $tax_label = '';
-    }
-
-	$return = '';
 	$price = number_format(
 		(double) $price,
 		(int) $jigoshop_options->get_option('jigoshop_price_num_decimals'),
@@ -997,57 +997,59 @@ function jigoshop_price( $price, $args = array() ) {
 		$jigoshop_options->get_option('jigoshop_price_thousand_sep')
 	);
 
-    $return = $price;
+  $return = $price;
 
-    if ($with_currency) :
+	if($with_currency)
+	{
+		$currency_pos = $jigoshop_options->get_option('jigoshop_currency_pos');
+		$currency_symbol = get_jigoshop_currency_symbol();
+		$currency_code = $jigoshop_options->get_option('jigoshop_currency');
 
-        $currency_pos = $jigoshop_options->get_option('jigoshop_currency_pos');
-        $currency_symbol = get_jigoshop_currency_symbol();
-        $currency_code = $jigoshop_options->get_option('jigoshop_currency');
+		switch($currency_pos)
+		{
+			case 'left' :
+				$return = $currency_symbol.$price;
+				break;
+			case 'left_space' :
+				$return = $currency_symbol.' '.$price;
+				break;
+			case 'right' :
+				$return = $price.$currency_symbol;
+				break;
+			case 'right_space' :
+				$return = $price.' '.$currency_symbol;
+				break;
+			case 'left_code' :
+				$return = $currency_code.$price;
+				break;
+			case 'left_code_space' :
+				$return = $currency_code.' '.$price;
+				break;
+			case 'right_code' :
+				$return = $price.$currency_code;
+				break;
+			case 'right_code_space' :
+				$return = $price.' '.$currency_code;
+				break;
+			case 'code_symbol' :
+				$return = $currency_code.$price.$currency_symbol;
+				break;
+			case 'code_symbol_space' :
+				$return = $currency_code.' '.$price.' '.$currency_symbol;
+				break;
+			case 'symbol_code' :
+				$return = $currency_symbol.$price.$currency_code;
+				break;
+			case 'symbol_code_space' :
+				$return = $currency_symbol.' '.$price.' '.$currency_code;
+				break;
+		}
 
-        switch ($currency_pos) :
-            case 'left' :
-                $return = $currency_symbol . $price;
-            break;
-            case 'left_space' :
-                $return = $currency_symbol . ' ' . $price;
-            break;
-            case 'right' :
-                $return = $price . $currency_symbol;
-            break;
-            case 'right_space' :
-                $return = $price . ' ' . $currency_symbol;
-            break;
-            case 'left_code' :
-                $return = $currency_code . $price;
-            break;
-            case 'left_code_space' :
-                $return = $currency_code . ' ' . $price;
-            break;
-            case 'right_code' :
-                $return = $price . $currency_code;
-            break;
-            case 'right_code_space' :
-                $return = $price . ' ' . $currency_code;
-            break;
-            case 'code_symbol' :
-                $return = $currency_code . $price . $currency_symbol;
-            break;
-            case 'code_symbol_space' :
-                $return = $currency_code . ' ' . $price . ' ' . $currency_symbol;
-            break;
-            case 'symbol_code' :
-                $return = $currency_symbol . $price . $currency_code;
-            break;
-            case 'symbol_code_space' :
-                $return = $currency_symbol . ' ' . $price . ' ' . $currency_code;
-            break;
-        endswitch;
-
-        // only show tax label (ex. tax) if we are going to show the price with currency as well. Otherwise we just want the formatted price
-        if ($jigoshop_options->get_option('jigoshop_calc_taxes')=='yes') $return .= $tax_label;
-
-    endif;
+		// only show tax label (ex. tax) if we are going to show the price with currency as well. Otherwise we just want the formatted price
+		if($jigoshop_options->get_option('jigoshop_calc_taxes') == 'yes'){
+			$return .= $tax_label;
+		}
+	}
 
 	return apply_filters( 'jigoshop_price_display_filter', $return);
 }

@@ -17,7 +17,7 @@ use Jigoshop\Web\Optimizing\Filter\WordpressCssRewriteFilter;
  * Main class of Jigoshop Web Optimizing framework.
  *
  * @package Jigoshop\Web
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class Optimizing
 {

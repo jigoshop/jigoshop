@@ -11,7 +11,7 @@ use Assetic\Filter\BaseCssFilter;
  * This class is based on CssRewriteFilter from Assetic.
  *
  * @package Jigoshop\Web\Optimizing\Filter
- * @author Jigoshop
+ * @author Amadeusz Starzykiewicz
  */
 class WordpressCssRewriteFilter extends BaseCssFilter
 {
