@@ -104,9 +104,7 @@ class Jigoshop_Widget_Featured_Products extends WP_Widget {
 					echo '<a href="' . esc_attr( get_permalink() ) . '" title="' . esc_attr( get_the_title() ) . '">';
 
 					// Print the product image
-					echo ( has_post_thumbnail() )
-						? the_post_thumbnail( 'shop_tiny' )
-						: jigoshop_get_image_placeholder( 'shop_tiny' );
+					echo jigoshop_get_product_thumbnail( 'shop_tiny' );
 
 					echo '<span class="js_widget_product_title">' . get_the_title() . '</span>';
 					echo '</a>';
