@@ -68,7 +68,8 @@ class jigoshop extends Jigoshop_Singleton {
 	 * Get the assets url
 	 * Provide a filter to allow asset location elsewhere such as on a CDN
 	 *
-	 * @return  string	url
+	 * @param null $file
+	 * @return  string  url
 	 */
 	public static function assets_url( $file = NULL ) {
 		return apply_filters( 'jigoshop_assets_url', self::plugin_url( $file ) );
@@ -76,21 +77,38 @@ class jigoshop extends Jigoshop_Singleton {
 
 	/**
 	 * Get the plugin url
-	 * @todo perhaps we should add a trailing slash? -1 Character then!
-	 * @note plugin_dir_url() does this
 	 *
-	 * @return  string	url
+	 * @note plugin_dir_url() does this
+	 * @param null $file
+	 * @return  string  url
 	 */
 	public static function plugin_url( $file = NULL ) {
-		if ( ! empty( self::$plugin_url) )
-			return self::$plugin_url;
+		if ( empty( self::$plugin_url) ){
+			// TODO: Figure out why plugins_url() returns different result than the same code here
+//			self::$plugin_url = plugins_url( $file, dirname(__FILE__) );
 
-		return self::$plugin_url = plugins_url( $file, dirname(__FILE__));
+			$plugin = dirname(__FILE__);
+
+			$url = WP_PLUGIN_URL;
+			$url = set_url_scheme( $url );
+
+			if ( !empty($plugin) && is_string($plugin) ) {
+				$folder = dirname(plugin_basename($plugin));
+				if ( '.' != $folder )
+					$url .= '/' . ltrim($folder, '/');
+			}
+
+			if ( $file && is_string( $file ) )
+				$url .= '/' . ltrim($file, '/');
+
+			self::$plugin_url = $url;
+		}
+
+		return self::$plugin_url;
 	}
 
 	/**
 	 * Get the plugin path
-	 * @todo perhaps we should add a trailing slash? -1 Character then!
 	 * @note plugin_dir_path() does this
 	 *
 	 * @return  string	url
@@ -105,7 +123,8 @@ class jigoshop extends Jigoshop_Singleton {
 	/**
 	 * Return the URL with https if SSL is on
 	 *
-	 * @return  string	url
+	 * @param $url
+	 * @return string url
 	 */
 	public static function force_ssl( $url ) {
 		if (is_ssl()) $url = str_replace('http:', 'https:', $url);

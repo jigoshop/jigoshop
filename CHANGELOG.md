@@ -12,6 +12,7 @@
 		* Fix: Strict standards on `attribute_label()` method in `jigoshop_product` class.
 		* Fix: Licence validator now properly deactivates licences.
 		* Fix: Calculating taxes is always performed.
+		* Fix: `jigoshop::plugin_url()` now returns proper URL.
 
 * 1.8.6 - 2014-04-24
 		* New: Checking for product type when loading products on sale.
