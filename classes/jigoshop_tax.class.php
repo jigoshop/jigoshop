@@ -289,32 +289,6 @@ class jigoshop_tax extends Jigoshop_Base {
     }
 
     /**
-     * validate if customer should be taxed or not
-     * @return boolean true if customer is to be taxed, otherwise false
-     * @since 1.2
-     */
-    private function charge_taxes_to_customer() {
-
-        // always charge taxes if chosen shipping method is local_pickup since person is in the taxable country
-        if (jigoshop_session::instance()->chosen_shipping_method_id == 'local_pickup') :
-            return true;
-        endif;
-
-        $country = ($this->shipable ? jigoshop_customer::get_shipping_country() : jigoshop_customer::get_country());
-        $base_country = jigoshop_countries::get_base_country();
-
-        if (jigoshop_countries::is_eu_country($base_country)) :
-            if (!jigoshop_countries::is_eu_country($country)) :
-                return false;
-            endif;
-        elseif ($country != $base_country) :
-            return false;
-        endif;
-
-        return true;
-    }
-
-    /**
      * gets the tax classes for the customer based on customer shipping
      * country and state.
      * @return type array of tax classes
@@ -328,8 +302,6 @@ class jigoshop_tax extends Jigoshop_Base {
 
         $country = ($this->shipable ? jigoshop_customer::get_shipping_country() : jigoshop_customer::get_country());
         $state = ($this->shipable ? jigoshop_customer::get_shipping_state() : jigoshop_customer::get_state());
-
-        if (!$this->charge_taxes_to_customer()) return array();
 
         $state = ($state && jigoshop_countries::country_has_states($country)? $state : '*');
         $tax_classes = (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state] : false);
@@ -779,8 +751,6 @@ class jigoshop_tax extends Jigoshop_Base {
         $country = jigoshop_customer::get_shipping_country();
         $rates = array();
 
-        // don't calculate if customer is shipping to another country
-        if (!$this->charge_taxes_to_customer()) return array();
         $state = jigoshop_customer::get_shipping_state();
 
         // retains order of tax classes for compound tax
@@ -851,8 +821,6 @@ class jigoshop_tax extends Jigoshop_Base {
 
         $country = jigoshop_customer::get_shipping_country();
 
-        // don't calculate if customer is shipping to another country
-        if (!$this->charge_taxes_to_customer()) return 0;
         $state = jigoshop_customer::get_shipping_state();
 
         // If we are here then shipping is taxable - work it out
