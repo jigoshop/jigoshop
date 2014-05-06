@@ -1294,7 +1294,7 @@ class Jigoshop_Options_Parser {
 							endif;
 							echo '</select>';
 
-							echo '<button class="select_none button">'.__('None', 'jigoshop').'</button><button class="button select_us_states">'.__('US States', 'jigoshop').'</button><button class="button select_europe">'.__('EU States', 'jigoshop').'</button></td>';
+							echo '<button class="select_none button">'.__('None', 'jigoshop').'</button><button class="button select_all">'.__('All', 'jigoshop').'</button><button class="button select_us_states">'.__('US States', 'jigoshop').'</button><button class="button select_europe">'.__('EU States', 'jigoshop').'</button></td>';
 							echo '<td><input type="text" value="' . esc_attr( $rate['rate']  ) . '" name="tax_rate[' . esc_attr( $i ) . ']" placeholder="' . __('Rate (%)', 'jigoshop') . '" size="6" /></td>';
 
 							echo '<td><input type="checkbox" name="tax_shipping[' . esc_attr( $i ) . ']" ';
@@ -1330,7 +1330,12 @@ class Jigoshop_Options_Parser {
 					jQuery(this).closest('td').find('select.tax_select2').trigger("change");
 					return false;
 				});
-				jQuery(document.body).on('click', 'tr.tax_rate .select_us_states', function(e){
+				jQuery(document.body).on('click', 'tr.tax_rate .select_all', function(){
+					jQuery(this).closest('td').find('select option').attr("selected","selected");
+					jQuery(this).closest('td').find('select.tax_select2').trigger("change");
+					return false;
+				});
+				jQuery(document.body).on('click', 'tr.tax_rate .select_us_states', function(){
 					jQuery(this).closest('td').find('select optgroup[label="<?php _e( 'United States', 'jigoshop' ); ?>"] option').attr("selected","selected");
 					jQuery(this).closest('td').find('select.tax_select2').trigger("change");
 					return false;
