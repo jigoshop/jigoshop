@@ -564,6 +564,7 @@ function jigoshop_admin_scripts() {
 	if ( !jigoshop_is_admin_page() ) return;
 
 	wp_enqueue_script('jquery-ui-core');
+	wp_enqueue_script('jquery-ui-sortable');
 	jigoshop_add_script( 'jigoshop-select2', jigoshop::assets_url().'/assets/js/select2.min.js', array( 'jquery' ) );
 	jigoshop_add_script( 'jquery-ui-datepicker', jigoshop::assets_url().'/assets/js/jquery-ui-datepicker-1.8.16.min.js', array( 'jquery', 'jquery-ui-core' ), array('version' => '1.8.16') );
 	jigoshop_add_script( 'jigoshop_blockui', jigoshop::assets_url() . '/assets/js/blockui.js', array( 'jquery' ), array('version' => '2.4.6') );
