@@ -52,7 +52,7 @@ class Optimizing
 		{
 			add_action('admin_enqueue_scripts', array($this, 'admin_print_scripts'), 1000);
 			add_action('admin_enqueue_scripts', array($this, 'admin_print_styles'), 1000);
-			\Jigoshop_Base::get_options()->install_external_options_tab(__('Web Optimizing', 'jigoshop_web_optimizing'), $this->admin_settings());
+			\Jigoshop_Base::get_options()->install_external_options_tab(__('Web Optimisation', 'jigoshop_web_optimizing'), $this->admin_settings());
 		}
 		// Front
 		else
