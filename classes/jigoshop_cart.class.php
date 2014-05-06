@@ -490,9 +490,9 @@ class jigoshop_cart extends Jigoshop_Singleton {
             return;
         }
 
-		/*
-		 *  Loop through each product in the cart
-		 */
+		 /*
+		  *  Loop through each product in the cart
+		  */
         if ( ! empty( self::$cart_contents )) foreach ( self::$cart_contents as $cart_item_key => $values ) {
 
             $_product = $values['data'];
@@ -509,13 +509,11 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
 			if ( self::get_options()->get_option('jigoshop_calc_taxes') == 'yes' ) {
 
-				$tax_classes_applied = array();
-
 				if ( $_product->is_taxable() ) {
 
-                    $shipable = jigoshop_shipping::is_enabled() && $_product->requires_shipping();
+          $shippable = jigoshop_shipping::is_enabled() && $_product->requires_shipping();
 
-					self::$tax->set_is_shipable( $shipable );
+					self::$tax->set_is_shipable( $shippable );
 
 					$price_includes_tax =
 						self::get_options()->get_option('jigoshop_tax_after_coupon') == 'yes'
@@ -540,7 +538,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
 							$total_item_price = ($discounted_item_price + self::$tax->get_non_compounded_tax_amount() + self::$tax->get_compound_tax_amount()) * 100;
 
-						} else if ( !jigoshop_customer::is_taxable($shipable) ) {
+						} else if ( !jigoshop_customer::is_taxable($shippable) ) {
 							// adjust total_item_price for customers that are not in the taxable shop country
 							$total_item_price = $_product->get_price_excluding_tax() * $values['quantity'] * 100;
 						}

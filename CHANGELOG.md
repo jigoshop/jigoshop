@@ -1,13 +1,16 @@
 ## Changelog
 
 * 1.9 - 2014-04-28
-    * New: Jigoshop Web Optimizing extensions - ability to compress CSS and JavaScript into single files.
-    * New: New look of Jigoshop Dashboard.
-    * New: API for localizing JavaScript files in order to work with Jigoshop Web Optimizing extension.
-    * New: Multipart form in admin settings to use with user-defined input fields. Thanks to Andrei Neamtu
-    * Improved: Updated "Useful links" section.
-    * Fix: Specific countries with tax caused orders to pass without adding required tax cost. Thanks to Naomi Taylor
-    * Fix: Strict standards on `attribute_label()` method in `jigoshop_product` class.
+		* New: Jigoshop Web Optimisation extension - ability to combine CSS and JavaScript into a single files.
+		* New: Brand new look of Jigoshop Dashboard.
+		* New: API for localizing JavaScript files in order to work with Jigoshop Web Optimisation extension.
+		* New: Multipart form in admin settings to use with user-defined input fields. Thanks to Andrei Neamtu
+		* New: Ability to select all countries in tax class.
+		* Improved: Updated "Useful links" section.
+		* Improved: Load jQuery UI Sortable plugin by default.
+		* Fix: Specific countries with tax caused orders to pass without adding required tax cost. Thanks to Naomi Taylor
+		* Fix: Strict standards on `attribute_label()` method in `jigoshop_product` class.
+		* Fix: Licence validator now properly deactivates licences.
 
 * 1.8.6 - 2014-04-24
 		* New: Checking for product type when loading products on sale.
