@@ -277,7 +277,16 @@ class Optimizing
 	{
 		/** @var $wp_scripts \WP_Scripts */
 		global $wp_scripts;
-		$diff = array_diff($dependencies, array_keys($wp_scripts->registered));
+
+		if($wp_scripts !== null)
+		{
+			$diff = array_diff($dependencies, array_keys($wp_scripts->registered));
+		}
+		else
+		{
+			$diff = $dependencies;
+		}
+
 		$current_page = $this->get_current_page();
 
 		// Check if non-WordPress dependencies are present.
@@ -298,7 +307,16 @@ class Optimizing
 	{
 		/** @var $wp_styles \WP_Styles */
 		global $wp_styles;
-		$diff = array_diff($dependencies, array_keys($wp_styles->registered));
+
+		if($wp_styles !== null)
+		{
+			$diff = array_diff($dependencies, array_keys($wp_styles->registered));
+		}
+		else
+		{
+			$diff = $dependencies;
+		}
+
 		$current_page = $this->get_current_page();
 
 		// Check if non-WordPress dependencies are present.

@@ -454,7 +454,7 @@ function is_jigoshop_single_page($page) {
 add_action( 'template_redirect', 'jigoshop_frontend_scripts', 1 );
 function jigoshop_frontend_scripts() {
 
-	if ( is_admin() ) return false;
+	if ( is_admin() ) return;
 
   $jigoshop_options = Jigoshop_Base::get_options();
 
@@ -470,6 +470,7 @@ function jigoshop_frontend_scripts() {
 		jigoshop_add_style( 'jigoshop_styles', $theme_css );
 	}
 
+	wp_enqueue_script('jquery');
 	jigoshop_add_script( 'jigoshop_global', jigoshop::assets_url().'/assets/js/global.js', array('jquery'), array('in_footer' => true) );
 
 	if ( $jigoshop_options->get_option( 'jigoshop_disable_fancybox' ) == 'no' ) {
