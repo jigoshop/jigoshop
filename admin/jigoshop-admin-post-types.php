@@ -553,10 +553,10 @@ function jigoshop_admin_product_search( $wp ) {
 		$term_clauses = array();
 		foreach($terms as $term)
 		{
-			$term_clauses[] = "(p.ID = '" . $wpdb->escape($term) . "' OR
-							p.post_title LIKE '%" . $wpdb->escape($term) . "%' OR
-							p.post_content LIKE '%" . $wpdb->escape($term) . "%' OR
-							pm.meta_value LIKE '%" . $wpdb->escape($term) . "%')
+			$term_clauses[] = "(p.ID = '" . esc_sql($term) . "' OR
+							p.post_title LIKE '%" . esc_sql($term) . "%' OR
+							p.post_content LIKE '%" . esc_sql($term) . "%' OR
+							pm.meta_value LIKE '%" . esc_sql($term) . "%')
 						";
 		}
 
