@@ -31,43 +31,50 @@ class Optimization
 
 	public function __construct()
 	{
-		require_once(JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_DIR.'/vendor/CSSMin/cssmin.php');
-		require_once(JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_DIR.'/vendor/minify/JSMinPlus.php');
-
-		$filterManager = new FilterManager();
-		$filterManager->set('jsmin', new JSMinPlusFilter());
-		$filterManager->set('cssmin', new CssMinFilter());
-		$filterManager->set('cssrewrite', new WordpressCssRewriteFilter(JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_CACHE));
-		$this->_factory = new AssetFactory(JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_CACHE);
-		$this->_factory->setAssetManager(new AssetManager());
-		$this->_factory->setFilterManager($filterManager);
-		$this->_factory->addWorker(new CacheBustingWorker());
-
-		add_filter('jigoshop_add_script', array($this, 'add_script'), 99999, 4);
-		add_filter('jigoshop_localize_script', array($this, 'localize_script'), 99999, 3);
-		add_filter('jigoshop_add_style', array($this, 'add_style'), 99999, 4);
-
-		// Admin
 		if(is_admin())
 		{
-			add_action('admin_enqueue_scripts', array($this, 'admin_print_scripts'), 1000);
-			add_action('admin_enqueue_scripts', array($this, 'admin_print_styles'), 1000);
 			\Jigoshop_Base::get_options()->install_external_options_tab(__('Web Optimization System', 'jigoshop_web_optimization_system'), $this->admin_settings());
 		}
-		// Front
-		else
-		{
-			add_action('wp_enqueue_scripts', array($this, 'front_print_scripts'), 1000);
-			add_action('wp_enqueue_scripts', array($this, 'front_print_styles'), 1000);
-		}
 
-		// Initialize script and style arrays
-		$available = jigoshop_get_available_pages();
-		foreach($available as $page)
+		if(\Jigoshop_Base::get_options()->get_option('jigoshop_web_optimization_system_enable', 'yes') == 'yes')
 		{
-			$this->_scripts[$page] = array();
+			require_once(JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_DIR.'/vendor/CSSMin/cssmin.php');
+			require_once(JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_DIR.'/vendor/minify/JSMinPlus.php');
+
+			$filterManager = new FilterManager();
+			$filterManager->set('jsmin', new JSMinPlusFilter());
+			$filterManager->set('cssmin', new CssMinFilter());
+			$filterManager->set('cssrewrite', new WordpressCssRewriteFilter(JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_CACHE));
+			$this->_factory = new AssetFactory(JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_CACHE);
+			$this->_factory->setAssetManager(new AssetManager());
+			$this->_factory->setFilterManager($filterManager);
+			$this->_factory->addWorker(new CacheBustingWorker());
+
+			add_filter('jigoshop_add_script', array($this, 'add_script'), 99999, 4);
+			add_filter('jigoshop_localize_script', array($this, 'localize_script'), 99999, 3);
+			add_filter('jigoshop_add_style', array($this, 'add_style'), 99999, 4);
+
+			// Admin
+			if(is_admin())
+			{
+				add_action('admin_enqueue_scripts', array($this, 'admin_print_scripts'), 1000);
+				add_action('admin_enqueue_scripts', array($this, 'admin_print_styles'), 1000);
+			}
+			// Front
+			else
+			{
+				add_action('wp_enqueue_scripts', array($this, 'front_print_scripts'), 1000);
+				add_action('wp_enqueue_scripts', array($this, 'front_print_styles'), 1000);
+			}
+
+			// Initialize script and style arrays
+			$available = jigoshop_get_available_pages();
+			foreach($available as $page)
+			{
+				$this->_scripts[$page] = array();
+			}
+			$this->_styles = $this->_scripts;
 		}
-		$this->_styles = $this->_scripts;
 	}
 
 	/** Plugin page in administration panel. */
