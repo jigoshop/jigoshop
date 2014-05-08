@@ -35,7 +35,7 @@
 	});
 
 	function jigoshop_start_tabs() {
-
+		
 		var $tabs = $('.tabs');
 
 		// First show tabs & hide each panel
@@ -53,7 +53,7 @@
 			$('div.panel', $panels).hide();
 			$( $(this).attr('href') ).show();
 		});
-
+		
 	}
 
 	function jigoshop_stock_options() {
@@ -177,7 +177,7 @@
 			e.preventDefault();
 			var answer = confirm( jigoshop_params.cart_total );
 			if ( answer ){
-
+				
 				// stuff the normal round function, we'll return it at end of function
 				// replace with alternative, still doesn't work across diff browsers though
 				// TODO: we shouldn't be doing any tax calcs in javascript
@@ -189,7 +189,7 @@
 					var coefficient = Math.pow( 10, precision );
 					return Math._round( number * coefficient ) / coefficient;
 				}
-
+				
 				var taxBeforeDiscount = "<?php Jigoshop_Base::get_options()->get_option('jigoshop_tax_after_coupon'); ?>";
 				var itemTotal = 0;
 				var subtotal = 0;
@@ -221,35 +221,35 @@
 						totalItemCost = parseFloat( itemCost * itemQty );
 
 						if ( itemTax && itemTax > 0 ) {
-
+							
 							// get tax rate into a decimal value
 							taxRate = itemTax / Math.pow(10,2);
-
+							
 							// this will give 4 decimal places or precision
 							itemTax = itemCost * taxRate;
-
+							
 							// round to 3 decimal places
 							itemTax1 = Math.round( itemTax, 3 );
-
+							
 							// round again to 2 decimal places
 							finalItemTax = Math.round( itemTax1, 2 );
-
+							
 							// get the total tax for the product including quantities
 							totalItemTax = finalItemTax * itemQty;
 
 						}
-
+						
 						// total the tax across all products
 						totalTax = totalTax + totalItemTax;
-
+						
 						// total all products without tax
 						subtotal = subtotal + totalItemCost;
 
 					}
 				}
-
+				
 				totalTax = totalTax + parseFloat(shipping_tax);
-
+				
 				// total it all up
 				if ( taxBeforeDiscount == 'no' )
 					total = parseFloat(subtotal) - parseFloat(discount) + parseFloat(totalTax) + parseFloat(shipping);
@@ -262,7 +262,7 @@
 				$('input#order_tax').val( totalTax.toFixed(2) );
 				$('input#order_shipping_tax').val( shipping_tax.toFixed(2) );
 				$('input#order_total').val( total.toFixed(2) );
-
+				
 				Math.round = Math._round;   // return normal round function we altered at the start of function
 			}
 
@@ -287,15 +287,13 @@
 
 		$('button.add_shop_order_item').click(function(e) {
 			e.preventDefault();
-			var $select = $("#order_product_select");
-			var item_id = $select.val();
+			var item_id = $("#order_product_select").val();
 			if (item_id) {
 				$('table.jigoshop_order_items').block({ message: null, overlayCSS: { background: '#fff url(' + jigoshop_params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
 
 				var data = {
-					action: 		  'jigoshop_add_order_item',
+					action: 		'jigoshop_add_order_item',
 					item_to_add: 	item_id,
-					item_no:      $('.jigoshop_order_items > tbody > tr').length,
 					security: 		jigoshop_params.add_order_item_nonce
 				};
 
@@ -303,13 +301,13 @@
 
 					$('table.jigoshop_order_items tbody#order_items_list').append( response );
 					$('table.jigoshop_order_items').unblock();
-					$select.select2('val', '');
-					$select.css('border-color', '');
+					$("#order_product_select").select2('val', '');
+					$("#order_product_select").css('border-color', '');
 
 				});
 
 			} else {
-				$select.css('border-color', 'red');
+				$("#order_product_select").css('border-color', 'red');
 			}
 		});
 
@@ -375,7 +373,7 @@
 
 			if (!attribute) {
 				var size = $('.attribute').size();
-
+				
 				// Add custom attribute row
 				var $custom_panel = $('\
 					<div class="postbox attribute custom">\

@@ -105,7 +105,7 @@ div.pages ul.pages li a:hover {background-color: #474f40;}
 #dashboard-widgets .jigoshop-links-widget .social p {color: #89b431;}
 #jigoshop-stats .next {background: url(../images/jigo-ico.png) 0 -359px no-repeat;}
 #jigoshop_dash_stock_report .inside {padding-left: 0;}
-#jigoshop_dash_stock_report .inside ol {margin-left: 0;margin-bottom: 24px;}
+#jigoshop_dash_stock_report .inside ol {list-style: decimal inside;margin-left: 0;margin-bottom: 24px;}
 #jigoshop_dash_stock_report .inside ol li {font: 14px "Open Sans",arial,sans-serif;background: #fff;margin-bottom: 6px;border-radius: 2px;padding: 8px 9px;}
 #jigoshop_dash_stock_report .inside .table {float: none !important;width: 100% !important;}
 #jigoshop_dash_stock_report .inside .table .sub {font: 12px arial,sans-serif;color: #474d3f;padding-left: 61px;position: relative;padding-bottom: 0}
@@ -121,3 +121,11 @@ div.pages ul.pages li a:hover {background-color: #474f40;}
 #jigoshop-metaboxes-main .jigo-help .jigo-email {display: block;padding:5px 11px 14px;}
 #jigoshop-metaboxes-main .jigo-help .jigo-email a {font-size: 13px;color: #89b431;}
 #jigoshop-metaboxes-main .jigo-help .jigo-email a:hover {text-decoration: underline;}
+.jigoshop-settings input[type="checkbox"] {width: 14px;}
+#adminmenuback, #adminmenuwrap, #adminmenu {height: 100%;}
+#dashboard-widgets #jigo-social li {display: inline-block;margin-right: 5px;padding: 0;}
+#dashboard-widgets #jigo-social li a {display: block;width: 30px;height: 30px;padding: 0;background-size: cover !important;text-indent: -9999999px;}
+#dashboard-widgets #jigo-social li a:before {display: none;}
+#dashboard-widgets #jigo-social #fb-icon {background: url(../images/icons/fb.png) no-repeat;}
+#dashboard-widgets #jigo-social #tw-icon {background: url(../images/icons/twit.png) no-repeat;}
+#dashboard-widgets #jigo-social #gp-icon {background: url(../images/icons/gplus.png) no-repeat;}

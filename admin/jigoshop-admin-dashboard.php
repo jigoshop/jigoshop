@@ -413,14 +413,11 @@ class jigoshop_dashboard {
 					<p><?= __('Our team is available to help you with implementation of additional requirements or to provide you with custom development. Please contact our sales team to obtain a quote.', 'jigoshop'); ?>: <span class="jigo-email"><a href="mailto:sales@jigoshop.com">sales@jigoshop.com</a></span></p>
 					<p><?php _e('Join our growing developer community today, contribute to the jigoshop project via GitHub.', 'jigoshop') ?>: <a href="https://github.com/jigoshop/jigoshop">Fork</a></p>
 					<h4><?php _e('Jigoshop Social', 'jigoshop'); ?></h4>
-					<div id="fb-root">
-						<fb:like href="http://www.jigoshop.com" send="true" layout="button_count" width="250" show_faces="true" action="like" font="arial"></fb:like>
-						<a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.jigoshop.com/" data-text="Jigoshop: A WordPress eCommerce solution that works" data-count="horizontal" data-via="jigoshop" data-related="Jigowatt:Creators">Tweet</a>
-						<g:plusone size="medium" href="http://www.jigoshop.com/"></g:plusone>
-					</div>
-					<script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
-					<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
-					<script type="text/javascript" src="https://apis.google.com/js/plusone.js">{lang: 'en-GB'}</script>
+					<ul id="jigo-social">
+						<li><a href="https://www.facebook.com/Jigoshop?fref=ts" target="_blank" id="fb-icon">Facebook</a></li>
+						<li><a href="https://twitter.com/Jigoshop" target="_blank" id="tw-icon">Twitter</a></li>
+						<li><a href="https://plus.google.com/111168393814065931328/posts" target="_blank" id="gp-icon">G-plus</a></li>
+					</ul>
 				</div>
 			</div>
 			<div class="links jigo-links">
