@@ -205,6 +205,7 @@ class jigoshop_dashboard {
 			foreach ($orders as $order) :
 
 				$this_order = new jigoshop_order( $order->ID );
+				$user = get_userdata($this_order->user_id);
 
 				$total_items = 0;
 				foreach ( $this_order->items as $index => $item ) {
@@ -213,7 +214,8 @@ class jigoshop_dashboard {
 
 				echo '
 				<li>
-					<span class="order-status '.sanitize_title($this_order->status).'">'.ucwords(__($this_order->status, 'jigoshop')).'</span> <a href="'.admin_url('post.php?post='.$order->ID).'&action=edit">'.get_the_time(__('M d, Y', 'jigoshop'), $order->ID).'</a><br />
+					<span class="order-status '.sanitize_title($this_order->status).'">'.ucwords(__($this_order->status, 'jigoshop')).'</span> <a href="'.admin_url('post.php?post='.$order->ID).'&action=edit">#'.$order->ID.'</a>
+					<span class="order-time">'.get_the_time(__('M d, Y', 'jigoshop'), $order->ID).'</span> <span class="order-customer">'.$user->display_name.'</span>
 					<small>'.sizeof($this_order->items).' '._n('Item', 'Items', sizeof($this_order->items), 'jigoshop').', <span class="total-quantity">'.__('Total Quantity','jigoshop').' '.$total_items.'</span> <span class="order-cost">'.jigoshop_price($this_order->order_total).'</span></small>
 				</li>';
 
@@ -408,7 +410,7 @@ class jigoshop_dashboard {
 			<div class="social">
 				<div xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:g="http://base.google.com/ns/1.0">
 					<h4 class="first"><?php _e('Jigoshop Project', 'jigoshop') ?></h4>
-					<span class="jigo-email"><a href="mailto:sales@jigoshop.com">sales@jigoshop.com</a></span>
+					<p><?= __('Our team is available to help you with implementation of additional requirements or to provide you with custom development. Please contact our sales team to obtain a quote.', 'jigoshop'); ?>: <span class="jigo-email"><a href="mailto:sales@jigoshop.com">sales@jigoshop.com</a></span></p>
 					<p><?php _e('Join our growing developer community today, contribute to the jigoshop project via GitHub.', 'jigoshop') ?>: <a href="https://github.com/jigoshop/jigoshop">Fork</a></p>
 					<h4><?php _e('Jigoshop Social', 'jigoshop'); ?></h4>
 					<div id="fb-root">
