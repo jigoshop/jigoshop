@@ -53,7 +53,6 @@ body,html {background: #e7ece3 !important;}
 #jigoshop_dash_recent_orders .recent-orders li a:hover {text-decoration: underline;}
 #jigoshop_dash_recent_orders .recent-orders li br {display: none;}
 #jigoshop_dash_recent_orders .recent-orders li small {color:#91b93f;font-size:11px;}
-#jigoshop_dash_recent_orders .total-quantity {display: none;}
 #jigoshop_dash_recent_orders .order-cost {float: right;}
 #jigoshop_dash_recent_orders .recent-orders li .order-cost {color: #464e3f;margin-left: 17px;}
 #jigoshop_dash_recent_orders .order-status {display: inline-block;width: 12px;height: 12px;border-radius: 50%;text-indent: -999999px;margin: 3px 17px;}

@@ -206,6 +206,20 @@ class jigoshop_dashboard {
 
 				$this_order = new jigoshop_order( $order->ID );
 				$user = get_userdata($this_order->user_id);
+				if($user)
+				{
+					$user = array(
+						'link' => get_edit_user_link($user->ID),
+						'name' => $user->display_name,
+					);
+				}
+				else
+				{
+					$user = array(
+						'link' => '',
+						'name' => __('guest', 'jigoshop'),
+					);
+				}
 
 				$total_items = 0;
 				foreach ( $this_order->items as $index => $item ) {
@@ -215,7 +229,7 @@ class jigoshop_dashboard {
 				echo '
 				<li>
 					<span class="order-status '.sanitize_title($this_order->status).'">'.ucwords(__($this_order->status, 'jigoshop')).'</span> <a href="'.admin_url('post.php?post='.$order->ID).'&action=edit">#'.$order->ID.'</a>
-					<span class="order-time">'.get_the_time(__('M d, Y', 'jigoshop'), $order->ID).'</span> <span class="order-customer"><a href="'.get_edit_user_link($user->ID).'">'.$user->display_name.'</a></span>
+					<span class="order-time">'.get_the_time(__('M d, Y', 'jigoshop'), $order->ID).'</span> <span class="order-customer"><a href="'.$user['link'].'">'.$user['name'].'</a></span>
 					<small>'.sizeof($this_order->items).' '._n('Item', 'Items', sizeof($this_order->items), 'jigoshop').', <span class="total-quantity">'.__('Total Quantity','jigoshop').' '.$total_items.'</span> <span class="order-cost">'.jigoshop_price($this_order->order_total).'</span></small>
 				</li>';
 
