@@ -270,6 +270,8 @@ class jigoshop_dashboard {
 			if (sizeof($outofstock)==0) :
 				$outofstock[] = '<tr><td colspan="2">'.__('No products are out of stock.', 'jigoshop').'</td></tr>';
 			endif;
+			array_splice($outofstock, 0, 20);
+			array_splice($lowinstock, 0, 20);
 			?>
 			<div id="jigoshop_right_now" class="jigoshop_right_now">
 				<div class="table table_content">
