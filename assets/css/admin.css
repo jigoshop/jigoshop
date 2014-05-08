@@ -74,6 +74,7 @@ body,html {background: #e7ece3 !important;}
 #jigoshop_dash_useful_links .inside ul li a:before {background: url(../images/jigo-ico.png) 0 -162px no-repeat;content:"";width: 19px;height: 19px;position: absolute;left:0;top:0;}
 #jigoshop_dash_latest_news .inside ul li a:hover:before,
 #jigoshop_dash_useful_links .inside ul li a:hover:before {background-position: 0 -189px;}
+#jigoshop_dash_useful_links {overflow:hidden;}
 #jigoshop_dash_recent_reviews .inside {padding-left: 0;}
 #jigoshop_dash_recent_reviews .inside.jigoshop-reviews-widget li {position: relative;padding-bottom: 31px;margin-bottom: 27px;}
 #jigoshop_dash_recent_reviews .inside.jigoshop-reviews-widget li img.avatar {border-radius: 50px;}

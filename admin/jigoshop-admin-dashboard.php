@@ -272,8 +272,8 @@ class jigoshop_dashboard {
 			if (sizeof($outofstock)==0) :
 				$outofstock[] = '<tr><td colspan="2">'.__('No products are out of stock.', 'jigoshop').'</td></tr>';
 			endif;
-			array_splice($outofstock, 0, 20);
-			array_splice($lowinstock, 0, 20);
+			$outofstock = array_splice($outofstock, 0, 20);
+			$lowinstock = array_splice($lowinstock, 0, 20);
 			?>
 			<div id="jigoshop_right_now" class="jigoshop_right_now">
 				<div class="table table_content">
@@ -408,7 +408,7 @@ class jigoshop_dashboard {
 				</ul>
 			</div>
 			<div class="social">
-				<div xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:g="http://base.google.com/ns/1.0">
+				<div>
 					<h4 class="first"><?php _e('Jigoshop Project', 'jigoshop') ?></h4>
 					<p><?= __('Our team is available to help you with implementation of additional requirements or to provide you with custom development. Please contact our sales team to obtain a quote.', 'jigoshop'); ?>: <span class="jigo-email"><a href="mailto:sales@jigoshop.com">sales@jigoshop.com</a></span></p>
 					<p><?php _e('Join our growing developer community today, contribute to the jigoshop project via GitHub.', 'jigoshop') ?>: <a href="https://github.com/jigoshop/jigoshop">Fork</a></p>
