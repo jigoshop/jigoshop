@@ -61,6 +61,8 @@ body,html {background: #e7ece3 !important;}
 #jigoshop_dash_recent_orders .order-status.on-hold {background: #e21b23/* #2f79d5 */;}
 #jigoshop_dash_recent_orders .order-status.pending {background:#f3ac32;}
 #jigoshop_dash_recent_orders .order-status.completed {background: #98c242;}
+#jigoshop_dash_recent_orders .order-status.processing {background: #2f79d5;}
+#jigoshop_dash_recent_orders .order-status.refunded {background: #cccccc;}
 #jigoshop_dash_latest_news .inside,
 #jigoshop_dash_useful_links .inside,
 #jigoshop_dash_monthly_report .inside {padding-left: 0;}
