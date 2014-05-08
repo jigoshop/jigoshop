@@ -404,15 +404,19 @@ class jigoshop_dashboard {
 				</ul>
 			</div>
 			<div class="social">
-				<div>
+				<div xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:g="http://base.google.com/ns/1.0">
 					<h4 class="first"><?php _e('Jigoshop Project', 'jigoshop') ?></h4>
-					<p><?php _e('Join our growing developer community today, contribute to the jigoshop project via GitHub.', 'jigoshop') ?></p>
-					<p><a href="https://github.com/jigoshop/jigoshop" class="gitforked-button gitforked-forks gitforked-watchers">Fork</a></p>
-					<script src="http://gitforked.com/api/1.1/button.js" type="text/javascript"></script>
+					<span class="jigo-email"><a href="mailto:sales@jigoshop.com">sales@jigoshop.com</a></span>
+					<p><?php _e('Join our growing developer community today, contribute to the jigoshop project via GitHub.', 'jigoshop') ?>: <a href="https://github.com/jigoshop/jigoshop">Fork</a></p>
 					<h4><?php _e('Jigoshop Social', 'jigoshop'); ?></h4>
-					<div id="fb-root"></div><script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:like href="http://www.jigoshop.com" send="true" layout="button_count" width="250" show_faces="true" action="like" font="arial"></fb:like>
-					<p><a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.jigoshop.com/" data-text="Jigoshop: A WordPress eCommerce solution that works" data-count="horizontal" data-via="jigoshop" data-related="Jigowatt:Creators">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script></p>
-					<p><g:plusone size="medium" href="http://www.jigoshop.com/"></g:plusone><script type="text/javascript" src="https://apis.google.com/js/plusone.js">{lang: 'en-GB'}</script></p>
+					<div id="fb-root">
+						<fb:like href="http://www.jigoshop.com" send="true" layout="button_count" width="250" show_faces="true" action="like" font="arial"></fb:like>
+						<a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.jigoshop.com/" data-text="Jigoshop: A WordPress eCommerce solution that works" data-count="horizontal" data-via="jigoshop" data-related="Jigowatt:Creators">Tweet</a>
+						<g:plusone size="medium" href="http://www.jigoshop.com/"></g:plusone>
+					</div>
+					<script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
+					<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+					<script type="text/javascript" src="https://apis.google.com/js/plusone.js">{lang: 'en-GB'}</script>
 				</div>
 			</div>
 			<div class="links jigo-links">
@@ -421,9 +425,6 @@ class jigoshop_dashboard {
 					<li><a href="http://forum.jigoshop.com/kb"><?php _e('Stuck? Read the plugin\'s documentation.', 'jigoshop'); ?></a></li>
 					<li><a href="http://wordpress.org/support/plugin/jigoshop"><?php _e('Support', 'jigoshop'); ?></a></li>
 				</ul>
-			</div>
-			<div class="jigo-help">
-				<span class="jigo-email"><a href="mailto:sales@jigoshop.com">sales@jigoshop.com</a></span>
 			</div>
 		</div>
 		<?php
