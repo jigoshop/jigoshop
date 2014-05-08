@@ -1,6 +1,6 @@
 <?php
 
-namespace Jigoshop\Web\Optimizing\Filter;
+namespace Jigoshop\Web\Optimization\Filter;
 
 use Assetic\Asset\AssetInterface;
 use Assetic\Filter\BaseCssFilter;
@@ -10,7 +10,7 @@ use Assetic\Filter\BaseCssFilter;
  *
  * This class is based on CssRewriteFilter from Assetic.
  *
- * @package Jigoshop\Web\Optimizing\Filter
+ * @package Jigoshop\Web\Optimization\Filter
  * @author Amadeusz Starzykiewicz
  */
 class WordpressCssRewriteFilter extends BaseCssFilter

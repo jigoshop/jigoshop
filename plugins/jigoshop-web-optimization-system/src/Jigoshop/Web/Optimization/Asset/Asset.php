@@ -1,16 +1,16 @@
 <?php
 
-namespace Jigoshop\Web\Optimizing\Asset;
+namespace Jigoshop\Web\Optimization\Asset;
 
 use Assetic\Asset\AssetCache;
 use Assetic\Cache\FilesystemCache;
 use Assetic\Factory\AssetFactory;
-use Jigoshop\Web\Optimizing\Assetic\Writer;
+use Jigoshop\Web\Optimization\Assetic\Writer;
 
 /**
  * Abstract class for asset creation.
  *
- * @package Jigoshop\Web\Optimizing
+ * @package Jigoshop\Web\Optimization
  * @author Amadeusz Starzykiewicz
  */
 abstract class Asset
@@ -31,7 +31,7 @@ abstract class Asset
 	 */
 	public function getAsset()
 	{
-		$writer = new Writer(JIGOSHOP_WEB_OPTIMIZING_CACHE, array_map(function($item){
+		$writer = new Writer(JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_CACHE, array_map(function($item){
 			return array($item);
 		}, $this->values));
 
@@ -44,7 +44,7 @@ abstract class Asset
 					'vars' => $this->getAssetVariables(),
 				)
 			),
-			new FilesystemCache(JIGOSHOP_WEB_OPTIMIZING_CACHE)
+			new FilesystemCache(JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_CACHE)
 		);
 		$asset->setValues($this->values);
 		$writer->writeAsset($asset);

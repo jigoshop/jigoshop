@@ -104,7 +104,7 @@ include_once( 'jigoshop_emails.php' );
 include_once( 'jigoshop_actions.php' );
 
 // Plugins
-include_once('plugins/jigoshop-web-optimizing/jigoshop-web-optimizing.php');
+include_once('plugins/jigoshop-web-optimization-system/jigoshop-web-optimization.php');
 
 /**
  * IIS compat fix/fallback

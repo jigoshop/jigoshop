@@ -1,6 +1,6 @@
 <?php
 
-namespace Jigoshop\Web\Optimizing\Assetic;
+namespace Jigoshop\Web\Optimization\Assetic;
 
 use Assetic\Asset\AssetInterface;
 use Assetic\AssetWriter;
@@ -11,7 +11,7 @@ use Assetic\Util\VarUtils;
  *
  * Checks if file exists before writing it again.
  *
- * @package Jigoshop\Web\Optimizing\Assetic
+ * @package Jigoshop\Web\Optimization\Assetic
  * @author Amadeusz Starzykiewicz
  */
 class Writer extends AssetWriter

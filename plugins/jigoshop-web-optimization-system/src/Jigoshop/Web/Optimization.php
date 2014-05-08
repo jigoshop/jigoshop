@@ -11,15 +11,15 @@ use Assetic\Filter\CssMinFilter;
 use Assetic\Filter\JSMinPlusFilter;
 use Assetic\FilterManager;
 use Assetic\Util\VarUtils;
-use Jigoshop\Web\Optimizing\Filter\WordpressCssRewriteFilter;
+use Jigoshop\Web\Optimization\Filter\WordpressCssRewriteFilter;
 
 /**
- * Main class of Jigoshop Web Optimizing framework.
+ * Main class of Jigoshop Web Optimization System.
  *
  * @package Jigoshop\Web
  * @author Amadeusz Starzykiewicz
  */
-class Optimizing
+class Optimization
 {
 	private $_scripts = array();
 	private $_styles = array();
@@ -31,14 +31,14 @@ class Optimizing
 
 	public function __construct()
 	{
-		require_once(JIGOSHOP_WEB_OPTIMIZING_DIR.'/vendor/CSSMin/cssmin.php');
-		require_once(JIGOSHOP_WEB_OPTIMIZING_DIR.'/vendor/minify/JSMinPlus.php');
+		require_once(JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_DIR.'/vendor/CSSMin/cssmin.php');
+		require_once(JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_DIR.'/vendor/minify/JSMinPlus.php');
 
 		$filterManager = new FilterManager();
 		$filterManager->set('jsmin', new JSMinPlusFilter());
 		$filterManager->set('cssmin', new CssMinFilter());
-		$filterManager->set('cssrewrite', new WordpressCssRewriteFilter(JIGOSHOP_WEB_OPTIMIZING_CACHE));
-		$this->_factory = new AssetFactory(JIGOSHOP_WEB_OPTIMIZING_CACHE);
+		$filterManager->set('cssrewrite', new WordpressCssRewriteFilter(JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_CACHE));
+		$this->_factory = new AssetFactory(JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_CACHE);
 		$this->_factory->setAssetManager(new AssetManager());
 		$this->_factory->setFilterManager($filterManager);
 		$this->_factory->addWorker(new CacheBustingWorker());
@@ -52,7 +52,7 @@ class Optimizing
 		{
 			add_action('admin_enqueue_scripts', array($this, 'admin_print_scripts'), 1000);
 			add_action('admin_enqueue_scripts', array($this, 'admin_print_styles'), 1000);
-			\Jigoshop_Base::get_options()->install_external_options_tab(__('Web Optimisation', 'jigoshop_web_optimizing'), $this->admin_settings());
+			\Jigoshop_Base::get_options()->install_external_options_tab(__('Web Optimization System', 'jigoshop_web_optimization_system'), $this->admin_settings());
 		}
 		// Front
 		else
@@ -75,14 +75,24 @@ class Optimizing
 	{
 		return array(
 			array(
-				'name' => __('Jigoshop Web Optimizing', 'jigoshop_web_optimizing'),
+				'name' => __('Jigoshop Web Optimization System', 'jigoshop_web_optimization_system'),
 				'type' => 'title',
 				'desc' => '',
 				'id' => '',
 			),
 			array(
-				'name' => __('Plugin status', 'jigoshop_web_optimizing'),
-				'id' => 'jigoshop_web_optimizing_clear_cache',
+				'name' => __('Enabled?', 'jigoshop_web_optimization_system'),
+				'id' => 'jigoshop_web_optimization_system_enable',
+				'type' => 'checkbox',
+				'std' => 'no',
+				'choices' => array(
+					'yes' => __('Yes'),
+					'no' => __('No'),
+				),
+			),
+			array(
+				'name' => __('Plugin status', 'jigoshop_web_optimization_system'),
+				'id' => 'jigoshop_web_optimization_system_clear_cache',
 				'type' => 'user_defined',
 				'display' => array($this, 'admin_plugin_status'),
 				'update' => array($this, 'admin_clear_cache'),
@@ -94,9 +104,9 @@ class Optimizing
 	public function admin_plugin_status()
 	{
 		/** @noinspection PhpUnusedLocalVariableInspection */
-		$files = iterator_count(new \FilesystemIterator(JIGOSHOP_WEB_OPTIMIZING_CACHE, \FilesystemIterator::SKIP_DOTS));
+		$files = iterator_count(new \FilesystemIterator(JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_CACHE, \FilesystemIterator::SKIP_DOTS));
 		ob_start();
-		include(JIGOSHOP_WEB_OPTIMIZING_DIR.'/templates/plugin_status.php');
+		include(JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_DIR.'/templates/plugin_status.php');
 
 		return ob_get_clean();
 	}
@@ -105,10 +115,10 @@ class Optimizing
 	{
 		if(isset($_POST['clear_cache']) && $_POST['clear_cache'] == 'on')
 		{
-			foreach(new \DirectoryIterator(JIGOSHOP_WEB_OPTIMIZING_CACHE) as $file)
+			foreach(new \DirectoryIterator(JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_CACHE) as $file)
 			{
 				/** @var $file \DirectoryIterator */
-				if(!$file->isDot())
+				if(!$file->isDot() && $file->getFilename() != '.ignore')
 				{
 					unlink($file->getPathname());
 				}
@@ -153,7 +163,7 @@ class Optimizing
 	 *
 	 * Use this function for each script added through {@link add_script()} as it won't be accessible otherwise.
 	 *
-	 * Function checks if script is managed by Optimizing so be sure you have added it earlier.
+	 * Function checks if script is managed by Optimization so be sure you have added it earlier.
 	 *
 	 * @param $handle string Name of script.
 	 * @param $object string Name of object to store values.
@@ -212,10 +222,10 @@ class Optimizing
 	{
 		// TODO: Think how to improve this call
 		$styles = call_user_func_array('array_merge', $this->_styles);
-		$asset = new Optimizing\Asset\Minified\Stylesheet($this->_factory, $styles, array('page' => 'all', 'location' => 'admin'));
+		$asset = new Optimization\Asset\Minified\Stylesheet($this->_factory, $styles, array('page' => 'all', 'location' => 'admin'));
 		$css = $asset->getAsset();
 
-		wp_enqueue_style('jigoshop_web_optimized_admin_styles', JIGOSHOP_WEB_OPTIMIZING_URL.'/cache/'.$this->get_asset_name($css));
+		wp_enqueue_style('jigoshop_web_optimization_admin_styles', JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_URL.'/cache/'.$this->get_asset_name($css));
 	}
 
 	/**
@@ -225,14 +235,14 @@ class Optimizing
 	{
 		// TODO: Think how to improve this call
 		$scripts = call_user_func_array('array_merge', $this->_scripts);
-		$asset = new Optimizing\Asset\Javascript($this->_factory, $scripts, array('page' => 'all', 'location' => 'admin'));
+		$asset = new Optimization\Asset\Javascript($this->_factory, $scripts, array('page' => 'all', 'location' => 'admin'));
 		$js = $asset->getAsset();
 
-		wp_enqueue_script('jigoshop_web_optimized_admin_scripts', JIGOSHOP_WEB_OPTIMIZING_URL.'/cache/'.$this->get_asset_name($js), array_unique($this->_dependencies));
+		wp_enqueue_script('jigoshop_web_optimization_admin_scripts', JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_URL.'/cache/'.$this->get_asset_name($js), array_unique($this->_dependencies));
 
 		foreach($this->_localizations as $object => $values)
 		{
-			wp_localize_script('jigoshop_web_optimized_admin_scripts', $object, $values);
+			wp_localize_script('jigoshop_web_optimization_admin_scripts', $object, $values);
 		}
 	}
 
@@ -246,10 +256,10 @@ class Optimizing
 			$this->_styles[JIGOSHOP_ALL],
 			$this->_styles[$current_page]
 		);
-		$asset = new Optimizing\Asset\Minified\Stylesheet($this->_factory, $styles, array('page' => $current_page, 'location' => 'frontend'));
+		$asset = new Optimization\Asset\Minified\Stylesheet($this->_factory, $styles, array('page' => $current_page, 'location' => 'frontend'));
 		$css = $asset->getAsset();
 
-		wp_enqueue_style('jigoshop_web_optimized', JIGOSHOP_WEB_OPTIMIZING_URL.'/cache/'.$this->get_asset_name($css));
+		wp_enqueue_style('jigoshop_web_optimization', JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_URL.'/cache/'.$this->get_asset_name($css));
 	}
 
 	/**
@@ -262,10 +272,10 @@ class Optimizing
 			$this->_scripts[JIGOSHOP_ALL],
 			$this->_scripts[$current_page]
 		);
-		$asset = new Optimizing\Asset\Minified\Javascript($this->_factory, $scripts, array('page' => $current_page, 'location' => 'frontend'));
+		$asset = new Optimization\Asset\Minified\Javascript($this->_factory, $scripts, array('page' => $current_page, 'location' => 'frontend'));
 		$js = $asset->getAsset();
 
-		wp_enqueue_script('jigoshop_web_optimized', JIGOSHOP_WEB_OPTIMIZING_URL.'/cache/'.$this->get_asset_name($js), array_unique($this->_dependencies));
+		wp_enqueue_script('jigoshop_web_optimization', JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_URL.'/cache/'.$this->get_asset_name($js), array_unique($this->_dependencies));
 	}
 
 	private function get_source_path($src)

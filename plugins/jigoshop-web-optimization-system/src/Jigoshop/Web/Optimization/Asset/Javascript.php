@@ -1,18 +1,18 @@
 <?php
 
-namespace Jigoshop\Web\Optimizing\Asset;
+namespace Jigoshop\Web\Optimization\Asset;
 
 /**
- * Class representing stylesheet asset.
+ * Class representing JavaScript asset.
  *
- * @package Jigoshop\Web\Optimizing
+ * @package Jigoshop\Web\Optimization
  * @author Amadeusz Starzykiewicz
  */
-class Stylesheet extends Asset
+class Javascript extends Asset
 {
 	protected function getNamePattern()
 	{
-		return 'styles_{location}_{page}.css';
+		return 'scripts_{location}_{page}.js';
 	}
 
 	protected function getAssetVariables()

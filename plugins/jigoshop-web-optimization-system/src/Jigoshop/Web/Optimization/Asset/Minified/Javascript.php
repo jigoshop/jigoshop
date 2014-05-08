@@ -1,13 +1,13 @@
 <?php
 
-namespace Jigoshop\Web\Optimizing\Asset\Minified;
+namespace Jigoshop\Web\Optimization\Asset\Minified;
 
-use Jigoshop\Web\Optimizing\Asset\Javascript as BaseJavascript;
+use Jigoshop\Web\Optimization\Asset\Javascript as BaseJavascript;
 
 /**
  * Class representing JavaScript asset with minification.
  *
- * @package Jigoshop\Web\Optimizing
+ * @package Jigoshop\Web\Optimization
  * @author Amadeusz Starzykiewicz
  */
 class Javascript extends BaseJavascript

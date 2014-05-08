@@ -1,13 +1,13 @@
 <?php
 
-namespace Jigoshop\Web\Optimizing\Asset\Minified;
+namespace Jigoshop\Web\Optimization\Asset\Minified;
 
-use Jigoshop\Web\Optimizing\Asset\Stylesheet as BaseStylesheet;
+use Jigoshop\Web\Optimization\Asset\Stylesheet as BaseStylesheet;
 
 /**
  * Class representing stylesheet asset.
  *
- * @package Jigoshop\Web\Optimizing
+ * @package Jigoshop\Web\Optimization
  * @author Amadeusz Starzykiewicz
  */
 class Stylesheet extends BaseStylesheet
