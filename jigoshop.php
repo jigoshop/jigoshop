@@ -23,7 +23,7 @@
  * Author URI:          http://www.jigoshop.com
  *
  * Version:             1.9
- * Requires at least:   3.5
+ * Requires at least:   3.8
  * Tested up to:        3.9
  *
  * Text Domain:         jigoshop
@@ -552,9 +552,9 @@ function jigoshop_admin_styles() {
 
 	if ( ! jigoshop_is_admin_page() ) return;
 	jigoshop_add_style( 'jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css' );
-	jigoshop_add_style( 'jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css' );
+	jigoshop_add_style( 'jquery_ui_jigoshop', jigoshop::assets_url() . '/assets/css/jquery-ui.css' );
 	jigoshop_add_style( 'thickbox', false );
-	jigoshop_add_style( 'jigoshop-required', jigoshop::assets_url() . '/assets/css/required.css' );
+	jigoshop_add_style( 'jigoshop_required', jigoshop::assets_url() . '/assets/css/required.css' );
 
 }
 
@@ -566,8 +566,8 @@ function jigoshop_admin_scripts() {
 
 	wp_enqueue_script('jquery-ui-core');
 	wp_enqueue_script('jquery-ui-sortable');
+	wp_enqueue_script('jquery-ui-datepicker');
 	jigoshop_add_script( 'jigoshop-select2', jigoshop::assets_url().'/assets/js/select2.min.js', array( 'jquery' ) );
-	jigoshop_add_script( 'jquery-ui-datepicker', jigoshop::assets_url().'/assets/js/jquery-ui-datepicker-1.8.16.min.js', array( 'jquery', 'jquery-ui-core' ), array('version' => '1.8.16') );
 	jigoshop_add_script( 'jigoshop_blockui', jigoshop::assets_url() . '/assets/js/blockui.js', array( 'jquery' ), array('version' => '2.4.6') );
 	jigoshop_add_script( 'jigoshop_backend', jigoshop::assets_url() . '/assets/js/jigoshop_backend.js', array( 'jquery' ), array('version' => '1.0') );
 	jigoshop_add_script( 'thickbox', false );
@@ -596,12 +596,12 @@ function jigoshop_admin_scripts() {
  *  individually (PrettyPhoto, jQuery UI, Select2)
  *  For Shops that might have our frontend.css disabled, install the required bits for these libraries
  */
-add_action( 'wp_print_scripts', 'jigoshop_check_required_css', 99 );
+add_action( 'wp_enqueue_scripts', 'jigoshop_check_required_css', 99 );
 function jigoshop_check_required_css() {
 	global $wp_styles;
 
 	if ( empty( $wp_styles->registered['jigoshop_styles'] )) {
-		wp_enqueue_style( 'jigoshop-required', jigoshop::assets_url() . '/assets/css/required.css' );
+		jigoshop_add_style( 'jigoshop_required', jigoshop::assets_url() . '/assets/css/required.css' );
 	}
 }
 
