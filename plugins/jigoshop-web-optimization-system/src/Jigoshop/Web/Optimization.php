@@ -88,8 +88,9 @@ class Optimization
 				'id' => '',
 			),
 			array(
-				'name' => __('Enabled?', 'jigoshop_web_optimization_system'),
+				'name' => __('Enable Jigoshop Web Optimization System', 'jigoshop_web_optimization_system'),
 				'id' => 'jigoshop_web_optimization_system_enable',
+				'desc' => __('This feature improves performance of the jigoshop along with its extenstions by combining and compressing all the css and js files. As a result browser will have to download one compressed java script file and one compressed css file for all jigoshop related functionality. Note: Extensions should use jigoshop_add_style(), jigoshop_add_script() and jigoshop_localize_script() API in order to utilise JWOS functionality.', 'jigoshop_web_optimization_system'),
 				'type' => 'checkbox',
 				'std' => 'no',
 				'choices' => array(
