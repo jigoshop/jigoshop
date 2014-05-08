@@ -360,7 +360,7 @@ class jigoshop_dashboard {
 
 			include_once(ABSPATH.WPINC.'/class-simplepie.php');
 
-			$rss = fetch_feed('http://www.jigoshop.com/feed');
+			$rss = fetch_feed('http://www.jigoshop.com/feed/');
 
 			if (!is_wp_error( $rss ) ) :
 
