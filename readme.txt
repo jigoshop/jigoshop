@@ -4,7 +4,7 @@ Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, wid
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.8
 Tested up to: 3.9
-Stable tag: 1.9
+Stable tag: 1.9.1
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -113,6 +113,8 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 == Changelog ==
 
+= 1.9.1 - 2014-05-12 =
+* Fix: Checking for shipping and billing state and country correctness.
 = 1.9 - 2014-05-12 =
 * New: Jigoshop Web Optimisation System - ability to combine CSS and JavaScript into a single files.
 * New: Brand new look of Jigoshop Dashboard.

@@ -1,5 +1,7 @@
 ## Changelog
 
+* 1.9.1 - 2014-05-12
+    * Fix: Checking for shipping and billing state and country correctness.
 * 1.9 - 2014-05-12
     * New: Jigoshop Web Optimisation System - ability to combine CSS and JavaScript into a single files.
     * New: Brand new look of Jigoshop Dashboard.
