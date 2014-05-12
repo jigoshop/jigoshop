@@ -1,10 +1,27 @@
 ## Changelog
 
+* 1.9 - 2014-05-12
+    * New: Jigoshop Web Optimisation System - ability to combine CSS and JavaScript into a single files.
+    * New: Brand new look of Jigoshop Dashboard.
+    * New: API for localizing JavaScript files in order to work with Jigoshop Web Optimisation extension.
+    * New: Multipart form in admin settings to use with user-defined input fields. Thanks to Andrei Neamtu
+    * New: Ability to select all countries in tax class.
+    * New: More detailed information about low in stock variable products.
+    * New: Validating if customer shipping country and state is allowed for taxing purposes.
+    * Improved: Updated "Useful links" section.
+    * Improved: Load jQuery UI Sortable plugin by default.
+    * Improved: Load tim of admin dashboard for shops with many items.
+    * Fix: Specific countries with tax caused orders to pass without adding required tax cost. Thanks to Naomi Taylor
+    * Fix: Strict standards on `attribute_label()` method in `jigoshop_product` class.
+    * Fix: Licence validator now properly deactivates licences.
+    * Fix: Calculating taxes is always performed.
+    * Fix: `jigoshop::plugin_url()` now returns proper URL.
+
 * 1.8.6 - 2014-04-24
-		* New: Checking for product type when loading products on sale.
-		* New: jQuery `jigoshop_add_variation` action after adding new variation in admin panel.
-		* Fix: Password type field on Checkout. Thanks to jlalunz
-		* Fix: Different user meta used for `address 2` line in checkout and `my_account` shortcode. Thanks to robselway
+    * New: Checking for product type when loading products on sale.
+    * New: jQuery `jigoshop_add_variation` action after adding new variation in admin panel.
+    * Fix: Password type field on Checkout. Thanks to jlalunz
+    * Fix: Different user meta used for `address 2` line in checkout and `my_account` shortcode. Thanks to robselway
 
 * 1.8.5 - 2014-04-15
     * New: Checking if widgets has titles - otherwise skipping displaying them. Thanks to Stephen Cronin

@@ -22,8 +22,8 @@
  * Author:              Jigoshop
  * Author URI:          http://www.jigoshop.com
  *
- * Version:             1.8.6
- * Requires at least:   3.5
+ * Version:             1.9
+ * Requires at least:   3.8
  * Tested up to:        3.9
  *
  * Text Domain:         jigoshop
@@ -103,6 +103,8 @@ include_once( 'jigoshop_template_actions.php' );
 include_once( 'jigoshop_emails.php' );
 include_once( 'jigoshop_actions.php' );
 
+// Plugins
+include_once('plugins/jigoshop-web-optimization-system/jigoshop-web-optimization.php');
 
 /**
  * IIS compat fix/fallback
@@ -170,6 +172,7 @@ function jigoshop_init() {
 	}
 
 	jigoshop_roles_init();
+	do_action('jigoshop_initialize_plugins');
 
 }
 
@@ -286,6 +289,16 @@ function jigoshop_roles_init() {
 	}
 }
 
+function jigoshop_prepare_dashboard_title($title)
+{
+	$result = '<span>'.preg_replace('/ /', '</span> ', $title, 1);
+	if(strpos($result, '</span>') === false)
+	{
+		$result .= '</span>';
+	}
+	return $result;
+}
+
 /**
  * Enqueues script.
  *
@@ -314,6 +327,23 @@ function jigoshop_add_script($handle, $src, array $dependencies = array(), array
 			$footer = isset($options['in_footer']) ? $options['in_footer'] : false;
 			wp_enqueue_script($handle, $src, $dependencies, $version, $footer);
 		}
+	}
+}
+
+/**
+ * Localizes script.
+ *
+ * Calls filter `jigoshop_localize_script`. If the filter returns empty value the script is omitted.
+ *
+ * @param string $handle Handle name.
+ * @param string $object Object name.
+ * @param array $values List of values to localize.
+ */
+function jigoshop_localize_script($handle, $object, array $values){
+	$handle = apply_filters('jigoshop_localize_script', $handle, $object, $values);
+
+	if(!empty($handle)){
+		wp_localize_script($handle, $object, $values);
 	}
 }
 
@@ -421,12 +451,12 @@ function is_jigoshop_single_page($page) {
 /**
  * Jigoshop Frontend Styles and Scripts
  **/
-add_action( 'template_redirect', 'jigoshop_frontend_scripts' );
+add_action( 'template_redirect', 'jigoshop_frontend_scripts', 1 );
 function jigoshop_frontend_scripts() {
 
-	if ( is_admin() ) return false;
+	if ( is_admin() ) return;
 
-    $jigoshop_options = Jigoshop_Base::get_options();
+  $jigoshop_options = Jigoshop_Base::get_options();
 
 	$frontend_css = jigoshop::assets_url() . '/assets/css/frontend.css';
 	$theme_css = file_exists( get_stylesheet_directory() . '/jigoshop/style.css')
@@ -440,6 +470,7 @@ function jigoshop_frontend_scripts() {
 		jigoshop_add_style( 'jigoshop_styles', $theme_css );
 	}
 
+	wp_enqueue_script('jquery');
 	jigoshop_add_script( 'jigoshop_global', jigoshop::assets_url().'/assets/js/global.js', array('jquery'), array('in_footer' => true) );
 
 	if ( $jigoshop_options->get_option( 'jigoshop_disable_fancybox' ) == 'no' ) {
@@ -448,7 +479,6 @@ function jigoshop_frontend_scripts() {
 
 	jigoshop_add_script( 'jigoshop_blockui', jigoshop::assets_url().'/assets/js/blockui.js', array('jquery'), array('in_footer' => true) );
 	jigoshop_add_script( 'jigoshop-cart', jigoshop::assets_url().'/assets/js/cart.js', array( 'jquery' ), array('in_footer' => true, 'page' => JIGOSHOP_CART) );
-//	jigoshop_add_script( 'jigoshop-select2', jigoshop::assets_url().'/assets/js/select2.min.js', array( 'jquery' ), array('in_footer' => true, 'page' => JIGOSHOP_CHECKOUT) );
 	jigoshop_add_script( 'jigoshop-checkout', jigoshop::assets_url().'/assets/js/checkout.js', array( 'jquery' ), array('in_footer' => true, 'page' => JIGOSHOP_CHECKOUT) );
 	jigoshop_add_script( 'jigoshop-single-product', jigoshop::assets_url().'/assets/js/single-product.js', array( 'jquery' ), array('in_footer' => true, 'page' => JIGOSHOP_PRODUCT) );
 	jigoshop_add_script( 'jigoshop-countries', jigoshop::assets_url().'/assets/js/countries.js', array(), array('in_footer' => true, 'page' => array(JIGOSHOP_CHECKOUT, JIGOSHOP_CART)));
@@ -480,7 +510,7 @@ function jigoshop_frontend_scripts() {
 
 	$jigoshop_params = apply_filters('jigoshop_params', $jigoshop_params);
 
-	wp_localize_script( 'jigoshop_global', 'jigoshop_params', $jigoshop_params );
+	wp_localize_script( 'jquery', 'jigoshop_params', $jigoshop_params );
 
 }
 
@@ -522,20 +552,22 @@ function jigoshop_admin_styles() {
 
 	if ( ! jigoshop_is_admin_page() ) return;
 	jigoshop_add_style( 'jigoshop_admin_styles', jigoshop::assets_url() . '/assets/css/admin.css' );
-	jigoshop_add_style( 'jquery-ui-jigoshop-styles', jigoshop::assets_url() . '/assets/css/jquery-ui-1.8.16.jigoshop.css' );
+	jigoshop_add_style( 'jquery_ui_jigoshop', jigoshop::assets_url() . '/assets/css/jquery-ui.css' );
 	jigoshop_add_style( 'thickbox', false );
-	jigoshop_add_style( 'jigoshop-required', jigoshop::assets_url() . '/assets/css/required.css' );
+	jigoshop_add_style( 'jigoshop_required', jigoshop::assets_url() . '/assets/css/required.css' );
 
 }
 
 
-add_action( 'admin_print_scripts', 'jigoshop_admin_scripts' );
+add_action( 'admin_enqueue_scripts', 'jigoshop_admin_scripts' );
 function jigoshop_admin_scripts() {
 
 	if ( !jigoshop_is_admin_page() ) return;
 
+	wp_enqueue_script('jquery-ui-core');
+	wp_enqueue_script('jquery-ui-sortable');
+	wp_enqueue_script('jquery-ui-datepicker');
 	jigoshop_add_script( 'jigoshop-select2', jigoshop::assets_url().'/assets/js/select2.min.js', array( 'jquery' ) );
-	jigoshop_add_script( 'jquery-ui-datepicker', jigoshop::assets_url().'/assets/js/jquery-ui-datepicker-1.8.16.min.js', array( 'jquery' ), array('version' => '1.8.16') );
 	jigoshop_add_script( 'jigoshop_blockui', jigoshop::assets_url() . '/assets/js/blockui.js', array( 'jquery' ), array('version' => '2.4.6') );
 	jigoshop_add_script( 'jigoshop_backend', jigoshop::assets_url() . '/assets/js/jigoshop_backend.js', array( 'jquery' ), array('version' => '1.0') );
 	jigoshop_add_script( 'thickbox', false );
@@ -564,12 +596,12 @@ function jigoshop_admin_scripts() {
  *  individually (PrettyPhoto, jQuery UI, Select2)
  *  For Shops that might have our frontend.css disabled, install the required bits for these libraries
  */
-add_action( 'wp_print_scripts', 'jigoshop_check_required_css', 99 );
+add_action( 'wp_enqueue_scripts', 'jigoshop_check_required_css', 99 );
 function jigoshop_check_required_css() {
 	global $wp_styles;
 
 	if ( empty( $wp_styles->registered['jigoshop_styles'] )) {
-		wp_enqueue_style( 'jigoshop-required', jigoshop::assets_url() . '/assets/css/required.css' );
+		jigoshop_add_style( 'jigoshop_required', jigoshop::assets_url() . '/assets/css/required.css' );
 	}
 }
 
@@ -940,26 +972,26 @@ function get_jigoshop_currency_symbol() {
 
 }
 
-function jigoshop_price( $price, $args = array() ) {
+function jigoshop_price($price, $args = array()){
+	$jigoshop_options = Jigoshop_Base::get_options();
+	$ex_tax_label = 0;
+	$with_currency = true;
 
-    $jigoshop_options = Jigoshop_Base::get_options();
 	extract(shortcode_atts(array(
-		'ex_tax_label' 	=> 0, // 0 for no label, 1 for ex. tax, 2 for inc. tax
-        'with_currency' => true
+		'ex_tax_label' => 0, // 0 for no label, 1 for ex. tax, 2 for inc. tax
+		'with_currency' => true
 	), $args));
 
+	if($ex_tax_label === 1){
+		$tax_label = __(' <small>(ex. tax)</small>', 'jigoshop');
+	} else {
+		if($ex_tax_label === 2){
+			$tax_label = __(' <small>(inc. tax)</small>', 'jigoshop');
+		} else {
+			$tax_label = '';
+		}
+	}
 
-    $tax_label = '';
-
-    if ($ex_tax_label === 1) {
-        $tax_label = __(' <small>(ex. tax)</small>', 'jigoshop');
-    } else if ($ex_tax_label === 2) {
-        $tax_label = __(' <small>(inc. tax)</small>', 'jigoshop');
-    } else {
-        $tax_label = '';
-    }
-
-	$return = '';
 	$price = number_format(
 		(double) $price,
 		(int) $jigoshop_options->get_option('jigoshop_price_num_decimals'),
@@ -967,64 +999,66 @@ function jigoshop_price( $price, $args = array() ) {
 		$jigoshop_options->get_option('jigoshop_price_thousand_sep')
 	);
 
-    $return = $price;
+  $return = $price;
 
-    if ($with_currency) :
+	if($with_currency)
+	{
+		$currency_pos = $jigoshop_options->get_option('jigoshop_currency_pos');
+		$currency_symbol = get_jigoshop_currency_symbol();
+		$currency_code = $jigoshop_options->get_option('jigoshop_currency');
 
-        $currency_pos = $jigoshop_options->get_option('jigoshop_currency_pos');
-        $currency_symbol = get_jigoshop_currency_symbol();
-        $currency_code = $jigoshop_options->get_option('jigoshop_currency');
+		switch($currency_pos)
+		{
+			case 'left' :
+				$return = $currency_symbol.$price;
+				break;
+			case 'left_space' :
+				$return = $currency_symbol.' '.$price;
+				break;
+			case 'right' :
+				$return = $price.$currency_symbol;
+				break;
+			case 'right_space' :
+				$return = $price.' '.$currency_symbol;
+				break;
+			case 'left_code' :
+				$return = $currency_code.$price;
+				break;
+			case 'left_code_space' :
+				$return = $currency_code.' '.$price;
+				break;
+			case 'right_code' :
+				$return = $price.$currency_code;
+				break;
+			case 'right_code_space' :
+				$return = $price.' '.$currency_code;
+				break;
+			case 'code_symbol' :
+				$return = $currency_code.$price.$currency_symbol;
+				break;
+			case 'code_symbol_space' :
+				$return = $currency_code.' '.$price.' '.$currency_symbol;
+				break;
+			case 'symbol_code' :
+				$return = $currency_symbol.$price.$currency_code;
+				break;
+			case 'symbol_code_space' :
+				$return = $currency_symbol.' '.$price.' '.$currency_code;
+				break;
+		}
 
-        switch ($currency_pos) :
-            case 'left' :
-                $return = $currency_symbol . $price;
-            break;
-            case 'left_space' :
-                $return = $currency_symbol . ' ' . $price;
-            break;
-            case 'right' :
-                $return = $price . $currency_symbol;
-            break;
-            case 'right_space' :
-                $return = $price . ' ' . $currency_symbol;
-            break;
-            case 'left_code' :
-                $return = $currency_code . $price;
-            break;
-            case 'left_code_space' :
-                $return = $currency_code . ' ' . $price;
-            break;
-            case 'right_code' :
-                $return = $price . $currency_code;
-            break;
-            case 'right_code_space' :
-                $return = $price . ' ' . $currency_code;
-            break;
-            case 'code_symbol' :
-                $return = $currency_code . $price . $currency_symbol;
-            break;
-            case 'code_symbol_space' :
-                $return = $currency_code . ' ' . $price . ' ' . $currency_symbol;
-            break;
-            case 'symbol_code' :
-                $return = $currency_symbol . $price . $currency_code;
-            break;
-            case 'symbol_code_space' :
-                $return = $currency_symbol . ' ' . $price . ' ' . $currency_code;
-            break;
-        endswitch;
-
-        // only show tax label (ex. tax) if we are going to show the price with currency as well. Otherwise we just want the formatted price
-        if ($jigoshop_options->get_option('jigoshop_calc_taxes')=='yes') $return .= $tax_label;
-
-    endif;
+		// only show tax label (ex. tax) if we are going to show the price with currency as well. Otherwise we just want the formatted price
+		if($jigoshop_options->get_option('jigoshop_calc_taxes') == 'yes'){
+			$return .= $tax_label;
+		}
+	}
 
 	return apply_filters( 'jigoshop_price_display_filter', $return);
 }
 
 /** Show variation info if set */
-function jigoshop_get_formatted_variation( $variation = '', $flat = false ) {
-	if ($variation && is_array($variation)) :
+function jigoshop_get_formatted_variation(jigoshop_product $product, $flat = false ) {
+	if ($product instanceof jigoshop_product_variation && is_array($product->variation_data)) :
 
 		$return = '';
 
@@ -1034,7 +1068,7 @@ function jigoshop_get_formatted_variation( $variation = '', $flat = false ) {
 
 		$variation_list = array();
 
-		foreach ($variation as $name => $value) :
+		foreach ($product->variation_data as $name => $value) :
 
 			$name = str_replace('tax_', '', $name);
 
@@ -1044,8 +1078,7 @@ function jigoshop_get_formatted_variation( $variation = '', $flat = false ) {
 					if ( $term->slug == $value ) $value = $term->name;
 				endforeach;
 				$name = get_taxonomy( 'pa_'.$name )->labels->name;
-				// TODO: this is -not- a static class function and shouldn't be called like this Mr Gates
-				$name = jigoshop_product::attribute_label('pa_'.$name);
+				$name = $product->attribute_label('pa_'.$name);
 			endif;
 
 			// TODO: if it is a custom text attribute, 'pa_' taxonomies are not created and we

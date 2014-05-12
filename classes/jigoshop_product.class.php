@@ -50,7 +50,7 @@ class jigoshop_product extends Jigoshop_Base {
 	private $stock_status = 'instock';
 	private $backorders;
 	public  $stock;         // : admin/jigoshop-admin-post-types.php on line 180
-	private $stock_sold;    // for managed stock only
+	protected $stock_sold;    // for managed stock only
 	private $quantity_sold; // all sales whether managed stock or not
 
 	private	$attributes   = array();
@@ -414,7 +414,7 @@ class jigoshop_product extends Jigoshop_Base {
 			$_parent = new jigoshop_product( $this->ID );
 			$this->stock = $_parent->stock;
 		}
-		if( $this->managing_stock() && ($below_stock_threshold ? $this->stock >= self::get_options()->get_option('jigoshop_notify_no_stock_amount') : $this->stock > 0 ) )
+		if( $this->managing_stock() && ($below_stock_threshold ? $this->stock > self::get_options()->get_option('jigoshop_notify_no_stock_amount') : $this->stock > 0 ) )
 			return true;
 
 		return false;

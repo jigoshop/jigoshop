@@ -81,13 +81,14 @@ function jigoshop_add_order_item() {
 	$loop = 0;
 	?>
 	<tr class="item">
+		<?php do_action( 'jigoshop_admin_order_item_before_prod_id', intval($_POST['item_no']) ) ?>
 		<td class="product-id">#<?php echo $_product->id; ?></td>
 		<td class="variation-id"><?php if (isset($_product->variation_id)) echo $_product->variation_id; else echo '-'; ?></td>
 		<td class="product-sku"><?php if ($_product->sku) echo $_product->sku; ?></td>
 		<td class="name"><a href="<?php echo esc_url( admin_url('post.php?post='. $_product->id .'&action=edit') ); ?>"><?php echo $_product->get_title(); ?></a></td>
 		<td class="variation"><?php
 			if (isset($_product->variation_data)) :
-				echo jigoshop_get_formatted_variation( $_product->variation_data, true );
+				echo jigoshop_get_formatted_variation( $_product, true );
 			else :
 				echo '-';
 			endif;
@@ -102,7 +103,7 @@ function jigoshop_add_order_item() {
 				<tbody></tbody>
 			</table>
 		</td>-->
-		<?php do_action('jigoshop_admin_order_item_values', $_product); ?>
+		<?php do_action('jigoshop_admin_order_item_values', $_product, array(), 0); ?>
 		<td class="quantity"><input type="text" name="item_quantity[]" placeholder="<?php _e('Quantity e.g. 2', 'jigoshop'); ?>" value="1" /></td>
         <td class="cost"><input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit ex. tax e.g. 2.99', 'jigoshop'); ?>" value="<?php echo esc_attr( $jigoshop_options->get_option('jigoshop_prices_include_tax') == 'yes' ? $_product->get_price_excluding_tax() : $_product->get_price() ); ?>" /></td>
         <td class="tax"><input type="text" name="item_tax_rate[]" placeholder="<?php _e('Tax Rate e.g. 20.0000', 'jigoshop'); ?>" value="<?php echo esc_attr( jigoshop_tax::calculate_total_tax_rate($_product->get_tax_base_rate()) ); ?>" /></td>
@@ -852,7 +853,7 @@ function jigoshop_ga_ecommerce_tracking( $order_id ) {
 				'<?php echo $_product->sku; ?>',        // SKU
 				'<?php echo $item['name']; ?>',         // Product Title
 				'<?php if (isset($_product->variation_data))
-					echo jigoshop_get_formatted_variation( $_product->variation_data, true ); ?>',   // category or variation
+					echo jigoshop_get_formatted_variation( $_product, true ); ?>',   // category or variation
 				'<?php echo ($item['cost']/$item['qty']); ?>', // Unit Price
 				'<?php echo $item['qty']; ?>'           // Quantity
 				],
