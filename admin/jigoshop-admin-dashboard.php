@@ -307,7 +307,7 @@ class jigoshop_dashboard {
 								<li><a href="<?= $item['link']; ?>"><?= $item['title']; ?></a></li>
 							<?php endforeach; ?>
 						<?php else: ?>
-							<li><?= __('No products are low in stock.', 'jigoshop'); ?></li>
+							<li><?= __('No products are out of stock.', 'jigoshop'); ?></li>
 						<?php endif; ?>
 					</ol>
 				</div>
