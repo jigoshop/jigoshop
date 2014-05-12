@@ -291,22 +291,32 @@ class jigoshop_tax extends Jigoshop_Base {
     /**
      * gets the tax classes for the customer based on customer shipping
      * country and state.
-     * @return type array of tax classes
+     * @return array array of tax classes
      */
     private function get_tax_classes_for_customer() {
+      // if local pickup, we need to use the base tax classes
+      if (jigoshop_session::instance()->chosen_shipping_method_id == 'local_pickup') :
+          return $this->get_tax_classes_for_base();
+      endif;
 
-        // if local pickup, we need to use the base tax classes
-        if (jigoshop_session::instance()->chosen_shipping_method_id == 'local_pickup') :
-            return $this->get_tax_classes_for_base();
-        endif;
+	    $allowed_countries = Jigoshop_Base::get_options()->get_option('jigoshop_allowed_countries');
+      $country = ($this->shipable ? jigoshop_customer::get_shipping_country() : jigoshop_customer::get_country());
+      $state = ($this->shipable ? jigoshop_customer::get_shipping_state() : jigoshop_customer::get_state());
 
-        $country = ($this->shipable ? jigoshop_customer::get_shipping_country() : jigoshop_customer::get_country());
-        $state = ($this->shipable ? jigoshop_customer::get_shipping_state() : jigoshop_customer::get_state());
+	    if($allowed_countries === 'specific'){
+		    $specific_countries = Jigoshop_Base::get_options()->get_option('jigoshop_specific_allowed_countries');
+		    if(!in_array($country, $specific_countries)){
+			    $country = array_shift($specific_countries);
+		    }
+		    if(!in_array($state, array_keys($this->rates[$country]))){
+			    $states = array_keys($this->rates[$country]);
+			    $state = array_shift($states);
+		    }
+	    }
 
-        $state = ($state && jigoshop_countries::country_has_states($country)? $state : '*');
-        $tax_classes = (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state] : false);
-        return ($tax_classes && is_array($tax_classes) ? array_keys( $tax_classes ) : array());
-
+      $state = ($state && jigoshop_countries::country_has_states($country) ? $state : '*');
+      $tax_classes = (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state] : false);
+      return ($tax_classes && is_array($tax_classes) ? array_keys($tax_classes) : array());
     }
 
     /**
@@ -324,17 +334,28 @@ class jigoshop_tax extends Jigoshop_Base {
     }
 
     private function get_online_label_for_customer($class = '*') {
+      if (jigoshop_session::instance()->chosen_shipping_method_id == 'local_pickup') :
+          return $this->get_online_label_for_base($class);
+      endif;
 
-        if (jigoshop_session::instance()->chosen_shipping_method_id == 'local_pickup') :
-            return $this->get_online_label_for_base($class);
-        endif;
+	    $allowed_countries = Jigoshop_Base::get_options()->get_option('jigoshop_allowed_countries');
+	    $country = ($this->shipable ? jigoshop_customer::get_shipping_country() : jigoshop_customer::get_country());
+	    $state = ($this->shipable ? jigoshop_customer::get_shipping_state() : jigoshop_customer::get_state());
 
-        $country = ($this->shipable ? jigoshop_customer::get_shipping_country() : jigoshop_customer::get_country());
-        $state = ($this->shipable ? jigoshop_customer::get_shipping_state() : jigoshop_customer::get_state());
+	    if($allowed_countries === 'specific'){
+		    $specific_countries = Jigoshop_Base::get_options()->get_option('jigoshop_specific_allowed_countries');
+		    if(!in_array($country, $specific_countries)){
+			    $country = array_shift($specific_countries);
+		    }
+		    if(!in_array($state, array_keys($this->rates[$country]))){
+			    $states = array_keys($this->rates[$country]);
+			    $state = array_shift($states);
+		    }
+	    }
 
-        $state = (jigoshop_countries::country_has_states($country) && $state ? $state : '*');
+      $state = (jigoshop_countries::country_has_states($country) && $state ? $state : '*');
 
-        return (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state][$class]['label'] : __('Tax','jigoshop'));
+      return (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state][$class]['label'] : __('Tax','jigoshop'));
     }
 
     /**
@@ -440,14 +461,14 @@ class jigoshop_tax extends Jigoshop_Base {
         return ($this->tax_divisor > 0 ? number_format(($tax_amount / $this->tax_divisor), 2, '.', '') : number_format($tax_amount, 2, '.', ''));
     }
 
-    /**
-     * calculates the taxes on the total item price and creates the tax data array
-     *
-     * @param type $total_item_price the total value of the item
-     * @param type $tax_classes the tax classes applicable to the item
-     * @param type $prices_include_tax determines if the tax was already included
-     * in the product or not
-     */
+	/**
+	 * Calculates the taxes on the total item price and creates the tax data array
+	 *
+	 * @param float $total_item_price the total value of the item
+	 * @param array $tax_classes the tax classes applicable to the item
+	 * @param array|bool $prices_include_tax determines if the tax was already included in the product or not
+	 * @return array
+	 */
     public function calculate_tax_amounts($total_item_price, $tax_classes, $prices_include_tax = true) {
         $tax_amount = array();
         $tax_classes_applied = array();
@@ -668,8 +689,8 @@ class jigoshop_tax extends Jigoshop_Base {
 
     /**
      * Gets the amount of tax for the particular tax class
-     * @param string tax_class the tax class to retrieve the tax amount for
-     * @return type returns the tax amount with 2 decimal places
+     * @param string $tax_class the tax class to retrieve the tax amount for
+     * @return float returns the tax amount with 2 decimal places
      */
     function get_tax_amount($tax_class) {
         $tax_amount = 0;
@@ -687,7 +708,7 @@ class jigoshop_tax extends Jigoshop_Base {
 
     /**
      * get the tax rate at which the tax class is applying
-     * @param string tax_class the class to find the rate for
+     * @param string $tax_class the class to find the rate for
      * @return mixed the rate of tax or false if the rate hasn't been set on the class (error)
      */
     function get_tax_rate($tax_class) {
@@ -709,33 +730,44 @@ class jigoshop_tax extends Jigoshop_Base {
     /**
      * Get the current taxation rate using find_rate()
      *
-     * @param   string	tax_class the tax class to find rate on
-     * @param   boolean rate_only if true, returns the tax rate, otherwise return the full rate array
+     * @param   string	$tax_class the tax class to find rate on
+     * @param   boolean $rate_only if true, returns the tax rate, otherwise return the full rate array
      * @return  mixed return current rate array if rate_only is false, otherwise
      * return the double value of the rate
      */
     function get_rate( $tax_class = '*', $rate_only = true ) {
+      if ( jigoshop_session::instance()->chosen_shipping_method_id == 'local_pickup' ) :
+        return $this->get_shop_base_rate($tax_class, $rate_only);
+      endif;
 
-        if ( jigoshop_session::instance()->chosen_shipping_method_id == 'local_pickup' ) :
-            return $this->get_shop_base_rate($tax_class, $rate_only);
-        endif;
+	    $allowed_countries = Jigoshop_Base::get_options()->get_option('jigoshop_allowed_countries');
+	    $country = ($this->shipable ? jigoshop_customer::get_shipping_country() : jigoshop_customer::get_country());
+	    $state = ($this->shipable ? jigoshop_customer::get_shipping_state() : jigoshop_customer::get_state());
 
-        $country = ($this->shipable ? jigoshop_customer::get_shipping_country() : jigoshop_customer::get_country());
-        $state = ($this->shipable ? jigoshop_customer::get_shipping_state() : jigoshop_customer::get_state());
+	    if($allowed_countries === 'specific'){
+		    $specific_countries = Jigoshop_Base::get_options()->get_option('jigoshop_specific_allowed_countries');
+		    if(!in_array($country, $specific_countries)){
+			    $country = array_shift($specific_countries);
+		    }
+		    if(!in_array($state, array_keys($this->rates[$country]))){
+			    $states = array_keys($this->rates[$country]);
+			    $state = array_shift($states);
+		    }
+	    }
 
-        $state = (jigoshop_countries::country_has_states($country) && $state ? $state : '*');
-        $rate = $this->find_rate($country, $state, $tax_class);
-        return ($rate_only ? $rate['rate'] : $rate);
-
+      $state = (jigoshop_countries::country_has_states($country) && $state ? $state : '*');
+      $rate = $this->find_rate($country, $state, $tax_class);
+      return ($rate_only ? $rate['rate'] : $rate);
     }
 
 
-    /**
-     * Get the shop's taxation rate using find_rate()
-     *
-     * @param   string	tax_class is the tax class (not object)
-     * @return  int
-     */
+	/**
+	 * Get the shop's taxation rate using find_rate()
+	 *
+	 * @param string $tax_class is the tax class (not object)
+	 * @param bool $rate_only
+	 * @return int
+	 */
     function get_shop_base_rate($tax_class = '*', $rate_only = true) {
 
         $country = jigoshop_countries::get_base_country();

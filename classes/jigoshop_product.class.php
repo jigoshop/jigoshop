@@ -50,7 +50,7 @@ class jigoshop_product extends Jigoshop_Base {
 	private $stock_status = 'instock';
 	private $backorders;
 	public  $stock;         // : admin/jigoshop-admin-post-types.php on line 180
-	private $stock_sold;    // for managed stock only
+	protected $stock_sold;    // for managed stock only
 	private $quantity_sold; // all sales whether managed stock or not
 
 	private	$attributes   = array();

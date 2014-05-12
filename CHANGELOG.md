@@ -7,6 +7,7 @@
     * New: Multipart form in admin settings to use with user-defined input fields. Thanks to Andrei Neamtu
     * New: Ability to select all countries in tax class.
     * New: More detailed information about low in stock variable products.
+    * New: Validating if customer shipping country and state is allowed for taxing purposes.
     * Improved: Updated "Useful links" section.
     * Improved: Load jQuery UI Sortable plugin by default.
     * Improved: Load tim of admin dashboard for shops with many items.
