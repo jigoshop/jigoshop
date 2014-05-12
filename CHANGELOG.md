@@ -1,6 +1,6 @@
 ## Changelog
 
-* 1.9 - 2014-04-28
+* 1.9 - 2014-05-12
     * New: Jigoshop Web Optimisation System - ability to combine CSS and JavaScript into a single files.
     * New: Brand new look of Jigoshop Dashboard.
     * New: API for localizing JavaScript files in order to work with Jigoshop Web Optimisation extension.
