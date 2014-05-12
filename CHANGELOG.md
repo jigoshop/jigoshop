@@ -6,8 +6,10 @@
     * New: API for localizing JavaScript files in order to work with Jigoshop Web Optimisation extension.
     * New: Multipart form in admin settings to use with user-defined input fields. Thanks to Andrei Neamtu
     * New: Ability to select all countries in tax class.
+    * New: More detailed information about low in stock variable products.
     * Improved: Updated "Useful links" section.
     * Improved: Load jQuery UI Sortable plugin by default.
+    * Improved: Load tim of admin dashboard for shops with many items.
     * Fix: Specific countries with tax caused orders to pass without adding required tax cost. Thanks to Naomi Taylor
     * Fix: Strict standards on `attribute_label()` method in `jigoshop_product` class.
     * Fix: Licence validator now properly deactivates licences.
