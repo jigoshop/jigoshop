@@ -35,7 +35,8 @@ body,html {background: #e7ece3 !important;}
 #jigoshop-metaboxes-main #dashboard-widgets .postbox .handlediv {display: none !important;}
 .toplevel_page_jigoshop #jigoshop-metaboxes-main h2 {text-indent: -9999999px;padding: 0;margin: 35px 0 10px 22px;display: inline-block;height: 25px; width:132px;background: url(../images/jigo-ico.png) 0 -480px no-repeat;float: left;}
 #jigoshop_dash_right_now h3 {display: none;}
-#jigoshop_dash_right_now .table_content,#jigoshop_dash_right_now .table_discussion {min-width: 375px;float: left;width: 50%;}
+#jigoshop_dash_right_now .table_content,#jigoshop_dash_right_now .table_discussion {min-width: 265px;float: left;width: 50%;}
+#jigoshop_dash_right_now .table_discussion {margin-top: 69px;}
 #jigoshop_dash_right_now .table {font-size: 17px;}
 #jigoshop_dash_right_now .table td {height: 44px; padding: 13px 13px 13px 0;}
 #jigoshop_dash_right_now .table a {color: #464e3f;}
@@ -95,7 +96,7 @@ div.pages ul.pages li a:hover {background-color: #474f40;}
 #jigoshop_right_now .table_content .sub span {display: block !important;font: 700 12.5px "Open Sans",arial,sans-serif;text-transform: uppercase;letter-spacing: 4px;margin-bottom: -10px;}
 #jigoshop-metaboxes-main .postbox h3 span span:before,
 #jigoshop_right_now .table_content .sub span:before {display: none;}
-#jigoshop-stats {position: relative;background: #fff;padding: 24px 3px;}
+#jigoshop-stats {position: relative;background: #fff;padding: 30px 0 0 19px;}
 #jigoshop-stats p {position: absolute;right: 0;top: -54px;z-index: 100;margin: 0;}
 #jigoshop-stats .previous,
 #jigoshop-stats .next {display: block;width: 44px;height: 44px;text-indent: -9999999px;}
@@ -131,3 +132,6 @@ div.pages ul.pages li a:hover {background-color: #474f40;}
 #dashboard-widgets #jigo-social #fb-icon {background: url(../images/icons/fb.png) no-repeat;}
 #dashboard-widgets #jigo-social #tw-icon {background: url(../images/icons/twit.png) no-repeat;}
 #dashboard-widgets #jigo-social #gp-icon {background: url(../images/icons/gplus.png) no-repeat;}
+@media (max-width: 1300px) {
+	#jigoshop_dash_right_now .table_discussion {margin-top: -16px;}
+}
