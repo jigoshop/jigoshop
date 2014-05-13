@@ -1,6 +1,7 @@
 ## Changelog
 
 * 1.9.2 -
+    * New: System Info icon.
     * Improved: Code formatting of settings and tax classes.
     * Fix: Saving multiple taxes - fixes issue where some states were not saved thus resulting in 0% tax.
     * Fix: Calculating taxes in cart and checkout

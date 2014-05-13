@@ -22,9 +22,9 @@
  * Author:              Jigoshop
  * Author URI:          http://www.jigoshop.com
  *
- * Version:             1.9.1
+ * Version:             1.9.2
  * Requires at least:   3.8
- * Tested up to:        3.9
+ * Tested up to:        3.9.1
  *
  * Text Domain:         jigoshop
  * Domain Path:         /languages/

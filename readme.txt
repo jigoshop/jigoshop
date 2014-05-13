@@ -3,7 +3,7 @@ Contributors: Jigoshop
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigowatt, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.8
-Tested up to: 3.9
+Tested up to: 3.9.1
 Stable tag: 1.9.1
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
@@ -113,6 +113,12 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 == Changelog ==
 
+= 1.9.2 - =
+* New: System Info icon.
+* Improved: Code formatting of settings and tax classes.
+* Fix: Saving multiple taxes - fixes issue where some states were not saved thus resulting in 0% tax.
+* Fix: Calculating taxes in cart and checkout
+* Fix: Properly displaying tax values when coupons are used and tax is applied after coupons.
 = 1.9.1 - 2014-05-12 =
 * Fix: Checking for shipping and billing state and country correctness.
 = 1.9 - 2014-05-12 =
