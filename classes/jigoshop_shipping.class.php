@@ -185,7 +185,7 @@ class jigoshop_shipping extends Jigoshop_Singleton {
     /**
      * Calculate the shipping price
      *
-     * @param type $tax jigoshop_tax class instance
+     * @param $tax jigoshop_tax The tax
      */
     public static function calculate_shipping($tax) {
 
