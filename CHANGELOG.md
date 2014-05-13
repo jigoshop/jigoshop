@@ -1,6 +1,6 @@
 ## Changelog
 
-* 1.9.2 -
+* 1.9.2 - 2014-05-13
     * New: System Info icon.
     * Improved: Code formatting of settings and tax classes.
     * Fix: Saving multiple taxes - fixes issue where some states were not saved thus resulting in 0% tax.

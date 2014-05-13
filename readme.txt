@@ -4,7 +4,7 @@ Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, wid
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.8
 Tested up to: 3.9.1
-Stable tag: 1.9.1
+Stable tag: 1.9.2
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -113,7 +113,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 == Changelog ==
 
-= 1.9.2 - =
+= 1.9.2 - 2014-05-13 =
 * New: System Info icon.
 * Improved: Code formatting of settings and tax classes.
 * Fix: Saving multiple taxes - fixes issue where some states were not saved thus resulting in 0% tax.
