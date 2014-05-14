@@ -1074,11 +1074,9 @@ class Jigoshop_Options_Parser {
 					<?php
 					$i = -1;
 					if ( $tax_rates && is_array( $tax_rates ) && sizeof( $tax_rates ) > 0 ) :
-
 						$tax_rates = $this->array_compare( $tax_rates );
-
 						foreach ( $tax_rates as $rate ) :
-							if ( isset($rate['is_all_states']) && in_array($tax_rate['country'].$tax_rate['class'], $applied_all_states) )
+							if ( isset($rate['is_all_states']) && in_array($rate['country'].$rate['class'], $applied_all_states) )
 								continue;
 
 							$i++;// increment counter after check for all states having been applied
@@ -1101,8 +1099,8 @@ class Jigoshop_Options_Parser {
 
 							echo '<td><select name="tax_country[' . esc_attr( $i ) . '][]" id="tax_country_' . esc_attr( $i ) . '" class="tax_select2" multiple="multiple" style="width:220px;">';
 							if ( isset($rate['is_all_states']) ) :
-								if ( is_array( $applied_all_states ) && !in_array( $tax_rate['country'].$tax_rate['class'], $applied_all_states )) :
-									$applied_all_states[] = $tax_rate['country'].$tax_rate['class'];
+								if ( is_array( $applied_all_states ) && !in_array( $rate['country'].$rate['class'], $applied_all_states )) :
+									$applied_all_states[] = $rate['country'].$rate['class'];
 									jigoshop_countries::country_dropdown_options( $rate['country'], '*', true ); //all-states
 								else :
 									continue;
