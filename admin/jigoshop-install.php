@@ -47,7 +47,7 @@ function _install_jigoshop(){
 
 		jigoshop_tables_install(); /* we need tables installed first to eliminate installation errors */
 
-		Jigoshop_Base::get_options();
+		jigoshop_populate_options();
 
 		jigoshop_create_pages();
 
@@ -62,6 +62,96 @@ function _install_jigoshop(){
 
 		// Update version
 		update_site_option("jigoshop_db_version", JIGOSHOP_VERSION);
+	}
+}
+
+function jigoshop_populate_options(){
+	$defaults = array(
+		'jigoshop_default_country' => 'GB',
+		'jigoshop_currency' => 'GBP',
+		'jigoshop_allowed_countries' => 'all',
+		'jigoshop_specific_allowed_countries' => '',
+		'jigoshop_demo_store' => 'no',
+		'jigoshop_company_name' => '',
+		'jigoshop_tax_number' => '',
+		'jigoshop_address_line1' => '',
+		'jigoshop_address_line2' => '',
+		'jigoshop_company_phone' => '',
+		'jigoshop_company_email' => '',
+		'jigoshop_prepend_shop_page_to_urls' => 'no',
+		'jigoshop_prepend_shop_page_to_product' => 'no',
+		'jigoshop_prepend_category_to_product' => 'no',
+		'jigoshop_product_category_slug' => _x('product-category', 'slug', 'jigoshop'),
+		'jigoshop_product_tag_slug' => _x('product-tag', 'slug', 'jigoshop'),
+		'jigoshop_email' => get_option('admin_email'),
+		'jigoshop_cart_shows_shop_button' => 'yes',
+		'jigoshop_redirect_add_to_cart' => 'same_page',
+		'jigoshop_reset_pending_orders' => 'no',
+		'jigoshop_complete_processing_orders' => 'no',
+		'jigoshop_downloads_require_login' => 'no',
+		'jigoshop_disable_css' => 'no',
+		'jigoshop_frontend_with_theme_css' => 'no',
+		'jigoshop_disable_fancybox' => 'no',
+		'jigoshop_enable_postcode_validating' => 'no',
+		'jigoshop_verify_checkout_info_message' => 'yes',
+		'jigoshop_eu_vat_reduction_message' => 'yes',
+		'jigoshop_enable_guest_checkout' => 'yes',
+		'jigoshop_enable_guest_login' => 'yes',
+		'jigoshop_enable_signup_form' => 'yes',
+		'jigoshop_force_ssl_checkout' => 'no',
+		'jigoshop_sharethis' => '',
+		'jigoshop_ga_id' => '',
+		'jigoshop_ga_ecommerce_tracking_enabled' => 'no',
+		'jigoshop_catalog_product_button' => 'add',
+		'jigoshop_catalog_sort_orderby' => 'post_date',
+		'jigoshop_catalog_sort_direction' => 'asc',
+		'jigoshop_catalog_columns' => '3',
+		'jigoshop_catalog_per_page' => '12',
+		'jigoshop_currency_pos' => 'left',
+		'jigoshop_price_thousand_sep' => ',',
+		'jigoshop_price_decimal_sep' => '.',
+		'jigoshop_price_num_decimals' => '2',
+		'jigoshop_use_wordpress_tiny_crop' => 'no',
+		'jigoshop_use_wordpress_thumbnail_crop' => 'no',
+		'jigoshop_use_wordpress_catalog_crop' => 'no',
+		'jigoshop_use_wordpress_featured_crop' => 'no',
+		'jigoshop_shop_tiny_w' => 36,
+		'jigoshop_shop_tiny_h' => 36,
+		'jigoshop_shop_thumbnail_w' => 90,
+		'jigoshop_shop_thumbnail_h' => 90,
+		'jigoshop_shop_small_w' => 150,
+		'jigoshop_shop_small_h' => 150,
+		'jigoshop_shop_large_w' => 300,
+		'jigoshop_shop_large_h' => 300,
+		'jigoshop_enable_sku' => 'yes',
+		'jigoshop_enable_weight' => 'yes',
+		'jigoshop_weight_unit' => 'kg',
+		'jigoshop_enable_dimensions' => 'yes',
+		'jigoshop_dimension_unit' => 'cm',
+		'jigoshop_product_thumbnail_columns' => '3',
+		'jigoshop_enable_related_products' => 'yes',
+		'jigoshop_manage_stock' => 'yes',
+		'jigoshop_show_stock' => 'yes',
+		'jigoshop_notify_low_stock' => 'yes',
+		'jigoshop_notify_low_stock_amount' => '2',
+		'jigoshop_notify_no_stock' => 'yes',
+		'jigoshop_notify_no_stock_amount' => '0',
+		'jigoshop_hide_no_stock_product' => 'no',
+		'jigoshop_calc_taxes' => 'yes',
+		'jigoshop_tax_after_coupon' => 'yes',
+		'jigoshop_prices_include_tax' => 'yes',
+		'jigoshop_tax_classes' => sprintf(__('Reduced Rate%sZero Rate', 'jigoshop'), PHP_EOL),
+		'jigoshop_tax_rates' => '',
+		'jigoshop_calc_shipping' => 'yes',
+		'jigoshop_enable_shipping_calc' => 'yes',
+		'jigoshop_ship_to_billing_address_only' => 'no',
+		'jigoshop_show_checkout_shipping_fields' => 'no',
+		'jigoshop_default_gateway' => 'cheque',
+	);
+
+	$options = Jigoshop_Base::get_options();
+	foreach($defaults as $option => $value){
+		$options->add_option($option, $value);
 	}
 }
 

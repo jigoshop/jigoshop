@@ -1038,7 +1038,10 @@ class Jigoshop_Options_Parser {
 
 		$_tax = new jigoshop_tax();
 		$tax_classes = $_tax->get_tax_classes();
-		$tax_rates = (array) Jigoshop_Base::get_options()->get_option( 'jigoshop_tax_rates' );
+		$tax_rates = Jigoshop_Base::get_options()->get_option('jigoshop_tax_rates');
+		if(empty($tax_rates)){
+			$tax_rates = array();
+		}
 		$applied_all_states = array();
 
 		ob_start();

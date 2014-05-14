@@ -1,7 +1,8 @@
 ## Changelog
 
-* 1.9.3
+* 1.9.3 -
     * Fix: First activation warnings.
+    * Improve: Remove lots of backwards compatibility code from Jigoshop_Options class. WARNING: Old plugins may stop working!
 * 1.9.2 - 2014-05-13
     * New: System Info icon.
     * Improved: Code formatting of settings and tax classes.
