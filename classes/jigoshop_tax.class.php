@@ -294,7 +294,7 @@ class jigoshop_tax extends Jigoshop_Base {
 	 *
 	 * @return array array of tax classes
 	 */
-	private function get_tax_classes_for_customer(){
+	public function get_tax_classes_for_customer(){
 		// if local pickup, we need to use the base tax classes
 		if(jigoshop_session::instance()->chosen_shipping_method_id == 'local_pickup'){
 			return $this->get_tax_classes_for_base();
@@ -316,6 +316,19 @@ class jigoshop_tax extends Jigoshop_Base {
 		}
 
 		$state = ($state && jigoshop_countries::country_has_states($country) ? $state : '*');
+		$tax_classes = (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state] : false);
+
+		return ($tax_classes && is_array($tax_classes) ? array_keys($tax_classes) : array());
+	}
+
+	/**
+	 * Gets the tax classes for the shops base country and state
+	 *
+	 * @return array array of tax classes
+	 */
+	public function get_tax_classes_for_base(){
+		$country = jigoshop_countries::get_base_country();
+		$state = jigoshop_countries::get_base_state();
 		$tax_classes = (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state] : false);
 
 		return ($tax_classes && is_array($tax_classes) ? array_keys($tax_classes) : array());
@@ -359,19 +372,6 @@ class jigoshop_tax extends Jigoshop_Base {
 		$state = (jigoshop_countries::country_has_states($country) && $state ? $state : '*');
 
 		return (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state][$class]['label'] : __('Tax', 'jigoshop'));
-	}
-
-	/**
-	 * Gets the tax classes for the shops base country and state
-	 *
-	 * @return array array of tax classes
-	 */
-	public function get_tax_classes_for_base(){
-		$country = jigoshop_countries::get_base_country();
-		$state = jigoshop_countries::get_base_state();
-		$tax_classes = (isset($this->rates[$country]) && isset($this->rates[$country][$state]) ? $this->rates[$country][$state] : false);
-
-		return ($tax_classes && is_array($tax_classes) ? array_keys($tax_classes) : array());
 	}
 
 	/**

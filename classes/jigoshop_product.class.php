@@ -670,27 +670,27 @@ class jigoshop_product extends Jigoshop_Base {
 	/**
 	 * Returns the base Country and State tax rate
 	 */
-	public function get_tax_base_rate() {
-
+	public function get_tax_base_rate(){
 		$rate = array();
 
-        if ($this->is_taxable() && self::get_options()->get_option('jigoshop_calc_taxes') == 'yes') :
-            $_tax = new jigoshop_tax();
+		if($this->is_taxable() && self::get_options()->get_option('jigoshop_calc_taxes') == 'yes'){
+			$_tax = new jigoshop_tax();
+			$tax_classes = $this->get_tax_classes();
 
-            if ($_tax->get_tax_classes_for_base()) foreach ( $_tax->get_tax_classes_for_base() as $tax_class ) :
+			foreach($_tax->get_tax_classes_for_customer() as $tax_class){
+				if(!in_array($tax_class, $tax_classes)){
+					continue;
+				}
 
-                if ( !in_array($tax_class, $this->get_tax_classes())) continue;
-                $my_rate = $_tax->get_shop_base_rate($tax_class);
+				$my_rate = $_tax->get_rate($tax_class);
 
-                if ($my_rate > 0) :
-                    $rate[$tax_class] = array('rate'=>$my_rate, 'is_not_compound_tax'=>!$_tax->is_compound_tax());
-                endif;
+				if($my_rate > 0){
+					$rate[$tax_class] = array('rate' => $my_rate, 'is_not_compound_tax' => !$_tax->is_compound_tax());
+				}
+			}
+		}
 
-            endforeach;
-
-        endif;
-
-        return $rate;
+		return $rate;
 	}
 
 	/**

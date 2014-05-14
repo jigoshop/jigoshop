@@ -115,6 +115,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 = 1.9.3 - =
 * Fix: First activation warnings.
+* Fix: Taxes are calculated even when not set for base country.
 * Improve: Remove lots of backwards compatibility code from Jigoshop_Options class. WARNING: Old plugins may stop working!
 = 1.9.2 - 2014-05-13 =
 * New: System Info icon.
