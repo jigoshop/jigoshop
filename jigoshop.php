@@ -22,7 +22,7 @@
  * Author:              Jigoshop
  * Author URI:          http://www.jigoshop.com
  *
- * Version:             1.9.2
+ * Version:             1.9.3
  * Requires at least:   3.8
  * Tested up to:        3.9.1
  *
@@ -961,15 +961,13 @@ add_filter('script_loader_src', 'jigoshop_force_ssl_urls');
 add_filter('style_loader_src', 'jigoshop_force_ssl_urls');
 
 
-function get_jigoshop_currency_symbol() {
-
-    $jigoshop_options = Jigoshop_Base::get_options();
-	$currency = $jigoshop_options->get_option('jigoshop_currency');
+function get_jigoshop_currency_symbol(){
+	$jigoshop_options = Jigoshop_Base::get_options();
+	$currency = $jigoshop_options->get_option('jigoshop_currency', 'USD');
 	$symbols = jigoshop::currency_symbols();
 	$currency_symbol = $symbols[$currency];
 
 	return apply_filters('jigoshop_currency_symbol', $currency_symbol, $currency);
-
 }
 
 function jigoshop_price($price, $args = array()){

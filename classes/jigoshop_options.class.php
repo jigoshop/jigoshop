@@ -122,112 +122,33 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	private static $current_options;
 	private $bad_extensions = array();
 
-
 	/**
 	 * Instantiates a new Options object
 	 *
-	 * @param   none
-	 * @return  Void
-	 *
-	 * @since	1.3
+	 * @return Jigoshop_Options
+	 * @since  1.3
 	 */
-	public function __construct() {
-
+	public function __construct(){
+		self::$current_options = array();
 		self::$default_options = $this->get_default_options();
-		self::$current_options = array_merge_recursive(self::$default_options, get_option( JIGOSHOP_OPTIONS ));	// load existing from database, false if none
 
-		if ( false === self::$current_options ) {
-
-			if ( ! $this->need_to_upgrade_from_123_to_130() ) {     // should be from a fresh install
-
-				$current_options = array();
-
-				foreach ( $this->get_default_options() as $setting ) :
-					if ( isset( $setting['id'] )) {
-						$current_options[$setting['id']] = $setting['std'];
-					}
-				endforeach;
-
-				self::$current_options = $current_options;
-				update_option( JIGOSHOP_OPTIONS, $current_options );
-
-			}
-
+		$options = get_option(JIGOSHOP_OPTIONS);
+		if(is_array($options)){
+			self::$current_options = array_merge_recursive(self::$default_options, $options);
 		}
 
-	}
+		if(empty(self::$current_options)){
+			$current_options = array();
 
-
-	/**
-	 * Special case function that's run if no 'jigoshop_options' available in Database
-	 * Typically encountered when first run on upgrade from version 1.2.3 to version 1.3
-	 * when this class is first implemented.
-	 *
-	 * Finds all separate options from 1.2.3 and installs them as our current options with a few changes
-	 * Sets a 'jigoshop_upgraded_from_123' flag option to note that this has been done.
-	 *
-	 * This has to happen here instead of an 'upgrade' script due to 'update_option' changing a few defaults
-	 * and the old existing options are then altered prior to the 'upgrade'.
-	 *
-	 * @param   none
-	 * @return  true if upgrade was needed, false otherwise
-	 *
-	 * @since	1.3
-	 */
-	private function need_to_upgrade_from_123_to_130() {
-
-		global $wpdb;
-
-		$version = get_site_option( 'jigoshop_db_version' );
-		$upgraded = get_option( 'jigoshop_upgraded_from_123' );
-		if ( $version !== false && $version < 1207160 && $upgraded === false ) {
-
-			$transfer_options = array();
-			$options_in_use = $wpdb->get_results(
-				$wpdb->prepare( "SELECT * FROM {$wpdb->options} WHERE option_name LIKE 'jigoshop_%%';" ));
-			foreach ( $options_in_use as $index => $setting ) {
-				if ( $setting->option_name == 'jigoshop_options' ) continue;
-				if ( $setting->option_name == 'jigoshop_db_version' ) continue;
-				// this will add all settings into the new api, even if they will not be called from there.
-				// eg. enabled plugins may not have utilized the new infrastructure yet.
-				$transfer_options[$setting->option_name] = get_option( $setting->option_name );
-				if ( $setting->option_name == 'jigoshop_display_totals_tax' ) {
-					$current = get_option( $setting->option_name );
-					if ( false !== $current ) {
-						if ( $current == 'including' ) :
-							$transfer_options[$setting->option_name] = 'yes';
-						else :
-							$transfer_options[$setting->option_name] = 'no';
-						endif;
-					}
+			foreach(self::$default_options as $setting){
+				if(isset($setting['id'])){
+					$current_options[$setting['id']] = $setting['std'];
 				}
 			}
 
-			if ( $transfer_options['jigoshop_paypal_testmode'] == 'yes' ) {
-				$transfer_options['jigoshop_sandbox_email'] = $transfer_options['jigoshop_paypal_email'];
-				$transfer_options['jigoshop_paypal_email'] = '';
-			}
-
-			$transfer_options['jigoshop_use_beta_version'] = 'no';
-			$transfer_options['jigoshop_reset_pending_orders'] = 'no';
-			$transfer_options['jigoshop_complete_processing_orders'] = 'no';
-			$transfer_options['jigoshop_downloads_require_login'] = 'no';
-			$transfer_options['jigoshop_frontend_with_theme_css'] = 'no';
-
-			$transfer_options['jigoshop_upgraded_from_123'] = 'yes';
-
-			self::$current_options = $transfer_options;
- 			update_option( JIGOSHOP_OPTIONS, $transfer_options );
- 			update_option( 'jigoshop_upgraded_from_123', 'yes' );
-
- 			return true;
-
-		} else {    // fresh install?
-
-			return false;
-
+			self::$current_options = $current_options;
+			update_option(JIGOSHOP_OPTIONS, $current_options);
 		}
-
 	}
 
 
@@ -268,30 +189,24 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		}
 	}
 
-
 	/**
 	 * Returns a named Jigoshop option
 	 *
-	 * @param   string	the name of the option to retrieve
-	 * @param   mixed	the value to return if the option doesn't exist
-	 * @return  mixed	the value of the option, null if no $default and doesn't exist
-	 *
-	 * @since	1.3
+	 * @param string $name the name of the option to retrieve
+	 * @param mixed $default the value to return if the option doesn't exist
+	 * @return mixed the value of the option, null if no $default and doesn't exist
+	 * @since  1.3
 	 */
-	public function get_option( $name, $default = null ) {
-
-		$old_option = get_option($name);
-
-		if ( isset( self::$current_options[$name] )) :
-			return apply_filters( 'jigoshop_get_option', self::$current_options[$name], $name, $default);
-		elseif ( isset( $old_option ) && $old_option !== false ) :
-			return apply_filters( 'jigoshop_get_option', $old_option, $name, $default);
-		elseif ( isset( $default )) :
-			return apply_filters( 'jigoshop_get_option', $default, $name, $default);
-		else :
+	public function get_option($name, $default = null){
+		if(isset(self::$current_options[$name])){
+			return apply_filters('jigoshop_get_option', self::$current_options[$name], $name, $default);
+		} elseif(($old_option = get_option($name)) !== false){
+			return apply_filters('jigoshop_get_option', $old_option, $name, $default);
+		} elseif(isset($default)){
+			return apply_filters('jigoshop_get_option', $default, $name, $default);
+		} else {
 			return null;
-		endif;
-
+		}
 	}
 
 	/**

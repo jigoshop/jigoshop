@@ -1,5 +1,7 @@
 ## Changelog
 
+* 1.9.3
+    * Fix: First activation warnings.
 * 1.9.2 - 2014-05-13
     * New: System Info icon.
     * Improved: Code formatting of settings and tax classes.

@@ -42,15 +42,12 @@ function install_jigoshop( $network_wide = false ) {
 
 }
 
-function _install_jigoshop() {
+function _install_jigoshop(){
+	if(!get_option('jigoshop_db_version')){
 
-    $jigoshop_options = Jigoshop_Base::get_options();
+		jigoshop_tables_install(); /* we need tables installed first to eliminate installation errors */
 
-	if( ! get_option('jigoshop_db_version') )  {
-
-		jigoshop_tables_install();		/* we need tables installed first to eliminate installation errors */
-
-		Jigoshop_Base::get_options();   /* instantiate options */
+		Jigoshop_Base::get_options();
 
 		jigoshop_create_pages();
 
@@ -61,10 +58,10 @@ function _install_jigoshop() {
 		wp_clear_scheduled_hook('jigoshop_cron_pending_orders');
 
 		// Flush Rules
-		flush_rewrite_rules( false );
+		flush_rewrite_rules(false);
 
 		// Update version
-		update_site_option( "jigoshop_db_version", JIGOSHOP_VERSION );
+		update_site_option("jigoshop_db_version", JIGOSHOP_VERSION);
 	}
 }
 
