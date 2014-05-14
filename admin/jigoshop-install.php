@@ -372,6 +372,7 @@ function jigoshop_default_taxonomies() {
 	}
 
 	$order_status = array(
+		'new',
 		'pending',
 		'on-hold',
 		'processing',
