@@ -603,7 +603,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 				@list($country, $state) = explode(':', $country_code, 2);
 
 				if(!in_array($country, $whole_countries_processed)){
-					if(jigoshop_countries::country_has_states($country)){
+					if($state === null && jigoshop_countries::country_has_states($country)){
 						$whole_countries_processed[] = $country;
 						foreach(jigoshop_countries::get_states($country) as $state => $state_name){
 							$tax_rates[] = array(
