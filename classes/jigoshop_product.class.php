@@ -1131,14 +1131,18 @@ class jigoshop_product extends Jigoshop_Base {
 	 *
 	 * @return  array
 	 */
-	public function get_attributes() {
-
+	public function get_attributes(){
 		// Get the attributes
-		if ( ! $this->attributes )
-			if ( isset( $this->meta['product_attributes'] ) )
-				$this->attributes = maybe_unserialize( $this->meta['product_attributes'][0] );
+		if(!$this->attributes){
+			if(isset($this->meta['product_attributes'])){
+				$this->attributes = maybe_unserialize($this->meta['product_attributes'][0]);
+				if(!is_array($this->attributes)){
+					$this->attributes = array();
+				}
+			}
+		}
 
-		return (array) $this->attributes;
+		return $this->attributes;
 	}
 
 	/**

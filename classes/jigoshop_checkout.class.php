@@ -1101,6 +1101,8 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
 					// Insert or update the post data
 					$create_new_order = true;
+					$order_id = 0;
+
 					if ( isset(jigoshop_session::instance()->order_awaiting_payment)
 						&& jigoshop_session::instance()->order_awaiting_payment > 0 ) {
 
@@ -1120,6 +1122,10 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 							jigoshop::add_error( 'Error: Unable to create order. Please try again.' );
 			                break;
 						}
+					}
+					if($order_id === 0){
+						jigoshop::add_error(__('Error: Unable to create order. Please try again.', 'jigoshop'));
+						return;
 					}
 
 					// Update post meta
