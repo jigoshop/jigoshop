@@ -148,7 +148,7 @@ function jigoshop_system_info() {
 	<?php require_once('browser.php'); $browser =  new Browser(); echo $browser ; ?>
 
 	PHP Version:              <?php echo PHP_VERSION . "\n"; ?>
-	MySQL Version:            <?php echo mysql_get_server_info() . "\n"; ?>
+	MySQL Version:            <?php global $wpdb; echo $wpdb->db_version() . "\n"; ?>
 	Web Server Info:          <?php echo $_SERVER['SERVER_SOFTWARE'] . "\n"; ?>
 
 	PHP Memory Limit:         <?php echo ini_get('memory_limit') . "\n"; ?>
