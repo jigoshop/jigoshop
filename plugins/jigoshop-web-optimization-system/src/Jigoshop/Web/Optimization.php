@@ -283,6 +283,11 @@ class Optimization
 		$js = $asset->getAsset();
 
 		wp_enqueue_script('jigoshop_web_optimization', JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_URL.'/cache/'.$this->get_asset_name($js), array_unique($this->_dependencies));
+
+		foreach($this->_localizations as $object => $values)
+		{
+			wp_localize_script('jigoshop_web_optimization', $object, $values);
+		}
 	}
 
 	private function get_source_path($src)
