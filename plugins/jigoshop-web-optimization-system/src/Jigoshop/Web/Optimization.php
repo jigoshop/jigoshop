@@ -180,13 +180,12 @@ class Optimization
 	 */
 	public function localize_script($handle, $object, array $values)
 	{
-		foreach($this->_scripts as $pack)
+		$handle = '@'.$this->prepare_script_handle($handle);
+		$current_page = $this->get_current_page();
+		if(in_array($handle, $this->_scripts[$current_page]) || in_array($handle, $this->_scripts[JIGOSHOP_ALL]))
 		{
-			if(in_array($handle, $pack))
-			{
-				$this->_localizations[$object] = $values;
-				return '';
-			}
+			$this->_localizations[$object] = $values;
+			return '';
 		}
 
 		return $handle;

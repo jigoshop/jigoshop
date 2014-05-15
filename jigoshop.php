@@ -510,7 +510,7 @@ function jigoshop_frontend_scripts() {
 
 	$jigoshop_params = apply_filters('jigoshop_params', $jigoshop_params);
 
-	wp_localize_script( 'jquery', 'jigoshop_params', $jigoshop_params );
+	jigoshop_localize_script( 'jigoshop_global', 'jigoshop_params', $jigoshop_params );
 
 }
 

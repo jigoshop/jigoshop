@@ -8,7 +8,9 @@
     * Fix: Ability to add taxes to single state. Thanks to elitistdogg!
     * Fix: Order email warnings.
     * Fix: Properly display variation details. Thanks to Jared Weiss!
+    * Fix: `jigoshop_localize_script()` now works properly.
     * Improve: Remove lots of backwards compatibility code from Jigoshop_Options class. WARNING: Old plugins may stop working!
+    * Improve: Use `jigoshop_localize_script()` in order to avoid problems with external jQuery versions.
 * 1.9.2 - 2014-05-13
     * New: System Info icon.
     * Improved: Code formatting of settings and tax classes.

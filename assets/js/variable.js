@@ -7,7 +7,9 @@
 		var ID = 0;
 
 		// Unbind the standard postbox click event
-		$('.jigoshop_variation.postbox h3').unbind('click.postboxes');
+		setTimeout(function(){
+			$('.jigoshop_variation.postbox h3').unbind('click.postboxes');
+		}, 100);
 
 		// Set up the events bound to the root variable product options so events don't bubble to the document
 		$('#variable_product_options')
@@ -15,7 +17,7 @@
 
 			var $this	= $(this);
 		 	      panel	= '.'+$this.val();
-		 	      $root	= $this.parent().parent().parent()
+		 	      $root	= $this.parent().parent().parent();
 
 			// Hide all the panels first then show the relevant one
 			// TODO: can this be improved anyway?
@@ -104,7 +106,7 @@
 
 					// Hide thickbox
 					tb_remove();
-				}
+				};
 
 				// @todo: Why do we need this? -Rob
 				// formfield = $('.upload_image_id', $parent).attr('name');
@@ -131,7 +133,7 @@
 
 				// Hide thickbox
 				tb_remove();
-			}
+			};
 
 			// @todo: Why do we need this? -Rob
 			// formfield = $(parent).attr('name');

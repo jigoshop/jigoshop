@@ -17,21 +17,6 @@
  * @license             GNU General Public License v3
  */
 
-// Temporary fix for selectbox triggering the click event.
-// For some reason enqueing the script inside a class causes the event unbind()
-// to not work. Would prefer this to be part of the class but perhaps its better to enqueue
-// everything all at once.
-add_action( 'admin_enqueue_scripts', 'jigoshop_product_meta_variable_script' );
-function jigoshop_product_meta_variable_script( $hook ) {
-	global $post;
-
-	// Don't enqueue script if not on product edit screen
-	if ( $hook != 'post.php' || $post->post_type != 'product' )
-		return false;
-
-	wp_enqueue_script('jigoshop-variable-js', jigoshop::assets_url() . '/assets/js/variable.js' , array('jquery'),1,true);
-}
-
 class jigoshop_product_meta_variable extends jigoshop_product_meta
 {
 	public function __construct() {
@@ -58,18 +43,17 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	 * Registers scripts for use in the admin
 	 * Also localizes variables for use in the javascript, essential for variation addition
 	 *
-	 * @return  void
+	 * @param string $hook
 	 */
 	public function admin_enqueue_scripts( $hook ) {
 		global $post;
 
 		// Don't enqueue script if not on product edit screen
 		if ( $hook != 'post.php' || $post->post_type != 'product' )
-			return false;
+			return;
 
-		// wp_enqueue_script('jigoshop-variable-js', jigoshop::assets_url() . '/assets/js/variable.js', array('postbox', 'jquery'), true);
-
-		wp_localize_script( 'jigoshop-variable-js', 'varmeta', array(
+		jigoshop_add_script('jigoshop-variable-js', jigoshop::assets_url() . '/assets/js/variable.js' , array('jquery'), array('in_footer' => true));
+		jigoshop_localize_script( 'jigoshop-variable-js', 'varmeta', array(
 			'assets_url'  => jigoshop::assets_url(),
 			'ajax_url'    => admin_url('admin-ajax.php'),
 			'i18n'        => array(
