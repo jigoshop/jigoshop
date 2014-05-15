@@ -113,7 +113,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 == Changelog ==
 
-= 1.9.3 - =
+= 1.9.3 - 2014-05-15 =
 * New: "New" order status.
 * Fix: First activation warnings.
 * Fix: Taxes are calculated even when not set for base country.
