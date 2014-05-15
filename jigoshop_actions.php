@@ -88,7 +88,7 @@ function jigoshop_add_order_item() {
 		<td class="name"><a href="<?php echo esc_url( admin_url('post.php?post='. $_product->id .'&action=edit') ); ?>"><?php echo $_product->get_title(); ?></a></td>
 		<td class="variation"><?php
 			if (isset($_product->variation_data)) :
-				echo jigoshop_get_formatted_variation( $_product, true );
+				echo jigoshop_get_formatted_variation( $_product, $_product->variation_data, true );
 			else :
 				echo '-';
 			endif;
@@ -853,7 +853,7 @@ function jigoshop_ga_ecommerce_tracking( $order_id ) {
 				'<?php echo $_product->sku; ?>',        // SKU
 				'<?php echo $item['name']; ?>',         // Product Title
 				'<?php if (isset($_product->variation_data))
-					echo jigoshop_get_formatted_variation( $_product, true ); ?>',   // category or variation
+					echo jigoshop_get_formatted_variation( $_product, $item['variation'], true ); ?>',   // category or variation
 				'<?php echo ($item['cost']/$item['qty']); ?>', // Unit Price
 				'<?php echo $item['qty']; ?>'           // Quantity
 				],

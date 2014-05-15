@@ -137,7 +137,7 @@ function jigoshop_order_tracking( $atts ) {
 							echo '<td class="product-name">'.$_product->get_title();
 
 							if ($_product instanceof jigoshop_product_variation) :
-								echo jigoshop_get_formatted_variation( $_product );
+								echo jigoshop_get_formatted_variation( $_product, $order_item['variation'] );
 							endif;
 
 							do_action( 'jigoshop_display_item_meta_data', $order_item );

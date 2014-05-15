@@ -507,7 +507,7 @@ function jigoshop_view_order() {
 									<td class="product-name">' . $item['name'];
 
                             if ($_product instanceof jigoshop_product_variation) :
-                                echo jigoshop_get_formatted_variation($_product);
+                                echo jigoshop_get_formatted_variation($_product, $item['variation']);
                             endif;
 
                             do_action( 'jigoshop_display_item_meta_data', $item );

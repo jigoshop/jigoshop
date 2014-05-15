@@ -265,11 +265,7 @@ function jigoshop_order_items_meta_box($post) {
                         </td>
                         <td class="variation"><?php
                             if (isset($_product->variation_data)) :
-                                echo jigoshop_get_formatted_variation( $_product, true );
-                            elseif ( isset($item['variation']) && is_array($item['variation']) ) :
-                                foreach( $item['variation'] as $var ) {
-                                    echo "{$var['name']} : {$var['value']}";
-                                }
+                                echo jigoshop_get_formatted_variation( $_product, $item['variation'], true );
                             else :
                                 echo '-';
                             endif;

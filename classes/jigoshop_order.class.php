@@ -331,7 +331,7 @@ class jigoshop_order extends Jigoshop_Base {
             }
 
 			if (isset($_product->variation_data)) {
-				$return .= PHP_EOL . jigoshop_get_formatted_variation( $_product, true);
+				$return .= PHP_EOL . jigoshop_get_formatted_variation($_product, $item['variation'], true);
 			}
 
 			// Very hacky, used for GFORMS ADDONS -Rob

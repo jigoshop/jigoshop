@@ -1055,55 +1055,53 @@ function jigoshop_price($price, $args = array()){
 }
 
 /** Show variation info if set */
-function jigoshop_get_formatted_variation(jigoshop_product $product, $flat = false ) {
-	if ($product instanceof jigoshop_product_variation && is_array($product->variation_data)) :
+function jigoshop_get_formatted_variation(jigoshop_product $product, array $variation_data, $flat = false){
+	$return = '';
 
-		$return = '';
-
-		if (!$flat) :
+	if($product instanceof jigoshop_product_variation && is_array($product->variation_data)){
+		if(!$flat){
 			$return = '<dl class="variation">';
-		endif;
+		}
 
 		$variation_list = array();
 
-		foreach ($product->variation_data as $name => $value) :
-
+		foreach($variation_data as $name => $value){
 			$name = str_replace('tax_', '', $name);
 
-			if ( taxonomy_exists( 'pa_'.$name )) :
-				$terms = get_terms( 'pa_'.$name, array( 'orderby' => 'slug', 'hide_empty' => '0' ) );
-				foreach ( $terms as $term ) :
-					if ( $term->slug == $value ) $value = $term->name;
-				endforeach;
-				$name = get_taxonomy( 'pa_'.$name )->labels->name;
+			if(taxonomy_exists('pa_'.$name)){
+				$terms = get_terms('pa_'.$name, array('orderby' => 'slug', 'hide_empty' => '0'));
+				foreach($terms as $term){
+					if($term->slug == $value){
+						$value = $term->name;
+					}
+				}
+				$name = get_taxonomy('pa_'.$name)->labels->name;
 				$name = $product->attribute_label('pa_'.$name);
-			endif;
+			}
 
 			// TODO: if it is a custom text attribute, 'pa_' taxonomies are not created and we
 			// have no way to get the 'label' as submitted on the Edit Product->Attributes tab.
 			// (don't ask me why not, I don't know, but it seems that we should be creating taxonomies)
 			// this function really requires the product passed to it for: $product->attribute_label( $name )
-			if ($flat) :
+			if($flat){
 				$variation_list[] = $name.': '.$value;
-			else :
+			} else {
 				$variation_list[] = '<dt>'.$name.':</dt><dd>'.$value.'</dd>';
-			endif;
+			}
+		}
 
-		endforeach;
-
-		if ($flat) :
+		if($flat){
 			$return .= implode(', ', $variation_list);
-		else :
+		} else {
 			$return .= implode('', $variation_list);
-		endif;
+		}
 
-		if (!$flat) :
+		if(!$flat){
 			$return .= '</dl>';
-		endif;
+		}
+	}
 
-		return $return;
-
-	endif;
+	return $return;
 }
 
 // Remove pingbacks/trackbacks from Comments Feed
