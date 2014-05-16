@@ -36,6 +36,7 @@ add_action( 'add_meta_boxes', 'jigoshop_meta_boxes' );
 function jigoshop_meta_boxes() {
     add_meta_box( 'jigoshop-product-data', __('Product Data', 'jigoshop'), 'jigoshop_product_data_box', 'product', 'normal', 'high' );
 
+		add_filter('jigoshop_admin_order_billing_fields', 'jigoshop_hide_euvat_field', 10, 2);
     add_meta_box( 'jigoshop-order-data', __('Order Data', 'jigoshop'), 'jigoshop_order_data_meta_box', 'shop_order', 'normal', 'high' );
     add_meta_box( 'jigoshop-order-items', __('Order Items <small>&ndash; Note: if you edit quantities or remove items from the order you will need to manually change the item\'s stock levels.</small>', 'jigoshop'), 'jigoshop_order_items_meta_box', 'shop_order', 'normal', 'high');
     add_meta_box( 'jigoshop-order-totals', __('Order Totals', 'jigoshop'), 'jigoshop_order_totals_meta_box', 'shop_order', 'side', 'default');
@@ -51,6 +52,13 @@ function jigoshop_meta_boxes() {
     remove_meta_box( 'commentstatusdiv', 'shop_coupon' , 'normal' );
     remove_meta_box( 'slugdiv', 'shop_coupon' , 'normal' );
     remove_post_type_support( 'shop_coupon', 'editor' );
+}
+
+function jigoshop_hide_euvat_field($fields, $data){
+	if(!isset($data['billing_euvatno'])){
+		unset($fields['billing_euvatno']);
+	}
+	return $fields;
 }
 
 /**

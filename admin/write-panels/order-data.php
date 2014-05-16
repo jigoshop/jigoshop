@@ -31,8 +31,7 @@ function jigoshop_order_data_meta_box($post) {
 
 	wp_nonce_field('jigoshop_save_data', 'jigoshop_meta_nonce');
 
-    $data = (array) maybe_unserialize( get_post_meta($post->ID, 'order_data', true) );
-
+  $data = (array) maybe_unserialize( get_post_meta($post->ID, 'order_data', true) );
 	$data['customer_user'] = (int) get_post_meta($post->ID, 'customer_user', true);
 
 	$order_status = get_the_terms($post->ID, 'shop_order_status');
@@ -49,6 +48,7 @@ function jigoshop_order_data_meta_box($post) {
 		$order_title = $post->post_title;
 	endif;
 
+	$data = apply_filters('jigoshop_admin_order_data', $data, $post->ID);
 	?>
 	<style type="text/css">
 		#titlediv, #major-publishing-actions, #minor-publishing-actions { display:none }
@@ -116,47 +116,32 @@ function jigoshop_order_data_meta_box($post) {
 		</div>
 
 		<div id="order_customer_billing_data" class="panel jigoshop_options_panel">
-            <?php
-				// display billing fields and values
+			<?php
+			$billing_fields = apply_filters('jigoshop_admin_order_billing_fields', array(
+				'billing_company' => __('Company', 'jigoshop'),
+				'billing_euvatno' => __('EU VAT Number', 'jigoshop'),
+				'billing_first_name' => __('First Name', 'jigoshop'),
+				'billing_last_name' => __('Last Name', 'jigoshop'),
+				'billing_address_1' => __('Address 1', 'jigoshop'),
+				'billing_address_2' => __('Address 2', 'jigoshop'),
+				'billing_city' => __('City', 'jigoshop'),
+				'billing_postcode' => __('Postcode', 'jigoshop'),
+				'billing_country' => __('Country', 'jigoshop'),
+				'billing_state' => __('State/County', 'jigoshop'),
+				'billing_phone' => __('Tel', 'jigoshop'),
+				'billing_email' => __('Email Address', 'jigoshop'),
+			), $data);
 
-                $billing_fields = array(
-					'company'   => __('Company', 'jigoshop'),
-					'first_name'=> __('First Name', 'jigoshop'),
-					'last_name' => __('Last Name', 'jigoshop'),
-					'address_1' => __('Address 1', 'jigoshop'),
-					'address_2' => __('Address 2', 'jigoshop'),
-					'city'      => __('City', 'jigoshop'),
-					'postcode'  => __('Postcode', 'jigoshop'),
-					'country'   => __('Country', 'jigoshop'),
-					'state'     => __('State/County', 'jigoshop'),
-					'phone'     => __('Tel', 'jigoshop'),
-					'email'     => __('Email Address', 'jigoshop'),
-				);
+			foreach($billing_fields as $field_id => $field_desc){
+				$field_value = '';
 
-				if ( isset( $data['billing_euvatno'] )) {
-					$start = $billing_fields;
-					array_splice( $start, 1 );
-					$end = $billing_fields;
-					array_splice( $end, 0, 1 );
-					$billing_fields = array_merge(
-						$start,
-						array( 'euvatno' => __('EU VAT Number', 'jigoshop') ),
-						$end
-					);
+				if(isset($data[$field_id])){
+					$field_value = $data[$field_id];
 				}
 
-                foreach($billing_fields as $field_id => $field_desc) {
-                    $field_id = 'billing_' . $field_id;
-                    $field_value = '';
-
-                    if(isset($data[$field_id])) {
-                        $field_value = $data[$field_id];
-                    }
-
-                    echo '<p class="form-field"><label for="' . esc_attr( $field_id ) . '">'.$field_desc.':</label>
-				<input type="text" name="'.esc_attr($field_id).'" id="'.esc_attr($field_id).'" value="'.esc_attr($field_value).'" /></p>';
-                }
-
+				echo '<p class="form-field"><label for="'.esc_attr($field_id).'">'.$field_desc.':</label>
+						<input type="text" name="'.esc_attr($field_id).'" id="'.esc_attr($field_id).'" value="'.esc_attr($field_value).'" /></p>';
+			}
 			?>
 		</div>
 
@@ -164,31 +149,28 @@ function jigoshop_order_data_meta_box($post) {
 
 			<p class="form-field"><button class="button billing-same-as-shipping"><?php _e('Copy billing address to shipping address', 'jigoshop'); ?></button></p>
 			<?php
-            //display shipping fieds and values
+			$shipping_fields = apply_filters('jigoshop_admin_order_shipping_fields', array(
+				'shipping_company' => __('Company', 'jigoshop'),
+				'shipping_first_name' => __('First Name', 'jigoshop'),
+				'shipping_last_name' => __('Last Name', 'jigoshop'),
+				'shipping_address_1' => __('Address 1', 'jigoshop'),
+				'shipping_address_2' => __('Address 2', 'jigoshop'),
+				'shipping_city' => __('City', 'jigoshop'),
+				'shipping_postcode' => __('Postcode', 'jigoshop'),
+				'shipping_country' => __('Country', 'jigoshop'),
+				'shipping_state' => __('State/County', 'jigoshop')
+			), $data);
 
-                $shipping_fields = array(
-					'company'   => __('Company', 'jigoshop'),
-					'first_name'=> __('First Name', 'jigoshop'),
-					'last_name' => __('Last Name', 'jigoshop'),
-					'address_1' => __('Address 1', 'jigoshop'),
-					'address_2' => __('Address 2', 'jigoshop'),
-					'city'      => __('City', 'jigoshop'),
-					'postcode'  => __('Postcode', 'jigoshop'),
-					'country'   => __('Country', 'jigoshop'),
-					'state'     => __('State/County', 'jigoshop')
-				);
+			foreach($shipping_fields as $field_id => $field_desc){
+				$field_value = '';
 
-                foreach($shipping_fields as $field_id => $field_desc) {
-                    $field_id = 'shipping_' . $field_id;
-                    $field_value = '';
+				if(isset($data[$field_id])){
+					$field_value = $data[$field_id];
+				}
 
-                    if(isset($data[$field_id])) {
-                        $field_value = $data[$field_id];
-                    }
-
-                    echo '<p class="form-field"><label for="' . esc_attr( $field_id ) . '">'.$field_desc.':</label>
+				echo '<p class="form-field"><label for="'.esc_attr($field_id).'">'.$field_desc.':</label>
 				<input type="text" name="'.esc_attr($field_id).'" id="'.esc_attr($field_id).'" value="'.esc_attr($field_value).'" /></p>';
-                }
+			}
 			?>
 		</div>
 
