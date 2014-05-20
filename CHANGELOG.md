@@ -1,5 +1,8 @@
 ## Changelog
 
+* 1.9.4
+    * Fix: Add BlockUI JavaScript in header for proper PayPal Standard support.
+    * Fix: Minor code updates to PayPal Standard gateway.
 * 1.9.3.1 - 2014-05-18
     * Fix: Quick fix for invalid use of `jigoshop_get_formatted_variation()`
 * 1.9.3 - 2014-05-15

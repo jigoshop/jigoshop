@@ -22,7 +22,7 @@
  * Author:              Jigoshop
  * Author URI:          http://www.jigoshop.com
  *
- * Version:             1.9.3.1
+ * Version:             1.9.4
  * Requires at least:   3.8
  * Tested up to:        3.9.1
  *
@@ -451,7 +451,7 @@ function is_jigoshop_single_page($page) {
 /**
  * Jigoshop Frontend Styles and Scripts
  **/
-add_action( 'template_redirect', 'jigoshop_frontend_scripts', 1 );
+add_action( 'wp_enqueue_scripts', 'jigoshop_frontend_scripts', 1 );
 function jigoshop_frontend_scripts() {
 
 	if ( is_admin() ) return;
@@ -477,7 +477,7 @@ function jigoshop_frontend_scripts() {
 		jigoshop_add_script( 'prettyphoto', jigoshop::assets_url().'/assets/js/jquery.prettyPhoto.js', array('jquery'), array('in_footer' => true) );
 	}
 
-	jigoshop_add_script( 'jigoshop_blockui', jigoshop::assets_url().'/assets/js/blockui.js', array('jquery'), array('in_footer' => true) );
+	jigoshop_add_script( 'jigoshop_blockui', jigoshop::assets_url().'/assets/js/blockui.js', array('jquery'), array('in_footer' => false) );
 	jigoshop_add_script( 'jigoshop-cart', jigoshop::assets_url().'/assets/js/cart.js', array( 'jquery' ), array('in_footer' => true, 'page' => JIGOSHOP_CART) );
 	jigoshop_add_script( 'jigoshop-checkout', jigoshop::assets_url().'/assets/js/checkout.js', array( 'jquery' ), array('in_footer' => true, 'page' => JIGOSHOP_CHECKOUT) );
 	jigoshop_add_script( 'jigoshop-single-product', jigoshop::assets_url().'/assets/js/single-product.js', array( 'jquery' ), array('in_footer' => true, 'page' => JIGOSHOP_PRODUCT) );

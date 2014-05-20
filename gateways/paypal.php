@@ -395,28 +395,28 @@ class paypal extends jigoshop_payment_gateway {
 				' . implode('', $paypal_args_array) . '
 				<input type="submit" class="button-alt" id="submit_paypal_payment_form" value="'.__('Pay via PayPal', 'jigoshop').'" />
 				<script type="text/javascript">
-				/*<![CDATA[*/
-					jQuery(document).ready( function($) {
-						$("body").block(
-							{
-								message: "<img src=\"'.jigoshop::assets_url().'/assets/images/ajax-loader.gif\" alt=\"Redirecting...\" />'.__('Thank you for your order. We are now redirecting you to PayPal to make payment.', 'jigoshop').'",
-								overlayCSS:
+					(function($){
+						$(document).ready(function(){
+							$("body").block(
 								{
-									background: "#fff",
-									opacity: 0.6
-								},
-								css: {
-									padding:		20,
-									textAlign:	  "center",
-									color:		  "#555",
-									border:		 "3px solid #aaa",
-									backgroundColor:"#fff",
-									cursor:		 "wait"
-								}
-							});
-						$("#submit_paypal_payment_form").click();
-					});
-				/*]]>*/
+									message: "<img src=\"'.jigoshop::assets_url().'/assets/images/ajax-loader.gif\" alt=\"Redirecting...\" />'.__('Thank you for your order. We are now redirecting you to PayPal to make payment.', 'jigoshop').'",
+									overlayCSS:
+									{
+										background: "#fff",
+										opacity: 0.6
+									},
+									css: {
+										padding:		20,
+										textAlign:	  "center",
+										color:		  "#555",
+										border:		 "3px solid #aaa",
+										backgroundColor:"#fff",
+										cursor:		 "wait"
+									}
+								});
+							$("#submit_paypal_payment_form").click();
+						})
+					})(jQuery);
 				</script>
 			</form>';
 
