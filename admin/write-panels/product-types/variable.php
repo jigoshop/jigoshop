@@ -200,8 +200,14 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			wp_set_object_terms( $ID, sanitize_title($meta['product-type']), 'product_type');
 
 			// Set variation meta data
+			if(!is_numeric($meta['regular_price'])){
+				add_filter('redirect_post_location', function($location){
+					return add_query_arg('jigoshop_message', 'invalid_variation_price', $location);
+				});
+				$meta['regular_price'] = 0.0;
+			}
 			update_post_meta( $ID, 'sku',           $meta['sku'] );
-			update_post_meta( $ID, 'regular_price', $meta['regular_price'] );
+			update_post_meta( $ID, 'regular_price',  $meta['regular_price']);
 
 			$sale_price = ! empty( $meta['sale_price'] )
 				? ( !strstr( $meta['sale_price'], '%' ) ? jigoshop_sanitize_num( $meta['sale_price'] ) : $meta['sale_price'] )

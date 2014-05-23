@@ -28,6 +28,16 @@ if ( get_bloginfo('version') >= '3.3' ) {
 	require_once( 'jigoshop-admin-help.php' );
 }
 
+add_action('admin_notices', function(){
+	if(isset($_GET['jigoshop_message'])){
+		switch($_GET['jigoshop_message']){
+			case 'invalid_variation_price':
+				echo '<div class="error"><p>'.__('<strong>Error!</strong> One of variations has invalid price!', 'jigoshop').'</p></div>';
+				break;
+		}
+	}
+});
+
 add_action('admin_notices', 'jigoshop_update');
 function jigoshop_update() {
 	// Run database upgrade if required
