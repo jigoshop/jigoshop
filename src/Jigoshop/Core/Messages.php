@@ -2,6 +2,8 @@
 
 namespace Jigoshop\Core;
 
+use WPAL\Wordpress;
+
 /**
  * Class containing Jigoshop messages.
  *
@@ -18,7 +20,7 @@ class Messages
 	private $warnings = array();
 	private $errors = array();
 
-	public function __construct(\WPAL\Wordpress $wordpress)
+	public function __construct(Wordpress $wordpress)
 	{
 		if(isset($_SESSION[self::NOTICES]))
 		{

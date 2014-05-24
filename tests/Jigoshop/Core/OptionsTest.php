@@ -10,12 +10,12 @@ namespace Jigoshop\Core;
  */
 class OptionsTest extends \PHPUnit_Framework_TestCase
 {
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \WPAL\Wordpress */
 	private $wordpress;
 
 	public function setUp()
 	{
-		$this->wordpress = $this->getMock('Jigoshop\\Core\\Wordpress');
+		$this->wordpress = $this->getMock('\\WPAL\\Wordpress');
 		$this->wordpress->expects($this->any())
 			->method('getOption')
 			->with($this->equalTo('jigoshop'))
@@ -92,7 +92,9 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
 	public function testUpdateAndSaveOptionsValue()
 	{
 		// Given
-		$this->wordpress->expects($this->once())
+		$wordpress = $this->wordpress;
+		/** @var $wordpress \PHPUnit_Framework_MockObject_MockObject */
+		$wordpress->expects($this->once())
 			->method('updateOption')
 			->withAnyParameters();
 		$options = new Options($this->wordpress);

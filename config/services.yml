@@ -1,0 +1,19 @@
+parameters: ~
+services:
+  wpal:
+    class: WPAL\Wordpress
+  jigoshop:
+    class: Jigoshop\Core
+    arguments: ['@wpal', '@jigoshop.options', '@jigoshop.messages']
+  jigoshop.options:
+    class: Jigoshop\Core\Options
+    arguments: ['@wpal']
+  jigoshop.messages:
+    class: Jigoshop\Core\Messages
+    arguments: ['@wpal']
+  jigoshop.cron:
+    class: Jigoshop\Core\Cron
+    arguments: ['@wpal', '@jigoshop.options', '@jigoshop.service.order']
+  jigoshop.service.order:
+    class: Jigoshop\Service\Order
+    arguments: ['@wpal']

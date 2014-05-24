@@ -3,6 +3,7 @@
 namespace Jigoshop\Service;
 
 use Jigoshop\Entity\EntityInterface;
+use WPAL\Wordpress;
 
 /**
  * Orders service.
@@ -12,6 +13,13 @@ use Jigoshop\Entity\EntityInterface;
  */
 class Order implements OrderServiceInterface
 {
+	/** @var \WPAL\Wordpress */
+	private $wordpress;
+
+	public function __construct(Wordpress $wordpress)
+	{
+		$this->wordpress = $wordpress;
+	}
 	/**
 	 * Finds order specified by ID.
 	 *

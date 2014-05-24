@@ -10,6 +10,7 @@ use Jigoshop\Core\PostTypes;
 use Jigoshop\Core\Roles;
 use Jigoshop\Service\Order as OrderService;
 use Jigoshop\Service\Product as ProductService;
+use WPAL\Wordpress;
 
 class Core
 {
@@ -28,13 +29,13 @@ class Core
 	/** @var \WPAL\Wordpress */
 	private $wordpress;
 
-	public function __construct()
+	public function __construct(Wordpress $wordpress, Options $options, Messages $messages)
 	{
 		PostTypes::initialize();
 		Roles::initialize();
-		$this->wordpress = new \WPAL\Wordpress();
-		$this->options = new Options($this->wordpress);
-		$this->messages = new Messages($this->wordpress);
+		$this->wordpress = $wordpress;
+		$this->options = $options;
+		$this->messages = $messages;
 		$this->_addQueryFilters();
 		$this->cron = new Cron($this->wordpress, $this->options, $this->getOrderService());
 		$this->assets = new Assets($this->options);
@@ -43,6 +44,14 @@ class Core
 		{
 			$this->admin = new Admin($this);
 		}
+	}
+
+	/**
+	 * Starts Jigoshop extensions and Jigoshop itself.
+	 */
+	public function run()
+	{
+		//
 	}
 
 	private function _addQueryFilters()
@@ -88,7 +97,7 @@ class Core
 	{
 		if(!isset($this->services['order']))
 		{
-			$service = new OrderService();
+			$service = new OrderService($this->wordpress);
 
 			switch($this->options->get('cache_mechanism'))
 			{

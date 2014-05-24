@@ -9,12 +9,15 @@ namespace Jigoshop\Core;
  */
 class MessagesTest extends \PHPUnit_Framework_TestCase
 {
-	/** @var \Jigoshop\Core\Wordpress */
+	/** @var \WPAL\Wordpress */
 	private $wordpress;
 
 	public function setUp()
 	{
-		$this->wordpress = $this->getMock('\\Jigoshop\\Core\\Wordpress');
+		$this->wordpress = $this->getMock('\\WPAL\\Wordpress');
+		$this->wordpress->expects($this->any())
+			->method('addAction')
+			->with($this->anything());
 	}
 
 	public function testAddNotice()
