@@ -17,7 +17,7 @@
  * @copyright           Copyright © 2011-2014 Jigoshop.
  * @license             GNU General Public License v3
  *
- * @version 1.2.1 - 2014-04-28
+ * @version 1.2.2 - 2014-05-11
  */
 
 
@@ -212,9 +212,8 @@ class jigoshop_licence_validator
 		foreach ( $_POST['licence_keys'] as $product_id => $licence_key ) {
 
 			$licence_key		= trim( $licence_key );
-			$activation_email	= ( isset( $_POST['licence_emails'][$product_id] ) && is_email( $_POST['licence_emails'][$product_id] ) )
-			? $_POST['licence_emails'][$product_id]
-			: '';
+			$activation_email	= ( isset( $_POST['licence_emails'][$product_id] ) && is_email( $_POST['licence_emails'][$product_id] ) ) ?
+									$_POST['licence_emails'][$product_id] : $this->get_current_user_email();
 			$licence_active		= ( isset( $keys[$product_id]['status'] ) && $keys[$product_id]['status'] );
 
 			// Deactivate this key as it was removed
