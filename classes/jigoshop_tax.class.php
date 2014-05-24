@@ -309,9 +309,13 @@ class jigoshop_tax extends Jigoshop_Base {
 			if(!in_array($country, $specific_countries)){
 				$country = array_shift($specific_countries);
 			}
-			if(isset($this->rates[$country]) && is_array($this->rates[$country]) && !in_array($state, array_keys($this->rates[$country]))){
-				$states = array_keys($this->rates[$country]);
-				$state = array_shift($states);
+			if(jigoshop_countries::country_has_states($country) && !in_array($state, array_keys(jigoshop_countries::get_states($country)))){
+				if(isset($this->rates[$country])){
+					$states = array_keys($this->rates[$country]);
+					$state = array_shift($states);
+				} else {
+					$state = jigoshop_countries::get_base_state();
+				}
 			}
 		}
 

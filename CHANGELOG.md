@@ -6,6 +6,7 @@
     * Fix: Minor code updates to PayPal Standard gateway.
     * Fix: Saving options in specific circumstances.
     * Fix: Warnings when no tax defined.
+    * Fix: Proper checking for tax state correctness. Thanks to Karl Engstrom
 * 1.9.3.1 - 2014-05-18
     * Fix: Quick fix for invalid use of `jigoshop_get_formatted_variation()`
 * 1.9.3 - 2014-05-15
