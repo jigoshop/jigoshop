@@ -322,6 +322,10 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		$current_options = $options->get_current_options();
 		$valid_input = $current_options; // we start with the current options
 
+		if(isset($_POST['jigoshop_options_processed']) && wp_verify_nonce($_POST['jigoshop_options_processed'], 'jigoshop_options_processed')){
+			return $valid_input;
+		}
+
 		// Find the current TAB we are working with and use it's option settings
 		$this_section = $this->get_current_tab_name();
 		$tab = $this->our_parser->tabs[sanitize_title($this_section)];
@@ -375,7 +379,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 							break;
 						case 'checkbox' :
 							// there will be no $value for a false checkbox, set it now
-							$valid_input[$setting['id']] = isset($value) ? 'yes' : 'no';
+							$valid_input[$setting['id']] = $value !== null ? 'yes' : 'no';
 							break;
 						case 'multicheck' :
 							$selected = array();
@@ -507,6 +511,8 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 				unset($valid_input[$key]);
 			}
 		}
+
+		$_POST['jigoshop_options_processed'] = wp_create_nonce('jigoshop_options_processed');
 
 		return $valid_input; // send it back to WordPress for saving
 	}

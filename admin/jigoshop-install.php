@@ -43,11 +43,11 @@ function install_jigoshop( $network_wide = false ) {
 }
 
 function _install_jigoshop(){
+	jigoshop_populate_options();
+
 	if(!get_option('jigoshop_db_version')){
 
 		jigoshop_tables_install(); /* we need tables installed first to eliminate installation errors */
-
-		jigoshop_populate_options();
 
 		jigoshop_create_pages();
 
@@ -151,7 +151,9 @@ function jigoshop_populate_options(){
 
 	$options = Jigoshop_Base::get_options();
 	foreach($defaults as $option => $value){
-		$options->add_option($option, $value);
+		if(!$options->exists_option($option)){
+			$options->add_option($option, $value);
+		}
 	}
 }
 
