@@ -8,7 +8,6 @@ use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\PostTypes;
 use Jigoshop\Core\Roles;
-use Jigoshop\Core\Wordpress;
 use Jigoshop\Service\Order as OrderService;
 use Jigoshop\Service\Product as ProductService;
 
@@ -26,15 +25,15 @@ class Core
 	private $messages;
 	/** @var \Jigoshop\Admin */
 	private $admin;
-	/** @var \Jigoshop\Core\Wordpress */
+	/** @var \WPAL\Wordpress */
 	private $wordpress;
 
 	public function __construct()
 	{
 		PostTypes::initialize();
 		Roles::initialize();
-		$this->wordpress = new Wordpress();
-		$this->options = new Options();
+		$this->wordpress = new \WPAL\Wordpress();
+		$this->options = new Options($this->wordpress);
 		$this->messages = new Messages($this->wordpress);
 		$this->_addQueryFilters();
 		$this->cron = new Cron($this->wordpress, $this->options, $this->getOrderService());
@@ -58,7 +57,7 @@ class Core
 	}
 
 	/**
-	 * @return Wordpress WordPress abstraction instance.
+	 * @return \WPAL\Wordpress WordPress abstraction instance.
 	 */
 	public function getWordpress()
 	{

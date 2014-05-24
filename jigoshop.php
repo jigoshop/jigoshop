@@ -22,7 +22,7 @@
  * Author URI:          http://www.jigoshop.com
  * Version:             2.0
  * Requires at least:   3.8
- * Tested up to:        3.9
+ * Tested up to:        3.9.1
  * Text Domain:         jigoshop
  * Domain Path:         /languages/
  * DISCLAIMER
@@ -52,6 +52,8 @@ function jigoshop_setup_class_loader()
 {
 	require_once(JIGOSHOP_DIR.'/src/Jigoshop/ClassLoader.php');
 	$loader = new \JigoshopClassLoader('Jigoshop', JIGOSHOP_DIR.'/src');
+	$loader->register();
+	$loader = new \JigoshopClassLoader('WPAL', JIGOSHOP_DIR.'/vendor/megawebmaster/wpal');
 	$loader->register();
 }
 

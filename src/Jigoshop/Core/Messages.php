@@ -18,7 +18,7 @@ class Messages
 	private $warnings = array();
 	private $errors = array();
 
-	public function __construct(Wordpress $wordpress)
+	public function __construct(\WPAL\Wordpress $wordpress)
 	{
 		if(isset($_SESSION[self::NOTICES]))
 		{

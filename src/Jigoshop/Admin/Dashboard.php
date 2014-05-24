@@ -3,7 +3,6 @@
 namespace Jigoshop\Admin;
 
 use Jigoshop\Core\Options;
-use Jigoshop\Core\Wordpress;
 use Jigoshop\Entity\Order;
 use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
@@ -16,7 +15,7 @@ use Jigoshop\Service\ProductServiceInterface;
  */
 class Dashboard implements PageInterface
 {
-	/** @var \Jigoshop\Core\Wordpress */
+	/** @var \WPAL\Wordpress */
 	private $database;
 	/** @var \Jigoshop\Service\OrderServiceInterface */
 	private $orderService;
@@ -25,7 +24,7 @@ class Dashboard implements PageInterface
 	/** @var Options */
 	private $options;
 
-	public function __construct(Wordpress $database, Options $options, OrderServiceInterface $orderService, ProductServiceInterface $productService)
+	public function __construct(\WPAL\Wordpress $database, Options $options, OrderServiceInterface $orderService, ProductServiceInterface $productService)
 	{
 		$this->database = $database;
 		$this->options = $options;

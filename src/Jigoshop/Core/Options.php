@@ -11,7 +11,7 @@ namespace Jigoshop\Core;
  */
 class Options
 {
-	/** @var \Jigoshop\Core\Wordpress */
+	/** @var \WPAL\Wordpress */
 	private $wordpress;
 
 	// TODO: Fill default options
@@ -32,7 +32,7 @@ class Options
 	private $options = array();
 	private $dirty = false;
 
-	public function __construct(Wordpress $wordpress)
+	public function __construct(\WPAL\Wordpress $wordpress)
 	{
 		$this->wordpress = $wordpress;
 		$this->_loadOptions();

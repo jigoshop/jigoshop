@@ -1,2 +1,4 @@
 compatibility/*
 phpunit.phar
+
+/vendor/

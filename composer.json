@@ -1,0 +1,29 @@
+{
+	"name": "jigoshop/jigoshop",
+	"description": "Jigoshop is an eCommerce plugin for WordPress forged from years of experience by the WordPress Community & the Jigoshop Team.",
+	"license": "GPLv3",
+	"authors": [
+		{
+			"name": "Jigoshop",
+			"email": "support@jigoshop.com"
+		},
+		{
+			"name": "Amadeusz Starzykiewicz",
+			"email": "megawebmaster@gmail.com"
+		}
+	],
+	"minimum-stability": "dev",
+	"repositories": [
+		{
+			"type": "git",
+			"url": "https://github.com/megawebmaster/wpal"
+		}
+	],
+	"require": {
+		"php": ">= 5.3.3",
+		"megawebmaster/wpal": "*"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "*"
+	}
+}

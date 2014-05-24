@@ -6,14 +6,14 @@ use Jigoshop\Service\OrderServiceInterface;
 
 class Cron
 {
-	/** @var \Jigoshop\Core\Wordpress */
+	/** @var \WPAL\Wordpress */
 	private $wordpress;
 	/** @var Options */
 	private $options;
 	/** @var OrderServiceInterface */
 	private $service;
 
-	public function __construct(Wordpress $wordpress, Options $options, OrderServiceInterface $service)
+	public function __construct(\WPAL\Wordpress $wordpress, Options $options, OrderServiceInterface $service)
 	{
 		$this->wordpress = $wordpress;
 		$this->options = $options;
@@ -26,7 +26,7 @@ class Cron
 
 	public static function clear()
 	{
-		$wordpress = new Wordpress();
+		$wordpress = new \WPAL\Wordpress();
 		$wordpress->clearScheduledHook('jigoshop\\cron\\pending_orders');
 		$wordpress->clearScheduledHook('jigoshop\\cron\\processing_orders');
 	}
