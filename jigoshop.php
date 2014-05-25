@@ -62,10 +62,9 @@ class Jigoshop_Init
 	public function __construct()
 	{
 		require_once(JIGOSHOP_DIR.'/vendor/autoload.php');
-		require_once(JIGOSHOP_DIR.'/src/Jigoshop/ClassLoader.php');
-		$loader = new \JigoshopClassLoader('WPAL', JIGOSHOP_DIR.'/vendor/megawebmaster/wpal');
-		$loader->register();
-		$loader = new \JigoshopClassLoader('Jigoshop', JIGOSHOP_DIR.'/src');
+		$loader = new \Symfony\Component\ClassLoader\ClassLoader();
+		$loader->addPrefix('WPAL', JIGOSHOP_DIR.'/vendor/megawebmaster/wpal');
+		$loader->addPrefix('Jigoshop', JIGOSHOP_DIR.'/src');
 		$loader->register();
 
 		// Initialize Jigoshop Dependency Injection Container

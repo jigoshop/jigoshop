@@ -22,13 +22,13 @@
 	"require": {
 		"php": ">= 5.3.3",
 		"megawebmaster/wpal": "*",
+		"symfony/class-loader": "2.4.*",
 		"symfony/dependency-injection": "2.4.*",
 		"symfony/config": "2.4.*",
 		"symfony/yaml": "2.4.*",
-		"symfony/proxy-manager-bridge": "2.3.*"
+		"symfony/proxy-manager-bridge": "2.4.*"
 	},
 	"require-dev": {
-		"megawebmaster/wpal": "*",
 		"phpunit/phpunit": "3.7.*"
 	}
 }
