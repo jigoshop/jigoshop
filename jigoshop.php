@@ -54,93 +54,94 @@ if(!defined('JIGOSHOP_URL'))
 	define('JIGOSHOP_URL', plugins_url('', __FILE__));
 }
 
-function jigoshop_setup_class_loader()
+class Jigoshop_Init
 {
-	require_once(JIGOSHOP_DIR.'/vendor/autoload.php');
-	require_once(JIGOSHOP_DIR.'/src/Jigoshop/ClassLoader.php');
-	$loader = new \JigoshopClassLoader('WPAL', JIGOSHOP_DIR.'/vendor/megawebmaster/wpal');
-	$loader->register();
-	$loader = new \JigoshopClassLoader('Jigoshop', JIGOSHOP_DIR.'/src');
-	$loader->register();
-}
+	/** @var \JigoshopContainer */
+	private $container;
 
-/**
- * Initializes Jigoshop.
- *
- * Sets properly class loader and prepares Jigoshop to start, then sets up external plugins.
- *
- * Calls `jigoshop\initialize\plugins` action with \Jigoshop\Core object as parameter.
- */
-function jigoshop_init()
-{
-	// Override default translations with custom .mo's found in wp-content/languages/jigoshop first.
-	load_textdomain('jigoshop', WP_LANG_DIR.'/jigoshop/jigoshop-'.get_locale().'.mo');
-	load_plugin_textdomain('jigoshop', false, JIGOSHOP_DIR.'/languages/');
-
-	jigoshop_setup_class_loader();
-
-	// Initialize Jigoshop Dependency Injection Container
-	$file = JIGOSHOP_DIR.'/cache/container.php';
-	$is_debug = true; // TODO: Properly fetch developers mode
-	$config_cache = new ConfigCache($file, $is_debug);
-
-	if(!$config_cache->isFresh()){
-		$builder = new ContainerBuilder();
-		$loader = new YamlFileLoader($builder, new FileLocator(JIGOSHOP_DIR.'/config'));
-		$loader->load('services.yml');
-		// Load extension configuration
-		do_action('jigoshop\\plugins\\configure', $builder);
-		$builder->compile();
-
-		$dumper = new PhpDumper($builder);
-		$config_cache->write(
-			$dumper->dump(array('class' => 'JigoshopContainer')),
-			$builder->getResources()
-		);
-	}
-
-	/** @noinspection PhpIncludeInspection */
-	require_once($file);
-	/** @noinspection PhpUndefinedClassInspection */
-	$container = new JigoshopContainer();
-
-	/** @var \Jigoshop\Core $jigoshop */
-	$jigoshop = $container->get('jigoshop');
-	// Initialize Cron and Assets
-	$container->get('jigoshop.cron');
-	$container->get('jigoshop.assets');
-
-	// Initialize external plugins
-	do_action('jigoshop\\plugins\\initialize', $container, $jigoshop);
-
-	$jigoshop->run();
-}
-add_action('init', 'jigoshop_init', 0);
-
-/**
- * Installs or updates Jigoshop.
- */
-function jigoshop_update($network_wide = false)
-{
-	jigoshop_setup_class_loader();
-	/** @var $wpdb WPDB */
-	global $wpdb;
-
-	if(!$network_wide)
+	public function __construct()
 	{
-		new \Jigoshop\Core\Install($wpdb);
-		return;
+		require_once(JIGOSHOP_DIR.'/vendor/autoload.php');
+		require_once(JIGOSHOP_DIR.'/src/Jigoshop/ClassLoader.php');
+		$loader = new \JigoshopClassLoader('WPAL', JIGOSHOP_DIR.'/vendor/megawebmaster/wpal');
+		$loader->register();
+		$loader = new \JigoshopClassLoader('Jigoshop', JIGOSHOP_DIR.'/src');
+		$loader->register();
+
+		// Initialize Jigoshop Dependency Injection Container
+		$file = JIGOSHOP_DIR.'/cache/container.php';
+		$is_debug = true; // TODO: Properly fetch developers mode
+		$config_cache = new ConfigCache($file, $is_debug);
+
+		if(!$config_cache->isFresh()){
+			$builder = new ContainerBuilder();
+			$loader = new YamlFileLoader($builder, new FileLocator(JIGOSHOP_DIR.'/config'));
+			$loader->load('services.yml');
+			// Load extension configuration
+			do_action('jigoshop\\plugins\\configure', $builder);
+			$builder->compile();
+
+			$dumper = new PhpDumper($builder);
+			$config_cache->write(
+				$dumper->dump(array('class' => 'JigoshopContainer')),
+				$builder->getResources()
+			);
+		}
+
+		/** @noinspection PhpIncludeInspection */
+		require_once($file);
+		/** @noinspection PhpUndefinedClassInspection */
+		$this->container = new JigoshopContainer();
 	}
 
-	$blog = $wpdb->blogid;
-	$ids = $wpdb->get_col("SELECT blog_id FROM {$wpdb->blogs}");
-
-	foreach($ids as $id)
+	/**
+	 * Initializes Jigoshop.
+	 *
+	 * Sets properly class loader and prepares Jigoshop to start, then sets up external plugins.
+	 *
+	 * Calls `jigoshop\plugins\configure` action with \JigoshopContainer object as parameter - you need to add your extension configuration to the container there.
+	 */
+	public function init()
 	{
-		switch_to_blog($id);
-		new \Jigoshop\Core\Install($wpdb);
-	}
-	switch_to_blog($blog);
-}
-register_activation_hook(__FILE__, 'jigoshop_update');
+		// Override default translations with custom .mo's found in wp-content/languages/jigoshop first.
+		load_textdomain('jigoshop', WP_LANG_DIR.'/jigoshop/jigoshop-'.get_locale().'.mo');
+		load_plugin_textdomain('jigoshop', false, JIGOSHOP_DIR.'/languages/');
 
+		/** @var \Jigoshop\Core $jigoshop */
+		$jigoshop = $this->container->get('jigoshop');
+		// Initialize Cron and Assets
+		$this->container->get('jigoshop.cron');
+		$this->container->get('jigoshop.assets');
+
+		$jigoshop->run();
+	}
+
+	/**
+	 * Installs or updates Jigoshop.
+	 */
+	public function update($network_wide = false)
+	{
+		/** @var $wpdb WPDB */
+		global $wpdb;
+
+		if(!$network_wide)
+		{
+			new \Jigoshop\Core\Install($wpdb);
+			return;
+		}
+
+		$blog = $wpdb->blogid;
+		$ids = $wpdb->get_col("SELECT blog_id FROM {$wpdb->blogs}");
+
+		foreach($ids as $id)
+		{
+			switch_to_blog($id);
+			new \Jigoshop\Core\Install($wpdb);
+		}
+		switch_to_blog($blog);
+	}
+}
+
+$jigoshop_init = new Jigoshop_Init();
+add_action('init', array($jigoshop_init, 'init'), 0);
+register_activation_hook(__FILE__, array($jigoshop_init, 'update'));
