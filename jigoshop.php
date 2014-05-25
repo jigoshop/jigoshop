@@ -56,16 +56,9 @@ if(!defined('JIGOSHOP_URL'))
 
 function jigoshop_setup_class_loader()
 {
+	require_once(JIGOSHOP_DIR.'/vendor/autoload.php');
 	require_once(JIGOSHOP_DIR.'/src/Jigoshop/ClassLoader.php');
 	$loader = new \JigoshopClassLoader('WPAL', JIGOSHOP_DIR.'/vendor/megawebmaster/wpal');
-	$loader->register();
-	$loader = new \JigoshopClassLoader('Symfony\\Component\\DependencyInjection', JIGOSHOP_DIR.'/vendor/symfony/dependency-injection');
-	$loader->register();
-	$loader = new \JigoshopClassLoader('Symfony\\Component\\Filesystem', JIGOSHOP_DIR.'/vendor/symfony/filesystem');
-	$loader->register();
-	$loader = new \JigoshopClassLoader('Symfony\\Component\\Config', JIGOSHOP_DIR.'/vendor/symfony/config');
-	$loader->register();
-	$loader = new \JigoshopClassLoader('Symfony\\Component\\Yaml', JIGOSHOP_DIR.'/vendor/symfony/yaml');
 	$loader->register();
 	$loader = new \JigoshopClassLoader('Jigoshop', JIGOSHOP_DIR.'/src');
 	$loader->register();
@@ -88,7 +81,7 @@ function jigoshop_init()
 
 	// Initialize Jigoshop Dependency Injection Container
 	$file = JIGOSHOP_DIR.'/cache/container.php';
-	$is_debug = true;
+	$is_debug = true; // TODO: Properly fetch developers mode
 	$config_cache = new ConfigCache($file, $is_debug);
 
 	if(!$config_cache->isFresh()){
@@ -113,6 +106,9 @@ function jigoshop_init()
 
 	/** @var \Jigoshop\Core $jigoshop */
 	$jigoshop = $container->get('jigoshop');
+	// Initialize Cron and Assets
+	$container->get('jigoshop.cron');
+	$container->get('jigoshop.assets');
 
 	// Initialize external plugins
 	do_action('jigoshop\\plugins\\initialize', $container, $jigoshop);

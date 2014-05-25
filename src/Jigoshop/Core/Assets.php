@@ -5,6 +5,7 @@ namespace Jigoshop\Core;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use Jigoshop\Pages;
+use WPAL\Wordpress;
 
 /**
  * Class for adding required assets.
@@ -16,13 +17,17 @@ use Jigoshop\Pages;
  */
 class Assets
 {
+	/** @var \Jigoshop\Core\Options */
 	private $options;
+	/** @var \WPAL\Wordpress */
+	private $wp;
 
-	public function __construct(Options $options)
+	public function __construct(Wordpress $wp, Options $options)
 	{
+		$this->wp = $wp;
 		$this->options = $options;
-		add_action('admin_enqueue_scripts', array($this, 'loadAdminAssets'));
-		add_action('wp_enqueue_scripts', array($this, 'loadFrontendAssets'));
+		$wp->addAction('admin_enqueue_scripts', array($this, 'loadAdminAssets'));
+		$wp->addAction('wp_enqueue_scripts', array($this, 'loadFrontendAssets'));
 	}
 
 	/** @noinspection PhpUnusedPrivateMethodInspection */
@@ -63,7 +68,7 @@ class Assets
 		 */
 		if($adminPage == 'shop_order' || $adminPage == 'shop_coupon')
 		{
-			add_filter('script_loader_src', array($this, '_disableAutoSave'), 10, 2);
+			$this->wp->addFilter('script_loader_src', array($this, '_disableAutoSave'), 10, 2);
 		}
 	}
 
@@ -82,7 +87,7 @@ class Assets
 	public function loadFrontendAssets()
 	{
 		$frontend_css = JIGOSHOP_URL.'/assets/css/frontend.css';
-		$theme_css = file_exists(get_stylesheet_directory().'/jigoshop/style.css') ? get_stylesheet_directory_uri().'/jigoshop/style.css' : $frontend_css;
+		$theme_css = file_exists($this->wp->getStylesheetDirectory().'/jigoshop/style.css') ? $this->wp->getStylesheetDirectoryUri().'/jigoshop/style.css' : $frontend_css;
 
 		if($this->options->get('disable_css') == 'no')
 		{

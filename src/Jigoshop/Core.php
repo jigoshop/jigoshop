@@ -2,14 +2,10 @@
 
 namespace Jigoshop;
 
-use Jigoshop\Core\Assets;
-use Jigoshop\Core\Cron;
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\PostTypes;
 use Jigoshop\Core\Roles;
-use Jigoshop\Service\Order as OrderService;
-use Jigoshop\Service\Product as ProductService;
 use WPAL\Wordpress;
 
 class Core
@@ -18,31 +14,25 @@ class Core
 
 	/** @var \Jigoshop\Core\Options */
 	private $options;
-	/** @var array  */
-	private $services = array();
-	/** @var \Jigoshop\Core\Cron  */
-	private $cron;
 	/** @var \Jigoshop\Core\Messages */
 	private $messages;
 	/** @var \Jigoshop\Admin */
 	private $admin;
 	/** @var \WPAL\Wordpress */
-	private $wordpress;
+	private $wp;
 
-	public function __construct(Wordpress $wordpress, Options $options, Messages $messages)
+	public function __construct(Wordpress $wp, Options $options, Messages $messages, Admin $admin)
 	{
 		PostTypes::initialize();
 		Roles::initialize();
-		$this->wordpress = $wordpress;
+		$this->wp = $wp;
 		$this->options = $options;
 		$this->messages = $messages;
 		$this->_addQueryFilters();
-		$this->cron = new Cron($this->wordpress, $this->options, $this->getOrderService());
-		$this->assets = new Assets($this->options);
 
-		if(is_admin())
+		if($wp->isAdmin())
 		{
-			$this->admin = new Admin($this);
+			$this->admin = $admin;
 		}
 	}
 
@@ -51,17 +41,17 @@ class Core
 	 */
 	public function run()
 	{
-		//
+		// TODO: Build required extensions
 	}
 
 	private function _addQueryFilters()
 	{
-		if(!is_admin())
+		if(!$this->wp->isAdmin())
 		{
 			/* Catalog Filters */
-			add_filter('jigoshop\\shop\\query', array($this, '_shopSortingFilter'));
-			add_filter('jigoshop\\shop\\columns', array($this, '_shopVisibleColumnsFilter'));
-			add_filter('jigoshop\\shop\\per_page', array($this, '_shopPerPageFilter'));
+			$this->wp->addFilter('jigoshop\\shop\\query', array($this, '_shopSortingFilter'));
+			$this->wp->addFilter('jigoshop\\shop\\columns', array($this, '_shopVisibleColumnsFilter'));
+			$this->wp->addFilter('jigoshop\\shop\\per_page', array($this, '_shopPerPageFilter'));
 		}
 	}
 
@@ -70,7 +60,7 @@ class Core
 	 */
 	public function getWordpress()
 	{
-		return $this->wordpress;
+		return $this->wp;
 	}
 
 	/**
@@ -81,37 +71,12 @@ class Core
 	 */
 	public function getAdmin()
 	{
-		if(!is_admin())
+		if(!$this->wp->isAdmin())
 		{
 			throw new Exception('Invalid use of Core::getAdmin() function - not in admin panel!');
 		}
 
 		return $this->admin;
-	}
-
-	/**
-	 * @return OrderService Orders service.
-	 * @since 2.0
-	 */
-	public function getOrderService()
-	{
-		if(!isset($this->services['order']))
-		{
-			$service = new OrderService($this->wordpress);
-
-			switch($this->options->get('cache_mechanism'))
-			{
-				case 'simple':
-					$service = new Service\Cache\Order\Simple($service);
-					break;
-				default:
-					$service = apply_filters('jigoshop\\core\\get_order_service', $service);
-			}
-
-			$this->services['order'] = $service;
-		}
-
-		return $this->services['order'];
 	}
 
 	/**
@@ -130,31 +95,6 @@ class Core
 	public function getMessages()
 	{
 		return $this->messages;
-	}
-
-	/**
-	 * @return ProductService Products service.
-	 * @since 2.0
-	 */
-	public function getProductService()
-	{
-		if(!isset($this->services['product']))
-		{
-			$service = new ProductService();
-
-			switch($this->options->get('cache_mechanism'))
-			{
-				case 'simple':
-					$service = new Service\Cache\Product\Simple($service);
-					break;
-				default:
-					$service = apply_filters('jigoshop\\core\\get_product_service', $service);
-			}
-
-			$this->services['product'] = $service;
-		}
-
-		return $this->services['product'];
 	}
 
 	/** @noinspection PhpUnusedPrivateMethodInspection */

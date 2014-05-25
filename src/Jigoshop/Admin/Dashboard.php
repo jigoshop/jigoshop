@@ -6,6 +6,7 @@ use Jigoshop\Core\Options;
 use Jigoshop\Entity\Order;
 use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
+use WPAL\Wordpress;
 
 /**
  * Jigoshop dashboard.
@@ -15,8 +16,8 @@ use Jigoshop\Service\ProductServiceInterface;
  */
 class Dashboard implements PageInterface
 {
-	/** @var \WPAL\Wordpress */
-	private $database;
+	/** @var Wordpress */
+	private $wp;
 	/** @var \Jigoshop\Service\OrderServiceInterface */
 	private $orderService;
 	/** @var \Jigoshop\Service\ProductServiceInterface */
@@ -24,9 +25,9 @@ class Dashboard implements PageInterface
 	/** @var Options */
 	private $options;
 
-	public function __construct(\WPAL\Wordpress $database, Options $options, OrderServiceInterface $orderService, ProductServiceInterface $productService)
+	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, ProductServiceInterface $productService)
 	{
-		$this->database = $database;
+		$this->wp = $wp;
 		$this->options = $options;
 		$this->orderService = $orderService;
 		$this->productService = $productService;
@@ -198,7 +199,7 @@ class Dashboard implements PageInterface
 	 */
 	public function recentReviews()
 	{
-		$wpdb = $this->database->getWPDB();
+		$wpdb = $this->wp->getWPDB();
 		/** @noinspection PhpUnusedLocalVariableInspection */
 		$comments = $wpdb->get_results("SELECT *, SUBSTRING(comment_content,1,100) AS comment_excerpt
 				FROM $wpdb->comments

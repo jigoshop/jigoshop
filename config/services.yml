@@ -4,16 +4,71 @@ services:
     class: WPAL\Wordpress
   jigoshop:
     class: Jigoshop\Core
-    arguments: ['@wpal', '@jigoshop.options', '@jigoshop.messages']
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.messages'
+      - '@jigoshop.admin'
   jigoshop.options:
     class: Jigoshop\Core\Options
-    arguments: ['@wpal']
+    arguments:
+      - '@wpal'
   jigoshop.messages:
     class: Jigoshop\Core\Messages
-    arguments: ['@wpal']
+    arguments:
+      - '@wpal'
   jigoshop.cron:
     class: Jigoshop\Core\Cron
-    arguments: ['@wpal', '@jigoshop.options', '@jigoshop.service.order']
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.order'
+  jigoshop.assets:
+    class: Jigoshop\Core\Assets
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+  jigoshop.factory.order_service:
+    class: Jigoshop\Factory\OrderService
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+  jigoshop.factory.product_service:
+    class: Jigoshop\Factory\ProductService
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
   jigoshop.service.order:
     class: Jigoshop\Service\Order
-    arguments: ['@wpal']
+    factory_service: jigoshop.factory.order_service
+    factory_method: getService
+  jigoshop.service.product:
+    class: Jigoshop\Service\Product
+    factory_service: jigoshop.factory.product_service
+    factory_method: getService
+  jigoshop.admin:
+    class: Jigoshop\Admin
+    lazy: true
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.admin.dashboard'
+      - '@jigoshop.admin.settings'
+      - '@jigoshop.admin.system_info'
+      - '@jigoshop.admin.reports'
+      - '@jigoshop.admin.product.attributes'
+  jigoshop.admin.dashboard:
+    class: Jigoshop\Admin\Dashboard
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.order'
+      - '@jigoshop.service.product'
+  jigoshop.admin.settings:
+    class: Jigoshop\Admin\Settings
+  jigoshop.admin.system_info:
+    class: Jigoshop\Admin\SystemInfo
+  jigoshop.admin.reports:
+    class: Jigoshop\Admin\Reports
+  jigoshop.admin.product.attributes:
+    class: Jigoshop\Admin\Product\Attributes

@@ -8,6 +8,8 @@ use Jigoshop\Admin\Product\Attributes;
 use Jigoshop\Admin\Reports;
 use Jigoshop\Admin\Settings;
 use Jigoshop\Admin\SystemInfo;
+use Jigoshop\Core\Options;
+use WPAL\Wordpress;
 
 /**
  * Class for handling administration panel.
@@ -17,8 +19,8 @@ use Jigoshop\Admin\SystemInfo;
  */
 class Admin
 {
-	/** @var \Jigoshop\Core */
-	private $core;
+	/** @var \WPAL\Wordpress */
+	private $wp;
 	/** @var array */
 	private $pages = array(
 		'jigoshop' => array(),
@@ -29,18 +31,18 @@ class Admin
 	private $settings;
 	private $systemInfo;
 
-	public function __construct(Core $core)
+	public function __construct(Wordpress $wp, Options $options, Dashboard $dashboard, Settings $settings, SystemInfo $systemInfo, Reports $reports, Attributes $attributes)
 	{
-		$this->core = $core;
-		$this->dashboard = new Dashboard($core->getWordpress(), $core->getOptions(), $core->getOrderService(), $core->getProductService());
-		$this->settings = new Settings();
-		$this->systemInfo = new SystemInfo();
+		$this->wp = $wp;
+		$this->dashboard = $dashboard;
+		$this->settings = $settings;
+		$this->systemInfo = $systemInfo;
 		$this->addPage('jigoshop', $this->dashboard);
-		$this->addPage('jigoshop', new Reports());
-		$this->addPage('products', new Attributes());
+		$this->addPage('jigoshop', $reports);
+		$this->addPage('products', $attributes);
 
-		add_action('admin_menu', array($this, 'beforeMenu'), 9);
-		add_action('admin_menu', array($this, 'afterMenu'), 50);
+		$wp->addAction('admin_menu', array($this, 'beforeMenu'), 9);
+		$wp->addAction('admin_menu', array($this, 'afterMenu'), 50);
 	}
 
 	/**
@@ -65,46 +67,37 @@ class Admin
 	}
 
 	/**
-	 * @return Core\Options Options handler.
-	 */
-	public function getOptions()
-	{
-		return $this->core->getOptions();
-	}
-
-	/**
 	 * Adds Jigoshop menus.
 	 */
 	public function beforeMenu()
 	{
-		global $menu;
+		$menu = $this->wp->getMenu();
 
-		if(current_user_can('manage_jigoshop'))
+		if($this->wp->currentUserCan('manage_jigoshop'))
 		{
 			$menu[54] = array('', 'read', 'separator-jigoshop', '', 'wp-menu-separator jigoshop');
 		}
 
-		// TODO: Add Jigoshop icon!
-		add_menu_page(__('Jigoshop'), __('Jigoshop'), 'manage_jigoshop', 'jigoshop', array($this->dashboard, 'display'), null, 55);
+		$this->wp->addMenuPage(__('Jigoshop'), __('Jigoshop'), 'manage_jigoshop', 'jigoshop', array($this->dashboard, 'display'), null, 55);
 		foreach($this->pages['jigoshop'] as $page)
 		{
 			/** @var $page PageInterface */
-			add_submenu_page('jigoshop', $page->getTitle(), $page->getTitle(), $page->getCapability(), $page->getMenuSlug(), array($page, 'display'));
+			$this->wp->addSubmenuPage('jigoshop', $page->getTitle(), $page->getTitle(), $page->getCapability(), $page->getMenuSlug(), array($page, 'display'));
 		}
 
 		foreach($this->pages['products'] as $page)
 		{
 			/** @var $page PageInterface */
-			add_submenu_page('edit.php?post_type=product', $page->getTitle(), $page->getTitle(), $page->getCapability(), $page->getMenuSlug(), array($page, 'display'));
+			$this->wp->addSubmenuPage('edit.php?post_type=product', $page->getTitle(), $page->getTitle(), $page->getCapability(), $page->getMenuSlug(), array($page, 'display'));
 		}
 
 		foreach($this->pages['orders'] as $page)
 		{
 			/** @var $page PageInterface */
-			add_submenu_page('edit.php?post_type=shop_order', $page->getTitle(), $page->getTitle(), $page->getCapability(), $page->getMenuSlug(), array($page, 'display'));
+			$this->wp->addSubmenuPage('edit.php?post_type=shop_order', $page->getTitle(), $page->getTitle(), $page->getCapability(), $page->getMenuSlug(), array($page, 'display'));
 		}
 
-		do_action('jigoshop\\admin\\before_menu');
+		$this->wp->doAction('jigoshop\\admin\\before_menu');
 	}
 
 	/**
@@ -112,14 +105,14 @@ class Admin
 	 */
 	public function afterMenu()
 	{
-		$admin_page = add_submenu_page('jigoshop', $this->settings->getTitle(), $this->settings->getTitle(), $this->settings->getCapability(),
+		$admin_page = $this->wp->addSubmenuPage('jigoshop', $this->settings->getTitle(), $this->settings->getTitle(), $this->settings->getCapability(),
 			$this->settings->getMenuSlug(), array($this->settings, 'display'));
-		add_action('admin_print_scripts-'.$admin_page, array($this, 'settings_scripts'));
-		add_action('admin_print_styles-'.$admin_page, array($this, 'settings_styles'));
+		$this->wp->addAction('admin_print_scripts-'.$admin_page, array($this, 'settings_scripts'));
+		$this->wp->addAction('admin_print_styles-'.$admin_page, array($this, 'settings_styles'));
 
-		add_submenu_page('jigoshop', $this->systemInfo->getTitle(), $this->systemInfo->getTitle(), $this->systemInfo->getCapability(),
+		$this->wp->addSubmenuPage('jigoshop', $this->systemInfo->getTitle(), $this->systemInfo->getTitle(), $this->systemInfo->getCapability(),
 			$this->systemInfo->getMenuSlug(), array($this->systemInfo, 'display'));
 
-		do_action('jigoshop\\admin\\after_menu');
+		$this->wp->doAction('jigoshop\\admin\\after_menu');
 	}
 }
