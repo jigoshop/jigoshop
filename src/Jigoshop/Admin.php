@@ -101,15 +101,12 @@ class Admin
 	}
 
 	/**
-	 * Adds Jigoshop settings and system information menus (to the end of Jigoshop sub-menu).
+	 * Adds Jigoshop settings and system information menus (at the end of Jigoshop sub-menu).
 	 */
 	public function afterMenu()
 	{
-		$admin_page = $this->wp->addSubmenuPage('jigoshop', $this->settings->getTitle(), $this->settings->getTitle(), $this->settings->getCapability(),
+		$this->wp->addSubmenuPage('jigoshop', $this->settings->getTitle(), $this->settings->getTitle(), $this->settings->getCapability(),
 			$this->settings->getMenuSlug(), array($this->settings, 'display'));
-		$this->wp->addAction('admin_print_scripts-'.$admin_page, array($this, 'settings_scripts'));
-		$this->wp->addAction('admin_print_styles-'.$admin_page, array($this, 'settings_styles'));
-
 		$this->wp->addSubmenuPage('jigoshop', $this->systemInfo->getTitle(), $this->systemInfo->getTitle(), $this->systemInfo->getCapability(),
 			$this->systemInfo->getMenuSlug(), array($this->systemInfo, 'display'));
 

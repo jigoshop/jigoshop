@@ -20,7 +20,7 @@ class Messages
 	private $warnings = array();
 	private $errors = array();
 
-	public function __construct(Wordpress $wordpress)
+	public function __construct(Wordpress $wp)
 	{
 		if(isset($_SESSION[self::NOTICES]))
 		{
@@ -35,7 +35,7 @@ class Messages
 			$this->errors = $_SESSION[self::ERRORS];
 		}
 
-		$wordpress->addAction('shutdown', array($this, 'preserveMessages'));
+		$wp->addAction('shutdown', array($this, 'preserveMessages'));
 	}
 
 	/**

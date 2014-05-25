@@ -10,6 +10,12 @@ namespace Jigoshop\Admin;
  */
 class Settings implements PageInterface
 {
+	public function __construct()
+	{
+//		$this->wp->addAction('admin_print_scripts-'.$admin_page, array($this, 'settings_scripts')); // TODO: Use JWOS ability to check what current page is to properly include scripts
+//		$this->wp->addAction('admin_print_styles-'.$admin_page, array($this, 'settings_styles'));
+	}
+
 	/**
 	 * @return string Title of page.
 	 */

@@ -1,18 +1,14 @@
 # [Jigoshop](http://www.jigoshop.com)
 
-Jigoshop is a feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance.
+Jigoshop is a feature-packed eCommerce plugin built upon WordPress core functionality and modern coding standards ensuring excellent performance.
 
 ## Quick start
 
-To get started, [check out our installation guide](http://forum.jigoshop.com/kb/getting-started/installation)!
-
-1. You can also clone the git repo:
-
-	```
-	git clone git://github.com/jigoshop/jigoshop.git
-	```
-
-2. Or download it into your WordPress plugin directory: `https://github.com/jigoshop/jigoshop/zipball/master`
+1. Install [Composer](http://getcomposer.org)
+2. Clone the git repository: `git clone https://github.com/jigoshop/jigoshop.git`
+3. Install required dependencies: `composer.phar update --no-dev`
+    * Note: if you want to run tests or make some changes to the code remove `--no-dev` parameter from Composer update call.
+4. (Optionally) Run tests to verify everything is working correctly: `php vendor/phpunit/phpunit/phpunit.php --configuration phpunit.xml.dist`
 
 ## Bug tracker
 
