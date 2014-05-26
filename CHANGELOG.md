@@ -8,6 +8,7 @@
     * Fix: Warnings when no tax defined.
     * Fix: Proper checking for tax state correctness. Thanks to Karl Engstrom
     * Fix: Update variation formatting to use built-in values and selections as well.
+    * Improve: Minor update of PayPal gateway.
 * 1.9.3.1 - 2014-05-18
     * Fix: Quick fix for invalid use of `jigoshop_get_formatted_variation()`
 * 1.9.3 - 2014-05-15
