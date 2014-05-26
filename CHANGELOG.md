@@ -1,6 +1,6 @@
 ## Changelog
 
-* 1.9.4
+* 1.9.4 - 2014-05-26
     * New: Checking for valid variation price (with proper error message).
     * Fix: Add BlockUI JavaScript in header for proper PayPal Standard support.
     * Fix: Minor code updates to PayPal Standard gateway.
