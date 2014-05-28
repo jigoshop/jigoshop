@@ -4,6 +4,7 @@
     * Fix: Variation data disappearing in emails.
     * Improve: Hide infinite availability for variable products.
     * Improve: Code cleaning.
+    * Improve: Update POT file for translations.
 * 1.9.4 - 2014-05-26
     * New: Checking for valid variation price (with proper error message).
     * Fix: Add BlockUI JavaScript in header for proper PayPal Standard support.
