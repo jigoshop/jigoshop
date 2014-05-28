@@ -300,49 +300,45 @@ class jigoshop_order extends Jigoshop_Base {
 	}
 
 	/** Output items for display in emails */
-	function email_order_items_list( $show_download_links = false, $show_sku = false, $price_inc_tax = false) {
-
+	function email_order_items_list($show_download_links = false, $show_sku = false, $price_inc_tax = false){
 		$return = '';
 
-        // validate if any item has cost less than 0. If that's the case, we can't use price including tax
-        $use_inc_tax = $price_inc_tax;
-        if ($price_inc_tax) :
+		// validate if any item has cost less than 0. If that's the case, we can't use price including tax
+		$use_inc_tax = $price_inc_tax;
+		if($price_inc_tax){
+			foreach($this->items as $item){
+				$use_inc_tax = ($item['cost_inc_tax'] >= 0);
+				if(!$use_inc_tax){
+					break;
+				}
+			}
+		}
 
-            foreach ($this->items as $item) :
-                $use_inc_tax = ($item['cost_inc_tax'] >= 0);
-                if (!$use_inc_tax) break;
-            endforeach;
-        endif;
+		foreach($this->items as $item){
+			$_product = $this->get_product_from_item($item);
+			$return .= $item['qty'].' x '.html_entity_decode(apply_filters('jigoshop_order_product_title', $item['name'], $_product), ENT_QUOTES, 'UTF-8');
 
-		foreach ( $this->items as $item ) {
-
-			$_product = $this->get_product_from_item( $item );
-
-			$return .= $item['qty'] . ' x ' . html_entity_decode(apply_filters('jigoshop_order_product_title', $item['name'], $_product), ENT_QUOTES, 'UTF-8');
-
-			if ( $show_sku ) {
-				$return .= ' (#' . $_product->sku . ')';
+			if($show_sku){
+				$return .= ' (#'.$_product->sku.')';
 			}
 
-            if ($use_inc_tax && $item['cost_inc_tax'] >= 0) {
-                $return .= ' - ' . html_entity_decode(strip_tags(jigoshop_price( $item['cost_inc_tax']*$item['qty'], array('ex_tax_label' => 0 ))), ENT_COMPAT, 'UTF-8');
-            } else {
-                $return .= ' - ' . html_entity_decode(strip_tags(jigoshop_price( $item['cost'], array('ex_tax_label' => 1 ))), ENT_COMPAT, 'UTF-8');
-            }
+			if($use_inc_tax && $item['cost_inc_tax'] >= 0){
+				$return .= ' - '.html_entity_decode(strip_tags(jigoshop_price($item['cost_inc_tax'] * $item['qty'], array('ex_tax_label' => 0))), ENT_COMPAT, 'UTF-8');
+			} else {
+				$return .= ' - '.html_entity_decode(strip_tags(jigoshop_price($item['cost'], array('ex_tax_label' => 1))), ENT_COMPAT, 'UTF-8');
+			}
 
-			if (isset($_product->variation_data)) {
-				$return .= PHP_EOL . jigoshop_get_formatted_variation($_product, $item['variation'], true);
+			if($_product instanceof jigoshop_product_variation){
+				$return .= PHP_EOL.jigoshop_get_formatted_variation($_product, $item['variation'], true);
 			}
 
 			// Very hacky, used for GFORMS ADDONS -Rob
-			if ( ! isset($_product->variation_data) && isset($item['variation'])) {
-
-				if ( ! empty( $item['variation'] )) foreach ( $item['variation'] as $variation) {
-
-					$return .= PHP_EOL . $variation['name'].': '.$variation['value'];
-
+			if(!isset($_product->variation_data) && isset($item['variation'])){
+				if(!empty($item['variation'])){
+					foreach($item['variation'] as $variation){
+						$return .= PHP_EOL.$variation['name'].': '.$variation['value'];
+					}
 				}
-
 			}
 
 			//  Check that this filter supplied by OptArt is in use before applying it.
@@ -350,45 +346,38 @@ class jigoshop_order extends Jigoshop_Base {
 			//  if that plugin is not active, emails will have a line item with 'Array' on each product description.
 			//  TODO: Jigoshop never intends to use $item like this, a filter is incorrect. -JAP-
 			global $wp_filter;
-			if ( isset( $wp_filter['jigoshop_display_item_meta_data_email'] )) {
-				$meta_data = apply_filters( 'jigoshop_display_item_meta_data_email', $item );
-				if ( $meta_data != '' ) {
-				  $return .= PHP_EOL . $meta_data;
+			if(isset($wp_filter['jigoshop_display_item_meta_data_email'])){
+				$meta_data = apply_filters('jigoshop_display_item_meta_data_email', $item);
+				if($meta_data != ''){
+					$return .= PHP_EOL.$meta_data;
 				}
 			}
 
-			if ( ! empty( $item['customization'] ) ) {
-				$return .= PHP_EOL . apply_filters( 'jigoshop_customized_product_label', __(' Personal: ','jigoshop') ) . PHP_EOL . $item['customization'];
+			if(!empty($item['customization'])){
+				$return .= PHP_EOL.apply_filters('jigoshop_customized_product_label', __(' Personal: ', 'jigoshop')).PHP_EOL.$item['customization'];
 			}
 
-			if ( $show_download_links ) {
-
-				if ( $_product->exists() ) {
-
-					if ( $_product->is_type( 'downloadable' )) {
-
-						if ( (bool) $item['variation_id'] ) {
+			if($show_download_links){
+				if($_product->exists()){
+					if($_product->is_type('downloadable')){
+						if((bool)$item['variation_id']){
 							$product_id = $_product->variation_id;
 						} else {
 							$product_id = $_product->ID;
 						}
 
-						if ( $this->get_downloadable_file_url( $product_id ) ) {
-							$return .= PHP_EOL . __('Your download link for this file is:', 'jigoshop');
-							$return .= PHP_EOL . ' - ' . $this->get_downloadable_file_url( $product_id ) . '';
+						if($this->get_downloadable_file_url($product_id)){
+							$return .= PHP_EOL.__('Your download link for this file is:', 'jigoshop');
+							$return .= PHP_EOL.' - '.$this->get_downloadable_file_url($product_id).'';
 						}
 					}
-
 				}
-
 			}
 
 			$return .= PHP_EOL;
-
 		}
 
 		return $return;
-
 	}
 
 	/**  Generates a URL so that a customer can checkout/pay for their (unpaid - pending) order via a link */

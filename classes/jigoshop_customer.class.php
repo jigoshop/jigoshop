@@ -325,44 +325,43 @@ class jigoshop_customer extends Jigoshop_Singleton {
 	/**
 	 * Gets a user's downloadable products if they are logged in
 	 *
-	 * @return   array	downloads	Array of downloadable products
+	 * @return array Array of downloadable products
 	 */
-	public static function get_downloadable_products() {
-
+	public static function get_downloadable_products(){
 		global $wpdb;
-
 		$downloads = array();
 
-		if (is_user_logged_in()) :
-
+		if(is_user_logged_in()){
 			$jigoshop_orders = new jigoshop_orders();
-			$jigoshop_orders->get_customer_orders( get_current_user_id() );
-			if ($jigoshop_orders->orders) foreach ($jigoshop_orders->orders as $order) :
-				if ( $order->status == 'completed' ) {
-					$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM ".$wpdb->prefix."jigoshop_downloadable_product_permissions WHERE order_key = %s AND user_id = %d;", $order->order_key, get_current_user_id() ) );
-					$user_info = get_userdata(get_current_user_id());
-					if ($results) foreach ($results as $result) :
-							$_product = new jigoshop_product_variation( $result->product_id );
-							$download_name = $_product->ID ? get_the_title($_product->ID) : get_the_title($result->product_id);
+			$jigoshop_orders->get_customer_orders(get_current_user_id());
+			if($jigoshop_orders->orders){
+				$user_info = get_userdata(get_current_user_id());
+				foreach($jigoshop_orders->orders as $order){
+					if($order->status == 'completed'){
+						$results = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}jigoshop_downloadable_product_permissions WHERE order_key = %s AND user_id = %d;", $order->order_key, get_current_user_id()));
+						if($results){
+							foreach($results as $result){
+								$_product = new jigoshop_product_variation($result->product_id);
+								$download_name = $_product->ID ? get_the_title($_product->ID) : get_the_title($result->product_id);
 
-							if (isset($_product->variation_data)) :
-								$download_name = $download_name .' (' . jigoshop_get_formatted_variation( $_product, $_product->variation_data, true ).')';
-							endif;
-							$downloads[] = array(
-								'download_url'       => add_query_arg('download_file', $result->product_id, add_query_arg('order', $result->order_key, add_query_arg('email', $user_info->user_email, home_url()))),
-								'product_id'         => $result->product_id,
-								'download_name'      => $download_name,
-								'order_key'          => $result->order_key,
-								'downloads_remaining'=> $result->downloads_remaining
-							);
-					endforeach;
+								if(isset($_product->variation_data)){
+									$download_name .= ' ('.jigoshop_get_formatted_variation($_product, array(), true).')';
+								}
+								$downloads[] = array(
+									'download_url' => add_query_arg('download_file', $result->product_id, add_query_arg('order', $result->order_key, add_query_arg('email', $user_info->user_email, home_url()))),
+									'product_id' => $result->product_id,
+									'download_name' => $download_name,
+									'order_key' => $result->order_key,
+									'downloads_remaining' => $result->downloads_remaining
+								);
+							}
+						}
+					}
 				}
-			endforeach;
+			}
+		}
 
-		endif;
-
-		return apply_filters( 'jigoshop_downloadable_products', $downloads );
-
+		return apply_filters('jigoshop_downloadable_products', $downloads);
 	}
 
 	public function address_form($load_address, $fields) {

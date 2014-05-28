@@ -472,34 +472,33 @@ class jigoshop_product extends Jigoshop_Base {
 	 *
 	 * @return  string
 	 */
-	public function get_availability() {
-
-
+	public function get_availability(){
 		// Do not display initial availability if we aren't managing stock or if variable or grouped
-		if ( self::get_options()->get_option('jigoshop_manage_stock') != 'yes' || $this->is_type( array('grouped', 'variable')) )
+		if(self::get_options()->get_option('jigoshop_manage_stock') != 'yes' || $this->is_type(array('grouped', 'variable'))){
 			return false;
+		}
 
 		// Start as in stock
 		$notice = array(
-			'availability' => __( 'In Stock', 'jigoshop' ),
+			'availability' => __('In Stock', 'jigoshop'),
 			'class' => null,
 		);
 
 		// If stock is being managed & has stock
-		if ( $this->is_in_stock() ) {
+		if($this->is_in_stock()){
 			// Check if we allow backorders
-			if ( $this->stock <= 0 && $this->backorders_allowed() ) {
-				$notice['availability'] = __( 'Available for order', 'jigoshop' );
-			} else if ( self::get_options()->get_option('jigoshop_show_stock') == 'yes' && ! $this->has_child() ){
+			if($this->stock <= 0 && $this->backorders_allowed()){
+				$notice['availability'] = __('Available for order', 'jigoshop');
+			} else if(self::get_options()->get_option('jigoshop_show_stock') == 'yes' && !$this->has_child() && $this->stock > 0){
 				// Check if we want user to get how many items is available
-				$notice['availability'] .= ' &ndash; '.$this->stock.' '.__(' available', 'jigoshop' );
+				$notice['availability'] .= ' &ndash; '.$this->stock.' '.__(' available', 'jigoshop');
 			}
 		} else {
-			$notice['availability']	= __( 'Out of Stock', 'jigoshop' );
+			$notice['availability'] = __('Out of Stock', 'jigoshop');
 			$notice['class'] = 'out-of-stock';
 		}
 
-		return apply_filters( 'jigoshop_product_availability', $notice, $this );
+		return apply_filters('jigoshop_product_availability', $notice, $this);
 	}
 
 	/**

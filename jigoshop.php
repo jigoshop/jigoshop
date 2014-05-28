@@ -22,7 +22,7 @@
  * Author:              Jigoshop
  * Author URI:          http://www.jigoshop.com
  *
- * Version:             1.9.4
+ * Version:             1.9.5
  * Requires at least:   3.8
  * Tested up to:        3.9.1
  *
@@ -1062,7 +1062,7 @@ function jigoshop_get_formatted_variation(jigoshop_product $product, $variation_
 	}
 
 	if($product instanceof jigoshop_product_variation){
-		$variation_data = array_merge($variation_data, $product->variation_data);
+		$variation_data = array_merge(array_filter($variation_data), array_filter($product->variation_data));
 
 		if(!$flat){
 			$return = '<dl class="variation">';

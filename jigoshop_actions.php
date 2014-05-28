@@ -88,7 +88,7 @@ function jigoshop_add_order_item() {
 		<td class="name"><a href="<?php echo esc_url( admin_url('post.php?post='. $_product->id .'&action=edit') ); ?>"><?php echo $_product->get_title(); ?></a></td>
 		<td class="variation"><?php
 			if (isset($_product->variation_data)) :
-				echo jigoshop_get_formatted_variation( $_product, $_product->variation_data, true );
+				echo jigoshop_get_formatted_variation( $_product, array(), true );
 			else :
 				echo '-';
 			endif;
@@ -872,10 +872,10 @@ function jigoshop_ga_ecommerce_tracking( $order_id ) {
 /**
  * Jigoshop Dropdown categories
  *
- * @see     http://core.trac.wordpress.org/ticket/13258
- * @param   integer   Show Product Count?
- * @param   integer   Show Hierarchy?
- * @return  void
+ * @see http://core.trac.wordpress.org/ticket/13258
+ * @param bool $show_counts
+ * @param bool $hierarchal
+ * @internal
  */
 function jigoshop_product_dropdown_categories( $show_counts = true, $hierarchal = true ) {
 	global $wp_query;
