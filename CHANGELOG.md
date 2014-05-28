@@ -1,6 +1,6 @@
 ## Changelog
 
-* 1.9.5 -
+* 1.9.5 - 2014.05.28
     * Fix: Variation data disappearing in emails.
     * Fix: Saving taxes.
     * Improve: Hide infinite availability for variable products.
