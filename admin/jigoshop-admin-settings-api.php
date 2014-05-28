@@ -337,6 +337,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					// special case tax classes should be updated, they will do nothing if this is not the right TAB
 					if($setting['id'] == 'jigoshop_tax_rates'){
 						$valid_input['jigoshop_tax_rates'] = $this->get_updated_tax_classes();
+						$options->set_option('jigoshop_tax_rates', $valid_input['jigoshop_tax_rates']);
 						continue;
 					}
 

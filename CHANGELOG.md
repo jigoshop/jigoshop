@@ -2,6 +2,7 @@
 
 * 1.9.5 -
     * Fix: Variation data disappearing in emails.
+    * Fix: Saving taxes.
     * Improve: Hide infinite availability for variable products.
     * Improve: Code cleaning.
     * Improve: Update POT file for translations.
