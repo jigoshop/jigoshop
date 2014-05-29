@@ -292,7 +292,7 @@ class Optimization
 
 	private function get_source_path($src)
 	{
-		return str_replace(\jigoshop::assets_url(), \jigoshop::plugin_path(), $src);
+		return str_replace(WP_CONTENT_URL, WP_CONTENT_DIR, $src);
 	}
 
 	private function check_script_dependencies(array &$dependencies)

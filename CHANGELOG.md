@@ -1,5 +1,7 @@
 ## Changelog
 
+* 1.9.6:
+    * Fix: Properly convert asset URLs to directory paths in JWOS.
 * 1.9.5 - 2014.05.28
     * Fix: Variation data disappearing in emails.
     * Fix: Saving taxes.
