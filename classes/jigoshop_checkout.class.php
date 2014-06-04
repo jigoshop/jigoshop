@@ -371,8 +371,13 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
 				if($allowed_countries === 'specific'){
 					$specific_countries = Jigoshop_Base::get_options()->get_option('jigoshop_specific_allowed_countries');
+					$base_cc = jigoshop_countries::get_base_country();
 					if(!in_array($current_cc, $specific_countries)){
-						$current_cc = jigoshop_countries::get_base_country();
+						if(in_array($base_cc, $specific_countries)){
+							$current_cc = $base_cc;
+						} else {
+							$current_cc = array_shift($specific_countries);
+						}
 					}
 				}
 
@@ -381,9 +386,15 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					$current_r = jigoshop_customer::get_state();
 				}
 
-				$states = jigoshop_countries::get_states( $current_cc );
-				if(jigoshop_countries::country_has_states($current_cc) && !in_array($current_r, array_keys($states))){
-					$current_r = jigoshop_countries::get_base_state();
+				$states = jigoshop_countries::get_states($current_cc);
+				$state_keys = array_keys($states);
+				if(jigoshop_countries::country_has_states($current_cc) && !in_array($current_r, $state_keys)){
+					$base_r = jigoshop_countries::get_base_state();
+					if(in_array($base_r, $state_keys)){
+						$current_r = $base_r;
+					} else {
+						$current_r = array_shift($state_keys);
+					}
 				}
 
 				if ( jigoshop_countries::country_has_states( $current_cc ) ) {
