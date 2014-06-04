@@ -564,13 +564,13 @@ function jigoshop_admin_scripts() {
 
 	if ( !jigoshop_is_admin_page() ) return;
 
+	wp_enqueue_script('thickbox');
 	wp_enqueue_script('jquery-ui-core');
 	wp_enqueue_script('jquery-ui-sortable');
 	wp_enqueue_script('jquery-ui-datepicker');
 	jigoshop_add_script( 'jigoshop-select2', jigoshop::assets_url().'/assets/js/select2.min.js', array( 'jquery' ) );
 	jigoshop_add_script( 'jigoshop_blockui', jigoshop::assets_url() . '/assets/js/blockui.js', array( 'jquery' ), array('version' => '2.4.6') );
 	jigoshop_add_script( 'jigoshop_backend', jigoshop::assets_url() . '/assets/js/jigoshop_backend.js', array( 'jquery' ), array('version' => '1.0') );
-	jigoshop_add_script( 'thickbox', false );
 
 	jigoshop_add_script('jquery_flot', jigoshop::assets_url().'/assets/js/jquery.flot.min.js', array( 'jquery' ), array(
 		'version' => '1.0',
