@@ -292,7 +292,7 @@ class Optimization
 
 	private function get_source_path($src)
 	{
-		return str_replace(WP_CONTENT_URL, WP_CONTENT_DIR, $src);
+		return preg_replace('@'.str_replace('http', 'http(s)?', WP_CONTENT_URL).'@', WP_CONTENT_DIR, $src);
 	}
 
 	private function check_script_dependencies(array &$dependencies)
