@@ -761,12 +761,13 @@ class jigoshop_tax extends Jigoshop_Base {
 			}
 		}
 
-		if(!in_array($state, array_keys($this->rates[$country]))){
+		$has_states = jigoshop_countries::country_has_states($country);
+		if($has_states && isset($this->rates[$country]) && !in_array($state, array_keys($this->rates[$country]))){
 			$states = array_keys($this->rates[$country]);
 			$state = array_shift($states);
 		}
 
-		$state = (jigoshop_countries::country_has_states($country) && $state ? $state : '*');
+		$state = $has_states && $state ? $state : '*';
 		$rate = $this->find_rate($country, $state, $tax_class);
 
 		return ($rate_only ? $rate['rate'] : $rate);
