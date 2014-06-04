@@ -16,39 +16,36 @@
     }
 
     // Init trigger
-    $('body').bind('init_checkout', function() {
-      $('#billing_country, #shipping_country, .country_to_state').change();
-    });
-
-    // Update trigger
-    $('body').bind('update_checkout', function() {
-      clearTimeout(updateTimer);
-      update_checkout();
-      validate_required();
-    });
+    $('body')
+	    .bind('init_checkout', function() {
+	      $('#billing_country, #shipping_country, .country_to_state').change();
+	    })
+	    .bind('update_checkout', function() {
+	      clearTimeout(updateTimer);
+	      update_checkout();
+	      validate_required();
+	    });
 
 
     function update_checkout() {
-
       if (jqxhr) jqxhr.abort();
 
-      var payment_id		= $('#payment input[name=payment_method]:checked').attr('id');
-      var method			= $('#shipping_method').val();
-      var coupon			= $('#coupon_code').val();
-      var payment_method	= $('input[name=payment_method]:checked').val();
-      var country			= $('#billing-country').val();
-      var state			= $('#billing-state').val();
-      var postcode		= $('input#billing-postcode').val();
+	    var $payment_method = $('input[name=payment_method]:checked');
+	    var payment_id = $payment_method.attr('id');
+	    var method = $('#shipping_method').val();
+	    var coupon = $('#coupon_code').val();
+	    var payment_method = $payment_method.val();
+	    var country = $('#billing-country').val();
+	    var state = $('#billing-state').val();
+	    var postcode = $('input#billing-postcode').val();
+	    var s_country	= country;
+	    var s_state		= state;
+	    var s_postcode	= postcode;
 
-      if ( $('#shiptobilling input').is(':checked') || $('#shiptobilling input').size() == 0 ) {
-        var s_country	= $('#billing-country').val();
-        var s_state		= $('#billing-state').val();
-        var s_postcode	= $('input#billing-postcode').val();
-
-      } else {
-        var s_country	= $('#shipping-country').val();
-        var s_state		= $('#shipping-state').val();
-        var s_postcode	= $('input#shipping-postcode').val();
+      if(!$('#shiptobilling-checkbox').is(':checked')){
+        s_country	= $('#shipping-country').val();
+        s_state		= $('#shipping-state').val();
+        s_postcode	= $('input#shipping-postcode').val();
       }
 
       $('#order_methods, #order_review').block( {
@@ -85,7 +82,7 @@
           $('div#payment:not(:last)').remove();
           // reset currently selected gateway
           $('#'+payment_id).attr('checked',true);
-          $('#payment input[name=payment_method]:checked').click();
+          $payment_method.click();
         }
       });
 
@@ -148,10 +145,6 @@
 
     }
 
-
-    // use select2 for all selects
-//	$('select').select2({ width: 'off' });
-
     // ensure there is no duplicate #payment from themes
     $('div#payment:not(:last)').remove();
 
@@ -163,12 +156,11 @@
       $('form.login').slideToggle();
     });
 
-
     // handle hiding and showing the shipping fields
-    $('div.shipping-address').hide();
-    $('#shiptobilling input').change( function() {
-      $('div.shipping-address').hide();
-      if (!$(this).is(':checked')) {
+    $('#shiptobilling-checkbox').change( function() {
+	    if($(this).is(':checked')){
+		    $('div.shipping-address').slideUp();
+	    } else {
         $('div.shipping-address').slideDown();
       }
     }).change();
@@ -185,7 +177,7 @@
         $('div.payment_box').show();
       }
     });
-    $('#payment input[name=payment_method]:checked').click();
+    $('input[name=payment_method]:checked').click();
 
 
     // handle selections from items requiring an update of totals
@@ -205,18 +197,15 @@
       $('#account-username')
         .addClass('input-required')
         .closest('.form-row')
-        .removeClass('jigoshop-validated jigoshop-invalid'
-        );
+        .removeClass('jigoshop-validated jigoshop-invalid');
       $('#account-password')
         .addClass('input-required')
         .closest('.form-row')
-        .removeClass('jigoshop-validated jigoshop-invalid'
-        );
+        .removeClass('jigoshop-validated jigoshop-invalid');
       $('#account-password-2')
         .addClass('input-required')
         .closest('.form-row')
-        .removeClass('jigoshop-validated jigoshop-invalid'
-        );
+        .removeClass('jigoshop-validated jigoshop-invalid');
     } else {
       $('div.create-account').hide();
       $('#createaccount').prev().find('span.required').remove();
@@ -228,46 +217,39 @@
         $('#account-username')
           .removeClass('input-required')
           .closest('.form-row')
-          .removeClass('jigoshop-validated jigoshop-invalid'
-          );
+          .removeClass('jigoshop-validated jigoshop-invalid');
         $('#account-username').prev().find('span.required').remove();
         $('#account-password')
           .removeClass('input-required')
           .closest('.form-row')
-          .removeClass('jigoshop-validated jigoshop-invalid'
-          );
+          .removeClass('jigoshop-validated jigoshop-invalid');
         $('#account-password').prev().find('span.required').remove();
         $('#account-password-2')
           .removeClass('input-required')
           .closest('.form-row')
-          .removeClass('jigoshop-validated jigoshop-invalid'
-          );
+          .removeClass('jigoshop-validated jigoshop-invalid');
         $('#account-password-2').prev().find('span.required').remove();
       } else {
         $('div.create-account').slideDown();
         $('#account-username')
           .addClass('input-required')
           .closest('.form-row')
-          .removeClass('jigoshop-validated jigoshop-invalid'
-          );
+          .removeClass('jigoshop-validated jigoshop-invalid');
         $('#account-username').prev().append(' <span class="required">*</span>');
         $('#account-password')
           .addClass('input-required')
           .closest('.form-row')
-          .removeClass('jigoshop-validated jigoshop-invalid'
-          );
+          .removeClass('jigoshop-validated jigoshop-invalid');
         $('#account-password').prev().append(' <span class="required">*</span>');
         $('#account-password-2')
           .addClass('input-required')
           .closest('.form-row')
-          .removeClass('jigoshop-validated jigoshop-invalid'
-          );
+          .removeClass('jigoshop-validated jigoshop-invalid');
         $('#account-password-2').prev().append(' <span class="required">*</span>');
       }
     }).change();
 
-
-    // handle changes to Countries that dont' require states and back again
+    // handle changes to Countries that don't require states and back again
     $('select.country_to_state').change( function() {
 
       var country = $(this).val();
