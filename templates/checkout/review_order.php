@@ -43,7 +43,7 @@ $jigoshop_options = Jigoshop_Base::get_options(); ?>
                 </tr>
 			<?php elseif ( jigoshop_cart::show_retail_price() ) : ?>
 				<tr>
-					<td colspan="2"><?php _e('Subtotal', 'jigoshop'); ?></th>
+					<td colspan="2"><?php _e('Subtotal', 'jigoshop'); ?></td>
 					<?php
 					$price = jigoshop_cart::$cart_contents_total_ex_tax + jigoshop_cart::$shipping_total;
 					$price = jigoshop_price($price, array('ex_tax_label' => 1));
@@ -78,7 +78,7 @@ $jigoshop_options = Jigoshop_Base::get_options(); ?>
 					<td>-<?php echo jigoshop_cart::get_total_discount(); ?></td>
 				</tr>
 				<?php endif; ?>
-
+						<tr>
                 <td colspan="2"><strong><?php _e('Grand Total', 'jigoshop'); ?></strong></td>
                 <td><strong><?php echo jigoshop_cart::get_total(); ?></strong></td>
             </tr>
