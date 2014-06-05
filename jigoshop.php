@@ -486,9 +486,9 @@ function jigoshop_frontend_scripts() {
 	/* Script.js variables */
 	// TODO: clean this up, a lot aren't even used anymore, do away with it
 	$jigoshop_params = array(
-		'ajax_url' => admin_url('admin-ajax.php'),
+		'ajax_url' => admin_url('admin-ajax.php', 'jigoshop'),
 		'assets_url' => jigoshop::assets_url(),
-		'checkout_url' => admin_url('admin-ajax.php?action=jigoshop-checkout'),
+		'checkout_url' => admin_url('admin-ajax.php?action=jigoshop-checkout', 'jigoshop'),
 		'currency_symbol' => get_jigoshop_currency_symbol(),
 		'get_variation_nonce' => wp_create_nonce("get-variation"),
 		'load_fancybox' => $jigoshop_options->get_option('jigoshop_disable_fancybox') == 'no',

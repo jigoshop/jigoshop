@@ -3,6 +3,12 @@
 * 1.9.6:
     * New: Add version constant to `jigoshop` class for easy checking in plugins.
     * Fix: Properly convert asset URLs to directory paths in JWOS.
+    * Fix: Tax warnings when country is with states and no taxes are available for it.
+    * Fix: Properly include ThickBox for uploads.
+    * Improved: Jigoshop styles on TwentyFourteen.
+    * Improved: Better recognition of SSL usage.
+    * Improved: Better recognition of available country and state on checkout.
+    * Improved: Review order template fixes.
 * 1.9.5 - 2014.05.28
     * Fix: Variation data disappearing in emails.
     * Fix: Saving taxes.
