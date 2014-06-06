@@ -864,6 +864,11 @@ class jigoshop_countries extends Jigoshop_Base {
 		return isset($states[$state_code]) ? $states[$state_code] : '';
 	}
 
+	public static function country_has_state($country_code, $state_code){
+		$states = self::get_states($country_code);
+		return in_array($state_code, array_keys($states));
+	}
+
 	/** Outputs the list of countries and states for use in dropdown boxes */
 	public static function country_dropdown_options(
 		$selected_country = '',
