@@ -301,8 +301,8 @@ class jigoshop_tax extends Jigoshop_Base {
 		}
 
 		$allowed_countries = Jigoshop_Base::get_options()->get_option('jigoshop_allowed_countries');
-		$country = ($this->shippable ? jigoshop_customer::get_shipping_country() : jigoshop_customer::get_country());
-		$state = ($this->shippable ? jigoshop_customer::get_shipping_state() : jigoshop_customer::get_state());
+		$country = jigoshop_customer::get_country();
+		$state = jigoshop_customer::get_state();
 
 		if($allowed_countries === 'specific'){
 			$specific_countries = Jigoshop_Base::get_options()->get_option('jigoshop_specific_allowed_countries');
@@ -364,8 +364,8 @@ class jigoshop_tax extends Jigoshop_Base {
 		}
 
 		$allowed_countries = Jigoshop_Base::get_options()->get_option('jigoshop_allowed_countries');
-		$country = ($this->shippable ? jigoshop_customer::get_shipping_country() : jigoshop_customer::get_country());
-		$state = ($this->shippable ? jigoshop_customer::get_shipping_state() : jigoshop_customer::get_state());
+		$country = jigoshop_customer::get_country();
+		$state = jigoshop_customer::get_state();
 
 		if($allowed_countries === 'specific'){
 			$specific_countries = Jigoshop_Base::get_options()->get_option('jigoshop_specific_allowed_countries');
@@ -751,8 +751,8 @@ class jigoshop_tax extends Jigoshop_Base {
 		endif;
 
 		$allowed_countries = Jigoshop_Base::get_options()->get_option('jigoshop_allowed_countries');
-		$country = ($this->shippable ? jigoshop_customer::get_shipping_country() : jigoshop_customer::get_country());
-		$state = ($this->shippable ? jigoshop_customer::get_shipping_state() : jigoshop_customer::get_state());
+		$country = jigoshop_customer::get_country();
+		$state = jigoshop_customer::get_state();
 
 		if($allowed_countries === 'specific'){
 			$specific_countries = Jigoshop_Base::get_options()->get_option('jigoshop_specific_allowed_countries');

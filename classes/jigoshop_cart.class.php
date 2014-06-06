@@ -949,13 +949,7 @@ class jigoshop_cart extends Jigoshop_Singleton {
 
 			// only show estimated tag when customer is on the cart page and no shipping calculator is enabled to be able to change country
 			if(!jigoshop_shipping::show_shipping_calculator() && is_cart()){
-
-				if(self::needs_shipping() && jigoshop_shipping::is_enabled()){
-					$return .= '<small>'.sprintf(__('estimated for: %s', 'jigoshop'), __(jigoshop_countries::$countries[jigoshop_countries::get_base_country()], 'jigoshop')).'</small>';
-				} else {
-					$return .= '<small>'.sprintf(__('estimated for: %s', 'jigoshop'), __(jigoshop_countries::$countries[jigoshop_customer::get_country()], 'jigoshop')).'</small>';
-				}
-
+				$return .= '<small>'.sprintf(__('estimated for: %s', 'jigoshop'), __(jigoshop_countries::$countries[jigoshop_customer::get_country()], 'jigoshop')).'</small>';
 			}
 		}
 

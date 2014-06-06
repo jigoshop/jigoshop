@@ -5,10 +5,12 @@
     * Fix: Properly convert asset URLs to directory paths in JWOS.
     * Fix: Tax warnings when country is with states and no taxes are available for it.
     * Fix: Properly include ThickBox for uploads.
+    * Fix: Taxes are applied to billing country instead of shipping country if product is shippable.
     * Improved: Jigoshop styles on TwentyFourteen.
     * Improved: Better recognition of SSL usage.
     * Improved: Better recognition of available country and state on checkout.
     * Improved: Review order template fixes.
+    * Improved: Jigoshop Countries class - now it has `get_country($country_code)` and `get_state($country_code, $state_code)` functions.
 * 1.9.5 - 2014.05.28
     * Fix: Variation data disappearing in emails.
     * Fix: Saving taxes.
