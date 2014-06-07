@@ -292,7 +292,9 @@ class jigoshop_customer extends Jigoshop_Singleton {
 		if(!is_array(jigoshop_session::instance()->customer)){
 			jigoshop_session::instance()->customer = array();
 		}
-		jigoshop_session::instance()->customer[$name] = $value;
+		$customer = jigoshop_session::instance()->customer;
+		$customer[$name] = $value;
+		jigoshop_session::instance()->customer = $customer;
 	}
 
 	private static function get_customer_session($name){
