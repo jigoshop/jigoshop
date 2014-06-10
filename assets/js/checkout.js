@@ -19,11 +19,6 @@
     $('body')
 	    .bind('init_checkout', function() {
 	      $('#billing_country, #shipping_country, .country_to_state').change();
-	    })
-	    .bind('update_checkout', function() {
-	      clearTimeout(updateTimer);
-	      update_checkout();
-	      validate_required();
 	    });
 
 
@@ -86,6 +81,7 @@
         }
       });
 
+	    $('body').trigger('jigoshop.update_checkout');
     }
 
 
