@@ -25,9 +25,8 @@ function jigoshop_upgrade() {
 	// Get the db version
 	$jigoshop_db_version = get_site_option( 'jigoshop_db_version' );
 
-	// 'Cause we aint got shiz to do
-	if ( $jigoshop_db_version == JIGOSHOP_VERSION )
-		return false;
+	if ( $jigoshop_db_version == JIGOSHOP_DB_VERSION )
+		return;
 
 	if ( ! is_numeric($jigoshop_db_version) ) {
 		jigoshop_convert_db_version();
@@ -94,9 +93,7 @@ function jigoshop_upgrade() {
  	}
 
 	// Update the db option
-	update_site_option( 'jigoshop_db_version', JIGOSHOP_VERSION );
-
-	return true;
+	update_site_option( 'jigoshop_db_version', JIGOSHOP_DB_VERSION );
 }
 
 /**

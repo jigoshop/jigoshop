@@ -41,11 +41,11 @@ add_action('admin_notices', function(){
 add_action('admin_notices', 'jigoshop_update');
 function jigoshop_update() {
 	// Run database upgrade if required
-	if ( is_admin() && get_site_option('jigoshop_db_version') < JIGOSHOP_VERSION ) {
+	if ( is_admin() && get_site_option('jigoshop_db_version') < JIGOSHOP_DB_VERSION ) {
 
 		if ( isset($_GET['jigoshop_update_db']) && (bool) $_GET['jigoshop_update_db'] ) {
 			require_once( jigoshop::plugin_path().'/jigoshop_upgrade.php' );
-			$response = jigoshop_upgrade();
+			jigoshop_upgrade();
 
 		} else {
 

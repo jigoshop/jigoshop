@@ -42,10 +42,18 @@
  * @license             GNU General Public License v3
  */
 
-if ( !defined( "JIGOSHOP_VERSION" )) define( "JIGOSHOP_VERSION", 1307110 ) ;
-if ( !defined( "JIGOSHOP_OPTIONS" )) define( "JIGOSHOP_OPTIONS", 'jigoshop_options' );
-if ( !defined( 'JIGOSHOP_TEMPLATE_URL' ) ) define( 'JIGOSHOP_TEMPLATE_URL', 'jigoshop/' );
-if ( !defined( "PHP_EOL" )) define( "PHP_EOL", "\r\n" );
+if(!defined("JIGOSHOP_VERSION")){
+	define("JIGOSHOP_VERSION", '1.9.6');
+}
+if(!defined("JIGOSHOP_DB_VERSION")){
+	define("JIGOSHOP_DB_VERSION", 1307110);
+}
+if(!defined("JIGOSHOP_OPTIONS")){
+	define("JIGOSHOP_OPTIONS", 'jigoshop_options');
+}
+if(!defined('JIGOSHOP_TEMPLATE_URL')){
+	define('JIGOSHOP_TEMPLATE_URL', 'jigoshop/');
+}
 
 /**
  * Include core files and classes
@@ -1177,7 +1185,7 @@ function jigoshop_sanitize_user($username, $raw_username, $strict) {
 
 add_action( 'wp_head', 'jigoshop_head_version' );
 function jigoshop_head_version() {
-	echo "\n" . '<!-- Jigoshop Version: '.jigoshop::jigoshop_version().' -->' . "\n";
+	echo "\n" . '<!-- Jigoshop Version: '.JIGOSHOP_VERSION.' -->' . "\n";
 }
 
 global $jigoshop_body_classes;

@@ -54,6 +54,7 @@ class jigoshop extends Jigoshop_Singleton {
 
 	/**
 	 * Get the current version of Jigoshop
+	 * @deprecated Please use JIGOSHOP_VERSION constant instead - it is much faster.
 	 *
 	 * @return  string	current Jigoshop version
 	 */

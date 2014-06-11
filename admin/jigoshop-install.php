@@ -61,7 +61,7 @@ function _install_jigoshop(){
 		flush_rewrite_rules(false);
 
 		// Update version
-		update_site_option("jigoshop_db_version", JIGOSHOP_VERSION);
+		update_site_option("jigoshop_db_version", JIGOSHOP_DB_VERSION);
 	}
 }
 

@@ -315,29 +315,11 @@ class jigoshop_product extends Jigoshop_Base {
 
 	/**
 	 * Get the product's post data
-	 * @deprecated Should be using WP native the_title() right? -Rob
-	 * NOTE: Only used for get_title()
-	 *
-	 * @return  object
-	 */
-	public function get_post_data() {
-		if (empty($this->post)) {
-			$this->post = get_post( $this->ID );
-		}
-
-		return $this->post;
-	}
-
-	/**
-	 * Get the product's post data
-	 * @deprecated Should be using WP native the_title() right? -Rob
-	 * NOTE: Only used for get_title()
 	 *
 	 * @return  string
 	 */
 	public function get_title() {
-		$this->get_post_data();
-		return apply_filters('jigoshop_product_title', get_the_title($this->post->ID), $this);
+		return apply_filters('jigoshop_product_title', get_the_title($this->ID), $this);
 	}
 
 	/**
@@ -580,12 +562,11 @@ class jigoshop_product extends Jigoshop_Base {
 	}
 
 	/**
-     * Get the product total price excluding tax
-     *
-     * @param   int     $quantity
-     *
-     * $return  float   the total price of the product times the quantity without any tax included
-     */
+	 * Get the product total price excluding tax
+	 *
+	 * @param int $quantity
+	 * @return float the total price of the product times the quantity without any tax included
+	 */
 	function get_price_excluding_tax( $quantity = 1 ) {
 
         // to avoid rounding errors multiply by 100
@@ -628,9 +609,8 @@ class jigoshop_product extends Jigoshop_Base {
 	/**
      * Get the product total price including tax
      *
-     * @param   int     $quantity
-     *
-     * $return  float   the total price of the product times the quantity and destination tax included
+     * @param int $quantity
+     * @return float the total price of the product times the quantity and destination tax included
      */
 	function get_price_with_tax( $quantity = 1 ) {
 
@@ -722,8 +702,8 @@ class jigoshop_product extends Jigoshop_Base {
     /**
      * This function returns the tax rate for a particular tax_class applied to the product
      *
-     * @param string tax_class the class of tax to find
-     * @param array product_tax_rates the tax rates applied to the product
+     * @param string $tax_class the class of tax to find
+     * @param array $product_tax_rates the tax rates applied to the product
      * @return double the tax rate percentage
      */
     public static function get_product_tax_rate($tax_class, $product_tax_rates) {
@@ -737,8 +717,8 @@ class jigoshop_product extends Jigoshop_Base {
 
     /**
      * Returns true if the tax is not compounded.
-     * @param string tax_class the tax class return value on
-     * @param array product_tax_rates the array of tax rates on the product
+     * @param string $tax_class the tax class return value on
+     * @param array $product_tax_rates the array of tax rates on the product
      * @return bool true if tax class is not compounded. False otherwise. Default true.
      */
     public static function get_non_compounded_tax($tax_class, $product_tax_rates) {
@@ -800,8 +780,7 @@ class jigoshop_product extends Jigoshop_Base {
 	/**
 	 * Adjust the products price during runtime
 	 *
-	 * @param   mixed
-	 * @return  void
+	 * @param mixed
 	 */
 	public function adjust_price( $new_price ) {
 
@@ -815,7 +794,7 @@ class jigoshop_product extends Jigoshop_Base {
 	/**
 	 * Returns the products sale value, either with or without a percentage
 	 *
-	 * @return html
+	 * @return string HTML price of product (with sales)
 	 */
 	public function get_calculated_sale_price_html() {
 
@@ -863,7 +842,7 @@ class jigoshop_product extends Jigoshop_Base {
 	/**
 	 * Returns the price in html format
 	 *
-	 * @return  html
+	 * @return string HTML price of product
 	 */
 	public function get_price_html() {
 
@@ -938,7 +917,7 @@ class jigoshop_product extends Jigoshop_Base {
 	/**
 	 * Returns the upsell product ids
 	 *
-	 * @return  mixed
+	 * @return mixed
 	 */
 	public function get_upsells() {
 		$ids = get_post_meta( $this->id, 'upsell_ids' );
@@ -949,7 +928,7 @@ class jigoshop_product extends Jigoshop_Base {
 	/**
 	 * Returns the cross_sells product ids
 	 *
-	 * @return  mixed
+	 * @return mixed
 	 */
 	public function get_cross_sells() {
 		$ids = get_post_meta( $this->id, 'crosssell_ids' );
@@ -959,9 +938,8 @@ class jigoshop_product extends Jigoshop_Base {
 
 	/**
 	 * Returns the product's length
-	 * @deprecated not required since we can just call $this->weight if the var is public
 	 *
-	 * @return  mixed   length
+	 * @return mixed length
 	 */
 	public function get_length() {
 		return $this->length;
@@ -969,7 +947,6 @@ class jigoshop_product extends Jigoshop_Base {
 
 	/**
 	 * Returns the product's width
-	 * @deprecated not required since we can just call $this->weight if the var is public
 	 *
 	 * @return  mixed   width
 	 */
@@ -979,7 +956,6 @@ class jigoshop_product extends Jigoshop_Base {
 
 	/**
 	 * Returns the product's height
-	 * @deprecated not required since we can just call $this->weight if the var is public
 	 *
 	 * @return  mixed   height
 	 */
@@ -994,10 +970,14 @@ class jigoshop_product extends Jigoshop_Base {
     public function get_tax_classes() {
         return (array) get_post_meta($this->ID, 'tax_classes', true);
     }
+
 	/**
 	 * Returns the product categories
 	 *
-	 * @return  HTML
+	 * @param string $sep Separator.
+	 * @param string $before Content before list.
+	 * @param string $after Content after list.
+	 * @return string HTML code of categories list.
 	 */
 	public function get_categories( $sep = ', ', $before = '', $after = '' ) {
 		return get_the_term_list($this->ID, 'product_cat', $before, $sep, $after);
@@ -1006,7 +986,10 @@ class jigoshop_product extends Jigoshop_Base {
 	/**
 	 * Returns the product tags
 	 *
-	 * @return  HTML
+	 * @param string $sep Separator.
+	 * @param string $before Content before list.
+	 * @param string $after Content after list.
+	 * @return string HTML code of tags list.
 	 */
 	public function get_tags( $sep = ', ', $before = '', $after = '' ) {
 		return get_the_term_list($this->ID, 'product_tag', $before, $sep, $after);
@@ -1059,7 +1042,8 @@ class jigoshop_product extends Jigoshop_Base {
 	 * Gets all products which have a common category or tag
 	 * TODO: Add stock check?
 	 *
-	 * @return	array
+	 * @param int $limit
+	 * @return array
 	 */
 	public function get_related( $limit = 5 ) {
 
@@ -1110,7 +1094,8 @@ class jigoshop_product extends Jigoshop_Base {
 	/**
 	 * Gets a single product attribute
 	 *
-	 * @return  string|array
+	 * @param $key string Attribute key.
+	 * @return string|array
 	 */
 	public function get_attribute( $key ) {
 
@@ -1169,9 +1154,9 @@ class jigoshop_product extends Jigoshop_Base {
 	/**
 	 * Checks if the product has dimensions
 	 *
-     * @param boolean all_dimensions if true, then all dimensions have to be set
-     * in order for has_dimensions to return true, otherwise if false, then just 1
-     * of the dimensions has to be set for the function to return true.
+   * @param boolean $all_dimensions if true, then all dimensions have to be set
+   * in order for has_dimensions to return true, otherwise if false, then just 1
+   * of the dimensions has to be set for the function to return true.
 	 * @return  bool
 	 */
 	public function has_dimensions($all_dimensions = false) {
@@ -1198,7 +1183,7 @@ class jigoshop_product extends Jigoshop_Base {
 	/**
 	 * Lists attributes in a html table
 	 *
-	 * @return  html
+	 * @return string HTML code with attributes list.
 	 **/
 	public function list_attributes() {
 
@@ -1277,7 +1262,7 @@ class jigoshop_product extends Jigoshop_Base {
 	 * TODO: Note that this is 'variable product' specific, and should be moved to separate class
 	 * with all 'variable product' logic form other methods in this class.
 	 *
-	 * @return   two dimensional array of attributes and their available values
+	 * @return array Two dimensional array of attributes and their available values
 	 */
 	function get_available_attributes_variations() {
 
@@ -1388,7 +1373,6 @@ class jigoshop_product extends Jigoshop_Base {
 	/**
 	 * Get a product attributes label
 	 */
-
 	public function attribute_label( $name ) {
 		global $wpdb;
 
