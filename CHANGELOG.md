@@ -7,6 +7,7 @@
     * Fix: Tax warnings when country is with states and no taxes are available for it.
     * Fix: Properly include ThickBox for uploads.
     * Fix: Taxes are applied to billing country instead of shipping country if product is shippable.
+    * Fix: Checking if specific countries are set properly before updating tax classes.
     * Improved: Jigoshop styles on TwentyFourteen.
     * Improved: Better recognition of SSL usage.
     * Improved: Better recognition of available country and state on checkout.
