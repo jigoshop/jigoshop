@@ -4,7 +4,7 @@ Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, wid
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@jigowatt.co.uk&item_name=Donation+for+Jigoshop
 Requires at least: 3.8
 Tested up to: 3.9.1
-Stable tag: 1.9.5
+Stable tag: 1.9.6
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -113,6 +113,23 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 == Changelog ==
 
+= 1.9.6 - 2014.06.11 =
+* New: Add version constant to `jigoshop` class for easy checking in plugins.
+* New: Javascript triggers `jigoshop.update_checkout` on body element when `update_checkout()` method is called. Useful for payment gateways.
+* Fix: Properly convert asset URLs to directory paths in JWOS.
+* Fix: Tax warnings when country is with states and no taxes are available for it.
+* Fix: Properly include ThickBox for uploads.
+* Fix: Taxes are applied to billing country instead of shipping country if product is shippable.
+* Fix: Checking if specific countries are set properly before updating tax classes.
+* Improved: Jigoshop styles on TwentyFourteen.
+* Improved: Better recognition of SSL usage.
+* Improved: Better recognition of available country and state on checkout.
+* Improved: Review order template fixes.
+* Improved: Jigoshop Countries class - now it has `get_country($country_code)` and `get_state($country_code, $state_code)` functions.
+* Improved: Check if there is shipping and payment method before displaying it in orders list.
+* Improved: Reformat of PayPal Standard gateway.
+* Improved: Introduced `JIGOSHOP_VERSION` and `JIGOSHOP_DB_VERSION` (old `JIGOSHOP_VERSION`) constants - use them instead of jigoshop::jigoshop_version() function.
+* Improved: Removed deprecated qualifier on product's `get_title()` function and updated the function.
 = 1.9.5 - 2014.05.28 =
 * Fix: Variation data disappearing in emails.
 * Fix: Saving taxes.

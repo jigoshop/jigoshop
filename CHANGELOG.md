@@ -1,6 +1,6 @@
 ## Changelog
 
-* 1.9.6:
+* 1.9.6 - 2014.06.11:
     * New: Add version constant to `jigoshop` class for easy checking in plugins.
     * New: Javascript triggers `jigoshop.update_checkout` on body element when `update_checkout()` method is called. Useful for payment gateways.
     * Fix: Properly convert asset URLs to directory paths in JWOS.
