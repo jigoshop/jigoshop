@@ -383,10 +383,14 @@ function jigoshop_custom_order_columns($column) {
         case "billing_and_shipping" :
             ?>
             <dl>
+	              <?php if($order->payment_method_title): ?>
                 <dt><?php _e('Payment:', 'jigoshop'); ?></dt>
                 <dd><?php echo $order->payment_method_title; ?></dd>
+	              <?php endif; ?>
+	              <?php if($order->shipping_service): ?>
                 <dt><?php _e('Shipping:', 'jigoshop'); ?></dt>
                 <dd><?php echo sprintf( __('%s', 'jigoshop'), $order->shipping_service); ?></dd>
+	              <?php endif; ?>
             </dl>
             <?php
             break;

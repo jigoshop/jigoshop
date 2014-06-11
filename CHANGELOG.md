@@ -13,6 +13,7 @@
     * Improved: Better recognition of available country and state on checkout.
     * Improved: Review order template fixes.
     * Improved: Jigoshop Countries class - now it has `get_country($country_code)` and `get_state($country_code, $state_code)` functions.
+    * Improved: Check if there is shipping and payment method before displaying it in orders list.
 * 1.9.5 - 2014.05.28
     * Fix: Variation data disappearing in emails.
     * Fix: Saving taxes.
