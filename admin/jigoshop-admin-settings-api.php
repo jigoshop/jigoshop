@@ -367,7 +367,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 							break;
 						case 'multi_select_countries' :
 							if(isset($value)){
-								$countries = jigoshop_countries::$countries;
+								$countries = jigoshop_countries::get_countries();
 								asort($countries);
 								$selected = array();
 								foreach($countries as $key => $val){
@@ -832,8 +832,7 @@ class Jigoshop_Options_Parser {
 				<?php
 				break;
 			case 'multi_select_countries':
-				$countries = jigoshop_countries::$countries;
-				asort($countries);
+				$countries = jigoshop_countries::get_countries();
 				$selections = (array)$options->get_option($item['id']);
 
 				$display .= '<select multiple="multiple"
