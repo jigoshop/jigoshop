@@ -22,7 +22,7 @@
  * Author:              Jigoshop
  * Author URI:          http://www.jigoshop.com
  *
- * Version:             1.9.6
+ * Version:             1.9.7
  * Requires at least:   3.8
  * Tested up to:        3.9.1
  *
@@ -43,7 +43,7 @@
  */
 
 if(!defined("JIGOSHOP_VERSION")){
-	define("JIGOSHOP_VERSION", '1.9.6');
+	define("JIGOSHOP_VERSION", '1.9.7');
 }
 if(!defined("JIGOSHOP_DB_VERSION")){
 	define("JIGOSHOP_DB_VERSION", 1307110);
