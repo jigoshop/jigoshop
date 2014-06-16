@@ -102,6 +102,16 @@ function jigoshop_get_template_part( $slug, $name = '' ) {
 // Returns the template to be used ( child-theme or theme or plugin )
 //################################################################################
 
+function jigoshop_locate_template($template)
+{
+	$file = locate_template(array('jigoshop/'.$template.'.php'), false, false);
+	if (empty($file)) {
+		$file = JIGOSHOP_DIR.'/templates/'.$template.'.php';
+	}
+
+	return $file;
+}
+
 function jigoshop_return_template( $template_name ) {
 	$template = locate_template( array( $template_name, JIGOSHOP_TEMPLATE_URL . $template_name ), false );
 	if ( !$template)
