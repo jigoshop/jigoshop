@@ -49,6 +49,9 @@ if (!defined("JIGOSHOP_OPTIONS")) {
 if (!defined('JIGOSHOP_TEMPLATE_URL')) {
 	define('JIGOSHOP_TEMPLATE_URL', 'jigoshop/');
 }
+if (!defined('JIGOSHOP_DIR')) {
+	define('JIGOSHOP_DIR', dirname(__FILE__));
+}
 
 /**
  * Include core files and classes
@@ -774,6 +777,32 @@ function jigoshop_product_cat_filter_post_link($permalink, $post, $leavename, $s
 }
 add_filter('post_type_link', 'jigoshop_product_cat_filter_post_link', 10, 4);
 
+/**
+ * Helper function to locate proper template and set up environment based on passed array.
+ *
+ * @param string $template Template name.
+ * @param array $variables Template variables
+ */
+function jigoshop_render($template, array $variables) {
+	$file = jigoshop_locate_template($template);
+	extract($variables);
+	/** @noinspection PhpIncludeInspection */
+	require($file);
+}
+
+/**
+ * Helper function to locate proper template and set up environment based on passed array.
+ * Returns value of rendered template as a string.
+ *
+ * @param string $template Template name.
+ * @param array $variables Template variables
+ * @return string
+ */
+function jigoshop_render_result($template, array $variables) {
+	ob_start();
+	jigoshop_render($template, $variables);
+	return ob_get_clean();
+}
 
 /**
  * Evaluates to true only on the Shop page, not Product categories and tags
