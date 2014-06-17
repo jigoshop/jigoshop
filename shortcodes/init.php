@@ -20,6 +20,7 @@ include_once('my_account.php');
 include_once('order_tracking.php');
 include_once('pay.php');
 include_once('thankyou.php');
+include_once('product_list.php');
 
 function jigoshop_shortcode_wrapper( $function, $atts = array() ) {
 	// WordPress caching of shortcodes stripped out in version 1.4.9 for compatibility with Cache plugins on Cart and Checkout
