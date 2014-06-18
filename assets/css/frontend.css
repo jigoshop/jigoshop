@@ -11,15 +11,14 @@ ul.products.rows > li {
 	margin: 0 0 20px 0;
 }
 ul.products.rows > li > div.before-product {
-	float: left;
-	display: block;
+	display: inline-block;
+	vertical-align: middle;
 }
 ul.products.rows > li > div.before-product > img {
 	margin-right: 10px;
 }
 ul.products.rows > li > a.product {
-	display: block;
-	float: left;
+	display: inline-block;
 	width: 70%;
 	margin: 0;
 	padding: 0;
@@ -30,8 +29,8 @@ ul.products.rows > li > a.product > span.sku {
 	color: #888888;
 }
 ul.products.rows > li > div.after-product {
-	float: right;
-	display: block;
+	display: inline-block;
+	vertical-align: middle;
 	width: 30%;
 }
 ul.products.rows > li > div.after-product > div.quantity {
@@ -42,11 +41,9 @@ ul.products.rows > li > div.after-product > a.button {
 }
 ul.products.rows.thumbnails > li > div.after-product {
 	width: 20%;
-	margin-top: 20px;
 }
 ul.products.rows.thumbnails > li > a.product {
 	width: 55%;
-	margin-top: 20px;
 }
 /* fix wordpress theme */
 #content #breadcrumb,#content .type-product {margin: 0; padding: 0 0 0 1.5%;}
