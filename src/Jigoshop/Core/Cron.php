@@ -21,8 +21,8 @@ class Cron
 		$this->service = $service;
 		$this->_scheduleEvents();
 
-		$wp->addAction('jigoshop\\cron\\pending_orders', array($this, '_updatePendingOrders'));
-		$wp->addAction('jigoshop\\cron\\processing_orders', array($this, '_completeProcessingOrders'));
+		$wp->addAction('jigoshop\\cron\\pending_orders', array($this, 'updatePendingOrders'));
+		$wp->addAction('jigoshop\\cron\\processing_orders', array($this, 'completeProcessingOrders'));
 	}
 
 	public static function clear()
@@ -49,81 +49,51 @@ class Cron
 
 	/**
 	 * Moves old orders to "On Hold" status.
+	 *
+	 * @internal
 	 */
-	/** @noinspection PhpUnusedPrivateMethodInspection */
-	private function _updatePendingOrders()
+	public function updatePendingOrders()
 	{
 		if($this->options->get('reset_pending_orders') == 'yes')
 		{
-			$this->wp->addFilter('posts_where', array($this, '_ordersFilter'));
-			$query = new \WP_Query(array(
-				'post_status' => 'publish',
-				'post_type' => 'shop_order',
-				'shop_order_status' => 'pending',
-				'suppress_filters' => false,
-				'fields' => 'ids',
-			));
-			$orders = $this->service->findByQuery($query);
+			$orders = $this->service->findOldPending();
 
-			$this->wp->removeFilter('posts_where', array($this, '_ordersFilter'));
-			// TODO: Update function to call
-			$this->wp->removeAction('order_status_pending_to_on-hold', 'jigoshop_processing_order_customer_notification');
+			// TODO: Disable notification of the user
+//			$this->wp->removeAction('jigoshop\\order\\status\\pending_to_on-hold', 'jigoshop_processing_order_customer_notification');
 
-			// TODO: Proper status handling
 			foreach($orders as $order)
 			{
 				/** @var $order \Jigoshop\Entity\Order */
 				$order->updateStatus('on-hold', __('Archived due to order being in pending state for a month or longer.', 'jigoshop'));
 			}
 
-			// TODO: Proper action naming
-			// TODO: Update function to call
-			$this->wp->addAction('order_status_pending_to_on-hold', 'jigoshop_processing_order_customer_notification');
+			// TODO: Enable notification of the user
+//			$this->wp->addAction('jigoshop\\order\\status\\pending_to_on-hold', 'jigoshop_processing_order_customer_notification');
 		}
 	}
 
 	/**
 	 * Marks old, but still in "Processing" status orders as completed.
+	 *
+	 * @internal
 	 */
-	/** @noinspection PhpUnusedPrivateMethodInspection */
-	private function _completeProcessingOrders()
+	public function completeProcessingOrders()
 	{
 		if($this->options->get('complete_processing_orders') == 'yes')
 		{
-			$this->wp->addFilter('posts_where', array($this, '_ordersFilter'));
-			$query = new \WP_Query(array(
-				'post_status' => 'publish',
-				'post_type' => 'shop_order',
-				'shop_order_status' => 'processing',
-				'suppress_filters' => false,
-				'fields' => 'ids',
-			));
-			$orders = $this->service->findByQuery($query);
+			$orders = $this->service->findOldProcessing();
 
-			$this->wp->removeFilter('posts_where', array($this, '_ordersFilter'));
-			// TODO: Update function to call
-			$this->wp->removeAction('order_status_completed', 'jigoshop_processing_order_customer_notification');
+			// TODO: Disable notification of the user
+//			$this->wp->removeAction('jigoshop\\order\\status\\completed', 'jigoshop_processing_order_customer_notification');
 
-			// TODO: Proper status handling
 			foreach($orders as $order)
 			{
 				/** @var $order \Jigoshop\Entity\Order */
 				$order->updateStatus('completed', __('Completed due to order being in processing state for a month or longer.', 'jigoshop'));
 			}
 
-			// TODO: Proper action naming
-			// TODO: Update function to call
-			$this->wp->addAction('order_status_completed', 'jigoshop_processing_order_customer_notification');
+			// TODO: Enable notification of the user
+//			$this->wp->addAction('jigoshop\\order\\status\\completed', 'jigoshop_processing_order_customer_notification');
 		}
-	}
-
-	/**
-	 * @param string $when Base query.
-	 * @return string Query for orders older than 30 days.
-	 */
-	/** @noinspection PhpUnusedPrivateMethodInspection */
-	private function _ordersFilter($when = '')
-	{
-		return $when.$this->wp->getWPDB()->prepare(' AND post_date < %s', date('Y-m-d', time()-30*24*3600));
 	}
 }

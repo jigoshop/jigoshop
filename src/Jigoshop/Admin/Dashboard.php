@@ -78,7 +78,7 @@ class Dashboard implements PageInterface
 		add_meta_box('jigoshop_dashboard_useful_links', __('Useful Links', 'jigoshop'), array($this, 'usefulLinks'), 'jigoshop', 'normal', 'core');
 
 		/** @noinspection PhpUnusedLocalVariableInspection */
-		global $submenu; // TODO: Create proper abstraction when testing code appears
+		$submenu = $this->wp->getSubmenu();
 		include(JIGOSHOP_DIR.'/templates/admin/dashboard.php');
 	}
 

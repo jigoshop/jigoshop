@@ -78,4 +78,20 @@ class Simple implements OrderServiceInterface
 		// TODO: Implement findFromMonth() method.
 		return $this->service->findFromMonth($month);
 	}
+
+	/**
+	 * @return array List of orders that are too long in Pending status.
+	 */
+	public function findOldPending()
+	{
+		return $this->service->findOldPending();
+	}
+
+	/**
+	 * @return array List of orders that are too long in Processing status.
+	 */
+	public function findOldProcessing()
+	{
+		return $this->service->findOldProcessing();
+	}
 }

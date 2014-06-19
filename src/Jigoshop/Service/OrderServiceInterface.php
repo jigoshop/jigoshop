@@ -15,4 +15,14 @@ interface OrderServiceInterface extends ServiceInterface
 	 * @return array List of orders from selected month.
 	 */
 	public function findFromMonth($month);
+
+	/**
+	 * @return array List of orders that are too long in Pending status.
+	 */
+	public function findOldPending();
+
+	/**
+	 * @return array List of orders that are too long in Processing status.
+	 */
+	public function findOldProcessing();
 }

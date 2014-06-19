@@ -14,11 +14,11 @@ use WPAL\Wordpress;
 class Order implements OrderServiceInterface
 {
 	/** @var \WPAL\Wordpress */
-	private $wordpress;
+	private $wp;
 
-	public function __construct(Wordpress $wordpress)
+	public function __construct(Wordpress $wp)
 	{
-		$this->wordpress = $wordpress;
+		$this->wp = $wp;
 	}
 	/**
 	 * Finds order specified by ID.
@@ -119,5 +119,53 @@ class Order implements OrderServiceInterface
 //		$orders = get_posts( $args );
 		// TODO: Implement findFromMonth() method.
 		return array();
+	}
+
+	/**
+	 * @return array List of orders that are too long in Pending status.
+	 */
+	public function findOldPending()
+	{
+		// TODO: Improve findOldPending method
+		$this->wp->addFilter('posts_where', array($this, 'ordersFilter'));
+		$query = new \WP_Query(array(
+			'post_status' => 'publish',
+			'post_type' => 'shop_order',
+			'shop_order_status' => 'pending',
+			'suppress_filters' => false,
+			'fields' => 'ids',
+		));
+		$results = $this->findByQuery($query);
+		$this->wp->removeFilter('posts_where', array($this, 'ordersFilter'));
+		return $results;
+	}
+
+	/**
+	 * @return array List of orders that are too long in Processing status.
+	 */
+	public function findOldProcessing()
+	{
+		// TODO: Improve findOldProcessing method
+		$this->wp->addFilter('posts_where', array($this, 'ordersFilter'));
+		$query = new \WP_Query(array(
+			'post_status' => 'publish',
+			'post_type' => 'shop_order',
+			'shop_order_status' => 'processing',
+			'suppress_filters' => false,
+			'fields' => 'ids',
+		));
+		$results = $this->findByQuery($query);
+		$this->wp->removeFilter('posts_where', array($this, 'ordersFilter'));
+		return $results;
+	}
+
+	/**
+	 * @param string $when Base query.
+	 * @return string Query for orders older than 30 days.
+	 * @internal
+	 */
+	public function ordersFilter($when = '')
+	{
+		return $when.$this->wp->getWPDB()->prepare(' AND post_date < %s', date('Y-m-d', time()-30*24*3600));
 	}
 }
