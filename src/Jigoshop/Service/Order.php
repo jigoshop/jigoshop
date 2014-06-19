@@ -20,6 +20,7 @@ class Order implements OrderServiceInterface
 	{
 		$this->wp = $wp;
 	}
+
 	/**
 	 * Finds order specified by ID.
 	 *
@@ -34,8 +35,8 @@ class Order implements OrderServiceInterface
 
 	/**
 	 * Finds order specified using WordPress query.
-	 *
 	 * TODO: Replace \WP_Query in order to make Jigoshop testable
+	 *
 	 * @param $query \WP_Query WordPress query.
 	 * @return array Collection of found orders
 	 */
@@ -46,7 +47,7 @@ class Order implements OrderServiceInterface
 		$results = $query->get_posts();
 		$that = $this;
 		// TODO: Maybe it is good to optimize this to fetch all found orders data at once?
-		$orders = array_map(function($order) use ($that){
+		$orders = array_map(function ($order) use ($that){
 			return $that->find($order);
 		}, $results);
 
@@ -61,8 +62,7 @@ class Order implements OrderServiceInterface
 	 */
 	public function save(EntityInterface $object)
 	{
-		if(!($object instanceof \Jigoshop\Entity\Order))
-		{
+		if (!($object instanceof \Jigoshop\Entity\Order)) {
 			throw new Exception('Trying to save not an order!');
 		}
 
@@ -137,6 +137,7 @@ class Order implements OrderServiceInterface
 		));
 		$results = $this->findByQuery($query);
 		$this->wp->removeFilter('posts_where', array($this, 'ordersFilter'));
+
 		return $results;
 	}
 
@@ -156,6 +157,7 @@ class Order implements OrderServiceInterface
 		));
 		$results = $this->findByQuery($query);
 		$this->wp->removeFilter('posts_where', array($this, 'ordersFilter'));
+
 		return $results;
 	}
 
@@ -166,6 +168,6 @@ class Order implements OrderServiceInterface
 	 */
 	public function ordersFilter($when = '')
 	{
-		return $when.$this->wp->getWPDB()->prepare(' AND post_date < %s', date('Y-m-d', time()-30*24*3600));
+		return $when.$this->wp->getWPDB()->prepare(' AND post_date < %s', date('Y-m-d', time() - 30 * 24 * 3600));
 	}
 }

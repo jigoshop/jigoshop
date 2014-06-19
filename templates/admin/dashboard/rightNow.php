@@ -57,5 +57,5 @@
 			</tbody>
 		</table>
 	</div>
-	<br class="clear"/>
+	<br class="clear" />
 </div>

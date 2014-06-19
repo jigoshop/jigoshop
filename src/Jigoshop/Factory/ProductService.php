@@ -29,8 +29,7 @@ class ProductService
 	{
 		$service = new Service($this->wp);
 
-		switch($this->options->get('cache_mechanism'))
-		{
+		switch ($this->options->get('cache_mechanism')) {
 			case 'simple':
 				$service = new SimpleCache($service);
 				break;

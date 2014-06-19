@@ -36,13 +36,11 @@ class Cron
 	private function _scheduleEvents()
 	{
 		$time = time();
-		if(!$this->wp->nextScheduled('jigoshop\\cron\\pending_orders'))
-		{
+		if (!$this->wp->nextScheduled('jigoshop\\cron\\pending_orders')) {
 			$this->wp->scheduleEvent($time, 'daily', 'jigoshop\\cron\\pending_orders');
 		}
 
-		if(!$this->wp->nextScheduled('jigoshop\\cron\\processing_orders'))
-		{
+		if (!$this->wp->nextScheduled('jigoshop\\cron\\processing_orders')) {
 			$this->wp->scheduleEvent($time, 'daily', 'jigoshop\\cron\\processing_orders');
 		}
 	}
@@ -54,15 +52,13 @@ class Cron
 	 */
 	public function updatePendingOrders()
 	{
-		if($this->options->get('reset_pending_orders') == 'yes')
-		{
+		if ($this->options->get('reset_pending_orders') == 'yes') {
 			$orders = $this->service->findOldPending();
 
 			// TODO: Disable notification of the user
 //			$this->wp->removeAction('jigoshop\\order\\status\\pending_to_on-hold', 'jigoshop_processing_order_customer_notification');
 
-			foreach($orders as $order)
-			{
+			foreach ($orders as $order) {
 				/** @var $order \Jigoshop\Entity\Order */
 				$order->updateStatus('on-hold', __('Archived due to order being in pending state for a month or longer.', 'jigoshop'));
 			}
@@ -79,15 +75,13 @@ class Cron
 	 */
 	public function completeProcessingOrders()
 	{
-		if($this->options->get('complete_processing_orders') == 'yes')
-		{
+		if ($this->options->get('complete_processing_orders') == 'yes') {
 			$orders = $this->service->findOldProcessing();
 
 			// TODO: Disable notification of the user
 //			$this->wp->removeAction('jigoshop\\order\\status\\completed', 'jigoshop_processing_order_customer_notification');
 
-			foreach($orders as $order)
-			{
+			foreach ($orders as $order) {
 				/** @var $order \Jigoshop\Entity\Order */
 				$order->updateStatus('completed', __('Completed due to order being in processing state for a month or longer.', 'jigoshop'));
 			}

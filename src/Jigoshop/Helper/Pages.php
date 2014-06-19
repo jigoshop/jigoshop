@@ -90,7 +90,7 @@ class Pages
 	 */
 	public static function isAccount()
 	{
-		return is_page(Core::getPageId(self::ACCOUNT));// || is_page(jigoshop_get_page_id('edit_address')) || is_page(jigoshop_get_page_id('change_password')) || is_page(jigoshop_get_page_id('view_order'));
+		return is_page(Core::getPageId(self::ACCOUNT)); // || is_page(jigoshop_get_page_id('edit_address')) || is_page(jigoshop_get_page_id('change_password')) || is_page(jigoshop_get_page_id('view_order'));
 	}
 
 	/**
@@ -112,7 +112,7 @@ class Pages
 	 */
 	public static function isCheckout()
 	{
-		return is_page(Core::getPageId(self::CHECKOUT));// || is_page(jigoshop_get_page_id('pay'));
+		return is_page(Core::getPageId(self::CHECKOUT)); // || is_page(jigoshop_get_page_id('pay'));
 	}
 
 	/**
@@ -128,8 +128,7 @@ class Pages
 
 	public static function isAjax()
 	{
-		if(defined('DOING_AJAX'))
-		{
+		if (defined('DOING_AJAX')) {
 			return true;
 		}
 
@@ -144,13 +143,11 @@ class Pages
 	{
 		global $current_screen;
 
-		if($current_screen->post_type == 'product' || $current_screen->post_type == 'shop_order' || $current_screen->post_type == 'shop_coupon')
-		{
+		if ($current_screen->post_type == 'product' || $current_screen->post_type == 'shop_order' || $current_screen->post_type == 'shop_coupon') {
 			return $current_screen->post_type;
 		}
 
-		if(strstr($current_screen->id, 'jigoshop'))
-		{
+		if (strstr($current_screen->id, 'jigoshop')) {
 			return $current_screen->id;
 		}
 

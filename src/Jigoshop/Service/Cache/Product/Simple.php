@@ -31,10 +31,10 @@ class Simple implements ProductServiceInterface
 	 */
 	public function find($id)
 	{
-		if(!isset($this->objects[$id]))
-		{
+		if (!isset($this->objects[$id])) {
 			$this->objects[$id] = $this->service->find($id);
 		}
+
 		return $this->objects[$id];
 	}
 
@@ -49,8 +49,7 @@ class Simple implements ProductServiceInterface
 		// TODO: Check on various occasions if this is sufficient as hashing method.
 		$hash = hash('md5', serialize($query->query_vars));
 
-		if(!isset($this->queries[$hash]))
-		{
+		if (!isset($this->queries[$hash])) {
 			$this->queries[$hash] = $this->service->findByQuery($query);
 		}
 
@@ -74,8 +73,7 @@ class Simple implements ProductServiceInterface
 	 */
 	public function findOutOfStock()
 	{
-		if(!isset($this->queries['out_of_stock']))
-		{
+		if (!isset($this->queries['out_of_stock'])) {
 			$this->queries['out_of_stock'] = $this->service->findOutOfStock();
 		}
 
@@ -88,8 +86,7 @@ class Simple implements ProductServiceInterface
 	 */
 	public function findLowStock($threshold)
 	{
-		if(!isset($this->queries['low_stock_'.$threshold]))
-		{
+		if (!isset($this->queries['low_stock_'.$threshold])) {
 			$this->queries['low_stock_'.$threshold] = $this->service->findLowStock($threshold);
 		}
 

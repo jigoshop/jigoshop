@@ -5,18 +5,19 @@
 ?>
 <div id="jigoshop-metaboxes-main" class="wrap">
 	<form action="admin-post.php" method="post">
-		<h2><?php _e('Jigoshop Dashboard','jigoshop'); ?></h2>
+		<h2><?php _e('Jigoshop Dashboard', 'jigoshop'); ?></h2>
+
 		<p id="wp-version-message"><?php _e('You are using', 'jigoshop'); ?>
 			<strong>Jigoshop <?php echo \Jigoshop\Core::VERSION; ?></strong>
 		</p>
 
 		<?php \wp_nonce_field('jigoshop-metaboxes-main'); ?>
-		<?php \wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false ); ?>
-		<?php \wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false ); ?>
+		<?php \wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false); ?>
+		<?php \wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false); ?>
 
 		<div class="pages">
 			<ul class="pages">
-				<?php foreach($submenu['jigoshop'] as $item): ?>
+				<?php foreach ($submenu['jigoshop'] as $item): ?>
 					<li><a href="<?php echo (strpos($item[2], 'edit.php') === false ? 'admin.php?page=' : '').$item[2]; ?>"><?php echo $item[0]; ?></a></li>
 				<?php endforeach; ?>
 			</ul>
@@ -31,13 +32,13 @@
 					<?php \do_meta_boxes('jigoshop', 'normal', null); ?>
 				</div>
 			</div>
-			<br class="clear"/>
+			<br class="clear" />
 		</div>
 	</form>
 </div>
 <script type="text/javascript">
 	//<![CDATA[
-	jQuery(document).ready( function($) {
+	jQuery(document).ready(function($){
 		// close postboxes that should be closed
 		$('.if-js-closed').removeClass('if-js-closed').addClass('closed');
 		// postboxes setup

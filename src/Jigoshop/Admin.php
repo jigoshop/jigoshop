@@ -58,8 +58,7 @@ class Admin
 	 */
 	public function addPage($parent, PageInterface $page)
 	{
-		if(!isset($this->pages[$parent]))
-		{
+		if (!isset($this->pages[$parent])) {
 			throw new Exception('Trying to add page to invalid parent. Available ones are: '.join(', ', array_keys($this->pages)));
 		}
 
@@ -73,26 +72,22 @@ class Admin
 	{
 		$menu = $this->wp->getMenu();
 
-		if($this->wp->currentUserCan('manage_jigoshop'))
-		{
+		if ($this->wp->currentUserCan('manage_jigoshop')) {
 			$menu[54] = array('', 'read', 'separator-jigoshop', '', 'wp-menu-separator jigoshop');
 		}
 
 		$this->wp->addMenuPage(__('Jigoshop'), __('Jigoshop'), 'manage_jigoshop', 'jigoshop', array($this->dashboard, 'display'), null, 55);
-		foreach($this->pages['jigoshop'] as $page)
-		{
+		foreach ($this->pages['jigoshop'] as $page) {
 			/** @var $page PageInterface */
 			$this->wp->addSubmenuPage('jigoshop', $page->getTitle(), $page->getTitle(), $page->getCapability(), $page->getMenuSlug(), array($page, 'display'));
 		}
 
-		foreach($this->pages['products'] as $page)
-		{
+		foreach ($this->pages['products'] as $page) {
 			/** @var $page PageInterface */
 			$this->wp->addSubmenuPage('edit.php?post_type=product', $page->getTitle(), $page->getTitle(), $page->getCapability(), $page->getMenuSlug(), array($page, 'display'));
 		}
 
-		foreach($this->pages['orders'] as $page)
-		{
+		foreach ($this->pages['orders'] as $page) {
 			/** @var $page PageInterface */
 			$this->wp->addSubmenuPage('edit.php?post_type=shop_order', $page->getTitle(), $page->getTitle(), $page->getCapability(), $page->getMenuSlug(), array($page, 'display'));
 		}

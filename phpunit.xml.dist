@@ -10,16 +10,16 @@
          stopOnFailure="false"
          syntaxCheck="false"
          bootstrap="tests/bootstrap.php"
->
-    <php>
-        <ini name="intl.default_locale" value="en"/>
-        <ini name="intl.error_level" value="0"/>
-        <ini name="memory_limit" value="-1"/>
-    </php>
+	>
+	<php>
+		<ini name="intl.default_locale" value="en" />
+		<ini name="intl.error_level" value="0" />
+		<ini name="memory_limit" value="-1" />
+	</php>
 
-    <testsuites>
-        <testsuite name="Jigoshop Test Suite">
-            <directory>./tests/</directory>
-        </testsuite>
-    </testsuites>
+	<testsuites>
+		<testsuite name="Jigoshop Test Suite">
+			<directory>./tests/</directory>
+		</testsuite>
+	</testsuites>
 </phpunit>

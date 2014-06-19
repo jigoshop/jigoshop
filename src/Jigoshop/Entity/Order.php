@@ -85,22 +85,18 @@ class Order implements EntityInterface
 		$old_status = get_term_by('slug', $this->status, 'shop_order_status');
 		$new_status = get_term_by('slug', $status, 'shop_order_status');
 
-		if($new_status)
-		{
+		if ($new_status) {
 			wp_set_object_terms($this->id, array($new_status->slug), 'shop_order_status', false);
 
-			if($this->status != $new_status->slug)
-			{
+			if ($this->status != $new_status->slug) {
 //				do_action('order_status_'.$new_status->slug, $this->id);
 //				do_action('order_status_'.$this->status.'_to_'.$new_status->slug, $this->id);
 				$this->addNote($message.sprintf(__('Order status changed from %s to %s.', 'jigoshop'), __($old_status->name, 'jigoshop'), __($new_status->name, 'jigoshop')));
 
 				// Date
-				if($new_status->slug == 'completed')
-				{
+				if ($new_status->slug == 'completed') {
 					update_post_meta($this->id, 'completed_date', current_time('timestamp'));
-					foreach($this->items as $item)
-					{
+					foreach ($this->items as $item) {
 						/** @var \Jigoshop\Entity\Order\Item $item */
 						$sales = get_post_meta($item->getProduct()->getId(), 'quantity_sold', true) + $item->getQuantity();
 						update_post_meta($item->getProduct()->getId(), 'quantity_sold', $sales);

@@ -4,7 +4,6 @@ namespace Jigoshop\Entity\Product;
 
 /**
  * Product's attribute.
- *
  * TODO: Implement
  *
  * @package Jigoshop\Entity\Product
@@ -32,8 +31,7 @@ class Attribute implements \Serializable
 	 */
 	public function serialize()
 	{
-		if(empty($this->name))
-		{
+		if (empty($this->name)) {
 			return '';
 		}
 

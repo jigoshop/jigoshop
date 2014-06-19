@@ -82,13 +82,11 @@ class Options
 	{
 		$name = array_shift($names);
 
-		if(!isset($options[$name]))
-		{
+		if (!isset($options[$name])) {
 			return $default;
 		}
 
-		if(empty($names))
-		{
+		if (empty($names)) {
 			return $options[$name];
 		}
 
@@ -109,8 +107,7 @@ class Options
 	{
 		$sizes = $this->getImageSizes();
 
-		foreach($sizes as $size => $options)
-		{
+		foreach ($sizes as $size => $options) {
 			$this->wp->addImageSize($size, $options['width'], $options['height'], $options['crop']);
 		}
 
@@ -122,8 +119,7 @@ class Options
 	 */
 	public function saveOptions()
 	{
-		if($this->dirty)
-		{
+		if ($this->dirty) {
 			$this->wp->updateOption('jigoshop', $this->options);
 		}
 	}

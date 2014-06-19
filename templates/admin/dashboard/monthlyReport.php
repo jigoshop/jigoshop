@@ -12,7 +12,7 @@
 ?>
 <div class="stats" id="jigoshop-stats">
 	<p>
-		<?php if($currentMonth != $selectedMonth) : ?>
+		<?php if ($currentMonth != $selectedMonth) : ?>
 			<a href="admin.php?page=jigoshop&amp;month=<?= $nextMonth; ?>&amp;year=<?= $nextYear; ?>" class="next"><?php _e('Next Month &rarr;', 'jigoshop'); ?></a>
 		<?php endif; ?>
 		<a href="admin.php?page=jigoshop&amp;month=<?= $previousMonth; ?>&amp;year=<?= $previousYear; ?>" class="previous"><?php _e('&larr; Previous Month', 'jigoshop'); ?></a>
@@ -39,21 +39,16 @@
 						// extends to infinity upwards and downwards
 						markings.push({ xaxis: { from: i, to: i + 2 * 24 * 60 * 60 * 1000 } });
 						i += 7 * 24 * 60 * 60 * 1000;
-					} while (i < axes.xaxis.max);
-
+					} while(i < axes.xaxis.max);
 					return markings;
 				}
 
 				var d = <?= json_encode($orderCounts); ?>;
-
 				// TODO: Think if this adding is required
 //				for (var i = 0; i < d.length; ++i) d[i][0] += 60 * 60 * 1000;
-
 				var d2 = <?= json_encode($orderAmounts); ?>;
-
 				// TODO: Think if this adding is required
 //				for (var i = 0; i < d2.length; ++i) d2[i][0] += 60 * 60 * 1000;
-
 				var $plot = $("#jigoshop-monthly-report");
 				$.plot(
 					$plot,
@@ -90,7 +85,6 @@
 						colors: ["#21759B", "#ed8432"]
 					}
 				);
-
 				function showTooltip(x, y, contents){
 					jQuery('<div id="tooltip">' + contents + '</div>').css({
 						position: 'absolute',
@@ -109,10 +103,8 @@
 					if(item){
 						if(previousPoint != item.dataIndex){
 							var y;
-
 							previousPoint = item.dataIndex;
 							$("#tooltip").remove();
-
 							if(item.series.label == "<?= __('Number of sales','jigoshop'); ?>"){
 								y = item.datapoint[1];
 								showTooltip(item.pageX, item.pageY, item.series.label + " - " + y);

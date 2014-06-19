@@ -31,10 +31,10 @@ class Simple implements OrderServiceInterface
 	 */
 	public function find($id)
 	{
-		if(!isset($this->objects[$id]))
-		{
+		if (!isset($this->objects[$id])) {
 			$this->objects[$id] = $this->service->find($id);
 		}
+
 		return $this->objects[$id];
 	}
 
@@ -49,8 +49,7 @@ class Simple implements OrderServiceInterface
 		// TODO: Check on various occasions if this is sufficient as hashing method.
 		$hash = hash('md5', serialize($query->query_vars));
 
-		if(!isset($this->queries[$hash]))
-		{
+		if (!isset($this->queries[$hash])) {
 			$this->queries[$hash] = $this->service->findByQuery($query);
 		}
 

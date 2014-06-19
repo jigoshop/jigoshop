@@ -14,7 +14,6 @@
  *  ///////////////////    ///////////
  *  //////////////////////////////////
  *   `//////////////////////////////`
- *
  * Plugin Name:         Jigoshop
  * Plugin URI:          http://www.jigoshop.com/
  * Description:         Jigoshop, a WordPress eCommerce plugin that works.
@@ -44,13 +43,11 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-if(!defined('JIGOSHOP_DIR'))
-{
+if (!defined('JIGOSHOP_DIR')) {
 	define('JIGOSHOP_DIR', dirname(__FILE__));
 }
 // Define plugin URL for assets
-if(!defined('JIGOSHOP_URL'))
-{
+if (!defined('JIGOSHOP_URL')) {
 	define('JIGOSHOP_URL', plugins_url('', __FILE__));
 }
 
@@ -72,7 +69,7 @@ class Jigoshop_Init
 		$is_debug = true; // TODO: Properly fetch developers mode
 		$config_cache = new ConfigCache($file, $is_debug);
 
-		if(!$config_cache->isFresh()){
+		if (!$config_cache->isFresh()) {
 			$builder = new ContainerBuilder();
 			$loader = new YamlFileLoader($builder, new FileLocator(JIGOSHOP_DIR.'/config'));
 			$loader->load('services.yml');
@@ -95,9 +92,7 @@ class Jigoshop_Init
 
 	/**
 	 * Initializes Jigoshop.
-	 *
 	 * Sets properly class loader and prepares Jigoshop to start, then sets up external plugins.
-	 *
 	 * Calls `jigoshop\plugins\configure` action with \JigoshopContainer object as parameter - you need to add your extension configuration to the container there.
 	 */
 	public function init()
@@ -123,17 +118,16 @@ class Jigoshop_Init
 		/** @var $wpdb WPDB */
 		global $wpdb;
 
-		if(!$network_wide)
-		{
+		if (!$network_wide) {
 			new \Jigoshop\Core\Install($wpdb);
+
 			return;
 		}
 
 		$blog = $wpdb->blogid;
 		$ids = $wpdb->get_col("SELECT blog_id FROM {$wpdb->blogs}");
 
-		foreach($ids as $id)
-		{
+		foreach ($ids as $id) {
 			switch_to_blog($id);
 			new \Jigoshop\Core\Install($wpdb);
 		}

@@ -20,6 +20,7 @@ class Core
 	{
 		return get_option('jigoshop_'.$page.'_id');
 	}
+
 	/**
 	 * Sets id of specified Jigoshop page.
 	 *

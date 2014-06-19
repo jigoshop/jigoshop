@@ -73,7 +73,6 @@ class Product implements EntityInterface
 
 	/**
 	 * Adds new attribute to the product.
-	 *
 	 * If attribute already exists - it is replaced.
 	 * Calls `jigoshop\product\add_attribute` filter before adding. If filter returns false - attribute is not added.
 	 *
@@ -83,15 +82,13 @@ class Product implements EntityInterface
 	{
 		$key = $this->_findAttribute($attribute->getName());
 
-		if($key === false)
-		{
+		if ($key === false) {
 			$key = count($this->attributes);
 		}
 
 		$attribute = apply_filters('jigoshop\\product\\add_attribute', $attribute, $this);
 
-		if($attribute !== false)
-		{
+		if ($attribute !== false) {
 			$this->attributes[$key] = $attribute;
 			$this->dirtyFields[] = 'attributes';
 		}
@@ -99,23 +96,20 @@ class Product implements EntityInterface
 
 	/**
 	 * Removes attribute from the product.
-	 *
 	 * Calls `jigoshop\product\delete_attribute` filter before removing. If filter returns false - attribute is not removed.
 	 *
 	 * @param Product\Attribute|string $attribute Attribute to remove.
 	 */
 	public function deleteAttribute($attribute)
 	{
-		if($attribute instanceof Product\Attribute)
-		{
+		if ($attribute instanceof Product\Attribute) {
 			$attribute = $attribute->getName();
 		}
 
 		$key = $this->_findAttribute($attribute);
 		$key = apply_filters('jigoshop\\product\\delete_attribute', $key, $attribute, $this);
 
-		if($key !== false)
-		{
+		if ($key !== false) {
 			unset($this->attributes[$key]);
 			$this->dirtyFields[] = 'attributes';
 		}
@@ -123,7 +117,6 @@ class Product implements EntityInterface
 
 	/**
 	 * Returns attribute of the product.
-	 *
 	 * If attribute is not found - returns {@code null}.
 	 *
 	 * @param $name string Attribute name.
@@ -133,8 +126,7 @@ class Product implements EntityInterface
 	{
 		$key = $this->_findAttribute($name);
 
-		if($key !== false)
-		{
+		if ($key !== false) {
 			return $this->attributes[$key];
 		}
 
@@ -168,7 +160,6 @@ class Product implements EntityInterface
 
 	/**
 	 * Sets new product price.
-	 *
 	 * Applies `jigoshop\product\set_price` filter to allow plugins to modify the price. When filter returns false price is not modified at all.
 	 *
 	 * @param float $price New product price.
@@ -177,8 +168,7 @@ class Product implements EntityInterface
 	{
 		$price = apply_filters('jigoshop\\product\\set_price', $price, $this);
 
-		if($price !== false)
-		{
+		if ($price !== false) {
 			$this->price = $price;
 			$this->dirtyFields[] = 'price';
 		}
@@ -186,7 +176,6 @@ class Product implements EntityInterface
 
 	/**
 	 * Returns real product price.
-	 *
 	 * Applies `jigoshop\product\get_price` filter to allow plugins to modify the price.
 	 *
 	 * @return float Current product price.
@@ -215,7 +204,6 @@ class Product implements EntityInterface
 
 	/**
 	 * Sets product sales.
-	 *
 	 * Applies `jigoshop\product\set_sales` filter to allow plugins to modify sales data. When filter returns false sales are not modified at all.
 	 *
 	 * @param Sales $sales Product sales data.
@@ -224,8 +212,7 @@ class Product implements EntityInterface
 	{
 		$sales = apply_filters('jigoshop\\product\\set_sales', $sales, $this);
 
-		if($sales !== false)
-		{
+		if ($sales !== false) {
 			$this->sales = $sales;
 			$this->dirtyFields[] = 'sales';
 		}
@@ -241,7 +228,6 @@ class Product implements EntityInterface
 
 	/**
 	 * Sets product size.
-	 *
 	 * Applies `jigoshop\product\set_size` filter to allow plugins to modify size data. When filter returns false size is not modified at all.
 	 *
 	 * @param Size $size New product size.
@@ -250,8 +236,7 @@ class Product implements EntityInterface
 	{
 		$size = apply_filters('jigoshop\\product\\set_size', $size, $this);
 
-		if($size !== false)
-		{
+		if ($size !== false) {
 			$this->size = $size;
 			$this->dirtyFields[] = 'size';
 		}
@@ -284,7 +269,6 @@ class Product implements EntityInterface
 
 	/**
 	 * Sets product stock.
-	 *
 	 * Applies `jigoshop\product\set_stock` filter to allow plugins to modify stock data. When filter returns false stock is not modified at all.
 	 *
 	 * @param StockStatus $stock New product stock status.
@@ -293,8 +277,7 @@ class Product implements EntityInterface
 	{
 		$stock = apply_filters('jigoshop\\product\\set_stock', $stock, $this);
 
-		if($stock !== false)
-		{
+		if ($stock !== false) {
 			$this->stock = $stock;
 			$this->dirtyFields[] = 'stock';
 		}
@@ -310,6 +293,7 @@ class Product implements EntityInterface
 
 	/**
 	 * TODO: Implement taxing. Probably it is worth to use the same filters as in other setters.
+	 *
 	 * @param mixed $tax
 	 */
 	public function setTax($tax)
@@ -320,6 +304,7 @@ class Product implements EntityInterface
 
 	/**
 	 * TODO: Implement taxing.
+	 *
 	 * @return mixed
 	 */
 	public function getTax()
@@ -355,7 +340,6 @@ class Product implements EntityInterface
 
 	/**
 	 * Sets product visibility.
-	 *
 	 * Please, use provided constants to set value properly:
 	 *   * Product::VISIBILITY_CATALOG - visible only in catalog
 	 *   * Product::VISIBILITY_SEARCH - visible only in search
@@ -371,7 +355,6 @@ class Product implements EntityInterface
 
 	/**
 	 * Returns bitwise value of product visibility.
-	 *
 	 * Do determine if product is visible in specified type simply check it with "&" bit operator.
 	 *
 	 * @return int Current product visibility.
@@ -387,7 +370,7 @@ class Product implements EntityInterface
 	 */
 	private function _findAttribute($attribute)
 	{
-		return array_search($attribute, array_map(function($item){
+		return array_search($attribute, array_map(function ($item){
 			/** @var $item \Jigoshop\Entity\Product\Attribute */
 			return $item->getName();
 		}, $this->attributes));
@@ -400,10 +383,8 @@ class Product implements EntityInterface
 	{
 		$toSave = array();
 
-		foreach($this->dirtyFields as $field)
-		{
-			switch($field)
-			{
+		foreach ($this->dirtyFields as $field) {
+			switch ($field) {
 				case 'sales':
 					$toSave['sales_from'] = $this->sales->getFrom()->getTimestamp();
 					$toSave['sales_to'] = $this->sales->getTo()->getTimestamp();

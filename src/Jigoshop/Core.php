@@ -30,8 +30,7 @@ class Core
 		$this->messages = $messages;
 		$this->_addQueryFilters();
 
-		if($wp->isAdmin())
-		{
+		if ($wp->isAdmin()) {
 			$this->admin = $admin;
 		}
 	}
@@ -46,8 +45,7 @@ class Core
 
 	private function _addQueryFilters()
 	{
-		if(!$this->wp->isAdmin())
-		{
+		if (!$this->wp->isAdmin()) {
 			/* Catalog Filters */
 			$this->wp->addFilter('jigoshop\\shop\\query', array($this, '_shopSortingFilter'));
 			$this->wp->addFilter('jigoshop\\shop\\columns', array($this, '_shopVisibleColumnsFilter'));
@@ -71,8 +69,7 @@ class Core
 	 */
 	public function getAdmin()
 	{
-		if(!$this->wp->isAdmin())
-		{
+		if (!$this->wp->isAdmin()) {
 			throw new Exception('Invalid use of Core::getAdmin() function - not in admin panel!');
 		}
 
@@ -101,6 +98,7 @@ class Core
 	private function _shopSortingFilter()
 	{
 		$options = $this->options->get('catalog_sort');
+
 		return array(
 			'orderby' => $options['order_by'],
 			'order' => $options['order'],

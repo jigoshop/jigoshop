@@ -68,8 +68,7 @@ class Dashboard implements PageInterface
 
 		add_meta_box('jigoshop_dashboard_right_now', __('Right Now', 'jigoshop'), array($this, 'rightNow'), 'jigoshop', 'side', 'core');
 		add_meta_box('jigoshop_dashboard_recent_orders', __('Recent Orders', 'jigoshop'), array($this, 'recentOrders'), 'jigoshop', 'side', 'core');
-		if($this->options->get('manage_stock') == 'yes')
-		{
+		if ($this->options->get('manage_stock') == 'yes') {
 			add_meta_box('jigoshop_dashboard_stock_report', __('Stock Report', 'jigoshop'), array($this, 'stockReport'), 'jigoshop', 'side', 'core');
 		}
 		add_meta_box('jigoshop_dashboard_monthly_report', __('Monthly Report', 'jigoshop'), array($this, 'monthlyReport'), 'jigoshop', 'normal', 'core');
@@ -134,8 +133,7 @@ class Dashboard implements PageInterface
 		$lowStockAmount = $this->options->get('notify_low_stock_amount', 1);
 		$notifyOufOfStock = $this->options->get('notify_out_of_stock', true);
 
-		if($notifyOufOfStock)
-		{
+		if ($notifyOufOfStock) {
 			/** @noinspection PhpUnusedLocalVariableInspection */
 			$outOfStock = $this->productService->findOutOfStock();
 		}
@@ -166,27 +164,23 @@ class Dashboard implements PageInterface
 		$previousMonth = ($selectedMonth == 1) ? 12 : $selectedMonth - 1;
 
 		$orders = $this->orderService->findFromMonth($selectedMonth);
-		$days = range(strtotime($selectedYear.'-'.$selectedMonth.'-01'), time(), 24*3600);
+		$days = range(strtotime($selectedYear.'-'.$selectedMonth.'-01'), time(), 24 * 3600);
 		$orderAmountsData = $orderCountsData = array_fill_keys($days, 0);
 		$orderAmounts = $orderCounts = array();
 
-		foreach($orders as $order)
-		{
+		foreach ($orders as $order) {
 			/** @var $order Order */
-			if(!in_array($order->getStatus(), array(Order\Status::REFUNDED, Order\Status::CANCELLED)))
-			{
+			if (!in_array($order->getStatus(), array(Order\Status::REFUNDED, Order\Status::CANCELLED))) {
 				$day = strtotime(date('Y-m-d', $order->getCreatedAt()->getTimestamp()));
 				$orderCountsData[$day] += 1;
 				$orderAmountsData[$day] += $order->getSubtotal() + $order->getShipping();
 			}
 		}
 
-		foreach($orderCountsData as $day => $value)
-		{
+		foreach ($orderCountsData as $day => $value) {
 			$orderCounts[] = array($day, $value);
 		}
-		foreach($orderAmountsData as $day => $value)
-		{
+		foreach ($orderAmountsData as $day => $value) {
 			$orderAmounts[] = array($day, $value);
 		}
 
@@ -218,25 +212,23 @@ class Dashboard implements PageInterface
 	 */
 	public function latestNews()
 	{
-		if(file_exists(ABSPATH.WPINC.'/class-simplepie.php'))
-		{
+		if (file_exists(ABSPATH.WPINC.'/class-simplepie.php')) {
 			include_once(ABSPATH.WPINC.'/class-simplepie.php');
 
 			$rss = fetch_feed('http://www.jigoshop.com/feed');
 			/** @noinspection PhpUnusedLocalVariableInspection */
 			$items = array();
 
-			if(!is_wp_error($rss))
-			{
+			if (!is_wp_error($rss)) {
 				$maxItems = $rss->get_item_quantity(5);
 				$rssItems = $rss->get_items(0, $maxItems);
 
-				if($maxItems > 0)
-				{
+				if ($maxItems > 0) {
 					/** @noinspection PhpUnusedLocalVariableInspection */
-					$items = array_map(function($item){
+					$items = array_map(function ($item){
 						/** @var $item \SimplePie_Item */
 						$date = $item->get_date('U');
+
 						return array(
 							'title' => wptexturize($item->get_title(), ENT_QUOTES, 'UTF-8'),
 							'link' => $item->get_permalink(),

@@ -22,16 +22,13 @@ class Messages
 
 	public function __construct(Wordpress $wp)
 	{
-		if(isset($_SESSION[self::NOTICES]))
-		{
+		if (isset($_SESSION[self::NOTICES])) {
 			$this->notices = $_SESSION[self::NOTICES];
 		}
-		if(isset($_SESSION[self::WARNINGS]))
-		{
+		if (isset($_SESSION[self::WARNINGS])) {
 			$this->warnings = $_SESSION[self::WARNINGS];
 		}
-		if(isset($_SESSION[self::ERRORS]))
-		{
+		if (isset($_SESSION[self::ERRORS])) {
 			$this->errors = $_SESSION[self::ERRORS];
 		}
 
@@ -55,7 +52,7 @@ class Messages
 	 */
 	public function getNotices()
 	{
-		return array_map(function($item){
+		return array_map(function ($item){
 			return $item['message'];
 		}, $this->notices);
 	}
@@ -77,7 +74,7 @@ class Messages
 	 */
 	public function getWarnings()
 	{
-		return array_map(function($item){
+		return array_map(function ($item){
 			return $item['message'];
 		}, $this->warnings);
 	}
@@ -99,7 +96,7 @@ class Messages
 	 */
 	public function getErrors()
 	{
-		return array_map(function($item){
+		return array_map(function ($item){
 			return $item['message'];
 		}, $this->errors);
 	}
@@ -109,13 +106,13 @@ class Messages
 	 */
 	public function preserveMessages()
 	{
-		$_SESSION[self::NOTICES] = array_values(array_filter($this->notices, function($item){
+		$_SESSION[self::NOTICES] = array_values(array_filter($this->notices, function ($item){
 			return $item['persistent'];
 		}));
-		$_SESSION[self::WARNINGS] = array_values(array_filter($this->warnings, function($item){
+		$_SESSION[self::WARNINGS] = array_values(array_filter($this->warnings, function ($item){
 			return $item['persistent'];
 		}));
-		$_SESSION[self::ERRORS] = array_values(array_filter($this->errors, function($item){
+		$_SESSION[self::ERRORS] = array_values(array_filter($this->errors, function ($item){
 			return $item['persistent'];
 		}));
 	}

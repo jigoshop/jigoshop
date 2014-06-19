@@ -92,4 +92,5 @@ class Sales implements \Serializable
 		$this->from = new \DateTime($data['from']);
 		$this->to = new \DateTime($data['to']);
 		$this->price = floatval($data['price']);
-}}
+	}
+}

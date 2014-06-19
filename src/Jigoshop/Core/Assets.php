@@ -9,7 +9,6 @@ use WPAL\Wordpress;
 
 /**
  * Class for adding required assets.
- *
  * TODO: Rethink if all assets are needed.
  *
  * @package Jigoshop\Core
@@ -37,8 +36,7 @@ class Assets
 		Styles::add('jigoshop_admin_icons_style', JIGOSHOP_URL.'/assets/css/admin-icons.css');
 
 		$adminPage = \Jigoshop\Helper\Pages::isAdminPage();
-		if(!$adminPage)
-		{
+		if (!$adminPage) {
 			return;
 		}
 
@@ -66,8 +64,7 @@ class Assets
 		 * Disable autosaves on the order and coupon pages. Prevents the javascript alert when modifying.
 		 * `wp_deregister_script( 'autosave' )` would produce errors, so we use a filter instead.
 		 */
-		if($adminPage == 'shop_order' || $adminPage == 'shop_coupon')
-		{
+		if ($adminPage == 'shop_order' || $adminPage == 'shop_coupon') {
 			$this->wp->addFilter('script_loader_src', array($this, '_disableAutoSave'), 10, 2);
 		}
 	}
@@ -75,8 +72,7 @@ class Assets
 	/** @noinspection PhpUnusedPrivateMethodInspection */
 	private function _disableAutoSave($src, $handle)
 	{
-		if('autosave' != $handle)
-		{
+		if ('autosave' != $handle) {
 			return $src;
 		}
 
@@ -89,10 +85,8 @@ class Assets
 		$frontend_css = JIGOSHOP_URL.'/assets/css/frontend.css';
 		$theme_css = file_exists($this->wp->getStylesheetDirectory().'/jigoshop/style.css') ? $this->wp->getStylesheetDirectoryUri().'/jigoshop/style.css' : $frontend_css;
 
-		if($this->options->get('disable_css') == 'no')
-		{
-			if($this->options->get('load_frontend_css') == 'yes')
-			{
+		if ($this->options->get('disable_css') == 'no') {
+			if ($this->options->get('load_frontend_css') == 'yes') {
 				Styles::add('jigoshop_theme_styles', $frontend_css);
 			}
 			Styles::add('jigoshop_styles', $theme_css);
@@ -100,8 +94,7 @@ class Assets
 
 		Scripts::add('jigoshop_global', JIGOSHOP_URL.'/assets/js/global.js', array('jquery'), array('in_footer' => true));
 
-		if($this->options->get('disable_prettyphoto') == 'no')
-		{
+		if ($this->options->get('disable_prettyphoto') == 'no') {
 			Scripts::add('prettyphoto', JIGOSHOP_URL.'/assets/js/jquery.prettyPhoto.js', array('jquery'), array('in_footer' => true));
 		}
 

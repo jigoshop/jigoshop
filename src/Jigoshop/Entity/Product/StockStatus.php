@@ -50,7 +50,6 @@ class StockStatus
 
 	/**
 	 * Sets product status.
-	 *
 	 * Please use provided constants:
 	 *   * StockStatus::IN_STOCK - product is in stock
 	 *   * StockStatus::OUT_STOCK - product is out of stock

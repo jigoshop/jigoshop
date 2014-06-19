@@ -23,7 +23,8 @@ class Pages
 	 *
 	 * @return array List of supported pages.
 	 */
-	public function getAvailablePages() {
+	public function getAvailablePages()
+	{
 		return array(
 			self::CART,
 			self::CHECKOUT,
@@ -42,11 +43,12 @@ class Pages
 	 * @return bool Is current page one of provided?
 	 * @since 2.0
 	 */
-	public static function isOneOfPages($pages) {
+	public static function isOneOfPages($pages)
+	{
 		$result = false;
 		$pages = is_array($pages) ? $pages : array($pages);
 
-		foreach($pages as $page){
+		foreach ($pages as $page) {
 			$result = $result || self::isPage($page);
 		}
 
@@ -60,8 +62,9 @@ class Pages
 	 * @return bool Is current page the one from name?
 	 * @since 2.0
 	 */
-	public static function isPage($page) {
-		switch($page){
+	public static function isPage($page)
+	{
+		switch ($page) {
 			case self::CART:
 				return Helper\Pages::isCart();
 			case self::CHECKOUT:

@@ -12,7 +12,6 @@ class Roles
 {
 	/**
 	 * Initializes required capabilities.
-	 *
 	 * Supports 3 filters:
 	 *  * jigoshop\role\customer - customer role capabilities array
 	 *  * jigoshop\role\shop_manager - shop manager role capabilities array
@@ -22,8 +21,7 @@ class Roles
 	{
 		global $wp_roles;
 
-		if(class_exists('WP_Roles') && !($wp_roles instanceof \WP_Roles))
-		{
+		if (class_exists('WP_Roles') && !($wp_roles instanceof \WP_Roles)) {
 			$wp_roles = new \WP_Roles();
 		}
 
@@ -67,10 +65,8 @@ class Roles
 			'import' => true,
 		)));
 
-		foreach(self::getCapabilities() as $group)
-		{
-			foreach($group as $cap)
-			{
+		foreach (self::getCapabilities() as $group) {
+			foreach ($group as $cap) {
 				$wp_roles->add_cap('administrator', $cap);
 				$wp_roles->add_cap('shop_manager', $cap);
 			}
@@ -90,8 +86,7 @@ class Roles
 		);
 
 		$types = apply_filters('jigoshop\\capability\\types', array('product', 'shop_order', 'shop_coupon'));
-		foreach($types as $type)
-		{
+		foreach ($types as $type) {
 			$capabilities[$type] = array(
 				// Post type
 				"edit_{$type}",

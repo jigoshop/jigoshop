@@ -22,12 +22,11 @@ class Product implements ProductServiceInterface
 	{
 		$product = new \Jigoshop\Entity\Product();
 
-		if($id !== null)
-		{
+		if ($id !== null) {
 			// TODO: Remove get_post() call in order to make Jigoshop testable
 			$post = get_post($id);
 			// TODO: Remove get_post_meta() call in order to make Jigoshop testable
-			$meta = array_map(function($item){
+			$meta = array_map(function ($item){
 				return $item[0];
 			}, get_post_meta($id));
 
@@ -44,8 +43,8 @@ class Product implements ProductServiceInterface
 
 	/**
 	 * Finds items specified using WordPress query.
-	 *
 	 * TODO: Replace \WP_Query in order to make Jigoshop testable
+	 *
 	 * @param $query \WP_Query WordPress query.
 	 * @return array Collection of found items.
 	 */
@@ -56,7 +55,7 @@ class Product implements ProductServiceInterface
 		$results = $query->get_posts();
 		$that = $this;
 		// TODO: Maybe it is good to optimize this to fetch all found products data at once?
-		$products = array_map(function($product) use ($that){
+		$products = array_map(function ($product) use ($that){
 			return $that->find($product->ID);
 		}, $results);
 
@@ -71,15 +70,13 @@ class Product implements ProductServiceInterface
 	 */
 	public function save(EntityInterface $object)
 	{
-		if(!($object instanceof \Jigoshop\Entity\Product))
-		{
+		if (!($object instanceof \Jigoshop\Entity\Product)) {
 			throw new Exception('Trying to save not a product!');
 		}
 
 		$fields = $object->getStateToSave();
 
-		if(isset($fields['id']) || isset($fields['name']))
-		{
+		if (isset($fields['id']) || isset($fields['name'])) {
 			// TODO: Remove wp_update_post() call in order to make Jigoshop testable
 			wp_update_post(array(
 				'ID' => $object->getId(),
@@ -88,8 +85,7 @@ class Product implements ProductServiceInterface
 			unset($fields['id'], $fields['name']);
 		}
 
-		foreach($fields as $field => $value)
-		{
+		foreach ($fields as $field => $value) {
 			// TODO: Remove update_post_meta() call in order to make Jigoshop testable
 			update_post_meta($object->getId(), $field, $value);
 		}
@@ -106,7 +102,7 @@ class Product implements ProductServiceInterface
 		$query = new \WP_Query(array(
 			'post_type' => 'product',
 			'post_status' => 'publish',
-			'ignore_sticky_posts'	=> 1,
+			'ignore_sticky_posts' => 1,
 			'posts_per_page' => -1,
 			'meta_query' => array(
 				array(
@@ -135,7 +131,7 @@ class Product implements ProductServiceInterface
 		$query = new \WP_Query(array(
 			'post_type' => 'product',
 			'post_status' => 'publish',
-			'ignore_sticky_posts'	=> 1,
+			'ignore_sticky_posts' => 1,
 			'posts_per_page' => -1,
 			'meta_query' => array(
 				array(

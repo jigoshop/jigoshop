@@ -32,17 +32,16 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
 		$this->wordpress->expects($this->any())
 			->method('applyFilters')
 			->with($this->logicalOr($this->equalTo('jigoshop\\image\\sizes'), $this->equalTo('jigoshop\\image\\size\\crop')), $this->anything())
-			->will($this->returnCallback(function($filter){
-				switch($filter)
-				{
+			->will($this->returnCallback(function ($filter){
+				switch ($filter) {
 					case 'jigoshop\\image\\sizes':
 						return array(
-								'test_size' => array(
-									'crop' => false,
-									'width' => 100,
-									'height' => 100,
-								)
-							);
+							'test_size' => array(
+								'crop' => false,
+								'width' => 100,
+								'height' => 100,
+							)
+						);
 					case 'jigoshop\\image\\size\\crop':
 						return false;
 				}

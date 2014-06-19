@@ -22,8 +22,7 @@ class Install
 		// TODO: Remove get_option() call in order to make Jigoshop testable
 		$db = get_option('jigoshop_database_version');
 
-		if($db === false)
-		{
+		if ($db === false) {
 			$this->_createTables();
 			$this->_createPages();
 			Cron::clear();
@@ -40,14 +39,11 @@ class Install
 		$this->wpdb->hide_errors();
 
 		$collate = '';
-		if($this->wpdb->has_cap('collation'))
-		{
-			if(!empty($this->wpdb->charset))
-			{
+		if ($this->wpdb->has_cap('collation')) {
+			if (!empty($this->wpdb->charset)) {
 				$collate = "DEFAULT CHARACTER SET {$this->wpdb->charset}";
 			}
-			if(!empty($this->wpdb->collate))
-			{
+			if (!empty($this->wpdb->collate)) {
 				$collate .= " COLLATE {$this->wpdb->collate}";
 			}
 		}
@@ -133,8 +129,7 @@ class Install
 		$slug = esc_sql(_x($slug, 'page_slug', 'jigoshop'));
 		$page_id = $this->wpdb->get_var($this->wpdb->prepare("SELECT ID FROM {$this->wpdb->posts} WHERE post_name = %s AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1", $slug));
 
-		if(!$page_id)
-		{
+		if (!$page_id) {
 			$data['post_name'] = $slug;
 			// TODO: Remove wp_insert_post() call in order to make Jigoshop testable
 			$page_id = wp_insert_post($data);
