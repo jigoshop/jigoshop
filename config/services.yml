@@ -17,6 +17,10 @@ services:
     class: Jigoshop\Core\Messages
     arguments:
       - '@wpal'
+  jigoshop.post_types:
+    class: Jigoshop\Core\PostTypes
+    arguments:
+      - '@wpal'
   jigoshop.cron:
     class: Jigoshop\Core\Cron
     arguments:

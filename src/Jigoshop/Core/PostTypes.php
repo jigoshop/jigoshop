@@ -2,6 +2,8 @@
 
 namespace Jigoshop\Core;
 
+use WPAL\Wordpress;
+
 /**
  * Registers required post types.
  *
@@ -10,17 +12,21 @@ namespace Jigoshop\Core;
  */
 class PostTypes
 {
-	public static function initialize()
+	/** @var \WPAL\Wordpress */
+	private $wp;
+
+	public function __construct(Wordpress $wp)
 	{
-		self::_registerProduct();
-		self::_registerProductCategory();
-		self::_registerProductTag();
+		$this->wp = $wp;
+		$this->_registerProduct();
+		$this->_registerProductCategory();
+		$this->_registerProductTag();
 	}
 
 	/** Creates "product" post type in WordPress. */
-	private static function _registerProduct()
+	private function _registerProduct()
 	{
-		register_post_type(
+		$this->wp->registerPostType(
 			'product',
 			array(
 				'labels' => array(
@@ -63,9 +69,9 @@ class PostTypes
 	}
 
 	/** Creates "product_category" taxonomy in WordPress. */
-	private static function _registerProductCategory()
+	private function _registerProductCategory()
 	{
-		register_taxonomy('product_category',
+		$this->wp->registerTaxonomy('product_category',
 			array('product'),
 			array(
 				'labels' => array(
@@ -102,9 +108,9 @@ class PostTypes
 	}
 
 	/** Creates "product_tag" taxonomy in WordPress. */
-	private static function _registerProductTag()
+	private function _registerProductTag()
 	{
-		register_taxonomy('product_tag',
+		$this->wp->registerTaxonomy('product_tag',
 			array('product'),
 			array(
 				'labels' => array(
