@@ -102,8 +102,9 @@ class Jigoshop_Init
 		load_plugin_textdomain('jigoshop', false, JIGOSHOP_DIR.'/languages/');
 
 		/** @var \Jigoshop\Core $jigoshop */
-		// Initialize post types
+		// Initialize post types and roles
 		$this->container->get('jigoshop.post_types');
+		$this->container->get('jigoshop.roles');
 		$jigoshop = $this->container->get('jigoshop');
 		// Initialize Cron and Assets
 		$this->container->get('jigoshop.cron');

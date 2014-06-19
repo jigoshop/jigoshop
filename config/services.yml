@@ -21,6 +21,10 @@ services:
     class: Jigoshop\Core\PostTypes
     arguments:
       - '@wpal'
+  jigoshop.roles:
+    class: Jigoshop\Core\Roles
+    arguments:
+      - '@wpal'
   jigoshop.cron:
     class: Jigoshop\Core\Cron
     arguments:

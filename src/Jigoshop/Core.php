@@ -4,7 +4,6 @@ namespace Jigoshop;
 
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
-use Jigoshop\Core\Roles;
 use WPAL\Wordpress;
 
 class Core
@@ -22,7 +21,6 @@ class Core
 
 	public function __construct(Wordpress $wp, Options $options, Messages $messages, Admin $admin)
 	{
-		Roles::initialize();
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->messages = $messages;

@@ -2,6 +2,8 @@
 
 namespace Jigoshop\Core;
 
+use WPAL\Wordpress;
+
 /**
  * Roles
  *
@@ -10,6 +12,9 @@ namespace Jigoshop\Core;
  */
 class Roles
 {
+	/** @var \WPAL\Wordpress */
+	private $wp;
+
 	/**
 	 * Initializes required capabilities.
 	 * Supports 3 filters:
@@ -17,23 +22,20 @@ class Roles
 	 *  * jigoshop\role\shop_manager - shop manager role capabilities array
 	 *  * jigoshop\capability\types - capabilities for custom types
 	 */
-	public static function initialize()
+	public function __construct(Wordpress $wp)
 	{
-		global $wp_roles;
-
-		if (class_exists('WP_Roles') && !($wp_roles instanceof \WP_Roles)) {
-			$wp_roles = new \WP_Roles();
-		}
+		$this->wp = $wp;
+		$roles = $wp->getRoles();
 
 		// Customer role
-		add_role('customer', __('Customer', 'jigoshop'), apply_filters('jigoshop\\role\\customer', array(
+		$wp->addRole('customer', __('Customer', 'jigoshop'), $wp->applyFilters('jigoshop\\role\\customer', array(
 			'read' => true,
 			'edit_posts' => false,
 			'delete_posts' => false
 		)));
 
 		// Shop manager role
-		add_role('shop_manager', __('Shop Manager', 'jigoshop'), apply_filters('jigoshop\\role\\shop_manager', array(
+		$wp->addRole('shop_manager', __('Shop Manager', 'jigoshop'), $wp->applyFilters('jigoshop\\role\\shop_manager', array(
 			'read' => true,
 			'read_private_pages' => true,
 			'read_private_posts' => true,
@@ -65,15 +67,15 @@ class Roles
 			'import' => true,
 		)));
 
-		foreach (self::getCapabilities() as $group) {
+		foreach ($this->getCapabilities() as $group) {
 			foreach ($group as $cap) {
-				$wp_roles->add_cap('administrator', $cap);
-				$wp_roles->add_cap('shop_manager', $cap);
+				$roles->add_cap('administrator', $cap);
+				$roles->add_cap('shop_manager', $cap);
 			}
 		}
 	}
 
-	private static function getCapabilities()
+	private function getCapabilities()
 	{
 		$capabilities = array(
 			'core' => array(
@@ -85,7 +87,7 @@ class Roles
 			)
 		);
 
-		$types = apply_filters('jigoshop\\capability\\types', array('product', 'shop_order', 'shop_coupon'));
+		$types = $this->wp->applyFilters('jigoshop\\capability\\types', array('product', 'shop_order', 'shop_coupon'));
 		foreach ($types as $type) {
 			$capabilities[$type] = array(
 				// Post type
