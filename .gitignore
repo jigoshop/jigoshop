@@ -1,2 +1,5 @@
+cache
 compatibility/*
-/vendor/
+vendor/
+composer.lock
+deploy.sh
