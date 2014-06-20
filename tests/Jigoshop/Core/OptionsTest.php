@@ -10,7 +10,7 @@ namespace Jigoshop\Core;
  */
 class OptionsTest extends \PHPUnit_Framework_TestCase
 {
-	/** @var \WPAL\Wordpress */
+	/** @var \PHPUnit_Framework_MockObject_MockObject */
 	private $wordpress;
 
 	public function setUp()
@@ -52,6 +52,7 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
 	public function testGetOptionValue()
 	{
 		// Given
+		/** @noinspection PhpParamsInspection */
 		$options = new Options($this->wordpress);
 
 		// When
@@ -64,6 +65,7 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
 	public function testUpdateOptionValue()
 	{
 		// Given
+		/** @noinspection PhpParamsInspection */
 		$options = new Options($this->wordpress);
 
 		// When
@@ -76,6 +78,7 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
 	public function testGetImageSizes()
 	{
 		// Given
+		/** @noinspection PhpParamsInspection */
 		$options = new Options($this->wordpress);
 
 		// When
@@ -91,11 +94,10 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
 	public function testUpdateAndSaveOptionsValue()
 	{
 		// Given
-		$wordpress = $this->wordpress;
-		/** @var $wordpress \PHPUnit_Framework_MockObject_MockObject */
-		$wordpress->expects($this->once())
+		$this->wordpress->expects($this->once())
 			->method('updateOption')
 			->withAnyParameters();
+		/** @noinspection PhpParamsInspection */
 		$options = new Options($this->wordpress);
 
 		// When
@@ -109,6 +111,7 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
 	public function testDefaultOptionsMerging()
 	{
 		// Given
+		/** @noinspection PhpParamsInspection */
 		$options = new Options($this->wordpress);
 
 		// When / Then
@@ -127,6 +130,7 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
 	public function testGettingNestedValues()
 	{
 		// Given
+		/** @noinspection PhpParamsInspection */
 		$options = new Options($this->wordpress);
 
 		// When / Then

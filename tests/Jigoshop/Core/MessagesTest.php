@@ -6,10 +6,11 @@ namespace Jigoshop\Core;
  * Messages test.
  *
  * @package Jigoshop\Core
+ * @author Amadeusz Starzykiewicz
  */
 class MessagesTest extends \PHPUnit_Framework_TestCase
 {
-	/** @var \WPAL\Wordpress */
+	/** @var \PHPUnit_Framework_MockObject_MockObject */
 	private $wordpress;
 
 	public function setUp()
@@ -23,6 +24,7 @@ class MessagesTest extends \PHPUnit_Framework_TestCase
 	public function testAddNotice()
 	{
 		// Given
+		/** @noinspection PhpParamsInspection */
 		$messages = new Messages($this->wordpress);
 
 		// When
@@ -37,6 +39,7 @@ class MessagesTest extends \PHPUnit_Framework_TestCase
 	public function testAddWarning()
 	{
 		// Given
+		/** @noinspection PhpParamsInspection */
 		$messages = new Messages($this->wordpress);
 
 		// When
@@ -51,6 +54,7 @@ class MessagesTest extends \PHPUnit_Framework_TestCase
 	public function testAddError()
 	{
 		// Given
+		/** @noinspection PhpParamsInspection */
 		$messages = new Messages($this->wordpress);
 
 		// When
@@ -65,6 +69,7 @@ class MessagesTest extends \PHPUnit_Framework_TestCase
 	public function testPreservingMessages()
 	{
 		// Given
+		/** @noinspection PhpParamsInspection */
 		$messages = new Messages($this->wordpress);
 		$messages->addError('test', false);
 		$messages->addError('preserved', true);
