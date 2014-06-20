@@ -40,7 +40,7 @@ class Order implements OrderServiceInterface
 	 * @param $query \WP_Query WordPress query.
 	 * @return array Collection of found orders
 	 */
-	public function findByQuery(\WP_Query $query)
+	public function findByQuery($query)
 	{
 		// Fetch only IDs
 		$query->query_vars['fields'] = 'ids';

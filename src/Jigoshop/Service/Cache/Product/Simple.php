@@ -44,7 +44,7 @@ class Simple implements ProductServiceInterface
 	 * @param $query \WP_Query WordPress query.
 	 * @return array Collection of found items.
 	 */
-	public function findByQuery(\WP_Query $query)
+	public function findByQuery($query)
 	{
 		// TODO: Check on various occasions if this is sufficient as hashing method.
 		$hash = hash('md5', serialize($query->query_vars));
