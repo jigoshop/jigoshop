@@ -446,7 +446,7 @@ msgstr "Tel:"
 
 #: ../jigoshop_emails.php:401
 msgid "EU VAT Number:"
-msgstr ""
+msgstr "Közösségi adószám (EU)"
 
 # @ jigoshop
 #: ../jigoshop_emails.php:413
