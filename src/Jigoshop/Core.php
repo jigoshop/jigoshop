@@ -47,9 +47,9 @@ class Core
 	{
 		if (!$this->wp->isAdmin()) {
 			/* Catalog Filters */
-			$this->wp->addFilter('jigoshop\\shop\\query', array($this, '_shopSortingFilter'));
-			$this->wp->addFilter('jigoshop\\shop\\columns', array($this, '_shopVisibleColumnsFilter'));
-			$this->wp->addFilter('jigoshop\\shop\\per_page', array($this, '_shopPerPageFilter'));
+			$this->wp->addFilter('jigoshop\\shop\\query', array($this, 'shopSortingFilter'));
+			$this->wp->addFilter('jigoshop\\shop\\columns', array($this, 'shopVisibleColumnsFilter'));
+			$this->wp->addFilter('jigoshop\\shop\\per_page', array($this, 'shopPerPageFilter'));
 		}
 	}
 
@@ -103,8 +103,10 @@ class Core
 		return $this->pages;
 	}
 
-	/** @noinspection PhpUnusedPrivateMethodInspection */
-	private function _shopSortingFilter()
+	/**
+	 * @return array Arguments for post sorting of product list.
+	 */
+	public function shopSortingFilter()
 	{
 		$options = $this->options->get('catalog_sort');
 
@@ -114,14 +116,18 @@ class Core
 		);
 	}
 
-	/** @noinspection PhpUnusedPrivateMethodInspection */
-	private function _shopVisibleColumnsFilter()
+	/**
+	 * @return int Number of columns in product list.
+	 */
+	public function shopVisibleColumnsFilter()
 	{
 		return $this->options->get('catalog_sort.columns');
 	}
 
-	/** @noinspection PhpUnusedPrivateMethodInspection */
-	private function _shopPerPageFilter()
+	/**
+	 * @return int Number of items per page in product list.
+	 */
+	public function shopPerPageFilter()
 	{
 		return $this->options->get('catalog_per_page');
 	}
