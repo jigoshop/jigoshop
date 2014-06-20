@@ -60,7 +60,7 @@ class Cron
 
 			foreach ($orders as $order) {
 				/** @var $order \Jigoshop\Entity\Order */
-				$order->updateStatus('on-hold', __('Archived due to order being in pending state for a month or longer.', 'jigoshop'));
+				$order->updateStatus('on-hold', \__('Archived due to order being in pending state for a month or longer.', 'jigoshop'));
 			}
 
 			// TODO: Enable notification of the user
@@ -83,7 +83,7 @@ class Cron
 
 			foreach ($orders as $order) {
 				/** @var $order \Jigoshop\Entity\Order */
-				$order->updateStatus('completed', __('Completed due to order being in processing state for a month or longer.', 'jigoshop'));
+				$order->updateStatus('completed', \__('Completed due to order being in processing state for a month or longer.', 'jigoshop'));
 			}
 
 			// TODO: Enable notification of the user
