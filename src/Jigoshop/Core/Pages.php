@@ -42,15 +42,15 @@ class Pages
 	 */
 	public function getAvailable()
 	{
-		return array(
-			self::CART,
-			self::CHECKOUT,
-			self::PRODUCT,
-			self::PRODUCT_CATEGORY,
-			self::PRODUCT_LIST,
-			self::PRODUCT_TAG,
-			self::ALL,
-		);
+	return array(
+		self::CART,
+		self::CHECKOUT,
+		self::PRODUCT,
+		self::PRODUCT_CATEGORY,
+		self::PRODUCT_LIST,
+		self::PRODUCT_TAG,
+		self::ALL,
+	);
 	}
 
 	/**
@@ -154,7 +154,7 @@ class Pages
 	public function isProductList()
 	{
 		return $this->wp->isPostTypeArchive(PostTypes::PRODUCT) || $this->wp->isPage($this->options->getPageId(self::SHOP))
-		|| $this->isProductTag() || $this->isProductCategory();
+		|| $this->isProductCategory() || $this->isProductTag();
 	}
 
 	/**
