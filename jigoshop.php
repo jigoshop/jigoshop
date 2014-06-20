@@ -56,8 +56,22 @@ if (!defined('JIGOSHOP_DIR')) {
 if(!version_compare(PHP_VERSION, '5.3.3', '>=')){
 	function jigoshop_required_version(){
 		echo '<div class="error"><p>'.
-			sprintf(__('<strong>Error!</strong> Jigoshop requires PHP 5.3.3 at least! Your version: %s, please upgrade.', 'jigoshop'), PHP_VERSION).
+			sprintf(__('<strong>Error!</strong> Jigoshop requires PHP 5.3.3 at least! Your version: %s. Please upgrade.', 'jigoshop'), PHP_VERSION).
 		'</p></div>';
+	}
+	add_action('admin_notices', 'jigoshop_required_version');
+	return;
+}
+
+include ABSPATH.WPINC.'/version.php';
+/** @noinspection PhpUndefinedVariableInspection */
+if(!version_compare($wp_version, '3.8', '>=')){
+	function jigoshop_required_version(){
+		include ABSPATH.WPINC.'/version.php';
+		/** @noinspection PhpUndefinedVariableInspection */
+		echo '<div class="error"><p>'.
+			sprintf(__('<strong>Error!</strong> Jigoshop requires WordPress 3.8 at least! Your version: %s. Please upgrade.', 'jigoshop'), $wp_version).
+			'</p></div>';
 	}
 	add_action('admin_notices', 'jigoshop_required_version');
 	return;
