@@ -132,4 +132,26 @@ class Options
 		$options = (array)$this->wp->getOption('jigoshop');
 		$this->options = array_merge($this->defaults, $options);
 	}
+
+	/**
+	 * Retrieves id of specified Jigoshop page.
+	 *
+	 * @param $page string Page slug.
+	 * @return mixed Page ID.
+	 */
+	public function getPageId($page)
+	{
+		return $this->wp->getOption('jigoshop_'.$page.'_id');
+	}
+
+	/**
+	 * Sets id of specified Jigoshop page.
+	 *
+	 * @param $page string Page slug.
+	 * @param $id int Page ID.
+	 */
+	public function setPageId($page, $id)
+	{
+		$this->wp->updateOption('jigoshop_'.$page.'_id', $id);
+	}
 }

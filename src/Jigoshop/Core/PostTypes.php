@@ -12,6 +12,15 @@ use WPAL\Wordpress;
  */
 class PostTypes
 {
+	// Post Types
+	const PRODUCT = 'product';
+	const ORDER = 'shop_order';
+	const COUPON = 'shop_coupon';
+
+	// Taxonomy types
+	const PRODUCT_CATEGORY = 'product_category';
+	const PRODUCT_TAG = 'product_tag';
+
 	/** @var \WPAL\Wordpress */
 	private $wp;
 
@@ -27,7 +36,7 @@ class PostTypes
 	private function _registerProduct()
 	{
 		$this->wp->registerPostType(
-			'product',
+			self::PRODUCT,
 			array(
 				'labels' => array(
 					'name' => __('Products', 'jigoshop'),
@@ -71,8 +80,8 @@ class PostTypes
 	/** Creates "product_category" taxonomy in WordPress. */
 	private function _registerProductCategory()
 	{
-		$this->wp->registerTaxonomy('product_category',
-			array('product'),
+		$this->wp->registerTaxonomy(self::PRODUCT_CATEGORY,
+			array(self::PRODUCT),
 			array(
 				'labels' => array(
 					'menu_name' => __('Categories', 'jigoshop'),
@@ -110,8 +119,8 @@ class PostTypes
 	/** Creates "product_tag" taxonomy in WordPress. */
 	private function _registerProductTag()
 	{
-		$this->wp->registerTaxonomy('product_tag',
-			array('product'),
+		$this->wp->registerTaxonomy(self::PRODUCT_TAG,
+			array(self::PRODUCT),
 			array(
 				'labels' => array(
 					'menu_name' => __('Tags', 'jigoshop'),

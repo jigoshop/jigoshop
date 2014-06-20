@@ -4,7 +4,6 @@ namespace Jigoshop\Core;
 
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
-use Jigoshop\Pages;
 use WPAL\Wordpress;
 
 /**
@@ -16,15 +15,24 @@ use WPAL\Wordpress;
  */
 class Assets
 {
+	/** @var \Jigoshop\Core\Pages */
+	private $pages;
 	/** @var \Jigoshop\Core\Options */
 	private $options;
+	/** @var \Jigoshop\Helper\Styles */
+	private $styles;
+	/** @var \Jigoshop\Helper\Scripts */
+	private $scripts;
 	/** @var \WPAL\Wordpress */
 	private $wp;
 
-	public function __construct(Wordpress $wp, Options $options)
+	public function __construct(Wordpress $wp, Pages $pages, Options $options, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
+		$this->pages = $pages;
 		$this->options = $options;
+		$this->styles = $styles;
+		$this->scripts = $scripts;
 		$wp->addAction('admin_enqueue_scripts', array($this, 'loadAdminAssets'));
 		$wp->addAction('wp_enqueue_scripts', array($this, 'loadFrontendAssets'));
 	}
@@ -33,29 +41,29 @@ class Assets
 	public function loadAdminAssets()
 	{
 		/* Our setting icons */
-		Styles::add('jigoshop_admin_icons_style', JIGOSHOP_URL.'/assets/css/admin-icons.css');
+		$this->styles->add('jigoshop_admin_icons_style', JIGOSHOP_URL.'/assets/css/admin-icons.css');
 
-		$adminPage = \Jigoshop\Helper\Pages::isAdminPage();
+		$adminPage = $this->pages->isAdminPage();
 		if (!$adminPage) {
 			return;
 		}
 
-		Styles::add('jigoshop_admin_styles', JIGOSHOP_URL.'/assets/css/admin.css');
-		Styles::add('jquery-ui-jigoshop-styles', JIGOSHOP_URL.'/assets/css/jquery-ui-1.8.16.jigoshop.css');
-		Styles::add('thickbox', false);
-		Styles::add('jigoshop-required', JIGOSHOP_URL.'/assets/css/required.css');
+		$this->styles->add('jigoshop_admin_styles', JIGOSHOP_URL.'/assets/css/admin.css');
+		$this->styles->add('jquery-ui-jigoshop-styles', JIGOSHOP_URL.'/assets/css/jquery-ui-1.8.16.jigoshop.css');
+		$this->styles->add('thickbox', false);
+		$this->styles->add('jigoshop-required', JIGOSHOP_URL.'/assets/css/required.css');
 
-		Scripts::add('jigoshop-select2', JIGOSHOP_URL.'/assets/js/select2.min.js', array('jquery'));
-		Scripts::add('jquery-ui-datepicker', JIGOSHOP_URL.'/assets/js/jquery-ui-datepicker-1.8.16.min.js', array('jquery'), array('version' => '1.8.16'));
-		Scripts::add('jigoshop_blockui', JIGOSHOP_URL.'/assets/js/blockui.js', array('jquery'), array('version' => '2.4.6'));
-		Scripts::add('jigoshop_backend', JIGOSHOP_URL.'/assets/js/jigoshop_backend.js', array('jquery'), array('version' => '1.0'));
-		Scripts::add('thickbox', false);
+		$this->scripts->add('jigoshop-select2', JIGOSHOP_URL.'/assets/js/select2.min.js', array('jquery'));
+		$this->scripts->add('jquery-ui-datepicker', JIGOSHOP_URL.'/assets/js/jquery-ui-datepicker-1.8.16.min.js', array('jquery'), array('version' => '1.8.16'));
+		$this->scripts->add('jigoshop_blockui', JIGOSHOP_URL.'/assets/js/blockui.js', array('jquery'), array('version' => '2.4.6'));
+		$this->scripts->add('jigoshop_backend', JIGOSHOP_URL.'/assets/js/jigoshop_backend.js', array('jquery'), array('version' => '1.0'));
+		$this->scripts->add('thickbox', false);
 
-		Scripts::add('jquery_flot', JIGOSHOP_URL.'/assets/js/jquery.flot.min.js', array('jquery'), array(
+		$this->scripts->add('jquery_flot', JIGOSHOP_URL.'/assets/js/jquery.flot.min.js', array('jquery'), array(
 			'version' => '1.0',
 			'page' => array('jigoshop_page_jigoshop_reports', 'toplevel_page_jigoshop')
 		));
-		Scripts::add('jquery_flot_pie', JIGOSHOP_URL.'/assets/js/jquery.flot.pie.min.js', array('jquery'), array(
+		$this->scripts->add('jquery_flot_pie', JIGOSHOP_URL.'/assets/js/jquery.flot.pie.min.js', array('jquery'), array(
 			'version' => '1.0',
 			'page' => array('jigoshop_page_jigoshop_reports', 'toplevel_page_jigoshop')
 		));
@@ -87,21 +95,21 @@ class Assets
 
 		if ($this->options->get('disable_css') == 'no') {
 			if ($this->options->get('load_frontend_css') == 'yes') {
-				Styles::add('jigoshop_theme_styles', $frontend_css);
+				$this->styles->add('jigoshop_theme_styles', $frontend_css);
 			}
-			Styles::add('jigoshop_styles', $theme_css);
+			$this->styles->add('jigoshop_styles', $theme_css);
 		}
 
-		Scripts::add('jigoshop_global', JIGOSHOP_URL.'/assets/js/global.js', array('jquery'), array('in_footer' => true));
+		$this->scripts->add('jigoshop_global', JIGOSHOP_URL.'/assets/js/global.js', array('jquery'), array('in_footer' => true));
 
 		if ($this->options->get('disable_prettyphoto') == 'no') {
-			Scripts::add('prettyphoto', JIGOSHOP_URL.'/assets/js/jquery.prettyPhoto.js', array('jquery'), array('in_footer' => true));
+			$this->scripts->add('prettyphoto', JIGOSHOP_URL.'/assets/js/jquery.prettyPhoto.js', array('jquery'), array('in_footer' => true));
 		}
 
-		Scripts::add('jigoshop_blockui', JIGOSHOP_URL.'/assets/js/blockui.js', array('jquery'), array('in_footer' => true));
-		Scripts::add('jigoshop-cart', JIGOSHOP_URL.'/assets/js/cart.js', array('jquery'), array('in_footer' => true, 'page' => Pages::CART));
-		Scripts::add('jigoshop-checkout', JIGOSHOP_URL.'/assets/js/checkout.js', array('jquery'), array('in_footer' => true, 'page' => Pages::CHECKOUT));
-		Scripts::add('jigoshop-single-product', JIGOSHOP_URL.'/assets/js/single-product.js', array('jquery'), array('in_footer' => true, 'page' => Pages::PRODUCT));
-		Scripts::add('jigoshop-countries', JIGOSHOP_URL.'/assets/js/countries.js', array(), array('in_footer' => true, 'page' => array(Pages::CHECKOUT, Pages::CART)));
+		$this->scripts->add('jigoshop_blockui', JIGOSHOP_URL.'/assets/js/blockui.js', array('jquery'), array('in_footer' => true));
+		$this->scripts->add('jigoshop-cart', JIGOSHOP_URL.'/assets/js/cart.js', array('jquery'), array('in_footer' => true, 'page' => Pages::CART));
+		$this->scripts->add('jigoshop-checkout', JIGOSHOP_URL.'/assets/js/checkout.js', array('jquery'), array('in_footer' => true, 'page' => Pages::CHECKOUT));
+		$this->scripts->add('jigoshop-single-product', JIGOSHOP_URL.'/assets/js/single-product.js', array('jquery'), array('in_footer' => true, 'page' => Pages::PRODUCT));
+		$this->scripts->add('jigoshop-countries', JIGOSHOP_URL.'/assets/js/countries.js', array(), array('in_footer' => true, 'page' => array(Pages::CHECKOUT, Pages::CART)));
 	}
 }

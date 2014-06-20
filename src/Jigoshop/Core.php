@@ -4,6 +4,7 @@ namespace Jigoshop;
 
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
+use Jigoshop\Core\Pages;
 use WPAL\Wordpress;
 
 class Core
@@ -14,16 +15,19 @@ class Core
 	private $options;
 	/** @var \Jigoshop\Core\Messages */
 	private $messages;
+	/** @var \Jigoshop\Core\Pages */
+	private $pages;
 	/** @var \Jigoshop\Admin */
 	private $admin;
 	/** @var \WPAL\Wordpress */
 	private $wp;
 
-	public function __construct(Wordpress $wp, Options $options, Messages $messages, Admin $admin)
+	public function __construct(Wordpress $wp, Options $options, Messages $messages, Pages $pages, Admin $admin)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->messages = $messages;
+		$this->pages = $pages;
 		$this->_addQueryFilters();
 
 		if ($wp->isAdmin()) {
@@ -88,6 +92,15 @@ class Core
 	public function getMessages()
 	{
 		return $this->messages;
+	}
+
+	/**
+	 * @return Pages Helper for checking Jigoshop pages.
+	 * @since 2.0
+	 */
+	public function getPages()
+	{
+		return $this->pages;
 	}
 
 	/** @noinspection PhpUnusedPrivateMethodInspection */

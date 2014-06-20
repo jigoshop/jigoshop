@@ -2,7 +2,8 @@
 
 namespace Jigoshop\Helper;
 
-use Jigoshop\Pages;
+use Jigoshop\Core\Pages;
+use WPAL\Wordpress;
 
 /**
  * Styles helper.
@@ -12,9 +13,20 @@ use Jigoshop\Pages;
  */
 class Styles
 {
+	/** @var \Jigoshop\Core\Pages */
+	private $pages;
+	/** @var \WPAL\Wordpress */
+	private $wp;
+
+	public function __construct(Wordpress $wp, Pages $pages)
+	{
+		$this->wp = $wp;
+		$this->pages = $pages;
+	}
+
 	/**
 	 * Enqueues stylesheet.
-	 * Calls filter `jigoshop_add_style`. If the filter returns empty value the style is omitted.
+	 * Calls filter `jigoshop\\style\\add`. If the filter returns empty value the style is omitted.
 	 * Available options:
 	 *   * version - Wordpress script version number
 	 *   * media - CSS media this script represents
@@ -27,17 +39,17 @@ class Styles
 	 * @param array $options List of options.
 	 * @since 2.0
 	 */
-	public static function add($handle, $src, array $dependencies = array(), array $options = array())
+	public function add($handle, $src, array $dependencies = array(), array $options = array())
 	{
 		$page = isset($options['page']) ? (array)$options['page'] : array('all');
 
-		if (Pages::isOneOfPages($page)) {
-			$handle = apply_filters('jigoshop_add_style', $handle, $src, $dependencies, $options);
+		if ($this->pages->isOneOf($page)) {
+			$handle = $this->wp->applyFilters('jigoshop\\style\\add', $handle, $src, $dependencies, $options);
 
 			if (!empty($handle)) {
 				$version = isset($options['version']) ? $options['version'] : false;
 				$media = isset($options['media']) ? $options['media'] : 'all';
-				wp_enqueue_style($handle, $src, $dependencies, $version, $media);
+				$this->wp->wpEnqueueStyle($handle, $src, $dependencies, $version, $media);
 			}
 		}
 	}

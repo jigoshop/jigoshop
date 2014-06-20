@@ -8,11 +8,17 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.messages'
+      - '@jigoshop.pages'
       - '@jigoshop.admin'
   jigoshop.options:
     class: Jigoshop\Core\Options
     arguments:
       - '@wpal'
+  jigoshop.pages:
+    class: Jigoshop\Core\Pages
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
   jigoshop.messages:
     class: Jigoshop\Core\Messages
     arguments:
@@ -35,7 +41,20 @@ services:
     class: Jigoshop\Core\Assets
     arguments:
       - '@wpal'
+      - '@jigoshop.pages'
       - '@jigoshop.options'
+      - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'
+  jigoshop.helper.styles:
+    class: Jigoshop\Helper\Styles
+    arguments:
+      - '@wpal'
+      - '@jigoshop.pages'
+  jigoshop.helper.scripts:
+    class: Jigoshop\Helper\Scripts
+    arguments:
+      - '@wpal'
+      - '@jigoshop.pages'
   jigoshop.factory.order_service:
     class: Jigoshop\Factory\OrderService
     arguments:
