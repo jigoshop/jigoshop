@@ -3,6 +3,7 @@
 namespace Jigoshop\Admin;
 
 use Jigoshop\Core\Options;
+use Jigoshop\Core\PostTypes;
 use Jigoshop\Entity\Order;
 use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
@@ -62,19 +63,19 @@ class Dashboard implements PageInterface
 	 */
 	public function display()
 	{
-		wp_enqueue_script('common');
-		wp_enqueue_script('wp-lists');
-		wp_enqueue_script('postbox');
+		$this->wp->wpEnqueueScript('common');
+		$this->wp->wpEnqueueScript('wp-lists');
+		$this->wp->wpEnqueueScript('postbox');
 
-		add_meta_box('jigoshop_dashboard_right_now', __('Right Now', 'jigoshop'), array($this, 'rightNow'), 'jigoshop', 'side', 'core');
-		add_meta_box('jigoshop_dashboard_recent_orders', __('Recent Orders', 'jigoshop'), array($this, 'recentOrders'), 'jigoshop', 'side', 'core');
+		$this->wp->addMetaBox('jigoshop_dashboard_right_now', __('Right Now', 'jigoshop'), array($this, 'rightNow'), 'jigoshop', 'side', 'core');
+		$this->wp->addMetaBox('jigoshop_dashboard_recent_orders', __('Recent Orders', 'jigoshop'), array($this, 'recentOrders'), 'jigoshop', 'side', 'core');
 		if ($this->options->get('manage_stock') == 'yes') {
-			add_meta_box('jigoshop_dashboard_stock_report', __('Stock Report', 'jigoshop'), array($this, 'stockReport'), 'jigoshop', 'side', 'core');
+			$this->wp->addMetaBox('jigoshop_dashboard_stock_report', __('Stock Report', 'jigoshop'), array($this, 'stockReport'), 'jigoshop', 'side', 'core');
 		}
-		add_meta_box('jigoshop_dashboard_monthly_report', __('Monthly Report', 'jigoshop'), array($this, 'monthlyReport'), 'jigoshop', 'normal', 'core');
-		add_meta_box('jigoshop_dashboard_recent_reviews', __('Recent Reviews', 'jigoshop'), array($this, 'recentReviews'), 'jigoshop', 'normal', 'core');
-		add_meta_box('jigoshop_dashboard_latest_news', __('Latest News', 'jigoshop'), array($this, 'latestNews'), 'jigoshop', 'normal', 'core');
-		add_meta_box('jigoshop_dashboard_useful_links', __('Useful Links', 'jigoshop'), array($this, 'usefulLinks'), 'jigoshop', 'normal', 'core');
+		$this->wp->addMetaBox('jigoshop_dashboard_monthly_report', __('Monthly Report', 'jigoshop'), array($this, 'monthlyReport'), 'jigoshop', 'normal', 'core');
+		$this->wp->addMetaBox('jigoshop_dashboard_recent_reviews', __('Recent Reviews', 'jigoshop'), array($this, 'recentReviews'), 'jigoshop', 'normal', 'core');
+		$this->wp->addMetaBox('jigoshop_dashboard_latest_news', __('Latest News', 'jigoshop'), array($this, 'latestNews'), 'jigoshop', 'normal', 'core');
+		$this->wp->addMetaBox('jigoshop_dashboard_useful_links', __('Useful Links', 'jigoshop'), array($this, 'usefulLinks'), 'jigoshop', 'normal', 'core');
 
 		/** @noinspection PhpUnusedLocalVariableInspection */
 		$submenu = $this->wp->getSubmenu();
@@ -86,9 +87,9 @@ class Dashboard implements PageInterface
 	 */
 	public function rightNow()
 	{
-		$num_posts = wp_count_posts('product');
+		$num_posts = $this->wp->wpCountPosts(PostTypes::PRODUCT);
 		/** @noinspection PhpUnusedLocalVariableInspection */
-		$productCount = number_format_i18n($num_posts->publish);
+		$productCount = $this->wp->numberFormatI18n($num_posts->publish);
 		/** @noinspection PhpUnusedLocalVariableInspection */
 		$categoryCount = 0;
 		/** @noinspection PhpUnusedLocalVariableInspection */
@@ -215,24 +216,25 @@ class Dashboard implements PageInterface
 		if (file_exists(ABSPATH.WPINC.'/class-simplepie.php')) {
 			include_once(ABSPATH.WPINC.'/class-simplepie.php');
 
-			$rss = fetch_feed('http://www.jigoshop.com/feed');
+			$rss = $this->wp->fetchFeed('http://www.jigoshop.com/feed');
 			/** @noinspection PhpUnusedLocalVariableInspection */
 			$items = array();
 
-			if (!is_wp_error($rss)) {
+			if (!$this->wp->isWpError($rss)) {
 				$maxItems = $rss->get_item_quantity(5);
 				$rssItems = $rss->get_items(0, $maxItems);
 
 				if ($maxItems > 0) {
 					/** @noinspection PhpUnusedLocalVariableInspection */
-					$items = array_map(function ($item){
+					$that = $this;
+					$items = array_map(function ($item) use ($that) {
 						/** @var $item \SimplePie_Item */
 						$date = $item->get_date('U');
 
 						return array(
-							'title' => wptexturize($item->get_title(), ENT_QUOTES, 'UTF-8'),
+							'title' => $that->wp->wptexturize($item->get_title()),
 							'link' => $item->get_permalink(),
-							'date' => (abs(time() - $date)) < 86400 ? sprintf(__('%s ago', 'jigoshop'), human_time_diff($date)) : date(__('F jS Y', 'jigoshop'), $date),
+							'date' => (abs(time() - $date)) < 86400 ? sprintf(__('%s ago', 'jigoshop'), $that->wp->humanTimeDiff($date)) : date(__('F jS Y', 'jigoshop'), $date),
 						);
 					}, $rssItems);
 				}
