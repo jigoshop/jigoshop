@@ -5,6 +5,7 @@
     * New: `jigoshop_countries::has_country()` and `jigoshop_countries::has_state()` methods introduced.
     * New: `jigoshop_render()` function introduced.
     * New: `jigoshop_product_list` shortcode.
+    * New: Check for minimum, required PHP version.
     * Improved: Reformatted main Jigoshop file.
 * 1.9.6 - 2014.06.11:
     * New: Add version constant to `jigoshop` class for easy checking in plugins.

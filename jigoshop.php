@@ -53,6 +53,16 @@ if (!defined('JIGOSHOP_DIR')) {
 	define('JIGOSHOP_DIR', dirname(__FILE__));
 }
 
+if(!version_compare(PHP_VERSION, '5.3.3', '>=')){
+	function jigoshop_required_version(){
+		echo '<div class="error"><p>'.
+			sprintf(__('<strong>Error!</strong> Jigoshop requires PHP 5.3.3 at least! Your version: %s, please upgrade.', 'jigoshop'), PHP_VERSION).
+		'</p></div>';
+	}
+	add_action('admin_notices', 'jigoshop_required_version');
+	return;
+}
+
 /**
  * Include core files and classes
  */
@@ -134,7 +144,7 @@ add_action('init', 'jigoshop_init', 0);
 function jigoshop_init()
 {
 	/* ensure nothing is output to the browser prior to this (other than headers) */
-	ob_clean();
+	//ob_clean();
 
 	// http://www.geertdedeckere.be/article/loading-wordpress-language-files-the-right-way
 	// this means that all Jigoshop extensions, shipping modules and gateways must load their text domains on the 'init' action hook

@@ -65,6 +65,7 @@ CV
 .settings/*
 .buildpath
 .project
+composer.lock
 nbproject
 deploy.sh
 
