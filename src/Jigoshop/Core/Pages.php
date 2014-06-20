@@ -180,7 +180,7 @@ class Pages
 			return false;
 		}
 
-		if (in_array($currentScreen->post_type, array(PostTypes::PRODUCT, PostTypes::ORDER, PostTypes::COUPON))) {
+		if (in_array($currentScreen->post_type, array(PostTypes::PRODUCT, PostTypes::ORDER, PostTypes::COUPON), true)) {
 			return $currentScreen->post_type;
 		}
 

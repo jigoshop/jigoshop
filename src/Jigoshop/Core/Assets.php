@@ -50,35 +50,37 @@ class Assets
 
 		$this->styles->add('jigoshop_admin_styles', JIGOSHOP_URL.'/assets/css/admin.css');
 		$this->styles->add('jquery-ui-jigoshop-styles', JIGOSHOP_URL.'/assets/css/jquery-ui-1.8.16.jigoshop.css');
-		$this->styles->add('thickbox', false);
 		$this->styles->add('jigoshop-required', JIGOSHOP_URL.'/assets/css/required.css');
 
 		$this->scripts->add('jigoshop-select2', JIGOSHOP_URL.'/assets/js/select2.min.js', array('jquery'));
-		$this->scripts->add('jquery-ui-datepicker', JIGOSHOP_URL.'/assets/js/jquery-ui-datepicker-1.8.16.min.js', array('jquery'), array('version' => '1.8.16'));
 		$this->scripts->add('jigoshop_blockui', JIGOSHOP_URL.'/assets/js/blockui.js', array('jquery'), array('version' => '2.4.6'));
 		$this->scripts->add('jigoshop_backend', JIGOSHOP_URL.'/assets/js/jigoshop_backend.js', array('jquery'), array('version' => '1.0'));
-		$this->scripts->add('thickbox', false);
 
 		$this->scripts->add('jquery_flot', JIGOSHOP_URL.'/assets/js/jquery.flot.min.js', array('jquery'), array(
 			'version' => '1.0',
-			'page' => array('jigoshop_page_jigoshop_reports', 'toplevel_page_jigoshop')
+			'page' => array('jigoshop_page_jigoshop_reports', 'toplevel_page_jigoshop') // TODO: Properly fetch page names
 		));
 		$this->scripts->add('jquery_flot_pie', JIGOSHOP_URL.'/assets/js/jquery.flot.pie.min.js', array('jquery'), array(
 			'version' => '1.0',
-			'page' => array('jigoshop_page_jigoshop_reports', 'toplevel_page_jigoshop')
+			'page' => array('jigoshop_page_jigoshop_reports', 'toplevel_page_jigoshop') // TODO: Properly fetch page names
 		));
 
 		/*
 		 * Disable autosaves on the order and coupon pages. Prevents the javascript alert when modifying.
 		 * `wp_deregister_script( 'autosave' )` would produce errors, so we use a filter instead.
 		 */
-		if ($adminPage == 'shop_order' || $adminPage == 'shop_coupon') {
-			$this->wp->addFilter('script_loader_src', array($this, '_disableAutoSave'), 10, 2);
+		if (in_array($adminPage, array(PostTypes::ORDER, PostTypes::COUPON), true)) {
+			$this->wp->addFilter('script_loader_src', array($this, 'disableAutoSave'), 10, 2);
 		}
 	}
 
-	/** @noinspection PhpUnusedPrivateMethodInspection */
-	private function _disableAutoSave($src, $handle)
+	/**
+	 * @param $src string Script URI to load
+	 * @param $handle string Handle name
+	 * @return string Script URI to load
+	 * @internal
+	 */
+	public function disableAutoSave($src, $handle)
 	{
 		if ('autosave' != $handle) {
 			return $src;
@@ -87,7 +89,6 @@ class Assets
 		return '';
 	}
 
-	/** @noinspection PhpUnusedPrivateMethodInspection */
 	public function loadFrontendAssets()
 	{
 		$frontend_css = JIGOSHOP_URL.'/assets/css/frontend.css';

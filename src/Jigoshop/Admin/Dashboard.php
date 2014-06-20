@@ -171,7 +171,7 @@ class Dashboard implements PageInterface
 
 		foreach ($orders as $order) {
 			/** @var $order Order */
-			if (!in_array($order->getStatus(), array(Order\Status::REFUNDED, Order\Status::CANCELLED))) {
+			if (!in_array($order->getStatus(), array(Order\Status::REFUNDED, Order\Status::CANCELLED), true)) {
 				$day = strtotime(date('Y-m-d', $order->getCreatedAt()->getTimestamp()));
 				$orderCountsData[$day] += 1;
 				$orderAmountsData[$day] += $order->getSubtotal() + $order->getShipping();
