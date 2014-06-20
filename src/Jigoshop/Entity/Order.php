@@ -34,12 +34,12 @@ class Order implements EntityInterface
 	public function getStatuses()
 	{
 		$order_types = array(
-			Status::PENDING => __('Pending', 'jigoshop'),
-			Status::ON_HOLD => __('On-Hold', 'jigoshop'),
-			Status::PROCESSING => __('Processing', 'jigoshop'),
-			Status::COMPLETED => __('Completed', 'jigoshop'),
-			Status::CANCELLED => __('Cancelled', 'jigoshop'),
-			Status::REFUNDED => __('Refunded', 'jigoshop'),
+			Status::PENDING => \__('Pending', 'jigoshop'),
+			Status::ON_HOLD => \__('On-Hold', 'jigoshop'),
+			Status::PROCESSING => \__('Processing', 'jigoshop'),
+			Status::COMPLETED => \__('Completed', 'jigoshop'),
+			Status::CANCELLED => \__('Cancelled', 'jigoshop'),
+			Status::REFUNDED => \__('Refunded', 'jigoshop'),
 		);
 
 		return apply_filters('jigoshop_filter_order_status_names', $order_types);
@@ -56,12 +56,12 @@ class Order implements EntityInterface
 	{
 		$comment = array(
 			'comment_post_ID' => $this->id,
-			'comment_author' => __('Jigoshop', 'jigoshop'),
+			'comment_author' => \__('Jigoshop', 'jigoshop'),
 			'comment_author_email' => '',
 			'comment_author_url' => '',
 			'comment_content' => $note,
 			'comment_type' => 'order_note',
-			'comment_agent' => __('Jigoshop', 'jigoshop'),
+			'comment_agent' => \__('Jigoshop', 'jigoshop'),
 			'comment_parent' => 0,
 			'comment_date' => current_time('timestamp'),
 			'comment_date_gmt' => current_time('timestamp', true),
@@ -91,7 +91,7 @@ class Order implements EntityInterface
 			if ($this->status != $new_status->slug) {
 //				do_action('order_status_'.$new_status->slug, $this->id);
 //				do_action('order_status_'.$this->status.'_to_'.$new_status->slug, $this->id);
-				$this->addNote($message.sprintf(__('Order status changed from %s to %s.', 'jigoshop'), __($old_status->name, 'jigoshop'), __($new_status->name, 'jigoshop')));
+				$this->addNote($message.sprintf(\__('Order status changed from %s to %s.', 'jigoshop'), \__($old_status->name, 'jigoshop'), \__($new_status->name, 'jigoshop')));
 
 				// Date
 				if ($new_status->slug == 'completed') {

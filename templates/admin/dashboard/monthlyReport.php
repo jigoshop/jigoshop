@@ -53,8 +53,8 @@
 				$.plot(
 					$plot,
 					[
-						{ label: "<?= __('Number of sales','jigoshop'); ?>", data: d },
-						{ label: "<?= __('Sales amount','jigoshop'); ?>", data: d2, yaxis: 2 }
+						{ label: "<?= \__('Number of sales','jigoshop'); ?>", data: d },
+						{ label: "<?=\ __('Sales amount','jigoshop'); ?>", data: d2, yaxis: 2 }
 					],
 					{
 						series: {
@@ -105,7 +105,7 @@
 							var y;
 							previousPoint = item.dataIndex;
 							$("#tooltip").remove();
-							if(item.series.label == "<?= __('Number of sales','jigoshop'); ?>"){
+							if(item.series.label == "<?= \__('Number of sales','jigoshop'); ?>"){
 								y = item.datapoint[1];
 								showTooltip(item.pageX, item.pageY, item.series.label + " - " + y);
 							} else {

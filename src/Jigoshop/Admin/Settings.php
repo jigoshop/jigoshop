@@ -21,7 +21,7 @@ class Settings implements PageInterface
 	 */
 	public function getTitle()
 	{
-		return __('Settings', 'jigoshop');
+		return \__('Settings', 'jigoshop');
 	}
 
 	/**

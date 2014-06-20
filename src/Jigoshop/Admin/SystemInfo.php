@@ -15,7 +15,7 @@ class SystemInfo implements PageInterface
 	 */
 	public function getTitle()
 	{
-		return __('System Information', 'jigoshop');
+		return \__('System Information', 'jigoshop');
 	}
 
 	/**

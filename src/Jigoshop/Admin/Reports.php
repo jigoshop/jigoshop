@@ -14,7 +14,7 @@ class Reports implements PageInterface
 	 */
 	public function getTitle()
 	{
-		return __('Reports', 'jigoshop');
+		return \__('Reports', 'jigoshop');
 	}
 
 	/**

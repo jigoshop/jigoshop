@@ -76,7 +76,7 @@ class Admin
 			$menu[54] = array('', 'read', 'separator-jigoshop', '', 'wp-menu-separator jigoshop');
 		}
 
-		$this->wp->addMenuPage(__('Jigoshop'), __('Jigoshop'), 'manage_jigoshop', 'jigoshop', array($this->dashboard, 'display'), null, 55);
+		$this->wp->addMenuPage(\__('Jigoshop'), \__('Jigoshop'), 'manage_jigoshop', 'jigoshop', array($this->dashboard, 'display'), null, 55);
 		foreach ($this->pages['jigoshop'] as $page) {
 			/** @var $page PageInterface */
 			$this->wp->addSubmenuPage('jigoshop', $page->getTitle(), $page->getTitle(), $page->getCapability(), $page->getMenuSlug(), array($page, 'display'));

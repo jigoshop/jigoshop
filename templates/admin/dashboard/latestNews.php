@@ -10,5 +10,5 @@
 		<?php endforeach; ?>
 	</ul>
 <?php else: ?>
-	<p class="notice"><?= __('No items found.', 'jigoshop'); ?></p>
+	<p class="notice"><?= \__('No items found.', 'jigoshop'); ?></p>
 <?php endif; ?>
