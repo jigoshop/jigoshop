@@ -485,7 +485,7 @@ ul.subsubsub li.refunded a {
 }
 
 .fixed .column-featured {
-	width: 60px
+	width: 90px
 }
 
 .fixed .column-featured div {
@@ -534,7 +534,7 @@ table.wp-list-table span.na {
 	color: #999999
 }
 
-table.wp-list-table .column-featured, table.wp-list-table .column-sellable, table.wp-list-table .column-is_in_stock {
+table.wp-list-table .column-sellable, table.wp-list-table .column-is_in_stock {
 	text-align: center !important
 }
 
