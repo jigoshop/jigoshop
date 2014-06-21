@@ -17,6 +17,11 @@ class Sales implements \Serializable
 	/** @var float */
 	private $price = 0.0;
 
+	public function __construct()
+	{
+		$this->from = $this->to = new \DateTime();
+	}
+
 	/**
 	 * @param \DateTime $from New start sales date.
 	 */

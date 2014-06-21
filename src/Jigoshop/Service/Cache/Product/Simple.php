@@ -3,6 +3,7 @@
 namespace Jigoshop\Service\Cache\Product;
 
 use Jigoshop\Entity\EntityInterface;
+use Jigoshop\Entity\Product;
 use Jigoshop\Service\ProductServiceInterface;
 
 /**
@@ -27,7 +28,7 @@ class Simple implements ProductServiceInterface
 	 * Finds item specified by ID.
 	 *
 	 * @param $id int The ID.
-	 * @return \stdClass
+	 * @return Product
 	 */
 	public function find($id)
 	{
@@ -36,6 +37,21 @@ class Simple implements ProductServiceInterface
 		}
 
 		return $this->objects[$id];
+	}
+
+	/**
+	 * Finds item for specified WordPress post.
+	 *
+	 * @param $post \WP_Post WordPress post.
+	 * @return Product Item found.
+	 */
+	public function findForPost($post)
+	{
+		if (!isset($this->objects[$post->ID])) {
+			$this->objects[$post->ID] = $this->service->findForPost($post);
+		}
+
+		return $this->objects[$post->ID];
 	}
 
 	/**

@@ -21,6 +21,14 @@ interface ServiceInterface
 	public function find($id);
 
 	/**
+	 * Finds item for specified WordPress post.
+	 *
+	 * @param $post \WP_Post WordPress post.
+	 * @return EntityInterface Item found.
+	 */
+	public function findForPost($post);
+
+	/**
 	 * Finds items specified using WordPress query.
 	 *
 	 * @param $query \WP_Query WordPress query.

@@ -34,6 +34,18 @@ class Order implements OrderServiceInterface
 	}
 
 	/**
+	 * Finds item for specified WordPress post.
+	 *
+	 * @param $post \WP_Post WordPress post.
+	 * @return Order Item found.
+	 */
+	public function findForPost($post)
+	{
+		// TODO: Implement findForPost() method.
+		return new \Jigoshop\Entity\Order();
+	}
+
+	/**
 	 * Finds order specified using WordPress query.
 	 * TODO: Replace \WP_Query in order to make Jigoshop testable
 	 *

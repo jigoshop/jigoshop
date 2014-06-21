@@ -3,6 +3,7 @@
 namespace Jigoshop\Service\Cache\Order;
 
 use Jigoshop\Entity\EntityInterface;
+use Jigoshop\Entity\Order;
 use Jigoshop\Service\OrderServiceInterface;
 
 /**
@@ -27,7 +28,7 @@ class Simple implements OrderServiceInterface
 	 * Finds item specified by ID.
 	 *
 	 * @param $id int The ID.
-	 * @return \stdClass
+	 * @return Order
 	 */
 	public function find($id)
 	{
@@ -36,6 +37,21 @@ class Simple implements OrderServiceInterface
 		}
 
 		return $this->objects[$id];
+	}
+
+	/**
+	 * Finds item for specified WordPress post.
+	 *
+	 * @param $post \WP_Post WordPress post.
+	 * @return Order Item found.
+	 */
+	public function findForPost($post)
+	{
+		if (!isset($this->objects[$post->ID])) {
+			$this->objects[$post->ID] = $this->service->findForPost($post);
+		}
+
+		return $this->objects[$post->ID];
 	}
 
 	/**

@@ -3,6 +3,7 @@
 namespace Jigoshop\Service;
 
 use Jigoshop\Entity\EntityInterface;
+use WPAL\Wordpress;
 
 /**
  * Product service.
@@ -12,6 +13,14 @@ use Jigoshop\Entity\EntityInterface;
  */
 class Product implements ProductServiceInterface
 {
+	/** @var \WPAL\Wordpress */
+	private $wp;
+
+	public function __construct(Wordpress $wp)
+	{
+		$this->wp = $wp;
+	}
+
 	/**
 	 * Finds product specified by ID.
 	 *
@@ -23,20 +32,42 @@ class Product implements ProductServiceInterface
 		$product = new \Jigoshop\Entity\Product();
 
 		if ($id !== null) {
-			// TODO: Remove get_post() call in order to make Jigoshop testable
-			$post = get_post($id);
-			// TODO: Remove get_post_meta() call in order to make Jigoshop testable
+			$post = $this->wp->getPost($id);
 			$meta = array_map(function ($item){
 				return $item[0];
-			}, get_post_meta($id));
+			}, $this->wp->getPostMeta($id));
 
 			$product->setId($id);
 			$product->setName($post->post_title);
 			$product->restoreState($meta);
 			// TODO: Restoring attributes
 
-			$product = apply_filters('jigoshop\\find\\product', $product, $meta);
+			$product = $this->wp->applyFilters('jigoshop\\find\\product', $product, $meta);
 		}
+
+		return $product;
+	}
+
+	/**
+	 * Finds item for specified WordPress post.
+	 *
+	 * @param $post \WP_Post WordPress post.
+	 * @return Product Item found.
+	 */
+	public function findForPost($post)
+	{
+		$product = new \Jigoshop\Entity\Product();
+
+		$meta = array_map(function ($item){
+			return $item[0];
+		}, $this->wp->getPostMeta($post->ID));
+
+		$product->setId($post->ID);
+		$product->setName($post->post_title);
+		$product->restoreState($meta);
+		// TODO: Restoring attributes
+
+		$product = $this->wp->applyFilters('jigoshop\\find\\product', $product, $meta);
 
 		return $product;
 	}
@@ -77,8 +108,7 @@ class Product implements ProductServiceInterface
 		$fields = $object->getStateToSave();
 
 		if (isset($fields['id']) || isset($fields['name'])) {
-			// TODO: Remove wp_update_post() call in order to make Jigoshop testable
-			wp_update_post(array(
+			$this->wp->wpUpdatePost(array(
 				'ID' => $object->getId(),
 				'post_title' => $object->getName(),
 			));
@@ -86,8 +116,7 @@ class Product implements ProductServiceInterface
 		}
 
 		foreach ($fields as $field => $value) {
-			// TODO: Remove update_post_meta() call in order to make Jigoshop testable
-			update_post_meta($object->getId(), $field, $value);
+			$this->wp->updatePostMeta($object->getId(), $field, $value);
 		}
 
 		// TODO: Saving attributes

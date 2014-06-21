@@ -14,22 +14,23 @@ use Jigoshop\Entity\Product\StockStatus;
  */
 class Product implements EntityInterface
 {
+	const TYPE = 'simple';
+
 	const VISIBILITY_CATALOG = 1;
 	const VISIBILITY_SEARCH = 2;
 	const VISIBILITY_PUBLIC = 3; // CATALOG | SEARCH
 
 	private $id;
-	private $type;
 	private $name;
 	private $sku;
-	private $price;
-	private $regularPrice;
+	private $price = 0.0;
+	private $regularPrice = 0.0;
 	/** @var Sales */
 	private $sales;
 	/** @var Size */
 	private $size;
 	private $tax;
-	private $visibility;
+	private $visibility = self::VISIBILITY_PUBLIC;
 	private $featured;
 	/** @var StockStatus */
 	private $stock;
@@ -313,20 +314,11 @@ class Product implements EntityInterface
 	}
 
 	/**
-	 * @param string $type New product type.
-	 */
-	public function setType($type)
-	{
-		$this->type = $type;
-		$this->dirtyFields[] = 'type';
-	}
-
-	/**
 	 * @return string Product type.
 	 */
 	public function getType()
 	{
-		return $this->type;
+		return self::TYPE;
 	}
 
 	/**
@@ -418,27 +410,54 @@ class Product implements EntityInterface
 	 */
 	public function restoreState(array $state)
 	{
-		$this->type = $state['type'];
-		$this->price = floatval($state['price']);
-		$this->regularPrice = floatval($state['regular_price']);
-		$this->visibility = intval($state['visibility']);
+		if (isset($state['price'])) {
+			$this->price = floatval($state['price']);
+		}
+		if (isset($state['regular_price'])) {
+			$this->regularPrice = floatval($state['regular_price']);
+		}
+		if (isset($state['visibility'])) {
+			$this->visibility = intval($state['visibility']);
+		}
 
 		$this->sales = new Sales();
-		$this->sales->setFrom(new \DateTime($state['sales_from']));
-		$this->sales->setTo(new \DateTime($state['sales_to']));
-		$this->sales->setPrice(floatval($state['sales_price']));
+		if (isset($state['sales_from'])) {
+			$this->sales->setFrom(new \DateTime($state['sales_from']));
+		}
+		if (isset($state['sales_to'])) {
+			$this->sales->setTo(new \DateTime($state['sales_to']));
+		}
+		if (isset($state['sales_price'])) {
+			$this->sales->setPrice(floatval($state['sales_price']));
+		}
 
 		$this->size = new Size();
-		$this->size->setWeight(floatval($state['size_weight']));
-		$this->size->setWidth(floatval($state['size_width']));
-		$this->size->setHeight(floatval($state['size_height']));
-		$this->size->setLength(floatval($state['size_length']));
+		if (isset($state['size_weight'])) {
+			$this->size->setWeight(floatval($state['size_weight']));
+		}
+		if (isset($state['size_width'])) {
+			$this->size->setWidth(floatval($state['size_width']));
+		}
+		if (isset($state['size_height'])) {
+			$this->size->setHeight(floatval($state['size_height']));
+		}
+		if (isset($state['size_length'])) {
+			$this->size->setLength(floatval($state['size_length']));
+		}
 
 		$this->stock = new StockStatus();
-		$this->stock->setManage(boolval($state['stock_manage']));
-		$this->stock->setAllowBackorders(boolval($state['stock_allowed_backorders']));
-		$this->stock->setStatus(intval($state['stock_status']));
-		$this->stock->setStock(intval($state['stock_stock']));
+		if (isset($state['stock_manage'])) {
+			$this->stock->setManage(boolval($state['stock_manage']));
+		}
+		if (isset($state['stock_allowed_backorders'])) {
+			$this->stock->setAllowBackorders(boolval($state['stock_allowed_backorders']));
+		}
+		if (isset($state['stock_status'])) {
+			$this->stock->setStatus(intval($state['stock_status']));
+		}
+		if (isset($state['stock_stock'])) {
+			$this->stock->setStock(intval($state['stock_stock']));
+		}
 
 		// TODO: Restore tax (after thinking it over and implementing).
 		// TODO: Restore attributes?
