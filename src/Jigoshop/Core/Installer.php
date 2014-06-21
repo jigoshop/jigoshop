@@ -3,7 +3,7 @@
 namespace Jigoshop\Core;
 
 use Jigoshop\Core;
-use Jigoshop\Helper\Pages;
+use WPAL\Wordpress;
 
 /**
  * Jigoshop installer class.
@@ -11,47 +11,57 @@ use Jigoshop\Helper\Pages;
  * @package Jigoshop\Core
  * @author Amadeusz Starzykiewicz
  */
-class Install
+class Installer
 {
-	/** @var \wpdb */
-	private $wpdb;
+	const DB_VERSION = 0;
 
-	public function __construct(\wpdb $wpdb)
+	/** @var \WPAL\Wordpress */
+	private $wp;
+	/** @var \Jigoshop\Core\Options */
+	private $options;
+	/** @var \Jigoshop\Core\Cron */
+	private $cron;
+
+	public function __construct(Wordpress $wp, Options $options, Cron $cron)
 	{
-		$this->wpdb = $wpdb;
-		// TODO: Remove get_option() call in order to make Jigoshop testable
-		$db = get_option('jigoshop_database_version');
+		$this->wp = $wp;
+		$this->options = $options;
+		$this->cron = $cron;
+	}
+
+	public function install()
+	{
+		$db = $this->wp->getOption('jigoshop_database_version');
 
 		if ($db === false) {
-			$this->_createTables();
-			$this->_createPages();
-			Cron::clear();
+//			$this->_createTables();
+//			$this->_createPages();
+			$this->cron->clear();
 		}
 
 		// TODO: Remove flush_rewrite_rules() call in order to make Jigoshop testable
 		flush_rewrite_rules(false);
 		// TODO: Remove update_site_option() call in order to make Jigoshop testable
-		update_site_option('jigoshop_database_version', Core::VERSION);
+		update_site_option('jigoshop_database_version', self::DB_VERSION);
 	}
 
 	private function _createTables()
 	{
-		$this->wpdb->hide_errors();
+		$wpdb = $this->wp->getWPDB();
+		$wpdb->hide_errors();
 
 		$collate = '';
-		if ($this->wpdb->has_cap('collation')) {
-			if (!empty($this->wpdb->charset)) {
-				$collate = "DEFAULT CHARACTER SET {$this->wpdb->charset}";
+		if ($wpdb->has_cap('collation')) {
+			if (!empty($wpdb->charset)) {
+				$collate = "DEFAULT CHARACTER SET {$wpdb->charset}";
 			}
-			if (!empty($this->wpdb->collate)) {
-				$collate .= " COLLATE {$this->wpdb->collate}";
+			if (!empty($wpdb->collate)) {
+				$collate .= " COLLATE {$wpdb->collate}";
 			}
 		}
 
-		require_once(ABSPATH.'/wp-admin/includes/upgrade.php');
-
 		$tables = "
-			CREATE TABLE IF NOT EXISTS {$this->wpdb->prefix}jigoshop_attribute (
+			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_attribute (
 				id INT(9) NOT NULL AUTO_INCREMENT,
 				attribute_name VARCHAR(255) NOT NULL,
 				attribute_label LONGTEXT NULL,
@@ -59,7 +69,7 @@ class Install
 				attribute_order INT NOT NULL,
 				PRIMARY KEY id (attribute_id)
 			) {$collate};
-			CREATE TABLE {$this->wpdb->prefix}jigoshop_order_item (
+			CREATE TABLE {$wpdb->prefix}jigoshop_order_item (
 				id bigint(20) NOT NULL auto_increment,
 				item_name longtext NOT NULL,
 				item_type varchar(200) NOT NULL DEFAULT '',
@@ -68,7 +78,7 @@ class Install
 				PRIMARY KEY (id),
 				KEY order_id (order_id)
 			) {$collate};
-			CREATE TABLE {$this->wpdb->prefix}jigoshop_order_item_meta (
+			CREATE TABLE {$wpdb->prefix}jigoshop_order_item_meta (
 				id bigint(20) NOT NULL auto_increment,
 				order_item_id bigint(20) NOT NULL,
 				meta_key varchar(255) NULL,
@@ -79,7 +89,7 @@ class Install
 			) {$collate};
 		";
 		// TODO: Is attribute_meta table needed?
-//		$sql = "CREATE TABLE IF NOT EXISTS {$this->wpdb->prefix}jigoshop_termmeta (
+//		$sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_termmeta (
 //			meta_id BIGINT(20) NOT NULL AUTO_INCREMENT,
 //			jigoshop_term_id BIGINT(20) NOT NULL,
 //			meta_key VARCHAR(255) NULL,
@@ -104,30 +114,31 @@ class Install
 		);
 
 		$this->_createPage(Pages::SHOP, array_merge($data, array(
-			'page_title' => \__('Shop', 'jigoshop'),
+			'page_title' => __('Shop', 'jigoshop'),
 		)));
-		$this->_createPage(Pages::CART, array_merge($data, array(
-			'page_title' => \__('Cart', 'jigoshop'),
-			'post_content' => '[jigoshop_cart]',
-		)));
-		$this->_createPage(Pages::CHECKOUT, array_merge($data, array(
-			'page_title' => \__('My account', 'jigoshop'),
-			'post_content' => '[jigoshop_checkout]',
-		)));
-		$this->_createPage(Pages::ACCOUNT, array_merge($data, array(
-			'page_title' => \__('My account', 'jigoshop'),
-			'post_content' => '[jigoshop_my_account]',
-		)));
-		$this->_createPage(Pages::ORDER_TRACKING, array_merge($data, array(
-			'page_title' => \__('Track your order', 'jigoshop'),
-			'post_content' => '[jigoshop_order_tracking]',
-		)));
+//		$this->_createPage(Pages::CART, array_merge($data, array(
+//			'page_title' => __('Cart', 'jigoshop'),
+//			'post_content' => '[jigoshop_cart]',
+//		)));
+//		$this->_createPage(Pages::CHECKOUT, array_merge($data, array(
+//			'page_title' => __('My account', 'jigoshop'),
+//			'post_content' => '[jigoshop_checkout]',
+//		)));
+//		$this->_createPage(Pages::ACCOUNT, array_merge($data, array(
+//			'page_title' => __('My account', 'jigoshop'),
+//			'post_content' => '[jigoshop_my_account]',
+//		)));
+//		$this->_createPage(Pages::ORDER_TRACKING, array_merge($data, array(
+//			'page_title' => __('Track your order', 'jigoshop'),
+//			'post_content' => '[jigoshop_order_tracking]',
+//		)));
 	}
 
 	private function _createPage($slug, $data)
 	{
+		$wpdb = $this->wp->getWPDB();
 		$slug = esc_sql(_x($slug, 'page_slug', 'jigoshop'));
-		$page_id = $this->wpdb->get_var($this->wpdb->prepare("SELECT ID FROM {$this->wpdb->posts} WHERE post_name = %s AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1", $slug));
+		$page_id = $wpdb->get_var($wpdb->prepare("SELECT ID FROM {$wpdb->posts} WHERE post_name = %s AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1", $slug));
 
 		if (!$page_id) {
 			$data['post_name'] = $slug;
@@ -135,6 +146,6 @@ class Install
 			$page_id = wp_insert_post($data);
 		}
 
-		\Jigoshop\Helper\Core::setPageId($slug, $page_id);
+		$this->options->setPageId($slug, $page_id);
 	}
 }

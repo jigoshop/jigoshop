@@ -119,21 +119,25 @@ class Jigoshop_Init
 	 */
 	public function update($network_wide = false)
 	{
-		/** @var $wpdb WPDB */
-		global $wpdb;
+		// Require upgrade specific files
+		require_once(ABSPATH.'/wp-admin/includes/upgrade.php');
+
+		/** @var $wp \WPAL\Wordpress */
+		$wp = $this->container->get('wpal');
+		/** @var $options \Jigoshop\Core\Installer */
+		$installer = $this->container->get('jigoshop.installer');
 
 		if (!$network_wide) {
-			new \Jigoshop\Core\Install($wpdb);
-
+			$installer->install();
 			return;
 		}
 
-		$blog = $wpdb->blogid;
-		$ids = $wpdb->get_col("SELECT blog_id FROM {$wpdb->blogs}");
+		$blog = $wp->getWPDB()->blogid;
+		$ids = $wp->getWPDB()->get_col("SELECT blog_id FROM {$wp->getWPDB()->blogs}");
 
 		foreach ($ids as $id) {
 			switch_to_blog($id);
-			new \Jigoshop\Core\Install($wpdb);
+			$installer->install();
 		}
 		switch_to_blog($blog);
 	}

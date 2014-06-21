@@ -25,11 +25,10 @@ class Cron
 		$wp->addAction('jigoshop\\cron\\processing_orders', array($this, 'completeProcessingOrders'));
 	}
 
-	public static function clear()
+	public function clear()
 	{
-		$wordpress = new Wordpress();
-		$wordpress->clearScheduledHook('jigoshop\\cron\\pending_orders');
-		$wordpress->clearScheduledHook('jigoshop\\cron\\processing_orders');
+		$this->wp->clearScheduledHook('jigoshop\\cron\\pending_orders');
+		$this->wp->clearScheduledHook('jigoshop\\cron\\processing_orders');
 	}
 
 	/** Schedules order processing events if not scheduled already. */
