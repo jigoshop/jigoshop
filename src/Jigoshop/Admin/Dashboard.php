@@ -3,7 +3,7 @@
 namespace Jigoshop\Admin;
 
 use Jigoshop\Core\Options;
-use Jigoshop\Core\PostTypes;
+use Jigoshop\Core\Types;
 use Jigoshop\Entity\Order;
 use Jigoshop\Helper\Render;
 use Jigoshop\Service\OrderServiceInterface;
@@ -89,7 +89,7 @@ class Dashboard implements PageInterface
 	 */
 	public function rightNow()
 	{
-		$num_posts = $this->wp->wpCountPosts(PostTypes::PRODUCT);
+		$num_posts = $this->wp->wpCountPosts(Types::PRODUCT);
 		/** @noinspection PhpUnusedLocalVariableInspection */
 		$productCount = $this->wp->numberFormatI18n($num_posts->publish);
 		/** @noinspection PhpUnusedLocalVariableInspection */

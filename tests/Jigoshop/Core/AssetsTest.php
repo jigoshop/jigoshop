@@ -112,7 +112,7 @@ class AssetsTest extends \PHPUnit_Framework_TestCase
 
 		$this->pages->expects($this->once())
 			->method('isAdminPage')
-			->will($this->returnValue(PostTypes::ORDER));
+			->will($this->returnValue(Types::ORDER));
 		$this->wp->expects($this->once())
 			->method('addFilter')
 			->with($this->equalTo('script_loader_src'), $this->anything(), $this->anything(), $this->anything());

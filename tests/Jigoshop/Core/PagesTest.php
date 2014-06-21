@@ -76,7 +76,7 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		/** @noinspection PhpParamsInspection */
 		$pages = new Pages($this->wp, $this->options);
 		$currentScreen = new \stdClass();
-		$currentScreen->post_type = PostTypes::PRODUCT;
+		$currentScreen->post_type = Types::PRODUCT;
 		$this->wp->expects($this->once())
 			->method('getCurrentScreen')
 			->will($this->returnValue($currentScreen));
@@ -85,7 +85,7 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$result = $pages->isAdminPage();
 
 		// Then
-		$this->assertEquals(PostTypes::PRODUCT, $result);
+		$this->assertEquals(Types::PRODUCT, $result);
 	}
 
 	public function testIsAdminPageJigoshop()
@@ -249,7 +249,7 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$pages = new Pages($this->wp, $this->options);
 		$this->wp->expects($this->once())
 			->method('isPostTypeArchive')
-			->with($this->equalTo(PostTypes::PRODUCT))
+			->with($this->equalTo(Types::PRODUCT))
 			->will($this->returnValue(true));
 
 		// When
@@ -394,7 +394,7 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$pages = new Pages($this->wp, $this->options);
 		$this->wp->expects($this->once())
 			->method('isPostTypeArchive')
-			->with($this->equalTo(PostTypes::PRODUCT))
+			->with($this->equalTo(Types::PRODUCT))
 			->will($this->returnValue(false));
 		$this->wp->expects($this->once())
 			->method('isSingular')
@@ -427,11 +427,11 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$pages = new Pages($this->wp, $this->options);
 		$this->wp->expects($this->at(0))
 			->method('isSingular')
-			->with($this->equalTo(array(PostTypes::PRODUCT)))
+			->with($this->equalTo(array(Types::PRODUCT)))
 			->will($this->returnValue(true));
 		$this->wp->expects($this->at(1))
 			->method('isSingular')
-			->with($this->equalTo(array(PostTypes::PRODUCT)))
+			->with($this->equalTo(array(Types::PRODUCT)))
 			->will($this->returnValue(false));
 
 		// When
@@ -450,11 +450,11 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$pages = new Pages($this->wp, $this->options);
 		$this->wp->expects($this->at(0))
 			->method('isTax')
-			->with($this->equalTo(PostTypes::PRODUCT_CATEGORY))
+			->with($this->equalTo(Types::PRODUCT_CATEGORY))
 			->will($this->returnValue(true));
 		$this->wp->expects($this->at(1))
 			->method('isTax')
-			->with($this->equalTo(PostTypes::PRODUCT_CATEGORY))
+			->with($this->equalTo(Types::PRODUCT_CATEGORY))
 			->will($this->returnValue(false));
 
 		// When
@@ -473,7 +473,7 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$pages = new Pages($this->wp, $this->options);
 		$this->wp->expects($this->once())
 			->method('isPostTypeArchive')
-			->with($this->equalTo(PostTypes::PRODUCT))
+			->with($this->equalTo(Types::PRODUCT))
 			->will($this->returnValue(true));
 
 		// When
@@ -490,7 +490,7 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$pages = new Pages($this->wp, $this->options);
 		$this->wp->expects($this->once())
 			->method('isPostTypeArchive')
-			->with($this->equalTo(PostTypes::PRODUCT))
+			->with($this->equalTo(Types::PRODUCT))
 			->will($this->returnValue(false));
 		$this->options->expects($this->any())
 			->method('getPageId')
@@ -515,7 +515,7 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$pages = new Pages($this->wp, $this->options);
 		$this->wp->expects($this->once())
 			->method('isPostTypeArchive')
-			->with($this->equalTo(PostTypes::PRODUCT))
+			->with($this->equalTo(Types::PRODUCT))
 			->will($this->returnValue(false));
 		$this->options->expects($this->any())
 			->method('getPageId')
@@ -527,7 +527,7 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 			->will($this->returnValue(false));
 		$this->wp->expects($this->once())
 			->method('isTax')
-			->with($this->equalTo(PostTypes::PRODUCT_CATEGORY), $this->anything())
+			->with($this->equalTo(Types::PRODUCT_CATEGORY), $this->anything())
 			->will($this->returnValue(true));
 
 		// When
@@ -544,7 +544,7 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$pages = new Pages($this->wp, $this->options);
 		$this->wp->expects($this->once())
 			->method('isPostTypeArchive')
-			->with($this->equalTo(PostTypes::PRODUCT))
+			->with($this->equalTo(Types::PRODUCT))
 			->will($this->returnValue(false));
 		$this->options->expects($this->any())
 			->method('getPageId')
@@ -558,7 +558,7 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 			->method('isTax')
 			->with($this->anything(), $this->anything())
 			->will($this->returnCallback(function($tax){
-				if($tax == PostTypes::PRODUCT_TAG){
+				if($tax == Types::PRODUCT_TAG){
 					return true;
 				}
 				return false;
@@ -578,11 +578,11 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$pages = new Pages($this->wp, $this->options);
 		$this->wp->expects($this->at(0))
 			->method('isTax')
-			->with($this->equalTo(PostTypes::PRODUCT_TAG))
+			->with($this->equalTo(Types::PRODUCT_TAG))
 			->will($this->returnValue(true));
 		$this->wp->expects($this->at(1))
 			->method('isTax')
-			->with($this->equalTo(PostTypes::PRODUCT_TAG))
+			->with($this->equalTo(Types::PRODUCT_TAG))
 			->will($this->returnValue(false));
 
 		// When
@@ -601,7 +601,7 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$pages = new Pages($this->wp, $this->options);
 		$this->wp->expects($this->once())
 			->method('isPostTypeArchive')
-			->with($this->equalTo(PostTypes::PRODUCT))
+			->with($this->equalTo(Types::PRODUCT))
 			->will($this->returnValue(true));
 
 		// When
@@ -618,7 +618,7 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$pages = new Pages($this->wp, $this->options);
 		$this->wp->expects($this->once())
 			->method('isPostTypeArchive')
-			->with($this->equalTo(PostTypes::PRODUCT))
+			->with($this->equalTo(Types::PRODUCT))
 			->will($this->returnValue(false));
 		$this->options->expects($this->any())
 			->method('getPageId')
@@ -634,7 +634,7 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 			->will($this->returnValue(false));
 		$this->wp->expects($this->once())
 			->method('isSingular')
-			->with($this->equalTo(array(PostTypes::PRODUCT)))
+			->with($this->equalTo(array(Types::PRODUCT)))
 			->will($this->returnValue(true));
 
 		// When
@@ -651,7 +651,7 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$pages = new Pages($this->wp, $this->options);
 		$this->wp->expects($this->once())
 			->method('isPostTypeArchive')
-			->with($this->equalTo(PostTypes::PRODUCT))
+			->with($this->equalTo(Types::PRODUCT))
 			->will($this->returnValue(false));
 		$this->options->expects($this->any())
 			->method('getPageId')
@@ -667,7 +667,7 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 			->will($this->returnValue(false));
 		$this->wp->expects($this->once())
 			->method('isSingular')
-			->with($this->equalTo(array(PostTypes::PRODUCT)))
+			->with($this->equalTo(array(Types::PRODUCT)))
 			->will($this->returnValue(false));
 
 		// When

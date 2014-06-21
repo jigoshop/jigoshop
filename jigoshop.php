@@ -71,6 +71,7 @@ class Jigoshop_Init
 
 		if (!$config_cache->isFresh()) {
 			$builder = new ContainerBuilder();
+			$builder->addCompilerPass(new Jigoshop\Core\Types\CompilerPass());
 			$loader = new YamlFileLoader($builder, new FileLocator(JIGOSHOP_DIR.'/config'));
 			$loader->load('services.yml');
 			// Load extension configuration
@@ -103,7 +104,7 @@ class Jigoshop_Init
 
 		/** @var \Jigoshop\Core $jigoshop */
 		// Initialize post types and roles
-		$this->container->get('jigoshop.post_types');
+		$this->container->get('jigoshop.types');
 		$this->container->get('jigoshop.roles');
 		$jigoshop = $this->container->get('jigoshop');
 		// Initialize Cron and Assets

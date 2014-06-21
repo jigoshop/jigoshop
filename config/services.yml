@@ -23,10 +23,22 @@ services:
     class: Jigoshop\Core\Messages
     arguments:
       - '@wpal'
-  jigoshop.post_types:
-    class: Jigoshop\Core\PostTypes
+  jigoshop.types:
+    class: Jigoshop\Core\Types
     arguments:
       - '@wpal'
+  jigoshop.post_type.product:
+    class: Jigoshop\Core\Types\Product
+    tags:
+      - { name: jigoshop.type.post }
+  jigoshop.taxonomy.product_category:
+    class: Jigoshop\Core\Types\ProductCategory
+    tags:
+      - { name: jigoshop.type.taxonomy }
+  jigoshop.taxonomy.product_tag:
+    class: Jigoshop\Core\Types\ProductTag
+    tags:
+      - { name: jigoshop.type.taxonomy }
   jigoshop.roles:
     class: Jigoshop\Core\Roles
     arguments:

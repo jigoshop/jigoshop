@@ -131,7 +131,7 @@ class Pages
 	 */
 	public function isProduct()
 	{
-		return $this->wp->isSingular(array(PostTypes::PRODUCT));
+		return $this->wp->isSingular(array(Types::PRODUCT));
 	}
 
 	/**
@@ -142,7 +142,7 @@ class Pages
 	 */
 	public function isProductCategory()
 	{
-		return $this->wp->isTax(PostTypes::PRODUCT_CATEGORY);
+		return $this->wp->isTax(Types::PRODUCT_CATEGORY);
 	}
 
 	/**
@@ -153,7 +153,7 @@ class Pages
 	 */
 	public function isProductList()
 	{
-		return $this->wp->isPostTypeArchive(PostTypes::PRODUCT) || $this->wp->isPage($this->options->getPageId(self::SHOP))
+		return $this->wp->isPostTypeArchive(Types::PRODUCT) || $this->wp->isPage($this->options->getPageId(self::SHOP))
 		|| $this->isProductCategory() || $this->isProductTag();
 	}
 
@@ -165,7 +165,7 @@ class Pages
 	 */
 	public function isProductTag()
 	{
-		return $this->wp->isTax(PostTypes::PRODUCT_TAG);
+		return $this->wp->isTax(Types::PRODUCT_TAG);
 	}
 
 	/**
@@ -180,7 +180,8 @@ class Pages
 			return false;
 		}
 
-		if (in_array($currentScreen->post_type, array(PostTypes::PRODUCT, PostTypes::ORDER, PostTypes::COUPON), true)) {
+//		if (in_array($currentScreen->post_type, array(Types::PRODUCT, Types::ORDER, Types::COUPON), true)) {
+		if (in_array($currentScreen->post_type, array(Types::PRODUCT), true)) {
 			return $currentScreen->post_type;
 		}
 
