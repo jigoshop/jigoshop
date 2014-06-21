@@ -95,6 +95,8 @@ services:
     class: Jigoshop\Admin\Settings
   jigoshop.admin.system_info:
     class: Jigoshop\Admin\SystemInfo
+    arguments:
+      - '@wpal'
   jigoshop.admin.reports:
     class: Jigoshop\Admin\Reports
   jigoshop.admin.product.attributes:

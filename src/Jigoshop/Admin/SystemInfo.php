@@ -2,6 +2,9 @@
 
 namespace Jigoshop\Admin;
 
+use Jigoshop\Helper\Render;
+use WPAL\Wordpress;
+
 /**
  * Jigoshop system info page.
  *
@@ -10,6 +13,14 @@ namespace Jigoshop\Admin;
  */
 class SystemInfo implements PageInterface
 {
+	/** @var \WPAL\Wordpress */
+	private $wp;
+
+	public function __construct(Wordpress $wp)
+	{
+		$this->wp = $wp;
+	}
+
 	/**
 	 * @return string Title of page.
 	 */
@@ -39,6 +50,11 @@ class SystemInfo implements PageInterface
 	 */
 	public function display()
 	{
-		// TODO: Implement display() method.
+		Render::output('admin/system_info', array(
+			'wpdb' => $this->wp->getWPDB(),
+			'show_on_front' => $this->wp->getOption('show_on_front'),
+			'page_on_front' => $this->wp->getOption('page_on_front'),
+			'page_for_posts' => $this->wp->getOption('page_for_posts'),
+		));
 	}
 }
