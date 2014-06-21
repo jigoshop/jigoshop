@@ -5,6 +5,7 @@ namespace Jigoshop\Admin;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\PostTypes;
 use Jigoshop\Entity\Order;
+use Jigoshop\Helper\Render;
 use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
@@ -77,9 +78,10 @@ class Dashboard implements PageInterface
 		$this->wp->addMetaBox('jigoshop_dashboard_latest_news', \__('Latest News', 'jigoshop'), array($this, 'latestNews'), 'jigoshop', 'normal', 'core');
 		$this->wp->addMetaBox('jigoshop_dashboard_useful_links', \__('Useful Links', 'jigoshop'), array($this, 'usefulLinks'), 'jigoshop', 'normal', 'core');
 
-		/** @noinspection PhpUnusedLocalVariableInspection */
 		$submenu = $this->wp->getSubmenu();
-		include(JIGOSHOP_DIR.'/templates/admin/dashboard.php');
+		Render::output('admin/dashboard', array(
+			'submenu' => $submenu,
+		));
 	}
 
 	/**
@@ -105,7 +107,16 @@ class Dashboard implements PageInterface
 		/** @noinspection PhpUnusedLocalVariableInspection */
 		$completedCount = 0;
 
-		include(JIGOSHOP_DIR.'/templates/admin/dashboard/rightNow.php');
+		Render::output('admin/dashboard/rightNow', array(
+			'productCount' => $productCount,
+			'categoryCount' => $categoryCount,
+			'tagCount' => $tagCount,
+			'attributesCount' => $attributesCount,
+			'pendingCount' => $pendingCount,
+			'onHoldCount' => $onHoldCount,
+			'processingCount' => $processingCount,
+			'completedCount' => $completedCount,
+		));
 	}
 
 	/**
@@ -123,7 +134,9 @@ class Dashboard implements PageInterface
 			'post_status' => 'publish'
 		)));
 		// TODO: Implement after finishing implementing Orders
-//		include(JIGOSHOP_DIR.'/templates/admin/dashboard/recentOrders.php');
+//		Render::output('admin/dashboard/recentOrders', array(
+//			'orders' => $orders,
+//		));
 	}
 
 	/**
@@ -133,16 +146,19 @@ class Dashboard implements PageInterface
 	{
 		$lowStockAmount = $this->options->get('notify_low_stock_amount', 1);
 		$notifyOufOfStock = $this->options->get('notify_out_of_stock', true);
+		$outOfStock = array();
 
 		if ($notifyOufOfStock) {
-			/** @noinspection PhpUnusedLocalVariableInspection */
 			$outOfStock = $this->productService->findOutOfStock();
 		}
 
-		/** @noinspection PhpUnusedLocalVariableInspection */
 		$lowStock = $this->productService->findLowStock($lowStockAmount);
 
-		include(JIGOSHOP_DIR.'/templates/admin/dashboard/stockReport.php');
+		Render::output('admin/dashboard/stockReport', array(
+			'notifyOutOfStock' => $notifyOufOfStock,
+			'outOfStock' => $outOfStock,
+			'lowStock' => $lowStock,
+		));
 	}
 
 	/**
@@ -155,13 +171,9 @@ class Dashboard implements PageInterface
 		$selectedMonth = isset($_GET['month']) ? intval($_GET['month']) : $currentMonth;
 		$selectedYear = isset($_GET['year']) ? intval($_GET['year']) : $currentYear;
 
-		/** @noinspection PhpUnusedLocalVariableInspection */
 		$nextYear = ($selectedMonth == 12) ? $selectedYear + 1 : $selectedYear;
-		/** @noinspection PhpUnusedLocalVariableInspection */
 		$nextMonth = ($selectedMonth == 12) ? 1 : $selectedMonth + 1;
-		/** @noinspection PhpUnusedLocalVariableInspection */
 		$previousYear = ($selectedMonth == 1) ? $selectedYear - 1 : $selectedYear;
-		/** @noinspection PhpUnusedLocalVariableInspection */
 		$previousMonth = ($selectedMonth == 1) ? 12 : $selectedMonth - 1;
 
 		$orders = $this->orderService->findFromMonth($selectedMonth);
@@ -186,7 +198,19 @@ class Dashboard implements PageInterface
 		}
 
 		unset($orderAmountsData, $orderCountsData);
-		include(JIGOSHOP_DIR.'/templates/admin/dashboard/monthlyReport.php');
+		Render::output('admin/dashboard/monthlyReport', array(
+			'orders' => $orders,
+			'selectedMonth' => $selectedMonth,
+			'selectedYear' => $selectedYear,
+			'currentMonth' => $currentMonth,
+			'currentYear' => $currentYear,
+			'nextMonth' => $nextMonth,
+			'nextYear' => $nextYear,
+			'previousMonth' => $previousMonth,
+			'previousYear' => $previousYear,
+			'orderCounts' => $orderCounts,
+			'orderAmounts' => $orderAmounts,
+		));
 	}
 
 	/**
@@ -205,7 +229,10 @@ class Dashboard implements PageInterface
 				AND post_type = 'product'
 				ORDER BY comment_date_gmt DESC
 				LIMIT 5");
-		include(JIGOSHOP_DIR.'/templates/admin/dashboard/recentReviews.php');
+
+		Render::output('admin/dashboard/recentReviews', array(
+			'comments' => $comments,
+		));
 	}
 
 	/**
@@ -217,7 +244,6 @@ class Dashboard implements PageInterface
 			include_once(ABSPATH.WPINC.'/class-simplepie.php');
 
 			$rss = $this->wp->fetchFeed('http://www.jigoshop.com/feed');
-			/** @noinspection PhpUnusedLocalVariableInspection */
 			$items = array();
 
 			if (!$this->wp->isWpError($rss)) {
@@ -225,7 +251,6 @@ class Dashboard implements PageInterface
 				$rssItems = $rss->get_items(0, $maxItems);
 
 				if ($maxItems > 0) {
-					/** @noinspection PhpUnusedLocalVariableInspection */
 					$that = $this;
 					$items = array_map(function ($item) use ($that) {
 						/** @var $item \SimplePie_Item */
@@ -240,7 +265,9 @@ class Dashboard implements PageInterface
 				}
 			}
 
-			include(JIGOSHOP_DIR.'/templates/admin/dashboard/latestNews.php');
+			Render::output('admin/dashboard/latestNews', array(
+				'items' => $items,
+			));
 		}
 	}
 
@@ -249,6 +276,6 @@ class Dashboard implements PageInterface
 	 */
 	public function usefulLinks()
 	{
-		include(JIGOSHOP_DIR.'/templates/admin/dashboard/usefulLinks.php');
+		Render::output('admin/dashboard/usefulLinks', array());
 	}
 }

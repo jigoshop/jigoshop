@@ -1,7 +1,6 @@
 <?php
 /**
  * @var $comments array List of product reviews.
- * @var $rating int Rating.
  */
 ?>
 <div class="inside jigoshop-reviews-widget">
