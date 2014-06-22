@@ -17,7 +17,7 @@
  * @copyright           Copyright © 2011-2014 Jigoshop.
  * @license             GNU General Public License v3
  *
- * @version 1.2.2 - 2014-05-11
+ * @version 1.3 - 2014-06-22
  */
 
 
@@ -121,6 +121,20 @@ class jigoshop_licence_validator
 			</div>
 		<?php
 	}
+
+    /**
+     * Displaying the error message in admin panel when plugin license is outdated
+     */
+    private function display_incorrect_update_warning()
+    {
+        ?>
+        <div class="error">
+            <p>
+                <?php echo sprintf(	__( 'The License key for <i><b>%s</b></i> is outdated. Please renew your license. Until then, the update for this plugin will not be accessible.', 'jigoshop' ), $this->title ); ?>
+            </p>
+        </div>
+    <?php
+    }
 
 
 	/**
@@ -288,6 +302,12 @@ class jigoshop_licence_validator
 		$response = $this->get_update_version( $this->identifier, $licence_key, $licence_email );
 
 		if ( isset( $response->version )) {
+
+            if ( strlen( $response->update_url ) === 0 && isset( $response->outdated_license ) && $response->outdated_license == 1 ) {
+
+                $this->display_incorrect_update_warning();
+            }
+
 			// If a newer version is available, add the update
 			if ( version_compare( $this->version, $response->version, '<' )) {
 				$obj = new stdClass();
