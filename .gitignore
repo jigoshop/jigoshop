@@ -67,7 +67,6 @@ CV
 .project
 composer.lock
 nbproject
-deploy.sh
 
 # Tests Noise #
 ###############
@@ -80,3 +79,7 @@ plugins/jigoshop-web-optimization-system/cache/*
 
 # Deploying script #
 deploy.sh
+
+cache/
+compatibility/
+vendor/

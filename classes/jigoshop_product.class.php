@@ -120,23 +120,26 @@ class jigoshop_product extends Jigoshop_Base {
 	/**
 	 * Get the main product image or parents image
 	 *
-	 * @return   html
-	 **/
-	public function get_image( $size = 'shop_thumbnail' ) {
-
+	 * @param string $size
+	 * @return string HTML
+	 */
+	public function get_image($size = 'shop_thumbnail')
+	{
 		// Get the image size
-		$size = jigoshop_get_image_size( $size );
+		$size = jigoshop_get_image_size($size);
 
 		// If product has an image
-		if( has_post_thumbnail( $this->ID ) )
-		return get_the_post_thumbnail( $this->ID, $size );
+		if (has_post_thumbnail($this->ID)) {
+			return get_the_post_thumbnail($this->ID, $size);
+		}
 
 		// If product has a parent and that has an image display that
-		if( ($parent_ID = wp_get_post_parent_id( $this->ID )) && has_post_thumbnail( $parent_ID ) )
-			return get_the_post_thumbnail( $this->ID, $size );
+		if (($parent_ID = wp_get_post_parent_id($this->ID)) && has_post_thumbnail($parent_ID)) {
+			return get_the_post_thumbnail($this->ID, $size);
+		}
 
 		// Otherwise just return a placeholder
-		return jigoshop_get_image_placeholder( $size );
+		return jigoshop_get_image_placeholder($size);
 	}
 
 	/**

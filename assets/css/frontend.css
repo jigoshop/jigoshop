@@ -32,9 +32,9 @@ ul.products.rows > li > a.product > span.sku {
 ul.products.rows > li > div.after-product {
 	display: inline-block;
 	vertical-align: middle;
-	width: 40%;
 }
 ul.products.rows > li > div.after-product > div.quantity {
+	display: inline-block;
 	text-align: center;
 }
 ul.products.rows > li > div.after-product > a.button {

@@ -76,5 +76,5 @@ function jigoshop_product_sku($post, jigoshop_product $product)
 }
 function jigoshop_product_thumbnail($post, jigoshop_product $product)
 {
-	echo jigoshop_get_product_thumbnail('shop_thumbnail');
+	echo $product->get_image('shop_thumbnail');
 }
