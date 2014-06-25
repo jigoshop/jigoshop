@@ -9,6 +9,7 @@ ul.products.rows > li {
 	width: 100%;
 	display: block;
 	margin: 0 0 20px 0;
+	float: none;
 }
 ul.products.rows > li > div.before-product {
 	display: inline-block;
@@ -19,7 +20,7 @@ ul.products.rows > li > div.before-product > img {
 }
 ul.products.rows > li > a.product {
 	display: inline-block;
-	width: 70%;
+	width: 60%;
 	margin: 0;
 	padding: 0;
 	vertical-align: middle;
@@ -31,7 +32,7 @@ ul.products.rows > li > a.product > span.sku {
 ul.products.rows > li > div.after-product {
 	display: inline-block;
 	vertical-align: middle;
-	width: 30%;
+	width: 40%;
 }
 ul.products.rows > li > div.after-product > div.quantity {
 	text-align: center;

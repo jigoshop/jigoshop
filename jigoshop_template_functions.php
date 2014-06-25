@@ -144,7 +144,7 @@ if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 }
 if (!function_exists('jigoshop_template_loop_product_thumbnail')) {
 	function jigoshop_template_loop_product_thumbnail( $post, $_product ) {
-		echo jigoshop_get_product_thumbnail();
+		echo $_product->get_image('shop_small');
 	}
 }
 if (!function_exists('jigoshop_template_loop_price')) {
