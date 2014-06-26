@@ -108,163 +108,162 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 	/**
 	 * Process the product variable meta
 	 *
-	 * @param   int   Product ID
+	 * @param   int $parent_id Product ID
 	 * @return  void
 	 */
-	public function save( $parent_id, $post ) {
+	public function save($parent_id)
+	{
 		global $wpdb;
 
 		// Do not run if there are no variations
-		if ( ! isset($_POST['variations']) )
-			return false;
+		if (!isset($_POST['variations'])) {
+			return;
+		}
 
 		// Get the attributes to be used later
-		$attributes = (array) maybe_unserialize( get_post_meta($parent_id, 'product_attributes', true) );
+		$attributes = (array)maybe_unserialize(get_post_meta($parent_id, 'product_attributes', true));
 
-		foreach ( $_POST['variations'] as $ID => $meta ) {
-
+		foreach ($_POST['variations'] as $ID => $meta) {
 			/**
 			 * Generate a post title of the current variation.
 			 * Parent Title - [attribute: variation]
 			 */
 			$taxes = array();
-			foreach ( $meta as $k => $v ) :
-				if ( strstr ( $k, 'tax_' ) ) {
-					$tax     = substr( $k, 4 );
-					$taxes[] = sprintf('[%s: %s]', $tax, !empty($v) ? $v : 'Any ' . $tax );
+			foreach ($meta as $k => $v) {
+				if (strstr($k, 'tax_')) {
+					$tax = substr($k, 4);
+					$taxes[] = sprintf('[%s: %s]', $tax, !empty($v) ? $v : 'Any '.$tax);
 				}
-			endforeach;
+			}
 
-			$post_title = !empty($_POST['post_title']) ? $_POST['post_title'] : the_title('','',false);
-			$title      = sprintf('%s - %s', $post_title, implode( $taxes, ' ' ) );
+			$post_title = !empty($_POST['post_title']) ? $_POST['post_title'] : the_title('', '', false);
+			$title = sprintf('%s - %s', $post_title, implode($taxes, ' '));
 
 			/**
 			 * Prevent duplicate variations
 			 */
 			// Update post data or Add post if new
-			if ( strpos( $ID, '_new' ) ) {
-
+			if (strpos($ID, '_new')) {
 				// check for an existing variation with matching attributes to prevent duplication
 				$current_meta = $meta;
-				foreach ( $current_meta as $current_id => $current_value ) {
+				foreach ($current_meta as $current_id => $current_value) {
 					// discard everything but the taxonomies
-					if ( strpos( $current_id, 'tax_' ) !== 0 ) {
-						unset( $current_meta[$current_id] );
+					if (strpos($current_id, 'tax_') !== 0) {
+						unset($current_meta[$current_id]);
 					}
 				}
 				// we now have just the taxonomies in use for this new variation in $current_meta, match them up to others
 				$all_variations = $_POST['variations'];
-				unset( $all_variations[$ID] );		// we don't need the current new variation
+				unset($all_variations[$ID]); // we don't need the current new variation
 				$duplicate = false;
-				foreach ( $all_variations as $this_id => $this_meta ) {
+				foreach ($all_variations as $this_id => $this_meta) {
 					$haystack_meta = $this_meta;
-					foreach ( $haystack_meta as $haystack_id => $haystack_value ) {
+					foreach ($haystack_meta as $haystack_id => $haystack_value) {
 						// discard everything but the taxonomies
-						if ( strpos( $haystack_id, 'tax_' ) !== 0 ) {
-							unset( $haystack_meta[$haystack_id] );
+						if (strpos($haystack_id, 'tax_') !== 0) {
+							unset($haystack_meta[$haystack_id]);
 						}
 					}
 					// we now have the taxonomies only for this haystack variation
-					$result = array_diff( $haystack_meta, $current_meta );
-					if ( empty( $result ) ) $duplicate = true;
+					$result = array_diff($haystack_meta, $current_meta);
+					if (empty($result)) $duplicate = true;
 				}
 
-				if ( ! $duplicate ) {
-					$ID = wp_insert_post( array(
-						'post_title'  => !empty($title) ? $title : "#{$parent_id}: Child Variation",
+				if (!$duplicate) {
+					$ID = wp_insert_post(array(
+						'post_title' => !empty($title) ? $title : "#{$parent_id}: Child Variation",
 						'post_status' => isset($meta['enabled']) ? 'publish' : 'draft',
 						'post_parent' => $parent_id,
-						'post_type'   => 'product_variation'
+						'post_type' => 'product_variation'
 					));
 				} else {
 					// silent fail, should put up a message?
 				}
-
 			} else {
-				$_product = new jigoshop_product_variation( $ID );
-				if ( Jigoshop_Base::get_options()->get_option( 'jigoshop_hide_no_stock_product' ) == 'yes'
-					&& $_product->managing_stock() ) {
-					if ( $meta['stock'] <= Jigoshop_Base::get_options()->get_option( 'jigoshop_notify_no_stock_amount' ) && $meta['stock'] <> '' ) {
-						unset( $meta['enabled'] );
+				$_product = new jigoshop_product_variation($ID);
+				if (Jigoshop_Base::get_options()->get_option('jigoshop_hide_no_stock_product') == 'yes'
+					&& $_product->managing_stock()
+				) {
+					if ($meta['stock'] <= Jigoshop_Base::get_options()->get_option('jigoshop_notify_no_stock_amount') && $meta['stock'] <> '') {
+						unset($meta['enabled']);
 					} else {
 						$meta['enabled'] = true;
 					}
 				}
-				$wpdb->update( $wpdb->posts, array(
-					'post_title'  => !empty($title) ? $title : "#{$parent_id}: Child Variation",
+				$wpdb->update($wpdb->posts, array(
+					'post_title' => !empty($title) ? $title : "#{$parent_id}: Child Variation",
 					'post_status' => isset($meta['enabled']) ? 'publish' : 'draft'
-				), array( 'ID'    => $ID ) );
+				), array('ID' => $ID));
 			}
 
 			// Set the product type
-			wp_set_object_terms( $ID, sanitize_title($meta['product-type']), 'product_type');
+			wp_set_object_terms($ID, sanitize_title($meta['product-type']), 'product_type');
 
 			// Set variation meta data
-			if(!is_numeric($meta['regular_price'])){
-				add_filter('redirect_post_location', function($location){
+			if (!is_numeric($meta['regular_price'])) {
+				add_filter('redirect_post_location', function ($location){
 					return add_query_arg('jigoshop_message', 'invalid_variation_price', $location);
 				});
 				$meta['regular_price'] = 0.0;
 			}
-			update_post_meta( $ID, 'sku',           $meta['sku'] );
-			update_post_meta( $ID, 'regular_price',  $meta['regular_price']);
 
-			$sale_price = ! empty( $meta['sale_price'] )
-				? ( !strstr( $meta['sale_price'], '%' ) ? jigoshop_sanitize_num( $meta['sale_price'] ) : $meta['sale_price'] )
+			update_post_meta($ID, 'sku', $meta['sku']);
+			update_post_meta($ID, 'regular_price', $meta['regular_price']);
+
+			$sale_price = !empty($meta['sale_price'])
+				? (!strstr($meta['sale_price'], '%') ? jigoshop_sanitize_num($meta['sale_price']) : $meta['sale_price'])
 				: '';
-			if ( strstr( $meta['sale_price'], '%' ) ) {
-				update_post_meta( $ID, 'sale_price', $sale_price );
-			} else if ( ! empty( $sale_price ) && $sale_price < jigoshop_sanitize_num( $meta['regular_price'] ) ) {
-				update_post_meta( $ID, 'sale_price', $sale_price );
+
+			if (strstr($meta['sale_price'], '%')) {
+				update_post_meta($ID, 'sale_price', $sale_price);
+			} else if (!empty($sale_price) && $sale_price < jigoshop_sanitize_num($meta['regular_price'])) {
+				update_post_meta($ID, 'sale_price', $sale_price);
 			} else {
 				// silently fail if entered sale price > regular price (or nothing entered)
-				update_post_meta( $ID, 'sale_price', '' );
+				update_post_meta($ID, 'sale_price', '');
 			}
 
-			update_post_meta( $ID, 'weight',        $meta['weight'] );
-			update_post_meta( $ID, 'length',        $meta['length'] );
-			update_post_meta( $ID, 'height',        $meta['height'] );
-			update_post_meta( $ID, 'width',         $meta['width'] );
+			update_post_meta($ID, 'weight', $meta['weight']);
+			update_post_meta($ID, 'length', $meta['length']);
+			update_post_meta($ID, 'height', $meta['height']);
+			update_post_meta($ID, 'width', $meta['width']);
 
-			update_post_meta( $ID, 'stock',         $meta['stock'] );
-			update_post_meta( $ID, '_thumbnail_id', $meta['_thumbnail_id'] );
+			update_post_meta($ID, 'stock', $meta['stock']);
+			update_post_meta($ID, '_thumbnail_id', $meta['_thumbnail_id']);
 
 			// Downloadable Only
-			if( $meta['product-type'] == 'downloadable' ) {
-				update_post_meta( $ID, 'file_path',      $meta['file_path']);
-				update_post_meta( $ID, 'download_limit', $meta['download_limit']);
+			if ($meta['product-type'] == 'downloadable') {
+				update_post_meta($ID, 'file_path', $meta['file_path']);
+				update_post_meta($ID, 'download_limit', $meta['download_limit']);
 			}
 
-			// Refresh taxonomy attributes
-			$current_meta = get_post_custom( $ID );
-
 			// Remove the current data
-			delete_post_meta( $ID, 'variation_data' );
+			delete_post_meta($ID, 'variation_data');
 
 			// Update taxonomies
 			$variation_data = array();
-			foreach ( $attributes as $attribute ) {
+			foreach ($attributes as $attribute) {
 
 				// Skip if attribute is not for variation
-				if ( ! isset( $attribute['variation'] )) continue;
+				if (!isset($attribute['variation'])) continue;
 
 				// Configure the data
-				$key = 'tax_' . sanitize_title($attribute['name']);
-				if ( isset( $meta[$key] ) ) $variation_data[$key] = $meta[$key];
+				$key = 'tax_'.sanitize_title($attribute['name']);
+				if (isset($meta[$key])) $variation_data[$key] = $meta[$key];
 			}
 
-			update_post_meta( $ID, 'variation_data', $variation_data );
+			update_post_meta($ID, 'variation_data', $variation_data);
 
-			do_action( 'jigoshop_variable_product_table_data_save' , $ID, $meta);
+			do_action('jigoshop_variable_product_table_data_save', $ID, $meta);
 		}
 
 		// Update default attribute options setting
 		$default_attributes = array();
 
 		foreach ($attributes as $attribute) {
-			if ( isset( $attribute['variation'] ) ) {
-				$value = 'default_attribute_' . sanitize_title($attribute['name']);
-				if ( isset( $_POST[$value] )) {
+			if (isset($attribute['variation'])) {
+				$value = 'default_attribute_'.sanitize_title($attribute['name']);
+				if (isset($_POST[$value])) {
 					$value = esc_attr(trim($_POST[$value]));
 				} else {
 					$value = null;
@@ -273,9 +272,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 					$default_attributes[sanitize_title($attribute['name'])] = $value;
 				}
 			}
-  		}
-		update_post_meta( $parent_id, '_default_attributes', $default_attributes );
+		}
 
+		update_post_meta($parent_id, '_default_attributes', $default_attributes);
 	}
 
 	public function display() {

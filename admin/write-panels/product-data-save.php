@@ -22,7 +22,7 @@ class jigoshop_product_meta
 		add_action( 'jigoshop_process_product_meta', array(&$this, 'save'), 1, 2 );
 	}
 
-	public function save( $post_id, $post ) {
+	public function save( $post_id ) {
 
 		// Set the product type
 		wp_set_object_terms( $post_id, sanitize_title($_POST['product-type']), 'product_type');
