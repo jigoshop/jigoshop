@@ -181,6 +181,8 @@ function jigoshop_system_info() {
 	Use Only Cookies:         <?php echo (ini_get('session.use_only_cookies') ? 'On' : 'Off'); ?><?php echo "\n"; ?>
 
 	WordPress Memory Limit:   <?php echo (jigoshop_let_to_num(WP_MEMORY_LIMIT)/(1024*1024))."MB"; ?><?php echo "\n"; ?>
+	Max Input Time:           <?php echo ini_get('max_input_time'); ?><?php echo "\n"; ?>
+	Max Input Vars:           <?php echo ini_get('max_input_vars'); ?><?php echo "\n"; ?>
 	WP_DEBUG:                 <?php echo (WP_DEBUG) ? __('On', 'jigoshop') : __('Off', 'jigoshop'); ?><?php echo "\n"; ?>
 	DISPLAY ERRORS:           <?php echo (ini_get('display_errors')) ? 'On (' . ini_get('display_errors') . ')' : 'N/A'; ?><?php echo "\n"; ?>
 	FSOCKOPEN:                <?php echo (function_exists('fsockopen')) ? __('Your server supports fsockopen.', 'jigoshop') : __('Your server does not support fsockopen.', 'jigoshop'); ?><?php echo "\n"; ?>
