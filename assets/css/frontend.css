@@ -40,11 +40,11 @@ ul.products.rows > li > div.after-product > div.quantity {
 ul.products.rows > li > div.after-product > a.button {
 	float: none;
 }
-ul.products.rows.thumbnails > li > div.after-product {
-	width: 20%;
-}
 ul.products.rows.thumbnails > li > a.product {
 	width: 55%;
+}
+ul.products.rows.thumbnails > li > div.after-product > div.quantity {
+	display: block;
 }
 /* fix wordpress theme */
 #content #breadcrumb,#content .type-product {margin: 0; padding: 0 0 0 1.5%;}
