@@ -661,31 +661,34 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 		}
 
 		$postcode = isset($_POST['billing-postcode']) ? jigowatt_clean($_POST['billing-postcode']) : '';
+		$ship_to_billing = Jigoshop_Base::get_options()->get_option('jigoshop_ship_to_billing_address_only') == 'yes';
 		jigoshop_customer::set_location($country, $state, $postcode);
-		if ( $this->posted['shiptobilling'] ) {
-			jigoshop_customer::set_shipping_location($country, $state, $postcode);
-		} else {
-			$country  = isset($_POST['shipping-country']) ? jigowatt_clean($_POST['shipping-country']) : '';
-			$state    = isset($_POST['shipping-state']) ? jigowatt_clean($_POST['shipping-state']) : '';
-			$postcode = isset($_POST['shipping-postcode']) ? jigowatt_clean($_POST['shipping-postcode']) : '';
+		if(Jigoshop_Base::get_options()->get_option('jigoshop_calc_shipping') == 'yes'){
+			if ( $ship_to_billing ) {
+				jigoshop_customer::set_shipping_location($country, $state, $postcode);
+			} else {
+				$country  = isset($_POST['shipping-country']) ? jigowatt_clean($_POST['shipping-country']) : '';
+				$state    = isset($_POST['shipping-state']) ? jigowatt_clean($_POST['shipping-state']) : '';
+				$postcode = isset($_POST['shipping-postcode']) ? jigowatt_clean($_POST['shipping-postcode']) : '';
 
-			if($allowed_countries === 'specific'){
-				$specific_countries = Jigoshop_Base::get_options()->get_option('jigoshop_specific_allowed_countries');
-				if(!in_array($country, $specific_countries)){
-					jigoshop::add_error(__('Invalid shipping country.', 'jigoshop'));
-					return;
+				if($allowed_countries === 'specific'){
+					$specific_countries = Jigoshop_Base::get_options()->get_option('jigoshop_specific_allowed_countries');
+					if(!in_array($country, $specific_countries)){
+						jigoshop::add_error(__('Invalid shipping country.', 'jigoshop'));
+						return;
+					}
 				}
-			}
 
-			if(jigoshop_countries::country_has_states($country)){
-				$states = jigoshop_countries::get_states($country);
-				if(!in_array($state, array_keys($states))){
-					jigoshop::add_error(__('Invalid shipping state.', 'jigoshop'));
-					return;
+				if(jigoshop_countries::country_has_states($country)){
+					$states = jigoshop_countries::get_states($country);
+					if(!in_array($state, array_keys($states))){
+						jigoshop::add_error(__('Invalid shipping state.', 'jigoshop'));
+						return;
+					}
 				}
-			}
 
-			jigoshop_customer::set_shipping_location($country, $state, $postcode);
+				jigoshop_customer::set_shipping_location($country, $state, $postcode);
+			}
 		}
 
 		// Billing Information
