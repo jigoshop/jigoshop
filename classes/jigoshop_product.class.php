@@ -565,7 +565,6 @@ class jigoshop_product extends Jigoshop_Base {
 
 	/**
 	 * Returns the product's weight
-	 * @deprecated not required since we can just call $this->weight if the var is public
 	 *
 	 * @return  mixed   weight
 	 */
