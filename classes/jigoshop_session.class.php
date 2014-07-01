@@ -20,6 +20,16 @@ class jigoshop_session extends Jigoshop_Singleton {
 
 	protected function __construct() {
 		if ( ! session_id()) session_start();
+		if(!isset($_SESSION['jigoshop'])){
+			$_SESSION['jigoshop'] = array(
+				JIGOSHOP_VERSION => array(),
+			);
+		}
+		add_action('shutdown', array($this, 'close_session'));
+	}
+
+	public function close_session(){
+		session_write_close();
 	}
 
 	public function __get( $key ) {
