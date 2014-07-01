@@ -812,20 +812,17 @@ class jigoshop_countries extends Jigoshop_Base {
 	/** get base country */
 	public static function get_base_country(){
 		$default = self::get_options()->get_option('jigoshop_default_country');
-		list($country) = explode(':', $default);
+		$country = explode(':', $default);
 
-		return $country;
+		return $country[0];
 	}
 
 	/** get base state */
 	public static function get_base_state(){
 		$default = self::get_options()->get_option('jigoshop_default_country');
-		if(strpos($default, ':') !== false){
-			$default = explode(':', $default);
-			return $default[1];
-		}
+		$country = explode(':', $default);
 
-		return '*';
+		return count($country) == 2 ? $country[1] : '*';
 	}
 
 	public static function get_countries(){

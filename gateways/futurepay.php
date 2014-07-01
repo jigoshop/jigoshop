@@ -62,9 +62,7 @@ class futurepay extends jigoshop_payment_gateway {
 		add_action( 'wp_footer', array( $this, 'futurepay_script' ) );
 
 		$this->currency_symbol = get_jigoshop_currency_symbol();
-		$this->shop_base_country = (strpos( Jigoshop_Base::get_options()->get_option( 'jigoshop_default_country' ), ':' ) !== false )
-	      ? substr( Jigoshop_Base::get_options()->get_option( 'jigoshop_default_country'), 0, strpos( Jigoshop_Base::get_options()->get_option('jigoshop_default_country' ), ':' ))
-	      : Jigoshop_Base::get_options()->get_option( 'jigoshop_default_country' );
+		$this->shop_base_country = jigoshop_countries::get_base_country();
 	}
 
 
