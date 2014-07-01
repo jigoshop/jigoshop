@@ -517,7 +517,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 
 		$_POST['jigoshop_options_processed'] = wp_create_nonce('jigoshop_options_processed');
 
-		return $valid_input; // send it back to WordPress for saving
+		return $valid_input;
 	}
 
 	/**

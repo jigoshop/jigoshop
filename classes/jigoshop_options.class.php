@@ -164,7 +164,9 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		$this->get_current_options();
 		if(!isset(self::$current_options[$name])){
 			self::$current_options[$name] = $value;
-			add_action('shutdown', array($this, 'update_options'));
+			if(!has_action('shutdown', array($this, 'update_options'))){
+				add_action('shutdown', array($this, 'update_options'));
+			}
 		}
 	}
 
@@ -200,7 +202,9 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 
 		if(isset($name)){
 			self::$current_options[$name] = $value;
-			add_action('shutdown', array($this, 'update_options'));
+			if(!has_action('shutdown', array($this, 'update_options'))){
+				add_action('shutdown', array($this, 'update_options'));
+			}
 		}
 	}
 
@@ -215,7 +219,9 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		$this->get_current_options();
 		if(isset($name)){
 			unset(self::$current_options[$name]);
-			add_action('shutdown', array($this, 'update_options'));
+			if(!has_action('shutdown', array($this, 'update_options'))){
+				add_action('shutdown', array($this, 'update_options'));
+			}
 
 			return true;
 		}
@@ -404,7 +410,9 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	 */
 	private function set_current_options($options){
 		self::$current_options = $options;
-		add_action('shutdown', array($this, 'update_options'));
+		if(!has_action('shutdown', array($this, 'update_options'))){
+			add_action('shutdown', array($this, 'update_options'));
+		}
 	}
 
 	/**
