@@ -480,7 +480,9 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 							}
 							break;
 					}
-					$options->set_option($setting['id'], $valid_input[$setting['id']]);
+					if(isset($valid_input[$setting['id']])){
+						$options->set_option($setting['id'], $valid_input[$setting['id']]);
+					}
 				}
 			}
 		}
