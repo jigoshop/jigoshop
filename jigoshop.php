@@ -53,11 +53,13 @@ if (!defined('JIGOSHOP_DIR')) {
 	define('JIGOSHOP_DIR', dirname(__FILE__));
 }
 define('JIGOSHOP_REQUIRED_MEMORY', 128);
+define('JIGOSHOP_PHP_VERSION', '5.3');
+define('JIGOSHOP_WORDPRESS_VERSION', '3.8');
 
-if(!version_compare(PHP_VERSION, '5.3.3', '>=')){
+if(!version_compare(PHP_VERSION, JIGOSHOP_PHP_VERSION, '>=')){
 	function jigoshop_required_version(){
 		echo '<div class="error"><p>'.
-			sprintf(__('<strong>Error!</strong> Jigoshop requires PHP 5.3.3 at least! Your version: %s. Please upgrade.', 'jigoshop'), PHP_VERSION).
+			sprintf(__('<strong>Error!</strong> Jigoshop requires at least PHP %s! Your version is: %s. Please upgrade.', 'jigoshop'), JIGOSHOP_PHP_VERSION, PHP_VERSION).
 		'</p></div>';
 	}
 	add_action('admin_notices', 'jigoshop_required_version');
@@ -66,12 +68,12 @@ if(!version_compare(PHP_VERSION, '5.3.3', '>=')){
 
 include ABSPATH.WPINC.'/version.php';
 /** @noinspection PhpUndefinedVariableInspection */
-if(!version_compare($wp_version, '3.8', '>=')){
+if(!version_compare($wp_version, JIGOSHOP_WORDPRESS_VERSION, '>=')){
 	add_action('admin_notices', function(){
 		include ABSPATH.WPINC.'/version.php';
 		/** @noinspection PhpUndefinedVariableInspection */
 		echo '<div class="error"><p>'.
-			sprintf(__('<strong>Error!</strong> Jigoshop requires WordPress 3.8 at least! Your version: %s. Please upgrade.', 'jigoshop'), $wp_version).
+			sprintf(__('<strong>Error!</strong> Jigoshop requires at least WordPress %s! Your version is: %s. Please upgrade.', 'jigoshop'), JIGOSHOP_WORDPRESS_VERSION, $wp_version).
 			'</p></div>';
 	});
 	return;
