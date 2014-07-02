@@ -983,7 +983,7 @@ class Jigoshop_Options_Parser {
 				<script type="text/javascript">
 					/*<![CDATA[*/
 					jQuery(function(){
-						jQuery("#<?php echo $id; ?>").select2({ width: '<?= $width; ?>px' });
+						jQuery("#<?php echo $id; ?>").select2({ width: '<?php echo $width; ?>px' });
 					});
 					/*]]>*/
 				</script>

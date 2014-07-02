@@ -292,10 +292,10 @@ class jigoshop_dashboard {
 					<ol>
 						<?php if(count($lowinstock) > 0): ?>
 							<?php foreach($lowinstock as $item): ?>
-								<li><a href="<?= $item['link']; ?>"><?= $item['title']; ?></a></li>
+								<li><a href="<?php echo $item['link']; ?>"><?php echo $item['title']; ?></a></li>
 							<?php endforeach; ?>
 						<?php else: ?>
-							<li><?= __('No products are low in stock.', 'jigoshop'); ?></li>
+							<li><?php echo __('No products are low in stock.', 'jigoshop'); ?></li>
 						<?php endif; ?>
 					</ol>
 				</div>
@@ -304,10 +304,10 @@ class jigoshop_dashboard {
 					<ol>
 						<?php if(count($outofstock) > 0): ?>
 							<?php foreach($outofstock as $item): ?>
-								<li><a href="<?= $item['link']; ?>"><?= $item['title']; ?></a></li>
+								<li><a href="<?php echo $item['link']; ?>"><?php echo $item['title']; ?></a></li>
 							<?php endforeach; ?>
 						<?php else: ?>
-							<li><?= __('No products are out of stock.', 'jigoshop'); ?></li>
+							<li><?php echo __('No products are out of stock.', 'jigoshop'); ?></li>
 						<?php endif; ?>
 					</ol>
 				</div>
@@ -418,7 +418,7 @@ class jigoshop_dashboard {
 			<div class="social">
 				<div>
 					<h4 class="first"><?php _e('Jigoshop Project', 'jigoshop') ?></h4>
-					<p><?= __('Our team is available to help you with implementation of additional requirements or to provide you with custom development. Please contact our sales team to obtain a quote', 'jigoshop'); ?>
+					<p><?php echo __('Our team is available to help you with implementation of additional requirements or to provide you with custom development. Please contact our sales team to obtain a quote', 'jigoshop'); ?>
 						: <span class="jigo-email"><a href="mailto:sales@jigoshop.com">sales@jigoshop.com</a></span></p>
 					<p><?php _e('Join our growing developer community today, contribute to the jigoshop project via GitHub.', 'jigoshop') ?>: <a href="https://github.com/jigoshop/jigoshop">Fork</a>
 					</p>
