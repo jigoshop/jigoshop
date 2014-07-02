@@ -46,8 +46,3 @@ ul.products.rows.thumbnails > li > a.product {
 ul.products.rows.thumbnails > li > div.after-product > div.quantity {
 	display: block;
 }
-/* fix wordpress theme */
-#content #breadcrumb,#content .type-product {margin: 0; padding: 0 0 0 1.5%;}
-#primary #content ul.products,#content > .page-title {padding: 0 0 0 1.5% !important;}
-body.jigoshop .entry-header,body.jigoshop .entry-content,body.jigoshop .entry-header {margin-left: 0;}
-@media (max-width: 1042px) {div.product div.summary {float: left;}}

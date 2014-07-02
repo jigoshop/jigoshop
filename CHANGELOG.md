@@ -14,6 +14,7 @@
     * Improved: Reformatted main Jigoshop file.
     * Improved: Proper variation price sanitization.
     * Fix: Warning when saving product meta.
+    * Fix: Removed Wordpress TwentyFourteen theme fix as it causes problems with real shops.
 * 1.9.6 - 2014.06.11:
     * New: Add version constant to `jigoshop` class for easy checking in plugins.
     * New: Javascript triggers `jigoshop.update_checkout` on body element when `update_checkout()` method is called. Useful for payment gateways.
