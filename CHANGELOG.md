@@ -11,6 +11,7 @@
     * New: Premium support and Docs links in Plugins list.
     * Improved: JWOS now supports PHP 5.3 with `short_open_tag` disabled.
     * Improved: Reformatted main Jigoshop file.
+    * Improved: Proper variation price sanitization.
     * Fix: Warning when saving product meta.
 * 1.9.6 - 2014.06.11:
     * New: Add version constant to `jigoshop` class for easy checking in plugins.

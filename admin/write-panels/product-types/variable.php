@@ -200,6 +200,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			wp_set_object_terms($ID, sanitize_title($meta['product-type']), 'product_type');
 
 			// Set variation meta data
+			$meta['regular_price'] = jigoshop_sanitize_num($meta['regular_price']);
 			if (!is_numeric($meta['regular_price'])) {
 				add_filter('redirect_post_location', function ($location){
 					return add_query_arg('jigoshop_message', 'invalid_variation_price', $location);

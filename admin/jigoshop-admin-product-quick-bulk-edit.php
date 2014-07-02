@@ -122,35 +122,39 @@ function jigoshop_add_to_bulk_quick_edit_custom_box( $column_name, $post_type ) 
  */
 add_action( 'save_post','jigoshop_save_quick_edit', 10, 2 );
 
-function jigoshop_save_quick_edit( $post_id, $post ) {
-
+function jigoshop_save_quick_edit($post_id, $post)
+{
 	// don't save for autosave
-	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return $post_id;
+	if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+		return $post_id;
+	}
 
 	// don't save for revisions
-	if ( isset( $post->post_type ) && $post->post_type == 'revision' ) return $post_id;
+	if (isset($post->post_type) && $post->post_type == 'revision') {
+		return $post_id;
+	}
 
-	switch ( $post->post_type ) {
-	case 'product':
-		$_product = new jigoshop_product( $post_id );
-		if ( array_key_exists( 'stock', $_POST ) && $_product->managing_stock() ) {
-			$stock = empty( $_POST['stock'] ) ? 0 : jigoshop_sanitize_num( $_POST[ 'stock' ] );
-			// TODO: do we need to check to hide products at low stock threshold? (-JAP-)
-			update_post_meta( $post_id, 'stock', $stock );
-		}
-		if ( array_key_exists( 'price', $_POST ) && ! empty( $_POST['price'] ) ) {
-			if ( ! $_product->is_type( array( 'grouped' ) ) ) {
-				if ($_POST[ 'price' ] == null){
-				update_post_meta( $post_id, 'regular_price', '' );
-				}
-				else{
-				update_post_meta( $post_id, 'regular_price', jigoshop_sanitize_num( $_POST[ 'price' ] ) );
+	switch ($post->post_type) {
+		case 'product':
+			$_product = new jigoshop_product($post_id);
+			if (array_key_exists('stock', $_POST) && $_product->managing_stock()) {
+				$stock = empty($_POST['stock']) ? 0 : jigoshop_sanitize_num($_POST['stock']);
+				// TODO: do we need to check to hide products at low stock threshold? (-JAP-)
+				update_post_meta($post_id, 'stock', $stock);
+			}
+			if (array_key_exists('price', $_POST) && !empty($_POST['price'])) {
+				if (!$_product->is_type(array('grouped'))) {
+					if ($_POST['price'] == null) {
+						update_post_meta($post_id, 'regular_price', 0.0);
+					} else {
+						update_post_meta($post_id, 'regular_price', jigoshop_sanitize_num($_POST['price']));
+					}
 				}
 			}
-		}
-		break;
-   }
+			break;
+	}
 
+	return $post_id;
 }
 
 /**

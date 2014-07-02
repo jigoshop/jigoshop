@@ -22,92 +22,104 @@ class jigoshop_product_meta
 		add_action( 'jigoshop_process_product_meta', array(&$this, 'save'), 1, 2 );
 	}
 
-	public function save( $post_id ) {
-
+	public function save($post_id)
+	{
 		// Set the product type
-		wp_set_object_terms( $post_id, sanitize_title($_POST['product-type']), 'product_type');
+		wp_set_object_terms($post_id, sanitize_title($_POST['product-type']), 'product_type');
 
 		// Process general product data
-		update_post_meta( $post_id, 'regular_price', (isset($_POST['regular_price']) && $_POST['regular_price'] != null) ? jigoshop_sanitize_num($_POST['regular_price']) : '');
+		$regular_price = (isset($_POST['regular_price']) && $_POST['regular_price'] != null) ? jigoshop_sanitize_num($_POST['regular_price']) : 0.0;
+		update_post_meta($post_id, 'regular_price', $regular_price);
 
-		$sale_price = ! empty( $_POST['sale_price'] )
-			? ( ! strstr( $_POST['sale_price'], '%' ) ? jigoshop_sanitize_num( $_POST['sale_price'] ) : $_POST['sale_price'] )
+		$sale_price = !empty($_POST['sale_price'])
+			? (!strstr($_POST['sale_price'], '%') ? jigoshop_sanitize_num($_POST['sale_price']) : $_POST['sale_price'])
 			: '';
-		if ( strstr( $_POST['sale_price'], '%' ) ) {
-			update_post_meta( $post_id, 'sale_price', $sale_price );
-		} else if ( ! empty( $sale_price ) && $sale_price < jigoshop_sanitize_num( $_POST['regular_price'] ) ) {
-			update_post_meta( $post_id, 'sale_price', $sale_price );
+
+		if (strstr($_POST['sale_price'], '%')) {
+			update_post_meta($post_id, 'sale_price', $sale_price);
+		} else if (!empty($sale_price) && $sale_price < $regular_price) {
+			update_post_meta($post_id, 'sale_price', $sale_price);
 		} else {
 			// silently fail if entered sale price > regular price (or nothing entered)
-			update_post_meta( $post_id, 'sale_price', '' );
+			update_post_meta($post_id, 'sale_price', '');
 		}
 		// finally, if this product is a 'variable' or 'grouped', then there should never be a sale_price here
 		// perhaps it was a 'simple' product once and was changed (see rhr #437)
-		$terms = wp_get_object_terms( $post_id, 'product_type' );
-		if ( ! empty( $terms ))
-			if ( ! is_wp_error( $terms ))
-				if ( sizeof( $terms ) == 1 )
-					if ( in_array( $terms[0]->slug, array( 'variable', 'grouped' ) ) )
-						delete_post_meta( $post_id, 'sale_price' );
+		$terms = wp_get_object_terms($post_id, 'product_type');
+		if (!empty($terms)) {
+			if (!is_wp_error($terms)) {
+				if (sizeof($terms) == 1) {
+					if (in_array($terms[0]->slug, array('variable', 'grouped'))) {
+						delete_post_meta($post_id, 'sale_price');
+					}
+				}
+			}
+		}
 
-		if ( isset( $_POST['weight'] ) )
-			update_post_meta( $post_id, 'weight',        (float) $_POST['weight']);
-		if ( isset( $_POST['length'] ) )
-			update_post_meta( $post_id, 'length',        (float) $_POST['length']);
-		if ( isset( $_POST['width'] ) )
-			update_post_meta( $post_id, 'width',         (float) $_POST['width']);
-		if ( isset( $_POST['height'] ) )
-			update_post_meta( $post_id, 'height',        (float) $_POST['height']);
+		if (isset($_POST['weight'])) {
+			update_post_meta($post_id, 'weight', (float)$_POST['weight']);
+		}
+		if (isset($_POST['length'])) {
+			update_post_meta($post_id, 'length', (float)$_POST['length']);
+		}
+		if (isset($_POST['width'])) {
+			update_post_meta($post_id, 'width', (float)$_POST['width']);
+		}
+		if (isset($_POST['height'])) {
+			update_post_meta($post_id, 'height', (float)$_POST['height']);
+		}
 
-		update_post_meta( $post_id, 'tax_status',    $_POST['tax_status']);
-		update_post_meta( $post_id, 'tax_classes',   isset($_POST['tax_classes']) ? $_POST['tax_classes'] : array() );
+		update_post_meta($post_id, 'tax_status', $_POST['tax_status']);
+		update_post_meta($post_id, 'tax_classes', isset($_POST['tax_classes']) ? $_POST['tax_classes'] : array());
 
-		update_post_meta( $post_id, 'visibility',    $_POST['product_visibility']);
-		update_post_meta( $post_id, 'featured',      isset($_POST['featured']) );
-		update_post_meta( $post_id, 'customizable',  $_POST['product_customize'] );
-		update_post_meta( $post_id, 'customized_length',  $_POST['customized_length'] );
+		update_post_meta($post_id, 'visibility', $_POST['product_visibility']);
+		update_post_meta($post_id, 'featured', isset($_POST['featured']));
+		update_post_meta($post_id, 'customizable', $_POST['product_customize']);
+		update_post_meta($post_id, 'customized_length', $_POST['customized_length']);
 
 		// Downloadable Only
-		if( $_POST['product-type'] == 'downloadable' ) {
-			update_post_meta( $post_id, 'file_path',      $_POST['file_path']);
-			update_post_meta( $post_id, 'download_limit', $_POST['download_limit']);
+		if ($_POST['product-type'] == 'downloadable') {
+			update_post_meta($post_id, 'file_path', $_POST['file_path']);
+			update_post_meta($post_id, 'download_limit', $_POST['download_limit']);
 		}
 
 		// Process the SKU
-		if ( Jigoshop_Base::get_options()->get_option('jigoshop_enable_sku') !== 'no' ) {
-			( $this->is_unique_sku( $post_id, $_POST['sku'] ) )
-				? update_post_meta( $post_id, 'sku', $_POST['sku'])
-				: delete_post_meta( $post_id, 'sku' );
+		if (Jigoshop_Base::get_options()->get_option('jigoshop_enable_sku') !== 'no') {
+			($this->is_unique_sku($post_id, $_POST['sku']))
+				? update_post_meta($post_id, 'sku', $_POST['sku'])
+				: delete_post_meta($post_id, 'sku');
 		}
 
 		// Process the attributes
-		update_post_meta( $post_id, 'product_attributes', $this->process_attributes($_POST, $post_id));
+		update_post_meta($post_id, 'product_attributes', $this->process_attributes($_POST, $post_id));
 
 		// Process the stock information
-		$stockresult = $this->process_stock( $_POST );
-		if ( is_array( $stockresult ) ) foreach( $stockresult as $key => $value ) {
-			update_post_meta( $post_id, $key, $value );
+		$stockresult = $this->process_stock($_POST);
+		if (is_array($stockresult)) {
+			foreach ($stockresult as $key => $value) {
+				update_post_meta($post_id, $key, $value);
+			}
 		}
 
-		if( $_POST['product-type'] == 'external' ) {
-			update_post_meta( $post_id, 'external_url', $_POST['external_url']);
-			update_post_meta( $post_id, 'stock_status', 'instock' );
-			update_post_meta( $post_id, 'manage_stock', false );
+		if ($_POST['product-type'] == 'external') {
+			update_post_meta($post_id, 'external_url', $_POST['external_url']);
+			update_post_meta($post_id, 'stock_status', 'instock');
+			update_post_meta($post_id, 'manage_stock', false);
 		}
 
 		// Process the sale dates
-		foreach( $this->process_sale_dates( $_POST ) as $key => $value ) {
-			update_post_meta( $post_id, $key, $value );
+		foreach ($this->process_sale_dates($_POST) as $key => $value) {
+			update_post_meta($post_id, $key, $value);
 		}
 
 		// Do action for product type
-		do_action( 'jigoshop_process_product_meta_' . $_POST['product-type'], $post_id );
+		do_action('jigoshop_process_product_meta_'.$_POST['product-type'], $post_id);
 	}
 
 	/**
 	 * Processes the sale dates
 	 *
-	 * @param   array   The postback
+	 * @param   array $post The postback
 	 * @return  array
 	 **/
 	private function process_sale_dates( array $post ) {

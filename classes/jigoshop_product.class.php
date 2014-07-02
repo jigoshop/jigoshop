@@ -81,9 +81,10 @@ class jigoshop_product extends Jigoshop_Base {
 		$this->exists = (bool) $meta;
 
 		// Get the product type, from the cache if we can
-		$terms = current( (array) get_the_terms( $this->ID, 'product_type' ) );
+		$terms = (array)get_the_terms($this->ID, 'product_type');
+		$terms = current($terms);
 
-		// Use slug as it is already santizied.
+		// Use slug as it is already sanitized.
 		$this->product_type = ( ! empty( $terms ) ) ? $terms->slug : 'simple';
 
 		// Define data
