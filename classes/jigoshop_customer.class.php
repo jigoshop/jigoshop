@@ -40,8 +40,8 @@ class jigoshop_customer extends Jigoshop_Singleton {
 	 * @since 1.4.4
 	 */
 	private function set_default_customer() {
-		$default = self::get_options()->get_option('jigoshop_default_country');
-		@list($country, $state) = explode(':', $default, 2);
+		$country = jigoshop_countries::get_default_customer_country();
+		$state = jigoshop_countries::get_default_customer_state();
 
 		jigoshop_session::instance()->customer = array(
 			'country'          => $country,
@@ -147,7 +147,7 @@ class jigoshop_customer extends Jigoshop_Singleton {
 			return self::get_customer_session('country');
 		}
 
-		return jigoshop_countries::get_base_country();
+		return jigoshop_countries::get_default_customer_country();
 	}
 
 	/** Gets the state from the current session */
@@ -156,7 +156,7 @@ class jigoshop_customer extends Jigoshop_Singleton {
 			return trim(self::get_customer_session('state'), ':');
 		}
 
-		return jigoshop_countries::get_base_state();
+		return jigoshop_countries::get_default_customer_state();
 	}
 
 	/** Gets the country from the current session */
@@ -165,7 +165,7 @@ class jigoshop_customer extends Jigoshop_Singleton {
 			return self::get_customer_session('shipping_country');
 		}
 
-		return jigoshop_countries::get_base_country();
+		return jigoshop_countries::get_default_customer_country();
 	}
 
 	/** Gets the state from the current session */
@@ -174,7 +174,7 @@ class jigoshop_customer extends Jigoshop_Singleton {
 			return trim(self::get_customer_session('shipping_state'), ':');
 		}
 
-		return jigoshop_countries::get_base_state();
+		return jigoshop_countries::get_default_customer_state();
 	}
 
 	/** Gets the postcode from the current session */
@@ -219,7 +219,7 @@ class jigoshop_customer extends Jigoshop_Singleton {
 			}
 		}
 
-		$country = jigoshop_countries::get_base_country();
+		$country = jigoshop_countries::get_default_customer_country();
 		return jigoshop_countries::get_country($country);
 	}
 

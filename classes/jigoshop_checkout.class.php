@@ -346,8 +346,12 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="'.esc_attr($args['name']).'" class="'.esc_attr(implode(' ', $args['label_class'])).'">'.$args['label'].$required.'</label>
 					<select name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" class="country_to_state'.esc_attr($input_required).'" rel="'.esc_attr($args['rel']).'">';
+				$countries = jigoshop_countries::get_allowed_countries();
+				if(Jigoshop_Base::get_options()->get_option('jigoshop_default_country_for_customer') == -1){
+					$countries = array_merge(array(-1 =>  __('Select your country', 'jigoshop')), $countries);
+				}
 
-				foreach ( jigoshop_countries::get_allowed_countries() as $key => $value ) {
+				foreach ( $countries as $key => $value ) {
 					$field .= '<option value="'.esc_attr($key).'"';
 					if ( $this->get_value($args['name'] ) == $key ) $field .= 'selected="selected"';
 					elseif ( ! $this->get_value($args['name'] ) && jigoshop_customer::get_country() == $key ) $field .= 'selected="selected"';

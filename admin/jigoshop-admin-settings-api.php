@@ -122,7 +122,8 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			'class' => '',
 			'display' => null,
 			'update' => null,
-			'extra' => null
+			'extra' => null,
+			'options' => array(),
 		);
 
 		$option = wp_parse_args($option, $defaults);
@@ -136,7 +137,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			'name' => $option['name'],
 			'desc' => $option['desc'],
 			'tip' => $option['tip'],
-			"std" => $option['std'],
+			'std' => $option['std'],
 			'multiple' => $option['multiple'],
 			'choices' => $option['choices'],
 			'label_for' => $id,
@@ -144,6 +145,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			'display' => $option['display'],
 			'update' => $option['update'],
 			'extra' => $option['extra'],
+			'options' => $option['options'],
 		);
 
 		if($option['type'] != 'tab'){
@@ -809,6 +811,10 @@ class Jigoshop_Options_Parser {
 				break;
 			case 'single_select_country':
 				$country_setting = (string)$options->get_option($item['id']);
+				$add_empty = false;
+				if(isset($item['options']['add_empty']) && $item['options']['add_empty']){
+					$add_empty = true;
+				}
 
 				if(strstr($country_setting, ':')){
 					$temp = explode(':', $country_setting);
@@ -821,7 +827,7 @@ class Jigoshop_Options_Parser {
 
 				$id = $item['id'];
 				$display .= '<select id="'.$id.'" class="single_select_country '.$class.'" name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']">';
-				$display .= jigoshop_countries::country_dropdown_options($country, $state, true, false, false);
+				$display .= jigoshop_countries::country_dropdown_options($country, $state, true, false, false, $add_empty);
 				$display .= '</select>';
 				?>
 				<script type="text/javascript">

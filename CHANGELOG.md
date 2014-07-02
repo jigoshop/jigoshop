@@ -9,6 +9,7 @@
     * New: Check for minimum, required WordPress version.
     * New: Check for minimum, required memory size - currently 128 MB.
     * New: Premium support and Docs links in Plugins list.
+    * New: Ability to define default customer country.
     * Improved: JWOS now supports PHP 5.3 with `short_open_tag` disabled.
     * Improved: Reformatted main Jigoshop file.
     * Improved: Proper variation price sanitization.

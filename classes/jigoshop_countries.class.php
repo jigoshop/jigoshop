@@ -825,6 +825,28 @@ class jigoshop_countries extends Jigoshop_Base {
 		return count($country) == 2 ? $country[1] : '*';
 	}
 
+	/** get customer default country */
+	public static function get_default_customer_country(){
+		$default = self::get_options()->get_option('jigoshop_default_country_for_customer');
+		if($default == -1){
+			return '';
+		}
+		$country = explode(':', $default);
+
+		return $country[0];
+	}
+
+	/** get customer default state */
+	public static function get_default_customer_state(){
+		$default = self::get_options()->get_option('jigoshop_default_country_for_customer');
+		if($default == -1){
+			return '';
+		}
+		$country = explode(':', $default);
+
+		return count($country) == 2 ? $country[1] : '*';
+	}
+
 	public static function get_countries(){
 		$countries = array_map(function($item){ return __($item, 'jigoshop'); }, self::$countries);
 		asort($countries, SORT_LOCALE_STRING);
@@ -884,7 +906,8 @@ class jigoshop_countries extends Jigoshop_Base {
 		$selected_state = null,
 		$escape = true,
 		$show_all = true,
-		$echo = true
+		$echo = true,
+		$add_empty = false
 	){
 		$output = '';
 		$countries = self::get_countries();
@@ -898,6 +921,10 @@ class jigoshop_countries extends Jigoshop_Base {
 		}
 		if(is_array($selected_state)){
 			$selected_state = array_unique($selected_state);
+		}
+
+		if($add_empty){
+			$output .= '<option value="-1">'.__('None', 'jigoshop').'</option>';
 		}
 
 		if($countries){
