@@ -20,7 +20,7 @@
  * Description:         Jigoshop, a WordPress eCommerce plugin that works.
  * Author:              Jigoshop
  * Author URI:          http://www.jigoshop.com
- * Version:             1.9.7
+ * Version:             1.10
  * Requires at least:   3.8
  * Tested up to:        3.9.1
  * Text Domain:         jigoshop
@@ -38,7 +38,7 @@
  */
 
 if (!defined("JIGOSHOP_VERSION")) {
-	define("JIGOSHOP_VERSION", '1.9.7');
+	define("JIGOSHOP_VERSION", '1.10');
 }
 if (!defined("JIGOSHOP_DB_VERSION")) {
 	define("JIGOSHOP_DB_VERSION", 1307110);
@@ -166,6 +166,14 @@ function jigoshop_init()
 	// Override default translations with custom .mo's found in wp-content/languages/jigoshop first.
 	load_textdomain('jigoshop', WP_LANG_DIR.'/jigoshop/jigoshop-'.get_locale().'.mo');
 	load_plugin_textdomain('jigoshop', false, dirname(plugin_basename(__FILE__)).'/languages/');
+	add_filter('plugin_action_links_'.plugin_basename(__FILE__), function($links){
+		unset($links[0]);
+		return array_merge(array(
+			'<a href="'.admin_url('admin.php?page=jigoshop_settings').'">'.__('Settings', 'jigoshop').'</a>',
+			'<a href="http://forum.jigoshop.com/kb">'.__('Docs', 'jigoshop').'</a>',
+			'<a href="http://www.jigoshop.com/compare-support-packages/">'.__('Premium Support', 'jigoshop').'</a>',
+		), $links);
+	});
 
 	// instantiate options -after- loading text domains
 	$options = Jigoshop_Base::get_options();
