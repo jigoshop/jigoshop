@@ -52,6 +52,7 @@ if (!defined('JIGOSHOP_TEMPLATE_URL')) {
 if (!defined('JIGOSHOP_DIR')) {
 	define('JIGOSHOP_DIR', dirname(__FILE__));
 }
+define('JIGOSHOP_REQUIRED_MEMORY', 128);
 
 if(!version_compare(PHP_VERSION, '5.3.3', '>=')){
 	function jigoshop_required_version(){
@@ -66,14 +67,31 @@ if(!version_compare(PHP_VERSION, '5.3.3', '>=')){
 include ABSPATH.WPINC.'/version.php';
 /** @noinspection PhpUndefinedVariableInspection */
 if(!version_compare($wp_version, '3.8', '>=')){
-	function jigoshop_required_version(){
+	add_action('admin_notices', function(){
 		include ABSPATH.WPINC.'/version.php';
 		/** @noinspection PhpUndefinedVariableInspection */
 		echo '<div class="error"><p>'.
 			sprintf(__('<strong>Error!</strong> Jigoshop requires WordPress 3.8 at least! Your version: %s. Please upgrade.', 'jigoshop'), $wp_version).
 			'</p></div>';
-	}
-	add_action('admin_notices', 'jigoshop_required_version');
+	});
+	return;
+}
+
+$ini_memory_limit = ini_get('memory_limit');
+preg_match('/^(\d+)(.)$/', $ini_memory_limit, $memory);
+$memory_limit = $memory[1];
+switch($memory[2]){
+	case 'M':
+		$memory_limit *= 1024;
+	case 'K':
+		$memory_limit *= 1024;
+}
+if($memory_limit < JIGOSHOP_REQUIRED_MEMORY*1024*1024){
+	add_action('admin_notices', function() use ($ini_memory_limit){
+		echo '<div class="error"><p>'.
+			sprintf(__('<strong>Error!</strong> Jigoshop requires at least %sM of memory! Your system currently has: %s.', 'jigoshop'), JIGOSHOP_REQUIRED_MEMORY, $ini_memory_limit).
+			'</p></div>';
+	});
 	return;
 }
 

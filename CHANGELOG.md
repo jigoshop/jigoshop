@@ -7,7 +7,11 @@
     * New: `jigoshop_product_list` shortcode.
     * New: Check for minimum, required PHP version.
     * New: Check for minimum, required WordPress version.
+    * New: Check for minimum, required memory size - currently 128 MB.
+    * New: Premium support and Docs links in Plugins list.
+    * Improved: JWOS now supports PHP 5.3 with `short_open_tag` disabled.
     * Improved: Reformatted main Jigoshop file.
+    * Fix: Warning when saving product meta.
 * 1.9.6 - 2014.06.11:
     * New: Add version constant to `jigoshop` class for easy checking in plugins.
     * New: Javascript triggers `jigoshop.update_checkout` on body element when `update_checkout()` method is called. Useful for payment gateways.
