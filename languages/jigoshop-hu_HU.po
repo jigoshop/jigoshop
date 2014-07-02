@@ -1136,7 +1136,7 @@ msgstr "Felhasználói név"
 #: ../jigoshop_template_functions.php:968
 #: ../classes/jigoshop_checkout.class.php:253 ../widgets/user_login.php:92
 msgid "Password"
-msgstr "Jelsző"
+msgstr "Jelszó"
 
 # @ jigoshop
 #: ../jigoshop_template_functions.php:975 ../widgets/user_login.php:70

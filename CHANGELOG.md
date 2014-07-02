@@ -1,5 +1,11 @@
 ## Changelog
 
+* 1.9.7:
+    * New: `jigoshop_countries::get_countries()` function - returns alphabetically sorted list of translated country names.
+    * New: `jigoshop_countries::has_country()` and `jigoshop_countries::has_state()` methods introduced.
+    * New: `jigoshop_render()` function introduced.
+    * New: `jigoshop_product_list` shortcode.
+    * Improved: Reformatted main Jigoshop file.
 * 1.9.6 - 2014.06.11:
     * New: Add version constant to `jigoshop` class for easy checking in plugins.
     * New: Javascript triggers `jigoshop.update_checkout` on body element when `update_checkout()` method is called. Useful for payment gateways.
