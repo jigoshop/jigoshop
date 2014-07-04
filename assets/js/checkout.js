@@ -26,6 +26,7 @@
       if (jqxhr) jqxhr.abort();
 
 	    var $payment_method = $('input[name=payment_method]:checked');
+	    var $ship_to_billing = $('#shiptobilling-checkbox');
 	    var payment_id = $payment_method.attr('id');
 	    var method = $('#shipping_method').val();
 	    var coupon = $('#coupon_code').val();
@@ -37,7 +38,7 @@
 	    var s_state		= state;
 	    var s_postcode	= postcode;
 
-      if(!$('#shiptobilling-checkbox').is(':checked')){
+      if($ship_to_billing.length > 0 && !$ship_to_billing.is(':checked')){
         s_country	= $('#shipping-country').val();
         s_state		= $('#shipping-state').val();
         s_postcode	= $('input#shipping-postcode').val();

@@ -157,9 +157,9 @@ class futurepay extends jigoshop_payment_gateway {
 		if ( ! in_array( $this->shop_base_country, $this->merchant_countries )) {
 			$country_list = array();
 			foreach ( $this->merchant_countries as $this_country ) {
-				$country_list[] = jigoshop_countries::$countries[$this_country];
+				$country_list[] = jigoshop_countries::get_country($this_country);
 			}
-			echo '<div class="error"><p>'.sprintf(__('The FuturePay gateway is available to merchants from: %s.  Your country is: %s.  FuturePay won\'t work until you change the Jigoshop Shop Base country to an accepted one.  FuturePay is currently disabled on the Payment Gateways settings tab.','jigoshop'), implode( ', ', $country_list ), jigoshop_countries::$countries[$this->shop_base_country] ).'</p></div>';
+			echo '<div class="error"><p>'.sprintf(__('The FuturePay gateway is available to merchants from: %s.  Your country is: %s.  FuturePay won\'t work until you change the Jigoshop Shop Base country to an accepted one.  FuturePay is currently disabled on the Payment Gateways settings tab.','jigoshop'), implode( ', ', $country_list ), jigoshop_countries::get_base_country() ).'</p></div>';
 			Jigoshop_Base::get_options()->set_option( 'jigoshop_futurepay_enabled', 'no' );
 		}
 

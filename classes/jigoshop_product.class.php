@@ -314,12 +314,21 @@ class jigoshop_product extends Jigoshop_Base {
 	}
 
 	/**
-	 * Get the product's post data
+	 * Get the product's title
 	 *
 	 * @return  string
 	 */
 	public function get_title() {
 		return apply_filters('jigoshop_product_title', get_the_title($this->ID), $this);
+	}
+
+	/**
+	 * Get the link to the product
+	 *
+	 * @return string
+	 */
+	public function get_link() {
+		return apply_filters('jigoshop_product_link', get_permalink($this->ID), $this);
 	}
 
 	/**
