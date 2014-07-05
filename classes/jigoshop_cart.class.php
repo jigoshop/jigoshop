@@ -525,12 +525,13 @@ class jigoshop_cart extends Jigoshop_Singleton
 		}
 
 		self::$shipping_total = jigoshop_shipping::get_total();
+		$shipping_method = jigoshop_shipping::get_chosen_method();
 
 		if (self::get_options()->get_option('jigoshop_calc_taxes') == 'yes') {
-			self::$shipping_tax_total = jigoshop_shipping::get_tax();
-			self::$tax->update_tax_amount_with_shipping_tax(self::$shipping_tax_total * 100);
-
 			$shipping_tax_classes = self::$tax->get_shipping_tax_classes();
+			self::$shipping_tax_total = jigoshop_shipping::get_tax();
+			self::$tax->calculate_shipping_tax(self::$shipping_total, $shipping_method, $shipping_tax_classes);
+//			self::$tax->update_tax_amount_with_shipping_tax(self::$shipping_tax_total * 100);
 
 			foreach ($shipping_tax_classes as $tax_class) {
 				if (empty(self::$price_per_tax_class_ex_tax[$tax_class])) {
@@ -603,7 +604,8 @@ class jigoshop_cart extends Jigoshop_Singleton
 					}
 
 					self::$tax->update_tax_amount($tax_class, $tax * 100, false, true);
-					self::$tax->update_tax_amount_with_shipping_tax(self::$shipping_tax_total * 100);
+					self::$tax->calculate_shipping_tax(self::$shipping_total, $shipping_method, array($tax_class));
+//					self::$tax->update_tax_amount_with_shipping_tax(self::$shipping_tax_total * 100);
 					$temp += self::$tax->get_tax_amount($tax_class);
 				}
 
@@ -828,30 +830,12 @@ class jigoshop_cart extends Jigoshop_Singleton
 		$total = 0;
 
 		if (!empty(self::$cart_contents)) {
-			foreach (self::$cart_contents as $cart_item_key => $values) {
+			foreach (self::$cart_contents as $values) {
+				/** @var jigoshop_product $_product */
 				$_product = $values['data'];
 
 				// do we need to exclude taxable products that have a zero tax rate?
 				if ($_product->is_taxable()) {
-					$total += $_product->get_price_excluding_tax() * $values['quantity'];
-				}
-			}
-		}
-
-		return $total;
-	}
-
-	/** calculate totals for all non-taxable products in the cart */
-	private static function get_cart_non_taxable_products_total()
-	{
-		$total = 0;
-
-		if (!empty(self::$cart_contents)) {
-			foreach (self::$cart_contents as $cart_item_key => $values) {
-				$_product = $values['data'];
-
-				// we may need to include taxable products that have a zero tax rate?
-				if (!$_product->is_taxable()) {
 					$total += $_product->get_price_excluding_tax() * $values['quantity'];
 				}
 			}
@@ -1062,7 +1046,7 @@ class jigoshop_cart extends Jigoshop_Singleton
 		return self::$tax->get_tax_rate($tax_class);
 	}
 
-	public static function show_retail_price($order = '')
+	public static function show_retail_price()
 	{
 		if (self::get_options()->get_option('jigoshop_calc_taxes') != 'yes') {
 			return false;
