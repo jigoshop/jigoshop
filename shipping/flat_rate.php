@@ -163,7 +163,7 @@ class flat_rate extends jigoshop_shipping_method {
 			if ( Jigoshop_Base::get_options()->get_option('jigoshop_calc_taxes')=='yes' && $this->tax_status=='taxable' ) :
 
 				// fix flat rate taxes for now. This is old and deprecated, but need to think about how to utilize the total_shipping_tax_amount yet
-				$this->shipping_tax = $this->calculate_shipping_tax($this->shipping_total - jigoshop_cart::get_cart_discount_leftover());
+				$this->shipping_tax = $this->calculate_shipping_tax($this->shipping_total);
                 //$_tax->calculate_shipping_tax( $this->shipping_total - jigoshop_cart::get_cart_discount_leftover(), $this->id );
                 //$this->shipping_tax = //$_tax->get_total_shipping_tax_amount();
 				//$this->shipping_tax = $this->get_selected_tax(0);

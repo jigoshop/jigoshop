@@ -148,7 +148,7 @@ class jigoshop_shipping_method {
 
         $tax = 0;
         if (Jigoshop_Base::get_options()->get_option('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable' && $price > 0) {
-            $tax = $this->calculate_shipping_tax($price - jigoshop_cart::get_cart_discount_leftover());
+            $tax = $this->calculate_shipping_tax($price);
         }
 
         // changed for 1.4.5 since there are instances where a shipping method may want to provide their own rules for
