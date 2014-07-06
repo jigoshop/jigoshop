@@ -41,7 +41,7 @@ if (!defined('JIGOSHOP_VERSION')) {
 	define('JIGOSHOP_VERSION', '1.10');
 }
 if (!defined('JIGOSHOP_DB_VERSION')) {
-	define('JIGOSHOP_DB_VERSION', 1307110);
+	define('JIGOSHOP_DB_VERSION', 1407060);
 }
 if (!defined('JIGOSHOP_OPTIONS')) {
 	define('JIGOSHOP_OPTIONS', 'jigoshop_options');

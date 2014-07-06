@@ -47,8 +47,22 @@ function jigoshop_upgrade_1_8_0() {
 }
 
 function jigoshop_upgrade_1_10_0(){
-	// TODO: Convert {billing,shipping}-address(2)? to {billing,shipping}_address_{1,2} format in orders
-	// TODO: Convert items from {billing,shipping}-field format to {billing,shipping}_ format in orders
-	// TODO: Convert user-meta from {billing,shipping}-field into {billing,shipping}_field format
-	// TODO: Move jigoshop_address_line{1,2} to jigoshop_address_{1,2}
+	/** @var $wpdb wpdb */
+	global $wpdb;
+
+	$data = $wpdb->get_results("SELECT umeta_id, user_id, meta_key, meta_value FROM {$wpdb->usermeta} WHERE meta_key LIKE 'billing-%' OR meta_key LIKE 'shipping-%'", ARRAY_A);
+	$query = "REPLACE INTO {$wpdb->usermeta} VALUES ";
+	foreach($data as $item){
+		$key = str_replace(array('billing-', 'shipping-'), array('billing_', 'shipping_'), $item['meta_key']);
+		$query .= "({$item['umeta_id']}, {$item['user_id']}, '{$key}', '{$item['meta_value']}'),";
+	}
+	unset($data);
+	$query = rtrim($query, ',');
+	$wpdb->query($query);
+
+	$options = Jigoshop_Base::get_options();
+	$options->add_option('jigoshop_address_1', $options->get_option('jigoshop_address_line1'));
+	$options->add_option('jigoshop_address_2', $options->get_option('jigoshop_address_line2'));
+	$options->delete_option('jigoshop_address_line1');
+	$options->delete_option('jigoshop_address_line2');
 }
