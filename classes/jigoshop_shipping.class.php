@@ -77,6 +77,7 @@ class jigoshop_shipping extends Jigoshop_Singleton {
 
 	    if(self::$enabled == 'yes'){
 		    foreach(self::get_all_methods() as $method){
+			    /** @var $method jigoshop_shipping_method */
 			    if(jigoshop_cart::has_free_shipping_coupon() && $method->id == 'free_shipping'){
 				    $_available_methods[$method->id] = $method;
 			    }

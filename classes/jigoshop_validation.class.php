@@ -56,7 +56,7 @@ class jigoshop_validation {
 	/**
 	 * Validates an email using wordpress native is_email function
 	 *
-	 * @param   string	email address
+	 * @param   string $email email address
 	 * @return  boolean
 	 */
 	public static function is_email( $email ) {
@@ -66,7 +66,7 @@ class jigoshop_validation {
 	/**
 	 * Validates a phone number using a regular expression
 	 *
-	 * @param   string	phone number
+	 * @param   string $phone phone number
 	 * @return  boolean
 	 */
 	public static function is_phone( $phone ) {

@@ -375,8 +375,8 @@ class jigoshop_product extends Jigoshop_Base {
 	/**
 	 * Returns whether or not the product is in stock
 	 *
-	 * @param   bool    Whether to compare against the global setting for no stock threshold
-	 * @return  bool
+	 * @param bool $below_stock_threshold Whether to compare against the global setting for no stock threshold
+	 * @return bool
 	 */
 	public function is_in_stock( $below_stock_threshold = false ) {
 
@@ -445,21 +445,18 @@ class jigoshop_product extends Jigoshop_Base {
 	 * @return  bool
 	 */
 	public function has_enough_stock( $quantity ) {
-
-		// always work from a new product to check actual stock available
-		// this product instance could be sitting in a Cart for a user and
-		// another customer purchases the last available
-		$temp = new jigoshop_product( $this->ID );
-		return ($this->backorders_allowed() || $temp->stock >= $quantity);
+		return $this->managing_stock() && $this->get_stock() >= $quantity;
 	}
 
 	/**
 	 * Returns number of items available for sale.
 	 *
-	 * @return  int
+	 * NOTE: This method always loads stock quantity from database to be perfectly up-to-date.
+	 *
+	 * @return int
 	 */
 	public function get_stock() {
-		return (int) $this->stock;
+		return (int)get_post_meta($this->id, 'stock', true);
 	}
 
 	/**
@@ -579,83 +576,70 @@ class jigoshop_product extends Jigoshop_Base {
 	 * @param int $quantity
 	 * @return float the total price of the product times the quantity without any tax included
 	 */
-	function get_price_excluding_tax( $quantity = 1 ) {
+	public function get_price_excluding_tax($quantity = 1)
+	{
+		// to avoid rounding errors multiply by 100
+		$price = $this->get_price() * 100;
 
-        // to avoid rounding errors multiply by 100
-        $price = $this->get_price() * 100;
+		if (self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes') {
+			$rates = (array)$this->get_tax_base_rate();
 
-        if ( self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes' ) {
+			if (count($rates) > 0) {
+				// rates array sorted so that taxes applied to retail value come first. To reverse taxes, need to reverse this array
+				$new_rates = array_reverse($rates, true);
+				$tax_totals = 0;
+				$_tax = new jigoshop_tax(100);
 
-            $rates = (array) $this->get_tax_base_rate();
-
-            if ( count( $rates > 0 )) {
-
-                // rates array sorted so that taxes applied to retail value come first. To reverse taxes, need to reverse this array
-                $new_rates = array_reverse($rates, true);
-
-                $tax_totals = 0;
-
-                $_tax = new jigoshop_tax(100);
-
-                foreach ( $new_rates as $key=>$value ) :
-
-                    if ($value['is_not_compound_tax']) :
-                        $tax_totals += $_tax->calc_tax( $price * $quantity, $value['rate'], true );
-                    else :
-                        $tax_amount[$key] = $_tax->calc_tax( $price * $quantity, $value['rate'], true );
-                        $tax_totals += $tax_amount[$key];
-                    endif;
-
-                endforeach;
-
-                return round( ($price * $quantity - $tax_totals) / 100, 4 );
-
-            }
-
-        }
-
-		return round( $price * $quantity / 100, 4 );
-
-    }
-
-	/**
-     * Get the product total price including tax
-     *
-     * @param int $quantity
-     * @return float the total price of the product times the quantity and destination tax included
-     */
-	function get_price_with_tax( $quantity = 1 ) {
-
-        // to avoid rounding errors multiply by 100
-        $price = $this->get_price_excluding_tax() * 100;
-		$tax_totals = 0;
-		$rates = (array) $this->get_tax_destination_rate();
-
-		if ( count( $rates > 0 )) {
-
-			// rates array sorted so that taxes applied to retail value come first. To reverse taxes, need to reverse this array
-			$new_rates = array_reverse( $rates, true );
-
-			$tax_totals = 0;
-
-			$_tax = new jigoshop_tax( 100 );
-
-			foreach ( $new_rates as $key => $value ) {
-
-				if ( $value['is_not_compound_tax'] ) {
-					$tax_totals += $_tax->calc_tax( $price * $quantity, $value['rate'], false );
-				} else {
-					$tax_amount[$key] = $_tax->calc_tax( $price * $quantity, $value['rate'], false );
-					$tax_totals += $tax_amount[$key];
+				foreach ($new_rates as $key => $value) {
+					if ($value['is_not_compound_tax']) {
+						$tax_totals += $_tax->calc_tax($price * $quantity, $value['rate'], true);
+					} else {
+						$tax_amount[$key] = $_tax->calc_tax($price * $quantity, $value['rate'], true);
+						$tax_totals += $tax_amount[$key];
+					}
 				}
-				$tax_totals = round( $tax_totals, 1 );  // without this we were getting rounding errors
 
+				return round(($price * $quantity - $tax_totals) / 100, 4);
 			}
-
 		}
 
-		return round( ($price * $quantity + $tax_totals) / 100, 4 );
+		return round($price * $quantity / 100, 4);
+	}
 
+	/**
+	 * Get the product total price including tax
+	 *
+	 * @param int $quantity
+	 * @return float the total price of the product times the quantity and destination tax included
+	 */
+	public function get_price_with_tax($quantity = 1)
+	{
+		if(self::get_options()->get_option('jigoshop_calc_taxes') !== 'yes' || self::get_options()->get_option('jigoshop_prices_include_tax') === 'yes'){
+			return $this->get_price();
+		}
+
+		// to avoid rounding errors multiply by 100
+		$price = $this->get_price_excluding_tax() * 100;
+		$rates = (array)$this->get_tax_destination_rate();
+		$tax_totals = 0;
+
+		if (count($rates) > 0) {
+			// rates array sorted so that taxes applied to retail value come first. To reverse taxes, need to reverse this array
+			$new_rates = array_reverse($rates, true);
+			$_tax = new jigoshop_tax(100);
+
+			foreach ($new_rates as $key => $value) {
+				if ($value['is_not_compound_tax']) {
+					$tax_totals += $_tax->calc_tax($price * $quantity, $value['rate'], false);
+				} else {
+					$tax_amount[$key] = $_tax->calc_tax($price * $quantity, $value['rate'], false);
+					$tax_totals += $tax_amount[$key];
+				}
+				$tax_totals = round($tax_totals, 1); // without this we were getting rounding errors
+			}
+		}
+
+		return round(($price * $quantity + $tax_totals) / 100, 4);
 	}
 
 	/**
@@ -687,28 +671,29 @@ class jigoshop_product extends Jigoshop_Base {
 	/**
 	 * Returns the destination Country and State tax rate
 	 */
-	public function get_tax_destination_rate() {
+	public function get_tax_destination_rate()
+	{
+		$rates = array();
 
-		$rate = array();
+		if ($this->is_taxable() && self::get_options()->get_option('jigoshop_calc_taxes') == 'yes') {
+			$tax = new jigoshop_tax();
 
-        if ( $this->is_taxable() && self::get_options()->get_option('jigoshop_calc_taxes') == 'yes' ) {
+			if ($tax->get_tax_classes_for_base()) {
+				foreach ($tax->get_tax_classes_for_base() as $tax_class) {
+					if (!in_array($tax_class, $this->get_tax_classes())) {
+						continue;
+					}
 
-            $_tax = new jigoshop_tax();
+					$rate = $tax->get_rate($tax_class);
 
-            if ( $_tax->get_tax_classes_for_base() ) foreach ( $_tax->get_tax_classes_for_base() as $tax_class ) {
+					if ($rate > 0) {
+						$rates[$tax_class] = array('rate' => $rate, 'is_not_compound_tax' => !$tax->is_compound_tax());
+					}
+				}
+			}
+		}
 
-                if ( ! in_array( $tax_class, $this->get_tax_classes() )) continue;
-                $my_rate = $_tax->get_rate( $tax_class );
-
-                if ( $my_rate > 0 ) {
-                    $rate[$tax_class] = array( 'rate' => $my_rate, 'is_not_compound_tax' => ! $_tax->is_compound_tax() );
-                }
-
-            }
-
-        }
-
-        return $rate;
+		return $rates;
 	}
 
     /**
