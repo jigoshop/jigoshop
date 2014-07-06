@@ -34,7 +34,7 @@ $jigoshop_options = Jigoshop_Base::get_options(); ?>
 				<td class="cart-row-subtotal"><?php echo jigoshop_cart::get_cart_subtotal(true,false,true); ?></td>
 			</tr>
 
-            <?php jigoshop_checkout::get_shipping_dropdown(); ?>
+            <?php jigoshop_checkout::render_shipping_dropdown(); ?>
 
             <?php if ( jigoshop_cart::show_retail_price() && Jigoshop_Base::get_options()->get_option( 'jigoshop_prices_include_tax' ) == 'no' ) : ?>
                 <tr>

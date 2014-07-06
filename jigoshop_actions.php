@@ -467,11 +467,24 @@ add_action('wp_ajax_jigoshop-checkout', 'jigoshop_process_checkout');
 add_action('wp_ajax_nopriv_jigoshop-checkout', 'jigoshop_process_checkout');
 
 function jigoshop_process_checkout () {
-	include_once jigoshop::plugin_path() . '/classes/jigoshop_checkout.class.php';
+	include_once JIGOSHOP_DIR.'/classes/jigoshop_checkout.class.php';
 
-	jigoshop_checkout::instance()->process_checkout();
+	/** @var jigoshop_checkout $checkout */
+	$checkout = jigoshop_checkout::instance();
+	$result = $checkout->process_checkout();
 
-	die(0);
+	if($result === false){
+		jigoshop::show_messages();
+		exit;
+	}
+
+	if(isset($result['result']) && $result['result'] == 'redirect'){
+		echo json_encode(array('result' => 'success', 'redirect' => get_permalink($result['redirect'])));
+		exit;
+	}
+
+	echo json_encode(apply_filters('jigoshop_is_ajax_payment_successful', $result));
+	exit;
 }
 
 

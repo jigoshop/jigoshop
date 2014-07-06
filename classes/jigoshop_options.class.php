@@ -536,14 +536,14 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				'name' => __('Address Line1', 'jigoshop'),
 				'desc' => '',
 				'tip' => __('Setting your address will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop'),
-				'id' => 'jigoshop_address_line1',
+				'id' => 'jigoshop_address_1',
 				'type' => 'longtext',
 			),
 			array(
 				'name' => __('Address Line2', 'jigoshop'),
 				'desc' => '',
 				'tip' => __('If address line1 is not set, address line2 will not display even if you put a value in it. Setting your address will enable us to print it out on your invoice emails. Leave blank to disable.', 'jigoshop'),
-				'id' => 'jigoshop_address_line2',
+				'id' => 'jigoshop_address_2',
 				'type' => 'longtext',
 			),
 			array(

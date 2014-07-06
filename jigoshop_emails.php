@@ -263,11 +263,11 @@ function add_company_information() {
 		$add_eol = true;
 	endif;
 
-	if ($jigoshop_options->get_option('jigoshop_address_line1')) :
+	if ($jigoshop_options->get_option('jigoshop_address_1')) :
 		$add_eol = true;
-		echo $jigoshop_options->get_option('jigoshop_address_line1') . PHP_EOL;
-		if ($jigoshop_options->get_option('jigoshop_address_line2')) :
-			echo $jigoshop_options->get_option('jigoshop_address_line2') . PHP_EOL;
+		echo $jigoshop_options->get_option('jigoshop_address_1') . PHP_EOL;
+		if ($jigoshop_options->get_option('jigoshop_address_2')) :
+			echo $jigoshop_options->get_option('jigoshop_address_2') . PHP_EOL;
 		endif;
 	endif;
 

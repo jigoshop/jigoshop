@@ -20,20 +20,33 @@ function get_jigoshop_checkout( $atts ) {
 }
 
 function jigoshop_checkout( $atts ) {
-
 	if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
 
-	jigoshop_cart::get_cart();
-	if (sizeof(jigoshop_cart::$cart_contents)==0) {
-		wp_safe_redirect( get_permalink( jigoshop_get_page_id( 'cart' )));
+	if (count(jigoshop_cart::get_cart()) == 0) {
+		// TODO: Properly do the redirect, probably all processing code needs to be stripped and moved to an action.
+		wp_safe_redirect(get_permalink(jigoshop_get_page_id('cart')));
 		exit;
 	}
 
 	$non_js_checkout = (isset($_POST['update_totals']) && $_POST['update_totals']) ? true : false;
 
+	/** @var jigoshop_checkout $_checkout */
 	$_checkout = jigoshop_checkout::instance();
+	$result = $_checkout->process_checkout();
 
-	$_checkout->process_checkout();
+	if($result === false){
+		jigoshop::show_messages();
+	}
+
+	if(isset($result['result']) && $result['result'] === 'success'){
+		wp_safe_redirect(apply_filters('jigoshop_is_ajax_payment_successful', $result['redirect']));
+		exit;
+	}
+
+	if(isset($result['redirect'])){
+		wp_safe_redirect(get_permalink($result['redirect']));
+		exit;
+	}
 
 	$result = jigoshop_cart::check_cart_item_stock();
 

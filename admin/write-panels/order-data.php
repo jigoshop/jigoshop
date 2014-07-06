@@ -26,7 +26,7 @@
  */
 function jigoshop_order_data_meta_box($post) {
 
-	global $post, $wpdb, $thepostid;
+	global $post;
 	add_action('admin_footer', 'jigoshop_meta_scripts');
 
 	wp_nonce_field('jigoshop_save_data', 'jigoshop_meta_nonce');
@@ -373,7 +373,7 @@ function jigoshop_order_totals_meta_box($post) {
     $_order = new jigoshop_order($post->ID);
 
     $coupons = array();
-    $order_discount_coupons = (array)$_order->get_value_from_data('order_discount_coupons');
+    $order_discount_coupons = (array)$_order->_fetch('order_discount_coupons');
 	if( ! empty( $order_discount_coupons )) {
 		foreach ( $order_discount_coupons as $coupon ) {
 			$coupons[] = isset( $coupon['code'] ) ? $coupon['code'] : '';
@@ -383,12 +383,12 @@ function jigoshop_order_totals_meta_box($post) {
 	<ul class="totals">
 		<li class="left">
 			<label><?php _e('Subtotal:', 'jigoshop'); ?></label>
-			<input type="text" id="order_subtotal" name="order_subtotal" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo esc_attr( $_order->get_value_from_data('order_subtotal') ); ?>" class="first" />
+			<input type="text" id="order_subtotal" name="order_subtotal" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo esc_attr( $_order->_fetch('order_subtotal') ); ?>" class="first" />
 		</li>
 
 		<li class="right">
 			<label><?php _e('Discount: ', 'jigoshop'); ?><span class="applied-coupons-values"><?php echo implode( ',', $coupons ); ?></span></label>
-			<input type="text" id="order_discount" name="order_discount" placeholder="0.00" value="<?php echo esc_attr( $_order->get_value_from_data('order_discount') ); ?>" />
+			<input type="text" id="order_discount" name="order_discount" placeholder="0.00" value="<?php echo esc_attr( $_order->_fetch('order_discount') ); ?>" />
 		</li>
 		<?php
 			$shipping_methods = jigoshop_shipping::get_all_methods();
@@ -396,7 +396,7 @@ function jigoshop_order_totals_meta_box($post) {
 			$shipping_select .= "<option></option>";
 			if ( ! empty( $shipping_methods )) foreach( $shipping_methods as $index => $method ) {
 				$mark = '';
-				if ( $_order->get_value_from_data('shipping_method') == $method->id ) {
+				if ( $_order->_fetch('shipping_method') == $method->id ) {
 					$mark = 'selected="selected"';
 				}
 				$shipping_select .= "<option value='{$method->id}' {$mark}>{$method->title}</option>";
@@ -405,7 +405,7 @@ function jigoshop_order_totals_meta_box($post) {
 		?>
 		<li>
 			<label><?php _e('Shipping:', 'jigoshop'); ?></label>
-            <input type="text" id="order_shipping" name="order_shipping" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo esc_attr( $_order->get_value_from_data('order_shipping') ); ?>" class="first" /> <?php echo $shipping_select; ?>
+            <input type="text" id="order_shipping" name="order_shipping" placeholder="0.00 <?php _e('(ex. tax)', 'jigoshop'); ?>" value="<?php echo esc_attr( $_order->_fetch('order_shipping') ); ?>" class="first" /> <?php echo $shipping_select; ?>
 			<script type="text/javascript">
 				/*<![CDATA[*/
 					jQuery(function() {
@@ -422,7 +422,7 @@ function jigoshop_order_totals_meta_box($post) {
 
 		<li class="right">
 			<label><?php _e('Shipping Tax:', 'jigoshop'); ?></label>
-			<input type="text" id="order_shipping_tax" name="order_shipping_tax" placeholder="0.00" value="<?php echo esc_attr( $_order->get_value_from_data('order_shipping_tax') ); ?>" class="first" />
+			<input type="text" id="order_shipping_tax" name="order_shipping_tax" placeholder="0.00" value="<?php echo esc_attr( $_order->_fetch('order_shipping_tax') ); ?>" class="first" />
 		</li>
 		<?php
 			$payment_methods = jigoshop_payment_gateways::get_available_payment_gateways();
@@ -430,7 +430,7 @@ function jigoshop_order_totals_meta_box($post) {
 			$payment_select .= "<option></option>";
 			if ( ! empty( $payment_methods )) foreach( $payment_methods as $index => $method ) {
 				$mark = '';
-				if ( $_order->get_value_from_data('payment_method') == $method->id ) {
+				if ( $_order->_fetch('payment_method') == $method->id ) {
 					$mark = 'selected="selected"';
 				}
 				$payment_select .= "<option value='{$method->id}' {$mark}>{$method->title}</option>";
@@ -440,7 +440,7 @@ function jigoshop_order_totals_meta_box($post) {
 		<?php do_action( 'jigoshop_admin_order_totals_after_shipping', $post->ID ) ?>
 		<li>
 			<label><?php _e('Total:', 'jigoshop'); ?></label>
-            <input type="text" id="order_total" name="order_total" placeholder="0.00" value="<?php echo esc_attr( $_order->get_value_from_data('order_total') ); ?>" class="first" /> <?php echo $payment_select; ?>
+            <input type="text" id="order_total" name="order_total" placeholder="0.00" value="<?php echo esc_attr( $_order->_fetch('order_total') ); ?>" class="first" /> <?php echo $payment_select; ?>
 			<script type="text/javascript">
 				/*<![CDATA[*/
 					jQuery(function() {

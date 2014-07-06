@@ -78,23 +78,7 @@ function jigoshop_process_shop_order_meta($post_id)
 
 		/* Checks if this is a new order from "Add Order" button */
 		if (!empty($_POST['auto_draft']) && !empty($_POST['customer_user']) && empty($_POST[$key])){
-			/**
-			 * Some nasty but necessary checks for finding the meta data. It's either this or a whole
-			 * new list of arrays just for this checking bit.
-			 */
-			$adr = '';
-			if (strstr($key, 'billing_')) {
-				$adr = str_replace('billing_', 'billing-', $key);
-			} else if (strstr($key, 'shipping_')) {
-				$adr = str_replace('shipping_', 'shipping-', $key);
-			}
-			if (strstr($adr, 'address_1')) {
-				$adr = str_replace('address_1', 'address', $adr);
-			} else if (strstr($adr, 'address_2')) {
-				$adr = str_replace('address_1', 'address2', $adr);
-			}
-
-			$data[$key] = get_user_meta($_POST['customer_user'], $adr, true);
+			$data[$key] = get_user_meta($_POST['customer_user'], $key, true);
 		}
 	}
 
