@@ -822,7 +822,7 @@ class jigoshop_countries extends Jigoshop_Base {
 		$default = self::get_options()->get_option('jigoshop_default_country');
 		$country = explode(':', $default);
 
-		return count($country) == 2 ? $country[1] : '*';
+		return count($country) == 2 ? $country[1] : '';
 	}
 
 	/** get customer default country */
@@ -844,7 +844,7 @@ class jigoshop_countries extends Jigoshop_Base {
 		}
 		$country = explode(':', $default);
 
-		return count($country) == 2 ? $country[1] : '*';
+		return count($country) == 2 ? $country[1] : '';
 	}
 
 	public static function get_countries(){
