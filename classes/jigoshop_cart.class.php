@@ -221,7 +221,7 @@ class jigoshop_cart extends Jigoshop_Singleton
 	 */
 	public static function is_empty()
 	{
-		return !empty(self::$cart_contents);
+		return empty(self::$cart_contents);
 	}
 
 	/**
@@ -763,6 +763,17 @@ class jigoshop_cart extends Jigoshop_Singleton
 		return $return;
 	}
 
+	public static function get_subtotal()
+	{
+		do_action('jigoshop_calculate_totals');
+		return self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes' ? self::$subtotal_ex_tax : self::$subtotal;
+	}
+
+	public static function get_discount_subtotal()
+	{
+		return self::get_subtotal() + self::get_shipping_total() - self::$discount_total;
+	}
+
 	public static function get_cart_shipping_total($for_display = true, $order_exclude_tax = false)
 	{
 		/* Quit early if there is no shipping label. */
@@ -794,6 +805,11 @@ class jigoshop_cart extends Jigoshop_Singleton
 		}
 
 		return $return;
+	}
+
+	public static function get_shipping_total()
+	{
+		return self::$shipping_total;
 	}
 
 	/**
