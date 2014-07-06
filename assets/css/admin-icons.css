@@ -105,3 +105,12 @@ div.pages ul.pages li +li+li+li+li+li+li+li+li a:before {
 div.pages ul.pages li:last-child a:before {
 	background-position: -27px -130px !important;
 }
+
+#wpadminbar > #wp-toolbar > #wp-admin-bar-root-default > li#wp-admin-bar-jigoshop > a:before {
+	content: ' ';
+	display: block;
+	background-image: url('../images/jigo-ico.png') !important;
+	width: 19px;
+	height: 14px;
+	margin-top: 9px;
+}

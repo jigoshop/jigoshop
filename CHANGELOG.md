@@ -10,9 +10,11 @@
     * New: Check for minimum, required memory size - currently 128 MB.
     * New: Premium support and Docs links in Plugins list.
     * New: Ability to define default customer country.
+    * New: Introduce Jigoshop menu to WordPress admin toolbar.
     * Improved: JWOS now supports PHP 5.3 with `short_open_tag` disabled.
     * Improved: Reformatted main Jigoshop file.
     * Improved: Proper variation price sanitization.
+    * Improved: Removed use of deprecated methods from Jigoshop cart, introduced payment methods template.
     * Fix: Warning when saving product meta.
     * Fix: Removed Wordpress TwentyFourteen theme fix as it causes problems with real shops.
 * 1.9.6 - 2014.06.11:

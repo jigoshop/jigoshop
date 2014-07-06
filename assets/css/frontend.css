@@ -46,3 +46,11 @@ ul.products.rows.thumbnails > li > a.product {
 ul.products.rows.thumbnails > li > div.after-product > div.quantity {
 	display: block;
 }
+#wpadminbar > #wp-toolbar > #wp-admin-bar-root-default > li#wp-admin-bar-jigoshop > a:before {
+	content: ' ';
+	display: block;
+	background-image: url('../images/jigo-ico.png') !important;
+	width: 19px;
+	height: 14px;
+	margin-top: 9px;
+}

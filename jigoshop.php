@@ -37,14 +37,14 @@
  * @license             GNU General Public License v3
  */
 
-if (!defined("JIGOSHOP_VERSION")) {
-	define("JIGOSHOP_VERSION", '1.10');
+if (!defined('JIGOSHOP_VERSION')) {
+	define('JIGOSHOP_VERSION', '1.10');
 }
-if (!defined("JIGOSHOP_DB_VERSION")) {
-	define("JIGOSHOP_DB_VERSION", 1307110);
+if (!defined('JIGOSHOP_DB_VERSION')) {
+	define('JIGOSHOP_DB_VERSION', 1307110);
 }
-if (!defined("JIGOSHOP_OPTIONS")) {
-	define("JIGOSHOP_OPTIONS", 'jigoshop_options');
+if (!defined('JIGOSHOP_OPTIONS')) {
+	define('JIGOSHOP_OPTIONS', 'jigoshop_options');
 }
 if (!defined('JIGOSHOP_TEMPLATE_URL')) {
 	define('JIGOSHOP_TEMPLATE_URL', 'jigoshop/');
@@ -170,6 +170,54 @@ if (is_admin()) {
 	include_once('admin/jigoshop-admin.php');
 	register_activation_hook(__FILE__, 'install_jigoshop');
 }
+
+/**
+ * Adds Jigoshop items to admin bar.
+ */
+function jigoshop_admin_toolbar() {
+	/** @var WP_Admin_Bar $wp_admin_bar */
+	global $wp_admin_bar;
+
+	$wp_admin_bar->add_node(array(
+		'id' => 'jigoshop',
+		'title' => __('Jigoshop', 'jigoshop'),
+		'href' => admin_url('admin.php?page=jigoshop'),
+		'parent' => false,
+		'meta' => array(
+			'class' => 'jigoshop-toolbar'
+		),
+	));
+
+	$wp_admin_bar->add_node(array(
+		'id' => 'jigoshop_dashboard',
+		'title' => __('Dashboard', 'jigoshop'),
+		'parent' => 'jigoshop',
+		'href' => admin_url('admin.php?page=jigoshop'),
+	));
+
+	$wp_admin_bar->add_node(array(
+		'id' => 'jigoshop_products',
+		'title' => __('Products', 'jigoshop'),
+		'parent' => 'jigoshop',
+		'href' => admin_url('edit.php?post_type=product'),
+	));
+
+	$wp_admin_bar->add_node(array(
+		'id' => 'jigoshop_orders',
+		'title' => __('Orders', 'jigoshop'),
+		'parent' => 'jigoshop',
+		'href' => admin_url('edit.php?post_type=shop_order'),
+	));
+
+	$wp_admin_bar->add_node(array(
+		'id' => 'jigoshop_settings',
+		'title' => __('Settings', 'jigoshop'),
+		'parent' => 'jigoshop',
+		'href' => admin_url('admin.php?page=jigoshop_settings'),
+	));
+}
+
+add_action('admin_bar_menu', 'jigoshop_admin_toolbar', 35);
 
 /**
  * Jigoshop Init
