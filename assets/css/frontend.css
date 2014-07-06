@@ -54,3 +54,4 @@ ul.products.rows.thumbnails > li > div.after-product > div.quantity {
 	height: 14px;
 	margin-top: 9px;
 }
+#content #breadcrumb, #content .type-product {margin: 0; padding: 0 0 0 1.5%;}
