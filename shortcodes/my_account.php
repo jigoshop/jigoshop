@@ -127,7 +127,8 @@ function jigoshop_my_account( $atts ) {
 				</header>
 				<address>
 					<?php
-						if (isset(jigoshop_countries::$countries->countries[get_user_meta( get_current_user_id(), 'billing-country', true )])) $country = jigoshop_countries::$countries->countries[get_user_meta( get_current_user_id(), 'billing-country', true )]; else $country = '';
+					$country = get_user_meta( get_current_user_id(), 'billing-country', true );
+						if (jigoshop_countries::has_country($country)) $country = jigoshop_countries::get_country($country); else $country = '';
 						$address = array(
 							get_user_meta( get_current_user_id(), 'billing-first_name', true ) . ' ' . get_user_meta( get_current_user_id(), 'billing-last_name', true )
 							,get_user_meta( get_current_user_id(), 'billing-company', true )
@@ -156,7 +157,8 @@ function jigoshop_my_account( $atts ) {
 				</header>
 				<address>
 					<?php
-						if (isset(jigoshop_countries::$countries->countries[get_user_meta( get_current_user_id(), 'shipping-country', true )])) $country = jigoshop_countries::$countries->countries[get_user_meta( get_current_user_id(), 'shipping-country', true )]; else $country = '';
+						$country = get_user_meta( get_current_user_id(), 'shipping-country', true );
+						if (jigoshop_countries::has_country($country)) $country = jigoshop_countries::get_country($country); else $country = '';
 						$address = array(
 							get_user_meta( get_current_user_id(), 'shipping-first_name', true ) . ' ' . get_user_meta( get_current_user_id(), 'shipping-last_name', true )
 							,get_user_meta( get_current_user_id(), 'shipping-company', true )

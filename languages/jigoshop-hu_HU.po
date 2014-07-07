@@ -1172,6 +1172,8 @@ msgid ""
 "Please verify that all your information is correctly entered before placing "
 "your Order."
 msgstr ""
+"Kérlek erősítsd meg, hogy minden információ amit bevittél helyes, mielőtt "
+"lezárod a rendelésedet."
 
 #: ../jigoshop_template_functions.php:1021
 msgid ""
@@ -1181,6 +1183,10 @@ msgid ""
 "Order and totals adjusted.  You may enter your EU VAT Number either with, or "
 "without, the 2 character EU country code in front."
 msgstr ""
+"Ha megadtál EU-s adószámot, utána lesz nézve miután  <strong>lezártad </"
+"strong> a rendelésedet és hitelesítve lett. <strong><em>Csak</em></strong> "
+"akkor lesz az adó levonva a végleges rendelés összegéből. Az EU adószámodat "
+"beírhatod az országjelölő 2 karakterrel az elején vagy anélkül is."
 
 #: ../jigoshop_template_functions.php:1035
 msgctxt "breadcrumb"

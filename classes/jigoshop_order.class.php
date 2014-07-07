@@ -129,7 +129,7 @@ class jigoshop_order extends Jigoshop_Base {
 
 		// Formatted Addresses
 		$formatted_address = array();
-		$country = ($this->billing_country && isset(jigoshop_countries::$countries[$this->billing_country])) ? jigoshop_countries::$countries[$this->billing_country] : $this->billing_country;
+		$country = ($this->billing_country && jigoshop_countries::has_country($this->billing_country)) ? jigoshop_countries::get_country($this->billing_country) : $this->billing_country;
 		$address = array_map('trim', array(
 			$this->billing_address_1,
 			$this->billing_address_2,
@@ -145,7 +145,7 @@ class jigoshop_order extends Jigoshop_Base {
 
 		if($this->shipping_address_1) :
 			$formatted_address = array();
-			$country = ($this->shipping_country && isset(jigoshop_countries::$countries[$this->shipping_country])) ? jigoshop_countries::$countries[$this->shipping_country] : $this->shipping_country;
+			$country = ($this->shipping_country && jigoshop_countries::has_country($this->shipping_country)) ? jigoshop_countries::get_country($this->shipping_country) : $this->shipping_country;
 			$address = array_map('trim', array(
 				$this->shipping_address_1,
 				$this->shipping_address_2,

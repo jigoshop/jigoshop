@@ -91,7 +91,7 @@ function jigoshop_cart($atts) {
         return;
     endif;
     ?>
-    <form action="<?php echo esc_url( jigoshop_cart::get_cart_url() ); ?>" method="post">
+    <form class="form-cart-items" action="<?php echo esc_url( jigoshop_cart::get_cart_url() ); ?>" method="post">
         <table class="shop_table cart" cellspacing="0">
             <thead>
                 <tr>
