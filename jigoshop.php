@@ -426,6 +426,29 @@ function jigoshop_add_script($handle, $src, array $dependencies = array(), array
 }
 
 /**
+ * Removes script from enqueued list.
+ * Calls filter `jigoshop_remove_script`. If the filter returns empty value the script is omitted.
+ * Available options:
+ *   * page - list of pages to use the script
+ * Options could be extended by plugins.
+ *
+ * @param string $handle Handle name.
+ * @param array $options List of options.
+ */
+function jigoshop_remove_script($handle, array $options = array())
+{
+	$page = isset($options['page']) ? (array)$options['page'] : array('all');
+
+	if (is_jigoshop_page($page)) {
+		$handle = apply_filters('jigoshop_remove_script', $handle, $options);
+
+		if (!empty($handle)) {
+			wp_deregister_script($handle);
+		}
+	}
+}
+
+/**
  * Localizes script.
  * Calls filter `jigoshop_localize_script`. If the filter returns empty value the script is omitted.
  *

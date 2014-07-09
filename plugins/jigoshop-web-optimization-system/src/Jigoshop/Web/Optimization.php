@@ -51,6 +51,7 @@ class Optimization
 			$this->_factory->addWorker(new CacheBustingWorker());
 
 			add_filter('jigoshop_add_script', array($this, 'add_script'), 99999, 4);
+			add_filter('jigoshop_remove_script', array($this, 'remove_script'), 99999, 2);
 			add_filter('jigoshop_localize_script', array($this, 'localize_script'), 99999, 3);
 			add_filter('jigoshop_add_style', array($this, 'add_style'), 99999, 4);
 
@@ -164,6 +165,39 @@ class Optimization
 		}
 
 		return '';
+	}
+
+	/**
+	 * Removes file from managed scripts.
+
+	 * Available options:
+	 *   * page - list of pages to use the stylesheet.
+	 *
+	 * @param $handle string Name of script.
+	 * @param $options array List of options.
+	 * @return string Empty string for jigoshop_remove_script() function if script was found or handle name otherwise.
+	 */
+	public function remove_script($handle, array $options = array())
+	{
+		$pages = isset($options['page']) ? (array)$options['page'] : array('all');
+		$script_handle = $this->prepare_script_handle($handle);
+		$manager = $this->_factory->getAssetManager();
+		if($manager->has($script_handle))
+		{
+			$manager->set($script_handle, null);
+			foreach($pages as $page)
+			{
+				$position = array_search('@'.$script_handle, $this->_scripts[$page]);
+				if($position !== false)
+				{
+					unset($this->_scripts[$page][$position]);
+				}
+			}
+
+			return '';
+		}
+
+		return $handle;
 	}
 
 	/**

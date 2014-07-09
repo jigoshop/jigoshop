@@ -11,6 +11,7 @@
     * New: Premium support and Docs links in Plugins list.
     * New: Ability to define default customer country.
     * New: Introduce Jigoshop menu to WordPress admin toolbar.
+    * New: `jigoshop_remove_script()` function and its support in JWOS.
     * Improved: JWOS now supports PHP 5.3 with `short_open_tag` disabled.
     * Improved: Reformatted main Jigoshop file.
     * Improved: Proper variation price sanitization.
