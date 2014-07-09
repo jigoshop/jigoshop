@@ -1,6 +1,6 @@
 (function($){
   "use strict";
-  $(document).ready( function($) {
+  $(document).ready( function() {
 
     var states = jigoshop_countries;
 
