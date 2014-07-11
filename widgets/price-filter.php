@@ -53,18 +53,17 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 
 	/**
 	 * Widget
-	 *
 	 * Display the widget in the sidebar
 	 * Save output to the cache if empty
 	 *
-	 * @param	array	sidebar arguments
-	 * @param	array	instance
+	 * @param  array $args sidebar arguments
+	 * @param  array $instance instance
 	 */
 	public function widget( $args, $instance ) {
 		extract( $args );
 
 		if ( ! is_tax( 'product_cat' ) && ! is_post_type_archive( 'product' ) && ! is_tax( 'product_tag' ) )
-			return false;
+			return;
 
 		global $_chosen_attributes, $wpdb, $jigoshop_all_post_ids_in_view;
 
@@ -90,17 +89,14 @@ class Jigoshop_Widget_Price_Filter extends WP_Widget {
 
 		if ( get_search_query() ) {
 			$fields['s'] = get_search_query();
-//			$fields .= '<input type="hidden" name="s" value="' . get_search_query() . '" />';
 		}
 
 		if ( isset( $_GET['post_type'] ) ) {
 			$fields['post_type'] = esc_attr( $_GET['post_type'] );
-//			$fields .= '<input type="hidden" name="post_type" value="' . esc_attr( $_GET['post_type'] ) . '" />';
 		}
 
 		if ( ! empty( $_chosen_attributes )) foreach ( $_chosen_attributes as $attribute => $value ) {
 			$fields[str_replace('pa_', 'filter_', $attribute)] = implode(',', $value);
-//			$fields .= '<input type="hidden" name="'.str_replace('pa_', 'filter_', $attribute).'" value="'.implode(',', $value).'" />';
 		}
 
 		// Get maximum price

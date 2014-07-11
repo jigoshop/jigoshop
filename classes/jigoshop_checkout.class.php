@@ -77,7 +77,6 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 				'name' => 'billing_euvatno',
 				'label' => __('EU VAT Number', 'jigoshop'),
 				'placeholder' => __('EU VAT Number', 'jigoshop'),
-				'class' => array('form-row-last'),
 			),
 			array(
 				'name' => 'billing_address_1',

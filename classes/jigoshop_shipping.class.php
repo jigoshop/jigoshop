@@ -180,52 +180,53 @@ class jigoshop_shipping extends Jigoshop_Singleton {
 		return $_available_methods[$chosen_method]->title;
 	}
 
-    /**
-     * Calculate the shipping price
-     *
-     * @param $tax jigoshop_tax The tax
-     */
-    public static function calculate_shipping($tax) {
+	/**
+	 * Calculate the shipping price
+	 *
+	 * @param $tax jigoshop_tax The tax
+	 */
+	public static function calculate_shipping($tax)
+	{
 
-        if (self::$enabled == 'yes') :
+		if (self::$enabled == 'yes') :
 
-            self::reset_shipping_methods();
-            self::reset_shipping(); // do not reset session (chosen_shipping_method_id)
-            $calc_cheapest = false;
+			self::reset_shipping_methods();
+			self::reset_shipping(); // do not reset session (chosen_shipping_method_id)
+			$calc_cheapest = false;
 
-            if (!empty( jigoshop_session::instance()->chosen_shipping_method_id)) :
-                $chosen_method = jigoshop_session::instance()->chosen_shipping_method_id;
-            else :
-                $chosen_method = '';
-                $calc_cheapest = true;
-            endif;
+			if (!empty(jigoshop_session::instance()->chosen_shipping_method_id)) :
+				$chosen_method = jigoshop_session::instance()->chosen_shipping_method_id;
+			else :
+				$chosen_method = '';
+				$calc_cheapest = true;
+			endif;
 
-            $_available_methods = self::get_available_shipping_methods();
+			$_available_methods = self::get_available_shipping_methods();
 
-            if (sizeof($_available_methods) > 0) :
+			if (sizeof($_available_methods) > 0) :
 
-                // have to check numeric selected_rate_id because it can be 0, and empty returns true for 0. That is unwanted behaviour
-                if (is_numeric( jigoshop_session::instance()->selected_rate_id ) && !empty($chosen_method)) :
+				// have to check numeric selected_rate_id because it can be 0, and empty returns true for 0. That is unwanted behaviour
+				if (is_numeric(jigoshop_session::instance()->selected_rate_id) && !empty($chosen_method)) :
 
-                    //make sure all methods are re-calculated since prices have been reset. Otherwise the other shipping
-                    //method prices will show free
-                    foreach ($_available_methods as $method) :
-                        $method->set_tax($tax);
-                        $method->calculate_shipping();
-                    endforeach;
+					//make sure all methods are re-calculated since prices have been reset. Otherwise the other shipping
+					//method prices will show free
+					foreach ($_available_methods as $method) :
+						$method->set_tax($tax);
+						$method->calculate_shipping();
+					endforeach;
 
-                    // select chosen method.
-                    if (isset($_available_methods[$chosen_method]) && $_available_methods[$chosen_method] && !$_available_methods[$chosen_method]->has_error()) :
-                        $chosen_method = $_available_methods[$chosen_method]->id;
+					// select chosen method.
+					if (isset($_available_methods[$chosen_method]) && $_available_methods[$chosen_method] && !$_available_methods[$chosen_method]->has_error()) :
+						$chosen_method = $_available_methods[$chosen_method]->id;
 
-                    // chosen shipping method had issues, need to auto calculate cheapest method now
-                    else :
-                        $chosen_method = self::get_cheapest_method($_available_methods, $tax);
-                    endif;
+					// chosen shipping method had issues, need to auto calculate cheapest method now
+					else :
+						$chosen_method = self::get_cheapest_method($_available_methods, $tax);
+					endif;
 
-                else :
-                    // current jigoshop functionality
-                    $_cheapest_method = self::get_cheapest_method($_available_methods, $tax);
+				else :
+					// current jigoshop functionality
+					$_cheapest_method = self::get_cheapest_method($_available_methods, $tax);
 					if (!$_cheapest_method) :
 						// there was an error, and if chosen method was in the session we want to reset that
 						$chosen_method = $_cheapest_method;
@@ -234,23 +235,23 @@ class jigoshop_shipping extends Jigoshop_Singleton {
 							$chosen_method = $_cheapest_method;
 						endif;
 					endif;
-                endif;
+				endif;
 
-                if ($chosen_method) :
+				if ($chosen_method) :
 
-                    //sets session in the method choose()
-                    $_available_methods[$chosen_method]->choose();
+					//sets session in the method choose()
+					$_available_methods[$chosen_method]->choose();
 
-                    self::$shipping_total = $_available_methods[$chosen_method]->get_selected_price( jigoshop_session::instance()->selected_rate_id );
-                    self::$shipping_tax = $_available_methods[$chosen_method]->get_selected_tax( jigoshop_session::instance()->selected_rate_id );
-	                self::$shipping_label = $_available_methods[$chosen_method]->get_selected_service(jigoshop_session::instance()->selected_rate_id );
+					self::$shipping_total = $_available_methods[$chosen_method]->get_selected_price(jigoshop_session::instance()->selected_rate_id);
+					self::$shipping_tax = $_available_methods[$chosen_method]->get_selected_tax(jigoshop_session::instance()->selected_rate_id);
+					self::$shipping_label = $_available_methods[$chosen_method]->get_selected_service(jigoshop_session::instance()->selected_rate_id);
 
-                endif;
+				endif;
 
-            endif; //sizeof available methods
+			endif; //sizeof available methods
 
-        endif; //self enabled == 'yes'
-    }
+		endif; //self enabled == 'yes'
+	}
 
     public static function reset_shipping() {
         self::$shipping_total = 0;
