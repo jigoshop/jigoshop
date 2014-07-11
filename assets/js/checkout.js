@@ -184,65 +184,69 @@
       validate_required();
     });
 
+		var $create_account = $('#create_account'),
+			$account_username = $('#account_username'),
+			$account_password = $('#account_password'),
+			$account_password_2 = $('#account_password_2');
 
     // handle account panel 'input-required' for guests allowed or not
     if ( jigoshop_params.option_guest_checkout == 'no' ) {
-      $('#createaccount').next().append(' <span class="required">*</span>');
-      $('#account-username').prev().append(' <span class="required">*</span>');
-      $('#account-password').prev().append(' <span class="required">*</span>');
-      $('#account-password-2').prev().append(' <span class="required">*</span>');
-      $('#account-username')
+      $create_account.next().append(' <span class="required">*</span>');
+      $account_username.prev().append(' <span class="required">*</span>');
+      $account_password.prev().append(' <span class="required">*</span>');
+      $account_password_2.prev().append(' <span class="required">*</span>');
+      $account_username
         .addClass('input-required')
         .closest('.form-row')
         .removeClass('jigoshop-validated jigoshop-invalid');
-      $('#account-password')
+      $account_password
         .addClass('input-required')
         .closest('.form-row')
         .removeClass('jigoshop-validated jigoshop-invalid');
-      $('#account-password-2')
+      $account_password_2
         .addClass('input-required')
         .closest('.form-row')
         .removeClass('jigoshop-validated jigoshop-invalid');
     } else {
       $('div.create-account').hide();
-      $('#createaccount').prev().find('span.required').remove();
+      $create_account.prev().find('span.required').remove();
     }
-    $('#createaccount').change( function() {
+	  $create_account.change( function() {
       if ( jigoshop_params.option_guest_checkout == 'no' ) {
       } else if ( ! $(this).is(':checked') ) {
         $('div.create-account').slideUp();
-        $('#account-username')
+        $account_username
           .removeClass('input-required')
           .closest('.form-row')
           .removeClass('jigoshop-validated jigoshop-invalid');
-        $('#account-username').prev().find('span.required').remove();
-        $('#account-password')
+        $account_username.prev().find('span.required').remove();
+        $account_password
           .removeClass('input-required')
           .closest('.form-row')
           .removeClass('jigoshop-validated jigoshop-invalid');
-        $('#account-password').prev().find('span.required').remove();
-        $('#account-password-2')
+        $account_password.prev().find('span.required').remove();
+        $account_password_2
           .removeClass('input-required')
           .closest('.form-row')
           .removeClass('jigoshop-validated jigoshop-invalid');
-        $('#account-password-2').prev().find('span.required').remove();
+        $account_password_2.prev().find('span.required').remove();
       } else {
         $('div.create-account').slideDown();
-        $('#account-username')
+        $account_username
           .addClass('input-required')
           .closest('.form-row')
           .removeClass('jigoshop-validated jigoshop-invalid');
-        $('#account-username').prev().append(' <span class="required">*</span>');
-        $('#account-password')
+        $account_username.prev().append(' <span class="required">*</span>');
+        $account_password
           .addClass('input-required')
           .closest('.form-row')
           .removeClass('jigoshop-validated jigoshop-invalid');
-        $('#account-password').prev().append(' <span class="required">*</span>');
-        $('#account-password-2')
+        $account_password.prev().append(' <span class="required">*</span>');
+        $account_password_2
           .addClass('input-required')
           .closest('.form-row')
           .removeClass('jigoshop-validated jigoshop-invalid');
-        $('#account-password-2').prev().append(' <span class="required">*</span>');
+        $account_password_2.prev().append(' <span class="required">*</span>');
       }
     }).change();
 

@@ -448,7 +448,7 @@ class jigoshop_customer extends Jigoshop_Singleton {
 					$field .= '</select>';
 				} else {
 					// Input
-					$field .= '<input type="text" class="input-text" value="'.esc_attr($current_r).'" placeholder="'.__('State/County', 'jigoshop').'" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" />';
+					$field .= '<input type="text" class="input-text" value="'.esc_attr($current_r).'" placeholder="'.__('State/Province', 'jigoshop').'" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" />';
 				}
 
 				$field .= '</p>'.$after;

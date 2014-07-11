@@ -124,7 +124,7 @@ function jigoshop_edit_address() {
 		array(
 			'type' => 'state',
 			'name' => $load_address.'_state',
-			'label' => __('State/County', 'jigoshop'),
+			'label' => __('State/Province', 'jigoshop'),
 			'required' => true,
 			'class' => array('form-row-last'),
 			'rel' => $load_address.'_country',

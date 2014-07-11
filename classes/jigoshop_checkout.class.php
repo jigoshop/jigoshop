@@ -441,7 +441,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					$field .= '</select>';
 				} else {
 					// Input
-					$field .= '<input type="text" class="input-text'.esc_attr($input_required).'" value="'.esc_attr($current_r).'" placeholder="'.__('State/County', 'jigoshop').'" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" />';
+					$field .= '<input type="text" class="input-text'.esc_attr($input_required).'" value="'.esc_attr($current_r).'" placeholder="'.__('State/Province', 'jigoshop').'" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" />';
 				}
 
 				$field .= '</p>'.$after;
@@ -513,8 +513,9 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 		if (isset($this->posted[$input]) && !empty($this->posted[$input])) {
 			return $this->posted[$input];
 		} elseif (is_user_logged_in()) {
-			if (get_user_meta(get_current_user_id(), $input, true)) {
-				return get_user_meta(get_current_user_id(), $input, true);
+			$value = get_user_meta(get_current_user_id(), $input, true);
+			if ($value) {
+				return $value;
 			}
 
 			$current_user = wp_get_current_user();
@@ -777,7 +778,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 			}
 
 			// Check the e-mail address
-			if (email_exists($this->posted['billing-email'])) {
+			if (email_exists($this->posted['billing_email'])) {
 				jigoshop::add_error(__('An account is already registered with your email address. Please login.', 'jigoshop'));
 			};
 		}
@@ -847,6 +848,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					'state' => $this->posted['billing_state'],
 					'postcode' => $this->posted['billing_postcode'],
 					'country' => $this->posted['billing_country'],
+					'phone' => $this->posted['billing_phone'],
 				);
 
 				if(isset($this->posted['billing_euvatno']) && $this->valid_euvatno){
@@ -862,6 +864,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 				// Get shipping/billing
 				if (!empty($this->posted['shiptobilling'])) {
 					$shipping = $billing;
+					unset($shipping['phone']);
 				} elseif (jigoshop_shipping::is_enabled()) {
 					$shipping = array(
 						'first_name' => $this->posted['shipping_first_name'],
@@ -1138,15 +1141,15 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 	private function create_user_account()
 	{
 		$reg_errors = new WP_Error();
-		do_action('register_post', $this->posted['billing-email'], $this->posted['billing-email'], $reg_errors);
+		do_action('register_post', $this->posted['billing_email'], $this->posted['billing_email'], $reg_errors);
 
 		if ($reg_errors->get_error_code()) {
 			jigoshop::add_error($reg_errors->get_error_message());
 			return 0;
 		}
 
-		$user_pass = $this->posted['account-password'];
-		$user_id = wp_create_user($this->posted['account-username'], $user_pass, $this->posted['billing-email']);
+		$user_pass = $this->posted['account_password'];
+		$user_id = wp_create_user($this->posted['account_username'], $user_pass, $this->posted['billing_email']);
 
 		if (!$user_id) {
 			jigoshop::add_error(sprintf(
@@ -1156,7 +1159,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 			return 0;
 		}
 
-		wp_update_user(array('ID' => $user_id, 'role' => 'customer', 'first_name' => $this->posted['billing-first_name'], 'last_name' => $this->posted['billing-last_name']));
+		wp_update_user(array('ID' => $user_id, 'role' => 'customer', 'first_name' => $this->posted['billing_first_name'], 'last_name' => $this->posted['billing_last_name']));
 		do_action('jigoshop_created_customer', $user_id);
 
 		// send the user a confirmation and their login details
