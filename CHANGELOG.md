@@ -20,6 +20,7 @@
     * Improved: Extracted account templates from shortcodes - now users can override them in their templates!
     * Improved: PayPal decimal errors for HUF, JPN and TWD currencies.
     * Improved: Default look of checkout form.
+    * Improved: "Tel" and "County" are now "Phone" and "Province" in admin panel.
     * Fix: Warning when saving product meta.
     * Fix: Removed Wordpress TwentyFourteen theme fix as it causes problems with real shops.
     * Fix: HTTPS warnings for external fonts removed.

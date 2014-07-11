@@ -357,7 +357,7 @@ function jigoshop_custom_order_columns($column) {
             ?></dd>
                 <?php if ($order->billing_email) : ?><dt><?php _e('Billing Email:', 'jigoshop'); ?></dt>
                     <dd><a href="mailto:<?php echo $order->billing_email; ?>"><?php echo $order->billing_email; ?></a></dd><?php endif; ?>
-                <?php if ($order->billing_phone) : ?><dt><?php _e('Billing Tel:', 'jigoshop'); ?></dt>
+                <?php if ($order->billing_phone) : ?><dt><?php _e('Billing Phone:', 'jigoshop'); ?></dt>
                     <dd><?php echo $order->billing_phone; ?></dd><?php endif; ?>
             </dl>
             <?php
