@@ -17,9 +17,11 @@
     * Improved: Reformatted main Jigoshop file.
     * Improved: Proper variation price sanitization.
     * Improved: Removed use of deprecated methods from Jigoshop cart, introduced payment methods template.
+    * Improved: Extracted account templates from shortcodes - now users can override them in their templates!
     * Fix: Warning when saving product meta.
     * Fix: Removed Wordpress TwentyFourteen theme fix as it causes problems with real shops.
     * Fix: HTTPS warnings for external fonts removed.
+    * Fix: Strict standards warning on edit address page.
 * 1.9.6 - 2014.06.11:
     * New: Add version constant to `jigoshop` class for easy checking in plugins.
     * New: Javascript triggers `jigoshop.update_checkout` on body element when `update_checkout()` method is called. Useful for payment gateways.
