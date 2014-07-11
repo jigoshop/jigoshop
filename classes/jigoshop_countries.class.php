@@ -699,6 +699,24 @@ class jigoshop_countries extends Jigoshop_Base {
 			'ZSI' => 'Zamboanga Sibugay',
 			'MMA' => 'Metro Manila', // TODO: Ask for the code
 		),
+		'PL' => array(
+			'DS' => 'dolnośląskie',
+			'KP' => 'kujawsko-pomorskie',
+			'LU' => 'lubelskie',
+			'LB' => 'lubuskie',
+			'LD' => 'łódzkie',
+			'MA' => 'małopolskie',
+			'MZ' => 'mazowieckie',
+			'OP' => 'opolskie',
+			'PK' => 'podkarpackie',
+			'PD' => 'podlaskie',
+			'PM' => 'pomorskie',
+			'SL' => 'śląskie',
+			'SK' => 'świętokrzyskie',
+			'WN' => 'warmińsko-mazurskie',
+			'WP' => 'wielkopolskie',
+			'ZP' => 'zachodniopomorskie',
+		),
 		// Romania: Counties
 		'RO' => array(
 			'ALB' => 'Alba',
