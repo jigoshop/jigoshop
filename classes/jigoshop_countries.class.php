@@ -634,8 +634,8 @@ class jigoshop_countries extends Jigoshop_Base {
 			'BUK' => 'Bukidnon',
 			'BUL' => 'Bulacan',
 			'CAG' => 'Cagayan',
-			'CAN' => 'Camarines Norte', // TODO: Ask for the code
-			'CAS' => 'Camarines Sur', // TODO: Ask for the code
+			'CAN' => 'Camarines Norte',
+			'CAS' => 'Camarines Sur',
 			'CAM' => 'Camiguin',
 			'CAP' => 'Capiz',
 			'CAT' => 'Catanduanes',
@@ -645,14 +645,14 @@ class jigoshop_countries extends Jigoshop_Base {
 			'NCO' => 'Cotabato',
 			'DAV' => 'Davao del Norte',
 			'DAS' => 'Davao del Sur',
-			'DAC' => 'Davao Occidental', // TODO: Ask for the code
+			'DAC' => 'Davao Occidental', // TODO: Needs to be updated when ISO code is assigned
 			'DAO' => 'Davao Oriental',
 			'DIN' => 'Dinagat Islands',
-			'EAS' => 'Eastern Samar', // TODO: Ask for the code
+			'EAS' => 'Eastern Samar',
 			'GUI' => 'Guimaras',
 			'IFU' => 'Ifugao',
-			'ILN' => 'Ilocos Norte', // TODO: Ask for the code
-			'ILS' => 'Ilocos Sur', // TODO: Ask for the code
+			'ILN' => 'Ilocos Norte',
+			'ILS' => 'Ilocos Sur',
 			'ILI' => 'Iloilo',
 			'ISA' => 'Isabela',
 			'KAL' => 'Kalinga',
@@ -660,35 +660,35 @@ class jigoshop_countries extends Jigoshop_Base {
 			'LAG' => 'Laguna',
 			'LAN' => 'Lanao del Norte',
 			'LAS' => 'Lanao del Sur',
-			'LEY' => 'Leyte', // TODO: Ask for the code
+			'LEY' => 'Leyte',
 			'MAG' => 'Maguindanao',
 			'MAD' => 'Marinduque',
-			'MAS' => 'Masbate', // TODO: Ask for the code
+			'MAS' => 'Masbate',
 			'MSC' => 'Misamis Occidental',
 			'MSR' => 'Misamis Oriental',
 			'MOU' => 'Mountain Province',
-			'NEC' => 'Negros Occidental', // TODO: Ask for the code
-			'NEO' => 'Negros Oriental', // TODO: Ask for the code
-			'NSM' => 'Northern Samar', // TODO: Ask for the code
+			'NEC' => 'Negros Occidental',
+			'NER' => 'Negros Oriental',
+			'NSA' => 'Northern Samar',
 			'NUE' => 'Nueva Ecija',
 			'NUV' => 'Nueva Vizcaya',
 			'MDC' => 'Occidental Mindoro',
 			'MDR' => 'Oriental Mindoro',
 			'PLW' => 'Palawan',
-			'PAM' => 'Pampanga', // TODO: Ask for the code
+			'PAM' => 'Pampanga',
 			'PAN' => 'Pangasinan',
 			'QUE' => 'Quezon',
 			'QUI' => 'Quirino',
 			'RIZ' => 'Rizal',
-			'ROM' => 'Romblon', // TODO: Ask for the code
-			'SAM' => 'Samar', // TODO: Ask for the code
+			'ROM' => 'Romblon',
+			'WSA' => 'Samar',
 			'SAR' => 'Sarangani',
 			'SIQ' => 'Siquijor',
-			'SOR' => 'Sorsogon', // TODO: Ask for the code
+			'SOR' => 'Sorsogon',
 			'SCO' => 'South Cotabato',
-			'SOL' => 'Southern Leyte', // TODO: Ask for the code
+			'SLE' => 'Southern Leyte',
 			'SUK' => 'Sultan Kudarat',
-			'SUL' => 'Sulu', // TODO: Ask for the code
+			'SLU' => 'Sulu',
 			'SUN' => 'Surigao del Norte',
 			'SUR' => 'Surigao del Sur',
 			'TAR' => 'Tarlac',
@@ -697,7 +697,7 @@ class jigoshop_countries extends Jigoshop_Base {
 			'ZAN' => 'Zamboanga del Norte',
 			'ZAS' => 'Zamboanga del Sur',
 			'ZSI' => 'Zamboanga Sibugay',
-			'MMA' => 'Metro Manila', // TODO: Ask for the code
+			'MNL' => 'Metro Manila',
 		),
 		'PL' => array(
 			'DS' => 'dolnośląskie',
@@ -1082,6 +1082,11 @@ class jigoshop_countries extends Jigoshop_Base {
 		}
 
 		return $output;
+	}
+
+	public static function get_all_states()
+	{
+		return self::$states;
 	}
 
 	// Called when a base state is set to '*', #545
