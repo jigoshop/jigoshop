@@ -46,7 +46,7 @@ class paypal extends jigoshop_payment_gateway {
 		$this->testmode = $options->get_option('jigoshop_paypal_testmode');
 		$this->testemail = $options->get_option('jigoshop_sandbox_email');
 		$this->send_shipping = $options->get_option('jigoshop_paypal_send_shipping');
-		$this->decimals = in_array($options->get_option('jigoshop_currency'), self::$no_decimal_currencies) ? 0 : 2;
+		$this->decimals = min($options->get_option('jigoshop_price_num_decimals'), (in_array($options->get_option('jigoshop_currency'), self::$no_decimal_currencies) ? 0 : 2));
 
 		$this->liveurl = 'https://www.paypal.com/webscr';
 		$this->testurl = 'https://www.sandbox.paypal.com/webscr';
