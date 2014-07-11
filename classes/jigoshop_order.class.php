@@ -478,7 +478,7 @@ class jigoshop_order extends Jigoshop_Base
 				// Status was changed
 				do_action( 'order_status_' . $new_status->slug , $this->id );
 				do_action( 'order_status_' . $this->status . '_to_' . $new_status->slug, $this->id );
-				$this->add_order_note( $note . sprintf( __('Order status changed from %s to %s.', 'jigoshop'), __($old_status->name, 'jigoshop'), __($new_status->name, 'jigoshop') ) );
+				$this->add_order_note( $note . ' ' . sprintf( __('Order status changed from %s to %s.', 'jigoshop'), __($old_status->name, 'jigoshop'), __($new_status->name, 'jigoshop') ) );
 
 				// Date
 				if ($new_status->slug == 'completed') {

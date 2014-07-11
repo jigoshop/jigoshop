@@ -71,12 +71,12 @@ class jigoshop_customer extends Jigoshop_Singleton {
 	 * @since 1.4.4
 	 */
 	public function update_signed_in_customer($user_login, $user){
-		$country = get_user_meta($user->ID, 'billing-country', true);
-		$state = get_user_meta($user->ID, 'billing-state', true);
-		$postcode = get_user_meta($user->ID, 'billing-postcode', true);
-		$shipping_country = get_user_meta($user->ID, 'shipping-country', true);
-		$shipping_state = get_user_meta($user->ID, 'shipping-state', true);
-		$shipping_postcode = get_user_meta($user->ID, 'shipping-postcode', true);
+		$country = get_user_meta($user->ID, 'billing_country', true);
+		$state = get_user_meta($user->ID, 'billing_state', true);
+		$postcode = get_user_meta($user->ID, 'billing_postcode', true);
+		$shipping_country = get_user_meta($user->ID, 'shipping_country', true);
+		$shipping_state = get_user_meta($user->ID, 'shipping_state', true);
+		$shipping_postcode = get_user_meta($user->ID, 'shipping_postcode', true);
 
 		jigoshop_session::instance()->customer = array(
 			'country' => $country,
@@ -509,7 +509,7 @@ class jigoshop_customer extends Jigoshop_Singleton {
 	}
 
 	/** Gets the value either from the posted data, or from the users meta data */
-	function get_value($input){
+	public static function get_value($input){
 		if(isset($_POST[$input]) && !empty($_POST[$input])){
 			return $_POST[$input];
 		} else if(is_user_logged_in()){
@@ -520,7 +520,7 @@ class jigoshop_customer extends Jigoshop_Singleton {
 			$current_user = wp_get_current_user();
 
 			switch($input){
-				case "billing-email" :
+				case "billing_email" :
 					return $current_user->user_email;
 					break;
 			}
