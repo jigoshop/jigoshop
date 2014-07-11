@@ -103,8 +103,14 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 				'type' => 'state',
 				'label' => __('State/Province', 'jigoshop'),
 				'required' => true,
-				'class' => array('form-row-first'),
 				'rel' => 'billing_country'
+			),
+			array(
+				'name' => 'billing_country',
+				'type' => 'country',
+				'label' => __('Country', 'jigoshop'),
+				'required' => true,
+				'rel' => 'billing_state',
 			),
 			array(
 				'name' => 'billing_postcode',
@@ -114,21 +120,6 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 				'label' => __('Postcode', 'jigoshop'),
 				'placeholder' => __('Postcode', 'jigoshop'),
 				'required' => true,
-				'class' => array('form-row-last')
-			),
-			array(
-				'name' => 'billing_country',
-				'type' => 'country',
-				'label' => __('Country', 'jigoshop'),
-				'required' => true,
-				'rel' => 'billing_state'
-			),
-			array(
-				'name' => 'billing_email',
-				'validate' => 'email',
-				'label' => __('Email Address', 'jigoshop'),
-				'placeholder' => __('you@yourdomain.com', 'jigoshop'),
-				'required' => true,
 				'class' => array('form-row-first')
 			),
 			array(
@@ -137,7 +128,14 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 				'label' => __('Phone', 'jigoshop'),
 				'placeholder' => __('Phone number', 'jigoshop'),
 				'required' => true,
-				'class' => array('form-row-last')
+				'class' => array('form-row-last'),
+			),
+			array(
+				'name' => 'billing_email',
+				'validate' => 'email',
+				'label' => __('Email Address', 'jigoshop'),
+				'placeholder' => __('you@yourdomain.com', 'jigoshop'),
+				'required' => true,
 			),
 		);
 
@@ -198,8 +196,14 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 				'type' => 'state',
 				'label' => __('State/Province', 'jigoshop'),
 				'required' => true,
-				'class' => array('form-row-first'),
 				'rel' => 'shipping_country'
+			),
+			array(
+				'name' => 'shipping_country',
+				'type' => 'country',
+				'label' => __('Country', 'jigoshop'),
+				'required' => true,
+				'rel' => 'shipping_state'
 			),
 			array(
 				'name' => 'shipping_postcode',
@@ -209,14 +213,6 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 				'label' => __('Postcode', 'jigoshop'),
 				'placeholder' => __('Postcode', 'jigoshop'),
 				'required' => true,
-				'class' => array('form-row-last')
-			),
-			array(
-				'name' => 'shipping_country',
-				'type' => 'country',
-				'label' => __('Country', 'jigoshop'),
-				'required' => true,
-				'rel' => 'shipping_state'
 			),
 		);
 

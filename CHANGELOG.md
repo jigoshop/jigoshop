@@ -19,6 +19,7 @@
     * Improved: Removed use of deprecated methods from Jigoshop cart, introduced payment methods template.
     * Improved: Extracted account templates from shortcodes - now users can override them in their templates!
     * Improved: PayPal decimal errors for HUF, JPN and TWD currencies.
+    * Improved: Default look of checkout form.
     * Fix: Warning when saving product meta.
     * Fix: Removed Wordpress TwentyFourteen theme fix as it causes problems with real shops.
     * Fix: HTTPS warnings for external fonts removed.
