@@ -27,6 +27,7 @@ add_filter('jigoshop_payment_gateways', function ($methods){
 
 class paypal extends jigoshop_payment_gateway {
 
+	// based on PayPal currency rule: https://developer.paypal.com/docs/classic/api/currency_codes/
 	private static $no_decimal_currencies = array('HUF', 'JPY', 'TWD');
 
 	public function __construct(){
