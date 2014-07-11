@@ -173,69 +173,32 @@ function jigoshop_edit_address() {
 }
 
 function get_jigoshop_change_password() {
-    return jigoshop_shortcode_wrapper('jigoshop_change_password');
+  return jigoshop_shortcode_wrapper('jigoshop_change_password');
 }
 
 function jigoshop_change_password() {
-
-    $user_id = get_current_user_id();
-
-    if (is_user_logged_in()) :
-
-        if ($_POST) :
-
-            if ($user_id > 0 && jigoshop::verify_nonce('change_password')) :
-
-                if ($_POST['password-1'] && $_POST['password-2']) :
-
-                    if ($_POST['password-1'] == $_POST['password-2']) :
-
-                        wp_update_user(array('ID' => $user_id, 'user_pass' => $_POST['password-1']));
-
-                        wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount')) ));
-
-                        exit;
-
-                    else :
-
-                        jigoshop::add_error(__('Passwords do not match.', 'jigoshop'));
-
-                    endif;
-
-                else :
-
-                    jigoshop::add_error(__('Please enter your password.', 'jigoshop'));
-
-                endif;
-
-            endif;
-        endif;
-
-        jigoshop::show_messages();
-
-		?>
-		<form action="<?php echo esc_url( apply_filters('jigoshop_get_change_password_page_id', get_permalink(jigoshop_get_page_id('change_password'))) ); ?>" method="post">
-
-			<p class="form-row form-row-first">
-				<label for="password-1"><?php _e('New password', 'jigoshop'); ?> <span class="required">*</span></label>
-				<input type="password" class="input-text" name="password-1" id="password-1" />
-			</p>
-			<p class="form-row form-row-last">
-				<label for="password-2"><?php _e('Re-enter new password', 'jigoshop'); ?> <span class="required">*</span></label>
-				<input type="password" class="input-text" name="password-2" id="password-2" />
-			</p>
-			<div class="clear"></div>
-			<?php jigoshop::nonce_field('change_password')?>
-			<p><input type="submit" class="button" name="save_password" value="<?php _e('Save', 'jigoshop'); ?>" /></p>
-
-		</form>
-
-		<?php
-    else :
+	if(!is_user_logged_in()){
 		wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount')) ));
 		exit;
+	}
 
-    endif;
+	$user_id = get_current_user_id();
+
+	if ($_POST && $user_id > 0 && jigoshop::verify_nonce('change_password')) {
+		if ($_POST['password-1'] && $_POST['password-2']) {
+			if ($_POST['password-1'] == $_POST['password-2']) {
+				wp_update_user(array('ID' => $user_id, 'user_pass' => $_POST['password-1']));
+				wp_safe_redirect(apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount'))));
+				exit;
+			} else {
+				jigoshop::add_error(__('Passwords do not match.', 'jigoshop'));
+			}
+		} else {
+			jigoshop::add_error(__('Please enter your password.', 'jigoshop'));
+		}
+	}
+
+	jigoshop_render('shortcode/my_account/change_password', array());
 }
 
 function get_jigoshop_view_order() {
