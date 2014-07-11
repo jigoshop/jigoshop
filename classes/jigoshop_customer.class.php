@@ -343,28 +343,13 @@ class jigoshop_customer extends Jigoshop_Singleton {
 		return apply_filters('jigoshop_downloadable_products', $downloads);
 	}
 
-	public function address_form($load_address, $fields){
-		$title = '<h3>';
-		if($load_address == 'billing'){
-			$title .= __('Billing Address', 'jigoshop');
-		} else {
-			$title .= __('Shipping Address', 'jigoshop');
-		}
-		$title .= '</h3>';
-		echo $title;
-		// Billing Details
-		foreach($fields as $field){
-			self::address_form_field($field);
-		}
-	}
-
 	/**
 	 * Outputs a form field
 	 *
 	 * @param array $args contains a list of args for showing the field, merged with defaults (below)
 	 * @return string
 	 */
-	function address_form_field($args){
+	public static function address_form_field($args){
 		$defaults = array(
 			'type' => 'text',
 			'name' => '',

@@ -38,135 +38,138 @@ function jigoshop_my_account($attributes) {
 }
 
 function get_jigoshop_edit_address() {
-    return jigoshop_shortcode_wrapper('jigoshop_edit_address');
+  return jigoshop_shortcode_wrapper('jigoshop_edit_address');
 }
 
 function jigoshop_edit_address() {
-
-	$user_id = get_current_user_id();
-
-	if ( is_user_logged_in() ) :
-
-		if ( isset($_GET['address']) ) $load_address = $_GET['address']; else $load_address = 'billing';
-		if ( $load_address == 'billing' ) $load_address = 'billing'; else $load_address = 'shipping';
-		$address = array(
-			array(
-				'name'        => $load_address . '_first_name',
-				'label'       => __('First Name', 'jigoshop'),
-				'placeholder' => __('First Name', 'jigoshop'),
-				'required'    => true,
-				'class'       => array('form-row-first'),
-				'value'       => get_user_meta( get_current_user_id(), $load_address . '_first_name', true )),
-			array(
-				'name'        => $load_address . '_last_name',
-				'label'       => __('Last Name', 'jigoshop'),
-				'placeholder' => __('Last Name', 'jigoshop'),
-				'required'    => true,
-				'class'       => array('form-row-last columned'),
-				'value'       => get_user_meta( get_current_user_id(), $load_address . '_last_name', true )),
-			array(
-				'name'        => $load_address . '_company',
-				'label'       => __('Company', 'jigoshop'),
-				'placeholder' => __('Company', 'jigoshop'),
-				'class'       => array('columned full-row clear'),
-				'value'       => get_user_meta( get_current_user_id(), $load_address . '_company_name', true ) ),
-			array(
-				'name'        => $load_address . '_address_1',
-				'label'       => __('Address', 'jigoshop'),
-				'placeholder' => __('Address 1', 'jigoshop'),
-				'required'    => true,
-				'class'       => array('form-row-first'),
-				'value'       => get_user_meta( get_current_user_id(), $load_address . '_address_1', true ) ),
-			array(
-				'name'        => $load_address . '_address_2',
-				'label'       => __('Address 2', 'jigoshop'),
-				'placeholder' => __('Address 2', 'jigoshop'),
-				'class'       => array('form-row-last'),
-				'label_class' => array('hidden'),
-				'value'       => get_user_meta( get_current_user_id(), $load_address . '_address_2', true ) ),
-			array(
-				'name'        => $load_address . '_city',
-				'label'       => __('City', 'jigoshop'),
-				'placeholder' => __('City', 'jigoshop'),
-				'required'    => true,
-				'class'       => array('form-row-first'),
-				'value'       => get_user_meta( get_current_user_id(), $load_address . '_city', true ) ),
-			array(
-				'type'        => 'postcode',
-				'validate'    => 'postcode',
-				'format'      => 'postcode',
-				'name'        => $load_address . '_postcode',
-				'label'       => __('Postcode', 'jigoshop'),
-				'placeholder' => __('Postcode', 'jigoshop'),
-				'required'    => true,
-				'class'       => array('form-row-last'),
-				'value'       => get_user_meta( get_current_user_id(), $load_address . '_postcode', true ) ),
-			array(
-				'type'        => 'country',
-				'name'        => $load_address . '_country',
-				'label'       => __('Country', 'jigoshop'),
-				'required'    => true,
-				'class'       => array('form-row-first'),
-				'rel'         => $load_address . '_state',
-				'value'       => get_user_meta( get_current_user_id(), $load_address . '_country', true ) ),
-			array(
-				'type'        => 'state',
-				'name'        => $load_address . '_state',
-				'label'       => __('State/County', 'jigoshop'),
-				'required'    => true,
-				'class'       => array('form-row-last'),
-				'rel'         => $load_address . '_country',
-				'value'       => get_user_meta( get_current_user_id(), $load_address . '_state', true ) ),
-			array(
-				'name'        => $load_address . '_email',
-				'validate'    => 'email',
-				'label'       => __('Email Address', 'jigoshop'),
-				'placeholder' => __('you@yourdomain.com', 'jigoshop'),
-				'required'    => true,
-				'class'       => array('form-row-first'),
-				'value'       => get_user_meta( get_current_user_id(), $load_address . '_email', true ) ),
-			array(
-				'name'        => $load_address . '_phone',
-				'validate'    => 'phone',
-				'label'       => __('Phone', 'jigoshop'),
-				'placeholder' => __('Phone number', 'jigoshop'),
-				'required'    => true,
-				'class'       => array('form-row-last'),
-				'value'       => get_user_meta( get_current_user_id(), $load_address . '_phone', true ) )
-		);
-		$address = apply_filters( 'jigoshop_customer_account_address_fields', $address );
-
-		if ($_POST) :
-
-			if ( $user_id > 0 && jigoshop::verify_nonce('edit_address') ) :
-				foreach ( $address as $field ){
-					if ( $_POST[$field['name']] ):
-						update_user_meta( $user_id, $field['name'], jigowatt_clean($_POST[$field['name']]) );
-					endif;
-				}
-				do_action('jigoshop_user_edit_address', $user_id, $address);
-			endif;
-
-			wp_safe_redirect( apply_filters( 'jigoshop_get_myaccount_page_id', get_permalink( jigoshop_get_page_id( 'myaccount' ))) );
-			exit;
-
-		endif;
-
-		?>
-		<form action="<?php echo esc_url( add_query_arg('address', $load_address, apply_filters('jigoshop_get_edit_address_page_id', get_permalink(jigoshop_get_page_id('edit_address')))) ); ?>" method="post">
-			<?php jigoshop_customer::address_form($load_address, $address);?>
-			<?php jigoshop::nonce_field('edit_address') ?>
-			<input type="submit" class="button" name="save_address" value="<?php _e('Save Address', 'jigoshop'); ?>" />
-
-		</form>
-		<?php
-
-	else :
-
+	if (!is_user_logged_in()) {
 		wp_safe_redirect( apply_filters( 'jigoshop_get_myaccount_page_id', get_permalink( jigoshop_get_page_id( 'myaccount' )) ));
 		exit;
+	}
 
-    endif;
+	$load_address = 'billing';
+	if (isset($_GET['address']) && in_array($_GET['address'], array('billing', 'shipping'))) {
+		$load_address = $_GET['address'];
+	}
+
+	$user_id = get_current_user_id();
+	$address = array(
+		array(
+			'name' => $load_address.'_first_name',
+			'label' => __('First Name', 'jigoshop'),
+			'placeholder' => __('First Name', 'jigoshop'),
+			'required' => true,
+			'class' => array('form-row-first'),
+			'value' => get_user_meta($user_id, $load_address.'_first_name', true)
+		),
+		array(
+			'name' => $load_address.'_last_name',
+			'label' => __('Last Name', 'jigoshop'),
+			'placeholder' => __('Last Name', 'jigoshop'),
+			'required' => true,
+			'class' => array('form-row-last columned'),
+			'value' => get_user_meta($user_id, $load_address.'_last_name', true)
+		),
+		array(
+			'name' => $load_address.'_company',
+			'label' => __('Company', 'jigoshop'),
+			'placeholder' => __('Company', 'jigoshop'),
+			'class' => array('columned full-row clear'),
+			'value' => get_user_meta($user_id, $load_address.'_company_name', true)
+		),
+		array(
+			'name' => $load_address.'_address_1',
+			'label' => __('Address', 'jigoshop'),
+			'placeholder' => __('Address 1', 'jigoshop'),
+			'required' => true,
+			'class' => array('form-row-first'),
+			'value' => get_user_meta($user_id, $load_address.'_address_1', true)
+		),
+		array(
+			'name' => $load_address.'_address_2',
+			'label' => __('Address 2', 'jigoshop'),
+			'placeholder' => __('Address 2', 'jigoshop'),
+			'class' => array('form-row-last'),
+			'label_class' => array('hidden'),
+			'value' => get_user_meta($user_id, $load_address.'_address_2', true)
+		),
+		array(
+			'name' => $load_address.'_city',
+			'label' => __('City', 'jigoshop'),
+			'placeholder' => __('City', 'jigoshop'),
+			'required' => true,
+			'class' => array('form-row-first'),
+			'value' => get_user_meta($user_id, $load_address.'_city', true)
+		),
+		array(
+			'type' => 'postcode',
+			'validate' => 'postcode',
+			'format' => 'postcode',
+			'name' => $load_address.'_postcode',
+			'label' => __('Postcode', 'jigoshop'),
+			'placeholder' => __('Postcode', 'jigoshop'),
+			'required' => true,
+			'class' => array('form-row-last'),
+			'value' => get_user_meta($user_id, $load_address.'_postcode', true)
+		),
+		array(
+			'type' => 'country',
+			'name' => $load_address.'_country',
+			'label' => __('Country', 'jigoshop'),
+			'required' => true,
+			'class' => array('form-row-first'),
+			'rel' => $load_address.'_state',
+			'value' => get_user_meta($user_id, $load_address.'_country', true)
+		),
+		array(
+			'type' => 'state',
+			'name' => $load_address.'_state',
+			'label' => __('State/County', 'jigoshop'),
+			'required' => true,
+			'class' => array('form-row-last'),
+			'rel' => $load_address.'_country',
+			'value' => get_user_meta($user_id, $load_address.'_state', true)
+		),
+		array(
+			'name' => $load_address.'_email',
+			'validate' => 'email',
+			'label' => __('Email Address', 'jigoshop'),
+			'placeholder' => __('you@yourdomain.com', 'jigoshop'),
+			'required' => true,
+			'class' => array('form-row-first'),
+			'value' => get_user_meta($user_id, $load_address.'_email', true)
+		),
+		array(
+			'name' => $load_address.'_phone',
+			'validate' => 'phone',
+			'label' => __('Phone', 'jigoshop'),
+			'placeholder' => __('Phone number', 'jigoshop'),
+			'required' => true,
+			'class' => array('form-row-last'),
+			'value' => get_user_meta($user_id, $load_address.'_phone', true)
+		)
+	);
+	$address = apply_filters('jigoshop_customer_account_address_fields', $address);
+
+	if ($_POST) {
+		if ($user_id > 0 && jigoshop::verify_nonce('edit_address')) {
+			foreach ($address as $field) {
+				if ($_POST[$field['name']]) {
+					update_user_meta($user_id, $field['name'], jigowatt_clean($_POST[$field['name']]));
+				}
+			}
+
+			do_action('jigoshop_user_edit_address', $user_id, $address);
+		}
+
+		wp_safe_redirect(apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount'))));
+		exit;
+	}
+
+	jigoshop_render('shortcode/my_account/edit_address', array(
+		'load_address' => $load_address,
+		'address' => $address,
+	));
 }
 
 function get_jigoshop_change_password() {
