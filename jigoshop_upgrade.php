@@ -51,14 +51,16 @@ function jigoshop_upgrade_1_10_0(){
 	global $wpdb;
 
 	$data = $wpdb->get_results("SELECT umeta_id, user_id, meta_key, meta_value FROM {$wpdb->usermeta} WHERE meta_key LIKE 'billing-%' OR meta_key LIKE 'shipping-%'", ARRAY_A);
-	$query = "REPLACE INTO {$wpdb->usermeta} VALUES ";
-	foreach($data as $item){
-		$key = str_replace(array('billing-', 'shipping-'), array('billing_', 'shipping_'), $item['meta_key']);
-		$query .= "({$item['umeta_id']}, {$item['user_id']}, '{$key}', '{$item['meta_value']}'),";
+	if(!empty($data)){
+		$query = "REPLACE INTO {$wpdb->usermeta} VALUES ";
+		foreach($data as $item){
+			$key = str_replace(array('billing-', 'shipping-'), array('billing_', 'shipping_'), $item['meta_key']);
+			$query .= "({$item['umeta_id']}, {$item['user_id']}, '{$key}', '{$item['meta_value']}'),";
+		}
+		unset($data);
+		$query = rtrim($query, ',');
+		$wpdb->query($query);
 	}
-	unset($data);
-	$query = rtrim($query, ',');
-	$wpdb->query($query);
 
 	$options = Jigoshop_Base::get_options();
 	$options->add_option('jigoshop_address_1', $options->get_option('jigoshop_address_line1'));
