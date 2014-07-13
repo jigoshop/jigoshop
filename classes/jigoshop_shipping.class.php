@@ -73,24 +73,21 @@ class jigoshop_shipping extends Jigoshop_Singleton {
 
     public static function get_available_shipping_methods() {
 
-        $_available_methods = array();
+	    $_available_methods = array();
 
-        if (self::$enabled == 'yes') :
+	    if(self::$enabled == 'yes'){
+		    foreach(self::get_all_methods() as $method){
+			    if(jigoshop_cart::has_free_shipping_coupon() && $method->id == 'free_shipping'){
+				    $_available_methods[$method->id] = $method;
+			    }
 
-            foreach (self::get_all_methods() as $method) :
-
-				if ( jigoshop_cart::has_free_shipping_coupon() && $method->id == 'free_shipping' )
-                    $_available_methods[$method->id] = $method;
-
-                if ( $method->is_available() ) {
-					if ( $method->cost >= 0 ) {
-						$_available_methods[$method->id] = $method;
-					}
-                }
-
-            endforeach;
-
-        endif;
+			    if($method->is_available()){
+				    if($method->cost >= 0){
+					    $_available_methods[$method->id] = $method;
+				    }
+			    }
+		    }
+	    }
 
 		//throw error if there are no shipping methods
 		if ( empty( $_available_methods )) {

@@ -44,3 +44,15 @@ See [CHANGELOG.md](CHANGELOG.md)
 * Docs: http://forum.jigoshop.com/kb
 * Twitter: http://twitter.com/jigoshop
 * Source: http://github.com/jigoshop/jigoshop
+
+## Shortcodes description
+
+* `jigoshop_product_list` - shortcode used to display list of product in column or row format, fetched by specified taxonomy and terms. Parameters:
+    * `number` - number of products to download, default: `jigoshop_catalog_per_page` option,
+    * `order_by` - ordering of the products, default: "date",
+    * `order` - type of ordering of the products, default: "desc",
+    * `orientation` - orientation of items, default: "rows",
+    * `taxonomy` - taxonomy to restrict products to, default: "product_cat",
+    * `terms` - list of term slugs to fetch, can be an array or space separated string, default: empty,
+    * `thumbnails` - decides whether to show thumbnails or not, default: "show",
+    * `sku` - decides whether to show SKU value or not, default: "hide"

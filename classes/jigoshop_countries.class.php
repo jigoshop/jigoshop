@@ -828,12 +828,17 @@ class jigoshop_countries extends Jigoshop_Base {
 		return '*';
 	}
 
+	public static function get_countries(){
+		$countries = array_map(function($item){ return __($item, 'jigoshop'); }, self::$countries);
+		asort($countries, SORT_LOCALE_STRING);
+		return $countries;
+	}
+
 	/** get countries we allow only */
 	public static function get_allowed_countries(){
-		$countries = self::$countries;
+		$countries = self::get_countries();
 
 		if(self::get_options()->get_option('jigoshop_allowed_countries') !== 'specific'){
-			asort($countries);
 			return $countries;
 		}
 
@@ -843,7 +848,7 @@ class jigoshop_countries extends Jigoshop_Base {
 			$allowed_countries[$country] = $countries[$country];
 		}
 
-		asort($allowed_countries);
+		asort($allowed_countries, SORT_LOCALE_STRING);
 		return $allowed_countries;
 	}
 
@@ -855,13 +860,20 @@ class jigoshop_countries extends Jigoshop_Base {
 		return array();
 	}
 
+	public static function has_country($country_code){
+		return isset(self::$countries[$country_code]);
+	}
+
 	public static function get_country($country_code){
-		return isset(self::$countries[$country_code]) ? self::$countries[$country_code] : '';
+		return self::has_country($country_code) ? __(self::$countries[$country_code], 'jigoshop') : '';
+	}
+
+	public static function has_state($country_code, $state_code){
+		return isset(self::$states[$country_code]) && isset(self::$states[$country_code][$state_code]);
 	}
 
 	public static function get_state($country_code, $state_code){
-		$states = self::get_states($country_code);
-		return isset($states[$state_code]) ? $states[$state_code] : '';
+		return self::has_state($country_code, $state_code) ? self::$states[$country_code][$state_code] : '';
 	}
 
 	public static function country_has_state($country_code, $state_code){
@@ -878,8 +890,7 @@ class jigoshop_countries extends Jigoshop_Base {
 		$echo = true
 	){
 		$output = '';
-		$countries = self::$countries;
-		asort($countries);
+		$countries = self::get_countries();
 
 		if($selected_state === null){
 			$selected_state = '*';
