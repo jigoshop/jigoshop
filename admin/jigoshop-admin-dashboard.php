@@ -433,8 +433,8 @@ class jigoshop_dashboard {
 			<div class="links jigo-links">
 				<ul>
 					<li><a href="http://www.jigoshop.com/"><?php _e('Learn more about the Jigoshop plugin', 'jigoshop'); ?></a></li>
-					<li><a href="http://forum.jigoshop.com/kb"><?php _e('Stuck? Read the plugin\'s documentation.', 'jigoshop'); ?></a></li>
-					<li><a href="http://wordpress.org/support/plugin/jigoshop"><?php _e('Support', 'jigoshop'); ?></a></li>
+					<li><a href="https://www.jigoshop.com/documentation/"><?php _e('Stuck? Read the plugin\'s documentation.', 'jigoshop'); ?></a></li>
+					<li><a href="https://www.jigoshop.com/support/"><?php _e('Support', 'jigoshop'); ?></a></li>
 				</ul>
 			</div>
 		</div>
