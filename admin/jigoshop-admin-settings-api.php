@@ -37,15 +37,9 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 * @since 1.3
 	 */
 	public function settings_scripts(){
-		// http://jquerytools.org/documentation/rangeinput/index.html
-		wp_register_script('jquery-tools', jigoshop::assets_url().'/assets/js/jquery.tools.min.js', array('jquery'), '1.2.7');
-		wp_enqueue_script('jquery-tools');
-
-		wp_register_script('jigoshop-bootstrap-tooltip', jigoshop::assets_url().'/assets/js/bootstrap-tooltip.min.js', array('jquery'), '2.0.3');
-		wp_enqueue_script('jigoshop-bootstrap-tooltip');
-
-		wp_register_script('jigoshop-select2', jigoshop::assets_url().'/assets/js/select2.min.js', array('jquery'));
-		wp_enqueue_script('jigoshop-select2');
+		jigoshop_add_script('jquery-tools', JIGOSHOP_URL.'/assets/js/jquery.tools.min.js', array('jquery'), array('version' => '1.2.7'));
+		jigoshop_add_script('jigoshop-bootstrap-tooltip', JIGOSHOP_URL.'/assets/js/bootstrap-tooltip.min.js', array('jquery'), array('version' => '2.0.3'));
+		jigoshop_add_script('jigoshop-select2', JIGOSHOP_URL.'/assets/js/select2.min.js', array('jquery'));
 	}
 
 	/**
@@ -54,9 +48,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 * @since 1.3
 	 */
 	public function settings_styles(){
-		wp_register_style('jigoshop-select2', jigoshop::assets_url().'/assets/css/select2.css');
-		wp_enqueue_style('jigoshop-select2');
-
+		jigoshop_add_style('jigoshop-select2', JIGOSHOP_URL.'/assets/css/select2.css');
 		do_action('jigoshop_settings_styles'); // user defined stylesheets should be registered and queued
 	}
 
