@@ -284,17 +284,16 @@ class jigoshop_cart extends Jigoshop_Singleton
 		$in_cart_qty = !empty($cart_item_key) ? self::$cart_contents[$cart_item_key]['quantity'] : 0;
 
 		//  prevents adding products to the cart without enough quantity on hand
-		if ($product->managing_stock() && !$product->has_enough_stock($quantity + $in_cart_qty)) {
-			if ($in_cart_qty > 0) {
-				$error = self::get_options()->get_option('jigoshop_show_stock') == 'yes' ?
-					sprintf(__('We are sorry.  We do not have enough "%s" to fill your request.  You have %d of them in your Cart and we have %d available at this time.', 'jigoshop'), $product->get_title(), $in_cart_qty, $product->get_stock()) :
-					sprintf(__('We are sorry.  We do not have enough "%s" to fill your request.', 'jigoshop'), $product->get_title());
-			} else {
-				$error = self::get_options()->get_option('jigoshop_show_stock') == 'yes' ?
-					sprintf(__('We are sorry.  We do not have enough "%s" to fill your request. There are only %d left in stock.', 'jigoshop'), $product->get_title(), $product->get_stock()) :
-					sprintf(__('We are sorry.  We do not have enough "%s" to fill your request.', 'jigoshop'), $product->get_title());
+		if (!$product->has_enough_stock($quantity + $in_cart_qty)) {
+			jigoshop::add_error(sprintf(__('We are sorry. We do not have enough "%s" to fill your request.', 'jigoshop'), $product->get_title()));
+
+			if (self::get_options()->get_option('jigoshop_show_stock') == 'yes') {
+				if ($in_cart_qty > 0) {
+					jigoshop::add_error(sprintf(__('You have %d of them in your Cart and we have %d available at this time.', 'jigoshop'), $in_cart_qty, $product->get_stock()));
+				} else {
+					jigoshop::add_error(sprintf(__('There are only %d left in stock.', 'jigoshop'), $product->get_stock()));
+				}
 			}
-			jigoshop::add_error($error);
 
 			return false;
 		}
