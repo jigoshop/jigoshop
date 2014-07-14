@@ -3,28 +3,34 @@
 * 1.10:
     * New: `jigoshop_countries::get_countries()` function - returns alphabetically sorted list of translated country names.
     * New: `jigoshop_countries::has_country()` and `jigoshop_countries::has_state()` methods introduced.
-    * New: `jigoshop_render()` function introduced.
+    * New: `jigoshop_render()` and `jigoshop_render_result()` functions introduced.
     * New: `jigoshop_product_list` shortcode.
     * New: Check for minimum, required PHP version.
     * New: Check for minimum, required WordPress version.
     * New: Check for minimum, required memory size - currently 128 MB.
-    * New: Premium support and Docs links in Plugins list.
+    * New: Support and Docs links in Plugins list.
     * New: Ability to define default customer country.
     * New: Introduce Jigoshop menu to WordPress admin toolbar.
     * New: `jigoshop_remove_script()` function and its support in JWOS.
-    * New: Provinces for Poland and Philippines.
+    * New: Provinces for Poland and Philippines. Thanks to Kristoffer Cheng
+    * New: `JIGOSHOP_URL` constant - for easy access to Jigoshop files from other plugins.
     * Improved: JWOS now supports PHP 5.3 with `short_open_tag` disabled.
     * Improved: Reformatted main Jigoshop file.
     * Improved: Proper variation price sanitization.
     * Improved: Removed use of deprecated methods from Jigoshop cart, introduced payment methods template.
     * Improved: Extracted account templates from shortcodes - now users can override them in their templates!
-    * Improved: PayPal decimal errors for HUF, JPN and TWD currencies.
+    * Improved: PayPal decimal errors for HUF, JPN and TWD currencies. Thanks to newash
     * Improved: Default look of checkout form.
     * Improved: "Tel" and "County" are now "Phone" and "Province" in admin panel.
+    * Improved: Updating order status is at the end of saving the order. Thanks to newash
+    * Improved: Admin settings uses JWOS now.
+    * Improved: Jigoshop class information functions returns values from constants as they should.
+    * Improved: Reformatted WorldPay gateway class
     * Fix: Warning when saving product meta.
     * Fix: Removed Wordpress TwentyFourteen theme fix as it causes problems with real shops.
     * Fix: HTTPS warnings for external fonts removed.
     * Fix: Strict standards warning on edit address page.
+    * Fix: Reports chart properly scales Y-Axis ticks.
 * 1.9.6 - 2014.06.11:
     * New: Add version constant to `jigoshop` class for easy checking in plugins.
     * New: Javascript triggers `jigoshop.update_checkout` on body element when `update_checkout()` method is called. Useful for payment gateways.
