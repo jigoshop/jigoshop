@@ -238,8 +238,8 @@ function jigoshop_init()
 		unset($links[0]);
 		return array_merge(array(
 			'<a href="'.admin_url('admin.php?page=jigoshop_settings').'">'.__('Settings', 'jigoshop').'</a>',
-			'<a href="http://forum.jigoshop.com/kb">'.__('Docs', 'jigoshop').'</a>',
-			'<a href="http://www.jigoshop.com/compare-support-packages/">'.__('Premium Support', 'jigoshop').'</a>',
+			'<a href="https://www.jigoshop.com/documentation/">'.__('Docs', 'jigoshop').'</a>',
+			'<a href="https://www.jigoshop.com/support/">'.__('Support', 'jigoshop').'</a>',
 		), $links);
 	});
 
