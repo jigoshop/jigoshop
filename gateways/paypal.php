@@ -521,7 +521,7 @@ class paypal extends jigoshop_payment_gateway {
 						}
 
 						// Validate Amount
-						if(number_format((float)$order->order_total, $this->decimals) != $posted['mc_gross']){
+						if(number_format((float)$order->order_total, $this->decimals, '.', '') != $posted['mc_gross']){
 							// Put this order on-hold for manual checking
 							$order->update_status('on-hold', sprintf(__('PayPal Validation Error: Payment amounts do not match initial order (gross %s).', 'jigoshop'), $posted['mc_gross']));
 							exit;
