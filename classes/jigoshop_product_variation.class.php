@@ -136,6 +136,18 @@ class jigoshop_product_variation extends jigoshop_product {
 		return $on_sale;
 	}
 
+	public function get_stock()
+	{
+		$stock = (int)get_post_meta($this->variation_id, 'stock', true);
+
+		if ( $stock == '-9999999' ) {
+			$stock = parent::get_stock();
+		}
+
+		return $stock;
+	}
+
+
 	/**
 	 * Check the stock levels to unsure we have enough to match request
 	 *
@@ -143,15 +155,7 @@ class jigoshop_product_variation extends jigoshop_product {
 	 * @return  bool
 	 */
 	public function has_enough_stock( $quantity ) {
-		// always work from a new product to check actual stock available
-		// this product instance could be sitting in a Cart for a user and
-		// another customer purchases the last available
-		$temp = new jigoshop_product_variation( $this->get_variation_id() );
-		if ( $temp->stock == '-9999999' ) {
-			$_parent = new jigoshop_product( $temp->ID );
-			$temp->stock = $_parent->stock;
-		}
-		return ($this->backorders_allowed() || $temp->stock >= $quantity);
+		return parent::has_enough_stock($quantity) || $this->get_stock() >= $quantity;
 	}
 
 	/**
