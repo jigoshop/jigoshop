@@ -30,9 +30,6 @@ function jigoshop_process_shop_order_meta($post_id)
 	//Get old order items
 	$old_order_items = (array)maybe_unserialize(get_post_meta($post_id, 'order_items', true));
 
-	// Order status
-	$order->update_status($_POST['order_status']);
-
 	// Add/Replace data to array
 	$customerDetails = array(
 		'billing_first_name',
@@ -185,6 +182,9 @@ function jigoshop_process_shop_order_meta($post_id)
 	// Save
 	update_post_meta($post_id, 'order_data', $data);
 	update_post_meta($post_id, 'order_items', $order_items);
+
+	// Order status
+	$order->update_status($_POST['order_status']);
 
 	// Handle button actions
 	if (isset($_POST['reduce_stock']) && $_POST['reduce_stock'] && count($order_items) > 0) {
