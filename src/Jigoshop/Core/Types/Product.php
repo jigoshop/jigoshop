@@ -316,7 +316,7 @@ class Product implements Post
 	{
 		switch($type){
 			case Simple::TYPE:
-				return 'Jigoshop\\Product\\Type\\Simple';
+				return 'Jigoshop\\Entity\\Product\\Type\\Simple';
 			default:
 				return $this->wp->applyFilters('jigoshop\\product\\type\\class', $type);
 		}

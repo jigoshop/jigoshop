@@ -3,6 +3,7 @@
 namespace Jigoshop\Service;
 
 use Jigoshop\Entity\EntityInterface;
+use Jigoshop\Entity\Product\Type\Simple;
 use Jigoshop\Exception;
 use WPAL\Wordpress;
 
@@ -65,6 +66,10 @@ class Product implements ProductServiceInterface
 	public function findForPost($post)
 	{
 		$type = $this->wp->getPostMeta($post->ID, 'type', true);
+		if(empty($type)){
+			$type = Simple::TYPE;
+		}
+
 		$product = $this->getProductForType($type);
 		$meta = array();
 

@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Core;
 
+use Jigoshop\Entity\Product\Type\Simple;
 use WPAL\Wordpress;
 
 /**
@@ -160,6 +161,6 @@ class Options
 	 */
 	public function getEnabledProductTypes()
 	{
-		return $this->wp->applyFilters('jigoshop\\product\\types', $this->get('enabled_product_types'));
+		return $this->wp->applyFilters('jigoshop\\product\\types', $this->get('enabled_product_types', array(Simple::TYPE)));
 	}
 }
