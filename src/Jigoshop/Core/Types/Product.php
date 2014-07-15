@@ -252,7 +252,10 @@ class Product implements Post
 		// Get all active terms
 		$types = array();
 		foreach ($this->enabledTypes as $type) {
-			$types[$type] = $this->getTypeName($type);
+			$types[$type] = array(
+				'label' => $this->getTypeName($type),
+				'count' => $this->getTypeCount($type),
+			);
 		}
 		$currentType = $this->wp->getQueryParameter('product_type');
 
@@ -330,5 +333,17 @@ class Product implements Post
 			default:
 				return $this->wp->applyFilters('jigoshop\\product\\type\\name', $type);
 		}
+	}
+
+	/**
+	 * Finds and returns number of products of specified type.
+	 *
+	 * @param $type string Name of the type.
+	 * @return int Count of the products.
+	 */
+	private function getTypeCount($type)
+	{
+		// TODO: Implement fetching count of selected type
+		return 0;
 	}
 }
