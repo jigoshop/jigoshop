@@ -52,15 +52,11 @@ class Product
 	 */
 	public static function getThumbnail(\Jigoshop\Entity\Product $product)
 	{
-//				if( 'trash' != $post->post_status ) {
-//					echo '<a class="row-title" href="'.get_edit_post_link( $post->ID ).'">';
-//					echo jigoshop_get_product_thumbnail( 'admin_product_list' );
-//					echo '</a>';
-//				}
-//				else {
-//					echo jigoshop_get_product_thumbnail( 'admin_product_list' );
-//				}
-		return '';
+		if (has_post_thumbnail($product->getId())) {
+			return get_the_post_thumbnail($product->getId(), 'admin_product_list');
+		} else {
+			return '<img src="'.JIGOSHOP_URL.'/assets/images/placeholder.png" alt="Placeholder" width="70" height="70" />';
+		}
 	}
 
 	/**

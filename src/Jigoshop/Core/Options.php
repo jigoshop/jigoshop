@@ -112,7 +112,7 @@ class Options
 			$this->wp->addImageSize($size, $options['width'], $options['height'], $options['crop']);
 		}
 
-//		add_image_size('admin_product_list', 32, 32, $this->get('jigoshop_use_wordpress_tiny_crop', 'no') == 'yes' ? true : false); // TODO: Is this needed?
+		$this->wp->addImageSize('admin_product_list', 70, 70, true);
 	}
 
 	/**
