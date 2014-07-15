@@ -30,7 +30,10 @@ abstract class Product implements EntityInterface
 	private $attributes;
 
 	protected $dirtyFields = array();
-	protected $dirtyAttributes = array();
+	protected $dirtyAttributes = array(
+		'new' => array(),
+		'removed' => array(),
+	);
 
 	/** @var \WPAL\Wordpress */
 	protected $wp;
@@ -191,7 +194,7 @@ abstract class Product implements EntityInterface
 
 		if ($attribute !== false) {
 			$this->attributes[$key] = $attribute;
-			$this->dirtyAttributes[] = $key;
+			$this->dirtyAttributes['new'][$key] = $attribute;
 		}
 	}
 
@@ -212,7 +215,7 @@ abstract class Product implements EntityInterface
 
 		if ($key !== false) {
 			unset($this->attributes[$key]);
-			$this->dirtyAttributes[] = $key;
+			$this->dirtyAttributes['removed'][] = $key;
 		}
 	}
 
@@ -308,7 +311,7 @@ abstract class Product implements EntityInterface
 			unset($this->dirtyFields[$key]);
 		}
 
-		// TODO: Save attributes?
+		$toSave['attributes'] = $this->dirtyAttributes;
 
 		return $toSave;
 	}
@@ -343,6 +346,9 @@ abstract class Product implements EntityInterface
 		}
 
 		// TODO: Restore tax (after thinking it over and implementing).
-		// TODO: Restore attributes?
+
+		if (isset($state['attributes'])) {
+			$this->attributes = $state['attributes'];
+		}
 	}
 }

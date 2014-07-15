@@ -154,4 +154,12 @@ class Options
 	{
 		$this->wp->updateOption('jigoshop_'.$page.'_id', $id);
 	}
+
+	/**
+	 * @return array List of names of enabled product types.
+	 */
+	public function getEnabledProductTypes()
+	{
+		return $this->wp->applyFilters('jigoshop\\product\\types', $this->get('enabled_product_types'));
+	}
 }

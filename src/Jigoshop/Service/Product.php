@@ -47,24 +47,13 @@ class Product implements ProductServiceInterface
 	 */
 	public function find($id)
 	{
-		$type = $this->wp->getPostMeta($id, 'type', true);
-		$product = $this->getProductForType($type);
+		$post = null;
 
 		if ($id !== null) {
 			$post = $this->wp->getPost($id);
-			$meta = array_map(function ($item){
-				return $item[0];
-			}, $this->wp->getPostMeta($id));
-
-			$product->setId($id);
-			$product->setName($post->post_title);
-			$product->restoreState($meta);
-			// TODO: Restoring attributes
-
-			$product = $this->wp->applyFilters('jigoshop\\find\\product', $product, $meta);
 		}
 
-		return $product;
+		return $this->findForPost($post);
 	}
 
 	/**
@@ -77,19 +66,21 @@ class Product implements ProductServiceInterface
 	{
 		$type = $this->wp->getPostMeta($post->ID, 'type', true);
 		$product = $this->getProductForType($type);
+		$meta = array();
 
-		$meta = array_map(function ($item){
-			return $item[0];
-		}, $this->wp->getPostMeta($post->ID));
+		if($post){
+			$meta = array_map(function ($item){
+				return $item[0];
+			}, $this->wp->getPostMeta($post->ID));
 
-		$product->setId($post->ID);
-		$product->setName($post->post_title);
-		$product->restoreState($meta);
-		// TODO: Restoring attributes
+			$meta['attributes'] = $this->getProductAttributes($post->ID);
 
-		$product = $this->wp->applyFilters('jigoshop\\find\\product', $product, $meta);
+			$product->setId($post->ID);
+			$product->setName($post->post_title);
+			$product->restoreState($meta);
+		}
 
-		return $product;
+		return $this->wp->applyFilters('jigoshop\\find\\product', $product, $meta);
 	}
 
 	/**
@@ -135,11 +126,21 @@ class Product implements ProductServiceInterface
 			unset($fields['id'], $fields['name']);
 		}
 
+		if (isset($fields['attributes'])) {
+			foreach ($fields['attributes']['removed'] as $key) {
+				$this->removeProductAttribute($object, $key);
+			}
+
+			foreach ($fields['attributes']['new'] as $key => $attribute) {
+				$this->saveProductAttribute($object, $key, $attribute);
+			}
+
+			unset($fields['attributes']);
+		}
+
 		foreach ($fields as $field => $value) {
 			$this->wp->updatePostMeta($object->getId(), $field, $value);
 		}
-
-		// TODO: Saving attributes
 	}
 
 	/**
@@ -212,5 +213,21 @@ class Product implements ProductServiceInterface
 
 		$class = $this->types[$type];
 		return new $class($this->wp);
+	}
+
+	private function removeProductAttribute($object, $key)
+	{
+		// TODO: Real remove of the attribute
+	}
+
+	private function saveProductAttribute($object, $key, $attribute)
+	{
+		// TODO: Real save of the attribute
+	}
+
+	private function getProductAttributes($id)
+	{
+		// TODO: Real fetch of product attributes and restoring state
+		return array();
 	}
 }

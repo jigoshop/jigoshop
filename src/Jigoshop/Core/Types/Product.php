@@ -4,6 +4,7 @@ namespace Jigoshop\Core\Types;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
+use Jigoshop\Entity\Product\Type\Simple;
 use Jigoshop\Helper\Render;
 use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
@@ -24,6 +25,11 @@ class Product implements Post
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->productService = $productService;
+
+		$enabledTypes = $options->getEnabledProductTypes();
+		foreach ($enabledTypes as $type) {
+			$productService->addType($type, $this->getTypeClass($type));
+		}
 
 		$wp->addFilter(sprintf('manage_edit-%s_columns', Types::PRODUCT), array($this, 'columns'));
 		$wp->addAction(sprintf('manage_%s_posts_custom_column', Types::PRODUCT), array($this, 'displayColumn'), 2);
@@ -298,5 +304,21 @@ class Product implements Post
 			'menu' => $menu,
 			'tabs' => $tabs,
 		));
+	}
+
+	/**
+	 * Finds and returns class name of specified product type.
+	 *
+	 * @param $type string Name of the type.
+	 * @return string Class name.
+	 */
+	private function getTypeClass($type)
+	{
+		switch($type){
+			case Simple::TYPE:
+				return 'Jigoshop\\Product\\Type\\Simple';
+			default:
+				return $this->wp->applyFilters('jigoshop\\product\\type\\class', $type);
+		}
 	}
 }
