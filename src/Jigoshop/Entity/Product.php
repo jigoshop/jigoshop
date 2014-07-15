@@ -3,7 +3,6 @@
 namespace Jigoshop\Entity;
 
 use Jigoshop\Entity\Product\Size;
-use Jigoshop\Entity\Product\StockStatus;
 use WPAL\Wordpress;
 
 /**
@@ -139,14 +138,14 @@ abstract class Product implements EntityInterface
 	}
 
 	/**
-	 * @return float Product price.
+	 * Returns whether product is visible to any of sources
+	 *
+	 * @return boolean Is product visible?
 	 */
-	public abstract function getPrice();
-
-	/**
-	 * @return StockStatus Product stock status.
-	 */
-	public abstract function getStock();
+	public function isVisible()
+	{
+		return $this->visibility && self::VISIBILITY_PUBLIC != 0;
+	}
 
 	/**
 	 * @return string Product type.

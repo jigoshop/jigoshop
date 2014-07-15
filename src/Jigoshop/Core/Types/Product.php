@@ -95,15 +95,17 @@ class Product implements Post
 			'thumbnail' => null,
 			'title' => _x('Name', 'product', 'jigoshop'),
 			'sku' => _x('SKU', 'product', 'jigoshop'),
-			'featured' => _x('Is featured?', 'product', 'jigoshop'),
+			'featured' => sprintf(
+				'<img src="'.JIGOSHOP_URL.'/assets/images/head_featured.png" alt="%s" title="%s" />',
+				_x('Is featured?', 'product', 'jigoshop'),
+				_x('Is featured?', 'product', 'jigoshop')
+			),
 			'type' => _x('Type', 'product', 'jigoshop'),
 			'stock' => _x('Stock', 'product', 'jigoshop'),
 			'price' => _x('Price', 'product', 'jigoshop'),
-			'date' => _x('Created at', 'product', 'jigoshop'),
+			'creation' => _x('Created at', 'product', 'jigoshop'),
 		);
 
-//		$columns["thumb"] = null;
-//		$columns["featured"] = '<img src="' . jigoshop::assets_url() . '/assets/images/head_featured.png" alt="' . __('Featured', 'jigoshop') . '" />';
 		if($this->options->get('enable_sku', 'yes') !== 'yes'){
 			unset($columns['sku']);
 		}
@@ -124,91 +126,42 @@ class Product implements Post
 		$product = $this->productService->find($post->ID);
 		switch ($column) {
 			case 'thumb':
-//				if( 'trash' != $post->post_status ) {
-//					echo '<a class="row-title" href="'.get_edit_post_link( $post->ID ).'">';
-//					echo jigoshop_get_product_thumbnail( 'admin_product_list' );
-//					echo '</a>';
-//				}
-//				else {
-//					echo jigoshop_get_product_thumbnail( 'admin_product_list' );
-//				}
+				echo \Jigoshop\Helper\Product::getThumbnail($product);
 				break;
 			case 'price':
-				echo $product->getPrice();
+				echo \Jigoshop\Helper\Product::getPrice($product);
 				break;
 			case 'featured':
-//				$url = wp_nonce_url( admin_url('admin-ajax.php?action=jigoshop-feature-product&product_id=' . $post->ID) );
-//				echo '<a href="'.esc_url($url).'" title="'.__('Change','jigoshop') .'">';
-//				if ($product->is_featured()) echo '<a href="'.esc_url($url).'"><img src="'.jigoshop::assets_url().'/assets/images/head_featured_desc.png" alt="yes" />';
-//				else echo '<img src="'.jigoshop::assets_url().'/assets/images/head_featured.png" alt="no" />';
-//				echo '</a>';
+				echo \Jigoshop\Helper\Product::isFeatured($product);
 				break;
 			case 'stock':
-				echo $product->getStock()->getStatus();
-//				if ( ! $product->is_type( 'grouped' ) && $product->is_in_stock() ) {
-//					if ( $product->managing_stock() ) {
-//						if ( $product->is_type( 'variable' ) && $product->stock > 0 ) {
-//							echo $product->stock.' '.__('In Stock', 'jigoshop');
-//						} else if ( $product->is_type( 'variable' ) ) {
-//							$stock_total = 0;
-//							foreach ( $product->get_children() as $child_ID ) {
-//								$child = $product->get_child( $child_ID );
-//								$stock_total += (int)$child->stock;
-//							}
-//							echo $stock_total.' '.__('In Stock', 'jigoshop');
-//						} else {
-//							echo $product->stock.' '.__('In Stock', 'jigoshop');
-//						}
-//					} else {
-//						echo __('In Stock', 'jigoshop');
-//					}
-//				} elseif ( $product->is_type( 'grouped' ) ) {
-//					echo __('Parent (no stock)', 'jigoshop');
-//				} else {
-//					echo '<strong class="attention">' . __('Out of Stock', 'jigoshop') . '</strong>';
-//				}
+				echo \Jigoshop\Helper\Product::getStock($product);
 				break;
 			case 'type':
-				echo $product->getType();
+				echo $this->getTypeName($product->getType());
 				break;
 			case 'sku':
 				echo $product->getSku();
 				break;
-			case 'date':
-//				if ( '0000-00-00 00:00:00' == $post->post_date ) :
-//					$t_time = $h_time = __( 'Unpublished', 'jigoshop' );
-//					$time_diff = 0;
-//				else :
-//					$t_time = get_the_time( __( 'Y/m/d g:i:s A', 'jigoshop' ) );
-//					$m_time = $post->post_date;
-//					$time = get_post_time( 'G', true, $post );
-//
-//					$time_diff = time() - $time;
-//
-//					if ( $time_diff > 0 && $time_diff < 24*60*60 )
-//						$h_time = sprintf( __( '%s ago', 'jigoshop' ), human_time_diff( $time ) );
-//					else
-//						$h_time = mysql2date( __( 'Y/m/d', 'jigoshop' ), $m_time );
-//				endif;
-//
-//				echo '<abbr title="' . esc_attr( $t_time ) . '">' . apply_filters( 'post_date_column_time', $h_time, $post ) . '</abbr><br />';
-//
-//				if ( 'publish' == $post->post_status ) :
-//					_e( 'Published', 'jigoshop' );
-//				elseif ( 'future' == $post->post_status ) :
-//					if ( $time_diff > 0 ) :
-//						echo '<strong class="attention">' . __( 'Missed schedule', 'jigoshop' ) . '</strong>';
-//					else :
-//						_e( 'Scheduled', 'jigoshop' );
-//					endif;
-//				else :
-//					_e( 'Draft', 'jigoshop' );
-//				endif;
-//				if ( $product->visibility ) :
-//					echo ($product->visibility != 'visible')
-//						? '<br /><strong class="attention">'.ucfirst($product->visibility).'</strong>'
-//						: '';
-//				endif;
+			case 'creation':
+				$fullFormat = _x('Y/m/d g:i:s A', 'time', 'jigoshop');
+				$format = _x('Y/m/d', 'time', 'jigoshop');
+				echo '<abbr title="'.mysql2date($fullFormat, $post->post_date).'">'.apply_filters('post_date_column_time', mysql2date($format, $post->post_date), $post ).'</abbr>';
+
+				if($product->isVisible()){
+					echo '<br /><strong>'.__('Visible in', 'jigoshop').'</strong>: ';
+					switch($product->getVisibility()){
+						case \Jigoshop\Entity\Product::VISIBILITY_SEARCH:
+							echo __('Search only', 'jigoshop');
+							break;
+						case \Jigoshop\Entity\Product::VISIBILITY_CATALOG:
+							echo __('Catalog only', 'jigoshop');
+							break;
+						case \Jigoshop\Entity\Product::VISIBILITY_PUBLIC:
+							echo __('Catalog and search', 'jigoshop');
+							break;
+					}
+				}
 				break;
 		}
 	}

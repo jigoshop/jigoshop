@@ -472,10 +472,6 @@ ul.subsubsub li.refunded a {
 	width: 12%
 }
 
-.fixed th.column-featured img {
-	display: none
-}
-
 .fixed th.column-featured a, .fixed th.column-featured.desc a:hover {
 	background: url('../images/head_featured.png') top center no-repeat
 }
@@ -485,13 +481,17 @@ ul.subsubsub li.refunded a {
 }
 
 .fixed .column-featured {
-	width: 90px
+	width: 20px;
+}
+
+.fixed .column-thumbnail {
+	width: 100px;
 }
 
 .fixed .column-featured div {
 	text-indent: 100%;
 	white-space: nowrap;
-	overflow: hidden
+	overflow: hidden;
 }
 
 .fixed .column-featured.sortable a span, .fixed .column-featured.sorted a span {
