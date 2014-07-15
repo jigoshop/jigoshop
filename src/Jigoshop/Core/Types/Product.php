@@ -19,6 +19,8 @@ class Product implements Post
 	private $options;
 	/** @var \Jigoshop\Service\ProductServiceInterface */
 	private $productService;
+	/** @var array */
+	private $enabledTypes = array();
 
 	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService)
 	{
@@ -26,15 +28,15 @@ class Product implements Post
 		$this->options = $options;
 		$this->productService = $productService;
 
-		$enabledTypes = $options->getEnabledProductTypes();
-		foreach ($enabledTypes as $type) {
+		$this->enabledTypes = $options->getEnabledProductTypes();
+		foreach ($this->enabledTypes as $type) {
 			$productService->addType($type, $this->getTypeClass($type));
 		}
 
 		$wp->addFilter(sprintf('manage_edit-%s_columns', Types::PRODUCT), array($this, 'columns'));
 		$wp->addAction(sprintf('manage_%s_posts_custom_column', Types::PRODUCT), array($this, 'displayColumn'), 2);
 //		$wp->addAction('restrict_manage_posts', array($this, 'categoryFilter'));
-//		$wp->addAction('restrict_manage_posts', array($this, 'typeFilter'));
+		$wp->addAction('restrict_manage_posts', array($this, 'typeFilter'));
 		$that = $this;
 		$wp->addAction('add_meta_boxes', function() use ($wp, $that){
 			$wp->addMetaBox('jigoshop-product-data', __('Product Data', 'jigoshop'), array($that, 'dataBox'), $that::NAME, 'normal', 'high');
@@ -248,12 +250,14 @@ class Product implements Post
 		}
 
 		// Get all active terms
-		// TODO: Properly fetch available types
-		$terms = $this->wp->getTerms('product_type');
+		$types = array();
+		foreach ($this->enabledTypes as $type) {
+			$types[$type] = $this->getTypeName($type);
+		}
 		$currentType = $this->wp->getQueryParameter('product_type');
 
 		Render::output('admin/products/typeFilter', array(
-			'types' => $terms,
+			'types' => $types,
 			'current' => $currentType
 		));
 	}
@@ -268,25 +272,15 @@ class Product implements Post
 	{
 		$post = $this->wp->getGlobalPost();
 		$product = $this->productService->findForPost($post);
-		// TODO: Properly fetch available product types
-		$types = $this->wp->applyFilters('jigoshop\\admin\\product\\types', array(
-			'simple' => __('Simple', 'jigoshop'),
-		));
-//		$types = apply_filters( 'jigoshop_product_type_selector', array(
-//			'simple'		=> __('Simple', 'jigoshop'),
-//			'downloadable'	=> __('Downloadable', 'jigoshop'),
-//			'grouped'		=> __('Grouped', 'jigoshop'),
-//			'virtual'		=> __('Virtual', 'jigoshop'),
-//			'variable'		=> __('Variable', 'jigoshop'),
-//			'external'		=> __('External / Affiliate', 'jigoshop')
-//		));
+		$types = array();
+		foreach ($this->enabledTypes as $type) {
+			$types[$type] = $this->getTypeName($type);
+		}
 		$menu = $this->wp->applyFilters('jigoshop\\admin\\product\\menu', array(
 			'general' => __('General', 'jigoshop'),
 			'advanced' => __('Advanced', 'jigoshop'),
 			'inventory' => __('Inventory', 'jigoshop'),
 			'attributes' => __('Attributes', 'jigoshop'),
-//			'grouping' => __('Grouping', 'jigoshop'), // TODO: Remove this, unnecessary tab...
-//			'file' => __('Download', 'jigoshop'), // TODO: Remove this, move to Downloadable product
 		));
 		$tabs = $this->wp->applyFilters('jigoshop\\admin\\product\\tabs', array(
 			'general' => array(),
@@ -319,6 +313,22 @@ class Product implements Post
 				return 'Jigoshop\\Entity\\Product\\Type\\Simple';
 			default:
 				return $this->wp->applyFilters('jigoshop\\product\\type\\class', $type);
+		}
+	}
+
+	/**
+	 * Finds and returns human-readable name of specified product type.
+	 *
+	 * @param $type string Name of the type.
+	 * @return string Human-readable name.
+	 */
+	private function getTypeName($type)
+	{
+		switch($type){
+			case Simple::TYPE:
+				return __('Simple', 'jigoshop');
+			default:
+				return $this->wp->applyFilters('jigoshop\\product\\type\\name', $type);
 		}
 	}
 }
