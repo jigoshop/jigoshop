@@ -25,7 +25,8 @@
     * Improved: Updating order status is at the end of saving the order. Thanks to newash
     * Improved: Admin settings uses JWOS now.
     * Improved: Jigoshop class information functions returns values from constants as they should.
-    * Improved: Reformatted WorldPay gateway class
+    * Improved: Reformatted WorldPay gateway class.
+    * Improved: New Google Analytics code using Universal Analytics. Thanks to Ragnar Karlsson for a tip!
     * Fix: Warning when saving product meta.
     * Fix: Removed Wordpress TwentyFourteen theme fix as it causes problems with real shops.
     * Fix: HTTPS warnings for external fonts removed.
