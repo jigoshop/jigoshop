@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Jigoshop\Core\Types;
-
 
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;

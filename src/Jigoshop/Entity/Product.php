@@ -2,9 +2,8 @@
 
 namespace Jigoshop\Entity;
 
-use Jigoshop\Entity\Product\Sales;
 use Jigoshop\Entity\Product\Size;
-use Jigoshop\Entity\Product\StockStatus;
+use WPAL\Wordpress;
 
 /**
  * Product class.
@@ -12,10 +11,8 @@ use Jigoshop\Entity\Product\StockStatus;
  * @package Jigoshop\Entity
  * @author Amadeusz Starzykiewicz
  */
-class Product implements EntityInterface
+abstract class Product implements EntityInterface
 {
-	const TYPE = 'simple';
-
 	const VISIBILITY_CATALOG = 1;
 	const VISIBILITY_SEARCH = 2;
 	const VISIBILITY_PUBLIC = 3; // CATALOG | SEARCH
@@ -23,20 +20,25 @@ class Product implements EntityInterface
 	private $id;
 	private $name;
 	private $sku;
-	private $price = 0.0;
-	private $regularPrice = 0.0;
-	/** @var Sales */
-	private $sales;
 	/** @var Size */
 	private $size;
+
 	private $tax;
+
 	private $visibility = self::VISIBILITY_PUBLIC;
 	private $featured;
-	/** @var StockStatus */
-	private $stock;
 	private $attributes;
 
-	private $dirtyFields = array();
+	protected $dirtyFields = array();
+	protected $dirtyAttributes = array();
+
+	/** @var \WPAL\Wordpress */
+	protected $wp;
+
+	public function __construct(Wordpress $wp)
+	{
+		$this->wp = $wp;
+	}
 
 	/**
 	 * @param int $id New ID for the product.
@@ -73,6 +75,104 @@ class Product implements EntityInterface
 	}
 
 	/**
+	 * @param string $sku New SKU (Stock-Keeping Unit).
+	 */
+	public function setSku($sku)
+	{
+		$this->sku = $sku;
+		$this->dirtyFields[] = 'sku';
+	}
+
+	/**
+	 * @return string Product's SKU (Stock-Keeping Unit).
+	 */
+	public function getSku()
+	{
+		return $this->sku;
+	}
+
+	/**
+	 * @param boolean $featured Whether product is featured.
+	 */
+	public function setFeatured($featured)
+	{
+		$this->featured = $featured;
+		$this->dirtyFields[] = 'featured';
+	}
+
+	/**
+	 * @return boolean Is product featured?
+	 */
+	public function isFeatured()
+	{
+		return $this->featured;
+	}
+
+	/**
+	 * Sets product visibility.
+	 * Please, use provided constants to set value properly:
+	 *   * Product::VISIBILITY_CATALOG - visible only in catalog
+	 *   * Product::VISIBILITY_SEARCH - visible only in search
+	 *   * Product::VISIBILITY_PUBLIC - visible in search and catalog
+	 *
+	 * @param int $visibility Product visibility.
+	 */
+	public function setVisibility($visibility)
+	{
+		$this->visibility = $visibility;
+		$this->dirtyFields[] = 'visibility';
+	}
+
+	/**
+	 * Returns bitwise value of product visibility.
+	 * Do determine if product is visible in specified type simply check it with "&" bit operator.
+	 *
+	 * @return int Current product visibility.
+	 */
+	public function getVisibility()
+	{
+		return $this->visibility;
+	}
+
+	/**
+	 * @return string Product type.
+	 */
+	public abstract function getType();
+
+	/**
+	 * @param $type string Type name.
+	 * @return bool Is product of specified type?
+	 */
+	public function isType($type)
+	{
+		return $this->getType() === $type;
+	}
+
+	/**
+	 * Sets product size.
+	 * Applies `jigoshop\product\set_size` filter to allow plugins to modify size data. When filter returns false size is not modified at all.
+	 *
+	 * @param Size $size New product size.
+	 */
+	public function setSize(Size $size)
+	{
+		$size = $this->wp->applyFilters('jigoshop\\product\\set_size', $size, $this);
+
+		if ($size !== false) {
+			$this->size = $size;
+			$this->dirtyFields[] = 'size';
+		}
+	}
+
+	/**
+	 * @return Size Product size.
+	 */
+	public function getSize()
+	{
+		return $this->size;
+	}
+
+	/**
 	 * Adds new attribute to the product.
 	 * If attribute already exists - it is replaced.
 	 * Calls `jigoshop\product\add_attribute` filter before adding. If filter returns false - attribute is not added.
@@ -87,11 +187,11 @@ class Product implements EntityInterface
 			$key = count($this->attributes);
 		}
 
-		$attribute = apply_filters('jigoshop\\product\\add_attribute', $attribute, $this);
+		$attribute = $this->wp->applyFilters('jigoshop\\product\\add_attribute', $attribute, $this);
 
 		if ($attribute !== false) {
 			$this->attributes[$key] = $attribute;
-			$this->dirtyFields[] = 'attributes';
+			$this->dirtyAttributes[] = $key;
 		}
 	}
 
@@ -108,11 +208,11 @@ class Product implements EntityInterface
 		}
 
 		$key = $this->_findAttribute($attribute);
-		$key = apply_filters('jigoshop\\product\\delete_attribute', $key, $attribute, $this);
+		$key = $this->wp->applyFilters('jigoshop\\product\\delete_attribute', $key, $attribute, $this);
 
 		if ($key !== false) {
 			unset($this->attributes[$key]);
-			$this->dirtyFields[] = 'attributes';
+			$this->dirtyAttributes[] = $key;
 		}
 	}
 
@@ -143,156 +243,6 @@ class Product implements EntityInterface
 	}
 
 	/**
-	 * @param boolean $featured Whether product is featured.
-	 */
-	public function setFeatured($featured)
-	{
-		$this->featured = $featured;
-		$this->dirtyFields[] = 'featured';
-	}
-
-	/**
-	 * @return boolean Is product featured?
-	 */
-	public function isFeatured()
-	{
-		return $this->featured;
-	}
-
-	/**
-	 * Sets new product price.
-	 * Applies `jigoshop\product\set_price` filter to allow plugins to modify the price. When filter returns false price is not modified at all.
-	 *
-	 * @param float $price New product price.
-	 */
-	public function setPrice($price)
-	{
-		$price = apply_filters('jigoshop\\product\\set_price', $price, $this);
-
-		if ($price !== false) {
-			$this->price = $price;
-			$this->dirtyFields[] = 'price';
-		}
-	}
-
-	/**
-	 * Returns real product price.
-	 * Applies `jigoshop\product\get_price` filter to allow plugins to modify the price.
-	 *
-	 * @return float Current product price.
-	 */
-	public function getPrice()
-	{
-		return apply_filters('jigoshop\\product\\get_price', $this->price, $this);
-	}
-
-	/**
-	 * @param float $regularPrice New regular product price.
-	 */
-	public function setRegularPrice($regularPrice)
-	{
-		$this->regularPrice = $regularPrice;
-		$this->dirtyFields[] = 'regularPrice';
-	}
-
-	/**
-	 * @return float Regular product price.
-	 */
-	public function getRegularPrice()
-	{
-		return $this->regularPrice;
-	}
-
-	/**
-	 * Sets product sales.
-	 * Applies `jigoshop\product\set_sales` filter to allow plugins to modify sales data. When filter returns false sales are not modified at all.
-	 *
-	 * @param Sales $sales Product sales data.
-	 */
-	public function setSales(Sales $sales)
-	{
-		$sales = apply_filters('jigoshop\\product\\set_sales', $sales, $this);
-
-		if ($sales !== false) {
-			$this->sales = $sales;
-			$this->dirtyFields[] = 'sales';
-		}
-	}
-
-	/**
-	 * @return Sales Current product sales data.
-	 */
-	public function getSales()
-	{
-		return $this->sales;
-	}
-
-	/**
-	 * Sets product size.
-	 * Applies `jigoshop\product\set_size` filter to allow plugins to modify size data. When filter returns false size is not modified at all.
-	 *
-	 * @param Size $size New product size.
-	 */
-	public function setSize(Size $size)
-	{
-		$size = apply_filters('jigoshop\\product\\set_size', $size, $this);
-
-		if ($size !== false) {
-			$this->size = $size;
-			$this->dirtyFields[] = 'size';
-		}
-	}
-
-	/**
-	 * @return Size Product size.
-	 */
-	public function getSize()
-	{
-		return $this->size;
-	}
-
-	/**
-	 * @param string $sku New SKU (Stock-Keeping Unit).
-	 */
-	public function setSku($sku)
-	{
-		$this->sku = $sku;
-		$this->dirtyFields[] = 'sku';
-	}
-
-	/**
-	 * @return string Product's SKU (Stock-Keeping Unit).
-	 */
-	public function getSku()
-	{
-		return $this->sku;
-	}
-
-	/**
-	 * Sets product stock.
-	 * Applies `jigoshop\product\set_stock` filter to allow plugins to modify stock data. When filter returns false stock is not modified at all.
-	 *
-	 * @param StockStatus $stock New product stock status.
-	 */
-	public function setStock(StockStatus $stock)
-	{
-		$stock = apply_filters('jigoshop\\product\\set_stock', $stock, $this);
-
-		if ($stock !== false) {
-			$this->stock = $stock;
-			$this->dirtyFields[] = 'stock';
-		}
-	}
-
-	/**
-	 * @return StockStatus Current stock status.
-	 */
-	public function getStock()
-	{
-		return $this->stock;
-	}
-
-	/**
 	 * TODO: Implement taxing. Probably it is worth to use the same filters as in other setters.
 	 *
 	 * @param mixed $tax
@@ -314,53 +264,10 @@ class Product implements EntityInterface
 	}
 
 	/**
-	 * @return string Product type.
-	 */
-	public function getType()
-	{
-		return self::TYPE;
-	}
-
-	/**
-	 * @param $type string Type name.
-	 * @return bool Is product of specified type?
-	 */
-	public function isType($type)
-	{
-		return $this->getType() == $type;
-	}
-
-	/**
-	 * Sets product visibility.
-	 * Please, use provided constants to set value properly:
-	 *   * Product::VISIBILITY_CATALOG - visible only in catalog
-	 *   * Product::VISIBILITY_SEARCH - visible only in search
-	 *   * Product::VISIBILITY_PUBLIC - visible in search and catalog
-	 *
-	 * @param int $visibility Product visibility.
-	 */
-	public function setVisibility($visibility)
-	{
-		$this->visibility = $visibility;
-		$this->dirtyFields[] = 'visibility';
-	}
-
-	/**
-	 * Returns bitwise value of product visibility.
-	 * Do determine if product is visible in specified type simply check it with "&" bit operator.
-	 *
-	 * @return int Current product visibility.
-	 */
-	public function getVisibility()
-	{
-		return $this->visibility;
-	}
-
-	/**
 	 * @param string $attribute Attribute name to find.
 	 * @return int Key in attributes array.
 	 */
-	private function _findAttribute($attribute)
+	protected function _findAttribute($attribute)
 	{
 		return array_search($attribute, array_map(function ($item){
 			/** @var $item \Jigoshop\Entity\Product\Attribute */
@@ -375,12 +282,19 @@ class Product implements EntityInterface
 	{
 		$toSave = array();
 
-		foreach ($this->dirtyFields as $field) {
+		foreach ($this->dirtyFields as $key => $field) {
 			switch ($field) {
-				case 'sales':
-					$toSave['sales_from'] = $this->sales->getFrom()->getTimestamp();
-					$toSave['sales_to'] = $this->sales->getTo()->getTimestamp();
-					$toSave['sales_price'] = $this->sales->getPrice();
+				case 'sku':
+					$toSave['sku'] = $this->sku;
+					break;
+				case 'featured':
+					$toSave['featured'] = $this->featured;
+					break;
+				case 'visibility':
+					$toSave['visibility'] = $this->visibility;
+					break;
+				case 'type':
+					$toSave['type'] = $this->getType();
 					break;
 				case 'size':
 					$toSave['size_weight'] = $this->size->getWeight();
@@ -388,16 +302,10 @@ class Product implements EntityInterface
 					$toSave['size_height'] = $this->size->getHeight();
 					$toSave['size_length'] = $this->size->getLength();
 					break;
-				case 'stock':
-					$toSave['stock_manage'] = $this->stock->getManage();
-					$toSave['stock_allowed_backorders'] = $this->stock->getAllowBackorders();
-					$toSave['stock_status'] = $this->stock->getStatus();
-					$toSave['stock_stock'] = $this->stock->getStock();
-					break;
 				// TODO: Save tax properly
-				default:
-					$toSave[$field] = $this->$field;
 			}
+
+			unset($this->dirtyFields[$key]);
 		}
 
 		// TODO: Save attributes?
@@ -410,25 +318,14 @@ class Product implements EntityInterface
 	 */
 	public function restoreState(array $state)
 	{
-		if (isset($state['price'])) {
-			$this->price = floatval($state['price']);
+		if (isset($state['sku'])) {
+			$this->sku = $state['sku'];
 		}
-		if (isset($state['regular_price'])) {
-			$this->regularPrice = floatval($state['regular_price']);
+		if (isset($state['featured'])) {
+			$this->visibility = boolval($state['featured']);
 		}
 		if (isset($state['visibility'])) {
 			$this->visibility = intval($state['visibility']);
-		}
-
-		$this->sales = new Sales();
-		if (isset($state['sales_from'])) {
-			$this->sales->setFrom(new \DateTime($state['sales_from']));
-		}
-		if (isset($state['sales_to'])) {
-			$this->sales->setTo(new \DateTime($state['sales_to']));
-		}
-		if (isset($state['sales_price'])) {
-			$this->sales->setPrice(floatval($state['sales_price']));
 		}
 
 		$this->size = new Size();
@@ -443,20 +340,6 @@ class Product implements EntityInterface
 		}
 		if (isset($state['size_length'])) {
 			$this->size->setLength(floatval($state['size_length']));
-		}
-
-		$this->stock = new StockStatus();
-		if (isset($state['stock_manage'])) {
-			$this->stock->setManage(boolval($state['stock_manage']));
-		}
-		if (isset($state['stock_allowed_backorders'])) {
-			$this->stock->setAllowBackorders(boolval($state['stock_allowed_backorders']));
-		}
-		if (isset($state['stock_status'])) {
-			$this->stock->setStatus(intval($state['stock_status']));
-		}
-		if (isset($state['stock_stock'])) {
-			$this->stock->setStock(intval($state['stock_stock']));
 		}
 
 		// TODO: Restore tax (after thinking it over and implementing).

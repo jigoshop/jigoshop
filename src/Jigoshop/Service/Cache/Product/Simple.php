@@ -25,6 +25,18 @@ class Simple implements ProductServiceInterface
 	}
 
 	/**
+	 * Adds new type to managed types.
+	 *
+	 * @param $type string Unique type name.
+	 * @param $class string Class name.
+	 * @throws \Jigoshop\Exception When type already exists.
+	 */
+	public function addType($type, $class)
+	{
+		$this->service->addType($type, $class);
+	}
+
+	/**
 	 * Finds item specified by ID.
 	 *
 	 * @param $id int The ID.

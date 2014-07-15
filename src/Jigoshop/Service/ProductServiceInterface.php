@@ -13,6 +13,15 @@ use Jigoshop\Entity\Product;
 interface ProductServiceInterface extends ServiceInterface
 {
 	/**
+	 * Adds new type to managed types.
+	 *
+	 * @param $type string Unique type name.
+	 * @param $class string Class name.
+	 * @throws \Jigoshop\Exception When type already exists.
+	 */
+	public function addType($type, $class);
+
+	/**
 	 * Finds item specified by ID.
 	 *
 	 * @param $id int The ID.

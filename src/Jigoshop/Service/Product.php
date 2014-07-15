@@ -3,6 +3,7 @@
 namespace Jigoshop\Service;
 
 use Jigoshop\Entity\EntityInterface;
+use Jigoshop\Exception;
 use WPAL\Wordpress;
 
 /**
@@ -15,10 +16,27 @@ class Product implements ProductServiceInterface
 {
 	/** @var \WPAL\Wordpress */
 	private $wp;
+	private $types = array();
 
 	public function __construct(Wordpress $wp)
 	{
 		$this->wp = $wp;
+	}
+
+	/**
+	 * Adds new type to managed types.
+	 *
+	 * @param $type string Unique type name.
+	 * @param $class string Class name.
+	 * @throws \Jigoshop\Exception When type already exists.
+	 */
+	public function addType($type, $class)
+	{
+		if (isset($this->types[$type])) {
+			throw new Exception(sprintf('Product of type %s already exists.'), $type);
+		}
+
+		$this->types[$type] = $class;
 	}
 
 	/**
@@ -29,7 +47,8 @@ class Product implements ProductServiceInterface
 	 */
 	public function find($id)
 	{
-		$product = new \Jigoshop\Entity\Product();
+		$type = $this->wp->getPostMeta($id, 'type', true);
+		$product = $this->getProductForType($type);
 
 		if ($id !== null) {
 			$post = $this->wp->getPost($id);
@@ -56,7 +75,8 @@ class Product implements ProductServiceInterface
 	 */
 	public function findForPost($post)
 	{
-		$product = new \Jigoshop\Entity\Product();
+		$type = $this->wp->getPostMeta($post->ID, 'type', true);
+		$product = $this->getProductForType($type);
 
 		$meta = array_map(function ($item){
 			return $item[0];
@@ -125,7 +145,7 @@ class Product implements ProductServiceInterface
 	/**
 	 * @return array List of products that are out of stock.
 	 */
-	function findOutOfStock()
+	public function findOutOfStock()
 	{
 		// TODO: Replace \WP_Query in order to make Jigoshop testable
 		$query = new \WP_Query(array(
@@ -154,7 +174,7 @@ class Product implements ProductServiceInterface
 	 * @param $threshold int Threshold where to assume product is low in stock.
 	 * @return array List of products that are low in stock.
 	 */
-	function findLowStock($threshold)
+	public function findLowStock($threshold)
 	{
 		// TODO: Replace \WP_Query in order to make Jigoshop testable
 		$query = new \WP_Query(array(
@@ -177,5 +197,20 @@ class Product implements ProductServiceInterface
 		));
 
 		return $this->findByQuery($query);
+	}
+
+	/**
+	 * @param $type string Type name of product.
+	 * @throws \Jigoshop\Exception When product type does not exists.
+	 * @return \Jigoshop\Entity\Product
+	 */
+	private function getProductForType($type)
+	{
+		if (!isset($this->types[$type])) {
+			throw new Exception(sprintf('Product type %s does not exists.', $type));
+		}
+
+		$class = $this->types[$type];
+		return new $class($this->wp);
 	}
 }
