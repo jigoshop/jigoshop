@@ -1124,8 +1124,10 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 	 */
 	public static function process_gateway($gateway)
 	{
-		if (!$gateway) {
-			jigoshop::add_error(__('Invalid payment method.', 'jigoshop'));
+		if ($gateway === null) {
+			if (jigoshop_cart::$subtotal > 0) {
+				jigoshop::add_error(__('Invalid payment method.', 'jigoshop'));
+			}
 
 			return false;
 		}
