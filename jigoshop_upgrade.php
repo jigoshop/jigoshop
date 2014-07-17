@@ -67,4 +67,7 @@ function jigoshop_upgrade_1_10_0(){
 	$options->add_option('jigoshop_address_2', $options->get_option('jigoshop_address_line2'));
 	$options->delete_option('jigoshop_address_line1');
 	$options->delete_option('jigoshop_address_line2');
+
+	// Set default customer country
+	$options->add_option('jigoshop_default_country_for_customer', $options->get_option('jigoshop_default_country'));
 }
