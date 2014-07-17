@@ -62,6 +62,10 @@ class jigoshop_licence_validator
 		$this->version	        = $info['Version'];
 		$this->home_shop_url    = $home_shop_url;
 
+		if (is_ssl()) {
+			$this->home_shop_url = str_replace('http://', 'https://', $this->home_shop_url);
+		}
+
 		self::$plugins[$this->identifier] = array(
 			'version'       => $this->version,
 			'plugin_slug'   => $this->plugin_slug,
