@@ -138,13 +138,13 @@ class jigoshop_product_variation extends jigoshop_product {
 
 	public function get_stock()
 	{
-		$stock = (int)get_post_meta($this->variation_id, 'stock', true);
+		$stock = get_post_meta($this->variation_id, 'stock', true);
 
-		if ( $stock == '-9999999' ) {
+		if ( empty($stock) || $stock == '-9999999' ) {
 			$stock = parent::get_stock();
 		}
 
-		return $stock;
+		return (int)$stock;
 	}
 
 
