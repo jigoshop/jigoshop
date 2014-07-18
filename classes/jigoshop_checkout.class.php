@@ -849,6 +849,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					'postcode' => $this->posted['billing_postcode'],
 					'country' => $this->posted['billing_country'],
 					'phone' => $this->posted['billing_phone'],
+					'email' => $this->posted['billing_email'],
 				);
 
 				if(isset($this->posted['billing_euvatno']) && $this->valid_euvatno){
@@ -864,7 +865,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 				// Get shipping/billing
 				if (!empty($this->posted['shiptobilling'])) {
 					$shipping = $billing;
-					unset($shipping['phone']);
+					unset($shipping['phone'], $shipping['email']);
 				} elseif (jigoshop_shipping::is_enabled()) {
 					$shipping = array(
 						'first_name' => $this->posted['shipping_first_name'],
