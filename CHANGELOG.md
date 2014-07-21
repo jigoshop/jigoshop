@@ -14,6 +14,8 @@
     * New: `jigoshop_remove_script()` function and its support in JWOS.
     * New: Provinces for Poland and Philippines. Thanks to Kristoffer Cheng
     * New: `JIGOSHOP_URL` constant - for easy access to Jigoshop files from other plugins.
+    * New: `jigoshop_is_minimum_version()` function - for checking if Jigoshop matches at least specified version using `version_compare()` PHP function.
+    * New: `jigoshop_add_required_version_notice()`function - for adding preformatted notice when plugin requires higher version of Jigoshop.
     * Improved: JWOS now supports PHP 5.3 with `short_open_tag` disabled.
     * Improved: Reformatted main Jigoshop file.
     * Improved: Proper variation price sanitization.

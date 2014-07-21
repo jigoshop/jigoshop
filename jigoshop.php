@@ -150,6 +150,7 @@ include_once('classes/jigoshop_cron.class.php');
 include_once('shortcodes/init.php');
 include_once('widgets/init.php');
 
+include_once('jigoshop_functions.php');
 include_once('jigoshop_templates.php');
 include_once('jigoshop_template_actions.php');
 include_once('jigoshop_emails.php');
